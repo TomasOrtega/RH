@@ -15,9 +15,9 @@ variable {k K L : Type*} [CommRing k] [Field K] [CommRing L] [Algebra k L] [Alge
   {n δ : ℕ} (y : Fin n → L) (θ : Fin δ → L) (J : ℕ → Submodule K L) (Δ : Fin n → Derivation k L L)
 
 /- English proof (translation)
-Proceed by induction on `m using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Rewrite using `[show monomial (f + g) (1 : K) = monomial f 1 * monomial g 1 by rw [monomial_mul, one_mul], map_mul, Derivation.leibniz, Derivation.leibniz, hf, hg, map_add, smul_eq_mul, smul_eq_mul, smul_eq_mul, smul_eq_mul, map_mul, map_mul]`. Consider the case `single i a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[← X_pow_eq_monomial, map_pow, aeval_X, Derivation.leibniz_pow, Derivation.leibniz_pow, hy, pderiv_X, map_nsmul, smul_eq_mul, smul_eq_mul, map_mul, map_pow, aeval_X]`. Distinguish the cases in `h : l = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, Pi.single_eq_of_ne (Ne.symm h), map_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ind_mono (hy : ∀ l l', Δ l (y l') = if l = l' then 1 else 0) (l : Fin n) (m : Fin n →₀ ℕ) :
     Δ l (aeval y (monomial m (1 : K))) = aeval y (pderiv l (monomial m (1 : K))) := by
@@ -35,16 +35,16 @@ theorem ind_mono (hy : ∀ l l', Δ l (y l') = if l = l' then 1 else 0) (l : Fin
     · rw [if_neg h, Pi.single_eq_of_ne (Ne.symm h), map_zero]
 
 /- English proof (translation)
-Rewrite using `[← map_smul, smul_monomial, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_monomial_eq_smul (m : Fin n →₀ ℕ) (c : K) :
     aeval y (monomial m c) = c • aeval y (monomial m (1 : K)) := by
   rw [← map_smul, smul_monomial, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Rewrite using `[← support_sum_monomial_coeff p, map_sum, Finset.sum_mul]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Establish `hd : m.degree = a`. Assume the negation of the conclusion as `h`. Conclude with `(MvPolynomial.mem_support_iff.mp hm) (hp.coeff_eq_zero h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_monomial_eq_smul, smul_mul_assoc, ← hd]`. Conclude with `Submodule.smul_mem _ _ (hY m i)`.
+A detailed English derivation is pending.
 -/
 theorem ind_hom_mem (hY : ∀ (m : Fin n →₀ ℕ) i, aeval y (monomial m (1 : K)) * θ i ∈ J m.degree) {a : ℕ}
     {p : MvPolynomial (Fin n) K} (hp : p.IsHomogeneous a) (i : Fin δ) : aeval y p * θ i ∈ J a := by
@@ -57,11 +57,11 @@ theorem ind_hom_mem (hY : ∀ (m : Fin n →₀ ℕ) i, aeval y (monomial m (1 :
   exact Submodule.smul_mem _ _ (hY m i)
 
 /- English proof (translation)
-Rewrite using `[← support_sum_monomial_coeff p]`. Simplify using `only [map_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Establish `hd : m.degree = a`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `(MvPolynomial.mem_support_iff.mp hm) (hp.coeff_eq_zero h)`. Take `⟨c', hc'⟩` from `hK l (coeff m p)`. Establish `e1 : Δ l (aeval y (monomial m (coeff m p)) * θ i) = c' • (aeval y (monomial m (1 : K)) * θ i) + aeval y (pderiv l (monomial m (coeff m p))) * θ i`. Establish `e2 : pderiv l (monomial m (coeff m p)) = coeff m p • pderiv l (monomial m (1 : K))`. Rewrite using `[← Derivation.map_smul, smul_monomial, smul_eq_mul, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, map_smul, aeval_monomial_eq_smul, Algebra.smul_def, Derivation.leibniz, hθ, smul_zero, zero_add, Derivation.leibniz, hc', ind_mono y Δ hy]`. Simplify using `only [smul_eq_mul, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, add_sub_cancel_right, ← hd]`. Conclude with `Submodule.smul_mem _ _ (hY m i)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ind_der_mem (hy : ∀ l l', Δ l (y l') = if l = l' then 1 else 0) (hθ : ∀ l i, Δ l (θ i) = 0)
     (hK : ∀ l (c : K), ∃ c' : K, Δ l (algebraMap K L c) = algebraMap K L c')
@@ -89,33 +89,29 @@ theorem ind_der_mem (hy : ∀ l l', Δ l (y l') = if l = l' then 1 else 0) (hθ 
 variable [CharZero K]
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero`. Introduce `c hc _`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.zero_apply, ← MvPolynomial.support_eq_empty, Finset.eq_empty_iff_forall_notMem]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm`. Conclude with `absurd (hc i m hm) (Nat.not_lt_zero _)`. Consider the case `succ a ih`. Introduce `c hc hmem`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hC : ∀ i, c i = C (coeff 0 (c i))`. Introduce `i`. Use extensionality with `m`. Rewrite using `[coeff_C]`. Use `split_ifs with h`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[← h]`. Assume the negation of the conclusion as `h'`. Use `hc i m (MvPolynomial.mem_support_iff.mpr h')` as an intermediate fact. Conclude with `h ((Finsupp.degree_eq_zero_iff m).mp (by omega)).symm`. Establish `h0` using `hbase (fun i => coeff 0 (c i)) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∑ i, aeval y (c i) * θ i = ∑ i, coeff 0 (c i) • θ i` using `Finset.sum_congr rfl fun i _ => by conv_lhs => rw [hC i]`. Rewrite using `[aeval_C, Algebra.smul_def]`. Rewrite using `[← e]`. Conclude with `hmem)`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h0i : coeff 0 (c i) = 0` using `congrFun h0 i`. Rewrite using `[hC i, h0i, map_zero]`. Both sides reduce to the same expression. Establish `hlow : (fun i => c i - homogeneousComponent a (c i)) = 0`. Apply `ih` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i m hm`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, coeff_sub, coeff_homogeneousComponent]`. Distinguish the cases in `hd : m.degree = a`. Rewrite `hm` using `[if_pos hd, sub_self]`. Conclude with `absurd rfl hm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[if_neg hd, sub_zero]`. Use `hc i m (MvPolynomial.mem_support_iff.mpr hm)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e : ∑ i, aeval y (c i - homogeneousComponent a (c i)) * θ i = ∑ i, aeval y (c i) * θ i - ∑ i, aeval y (homogeneousComponent a (c i)) * θ i`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_sub, sub_mul]`. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (hanti a hmem) (Submodule.sum_mem _ fun i _ => ind_hom_mem y θ J hY (homogeneousComponent_isHomogeneous a (c i)) i)`. Establish `hhom : ∀ i, (c i).IsHomogeneous a`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun hlow i` as an intermediate fact. Rewrite `this` using `[Pi.zero_apply, sub_eq_zero]`. Rewrite using `[this]`. Conclude with `homogeneousComponent_isHomogeneous a (c i)`. Establish `hpd : ∀ l, (fun i => pderiv l (c i)) = 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `l`. Apply `ih` to reduce the goal to its premises. Introduce `i m hm`. Establish `hd : m.degree = a - 1`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(MvPolynomial.mem_support_iff.mp hm) ((hhom i).pderiv.coeff_eq_zero h)`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `hJ l a _ hmem`. Rewrite `h1` using `[map_sum]`. Establish `h2 : ∑ i, (Δ l (aeval y (c i) * θ i) - aeval y (pderiv l (c i)) * θ i) ∈ J a` using `Submodule.sum_mem _ fun i _ => ind_der_mem y θ J Δ hy hθ hK hY (hhom i) l i`.
-
-Rewrite `h2` using `[Finset.sum_sub_distrib]`. Use `Submodule.sub_mem _ h1 h2` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `i`. Establish `hE` using `(hhom i).sum_X_mul_pderiv`.
-
-Establish `h0 : ∑ l, X l * pderiv l (c i) = 0` using `Finset.sum_eq_zero fun l _ => by rw [congrFun (hpd l) i, Pi.zero_apply, mul_zero]`. Rewrite `hE` using `[h0]`. Rewrite using `[Pi.zero_apply]`. Conclude with `(smul_eq_zero.mp hE.symm).resolve_left (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ind_claim (hy : ∀ l l', Δ l (y l') = if l = l' then 1 else 0) (hθ : ∀ l i, Δ l (θ i) = 0)
     (hK : ∀ l (c : K), ∃ c' : K, Δ l (algebraMap K L c) = algebraMap K L c')
@@ -205,7 +201,7 @@ end Abstract
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Derivation.add_apply, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem der_sum_apply {k L ι : Type*} [CommRing k] [CommRing L] [Algebra k L] (s : Finset ι)
     (f : ι → Derivation k L L) (x : L) : (∑ i ∈ s, f i) x = ∑ i ∈ s, f i x := by
@@ -225,14 +221,14 @@ attribute [local instance] LwAlgKl
 def pdLw (p : Idx D j N) : Derivation (X.Kl la) (Lw X la w) (Lw X la w) := pdLc X la w p
 
 /- English proof (translation)
-The claim follows from `pdLc_algebraMap X la w p x`.
+A detailed English derivation is pending.
 -/
 theorem pdLw_algebraMap (p : Idx D j N) (x : Rp X la N) :
     pdLw X la w p (algebraMap (Rp X la N) (Lw X la w) x) = algebraMap (Rp X la N) (Lw X la w) (pdRp X la N p x) :=
   pdLc_algebraMap X la w p x
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply (Kp X la N) (Rp X la N) (Lw X la w), pdLw_algebraMap, pdRp_algebraMap, ← IsScalarTower.algebraMap_apply (Kp X la N) (Rp X la N) (Lw X la w)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pdLw_algebraMap_Kp (p : Idx D j N) (c : Kp X la N) :
     pdLw X la w p (algebraMap (Kp X la N) (Lw X la w) c) = algebraMap (Kp X la N) (Lw X la w) (pdKp X la N p c) := by
@@ -240,7 +236,7 @@ theorem pdLw_algebraMap_Kp (p : Idx D j N) (c : Kp X la N) :
     ← IsScalarTower.algebraMap_apply (Kp X la N) (Rp X la N) (Lw X la w)]
 
 /- English proof (translation)
-Establish `h` using `hasse_jid_power X la w u (Finsupp.single p 1) (a + 1) x hx`. Rewrite `h` using `[Finsupp.sum_single_index rfl, Nat.add_sub_cancel]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pdLw_mem (p : Idx D j N) (u : WeightFamilies.Wt D j) (a : ℕ) {x : Lw X la w} (hx : x ∈ JHfr X la w u (a + 1)) :
     pdLw X la w p x ∈ JHfr X la w u a := by
@@ -249,9 +245,7 @@ theorem pdLw_mem (p : Idx D j N) (u : WeightFamilies.Wt D j) (a : ℕ) {x : Lw X
   exact h
 
 /- English proof (translation)
-Establish `h` using `congrArg (pdLw X la w p) (section_mul_inverse_eq_one X la w)`. Rewrite `h` using `[Derivation.leibniz, Derivation.map_one_eq_zero, pdLw_algebraMap, pdRp_sec, if_neg hp, map_zero, smul_zero, add_zero, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[section_mul_inverse_eq_one, one_mul]`. Use `_ = w0inv X la w * (algebraMap (Rp X la N) (Lw X la w) (sec X la w 0) * pdLw X la w p (w0inv X la w)) := by ring`.
-
-Use `_ = 0 := by rw [h, mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pdLw_w0inv (p : Idx D j N) (hp : p.1 ≠ 0) : pdLw X la w p (w0inv X la w) = 0 := by
   have h := congrArg (pdLw X la w p) (section_mul_inverse_eq_one X la w)
@@ -269,7 +263,7 @@ def dSec (l : Fin (WeightFamilies.dimY D j)) : Derivation (X.Kl la) (Lw X la w) 
   ∑ κ, algebraMap (Kp X la N) (Lw X la w) (t0 X la κ) • pdLw X la w (l.succ, κ)
 
 /- English proof (translation)
-Unfold `dSec`. Rewrite using `[der_sum_apply]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.smul_apply, smul_eq_mul, Algebra.smul_def]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dSec_apply (l : Fin (WeightFamilies.dimY D j)) (x : Lw X la w) :
     dSec X la w l x = ∑ κ, t0 X la κ • pdLw X la w (l.succ, κ) x := by
@@ -281,13 +275,13 @@ theorem dSec_apply (l : Fin (WeightFamilies.dimY D j)) (x : Lw X la w) :
 def ySec (l : Fin (WeightFamilies.dimY D j)) : Lw X la w := (sfr X la w l.succ : Lw X la w)
 
 /- English proof (translation)
-Establish `h1 : ∀ κ, pdLw X la w (l.succ, κ) (ySec X la w l') = if l = l' then algebraMap (Rp X la N) (Lw X la w) (emb X la N (X.inc wL (w κ))) * w0inv X la w else 0`. Introduce `κ`. Unfold `ySec`. Rewrite using `[coe_sfr, frac_apply, pow_one, Derivation.leibniz, pdLw_w0inv X la w _ (Fin.succ_ne_zero l), smul_zero, zero_add, pdLw_algebraMap, pdRp_sec, smul_eq_mul]`. Distinguish the cases in `h : l = l'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, if_pos (by rw [h]), mul_comm]`. Rewrite using `[if_neg h, if_neg (fun e => h (Fin.succ_injective _ e)), map_zero, mul_zero]`. Rewrite using `[dSec_apply]`. Simplify using `only [h1]`. Distinguish the cases in `h : l = l'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [if_pos h]`. Rewrite using `[← section_mul_inverse_eq_one X la w]`. Unfold `sec`. Rewrite using `[map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← smul_mul_assoc]`. Use `congr 1`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply (Kp X la N) (Rp X la N) (Lw X la w)]`. Both sides reduce to the same expression. Simplify using `only [if_neg h, smul_zero, Finset.sum_const_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem dSec_ySec (l l' : Fin (WeightFamilies.dimY D j)) : dSec X la w l (ySec X la w l') = if l = l' then 1 else 0 := by
   have h1 : ∀ κ, pdLw X la w (l.succ, κ) (ySec X la w l') =
@@ -314,7 +308,7 @@ theorem dSec_ySec (l l' : Fin (WeightFamilies.dimY D j)) : dSec X la w l (ySec X
   · simp only [if_neg h, smul_zero, Finset.sum_const_zero]
 
 /- English proof (translation)
-Rewrite using `[dSec_apply]`. Use `Finset.sum_eq_zero fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[pdLw_algebraMap, pdRp_emb, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dSec_emb (l : Fin (WeightFamilies.dimY D j)) (F : X.Forms) :
     dSec X la w l (algebraMap (Rp X la N) (Lw X la w) (emb X la N F)) = 0 := by
@@ -323,7 +317,7 @@ theorem dSec_emb (l : Fin (WeightFamilies.dimY D j)) (F : X.Forms) :
   rw [pdLw_algebraMap, pdRp_emb, map_zero, smul_zero]
 
 /- English proof (translation)
-Use `⟨∑ κ, t0 X la κ * pdKp X la N (l.succ, κ) c, ?_⟩` and prove the remaining obligations. Rewrite using `[dSec_apply, map_sum]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[pdLw_algebraMap_Kp, Algebra.smul_def, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dSec_algebraMap_Kp (l : Fin (WeightFamilies.dimY D j)) (c : Kp X la N) :
     ∃ c' : Kp X la N, dSec X la w l (algebraMap (Kp X la N) (Lw X la w) c) = algebraMap (Kp X la N) (Lw X la w) c' := by
@@ -333,7 +327,7 @@ theorem dSec_algebraMap_Kp (l : Fin (WeightFamilies.dimY D j)) (c : Kp X la N) :
   rw [pdLw_algebraMap_Kp, Algebra.smul_def, map_mul]
 
 /- English proof (translation)
-Rewrite using `[dSec_apply]`. Conclude with `Submodule.sum_mem _ fun κ _ => Submodule.smul_mem _ _ (pdLw_mem X la w _ u a hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dSec_mem (l : Fin (WeightFamilies.dimY D j)) (u : WeightFamilies.Wt D j) (a : ℕ) (x : Lw X la w) (hx : x ∈ JHfr X la w u (a + 1)) :
     dSec X la w l x ∈ JHfr X la w u a := by
@@ -341,9 +335,9 @@ theorem dSec_mem (l : Fin (WeightFamilies.dimY D j)) (u : WeightFamilies.Wt D j)
   exact Submodule.sum_mem _ fun κ _ => Submodule.smul_mem _ _ (pdLw_mem X la w _ u a hx)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h1 : x ∈ JHs X la w u (a + 1)` using `hx`. Rewrite `h1` using `[← Jid_pow_smul_HK]`. Establish `h2 : x ∈ Jid X la w ^ a • HK X la w u` using `Submodule.smul_mono (Ideal.pow_le_pow_right (Nat.le_succ a)) le_rfl h1`. Rewrite `h2` using `[Jid_pow_smul_HK]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem JHfr_succ_le (u : WeightFamilies.Wt D j) (a : ℕ) : JHfr X la w u (a + 1) ≤ JHfr X la w u a := by
   intro x hx
@@ -355,9 +349,9 @@ theorem JHfr_succ_le (u : WeightFamilies.Wt D j) (a : ℕ) : JHfr X la w u (a + 
 
 open MvPolynomial in
 /- English proof (translation)
-Rewrite using `[aeval_monomial, map_one, one_mul, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finsupp.degree_eq_sum, ← coe_prod_sfr]`. Use `show _ = (Frac0 X la w).val (∏ i, sfr X la w i.succ ^ m i)`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem aeval_ySec_monomial (m : Fin (WeightFamilies.dimY D j) →₀ ℕ) :
     aeval (ySec X la w) (monomial m (1 : Kp X la N)) = frac X la w m.degree (secPow X la w m) := by
@@ -371,7 +365,7 @@ theorem aeval_ySec_monomial (m : Fin (WeightFamilies.dimY D j) →₀ ℕ) :
 
 open MvPolynomial in
 /- English proof (translation)
-Rewrite using `[aeval_ySec_monomial, ← frac_zero, frac_mul, mem_JHfr]`. Use `⟨0, _, secPow_mul_mem_Mon X la w (Finsupp.degree_eq_sum m).symm ?_, by rw [add_comm]⟩` and prove the remaining obligations. Rewrite using `[addL_zero]`. Conclude with `emb_mem_Vw X la N u F`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ySec_monomial_mul_mem (u : WeightFamilies.Wt D j) (m : Fin (WeightFamilies.dimY D j) →₀ ℕ) (F : B.Cusp j u) :
     aeval (ySec X la w) (monomial m (1 : Kp X la N)) * algebraMap (Rp X la N) (Lw X la w) (emb X la N (X.inc u F)) ∈
@@ -391,7 +385,7 @@ variable (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) {N : ℕ} {wL : W
   (wF : WeightFamilies.Wt D j) (T : ℕ)
 
 /- English proof (translation)
-The claim follows from `have := Kl_charZero X la charZero_of_injective_algebraMap (algebraMap (X.Kl la) (Kp X la N)).injective`.
+A detailed English derivation is pending.
 -/
 theorem Kp_charZero' : CharZero (Kp X la N) :=
   have := Kl_charZero X la
@@ -404,7 +398,7 @@ def phiN (θ : B.Cusp j wF) : MvPolynomial (Fin (WeightFamilies.dimY D j)) (Kp X
   (basisMonomials (Fin (WeightFamilies.dimY D j)) (Kp X la N)).constr (Kp X la N) (gN X la w wF T θ)
 
 /- English proof (translation)
-Establish `e : monomial m c = c • basisMonomials (Fin (WeightFamilies.dimY D j)) (Kp X la N) m`. Rewrite using `[coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]`. Unfold `phiN`. Rewrite using `[e, map_smul, Module.Basis.constr_basis]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiN_monomial (θ : B.Cusp j wF) (m : Fin (WeightFamilies.dimY D j) →₀ ℕ) (c : Kp X la N) :
     phiN X la w wF T θ (monomial m c) = c • gN X la w wF T θ m := by
@@ -414,7 +408,7 @@ theorem phiN_monomial (θ : B.Cusp j wF) (m : Fin (WeightFamilies.dimY D j) →�
   rw [e, map_smul, Module.Basis.constr_basis]
 
 /- English proof (translation)
-Rewrite using `[aeval_ySec_monomial, ← frac_zero, frac_mul, ← frac_pow_mul X la w (m.degree + 0) (T - m.degree)]`. Unfold `gN`. Rewrite using `[show m.degree + 0 + (T - m.degree) = T by omega]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frac_gN (θ : B.Cusp j wF) (m : Fin (WeightFamilies.dimY D j) →₀ ℕ) (hm : m.degree ≤ T) :
     frac X la w T (gN X la w wF T θ m) = aeval (ySec X la w) (monomial m (1 : Kp X la N)) *
@@ -426,9 +420,9 @@ theorem frac_gN (θ : B.Cusp j wF) (m : Fin (WeightFamilies.dimY D j) →₀ ℕ
   ring
 
 /- English proof (translation)
-Establish `key : ∀ (s : Finset (Fin (WeightFamilies.dimY D j) →₀ ℕ)) (f : (Fin (WeightFamilies.dimY D j) →₀ ℕ) → Kp X la N), (∀ m ∈ s, m.degree ≤ T) → frac X la w T (phiN X la w wF T θ (∑ m ∈ s, monomial m (f m))) = aeval (ySec X la w) (∑ m ∈ s, monomial m (f m)) * algebraMap (Rp X la N) (L …`. Introduce `s f hs`. Simplify using `only [map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[phiN_monomial, map_smul, frac_gN X la w wF T θ m (hs m hm), aeval_monomial_eq_smul (ySec X la w) m (f m), smul_mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `key p.support (fun m => coeff m p) hp` as an intermediate fact. Rewrite `this` using `[support_sum_monomial_coeff]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem frac_phiN (θ : B.Cusp j wF) (p : MvPolynomial (Fin (WeightFamilies.dimY D j)) (Kp X la N))
     (hp : ∀ m ∈ p.support, m.degree ≤ T) :
@@ -456,21 +450,19 @@ variable {X : PJ D B P j} {wL wF : WeightFamilies.Wt D j} {T : ℕ} (G : GlobalF
   (la : HeightOneSpectrum (𝓞 B.KO))
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨al, i, hal, hx⟩` from `hx`. Use `⟨fun i' => if i' = i then monomial (Finsupp.equivFunOnFinite.symm al) 1 else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `i' m hm dsimp only at hm`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : i' = i`. Rewrite `hm` using `[if_pos h]`. Use `Finset.mem_singleton.mp (support_monomial_subset hm)` as an intermediate fact. Rewrite using `[this, Finsupp.degree_eq_sum]`. Conclude with `hal`.
+Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[if_neg h, support_zero]`. Conclude with `absurd hm (Finset.notMem_empty _)`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `only`. Rewrite using `[if_pos rfl, phiN_monomial, one_smul, hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `gN`. Rewrite using `[Finsupp.degree_eq_sum]`. Both sides reduce to the same expression. Introduce `i' _ h dsimp only`. Rewrite using `[if_neg h, map_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Consider the case `zero => exact ⟨0, fun i m hm => by simp at hm, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c, hc, hxc⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c', hc', hyc⟩` from `hy`. Use `⟨c + c', fun i m hm => ?_, ?_⟩` and prove the remaining obligations. Break down `Finset.mem_union.mp (support_add hm) with h | h` into its components or cases. Conclude with `hc i m h`. Conclude with `hc' i m h`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.coe_add, hxc, hyc, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [Pi.add_apply, map_add]`. Consider the case `smul a x _ hx`. Take `⟨c, hc, hxc⟩` from `hx`. Use `⟨a • c, fun i m hm => hc i m (support_smul hm), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Submodule.coe_smul, hxc, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [Pi.smul_apply, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coeff_of_mem_span {x : ↥(Vw X la G.N (addL wF wL T))}
     (hx : x ∈ Submodule.span (Kp X la G.N) (sectionMonomialGenerators G la)) :
@@ -520,17 +512,15 @@ theorem exists_coeff_of_mem_span {x : ↥(Vw X la G.N (addL wF wL T))}
 attribute [local instance] LwAlgKl
 
 /- English proof (translation)
-Introduce `x hx h0`. Use `Kp_charZero' X la (N := G.N)` as an intermediate fact. Take `⟨c, hc, hxc⟩` from `exists_coeff_of_mem_span G la hx`. Establish `hbase : ∀ b : Fin G.del → Kp X la G.N, ∑ i, b i • algebraMap (Rp X la G.N) (Lw X la G.w) (emb X la G.N (X.inc wF (G.th' i))) ∈ JHfr X la G.w wF 1 → b = 0`. Introduce `b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlin : ∑ i, b i • tL G la i = 0`. Establish `e : ∑ i, b i • tL G la i = rho0 X la G.w wF (∑ i, b i • (⟨emb X la G.N (X.inc wF (G.th' i)), emb_mem_Vw X la G.N wF (G.th' i)⟩ : ↥(Vw X la G.N wF)))`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul]; rfl`. Rewrite using `[e, restriction_apply_eq_reduction, reduction_eq_zero_iff_mem_ideal_smul, ← pow_one (Jid X la G.w), mem_Jid_pow_smul_top, ← mem_JHfr, coe_toHK0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : algebraMap (Rp X la G.N) (Lw X la G.w) ((∑ i, b i • (⟨emb X la G.N (X.inc wF (G.th' i)), emb_mem_Vw X la G.N wF (G.th' i)⟩ : ↥(Vw X la G.N wF)) : ↥(Vw X la G.N wF)) : Rp X la G.N) = ∑ i, b i • algebraMap (Rp X la G.N) (Lw X la G.w) (emb X la G.N (X.inc wF (G.th' i)))`. Rewrite using `[AddSubmonoidClass.coe_finsetSum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply (Kp X la G.N) (Rp X la G.N) (Lw X la G.w), ← Algebra.smul_def]`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hb`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.mp hB.1 b hlin i`. Establish `hmem : ∑ i, aeval (ySec X la G.w) (c i) * algebraMap (Rp X la G.N) (Lw X la G.w) (emb X la G.N (X.inc wF (G.th' i))) ∈ JHfr X la G.w wF (a0 D j T)`. Rewrite `h0` using `[rhoK_apply, toWK_eq_zero_iff, mem_Jid_pow_smul_top, ← mem_JHfr, coe_toHK, hxc, map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : ∀ i, frac X la G.w T (phiN X la G.w wF T (G.th' i) (c i)) = aeval (ySec X la G.w) (c i) * algebraMap (Rp X la G.N) (Lw X la G.w) (emb X la G.N (X.inc wF (G.th' i)))` using `fun i => frac_phiN X la G.w wF T (G.th' i) (c i) fun m hm => ((hc i m hm).le.trans (Nat.sub_le _ _))`. Simplify using `only [e] at h0`. Conclude with `h0`. Establish `hc0` using `ind_claim (ySec X la G.w) (fun i => algebraMap (Rp X la G.N) (Lw X la G.w) (emb X la G.N (X.inc wF (G.th' i)))) (JHfr X la G.w wF) (dSec X la G.w) (dSec_ySec X la G.w) (fun l i => dSec_emb X la G.w l _) (dSec_algebraMap_Kp X la G.w) (fun l a x hx => dSec_mem X la G.w l wF a x hx) …`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Rewrite using `[hxc, hc0]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem in64 (hB : InBasis G la) : ∀ x ∈ Submodule.span (Kp X la G.N) (sectionMonomialGenerators G la),
     rhoK X la G.w wF (a0 D j T) T x = 0 → x = 0 := by

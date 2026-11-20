@@ -7,7 +7,7 @@ set_option autoImplicit false
 namespace GlobalTheory.ChainPts
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TriFrame.readsOmSt`.
+A detailed English derivation is pending.
 -/
 theorem readsOmSt : GlobalTheory.ChainPts.ReadsOmSt := GlobalTheory.TriFrame.readsOmSt
 

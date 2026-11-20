@@ -13,9 +13,9 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha r n e he c`. Set `μ : Measure (GA E a)` to `Measure.haar`. Use `haveI : μ.IsHaarMeasure := inferInstanceAs (Measure.haar : Measure (GA E a)).IsHaarMeasure`. Use `haveI : μ.IsMulRightInvariant := GlobalTheory.CovolGL.isMulRightInvariant E a μ`. Take `⟨χ, hχ⟩` from `UpperTheory.V.Lit.Bor.twEx E a ha r`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P, Q, S, h⟩` from `fnProj0 E a ha μ n e he c`. Take `⟨P', Q', S', h'⟩` from `twRes E a r χ hχ (gard μ) n e c P Q S h`. Use `⟨_, P', Q', S', ⟨fun X φ hφ => (twSq E a ha μ r χ hχ φ hφ).1 X, fun φ hφ => ?_, fun φ hφ => (twSq E a ha μ r χ hχ φ hφ).2, fun φ h1 h2 h3 h4 => twCpt E a ha μ r χ hχ φ h1 h2 h3 h4⟩, h'⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hχ.1`. Conclude with `chiGrow E a χ s hs φ (gardFacts E a ha μ _ hφ).2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.fnProj :
     UpperTheory.V.Cj.H.FnProj := by

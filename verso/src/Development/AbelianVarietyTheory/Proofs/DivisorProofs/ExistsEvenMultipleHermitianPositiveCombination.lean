@@ -12,9 +12,9 @@ open Matrix
 namespace GlobalTheory.Desc.HermComb
 
 /- English proof (translation)
-Use `haveI : IsZLattice ℝ Λ := ⟨hs⟩`. Set `b` to `Module.finBasis ℤ Λ`. Use `⟨_, b.ofZLatticeBasis ℝ Λ, fun x => ⟨fun hx k => ⟨b.repr ⟨x, hx⟩ k, ?_⟩, fun h => ?_⟩⟩` and prove the remaining obligations. Conclude with `b.ofZLatticeBasis_repr_apply ℝ Λ ⟨x, hx⟩ k`. Use `choose m hm using h`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : x = ∑ k, m k • (b k : Fin g → ℂ)` using `by conv_lhs => rw [← (b.ofZLatticeBasis ℝ Λ).sum_repr x]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hm k, Module.Basis.ofZLatticeBasis_apply, Int.cast_smul_eq_zsmul]`. Rewrite using `[hx]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (b k).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_basis (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (hd : DiscreteTopology Λ)
     (hs : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) :
@@ -33,7 +33,7 @@ theorem lat_basis (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (hd : DiscreteT
     exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (b k).2
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `h`. Use `⟨k * q.num, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[mul_comm (q.den : ℚ) k, mul_assoc, mul_comm (q.den : ℚ), Rat.mul_den_eq_num]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem int_of_den_dvd (q : ℚ) (D : ℕ) (h : q.den ∣ D) : ∃ m : ℤ, (D : ℚ) * q = m := by
   obtain ⟨k, rfl⟩ := h
@@ -42,9 +42,9 @@ theorem int_of_den_dvd (q : ℚ) (D : ℕ) (h : q.den ∣ D) : ∃ m : ℤ, (D :
   rw [mul_comm (q.den : ℚ) k, mul_assoc, mul_comm (q.den : ℚ), Rat.mul_den_eq_num]
 
 /- English proof (translation)
-Set `S : Finset ℚ` to `insert c₀ (Finset.univ.image c ∪ Finset.univ.image (fun x : Fin r × Fin n × Fin n => M x.1 x.2.1 x.2.2))`. Establish `hdv : ∀ q ∈ S, q.den ∣ ∏ q ∈ S, q.den` using `fun q hq => Finset.dvd_prod_of_mem _ hq`. Use `⟨∏ q ∈ S, q.den, Finset.prod_pos fun (q : ℚ) _ => q.den_pos, int_of_den_dvd _ _ (hdv _ ?_), fun i => int_of_den_dvd _ _ (hdv _ ?_), fun i k l => int_of_den_dvd _ _ (hdv _ ?_)⟩` and prove the remaining obligations. Simplify using `[S]`. Simplify using `[S]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [S, Finset.mem_insert, Finset.mem_union, Finset.mem_image, Finset.mem_univ, true_and]`. Conclude with `Or.inr (Or.inr ⟨(i, k, l), rfl⟩)`.
+Simplify using the standard rewrite rules. Prove the second alternative.
 -/
 theorem common_den (n r : ℕ) (c₀ : ℚ) (c : Fin r → ℚ) (M : Fin r → Matrix (Fin n) (Fin n) ℚ) :
     ∃ D : ℕ, 1 ≤ D ∧ (∃ m : ℤ, (D : ℚ) * c₀ = m) ∧ (∀ i, ∃ m : ℤ, (D : ℚ) * c i = m) ∧
@@ -65,25 +65,23 @@ end GlobalTheory.Desc.HermComb
 namespace GlobalTheory.Desc.HermComb
 
 /- English proof (translation)
-Introduce `g Λ hd hs H₁ H₂ h₁ h₂ hp₁ hp₂ hi₁ hi₂`. Take `⟨n, e, he⟩` from `lat_basis g Λ hd hs`. Apply the tactic sequence `have hek : ∀ k, e k ∈ Λ := fun k => (he _).2 fun j => ⟨if k = j then 1 else 0, by rw [e.repr_self, Finsupp.single_apply]; split_ifs <;> simp⟩`. Take `⟨γ, hγ, hsa⟩` from `GlobalTheory.T.exists_selfAdjoint_endo_relating_hermitian_forms g H₁ H₂ h₁ h₂ hp₁`. Take `⟨Tq, hT⟩` from `GlobalTheory.T.hermitian_endo_matrix_rational_in_lattice_basis g n e H₁ H₂ hp₁ (fun k l => hi₁ _ (hek k) _ (hek l)) (fun k l => hi₂ _ (hek k) _ (hek l)) γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hB, hBT⟩` from `GlobalTheory.T.posDef_real_gram_pair_hermitian_forms g n e H₁ H₂ h₁ h₂ hp₁ hp₂ γ hγ`. Rewrite `hBT` using `[← hT]`. Take `⟨c₀, r, c, p, hc₀, hc, hid⟩` from `GlobalTheory.T.exists_unit_eq_positive_squares_times_selfAdjoint n Tq _ hB hBT`. Establish `hform` using `GlobalTheory.T.hermitian_form_eq_combination_of_selfAdjoint_identity g H₁ H₂ γ hγ hsa c₀ r c p (GlobalTheory.T.rational_matrix_identity_transfer_to_complex_map g n e γ Tq hT c₀ r c p hid)`. Take `⟨D, hD1, ⟨m₀, hm₀⟩, hci, hM⟩` from `common_den n r c₀ c (fun i => Polynomial.aeval Tq (p i))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose m hm using hci`. Establish `hm₀p : 0 < m₀`. Establish `: (0 : ℚ) < m₀` using `by rw [← hm₀]; exact mul_pos (by exact_mod_cast hD1) hc₀`. Conclude with `this` after adjusting the coercions. Establish `hmp : ∀ i, 0 ≤ m i` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (0 : ℚ) ≤ m i` using `by rw [← hm i]; exact (mul_pos (by exact_mod_cast hD1) (hc i)).le`. Conclude with `this` after adjusting the coercions. Use `⟨2 * D ^ 3, 2 * D ^ 2 * m₀.toNat, r, fun i => 2 * (m i).toNat, fun i => D • Polynomial.aeval γ (p i), ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: 1 ≤ D ^ 3` using `Nat.one_le_pow _ _ hD1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h1 : 1 ≤ D ^ 2` using `Nat.one_le_pow _ _ hD1`. Establish `h2 : 1 ≤ m₀.toNat` using `by omega`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `even_two_mul _`. Rewrite using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `even_two_mul _`. Conclude with `fun i => even_two_mul _`. Conclude with `fun i => GlobalTheory.T.nsmul_aeval_mem_lattice_of_int_rational_matrix g n Λ e he γ Tq hT (p i) D (hM i)`. Introduce `z w`. Establish `hm₀' : ((m₀.toNat : ℕ) : ℂ) = (D : ℂ) * (c₀ : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ((m₀.toNat : ℤ) : ℚ) = (D : ℚ) * c₀` using `by rw [Int.toNat_of_nonneg hm₀p.le, hm₀]`. Conclude with `congrArg (fun q : ℚ => (q : ℂ)) this` after adjusting the coercions. Establish `hm' : ∀ i, (((m i).toNat : ℕ) : ℂ) = (D : ℂ) * (c i : ℂ)` using `fun i => by`. Establish `: (((m i).toNat : ℤ) : ℚ) = (D : ℚ) * c i` using `by rw [Int.toNat_of_nonneg (hmp i), hm i]`. Conclude with `congrArg (fun q : ℚ => (q : ℂ)) this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hsc : ∀ a b : Fin g → ℂ, (D • a) ⬝ᵥ H₂.mulVec (star (D • b)) = (D : ℂ) * D * (a ⬝ᵥ H₂.mulVec (star b))`. Introduce `a b`. Rewrite using `[star_nsmul, mulVec_smul, dotProduct_smul, smul_dotProduct, nsmul_eq_mul, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [LinearMap.smul_apply, hsc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hform z w]`. Move the coercions through the operations in `[hm₀', hm']`. Rewrite using `[mul_add, Finset.mul_sum]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)), DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ →
     ∀ (H₁ H₂ : Matrix (Fin g) (Fin g) ℂ), H₁.IsHermitian → H₂.IsHermitian →

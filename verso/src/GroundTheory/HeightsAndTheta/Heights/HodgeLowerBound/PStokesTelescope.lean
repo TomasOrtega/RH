@@ -16,9 +16,9 @@ set_option linter.unusedSectionVars false
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Unfold `ptsIntegral ptsIntegralAt`. Use `split_ifs with hΨ`. Use `congr 1`. Use function extensionality and compare the values at `y`. Use `finsum_congr fun w => finsum_congr fun _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `sheetDensity`. Use `split_ifs with hγ`. Rewrite using `[hg _ hγ.choose_spec.2.self_of_nhds.2.1]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_congr_g (P : Ideal (MRing ι)) {e : ℕ} (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ)
     {g g' : ((Σ k, ι k) → ℂ) → ℝ} (hg : ∀ z ∈ mcPts P, g z = g' z) :
@@ -36,7 +36,7 @@ theorem ptsIntegral_congr_g (P : Ideal (MRing ι)) {e : ℕ} (φ : Fin e → ((�
   · rfl
 
 /- English proof (translation)
-Unfold `ptsIntegral ptsIntegralAt sheetDensity`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ptsIntegral_zero_g (P : Ideal (MRing ι)) {e : ℕ} (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ) :
     ptsIntegral P φ (fun _ => (0 : ℝ)) = 0 := by
@@ -45,7 +45,7 @@ theorem ptsIntegral_zero_g (P : Ideal (MRing ι)) {e : ℕ} (φ : Fin e → ((Σ
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h1 : fderiv ℝ (fun y => c * f y) = c • fderiv ℝ f` using `fderiv_const_smul_field (f := f) c`. Establish `h2 : fderiv ℝ (c • fderiv ℝ f) = c • fderiv ℝ (fderiv ℝ f)` using `fderiv_const_smul_field (f := fderiv ℝ f) c`. Use extensionality with `i j`. Simplify using `only [cxHessian, h1, h2, Pi.smul_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, Matrix.smul_apply]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -59,7 +59,7 @@ theorem cxHessian_const_mul {D : ℕ} (c : ℝ) (f : (Fin D → ℂ) → ℝ) (z
   ring
 
 /- English proof (translation)
-Unfold `mixedDisc`. Simplify using `only [← Finset.smul_sum, Matrix.det_smul, Fintype.card_fin, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun S _ => by ring` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem mixedDisc_smul {D : ℕ} (c : ℂ) (A : Fin D → Matrix (Fin D) (Fin D) ℂ) :
     mixedDisc (fun k => c • A k) = c ^ D * mixedDisc A := by
@@ -68,7 +68,7 @@ theorem mixedDisc_smul {D : ℕ} (c : ℂ) (A : Fin D → Matrix (Fin D) (Fin D)
   refine Finset.sum_congr rfl fun S _ => by ring
 
 /- English proof (translation)
-Simplify using `only [maDensity, cxHessian_const_mul, mixedDisc_smul]`. Rewrite using `[← Complex.ofReal_pow, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem maDensity_const_mul {D : ℕ} (c : ℝ) (φ : Fin D → (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) :
     maDensity (fun k y => c * φ k y) z = c ^ D * maDensity φ z := by
@@ -77,7 +77,7 @@ theorem maDensity_const_mul {D : ℕ} (c : ℝ) (φ : Fin D → (Fin D → ℂ) 
   ring
 
 /- English proof (translation)
-Unfold `sheetDensity`. Use `split_ifs with hγ`. Simplify using `only [maDensity_const_mul]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sheetDensity_scale (P : Ideal (MRing ι)) {e : ℕ}
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ)
@@ -90,9 +90,9 @@ theorem sheetDensity_scale (P : Ideal (MRing ι)) {e : ℕ}
   · ring
 
 /- English proof (translation)
-Unfold `ptsIntegral`. Use `split_ifs with hΨ`. Unfold `ptsIntegralAt`. Rewrite using `[← MeasureTheory.integral_const_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[mul_finsum_mem]`. Simplify using `only [sheetDensity_scale]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_scale (P : Ideal (MRing ι)) {e : ℕ} (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ)
     (g : ((Σ k, ι k) → ℂ) → ℝ) (c c' : ℝ) :
@@ -118,7 +118,7 @@ def blockInd : HermLine ι where
     simp only [e, Pi.zero_apply, zpow_zero, Finset.prod_const_one, one_mul]
 
 /- English proof (translation)
-Use `(contDiffOn_const (c := (1 : ℝ))).congr fun z hz => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hz`. Use `show (if ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0 then (1 : ℝ) else 0) = 1`. Rewrite using `[if_pos hz]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockInd_smooth : IsSmoothHerm (blockInd (ι := ι)) := by
   refine (contDiffOn_const (c := (1 : ℝ))).congr fun z hz => ?_
@@ -138,7 +138,7 @@ def ratio (A A' : HermLine ι) (ha : A'.a = A.a) : HermLine ι where
     simp
 
 /- English proof (translation)
-The claim follows from `hA'.div hA fun z hz => (A.pos z hz).ne'`.
+A detailed English derivation is pending.
 -/
 theorem ratio_smooth {A A' : HermLine ι} (ha : A'.a = A.a) (hA : IsSmoothHerm A) (hA' : IsSmoothHerm A') :
     IsSmoothHerm (ratio A A' ha) :=
@@ -147,9 +147,9 @@ theorem ratio_smooth {A A' : HermLine ι} (ha : A'.a = A.a) (hA : IsSmoothHerm A
 variable {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ}
 
 /- English proof (translation)
-Establish `hR` using `hI.2.2 P n L B 1 0 hP hL hB (fun k => by simp [hB0]) tele_one_homog (fun h1 => hP.2.1.1.ne_top ((Ideal.eq_top_iff_one P).mpr h1))`. Rewrite using `[hR]`. Unfold `recR`. Rewrite using `[tele_divSupp_one, finsum_mem_empty, zero_sub]`. Unfold `arInt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hl : logNorm B 1 = fun z => - Real.log (B.h z)`. Use function extensionality and compare the values at `z`. Simplify using `[logNorm, Real.log_inv]`. Rewrite using `[hl, tele_ptsIntegral_neg, neg_neg]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fam_degZero (hI : IsIntersectionFamily I) {P : Ideal (MRing ι)} {n : ℕ} (hP : IsArithVar P (n + 1))
     (L : Fin n → HermLine ι) (hL : ∀ j, IsSmoothHerm (L j)) (B : HermLine ι) (hB : IsSmoothHerm B)
@@ -169,13 +169,11 @@ theorem fam_degZero (hI : IsIntersectionFamily I) {P : Ideal (MRing ι)} {n : �
   rw [hl, tele_ptsIntegral_neg, neg_neg]
 
 /- English proof (translation)
-Establish `hT : I P (n + 1) (Fin.snoc L blockInd) = 0`. Rewrite using `[fam_degZero hI hP L hL blockInd blockInd_smooth rfl, ptsIntegral_congr_g P _ (g' := fun _ => 0) (fun z hz => by simp [blockInd, hz.1])]`. Conclude with `ptsIntegral_zero_g P _`. Establish `hXT : X.tensor blockInd = Y.tensor blockInd`. Apply `tele_herm_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show X.a + 0 = Y.a + 0`. Rewrite using `[ha]`. Use function extensionality and compare the values at `z show X.h z * blockInd.h z = Y.h z * blockInd.h z`. Distinguish the cases in `hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0`. Rewrite using `[hh z hz]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[blockInd, hz]`. Establish `hx` using `hI.2.1 P n L X blockInd hP hL hX blockInd_smooth`. Establish `hy` using `hI.2.1 P n L Y blockInd hP hL hY blockInd_smooth`. Rewrite `hx` using `[hXT, hT, add_zero]`. Rewrite `hy` using `[hT, add_zero]`.
-
-Rewrite using `[← hx, hy]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fam_congr_blocks (hI : IsIntersectionFamily I) {P : Ideal (MRing ι)} {n : ℕ} (hP : IsArithVar P (n + 1))
     (L : Fin n → HermLine ι) (hL : ∀ j, IsSmoothHerm (L j)) {X Y : HermLine ι} (hX : IsSmoothHerm X)
@@ -204,11 +202,11 @@ def fam (A A' : HermLine ι) (N i : ℕ) : Fin N → HermLine ι :=
   fun j => if j.val < i then A' else A
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply, fam]`. Distinguish the cases in `h : j.val < i`. Establish `h' : Fin.castSucc j < (⟨i, hi⟩ : Fin (D + 1))`. Rewrite using `[Fin.lt_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Rewrite using `[Fin.succAbove_of_castSucc_lt _ _ h', if_pos (show (Fin.castSucc j).val < k by show j.val < k omega), if_pos h]`. Establish `h' : (⟨i, hi⟩ : Fin (D + 1)) ≤ Fin.castSucc j`. Rewrite using `[Fin.le_def]`. Use `show i ≤ j.val`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Fin.succAbove_of_le_castSucc _ _ h', if_neg (show ¬ (Fin.succ j).val < k by show ¬ j.val + 1 < k omega), if_neg h]`.
+A detailed English derivation is pending.
 -/
 theorem fam_succAbove (A A' : HermLine ι) (D i : ℕ) (hi : i < D + 1) (k : ℕ) (hk : k = i ∨ k = i + 1) :
     fam A A' (D + 1) k ∘ (⟨i, hi⟩ : Fin (D + 1)).succAbove = fam A A' D i := by
@@ -230,7 +228,7 @@ theorem fam_succAbove (A A' : HermLine ι) (D i : ℕ) (hi : i < D + 1) (k : ℕ
       omega), if_neg h]
 
 /- English proof (translation)
-Unfold `fam`. Use `split_ifs`. Conclude with `hA'`. Conclude with `hA`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fam_smooth {A A' : HermLine ι} (hA : IsSmoothHerm A) (hA' : IsSmoothHerm A') (N i : ℕ) (j : Fin N) :
     IsSmoothHerm (fam A A' N i j) := by
@@ -240,23 +238,21 @@ theorem fam_smooth {A A' : HermLine ι} (hA : IsSmoothHerm A) (hA' : IsSmoothHer
   · exact hA
 
 /- English proof (translation)
-Establish `hsymm` using `hI.1`. Establish `hadd` using `hI.2.1`. Establish `hR` using `ratio_smooth ha hA hA'`. Establish `htel` using `Finset.sum_range_sub (fun i => I P (n + 1) (fam A A' (n + 1) i)) (n + 1)`. Establish `hT0 : fam A A' (n + 1) 0 = fun _ => A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Simplify using `[fam]`. Establish `hT1 : fam A A' (n + 1) (n + 1) = fun _ => A'`. Use function extensionality and compare the values at `j`. Simplify using `[fam, j.isLt]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [hT0, hT1] at htel`. Rewrite using `[← htel]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Establish `hLs` using `fam_smooth hA hA' n i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : I P (n + 1) (fam A A' (n + 1) (i + 1)) = I P (n + 1) (Fin.snoc (fam A A' n i) A')`. Establish `h` using `hsymm _ _ (fam A A' (n + 1) (i + 1)) (tele_perm ⟨i, hi⟩) hP (fam_smooth hA hA' _ _)`. Establish `hv1 : fam A A' (n + 1) (i + 1) ⟨i, hi⟩ = A'`. Simplify using `[fam]`. Rewrite `h` using `[tele_comp_perm, fam_succAbove A A' n i hi (i + 1) (Or.inr rfl), hv1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.symm`. Establish `e0 : I P (n + 1) (fam A A' (n + 1) i) = I P (n + 1) (Fin.snoc (fam A A' n i) A)`. Establish `h` using `hsymm _ _ (fam A A' (n + 1) i) (tele_perm ⟨i, hi⟩) hP (fam_smooth hA hA' _ _)`. Establish `hv0 : fam A A' (n + 1) i ⟨i, hi⟩ = A`. Simplify using `[fam]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[tele_comp_perm, fam_succAbove A A' n i hi i (Or.inl rfl), hv0]`. Conclude with `h.symm`. Establish `hAR : IsSmoothHerm (A.tensor (ratio A A' ha))` using `hA.mul hR`. Establish `hN' : I P (n + 1) (Fin.snoc (fam A A' n i) A') = I P (n + 1) (Fin.snoc (fam A A' n i) (A.tensor (ratio A A' ha)))`. Use `fam_congr_blocks hI hP _ hLs hA' hAR ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show A'.a = A.a + 0`. Rewrite using `[ha, add_zero]`. Introduce `z hz show A'.h z = A.h z * (A'.h z / A.h z)`. Rewrite using `[mul_div_cancel₀ _ (A.pos z hz).ne']`. Rewrite using `[e1, e0, hN', hadd _ _ _ _ _ hP hLs hA hR, add_sub_cancel_left, fam_degZero hI hP _ hLs _ hR rfl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hpot : (fun j z => Real.log ((fam A A' n i j).h z)) = stokesMixPot A A' n i`. Use function extensionality and compare the values at `j z`. Simplify using `only [fam, stokesMixPot]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[hpot]`.
-
-Use `ptsIntegral_congr_g P _ fun z hz => ?_` and prove the remaining obligations. Use `show Real.log (A'.h z / A.h z) = _`. Rewrite using `[Real.log_div (A'.pos z hz.1).ne' (A.pos z hz.1).ne']`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_sub_top (hI : IsIntersectionFamily I) {P : Ideal (MRing ι)} {n : ℕ} (hP : IsArithVar P (n + 1))
     {A A' : HermLine ι} (hA : IsSmoothHerm A) (hA' : IsSmoothHerm A') (ha : A'.a = A.a) :
@@ -311,11 +307,11 @@ theorem top_sub_top (hI : IsIntersectionFamily I) {P : Ideal (MRing ι)} {n : �
   rw [Real.log_div (A'.pos z hz.1).ne' (A.pos z hz.1).ne']
 
 /- English proof (translation)
-Rewrite using `[top_sub_top hI hP hA.1 hA'.1 ha]`. Establish `h0 : stokesMixPot A A' n 0 = fun (_ : Fin n) z => Real.log (A.h z)`. Use function extensionality and compare the values at `j z`. Simplify using `[stokesMixPot]`. Establish `hmono : ∀ i, i ≤ n → ptsIntegral P (stokesMixPot A A' n i) (fun z => Real.log (A'.h z) - Real.log (A.h z)) ≤ ptsIntegral P (stokesMixPot A A' n 0) (fun z => Real.log (A'.h z) - Real.log (A.h z))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro _`. Conclude with `le_rfl`. Consider the case `succ i ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hi`. Conclude with `(hS K ι P n i A A' hP ha hA hA' (by omega)).trans (ih (by omega))`. Rewrite using `[← h0]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem top_sub_top_le (hS : StokesStep.Statement) (hI : IsIntersectionFamily I) {P : Ideal (MRing ι)} {n : ℕ}
     (hP : IsArithVar P (n + 1)) {A A' : HermLine ι} (hA : IsSemipositiveH P A) (hA' : IsSemipositiveH P A')
@@ -346,15 +342,15 @@ end StokesTelescope
 open StokesTelescope in
 
 /- English proof (translation)
-Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B p q t t' hII hq hMU hN`. Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast (show 0 < q by omega)`. Establish `ha : (X.MUq B p q t').a = (X.NbarQ B p q t).a`. Simplify using `only [ComponentSetting.MUq, MUc, ComponentSetting.NbarQ, smoothRepConj_a, smoothRep_a]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `h` using `top_sub_top_le hS (hII K ι) (n := D.n) D.arith hN hMU ha`. Establish `hI0 : X.I0 B p q t t' = (q : ℝ)⁻¹ * (q : ℝ)⁻¹ ^ D.n * ptsIntegral (mCoordIdeal D.y) (fun (_ : Fin D.n) z => Real.log ((X.NbarQ B p q t).h z)) (fun z => Real.log ((X.MUq B p q t').h z) - Real.log ((X.NbarQ B p q t).h z))`. Establish `e1 : X.omN B p q t = fun (_ : Fin D.n) z => (q : ℝ)⁻¹ * Real.log ((X.NbarQ B p q t).h z)`. Use function extensionality and compare the values at `j z`. Simplify using `only [ComponentSetting.omN]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[div_eq_inv_mul]`. Establish `e2 : X.wSt B p q t t' = fun z => (q : ℝ)⁻¹ * (Real.log ((X.MUq B p q t').h z) - Real.log ((X.NbarQ B p q t).h z))`. Use function extensionality and compare the values at `z`. Simplify using `only [ComponentSetting.wSt]`. Rewrite using `[div_eq_inv_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `ComponentSetting.I0`. Rewrite using `[e1, e2, ptsIntegral_scale]`. Unfold `topMUc ComponentSetting.topN`. Rewrite using `[← sub_div, div_le_iff₀ (by positivity)]`. Use `h.trans (le_of_eq ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hI0, inv_pow]`. Establish `hqn : (q : ℝ) ^ D.n ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem StokesTelescope.proof (hS : StokesStep.Statement) : StokesTelescope.Statement := by
   intro II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B p q t t' hII hq hMU hN

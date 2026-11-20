@@ -20,13 +20,13 @@ noncomputable section
 namespace GlobalTheory.IndLine
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM N hNV hN`. Establish `hA` using `GlobalTheory.T.low_part_le_fixed_part_image hK F E σ B a a' G X om om' R Rf hM`. Establish `hB` using `GlobalTheory.T.stabilizer_upper_fixed_part hK F E σ B a a' G X om om' hM.triple (lowDegInf B G.M R.p)`. Establish `hC` using `GlobalTheory.T.fixed_part_irreducible hK F E σ B a a' G X om om' hM.triple (lowDegInf B G.M R.p) (GlobalTheory.T.low_degree_le_fixed_degree hK F E σ B a a' G X om om' R Rf hM)`. Establish `hP` using `fixPart_le_pol B G.M om (lowDegInf B G.M R.p)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hC (fixPart B G.M om (lowDegInf B G.M R.p) ⊓ N.comap R.p) inf_le_left (fun k hk f hf f₁ h1 => ⟨hB k hk f hf.1 f₁ h1, hN k hk f (hP hf.1) f₁ h1 hf.2⟩) with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Take `⟨f, hf, rfl⟩` from `hA (hNV hx)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf' : f ∈ fixPart B G.M om (lowDegInf B G.M R.p) ⊓ N.comap R.p` using `⟨hf, hx⟩`. Rewrite `hf'` using `[h, Submodule.mem_bot]`. Rewrite using `[hf', map_zero]`. Conclude with `Submodule.zero_mem _`. Use `right`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `le_antisymm hNV fun x hx => ?_` and prove the remaining obligations. Take `⟨f, hf, rfl⟩` from `hA hx`. Rewrite `hf` using `[← h]`. Conclude with `hf.2`.
+A detailed English derivation is pending.
 -/
 theorem lowPartInf_irred : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)

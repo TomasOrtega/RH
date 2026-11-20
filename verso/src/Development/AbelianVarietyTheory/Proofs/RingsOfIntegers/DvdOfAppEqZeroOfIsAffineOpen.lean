@@ -19,7 +19,7 @@ theorem resTop_scal {V : Type} [CommRing V] {Y : Scheme.{0}} (p : Y ⟶ Spec (Co
     Out.resTop W (scal p a) = constFn p W a := rfl
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun g => g.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (Ideal.Quotient.mk (I ^ (e + 1)))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thick_appTop {V : Type} [CommRing V] (I : Ideal V) (e : ℕ) (a : V) :
     (thick V I e).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom a) =
@@ -30,9 +30,9 @@ theorem thick_appTop {V : Type} [CommRing V] (I : Ideal V) (e : ℕ) (a : V) :
   exact h.symm
 
 /- English proof (translation)
-Establish `h0 : ((thick V I e).appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom a) = 0`. Rewrite using `[thick_appTop, Ideal.Quotient.eq_zero_iff_mem.mpr ha, map_zero]`. Establish `hc` using `congrArg (fun φ => (φ.appLE ⊤ ((pullback.fst X.hom (thick V I e)) ⁻¹ᵁ W) (by simp)).hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom a)) (pullback.condition (f := X.hom) (g := thick V I e))`. Establish `h1 : ((pullback.snd X.hom (thick V I e) ≫ thick V I e).appLE ⊤ ((pullback.fst X.hom (thick V I e)) ⁻¹ᵁ W) (by simp)).hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom a) = 0`. Express the relevant statement in the definitionally equal form `((pullback X.hom (thick V I e)).presheaf.map _).hom (((pullback.snd X.hom (thick V I e)).app _).hom (((thick V I e).appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom a))) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h0, map_zero, map_zero]`. Establish `hn` using `congrArg (fun φ => φ.hom ((X.hom.appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom a))) ((pullback.fst X.hom (thick V I e)).naturality (homOfLE (show W ≤ X.hom ⁻¹ᵁ ⊤ by simp)).op)`. Conclude with `hn.trans (hc.trans h1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem app_constFn_eq_zero {V : Type} [CommRing V] [IsDomain V] (I : Ideal V) (e : ℕ)
     (X : Over (Spec (CommRingCat.of V))) (W : X.left.Opens) {a : V} (ha : a ∈ I ^ (e + 1)) :
@@ -53,9 +53,9 @@ theorem app_constFn_eq_zero {V : Type} [CommRing V] [IsDomain V] (I : Ideal V) (
   exact hn.trans (hc.trans h1)
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨b, rfl⟩ : ∃ b, (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom b = x` from `⟨(Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom x, by simp⟩`. Rewrite `hx` using `[RingHom.mem_ker, thick_appTop]`. Establish `hb : Ideal.Quotient.mk (maximalIdeal V ^ (e + 1)) b = 0`. Simplify using `using congrArg (Scheme.ΓSpecIso (CommRingCat.of (V ⧸ maximalIdeal V ^ (e + 1)))).hom.hom hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hb` using `[Ideal.Quotient.eq_zero_iff_mem, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨c, rfl⟩` from `hb`. Conclude with `Ideal.mem_span_singleton.2 ⟨(Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom c, map_mul _ _ _⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem ker_thick_appTop_le_span_pow_succ {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
     (hϖ : Irreducible ϖ) (e : ℕ) :
@@ -75,7 +75,7 @@ private theorem ker_thick_appTop_le_span_pow_succ {V : Type} [CommRing V] [IsDom
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
 
 /- English proof (translation)
-Establish `hm` using `GlobalTheory.ProperFunctions.mem_map_ker_of_app_eq_zero (IsPullback.of_hasPullback X.hom (thick V (maximalIdeal V) e)) hU f hf`. Establish `hm2` using `Ideal.map_mono (ker_thick_appTop_le_span_pow_succ hϖ e) hm`. Rewrite `hm2` using `[Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Conclude with `hm2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_app_eq_zero_of_isAffineOpen (hϖ : Irreducible ϖ) (X : Over (Spec (CommRingCat.of V))) [Flat X.hom]
     (e : ℕ) {U : X.left.Opens} (hU : IsAffineOpen U) (f : Γ(X.left, U))
@@ -87,11 +87,11 @@ theorem dvd_of_app_eq_zero_of_isAffineOpen (hϖ : Irreducible ϖ) (X : Over (Spe
   exact hm2
 
 /- English proof (translation)
-Take `⟨U, hU, hxU, hUW⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.left.isBasis_affineOpens hx`. Establish `hr : ((fstG (maximalIdeal V) e X).left.app U).hom ((X.left.presheaf.map (homOfLE hUW).op).hom f) = 0`. Establish `hn` using `congrArg (fun φ => φ.hom f) ((fstG (maximalIdeal V) e X).left.naturality (homOfLE hUW).op)`. Use `hn.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(_ : _ →+* _) (((fstG (maximalIdeal V) e X).left.app W).hom f) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hf, map_zero]`. Take `⟨g, hg⟩` from `dvd_of_app_eq_zero_of_isAffineOpen hϖ X e hU _ hr`. Establish `hgerm` using `gs_appLE (𝟙 X.left) W U hUW (𝟙 X.left) x hxU f`. Rewrite `hgerm` using `[Category.id_comp]`. Establish `hres : (Scheme.Hom.appLE (𝟙 X.left) W U hUW).hom f = (X.left.presheaf.map (homOfLE hUW).op).hom f` using `rfl`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hgerm, hres, hg, gs_mul _ _ _ hxU, gs_constFn _ _ _ _ hxU, Category.id_comp]`. Conclude with `dvd_mul_right _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cst_dvd_gs_of_app_eq_zero (hϖ : Irreducible ϖ) (X : Over (Spec (CommRingCat.of V))) [Flat X.hom]
     (e : ℕ) (W : X.left.Opens) (f : Γ(X.left, W))
@@ -112,9 +112,9 @@ theorem cst_dvd_gs_of_app_eq_zero (hϖ : Irreducible ϖ) (X : Over (Spec (CommRi
   exact dvd_mul_right _ _
 
 /- English proof (translation)
-Rewrite using `[resTop_scal]`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Conclude with `exists_div X.hom (pow_ne_zero _ hϖ.ne_zero) W f (fun x hx => cst_dvd_gs_of_app_eq_zero hϖ X e W f hf x hx)`. Introduce and unpack `⟨g, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, app_constFn_eq_zero (maximalIdeal V) e X W (Ideal.pow_mem_pow ((IsLocalRing.mem_maximalIdeal _).mpr hϖ.not_isUnit) _), zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem app_eq_zero_iff (hϖ : Irreducible ϖ) (X : Over (Spec (CommRingCat.of V))) [Flat X.hom]
     (e : ℕ) (W : X.left.Opens) (f : Γ(X.left, W)) :
@@ -130,9 +130,9 @@ theorem app_eq_zero_iff (hϖ : Irreducible ϖ) (X : Over (Spec (CommRingCat.of V
       (Ideal.pow_mem_pow ((IsLocalRing.mem_maximalIdeal _).mpr hϖ.not_isUnit) _), zero_mul]
 
 /- English proof (translation)
-Introduce `V _ _ _ ϖ hϖ X _ N σ e`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨τ, hτ⟩` from `exists_div_sec X.hom (pow_ne_zero (e + 1) hϖ.ne_zero) σ (fun j x hx => cst_dvd_gs_of_app_eq_zero hϖ X e (N.U j) (σ.f j) (h j) x hx)`. Conclude with `⟨τ, fun j => by rw [hτ j, resTop_scal]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨τ, hτ⟩ j`. Conclude with `(app_eq_zero_iff hϖ X e (N.U j) (σ.f j)).2 ⟨τ.f j, hτ j⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (X : Over (Spec (CommRingCat.of V))) [Flat X.hom] (N : LB X.left) (σ : LB.Sec N) (e : ℕ), (∀ j, ((fstG (maximalIdeal V) e X).left.app _).hom (σ.f j) = 0) ↔ ∃ τ : LB.Sec N, SecIsMul X.hom (ϖ ^ (e + 1)) σ τ := by
   intro V _ _ _ ϖ hϖ X _ N σ e

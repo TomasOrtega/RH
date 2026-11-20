@@ -11,15 +11,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LiftCong
 
 /- English proof (translation)
-Introduce `z hz`. Use `choose t htS ht using hy`. Use `set x : Fin n → B := (Units.val (β⁻¹ : GL (Fin n) B)).mulVec (fun a => s (z a)) with hx`. Establish `hxS : ∀ i, x i ∈ S` using `(hL z).1 hz`. Take `⟨w, hw⟩ : ∃ w : Fin n → A, (fun a => s (w a)) = β.val.mulVec ((Matrix.of t).mulVec x)` from `by choose f hf using hs.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨fun a => f _, funext fun a => hf _⟩`. Use `⟨w, (hL w).2 fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] show ∑ j, t i j * x j ∈ S`. Conclude with `S.sum_mem fun j _ => S.mul_mem (htS i j) (hxS j)`. Establish `hz' : (fun a => s (z a)) = β.val.mulVec x`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hx, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hm : s c • (y.map S.subtype - 1) = (N : B) • Matrix.of t`. Use extensionality with `i j`. Use `ht i j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.map_apply, smul_eq_mul, Matrix.of_apply, Subring.coe_subtype]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Establish `e1 : (k.map s).mulVec (s c • fun a => s (z a)) - (s c • fun a => s (z a)) = (N : B) • fun a => s (w a)`. Rewrite using `[hw, hk, Matrix.mulVec_smul, ← Matrix.mulVec_mulVec, ← hx, hz', ← Matrix.mulVec_mulVec, ← Matrix.mulVec_smul _ (N : B), ← Matrix.smul_mulVec (N : B), ← hm, Matrix.smul_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_smul, Matrix.mulVec_sub, smul_sub]`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `hs.1` to reduce the goal to its premises. Establish `e2` using `congrFun e1 i`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Matrix.map_apply] at e2`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, Matrix.mulVec, dotProduct, map_sub, map_sum, map_mul, nsmul_eq_mul, map_natCast]`. Conclude with `e2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem move_mem_of_entries {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (s : A →+* B)
     (hs : Function.Bijective s) (S : Subring B) (β : GL (Fin n) B) (L : AddSubgroup (Fin n → A))
@@ -63,13 +63,13 @@ theorem move_mem_of_entries {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (s 
     exact e2
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `Formalism.L2.DIV.cmpS_surj (F := F) I h0 (Ideal.Quotient.mk _ s)`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Establish `hd : Formalism.L2.DIV.oToS F E a - s ∈ Formalism.L2.DIV.idS F I` using `Ideal.Quotient.eq.1 hq`. Establish `ha : a ∈ I`. Apply `hI` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `J ⟨hJ, hp⟩`. Set `w : Formalism.L2.DIV.Pl E` to `⟨J, hp, fun h => h0 (le_bot_iff.1 (h ▸ hJ))⟩`. Establish `h1 : Formalism.L2.DIV.resS F w (Formalism.L2.DIV.oToS F E a - s) = 0`. Establish `: Formalism.L2.DIV.idS F I ≤ RingHom.ker (Formalism.L2.DIV.resS F w)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.map_le_iff_le_comap.2 fun b hb => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, Formalism.L2.DIV.resS_oToS]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hJ hb)`. Conclude with `this hd`. Rewrite `h1` using `[map_sub, hs w hJ, sub_zero, Formalism.L2.DIV.resS_oToS]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h1`. Use `sub_mem (Ideal.mem_map_of_mem (Formalism.L2.DIV.oToS F E) ha) hd` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mem_idS_of_resS {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (I : Ideal (𝓞 E)) (h0 : I ≠ ⊥) (hI : I.IsRadical) (s : Formalism.L2.Herm.intAf F E)
@@ -94,7 +94,7 @@ theorem mem_idS_of_resS {F E : Type} [Field F] [NumberField F] [Field E] [Number
   rwa [sub_sub_cancel] at this
 
 /- English proof (translation)
-Establish `h4` using `congrArg S.subtype h`. Rewrite `h4` using `[map_mul, map_mul, map_natCast]`. Rewrite using `[mul_comm, mul_comm (N : B)]`. Conclude with `h4.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_mul_eq_of_eq {B : Type} [CommRing B] (S : Subring B) (t e c : S) (N : ℕ) (h : t * N = e * c) :
     (c : B) * (e : B) = N * (t : B) := by
@@ -104,14 +104,14 @@ theorem coe_mul_eq_of_eq {B : Type} [CommRing B] (S : Subring B) (t e c : S) (N 
   exact h4.symm
 
 /- English proof (translation)
-The claim follows from `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).bijective`.
+A detailed English derivation is pending.
 -/
 theorem swapAE_bijective (D : D7) : Function.Bijective (swapAE D) :=
   (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).bijective
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Establish `h1` using `congrArg Units.val (Formalism.L2.DIV.frGL_pullFr β ⟨finR V rfl κ, h⟩)`. Conclude with `h1.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finHom_map_eq {D : D7} (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (κ : GA D V)
     (h : finR V rfl κ ∈ Formalism.L2.DIV.St β) :
@@ -123,19 +123,19 @@ theorem finHom_map_eq {D : D7} (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (κ : 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D H l V r hr β Pg hβ hPg`. Substitute `hr` using the available equality. Use `⟨fun g κ hκ z hz => ?_, fun hrad κ hκ => ?_⟩` and prove the remaining obligations. Take `⟨-, h, -⟩` from `hκ`. Use `move_mem_of_entries (swapAE D) (swapAE_bijective D) (OAf D) β (latHat V) hβ _ _ (finHom_map_eq V β κ h) 1 1 (fun i j => ⟨_, SetLike.coe_mem ((_ - 1 : Matrix _ _ (OAf D)) i j), by rw [map_one, Nat.cast_one]⟩) z hz` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [one_mul] at this`. Conclude with `this`. Take `⟨-, h, hw⟩` from `hκ`. Rewrite using `[GlobalTheory.Member.finCong_iff_half D H l V κ]`. Introduce `b hb`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `move_mem_of_entries (swapAE D) (swapAE_bijective D) (OAf D) β (latHat V) hβ _ _ (finHom_map_eq V β κ h) ((1 : Af D.host.F) ⊗ₜ (b : D.host.E)) l.M (fun i j => ?_)` and prove the remaining obligations. Establish `h0 : l.Mb ≠ ⊥`. Introduce `h0`. Establish `hp` using `l.prod`. Rewrite `hp` using `[h0, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `l.three_le`. Establish `: l.M = 0` using `by exact_mod_cast hp`. Use linear arithmetic over natural numbers and integers. Generalize the expression as in `hy : Formalism.L2.DIV.pullFr β ⟨finR V rfl κ, h⟩ = y`. Establish `he : (y.val - 1) i j ∈ Formalism.L2.DIV.idS D.host.F l.Mb`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_idS_of_resS _ h0 hrad _ fun w hle => ?_` and prove the remaining obligations. Establish `h1 : Formalism.UG.bc (Formalism.L2.DIV.resS D.host.F w) y = 1`. Rewrite using `[← hy]`. Conclude with `hw ⟨w, (hPg w).2 hle⟩`. Establish `h2 : Formalism.L2.DIV.resS D.host.F w (y.val i j) = (1 : Matrix _ _ (Formalism.L2.DIV.kP w)) i j` using `congrArg (fun g : GL (Fin V.rank) (Formalism.L2.DIV.kP w) => g.val i j) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Matrix.sub_apply, map_sub, h2]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `hm : (y.val - 1) i j * Formalism.L2.DIV.oToS D.host.F D.host.E b ∈ Ideal.span {((l.M : ℕ) : OAf D)}`. Use `Ideal.mul_mem_mul he (Ideal.mem_map_of_mem (Formalism.L2.DIV.oToS D.host.F D.host.E) hb)` as an intermediate fact. Rewrite `this` using `[Formalism.L2.DIV.idS, ← Ideal.map_mul, l.prod, Ideal.map_span, Set.image_singleton, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 hm`. Use `⟨t, t.2, ?_⟩` and prove the remaining obligations. Conclude with `coe_mul_eq_of_eq _ _ _ _ _ ht`.
+A detailed English derivation is pending.
 -/
 theorem lift_finCong : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (l : Level H) (V : HSp D) (r : ℕ) (hr : V.rank = r) (β : GL (Fin r) (EAf D)) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)), IsLatBasis V hr β → (∀ w, w ∈ Pg ↔ l.Mb ≤ w.asIdeal) → (∀ (g : Formalism.L2.DIV.G0 Pg r) κ, IsLift V hr β Pg g κ → FinCong V 1 κ) ∧ (l.Mb.IsRadical → ∀ κ, IsLift V hr β Pg 1 κ → FinCong V l.M κ) := by
   intro D H l V r hr β Pg hβ hPg

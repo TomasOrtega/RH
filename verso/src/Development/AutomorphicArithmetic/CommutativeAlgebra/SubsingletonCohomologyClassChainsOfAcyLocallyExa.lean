@@ -6,15 +6,15 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.ExistsPrimitiveFreeO
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Bc
 
 /- English proof (translation)
-Introduce `C a _ E hAcy hLoc n`. Use `haveI : IsStrictlyLE ((chains ℤ).obj E) 0 := (GlobalTheory.T.chains_map_and_d_eq_sum_neg_one_pow_smul_delta ℤ).1 E`. Use `UpperTheory.subsingleton_cohomologyClass_of_bounded_of_cycles_lift ((chains ℤ).obj E) C a ?_ n` and prove the remaining obligations. Introduce `p j f hf`. Break down `le_or_gt p 0 with hp | hp` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨m, rfl⟩` from `Int.exists_eq_neg_ofNat hp`. Establish `hmono : ∀ {V U : Scheme.{0}} (g : V ⟶ U), Nonempty (Sx E 0 U) → Nonempty (Sx E 0 V)`. Introduce `V U g hx`. Take `⟨x⟩` from `hx`. Conclude with `⟨((E.obj (op (SimplexCategory.mk 0))).map g.op) x⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hsupp : Supp (fun U => Nonempty (Sx E 0 U)) (E.obj (op (SimplexCategory.mk m)))`. Introduce `U hx`. Take `⟨x⟩` from `hx`. Conclude with `⟨((E.map (SimplexCategory.const (SimplexCategory.mk 0) (SimplexCategory.mk m) 0).op).app (op U)) x⟩`. Establish `hf' : ((chainsXIso ℤ E m).inv ≫ f) ≫ C.d j (j + 1) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hf, comp_zero]`. Take `⟨g, hg⟩` from `UpperTheory.exists_primitive_free_of_acy_locally_exact C a (fun U => Nonempty (Sx E 0 U)) hmono hAcy hLoc (E.obj (op (SimplexCategory.mk m))) hsupp j _ hf'`. Use `⟨(chainsXIso ℤ E m).hom ≫ g, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hg, Iso.hom_inv_id_assoc]`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hz : IsZero (((chains ℤ).obj E).X p)` using `((chains ℤ).obj E).isZero_of_isStrictlyLE 0 p hp`. Rewrite using `[zero_comp]`. Conclude with `(hz.eq_of_src _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.subsingleton_cohomologyClass_chains_of_acy_locally_exact :
     ∀ (C : Cx ℤ) (a : ℤ) [C.IsStrictlyGE a] (E : Spc), (∀ s, Acy (fun U => Nonempty (Sx E 0 U)) (C.X s)) → (∀ (U : Scheme.{0}), Nonempty (Sx E 0 U) → ∀ (n : ℤ) (b : Sec (C.X n) U), Sec.map (C.d n (n + 1)) b = 0 → Loc U fun V g => ∃ c : Sec (C.X (n - 1)) V, Sec.map (C.d (n - 1) n) c = Sec.res g b) → ∀ n : ℤ, Subsingleton (CohomologyClass ((chains ℤ).obj E) C n) := by

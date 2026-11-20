@@ -32,27 +32,27 @@ open IsDedekindDomain Formalism.MainNotions GlobalTheory.IntCuspLat
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Set `σ : Y.d.c₂.F →+* ℂ` to `Y.d.c₂.F.val.toRingHom`. Establish `hσ : GoodEmb Y.d.c₂ σ` using `rfl`. Establish `hr : 1 ≤ D.R.r`. Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hU : Formalism.L2.PjFree.IsUnf (Formalism.L2.PjFree.Unf.ofPj (Y.U σ))` using `(Formalism.L2.PjFree.isUnf_ofPj _).2 (hG.unf σ hσ)`. Establish `hpq : D.R.r = (T.Q.Dw j).p + (T.Q.Dw j).q` using `hU.1`. Establish `hA : Y.d.l₂.A = 1` using `hG.lev.2`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `GlobalTheory.ChartFree.chartIndep`. Establish `hP : ∀ k, PrincUpTo ((Y.U σ).X k) Y.d.l₂.M (laU (Y.U σ) a n k)` using `fun k => princUpTo_of_root _ _ w hw _ (hla σ k) (GlobalTheory.unf_group_contains_congruence_upto_rootsOfUnity _ _ _ _ _ _ σ _ _ hU hA hr k)`. Take `⟨_, hW⟩` from `hG.modelW σ hσ`. Establish `hGm : ∀ k k', ((Y.U σ).X k).Gm = ((Y.U σ).X k').Gm ∧ ((Y.U σ).X k).ξ0 = ((Y.U σ).X k').ξ0` using `fun k k' => ⟨(hW k).1.trans (hW k').1.symm, (hW k).2.trans (hW k').2.symm⟩`. Establish `hχ` using `fun k => hG.chiTriv σ hσ a n hdom k`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf'` using `(mem_cusp _ _ _ a n f).1 hf`. Establish `h1 : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q` using `hpq ▸ hr`. Establish `hL : Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `hB : Out.SecBaseChangeSt` using `hL.secBaseChange`. Establish `hnr : (T.Q.Dw j).p + (T.Q.Dw j).q ≤ n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : 0 < Module.finrank ℚ D.host.E` using `Module.finrank_pos`. Establish `: D.R.r ≤ Module.finrank ℚ D.host.E * D.R.r` using `Nat.le_mul_of_pos_left _ h0`. Use linear arithmetic over natural numbers and integers. Establish `hd : ∃ d : DeltaDat Y.d.Xo₂ Y.d.c₂ n, d.IsLev ∧ (∃ _ : StarRing (𝓞 D.host.E), IsNab d.Xo₂ d.c₂ d.nab₂) ∧ d.cδ = 1 ∧ d.pd = 1 ∧ d.l₂.A = Y.d.l₂.A ∧ ∃ ph x₀, d.PhiPin ph 1 x₀`. Take `⟨d, e1, -, e2, -, -, hδ, hlev, hnab⟩` from `GlobalTheory.LevelCover.exists_deltaDat_isLev _ _ _ _ Y.d.Xo₂ Y.d.c₂ h1 n 1 ⊤ Y.d.l₂ Y.d.Xo₂ Y.d.c₂ rfl ⟨dvd_rfl, le_rfl, dvd_rfl⟩ (Nat.mul_one _).symm (Nat.coprime_one_left _) (Ideal.mul_top _).symm (top_sup_eq _)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, ph, x₀, hpin⟩` from `GlobalTheory.exists_phiPin_of_character _ _ _ _ Y.d.Xo₂ Y.d.c₂ n d hlev hnr 1`. Conclude with `⟨{ d with φδ := f }, hlev, hnab, hδ, e1, congrArg (·.A) e2, ph, x₀, hpin⟩`. Take `⟨d, hlev, hnab, hδ, hpe, hAe, ph, x₀, hpin⟩` from `hd`. Establish `hT : AllTest d.Xo₂ d.c₂` using `GlobalTheory.Frames.allTest_of_secBaseChange hB _ _ _ d.l₂ d.Xo₂ d.c₂`. Take `⟨_, nab, -⟩` from `GlobalTheory.CanonConn.exists_isNab hL _ _ _ _ Y.d.Xo₂ Y.d.c₂`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hone : ∀ (k : Type) [Field k] [Algebra d.c₂.F k] (y : FrPt d.Xo₂ d.c₂ k), evR d.Xo₂ d.c₂ d.cδ y = 1` using `fun k _ _ y => by`. Rewrite using `[hδ]`. Conclude with `evalAt_one _ _ _ (hT _ _)`. Establish `hunit : GlobalTheory.Dict.UnitC d` using `fun A y => by`. Establish `: evR d.Xo₂ d.c₂ d.cδ y = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hδ]`. Conclude with `evalAt_one _ _ _ (hT _ _)`. Rewrite using `[this, norm_one]`. Establish `h3 : ¬ 3 ∣ d.pd` using `by rw [hpe]; decide`. Establish `htie : d.PsiTie 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `k g ρ _ _ _ _ K _ _ _ y y' _`. Express the relevant statement in the definitionally equal form `evR d.Xo₂ d.c₂ d.cδ y' = algebraMap d.c₂.F K (d.eF ((1 : Y.d.c₂.Fˣ) : Y.d.c₂.F)) * evR d.Xo₂ d.c₂ d.cδ y`. Rewrite using `[hone K y, hone K y']`. Simplify using the standard rewrite rules. Establish `hind` using `(GlobalTheory.reading_linearIndependent_and_injective GlobalTheory.lawsFieldsSeparately.2.1 _ _ _ _ Y.d.Xo₂ Y.d.c₂ σ D.R.r _ hU a n).1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `exists_smul_nonneg_of_span (fun la => isVal_valSet la) (fun b => shortGen Y.d.Xo₂ Y.d.c₂ nab b 0 a n d) (fun b hb => ?_) fun b hb g hg => ?_` and prove the remaining obligations. Establish `htot : ShortValTot Y.d.Xo₂ Y.d.c₂ nab b 0 a n d` using `GlobalTheory.shortValTot_of_pinned hL hC _ _ _ _ Y.d.Xo₂ Y.d.c₂ n d (GlobalTheory.levelMaps_closed hL _ _ _ h1) (GlobalTheory.Frames.algebraic_laws hB _ _ _ _ Y.d.Xo₂ Y.d.c₂).2.2.1 (GlobalTheory.Frames.allTest_of_secBaseChange hB _ _ _ _ Y.d.Xo₂ Y.d.c₂) (GlobalTheory.Frames.algeb …`. Establish `hsp` using `holSub0_le_span_shortGen_upto hC _ _ _ _ Y.d.Xo₂ Y.d.c₂ n d σ D.R.r _ hσ hU hr hA hGm hlev hnab hunit h3 (fun _ => ⟨ph, 1, x₀, hpin⟩) nab b 0 a hb hdom hn hP hχ htot`. Use `GlobalTheory.mem_span_of_map_mem_span_image (Formalism.L2.PjFree.rdU (Formalism.L2.PjFree.Unf.ofPj (Y.U σ))) (sec Y.d.Xo₂ Y.d.c₂ a n) hind _ (fun g hg => hg.1) hf'.1 (hsp ?_)` and prove the remaining obligations. Conclude with `⟨hf'.2 _ hσ, fun k x hx => dif_neg hx⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hsec, Λ, N, x0, P, hUn, hTb, hTM, hN, -, hPl, hR⟩` from `hg`. Take `⟨inst, hnab⟩` from `hnab`. Take `⟨t, ht, hb'⟩` from `exists_smul_nonneg_of_shortRule_any_level D _ _ _ Y.d.Xo₂ Y.d.c₂ n d hlev hnab (fun k _ _ y => by rw [hone k y, one_pow]) (GlobalTheory.PlaceInt.datum_isIntegral _ _ _ _ Y.d.Xo₂ Y.d.c₂ n d hlev ph 1 x₀ hpin) Λ N hUn hTM hN a P hPl x0 g hsec hR`. Conclude with `⟨t, N, ht, hN.1.pos, fun la ℓ hℓ hm hor => hb' la ℓ hℓ hm (hor.elim (trivAt_of_dvd hTb) (trivAt_of_not_dvd hUn hN hℓ))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smul_nonneg_of_dvd (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ) (hG : Y.Good e o) (w : ℕ)
     (hw : ∀ (u : D.host.E) (n : ℕ), 0 < n → u ^ n = 1 → u ^ w = 1) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (hdom : Dom a n)
@@ -134,15 +134,13 @@ theorem exists_smul_nonneg_of_dvd (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j)
       hb' la ℓ hℓ hm (hor.elim (trivAt_of_dvd hTb) (trivAt_of_not_dvd hUn hN hℓ))⟩
 
 /- English proof (translation)
-Establish `hmul : CuspMul Y.d.Xo₂ Y.d.c₂ Y.U` using `cusp_mul_of_M5 ReciprocityTheory.ChartRestriction.G.FD.siegelSpaceAlgebra_holds _`. Establish `hD : ∀ k : ℕ, Dom (k • a) (k * n)` using `fun k => ⟨fun τ i i' hi => Nat.mul_le_mul_left k (hdom.1 τ hi), hdom.2.mul_left k⟩`. Establish `hpow : ∀ k : ℕ, f ^ (k + 1) ∈ cusp Y.d.Xo₂ Y.d.c₂ Y.U ((k + 1) • a) ((k + 1) * n)` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => simpa using hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Rewrite using `[pow_succ, succ_nsmul a (k + 1), Nat.succ_mul (k + 1)]`. Conclude with `hmul _ _ _ _ _ _ (hD _) hdom ih hf`. Take `⟨w, hw0, hw⟩` from `exists_pow_root_eq_one D.host.E`. Take `⟨k, rfl⟩ : ∃ k, w = k + 1` from `⟨w - 1, by omega⟩`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : ((k + 1 : ℕ) : ℤ) ∣ (((k + 1) * n / 2 : ℕ) : ℤ)`. Take `⟨m, hm⟩` from `hdom.2`. Rewrite using `[hm, ← two_mul, mul_left_comm, Nat.mul_div_cancel_left _ two_pos]`. Conclude with `Int.natCast_dvd_natCast.2 (dvd_mul_right _ _)`. Establish `h1 : ∀ x, ((k + 1 : ℕ) : ℤ) ∣ ((((k + 1) • a) x : ℕ) : ℤ)` using `fun x => Int.natCast_dvd_natCast.2 (dvd_mul_right (k + 1) (a x))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Take `⟨s, hs, h⟩` from `exists_smul_nonneg_of_dvd D T j Y e o hG (k + 1) hw _ _ (hD (k + 1)) (hn.trans (Nat.le_mul_of_pos_left _ hw0)) (fun σ c τ i => by`. Unfold `laU`. Use `split_ifs`. Conclude with `(h1 _).add h2`. Conclude with `(h1 _).neg_right.sub h2) _ (hpow k)`.
-
-Conclude with `⟨s, hs, fun la v hv => nonneg_of_pow (fun la => isVal_valSet la) hv s f _ (h la v hv)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smul_nonneg_all (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ) (hG : Y.Good e o)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (hdom : Dom a n) (hn : 4 * (Module.finrank ℚ D.host.E * D.R.r) + 4 ≤ n)

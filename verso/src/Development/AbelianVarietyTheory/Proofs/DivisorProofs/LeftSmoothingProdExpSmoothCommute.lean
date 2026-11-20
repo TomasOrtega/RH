@@ -16,9 +16,9 @@ variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpac
   {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸}
 
 /- English proof (translation)
-Use `letI := h.chartedSpace`. Introduce `t`. Use `h.contMDiffAt_of_val ?_` and prove the remaining obligations. Establish `e : (fun s => (((h.prodExp X s : G) : 𝔸ˣ) : 𝔸)) = prodExpVal (fun i => (X i : 𝔸))`. Use function extensionality and compare the values at `fun s => h.val_prodExp X s`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Conclude with `(contDiff_prodExpVal _).contMDiff.contMDiffAt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contMDiff_prodExp (h : IsExpLieAlgebra G 𝔤) {n : ℕ} (X : Fin n → 𝔤) :
     letI := h.chartedSpace; ContMDiff 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, 𝔤) ∞ (h.prodExp X) := by
@@ -31,7 +31,7 @@ theorem contMDiff_prodExp (h : IsExpLieAlgebra G 𝔤) {n : ℕ} (X : Fin n → 
   exact (contDiff_prodExpVal _).contMDiff.contMDiffAt
 
 /- English proof (translation)
-Use `letI := h.chartedSpace`. Use `haveI := h.lieGroup ∞`. Establish `hm : ContMDiff 𝓘(ℝ, 𝔤 × (Fin n → ℝ)) 𝓘(ℝ, 𝔤) ∞ (fun p : 𝔤 × (Fin n → ℝ) => h.prodExp X p.2 * g * h.expG p.1)` using `(((contMDiff_prodExp h X).comp contDiff_snd.contMDiff).mul contMDiff_const).mul (h.contMDiff_expG_comp contDiff_fst)`. Conclude with `(ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) hf hm).contDiff`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_param (h : IsExpLieAlgebra G 𝔤) {n : ℕ} (X : Fin n → 𝔤) {f : G → ℂ}
     (hf : h.IsSmoothFun f) (g : G) :
@@ -45,13 +45,11 @@ theorem contDiff_param (h : IsExpLieAlgebra G 𝔤) {n : ℕ} (X : Fin n → �
   exact (ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) hf hm).contDiff
 
 /- English proof (translation)
-Use `set L := ContinuousLinearMap.inl ℝ P T`. Use `set H : P × T → ContinuousMultilinearMap ℝ (fun _ : Fin k => P) E' := fun q => ContinuousMultilinearMap.compContinuousLinearMapL (fun _ => L) (iteratedFDeriv ℝ k Φ q)`. Establish `hH : Continuous H` using `(ContinuousLinearMap.continuous _).comp (hΦ.continuous_iteratedFDeriv (by exact_mod_cast le_top))`. Establish `hpart : ∀ (Z : T) (Y : P), iteratedFDeriv ℝ k (fun Y => Φ (Y, Z)) Y = H (Y, Z)`. Introduce `Z Y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun Y => Φ (Y, Z)) = (fun w => Φ (w + (0, Z))) ∘ L`. Use function extensionality and compare the values at `Y`. Simplify using `[L]`. Establish `hΦZ : ContDiff ℝ ∞ (fun w : P × T => Φ (w + (0, Z)))` using `hΦ.comp (contDiff_id.add contDiff_const)`. Rewrite using `[e, L.iteratedFDeriv_comp_right hΦZ Y (by exact_mod_cast le_top), iteratedFDeriv_comp_add_right]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[H, L]`. Establish `e : (fun p : P × T => iteratedFDeriv ℝ k (fun Y => Φ (Y, p.2)) p.1) = H`. Use function extensionality and compare the values at `p`. Conclude with `hpart p.2 p.1`. Rewrite using `[e]`.
-
-Conclude with `hH`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_iteratedFDeriv_partial {P T E' : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P]
     [NormedAddCommGroup T] [NormedSpace ℝ T] [NormedAddCommGroup E'] [NormedSpace ℝ E']
@@ -84,7 +82,7 @@ noncomputable def conv (f : G → ℂ) (y : G) : ℂ :=
   ∫ t, κ t * f (h.prodExp X t * y)
 
 /- English proof (translation)
-Simplify using `only [conv, integrand, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conv_mul_expG (f : G → ℂ) (g : G) (Y : 𝔤) :
     conv h X κ f (g * h.expG Y) = ∫ t, integrand h X κ f g Y t := by
@@ -93,16 +91,16 @@ theorem conv_mul_expG (f : G → ℂ) (g : G) (Y : 𝔤) :
 variable {h X κ}
 
 /- English proof (translation)
-The claim follows from `(contDiff_param h X hf g).comp (contDiff_id.prodMk contDiff_const)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_slice {f : G → ℂ} (hf : h.IsSmoothFun f) (g : G) (t : Fin n → ℝ) :
     ContDiff ℝ ∞ (fun Y : 𝔤 => f (h.prodExp X t * g * h.expG Y)) :=
   (contDiff_param h X hf g).comp (contDiff_id.prodMk contDiff_const)
 
 /- English proof (translation)
-Rewrite using `[ParamIntegral.iter]`. Establish `e : (fun Y => integrand h X κ f g Y t) = (ContinuousLinearMap.mul ℝ ℂ (κ t)) ∘ (fun Y : 𝔤 => f (h.prodExp X t * g * h.expG Y))`. Use function extensionality and compare the values at `Y`. Simplify using `[integrand]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ContinuousLinearMap.mul ℝ ℂ (κ t)).iteratedFDeriv_comp_left (contDiff_slice hf g t).contDiffAt (by exact_mod_cast le_top)`.
+A detailed English derivation is pending.
 -/
 theorem iter_integrand_eq {f : G → ℂ} (hf : h.IsSmoothFun f) (g : G) (k : ℕ) (Y : 𝔤)
     (t : Fin n → ℝ) :
@@ -118,7 +116,7 @@ theorem iter_integrand_eq {f : G → ℂ} (hf : h.IsSmoothFun f) (g : G) (k : �
     (contDiff_slice hf g t).contDiffAt (by exact_mod_cast le_top)
 
 /- English proof (translation)
-Establish `e : (fun Y => integrand h X κ f g Y t) = (ContinuousLinearMap.mul ℝ ℂ (κ t)) ∘ (fun Y : 𝔤 => f (h.prodExp X t * g * h.expG Y))`. Use function extensionality and compare the values at `Y`. Simplify using `[integrand]`. Rewrite using `[e]`. Conclude with `(ContinuousLinearMap.mul ℝ ℂ (κ t)).contDiff.comp (contDiff_slice hf g t)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrand_contDiff {f : G → ℂ} (hf : h.IsSmoothFun f) (g : G) (t : Fin n → ℝ) :
     ContDiff ℝ ∞ (fun Y => integrand h X κ f g Y t) := by
@@ -129,7 +127,7 @@ theorem integrand_contDiff {f : G → ℂ} (hf : h.IsSmoothFun f) (g : G) (t : F
   exact (ContinuousLinearMap.mul ℝ ℂ (κ t)).contDiff.comp (contDiff_slice hf g t)
 
 /- English proof (translation)
-Repeatedly rewrite using `[iter_integrand_eq hf]`. Establish `hc` using `continuous_iteratedFDeriv_partial (contDiff_param h X hf g) k`. Establish `hL : Continuous (fun t => ContinuousLinearMap.mul ℝ ℂ (κ t))` using `(ContinuousLinearMap.mul ℝ ℂ).continuous.comp hκ`. Establish `hB` using `ContinuousLinearMap.continuous₂ (𝕜 := ℝ) (E := ℂ →L[ℝ] ℂ) (F := ContinuousMultilinearMap ℝ (fun _ : Fin k => 𝔤) ℂ) (G := ContinuousMultilinearMap ℝ (fun _ : Fin k => 𝔤) ℂ) (ContinuousLinearMap.compContinuousMultilinearMapL ℝ (fun _ : Fin k => 𝔤) ℂ ℂ)`. Conclude with `hB.comp ((hL.comp continuous_snd).prodMk hc)`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrand_cont (hκ : Continuous κ) {f : G → ℂ} (hf : h.IsSmoothFun f) (g : G) (k : ℕ) :
     Continuous (fun p : 𝔤 × (Fin n → ℝ) => ParamIntegral.iter (integrand h X κ f g) k p.1 p.2) := by
@@ -144,7 +142,7 @@ theorem integrand_cont (hκ : Continuous κ) {f : G → ℂ} (hf : h.IsSmoothFun
   exact hB.comp ((hL.comp continuous_snd).prodMk hc)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨univ, univ_mem, tsupport κ, hκs, fun Y _ t ht => by simp [integrand, image_eq_zero_of_notMem_tsupport ht]⟩`.
+Supply the required witnesses or components.
 -/
 theorem integrand_supp (hκs : HasCompactSupport κ) (f : G → ℂ) (g : G) (Y₀ : 𝔤) :
     ∃ U ∈ 𝓝 Y₀, ∃ C : Set (Fin n → ℝ), IsCompact C ∧
@@ -153,7 +151,7 @@ theorem integrand_supp (hκs : HasCompactSupport κ) (f : G → ℂ) (g : G) (Y�
     simp [integrand, image_eq_zero_of_notMem_tsupport ht]⟩
 
 /- English proof (translation)
-Rewrite using `[IsExpLieAlgebra.isSmoothFun_iff]`. Introduce `g`. Repeatedly rewrite using `[conv_mul_expG]`. Conclude with `contDiff_integral_of_iteratedFDeriv _ (integrand_contDiff hf g) (integrand_cont hκ hf g) (integrand_supp hκs f g)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothFun_conv (hκ : Continuous κ) (hκs : HasCompactSupport κ) {f : G → ℂ}
     (hf : h.IsSmoothFun f) : h.IsSmoothFun (conv h X κ f) := by
@@ -164,13 +162,11 @@ theorem isSmoothFun_conv (hκ : Continuous κ) (hκs : HasCompactSupport κ) {f 
     (integrand_cont hκ hf g) (integrand_supp hκs f g)
 
 /- English proof (translation)
-Use `show fderiv ℝ (fun Y : 𝔤 => conv h X κ f (g * h.expG Y)) 0 Z = _`. Repeatedly rewrite using `[conv_mul_expG]`. Rewrite using `[← iteratedFDeriv_one_apply (fun _ : Fin 1 => Z), iteratedFDeriv_integral_eq _ (integrand_contDiff hf g) (integrand_cont hκ hf g) (integrand_supp hκs f g) 1]`. Establish `hint : Integrable (fun t => ParamIntegral.iter (integrand h X κ f g) 1 (0 : 𝔤) t)`. Use `Continuous.integrable_of_hasCompactSupport ((integrand_cont hκ hf g 1).comp (continuous_const.prodMk continuous_id)) ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasCompactSupport.intro hκs fun t ht => ParamIntegral.iter_eq_zero_of_eventually ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun Y => by`. Simplify using `[integrand, image_eq_zero_of_notMem_tsupport ht]`. Rewrite using `[ContinuousMultilinearMap.integral_apply hint]`. Simplify using `only [conv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[iter_integrand_eq hf]`. Simplify using `only [ContinuousLinearMap.compContinuousMultilinearMap_coe, Function.comp_apply, ContinuousLinearMap.mul_apply']`. Rewrite using `[iteratedFDeriv_one_apply]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rightDeriv_conv (hκ : Continuous κ) (hκs : HasCompactSupport κ) {f : G → ℂ}
     (hf : h.IsSmoothFun f) (Z : 𝔤) (g : G) :
@@ -222,7 +218,7 @@ noncomputable def convEnd (hκ : Continuous κ) (hκs : HasCompactSupport κ) :
     congr 1; funext t; simp only [Pi.smul_apply, smul_eq_mul]; ring
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Conclude with `rightDeriv_conv hκ hκs f.2 Z y`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem commute_convEnd (hκ : Continuous κ) (hκs : HasCompactSupport κ) (Z : 𝔤) :
     h.rightDerivEnd (F := ℂ) Z * convEnd h X hκ hκs = convEnd h X hκ hκs * h.rightDerivEnd Z := by
@@ -230,9 +226,9 @@ theorem commute_convEnd (hκ : Continuous κ) (hκs : HasCompactSupport κ) (Z :
   exact rightDeriv_conv hκ hκs f.2 Z y
 
 /- English proof (translation)
-Establish `hle : Algebra.adjoin ℂ (Set.range (h.rightDerivEnd (F` using `ℂ))) ≤ Subalgebra.centralizer ℂ {convEnd h X hκ hκs} := by`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨Z, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce `A hA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hA` using `[Set.mem_singleton_iff]`. Substitute `hA` using the available equality. Conclude with `(commute_convEnd hκ hκs Z).symm`. Use `(Subalgebra.mem_centralizer_iff ℂ).1 (hle hT) _ rfl` as an intermediate fact. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem adjoin_commute_convEnd (hκ : Continuous κ) (hκs : HasCompactSupport κ)
     {T : Module.End ℂ (h.smoothFuns (F := ℂ))}
@@ -255,7 +251,7 @@ end GlobalTheory.LeftSmoothing
 open GlobalTheory.LeftSmoothing in
 
 /- English proof (translation)
-Introduce `𝔸 _ _ _ _ G 𝔤 h n X κ hκ hκs f`. Use `⟨convEnd h X hκ hκs f, fun y => rfl, fun T hT y => ?_⟩` and prove the remaining obligations. Establish `e` using `LinearMap.congr_fun (adjoin_commute_convEnd (X := X) hκ hκs hT) f`. Simplify using `only [Module.End.mul_apply] at e`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

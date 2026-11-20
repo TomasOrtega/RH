@@ -18,13 +18,13 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ZM
 
 /- English proof (translation)
-Set `P : Polynomial K₀` to `MvPolynomial.eval₂ (Polynomial.C.comp β) (fun a => Polynomial.X * Polynomial.C (v a)) F`. Establish `key : ∀ {E : Type} [CommRing E] (k : K₀ →+* E) (c : E), Polynomial.eval₂RingHom k c P = MvPolynomial.eval₂ (k.comp β) (fun a => c * k (v a)) F`. Introduce `E _ k c`. Simplify using `only [P]`. Rewrite using `[MvPolynomial.hom_eval₂]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `r`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `a`. Rewrite using `[map_mul]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hP : P.map j = 0`. Use `Polynomial.eq_zero_of_infinite_isRoot _ ((Set.finite_singleton (0 : ℂ)).infinite_compl.mono fun c hc => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(P.map j).eval c = 0`. Rewrite using `[Polynomial.eval_map]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(key j c).trans (h c hc)`. Rewrite `hP` using `[Polynomial.map_eq_zero]`. Rewrite using `[← key, hP, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval₂_mul_eq_zero_of_complex {o K₀ K σ : Type} [CommRing o] [Field K₀] [CommRing K] (β : o →+* K₀)
     (i : K₀ →+* K) (j : K₀ →+* ℂ) (v : σ → K₀) (F : MvPolynomial σ o)
@@ -52,9 +52,9 @@ theorem eval₂_mul_eq_zero_of_complex {o K₀ K σ : Type} [CommRing o] [Field 
   rw [← key, hP, map_zero]
 
 /- English proof (translation)
-Take `⟨R, _, x, v, hx, ⟨p, hp⟩, hth⟩` from `GlobalTheory.ThetaLocal.exists_hasTh hL hL2 o g N' J b _ s t hN (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K)`. Establish `hr : Set.range (𝟙 (Sp K) : Sp K ⟶ Sp K) ⊆ Set.range x`. Introduce and unpack `q -`. Conclude with `⟨p, Subsingleton.elim (α := PrimeSpectrum K) _ _⟩`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (IsOpenImmersion.lift x (𝟙 _) hr)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `e : spMap φ.hom ≫ x = 𝟙 _`. Rewrite using `[← IsOpenImmersion.lift_fac x (𝟙 _) hr, ← hφ]`. Both sides reduce to the same expression. Conclude with `⟨_, e ▸ GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b _ s t R K φ.hom x v hth⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components.
 -/
 theorem TObj.exists_hasTh_field (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [CommRing o] {g N' : ℕ} {J : Type}
     {b : TBase o (N' ^ 2)} {K : Type} [Field K] {s : Sp K ⟶ Sp o} (t : TObj g (N' ^ 2) J b s) (hN : Odd N') :
@@ -71,17 +71,17 @@ theorem TObj.exists_hasTh_field (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [Co
   exact ⟨_, e ▸ GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b _ s t R K φ.hom x v hth⟩
 
 /- English proof (translation)
-Take `⟨K₀, _, β₀, i, j, t₀, tx, tc, hem, hs, m1, m2, m3, hC⟩` from `hy`. Establish `hβi : β = i.comp β₀`. Establish `e : Spec.map (CommRingCat.ofHom β) = Spec.map (CommRingCat.ofHom β₀ ≫ CommRingCat.ofHom i)`. Rewrite using `[Spec.map_comp]`. Conclude with `hβ.symm.trans hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`. Establish `a1 : tx.HasTh (𝟙 _) w` using `(GlobalTheory.hasTh_iff_of_tmap o g N' J b _ _ t _ _ tx y K (𝟙 _) w m1).2 (by rwa [Category.id_comp])`. Establish `a2 : t₀.HasTh (spMap i) w`. Use `(GlobalTheory.hasTh_iff_of_tmap o g N' J b _ _ t₀ _ _ tx (spMap i) K (𝟙 _) w m2).1 a1` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v₀, hv₀⟩` from `t₀.exists_hasTh_field hL hL2 hN`. Establish `a3 : t₀.HasTh (spMap i) (fun a => i (v₀ a))`. Use `GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b _ _ t₀ K₀ K i (𝟙 _) v₀ hv₀` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Then use the resulting hypothesis. Establish `hspan : Ideal.span (Set.range fun a => i (v₀ a)) = ⊤`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha⟩` from `GlobalTheory.T.thetaCosetNonvanishing_of_hasTh hL hL2 o g N' J b _ _ t₀ n K (spMap i) _ ⊥ h2 hn a3 Ideal.isPrime_bot 0`. Rewrite `ha` using `[Ideal.mem_bot]`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨_, rfl⟩) (Ne.isUnit ha)`. Take `⟨u, hu⟩` from `GlobalTheory.hasTh_unique_unit hL hL2 o g N' J b _ _ t₀ K (spMap i) _ w a3 a2 hspan`. Establish `a4 : tc.HasTh (𝟙 _) (fun a => j (v₀ a))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(GlobalTheory.hasTh_iff_of_tmap o g N' J b _ _ t₀ _ _ tc (spMap j) ℂ (𝟙 _) _ m3).2 ?_` and prove the remaining obligations. Use `GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b _ _ t₀ K₀ ℂ j (𝟙 _) v₀ hv₀` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Rewrite using `[Category.id_comp]` and apply the resulting hypothesis. Rewrite using `[hβi, funext hu]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `eval₂_mul_eq_zero_of_complex β₀ i j v₀ F (fun c hc => ?_) u` and prove the remaining obligations. Establish `hle : thIdeal em C ≤ RingHom.ker (MvPolynomial.eval₂Hom em (fun a => c * j (v₀ a)))` using `iInf_le_of_le tc (iInf_le_of_le _ (iInf_le_of_le ⟨hC, a4.unit_mul c hc.isUnit⟩ le_rfl))`. Rewrite using `[hem]`. Conclude with `hle hF`.
+A detailed English derivation is pending.
 -/
 theorem eval₂_eq_zero_of_fromC (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [CommRing o] {g n N' : ℕ} {J : Type}
     {b : TBase o (N' ^ 2)} {em : o →+* ℂ} {C : TObj g (N' ^ 2) J b (spMap em) → Prop} {S : Scheme.{0}}
@@ -122,17 +122,17 @@ theorem eval₂_eq_zero_of_fromC (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [C
   exact hle hF
 
 /- English proof (translation)
-Introduce `hL hL2 o _ g n N' J b em C S s t R _ β x v h2 hn hN hS hd hx hβ hth`. Use `⟨fun F hF => ?_, fun q hq => GlobalTheory.T.thetaCosetNonvanishing_of_hasTh hL hL2 o g N' J b S s t n R x v q h2 hn hth hq⟩` and prove the remaining obligations. Establish `hR : IsReduced (Sp R)` using `isReduced_of_isOpenImmersion x`. Establish `hR' : _root_.IsReduced R` using `(affine_isReduced_iff (CommRingCat.of R)).1 hR`. Use `IsNilpotent.eq_zero ((PrimeSpectrum.basicOpen_eq_bot_iff _).1 ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Establish `hd' : Dense (x ⁻¹' fromSet em C t)` using `hd.preimage x.isOpenEmbedding.isOpenMap`. Take `⟨q, hq, K, _, y, ⟨p, hp⟩, hy⟩` from `hd'.inter_open_nonempty (PrimeSpectrum.basicOpen (MvPolynomial.eval₂ β v F) : Set (PrimeSpectrum R)) (PrimeSpectrum.basicOpen _).isOpen ((TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hne)`. Establish `hr : Set.range y ⊆ Set.range x`. Introduce and unpack `_ ⟨p', rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨q, by rw [← hp, Subsingleton.elim (α := PrimeSpectrum K) p p']⟩`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (IsOpenImmersion.lift x y hr)`. Establish `e : spMap φ.hom ≫ x = y`. Rewrite using `[← IsOpenImmersion.lift_fac x y hr, ← hφ]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hq' : PrimeSpectrum.comap φ.hom p = q`. Apply `x.isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← hp, ← e]`. Both sides reduce to the same expression. Establish `hw : t.HasTh y (fun a => φ.hom (v a))` using `e ▸ GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b S s t R K φ.hom x v hth`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hs : y ≫ s = spMap (φ.hom.comp β)`. Rewrite using `[← e, Category.assoc, hβ, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `h0` using `eval₂_eq_zero_of_fromC hL hL2 h2 hn hN hy _ hs hw hF`. Rewrite `h0` using `[← MvPolynomial.hom_eval₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hq` to reduce the goal to its premises. Rewrite using `[← hq']`. Express the relevant statement in the definitionally equal form `φ.hom _ ∈ PrimeSpectrum.asIdeal p`. Rewrite using `[h0]`. Conclude with `Ideal.zero_mem _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inMM_of_dense_fromSet :
     Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g n N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (em : o →+* ℂ) (C : TObj g (N' ^ 2) J b (spMap em) → Prop) (S : Scheme.{0}) (s : S ⟶ Sp o) (t : TObj g (N' ^ 2) J b s) (R : Type) [CommRing R] (β : o →+* R) (x : Sp R ⟶ S) (v : Ix g (N' ^ 2) → R), 2 ≤ n → n ∣ N' → Odd N' → IsReduced S → Dense (fromSet em C t) → IsOpenImmersion x → x ≫ s = spMap β → t.HasTh x v → InMM n N' (thIdeal em C) β v := by

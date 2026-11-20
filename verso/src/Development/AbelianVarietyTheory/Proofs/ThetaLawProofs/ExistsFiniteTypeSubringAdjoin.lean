@@ -16,11 +16,11 @@ open GlobalTheory.KeyPow GlobalTheory.KeyKa
 namespace GlobalTheory.KeyTf
 
 /- English proof (translation)
-Introduce `S _ R₀ F hR₀`. Take `⟨s, hs⟩` from `hR₀.out`. Set `T : Finset S` to `s.image (Subtype.val) ∪ F`. Use `⟨(Algebra.adjoin ℤ (T : Set S)).toSubring, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : (⟨x, hx⟩ : R₀) ∈ Algebra.adjoin ℤ (s : Set R₀)` using `hs ▸ Algebra.mem_top`. Establish `h2 : x ∈ (Algebra.adjoin ℤ (s : Set R₀)).map R₀.subtype.toIntAlgHom` using `Subalgebra.mem_map.2 ⟨_, hmem, rfl⟩`. Rewrite `h2` using `[← Algebra.adjoin_image]`. Use `Algebra.adjoin_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Finset.mem_union_left _ (Finset.mem_image_of_mem _ hy)`. Introduce `x hx`. Conclude with `Algebra.subset_adjoin (Finset.mem_union_right _ hx)`. Conclude with `(Subalgebra.fg_iff_finiteType _).1 ⟨T, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.KeyTf.exists_finiteType_subring_adjoin :
     ∀ (S : Type) [CommRing S] (R₀ : Subring S) (F : Finset S), Algebra.FiniteType ℤ R₀ →

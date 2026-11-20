@@ -15,20 +15,20 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, isPlaceOver_placeOf _ w⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_place (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) :
     ∃ A : ValuationSubring (AlgebraicClosure E), IsPlaceOver A w :=
   ⟨_, isPlaceOver_placeOf _ w⟩
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h` and use `let ⟨rc, hrc, _⟩ := H.1 E Ω A w h; ⟨rc, hrc.toLit⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem localLanglandsExists_of_localLanglandsGL (H : GlobalTheory.Published.LocalLanglandsGL) : GlobalTheory.Published.LocalLanglandsExists :=
   fun E Ω _ _ _ _ _ A w h => let ⟨rc, hrc, _⟩ := H.1 E Ω A w h; ⟨rc, hrc.toLit⟩
 
 /- English proof (translation)
-Take `⟨n, a, rfl⟩` from `x.exists_rep`. Take `rfl : n = 0` from `by simpa using hx`. Conclude with `WD.sound ⟨.refl _ _, fun _ _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_lpZero {x : WD h} (hx : x.lpDim = 0) : x = WD.lpZero h := by
   obtain ⟨n, a, rfl⟩ := x.exists_rep
@@ -36,9 +36,9 @@ theorem eq_lpZero {x : WD h} (hx : x.lpDim = 0) : x = WD.lpZero h := by
   exact WD.sound ⟨.refl _ _, fun _ _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨n, a, ha, hi⟩`. Establish `h0` using `congrArg WD.lpDim ha`. Take `rfl : n = 0` from `by simpa [WD.lpZero] using h0`. Establish `: Nontrivial (Subrepresentation a.ρ)` using `hi.toNontrivial`. Take `⟨S, T, hST⟩` from `exists_pair_ne (Subrepresentation a.ρ)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hST (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))`.
+A detailed English derivation is pending.
 -/
 theorem not_isIrrWD_lpZero : ¬ IsIrrWD (WD.lpZero h) := by
   rintro ⟨n, a, ha, hi⟩
@@ -49,11 +49,11 @@ theorem not_isIrrWD_lpZero : ¬ IsIrrWD (WD.lpZero h) := by
   exact hST (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))
 
 /- English proof (translation)
-Establish `h1 : (x.lpChar y).lpDim = 0`. Take `⟨n, a, rfl⟩` from `x.exists_rep`. Take `⟨m, b, rfl⟩` from `y.exists_rep`. Take `rfl : m = 0` from `by simpa using hy`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `h2 : ((x.lpChar y).lpSum (x.lpChar y)).lpDim = 0`. Take `⟨n, a, ha⟩` from `(x.lpChar y).exists_rep`. Rewrite `h1`, the goal using `[← ha]`. Take `rfl : n = 0` from `by simpa using h1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `h3` using `hε.add E w h ψ hψ hψ' (x.lpChar y) (x.lpChar y)`. Rewrite `h3` using `[(eq_lpZero h2).trans (eq_lpZero h1).symm]`. Conclude with `(mul_eq_left.1 h3.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_tensor_zero {ε : EpsFamily A} (hε : IsDeligneEps ε) (ψ : AddChar (w.adicCompletion E) Circle)
     (hψ : Continuous ψ) (hψ' : ψ ≠ 1) (x y : WD h) (hy : y.lpDim = 0) : ε E w h ψ (x.lpChar y) = 1 := by
@@ -72,11 +72,11 @@ theorem eps_tensor_zero {ε : EpsFamily A} (hε : IsDeligneEps ε) (ψ : AddChar
   exact (mul_eq_left.1 h3.symm)
 
 /- English proof (translation)
-Take `⟨n, a, ha⟩` from `(rc ρ).exists_rep`. Use `show ((((rc ρ).lpTw ((((1 : ℕ) : ℝ) - 1) / 2)).lpChar (WD.lpSp h 1)).lpSum (WD.lpZero h)) = rc ρ`. Rewrite using `[← ha, WD.lpTw_mk, WD.lpSp, WD.lpChar_mk, WD.lpZero, WD.lpSum_mk]`. Use `WD.sound ⟨(LinearEquiv.prodUnique).trans ((TensorProduct.congr (.refl ℂ _) (LinearEquiv.funUnique (Fin 1) ℂ ℂ)).trans (TensorProduct.rid ℂ _)), fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Take `⟨v, u⟩` from `v show (TensorProduct.rid ℂ _) (TensorProduct.congr (.refl ℂ _) (LinearEquiv.funUnique (Fin 1) ℂ ℂ) (TensorProduct.map _ _ v)) = a.ρ σ ((TensorProduct.rid ℂ _) (TensorProduct.congr (.refl ℂ _) (LinearEquiv.funUnique (Fin 1) ℂ ℂ) v))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [WDRep.spEig, coe_qPow]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Take `⟨v, u⟩` from `v show (TensorProduct.rid ℂ _) (TensorProduct.congr (.refl ℂ _) (LinearEquiv.funUnique (Fin 1) ℂ ℂ) (((a.tw ((((1 : ℕ) : ℝ) - 1) / 2)).tensor (WDRep.sp h 1)).N v)) = a.N ((TensorProduct.rid ℂ _) (TensorProduct.congr (.refl ℂ _) (LinearEquiv.funUnique (Fin 1) ℂ ℂ) v))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [shiftEnd_apply]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem segSum_single (rc : IrrGL (w.adicCompletion E) → WD h) (ρ : IrrGL (w.adicCompletion E)) (hρ : ρ.IsCusp) :
     segSum rc [Segment.single ρ hρ] = rc ρ := by
@@ -103,7 +103,7 @@ theorem segSum_single (rc : IrrGL (w.adicCompletion E) → WD h) (ρ : IrrGL (w.
     | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Take `⟨a, ha, ε, -, H⟩` from `H`. Rewrite using `[H.one]`. Establish `: WD.lpOfChar h ((SmGL.unrChar (w.adicCompletion E) c).comp a) (ha.smooth hc) = WD.mk (WDRep.diag h fun _ : Fin 1 => c⁻¹)`. Simplify using `only [WD.lpOfChar, WDRep.diag, ha.unrChar_comp]`. Rewrite using `[this, WD.frobEig_diag]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -119,7 +119,7 @@ theorem frobEig_unr {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRecLit h r
   rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨a, ha, ε, -, H⟩`. Take `⟨_, h0⟩` from `H.bij.2 (WD.lpSp h 0)`. Take `⟨_, h1⟩` from `H.bij.2 (WD.lpSp h 1)`. Use `congrArg WD.lpDim (h0.symm.trans h1)` as an intermediate fact. Simplify using `at this`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_const (y : WD h) : ¬ IsRecLit h fun _ => y := by
   rintro ⟨a, ha, ε, -, H⟩

@@ -14,9 +14,9 @@ namespace PDiv
 namespace CocycleSum
 
 /- English proof (translation)
-Establish `h1` using `h a b (a' * b')`. Establish `h2` using `h a a' (b * b')`. Establish `h3` using `h a' b' b`. Rewrite `h1` using `[show b * (a' * b') = a' * (b * b') from mul_left_comm _ _ _]`. Rewrite `h3` using `[show b' * b = b * b' from mul_comm _ _, hs (a' * b') b, hs b' b]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← sub_eq_zero]`. Establish `e : c (a * b) (a' * b') - (c a a' + c b b' + (c (a * a') (b * b') - c a b - c a' b')) = -(c b (a' * b') - c (a * b) (a' * b') + c a (a' * (b * b')) - c a b) + (c a' (b * b') - c (a * a') (b * b') + c a (a' * (b * b')) - c a a') - (c b b' - c b (a' * b') + c a' (b * b') - c a' b')` using `by abel`. Rewrite using `[e, h1, h2, h3]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem four {M N : Type} [CommMonoid M] [AddCommGroup N] (c : M → M → N)
     (h : ∀ x y z, c y z - c (x * y) z + c x (y * z) - c x y = 0) (hs : ∀ x y, c x y = c y x)
@@ -47,7 +47,7 @@ Both sides reduce to the same expression.
     val x y (a ⊗ₜ b) = x.ofConv a * y.ofConv b := rfl
 
 /- English proof (translation)
-Rewrite using `[val]`. Conclude with `AlgHom.convMul_apply x y a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_apply (x y : WithConv (A →ₐ[R] X)) (a : A) :
     (x * y).ofConv a = val x y (comul a) := by
@@ -55,11 +55,11 @@ theorem mul_apply (x y : WithConv (A →ₐ[R] X)) (a : A) :
   exact AlgHom.convMul_apply x y a
 
 /- English proof (translation)
-Establish `hA : ∀ (t : A ⊗[R] A) (b : A), Algebra.TensorProduct.lift x.ofConv (val y z) (fun _ _ => .all ..) (TensorProduct.assoc R A A A (t ⊗ₜ b)) = val x y t * z.ofConv b`. Introduce `t b`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a a' => simp [mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add u v hu hv => simp only [TensorProduct.add_tmul, map_add, hu, hv, add_mul]`. Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[cobTwo_apply]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub, map_add, TensorProduct.mk_apply, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul, LinearMap.flip_apply, Algebra.TensorProduct.lift_tmul, val_tmul, hA, mul_apply, map_one, one_mul, mul_one]`. Consider the case `add u v hu hv`. Simplify using `only [map_add, hu, hv]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem lift_cobTwo (x y z : WithConv (A →ₐ[R] X)) (c : A ⊗[R] A) :
     Algebra.TensorProduct.lift x.ofConv (val y z) (fun _ _ => .all ..) (cobTwo R A c) =
@@ -84,7 +84,7 @@ theorem lift_cobTwo (x y z : WithConv (A →ₐ[R] X)) (c : A ⊗[R] A) :
     abel
 
 /- English proof (translation)
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rw [TensorProduct.comm_tmul, val_tmul, val_tmul, mul_comm]`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem val_comm (x y : WithConv (A →ₐ[R] X)) (c : A ⊗[R] A) :
     val x y (TensorProduct.comm R A A c) = val y x c := by
@@ -94,7 +94,7 @@ theorem val_comm (x y : WithConv (A →ₐ[R] X)) (c : A ⊗[R] A) :
   | add u v hu hv => simp only [map_add, hu, hv]
 
 /- English proof (translation)
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp only [val_tmul, ptsPush_ofConv, AlgHom.comp_apply, map_mul]`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem val_push {Y : Type} [CommRing Y] [Algebra R Y] (u : X →ₐ[R] Y)
     (x y : WithConv (A →ₐ[R] X)) (c : A ⊗[R] A) :
@@ -107,7 +107,7 @@ theorem val_push {Y : Type} [CommRing Y] [Algebra R Y] (u : X →ₐ[R] Y)
 variable {B : Type} [CommRing B] [Bialgebra R B]
 
 /- English proof (translation)
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Simplify using `only [val_tmul, ptsPush_ofConv, AlgHom.comp_apply, Algebra.TensorProduct.includeLeft_apply, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, TensorProduct.map_tmul, AlgHom.toLinearMap_apply]`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem val_include (x y : WithConv (A →ₐ[R] B)) (c : A ⊗[R] A) :
     val (ptsPush A (Algebra.TensorProduct.includeLeft : B →ₐ[R] B ⊗[R] B) x)
@@ -122,7 +122,7 @@ theorem val_include (x y : WithConv (A →ₐ[R] B)) (c : A ⊗[R] A) :
   | add u v hu hv => simp only [map_add, hu, hv]
 
 /- English proof (translation)
-Apply `WithConv.ext` to reduce the goal to its premises. Use extensionality with `a`. Rewrite using `[mul_apply, val_include]`. Simplify using `only [ptsPush_ofConv, AlgHom.comp_apply, Bialgebra.comulAlgHom_apply]`. Conclude with `CoalgHomClass.map_comp_comul_apply f a`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem include_mul (f : A →ₐc[R] B) :
     ptsPush A (Algebra.TensorProduct.includeLeft : B →ₐ[R] B ⊗[R] B) (toConv (f : A →ₐ[R] B)) *
@@ -139,11 +139,11 @@ end CocycleSum
 open CocycleSum in
 
 /- English proof (translation)
-Take `⟨hc2, hcs⟩` from `mem_symCocycles.1 hc`. Establish `hv : ∀ (x y : WithConv (A →ₐ[R] B)) (t : A ⊗[R] A), val x y t = LinearMap.mul' R B (TensorProduct.map x.ofConv.toLinearMap y.ofConv.toLinearMap t)`. Introduce `x y t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b => simp`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Establish `key` using `four (M := WithConv (A →ₐ[R] B ⊗[R] B)) (fun x y => val x y c) (fun x y z => (lift_cobTwo x y z c).symm.trans (by rw [hc2, map_zero])) (fun x y => by rw [← val_comm, hcs]) (ptsPush A (Algebra.TensorProduct.includeLeft : B →ₐ[R] B ⊗[R] B) (toConv (f : A →ₐ[R] B))) (ptsPush A (Alge …`. Rewrite `key` using `[← map_mul (ptsPush A (Algebra.TensorProduct.includeLeft : B →ₐ[R] B ⊗[R] B)), ← map_mul (ptsPush A (Algebra.TensorProduct.includeRight : B →ₐ[R] B ⊗[R] B)), include_mul f, include_mul g, val_include, val_include, val_include, val_push, val_push, val_push]`. Establish `hl : ∀ h : A →ₐc[R] B, (h : A →ₗ[R] B) = (h : A →ₐ[R] B).toLinearMap` using `fun _ => rfl`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfg : ((toConv f * toConv g).ofConv : A →ₐ[R] B) = (toConv (f : A →ₐ[R] B) * toConv (g : A →ₐ[R] B)).ofConv` using `congrArg WithConv.ofConv (BialgHom.toAlgHom_convMul (toConv f) (toConv g))`. Establish `hv' : LinearMap.mul' R B (TensorProduct.map (f : A →ₗ[R] B) (g : A →ₗ[R] B) c) = val (toConv (f : A →ₐ[R] B)) (toConv (g : A →ₐ[R] B)) c`. Rewrite using `[hv, hl, hl]`. Unfold `pullbackTwo`. Rewrite using `[hl, hfg, key, cobOne_apply, hv', Algebra.TensorProduct.includeLeft_apply, Algebra.TensorProduct.includeRight_apply, hl, hl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

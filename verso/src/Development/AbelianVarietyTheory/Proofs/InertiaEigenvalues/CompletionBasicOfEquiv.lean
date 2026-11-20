@@ -8,9 +8,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.Per
 
 /- English proof (translation)
-Introduce `l _`. Take `⟨hc, ht, hd, hv⟩` from `GlobalTheory.MemLoc.acris_basic l`. Use `⟨ht, hc, fun k x => ?_, fun k d => ?_⟩` and prove the remaining obligations. Take `⟨s, z, hz⟩` from `hd x k`. Conclude with `⟨s, Ideal.mem_span_singleton.2 ⟨z, by rw [hz, add_sub_cancel_left]⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[Ideal.mem_span_singleton, Ideal.mem_span_singleton]`. Conclude with `hv d k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acris_basic : ∀ (l : ℕ) [Fact l.Prime], (∀ x : Formalism.Per.Acris l, ((l : ℕ) : Formalism.Per.Acris l) * x = 0 → x = 0) ∧ IsAdicComplete (Ideal.span {((l : ℕ) : Formalism.Per.Acris l)}) (Formalism.Per.Acris l) ∧ (∀ (k : ℕ) (x : Formalism.Per.Acris l), ∃ d : ↥(Formalism.Per.Acris0 l), x - algebraMap ↥(Formalism.Per.Acris0 l) (Formalism.Per.Acris l) d ∈ Ideal.span {((l : ℕ) : Formalism.Per.Acris l) ^ k}) ∧ ∀ (k : ℕ) (d : ↥(Formalism.Per.Acris0 l)), algebraMap ↥(Formalism.Per.Acris0 l) (Formalism.Per.Acris l) d ∈ Ideal.span {((l : ℕ) : Formalism.Per.Acris l) ^ k} ↔ d ∈ Ideal.span {((l : ℕ) : ↥(Formalism.Per.Acris0 l)) ^ k} := by
   intro l _

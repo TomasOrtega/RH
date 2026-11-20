@@ -16,24 +16,24 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc.Sep.Twist
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_spMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (b : R →+* R') (a : R' →+* R'') :
     spMap a ≫ spMap b = spMap (a.comp b) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Introduce `V₁ _ X _ L hL K _ ev σ K₀ _ e hσe Z _ LZ hLZ ψ hψ H1 Y _ L₀ hL₀ φ hφ H2`. Establish `hs : spMap σ.toRingHom ≫ spMap e = spMap e` using `by rw [spMap_comp_spMap, hσe]`. Establish `hev : spMap σ.toRingHom ≫ spMap ev = spMap (σ.toRingHom.comp ev)` using `spMap_comp_spMap _ _`. Establish `hX` using `isGrpPullback_pullback X (spMap ev)`. Establish `hXσ` using `isGrpPullback_pullback X (spMap (σ.toRingHom.comp ev))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ` using `hψ.comp hφ`. Take `⟨ρ, hρ1, hρ2⟩ : ∃ ρ : pullback X.hom (spMap (σ.toRingHom.comp ev)) ⟶ pullback X.hom (spMap ev), ρ ≫ pullback.fst X.hom (spMap ev) = pullback.fst X.hom (spMap (σ.toRingHom.comp ev)) ∧ ρ ≫ pullback.snd X.hom (spMap ev) = pullback.snd X.hom (spMap (σ.toRingHom.comp ev)) ≫ spMap σ.to …` from `⟨pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ spMap σ.toRingHom) (by rw [pullback.condition, Category.assoc, hev]), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Establish `hρ : IsGrpPullback ((Over.pullback (spMap (σ.toRingHom.comp ev))).obj X) ((Over.pullback (spMap ev)).obj X) (spMap σ.toRingHom) ρ` using `hX.cancel (hXσ.congr hev.symm hρ1.symm) hρ2`. Establish `hσχ` using `hρ.comp hχ`. Apply the tactic sequence `obtain ⟨f, hf1, hf2⟩ : ∃ f : pullback X.hom (spMap ev) ⟶ pullback X.hom (spMap (σ.toRingHom.comp ev)), f ≫ ρ ≫ ψ ≫ φ = ψ ≫ φ ∧ f ≫ pullback.snd X.hom (spMap (σ.toRingHom.comp ev)) = pullback.snd X.hom (spMap ev) := ⟨hσχ.1.lift (ψ ≫ φ) (pullback.snd X.hom (spMap ev)) (by rw [hχ.1. …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfg : IsGrpPullback ((Over.pullback (spMap ev)).obj X) ((Over.pullback (spMap (σ.toRingHom.comp ev))).obj X) (𝟙 _) f` using `hσχ.cancel (hχ.congr (by simp only [Category.id_comp, hs]) hf1.symm) (by rw [Category.comp_id]; exact hf2)`. Establish `hτ1 : f ≫ pullback.fst X.hom (spMap (σ.toRingHom.comp ev)) = (f ≫ ρ) ≫ pullback.fst X.hom (spMap ev)`. Rewrite using `[Category.assoc, hρ1]`. Establish `hτχ : (f ≫ ρ) ≫ ψ ≫ φ = ψ ≫ φ` using `by rw [Category.assoc, hf1]`. Establish `hτ2 : (f ≫ ρ) ≫ pullback.snd X.hom (spMap ev) = pullback.snd X.hom (spMap ev) ≫ spMap σ.toRingHom`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hρ2, ← Category.assoc, hf2]`. Use `⟨f, hfg, ?_, ?_⟩` and prove the remaining obligations. Establish `K1 : LBIso (LZ.pull ψ) (L₀.pull (ψ ≫ φ))` using `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull LZ ψ ψ rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullSame L₀ _ (fun _ => φ) _ ψ fun _ => rfl) H2`. Establish `hA` using `pull_isLB hL (pullback.fst X.hom (spMap ev))`. Establish `hC` using `pull_isLB hL₀ (ψ ≫ φ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `AC` using `LBIso.trans hA (pull_isLB hLZ ψ) hC H1 K1`. Establish `D : LBIso (L.pull (f ≫ pullback.fst X.hom (spMap (σ.toRingHom.comp ev)))) (L₀.pull (ψ ≫ φ))` using `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullSame L _ (fun _ => pullback.fst X.hom (spMap ev)) _ (f ≫ ρ) fun _ => hτ1) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullSame L₀ _ (fun _ => ψ ≫ φ) _ (f ≫ ρ) fun _ => hτχ.symm) AC`. Conclude with `LBIso.trans hA hC (pull_isLB hL _) AC D.symm`. Introduce `q y₀ hq hq'`. Establish `hqτ : q ≫ f ≫ ρ = spMap σ.toRingHom ≫ q`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hχ.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hτχ, hq, Category.assoc, hq, ← Category.assoc, hs]`. Use `show (q ≫ f ≫ ρ) ≫ pullback.snd X.hom (spMap ev) = (spMap σ.toRingHom ≫ q) ≫ pullback.snd X.hom (spMap ev)`. Rewrite using `[Category.assoc, hτ2, ← Category.assoc, hq', Category.assoc, hq', Category.id_comp, Category.comp_id]`. Rewrite using `[hτ1, ← Category.assoc, hqτ, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_fibre_iso : ∀ (V₁ : Type) [CommRing V₁] (X : Over (Sp V₁)) [GrpObj X] (L : LB X.left), L.IsLB →
   ∀ (K : Type) [Field K]

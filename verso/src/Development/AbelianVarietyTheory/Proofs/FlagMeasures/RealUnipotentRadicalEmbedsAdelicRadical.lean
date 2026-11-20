@@ -11,14 +11,14 @@ noncomputable section
 namespace GlobalTheory.RadEmb
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq_dot {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
     Formalism.UG.hform (starRingEnd ℂ) A x y = star x ⬝ᵥ (A *ᵥ y) := by
   simp [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `e : star x ⬝ᵥ (Jm ε *ᵥ y) = star (Formalism.QuantumDeterminants.herm (Jm ε) x y)`. Simplify using `only [Formalism.QuantumDeterminants.herm, Jm, dotProduct, Matrix.mulVec_diagonal, star_sum, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [mul_comm]`. Rewrite using `[← e, ← h, hform_eq_dot, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_frame {n : ℕ} {ε : Fin n → Bool} {A P : Matrix (Fin n) (Fin n) ℂ} (h : Pᴴ * A * P = Jm ε)
     (x y : Fin n → ℂ) :
@@ -31,20 +31,20 @@ theorem hform_frame {n : ℕ} {ε : Fin n → Bool} {A P : Matrix (Fin n) (Fin n
     Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Use `⟨fun x _ => by simp, fun y _ => by simp, fun y x _ => by simp [Formalism.UG.hform]⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem inUnipRad_one (I : AutInst) {A : Type} [CommRing A] (s : A →+* A) (JA : Matrix (Fin I.n) (Fin I.n) A)
     (WA : Submodule A (Fin I.n → A)) : I.InUnipRad s JA WA 1 := by
   refine ⟨fun x _ => by simp, fun y _ => by simp, fun y x _ => by simp [Formalism.UG.hform]⟩
 
 /- English proof (translation)
-Establish `hφ : ∀ a, I.φ v (starRingEnd I.E a) = starRingEnd ℂ (I.φ v a)` using `fun a => I.cm.cmUnram.2.1 _ a`. Introduce `x hx y hy`. Rewrite using `[hform_eq_dot]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`. Use `congrArg (I.φ v) (hW.2 a ha b hb)` as an intermediate fact.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hform_eq_dot]`. Simplify `this` using `only [Formalism.UG.hform, map_sum, map_mul, hφ, map_zero, Matrix.map_apply]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [Matrix.mulVec_add, dotProduct_add, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [Matrix.mulVec_smul, dotProduct_smul, ha, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [star_add, add_dotProduct, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [star_smul, smul_dotProduct, ha, smul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem span_isot (I : AutInst) (W : Submodule I.E (Fin I.n → I.E)) (v : InfinitePlace I.F) (hW : I.IsIsot W) :
     ∀ x ∈ Submodule.span ℂ ((fun w : Fin I.n → I.E => fun i => I.φ v (w i)) '' (W : Set _)),
@@ -70,25 +70,21 @@ theorem span_isot (I : AutInst) (W : Submodule I.E (Fin I.n → I.E)) (v : Infin
   | smul c a _ ha => rw [star_smul, smul_dotProduct, ha, smul_zero]
 
 /- English proof (translation)
-Introduce `I W v hW`. Establish `hP : ∀ u, I.P u * (I.P u)⁻¹ = 1` using `fun u => Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit u))`. Establish `hQ : ∀ y, I.P v *ᵥ ((I.P v)⁻¹ *ᵥ y) = y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, hP, Matrix.one_mulVec]`. Use `set WA := Submodule.span ℂ ((fun w : Fin I.n → I.E => fun i => I.φ v (w i)) '' (W : Set _)) with hWA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf` using `hform_frame (I.P_spec v)`. Use `⟨WA.comap (I.P v).mulVecLin, ⟨?_, fun x hx y hy => ?_⟩, fun m hm => ⟨fun u => ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `h`. Apply `hW.1` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Establish `h1 : (I.P v)⁻¹ *ᵥ (fun i => I.φ v (w i)) ∈ WA.comap (I.P v).mulVecLin`. Rewrite using `[Submodule.mem_comap, Matrix.mulVecLin_apply, hQ]`. Conclude with `Submodule.subset_span ⟨w, hw, rfl⟩`. Rewrite `h1` using `[h, Submodule.mem_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hQ (fun i => I.φ v (w i))`. Rewrite `h2` using `[h1, Matrix.mulVec_zero]`. Rewrite using `[Submodule.mem_bot]`. Use function extensionality and compare the values at `i`. Conclude with `(map_eq_zero (I.φ v)).1 (congrFun h2 i).symm`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `span_isot I W v hW _ hx _ hy` as an intermediate fact. Simplify using `only [Matrix.mulVecLin_apply] at this`. Rewrite `this` using `[hf]`. Conclude with `star_eq_zero.1 this`. Distinguish the cases in `hu : u = v`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hu` using the available equality. Simplify using `only [Pi.mulSingle_eq_same]`. Establish `e : ∀ y, (I.P u * uMat m * (I.P u)⁻¹ - 1) *ᵥ y = I.P u *ᵥ ((umat m - 1) *ᵥ ((I.P u)⁻¹ *ᵥ y))`. Introduce `y`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hP]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `mem : ∀ x ∈ WA, (I.P u)⁻¹ *ᵥ x ∈ WA.comap (I.P u).mulVecLin` using `fun x hx => by`. Rewrite using `[Submodule.mem_comap, Matrix.mulVecLin_apply, hQ]`. Conclude with `hx`. Use `⟨fun x hx => ?_, fun y hy => ?_, fun y x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[e, hm.1 _ (mem x hx), Matrix.mulVec_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `hm.2.1 _ fun x hx => ?_` and prove the remaining obligations. Use `hy _ hx` as an intermediate fact. Rewrite `this` using `[← hQ y, Matrix.mulVecLin_apply, hf]`. Conclude with `star_eq_zero.1 this`.
-
-Rewrite using `[e, ← hQ x, hf, hm.2.2 _ _ (mem x hx), star_zero]`. Establish `e : uMat ((Pi.mulSingle v m : I.Ginf) u) = 1`. Rewrite using `[Pi.mulSingle_eq_of_ne hu]`. Both sides reduce to the same expression. Simplify using `only [e, Matrix.mul_one, hP]`.
-
-Conclude with `inUnipRad_one I _ _ _`. Conclude with `inUnipRad_one I _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem radical_embeds : ∀ (I : AutInst) (W : Submodule I.E (Fin I.n → I.E)) (v : InfinitePlace I.F), I.IsIsot W →
     ∃ Wv : Submodule ℂ (Fin I.n → ℂ), IsIsoC (I.ε v) Wv ∧

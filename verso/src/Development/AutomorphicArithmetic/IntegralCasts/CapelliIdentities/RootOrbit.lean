@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `A B G Ω _ _ _ _ _ _ _ _ _ φ ψ h b`. Consider the cases of `nonempty_fintype G`. Take `⟨p, hp⟩` from `(Polynomial.mem_lifts _).1 (Algebra.IsInvariant.charpoly_mem_lifts A B G b)`. Establish `hmap : (MulSemiringAction.charpoly G b).map φ = (MulSemiringAction.charpoly G b).map ψ`. Rewrite using `[← hp, Polynomial.map_map, Polynomial.map_map, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hroot : ((MulSemiringAction.charpoly G b).map ψ).eval (ψ b) = 0`. Rewrite using `[Polynomial.eval_map, Polynomial.eval₂_at_apply, MulSemiringAction.eval_charpoly, map_zero]`. Rewrite `hroot` using `[← hmap, MulSemiringAction.charpoly_eq, Polynomial.map_prod, Polynomial.eval_prod, Finset.prod_eq_zero_iff]`. Take `⟨g, -, hg⟩` from `hroot`. Use `⟨g, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hg` using `[sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.Reformulated.B.Qi49.root_orbit :
     ∀ {A B G Ω : Type} [inst : CommRing A]

@@ -11,9 +11,9 @@ variable {p : ℕ} [hp : Fact p.Prime] {W k : Type} [CommRing W] [IsDomain W] [I
   [Field k] [CharP k p] [PerfectRing k p]
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero ψ).2 ?_` and prove the remaining obligations. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hne hirr`. Take `⟨u, hu⟩` from `hn`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2 : ψ ((p : W) ^ n) = 0` using `by rw [← hu, map_mul, hx, zero_mul]`. Rewrite `h2` using `[map_pow, map_natCast]`. Conclude with `pow_ne_zero n (WittVector.p_nonzero p k) h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_injective (ψ : W →+* WittVector p k) (hirr : Irreducible (p : W)) :
     Function.Injective ψ := by
@@ -27,13 +27,13 @@ theorem psi_injective (ψ : W →+* WittVector p k) (hirr : Irreducible (p : W))
   exact pow_ne_zero n (WittVector.p_nonzero p k) h2
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hres (w.coeff 0)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : w - ψ a = 0`. Conclude with `⟨0, by rw [mul_zero, add_zero]; exact sub_eq_zero.mp hz⟩`. Take `⟨m, b, hb0, hb⟩` from `WittVector.exists_eq_pow_p_mul (w - ψ a) hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hc : (w - ψ a).coeff 0 = 0`. Establish `h3` using `WittVector.add_coeff_zero (ψ a) (w - ψ a)`. Rewrite `h3` using `[show ψ a + (w - ψ a) = w by abel, h0, ha]`. Take the linear combination `-h3`. Establish `hm : m ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Apply `hb0` to reduce the goal to its premises. Rewrite `hb` using `[pow_zero, one_mul]`. Rewrite using `[← hb]`. Conclude with `hc`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(p : WittVector p k) ^ (m - 1) * b, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← pow_succ', Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.mpr hm), ← hb]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem psi_step (ψ : W →+* WittVector p k) (res : W →+* k) (hres : Function.Surjective res)
     (h0 : ∀ x, (ψ x).coeff 0 = res x) (w : WittVector p k) :
@@ -58,25 +58,23 @@ theorem psi_step (ψ : W →+* WittVector p k) (res : W →+* k) (hres : Functio
     ring
 
 /- English proof (translation)
-Introduce `w`. Use `choose A B hAB using psi_step ψ res hres h0`. Take `⟨r, hr0, hrs⟩ : ∃ r : ℕ → WittVector p k, r 0 = w ∧ ∀ n, r (n + 1) = B (r n)` from `⟨fun n => B^[n] w, rfl, fun n => Function.iterate_succ_apply' B n w⟩`. Take `⟨s, hs0, hss⟩ : ∃ s : ℕ → W, s 0 = 0 ∧ ∀ n, s (n + 1) = s n + A (r n) * (p : W) ^ n` from `⟨fun n => ∑ i ∈ Finset.range n, A (r i) * (p : W) ^ i, by simp, fun n => Finset.sum_range_succ _ _⟩`. Establish `hinv : ∀ n, w = ψ (s n) + (p : WittVector p k) ^ n * r n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [hs0, hr0, map_zero, pow_zero, one_mul, zero_add]`. Consider the case `succ n ih`. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hAB (r n)]`. Use `_ = ψ (s (n + 1)) + (p : WittVector p k) ^ (n + 1) * r (n + 1) := by`. Rewrite using `[hss, hrs, map_add, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdiv : ∀ m n, m ≤ n → (p : W) ^ m ∣ s n - s m`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hmn ih`. Rewrite using `[hss, add_sub_right_comm]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `dvd_add ih (Dvd.dvd.mul_left (pow_dvd_pow _ hmn) _)`. Establish `hI : ∀ n (x : W), x ∈ (Ideal.span {(p : W)} ^ n • ⊤ : Submodule W W) ↔ (p : W) ^ n ∣ x`. Introduce `n x`. Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨L, hL⟩` from `hC.toIsPrecomplete.prec (f := s) (fun {m n} hmn => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[SModEq.sub_mem, hI]`. Conclude with `dvd_sub_comm.mp (hdiv m n hmn))`. Establish `hw : ∀ n, (p : WittVector p k) ^ n ∣ w - ψ L`. Introduce `n`. Take `⟨c, hc⟩` from `(hI n _).1 (SModEq.sub_mem.1 (hL n))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `⟨ψ c + r n, ?_⟩` and prove the remaining obligations. Establish `h2 : ψ (s n) - ψ L = (p : WittVector p k) ^ n * ψ c`. Rewrite using `[← map_sub, hc, map_mul, map_pow, map_natCast]`. Combine the equalities or inequalities in the displayed calculation. Establish `hzero : w - ψ L = 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Take `⟨m, b, hb0, hb⟩` from `WittVector.exists_eq_pow_p_mul (w - ψ L) hne`. Take `⟨c, hc⟩` from `hw (m + 1)`. Rewrite `hc` using `[hb, pow_succ, mul_assoc]`. Establish `hp : (p : WittVector p k) ^ m ≠ 0` using `pow_ne_zero m (WittVector.p_nonzero p k)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hbc` using `mul_left_cancel₀ hp hc`. Apply `hb0` to reduce the goal to its premises. Rewrite using `[hbc]`. Use `first`. Consider the case `rw [WittVector.mul_coeff_zero, WittVector.coeff_p_zero, zero_mul]`.
-
-Consider the case `simp`. Conclude with `⟨L, (sub_eq_zero.mp hzero).symm⟩`.
+Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem psi_surjective (ψ : W →+* WittVector p k) (res : W →+* k) (hres : Function.Surjective res)
     (h0 : ∀ x, (ψ x).coeff 0 = res x) (hC : IsAdicComplete (Ideal.span {(p : W)}) W) :

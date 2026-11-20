@@ -14,11 +14,11 @@ namespace GlobalTheory.CharLog
 variable {p : ℕ} {B O Q : Type} [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] {θ : B →+* O}
 
 /- English proof (translation)
-Establish `hna : n.natAbs ≠ 0` using `Int.natAbs_ne_zero.2 hn`. Take `⟨k, m, hm, hnm⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hna p (Fact.out : p.Prime).ne_one`. Establish `hcop : Nat.Coprime m p` using `Nat.coprime_comm.1 (((Fact.out : p.Prime).coprime_iff_not_dvd).2 hm)`. Establish `hu : IsUnit (n.natAbs : Q)`. Rewrite using `[hnm, Nat.cast_mul, Nat.cast_pow]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(h.unit_p.pow k).mul ?_` and prove the remaining obligations. Simplify using `using (h.unit_coprime m hcop).map (algebraMap B Q)`. Break down `Int.natAbs_eq n with h' | h'` into its components or cases. Rewrite using `[h', Int.cast_natCast]`. Conclude with `hu`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h', Int.cast_neg, Int.cast_natCast]`. Conclude with `hu.neg`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_intCast [Fact p.Prime] (h : GlobalTheory.QLog.IsFrame p Q θ) {n : ℤ} (hn : n ≠ 0) :
     IsUnit (n : Q) := by
@@ -43,19 +43,17 @@ end GlobalTheory.CharLog
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat GlobalTheory.FormalCalc
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hlift hμ χ`. Use `letI : Algebra ℚ F.Q := GlobalTheory.CharLog.ratAlgebra F.frame`. Take `⟨u, hu0, hu⟩` from `GlobalTheory.T.exists_charSeries' p O G d c χ`. Establish `hmul` using `GlobalTheory.T.subst_groupLaw_eq_mul_of_dualTateCharacter p O G d c χ u hu`. Use `choose g0 hg0 using fun α => F.frame.surj (coeff α u)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `g : MvPowerSeries (Fin d) F.B` to `fun α => if α = 0 then 1 else g0 α`. Establish `hg : map F.θ g = u`. Use extensionality with `α`. Rewrite using `[coeff_map]`. Distinguish the cases in `h : α = 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Express the relevant statement in the definitionally equal form `F.θ (if (0 : Fin d →₀ ℕ) = 0 then 1 else g0 0) = _`. Rewrite using `[if_pos rfl, map_one, coeff_zero_eq_constantCoeff_apply, hu0]`. Express the relevant statement in the definitionally equal form `F.θ (if α = 0 then 1 else g0 α) = _`. Rewrite using `[if_neg h, hg0]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg1 : constantCoeff g = 1`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Express the relevant statement in the definitionally equal form `(if (0 : Fin d →₀ ℕ) = 0 then 1 else g0 0) = 1`. Rewrite using `[if_pos rfl]`. Establish `hlin : ∀ i, lin (formalLog (map (algebraMap F.B F.Q) g)) i = algebraMap F.B F.Q (coeff (Finsupp.single i 1) g)` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.powerSeriesLinearCoefficients_mvPowerSeriesFormalLog F.Q d _ (by rw [constantCoeff_map, hg1, map_one]) i, lin, coeff_map]`. Establish `hcob` using `GlobalTheory.T.cob1_formalLog_mem_ker_of_map_grouplike p F.B O F.Q F.θ F.frame d μ' hlift.const g hg1 (by`. Rewrite using `[hg]`. Use `hmul using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hμ i)`. Use `⟨formalLog (map (algebraMap F.B F.Q) g), fun i => coeff (Finsupp.single i 1) g, ⟨constantCoeff_formalLog (by rw [constantCoeff_map, hg1, map_one]), fun i => ⟨_, Submodule.mem_top, hlin i⟩, fun α => by obtain ⟨b, -, hb⟩ := hcob α; exact ⟨b, Submodule.mem_top, hb⟩⟩, hcob, GlobalThe …` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.dlog_eq_sum_linearCoefficients_form_explicit p O G d c χ u hu0 hu]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hg, lin, coeff_map]`.
-
-Conclude with `GlobalTheory.T.period_formalLog_lift_characterSeries p C v O hv ε hε F G d c χ g hg1 (by rw [hg]; exact hu)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CharLog.exists_log_char_period : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) (μ' : Fin d → MvPowerSeries (Fin d ⊕ Fin d) F.B), IsLift F.θ μ' → (∀ i, map F.θ (μ' i) = c.μ i) → ∀ χ : G.dual.Tate, ∃ (f : MvPowerSeries (Fin d) F.Q) (w : Fin d → F.B), QL μ' ⊤ f ∧ In (RingHom.ker F.θ) (cob1 (up F.Q μ') f) ∧ In (⊤ : Ideal F.B) (frob p F.s f - (p : F.Q) • f) ∧ (∀ i, lin f i = algebraMap F.B F.Q (w i)) ∧ dlog G χ = ∑ i, F.θ (w i) • c.form i ∧ ∀ t, c.HasPeriod F.θ t f (F.a (Sandwich.mu ε * ofPadic p O (epsPairing hε G t χ))) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hlift hμ χ

@@ -5,11 +5,11 @@ import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSqu
 namespace Formalism.L2.Th1.G
 
 /- English proof (translation)
-The claim follows from `IntDThmB_of intAtD shapeCong`.
+A detailed English derivation is pending.
 -/
 theorem intDThmB : IntDThmB := IntDThmB_of intAtD shapeCong
 /- English proof (translation)
-The claim follows from `IntDThmBGauss_of intAtD shapeCong`.
+A detailed English derivation is pending.
 -/
 theorem intDThmBGauss : IntDThmBGauss := IntDThmBGauss_of intAtD shapeCong
 

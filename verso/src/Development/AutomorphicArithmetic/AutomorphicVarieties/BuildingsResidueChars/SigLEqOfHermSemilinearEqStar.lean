@@ -6,31 +6,31 @@ section SlopeTestRemainingChoices
 variable {K : Type} [Field K] {Δ τ : K}
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [sigL]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sigL_mul' (x y : EL Δ τ) : sigL (x * y) = sigL x * sigL y := by
   ext <;> simp [sigL]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [sigL]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sigL_sigL' (x : EL Δ τ) : sigL (sigL x) = x := by
   ext <;> simp [sigL]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [sigL]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sigL_star' (x : EL Δ τ) : sigL (star x) = star (sigL x) := by
   ext <;> simp [sigL]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [sigL, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sigL_one' : sigL (1 : EL Δ τ) = 1 := by
   ext <;> simp [sigL, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
 
 /- English proof (translation)
-Establish `e : star (algebraMap K (Lsq K Δ) τ) = algebraMap K (Lsq K Δ) τ`. Apply the tactic sequence `ext <;> simp`. Simplify using `[QuadraticAlgebra.trace_def, sigL, e]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem trace_sigL (x : EL Δ τ) : QuadraticAlgebra.trace (sigL x) = star (QuadraticAlgebra.trace x) := by
   have e : star (algebraMap K (Lsq K Δ) τ) = algebraMap K (Lsq K Δ) τ := by
@@ -38,9 +38,9 @@ private theorem trace_sigL (x : EL Δ τ) : QuadraticAlgebra.trace (sigL x) = st
   simp [QuadraticAlgebra.trace_def, sigL, e]
 
 /- English proof (translation)
-Establish `h1` using `h 1`. Establish `h2` using `h QuadraticAlgebra.omega`. Simplify using `[QuadraticAlgebra.trace_def] at h1 h2`. Establish `hu : IsUnit (algebraMap K (Lsq K Δ) (τ ^ 2 - 4))` using `(IsUnit.mk0 _ hτ).map _`. Rewrite `hu` using `[map_sub, map_pow, map_ofNat]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `QuadraticAlgebra.ext ?_ ?_` and prove the remaining obligations. Use `hu.mul_right_eq_zero.1 ?_` and prove the remaining obligations. Take the linear combination `((algebraMap K (Lsq K Δ) τ) ^ 2 - 2) * h1 - (algebraMap K (Lsq K Δ) τ) * h2`. Use `hu.mul_right_eq_zero.1 ?_` and prove the remaining obligations. Take the linear combination `2 * h2 - (algebraMap K (Lsq K Δ) τ) * h1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem eq_zero_of_trace (hτ : τ ^ 2 - 4 ≠ 0) {w : EL Δ τ}
     (h : ∀ x, QuadraticAlgebra.trace (w * x) = 0) : w = 0 := by
@@ -58,9 +58,9 @@ private theorem eq_zero_of_trace (hτ : τ ^ 2 - 4 ≠ 0) {w : EL Δ τ}
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `K _ _ Δ τ c d m hτ h`. Establish `key : ∀ a : EL Δ τ, QuadraticAlgebra.trace ((m * d * star (sigL d) - sigL m) * a) = 0` using `fun a => by`. Establish `e` using `h (0, sigL a) (0, 1)`. Simplify using `only [herm, semi, star_zero, mul_zero, zero_mul, zero_add, sigL_sigL', sigL_one', mul_one, star_one, sigL_mul'] at e`. Rewrite `e` using `[← trace_sigL, sigL_mul', sigL_sigL']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[sub_mul, map_sub, sub_eq_zero, ← e]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(sub_eq_zero.1 (eq_zero_of_trace hτ key)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.sigL_eq_of_herm_semilinear_eq_star :
     ∀ (K : Type) [Field K] [CharZero K] (Δ τ c : K) (d m : EL Δ τ), τ ^ 2 - 4 ≠ 0 →

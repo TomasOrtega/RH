@@ -11,7 +11,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
   IsDedekindDomain Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge
 
 /- English proof (translation)
-The claim follows from `(PI.MassDataKppVolLemmas.Bridge_mem_Kf_iff X.B.I hb x).2 hx`.
+A detailed English derivation is pending.
 -/
 theorem finHA_mem_Kf {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (x : X.B.I.Gf)
     (hx : x ∈ X.B.I.Kset) :
@@ -19,7 +19,7 @@ theorem finHA_mem_Kf {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (x : 
   (PI.MassDataKppVolLemmas.Bridge_mem_Kf_iff X.B.I hb x).2 hx
 
 /- English proof (translation)
-Introduce `D X hb _ hL w`. Introduce and unpack `_ ⟨_, ⟨k, hk, rfl⟩, rfl⟩`. Establish `h1` using `finHA_mem_Kf X hb (X.xu w) (X.xu_K w)`. Establish `h2` using `finHA_mem_Kf X hb k (hL.2.1 k hk)`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ h1 h2) (Subgroup.inv_mem _ h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem k2uLeKf_holds : ConjugateLevelLeMaximalCompact := by
   intro D X hb _ hL w

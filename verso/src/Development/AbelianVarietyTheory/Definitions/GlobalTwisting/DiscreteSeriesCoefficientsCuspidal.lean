@@ -461,13 +461,13 @@ structure ArithmeticGeometryHyps : Prop where
   fdeg₂ : GlobalTheory.Mem.Vol.FormalDegreeFormula₂
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GalOfCusp.localGlobalAboveL_of_potSemistable_of_purity h.localGlobalAboveLPst h.regularAlgebraicPurity`.
+A detailed English derivation is pending.
 -/
 theorem ArithmeticGeometryHyps.localGlobalAboveL_of_hypotheses (h : ArithmeticGeometryHyps) : GlobalTheory.GalOfCusp.LocalGlobalAboveL :=
   GlobalTheory.GalOfCusp.localGlobalAboveL_of_potSemistable_of_purity h.localGlobalAboveLPst h.regularAlgebraicPurity
 
 /- English proof (translation)
-Introduce `k _ _ _ _` and use `⟨h.geometricLemmaFiltration k, hc h.bernsteinZelevinskyFiniteness k⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ArithmeticGeometryHyps.geometricLemma_of_cells (h : ArithmeticGeometryHyps)
     (hc : GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
@@ -475,18 +475,18 @@ theorem ArithmeticGeometryHyps.geometricLemma_of_cells (h : ArithmeticGeometryHy
   fun k _ _ _ _ => ⟨h.geometricLemmaFiltration k, hc h.bernsteinZelevinskyFiniteness k⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.geometricLemma_of_filtration h.bernsteinZelevinskyFiniteness h.geometricLemmaFiltration`.
+A detailed English derivation is pending.
 -/
 theorem ArithmeticGeometryHyps.geometricLemma (h : ArithmeticGeometryHyps) : GlobalTheory.Published.GeometricLemma :=
   GlobalTheory.geometricLemma_of_filtration h.bernsteinZelevinskyFiniteness h.geometricLemmaFiltration
 
 /- English proof (translation)
-The claim follows from `h.chebotarevOpenNormal`.
+A detailed English derivation is pending.
 -/
 example (h : ArithmeticGeometryHyps) : GlobalTheory.TwSys.Cheb := h.chebotarevOpenNormal
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.formalDegreeCompactDual, h.discreteSeriesUpqExists⟩`.
+Supply the required witnesses or components.
 -/
 example (h : ArithmeticGeometryHyps) : GlobalTheory.Mem.Vol.FormalDegreeFormula₂ ∧ GlobalTheory.Mem.Vol.DiscreteSeriesExist :=
   ⟨h.formalDegreeCompactDual, h.discreteSeriesUpqExists⟩

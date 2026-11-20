@@ -4,13 +4,9 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI hp : (RingHom.ker h).IsPrime := RingHom.ker_isPrime h`. Take `⟨Q, -, hQ, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (RingHom.ker h) (⊥ : Ideal C) (by simpa [← RingHom.ker_eq_comap_bot] using hk)`. Use `haveI : Q.LiesOver (RingHom.ker h) := (Ideal.liesOver_iff _ _).mpr hQc.symm`. Use `letI : Algebra (A ⧸ RingHom.ker h) K := (RingHom.kerLift h).toAlgebra`. Use `haveI : FaithfulSMul (A ⧸ RingHom.ker h) K := (faithfulSMul_iff_algebraMap_injective _ _).mpr (RingHom.kerLift_injective h)`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `haveI : FaithfulSMul (A ⧸ RingHom.ker h) (C ⧸ Q) := inferInstance`. Use `haveI : Nontrivial (A ⧸ RingHom.ker h) := Ideal.Quotient.nontrivial_iff.mpr hp.ne_top`. Use `haveI : Algebra.IsIntegral (A ⧸ RingHom.ker h) (C ⧸ Q) := Ideal.Quotient.algebra_isIntegral_of_liesOver (A := A) (p := RingHom.ker h) (P := Q)`. Use `haveI : Algebra.IsAlgebraic (A ⧸ RingHom.ker h) (C ⧸ Q) := Algebra.IsIntegral.isAlgebraic`. Use `haveI : Module.IsTorsionFree (A ⧸ RingHom.ker h) (C ⧸ Q) := Module.isTorsionFree_iff_algebraMap_injective.2 (FaithfulSMul.algebraMap_injective _ _)`.
-
-Use `haveI : Module.IsTorsionFree (A ⧸ RingHom.ker h) K := Module.isTorsionFree_iff_algebraMap_injective.2 (RingHom.kerLift_injective h)`. Set `φ : (C ⧸ Q) →ₐ[A ⧸ RingHom.ker h] K` to `IsAlgClosed.lift`. Use `⟨φ.toRingHom.comp (Ideal.Quotient.mk Q), ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Establish `e1 : (Ideal.Quotient.mk Q) (algebraMap A C a) = algebraMap (A ⧸ RingHom.ker h) (C ⧸ Q) (Ideal.Quotient.mk _ a)` using `rfl`.
-
-Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[e1, φ.commutes]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ringHom_extend_of_isIntegral_isAlgClosed (A C K : Type) [CommRing A] [CommRing C]
     [Algebra A C] [Algebra.IsIntegral A C] [Field K] [IsAlgClosed K] (h : A →+* K)

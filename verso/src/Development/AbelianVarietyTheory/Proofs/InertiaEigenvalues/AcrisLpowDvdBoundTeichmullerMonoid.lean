@@ -18,13 +18,13 @@ namespace GlobalTheory.AcrisMonBound
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Use `set a := ‖((c.untilt : Per.OC l) : ℂ_[l])‖`. Use `set b := ‖((l : ℕ) : ℂ_[l])‖`. Establish `ha : 0 < a`. Use `norm_pos_iff.2 fun h => hc (GlobalTheory.TiltAbs.eq_zero_of_untilt c ?_)` and prove the remaining obligations. Conclude with `Subtype.ext (by simpa using h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb1 : b < 1` using `GlobalTheory.RingBasics.norm_p_lt`. Take `⟨K, hK⟩` from `exists_pow_lt_of_lt_one ha hb1`. Use `⟨K, fun k hk => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hkK`. Take `⟨d, hd⟩` from `map_dvd (PreTilt.untilt (O := Per.OC l) (p := l)) hk`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite `hd` using `[map_pow, hϖ]`. Establish `h1` using `congrArg (fun z : Per.OC l => ‖(z : ℂ_[l])‖) hd`. Move the coercions through the operations in `at h1`. Rewrite `h1` using `[norm_mul, norm_pow]`. Establish `h2 : a ≤ b ^ k`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `‖((c.untilt : Per.OC l) : ℂ_[l])‖ ≤ _`. Rewrite using `[h1]`. Conclude with `mul_le_of_le_one_right (pow_nonneg (norm_nonneg _) _) (GlobalTheory.TiltAbs.norm_le_one d)`. Establish `h3 : b ^ k ≤ b ^ K` using `pow_le_pow_of_le_one (norm_nonneg _) hb1.le (not_lt.1 hkK)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_pow_bound {ϖ : OCb l} (hϖ : ϖ.untilt = (l : Per.OC l)) {c : OCb l} (hc : c ≠ 0) :
     ∃ K : ℕ, ∀ k : ℕ, ϖ ^ k ∣ c → k < K := by
@@ -54,19 +54,17 @@ end GlobalTheory.AcrisMonBound
 namespace GlobalTheory.AcrisMonBound
 
 /- English proof (translation)
-Introduce `l hl y hy`. Establish `hl2 : 2 ≤ l` using `hl.out.two_le`. Take `⟨ϖ, hϖ⟩` from `GlobalTheory.MemLoc.FundOnto.untilt_surjective l (l : Per.OC l)`. Take `⟨K, hK⟩` from `exists_pow_bound hϖ hy`. Use `⟨K, fun z N hz h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set u := PadicInt.unitCoeff hz`. Use `set v := z.valuation`. Break down `le_or_gt N v with hNv | hNv` into its components or cases. Use linear arithmetic over natural numbers and integers. Take `⟨n', rfl⟩` from `Nat.exists_eq_add_of_le hNv.le`.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set y' := y * algebraMap ℤ_[l] (Ainf l) (u : ℤ_[l])`. Establish `hza : algebraMap ℤ_[l] (Per.Acris l) z = (l : Per.Acris l) ^ v * algebraMap ℤ_[l] (Per.Acris l) (u : ℤ_[l])` using `by conv_lhs => rw [PadicInt.unitCoeff_spec hz]`. Rewrite using `[map_mul, map_pow, map_natCast, mul_comm]`. Establish `hy' : ainfToAcris l y' = ainfToAcris l y * algebraMap ℤ_[l] (Per.Acris l) (u : ℤ_[l])`. Simplify using `only [y', map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Establish `h2 : (l : Per.Acris l) ^ n' ∣ ainfToAcris l y'`. Take `⟨w, hw⟩` from `h`. Use `⟨w, ?_⟩` and prove the remaining obligations. Establish `h3 : ((l ^ v : ℕ) : Per.Acris l) * (ainfToAcris l y' - (l : Per.Acris l) ^ n' * w) = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `hw` using `[hza]`. Rewrite using `[hy']`. Use `push_cast`. Rewrite using `[mul_sub]`. Take the linear combination `hw`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.1 (acris_nat_cancel (pow_ne_zero _ hl.out.ne_zero) h3)`. Establish `h4` using `GlobalTheory.AcrisMuBound.pow_dvd_cc hl2 hϖ h2`. Establish `hu : IsUnit (WittVector.constantCoeff (algebraMap ℤ_[l] (Ainf l) (u : ℤ_[l])))` using `(u.isUnit.map _).map _`. Rewrite `h4` using `[show y' = y * algebraMap ℤ_[l] (Ainf l) (u : ℤ_[l]) from rfl, map_mul, hu.dvd_mul_right]`. Establish `h5` using `hK _ h4`.
-
-Establish `h6 : n' ≤ (l - 1) * n'` using `Nat.le_mul_of_pos_left n' (by omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (y : Ainf l), WittVector.constantCoeff y ≠ 0 → ∃ C : ℕ, ∀ (z : ℤ_[l]) (N : ℕ), z ≠ 0 → (l : Per.Acris l) ^ N ∣ ainfToAcris l y * algebraMap ℤ_[l] (Per.Acris l) z → N ≤ z.valuation + C := by
   intro l hl y hy

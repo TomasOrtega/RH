@@ -19,7 +19,7 @@ def OrderLE (I : X.IdealSheafData) (m : ℕ) : Prop :=
   ∀ x : X, orderAt I x ≤ (m : ℕ∞)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem orderLE_iff (I : X.IdealSheafData) (m : ℕ) :
     OrderLE I m ↔ ∀ x : X, orderAt I x ≤ (m : ℕ∞) := Iff.rfl
@@ -43,21 +43,21 @@ theorem lcmUpTo_one : lcmUpTo 1 = 1 := rfl
 def tuningExponent (m : ℕ) : ℕ := if m ≤ 1 then 1 else (m - 1) * lcmUpTo m
 
 /- English proof (translation)
-Unfold `tuningExponent`. Conclude with `if_pos h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tuningExponent_of_le_one {m : ℕ} (h : m ≤ 1) : tuningExponent m = 1 := by
   unfold tuningExponent
   exact if_pos h
 
 /- English proof (translation)
-Unfold `tuningExponent`. Conclude with `if_neg (by omega)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tuningExponent_of_two_le {m : ℕ} (h : 2 ≤ m) : tuningExponent m = (m - 1) * lcmUpTo m := by
   unfold tuningExponent
   exact if_neg (by omega)
 
 /- English proof (translation)
-The claim follows from `tuningExponent_of_le_one le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem tuningExponent_one : tuningExponent 1 = 1 := tuningExponent_of_le_one le_rfl
 
@@ -154,7 +154,7 @@ def CoSupportTunedSheafEqAndOrderLE : Prop :=
       orderAtLeastLocus (tunedSheaf k p I m s) s = orderAtLeastLocus I m ∧ OrderLE (tunedSheaf k p I m s) s
 
 /- English proof (translation)
-The claim follows from `(h k X p I m hm hmax s hs).2`.
+A detailed English derivation is pending.
 -/
 theorem CoSupportTunedSheafEqAndOrderLE.orderLE (h : CoSupportTunedSheafEqAndOrderLE.{u}) (k : Type u) [Field k]
     [CharZero k] [IsNoetherianRing k] (X : Scheme.{u}) (p : X ⟶ Spec (CommRingCat.of k))

@@ -3,7 +3,7 @@ import Development.WeilBound.CoreStatements.HodgeTatePoints.PfibRing
 open TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `PositivityTheory.HtPt.Pfib.fibre_crit_ring` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FHodgeTatePoints%2FPfibRing.lean&line=205#L205)
 -/

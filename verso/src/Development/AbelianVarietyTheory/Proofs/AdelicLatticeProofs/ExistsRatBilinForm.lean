@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.RationalValueRealScalar
 
 /- English proof (translation)
-Establish `h1 : (c.den : ℤ) • (c • x) = c.num • x`. Rewrite using `[← Int.cast_smul_eq_zsmul ℚ, ← Int.cast_smul_eq_zsmul ℚ, smul_smul]`. Use `congr 1`. Rewrite using `[Int.cast_natCast, mul_comm, Rat.mul_den_eq_num]`. Establish `h2 : (c.den : ℝ) • p (c • x) = (c.num : ℝ) • p x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Int.cast_natCast, Int.cast_smul_eq_zsmul ℝ, Int.cast_smul_eq_zsmul ℝ, ← map_zsmul, ← map_zsmul, h1]`. Establish `hd : (c.den : ℝ) ≠ 0` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem map_rat_smul_real {U : Type} [AddCommGroup U] [Module ℝ U] {V : Type} [AddCommGroup V]
     [Module ℚ V] (p : V →+ U) (c : ℚ) (x : V) : p (c • x) = (c : ℝ) • p x := by
@@ -22,9 +22,9 @@ theorem map_rat_smul_real {U : Type} [AddCommGroup U] [Module ℝ U] {V : Type} 
     _ = (c : ℝ) • p x := by rw [smul_smul, Rat.cast_def, inv_mul_eq_div]
 
 /- English proof (translation)
-Take `⟨N, hN, hNu⟩` from `hL u`. Take `⟨M, hM, hMv⟩` from `hL v`. Take `⟨k, hk⟩` from `hint _ hNu _ hMv`. Simplify using `only [map_nsmul, LinearMap.smul_apply, nsmul_eq_mul] at hk`. Use `⟨-(k / (N * M) : ℚ), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hNM : (N : ℝ) * M ≠ 0` using `by positivity`. Use `push_cast`. Rewrite using `[neg_inj, div_eq_iff hNM, ← hk]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_rat_value {U : Type} [AddCommGroup U] [Module ℝ U] (om : U →ₗ[ℝ] U →ₗ[ℝ] ℝ)
     {V : Type} [AddCommGroup V] (p : V →+ U) (L : AddSubgroup V)
@@ -42,13 +42,13 @@ theorem exists_rat_value {U : Type} [AddCommGroup U] [Module ℝ U] (om : U →�
   ring
 
 /- English proof (translation)
-Use `choose q hq using exists_rat_value om p L hL hint`. Use `⟨LinearMap.mk₂ ℚ q ?_ ?_ ?_ ?_, fun u v => hq u v⟩` and prove the remaining obligations. Introduce `u1 u2 v`. Apply `Rat.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[Rat.cast_add, hq, hq, hq, map_add, LinearMap.map_add, LinearMap.add_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `c u v`. Apply `Rat.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[smul_eq_mul, Rat.cast_mul, hq, hq, map_rat_smul_real, LinearMap.map_smul, LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u v1 v2`. Apply `Rat.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[Rat.cast_add, hq, hq, hq, map_add, LinearMap.map_add]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c u v`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Rat.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[smul_eq_mul, Rat.cast_mul, hq, hq, map_rat_smul_real, LinearMap.map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_rat_bilinForm {U : Type} [AddCommGroup U] [Module ℝ U] (om : U →ₗ[ℝ] U →ₗ[ℝ] ℝ)
     {V : Type} [AddCommGroup V] [Module ℚ V] (p : V →+ U) (L : AddSubgroup V)

@@ -8,13 +8,13 @@ namespace PI.AprimeInfAsm
 open PI.AprimeInfW
 
 /- English proof (translation)
-The claim follows from `aprimeInf_of_grp hC (grpStd_full expProdU_holds hV) nuBridge placeJacAll_holds`.
+A detailed English derivation is pending.
 -/
 theorem aprimeInf_of_hinfCompact (hC : MassDataMassesW.HinfCompact) (hV : GaugeVolUD) : Formalism.L2.SG.Pf.NcReal.AprimeInf :=
   aprimeInf_of_grp hC (grpStd_full expProdU_holds hV) nuBridge placeJacAll_holds
 
 /- English proof (translation)
-The claim follows from `aprimeInf_of_hinfCompact hC hV`.
+A detailed English derivation is pending.
 -/
 theorem aprime_infinite_real (hC : MassDataMassesW.HinfCompact) (hV : GaugeVolUD) : Formalism.L2.SG.Pf.NcReal.AprimeInf :=
   aprimeInf_of_hinfCompact hC hV

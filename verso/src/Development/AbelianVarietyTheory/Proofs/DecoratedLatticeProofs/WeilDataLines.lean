@@ -23,14 +23,14 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter (CharUnramAt)
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `x h1 h2 h3 h4` and use `by rw [MonoidHom.mul_apply, h x h1 h2 h3 h4, h' x h1 h2 h3 h4, mul_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem charUnram_mul {χ χ' : (AE D)ˣ →* Circle} {v} (h : CharUnramAt D χ v) (h' : CharUnramAt D χ' v) :
     CharUnramAt D (χ * χ') v := fun x h1 h2 h3 h4 => by
   rw [MonoidHom.mul_apply, h x h1 h2 h3 h4, h' x h1 h2 h3 h4, mul_one]
 
 /- English proof (translation)
-Introduce `x h1 h2 h3 h4` and use `by rw [MonoidHom.inv_apply, h x h1 h2 h3 h4, inv_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem charUnram_inv {χ : (AE D)ˣ →* Circle} {v} (h : CharUnramAt D χ v) : CharUnramAt D χ⁻¹ v := fun x h1 h2 h3 h4 => by
   rw [MonoidHom.inv_apply, h x h1 h2 h3 h4, inv_one]

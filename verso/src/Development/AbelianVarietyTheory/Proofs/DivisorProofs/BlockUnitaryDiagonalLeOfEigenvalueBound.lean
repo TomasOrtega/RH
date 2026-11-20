@@ -9,15 +9,13 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 namespace GlobalTheory.HoweR
 
 /- English proof (translation)
-Establish `hn : Module.finrank ℂ E = Module.finrank ℂ E` using `rfl`. Use `set b := hT.eigenvectorBasis hn`. Use `set ev := hT.eigenvalues hn`. Establish `hb : ∀ i, T (b i) = ((ev i : ℝ) : ℂ) • b i` using `fun i => hT.apply_eigenvectorBasis hn i`. Establish `hle : ∀ i, ev i ≤ R` using `fun i => hR _ _ (b.orthonormal.ne_zero i) (hb i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : ∀ i, inner ℂ y (b i) * inner ℂ (b i) y = ((‖inner ℂ (b i) y‖ ^ 2 : ℝ) : ℂ)`. Introduce `i`. Rewrite using `[← inner_conj_symm (b i) y, Complex.norm_conj]`. Use `first`. Consider the case `(rw [Complex.mul_conj']; push_cast; rfl)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(rw [mul_comm, Complex.conj_mul']; push_cast; rfl)`. Establish `h1 : inner ℂ y (T y) = ∑ i, ((ev i * ‖inner ℂ (b i) y‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[← b.sum_inner_mul_inner y (T y)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hT (b i) y, hb i, inner_smul_left, Complex.conj_ofReal, mul_left_comm, h3 i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : inner ℂ y y = ∑ i, ((‖inner ℂ (b i) y‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[← b.sum_inner_mul_inner y y]`. Conclude with `Finset.sum_congr rfl fun i _ => h3 i`.
-
-Rewrite using `[h1, h2, Complex.re_sum, Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.ofReal_re]`. Conclude with `mul_le_mul_of_nonneg_right (hle i) (by positivity)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem re_inner_apply_le_of_eigen {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [FiniteDimensional ℂ E] {T : E →ₗ[ℂ] E} (hT : T.IsSymmetric) (R : ℝ)
@@ -113,35 +111,31 @@ def blockCore (s : ι → Bool) (U : Submodule ℂ M) (ip : M →ₗ⋆[ℂ] M �
 end Block
 
 /- English proof (translation)
-Introduce `ι M _ _ _ _ s F U R hU hR a ha u hu hu0 m hm`. Take `⟨hfd, hst, ip, hsym, hpos, hadj⟩` from `hU`. Set `cd` to `blockCore s U ip hsym hpos`. Use `letI : NormedAddCommGroup (blockSub s U) := cd.toNormedAddCommGroup`. Use `letI : InnerProductSpace ℂ (blockSub s U) := InnerProductSpace.ofCore cd.toCore`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : FiniteDimensional ℂ U := hfd`. Use `haveI : FiniteDimensional ℂ (blockSub s U) := by`. Set `e : blockSub s U →ₗ[ℂ] (ι → U)` to `{ toFun := fun y c => ⟨y.1 c, (y.2 c).1⟩ map_add' := fun y z => rfl map_smul' := fun r y => rfl }`. Conclude with `Module.Finite.of_injective e (fun y z h => Subtype.ext (funext fun c => congrArg Subtype.val (congrFun h c)))`. Establish `hinner : ∀ y z : blockSub s U, inner ℂ y z = ∑ c, ip (y.1 c) (z.1 c)` using `fun _ _ => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `key : ∀ (y z : blockSub s U) (c b : ι), ip (if s c = true then F c b (y.1 b) else 0) (z.1 c) = ip (y.1 b) (if s b = true then F b c (z.1 c) else 0)`. Introduce `y z c b`. Distinguish the cases in `hc : s c = true`. Distinguish the cases in `hb : s b = true`. Rewrite using `[if_pos hc, if_pos hb]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hadj c b (hc.trans hb.symm) _ (y.2 b).1 _ (z.2 c).1`. Rewrite using `[if_pos hc, if_neg hb, (y.2 b).2 (by simpa using hb)]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hc, (z.2 c).2 (by simpa using hc)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hT : (blockOp s F U hst).IsSymmetric`. Introduce `y z`. Rewrite using `[hinner, hinner]`. Simplify using `only [blockOp_apply]`. Establish `e1 : ∀ c, ip (if s c = true then ∑ b, F c b (y.1 b) else 0) (z.1 c) = ∑ b, ip (if s c = true then F c b (y.1 b) else 0) (z.1 c)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `intro c; split_ifs <;> simp [map_sum]`. Establish `e2 : ∀ b, ip (y.1 b) (if s b = true then ∑ c, F b c (z.1 c) else 0) = ∑ c, ip (y.1 b) (if s b = true then F b c (z.1 c) else 0)`. Apply the tactic sequence `intro b; split_ifs <;> simp [map_sum]`. Simplify using `only [e1, e2, key]`. Conclude with `Finset.sum_comm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hR' : ∀ (x : ℝ) (v : blockSub s U), v ≠ 0 → blockOp s F U hst v = (x : ℂ) • v → x ≤ R`. Introduce `x v hv hTv`. Use `hR x v.1 (fun h => hv (Subtype.ext h)) (fun c => (v.2 c).1) (fun c => (v.2 c).2) fun c hc => ?_` and prove the remaining obligations. Use `congrFun (congrArg Subtype.val hTv) c` as an intermediate fact. Rewrite `this` using `[blockOp_apply, if_pos hc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `hmem : Pi.single a u ∈ blockSub s U`. Introduce `c`. Distinguish the cases in `hc : c = a`. Substitute `hc; simp only [Pi.single_eq_same]; exact ⟨hu, fun h => by simp [ha] at h⟩` using the available equality.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_eq_of_ne hc]`. Conclude with `⟨U.zero_mem, fun _ => rfl⟩`. Use `set y0 : blockSub s U := ⟨Pi.single a u, hmem⟩`. Establish `hy0 : (y0 : ι → M) = Pi.single a u` using `rfl`. Establish `hTa : (blockOp s F U hst y0 : ι → M) a = m • u`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[blockOp_apply, if_pos ha, hy0, Finset.sum_eq_single a, Pi.single_eq_same, hm]`. Introduce `b _ hb`. Rewrite using `[Pi.single_eq_of_ne hb, map_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `i1 : inner ℂ y0 (blockOp s F U hst y0) = m * ip u u`. Rewrite using `[hinner, Finset.sum_eq_single a, hTa, hy0, Pi.single_eq_same, map_smul, smul_eq_mul]`. Introduce `b _ hb`. Rewrite using `[hy0, Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Establish `i2 : inner ℂ y0 y0 = ip u u`. Rewrite using `[hinner, Finset.sum_eq_single a, hy0, Pi.single_eq_same]`. Introduce `b _ hb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hy0, Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Establish `hle` using `re_inner_apply_le_of_eigen hT R hR' y0`.
-
-Rewrite `hle` using `[i1, i2]`. Establish `him : (ip u u).im = 0`. Establish `h` using `hsym u hu u hu`. Establish `h2` using `congrArg Complex.im h`. Simplify using `only [Complex.star_def, Complex.conj_im] at h2`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hp` using `hpos u hu hu0`. Rewrite `hle` using `[Complex.mul_re, him, mul_zero, sub_zero]`. Conclude with `le_of_mul_le_mul_right hle hp`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem re_diag_le_of_eigen_bound : ∀ (ι M : Type) [Fintype ι] [DecidableEq ι] [AddCommGroup M] [Module ℂ M] (s : ι → Bool) (F : ι → ι → Module.End ℂ M), ∀ (U : Submodule ℂ M) (R : ℝ), UnitOn s F U → (∀ (x : ℝ) (y : ι → M), y ≠ 0 → (∀ a, y a ∈ U) → (∀ a, s a = false → y a = 0) → (∀ a, s a = true → ∑ b, F a b (y b) = (x : ℂ) • y a) → x ≤ R) → ∀ a, s a = true → ∀ u ∈ U, u ≠ 0 → ∀ m : ℂ, F a a u = m • u → m.re ≤ R := by
   intro ι M _ _ _ _ s F U R hU hR a ha u hu hu0 m hm

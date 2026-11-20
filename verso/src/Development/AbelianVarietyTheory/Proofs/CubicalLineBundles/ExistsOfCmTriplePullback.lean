@@ -12,11 +12,11 @@ open GlobalTheory GlobalTheory.CM
 namespace GlobalTheory.CM
 
 /- English proof (translation)
-Introduce `E _ _ _ H S S' f T t' m`. Establish `e : LBIso t'.PP.L (T.t.PP.L.pull m.φ)`. Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨w, hw⟩`. Take `⟨h₁, h₂, h₃⟩` from `PolPull.pol_pull_of_relAmple_local AmpleLocal.relAmple_of_locally S S' T.t.G t'.G f m.φ T.t.PP.L t'.PP.L T.t.PP.isLB t'.PP.isLB T.ab m.cart e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hs : Out.Sym t'.G t'.PP.L`. Take `⟨-, w, hw, -⟩` from `t'.sym`. Conclude with `fun _ => ⟨⊤, trivial, gen_of_iso ((isGen_iff w).1 hw) _⟩`. Establish `hd : SmoothOfRelativeDimension T.g t'.G.hom`. Use `smoothOfRelativeDimension_isStableUnderBaseChange.{0} T.g` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension T.g) m.cart.1 T.dim`. Conclude with `⟨⟨⟨t', h₁, T.g, hd, hs, h₂ T.ample, h₃ T.ktriv⟩, rfl, rfl⟩, LBIso.symm e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PAT.exists_of_sabMap :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S S' : Scheme.{0}) (f : S' ⟶ S) (T : PAT H S) (t' : SAB H S') (m : SABMap t' T.t f), (∃ T' : PAT H S', T'.t = t' ∧ T'.g = T.g) ∧ LBIso (T.t.PP.L.pull m.φ) t'.PP.L := by

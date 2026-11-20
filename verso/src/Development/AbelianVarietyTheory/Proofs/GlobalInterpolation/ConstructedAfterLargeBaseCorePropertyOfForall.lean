@@ -36,13 +36,13 @@ section large₂
 variable {KP : ∀ B : GlobalTheory.Mem.Base, Fr B.toPre → Prop} {Q Q' : V4.Slot}
 
 /- English proof (translation)
-The claim follows from `let ⟨R, hR, h⟩ := h; ⟨R, hR, hi _ h⟩`.
+A detailed English derivation is pending.
 -/
 theorem eventually_coreProperty_mono {r r' : V4.Slot → Prop} (h : Lg1 KP Q Q' r) (hi : ∀ S, r S → r' S) : Lg1 KP Q Q' r' :=
   let ⟨R, hR, h⟩ := h; ⟨R, hR, hi _ h⟩
 
 /- English proof (translation)
-The claim follows from `RowL.and (KP := KP) (Q := Q) (Q' := Q') h h'`.
+A detailed English derivation is pending.
 -/
 theorem forall_linked_bundles_and {Lk : LkT Bundle} {H H' : ∀ 𝒜 : FamClass, RawSel Bundle 𝒜 → Prop}
     (h : Lg1 KP Q Q' fun S => Row S Lk H) (h' : Lg1 KP Q Q' fun S => Row S Lk H') :

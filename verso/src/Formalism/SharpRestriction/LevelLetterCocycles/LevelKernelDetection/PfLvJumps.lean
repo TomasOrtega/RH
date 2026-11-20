@@ -20,7 +20,7 @@ section Jumps
 variable {T : LocLat G Qp LL O}
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b => simp [actVdR, actVB, ιV, PD.ι_comm]`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pfLvJumps_act (g : G) (z : T.V ⊗[Qp] B) :
     actVdR PD T.ρ g (ιV PD (LL := LL) (V := T.V) z) = ιV PD (LL := LL) (V := T.V) (actVB PD T.ρ g z) := by
@@ -30,7 +30,7 @@ theorem pfLvJumps_act (g : G) (z : T.V ⊗[Qp] B) :
   | add x y hx hy => rw [map_add, map_add, map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b`. Simplify using `[mulVdR, mulVB, ιV, map_mul, AlgHom.commutes, IsScalarTower.algebraMap_apply K₀ K BdR]`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem pfLvJumps_mul (c : K₀) (z : T.V ⊗[Qp] B) :
     mulVdR (K := K) (BdR := BdR) (V := T.V) (LL := LL) (algebraMap K₀ K c) (ιV PD (LL := LL) (V := T.V) z) =
@@ -42,13 +42,13 @@ theorem pfLvJumps_mul (c : K₀) (z : T.V ⊗[Qp] B) :
   | add x y hx hy => rw [map_add, map_add, map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite `hz` using `[DcrisL, Submodule.mem_inf]`. Take `⟨hz1, hz2⟩` from `hz`. Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hz1`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at hz2`. Rewrite using `[DdRE, Submodule.mem_inf]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Introduce `g`. Rewrite using `[pfLvJumps_act, hz1 g]`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `c`. Take `⟨c', rfl⟩` from `hK c`. Establish `hτc : τ (algebraMap K₀ K c') = τ₀ c'`. Rewrite using `[← hτ]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[pfLvJumps_mul, hz2 c', map_smul, hτc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pfLvJumps_dcrisL (hK : Function.Surjective (algebraMap K₀ K)) (τ₀ : K₀ →ₐ[Qp] LL)
     (τ : K →ₐ[Qp] LL) (hτ : τ.comp (IsScalarTower.toAlgHom Qp K₀ K) = τ₀) (z : T.V ⊗[Qp] B)
@@ -75,9 +75,9 @@ theorem pfLvJumps_dcrisL (hK : Function.Surjective (algebraMap K₀ K)) (τ₀ :
     rw [pfLvJumps_mul, hz2 c', map_smul, hτc]
 
 /- English proof (translation)
-Establish `key : ∀ b b' : ℤ, FildR PD T.ρ τ b ≤ FildR PD T.ρ τ b' → FilCris PD T.ρ b ⊓ DcrisL PD T.ρ τ₀ ≤ FilCris PD T.ρ b' ⊓ DcrisL PD T.ρ τ₀`. Introduce `b b' hbb x hx`. Rewrite `hx` using `[Submodule.mem_inf, FilCris, Submodule.mem_inf, Submodule.mem_comap]`. Take `⟨⟨hx1, hx2⟩, hx3⟩` from `hx`. Establish `hd : ιV PD (LL` using `LL) (V := T.V) x ∈ FildR PD T.ρ τ b := (Submodule.mem_inf).2 ⟨pfLvJumps_dcrisL hK τ₀ τ hτ x hx3, hx2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd'` using `((Submodule.mem_inf).1 (hbb hd)).2`. Conclude with `(Submodule.mem_inf).2 ⟨(Submodule.mem_inf).2 ⟨hx1, hd'⟩, hx3⟩`. Conclude with `le_antisymm (key a (a + 1) h.ge) (key (a + 1) a h.le)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pfLvJumps_fil (hK : Function.Surjective (algebraMap K₀ K)) (τ₀ : K₀ →ₐ[Qp] LL)
     (τ : K →ₐ[Qp] LL) (hτ : τ.comp (IsScalarTower.toAlgHom Qp K₀ K) = τ₀) (a : ℤ)
@@ -95,7 +95,7 @@ theorem pfLvJumps_fil (hK : Function.Surjective (algebraMap K₀ K)) (τ₀ : K�
   exact le_antisymm (key a (a + 1) h.ge) (key (a + 1) a h.le)
 
 /- English proof (translation)
-Unfold `FilD FilLev`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pfLvJumps_filD (c : ZMod n) (s : ℕ) (u : ℤ)
     (h : FilCris PD T.ρ u ⊓ DcrisL PD T.ρ (W.emb (c - (s : ZMod n))) =
@@ -105,7 +105,7 @@ theorem pfLvJumps_filD (c : ZMod n) (s : ℕ) (u : ℤ)
   rw [h]
 
 /- English proof (translation)
-Set `e : K₀ ≃ₐ[Qp] K` to `AlgEquiv.ofBijective (IsScalarTower.toAlgHom Qp K₀ K) ⟨(algebraMap K₀ K).injective, hK⟩`. Use `⟨τ₀.comp e.symm.toAlgHom, ?_⟩` and prove the remaining obligations. Use extensionality with `c`. Conclude with `congrArg τ₀ (e.symm_apply_apply c)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem pfLvJumps_over (hK : Function.Surjective (algebraMap K₀ K)) (τ₀ : K₀ →ₐ[Qp] LL) :
     ∃ τ : K →ₐ[Qp] LL, τ.comp (IsScalarTower.toAlgHom Qp K₀ K) = τ₀ := by
@@ -116,7 +116,7 @@ theorem pfLvJumps_over (hK : Function.Surjective (algebraMap K₀ K)) (τ₀ : K
   exact congrArg τ₀ (e.symm_apply_apply c)
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `pfLvJumps_over hK (W.emb (c - (s : ZMod n)))`. Use `hJ (c - (s : ZMod n)) τ hτ u ?_` and prove the remaining obligations. Introduce `h`. Conclude with `hu (pfLvJumps_filD c s u (pfLvJumps_fil hK _ τ hτ u h))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pfLvJumps_win (hK : Function.Surjective (algebraMap K₀ K)) (G₀ Sz η : ℕ) (ty : ZMod n → LT)
     (hJ : KindJumps PD T W.emb G₀ Sz η ty) (c : ZMod n) (s : ℕ) (u : ℤ)
@@ -127,13 +127,13 @@ theorem pfLvJumps_win (hK : Function.Surjective (algebraMap K₀ K)) (G₀ Sz η
   exact hu (pfLvJumps_filD c s u (pfLvJumps_fil hK _ τ hτ u h))
 
 /- English proof (translation)
-Introduce `s _`. Establish `hw` using `pfLvJumps_win hK G₀ Sz η ty hJ c s`. Express the relevant statement in the definitionally equal form `Formalism.ExponentWindows.G.Jumps (kdOf ty (c - (s : ZMod n))) G₀ Sz η (bbOf ty (c - (s : ZMod n))) (FilD W T c s)`. Consider the cases of `h : ty (c - (s : ZMod n)) with`. Consider the case `thin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Simplify using `only [kdOf, h, Formalism.ExponentWindows.G.Jumps]`. Introduce `u hu`. Simplify `hw u hu` using `[LT.win, h]`. Consider the case `up b`. Simplify using `only [kdOf, bbOf, h, LT.size, Formalism.ExponentWindows.G.Jumps]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Simplify using the standard rewrite rules.
 
-Introduce `u hu`. Simplify `hw u hu` using `[LT.win, h]`. Consider the case `down b`. Simplify using `only [kdOf, bbOf, h, LT.size, Formalism.ExponentWindows.G.Jumps]`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hw u hu` using `[LT.win, h]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem jumps_holds (hK : Function.Surjective (algebraMap K₀ K)) (c : ZMod n) (ell : ℕ)
     (G₀ Sz η : ℕ) (ty : ZMod n → LT) (hJ : KindJumps PD T W.emb G₀ Sz η ty) :
@@ -156,7 +156,7 @@ theorem jumps_holds (hK : Function.Surjective (algebraMap K₀ K)) (c : ZMod n) 
     simpa [LT.win, h] using hw u hu
 
 /- English proof (translation)
-The claim follows from `jumps_holds hK c ell G₀ Sz η ty fun i τ hτ a ha => hJ i τ hτ a (hQuot T₁ T₂ F hc₁ hc₂ hon τ a ha)`.
+A detailed English derivation is pending.
 -/
 theorem jumps_holds_quot (hK : Function.Surjective (algebraMap K₀ K))
     (hQuot : ∀ (T₁ T₂ : LocLat G Qp LL O) (F : LatHom T₁.L T₂.L), CrysLat PD T₁ → CrysLat PD T₂ → F.Onto →

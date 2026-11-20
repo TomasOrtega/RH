@@ -12,29 +12,23 @@ set_option autoImplicit false
 namespace GlobalTheory.FieldPair
 
 /- English proof (translation)
-Introduce `κ' _ _ F A hsm hAF hfrac`. Use `haveI : IsFractionRing A κ' := IsFractionRing.of_field A κ' fun z => by`. Take `⟨a, ha, b, hb, hb0, e⟩` from `hfrac z`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, by simp [← e, hb0]⟩`. Set `ι : A →+* F.ring` to `(algebraMap A κ').codRestrict F.ring (fun x => hAF x.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `q : Ideal A` to `(IsLocalRing.maximalIdeal F.ring).comap ι`. Establish `hq : q ≠ ⊤`. Introduce `h`. Establish `h1 : (1 : A) ∈ q` using `h ▸ Submodule.mem_top`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 (show ι 1 ∈ _ from h1) (by simp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn, hqn⟩` from `Ideal.exists_le_maximal q hq`. Establish `hinv : ∀ s ∈ n.primeCompl, ((s : A) : κ')⁻¹ ∈ F.ring`. Introduce `s hs`. Establish `hs' : ι s ∉ IsLocalRing.maximalIdeal F.ring` using `fun h => hs (hqn h)`. Establish `hu : IsUnit (ι s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Conclude with `hs' ((IsLocalRing.mem_maximalIdeal _).2 h)`. Take `⟨u, hu⟩` from `hu.exists_right_inv`. Establish `e : ((s : A) : κ') * (u : κ') = 1` using `congrArg Subtype.val hu`. Rewrite using `[← eq_inv_of_mul_eq_one_right e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `u.2`. Establish `hle : n.primeCompl ≤ nonZeroDivisors A` using `n.primeCompl_le_nonZeroDivisors`. Set `B0 : Subalgebra A κ'` to `Localization.subalgebra.ofField κ' n.primeCompl hle`. Use `haveI : IsLocalization.AtPrime B0 n := Localization.subalgebra.isLocalization_ofField κ' _ hle`. Establish `hAB : A.toSubring ≤ B0.toSubring` using `fun x hx => B0.algebraMap_mem (⟨x, hx⟩ : A)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ∀ a, algebraMap ℂ κ' a ∈ B0.toSubring` using `fun a => hAB (A.algebraMap_mem a)`. Use `letI : Algebra ℂ B0 := ((algebraMap A B0).comp (algebraMap ℂ A)).toAlgebra`. Use `haveI : IsScalarTower ℂ A B0 := IsScalarTower.of_algebraMap_eq' rfl`. Establish `hloc : IsLocalRing B0` using `IsLocalization.AtPrime.isLocalRing B0 n`. Use `⟨B0.toSubring, ⟨hc, hloc, ?_, ?_⟩, ?_, hAB, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `show (algebraMap ℂ B0).EssFiniteType`. Use `RingHom.EssFiniteType.comp ?_ ?_` and prove the remaining obligations. Conclude with `RingHom.essFiniteType_algebraMap.2 inferInstance`. Conclude with `RingHom.essFiniteType_algebraMap.2 (Algebra.EssFiniteType.of_isLocalization B0 n.primeCompl)`. Introduce `f`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, b, hb, hb0, e⟩` from `hfrac f`. Conclude with `⟨a, hAB ha, b, hAB hb, hb0, e⟩`. Introduce `r hr`. Set `r' : B0` to `⟨r, hr⟩`. Use `letI : Field (A ⧸ n) := Ideal.Quotient.field n`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Module.Finite ℂ (A ⧸ n) := finite_of_finite_type_of_isJacobsonRing ℂ (A ⧸ n)`. Establish `hsurj : Function.Surjective (algebraMap ℂ (A ⧸ n))` using `IsAlgClosed.algebraMap_bijective_of_isIntegral.2`. Set `e` to `IsLocalization.AtPrime.equivQuotMaximalIdeal n B0`. Take `⟨x, hx⟩` from `Ideal.Quotient.mk_surjective (e.symm (Ideal.Quotient.mk _ r'))`. Take `⟨a, ha⟩` from `hsurj (Ideal.Quotient.mk n x)`.
-
-Use `⟨a, ?_⟩` and prove the remaining obligations. Set `z : B0` to `algebraMap A B0 (algebraMap ℂ A a)`. Establish `hz : Ideal.Quotient.mk (IsLocalRing.maximalIdeal B0) z = Ideal.Quotient.mk _ r'`. Rewrite using `[← e.apply_symm_apply (Ideal.Quotient.mk _ r'), ← hx, ← ha]`. Conclude with `(IsLocalization.AtPrime.equivQuotMaximalIdeal_apply_mk n B0 (algebraMap ℂ A a)).symm`.
-
-Establish `hm : r' - z ∈ IsLocalRing.maximalIdeal B0` using `Ideal.Quotient.eq.1 hz.symm`. Establish `hnu` using `(nonUnit_iff (R := B0.toSubring) (r' - z)).2 ((IsLocalRing.mem_maximalIdeal _).1 hm)`. Conclude with `hnu`. Introduce and unpack `x ⟨a, s, hs, rfl⟩`. Conclude with `F.ring.toSubring.mul_mem (hAF a.2) (hinv s hs)`.
-
-Use `show (algebraMap ℂ B0).FormallySmooth haveI : Algebra.FormallyEtale A B0 := Algebra.FormallyEtale.of_isLocalization n.primeCompl haveI : Algebra.FormallySmooth ℂ B0 := Algebra.FormallySmooth.comp ℂ A B0`. Conclude with `RingHom.formallySmooth_algebraMap.2 inferInstance`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_locRing_closedPoint_centre : ∀ {κ' : Type} [Field κ'] [Algebra ℂ κ'] (F : Place (algebraMap ℂ κ')) (A : Subalgebra ℂ κ'),
     Algebra.Smooth ℂ A → A.toSubring ≤ F.ring.toSubring →

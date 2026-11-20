@@ -9,7 +9,7 @@ open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTh
 namespace GlobalTheory.CompanionTheory.Ar.RealFormIndep
 
 /- English proof (translation)
-Rewrite using `[star_sum, mulVec_sum, sum_dotProduct]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[dotProduct_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[star_smul, star_trivial, mulVec_smul, smul_dotProduct, dotProduct_smul, Complex.real_smul, Complex.real_smul, Complex.ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -26,17 +26,17 @@ theorem pairing_real_combination {g k : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ)
   ring
 
 /- English proof (translation)
-Introduce `g k Hm hpos u hu hreal`. Rewrite `hu`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `hR : ∀ a b : Fin k → ℝ, ((∑ i, a i • u i) ⬝ᵥ Hm *ᵥ star (∑ j, b j • u j)).im = 0`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pairing_real_combination]`. Simplify using `[Complex.im_sum, hreal]`. Establish `hxy : (∑ i, (c i).re • u i) + Complex.I • (∑ i, (c i).im • u i) = 0`. Rewrite using `[← hc]`. Use extensionality with `t`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Pi.add_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Complex.real_smul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← Complex.re_add_im (c i)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hx : (∑ i, (c i).re • u i) = -(Complex.I • ∑ i, (c i).im • u i)` using `eq_neg_of_add_eq_zero_left hxy`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyy : ((∑ i, (c i).im • u i) ⬝ᵥ Hm *ᵥ star (∑ j, (c j).im • u j)).re = 0`. Establish `h` using `hR (fun i => (c i).re) (fun j => (c j).im)`. Rewrite `h` using `[hx, neg_dotProduct, smul_dotProduct, smul_eq_mul]`. Simplify using `using h`. Establish `hy0 : (∑ i, (c i).im • u i) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Use `hpos _ hne` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx0 : (∑ i, (c i).re • u i) = 0`. Rewrite using `[hx, hy0, smul_zero, neg_zero]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `h1` using `hu (fun i => (c i).re) hx0 i`. Establish `h2` using `hu (fun i => (c i).im) hy0 i`. Conclude with `Complex.ext (by simpa using h1) (by simpa using h2)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linearIndependent_complex_of_real_form :
     ∀ (g k : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ),

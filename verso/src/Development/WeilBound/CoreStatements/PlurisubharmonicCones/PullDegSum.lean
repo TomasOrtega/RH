@@ -24,9 +24,9 @@ section Last
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) [Fintype (CMType H)]
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_prod_type, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_add]`. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd]`. Rewrite using `[Finset.prod_eq_one (fun i _ => if_neg (by omega)), one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [le_add_iff_nonneg_right, zero_le, if_true]`. Conclude with `(Fintype.prod_equiv Fin.revPerm (fun a => F (lastRoot D (τ, a))) (fun j => F (τ, Fin.natAdd D.p j)) (fun a => rfl)).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_last {M : Type} [CommMonoid M] (F : CMType H × Fin (D.p + D.q) → M) :
     ∏ r, (if D.p ≤ (r.2 : ℕ) then F r else 1) = ∏ a, F (lastRoot D a) := by
@@ -40,9 +40,9 @@ theorem prod_last {M : Type} [CommMonoid M] (F : CMType H × Fin (D.p + D.q) →
     (fun a => rfl)).symm
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd]`. Rewrite using `[Finset.sum_eq_zero (fun i _ => if_neg (by omega)), zero_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [le_add_iff_nonneg_right, zero_le, if_true]`. Conclude with `(Fintype.sum_equiv Fin.revPerm (fun a => F (lastRoot D (τ, a))) (fun j => F (τ, Fin.natAdd D.p j)) (fun a => rfl)).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_last {M : Type} [AddCommMonoid M] (F : CMType H × Fin (D.p + D.q) → M) :
     ∑ r, (if D.p ≤ (r.2 : ℕ) then F r else 0) = ∑ a, F (lastRoot D a) := by
@@ -58,9 +58,9 @@ theorem sum_last {M : Type} [AddCommMonoid M] (F : CMType H × Fin (D.p + D.q) �
 end Last
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [pullDeg, Finset.sum_apply]`. Distinguish the cases in `hx : ∃ y, κ y = x`. Take `⟨y, rfl⟩` from `hx`. Simplify using `only [hκ.extend_apply, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.extend_apply' _ _ _ hx, Pi.zero_apply, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pullDeg_sum {K K' I : Type} [Fintype I] {κ : K → K'} (hκ : Function.Injective κ) (a : I → K → ℤ) :
     pullDeg κ (∑ j, a j) = ∑ j, pullDeg κ (a j) := by
@@ -73,53 +73,47 @@ theorem pullDeg_sum {K K' I : Type} [Fintype I] {κ : K → K'} (hκ : Function.
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hG E _ _ _ _ H D Xo l c Y S RM Sys Fx oR II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or B hS hdisc hvR hR4 hp hbg hsm hgood hgen`. Substitute `hS` using the available equality. Establish `hmono : Mono (spMap (algebraMap (𝓞 c.F) c.F))` using `OrLinked.mono_int' c`. Establish `czR : CharZero RM.Ω` using `charZero_of_injective_ringHom oR.𝔐.cst.injective`. Take `⟨a1, a2, a3, a4⟩` from `GlobalTheory.T.compact_datum_intersection E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfree : ∀ p ∈ S₀ ∪ Dc.SB B, HT.HTFree Or.𝔐 p` using `fun p hp' => by`. Break down `Finset.mem_union.1 hp' with h | h` into its components or cases. Conclude with `hgood.1 p h`. Conclude with `hgood.2 p (Finset.mem_filter.1 h).1`. Establish `hlev : ∀ p ∈ S₀ ∪ Dc.SB B, ∀ q, InFibre Or.𝔐.ξ p q → Or.𝔐.M.htOm Or.𝔐.t.PP.L (p ^ 4) q = Or.𝔐.M.htOm Or.𝔐.t.PP.L (p ^ Or.𝔐.R p) q` using `fun p hp' => h₁ hG.2.2.2.2.2.2.1 E H D l (Xo l) c Y _ Ω K J Dc.y (Or.𝔐.withS _ a1 a2 a3 a4) p hp' (by omega) (hfree p hp')`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `B₄` to `levFour Or.𝔐 _ a1 a2 a3 a4 hlev`. Establish `hB₄ : ∀ s, B₄.V s = Or.𝔐.VS (S₀ ∪ Dc.SB B) s` using `patch_four Or.𝔐 _ hlev`. Establish `eg : genPt oR.𝔐.ξ₀ = genPt Or.𝔐.ξ₀`. Establish `g1` using `RegAtDom.map_genPt oR.𝔐.fn_over`. Establish `g2` using `RegAtDom.map_genPt (show GlobalTheory.CompanionTheory.Ar.Dominates oR.𝔐.ξ Fx.ξf oR.𝔐.f oR.g from oR.g_over)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hgen, ← g1, g2]`. Take `⟨ψ, hψ⟩` from `FlagPull.exists_iso oR.𝔐.gen₀ Or.𝔐.gen₀ eg`. Establish `hfin : letI` using `(Or.𝔐.fn.comp ψ.toRingHom).toAlgebra; Module.Finite oR.𝔐.Ω₀ Ω := by`. Establish `f1 : Or.𝔐.fn.Finite`. Set `_` to `Or.𝔐.fn.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Module.finite_of_finrank_pos (Or.cover.2 ▸ Or.cover.1)`. Conclude with `RingHom.Finite.comp f1 (RingHom.Finite.of_surjective _ ψ.surjective)`. Take `⟨Ω₃, _, i₁, i₂, hi, hf₁⟩` from `OrLinked.exists_tensor_field oR.𝔐.Ω₀ RM.Ω Ω oR.𝔐.fn _ hfin`. Establish `cz : CharZero Ω₃` using `charZero_of_injective_ringHom i₁.injective`. Establish `fd₁ : FiniteDimensional i₁.fieldRange Ω₃` using `FiniteDimensional.of_finrank_pos (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[OrLinked.finrank_fieldRange]`. Set `_` to `i₁.toAlgebra`. Conclude with `Module.finrank_pos)`. Take `⟨K₃, _, ρ, _, κ₁, v₁, κ, v, y, Z, ξ, g₁, g₂, bm₁, bm₂, hy₁, hy₂, I1, I2, har, hbir, hall, htie, hnorm, hd₁, hd₂, hrk⟩` from `join_normal i₁ i₂ RM.y Dc.y _ oR.𝔐.ξ Or.𝔐.ξ RM.arith RM.birational fd₁ oR.𝔐.all Or.𝔐.all oR.𝔐.tie Or.𝔐.tie`. Take `⟨x₁, hx₁'⟩` from `GlobalTheory.T.hodge_component_factor_point E H D l (Xo l) c _ _ Y _ RM.Ω RM.K RM.ι RM.y oR.𝔐 hmono`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x₂, hx₂'⟩` from `GlobalTheory.T.hodge_component_factor_point E H D l (Xo l) c _ _ Y _ Ω K J Dc.y Or.𝔐 hmono`. Establish `hx₁ : oR.𝔐.ξ ≫ oR.𝔐.f = (spMap oR.𝔐.fn ≫ x₁) ≫ Y.j`. Rewrite using `[Category.assoc, ← hx₁']`. Conclude with `oR.𝔐.fn_over`. Establish `hx₂ : Or.𝔐.ξ ≫ Or.𝔐.f = (spMap Or.𝔐.fn ≫ x₂) ≫ Y.j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, ← hx₂']`. Conclude with `Or.𝔐.fn_over`. Establish `hdisc' : ∀ p : ℕ, p.Prime → (p : ℤ) ∣ discr E → p ∈ S₀ ∪ Dc.SB B` using `fun p h1 h2 => Finset.mem_union_left _ (hdisc p h1 h2)`. Take `⟨𝔐, a, j₁, m₁, q1, q2, q3, q4, q5, q6, q7, -, q9⟩` from `GlobalTheory.T.hodge_cpt_field_extension E H D l (Xo l) c _ _ Y _ RM.Ω Ω₃ i₁ RM.K K₃ RM.ι ρ RM.y y oR.𝔐 _ Z ξ g₁ hx₁ hdisc' (fun p hp s => (hvR p hp).2 s) hall htie hnorm hd₁`. Establish `hdom₁ : GlobalTheory.CompanionTheory.Ar.Dominates 𝔐.ξ oR.𝔐.ξ (a.hom ≫ g₁) i₁` using `by show 𝔐.ξ ≫ a.hom ≫ g₁ = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Category.assoc, q1]`. Conclude with `hd₁`. Establish `hdom₂ : GlobalTheory.CompanionTheory.Ar.Dominates 𝔐.ξ Or.𝔐.ξ (a.hom ≫ g₂) i₂` using `by show 𝔐.ξ ≫ a.hom ≫ g₂ = _`. Rewrite using `[← Category.assoc, q1]`. Conclude with `hd₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hf𝔐 : 𝔐.f = (a.hom ≫ g₁) ≫ oR.𝔐.f` using `by rw [q2, Category.assoc]`. Take `⟨Fl, hbF, -, -, hlF⟩` from `FlagPull.flag_pull E H D l (Xo l) c _ _ Y _ RM.Ω Ω₃ i₁ RM.K K₃ RM.ι ρ RM.y y oR.𝔐 𝔐 (a.hom ≫ g₁) j₁ m₁ κ₁ v₁ oR.Fl bm₁ hy₁ hdom₁ hf𝔐 q3 q4 q6 q7 q9 fd₁`. Establish `hZ : g₂ ≫ Or.𝔐.f = g₁ ≫ oR.𝔐.f`. Use `OrLinked.map_eq_of_generic hnorm hall Y.s Y.proj ?_` and prove the remaining obligations. Establish `e1 : ξ ≫ g₁ = spMap i₁ ≫ oR.𝔐.ξ` using `hd₁`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e2 : ξ ≫ g₂ = spMap i₂ ≫ Or.𝔐.ξ` using `hd₂`. Establish `e3 : oR.𝔐.ξ ≫ oR.𝔐.f = spMap oR.𝔐.fn ≫ oR.𝔐.ξ₀` using `oR.𝔐.fn_over`. Establish `e4 : Or.𝔐.ξ ≫ Or.𝔐.f = spMap Or.𝔐.fn ≫ Or.𝔐.ξ₀` using `Or.𝔐.fn_over`. Rewrite using `[← Category.assoc, ← Category.assoc, e1, e2, Category.assoc, Category.assoc, e3, e4, ← hψ, ← Category.assoc, ← Category.assoc, ← Category.assoc, OrLinked.spMap_spMap', OrLinked.spMap_spMap', OrLinked.spMap_spMap', hi, RingHom.comp_assoc]`. Establish `hvb₄ : ∀ p ∈ S₀ ∪ Dc.SB B, ∀ s, ((Or.𝔐.M.htOm Or.𝔐.t.PP.L (p ^ 4)).map (Or.𝔐.Vgen s).dualRestrict).IsVBOn {q | InFibre Or.𝔐.ξ p q} (labelRk D s) ⊤` using `fun p hp' s => vbOn_congr (L := (Or.𝔐.M.htOm Or.𝔐.t.PP.L (p ^ Or.𝔐.R p)).map (Or.𝔐.Vgen s).dualRestrict) (fun q hq => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Lat.map]`. Rewrite using `[hlev p hp' q hq]) ((hfree p hp').2 s)`. Establish `hf₄ : (a.hom ≫ g₂) ≫ Or.𝔐.f = 𝔐.f` using `by rw [q2, Category.assoc, hZ]`. Take `⟨j, m, hj, hpt, hV⟩` from `pull_on (i := i₂) B₄ 𝔐 (a.hom ≫ g₂) _ hx₂ hdisc' hvb₄ hdom₂ hf₄ (fun p hp' => by rw [q5]; exact hR4 p hp')`. Establish `hx : 𝔐.ξ ≫ 𝔐.f = (spMap i₁ ≫ spMap oR.𝔐.fn ≫ x₁) ≫ Y.j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e1 : 𝔐.ξ ≫ a.hom ≫ g₁ = spMap i₁ ≫ oR.𝔐.ξ` using `hdom₁`. Rewrite using `[hf𝔐, ← Category.assoc, e1, Category.assoc, hx₁]`. Simplify using `only [Category.assoc]`. Take `⟨β, d, hβ, hβn, hint⟩` from `GlobalTheory.T.hodge_cpt_multihomog_form E H D l (Xo l) c _ _ Y _ Ω₃ K₃ ρ y 𝔐 _ hx hmono`. Establish `hdown : ∀ (z : Sp ℂ ⟶ 𝔐.X) (w : (Σ k, ρ k) → ℂ), CoordsAt 𝔐.ξ y z w → 𝔐.Interior z → CoordsAt Or.𝔐.ξ Dc.y (z ≫ a.hom ≫ g₂) (fun p => w (v p)) ∧ Or.𝔐.Interior (z ≫ a.hom ≫ g₂)` using `fun z w hw hz => ⟨HodgePull.coordsAt_pull hdom₂ 𝔐.tie.gen Or.𝔐.tie.cover bm₂ hy₂ (𝔐.all _) (Or.𝔐.all _) hw, (abLocus_pullback abLocusOne Or.𝔐.t.semi m.cart.1 _).2 hz⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨K₃, inferInstance, ρ, inferInstance, κ₁, v₁, κ, v, Ω₃, inferInstance, cz, y, β, d, bm₁, bm₂, I1, I2, har, hβ, hβn, hrk, fun w hw hb hBd => ?_, fun L L' hL hL' => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hI⟩` from `hint w hw hb`. Take `⟨c1, c2⟩` from `hdown z w hz hI`. Conclude with `(Or.bd _ _ c1).1 hBd c2`. Take `⟨ch₀, hch₀⟩` from `Or.𝔐.tie.cover ⟨genPt Or.𝔐.ξ, specializes_rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨n, f, cc, -, -, hsum, hloc⟩` from `Hd.locally ch₀ hch₀.1`. Choose the witnesses or unpack the hypotheses as in `⟨l₀⟩ : Nonempty (Fin n) := by`. Assume the negation of the conclusion as `h`. Use `not_nonempty_iff.1 h` as an intermediate fact. Simplify using `at hsum`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨bb, -, lam, -, hΛ⟩` from `hloc l₀`. Establish `hs : ∀ τ k, ∃ z, z ∈ Or.𝔐.Vgen (Or.sm τ) ∧ Or.i τ (bb τ (tailIdx Dc.j_le_N k)) - z ∈ Or.𝔐.Vgen (Or.bg τ)` using `fun τ k => by`. Take `⟨a, ha, z, hz, h⟩` from `Submodule.mem_sup.1 (Or.i_range τ ▸ LinearMap.mem_range_self (Or.i τ) (bb τ (tailIdx Dc.j_le_N k)))`. Conclude with `⟨z, hz, by rw [← h, add_sub_cancel_right]; exact ha⟩`. Use `choose s hs using hs`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hsi, hdeg⟩` from `GlobalTheory.T.intersection_datum_degree_sum E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B bb s _ hs hΛ`. Establish `hmet` using `h₂ hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B bb s _ hs hΛ`. Establish `hn : Dc.N - Dc.j = D.q`. Break down `Or.side with ⟨-, -, h⟩ | ⟨h, -, -⟩` into its components or cases. Rewrite using `[h, Or.N_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[hbg]`. Take `⟨τ⟩ : Nonempty (CMType H)` from `(GlobalTheory.T.cm_host_rank_bounds E H).2.1`. Conclude with `absurd (congrFun h τ) (by simp)`. Simplify using `only [hsm] at hs hdeg hmet`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `choose Lp hLp using fun r => ((GlobalTheory.T.block_pullback_herm_line RM.K RM.ι K₃ ρ κ₁ v₁ bm₁).1 (oR.sing r)).exists`. Establish `hroot : Fl.RootLines (fun r => (Lp r).a) fun r => i₁ (oR.e r)`. Establish `h` using `hlF _ _ oR.lines`. Establish `e : (fun r => (Lp r).a) = fun r => pullDeg κ₁ (RM.xdeg r)` using `funext fun r => by rw [(hLp r).1, oR.sing_deg]`. Rewrite using `[e]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hiso` using `core 𝔐 Fl hbir Lp hroot (fun r => HodgePull.hodgeLine_pull E H D l (Xo l) c _ _ Y _ RM.Ω Ω₃ i₁ RM.K K₃ RM.ι ρ RM.y y oR.𝔐 𝔐 (a.hom ≫ g₁) j₁ m₁ κ₁ v₁ oR.Fl bm₁ hy₁ hdom₁ hf𝔐 q3 q4 q6 q7 q9 Fl hbF r _ _ _ (oR.hodge r) (hLp r)) Or.𝔐.t Or.𝔐.tie.gen Or.𝔐.tie.cover Or.𝔐.M (fun τ => Or. …`. Take `⟨f₁, f₂, hf, hdef⟩` from `hiso`. Conclude with `⟨f₁, f₂, hf, fun w hw => hdef w (hint w hw.1 hw.2)⟩`. Rewrite using `[hL.1, ← sum_last D fun r => (Lp r).a] show pullDeg κ₁ (∑ r, muExp D.p r • (oR.sing r).a) = _`. Rewrite using `[pullDeg_sum bm₁.1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Unfold `muExp`. Use `split_ifs`. Rewrite using `[one_smul, (hLp r).1]`. Rewrite using `[zero_smul]`.
-
-Use function extensionality and compare the values at `k'`. Unfold `pullDeg`. Distinguish the cases in `h : ∃ k, κ₁ k = k'`. Take `⟨k, rfl⟩` from `h`. Rewrite using `[bm₁.1.extend_apply]`.
-
-Both sides reduce to the same expression. Rewrite using `[Function.extend_apply' _ _ _ h]`. Rewrite using `[hL.2, ← prod_last D fun r => (Lp r).h w] show ∏ r, (oR.sing r).h _ ^ muExp D.p r = _`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Unfold `muExp`.
-
-Use `split_ifs`. Rewrite using `[zpow_one, (hLp r).2]`. Rewrite using `[zpow_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem common (h₁ : LevelFree) (h₂ : MuHodge) : Common := by
   intro hG E _ _ _ _ H D Xo l c Y S RM Sys Fx oR II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or B hS hdisc hvR hR4 hp hbg hsm hgood hgen

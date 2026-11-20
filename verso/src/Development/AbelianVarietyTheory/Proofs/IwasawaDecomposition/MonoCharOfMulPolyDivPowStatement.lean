@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonoCharOfMu
 open Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.mono_char_of_mul_poly_div_pow` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FMonoCharOfMulPolyDivPow.lean&line=6#L6)
 -/

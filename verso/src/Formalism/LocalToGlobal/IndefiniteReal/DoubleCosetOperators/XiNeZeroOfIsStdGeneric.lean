@@ -18,9 +18,9 @@ Both sides reduce to the same expression.
     mulC c (Multiplicative.ofAdd z) = Multiplicative.ofAdd (c * z) := rfl
 
 /- English proof (translation)
-Introduce `h`. Apply `hθ` to reduce the goal to its premises. Use `MonoidHom.ext fun z => ?_` and prove the remaining obligations. Establish `e` using `DFunLike.congr_fun h (Multiplicative.ofAdd (c⁻¹ * Multiplicative.toAdd z))`. Simplify using `only [MonoidHom.comp_apply, mulC_ofAdd, MonoidHom.one_apply] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[← mul_assoc, mul_inv_cancel₀ hc, one_mul, ofAdd_toAdd]`. Simplify using `using e`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem comp_mulC_ne_one {K : Type} [Field K] {q : ℕ} [Fact q.Prime] (θ : Multiplicative (ZMod q) →* Kˣ) (hθ : θ ≠ 1)
     {c : ZMod q} (hc : c ≠ 0) : θ.comp (mulC c) ≠ 1 := by
@@ -33,7 +33,7 @@ theorem comp_mulC_ne_one {K : Type} [Field K] {q : ℕ} [Fact q.Prime] (θ : Mul
   simpa using e
 
 /- English proof (translation)
-Use `MonoidHom.ext fun z => ?_` and prove the remaining obligations. Simplify using `only [MonoidHom.comp_apply, MonoidHom.one_apply]`. Rewrite using `[← ofAdd_toAdd z, mulC_ofAdd, zero_mul, ofAdd_zero, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_mulC_zero {K : Type} [Field K] {q : ℕ} (θ : Multiplicative (ZMod q) →* Kˣ) :
     θ.comp (mulC (0 : ZMod q)) = 1 := by
@@ -62,7 +62,7 @@ theorem psiXi_apply {K : Type} [Field K] (ξ : ∀ x, ZMod (p x)) (θ : ∀ x, M
       supSum r (((u : GProd p r) x : GL (Fin r) (ZMod (p x))) : Matrix (Fin r) (Fin r) (ZMod (p x))))) := rfl
 
 /- English proof (translation)
-Simplify using `using supSum_mul (u.2 x) (v.2 x)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem supSum_mul_Uup (u v : Uup p r) (x : ι) :
     supSum r ((((u * v : Uup p r) : GProd p r) x : GL (Fin r) (ZMod (p x))) : Matrix (Fin r) (Fin r) (ZMod (p x))) =
@@ -71,13 +71,13 @@ theorem supSum_mul_Uup (u v : Uup p r) (x : ι) :
   simpa using supSum_mul (u.2 x) (v.2 x)
 
 /- English proof (translation)
-The claim follows from `map_mul _ u v`.
+A detailed English derivation is pending.
 -/
 theorem psiXi_mul {K : Type} [Field K] (ξ : ∀ x, ZMod (p x)) (θ : ∀ x, Multiplicative (ZMod (p x)) →* Kˣ)
     (u v : Uup p r) : psiXi p r ξ θ (u * v) = psiXi p r ξ θ u * psiXi p r ξ θ v := map_mul _ u v
 
 /- English proof (translation)
-Use `⟨thXi p ξ θ, fun hr x => ?_, fun u => rfl⟩` and prove the remaining obligations. Use `haveI := Fact.mk (hp x)`. Conclude with `comp_mulC_ne_one (θ x) (hθ hr x) (hξ hr x)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem psiXi_isStdGeneric {K : Type} [Field K] (hp : ∀ x, (p x).Prime) (ξ : ∀ x, ZMod (p x))
     (θ : ∀ x, Multiplicative (ZMod (p x)) →* Kˣ) (hξ : 2 ≤ r → ∀ x, ξ x ≠ 0) (hθ : 2 ≤ r → ∀ x, θ x ≠ 1) :
@@ -87,9 +87,9 @@ theorem psiXi_isStdGeneric {K : Type} [Field K] (hp : ∀ x, (p x).Prime) (ξ : 
   exact comp_mulC_ne_one (θ x) (hθ hr x) (hξ hr x)
 
 /- English proof (translation)
-Establish `hc : ∀ M : Matrix.SpecialLinearGroup (Fin r) (ZMod (p x)), ((Matrix.SpecialLinearGroup.toGL M : GL (Fin r) (ZMod (p x))) : Matrix (Fin r) (Fin r) (ZMod (p x))) = M` using `fun M => rfl`. Rewrite using `[psiXi_apply, Finset.prod_eq_single x]`. Simplify using `only [tvAt, Pi.mulSingle_eq_same] show θ x (Multiplicative.ofAdd (ξ x * supSum r (tv hr (1 : ZMod (p x))))) = _`. Rewrite using `[supSum_tv, mul_one]`. Introduce `y _ hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[tvAt, Pi.mulSingle_eq_of_ne hy, supSum_one]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ x) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem psiXi_tvAt [DecidableEq ι] {K : Type} [Field K] (ξ : ∀ x, ZMod (p x))
     (θ : ∀ x, Multiplicative (ZMod (p x)) →* Kˣ) (hr : 2 ≤ r) (x : ι) :
@@ -107,9 +107,9 @@ theorem psiXi_tvAt [DecidableEq ι] {K : Type} [Field K] (ξ : ∀ x, ZMod (p x)
     exact absurd (Finset.mem_univ x) h
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `psiXi_tvAt ξ θ hr x`. Rewrite `h1` using `[h, MonoidHom.one_apply]`. Apply `hθ` to reduce the goal to its premises. Use `haveI : Fact (p x).Prime := ⟨hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : NeZero (p x) := ⟨hp.ne_zero⟩`. Use `MonoidHom.ext fun z => ?_` and prove the remaining obligations. Take `⟨n, hn⟩ : ∃ n : ℕ, Multiplicative.toAdd z = n • ξ x` from `⟨(Multiplicative.toAdd z * (ξ x)⁻¹).val, by`. Rewrite using `[nsmul_eq_mul, ZMod.natCast_zmod_val, mul_assoc, inv_mul_cancel₀ hξ, mul_one]⟩`. Rewrite using `[MonoidHom.one_apply, ← ofAdd_toAdd z, hn, ofAdd_nsmul, map_pow, ← h1, one_pow]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiXi_ne_one [DecidableEq ι] {K : Type} [Field K] (ξ : ∀ x, ZMod (p x))
     (θ : ∀ x, Multiplicative (ZMod (p x)) →* Kˣ) (hr : 2 ≤ r) (x : ι) (hp : (p x).Prime) (hξ : ξ x ≠ 0)
@@ -127,9 +127,9 @@ theorem psiXi_ne_one [DecidableEq ι] {K : Type} [Field K] (ξ : ∀ x, ZMod (p 
   rw [MonoidHom.one_apply, ← ofAdd_toAdd z, hn, ofAdd_nsmul, map_pow, ← h1, one_pow]
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨θ', hθ', hψ'⟩` from `hg`. Establish `hm : tvAt (p` using `p) hr x ∈ S := by rw [hS]; exact tvAt_mem hr x`. Establish `e` using `(hψ' ⟨_, hm⟩).symm.trans (hψ ⟨_, hm⟩)`. Simplify using `only [stdVal_tvAt, thXi, h0, comp_mulC_zero, MonoidHom.one_apply] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `char_one_ne (θ' x) (hθ' hr x) e`.
+A detailed English derivation is pending.
 -/
 theorem xi_ne_zero_of_isStdGeneric [DecidableEq ι] {K : Type} [Field K] {S : Subgroup (GProd p r)}
     (hS : S = Uup p r) (ψ : S →* Kˣ) (hg : IsStdGeneric p r ψ) (ξ : ∀ x, ZMod (p x))
@@ -157,7 +157,7 @@ Both sides reduce to the same expression.
 theorem U_eq_Uup (N : NData R H what₂) : U N = Uup (fun kv : (Σ k : Fin 2, N.PlG k) => H.g kv.1) R.r := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_U {N : NData R H what₂} {u : G0g N} : u ∈ U N ↔
     ∀ kv : (Σ k : Fin 2, N.PlG k), (∀ a b : Fin R.r, b < a →
@@ -166,9 +166,9 @@ theorem mem_U {N : NData R H what₂} {u : G0g N} : u ∈ U N ↔
   Iff.rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `: Fact (H.g k).Prime` using `⟨H.g_prime k⟩`. Establish `hm : tvAt (p` using `fun kv : (Σ k : Fin 2, N.PlG k) => H.g kv.1) hr ⟨k, v⟩ ∈ U N := tvAt_mem hr _`. Rewrite `hm` using `[h, Subgroup.mem_bot]`. Establish `e` using `congrArg (fun g : G0g N => supSum R.r ((g ⟨k, v⟩ : GL (Fin R.r) (ZMod (H.g k))) : Matrix (Fin R.r) (Fin R.r) (ZMod (H.g k)))) hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [tvAt_apply, if_true] at e`. Rewrite `e` using `[supSum_tv]`. Simplify using `[supSum_one] at e`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem U_ne_bot (N : NData R H what₂) (hr : 2 ≤ R.r) (k : Fin 2) (v : N.PlG k) : U N ≠ ⊥ := by
   classical
@@ -196,7 +196,7 @@ theorem psiUOf_apply (N : NData R H what₂) {K : Type} [Field K] (ξ : ∀ kv :
   rfl
 
 /- English proof (translation)
-The claim follows from `psiXi_isStdGeneric (fun kv : (Σ k : Fin 2, N.PlG k) => H.g_prime kv.1) ξ _ hξ (fun hr (kv : Σ k : Fin 2, N.PlG k) => hθ hr kv.1)`.
+A detailed English derivation is pending.
 -/
 theorem psiUOf_isStdGeneric (N : NData R H what₂) {K : Type} [Field K]
     (ξ : ∀ kv : (Σ k : Fin 2, N.PlG k), ZMod (H.g kv.1)) (θ : ∀ k : Fin 2, Multiplicative (ZMod (H.g k)) →* Kˣ)
@@ -206,7 +206,7 @@ theorem psiUOf_isStdGeneric (N : NData R H what₂) {K : Type} [Field K]
     (fun hr (kv : Σ k : Fin 2, N.PlG k) => hθ hr kv.1)
 
 /- English proof (translation)
-Conclude with `psiXi_ne_one ξ (fun kv => θ kv.1) hr ⟨k, v⟩ (H.g_prime k) hξ hθ`.
+A detailed English derivation is pending.
 -/
 theorem psiUOf_ne_one (N : NData R H what₂) {K : Type} [Field K]
     (ξ : ∀ kv : (Σ k : Fin 2, N.PlG k), ZMod (H.g kv.1)) (θ : ∀ k : Fin 2, Multiplicative (ZMod (H.g k)) →* Kˣ)
@@ -219,7 +219,7 @@ def thSide {K : Type} [Field K] (g : Fin 2 → ℕ) (θ : ∀ k : Fin 2, Multipl
   fun k => if b then θ k else (θ k)⁻¹
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [thSide, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem thSide_ne_one {K : Type} [Field K] (g : Fin 2 → ℕ) (θ : ∀ k : Fin 2, Multiplicative (ZMod (g k)) →* Kˣ)
     (b : Bool) (k : Fin 2) (h : θ k ≠ 1) : thSide g θ b k ≠ 1 := by
@@ -230,7 +230,7 @@ def psiUD (D : D7) (i : D.ntw.Tw) (θ : ∀ k : Fin 2, Multiplicative (ZMod (D.h
   psiUOf D.nd (xiRed D) (thSide D.host.g θ b)
 
 /- English proof (translation)
-Simplify using `only [psiUD, psiUOf_apply, thSide, Bool.false_eq_true, if_false, if_true, MonoidHom.inv_apply, Finset.prod_inv_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psiUD_side (D : D7) (i : D.ntw.Tw)
     (θ : ∀ k : Fin 2, Multiplicative (ZMod (D.host.g k)) →* (FractionRing (D.ntw.O i))ˣ) (u : U D.nd) :
@@ -241,9 +241,9 @@ theorem psiUD_side (D : D7) (i : D.ntw.Tw)
 def XiRedNZ (D : D7) : Prop := ∀ kv : (Σ k : Fin 2, D.nd.PlG k), xiRed D kv ≠ 0
 
 /- English proof (translation)
-Use `⟨hU, fun i b => ?_, fun i u => ?_, fun i b => ?_⟩` and prove the remaining obligations. Use `⟨thXi _ (xiRed D) (fun kv => thSide D.host.g (θ i) b kv.1), fun hr kv => ?_, fun u => ?_⟩` and prove the remaining obligations. Establish `: Fact (D.host.g kv.1).Prime` using `⟨D.host.g_prime kv.1⟩`. Conclude with `comp_mulC_ne_one _ (thSide_ne_one _ _ b _ (hθ hr i kv.1)) (hξ hr kv)`. Rewrite using `[hψ]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hψ, hψ]`. Conclude with `psiUD_side D i (θ i) _`. Conclude with `⟨thSide D.host.g (θ i) b, fun hr kk => thSide_ne_one _ _ b _ (hθ hr i kk), fun u => by rw [hψ]; rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tied_U_clauses (D : D7)
     (θ : ∀ i, ∀ k : Fin 2, Multiplicative (ZMod (D.host.g k)) →* (FractionRing (D.ntw.O i))ˣ)
@@ -267,7 +267,7 @@ theorem tied_U_clauses (D : D7)
   · exact ⟨thSide D.host.g (θ i) b, fun hr kk => thSide_ne_one _ _ b _ (hθ hr i kk), fun u => by rw [hψ]; rfl⟩
 
 /- English proof (translation)
-Introduce `kv`. Take `⟨θ, -, hψ⟩` from `T.psiU_xi i true`. Conclude with `xi_ne_zero_of_isStdGeneric T.U_eq _ (T.psiU_gen i true) (xiRed D) (fun kv => θ kv.1) (fun u => (hψ u).trans rfl) hr (fun kv => ⟨(D.host.g_prime kv.1).ne_zero⟩) kv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem NExpTied.xiRedNZ {D : D7} (T : NExpTied D) (hr : 2 ≤ D.R.r) (i : D.ntw.Tw) : XiRedNZ D := by
   classical

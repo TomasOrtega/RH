@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InductionContrag
 namespace GlobalTheory.CompanionTheory.Glob
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SmGL.IndDual.inductionContragredient`.
+A detailed English derivation is pending.
 -/
 theorem inductionContragredient : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GlobalTheory.SmGL.InductionContragredient k :=

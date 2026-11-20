@@ -14,7 +14,7 @@ namespace GlobalTheory.HeightCounting.RowRhoInt
 end GlobalTheory.HeightCounting.RowRhoInt
 namespace GlobalTheory.HeightCounting.RowRhoInt
 /- English proof (citation)
-Apply `GlobalTheory.T.exists_galois_rep_of_cuspidal_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FExistsIsRepOfTwStatement.lean&line=11#L11)
 -/
@@ -25,11 +25,11 @@ theorem twistEx_alt : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D :
 end GlobalTheory.HeightCounting.RowRhoInt
 namespace GlobalTheory.HeightCounting.RowRhoInt
 /- English proof (translation)
-Take `⟨k, hk1, hk2, hk⟩` from `hσ`. Take `⟨π₀, hc₀, hr₀, hl₀, hp₀⟩` from `hR k hk1 hk2 σ hk hg`. Take `⟨ι₀, hι₀⟩` from `GlobalTheory.exists_padicAlgCl_ringEquiv_complex_comp_eq l ↥D.LL0 j (embLL0 D)`. Establish `h0 : ∀ x, ι₀ (j x) = embLL0 D x` using `fun x => RingHom.congr_fun hι₀ x`. Take `⟨ρG, hρG⟩` from `_root_.GlobalTheory.HeightCounting.RowRhoInt.twistEx_alt hA D cf jE A hG l ι₀ π₀ hc₀ hr₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨L, P, hP⟩` from `conjIntegral l (Formalism.ConjugateSelfDual.G D.host.E D.nd.Om) D.R.r ρG hρG.1`. Set `ρ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin D.R.r) (PadicAlgCl l)` to `(MulAut.conj P⁻¹).toMonoidHom.comp ρG`. Establish `hρ : ∀ g, ρ g = P⁻¹ * ρG g * P` using `fun g => by simp [ρ, MulAut.conj_apply]`. Establish `hρ0 : IsRepOf D l ι₀ (D.naut.tw π₀ D.naut.etaTinv) ((1 - (D.R.nV : ℝ)) / 2) ρ` using `isRepOf_conj D l ι₀ _ _ ρG ρ P hρ hρG`. Use `⟨L, ρ, hρ0.1, fun g i k => by rw [hρ]; exact hP g i k, fun π hc hr hl ι hι => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `isRepOf_of_read D l ι₀ ι j h0 hι _ _ ρ hρ0 hp₀`. Take `⟨ρ', hρ'⟩` from `_root_.GlobalTheory.HeightCounting.RowRhoInt.twistEx_alt hA D cf jE A hG l ι π hc hr`. Use `isRepOf_of_split D hC l ι _ _ _ ρ ρ' h1 hρ' (fun w hw => ?_)` and prove the remaining obligations. Rewrite using `[D.naut.locG_tw, D.naut.locG_tw, hl₀ w hw, hl w hw]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem core_data_of_point (hA : GlobalTheory.Published.GlobalArtinReciprocity) (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb)
     (A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE) (hG : GalEx D) (hR : RowCusp D A.row) (hC : GlobalTheory.RowTie.ChebSplit D.nd)
@@ -70,7 +70,7 @@ def padicRepresentationOfEmbedding (l : ℕ) [Fact l.Prime] (j : ↥D.LL0 →+* 
     Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin D.R.r) (PadicAlgCl l) :=
   if h : GoodOcc D σ then (_root_.GlobalTheory.HeightCounting.RowRhoInt.core_data_of_point hA D cf jE A hG hR hC l j σ h.1 h.2).choose_spec.choose else 1
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.HeightCounting.RowRhoInt.pickL_alt, _root_.GlobalTheory.HeightCounting.RowRhoInt.padicRepresentationOfEmbedding, dif_pos h]`. Conclude with `(_root_.GlobalTheory.HeightCounting.RowRhoInt.core_data_of_point hA D cf jE A hG hR hC l j σ h.1 h.2).choose_spec.choose_spec`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pick_spec_alt (l : ℕ) [Fact l.Prime] (j : ↥D.LL0 →+* PadicAlgCl l) (σ : D.what₂.FT) (h : GoodOcc D σ) :
     Continuous (fun g => ((_root_.GlobalTheory.HeightCounting.RowRhoInt.padicRepresentationOfEmbedding hA D cf jE A hG hR hC l j σ g : GL (Fin D.R.r) (PadicAlgCl l)) :
@@ -91,7 +91,7 @@ def bigOfStarStable (hstar : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) :
       fun σ => IntermediateField.finiteDimensional_iSup_of_finite
     exact IntermediateField.finiteDimensional_iSup_of_finite⟩
 /- English proof (translation)
-The claim follows from `(le_iSup (fun b : Bool => (_root_.GlobalTheory.HeightCounting.RowRhoInt.pickL_alt hA D cf jE A hG hR hC l (jSide D hstar l j b) σ).1) b).trans (le_iSup (fun σ : D.what₂.FT => ⨆ b : Bool, (_root_.GlobalTheory.HeightCounting.RowRhoInt.pickL_alt hA D cf jE A hG hR hC l (jSide D hsta …`.
+A detailed English derivation is pending.
 -/
 theorem pickL_jSide_le_cBig (hstar : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) (l : ℕ) [Fact l.Prime]
     (j : ↥D.LL0 →+* PadicAlgCl l) (σ : D.what₂.FT) (b : Bool) :
@@ -107,29 +107,27 @@ end HidaSetting
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `hA D cf jE A hG hR hC hstar`. Use `⟨_root_.GlobalTheory.HeightCounting.RowRhoInt.bigOfStarStable hA D cf jE A hG hR hC hstar, fun b0 b1 Sx T Sp hc => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ (i : T.Tw) (σ : D.what₂.FT) (b : Bool) (h : GoodOcc D σ) g k k', ((_root_.GlobalTheory.HeightCounting.RowRhoInt.padicRepresentationOfEmbedding hA D cf jE A hG hR hC (T.l i) (jSide D hstar (T.l i) (Sp.j0 i) b) σ g : GL (Fin D.R.r) (PadicAlgCl (T.l i))) : Matrix (Fin D.R.r …`. Introduce `i σ b h g k k'`. Conclude with `intOf_mono (((_root_.GlobalTheory.HeightCounting.RowRhoInt.pickL_jSide_le_cBig hA D cf jE A hG hR hC hstar (T.l i) (Sp.j0 i) σ b).trans (hc (T.l i) (Sp.j0 i))).trans (Sp.ringSpec_baseExtension_lowerBound i)) ((_root_.GlobalTheory.HeightCounting.RowRhoInt.pick_spec_alt hA D cf jE …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `rho : RhoFam D T` to `fun i σ b => if h : GoodOcc D σ then mapRep (Sp.eO0 i).symm.toRingHom (restrictRep (Formalism.L2.TwC.intOf (T.l i) (Sp.K0 i).1) (_root_.GlobalTheory.HeightCounting.RowRhoInt.padicRepresentationOfEmbedding hA D cf jE A hG hR hC (T.l i) (jSide D hstar (T.l i) (Sp.j0 i) b) σ) (hmem …`. Establish `hemb : ∀ i, Topology.IsEmbedding (fun x : T.O0 i => kap Sp i (algebraMap (T.O0 i) (FractionRing (T.O0 i)) x))` using `fun i => (GlobalTheory.CoefEmbed.embedding_closed_integral (T.l i) (T.O0 i) (T.twistBaseCoefficientRing_isAdic i) (kap Sp i) (twistFractionFieldToPadicAlgebraicClosure_padicInt Sp i)).1`. Establish `hks : ∀ i (y : Formalism.L2.TwC.intOf (T.l i) (Sp.K0 i).1), kap Sp i (algebraMap (T.O0 i) (FractionRing (T.O0 i)) ((Sp.eO0 i).symm y)) = (y : PadicAlgCl (T.l i))`. Introduce `i y`. Rewrite using `[kap_alg, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨rho, fun i σ b => ?_, fun i σ b hocc hgood π hc hr hloc φ ι hφ hι => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : GoodOcc D σ`. Establish `e : rho i σ b = mapRep (Sp.eO0 i).symm.toRingHom (restrictRep (Formalism.L2.TwC.intOf (T.l i) (Sp.K0 i).1) (_root_.GlobalTheory.HeightCounting.RowRhoInt.padicRepresentationOfEmbedding hA D cf jE A hG hR hC (T.l i) (jSide D hstar (T.l i) (Sp.j0 i) b) σ) (hmem i σ b h))` using `dif_pos h`. Rewrite using `[e]`. Use `continuous_pi fun k => continuous_pi fun k' => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hemb i).continuous_iff.mpr ?_` and prove the remaining obligations. Establish `hc0` using `(_root_.GlobalTheory.HeightCounting.RowRhoInt.pick_spec_alt hA D cf jE A hG hR hC (T.l i) (jSide D hstar (T.l i) (Sp.j0 i) b) σ h).1.matrix_elem k k'`. Use `hc0.congr fun g => ?_` and prove the remaining obligations. Conclude with `(hks i ⟨_, hmem i σ b h g k k'⟩).symm`. Establish `e : rho i σ b = 1` using `dif_neg h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Simplify using `only [MonoidHom.one_apply, Units.val_one]`. Conclude with `continuous_const`. Establish `h : GoodOcc D σ` using `⟨hocc, hgood⟩`. Establish `e : rho i σ b = mapRep (Sp.eO0 i).symm.toRingHom (restrictRep (Formalism.L2.TwC.intOf (T.l i) (Sp.K0 i).1) (_root_.GlobalTheory.HeightCounting.RowRhoInt.padicRepresentationOfEmbedding hA D cf jE A hG hR hC (T.l i) (jSide D hstar (T.l i) (Sp.j0 i) b) σ) (hmem i σ b h))` using `dif_pos h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `hstd : ∀ z : ℤ_[T.l i], algebraMap ℤ_[T.l i] (PadicAlgCl (T.l i)) z = algebraMap ℚ_[T.l i] (PadicAlgCl (T.l i)) (z : ℚ_[T.l i])` using `fun z => IsScalarTower.algebraMap_apply ℤ_[T.l i] ℚ_[T.l i] (PadicAlgCl (T.l i)) z`. Use `haveI : FaithfulSMul ℤ_[T.l i] (T.O0 i) := by`. Rewrite using `[faithfulSMul_iff_algebraMap_injective]`. Introduce `z z' hzz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun y => kap Sp i (algebraMap (T.O0 i) (FractionRing (T.O0 i)) y)) hzz`. Simplify using `only [twistFractionFieldToPadicAlgebraicClosure_padicInt] at h3`. Conclude with `Subtype.ext ((algebraMap ℚ_[T.l i] (PadicAlgCl (T.l i))).injective h3)`. Establish `h₀ : ((kap Sp i).comp (algebraMap (T.O0 i) (FractionRing (T.O0 i)))).comp (algebraMap ℤ_[T.l i] (T.O0 i)) = algebraMap ℤ_[T.l i] (PadicAlgCl (T.l i))` using `RingHom.ext fun z => (twistFractionFieldToPadicAlgebraicClosure_padicInt Sp i z).trans (hstd z).symm`. Establish `h₁ : (φ.comp (algebraMap (T.O0 i) (FractionRing (T.O0 i)))).comp (algebraMap ℤ_[T.l i] (T.O0 i)) = algebraMap ℤ_[T.l i] (PadicAlgCl (T.l i))` using `RingHom.ext fun z => (hφ z).trans (hstd z).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨τ, hτ⟩` from `GlobalTheory.EmbConj.exists_algEquiv _ _ h₀ h₁`. Establish `hφτ : ∀ q, φ q = τ (kap Sp i q)`. Establish `: φ = (τ.toRingEquiv.toRingHom).comp (kap Sp i)` using `IsLocalization.ringHom_ext (nonZeroDivisors (T.O0 i)) (RingHom.ext fun y => (hτ y).symm)`. Introduce `q`. Rewrite using `[this]`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hrep : mapRep (φ.comp (algebraMap (T.O0 i) (FractionRing (T.O0 i)))) (mapRep (Sp.eO0 i).symm.toRingHom (restrictRep (Formalism.L2.TwC.intOf (T.l i) (Sp.K0 i).1) (_root_.GlobalTheory.HeightCounting.RowRhoInt.padicRepresentationOfEmbedding hA D cf jE A hG hR hC (T.l i) (jSide D hst …`. Use extensionality with `g k k'`. Express the relevant statement in the definitionally equal form `φ (algebraMap (T.O0 i) (FractionRing (T.O0 i)) ((Sp.eO0 i).symm ⟨_, hmem i σ b h g k k'⟩)) = τ _`. Rewrite using `[hφτ, hks]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Rewrite using `[hrep]`. Apply `isRepOf_map D (T.l i) ι _ _ _ τ` to reduce the goal to its premises. Use `(_root_.GlobalTheory.HeightCounting.RowRhoInt.pick_spec_alt hA D cf jE A hG hR hC (T.l i) (jSide D hstar (T.l i) (Sp.j0 i) b) σ h).2.2 π hc hr hloc _ (fun x => ?_)` and prove the remaining obligations. Establish `hx` using `hι x`. Consider the cases of `b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : T.emb0b i x = T.emb0 i (starRestrictSubfield D hstar x)` using `T.restX_coefficientEmbedding_conj i x _ rfl`. Simplify using `only [Bool.false_eq_true, if_false] at hx`. Rewrite `hx` using `[e1, hφτ, kap_emb0]`. Conclude with `hx`. Simplify using `only [if_true] at hx`.
-
-Rewrite `hx` using `[hφτ, kap_emb0]`. Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem rho_rows_alt : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE),
     GalEx D → RowCusp D A.row → GlobalTheory.RowTie.ChebSplit D.nd → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) →

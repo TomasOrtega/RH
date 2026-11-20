@@ -10,11 +10,11 @@ namespace GlobalTheory.Vert.Model
 attribute [local instance] Algebra.TensorProduct.rightAlgebra in
 
 /- English proof (translation)
-Introduce `O _ _ _ M V hV hne`. Use `le_antisymm ((QCoh.topologicalKrullDim_mono hV).trans_eq (topologicalKrullDim_gen O M)) ?_` and prove the remaining obligations. Establish `hη : genericPoint M.X ∈ (V : Set M.X)`. Take `⟨x, hx⟩` from `hne`. Conclude with `VB.genericPoint_mem hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A, _, _, _, _, _, j, _, hr, -, hA⟩` from `exists_chart_trdeg_eq_relDim M (V : Set M.X) V.isOpen hη`. Use `IsLocalization.tensorRight (S := A) (FractionRing O) (nonZeroDivisors O)` as an intermediate fact. Establish `hemb` using `j.isOpenEmbedding.isEmbedding.comp (PrimeSpectrum.localization_comap_isEmbedding (FractionRing O ⊗[O] A) (Algebra.algebraMapSubmonoid A (nonZeroDivisors O)))`. Rewrite using `[← ringKrullDim_genericFibre_eq O (FractionRing O) hA, ← PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim, ← topologicalKrullDim_eq_of_isEmbedding hemb rfl]`. Use `QCoh.topologicalKrullDim_mono ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `hr ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_open_of_le_gen : ∀ (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (M : GlobalTheory.Vert.Model O) (V : M.X.Opens), V ≤ M.gen →

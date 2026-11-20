@@ -10,13 +10,13 @@ namespace GlobalTheory.StdChar
 def qe (q : ℚ) : ℂ := Complex.exp (2 * Real.pi * Complex.I * (q : ℂ))
 
 /- English proof (translation)
-Simplify using `only [qe, Rat.cast_add, mul_add, Complex.exp_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qe_add (a b : ℚ) : qe (a + b) = qe a * qe b := by
   simp only [qe, Rat.cast_add, mul_add, Complex.exp_add]
 
 /- English proof (translation)
-Simplify using `only [qe, Rat.cast_intCast]`. Rewrite using `[show 2 * (Real.pi : ℂ) * Complex.I * (n : ℂ) = n * (2 * Real.pi * Complex.I) by ring]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I n`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qe_int (n : ℤ) : qe n = 1 := by
   simp only [qe, Rat.cast_intCast]
@@ -24,9 +24,9 @@ theorem qe_int (n : ℤ) : qe n = 1 := by
   exact Complex.exp_int_mul_two_pi_mul_I n
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.1 h`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h2 : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `: (q : ℂ) = n`. Apply `mul_left_cancel₀ h2` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hn]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem qe_eq_one {q : ℚ} (h : qe q = 1) : ∃ n : ℤ, q = n := by
   obtain ⟨n, hn⟩ := Complex.exp_eq_one_iff.1 h
@@ -50,9 +50,9 @@ Both sides reduce to the same expression.
 theorem ce_coe (q : ℚ) : ce (q : AddCircle (1 : ℚ)) = qe q := rfl
 
 /- English proof (translation)
-Proceed by induction on `a using QuotientAddGroup.induction_on with`. Consider the case `H a`. Proceed by induction on `b using QuotientAddGroup.induction_on with`. Consider the case `H b`. Rewrite using `[← QuotientAddGroup.mk_add]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `qe_add a b`.
+A detailed English derivation is pending.
 -/
 theorem ce_add (a b : AddCircle (1 : ℚ)) : ce (a + b) = ce a * ce b := by
   induction a using QuotientAddGroup.induction_on with
@@ -63,14 +63,14 @@ theorem ce_add (a b : AddCircle (1 : ℚ)) : ce (a + b) = ce a * ce b := by
   exact qe_add a b
 
 /- English proof (translation)
-Rewrite using `[show (0 : AddCircle (1 : ℚ)) = ((0 : ℚ) : AddCircle (1 : ℚ)) by simp, ce_coe]`. Simplify using `using qe_int 0`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ce_zero : ce 0 = 1 := by
   rw [show (0 : AddCircle (1 : ℚ)) = ((0 : ℚ) : AddCircle (1 : ℚ)) by simp, ce_coe]
   simpa using qe_int 0
 
 /- English proof (translation)
-Proceed by induction on `z using QuotientAddGroup.induction_on with`. Consider the case `H q`. Take `⟨n, hn⟩` from `qe_eq_one h`. Rewrite using `[AddCircle.coe_eq_zero_iff]`. Conclude with `⟨n, by simp [hn]⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ce_eq_one {z : AddCircle (1 : ℚ)} (h : ce z = 1) : z = 0 := by
   induction z using QuotientAddGroup.induction_on with
@@ -91,7 +91,7 @@ def intSub (F : Type) [NontriviallyNormedField F] [IsUltrametricDist F] : AddSub
   neg_mem' {a} ha := by simpa using ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intSub [IsUltrametricDist F] {x : F} : x ∈ intSub F ↔ ‖x‖ ≤ 1 := Iff.rfl
 
@@ -101,9 +101,9 @@ def charOf (c : F →+ AddCircle (1 : ℚ)) : AddChar F ℂ where
   map_add_eq_mul' a b := by simp [ce_add]
 
 /- English proof (translation)
-Establish `hK : IsCompact (Metric.ball (0 : F) 1)` using `(isCompact_closedBall (0 : F) 1).of_isClosed_subset (IsUltrametricDist.isClosed_ball 0 1) Metric.ball_subset_closedBall`. Take `⟨ϖ, hϖ, hmax⟩` from `hK.exists_isMaxOn ⟨0, by simp⟩ continuous_norm.continuousOn`. Establish `hϖ1 : ‖ϖ‖ < 1` using `by simpa using hϖ`. Establish `hle : ∀ y : F, ‖y‖ < 1 → ‖y‖ ≤ ‖ϖ‖` using `fun y hy => hmax (by simpa using hy)`. Take `⟨z, hz0, hz1⟩` from `NormedField.exists_norm_lt_one F`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨ϖ, ?_, hϖ1, hle⟩` and prove the remaining obligations. Introduce `h`. Use `hle z hz1` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_unif [IsUltrametricDist F] [ProperSpace F] :
     ∃ ϖ : F, ϖ ≠ 0 ∧ ‖ϖ‖ < 1 ∧ ∀ y : F, ‖y‖ < 1 → ‖y‖ ≤ ‖ϖ‖ := by
@@ -121,9 +121,9 @@ theorem exists_unif [IsUltrametricDist F] [ProperSpace F] :
   linarith
 
 /- English proof (translation)
-Take `⟨a, -, φ, hφ, hlim⟩` from `(isCompact_closedBall (0 : F) 1).tendsto_subseq (x := fun n : ℕ => (n : F)) (fun n => by simpa using IsUltrametricDist.norm_natCast_le_one F n)`. Take `⟨M, hM⟩` from `Metric.cauchySeq_iff'.1 hlim.cauchySeq 1 one_pos`. Establish `h` using `hM (M + 1) (by omega)`. Establish `hlt : φ M < φ (M + 1)` using `hφ (by omega)`. Use `⟨φ (M + 1) - φ M, by omega, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.cast_sub hlt.le, ← dist_eq_norm]`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_nat_norm_lt_one [IsUltrametricDist F] [ProperSpace F] [CharZero F] :
     ∃ N : ℕ, 0 < N ∧ ‖(N : F)‖ < 1 := by
@@ -138,11 +138,9 @@ theorem exists_nat_norm_lt_one [IsUltrametricDist F] [ProperSpace F] [CharZero F
 
 variable (F) in
 /- English proof (translation)
-Take `⟨ϖ, hϖ0, hϖ1, hle⟩` from `exists_unif (F := F)`. Establish `hpos : 0 < ‖ϖ‖` using `norm_pos_iff.2 hϖ0`. Establish `hx : (QuotientAddGroup.mk ϖ⁻¹ : F ⧸ intSub F) ≠ 0`. Rewrite using `[Ne, QuotientAddGroup.eq_zero_iff, mem_intSub, norm_inv, not_le]`. Conclude with `one_lt_inv_iff₀.2 ⟨hpos, hϖ1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `CharacterModule.exists_character_apply_ne_zero_of_ne_zero hx`. Set `c' : F →+ AddCircle (1 : ℚ)` to `AddMonoidHom.comp c (QuotientAddGroup.mk' (intSub F))`. Use `⟨charOf c', fun x hx1 => ?_, ϖ⁻¹, fun h => hc ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `show ce (c (QuotientAddGroup.mk x)) = 1`. Rewrite using `[(QuotientAddGroup.eq_zero_iff x).2 hx1, map_zero, ce_zero]`.
-
-Conclude with `ce_eq_one h`. Rewrite using `[norm_mul, norm_inv, inv_mul_le_iff₀ hpos, mul_one]`. Conclude with `hle y hy`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stdChar [IsUltrametricDist F] [ProperSpace F] : ∃ ψ : AddChar F ℂ, IsStdChar ψ := by
   obtain ⟨ϖ, hϖ0, hϖ1, hle⟩ := exists_unif (F := F)
@@ -165,7 +163,7 @@ section Props
 variable {F : Type} [NontriviallyNormedField F]
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨Metric.ball x 1, Metric.isOpen_ball, Metric.mem_ball_self one_pos, fun x' hx' => ?_⟩` and prove the remaining obligations. Establish `h : ψ (x' - x) = 1` using `hψ.1 _ (by rw [← dist_eq_norm]; exact (Metric.mem_ball.1 hx').le)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem locConst [IsUltrametricDist F] {ψ : AddChar F ℂ} (hψ : IsStdChar ψ) :
     IsLocallyConstant (fun x => ψ x) := by
@@ -177,11 +175,11 @@ theorem locConst [IsUltrametricDist F] {ψ : AddChar F ℂ} (hψ : IsStdChar ψ)
     _ = ψ x := by rw [AddChar.map_add_eq_mul, h, mul_one]
 
 /- English proof (translation)
-Take `⟨N, hN0, hN1⟩` from `exists_nat_norm_lt_one (F := F)`. Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases. Simplify using the standard rewrite rules. Establish `hxpos : 0 < ‖x‖` using `norm_pos_iff.2 hx0`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (inv_pos.2 hxpos) hN1`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ψ ((N ^ k : ℕ) • x) = 1`. Apply `hψ.1` to reduce the goal to its premises. Rewrite using `[nsmul_eq_mul, norm_mul, Nat.cast_pow, norm_pow]`. Conclude with `(mul_le_mul_of_nonneg_right hk.le (norm_nonneg _)).trans (by rw [inv_mul_cancel₀ hxpos.ne'])`. Rewrite `h1` using `[AddChar.map_nsmul_eq_pow]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ‖ψ x‖ ^ (N ^ k) = 1` using `by rw [← norm_pow, h1, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (pow_ne_zero k hN0.ne')).1 h2`.
+A detailed English derivation is pending.
 -/
 theorem norm_eq_one [IsUltrametricDist F] [ProperSpace F] [CharZero F] {ψ : AddChar F ℂ}
     (hψ : IsStdChar ψ) (x : F) : ‖ψ x‖ = 1 := by
@@ -199,11 +197,11 @@ theorem norm_eq_one [IsUltrametricDist F] [ProperSpace F] [CharZero F] {ψ : Add
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) (pow_ne_zero k hN0.ne')).1 h2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hy`. Use `push_neg at hy`. Take `⟨x, hx, hxy⟩` from `hψ.2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy0 : y ≠ 0` using `by rintro rfl; simp at hy; linarith`. Establish `hypos : 0 < ‖y‖` using `norm_pos_iff.2 hy0`. Establish `hxle : ‖x‖ ≤ ‖y‖`. Use `hxy y⁻¹ (by rw [norm_inv]; exact inv_lt_one_of_one_lt₀ hy)` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_inv, mul_inv_le_iff₀ hypos, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx` to reduce the goal to its premises. Use `h (x * y⁻¹) (by rw [norm_mul, norm_inv, mul_inv_le_iff₀ hypos, one_mul]; exact hxle)` as an intermediate fact. Rewrite `this` using `[mul_assoc, inv_mul_cancel₀ hy0, mul_one]`. Then use the resulting hypothesis. Introduce `hy e he`. Conclude with `hψ.1 _ (by rw [norm_mul]; exact mul_le_one₀ he (norm_nonneg _) hy)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem conductor [IsUltrametricDist F] {ψ : AddChar F ℂ} (hψ : IsStdChar ψ) (y : F) :
     (∀ e : F, ‖e‖ ≤ 1 → ψ (e * y) = 1) ↔ ‖y‖ ≤ 1 := by
@@ -229,17 +227,17 @@ section Ext
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
 /- English proof (translation)
-Use `haveI := hU.ultraE`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hy`. Use `push_neg at hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hxy⟩` from `hψ.2`. Take `⟨e₀, he₀, hsum⟩` from `he`. Take `⟨a, ha⟩` from `hU.unram y`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp at hy; linarith`. Establish `hypos : 0 < ‖y‖` using `norm_pos_iff.2 hy0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha1 : 1 < ‖a‖` using `ha ▸ hy`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at ha1; linarith`. Establish `hxle : ‖x‖ ≤ ‖y‖`. Use `hxy a⁻¹ (by rw [norm_inv]; exact inv_lt_one_of_one_lt₀ ha1)` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_inv, mul_inv_le_iff₀ (norm_pos_iff.2 ha0), one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[ha]` and apply the resulting hypothesis. Establish `htr1 : Algebra.trace F E e₀ = 1`. Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[htr, hsum, map_one]`. Apply `hx` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h (algebraMap F E x * e₀ * y⁻¹) (by` as an intermediate fact. Rewrite using `[norm_mul, norm_mul, norm_inv, norm_algebraMap', mul_inv_le_iff₀ hypos]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[mul_assoc, inv_mul_cancel₀ hy0, mul_one, ← Algebra.smul_def, LinearMap.map_smul, htr1, smul_eq_mul, mul_one]`. Then use the resulting hypothesis. Introduce `hy e he'`.
+Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hψ.1` to reduce the goal to its premises. Establish `hz : ‖e * y‖ ≤ 1` using `by rw [norm_mul]; exact mul_le_one₀ he' (norm_nonneg _) hy`. Rewrite using `[← norm_algebraMap' E, htr]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hz (by rw [hU.norm_star]; exact hz))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conductor_trace [hU : Unram F E]
     (htr : ∀ y : E, algebraMap F E (Algebra.trace F E y) = y + star y)
@@ -281,9 +279,7 @@ theorem conductor_trace [hU : Unram F E]
 end Ext
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU`. Use `haveI := hU.ultraF`. Use `haveI := hU.charZero`. Use `haveI := hU.lcF`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`.
-
-Take `⟨htr, he, -⟩` from `GlobalTheory.T.unramifiedQuadratic_integral_traceForm_perfect F E`. Conclude with `⟨exists_stdChar F, fun ψ hψ => ⟨locConst hψ, norm_eq_one hψ, conductor hψ, conductor_trace htr he hψ⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem psi_conductor : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E], (∃ ψ : AddChar F ℂ, IsStdChar ψ) ∧ ∀ ψ : AddChar F ℂ, IsStdChar ψ →

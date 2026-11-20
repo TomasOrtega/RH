@@ -22,13 +22,13 @@ open GlobalTheory.ArcPull
 open GlobalTheory.PsiEvenPull (proj)
 
 /- English proof (translation)
-Establish `hI : IsIso hD.W.ι` using `by rw [hW, ← Scheme.topIso_hom]; infer_instance`. Set `h : Sp R' ⟶ (TW hD.W).left` to `specOf φ ≫ inv hD.W.ι`. Establish `hh : h ≫ hD.W.ι = specOf φ` using `by simp [h]`. Establish `hg : hD.g = jK R' ≫ h`. Rewrite using `[← cancel_mono hD.W.ι, hD.g_comm, Category.assoc, hh]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `sq : (D'.c x).left ≫ proj hD = h ≫ (toUnit (TW hD.W) ≫ D.c (hD.xe x)).left`. Rewrite using `[hD.c_pr x, ← hh, Category.assoc]`. Both sides reduce to the same expression. Take `⟨a, ha, va⟩` from `exists_down_om hD.w_gen D.P.isLB D'.P.isLB (Y' := Sp R') (K := PUnit) (φ' := fun _ => (D'.c x).left) h (fun _ => sq) (hD.psiW.psi (hD.xe x)) (hD.psiW.psi_gen _)`. Use `(psiUnitOn_univ_iff D' x).2 ⟨a, ha, corr_of_val D'.P.isLB fun y J' hJ' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨J, hJ⟩` from `DegPull.exists_good' D.P.isLB y`. Establish `e₁` using `PsiEvenPull.psi_pull hD x (𝟙 _) y hJ hJ'`. Establish `e₂` using `va _ (𝟙 _ ≫ jK R') y J J' hJ hJ'`. Rewrite `e₂` using `[Fintype.prod_unique, zpow_neg_one, Category.assoc (𝟙 _) (jK R') h, ← hg]`. Establish `e` using `e₁.symm.trans e₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(val_pull hJ' _ _ _).trans (mul_left_cancel e).symm`.
+A detailed English derivation is pending.
 -/
 theorem psiUnitOn_pull_top {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ : R →+* R'}
     {D : DegPre R} {D' : DegPre R'} (hD : IsPullDeg φ D D') (hW : hD.W = ⊤) (x : D'.X) :

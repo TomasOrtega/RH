@@ -7,27 +7,23 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Topology
 
 /- English proof (translation)
-Introduce `σ _ X w d A hX hiso U hU`. Take `⟨N, k, f, hNo, hwN, hf, hXN⟩` from `hX`. Take `⟨W, hW, hWiso⟩` from `hiso`. Establish `hmem : N ∩ U ∩ W ∈ 𝓝 w` using `Filter.inter_mem (Filter.inter_mem (hNo.mem_nhds hwN) hU) hW`. Take `⟨ρ, hρ, hball⟩` from `Metric.nhds_basis_closedBall.mem_iff.mp hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hBN : Metric.closedBall w ρ ⊆ N` using `fun x hx => (hball hx).1.1`. Use `set C : Set (σ → ℂ) := Metric.closedBall w ρ ∩ (fun z i => f i z) ⁻¹' {0} with hCdef`. Establish `hCX : ∀ x ∈ C, x ∈ X`. Introduce `x hx`. Establish `hxN` using `hBN hx.1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: x ∈ X ∩ N`. Rewrite using `[hXN]`. Use `⟨hxN, fun i => ?_⟩` and prove the remaining obligations. Use `congrFun (show (fun i => f i x) = 0 from hx.2) i` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `this.1`. Establish `hXC : ∀ x ∈ X, x ∈ Metric.closedBall w ρ → x ∈ C`. Introduce `x hxX hxB`. Establish `: x ∈ {z | z ∈ N ∧ ∀ i, f i z = 0}` using `hXN ▸ ⟨hxX, hBN hxB⟩`. Use `⟨hxB, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Use `show (fun i => f i x) = 0`. Use function extensionality and compare the values at `i`. Simplify using `using this.2 i`. Establish `hCcl : IsClosed C`. Use `ContinuousOn.preimage_isClosed_of_isClosed ?_ Metric.isClosed_closedBall isClosed_singleton` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `continuousOn_pi.mpr fun i => ((hf i).continuousOn).mono hBN`. Establish `hC : IsCompact C` using `(isCompact_closedBall w ρ).of_isClosed_subset hCcl Set.inter_subset_left`. Use `set S : Set (σ → ℂ) := C ∩ Metric.sphere w ρ with hSdef`. Establish `hS : IsCompact S` using `hC.inter_right Metric.isClosed_sphere`. Establish `hT : IsCompact (A '' S)` using `hS.image A.continuous`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hAw : A w ∉ A '' S`. Introduce and unpack `⟨x, hxS, hxA⟩`. Establish `hxw : x = w` using `hWiso x ⟨hCX x hxS.1, (hball hxS.1.1).2⟩ hxA`. Establish `hd` using `hxS.2`. Rewrite `hd` using `[hxw, Metric.mem_sphere, dist_self]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hρ.ne hd`. Take `⟨r, hr, hrT⟩` from `Metric.isOpen_iff.mp hT.isClosed.isOpen_compl (A w) hAw`. Use `⟨ρ, hρ, r, hr, fun x hx => (hball (Metric.ball_subset_closedBall hx)).1.2, ?_⟩` and prove the remaining obligations. Introduce `K hKr hK`. Establish `heq : {x | x ∈ X ∩ Metric.ball w ρ ∧ A x ∈ K} = C ∩ A ⁻¹' K`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hxX, hxB⟩, hxK⟩`. Conclude with `⟨hXC x hxX (Metric.ball_subset_closedBall hxB), hxK⟩`. Introduce and unpack `⟨hxC, hxK⟩`.
-
-Use `⟨⟨hCX x hxC, ?_⟩, hxK⟩` and prove the remaining obligations. Establish `hle : dist x w ≤ ρ` using `hxC.1`. Break down `hle.lt_or_eq with hlt | heq` into its components or cases. Conclude with `hlt`. Conclude with `absurd ⟨x, ⟨hxC, heq⟩, rfl⟩ (hrT (hKr hxK))`.
-
-Rewrite using `[heq]`. Conclude with `hC.inter_right (hK.isClosed.preimage A.continuous)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FiniteProjectionProperBall.proof : FiniteProjectionProperBall.Statement := by
   intro σ _ X w d A hX hiso U hU

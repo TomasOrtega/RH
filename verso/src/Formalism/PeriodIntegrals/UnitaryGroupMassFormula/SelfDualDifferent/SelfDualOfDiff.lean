@@ -8,15 +8,13 @@ open NumberField
 namespace PI.UnitaryGroupMassFormula.KerSelfDual
 
 /- English proof (translation)
-Introduce `K E _ _ _ _ _ cj 𝔟 𝔟c hconj hc hd`. Establish `hD : ((differentIdeal (𝓞 K) (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) = (FractionalIdeal.dual (𝓞 K) K (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E))⁻¹` using `coeIdeal_differentIdeal (𝓞 K) K E (𝓞 E)`. Establish `hdual1 : FractionalIdeal.dual (𝓞 K) K (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0` using `FractionalIdeal.dual_ne_zero (𝓞 K) K one_ne_zero`. Establish `hD0 : differentIdeal (𝓞 K) (𝓞 E) ≠ ⊥`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hD` using `[h, FractionalIdeal.coeIdeal_bot]`. Conclude with `inv_ne_zero hdual1 hD.symm`. Establish `hb : 𝔟 ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hD0 (by rw [hd, Ideal.bot_mul])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hbc : 𝔟c ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hD0 (by rw [hd, Ideal.mul_bot])`. Establish `hb0 : ((𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr hb`. Establish `hbc0 : ((𝔟c : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr hbc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdual : FractionalIdeal.dual (𝓞 K) K ((𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E))⁻¹ = ((𝔟c : FractionalIdeal (nonZeroDivisors (𝓞 E)) E))⁻¹`. Rewrite using `[FractionalIdeal.dual_inv, ← inv_inv (FractionalIdeal.dual (𝓞 K) K 1), ← hD, hd, FractionalIdeal.coeIdeal_mul, mul_inv, mul_comm, ← mul_assoc, mul_inv_cancel₀ hb0, one_mul]`. Introduce `y`. Rewrite using `[inv_map cj hconj.1 𝔟 𝔟c hc hb hbc y, ← hdual, FractionalIdeal.mem_dual (inv_ne_zero hb0)]`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Algebra.traceForm_apply, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDualOfDiff : PI.KerIso.SelfDualOfDiff := by
   intro K E _ _ _ _ _ cj 𝔟 𝔟c hconj hc hd

@@ -3,25 +3,23 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p hp k A _ _ _ _ _ T f hf hT hfix`. Establish `hp1 : 1 < p ^ f` using `Nat.one_lt_pow hf.ne' hp.out.one_lt`. Establish `hint : ∀ t ∈ (T : Set A), IsIntegral k t`. Introduce `t ht`. Use `⟨Polynomial.X ^ (p ^ f) - Polynomial.X, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Polynomial.monic_X_pow_sub (by rw [Polynomial.degree_X]; exact_mod_cast hp1)`. Simplify using `[hfix t ht]`. Establish `hfinA : Module.Finite k (Algebra.adjoin k (T : Set A))` using `Algebra.finite_adjoin_of_finite_of_isIntegral T.finite_toSet hint`. Rewrite `hfinA` using `[hT]`. Use `haveI : Module.Finite k A := Module.Finite.equiv (Subalgebra.topEquiv (R := k) (A := A)).toLinearEquiv`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpk : ((p ^ f : ℕ) : k) = 0`. Rewrite using `[CharP.cast_eq_zero_iff k p]`. Conclude with `dvd_pow_self p hf.ne'`. Establish `hD : KaehlerDifferential.D k A = 0`. Apply `Derivation.ext_of_adjoin_eq_top (T : Set A) hT` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `t ht`. Establish `h1` using `(KaehlerDifferential.D k A).leibniz_pow t (p ^ f)`. Rewrite `h1` using `[hfix t ht]`. Rewrite using `[h1, ← Nat.cast_smul_eq_nsmul k, hpk, zero_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : Subsingleton (Ω[A⁄k]) := by`. Prove the components needed by the constructor for the conclusion. Introduce `x y`. Establish `hx : ∀ z : Ω[A⁄k], z = 0`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `htop` using `KaehlerDifferential.span_range_derivation k A`. Establish `hz : z ∈ Submodule.span A (Set.range (KaehlerDifferential.D k A))` using `by rw [htop]; trivial`. Rewrite `hz` using `[hD]`. Establish `: Set.range (⇑(0 : Derivation k A (Ω[A⁄k]))) ⊆ ({0} : Set (Ω[A⁄k]))`. Introduce and unpack `_ ⟨w, rfl⟩`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `Submodule.span_mono (R := A) this hz` as an intermediate fact. Simplify using `using this`. Rewrite using `[hx x, hx y]`. Use `haveI : Algebra.FormallyUnramified k A := ⟨inferInstance⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : IsReduced A := Algebra.FormallyUnramified.isReduced_of_field k A`. Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite k A`. Establish `hField : IsField A` using `IsArtinianRing.isField_of_isReduced_of_isLocalRing A`. Use `⟨hField, ?_⟩` and prove the remaining obligations. Introduce `y a hy`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `letI : Field A := hField.toField`. Use `haveI : Algebra.IsSeparable k A := Algebra.FormallyUnramified.isSeparable k A`. Use `haveI : ExpChar k p := ExpChar.prime hp.out`. Establish `hmem : y ∈ perfectClosure k A`. Rewrite using `[mem_perfectClosure_iff_pow_mem p]`.
-
-Conclude with `⟨1, by rw [pow_one, hy]; exact ⟨a, rfl⟩⟩`. Rewrite `hmem` using `[perfectClosure.eq_bot_of_isSeparable, IntermediateField.mem_bot]`. Take `⟨b, hb⟩` from `hmem`. Conclude with `⟨b, hb.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem localAlg_frob_fixed_isField_and_pth_roots :
     ∀ (p : ℕ) [Fact p.Prime] (k A : Type) [Field k] [CharP k p] [CommRing A] [Algebra k A] [IsLocalRing A]

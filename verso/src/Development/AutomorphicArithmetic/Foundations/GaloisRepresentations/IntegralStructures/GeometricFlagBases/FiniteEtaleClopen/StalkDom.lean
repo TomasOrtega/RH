@@ -6,7 +6,7 @@ open GlobalTheory.GalV (HTower)
 open UpperTheory.Gal.Int.Geo UpperTheory.Gal.Int.Geo.Cut
 
 /- English proof (translation)
-Introduce `O _ _ _ Y p hp y`. Use `haveI : Smooth p := hp`. Use `haveI := GroundTheory.Arith.SchemeCoh.isRegularLocalRing_stalk_of_smooth p y`. Conclude with `GroundTheory.Arith.SchemeCoh.IsRegularLocalRing.isDomain`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.Cut.stalkDom :
     UpperTheory.Gal.Int.Geo.Cut.StalkDom := by

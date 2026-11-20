@@ -21,13 +21,13 @@ noncomputable section
 namespace GlobalTheory.CExtGen
 
 /- English proof (translation)
-Introduce `g n o _ ζ F V _ _ _ hB hV y`. Establish `hC : GlobalTheory.LN.CDvr V` using `⟨hV, hB.1.2.2.2, hB.2⟩`. Use `haveI : CharZero V := hB.2`. Use `haveI : CharZero (FractionRing V) := inferInstance`. Take `⟨R₁, _, _, hfin, hnt, P, α, α₂, hα, hsq, hlam⟩` from `GlobalTheory.T.exists_lambdaPolarisation_siegelObject_charZeroField g n o ζ F.X F.s F.univ F.princ (FractionRing V) y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W₁, _, _, _, f₁, ψ, hW₁, hi₁, hl₁, hf₁, hc₁⟩` from `GlobalTheory.T.exists_completeDVR_finite_map_of_finiteAlgebra V hC R₁ hfin hnt`. Take `⟨P₁, φ₁, hP₁, -, hL₁⟩` from `GlobalTheory.KeyFam.SameLam.exists_polPB P ψ`. Take `⟨β₂, hβ₂, hΛ₁⟩` from `GlobalTheory.Mum.lbIso_lam_pull_of_isGrpPullback _ _ _ P.A P₁.A φ₁ hP₁`. Establish `lam₁` using `hΛ₁ P.L P₁.L _ F.univ.P α₂ P.isLB P₁.isLB F.univ.isLB hL₁ hlam`. Take `⟨V₁, _, _, _, f₂, fK₂, hV₁, hi₂, hl₂, hf₂, hc₂, A, β, hβ, hLA, G, _, _, gen, hG, hgen⟩` from `GlobalTheory.T.exists_semiAbelianModel_finiteExt_completeDVR W₁ hW₁ P₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨γ₂, hγ₂, hΛ₂⟩` from `GlobalTheory.Mum.lbIso_lam_pull_of_isGrpPullback _ _ _ P₁.A A.A β hβ`. Establish `lam₂` using `hΛ₂ P₁.L A.L _ F.univ.P (β₂ ≫ α₂) P₁.isLB A.isLB F.univ.isLB hLA lam₁`. Use `⟨V₁, inferInstance, inferInstance, inferInstance, f₂.comp f₁, fK₂.comp (ψ.comp (algebraMap _ R₁)), hV₁, hi₂.comp hi₁, ?_, hf₂.comp hf₁, ?_, A, β ≫ φ₁ ≫ α, γ₂ ≫ β₂ ≫ α₂, ?_, ?_, ?_, G, inferInstance, inferInstance, gen, hG, hgen⟩` and prove the remaining obligations. Conclude with `RingHom.isLocalHom_comp f₂ f₁`. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hc₁, hc₂]`. Use `(hβ.comp (hP₁.comp hα)).congr ?_ rfl` and prove the remaining obligations. Simplify using `[spMap, Spec.map_comp]`. Conclude with `GlobalTheory.ZM.SiegPull.isSquare_comp hγ₂ (GlobalTheory.ZM.SiegPull.isSquare_comp hβ₂ hsq)`. Simplify `lam₂` using `[Category.assoc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_polAV_semiAbelian : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V],
     GlobalTheory.Mum.Base V → IsDiscreteValuationRing V → ∀ y : Sp (FractionRing V) ⟶ F.X,

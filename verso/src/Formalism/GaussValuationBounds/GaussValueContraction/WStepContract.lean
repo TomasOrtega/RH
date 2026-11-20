@@ -3,9 +3,9 @@ import Formalism.GaussValuationBounds.Statement
 namespace Formalism.NOK
 
 /- English proof (translation)
-Establish `hd : 0 < ℓ - 1` using `by linarith`. Establish `hD : 0 < ℓ ^ 2 - ℓ + 1` using `by nlinarith`. Unfold `WStep`. Establish `h1 : H / (ℓ - 1) ≤ H' / (ℓ - 1)` using `div_le_div_of_nonneg_right hH hd.le`. Establish `h2 : (ℓ * a + (ℓ - 1) * (H + lam)) / (ℓ ^ 2 - ℓ + 1) ≤ (ℓ * a' + (ℓ - 1) * (H' + lam)) / (ℓ ^ 2 - ℓ + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `div_le_div_of_nonneg_right _ hD.le` to reduce the goal to its premises. Establish `: ℓ * a ≤ ℓ * a'` using `mul_le_mul_of_nonneg_left ha (by linarith)`. Establish `: (ℓ - 1) * (H + lam) ≤ (ℓ - 1) * (H' + lam)` using `mul_le_mul_of_nonneg_left (by linarith) hd.le`. Combine the linear equalities and inequalities to obtain the conclusion. Use `max_le_max h1 h2` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -26,9 +26,9 @@ theorem wStep_mono {ℓ H H' lam a a' : ℝ} (hℓ : 3 ≤ ℓ) (hH : H ≤ H') 
   linarith
 
 /- English proof (translation)
-Establish `hd : 0 < ℓ - 1` using `by linarith`. Establish `hD : 0 < ℓ ^ 2 - ℓ + 1` using `by nlinarith`. Establish `e1 : H / (ℓ - 1) ≤ z + t + 1`. Rewrite using `[div_le_iff₀ hd]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `e2 : (ℓ * ((ℓ - 1) * z + t + 2) + (ℓ - 1) * (H + lam)) / (ℓ ^ 2 - ℓ + 1) ≤ z + t + 1`. Rewrite using `[div_le_iff₀ hD, hH]`. Use the polynomial consequences of the given equalities and inequalities. Unfold `WStep`. Use `max_le e1 e2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -46,17 +46,17 @@ theorem wStep_contract {ℓ H lam z t : ℝ} (hℓ : 3 ≤ ℓ) (hlam : 0 ≤ la
   linarith
 
 /- English proof (translation)
-Introduce `n _ ℓ lam Hm a H hℓ hlam hH hstep i`. Establish `hd : 0 < ℓ - 1` using `by linarith`. Take `⟨i₀, -, hi₀⟩` from `Finset.exists_max_image Finset.univ a Finset.univ_nonempty`. Establish `hm : ∀ i, a i ≤ a i₀` using `fun i => hi₀ i (Finset.mem_univ i)`. Establish `h1` using `hstep (i₀ + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[add_sub_cancel_right]`. Establish `h2 : a i₀ ≤ WStep ℓ Hm lam (a i₀)` using `le_trans h1 (wStep_mono hℓ (hH _) (hm _))`. Establish `key : a i₀ ≤ (Hm + lam) / (ℓ - 1) + 2`. Unfold `WStep at h2`. Establish `h3 : a i₀ - 1 ≤ max (Hm / (ℓ - 1)) ((ℓ * a i₀ + (ℓ - 1) * (Hm + lam)) / (ℓ ^ 2 - ℓ + 1))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Break down `le_max_iff.mp h3 with h4 | h4` into its components or cases. Establish `: Hm / (ℓ - 1) ≤ (Hm + lam) / (ℓ - 1)` using `div_le_div_of_nonneg_right (by linarith) hd.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD : 0 < ℓ ^ 2 - ℓ + 1` using `by nlinarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `h4` using `[le_div_iff₀ hD]`. Establish `h5 : a i₀ * (ℓ - 1) ≤ Hm + lam + 2 * (ℓ - 1)`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_le]`. Use `mul_lt_mul_of_pos_left hc hd` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `: a i₀ ≤ (Hm + lam + 2 * (ℓ - 1)) / (ℓ - 1)` using `by rw [le_div_iff₀ hd]; exact h5`. Establish `e : (Hm + lam + 2 * (ℓ - 1)) / (ℓ - 1) = (Hm + lam) / (ℓ - 1) + 2`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `le_trans (hm i) key`.
+A detailed English derivation is pending.
 -/
 theorem wCycle_proof : WCycle := by
   intro n _ ℓ lam Hm a H hℓ hlam hH hstep i
@@ -87,15 +87,15 @@ theorem wCycle_proof : WCycle := by
   exact le_trans (hm i) key
 
 /- English proof (translation)
-Introduce `ℓ lam G X₀ j x H hℓ hlam hG hX₀ hx0 hH hstep`. Establish `hd : 0 < ℓ - 1` using `by linarith`. Use `set t := (2 * G + lam) / (ℓ - 1) with ht`. Establish `htH : 2 * G + lam = (ℓ - 1) * t` using `by rw [ht]; field_simp`. Establish `claim : ∀ k, k ≤ j → x k ≤ X₀ / (ℓ - 1) ^ k + t + 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_`. Establish `: 0 ≤ t` using `div_nonneg (by linarith) hd.le`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [pow_zero, div_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ k ih`. Introduce `hk`. Establish `hk' : k < j` using `by omega`.
+Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprev` using `ih hk'.le`. Use `set z := X₀ / (ℓ - 1) ^ (k + 1) with hzdef`. Establish `hz : 0 ≤ z` using `div_nonneg hX₀ (pow_nonneg hd.le _)`. Establish `hzk : X₀ / (ℓ - 1) ^ k = (ℓ - 1) * z`. Rewrite using `[hzdef, pow_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite `hprev` using `[hzk]`. Combine the equalities or inequalities in the displayed calculation. Use `claim j le_rfl` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem wThin_proof : WThin := by
   intro ℓ lam G X₀ j x H hℓ hlam hG hX₀ hx0 hH hstep
@@ -126,13 +126,13 @@ theorem wThin_proof : WThin := by
   linarith
 
 /- English proof (translation)
-Introduce `n _ ℓ lam h G a H c j hℓ hlam hh hG hH hthin hstep`. Establish `hd : 0 < ℓ - 1` using `by linarith`. Use `set X₀ := (2 * h + lam) / (ℓ - 1) + 2 with hX₀def`. Establish `hX₀ : 0 ≤ X₀`. Establish `: 0 ≤ (2 * h + lam) / (ℓ - 1)` using `div_nonneg (by linarith) hd.le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA : ∀ i, a i ≤ X₀` using `wCycle_proof n ℓ lam (2 * h) a H hℓ hlam hH hstep`. Use `wThin_proof ℓ lam G X₀ j (fun k => a (c + ((j - k : ℕ) : ZMod n))) (fun k => H (c + ((j - k : ℕ) : ZMod n))) hℓ hlam hG hX₀ (hA _) (fun k hk => hthin (j - k) (by omega) (by omega)) (by` as an intermediate fact. Introduce `k hk`. Establish `e1 : ((j - k : ℕ) : ZMod n) = ((j - (k + 1) : ℕ) : ZMod n) + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show j - k = (j - (k + 1)) + 1 by omega]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : c + ((j - k : ℕ) : ZMod n) - 1 = c + ((j - (k + 1) : ℕ) : ZMod n)`. Rewrite using `[e1]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hstep (c + ((j - k : ℕ) : ZMod n))`. Rewrite `h1` using `[e2]`. Conclude with `h1)`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem wCut_proof : WCut := by
   intro n _ ℓ lam h G a H c j hℓ hlam hh hG hH hthin hstep

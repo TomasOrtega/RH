@@ -13,27 +13,27 @@ namespace Formalism.L2.SG.PoincareInHH.Cut
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-The claim follows from `phWellDef_of_steps X u hK hS hN`.
+A detailed English derivation is pending.
 -/
 theorem poincare_well_defined (hK : X.LevelSubgroupCharacter) (hS : KsetSplit X u) (hN : UnipotentConjugateInLevel X u) : PhWellDef X u hK :=
   phWellDef_of_steps X u hK hS hN
 
 /- English proof (translation)
-The claim follows from `phProps_of_steps X u hK (Formalism.L2.SG.Closed.level_subgroup_properties X) hR hS hN hL hP`.
+A detailed English derivation is pending.
 -/
 theorem poincare_properties (hK : X.LevelSubgroupCharacter) (hR : FoldReadyX X) (hS : KsetSplit X u) (hN : UnipotentConjugateInLevel X u)
     (hL : RatLevi X u) (hP : PsiProd X u) : PhProps X u hK :=
   phProps_of_steps X u hK (Formalism.L2.SG.Closed.level_subgroup_properties X) hR hS hN hL hP
 
 /- English proof (translation)
-The claim follows from `iFinite_of X u hK hF hM hW (phWellDef_of_steps X u hK hS hN) hU`.
+A detailed English derivation is pending.
 -/
 theorem poincare_integral_finite (hK : X.LevelSubgroupCharacter) (hF : SratFund X u) (hM : MultPoly X) (hW : WuDecay.WuDecay X)
     (hS : KsetSplit X u) (hN : UnipotentConjugateInLevel X u) (hU : IUnfold X u hK) : IFinite X u hK :=
   iFinite_of X u hK hF hM hW (phWellDef_of_steps X u hK hS hN) hU
 
 /- English proof (translation)
-The claim follows from `inHH_of_steps X u hK (Formalism.L2.SG.Closed.level_subgroup_properties X) hR (@Formalism.L2.SG.Closed.fold_L2_first X.B.I.GA _ _ _ hR.1 hR.2.1 hR.2.2.1 _ hR.2.2.2.1 (X.B.I.muA X.B.μf) (@muA_isHaar' X.B.I X.B.μf X.B.sf X.B.haar)) (@Formalism.L2.SG.Closed.fold_L2_second X.B.I.GA _ …`.
+A detailed English derivation is pending.
 -/
 theorem poincare_in_holomorphic_space (hK : X.LevelSubgroupCharacter) (hR : FoldReadyX X) (hS : KsetSplit X u) (hN : UnipotentConjugateInLevel X u)
     (hL : RatLevi X u) (hP : PsiProd X u) (hW : WuDecay.WuDecay X) (hF : SratFund X u) (hM : MultPoly X)
@@ -47,45 +47,45 @@ theorem poincare_in_holomorphic_space (hK : X.LevelSubgroupCharacter) (hR : Fold
     hS hN hL hP hW hF hM hU hFB hPM hRph hPI hRF hEF
 
 /- English proof (translation)
-The claim follows from `puLinear_holds X u hK Dt`.
+A detailed English derivation is pending.
 -/
 theorem poincare_linear (hK : X.LevelSubgroupCharacter) (Dt : Set X.B.I.GA) : PuLinear X u hK Dt := puLinear_holds X u hK Dt
 
 /- English proof (translation)
-The claim follows from `colsLink_of X u hK hC hF hU hCF`.
+A detailed English derivation is pending.
 -/
 theorem columns_link (hK : X.LevelSubgroupCharacter) (hC : BaseLevelSetClosed X u) (hF : GamFinOrd X u) (hU : GamUnip X u)
     (hCF : ClassFin X u hK) : ColsLink X u hK :=
   colsLink_of X u hK hC hF hU hCF
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.foldReady_holds X.B.I`.
+A detailed English derivation is pending.
 -/
 theorem foldReadyX_holds : FoldReadyX X := Formalism.L2.SG.Pf.foldReady_holds X.B.I
 
 /- English proof (translation)
-Take `⟨Fs, -, h⟩` from `Formalism.L2.SG.Pf.exists_fund_srat_holds X u`. Conclude with `⟨Fs, h _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sratFund_holds : SratFund X u := by
   obtain ⟨Fs, -, h⟩ := Formalism.L2.SG.Pf.exists_fund_srat_holds X u
   exact ⟨Fs, h _⟩
 
 /- English proof (translation)
-The claim follows from `poincare_properties X u hK (foldReadyX_holds X) hS hN hL hP`.
+A detailed English derivation is pending.
 -/
 theorem phProps_closed (hK : X.LevelSubgroupCharacter) (hS : KsetSplit X u) (hN : UnipotentConjugateInLevel X u) (hL : RatLevi X u)
     (hP : PsiProd X u) : PhProps X u hK :=
   poincare_properties X u hK (foldReadyX_holds X) hS hN hL hP
 
 /- English proof (translation)
-The claim follows from `poincare_integral_finite X u hK (sratFund_holds X u) hM hW hS hN hU`.
+A detailed English derivation is pending.
 -/
 theorem iFinite_closed (hK : X.LevelSubgroupCharacter) (hM : MultPoly X) (hW : WuDecay.WuDecay X) (hS : KsetSplit X u)
     (hN : UnipotentConjugateInLevel X u) (hU : IUnfold X u hK) : IFinite X u hK :=
   poincare_integral_finite X u hK (sratFund_holds X u) hM hW hS hN hU
 
 /- English proof (translation)
-The claim follows from `poincare_in_holomorphic_space X u hK (foldReadyX_holds X) hS hN hL hP hW (sratFund_holds X u) hM hU hFB hPM hRph hPI hRF hEF`.
+A detailed English derivation is pending.
 -/
 theorem inHH_closed (hK : X.LevelSubgroupCharacter) (hS : KsetSplit X u) (hN : UnipotentConjugateInLevel X u) (hL : RatLevi X u) (hP : PsiProd X u)
     (hW : WuDecay.WuDecay X) (hM : MultPoly X) (hU : IUnfold X u hK) (hFB : FundBridge X) (hPM : PserMeas X u hK)

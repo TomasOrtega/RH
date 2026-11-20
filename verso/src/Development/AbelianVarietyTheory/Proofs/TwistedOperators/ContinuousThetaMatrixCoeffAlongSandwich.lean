@@ -14,9 +14,7 @@ noncomputable section
 namespace GlobalTheory.ThetaCoefCont
 
 /- English proof (translation)
-Take `⟨hg, -, hsc, -, hdisc, K, hK, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D W V`. Use `haveI := hg`. Use `haveI := hsc`. Use `haveI := hdisc`. Use `haveI : BorelSpace (WO V W) := ⟨rfl⟩`.
-
-Use `haveI : Countable (ratL W V) := TopologicalSpace.separableSpace_iff_countable.mp inferInstance`. Conclude with `GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact (ratL W V) hK hcov ν h𝓕`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem measure_fundamentalDomain_ratL_lt_infty {D : D7} (V W : HSp D) (ν : Measure (WO V W)) (𝓕 : Set (WO V W))
     (hν : ν.IsAddHaarMeasure) (h𝓕 : IsAddFundamentalDomain (ratL W V) 𝓕 ν) : ν 𝓕 < ⊤ := by
@@ -29,17 +27,15 @@ private theorem measure_fundamentalDomain_ratL_lt_infty {D : D7} (V W : HSp D) (
   exact GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact (ratL W V) hK hcov ν h𝓕
 
 /- English proof (translation)
-Introduce `D V W a b P Q ψ hψ ν 𝓕 hν h𝓕 G G' hG hG'`. Use `haveI : BorelSpace (WO V W) := ⟨rfl⟩`. Establish `hfin : ν 𝓕 < ⊤` using `measure_fundamentalDomain_ratL_lt_infty V W ν 𝓕 hν h𝓕`. Use `haveI : IsFiniteMeasure (ν.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ]; exact hfin⟩`. Take `⟨C', hC'⟩` from `GlobalTheory.OrientedHeis.theta_bounded hψ hG'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg⟩ : ∃ g : GlobalTheory.RealWeil.BB ψ V W, (g.1 : WO V W → ℂ) = G` from `⟨_, GlobalTheory.RealWeil.coe_toB hψ G hG⟩`. Establish `hE : Continuous (GlobalTheory.IsoMean.emb V W P Q)`. Unfold `GlobalTheory.IsoMean.emb`. Conclude with `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Establish `hρ : Continuous fun y : Mx D a b => GlobalTheory.RealWeil.rhoB hψ (GlobalTheory.IsoMean.emb V W P Q y) g` using `(GlobalTheory.RealWeil.continuous_rhoB hψ g).comp hE`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΦ : Continuous fun h : GlobalTheory.RealWeil.BB ψ V W => ∫ u in 𝓕, h.1 u * star (G' u) ∂ν`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `h₀`. Establish `hnear : ∀ᶠ h in nhds h₀, ‖h‖ < ‖h₀‖ + 1` using `(continuous_norm.tendsto h₀).eventually (gt_mem_nhds (lt_add_one _))`. Use `MeasureTheory.continuousAt_of_dominated (bound := fun _ => (‖h₀‖ + 1) * C') ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Filter.Eventually.of_forall fun h => (h.1.continuous.mul (continuous_star.comp hG'.cont)).aestronglyMeasurable`. Use `hnear.mono fun h hh => Filter.Eventually.of_forall fun u => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_star]`. Conclude with `mul_le_mul ((GlobalTheory.RealWeil.norm_ev_le u h).trans hh.le) (hC' u) (norm_nonneg _) ((norm_nonneg h).trans hh.le)`. Conclude with `integrable_const _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Filter.Eventually.of_forall fun u => ?_` and prove the remaining obligations. Establish `hev : Continuous fun h : GlobalTheory.RealWeil.BB ψ V W => h.1 u`. Establish `hc : Continuous fun h : GlobalTheory.RealWeil.BB ψ V W => GlobalTheory.RealWeil.ev _ _ u h` using `(GlobalTheory.RealWeil.ev _ _ u).continuous`. Simplify `hc` using `only [GlobalTheory.RealWeil.ev_apply]`. Conclude with `(hev.mul continuous_const).continuousAt`.
-
-Establish `key : ∀ (y : Mx D a b) (u : WO V W), heisO ψ V W (GlobalTheory.IsoMean.emb V W P Q y) G u = (GlobalTheory.RealWeil.rhoB hψ (GlobalTheory.IsoMean.emb V W P Q y) g).1 u`. Introduce `y u`. Rewrite using `[GlobalTheory.RealWeil.coe_rhoB, hg]`. Repeatedly rewrite using `[key]`. Conclude with `hΦ.comp hρ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_coef : ∀ (D : D7) (V W : HSp D) (a b : ℕ) (P : Matrix (Fin W.rank) (Fin a) D.host.E) (Q : Matrix (Fin b) (Fin V.rank) D.host.E) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (ν : Measure (WO V W)) (𝓕 : Set (WO V W)), ν.IsAddHaarMeasure → IsAddFundamentalDomain (ratL W V) 𝓕 ν → ∀ G G' : WO V W → ℂ, IsThetaFunO ψ V W G → IsThetaFunO ψ V W G' → Continuous (fun y : Mx D a b => ∫ u in 𝓕, heisO ψ V W (GlobalTheory.IsoMean.emb V W P Q y) G u * star (G' u) ∂ν) := by
   intro D V W a b P Q ψ hψ ν 𝓕 hν h𝓕 G G' hG hG'

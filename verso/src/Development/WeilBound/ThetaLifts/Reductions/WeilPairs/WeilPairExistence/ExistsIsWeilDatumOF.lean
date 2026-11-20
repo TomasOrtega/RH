@@ -17,9 +17,9 @@ namespace PositivityTheory.ThKW.S
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Establish `: (((η ^ n)⁻¹ * χ : (AF F ⊗[F] E)ˣ →* Circle) : (AF F ⊗[F] E)ˣ → Circle) = fun x => (η x ^ n)⁻¹ * χ x`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hη.1.pow n).inv).mul hχ.1`. Establish `h1` using `hχ.2 x`. Establish `h2` using `hη.2 x`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.pow_apply, h1, h2, one_pow, inv_one, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHeckeCharF_div_pow {χ η : (AF F ⊗[F] E)ˣ →* Circle} (hχ : IsHeckeCharF χ) (hη : IsHeckeCharF η) (n : ℕ) :
     IsHeckeCharF ((η ^ n)⁻¹ * χ) := by
@@ -33,7 +33,7 @@ theorem isHeckeCharF_div_pow {χ η : (AF F ⊗[F] E)ˣ →* Circle} (hχ : IsHe
     simp only [MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.pow_apply, h1, h2, one_pow, inv_one, mul_one]
 
 /- English proof (translation)
-Use `⟨hχ.1, fun e he a => ?_⟩` and prove the remaining obligations. Establish `h1` using `hχ.2 e he a`. Establish `h2` using `hη.2 e he a`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.pow_apply, h1, h2, pow_one, pow_zero, inv_mul_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem resEtaF_div_pow {χ η : (AF F ⊗[F] E)ˣ →* Circle} {n : ℕ} (hχ : ResEtaF χ n) (hη : ResEtaF η 1) :
     ResEtaF ((η ^ n)⁻¹ * χ) 0 := by
@@ -43,9 +43,9 @@ theorem resEtaF_div_pow {χ η : (AF F ⊗[F] E)ˣ →* Circle} {n : ℕ} (hχ :
   simp only [MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.pow_apply, h1, h2, pow_one, pow_zero, inv_mul_cancel]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hξσ hLat χS χT hcS hcT rS rT`. Take `⟨η, hη1, hη2, hη3, hη4⟩` from `PositivityTheory.ThKW.exists_eta F E σ B hB`. Take `⟨Λ, hΛ1, hΛ2⟩` from `hLat`. Establish `hc : GlobalTheory.FinLatF.HeisClosedF σ JS JT ξ₀ B.ψ` using `GlobalTheory.T.theta_function_heisenberg_invariant F E σ B hB nS nT JS JT ξ₀`. Take `⟨w, lam, Om, hO⟩` from `PositivityTheory.ThKW.latRep F E σ B hB nS nT JS JT hS hT ξ₀ hξ hξσ Λ hΛ1 hΛ2 hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨om, hom⟩` from `PositivityTheory.ThKW.datumEta F E σ B hB nS nT JS JT hS hT ξ₀ hξ hξσ Λ hΛ1 hΛ2 hc w lam Om hO η hη1 hη2 hη3 hη4`. Take `⟨om', hom'⟩` from `GlobalTheory.T.weil_datum_twist_by_hecke_characters_trivial_base F E σ B hB nS nT JS JT hS hT ξ₀ hξ hξσ _ _ ((η ^ nS)⁻¹ * χS) ((η ^ nT)⁻¹ * χT) om hom (isHeckeCharF_div_pow hcS hη1 _) (isHeckeCharF_div_pow hcT hη1 _) (resEtaF_div_pow rS hη2) (resEtaF_div_pow rT hη2)`. Rewrite `hom'` using `[mul_inv_cancel_left, mul_inv_cancel_left]`. Conclude with `⟨om', hom'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_isWeilDatumOF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

@@ -16,9 +16,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [
     (X : Type) [AddCommGroup X] [Module O X]
 
 /- English proof (translation)
-Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Rewrite using `[coefRep_tmul, twistRep_apply]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `((Γ.χ₁⁻¹ g : Oˣ) : O) • ((Γ.chi 1 g : O) • a) = a`. Rewrite using `[GalData.chi_one, smul_smul]`. Simplify using the standard rewrite rules. Consider the case `add a b ha hb => rw [map_add, ha, hb]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem twCoef_chi_one (g : G) (m : O ⊗[O] X) : twCoef (Γ.Wchi 1) Γ.χ₁ X g m = m := by
   induction m using TensorProduct.induction_on with
@@ -36,16 +36,16 @@ def homModInertia (I : Subgroup G) : Set (H1 (twCoef (Γ.Wchi 1) Γ.χ₁ X) ⊤
     ∀ g ∈ I, (z : G → O ⊗[O] X) g = 0}
 
 /- English proof (translation)
-Rewrite using `[cocycle_mul z g h, twCoef_chi_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cocycle_add (z : ↥(Z1 (twCoef (Γ.Wchi 1) Γ.χ₁ X) ⊤)) (g h : G) :
     (z : G → O ⊗[O] X) (g * h) = (z : G → O ⊗[O] X) g + (z : G → O ⊗[O] X) h := by
   rw [cocycle_mul z g h, twCoef_chi_one]
 
 /- English proof (translation)
-Use extensionality with `c`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z', hz, h⟩`. Rewrite using `[← hz]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mk_mem_unr_of_trivial (twCoef_chi_one Γ X) I z').mpr h`. Introduce `h`. Conclude with `⟨z, rfl, (mk_mem_unr_of_trivial (twCoef_chi_one Γ X) I z).mp h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem homModInertia_eq_unr (I : Subgroup G) :
     homModInertia Γ X I = (unr (twCoef (Γ.Wchi 1) Γ.χ₁ X) I : Set _) := by
@@ -68,7 +68,7 @@ def AdmChiOneUnramified {l : ℕ} [Fact l.Prime] (P : LocPrime l) : Prop :=
       adm (P.PD K) emb Γ D.t D.Ut (Γ.Wchi 1) X = homModInertia Γ X (Loc.IK K)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, rfl, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 example {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [Field LL]
     [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] (Γ : GalData G Qp LL O)

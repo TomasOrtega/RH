@@ -11,15 +11,13 @@ section Coord
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Establish `li : LinearIndependent F ![(1 : E), δ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h1 : s • (1 : E) + t • (-δ) = 0`. Use `congrArg σ hst` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[map_add, map_smul, hδ]`. Establish `hs : (2 * s) • (1 : E) = 0`. Establish `: (2 * s) • (1 : E) = (s • (1 : E) + t • δ) + (s • (1 : E) + t • (-δ))` using `by module`. Rewrite using `[this, hst, h1, add_zero]`. Establish `hs0 : s = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `smul_eq_zero.1 hs with h | h` into its components or cases. Conclude with `(mul_eq_zero.1 h).resolve_left h2`. Conclude with `absurd h one_ne_zero`. Substitute `hs0` using the available equality. Use `⟨rfl, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Break down `smul_eq_zero.1 (by simpa using hst : t • δ = 0) with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h h0`. Use `⟨basisOfLinearIndependentOfCardEqFinrank li (by simp [hfr]), ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_basis_one_delta (σ : E →ₐ[F] E) {δ : E} (hδ : σ δ = -δ) (h0 : δ ≠ 0)
     (hfr : Module.finrank F E = 2) (h2 : (2 : F) ≠ 0) :
@@ -49,9 +47,9 @@ theorem exists_basis_one_delta (σ : E →ₐ[F] E) {δ : E} (hδ : σ δ = -δ)
 variable {R : Type} [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Set `B` to `Algebra.TensorProduct.basis R b`. Use `⟨B.repr y 0, B.repr y 1, ?_⟩` and prove the remaining obligations. Establish `h` using `(B.sum_repr y).symm`. Rewrite `h` using `[Fin.sum_univ_two]`. Establish `e0 : B 0 = (1 : R) ⊗ₜ[F] (1 : E)` using `by simp [B, hb0]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : B 1 = (1 : R) ⊗ₜ[F] δ` using `by simp [B, hb1]`. Rewrite `h` using `[e0, e1, TensorProduct.smul_tmul', TensorProduct.smul_tmul']`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_coord (b : Module.Basis (Fin 2) F E) {δ : E} (hb0 : b 0 = 1) (hb1 : b 1 = δ)
     (y : R ⊗[F] E) : ∃ a c : R, y = a ⊗ₜ[F] (1 : E) + c ⊗ₜ[F] δ := by
@@ -65,11 +63,11 @@ theorem exists_coord (b : Module.Basis (Fin 2) F E) {δ : E} (hb0 : b 0 = 1) (hb
   simpa using h
 
 /- English proof (translation)
-Set `B` to `Algebra.TensorProduct.basis R b`. Establish `e : ∀ p q : R, p ⊗ₜ[F] (1 : E) + q ⊗ₜ[F] δ = p • B 0 + q • B 1`. Introduce `p q`. Establish `e0 : B 0 = (1 : R) ⊗ₜ[F] (1 : E)` using `by simp [B, hb0]`. Establish `e1 : B 1 = (1 : R) ⊗ₜ[F] δ` using `by simp [B, hb1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e0, e1, TensorProduct.smul_tmul', TensorProduct.smul_tmul']`. Simplify using the standard rewrite rules. Rewrite `h` using `[e, e]`. Establish `h0` using `congrArg (fun y => B.repr y 0) h`. Establish `h1` using `congrArg (fun y => B.repr y 1) h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at h0 h1`. Conclude with `⟨h0, h1⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem coord_inj (b : Module.Basis (Fin 2) F E) {δ : E} (hb0 : b 0 = 1) (hb1 : b 1 = δ)
     {a c a' c' : R} (h : a ⊗ₜ[F] (1 : E) + c ⊗ₜ[F] δ = a' ⊗ₜ[F] (1 : E) + c' ⊗ₜ[F] δ) :
@@ -88,7 +86,7 @@ theorem coord_inj (b : Module.Basis (Fin 2) F E) {δ : E} (hb0 : b 0 = 1) (hb1 :
   exact ⟨h0, h1⟩
 
 /- English proof (translation)
-Introduce `p q h`. Establish `h' : p ⊗ₜ[F] (1 : E) + (0 : R) ⊗ₜ[F] δ = q ⊗ₜ[F] (1 : E) + (0 : R) ⊗ₜ[F] δ`. Simplify using `using h`. Conclude with `(coord_inj b hb0 hb1 h').1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tmul_one_injective (b : Module.Basis (Fin 2) F E) {δ : E} (hb0 : b 0 = 1) (hb1 : b 1 = δ) :
     Function.Injective (Algebra.TensorProduct.includeLeft : R →ₐ[F] R ⊗[F] E) := by
@@ -100,33 +98,31 @@ theorem tmul_one_injective (b : Module.Basis (Fin 2) F E) {δ : E} (hb0 : b 0 = 
 end Coord
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h R _ _ _ _`. Establish `hσσ : ∀ x, σ (σ x) = x`. Introduce `x`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h.2.2.2, h.2.2.2, star_star]`. Establish `hne : ∃ x, σ x ≠ x`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `h.2.1` as an intermediate fact. Apply `IsTotallyComplex.complexEmbedding_not_isReal τ` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Establish `h'` using `h.2.2.2 τ x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[hc]`. Simplify `h'.symm` using `[ComplexEmbedding.conjugate_coe_eq]`. Take `⟨x₀, hx₀⟩` from `hne`. Use `set δ : E := x₀ - σ x₀ with hδdef`. Establish `hδ : σ δ = -δ` using `by simp [hδdef, hσσ]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ0 : δ ≠ 0` using `fun e => hx₀ (sub_eq_zero.1 e).symm`. Establish `h2F : (2 : F) ≠ 0` using `two_ne_zero`. Take `⟨b, hb0, hb1⟩` from `exists_basis_one_delta σ hδ hδ0 h.2.2.1 h2F`. Establish `: Module.Finite F E` using `Module.Finite.of_basis b`. Establish `hsig : ∀ (a : R) (e : E), sigR R σ (a ⊗ₜ[F] e) = a ⊗ₜ[F] σ e` using `fun _ _ => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2R : IsUnit (2 : R)`. Use `(IsUnit.mk0 (2 : F) h2F).map (algebraMap F R)` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `half : ∀ a : R, a + a = 0 → a = 0` using `fun a ha => (h2R.mul_right_eq_zero).1 (by rw [two_mul, ha])`. Establish `hnil : ∀ a : R, IsNilpotent (a ⊗ₜ[F] (1 : E) : R ⊗[F] E) → a = 0` using `fun a ha => ((IsNilpotent.map_iff (tmul_one_injective (R := R) b hb0 hb1)).1 ha).eq_zero`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hδu : IsUnit ((1 : R) ⊗ₜ[F] δ : R ⊗[F] E)` using `(IsUnit.mk0 δ hδ0).map (Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E)`. Use `⟨IsArtinianRing.of_finite R _, ⟨fun x hx => ?_⟩, ?_, fun y => ?_, ⟨_, hδu, ?_⟩, fun y hy => ?_, fun r => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨a, c, rfl⟩` from `exists_coord b hb0 hb1 x`. Establish `hs` using `hx.map (sigR R σ)`. Establish `hadd` using `(Commute.all _ _).isNilpotent_add hx hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (a ⊗ₜ[F] (1 : E) + c ⊗ₜ[F] δ) + sigR R σ (a ⊗ₜ[F] (1 : E) + c ⊗ₜ[F] δ) = (a + a) ⊗ₜ[F] (1 : E)`. Rewrite using `[map_add, hsig, hsig, map_one, hδ, TensorProduct.tmul_neg, TensorProduct.add_tmul]`. Normalize the expressions using the abelian group laws. Rewrite `hadd` using `[e1]`. Establish `ha : a = 0` using `half a (hnil _ hadd)`.
+Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Substitute `ha` using the available equality. Rewrite `hx`, the goal using `[TensorProduct.zero_tmul, zero_add]`. Establish `hm : IsNilpotent ((c ⊗ₜ[F] δ) * ((1 : R) ⊗ₜ[F] δ⁻¹) : R ⊗[F] E)` using `(Commute.all _ _).isNilpotent_mul_right (show IsNilpotent (c ⊗ₜ[F] δ : R ⊗[F] E) from hx)`. Establish `e2 : ((c ⊗ₜ[F] δ) * ((1 : R) ⊗ₜ[F] δ⁻¹) : R ⊗[F] E) = c ⊗ₜ[F] (1 : E)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_inv_cancel₀ hδ0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[e2]`. Rewrite using `[hnil c hm, TensorProduct.zero_tmul]`. Use `(IsUnit.mk0 (2 : F) h2F).map (algebraMap F (R ⊗[F] E))` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Proceed by induction on `y using TensorProduct.induction_on with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `tmul a e => rw [hsig, hsig, hσσ]`. Rewrite using `[hsig, hδ, TensorProduct.tmul_neg]`. Take `⟨a, c, rfl⟩` from `exists_coord b hb0 hb1 y`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hy` using `[map_add, hsig, hsig, map_one, hδ, TensorProduct.tmul_neg, ← TensorProduct.neg_tmul]`. Establish `hc` using `(coord_inj b hb0 hb1 hy).2`. Establish `: c = 0` using `half c (by nth_rewrite 1 [← hc]; simp)`. Conclude with `⟨a, by rw [this, TensorProduct.zero_tmul, add_zero]⟩`. Introduce and unpack `⟨u, hu⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, c, hac⟩` from `exists_coord b hb0 hb1 (u⁻¹ : (R ⊗[F] E)ˣ).val`. Establish `e : (r * a) ⊗ₜ[F] (1 : E) + (r * c) ⊗ₜ[F] δ = (1 : R) ⊗ₜ[F] (1 : E) + (0 : R) ⊗ₜ[F] δ`. Establish `: (u : R ⊗[F] E) * (u⁻¹ : (R ⊗[F] E)ˣ).val = 1` using `u.mul_inv`. Rewrite `this` using `[hu, hac, mul_add, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, one_mul, Algebra.TensorProduct.one_def]`. Rewrite using `[this, TensorProduct.zero_tmul, add_zero]`.
-
-Conclude with `IsUnit.of_mul_eq_one a (coord_inj b hb0 hb1 e).1`. Introduce `hr`. Conclude with `hr.map (Algebra.TensorProduct.includeLeft : R →ₐ[F] R ⊗[F] E)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem algebra_tensor_invol : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] [IsArtinianRing R] [IsReduced R],

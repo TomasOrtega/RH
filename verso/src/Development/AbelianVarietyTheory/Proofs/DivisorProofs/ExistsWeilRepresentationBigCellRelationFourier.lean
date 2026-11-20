@@ -57,7 +57,7 @@ Both sides reduce to the same expression.
 theorem mat_unip (b : Matrix ν ν E) (hb : (b.map c)ᵀ = b) : mat c (unip c b hb) = fromBlocks 1 b 0 1 := rfl
 
 /- English proof (translation)
-Establish `h1 : b * b⁻¹ = 1` using `mul_nonsing_inv b (isUnit_iff_ne_zero.mpr hb0)`. Rewrite using `[mat_mul, mat_mul, mat_mul, mat_mul, mat_weyl_inv, mat_unip_inv, mat_unip, mat_weyl]`. Simplify using `only [stdJ, fromBlocks_multiply, fromBlocks_neg, h1]`. Simplify using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem splitUnitaryElementMatrix_bigCell_product (b : Matrix ν ν E) (hb : (b.map c)ᵀ = b) (hb0 : b.det ≠ 0) (hb' : ((-b⁻¹).map c)ᵀ = -b⁻¹) :
     mat c (weyl c ν * unip c b hb * weyl c ν * (unip c (-b⁻¹) hb')⁻¹ * (weyl c ν)⁻¹) =
@@ -68,7 +68,7 @@ theorem splitUnitaryElementMatrix_bigCell_product (b : Matrix ν ν E) (hb : (b.
   simp [h1]
 
 /- English proof (translation)
-Rewrite using `[mem_sieg, mat_mul, mat_mul, mat_weyl_inv, mat_weyl, mat_levi]`. Simplify using `[stdJ, fromBlocks_multiply, fromBlocks_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_levi_mem (hc : ∀ z, c (c z) = z) (a : GL ν E) :
     weyl c ν * levi c hc a * (weyl c ν)⁻¹ ∈ sieg c ν := by
@@ -76,9 +76,9 @@ theorem conj_levi_mem (hc : ∀ z, c (c z) = z) (a : GL ν E) :
   simp [stdJ, fromBlocks_multiply, fromBlocks_neg]
 
 /- English proof (translation)
-Establish `h1 : ((b⁻¹).map c)ᵀ * b = 1`. Establish `h3 : ((b⁻¹).map c)ᵀ * (b.map c)ᵀ = 1`. Rewrite using `[← transpose_mul, ← Matrix.map_mul (f := c), mul_nonsing_inv b (isUnit_iff_ne_zero.mpr hb0), Matrix.map_one _ (map_zero c) (map_one c), transpose_one]`. Rewrite `h3` using `[hb]`. Then use the resulting hypothesis. Establish `h2 : ((b⁻¹).map c)ᵀ = b⁻¹` using `(Matrix.inv_eq_left_inv h1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_neg _ (map_neg c), transpose_neg, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_neg_inv (b : Matrix ν ν E) (hb : (b.map c)ᵀ = b) (hb0 : b.det ≠ 0) : ((-b⁻¹).map c)ᵀ = -b⁻¹ := by
   have h1 : ((b⁻¹).map c)ᵀ * b = 1 := by
@@ -90,7 +90,7 @@ theorem herm_neg_inv (b : Matrix ν ν E) (hb : (b.map c)ᵀ = b) (hb0 : b.det �
   rw [Matrix.map_neg _ (map_neg c), transpose_neg, h2]
 
 /- English proof (translation)
-Rewrite using `[mat_mul, mat_mul, mat_mul, mat_weyl, mat_levi, mat_unip]`. Simplify using `[fromBlocks_multiply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lower_left (hc : ∀ z, c (c z) = z) (a : GL ν E) (b : Matrix ν ν E) (hb : (b.map c)ᵀ = b) :
     (mat c (weyl c ν * (levi c hc a * unip c b hb) * weyl c ν)).toBlocks₂₁ = (a : Matrix ν ν E) * b := by
@@ -100,31 +100,27 @@ theorem lower_left (hc : ∀ z, c (c z) = z) (a : GL ν E) (b : Matrix ν ν E) 
 end GlobalTheory.KSp.WeylCellRel
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ _ c δ hE α _ _ ν _ _ Q hQ ψ hψ hψ1 hψne χ hχ hres _ _ μ _ γ₀ hγ hγ0`. Take `⟨hfd, -, -, -, -, -, -, hmat⟩` from `GlobalTheory.T.quadExt_topological_properties F E c δ hE`. Take `⟨hmt, hgood⟩` from `hmat α ν`. Use `haveI : FiniteDimensional F (Matrix α ν E) := inferInstance`. Take `⟨β, hβ, hsymm, hnd, -, -⟩` from `GlobalTheory.T.hermitianMatrixColumnPairing_algebraic_properties F E c δ hE α ν Q hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpair` using `GlobalTheory.T.isSelfDualBicharacterPairing_of_symmBilinForm F (Matrix α ν E) ψ hψ hψ1 hψne β hsymm hnd`. Establish `hfou : ∀ f, fou c ψ Q μ f = four μ (fun x y => ψ (β x y)) f`. Introduce `f`. Establish `hfe : (fun x y => ψ (β x y)) = (fun x y => ψ (pr c Q x y))` using `by funext x y; rw [hβ]`. Rewrite using `[hfe]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨C, hC, hinv⟩` from `GlobalTheory.T.bicharacterFourierTransform_twice_eq_pos_smul_reflect (Matrix α ν E) hgood μ _ hpair`. Establish `inj : ∀ g ∈ SB (Matrix α ν E), fou c ψ Q μ g = 0 → g = 0`. Introduce `g hg h0`. Use function extensionality and compare the values at `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1` using `hinv g hg (-x)`. Rewrite `h1` using `[← hfou g, h0, neg_neg]`. Establish `h2 : four μ (fun x y => ψ (β x y)) (0 : Matrix α ν E → ℂ) (-x) = 0` using `by simp [four]`. Rewrite `h1` using `[h2]`. Conclude with `(mul_eq_zero.mp h1.symm).resolve_left (by exact_mod_cast hC.ne')`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hgood.grp`. Use `haveI := hgood.t2`. Take `⟨L, hLc, hLo, -⟩` from `hgood.small Set.univ Filter.univ_mem`. Establish `hLcl : IsClopen (L : Set (Matrix α ν E))` using `⟨AddSubgroup.isClosed_of_isOpen L hLo, hLo⟩`. Use `set φ : Matrix α ν E → ℂ := (L : Set (Matrix α ν E)).indicator 1 with hφd`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hφ : φ ∈ SB (Matrix α ν E)`. Use `⟨?_, HasCompactSupport.intro hLc fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Use `(LocallyConstant.indicator (1 : LocallyConstant (Matrix α ν E) ℂ) hLcl).isLocallyConstant` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(LocallyConstant.indicator_apply (1 : LocallyConstant (Matrix α ν E) ℂ) hLcl y).symm`. Establish `hφ0 : φ 0 = 1` using `by simp [hφd, Set.indicator_of_mem (zero_mem L)]`. Establish `hfφ : fou c ψ Q μ φ ∈ SB (Matrix α ν E)`. Rewrite using `[hfou]`. Conclude with `GlobalTheory.T.bicharacterFourierTransform_mem_schwartzBruhat (Matrix α ν E) hgood μ _ hpair φ hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((1 : Matrix ν ν E).map c)ᵀ = 1`. Rewrite using `[Matrix.map_one _ (map_zero c) (map_one c), transpose_one]`. Establish `hu : unip c 1 h1 ∈ sieg c ν` using `by rw [mem_sieg, WeylCellRel.mat_unip]; simp`. Establish `hg` using `GlobalTheory.T.siegelParabolic_preserves_schwartzBruhat F E c δ hE α ν Q hQ ψ hψ hψ1 hψne χ hχ hres (unip c 1 h1) hu _ hfφ`. Take `⟨sc1, scmul, -⟩` from `GlobalTheory.T.unitaryCharacterAbsScalar_basic_properties F E c δ hE (Fintype.card α) χ hres`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sc_ne : ∀ z : E, z ≠ 0 → sc F χ (Fintype.card α) z ≠ 0` using `fun z hz h => by`. Establish `h'` using `scmul z z⁻¹`. Rewrite `h'` using `[mul_inv_cancel₀ hz, sc1, h, zero_mul]`. Conclude with `one_ne_zero h'`. Establish `br` using `GlobalTheory.T.fourier_hermitianMultiplier_braid_relation F E c δ hE α ν Q hQ ψ hψ hψ1 hψne χ hχ hres μ 1 _ h1 (by simp) (hγ 1 h1 (by simp)) φ hφ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `br` using `[hγ0, zero_mul, zero_smul]`. Establish `hs : sc F χ (Fintype.card α) (-(1 : Matrix ν ν E)⁻¹).det ≠ 0` using `sc_ne _ (by simp [det_neg])`. Establish `hX` using `(smul_eq_zero.mp br).resolve_left hs`. Establish `hpar0` using `inj _ hg hX`. Apply `one_ne_zero (α := ℂ)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hφ0]`. Establish `hF0 : fou c ψ Q μ φ = 0`. Use function extensionality and compare the values at `x`. Establish `h2` using `congrFun hpar0 x`. Establish `hψ0 : ∀ t, ψ t ≠ 0`.
-
-Introduce `t h4`. Use `hψ1 t` as an intermediate fact. Rewrite `this` using `[h4, norm_zero]`. Conclude with `zero_ne_one this`. Simplify `h2` using `[parFun, WeylCellRel.mat_unip, sc1, hψ0]`.
-
-Rewrite using `[inj φ hφ hF0]`. Both sides reduce to the same expression.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KSp.WeylCellRel.gauss_const_ne_zero : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E] (c : E →ₐ[F] E) (δ : E) (hE : IsQuad c δ) (α : Type) [Fintype α] [DecidableEq α] (ν : Type) [Fintype ν] [DecidableEq ν] (Q : Matrix α α E) (_ : IsHerm c Q) (ψ : AddChar F ℂ) (hψ : Continuous ψ) (_ : ∀ t, ‖ψ t‖ = 1) (_ : ψ ≠ 1) (χ : Eˣ →* Circle) (_ : Continuous χ) (_ : ResEtaPow (R := F) ⊥ χ (Fintype.card α)) [MeasurableSpace (Matrix α ν E)] [BorelSpace (Matrix α ν E)] (μ : Measure (Matrix α ν E)) [μ.IsAddHaarMeasure] (γ₀ : ℂ), (∀ b : Matrix ν ν E, (b.map c)ᵀ = b → b.det ≠ 0 → HasGauss μ (fun x => ψ (2⁻¹ * pr c Q x (x * b))) (γ₀ * sc F χ (Fintype.card α) b.det⁻¹)) → γ₀ ≠ 0 := by
   intro F _ _ _ _ _ E _ _ _ _ c δ hE α _ _ ν _ _ Q hQ ψ hψ hψ1 hψne χ hχ hres _ _ μ _ γ₀ hγ hγ0
@@ -187,31 +183,29 @@ theorem GlobalTheory.KSp.WeylCellRel.gauss_const_ne_zero : ∀ (F : Type) [Field
   rw [inj φ hφ hF0]; rfl
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ _ c δ hE α _ _ ν _ _ Q hQ ψ hψ hψ1 hψne χ hχ hres _ _ μ _`. Take `⟨γ₀, hγ⟩` from `GlobalTheory.T.hasGaussIntegral_hermitian_quadratic_character F E c δ hE α ν Q hQ ψ hψ hψ1 hψne χ hχ hres μ`. Establish `hγ0 : γ₀ ≠ 0` using `GlobalTheory.KSp.WeylCellRel.gauss_const_ne_zero F E c δ hE α ν Q hQ ψ hψ hψ1 hψne χ hχ hres μ γ₀ hγ`. Take `⟨sc1, scmul, -⟩` from `GlobalTheory.T.unitaryCharacterAbsScalar_basic_properties F E c δ hE (Fintype.card α) χ hres`. Establish `sc_ne : ∀ z : E, z ≠ 0 → sc F χ (Fintype.card α) z ≠ 0` using `fun z hz h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h'` using `scmul z z⁻¹`. Rewrite `h'` using `[mul_inv_cancel₀ hz, sc1, h, zero_mul]`. Conclude with `one_ne_zero h'`. Establish `hs1 : sc F χ (Fintype.card α) (-1 : Matrix ν ν E).det ≠ 0` using `sc_ne _ (by simp [det_neg])`. Use `⟨sc F χ (Fintype.card α) (-1 : Matrix ν ν E).det / γ₀, div_ne_zero hs1 hγ0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp hcell`. Take `⟨-, -, a, b, hb, rfl⟩` from `GlobalTheory.T.splitUnitarySiegelParabolic_block_relations F E c δ hE ν p hp`. Establish `hb0 : b.det ≠ 0`. Establish `h` using `(GlobalTheory.T.inCell_iff_det_lower_left_block_ne_zero F E c δ hE ν _).mp hcell`. Rewrite `h` using `[WeylCellRel.lower_left, det_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `right_ne_zero_of_mul h`. Establish `hb'` using `WeylCellRel.herm_neg_inv c b hb hb0`. Establish `hunip : ∀ (b' : Matrix ν ν E) (h' : (b'.map c)ᵀ = b'), unip c b' h' ∈ sieg c ν`. Introduce `b' h'`. Rewrite using `[mem_sieg, WeylCellRel.mat_unip]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hlevi : levi c hE.invol a ∈ sieg c ν` using `by rw [mem_sieg, WeylCellRel.mat_levi]; simp`. Take `⟨q, hqd⟩ : ∃ q, q = weyl c ν * levi c hE.invol a * (weyl c ν)⁻¹` from `⟨_, rfl⟩`. Take `⟨p₀, hp0d⟩ : ∃ p₀, p₀ = weyl c ν * unip c b hb * weyl c ν * (unip c (-b⁻¹) hb')⁻¹ * (weyl c ν)⁻¹` from `⟨_, rfl⟩`. Establish `hq : q ∈ sieg c ν` using `hqd ▸ WeylCellRel.conj_levi_mem c hE.invol a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0m : mat c p₀ = fromBlocks (-b⁻¹) 1 0 (-b)` using `hp0d ▸ WeylCellRel.splitUnitaryElementMatrix_bigCell_product c b hb hb0 hb'`. Establish `hp0 : p₀ ∈ sieg c ν` using `by rw [mem_sieg, hp0m]; simp`. Use `⟨q * p₀, mul_mem hq hp0, unip c (-b⁻¹) hb', hunip _ _, by rw [hqd, hp0d]; group, ?_⟩` and prove the remaining obligations. Introduce `φ hφ`. Take `⟨-, pm⟩` from `GlobalTheory.T.parFun_sieg_mul' F E c δ hE α ν Q hQ ψ hψ hψ1 hψne χ hχ hres`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fl` using `GlobalTheory.T.fourier_intertwines_siegelLeviOperator F E c δ hE α ν Q hQ ψ hψ hψ1 hψne χ hχ hres μ (levi c hE.invol a) hlevi q hq (by rw [hqd]; group)`. Establish `br` using `GlobalTheory.T.fourier_hermitianMultiplier_braid_relation F E c δ hE α ν Q hQ ψ hψ hψ1 hψne χ hχ hres μ b _ hb hb0 (hγ b hb hb0) φ hφ`. Rewrite `br` using `[← WeylCellRel.mat_unip c b hb, ← WeylCellRel.mat_unip c (-b⁻¹) hb', ← hp0m]`. Establish `pf_smul : ∀ (g : Matrix (ν ⊕ ν) (ν ⊕ ν) E) (k : ℂ) (f : Matrix α ν E → ℂ), parFun c ψ χ Q g (k • f) = k • parFun c ψ χ Q g f`. Introduce `g k f`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [parFun, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `fou_smul : ∀ (k : ℂ) (f : Matrix α ν E → ℂ), fou c ψ Q μ (k • f) = k • fou c ψ Q μ f`. Introduce `k f`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [fou, four, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e : (-b⁻¹ : Matrix ν ν E).det = (-1 : Matrix ν ν E).det * b.det⁻¹`. Rewrite using `[← neg_one_mul, det_mul, det_nonsing_inv, Ring.inverse_eq_inv']`. Establish `hκγ : sc F χ (Fintype.card α) (-1 : Matrix ν ν E).det / γ₀ * (γ₀ * sc F χ (Fintype.card α) b.det⁻¹) = sc F χ (Fintype.card α) (-b⁻¹).det`. Rewrite using `[e, scmul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hs : sc F χ (Fintype.card α) (-b⁻¹).det ≠ 0` using `sc_ne _ (by`. Rewrite using `[e]; exact mul_ne_zero (by simp [det_neg]) (inv_ne_zero hb0))`. Establish `hγne : γ₀ * sc F χ (Fintype.card α) b.det⁻¹ ≠ 0`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hκγ` using `[h, mul_zero]`. Conclude with `hs hκγ.symm`. Use `set κ := sc F χ (Fintype.card α) (-1 : Matrix ν ν E).det / γ₀ with hκ`. Establish `key : κ • fou c ψ Q μ (parFun c ψ χ Q (mat c (unip c b hb)) (fou c ψ Q μ φ)) = parFun c ψ χ Q (mat c p₀) (fou c ψ Q μ (parFun c ψ χ Q (mat c (unip c (-b⁻¹) hb')) φ))`. Apply `smul_right_injective _ hγne` to reduce the goal to its premises.
-
-Simplify using `only`. Rewrite using `[smul_smul, mul_comm, hκγ, br]`. Rewrite using `[pf_smul, fou_smul, pm _ hlevi _ (hunip _ _), fl, ← pf_smul, key, pf_smul, pm _ hq _ hp0]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KSp.weyl_cell_relation : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E] (c : E →ₐ[F] E) (δ : E) (hE : IsQuad c δ) (α : Type) [Fintype α] [DecidableEq α] (ν : Type) [Fintype ν] [DecidableEq ν] (Q : Matrix α α E) (_ : IsHerm c Q) (ψ : AddChar F ℂ) (hψ : Continuous ψ) (_ : ∀ t, ‖ψ t‖ = 1) (_ : ψ ≠ 1) (χ : Eˣ →* Circle) (_ : Continuous χ) (_ : ResEtaPow (R := F) ⊥ χ (Fintype.card α)) [MeasurableSpace (Matrix α ν E)] [BorelSpace (Matrix α ν E)] (μ : Measure (Matrix α ν E)) [μ.IsAddHaarMeasure], ∃ κ : ℂ, κ ≠ 0 ∧ ∀ p ∈ sieg c ν, InCell c (weyl c ν * p * weyl c ν) → ∃ p₁ ∈ sieg c ν, ∃ p₂ ∈ sieg c ν, weyl c ν * p * weyl c ν = p₁ * weyl c ν * p₂ ∧ ∀ φ ∈ SB (Matrix α ν E), κ • fou c ψ Q μ (parFun c ψ χ Q (mat c p) (κ • fou c ψ Q μ φ)) = parFun c ψ χ Q (mat c p₁) (κ • fou c ψ Q μ (parFun c ψ χ Q (mat c p₂) φ)) := by
   intro F _ _ _ _ _ E _ _ _ _ c δ hE α _ _ ν _ _ Q hQ ψ hψ hψ1 hψne χ hχ hres _ _ μ _

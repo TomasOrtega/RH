@@ -6,43 +6,39 @@ open MeasureTheory Matrix Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X _ _ _ _ μ hμ K x₀ f hK hKc hx₀ hpos hf hf1 hf01 hsep E _ _ _ F hF`. Establish `hKae : ∀ᵐ x ∂μ, x ∈ K` using `ae_iff.mpr hKc`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Establish `hμK : μ.restrict K = μ` using `Measure.restrict_eq_self_of_ae_mem hKae`. Establish `hFm : AEStronglyMeasurable F μ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hF.aestronglyMeasurable_of_isCompact (μ := μ) hK hKm`. Rewrite `h` using `[hμK]`. Then use the resulting hypothesis. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hF`. Establish `hC0 : 0 ≤ C` using `le_trans (norm_nonneg _) (hC x₀ hx₀)`. Establish `hfm_int : ∀ m : ℕ, Integrable (fun x => f x ^ m) μ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m`. Use `Integrable.of_bound (hf.pow m).aestronglyMeasurable 1 ?_` and prove the remaining obligations. Use `filter_upwards [hKae] with x hx`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (pow_nonneg (hf01 x hx).1 m)]`. Conclude with `pow_le_one₀ (hf01 x hx).1 (hf01 x hx).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlow : ∀ η : ℝ, 0 ≤ η → ∀ m : ℕ, η ^ m * μ.real {x | η < f x} ≤ ∫ y, f y ^ m ∂μ`. Introduce `η hη m`. Establish `hWm : MeasurableSet {x | η < f x}` using `measurableSet_lt measurable_const hf.measurable`. Establish `h` using `integral_indicator_const (μ := μ) (η ^ m) hWm`. Rewrite `h` using `[smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, ← h]`. Use `integral_mono_ae ((integrable_const (η ^ m)).indicator hWm) (hfm_int m) ?_` and prove the remaining obligations. Use `filter_upwards [hKae] with x hx`. Distinguish the cases in `hxW : x ∈ {x | η < f x}`. Rewrite using `[Set.indicator_apply, if_pos hxW]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `pow_le_pow_left₀ hη (le_of_lt hxW) m`. Rewrite using `[Set.indicator_apply, if_neg hxW]`. Conclude with `pow_nonneg (hf01 x hx).1 m`. Rewrite using `[Metric.tendsto_atTop]`. Introduce `ε hε`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu_open, hx₀u, hu⟩` from `mem_nhdsWithin.mp ((hF x₀ hx₀) (Metric.ball_mem_nhds (F x₀) (half_pos hε)))`. Take `⟨δ, hδ1, hδ⟩` from `hsep u (hu_open.mem_nhds hx₀u)`. Take `⟨d, hd0, hd1, hδd⟩ : ∃ d : ℝ, 0 ≤ d ∧ d < 1 ∧ δ ≤ d` from `⟨max δ 0, le_max_right _ _, max_lt hδ1 one_pos, le_max_left _ _⟩`. Take `⟨η, hη0, hdη, hη1⟩ : ∃ η : ℝ, 0 < η ∧ d < η ∧ η < 1` from `⟨(d + 1) / 2, by linarith, by linarith, by linarith⟩`. Establish `hWpos : 0 < μ {x | η < f x}` using `hpos _ (isOpen_lt continuous_const hf) (by show η < f x₀; rw [hf1]; exact hη1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hW : 0 < μ.real {x | η < f x}` using `ENNReal.toReal_pos hWpos.ne' (measure_ne_top μ _)`. Establish `hr : Tendsto (fun m : ℕ => (2 * C + 1) * (d / η) ^ m / μ.real {x | η < f x}) atTop (𝓝 0)`. Establish `h` using `((tendsto_pow_atTop_nhds_zero_of_lt_one (div_nonneg hd0 hη0.le) ((div_lt_one hη0).mpr hdη)).const_mul (2 * C + 1)).div_const (μ.real {x | η < f x})`. Simplify using `using h`. Take `⟨N, hN⟩` from `Filter.eventually_atTop.mp (hr (Iio_mem_nhds (half_pos hε)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨N, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hIpos : 0 < ∫ y, f y ^ m ∂μ` using `lt_of_lt_of_le (mul_pos (pow_pos hη0 m) hW) (hlow η hη0.le m)`. Use `set c : X → ℂ := fun x => ((f x ^ m / ∫ y, f y ^ m ∂μ : ℝ) : ℂ) with hc`. Establish `hc_cont : Continuous c` using `Complex.continuous_ofReal.comp ((hf.pow m).div_const _)`. Establish `hcnorm : ∀ x ∈ K, ‖c x‖ = f x ^ m / ∫ y, f y ^ m ∂μ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[hc, Complex.norm_real, Real.norm_of_nonneg (div_nonneg (pow_nonneg (hf01 x hx).1 m) hIpos.le)]`. Establish `hcle : ∀ x ∈ K, ‖c x‖ ≤ 1 / ∫ y, f y ^ m ∂μ`. Introduce `x hx`. Rewrite using `[hcnorm x hx]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `div_le_div_of_nonneg_right (pow_le_one₀ (hf01 x hx).1 (hf01 x hx).2) hIpos.le`. Establish `hc_int : Integrable c μ`. Use `Integrable.of_bound hc_cont.aestronglyMeasurable (1 / ∫ y, f y ^ m ∂μ) ?_` and prove the remaining obligations. Use `filter_upwards [hKae] with x hx`. Conclude with `hcle x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcF_int : Integrable (fun x => c x • F x) μ`. Use `Integrable.of_bound (hc_cont.aestronglyMeasurable.smul hFm) (1 / (∫ y, f y ^ m ∂μ) * C) ?_` and prove the remaining obligations. Use `filter_upwards [hKae] with x hx`. Rewrite using `[norm_smul]`. Conclude with `mul_le_mul (hcle x hx) (hC x hx) (norm_nonneg _) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hint1 : ∫ x, c x ∂μ = 1` using `by show ∫ x, ((f x ^ m / ∫ y, f y ^ m ∂μ : ℝ) : ℂ) ∂μ = 1`. Rewrite using `[integral_complex_ofReal, integral_div, div_self hIpos.ne', Complex.ofReal_one]`. Establish `hkey : (∫ x, ((f x ^ m / ∫ y, f y ^ m ∂μ : ℝ) : ℂ) • F x ∂μ) - F x₀ = ∫ x, c x • (F x - F x₀) ∂μ`. Repeatedly rewrite using `[smul_sub]`. Rewrite using `[integral_sub hcF_int (hc_int.smul_const (F x₀)), integral_smul_const, hint1, one_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `set B : ℝ := (2 * C + 1) * d ^ m / ∫ y, f y ^ m ∂μ with hB`. Establish `hB0 : 0 ≤ B` using `div_nonneg (mul_nonneg (by linarith) (pow_nonneg hd0 m)) hIpos.le`. Establish `hbound : ∀ᵐ x ∂μ, ‖c x • (F x - F x₀)‖ ≤ (f x ^ m / ∫ y, f y ^ m ∂μ) * (ε / 2) + B` using `by filter_upwards [hKae] with x hx`. Establish `h0 : 0 ≤ f x ^ m / ∫ y, f y ^ m ∂μ` using `div_nonneg (pow_nonneg (hf01 x hx).1 m) hIpos.le`. Rewrite using `[norm_smul, hcnorm x hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Distinguish the cases in `hxu : x ∈ u`. Establish `hlt : ‖F x - F x₀‖ < ε / 2`. Establish `h` using `hu ⟨hxu, hx⟩`. Simplify `h` using `[dist_eq_norm]`. Use `mul_le_mul_of_nonneg_left hlt.le h0` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfx : f x ≤ d` using `le_trans (hδ x hx hxu) hδd`. Establish `hpow : f x ^ m ≤ d ^ m` using `pow_le_pow_left₀ (hf01 x hx).1 hfx m`. Establish `hFd : ‖F x - F x₀‖ ≤ 2 * C + 1`. Use `norm_sub_le (F x) (F x₀)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[hC x hx, hC x₀ hx₀]`. Establish `h1 : f x ^ m / (∫ y, f y ^ m ∂μ) * ‖F x - F x₀‖ ≤ B`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : 0 ≤ f x ^ m / (∫ y, f y ^ m ∂μ) * (ε / 2)` using `mul_nonneg h0 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hBle : B ≤ (2 * C + 1) * (d / η) ^ m / μ.real {x | η < f x}`. Rewrite using `[hB, div_pow, mul_div_assoc', div_div]`. Conclude with `div_le_div_of_nonneg_left (mul_nonneg (by linarith) (pow_nonneg hd0 m)) (mul_pos (pow_pos hη0 m) hW) (hlow η hη0.le m)`. Establish `hBlt : B < ε / 2` using `lt_of_le_of_lt hBle (hN m hm)`. Establish `hg_int : Integrable (fun x => (f x ^ m / ∫ y, f y ^ m ∂μ) * (ε / 2) + B) μ` using `(((hfm_int m).div_const _).mul_const _).add (integrable_const _)`.
-
-Rewrite using `[dist_eq_norm, hkey]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_add (((hfm_int m).div_const _).mul_const _) (integrable_const _), integral_mul_const, integral_div, div_self hIpos.ne', integral_const]`. Simplify using the standard rewrite rules. Use `_ < ε := by linarith`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_integral_normalised_pow_peak :
     ∀ (X : Type) [TopologicalSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X] (μ : Measure X), IsProbabilityMeasure μ → ∀ (K : Set X) (x₀ : X) (f : X → ℝ), IsCompact K → μ Kᶜ = 0 → x₀ ∈ K → (∀ U : Set X, IsOpen U → x₀ ∈ U → 0 < μ U) → Continuous f → f x₀ = 1 → (∀ x ∈ K, 0 ≤ f x ∧ f x ≤ 1) → (∀ U ∈ 𝓝 x₀, ∃ δ < 1, ∀ x ∈ K, x ∉ U → f x ≤ δ) → ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] (F : X → E), ContinuousOn F K → Tendsto (fun m : ℕ => ∫ x, ((f x ^ m / ∫ y, f y ^ m ∂μ : ℝ) : ℂ) • F x ∂μ) atTop (𝓝 (F x₀)) := by

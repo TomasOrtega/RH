@@ -10,43 +10,37 @@ open GlobalTheory.Mum
 namespace GlobalTheory.MoveNear
 
 /- English proof (translation)
-Introduce `R _ _ _ hR S π G' _ _ _ N e he hPt Ω _ s g hT hs`. Use `haveI := N.isOpen`. Use `haveI := hR.1`. Set `xR` to `s ≫ π`. Set `UΩ` to `pullback N.U.hom xR`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T` to `pullback G'.hom s`. Set `m : UΩ ⟶ pullback N.U.hom π` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ s) (by rw [Category.assoc]; exact pullback.condition)`. Set `k : UΩ ⟶ T` to `pullback.lift (m ≫ N.u) (pullback.snd _ _) (by rw [Category.assoc, N.u_over, pullback.lift_snd])`. Establish `sqP : IsPullback m (pullback.snd N.U.hom xR) (pullback.snd N.U.hom π) s`. Use `IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback N.U.hom π)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pullback.lift_fst]`. Conclude with `IsPullback.of_hasPullback N.U.hom xR`. Establish `sqk : IsPullback m k N.u (pullback.fst G'.hom s)`. Use `IsPullback.of_bot (v₂₁ := pullback.snd G'.hom s) (v₂₂ := G'.hom) (h₃₁ := s) ?_ (pullback.lift_fst _ _ _).symm (IsPullback.of_hasPullback G'.hom s)` and prove the remaining obligations. Rewrite using `[pullback.lift_snd, N.u_over]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `sqP`. Establish `hk : IsOpenImmersion k` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) sqk N.isOpen`. Set `TO : Over S` to `Over.mk (pullback.snd G'.hom s ≫ s)`. Set `yT : TO ⟶ G'` to `Over.homMk (pullback.fst G'.hom s) pullback.condition`. Set `qT : TO ⟶ Over.mk s` to `Over.homMk (pullback.snd G'.hom s) rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Set `zT : TO ⟶ G'` to `(qT ≫ g) * yT`. Set `UO : Over S` to `Over.mk (pullback.snd N.U.hom xR ≫ s)`. Set `kO : UO ⟶ TO` to `Over.homMk k (by`. Express the relevant statement in the definitionally equal form `k ≫ pullback.snd _ _ ≫ s = _`. Rewrite using `[pullback.lift_snd_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `rfl)`. Establish `sec : ∀ h : Over.mk s ⟶ G', ∃ σ : Over.mk s ⟶ TO, σ ≫ yT = h ∧ σ ≫ qT = 𝟙 _` using `fun h => ⟨Over.homMk (pullback.lift h.left (𝟙 _) ((Over.w h).trans (Category.id_comp _).symm)) (by`. Express the relevant statement in the definitionally equal form `pullback.lift _ _ _ ≫ pullback.snd G'.hom s ≫ s = s`. Rewrite using `[pullback.lift_snd_assoc]`. Conclude with `Category.id_comp _),`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use the proof step `Over.OverMorphism.ext (pullback.lift_fst _ _ _), Over.OverMorphism.ext (pullback.lift_snd _ _ _)⟩`. Establish `hone : ∀ p, (1 : Over.mk s ⟶ G').left p ∈ Set.range N.u`. Take `⟨x₀, -, -, hx₀⟩` from `hPt`. Establish `e₁ : (1 : Over.mk s ⟶ G').left = s ≫ (1 : Over.mk (𝟙 S) ⟶ G').left` using `congrArg (fun f => f.left) (MonObj.comp_one (M := G') (Over.homMk s (by simp) : Over.mk s ⟶ Over.mk (𝟙 S))).symm`. Introduce `p`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, ← hx₀]`. Conclude with `⟨x₀ (s p), rfl⟩`. Establish `hoU : IsOpen (Set.range N.u)` using `N.u.isOpenEmbedding.isOpen_range`. Take `⟨σ₁, h₁, -⟩` from `sec 1`. Take `⟨σ₂, h₂, h₂'⟩` from `sec g⁻¹`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e₂ : σ₂ ≫ zT = 1`. Rewrite using `[MonObj.comp_mul, h₂, ← Category.assoc, h₂', Category.id_comp, mul_inv_cancel]`. Establish `: IrreducibleSpace T` using `hT`. Take `⟨t, ⟨p₀, hp₀⟩, ht⟩` from `nonempty_preirreducible_inter (hoU.preimage (pullback.fst G'.hom s).continuous) (hoU.preimage zT.left.continuous) ⟨σ₁.left (IsLocalRing.closedPoint _), by`. Use `hone (IsLocalRing.closedPoint _)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← h₁]`. Conclude with `this⟩`. Use the proof step `⟨σ₂.left (IsLocalRing.closedPoint _), by`. Use `hone (IsLocalRing.closedPoint _)` as an intermediate fact. Rewrite `this` using `[← e₂]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this⟩`. Take `⟨w, -, hw⟩` from `Scheme.exists_preimage_of_isPullback sqk p₀ t hp₀`. Set `O : UΩ.Opens` to `⟨(kO ≫ zT).left ⁻¹' Set.range N.u, hoU.preimage (kO ≫ zT).left.continuous⟩`. Establish `hwO : w ∈ O` using `by show (kO ≫ zT).left w ∈ Set.range N.u`. Rewrite using `[Over.comp_left, Scheme.Hom.comp_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `zT.left (k w) ∈ Set.range N.u`. Rewrite using `[hw]`. Conclude with `ht`. Establish `hirr : IrreducibleSpace UΩ`. Use `(irreducibleSpace_def _).2 ⟨⟨w, trivial⟩, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(IrreducibleSpace.isIrreducible_univ T).2.preimage k.isOpenEmbedding` as an intermediate fact. Simplify using `using this`. Take `⟨a, aΩ, ha, haf, has, hao⟩` from `GlobalTheory.T.smoothGroup_sections_dense_in_fibres R hR.2.2.2 N.U N.smooth e he Ω xR hs hirr O ⟨w, hwO⟩`. Set `x : Over.mk (𝟙 S) ⟶ G'` to `Over.homMk (pullback.lift (π ≫ a) (𝟙 S) (by rw [Category.assoc, ha, Category.comp_id]; exact (Category.id_comp π).symm) ≫ N.u) (by rw [Category.assoc, N.u_over, pullback.lift_snd]; rfl)`. Use `⟨a, x, ha, ⟨_, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Set `rO : Over.mk s ⟶ UO` to `Over.homMk aΩ (by`. Express the relevant statement in the definitionally equal form `aΩ ≫ pullback.snd _ _ ≫ s = s`. Rewrite using `[← Category.assoc, has, Category.id_comp])`. Establish `hq : rO ≫ kO ≫ qT = 𝟙 _`. Use `ext`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `aΩ ≫ k ≫ pullback.snd _ _ = 𝟙 _`. Rewrite using `[pullback.lift_snd, has]`. Establish `hy : rO ≫ kO ≫ yT = (Over.homMk s (by simp) : Over.mk s ⟶ Over.mk (𝟙 S)) ≫ x`. Use `ext`. Express the relevant statement in the definitionally equal form `aΩ ≫ k ≫ pullback.fst _ _ = s ≫ pullback.lift (π ≫ a) (𝟙 S) _ ≫ N.u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pullback.lift_fst, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, pullback.lift_fst] show aΩ ≫ pullback.lift (pullback.fst N.U.hom xR) _ _ ≫ pullback.fst N.U.hom π = s ≫ π ≫ a`. Rewrite using `[pullback.lift_fst, haf]`.
-
-Simplify using `only [xR, Category.assoc]`. Rewrite using `[Category.assoc, Category.assoc, pullback.lift_snd, pullback.lift_snd, ← Category.assoc, has, Category.id_comp, Category.comp_id]`. Establish `hz : g * ((Over.homMk s (by simp) : Over.mk s ⟶ Over.mk (𝟙 S)) ≫ x) = rO ≫ kO ≫ zT`. Establish `hq' : (rO ≫ kO) ≫ qT = 𝟙 _` using `by rw [Category.assoc]; exact hq`. Establish `hy' : (rO ≫ kO) ≫ yT = (Over.homMk s (by simp) : Over.mk s ⟶ Over.mk (𝟙 S)) ≫ x`.
-
-Rewrite using `[Category.assoc]`. Conclude with `hy`. Rewrite using `[← Category.assoc, MonObj.comp_mul, ← Category.assoc, hq', Category.id_comp, hy']`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[hz]`.
-
-Conclude with `hao ⟨p, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section_translate_mem : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (S : Scheme.{0}) (π : S ⟶ Sp R) (G' : Over S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (N : Near π G') (e : Sp R ⟶ N.U.left), e ≫ N.U.hom = 𝟙 _ → N.Pt (𝟙 S) (π ≫ e) (1 : Over.mk (𝟙 S) ⟶ G').left → ∀ (Ω : Type) [Field Ω] (s : Sp Ω ⟶ S) (g : Over.mk s ⟶ G'), IrreducibleSpace (pullback G'.hom s : Scheme.{0}) → closedPoint R ∉ Set.range (s ≫ π) → ∃ (a : Sp R ⟶ N.U.left) (x : Over.mk (𝟙 S) ⟶ G'), a ≫ N.U.hom = 𝟙 _ ∧ N.Pt (𝟙 S) (π ≫ a) x.left ∧ Set.range (g * (Over.homMk s (by simp) : Over.mk s ⟶ Over.mk (𝟙 S)) ≫ x).left ⊆ Set.range N.u := by
   intro R _ _ _ hR S π G' _ _ _ N e he hPt Ω _ s g hT hs

@@ -5,21 +5,19 @@ namespace GlobalTheory
 open PowerSeries in
 
 /- English proof (translation)
-Take `⟨z, rfl⟩ : X ∣ y` from `by rwa [PowerSeries.X_dvd_iff]`. Establish `hs : HasSubst (X * z)` using `HasSubst.of_constantCoeff_zero' hy`. Establish `hu1 : coeff 1 (X * z) = constantCoeff z`. Rewrite using `[coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply]`. Rewrite `hu` using `[hu1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : ∀ n, coeff n (a.subst (X * z)) = ∑ d ∈ Finset.range (n + 1), coeff d a * coeff (n - d) (z ^ d)`. Introduce `n`. Rewrite using `[coeff_subst' hs, finsum_eq_sum_of_support_subset (s := Finset.range (n + 1))]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, coeff_X_pow_mul', if_pos (Nat.lt_succ_iff.mp (Finset.mem_range.mp hd)), smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `d hd`. Rewrite `hd` using `[Function.mem_support]`. Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `h`. Apply `hd` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mul_pow, coeff_X_pow_mul', if_neg (by omega), smul_zero]`. Establish `main : ∀ k, 0 < k → coeff k a = 0`. Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `hk`. Establish `h1` using `hc k`. Rewrite `h1` using `[ha, Finset.sum_range_succ, Finset.sum_eq_zero, zero_add, Nat.sub_self, coeff_zero_eq_constantCoeff_apply, map_pow]`. Establish `h2 : coeff k a * (1 - constantCoeff z ^ k) = 0`. Rewrite using `[mul_sub, mul_one, ← h1, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `mul_eq_zero.mp h2 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (sub_eq_zero.mp h).symm (hu k hk)`. Introduce `d hd`. Break down `Nat.eq_zero_or_pos d with rfl | hd0` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[coeff_one, hk.ne']`. Rewrite using `[ih d (Finset.mem_range.mp hd) hd0, zero_mul]`. Use extensionality with `n`. Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules.
-
-Rewrite using `[coeff_C, if_neg (Nat.succ_ne_zero n)]`. Conclude with `main (n + 1) (Nat.succ_pos n)`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powerSeries_eq_C_of_subst_eq_self (L : Type) [Field L] (y : PowerSeries L)
     (hy : PowerSeries.constantCoeff y = 0)

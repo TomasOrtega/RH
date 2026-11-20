@@ -8,9 +8,9 @@ open scoped TensorProduct
 namespace UpperTheory.V.Lit.Dr
 
 /- English proof (translation)
-Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero`. Rewrite using `[map_zero, map_zero]`. Both sides reduce to the same expression. Consider the case `tmul φ v`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Use function extensionality and compare the values at `g`. Simplify using `[mul_comm]`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, Pi.add_apply, Submodule.coe_add, ← hx, ← hy]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ev_comp {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a d : ℕ}
     (m : Sm E a ⊗[ℂ] (Fin d → ℂ)) (j : Fin d) :
@@ -27,11 +27,11 @@ private theorem ev_comp {E : Type} [Field E] [NumberField E] [IsTotallyComplex E
     rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ a d`. Use `⟨fun m m' h => ?_, fun m j => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Apply `(TensorProduct.piScalarRight ℂ ℂ (Sm E a) (Fin d)).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← ev_comp, ← ev_comp, h]`. Rewrite using `[ev_comp]`. Conclude with `Subtype.property _`. Use `⟨(TensorProduct.piScalarRight ℂ ℂ (Sm E a) (Fin d)).symm fun j => ⟨_, hf j⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrFun (ev_comp ((TensorProduct.piScalarRight ℂ ℂ (Sm E a) (Fin d)).symm fun j => ⟨_, hf j⟩) j) g` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evFacts : EvFacts := by
   intro E _ _ _ a d

@@ -12,9 +12,9 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 def eLast (R : Type*) [CommRing R] (a : ℕ) : Fin a → R := fun i => if (i : ℕ) + 1 = a then 1 else 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [secRow, eLast, Matrix.of_apply, Matrix.one_apply]`. Distinguish the cases in `h : (i : ℕ) + 1 = a`. Rewrite using `[if_pos h]`. Distinguish the cases in `h2 : (j : ℕ) + 1 = a`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h2, if_pos (Fin.ext (by omega))]`. Rewrite using `[if_neg h2, if_neg (fun e : i = j => h2 (e ▸ h))]`. Rewrite using `[if_neg h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem secRow_eLast {R : Type*} [CommRing R] : secRow (eLast R a) = 1 := by
   ext i j
@@ -27,9 +27,9 @@ theorem secRow_eLast {R : Type*} [CommRing R] : secRow (eLast R a) = 1 := by
   · rw [if_neg h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [secRow, Matrix.of_apply, Matrix.updateRow_apply]`. Distinguish the cases in `h : i = Fin.last n`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h, if_neg (fun e => h (Fin.ext (by simpa using e)))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem secRow_eq_updateRow {R : Type*} [CommRing R] {n : ℕ} (y : Fin (n + 1) → R) :
     secRow y = (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) R).updateRow (Fin.last n) y := by
@@ -40,16 +40,16 @@ theorem secRow_eq_updateRow {R : Type*} [CommRing R] {n : ℕ} (y : Fin (n + 1) 
   · rw [if_neg h, if_neg (fun e => h (Fin.ext (by simpa using e)))]
 
 /- English proof (translation)
-Rewrite using `[secRow_eq_updateRow, ← Matrix.cramer_transpose_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_secRow {R : Type*} [CommRing R] {n : ℕ} (y : Fin (n + 1) → R) : (secRow y).det = y (Fin.last n) := by
   rw [secRow_eq_updateRow, ← Matrix.cramer_transpose_apply]
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.vecMul, dotProduct]`. Rewrite using `[Finset.sum_eq_single (Fin.last n)]`. Simplify using `[eLast, secRow]`. Introduce `b _ hb`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ¬ ((b : ℕ) + 1 = n + 1)` using `fun e => hb (Fin.ext (by simpa using e))`. Simplify using `only [eLast, if_neg this, zero_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eLast_vecMul_secRow {R : Type*} [CommRing R] {n : ℕ} (y : Fin (n + 1) → R) :
     Matrix.vecMul (eLast R (n + 1)) (secRow y) = y := by
@@ -65,7 +65,7 @@ theorem eLast_vecMul_secRow {R : Type*} [CommRing R] {n : ℕ} (y : Fin (n + 1) 
 omit [NumberField E] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Establish `h : IsUnit (secRow y).det`. Rewrite using `[det_secRow]`. Conclude with `Pi.isUnit_iff.2 fun w => (hy w).isUnit`. Rewrite using `[secInv, dif_pos h]`. Conclude with `(Matrix.nonsingInvUnit (secRow y) h).mul_inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secRow_mul_secInv {n : ℕ} (y : Fin (n + 1) → Cinf E) (hy : ∀ w, y (Fin.last n) w ≠ 0) :
     secRow y * (secInv y : Matrix (Fin (n + 1)) (Fin (n + 1)) (Cinf E)) = 1 := by
@@ -77,7 +77,7 @@ theorem secRow_mul_secInv {n : ℕ} (y : Fin (n + 1) → Cinf E) (hy : ∀ w, y 
 omit [NumberField E] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Use `conv_lhs => rw [← eLast_vecMul_secRow y]`. Rewrite using `[eLast_vecMul_secRow y]`. Use `conv_lhs => congr`. Rewrite using `[← eLast_vecMul_secRow y]`. Rewrite using `[Matrix.vecMul_vecMul, secRow_mul_secInv y hy, Matrix.vecMul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecMul_secInv {n : ℕ} (y : Fin (n + 1) → Cinf E) (hy : ∀ w, y (Fin.last n) w ≠ 0) :
     Matrix.vecMul y (secInv y : Matrix (Fin (n + 1)) (Fin (n + 1)) (Cinf E)) = eLast (Cinf E) (n + 1) := by
@@ -88,7 +88,7 @@ theorem vecMul_secInv {n : ℕ} (y : Fin (n + 1) → Cinf E) (hy : ∀ w, y (Fin
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Unfold `secInv`. Use `split_ifs with h`. Rewrite using `[inv_eq_one]`. Conclude with `Units.ext secRow_eLast`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem secInv_eLast : secInv (eLast (Cinf E) a) = 1 := by
   unfold secInv
@@ -98,7 +98,7 @@ theorem secInv_eLast : secInv (eLast (Cinf E) a) = 1 := by
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Unfold `rowAct`. Rewrite using `[Units.val_mul, ← Matrix.vecMul_vecMul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.vecMul, dotProduct, ratGL]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rowAct_ratGL_mul (ξ : Fin a → E) (γ : GL (Fin a) E) (g : GA E a) :
     rowAct ξ (ratGL E a γ * g) = rowAct (Matrix.vecMul ξ (γ : Matrix (Fin a) (Fin a) E)) g := by
@@ -110,14 +110,14 @@ theorem rowAct_ratGL_mul (ξ : Fin a → E) (γ : GL (Fin a) E) (g : GA E a) :
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Simplify using `[detPow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem detPow_mul (x : ℝ) (g h : GA E a) : detPow E a x (g * h) = detPow E a x g * detPow E a x h := by
   simp [detPow]
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Simplify using `[detPow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem detPow_pos (x : ℝ) (g : GA E a) : 0 < detPow E a x g := by
   simp [detPow]
@@ -125,7 +125,7 @@ theorem detPow_pos (x : ℝ) (g : GA E a) : 0 < detPow E a x g := by
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Establish `h : Matrix.GeneralLinearGroup.det (ratGL E a γ) = diagUnits E (Matrix.GeneralLinearGroup.det γ)` using `Units.ext (det_map (algebraMap E (Ad E)) γ)`. Establish `h2` using `(GlobalTheory.HeckeGal.Model.absPow E x).2.2 (Matrix.GeneralLinearGroup.det γ)`. Unfold `detPow chiDet`. Rewrite using `[MonoidHom.comp_apply, h, h2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem detPow_ratGL (x : ℝ) (γ : GL (Fin a) E) : detPow E a x (ratGL E a γ) = 1 := by
   have h : Matrix.GeneralLinearGroup.det (ratGL E a γ) = diagUnits E (Matrix.GeneralLinearGroup.det γ) :=
@@ -137,18 +137,18 @@ theorem detPow_ratGL (x : ℝ) (γ : GL (Fin a) E) : detPow E a x (ratGL E a γ)
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.HeckeGal.Model.absPow_isAbsPow E x).2.1 v`.
+A detailed English derivation is pending.
 -/
 theorem norm_absPow_val (x : ℝ) (v : HeightOneSpectrum (𝓞 E)) :
     (((GlobalTheory.HeckeGal.Model.absPow E x).val v : ℂˣ) : ℂ) = (Ideal.absNorm v.asIdeal : ℂ) ^ (-(x : ℂ)) :=
   (GlobalTheory.HeckeGal.Model.absPow_isAbsPow E x).2.1 v
 
 /- English proof (translation)
-Set `e : {ξ : Fin a → E // ξ ≠ 0} ≃ {ξ : Fin a → E // ξ ≠ 0}` to `{ toFun := fun ξ => ⟨Matrix.vecMul ξ.1 (γ : Matrix (Fin a) (Fin a) E), fun h => ξ.2 (by`. Use `congrArg (fun u => Matrix.vecMul u ((γ⁻¹ : GL (Fin a) E) : Matrix (Fin a) (Fin a) E)) h` as an intermediate fact. Simplify `this)⟩` using `[Matrix.vecMul_vecMul]`. Use `invFun := fun ξ => ⟨Matrix.vecMul ξ.1 ((γ⁻¹ : GL (Fin a) E) : Matrix (Fin a) (Fin a) E), fun h => ξ.2 (by`. Use `congrArg (fun u => Matrix.vecMul u (γ : Matrix (Fin a) (Fin a) E)) h` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this)⟩` using `[Matrix.vecMul_vecMul]`. Use `left_inv := fun ξ => Subtype.ext (by simp [Matrix.vecMul_vecMul])`. Use `right_inv := fun ξ => Subtype.ext (by simp [Matrix.vecMul_vecMul]) }`. Unfold `thetaSum`. Rewrite using `[← e.tsum_eq fun ξ => Psi φ φ' Φ N g (rowAct ξ.1 g)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[rowAct_ratGL_mul]`. Simplify using `only [Psi, mul_assoc, hφ, hφ']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thetaSum_ratGL_mul (φ φ' : GA E a → ℂ) (Φ : (Fin a → Cinf E) → ℂ) (N : ℕ)
     (hφ : ∀ γ g, φ (ratGL E a γ * g) = φ g) (hφ' : ∀ γ g, φ' (ratGL E a γ * g) = φ' g)
@@ -171,7 +171,7 @@ theorem thetaSum_ratGL_mul (φ φ' : GA E a → ℂ) (Φ : (Fin a → Cinf E) �
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Unfold `indN`. Rewrite using `[if_pos]`. Introduce `i`. Conclude with `⟨0, fun v => zero_mem _, by simp [eLast]⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem indN_eLast (N : ℕ) : indN N (eLast (Af E) a) = 1 := by
   unfold indN
@@ -182,11 +182,9 @@ theorem indN_eLast (N : ℕ) : indN N (eLast (Af E) a) = 1 := by
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Introduce and unpack `⟨z, hz, h⟩`. Establish `h1` using `congrArg (fun t => Valued.v (pLoc E v t)) h`. Simplify using `only [map_neg, map_one, map_mul, map_natCast, Valuation.map_neg] at h1`. Establish `h2 : Valued.v (pLoc E v z) ≤ 1` using `hz v`. Establish `h3 : Valued.v (N : v.adicCompletion E) < 1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (N : v.adicCompletion E) = algebraMap E _ (algebraMap (𝓞 E) E (N : 𝓞 E))` using `by simp`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `Valued.v ((algebraMap (𝓞 E) E (N : 𝓞 E) : E) : v.adicCompletion E) < 1`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hv`.
-
-Conclude with `absurd h1 (ne_of_gt (mul_lt_one_of_lt_of_le h3 h2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neg_one_notMem_natLat (N : ℕ) (v : HeightOneSpectrum (𝓞 E)) (hv : (N : 𝓞 E) ∈ v.asIdeal) :
     (-1 : Af E) ∉ natLat E N := by
@@ -204,9 +202,9 @@ theorem neg_one_notMem_natLat (N : ℕ) (v : HeightOneSpectrum (𝓞 E)) (hv : (
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Unfold `indN`. Rewrite using `[if_neg]`. Introduce `h`. Use `h (Fin.last n)` as an intermediate fact. Simplify using `only [Fin.val_last, if_true, Pi.zero_apply, zero_sub] at this`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `neg_one_notMem_natLat N v hv this`.
+A detailed English derivation is pending.
 -/
 theorem indN_zero {n : ℕ} (N : ℕ) (v : HeightOneSpectrum (𝓞 E)) (hv : (N : 𝓞 E) ∈ v.asIdeal) :
     indN N (0 : Fin (n + 1) → Af E) = 0 := by
@@ -218,7 +216,7 @@ theorem indN_zero {n : ℕ} (N : ℕ) (v : HeightOneSpectrum (𝓞 E)) (hv : (N 
   exact neg_one_notMem_natLat N v hv this
 
 /- English proof (translation)
-Simplify using `[rowAct, pInf_algebraMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pInf_rowAct_one (ξ : Fin a → E) (i : Fin a) (w : InfinitePlace E) :
     pInf E (rowAct ξ 1 i) w = w.embedding (ξ i) := by
@@ -227,13 +225,13 @@ theorem pInf_rowAct_one (ξ : Fin a → E) (i : Fin a) (w : InfinitePlace E) :
 open Classical in
 
 /- English proof (translation)
-Establish `h0 : eLast E (n + 1) ≠ 0` using `fun h => by simpa [eLast] using congrFun h (Fin.last n)`. Unfold `thetaSum`. Rewrite using `[tsum_eq_single ⟨eLast E (n + 1), h0⟩]`. Establish `h1 : (fun i => pInf E (rowAct (eLast E (n + 1)) (1 : GA E (n + 1)) i)) = eLast (Cinf E) (n + 1)`. Apply the tactic sequence `funext i; simp only [rowAct, eLast, Units.val_one, Matrix.vecMul_one, apply_ite, map_one, map_zero]; split_ifs <;> rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2 : (fun i => GlobalTheory.RSJ.pFin E (rowAct (eLast E (n + 1)) (1 : GA E (n + 1)) i)) = eLast (Af E) (n + 1)`. Apply the tactic sequence `funext i; simp only [rowAct, eLast, Units.val_one, Matrix.vecMul_one, apply_ite, map_one, map_zero]; split_ifs <;> rfl`. Simplify using `only [Psi, h1, h2, secInv_eLast, indN_eLast]`. Simplify using the standard rewrite rules. Introduce `ξ hξ`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (fun i => pInf E (rowAct ξ.1 (1 : GA E (n + 1)) i)) ≠ eLast (Cinf E) (n + 1)`. Introduce `h`. Apply `hξ` to reduce the goal to its premises. Use `Subtype.ext (funext fun i => ?_)` and prove the remaining obligations. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `congrFun (congrFun h i) w` as an intermediate fact. Rewrite `this` using `[pInf_rowAct_one]`. Apply `w.embedding.injective` to reduce the goal to its premises. Apply the tactic sequence `rw [this]; simp only [eLast]; split_ifs <;> simp`. Simplify using `only [Psi, if_neg this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -262,9 +260,7 @@ theorem thetaSum_point {n : ℕ} (φ φ' : GA E (n + 1) → ℂ) (N : ℕ) :
 open Classical in
 
 /- English proof (translation)
-Use `haveI : T2Space (Af E) := inferInstanceAs (T2Space (RestrictedProduct _ _ _))`. Use `haveI : T2Space (InfiniteAdeleRing E) := inferInstanceAs (T2Space (∀ w : InfinitePlace E, w.Completion))`. Use `haveI : T2Space (Ad E) := inferInstanceAs (T2Space (InfiniteAdeleRing E × Af E))`. Use `haveI : T2Space (GA E (n + 1)) := Units.isEmbedding_embedProduct.t2Space`. Unfold `Zint`.
-
-Rewrite using `[Measure.restrict_univ, integral_dirac, thetaSum_point]`. Simplify using `[detPow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zint_dirac {n : ℕ} (φ φ' : GA E (n + 1) → ℂ) (N : ℕ) (x : ℝ) :
     Zint (Measure.dirac 1) Set.univ φ φ' (fun y => if y = eLast (Cinf E) (n + 1) then 1 else 0) N x

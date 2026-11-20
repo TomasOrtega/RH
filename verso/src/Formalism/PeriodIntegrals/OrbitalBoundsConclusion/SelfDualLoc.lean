@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SelfDualLocalBasis.Self
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SelfDualLocalBasis.LocBasis
 
 /- English proof (translation)
-The claim follows from `PI.SelfDualLoc.W.selfDualLoc_of_locBasis PI.SelfDualLoc.W.locBasis`.
+A detailed English derivation is pending.
 -/
 theorem self_dual_local : PI.SelfDualLoc :=
   PI.SelfDualLoc.W.selfDualLoc_of_locBasis PI.SelfDualLoc.W.locBasis

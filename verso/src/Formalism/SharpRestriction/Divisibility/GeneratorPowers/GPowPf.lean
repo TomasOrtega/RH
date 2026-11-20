@@ -36,20 +36,20 @@ def powMap (p : IsPowGrp A' A n) (f : A ⟶ A) : A' ⟶ A' :=
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `p.lim.fac _ ⟨i⟩`.
+A detailed English derivation is pending.
 -/
 theorem powMap_pr (p : IsPowGrp A' A n) (f : A ⟶ A) (i : Fin n) : powMap p f ≫ p.pr i = p.pr i ≫ f :=
   p.lim.fac _ ⟨i⟩
 
 /- English proof (translation)
-The claim follows from `p.lim.hom_ext fun ⟨i⟩ => h i`.
+A detailed English derivation is pending.
 -/
 theorem pow_ext (p : IsPowGrp A' A n) {T : Over S} {x y : T ⟶ A'} (h : ∀ i, x ≫ p.pr i = y ≫ p.pr i) :
     x = y :=
   p.lim.hom_ext fun ⟨i⟩ => h i
 
 /- English proof (translation)
-The claim follows from `pow_ext p fun i => by have := p.hom i rw [Category.assoc, powMap_pr, ← Category.assoc, IsMonHom.one_hom, IsMonHom.one_hom] mul_hom := pow_ext p fun i => by have := p.hom i rw [Category.assoc, powMap_pr, ← Category.assoc, IsMonHom.mul_hom, Category.assoc, IsMonHom.mul_hom, Categor …`.
+A detailed English derivation is pending.
 -/
 theorem powMap_isMonHom (p : IsPowGrp A' A n) (f : A ⟶ A) [IsMonHom f] : IsMonHom (powMap p f) where
   one_hom := pow_ext p fun i => by
@@ -64,7 +64,7 @@ theorem powMap_isMonHom (p : IsPowGrp A' A n) (f : A ⟶ A) [IsMonHom f] : IsMon
 variable [IsCommMonObj A'] [IsCommMonObj A]
 
 /- English proof (translation)
-Use `p.hom i` as an intermediate fact. Rewrite using `[padd, padd, Category.assoc, IsMonHom.mul_hom, lift_map_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem padd_pr (p : IsPowGrp A' A n) {T : Over S} (x y : T ⟶ A') (i : Fin n) :
     padd A' x y ≫ p.pr i = padd A (x ≫ p.pr i) (y ≫ p.pr i) := by
@@ -81,7 +81,7 @@ def powRingAct (p : IsPowGrp A' A n) {O : Type} [Ring O] (ρ : RingAct A O) : Ri
     rw [powMap_pr, ρ.map_add, padd_pr, powMap_pr, powMap_pr, padd, padd, comp_lift_assoc]
 
 /- English proof (translation)
-The claim follows from `powMap_pr p _ i`.
+A detailed English derivation is pending.
 -/
 theorem powRingAct_pr (p : IsPowGrp A' A n) {O : Type} [Ring O] (ρ : RingAct A O) (a : O) (i : Fin n) :
     (powRingAct p ρ).act a ≫ p.pr i = p.pr i ≫ ρ.act a :=
@@ -90,13 +90,13 @@ theorem powRingAct_pr (p : IsPowGrp A' A n) {O : Type} [Ring O] (ρ : RingAct A 
 end Pow
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ _ t P n D' pD`. Use `letI := H.starRing`. Use `letI sm : SMul (𝓞 E) D'.toPre.X := ⟨fun a x => pD.xe.symm (a • pD.xe x)⟩`. Establish `hsm : ∀ (a : 𝓞 E) (x : D'.toPre.X), pD.xe (a • x) = a • pD.xe x` using `fun a x => pD.xe.apply_symm_apply _`. Use `letI M : Module (𝓞 E) D'.toPre.X := Function.Injective.module (𝓞 E) pD.xe.toAddMonoidHom pD.xe.injective hsm`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `⟨M, ?_⟩` and prove the remaining obligations. Set `ρ` to `powRingAct pD.pw P.oD.onB.toRingAct`. Establish `hpr : ∀ (a : 𝓞 E) (i : Fin n), ρ.act a ≫ pD.pw.pr i = pD.pw.pr i ≫ P.oD.onB.act a` using `fun a i => powRingAct_pr _ _ a i`. Establish `rosati : ∀ a : 𝓞 E, RosatiAdj D'.toPre.P.A D'.toPre.P.L (ρ.act a) (ρ.act (star a))` using `fun a => hR V D'.toPre P.D.toPre n pD _ _ _ _ (P.oD.onB.hom a) (P.oD.onB.hom (star a)) (hpr a) (hpr (star a)) (P.oD.onB.rosati a)`. Set `oB : D'.toPre.P.OAct (𝓞 E)` to `{ ρ with rosati := rosati }`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨{ onB := oB, c_lin := ?_, tau_bal := ?_ }, fun a x i => by rw [hsm]; rfl, fun a i => hpr a i⟩` and prove the remaining obligations. Introduce `a y`. Apply `pow_ext pD.pw` to reduce the goal to its premises. Introduce `i`. Express the relevant statement in the definitionally equal form `D'.toPre.c (a • y) ≫ pD.pw.pr i = (D'.toPre.c y ≫ ρ.act a) ≫ pD.pw.pr i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[pD.c_pr, hsm, Pi.smul_apply, P.oD.c_lin, Category.assoc, hpr, ← Category.assoc, pD.c_pr]`. Introduce `a`. Conclude with `hT V D'.toPre P.D.toPre n pD _ _ _ _ (fun y => a • y) (fun y => star a • y) (P.oD.onB.hom a) (P.oD.onB.hom (star a)) (hpr a) (hpr (star a)) (P.oD.onB.rosati a) (fun y => P.oD.c_lin a y) (fun y => P.oD.c_lin (star a) y) (P.oD.tau_bal a)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem powOAct_holds (hR : BoxRosatiSt) (hT : BoxTauBalSt) : PowOActSt := by
   intro E _ _ _ H V _ _ _ t P n D' pD

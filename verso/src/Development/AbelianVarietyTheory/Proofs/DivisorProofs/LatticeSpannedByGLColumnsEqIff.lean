@@ -15,31 +15,29 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {w : Pl E} {K : Glob
   (e : K.E ≃+* w.adicCompletion E) {a : ℕ} {B : GlobalTheory.UnitLemma.InvAlg K} (b : Module.Basis (Fin a) K.E B.A)
 
 /- English proof (translation)
-Rewrite using `[← crd_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem crd_smulO (c : K.O) (y : B.A) : crd e b (c • y) = e (algebraMap K.O K.E c) • crd e b y := by
   rw [← crd_smul, algebraMap_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[crd]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem crd_zero : crd e b (0 : B.A) = 0 := by
   funext i; simp [crd]
 
 /- English proof (translation)
-Rewrite using `[latOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨j, rfl⟩` from `hx`. Introduce `i`. Rewrite using `[crd_ofCrd, ← col_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Consider the case `zero => intro i`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Simplify using `[crd_zero]`. Consider the case `add x z _ _ hx hz`. Introduce `i`. Rewrite using `[crd_add, Matrix.mulVec_add, Pi.add_apply]`. Conclude with `(Valued.v.map_add _ _).trans (max_le (hx i) (hz i))`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul c x _ hx`. Introduce `i`. Rewrite using `[crd_smulO, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, map_mul]`. Conclude with `mul_le_one' ((he _).1 ⟨c, rfl⟩) (hx i)`. Introduce `h choose c hc using fun j => (he (e.symm (((q⁻¹ : GLw a w).val *ᵥ crd e b y) j))).2 (by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingEquiv.apply_symm_apply]`. Conclude with `h j)`. Establish `hy : y = ∑ j, c j • ofCrd e b (fun i => q.val i j)`. Apply `crd_injective e b` to reduce the goal to its premises. Rewrite using `[crd_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : crd e b y = q.val *ᵥ ((q⁻¹ : GLw a w).val *ᵥ crd e b y)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Use `conv_lhs => rw [h1]`. Use function extensionality and compare the values at `i`. Simplify using `only [crd_smulO, hc, RingEquiv.apply_symm_apply, crd_ofCrd, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct]`.
-
-Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[hy]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_lat_iff (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) (q : GLw a w) (y : B.A) :
     y ∈ GlobalTheory.TwLat.lat e b q ↔ ∀ i, Valued.v (((q⁻¹ : GLw a w).val *ᵥ crd e b y) i) ≤ 1 := by
@@ -78,11 +76,11 @@ theorem mem_lat_iff (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (
     exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hle i j`. Establish `hm : ofCrd e b (fun i => q.val i j) ∈ GlobalTheory.TwLat.lat e b q`. Rewrite using `[latOf_eq]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(mem_lat_iff e b he q' _).1 (hle hm) i` as an intermediate fact. Rewrite `this` using `[crd_ofCrd, ← col_mul, ← Units.val_mul]`. Conclude with `this`. Introduce `h conv_lhs => rw [latOf_eq]`. Rewrite using `[Submodule.span_le]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[SetLike.mem_coe, mem_lat_iff e b he, crd_ofCrd, ← col_mul, ← Units.val_mul]`. Conclude with `fun i => h i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem lat_le_iff (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) (q q' : GLw a w) :
     GlobalTheory.TwLat.lat e b q ≤ GlobalTheory.TwLat.lat e b q' ↔ ∀ i j, Valued.v ((q'⁻¹ * q : GLw a w).val i j) ≤ 1 := by
@@ -101,7 +99,7 @@ theorem lat_le_iff (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e
     exact fun i => h i j
 
 /- English proof (translation)
-Introduce `E _ _ _ w K e he a B b q q'`. Rewrite using `[le_antisymm_iff, lat_le_iff e b he, lat_le_iff e b he, GlobalTheory.LFun.KGL, GlobalTheory.AdelicU.mem_GLint_iff, _root_.mul_inv_rev, inv_inv]`. Conclude with `and_comm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_eq_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E) (K : GlobalTheory.UnitLemma.UQ)
     (e : K.E ≃+* w.adicCompletion E), (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) →

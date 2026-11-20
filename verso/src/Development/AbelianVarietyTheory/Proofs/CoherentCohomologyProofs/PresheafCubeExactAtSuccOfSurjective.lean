@@ -41,19 +41,17 @@ variable [LinearOrder ι] [Finite ι] (F : TopCat.Sheaf AddCommGrpCat.{w} T) [F.
 open CategoryTheory AlgebraicGeometry Limits TopologicalSpace Opposite in
 variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R] in
 /- English proof (translation)
-Rewrite `hB`, the goal using `[show (1 : ℕ) = 0 + 1 from rfl, _root_.GlobalTheory.cubeComplex_exactAt_succ_iff]`. Establish `comm : ∀ p (x : A.Term p), (_root_.GlobalTheory.cubeComplexMap φ).f (p + 1) (A.d p x) = B.d p ((_root_.GlobalTheory.cubeComplexMap φ).f p x)`. Introduce `p x`. Use `congrArg (fun f => f.hom x) ((_root_.GlobalTheory.cubeComplexMap φ).comm p (p + 1))` as an intermediate fact. Simplify using `only [_root_.GlobalTheory.cubeComplex, CochainComplex.of_d, ModuleCat.hom_comp, ModuleCat.hom_ofHom, LinearMap.coe_comp, Function.comp_apply] at this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this.symm`. Establish `dd : ∀ y : A.Term 0, A.d 1 (A.d 0 y) = 0`. Introduce `y`. Use `congrArg (fun f => f.hom y) ((_root_.GlobalTheory.cubeComplex A).d_comp_d 0 1 2)` as an intermediate fact. Simplify `this` using `[_root_.GlobalTheory.cubeComplex, LinearMap.comp_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `inj1 : Function.Injective ((_root_.GlobalTheory.cubeComplexMap φ).f 1)`. Introduce `x y hxy`. Use function extensionality and compare the values at `s`. Apply `hinj s.1 (Finset.card_pos.mp (by rw [s.2]; norm_num))` to reduce the goal to its premises. Conclude with `congrFun hxy s`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `surj0 : Function.Surjective ((_root_.GlobalTheory.cubeComplexMap φ).f 0)`. Introduce `y`. Use `⟨fun s => (hsurj s.1 (Finset.card_eq_zero.mp s.2) (y s)).choose, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Conclude with `(hsurj s.1 (Finset.card_eq_zero.mp s.2) (y s)).choose_spec`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1 : B.d 1 ((_root_.GlobalTheory.cubeComplexMap φ).f 1 x) = 0`. Rewrite using `[← comm 1 x]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `(_root_.GlobalTheory.cubeComplexMap φ).f 2 (A.d 1 x) = 0`. Rewrite using `[show A.d 1 x = 0 from hx]`. Conclude with `map_zero _`. Take `⟨y, hy⟩` from `(hB ((_root_.GlobalTheory.cubeComplexMap φ).f 1 x)).1 h1`. Take `⟨z, rfl⟩` from `surj0 y`.
-
-Conclude with `⟨z, inj1 ((comm 0 z).trans hy)⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `dd y`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem cubeComplex_exactAt_one_of_hom_surj_empty_inj_nonempty {A B : _root_.GlobalTheory.Cube ι R} (φ : A ⟶ B)
     (hsurj : ∀ s : Finset ι, s = ∅ → Function.Surjective (φ.app s))
@@ -101,13 +99,13 @@ variable {T : TopCat.{w}} {ι : Type} [LinearOrder ι] {R : Type u} [Ring R]
   (hs : ∀ ⦃W W' : Opens T⦄ (h : W' ≤ W), Function.Surjective (_root_.GlobalTheory.presheafRes P h)) in
 include hP hs in
 /- English proof (translation)
-Establish `h : ∀ s, _root_.GlobalTheory.cechOpen (V ⊓ ⨆ i, U i) U s ≤ _root_.GlobalTheory.cechOpen V U s` using `fun s => _root_.GlobalTheory.cechOpen_mono inf_le_left (fun _ => le_rfl) s`. Use `cubeComplex_exactAt_one_of_hom_surj_empty_inj_nonempty (_root_.GlobalTheory.presheafCubeRes P h) ?_ ?_ (_root_.GlobalTheory.presheafCube_exactAt_zero_one hP (V := V ⊓ ⨆ i, U i) (U := U) inf_le_right).2` and prove the remaining obligations. Introduce and unpack `s rfl`. Conclude with `hs (h ∅)`. Introduce `s hs' x y hxy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : _root_.GlobalTheory.cechOpen V U s ≤ _root_.GlobalTheory.cechOpen (V ⊓ ⨆ i, U i) U s`. Introduce `z hz`. Rewrite `hz`, the goal using `[_root_.GlobalTheory.mem_cechOpen]`. Take `⟨j, hj⟩` from `hs'`. Conclude with `⟨⟨hz.1, Opens.mem_iSup.mpr ⟨j, hz.2 j hj⟩⟩, hz.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `back : ∀ (O O' : Opens T) (h₁ : O' ≤ O) (h₂ : O ≤ O') (w : P.obj (op O)), P.map (homOfLE h₂).op (P.map (homOfLE h₁).op w) = w`. Introduce `O O' h₁ h₂ w`. Rewrite using `[← ConcreteCategory.comp_apply, ← P.map_comp, show (homOfLE h₁).op ≫ (homOfLE h₂).op = 𝟙 _ from Subsingleton.elim _ _]`. Simplify using the standard rewrite rules. Establish `key : ∀ w, P.map (homOfLE h').op ((_root_.GlobalTheory.presheafCubeRes P h).app s w) = w` using `fun w => back _ _ (h s) h' w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key x, ← key y, hxy]`.
+A detailed English derivation is pending.
 -/
 private theorem cubeComplex_presheafCube_exactAt_one (V : Opens T) (U : ι → Opens T) :
     (_root_.GlobalTheory.cubeComplex (_root_.GlobalTheory.presheafCube P V U)).ExactAt 1 := by
@@ -139,15 +137,15 @@ variable {T : TopCat.{w}} {ι : Type} [LinearOrder ι] {R : Type u} [Ring R]
   (hs : ∀ ⦃W W' : Opens T⦄ (h : W' ≤ W), Function.Surjective (_root_.GlobalTheory.presheafRes P h)) in
 include hP hs in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `α _ _ hcard V U p`. Rewrite using `[_root_.GlobalTheory.cubeComplex_exactAt_succ_iff]`. Establish `: Subsingleton ((_root_.GlobalTheory.presheafCube P V U).Term (p + 1))` using `_root_.GlobalTheory.Cube.subsingleton_term _ (by omega)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Subsingleton ((_root_.GlobalTheory.presheafCube P V U).Term (p + 1 + 1))` using `_root_.GlobalTheory.Cube.subsingleton_term _ (by omega)`. Introduce `x`. Conclude with `⟨fun _ => ⟨0, Subsingleton.elim _ _⟩, fun _ => Subsingleton.elim _ _⟩`. Consider the case `succ n ih`. Introduce `α _ _ hcard V U p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `p with`. Consider the case `zero => exact cubeComplex_presheafCube_exactAt_one hP hs V U`. Consider the case `succ p`. Take `⟨i⟩ : Nonempty α` from `Fintype.card_pos_iff.mp (by omega)`. Set `e : {j : α // j ≠ i} ↪o α` to `OrderEmbedding.subtype _`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `he : Set.range e = {i}ᶜ`. Use extensionality with `j`. Simplify using `[e]`. Establish `hcard' : Fintype.card {j : α // j ≠ i} = n`. Simplify using `[Fintype.card_subtype_compl, hcard]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `_root_.GlobalTheory.cubeComplex_exactAt_succ_of_faces he` to reduce the goal to its premises. Conclude with `(ih hcard' V (fun k => U (e k)) (p + 1)).of_iso ((_root_.GlobalTheory.cubeFunctor _ R).mapIso (_root_.GlobalTheory.presheafCubeLowerFaceIso P V U e)).symm`. Conclude with `(ih hcard' (V ⊓ U i) (fun k => U (e k)) p).of_iso ((_root_.GlobalTheory.cubeFunctor _ R).mapIso (_root_.GlobalTheory.presheafCubeUpperFaceIso P V U e i)).symm`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem cubeComplex_presheafCube_exactAt_add_one_of_card (n : ℕ) :
     ∀ {α : Type} [LinearOrder α] [Fintype α], Fintype.card α = n →
@@ -186,9 +184,9 @@ variable {T : TopCat.{w}} {ι : Type} in
 variable [LinearOrder ι] [Finite ι] (F : TopCat.Sheaf AddCommGrpCat.{w} T) [F.IsFlasque] in
 
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Establish `hP` using `_root_.GlobalTheory.isSheaf_comp_abToIntModule F.cond`. Establish `hs : ∀ ⦃W W' : Opens T⦄ (h : W' ≤ W), Function.Surjective (_root_.GlobalTheory.presheafRes (F.obj ⋙ _root_.GlobalTheory.abToIntModule) h)`. Introduce `W W' h`. Establish `: Epi (F.obj.map (homOfLE h).op)` using `TopCat.Presheaf.IsFlasque.epi _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(AddCommGrpCat.epi_iff_surjective _).mp this`. Establish `hex` using `cubeComplex_presheafCube_exactAt_add_one_of_card hP hs _ rfl V U (p + 1)`. Establish `hcech` using `(_root_.GlobalTheory.cechComplex_exactAt_succ_iff_cube _ p).mpr hex`. Conclude with `ModuleCat.subsingleton_of_isZero hcech.isZero_homology`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.subsingleton_cechAbH_succ_of_isFlasque (V : Opens T) (U : ι → Opens T) (p : ℕ) :
     Subsingleton (_root_.GlobalTheory.cechAbH F.obj V U (p + 1)) := by

@@ -5,13 +5,13 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p _ C _ _ φ Λ _ _ _ _ _ a`. Establish `hint : IsIntegral ℤ_[p] a` using `Algebra.IsIntegral.isIntegral a`. Use `⟨minpoly ℤ_[p] a, minpoly.aeval _ _, ?_⟩` and prove the remaining obligations. Establish `hirr : Irreducible ((minpoly ℤ_[p] a).map (algebraMap ℤ_[p] ℚ_[p]))` using `((minpoly.monic hint).irreducible_iff_irreducible_map_fraction_map (K := ℚ_[p])).1 (minpoly.irreducible hint)`. Establish `hsep` using `hirr.separable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h`. Establish `hs` using `PadicInt.unitCoeff_spec h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hx` using `[hs, map_mul, map_pow, map_natCast]`. Break down `mul_eq_zero.1 hx with h1 | h1` into its components or cases. Conclude with `(((PadicInt.unitCoeff h).isUnit).map φ).ne_zero h1`. Conclude with `(pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)) h1`. Set `ψ : ℚ_[p] →+* C` to `IsFractionRing.lift (K := ℚ_[p]) hinj`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hcomp : ψ.comp (algebraMap ℤ_[p] ℚ_[p]) = φ`. Use extensionality with `x`. Conclude with `IsFractionRing.lift_algebraMap hinj x`. Use `hsep.map (f := ψ)` as an intermediate fact. Rewrite `this` using `[Polynomial.map_map, hcomp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_poly_aeval_eq_zero_map_separable :
     ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [CharZero C] (φ : ℤ_[p] →+* C) (Λ : Type)

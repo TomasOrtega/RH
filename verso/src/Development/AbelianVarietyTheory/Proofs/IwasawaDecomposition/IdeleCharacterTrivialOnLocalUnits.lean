@@ -15,9 +15,9 @@ namespace GlobalTheory.Mem.LocTriv
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.TendstoOfIntegrals.target_check`. Consider the case `exact _root_.GlobalTheory.TendstoOfIntegrals.target_check`. Consider the case `(apply _root_.GlobalTheory.TendstoOfIntegrals.target_check <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.TendstoOfIntegrals.target_check <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.TendstoOfIntegrals.target_check <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.TendstoOfIntegrals.target_check ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tendsto_finiteAdele {ι : Type} {l : Filter ι} (f : ι → FiniteAdeleRing (𝓞 L) L) (b : FiniteAdeleRing (𝓞 L) L)
     (hf : ∀ i v, f i v ∈ v.adicCompletionIntegers L) (hb : ∀ v, b v ∈ v.adicCompletionIntegers L)
@@ -39,13 +39,13 @@ def part (a : Ideles L) (S : Finset (HeightOneSpectrum (𝓞 L))) : Ideles L :=
   ∏ v ∈ S, localIdele L v (Units.map (ev v) a)
 
 /- English proof (translation)
-Simplify using `only [part, map_inv, Finset.prod_inv_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem part_inv (a : Ideles L) (S : Finset (HeightOneSpectrum (𝓞 L))) : (part a S)⁻¹ = part a⁻¹ S := by
   simp only [part, map_inv, Finset.prod_inv_distrib]
 
 /- English proof (translation)
-Use `Function.update_self (β := fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletion L) v (x : v.adicCompletion L) (fun _ => 1)` as an intermediate fact. Use `this` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression.
 -/
 theorem ev_local_self (v : HeightOneSpectrum (𝓞 L)) (x : (v.adicCompletion L)ˣ) :
     ev v (localIdele L v x : AdeleRing (𝓞 L) L) = x := by
@@ -56,7 +56,7 @@ theorem ev_local_self (v : HeightOneSpectrum (𝓞 L)) (x : (v.adicCompletion L)
   rfl
 
 /- English proof (translation)
-Use `Function.update_of_ne (β := fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletion L) hw (x : v.adicCompletion L) (fun _ => 1)` as an intermediate fact. Use `this` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression.
 -/
 theorem ev_local_ne {v w : HeightOneSpectrum (𝓞 L)} (hw : w ≠ v) (x : (v.adicCompletion L)ˣ) :
     ev w (localIdele L v x : AdeleRing (𝓞 L) L) = 1 := by
@@ -67,7 +67,7 @@ theorem ev_local_ne {v w : HeightOneSpectrum (𝓞 L)} (hw : w ≠ v) (x : (v.ad
   rfl
 
 /- English proof (translation)
-Rewrite using `[part, Units.coe_prod, map_prod, Finset.prod_eq_single_of_mem w hw (fun v _ hv => ev_local_ne hv.symm _), ev_local_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_part_mem (a : Ideles L) {S : Finset (HeightOneSpectrum (𝓞 L))} {w : HeightOneSpectrum (𝓞 L)} (hw : w ∈ S) :
     ev w (part a S : AdeleRing (𝓞 L) L) = ev w (a : AdeleRing (𝓞 L) L) := by
@@ -76,7 +76,7 @@ theorem ev_part_mem (a : Ideles L) {S : Finset (HeightOneSpectrum (𝓞 L))} {w 
   rfl
 
 /- English proof (translation)
-Rewrite using `[part, Units.coe_prod, map_prod]`. Conclude with `Finset.prod_eq_one fun v hv => ev_local_ne (fun e : w = v => hw (e ▸ hv)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_part_not_mem (a : Ideles L) {S : Finset (HeightOneSpectrum (𝓞 L))} {w : HeightOneSpectrum (𝓞 L)}
     (hw : w ∉ S) : ev w (part a S : AdeleRing (𝓞 L) L) = 1 := by
@@ -84,7 +84,7 @@ theorem ev_part_not_mem (a : Ideles L) {S : Finset (HeightOneSpectrum (𝓞 L))}
   exact Finset.prod_eq_one fun v hv => ev_local_ne (fun e : w = v => hw (e ▸ hv)) _
 
 /- English proof (translation)
-Establish `h : finPartI L (part a S) = part a S`. Rewrite using `[part, map_prod]`. Conclude with `Finset.prod_congr rfl fun v _ => Units.ext rfl`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem part_fst (a : Ideles L) (S : Finset (HeightOneSpectrum (𝓞 L))) : (part a S : AdeleRing (𝓞 L) L).1 = 1 := by
   have h : finPartI L (part a S) = part a S := by
@@ -94,11 +94,9 @@ theorem part_fst (a : Ideles L) (S : Finset (HeightOneSpectrum (𝓞 L))) : (par
   rfl
 
 /- English proof (translation)
-Establish `h2 : Tendsto (fun S => (part a S : AdeleRing (𝓞 L) L).2) atTop (𝓝 (a : AdeleRing (𝓞 L) L).2)`. Use `tendsto_finiteAdele _ _ (fun S v => ?_) (fun v => (ha v).le) fun v => ?_` and prove the remaining obligations. Use `show ev v (part a S : AdeleRing (𝓞 L) L) ∈ _`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[ev_part_mem a hv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ha v).le`. Rewrite using `[ev_part_not_mem a hv]`. Conclude with `one_mem _`. Use `tendsto_const_nhds.congr' ?_ filter_upwards [eventually_ge_atTop ({v} : Finset _)] with S hS` and prove the remaining obligations. Conclude with `(ev_part_mem a (hS (Finset.mem_singleton_self v))).symm`.
-
-Establish `h3 : Tendsto (fun S => (part a S : AdeleRing (𝓞 L) L).1) atTop (𝓝 (a : AdeleRing (𝓞 L) L).1)`. Rewrite using `[h1]`. Conclude with `tendsto_const_nhds.congr fun S => (part_fst a S).symm`. Conclude with `h3.prodMk_nhds h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_part_val {a : Ideles L} (ha : a ∈ unitIdl L) (h1 : (a : AdeleRing (𝓞 L) L).1 = 1) :
     Tendsto (fun S => (part a S : AdeleRing (𝓞 L) L)) atTop (𝓝 (a : AdeleRing (𝓞 L) L)) := by
@@ -119,9 +117,9 @@ theorem tendsto_part_val {a : Ideles L} (ha : a ∈ unitIdl L) (h1 : (a : AdeleR
   exact h3.prodMk_nhds h2
 
 /- English proof (translation)
-Establish `e : finPartI L a = a` using `finPartI_eq_self h1`. Establish `e' : finPartI L a⁻¹ = a⁻¹` using `by rw [map_inv, e]`. Establish `t1` using `tendsto_part_val ha (by rw [← e]; rfl)`. Establish `t2` using `tendsto_part_val ((unitIdl L).inv_mem ha) (by rw [← e']; rfl)`. Simplify using `only [← part_inv] at t2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Conclude with `t1.prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp t2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_part {a : Ideles L} (ha : a ∈ unitIdl L) (h1 : ∀ w, (a : AdeleRing (𝓞 L) L).1 w = 1) :
     Tendsto (part a) atTop (𝓝 a) := by
@@ -136,9 +134,9 @@ theorem tendsto_part {a : Ideles L} (ha : a ∈ unitIdl L) (h1 : ∀ w, (a : Ade
 open Classical in
 
 /- English proof (translation)
-Introduce `L _ _ ψ hψ a ha h1 hl`. Establish `t` using `(hψ.tendsto a).comp (tendsto_part ha h1)`. Establish `e : ψ ∘ part a = fun _ => 1` using `funext fun S => by show ψ (part a S) = 1`. Rewrite using `[part, map_prod]`. Conclude with `Finset.prod_eq_one fun v _ => hl v _ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `t` using `[e]`. Conclude with `tendsto_nhds_unique t tendsto_const_nhds`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_local : ∀ (L : Type) [Field L] [NumberField L] (ψ : Ideles L →* ℂˣ), Continuous ψ → ∀ a : Ideles L, a ∈ unitIdl L → (∀ w, (a : AdeleRing (𝓞 L) L).1 w = 1) → (∀ v (x : (v.adicCompletion L)ˣ), (x : v.adicCompletion L) = (a : AdeleRing (𝓞 L) L).2 v → ψ (localIdele L v x) = 1) → ψ a = 1 := by
   intro L _ _ ψ hψ a ha h1 hl

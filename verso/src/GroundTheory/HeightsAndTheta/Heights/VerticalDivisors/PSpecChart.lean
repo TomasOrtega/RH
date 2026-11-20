@@ -11,19 +11,19 @@ open MvPolynomial NumberField IsDedekindDomain
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ _ n e I v _ 𝔫 W _ hW h𝔫`. Use `𝔫.isMaximal` as an intermediate fact. Establish `hPW : integralModel I ≤ W` using `le_trans le_sup_left hW.1.1.2`. Establish `h𝔫' : W.map (toSecB e I v) = 𝔫.asIdeal` using `by rw [← secIdealOf_eq_map]; exact h𝔫`. Take `⟨hcontr, hflat⟩` from `SpecChart.contraction_and_flat 𝔫.asIdeal hPW h𝔫'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hunit : ∀ s : W.primeCompl, IsUnit (((algebraMap (SecB e I v) (Localization.AtPrime 𝔫.asIdeal)).comp (toSecB e I v)) s)` using `fun s => IsLocalization.map_units (Localization.AtPrime 𝔫.asIdeal) (⟨toSecB e I v s, fun h => s.2 (hcontr _ h)⟩ : 𝔫.asIdeal.primeCompl)`. Set `ψ0 : Localization.AtPrime W →+* Localization.AtPrime 𝔫.asIdeal` to `IsLocalization.lift (M := W.primeCompl) hunit`. Establish `hψ0 : ∀ g, ψ0 (algebraMap _ (Localization.AtPrime W) g) = algebraMap (SecB e I v) (Localization.AtPrime 𝔫.asIdeal) (toSecB e I v g)` using `fun g => IsLocalization.lift_eq hunit g`. Establish `hker : (integralModel I).map (algebraMap _ (Localization.AtPrime W)) ≤ RingHom.ker ψ0`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hψ0, RingHom.mem_ker.mp (SpecChart.toSecB_le e hg), map_zero]`. Establish `hker' : ∀ a ∈ (integralModel I).map (algebraMap _ (Localization.AtPrime W)), ψ0 a = 0` using `fun a ha => RingHom.mem_ker.mp (hker ha)`. Set `ψ` to `Ideal.Quotient.lift _ ψ0 hker'`. Establish `hψ : ∀ g, ψ (Ideal.Quotient.mk _ (algebraMap _ (Localization.AtPrime W) g)) = algebraMap (SecB e I v) (Localization.AtPrime 𝔫.asIdeal) (toSecB e I v g)` using `fun g => by show Ideal.Quotient.lift _ ψ0 hker' (Ideal.Quotient.mk _ _) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Ideal.Quotient.lift_mk, hψ0]`. Establish `hmax : (IsLocalRing.maximalIdeal (Localization.AtPrime W)).map (ψ.comp (Ideal.Quotient.mk _)) = IsLocalRing.maximalIdeal (Localization.AtPrime 𝔫.asIdeal)`. Establish `hcomp : (ψ.comp (Ideal.Quotient.mk _)).comp (algebraMap _ (Localization.AtPrime W)) = (algebraMap (SecB e I v) (Localization.AtPrime 𝔫.asIdeal)).comp (toSecB e I v)` using `RingHom.ext fun g => hψ g`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal (I := W), Ideal.map_map, hcomp, ← Ideal.map_map, h𝔫', Localization.AtPrime.map_eq_maximalIdeal]`. Use `⟨ψ, fun g => ?_, ?_, ?_, hmax⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hψ]`. Both sides reduce to the same expression. Conclude with `((IsLocalRing.local_hom_TFAE (ψ.comp (Ideal.Quotient.mk _))).out 2 0).mp hmax.le`. Use `SpecChart.isLocalization_quot W (integralModel I)` as an intermediate fact. Use `SpecChart.flat_of_isLocalization_comp (R := MvPolynomial (Fin n) (𝓞 K) ⧸ integralModel I) (S := Localization.AtPrime W ⧸ (integralModel I).map (algebraMap _ (Localization.AtPrime W))) (T := Localization.AtPrime 𝔫.asIdeal) (W.primeCompl.map (Ideal.Quotient.mk (integralModel I))) ψ …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h : ψ.comp (algebraMap (MvPolynomial (Fin n) (𝓞 K) ⧸ integralModel I) (Localization.AtPrime W ⧸ (integralModel I).map (algebraMap _ (Localization.AtPrime W)))) = SpecChart.quotToBn e 𝔫.asIdeal`. Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Use `RingHom.ext fun g => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[Ideal.Quotient.algebraMap_quotient_map_quotient, hψ, SpecChart.quotToBn_mk]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `hflat`.
+A detailed English derivation is pending.
 -/
 theorem SpecChart.proof : SpecChart.Statement := by
   intro K _ _ n e I v _ 𝔫 W _ hW h𝔫

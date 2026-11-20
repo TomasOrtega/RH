@@ -27,7 +27,7 @@ noncomputable section
 namespace GlobalTheory.FlatSecCover
 
 /- English proof (translation)
-Take `⟨g, hg, hu⟩` from `h`. Use `⟨g⁻¹, hg.neg, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val, ← mul_inv]`. Conclude with `hu.inv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generatesAt_neg_inv {X : Scheme.{0}} [IsIntegral X] {Δ : CartierDiv X} {x : X} {f : X.functionField}
     (h : Δ.GeneratesAt x f) : (-Δ).GeneratesAt x f⁻¹ := by
@@ -37,7 +37,7 @@ theorem generatesAt_neg_inv {X : Scheme.{0}} [IsIntegral X] {Δ : CartierDiv X} 
   exact hu.inv
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (CartierDiv.generatesAt_zero_iff (x := x) (f := (1 : X.functionField))).2 (unitAt_one x)`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.prod_insert hj]`. Conclude with `(h j (Finset.mem_insert_self j s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generatesAt_prod {X : Scheme.{0}} [IsIntegral X] {ι : Type} (s : Finset ι) {Δ : ι → CartierDiv X} {x : X}
     {f : ι → X.functionField} (h : ∀ i ∈ s, (Δ i).GeneratesAt x (f i)) :
@@ -52,13 +52,13 @@ theorem generatesAt_prod {X : Scheme.{0}} [IsIntegral X] {ι : Type} (s : Finset
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hp` using `O.S.p_eq`. Establish `hr` using `O.S.rank_eq`. Establish `hi'` using `i.isLt`. Unfold `rootFn rootSym`. Distinguish the cases in `hi : (i : ℕ) < O.j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hi, if_pos (by omega)]`. Establish `e : expo O.S.Dw (Finsupp.single ((fun _ => false : ℕ → Bool), (none : Option ℝ), (Sum.inl (DV.tauEmb D τ, (i : ℕ)) : ((D.host.E →+* ℂ) × ℕ) ⊕ ℕ)) 1) = expo O.S.Dw (Finsupp.single (ArIn.ind (FlagAr.setB O.Y B), (none : Option ℝ), (Sum.inl (DV.tauEmb D τ, (i : ℕ)) : ((D.host.E →+* …`. Use function extensionality and compare the values at `x`. Rewrite using `[expo_single, expo_single]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `generatesAt_genAt _ z`. Rewrite using `[if_neg hi, if_neg (by omega)]`. Establish `e : expo O.S.Dw (Finsupp.single ((fun _ => false : ℕ → Bool), (none : Option ℝ), (Sum.inl (conjEmb (DV.tauEmb D τ), O.S.Dw.p + O.S.Dw.q - 1 - (i : ℕ)) : ((D.host.E →+* ℂ) × ℕ) ⊕ ℕ)) (-1)) = -expo O.S.Dw (Finsupp.single (ArIn.ind (FlagAr.setB O.Y B), (none : Option ℝ), (Sum.inl (c …`. Use function extensionality and compare the values at `x`. Establish `hs : O.S.Dw.p + O.S.Dw.q - 1 - (i : ℕ) = O.N - 1 - (i : ℕ)` using `by omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.neg_apply, expo_single, expo_single, hs]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e, GlobalTheory.OmCx.divOf_neg O c]`. Conclude with `generatesAt_neg_inv (generatesAt_genAt _ z)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generatesAt_rootFn (O : Setup D) (c : O.s.Comp) (B : ℝ) (τ : D.what₂.Tau) (i : Fin O.N) (z : (O.var c).X) :
     (divOf (O.Φ.C c) (expo O.S.Dw (rootSym O.S.Dw (fun _ => false) none (DV.tauEmb D τ) i))).GeneratesAt z
@@ -90,7 +90,7 @@ theorem generatesAt_rootFn (O : Setup D) (c : O.s.Comp) (B : ℝ) (τ : D.what�
     exact generatesAt_neg_inv (generatesAt_genAt _ z)
 
 /- English proof (translation)
-Rewrite using `[detSym, GlobalTheory.OmCx.expo_finset_sum, GlobalTheory.OmCx.divOf_sum, O.S.rank_eq, Finset.sum_range]`. Conclude with `generatesAt_prod Finset.univ fun i _ => generatesAt_rootFn O c B τ i z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generatesAt_detFn (O : Setup D) (c : O.s.Comp) (B : ℝ) (τ : D.what₂.Tau) (z : (O.var c).X) :
     (divOf (O.Φ.C c) (expo O.S.Dw (detSym O.S.Dw (fun _ => false) none (DV.tauEmb D τ)))).GeneratesAt z
@@ -99,7 +99,7 @@ theorem generatesAt_detFn (O : Setup D) (c : O.s.Comp) (B : ℝ) (τ : D.what₂
   exact generatesAt_prod Finset.univ fun i _ => generatesAt_rootFn O c B τ i z
 
 /- English proof (translation)
-Introduce `D O c B τ z`. Rewrite using `[div_eq_mul_inv]`. Conclude with `GlobalTheory.ChernWeilLine.unitAt_mul_inv_of_generatesAt (GlobalTheory.ShFam.Hor.isFlat_flatSec D O.A O.N O.j O.S O.κ O.s O.Φ c τ z) (generatesAt_detFn O c B τ z)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_flatSec_div_detFn : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (B : ℝ) (τ : D.what₂.Tau) (z : (O.var c).X),
     UnitAt z (flatSec O.s O.Φ c τ / detFn O c B τ z) := by

@@ -18,39 +18,39 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullH
 namespace PositivityTheory.SiegelWeilFormula.KFP
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Simplify using `only [actB, Units.val_mul, Subgroup.coe_mul, Matrix.transpose_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actB_mul_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (a b : d.G) (u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     actB (cA σ) (a * b) u = actB (cA σ) a (actB (cA σ) b u) := by
   simp only [actB, Units.val_mul, Subgroup.coe_mul, Matrix.transpose_mul, Matrix.mul_assoc]
 /- English proof (translation)
-Simplify using `[actB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actB_one_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     actB (cA σ) (1 : d.G) u = u := by
   simp [actB]
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d R Φ hK`. Establish `hΦ : Φ ∈ d.sch` using `hK.1`. Take `⟨k, ω, χ, C, c, ν, νf, vv, hk, hω1, hω, hχ, hC, hν, hνf, heig, hrot, hB⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KFP.line_data_k hT hU hH hA hF hLO hLI R`. Take `⟨q, hq0, hq⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KFP.exists_poly_k hK hk`. Establish `hω0 : ω ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hω1` using `[h, norm_zero]`. Conclude with `zero_ne_one hω1`. Establish `hωi : ∀ j : ℕ, 0 < j → ω⁻¹ ^ j ≠ 1` using `fun j hj h => hω j hj (by rw [inv_pow] at h; exact inv_eq_one.1 h)`. Establish `hμ : (star χ)⁻¹ ≠ 0` using `inv_ne_zero (star_ne_zero.2 hχ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `poly_of_rot q hq0 (star χ)⁻¹ ω⁻¹ hμ (inv_ne_zero hω0) hωi`. Establish `hinv : ∀ ξ z, actB (cA σ) k⁻¹ (vv ξ z) = vv ξ (ω⁻¹ * z)` using `fun ξ z => by`. Use `congrArg (actB (cA σ) k⁻¹) (hrot ξ (ω⁻¹ * z))` as an intermediate fact. Rewrite `this` using `[← _root_.PositivityTheory.SiegelWeilFormula.KFP.actB_mul_k, inv_mul_cancel, _root_.PositivityTheory.SiegelWeilFormula.KFP.actB_one_k, ← mul_assoc, mul_inv_cancel₀ hω0, one_mul, eq_comm]`. Then use the resulting hypothesis. Establish `hact : ∀ (i : ℕ) ξ z, actB (cA σ) (k⁻¹ ^ i) (vv ξ z) = vv ξ (ω⁻¹ ^ i * z)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro ξ z`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.KFP.actB_one_k]`. Consider the case `succ i ih => intro ξ z`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, _root_.PositivityTheory.SiegelWeilFormula.KFP.actB_mul_k, hinv, ih, pow_succ, mul_assoc]`. Establish `hTΦ : d.T Φ ∈ d.schM` using `(hT.1 F E σ d).1 Φ hΦ`. Use `_root_.PositivityTheory.SiegelWeilFormula.KFP.mem_fock_of_k R hνf hTΦ fun g hg' => ?_` and prove the remaining obligations. Take `⟨Ω, hΩ, hTΩ⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KFP.exists_lift_k hT hF R hg'`. Take `⟨h, hh⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KFP.hg_sch_k R hνf hTΦ hg'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpi : (0 : ℝ) < 2 * Real.pi` using `by positivity`. Take `⟨P, -, hP⟩` from `poly_gauss_of_lines (2 * Real.pi) hpi N h fun ξ => by set I : ℂ → ℂ := fun z => ∫ u, h u * Real.exp (-(2 * Real.pi * ‖u‖ ^ 2)) * Complex.exp (z * ⟪ξ, u⟫_ℝ) with hI set Eξ : ℂ → ℂ := fun z => Complex.exp (-(z ^ 2 * ‖ξ‖ ^ 2 / (16 * Real.pi))) * I z with hE`. Establish `hdiff : Differentiable ℂ Eξ` using `(Differentiable.cexp (by fun_prop)).mul (entire_laplace (2 * Real.pi) hpi h ξ)`. Establish `hrel : ∀ z, ∑ i ∈ Finset.range (q.natDegree + 1), q.coeff i * (star χ)⁻¹ ^ i * Eξ (ω⁻¹ ^ i * z) = 0`. Introduce `z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e0` using `_root_.PositivityTheory.SiegelWeilFormula.KFP.B_rel_k hT hU hν hχ hΩ (heig g hg' Ω hΩ hTΩ) hΦ q hq (vv ξ z)`. Simplify using `only [hact, hB g hg' Ω hΩ hTΩ Φ hΦ, ← hh] at e0`. Establish `hn : ∀ i : ℕ, ‖ω⁻¹ ^ i * z‖ = ‖z‖` using `fun i => by`. Rewrite using `[norm_mul, norm_pow, norm_inv, hω1, inv_one, one_pow, one_mul]`. Simplify using `only [hn] at e0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc0 : (C * (Real.exp (-(c * ‖z‖ ^ 2 * ‖ξ‖ ^ 2)) : ℂ)) ≠ 0` using `mul_ne_zero hC (Complex.ofReal_ne_zero.2 (Real.exp_pos _).ne')`. Use `(mul_eq_zero.1 (?_ : (C * (Real.exp (-(c * ‖z‖ ^ 2 * ‖ξ‖ ^ 2)) : ℂ)) * ∑ i ∈ Finset.range (q.natDegree + 1), q.coeff i * (star χ)⁻¹ ^ i * Eξ (ω⁻¹ ^ i * z) = 0)).resolve_left hc0` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← e0]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [hE, hI]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨p, hpN, hp⟩` from `hN Eξ hdiff hrel`. Use `⟨p, hpN, fun z => ?_⟩` and prove the remaining obligations. Establish `e1` using `hp z`. Simplify using `only [hE] at e1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : I z = Complex.exp (z ^ 2 * ‖ξ‖ ^ 2 / (16 * Real.pi)) * p.eval z`. Rewrite using `[← e1, ← mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules. Establish `e3 : ((8 : ℂ) * ((2 * Real.pi : ℝ) : ℂ)) = 16 * (Real.pi : ℂ)` using `by push_cast; ring`. Rewrite using `[e3]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `e2` using `[hI]`. Conclude with `⟨P, fun u => by rw [← hh]; exact hP u⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kFinPoly_of_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hU : _root_.PositivityTheory.SiegelWeilFormula.TUnit_k) (hH : _root_.PositivityTheory.SiegelWeilFormula.THeis_k) (hA : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) (hF : _root_.PositivityTheory.SiegelWeilFormula.FockMem_k) (hLO : _root_.PositivityTheory.SiegelWeilFormula.LocOpEx_k)
     (hLI : _root_.PositivityTheory.SiegelWeilFormula.LocInst_k) : _root_.PositivityTheory.SiegelWeilFormula.KFinPoly_k := by

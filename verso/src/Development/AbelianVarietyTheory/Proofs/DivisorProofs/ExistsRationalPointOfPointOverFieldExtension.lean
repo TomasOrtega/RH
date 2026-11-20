@@ -9,9 +9,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `H Q φ hφ Ω _ _ ν Ω' _ io q hq`. Establish `: JacobsonSpace ↥(pullback φ ν)` using `LocallyOfFiniteType.jacobsonSpace (pullback.snd φ ν)`. Establish `hne : (Set.univ : Set ↥(pullback φ ν)).Nonempty` using `⟨pullback.lift q (spMap io) hq (IsLocalRing.closedPoint Ω'), trivial⟩`. Take `⟨c, -, hc⟩` from `nonempty_inter_closedPoints hne isOpen_univ.isLocallyClosed`. Establish `hc' : IsClosed ({c} : Set ↥(pullback φ ν))` using `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨pointOfClosedPoint (pullback.snd φ ν) c hc' ≫ pullback.fst φ ν, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pt_of_pt_ext : ∀ (H Q : Scheme.{0}) (φ : H ⟶ Q), LocallyOfFiniteType φ → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω]
     (ν : Sp Ω ⟶ Q) (Ω' : Type) [Field Ω'] (io : Ω →+* Ω') (q : Sp Ω' ⟶ H), q ≫ φ = spMap io ≫ ν →

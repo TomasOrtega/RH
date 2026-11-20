@@ -18,15 +18,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-Introduce `c y hy`. Unfold `NcS at hy`. Rewrite `hy` using `[Submodule.mem_inf, Submodule.mem_inf]`. Take `⟨⟨hyN, hyD⟩, hyL⟩` from `hy`. Rewrite `hyN` using `[Submodule.restrictScalars_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `LamPS`. Rewrite using `[Submodule.mem_inf, Submodule.mem_inf]`. Use `⟨⟨?_, hyD⟩, hyL⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem, Submodule.mem_comap]`. Unfold `letS at hyL`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `hyL` using `[LinearMap.mem_ker]`. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at hyL`. Establish `hNl : y ∈ W.Nl T c`. Unfold `LocWach.Nl`. Use `Submodule.mem_map.2 ⟨y, hyN, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, hyL]`. Establish `h5'` using `h5 c y hNl`. Establish `hQ : W.Q = W.q` using `by simp [LocWach.Q, hs1]`. Establish `hE : Eπ ^ h' = ((w⁻¹ : (LetA O n)ˣ) : LetA O n) ^ h' * W.Q ^ h'`. Rewrite using `[hQ, hw, mul_pow, ← mul_assoc, ← mul_pow, Units.inv_mul, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.MainNotions.DeltaInvariantLattices.smulA`. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, hE, mul_smul]`. Conclude with `Submodule.smul_mem _ _ h5'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ninLamPf_local (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (Eπ : LetA O n) (h' : ℕ)
     (w : (LetA O n)ˣ) (hs1 : W.s = 1) (hw : W.q = (w : LetA O n) * Eπ)
@@ -60,9 +60,9 @@ theorem ninLamPf_local (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (Eπ : L
 end NinLamPfLocal
 
 /- English proof (translation)
-Introduce `D HW F Cm CA CB CK hA l _ hl K LL hG π' E hp9 T h' hcrys hjumps`. Establish `hT1` using `hA.1 l K 1 LL hG`. Establish `hP5` using `hT1.2.2.2.2.1`. Take `⟨w, hw⟩` from `hp9.2.2.2.2.1`. Establish `hJ : Formalism.MainNotions.DeltaInvariantLattices.JumpsLet ((HW l).W K 1 LL hG) T (fun _ => h') (fun _ => h')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `τ i _`. Conclude with `hjumps τ`. Establish `h5` using `(hP5 T (fun _ => h') (fun _ => h') hcrys hJ).2.1`. Conclude with `ninLamPf_local _ T _ h' w ((HW l).W_s K 1 LL hG) hw h5`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ninlam_pf : NinLamStep := by
   intro D HW F Cm CA CB CK hA l _ hl K LL hG π' E hp9 T h' hcrys hjumps

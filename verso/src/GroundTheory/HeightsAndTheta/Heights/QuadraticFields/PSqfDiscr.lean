@@ -14,29 +14,27 @@ open NumberField Module Polynomial GroundTheory.Heights₂.Theta.QuadraticFieldA
 variable {K : Type} [Field K] [NumberField K] [Algebra.IsQuadraticExtension ℚ K] {d : ℕ} {x : K}
 
 /- English proof (translation)
-Establish `hd : 0 < d` using `Nat.pos_of_ne_zero hsq.ne_zero`. Use `set y := algebraMap ℚ K a + algebraMap ℚ K b * x with hy_def`. Establish `hc` using `isIntegral_conj hy`. Rewrite `hc` using `[conj_apply hd hx]`. Establish `h2 : (2 : K) = algebraMap ℚ K 2` using `(map_ofNat _ 2).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdK : (d : K) = algebraMap ℚ K d` using `(map_natCast _ d).symm`. Establish `htr : IsIntegral ℤ (algebraMap ℚ K (2 * a))`. Establish `e : algebraMap ℚ K (2 * a) = y + (algebraMap ℚ K a - algebraMap ℚ K b * x)`. Rewrite using `[map_mul, ← h2, hy_def]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hy.add hc`. Take `⟨A, hA⟩` from `exists_int_of_isIntegral _ htr`. Establish `hnm : IsIntegral ℤ (algebraMap ℚ K (a ^ 2 + d * b ^ 2))`. Establish `e : algebraMap ℚ K (a ^ 2 + d * b ^ 2) = y * (algebraMap ℚ K a - algebraMap ℚ K b * x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[map_add, map_mul, map_pow, map_pow, ← hdK, hy_def]`. Take the linear combination `(algebraMap ℚ K b) ^ 2 * hx`. Rewrite using `[e]`. Conclude with `hy.mul hc`. Take `⟨N, hN⟩` from `exists_int_of_isIntegral _ hnm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAK : algebraMap ℤ K A = algebraMap ℚ K (2 * a)`. Rewrite using `[hA, eq_intCast, map_intCast]`. Establish `h2y : IsIntegral ℤ (y + y - algebraMap ℤ K A)` using `(hy.add hy).sub isIntegral_algebraMap`. Establish `hk : IsIntegral ℤ (algebraMap ℚ K (-(d * (2 * b))))`. Establish `e : algebraMap ℚ K (-(d * (2 * b))) = (y + y - algebraMap ℤ K A) * x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hAK, hy_def, map_neg, map_mul, map_mul, map_mul, ← hdK, ← h2]`. Take the linear combination `(-(2 : K) * algebraMap ℚ K b) * hx`. Rewrite using `[e]`. Conclude with `h2y.mul (isIntegral_alt hx)`. Take `⟨k, hk'⟩` from `exists_int_of_isIntegral _ hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `he : IsIntegral ℤ (algebraMap ℚ K (-(d * (2 * b) ^ 2)))`. Establish `e : algebraMap ℚ K (-(d * (2 * b) ^ 2)) = (y + y - algebraMap ℤ K A) ^ 2`. Rewrite using `[hAK, hy_def, map_neg, map_mul, map_pow, map_mul, map_mul, ← hdK, ← h2]`. Take the linear combination `(-(2 : K) ^ 2 * algebraMap ℚ K b ^ 2) * hx`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2y.pow 2`. Take `⟨e, he'⟩` from `exists_int_of_isIntegral _ he`. Establish `hke : (k : ℚ) ^ 2 = d * (-e)`. Establish `h1 : (k : ℚ) = -(d * (2 * b))` using `hk'.symm`. Establish `h2 : (e : ℚ) = -(d * (2 * b) ^ 2)` using `he'.symm`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hke' : k ^ 2 = d * (-e)` using `by exact_mod_cast hke`. Establish `hdk : (d : ℤ) ∣ k` using `((Int.squarefree_natCast.mpr hsq).dvd_pow_iff_dvd two_ne_zero).mp ⟨-e, hke'⟩`. Take `⟨B, hB⟩` from `hdk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hd0 : (d : ℚ) ≠ 0` using `by exact_mod_cast hd.ne'`. Establish `h1 : (k : ℚ) = -(d * (2 * b))` using `hk'.symm`. Rewrite `h1` using `[hB]`. Move the coercions through the operations in `at h1`. Establish `hb : 2 * b = -(B : ℚ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `: (d : ℚ) * (2 * b) = d * (-B)` using `by linarith`. Conclude with `mul_left_cancel₀ hd0 this`. Use `⟨A, -B, N, hA, by push_cast; exact hb, ?_⟩` and prove the remaining obligations. Establish `: ((A ^ 2 + d * (-B) ^ 2 : ℤ) : ℚ) = ((4 * N : ℤ) : ℚ)`. Use `push_cast`.
-
-Rewrite using `[← hA, ← hN]`. Establish `: (B : ℚ) = -(2 * b)` using `by linarith`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coords_of_isIntegral (hsq : Squarefree d) (hx : x ^ 2 = -(d : K)) {a b : ℚ}
     (hy : IsIntegral ℤ (algebraMap ℚ K a + algebraMap ℚ K b * x)) :
@@ -105,13 +103,13 @@ theorem coords_of_isIntegral (hsq : Squarefree d) (hx : x ^ 2 = -(d : K)) {a b :
   exact_mod_cast this
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `exists_rat (Nat.pos_of_ne_zero hsq.ne_zero) hx (y : K)`. Establish `hy : IsIntegral ℤ (algebraMap ℚ K a + algebraMap ℚ K b * x)` using `hab ▸ y.2`. Take `⟨A, B, N, hA, hB, hN⟩` from `coords_of_isIntegral hsq hx hy`. Take `⟨m, hm⟩` from `parity_of_norm hd4 hN`. Use `⟨m, B, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hab]`. Express the relevant statement in the definitionally equal form `_ = algebraMap (𝓞 K) K (m • (1 : 𝓞 K) + B • omega hd4 hx)`. Rewrite using `[map_add, map_zsmul, map_zsmul, map_one, ← RingOfIntegers.coe_eq_algebraMap, coe_omega, zsmul_eq_mul, zsmul_eq_mul]`. Establish `ha : algebraMap ℚ K a = (A : K) / 2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[eq_div_iff two_ne_zero, ← map_intCast (algebraMap ℚ K), ← hA]`. Simplify using `[mul_comm]`. Establish `hb : algebraMap ℚ K b = (B : K) / 2`. Rewrite using `[eq_div_iff two_ne_zero, ← map_intCast (algebraMap ℚ K), ← hB]`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ha, hb, hm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_int_coords (hsq : Squarefree d) (hd4 : d % 4 = 3) (hx : x ^ 2 = -(d : K))
     (y : 𝓞 K) : ∃ m n : ℤ, y = m • (1 : 𝓞 K) + n • omega hd4 hx := by
@@ -142,20 +140,20 @@ def basisInt (hsq : Squarefree d) (hd4 : d % 4 = 3) (hx : x ^ 2 = -(d : K)) :
       (Submodule.smul_mem _ n (Submodule.subset_span ⟨1, rfl⟩)))
 
 /- English proof (translation)
-Simplify using `[basisInt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem basisInt_apply (hsq : Squarefree d) (hd4 : d % 4 = 3) (hx : x ^ 2 = -(d : K)) :
     ⇑(basisInt hsq hd4 hx) = ![1, omega hd4 hx] := by
   simp [basisInt]
 
 /- English proof (translation)
-Establish `hd : 0 < d` using `Nat.pos_of_ne_zero hsq.ne_zero`. Use `set b := basisInt hsq hd4 hx`. Establish `h1 : (discr K : ℚ) = Algebra.discr ℚ (b.localizationLocalization ℚ (nonZeroDivisors ℤ) K)`. Rewrite using `[Algebra.discr_localizationLocalization, discr_eq_discr]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hb : ⇑(b.localizationLocalization ℚ (nonZeroDivisors ℤ) K) = ![(1 : K), (1 + x) / 2]`. Use extensionality with `i`. Rewrite using `[Basis.localizationLocalization_apply, basisInt_apply]`. Apply the tactic sequence `fin_cases i <;> simp [coe_omega]`. Rewrite `h1` using `[hb, Algebra.discr_def, Matrix.det_fin_two]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Algebra.traceMatrix_apply, Algebra.traceForm_apply, Matrix.cons_val_zero, Matrix.cons_val_one, one_mul, mul_one] at h1`. Establish `c` using `conj_alt_bis (K := K) hd hx`. Establish `t1 : Algebra.trace ℚ K 1 = 2` using `trace_eq_of _ _ (by rw [map_one, map_ofNat]; norm_num)`. Establish `tω : Algebra.trace ℚ K ((1 + x) / 2) = 1` using `trace_eq_of _ _ (by rw [map_div₀, map_add, map_one, c, map_one, map_ofNat]; ring)`. Establish `tω2 : Algebra.trace ℚ K ((1 + x) / 2 * ((1 + x) / 2)) = (1 - d) / 2` using `trace_eq_of _ _ (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_div₀, map_add, map_one, c, map_ofNat, map_div₀, map_sub, map_one, map_natCast, map_ofNat]`. Take the linear combination `(1 / 2 : K) * hx)`. Rewrite `h1` using `[t1, tω, tω2]`. Establish `: (discr K : ℚ) = ((-(d : ℤ) : ℤ) : ℚ)` using `by rw [h1]; push_cast; ring`. Conclude with `this` after adjusting the coercions.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem discr_eq (hsq : Squarefree d) (hd4 : d % 4 = 3) (hx : x ^ 2 = -(d : K)) :
     discr K = -(d : ℤ) := by
@@ -186,7 +184,7 @@ theorem discr_eq (hsq : Squarefree d) (hd4 : d % 4 = 3) (hx : x ^ 2 = -(d : K)) 
 end SqfDiscr
 
 /- English proof (translation)
-Introduce `d hsq hd4 K _ _ hK x hx`. Establish `: Algebra.IsQuadraticExtension ℚ K` using `⟨hK⟩`. Conclude with `SqfDiscr.discr_eq hsq hd4 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem SqfDiscr.proof : SqfDiscr.Statement := by
   intro d hsq hd4 K _ _ hK x hx

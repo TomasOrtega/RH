@@ -10,9 +10,9 @@ namespace GroundTheory.Heights₂.Heights.TheoremB
 open MvPolynomial Finset
 
 /- English proof (translation)
-Rewrite using `[RestTerms.blockPowerSum, map_sum]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l _ hl`. Rewrite using `[pderiv_pow, pderiv_X_of_ne (show (σ, l) ≠ (σ, i) by simp [hl]), mul_zero]`. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[pderiv_pow, pderiv_X_of_ne (show (σ, l) ≠ (τ, i) by simp [h]), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_blockPowerSum_apply (d : IndexData) (k : ℕ) (σ τ : Fin d.f) (i : Fin d.N) :
     pderiv (τ, i) (RestTerms.blockPowerSum d.f d.N k σ : XPoly d) =
@@ -30,7 +30,7 @@ theorem pderiv_blockPowerSum_apply (d : IndexData) (k : ℕ) (σ τ : Fin d.f) (
     rw [pderiv_pow, pderiv_X_of_ne (show (σ, l) ≠ (τ, i) by simp [h]), mul_zero]
 
 /- English proof (translation)
-Simplify using `only [intFl, LinearMap.smul_apply, flagIntegralLin, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[RestTerms.FlagIntegralKillsPowerSums.intersectionNumber_baseChange d.f d.N k σ G hk1 hkN, smul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem intFl_blockPowerSum_mul (d : IndexData) (k : ℕ) (σ : Fin d.f) (G : XPoly d)
     (hk1 : 1 ≤ k) (hkN : k ≤ d.N) :
@@ -39,20 +39,20 @@ theorem intFl_blockPowerSum_mul (d : IndexData) (k : ℕ) (σ : Fin d.f) (G : XP
   rw [RestTerms.FlagIntegralKillsPowerSums.intersectionNumber_baseChange d.f d.N k σ G hk1 hkN, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[show (n : XPoly d) = C (n : ℚ) from (map_natCast C n).symm, C_mul', map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem intFl_natCast_mul (d : IndexData) (n : ℕ) (G : XPoly d) :
     intFl d ((n : XPoly d) * G) = n * intFl d G := by
   rw [show (n : XPoly d) = C (n : ℚ) from (map_natCast C n).symm, C_mul', map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `d τ F Q _ _ hQ`. Establish `hinner : ∀ k : ℕ, ∑ i ∈ univ.filter (fun i : Fin d.N => i.val < d.j), ∑ σ : Fin d.f, pderiv (τ, i) (RestTerms.blockPowerSum d.f d.N k σ * Q k σ) = ∑ σ : Fin d.f, RestTerms.blockPowerSum d.f d.N k σ * ∑ i ∈ univ.filter (fun i : Fin d.N => i.val < d.j), pderiv (τ, i) (Q k σ) + (k : …`. Introduce `k`. Repeatedly rewrite using `[pderiv_mul, pderiv_blockPowerSum_apply, ite_mul, zero_mul, Finset.sum_add_distrib, Finset.sum_ite_eq' univ τ, if_pos (Finset.mem_univ τ)]`. Rewrite using `[add_comm, Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[lowerPowerSum, Finset.mul_sum, Finset.sum_mul]`. Establish `hexp : ∑ i ∈ univ.filter (fun i : Fin d.N => i.val < d.j), pderiv (τ, i) F = ∑ k ∈ Icc 1 d.N, (∑ σ : Fin d.f, RestTerms.blockPowerSum d.f d.N k σ * ∑ i ∈ univ.filter (fun i : Fin d.N => i.val < d.j), pderiv (τ, i) (Q k σ) + (k : XPoly d) * lowerPowerSum d (k - 1) τ * Q k τ)`. Rewrite using `[hQ]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[map_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun k _ => hinner k)`. Unfold `shiftFl`. Rewrite using `[hexp, map_sum]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun k hk => ?_)` and prove the remaining obligations. Rewrite `hk` using `[Finset.mem_Icc]`. Rewrite using `[map_add, map_sum, Finset.sum_eq_zero (fun σ _ => intFl_blockPowerSum_mul d k σ _ hk.1 hk.2), zero_add, mul_assoc, intFl_natCast_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ShFormula.proof : ShFormula.Statement := by
   classical
@@ -87,7 +87,7 @@ theorem ShFormula.proof : ShFormula.Statement := by
     intFl_natCast_mul]
 
 /- English proof (translation)
-The claim follows from `ShFormula.proof`.
+A detailed English derivation is pending.
 -/
 theorem ShFormula.full : ShFormula.Statement := ShFormula.proof
 

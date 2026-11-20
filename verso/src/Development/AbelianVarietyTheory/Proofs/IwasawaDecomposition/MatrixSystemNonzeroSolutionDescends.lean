@@ -5,17 +5,17 @@ open Formalism.ConjugateSelfDual Formalism.MainNotions.N Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hC hAB hQ`. Use `letI := f.toAlgebra`. Choose the witnesses or unpack the hypotheses as in `⟨i₀, j₀, hij⟩ : ∃ i j, C i j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hC (Matrix.ext h)`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual k L, φ (C i₀ j₀) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hij ((Module.forall_dual_apply_eq_zero_iff k (C i₀ j₀)).mp h)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ (x : k) (y : L), φ (f x * y) = x * φ y`. Introduce `x y`. Establish `h1 : f x * y = x • y` using `(Algebra.smul_def x y).symm`. Rewrite using `[h1, map_smul, smul_eq_mul]`. Establish `key' : ∀ (x : k) (y : L), φ (y * f x) = φ y * x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Rewrite using `[mul_comm y, key, mul_comm]`. Use `⟨C.map φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hφ` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `congrFun (congrFun h i₀) j₀` as an intermediate fact. Simplify using `using this`. Introduce `g`. Use extensionality with `i j`. Use `congrArg φ (congrFun (congrFun (hAB g) i) j)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, key, key']`. Use extensionality with `i j`. Use `congrArg φ (congrFun (congrFun hQ i) j)` as an intermediate fact. Simplify `this` using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, key, Matrix.zero_apply, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem matrix_system_nonzero_solution_descends {k L Γ : Type} [Field k] [Field L] (f : k →+* L)
     {a b c : ℕ} (A : Γ → Matrix (Fin a) (Fin a) k) (B : Γ → Matrix (Fin b) (Fin b) k)

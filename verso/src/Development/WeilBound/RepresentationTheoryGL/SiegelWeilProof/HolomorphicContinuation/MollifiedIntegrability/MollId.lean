@@ -12,40 +12,40 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.WR PositivityTheory.Rg.Sw.WR.
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `: Complex.I * (t : ℂ) * (r : ℂ) = ((t * r : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_exp_ofReal_mul_I]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_cexp_It (t r : ℝ) : ‖Complex.exp (Complex.I * t * r)‖ = 1 := by
   have : Complex.I * (t : ℂ) * (r : ℂ) = ((t * r : ℝ) : ℂ) * Complex.I := by push_cast; ring
   rw [this, Complex.norm_exp_ofReal_mul_I]
 
 /- English proof (translation)
-Establish `: -(Complex.I * (t : ℂ) * (r : ℂ)) = ((-(t * r) : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_exp_ofReal_mul_I]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_cexp_neg_It (t r : ℝ) : ‖Complex.exp (-(Complex.I * t * r))‖ = 1 := by
   have : -(Complex.I * (t : ℂ) * (r : ℂ)) = ((-(t * r) : ℝ) : ℂ) * Complex.I := by push_cast; ring
   rw [this, Complex.norm_exp_ofReal_mul_I]
 
 /- English proof (translation)
-Simplify using `only [ip, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ip_sub_right (y u w : E n) : ip y (u - w) = ip y u - ip y w := by
   simp only [ip, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [ip, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ip_comm (y y' : E n) : ip y y' = ip y' y := by
   simp only [ip, mul_comm]
 
 /- English proof (translation)
-Unfold `ip`. Conclude with `continuous_finsetSum _ fun a _ => continuous_finsetSum _ fun b _ => by fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_ip : Continuous (fun p : E n × E n => ip p.1 p.2) := by
   unfold ip
   exact continuous_finsetSum _ fun a _ => continuous_finsetSum _ fun b _ => by fun_prop
 
 /- English proof (translation)
-Unfold `gK`. Conclude with `continuous_finsetProd _ fun a _ => continuous_finsetProd _ fun b _ => by fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_gK : Continuous (gK (n := n)) := by
   unfold gK
@@ -54,7 +54,7 @@ theorem continuous_gK : Continuous (gK (n := n)) := by
 def gam (ε : ℝ) (y : E n) : ℂ := Complex.exp (-((ε * ip y y : ℝ) : ℂ))
 
 /- English proof (translation)
-Unfold `gam`. Establish `h : Continuous (fun y : E n => ip y y)` using `continuous_ip.comp (continuous_id.prodMk continuous_id)`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_gam (ε : ℝ) : Continuous (gam (n := n) ε) := by
   unfold gam
@@ -64,7 +64,7 @@ theorem continuous_gam (ε : ℝ) : Continuous (gam (n := n) ε) := by
 def kr (ε t : ℝ) (u : E n) : ℂ := ∫ y, gam ε y * Complex.exp (Complex.I * t * ip y u)
 
 /- English proof (translation)
-Unfold `kr`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `y`. Rewrite using `[norm_mul, norm_cexp_It, mul_one]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_kr_le (ε t : ℝ) (hε : 0 < ε) (u : E n) : ‖kr ε t u‖ ≤ ∫ y, ‖gam (n := n) ε y‖ := by
   unfold kr
@@ -73,9 +73,9 @@ theorem norm_kr_le (ε t : ℝ) (hε : 0 < ε) (u : E n) : ‖kr ε t u‖ ≤ �
   rw [norm_mul, norm_cexp_It, mul_one]
 
 /- English proof (translation)
-Unfold `kr`. Use `continuous_of_dominated (bound := fun y => ‖gam (n := n) ε y‖) ?_ ?_ (integrable_gauss ε hε).norm ?_` and prove the remaining obligations. Introduce `u`. Conclude with `((continuous_gam ε).mul (Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (continuous_ip.comp (continuous_id.prodMk continuous_const)))))).aestronglyMeasurable`. Introduce `u`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_cexp_It, mul_one]`. Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations. Conclude with `continuous_const.mul (Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (continuous_ip.comp (continuous_const.prodMk continuous_id)))))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_kr (ε t : ℝ) (hε : 0 < ε) : Continuous (kr (n := n) ε t) := by
   unfold kr
@@ -91,7 +91,7 @@ theorem continuous_kr (ε t : ℝ) (hε : 0 < ε) : Continuous (kr (n := n) ε t
       (Complex.continuous_ofReal.comp (continuous_ip.comp (continuous_const.prodMk continuous_id)))))
 
 /- English proof (translation)
-Simplify using `[E, Module.finrank_pi_fintype, sq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finrank_E : Module.finrank ℝ (E n) = n ^ 2 := by
   simp [E, Module.finrank_pi_fintype, sq]
@@ -99,9 +99,7 @@ theorem finrank_E : Module.finrank ℝ (E n) = n ^ 2 := by
 def mM (ψ : E n → ℂ) (l : ℝ) (w : E n) : ℂ := ∫ v, ψ (w - l⁻¹ • v) * (gK v : ℂ)
 
 /- English proof (translation)
-Unfold `mM`. Combine the equalities or inequalities in the displayed calculation. Use `norm_integral_le_of_norm_le (integrable_gK.const_mul B) (Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (gK_nonneg v)]`. Conclude with `mul_le_mul_of_nonneg_right (hB _) (gK_nonneg v)`.
-
-Use `_ = B := by rw [integral_const_mul, integral_gK, mul_one]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mM_le (ψ : E n → ℂ) (B : ℝ) (hB : ∀ x, ‖ψ x‖ ≤ B) (hψ : Continuous ψ) (l : ℝ) (w : E n) :
     ‖mM ψ l w‖ ≤ B := by
@@ -113,9 +111,9 @@ theorem norm_mM_le (ψ : E n → ℂ) (B : ℝ) (hB : ∀ x, ‖ψ x‖ ≤ B) (
     _ = B := by rw [integral_const_mul, integral_gK, mul_one]
 
 /- English proof (translation)
-Unfold `mM`. Use `continuous_of_dominated (bound := fun v => B * gK (n := n) v) ?_ ?_ (integrable_gK.const_mul B) ?_` and prove the remaining obligations. Introduce `w`. Conclude with `((by fun_prop : Continuous fun v : E n => ψ (w - l⁻¹ • v)).mul (Complex.continuous_ofReal.comp continuous_gK)).aestronglyMeasurable`. Introduce `w`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eventually.of_forall fun v => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (gK_nonneg v)]`. Conclude with `mul_le_mul_of_nonneg_right (hB _) (gK_nonneg v)`. Conclude with `Eventually.of_forall fun v => (by fun_prop : Continuous fun w : E n => ψ (w - l⁻¹ • v) * (gK v : ℂ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_mM (ψ : E n → ℂ) (B : ℝ) (hB : ∀ x, ‖ψ x‖ ≤ B) (hψ : Continuous ψ) (l : ℝ) :
     Continuous (mM ψ l) := by
@@ -130,11 +128,11 @@ theorem continuous_mM (ψ : E n → ℂ) (B : ℝ) (hB : ∀ x, ‖ψ x‖ ≤ B
   · exact Eventually.of_forall fun v => (by fun_prop : Continuous fun w : E n => ψ (w - l⁻¹ • v) * (gK v : ℂ))
 
 /- English proof (translation)
-Establish `hlim : ψ w = ∫ v, ψ (w - (0 : ℝ) • v) * (gK (n` using `n) v : ℂ) := by`. Simplify using `only [zero_smul, sub_zero]`. Rewrite using `[integral_const_mul, integral_complex_ofReal, integral_gK, Complex.ofReal_one, mul_one]`. Rewrite using `[hlim]`. Unfold `mM`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `tendsto_integral_of_dominated_convergence (fun v => B * gK (n := n) v) ?_ (integrable_gK.const_mul B) ?_ ?_` and prove the remaining obligations. Introduce `k`. Conclude with `((by fun_prop : Continuous fun v : E n => ψ (w - (l k)⁻¹ • v)).mul (Complex.continuous_ofReal.comp continuous_gK)).aestronglyMeasurable`. Introduce `k`. Use `Eventually.of_forall fun v => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (gK_nonneg v)]`. Conclude with `mul_le_mul_of_nonneg_right (hB _) (gK_nonneg v)`. Use `Eventually.of_forall fun v => ?_` and prove the remaining obligations. Use `Tendsto.mul ?_ tendsto_const_nhds` and prove the remaining obligations. Conclude with `(hψ.tendsto _).comp (tendsto_const_nhds.sub (hl.smul_const v))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tendsto_mM (ψ : E n → ℂ) (B : ℝ) (hB : ∀ x, ‖ψ x‖ ≤ B) (hψ : Continuous ψ) (l : ℕ → ℝ)
     (hl : Tendsto (fun k => (l k)⁻¹) atTop (𝓝 0)) (w : E n) :

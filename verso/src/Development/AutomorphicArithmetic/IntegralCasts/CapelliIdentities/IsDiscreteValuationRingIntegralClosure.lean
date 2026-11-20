@@ -3,9 +3,9 @@ import Mathlib
 open Polynomial
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `hm : (minpoly ℚ_[l] x).Monic` using `minpoly.monic hint`. Establish `hc : ∀ n, ‖(minpoly ℚ_[l] x).coeff n‖ ≤ 1` using `(spectralValue_le_one_iff hm).mp hx`. Establish `hl : minpoly ℚ_[l] x ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l])`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Conclude with `⟨⟨_, hc n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl hm`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isIntegral_of_spectralNorm_le_one (l : ℕ) [Fact l.Prime] (L : Type*) [Field L]
     [Algebra ℚ_[l] L] [FiniteDimensional ℚ_[l] L] [Algebra ℤ_[l] L]
@@ -23,11 +23,11 @@ private theorem isIntegral_of_spectralNorm_le_one (l : ℕ) [Fact l.Prime] (L : 
   rw [← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]
 
 /- English proof (translation)
-Distinguish the cases in `hx : spectralNorm ℚ_[l] L x ≤ 1`. Conclude with `Or.inl (isIntegral_of_spectralNorm_le_one l L x hx)`. Use `Or.inr (isIntegral_of_spectralNorm_le_one l L x⁻¹ ?_)` and prove the remaining obligations. Establish `hx1 : 1 < spectralNorm ℚ_[l] L x` using `not_le.mp hx`. Establish `hx0 : x ≠ 0`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hx1` using `[spectralNorm_zero]`. Conclude with `absurd hx1 (by norm_num)`. Establish `hmul : spectralNorm ℚ_[l] L x * spectralNorm ℚ_[l] L x⁻¹ = 1`. Establish `h` using `spectralAlgNorm_mul (K := ℚ_[l]) (L := L) x x⁻¹`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[mul_inv_cancel₀ hx0, spectralAlgNorm_one]`. Conclude with `h.symm`. Establish `h0 : 0 ≤ spectralNorm ℚ_[l] L x⁻¹` using `spectralNorm_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem isIntegral_or_isIntegral_inv (l : ℕ) [Fact l.Prime] (L : Type*) [Field L]
     [Algebra ℚ_[l] L] [FiniteDimensional ℚ_[l] L] [Algebra ℤ_[l] L]
@@ -49,11 +49,11 @@ private theorem isIntegral_or_isIntegral_inv (l : ℕ) [Fact l.Prime] (L : Type*
     nlinarith
 
 /- English proof (translation)
-Establish `hD : IsDedekindDomain (integralClosure ℤ_[l] L)` using `integralClosure.isDedekindDomain ℤ_[l] ℚ_[l] L`. Establish `hF : IsFractionRing (integralClosure ℤ_[l] L) L` using `integralClosure.isFractionRing_of_finite_extension ℚ_[l] L`. Establish `hV : ValuationRing (integralClosure ℤ_[l] L)`. Rewrite using `[ValuationRing.iff_isInteger_or_isInteger _ L]`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `isIntegral_or_isIntegral_inv l L x with h | h` into its components or cases. Conclude with `Or.inl ⟨⟨x, h⟩, rfl⟩`. Conclude with `Or.inr ⟨⟨x⁻¹, h⟩, rfl⟩`. Establish `hinj : Function.Injective (algebraMap ℤ_[l] (integralClosure ℤ_[l] L))`. Introduce `a b hab`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : algebraMap ℤ_[l] L a = algebraMap ℤ_[l] L b` using `congrArg (fun z : integralClosure ℤ_[l] L => (z : L)) hab`. Rewrite `h` using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] L, IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] L b]`. Conclude with `IsFractionRing.injective ℤ_[l] ℚ_[l] ((algebraMap ℚ_[l] L).injective h)`. Establish `hnf : ¬ IsField (integralClosure ℤ_[l] L)` using `fun h => IsDiscreteValuationRing.not_isField ℤ_[l] (isField_of_isIntegral_of_isField hinj h)`. Conclude with `((IsDiscreteValuationRing.TFAE (integralClosure ℤ_[l] L) hnf).out 0 1).mpr hV`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isDiscreteValuationRing_integralClosure (l : ℕ) [Fact l.Prime] (L : Type*) [Field L] [Algebra ℚ_[l] L]
     [FiniteDimensional ℚ_[l] L] [Algebra ℤ_[l] L] [IsScalarTower ℤ_[l] ℚ_[l] L] :
@@ -80,7 +80,7 @@ private theorem isDiscreteValuationRing_integralClosure (l : ℕ) [Fact l.Prime]
   exact ((IsDiscreteValuationRing.TFAE (integralClosure ℤ_[l] L) hnf).out 0 1).mpr hV
 
 /- English proof (translation)
-Introduce `l _ K _`. Conclude with `isDiscreteValuationRing_integralClosure l K`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.integralClosure_isDVR :
     ∀ {l : ℕ} [Fact (Nat.Prime l)] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] ↥K], IsDiscreteValuationRing ↥(integralClosure ℤ_[l] ↥K) := by

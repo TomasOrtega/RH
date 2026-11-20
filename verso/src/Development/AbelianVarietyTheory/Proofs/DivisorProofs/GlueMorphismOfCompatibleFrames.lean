@@ -19,34 +19,34 @@ def locMap {U : X.Opens} {f : Fin r → Γ(M, U)} (hf : VB.IsFrame f) (φ : Fin 
   (hf.basis h).constr Γ(X, W) fun a => Twist.resM M' h (φ a)
 
 /- English proof (translation)
-Rewrite using `[← hf.basis_apply h, locMap, Module.Basis.constr_basis]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locMap_frame {U : X.Opens} {f : Fin r → Γ(M, U)} (hf : VB.IsFrame f) (φ : Fin r → Γ(M', U)) {W : X.Opens}
     (h : W ≤ U) (a : Fin r) : locMap hf φ h (Twist.resM M h (f a)) = Twist.resM M' h (φ a) := by
   rw [← hf.basis_apply h, locMap, Module.Basis.constr_basis]
 
 /- English proof (translation)
-The claim follows from `LB.modRes_modRes h₁ h₂ s`.
+A detailed English derivation is pending.
 -/
 theorem res_res {F : X.Modules} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (s : Γ(F, U)) :
     Twist.resM F h₂ (Twist.resM F h₁ s) = Twist.resM F (h₂.trans h₁) s :=
   LB.modRes_modRes h₁ h₂ s
 
 /- English proof (translation)
-The claim follows from `LB.modRes_smul h a s`.
+A detailed English derivation is pending.
 -/
 theorem res_smul {F : X.Modules} {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)) (s : Γ(F, U)) :
     Twist.resM F h (a • s) = resG X h a • Twist.resM F h s :=
   LB.modRes_smul h a s
 
 /- English proof (translation)
-The claim follows from `LB.modRes_self h s`.
+A detailed English derivation is pending.
 -/
 theorem res_self {F : X.Modules} {U : X.Opens} (h : U ≤ U) (s : Γ(F, U)) : Twist.resM F h s = s :=
   LB.modRes_self h s
 
 /- English proof (translation)
-Rewrite using `[← (hf.basis h).sum_repr s]`. Simplify using `only [map_sum, map_smul, res_smul, hf.basis_apply, locMap_frame, res_res]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem res_locMap {U : X.Opens} {f : Fin r → Γ(M, U)} (hf : VB.IsFrame f) (φ : Fin r → Γ(M', U)) {W W' : X.Opens}
     (h : W ≤ U) (h' : W' ≤ W) (s : Γ(M, W)) :
@@ -55,9 +55,9 @@ theorem res_locMap {U : X.Opens} {f : Fin r → Γ(M, U)} (hf : VB.IsFrame f) (�
   simp only [map_sum, map_smul, res_smul, hf.basis_apply, locMap_frame, res_res]
 
 /- English proof (translation)
-Use `(hf'.basis h').ext fun a => ?_` and prove the remaining obligations. Establish `e : locMap hf φ (inf_le_left : U ⊓ U' ≤ U) (Twist.resM M inf_le_right (f' a)) = Twist.resM M' (inf_le_right : U ⊓ U' ≤ U') (φ' a)`. Rewrite using `[H a, locMap, Module.Basis.constr_apply_fintype]`. Both sides reduce to the same expression. Establish `e'` using `congrArg (Twist.resM M' (le_inf h h')) e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `e'` using `[res_locMap, res_res, res_res]`. Rewrite using `[hf'.basis_apply, locMap_frame]`. Conclude with `e'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locMap_eq {U U' : X.Opens} {f : Fin r → Γ(M, U)} (hf : VB.IsFrame f) (φ : Fin r → Γ(M', U))
     {f' : Fin r → Γ(M, U')} (hf' : VB.IsFrame f') (φ' : Fin r → Γ(M', U'))
@@ -75,15 +75,13 @@ theorem locMap_eq {U U' : X.Opens} {f : Fin r → Γ(M, U)} (hf : VB.IsFrame f) 
   exact e'
 
 /- English proof (translation)
-Introduce `X M M' r ι U hU f hf φ H`. Establish `hc (V : X.Opens) : V ≤ ⨆ i, V ⊓ U i` using `fun x hx => by`. Take `⟨i, hi⟩` from `hU x`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, hx, hi⟩`. Establish `ex (V : X.Opens) (s : Γ(M, V)) : ∃ t : Γ(M', V), ∀ (i : ι) (W : X.Opens) (hV : W ≤ V) (hi : W ≤ U i), Twist.resM M' hV t = locMap (hf i) (φ i) hi (Twist.resM M hV s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `LB.exists_modSec_of_cover (F := M') (fun i => V ⊓ U i) (fun _ => inf_le_left) (hc V) (fun i => locMap (hf i) (φ i) inf_le_right (Twist.resM M inf_le_left s)) fun i j => by`. Express the relevant statement in the definitionally equal form `Twist.resM M' _ _ = Twist.resM M' _ _`. Rewrite using `[res_locMap, res_locMap, res_res, res_res, locMap_eq (hf i) (φ i) (hf j) (φ j) (H i j)]`. Use `⟨t, fun i W hV hi => ?_⟩` and prove the remaining obligations. Use `congrArg (Twist.resM M' (le_inf hV hi)) (ht i)` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[res_locMap, res_res, res_res]`. Conclude with `this`. Use `choose t ht using ex`. Establish `ext (V : X.Opens) (a b : Γ(M', V)) (h : ∀ i, Twist.resM M' (inf_le_left : V ⊓ U i ≤ V) a = Twist.resM M' (inf_le_left : V ⊓ U i ≤ V) b) : a = b` using `LB.modSec_ext_of_cover (fun i => V ⊓ U i) (fun _ => inf_le_left) (hc V) h`. Use `⟨LB.homOfLinear (fun V => { toFun := t V map_add' := fun s s' => ext V _ _ fun i => by` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_add, ht V _ i _ _ inf_le_right, ht V _ i _ _ inf_le_right, ht V _ i _ _ inf_le_right, map_add, map_add]`. Use the proof step `map_smul' := fun c s => ext V _ _ fun i => by`. Rewrite using `[RingHom.id_apply, res_smul, ht V _ i _ _ inf_le_right, ht V _ i _ _ inf_le_right, res_smul, map_smul] }) (fun {V W} h s => ext W _ _ fun i => ?_), fun i a => ?_⟩`. Express the relevant statement in the definitionally equal form `Twist.resM M' _ (t W (Twist.resM M h s)) = Twist.resM M' _ (Twist.resM M' h (t V s))`. Rewrite using `[res_res, ht W _ i _ _ inf_le_right, ht V _ i _ _ inf_le_right, res_res]`.
-
-Use `ht (U i) (f i a) i (U i) le_rfl le_rfl` as an intermediate fact. Rewrite `this` using `[locMap_frame, res_self, res_self]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_frames : ∀ (X : Scheme.{0}) (M M' : X.Modules) (r : ℕ) (ι : Type) (U : ι → X.Opens), (∀ x : X, ∃ i, x ∈ U i) →
     ∀ (f : ∀ i, Fin r → Γ(M, U i)) (hf : ∀ i, VB.IsFrame (f i)) (φ : ∀ i, Fin r → Γ(M', U i)),

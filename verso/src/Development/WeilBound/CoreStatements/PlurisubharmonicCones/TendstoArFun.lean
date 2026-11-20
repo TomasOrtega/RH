@@ -17,7 +17,7 @@ section Lines
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
 /- English proof (translation)
-Consider the cases of `A`. Consider the cases of `B`. Consider the cases of `ha`. Consider the cases of `hh`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem herm_ext {A B : HermLine J} (ha : A.a = B.a) (hh : A.h = B.h) : A = B := by
   cases A
@@ -27,21 +27,21 @@ theorem herm_ext {A B : HermLine J} (ha : A.a = B.a) (hh : A.h = B.h) : A = B :=
   rfl
 
 /- English proof (translation)
-The claim follows from `herm_ext (by simp [combLine, Fintype.sum_option]) (by funext z; simp [combLine, Fintype.prod_option])`.
+A detailed English derivation is pending.
 -/
 theorem comb_some {σ : Type} [Fintype σ] (c₀ : HermLine J) (l : σ → HermLine J) (n : σ → ℤ) :
     combLine (fun o : Option σ => o.elim c₀ l) (fun o => o.elim 0 n) = combLine l n :=
   herm_ext (by simp [combLine, Fintype.sum_option]) (by funext z; simp [combLine, Fintype.prod_option])
 
 /- English proof (translation)
-The claim follows from `herm_ext (by simp [combLine, Fintype.sum_option]) (by funext z; simp [combLine, Fintype.prod_option])`.
+A detailed English derivation is pending.
 -/
 theorem comb_none {σ : Type} [Fintype σ] (c₀ : HermLine J) (l : σ → HermLine J) :
     combLine (fun o : Option σ => o.elim c₀ l) (fun o => o.elim 1 0) = c₀ :=
   herm_ext (by simp [combLine, Fintype.sum_option]) (by funext z; simp [combLine, Fintype.prod_option])
 
 /- English proof (translation)
-Establish `h1` using `hI.degree K J P e L 2 hP hL Nat.prime_two`. Establish `h2` using `hI.degree K J P e L' 2 hP hL' Nat.prime_two`. Simplify using `only [h] at h1`. Conclude with `h1.trans h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pts_deg (hI : PB.Inputs) {P : Ideal (MRing J)} {e : ℕ} (hP : IsArithVar P (e + 1)) {L L' : Fin e → HermLine J}
     (hL : ∀ j, IsSmoothHerm (L j)) (hL' : ∀ j, IsSmoothHerm (L' j)) (h : ∀ j, (L j).a = (L' j).a) :
@@ -59,15 +59,15 @@ variable {Ψ : Type} [Fintype Ψ] {N : ℕ}
 def gapc (c : Ψ × Fin N → ℤ) (r : Ψ × Fin N) : ℤ := (if h : (r.2 : ℕ) + 1 < N then c (r.1, ⟨r.2 + 1, h⟩) else 0) - c r
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Set `c' : ℕ → ℤ` to `fun i => if h : i < N then c (τ, ⟨i, h⟩) else 0`. Establish `h1 : ∀ i : Fin N, gapc c (τ, i) = c' (i + 1) - c' i` using `fun i => by simp [gapc, c']`. Establish `h2 : ∀ k : Fin N, ∑ i : Fin N, (if k ≤ i then gapc c (τ, i) else 0) = -c (τ, k)` using `fun k => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Finset.sum_Ico_sub c' k.2.le`. Establish `h4 : ∑ i : Fin N, (if k ≤ i then gapc c (τ, i) else 0) = ∑ i ∈ Finset.range N, if (k : ℕ) ≤ i then c' (i + 1) - c' i else 0`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun i => if (k : ℕ) ≤ i then c' (i + 1) - c' i else 0)]`. Simplify using `only [h1, Fin.le_def]`. Rewrite using `[h4, ← Finset.sum_filter, show (Finset.range N).filter (fun i => (k : ℕ) ≤ i) = Finset.Ico (k : ℕ) N by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Simplify using `[and_comm], h3]`. Simplify using `[c']`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_neg, Finset.smul_sum, Finset.sum_neg_distrib, show Finset.Iic i = Finset.univ.filter (· ≤ i) by ext; simp, Finset.sum_filter]`. Simplify using `only [ite_smul, zero_smul]`. Use `_ = _ := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_neg_distrib, ← Finset.sum_smul, h2, neg_smul, neg_neg]`.
+A detailed English derivation is pending.
 -/
 theorem sum_gapc {A : Type} [AddCommGroup A] (c : Ψ × Fin N → ℤ) (x : Ψ × Fin N → A) :
     ∑ r, gapc c r • -∑ k ∈ Finset.Iic r.2, x (r.1, k) = ∑ r, c r • x r := by
@@ -98,16 +98,16 @@ theorem sum_gapc {A : Type} [AddCommGroup A] (c : Ψ × Fin N → ℤ) (x : Ψ �
 variable (M : RootModel Ψ N) {II : IntersectionSystem}
 
 /- English proof (translation)
-Consider the cases of `j`. Use `exacts [M.A_smooth, M.x_smooth _ _]`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem line_smooth (t : ℝ) (j : Option (Ψ × Fin N)) : IsSmoothHerm (M.line t j) := by
   cases j
   exacts [M.A_smooth, M.x_smooth _ _]
 
 /- English proof (translation)
-Establish `h1 : toA (∏ j, X (w j) : RP Ψ N) = basisMonomials (Option (Ψ × Fin N)) ℝ (∑ j, Finsupp.single (some (w j)) 1)`. Simplify using `only [toA, map_prod, rename_X, coe_basisMonomials]`. Rewrite using `[monomial_sum_one]`. Both sides reduce to the same expression. Establish `h3 : (∑ j, Finsupp.single (some (w j)) 1 : Option (Ψ × Fin N) →₀ ℕ) none = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `[Finsupp.finsetSum_apply]`. Take `⟨h2, -, -, h4⟩` from `GlobalTheory.T.monomial_lines_permutation II hII.1 M.K M.ι M.P _ _ (M.line t) (fun j => some (w j)) M.arith (line_smooth M t)`. Establish `hδ : (M.δ : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 M.δ_pos.ne'`. Rewrite using `[h1, RootModel.arFun, Module.Basis.constr_basis, RootModel.arMono, if_pos h2, h3, pow_zero, mul_one, div_mul_cancel₀ _ hδ, h4]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem arFun_word (hII : IsFullIntersectionSystem II) (t : ℝ) (w : Fin (dimFl Ψ N + 1) → Ψ × Fin N) :
     M.arFun II t (toA (∏ j, X (w j))) * M.δ = II M.K M.ι M.P (dimFl Ψ N + 1) fun j => M.x t (w j) := by
@@ -125,9 +125,9 @@ theorem arFun_word (hII : IsFullIntersectionSystem II) (t : ℝ) (w : Fin (dimFl
   rfl
 
 /- English proof (translation)
-Substitute `hd` using the available equality. Rewrite using `[GlobalTheory.T.arith_intersection_multilinear_all II hII M.K M.ι M.P _ _ (M.x t) c M.arith (M.x_smooth t), Fintype.prod_sum]`. Establish `h1 : ∀ w : Fin (dimFl Ψ N + 1) → Ψ × Fin N, toA (∏ j, c j (w j) • X (w j) : RP Ψ N) = ((∏ j, c j (w j) : ℤ) : ℝ) • toA (∏ j, X (w j))` using `fun w => by`. Rewrite using `[Finset.prod_smul, Int.cast_smul_eq_zsmul, toA, toA, map_zsmul]`. Establish `h2 : toA (∑ w : Fin (dimFl Ψ N + 1) → Ψ × Fin N, ∏ j, c j (w j) • X (w j) : RP Ψ N) = ∑ w : Fin (dimFl Ψ N + 1) → Ψ × Fin N, toA (∏ j, c j (w j) • X (w j))` using `map_sum (rename some) _ _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[h1, map_smul, smul_eq_mul, mul_assoc, arFun_word M hII, Int.cast_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem arFun_prod (hII : IsFullIntersectionSystem II) (t : ℝ) {d : ℕ} (hd : d = dimFl Ψ N + 1) (c : Fin d → Ψ × Fin N → ℤ) :
     M.arFun II t (toA (∏ j, ∑ x, c j x • X x)) * M.δ = II M.K M.ι M.P d fun j => combLine (M.x t) (c j) := by
@@ -144,7 +144,7 @@ theorem arFun_prod (hII : IsFullIntersectionSystem II) (t : ℝ) {d : ℕ} (hd :
   rw [h1, map_smul, smul_eq_mul, mul_assoc, arFun_word M hII, Int.cast_prod]
 
 /- English proof (translation)
-Substitute `hd` using the available equality. Establish `h` using `GlobalTheory.CompanionTheory.Ar.Giv.degreeGeneric_of_degree hI.degree M.K M.ι M.P _ (fun j => combLine (M.x t) (c j)) M.arith fun j => (GlobalTheory.T.hermitian_combination_smooth_conj _ _ _ _ _).1 (M.x_smooth t)`. Use `(geoFun_prod M hI c).trans (Eq.trans ?_ h.symm)` and prove the remaining obligations. Simplify using `only [combLine, M.x_deg]`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem geoFun_pts (hI : PB.Inputs) (t : ℝ) {d : ℕ} (hd : d = dimFl Ψ N) (c : Fin d → Ψ × Fin N → ℤ) :
     M.geoFun (toA (∏ j, ∑ x, c j x • X x)) * M.δ =
@@ -157,9 +157,9 @@ theorem geoFun_pts (hI : PB.Inputs) (t : ℝ) {d : ℕ} (hd : d = dimFl Ψ N) (c
   simp only [combLine, M.x_deg]
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial m a`. Establish `e : (monomial m a : RPA Ψ N) = a • basisMonomials (Option (Ψ × Fin N)) ℝ m`. Rewrite using `[coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]`. Take `⟨L, hL⟩` from `h m`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [e, map_smul, RootModel.arFun, RootModel.PP, Module.Basis.constr_basis, hL.limUnder_eq]`. Conclude with `hL.const_smul a`. Consider the case `add p q hp hq => simpa only [map_add] using hp.add hq`.
+Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tendsto_arFun (h : M.Converges II) (F : RPA Ψ N) :
     Tendsto (fun t => M.arFun II t F) (𝓝[>] 0) (𝓝 (M.PP II F)) := by
@@ -173,7 +173,7 @@ theorem tendsto_arFun (h : M.Converges II) (F : RPA Ψ N) :
   | add p q hp hq => simpa only [map_add] using hp.add hq
 
 /- English proof (translation)
-Establish `h` using `test_factor e hq hn`. Rewrite `h`, the goal using `[Fin.prod_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, Finset.prod_const, Finset.card_univ, Fintype.card_fin] at h ⊢`. Rewrite using `[testPoly, pow_succ', mul_assoc, h, pow_succ', mul_assoc, sum_muCoef, muSmall, if_pos (by omega)]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem test_factor' [DecidableEq Ψ] {p q n r : ℕ} (e : Fin r ≃ PairIx Ψ p q) (hq : q ≤ p) (hn : n = Fintype.card Ψ * p * q) :
     (testPoly p : RP Ψ (p + q)) =

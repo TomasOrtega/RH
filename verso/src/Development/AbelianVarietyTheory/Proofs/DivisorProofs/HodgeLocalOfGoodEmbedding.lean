@@ -22,15 +22,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[unfFam, dif_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unfFam_self (U : Formalism.L2.PjFree.Unf Xo c σ r) : unfFam U σ = U := by
   rw [unfFam, dif_pos rfl]
 
 /- English proof (translation)
-Take `⟨ψ, σ', k, x, h1, h2, h3, h4, h5, h6⟩` from `h`. Break down `h1 with rfl | rfl` into its components or cases. Take `rfl : σ' = σ` from `h2.trans (RingHom.id_comp σ)`. Establish `key : ∀ (W : Formalism.L2.PjFree.Unf Xo c σ' r), W = V' σ' → ∀ (k : W.Comp) (x : (W.X k).dom), IsOrth (W.X k) x.1 → (cxPt Z (W.un k x)).1 = spMap (RingHom.id ℂ) ≫ y.1 → f.IsMap (RingHom.id ℂ) (cxFrame Z (W.un k x)) → IsHodgeFrame V' y f`. Introduce and unpack `W rfl k x a b d`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨RingHom.id ℂ, σ', k, x, .inl rfl, (RingHom.id_comp σ').symm, hσ, a, b, d⟩`. Conclude with `key (V σ') hV k x h4 h5 h6`. Conclude with `(not_good_conj c (σ := σ) hσ (h2 ▸ h3)).elim`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isHodgeFrame_of_eq {V V' : ∀ σ' : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ' r} (hσ : Formalism.L2.PjFree.GoodEmb c σ)
     (hV : V σ = V' σ) {y : CxPts (genStr Z) σ} {f : EigFrame Z σ (y.1 ≫ genι Z)} (h : IsHodgeFrame V y f) :
@@ -49,9 +49,9 @@ theorem isHodgeFrame_of_eq {V V' : ∀ σ' : c.F →+* ℂ, Formalism.L2.PjFree.
 end Free
 
 /- English proof (translation)
-Establish `hU : ∀ σ', Formalism.L2.PjFree.GoodEmb κ.c σ' → Formalism.L2.PjFree.IsUnf (s.U σ')` using `fun σ' h => (s.unf σ' h).1`. Take `⟨f, hf⟩` from `exists_isHodgeFrame hU (y := y) hy`. Establish `h : ∃ f, IsHodgeFrame (unfFam (s.U σ)) y f` using `⟨f, isHodgeFrame_of_eq hσ (unfFam_self _).symm hf⟩`. Establish `hc : IsHodgeFrame s.U y h.choose` using `isHodgeFrame_of_eq hσ (unfFam_self _) h.choose_spec`. Rewrite using `[x.hodge_gram hc g τ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = _ • (EigMet.hodge (unfFam (s.U σ)) (2 * Real.pi) Real.two_pi_pos _).gram y g τ`. Rewrite using `[show (EigMet.hodge (unfFam (s.U σ)) (2 * Real.pi) Real.two_pi_pos (Classical.arbitrary (EigMet s.T.Z σ))).gram y g τ = _ from dif_pos h, smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hodge_gram_eq_hodgeMet {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (x : ToroidalCompactificationData s)
     {σ : κ.c.F →+* ℂ} (hσ : Formalism.L2.PjFree.GoodEmb κ.c σ) {y : CxPts (genStr s.T.Z) σ} (hy : Inner y)
@@ -70,7 +70,7 @@ theorem hodge_gram_eq_hodgeMet {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} 
   ring
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Conclude with `GlobalTheory.T.exists_periodChart_hodgeMetric_genericFibre E H Dw l Xo c O β Y T σ U hσ hU x₀`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem chart_of_rank {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F)
@@ -92,7 +92,7 @@ theorem chart_of_rank {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Re
   exact GlobalTheory.T.exists_periodChart_hodgeMetric_genericFibre E H Dw l Xo c O β Y T σ U hσ hU x₀
 
 /- English proof (translation)
-Simplify using `only [hermForm, Matrix.mul_apply, dotProduct, Matrix.mulVec, Matrix.conjTranspose_apply, Finset.mul_sum, Finset.sum_mul, Pi.star_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mul_conjTranspose_apply {m m' : Type} [Fintype m] [Fintype m'] {g : ℕ} (Q : Matrix m (Fin g) ℂ)
     (M : Matrix (Fin g) (Fin g) ℂ) (Q' : Matrix m' (Fin g) ℂ) (b : m) (b' : m') :
@@ -113,25 +113,23 @@ namespace GlobalTheory.CurvInterp.HodgeGood
 open Formalism.L2.Pj GlobalTheory.LieBase GlobalTheory.ShFam.Hor.ExpDirs
 
 /- English proof (translation)
-Introduce `D A N j S κ s x σ hσ e B a hB h0 ha hc`. Take `⟨n, k, hk, g, rk, τ₀, Bm, ch₀, ex, κc, hP, hex, hx0, hch0, hcard, hκ, hInner, hmain⟩` from `chart_of_rank A.H S.Dw κ.l (S.Xo κ.l) κ.c (𝓞 κ.c.F) (algebraMap (𝓞 κ.c.F) κ.c.F) s.Ygl s.T σ S.rank_eq (s.U σ) hσ (s.unf σ hσ).1 (a 0).1`. Use `set B' : Set (Fin e → ℂ) := B ∩ (fun z => (a z).1) ⁻¹' ch₀.source with hB'`. Establish `hB'o : IsOpen B'` using `hc.isOpen_inter_preimage hB ch₀.open_source`. Establish `h0' : (0 : Fin e → ℂ) ∈ B'` using `⟨h0, hx0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB'B : B' ⊆ B` using `Set.inter_subset_left`. Establish `src : ∀ z ∈ B', (a z).1 ∈ ch₀.source` using `fun z hz => hz.2`. Take `⟨ρ, hρ, hρB⟩` from `Metric.isOpen_iff.1 hB'o 0 h0'`. Establish `hhol' : IsHolTo B' (fun z => (a z).1.1)` using `GlobalTheory.LocLift.isHolTo_mono ha.1 hB'o hB'B`. Establish `htan : ∀ τ i, HolTan B' fun z => (a z).2.v τ i` using `fun τ i U f => (ha.2 τ i U f).mono fun z hz => ⟨hB'B hz.1, hz.2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `fun z (hz : z ∈ B') => hex.2.2.2.2.2 _ (src z hz)`. Use `choose! Wa hWa using fun z (hz : z ∈ B') (q : Σ τ : D.host.E →+* ℂ, Fin (S.Dw.mult τ)) => ((h5 z hz).2 _ ((a z).2.tan q.1 q.2)).exists`. Establish `hWd : ∀ z ∈ B', ∀ q, DifferentiableAt ℂ (fun z => Wa z q) z` using `fun z hz q => differentiableAt_dir hex hB'o hhol' src (htan q.1 q.2) (fun b hb => hWa b hb q) hz`. Use `⟨ρ, hρ, hρB.trans hB'B, ?_⟩` and prove the remaining obligations. Unfold `IsBlockModel`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, k, hk, g, rk, τ₀, Bm, fun z => ch₀ (a z).1, fun τ z => Matrix.of fun i l => Wa z ⟨τ, i⟩ l, fun τ => xiR D * κc τ, hP, ?_, hch0, ?_, ?_, hcard, ?_, fun τ => mul_pos (GlobalTheory.ShFam.xiR_pos D) (hκ τ), ?_⟩` and prove the remaining obligations. Use `differentiableOn_pi.2 fun m => ?_` and prove the remaining obligations. Conclude with `hex.2.1 m (Fin e → ℂ) (Metric.ball 0 ρ) (fun z => (a z).1) Metric.isOpen_ball (GlobalTheory.LocLift.isHolTo_mono hhol' Metric.isOpen_ball hρB) fun z hz => src z (hρB hz)`. Introduce `z hz m`. Establish `h` using `ch₀.map_source (src z (hρB hz))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[hex.1, mem_ball_zero_iff]`. Conclude with `(norm_le_pi_norm _ m).trans_lt h`. Introduce `τ i l z hz`. Conclude with `(differentiableAt_pi.1 (hWd z (hρB hz) ⟨τ, i⟩) l).differentiableWithinAt`. Establish `e0 : ex (a 0).1 0 = 1` using `by simpa using hex.2.2.2.1 _ hx0 0 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Take `⟨bs, hbs⟩` from `dirs_basis (a 0).2 (e := fun w => (ex (a 0).1 w).left) (congrArg (·.left) e0) (h5 0 h0').1 (h5 0 h0').2 (fun q => hWa 0 h0' q)`. Establish `: (fun p : Σ τ, Fin (S.Dw.mult τ) => (Matrix.of fun i l => Wa 0 ⟨p.1, i⟩ l) p.2) = Wa 0`. Use function extensionality and compare the values at `p`. Both sides reduce to the same expression. Simplify using `only [] at this ⊢`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this, ← hbs]`. Conclude with `bs.linearIndependent`. Introduce `z hz hin`. Establish `hs` using `src z (hρB hz)`. Establish `hD : Dirs ⟨(a z).1, (a z).2⟩ (fun w => (ex (a z).1 w).left) (Wa z)` using `fun q => hWa z (hρB hz) q`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Take `⟨hm1, hm2⟩` from `hmain _ hs hin (a z).2 (Wa z) hD`. Use `⟨⟨?_, (hInner _ hs).1 hin⟩, fun τ => ?_, fun τ τ' hne => ?_⟩` and prove the remaining obligations. Introduce `m`. Establish `h` using `ch₀.map_source hs`. Rewrite `h` using `[hex.1, mem_ball_zero_iff]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `(norm_le_pi_norm _ m).trans_lt h`. Use extensionality with `b b' dsimp only`. Rewrite using `[Matrix.transpose_apply, hodge_gram_eq_hodgeMet x hσ hin, hm1, Matrix.smul_apply, Matrix.smul_apply, Matrix.smul_apply, mul_conjTranspose_apply, Matrix.of_apply, smul_smul]`. Use `congr 1`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Use extensionality with `b b' dsimp only`. Rewrite using `[mul_conjTranspose_apply, Matrix.zero_apply]`. Conclude with `hm2 ⟨τ, b⟩ ⟨τ', b'⟩ hne`.
+By extensionality, compare the relevant components. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hodgeLocal_good : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (σ : κ.c.F →+* ℂ), Formalism.L2.PjFree.GoodEmb κ.c σ → HodgeLocal x σ := by
   intro D A N j S κ s x σ hσ e B a hB h0 ha hc

@@ -13,11 +13,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
 
 /- English proof (translation)
-Establish `hkU : k.1 ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F)` using `((S.U_eq k.1).1 k.2).1`. Establish `e : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ0 = y2.1 * k.1 * y1.1⁻¹ := by`. Rewrite using `[← h]`. Use `group`. Establish `hb : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ0 ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ y2.2 hkU) (Subgroup.inv_mem _ y1.2)`. Use `(DoubleCoset.eq _ _ y1 y2).2 ⟨⟨bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ0, hb⟩, ?_, ⟨k.1⁻¹, Subgroup.inv_mem _ hkU⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_subgroupOf.2 ⟨γ0, hγ0, rfl⟩`. Conclude with `Subgroup.mem_subgroupOf.2 (S.U.inv_mem k.2)`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[h]`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rnd_cls (S : StepLevel F E σ J T f bad) (γ0 : GL (Fin n) E) (hγ0 : γ0 ∈ UJ (σ : E →+* E) J)
     (y1 y2 : UPts σ J (FiniteAdeleRing (𝓞 F) F)) (k : S.U)
@@ -37,9 +35,9 @@ theorem rnd_cls (S : StepLevel F E σ J T f bad) (γ0 : GL (Fin n) E) (hγ0 : γ
     rw [h]; group
 
 /- English proof (translation)
-Establish `key : S.chi ((κ * κ')⁻¹ * k) = 1`. Apply `S.chi_triv` to reduce the goal to its premises. Introduce `v'' hv''`. Establish `hne : v'' ≠ v` using `fun e => hb (e ▸ hv'')`. Simplify using `only [Subgroup.coe_mul, InvMemClass.coe_inv, hk, map_mul, map_inv, hη v'' hne, hη' v'' hne, mul_one, one_mul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `group`. Rewrite `key` using `[map_mul, map_inv, inv_mul_eq_one]`. Rewrite using `[← key, map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rnd_chi (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F)) (hb : v ∉ bad)
     (η η' : UPts σ J (FiniteAdeleRing (𝓞 F) F))

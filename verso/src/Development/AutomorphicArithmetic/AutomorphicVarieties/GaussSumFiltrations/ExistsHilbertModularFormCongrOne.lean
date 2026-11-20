@@ -4,12 +4,12 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 namespace UpperTheory.V
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.HilbertThetaSeries.hilbertOne`.
+A detailed English derivation is pending.
 -/
 theorem Published.exists_hilbertModularForm_congr_one : Published.HilbertOne := GlobalTheory.HilbertThetaSeries.hilbertOne
 
 /- English proof (translation)
-The claim follows from `Lit.oneUse_of Published.exists_hilbertModularForm_congr_one`.
+A detailed English derivation is pending.
 -/
 theorem Lit.oneUse : Lit.OneUse := Lit.oneUse_of Published.exists_hilbertModularForm_congr_one
 

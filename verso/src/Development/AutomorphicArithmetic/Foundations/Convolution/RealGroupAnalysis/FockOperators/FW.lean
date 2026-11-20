@@ -9,13 +9,13 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W O w`. Establish `hc : cw w (rt D.δ) ≠ 0` using `(coordMk F E D).2.2.1 w`. Establish `hcc : cc ≠ 0`. Simplify using `[cc, Real.pi_ne_zero]`. Establish `h2 : ∀ i j, O.d w i * O.d w j * W.Om (wW F) = W.Om (wW F) * (O.p D.δ w i * O.p D.δ w j)` using `fun i j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, dW, ← mul_assoc, dW, mul_assoc]`. Establish `comm : O.x w 0 * O.x w 1 = O.x w 1 * O.x w 0` using `(weyl F O w w 0 1).1`. Establish `p0 : O.p D.δ w 0 = (-cc) • O.x w 1` using `rfl`. Establish `p1 : O.p D.δ w 1 = (-cc) • O.x w 0` using `rfl`. Establish `p2 : O.p D.δ w 2 = (2 * cc) • O.x w 2` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p3 : O.p D.δ w 3 = (-2 * cw w (rt D.δ) * cc) • O.x w 3` using `rfl`. Establish `key : (4 : ℂ)⁻¹ • (O.p D.δ w 2 * O.p D.δ w 2) - (4 * cw w (rt D.δ))⁻¹ • (O.p D.δ w 3 * O.p D.δ w 3) - O.p D.δ w 1 * O.p D.δ w 0 = cc • O.e D.δ w`. Rewrite using `[p0, p1, p2, p3, Ops.e]`. Simplify using `only [smul_mul_smul_comm, comm]`. Apply the tactic sequence `match_scalars <;> field_simp <;> ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `move : ((4 : ℂ)⁻¹ • (O.d w 2 * O.d w 2) - (4 * cw w (rt D.δ))⁻¹ • (O.d w 3 * O.d w 3) - O.d w 1 * O.d w 0) * W.Om (wW F) = W.Om (wW F) * ((4 : ℂ)⁻¹ • (O.p D.δ w 2 * O.p D.δ w 2) - (4 * cw w (rt D.δ))⁻¹ • (O.p D.δ w 3 * O.p D.δ w 3) - O.p D.δ w 1 * O.p D.δ w 0)`. Simplify using `only [sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, h2]`. Rewrite using `[Ops.f, smul_mul_assoc, move, key, mul_smul_comm, smul_smul, neg_mul, inv_mul_cancel₀ hcc, neg_smul, one_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.fW :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (O : Ops F) w, O.f D.δ w * W.Om (wW F) = -(W.Om (wW F) * O.e D.δ w) := by

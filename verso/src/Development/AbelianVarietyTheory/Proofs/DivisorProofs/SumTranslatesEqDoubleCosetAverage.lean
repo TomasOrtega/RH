@@ -6,9 +6,9 @@ namespace CosetAvg
 open MulAction
 
 /- English proof (translation)
-Establish `h1 : ∀ z : orbit H y, ∑ h : H, F (h • (z : X)) = ∑ h : H, F (h • y)`. Introduce and unpack `⟨z, g, rfl⟩`. Conclude with `Fintype.sum_equiv (Equiv.mulRight g) _ _ (fun h => by simp [mul_smul])`. Establish `h2 : ∀ h : H, ∑ z : orbit H y, F (h • (z : X)) = ∑ z : orbit H y, F z`. Introduce `h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fintype.sum_equiv (MulAction.toPerm h) _ _ (fun z => rfl)`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, ← Finset.card_univ, ← Finset.card_univ, ← Finset.sum_const, ← Finset.sum_const]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem orbit_sum {H X M : Type*} [Group H] [Fintype H] [MulAction H X] [AddCommGroup M]
     [Module ℂ M] (y : X) [Fintype (orbit H y)] (F : X → M) :
@@ -28,11 +28,9 @@ theorem orbit_sum {H X M : Type*} [Group H] [Fintype H] [MulAction H X] [AddComm
     _ = ∑ _h : H, ∑ z : orbit H y, F z := Finset.sum_congr rfl (fun h _ => h2 h)
 
 /- English proof (translation)
-Establish `hH : (Fintype.card H : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `hO : ∀ i, (Fintype.card (orbit H (y i)) : ℂ) ≠ 0` using `fun i => by haveI : Nonempty (orbit H (y i)) := ⟨⟨y i, mem_orbit_self _⟩⟩`. Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Establish `key : ∀ i, ∑ h : H, F i (h • y i) = (Fintype.card H : ℂ) • ((Fintype.card (orbit H (y i)) : ℂ)⁻¹ • ∑ z : orbit H (y i), F i z)`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_comm (Fintype.card H : ℂ), ← orbit_sum, smul_smul, inv_mul_cancel₀ (hO i), one_smul]`. Apply `smul_right_injective M hH` to reduce the goal to its premises. Simplify using `only`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]`.
-
-Use `_ = ∑ h : H, ∑ i ∈ s, F i (h • y i) := Finset.sum_congr rfl (fun h _ => (hinv h).symm)`. Use `_ = ∑ i ∈ s, ∑ h : H, F i (h • y i) := Finset.sum_comm`. Use `_ = _ := by rw [Finset.smul_sum]; exact Finset.sum_congr rfl (fun i _ => key i)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_of_invariant {H X M ι : Type*} [Group H] [Fintype H] [MulAction H X]
     [AddCommGroup M] [Module ℂ M] (s : Finset ι) (y : ι → X) [∀ i, Fintype (orbit H (y i))]
@@ -64,31 +62,29 @@ namespace CosetAvg
 open MulAction
 
 /- English proof (translation)
-Introduce `G M _ _ _ ρ K ι s a R w hR hw hm`. Establish `hsm : ∀ (k : K) (g : G), k • ((g : G) : G ⧸ K) = ((k * g : G) : G ⧸ K)` using `fun k g => rfl`. Set `Y : SubMulAction K (G ⧸ K)` to `{ carrier := {q | ∃ i ∈ s, ∃ k : K, q = k • ((a i : G) : G ⧸ K)} smul_mem' := by`. Introduce and unpack `c q ⟨i, hi, k, rfl⟩`. Conclude with `⟨i, hi, c * k, (mul_smul c k _).symm⟩ }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hYsub : (Y : Set (G ⧸ K)) ⊆ ((s.biUnion fun i => (R i).image (QuotientGroup.mk : G → G ⧸ K) : Finset (G ⧸ K)) : Set (G ⧸ K))`. Introduce and unpack `q ⟨i, hi, k, rfl⟩`. Take `⟨γ, ⟨hγ, hγk⟩, -⟩` from `(hR i hi).2 (k * a i) ⟨k, k.2, 1, K.one_mem, by simp⟩`. Use `Finset.mem_coe.mpr (Finset.mem_biUnion.mpr ⟨i, hi, Finset.mem_image.mpr ⟨γ, hγ, ?_⟩⟩)` and prove the remaining obligations. Rewrite using `[hsm, QuotientGroup.eq]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hγk`. Use `haveI : Finite Y := (Set.Finite.subset (Finset.finite_toSet _) hYsub).to_subtype`. Use `letI : Fintype Y := Fintype.ofFinite Y`. Set `φ` to `MulAction.toPermHom K Y`. Set `H` to `φ.range`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Fintype H := Fintype.ofFinite H`. Establish `hy : ∀ i ∈ s, ((a i : G) : G ⧸ K) ∈ Y` using `fun i hi => ⟨i, hi, 1, by simp⟩`. Set `y : s → Y` to `fun i => ⟨((a i : G) : G ⧸ K), hy i i.2⟩`. Use `letI : ∀ i, Fintype (orbit H (y i)) := fun i => Fintype.ofFinite _`. Set `F : s → Y → M` to `fun i q => ρ (q : G ⧸ K).out (w i)`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hF : ∀ (i : s) (q : Y) (g : G), (q : G ⧸ K) = (g : G ⧸ K) → F i q = ρ g (w i)`. Introduce `i q g hq`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K g`. Simplify using `only [F, hq, hk, map_mul, Module.End.mul_apply, hw i i.2 k k.2]`. Establish `hval : ∀ (k : K) (i : s), ((((⟨φ k, k, rfl⟩ : H) • y i : Y)) : G ⧸ K) = ((k * a i : G) : G ⧸ K)` using `fun k i => rfl`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hinv : ∀ h : H, ∑ i ∈ Finset.univ, F i (h • y i) = ∑ i ∈ Finset.univ, F i (y i)`. Introduce and unpack `⟨_, k, rfl⟩`. Rewrite using `[Finset.sum_congr rfl (fun i _ => hF i _ _ (hval k i)), Finset.sum_congr rfl (fun i _ => hF i (y i) (a i) rfl)]`. Simplify using `only [map_mul, Module.End.mul_apply]`. Rewrite using `[← map_sum, Finset.sum_coe_sort s (fun i => ρ (a i) (w i)), hm k k.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmain` using `avg_of_invariant (H := H) Finset.univ y F hinv`. Establish `horb : ∀ i : s, ∃ e : (R i) ≃ orbit H (y i), ∀ γ : R i, ((e γ : Y) : G ⧸ K) = ((γ : G) : G ⧸ K)`. Introduce `i`. Establish `hmemY : ∀ γ ∈ R i, ((γ : G) : G ⧸ K) ∈ Y`. Introduce `γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k₁, hk₁, k₂, hk₂, rfl⟩` from `(hR i i.2).1 γ hγ`. Conclude with `⟨i, i.2, ⟨k₁, hk₁⟩, by rw [hsm, QuotientGroup.mk_mul_of_mem _ hk₂]⟩`. Establish `hmemO : ∀ (γ : G) (hγ : γ ∈ R i), (⟨(γ : G ⧸ K), hmemY γ hγ⟩ : Y) ∈ orbit H (y i)`. Introduce `γ hγ`. Take `⟨k₁, hk₁, k₂, hk₂, hγe⟩` from `(hR i i.2).1 γ hγ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `⟨⟨φ ⟨k₁, hk₁⟩, ⟨k₁, hk₁⟩, rfl⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `(hval _ _).trans ((QuotientGroup.mk_mul_of_mem _ hk₂).symm.trans (congrArg _ hγe.symm))`. Set `f : R i → orbit H (y i)` to `fun γ => ⟨⟨(γ : G ⧸ K), hmemY γ γ.2⟩, hmemO γ γ.2⟩`. Establish `hbij : Function.Bijective f`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨γ, hγ⟩ ⟨γ', hγ'⟩ he`. Establish `he' : ((γ : G) : G ⧸ K) = ((γ' : G) : G ⧸ K)` using `congrArg (fun z : orbit H (y i) => ((z : Y) : G ⧸ K)) he`. Rewrite `he'` using `[QuotientGroup.eq]`. Establish `hu` using `(hR i i.2).2 γ' ((hR i i.2).1 γ' hγ')`. Conclude with `Subtype.ext (hu.unique ⟨hγ, he'⟩ ⟨hγ', by simp⟩)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, ⟨⟨_, k, rfl⟩, hz⟩⟩`. Take `⟨γ, ⟨hγ, hγk⟩, -⟩` from `(hR i i.2).2 (k * a i) ⟨k, k.2, 1, K.one_mem, by simp⟩`. Use `⟨⟨γ, hγ⟩, Subtype.ext (Subtype.ext ?_)⟩` and prove the remaining obligations. Conclude with `(QuotientGroup.eq.mpr hγk).trans ((hval k i).symm.trans (congrArg Subtype.val hz))`. Conclude with `⟨Equiv.ofBijective f hbij, fun γ => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Finset.sum_coe_sort s, ← Finset.sum_coe_sort s, Finset.sum_congr rfl (fun i _ => (hF i (y i) (a i) rfl).symm), hmain]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Take `⟨e, he⟩` from `horb i`. Rewrite using `[← Fintype.card_congr e, Fintype.card_coe]`. Use `congr 1`.
-
-Rewrite using `[← Finset.sum_coe_sort (R i)]`. Conclude with `(Fintype.sum_equiv e _ _ (fun γ => (hF i _ _ (he γ)).symm)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_translates_eq_avg : ∀ {G M : Type} [Group G] [AddCommGroup M] [Module ℂ M] (ρ : G →* Module.End ℂ M) (K : Subgroup G) {ι : Type} (s : Finset ι) (a : ι → G) (R : ι → Finset G) (w : ι → M), (∀ i ∈ s, (∀ γ ∈ R i, ∃ k₁ ∈ K, ∃ k₂ ∈ K, γ = k₁ * a i * k₂) ∧ ∀ x : G, (∃ k₁ ∈ K, ∃ k₂ ∈ K, x = k₁ * a i * k₂) → ∃! γ, γ ∈ R i ∧ γ⁻¹ * x ∈ K) → (∀ i ∈ s, ∀ k ∈ K, ρ k (w i) = w i) → (∀ k ∈ K, ρ k (∑ i ∈ s, ρ (a i) (w i)) = ∑ i ∈ s, ρ (a i) (w i)) → ∑ i ∈ s, ρ (a i) (w i) = ∑ i ∈ s, ((R i).card : ℂ)⁻¹ • ∑ γ ∈ R i, ρ γ (w i) := by
   intro G M _ _ _ ρ K ι s a R w hR hw hm

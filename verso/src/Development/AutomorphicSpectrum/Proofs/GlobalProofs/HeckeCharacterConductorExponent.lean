@@ -15,7 +15,7 @@ namespace GlobalTheory.CompanionTheory.HeckeBridge
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `MonoidHom.ext fun a => ?_` and prove the remaining obligations. Use `show (toHecke χ hu).toIdele (ofFinite (finiteUnitsSingle v a)) = (toHecke χ hu).localComponent v a`. Rewrite using `[GroundTheory.Global.IdeleGroup.ofFinite_finiteUnitsSingle, GroundTheory.Global.HeckeCharacter.localComponent_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_finiteUnitsSingle (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum (𝓞 E)) :
     (((toHecke χ hu).toIdele.comp ofFinite).comp (finiteUnitsSingle v)) =
@@ -25,11 +25,11 @@ theorem comp_finiteUnitsSingle (χ : HChar E) (hu : IsUnitary χ) (v : HeightOne
   rw [GroundTheory.Global.IdeleGroup.ofFinite_finiteUnitsSingle, GroundTheory.Global.HeckeCharacter.localComponent_apply]
 
 /- English proof (translation)
-Rewrite using `[comp_finiteUnitsSingle χ hu v]`. Establish `h` using `coe_localComponent χ hu v x`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← h]`. Establish `h1' : (toHecke χ hu).localComponent v x = 1` using `h1`. Rewrite using `[h1', Circle.coe_one, Units.val_one]`. Introduce `h1`. Establish `h1' : (toHecke χ hu).localComponent v x = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Circle.ext` to reduce the goal to its premises. Rewrite using `[h, h1, Units.val_one, Circle.coe_one]`. Conclude with `h1'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem toHecke_local_eq_one_iff (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum (𝓞 E))
     (x : (v.adicCompletion E)ˣ) :
@@ -49,9 +49,9 @@ private theorem toHecke_local_eq_one_iff (χ : HChar E) (hu : IsUnitary χ) (v :
     exact h1'
 
 /- English proof (translation)
-Unfold `Formalism.L2.Host.HChar.LevelLe`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Rewrite `hx` using `[GroundTheory.Global.mem_unitsLevel]`. Rewrite using `[MonoidHom.mem_ker, toHecke_local_eq_one_iff χ hu v x]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h x hx.1 hx.2`. Introduce `h x hux hx`. Rewrite using `[← toHecke_local_eq_one_iff χ hu v x]`. Conclude with `h (GroundTheory.Global.mem_unitsLevel.mpr ⟨hux, hx⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelLe_iff_unitsLevel_le_ker (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum (𝓞 E)) (n : ℕ) :
     χ.LevelLe v n ↔
@@ -67,7 +67,7 @@ theorem levelLe_iff_unitsLevel_le_ker (χ : HChar E) (hu : IsUnitary χ) (v : He
     exact h (GroundTheory.Global.mem_unitsLevel.mpr ⟨hux, hx⟩)
 
 /- English proof (translation)
-Rewrite using `[levelLe_iff_unitsLevel_le_ker χ hu v n]`. Conclude with `GroundTheory.Global.unitsLevel_le_ker_iff v GroundTheory.Global.Circle.noSmallSubgroups _ (((toHecke χ hu).continuous_toIdele.comp GroundTheory.Global.IdeleGroup.continuous_ofFinite).comp (GroundTheory.Global.IdeleGroup.continuous_finiteUnitsSingle v))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelLe_iff_conductorExponentAt (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum (𝓞 E)) (n : ℕ) :
     χ.LevelLe v n ↔ conductorExponentAt ((toHecke χ hu).toIdele.comp ofFinite) v ≤ n := by
@@ -77,23 +77,23 @@ theorem levelLe_iff_conductorExponentAt (χ : HChar E) (hu : IsUnitary χ) (v : 
       (GroundTheory.Global.IdeleGroup.continuous_finiteUnitsSingle v))
 
 /- English proof (translation)
-Establish `hfin : (Function.mulSupport fun w : HeightOneSpectrum R => w.asIdeal ^ a w).Finite`. Rewrite using `[GroundTheory.Global.mulSupport_asIdeal_pow]`. Conclude with `ha`. Prove the components needed by the constructor for the conclusion. Introduce `hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Use `set b : HeightOneSpectrum R → ℕ := Function.update a v 0 with hb`. Establish `hbfin : (Function.support b).Finite`. Use `ha.subset (fun w hw => ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality. Simplify using `[hb] at hw`. Simplify `hw` using `[hb, Function.update_of_ne hwv]`. Establish `hcfin : (Function.mulSupport fun w : HeightOneSpectrum R => w.asIdeal ^ (if w = v then a v else 0)).Finite`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Set.finite_singleton v).subset (fun w hw => ?_)` and prove the remaining obligations. Rewrite using `[Set.mem_singleton_iff]`. Assume the negation of the conclusion as `hwv`. Conclude with `hw (by simp [hwv])`. Establish `hbfin' : (Function.mulSupport fun w : HeightOneSpectrum R => w.asIdeal ^ b w).Finite`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GroundTheory.Global.mulSupport_asIdeal_pow]`. Conclude with `hbfin`. Establish `hsingle : ∏ᶠ w : HeightOneSpectrum R, w.asIdeal ^ (if w = v then a v else 0) = v.asIdeal ^ a v`. Rewrite using `[finprod_eq_single _ v (fun w hw => by simp [hw])]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hsplit : ∏ᶠ w : HeightOneSpectrum R, w.asIdeal ^ a w = v.asIdeal ^ a v * ∏ᶠ w : HeightOneSpectrum R, w.asIdeal ^ b w`. Rewrite using `[← hsingle, ← finprod_mul_distrib hcfin hbfin']`. Use `finprod_congr fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hb]`. Simplify using `[hb, hwv, Function.update_of_ne hwv]`. Rewrite `hk` using `[hsplit]`. Establish `hpow : v.asIdeal ^ k = v.asIdeal ^ a v * v.asIdeal ^ (k - a v)`. Rewrite using `[← pow_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite `hk` using `[hpow]`. Establish `hne0 : v.asIdeal ^ a v ≠ 0` using `pow_ne_zero _ (by rw [Ideal.zero_eq_bot]; exact v.ne_bot)`. Establish `hk'` using `(mul_dvd_mul_iff_left hne0).mp hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv : v.asIdeal ∣ ∏ᶠ w : HeightOneSpectrum R, w.asIdeal ^ b w` using `(dvd_pow_self _ (by omega)).trans hk'`. Establish `h1` using `(GroundTheory.Global.asIdeal_dvd_finprod_iff hbfin v).mp hv`. Simplify using `[hb] at h1`. Introduce `hk`. Conclude with `(pow_dvd_pow _ hk).trans (finprod_mem_dvd (f := fun w : HeightOneSpectrum R => w.asIdeal ^ a w) v hfin)`.
+A detailed English derivation is pending.
 -/
 private theorem asIdeal_pow_dvd_finprod_iff {R : Type*} [CommRing R] [IsDedekindDomain R]
     {a : HeightOneSpectrum R → ℕ} (ha : (Function.support a).Finite) (v : HeightOneSpectrum R) (k : ℕ) :
@@ -148,11 +148,11 @@ private theorem asIdeal_pow_dvd_finprod_iff {R : Type*} [CommRing R] [IsDedekind
       (finprod_mem_dvd (f := fun w : HeightOneSpectrum R => w.asIdeal ^ a w) v hfin)
 
 /- English proof (translation)
-Establish `hcont : Continuous ((toHecke χ hu).toIdele.comp ofFinite)` using `(toHecke χ hu).continuous_toIdele.comp GroundTheory.Global.IdeleGroup.continuous_ofFinite`. Establish `hfin` using `GroundTheory.Global.IdeleGroup.finite_support_conductorExponentAt GroundTheory.Global.Circle.noSmallSubgroups _ hcont`. Establish `hne` using `(toHecke χ hu).conductor_ne_bot`. Establish `hcond : χ.IsCond (toHecke χ hu).conductor`. Unfold `Formalism.L2.Host.HChar.IsCond`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨hne, fun w n => ?_⟩` and prove the remaining obligations. Rewrite using `[levelLe_iff_conductorExponentAt χ hu w n]`. Establish `h1` using `asIdeal_pow_dvd_finprod_iff hfin w (n + 1)`. Express the relevant statement in the definitionally equal form `_ ↔ ¬ w.asIdeal ^ (n + 1) ∣ ∏ᶠ u : HeightOneSpectrum (𝓞 E), u.asIdeal ^ conductorExponentAt ((toHecke χ hu).toIdele.comp ofFinite) u`. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `constructor <;> intro h2 <;> omega`. Conclude with `(GlobalTheory.CMVal.ExpAt.unique h ((GlobalTheory.CMVal.isCond_iff_expAt χ hne).mp hcond v)).symm`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem multiplicity_conductor_toHecke (E : Type) [Field E] [NumberField E] (χ : HChar E) (hu : IsUnitary χ)
     (v : HeightOneSpectrum (𝓞 E)) (m : ℕ) (h : ExpAt χ v m) :

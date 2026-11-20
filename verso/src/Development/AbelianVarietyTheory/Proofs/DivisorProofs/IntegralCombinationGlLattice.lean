@@ -15,37 +15,37 @@ section IntLemmas
 variable {m p q : Type}
 
 /- English proof (translation)
-Introduce `i j` and use `by simpa using add_mem (hX i j) (hY i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_add {X Y : Matrix m p k} (hX : ∀ i j, X i j ∈ 𝒪[k]) (hY : ∀ i j, Y i j ∈ 𝒪[k]) :
     ∀ i j, (X + Y) i j ∈ 𝒪[k] := fun i j => by simpa using add_mem (hX i j) (hY i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by simpa using neg_mem (hX i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_neg {X : Matrix m p k} (hX : ∀ i j, X i j ∈ 𝒪[k]) : ∀ i j, (-X) i j ∈ 𝒪[k] :=
   fun i j => by simpa using neg_mem (hX i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply]; exact sum_mem fun l _ => mul_mem (hX i l) (hY l j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_mul [Fintype p] {X : Matrix m p k} {Y : Matrix p q k} (hX : ∀ i j, X i j ∈ 𝒪[k])
     (hY : ∀ i j, Y i j ∈ 𝒪[k]) : ∀ i j, (X * Y) i j ∈ 𝒪[k] := fun i j => by
   rw [Matrix.mul_apply]; exact sum_mem fun l _ => mul_mem (hX i l) (hY l j)
 
 /- English proof (translation)
-Introduce `i j` and use `by simpa using mul_mem ha (hX i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_smul {a : k} (ha : a ∈ 𝒪[k]) {X : Matrix m p k} (hX : ∀ i j, X i j ∈ 𝒪[k]) :
     ∀ i j, (a • X) i j ∈ 𝒪[k] := fun i j => by simpa using mul_mem ha (hX i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by simp [zero_mem]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_zero : ∀ i j, (0 : Matrix m p k) i j ∈ 𝒪[k] := fun i j => by simp [zero_mem]
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.one_apply]; split_ifs · exact one_mem _ · exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_one [DecidableEq m] : ∀ i j, (1 : Matrix m m k) i j ∈ 𝒪[k] := fun i j => by
   rw [Matrix.one_apply]; split_ifs
@@ -55,9 +55,7 @@ theorem int_one [DecidableEq m] : ∀ i j, (1 : Matrix m m k) i j ∈ 𝒪[k] :=
 end IntLemmas
 
 /- English proof (translation)
-Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `letI : (Valued.v (R := k)).RankOne :=`. Use the proof step `{ hom' := IsRankLeOne.nonempty.some.emb (R := k).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`. Use `open scoped Valued in`.
-
-Conclude with `NormedField.nhdsNE_neBot (0 : k)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem nhdsNE_zero_neBot : (𝓝[≠] (0 : k)).NeBot := by
   letI := IsTopologicalAddGroup.rightUniformSpace k
@@ -70,9 +68,9 @@ theorem nhdsNE_zero_neBot : (𝓝[≠] (0 : k)).NeBot := by
   exact NormedField.nhdsNE_neBot (0 : k)
 
 /- English proof (translation)
-Establish `hev : ∀ᶠ c in 𝓝 (0 : k), ∀ B ∈ {B : Matrix m p k | ∀ i j, B i j ∈ 𝒪[k]}, c • B ∈ S`. Use `(isCompact_intMatrix (k := k) (m := m) (n := p)).eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun z : k × Matrix m p k => z.1 • z.2` using `continuous_fst.smul continuous_snd`. Establish `h0 : (fun z : k × Matrix m p k => z.1 • z.2) (0, y) = 0` using `by simp`. Conclude with `hc.continuousAt.preimage_mem_nhds (by simpa using hS)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ᶠ c in 𝓝 (0 : k), valuation k c < 1` using `IsOpen.mem_nhds (by simpa using (valuation k).isOpen_ball 1) (by simp)`. Use `haveI := nhdsNE_zero_neBot (k := k)`. Take `⟨c, ⟨h1, h2⟩, h3⟩` from `(((hev.and hv).filter_mono (nhdsWithin_le_nhds (s := {(0 : k)}ᶜ))).and (self_mem_nhdsWithin (s := {(0 : k)}ᶜ))).exists`. Conclude with `⟨c, h3, h2, fun B hB => h1 B hB⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smul_int_subset {m p : Type} [Fintype m] [Fintype p] {S : Set (Matrix m p k)}
     (hS : S ∈ 𝓝 (0 : Matrix m p k)) :
@@ -92,13 +90,11 @@ theorem exists_smul_int_subset {m p : Type} [Fintype m] [Fintype p] {S : Set (Ma
   exact ⟨c, h3, h2, fun B hB => h1 B hB⟩
 
 /- English proof (translation)
-Take `⟨hl, hc⟩ : IsLocallyConstant φ ∧ HasCompactSupport φ` from `hφ`. Establish `hK : IsCompact (tsupport φ)` using `hc`. Establish `hev : ∀ᶠ y in 𝓝 (0 : Matrix m p k), ∀ x ∈ tsupport φ, φ (x + y) = φ x`. Use `hK.eventually_forall_of_forall_eventually fun x _ => ?_` and prove the remaining obligations. Establish `h1 : IsLocallyConstant fun z : Matrix m p k × Matrix m p k => φ (z.2 + z.1)` using `hl.comp_continuous (by fun_prop)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : IsLocallyConstant fun z : Matrix m p k × Matrix m p k => φ z.2` using `hl.comp_continuous (by fun_prop)`. Use `filter_upwards [h1.eventually_eq (0, x), h2.eventually_eq (0, x)] with z e1 e2`. Rewrite using `[e1, e2, add_zero]`. Take `⟨s, hs, -, hM⟩` from `exists_smul_int_subset hev`. Use `⟨s, hs, fun x B hB => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ tsupport φ`. Conclude with `hM B hB x hx`. Distinguish the cases in `hxy : x + s • B ∈ tsupport φ`. Use `hM (-B) (int_neg hB) _ hxy` as an intermediate fact. Rewrite `this` using `[smul_neg, add_neg_cancel_right]`.
-
-Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxy]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_period {m p : Type} [Fintype m] [Fintype p] (φ : Matrix m p k → ℂ)
     (hφ : φ ∈ SB (Matrix m p k)) :
@@ -124,15 +120,15 @@ theorem exists_period {m p : Type} [Fintype m] [Fintype p] (φ : Matrix m p k �
   · rw [image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxy]
 
 /- English proof (translation)
-Establish `hI : ∀ i j, (1 + E) i j ∈ 𝒪[k]` using `fun i j => by`. Rewrite using `[Valuation.mem_integer_iff, Matrix.add_apply]`. Use `Valuation.map_add_le _ ?_ (hE i j).le` and prove the remaining obligations. Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`. Establish `hEI : ∀ i j, E i j ∈ 𝒪[k]` using `fun i j => (Valuation.mem_integer_iff _ _).2 (hE i j).le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Set `M : Matrix n n 𝒪[k]` to `fun i j => ⟨(1 + E) i j, hI i j⟩`. Establish `hres : (IsLocalRing.residue 𝒪[k]).mapMatrix M = 1`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply]`. Establish `: M i j - (1 : Matrix n n 𝒪[k]) i j = ⟨E i j, hEI i j⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply the tactic sequence `by_cases h : i = j <;> simp [M, Matrix.one_apply, h]`. Establish `hm : M i j - (1 : Matrix n n 𝒪[k]) i j ∈ IsLocalRing.maximalIdeal 𝒪[k]`. Rewrite using `[this, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one]`. Conclude with `hE i j`.
+Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (IsLocalRing.residue 𝒪[k]) (M i j) = (IsLocalRing.residue 𝒪[k]) ((1 : Matrix n n 𝒪[k]) i j)`. Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Conclude with `hm`. Apply the tactic sequence `rw [e2]; by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Establish `hdet : IsUnit M.det`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det, hres, Matrix.det_one]`. Conclude with `one_ne_zero`. Use `⟨(algebraMap 𝒪[k] k).mapMatrix M⁻¹, fun i j => (M⁻¹ i j).2, ?_⟩` and prove the remaining obligations. Establish `hM : (algebraMap 𝒪[k] k).mapMatrix M = 1 + E` using `rfl`. Rewrite using `[← hM, ← map_mul, Matrix.mul_nonsing_inv M hdet, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_inv_one_add_small {n : Type} [Fintype n] [DecidableEq n] (E : Matrix n n k)
     (hE : ∀ i j, valuation k (E i j) < 1) :
@@ -165,11 +161,11 @@ theorem exists_int_inv_one_add_small {n : Type} [Fintype n] [DecidableEq n] (E :
   rw [← hM, ← map_mul, Matrix.mul_nonsing_inv M hdet, map_one]
 
 /- English proof (translation)
-Take `⟨O, hO, hOK⟩` from `(isEmbedding_val_GL (k := k) (n := n)).isInducing.isOpen_iff.1 hK`. Establish `h1 : (1 : Matrix n n k) ∈ O`. Establish `: (1 : GL n k) ∈ (fun g : GL n k => g.val) ⁻¹' O` using `by rw [hOK]; exact K.one_mem`. Simplify using `using this`. Establish `hS : {E : Matrix n n k | 1 + E ∈ O} ∈ 𝓝 (0 : Matrix n n k)` using `(hO.preimage (by fun_prop)).mem_nhds (by simpa using h1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨t, ht, hv, hE⟩` from `exists_smul_int_subset hS`. Use `⟨t, ht, hv, fun A hA => ?_⟩` and prove the remaining obligations. Establish `hsmall : ∀ i j, valuation k ((t • A) i j) < 1` using `fun i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Take `⟨N, -, hN⟩` from `exists_int_inv_one_add_small (t • A) hsmall`. Set `g : GL n k` to `⟨1 + t • A, N, hN, mul_eq_one_comm.1 hN⟩`. Use `⟨g, ?_, rfl⟩` and prove the remaining obligations. Establish `: g ∈ (fun g : GL n k => g.val) ⁻¹' O` using `hE A hA`. Rewrite `this` using `[hOK]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_one_add_mem {n : Type} [Fintype n] [DecidableEq n] (K : Subgroup (GL n k))
     (hK : IsOpen (K : Set (GL n k))) :
@@ -202,13 +198,13 @@ def Rel (t c : k) (X Y : Matrix m p k) : Prop :=
     Y = X + t • (A * X + c • B)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 0, int_zero, int_zero, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem rel_refl (t c : k) (X : Matrix m p k) : Rel t c X X :=
   ⟨0, 0, int_zero, int_zero, by simp⟩
 
 /- English proof (translation)
-Take `⟨A, B, hA, hB, rfl⟩` from `h1`. Take `⟨A', B', hA', hB', rfl⟩` from `h2`. Use `⟨A + A' + t • (A' * A), B + t • (A' * B) + B', int_add (int_add hA hA') (int_smul ht (int_mul hA' hA)), int_add (int_add hB (int_smul ht (int_mul hA' hB))) hB', ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc, smul_add]`. Use `module`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rel_trans {t c : k} (ht : t ∈ 𝒪[k]) {X Y Z : Matrix m p k} (h1 : Rel t c X Y) (h2 : Rel t c Y Z) :
     Rel t c X Z := by
@@ -220,15 +216,15 @@ theorem rel_trans {t c : k} (ht : t ∈ 𝒪[k]) {X Y Z : Matrix m p k} (h1 : Re
   module
 
 /- English proof (translation)
-Take `⟨A, B, hA, hB, rfl⟩` from `h`. Establish `hsmall : ∀ i j, valuation k ((t • A) i j) < 1` using `fun i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨N, hNi, hN⟩` from `exists_int_inv_one_add_small (t • A) hsmall`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Establish `hN' : N * (1 + t • A) = 1` using `mul_eq_one_comm.1 hN`. Establish `P : N + t • (A * N) = 1`. Rewrite using `[← hN, Matrix.add_mul, Matrix.one_mul, Matrix.smul_mul]`. Establish `Q : N + t • (N * A) = 1`. Rewrite using `[← hN', Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨-(A * N), -(N * B), int_neg (int_mul hA hNi), int_neg (int_mul hNi hB), ?_⟩` and prove the remaining obligations. Establish `hQ' : A * N * X + t • (A * N * A * X) = A * X`. Establish `: A * ((N + t • (N * A)) * X) = A * N * X + t • (A * N * A * X)`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`. Rewrite using `[← this, Q, Matrix.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hP' : N * B + t • (A * N * B) = B`. Establish `: (N + t • (A * N)) * B = N * B + t • (A * N * B)`. Simplify using `only [Matrix.add_mul, Matrix.smul_mul]`. Rewrite using `[← this, P, Matrix.one_mul]`. Establish `key : X + t • (A * X + c • B) + t • (-(A * N) * (X + t • (A * X + c • B)) + c • -(N * B)) = X + t • (A * X - (A * N * X + t • (A * N * A * X))) + (t * c) • (B - (N * B + t • (A * N * B)))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc, Matrix.neg_mul, Matrix.mul_neg, smul_add, smul_neg, smul_sub]`. Use `module`. Rewrite using `[key, hQ', hP']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rel_symm {t c : k} (hv : valuation k t < 1) {X Y : Matrix m p k} (h : Rel t c X Y) : Rel t c Y X := by
   obtain ⟨A, B, hA, hB, rfl⟩ := h
@@ -261,7 +257,7 @@ theorem rel_symm {t c : k} (hv : valuation k t < 1) {X Y : Matrix m p k} (h : Re
   simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rel_refl t c, rel_symm hv, rel_trans ((Valuation.mem_integer_iff _ _).2 hv.le)⟩`.
+Supply the required witnesses or components.
 -/
 theorem rel_equivalence {t c : k} (hv : valuation k t < 1) : Equivalence (Rel (m := m) (p := p) t c) :=
   ⟨rel_refl t c, rel_symm hv, rel_trans ((Valuation.mem_integer_iff _ _).2 hv.le)⟩
@@ -269,9 +265,9 @@ theorem rel_equivalence {t c : k} (hv : valuation k t < 1) : Equivalence (Rel (m
 variable [Fintype p]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.sub_mul, ← Matrix.smul_mul, ← hh]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨A, B, hA, hB, rfl⟩`. Conclude with `⟨A, B, hA, hB, by rw [add_sub_cancel_left, smul_smul, inv_mul_cancel₀ ht, one_smul]⟩`. Introduce and unpack `⟨A, B, hA, hB, e⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨A, B, hA, hB, by rw [← e, smul_smul, mul_inv_cancel₀ ht, one_smul, add_sub_cancel]⟩`.
+Supply the required witnesses or components.
 -/
 theorem rel_iff {t c : k} (ht : t ≠ 0) {X : Matrix m p k} {h : Matrix p p k}
     (hh : ∀ Y : Matrix m p k, (∃ (A : Matrix m m k) (B : Matrix m p k), (∀ i j, A i j ∈ 𝒪[k]) ∧
@@ -295,13 +291,13 @@ def boxInd (t : k) (X' : Matrix m p k) : Matrix m p k → ℂ := fun Z =>
   if ∀ i j, (t⁻¹ • (Z - X')) i j ∈ 𝒪[k] then 1 else 0
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `hcont : Continuous fun Z : Matrix m p k => t⁻¹ • (Z - X')` using `by fun_prop`. Establish `hUo : IsOpen {Z : Matrix m p k | ∀ i j, (t⁻¹ • (Z - X')) i j ∈ 𝒪[k]}` using `(isOpen_intMatrix (k := k) (m := m) (n := p)).preimage hcont`. Establish `hUc : IsClosed {Z : Matrix m p k | ∀ i j, (t⁻¹ • (Z - X')) i j ∈ 𝒪[k]}` using `(isCompact_intMatrix (k := k) (m := m) (n := p)).isClosed.preimage hcont`. Use `⟨(IsLocallyConstant.iff_exists_open _).2 fun x => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hx : ∀ i j, (t⁻¹ • (x - X')) i j ∈ 𝒪[k]`. Use `⟨_, hUo, hx, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : ∀ i j, (t⁻¹ • (y - X')) i j ∈ 𝒪[k]` using `hy`. Simplify using `only [boxInd]`. Rewrite using `[if_pos hy', if_pos hx]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, hUc.isOpen_compl, hx, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : ¬ ∀ i j, (t⁻¹ • (y - X')) i j ∈ 𝒪[k]` using `hy`. Simplify using `only [boxInd]`. Rewrite using `[if_neg hy', if_neg hx]`. Use `HasCompactSupport.intro ((isCompact_intMatrix (k := k) (m := m) (n := p)).image (f := fun Z => X' + t • Z) (by fun_prop)) fun x hx => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [boxInd]`. Rewrite using `[if_neg]`. Introduce `hc`. Conclude with `hx ⟨t⁻¹ • (x - X'), hc, by simp [smul_smul, mul_inv_cancel₀ ht]⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem boxInd_mem_SB {t : k} (ht : t ≠ 0) (X' : Matrix m p k) : boxInd t X' ∈ SB (Matrix m p k) := by
   obtain ⟨_, _⟩ := GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
@@ -327,11 +323,11 @@ theorem boxInd_mem_SB {t : k} (ht : t ≠ 0) (X' : Matrix m p k) : boxInd t X' �
 
 open Classical in
 /- English proof (translation)
-Use function extensionality and compare the values at `Z`. Simplify using `only [boxInd]`. Use `if_congr ⟨fun hZ => ?_, fun hZ => ?_⟩ rfl rfl` and prove the remaining obligations. Establish `e : t⁻¹ • (Z - X₂) = t⁻¹ • (Z - X₁) + t⁻¹ • (X₁ - X₂)` using `by rw [← smul_add]; congr 1; abel`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `int_add hZ h`. Establish `e : t⁻¹ • (Z - X₁) = t⁻¹ • (Z - X₂) + -(t⁻¹ • (X₁ - X₂))`. Rewrite using `[← smul_neg, ← smul_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `int_add hZ (int_neg h)`.
+A detailed English derivation is pending.
 -/
 theorem boxInd_congr {t : k} {X₁ X₂ : Matrix m p k} (h : ∀ i j, (t⁻¹ • (X₁ - X₂)) i j ∈ 𝒪[k]) :
     boxInd t X₁ = boxInd t X₂ := by
@@ -349,15 +345,13 @@ end Box
 open Classical in
 
 /- English proof (translation)
-Set `r : Setoid T` to `⟨R, hR⟩`. Take `⟨S, hS⟩` from `(hf : IsCompact (tsupport f)).elim_finite_subcover (fun x : T => {y | R x y}) hopen (fun y _ => Set.mem_iUnion.2 ⟨y, hR.refl y⟩)`. Set `Q : Finset (Quotient r)` to `S.image (Quotient.mk r)`. Establish `hQ : ∀ y, y ∈ tsupport f → Quotient.mk r y ∈ Q` using `fun y hy => by`. Take `⟨x, hx, hxy⟩` from `Set.mem_iUnion₂.1 (hS hy)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.mem_image.2 ⟨x, hx, Quotient.sound hxy⟩`. Establish `hiff : ∀ (q : Quotient r) (y : T), R q.out y ↔ q = Quotient.mk r y` using `fun q y => by conv_rhs => rw [← Quotient.out_eq q]`. Conclude with `(Quotient.eq (r := r)).symm`. Establish `e : f = ∑ q ∈ Q, f q.out • (fun y => if R q.out y then (1 : ℂ) else 0)`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_apply]`. Establish `: ∀ q ∈ Q, (f q.out • (fun y => if R q.out y then (1 : ℂ) else 0)) y = if q = Quotient.mk r y then f y else 0` using `fun q _ => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Distinguish the cases in `hq : q = Quotient.mk r y`. Rewrite using `[if_pos ((hiff q y).2 hq), if_pos hq, hconst _ _ ((hiff q y).2 hq)]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h' => hq ((hiff q y).1 h')), if_neg hq]`. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_ite_eq']`. Use `split_ifs with hy`. Both sides reduce to the same expression. Conclude with `image_eq_zero_of_notMem_tsupport fun h' => hy (hQ y h')`.
-
-Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun q _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨q.out, rfl⟩)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_classes {T : Type} [TopologicalSpace T] (R : T → T → Prop) (hR : Equivalence R)
     (hopen : ∀ x, IsOpen {y | R x y}) (f : T → ℂ) (hf : HasCompactSupport f)
@@ -392,19 +386,19 @@ theorem mem_span_classes {T : Type} [TopologicalSpace T] (R : T → T → Prop) 
 open Classical in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n d H K hK`. Take `⟨t, ht, htv, hgK⟩` from `exists_one_add_mem K hK`. Take `⟨F, hF⟩` from `(isCompact_intMatrix (k := k) (m := Fin n) (n := Fin d)).elim_finite_subcover (fun X' : {X' : Matrix (Fin n) (Fin d) k // ∀ i j, X' i j ∈ 𝒪[k]} => {Z : Matrix (Fin n) (Fin d) k | ∀ i j, (t⁻¹ • (Z - X'.1)) i j ∈ 𝒪[k]}) (fun X' => (isOpen_intMatrix (k := k) (m := Fin n) (n := Fin d …`. Use `⟨(fun X' : {X' : Matrix (Fin n) (Fin d) k // ∀ i j, X' i j ∈ 𝒪[k]} => boxInd t X'.1) '' (F : Set _), F.finite_toSet.image _, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨X', -, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `boxInd_mem_SB ht _`. Introduce `φ hφ hinv`. Take `⟨s, hs, hper⟩` from `exists_period φ hφ`. Establish `hc : s / t ≠ 0` using `div_ne_zero hs ht`. Establish `htc : t * (s / t) = s` using `mul_div_cancel₀ s ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR` using `rel_equivalence (m := Fin n) (p := Fin d) (c := s / t) htv`. Establish `hopen : ∀ X, IsOpen {Y | Rel t (s / t) X Y}` using `fun X => by`. Take `⟨h, hh⟩` from `H X (s / t) hc`. Establish `e : {Y | Rel t (s / t) X Y} = (fun Y : Matrix (Fin n) (Fin d) k => t⁻¹ • (Y * (h : Matrix (Fin d) (Fin d) k) - X * (h : Matrix (Fin d) (Fin d) k))) ⁻¹' {Z | ∀ i j, Z i j ∈ 𝒪[k]}` using `Set.ext fun Y => rel_iff ht hh Y`. Rewrite using `[e]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(isOpen_intMatrix (k := k) (m := Fin n) (n := Fin d)).preimage (by fun_prop)`. Establish `hconst : ∀ X Y, Rel t (s / t) X Y → φ Y = φ X`. Introduce and unpack `X _ ⟨A, B, hA, hB, rfl⟩`. Take `⟨g, hgK', hgv⟩` from `hgK A hA`. Establish `e : X + t • (A * X + (s / t) • B) = (g : Matrix (Fin n) (Fin n) k) * X + s • B`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgv, Matrix.add_mul, Matrix.one_mul, smul_add, Matrix.smul_mul, smul_smul, htc, add_assoc]`. Rewrite using `[e, hper _ _ hB, hinv g hgK' X]`. Use `Submodule.span_mono ?_ (mem_span_classes _ hR hopen φ hφ.2 hconst)` and prove the remaining obligations. Introduce and unpack `_ ⟨X, rfl⟩`. Take `⟨h, hh⟩` from `H X (s / t) hc`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hXh : ∀ i j, (X * (h : Matrix (Fin d) (Fin d) k)) i j ∈ 𝒪[k]` using `(hh X).1 ⟨1, 0, int_one, int_zero, by simp⟩`. Take `⟨X', hX'F, hX'⟩` from `Set.mem_iUnion₂.1 (hF hXh)`. Use `⟨boxInd t X'.1, ⟨X', hX'F, rfl⟩, h, ?_⟩` and prove the remaining obligations. Rewrite using `[← boxInd_congr hX']`. Use function extensionality and compare the values at `Y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [boxInd]`. Distinguish the cases in `hr : Rel t (s / t) X Y`. Rewrite using `[if_pos hr, if_pos ((rel_iff ht hh Y).1 hr)]`. Rewrite using `[if_neg hr, if_neg (fun h' => hr ((rel_iff ht hh Y).2 h'))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_translates_of_invariant : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ),
     (∀ (X : Matrix (Fin n) (Fin d) k) (c : k), c ≠ 0 → ∃ h : GL (Fin d) k, ∀ Y : Matrix (Fin n) (Fin d) k,

@@ -9,19 +9,17 @@ namespace Formalism.MainNotions.RamifiedCoefficientChains.S9
 open Module Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.RamifiedCoefficientChains Polynomial
 
 /- English proof (translation)
-Take `⟨z, hz, hv⟩` from `Formalism.MainNotions.LiftingTheory.gam_zl (H := H) hg`. Establish `hne : (z : ℤ_[l]) - 1 ≠ 0`. Introduce `h0`. Rewrite `hv` using `[h0]`. Simplify using `at hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `I : Ideal ℤ_[l]` to `Ideal.span {((l : ℕ) : ℤ_[l])}`. Establish `hI : (z : ℤ_[l]) - 1 ∈ I`. Use `(PadicInt.mem_span_pow_iff_le_valuation _ hne 1).2 (by omega)` as an intermediate fact. Simplify using `using this`. Establish `hz1 : Units.map (Ideal.Quotient.mk I).toMonoidHom z = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.coe_map, Units.val_one]`. Conclude with `(Ideal.Quotient.eq.2 hI).trans (map_one _)`. Establish `hw : ∀ x : ℤ, ∃ w : ℤ_[l], -((l : ℕ) : ℤ_[l]) * w = ((z ^ (-x) : ℤ_[l]ˣ) : ℤ_[l]) - 1`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : (Ideal.Quotient.mk I) ((z ^ (-x) : ℤ_[l]ˣ) : ℤ_[l]) = (Ideal.Quotient.mk I) 1`. Use `congrArg Units.val (show Units.map (Ideal.Quotient.mk I).toMonoidHom (z ^ (-x)) = 1 by` as an intermediate fact. Rewrite using `[map_zpow, hz1, one_zpow])`. Rewrite `this` using `[Units.coe_map, Units.val_one]`. Conclude with `this.trans (map_one _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 h1)`. Conclude with `⟨-w, by rw [← hw]; ring⟩`. Use `choose w hw using hw`. Use `⟨fun x => algebraMap ℤ_[l] ↥(OL LL) (w x), fun x => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (algebraMap ℤ_[l] ↥(OL LL)) (hw x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `e` using `[map_mul, map_neg, map_natCast, map_sub, map_one]`. Rewrite using `[P.PD_p K, e]`. Use `congr 1`. Establish `hzu : Units.map (algebraMap ℤ_[l] ↥(OL LL)).toMonoidHom z = (H.W K 1 LL hg).χΓ (H.W K 1 LL hg).gam` using `Units.ext hz`. Rewrite using `[← hzu, ← map_zpow]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lemmaGD_cc {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P) {K LL : FinExt l}
     (hg : Good K 1 LL) :
@@ -62,9 +60,9 @@ theorem lemmaGD_cc {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P) {K 
   rfl
 
 /- English proof (translation)
-Introduce `l _ K LL hg _`. Establish `hQ` using `hA.2.2.2.2.2.2.2.2.2.2.2.2.1 l K LL hg`. Establish `h9` using `(hA.1 l K 1 LL hg).2.2.2.2.2.2.2.2.1`. Use `lemGB_of _ hQ (fun hCA => Formalism.MainNotions.CrystallineLiftingInputs.RToolNum_holds (D.loc l) (HW l) K LL hg hCA) (hC4 l K 1 LL hg) h9 (Formalism.MainNotions.LiftingTheory.lattice_clause_every_situation D HW F l K 1 LL hg) (fun _ => lemmaGD_cc (HW l) hg) (fun _ => ?_) (h56 l …` and prove the remaining obligations. Rewrite using `[(D.loc l).PD_p K]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.MainNotions.UnusedSlot80.Split2.isUnit_pred l LL`.
+A detailed English derivation is pending.
 -/
 theorem lemGB_L (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (CR CA CB CK C₀ : ℝ) (hA : Formalism.MainNotions.CrystallineLiftingInputs.admitted D HW F Cm CR CA CB CK C₀)
@@ -83,7 +81,7 @@ theorem lemGB_L (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
   exact Formalism.MainNotions.UnusedSlot80.Split2.isUnit_pred l LL
 
 /- English proof (translation)
-Introduce `l _ K LL hg _`. Conclude with `lemmaGs_of_lemGAB _ (hGA l K LL hg) (lemGB_L D HW F Cm CR CA CB CK C₀ hA hC4 h56 l K LL hg)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lemmaGs_L (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (CR CA CB CK C₀ : ℝ)
@@ -99,7 +97,7 @@ theorem lemmaGs_L (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (lemGB_L D HW F Cm CR CA CB CK C₀ hA hC4 h56 l K LL hg)
 
 /- English proof (translation)
-Introduce `l _ K LL hg _`. Conclude with `lemmaG_of_sharp _ (lemmaGs_L D HW F Cm CR CA CB CK C₀ hA hC4 h56 hGA l K LL hg)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem local_clause_of_gamma_lemmas (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (CR CA CB CK C₀ : ℝ)

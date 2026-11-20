@@ -19,13 +19,13 @@ variable (hE : type_of% @GlobalTheory.T.exists_base_change_group)
 include hE
 
 /- English proof (translation)
-The claim follows from `Htat.bt_sub_eq_top_of @Htat.hens_normal hE @Htat.reg_pull`.
+A detailed English derivation is pending.
 -/
 theorem sub_eq_top_of : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (U : Γ.G.left.Opens), Γ.IsFinOpenSub U → Γ.btOrder U = Γ.btOrder ⊤ :=
   Htat.bt_sub_eq_top_of @Htat.hens_normal hE @Htat.reg_pull
 
 /- English proof (translation)
-The claim follows from `Htat.bt_hopf_of @Htat.hens_normal hE @Htat.reg_pull`.
+A detailed English derivation is pending.
 -/
 theorem hopf_of : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T), IsHopfOrder (Γ.btOrder ⊤) :=
   Htat.bt_hopf_of @Htat.hens_normal hE @Htat.reg_pull
@@ -33,17 +33,15 @@ theorem hopf_of : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R
 omit hE in
 
 /- English proof (translation)
-Establish `key : ∀ q : T ⧸ K, ∃ r : T, (QuotientGroup.mk r : T ⧸ K) = q ∧ ∃ a ∈ A, ∀ (h : H) (hh : r⁻¹ * α h ∈ K), a ⟨r⁻¹ * α h, hh⟩ = g h`. Introduce `q`. Distinguish the cases in `hq : ∃ h₀, (QuotientGroup.mk (α h₀) : T ⧸ K) = q`. Take `⟨h₀, h0⟩` from `hq`. Take `⟨a, ha, hag⟩` from `hg h₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨α h₀, h0, a, ha, fun h hh => ?_⟩` and prove the remaining obligations. Use `hag (h₀⁻¹ * h) (by simpa using hh)` as an intermediate fact. Simplify using `using this`. Use `⟨q.out, q.out_eq, 0, A.zero_mem, fun h hh => (hq ⟨h, ?_⟩).elim⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.eq.2 hh]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `q.out_eq`. Use `choose r hr a ha hag using key`. Establish `hm : ∀ t : T, (r (QuotientGroup.mk t))⁻¹ * t ∈ K` using `fun t => QuotientGroup.eq.1 (hr _)`. Use `⟨fun t => a (QuotientGroup.mk t) ⟨_, hm t⟩, fun t => ?_, fun h => hag _ h _⟩` and prove the remaining obligations. Use `hA _ (ha (QuotientGroup.mk t)) ⟨_, hm t⟩` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Establish `e : (QuotientGroup.mk (t * K.subtype k) : T ⧸ K) = QuotientGroup.mk t` using `QuotientGroup.mk_mul_of_mem t k.2`. Establish `gen : ∀ (q q' : T ⧸ K) (e : q = q') (x : T) (h : (r q)⁻¹ * x ∈ K) (h' : (r q')⁻¹ * x ∈ K), a q ⟨_, h⟩ = a q' ⟨_, h'⟩`. Introduce `q q' e x h h'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression.
 
-Substitute `e` using the available equality. Both sides reduce to the same expression. Use `(gen _ _ e _ (hm _) (by rw [← e]; exact hm _)).trans ?_` and prove the remaining obligations. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Conclude with `(_root_.mul_assoc _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_ind {R T H : Type} [CommRing R] [CommGroup T] [CommGroup H] (K : Subgroup T) (A : Subalgebra R (K → R))
     (hA : ∀ f ∈ A, ∀ t, (fun h => f (t * h)) ∈ A) (α : H →* T) (g : H → R)
@@ -82,15 +80,15 @@ section
 variable {R : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] {T : Type} [CommGroup T] [Finite T]
 
 /- English proof (translation)
-Take `⟨K, A, hK, hA, hAf⟩` from `Twhopf.sub_order R T Γ U hU`. Use `⟨K, A, hK, hA, ?_, hAf, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_top_of hE R T Γ U hU]`. Use extensionality with `f`. Rewrite using `[Twhopf.mem_order R T Γ U f]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hf t`. Take `⟨s, hs⟩` from `(Twhopf.reg_iff R T Γ U _).1 (hf t)`. Conclude with `(hAf _).2 ⟨s, fun t' h => hs t' h⟩`. Introduce `hf t`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Twhopf.reg_iff R T Γ U _).2 ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `(hAf _).1 (hf t)`. Conclude with `⟨s, fun t' h => hs ⟨t', (hK t').2 h⟩ h⟩`. Establish `hU'` using `SubOrder.isAffineOpen_of_fin Γ hU`. Use `letI : Algebra R Γ(Γ.G.left, U) := (SubOrder.secRho Γ hU').toAlgebra`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hρ : hU'.fromSpec ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom (algebraMap R Γ(Γ.G.left, U)))` using `SubOrder.fromSpec_hom Γ hU'`. Establish `hfin` using `SubOrder.sec_finite hρ hU`. Establish `hval : ∀ (t : K), ∃ r : R, algebraMap R (FractionRing R) r = SubOrder.valAlg hρ t ((hK t).1 t.2) s`. Introduce `t`. Establish `h1 : IsIntegral R s` using `Algebra.IsIntegral.isIntegral s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `IsIntegrallyClosed.isIntegral_iff.1 (h1.map (SubOrder.valAlg hρ t ((hK t).1 t.2)))`. Use `choose f hf using hval`. Conclude with `⟨f, (hAf f).2 ⟨s, fun t h => (hf t).symm⟩, fun t h => (hf t).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem order_ind (Γ : QFGroup R T) (U : Γ.G.left.Opens) (hU : Γ.IsFinOpenSub U) :
     ∃ (K : Subgroup T) (A : Subalgebra R (K → R)), (∀ t, t ∈ K ↔ ⊤ ≤ (Γ.pt t).left ⁻¹ᵁ U) ∧ IsHopfOrder A ∧
@@ -125,23 +123,21 @@ theorem order_ind (Γ : QFGroup R T) (U : Γ.G.left.Opens) (hU : Γ.IsFinOpenSub
     exact ⟨f, (hAf f).2 ⟨s, fun t h => (hf t).symm⟩, fun t h => (hf t).symm⟩
 
 /- English proof (translation)
-Set `φ : ∀ S : Over (Spec (CommRingCat.of R)), (S ⟶ Γ₁.G) →* (S ⟶ Γ.G)` to `fun S => MonoidHom.mk' (fun x => x ≫ a) (hmul S)`. Establish `hφ : ∀ S x, φ S x = x ≫ a` using `fun _ _ => rfl`. Establish `happ : ∀ {S : Over (Spec (CommRingCat.of R))} (x : S ⟶ Γ₁.G) z, (x ≫ a).left z = a.left (x.left z)`. Introduce `S x z`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h1 : Γ₁.IsFinOpenSub (a.left ⁻¹ᵁ U)`. Use `⟨?_, fun x => ?_, fun S x y hx hy z => ?_, fun S x hx z => ?_⟩` and prove the remaining obligations. Use `hU.finite` as an intermediate fact. Rewrite using `[← Over.w a, ← Category.assoc, ← morphismRestrict_ι, Category.assoc]`. Use `infer_instance`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : η[Γ₁.G] ≫ a = η[Γ.G]`. Use `map_one (φ (𝟙_ _))` as an intermediate fact. Rewrite `this` using `[hφ]`. Simplify `this` using `[Hom.one_def]`. Express the relevant statement in the definitionally equal form `a.left (η[Γ₁.G].left x) ∈ U`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← happ, e]`. Conclude with `hU.one x`. Express the relevant statement in the definitionally equal form `a.left _ ∈ U`. Rewrite using `[← happ, hmul]`. Conclude with `hU.mul S _ _ (fun z => by rw [happ]; exact hx z) (fun z => by rw [happ]; exact hy z) z`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `a.left _ ∈ U`. Rewrite using `[← happ, ← hφ, map_inv, hφ]`. Conclude with `hU.inv S _ (fun z => by rw [happ]; exact hx z) z`. Use `⟨h1, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.btOrder_comap_hom R H Γ₁ T Γ a α hα f hf`. Introduce `g hg`. Take `⟨K, A, hK, hA, hind, -, hsec⟩` from `order_ind hE Γ U hU`. Rewrite `hg` using `[← sub_eq_top_of hE R H Γ₁ _ h1, Twhopf.mem_order]`. Establish `hUa` using `SubOrder.isAffineOpen_of_fin Γ hU`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsurj : Function.Surjective (a.left.app U)` using `a.left.app_surjective U hUa`. Take `⟨f, hf, hfg⟩` from `exists_ind K A (Twhopf.translate_mem R K A hA) α g (fun h₀ => by`. Take `⟨s₁, hs₁⟩` from `(Twhopf.reg_iff R H Γ₁ _ _).1 (hg h₀)`. Take `⟨s, rfl⟩` from `hsurj s₁`. Take `⟨b, hb, hbs⟩` from `hsec s`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨b, hb, fun h hh => IsFractionRing.injective R (FractionRing R) ?_⟩` and prove the remaining obligations. Establish `e : (Γ₁.pt h).left ≫ a.left = (Γ.pt (α h)).left` using `by rw [← Over.comp_left, hα]`. Establish `h2` using `(hK _).1 hh`. Establish `h3 : ⊤ ≤ ((Γ₁.pt h).left ≫ a.left) ⁻¹ᵁ U` using `e ▸ h2`. Rewrite using `[← hbs ⟨_, hh⟩ h2, ← hs₁ h h3, ← Htat.Pull.valAt_comp _ _ _ h3]`.
-
-Conclude with `Htat.Pull.valAt_congr e.symm _ _ _ _)`. Rewrite using `[hind]`. Conclude with `⟨f, hf, funext hfg⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem res_fin_core (Γ : QFGroup R T) {H : Type} [CommGroup H] [Finite H] (Γ₁ : QFGroup R H) (a : Γ₁.G ⟶ Γ.G)
     (hmul : ∀ (S : Over (Spec (CommRingCat.of R))) (x y : S ⟶ Γ₁.G), (x * y) ≫ a = (x ≫ a) * (y ≫ a))
@@ -195,34 +191,32 @@ theorem res_fin_core (Γ : QFGroup R T) {H : Type} [CommGroup H] [Finite H] (Γ�
 end
 
 /- English proof (translation)
-Introduce `R _ _ _ T _ _ Γ H _ _ Γ₁ a _ α hα hcl U hU`. Conclude with `res_fin_core hE Γ Γ₁ a (fun S x y => MonObj.mul_comp x y a) α hα hcl U hU`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem res_finite_open_bt_order : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (H : Type) [CommGroup H] [Finite H] (Γ₁ : QFGroup R H) (a : Γ₁.G ⟶ Γ.G) [IsMonHom a] (α : H →* T), (∀ h, Γ₁.pt h ≫ a = Γ.pt (α h)) → IsClosedImmersion a.left → ∀ U : Γ.G.left.Opens, Γ.IsFinOpenSub U → Γ₁.IsFinOpenSub (a.left ⁻¹ᵁ U) ∧ resOrder α (Γ.btOrder ⊤) = Γ₁.btOrder ⊤ := by
   intro R _ _ _ T _ _ Γ H _ _ Γ₁ a _ α hα hcl U hU
   exact res_fin_core hE Γ Γ₁ a (fun S x y => MonObj.mul_comp x y a) α hα hcl U hU
 
 /- English proof (translation)
-Use `le_antisymm ?_ fun g hg => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `GlobalTheory.T.btOrder_comap_hom R H Γ₁ T Γ a α hα f hf`. Use `Htat.mem_descent R H (Subalgebra.toSubmodule (resOrder α (Γ.btOrder ⊤))) g fun P hP => ?_` and prove the remaining obligations. Take `⟨R', _, _, _, _, hN, hflat, hP'⟩` from `Htat.hens_normal R P`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (algebraMap R R')` using `Htat.ValuationInjectivePi.flat_inj`. Take `⟨κ, hκ⟩` from `Htat.ValuationInjectivePi.exists_kappa hinj`. Take `⟨Γ', F, hF⟩` from `hE R T Γ R' (algebraMap R R') hinj`. Take `⟨Γ₁', F₁, hF₁⟩` from `hE R H Γ₁ R' (algebraMap R R') hinj`. Establish `w : (F₁ ≫ a.left) ≫ Γ.G.hom = Γ₁'.G.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R R'))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Over.w a, hF₁.cart.w]`. Set `a' : Γ₁'.G ⟶ Γ'.G` to `Over.homMk (hF.cart.lift _ _ w) (hF.cart.lift_snd _ _ w)`. Establish `ha' : a'.left ≫ F = F₁ ≫ a.left` using `hF.cart.lift_fst _ _ w`. Establish `hext : ∀ {S : Over (Spec (CommRingCat.of R'))} (x y : S ⟶ Γ'.G), x.left ≫ F = y.left ≫ F → x = y` using `fun x y e => Over.OverMorphism.ext (hF.cart.hom_ext e (by rw [Over.w, Over.w]))`. Establish `hpb : IsPullback F₁ a'.left a.left F`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsPullback.of_bot ?_ ha'.symm hF.cart` and prove the remaining obligations. Rewrite using `[Over.w a', Over.w a]`. Conclude with `hF₁.cart`. Establish `hcl' : IsClosedImmersion a'.left` using `MorphismProperty.of_isPullback hpb hcl`. Establish `hmul' : ∀ (S : Over (Spec (CommRingCat.of R'))) (x y : S ⟶ Γ₁'.G), (x * y) ≫ a' = (x ≫ a') * (y ≫ a')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `S x y`. Set `l : (S ⟶ Γ₁'.G) → (Over.mk (S.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R R'))) ⟶ Γ₁.G)` to `fun z => Over.homMk (z.left ≫ F₁) (by`. Express the relevant statement in the definitionally equal form `(z.left ≫ F₁) ≫ _ = S.hom ≫ _`. Rewrite using `[Category.assoc, hF₁.cart.w, ← Category.assoc, Over.w])`. Establish `hl : ∀ z, (l z).left = z.left ≫ F₁` using `fun _ => rfl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hla : ∀ z, (l z ≫ a).left = (z ≫ a').left ≫ F` using `fun z => by`. Rewrite using `[Over.comp_left, Over.comp_left, hl, Category.assoc, Category.assoc, ha']`. Apply `hext` to reduce the goal to its premises. Rewrite using `[← hF.mul S _ _ _ _ (hla x) (hla y), ← hmul, Over.comp_left, Over.comp_left, hF₁.mul S _ _ _ _ (hl x) (hl y), Category.assoc, Category.assoc, ha']`. Establish `hα' : ∀ h, Γ₁'.pt h ≫ a' = Γ'.pt (α h)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, ha', ← Category.assoc, GlobalTheory.T.base_change_points_compat R H Γ₁ R' Γ₁' F₁ hF₁ κ hκ h, GlobalTheory.T.base_change_points_compat R T Γ R' Γ' F hF κ hκ, Category.assoc, ← Over.comp_left, hα]`. Use `haveI := Γ'.quasiFinite`. Use `haveI := Γ'.separated`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := Γ'.quasiCompact`. Use `haveI := Γ'.finPres`. Take `⟨U, hUfin, hUcl⟩` from `Twhopf.finite_part R' Γ'.G.left Γ'.G.hom`. Establish `hU : Γ'.IsFinOpenSub U` using `Twhopf.finite_sub R' T Γ' U hUfin hUcl`. Establish `hres` using `(res_fin_core hE Γ' Γ₁' a' hmul' α hα' hcl' U hU).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨R', inferInstance, inferInstance, inferInstance, hflat, hP', ?_⟩` and prove the remaining obligations. Establish `h1` using `OrderApi.comp_mem_extOrder (algebraMap R R') hg`. Rewrite `h1` using `[← Htat.bt_flat_bc R H Γ₁ R' Γ₁' F₁ hF₁ hflat, ← hres, Htat.bt_flat_bc R T Γ R' Γ' F hF hflat]`. Take `⟨f', hf', e⟩` from `h1`. Rewrite using `[← e]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Establish `hf''` using `(Htat.ext_span R T R' _ _ f').1 hf'`. Use `clear e hf'`. Proceed by induction on `hf'' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, rfl⟩` from `hx`.
-
-Conclude with `Submodule.subset_span ⟨_, ⟨f, hf, rfl⟩, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => exact Submodule.smul_mem _ c hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem res_core {R : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] {T : Type} [CommGroup T] [Finite T]
     (Γ : QFGroup R T) {H : Type} [CommGroup H] [Finite H] (Γ₁ : QFGroup R H) (a : Γ₁.G ⟶ Γ.G)
@@ -290,7 +284,7 @@ theorem res_core {R : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] {T 
   | smul c x _ hx => exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Introduce `R _ _ _ _ T _ _ Γ H _ _ Γ₁ a _ α hα hcl`. Conclude with `res_core hE Γ Γ₁ a (fun S x y => MonObj.mul_comp x y a) α hα hcl`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem res_bt_order_top : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (H : Type) [CommGroup H] [Finite H] (Γ₁ : QFGroup R H) (a : Γ₁.G ⟶ Γ.G) [IsMonHom a] (α : H →* T), (∀ h, Γ₁.pt h ≫ a = Γ.pt (α h)) → IsClosedImmersion a.left → resOrder α (Γ.btOrder ⊤) = Γ₁.btOrder ⊤ := by
   intro R _ _ _ _ T _ _ Γ H _ _ Γ₁ a _ α hα hcl

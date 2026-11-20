@@ -5,19 +5,17 @@ universe u_1 u_2 u_3 u_4
 namespace Bl.general_b_fact_right_bis_form
 
 /- English proof (translation)
-Use `Finset.induction_on F ?_ ?_` and prove the remaining obligations. Introduce `m _ h2`. Conclude with `hS m (fun i => h2 i (by simp))`. Introduce `a F ha ih m h1 h2`. Establish `hlin : ∀ y : M a, (∏ i, φ i (Function.update m a y i)) = φ a y * ∏ i ∈ Finset.univ.erase a, φ i (m i)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ a)]`. Use `congr 1`. Rewrite using `[Function.update_self]`. Use `Finset.prod_congr rfl ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hi)]`. Establish `hsub : Submodule.span R (S a) ≤ T.comap ((LinearMap.mulRight R (∏ i ∈ Finset.univ.erase a, φ i (m i))).comp (φ a))`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.comp_apply, LinearMap.mulRight_apply, ← hlin y]`. Use `ih (Function.update m a y) ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Establish `hia : i ≠ a` using `fun h => ha (h ▸ hi)`. Rewrite using `[Function.update_of_ne hia]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1 i (Finset.mem_insert_of_mem hi)`. Introduce `i hi`. Distinguish the cases in `hia : i = a`. Substitute `hia` using the available equality. Rewrite using `[Function.update_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hy`. Rewrite using `[Function.update_of_ne hia]`. Conclude with `h2 i (by simp [hia, hi])`. Establish `hx` using `hsub (h1 a (Finset.mem_insert_self a F))`. Rewrite `hx` using `[Submodule.mem_comap, LinearMap.comp_apply, LinearMap.mulRight_apply, ← hlin (m a), Function.update_eq_self]`.
-
-Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aux {R : Type u_1} [CommRing R] {ι : Type u_2} [Fintype ι] [DecidableEq ι]
     {M : ι → Type u_3} [(i : ι) → AddCommGroup (M i)] [(i : ι) → Module R (M i)]
@@ -63,7 +61,7 @@ private theorem aux {R : Type u_1} [CommRing R] {ι : Type u_2} [Fintype ι] [De
     exact hx
 
 /- English proof (translation)
-Introduce `R _ ι _ _ M _ _ A _ _ φ S T h m hm`. Conclude with `aux φ S T h Finset.univ m (fun i _ => hm i) (fun i hi => absurd (Finset.mem_univ i) hi)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {R : Type u_1} [inst : CommRing.{u_1} R] {ι : Type u_2} [inst_1 : Fintype.{u_2} ι] [DecidableEq.{u_2 + 1} ι]

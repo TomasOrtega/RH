@@ -8,15 +8,13 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Establish `hd : DiscreteTopology (G ⧸ J)`. Use `discreteTopology_iff_isOpen_singleton.2 fun c => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective c`. Establish `himg : ({(QuotientGroup.mk g : G ⧸ J)} : Set (G ⧸ J)) = QuotientGroup.mk '' ((fun h => g⁻¹ * h) ⁻¹' (J : Set G))`. Use extensionality with `c`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨h, rfl⟩` from `QuotientGroup.mk_surjective c`. Simplify using `only [Set.mem_singleton_iff, Set.mem_image, Set.mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Conclude with `⟨g * (g⁻¹ * h), by simpa using QuotientGroup.eq.1 e.symm, by simp⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, ha, e⟩`. Rewrite using `[← e]`. Conclude with `(QuotientGroup.eq.2 ha).symm`. Rewrite using `[himg]`. Conclude with `QuotientGroup.isOpenMap_coe _ (ho.preimage (by fun_prop))`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hS : {c : G ⧸ J | ∃ k ∈ J, c = QuotientGroup.mk (k * x)} = (fun k => (QuotientGroup.mk (k * x) : G ⧸ J)) '' (J : Set G)`. Use extensionality with `c`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image, SetLike.mem_coe]`. Conclude with `⟨fun ⟨k, hk, e⟩ => ⟨k, hk, e.symm⟩, fun ⟨k, hk, e⟩ => ⟨k, hk, e.symm⟩⟩`. Rewrite using `[hS]`.
-
-Conclude with `(hc.image ((QuotientGroup.continuous_mk).comp (continuous_id.mul continuous_const))).finite_of_discrete`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orbit_finite {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (J : Subgroup G) (x : G) (ho : IsOpen (J : Set G)) (hc : IsCompact (J : Set G)) :
@@ -46,11 +44,11 @@ private theorem orbit_finite {G : Type*} [Group G] [TopologicalSpace G] [IsTopol
   exact (hc.image ((QuotientGroup.continuous_mk).comp (continuous_id.mul continuous_const))).finite_of_discrete
 
 /- English proof (translation)
-Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun v => ?_` and prove the remaining obligations. Establish `h1 : ⟪A v, A v⟫_ℂ = ⟪v, v⟫_ℂ`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_right, h]`. Establish `: B (A v) = v`. Use `congrArg (fun S : H →L[ℂ] H => S v) hBA` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Rewrite using `[this]`. Establish `h2 : ‖A v‖ ^ 2 = ‖v‖ ^ 2`. Rewrite using `[← @inner_self_eq_norm_sq ℂ, ← @inner_self_eq_norm_sq ℂ, h1]`. Establish `h3 : ‖A v‖ = ‖v‖` using `(sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 h2`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h3, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem norm_le_one_of_adj {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (A B : H →L[ℂ] H) (h : ContinuousLinearMap.adjoint A = B) (hBA : B ∘L A = 1) :
@@ -68,23 +66,23 @@ private theorem norm_le_one_of_adj {H : Type*} [NormedAddCommGroup H] [InnerProd
   rw [h3, one_mul]
 
 /- English proof (translation)
-Establish `hB : (∑ᶠ c ∈ S, ρ c.out) = ∑ c ∈ hS.toFinset, ρ c.out` using `finsum_mem_eq_finite_toFinset_sum _ hS`. Rewrite `hA` using `[hB]`. Establish `hkey : ∀ (y : G) (c : G ⧸ J), (QuotientGroup.mk y : G ⧸ J) = c → ∀ v ∈ V, ρ c.out v = ρ y v`. Introduce and unpack `y _ rfl v hv`. Take `⟨j, hj⟩` from `QuotientGroup.mk_out_eq_mul J y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hj, hmul, ContinuousLinearMap.comp_apply, (hfix v).1 hv j j.2]`. Establish `hsm : ∀ k ∈ J, ∀ c ∈ S, k • c ∈ S`. Substitute `hSd` using the available equality. Introduce and unpack `k hk _ ⟨k', hk', rfl⟩`. Conclude with `⟨k * k', J.mul_mem hk hk', by rw [mul_assoc]; rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hApply : ∀ v, A v = ∑ c ∈ hS.toFinset, ρ c.out (prj V v)` using `fun v => by`. Rewrite using `[hA, ContinuousLinearMap.comp_apply, ContinuousLinearMap.sum_apply]`. Establish `hinv : ∀ v, A v ∈ V`. Introduce `v`. Rewrite using `[hfix]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k hk`. Rewrite using `[hApply, map_sum]`. Use `Finset.sum_equiv (MulAction.toPerm k) (fun c => ?_) (fun c _ => ?_)` and prove the remaining obligations. Simplify using `only [Set.Finite.mem_toFinset, MulAction.toPerm_apply]`. Use `⟨hsm k hk c, fun h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hsm k⁻¹ (J.inv_mem hk) _ h`. Use `hkey (k * c.out) (k • c) (by conv_rhs => rw [← QuotientGroup.out_eq' c] rfl) _ (a1 v)` as an intermediate fact. Simplify using `only [MulAction.toPerm_apply]`. Rewrite using `[this, hmul, ContinuousLinearMap.comp_apply]`. Establish `hAP : A ∘L prj V = A`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, hApply, hApply, a2 _ (a1 v)]`. Use `⟨hinv, hAP, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ι _ y hy hr v hv`. Establish `hF : hS.toFinset = Finset.univ.image (fun i => (QuotientGroup.mk (y i) : G ⧸ J))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `c`. Establish `hc : c ∈ S ↔ c ∈ Set.range (fun i => (QuotientGroup.mk (y i) : G ⧸ J))` using `by rw [hr]`. Simplify using `using hc`. Rewrite using `[hApply, a2 v hv, hF, Finset.sum_image (fun a _ b _ h => hy h)]`. Conclude with `Finset.sum_congr rfl fun i _ => hkey (y i) _ rfl v hv`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T hT`. Rewrite using `[hA]`. Conclude with `(Commute.sum_right _ _ _ fun c _ => hT _).mul_right (hTP T hT)`. Rewrite using `[hA]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Set.ncard_eq_toFinset_card S hS]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem hop_abs {G H : Type*} [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (ρ : G → H →L[ℂ] H) (hmul : ∀ g h, ρ (g * h) = ρ g ∘L ρ h)
@@ -155,17 +153,15 @@ private theorem hop_abs {G H : Type*} [Group G] [NormedAddCommGroup H] [InnerPro
         simp
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ w J x ho hc`. Take `⟨-, hmem, a1, a2, -, hmul, hone, hadj, hT⟩` from `UpperTheory.ConvolutionTheory.Tf.commPrj K n μ (J.map (AdelicGLn.localEmbedding w))`. Establish `hfin` using `orbit_finite J x ho hc`. Establish `hfix : ∀ v, v ∈ fixL μ w J ↔ ∀ k ∈ J, rhoL μ w k v = v` using `fun v => by`. Unfold `fixL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hmem]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h k hk => h _ (Subgroup.mem_map_of_mem _ hk)`. Introduce and unpack `h _ ⟨k, hk, rfl⟩`. Conclude with `h k hk`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hρ : ∀ g h, rhoL μ w (g * h) = rhoL μ w g ∘L rhoL μ w h` using `fun g h => by`. Simplify using `only [rhoL, map_mul, hmul]`. Establish `hnorm : ∀ g, ‖rhoL μ w g‖ ≤ 1` using `fun g => by`. Use `norm_le_one_of_adj _ (rhoF μ (AdelicGLn.localEmbedding w g)⁻¹) (hadj _) ?_` and prove the remaining obligations. Unfold `rhoL`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmul, inv_mul_cancel, hone]`. Establish `hP : ‖prj (fixL μ w J)‖ ≤ 1`. Unfold `prj`. Conclude with `Submodule.starProjection_norm_le _`. Establish `hTP : ∀ T : LL μ →L[ℂ] LL μ, (∀ g, Commute T (rhoL μ w g)) → Commute T (prj (fixL μ w J))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `T h`. Use `hT T ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, -, rfl⟩`. Conclude with `h k`. Take `⟨b1, b2, b3, b4, b5⟩` from `hop_abs (rhoL μ w) hρ hnorm J x (fixL μ w J) hfix a1 a2 hP hTP _ rfl hfin (Hop μ w J x) rfl`.
-
-Conclude with `⟨hfin, b1, b2, b3, b4, b5⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.hopBasic :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K) (J : Subgroup (GL (Fin n) (w.adicCompletion K))) (x : GL (Fin n) (w.adicCompletion K)),

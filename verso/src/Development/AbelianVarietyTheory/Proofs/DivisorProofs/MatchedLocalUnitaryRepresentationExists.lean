@@ -20,13 +20,13 @@ section Local
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem acts_one_loc (v : Pl F) (φ : (κ → Fv F v) → ℂ) :
     Acts (evFin F v) (1 : Module.End ℂ ((κ → AF F) → ℂ)) φ φ := fun _ _ => rfl
 
 /- English proof (translation)
-Introduce `r hr`. Establish `hr1 : Rest (evFin F v) φ₁ r` using `⟨hr.1, by rw [← a r hr]; exact h₁ _ hr.2⟩`. Use `show T₂ (T₁ _) = _`. Rewrite using `[a r hr, b r hr1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acts_mul_loc (v : Pl F) {T₁ T₂ : Module.End ℂ ((κ → AF F) → ℂ)}
     (h₁ : ∀ Φ ∈ schA F κ, T₁ Φ ∈ schA F κ) {φ φ₁ φ₂ : (κ → Fv F v) → ℂ}
@@ -38,17 +38,15 @@ theorem acts_mul_loc (v : Pl F) {T₁ T₂ : Module.End ℂ ((κ → AF F) → �
   rw [a r hr, b r hr1]
 
 /- English proof (translation)
-Establish `hs : a • φ + b • ψ ∈ SB (κ → Fv F v)` using `add_mem ((SB _).smul_mem a hφ) ((SB _).smul_mem b hψ)`. Take `⟨χ, -, hχ⟩` from `hex _ hs`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.RestWitness.exists_rest κ v`. Establish `e : tens (evFin F v) (a • φ + b • ψ) R = a • tens (evFin F v) φ R + b • tens (evFin F v) ψ R`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [tens, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e' : tens (evFin F v) (a • φ₁ + b • ψ₁) R = a • tens (evFin F v) φ₁ R + b • tens (evFin F v) ψ₁ R`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key : tens (evFin F v) χ R = tens (evFin F v) (a • φ₁ + b • ψ₁) R`. Rewrite using `[← hχ R (hR _ hs), e, map_add, map_smul, map_smul, h₁ R (hR φ hφ), h₂ R (hR ψ hψ), e']`. Establish `hχe : χ = a • φ₁ + b • ψ₁`. Use function extensionality and compare the values at `t`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hz : At (evFin F v) (fun i => GlobalTheory.LatVac.liftV v (t i))`. Introduce `u' hu'`. Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.LatVac.at_liftV v _ u' hu'`. Establish `hRz : R (fun i => GlobalTheory.LatVac.liftV v (t i)) = R 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (hR φ hφ).1 0 _ hz`. Use `congrFun key (fun i => GlobalTheory.LatVac.liftV v (t i))` as an intermediate fact. Simplify using `only [tens, GlobalTheory.LatVac.evFin_liftV, hRz] at this`. Conclude with `mul_right_cancel₀ hR0 this`. Rewrite using `[← hχe]`.
-
-Conclude with `hχ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acts_lin_loc (v : Pl F) (T : Module.End ℂ ((κ → AF F) → ℂ))
     (hex : ∀ φ ∈ SB (κ → Fv F v), ∃ φ₁ ∈ SB (κ → Fv F v), Acts (evFin F v) T φ φ₁)
@@ -80,31 +78,29 @@ theorem acts_lin_loc (v : Pl F) (T : Module.End ℂ ((κ → AF F) → ℂ))
 end Local
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM v`. Establish `hAE` using `GlobalTheory.T.theta_action_exists hKP.base`. Establish `hP` using `GlobalTheory.ThK.Inhab.pairV hM.triple`. Establish `hP'` using `GlobalTheory.ThK.Inhab.pairV' hM.triple`. Establish `h1V : (1 : UA σ G.V.J) ∈ UAt σ G.V (evFin F v)` using `(locU σ G.V v).one_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1V' : (1 : UA σ G.V'.J) ∈ UAt σ G.V' (evFin F v)` using `(locU σ G.V' v).one_mem`. Establish `ex : ∀ h : locU σ G.W v, ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∃ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, (h : UA σ G.W.J))) φ φ₁`. Introduce `h φ hφ`. Take `⟨φ₁, ⟨k1, k2⟩, -⟩` from `(hAE F E σ B a (a + a') G.V G.W G.M _ _ om _ _ _ _ hP v).1 1 h1V h h.2 φ hφ`. Conclude with `⟨φ₁, k1, k2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `ex' : ∀ h : locU σ G.W v, ∀ φ ∈ SB (Fin a' × Fin (a + a') → Fv F v), ∃ φ₁ ∈ SB (Fin a' × Fin (a + a') → Fv F v), Acts (evFin F v) (om' (1, (h : UA σ G.W.J))) φ φ₁`. Introduce `h φ hφ`. Take `⟨φ₁, ⟨k1, k2⟩, -⟩` from `(hAE F E σ B a' (a + a') G.V' G.W G.M' _ _ om' _ _ _ _ hP' v).1 1 h1V' h h.2 φ hφ`. Conclude with `⟨φ₁, k1, k2⟩`. Establish `wd : ∀ h : locU σ G.W v, ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ ψ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ ψ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, (h : UA σ G.W.J))) φ φ₁ → Acts (evFin F v) (om (1, (h : UA σ …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `h φ hφ ψ hψ φ₁ hφ₁ ψ₁ hψ₁ a1 a2 e`. Establish `hm : Rf.p v φ ∈ (SB (Fin a' × Fin (a + a') → Fv F v)).map (Rf.p' v)`. Rewrite using `[hM.fin.onto' v]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨φ', hφ', e'⟩` from `Submodule.mem_map.1 hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Take `⟨φ₁', hφ₁', a3⟩` from `ex' h φ' hφ'`. Establish `k1` using `hM.fin.equiv v h h.2 φ hφ φ' hφ' φ₁ hφ₁ φ₁' hφ₁' a1 a3 e'.symm`. Establish `k2` using `hM.fin.equiv v h h.2 ψ hψ φ' hφ' ψ₁ hψ₁ φ₁' hφ₁' a2 a3 (e.symm.trans e'.symm)`. Conclude with `k1.trans k2.symm`. Establish `pre : ∀ x : Rf.Pi v, ∃ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), Rf.p v φ = x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `hm : x ∈ (SB (Fin a × Fin (a + a') → Fv F v)).map (Rf.p v)`. Rewrite using `[hM.fin.onto v]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `Submodule.mem_map.1 hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg⟩ : ∃ g : locU σ G.W v → Rf.Pi v → Rf.Pi v, ∀ h : locU σ G.W v, ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, (h : UA σ G.W.J))) φ φ₁ → g h (Rf.p v φ) = Rf.p v φ₁` from `by choose φof hφof hpφ using pre choose φ1 hφ1 hact using ex`. Use `⟨fun h x => Rf.p v (φ1 h (φof x) (hφof x)), fun h φ hφ φ₁ hφ₁ ac => ?_⟩` and prove the remaining obligations. Conclude with `wd h _ (hφof _) φ hφ _ (hφ1 _ _ _) φ₁ hφ₁ (hact _ _ _) ac (hpφ _)`. Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hP.weil`. Establish `glin : ∀ h (c d : ℂ) x y, g h (c • x + d • y) = c • g h x + d • g h y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `h c d x y`. Take `⟨φ, hφ, rfl⟩` from `pre x`. Take `⟨ψ, hψ, rfl⟩` from `pre y`. Take `⟨φ₁, hφ₁, a1⟩` from `ex h φ hφ`. Take `⟨ψ₁, hψ₁, a2⟩` from `ex h ψ hψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l` using `acts_lin_loc v _ (ex h) hφ hψ a1 a2 c d`. Establish `hs : c • φ + d • ψ ∈ SB (Fin a × Fin (a + a') → Fv F v)` using `add_mem ((SB _).smul_mem c hφ) ((SB _).smul_mem d hψ)`. Establish `hs1 : c • φ₁ + d • ψ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v)` using `add_mem ((SB _).smul_mem c hφ₁) ((SB _).smul_mem d hψ₁)`. Establish `e` using `hg h _ hs _ hs1 l`. Rewrite `e` using `[map_add, map_smul, map_smul, map_add, map_smul, map_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e, hg h φ hφ φ₁ hφ₁ a1, hg h ψ hψ ψ₁ hψ₁ a2]`. Establish `gone : ∀ x, g 1 x = x`. Introduce `x`. Take `⟨φ, hφ, rfl⟩` from `pre x`. Establish `ac : Acts (evFin F v) (om (1, ((1 : locU σ G.W v) : UA σ G.W.J))) φ φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show ((1, ((1 : locU σ G.W v) : UA σ G.W.J)) : UA σ G.V.J × UA σ G.W.J) = 1 from rfl, map_one]`. Conclude with `acts_one_loc v φ`. Conclude with `hg 1 φ hφ φ hφ ac`. Establish `gmul : ∀ h h' x, g (h * h') x = g h (g h' x)`. Introduce `h h' x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨φ, hφ, rfl⟩` from `pre x`. Take `⟨φ₁, hφ₁, a1⟩` from `ex h' φ hφ`. Take `⟨φ₂, hφ₂, a2⟩` from `ex h φ₁ hφ₁`. Establish `ac : Acts (evFin F v) (om (1, ((h * h' : locU σ G.W v) : UA σ G.W.J))) φ φ₂`. Rewrite using `[show ((1, ((h * h' : locU σ G.W v) : UA σ G.W.J)) : UA σ G.V.J × UA σ G.W.J) = (1, (h : UA σ G.W.J)) * (1, (h' : UA σ G.W.J)) from Prod.ext (mul_one 1).symm rfl, map_mul]`.
-
-Conclude with `acts_mul_loc v (fun Φ hΦ => hW.pres _ Φ hΦ) a1 a2`. Rewrite using `[hg _ φ hφ φ₂ hφ₂ ac, hg h' φ hφ φ₁ hφ₁ a1, hg h φ₁ hφ₁ φ₂ hφ₂ a2]`. Set `ρ : Representation ℂ (locU σ G.W v) (Rf.Pi v)` to `{ toFun := fun h => { toFun := g h map_add' := fun x y => by simpa using glin h 1 1 x y map_smul' := fun c x => by simpa using glin h c 0 x 0 } map_one' := LinearMap.ext gone map_mul' := fun h h' => LinearMap.ext (gmul h h') }`. Conclude with `⟨ρ, ex, hg⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_locRep : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)

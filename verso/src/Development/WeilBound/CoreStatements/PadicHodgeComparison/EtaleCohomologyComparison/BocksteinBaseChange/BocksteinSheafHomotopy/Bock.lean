@@ -5,7 +5,7 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 namespace CrystallineSemistableComparison
 
 /- English proof (translation)
-Introduce `hF` and use `bock_tw (TwSeq.twSeq hF.et.gen) hF`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bock : BocksteinInputFromFormal := fun hF => bock_tw (TwSeq.twSeq hF.et.gen) hF
 

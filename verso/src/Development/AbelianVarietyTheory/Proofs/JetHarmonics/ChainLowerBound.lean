@@ -8,14 +8,14 @@ open Finset
 namespace GlobalTheory.WigSh
 
 /- English proof (translation)
-The claim follows from `Fin.strictAnti_iff_succ_lt.2 fun j => (h j).1.trans_le (h j).2`.
+A detailed English derivation is pending.
 -/
 private theorem strictAnti_of_box {n : ℕ} {L : Fin (n+1) → ℤ} {M : Fin n → ℤ}
     (h : ∀ j : Fin n, L j.succ < M j ∧ M j ≤ L j.castSucc) : StrictAnti L :=
   Fin.strictAnti_iff_succ_lt.2 fun j => (h j).1.trans_le (h j).2
 
 /- English proof (translation)
-Establish `h1 : (D ^ (2 * n₀))⁻¹ = ∏ _j ∈ Finset.range n₀, (D ^ 2)⁻¹`. Rewrite using `[Finset.prod_const, Finset.card_range, pow_mul, inv_pow]`. Rewrite using `[h1]`. Conclude with `Finset.prod_le_prod (fun _ _ => by positivity) (fun j hj => hf j (Finset.mem_range.1 hj))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chain_prod_le {n₀ : ℕ} {D : ℝ} (hD : 1 ≤ D) (f : ℕ → ℝ)
     (hf : ∀ j < n₀, (D ^ 2)⁻¹ ≤ f j) : (D ^ (2 * n₀))⁻¹ ≤ ∏ j ∈ Finset.range n₀, f j := by
@@ -26,47 +26,45 @@ private theorem chain_prod_le {n₀ : ℕ} {D : ℝ} (hD : 1 ≤ D) (f : ℕ →
     (fun j hj => hf j (Finset.mem_range.1 hj))
 
 /- English proof (translation)
-Introduce `n L M i n₀ b hL hbox hgap hb hn hspan`. Establish `hD : (1 : ℝ) ≤ 3 * b` using `by linarith`. Establish `h0 : ∀ k, (L k : ℝ) ≤ L 0` using `fun k => by`. Conclude with `hL.antitone (Fin.zero_le k)` after adjusting the coercions. Establish `hl : ∀ k, (L (Fin.last n) : ℝ) ≤ L k` using `fun k => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hL.antitone (Fin.le_last k)` after adjusting the coercions. Establish `hlt : ∀ k : Fin n, k < i → L i.castSucc < M k` using `fun k hk => lt_of_le_of_lt (hL.antitone (by`. Rewrite using `[Fin.le_def]`. Simplify using `only [Fin.val_succ, Fin.val_castSucc]`. Conclude with `hk)) (hbox k).1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hgt : ∀ k : Fin n, i < k → M k ≤ L i.succ` using `fun k hk => le_trans (hbox k).2 (hL.antitone (by`. Rewrite using `[Fin.le_def]`. Simplify using `only [Fin.val_succ, Fin.val_castSucc]`. Conclude with `hk))`. Distinguish the cases in `hc : L i.succ + n₀ + 1 ≤ M i`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `left`. Use `chain_prod_le hD _ fun j hj => ?_` and prove the remaining obligations. Establish `hjZ : (j : ℤ) < n₀` using `by exact_mod_cast hj`. Establish `hjR : (j : ℝ) ≤ b` using `le_trans (by exact_mod_cast hj.le) hn`. Establish `hj0 : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hbox' : ∀ k : Fin n, Function.update L i.succ (L i.succ + (j : ℤ)) k.succ < M k ∧ M k ≤ Function.update L i.succ (L i.succ + (j : ℤ)) k.castSucc`. Introduce `k`. Prove the components needed by the constructor for the conclusion. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[Function.update_self]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Function.update_of_ne (fun h => hk (Fin.succ_injective _ h))]`. Conclude with `(hbox k).1`. Distinguish the cases in `hk : k.castSucc = i.succ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hbox k).2` as an intermediate fact. Rewrite `this`, the goal using `[hk]`. Rewrite using `[Function.update_self]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Function.update_of_ne hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `(hbox k).2`. Use `GlobalTheory.T.inv_sq_le_wignerCoeffSqRaising n _ M i.succ (3 * b) (strictAnti_of_box hbox') hbox' ?_ hD ?_ ?_` and prove the remaining obligations. Introduce `k`. Rewrite using `[Function.update_self]`. Break down `lt_trichotomy k i with hk | hk | hk` into its components or cases.
+Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `hlt k hk` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute `hk` using the available equality. Use linear arithmetic over natural numbers and integers. Use `hgt k hk` as an intermediate fact.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Function.update_self, Function.update_of_ne (Fin.succ_ne_zero i).symm]`. Use `push_cast`. Use `hl i.succ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[Function.update_self]`. Distinguish the cases in `hk : Fin.last n = i.succ`. Rewrite using `[hk, Function.update_self]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Function.update_of_ne hk]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Use `h0 i.succ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `right`. Use `chain_prod_le hD _ fun j hj => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hjZ : (j : ℤ) < n₀` using `by exact_mod_cast hj`. Establish `hjR : (j : ℝ) ≤ b` using `le_trans (by exact_mod_cast hj.le) hn`. Establish `hj0 : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Establish `hbox' : ∀ k : Fin n, Function.update L i.castSucc (L i.castSucc - (j : ℤ)) k.succ < M k ∧ M k ≤ Function.update L i.castSucc (L i.castSucc - (j : ℤ)) k.castSucc`. Introduce `k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Distinguish the cases in `hk : k.succ = i.castSucc`. Establish `hki : k < i`. Use `congrArg Fin.val hk` as an intermediate fact. Simplify using `only [Fin.val_succ, Fin.val_castSucc] at this`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Use `hlt k hki` as an intermediate fact. Rewrite using `[hk, Function.update_self]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.update_of_ne hk]`. Conclude with `(hbox k).1`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Rewrite using `[Function.update_self]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute using the available equality.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Function.update_of_ne (fun h => hk (Fin.castSucc_injective _ h))]`. Conclude with `(hbox k).2`. Use `GlobalTheory.T.inv_sq_le_wignerCoeffSqLowering n _ M i.castSucc (3 * b) (strictAnti_of_box hbox') hbox' ?_ hD ?_ ?_` and prove the remaining obligations. Introduce `k`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Function.update_self]`. Break down `lt_trichotomy k i with hk | hk | hk` into its components or cases. Use `hlt k hk` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute `hk` using the available equality.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `hgt k hk` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Function.update_self]`. Distinguish the cases in `hk : 0 = i.castSucc`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hk, Function.update_self]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Function.update_of_ne hk]`. Use `push_cast`. Use `hl i.castSucc` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Function.update_self, Function.update_of_ne (Fin.castSucc_lt_last i).ne']`. Use `push_cast`. Use `h0 i.castSucc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem chain_lower_bound : ∀ (n : ℕ) (L : Fin (n+1) → ℤ) (M : Fin n → ℤ) (i : Fin n) (n₀ : ℕ) (b : ℝ), StrictAnti L → (∀ j : Fin n, L j.succ < M j ∧ M j ≤ L j.castSucc) → L i.succ + 2 * (n₀ : ℤ) + 1 ≤ L i.castSucc → 1 ≤ b → (n₀ : ℝ) ≤ b → ((L 0 : ℝ) - L (Fin.last n) ≤ 2 * b) → (((3 * b) ^ (2 * n₀))⁻¹ ≤ ∏ j ∈ Finset.range n₀, GlobalTheory.WigSh.wP (Function.update L i.succ (L i.succ + (j : ℤ))) M i.succ) ∨ (((3 * b) ^ (2 * n₀))⁻¹ ≤ ∏ j ∈ Finset.range n₀, GlobalTheory.WigSh.wM (Function.update L i.castSucc (L i.castSucc - (j : ℤ))) M i.castSucc) := by
   intro n L M i n₀ b hL hbox hgap hb hn hspan

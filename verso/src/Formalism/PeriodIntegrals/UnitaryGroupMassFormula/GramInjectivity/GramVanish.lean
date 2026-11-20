@@ -7,19 +7,17 @@ namespace PI.WwInjectiveWork
 open MvPolynomial
 
 /- English proof (translation)
-Take `⟨g, hg⟩ : ∃ g : ι → MvPolynomial σ K, ∀ j, g j = map (Int.castRingHom K) (f j)` from `⟨_, fun _ => rfl⟩`. Simplify using `only [← hg] at h ⊢`. Establish `key : ∀ l : Module.Dual ℚ K, ∀ j, l (ph (g j)) = 0`. Introduce `l`. Establish `lin : ∀ (x : K) (n : ℤ), algebraMap ℚ K (l x) * (n : K) = algebraMap ℚ K (l (x * n))`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x n`. Rewrite using `[show x * (n : K) = n • x by rw [zsmul_eq_mul, mul_comm], map_zsmul, zsmul_eq_mul, map_mul, map_intCast, mul_comm]`. Establish `hrel : ∑ j, algebraMap ℚ K (l (ph (g j))) • g j = 0`. Use extensionality with `s`. Establish `hs` using `congrArg (fun p => l (coeff s p)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [coeff_sum, coeff_smul, smul_eq_mul, coeff_zero, map_sum, map_zero] at hs`. Establish `e : ∀ j, coeff s (g j) = ((coeff s (f j) : ℤ) : K)` using `fun j => by`. Rewrite using `[hg, coeff_map, eq_intCast]`. Rewrite using `[coeff_sum, coeff_zero]`. Simplify using `only [coeff_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[e j, lin]`. Use `_ = algebraMap ℚ K (∑ j, l (ph (g j) * coeff s (g j))) := by rw [map_sum]`. Use `_ = 0 := by rw [hs, map_zero]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : ∑ j, l (ph (g j)) ^ 2 = 0`. Establish `h1 : l (ph (∑ j, algebraMap ℚ K (l (ph (g j))) • g j)) = 0`. Rewrite using `[hrel, map_zero, map_zero]`. Rewrite `h1` using `[map_sum, map_sum]`. Rewrite using `[← h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, ← Algebra.smul_def, map_smul, smul_eq_mul, sq]`. Introduce `j`. Establish `hnn : ∀ k ∈ (Finset.univ : Finset ι), 0 ≤ l (ph (g k)) ^ 2` using `fun k _ => sq_nonneg _`. Establish `hj` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).mp hsum j (Finset.mem_univ j)`.
-
-Conclude with `(pow_eq_zero_iff two_ne_zero).mp hj`. Conclude with `(Module.forall_dual_apply_eq_zero_iff ℚ (ph (g i))).mp (fun l => key l i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gram_vanish {σ ι K : Type*} [Fintype ι] [Field K] [CharZero K]
     (f : ι → MvPolynomial σ ℤ) (ph : MvPolynomial σ K →ₗ[K] K)

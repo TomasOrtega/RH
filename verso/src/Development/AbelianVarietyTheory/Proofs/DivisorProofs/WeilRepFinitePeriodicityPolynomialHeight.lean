@@ -12,11 +12,9 @@ open GlobalTheory.ArchDecay
 namespace GlobalTheory.ArchDecay
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ`. Take `⟨C, k, hCk⟩` from `GlobalTheory.ThetaLevel.periodic_level F E σ B n d X W M χX χW om r s r' s' hP Φ hΦ`. Use `⟨C, k, fun g h => ?_⟩` and prove the remaining obligations. Take `⟨m, hm1, hmle, hper⟩` from `hCk g h`. Use `⟨m, hm1, hmle, fun x z hz => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose a ha0 haI haz using hz`. Establish `hz' : z = (m : AF F) • a`. Use function extensionality and compare the values at `i`. Simplify using `[haz i]`. Rewrite using `[hz']`.
-
-Conclude with `hper x a fun i => ⟨ha0 i, haI i⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem per_om_level : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ Φ ∈ schA F (Fin n × Fin d), ∃ (C : ℝ) (k : ℕ), ∀ g h, ∃ m : ℕ, 0 < m ∧ (m : ℝ) ≤ C * ((ht g : ℝ) * ht h) ^ k ∧ Per F m (om (g, h) Φ) := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ

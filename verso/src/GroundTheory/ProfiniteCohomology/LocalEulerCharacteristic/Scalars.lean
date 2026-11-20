@@ -36,11 +36,11 @@ omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep A] [IsDiscreteRe
 include he in
 
 /- English proof (translation)
-Rewrite using `[inhomogeneousCochains.d_hom_apply, inhomogeneousCochains.d_hom_apply, map_add, map_sum, he]`. Use `congr 1`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `hk : ∀ (c : ℕ) (a : A), ((-1 : k) ^ c) • a = ((-1 : ℤ) ^ c) • a` using `fun c a => by`. Rewrite using `[← Int.cast_smul_eq_zsmul k]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hk' : ∀ (c : ℕ) (a : A'), ((-1 : k') ^ c) • a = ((-1 : ℤ) ^ c) • a` using `fun c a => by`. Rewrite using `[← Int.cast_smul_eq_zsmul k']`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite using `[hk, hk', map_zsmul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem addEquiv_inhomogeneousCochains_d (i : ℕ) (f : (Fin i → G) → A) (g : Fin (i + 1) → G) :
     e ((inhomogeneousCochains.d A i).hom f g) =
@@ -61,9 +61,9 @@ theorem addEquiv_inhomogeneousCochains_d (i : ℕ) (f : (Fin i → G) → A) (g 
 include he in
 
 /- English proof (translation)
-Break down `eq_or_ne (i + 1) j with rfl | hij` into its components or cases. Rewrite using `[cochainsComplex_d, cochainsComplex_d]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Conclude with `addEquiv_inhomogeneousCochains_d e he i x.1 g`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h' : ¬ (ComplexShape.up ℕ).Rel i j` using `hij`. Rewrite using `[HomologicalComplex.shape _ _ _ h', HomologicalComplex.shape _ _ _ h']`. Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cochainsAddEquiv_d (i j : ℕ) (x : (cochainsComplex A).X i) :
     cochainsAddEquiv e j (((cochainsComplex A).d i j).hom x) =
@@ -110,9 +110,9 @@ noncomputable def homologyAbIsoOfAbIso {S₁ : ShortComplex (ModuleCat.{u} k)}
     (ShortComplex.homologyFunctorIso (forget₂ (ModuleCat.{u} k') Ab)).app S₂
 
 /- English proof (translation)
-Establish `n1` using `(ShortComplex.homologyFunctorIso (forget₂ (ModuleCat.{u} k) Ab)).inv.naturality φ₁`. Establish `n2` using `(ShortComplex.homologyFunctorIso (forget₂ (ModuleCat.{u} k') Ab)).hom.naturality φ₂`. Establish `n3 : ((forget₂ (ModuleCat.{u} k) Ab).mapShortComplex ⋙ ShortComplex.homologyFunctor Ab).map φ₁ ≫ (ShortComplex.homologyFunctor Ab).map σT.hom = (ShortComplex.homologyFunctor Ab).map σS.hom ≫ ((forget₂ (ModuleCat.{u} k') Ab).mapShortComplex ⋙ ShortComplex.homologyFunctor Ab).map φ …`. Rewrite using `[Functor.comp_map, Functor.comp_map, ← Functor.map_comp, ← Functor.map_comp, h]`. Simplify using `only [homologyAbIsoOfAbIso, Iso.trans_hom, Iso.symm_hom, Iso.app_inv, Iso.app_hom, Functor.mapIso_hom, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `slice_lhs 1 2 => rw [n1]`. Use `slice_lhs 2 3 => rw [n3]`. Use `slice_lhs 3 4 => rw [n2]`.
+A detailed English derivation is pending.
 -/
 theorem homologyMap_comp_homologyAbIsoOfAbIso
     {S₁ T₁ : ShortComplex (ModuleCat.{u} k)} {S₂ T₂ : ShortComplex (ModuleCat.{u} k')}
@@ -152,7 +152,7 @@ noncomputable def cohomologyAddEquivOfEquiv (n : ℕ) : cohomology A n ≃+ coho
   (homologyAbIsoOfAbIso (cochainsScAbIso e he n)).addCommGroupIsoToAddEquiv
 
 /- English proof (translation)
-Establish `key` using `homologyMap_comp_homologyAbIsoOfAbIso ((HomologicalComplex.shortComplexFunctor _ _ n).map (cochainsMapAlong φ hφ f)) ((HomologicalComplex.shortComplexFunctor _ _ n).map (cochainsMapAlong φ hφ f')) (cochainsScAbIso e he n) (cochainsScAbIso eB heB n) (by`. Apply the tactic sequence `ext x <;> exact Subtype.ext (funext fun _ => hf _))`. Conclude with `congrArg (fun f => f.hom x) key`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cohomologyAddEquivOfEquiv_mapAlong {H : Type u} [Group H] [TopologicalSpace H]
     [IsTopologicalGroup H] (φ : H →* G) (hφ : Continuous φ) {B : Rep.{u} k H} {B' : Rep.{u} k' H}
@@ -170,7 +170,7 @@ theorem cohomologyAddEquivOfEquiv_mapAlong {H : Type u} [Group H] [TopologicalSp
   exact congrArg (fun f => f.hom x) key
 
 /- English proof (translation)
-Rewrite using `[cohomologyRes_eq, cohomologyRes_eq]`. Conclude with `cohomologyAddEquivOfEquiv_mapAlong e he S.subtype (continuous_subgroup_subtype S) (B := Rep.res S.subtype A) (B' := Rep.res S.subtype A') e (fun s a => he s a) (𝟙 _) (𝟙 _) (fun _ => rfl) n x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyAddEquivOfEquiv_cohomologyRes (S : Subgroup G) (n : ℕ) (x : cohomology A n) :
     cohomologyAddEquivOfEquiv (A := Rep.res S.subtype A) (A' := Rep.res S.subtype A') e
@@ -182,7 +182,7 @@ theorem cohomologyAddEquivOfEquiv_cohomologyRes (S : Subgroup G) (n : ℕ) (x : 
     (fun _ => rfl) n x
 
 /- English proof (translation)
-Establish `key` using `cohomologyAddEquivOfEquiv_mapAlong e he (MonoidHom.id G) continuous_id eB heB f f' hf n x`. Rewrite `key` using `[cohomologyMapAlong_id_eq_cohomologyMap, cohomologyMapAlong_id_eq_cohomologyMap]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cohomologyAddEquivOfEquiv_cohomologyMap {B : Rep.{u} k G} {B' : Rep.{u} k' G}
     [IsDiscreteRep B] [IsDiscreteRep B'] (eB : B ≃+ B')
@@ -196,7 +196,7 @@ theorem cohomologyAddEquivOfEquiv_cohomologyMap {B : Rep.{u} k G} {B' : Rep.{u} 
   rwa [cohomologyMapAlong_id_eq_cohomologyMap, cohomologyMapAlong_id_eq_cohomologyMap] at key
 
 /- English proof (translation)
-The claim follows from `cohomologyAddEquivOfEquiv_mapAlong (A := Rep.res N.subtype A) (A' := Rep.res N.subtype A') e (fun s a => he s a) (GroundTheory.GroupCoh.conjHom N g) (continuous_conjHom N g) (B := Rep.res N.subtype A) (B' := Rep.res N.subtype A') e (fun s a => he s a) (GroundTheory.GroupCoh.conjM …`.
+A detailed English derivation is pending.
 -/
 theorem cohomologyAddEquivOfEquiv_cohomologyConj (N : Subgroup G) [N.Normal] (n : ℕ) (g : G)
     (x : cohomology (Rep.res N.subtype A) n) :

@@ -17,13 +17,13 @@ open Formalism.L2.SG.RealObj
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-Introduce `x` and use `Formalism.L2.SG.Pf.CarrierTop.placeTie_ePl X x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem placeTie_ePl : PlaceTie X (Formalism.L2.Geo.Rec.StarEmbeddingNorm.ePl D).symm :=
   fun x => Formalism.L2.SG.Pf.CarrierTop.placeTie_ePl X x
 
 /- English proof (translation)
-Use `show X.B.I.φ _ (X.ιE.symm (X.ιE x)) = _`. Rewrite using `[RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embE_apply (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (j : Fin (nfE D)) (x : X.B.I.E) :
     embE X e j (X.ιE x) = X.B.I.φ (tauE X e j) x := by
@@ -33,7 +33,7 @@ theorem embE_apply (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (j : Fin (nfE 
 variable {X} {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Use `show Complex.normSq _ - Formalism.QuantumDeterminants.Tz I.G.k I.G.r (I.T j).base.z * Formalism.QuantumDeterminants.Tz I.G.k I.G.r (I.T j).base.z' = _`. Rewrite using `[(I.hT j).1, (I.hT j).2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem G_sOf (I : CarrierIn X u u') (j : Fin I.nf) (q : Formalism.FourierDecayAlt.C.LPt) :
     ((sOf I).pd j).G q = Complex.normSq (Formalism.FourierDecayAlt.D.ptLast q).2 - Tw (D := D) u * Tw (D := D) u' := by
@@ -42,7 +42,7 @@ theorem G_sOf (I : CarrierIn X u u') (j : Fin I.nf) (q : Formalism.FourierDecayA
   rfl
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.CarrierTop.topTie_of X (sOf I) u u' sc i0 i0' FdN FdN' νq I.τ hPG hemb (G_sOf I)`.
+A detailed English derivation is pending.
 -/
 theorem top_carrierOf (I : CarrierIn X u u') (Mo : ModelsFor (sOf I)) (sc : ℝ)
     (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k) (FdN FdN' : Set X.B.I.Ginf)
@@ -53,7 +53,7 @@ theorem top_carrierOf (I : CarrierIn X u u') (Mo : ModelsFor (sOf I)) (sc : ℝ)
   Formalism.L2.SG.Pf.CarrierTop.topTie_of X (sOf I) u u' sc i0 i0' FdN FdN' νq I.τ hPG hemb (G_sOf I)
 
 /- English proof (translation)
-Introduce `j x` and use `embE_apply X e j x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem emb_carrierInOf (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) {θ : ℝ} (C : Formalism.L2.SG.LocWSOf.Choice X θ)
@@ -71,7 +71,7 @@ theorem emb_carrierInOf (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : Pla
   fun j x => embE_apply X e j x
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.CarrierSz.gridsOK_hyp D large₂ h hCl (sOf I) hr hDel hg hg1`.
+A detailed English derivation is pending.
 -/
 theorem gridsOK_sOf (I : CarrierIn X u u') (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT : ℝ}
     (h : Formalism.MainNotions.S.StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) (hCl : Formalism.L2.SG.Pf.CarrierSz.ClCut 0 ≤ Cl)
@@ -91,7 +91,7 @@ def grid1E (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (l : ℕ) (j : Fin (nf
     (4 * Formalism.FourierDecayAlt.C.Kst * (D.R.rS + 1))
 
 /- English proof (translation)
-The claim follows from `gridsOK_sOf _ large₂ h hCl rfl rfl (fun _ => rfl) (fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem gridsOK_carrierInOf (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT : ℝ}
     (h : Formalism.MainNotions.S.StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) (hCl : Formalism.L2.SG.Pf.CarrierSz.ClCut 0 ≤ Cl)
@@ -113,9 +113,7 @@ theorem gridsOK_carrierInOf (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT : �
 open Matrix in
 
 /- English proof (translation)
-Establish `h` using `Formalism.L2.SG.Pf.CarrierBase.baseFromX_of X u u' (sOf I) i0 i0' I.τ I.Q I.Qi hQ hi`. Establish `e1 : I.ν' = fun j => I.Qi (I.τ j) *ᵥ X.wfr u' (I.τ j) (i0' (I.τ j))` using `funext hν`. Establish `e2 : I.m₀ = fun j => Formalism.L2.SG.Pf.CarrierBase.m0Of X u u' (I.τ j) (I.Q (I.τ j)) (I.Qi (I.τ j))` using `funext hm`. Use `show BaseFromX X (sOf I) u u' i0 i0' I.τ I.Q I.Qi I.ν' I.m₀`. Rewrite using `[e1, e2]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_carrierOf (I : CarrierIn X u u') (Mo : ModelsFor (sOf I)) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
     (hQ : ∀ v, I.Q v * I.Qi v = 1) (hi : ∀ v, i0 v = i0' v)

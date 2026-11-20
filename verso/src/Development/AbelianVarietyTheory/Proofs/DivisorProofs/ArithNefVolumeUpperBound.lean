@@ -27,7 +27,7 @@ noncomputable section
 namespace GlobalTheory.NefUpper
 
 /- English proof (translation)
-Establish `h` using `SmallBall.encard_eq_Bl P (Pair.rep_base k X p P).1 P.L.smallSec 1 zero_le_one fun u => by`. Simplify using `only [HermLB.smallSec, Set.mem_setOf_eq, one_pow]`. Unfold `Pair.lc`. Rewrite using `[Set.ncard_def, Set.ncard_def, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_ncard_smallSec {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} (P : Pair p) :
     Real.log (P.L.smallSec.ncard : ℝ) = P.lc 1 0 1 := by
@@ -37,15 +37,15 @@ theorem log_ncard_smallSec {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral 
   rw [Set.ncard_def, Set.ncard_def, h]
 
 /- English proof (translation)
-Introduce `HC HA HS k _ X _ p D hX L N a hL ha ε hε`. Take `⟨⟨x, hx⟩, -⟩` from `GlobalTheory.T.isTranscendenceBasis_functionField_arithmeticVariety k X p D hX`. Take `⟨H, hNH, hbox⟩` from `GlobalTheory.T.exists_twist_nef_squarefree_monomials_small HC k X p D hX N x`. Use `set G := N.tens H with hG`. Establish `hnef : ∀ m : ℕ, ((L.pow m).tens G).IsNef D` using `fun m => GlobalTheory.T.hermLineBundle_isNef_tens HC k X p D hX _ _ (GlobalTheory.NefPow.isNef_pow HC k X p D hX L m hL) hNH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα, hαlim⟩` from `GlobalTheory.SelfInterGrowth.main HC k X p D hX L G a ha`. Establish `hα0 : ∀ m, 0 ≤ α m` using `fun m => by`. Take `⟨h, Hh, e⟩` from `hα m`. Rewrite using `[← e]`. Conclude with `(GlobalTheory.T.arithKleiman_heightNef_of_isNef HC HA HS k X p D hX _ (hnef m)).2 h Hh _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : ∀ m, 0 ≤ gdeg ((L.pow m).tens G) D` using `fun m => GlobalTheory.T.hermLineBundleGeometricDegree_nonneg_of_semiPos k X p D hX _ (hnef m).semiPos`. Establish `hglim` using `GlobalTheory.T.tendsto_hermLineBundleGeometricDegree_pow_tens_div_pow HC k X p D hX L G`. Use `GlobalTheory.T.eventually_le_of_smallSectionLogCountUpperBound D (fun m => Real.log (((L.pow m).tens N).smallSec.ncard : ℝ)) α (fun m => gdeg ((L.pow m).tens G) D) a (gdeg L D) hα0 hg0 hαlim hglim (fun m q hq => ?_) ε hε` and prove the remaining obligations. Take `⟨P, hPL, hPA, hPbox⟩` from `hbox ((L.pow m).tens N)`. Establish `hiso : (P.L.tens P.A).Isometric ((L.pow m).tens G)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hPL, hPA]`. Conclude with `HermLB.isometric_tens_assoc _ _ _`. Establish `T` using `GlobalTheory.T.hermitianLineBundle_positivity_preserved_isometric HC k X p D hX _ _ hiso.symm`. Establish `hb` using `GlobalTheory.T.arith_log_small_sections_upper_bound HC HA HS k X p D hX P x (α m) q hx.1 hPbox (T.2.1 (hnef m)) (T.2.2.2.1 _ (hα m)) hq`. Rewrite `hb` using `[hiso.gdeg_eq, ← log_ncard_smallSec]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e : Real.log (P.L.smallSec.ncard : ℝ) = Real.log (((L.pow m).tens N).smallSec.ncard : ℝ)`. Rewrite using `[hPL]`. Simplify `hb` using `only [e]`.
+A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Published.ArCalc → AmpleHS → SemiPull → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (L N : HermLB p) (a : ℝ), L.IsNef D → L.IsSelfInter a →

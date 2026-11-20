@@ -6,11 +6,11 @@ open Ad3 Ad3.S
 namespace GlobalTheory.CompanionTheory.InvGammaStrip
 
 /- English proof (translation)
-Introduce `a b`. Take `⟨C, hC0, hC⟩` from `exists_norm_inv_Gamma_le a b`. Use `⟨max (C * Real.exp Real.pi) Real.pi, fun z ha hb => ?_⟩` and prove the remaining obligations. Establish `h1` using `hC z ha hb`. Use `set y := z.im`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : |y| ≤ 1 + y ^ 2`. Apply the tactic sequence `rcases abs_cases y with ⟨h, _⟩ | ⟨h, _⟩ <;> rw [h] <;> nlinarith [sq_nonneg (y - 1/2), sq_nonneg (y + 1/2)]`. Establish `hpi` using `Real.pi_pos`. Establish `hM1 : C * Real.exp Real.pi ≤ max (C * Real.exp Real.pi) Real.pi` using `le_max_left _ _`. Establish `hM2 : Real.pi ≤ max (C * Real.exp Real.pi) Real.pi` using `le_max_right _ _`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem g0 : G0 := by
   intro a b

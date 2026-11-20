@@ -15,7 +15,7 @@ namespace PositivityTheory.PfSWUS.SwSpan
 open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC GlobalTheory.CompanionTheory.IwaAd PositivityTheory.PfSWUS.SwMatch
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem matInf_map {D : D7} (θ : InfFam D) (τ : D.what₂.Tau) {n : ℕ} (X : Mx D n n) :
     (PositivityTheory.SiegelWeilFormula.Gen.matInf X).map (θ τ) = compAt θ τ X := by
@@ -29,13 +29,13 @@ theorem aTau_val {D : D7} (θ : InfFam D) {n : ℕ} (a : GL (Fin n) (AE D)) (τ 
     (aTau θ a τ).1 = compAt θ τ a.1 := rfl
 
 /- English proof (translation)
-Introduce `D θ hθ n a b`. Unfold `PositivityTheory.SiegelWeilFormula.Gen.nuInf`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hA : ((aTau θ a τ)⁻¹).1 * compAt θ τ a.1 = 1`. Rewrite using `[← aTau_val, ← Matrix.GeneralLinearGroup.coe_mul, inv_mul_cancel, Matrix.GeneralLinearGroup.coe_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : compAt θ τ (conjH a b).1 = compAt θ τ a.1 * compAt θ τ b.1 * (compAt θ τ a.1)ᴴ`. Rewrite using `[← GlobalTheory.VacKInf.LeviFix.compAt_adj' hθ τ a.1]`. Use `show (a.1 * b.1 * adj a.1).map ((θ τ).comp (infPart D)) = _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hB : ((aTau θ a τ)⁻¹).1 * (compAt θ τ a.1 * compAt θ τ b.1 * (compAt θ τ a.1)ᴴ) * (((aTau θ a τ)⁻¹).1)ᴴ = compAt θ τ b.1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = compAt θ τ b.1 := by rw [hA]; simp`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[matInf_map, matInf_map, hc, hB]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem realConj : RealConj := by
   intro D θ hθ n a b

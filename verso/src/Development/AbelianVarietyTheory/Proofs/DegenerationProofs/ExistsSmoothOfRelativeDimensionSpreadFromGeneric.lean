@@ -12,9 +12,7 @@ set_option backward.isDefEq.respectTransparency false
 namespace GlobalTheory.GenSpread
 
 /- English proof (translation)
-Establish `h1` using `Flat.stalkMap φ x`. Establish `h2` using `φ.stalkMap_surjective x`. Use `algebraize [(φ.stalkMap x).hom]`. Establish `: IsLocalHom (algebraMap (Y.presheaf.stalk (φ x)) (X.presheaf.stalk x))` using `inferInstanceAs (IsLocalHom (φ.stalkMap x).hom)`. Use `Module.FaithfullyFlat.of_flat_of_isLocalHom (A := Y.presheaf.stalk (φ x)) (B := X.presheaf.stalk x)` as an intermediate fact.
-
-Conclude with `(ConcreteCategory.isIso_iff_bijective _).2 ⟨FaithfulSMul.algebraMap_injective (Y.presheaf.stalk (φ x)) (X.presheaf.stalk x), h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_stalkMap_of_flat {X Y : Scheme.{0}} (φ : X ⟶ Y) [Flat φ] [SurjectiveOnStalks φ] (x : X) :
     IsIso (φ.stalkMap x) := by
@@ -29,9 +27,9 @@ theorem isIso_stalkMap_of_flat {X Y : Scheme.{0}} (φ : X ⟶ Y) [Flat φ] [Surj
     ⟨FaithfulSMul.algebraMap_injective (Y.presheaf.stalk (φ x)) (X.presheaf.stalk x), h2⟩
 
 /- English proof (translation)
-Establish `: Flat φ` using `MorphismProperty.of_isPullback (P := @Flat) h.flip inferInstance`. Establish `: SurjectiveOnStalks φ` using `MorphismProperty.of_isPullback (P := @SurjectiveOnStalks) h.flip inferInstance`. Use `isIso_stalkMap_of_flat φ x` as an intermediate fact. Use `isIso_stalkMap_of_flat j (f₀ x)` as an intermediate fact. Establish `h0 : (f₀.stalkMap x).hom.FormallySmooth` using `Scheme.Hom.mem_smoothLocus.mp (f₀.smoothLocus_eq_top.ge (Set.mem_univ x))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((f₀ ≫ j).stalkMap x).hom.FormallySmooth`. Rewrite using `[Scheme.Hom.stalkMap_comp]`. Conclude with `(RingHom.FormallySmooth.respectsIso.cancel_left_isIso _ _).2 h0`. Rewrite `h1` using `[← h.w, Scheme.Hom.stalkMap_comp]`. Conclude with `Scheme.Hom.mem_smoothLocus.mpr ((RingHom.FormallySmooth.respectsIso.cancel_right_isIso _ _).1 h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_smoothLocus_of_isPullback {X X₀ S S₀ : Scheme.{0}} {f : X ⟶ S} {f₀ : X₀ ⟶ S₀}
     {φ : X₀ ⟶ X} {j : S₀ ⟶ S} (h : IsPullback φ f₀ f j) [LocallyOfFinitePresentation f] [Flat j]
@@ -51,15 +49,13 @@ theorem mem_smoothLocus_of_isPullback {X X₀ S S₀ : Scheme.{0}} {f : X ⟶ S}
     ((RingHom.FormallySmooth.respectsIso.cancel_right_isIso _ _).1 h1)
 
 /- English proof (translation)
-Establish `: Smooth f₀` using `SmoothOfRelativeDimension.smooth n _`. Establish `hz` using `mem_smoothLocus_of_isPullback h x`. Establish `: Smooth (f.smoothLocus.ι ≫ f)`. Rewrite using `[← Scheme.Hom.smoothLocus_eq_top_iff, ← Scheme.Hom.preimage_smoothLocus_eq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : SmoothOfRelativeDimension (0 + n) (pullback.snd f j)`. Rewrite using `[← h.isoPullback_inv_snd]`. Use `infer_instance`. Establish `h2 : SmoothOfRelativeDimension (0 + (0 + (0 + n))) (pullback.snd (f.smoothLocus.ι ≫ f) j)`. Rewrite using `[← pullbackRightPullbackFstIso_inv_snd_snd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `infer_instance`. Take `⟨W, hW, hW'⟩` from `GlobalTheory.VeryDenseFibres.exists_opens_smoothOfRelativeDimension (f.smoothLocus.ι ≫ f) j n (by simpa using h2) ⟨φ x, hz⟩ (f₀ x) (by`. Express the relevant statement in the definitionally equal form `f (φ x) = _`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, h.w])`. Set `i` to `W.ι ≫ f.smoothLocus.ι`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨i.opensRange, ⟨⟨⟨φ x, hz⟩, hW⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e : i.opensRange.ι ≫ f = i.isoOpensRange.inv ≫ (W.ι ≫ f.smoothLocus.ι ≫ f)`. Rewrite using `[← Scheme.Hom.isoOpensRange_inv_comp, Category.assoc, Category.assoc]`. Establish `h3 : SmoothOfRelativeDimension (0 + n) (i.isoOpensRange.inv ≫ (W.ι ≫ f.smoothLocus.ι ≫ f))` using `inferInstance`. Rewrite using `[e]`.
-
-Simplify using `using h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_opens_smoothOfRelativeDimension_of_isPullback {X X₀ S S₀ : Scheme.{0}} {f : X ⟶ S}
     {f₀ : X₀ ⟶ S₀} {φ : X₀ ⟶ X} {j : S₀ ⟶ S} (h : IsPullback φ f₀ f j)
@@ -91,15 +87,13 @@ theorem exists_opens_smoothOfRelativeDimension_of_isPullback {X X₀ S S₀ : Sc
   simpa using h3
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ n X X₀ f f₀ φ h hf hf₀`. Establish `: LocallyOfFinitePresentation f` using `inferInstance`. Establish `: Flat (spMap (algebraMap R K))` using `flat_specMap_localization (nonZeroDivisors R) K`. Establish `: IsPreimmersion (spMap (algebraMap R K))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Set `U : X.Opens` to `⨆ W : {W : X.Opens // SmoothOfRelativeDimension n (W.ι ≫ f)}, W.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hc : IsClosed (f '' (U : Set X)ᶜ)` using `f.isClosedMap _ U.2.isClosed_compl`. Take `⟨a, ha, H⟩` from `exists_forall_notMem (K := K) hc (by`. Introduce and unpack `w ⟨z, hz, e⟩`. Take `⟨x, rfl, -⟩` from `Scheme.exists_preimage_of_isPullback h z w e`. Take `⟨W, hW, hW'⟩` from `exists_opens_smoothOfRelativeDimension_of_isPullback h n x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hz (TopologicalSpace.Opens.mem_iSup.2 ⟨⟨W, hW'⟩, hW⟩))`. Use `⟨a, ha, fun R' _ g hg X' π f' hp => ?_⟩` and prove the remaining obligations. Establish `h1 : SmoothOfRelativeDimension n (pullback.snd f (spMap g))`. Use `GlobalTheory.ProperFlatNearFibre.smoothOfRelativeDimension_pullback_snd _ _ n fun z y e => ?_` and prove the remaining obligations. Establish `h2 : z ∈ U`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hz`. Conclude with `H R' g hg y ⟨z, hz, e⟩`. Take `⟨W, hW⟩` from `TopologicalSpace.Opens.mem_iSup.1 h2`. Conclude with `⟨W.1, hW, W.2⟩`. Establish `h2 : SmoothOfRelativeDimension (0 + n) (hp.isoPullback.hom ≫ pullback.snd f (spMap g))` using `inferInstance`.
-
-Simplify using `using h2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_smoothOfRelativeDimension :
     ∀ (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K] [IsFractionRing R K] (n : ℕ) (X X₀ : Scheme.{0}) (f : X ⟶ Sp R) (f₀ : X₀ ⟶ Sp K) (φ : X₀ ⟶ X), IsPullback φ f₀ f (spMap (algebraMap R K)) → IsProper f → SmoothOfRelativeDimension n f₀ → ∃ a : R, a ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (g : R →+* R'), IsUnit (g a) → ∀ (X' : Scheme.{0}) (π : X' ⟶ X) (f' : X' ⟶ Sp R'), IsPullback π f' f (spMap g) → SmoothOfRelativeDimension n f' := by

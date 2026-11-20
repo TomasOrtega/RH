@@ -23,15 +23,15 @@ attribute [local instance] Over.cartesianMonoidalCategory Over.braidedCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Set `M : Matrix (Fin n') (Fin n) R` to `Matrix.of fun l i => tanEv t (isTan_tv (v i)) h (m l)`. Establish `key : ∀ (c : Fin n → R) (l : Fin n'), tanEv t (isTan_tv (∑ i, c i • v i)) h (m l) = M.mulVec c l` using `fun c l => by`. Rewrite using `[GlobalTheory.T.tanEv_linear_combination E H X t R y V h n _ (fun i => isTan_tv (v i)) c _ _ ((LieMet.isComb_iff v c _).2 rfl)]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `hb : Function.Bijective M.mulVecLin`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun c c' hc => ?_, fun b => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.T.existsUnique_tangent_of_values E H X t R y V h n' m hm (M.mulVec c)).unique ⟨_, key c⟩ ⟨_, fun l => (key c' l).trans (congrFun hc l).symm⟩` as an intermediate fact. Conclude with `(hv _).unique rfl (tan_ext this)`. Take `⟨w, ⟨hw, hw'⟩, -⟩` from `GlobalTheory.T.existsUnique_tangent_of_values E H X t R y V h n' m hm b`. Take `⟨c, hc, -⟩` from `hv (tanOf hw)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨c, funext fun l => ((key c l).symm.trans ?_).trans (hw' l)⟩` and prove the remaining obligations. Simplify using `only [← hc]`. Both sides reduce to the same expression. Take `rfl : n = n'` from `by simpa using (LinearEquiv.ofBijective _ hb).finrank_eq`. Take `⟨u, hu⟩ : IsUnit M` from `Matrix.mulVec_surjective_iff_isUnit.1 hb.2`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hd : d ≤ n` using `by simpa using Fintype.card_le_of_embedding e`. Take `⟨ρ, hρ⟩` from `Equiv.Perm.exists_extending_pair _ _ (Fin.castLE_injective hd) e.injective`. Use `⟨⟨(u⁻¹).1.submatrix ρ id, M.submatrix id ρ, ?_, ?_⟩, fun j i hij => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, ← hu, Units.inv_mul, Matrix.submatrix_one_equiv]`. Rewrite using `[Matrix.submatrix_mul_equiv, ← hu, Units.mul_inv, Matrix.submatrix_id_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : ((u⁻¹).1 * M) (ρ j) (e i) = 0`. Rewrite using `[← hu, Units.inv_mul, Matrix.one_apply_ne]`. Rewrite using `[← hρ i]`. Conclude with `fun q => hij (congrArg Fin.val (ρ.injective q)).symm`. Conclude with `e₁`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_dual {X : Scheme.{0}} (t : SAB H X) {R : Type} [CommRing R] [Nontrivial R] {y : Sp R ⟶ X} {V : X.Opens}
     (h : ⊤ ≤ y ⁻¹ᵁ V) {n n' d : ℕ} {m : Fin n' → Γ(GlobalTheory.LieVB.omega t.G, V)} (hm : VB.IsFrame m)
@@ -67,7 +67,7 @@ theorem exists_dual {X : Scheme.{0}} (t : SAB H X) {R : Type} [CommRing R] [Nont
     exact e₁
 
 /- English proof (translation)
-Introduce `w` and use `by obtain ⟨w, rfl⟩ := L.surjective w refine (existsUnique_congr fun a => ?_).1 (hv w) rw [← L.injective.eq_iff, map_sum] simp only [map_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem full_map {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {R : Type} [CommRing R] {y : Sp R ⟶ X} {y' : Sp R ⟶ X'}
     (L : TanM y t.G ≃ₗ[R] TanM y' t'.G) {n : ℕ} {v : Fin n → TanM y t.G} (hv : Full v) : Full fun i => L (v i) := fun w => by
@@ -77,7 +77,7 @@ theorem full_map {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {R : Type} [C
   simp only [map_smul]
 
 /- English proof (translation)
-Establish `hv₀ : Full fun i => tanOf (hvt i)` using `fun u => (existsUnique_congr fun a => LieMet.isComb_iff (fun i => tanOf (hvt i)) a u).1 (hvb _ (isTan_tv u))`. Conclude with `⟨_, full_map ((pushE mu _ q).trans (pushE nu y rfl).symm) (full_bc ρ hv₀), fun i => congrArg (fun z => (tv z).left) ((pushE nu y rfl).apply_symm_apply _)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_full {X X' X₁ : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {t₁ : SAB H X₁} {τ : X' ⟶ X} {π : X₁ ⟶ X}
     (mu : SABMap t' t τ) (nu : SABMap t₁ t π) {R₀ R : Type} [CommRing R₀] [CommRing R] (ρ : R₀ →+* R) {y₀ : Sp R₀ ⟶ X'}
@@ -91,7 +91,7 @@ theorem exists_full {X X' X₁ : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {t₁
     congrArg (fun z => (tv z).left) ((pushE nu y rfl).apply_symm_apply _)⟩
 
 /- English proof (translation)
-Use `congrArg (fun s => c * φ s) h` as an intermediate fact. Simplify using `only [map_sum, map_mul, map_zero, mul_zero, Finset.mul_sum] at this`. Conclude with `(Finset.sum_congr rfl fun l _ => mul_left_comm _ _ _).trans this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_map_mul_eq_zero {R k : Type} [CommRing R] [CommRing k] (φ : R →+* k) {n : ℕ} (a b : Fin n → R) (c : k)
     (h : ∑ l, a l * b l = 0) : ∑ l, φ (a l) * (c * φ (b l)) = 0 := by
@@ -103,9 +103,7 @@ variable {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : Valua
   {i₀ : Idx H p}
 
 /- English proof (translation)
-Use `haveI : Nonempty Z'.X := ⟨x⟩`. Take `⟨z, hz⟩` from `Z'.dense.nonempty`. Take `⟨τ, mu, -, ht, -⟩` from `hf.2 (Z'.X.residueField z) (Z'.X.fromSpecResidueField z) (by`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `(Scheme.fromSpecResidueField_apply z a).symm ▸ hz)`.
-
-Conclude with `⟨τ, mu, ht⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isTrans {Z' Z : Mdl Y i₀} {f : Z'.X ⟶ Z.X} (hf : IsMap Z' Z f) (x : Z'.X) :
     ∃ (τ : (Y Z'.i).X ⟶ (Y Z.i).X) (mu : SABMap (Y Z'.i).t (Y Z.i).t τ), LocM.IsTrans Z.i Z'.i τ mu := by
@@ -117,36 +115,34 @@ theorem exists_isTrans {Z' Z : Mdl Y i₀} {f : Z'.X ⟶ Z.X} (hf : IsMap Z' Z f
   exact ⟨τ, mu, ht⟩
 
 /- English proof (translation)
-The claim follows from `Twist.isIso_of_bijective _ fun V => ⟨(Lat.top Z).N.incl_app_injective V, fun s => ⟨(Lat.top Z).N.mkSec s (by rw [Lat.isTop_top V]; trivial), (Lat.top Z).N.incl_app_mkSec _ _⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem isIso_incl_top (Z : Mdl Y i₀) : IsIso (Lat.top Z).N.incl :=
   Twist.isIso_of_bijective _ fun V => ⟨(Lat.top Z).N.incl_app_injective V, fun s =>
     ⟨(Lat.top Z).N.mkSec s (by rw [Lat.isTop_top V]; trivial), (Lat.top Z).N.incl_app_mkSec _ _⟩⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W _ _ Y i₀ Z Z' hZ ⟨f, hf⟩ t ht`. Take `⟨σ, r, hr, rfl⟩` from `mem_allSteps.1 ht`. Establish `hrt : r ∈ Z'.ty σ` using `by rw [hZ.1, Finset.mem_range]; omega`. Use `⟨hrt, f, hf, fun x => ?_⟩` and prove the remaining obligations. Take `⟨τ, mu, htr⟩` from `exists_isTrans hf x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hπ` using `comp_π_eq hf htr`. Take `⟨U₀, hU₀, w, hx₀, hw, hfl⟩` from `hZ.2 x`. Take `⟨n, v, e, hve, hvt, hvb⟩` from `hw σ`. Take `⟨V, n', m, hxV, hm⟩` from `(Lat.top Z).free (f x)`. Take `⟨U, hU, hxU, hle⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := U₀ ⊓ f ⁻¹ᵁ V) ⟨hx₀, hxV⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h₀ : U ≤ U₀` using `fun z hz => (hle hz).1`. Establish `h₁ : U ≤ f ⁻¹ᵁ V` using `fun z hz => (hle hz).2`. Use `haveI : Nonempty U := ⟨⟨x, hxU⟩⟩`. Set `ρ : Γ(Z'.X, U₀) →+* Γ(Z'.X, U)` to `(Z'.X.presheaf.map (homOfLE h₀).op).hom`. Establish `hρ : spMap ρ ≫ hU₀.fromSpec = hU.fromSpec` using `hU₀.map_fromSpec hU (homOfLE h₀).op`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : ⊤ ≤ (hU.fromSpec ≫ f) ⁻¹ᵁ V` using `fun z _ => by`. Use `h₁ (hU.range_fromSpec.le ⟨z, rfl⟩)` as an intermediate fact. Rewrite using `[Scheme.Hom.comp_preimage]` and apply the resulting hypothesis. Establish `q₁ : (spMap ρ ≫ hU₀.fromSpec ≫ Z'.π) ≫ τ = (hU.fromSpec ≫ f) ≫ Z.π`. Rewrite using `[← Category.assoc (spMap ρ), hρ, Category.assoc, Category.assoc, hπ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v₁, hv₁, hL⟩` from `exists_full (R := Γ(Z'.X, U)) mu Z.tMap ρ q₁ hvt hvb`. Use `isIso_incl_top Z` as an intermediate fact. Take `⟨a, ha⟩` from `exists_dual (R := Γ(Z'.X, U)) Z.t hy (hm.map_iso (Lat.top Z).N.incl) hv₁ e`. Use `⟨U, hU, V, n', m, a, hxU, h₁, hm, ?_⟩` and prove the remaining obligations. Introduce and unpack `k _ φ z hz h ⟨τ', mu', u, i, htr', hu, hi, hzu⟩ j hj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, hmu⟩` from `TransUniq.trans_unique E H Dw Xo p W Y _ _ τ τ' mu mu' hf.1.2.1 htr htr'`. Establish `ept : spMap (φ.comp ρ) ≫ hU₀.fromSpec = spMap φ ≫ hU.fromSpec`. Rewrite using `[← sp_comp, Category.assoc, hρ]`. Establish `hw'` using `hfl k (φ.comp ρ) (by rw [ept]; exact range_subset_opn Z' hu)`. Rewrite `hw'` using `[ept]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, -, fu, sf⟩` from `flagAt_two Z' hw' hu`. Take `⟨cf, hcf, hcomb⟩` from `sf σ r hrt i hi`. Take `⟨b, ψ, hb, -⟩` from `hu`. Take `⟨y, hy', -⟩` from `exists_lift_chart Z' hb`. Rewrite `hzu` using `[← hmu k y _ _ _ (by rw [hy']; exact (fu.1 σ i).1.1)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `z' : Fin (Dw.mult σ) → (Sp (DualNumber k) ⟶ Z.t.G.left)` to `fun i' => spMap (Formalism.L2.Pj.dualMap φ) ≫ (tv (v₁ (e i'))).left`. Establish `hz' : ∀ i', IsTanAtG Z.t (spMap φ ≫ hU.fromSpec ≫ f) (z' i')` using `fun i' => isTan_map φ rfl (isTan_tv _)`. Establish `hc₁` using `comb_push mu hcomb`. Establish `q₂ : ((spMap φ ≫ hU.fromSpec) ≫ Z'.π) ≫ τ = (spMap φ ≫ hU.fromSpec ≫ f) ≫ Z.π`. Simplify using `only [Category.assoc, hπ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `q₃ : (fun i' => w.bc (φ.comp ρ) σ i' ≫ mu.φ) = fun i' => z' i' ≫ Z.tMap.φ` using `funext fun i' => by`. Rewrite using `[← Vecs.bc_bc, Category.assoc, hL, hve]`. Conclude with `Category.assoc _ _ _`. Rewrite `hc₁` using `[q₂, q₃, ← hzu]`. Establish `hz₁ : IsTanAtG Z.t (spMap φ ≫ hU.fromSpec ≫ f) z` using `by rw [← Category.assoc]; exact hz`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : ⊤ ≤ (spMap φ ≫ hU.fromSpec ≫ f) ⁻¹ᵁ V` using `by rw [← Category.assoc]; exact h`. Establish `hc₂` using `(comb_push_iff Z.tMap hz' cf hz₁).1 hc₁`. Establish `ev : ∀ s, tanEv Z.t hz h s = ∑ i', cf i' * φ (tanEv Z.t (isTan_tv (v₁ (e i'))) hy s)` using `fun s => by`. Use `Eq.trans ?_ ((GlobalTheory.T.tanEv_linear_combination E H _ Z.t k _ V h' _ z' hz' cf z hz₁ hc₂ s).trans (Finset.sum_congr rfl fun i' _ => congrArg (cf i' * ·) (GlobalTheory.T.tanEv_base_change E H _ Z.t _ _ V hy _ _ k φ _ h' s)))` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show ∑ l, φ (a j l) * tanEv Z.t hz h ((Lat.top Z).N.incl.app V (m l)) = 0`. Simplify using `only [ev, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun i' _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi' : r ≤ (i' : ℕ)`.
-
-Simplify using `[hcf i' hi']`. Conclude with `sum_map_mul_eq_zero (R := Γ(Z'.X, U)) φ _ _ _ (ha j i' (by have : r ≤ (j : ℕ) := hj; omega))`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem holds_of_hasDR : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (Y : LocalSystem Xo p W) (i₀ : Idx H p), ∀ (Z Z' : Mdl Y i₀), HasDR Z' → (∃ f, IsMap Z' Z f) → ∀ t ∈ allSteps (Lat.top Z), Step.Holds t Z' := by
   intro E _ _ _ H Dw Xo p W _ _ Y i₀ Z Z' hZ ⟨f, hf⟩ t ht

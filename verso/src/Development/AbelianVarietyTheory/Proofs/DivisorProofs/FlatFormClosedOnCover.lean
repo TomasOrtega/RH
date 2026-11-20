@@ -9,7 +9,7 @@ namespace GlobalTheory.FlatClosed
 variable {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] {x : X}
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Conclude with `ContDiffAt.sum fun σ _ => contDiffAt_const.mul (contDiffAt_prod fun i _ => h _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffAt_det {ι : Type} [Fintype ι] [DecidableEq ι] {M : X → Matrix ι ι ℝ}
     (h : ∀ a b, ContDiffAt ℝ ∞ (fun y => M y a b) x) : ContDiffAt ℝ ∞ (fun y => (M y).det) x := by
@@ -17,9 +17,9 @@ theorem contDiffAt_det {ι : Type} [Fintype ι] [DecidableEq ι] {M : X → Matr
   exact ContDiffAt.sum fun σ _ => contDiffAt_const.mul (contDiffAt_prod fun i _ => h _ _)
 
 /- English proof (translation)
-Establish `e : (fun y => (M y)⁻¹ a b) = fun y => ((M y).det)⁻¹ * ((M y).updateRow b (Pi.single a 1)).det`. Use function extensionality and compare the values at `y`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, Matrix.adjugate_apply, Ring.inverse_eq_inv', smul_eq_mul]`. Rewrite using `[e]`. Use `((contDiffAt_det h).inv h0).mul (contDiffAt_det fun i i' => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hi : i = b`. Substitute `hi` using the available equality. Simplify using `using contDiffAt_const`. Simplify `h i i'` using `[Matrix.updateRow_ne hi]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem contDiffAt_inv {ι : Type} [Fintype ι] [DecidableEq ι] {M : X → Matrix ι ι ℝ}
     (h : ∀ a b, ContDiffAt ℝ ∞ (fun y => M y a b) x) (h0 : (M x).det ≠ 0) (a b : ι) :
@@ -39,13 +39,13 @@ theorem contDiffAt_inv {ι : Type} [Fintype ι] [DecidableEq ι] {M : X → Matr
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g : ℕ}
 
 /- English proof (translation)
-Establish `hb : P.1 ∈ B` using `hP.1`. Establish `hent : ∀ i j, ContDiffAt ℝ ∞ (fun Q : Pt E g => τ Q.1 i j) P` using `fun i j => (((GlobalTheory.SCV.contDiffOn_of_differentiableOn hτ.1 (hτ.2.1 i j) ∞).contDiffAt (hτ.1.mem_nhds hb)).restrict_scalars ℝ).comp P contDiffAt_fst`. Establish `him : ∀ i j, ContDiffAt ℝ ∞ (fun Q : Pt E g => ((τ Q.1).map Complex.im) i j) P` using `fun i j => (Complex.imCLM.contDiff.contDiffAt).comp P (hent i j)`. Establish `hre : ∀ i j, ContDiffAt ℝ ∞ (fun Q : Pt E g => ((τ Q.1).map Complex.re) i j) P` using `fun i j => (Complex.reCLM.contDiff.contDiffAt).comp P (hent i j)`. Establish `hdet : ((τ P.1).map Complex.im).det ≠ 0` using `(hτ.2.2 _ hb).2.det_pos.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv` using `contDiffAt_inv him hdet`. Establish `hzi : ∀ k, ContDiffAt ℝ ∞ (fun Q : Pt E g => (Q.2 k).im) P` using `fun k => (Complex.imCLM.contDiff.comp ((contDiff_apply ℝ ℂ k).comp contDiff_snd)).contDiffAt`. Establish `hzr : ∀ k, ContDiffAt ℝ ∞ (fun Q : Pt E g => (Q.2 k).re) P` using `fun k => (Complex.reCLM.contDiff.comp ((contDiff_apply ℝ ℂ k).comp contDiff_snd)).contDiffAt`. Establish `hp : ∀ i, ContDiffAt ℝ ∞ (fun Q : Pt E g => ∑ k, (Q.2 k).im * ((τ Q.1).map Complex.im)⁻¹ k i) P` using `fun i => ContDiffAt.sum fun k _ => (hzi k).mul (hinv k i)`. Rewrite using `[contDiffAt_pi]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `(i | i)`. Simplify `hp i` using `[flat, flatOf, Matrix.vecMul, dotProduct]`. Establish `hprod : ∀ a b, ContDiffAt ℝ ∞ (fun Q : Pt E g => (((τ Q.1).map Complex.im)⁻¹ * (τ Q.1).map Complex.re) a b) P` using `fun a b => by`. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiffAt.sum fun l _ => (hinv a l).mul (hre l b)`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: ContDiffAt ℝ ∞ (fun Q : Pt E g => (Q.2 i).re - ∑ k, (Q.2 k).im * (((τ Q.1).map Complex.im)⁻¹ * (τ Q.1).map Complex.re) k i) P` using `(hzr i).sub (ContDiffAt.sum fun k _ => (hzi k).mul (hprod k i))`. Simplify `this` using `[flat, flatOf, Matrix.vecMul, dotProduct]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem contDiffAt_flat {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} (hτ : IsPeriodMap B τ)
     {P : Pt E g} (hP : P ∈ cov B g) : ContDiffAt ℝ ∞ (flat τ) P := by
@@ -79,9 +79,9 @@ theorem contDiffAt_flat {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} (hτ
     simpa [flat, flatOf, Matrix.vecMul, dotProduct] using this
 
 /- English proof (translation)
-Introduce `g E _ _ _ B τ hτ P hP`. Establish `e : om0 τ = fun Q => ((fun _ : Fl g => symp g) (flat τ Q)).compContinuousLinearMap (fderiv ℝ (flat τ) Q)` using `rfl`. Rewrite using `[e, extDeriv_pullback (differentiableAt_const _) (contDiffAt_flat hτ hP) (by rw [minSmoothness_of_isRCLikeNormedField]; exact WithTop.coe_le_coe.2 le_top)]`. Establish `h0 : extDeriv (fun _ : Fl g => symp g) (flat τ P) = 0`. Use extensionality with `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[extDeriv, ContinuousAlternatingMap.alternatizeUncurryFin_apply]`. Rewrite using `[h0]`. Use extensionality with `v`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem extDeriv_om0 : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ},

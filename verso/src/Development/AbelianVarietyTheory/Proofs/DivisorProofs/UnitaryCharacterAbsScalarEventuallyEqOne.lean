@@ -15,31 +15,27 @@ open GlobalTheory.SplitWeil (SB nabs)
 namespace GlobalTheory.KSp
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ _ c δ hE m χ hχ`. Take `⟨hfd, htr, hinv, ht2, -, hN, -, -⟩` from `GlobalTheory.T.quadExt_topological_properties F E c δ hE`. Take `⟨L, hL, hLc, hLo⟩` from `GlobalTheory.T.exists_compactOpen_normClosedBall_quadratic F E c δ hE 1`. Establish `h0 : {t : Eˣ | ‖(χ t : ℂ) - 1‖ < 1 / 2} ∈ 𝓝 (1 : Eˣ)` using `(isOpen_lt (by fun_prop) continuous_const).mem_nhds (by simp)`. Rewrite `h0` using `[Units.isEmbedding_val₀.nhds_eq_comap, mem_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨U, hU, hUV⟩` from `h0`. Establish `h1 : ∀ᶠ π in 𝓝 (0 : F), ∀ a ∈ (L : Set E), 1 + π • a ∈ U`. Use `hLc.eventually_forall_of_forall_eventually fun a _ => ?_` and prove the remaining obligations. Establish `: Tendsto (fun q : F × E => 1 + q.1 • q.2) (𝓝 (0, a)) (𝓝 1)` using `Continuous.tendsto' (by fun_prop) _ _ (by simp)`. Conclude with `this hU`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : {x : F | valuation F x < 1} ∈ 𝓝 (0 : F)` using `(IsValuativeTopology.mem_nhds_zero_iff _).mpr ⟨1, fun _ h => h⟩`. Take `⟨s, hs⟩` from `GlobalTheory.SplitWeil.exists_cball_subset (inter_mem h1 h2)`. Take `⟨hsU, hsv⟩` from `hs (show (s : F) ∈ GlobalTheory.SplitWeil.cball s from show valuation F (s : F) ≤ valuation F (s : F) from le_rfl)`. Use `set π : F := (s : F) with hπdef`. Establish `hπ : π ≠ 0` using `s.ne_zero`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmul : ∀ a ∈ (L : Set E), ∀ b ∈ (L : Set E), a * b ∈ (L : Set E)`. Introduce `a ha b hb`. Rewrite `ha`, `hb`, the goal using `[hL]`. Use `show valuation F (Algebra.norm F (a * b)) ≤ valuation F ((1 : Fˣ) : F)`. Establish `ha' : valuation F (Algebra.norm F a) ≤ 1` using `by simpa [GlobalTheory.SplitWeil.cball] using ha`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hb' : valuation F (Algebra.norm F b) ≤ 1` using `by simpa [GlobalTheory.SplitWeil.cball] using hb`. Rewrite using `[map_mul, map_mul]`. Simplify using `using mul_le_one' ha' hb'`. Establish `hsm : ∀ a ∈ (L : Set E), π • a ∈ (L : Set E)`. Introduce `a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `ha`, the goal using `[hL]`. Use `show valuation F (Algebra.norm F (π • a)) ≤ valuation F ((1 : Fˣ) : F)`. Establish `ha' : valuation F (Algebra.norm F a) ≤ 1` using `by simpa [GlobalTheory.SplitWeil.cball] using ha`. Rewrite using `[Algebra.smul_def, map_mul, Algebra.norm_algebraMap, map_mul, map_pow]`. Simplify using `using mul_le_one' (pow_le_one' hsv.le _) ha'`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set V : Set E := {z | π⁻¹ • (z - 1) ∈ (L : Set E)} with hVdef`. Establish `hVo : IsOpen V` using `hLo.preimage (by fun_prop)`. Establish `hV1 : (1 : E) ∈ V` using `by simp [V, L.zero_mem]`. Establish `hVU : V ⊆ U`. Introduce `z hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `hsU _ hz` as an intermediate fact. Rewrite `this` using `[smul_smul, mul_inv_cancel₀ hπ, one_smul, add_sub_cancel]`. Then use the resulting hypothesis. Establish `hVpow : ∀ z ∈ V, ∀ n : ℕ, z ^ n ∈ V`. Introduce `z hz n`. Proceed by induction on `n with`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `zero => simpa using hV1`. Consider the case `succ n ih => show π⁻¹ • (z ^ (n + 1) - 1) ∈ (L : Set E)`. Establish `hz' : z = 1 + π • (π⁻¹ • (z - 1))`. Rewrite using `[smul_smul, mul_inv_cancel₀ hπ, one_smul, add_sub_cancel]`. Establish `e : π⁻¹ • (z ^ (n + 1) - 1) = π⁻¹ • (z ^ n - 1) + π • ((π⁻¹ • (z - 1)) * (π⁻¹ • (z ^ n - 1))) + π⁻¹ • (z - 1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : algebraMap F E π ≠ 0` using `(map_ne_zero _).mpr hπ`. Simplify using `only [Algebra.smul_def, map_inv₀]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `L.add_mem (L.add_mem ih (hsm _ (hmul _ hz _ ih))) hz`. Establish `h3 : Tendsto (fun z : E => Algebra.norm F z - 1) (𝓝 1) (𝓝 0)` using `Continuous.tendsto' (by fun_prop) _ _ (by simp)`. Use `filter_upwards [hVo.mem_nhds hV1, eventually_ne_nhds (one_ne_zero : (1 : E) ≠ 0), h3.eventually h2] with z hz hz0 hzN`. Establish `hv : valuation F (Algebra.norm F z) = 1`. Simplify using `using (valuation F).map_one_add_of_lt hzN`.
-
-Establish `hχz : χ (Units.mk0 z hz0) = 1`. Use `Circle.coe_eq_one.mp (GlobalTheory.WeilM.eq_one_of_forall_pow_near fun n => ?_)` and prove the remaining obligations. Establish `: (Units.mk0 z hz0) ^ n ∈ Units.val ⁻¹' U` using `by simpa using hVU (hVpow z hz n)`. Simplify using `using hUV this`. Establish `hn : nabs F (Units.map (Algebra.norm F : E →* F) (Units.mk0 z hz0)) = 1` using `GlobalTheory.SplitWeil.nabs_eq_one_of_valuation_eq_one (by simpa using hv)`.
-
-Simplify using `[sc, hz0, hχz, hn]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sc_eventually_eq_one : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E]

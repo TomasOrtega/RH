@@ -21,7 +21,7 @@ set_option autoImplicit false in
 open CategoryTheory AlgebraicGeometry KaehlerDifferential in
 
 /- English proof (translation)
-Introduce `V hV hV' g`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.W1.Lef.germCompat_id (Z : Scheme.{0}) [IsIntegral Z] :
     _root_.GlobalTheory.W1.Lef.GermCompat (𝟙 Z) (fun y => y) := by
@@ -81,7 +81,7 @@ def locTerm {d : ℕ} (A : Matrix (Fin d) (Fin d) ℂ) (a : ℕ) : ℂ :=
   (Matrix.det (1 + (Polynomial.X : Polynomial ℂ) • A.map Polynomial.C)).coeff a / (1 - A).det
 
 /- English proof (translation)
-Simplify using `[locTerm]`.
+Simplify using the standard rewrite rules.
 -/
 example (A : Matrix (Fin 0) (Fin 0) ℂ) : locTerm A 0 = 1 := by simp [locTerm]
 

@@ -20,9 +20,9 @@ attribute [local irreducible] Per.Acris Per.Bcris
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hee : (e * e').untilt = 1` using `by rw [map_mul, he, he', one_mul]`. Take `⟨z, _, hz, -, -⟩` from `GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l (e * e') hee`. Establish `h` using `GlobalTheory.MemLoc.LogAdd.log_add l e e' (j y) (j y') (j z) he he' ((GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l e y he hy).2.2.2 j hj) ((GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l e' y' he' hy').2.2.2 j hj) ((GlobalTheory.T.acris_log …`. Rewrite `h` using `[← map_add]`. Rewrite using `[← GlobalTheory.T.acrisToBdRPlus_injective l j hj h]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz`.
+A detailed English derivation is pending.
 -/
 theorem logA_mul {j : Per.Acris l →+* Per.BdRp l} (hj : IsCrisP j) {e e' : Per.Fl l} {y y' : Per.Acris l}
     (he : e.untilt = 1) (he' : e'.untilt = 1) (hy : IsLogA e y) (hy' : IsLogA e' y') :
@@ -37,11 +37,11 @@ theorem logA_mul {j : Per.Acris l →+* Per.BdRp l} (hj : IsCrisP j) {e e' : Per
   exact hz
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h1 : (1 : Per.Fl l).untilt = 1` using `map_one _`. Take `⟨z, _, hz, -, -⟩` from `GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l 1 h1`. Establish `h2` using `logA_mul hj h1 h1 hz hz`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h2` using `[one_mul]`. Establish `h3` using `(GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l 1 z h1 hz).1 _ h2`. Establish `h4 : z = 0` using `by simpa using h3`. Rewrite using `[pow_zero, Nat.cast_zero, zero_mul, ← h4]`. Conclude with `hz`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Use `logA_mul hj (by rw [map_pow, he, one_pow]) he ih hy` as an intermediate fact. Rewrite using `[pow_succ, Nat.cast_succ, add_mul, one_mul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logA_pow {j : Per.Acris l →+* Per.BdRp l} (hj : IsCrisP j) {e : Per.Fl l} {y : Per.Acris l}
     (he : e.untilt = 1) (hy : IsLogA e y) (n : ℕ) : IsLogA (e ^ n) ((n : Per.Acris l) * y) := by
@@ -61,9 +61,9 @@ theorem logA_pow {j : Per.Acris l →+* Per.BdRp l} (hj : IsCrisP j) {e : Per.Fl
     exact this
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Function.iterate_succ_apply', pow_succ', pow_mul]`. Establish `: ∀ x : Per.Fl l, ((frobeniusEquiv (Per.Fl l) l).symm x) ^ l = x` using `fun x => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← frobenius_def, ← frobeniusEquiv_apply, RingEquiv.apply_symm_apply]`. Rewrite using `[this, ih]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem iter_pow (e : Per.Fl l) (m : ℕ) :
     (((frobeniusEquiv (Per.Fl l) l).symm)^[m] e) ^ (l ^ m) = e := by
@@ -76,7 +76,7 @@ theorem iter_pow (e : Per.Fl l) (m : ℕ) :
     rw [this, ih]
 
 /- English proof (translation)
-Establish `h` using `C.ε_root 0`. Rewrite `h` using `[C.ζ_zero, map_one]`. Conclude with `Subtype.ext h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_untilt (C : Core l) : C.ε.untilt = 1 := by
   have h := C.ε_root 0
@@ -84,7 +84,7 @@ theorem eps_untilt (C : Core l) : C.ε.untilt = 1 := by
   exact Subtype.ext h
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [C.ζ_zero]`. Consider the case `succ m ih => rw [pow_succ', pow_mul, C.ζ_succ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zeta_pow (C : Core l) (m : ℕ) : C.ζ m ^ (l ^ m) = 1 := by
   induction m with
@@ -92,15 +92,15 @@ theorem zeta_pow (C : Core l) (m : ℕ) : C.ζ m ^ (l ^ m) = 1 := by
   | succ m ih => rw [pow_succ', pow_mul, C.ζ_succ, ih]
 
 /- English proof (translation)
-Use `haveI : NeZero (l ^ m) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `set a := (PadicInt.toZModPow m (C.χ g : ℤ_[l])).val with ha`. Take `⟨b, hb⟩ : ∃ b, a + b = l ^ m` from `Nat.exists_eq_add_of_le (ZMod.val_lt _).le |>.imp fun _ h => h.symm`. Use `set em := ((frobeniusEquiv (Per.Fl l) l).symm)^[m] C.ε with hem`. Establish `hε` using `eps_untilt C`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : ((em.untilt : Per.OC l) : ℂ_[l]) = algebraMap (Om l) ℂ_[l] (C.ζ m)` using `C.ε_root m`. Establish `he : (Per.σF g em * em ^ b).untilt = 1`. Rewrite using `[map_mul, map_pow, GlobalTheory.RingBasics.untilt_σF]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : ((Per.σO g em.untilt : Per.OC l) : ℂ_[l]) = Per.σC g (em.untilt : ℂ_[l])` using `GlobalTheory.RingIface.sigO_coe l g _`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Per.σC g (algebraMap (Om l) ℂ_[l] (C.ζ m)) = algebraMap (Om l) ℂ_[l] (g (C.ζ m))` using `GlobalTheory.RingBasics.σC_coe g _`. Use `push_cast`. Rewrite using `[h1, hr, h2, C.χ_cyc g m _ (zeta_pow C m), ← ha, ← map_pow, ← map_mul, ← pow_add, hb, zeta_pow, map_one]`. Take `⟨z, _, hz, -, -⟩` from `GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l _ he`. Establish `h1` using `logA_pow C.j_cris he hz (l ^ m)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgε : (Per.σF g C.ε).untilt = 1` using `by rw [GlobalTheory.RingBasics.untilt_σF, hε, map_one]`. Establish `h2` using `logA_mul C.j_cris hgε (by rw [map_pow, hε, one_pow]) ((GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l _ _ hε C.t_log).2.1 g) (logA_pow C.j_cris hε C.t_log b)`. Establish `h3 : (Per.σF g em * em ^ b) ^ (l ^ m) = Per.σF g C.ε * C.ε ^ b`. Rewrite using `[mul_pow, ← map_pow, ← pow_mul, mul_comm b, pow_mul, hem, iter_pow]`. Rewrite `h1` using `[h3]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4` using `(GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l _ _ (by rw [map_mul, hgε, map_pow, hε, one_pow, one_mul]) h1).1 _ h2`. Use `⟨z - C.t, ?_⟩` and prove the remaining obligations. Establish `h5 : (a : Per.Acris l) + b = (l : Per.Acris l) ^ m` using `by exact_mod_cast congrArg (Nat.cast : ℕ → Per.Acris l) hb`. Move the coercions through the operations in `at h4`. Take the linear combination `h4 - C.t * h5`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cong (C : Core l) (g : GQ l) (m : ℕ) : ∃ w : Per.Acris l,
     sigA g C.t - ((PadicInt.toZModPow m (C.χ g : ℤ_[l])).val : Per.Acris l) * C.t = (l : Per.Acris l) ^ m * w := by
@@ -134,13 +134,11 @@ theorem cong (C : Core l) (g : GQ l) (m : ℕ) : ∃ w : Per.Acris l,
   linear_combination h4 - C.t * h5
 
 /- English proof (translation)
-Introduce `l _ C g`. Use `haveI := (acris_basic l).1`. Rewrite using `[IsHausdorff.eq_iff_smodEq (I := Ideal.span {(l : Per.Acris l)})]`. Introduce `m`. Take `⟨w, hw⟩` from `cong C g m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set x : ℤ_[l] := (C.χ g : ℤ_[l])`. Use `haveI : NeZero (l ^ m) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `hk : x - ((PadicInt.toZModPow m x).val : ℤ_[l]) ∈ RingHom.ker (PadicInt.toZModPow m : ℤ_[l] →+* ZMod (l ^ m))`. Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Rewrite `hk` using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton']`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc⟩` from `hk`. Establish `hc'` using `congrArg ((algebraMap (Per.Ainf l) (Per.Acris l)).comp (Per.zA l)) hc`. Rewrite `hc'` using `[map_mul, map_sub, map_pow, map_natCast, map_natCast, RingHom.comp_apply, RingHom.comp_apply]`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Use `⟨w - algebraMap (Per.Ainf l) (Per.Acris l) (Per.zA l c) * C.t, ?_⟩` and prove the remaining obligations.
-
-Take the linear combination `- hw - C.t * hc'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem t_act : ∀ (l : ℕ) [Fact l.Prime], ∀ (C : Core l) (g : GQ l),
     sigA g C.t = algebraMap (Per.Ainf l) (Per.Acris l) (Per.zA l (C.χ g : ℤ_[l])) * C.t := by

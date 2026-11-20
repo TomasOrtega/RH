@@ -3,7 +3,7 @@ import Mathlib
 namespace UpperTheory.Reformulated.B.P6.r03a
 
 /- English proof (translation)
-The claim follows from `(algebraMap_smul K r x).symm`.
+A detailed English derivation is pending.
 -/
 theorem integer_smul_eq_algebraMap_smul {K : Type} [Field K] [NumberField K] {n : ℕ}
     (r : NumberField.RingOfIntegers K) (x : Fin n → K) :
@@ -11,15 +11,15 @@ theorem integer_smul_eq_algebraMap_smul {K : Type} [Field K] [NumberField K] {n 
   (algebraMap_smul K r x).symm
 
 /- English proof (translation)
-Introduce `K _ _ n M x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact M.zero_mem⟩`. Consider the case `add y z _ _ hy hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨c1, hc1, h1⟩` from `hy`. Take `⟨c2, hc2, h2⟩` from `hz`. Use `⟨c1 * c2, mul_ne_zero hc1 hc2, ?_⟩` and prove the remaining obligations. Establish `e : (c1 * c2) • (y + z) = c2 • (c1 • y) + c1 • (c2 • z)`. Rewrite using `[smul_add, mul_smul c1 c2 z, mul_comm c1 c2, mul_smul c2 c1 y]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `M.add_mem (M.smul_mem c2 h1) (M.smul_mem c1 h2)`. Consider the case `smul a y _ hy`. Take `⟨c, hc, h⟩` from `hy`. Take `⟨⟨p, q⟩, hpq⟩` from `IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers K)) a`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(q : NumberField.RingOfIntegers K) * c, mul_ne_zero (nonZeroDivisors.ne_zero q.2) hc, ?_⟩` and prove the remaining obligations. Establish `hpq' : a * algebraMap (NumberField.RingOfIntegers K) K (q : NumberField.RingOfIntegers K) = algebraMap (NumberField.RingOfIntegers K) K p` using `hpq`. Establish `e : ((q : NumberField.RingOfIntegers K) * c) • (a • y) = p • (c • y)`. Rewrite using `[integer_smul_eq_algebraMap_smul ((q : NumberField.RingOfIntegers K) * c) (a • y), integer_smul_eq_algebraMap_smul p (c • y), integer_smul_eq_algebraMap_smul c y, smul_smul, smul_smul, map_mul, ← hpq']`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `M.smul_mem p h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Adelic.SatLine.exists_smul_mem :
     ∀ {K : Type} [inst : Field K] [NumberField K] {n : ℕ} (M : Submodule (NumberField.RingOfIntegers K) (Fin n → K)) {x : Fin n → K}, x ∈ Submodule.span K (SetLike.coe M) → ∃ (c : NumberField.RingOfIntegers K), c ≠ OfNat.ofNat (nat_lit 0) ∧ c • x ∈ M := by

@@ -32,13 +32,13 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Establish `hinv` using `GlobalTheory.Mem.Col2.AdT.Opn.inv_eq_cT hc.sig hu`. Establish `h1 : (u : Matrix (Fin n) (Fin n) (AfE F E)) * (1 + cT (sigR hc.sig (FiniteAdeleRing (𝓞 F) F)) ((u : Matrix (Fin n) (Fin n) (AfE F E)) - 1)) = 1`. Rewrite using `[← hinv, Units.mul_inv]`. Establish `hC : (cT (sigR hc.sig (FiniteAdeleRing (𝓞 F) F)) ((u : Matrix (Fin n) (Fin n) (AfE F E)) - 1)).map (adAt F (conjPrime₂ P)) = 0`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show adAt F (conjPrime₂ P) (sigR hc.sig (FiniteAdeleRing (𝓞 F) F) (((u : Matrix (Fin n) (Fin n) (AfE F E)) - 1) j i)) = 0`. Establish `e2 : adAt F P ((1 : Matrix (Fin n) (Fin n) (AfE F E)) j i) = (1 : Matrix (Fin n) (Fin n) (P.adicCompletion E)) j i`. Apply the tactic sequence `rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`. Establish `hX : adAt F P (((u : Matrix (Fin n) (Fin n) (AfE F E)) - 1) j i) = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_apply, map_sub, hP, e2, sub_self]`. Establish `e` using `GlobalTheory.Mem.Col2.valued_sigR hc (conjPrime₂ P) (((u : Matrix (Fin n) (Fin n) (AfE F E)) - 1) j i)`. Rewrite `e` using `[GlobalTheory.CharValCompare.conjP_conjP, hX, Valuation.map_zero]`. Conclude with `(Valuation.zero_iff _).1 e`. Establish `h2` using `congrArg (adAt F (conjPrime₂ P)).mapMatrix h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h2` using `[map_mul, map_add, map_one]`. Express the relevant statement in the definitionally equal form `_ * (1 + (cT (sigR hc.sig (FiniteAdeleRing (𝓞 F) F)) ((u : Matrix (Fin n) (Fin n) (AfE F E)) - 1)).map (adAt F (conjPrime₂ P))) = 1 at h2`. Rewrite `h2` using `[hC, add_zero, mul_one]`. Conclude with `congrFun (congrFun h2 r) s`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adAt_conjP_eq_one (hc : CMData F E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : J = 1) {u : GL (Fin n) (AfE F E)}
     (hu : u ∈ UPts hc.sig J (FiniteAdeleRing (𝓞 F) F)) (P : HeightOneSpectrum (𝓞 E))
@@ -68,7 +68,7 @@ theorem adAt_conjP_eq_one (hc : CMData F E) {n : ℕ} {J : Matrix (Fin n) (Fin n
   exact congrFun (congrFun h2 r) s
 
 /- English proof (translation)
-Use `GlobalTheory.Mem.Col2.AdPlace.bc_prV_eq_one_of_adAt F E n v u fun w hw r s => ?_` and prove the remaining obligations. Break down `hover w hw with rfl | rfl` into its components or cases. Rewrite using `[hP, Matrix.one_apply]`. Rewrite using `[adAt_conjP_eq_one hc hJ hu P hP r s, Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem bc_prV_eq_one_of_split (hc : CMData F E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : J = 1) {u : GL (Fin n) (AfE F E)}
     (hu : u ∈ UPts hc.sig J (FiniteAdeleRing (𝓞 F) F)) (P : HeightOneSpectrum (𝓞 E)) (v : HeightOneSpectrum (𝓞 F))
@@ -85,7 +85,7 @@ end Gen
 section Root
 
 /- English proof (translation)
-Take `⟨M, hM1, hM2⟩` from `GlobalTheory.MatNthRoot.exists_nthRoot E P m n c A.1 hn hc (fun r s => by rw [Matrix.sub_apply]; exact hA r s)`. Establish `hu : IsUnit M` using `(isUnit_pow_iff hn.ne').1 (hM2 ▸ A.isUnit)`. Take `⟨M, rfl⟩` from `hu`. Conclude with `⟨M, Units.ext (by rw [Units.val_pow_eq_pow_val, hM2]), fun r s => by rw [← Matrix.sub_apply]; exact hM1 r s⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_root_GL {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (m n : ℕ) (hn : 0 < n)
     (c : P.adicCompletion E) (hc : Valued.v c < 1) (A : GL (Fin m) (P.adicCompletion E))
@@ -104,7 +104,7 @@ end Root
 section Fin
 
 /- English proof (translation)
-Rewrite `hy` using `[map_mul, map_inv, map_pow, hz, inv_one, one_mul]`. Conclude with `hy`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_eq_one_of_pow {G : Type} [Group G] {U : Subgroup G} (χ : U →* ℂˣ) (x z : U) (n : ℕ) (hz : χ z ^ n = 1)
     (hy : χ ((z ^ n)⁻¹ * x) = 1) : χ x = 1 := by
@@ -112,7 +112,7 @@ theorem chi_eq_one_of_pow {G : Type} [Group G] {U : Subgroup G} (χ : U →* ℂ
   exact hy
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_inv, map_pow, hz, hx, one_pow, inv_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_inv_pow_mul_eq_one {G H : Type} [Group G] [Group H] (f : G →* H) {x z : G} (n : ℕ) (hz : f z = 1) (hx : f x = 1) :
     f ((z ^ n)⁻¹ * x) = 1 := by
@@ -123,29 +123,25 @@ end Fin
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hPin l Z a T i hi bad S n hn hchi P v hv`. Take `⟨N₀, hN₀⟩` from `GlobalTheory.Mem.Col2.AdT.Opn.level_contains_deep I hI hPin l Z a T i hi bad S P v hv`. Establish `hd` using `fun N z => GlobalTheory.Mem.Col2.AdT.AdelicValuationDictionary.main I hI l Z a ((I.rec7 l Z).R.N i) N P z`. Take `⟨hs, hq, -⟩` from `hd 0 1`. Establish `hu : P.1.under (𝓞 B.host.F) = v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hv` using `[hs]`. Conclude with `HeightOneSpectrum.ext (Eq.symm hv)`. Use `haveI : CharZero (P.1.adicCompletion B.fields.E) := algebraRat.charZero _`. Use `set c : P.1.adicCompletion B.fields.E := ((qOf P.1 : ℕ) : P.1.adicCompletion B.fields.E) ^ (N₀ + 1) with hcdef`. Establish `hc : Valued.v c = WithZero.exp (-((N₀ : ℤ) + 1))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcdef, map_pow, hq, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `hc1 : Valued.v c < 1`. Rewrite using `[hc, ← WithZero.exp_zero]; exact WithZero.exp_lt_exp.2 (by omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn1 : Valued.v (n : P.1.adicCompletion B.fields.E) ≤ 1` using `GlobalTheory.MatNthRoot.v_natCast_le_one n`. Establish `hε : Valued.v ((n : P.1.adicCompletion B.fields.E) ^ 2 * c) ≠ 0`. Rewrite using `[map_mul, hc]`. Use `mul_ne_zero ?_ WithZero.exp_ne_zero` and prove the remaining obligations. Rewrite using `[Valuation.ne_zero_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.2 hn.ne')`. Use `set e := WithZero.log (Valued.v ((n : P.1.adicCompletion B.fields.E) ^ 2 * c)) with he`. Use `⟨(-e).toNat, fun x hxv w hw hxw => ?_⟩` and prove the remaining obligations. Establish `hxP : ∀ r s, adAt B.host.F P.1 (x.1.1 r s) = adAt B.host.F P.1 (w.1 r s)` using `fun r s => by`. Establish `h` using `congrArg (fun g : GL (Fin ((I.rec7 l Z).R.N i)) _ => g.1 r s) hxw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.Mem.Col2.AdT.LocSplice.adAt_eq_of_prV P.1 ?_` and prove the remaining obligations. Rewrite using `[hu]`. Conclude with `h`. Establish `hwP` using `((hd _ w).2.2).1 hw`. Establish `hwP` using `((hd (-e).toNat w).2.2).1 hw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hA : ∀ r s, Valued.v (adAt B.host.F P.1 (x.1.1 r s) - (1 : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (P.1.adicCompletion B.fields.E)) r s) ≤ Valued.v ((n : P.1.adicCompletion B.fields.E) ^ 2 * c)` using `fun r s => by`. Rewrite using `[hxP]`. Use `(hwP r s).trans ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_log hε, ← he]`. Conclude with `WithZero.exp_le_exp.2 (by omega)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `x' : GlobalTheory.Mem.Col2.TC.GA B (B.R.N i)` to `x.1`. Take `⟨Mu, hMun, hMu1⟩` from `exists_root_GL P.1 (B.R.N i) n hn c hc1 (Matrix.GeneralLinearGroup.map (adAt B.host.F P.1) x') hA`. Take `⟨z, hzU, hzv, hzP⟩` from `GlobalTheory.Mem.Col2.AdLift.exists_lift I hI hPin l Z a i hi P v hv Mu`. Establish `hz : z ∈ S.U` using `hN₀ z hzU hzv (((hd N₀ z).2.2).2 fun r s => by`. Rewrite using `[hzP]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `(hMu1 r s).trans ?_` and prove the remaining obligations. Rewrite using `[map_mul, hc]`. Conclude with `(mul_le_of_le_one_left' hn1).trans (WithZero.exp_le_exp.2 (by omega)))`. Establish `hgU : (z ^ n)⁻¹ * x.1 ∈ S.U`. Use `Subgroup.mul_mem _ (Subgroup.inv_mem _ (Subgroup.pow_mem _ hz n)) x.2` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyU` using `((S.U_eq _).1 hgU).1`. Establish `hgram` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hPin l Z).2.2.2 i hi).1`. Set `z' : GlobalTheory.Mem.Col2.TC.GA B (B.R.N i)` to `z`. Establish `hzmap : Matrix.GeneralLinearGroup.map (adAt B.host.F P.1) z' = Mu` using `Units.ext (Matrix.ext hzP)`. Establish `key : Matrix.GeneralLinearGroup.map (adAt B.host.F P.1) ((z' ^ n)⁻¹ * x') = 1`.
-
-Rewrite using `[map_mul, map_inv, map_pow, hzmap, hMun, inv_mul_cancel]`. Establish `hyP : ∀ r s, adAt B.host.F P.1 (((z ^ n)⁻¹ * x.1).1 r s) = (1 : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (P.1.adicCompletion B.fields.E)) r s` using `fun r s => congrArg (fun g : GL (Fin (B.R.N i)) (P.1.adicCompletion B.fields.E) => g.1 r s) key`. Establish `hover : ∀ w : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.E), w.under (𝓞 (I.rec7 l Z).host.F) = v → w = P.1 ∨ w = conjPrime₂ P.1` using `fun w hw => (GlobalTheory.Mem.Col2.under_eq_iff B.host P.1 w).1 (hw.trans hu.symm)`. Establish `hyv : ∀ v', bc (prV (E` using `(I.rec7 l Z).host.E) v') ((z ^ n)⁻¹ * x.1) = 1 := by`. Introduce `v'`.
-
-Distinguish the cases in `hv' : v' = v`. Rewrite using `[hv']`. Conclude with `bc_prV_eq_one_of_split (I.rec7 l Z).sp.cm hgram hyU P.1 v hover hyP`. Conclude with `map_inv_pow_mul_eq_one _ n (hzv v' hv') (hxv v' hv')`. Conclude with `chi_eq_one_of_pow S.chi x ⟨z, hz⟩ n (hchi _) (S.chi_triv _ fun v' _ => hyv v')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_eq_one_of_deep : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι) (T i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (S : StepLevel (I.rec7 l Z).host.F (I.rec7 l Z).host.E (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) T (I.rec7 l Z).R.f bad) (n : ℕ), 0 < n → (∀ κ : S.U, S.chi κ ^ n = 1) → ∀ (P : SBof I a) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), Formalism.L2.Col.IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1) → ∃ N : ℕ, ∀ x : S.U, (∀ v', v' ≠ v → bc (prV (E := (I.rec7 l Z).host.E) v') x.1 = 1) → ∀ w : GL (Fin ((I.rec7 l Z).R.N i)) ((I.rec7 l Z).host.E ⊗[(I.rec7 l Z).host.F] FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F), GlobalTheory.TwU.CongAt (GlobalTheory.TwU.seamP (sm I l Z) P.1) N w → bc (prV (E := (I.rec7 l Z).host.E) v) x.1 = bc (prV (E := (I.rec7 l Z).host.E) v) w → S.chi x = 1 := by
   intro B X I hI hPin l Z a T i hi bad S n hn hchi P v hv

@@ -15,7 +15,7 @@ namespace PositivityTheory.Rg.BcB.F.Rd.B
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Simplify using `only [finH, Prod.fst_mul, Prod.snd_mul, map_mul, Prod.mk_mul_mk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finH_mul {a b : ℕ} (g h : Hf E a b) : finH (g * h) = finH g * finH h := by
   simp only [finH, Prod.fst_mul, Prod.snd_mul, map_mul, Prod.mk_mul_mk]
@@ -25,7 +25,7 @@ section Level
 variable (B : Block E) (K₁ : Subgroup (GL (Fin B.a) (Af E))) (K₂ : Subgroup (GL (Fin B.b) (Af E)))
 
 /- English proof (translation)
-Introduce `i u hu x`. Conclude with `(hF i).1 u.1 (Subgroup.mem_prod.1 hu).1 u.2 (Subgroup.mem_prod.1 hu).2 x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem typeH_rinv {W₁ : Submodule ℂ (Kinf E B.a → ℂ)} {W₂ : Submodule ℂ (Kinf E B.b → ℂ)}
     (F : B.I → H E B.a B.b → ℂ) (hF : ∀ i, TypeH K₁ K₂ W₁ W₂ (F i)) :
@@ -34,9 +34,9 @@ theorem typeH_rinv {W₁ : Submodule ℂ (Kinf E B.a → ℂ)} {W₂ : Submodule
   exact (hF i).1 u.1 (Subgroup.mem_prod.1 hu).1 u.2 (Subgroup.mem_prod.1 hu).2 x
 
 /- English proof (translation)
-Introduce `x y u hu h`. Simplify using `only [mulF]`. Use `Finset.sum_congr rfl fun z _ => integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Establish `e : k⁻¹ * (h * u) ∈ (K₁.prod K₂ : Subgroup (Hf E B.a B.b)) ↔ k⁻¹ * h ∈ (K₁.prod K₂ : Subgroup (Hf E B.a B.b))`. Rewrite using `[← mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.mul_mem_cancel_right _ hu`. Simplify using `only [hψ₀, e]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulF_idem_rinv (cK : ℂ) (ψ₀ : Matrix B.κ B.κ (Hf E B.a B.b → ℂ))
     (hψ₀ : ∀ x y h, ψ₀ x y h = if x = y ∧ h ∈ (K₁.prod K₂ : Subgroup (Hf E B.a B.b)) then cK else 0)
@@ -50,15 +50,13 @@ theorem mulF_idem_rinv (cK : ℂ) (ψ₀ : Matrix B.κ B.κ (Hf E B.a B.b → �
   simp only [hψ₀, e]
 
 /- English proof (translation)
-Establish `: BorelSpace (Hf E B.a B.b)` using `⟨rfl⟩`. Establish `hKo : IsOpen (((K₁.prod K₂ : Subgroup (Hf E B.a B.b))) : Set (Hf E B.a B.b))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `hK₁o.prod hK₂o`. Use function extensionality and compare the values at `i x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [convF]`. Rewrite using `[Finset.sum_eq_single i.2]`. Establish `e : (fun h => ψ₀ i.2 i.2 h * f (i.1, i.2) (x * finH h)) = Set.indicator (((K₁.prod K₂ : Subgroup (Hf E B.a B.b))) : Set (Hf E B.a B.b)) (fun _ => cK * f i x)`. Use function extensionality and compare the values at `h`. Rewrite using `[hψ₀]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hh : h ∈ (K₁.prod K₂ : Subgroup (Hf E B.a B.b))`. Rewrite using `[Set.indicator_of_mem (SetLike.mem_coe.2 hh), if_pos ⟨rfl, hh⟩, Prod.mk.eta, hf i h hh x]`. Rewrite using `[Set.indicator_of_notMem (fun h' => hh (SetLike.mem_coe.1 h')), if_neg (fun h' => hh h'.2), zero_mul]`. Rewrite using `[e, integral_indicator_const _ hKo.measurableSet, Complex.real_smul, ← mul_assoc, mul_comm ((_ : ℝ) : ℂ) cK, hcK, one_mul]`. Introduce `z _ hz`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (fun h => ψ₀ i.2 z h * f (i.1, z) (x * finH h)) = fun _ => 0`. Use function extensionality and compare the values at `h`. Rewrite using `[hψ₀, if_neg (fun h' => hz h'.1.symm), zero_mul]`. Rewrite using `[e, integral_zero]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem convF_idem (hK₁o : IsOpen (K₁ : Set (GL (Fin B.a) (Af E)))) (hK₂o : IsOpen (K₂ : Set (GL (Fin B.b) (Af E))))
     (cK : ℂ) (hcK : cK * (B.ν.real ((K₁.prod K₂ : Subgroup (Hf E B.a B.b)) : Set (Hf E B.a B.b)) : ℂ) = 1)
@@ -90,37 +88,31 @@ theorem convF_idem (hK₁o : IsOpen (K₁ : Set (GL (Fin B.a) (Af E)))) (hK₂o 
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use `B.hν` as an intermediate fact. Establish `: BorelSpace (Hf E B.a B.b)` using `⟨rfl⟩`. Use `set K : Subgroup (Hf E B.a B.b) := K₁.prod K₂ with hKdef`. Establish `hKo : IsOpen (K : Set (Hf E B.a B.b))`. Rewrite using `[hKdef, Subgroup.coe_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hK₁o.prod hK₂o`. Establish `hKc : IsCompact (K : Set (Hf E B.a B.b))`. Rewrite using `[hKdef, Subgroup.coe_prod]`. Conclude with `hK₁c.prod hK₂c`. Establish `hKcl : IsClosed (K : Set (Hf E B.a B.b))` using `K.isClosed_of_isOpen hKo`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i x`. Simplify using `only [convF]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Use `set F : Hf E B.a B.b → ℂ := fun g => f (i.1, z) (x * finH g) with hFdef`. Establish `hFinv : ∀ g, ∀ u ∈ K, F (g * u) = F g` using `fun g u hu => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [hFdef, finH_mul, ← mul_assoc]`. Conclude with `hf _ u hu _`. Establish `hFc : Continuous F`. Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Establish `hU : IsOpen ((fun g' => g⁻¹ * g') ⁻¹' (K : Set (Hf E B.a B.b)))` using `hKo.preimage (continuous_const.mul continuous_id)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hgU : g ∈ (fun g' => g⁻¹ * g') ⁻¹' (K : Set (Hf E B.a B.b))`. Simplify using `only [Set.mem_preimage, inv_mul_cancel]`. Conclude with `K.one_mem`. Use `(continuousAt_const (y := F g)).congr (Filter.eventually_of_mem (hU.mem_nhds hgU) fun g' hg' => ?_)` and prove the remaining obligations. Use `hFinv g (g⁻¹ * g') hg'` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[mul_inv_cancel_left]`. Conclude with `this.symm`. Use `set φ : Hf E B.a B.b → ℂ := ψ i.2 z with hφdef`. Use `set ι : Hf E B.a B.b → ℂ := (K : Set (Hf E B.a B.b)).indicator (fun _ => cK) with hιdef`. Establish `hm : ∀ g, mulF B.ν ψ ψ₀ i.2 z g = ∫ h, φ h * ι (h⁻¹ * g) ∂B.ν`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Simplify using `only [mulF]`. Rewrite using `[Finset.sum_eq_single z]`. Use `integral_congr_ae (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only [hφdef, hιdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ₀]`. Distinguish the cases in `hh : h⁻¹ * g ∈ K`. Rewrite using `[if_pos ⟨rfl, hh⟩, Set.indicator_of_mem (SetLike.mem_coe.2 hh)]`. Rewrite using `[if_neg (fun h' => hh h'.2), Set.indicator_of_notMem (fun h' => hh (SetLike.mem_coe.1 h'))]`. Introduce `w _ hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (fun h => ψ i.2 w h * ψ₀ w z (h⁻¹ * g)) = fun _ => 0`. Use function extensionality and compare the values at `h`. Rewrite using `[hψ₀, if_neg (fun h' => hw h'.1), mul_zero]`. Rewrite using `[e, integral_zero]`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Establish `e1 : ∀ g, mulF B.ν ψ ψ₀ i.2 z g * f (i.1, z) (x * finH g) = ∫ h, φ h * ι (h⁻¹ * g) * F g ∂B.ν` using `fun g => by`. Rewrite using `[hm g, ← integral_mul_const]`. Repeatedly rewrite using `[e1]`. Establish `hcl : IsClopen (K : Set (Hf E B.a B.b))` using `⟨hKcl, hKo⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcont : Continuous (Function.uncurry fun (g h : Hf E B.a B.b) => φ h * ι (h⁻¹ * g) * F g)`. Establish `c1 : Continuous φ` using `(hψ i.2 z).1`. Establish `c2 : Continuous ι` using `hcl.continuous_indicator continuous_const`. Conclude with `((c1.comp continuous_snd).mul (c2.comp (continuous_snd.inv.mul continuous_fst))).mul (hFc.comp continuous_fst)`. Establish `hcs : HasCompactSupport (Function.uncurry fun (g h : Hf E B.a B.b) => φ h * ι (h⁻¹ * g) * F g)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hc : IsCompact ((fun p : Hf E B.a B.b × Hf E B.a B.b => (p.1 * p.2, p.1)) '' (tsupport φ ×ˢ (K : Set _)))` using `((hψ i.2 z).2.prod hKc).image ((continuous_fst.mul continuous_snd).prodMk continuous_fst)`. Use `HasCompactSupport.intro hc fun p hp => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : p.2 ∈ tsupport φ`. Distinguish the cases in `h2 : p.2⁻¹ * p.1 ∈ K`. Conclude with `absurd ⟨(p.2, p.2⁻¹ * p.1), ⟨h1, h2⟩, by simp⟩ hp`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show φ p.2 * ι (p.2⁻¹ * p.1) * F p.1 = 0`. Rewrite using `[hιdef, Set.indicator_of_notMem (fun h' => h2 (SetLike.mem_coe.1 h')), mul_zero, zero_mul]`. Use `show φ p.2 * ι (p.2⁻¹ * p.1) * F p.1 = 0`. Rewrite using `[image_eq_zero_of_notMem_tsupport h1, zero_mul, zero_mul]`. Rewrite using `[integral_integral_swap_of_hasCompactSupport hcont hcs]`.
-
-Use `integral_congr_ae (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Use `show ∫ g, φ h * ι (h⁻¹ * g) * F g ∂B.ν = ψ i.2 z h * f (i.1, z) (x * finH h)`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [inv_mul_cancel_left]`.
-
-Distinguish the cases in `hk : k ∈ K`. Rewrite using `[hιdef, Set.indicator_of_mem (SetLike.mem_coe.2 hk), Set.indicator_of_mem (SetLike.mem_coe.2 hk), hFinv h k hk]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hιdef, Set.indicator_of_notMem (fun h' => hk (SetLike.mem_coe.1 h')), Set.indicator_of_notMem (fun h' => hk (SetLike.mem_coe.1 h'))]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = ψ i.2 z h * f (i.1, z) (x * finH h) := by`. Rewrite using `[integral_indicator_const _ hKo.measurableSet, Complex.real_smul, ← mul_assoc, mul_comm ((_ : ℝ) : ℂ) cK, hcK, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convF_mulF_idem (hK₁o : IsOpen (K₁ : Set (GL (Fin B.a) (Af E))))
     (hK₁c : IsCompact (K₁ : Set (GL (Fin B.a) (Af E)))) (hK₂o : IsOpen (K₂ : Set (GL (Fin B.b) (Af E))))

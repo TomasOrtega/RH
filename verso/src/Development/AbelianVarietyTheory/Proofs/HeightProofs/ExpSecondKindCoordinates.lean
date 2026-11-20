@@ -30,9 +30,9 @@ open scoped Matrix.Norms.Operator ContDiff
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ProductOfFnSingle.prod_ofFn_eq_single`. Consider the case `exact _root_.GlobalTheory.ProductOfFnSingle.prod_ofFn_eq_single`. Consider the case `(apply _root_.GlobalTheory.ProductOfFnSingle.prod_ofFn_eq_single <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ProductOfFnSingle.prod_ofFn_eq_single <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ProductOfFnSingle.prod_ofFn_eq_single <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ProductOfFnSingle.prod_ofFn_eq_single ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ofFn_prod_single {M : Type*} [Monoid M] : ∀ {d : ℕ} (g : Fin d → M) (j : Fin d),
     (∀ i, i ≠ j → g i = 1) → (List.ofFn g).prod = g j := by
@@ -48,13 +48,13 @@ def lc {d : ℕ} (b : Fin d → Matrix (Fin n) (Fin n) ℂ) : (Fin d → ℝ) �
   ∑ i, (ContinuousLinearMap.proj i : (Fin d → ℝ) →L[ℝ] ℝ).smulRight (b i)
 
 /- English proof (translation)
-Simplify using `[lc, ContinuousLinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lc_apply {d : ℕ} (b : Fin d → Matrix (Fin n) (Fin n) ℂ) (v : Fin d → ℝ) : lc b v = ∑ i, v i • b i := by
   simp [lc, ContinuousLinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[ofFn_prod_single _ j]`. Simplify using the standard rewrite rules. Introduce `i hi`. Simplify using `[Pi.single_apply, hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem expProd_line {d : ℕ} (b : Fin d → Matrix (Fin n) (Fin n) ℂ) (j : Fin d) (r : ℝ) :
     (List.ofFn fun i => NormedSpace.exp ((r • Pi.single j (1 : ℝ) : Fin d → ℝ) i • b i)).prod =
@@ -65,17 +65,17 @@ theorem expProd_line {d : ℕ} (b : Fin d → Matrix (Fin n) (Fin n) ℂ) (j : F
     simp [Pi.single_apply, hi]
 
 /- English proof (translation)
-Use `set f := fun s : Fin d → ℝ => (List.ofFn fun i => NormedSpace.exp (s i • b i)).prod with hfdef`. Establish `hcd : ContDiff ℝ ∞ f` using `GlobalTheory.GardingVec.contDiff_expProd b`. Establish `hs : HasStrictFDerivAt f (fderiv ℝ f 0) 0` using `hcd.contDiffAt.hasStrictFDerivAt (by simp)`. It suffices to establish `e : fderiv ℝ f 0 = lc b by rwa [e] at hs`. Establish `hD : HasFDerivAt f (fderiv ℝ f 0) 0` using `hs.hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : ∀ j : Fin d, fderiv ℝ f 0 (Pi.single j 1) = b j`. Introduce `j`. Establish `h1 : HasDerivAt (fun r : ℝ => f (r • Pi.single j (1 : ℝ))) (fderiv ℝ f 0 (Pi.single j 1)) 0`. Establish `hl : HasDerivAt (fun r : ℝ => r • (Pi.single j (1 : ℝ) : Fin d → ℝ)) ((1 : ℝ) • Pi.single j 1) 0` using `(hasDerivAt_id (0 : ℝ)).smul_const _`. Rewrite `hl` using `[one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hD.comp_hasDerivAt_of_eq 0 hl (by simp)`. Establish `h2 : HasDerivAt (fun r : ℝ => f (r • Pi.single j (1 : ℝ))) (b j) 0`. Establish `h3` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) (b j) (0 : ℝ)`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h3`. Use `h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `expProd_line b j r`. Conclude with `h1.unique h2`. Use `ext1 v`. Rewrite using `[pi_eq_sum_univ v, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e1 : (fun k => if j = k then (1 : ℝ) else 0) = Pi.single j 1`. Use extensionality with `k`. Simplify using `[Pi.single_apply, eq_comm]`. Rewrite using `[e1, map_smul, map_smul, hj, lc_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[Pi.single_apply, hi]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem hasStrictFDerivAt_expProd {d : ℕ} (b : Fin d → Matrix (Fin n) (Fin n) ℂ) :
     HasStrictFDerivAt (fun s : Fin d → ℝ => (List.ofFn fun i => NormedSpace.exp (s i • b i)).prod) (lc b) 0 := by
@@ -115,29 +115,25 @@ section Chart
 open scoped Matrix.Norms.Operator ContDiff
 
 /- English proof (translation)
-Use `set A : (Fin d → ℝ) →L[ℝ] Matrix (Fin n) (Fin n) ℂ := lc b with hA`. Establish `hAinj : LinearMap.ker (A : (Fin d → ℝ) →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `hx' : ∑ i, x i • b i = 0` using `by rw [← lc_apply]; exact hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.1 hli x hx' i`. Take `⟨C, hC⟩` from `LinearMap.exists_leftInverse_of_injective _ hAinj`. Set `Cc : Matrix (Fin n) (Fin n) ℂ →L[ℝ] (Fin d → ℝ)` to `LinearMap.toContinuousLinearMap C`. Establish `hCA : ∀ v, Cc (A v) = v` using `fun v => LinearMap.congr_fun hC v`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f : (Fin d → ℝ) → Matrix (Fin n) (Fin n) ℂ := fun s => (List.ofFn fun i => NormedSpace.exp (s i • b i)).prod with hfdef`. Establish `hf : HasStrictFDerivAt f A 0` using `hasStrictFDerivAt_expProd b`. Establish `hf0 : f 0 = 1` using `by simp [hfdef]`. Establish `hlog : HasStrictFDerivAt (Formalism.MainNotions.S.Gauge.logM n) (ContinuousLinearMap.id ℝ _) (f 0)`. Establish `h` using `(Formalism.MainNotions.S.Gauge.hasStrict_expM (n := n)).to_localInverse`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[NormedSpace.exp_zero]`. Rewrite using `[hf0]`. Conclude with `h`. Use `set ψ : (Fin d → ℝ) → (Fin d → ℝ) := fun s => Cc (Formalism.MainNotions.S.Gauge.logM n (f s)) with hψdef`. Establish `hψ : HasStrictFDerivAt ψ ((ContinuousLinearEquiv.refl ℝ (Fin d → ℝ) : (Fin d → ℝ) ≃L[ℝ] (Fin d → ℝ)) : (Fin d → ℝ) →L[ℝ] (Fin d → ℝ)) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Cc.hasStrictFDerivAt.comp (0 : Fin d → ℝ) (hlog.comp (0 : Fin d → ℝ) hf)`. Establish `e : (Cc.comp ((ContinuousLinearMap.id ℝ (Formalism.MainNotions.S.Gauge.MxC n)).comp A)) = ((ContinuousLinearEquiv.refl ℝ (Fin d → ℝ) : (Fin d → ℝ) ≃L[ℝ] (Fin d → ℝ)) : (Fin d → ℝ) →L[ℝ] (Fin d → ℝ))` using `by ext1 v`. Simplify using `[hCA]`. Conclude with `h.congr_fderiv e`. Establish `hψ0 : ψ 0 = 0` using `by simp [hψdef, hf0, Formalism.MainNotions.S.Gauge.logM_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `set g := hψ.localInverse ψ _ 0 with hgdef`. Establish `hg : HasFDerivAt g (((ContinuousLinearEquiv.refl ℝ (Fin d → ℝ)).symm : (Fin d → ℝ) ≃L[ℝ] (Fin d → ℝ)) : (Fin d → ℝ) →L[ℝ] (Fin d → ℝ)) (ψ 0)` using `hψ.to_localInverse.hasFDerivAt`. Establish `hg0 : g (ψ 0) = 0` using `hψ.localInverse_apply_image`. Use `⟨fun t => g (t • c), ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [zero_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `hg0` using `[hψ0]`. Establish `hl : HasDerivAt (fun t : ℝ => t • c) ((1 : ℝ) • c) 0` using `(hasDerivAt_id (0 : ℝ)).smul_const _`. Rewrite `hl` using `[one_smul]`. Use `hg.comp_hasDerivAt_of_eq (0 : ℝ) hl (by simp [hψ0])` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlin : Filter.Tendsto (fun t : ℝ => t • c) (nhds 0) (nhds (ψ 0))`. Conclude with `(continuous_id.smul continuous_const : Continuous fun t : ℝ => t • c).tendsto' 0 (ψ 0) (by simp [hψ0])`. Establish `E1 : ∀ᶠ t in nhds (0 : ℝ), ψ (g (t • c)) = t • c` using `hlin.eventually hψ.eventually_right_inverse`. Establish `hτc : ContinuousAt (fun t : ℝ => g (t • c)) 0`. Conclude with `hg.continuousAt.comp_of_eq (continuous_id.smul continuous_const : Continuous fun t : ℝ => t • c).continuousAt (by simp [hψ0])`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfc : ContinuousAt (fun t : ℝ => f (g (t • c))) 0` using `(GlobalTheory.GardingVec.contDiff_expProd b).continuous.continuousAt.comp hτc`. Establish `E2 : ∀ᶠ t in nhds (0 : ℝ), f (g (t • c)) ∈ Formalism.MainNotions.S.Gauge.tOne ε`. Apply `hfc.preimage_mem_nhds` to reduce the goal to its premises. Establish `h0 : f (g ((0 : ℝ) • c)) = 1` using `by simp only [zero_smul]; rw [← hψ0, hg0, hf0]`. Rewrite using `[h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Formalism.MainNotions.S.Gauge.isOpen_tOne ε).mem_nhds (Formalism.MainNotions.S.Gauge.one_mem_tOne ε)`. Use `filter_upwards [E1, E2] with t h1 h2`. Use `set y := f (g (t • c)) with hy`. Establish `hU : Formalism.REAL.inUJ ε y`. Use `GlobalTheory.LowTypeDetermined.expProd_mem (GlobalTheory.TypeSum.isUnit_Jm ε) (Xs := b) (fun i => hb i) (g (t • c))` as an intermediate fact.
-
-Conclude with `this`. Take `⟨hG, hE⟩` from `Formalism.MainNotions.S.Gauge.logM_inG h2 hU`. Take `⟨c', hc'⟩` from `hsp _ hG`. Establish `hc'A : Formalism.MainNotions.S.Gauge.logM n y = A c'` using `by rw [hc', hA, lc_apply]`. Establish `hψy : ψ (g (t • c)) = c'` using `by show Cc (Formalism.MainNotions.S.Gauge.logM n y) = c'`.
-
-Rewrite using `[hc'A, hCA]`. Establish `hcc : c' = t • c` using `by rw [← hψy, h1]`. Establish `hL : Formalism.MainNotions.S.Gauge.logM n y = t • ∑ i, c i • b i`. Rewrite using `[hc'A, hcc, map_smul, hA, lc_apply]`. Rewrite using `[← hL, hE]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_product_chart_local (n : ℕ) (ε : Fin n → Bool) (d : ℕ) (b : Fin d → Matrix (Fin n) (Fin n) ℂ) (hb : ∀ i, b i ∈ lieSet ε)
     (hli : LinearIndependent ℝ b) (hsp : ∀ Z ∈ lieSet ε, ∃ c : Fin d → ℝ, Z = ∑ i, c i • b i) (c : Fin d → ℝ) :
@@ -217,7 +213,7 @@ theorem exp_product_chart_local (n : ℕ) (ε : Fin n → Bool) (d : ℕ) (b : F
 end Chart
 
 /- English proof (translation)
-Introduce `n ε d b hb hli hsp c` and use `exp_product_chart_local n ε d b hb hli hsp c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exp_eq_expProd_near_zero : ∀ (n : ℕ) (ε : Fin n → Bool) (d : ℕ) (b : Fin d → GlobalTheory.TypeSum.Mx n), (∀ i, b i ∈ lieSet ε) →
     LinearIndependent ℝ b → (∀ Z ∈ lieSet ε, ∃ c : Fin d → ℝ, Z = ∑ i, c i • b i) →

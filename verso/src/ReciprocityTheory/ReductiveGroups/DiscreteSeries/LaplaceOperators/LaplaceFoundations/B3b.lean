@@ -10,15 +10,13 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap.Base
 open ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ w hσ hw Z hZ s`. Establish `h0` using `(isDerivedOn_smE hσ).deriv Z hZ ⟨w, hw⟩`. Establish `hphi : phiW ε σ w Z = ((actM (smE ε σ) Z ⟨w, hw⟩ : smD ε σ) : H)`. Simplify using `only [phiW, dif_pos hw]`. Use `set g := σ (NormedSpace.exp ((s : ℂ) • Z)) with hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set T : H →L[ℂ] ℂ := (innerSL ℂ w).comp g with hT`. Establish `h1` using `((T.restrictScalars ℝ).hasFDerivAt).comp_hasDerivAt (0 : ℝ) h0`. Establish `h2 : HasDerivAt (fun x : ℝ => T (σ (NormedSpace.exp (((x - s : ℝ) : ℂ) • Z)) w)) (T ((actM (smE ε σ) Z ⟨w, hw⟩ : smD ε σ) : H)) s`. Establish `h1' : HasDerivAt (⇑(ContinuousLinearMap.restrictScalars ℝ T) ∘ fun t : ℝ => (σ (NormedSpace.exp ((t : ℂ) • Z))) w) ((ContinuousLinearMap.restrictScalars ℝ T) ((actM (smE ε σ) Z ⟨w, hw⟩ : smD ε σ) : H)) (s - s)`. Rewrite using `[sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `h1`. Conclude with `h1'.comp_sub_const s s`. Rewrite using `[hphi]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Establish `he : NormedSpace.exp ((x : ℂ) • Z) = NormedSpace.exp ((s : ℂ) • Z) * NormedSpace.exp (((x - s : ℝ) : ℂ) • Z)`. Rewrite using `[← exp_add_smul]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[he, hσ.1.2 _ (exp_smul_mem_UJset hZ s) _ (exp_smul_mem_UJset hZ (x - s))]`. Simplify using `[hT, hg]`. Simplify using `[hT, hg]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem b3b : DerivMatrixCoeffExp := by
   intro n ε H _ _ σ w hσ hw Z hZ s

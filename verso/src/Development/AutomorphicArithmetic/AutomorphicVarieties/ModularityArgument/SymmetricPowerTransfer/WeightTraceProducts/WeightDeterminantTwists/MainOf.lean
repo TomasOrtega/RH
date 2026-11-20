@@ -4,7 +4,7 @@ open Polynomial
 namespace UpperTheory.V.Z.Sym.Wt
 
 /- English proof (translation)
-Use extensionality with `i k`. Rewrite using `[Matrix.GeneralLinearGroup.map_apply, invT_val, invT_val, ← map_inv, Matrix.transpose_apply, Matrix.transpose_apply, Matrix.GeneralLinearGroup.map_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_invT {R : Type} [CommRing R] (f : R →+* ℂ) (d : ℕ) (g : GL (Fin d) R) :
     Matrix.GeneralLinearGroup.map f (invT R d g) = invT ℂ d (Matrix.GeneralLinearGroup.map f g) := by
@@ -13,7 +13,7 @@ private theorem map_invT {R : Type} [CommRing R] (f : R →+* ℂ) (d : ℕ) (g 
     Matrix.transpose_apply, Matrix.GeneralLinearGroup.map_apply]
 
 /- English proof (translation)
-Use extensionality with `i k`. Rewrite using `[Matrix.GeneralLinearGroup.map_apply]`. Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.diagonal_apply, apply_ite f]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem map_scal {R : Type} [CommRing R] (f : R →+* ℂ) (d : ℕ) (x : Rˣ) :
     Matrix.GeneralLinearGroup.map f (Matrix.GeneralLinearGroup.scalar (Fin d) x) =
@@ -29,29 +29,27 @@ private theorem val_map {R : Type} [CommRing R] (f : R →+* ℂ) (d : ℕ) (g :
     ((Matrix.GeneralLinearGroup.map f g : GL (Fin d) ℂ) : Matrix (Fin d) (Fin d) ℂ) = (g : Matrix (Fin d) (Fin d) R).map f := rfl
 
 /- English proof (translation)
-Introduce `R I _ _ em j hj`. Establish `hWG : ∀ g : GL (Fin 3) R, WG em j g = repG I j (fun w => Matrix.GeneralLinearGroup.map (em w) g)` using `fun _ => rfl`. Establish `hWD : ∀ (n : ℕ) (e : ℤ) (g : GL (Fin 2) R), WD em n e g = repD I n e (fun w => Matrix.GeneralLinearGroup.map (em w) g)` using `fun _ _ _ => rfl`. Establish `hdet : ∀ (w : I) (g : GL (Fin 2) R), ((Matrix.GeneralLinearGroup.map (em w) g : GL (Fin 2) ℂ) : Matrix (Fin 2) (Fin 2) ℂ).det = em w (g : Matrix (Fin 2) (Fin 2) R).det`. Introduce `w g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[val_map, RingHom.map_det]`. Both sides reduce to the same expression. Establish `htr : ∀ (w : I) (g : GL (Fin 2) R), ((Matrix.GeneralLinearGroup.map (em w) g : GL (Fin 2) ℂ) : Matrix (Fin 2) (Fin 2) ℂ).trace = em w (g : Matrix (Fin 2) (Fin 2) R).trace`. Introduce `w g`. Rewrite using `[val_map, AddMonoidHom.map_trace]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `{ finG := ?_, finD := ?_, th_sq := (h2 I j).1, th_rep := ?_, scalG := ?_, scalD := ?_, twine := ?_, stable := ?_, kappa := ?_ }` and prove the remaining obligations. Use `haveI : ∀ S : I → Bool, FiniteDimensional ℂ (Bi 3 (dg j S)) := fun S => h1 _ _ _ infer_instance`. Introduce `n`. Conclude with `h1 _ _ _`. Introduce `g`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hWG, hWG, (h2 I j).2]`. Establish `hfun : (fun v => invT ℂ 3 (Matrix.GeneralLinearGroup.map (em v) g)) = fun w => Matrix.GeneralLinearGroup.map (em w) (invT R 3 g)`. Use function extensionality and compare the values at `fun v => (map_invT _ _ _).symm`. Rewrite using `[hfun]`. Introduce `x`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hWG]`. Establish `hfun : (fun w => Matrix.GeneralLinearGroup.map (em w) (Matrix.GeneralLinearGroup.scalar (Fin 3) x)) = fun w => Matrix.GeneralLinearGroup.scalar (Fin 3) (Units.map (em w).toMonoidHom x)`. Use function extensionality and compare the values at `fun w => map_scal _ _ _`. Rewrite using `[hfun]`. Conclude with `(h5 I _).1 j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `n e x`. Rewrite using `[hWD]`. Establish `hfun : (fun w => Matrix.GeneralLinearGroup.map (em w) (Matrix.GeneralLinearGroup.scalar (Fin 2) x)) = fun w => Matrix.GeneralLinearGroup.scalar (Fin 2) (Units.map (em w).toMonoidHom x)`. Use function extensionality and compare the values at `fun w => map_scal _ _ _`. Rewrite using `[hfun, (h5 I _).2 n e]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Rewrite using `[Units.coe_prod]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, Units.coe_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `δ τ hch`. Rewrite using `[hWG]`. Use `h3 I j hj (fun w => Matrix.GeneralLinearGroup.map (em w) δ) (fun w => em w τ) ?_` and prove the remaining obligations. Introduce `v`. Rewrite using `[← map_invT, ← map_mul, val_map, Matrix.charpoly_map, hch]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Polynomial.map_mul, Polynomial.map_sub, Polynomial.map_add]`. Introduce `e γ hγ`. Rewrite using `[hWD, h4]`. Use `show _ = ∏ w, hq (em w (γ : Matrix (Fin 2) (Fin 2) R).trace) 1 j`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hdet, htr, hγ, map_one, one_zpow, one_mul]`. Introduce `z τ htz hdz`. Rewrite using `[hWD, h4]`. Use `show _ = ∏ w, hq (em w τ) 1 j`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu : em w (z : Matrix (Fin 2) (Fin 2) R).det ≠ 0`. Establish `hz : IsUnit (z : Matrix (Fin 2) (Fin 2) R).det`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Units.isUnit _`. Conclude with `(hz.map (em w)).ne_zero`.
-
-Rewrite using `[hdet, htr, htz, hdz, map_add, map_ofNat, h6 j (em w τ)]`. Rewrite `hu` using `[hdz, map_add, map_ofNat]`. Rewrite using `[zpow_neg, show ((j : ℤ) + 1) = ((j + 1 : ℕ) : ℤ) by push_cast; ring, zpow_natCast, inv_mul_cancel_left₀ (pow_ne_zero _ hu)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtMain_of (h1 : FinMH) (h2 : ThFacts) (h3 : TwineC) (h4 : TrDC) (h5 : Scalars) (h6 : HqKappa) : WtMain := by
   intro R I _ _ em j hj

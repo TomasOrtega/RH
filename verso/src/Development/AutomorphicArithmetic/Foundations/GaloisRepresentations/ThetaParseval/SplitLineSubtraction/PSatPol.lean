@@ -11,9 +11,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-Establish `hx : ((((q : ℝ) ^ (((a : ℝ) - 1) / 2) : ℝ) : ℂ))⁻¹ = (q : ℂ) ^ ((((1 : ℝ) - a) / 2 : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg q), Complex.ofReal_natCast, ← Complex.cpow_neg]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[zpow_neg, ← inv_zpow, mul_inv, ← hx, mul_zpow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem satPol_val (q a : ℕ) (b : ℂˣ) (m : ℤ) :
     ((((q : ℝ) ^ (((a : ℝ) - 1) / 2) : ℝ) : ℂ) * (b : ℂ)) ^ (-m) =
@@ -26,9 +26,9 @@ private theorem satPol_val (q a : ℕ) (b : ℂˣ) (m : ℤ) :
   rw [zpow_neg, ← inv_zpow, mul_inv, ← hx, mul_zpow]
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h a B g`. Rewrite using `[GlobalTheory.SatChar.charPol_satWD]`. Unfold `unrPol algSat`. Simplify using `only [bind, pure, Multiset.bind_singleton, Multiset.map_map, Function.comp_def]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[satPol_val]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.TP.Sub.satPol_holds :
     SatPol := by

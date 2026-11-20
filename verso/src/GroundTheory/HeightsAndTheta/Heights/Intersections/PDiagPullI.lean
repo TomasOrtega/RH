@@ -14,7 +14,7 @@ set_option linter.unusedSectionVars false
 namespace DiagonalPullback
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Distinguish the cases in `h : ∃ k', diagonalBlockIndex j k' = k`. Take `⟨k', rfl⟩` from `h`. Simplify using `only [Pi.add_apply, pullDeg_segreBlockEmbedding]`. Simplify using `only [I1.pullDeg, Pi.add_apply, Function.extend_apply' _ _ _ h, Pi.zero_apply, add_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pullDeg_add (j : Fin 2) (a b : T.YBlk → ℤ) :
     I1.pullDeg (diagonalBlockIndex j) (a + b) = I1.pullDeg (diagonalBlockIndex j) a + I1.pullDeg (diagonalBlockIndex j) b := by
@@ -25,9 +25,7 @@ theorem pullDeg_add (j : Fin 2) (a b : T.YBlk → ℤ) :
   · simp only [I1.pullDeg, Pi.add_apply, Function.extend_apply' _ _ _ h, Pi.zero_apply, add_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases j <;> cases k`. Conclude with `pullDeg_segreBlockEmbedding 0 c .base`. Conclude with `pullDeg_segreBlockEmbedding 0 c .det`. Conclude with `pullDeg_segreBlockEmbedding 0 c .line`.
-
-Conclude with `pullDeg_otherLine 0 c`. Conclude with `pullDeg_segreBlockEmbedding 1 c .base`. Conclude with `pullDeg_segreBlockEmbedding 1 c .det`. Conclude with `pullDeg_otherLine 1 c`. Conclude with `pullDeg_segreBlockEmbedding 1 c .line`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem pullDeg_eq_alt (j : Fin 2) (c : T.YBlk → ℤ) : I1.pullDeg (diagonalBlockIndex j) c = T.pullDeg j c := by
   funext k
@@ -44,9 +42,9 @@ theorem pullDeg_eq_alt (j : Fin 2) (c : T.YBlk → ℤ) : I1.pullDeg (diagonalBl
 variable {ι ν κ : Type} [Fintype ι] [Fintype ν] [Fintype κ]
 
 /- English proof (translation)
-Use `⟨rfl, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[ofMetrics_fs_h, ofMetrics_fs_h, prod_WBlk, prod_YBlk, pullDeg_eq_alt]`. Use `fin_cases j`. Simplify using `[T.pullDeg, T.yyEmb]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `[T.pullDeg, T.yyEmb]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isPull_fs (j : Fin 2) (c : T.YBlk → ℤ) :
     IsPullHerm (diagonalBlockIndex j) (T.yyEmb (ι := ι) (ν := ν) (κ := κ) j)
@@ -61,7 +59,7 @@ theorem isPull_fs (j : Fin 2) (c : T.YBlk → ℤ) :
     rfl
 
 /- English proof (translation)
-Use `show X p ∈ RingHom.ker _ ↔ _`. Rewrite using `[RingHom.mem_ker, T.multiConeMap, eval₂Hom_X', mul_eq_zero, C_eq_zero]`. Simplify using `[X_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem X_mem_diag_iff {Ω : Type} [Field Ω] {E : Type} [AddCommGroup E] [Module Ω E] {Φ : Type} [Field Φ]
     [Algebra Ω Φ] (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 2) Ω E) (φ : κ → E →ₗ[Ω] Ω) (a₀ : Φ)
@@ -72,27 +70,23 @@ theorem X_mem_diag_iff {Ω : Type} [Field Ω] {E : Type} [AddCommGroup E] [Modul
   simp [X_ne_zero]
 
 /- English proof (translation)
-Establish `hprime : S.Diag.IsPrime` using `hΔ.2.1.1`. Establish `hrel : IsRelevant S.Diag` using `hΔ.2.1.2.2`. Take `⟨ib, hib⟩` from `hrel .base`. Take `⟨il, hil⟩` from `hrel .det`. Take `⟨ik, hik⟩` from `hrel .line0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hik' : (X ⟨T.WBlk.line1, (ik : S.κ)⟩ : MRing S.WIdx) ∉ S.Diag`. Introduce `h`. Apply `hik` to reduce the goal to its premises. Rewrite `h`, the goal using `[X_mem_diag_iff]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set s : MRing S.YIdx := X ⟨T.YBlk.base, (ib : S.ι)⟩ ^ d .base * X ⟨T.YBlk.det, (il : S.ν)⟩ ^ d .det * X ⟨T.YBlk.line, (ik : S.κ)⟩ ^ d .line with hs_def`. Establish `hs : IsMultiHomog s d`. Establish `h` using `exHomog_mul (exHomog_mul (exHomog_pow (exHomog_X (ι := S.YIdx) T.YBlk.base ib) (d .base)) (exHomog_pow (exHomog_X (ι := S.YIdx) T.YBlk.det il) (d .det))) (exHomog_pow (exHomog_X (ι := S.YIdx) T.YBlk.line ik) (d .line))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `cases k <;> simp`. Establish `hs0 : rename (T.yyEmb 0) s = X ⟨T.WBlk.base, ib⟩ ^ d .base * X ⟨T.WBlk.det, il⟩ ^ d .det * X ⟨T.WBlk.line0, ik⟩ ^ d .line`. Simplify using `only [hs_def, map_mul, map_pow, rename_X]`. Both sides reduce to the same expression. Establish `hs1 : rename (T.yyEmb 1) s = X ⟨T.WBlk.base, ib⟩ ^ d .base * X ⟨T.WBlk.det, il⟩ ^ d .det * X ⟨T.WBlk.line1, (ik : S.κ)⟩ ^ d .line`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [hs_def, map_mul, map_pow, rename_X]`. Both sides reduce to the same expression. Establish `hpow : ∀ {f : MRing S.WIdx} (n : ℕ), f ∉ S.Diag → f ^ n ∉ S.Diag` using `fun n hf h => hf (hprime.mem_of_pow_mem n h)`. Establish `hmul : ∀ {f g : MRing S.WIdx}, f ∉ S.Diag → g ∉ S.Diag → f * g ∉ S.Diag` using `fun hf hg h => (hprime.mem_or_mem h).elim hf hg`. Establish `hn0 : rename (T.yyEmb 0) s ∉ S.Diag`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hs0]`. Conclude with `hmul (hmul (hpow _ hib) (hpow _ hil)) (hpow _ hik)`. Establish `hn1 : rename (T.yyEmb 1) s ∉ S.Diag`. Rewrite using `[hs1]`. Conclude with `hmul (hmul (hpow _ hib) (hpow _ hil)) (hpow _ hik')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set a0 : T.WBlk → ℕ := d .base • Pi.single T.WBlk.base 1 + d .det • Pi.single T.WBlk.det 1 + d .line • Pi.single T.WBlk.line0 1 with ha0`. Use `set a1 : T.WBlk → ℕ := d .base • Pi.single T.WBlk.base 1 + d .det • Pi.single T.WBlk.det 1 + d .line • Pi.single T.WBlk.line1 1 with ha1`. Establish `hh0 : IsMultiHomog (rename (T.yyEmb 0) s) a0`. Rewrite using `[hs0]`. Conclude with `exHomog_mul (exHomog_mul (exHomog_pow (exHomog_X (ι := S.WIdx) T.WBlk.base ib) _) (exHomog_pow (exHomog_X (ι := S.WIdx) T.WBlk.det il) _)) (exHomog_pow (exHomog_X (ι := S.WIdx) T.WBlk.line0 ik) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hh1 : IsMultiHomog (rename (T.yyEmb 1) s) a1`. Rewrite using `[hs1]`. Conclude with `exHomog_mul (exHomog_mul (exHomog_pow (exHomog_X (ι := S.WIdx) T.WBlk.base ib) _) (exHomog_pow (exHomog_X (ι := S.WIdx) T.WBlk.det il) _)) (exHomog_pow (exHomog_X (ι := S.WIdx) T.WBlk.line1 (ik : S.κ)) _)`. Establish `hT0 : A₀.a = T.pullDeg 0 A.a` using `by rw [hp0.1, pullDeg_eq_alt]`. Establish `hT1 : A₁.a = T.pullDeg 1 A.a` using `by rw [hp1.1, pullDeg_eq_alt]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hd0 : ∀ k, A₀.a k = a0 k`. Introduce `k`. Rewrite using `[hT0]`. Apply the tactic sequence `cases k <;> simp [T.pullDeg, ha0, hd]`. Establish `hd1 : ∀ k, A₁.a k = a1 k`.
-
-Introduce `k`. Rewrite using `[hT1]`. Apply the tactic sequence `cases k <;> simp [T.pullDeg, ha1, hd]`. Establish `e0` using `hF.2.2 S.Diag D L A₀ _ a0 hΔ hL (isSmoothHerm_pull 0 hA hp0) hd0 hh0 hn0`. Establish `e1` using `hF.2.2 S.Diag D L A₁ _ a1 hΔ hL (isSmoothHerm_pull 1 hA hp1) hd1 hh1 hn1`.
-
-Rewrite using `[e0, e1, recR_eq, recR_eq, cycR_eq_finsum, cycR_eq_finsum, (hDP (S.a 0)).1 s d hs]`. Use `congr 1`. Conclude with `ptsIntegral_congr_mcPts _ (fun _ _ _ => rfl) fun z hz => (hDP (S.a 0)).2.2 s d hs A A₀ A₁ hd ⟨hT0, hp0.2⟩ ⟨hT1, hp1.2⟩ z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem I_pull_eq {D : ℕ} (S : ProjectiveLineBundle D)
     (I : Ideal (MRing S.WIdx) → (n : ℕ) → (Fin n → HermLine S.WIdx) → ℝ) (hF : IsIntersectionFamily I)
@@ -177,25 +171,21 @@ end DiagonalPullback
 open DiagonalPullback
 
 /- English proof (translation)
-Introduce `I hI D S X X₀ X₁ L hX hp0 hp1 hL`. Establish `hF : IsIntersectionFamily (I T.WBlk S.WIdx)` using `hI T.WBlk S.WIdx`. Establish `hW : IsArithVar S.WW (D + 2)` using `S.arithWW`. Establish `hgW : S.g ∉ S.WW`. Establish `hh : aeval (T.wwCoord S.x S.δ S.e S.φ (S.a 0) (S.a 1)) S.h ≠ 0` using `(not_mem_ker_iff_aeval_ne _ S.h _ S.h_deg).1 S.h_nmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(not_mem_ker_iff_aeval_ne _ S.g _ S.g_deg).2 ?_` and prove the remaining obligations. Rewrite using `[S.quot]`. Use `mul_ne_zero ?_ hh` and prove the remaining obligations. Conclude with `sub_ne_zero.2 (S.indep.injective.ne (by decide))`. Establish `hdiv` using `(hDD S.Ω S.ι S.ν S.κ S.E S.Φ S.x S.B S.e S.φ S.δ S.dualSec S.dualGen S.detGen S.chart S.a S.indep).2 S.n S.g S.h S.g_deg S.h_deg S.h_nmem S.quot`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΔhor : IsHorizontal S.Diag`. Establish `h` using `hW.2.2.1`. Unfold `IsHorizontal at h ⊢`. Rewrite using `[← h]`. Conclude with `comap_C_ker_multiConeMap _ _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hΔmem : S.Diag ∈ divSupp S.WW S.g`. Use `mem_divSupp_of_divCycle_ne_zero fun h0 => ?_` and prove the remaining obligations. Use `congrArg (fun z => z S.Diag) hdiv` as an intermediate fact. Simplify using `only [Finsupp.coe_sub, Pi.sub_apply, T.toZCycle, Finsupp.mapRange_apply, h0, Finsupp.single_eq_same] at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΔ : IsArithVar S.Diag (D + 1)` using `(divSuppArith T.WBlk S.WIdx S.WW (D + 1) (HermLine.ofMetrics (fun k => maxMetric ℂ (S.WIdx k)) (fun k => (T.wwDeg S.n 1 k : ℤ))) S.g S.Diag hW ⟨T.wwDeg S.n 1, fun _ => rfl, S.g_deg, hgW⟩ hΔmem).1 hΔhor`. Establish `hDP'` using `hDP S.Ω S.ι S.ν S.κ S.E S.Φ S.x S.e S.φ S.δ`. Use `set b : T.YBlk → ℤ := fun k => ((X.a k).natAbs : ℤ) with hb`. Use `set B : HermLine S.YIdx := HermLine.ofMetrics (fun k => fsMetric (S.YIdx k)) b with hB`. Use `set B₀ : HermLine S.WIdx := HermLine.ofMetrics (fun k => fsMetric (S.WIdx k)) (I1.pullDeg (diagonalBlockIndex 0) b) with hB₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B₁ : HermLine S.WIdx := HermLine.ofMetrics (fun k => fsMetric (S.WIdx k)) (I1.pullDeg (diagonalBlockIndex 1) b) with hB₁`. Establish `hsB : IsSmoothHerm B` using `isSmoothHerm_ofMetrics_fs b`. Establish `hpB0 : IsPullHerm (diagonalBlockIndex 0) (T.yyEmb 0) B B₀` using `isPull_fs 0 b`. Establish `hpB1 : IsPullHerm (diagonalBlockIndex 1) (T.yyEmb 1) B B₁` using `isPull_fs 1 b`. Establish `hsX0 : IsSmoothHerm X₀` using `isSmoothHerm_pull 0 hX hp0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsX1 : IsSmoothHerm X₁` using `isSmoothHerm_pull 1 hX hp1`. Establish `hsB0 : IsSmoothHerm B₀` using `isSmoothHerm_ofMetrics_fs _`. Establish `hsB1 : IsSmoothHerm B₁` using `isSmoothHerm_ofMetrics_fs _`. Establish `hpXB : ∀ (j : Fin 2) {Xj Bj : HermLine S.WIdx}, IsPullHerm (diagonalBlockIndex j) (T.yyEmb j) X Xj → IsPullHerm (diagonalBlockIndex j) (T.yyEmb j) B Bj → IsPullHerm (diagonalBlockIndex j) (T.yyEmb j) (X.tensor B) (Xj.tensor Bj)`. Introduce `j Xj Bj hXj hBj`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨?_, fun z => ?_⟩` and prove the remaining obligations. Use `show Xj.a + Bj.a = I1.pullDeg (diagonalBlockIndex j) (X.a + B.a)`. Rewrite using `[pullDeg_add, hXj.1, hBj.1]`. Use `show Xj.h z * Bj.h z = X.h _ * B.h _`. Rewrite using `[hXj.2, hBj.2]`.
-
-Establish `c1` using `I_pull_eq S (I T.WBlk S.WIdx) hF hΔ hDP' L hL (X.tensor B) (X₀.tensor B₀) (X₁.tensor B₁) (fun k => (X.a k + (X.a k).natAbs).toNat) (fun k => by show X.a k + ((X.a k).natAbs : ℤ) = _`. Rewrite using `[Int.toNat_of_nonneg (by omega)])`. Use the proof step `(isSmoothHerm_tensor hX hsB) (hpXB 0 hp0 hpB0) (hpXB 1 hp1 hpB1)`. Establish `c2` using `I_pull_eq S (I T.WBlk S.WIdx) hF hΔ hDP' L hL B B₀ B₁ (fun k => (X.a k).natAbs) (fun _ => rfl) hsB hpB0 hpB1`. Establish `a0` using `hF.2.1 S.Diag D L X₀ B₀ hΔ hL hsX0 hsB0`.
-
-Establish `a1` using `hF.2.1 S.Diag D L X₁ B₁ hΔ hL hsX1 hsB1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem DiagPullI.proof (hDD : DiagDiv.Statement) (hDP : DiagPull.Statement) : DiagPullI.Statement := by
   intro I hI D S X X₀ X₁ L hX hp0 hp1 hL

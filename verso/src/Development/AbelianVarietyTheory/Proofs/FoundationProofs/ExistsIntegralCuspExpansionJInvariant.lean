@@ -16,7 +16,7 @@ namespace GlobalTheory.FNExpJ
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Rewrite using `[HahnSeries.ofPowerSeries_apply]`. Apply `HahnSeries.embDomain_notin_image_support` to reduce the goal to its premises. Introduce and unpack `⟨n, -, hn⟩`. Conclude with `hr n (by simpa using hn)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ofPowerSeries_coeff_of_ne (P : PowerSeries Ω) {r : ℚ} (hr : ∀ n : ℕ, (n : ℚ) ≠ r) :
     (HahnSeries.ofPowerSeries ℚ Ω P).coeff r = 0 := by
@@ -26,31 +26,31 @@ theorem ofPowerSeries_coeff_of_ne (P : PowerSeries Ω) {r : ℚ} (hr : ∀ n : �
   exact hr n (by simpa using hn)
 
 /- English proof (translation)
-Introduce `Ω _ ε`. Take `⟨c, hc⟩` from `GlobalTheory.exists_hasSum_modularJ_sub_inv`. Use `set P : PowerSeries Ω := PowerSeries.mk fun n => (c n : Ω) with hPdef`. Establish `hP : ∀ n : ℕ, (HahnSeries.ofPowerSeries ℚ Ω P).coeff (n : ℚ) = (c n : Ω)` using `fun n => by`. Rewrite using `[HahnSeries.ofPowerSeries_apply_coeff, hPdef, PowerSeries.coeff_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : ∀ r : ℚ, (∀ n : ℕ, (n : ℚ) ≠ r) → (HahnSeries.ofPowerSeries ℚ Ω P).coeff r = 0` using `fun r hr => ofPowerSeries_coeff_of_ne P hr`. Establish `hneg : ∀ r : ℚ, r < 0 → ∀ n : ℕ, (n : ℚ) ≠ r` using `fun r hr n hn => by`. Establish `: (0 : ℚ) ≤ n` using `n.cast_nonneg`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨HahnSeries.single (-1 : ℚ) (1 : Ω) + HahnSeries.ofPowerSeries ℚ Ω P, ⟨?_, 0, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, one_pos, fun r hr => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : r = -1`. Conclude with `⟨-1, by simp [h1]⟩`. Distinguish the cases in `h2 : ∃ n : ℕ, (n : ℚ) = r`. Take `⟨n, rfl⟩` from `h2`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n, by simp⟩`. Use `push_neg at h2`. It suffices to derive a contradiction. Apply `hr` to reduce the goal to its premises. Rewrite using `[HahnSeries.coeff_add, HahnSeries.coeff_single_of_ne h1, h0 r h2, add_zero]`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz set τ : ℍ := ⟨z, hz⟩ with hτ`. Establish `hup : up jT z = GlobalTheory.modularJ τ`. Simplify using `only [up, UpperHalfPlane.ofComplex_apply_of_im_pos hz]`. Both sides reduce to the same expression. Establish `hq : Function.Periodic.qParam 1 (τ : ℂ) = Complex.exp (2 * Real.pi * Complex.I * z)`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Function.Periodic.qParam, hτ]`. Establish `H1 : HasSum (fun r : ℚ => ε ((HahnSeries.single (-1 : ℚ) (1 : Ω)).coeff r) * Complex.exp (2 * Real.pi * Complex.I * (r : ℂ) * z)) (Function.Periodic.qParam 1 (τ : ℂ))⁻¹`. Use `hasSum_single (f := fun r : ℚ => ε ((HahnSeries.single (-1 : ℚ) (1 : Ω)).coeff r) * Complex.exp (2 * Real.pi * Complex.I * (r : ℂ) * z)) (-1) (fun r hr => by` as an intermediate fact. Simplify using `[HahnSeries.coeff_single_of_ne hr])`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hq, HahnSeries.coeff_single_same, map_one, one_mul, ← Complex.exp_neg]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `H2 : HasSum (fun r : ℚ => ε ((HahnSeries.ofPowerSeries ℚ Ω P).coeff r) * Complex.exp (2 * Real.pi * Complex.I * (r : ℂ) * z)) (GlobalTheory.modularJ τ - (Function.Periodic.qParam 1 (τ : ℂ))⁻¹)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Function.Injective.hasSum_iff (g := fun n : ℕ => (n : ℚ)) Nat.cast_injective (fun r hr => ?_)).mp ?_` and prove the remaining obligations. Rewrite using `[h0 r (fun n hn => hr ⟨n, hn⟩), map_zero, zero_mul]`. Use `hc τ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`. Simplify using `only [Function.comp_apply, hP, map_intCast, hq, ← Complex.exp_nat_mul]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `H1.add H2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r`.
+Expand and normalize the polynomial expressions, which then agree. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HahnSeries.coeff_add, map_add, add_mul]`. Rewrite using `[hup]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[HahnSeries.coeff_add, HahnSeries.coeff_single_same, h0 _ (hneg _ (by norm_num)), add_zero]`. Introduce `r hr`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[HahnSeries.coeff_add, HahnSeries.coeff_single_of_ne hr.ne, h0 r (hneg r (by linarith)), add_zero]`. Introduce `r`. Distinguish the cases in `h1 : r = -1`. Substitute `h1` using the available equality. Use `⟨1, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[HahnSeries.coeff_add, HahnSeries.coeff_single_same, h0 _ (hneg _ (by norm_num))]`. Simplify using the standard rewrite rules. Distinguish the cases in `h2 : ∃ n : ℕ, (n : ℚ) = r`. Take `⟨n, rfl⟩` from `h2`. Use `⟨c n, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[HahnSeries.coeff_add, HahnSeries.coeff_single_of_ne h1, hP, zero_add]`. Use `push_neg at h2`. Conclude with `⟨0, by rw [HahnSeries.coeff_add, HahnSeries.coeff_single_of_ne h1, h0 r h2]; simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem expansion_j : ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ), ∃ h : HahnSeries ℚ Ω,
     IsExp ε jT h ∧ h.coeff (-1) = 1 ∧ (∀ r : ℚ, r < -1 → h.coeff r = 0) ∧

@@ -16,7 +16,7 @@ namespace GlobalTheory.PtExt
 attribute [local instance] cotOp cotCentral cotTower
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `TrivSqZeroExt.snd (algebraMap R (TrivSqZeroExt R (Cot R D)) (Coalgebra.counit z) + TrivSqZeroExt.inr (AugCot.d (Bialgebra.counitAlgHom R D) z)) = _`. Rewrite using `[TrivSqZeroExt.snd_add, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cotSnd_cotPt_eq_dUnit (R : Type) [CommRing R] (D : Type) [CommRing D] [Bialgebra R D] (z : D) :
     cotSnd R D (cotPt R D z) = dUnit R z := by
@@ -25,11 +25,9 @@ theorem cotSnd_cotPt_eq_dUnit (R : Type) [CommRing R] (D : Type) [CommRing D] [B
   rw [TrivSqZeroExt.snd_add, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]
 
 /- English proof (translation)
-Introduce `R _ X D _ _ y f f' k h`. Establish `hf : f - f' = ⟨d0 _ k, commAlgFunctorCoboundaryZero_mem_cocyclesOne _ k⟩` using `Subtype.ext h.symm`. Set `y' : Pt X (cotExt R D).C` to `spOver (cotPt R D) ≫ y`. Establish `h1 : (cotExt R D).val y'.left y'.w f - (cotExt R D).val y'.left y'.w f' = (k (trivAt y') : (cotExt R D).C) - (cotExt R D).i (k (Thick.triv (cotExt R D).B _ ((cotExt R D).red_w y'.w)))`. Rewrite using `[← map_sub, hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `SqExt.tangentValue_coboundary _ _ _ k`. Establish `h2 : fv f D (cotExt R D).C (cotPt R D) y - fv f' D (cotExt R D).C (cotPt R D) y = (show (cotExt R D).C from k (trivAt y')) - cotPt R D (show D from k (trivAt y))` using `(congrFun (congrFun (congrFun h _) _) (trivMap (cotPt R D) y)).symm`. Establish `key : ∀ a a' b b' c i p : (cotExt R D).C, a - a' = c - i → b - b' = c - p → (a - b) - (a' - b') = p - i` using `fun a a' b b' c i p e1 e2 ↦ by linear_combination e1 - e2`. Establish `h3` using `congrArg (cotSnd R D) (key _ _ _ _ _ _ _ h1 h2)`. Rewrite `h3` using `[map_sub, map_sub (cotSnd R D) (cotPt R D _), cotSnd_cotPt_eq_dUnit]`.
-
-Conclude with `h3.trans (sub_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crystallineCocycleCotangentValue_sub_of_coboundary : ∀ (R : Type) [CommRing R] (X : Over (Sp R)) (D : Type) [CommRing D] [Bialgebra R D] (y : Pt X D) (f f' : Z1 (O (dp0 R) (X.hom ≫ 𝟙 _))) (k : C0 (O (dp0 R) (X.hom ≫ 𝟙 _))), d0 _ k = f.1 - f'.1 → cotVal f y - cotVal f' y = dUnit R (show D from k (trivAt y)) := by
   intro R _ X D _ _ y f f' k h

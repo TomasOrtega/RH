@@ -14,7 +14,7 @@ namespace GlobalTheory.ZH.CrdMove
 open GlobalTheory.VeryAmpleCharts GlobalTheory.ZH.CrdCalc GlobalTheory.FieldBaseChange
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE hU).op ≫ f.appLE U' V' e').hom a = (f.appLE U V e ≫ X.presheaf.map (homOfLE hV).op).hom a`. Rewrite using `[Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private lemma appLE_presheaf_map_eq_presheaf_map_appLE {X Y : Scheme.{0}} (f : X ⟶ Y) {U U' : Y.Opens} {V V' : X.Opens} (hU : U' ≤ U)
     (hV : V' ≤ V) (e : V ≤ f ⁻¹ᵁ U) (e' : V' ≤ f ⁻¹ᵁ U') (a : Γ(Y, U)) :
@@ -24,7 +24,7 @@ private lemma appLE_presheaf_map_eq_presheaf_map_appLE {X Y : Scheme.{0}} (f : X
   rw [Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private lemma appLE_eq_unfold {X Y : Scheme.{0}} {f g : X ⟶ Y} (h : f = g) (U : Y.Opens) (V : X.Opens)
     (e : V ≤ f ⁻¹ᵁ U) (e' : V ≤ g ⁻¹ᵁ U) (a : Γ(Y, U)) : (f.appLE U V e).hom a = (g.appLE U V e').hom a := by
@@ -32,7 +32,7 @@ private lemma appLE_eq_unfold {X Y : Scheme.{0}} {f g : X ⟶ Y} (h : f = g) (U 
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(h.appLE U V e₁ ≫ g.appLE V W e₂ ≫ f.appLE W W' e₃).hom a = _`. Rewrite using `[Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Conclude with `appLE_eq_unfold (Category.assoc _ _ _) _ _ _ _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma appLE_appLE_appLE_eq_appLE_comp_comp {X Y Z T : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (h : Z ⟶ T) (U : T.Opens)
     (V : Z.Opens) (W : Y.Opens) (W' : X.Opens) (e₁ : V ≤ h ⁻¹ᵁ U) (e₂ : W ≤ g ⁻¹ᵁ V) (e₃ : W' ≤ f ⁻¹ᵁ W)
@@ -43,27 +43,25 @@ private lemma appLE_appLE_appLE_eq_appLE_comp_comp {X Y Z T : Scheme.{0}} (f : X
   exact appLE_eq_unfold (Category.assoc _ _ _) _ _ _ _ _
 
 /- English proof (translation)
-Establish `h` using `(hA (Sp K) P N hN).2`. Unfold `Out.VeryAmpleAt at h`. Take `⟨M, s, hcov, hs⟩` from `h ⊤ (isAffineOpen_top _)`. Establish `hiso : IsIso (P.A.hom ⁻¹ᵁ ⊤).ι`. Rewrite using `[Scheme.Hom.preimage_top, ← Scheme.topIso_hom]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Establish `hψ : inv (P.A.hom ⁻¹ᵁ ⊤).ι ≫ (P.A.hom ⁻¹ᵁ ⊤).ι = 𝟙 _` using `IsIso.inv_hom_id _`. Establish `hL : P.L.IsLB` using `P.isLB`. Use `⟨M, fun i => GlobalTheory.VeryAmpleCharts.move P.L N hψ (s i), ?_, fun i _ => ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `hy : inv (P.A.hom ⁻¹ᵁ ⊤).ι y ∈ (⨆ i, Out.nonzeroLocus (s i))`. Rewrite using `[hcov]`. Discharge the goal by the elementary cases of `trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[TopologicalSpace.Opens.mem_iSup]`. Take `⟨i, hi⟩` from `hy`. Simplify using `only [TopologicalSpace.Opens.mem_iSup]`. Conclude with `⟨i, Set.mem_univ _, (SetLike.ext_iff.1 (GlobalTheory.VeryAmpleCharts.locus_move P.L N hψ hL (s i)) y).2 hi⟩`. Take `⟨haff, r, hr, hsurj⟩` from `hs i`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hloc` using `GlobalTheory.VeryAmpleCharts.locus_move P.L N hψ hL (s i)`. Use `⟨(congrArg IsAffineOpen hloc).mpr (haff.preimage _), ?_⟩` and prove the remaining obligations. Unfold `IsRatio resG constFn`. Use `⟨fun j => ((inv (P.A.hom ⁻¹ᵁ ⊤).ι).appLE _ _ hloc.le).hom (r j), fun j l => ?_, ?_⟩` and prove the remaining obligations. Establish `le : Out.nonzeroLocus (move P.L N hψ (s i)) ⊓ (lbPow P.L N).U l ≤ inv (P.A.hom ⁻¹ᵁ ⊤).ι ⁻¹ᵁ (Out.nonzeroLocus (s i) ⊓ (Out.powOver P.A P.L ⊤ N).U (fun _ => l PUnit.unit))` using `fun y hy => ⟨(SetLike.ext_iff.1 hloc y).1 hy.1, GlobalTheory.VeryAmpleCharts.chart_le P.L N hψ l hy.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg ((inv (P.A.hom ⁻¹ᵁ ⊤).ι).appLE _ _ le).hom (hr j (fun _ => l PUnit.unit))`. Rewrite `e` using `[map_mul, appLE_presheaf_map_eq_presheaf_map_appLE, appLE_presheaf_map_eq_presheaf_map_appLE, appLE_presheaf_map_eq_presheaf_map_appLE]`. Conclude with `e`. Establish `hiso0 : IsIso (⊤ : (Sp K).Opens).ι`. Rewrite using `[← Scheme.topIso_hom]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `infer_instance`. Rewrite using `[eq_top_iff]`. Introduce `f hf`. Take `⟨g, rfl⟩` from `GlobalTheory.VeryAmpleCharts.appLE_surjective (ψ := inv (P.A.hom ⁻¹ᵁ ⊤).ι) (Out.nonzeroLocus (s i)) _ hloc f`. Take `⟨F, rfl⟩` from `hsurj g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Use `clear hf`. Rewrite using `[MvPolynomial.coe_eval₂Hom, MvPolynomial.hom_eval₂]`. Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[MvPolynomial.eval₂_C, RingHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Apply `Subring.subset_closure` to reduce the goal to its premises. Use `left`. Take `⟨x, rfl⟩` from `GlobalTheory.VeryAmpleCharts.appLE_surjective (ψ := (⊤ : (Sp K).Opens).ι) ⊤ ⊤ (Scheme.Hom.preimage_top _).symm a`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom x, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom x) = x`. Simplify using the standard rewrite rules. Rewrite using `[hx]`. Conclude with `(appLE_eq_unfold (f := P.A.hom) (g := inv (P.A.hom ⁻¹ᵁ ⊤).ι ≫ (P.A.hom ∣_ ⊤) ≫ (⊤ : (Sp K).Opens).ι) (by rw [morphismRestrict_ι, ← Category.assoc, hψ, Category.id_comp]) ⊤ _ _ (fun _ _ => trivial) x).trans (appLE_appLE_appLE_eq_appLE_comp_comp _ _ _ ⊤ _ _ _ _ _ _ (fun _ _ => triv …`. Consider the case `add p q hp hq`.
-
-Rewrite using `[MvPolynomial.eval₂_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p n hp`. Rewrite using `[MvPolynomial.eval₂_mul, MvPolynomial.eval₂_X]`. Conclude with `mul_mem hp (Subring.subset_closure (Or.inr ⟨n, rfl⟩))`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem immBy_lbPow (hA : Out.AmpleSt) (K : Type) [Field K] (P : Out.PolAV (Sp K)) (N : ℕ) (hN : 4 ≤ N) :
     ∃ (m : ℕ) (s : Fin (m + 1) → (lbPow P.L N).Sec), ImmBy P.A.hom (lbPow P.L N) s Set.univ := by
@@ -133,7 +131,7 @@ theorem immBy_lbPow (hA : Out.AmpleSt) (K : Type) [Field K] (P : Out.PolAV (Sp K
 variable {X X' Y : Scheme.{0}} {R : Type} [CommRing R] {I : Type}
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (x ≫ g) ⁻¹ᵁ U` using `fun p _ => e (h trivial)`. Establish `key : g.appLE U W e ≫ x.appLE W ⊤ h = (x ≫ g).appLE U ⊤ h'`. Rewrite using `[Scheme.Hom.appLE_comp_appLE]`. Rewrite using `[valR, valR, dif_pos h, dif_pos h', ← key]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_appLE (x : Sp R ⟶ Y) (g : Y ⟶ X) (U : X.Opens) (W : Y.Opens) (e : W ≤ g ⁻¹ᵁ U) (h : ⊤ ≤ x ⁻¹ᵁ W)
     (a : Γ(X, U)) : valR x W ((g.appLE U W e).hom a) = valR (x ≫ g) U a := by
@@ -144,7 +142,7 @@ theorem valR_appLE (x : Sp R ⟶ Y) (g : Y ⟶ X) (U : X.Opens) (W : Y.Opens) (e
   rfl
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ x ⁻¹ᵁ U` using `fun p hp => hVU (h hp)`. Establish `k : Y.presheaf.map (homOfLE hVU).op ≫ x.appLE V ⊤ h = x.appLE U ⊤ h'`. Rewrite using `[Scheme.Hom.map_appLE]`. Unfold `rs`. Rewrite using `[valR, valR, dif_pos h, dif_pos h', ← k]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -158,14 +156,14 @@ private lemma valR_rs_eq_valR {R : Type} [CommRing R] (x : Sp R ⟶ Y) {U V : Y.
   rfl
 
 /- English proof (translation)
-Rewrite using `[valR, valR, valR, dif_pos h, dif_pos h, dif_pos h, map_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma valR_mul_lemma_2 {R : Type} [CommRing R] (x : Sp R ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (f g : Γ(Y, U)) : valR x U (f * g) = valR x U f * valR x U g := by
   rw [valR, valR, valR, dif_pos h, dif_pos h, dif_pos h, map_mul, map_mul]
 
 /- English proof (translation)
-Rewrite using `[valR, dif_pos h]`. Conclude with `(u.isUnit.map _).map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isUnit_valR_of_unit {R : Type} [CommRing R] (x : Sp R ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (u : Γ(Y, U)ˣ) : IsUnit (valR x U (u : Γ(Y, U))) := by
@@ -173,13 +171,11 @@ private lemma isUnit_valR_of_unit {R : Type} [CommRing R] (x : Sp R ⟶ Y) (U : 
   exact (u.isUnit.map _).map _
 
 /- English proof (translation)
-Take `⟨l, c, hl, hv⟩` from `h`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b, x (IsLocalRing.closedPoint R) ∈ A.U l ⊓ B.U b := by`. Use `cover_inf hB l (hl (Set.mem_univ (IsLocalRing.closedPoint R)))` as an intermediate fact. Simplify `this` using `[TopologicalSpace.Opens.mem_iSup]`. Establish `hV : ⊤ ≤ x ⁻¹ᵁ (A.U l ⊓ B.U b)` using `fun p _ => (IsLocalRing.specializes_closedPoint (R := R) p).mem_open (x ⁻¹ᵁ (A.U l ⊓ B.U b)).isOpen hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `isUnit_valR_of_unit x _ hV ((res (divLe l b) (u.s (b, l)))⁻¹)`. Use `⟨b, c * w, hV.trans (Scheme.Hom.preimage_mono x inf_le_right), fun j => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (valR x (A.U l ⊓ B.U b)) (secOfIso_spec (t j) hu hA hB l b)`. Rewrite `e` using `[valR_rs_eq_valR x _ hV]`. Unfold `isoCand at e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `e` using `[valR_mul_lemma_2 x _ hV, valR_rs_eq_valR x _ hV]`. Use `show v j = _`. Rewrite using `[hv j]`. Use `show (c : R) * valR x (A.U l) ((secOfIso (t j) hu hA hB).f l) = _`. Rewrite using `[e, ← hw, Units.val_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem crd_secOfIso [IsLocalRing R] {A B : LB Y} {u : LB.Iso A B} (hu : u.IsGen) (hA : A.IsLB) (hB : B.IsLB)
     (t : I → B.Sec) {x : Sp R ⟶ Y} {v : I → R} (h : Crd A (fun i => secOfIso (t i) hu hA hB) x v) :
@@ -203,7 +199,7 @@ theorem crd_secOfIso [IsLocalRing R] {A B : LB Y} {u : LB.Iso A B} (hu : u.IsGen
   ring
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h0` using `(mem_wchart (φ := fun _ : Fin 1 => g)).1 hy 0`. Conclude with `(mem_wchart (φ := fun _ : PUnit => 𝟙 X)).2 fun _ => h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pow_chart_le (L : LB X) (N : ℕ) (g : Y ⟶ X) (j : Fin 1 → L.ι) :
     (LB.LinComb L (K := Fin 1) (fun _ => g) (fun _ => (N : ℤ))).U j ≤ g ⁻¹ᵁ (lbPow L N).U (fun _ => j 0) := by
@@ -226,7 +222,7 @@ def pullPow {L : LB X} {N : ℕ} (g : Y ⟶ X) (t : (lbPow L N).Sec) :
     rfl
 
 /- English proof (translation)
-Take `⟨l, c, hl, hv⟩` from `h`. Use `⟨fun _ => l 0, c, fun p _ => pow_chart_le L N g l (hl trivial), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hv i]`. Conclude with `congrArg (fun r => (c : R) * r) (valR_appLE x g _ _ (pow_chart_le L N g l) hl ((t i).f fun _ => l 0))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_pullPow {L : LB X} {N : ℕ} (g : Y ⟶ X) (t : I → (lbPow L N).Sec) {x : Sp R ⟶ Y} {v : I → R}
     (h : Crd _ (fun i => pullPow g (t i)) x v) : Crd (lbPow L N) t (x ≫ g) v := by
@@ -236,11 +232,11 @@ theorem crd_pullPow {L : LB X} {N : ℕ} (g : Y ⟶ X) (t : I → (lbPow L N).Se
   exact congrArg (fun r => (c : R) * r) (valR_appLE x g _ _ (pow_chart_le L N g l) hl ((t i).f fun _ => l 0))
 
 /- English proof (translation)
-Take `⟨w', hw'⟩` from `LBIso.symm H`. Take `⟨u, hu⟩` from `H`. Establish `hA : (LB.LinComb M (K` using `Fin 1) (fun _ => p) (fun _ => (k : ℤ))).IsLB := linComb_isLB M hM _ _`. Establish `hC : (LB.LinComb (L.pull g) (K` using `Fin 1) (fun _ => 𝟙 Y) (fun _ => (k : ℤ))).IsLB := linComb_isLB _ (pull_isLB hL g) _ _`. Establish `hD : (LB.LinComb (M.pull p) (K` using `Fin 1) (fun _ => 𝟙 Y) (fun _ => (k : ℤ))).IsLB := linComb_isLB _ (pull_isLB hM p) _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : (LB.LinComb L (K` using `Fin 1) (fun _ => g) (fun _ => (k : ℤ))).IsLB := linComb_isLB L hL _ _`. Establish `h1 : LBIso (LB.LinComb (L.pull g) (K` using `Fin 1) (fun _ => 𝟙 Y) (fun _ => (k : ℤ))) (LB.LinComb M (K := Fin 1) (fun _ => 𝟙 Y ≫ p) (fun _ => (k : ℤ))) := iso_linComb ((isGen_iff u).1 hu) _ _`. Establish `h2 : LBIso (LB.LinComb (M.pull p) (K` using `Fin 1) (fun _ => 𝟙 Y) (fun _ => (k : ℤ))) (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 Y ≫ g) (fun _ => (k : ℤ))) := iso_linComb ((isGen_iff w').1 hw') _ _`. Establish `h3 : LBIso (LB.LinComb (L.pull g) (K` using `Fin 1) (fun _ => 𝟙 Y) (fun _ => (k : ℤ))) (LB.LinComb (M.pull p) (K := Fin 1) (fun _ => 𝟙 Y) (fun _ => (k : ℤ))) := ⟨LB.linCombIso u _ _, DVR.linCombIso_isGen u hu _ _⟩`. Simplify using `only [Category.id_comp] at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨w, hw⟩` from `LBIso.trans hA hC hB (LBIso.symm h1) (LBIso.trans hC hD hB h3 h2)`. Conclude with `⟨fun i => secOfIso (pullPow g (t i)) hw hA hB, fun R _ _ x v h => crd_pullPow g t (crd_secOfIso hw hA hB (fun i => pullPow g (t i)) h)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_transport {L : LB X} {M : LB X'} (hL : L.IsLB) (hM : M.IsLB)
     (g : Y ⟶ X) (gi : X ⟶ Y) (e₁ : gi ≫ g = 𝟙 X) (e₂ : g ≫ gi = 𝟙 Y) (p : Y ⟶ X')
@@ -271,9 +267,9 @@ theorem exists_transport {L : LB X} {M : LB X'} (hL : L.IsLB) (hM : M.IsLB)
     crd_pullPow g t (crd_secOfIso hw hA hB (fun i => pullPow g (t i)) h)⟩
 
 /- English proof (translation)
-Unfold `valHom constHom`. Establish `e1 : Y.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op ≫ x.appLE U ⊤ h = x.appTop`. Rewrite using `[Scheme.Hom.map_appLE]`. Both sides reduce to the same expression. Establish `key : (Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ π.appTop ≫ (Y.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op ≫ x.appLE U ⊤ h) ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom = CommRingCat.ofHom ψ`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[e1, ← Category.assoc π.appTop, ← Scheme.Hom.comp_appTop, hx, spMap, Scheme.ΓSpecIso_naturality, Iso.inv_hom_id_assoc]`. Conclude with `congrArg (fun φ => φ.hom a) key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_constHom {K : Type} [CommRing K] (π : Y ⟶ Sp K) (x : Sp R ⟶ Y) (ψ : K →+* R) (hx : x ≫ π = spMap ψ)
     (U : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (a : K) : valHom x U h (constHom π U a) = ψ a := by
@@ -289,17 +285,17 @@ theorem valR_constHom {K : Type} [CommRing K] (π : Y ⟶ Sp K) (x : Sp R ⟶ Y)
   exact congrArg (fun φ => φ.hom a) key
 
 /- English proof (translation)
-Take `⟨l, c, hl, hw⟩` from `h`. Establish `hl' : ⊤ ≤ x ⁻¹ᵁ (LB.LinComb L φ' ε).U l` using `fun q _ => (wchart_eq hφ l).ge (hl trivial)`. Use `⟨l, c, hl', fun i => ?_⟩` and prove the remaining obligations. Establish `hpull : ∀ j, valR x ((LB.LinComb L φ' ε).U l) (LB.Sec.f (pullOver L ε hp hφ (σ j)) l) = valR (x ≫ p) ((LB.LinComb L φ ε).U l) (LB.Sec.f (σ j) l)`. Introduce `j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(valR_rs_eq_valR x (wchart_eq hφ l).le hl' ((p.app _).hom (LB.Sec.f (σ j) l))).trans ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `valR_appLE x p _ _ le_rfl (fun q _ => hl trivial) _`. Establish `hconst : ∀ k : K, valR x ((LB.LinComb L φ' ε).U l) (constHom π' _ k) = ψ k`. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← valR_constHom π' x ψ hx _ hl' k]`. Unfold `valHom`. Rewrite using `[valR, dif_pos hl']`. Both sides reduce to the same expression. Establish `hsum : (LB.Sec.f (s i) l : Γ(Y, (LB.LinComb L φ' ε).U l)) = ∑ j, constHom π' _ (a i j) * LB.Sec.f (pullOver L ε hp hφ (σ j)) l`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs i]`. Use `show chartLin π' _ l (∑ j, a i j • pullOver L ε hp hφ (σ j)) = _`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hadd : ∀ f : J → Γ(Y, (LB.LinComb L φ' ε).U l), valR x ((LB.LinComb L φ' ε).U l) (∑ j, f j) = ∑ j, valR x ((LB.LinComb L φ' ε).U l) (f j)`. Introduce `f`. Simplify using `only [valR, dif_pos hl', map_sum]`. Use `show ∑ j, ψ (a i j) * w j = (c : R) * valR x _ (LB.Sec.f (s i) l)`. Rewrite using `[hsum, hadd, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[valR_mul_lemma_2 x _ hl', hconst, hpull, hw j]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem crd_comb {V K : Type} [CommRing V] [CommRing K] {L : LB X} {T : Type} [Fintype T] {φ : T → (X' ⟶ X)}
     {φ' : T → (Y ⟶ X)} {ε : T → ℤ} {π : X' ⟶ Sp V} {π' : Y ⟶ Sp K} {f : V →+* K} {p : Y ⟶ X'}

@@ -21,13 +21,13 @@ open scoped LaurentSeries
 namespace GlobalTheory.GenericFibrePoint
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y yF x φ hgp hL`. Establish `hsq : φ ≫ Y.t.G.hom = (x.P.A.hom ≫ yF) ≫ (Y.jQ ≫ pullback.fst _ _)`. Rewrite using `[hgp.1.w, Category.assoc]`. Both sides reduce to the same expression. Set `φ' : x.P.A.left ⟶ Y.oF.t.G.left` to `Y.m.cart.1.lift φ (x.P.A.hom ≫ yF) hsq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `h1 : φ' ≫ Y.m.φ = φ` using `Y.m.cart.1.lift_fst _ _ _`. Establish `h2 : φ' ≫ Y.oF.t.G.hom = x.P.A.hom ≫ yF` using `Y.m.cart.1.lift_snd _ _ _`. Establish `hn : IsGrpPullback x.P.A Y.t.G (yF ≫ (Y.jQ ≫ pullback.fst _ _)) (φ' ≫ Y.m.φ)`. Rewrite using `[h1]`. Conclude with `hgp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : IsGrpPullback x.P.A Y.oF.t.G yF φ'` using `IsGrpPullback.cancel Y.m.cart hn h2`. Use `⟨φ', h1, h2, hc.comp Y.m0.toSABMap.cart, ?_⟩` and prove the remaining obligations. Take `⟨w, hw, -⟩` from `Y.m.lin`. Take `⟨w0, hw0, -⟩` from `Y.m0.toSABMap.lin`. Establish `k : LBIso (Y.t.PP.L.pull Y.m.φ) (Xo.univ.t.PP.L.pull Y.m0.toSABMap.φ)` using `LBIso.trans (pull_isLB Y.t.PP.isLB _) Y.oF.t.PP.isLB (pull_isLB Xo.univ.t.PP.isLB _) (LBIso.symm ⟨w, hw⟩) ⟨w0, hw0⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k' : LBIso (Y.t.PP.L.pull φ) (Xo.univ.t.PP.L.pull (φ' ≫ Y.m0.toSABMap.φ))` using `GlobalTheory.Spread.lbIso_pull_comp φ' h1.symm rfl k`. Conclude with `LBIso.trans x.P.isLB (pull_isLB Y.t.PP.isLB _) (pull_isLB Xo.univ.t.PP.isLB _) hL k'`.
+A detailed English derivation is pending.
 -/
 theorem fibre_map_univ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (yF : Sp ℂ ⟶ Xo.XF c) (x : KeyIn ℂ) (φ : x.P.A.left ⟶ Y.t.G.left), IsGrpPullback x.P.A Y.t.G (yF ≫ Y.j) φ → LBIso x.P.L (Y.t.PP.L.pull φ) → ∃ φ' : x.P.A.left ⟶ Y.oF.t.G.left, φ' ≫ Y.m.φ = φ ∧ φ' ≫ Y.oF.t.G.hom = x.P.A.hom ≫ yF ∧ IsGrpPullback x.P.A Xo.univ.t.G (yF ≫ pullback.fst _ _) (φ' ≫ Y.m0.toSABMap.φ) ∧ LBIso x.P.L (Xo.univ.t.PP.L.pull (φ' ≫ Y.m0.toSABMap.φ)) := by
   intro E _ _ _ H Dw l Xo c O _ β Y yF x φ hgp hL

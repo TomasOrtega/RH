@@ -14,15 +14,15 @@ section General
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]
 
 /- English proof (translation)
-Establish `hΦ' : HasStrictFDerivAt Φ ((ContinuousLinearEquiv.refl ℝ V : V ≃L[ℝ] V) : V →L[ℝ] V) 0` using `hΦ`. Use `set g := hΦ'.localInverse Φ _ 0 with hg`. Establish `hg0 : g (Φ 0) = 0` using `hΦ'.localInverse_apply_image`. Establish `hgd : HasStrictFDerivAt g (((ContinuousLinearEquiv.refl ℝ V).symm : V ≃L[ℝ] V) : V →L[ℝ] V) (Φ 0)` using `hΦ'.to_localInverse`. Establish `hri : ∀ᶠ w in 𝓝 (Φ 0), Φ (g w) = w` using `hΦ'.eventually_right_inverse`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : Tendsto g (𝓝 (Φ 0)) (𝓝 0)`. Use `hgd.continuousAt.tendsto` as an intermediate fact. Rewrite `this` using `[hg0]`. Then use the resulting hypothesis. Establish `heq : G =ᶠ[𝓝 (Φ 0)] fun w => F (g w)` using `by filter_upwards [hri, ht.eventually hGF] with w h1 h2`. Rewrite using `[← h2, h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF' : HasFDerivAt F M (g (Φ 0))` using `by rw [hg0]; exact hF`. Establish `h1 : HasFDerivAt G M (Φ 0)`. Use `(hF'.comp (Φ 0) hgd.hasFDerivAt).congr_of_eventuallyEq heq` as an intermediate fact. Simplify using `using this`. Set `M' : V →L[ℂ] ℂ` to `{ toFun := M map_add' := M.map_add map_smul' := fun c v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h : c • v = c.re • v + c.im • (Complex.I • v)` using `by conv_lhs => rw [← Complex.re_add_im c]`. Rewrite using `[add_smul, mul_smul]`. Simplify using the standard rewrite rules. Rewrite using `[h, map_add, map_smul, map_smul, hM]`. Simplify using `only [Complex.real_smul, RingHom.id_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `conv_rhs => rw [← Complex.re_add_im c]`. Expand and normalize the polynomial expressions, which then agree. Use `cont := M.cont }`. Conclude with `(hasFDerivAt_of_restrictScalars ℝ (f' := M') h1 rfl).differentiableAt`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_of_chart (Φ : V → V) (G F : V → ℂ) (M : V →L[ℝ] ℂ)
     (hΦ : HasStrictFDerivAt Φ (ContinuousLinearMap.id ℝ V) 0) (hF : HasFDerivAt F M 0)
@@ -70,28 +70,28 @@ Both sides reduce to the same expression.
 theorem rmul_apply (x y : Frame Ψ r) (τ : Ψ) (a c : Fin r) : rmul x y τ a c = ∑ k, x τ a k * y τ k c := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Conclude with `Matrix.mul_assoc (mat x τ) (mat y τ) (mat z τ)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rmul_assoc (x y z : Frame Ψ r) : rmul (rmul x y) z = rmul x (rmul y z) := by
   funext τ
   exact Matrix.mul_assoc (mat x τ) (mat y τ) (mat z τ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Conclude with `Matrix.mul_one (mat x τ)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rmul_one (x : Frame Ψ r) : rmul x (oneFr Ψ r) = x := by
   funext τ
   exact Matrix.mul_one (mat x τ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Conclude with `Matrix.one_mul (mat x τ)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem one_rmul (x : Frame Ψ r) : rmul (oneFr Ψ r) x = x := by
   funext τ
   exact Matrix.one_mul (mat x τ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Conclude with `(NormedSpace.exp_zero : NormedSpace.exp (0 : Matrix (Fin r) (Fin r) ℂ) = 1)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem expFr_zero : expFr (0 : Frame Ψ r) = oneFr Ψ r := by
   funext τ
@@ -113,9 +113,9 @@ theorem mulL_apply (x y : Frame Ψ r) : mulL Ψ r x y = rmul x y := rfl
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-Set `i : (Fin r → Fin r → ℂ) →L[ℝ] Matrix (Fin r) (Fin r) ℂ` to `LinearMap.toContinuousLinearMap (Matrix.ofLinearEquiv ℝ).toLinearMap`. Set `p : Matrix (Fin r) (Fin r) ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ a c)`. Establish `h0 : HasStrictFDerivAt (NormedSpace.exp : Matrix (Fin r) (Fin r) ℂ → _) (1 : _ →L[ℝ] _) (i 0)`. Rewrite using `[map_zero]`. Conclude with `hasStrictFDerivAt_exp_zero`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `p.hasStrictFDerivAt.comp 0 (h0.comp 0 i.hasStrictFDerivAt)`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem hasStrict_exp_entry (a c : Fin r) :
     HasStrictFDerivAt (fun Z : Fin r → Fin r → ℂ => (NormedSpace.exp (Matrix.of Z) : Matrix (Fin r) (Fin r) ℂ) a c)
@@ -131,7 +131,7 @@ theorem hasStrict_exp_entry (a c : Fin r) :
   exact h
 
 /- English proof (translation)
-Use `hasStrictFDerivAt_pi'.2 fun τ => hasStrictFDerivAt_pi'.2 fun a => hasStrictFDerivAt_pi'.2 fun c => ?_` and prove the remaining obligations. Apply the tactic sequence `have h := (hasStrict_exp_entry a c).comp (0 : Frame Ψ r) (ContinuousLinearMap.proj τ : Frame Ψ r →L[ℝ] (Fin r → Fin r → ℂ)).hasStrictFDerivAt`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasStrict_expFr : HasStrictFDerivAt (expFr : Frame Ψ r → Frame Ψ r) (ContinuousLinearMap.id ℝ _) 0 := by
   refine hasStrictFDerivAt_pi'.2 fun τ => hasStrictFDerivAt_pi'.2 fun a => hasStrictFDerivAt_pi'.2 fun c => ?_
@@ -160,17 +160,17 @@ theorem projU_apply (p : ℕ) (W : Frame Ψ r) (τ : Ψ) (a b : Fin r) : projU �
       if a < b then -((sgn p a : ℝ) : ℂ) * ((sgn p b : ℝ) : ℂ) * (starRingEnd ℂ) (W τ b a) else 0 := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `unfold sgn; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_mul_self (p a : ℕ) : ((sgn p a : ℝ) : ℂ) * ((sgn p a : ℝ) : ℂ) = 1 := by
   unfold sgn; split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `τ`. Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, mat, Matrix.of_apply, projU_apply, Matrix.zero_apply]`. Establish `ha` using `sgn_mul_self X.p0 a`. Establish `hb` using `sgn_mul_self X.p0 b`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `lt_trichotomy a b with h | h | h` into its components or cases. Simplify using `only [h, h.not_gt, if_true, if_false, RCLike.star_def]`. Take the linear combination `(-(sgn X.p0 b : ℂ) * (starRingEnd ℂ) (W τ b a)) * ha`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, h.not_gt, if_true, if_false, RCLike.star_def, map_mul, map_neg, Complex.conj_ofReal, Complex.conj_conj]`. Take the linear combination `(-(sgn X.p0 a : ℂ) * W τ a b) * hb`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem projU_mem [NumberField E] [IsCMField E] (X : Data E r) (W : Frame X.Ψ r) :
     projU X.Ψ r X.p0 W ∈ unitLie X := by
@@ -189,7 +189,7 @@ theorem projU_mem [NumberField E] [IsCMField E] (X : Data E r) (W : Frame X.Ψ r
     linear_combination (-(sgn X.p0 a : ℂ) * W τ a b) * hb
 
 /- English proof (translation)
-Introduce `τ`. Establish `h` using `congrArg (fun M => t • M) (hZ τ)`. Establish `: mat (t • Z) τ = t • mat Z τ` using `rfl`. Rewrite using `[this, Matrix.conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul]`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smul_mem_unitLie [NumberField E] [IsCMField E] (X : Data E r) (t : ℝ) {Z : Frame X.Ψ r} (hZ : Z ∈ unitLie X) :
     t • Z ∈ unitLie X := by
@@ -200,38 +200,36 @@ theorem smul_mem_unitLie [NumberField E] [IsCMField E] (X : Data E r) (t : ℝ) 
   simpa using h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ' a' b'`. Simplify using `[Finset.sum_apply, unitFr, ite_and]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem frame_eq_sum (W : Frame Ψ r) : W = ∑ τ, ∑ a, ∑ b, W τ a b • unitFr τ a b := by
   funext τ' a' b'
   simp [Finset.sum_apply, unitFr, ite_and]
 
 /- English proof (translation)
-Use `set P := projU X.Ψ r X.p0 with hP`. Establish `key : ∀ (τ : X.Ψ) (a b : Fin r), ℓ (P (Complex.I • unitFr τ a b)) = Complex.I * ℓ (P (unitFr τ a b))`. Introduce `τ a b`. Distinguish the cases in `hab : b < a`. Establish `ha` using `sgn_mul_self X.p0 a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `sgn_mul_self X.p0 b`. Use `set t : ℝ := -(sgn X.p0 a * sgn X.p0 b) / 2 with ht`. Establish `h1` using `h τ b a hab _ (smul_mem_unitLie X t (projU_mem X (unitFr τ a b))) _ (smul_mem_unitLie X t (projU_mem X (Complex.I • unitFr τ a b))) (by`. Use function extensionality and compare the values at `τ' c d`. Simplify using `only [Pi.add_apply, Pi.smul_apply, projU_apply, unitFr, smul_eq_mul, Complex.real_smul, map_mul, Complex.conj_I]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `lt_trichotomy c d with hcd | hcd | hcd` into its components or cases. Simplify using `only [hcd, hcd.not_gt, if_true, if_false]`. Distinguish the cases in `hc : τ' = τ ∧ c = b ∧ d = a`. Take `⟨rfl, rfl, rfl⟩` from `hc`. Simplify using `only [and_self, if_true, map_one, ht]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `push_cast`. Take the linear combination `(-((sgn X.p0 c : ℂ) ^ 2 * (sgn X.p0 d : ℂ) ^ 2) / 2) * Complex.I_mul_I + ((sgn X.p0 c : ℂ) * (sgn X.p0 c : ℂ)) * ha + hb`. Establish `hc' : ¬ (τ' = τ ∧ d = a ∧ c = b)` using `fun h' => hc ⟨h'.1, h'.2.2, h'.2.1⟩`. Simplify using `[hc, hc']`. Substitute `hcd` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc : ¬ (τ' = τ ∧ c = b ∧ c = a)` using `fun h' => hab.ne (h'.2.1.symm.trans h'.2.2)`. Simplify using `[hc]`. Establish `hc : ¬ (τ' = τ ∧ c = b ∧ d = a)` using `fun h' => by`. Take `⟨-, rfl, rfl⟩` from `h'`. Conclude with `hab.not_gt hcd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hcd, if_true, hc, if_false]`. Take the linear combination `((t : ℂ) * if τ' = τ ∧ c = a ∧ d = b then 1 else 0) * Complex.I_mul_I)`. Rewrite `h1` using `[map_smul, map_smul, Complex.real_smul, Complex.real_smul]`. Establish `htt : (t : ℂ) * (-2 * ((sgn X.p0 a : ℂ) * (sgn X.p0 b : ℂ))) = 1`. Rewrite using `[ht]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `push_cast`. Take the linear combination `((sgn X.p0 b : ℂ) * (sgn X.p0 b : ℂ)) * ha + hb`. Establish `ht0 : (t : ℂ) ≠ 0` using `left_ne_zero_of_mul_eq_one htt`. Use `mul_left_cancel₀ ht0 ?_` and prove the remaining obligations. Take the linear combination `(-Complex.I) * h1 + ((t : ℂ) * ℓ (P (Complex.I • unitFr τ a b))) * Complex.I_mul_I`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h0 : ∀ z : ℂ, P (z • unitFr τ a b) = 0`. Introduce `z`. Use function extensionality and compare the values at `τ' c d`. Simplify using `only [hP, projU_apply, unitFr, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Break down `lt_trichotomy c d with hcd | hcd | hcd` into its components or cases.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hc : ¬ (τ' = τ ∧ d = a ∧ c = b)` using `fun h' => by`. Take `⟨-, rfl, rfl⟩` from `h'`. Conclude with `hab hcd`. Simplify using `[hcd.not_gt, hc]`. Simplify using `[hcd]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : ¬ (τ' = τ ∧ c = a ∧ d = b)` using `fun h' => by`. Take `⟨-, rfl, rfl⟩` from `h'`. Conclude with `hab hcd`. Simplify using `[hcd, hc]`. Establish `h1` using `h0 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[one_smul]`. Rewrite using `[h0, h1]`. Simplify using the standard rewrite rules. Establish `key2 : ∀ (z : ℂ) (τ : X.Ψ) (a b : Fin r), ℓ (P (z • unitFr τ a b)) = z * ℓ (P (unitFr τ a b))`. Introduce `z τ a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h : z • unitFr τ a b = z.re • unitFr τ a b + z.im • (Complex.I • unitFr τ a b)` using `by conv_lhs => rw [← Complex.re_add_im z]`. Rewrite using `[add_smul, mul_smul]`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Simplify using `only [map_add, map_smul, key, Complex.real_smul]`.
-
-Use `conv_rhs => rw [← Complex.re_add_im z]`. Expand and normalize the polynomial expressions, which then agree. Use `conv_lhs => rw [frame_eq_sum W]`. Use `conv_rhs => rw [frame_eq_sum W]`. Simplify using `only [Finset.smul_sum, smul_smul, map_sum, key2, Finset.mul_sum, mul_assoc]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ell_projU_I [NumberField E] [IsCMField E] (X : Data E r) (ℓ : Frame X.Ψ r →L[ℝ] ℂ)
     (h : ∀ (τ : X.Ψ) (c d : Fin r), c < d → ∀ Z ∈ unitLie X, ∀ Z' ∈ unitLie X,
@@ -306,9 +304,9 @@ theorem ell_projU_I [NumberField E] [IsCMField E] (X : Data E r) (ℓ : Frame X.
   simp only [Finset.smul_sum, smul_smul, map_sum, key2, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Unfold `bchar`. Establish `hp : ∀ {ι : Type} (u : Finset ι) (f : ι → Frame Ψ r → ℂ), (∀ i ∈ u, DifferentiableAt ℂ (f i) 0) → DifferentiableAt ℂ (fun W => ∏ i ∈ u, f i W) 0` using `fun u f hf => (HasFDerivAt.finset_prod fun i hi => (hf i hi).hasFDerivAt).differentiableAt`. Use `hp _ _ fun τ _ => hp _ _ fun i _ => ?_` and prove the remaining obligations. Use `DifferentiableAt.zpow ?_ (Or.inl ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply] fun_prop`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `show (1 : Matrix (Fin r) (Fin r) ℂ) i i + 0 ≠ 0`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableAt_bchar (la : Wt Ψ r) :
     DifferentiableAt ℂ (fun W : Frame Ψ r => bchar la (oneFr Ψ r + W)) 0 := by
@@ -324,21 +322,19 @@ theorem differentiableAt_bchar (la : Wt Ψ r) :
     simp
 
 /- English proof (translation)
-Use `set P := projU X.Ψ r X.p0 with hP`. Establish `hP0 : P 0 = 0` using `map_zero P`. Set `Φ : Frame X.Ψ r → Frame X.Ψ r` to `fun W => rmul (expFr (P W)) (oneFr X.Ψ r + (W - P W))`. Establish `hΦ0 : Φ 0 = oneFr X.Ψ r`. Simplify using `only [Φ, hP0, expFr_zero, one_rmul, sub_zero, add_zero]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hΦ : HasStrictFDerivAt Φ (ContinuousLinearMap.id ℝ _) 0`. Establish `h1 : HasStrictFDerivAt (fun W => expFr (P W)) ((ContinuousLinearMap.id ℝ _).comp P) 0` using `HasStrictFDerivAt.comp (g := expFr) 0 (by rw [hP0]; exact hasStrict_expFr) P.hasStrictFDerivAt`. Establish `h2 : HasStrictFDerivAt (fun W => oneFr X.Ψ r + (W - P W)) (ContinuousLinearMap.id ℝ _ - P) 0` using `((hasStrictFDerivAt_id (0 : Frame X.Ψ r)).sub P.hasStrictFDerivAt).const_add _`. Establish `h3` using `(mulL X.Ψ r).hasStrictFDerivAt_of_bilinear h1 h2`. Use `h3.congr_fderiv ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `ext1 W`. Simplify using `[mulL_apply, hP0, expFr_zero, one_rmul, rmul_one]`. Take `⟨χ', hχ⟩` from `differentiableAt_bchar (Ψ := X.Ψ) (r := r) la`. Establish `hq : HasFDerivAt (fun W => Q (rmul y (expFr (P W)))) (ℓ.comp P) 0`. Establish `h1 : HasFDerivWithinAt (fun Z : Frame X.Ψ r => Q (rmul y (expFr Z))) ℓ (unitLie X) (P 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hP0]`. Conclude with `hℓ`. Conclude with `h1.comp_hasFDerivAt 0 P.hasFDerivAt (Eventually.of_forall fun W => projU_mem X W)`. Establish `hF` using `(hχ.restrictScalars ℝ).mul hq`. Establish `hdet : ∀ᶠ W in 𝓝 (0 : Frame X.Ψ r), ∀ τ, (mat (oneFr X.Ψ r + (W - P W)) τ).det ≠ 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `eventually_all.2 fun τ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun W : Frame X.Ψ r => (mat (oneFr X.Ψ r + (W - P W)) τ).det` using `Continuous.matrix_det (A := fun W : Frame X.Ψ r => mat (oneFr X.Ψ r + (W - P W)) τ) ((continuous_apply τ).comp (continuous_const.add (continuous_id.sub P.continuous)))`. Use `hc.continuousAt.eventually_ne ?_` and prove the remaining obligations. Rewrite using `[hP0, sub_zero, add_zero]`. Conclude with `(Matrix.det_one.trans_ne one_ne_zero : (1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hΦ0]`. Use `differentiableAt_of_chart Φ _ _ _ hΦ hF ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hdet] with W hW`. Establish `hb : oneFr X.Ψ r + (W - P W) ∈ Bor X.Ψ r` using `fun τ => ⟨hW τ, fun a c hca => by show (1 : Matrix (Fin r) (Fin r) ℂ) a c + (W τ a c - projU X.Ψ r X.p0 W τ a c) = 0`. Simplify using `[projU_apply, hca, Matrix.one_apply_ne hca.ne']⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hχ2 : bchar la (oneFr X.Ψ r + (W - P W)) = bchar la (oneFr X.Ψ r + W)`. Simplify using `[bchar, hP, projU_apply]`. Simplify using `only [Φ, Pi.mul_apply]`. Rewrite using `[← rmul_assoc, hQ _ (hy _ (projU_mem X W)) _ hb, hχ2]`. Introduce `v`.
-
-Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars', map_smul, smul_eq_mul, hP, ell_projU_I X ℓ h]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem differentiableAt_unit [NumberField E] [IsCMField E] (X : Data E r) (la : Wt X.Ψ r) (Q : Frame X.Ψ r → ℂ)
     (hQ : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, Q (rmul x b) = bchar la b * Q x) (y : Frame X.Ψ r)
@@ -393,23 +389,23 @@ theorem differentiableAt_unit [NumberField E] [IsCMField E] (X : Data E r) (la :
 def invFr (x : Frame Ψ r) : Frame Ψ r := fun τ => ((mat x τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Conclude with `Matrix.mul_nonsing_inv (mat x τ) (hx τ).isUnit`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rmul_invFr {x : Frame Ψ r} (hx : ∀ τ, (mat x τ).det ≠ 0) : rmul x (invFr x) = oneFr Ψ r := by
   funext τ
   exact Matrix.mul_nonsing_inv (mat x τ) (hx τ).isUnit
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Conclude with `Matrix.nonsing_inv_mul (mat x τ) (hx τ).isUnit`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem invFr_rmul {x : Frame Ψ r} (hx : ∀ τ, (mat x τ).det ≠ 0) : rmul (invFr x) x = oneFr Ψ r := by
   funext τ
   exact Matrix.nonsing_inv_mul (mat x τ) (hx τ).isUnit
 
 /- English proof (translation)
-Introduce `τ`. Establish `hu : IsUnit (mat b τ).det` using `(hb τ).1.isUnit`. Use `⟨(Matrix.isUnit_nonsing_inv_det (mat b τ) hu).ne_zero, fun a c hca => ?_⟩` and prove the remaining obligations. Use `letI := Matrix.invertibleOfIsUnitDet _ hu`. Establish `hT : (mat b τ).BlockTriangular id` using `fun i j hij => (hb τ).2 i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hT hca`.
+A detailed English derivation is pending.
 -/
 theorem invFr_mem_Bor {b : Frame Ψ r} (hb : b ∈ Bor Ψ r) : invFr b ∈ Bor Ψ r := by
   intro τ
@@ -420,15 +416,13 @@ theorem invFr_mem_Bor {b : Frame Ψ r} (hb : b ∈ Bor Ψ r) : invFr b ∈ Bor �
   exact Matrix.blockTriangular_inv_of_blockTriangular hT hca
 
 /- English proof (translation)
-Take `⟨g1, g2, -, g4, -, g6, -⟩` from `GlobalTheory.T.gramSchmidt_flagDomain_orthonormalFrames E r X`. Introduce `x hx`. Take `⟨y, hy, b, hb, rfl⟩` from `g2 x hx`. Take `⟨ℓ, hℓ, h⟩` from `hk y hy`. Establish `hyd : ∀ τ, (mat y τ).det ≠ 0` using `fun τ => (g1 y hy τ).1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbd : ∀ τ, (mat b τ).det ≠ 0` using `fun τ => (hb τ).1`. Establish `hG` using `differentiableAt_unit X la Q hQ y (fun Z hZ => g1 _ (g6 y hy Z hZ)) ℓ hℓ h`. Set `A : Frame X.Ψ r → Frame X.Ψ r` to `fun x => rmul (invFr y) (rmul x (invFr b))`. Establish `hA : Differentiable ℂ A`. Use `differentiable_pi.2 fun τ => differentiable_pi.2 fun a => differentiable_pi.2 fun c => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [A, rmul_apply]`. Use `fun_prop`. Establish `hA0 : A (rmul y b) = oneFr X.Ψ r`. Simplify using `only [A]`. Rewrite using `[rmul_assoc, rmul_invFr hbd, rmul_one, invFr_rmul hyd]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomp : DifferentiableAt ℂ (fun x => bchar la b * Q (rmul y (A x))) (rmul y b)` using `(DifferentiableAt.comp (g := fun w => Q (rmul y w)) _ (by rw [hA0]; exact hG) (hA _)).const_mul _`. Establish `key : ∀ x ∈ X.dom, Q x = bchar la b * Q (rmul y (A x))`. Introduce `x hx`. Simplify using `only [A]`. Rewrite using `[← rmul_assoc, rmul_invFr hyd, one_rmul, ← hQ _ (g4 x hx _ (invFr_mem_Bor hb)) b hb, rmul_assoc, invFr_rmul hbd, rmul_one]`.
-
-Conclude with `hcomp.differentiableWithinAt.congr key (key _ hx)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentiableOn_of_killed (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r)
     (la : Wt X.Ψ r) (Q : Frame X.Ψ r → ℂ)

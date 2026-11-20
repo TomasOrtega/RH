@@ -19,7 +19,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `hf default`. Use `⟨r, funext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim x default, ← hr]`. Simplify using `[Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem hopfPoint_mem {C : Type} [Field C] (R : Type) [CommRing R] [Algebra R C]
     (N : Type) [Unique N] (f : N → C) (hf : f ∈ L2.intFun (C := C) R N) :
@@ -30,7 +30,7 @@ private theorem hopfPoint_mem {C : Type} [Field C] (R : Type) [CommRing R] [Alge
   simp [Algebra.smul_def]
 
 /- English proof (translation)
-Introduce `_` and use `⟨1, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private theorem hopfPoint_one {C : Type} [Field C] (R : Type) [CommRing R] [Algebra R C]
     (N : Type) : (1 : N → C) ∈ L2.intFun (C := C) R N := fun _ => ⟨1, by simp⟩
@@ -68,13 +68,11 @@ private def hopfPoint {C : Type} [Field C] (R : Type) [CommRing R] [Algebra R C]
   antipode := fun f hf x => hf (-x)
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ _ OE _ _ cp`. Set `_ : Unique (Nb p 0)` to `Pi.uniqueOfIsEmpty _`. Establish `hS : Subsingleton (LieDualModP p O 0)` using `(Submodule.Quotient.mk_surjective _).subsingleton`. Use `⟨{ ρ := { toFun := fun _ => 0 map_one' := Subsingleton.elim _ _ map_mul' := fun _ _ => Subsingleton.elim _ _ map_zero' := Subsingleton.elim _ _ map_add' := fun _ _ => Subsingleton.elim _ _ commutes' := fun _ => Subsingleton.elim _ _ } ρL := { toFun := fun _ => 0 map_one' := Subsi …` and prove the remaining obligations. Establish `h0 : Up.pair p 0 0 s t = 0` using `by simp [Up.pair]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h0, map_zero, ZMod.val_zero, pow_zero, Pi.one_apply]⟩`. Use `φ := 0`. Use `cotangent_surjective := fun y => ⟨0, Subsingleton.elim _ _⟩`. Use `cotangent_ker_eq := ?_`. Use `cotangent_linear := fun _ _ _ _ _ _ => Subsingleton.elim _ _ }⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[LinearMap.ker_zero, eq_comm, eq_top_iff]`. Introduce `f _`. Establish `: f = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
-
-Rewrite using `[Subsingleton.elim x 0]`. Conclude with `f.2.2`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem htd_dim_zero : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] (OE : Type) [CommRing OE] [StarRing OE] (cp : O), Nonempty (HodgeTateDatum p 0 v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp) := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ OE _ _ cp

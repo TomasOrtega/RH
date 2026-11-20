@@ -11,13 +11,13 @@ namespace Formalism.L2.G.RelativeIndexFlags.Core
 open Formalism.L2.G.Cmp Formalism.L2.G.RelativeIndexFlags
 
 /- English proof (translation)
-The claim follows from `RingHom.ext_int _ _`.
+A detailed English derivation is pending.
 -/
 theorem int_comp {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) :
     φ.comp (Int.castRingHom A) = Int.castRingHom B := RingHom.ext_int _ _
 
 /- English proof (translation)
-Introduce `i j hij`. Simplify using `only [lamStar, neg_le_neg_iff]`. Conclude with `hd (Fin.rev_le_rev.2 hij)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lamStar_anti {m : ℕ} (lam : Fin (m + 1) → ℤ) (hd : Antitone lam) : Antitone (lamStar lam) := by
   intro i j hij
@@ -25,21 +25,21 @@ theorem lamStar_anti {m : ℕ} (lam : Fin (m + 1) → ℤ) (hd : Antitone lam) :
   exact hd (Fin.rev_le_rev.2 hij)
 
 /- English proof (translation)
-Unfold `lamAt`. Rewrite using `[if_neg hs]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamAt_odd {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (s : Fin n') (hs : ¬ Even s.val) :
     lamAt lam0 s = lamStar (lam0 s) := by
   unfold lamAt; rw [if_neg hs]; rfl
 
 /- English proof (translation)
-Unfold `lamAt`. Rewrite using `[if_pos hs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lamAt_even {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (s : Fin n') (hs : Even s.val) :
     lamAt lam0 s = lam0 s := by
   unfold lamAt; rw [if_pos hs]
 
 /- English proof (translation)
-Distinguish the cases in `hs : Even s.val`. Rewrite using `[lamAt_even lam0 s hs]`. Conclude with `hd s`. Rewrite using `[lamAt_odd lam0 s hs]`. Conclude with `lamStar_anti _ (hd s)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamAt_anti {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd : IsDominant lam0) (s : Fin n') :
     Antitone (lamAt lam0 s) := by
@@ -48,13 +48,11 @@ theorem lamAt_anti {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd : Is
   · rw [lamAt_odd lam0 s hs]; exact lamStar_anti _ (hd s)
 
 /- English proof (translation)
-Rewrite `hf` using `[weyl_eq_span_int]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f0, hf0, rfl⟩` from `hx`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨f0, hf0, ?_⟩` and prove the remaining obligations. Use `show _ = a • rowAct Kf g (map (algebraMap O Kf) (map (Int.castRingHom O) f0))`. Rewrite using `[MvPolynomial.map_map, int_comp]`. Consider the case `zero => rw [map_zero, map_zero, smul_zero]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add, map_add, smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `e1 : map (algebraMap O Kf) (c • x) = algebraMap O Kf c • map (algebraMap O Kf) x`. Rewrite using `[smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul]`.
-
-Rewrite using `[e1, map_smul, smul_comm, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowAct_weyl_mem_span_integral {O Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf] (m : ℕ) (ν : Fin (m + 1) → ℕ)
     (g : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (a : Kf) (f : MvPolynomial (Fin (m + 1) × Fin (m + 1)) O)
@@ -79,7 +77,7 @@ theorem rowAct_weyl_mem_span_integral {O Kf : Type} [CommRing O] [Field Kf] [Alg
     exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Rewrite using `[dw_eq hinj m lam hlam g hg]`. Use `⟨rowAct K g⁻¹ (map (algebraMap O K) f), ⟨f, hf, ?_⟩, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `map (algebraMap O K) f = rowAct K g (rowAct K g⁻¹ (map (algebraMap O K) f))`. Rewrite using `[rowAct_cancel g g⁻¹ (Matrix.nonsing_inv_mul g hg)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowAct_weyl_mem_descentLattice {O K : Type} [CommRing O] [Field K] [Algebra O K] (hinj : Function.Injective (algebraMap O K)) (m : ℕ)
     (lam : Fin (m + 1) → ℤ) (hlam : Antitone lam) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) K) (hg : IsUnit g.det)
@@ -91,11 +89,11 @@ theorem rowAct_weyl_mem_descentLattice {O K : Type} [CommRing O] [Field K] [Alge
   rw [rowAct_cancel g g⁻¹ (Matrix.nonsing_inv_mul g hg)]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[dw_eq hinj m lam hlam g hg]`. Introduce and unpack `_ ⟨F0, ⟨f, hf, hfe⟩, rfl⟩`. Establish `hfe' : map (algebraMap O Kf) f = rowAct Kf g F0` using `hfe`. Establish `hF0 : F0 = rowAct Kf g⁻¹ (map (algebraMap O Kf) f)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfe', rowAct_cancel g⁻¹ g (Matrix.mul_nonsing_inv g hg)]`. Use `show g.det ^ (-(lam (Fin.last m))) • F0 ∈ _`. Rewrite using `[hF0]`. Conclude with `rowAct_weyl_mem_span_integral m _ g⁻¹ _ f hf`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨f0, hf0, rfl⟩`. Establish `h1` using `rowAct_weyl_mem_descentLattice hinj m lam hlam g hg (map (Int.castRingHom O) f0) (map_mem_weyl le_rfl _ f0 hf0)`. Rewrite `h1` using `[MvPolynomial.map_map, int_comp]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descentLattice_eq_span_weyl {O Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf]
     (hinj : Function.Injective (algebraMap O Kf)) (m : ℕ) (lam : Fin (m + 1) → ℤ) (hlam : Antitone lam)
@@ -120,14 +118,14 @@ theorem descentLattice_eq_span_weyl {O Kf : Type} [CommRing O] [Field Kf] [Algeb
     exact h1
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem sub_rfl {k : ℕ} {R : Type} (h : k = k) (A : Matrix (Fin k) (Fin k) R) :
     A.submatrix (finCongr h) (finCongr h) = A := by
   ext i j; rfl
 
 /- English proof (translation)
-Establish `h1 : ((A : Matrix (Fin k) (Fin k) R).map φ).det = φ (A : Matrix (Fin k) (Fin k) R).det` using `(RingHom.map_det φ _).symm`. Rewrite using `[h1]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 A.isUnit).map φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gl_map_det {k : ℕ} {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (A : GL (Fin k) R) :
     IsUnit ((A : Matrix (Fin k) (Fin k) R).map φ).det := by
@@ -147,7 +145,7 @@ def niAt (v : Fin P.nV) (s : Fin (P.n' v)) : Matrix (Fin (P.m + 1)) (Fin (P.m + 
   else (N (pos ⟨v, s⟩) : Matrix (Fin n) (Fin n) LL)ᵀ.submatrix (finCongr h) (finCongr h)
 
 /- English proof (translation)
-Unfold `niAt nAt`. Use `split_ifs`. Rewrite using `[Matrix.submatrix_mul_equiv, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.submatrix_one_equiv]`. Rewrite using `[Matrix.submatrix_mul_equiv, ← Matrix.transpose_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.transpose_one, Matrix.submatrix_one_equiv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem niAt_mul_nAt (v : Fin P.nV) (s : Fin (P.n' v)) : niAt P h pos N v s * nAt P h pos N v s = 1 := by
   unfold niAt nAt
@@ -157,21 +155,21 @@ theorem niAt_mul_nAt (v : Fin P.nV) (s : Fin (P.n' v)) : niAt P h pos N v s * nA
       Matrix.transpose_one, Matrix.submatrix_one_equiv]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, niAt_mul_nAt, Matrix.map_one φ φ.map_zero φ.map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem niAt_map_mul {R : Type} [Field R] (φ : LL →+* R) (v : Fin P.nV) (s : Fin (P.n' v)) :
     (niAt P h pos N v s).map φ * (nAt P h pos N v s).map φ = 1 := by
   rw [← Matrix.map_mul, niAt_mul_nAt, Matrix.map_one φ φ.map_zero φ.map_one]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (niAt_map_mul P h pos N φ v s)`.
+A detailed English derivation is pending.
 -/
 theorem nAt_map_inv {R : Type} [Field R] (φ : LL →+* R) (v : Fin P.nV) (s : Fin (P.n' v)) :
     ((nAt P h pos N v s).map φ)⁻¹ = (niAt P h pos N v s).map φ :=
   Matrix.inv_eq_left_inv (niAt_map_mul P h pos N φ v s)
 
 /- English proof (translation)
-The claim follows from `Matrix.isUnit_det_of_left_inverse (niAt_map_mul P h pos N φ v s)`.
+A detailed English derivation is pending.
 -/
 theorem nAt_map_det {R : Type} [Field R] (φ : LL →+* R) (v : Fin P.nV) (s : Fin (P.n' v)) :
     IsUnit ((nAt P h pos N v s).map φ).det :=
@@ -182,7 +180,7 @@ def bl (v : Fin P.nV) (s : Fin (P.n' v)) (f : MvPolynomial (Fin (P.m + 1) × Fin
   ((nAt P h pos N v s).det ^ (-(eAt P v s))) • rowAct LL (niAt P h pos N v s) (map (Int.castRingHom LL) f)
 
 /- English proof (translation)
-Unfold `bl`. Rewrite using `[Cmp.map_smul', map_rowAct, MvPolynomial.map_map, int_comp, map_zpow₀, nAt_map_inv, RingHom.map_det]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_bl {R : Type} [Field R] (φ : LL →+* R) (v : Fin P.nV) (s : Fin (P.n' v))
     (f : MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) ℤ) :
@@ -200,9 +198,9 @@ def genSet : Set (XR P LL) :=
     (∀ v s, f v s ∈ weyl ℤ (P.m + 1) (P.m + 1) le_rfl (nuOf (lamAt (P.lam0 v) s))) ∧ X = gen P h pos N f}
 
 /- English proof (translation)
-Unfold `gen`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_rename, map_prod]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Conclude with `MvPolynomial.map_rename _ _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem map_gen {R : Type} [Field R] (φ : LL →+* R)
     (f : ∀ v, Fin (P.n' v) → MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) ℤ) :
@@ -217,19 +215,17 @@ theorem map_gen {R : Type} [Field R] (φ : LL →+* R)
   exact MvPolynomial.map_rename _ _ _
 
 /- English proof (translation)
-Set `Tb : ∀ v, ∀ _ : Fin (P.n' v), Set (MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) Kf)` to `fun v s => (fun f0 => map e (bl P h pos N v s f0)) '' (weyl ℤ (P.m + 1) (P.m + 1) le_rfl (nuOf (lamAt (P.lam0 v) s)) : Set (MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) ℤ))`. Establish `hD : ∀ v (s : Fin (P.n' v)), Dl0 O P.m (lamAt (P.lam0 v) s) (extO O (P.ι v) (P.σ v) s.val (L v)) = Submodule.span O (Tb v s)`. Introduce `v s`. Rewrite using `[HL v s, descentLattice_eq_span_weyl hinj P.m _ (lamAt_anti _ (P.dom v) s) _ (nAt_map_det P h pos N e v s)]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Set.image_congr` to reduce the goal to its premises. Introduce `f0 _`. Conclude with `(map_bl P h pos N e v s f0).symm`. Set `Tv : ∀ v, Set (MvPolynomial (Fin (P.n' v) × (Fin (P.m + 1) × Fin (P.m + 1))) Kf)` to `fun v => {X | ∃ F : Fin (P.n' v) → MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) Kf, (∀ s, F s ∈ Tb v s) ∧ X = ∏ s, blockEmb Kf s (F s)}`. Establish `hs : ∀ v, HtenW O (P.lam0 v) (fun s => extO O (P.ι v) (P.σ v) s.val (L v)) = Submodule.span O (Tv v)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Unfold `HtenW tensorLat`. Simplify using `only [hD]`. Conclude with `prodSpan (O := O) (A := MvPolynomial (Fin (P.n' v) × (Fin (P.m + 1) × Fin (P.m + 1))) Kf) (B := fun _ => MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) Kf) (fun s => (blockEmb Kf s).toLinearMap.restrictScalars O) (Tb v)`. Unfold `Places.HtupW Places.tenV`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hs]`. Use `(prodSpan (O := O) (A := P.Xsp) (B := fun v => MvPolynomial (Fin (P.n' v) × (Fin (P.m + 1) × Fin (P.m + 1))) Kf) (fun v => (P.vEmb v).toLinearMap.restrictScalars O) Tv).trans ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `X`. Prove the components needed by the constructor for the conclusion.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨F, hF, rfl⟩ choose F' hF' hFe using hF choose f hf hfe using hF'`. Use `⟨gen P h pos N f, ⟨f, hf, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show map e (gen P h pos N f) = _`. Rewrite using `[map_gen]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show _ = P.vEmb v (F v)`. Rewrite using `[hFe v]`. Establish `e2 : ∀ s, map e (bl P h pos N v s (f v s)) = F' v s` using `fun s => hfe v s`. Simplify using `only [e2]`. Both sides reduce to the same expression.
-
-Introduce and unpack `⟨_, ⟨f, hf, rfl⟩, rfl⟩`. Conclude with `⟨fun v => ∏ s, blockEmb Kf s (map e (bl P h pos N v s (f v s))), fun v => ⟨fun s => map e (bl P h pos N v s (f v s)), fun s => ⟨f v s, hf v s, rfl⟩, rfl⟩, map_gen P h pos N e f⟩`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem htupW_eq (hinj : Function.Injective (algebraMap O Kf)) (e : LL →+* Kf) (L : P.Tup)
     (HL : ∀ v (s : Fin (P.n' v)), extO O (P.ι v) (P.σ v) s.val (L v) = colSpan O ((nAt P h pos N v s).map e)) :
@@ -282,13 +278,11 @@ theorem htupW_eq (hinj : Function.Injective (algebraMap O Kf)) (e : LL →+* Kf)
       map_gen P h pos N e f⟩
 
 /- English proof (translation)
-Rewrite using `[htupW_eq P h pos N (IsFractionRing.injective O Kf) e L HL]`. Prove the components needed by the constructor for the conclusion. Conclude with `hD e R0 hR0 _ Q`. Introduce `hQ`. Proceed by induction on `hQ using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `smul r x _ hx`. Take `⟨o, ho⟩` from `(hR0 r.1).1 r.2`. Establish `e1 : map e (r • x) = o • map e x`. Rewrite using `[Subring.smul_def, Cmp.map_smul', ← ho, algebraMap_smul]`. Rewrite using `[e1]`.
-
-Conclude with `Submodule.smul_mem _ o hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_htupW_iff (hD : DescVal) (hfr : IsFractionRing O Kf) (e : LL →+* Kf) (R0 : Subring LL)
     (hR0 : ∀ x, x ∈ R0 ↔ e x ∈ Set.range (algebraMap O Kf)) (L : P.Tup)

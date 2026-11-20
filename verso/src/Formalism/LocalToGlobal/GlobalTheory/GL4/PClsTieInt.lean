@@ -13,11 +13,9 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
 /- English proof (translation)
-Introduce `a ha`. Unfold `Formalism.L2.Herm.dualL at hb`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem b hb => exact hb a ha`. Consider the case `zero => rw [Formalism.UG.P.csScale_hform_zero_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add b b' _ _ h h' => rw [Formalism.UG.P.csScale_hform_add_right]`. Conclude with `add_mem h h'`. Consider the case `smul r b _ h`. Rewrite using `[← algebraMap_smul E r b, Formalism.UG.P.csScale_hform_smul_right]`.
-
-Conclude with `mul_mem ⟨r, rfl⟩ h`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_of_mem_dualL (hc : Formalism.BasicNotions.CMData F E) (S : Formalism.BasicNotions.HSpace E)
     (Λ : Submodule (𝓞 E) (Fin S.rank → E)) {b : Fin S.rank → E} (hb : b ∈ Formalism.L2.Herm.dualL hc S Λ) :
@@ -33,13 +31,11 @@ theorem pair_of_mem_dualL (hc : Formalism.BasicNotions.CMData F E) (S : Formalis
     exact mul_mem ⟨r, rfl⟩ h
 
 /- English proof (translation)
-Establish `: IsScalarTower ℚ F E` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Apply `mem_intOE_of_inclE F E` to reduce the goal to its premises. Establish `hm : ∀ a ∈ Lb, ∀ b ∈ Lb, IsIntegral ℤ (((1 : ℤ) : E) * hform (hc.sig : E →+* E) S.gram a b)`. Introduce `a ha b hb`. Take `⟨o, ho⟩` from `pair_of_mem_dualL hc S Lb (hLb hb) a ha`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Int.cast_one, one_mul, ← ho]`. Conclude with `RingOfIntegers.isIntegral_coe o`. Establish `hglob : ∀ z ∈ lat c, Formalism.L2.Herm.crd S z ∈ Formalism.UG.CS.globLat (X.y c : GL (Fin S.rank) (E ⊗[F] Formalism.L2.Herm.Af F)) Lb`. Introduce `z hz`. Use `show _ ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) _ Lb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `((X.y_lat c _).1 ?_)` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨Formalism.L2.Herm.crd S z, ⟨z, hz, rfl⟩, rfl⟩`. Establish `key` using `Formalism.UG.P.csScale_glob hc.sig S.gram Lb 1 hm (X.y c) (X.y c).2 (hglob x hx) (hglob y hy)`. Rewrite `key` using `[Int.cast_one, one_mul]`. Rewrite using `[Formalism.L2.Herm.hT_crd hc]`.
-
-Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ClassTie.lat_int {hc : Formalism.BasicNotions.CMData F E} {S : Formalism.BasicNotions.HSpace E} {Lb : Submodule (𝓞 E) (Fin S.rank → E)}
     {U : Subgroup (GL (Fin S.rank) (E ⊗[F] Formalism.L2.Herm.Af F))} {cls : Type} {stab : cls → Type}
@@ -64,13 +60,11 @@ theorem ClassTie.lat_int {hc : Formalism.BasicNotions.CMData F E} {S : Formalism
   exact key
 
 /- English proof (translation)
-Establish `: IsScalarTower ℚ F E` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Apply `mem_intOE_of_inclE F E` to reduce the goal to its premises. Establish `hm : ∀ a ∈ L.Lb, ∀ b ∈ L.Lb, IsIntegral ℤ (((1 : ℤ) : E) * hform (sp.cm.sig : E →+* E) sp.gram0 a b)`. Introduce `a ha b hb`. Take `⟨o, ho⟩` from `L.Lb_int b hb a ha`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Int.cast_one, one_mul, ← ho]`. Conclude with `RingOfIntegers.isIntegral_coe o`. Establish `hglob : ∀ z ∈ clsLat 0 c, sp.crd0 z ∈ Formalism.UG.CS.globLat (L.y c : GL (Fin R.k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) L.Lb`. Introduce `z hz`. Use `show _ ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) _ L.Lb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `((L.y_lat c _).1 ?_)` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨sp.crd0 z, ⟨z, hz, rfl⟩, rfl⟩`. Establish `key` using `Formalism.UG.P.csScale_glob sp.cm.sig sp.gram0 L.Lb 1 hm (L.y c) (L.y c).2 (hglob x hx) (hglob y hy)`. Rewrite `key` using `[Int.cast_one, one_mul]`. Rewrite using `[sp.hermitianForm_base_coordinates]`.
-
-Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ColLevel.lat_int {R : Formalism.BasicNotions.Ranks} {sp : Formalism.BasicNotions.Spaces R F E} {gp : Fin 2 → ℕ}
     {ι : Type} [Fintype ι] {hcp : ι → Formalism.BasicNotions.HCParam R} {C : Formalism.BasicNotions.ColumnChain R ι hcp}
@@ -103,7 +97,7 @@ open Formalism.BasicNotions in
 attribute [local instance] Formalism.BasicNotions.Host.cmStar in
 
 /- English proof (translation)
-Introduce `x hx y hy`. Break down `Nat.eq_zero_or_pos i with rfl | h1` into its components or cases. Conclude with `ColLevel.lat_int (X.base.lev0 u) c hy hx`. Conclude with `ClassTie.lat_int (X.base.cls u i h1 hi) (X.base.lev u i h1 hi).Lb_int c hy hx`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem clsLat_int {D : D7} (X : Formalism.L2.Herm.FullTied D) (u : D.what₂.Word) (i : ℕ) (hi : i ≤ D.R.m)
     (c : (D.mem u).C.cls i) :
@@ -117,7 +111,7 @@ open Formalism.BasicNotions in
 attribute [local instance] Formalism.BasicNotions.Host.cmStar in
 
 /- English proof (translation)
-Introduce `x hx y hy`. Use `ClassTie.lat_int (X.atT u).clsP ?_ c hy hx` and prove the remaining obligations. Rewrite using `[Formalism.L2.Herm.coordinate_lattice_self_dual]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem clsLatP_int {D : D7} (X : Formalism.L2.Herm.FullTied D) (u : D.what₂.Word) (c : (D.fm u).clsP) :
     ∀ x ∈ (X.atT u).lattice₂ c, x ∈ Formalism.MainNotions.flipTwoThree.dualSub D.sp.X' ((X.atT u).lattice₂ c) := by

@@ -17,7 +17,7 @@ section Rules
 variable {K : Type} [Field K] {σ : Type}
 
 /- English proof (translation)
-Unfold `mfact`. Conclude with `Finsupp.prod_fintype _ _ (fun _ => by simp)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem mfact_eq_prod_factorial [Fintype σ] (α : σ →₀ ℕ) :
     (mfact α : K) = ∏ x, ((α x).factorial : K) := by
@@ -25,9 +25,9 @@ private theorem mfact_eq_prod_factorial [Fintype σ] (α : σ →₀ ℕ) :
   exact Finsupp.prod_fintype _ _ (fun _ => by simp)
 
 /- English proof (translation)
-Rewrite using `[mfact_eq_prod_factorial, mfact_eq_prod_factorial, ← Finset.mul_prod_erase _ _ (Finset.mem_univ l), ← Finset.mul_prod_erase _ _ (Finset.mem_univ l)]`. Establish `hrest : ∏ x ∈ Finset.univ.erase l, (((α + Finsupp.single l 1 : σ →₀ ℕ) x).factorial : K) = ∏ x ∈ Finset.univ.erase l, ((α x).factorial : K)`. Use `Finset.prod_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, if_neg (Ne.symm (Finset.ne_of_mem_erase hx)), add_zero]`. Rewrite using `[hrest, Finsupp.add_apply, Finsupp.single_eq_same, Nat.factorial_succ, Nat.cast_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mfact_add_single [Fintype σ] [DecidableEq σ] (α : σ →₀ ℕ) (l : σ) :
     (mfact (α + Finsupp.single l 1) : K) = mfact α * ((α l : K) + 1) := by
@@ -42,7 +42,7 @@ theorem mfact_add_single [Fintype σ] [DecidableEq σ] (α : σ →₀ ℕ) (l :
   ring
 
 /- English proof (translation)
-Rewrite using `[derivAt0_eq_sum_of_subset (P + Q) g MvPolynomial.support_add, derivAt0_eq_sum_of_subset P g (Finset.subset_union_left (s₂ := Q.support)), derivAt0_eq_sum_of_subset Q g (Finset.subset_union_right (s₁ := P.support)), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem derivAt0_add' (P Q : MvPolynomial σ K) (g : MvPowerSeries σ K) :
     derivAt0 (P + Q) g = derivAt0 P g + derivAt0 Q g := by
@@ -56,7 +56,7 @@ theorem derivAt0_add' (P Q : MvPolynomial σ K) (g : MvPowerSeries σ K) :
   ring
 
 /- English proof (translation)
-Rewrite using `[derivAt0_eq_sum_of_subset (b • P) g MvPolynomial.support_smul, derivAt0, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem derivAt0_smulP (b : K) (P : MvPolynomial σ K) (g : MvPowerSeries σ K) :
     derivAt0 (b • P) g = b * derivAt0 P g := by
@@ -67,7 +67,7 @@ theorem derivAt0_smulP (b : K) (P : MvPolynomial σ K) (g : MvPowerSeries σ K) 
   ring
 
 /- English proof (translation)
-Unfold `derivAt0`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem derivAt0_smulG (b : K) (P : MvPolynomial σ K) (g : MvPowerSeries σ K) :
     derivAt0 P (b • g) = b * derivAt0 P g := by
@@ -78,7 +78,7 @@ theorem derivAt0_smulG (b : K) (P : MvPolynomial σ K) (g : MvPowerSeries σ K) 
   ring
 
 /- English proof (translation)
-Unfold `derivAt0`. Repeatedly rewrite using `[map_sum, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivAt0_sumG {κ : Type} (s : Finset κ) (P : MvPolynomial σ K) (f : κ → MvPowerSeries σ K) :
     derivAt0 P (∑ i ∈ s, f i) = ∑ i ∈ s, derivAt0 P (f i) := by
@@ -87,7 +87,7 @@ theorem derivAt0_sumG {κ : Type} (s : Finset κ) (P : MvPolynomial σ K) (f : �
   exact Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.C_apply, DepthAdd.derivAt0_monomial, DepthAdd.mfact_zero', MvPowerSeries.coeff_zero_eq_constantCoeff_apply, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem derivAt0_C' (a : K) (g : MvPowerSeries σ K) :
     derivAt0 (MvPolynomial.C a) g = a * constantCoeff g := by
@@ -95,9 +95,9 @@ theorem derivAt0_C' (a : K) (g : MvPowerSeries σ K) :
     MvPowerSeries.coeff_zero_eq_constantCoeff_apply, mul_one]
 
 /- English proof (translation)
-Establish `hP : P * MvPolynomial.X l = ∑ α ∈ P.support, MvPolynomial.monomial (α + Finsupp.single l 1) (P.coeff α)` using `by conv_lhs => rw [P.as_sum]`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[show (MvPolynomial.X l : MvPolynomial σ K) = MvPolynomial.monomial (Finsupp.single l 1) 1 from rfl, MvPolynomial.monomial_mul, mul_one]`. Rewrite using `[hP, DepthAdd.derivAt0_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => unfold derivAt0`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[DepthAdd.derivAt0_monomial, MvPowerSeries.coeff_pderiv, mfact_add_single]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem derivAt0_mul_X [Fintype σ] (P : MvPolynomial σ K) (l : σ) (g : MvPowerSeries σ K) :
     derivAt0 (P * MvPolynomial.X l) g = derivAt0 P (pderiv K l g) := by
@@ -116,7 +116,7 @@ theorem derivAt0_mul_X [Fintype σ] (P : MvPolynomial σ K) (l : σ) (g : MvPowe
   ring
 
 /- English proof (translation)
-Establish `hs : HasSubst A` using `hasSubst_of_constantCoeff_zero hA`. Establish `h` using `constantCoeff_subst_eq_zero hs hA (f := Ψ - C (constantCoeff Ψ)) (by simp)`. Rewrite `h` using `[subst_sub hs, subst_C, map_sub, constantCoeff_C, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem constantCoeff_subst_of_constantCoeff_zero' {K ι Λ : Type} [Field K] [Finite ι] (A : ι → MvPowerSeries Λ K)
     (hA : ∀ l, constantCoeff (A l) = 0) (Ψ : MvPowerSeries ι K) :
@@ -127,9 +127,9 @@ private theorem constantCoeff_subst_of_constantCoeff_zero' {K ι Λ : Type} [Fie
   exact h
 
 /- English proof (translation)
-Rewrite using `[map_sum, Finset.sum_eq_single lam]`. Rewrite using `[Derivation.map_smul, pderiv_X_self, MvPowerSeries.smul_eq_C_mul, mul_one]`. Introduce `b _ hb`. Rewrite using `[Derivation.map_smul, pderiv_X_of_ne hb, smul_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ lam) h`.
+A detailed English derivation is pending.
 -/
 private theorem pderiv_sum_smul_X_eq_C {K ι Λ : Type} [Field K] [Fintype Λ] [DecidableEq Λ] (β : Λ → ι → K)
     (lam : Λ) (l : ι) :
@@ -150,15 +150,15 @@ namespace GlobalTheory.IsoTriv
 open MvPowerSeries GlobalTheory.FGDepth GlobalTheory.IsoTriv.LinChange
 
 /- English proof (translation)
-Unfold `LinSt`. Introduce `K _ _ ι Λ _ _ β P`. Establish `hA0 : ∀ l : ι, constantCoeff (∑ lam, β lam l • (X lam : MvPowerSeries Λ K)) = 0`. Introduce `l`. Simplify using `[MvPowerSeries.smul_eq_C_mul]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Proceed by induction on `P using MvPolynomial.induction_on`. Name the introduced variables `a`. Introduce `Ψ`. Rewrite using `[MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, derivAt0_C', derivAt0_C', constantCoeff_subst_of_constantCoeff_zero' _ hA0]`. Name the introduced variables `p q hp hq`.
+Proceed by induction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `Ψ`. Rewrite using `[map_add, derivAt0_add', derivAt0_add', hp, hq]`. Name the introduced variables `p lam hp`. Introduce `Ψ`. Establish `hterm : ∀ l : ι, MvPolynomial.aeval (fun lam => ∑ l, MvPolynomial.C (β lam l) * (MvPolynomial.X l : MvPolynomial ι K)) p * (MvPolynomial.C (β lam l) * MvPolynomial.X l) = β lam l • (MvPolynomial.aeval (fun lam => ∑ l, MvPolynomial.C (β lam l) * (MvPolynomial.X l : MvPolynomial ι …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `l`. Rewrite using `[MvPolynomial.smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul]`. Simplify using `only [MvPolynomial.aeval_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Repeatedly rewrite using `[hterm]`. Rewrite using `[DepthAdd.derivAt0_sum, derivAt0_mul_X, ReciprocityTheory.ChartRestriction.G.TB.ChartChgPfTP.pderiv_subst _ hA0, derivAt0_sumG]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[derivAt0_smulP, derivAt0_mul_X, hp, pderiv_sum_smul_X_eq_C, mul_comm _ (C (β lam l)), ← MvPowerSeries.smul_eq_C_mul, derivAt0_smulG]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem linSt_holds : LinSt := by
   unfold LinSt

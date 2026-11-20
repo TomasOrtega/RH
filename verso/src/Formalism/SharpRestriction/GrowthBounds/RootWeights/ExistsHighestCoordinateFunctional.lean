@@ -16,7 +16,7 @@ variable {n : ℕ} {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRin
 def weightHeightAscending (nu : Fin n → ℤ) : ℤ := ∑ c : Fin n, ((c : ℕ) : ℤ) * nu c
 
 /- English proof (translation)
-Unfold `weightHeightAscending rootW`. Simplify using `only [Pi.add_apply, Pi.sub_apply, mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem weightHeightAscending_add_root (nu : Fin n → ℤ) (a b : Fin n) :
     weightHeightAscending (nu + rootW a b) = weightHeightAscending nu + (((a : ℕ) : ℤ) - ((b : ℕ) : ℤ)) := by
@@ -26,19 +26,17 @@ theorem weightHeightAscending_add_root (nu : Fin n → ℤ) (a b : Fin n) :
     Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Establish `hE : IsGLRep E` using `hI.1`. Establish `hv : v ∈ weightSp E lam` using `hI.2.2.1.2.1`. Unfold `loweringOperatorMonoid at hu`. Proceed by induction on `hu using Submonoid.closure_induction_left with`. Consider the case `one => exact ⟨lam, hv, Or.inl ⟨rfl, rfl⟩, le_rfl, le_rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Consider the case `mul_left g hg w _ ih`. Take `⟨a, b, hba, rfl⟩` from `hg`. Take `⟨nu, hnu, hor, h0, hl⟩` from `ih`. Use `⟨nu + rootW a b, gl_rep_operator_weight_shift hE hnu a b, Or.inr ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hab : ((b : ℕ) : ℤ) < ((a : ℕ) : ℤ)` using `by exact_mod_cast hba`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[weightHeightAscending_add_root]`. Break down `hor with ⟨rfl, -⟩ | h` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha0 : a ≠ 0`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hba` using `[h]`. Conclude with `absurd hba (Fin.not_lt_zero _)`. Establish `: (nu + rootW a b) 0 ≤ nu 0`. Simplify using `only [rootW, Pi.add_apply, Pi.sub_apply, Pi.single_apply, if_neg (Ne.symm ha0)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> omega`. Conclude with `this.trans h0`. Establish `hbl : b ≠ lastIdx n`. Introduce `h`. Establish `: (a : ℕ) ≤ n - 1` using `Nat.le_sub_one_of_lt a.isLt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : (b : ℕ) = n - 1` using `by rw [h]; rfl`. Establish `: (b : ℕ) < (a : ℕ)` using `hba`. Use linear arithmetic over natural numbers and integers. Establish `: nu (lastIdx n) ≤ (nu + rootW a b) (lastIdx n)`. Simplify using `only [rootW, Pi.add_apply, Pi.sub_apply, Pi.single_apply, if_neg (Ne.symm hbl)]`.
-
-Apply the tactic sequence `split_ifs <;> omega`. Conclude with `hl.trans this`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem irreducible_lowering_word_weight [NeZero n] {E : GLOps n (KK O) V} {lam : Fin n → ℤ} {v : V} (hI : IsIrrHW E lam v)
     {u : Module.End (KK O) V} (hu : u ∈ loweringOperatorMonoid E) :
@@ -76,9 +74,7 @@ theorem irreducible_lowering_word_weight [NeZero n] {E : GLOps n (KK O) V} {lam 
       exact hl.trans this
 
 /- English proof (translation)
-Rewrite using `[← irreducible_lowering_span_top hI, Submodule.span_le]`. Introduce and unpack `x ⟨u, hu, rfl⟩`. Take `⟨nu, hnu, h1 | h1, -⟩` from `irreducible_lowering_word_weight hI hu`. Rewrite using `[h1.2]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_span_singleton_self v)`.
-
-Conclude with `Submodule.mem_sup_right (Submodule.mem_iSup_of_mem nu (Submodule.mem_iSup_of_mem h1 hnu))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_le_line_sup_higher_weights [NeZero n] {E : GLOps n (KK O) V} {lam : Fin n → ℤ} {v : V} (hI : IsIrrHW E lam v) :
     (⊤ : Submodule (KK O) V) ≤ Submodule.span (KK O) {v} ⊔ ⨆ nu, ⨆ (_ : weightHeightAscending lam < weightHeightAscending nu), weightSp E nu := by
@@ -90,7 +86,7 @@ theorem top_le_line_sup_higher_weights [NeZero n] {E : GLOps n (KK O) V} {lam : 
   · exact Submodule.mem_sup_right (Submodule.mem_iSup_of_mem nu (Submodule.mem_iSup_of_mem h1 hnu))
 
 /- English proof (translation)
-Rewrite using `[← irreducible_lowering_span_top hI, Submodule.span_le]`. Introduce and unpack `x ⟨u, hu, rfl⟩`. Take `⟨nu, hnu, -, h0, hl⟩` from `irreducible_lowering_word_weight hI hu`. Conclude with `Submodule.mem_iSup_of_mem nu (Submodule.mem_iSup_of_mem ⟨h0, hl⟩ hnu)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem top_le_end_bounded_weights [NeZero n] {E : GLOps n (KK O) V} {lam : Fin n → ℤ} {v : V} (hI : IsIrrHW E lam v) :
     (⊤ : Submodule (KK O) V) ≤ ⨆ nu, ⨆ (_ : nu 0 ≤ lam 0 ∧ lam (lastIdx n) ≤ nu (lastIdx n)), weightSp E nu := by
@@ -100,7 +96,7 @@ theorem top_le_end_bounded_weights [NeZero n] {E : GLOps n (KK O) V} {lam : Fin 
   exact Submodule.mem_iSup_of_mem nu (Submodule.mem_iSup_of_mem ⟨h0, hl⟩ hnu)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Conclude with `h0 (weight_support_sum_eq_zero E (fun mu => mu 0 ≤ lam 0 ∧ lam (lastIdx n) ≤ mu (lastIdx n)) hx (top_le_end_bounded_weights hI Submodule.mem_top) hn)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem irreducible_weight_end_bounds [NeZero n] [CharZero (KK O)] {E : GLOps n (KK O) V} {lam : Fin n → ℤ} {v : V}
     (hI : IsIrrHW E lam v) {nu : Fin n → ℤ} {x : V} (hx : x ∈ weightSp E nu) (h0 : x ≠ 0) :
@@ -110,9 +106,9 @@ theorem irreducible_weight_end_bounds [NeZero n] [CharZero (KK O)] {E : GLOps n 
     (top_le_end_bounded_weights hI Submodule.mem_top) hn)
 
 /- English proof (translation)
-Establish `hx2` using `top_le_line_sup_higher_weights hI (Submodule.mem_top (x := x))`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.mp hx2`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hy`. Establish `hv : v ∈ weightSp E lam` using `hI.2.2.1.2.1`. Establish `hzw : z ∈ weightSp E lam`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : z = (c • v + z) - c • v` using `by abel`. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ hx (Submodule.smul_mem _ c hv)`. Establish `hz0 : z = 0` using `weight_support_sum_eq_zero E (fun nu => weightHeightAscending lam < weightHeightAscending nu) hzw hz (lt_irrefl _)`. Conclude with `⟨c, by rw [hz0, add_zero]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem irreducible_highest_weight_line [NeZero n] [CharZero (KK O)] {E : GLOps n (KK O) V} {lam : Fin n → ℤ} {v : V}
     (hI : IsIrrHW E lam v) {x : V} (hx : x ∈ weightSp E lam) : ∃ c : KK O, x = c • v := by
@@ -128,11 +124,11 @@ theorem irreducible_highest_weight_line [NeZero n] [CharZero (KK O)] {E : GLOps 
   exact ⟨c, by rw [hz0, add_zero]⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx2`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hx`. Conclude with `weight_support_sum_eq_zero E (fun mu => mu ∈ {mu | mu ≠ lam}) (Submodule.smul_mem _ c hI.2.2.1.2.1) hx2 (fun h => h rfl)`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[codisjoint_iff, eq_top_iff, ← hI.1.2.2, iSup_le_iff]`. Introduce `mu x hx`. Distinguish the cases in `h : mu = lam`. Substitute `h` using the available equality. Take `⟨c, rfl⟩` from `irreducible_highest_weight_line hI hx`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Submodule.mem_sup_left (Submodule.smul_mem _ c (Submodule.mem_span_singleton_self v))`. Apply `Submodule.mem_sup_right show x ∈ ⨆ mu ∈ {mu | mu ≠ lam}, weightSp E mu` to reduce the goal to its premises. Conclude with `Submodule.mem_iSup_of_mem mu (Submodule.mem_iSup_of_mem h hx)`.
+A detailed English derivation is pending.
 -/
 theorem highest_line_isCompl_other_weights [NeZero n] [CharZero (KK O)] {E : GLOps n (KK O) V} {lam : Fin n → ℤ} {v : V}
     (hI : IsIrrHW E lam v) : IsCompl (Submodule.span (KK O) {v}) (otherWts E lam) := by
@@ -153,17 +149,15 @@ theorem highest_line_isCompl_other_weights [NeZero n] [CharZero (KK O)] {E : GLO
       exact Submodule.mem_iSup_of_mem mu (Submodule.mem_iSup_of_mem h hx)
 
 /- English proof (translation)
-Establish `hc` using `highest_line_isCompl_other_weights hI`. Establish `hv0 : v ≠ 0` using `hI.2.2.1.1`. Set `P` to `Submodule.linearProjOfIsCompl _ _ hc`. Set `e` to `LinearEquiv.toSpanNonzeroSingleton (KK O) V v hv0`. Use `⟨e.symm.toLinearMap ∘ₗ P, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : P v = ⟨v, Submodule.mem_span_singleton_self v⟩` using `Submodule.linearProjOfIsCompl_apply_left hc ⟨v, Submodule.mem_span_singleton_self v⟩ show e.symm (P v) = 1`. Rewrite using `[h1, LinearEquiv.symm_apply_eq, LinearEquiv.toSpanNonzeroSingleton_one]`. Introduce `w hw`. Establish `h2 : P w = 0` using `Submodule.linearProjOfIsCompl_apply_right hc ⟨w, hw⟩`. Use `show e.symm (P w) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, map_zero]`. Introduce `x`. Establish `h8 : ∀ s : KK O, ((e s : Submodule.span (KK O) {v}) : V) = s • v` using `fun s => by first`. Consider the case `rfl`. Consider the case `simp [e, LinearEquiv.toSpanNonzeroSingleton_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h3 : (e.symm (P x)) • v = (P x : V)`. Rewrite using `[← h8, LinearEquiv.apply_symm_apply]`. Use `show x - (e.symm (P x)) • v ∈ otherWts E lam`. Rewrite using `[h3]`. Establish `hPP : P (P x : V) = P x` using `Submodule.linearProjOfIsCompl_apply_left hc (P x)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : P (x - (P x : V)) = 0`. Rewrite using `[map_sub, hPP, sub_self]`. Establish `h6` using `LinearMap.mem_ker.mpr h5`. Establish `h7` using `Submodule.linearProjOfIsCompl_ker hc`. Rewrite `h7` using `[SetLike.ext_iff]`.
-
-Conclude with `(h7 _).mp h6`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_highest_coordinate_functional [NeZero n] [CharZero (KK O)] {E : GLOps n (KK O) V} {lam : Fin n → ℤ} {v : V}
     (hI : IsIrrHW E lam v) : ∃ xi : V →ₗ[KK O] KK O, xi v = 1 ∧ (∀ w ∈ otherWts E lam, xi w = 0) ∧

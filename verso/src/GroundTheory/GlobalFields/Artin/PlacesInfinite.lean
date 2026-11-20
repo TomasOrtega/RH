@@ -35,7 +35,7 @@ theorem toFixedFieldAlgEquiv_apply (h : H) (y : L) : toFixedFieldAlgEquiv H h y 
 omit [IsGalois K L] in
 
 /- English proof (translation)
-Establish `hmem : σ.restrictScalars K ∈ fixingSubgroup (fixedField H)` using `(IntermediateField.mem_fixingSubgroup_iff _ _).2 fun y hy ↦ σ.commutes ⟨y, hy⟩`. Conclude with `(IntermediateField.fixingSubgroup_fixedField H).le hmem`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem restrictScalars_mem (σ : Gal(L/fixedField H)) : σ.restrictScalars K ∈ H := by
   have hmem : σ.restrictScalars K ∈ fixingSubgroup (fixedField H) :=
@@ -44,7 +44,7 @@ theorem restrictScalars_mem (σ : Gal(L/fixedField H)) : σ.restrictScalars K �
 
 omit [NumberField K] [NumberField L] [IsGalois K L] in
 /- English proof (translation)
-Use `InfinitePlace.ext _ _ fun y ↦ ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.smul_eq_comap, InfinitePlace.smul_eq_comap, InfinitePlace.comap_apply, InfinitePlace.comap_apply]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem smul_infinitePlace_toFixedFieldAlgEquiv (h : H) (w : InfinitePlace L) :
     toFixedFieldAlgEquiv H h • w = (h : Gal(L/K)) • w := by
@@ -65,7 +65,7 @@ def subfieldInfinitePlace (x : Gal(L/K)) : InfinitePlace (fixedField H) :=
 omit [NumberField K] [NumberField L] in
 
 /- English proof (translation)
-Rewrite using `[subfieldInfinitePlace, ← InfinitePlace.comap_comp, ← IsScalarTower.algebraMap_eq]`. Conclude with `((InfinitePlace.mem_orbit_iff (k := K)).1 ⟨x, rfl⟩).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_subfieldInfinitePlace (x : Gal(L/K)) :
     (subfieldInfinitePlace H w x).comap (algebraMap K (fixedField H)) =
@@ -74,11 +74,11 @@ theorem comap_subfieldInfinitePlace (x : Gal(L/K)) :
   exact ((InfinitePlace.mem_orbit_iff (k := K)).1 ⟨x, rfl⟩).symm
 
 /- English proof (translation)
-Rewrite using `[DoubleCoset.eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hxy`. Take `⟨σ, hσ⟩` from `InfinitePlace.exists_smul_eq_of_comap_eq (k := fixedField H) hxy`. Establish `hh : σ.restrictScalars K • x • w = y • w` using `hσ`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨σ.restrictScalars K, restrictScalars_mem H σ, (y⁻¹ * σ.restrictScalars K * x)⁻¹, Subgroup.inv_mem _ ?_, by group⟩` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, mul_smul, hh, inv_smul_smul]`. Introduce and unpack `⟨h, hh, d, hd, rfl⟩`. Rewrite using `[subfieldInfinitePlace, subfieldInfinitePlace, mul_smul, mul_smul, MulAction.mem_stabilizer_iff.1 hd]`. Rewrite using `[show h = ((⟨h, hh⟩ : H) : Gal(L/K)) from rfl, ← smul_infinitePlace_toFixedFieldAlgEquiv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(InfinitePlace.mem_orbit_iff (k := fixedField H)).1 ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem subfieldInfinitePlace_eq_iff (x y : Gal(L/K)) :
     subfieldInfinitePlace H w x = subfieldInfinitePlace H w y ↔
@@ -102,9 +102,9 @@ theorem subfieldInfinitePlace_eq_iff (x y : Gal(L/K)) :
 omit [NumberField K] [NumberField L] in
 
 /- English proof (translation)
-Take `⟨w', rfl⟩` from `InfinitePlace.comap_surjective (k := fixedField H) (K := L) u`. Simplify using `only at hu`. Establish `h' : w.comap (algebraMap K L) = w'.comap (algebraMap K L)`. Rewrite using `[← hu, ← InfinitePlace.comap_comp, ← IsScalarTower.algebraMap_eq]`. Take `⟨x, hx⟩` from `InfinitePlace.exists_smul_eq_of_comap_eq h'`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, by rw [subfieldInfinitePlace, hx]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_subfieldInfinitePlace_eq (u : InfinitePlace (fixedField H))
     (hu : u.comap (algebraMap K (fixedField H)) = w.comap (algebraMap K L)) :

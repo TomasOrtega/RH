@@ -18,15 +18,15 @@ variable {Γ A H : Type} [Group Γ] [Group A] [Group H] [TopologicalSpace A] [To
   (e : Γ ≃* A × H) {K : Subgroup Γ} {K₀ : Subgroup A} {K' : Subgroup H}
 
 /- English proof (translation)
-Rewrite using `[← hK, Subgroup.mem_map_equiv, MulEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mem_K (hK : K.map e.toMonoidHom = K₀.prod K') (x : Γ) : x ∈ K ↔ e x ∈ K₀.prod K' := by
   rw [← hK, Subgroup.mem_map_equiv, MulEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Take `⟨-, S, hS⟩` from `hf`. Establish `hC : IsCompact ((K₀ : Set A) ×ˢ (K' : Set H))` using `c₀.prod c'`. Use `⟨⋃ s ∈ S, (fun p : (A × H) × (A × H) => p.1 * e s * p.2) '' (((K₀ : Set A) ×ˢ (K' : Set H)) ×ˢ ((K₀ : Set A) ×ˢ (K' : Set H))), ?_, ?_⟩` and prove the remaining obligations. Conclude with `S.isCompact_biUnion fun s _ => (hC.prod hC).image (by fun_prop)`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, u, v, rfl⟩` from `hS x hx`. Use `Set.mem_iUnion₂.2 ⟨s, hs, ⟨(e u, e v), ⟨?_, ?_⟩, by simp [map_mul]⟩⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_prod.1 ((mem_K e hK u).1 u.2)`. Conclude with `Subgroup.mem_prod.1 ((mem_K e hK v).1 v.2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem compact_hull (hK : K.map e.toMonoidHom = K₀.prod K') (c₀ : IsCompact (K₀ : Set A))
     (c' : IsCompact (K' : Set H)) {f : Γ → ℂ} (hf : f ∈ Formalism.UG.Hecke ℂ K) :
@@ -43,13 +43,11 @@ private theorem compact_hull (hK : K.map e.toMonoidHom = K₀.prod K') (c₀ : I
     · exact Subgroup.mem_prod.1 ((mem_K e hK v).1 v.2)
 
 /- English proof (translation)
-Establish `oU : IsOpen ((K₀.prod K' : Subgroup (A × H)) : Set (A × H))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `o₀.prod o'`. Use `haveI := QuotientGroup.discreteTopology oU`. Take `⟨D, hD, hsupp⟩` from `compact_hull e hK c₀ c' ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hT : (((↑) : A × H → (A × H) ⧸ K₀.prod K') '' D).Finite` using `(hD.image QuotientGroup.continuous_mk).finite_of_discrete`. Set `φ : Γ ⧸ K → (A × H) ⧸ K₀.prod K'` to `fun q => ((e q.out : A × H) : (A × H) ⧸ K₀.prod K')`. Establish `hφ : Function.Injective φ`. Introduce `q₁ q₂ h`. Establish `h' : (e q₁.out)⁻¹ * e q₂.out ∈ K₀.prod K'` using `QuotientGroup.eq.1 h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h'` using `[← map_inv, ← map_mul, ← mem_K e hK]`. Rewrite using `[← QuotientGroup.out_eq' q₁, ← QuotientGroup.out_eq' q₂]`. Conclude with `QuotientGroup.eq.2 h'`. Use `(hT.preimage hφ.injOn).subset ?_` and prove the remaining obligations. Introduce `q hq`.
-
-Conclude with `⟨e q.out, hsupp _ hq, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem finite_cosets (hK : K.map e.toMonoidHom = K₀.prod K') (o₀ : IsOpen (K₀ : Set A))
     (o' : IsOpen (K' : Set H)) (c₀ : IsCompact (K₀ : Set A)) (c' : IsCompact (K' : Set H)) {a : Γ → ℂ}
@@ -73,9 +71,9 @@ private theorem finite_cosets (hK : K.map e.toMonoidHom = K₀.prod K') (o₀ : 
   exact ⟨e q.out, hsupp _ hq, rfl⟩
 
 /- English proof (translation)
-Establish `hm : e.symm (c, 1) ∈ K` using `(mem_K e hK _).2 (by simpa using Subgroup.mem_prod.2 ⟨hc, K'.one_mem⟩)`. Establish `hsplit : e.symm (g * c, h') = e.symm (g, h') * e.symm (c, 1)`. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[hsplit]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hf 1 ⟨_, hm⟩ (e.symm (g, h'))`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem slice_right (hK : K.map e.toMonoidHom = K₀.prod K') {f : Γ → ℂ} (hf : Formalism.UG.IsBiInv K f)
     (h' : H) (g : A) {c : A} (hc : c ∈ K₀) : f (e.symm (g * c, h')) = f (e.symm (g, h')) := by
@@ -87,9 +85,9 @@ private theorem slice_right (hK : K.map e.toMonoidHom = K₀.prod K') {f : Γ �
   simpa using hf 1 ⟨_, hm⟩ (e.symm (g, h'))
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Establish `hev : ∀ᶠ x in nhds g, g⁻¹ * x ∈ K₀`. Establish `hc : Continuous fun x : A => g⁻¹ * x` using `continuous_const.mul continuous_id`. Conclude with `(o₀.preimage hc).mem_nhds (by simp [K₀.one_mem])`. Use `(continuousAt_const (y := f (e.symm (g, h')))).congr ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [hev] with x hx`. Establish `hx'` using `slice_right e hK hf h' g hx`. Rewrite `hx'` using `[mul_inv_cancel_left]`. Conclude with `hx'.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem slice_cont (hK : K.map e.toMonoidHom = K₀.prod K') (o₀ : IsOpen (K₀ : Set A)) {f : Γ → ℂ}
     (hf : Formalism.UG.IsBiInv K f) (h' : H) : Continuous fun g : A => f (e.symm (g, h')) := by
@@ -114,32 +112,30 @@ private def blk (X : Fin a → Fin b → k) : Matrix (Fin n) (Fin n) k :=
   Matrix.reindex ε.symm ε.symm (Matrix.fromBlocks 1 (Matrix.of X) 0 1)
 
 /- English proof (translation)
-Simplify using `[blk, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem blk_neg (X : Fin a → Fin b → k) : blk ε X * blk ε (-X) = 1 := by
   simp [blk, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Unfold `blk`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem blk_cont : Continuous (blk ε : (Fin a → Fin b → k) → Matrix (Fin n) (Fin n) k) := by
   unfold blk
   fun_prop
 
 /- English proof (translation)
-Establish `hinv : ∀ X, (((u X)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = blk ε (-X)`. Introduce `X`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[hu X]`. Conclude with `blk_neg ε X`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcu : Continuous u`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `hv : (Units.val ∘ u) = blk ε` using `funext hu`. Rewrite using `[hv]`. Conclude with `blk_cont ε`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hv : (fun X => (((u X)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) = fun X => blk ε (-X)`. Use function extensionality and compare the values at `hinv`. Rewrite using `[hv]`. Conclude with `(blk_cont ε).comp continuous_neg`. Establish `hcont : Continuous fun X => g * (h⁻¹ * u X * h)` using `continuous_const.mul ((continuous_const.mul hcu).mul continuous_const)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `π : GL (Fin n) k → (Fin a → Fin b → k)` to `fun y i j => (y : Matrix (Fin n) (Fin n) k) (ε.symm (Sum.inl i)) (ε.symm (Sum.inr j))`. Establish `hπ : Continuous π` using `continuous_pi fun i => continuous_pi fun j => Units.continuous_val.matrix_elem _ _`. Establish `hπu : ∀ X, π (u X) = X`. Introduce `X`. Use function extensionality and compare the values at `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[π, hu, blk, Matrix.reindex_apply]`. Establish `hπ' : Continuous fun y : GL (Fin n) k => π (h * (g⁻¹ * y) * h⁻¹)`. Conclude with `hπ.comp ((continuous_const.mul (continuous_const.mul continuous_id)).mul continuous_const)`. Use `(hc.comp hcont).integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Use `HasCompactSupport.intro (hC.image hπ') ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `X hX`. Assume the negation of the conclusion as `hne`. Apply `hX` to reduce the goal to its premises. Use `⟨g * (h⁻¹ * u X * h), hs _ hne, ?_⟩` and prove the remaining obligations. Simplify using `only`.
-
-Rewrite using `[show h * (g⁻¹ * (g * (h⁻¹ * u X * h))) * h⁻¹ = u X by group]`. Conclude with `hπu X`.
+Simplify by unfolding definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem integrable_slice {F : GL (Fin n) k → ℂ} (hc : Continuous F) {C : Set (GL (Fin n) k)}
     (hC : IsCompact C) (hs : ∀ y, F y ≠ 0 → y ∈ C) (μ : Measure (Fin a → Fin b → k)) [μ.IsAddHaarMeasure]
@@ -191,7 +187,7 @@ variable {Γ H : Type} [Group Γ] [Group H] [TopologicalSpace H] [IsTopologicalG
   (e : Γ ≃* GL (Fin n) k × H) {K : Subgroup Γ} {K₀ : Subgroup (GL (Fin n) k)} {K' : Subgroup H}
 
 /- English proof (translation)
-Take `⟨D, hD, hsupp⟩` from `compact_hull e hK c₀ c' hf`. Establish `hbi : Formalism.UG.IsBiInv K f` using `hf.1`. Use `integrable_slice ε (slice_cont e hK o₀ hbi h') (hD.image continuous_fst) ?_ μ u (fun X => (hu X).trans rfl) g h` and prove the remaining obligations. Introduce `y hy`. Conclude with `⟨(y, h'), by simpa using hsupp _ hy, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem hecke_integrable (hK : K.map e.toMonoidHom = K₀.prod K') (o₀ : IsOpen (K₀ : Set (GL (Fin n) k)))
     (c₀ : IsCompact (K₀ : Set (GL (Fin n) k))) (c' : IsCompact (K' : Set H)) {f : Γ → ℂ}
@@ -208,7 +204,7 @@ private theorem hecke_integrable (hK : K.map e.toMonoidHom = K₀.prod K') (o₀
   exact ⟨(y, h'), by simpa using hsupp _ hy, rfl⟩
 
 /- English proof (translation)
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem left_mul (w : Γ) (y : GL (Fin n) k) (h' : H) :
     w * e.symm (y, h') = e.symm ((e w).1 * y, (e w).2 * h') := by
@@ -217,9 +213,9 @@ private theorem left_mul (w : Γ) (y : GL (Fin n) k) (h' : H) :
   rfl
 
 /- English proof (translation)
-Introduce `a b ε ha hb μ hμ u hu g h`. Use `haveI := hμ`. Establish `i1` using `hecke_integrable e hK o₀ c₀ c' hf h' ε μ u hu g h`. Establish `i2` using `hecke_integrable e hK o₀ c₀ c' hf' h' ε μ u hu g h`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_add (i1.const_mul c) i2, integral_const_mul, Cf h' a b ε ha hb μ hμ u hu g h, Cf' h' a b ε ha hb μ hμ u hu g h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem noConst_lin (hK : K.map e.toMonoidHom = K₀.prod K') (o₀ : IsOpen (K₀ : Set (GL (Fin n) k)))
     (c₀ : IsCompact (K₀ : Set (GL (Fin n) k))) (c' : IsCompact (K' : Set H)) {f f' : Γ → ℂ}
@@ -236,15 +232,15 @@ private theorem noConst_lin (hK : K.map e.toMonoidHom = K₀.prod K') (o₀ : Is
   simp
 
 /- English proof (translation)
-Introduce `a b ε ha hb μ hμ u hu g h`. Use `haveI := hμ`. Establish `hS` using `finite_cosets e hK o₀ o' c₀ c' hα`. Establish `key : ∀ y : GL (Fin n) k, Formalism.UG.conv K α f (e.symm (y, h')) = ∑ q ∈ hS.toFinset, α q.out * f (e.symm ((e q.out⁻¹).1 * y, (e q.out⁻¹).2 * h'))`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.UG.conv`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := hS.toFinset)]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[left_mul e]`. Introduce `q hq`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.mem_support, Set.Finite.coe_toFinset, Set.mem_setOf_eq] at hq ⊢`. Conclude with `left_ne_zero_of_mul hq`. Simplify using `only [key]`. Rewrite using `[integral_finset_sum]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[integral_const_mul]`. Establish `hz` using `Cf ((e q.out⁻¹).2 * h') a b ε ha hb μ hμ u hu ((e q.out⁻¹).1 * g) h`. Simplify using `only [mul_assoc] at hz ⊢`. Rewrite using `[hz, mul_zero]`. Introduce `q _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Integrable.const_mul ?_ _` and prove the remaining obligations. Establish `hi` using `hecke_integrable e hK o₀ c₀ c' hf ((e q.out⁻¹).2 * h') ε μ u hu ((e q.out⁻¹).1 * g) h`. Simplify `hi` using `only [mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem noConst_conv (hK : K.map e.toMonoidHom = K₀.prod K') (o₀ : IsOpen (K₀ : Set (GL (Fin n) k)))
     (o' : IsOpen (K' : Set H)) (c₀ : IsCompact (K₀ : Set (GL (Fin n) k))) (c' : IsCompact (K' : Set H))
@@ -279,9 +275,7 @@ private theorem noConst_conv (hK : K.map e.toMonoidHom = K₀.prod K') (o₀ : I
 end Main
 
 /- English proof (translation)
-Introduce `p _ G _ Lv k _ _ _ _ _ _ _ P H _ _ _ _ S k₁ _ _ P₁`. Use `haveI : SecondCountableTopology k := GlobalTheory.SplitWeil.secondCountable k`. Use `⟨fun a ha f hf Cf h' => ?_, fun h' => ?_, fun f hf f' hf' c Cf Cf' h' => ?_⟩` and prove the remaining obligations. Conclude with `noConst_conv S.e S.map_eq S.open₀ S.open' S.cpt₀ S.cpt' ha hf Cf h'`. Introduce `a b ε ha hb μ hμ u hu g h`.
-
-Simplify using the standard rewrite rules. Conclude with `noConst_lin S.e S.map_eq S.open₀ S.cpt₀ S.cpt' hf hf' c Cf Cf' h'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cuspIdeal : CuspIdeal := by
   intro p _ G _ Lv k _ _ _ _ _ _ _ P H _ _ _ _ S k₁ _ _ P₁

@@ -27,7 +27,7 @@ def CloudLowerBoundWeyl : Prop :=
           κ₂ * dL R (flatW (mm + 1) (fun s => A s + 2 * ccl) (fun s => B s + 2 * ccl))))
 
 /- English proof (translation)
-Unfold `weylDim`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [add_sub_add_right_eq_sub]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem weylDim_add_const (n : ℕ) (lam : Fin n → ℤ) (d : ℤ) : weylDim n (fun i => lam i + d) = weylDim n lam := by
   unfold weylDim
@@ -35,13 +35,13 @@ theorem weylDim_add_const (n : ℕ) (lam : Fin n → ℤ) (d : ℤ) : weylDim n 
   simp only [add_sub_add_right_eq_sub]
 
 /- English proof (translation)
-Rewrite using `[weylDim_cwt, weylDim_hwt]`. Establish `hw : (0 : ℝ) ≤ weylDim m μ` using `by exact_mod_cast (weylDim_pos_of_antitone m μ hμ).le`. Establish `hj : ∀ j : Fin m, (0 : ℝ) < (m : ℝ) - ((j : ℕ) : ℝ)` using `fun j => by`. Establish `: ((j : ℕ) : ℝ) < m` using `by exact_mod_cast j.isLt`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hμc : ∀ j, (0 : ℝ) ≤ μ j ∧ (μ j : ℝ) ≤ c` using `fun j => ⟨by exact_mod_cast (h0 j).1, by exact_mod_cast (h0 j).2⟩`. Establish `hA0 : (0 : ℝ) ≤ A` using `Nat.cast_nonneg A`. Establish `hB0 : (0 : ℝ) ≤ B` using `Nat.cast_nonneg B`. Establish `hc0 : (0 : ℝ) ≤ c` using `Nat.cast_nonneg c`. Establish `h1 : (∏ j : Fin m, ((A : ℝ) + ((j : ℕ) : ℝ) + 1) / (((j : ℕ) : ℝ) + 1)) ≤ ∏ j : Fin m, ((A : ℝ) + c - (μ j : ℝ) + ((j : ℕ) : ℝ) + 1) / (((j : ℕ) : ℝ) + 1)` using `Finset.prod_le_prod (fun j _ => by positivity) (fun j _ => div_le_div_of_nonneg_right (by linarith [hμc j]) (by positivity))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (∏ j : Fin m, ((B : ℝ) + (m : ℝ) - ((j : ℕ) : ℝ)) / ((m : ℝ) - ((j : ℕ) : ℝ))) ≤ ∏ j : Fin m, ((μ j : ℝ) + B + (m : ℝ) - ((j : ℕ) : ℝ)) / ((m : ℝ) - ((j : ℕ) : ℝ))` using `Finset.prod_le_prod (fun j _ => div_nonneg (by linarith [hj j]) (hj j).le) (fun j _ => div_le_div_of_nonneg_right (by linarith [hμc j]) (hj j).le)`. Establish `h3 : ((A : ℝ) + B + m + 1) / ((m : ℝ) + 1) ≤ ((A : ℝ) + c + B + m + 1) / ((m : ℝ) + 1)` using `div_le_div_of_nonneg_right (by linarith) (by positivity)`. Establish `hP2 : (0 : ℝ) ≤ ∏ j : Fin m, ((B : ℝ) + (m : ℝ) - ((j : ℕ) : ℝ)) / ((m : ℝ) - ((j : ℕ) : ℝ))` using `Finset.prod_nonneg fun j _ => div_nonneg (by linarith [hj j]) (hj j).le`. Establish `hQ1 : (0 : ℝ) ≤ ∏ j : Fin m, ((A : ℝ) + c - (μ j : ℝ) + ((j : ℕ) : ℝ) + 1) / (((j : ℕ) : ℝ) + 1)` using `Finset.prod_nonneg fun j _ => div_nonneg (by linarith [hμc j]) (by positivity)`. Establish `hQ2 : (0 : ℝ) ≤ ∏ j : Fin m, ((μ j : ℝ) + B + (m : ℝ) - ((j : ℕ) : ℝ)) / ((m : ℝ) - ((j : ℕ) : ℝ))` using `Finset.prod_nonneg fun j _ => div_nonneg (by linarith [hj j, hμc j]) (hj j).le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : (0 : ℝ) ≤ ((A : ℝ) + B + m + 1) / ((m : ℝ) + 1)` using `by positivity`. Establish `key` using `mul_le_mul_of_nonneg_left (mul_le_mul (mul_le_mul h1 h2 hP2 hQ1) h3 hF (mul_nonneg hQ1 hQ2)) hw`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cwt_lower (m A c B : ℕ) (μ : Fin m → ℤ) (hμ : Antitone μ) (h0 : ∀ i, 0 ≤ μ i ∧ μ i ≤ c) :
     (weylDim m μ : ℝ) * (weylDim (m + 2) (hwt m A B) : ℝ) ≤ (weylDim (m + 2) (cwt m A c B μ) : ℝ) := by
@@ -76,19 +76,17 @@ theorem cwt_lower (m A c B : ℕ) (μ : Fin m → ℤ) (hμ : Antitone μ) (h0 :
   linarith
 
 /- English proof (translation)
-Use `set μ : Fin mm → ℤ := fun j => lam j.castSucc.succ + ccl with hμdef`. Establish `hlam : (fun i => lam i + (ccl : ℤ)) = cwt mm P (2 * ccl) Q μ`. Use function extensionality and compare the values at `i`. Unfold `cwt`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.cons_zero, h0]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_succ, Fin.snoc_last]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.succ_last, hl]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Fin.cons_succ, Fin.snoc_castSucc, hμdef]`. Establish `hw : weylDim (mm + 2) lam = weylDim (mm + 2) (cwt mm P (2 * ccl) Q μ)`. Rewrite using `[← hlam, weylDim_add_const]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : weylDim mm (fun j => lam j.castSucc.succ) = weylDim mm μ` using `(weylDim_add_const mm (fun j => lam j.castSucc.succ) ccl).symm`. Establish `hμa : Antitone μ`. Introduce `i j hij`. Use `hanti (Fin.succ_le_succ_iff.mpr (Fin.castSucc_le_castSucc_iff.mpr hij))` as an intermediate fact. Simplify using `only [hμdef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hμ0 : ∀ i, 0 ≤ μ i ∧ μ i ≤ ((2 * ccl : ℕ) : ℤ)` using `fun i => by`. Use `abs_le.mp (hmid i)` as an intermediate fact. Simplify using `only [hμdef]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Conclude with `weylDim_pos_of_antitone mm μ hμa` after adjusting the coercions. Rewrite using `[hm, hw]`.
-
-Conclude with `cwt_lower mm P (2 * ccl) Q μ hμa hμ0`. Rewrite using `[hm, hw]`. Conclude with `(cwt_bound mm P (2 * ccl) Q μ hμa hμ0 t ht hP hQ).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_bounds (mm P Q ccl : ℕ) (lam : Fin (mm + 2) → ℤ) (hanti : Antitone lam) (h0 : lam 0 = (P : ℤ) + ccl)
     (hl : lam (Fin.last (mm + 1)) = -(Q : ℤ) - ccl) (hmid : ∀ j : Fin mm, |lam j.castSucc.succ| ≤ ccl)
@@ -134,7 +132,7 @@ theorem top_bounds (mm P Q ccl : ℕ) (lam : Fin (mm + 2) → ℤ) (hanti : Anti
     exact (cwt_bound mm P (2 * ccl) Q μ hμa hμ0 t ht hP hQ).2
 
 /- English proof (translation)
-Rewrite using `[hW R.Kf n' (mm + 1) lam0 hdom]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [weylDim, Int.cast_sub]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem dimV_weyl (hW : WeylV) {p n' : ℕ} (R : RS p n') (mm : ℕ) (lam0 : Fin n' → Fin (mm + 1 + 1) → ℤ)
     (hdom : IsDominant lam0) :
@@ -144,7 +142,7 @@ theorem dimV_weyl (hW : WeylV) {p n' : ℕ} (R : RS p n') (mm : ℕ) (lam0 : Fin
   simp only [weylDim, Int.cast_sub]
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_coe_sort TT f]`. Conclude with `(Finset.prod_subset (Finset.subset_univ TT) (fun s _ hs => hf s hs)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prod_univ_eq_prod_subtype_of_eq_one_off {n' : ℕ} (TT : Finset (Fin n')) (f : Fin n' → ℚ)
     (hf : ∀ s, s ∉ TT → f s = 1) : ∏ s : Fin n', f s = ∏ s : TT, f s.val := by
@@ -152,7 +150,7 @@ private theorem prod_univ_eq_prod_subtype_of_eq_one_off {n' : ℕ} (TT : Finset 
   exact (Finset.prod_subset (Finset.subset_univ TT) (fun s _ hs => hf s hs)).symm
 
 /- English proof (translation)
-Rewrite using `[dimV_weyl hW R mm _ (flatW_dom mm A B)]`. Rewrite using `[prod_univ_eq_prod_subtype_of_eq_one_off TT _ (fun s hs => by rw [lamAt_flat, dif_neg hs])]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[lamAt_flat, dif_pos s.2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dimV_flat (hW : WeylV) {p n' : ℕ} (R : RS p n') (mm : ℕ) {TT : Finset (Fin n')} (A B : TT → ℕ) :
     ((dimV R.Kf (flatW (mm + 1) A B) : ℕ) : ℚ) = ∏ s : TT, (dimHar (mm + 1) (A s) (B s) : ℚ) := by
@@ -162,9 +160,9 @@ theorem dimV_flat (hW : WeylV) {p n' : ℕ} (R : RS p n') (mm : ℕ) {TT : Finse
   rw [lamAt_flat, dif_pos s.2]
 
 /- English proof (translation)
-Establish `hone : ∀ s, s ∉ TT → weylDim (mm + 2) (lamAt lam0 s) = 1` using `fun s hs => by`. Establish `: lamAt lam0 s = fun _ => (0 : ℤ)`. Use function extensionality and compare the values at `i`. Simplify using `[lamAt, hz s hs, ite_apply]`. Rewrite using `[this, weylDim_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dimV_weyl hW R mm lam0 hdom]`. Conclude with `prod_univ_eq_prod_subtype_of_eq_one_off TT _ hone`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dimV_tops (hW : WeylV) {p n' : ℕ} (R : RS p n') (mm : ℕ) (TT : Finset (Fin n'))
     (lam0 : Fin n' → Fin (mm + 1 + 1) → ℤ) (hdom : IsDominant lam0) (hz : ∀ s, s ∉ TT → lam0 s = 0) :
@@ -178,7 +176,7 @@ theorem dimV_tops (hW : WeylV) {p n' : ℕ} (R : RS p n') (mm : ℕ) (TT : Finse
   exact prod_univ_eq_prod_subtype_of_eq_one_off TT _ hone
 
 /- English proof (translation)
-Unfold `lamAt`. Use `split_ifs`. Conclude with `hdom s`. Introduce `i j hij`. Conclude with `neg_le_neg (hdom s (Fin.rev_le_rev.mpr hij))`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lamAt_anti {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hdom : IsDominant lam0) (s : Fin n') :
     Antitone (lamAt lam0 s) := by
@@ -189,13 +187,13 @@ theorem lamAt_anti {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hdom : 
     exact neg_le_neg (hdom s (Fin.rev_le_rev.mpr hij))
 
 /- English proof (translation)
-Take `⟨h0, hl, hmid⟩` from `(hB s).1 hs`. Unfold `lamAt`. Use `split_ifs with he`. Use `⟨h0, hl, fun j => hmid _ ?_ ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.val_succ, Fin.coe_castSucc]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use `j.isLt` as an intermediate fact. Simplify using `only [Fin.val_succ, Fin.coe_castSucc]`. Use linear arithmetic over natural numbers and integers. Use `⟨?_, ?_, fun j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hl]`. Simplify using `[h0]`. Rewrite using `[abs_neg]`. Use `j.isLt` as an intermediate fact. Use `hmid _ ?_ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_rev, Fin.val_succ, Fin.coe_castSucc]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Fin.val_rev, Fin.val_succ, Fin.coe_castSucc]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem top_shape {n' mm : ℕ} (TT : Finset (Fin n')) (aw bw : Fin n' → ℤ) (ccl : ℕ)
     (lam0 : Fin n' → Fin (mm + 1 + 1) → ℤ) (hB : IsBaseWeight TT aw bw ccl lam0) (s : Fin n') (hs : s ∈ TT) :
@@ -223,7 +221,7 @@ theorem top_shape {n' mm : ℕ} (TT : Finset (Fin n')) (aw bw : Fin n' → ℤ) 
         omega
 
 /- English proof (translation)
-Establish `e1 : 0 ≤ (1 - κ₁) * (Cl * H - (1 - ep) * L)` using `mul_nonneg (by linarith) (by linarith)`. Establish `e2 : 0 ≤ κ₂ * (L - Cl * H)` using `mul_nonneg h2 (by linarith)`. Establish `e3 : 0 ≤ κ₁ * ep * L` using `by positivity`. Establish `e4 : Cl * κ₂ * Hp ≤ Cl * κ₂ * (2 * H)` using `mul_le_mul_of_nonneg_left a3 (mul_nonneg hCl h2)`. Use polynomial arithmetic with `[e1, e2, e3, e4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem share_abs (L H Hp Cl κ₁ κ₂ ep : ℝ) (hL : 0 ≤ L) (_hH : 0 ≤ H) (hCl : 0 ≤ Cl) (h1 : 0 ≤ κ₁) (h1' : κ₁ ≤ 1)
     (h2 : 0 ≤ κ₂) (hep : 0 ≤ ep) (a1 : Cl * H ≤ L) (a2 : (1 - ep) * L ≤ Cl * H) (a3 : Hp ≤ 2 * H) :
@@ -235,7 +233,7 @@ theorem share_abs (L H Hp Cl κ₁ κ₂ ep : ℝ) (hL : 0 ≤ L) (_hH : 0 ≤ H
   nlinarith [e1, e2, e3, e4]
 
 /- English proof (translation)
-Establish `h1 : 1 - x ≤ Real.exp (-x)` using `by linarith [Real.add_one_le_exp (-x)]`. Establish `h2 : Real.exp (-x) * Real.exp x = 1` using `by rw [← Real.exp_add]; simp`. Establish `h3` using `Real.exp_pos x`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h1 h3.le, mul_le_mul_of_nonneg_right hx h3.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem one_sub_mul_exp_le_one_of_le (x ep : ℝ) (hx : x ≤ ep) : (1 - ep) * Real.exp x ≤ 1 := by
   have h1 : 1 - x ≤ Real.exp (-x) := by linarith [Real.add_one_le_exp (-x)]
@@ -244,18 +242,16 @@ private theorem one_sub_mul_exp_le_one_of_le (x ep : ℝ) (hx : x ≤ ep) : (1 -
   nlinarith [mul_le_mul_of_nonneg_right h1 h3.le, mul_le_mul_of_nonneg_right hx h3.le]
 
 /- English proof (translation)
-Rewrite using `[Real.exp_nat_mul]`. Conclude with `pow_le_pow_left₀ (by linarith) (by linarith [Real.add_one_le_exp t]) N`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_add_pow_le_exp_mul (t : ℝ) (ht : 0 ≤ t) (N : ℕ) : (1 + t) ^ N ≤ Real.exp (N * t) := by
   rw [Real.exp_nat_mul]
   exact pow_le_pow_left₀ (by linarith) (by linarith [Real.add_one_le_exp t]) N
 
 /- English proof (translation)
-Take `⟨e0, el, emid⟩` from `top_shape TT aw bw ccl lam0 hB s.val s.2`. Take `⟨hA, hB'⟩` from `hAB s`. Establish `hanti` using `lamAt_anti lam0 hdom s.val`. Use `split_ifs at e0 el with he`. Establish `h` using `top_bounds mm (A s) (B s) ccl (lamAt lam0 s.val) hanti (by rw [e0]; linarith) (by rw [el]; linarith) emid t0 ht0 (hPA s).1 (hPA s).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[weylDim_hwt_eq]`. Move the coercions through the operations in `at h`. Conclude with `h`. Establish `h` using `top_bounds mm (B s) (A s) ccl (lamAt lam0 s.val) hanti (by rw [e0]; linarith) (by rw [el]; linarith) emid t0 ht0 (hPA s).2 (hPA s).1`. Rewrite `h` using `[weylDim_hwt_eq, dimHar_comm]`.
-
-Move the coercions through the operations in `at h`. Conclude with `h`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 private theorem top_facts_lemma_4 {n' mm : ℕ} (TT : Finset (Fin n')) (aw bw : Fin n' → ℤ) (ccl : ℕ)
     (lam0 : Fin n' → Fin (mm + 1 + 1) → ℤ) (A B : TT → ℕ) (hB : IsBaseWeight TT aw bw ccl lam0)
@@ -283,41 +279,37 @@ private theorem top_facts_lemma_4 {n' mm : ℕ} (TT : Finset (Fin n')) (aw bw : 
     exact h
 
 /- English proof (translation)
-Introduce `p n' R m hm TT a ccl b' aw bw lam0 A B hB hdom hz hAB hb' hbA ha hsmall t c₂ D₁ κ₁ κ₂ hD hc hc2 hk1 hk1' hk2 h1 h2`. Take `⟨mm, rfl⟩ : ∃ mm, m = mm + 1` from `⟨m - 1, by omega⟩`. Establish `key` using `hP p n' R mm (by omega) TT a ccl aw bw lam0 A B hB hdom hz hAB ha t c₂ D₁ κ₁ κ₂ hD hc hc2 hk1 hk1' hk2 h1 h2`. Use `RhoL_mono (ht := le_rfl) (hD := le_rfl) (hX := ?_) (h := key)` and prove the remaining obligations. Use `set ep : ℝ := 12 * (TT.card : ℝ) * (((mm + 1 : ℕ) : ℝ) + 1) * ccl / b' with hepdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set t0 : ℝ := 6 * ccl / b' with ht0def`. Establish `ht0 : 0 ≤ t0` using `by positivity`. Establish `hep0 : 0 ≤ ep` using `by positivity`. Establish `hPA : ∀ s : TT, ((2 * ccl : ℕ) : ℝ) ≤ t0 * A s ∧ ((2 * ccl : ℕ) : ℝ) ≤ t0 * B s`. Introduce `s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hA3, hB3⟩` from `hbA s`. Establish `e : t0 * (b' / 3) = 2 * ccl`. Rewrite using `[ht0def]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `push_cast`. Apply the tactic sequence `constructor <;> nlinarith [mul_le_mul_of_nonneg_left hA3 ht0, mul_le_mul_of_nonneg_left hB3 ht0]`. Establish `hF` using `top_facts_lemma_4 TT aw bw ccl lam0 A B hB hdom hAB t0 ht0 hPA`. Establish `hG : ∀ s : TT, (dimHar (mm + 1) (A s + 2 * ccl) (B s + 2 * ccl) : ℝ) ≤ (1 + t0) ^ (2 * mm + 1) * (dimHar (mm + 1) (A s) (B s) : ℝ)` using `fun s => by`. Establish `h` using `hwt_bound mm (A s) (2 * ccl) (B s) t0 ht0 (hPA s).1 (hPA s).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `h` using `[weylDim_hwt_eq, weylDim_hwt_eq]`. Move the coercions through the operations in `at h ⊢`. Conclude with `h`. Establish `hN` using `gaussianNumber_prime_pow_pos R (mm + 1 + 1) (by omega)`. Establish `hVL : (dimV R.Kf lam0 : ℝ) = ∏ s : TT, (weylDim (mm + 2) (lamAt lam0 s.val) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `congrArg (Rat.cast : ℚ → ℝ) (dimV_tops hW R mm TT lam0 hdom hz)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hVf : (dimV R.Kf (flatW (mm + 1) A B) : ℝ) = ∏ s : TT, (dimHar (mm + 1) (A s) (B s) : ℝ)`. Use `congrArg (Rat.cast : ℚ → ℝ) (dimV_flat hW R mm A B)` as an intermediate fact.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hVf2 : (dimV R.Kf (flatW (mm + 1) (fun s => A s + 2 * ccl) (fun s => B s + 2 * ccl)) : ℝ) = ∏ s : TT, (dimHar (mm + 1) (A s + 2 * ccl) (B s + 2 * ccl) : ℝ)`. Use `congrArg (Rat.cast : ℚ → ℝ) (dimV_flat hW R mm (fun s => A s + 2 * ccl) (fun s => B s + 2 * ccl))` as an intermediate fact. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hCl : dimCl TT lam0 = ∏ s : TT, (weylDim mm (cloudAt lam0 s.val) : ℝ)`. Unfold `dimCl`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `set E : ℝ := (1 + t0) ^ ((2 * mm + 1) * TT.card) with hEdef`. Establish `hc0 : ∀ s : TT, 0 ≤ (weylDim mm (cloudAt lam0 s.val) : ℝ) * (dimHar (mm + 1) (A s) (B s) : ℝ)` using `fun s => mul_nonneg (hF s).1.le (Nat.cast_nonneg _)`. Establish `P1 : (∏ s : TT, (weylDim mm (cloudAt lam0 s.val) : ℝ)) * ∏ s : TT, (dimHar (mm + 1) (A s) (B s) : ℝ) ≤ ∏ s : TT, (weylDim (mm + 2) (lamAt lam0 s.val) : ℝ)`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_le_prod (fun s _ => hc0 s) (fun s _ => (hF s).2.1)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `P2 : ∏ s : TT, (weylDim (mm + 2) (lamAt lam0 s.val) : ℝ) ≤ E * ((∏ s : TT, (weylDim mm (cloudAt lam0 s.val) : ℝ)) * ∏ s : TT, (dimHar (mm + 1) (A s) (B s) : ℝ))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_coe, ← pow_mul]`. Establish `P3 : ∏ s : TT, (dimHar (mm + 1) (A s + 2 * ccl) (B s + 2 * ccl) : ℝ) ≤ E * ∏ s : TT, (dimHar (mm + 1) (A s) (B s) : ℝ)`. Combine the equalities or inequalities in the displayed calculation.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_coe, ← pow_mul]`. Establish `hx : (((2 * mm + 1) * TT.card : ℕ) : ℝ) * t0 ≤ ep`. Rewrite using `[hepdef, ht0def]`. Use `push_cast`. Establish `hcd : (0 : ℝ) ≤ (TT.card : ℝ) * ccl` using `by positivity`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ((2 * (mm : ℝ) + 1) * TT.card) * (6 * ccl / b') = (6 * (2 * (mm : ℝ) + 1) * (TT.card * ccl)) / b'`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : 12 * (TT.card : ℝ) * ((mm : ℝ) + 1 + 1) * ccl / b' = (12 * ((mm : ℝ) + 2) * (TT.card * ccl)) / b'`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `div_le_div_of_nonneg_right (by nlinarith) hb'.le`. Establish `hEx` using `one_add_pow_le_exp_mul t0 ht0 ((2 * mm + 1) * TT.card)`. Establish `hE1 : (1 - ep) * E ≤ 1` using `le_trans (mul_le_mul_of_nonneg_left hEx (by linarith)) (one_sub_mul_exp_le_one_of_le _ ep hx)`. Establish `hE2 : E ≤ 2`. Use `one_sub_mul_exp_le_one_of_le _ (1 / 9) (hx.trans hsmall)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hClnn : 0 ≤ dimCl TT lam0`. Rewrite using `[hCl]`. Conclude with `Finset.prod_nonneg fun s _ => (hF s).1.le`. Establish `hVfnn : (0 : ℝ) ≤ ∏ s : TT, (dimHar (mm + 1) (A s) (B s) : ℝ)` using `Finset.prod_nonneg fun s _ => Nat.cast_nonneg _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hCV : 0 ≤ (∏ s : TT, (weylDim mm (cloudAt lam0 s.val) : ℝ)) * ∏ s : TT, (dimHar (mm + 1) (A s) (B s) : ℝ)` using `mul_nonneg (hCl ▸ hClnn) hVfnn`. Establish `a1 : dimCl TT lam0 * dL R (flatW (mm + 1) A B) ≤ dL R lam0`. Unfold `dL`. Rewrite using `[hCl, hVL, hVf, ← mul_div_assoc]`. Conclude with `div_le_div_of_nonneg_right P1 hN.le`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `a2 : (1 - ep) * dL R lam0 ≤ dimCl TT lam0 * dL R (flatW (mm + 1) A B)`. Unfold `dL`. Rewrite using `[hCl, hVL, hVf, ← mul_div_assoc, ← mul_div_assoc]`. Use `div_le_div_of_nonneg_right ?_ hN.le` and prove the remaining obligations. Establish `h1e : 0 ≤ 1 - ep` using `by linarith`.
-
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left P2 h1e, mul_le_mul_of_nonneg_right hE1 hCV]`. Establish `a3 : dL R (flatW (mm + 1) (fun s => A s + 2 * ccl) (fun s => B s + 2 * ccl)) ≤ 2 * dL R (flatW (mm + 1) A B)`. Unfold `dL`. Rewrite using `[hVf2, hVf, ← mul_div_assoc]`. Use `div_le_div_of_nonneg_right ?_ hN.le` and prove the remaining obligations.
-
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hE2 hVfnn]`. Conclude with `share_abs _ _ _ _ _ _ _ (dL_nonneg R lam0) (dL_nonneg R _) hClnn hk1 hk1' hk2 hep0 a1 a2 a3`.
+A detailed English derivation is pending.
 -/
 theorem cloud_bound_of_prop_and_weyl_dimension (hP : CloudLowerBoundWeyl) (hW : WeylV) : CloudWeightLowerBound := by
   intro p n' R m hm TT a ccl b' aw bw lam0 A B hB hdom hz hAB hb' hbA ha hsmall t c₂ D₁ κ₁ κ₂ hD hc hc2

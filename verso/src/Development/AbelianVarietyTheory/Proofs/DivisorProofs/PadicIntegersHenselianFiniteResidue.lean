@@ -8,9 +8,7 @@ open IsDedekindDomain IsLocalRing
 namespace GlobalTheory.IntAdicHensel
 
 /- English proof (translation)
-Introduce `v`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (v.adicCompletionIntegers ℚ)`. Use `haveI : IsPrecomplete (maximalIdeal (v.adicCompletionIntegers ℚ)) (v.adicCompletionIntegers ℚ) := Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.completion_integers_precomplete v hϖ`. Use `haveI : IsAdicComplete (maximalIdeal (v.adicCompletionIntegers ℚ)) (v.adicCompletionIntegers ℚ) := {}`. Use `haveI := IsAdicComplete.henselianRing (v.adicCompletionIntegers ℚ) (maximalIdeal (v.adicCompletionIntegers ℚ))`.
-
-Use `⟨GlobalTheory.henselianLocalRing_of_henselianRing _, ?_⟩` and prove the remaining obligations. Use `haveI : Finite (ℤ ⧸ v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot v.asIdeal v.ne_bot`. Conclude with `Finite.of_equiv _ (GroundTheory.Global.residueFieldEquiv (K := ℚ) v).toEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem henselianLocalRing_and_finite_residueField :
     ∀ (v : HeightOneSpectrum ℤ), HenselianLocalRing (v.adicCompletionIntegers ℚ) ∧

@@ -21,13 +21,13 @@ def ker (σ : K →ₐ[ℂ] κ') : Ideal (K ⊗[ℂ] κ') :=
 instance ker_isPrime (σ : K →ₐ[ℂ] κ') : (ker σ).IsPrime := RingHom.ker_isPrime _
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ker (σ : K →ₐ[ℂ] κ') (a : K ⊗[ℂ] κ') :
     a ∈ ker σ ↔ Algebra.TensorProduct.productMap σ (AlgHom.id ℂ κ') a = 0 := Iff.rfl
 
 /- English proof (translation)
-Use `haveI : IsDomain (K ⊗[ℂ] κ') := Function.Injective.isDomain (algebraMap (K ⊗[ℂ] κ') L) (IsFractionRing.injective _ L)`. Introduce `a ha`. Use `mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `ha (Ideal.zero_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem primeCompl_le (L : Type) [Field L] [Algebra (K ⊗[ℂ] κ') L] [IsFractionRing (K ⊗[ℂ] κ') L]
     (σ : K →ₐ[ℂ] κ') :
@@ -79,7 +79,7 @@ instance isLocalRing (σ : K →ₐ[ℂ] κ') : IsLocalRing (loc L σ) :=
   IsLocalization.AtPrime.isLocalRing (loc L σ) (ker σ)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.AtPrime.map_eq_maximalIdeal (ker σ) (loc L σ)`.
+A detailed English derivation is pending.
 -/
 theorem map_ker (σ : K →ₐ[ℂ] κ') :
     (ker σ).map (toLoc L σ) = IsLocalRing.maximalIdeal (loc L σ) :=

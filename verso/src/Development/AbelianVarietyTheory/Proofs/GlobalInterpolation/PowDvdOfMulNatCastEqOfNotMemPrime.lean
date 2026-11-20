@@ -5,17 +5,15 @@ open NumberField IsDedekindDomain Formalism.L2.Col
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro i r _`. Simplify using the standard rewrite rules. Consider the case `succ d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `i r h`. Establish `hiI : (i : R) ∈ I`. Establish `: s * (i : R) ∈ I`. Rewrite using `[h, pow_succ', mul_assoc]`. Conclude with `I.mul_mem_right _ hqI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hI.mem_or_mem this).resolve_left hs`. Establish `hdvd : q ∣ i`. Assume the negation of the conclusion as `hn`. Establish `hc : IsCoprime (q : R) (i : R)`. Use `(Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hq).2 hn)).map (Int.castRingHom R)` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `using this`. Take `⟨a, b, hab⟩` from `hc`. Conclude with `hI.one_notMem (hab ▸ I.add_mem (I.mul_mem_left a hqI) (I.mul_mem_left b hiI))`. Take `⟨j, rfl⟩` from `hdvd`. Establish `hq0 : (q : R) ≠ 0` using `by exact_mod_cast hq.ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Establish `h' : s * (j : R) = (q : R) ^ d * r`. Apply `mul_left_cancel₀ hq0` to reduce the goal to its premises. Move the coercions through the operations in `at h`. Take the linear combination `h`. Rewrite using `[pow_succ']`.
-
-Conclude with `Nat.mul_dvd_mul_left q (ih j r h')`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_dvd_of_mul_natCast_eq_of_notMem_prime {R : Type} [CommRing R] [IsDomain R] [CharZero R] (I : Ideal R)
     (hI : I.IsPrime) {q : ℕ} (hq : q.Prime) (hqI : (q : R) ∈ I) {s : R} (hs : s ∉ I) :
@@ -47,21 +45,21 @@ theorem pow_dvd_of_mul_natCast_eq_of_notMem_prime {R : Type} [CommRing R] [IsDom
     exact Nat.mul_dvd_mul_left q (ih j r h')
 
 /- English proof (translation)
-Introduce `E _ _ P hq K _ f A₀ hf A B hA`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hA`. Establish `hqP : ((qOf P : ℕ) : 𝓞 E) ∈ P.asIdeal` using `Ideal.absNorm_mem _`. Generalize the expression as in `qOf P = q at *`. Establish `hq0 : (q : E) ≠ 0` using `by exact_mod_cast hq.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hpos : 0 < q ^ d` using `pow_pos hq.pos d`. Use `symm`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `a ha`. Simplify using `only [LocE.valsQ, Finset.mem_image, Finset.mem_range] at ha ⊢`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨i, hi, rfl⟩` from `ha`. Use `⟨q ^ d * i, ?_, ?_⟩` and prove the remaining obligations. Establish `: q ^ (A₀ + d + B) = q ^ d * q ^ (A₀ + B)` using `by ring`. Rewrite using `[this]`. Conclude with `Nat.mul_lt_mul_of_pos_left hi hpos`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce `a ha hna`. Assume the negation of the conclusion as `hfa`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hna` to reduce the goal to its premises. Simplify using `only [LocE.valsQ, Finset.mem_image, Finset.mem_range] at ha ⊢`. Take `⟨i, hi, rfl⟩` from `ha`. Take `⟨r, s, hs, hrs⟩` from `hf _ hfa`. Establish `h1 : s * (i : 𝓞 E) = (q : 𝓞 E) ^ d * r`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `FaithfulSMul.algebraMap_injective (𝓞 E) E` to reduce the goal to its premises. Simplify using `only [map_mul, map_pow, map_natCast]`. Rewrite using `[← hrs]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩` from `pow_dvd_of_mul_natCast_eq_of_notMem_prime P.asIdeal P.isPrime hq hqP hs d i r h1`. Use `⟨j, ?_, ?_⟩` and prove the remaining obligations. Establish `: q ^ (A₀ + d + B) = q ^ d * q ^ (A₀ + B)` using `by ring`. Rewrite `hi` using `[this]`. Conclude with `Nat.lt_of_mul_lt_mul_left hi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_valsQ_eq_of_support_intAt : ∀ (E : Type) [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)), (qOf P).Prime → ∀ (K : Type) [Field K] (f : E → K) (A₀ : ℕ), (∀ a, f a ≠ 0 → IntAt P ((qOf P : E) ^ A₀ * a)) → ∀ A B : ℕ, A₀ ≤ A → ∑ a ∈ LocE.valsQ E (qOf P) A B, f a = ∑ a ∈ LocE.valsQ E (qOf P) A₀ B, f a := by
   intro E _ _ P hq K _ f A₀ hf A B hA

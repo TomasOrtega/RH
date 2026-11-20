@@ -10,9 +10,9 @@ namespace GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Establish `h0 : core.inner (0 : V) y = 0`. Establish `h` using `core.smul_left (0 : V) y 0`. Simplify using `using h`. Proceed by induction on `s using Finset.induction_on`. Simplify using `only [Finset.sum_empty]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Simplify using the standard rewrite rules.
 
-Conclude with `h0`. Name the introduced variables `a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, core.add_left, core.smul_left, ih]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_sum_left (core : InnerProductSpace.Core ℂ V) {I : Type} (s : Finset I)
     (c : I → ℂ) (u : I → V) (y : V) :
@@ -28,7 +28,7 @@ theorem inner_sum_left (core : InnerProductSpace.Core ℂ V) {I : Type} (s : Fin
     rw [Finset.sum_insert ha, Finset.sum_insert ha, core.add_left, core.smul_left, ih]
 
 /- English proof (translation)
-Rewrite using `[← core.conj_inner_symm, GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot.inner_sum_left, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Complex.conj_conj, core.conj_inner_symm, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_sum_right (core : InnerProductSpace.Core ℂ V) {I : Type} (s : Finset I)
     (c : I → ℂ) (u : I → V) (y : V) :
@@ -38,7 +38,7 @@ theorem inner_sum_right (core : InnerProductSpace.Core ℂ V) {I : Type} (s : Fi
   rw [map_mul, Complex.conj_conj, core.conj_inner_symm, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.of_apply, hw a, hw b, GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot.inner_sum_left]`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot.inner_sum_right, Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply, Matrix.transpose_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_change (core : InnerProductSpace.Core ℂ V) {I J : Type} [Fintype I] [Fintype J]
     [DecidableEq I] (u : I → V) (w : J → V) (P : Matrix J I ℂ)
@@ -53,7 +53,7 @@ theorem gram_change (core : InnerProductSpace.Core ℂ V) {I J : Type} [Fintype 
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Establish `hconj : (P.map (starRingEnd ℂ)).det = starRingEnd ℂ P.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot.gram_change core u w P hw, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hconj, norm_mul, norm_mul, Complex.norm_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_det_gram (core : InnerProductSpace.Core ℂ V) {I : Type} [Fintype I]
     [DecidableEq I] (u w : I → V) (P : Matrix I I ℂ)
@@ -75,9 +75,9 @@ noncomputable def blockMat {n : ℕ} (C : Matrix (Fin n) (Fin n) ℂ) (d : Fin n
       (fun j => Fin.lastCases (motive := fun _ => ℂ) 0 (C j) l) i
 
 /- English proof (translation)
-Establish `hsub : (GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot.blockMat C d s).submatrix (Fin.last n).succAbove (Fin.last n).succAbove = C`. Use extensionality with `i j`. Simplify using `[GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot.blockMat, Fin.succAbove_last]`. Establish `hsign : ((-1 : ℂ) ^ ((Fin.last n : ℕ) + (Fin.last n : ℕ))) = 1`. Rewrite using `[← two_mul, pow_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.det_succ_column _ (Fin.last n), Fin.sum_univ_castSucc, hsub, hsign, _root_.one_mul]`. Simplify using `[GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot.blockMat]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_blockMat {n : ℕ} (C : Matrix (Fin n) (Fin n) ℂ) (d : Fin n → ℂ) (s : ℂ) :
     (blockMat C d s).det = s * C.det := by
@@ -94,15 +94,15 @@ end GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot
 
 open GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot in
 /- English proof (translation)
-Introduce `V _ _ core n β x xe C d s hx hxe hs hGx hGβ`. Establish `hy : ∀ j, (Fin.snoc x xe : Fin (n + 1) → V) j = ∑ l, GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot.blockMat C d s j l • β l`. Introduce `j`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.snoc_last, hxe, Fin.sum_univ_castSucc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot.blockMat]`. Rewrite using `[Fin.snoc_castSucc, hx i, Fin.sum_univ_castSucc]`. Simplify using `[GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot.blockMat]`. Establish `h1 : ‖(Matrix.of fun a b => core.inner ((Fin.snoc x xe : Fin (n + 1) → V) a) ((Fin.snoc x xe : Fin (n + 1) → V) b)).det‖ = ‖(GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot.blockMat C d s).det‖ ^ 2 * ‖(Matrix.of fun a b => core.inner (β a) (β b)).det‖` using `GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot.norm_det_gram core β _ (GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot.blockMat C d s) hy`. Establish `h2 : ‖(Matrix.of fun a b => core.inner (x a) (x b)).det‖ = ‖C.det‖ ^ 2 * ‖(Matrix.of fun a b : Fin n => core.inner (β a.castSucc) (β b.castSucc)).det‖` using `GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot.norm_det_gram core (fun l => β l.castSucc) x C hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.GramQuot.det_blockMat]`. Establish `hx0 : ‖(Matrix.of fun a b => core.inner (x a) (x b)).det‖ ≠ 0` using `norm_ne_zero_iff.mpr hGx`. Establish `hC : ‖C.det‖ ≠ 0`. Introduce `h`. Apply `hx0` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h2, h]`. Simplify using the standard rewrite rules. Establish `hβ' : ‖(Matrix.of fun a b : Fin n => core.inner (β a.castSucc) (β b.castSucc)).det‖ ≠ 0`. Introduce `h`. Apply `hx0` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h2, h, mul_zero]`. Establish `hβ : ‖(Matrix.of fun a b => core.inner (β a) (β b)).det‖ ≠ 0` using `norm_ne_zero_iff.mpr hGβ`. Establish `hs' : ‖s‖ ≠ 0` using `norm_ne_zero_iff.mpr hs`. Rewrite using `[h1, h2, norm_mul, mul_pow, Real.log_mul (mul_ne_zero (pow_ne_zero 2 hs') (pow_ne_zero 2 hC)) hβ, Real.log_mul (pow_ne_zero 2 hs') (pow_ne_zero 2 hC), Real.log_mul (pow_ne_zero 2 hC) hβ', Real.log_pow, Real.log_pow]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

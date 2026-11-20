@@ -5,24 +5,24 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.GoodReduction.CMGoo
 namespace UpperTheory.Lit
 
 /- English proof (translation)
-The claim follows from `UpperTheory.Lit.Nos.Nos.neronOggShafarevich`.
+A detailed English derivation is pending.
 -/
 theorem neronOggShafarevich : GlobalTheory.Published.NeronOggShafarevichSt := UpperTheory.Lit.Nos.Nos.neronOggShafarevich
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.potentialGoodReduction_of_neronOggShafarevich neronOggShafarevich`.
+A detailed English derivation is pending.
 -/
 theorem potentialGoodReduction : GlobalTheory.Published.PotentialGoodReductionSt :=
   GlobalTheory.potentialGoodReduction_of_neronOggShafarevich neronOggShafarevich
 
 /- English proof (translation)
-The claim follows from `cmPotentialGoodReduction_of_nos neronOggShafarevich`.
+A detailed English derivation is pending.
 -/
 theorem cmPotentialGoodReduction : GlobalTheory.Published.CMPotentialGoodReductionSt :=
   cmPotentialGoodReduction_of_nos neronOggShafarevich
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨neronOggShafarevich, potentialGoodReduction, cmPotentialGoodReduction⟩`.
+Supply the required witnesses or components.
 -/
 theorem serreTateGoodReduction : GlobalTheory.Published.SerreTateGoodReductionSt :=
   ⟨neronOggShafarevich, potentialGoodReduction, cmPotentialGoodReduction⟩

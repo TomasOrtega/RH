@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.Cj.ResTop
 
 /- English proof (translation)
-Introduce `hz`. Establish `h` using `hz.2 1 Submodule.mem_top`. Simplify using `at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_mem_mcPts_top {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (z : (Σ k, ι k) → ℂ) : z ∉ mcPts (⊤ : Ideal (MRing ι)) := by
@@ -17,9 +17,9 @@ theorem not_mem_mcPts_top {K : Type} [Fintype K] {ι : K → Type} [∀ k, Finty
   simp at h
 
 /- English proof (translation)
-Establish `h1 : fderiv ℂ (σ ∘ τ) a = (fderiv ℂ σ (τ a)).comp (fderiv ℂ τ a)` using `fderiv_comp a hσ hτ`. Establish `h2 : fderiv ℂ (σ ∘ τ) a = ContinuousLinearMap.id ℂ E`. Rewrite using `[h.fderiv_eq]`. Conclude with `fderiv_id`. Introduce `u v huv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hu : (fderiv ℂ (σ ∘ τ) a) u = u` using `by rw [h2]; rfl`. Establish `hv : (fderiv ℂ (σ ∘ τ) a) v = v` using `by rw [h2]; rfl`. Rewrite using `[← hu, ← hv, h1]`. Simplify using `[huv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fderiv_injective_of_leftInv {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup F] [NormedSpace ℂ F] {τ : E → F} {σ : F → E} {a : E}
@@ -36,9 +36,9 @@ theorem fderiv_injective_of_leftInv {E F : Type*} [NormedAddCommGroup E] [Normed
   simp [huv]
 
 /- English proof (translation)
-Establish `hmem : R.A.chart k x ∈ (R.A.chart k).target ∩ (R.A.chart k).symm ⁻¹' R.U x` using `⟨(R.A.chart k).map_source hk, by`. Simplify `R.mem_U x⟩` using `only [Set.mem_preimage, (R.A.chart k).left_inv hk]`. Rewrite using `[differentiableAt_pi]`. Introduce `q`. Establish `hn : AnalyticAt ℂ ((fun y => R.lift x y q) ∘ (R.A.chart k).symm) (R.A.chart k x)` using `R.holo x q k _ hmem`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd : AnalyticAt ℂ ((fun y => R.lift x y ⟨q.1, p q.1⟩) ∘ (R.A.chart k).symm) (R.A.chart k x)` using `R.holo x ⟨q.1, p q.1⟩ k _ hmem`. Establish `hne : ((fun y => R.lift x y ⟨q.1, p q.1⟩) ∘ (R.A.chart k).symm) (R.A.chart k x) ≠ 0`. Simplify using `only [Function.comp, (R.A.chart k).left_inv hk]`. Conclude with `hp q.1`. Conclude with `(hn.div hd hne).differentiableAt`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableAt_affCoord {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P J : Ideal (MRing ι)} {e : ℕ} (R : AnLogRes P J e) (x : R.X) (p : (k : K) → ι k)
@@ -60,23 +60,21 @@ theorem differentiableAt_affCoord {K : Type} [Fintype K] {ι : K → Type} [∀ 
   exact (hn.div hd hne).differentiableAt
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Use `⟨fun x => (R.isOpen_U (g x)).preimage hg.1, fun x => R.mem_U (g x), fun x p => holoOn_comp hg (R.holo (g x) p), fun x y hy => R.mem _ _ hy, fun x x' y hy => R.compat _ _ _ hy, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨y, hy⟩` from `R.surj z hz (not_mem_mcPts_top z)`. Conclude with `⟨h y, by simpa only [hgh] using hy⟩`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `x x' hs`. Use `R.inj (g x) (g x') (not_mem_mcPts_top _) hs` as an intermediate fact. Rewrite using `[← hhg x, ← hhg x', this]`. Introduce `x p hp j hj`. Take `⟨k, hk⟩` from `R.A.cover (g x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `set a := A.chart j with ha`. Use `set c := R.A.chart k with hc`. Establish `hax : a.symm (a x) = x` using `a.left_inv hj`. Establish `hcx : c.symm (c (g x)) = g x` using `c.left_inv hk`. Use `set τ : (Fin e → ℂ) → (Fin e → ℂ) := c ∘ g ∘ a.symm with hτdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set σ : (Fin e → ℂ) → (Fin e → ℂ) := a ∘ h ∘ c.symm with hσdef`. Establish `hτx : τ (a x) = c (g x)` using `by simp only [hτdef, Function.comp, hax]`. Establish `hτ : AnalyticAt ℂ τ (a x)` using `hg.2 j k (a x) ⟨a.map_source hj, show g (a.symm (a x)) ∈ c.source by rw [hax]; exact hk⟩`. Establish `hσ : AnalyticAt ℂ σ (c (g x))` using `hh.2 k j (c (g x)) ⟨c.map_source hk, show h (c.symm (c (g x))) ∈ a.source by rw [hcx, hhg]; exact hj⟩`. Establish `hcont : ContinuousAt (g ∘ a.symm) (a x)` using `hg.1.continuousAt.comp (a.continuousAt_symm (a.map_source hj))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hnear : ∀ᶠ y in nhds (a x), g (a.symm y) ∈ c.source ∧ y ∈ a.target`. Use `(hcont.eventually_mem (c.open_source.mem_nhds ?_)).and (a.open_target.mem_nhds (a.map_source hj))` and prove the remaining obligations. Simplify `hk` using `only [Function.comp, hax]`. Establish `hleft : σ ∘ τ =ᶠ[nhds (a x)] id` using `by filter_upwards [hnear] with y hy`. Simplify using `only [hσdef, hτdef, Function.comp, c.left_inv hy.1, hhg, id, a.right_inv hy.2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj` using `fderiv_injective_of_leftInv hτ.differentiableAt (by rw [hτx]; exact hσ.differentiableAt) hleft`. Establish `hF` using `differentiableAt_affCoord R (g x) p hp k hk`. Establish `himm` using `R.immersion (g x) (not_mem_mcPts_top _) p hp k hk`. Use `set F : (Fin e → ℂ) → (Σ k, ι k) → ℂ := fun w => affCoord p (R.lift (g x) ((R.A.chart k).symm w)) with hFdef`. Establish `hcomp : (fun y => affCoord p (R.lift (g x) (g (a.symm y)))) =ᶠ[nhds (a x)] F ∘ τ` using `by filter_upwards [hnear] with y hy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hFdef, hτdef, Function.comp, ← hc, c.left_inv hy.1]`. Establish `hder : fderiv ℂ (fun y => affCoord p (R.lift (g x) (g (a.symm y)))) (a x) = (fderiv ℂ F (c (g x))).comp (fderiv ℂ τ (a x))`. Rewrite using `[hcomp.fderiv_eq, fderiv_comp (a x) (by rw [hτx]; exact hF) hτ.differentiableAt, hτx]`. Use `show (fderiv ℂ (fun y => affCoord p (R.lift (g x) (g (a.symm y)))) (a x)).ker = ⊥`. Rewrite using `[hder, eq_bot_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v hv`. Establish `h1 : (fderiv ℂ F (c (g x))) ((fderiv ℂ τ (a x)) v) = 0` using `by simpa using hv`. Establish `h2 : (fderiv ℂ τ (a x)) v ∈ (fderiv ℂ F (c (g x))).ker` using `by simpa using h1`. Rewrite `h2` using `[himm]`. Establish `h3 : (fderiv ℂ τ (a x)) v = 0` using `by simpa using h2`.
-
-Establish `h4 : v = 0` using `hinj (h3.trans (map_zero _).symm)`. Simplify using `[h4]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLiftSys_of_top {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P J : Ideal (MRing ι)} (hJ : J = ⊤) {e : ℕ} (R : AnLogRes P J e) {X : Type}

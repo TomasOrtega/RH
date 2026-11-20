@@ -25,7 +25,7 @@ open MeasureTheory
 namespace GlobalTheory.DiagThetaRatInv
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Pi.neg_apply, mul_neg, sub_mul, Finset.sum_sub_distrib, Finset.sum_neg_distrib, sub_eq_add_neg]`. Simplify using `only [add_mul, neg_mul, Finset.sum_add_distrib, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dot_elim {R : Type} [CommRing R] {κ : Type} [Fintype κ] (x : κ ⊕ κ → R) (v : κ → R) :
     x ⬝ᵥ Sum.elim v (-v) = ∑ i, (x (Sum.inl i) - x (Sum.inr i)) * v i := by
@@ -34,7 +34,7 @@ theorem dot_elim {R : Type} [CommRing R] {κ : Type} [Fintype κ] (x : κ ⊕ κ
   simp only [add_mul, neg_mul, Finset.sum_add_distrib, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.WeilM.schr]`. Rewrite using `[dot_elim, dot_elim]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem schr_diag {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (u v : κ → R) (Φ : (κ ⊕ κ → R) → ℂ) (x : κ ⊕ κ → R) :
@@ -45,13 +45,13 @@ theorem schr_diag {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R �
   simp
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ Φ γ hγ w`. Take `⟨a, b, rfl⟩` from `(GlobalTheory.WeilUnitaryTransport.mem_ratPair_iff γ).1 hγ`. Simplify using `only [GlobalTheory.WeilM.thetaSum]`. Rewrite using `[← (Equiv.subRight (Sum.elim a a)).tsum_eq]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `η`. Rewrite using `[schr_diag, schr_diag]`. Simplify using `only [Equiv.subRight_apply, Prod.fst_add, Prod.snd_add]`. Establish `h1 : (∑ i, (algebraMap F (AF F) ((η - Sum.elim a a) (Sum.inl i)) - algebraMap F (AF F) ((η - Sum.elim a a) (Sum.inr i))) * ((fun i => algebraMap F (AF F) (b i)) + w.2) i) = algebraMap F (AF F) (∑ i, (η (Sum.inl i) - η (Sum.inr i)) * b i) + ∑ i, (algebraMap F (AF F) (η (Sum.inl i) …`. Rewrite using `[map_sum, ← Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Sum.elim_inl, Sum.elim_inr, Pi.add_apply, map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (fun i => algebraMap F (AF F) ((η - Sum.elim a a) i)) + Sum.elim ((fun i => algebraMap F (AF F) (a i)) + w.1) ((fun i => algebraMap F (AF F) (a i)) + w.1) = (fun i => algebraMap F (AF F) (η i)) + Sum.elim w.1 w.1`. Use function extensionality and compare the values at `j`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `cases j <;> simp <;> abel`. Rewrite using `[h1, h2, AddChar.map_add_eq_mul, hψ.2.2.1, one_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem diag_theta_rat_inv : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ (κ : Type) [Fintype κ]
     (Φ : (κ ⊕ κ → AF F) → ℂ), ∀ γ ∈ GlobalTheory.WeilUnitaryTransport.ratPair F κ, ∀ w : (κ → AF F) × (κ → AF F),

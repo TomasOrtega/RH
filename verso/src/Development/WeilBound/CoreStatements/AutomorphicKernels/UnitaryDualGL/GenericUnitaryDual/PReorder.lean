@@ -14,9 +14,9 @@ namespace PositivityTheory.Gud.Pf
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hnp : ∀ i j, ¬ ((Δ i).nu ((s i : ℝ) : ℂ)).Precedes ((Δ j).nu ((s j : ℝ) : ℂ))`. Introduce `i j hp`. Establish `h1` using `PositivityTheory.UdReth2.add_one_le_of_precedes (Δ i) (Δ j) (hc i) (hc j) (s i) (s j) hp`. Use `hs i` as an intermediate fact. Use `hs j` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `*` using `[abs_lt]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `PositivityTheory.PfEss.Zc2.cs_reorderord PositivityTheory.RgGu.NR.ConjDual.irrAdm' (GlobalTheory.RgGu.Holds.lUnlinkedComm_holds k) (fun j => (Δ j).nu ((s j : ℝ) : ℂ)) σ (fun j => (δ j).nu (s j)) hd hd' (fun i j _ => hnp i j) (fun i j _ => hnp (σ i) (σ j)) (fun j => GlobalTheory.i …`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem reorder {h N : ℕ} (δ : Fin h → IrrGL k) (Δ : Fin h → Segment k) (s : Fin h → ℝ)
     (hL : ∀ j, IsLSeg (Δ j) (δ j).rep) (hc : ∀ j, PositivityTheory.UdReth2.IsCentred (Δ j)) (hs : ∀ j, |s j| < 1 / 2)

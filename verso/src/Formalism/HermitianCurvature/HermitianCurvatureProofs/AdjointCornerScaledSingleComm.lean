@@ -14,9 +14,9 @@ section blocks
 variable {j : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.conjTranspose_apply, zfull_apply, zfull_apply]`. Distinguish the cases in `h1 : a.val < j ∧ b.val < j`. Rewrite using `[dif_pos ⟨h1.2, h1.1⟩, dif_pos h1, Matrix.conjTranspose_apply]`. Rewrite using `[dif_neg (by tauto), dif_neg h1]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h2 : a.val = j ∧ b.val = j`. Rewrite using `[if_pos ⟨h2.2, h2.1⟩, if_pos h2]`. Rewrite using `[if_neg (by tauto), if_neg h2, star_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem zfull_conjTranspose (Z : Matrix (Fin j) (Fin j) ℂ) (τ : ℂ) :
     (zfull Z τ)ᴴ = zfull Zᴴ (star τ) := by
@@ -30,9 +30,9 @@ theorem zfull_conjTranspose (Z : Matrix (Fin j) (Fin j) ℂ) (τ : ℂ) :
     · rw [if_neg (by tauto), if_neg h2, star_zero]
 
 /- English proof (translation)
-Unfold `zfull U.blk2`. Simplify using `only [Matrix.reindex_apply]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a b`. Simplify using `[Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem zfull_mul (Z W : Matrix (Fin j) (Fin j) ℂ) (τ σ : ℂ) :
     zfull Z τ * zfull W σ = zfull (Z * W) (τ * σ) := by
@@ -45,11 +45,11 @@ theorem zfull_mul (Z W : Matrix (Fin j) (Fin j) ℂ) (τ σ : ℂ) :
   simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[zfull_apply, Matrix.one_apply]`. Distinguish the cases in `h1 : a.val < j ∧ b.val < j`. Rewrite using `[dif_pos h1, Matrix.one_apply]`. Simplify using `[Fin.ext_iff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_neg h1]`. Distinguish the cases in `h2 : a.val = j ∧ b.val = j`. Rewrite using `[if_pos h2, if_pos (Fin.ext (by omega))]`. Rewrite using `[if_neg h2, if_neg]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h2` to reduce the goal to its premises. Substitute `h` using the available equality. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Substitute using the available equality. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem zfull_one : zfull (1 : Matrix (Fin j) (Fin j) ℂ) 1 = 1 := by
   ext a b
@@ -64,7 +64,7 @@ theorem zfull_one : zfull (1 : Matrix (Fin j) (Fin j) ℂ) 1 = 1 := by
       intro h; apply h2; subst h; have := a.isLt; omega
 
 /- English proof (translation)
-Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[zfull_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hZ), inv_mul_cancel₀ hτ, zfull_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem zfull_inv {Z : Matrix (Fin j) (Fin j) ℂ} {τ : ℂ} (hZ : Z.det ≠ 0) (hτ : τ ≠ 0) :
     (zfull Z τ)⁻¹ = zfull Z⁻¹ τ⁻¹ := by
@@ -72,7 +72,7 @@ theorem zfull_inv {Z : Matrix (Fin j) (Fin j) ℂ} {τ : ℂ} (hZ : Z.det ≠ 0)
   rw [zfull_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hZ), inv_mul_cancel₀ hτ, zfull_one]
 
 /- English proof (translation)
-Rewrite using `[zfull_conjTranspose, zfull_inv (by rw [Matrix.det_conjTranspose]; exact star_ne_zero.mpr hZ) (star_ne_zero.mpr hτ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zfull_conjTranspose_inv {Z : Matrix (Fin j) (Fin j) ℂ} {τ : ℂ} (hZ : Z.det ≠ 0) (hτ : τ ≠ 0) :
     ((zfull Z τ)ᴴ)⁻¹ = zfull (Zᴴ)⁻¹ (star τ)⁻¹ := by
@@ -86,7 +86,7 @@ section units
 variable {k r j : ℕ}
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `(U.eB k (j + 1) (r - (j + 1))).surjective (Fin.cast (by omega) p)`. Conclude with `⟨P, by rw [hP]; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cast_eB_surj (hj : j + 1 ≤ r) (p : Fin (2 * r + k + 1)) :
     ∃ P : U.Ix k (j + 1) (r - (j + 1)), p = Fin.cast (by omega) (U.eB k (j + 1) (r - (j + 1)) P) := by
@@ -94,9 +94,9 @@ theorem cast_eB_surj (hj : j + 1 ≤ r) (p : Fin (2 * r + k + 1)) :
   exact ⟨P, by rw [hP]; rfl⟩
 
 /- English proof (translation)
-Use extensionality with `p q`. Take `⟨P, rfl⟩` from `cast_eB_surj (k := k) hj p`. Take `⟨Q, rfl⟩` from `cast_eB_surj (k := k) hj q`. Rewrite using `[LeftFubiniLemmas.castM_apply']`. Simplify using `only [Fin.cast_cast, Fin.cast_eq_self]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ux3.block3_apply]`. Apply the tactic sequence `rcases P with ((a | a) | a) <;> rcases Q with ((b | b) | b) <;>`. Apply the tactic sequence `simp [Matrix.single_apply, eI, Fin.ext_iff, Ux3.block_index_first_val, Ux3.block_index_middle_val, Ux3.block_index_last_val] <;> omega`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem single_eI_blk (hj : j + 1 ≤ r) (x y : Fin (j + 1)) :
     Matrix.single (eI k r ⟨x.val, by omega⟩) (eI k r ⟨y.val, by omega⟩) (1 : ℂ) =
@@ -111,9 +111,9 @@ theorem single_eI_blk (hj : j + 1 ≤ r) (x y : Fin (j + 1)) :
     simp [Matrix.single_apply, eI, Fin.ext_iff, Ux3.block_index_first_val, Ux3.block_index_middle_val, Ux3.block_index_last_val] <;> omega
 
 /- English proof (translation)
-Use extensionality with `p q`. Take `⟨P, rfl⟩` from `cast_eB_surj (k := k) hj p`. Take `⟨Q, rfl⟩` from `cast_eB_surj (k := k) hj q`. Rewrite using `[LeftFubiniLemmas.castM_apply']`. Simplify using `only [Fin.cast_cast, Fin.cast_eq_self]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ux3.block3_apply]`. Apply the tactic sequence `rcases P with ((a | a) | a) <;> rcases Q with ((b | b) | b) <;>`. Apply the tactic sequence `simp [Matrix.single_apply, esI, Fin.ext_iff, Ux3.block_index_first_val, Ux3.block_index_middle_val, Ux3.block_index_last_val, Fin.val_rev] <;>`. Apply the tactic sequence `(try omega) <;>`. Apply the tactic sequence `(have := x.isLt; have := y.isLt; have := a.isLt; have := b.isLt; split_ifs <;> first | rfl | omega)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem single_esI_blk (hj : j + 1 ≤ r) (x y : Fin (j + 1)) :
     Matrix.single (esI k r ⟨x.val, by omega⟩) (esI k r ⟨y.val, by omega⟩) (1 : ℂ) =
@@ -136,7 +136,7 @@ section linear
 variable {k j ρ : ℕ}
 
 /- English proof (translation)
-Use `Ux4.ext_eB fun x y => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Ux3.block3_apply, Ux3.block3_apply]`. Apply the tactic sequence `rcases x with ((a | a) | a) <;> rcases y with ((b | b) | b) <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smul_block_three (c : ℂ) (A11 : Matrix (Fin j) (Fin j) ℂ) (A12 : Matrix (Fin j) (Fin (2 * ρ + k + 1)) ℂ)
     (A13 : Matrix (Fin j) (Fin j) ℂ) (A21 : Matrix (Fin (2 * ρ + k + 1)) (Fin j) ℂ) (A22 : B.Mat k ρ)
@@ -149,25 +149,25 @@ theorem smul_block_three (c : ℂ) (A11 : Matrix (Fin j) (Fin j) ℂ) (A12 : Mat
   rcases x with ((a | a) | a) <;> rcases y with ((b | b) | b) <;> simp
 
 /- English proof (translation)
-Use extensionality with `p q`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem castM_add' {a b : ℕ} (h : a = b) (M N : B.Mat k a) : D.castM h (M + N) = D.castM h M + D.castM h N := by
   ext p q; rfl
 
 /- English proof (translation)
-Use extensionality with `p q`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem castM_smul' {a b : ℕ} (h : a = b) (c : ℂ) (M : B.Mat k a) : D.castM h (c • M) = c • D.castM h M := by
   ext p q; rfl
 
 /- English proof (translation)
-Use extensionality with `p q`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem castM_sub' {a b : ℕ} (h : a = b) (M N : B.Mat k a) : D.castM h (M - N) = D.castM h M - D.castM h N := by
   ext p q; rfl
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [LeftFubiniLemmas.castM_apply', Matrix.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem castM_sum' {a b : ℕ} (h : a = b) {ι : Type*} (s : Finset ι) (M : ι → B.Mat k a) :
     D.castM h (∑ i ∈ s, M i) = ∑ i ∈ s, D.castM h (M i) := by
@@ -192,9 +192,9 @@ def hM (k r j : ℕ) (hj : j + 1 ≤ r) (x y : Fin (j + 1)) (s : ℂ) : B.Mat k 
     star s • Matrix.single (esI k r ⟨y.val, by omega⟩) (esI k r ⟨x.val, by omega⟩) (1 : ℂ)
 
 /- English proof (translation)
-Unfold `hM`. Rewrite using `[single_eI_blk hj, single_esI_blk hj, ← castM_smul', ← castM_smul', ← castM_sub', smul_block_three, smul_block_three]`. Use `congr 1`. Use `Ux4.ext_eB fun p q => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, Ux3.block3_apply, Ux3.block3_apply, Ux3.block3_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases p with ((a | a) | a) <;> rcases q with ((b | b) | b) <;> simp [neg_smul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hM_blk (hj : j + 1 ≤ r) (x y : Fin (j + 1)) (s : ℂ) :
     hM k r j hj x y s = D.castM (by omega : j + 1 + (r - (j + 1)) = r)
@@ -216,9 +216,9 @@ Both sides reduce to the same expression.
 theorem nL_eq (hj : j + 1 ≤ r) (a : Fin j → ℂ) : nL k r j hj a = 1 + nN k r j hj a := rfl
 
 /- English proof (translation)
-Unfold `nN`. Establish `e1 : ∀ b : Fin j, Matrix.single (esI k r ⟨j, by omega⟩) (esI k r ⟨b, by omega⟩) (1 : ℂ) = Matrix.single (esI k r ⟨(Fin.last j).val, by simp; omega⟩) (esI k r ⟨(b.castSucc : Fin (j + 1)).val, by simp; omega⟩) 1` using `fun b => rfl`. Establish `e2 : ∀ b : Fin j, Matrix.single (eI k r ⟨b, by omega⟩) (eI k r ⟨j, by omega⟩) (1 : ℂ) = Matrix.single (eI k r ⟨(b.castSucc : Fin (j + 1)).val, by simp; omega⟩) (eI k r ⟨(Fin.last j).val, by simp; omega⟩) 1` using `fun b => rfl`. Repeatedly rewrite using `[e1, e2, single_eI_blk hj, single_esI_blk hj, ← castM_smul', ← castM_sub', ← castM_sum']`. Use `congr 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Ux4.ext_eB fun p q => ?_` and prove the remaining obligations. Rewrite using `[Ux3.block3_apply, Matrix.sum_apply]`. Repeatedly rewrite using `[Matrix.sub_apply, Matrix.smul_apply, Ux3.block3_apply]`. Apply the tactic sequence `rcases p with ((c | c) | c) <;> rcases q with ((d | d) | d) <;>`. Simplify using `[Matrix.sum_apply, Matrix.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem nN_blk (hj : j + 1 ≤ r) (a : Fin j → ℂ) :
     nN k r j hj a = D.castM (by omega : j + 1 + (r - (j + 1)) = r)
@@ -246,13 +246,13 @@ section blk2alg
 variable {j : ℕ}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `only [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem castM_mul' {k a b : ℕ} (h : a = b) (M N : B.Mat k a) : D.castM h (M * N) = D.castM h M * D.castM h N := by
   subst h; simp only [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]
 
 /- English proof (translation)
-Unfold `U.blk2`. Simplify using `only [Matrix.reindex_apply]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem symmetricScalarBlockMatrix_mul {p s : ℕ} (A A' : Matrix (Fin p) (Fin p) ℂ) (B B' : Matrix (Fin p) (Fin s) ℂ)
     (C C' : Matrix (Fin s) (Fin p) ℂ) (D D' : Matrix (Fin s) (Fin s) ℂ) :
@@ -262,7 +262,7 @@ theorem symmetricScalarBlockMatrix_mul {p s : ℕ} (A A' : Matrix (Fin p) (Fin p
   rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Unfold `U.blk2`. Rewrite using `[← Matrix.fromBlocks_smul]`. Use extensionality with `a b`. Simplify using `[Matrix.reindex_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem smul_block_two {p s : ℕ} (c : ℂ) (A : Matrix (Fin p) (Fin p) ℂ) (B : Matrix (Fin p) (Fin s) ℂ)
     (C : Matrix (Fin s) (Fin p) ℂ) (D : Matrix (Fin s) (Fin s) ℂ) :
@@ -273,21 +273,21 @@ theorem smul_block_two {p s : ℕ} (c : ℂ) (A : Matrix (Fin p) (Fin p) ℂ) (B
   simp [Matrix.reindex_apply]
 
 /- English proof (translation)
-Use extensionality with `p q`. Take `⟨p', rfl⟩` from `finSumFinEquiv.surjective p`. Take `⟨q', rfl⟩` from `finSumFinEquiv.surjective q`. Rewrite using `[Matrix.sum_apply]`. Unfold `U.blk2`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Apply the tactic sequence `rcases p' with p' | p' <;> rcases q' with q' | q'`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `congrArg Fin.val h.1` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Matrix.fromBlocks_apply₁₂, Matrix.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `h`. Use `congrArg Fin.val h.1` as an intermediate fact. Simplify using `at this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [Matrix.fromBlocks_apply₂₁, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single q']`. Apply the tactic sequence `rw [if_pos]; constructor <;> ext <;> simp`. Introduce `c _ hc`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `h`. Apply `hc` to reduce the goal to its premises. Use `congrArg Fin.val h.2` as an intermediate fact. Use `ext`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `using this`. Simplify using the standard rewrite rules. Simplify using `only [Matrix.fromBlocks_apply₂₂, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `congrArg Fin.val h.2` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_single_last (a : Fin j → ℂ) :
     (∑ c : Fin j, a c • Matrix.single (Fin.last j) c.castSucc (1 : ℂ)) =
@@ -316,21 +316,21 @@ theorem sum_single_last (a : Fin j → ℂ) :
     rw [if_neg]; intro h; have := congrArg Fin.val h.2; simp at this; omega
 
 /- English proof (translation)
-Use extensionality with `p q`. Take `⟨p', rfl⟩` from `finSumFinEquiv.surjective p`. Take `⟨q', rfl⟩` from `finSumFinEquiv.surjective q`. Rewrite using `[Matrix.sum_apply]`. Unfold `U.blk2`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Apply the tactic sequence `rcases p' with p' | p' <;> rcases q' with q' | q'`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `congrArg Fin.val h.2` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Matrix.fromBlocks_apply₁₂, Matrix.of_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single p']`. Apply the tactic sequence `rw [if_pos]; constructor <;> ext <;> simp`. Introduce `c _ hc`. Rewrite using `[if_neg]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hc` to reduce the goal to its premises. Use `congrArg Fin.val h.1` as an intermediate fact. Use `ext`. Simplify using `using this`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `h`. Use `congrArg Fin.val h.1` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Matrix.fromBlocks_apply₂₂, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `congrArg Fin.val h.1` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_single_col (a : Fin j → ℂ) :
     (∑ c : Fin j, a c • Matrix.single c.castSucc (Fin.last j) (1 : ℂ)) =
@@ -365,9 +365,9 @@ section conjx0
 variable {k r j : ℕ}
 
 /- English proof (translation)
-Use `sum_single_last (j := j) (fun c => if c = b then (1 : ℂ) else 0)` as an intermediate fact. Simplify using `only [ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Rewrite using `[this]`. Use `congr 1`. Use extensionality with `u c`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `fin_cases u`. Simplify using `[Matrix.single_apply, eq_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem single_last_eq_block_two (b : Fin j) :
     Matrix.single (Fin.last j) b.castSucc (1 : ℂ) = U.blk2 0 0 (Matrix.single 0 b 1) 0 := by
@@ -380,9 +380,9 @@ theorem single_last_eq_block_two (b : Fin j) :
   simp [Matrix.single_apply, eq_comm]
 
 /- English proof (translation)
-Use `sum_single_col (j := j) (fun c => if c = b then (1 : ℂ) else 0)` as an intermediate fact. Simplify using `only [ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Rewrite using `[this]`. Use `congr 1`. Use extensionality with `c u`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `fin_cases u`. Simplify using `[Matrix.single_apply, eq_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem single_column_eq_block_two (b : Fin j) :
     Matrix.single b.castSucc (Fin.last j) (1 : ℂ) = U.blk2 0 (Matrix.single b 0 1) 0 0 := by
@@ -395,9 +395,9 @@ theorem single_column_eq_block_two (b : Fin j) :
   simp [Matrix.single_apply, eq_comm]
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Ux3.wMat_mul_apply, Matrix.single_apply, Matrix.single_apply]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩; exact ⟨by rw [h1, Fin.rev_rev], h2⟩`. Introduce and unpack `⟨h1, h2⟩; exact ⟨by rw [← h1, Fin.rev_rev], h2⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 -/
 theorem w_mul_single {n : ℕ} (x y : Fin n) : G.wMat n * Matrix.single x y (1 : ℂ) = Matrix.single x.rev y 1 := by
   ext a b
@@ -409,9 +409,9 @@ theorem w_mul_single {n : ℕ} (x y : Fin n) : G.wMat n * Matrix.single x y (1 :
   · rintro ⟨h1, h2⟩; exact ⟨by rw [← h1, Fin.rev_rev], h2⟩
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Formalism.FourierDecayAlt.P.G5.mul_wMat_apply, Matrix.single_apply, Matrix.single_apply]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩; exact ⟨h1, by rw [h2, Fin.rev_rev]⟩`. Introduce and unpack `⟨h1, h2⟩; exact ⟨h1, by rw [← h2, Fin.rev_rev]⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 -/
 theorem single_mul_w {n : ℕ} (x y : Fin n) : Matrix.single x y (1 : ℂ) * G.wMat n = Matrix.single x y.rev 1 := by
   ext a b
@@ -423,17 +423,17 @@ theorem single_mul_w {n : ℕ} (x y : Fin n) : Matrix.single x y (1 : ℂ) * G.w
   · rintro ⟨h1, h2⟩; exact ⟨h1, by rw [← h2, Fin.rev_rev]⟩
 
 /- English proof (translation)
-Establish `hw : G.wMat (j + 1) * G.wMat (j + 1) = 1` using `Ux3.wMat_mul_self (j + 1)`. Establish `e1 : ∀ c : Fin j, Matrix.single (Fin.last j).rev c.castSucc.rev (1 : ℂ) = G.wMat (j + 1) * Matrix.single (Fin.last j) c.castSucc 1 * G.wMat (j + 1)`. Introduce `c`. Rewrite using `[w_mul_single, single_mul_w]`. Repeatedly rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `e2 : (∑ c : Fin j, (s * τ * Z⁻¹ b c) • (G.wMat (j + 1) * Matrix.single (Fin.last j) c.castSucc (1 : ℂ) * G.wMat (j + 1))) * (G.wMat (j + 1) * zfull Z τ) = G.wMat (j + 1) * ((∑ c : Fin j, (s * τ * Z⁻¹ b c) • Matrix.single (Fin.last j) c.castSucc (1 : ℂ)) * zfull Z τ)`. Rewrite using `[Finset.sum_mul, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Matrix.mul_assoc (G.wMat (j + 1)) (G.wMat (j + 1)) (zfull Z τ), hw, Matrix.one_mul]`. Rewrite using `[e2, Matrix.mul_assoc]`. Use `congr 1`. Rewrite using `[sum_single_last, single_last_eq_block_two, smul_block_two, smul_zero, smul_zero, smul_zero]`. Unfold `zfull`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[symmetricScalarBlockMatrix_mul, symmetricScalarBlockMatrix_mul]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`. Use `congr 1`. Establish `hinv : Z⁻¹ * Z = 1` using `Matrix.nonsing_inv_mul Z (isUnit_iff_ne_zero.mpr hZ)`. Use extensionality with `u v`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `fin_cases u`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul]`. Establish `h3 : ∑ x : Fin j, s * τ * Z⁻¹ b x * Z x v = s * τ * (Z⁻¹ * Z) b v`. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]; exact Finset.sum_congr rfl fun x _ => by ring`. Rewrite using `[h3, hinv, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : b = v`. Substitute `h` using the available equality. Simplify using `[mul_comm]`. Simplify using `[h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weyl_corner_scaled_single_comm (Z : Matrix (Fin j) (Fin j) ℂ) (hZ : Z.det ≠ 0) (τ s : ℂ) (b : Fin j) :
     G.wMat (j + 1) * zfull Z τ * (s • Matrix.single (Fin.last j) b.castSucc (1 : ℂ)) =
@@ -471,15 +471,15 @@ theorem weyl_corner_scaled_single_comm (Z : Matrix (Fin j) (Fin j) ℂ) (hZ : Z.
   · simp [h]
 
 /- English proof (translation)
-Establish `e1 : G.wMat (j + 1) * Matrix.single b.castSucc.rev (Fin.last j).rev (1 : ℂ) = Matrix.single b.castSucc (Fin.last j) 1 * G.wMat (j + 1)`. Rewrite using `[w_mul_single, single_mul_w, Fin.rev_rev]`. Establish `lhs : ((zfull Z τ)ᴴ)⁻¹ * G.wMat (j + 1) * (-(star s) • Matrix.single b.castSucc.rev (Fin.last j).rev (1 : ℂ)) = -((star s • (((zfull Z τ)ᴴ)⁻¹ * Matrix.single b.castSucc (Fin.last j) (1 : ℂ))) * G.wMat (j + 1))`. Rewrite using `[Matrix.mul_smul, Matrix.mul_assoc, e1, ← Matrix.mul_assoc, Matrix.smul_mul, neg_smul]`. Establish `rhs : (-∑ c : Fin j, conj (s * τ * Z⁻¹ b c) • Matrix.single c.castSucc (Fin.last j) (1 : ℂ)) * (((zfull Z τ)ᴴ)⁻¹ * G.wMat (j + 1)) = -(((∑ c : Fin j, conj (s * τ * Z⁻¹ b c) • Matrix.single c.castSucc (Fin.last j) (1 : ℂ)) * ((zfull Z τ)ᴴ)⁻¹) * G.wMat (j + 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.neg_mul, Matrix.mul_assoc]`. Rewrite using `[lhs, rhs]`. Use `congr 2`. Rewrite using `[zfull_conjTranspose_inv hZ hτ, sum_single_col, single_column_eq_block_two]`. Unfold `zfull`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[symmetricScalarBlockMatrix_mul, smul_block_two, symmetricScalarBlockMatrix_mul]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, smul_zero]`. Use `congr 1`. Use extensionality with `u v`. Use `fin_cases v`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.smul_apply, Matrix.mul_apply, Matrix.single_apply, Matrix.of_apply, smul_eq_mul, Fin.sum_univ_one]`. Rewrite using `[Finset.sum_eq_single b]`. Establish `hτ' : star τ ≠ 0` using `star_ne_zero.mpr hτ`. Rewrite using `[if_pos ⟨rfl, Subsingleton.elim _ _⟩, mul_one, ← Matrix.conjTranspose_nonsing_inv, Matrix.conjTranspose_apply]`. Simplify using `only [map_mul, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Introduce `c _ hc`. Simplify using `[Ne.symm hc]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adjoint_corner_scaled_single_comm (Z : Matrix (Fin j) (Fin j) ℂ) (hZ : Z.det ≠ 0) (τ s : ℂ) (hτ : τ ≠ 0) (b : Fin j) :
     ((zfull Z τ)ᴴ)⁻¹ * G.wMat (j + 1) * (-(star s) • Matrix.single b.castSucc.rev (Fin.last j).rev (1 : ℂ)) =
@@ -522,7 +522,7 @@ section conjfinal
 variable {k r j : ℕ}
 
 /- English proof (translation)
-Rewrite using `[level_point_eq_block_three, hM_blk, nN_blk, ← castM_mul', ← castM_mul']`. Use `congr 1`. Rewrite using `[Ux3.block3_mul, Ux3.block3_mul]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`. Rewrite using `[adjoint_corner_scaled_single_comm Z hZ τ s hτ b, weyl_corner_scaled_single_comm Z hZ τ s b]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem level_point_conj_unipotent (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ} (hZ : Z.det ≠ 0) {τ : ℂ} (hτ : τ ≠ 0)
     (γ : B.Mat k (r - (j + 1))) (b : Fin j) (s : ℂ) :

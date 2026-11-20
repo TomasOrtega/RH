@@ -9,7 +9,7 @@ namespace Formalism.L2.Pj
 open NumberField Formalism.BasicNotions nonZeroDivisors
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `D.host.𝔟_spec.2`. Rewrite `h2` using `[h, Ideal.smul_bot, sup_bot_eq]`. Conclude with `bot_ne_top h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem b_ne_bot (D : D7) : D.host.𝔟 ≠ ⊥ := by
   intro h
@@ -18,15 +18,15 @@ theorem b_ne_bot (D : D7) : D.host.𝔟 ≠ ⊥ := by
   exact bot_ne_top h2
 
 /- English proof (translation)
-The claim follows from `FractionalIdeal.one_mem_inv_coe_ideal (b_ne_bot D)`.
+A detailed English derivation is pending.
 -/
 theorem one_mem_inverse_halfDifferent (D : D7) : (1 : D.host.E) ∈ D.host.AA0 :=
   FractionalIdeal.one_mem_inv_coe_ideal (b_ne_bot D)
 
 /- English proof (translation)
-Establish `hN : ((Ideal.absNorm D.host.ccK : ℕ) : D.host.E) ∈ (D.host.ccE : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Rewrite using `[FractionalIdeal.mem_coeIdeal]`. Use `⟨((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E), ?_, by simp⟩` and prove the remaining obligations. Use `Ideal.mem_map_of_mem (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) (Ideal.absNorm_mem D.host.ccK)` as an intermediate fact. Simplify `this` using `[Host.ccE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `FractionalIdeal.mul_mem_mul hN (one_mem_inverse_halfDifferent D)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normK_mem_AA (D : D7) : ((Ideal.absNorm D.host.ccK : ℕ) : D.host.E) ∈ D.host.AA := by
   have hN : ((Ideal.absNorm D.host.ccK : ℕ) : D.host.E) ∈
@@ -40,25 +40,25 @@ theorem normK_mem_AA (D : D7) : ((Ideal.absNorm D.host.ccK : ℕ) : D.host.E) �
   exact this
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `D.host.ccK_ne_bot`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normK_ne_zero (D : D7) : ((Ideal.absNorm D.host.ccK : ℕ) : D.host.E) ≠ 0 := by
   rw [Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]
   exact D.host.ccK_ne_bot
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.EmbeddingTypes.exists_smul_mem_base_lattice_alt D j y`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_base_lattice_alt (D : D7) (j : ℕ) (y : (D.sp.W j).V) :
     ∃ s ∈ (𝓞 D.host.E)⁰, s • y ∈ (D.sp.W j).L0 :=
   _root_.UpperTheory.Reformulated.B.EmbeddingTypes.exists_smul_mem_base_lattice_alt D j y
 
 /- English proof (translation)
-Take `⟨s, hs, hsy⟩` from `exists_smul_mem_base_lattice_alt D j y`. Use `set n : 𝓞 D.host.E := ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E)`. Establish `hn : algebraMap (𝓞 D.host.E) D.host.E n = ((Ideal.absNorm D.host.ccK : ℕ) : D.host.E)`. Simplify using `[n]`. Establish `hn0 : n ∈ (𝓞 D.host.E)⁰`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Introduce `h0`. Apply `normK_ne_zero D` to reduce the goal to its premises. Rewrite using `[← hn, h0, map_zero]`. Use `⟨n * s, mul_mem hn0 hs, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul, ← algebraMap_smul D.host.E n, hn]`. Conclude with `Submodule.subset_span ⟨_, normK_mem_AA D, s • y, hsy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_latW (D : D7) (j : ℕ) (y : (D.sp.W j).V) :
     ∃ s ∈ (𝓞 D.host.E)⁰, s • y ∈ latW D j := by
@@ -98,7 +98,7 @@ instance latW_isLocalized (D : D7) (j : ℕ) :
   exists_of_eq {x₁ x₂} h := ⟨1, by rw [one_smul, one_smul]; exact Subtype.ext h⟩
 
 /- English proof (translation)
-Rewrite using `[IsFractionRing.finrank_right_eq (R := 𝓞 D.host.E) (S := D.host.E) (N := (D.sp.W j).V)]`. Conclude with `(IsLocalizedModule.finrank_eq (p := (𝓞 D.host.E)⁰) (f := (latW D j).subtype) le_rfl).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latW_finrank (D : D7) (j : ℕ) :
     Module.finrank (𝓞 D.host.E) (latW D j) = Module.finrank D.host.E (D.sp.W j).V := by
@@ -106,7 +106,7 @@ theorem latW_finrank (D : D7) (j : ℕ) :
   exact (IsLocalizedModule.finrank_eq (p := (𝓞 D.host.E)⁰) (f := (latW D j).subtype) le_rfl).symm
 
 /- English proof (translation)
-Rewrite using `[latW_finrank, (D.sp.W j).rank_eq, D.sp.W_rank j hj.1 hj.2]`. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem latW_rank (D : D7) (j : ℕ) (hj : 1 ≤ j ∧ j ≤ D.R.m) :
     Module.finrank (𝓞 D.host.E) (latW D j) = (D.R.sigW j).1 + (D.R.sigW j).2 := by

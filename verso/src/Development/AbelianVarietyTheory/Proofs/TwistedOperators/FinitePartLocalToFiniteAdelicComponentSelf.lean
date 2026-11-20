@@ -22,7 +22,7 @@ open scoped TensorProduct
 namespace GlobalTheory.FinLocSelf
 
 /- English proof (translation)
-Establish `h : ((Algebra.TensorProduct.map (AlgHom.id D.host.F D.host.E) (Formalism.UG.evalV D.host.F v)).comp ((Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).toAlgHom.comp (Algebra.TensorProduct.map (sndA D.host.F) (Al …` using `Algebra.TensorProduct.ext' fun _ _ => rfl`. Conclude with `DFunLike.congr_fun h x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prV_swap_sndA {D : D7} (v : HeightOneSpectrum (𝓞 D.host.F)) (x : AF D.host.F ⊗[D.host.F] D.host.E) :
     Formalism.UG.prV (E := D.host.E) v (Formalism.IndefR.Lev.swapAE D
@@ -37,7 +37,7 @@ theorem prV_swap_sndA {D : D7} (v : HeightOneSpectrum (𝓞 D.host.F)) (x : AF D
   exact DFunLike.congr_fun h x
 
 /- English proof (translation)
-Use `conv_rhs => rw [← proj_emb_self D.sp.cm.sig V.gram v g]`. Rewrite using `[matHom_proj]`. Use extensionality with `i j`. Conclude with `prV_swap_sndA v _`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem finE_locFin_map_prV {D : D7} (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (g : Gv V v) :
     (Formalism.IndefR.Lev.finE V (locFin V v g : GA D V)).val.map (Formalism.UG.prV (E := D.host.E) v) =

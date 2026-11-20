@@ -9,7 +9,7 @@ open scoped Classical
 namespace GlobalTheory.Shin
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show t (algebraMap F F' ((γ : Matrix (Fin n) (Fin n) F) i j)) = algebraMap F F' ((γ : Matrix (Fin n) (Fin n) F) i j)`. Conclude with `t.commutes _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem stdForm_incl_map_eq {F F' : Type} [Field F] [Field F'] [Algebra F F'] (n : ℕ) (t : F' ≃ₐ[F] F')
     (γ : GL (Fin n) F) :
@@ -20,13 +20,13 @@ theorem stdForm_incl_map_eq {F F' : Type} [Field F] [Field F'] [Algebra F F'] (n
   exact t.commutes _
 
 /- English proof (translation)
-Set `T : Matrix (Fin n) (Fin n) F' →+* Matrix (Fin n) (Fin n) F'` to `((t : F' ≃+* F') : F' →+* F').mapMatrix`. Establish `hT : ∀ N, T N = N.map t` using `fun N => rfl`. Rewrite using `[← hT]`. Proceed by induction on `hM using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Rewrite using `[hT, stdForm_incl_map_eq]`. Conclude with `Algebra.subset_adjoin rfl`. Consider the case `algebraMap r`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `: T (algebraMap F' (Matrix (Fin n) (Fin n) F') r) = algebraMap F' (Matrix (Fin n) (Fin n) F') (t r)`. Rewrite using `[hT]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.algebraMap_matrix_apply, h]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Subalgebra.add_mem _ hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `Subalgebra.mul_mem _ hx hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem stdForm_adjoin_map_mem {F F' : Type} [Field F] [Field F'] [Algebra F F'] (n : ℕ) (t : F' ≃ₐ[F] F')
     (γ : GL (Fin n) F) {M : Matrix (Fin n) (Fin n) F'}
@@ -52,34 +52,32 @@ theorem stdForm_adjoin_map_mem {F F' : Type} [Field F] [Field F'] [Algebra F F']
   | mul x y _ _ hx hy => rw [map_mul]; exact Subalgebra.mul_mem _ hx hy
 
 /- English proof (translation)
-Simplify using `only [Commute, SemiconjBy, Units.ext_iff, Units.val_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stdForm_commute_iff {F' : Type} [Field F'] {n : ℕ} (x y : GL (Fin n) F') :
     Commute x y ↔ Commute (x : Matrix (Fin n) (Fin n) F') (y : Matrix (Fin n) (Fin n) F') := by
   simp only [Commute, SemiconjBy, Units.ext_iff, Units.val_mul]
 
 /- English proof (translation)
-Introduce `F F' _ _ _ _ s hs n δ γ hN`. Take `⟨_, -, h3, h4, h5⟩` from `GlobalTheory.T.galoisTwistedNormGL_basic_properties F F' s hs n`. Establish `hgfix : ∀ t : F' ≃ₐ[F] F', galAct F F' n t (incl F F' n γ) = incl F F' n γ` using `fun t => Units.ext (stdForm_incl_map_eq n t γ)`. Establish `hC : ∀ z w : GL (Fin n) F', (z : Matrix (Fin n) (Fin n) F') ∈ Algebra.adjoin F' {((incl F F' n γ : GL (Fin n) F') : Matrix (Fin n) (Fin n) F')} → Commute w (incl F F' n γ) → Commute z w`. Introduce `z w hz hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hw`, the goal using `[stdForm_commute_iff]`. Conclude with `(Algebra.commute_of_mem_adjoin_singleton_of_commute hz hw).symm`. Establish `hCt : ∀ (t : F' ≃ₐ[F] F') (w : GL (Fin n) F'), Commute w (incl F F' n γ) → Commute (galAct F F' n t w) (incl F F' n γ)`. Introduce `t w hw`. Use `hw.map (galAct F F' n t)` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hgfix t]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `isConj_iff.1 hN`. Establish `hn1 : nrm s (c⁻¹ * δ * galAct F F' n s c) = incl F F' n γ`. Rewrite using `[h3, ← hc]`. Use `group`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm1 : Commute (c⁻¹ * δ * galAct F F' n s c) (incl F F' n γ)`. Use `h4 (c⁻¹ * δ * galAct F F' n s c)` as an intermediate fact. Rewrite `this` using `[hn1, hgfix s]`. Conclude with `this`. Take `⟨δ₀, hδ₀A, hn0⟩` from `GlobalTheory.T.norm_map_surjective_finite_field F F' s hs n γ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ₀g : Commute δ₀ (incl F F' n γ)` using `hC δ₀ _ hδ₀A (Commute.refl _)`. Establish `hεg : Commute (δ₀⁻¹ * (c⁻¹ * δ * galAct F F' n s c)) (incl F F' n γ)` using `(hδ₀g.inv_left).mul_left hcomm1`. Establish `hεn : nrm s (δ₀⁻¹ * (c⁻¹ * δ * galAct F F' n s c)) = 1`. Establish `hp` using `h5 δ₀ (δ₀⁻¹ * (c⁻¹ * δ * galAct F F' n s c)) (fun t u => hC _ _ (by rw [show ((galAct F F' n t δ₀ : GL (Fin n) F') : Matrix (Fin n) (Fin n) F') = (δ₀ : Matrix (Fin n) (Fin n) F').map t from rfl]; exact stdForm_adjoin_map_mem n t γ hδ₀A) (hCt u _ hεg))`. Rewrite `hp` using `[mul_inv_cancel_left, hn1, hn0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_left.1 hp.symm)`. Establish `hBst : ∀ M ∈ Subalgebra.centralizer F' {((incl F F' n γ : GL (Fin n) F') : Matrix (Fin n) (Fin n) F')}, M.map s ∈ Subalgebra.centralizer F' {((incl F F' n γ : GL (Fin n) F') : Matrix (Fin n) (Fin n) F')}`. Introduce `M hM`. Rewrite `hM`, the goal using `[Subalgebra.mem_centralizer_iff]`. Introduce `g' hg'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hg'` using `[Set.mem_singleton_iff]`. Substitute `hg'` using the available equality. Establish `e` using `congrArg (fun N => ((s : F' ≃+* F') : F' →+* F').mapMatrix N) (hM _ rfl)`. Simplify using `only [map_mul] at e`. Rewrite using `[← stdForm_incl_map_eq n s γ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`. Establish `hεB : ((δ₀⁻¹ * (c⁻¹ * δ * galAct F F' n s c) : GL (Fin n) F') : Matrix (Fin n) (Fin n) F') ∈ Subalgebra.centralizer F' {((incl F F' n γ : GL (Fin n) F') : Matrix (Fin n) (Fin n) F')}`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce `g' hg'`. Rewrite `hg'` using `[Set.mem_singleton_iff]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `hg'` using the available equality. Conclude with `((stdForm_commute_iff _ _).1 hεg).eq.symm`. Take `⟨x, hxB, hεx⟩` from `GlobalTheory.T.exists_coboundary_of_norm_one_in_subalgebra F F' s hs n _ hBst _ hεB hεn`. Establish `hxg : Commute x (incl F F' n γ)`. Rewrite using `[stdForm_commute_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `((Subalgebra.mem_centralizer_iff F').1 hxB _ rfl).symm`. Establish `hxδ₀ : Commute δ₀ x` using `hC δ₀ x hδ₀A hxg`. Establish `e1 : c⁻¹ * δ * galAct F F' n s c = δ₀ * (x⁻¹ * galAct F F' n s x)`. Rewrite using `[← hεx, mul_inv_cancel_left]`. Establish `key : (c * x⁻¹)⁻¹ * δ * galAct F F' n s (c * x⁻¹) = δ₀`.
-
-Rewrite using `[map_mul, map_inv]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨c * x⁻¹, by rw [key]; exact hδ₀A, by rw [key]; exact hn0⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isNorm_exists_twistedConj_adjoin :
     ∀ (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (s : F' ≃ₐ[F] F'),

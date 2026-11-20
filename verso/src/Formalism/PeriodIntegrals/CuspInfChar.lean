@@ -23,7 +23,7 @@ abbrev GlobalTheory (n i : ℕ) : Type := {p : Fin n × Fin n // p.1.val < i ∧
 def blk {i : ℕ} (x : GlobalTheory n i → A) : Matrix (Fin n) (Fin n) A :=
   of fun a b => if h : a.val < i ∧ i ≤ b.val then x ⟨(a, b), h⟩ else 0
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : c.val < i <;> simp [blk, h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blk_mul {i : ℕ} (x y : GlobalTheory n i → A) : blk x * blk y = 0 := by
   ext a b; rw [mul_apply]; refine Finset.sum_eq_zero fun c _ => ?_

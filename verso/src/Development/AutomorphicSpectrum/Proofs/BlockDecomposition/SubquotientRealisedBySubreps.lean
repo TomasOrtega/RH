@@ -6,21 +6,19 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.SubquotPres
 
 /- English proof (translation)
-Introduce `G V W _ _ _ _ _ ρ π h`. Take `⟨S, f, hf⟩` from `h`. Establish `hint : ∀ (g : G) (x : S.toSubmodule), f.toLinearMap (S.toRepresentation g x) = π g (f.toLinearMap x)` using `fun g x => by`. Simplify `Representation.IntertwiningMap.isIntertwining _ _ f g x` using `only [Representation.IntertwiningMap.toLinearMap_apply]`. Set `K : Submodule ℂ S.toSubmodule` to `LinearMap.ker f.toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `B : Subrepresentation ρ` to `⟨K.map S.toSubmodule.subtype, by`. Introduce `g v hv`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.mp hv`. Use `Submodule.mem_map.mpr ⟨S.toRepresentation g x, ?_, rfl⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hint, hx, map_zero]⟩`. Establish `hBS : B ≤ S` using `by show K.map S.toSubmodule.subtype ≤ S.toSubmodule`. Conclude with `Submodule.map_subtype_le _ _`. Establish `hQ : Submodule.comap S.toSubmodule.subtype B.toSubmodule = K` using `Submodule.comap_map_eq_of_injective Subtype.val_injective K`. Set `φ` to `Submodule.liftQ (Submodule.comap S.toSubmodule.subtype B.toSubmodule) f.toLinearMap hQ.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : ∀ x : S.toSubmodule, φ (Submodule.Quotient.mk x) = f.toLinearMap x` using `fun x => rfl`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ hQ.ge`. Establish `hsurj : Function.Surjective φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `w`. Take `⟨x, rfl⟩` from `hf w`. Conclude with `⟨Submodule.Quotient.mk x, by rw [hφ, Representation.IntertwiningMap.toLinearMap_apply]⟩`. Set `e` to `LinearEquiv.ofBijective φ ⟨hinj, hsurj⟩`. Establish `hφint : ∀ (g : G) q, φ (GlobalTheory.SmGL.subQuot S B g q) = π g (φ q)`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g q`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Conclude with `hint g x`. Establish `hT : ∀ g : G, e.symm.toLinearMap ∘ₗ π g = GlobalTheory.SmGL.subQuot S B g ∘ₗ e.symm.toLinearMap`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `w`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Take `⟨q, rfl⟩` from `e.surjective w`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
-
-Conclude with `(hφint g q).symm`. Set `T : Representation.IntertwiningMap π (GlobalTheory.SmGL.subQuot S B)` to `⟨e.symm.toLinearMap, hT⟩`. Conclude with `⟨S, B, hBS, ⟨Representation.Equiv.mk' T e (fun w => e.apply_symm_apply w) (fun q => e.symm_apply_apply q)⟩⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_equiv_subQuot : ∀ {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G V) (π : Representation ℂ G W),

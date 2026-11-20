@@ -27,11 +27,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
 /- English proof (translation)
-Use `⟨hso.1, ?_, fun PP hPP => ?_⟩` and prove the remaining obligations. Rewrite using `[one_pow, Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 P.isPrime.ne_top`. Establish `hPP' : PP ∈ R.Pg` using `hPP.elim id fun h => absurd h (Finset.notMem_empty _)`. Establish `hS : PP ∈ (R.Sb : Set (Formalism.L2.DIV.Pl D.host.E))` using `hSb hPP'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun h => hso.2.1 (h ▸ hS), fun h => hso.2.2 PP hS ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.Col.conjIdeal_asIdeal]`. Use `PP.isMaximal.eq_of_le (Formalism.L2.Col.conjPrime₂ P).isPrime.ne_top fun a ha => ?_` and prove the remaining obligations. Take `⟨a', ha', e⟩` from `h a ha`. Rewrite using `[Formalism.L2.Col.mem_conjP]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Formalism.L2.Col.cO D.host.E a = a'` using `RingOfIntegers.ext e.symm`. Rewrite using `[this]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem offPrincipalLevel (hSb : R.fam_Sb) (i : Fin D.R.m) {P : Formalism.L2.DIV.Pl D.host.E}
     (hso : Bridge.SplitOff P (R.Sb : Set (Formalism.L2.DIV.Pl D.host.E))) (c : ℕ) :
@@ -50,11 +50,11 @@ theorem offPrincipalLevel (hSb : R.fam_Sb) (i : Fin D.R.m) {P : Formalism.L2.DIV
     rwa [this]
 
 /- English proof (translation)
-Take `⟨c, hβ⟩` from `hL.βW i`. Establish `hP` using `offPrincipalLevel hSb i hso c`. Establish `hP'` using `offPrincipalLevel hSb i hso' c`. Take `⟨e, ϖ, he, -, -, hα⟩` from `ha`. Take `⟨e', ϖ', he', -, -, hα'⟩` from `ha'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨A₀, hA⟩, -⟩` from `exists_locRep hβ hP he hα.2.1`. Take `⟨⟨B₀, hB⟩, -⟩` from `exists_locRep hβ hP' he' hα'.2.1`. Establish `e1 : ∀ {F : GA D (Wc D i) → ℂ}, RInv (levG (Wc D i) (R.βW i) (R.datWp i R.triv)) F → heckeLin (Wc D i) Rc F = heckeLin (Wc D i) A₀ F` using `fun hF => (dcOp_eq_rInv hR hA.2 ⟨1, 1, by simp⟩ hF).1`. Establish `e2 : ∀ {F : GA D (Wc D i) → ℂ}, RInv (levG (Wc D i) (R.βW i) (R.datWp i R.triv)) F → heckeLin (Wc D i) Rc' F = heckeLin (Wc D i) B₀ F` using `fun hF => (dcOp_eq_rInv hR' hB.2 ⟨1, 1, by simp⟩ hF).1`. Establish `i1 : RInv (levG (Wc D i) (R.βW i) (R.datWp i R.triv)) (heckeLin (Wc D i) A₀ F)` using `dcOp_rInv hA.2 hF`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i2 : RInv (levG (Wc D i) (R.βW i) (R.datWp i R.triv)) (heckeLin (Wc D i) B₀ F)` using `dcOp_rInv hB.2 hF`. Rewrite using `[e2 hF, e1 hF, e1 i2, e2 i1]`. Conclude with `hA.comm hβ hP hB hF`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cosetSum_comm (hL : R.toLevCh.Is A.μ0) (hSb : R.fam_Sb) (i : Fin D.R.m) {P P' : Formalism.L2.DIV.Pl D.host.E}
     (hso : Bridge.SplitOff P (R.Sb : Set (Formalism.L2.DIV.Pl D.host.E)))
@@ -91,7 +91,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
   (Rl : RealDat3 D A3 Ks) (cG : Formalism.L2.DIV.G0 Rl.Pg D.R.r ≃* G0g D.nd) (S : RatDat D.ntw) (Y : NExpRealS Rl cG S)
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => (Y.fi i).e.injective (hinj ((hW i _).1 ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Rl.HW i (sg0 D A3.A)).e ((Rl.FW i).j (sg0 D A3.A) ((Y.fi i).e (t (t' x)))) = (Rl.HW i (sg0 D A3.A)).e ((Rl.FW i).j (sg0 D A3.A) ((Y.fi i).e (t' (t x))))`. Rewrite using `[ht, ht', ht', ht, map_smul, map_smul, smul_comm]`. Use `congrArg (fun z : MMap (Rl.MW i (sg0 D A3.A)) => c' • c • z) ?_` and prove the remaining obligations. Conclude with `MultilinearMap.ext fun v => cosetSum_comm hL hSb i hso hso' ha ha' hR hR' (fun k hk h => GlobalTheory.HeckeSup.model_inv_cl hW i _ _ v k hk h)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem commute_of_read (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hSb : Rl.toRealDat.fam_Sb) (hW : Rl.toRealDat.models_HW)
     (i : Fin D.R.m) (hinj : Function.Injective ((Rl.FW i).j (sg0 D A3.A))) {P P' : Formalism.L2.DIV.Pl D.host.E}
@@ -117,7 +117,7 @@ theorem commute_of_read (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hSb : Rl.toReal
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Set `r : ℕ → PlE D.host → Module.End S.Ks (FmK S j)` to `fun k P => ((f k P).restrictScalars S.Ks).restrict (p := (S.A j).WK) (q := (S.A j).WK) fun x hx => hs k P x hx`. Establish `hr : r k P * r k' P' = r k' P' * r k P` using `LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun h.eq x.1)`. Unfold `hkFR Commute SemiconjBy`. Express the relevant statement in the definitionally equal form `(Module.End.baseChangeHom S.Ks (KB S i b) (FmK S j) (r k P)) * (Module.End.baseChangeHom S.Ks (KB S i b) (FmK S j) (r k' P')) = (Module.End.baseChangeHom S.Ks (KB S i b) (FmK S j) (r k' P')) * (Module.End.baseChangeHom S.Ks (KB S i b) (FmK S j) (r k P))`. Rewrite using `[← map_mul, ← map_mul, hr]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem baseChange_comm (i : D.ntw.Tw) (j : ℕ) (b : Bool) {f : ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)}
     (hs : HeckeStabR S j f) (k k' : ℕ) (P P' : PlE D.host) (h : Commute (f k P) (f k' P')) :
@@ -133,9 +133,9 @@ theorem baseChange_comm (i : D.ntw.Tw) (j : ℕ) (b : Bool) {f : ℕ → PlE D.h
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `i _ j hj b k P k' P' hk hk'`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hj`. Establish `hF` using `baseChange_comm S i j b (hs j h1 h2) k k' P P' (hc i j h1 h2 k P k' P' hk hk')`. Use `LinearMap.ext fun x => (Y.eF i j b h1 h2).injective ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Y.eF i j b h1 h2 (D.nexp.hkF i j b k P (D.nexp.hkF i j b k' P' x)) = Y.eF i j b h1 h2 (D.nexp.hkF i j b k' P' (D.nexp.hkF i j b k P x))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hEq i j b h1 h2 k P _ hk.2.2.2 hk.2.2.1 hk.2.1, hEq i j b h1 h2 k' P' _ hk'.2.2.2 hk'.2.2.1 hk'.2.1, hEq i j b h1 h2 k' P' _ hk'.2.2.2 hk'.2.2.1 hk'.2.1, hEq i j b h1 h2 k P _ hk.2.2.2 hk.2.2.1 hk.2.1, map_smul, map_smul, smul_comm]`. Conclude with `congrArg (fun z => c i b k' P' • c i b k P • z) (LinearMap.congr_fun hF.eq (Y.eF i j b h1 h2 x))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hkComm_of_family (f : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j))
     (hs : ∀ j, 1 ≤ j → j ≤ D.R.m → HeckeStabR S j (f j))
@@ -157,9 +157,9 @@ theorem hkComm_of_family (f : ∀ j, ℕ → PlE D.host → Module.End D.what₂
   exact congrArg (fun z => c i b k' P' • c i b k P • z) (LinearMap.congr_fun hF.eq (Y.eF i j b h1 h2 x))
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, j = n + 1` from `⟨j - 1, by omega⟩`. Set `m : Fin D.R.m` to `⟨n, h2⟩`. Establish `so` using `hC i P hk.2.2.2 hk.2.2.1`. Establish `so'` using `hC i P' hk'.2.2.2 hk'.2.2.1`. Take `⟨α, Rc, ha, hR⟩` from `GlobalTheory.HeckeSupSt.exists_heckeElt hL hF m so hk.2.1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨α', Rc', ha', hR'⟩` from `GlobalTheory.HeckeSupSt.exists_heckeElt hL hF m so' hk'.2.1`. Take `⟨c, hc⟩` from `hr i m k P hk α Rc ha hR`. Take `⟨c', hc'⟩` from `hr i m k' P' hk' α' Rc' ha' hR'`. Conclude with `commute_of_read Rl cG S Y hL hF.Sb hW m (hinj m) so so' ha ha' hR hR' hc hc'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem family_comm (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hF : Rl.toRealDat.IsFam) (hW : Rl.toRealDat.models_HW)
     (hinj : ∀ i, Function.Injective ((Rl.FW i).j (sg0 D A3.A))) (hC : GlobalTheory.ExportPin.Model.Covered Rl)
@@ -184,7 +184,7 @@ theorem family_comm (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hF : Rl.toRealDat.I
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-The claim follows from `hkComm_of_family Rl cG S Y H.hL H.hs H.cHk H.hkEq fun i j a b k P k' P' hk hk' => family_comm Rl cG S Y hL hF hW hinj hC H.hL (fun i n k P hk α R ha hR => ⟨_, fun x => X.tie n k P hk.2.2.1 (hC i P hk.2.2.2 hk.2.2.1) ⟨i, hk.2.2.2⟩ (fun h => hk.2.2.2 (h2 i h)) hk.2.1 α R ha hR x rf …`.
+A detailed English derivation is pending.
 -/
 theorem hkComm_of_row (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hF : Rl.toRealDat.IsFam) (hW : Rl.toRealDat.models_HW)
     (hinj : ∀ i, Function.Injective ((Rl.FW i).j (sg0 D A3.A))) (hC : GlobalTheory.ExportPin.Model.Covered Rl)
@@ -199,7 +199,7 @@ theorem hkComm_of_row (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hF : Rl.toRealDat
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hp f hs hf`. Conclude with `hkComm_of_family Rl cG S Y f hs (fun i b k P => algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (u i b P) ^ k) hu fun i j a b k P k' P' hk hk' => family_comm Rl cG S Y hL hF hW hinj hC f (fun i n k P hk α R ha hR => ⟨_, fun x => hf n k P hk.2.2.1 (hC i P hk.2.2.2 hk.2.2.1) hk.2 …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hkComm_of_pin (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hF : Rl.toRealDat.IsFam) (hW : Rl.toRealDat.models_HW)
     (hinj : ∀ i, Function.Injective ((Rl.FW i).j (sg0 D A3.A))) (hC : GlobalTheory.ExportPin.Model.Covered Rl)
@@ -214,7 +214,7 @@ theorem hkComm_of_pin (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hF : Rl.toRealDat
 end Tied
 
 /- English proof (translation)
-Introduce `i hi j b k k' P P' hk hk'` and use `((GlobalTheory.SupLaw.Model.heckeLaws_of D hC hO) i hi).1 j b k P k' P' hk hk'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem commute_all_lifts (D : D7) (hC : HkComm D) (hO : OffRange D) : Formalism.MainNotions.LatticeVariant.adm13 D := fun i hi j b k k' P P' hk hk' =>
   ((GlobalTheory.SupLaw.Model.heckeLaws_of D hC hO) i hi).1 j b k P k' P' hk hk'

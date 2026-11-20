@@ -11,17 +11,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL ValuativeRel
 
 /- English proof (translation)
-Introduce `hG hZ k _ _ _ _ N V _ _ π s γ hγ hs hχ hnt`. Set `f` to `Equiv.sigmaUnique (Fin N) fun _ : Fin N => Fin 1`. Establish `hmono : StrictMono (blk f)` using `fun a b h => by simpa [blk, f] using h`. Establish `h3 : twKer π (unipRad k f) 1 = twKer π (unipB k (Fin N)) 1`. Rewrite using `[EmptyBlocks.unipRad_eq k f hmono]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `E : Jacquet π (unipRad k f) ≃ₗ[ℂ] Jacquet π (unipB k (Fin N))` to `Submodule.quotEquivOfEq _ _ h3`. Establish `hE : ∀ v : V, E (Submodule.Quotient.mk v) = Submodule.Quotient.mk v` using `fun _ => rfl`. Take `⟨y, hy0, hy⟩` from `UpperTheory.jacquet_exists_levi_congruence_fixed_of_char_support hG hZ k N V π s γ hγ hs hχ f E.toEquiv.nontrivial`. Use `⟨E y, E.map_ne_zero_iff.2 hy0, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hγ' : (γ : ValueGroupWithZero k) ≤ 1` using `hγ`. Establish `h1` using `hy (EmptyBlocks.torusToLevi k f t) fun a i j => by`. Rewrite using `[EmptyBlocks.val_torusToLevi, Subsingleton.elim i j, Matrix.sub_apply, Matrix.diagonal_apply_eq, Matrix.one_apply_eq]`. Conclude with `ht _`. Establish `hv : ∀ i, valuation k (t i : k) = 1` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Valuation.map_one_add_of_lt (valuation k) ((ht i).trans_le hγ')` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `hd : deltaHalf k (fun _ : Fin N => Fin 1) (EmptyBlocks.torusToLevi k f t) = 1`. Rewrite using `[deltaHalf_apply]`. Use `Finset.prod_eq_one fun a _ => isUnram_absPow k _ _ ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(EmptyBlocks.det_torusToLevi k f t a).trans (Fin.prod_univ_one _)` as an intermediate fact. Conclude with `(congrArg (fun u : kˣ => valuation k (u : k)) this).trans (hv _)`. Rewrite `h1` using `[jac_mk, hd, inv_one, Units.val_one, one_smul, EmptyBlocks.leviEmb_torusToLevi]`. Establish `h2` using `congrArg E h1`. Rewrite `h2` using `[hE, hE]`.
-
-Rewrite using `[hE, jacBU_mk]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.jacquet_borel_exists_torus_congruence_fixed :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V)

@@ -17,7 +17,7 @@ section SlopeTestRemainingChoices
 variable {k : Type} [Field k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)]
 
 /- English proof (translation)
-Take `⟨N, ι, _, h⟩` from `hp`. Establish `: LocallyOfFiniteType (strHom k X)` using `h ▸ inferInstance`. Conclude with `LocallyOfFiniteType.isLocallyNoetherian (strHom k X)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocallyNoetherian_of_isProjOver (hp : IsProjOver (strHom k X)) :
     IsLocallyNoetherian X := by
@@ -26,9 +26,9 @@ theorem isLocallyNoetherian_of_isProjOver (hp : IsProjOver (strHom k X)) :
   exact LocallyOfFiniteType.isLocallyNoetherian (strHom k X)
 
 /- English proof (translation)
-Establish `: Subsingleton (coh (twist (structureModule X) L) 0)`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `h : ∀ z : coh (twist (structureModule X) L) 0, z = 0` using `fun z => by`. Rewrite using `[← one_smul Γ(X, ⊤) z, Subsingleton.elim (1 : Γ(X, ⊤)) 0, zero_smul]`. Rewrite using `[h x, h y]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdim_eq_zero_of_subsingleton k 0`.
+A detailed English derivation is pending.
 -/
 theorem lineBundleGlobalSectionsDim_eq_zero_of_isEmpty [IsEmpty X] (L : LB X) : lbH0 k L = 0 := by
   have : Subsingleton (coh (twist (structureModule X) L) 0) := by
@@ -39,9 +39,7 @@ theorem lineBundleGlobalSectionsDim_eq_zero_of_isEmpty [IsEmpty X] (L : LB X) : 
   exact hdim_eq_zero_of_subsingleton k 0
 
 /- English proof (translation)
-Take `⟨i⟩` from `nonempty_twist_twist_iso_of_cls_eq (structureModule X) hA hB hN e`. Use `Twist.isQuasicoherent_twist (F := structureModule X) hA` as an intermediate fact. Establish `: Mono (Twist.secHom (twist (structureModule X) A) s)`. Rewrite using `[mono_secHom_iff _ hB, Twist.assPoints_twist hA, ← mono_cutHom_iff _ hB]`. Conclude with `hs`.
-
-Conclude with `LinearMap.finrank_le_finrank_of_injective (cohOn.map_zero_injective_of_mono k ⊤ (Twist.secHom (twist (structureModule X) A) s ≫ i.hom))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineBundleGlobalSectionsDim_le_of_injective_section_mul [IsLocallyNoetherian X] {N A B : LB X} (hN : N.IsLB)
     (hA : A.IsLB) (hB : B.IsLB) (e : cls N hN = cls A hA + cls B hB) (s : B.Sec)
@@ -60,21 +58,19 @@ end SlopeTestRemainingChoices
 open GlobalTheory.Published
 
 /- English proof (translation)
-Introduce `hNum F _ Z _ d hp hd L A hL hA`. Break down `isEmpty_or_nonempty Z with hZ | hZ` into its components or cases. Conclude with `⟨0, .of_forall fun m => by rw [lineBundleGlobalSectionsDim_eq_zero_of_isEmpty]; simp⟩`. Use `isLocallyNoetherian_of_isProjOver hp` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : ℕ, topologicalKrullDim Z = e := by`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0 : topologicalKrullDim Z ≠ ⊥` using `topologicalKrullDim_eq_bot_iff.not.2 (not_isEmpty_of_nonempty Z)`. Use `revert h0 hd`. Generalize the expression as in `topologicalKrullDim Z = D`. Introduce `hd h0`. Proceed by induction on `D using WithBot.recBotCoe with`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `bot => exact absurd rfl h0`. Consider the case `coe D`. Proceed by induction on `D using ENat.recTopCoe with`. Consider the case `top`. Establish `h' : (⊤ : ℕ∞) ≤ (d : ℕ∞)` using `by exact_mod_cast hd`.
+Treat this case separately. Proceed by induction. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Conclude with `absurd (top_le_iff.1 h') (ENat.coe_ne_top d)`. Consider the case `coe n => exact ⟨n, rfl⟩`. Establish `hed : e ≤ d`. Rewrite `hd` using `[he]`. Conclude with `hd` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLA : IsNef F (tens L A)` using `hL.tens hA.isNef hA`. Establish `ht` using `hNum.2.2.tendsto hp he hLA`. Use `set c : ℝ := (topSelfIntersection F (tens L A) e : ℝ) / e.factorial`. Establish `hb` using `ht.eventually (gt_mem_nhds (lt_add_one c))`. Establish `hcut : ∀ᶠ m : ℕ in atTop, ∃ t : (lbPow A (m - 1)).Sec, Mono (cutHom (structureModule Z) (isLB_lbPow hA.isLB (m - 1)) t)` using `(tendsto_sub_atTop_nat 1).eventually (hA.eventually_exists_mono_cutHom_pow (structureModule Z))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨|c| + 1, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hcut, hb, eventually_ge_atTop 1] with m ⟨t, hts⟩ hm hm1`. Establish `hcls : cls _ (isLB_lbPow (isLB_tens hL.isLB hA.isLB) m) = cls _ (isLB_tens (isLB_lbPow hL.isLB m) hA.isLB) + cls _ (isLB_lbPow hA.isLB (m - 1))`. Rewrite using `[cls_lbPow (isLB_tens hL.isLB hA.isLB), cls_tens hL.isLB hA.isLB, cls_tens (isLB_lbPow hL.isLB m) hA.isLB, cls_lbPow hL.isLB, cls_lbPow hA.isLB]`. Take `⟨n, rfl⟩ : ∃ n, m = n + 1` from `⟨m - 1, by omega⟩`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Nat.add_sub_cancel, add_smul, one_smul, smul_add]`. Normalize the expressions using the abelian group laws. Establish `h1` using `lineBundleGlobalSectionsDim_le_of_injective_section_mul (k := F) (isLB_lbPow (isLB_tens hL.isLB hA.isLB) m) (isLB_tens (isLB_lbPow hL.isLB m) hA.isLB) (isLB_lbPow hA.isLB (m - 1)) hcls t hts (finite_coh_zero_twist_of_isProjOver (algebraMap_eq_strHom F Z) hp (isLB_lbPow (isLB_tens …`. Establish `hmpos : (0 : ℝ) < (m : ℝ) ^ e` using `by positivity`. Establish `h2 : (lbH0 F (lbPow (tens L A) m) : ℝ) ≤ (c + 1) * (m : ℝ) ^ e` using `((div_lt_iff₀ hmpos).1 hm).le`.
-
-Establish `h3 : (m : ℝ) ^ e ≤ (m : ℝ) ^ d` using `pow_le_pow_right₀ (by exact_mod_cast hm1) hed`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lineBundleGlobalSectionsDim_nefPow_tensor_ample_isBigO : GlobalTheory.Published.NefNumerics → ∀ (F : Type) [Field F] (Z : Scheme.{0})
     [Algebra F Γ(Z, ⊤)] (d : ℕ), IsProjOver (strHom F Z) → topologicalKrullDim Z ≤ d →

@@ -12,9 +12,9 @@ namespace GlobalTheory.CompanionTheory.Ar.PeriodCoord
 variable {X : Scheme.{0}} {G : Over X} [GrpObj G] {A R : Type} [CommRing A] [CommRing R]
 
 /- English proof (translation)
-Establish `e : (CommRingCat.ofHom (algebraMap A (DualNumber A))) ≫ CommRingCat.ofHom (dualMap θ) = CommRingCat.ofHom θ ≫ CommRingCat.ofHom (algebraMap R (DualNumber R))`. Use `CommRingCat.hom_ext (RingHom.ext fun a => ?_)` and prove the remaining obligations. Use `show dualMap θ (algebraMap A (DualNumber A) a) = algebraMap R (DualNumber R) (θ a)`. Rewrite using `[TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `ext <;> simp [dualMap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `e'` using `congrArg Spec.map e`. Simplify using `only [Spec.map_comp] at e'`. Use `show spMap (dualMap θ) ≫ Spec.map _ ≫ i = Spec.map _ ≫ 𝟙 (Sp R) ≫ spMap θ ≫ i`. Rewrite using `[Category.id_comp, ← Category.assoc, e', Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualMap_comp_base (i : Sp A ⟶ X) (θ : A →+* R) :
     spMap (dualMap θ) ≫ (epsAt i).hom = (epsAt (𝟙 (Sp R) ≫ spMap θ ≫ i)).hom := by
@@ -36,11 +36,11 @@ def pushEps (i : Sp A ⟶ X) (θ : A →+* R) (v : epsAt i ⟶ G) : epsAt (𝟙 
     exact e)
 
 /- English proof (translation)
-Unfold `IsTanAt at h ⊢`. Establish `key : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom) ≫ Spec.map (CommRingCat.ofHom (dualMap θ)) = Spec.map (CommRingCat.ofHom θ) ≫ Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom A A A).toRingHom)`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun a => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[dualMap]`. Set `s : Over.mk (𝟙 (Sp R) ≫ spMap θ ≫ i) ⟶ Over.mk i` to `Over.homMk (spMap θ) (by simp)`. Establish `h1 : s ≫ (1 : Over.mk i ⟶ G) = 1` using `MonObj.comp_one s`. Establish `h2` using `congrArg CommaMorphism.left h1`. Use `Eq.trans ?_ h2` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `_ = spMap θ ≫ (1 : Over.mk i ⟶ G).left`. Rewrite using `[← h]`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ spMap (dualMap θ) ≫ v.left = _`. Rewrite using `[← Category.assoc, key, Category.assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTanAt_pushEps (i : Sp A ⟶ X) (θ : A →+* R) {v : epsAt i ⟶ G} (h : IsTanAt G i v) :
     IsTanAt G (𝟙 (Sp R) ≫ spMap θ ≫ i) (pushEps i θ v) := by
@@ -63,11 +63,9 @@ theorem isTanAt_pushEps (i : Sp A ⟶ X) (θ : A →+* R) {v : epsAt i ⟶ G} (h
   rw [← Category.assoc, key, Category.assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t A _ i N v R _ t' θ m g M hv`. Establish `hx : ∀ k, ∃ e : Fin g → R, (M.pt e).left ≫ m.φ = spMap (dualMap θ) ≫ (v k).left` using `fun k => by`. Establish `ht : IsTanAt t'.G (𝟙 (Sp R)) ((LiePull.tanPts m.cart (𝟙 (Sp R))).symm (pushEps i θ (v k)))` using `(LiePull.isTan_iff m.cart (𝟙 (Sp R)) _).1 (by`. Rewrite using `[MulEquiv.apply_symm_apply]`. Conclude with `isTanAt_pushEps i θ (hv k))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `M.onto _ ht`. Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[he, ← LiePull.pts_left m.cart (LiePull.eps_assoc (𝟙 (Sp R))), MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Use `choose x hx using hx`.
-
-Conclude with `⟨x, hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coords : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (A : Type) [CommRing A] (i : Sp A ⟶ X) (N : ℕ) (v : Fin N → (epsAt i ⟶ t.G)) (R : Type) [CommRing R] (t' : SAB H (Sp R)) (θ : A →+* R) (m : SABMap t' t (spMap θ ≫ i)) (g : ℕ) (M : LieModel t'.G (𝟙 (Sp R)) (Fin g → R)), (∀ k, IsTanAt t.G i (v k)) → ∃ x : Fin N → Fin g → R, ∀ k, (M.pt (x k)).left ≫ m.φ = spMap (dualMap θ) ≫ (v k).left := by
   intro E _ _ _ H X t A _ i N v R _ t' θ m g M hv

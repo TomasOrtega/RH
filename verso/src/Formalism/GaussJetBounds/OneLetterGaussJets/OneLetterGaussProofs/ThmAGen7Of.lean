@@ -12,37 +12,33 @@ namespace Formalism.DworkPowerSeriesWeights.OddLevelGainBounds
 open Formalism.IncomingBounds MvPolynomial
 
 /- English proof (translation)
-Introduce `K _ _ _ l d N0 N1 _ hl hl3 hd hde hnl h0 K0 hK0 ζ hζ be hbe x hx g hg0 hg U hU ε hε TT colN p hp hp1 I T hT nu1 nu2 size hnu1 hnu2 hsize spec hspec hinj hframe`. Establish `hpos : 0 < ‖(l : K)‖`. Rewrite using `[norm_pos_iff]`. Conclude with `hl.ne_zero` after adjusting the coercions. Establish `h21 : ∀ s, nu2 s ≤ nu1 s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Rewrite using `[hnu1, hnu2]`. Conclude with `(Finset.card_le_univ _).trans (by simp)`. Establish `h1s : ∀ s, nu1 s ≤ size s`. Introduce `s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hnu1, hsize]`. Combine the equalities or inequalities in the displayed calculation. Establish `hPint : (∏ s : ZMod d, minorProd (rowOp (N1` using `N1) TT T s) (p s) (hp s) (I s)) ∈ opInt K (ZV d N0 N1) := Subring.prod_mem _ fun s _ => minorProd_mem_opInt _ (fun i b => rowOp_mem_opInt TT T hT s i b) _ _ _`. Unfold `jetPair`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (Real.rpow_nonneg hpos.le _) fun κ hκ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsh` using `op_prod_shape TT T colN p hp hp1 I κ hκ`. Establish `hcap : ∀ (s : ZMod d) (k : Fin N0), ¬ (s ∈ TT ∧ k.val = 0) → rowDeg s k κ ≤ capL d TT nu1 nu2 s`. Introduce `s k hsk`. Unfold `capL`. Use `split_ifs with hs`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hnu2]`. Conclude with `((hsh s).2.2 hs ⟨0, h0⟩ rfl).2 k (fun hk => hsk ⟨hs, hk⟩)`. Rewrite using `[hnu1]`. Conclude with `(hsh s).2.1 k`. Establish `hjet` using `hJ K l d N0 N1 hl hl3 hd hde hnl h0 K0 hK0 ζ hζ be hbe x hx g hg0 hg U hU ε hε TT nu1 nu2 size h21 h1s spec κ ?_ ?_ hspec ?_ hcap hframe`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_assoc, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Introduce `s hs`. Rewrite using `[hnu1]`. Conclude with `((hsh s).2.2 hs ⟨0, h0⟩ rfl).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `s`. Establish `hrows` using `sum_filter_rows (fun r : ZMod d × Fin N0 => r.1 = s ∧ ¬ (r.1 ∈ TT ∧ r.2.val = 0)) κ`. Use `Eq.trans (Finset.sum_congr ?_ fun _ _ => rfl) (hrows.trans ?_)` and prove the remaining obligations. Use extensionality with `y`. Simplify using `[frameTop]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.sum_filter, Fintype.sum_prod_type, Finset.sum_eq_single s]`. Establish `htot` using `(hsh s).1`. Rewrite `htot` using `[← hsize]`. Unfold `Dl`. Use `split_ifs with hs`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `htop` using `((hsh s).2.2 hs ⟨0, h0⟩ rfl).1`. Rewrite `htop` using `[← hnu1]`. Rewrite `htot` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ (⟨0, h0⟩ : Fin N0)), htop]`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ (⟨0, h0⟩ : Fin N0))]`. Establish `hrest : (∑ k ∈ Finset.univ.erase (⟨0, h0⟩ : Fin N0), if (s = s ∧ ¬ (s ∈ TT ∧ k.val = 0)) then rowDeg s k κ else 0) = ∑ k ∈ Finset.univ.erase (⟨0, h0⟩ : Fin N0), rowDeg s k κ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[if_pos]`. Use `⟨rfl, fun hh => ?_⟩` and prove the remaining obligations. Conclude with `(Finset.mem_erase.mp hk).1 (Fin.ext hh.2)`. Simplify using `only at hrest ⊢`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hrest, if_neg (by simp [hs])]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← htot]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Introduce `s' _ hs'`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Simplify using `[hs']`. Introduce `hh`. Conclude with `absurd (Finset.mem_univ s) hh`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s0 j`. Rewrite using `[sum_filter_rows (fun r => spec r = some (s0, j))]`. Distinguish the cases in `hex : ∃ r0, spec r0 = some (s0, j)`. Take `⟨r0, hr0⟩` from `hex`. Establish `hfil : Finset.univ.filter (fun r => spec r = some (s0, j)) = {r0}`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `r`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `hr`. Conclude with `(hinj r0 r (by rw [hr0]; simp) (hr0.trans hr.symm)).symm`.
-
-Introduce `hr`. Rewrite using `[hr, hr0]`. Rewrite using `[hfil, Finset.sum_singleton]`. Take `⟨_, _, hs, hnt, _⟩` from `hspec r0.1 r0.2 s0 j hr0`. Rewrite using `[← hs]`.
-
-Conclude with `hcap r0.1 r0.2 hnt`. Rewrite using `[Finset.filter_false_of_mem (fun r _ hr => hex ⟨r, hr⟩)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thmAOp7_of (hJ : ThmAJet7.{u}) : ThmAOp7.{u} := by
   intro K _ _ _ l d N0 N1 _ hl hl3 hd hde hnl h0 K0 hK0 ζ hζ be hbe x hx g hg0 hg U hU ε hε
@@ -139,19 +135,17 @@ theorem thmAOp7_of (hJ : ThmAJet7.{u}) : ThmAOp7.{u} := by
       simp
 
 /- English proof (translation)
-Introduce `K _ _ _ l d N0 N1 _ hl h3 hd hev hpi h0 K0 hun ζ hζ be hbe x hx g hg0 hg U hU ε hε TT colN p hp hp1 I T hT xg hxg nu1 nu2 size hn1 hn2 hsz spec hs1 hs2 hs3`. Establish `key` using `hO K l d N0 N1 hl h3 hd hev hpi h0 K0 hun ζ hζ be hbe x hx g hg0 hg U hU ε hε TT colN p hp hp1 I T hT nu1 nu2 size hn1 hn2 hsz spec hs1 hs2 hs3`. Use `set aa : ZV d N0 N1 → MvPowerSeries (ZV d N0 N1) K := fun j => ∑ i : ZV d N0 N1, MvPowerSeries.C (genA TT T i j) * MvPowerSeries.X i with haa`. Establish `hs : MvPowerSeries.HasSubst aa` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun j => by simp [haa]`. Establish `hlin : ∀ z, MvPowerSeries.subst aa (linSub (frameM (N1` using `N1) x) z) = linSub (frameM (N1 := N1) xg) z := subst_linSub _ _ _ (frameM_genA TT T x xg hxg)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlin0 : ∀ z, MvPowerSeries.constantCoeff (linSub (frameM (N1` using `N1) x) z) = 0 := by`. Introduce `z`. Simplify using `[linSub]`. Establish `hbe0 : MvPowerSeries.constantCoeff be = 0`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h' : MvPowerSeries.coeff 0 be ≠ 0`. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply]` and apply the resulting hypothesis. Use `(hbe.2.2.1 0 h').1` as an intermediate fact. Simplify using `[degE] at this`. Establish `hbS0 : MvPowerSeries.constantCoeff (bSum (frameM (N1` using `N1) x) be) = 0 := by`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `bSum`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun ab _ => ?_` and prove the remaining obligations. Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => hlin0 _) (fun s => hlin0 _) hbe0`. Establish `hbS : MvPowerSeries.subst aa (bSum (frameM (N1` using `N1) x) be) = bSum (frameM (N1 := N1) xg) be := by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `bSum`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hs, map_sum]`. Use `Finset.sum_congr rfl fun ab _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom hs, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => hlin0 _) hs]`. Simplify using `only [hlin]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΘ : MvPowerSeries.subst (linSub (frameM (N1` using `N1) xg)) (MvPowerSeries.subst g U) * mvExp (ε • bSum (frameM (N1 := N1) xg) be) = MvPowerSeries.subst aa (MvPowerSeries.subst (linSub (frameM (N1 := N1) x)) (MvPowerSeries.subst g U) * mvExp (ε • bSum (frameM (N1 := N1) x) be)) := by`. Rewrite using `[MvPowerSeries.subst_mul hs, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero hlin0) hs, subst_mvExp hs _ (by rw [MvPowerSeries.smul_eq_C_mul, map_mul, hbS0, mul_zero]), MvPowerSeries.subst_smul hs, hbS]`. Simplify using `only [hlin]`. Rewrite using `[hΘ, jet_pair_linearity K (ZV d N0 N1) (ZV d N0 N1) (genA TT T), map_prod]`. Simplify using `only [map_minorProd, MvPolynomial.aeval_X, sum_genA_eq_rowOp]`.
-
-Conclude with `key`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thmAGen7_of (hO : ThmAOp7.{u}) : ThmAGen7.{u} := by
   intro K _ _ _ l d N0 N1 _ hl h3 hd hev hpi h0 K0 hun ζ hζ be hbe x hx g hg0 hg U hU ε hε TT colN

@@ -58,9 +58,9 @@ def splitArc : letI := H.starRing; AnArc (𝓞 E) :=
 instance : letI := H.starRing; IsEmpty (Fin (splitArc l).gB) := inferInstanceAs (IsEmpty (Fin 0))
 
 /- English proof (translation)
-Establish `h : v.left = spMap (algebraMap ℂ (DualNumber ℂ))` using `(Category.comp_id _).symm.trans (Over.w v)`. Establish `h' : η[(zeroPolAV (Sp ℂ)).A].left = 𝟙 (Sp ℂ)` using `(Category.comp_id _).symm.trans (Over.w η[(zeroPolAV (Sp ℂ)).A])`. Unfold `IsTangent`. Rewrite using `[h, h']`. Use `(Spec.map_comp _ _).symm.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Spec.map_id _`.
+A detailed English derivation is pending.
 -/
 theorem isTangent_zero (v : epsR ℂ ⟶ (zeroPolAV (Sp ℂ)).A) : IsTangent v := by
   have h : v.left = spMap (algebraMap ℂ (DualNumber ℂ)) := (Category.comp_id _).symm.trans (Over.w v)
@@ -72,11 +72,11 @@ theorem isTangent_zero (v : epsR ℂ ⟶ (zeroPolAV (Sp ℂ)).A) : IsTangent v :
   exact Spec.map_id _
 
 /- English proof (translation)
-Introduce `U h f`. Establish `hv : v.left ≫ 𝟙 (Sp ℂ) = spMap (algebraMap ℂ (DualNumber ℂ))` using `Over.w v`. Take `rfl : w = 0` from `Subsingleton.elim _ _`. Rewrite using `[map_zero]`. Establish `hf : f = constFn (𝟙 (Sp ℂ)) U (valAt' (𝟙 (Sp ℂ)) U f)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ComplexPoints.eq_of_valAt'_eq (𝟙 (Sp ℂ)) _ _ _ fun x hx hU => ?_` and prove the remaining obligations. Take `rfl : x = 𝟙 _` from `(Category.comp_id _).symm.trans hx`. Conclude with `(valAt'_constFn _ _ (Category.comp_id _) _ _ hU).symm`. Establish `e` using `GlobalTheory.Points.valR_constFn_of_over (𝟙 (Sp ℂ)) (algebraMap ℂ (DualNumber ℂ)) v.left hv U h (valAt' (𝟙 (Sp ℂ)) U f)`. Establish `e'` using `(congrArg (valR v.left U) hf).trans e`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `valR at e'`. Rewrite `e'` using `[dif_pos h]`. Conclude with `(congrArg TrivSqZeroExt.snd e').trans rfl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDiff_zero {O : Type} [CommRing O] [StarRing O] (A : AnArc O) [IsEmpty (Fin A.gB)] (w : Fin A.gB → ℂ)
     (v : epsR ℂ ⟶ (zeroPolAV (Sp ℂ)).A) : (zeroUnif A).IsDiff w v := by
@@ -151,7 +151,7 @@ def model : letI := H.starRing; GtAn (arcIn c ℂ bF) :=
 end Model
 
 /- English proof (translation)
-Use `letI : Algebra (FractionRing ℂ) ℂ := (FractionRing.algEquiv ℂ ℂ).toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℂ (FractionRing ℂ) ℂ := IsScalarTower.of_algebraMap_eq fun x => ((FractionRing.algEquiv ℂ ℂ).commutes x).symm`. Conclude with `⟨model _ _⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 example : letI := host.starRing
     letI : Algebra (FractionRing ℂ) ℂ := (FractionRing.algEquiv ℂ ℂ).toRingHom.toAlgebra
@@ -172,7 +172,7 @@ open FrameValue
 include Λ in
 
 /- English proof (translation)
-Establish `h : Out.jFK (R` using `ℂ) ℂ ≫ Out.jK ℂ = 𝟙 (Sp ℂ) := (Over.w (Λ.ex0 0).b).symm.trans ((congrArg (· ≫ a.D₀.P.A.hom) (Λ.ex0_b 0)).trans (Over.w (Λ.u.ex _)))`. Rewrite `h` using `[← Spec.map_comp, ← Spec.map_id]`. Establish `h'` using `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`. Conclude with `IsScalarTower.of_algebraMap_eq' h'.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isScalarTower : IsScalarTower ℂ (FractionRing ℂ) ℂ := by
   have h : Out.jFK (R := ℂ) ℂ ≫ Out.jK ℂ = 𝟙 (Sp ℂ) :=
@@ -182,13 +182,13 @@ theorem isScalarTower : IsScalarTower ℂ (FractionRing ℂ) ℂ := by
   exact IsScalarTower.of_algebraMap_eq' h'.symm
 
 /- English proof (translation)
-Rewrite using `[(Λ.u.ker 0).2 (zero_mem _), Hom.one_def, toUnit_unit, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_zero : Λ.u.ex 0 = η[a.D₀.P.A] := by
   rw [(Λ.u.ker 0).2 (zero_mem _), Hom.one_def, toUnit_unit, Category.id_comp]
 
 /- English proof (translation)
-Introduce `k` and use `by have h : ∀ p : 𝟙_ (Over (Sp ℂ)) ⟶ a.D₀.P.A, Λ.u.ex z ≫ toUnit a.D₀.P.A ≫ p = p := fun p => by rw [← Category.assoc, comp_toUnit, toUnit_unit, Category.id_comp] fin_cases k · exact Category.comp_id _ · change (Λ.u.ex z ≫ (𝟙 a.D₀.P.A * toUnit _ ≫ a.D₀.c (Λ.ε α))).left = (Λ.u.ex …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLift_fam (z : Fin Λ.A.gB → ℂ) (α : Λ.A.X) :
     IsLift Λ.u (a.D₀.famφB (Λ.ε α)) (Λ.u.ex z).left ![z, z + Λ.A.ct α, Λ.A.ct α, 0] := fun k => by
@@ -204,13 +204,13 @@ theorem isLift_fam (z : Fin Λ.A.gB → ℂ) (α : Λ.A.X) :
     rw [h, ex_zero]
 
 /- English proof (translation)
-Use `⟨?_, fun m z => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have := differentiable_secVal (u := Λ.u) a.D₀.P.isLB s (𝟙 _) (q := id) differentiable_id (z := fun z => ![z, z + Λ.A.ct α, Λ.A.ct α, 0]) (fun k => by fin_cases k <;> simp <;> fun_prop) (fun w => by rw [id, Category.comp_id]; exact isLift_fam Λ w α)`. Simplify using `only [id, Category.comp_id] at this`. Conclude with `this`. Set `m' : Λ.u.Λ` to `⟨m, Λ.lam.ge m.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₁ : Λ.u.ex (z + m) = Λ.u.ex z` using `by rw [Λ.u.ex_add, (Λ.u.ker m).2 m'.2, _root_.mul_one]`. Establish `e₂ : ![z + m, z + m + Λ.A.ct α, Λ.A.ct α, 0] = fun k => ![z, z + Λ.A.ct α, Λ.A.ct α, 0] k + ((![m', m', 0, 0] : Fin 4 → Λ.u.Λ) k : Fin Λ.A.gB → ℂ)`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> simp [m'] <;> abel`. Rewrite using `[GtAn.fn, GtAn.fn, e₁, e₂, secVal_add_period _ Λ.ah s (isLift_fam Λ z α)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `n` using `Λ.A.ah_ne_zero m z`. Simplify using `only [Fin.prod_univ_four, Out.DegPre.famε, Matrix.cons_val, ahFactor_zero a.D₀.P.isLB Λ.ah]`. Express the relevant statement in the definitionally equal form `Λ.A.ah m z ^ ((j : ℤ) - 1) * Λ.A.ah m (z + Λ.A.ct α) ^ (1 : ℤ) * _ * _ = _`. Rewrite using `[AnArc.ah_add, zpow_sub₀ n]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem fn_mem_Theta (j : ℕ) (α : Λ.A.X) (s : a.D₀.SecB j (Λ.ε α)) : Λ.fn j α s ∈ Λ.A.Theta j α := by
   refine ⟨?_, fun m z => ?_⟩
@@ -235,14 +235,14 @@ theorem fn_mem_Theta (j : ℕ) (α : Λ.A.X) (s : a.D₀.SecB j (Λ.ε α)) : Λ
     field_simp
 
 /- English proof (translation)
-Use `haveI := isScalarTower Λ`. Conclude with `Over.OverMorphism.ext ((Λ.ex0_b v).trans (toUnit_TF_comp_left _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem analyticTorusPoint_base_eq_holUnif_ex (v : Λ.A.V) : (Λ.ex0 v).b = toUnit _ ≫ Λ.u.ex v.2 := by
   haveI := isScalarTower Λ
   exact Over.OverMorphism.ext ((Λ.ex0_b v).trans (toUnit_TF_comp_left _).symm)
 
 /- English proof (translation)
-Introduce `k` and use `by haveI := isScalarTower Λ refine (Category.id_comp _).trans ?_ fin_cases k · refine Eq.trans ?_ (toUnit_TF_comp_left _) change (toUnit _ ≫ a.D₀.c (Λ.ε x) * (Λ.ex0 v).b).left = (toUnit _ ≫ Λ.u.ex (Λ.A.ct x + v.2)).left rw [analyticTorusPoint_base_eq_holUnif_ex, Λ.u.ex_add, MonOb …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLift_gt (v : Λ.A.V) (x : Λ.A.X) :
     IsLift Λ.u (Out.DegPre.gtφ a.D₀ ℂ (Λ.ex0 v).b (Λ.ε x)) (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ))
@@ -258,21 +258,17 @@ theorem isLift_gt (v : Λ.A.V) (x : Λ.A.X) :
   · exact (toUnit_TF_comp_left _).trans (congrArg (·.left) (ex_zero Λ).symm)
 
 /- English proof (translation)
-Introduce `j j' c₁ c₂ c₃`. Use `Units.ext (ComplexPoints.eq_of_valAt'_eq (𝟙 (Sp ℂ)) _ _ _ fun x hx hW => ?_)` and prove the remaining obligations. Take `rfl : x = 𝟙 _` from `(Category.comp_id _).symm.trans hx`. Establish `h₁ : ⊤ ≤ 𝟙 (Sp ℂ) ⁻¹ᵁ L.wchart φ j` using `hW.trans inf_le_left`. Establish `h₂ : ⊤ ≤ 𝟙 (Sp ℂ) ⁻¹ᵁ L.wchart φ' j'` using `hW.trans inf_le_right`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(valAt'_res _ inf_le_left _ hW).trans (Eq.trans ?_ (valAt'_res _ inf_le_right _ hW).symm)` and prove the remaining obligations. Rewrite using `[valAt'_gen hL ht hz h₁, valAt'_gen hL ht' hz' h₂, h]`. Use `congr 1`. Establish `hφ : ∀ k, φ k = (u.ex (z k)).left` using `fun k => (Category.id_comp _).symm.trans (hz k)`. Establish `hφ' : ∀ k, φ' k = (u.ex (z' k)).left` using `fun k => (Category.id_comp _).symm.trans (hz' k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `idx : (Sp ℂ ⟶ A.left) → L.ι` to `fun p => if h : ∃ k, φ k = p then j h.choose else if h : ∃ k, φ' k = p then j' h.choose else chartAt hL p`. Establish `i₁ : ∀ k, idx (φ k) = j k` using `fun k => by`. Establish `e : ∃ k', φ k' = φ k` using `⟨k, rfl⟩`. Simplify using `only [idx, dif_pos e]`. Conclude with `c₁ _ _ e.choose_spec`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `i₂ : ∀ k, idx (φ' k) = j' k` using `fun k => by`. Establish `e : ∃ k', φ' k' = φ' k` using `⟨k, rfl⟩`. Distinguish the cases in `e' : ∃ k', φ k' = φ' k`. Simplify using `only [idx, dif_pos e']`. Conclude with `c₃ _ _ e'.choose_spec`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [idx, dif_neg e', dif_pos e]`. Conclude with `c₂ _ _ e.choose_spec`. Establish `hi : ∀ w, u.fr (idx (u.ex w).left) w ≠ 0` using `fun w => u.fr_ne _ _ (by`. Distinguish the cases in `e : ∃ k, φ k = (u.ex w).left`. Take `⟨k, hk⟩` from `e`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hk, i₁, hφ]`. Conclude with `(hz.le_iff j).1 h₁ k`. Distinguish the cases in `e' : ∃ k, φ' k = (u.ex w).left`. Take `⟨k, hk⟩` from `e'`. Rewrite using `[← hk, i₂, hφ']`.
-
-Conclude with `(hz'.le_iff j').1 h₂ k`. Simplify using `only [idx, dif_neg e, dif_neg e']`. Conclude with `le_chartAt hL _)`. Use `congrArg (Units.coeHom ℂ) (hs fun w => Units.mk0 _ (hi w))` as an intermediate fact. Simplify using `only [map_prod, map_zpow, Units.coeHom_apply, Units.val_mk0, ← hφ, ← hφ', i₁, i₂] at this`.
-
-Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem corr_of_genVal {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} {u : HolUnif A L g} (hL : L.IsLB)
     {K K' : Type} [Fintype K] [Fintype K'] {φ : K → (Sp ℂ ⟶ A.left)} {ε : K → ℤ} {φ' : K' → (Sp ℂ ⟶ A.left)}
@@ -318,7 +314,7 @@ theorem corr_of_genVal {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} 
   exact this
 
 /- English proof (translation)
-The claim follows from `(genVal_mul hL t t' y _).trans (congrArg₂ (· * ·) h h')`.
+A detailed English derivation is pending.
 -/
 theorem genVal_mul_of {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} {u : HolUnif A L g} {hL : L.IsLB}
     {Y : Scheme.{0}} {K K' : Type} [Fintype K] [Fintype K'] {φ : K → (Y ⟶ A.left)} {ε : K → ℤ}
@@ -328,7 +324,7 @@ theorem genVal_mul_of {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} {
   (genVal_mul hL t t' y _).trans (congrArg₂ (· * ·) h h')
 
 /- English proof (translation)
-The claim follows from `(genVal_inv hL t y _).trans (congrArg (·⁻¹) h)`.
+A detailed English derivation is pending.
 -/
 theorem genVal_inv_of {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} {u : HolUnif A L g} {hL : L.IsLB}
     {Y : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y ⟶ A.left)} {ε : K → ℤ} {t : LB.Gen (LB.LinComb L φ ε)}
@@ -337,7 +333,7 @@ theorem genVal_inv_of {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} {
   (genVal_inv hL t y _).trans (congrArg (·⁻¹) h)
 
 /- English proof (translation)
-The claim follows from `(genVal_pull hL t f y z).trans (e ▸ h)`.
+A detailed English derivation is pending.
 -/
 theorem genVal_pull_of {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} {u : HolUnif A L g} {hL : L.IsLB}
     {Y Y' : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y ⟶ A.left)} {ε : K → ℤ} {t : LB.Gen (LB.LinComb L φ ε)}
@@ -346,15 +342,15 @@ theorem genVal_pull_of {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} 
   (genVal_pull hL t f y z).trans (e ▸ h)
 
 /- English proof (translation)
-Set `m' : Λ.u.Λ` to `⟨m, Λ.lam.ge m.2⟩`. Establish `e₂ : ![Λ.A.ct x + v.2, Λ.A.ct x, v.2, 0] = fun k => ![Λ.A.ct x + z, Λ.A.ct x, z, 0] k + ((![m', 0, m', 0] : Fin 4 → Λ.u.Λ) k : Fin Λ.A.gB → ℂ)`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> simp [m', hv, add_assoc]`. Establish `hz : IsLift Λ.u (Out.DegPre.gtφ a.D₀ ℂ (Λ.ex0 v).b (Λ.ε x)) (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ![Λ.A.ct x + z, Λ.A.ct x, z, 0]` using `fun k => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `(isLift_gt Λ v x k).trans ?_` and prove the remaining obligations. Rewrite using `[e₂]`. Use `beta_reduce`. Rewrite using `[Λ.u.ex_add, (Λ.u.ker _).2 (Subtype.prop _), _root_.mul_one]`. Use `⟨hz, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `Λ.arcDict_expZero_section v x`. Rewrite `h` using `[e₂]`. Establish `h'` using `(genVal_add_period a.D₀.P.isLB Λ.ah _ hz _).symm.trans h`. Simplify using `only [Fin.prod_univ_four, Out.DegPre.gtε, Matrix.cons_val, ahFactor_zero a.D₀.P.isLB Λ.ah] at h'`. Express the relevant statement in the definitionally equal form `Λ.A.ah m (Λ.A.ct x + z) ^ (-1 : ℤ) * _ * Λ.A.ah m z ^ (1 : ℤ) * _ * _ = _ at h'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `n` using `Λ.A.ah_ne_zero m z`. Establish `e₃ : eTwoPi (Λ.A.H (Λ.A.ct x) m / (2 * Complex.I)) = Complex.exp (Real.pi * Λ.A.H (Λ.A.ct x) m)`. Use `AnArc.e_neg_div (-Λ.A.H (Λ.A.ct x) m)` as an intermediate fact. Simplify `this` using `[neg_div]`. Rewrite `h'` using `[add_comm (Λ.A.ct x) z, AnArc.ah_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AnArc.e_add, e₃, ← h', add_comm (Λ.A.ct x) z]`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem genVal_shift (v : Λ.A.V) (z : Fin Λ.A.gB → ℂ) (m : Λ.A.abelian₂) (hv : v.2 = z + m) (x : Λ.A.X) :
     IsLift Λ.u (Out.DegPre.gtφ a.D₀ ℂ (Λ.ex0 v).b (Λ.ε x)) (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ))
@@ -389,15 +385,15 @@ theorem genVal_shift (v : Λ.A.V) (z : Fin Λ.A.gB → ℂ) (m : Λ.A.abelian₂
   rfl
 
 /- English proof (translation)
-Use `haveI := isScalarTower Λ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hb, hs⟩`. Establish `h0 : Λ.u.ex v.2 = 1` using `Over.OverMorphism.ext ((Λ.ex0_b v).symm.trans ((congrArg (·.left) hb).trans ((toUnit_TF_comp_left _).trans (by rw [Hom.one_def, toUnit_unit, Category.id_comp]))))`. Set `m : Λ.A.abelian₂` to `⟨v.2, Λ.lam.le ((Λ.u.ker _).1 h0)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `w : Λ.A.V` to `v - Λ.A.P0 (AnArc.La.mk 0 0 m)`. Take `⟨n, hn⟩` from `(expChar_eq_one_iff w.1).1 (MonoidHom.ext fun x => Units.ext (by`. Take `⟨hz, h⟩` from `genVal_shift Λ v 0 m (zero_add _).symm x.toAdd`. Use `genVal_corr a.D₀.P.isLB (hs _) hz (z' := PEmpty.elim) (fun k => k.elim) (fun f => by simp [Fin.prod_univ_four, Out.DegPre.gtε])` as an intermediate fact. Establish `e` using `h.symm.trans (this.trans (genVal_one (u := Λ.u) _ _ _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `eTwoPi (w.1 x.toAdd) = 1`. Simplify `e))` using `[w]`. Use `⟨AnArc.La.mk 0 n m, rfl, Prod.ext (AddMonoidHom.ext fun x => ?_) (by simp [m])⟩` and prove the remaining obligations. Use `hn x` as an intermediate fact. Simplify using `[w] at this`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[← this]`. Introduce and unpack `⟨la, hy, rfl⟩`. Establish `hv : (Λ.A.P0 la).2 = 0 + la.l` using `by simp [hy]`. Use `⟨by rw [analyticTorusPoint_base_eq_holUnif_ex, hv, zero_add, (Λ.u.ker _).2 (Λ.lam.ge la.l.2), Hom.one_def, toUnit_unit, Category.id_comp], fun x => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Λ.ε.surjective x`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hz, h⟩` from `genVal_shift Λ _ 0 la.l hv x`. Use `corr_of_genVal (u := Λ.u) a.D₀.P.isLB ((Λ.ex0 _).isGen _) (fun i j => ?_) hz (z' := PEmpty.elim) (fun k => k.elim) (fun f => ?_) ?_` and prove the remaining obligations. Conclude with `(map_one _).trans ((_root_.mul_one _).symm.trans (congrArg₂ (· * ·) rfl (map_one _).symm))`. Simplify using `[Fin.prod_univ_four, Out.DegPre.gtε]`. Conclude with `h.trans (Eq.trans (by simp [hy]) (genVal_one (u := Λ.u) _ _ _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isZero_iff (v : Λ.A.V) : (Λ.ex0 v).IsZero ↔ ∃ la : Λ.A.La, la.y = 0 ∧ v = Λ.A.P0 la := by
   haveI := isScalarTower Λ
@@ -430,17 +426,15 @@ theorem isZero_iff (v : Λ.A.V) : (Λ.ex0 v).IsZero ↔ ∃ la : Λ.A.La, la.y =
     · exact h.trans (Eq.trans (by simp [hy]) (genVal_one (u := Λ.u) _ _ _).symm)
 
 /- English proof (translation)
-Use `haveI := isScalarTower Λ`. Use `⟨by rw [analyticTorusPoint_base_eq_holUnif_ex, AnArc.degeneratingTori_basePeriodMap_snd, Λ.u.ex_add, (Λ.u.ker _).2 (Λ.lam.ge la.l.2), _root_.mul_one, Λ.ct], fun x => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Λ.ε.surjective x`. Take `⟨hz, h⟩` from `genVal_shift Λ _ _ la.l (Λ.A.degeneratingTori_basePeriodMap_snd la) x`. Establish `hc : ∀ y : Λ.A.X, 𝟙 (Sp ℂ) ≫ Out.jFK (R` using `ℂ) ℂ ≫ a.D₀.xK (Λ.ε y) = (Λ.u.ex (Λ.A.ct y)).left := fun y => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.id_comp, Λ.ct]`. Express the relevant statement in the definitionally equal form `Out.jFK (R := ℂ) ℂ ≫ Out.jK ℂ ≫ _ = _`. Rewrite using `[← Category.assoc, jFK_comp_jK_complex, Category.id_comp]`. Use `corr_of_genVal (u := Λ.u) a.D₀.P.isLB ((Λ.ex0 _).isGen _) ?_ hz (z' := Sum.elim (Sum.elim (Sum.elim (fun _ => Λ.A.ct (la.y + x)) (fun _ => Λ.A.ct la.y)) (fun _ => Λ.A.ct x)) (fun _ => 0)) ?_ (fun f => ?_) ?_` and prove the remaining obligations. Conclude with `DVR.pullGen_isGen _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (a.D₀.psi_gen _) (DVR.invGen_isGen _ _ _ _ (a.D₀.psi_gen _))) (DVR.invGen_isGen _ _ _ _ (a.D₀.psi_gen _))) (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ …`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `(((k | k) | k) | k)`. Conclude with `(by rw [map_add]; rfl : _ = 𝟙 (Sp ℂ) ≫ Out.jFK (R := ℂ) ℂ ≫ a.D₀.xK (Λ.ε (la.y + x))).trans (hc _)`. Conclude with `hc _`. Conclude with `hc _`. Express the relevant statement in the definitionally equal form `𝟙 (Sp ℂ) ≫ Out.jFK (R := ℂ) ℂ ≫ Out.jK ℂ ≫ eSec a.D₀.P.A = (Λ.u.ex 0).left`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity. Establish an intermediate fact.
 
-Rewrite using `[Category.id_comp, ← Category.assoc, jFK_comp_jK_complex, Category.id_comp, ex_zero]`. Both sides reduce to the same expression. Simplify using `[Fin.prod_univ_four, Out.DegPre.gtε, Fintype.prod_sum_type, add_comm]`. The two sides agree by associativity and commutativity. Establish `h1` using `Λ.psi (la.y + x)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_add Λ.ε]`. Establish `hr` using `genVal_pull_of (f := (toUnit (Out.TK ℂ)).left) (y := Out.jFK (R := ℂ) ℂ) jFK_comp_jK_complex (genVal_rig a.D₀.P.isLB Λ.rig)`. Establish `h2` using `genVal_pull_of (Category.id_comp (Out.jFK (R := ℂ) ℂ)) (genVal_mul_of (genVal_mul_of (genVal_mul_of h1 (genVal_inv_of (Λ.psi la.y))) (genVal_inv_of (Λ.psi x))) (genVal_inv_of hr))`. Use `h.trans (Eq.trans ?_ h2.symm)` and prove the remaining obligations. Establish `n1` using `(Λ.A.psi la.y).ne_zero`.
-
-Establish `n2` using `(Λ.A.psi x).ne_zero`. Simplify using `[Λ.A.psi_add, AnArc.e_add]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem isIota (la : Λ.A.La) : Out.GtPtF.IsIota (Λ.ε la.y) (Λ.ex0 (Λ.A.P0 la)) := by
   haveI := isScalarTower Λ
@@ -480,15 +474,13 @@ theorem isIota (la : Λ.A.La) : Out.GtPtF.IsIota (Λ.ε la.y) (Λ.ex0 (Λ.A.P0 l
     field_simp
 
 /- English proof (translation)
-Use `haveI := isScalarTower Λ`. Use `⟨by rw [analyticTorusPoint_base_eq_holUnif_ex, analyticTorusPoint_base_eq_holUnif_ex, analyticTorusPoint_base_eq_holUnif_ex, Prod.snd_add, Λ.u.ex_add, MonObj.comp_mul]; rfl, fun x => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Λ.ε.surjective x`. Establish `hp : 𝟙 (Sp ℂ) ≫ (lift (Out.DegPre.cF a.D₀ ℂ (Λ.ε x)) (lift (Λ.ex0 v).b (Λ.ex0 v').b)).left = (CubeValues.pt3 Λ.u ![Λ.A.ct x, v.2, v'.2]).left`. Rewrite using `[Category.id_comp, analyticTorusPoint_base_eq_holUnif_ex, analyticTorusPoint_base_eq_holUnif_ex, Out.DegPre.cF, ← Λ.ct, ← comp_lift, ← comp_lift]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `toUnit_TF_comp_left _`. Use `corr_of_genVal (u := Λ.u) a.D₀.P.isLB (DVR.mulGen_isGen _ _ _ _ _ _ _ ((Λ.ex0 _).isGen _) (DVR.pullGen_isGen _ _ _ _ a.D₀.cub.isGen _)) (DVR.mulGen_isGen _ _ _ _ _ _ _ ((Λ.ex0 _).isGen _) ((Λ.ex0 _).isGen _)) (z := Sum.elim ![Λ.A.ct x + (v + v').2, Λ.A.ct x, (v + v').2, 0] (cubeL …` and prove the remaining obligations. Introduce and unpack `(k | k)`. Conclude with `isLift_gt Λ _ x k`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) hp).trans (isLift_cube Λ.u _ k))`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `(k | k)`. Conclude with `isLift_gt Λ _ x k`. Conclude with `isLift_gt Λ _ x k`. Use `erw [Fintype.prod_sum_type, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `erw [show ∏ I : thK, f (cubeLift ![Λ.A.ct x, v.2, v'.2] I) ^ thε I = _ from prod_thK fun I => f (∑ a ∈ I, ![Λ.A.ct x, v.2, v'.2] a)]`. Simplify using `only [sum_three, Finset.sum_singleton, Finset.sum_empty, Matrix.cons_val, Fin.prod_univ_four, Out.DegPre.gtε, zpow_neg, zpow_one, Prod.snd_add, add_assoc]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
-
-Establish `h1` using `genVal_mul_of (Λ.arcDict_expZero_section (v + v') x) (genVal_pull_of hp (genVal_cube_of_face a.D₀.P.isLB Λ.ah _ a.D₀.cub.isGen (a.D₀.cub.face 0) _))`. Establish `h2` using `genVal_mul_of (Λ.arcDict_expZero_section v x) (Λ.arcDict_expZero_section v' x)`. Use `h1.trans (Eq.trans ?_ h2.symm)` and prove the remaining obligations. Simplify using `[AnArc.e_add]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isAdd (v v' : Λ.A.V) : (Λ.ex0 v).IsAdd (Λ.ex0 v') (Λ.ex0 (v + v')) := by
   haveI := isScalarTower Λ
@@ -525,19 +517,15 @@ theorem isAdd (v v' : Λ.A.V) : (Λ.ex0 v).IsAdd (Λ.ex0 v') (Λ.ex0 (v + v')) :
     simp [AnArc.e_add]
 
 /- English proof (translation)
-Use `haveI := isScalarTower Λ`. Introduce `g`. Take `⟨z, hz⟩` from `Λ.u.ex_onto (Over.homMk (show Sp ℂ ⟶ _ from g.b.left) ((Over.w g.b).trans jFK_comp_jK_complex))`. Establish `hb : ∀ w : Λ.A.X →+ ℂ, (Λ.ex0 (w, z)).b = g.b` using `fun w => Over.OverMorphism.ext ((Λ.ex0_b _).trans (congrArg (·.left) hz))`. Establish `hl : ∀ x, IsLift Λ.u (Out.DegPre.gtφ a.D₀ ℂ g.b (Λ.ε x)) (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ![Λ.A.ct x + z, Λ.A.ct x, z, 0]` using `fun x => hb 0 ▸ isLift_gt Λ (0, z) x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `t : Multiplicative Λ.A.X →* ℂˣ` to `MonoidHom.mk' (fun x => Units.mk0 _ (genVal_ne_zero a.D₀.P.isLB (g.s (Λ.ε x.toAdd)) (hl x.toAdd))) fun x' y' => Units.ext (by`. Set `x` to `x'.toAdd`. Set `y` to `y'.toAdd`. Establish `hp : 𝟙 (Sp ℂ) ≫ (lift (Out.DegPre.cF a.D₀ ℂ (Λ.ε x)) (lift (Out.DegPre.cF a.D₀ ℂ (Λ.ε y)) g.b)).left = (CubeValues.pt3 Λ.u ![Λ.A.ct x, Λ.A.ct y, z]).left`. Rewrite using `[Category.id_comp, ← hb 0, analyticTorusPoint_base_eq_holUnif_ex, Out.DegPre.cF, Out.DegPre.cF, ← Λ.ct, ← Λ.ct, ← comp_lift, ← comp_lift]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `toUnit_TF_comp_left _`. Establish `hm` using `g.mult (Λ.ε x) (Λ.ε y)`. Rewrite `hm` using `[← map_add Λ.ε]`. Establish `h0` using `genVal_corr (u := Λ.u) a.D₀.P.isLB hm (y := 𝟙 (Sp ℂ)) (z := Sum.elim ![Λ.A.ct (x + y) + z, Λ.A.ct (x + y), z, 0] (cubeLift ![Λ.A.ct x, Λ.A.ct y, z])) (z' := Sum.elim ![Λ.A.ct x + z, Λ.A.ct x, z, 0] ![Λ.A.ct y + z, Λ.A.ct y, z, 0]) (by`. Introduce and unpack `(k | k)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `hl _ k`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) hp).trans (isLift_cube Λ.u _ k)))`. Use the proof step `(by`. Introduce and unpack `(k | k)`. Conclude with `hl _ k`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hl _ k)`. Use the proof step `(fun f => by erw [Fintype.prod_sum_type, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Use `erw [show ∏ I : thK, f (cubeLift ![Λ.A.ct x, Λ.A.ct y, z] I) ^ thε I = _ from prod_thK fun I => f (∑ a ∈ I, ![Λ.A.ct x, Λ.A.ct y, z] a)]`. Simplify using `only [sum_three, Finset.sum_singleton, Finset.sum_empty, Matrix.cons_val, Fin.prod_univ_four, Out.DegPre.gtε, zpow_neg, zpow_one, map_add]`.
-
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`. Establish `h1` using `genVal_mul_of (rfl : genVal Λ.u a.D₀.P.isLB (g.s (Λ.ε (x + y))) (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ![Λ.A.ct (x + y) + z, Λ.A.ct (x + y), z, 0] = _) (genVal_pull_of hp (genVal_cube_of_face a.D₀.P.isLB Λ.ah _ a.D₀.cub.isGen (a.D₀.cub.face 0) _))`. Establish `h2` using `genVal_mul_of (rfl : genVal Λ.u a.D₀.P.isLB (g.s (Λ.ε x)) (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ![Λ.A.ct x + z, Λ.A.ct x, z, 0] = _) (rfl : genVal Λ.u a.D₀.P.isLB (g.s (Λ.ε y)) (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ![Λ.A.ct y + z, Λ.A.ct y, z, 0] = _)`.
-
-Conclude with `(_root_.mul_one _).symm.trans (h1.symm.trans (h0.trans h2)))`. Take `⟨w, hw⟩` from `expChar_surjective t`. Use `⟨(w, z), TorusExt.gt_ext (hb w) fun x => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Λ.ε.surjective x`. Conclude with `corr_of_genVal (u := Λ.u) a.D₀.P.isLB ((Λ.ex0 _).isGen _) (g.isGen _) (isLift_gt Λ (w, z) x) (hl x) (fun _ => rfl) ((Λ.arcDict_expZero_section _ x).trans (congrArg Units.val (DFunLike.congr_fun hw (Multiplicative.ofAdd x))))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem analyticTorusPoint_surjective : Function.Surjective Λ.ex0 := by
   haveI := isScalarTower Λ
@@ -592,7 +580,7 @@ theorem analyticTorusPoint_surjective : Function.Surjective Λ.ex0 := by
     (fun _ => rfl) ((Λ.arcDict_expZero_section _ x).trans (congrArg Units.val (DFunLike.congr_fun hw (Multiplicative.ofAdd x))))
 
 /- English proof (translation)
-Take `⟨q, hq, hu⟩` from `TorusExt.existsUnique_qkExt a.bimult (algebraMap (FractionRing ℂ) ℂ) (RingHom.ext fun _ => rfl) p`. Conclude with `⟨fun h => ⟨q, hq, h q hq⟩, fun ⟨q', hq', h⟩ q'' hq'' => (hu _ hq'').trans (hu _ hq').symm ▸ h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rep_iff (k : ℕ) (p : Out.QkPt a.D₀ (FractionRing ℂ) k) (la : Λ.A.La) :
     Λ.Rep k p la ↔ ∃ q : Out.QkPt a.D₀ ℂ k, QkExt (algebraMap _ ℂ) p q ∧ q.y = Λ.ε la.y ∧
@@ -612,13 +600,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 open FrameValue
 
 /- English proof (translation)
-Use `letI := H.starRing`. Use `⟨by rw [analyticTorusPoint_base_eq_holUnif_ex, analyticTorusPoint_base_eq_holUnif_ex, AnArc.actV_snd, Λ.act, Category.assoc], fun w hw h₀ x => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Λ.ε.surjective x`. Establish `hp : 𝟙 (Sp ℂ) ≫ (lift (Out.DegPre.cF a.D₀ ℂ (Λ.ε x)) (Λ.ex0 v).b).left = (lift (Λ.u.ex (Λ.A.ct x)) (Λ.u.ex v.2)).left`. Rewrite using `[Category.id_comp, analyticTorusPoint_base_eq_holUnif_ex, Out.DegPre.cF, ← Λ.ct, ← comp_lift]`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `toUnit_TF_comp_left _`. Rewrite using `[← map_smul Λ.ε]`. Use `corr_of_genVal (u := Λ.u) a.D₀.P.isLB (DVR.mulGen_isGen _ _ _ _ _ _ _ ((Λ.ex0 _).isGen _) (DVR.pullGen_isGen _ _ _ _ hw _)) ((Λ.ex0 _).isGen _) (z := Sum.elim ![Λ.A.ct (star r • x) + v.2, Λ.A.ct (star r • x), v.2, 0] (rosatiLift (Λ.A.F (star r)) (Λ.A.F r) (Λ.A.ct x) v.2)) ?_ (isL …` and prove the remaining obligations. Introduce and unpack `(k | k)`. Conclude with `isLift_gt Λ _ _ k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) hp).trans (isLift_rosati (Λ.act (star r)) (Λ.act r) _ _ k))`. Use `erw [Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_four, Fin.prod_univ_six, rosatiLift, Out.rosatiε, Out.DegPre.gtε, Matrix.cons_val, zpow_neg, zpow_one, Λ.A.ct_smul, AnArc.actV_snd]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
-
-Normalize the expressions using the abelian group laws. Establish `h1` using `genVal_mul_of (Λ.arcDict_expZero_section v (star r • x)) (genVal_pull_of hp ((genVal_rosati a.D₀.P.isLB Λ.ah (Λ.act (star r)) (Λ.act r) w hw h₀).2 _ _))`. Conclude with `h1.trans ((_root_.mul_one _).trans (Λ.arcDict_expZero_section (Λ.A.actV r v) x).symm)`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gtAct (Λ : letI := H.starRing; GtAn a) (r : 𝓞 E) (v : letI := H.starRing; Λ.A.V) :
     letI := H.starRing; GtAct a.oa r (Λ.ex0 v) (Λ.ex0 (Λ.A.actV r v)) := by
@@ -677,7 +663,7 @@ def toDict (Λ : letI := H.starRing; GtAn a) : letI := H.starRing; GtDict a.D₀
     iota := isIota Λ }
 
 /- English proof (translation)
-Use `letI := H.starRing`. Take `⟨q, hq, -⟩` from `TorusExt.existsUnique_qkExt a.bimult (algebraMap (FractionRing ℂ) ℂ) (RingHom.ext fun _ => rfl) p`. Take `⟨la, rfl⟩` from `(toDict Λ).qk_surjective k q`. Conclude with `⟨la, (rep_iff Λ k p la).2 ⟨_, hq, rfl, rfl⟩⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rep (Λ : letI := H.starRing; GtAn a) (k : ℕ) [NeZero k] (p : Out.QkPt a.D₀ (FractionRing ℂ) k) :
     letI := H.starRing; ∃ la, Λ.Rep k p la := by
@@ -688,11 +674,9 @@ theorem exists_rep (Λ : letI := H.starRing; GtAn a) (k : ℕ) [NeZero k] (p : O
   exact ⟨la, (rep_iff Λ k p la).2 ⟨_, hq, rfl, rfl⟩⟩
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `la la' h h'`. Take `⟨q, hq, hy, hg⟩` from `(rep_iff Λ k p la).1 h`. Take `⟨hy', hg'⟩` from `h' q hq`. Establish `e : (toDict Λ).qk k la' = (toDict Λ).qk k la` using `TorusExt.qk_ext (hy'.symm.trans hy) (hg'.symm.trans hg)`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `((toDict Λ).qk_equiv_iff k la la').1 ?_` and prove the remaining obligations. Rewrite using `[e]`. Use `(toDict Λ).qk_equiv_add k la 0` as an intermediate fact. Rewrite `this` using `[smul_zero]`. Use `erw [_root_.add_zero] at this`.
-
-Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_unique (Λ : letI := H.starRing; GtAn a) (k : ℕ) [NeZero k] (p : Out.QkPt a.D₀ (FractionRing ℂ) k) :
     letI := H.starRing; ∀ la la', Λ.Rep k p la → Λ.Rep k p la' → ∃ m, la' = la + k • m := by
@@ -716,9 +700,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Le
   [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ]
 
 /- English proof (translation)
-Use `letI := H.starRing`. Set `ζ : ℂˣ` to `Units.mk0 (zeta l.M) (Complex.exp_ne_zero _)`. Establish `h : (ζ : ℂ) = algebraMap (FractionRing ℂ) ℂ (arcRoot c ℂ c.F.val.toRingHom (Nat.dvd_lcm_left l.M l.A))` using `IsScalarTower.algebraMap_apply ℂ (FractionRing ℂ) ℂ _`. Establish `hζ : ζ ^ l.M = 1` using `Units.ext ((Units.val_pow_eq_pow_val _ _).trans (isPrimitiveRoot_zeta (lt_of_lt_of_le three_pos l.three_le)).pow_eq_one)`. Introduce `q hq`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `rfl` from `(qkExt_qkPt ℂ (isPrimitiveRoot_arcRoot c ℂ c.F.val.toRingHom (Nat.dvd_lcm_left l.M l.A)).pow_eq_one (algebraMap (FractionRing ℂ) ℂ) (RingHom.ext fun _ => rfl) hζ h v q).1 hq`. Use `⟨rfl, congrArg (pt _ ℂ) (MonoidHom.ext fun x => Units.ext ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((ζ ^ ConjDual.toDual H v.2 x.toAdd : ℂˣ) : ℂ) = eTwoPi ((l.M : ℂ)⁻¹ * (0 + (ConjDual.toDual H v.2 x.toAdd : ℤ) - (splitArc l).H 0 0 / (2 * Complex.I)))`. Rewrite using `[Units.val_zpow_eq_zpow_val, AnArc.H_zero_left, zero_div, sub_zero, zero_add, AnArc.e_mul_intCast]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rep_eta (v : HypLattice H) : letI := H.starRing
     (model c c.F.val.toRingHom).Rep l.M ((arcIn c ℂ c.F.val.toRingHom).eta v)
@@ -739,7 +723,7 @@ theorem rep_eta (v : HypLattice H) : letI := H.starRing
   rfl
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `h`. Take `⟨q, hq, hy, -⟩` from `(rep_iff _ _ _ _).1 h`. Conclude with `one_ne_zero (α := 𝓞 E) (hq.1.symm.trans hy)`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 example : letI := H.starRing
     ¬ (model c c.F.val.toRingHom).Rep l.M ((arcIn c ℂ c.F.val.toRingHom).eta ((1, 0) : HypLattice H)) 0 := by

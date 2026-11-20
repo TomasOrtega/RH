@@ -14,7 +14,7 @@ namespace GlobalTheory.ThKAutSmallKFin
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Unfold `Model.I theta`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[show ((g, h * k) : UA σ Y.J × UA σ W.J) = (g, h) * (1, k) by simp, map_mul, Module.End.mul_apply]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem I_mul_right {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (M : Model σ Y W) (om : Rep σ Y W)
     (Φ : (Fin n × Fin d → AF F) → ℂ) (h k : UA σ W.J) : M.I om Φ (h * k) = M.I om (om (1, k) Φ) h := by
@@ -26,9 +26,9 @@ theorem I_mul_right {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (M : Model σ Y 
 variable {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
 /- English proof (translation)
-Introduce `h`. Establish `hPair` using `GlobalTheory.ThKContSmall.isPair_small hT`. Establish `hS : Ψ ∈ GlobalTheory.WeilM.schA F _` using `GlobalTheory.ThKContSmall.so_le_schA hT.geo.hM' _ hΨ`. Establish `hB` using `(GlobalTheory.T.theta_basic_properties hP.base F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPair).1 Ψ hS`. Take `⟨C, k, hC⟩` from `GlobalTheory.T.schwartz_orbit_decay hP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPair Ψ hΨ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`. Establish `hv` using `GlobalTheory.ThKContSmall.measure_dom_lt_top hP.siegelSetUnitary hT.base hT.geo.hV' hT.geo.hM'`. Use `Measure.integrableOn_of_bounded (M := C * (ht h : ℝ) ^ k) hv.ne (hB.1.comp (continuous_id.prodMk continuous_const)).aestronglyMeasurable (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `h1` using `hC g h`. Rewrite `h1` using `[pow_zero, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem conv_so (hP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') {Ψ : (Fin a' × Fin (a + a') → AF F) → ℂ}
     (hΨ : Ψ ∈ G.M'.So B.ψ B.τ₁) : G.M'.Conv om' Ψ := by
@@ -45,9 +45,9 @@ theorem conv_so (hP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') {Ψ : (F
   rwa [pow_zero, mul_one] at h1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Establish `s₁` using `GlobalTheory.ThKContSmall.so_le_schA hT.geo.hM' _ h₁`. Establish `s₂` using `GlobalTheory.ThKContSmall.so_le_schA hT.geo.hM' _ h₂`. Establish `e : ∀ g, theta om' (Ψ₁ + Ψ₂) g h = theta om' Ψ₁ g h + theta om' Ψ₂ g h` using `fun g => by`. Simplify using `only [theta, map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `GlobalTheory.WeilM.thetaSum_add F (hT.weil'.isUSplitting.pres _ _ s₁) (hT.weil'.isUSplitting.pres _ _ s₂)`. Simplify using `only [Model.I, e, Pi.add_apply]`. Conclude with `integral_add (conv_so hP hT h₁ h) (conv_so hP hT h₂ h)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem I_add_so (hP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') {Ψ₁ Ψ₂ : (Fin a' × Fin (a + a') → AF F) → ℂ}
     (h₁ : Ψ₁ ∈ G.M'.So B.ψ B.τ₁) (h₂ : Ψ₂ ∈ G.M'.So B.ψ B.τ₁) :
@@ -62,7 +62,7 @@ theorem I_add_so (hP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') {Ψ₁ 
   exact integral_add (conv_so hP hT h₁ h) (conv_so hP hT h₂ h)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Simplify using `only [Model.I, theta, map_smul, GlobalTheory.WeilM.thetaSum_smul, Pi.smul_apply, smul_eq_mul, integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem I_smul {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (M : Model σ Y W) (om : Rep σ Y W)
     (t : ℂ) (Ψ : (Fin n × Fin d → AF F) → ℂ) : M.I om (t • Ψ) = t • M.I om Ψ := by
@@ -70,13 +70,11 @@ theorem I_smul {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (M : Model σ Y W) (o
   simp only [Model.I, theta, map_smul, GlobalTheory.WeilM.thetaSum_smul, Pi.smul_apply, smul_eq_mul, integral_const_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc hcs Φ hΦ`. Take `⟨K, hK, hKin⟩` from `GlobalTheory.T.maximal_compact_of_skew_hermitian_twist F E σ hσ B _ _ _ G.W hT.base hT.geo.hW c hc hcs`. Establish `hΦS : Φ ∈ G.M'.So B.ψ B.τ₁` using `(Submodule.mem_inf.1 hΦ).2`. Take `⟨S, hSf, -, hS⟩` from `GlobalTheory.T.polynomial_datum_finite_dimensional_orbit F E σ B _ _ G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ hKP (GlobalTheory.ThKContSmall.isPair_small hT) Φ (Submodule.mem_inf.1 hΦ).1`. Set `P` to `G.M'.So B.ψ B.τ₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `L : P →ₗ[ℂ] (UA σ G.W.J → ℂ)` to `{ toFun := fun Ψ => G.M'.I om' Ψ map_add' := fun Ψ₁ Ψ₂ => I_add_so hKP hT Ψ₁.2 Ψ₂.2 map_smul' := fun t Ψ => I_smul G.M' om' t Ψ }`. Set `S' : Submodule ℂ P` to `S.comap P.subtype`. Use `haveI : FiniteDimensional ℂ S := hSf`. Use `haveI : FiniteDimensional ℂ S' := FiniteDimensional.of_injective (K := ℂ) (V₂ := S) ((P.subtype.domRestrict S').codRestrict S fun x => x.2) fun x y e => Subtype.ext (Subtype.ext (congrArg (fun z : S => (z : GlobalTheory.ThK.Fn F a' (a + a'))) e))`. Set `T : P →ₗ[ℂ] (GAd σ (c • G.W.J.map σ) → ℂ)` to `LinearMap.funLeft ℂ ℂ (toGAd hσ G.W.J hc).symm ∘ₗ L`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨K, hK, Submodule.finiteDimensional_of_le (S₂ := S'.map T) (Submodule.span_le.2 ?_)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hk` using `hS _ (hKin k k.2)`. Use `⟨⟨om' (1, (toGAd hσ G.W.J hc).symm k) Φ, GlobalTheory.T.weil_representation_preserves_space hKP.base F E σ B a a' G X om om' hT _ Φ hΦS⟩, hk, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
-
-Simplify using `only [T, L, LinearMap.coe_comp, Function.comp_apply, LinearMap.funLeft_apply, LinearMap.coe_mk, AddHom.coe_mk, map_mul, I_mul_right]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kfin : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

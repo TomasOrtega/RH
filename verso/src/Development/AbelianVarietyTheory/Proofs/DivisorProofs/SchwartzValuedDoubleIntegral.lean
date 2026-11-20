@@ -13,11 +13,11 @@ open Classical
 namespace GlobalTheory.SchwInt
 
 /- English proof (translation)
-Introduce `V _ _ α β _ _ _ _ _ _ _ _ μa μb _ _ _ _ g hg C hC h0 S hS l`. Establish `h0' : ∀ p ∉ C, Function.uncurry g p = 0` using `fun p hp => h0 p hp`. Establish `hev : ∀ y, S y = ∫ p, Function.uncurry g p y ∂(μa.prod μb)`. Introduce `y`. Rewrite using `[hS y, integral_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `integrable_of_zero_outside _ (continuous_apply hg y) hC (fun p hp => by simp [h0' p hp])`. Establish `hSn : ∀ (n : ℕ) (x : V), iteratedFDeriv ℝ n S x = ∫ p, iteratedFDeriv ℝ n ⇑(Function.uncurry g p : SchwartzMap V ℂ) x ∂(μa.prod μb)`. Introduce `n x`. Establish `hfun : (⇑S) = fun y => ∫ p, (Function.uncurry g p : SchwartzMap V ℂ) y ∂(μa.prod μb)` using `funext hev`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Conclude with `GlobalTheory.T.iteratedFDeriv_integral_schwartz (μa.prod μb) _ hg C hC h0' n x`. Rewrite using `[GlobalTheory.T.schwartz_integral_eq_of_derivs (μa.prod μb) _ hg C hC h0' S hSn l, integral_prod]`. Both sides reduce to the same expression. Conclude with `integrable_of_zero_outside _ (l.continuous.comp hg) hC (fun p hp => by simp [h0' p hp])`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem clm_iterated_integral : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     {α β : Type} [TopologicalSpace α] [MeasurableSpace α] [BorelSpace α] [SecondCountableTopology α]

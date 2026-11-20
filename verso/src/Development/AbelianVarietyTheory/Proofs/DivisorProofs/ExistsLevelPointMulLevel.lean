@@ -17,7 +17,7 @@ open GlobalTheory.TorusExt
 attribute [local instance] gtGroup
 
 /- English proof (translation)
-Introduce `R _ _ _ D F _ _ k d p`. Use `⟨qkMk D.tau_bimult (d • p.y) p.g ?_, rfl, rfl⟩` and prove the remaining obligations. Rewrite using `[mul_nsmul, qk_nsmul D.tau_bimult, map_nsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_qk_mul : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegData R (maximalIdeal R)) (F : Type) [Field F] [Algebra (FractionRing R) F] (k d : ℕ) (p : QkPt D.toPre F k), ∃ q : QkPt D.toPre F (k * d), q.y = d • p.y ∧ q.g = p.g := by
   intro R _ _ _ D F _ _ k d p

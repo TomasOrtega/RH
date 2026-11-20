@@ -16,7 +16,7 @@ noncomputable section
 section SqrtNegOne
 
 /- English proof (translation)
-Establish `h : z ^ 2 = Complex.I ^ 2` using `by rw [hz, Complex.I_sq]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h with rfl | rfl` into its components or cases. Rewrite using `[Complex.conj_I]`. Rewrite using `[map_neg, Complex.conj_I, neg_neg]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_eq_neg_of_sq_eq_neg_one {z : ℂ} (hz : z ^ 2 = -1) : conj z = -z := by
   have h : z ^ 2 = Complex.I ^ 2 := by rw [hz, Complex.I_sq]
@@ -27,11 +27,11 @@ theorem conj_eq_neg_of_sq_eq_neg_one {z : ℂ} (hz : z ^ 2 = -1) : conj z = -z :
 variable {F k : Type*} [Field F] [Field k] [Algebra k F]
 
 /- English proof (translation)
-Rewrite using `[← not_isReal_iff_isComplex]`. Introduce `hw`. Establish `hφ : w.embedding i ^ 2 = -1` using `by rw [sq, ← map_mul, hi, map_neg, map_one]`. Establish `h1` using `conj_eq_neg_of_sq_eq_neg_one hφ`. Establish `h2 : conj (w.embedding i) = w.embedding i` using `RingHom.congr_fun (ComplexEmbedding.isReal_iff.1 (isReal_iff.1 hw)) i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : w.embedding i = 0`. Establish `h4 : w.embedding i + w.embedding i = 0` using `by nth_rw 2 [← h2]`. Rewrite using `[h1, add_neg_cancel]`. Rewrite `h4` using `[← two_mul, mul_eq_zero, or_iff_right two_ne_zero]`. Then use the resulting hypothesis. Rewrite `hφ` using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at hφ`.
+Evaluate the numerical expressions.
 -/
 theorem isComplex_of_mul_self_eq_neg_one {i : F} (hi : i * i = -1) (w : InfinitePlace F) :
     w.IsComplex := by
@@ -50,7 +50,7 @@ theorem isComplex_of_mul_self_eq_neg_one {i : F} (hi : i * i = -1) (w : Infinite
   norm_num at hφ
 
 /- English proof (translation)
-Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[isConj_iff_forall.1 h, map_neg, ← starRingEnd_apply]`. Conclude with `conj_eq_neg_of_sq_eq_neg_one (by rw [sq, ← map_mul, hi, map_neg, map_one])`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_eq_neg_of_isConj {φ : F →+* ℂ} {σ : F ≃ₐ[k] F} (h : ComplexEmbedding.IsConj φ σ)
     {i : F} (hi : i * i = -1) : σ i = -i := by
@@ -65,7 +65,7 @@ section FixedField
 variable {F E : Type*} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[mem_fixedField_iff]`. Use `⟨fun h ↦ h τ (Subgroup.mem_zpowers τ), fun h f hf ↦ ?_⟩` and prove the remaining obligations. Establish `hle : Subgroup.zpowers τ ≤ MulAction.stabilizer (E ≃ₐ[F] E) x` using `Subgroup.zpowers_le.2 (by rw [MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]; exact h)`. Establish `h'` using `hle hf`. Rewrite `h'` using `[MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_fixedField_zpowers (τ : E ≃ₐ[F] E) (x : E) :
     x ∈ fixedField (Subgroup.zpowers τ) ↔ τ x = x := by
@@ -93,9 +93,9 @@ def fixedSubfield : FiniteSubfield :=
       fun _ _ h ↦ (IntermediateField.inclusion (IntermediateField.lift_le _)).injective h⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `x ∈ IntermediateField.lift ((fixedField (Subgroup.zpowers τ)).restrictScalars ℚ) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h : x ∈ E.1` using `IntermediateField.lift_le _ hx`. Use `⟨h, (mem_fixedField_zpowers τ _).1 ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h'` using `(IntermediateField.mem_lift (E := (fixedField (Subgroup.zpowers τ)).restrictScalars ℚ) (⟨x, h⟩ : E.1)).1 hx`. Conclude with `(IntermediateField.mem_restrictScalars ℚ).1 h'`. Introduce and unpack `⟨h, hx⟩`. Conclude with `(IntermediateField.mem_lift (E := (fixedField (Subgroup.zpowers τ)).restrictScalars ℚ) (⟨x, h⟩ : E.1)).2 ((IntermediateField.mem_restrictScalars ℚ).2 ((mem_fixedField_zpowers τ _).2 hx))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_fixedSubfield {x : ℚ̄} :
     x ∈ (fixedSubfield τ).1 ↔ ∃ h : x ∈ E.1, τ ⟨x, h⟩ = ⟨x, h⟩ := by
@@ -113,13 +113,13 @@ theorem mem_fixedSubfield {x : ℚ̄} :
         ((mem_fixedField_zpowers τ _).2 hx))
 
 /- English proof (translation)
-The claim follows from `show (fixedSubfield τ).1 ≤ E.1 from IntermediateField.lift_le _`.
+A detailed English derivation is pending.
 -/
 theorem fixedSubfield_le : fixedSubfield τ ≤ E :=
   show (fixedSubfield τ).1 ≤ E.1 from IntermediateField.lift_le _
 
 /- English proof (translation)
-The claim follows from `fun x hx ↦ (mem_fixedSubfield τ).2 ⟨(Fact.out : K ≤ E) hx, τ.commutes (⟨x, hx⟩ : K.1)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_fixedSubfield : K ≤ fixedSubfield τ := fun x hx ↦
   (mem_fixedSubfield τ).2 ⟨(Fact.out : K ≤ E) hx, τ.commutes (⟨x, hx⟩ : K.1)⟩
@@ -131,7 +131,7 @@ instance fact_le_fixedSubfield : Fact (K ≤ fixedSubfield τ) :=
   ⟨le_fixedSubfield τ⟩
 
 /- English proof (translation)
-Take `⟨_, hs⟩` from `(mem_fixedSubfield τ).1 s.2`. Conclude with `hs`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem apply_algebraMap_fixedSubfield (s : (fixedSubfield τ).1) :
     τ (algebraMap (fixedSubfield τ).1 E.1 s) = algebraMap (fixedSubfield τ).1 E.1 s := by
@@ -139,7 +139,7 @@ theorem apply_algebraMap_fixedSubfield (s : (fixedSubfield τ).1) :
   exact hs
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨e.1, (mem_fixedSubfield τ).2 ⟨e.2, he⟩⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_algebraMap_eq_of_apply_eq {e : E.1} (he : τ e = e) :
     ∃ s : (fixedSubfield τ).1, algebraMap (fixedSubfield τ).1 E.1 s = e :=
@@ -149,13 +149,11 @@ variable {τ} (hτ : τ * τ = 1) {i : E.1} (hi : i * i = -1) (hτi : τ i = -i)
 include hτ hi hτi
 
 /- English proof (translation)
-Establish `hττ : ∀ x, τ (τ x) = x` using `fun x ↦ by rw [← AlgEquiv.mul_apply, hτ, AlgEquiv.one_apply]`. Establish `hi0 : i ≠ 0`. Introduce and unpack `rfl`. Rewrite `hi` using `[mul_zero, zero_eq_neg]`. Conclude with `one_ne_zero hi`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (2 : E.1) ≠ 0` using `two_ne_zero`. Take `⟨s, hs⟩` from `exists_algebraMap_eq_of_apply_eq τ (e := (e + τ e) / 2) (by`. Rewrite using `[map_div₀, map_add, hττ, map_ofNat, add_comm])`. Take `⟨t, ht⟩` from `exists_algebraMap_eq_of_apply_eq τ (e := (e - τ e) / (2 * i)) (by`. Rewrite using `[map_div₀, map_sub, map_mul, hττ, hτi, map_ofNat]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`. Use `⟨s, t, ?_⟩` and prove the remaining obligations. Rewrite using `[hs, ht]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_eq_add_mul (e : E.1) : ∃ s t : (fixedSubfield τ).1,
     algebraMap (fixedSubfield τ).1 E.1 s + i * algebraMap (fixedSubfield τ).1 E.1 t = e := by
@@ -177,14 +175,14 @@ theorem exists_eq_add_mul (e : E.1) : ∃ s t : (fixedSubfield τ).1,
   ring
 
 /- English proof (translation)
-Establish `h : σ i * σ i = i * i` using `by rw [← map_mul, hi, map_neg, map_one]`. Conclude with `mul_self_eq_mul_self_iff.1 h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem apply_eq_or_eq_neg (σ : E.1 ≃ₐ[(fixedSubfield τ).1] E.1) : σ i = i ∨ σ i = -i := by
   have h : σ i * σ i = i * i := by rw [← map_mul, hi, map_neg, map_one]
   exact mul_self_eq_mul_self_iff.1 h
 
 /- English proof (translation)
-Use extensionality with `e`. Take `⟨s, t, rfl⟩` from `exists_eq_add_mul hτ hi hτi e`. Simplify using `only [map_add, map_mul, AlgEquiv.commutes, h]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem galFixed_ext {σ ρ : E.1 ≃ₐ[(fixedSubfield τ).1] E.1} (h : σ i = ρ i) : σ = ρ := by
   ext e
@@ -192,9 +190,9 @@ theorem galFixed_ext {σ ρ : E.1 ≃ₐ[(fixedSubfield τ).1] E.1} (h : σ i = 
   simp only [map_add, map_mul, AlgEquiv.commutes, h]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun σ : E.1 ≃ₐ[(fixedSubfield τ).1] E.1 ↦ decide (σ i = i))`. Introduce `σ ρ h`. Apply `galFixed_ext hτ hi hτi` to reduce the goal to its premises. Distinguish the cases in `hσ : σ i = i`. Establish `hρ : ρ i = i` using `by simpa [hσ] using h.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hσ, hρ]`. Establish `hρ : ¬ ρ i = i` using `by simpa [hσ] using h.symm`. Rewrite using `[(apply_eq_or_eq_neg hτ hi hτi σ).resolve_left hσ, (apply_eq_or_eq_neg hτ hi hτi ρ).resolve_left hρ]`. Establish `h` using `Nat.card_le_card_of_injective _ hinj`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem natCard_galFixed_le_two : Nat.card (E.1 ≃ₐ[(fixedSubfield τ).1] E.1) ≤ 2 := by
   classical
@@ -212,7 +210,7 @@ theorem natCard_galFixed_le_two : Nat.card (E.1 ≃ₐ[(fixedSubfield τ).1] E.1
   simpa using h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun σ ρ ↦ galFixed_ext hτ hi hτi (by rw [AlgEquiv.mul_apply, AlgEquiv.mul_apply] rcases apply_eq_or_eq_neg hτ hi hτi σ with h1 | h1 <;> rcases apply_eq_or_eq_neg hτ hi hτi ρ with h2 | h2 <;> simp only [h1, h2, map_neg, neg_neg])⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isMulCommutative_galFixed : IsMulCommutative (E.1 ≃ₐ[(fixedSubfield τ).1] E.1) :=
   ⟨⟨fun σ ρ ↦ galFixed_ext hτ hi hτi (by
@@ -222,9 +220,9 @@ theorem isMulCommutative_galFixed : IsMulCommutative (E.1 ≃ₐ[(fixedSubfield 
       simp only [h1, h2, map_neg, neg_neg])⟩⟩
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨s, t, hst⟩` from `exists_eq_add_mul hτ hi hτi ⟨x, hx⟩`. Establish `hx' : x = (s : ℚ̄) + (i : ℚ̄) * (t : ℚ̄)` using `congrArg Subtype.val hst.symm`. Establish `hI : (i : ℚ̄) ∈ Cyclotomic.maxCyclotomic`. Use `subset_adjoin ℚ _ ⟨4, by norm_num, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : (i : ℚ̄) * (i : ℚ̄) = -1` using `congrArg Subtype.val hi`. Rewrite using `[show (4 : ℕ) = 2 * 2 from rfl, pow_mul, sq (i : ℚ̄), h]`. Evaluate the numerical expressions. Rewrite using `[hx']`. Conclude with `add_mem (le_sup_left (a := (fixedSubfield τ).1) s.2) (mul_mem (le_sup_right (a := (fixedSubfield τ).1) hI) (le_sup_left (a := (fixedSubfield τ).1) t.2))`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_fixedSubfield_sup_maxCyclotomic :
     E.1 ≤ (fixedSubfield τ).1 ⊔ Cyclotomic.maxCyclotomic := by
@@ -243,9 +241,9 @@ theorem le_fixedSubfield_sup_maxCyclotomic :
 omit hτ hi hτi in
 
 /- English proof (translation)
-Rewrite using `[← mk_embedding w, comap_mk, isReal_mk_iff, ComplexEmbedding.isReal_iff]`. Use `RingHom.ext fun s ↦ ?_` and prove the remaining obligations. Establish `h` using `isConj_iff_forall.1 hτw (algebraMap (fixedSubfield τ).1 E.1 s)`. Rewrite `h` using `[apply_algebraMap_fixedSubfield]`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem isReal_comap_fixedSubfield {w : InfinitePlace E.1}
     (hτw : ComplexEmbedding.IsConj w.embedding τ) :
@@ -258,7 +256,7 @@ theorem isReal_comap_fixedSubfield {w : InfinitePlace E.1}
   exact h.symm
 
 /- English proof (translation)
-Establish `hu` using `isReal_comap_fixedSubfield hτw`. Establish `hram : w.IsRamified (fixedSubfield τ).1` using `isRamified_iff.2 ⟨isComplex_of_mul_self_eq_neg_one hi w, hu⟩`. Rewrite using `[ideleSymbol_infiniteEmbedding, infiniteLocalSymbol_apply E.1 _ hu ⟨w, (inferInstance : w.LiesOver (w.comap (algebraMap (fixedSubfield τ).1 E.1)))⟩, if_pos]`. Conclude with `conjAt_ne_one hram`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ideleSymbol_infiniteEmbedding_neg_one_ne_one
     [(E.1.fixingSubgroup.subgroupOf (fixedSubfield τ).1.fixingSubgroup).Normal]
@@ -282,11 +280,11 @@ variable (K L : FiniteSubfield) [hKL : Fact (K ≤ L)]
   [(L.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal] [IsMulCommutative (L.1 ≃ₐ[K.1] L.1)]
 
 /- English proof (translation)
-Use `isMulCommutative_galFixed hτ hi hτi` as an intermediate fact. Establish `hu` using `isReal_comap_fixedSubfield hτw`. Establish `hfin : Module.finrank ((w.comap (algebraMap (fixedSubfield τ).1 E.1)).comap (algebraMap K.1 (fixedSubfield τ).1)).Completion (w.comap (algebraMap (fixedSubfield τ).1 E.1)).Completion = 1` using `(GroundTheory.Global.InfinitePlace.finrank_completion_eq_one_iff _).2 fun h ↦ not_isComplex_iff_isReal.2 hu h.2`. Set `y : (w.comap (algebraMap (fixedSubfield τ).1 E.1)).Completionˣ` to `Units.map (algebraMap ((w.comap (algebraMap (fixedSubfield τ).1 E.1)).comap (algebraMap K.1 (fixedSubfield τ).1)).Completion (w.comap (algebraMap (fixedSubfield τ).1 E.1)).Completion).toMonoidHom x`. Establish `hny : LocalField.normUnits ((w.comap (algebraMap (fixedSubfield τ).1 E.1)).comap (algebraMap K.1 (fixedSubfield τ).1)).Completion (w.comap (algebraMap (fixedSubfield τ).1 E.1)).Completion y = x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[LocalField.coe_normUnits]`. Express the relevant statement in the definitionally equal form `Algebra.norm _ (algebraMap _ _ (x : ((w.comap (algebraMap (fixedSubfield τ).1 E.1)).comap (algebraMap K.1 (fixedSubfield τ).1)).Completion)) = _`. Rewrite using `[Algebra.norm_algebraMap, hfin, pow_one]`. Establish `e1 : infiniteEmbedding ((w.comap (algebraMap (fixedSubfield τ).1 E.1)).comap (algebraMap K.1 (fixedSubfield τ).1)) x = ideleNorm K.1 (fixedSubfield τ).1 (infiniteEmbedding (w.comap (algebraMap (fixedSubfield τ).1 E.1)) y)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ideleNorm_infiniteEmbedding, hny]`. Establish `hsym` using `abstractSymbol_mk_of_natCard_le_two (fixedSubfield τ) E (natCard_galFixed_le_two hτ hi hτi) (le_fixedSubfield_sup_maxCyclotomic hτ hi hτi) (ideleSymbol_infiniteEmbedding_neg_one_ne_one hτ hi hτi hτw) (infiniteEmbedding (w.comap (algebraMap (fixedSubfield τ).1 E.1)) y)`. Establish `e2 : IdeleClassGroup.mk K.1 (ideleNorm K.1 (fixedSubfield τ).1 (infiniteEmbedding (w.comap (algebraMap (fixedSubfield τ).1 E.1)) y)) = FiniteSubfield.ideleClassNorm (le_fixedSubfield τ) (IdeleClassGroup.mk (fixedSubfield τ).1 (infiniteEmbedding (w.comap (algebraMap (fixedSubfield …` using `rfl`. Rewrite using `[e1, e2, abstractSymbol_ideleClassNorm_eq_map (K' := fixedSubfield τ) (L' := E), hsym, Abelianization.map_of, MonoidHom.comp_apply, restrictScalarsHom_apply, show ∀ σ : E.1 ≃ₐ[K.1] E.1, AlgEquiv.restrictNormalHom L.1 σ = σ.restrictNormal L.1 from fun _ ↦ rfl, restrictNormal_restr …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem abstractSymbol_mk_infiniteEmbedding_comap {E : FiniteSubfield} [Fact (K ≤ E)] [Fact (L ≤ E)]
     {τ : E.1 ≃ₐ[K.1] E.1} (hτ : τ * τ = 1) {i : E.1} (hi : i * i = -1) (hτi : τ i = -i)
@@ -338,17 +336,17 @@ theorem abstractSymbol_mk_infiniteEmbedding_comap {E : FiniteSubfield} [Fact (K 
     ideleSymbol_infiniteEmbedding]
 
 /- English proof (translation)
-Take `⟨I, hI⟩` from `IsAlgClosed.exists_pow_nat_eq (-1 : ℚ̄) two_pos`. Establish `: FiniteDimensional ℚ ℚ⟮I⟯` using `adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral I)`. Set `F₀ : FiniteSubfield` to `⟨L.1 ⊔ ℚ⟮I⟯, inferInstance⟩`. Establish `hF₀E : F₀ ≤ galoisClosure F₀` using `le_galoisClosure F₀`. Establish `hLE : L ≤ galoisClosure F₀` using `(show L.1 ≤ L.1 ⊔ ℚ⟮I⟯ from le_sup_left).trans hF₀E`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIE : I ∈ (galoisClosure F₀).1` using `hF₀E ((show ℚ⟮I⟯ ≤ L.1 ⊔ ℚ⟮I⟯ from le_sup_right) (mem_adjoin_simple_self ℚ I))`. Establish `: Fact (L ≤ galoisClosure F₀)` using `⟨hLE⟩`. Establish `: Fact (K ≤ galoisClosure F₀)` using `⟨hKL.out.trans hLE⟩`. Establish `hEn : (galoisClosure F₀).1.fixingSubgroup.Normal`. Express the relevant statement in the definitionally equal form `(normalClosure ℚ F₀.1 ℚ̄).fixingSubgroup.Normal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: IsGalois ℚ (normalClosure ℚ F₀.1 ℚ̄)` using `IsGalois.normalClosure ℚ F₀.1 ℚ̄`. Conclude with `IsGalois.fixingSubgroup_normal_of_isGalois _`. Establish `: ((galoisClosure F₀).1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal` using `hEn.subgroupOf _`. Set `i : (galoisClosure F₀).1` to `⟨I, hIE⟩`. Establish `hi : i * i = -1` using `Subtype.ext (by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `I * I = -1`. Rewrite using `[← sq, hI])`. Take `⟨w, hw'⟩` from `comap_surjective (k := K.1) (K := (galoisClosure F₀).1) v`. Establish `hw : w.comap (algebraMap K.1 (galoisClosure F₀).1) = v` using `hw'`. Establish `hram : w.IsRamified K.1` using `isRamified_iff.2 ⟨isComplex_of_mul_self_eq_neg_one hi w, by rw [hw]; exact hv⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτw : ComplexEmbedding.IsConj w.embedding (conjAt K.1 w)` using `isConj_conjAt hram`. Establish `hτi : conjAt K.1 w i = -i` using `apply_eq_neg_of_isConj hτw hi`. Establish `: ((galoisClosure F₀).1.fixingSubgroup.subgroupOf (fixedSubfield (conjAt K.1 w)).1.fixingSubgroup).Normal` using `hEn.subgroupOf _`. Establish `hvu : (w.comap (algebraMap (fixedSubfield (conjAt K.1 w)).1 (galoisClosure F₀).1)).comap (algebraMap K.1 (fixedSubfield (conjAt K.1 w)).1) = v`. Rewrite using `[← hw, ← comap_comp, ← IsScalarTower.algebraMap_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hvu` using the available equality. Conclude with `abstractSymbol_mk_infiniteEmbedding_comap K L (conjAt_mul_self w) hi hτi hτw x`.
+A detailed English derivation is pending.
 -/
 theorem abstractSymbol_mk_infiniteEmbedding_of_isReal (v : InfinitePlace K.1) (hv : v.IsReal)
     (x : v.Completionˣ) :
@@ -388,11 +386,11 @@ theorem abstractSymbol_mk_infiniteEmbedding_of_isReal (v : InfinitePlace K.1) (h
   exact abstractSymbol_mk_infiniteEmbedding_comap K L (conjAt_mul_self w) hi hτi hτw x
 
 /- English proof (translation)
-Establish `: Finite (Abelianization (L.1 ≃ₐ[K.1] L.1))` using `Finite.of_surjective _ (QuotientGroup.mk_surjective (s := commutator (L.1 ≃ₐ[K.1] L.1)))`. Use `set n := Nat.card (Abelianization (L.1 ≃ₐ[K.1] L.1))`. Establish `hn : 0 < n` using `Nat.card_pos`. Set `e` to `ringEquivComplexOfIsComplex (not_isReal_iff_isComplex.1 hv)`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (e x) hn`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz0 : e.symm z ≠ 0`. Introduce `h`. Apply `x.ne_zero` to reduce the goal to its premises. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_zero, ← hz, ← e.apply_symm_apply z, h, map_zero, zero_pow hn.ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxy : x = Units.mk0 (e.symm z) hz0 ^ n`. Apply `Units.ext` to reduce the goal to its premises. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_mk0, map_pow, RingEquiv.apply_symm_apply, hz]`. Rewrite using `[hxy, map_pow, map_pow, map_pow, pow_card_eq_one']`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abstractSymbol_mk_infiniteEmbedding_of_not_isReal (v : InfinitePlace K.1) (hv : ¬ v.IsReal)
     (x : v.Completionˣ) :
@@ -415,7 +413,7 @@ theorem abstractSymbol_mk_infiniteEmbedding_of_not_isReal (v : InfinitePlace K.1
   rw [hxy, map_pow, map_pow, map_pow, pow_card_eq_one']
 
 /- English proof (translation)
-Distinguish the cases in `hv : v.IsReal`. Conclude with `abstractSymbol_mk_infiniteEmbedding_of_isReal K L v hv x`. Rewrite using `[abstractSymbol_mk_infiniteEmbedding_of_not_isReal K L v hv x, infiniteLocalSymbol_of_not_isReal L.1 v hv, MonoidHom.one_apply, map_one]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abstractSymbol_mk_infiniteEmbedding (v : InfinitePlace K.1) (x : v.Completionˣ) :
     abstractSymbol K L (IdeleClassGroup.mk K.1 (infiniteEmbedding v x)) =
@@ -426,7 +424,7 @@ theorem abstractSymbol_mk_infiniteEmbedding (v : InfinitePlace K.1) (x : v.Compl
       infiniteLocalSymbol_of_not_isReal L.1 v hv, MonoidHom.one_apply, map_one]
 
 /- English proof (translation)
-Substitute `hw` using the available equality. Rewrite using `[abstractSymbol_mk_infiniteEmbedding_of_isReal K L _ hv, infiniteLocalSymbol_apply L.1 _ hv ⟨w, (inferInstance : w.LiesOver _)⟩, if_pos (by simp)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem abstractSymbol_mk_infiniteEmbedding_neg_one (v : InfinitePlace K.1) (hv : v.IsReal)
     (w : InfinitePlace L.1) (hw : w.comap (algebraMap K.1 L.1) = v) :
@@ -437,7 +435,7 @@ theorem abstractSymbol_mk_infiniteEmbedding_neg_one (v : InfinitePlace K.1) (hv 
     infiniteLocalSymbol_apply L.1 _ hv ⟨w, (inferInstance : w.LiesOver _)⟩, if_pos (by simp)]
 
 /- English proof (translation)
-Take `⟨w⟩` from `IdeleNorm.nonempty_infinitePlacesOver L.1 v`. Rewrite using `[abstractSymbol_mk_infiniteEmbedding_of_isReal K L v hv, infiniteLocalSymbol_apply L.1 v hv w, if_neg (not_lt.2 hx.le), map_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem abstractSymbol_mk_infiniteEmbedding_of_pos (v : InfinitePlace K.1) (hv : v.IsReal)
     (x : v.Completionˣ) (hx : 0 < extensionEmbeddingOfIsReal hv x) :

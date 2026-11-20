@@ -25,7 +25,7 @@ attribute [local instance] ptYAct
 def PtY.deco {b : L.β j} (x : PtY W cst L u m2 j b) : DecoSet X.E (R.N j) (Pr.vT u) Pr.vGs := x.1.1.deco
 
 /- English proof (translation)
-Conclude with `fun P hP => h P (Finset.mem_union_right _ hP)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sameOn_QE {d d' : DecoSet X.E (R.N j) (Pr.vT u) Pr.vGs} (h : DecoSet.SameOn (rowSG Pr sel mu) d d') :
     DecoSet.SameOn (QE sel (mu : Chr X.F X.E X.K)) d d' := by
@@ -33,7 +33,7 @@ theorem sameOn_QE {d d' : DecoSet X.E (R.N j) (Pr.vT u) Pr.vGs} (h : DecoSet.Sam
   exact fun P hP => h P (Finset.mem_union_right _ hP)
 
 /- English proof (translation)
-Use `show (if j = m2 + 1 then ybSet sel mu cst (p.mv d').deco.1.N else {Set.univ}) = if j = m2 + 1 then ybSet sel mu cst p.deco.1.N else {Set.univ}`. Rewrite using `[DecoF.mv_deco (sameOn_QE h)]`. Use `split_ifs`. Conclude with `ybSet_sameAt sel mu cst h`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cplAt_ys_mv (b : L.β j) (p : ChPt (R := R) sel mu u j) {d' : DecoSet X.E (R.N j) (Pr.vT u) Pr.vGs}
     (h : DecoSet.SameOn (rowSG Pr sel mu) p.deco d') :
@@ -55,19 +55,19 @@ def PtY.mv {b : L.β j} (x : PtY W cst L u m2 j b) (d' : DecoSet X.E (R.N j) (Pr
   if h : DecoSet.SameOn (rowSG Pr sel mu) x.deco d' then x.repl d' h else x
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem PtY.mv_pos {b : L.β j} {x : PtY W cst L u m2 j b} {d' : DecoSet X.E (R.N j) (Pr.vT u) Pr.vGs}
     (h : DecoSet.SameOn (rowSG Pr sel mu) x.deco d') : x.mv d' = x.repl d' h := dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem PtY.mv_neg {b : L.β j} {x : PtY W cst L u m2 j b} {d' : DecoSet X.E (R.N j) (Pr.vT u) Pr.vGs}
     (h : ¬ DecoSet.SameOn (rowSG Pr sel mu) x.deco d') : x.mv d' = x := dif_neg h
 
 /- English proof (translation)
-Rewrite using `[PtY.mv_pos h]`. Conclude with `DecoF.mv_deco (sameOn_QE h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PtY.mv_deco {b : L.β j} {x : PtY W cst L u m2 j b} {d' : DecoSet X.E (R.N j) (Pr.vT u) Pr.vGs}
     (h : DecoSet.SameOn (rowSG Pr sel mu) x.deco d') : (x.mv d').deco = d' := by
@@ -77,9 +77,9 @@ theorem PtY.mv_deco {b : L.β j} {x : PtY W cst L u m2 j b} {d' : DecoSet X.E (R
 def grpDeco {b : L.β j} (g : ((chFY W sel mu cst L u m2 j).mem b).G) : UF X.E (R.N j) × GLG X.E (R.N j) Pr.vGs := (g.1, g.2.1.1)
 
 /- English proof (translation)
-Distinguish the cases in `h : DecoSet.SameOn (rowSG Pr sel mu) x.deco d'`. Rewrite using `[PtY.mv_pos h, PtY.mv_pos (show DecoSet.SameOn (rowSG Pr sel mu) (PtY.deco (((chFY W sel mu cst L u m2 j).mem b).actD.toSMul.smul g x)) (grpDeco g • d') from h.smul _)]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Conclude with `DecoF.mv_smul (FrmG.incl (L.levG j b) (L.levQ j b) g) x.1.1 d'`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[PtY.mv_neg h, PtY.mv_neg (fun h' : DecoSet.SameOn (rowSG Pr sel mu) (PtY.deco (((chFY W sel mu cst L u m2 j).mem b).actD.toSMul.smul g x)) (grpDeco g • d') => h (DecoSet.SameOn.of_smul _ h'))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PtY.mv_smul {b : L.β j} (g : ((chFY W sel mu cst L u m2 j).mem b).G) (x : PtY W cst L u m2 j b)
     (d' : DecoSet X.E (R.N j) (Pr.vT u) Pr.vGs) :

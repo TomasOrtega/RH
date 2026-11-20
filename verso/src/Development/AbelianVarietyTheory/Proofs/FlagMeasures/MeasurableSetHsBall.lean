@@ -76,13 +76,13 @@ def into (V V' : Submodule ℂ (Fin n → ℂ)) : Submodule ℝ (Matrix (Fin n) 
     exact V'.smul_of_tower_mem c (hX y hy)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_perp {ε : Fin n → Bool} {V : Submodule ℂ (Fin n → ℂ)} {y : Fin n → ℂ} :
     y ∈ perp ε V ↔ ∀ x ∈ V, star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ y) = 0 := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_into {V V' : Submodule ℂ (Fin n → ℂ)} {X : Matrix (Fin n) (Fin n) ℂ} :
     X ∈ into V V' ↔ ∀ y ∈ V, X *ᵥ y ∈ V' := Iff.rfl
@@ -101,73 +101,73 @@ section Norm
 open scoped Matrix.Norms.Frobenius
 
 /- English proof (translation)
-Simplify using `only [nrm, Formalism.REAL.hs, Matrix.frobenius_norm_def, Real.sqrt_eq_rpow, Real.rpow_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrm_eq (X : Matrix (Fin n) (Fin n) ℂ) : nrm X = ‖X‖ := by
   simp only [nrm, Formalism.REAL.hs, Matrix.frobenius_norm_def, Real.sqrt_eq_rpow, Real.rpow_two]
 
 /- English proof (translation)
-Rewrite using `[nrm_eq, nrm_eq, nrm_eq]`. Conclude with `norm_add_le X Y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrm_add_le (X Y : Matrix (Fin n) (Fin n) ℂ) : nrm (X + Y) ≤ nrm X + nrm Y := by
   rw [nrm_eq, nrm_eq, nrm_eq]
   exact norm_add_le X Y
 
 /- English proof (translation)
-Rewrite using `[nrm_eq, nrm_eq, nrm_eq]`. Conclude with `norm_sub_le X Y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrm_sub_le (X Y : Matrix (Fin n) (Fin n) ℂ) : nrm (X - Y) ≤ nrm X + nrm Y := by
   rw [nrm_eq, nrm_eq, nrm_eq]
   exact norm_sub_le X Y
 
 /- English proof (translation)
-Rewrite using `[nrm_eq, nrm_eq, nrm_eq]`. Conclude with `Matrix.frobenius_norm_mul X Y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrm_mul_le (X Y : Matrix (Fin n) (Fin n) ℂ) : nrm (X * Y) ≤ nrm X * nrm Y := by
   rw [nrm_eq, nrm_eq, nrm_eq]
   exact Matrix.frobenius_norm_mul X Y
 
 /- English proof (translation)
-Rewrite using `[nrm_eq, nrm_eq, norm_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nrm_neg (X : Matrix (Fin n) (Fin n) ℂ) : nrm (-X) = nrm X := by rw [nrm_eq, nrm_eq, norm_neg]
 
 /- English proof (translation)
-Rewrite using `[nrm_eq, nrm_eq, norm_smul, Real.norm_eq_abs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nrm_smul (c : ℝ) (X : Matrix (Fin n) (Fin n) ℂ) : nrm (c • X) = |c| * nrm X := by rw [nrm_eq, nrm_eq, norm_smul, Real.norm_eq_abs]
 
 /- English proof (translation)
-Rewrite using `[nrm_eq, nrm_eq, Matrix.frobenius_norm_conjTranspose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nrm_conjTranspose (X : Matrix (Fin n) (Fin n) ℂ) : nrm Xᴴ = nrm X := by rw [nrm_eq, nrm_eq, Matrix.frobenius_norm_conjTranspose]
 
 /- English proof (translation)
-Rewrite using `[nrm_eq, norm_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nrm_eq_zero {X : Matrix (Fin n) (Fin n) ℂ} : nrm X = 0 ↔ X = 0 := by rw [nrm_eq, norm_eq_zero]
 
 end Norm
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem nrm_nonneg (X : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ nrm X := Real.sqrt_nonneg _
 
 /- English proof (translation)
-Unfold `Formalism.REAL.hs`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem hs_nonneg (X : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ Formalism.REAL.hs X := by
   unfold Formalism.REAL.hs
   positivity
 
 /- English proof (translation)
-The claim follows from `Real.sq_sqrt (hs_nonneg X)`.
+A detailed English derivation is pending.
 -/
 theorem nrm_sq (X : Matrix (Fin n) (Fin n) ℂ) : nrm X ^ 2 = Formalism.REAL.hs X := Real.sq_sqrt (hs_nonneg X)
 
 /- English proof (translation)
-Use `show Continuous fun X : Matrix (Fin n) (Fin n) ℂ => Real.sqrt (∑ i, ∑ j, ‖X i j‖ ^ 2)`. Conclude with `Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ((continuous_apply j).comp (continuous_apply i)).norm.pow 2)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_nrm : Continuous (nrm : Matrix (Fin n) (Fin n) ℂ → ℝ) := by
   show Continuous fun X : Matrix (Fin n) (Fin n) ℂ => Real.sqrt (∑ i, ∑ j, ‖X i j‖ ^ 2)
@@ -175,48 +175,48 @@ theorem continuous_nrm : Continuous (nrm : Matrix (Fin n) (Fin n) ℂ → ℝ) :
     continuous_finsetSum _ fun j _ => ((continuous_apply j).comp (continuous_apply i)).norm.pow 2)
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem len_nonneg (x : Fin d → ℝ) : 0 ≤ len x := Real.sqrt_nonneg _
 
 /- English proof (translation)
-The claim follows from `Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg (x i))`.
+A detailed English derivation is pending.
 -/
 theorem len_sq (x : Fin d → ℝ) : len x ^ 2 = ∑ i, x i ^ 2 := Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg (x i))
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq, len]`. Simplify using `[Real.norm_eq_abs, sq_abs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem len_eq (x : Fin d → ℝ) : len x = ‖(WithLp.toLp 2 x : EuclideanSpace ℝ (Fin d))‖ := by
   rw [EuclideanSpace.norm_eq, len]
   simp [Real.norm_eq_abs, sq_abs]
 
 /- English proof (translation)
-Rewrite using `[len_eq, len_eq, len_eq, WithLp.toLp_add]`. Conclude with `norm_add_le _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem len_add_le (x y : Fin d → ℝ) : len (x + y) ≤ len x + len y := by
   rw [len_eq, len_eq, len_eq, WithLp.toLp_add]
   exact norm_add_le _ _
 
 /- English proof (translation)
-Rewrite using `[len_eq, len_eq, WithLp.toLp_neg, norm_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem len_neg (x : Fin d → ℝ) : len (-x) = len x := by rw [len_eq, len_eq, WithLp.toLp_neg, norm_neg]
 
 /- English proof (translation)
-Rewrite using `[len_eq, len_eq, WithLp.toLp_smul, norm_smul, Real.norm_eq_abs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem len_smul (c : ℝ) (x : Fin d → ℝ) : len (c • x) = |c| * len x := by rw [len_eq, len_eq, WithLp.toLp_smul, norm_smul, Real.norm_eq_abs]
 
 /- English proof (translation)
-Unfold `len`. Conclude with `Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => (continuous_apply i).pow 2)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_len : Continuous (len : (Fin d → ℝ) → ℝ) := by
   unfold len
   exact Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => (continuous_apply i).pow 2)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[crd, Matrix.add_mul, Matrix.trace_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem crd_add (E : Fin d → Matrix (Fin n) (Fin n) ℂ) (X Y : Matrix (Fin n) (Fin n) ℂ) :
     crd E (X + Y) = crd E X + crd E Y := by
@@ -224,7 +224,7 @@ theorem crd_add (E : Fin d → Matrix (Fin n) (Fin n) ℂ) (X Y : Matrix (Fin n)
   simp [crd, Matrix.add_mul, Matrix.trace_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[crd, Matrix.sub_mul, Matrix.trace_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem crd_sub (E : Fin d → Matrix (Fin n) (Fin n) ℂ) (X Y : Matrix (Fin n) (Fin n) ℂ) :
     crd E (X - Y) = crd E X - crd E Y := by
@@ -232,7 +232,7 @@ theorem crd_sub (E : Fin d → Matrix (Fin n) (Fin n) ℂ) (X Y : Matrix (Fin n)
   simp [crd, Matrix.sub_mul, Matrix.trace_sub]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[crd, Matrix.trace_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem crd_smul (E : Fin d → Matrix (Fin n) (Fin n) ℂ) (c : ℝ) (X : Matrix (Fin n) (Fin n) ℂ) :
     crd E (c • X) = c • crd E X := by
@@ -240,7 +240,7 @@ theorem crd_smul (E : Fin d → Matrix (Fin n) (Fin n) ℂ) (c : ℝ) (X : Matri
   simp [crd, Matrix.trace_smul]
 
 /- English proof (translation)
-Unfold `crd`. Conclude with `continuous_pi fun i => Complex.continuous_re.comp ((continuous_id.matrix_mul continuous_const).matrix_trace)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_crd (E : Fin d → Matrix (Fin n) (Fin n) ℂ) : Continuous (crd E) := by
   unfold crd
@@ -248,33 +248,33 @@ theorem continuous_crd (E : Fin d → Matrix (Fin n) (Fin n) ℂ) : Continuous (
     Complex.continuous_re.comp ((continuous_id.matrix_mul continuous_const).matrix_trace)
 
 /- English proof (translation)
-Simplify using `[cmb, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cmb_add (E : Fin d → Matrix (Fin n) (Fin n) ℂ) (x y : Fin d → ℝ) : cmb E (x + y) = cmb E x + cmb E y := by simp [cmb, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[cmb, Finset.smul_sum, mul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cmb_smul (E : Fin d → Matrix (Fin n) (Fin n) ℂ) (c : ℝ) (x : Fin d → ℝ) : cmb E (c • x) = c • cmb E x := by simp [cmb, Finset.smul_sum, mul_smul]
 
 /- English proof (translation)
-Unfold `cmb`. Conclude with `continuous_finsetSum _ fun i _ => (continuous_apply i).smul continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_cmb (E : Fin d → Matrix (Fin n) (Fin n) ℂ) : Continuous (cmb E) := by
   unfold cmb
   exact continuous_finsetSum _ fun i _ => (continuous_apply i).smul continuous_const
 
 /- English proof (translation)
-Simplify using `[cmb, Finset.sum_mul, Matrix.trace_sum, Matrix.trace_smul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem re_trace_cmb_mul_eq_sum (E : Fin d → Matrix (Fin n) (Fin n) ℂ) (x : Fin d → ℝ)
     (Y : Matrix (Fin n) (Fin n) ℂ) : ((cmb E x * Y).trace).re = ∑ k, x k * ((E k * Y).trace).re := by
   simp [cmb, Finset.sum_mul, Matrix.trace_sum, Matrix.trace_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show ((cmb E x * (E i)ᴴ).trace).re = x i`. Rewrite using `[re_trace_cmb_mul_eq_sum]`. Establish `hk : ∀ k, x k * ((E k * (E i)ᴴ).trace).re = if k = i then x k else 0` using `fun k => by`. Rewrite using `[h k i]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Simplify using `[hk]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem crd_cmb {E : Fin d → Matrix (Fin n) (Fin n) ℂ} (h : IsON E) (x : Fin d → ℝ) : crd E (cmb E x) = x := by
   funext i
@@ -286,7 +286,7 @@ theorem crd_cmb {E : Fin d → Matrix (Fin n) (Fin n) ℂ} (h : IsON E) (x : Fin
   simp [hk]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℝ).mp hX`. Establish `hy : cmb E y = ∑ i, y i • E i` using `rfl`. Rewrite using `[← hy, crd_cmb h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cmb_crd {E : Fin d → Matrix (Fin n) (Fin n) ℂ} (h : IsON E) {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : X ∈ Submodule.span ℝ (Set.range E)) : cmb E (crd E X) = X := by
@@ -295,7 +295,7 @@ theorem cmb_crd {E : Fin d → Matrix (Fin n) (Fin n) ℂ} (h : IsON E) {X : Mat
   rw [← hy, crd_cmb h]
 
 /- English proof (translation)
-Simplify using `[cmb, crd, Matrix.conjTranspose_sum, Matrix.conjTranspose_smul, Matrix.mul_sum, Matrix.trace_sum, Matrix.trace_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem re_trace_mul_cmb (E : Fin d → Matrix (Fin n) (Fin n) ℂ) (X : Matrix (Fin n) (Fin n) ℂ) (x : Fin d → ℝ) :
     ((X * (cmb E x)ᴴ).trace).re = ∑ i, x i * crd E X i := by
@@ -303,7 +303,7 @@ theorem re_trace_mul_cmb (E : Fin d → Matrix (Fin n) (Fin n) ℂ) (X : Matrix 
     Matrix.trace_sum, Matrix.trace_smul]
 
 /- English proof (translation)
-Rewrite using `[show Y * Xᴴ = (X * Yᴴ)ᴴ by`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose], Matrix.trace_conjTranspose]`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem re_trace_symm (X Y : Matrix (Fin n) (Fin n) ℂ) : ((X * Yᴴ).trace).re = ((Y * Xᴴ).trace).re := by
   rw [show Y * Xᴴ = (X * Yᴴ)ᴴ by
@@ -311,7 +311,7 @@ theorem re_trace_symm (X Y : Matrix (Fin n) (Fin n) ℂ) : ((X * Yᴴ).trace).re
   simp
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.GaugeRightInv.hs_eq_re_trace, GlobalTheory.GaugeRightInv.hs_eq_re_trace X, GlobalTheory.GaugeRightInv.hs_eq_re_trace Y]`. Simplify using `only [Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add, Matrix.trace_add, Complex.add_re]`. Rewrite using `[re_trace_symm Y X]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hs_add (X Y : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.REAL.hs (X + Y) = Formalism.REAL.hs X + Formalism.REAL.hs Y + 2 * ((X * Yᴴ).trace).re := by
@@ -322,7 +322,7 @@ theorem hs_add (X Y : Matrix (Fin n) (Fin n) ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.GaugeRightInv.hs_eq_re_trace, re_trace_mul_cmb, crd_cmb h]`. Simplify using `[sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hs_cmb {E : Fin d → Matrix (Fin n) (Fin n) ℂ} (h : IsON E) (x : Fin d → ℝ) :
     Formalism.REAL.hs (cmb E x) = ∑ i, x i ^ 2 := by
@@ -330,14 +330,14 @@ theorem hs_cmb {E : Fin d → Matrix (Fin n) (Fin n) ℂ} (h : IsON E) (x : Fin 
   simp [sq]
 
 /- English proof (translation)
-Rewrite using `[nrm, hs_cmb h, len]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nrm_cmb {E : Fin d → Matrix (Fin n) (Fin n) ℂ} (h : IsON E) (x : Fin d → ℝ) : nrm (cmb E x) = len x := by rw [nrm, hs_cmb h, len]
 
 /- English proof (translation)
-Establish `hsplit : X - cmb E x = (X - cmb E (crd E X)) + cmb E (crd E X - x)`. Simplify using `only [cmb, Pi.sub_apply, sub_smul, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Establish `hzero : crd E (X - cmb E (crd E X)) = 0` using `by rw [crd_sub, crd_cmb h, sub_self]`. Rewrite using `[hsplit, hs_add, hs_cmb h, re_trace_mul_cmb, hzero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Pi.sub_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hs_sub_cmb {E : Fin d → Matrix (Fin n) (Fin n) ℂ} (h : IsON E) (X : Matrix (Fin n) (Fin n) ℂ)
     (x : Fin d → ℝ) : Formalism.REAL.hs (X - cmb E x) =
@@ -350,9 +350,9 @@ theorem hs_sub_cmb {E : Fin d → Matrix (Fin n) (Fin n) ℂ} (h : IsON E) (X : 
   simp [Pi.sub_apply]
 
 /- English proof (translation)
-Establish `h0` using `hs_sub_cmb h X 0`. Establish `hc : cmb E 0 = 0` using `by simp [cmb]`. Rewrite `h0` using `[hc, sub_zero]`. Simplify using `only [Pi.zero_apply, sub_zero] at h0`. Rewrite using `[len, nrm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Rewrite using `[h0]`. Combine the linear relations using `[hs_nonneg (X - cmb E (crd E X))]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem len_crd_le {E : Fin d → Matrix (Fin n) (Fin n) ℂ} (h : IsON E) (X : Matrix (Fin n) (Fin n) ℂ) :
     len (crd E X) ≤ nrm X := by
@@ -366,7 +366,7 @@ theorem len_crd_le {E : Fin d → Matrix (Fin n) (Fin n) ℂ} (h : IsON E) (X : 
   linarith [hs_nonneg (X - cmb E (crd E X))]
 
 /- English proof (translation)
-Establish `hY'` using `cmb_crd h hY`. Rewrite using `[← hY', nrm, nrm]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Rewrite using `[hs_sub_cmb h X (crd E Y)]`. Establish `hnn : 0 ≤ ∑ i, (crd E X i - crd E Y i) ^ 2` using `Finset.sum_nonneg fun i _ => sq_nonneg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -381,7 +381,7 @@ theorem nrm_sub_proj_le {E : Fin d → Matrix (Fin n) (Fin n) ℂ} (h : IsON E) 
   linarith
 
 /- English proof (translation)
-Unfold `gau`. Establish `h1 : Continuous fun v : (Fin a → ℝ) × (Fin b → ℝ) × (Fin c → ℝ) => cmb EN v.1 + cmb EM v.2.1 + cmb EK v.2.2` using `(((continuous_cmb EN).comp continuous_fst).add ((continuous_cmb EM).comp (continuous_fst.comp continuous_snd))).add ((continuous_cmb EK).comp (continuous_snd.comp continuous_snd))`. Conclude with `(continuous_nrm.comp h1).max (continuous_len.comp ((continuous_crd EL).comp ((continuous_cmb EK).comp (continuous_snd.comp continuous_snd))))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_gau {a b c e : ℕ} (EN : Fin a → Matrix (Fin n) (Fin n) ℂ) (EM : Fin b → Matrix (Fin n) (Fin n) ℂ)
     (EK : Fin c → Matrix (Fin n) (Fin n) ℂ) (EL : Fin e → Matrix (Fin n) (Fin n) ℂ) :
@@ -397,7 +397,7 @@ theorem continuous_gau {a b c e : ℕ} (EN : Fin a → Matrix (Fin n) (Fin n) �
       ((continuous_cmb EK).comp (continuous_snd.comp continuous_snd))))
 
 /- English proof (translation)
-Take `⟨v1, v2, v3⟩` from `v`. Simplify using `only [gau, Prod.smul_mk, cmb_smul, ← smul_add, nrm_smul, crd_smul, len_smul, abs_of_nonneg hs]`. Rewrite using `[mul_max_of_nonneg _ _ hs]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gau_smul {a b c e : ℕ} (EN : Fin a → Matrix (Fin n) (Fin n) ℂ) (EM : Fin b → Matrix (Fin n) (Fin n) ℂ)
     (EK : Fin c → Matrix (Fin n) (Fin n) ℂ) (EL : Fin e → Matrix (Fin n) (Fin n) ℂ) (s : ℝ) (hs : 0 ≤ s)
@@ -407,43 +407,41 @@ theorem gau_smul {a b c e : ℕ} (EN : Fin a → Matrix (Fin n) (Fin n) ℂ) (EM
   rw [mul_max_of_nonneg _ _ hs]
 
 /- English proof (translation)
-The claim follows from `le_max_of_le_left (nrm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem gau_nonneg {a b c e : ℕ} (EN : Fin a → Matrix (Fin n) (Fin n) ℂ) (EM : Fin b → Matrix (Fin n) (Fin n) ℂ)
     (EK : Fin c → Matrix (Fin n) (Fin n) ℂ) (EL : Fin e → Matrix (Fin n) (Fin n) ℂ)
     (v : (Fin a → ℝ) × (Fin b → ℝ) × (Fin c → ℝ)) : 0 ≤ gau EN EM EK EL v := le_max_of_le_left (nrm_nonneg _)
 
 /- English proof (translation)
-The claim follows from `continuous_nrm.comp (GlobalTheory.FlagLeviGroup.continuous_uMat.sub continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_nrm_uMat (ε : Fin n → Bool) : Continuous fun g : Formalism.REAL.UJ ε => nrm (uMat g - 1) := continuous_nrm.comp (GlobalTheory.FlagLeviGroup.continuous_uMat.sub continuous_const)
 
 /- English proof (translation)
-The claim follows from `(continuous_crd E).comp (GlobalTheory.FlagLeviGroup.continuous_uMat.sub continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_crd_uMat (ε : Fin n → Bool) (E : Fin d → Matrix (Fin n) (Fin n) ℂ) :
     Continuous fun g : Formalism.REAL.UJ ε => crd E (uMat g - 1) := (continuous_crd E).comp (GlobalTheory.FlagLeviGroup.continuous_uMat.sub continuous_const)
 
 /- English proof (translation)
-The claim follows from `(isClosed_le (continuous_nrm_uMat ε) continuous_const).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_hsBall (ε : Fin n → Bool) (r : ℝ) : MeasurableSet (hsBall ε r) := (isClosed_le (continuous_nrm_uMat ε) continuous_const).measurableSet
 
 /- English proof (translation)
-The claim follows from `(isOpen_lt (continuous_nrm_uMat ε) continuous_const).measurableSet.inter (isClosed_le (continuous_len.comp (continuous_crd_uMat ε E)) continuous_const).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_slab (ε : Fin n → Bool) (E : Fin d → Matrix (Fin n) (Fin n) ℂ) (ρ r : ℝ) :
     MeasurableSet (slab ε E ρ r) := (isOpen_lt (continuous_nrm_uMat ε) continuous_const).measurableSet.inter
     (isClosed_le (continuous_len.comp (continuous_crd_uMat ε E)) continuous_const).measurableSet
 
 /- English proof (translation)
-Take `⟨hemb, -⟩` from `Formalism.REAL.uJEmb n ε`. Establish `hC : IsCompact ({g : Matrix (Fin n) (Fin n) ℂ | Formalism.REAL.inUJ ε g ∧ Formalism.REAL.hs g ≤ (r + nrm (1 : Matrix (Fin n) (Fin n) ℂ)) ^ 2} ∩ {g | nrm (g - 1) ≤ r})` using `((Formalism.REAL.hSBall n ε).1 _).inter_right (isClosed_le (continuous_nrm.comp (continuous_id.sub continuous_const)) continuous_const)`. Use `hemb.isCompact_preimage hC using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [hsBall, Set.mem_ofPred_eq, Set.mem_preimage, Set.mem_inter_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `⟨⟨g.2, ?_⟩, hg⟩` and prove the remaining obligations. Rewrite using `[← nrm_sq]`. Establish `h1 : nrm (uMat g) ≤ r + nrm (1 : Matrix (Fin n) (Fin n) ℂ)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `nrm_add_le (uMat g - 1) 1`. Rewrite `h2` using `[sub_add_cancel]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `pow_le_pow_left₀ (nrm_nonneg _) h1 2`. Introduce `hg`.
-
-Conclude with `hg.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isCompact_hsBall (ε : Fin n → Bool) (r : ℝ) : IsCompact (hsBall ε r) := by
   obtain ⟨hemb, -⟩ := Formalism.REAL.uJEmb n ε
@@ -467,9 +465,9 @@ theorem isCompact_hsBall (ε : Fin n → Bool) (r : ℝ) : IsCompact (hsBall ε 
     exact hg.2
 
 /- English proof (translation)
-Establish `hsub : maxK ε ⊆ hsBall ε (2 * nrm (1 : Matrix (Fin n) (Fin n) ℂ))`. Introduce `g hg`. Establish `hg' : (uMat g)ᴴ * uMat g = 1` using `hg`. Establish `hg'' : uMat g * (uMat g)ᴴ = 1` using `(Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).mp hg'`. Establish `hn : nrm (uMat g) = nrm (1 : Matrix (Fin n) (Fin n) ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[nrm, nrm, GlobalTheory.GaugeRightInv.hs_eq_re_trace, GlobalTheory.GaugeRightInv.hs_eq_re_trace (1 : Matrix (Fin n) (Fin n) ℂ), hg'', Matrix.conjTranspose_one, Matrix.mul_one]`. Use `show nrm (uMat g - 1) ≤ 2 * nrm 1`. Establish `h3` using `nrm_sub_le (uMat g) 1`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(isCompact_hsBall ε _).of_isClosed_subset GlobalTheory.FlagLeviGroup.isClosed_maxK hsub`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isCompact_maxK (ε : Fin n → Bool) : IsCompact (maxK ε) := by
   have hsub : maxK ε ⊆ hsBall ε (2 * nrm (1 : Matrix (Fin n) (Fin n) ℂ)) := by
@@ -486,7 +484,7 @@ theorem isCompact_maxK (ε : Fin n → Bool) : IsCompact (maxK ε) := by
   exact (isCompact_hsBall ε _).of_isClosed_subset GlobalTheory.FlagLeviGroup.isClosed_maxK hsub
 
 /- English proof (translation)
-Take `⟨A, -, hON, -, -⟩` from `h`. Conclude with `hON`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsCut.isON {ε : Fin n → Bool} {S : Set (Formalism.REAL.UJ ε)} {E : Fin d → Matrix (Fin n) (Fin n) ℂ}
     (h : IsCut ε S E) : IsON E := by
@@ -494,7 +492,7 @@ theorem IsCut.isON {ε : Fin n → Bool} {S : Set (Formalism.REAL.UJ ε)} {E : F
   exact hON
 
 /- English proof (translation)
-Take `⟨A, hA, -, -, rfl⟩` from `h`. Conclude with `⟨GlobalTheory.GaugeSubLoc.algSub ε A hA, rfl, GlobalTheory.GaugeSubLoc.isClosed_algSub A hA⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsCut.subgroup {ε : Fin n → Bool} {S : Set (Formalism.REAL.UJ ε)} {E : Fin d → Matrix (Fin n) (Fin n) ℂ}
     (h : IsCut ε S E) : ∃ H : Subgroup (Formalism.REAL.UJ ε), (H : Set (Formalism.REAL.UJ ε)) = S ∧ IsClosed S := by
@@ -502,7 +500,7 @@ theorem IsCut.subgroup {ε : Fin n → Bool} {S : Set (Formalism.REAL.UJ ε)} {E
   exact ⟨GlobalTheory.GaugeSubLoc.algSub ε A hA, rfl, GlobalTheory.GaugeSubLoc.isClosed_algSub A hA⟩
 
 /- English proof (translation)
-Take `⟨A, -, -, hiff, -⟩` from `h`. Conclude with `((hiff X).mpr hX).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsCut.inG {ε : Fin n → Bool} {S : Set (Formalism.REAL.UJ ε)} {E : Fin d → Matrix (Fin n) (Fin n) ℂ}
     (h : IsCut ε S E) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ Submodule.span ℝ (Set.range E)) :

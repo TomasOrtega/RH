@@ -18,15 +18,15 @@ open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
 /- English proof (translation)
-Introduce `D X X0 Y S YS Z c w j H ι hι u hu κ hκ hs m`. Take `⟨gramR, c0R, c0L, hft, u', hu', hF⟩` from `hs`. Take `rfl : u' = u` from `funext fun τ => Subtype.ext ((hu' τ).trans (hu τ).symm)`. Take `⟨e, he, hO, -⟩` from `UpperTheory.KN.exists_rational_structure_lowest_form_space D X X0 Y (D.what₂.muTw w) (used_of_tw H.tw) j`. Take `⟨x, rfl⟩` from `e.surjective m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hN` using `UpperTheory.KN.mem_lNab_iff_coefficients_in_nabla_lattice D X j (Y.tupT (D.what₂.muTw w)) gramR c0R c0L hft x`. Establish `hC` using `UpperTheory.KN.scaled_fock_form_coefficients_integral D X X0 Y S YS Z c w j H ι hι u' hu gramR c0R c0L hft κ hκ hF`. Establish `hI` using `(UpperTheory.KN.ioP_tprod_injective_and_range_eq_valSpace D X X0 Y S YS Z c w j H ι hι u' hu).1`. Establish `hv : ∀ h, (κ⁻¹ • fockOf Y (used_of_tw H.tw) j u' (D.what₂.jMt (D.what₂.muTw w) (j.1 + 1) (e x))) h = κ⁻¹ • X.R.ioP j (PiTensorProduct.tprod ℂ u') ((X.R.B.jL j (Y.tupT (D.what₂.muTw w)) (GlobalTheory.Mem.R3.liftForm X.A3.A X.F.lv2.P0 X.F.lv2.ψ0 j (Y.tupT (D.what₂.muTw w)) x)) h)` using `fun h => by`. Rewrite using `[Pi.smul_apply, fockOf_apply, he x]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Iff.trans ?_ (hN.symm.trans (hO.2 x))` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hm a`. Take `⟨F, hF1, hF2⟩` from `(hC _ _).1 (((Base.mem_mtLat _ _ _ _).1 hm).2 ((X.R.B.L j (Y.tupT (D.what₂.muTw w))).pres.y a))`. Rewrite `hF2` using `[hv]`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨F, hF1, hI (smul_right_injective _ (inv_ne_zero hκ) hF2)⟩`. Introduce `hm`. Use `UpperTheory.KN.mem_mtLat_of_coefficients_mem_coefLat D X X0 Y S YS Z c w j H ι hι _ (Submodule.smul_mem _ _ ?_) fun a => ?_` and prove the remaining obligations. Rewrite using `[← (GlobalTheory.T.definiteComplexForms_eq_twistComplexForms_fockModel D X X0 Y S YS Z c w j H ι hι u' hu).2]`. Conclude with `LinearMap.mem_range_self _ _`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF1, hF2⟩` from `hm a`. Conclude with `(hC _ _).2 ⟨F, hF1, by rw [hv, hF2]⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.scaled_fock_form_mem_mtLat_iff :
     ∀ (D : D7) (X : RealSide D) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := X.A3) X.R.toRealDat X.F.lv2 X0) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS X.R X.cG S) (Z : ExportTie YS X.geo.v₀) (c : NChoice D) (w : D.what₂.places.Pl) (j : Fin D.R.m) (H : AtPlace Y Z c w j),

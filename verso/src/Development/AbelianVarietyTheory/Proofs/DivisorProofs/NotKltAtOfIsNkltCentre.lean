@@ -12,9 +12,9 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 namespace GlobalTheory.PairStep
 
 /- English proof (translation)
-Use `haveI : IsProper p := ((isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hp).1`. Introduce and unpack `⟨η', m', g', h₁, h₂, h₃, h₄⟩`. Take `⟨E, η, m, g, hη, hm, hg, hE, hd⟩` from `h`. Establish `h₅ : IsLogEqn p Γ η' z m' g'` using `fun w hw => h₃ w (hw.trans hz)`. Establish `h₆` using `h₄ E (hE.1.of_specializes hz)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₆` using `[discrep_eq hn h₁ hη h₂ hm h₅ hg hE.1]`. Conclude with `h₆.not_ge hd`.
+A detailed English derivation is pending.
 -/
 theorem not_kltAt_of_isNkltCentre (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X]
     [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ) (hp : IsProjOver p)

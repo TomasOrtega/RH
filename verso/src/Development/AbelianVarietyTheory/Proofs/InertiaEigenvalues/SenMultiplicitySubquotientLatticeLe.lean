@@ -9,9 +9,9 @@ open scoped LaurentSeries PowerSeries
 namespace GlobalTheory.Models
 
 /- English proof (translation)
-Establish `hle : ∀ g, LinearMap.range j ≤ (LinearMap.range j).comap (B.ρ g)`. Introduce and unpack `g _ ⟨x, rfl⟩`. Conclude with `⟨A.ρ g x, hj g x⟩`. Take `⟨C, e, he⟩` from `exists_ob (B.ρ.quotient (LinearMap.range j) hle)`. Use `⟨C, e.toLinearMap ∘ₗ (LinearMap.range j).mkQ, fun g x => ?_, e.surjective.comp (Submodule.mkQ_surjective _), fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← he]`. Both sides reduce to the same expression. Simplify using `[Submodule.Quotient.mk_eq_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem senle_exists_coker {k G : Type} [Field k] [Group G] (A B : Ob k G)
     (j : (Fin A.m → k) →ₗ[k] (Fin B.m → k)) (hj : IsHom A B j) :
@@ -29,13 +29,13 @@ theorem senle_exists_coker {k G : Type} [Field k] [Group G] (A B : Ob k G)
   · simp [Submodule.Quotient.mk_eq_zero]
 
 /- English proof (translation)
-Establish `hle : ∀ g, LinearMap.ker p ≤ (LinearMap.ker p).comap (A.ρ g)`. Introduce `g x hx`. Rewrite `hx` using `[LinearMap.mem_ker]`. Simplify using `only [Submodule.mem_comap, LinearMap.mem_ker]`. Rewrite using `[hp g x, hx, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨C, e, he⟩` from `exists_ob (A.ρ.subrepresentation (LinearMap.ker p) hle)`. Use `⟨C, (LinearMap.ker p).subtype ∘ₗ e.symm.toLinearMap, fun g x => ?_, (Submodule.injective_subtype _).comp e.symm.injective, fun y => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `e.surjective x`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← he, e.symm_apply_apply, e.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨e ⟨y, hy⟩, by simp⟩`. Introduce and unpack `⟨x, rfl⟩`.
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `(e.symm x).2`.
+A detailed English derivation is pending.
 -/
 theorem senle_exists_ker {k G : Type} [Field k] [Group G] (A B : Ob k G)
     (p : (Fin A.m → k) →ₗ[k] (Fin B.m → k)) (hp : IsHom A B p) :
@@ -60,9 +60,9 @@ theorem senle_exists_ker {k G : Type} [Field k] [Group G] (A B : Ob k G)
       exact (e.symm x).2
 
 /- English proof (translation)
-Introduce `k G _ _ l n _ _ _ R F B A₁ A j p w w' N hB hj hji hp hps hN i x`. Establish `hA₁ : F.Obj A₁` using `F.obj_sub A₁ B j hj hji hB`. Take `⟨C, q, hq, hqs, hex⟩` from `senle_exists_coker A₁ B j hj`. Take `⟨K, s, hs, hsi, hex'⟩` from `senle_exists_ker A₁ A p hp`. Establish `h1` using `GlobalTheory.T.senMultiplicity_additive_exact_sequence F A₁ B C j q N hB hj hq hji hqs hex i (hN.1 i) (hN.2.2 i) x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsat` using `GlobalTheory.PhiGam.Sat.main R (F.D B) (F.D A₁) (F.map A₁ B j) (F.map_inj A₁ B j hA₁ hB hj hji) (F.map_φ A₁ B j hA₁ hB hj) (F.map_γ A₁ B j hA₁ hB hj) w w' N hN.1 hN.2.1 hN.2.2`. Establish `h2` using `GlobalTheory.T.senMultiplicity_additive_exact_sequence F K A₁ A s p (F.pre A₁ B j N) hA₁ hs hp hsi hps hex' i (hsat.1 i) (hsat.2.2 i) x`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sen_push_pre_le : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.Prime] [CharP k l] [NeZero n] {R : RingPG k l} (F : DFun R n G) (B A₁ A : Ob k G) (j : (Fin A₁.m → k) →ₗ[k] (Fin B.m → k)) (p : (Fin A₁.m → k) →ₗ[k] (Fin A.m → k)) (w w' : ZMod n → ℤ) (N : Lats k n B.m), F.Obj B → IsHom A₁ B j → Function.Injective j → IsHom A₁ A p → Function.Surjective p → ABC (F.D B) w w' N → ∀ i x, sen ((F.D A).γ i) (F.push A₁ A p (F.pre A₁ B j N) i) x ≤ sen ((F.D B).γ i) (N i) x := by
   intro k G _ _ l n _ _ _ R F B A₁ A j p w w' N hB hj hji hp hps hN i x

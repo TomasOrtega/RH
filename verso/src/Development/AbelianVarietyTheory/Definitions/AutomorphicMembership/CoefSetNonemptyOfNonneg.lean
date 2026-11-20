@@ -48,16 +48,14 @@ def toLaurent : PowerSeries F.O →+* LaurentSeries ↥F.K :=
   (HahnSeries.ofPowerSeries ℤ ↥F.K).comp (PowerSeries.map (intO ↥F.K).subtype)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `PowerSeries.map_injective (intO ↥F.K).subtype Subtype.val_injective (HahnSeries.ofPowerSeries_injective (Γ := ℤ) h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toLaurent_injective : Function.Injective F.toLaurent :=
   fun _ _ h => PowerSeries.map_injective (intO ↥F.K).subtype Subtype.val_injective
     (HahnSeries.ofPowerSeries_injective (Γ := ℤ) h)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖((PowerSeries.map (intO ↥F.K).subtype g : PowerSeries ↥F.K) : LaurentSeries ↥F.K).coeff n‖ ≤ 1`. Rewrite using `[PowerSeries.coeff_coe]`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[PowerSeries.coeff_map]`.
-
-Conclude with `(PowerSeries.coeff _ g).2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_coeff_toLaurent (g : PowerSeries F.O) (n : ℤ) : ‖(F.toLaurent g).coeff n‖ ≤ 1 := by
   change ‖((PowerSeries.map (intO ↥F.K).subtype g : PowerSeries ↥F.K) : LaurentSeries ↥F.K).coeff n‖ ≤ 1
@@ -68,9 +66,7 @@ theorem norm_coeff_toLaurent (g : PowerSeries F.O) (n : ℤ) : ‖(F.toLaurent g
     exact (PowerSeries.coeff _ g).2
 
 /- English proof (translation)
-Use `haveI : CompleteSpace ↥F.K := F.closed.completeSpace_coe`. Establish `hO : (NormedField.valuation (K` using `↥F.K)).Integers F.O := { hom_inj := Subtype.val_injective map_le_one := fun x => by`. Rewrite using `[NormedField.valuation_apply, ← NNReal.coe_le_coe]`. Conclude with `x.2`. Use `exists_of_le_one := fun r hr => ⟨⟨r, by`.
-
-Rewrite `hr` using `[NormedField.valuation_apply, ← NNReal.coe_le_coe]`. Conclude with `hr⟩, rfl⟩ }`. Conclude with `NormIntegers.isAdicComplete_span_singleton hO ((Cht.mem_maximalIdeal_ball ϖ).1 ((mem_maximalIdeal _).2 h.not_isUnit))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdicComplete {ϖ : F.O} (h : Irreducible ϖ) : IsAdicComplete (Ideal.span {ϖ}) F.O := by
   haveI : CompleteSpace ↥F.K := F.closed.completeSpace_coe
@@ -88,9 +84,7 @@ theorem isAdicComplete {ϖ : F.O} (h : Irreducible ϖ) : IsAdicComplete (Ideal.s
 end DVF
 
 /- English proof (translation)
-Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`. Establish `hn` using `SharedLaws.mem_nonunits_V c hp.ne_zero hW`. Use `haveI := (isDiscreteValuationRing_and_finite_residueField_of_numberField (c.V W) hp.ne_zero hn).1`. Use `haveI : Countable c.F := Countable.of_equiv _ (Module.finBasis ℚ c.F).equivFun.toEquiv.symm`.
-
-Take `⟨C, f, K, hf, -, hK, hd, -⟩` from `Cht.CompletedClosure.fieldSt p (c.V W) hp ((ValuationSubring.coe_mem_nonunits_iff (A := c.V W) (a := (p : c.V W))).1 (by simpa using hn))`. Set `g : c.V W →+* ↥K` to `((intO ↥C.S).subtype.comp f).codRestrict K fun a => hK ▸ Subfield.le_topologicalClosure _ (Subfield.subset_closure ⟨a, rfl⟩)`. Conclude with `⟨⟨C, K, hK ▸ Subfield.isClosed_topologicalClosure _, hd⟩, g.codRestrict (intO ↥K) fun a => (f a).2, fun a a' h => hf (Subtype.ext (congrArg (fun z : ↥(intO ↥K) => ((z : ↥K) : ↥C.S)) h))⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dvf {l : Level H} (c : Coeff l) {p : ℕ} {W : ValuationSubring ℂ} (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) :
     ∃ (F : DVF p) (b : c.V W →+* F.O), Function.Injective b := by
@@ -137,18 +131,18 @@ abbrev Chr : Type := Module.Dual ℤ t.Forms
 abbrev Dir : Set t.Forms := admitted H l.M' t.a.D₀.X
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨t.a.be, t.a.be_symm, t.a.be_adj, fun y z => (dvd_mul_left _ _).trans (t.a.be_dvd y z)⟩, t.a.be_pos, t.a.be_dvd⟩`.
+Supply the required witnesses or components.
 -/
 theorem dir_nonempty : t.Dir.Nonempty :=
   ⟨⟨t.a.be, t.a.be_symm, t.a.be_adj, fun y z => (dvd_mul_left _ _).trans (t.a.be_dvd y z)⟩, t.a.be_pos, t.a.be_dvd⟩
 
 /- English proof (translation)
-The claim follows from `isFat_adm _ H l.M'`.
+A detailed English derivation is pending.
 -/
 theorem isFat_dir : IsFat t.Dir := isFat_adm _ H l.M'
 
 /- English proof (translation)
-Use `haveI := t.a.nontriv`. Take `⟨γ, hγ⟩` from `t.dir_nonempty`. Take `⟨y, hy⟩` from `exists_ne (0 : t.a.D₀.X)`. Conclude with `⟨γ, 0, fun h => by simpa [h] using hγ.1 y hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nontrivial_forms : Nontrivial t.Forms := by
   haveI := t.a.nontriv
@@ -167,7 +161,7 @@ def fracRoot (io : c.F →+* FractionRing A) {n : ℕ} (h : n ∣ l.M') : (Fract
     (Units.mk0 ⟨zeta n, zeta_mem_coeff_of_dvd c h⟩ fun e => Complex.exp_ne_zero _ (congrArg Subtype.val e))
 
 /- English proof (translation)
-Rewrite using `[fracRoot, ← map_pow, ← map_one (Units.map io.toMonoidHom)]`. Conclude with `congrArg _ (Units.ext (Subtype.ext (isPrimitiveRoot_zeta (Nat.pos_of_dvd_of_pos h (LevelExist.M'_pos l))).pow_eq_one))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fracRoot_pow (io : c.F →+* FractionRing A) {n : ℕ} (h : n ∣ l.M') : fracRoot io h ^ n = 1 := by
   rw [fracRoot, ← map_pow, ← map_one (Units.map io.toMonoidHom)]
@@ -212,7 +206,7 @@ end Toric
 variable {p : ℕ} {W : ValuationSubring ℂ} {F : DVF p}
 
 /- English proof (translation)
-Establish `h : Function.Injective ((algebraMap A (FractionRing A)).comp b)` using `fun x y e => hb (IsFractionRing.injective A (FractionRing A) e)`. Use `⟨IsFractionRing.lift (A := V) (K := K) h, RingHom.ext fun x => ?_⟩` and prove the remaining obligations. Conclude with `IsFractionRing.lift_algebraMap (A := V) (K := K) h x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_io {K : Type} [Field K] {V : ValuationSubring K} {b : V →+* A} (hb : Function.Injective b) :
     ∃ io : K →+* FractionRing A, io.comp V.subtype = (algebraMap A (FractionRing A)).comp b := by
@@ -222,7 +216,7 @@ theorem exists_io {K : Type} [Field K] {V : ValuationSubring K} {b : V →+* A} 
   exact IsFractionRing.lift_algebraMap (A := V) (K := K) h x
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible F.O`. Take `⟨χ, hχ, -⟩` from `hY F.O b ϖ a (Or.inr ⟨inferInstance, hϖ, F.isAdicComplete hϖ⟩)`. Conclude with `⟨ϖ, χ, hϖ, (hχ χ).1 rfl, (Y.hasArcData_iff _ _ _ _ _).1 ((hχ χ).1 rfl).2.2.2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart {Xo : Moduli Dw l} {Y : Model Xo c (c.V W).subtype} (hY : Y.N4) {b : c.V W →+* F.O}
     (a : ArcIn Dw l (c.V W).subtype F.O b) :
@@ -232,7 +226,7 @@ theorem exists_chart {Xo : Moduli Dw l} {Y : Model Xo c (c.V W).subtype} (hY : Y
   exact ⟨ϖ, χ, hϖ, (hχ χ).1 rfl, (Y.hasArcData_iff _ _ _ _ _).1 ((hχ χ).1 rfl).2.2.2⟩
 
 /- English proof (translation)
-Take `⟨io, hio⟩` from `exists_io hb`. Take `⟨ϖ, χ, -, -, ⟨Wt⟩⟩` from `exists_chart hY a`. Establish `hρ : ∀ τ x, algebraMap F.O (FractionRing F.O) (b.comp (IntModelExists.embV c W τ) x) = io (embK c τ x)` using `fun τ x => (RingHom.congr_fun hio (IntModelExists.embV c W τ x)).symm`. Take `⟨e, -, he⟩` from `GlobalTheory.T.exists_constant_eigenbasis_tangent_arc abelianSchemeLaws_all.1 abelianSchemeLaws_all.2 E H Dw l Xo c _ _ Y F.O b a χ Wt (fun τ => b.comp (IntModelExists.embV c W τ)) io hio hρ (IntModelExists.exists_values c W)`. Conclude with `⟨⟨b, a, e, io, (ArcCompare.isLetters_iff Wt io e).2 ⟨hio, _, fun τ => RingHom.ext (hρ τ), he⟩⟩, rfl, HEq.rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cusp {Xo : Moduli Dw l} {Y : Model Xo c (c.V W).subtype} (hY : Y.N4) {b : c.V W →+* F.O}
     (hb : Function.Injective b) (a : ArcIn Dw l (c.V W).subtype F.O b) :
@@ -246,7 +240,7 @@ theorem exists_cusp {Xo : Moduli Dw l} {Y : Model Xo c (c.V W).subtype} (hY : Y.
   exact ⟨⟨b, a, e, io, (ArcCompare.isLetters_iff Wt io e).2 ⟨hio, _, fun τ => RingHom.ext (hρ τ), he⟩⟩, rfl, HEq.rfl⟩
 
 /- English proof (translation)
-Take `⟨F, b, hb⟩` from `exists_dvf c hp hW`. Take `⟨io, hio⟩` from `exists_io hb`. Conclude with `⟨F, ⟨(exists_cusp hY hb (toricIn b io hio)).choose⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cusp_hyp {Xo : Moduli (HostModel.hypDatum H) l} {Y : Model Xo c (c.V W).subtype} (hY : Y.N4) (hp : p.Prime)
     (hW : (p : ℂ) ∈ W.nonunits) : ∃ F : DVF p, Nonempty (Cusp (HostModel.hypDatum H) l (c.V W).subtype F.O) := by
@@ -265,7 +259,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {S : Type} [CommRing S] (t : SAB H (Sp S))
 
 /- English proof (translation)
-Establish `e : (1 : Over.mk (𝟙 (Sp S)) ⟶ t.G).left = η[t.G].left`. Rewrite using `[Hom.one_def, show toUnit (Over.mk (𝟙 (Sp S))) = 𝟙 (𝟙_ (Over (Sp S))) from toUnit_unique _ _]`. Conclude with `congrArg (·.left) (Category.id_comp η[t.G])`. Conclude with `⟨fun h => h.2.trans e, fun h => ⟨(Over.w v).trans (Category.comp_id _).symm, Eq.trans h e.symm⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isTanAtG_id (v : epsR S ⟶ t.G) : IsTanAtG t (𝟙 _) v.left ↔ IsTangent v := by
   have e : (1 : Over.mk (𝟙 (Sp S)) ⟶ t.G).left = η[t.G].left := by
@@ -274,9 +268,9 @@ theorem isTanAtG_id (v : epsR S ⟶ t.G) : IsTanAtG t (𝟙 _) v.left ↔ IsTang
   exact ⟨fun h => h.2.trans e, fun h => ⟨(Over.w v).trans (Category.comp_id _).symm, Eq.trans h e.symm⟩⟩
 
 /- English proof (translation)
-Establish `e` using `Category.comp_id (spMap (algebraMap S (DualNumber S)))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, h⟩`. Use `⟨fun i => Over.homMk (u i).left ((Over.w (u i)).trans e), hu, Over.OverMorphism.ext (h.symm.trans ?_)⟩` and prove the remaining obligations. Conclude with `BaseMdl.prod_left_congr e _ _ fun _ => rfl`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨u, hu, rfl⟩`. Use `⟨fun i => Over.homMk (u i).left ((Over.w (u i)).trans e.symm), hu, ?_⟩` and prove the remaining obligations. Conclude with `BaseMdl.prod_left_congr e _ _ fun _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCombAtG_id {n : ℕ} (v : Fin n → (epsR S ⟶ t.G)) (cf : Fin n → S) (w : epsR S ⟶ t.G) :
     IsCombAtG t (𝟙 _) (fun i => (v i).left) cf w.left ↔ IsLieComb cf v w := by
@@ -290,7 +284,7 @@ theorem isCombAtG_id {n : ℕ} (v : Fin n → (epsR S ⟶ t.G)) (cf : Fin n → 
     exact BaseMdl.prod_left_congr e _ _ fun _ => rfl
 
 /- English proof (translation)
-Use `⟨fun τ k => ⟨(isTanAtG_id t _).2 ((h τ).1 k).1, ((h τ).1 k).2⟩, fun τ w hw he => ?_⟩` and prove the remaining obligations. Set `w' : epsR S ⟶ t.G` to `Over.homMk w (hw.1.trans (Category.comp_id _))`. Conclude with `(existsUnique_congr fun cf => isCombAtG_id t (u τ) cf w').2 ((h τ).2 w' ((isTanAtG_id t w').1 hw) he)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isFrame_id {l : Level H} {c : Coeff l} (g : c.F →+* S) (u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (epsR S ⟶ t.G))
     (h : ∀ τ, (∀ k, IsTangent (u τ k) ∧
@@ -333,7 +327,7 @@ example (γ₀ : t.Forms) (h : γ₀ ∈ t.Dir) :
     fjNorm (Z := Z) ⟨t.b, withForm t.a γ₀ h, t.e, t.letters⟩ T f = fjNorm t T f := rfl
 
 /- English proof (translation)
-Rewrite using `[Mdl.genO, Scheme.preimage_basicOpen_top, map_natCast]`. Use `(Scheme.basicOpen_of_isUnit _ ?_).ge` and prove the remaining obligations. Use `(IsUnit.mk0 (p : k) (Nat.cast_ne_zero.2 hp)).map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem le_preimage_genO (hp : p ≠ 0) {k : Type} [Field k] [CharZero k] (x : Sp k ⟶ Z.X) : ⊤ ≤ x ⁻¹ᵁ Z.genO := by
   rw [Mdl.genO, Scheme.preimage_basicOpen_top, map_natCast]
@@ -342,17 +336,17 @@ theorem le_preimage_genO (hp : p ≠ 0) {k : Type} [Field k] [CharZero k] (x : S
   rwa [map_natCast] at this
 
 /- English proof (translation)
-Take `⟨ϖ, χ, hϖ, hχ, ⟨Wt⟩⟩` from `exists_chart hY (withForm t.a γ h)`. Take `⟨io, hio⟩` from `t.letters`. Take `⟨hb, ρ, hρ, he⟩` from `(ArcCompare.isLetters_iff Wt io t.e).1 hio`. Establish `inj` using `F.toLaurent_injective`. Take `⟨g, y, hy, hyj⟩` from `(Cht.extendSt E H Dw Xo p W Y i₀).1 Z.i _ (spMap F.toLaurent ≫ χ) (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Use `hχ.2.2.1 _ fun hz => mul_ne_zero ((map_ne_zero_iff _ PowerSeries.C_injective).2 hϖ.ne_zero) PowerSeries.X_ne_zero ((injective_iff_map_eq_zero _).1 inj _ ?_)` and prove the remaining obligations. Establish `hz' : F.toLaurent (PowerSeries.C ϖ * PowerSeries.X) ∈ z.asIdeal` using `hz`. Rewrite using `[show z.asIdeal = ⊥ from @Ideal.eq_bot_of_prime _ _ _ z.2] at hz')` and apply the resulting hypothesis. Set `j : F.O →+* LaurentSeries ↥F.K` to `F.toLaurent.comp PowerSeries.C`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Establish `hj : Function.Injective j` using `inj.comp PowerSeries.C_injective`. Establish `hg : g.comp (Z.i.c.V W).subtype = j.comp t.b`. Establish `e₁ : spMap (g.comp (Z.i.c.V W).subtype) = spMap (j.comp t.b)`. Rewrite using `[spMap_comp, ← hy, Category.assoc, ← (Y Z.i).j_s, ← Category.assoc, hyj, Category.assoc, hχ.1, spMap_comp, spMap_comp, Category.assoc]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e₁)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : ∀ τ a, g (embK Z.i.c τ a) = j (ρ τ a)` using `fun τ a => by`. Establish `e₁ : ρ τ a = t.b (IntModelExists.embV Z.i.c W τ a)` using `IsFractionRing.injective F.O (FractionRing F.O) ((RingHom.congr_fun (hρ τ) a).trans (RingHom.congr_fun hb (IntModelExists.embV Z.i.c W τ a)))`. Rewrite using `[e₁]`. Conclude with `RingHom.congr_fun hg (IntModelExists.embV Z.i.c W τ a)`. Take `⟨t', ⟨m⟩⟩` from `exists_sab (spMap F.toLaurent) Wt.t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu, hbas⟩` from `GlobalTheory.T.constant_arc_eigenbasis_flat_baseChange globalFns_holds E H Dw _ _ _ _ _ (Y Z.i) F.O _ _ χ Wt ρ t.e he _ F.toLaurent (IntModelExists.flat_of_injective _ hj) t' m`. Use `choose w hw hw' using hu`. Establish `fr : IsFrame (Dw` using `Dw) t' g (𝟙 _) fun τ k => (u τ k).left := isFrame_id t' g u (by simpa only [hv] using hbas)`. Establish `fr₁` using `(Cht.frameMove E H Dw _ _ Z.i.c Z.i.c _ _ Wt.t t' _ m _ g g _ fun _ _ => rfl).1 _ fr`. Establish `fr₂` using `(Cht.frameMove E H Dw _ _ Z.i.c Z.i.c _ _ (Y Z.i).t Wt.t _ Wt.m _ g g _ fun _ _ => rfl).1 _ fr₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `fr₂` using `[Category.id_comp, ← hyj]`. Take `⟨x, ⟨hx, hfl⟩, -⟩` from `Z.bij _ g y hy _ fr₂`. Conclude with `⟨x, _, h, ϖ, χ, Wt, w, hϖ, hχ, hw, hx.trans hyj, fun τ k => by rw [hw', Category.assoc], hfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isArc (hY : (Y Z.i).N4) {γ : t.Forms} (h : γ ∈ t.Dir) : ∃ x v, IsArc t γ x v := by
   obtain ⟨ϖ, χ, hϖ, hχ, ⟨Wt⟩⟩ := exists_chart hY (withForm t.a γ h)
@@ -389,7 +383,7 @@ theorem exists_isArc (hY : (Y Z.i).N4) {γ : t.Forms} (h : γ ∈ t.Dir) : ∃ x
   exact ⟨x, _, h, ϖ, χ, Wt, w, hϖ, hχ, hw, hx.trans hyj, fun τ k => by rw [hw', Category.assoc], hfl⟩
 
 /- English proof (translation)
-Take `⟨x, v, hx⟩` from `exists_isArc t hY h`. Take `⟨_, _, _, _, _, -, -, -, -, -, hfl⟩` from `id hx`. Use `haveI : CharZero (LaurentSeries ↥F.K) := charZero_of_injective_ringHom (HahnSeries.C (Γ := ℤ) (R := ↥F.K)).injective`. Take `⟨r, hr, -⟩` from `T.existsUnique_isVal hty f (le_preimage_genO hp x) hfl`. Conclude with `⟨r, x, v, hx, hr⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isSeries (hp : p ≠ 0) (hY : (Y Z.i).N4) (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) {γ : t.Forms}
     (h : γ ∈ t.Dir) : ∃ r, IsSeries t T f γ r := by
@@ -425,7 +419,7 @@ def CuspRec.of : CuspRec Z where
     fun γ x v => by rw [LinearEquiv.symm_apply_apply]⟩
 
 /- English proof (translation)
-Take `⟨ε, h₁, h₂⟩` from `(CuspRec.of t).ex.choose_spec`. Conclude with `⟨ε.trans (Module.finBasis ℤ t.Forms).equivFun.symm, h₁, h₂⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CuspRec.exists_equiv : ∃ ε : (CuspRec.of t).cusp.Forms ≃ₗ[ℤ] t.Forms,
     (∀ γ, ε γ ∈ t.Dir ↔ γ ∈ (CuspRec.of t).cusp.Dir) ∧ ∀ γ x v, IsArc t (ε γ) x v ↔ IsArc (CuspRec.of t).cusp γ x v := by
@@ -433,7 +427,7 @@ theorem CuspRec.exists_equiv : ∃ ε : (CuspRec.of t).cusp.Forms ≃ₗ[ℤ] t.
   exact ⟨ε.trans (Module.finBasis ℤ t.Forms).equivFun.symm, h₁, h₂⟩
 
 /- English proof (translation)
-Take `⟨ε, h₁, h₂⟩` from `CuspRec.exists_equiv t`. Conclude with `⟨ε.dualMap, fun e M T f χ => coefNorm_equiv ε h₁ (fun γ r => exists_congr fun x => exists_congr fun v => and_congr_left' (h₂ γ x v)) χ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CuspRec.exists_fjNorm_eq : ∃ ε : t.Chr ≃ₗ[ℤ] (CuspRec.of t).cusp.Chr,
     ∀ (e : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) → ℤ) (M : Z.X.Modules) (T : GrTriv Z e M) (f : Γ(M, Z.genO)) (χ : t.Chr),
@@ -445,7 +439,7 @@ theorem CuspRec.exists_fjNorm_eq : ∃ ε : t.Chr ≃ₗ[ℤ] (CuspRec.of t).cus
 end Arcs
 
 /- English proof (translation)
-Establish `h` using `(isExpansion_single (P := {n : ℤ | 0 < n}) (χ₀ := LinearMap.id) (fun _ h => le_of_lt h) a).coefNorm_eq isFat_pos ⟨1, show (0 : ℤ) < 1 from one_pos⟩ fun _ _ => ⟨_, rfl⟩`. Use `⟨(h _).trans (by simp), (h _).trans ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg fun e => by simpa using LinearMap.congr_fun e 1, norm_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 example {K : Type} [NormedField K] (a : K) :
     coefNorm {n : ℤ | 0 < n} (fun γ r => r = HahnSeries.single γ a) LinearMap.id = ‖a‖ ∧
@@ -459,7 +453,7 @@ example {K : Type} [NormedField K] (a : K) :
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ} (ct : At S κ p)
 
 /- English proof (translation)
-Establish `h` using `GradedPieces.exists_isGrLB _ _ _ _ p ct.W ct.hp ct.hW _ _ ct.YY ct.isYY.2.1 (ct.expo l)`. Unfold `At.Lb`. Rewrite using `[dif_pos h]`. Conclude with `nonempty_grTriv ct.hp ct.hW h.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_lbTriv (l : PsiT D → ℕ → ℤ) : Nonempty (GrTriv ct.YY (ct.expo l) (ct.Lb l).toMod) := by
   have h := GradedPieces.exists_isGrLB _ _ _ _ p ct.W ct.hp ct.hW _ _ ct.YY ct.isYY.2.1 (ct.expo l)
@@ -470,7 +464,7 @@ theorem nonempty_lbTriv (l : PsiT D → ℕ → ℤ) : Nonempty (GrTriv ct.YY (c
 def lbTriv (l : PsiT D → ℕ → ℤ) : GrTriv ct.YY (ct.expo l) (ct.Lb l).toMod := (nonempty_lbTriv ct l).some
 
 /- English proof (translation)
-The claim follows from `((S.sys.clauses p ct.W ct.hp ct.hW).2 _).2.2`.
+A detailed English derivation is pending.
 -/
 theorem charts_YY : (ct.Y ct.YY.i).N4 := ((S.sys.clauses p ct.W ct.hp ct.hW).2 _).2.2
 
@@ -492,7 +486,7 @@ namespace FJ
 variable {ct : At S κ p} {l : PsiT D → ℕ → ℤ} {f : ct.Sec (ct.Lb l)}
 
 /- English proof (translation)
-Use `⟨fun h F t χ => ?_, fun h s χ => h _ _ χ⟩` and prove the remaining obligations. Take `⟨ε, hε⟩` from `CuspRec.exists_fjNorm_eq t`. Conclude with `hε _ _ _ f χ ▸ h (CuspRec.of t) (ε χ)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fjN_le_iff (B : ℝ) : (∀ s χ, (fjTrue ct).fjN l f s χ ≤ B) ↔
     ∀ (F : DVF p) (t : CuspOn ct.YY F) (χ : t.Chr), fjNorm t (lbTriv ct l) f χ ≤ B := by
@@ -501,28 +495,28 @@ theorem fjN_le_iff (B : ℝ) : (∀ s χ, (fjTrue ct).fjN l f s χ ≤ B) ↔
   exact hε _ _ _ f χ ▸ h (CuspRec.of t) (ε χ)
 
 /- English proof (translation)
-The claim follows from `h.coefNorm_eq t.isFat_dir t.dir_nonempty (fun _ => exists_isSeries t _ f ct.hp.ne_zero (charts_YY ct) ct.isYY.2.1.1) χ`.
+A detailed English derivation is pending.
 -/
 theorem fjNorm_eq {F : DVF p} {t : CuspOn ct.YY F} {c : t.Chr → ↥F.K} (h : IsFJ t (lbTriv ct l) f c) (χ : t.Chr) :
     fjNorm t (lbTriv ct l) f χ = ‖c χ‖ :=
   h.coefNorm_eq t.isFat_dir t.dir_nonempty (fun _ => exists_isSeries t _ f ct.hp.ne_zero (charts_YY ct) ct.isYY.2.1.1) χ
 
 /- English proof (translation)
-The claim follows from `IsExpansion.unique h h' t.isFat_dir t.dir_nonempty fun _ => exists_isSeries t _ f ct.hp.ne_zero (charts_YY ct) ct.isYY.2.1.1`.
+A detailed English derivation is pending.
 -/
 theorem IsFJ.unique {F : DVF p} {t : CuspOn ct.YY F} {c c' : t.Chr → ↥F.K} (h : IsFJ t (lbTriv ct l) f c)
     (h' : IsFJ t (lbTriv ct l) f c') : c = c' :=
   IsExpansion.unique h h' t.isFat_dir t.dir_nonempty fun _ => exists_isSeries t _ f ct.hp.ne_zero (charts_YY ct) ct.isYY.2.1.1
 
 /- English proof (translation)
-The claim follows from `coefSet_nonempty t.isFat_dir t.dir_nonempty (fun _ => exists_isSeries t _ f ct.hp.ne_zero (charts_YY ct) ct.isYY.2.1.1) h`.
+A detailed English derivation is pending.
 -/
 theorem coefSet_nonempty_of_nonneg {F : DVF p} (t : CuspOn ct.YY F) {χ : t.Chr} (h : Nonneg t.Dir χ) :
     (coefSet t.Dir (IsSeries t (lbTriv ct l) f) χ).Nonempty :=
   coefSet_nonempty t.isFat_dir t.dir_nonempty (fun _ => exists_isSeries t _ f ct.hp.ne_zero (charts_YY ct) ct.isYY.2.1.1) h
 
 /- English proof (translation)
-The claim follows from `coefNorm_eq_zero fun h' => h.not_ge ((nonneg_admissible_iff_positiveDefinite _).1 h' γ hγ)`.
+A detailed English derivation is pending.
 -/
 theorem fjN_eq_zero (s : (fjTrue ct).FJd) (χ : (fjTrue ct).Chr s) (γ : s.cusp.Forms)
     (hγ : ∀ y, y ≠ 0 → 0 < (γ : LinearMap.BilinForm ℤ s.cusp.a.D₀.X) y y) (h : (show s.cusp.Chr from χ) γ < 0) :
@@ -530,7 +524,7 @@ theorem fjN_eq_zero (s : (fjTrue ct).FJd) (χ : (fjTrue ct).Chr s) (γ : s.cusp.
   coefNorm_eq_zero fun h' => h.not_ge ((nonneg_admissible_iff_positiveDefinite _).1 h' γ hγ)
 
 /- English proof (translation)
-The claim follows from `coefNorm_le zero_le_one fun γ _ r hr n => by obtain ⟨g, rfl⟩ := h _ _ γ r hr exact s.F.norm_coeff_toLaurent g n`.
+A detailed English derivation is pending.
 -/
 theorem fjN_le_one (h : ∀ (F : DVF p) (t : CuspOn ct.YY F) γ r, IsSeries t (lbTriv ct l) f γ r →
     r ∈ F.toLaurent.range) (s : (fjTrue ct).FJd) (χ : (fjTrue ct).Chr s) : (fjTrue ct).fjN l f s χ ≤ 1 :=
@@ -539,16 +533,16 @@ theorem fjN_le_one (h : ∀ (F : DVF p) (t : CuspOn ct.YY F) γ r, IsSeries t (l
     exact s.F.norm_coeff_toLaurent g n
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨CuspRec.of (exists_cusp (charts_YY ct) hb a).choose⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_fjd {F : DVF p} {b : ct.YY.i.c.V ct.W →+* F.O} (hb : Function.Injective b)
     (a : ArcIn S.Dw ct.YY.i.l (ct.YY.i.c.V ct.W).subtype F.O b) : Nonempty (fjTrue ct).FJd :=
   ⟨CuspRec.of (exists_cusp (charts_YY ct) hb a).choose⟩
 
 /- English proof (translation)
-Take `⟨F, b, hb⟩` from `exists_dvf ct.YY.i.c ct.hp ct.hW`. Take `⟨io, hio⟩` from `exists_io hb`. Establish `: Nonempty (ArcIn S.Dw ct.YY.i.l (ct.YY.i.c.V ct.W).subtype F.O b)`. Generalize the expression as in `ct.YY.i = i at *`. Rewrite using `[h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨toricIn b io hio⟩`. Conclude with `nonempty_fjd hb this.some`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_fjd_hyp (h : S.Dw = HostModel.hypDatum A.H) : Nonempty (fjTrue ct).FJd := by
   obtain ⟨F, b, hb⟩ := exists_dvf ct.YY.i.c ct.hp ct.hW

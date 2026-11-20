@@ -8,7 +8,7 @@ universe u v
 set_option autoImplicit false
 
 /- English proof (translation)
-Establish `h : IsUnit (n : k)` using `isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 hn)`. Simplify using `using h.map (algebraMap k A)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem natCast_isUnit (k : Type) [Field k] [CharZero k] {A : Type} [CommRing A] [Algebra k A]
     {n : ℕ} (hn : n ≠ 0) : IsUnit (n : A) := by
@@ -16,15 +16,13 @@ private theorem natCast_isUnit (k : Type) [Field k] [CharZero k] {A : Type} [Com
   simpa using h.map (algebraMap k A)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hnot`. Take `⟨M, hM, hmem⟩` from `exists_max_ideal_of_mem_nonunits hnot`. Take `⟨Q, hQ⟩` from `onto ⟨M, hM.isPrime⟩`. Establish `hcomap : Q.asIdeal.comap (algebraMap A A') = M` using `congrArg PrimeSpectrum.asIdeal hQ`. Set `Am` to `Localization.AtPrime M`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `L` to `LocalizedModule M.primeCompl A'`. Establish `base` using `IsLocalizedModule.isBaseChange M.primeCompl Am (LocalizedModule.mkLinearMap M.primeCompl A')`. Use `haveI : Module.Free Am L := Module.free_of_flat_of_isLocalRing`. Use `haveI : Nontrivial L := by`. Use `⟨⟨LocalizedModule.mkLinearMap M.primeCompl _ 1, 0, fun h ↦ ?_⟩⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `(IsLocalizedModule.eq_zero_iff M.primeCompl (LocalizedModule.mkLinearMap M.primeCompl A')).1 h`. Establish `ht0 : algebraMap A A' t = 0`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `ht`. Establish `hin : (t : A) ∈ Q.asIdeal.comap (algebraMap A A')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, ht0]`. Conclude with `Q.asIdeal.zero_mem`. Conclude with `t.2 (hcomap.le hin)`. Establish `hrank : algebraMap A Am (algTrace A A' 1) = (Module.finrank Am L : Am)`. Rewrite using `[algTrace_apply, ← projTrace_of_isBaseChange base (LinearMap.mul _ _ 1) LinearMap.id (fun x ↦ by simp), projTrace_eq_trace, LinearMap.trace_id]`.
-
-Establish `hne : Module.finrank Am L ≠ 0` using `fun h ↦ not_subsingleton L ((Module.finrank_eq_zero_iff_of_free Am L).1 h)`. Establish `hunit : IsUnit (algebraMap A Am (algTrace A A' 1))`. Rewrite using `[hrank, ← map_natCast (algebraMap A Am)]`. Conclude with `(natCast_isUnit k hne).map _`. Conclude with `(IsLocalization.AtPrime.isUnit_to_map_iff Am M _).1 hunit hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unit_of_trace_one (k : Type) [Field k] [CharZero k] {A A' : Type} [CommRing A]
     [CommRing A'] [Algebra k A] [Algebra A A'] [Module.Finite A A'] [Module.Projective A A']
@@ -63,9 +61,7 @@ variable {k : Type} [Field k] [CharZero k] {X X' : Scheme.{0}} {s : X ⟶ Sp k} 
   {f : X' ⟶ X} [IsFinite f] [Etale f]
 
 /- English proof (translation)
-Use `letI := secAlg s s' f U`. Use `haveI := sec_finite (s := s) (s' := s') (f := f) hU`. Use `haveI := sec_etale (s := s) (s' := s') (f := f) hU`. Use `haveI := projective_of_etale (Sec s U) (Sec s' (f ⁻¹ᵁ U))`. Establish `hsq : Surjective (Spec.map (f.app U))` using `MorphismProperty.of_isPullback (P := @Surjective) (isPullback_fromSpec_app_preimage f hU (hU.preimage f)) inferInstance`.
-
-Conclude with `unit_of_trace_one k (A := Sec s U) (A' := Sec s' (f ⁻¹ᵁ U)) hsq.surj`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem unit_secTrace [Surjective f] {U : X.Opens} (hU : IsAffineOpen U) :
     IsUnit (secTrace (f := f) s s' hU 1) := by
@@ -80,9 +76,7 @@ private theorem unit_secTrace [Surjective f] {U : X.Opens} (hU : IsAffineOpen U)
 
 omit [CharZero k] in
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `toOm_surjective (s := s) (j := j) hU w`. Rewrite using `[Scheme.Modules.Hom.comp_app]`. Express the relevant statement in the definitionally equal form `(omegaTrace hf j).app U ((omegaPull hf j).val.app (op U) ((toOmega s j).app (op U) x)) = _`. Rewrite using `[omegaPull_toOmega hf j U x, ← one_smul (Sec s' (f ⁻¹ᵁ U)) (formPull hf U j x)]`. Use `erw [omegaTrace_toOm_smul_formPull hf j hU]`.
-
-Conclude with `(toOm s j U).map_smul _ x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pull_trace_app (hf : f ≫ s = s') (j : ℕ) {U : X.Opens} (hU : IsAffineOpen U)
     (w : Γ(Omega s j, U)) :
@@ -95,11 +89,11 @@ private theorem pull_trace_app (hf : f ≫ s = s') (j : ℕ) {U : X.Opens} (hU :
   exact (toOm s j U).map_smul _ x
 
 /- English proof (translation)
-Set `t : ∀ U : X.affineOpens, (Sec s U.1)ˣ` to `fun U ↦ (unit_secTrace (s := s) (s' := s') (f := f) U.2).unit`. Establish `ht : ∀ U : X.affineOpens, (t U : Sec s U.1) = secTrace (f` using `f) s s' U.2 1 := fun _ ↦ rfl`. Establish `hinv : ∀ (U V : X.affineOpens) (h : V.1 ≤ U.1), Sec.res s h ((t U)⁻¹ : (Sec s U.1)ˣ) = ((t V)⁻¹ : (Sec s V.1)ˣ)` using `fun U V h ↦ by`. Establish `e : Sec.res s h (t U) = t V`. Rewrite using `[ht, ht, secTrace_res U.2 V.2 h, map_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Units.eq_inv_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[← e, ← map_mul, Units.inv_mul, map_one]`. Set `mulInv : ∀ U : X.affineOpens, Γ(Omega s j, U.1) →ₗ[Γ(X, U.1)] Γ(Omega s j, U.1)` to `fun U ↦ LinearMap.lsmul Γ(X, U.1) Γ(Omega s j, U.1) (show Sec s U.1 from ((t U)⁻¹ : (Sec s U.1)ˣ))`. Establish `hmul : ∀ (U : X.affineOpens) (w : Γ(Omega s j, U.1)), mulInv U w = (((t U)⁻¹ : (Sec s U.1)ˣ) : Sec s U.1) • w` using `fun _ _ ↦ rfl`. Establish `hres : ∀ (U V : X.Opens) (h : V ≤ U) (g : Sec s U) (n : Γ(Omega s j, U)), (Omega s j).presheaf.map (homOfLE h).op (g • n) = Sec.res s h g • (Omega s j).presheaf.map (homOfLE h).op n` using `fun _ _ _ _ _ ↦ Scheme.Modules.map_smul _ _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨homOfAffine mulInv fun U V h w ↦ by rw [hmul, hmul, hres, hinv], hom_ext_affine fun U hU w ↦ ?_⟩` and prove the remaining obligations. Use `(homOfAffine_app mulInv _ ⟨U, hU⟩ ((omegaPull hf j ≫ omegaTrace hf j).app U w)).trans ?_` and prove the remaining obligations. Rewrite using `[hmul, pull_trace_app hf j hU, ← ht ⟨U, hU⟩, smul_smul, Units.inv_mul, one_smul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem pull_trace_leftInv [Surjective f] (hf : f ≫ s = s') (j : ℕ) :
     ∃ ψ : Omega s j ⟶ Omega s j, (omegaPull hf j ≫ omegaTrace hf j) ≫ ψ = 𝟙 _ := by
@@ -128,9 +122,9 @@ private theorem pull_trace_leftInv [Surjective f] (hf : f ≫ s = s') (j : ℕ) 
 end
 
 /- English proof (translation)
-Introduce `k _ _ a b Z W p r c _ _ _ hc x y hxy`. Use `letI := algΓ p`. Take `⟨ψ, hψ⟩` from `pull_trace_leftInv hc a`. Establish `back : ∀ z : hodgeH p a b, cohOn.map k ψ ⊤ b (hodgeTrace hc a b (hodgePull hc a b z)) = z` using `fun z ↦ by`. Use `(congrArg (cohOn.map k ψ ⊤ b) (hodgeTrace_hodgePull hc a b z)).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(cohOn.map_map k _ ψ z).trans ?_` and prove the remaining obligations. Rewrite using `[hψ]`. Conclude with `LinearMap.congr_fun (cohOn.map_id k _ ⊤ b) z`. Rewrite using `[← back x, ← back y, hxy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pHodgeInj :
     HodgeInj := by

@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.PicAffineSpace
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun z => TensorProduct.lid B M (φ.rTensor M z)) (Module.Invertible.tmul_comm (R := B) (m₁ := s) (m₂ := m))`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem form_smul_comm {B M : Type} [CommRing B] [AddCommGroup M] [Module B M] [Module.Invertible B M]
     (φ : M →ₗ[B] B) (s m : M) : φ s • m = φ m • s := by
@@ -27,11 +27,9 @@ theorem form_smul_comm {B M : Type} [CommRing B] [AddCommGroup M] [Module B M] [
   simpa using h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hP` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Take `⟨z, hz⟩` from `(Module.Invertible.bijective (R := A) (M := M)).2 1`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hz]`. Use `clear hz`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul φ m => simpa using h φ m`.
-
-Consider the case `add x y hx hy => rw [map_add]`. Conclude with `P.add_mem hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_pairing_notMem {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
     [Module.Invertible A M] (P : Ideal A) (hP : P ≠ ⊤) : ∃ (φ : M →ₗ[A] A) (m : M), φ m ∉ P := by
@@ -48,13 +46,13 @@ theorem exists_pairing_notMem {A M : Type} [CommRing A] [AddCommGroup M] [Module
   | add x y hx hy => rw [map_add]; exact P.add_mem hx hy
 
 /- English proof (translation)
-Use `letI : Algebra A B := ((E : MvPolynomial σ A →+* B).comp (algebraMap A _)).toAlgebra`. Take `⟨M₀, hM₀⟩` from `(pic_mapAlgebra_mvPolynomial_bijective A σ).2 (CommRing.Pic.mapRingHom (E.symm : B →+* MvPolynomial σ A) (CommRing.Pic.mk B M))`. Establish `h : CommRing.Pic.mapAlgebra A B M₀ = CommRing.Pic.mk B M`. Use `congrArg (CommRing.Pic.mapRingHom (E : MvPolynomial σ A →+* B)) hM₀` as an intermediate fact. Rewrite `this` using `[← CommRing.Pic.mapRingHom_algebraMap, CommRing.Pic.mapRingHom_mapRingHom, CommRing.Pic.mapRingHom_mapRingHom, RingEquiv.comp_symm, CommRing.Pic.mapRingHom_id_apply]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← CommRing.Pic.mapRingHom_algebraMap]`. Conclude with `this`. Take `⟨e⟩ : Nonempty (B ⊗[A] M₀ ≃ₗ[B] M)` from `CommRing.Pic.mk_eq_mk_iff.mp h`. Take `⟨φ, m₀, hφ⟩` from `exists_pairing_notMem (M := M₀) P hP`. Set `ψ : M →ₗ[B] B` to `(TensorProduct.AlgebraTensorModule.rid A B B).toLinearMap ∘ₗ φ.baseChange B ∘ₗ e.symm.toLinearMap`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e (1 ⊗ₜ m₀), φ m₀, hφ, fun m => ⟨ψ m, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← form_smul_comm]`. Use `congr 1`. Simplify using `only [ψ, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, LinearMap.baseChange_tmul, TensorProduct.AlgebraTensorModule.rid_tmul]`. Rewrite using `[Algebra.smul_def, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_generator_away {A B M σ : Type} [CommRing A] [IsDomain A] [IsIntegrallyClosed A]
     [CommRing B] (E : MvPolynomial σ A ≃+* B) [AddCommGroup M] [Module B M] [Module.Invertible B M]
@@ -84,25 +82,23 @@ theorem exists_generator_away {A B M σ : Type} [CommRing A] [IsDomain A] [IsInt
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Use `choose U hU s hs using hl`. Establish `hep : ∀ x : X, p (e x) = x` using `fun x => congrArg (fun q => q x) he`. Establish `base : ∀ (W : X.Opens) (u : Γ(Y, p ⁻¹ᵁ W)ˣ) (Z : Scheme.{0}) (f : Z ⟶ Y) (z : Z), p (f z) ∈ W → gm ((f ≫ p) ≫ e) z _ u = gm f z _ u`. Introduce `W u Z f z hz`. Choose the witnesses or unpack the hypotheses as in `⟨V, hV, hx, hVW⟩ : ∃ V : X.Opens, IsAffineOpen V ∧ p (f z) ∈ V ∧ V ≤ W := by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨V, hV, rfl⟩, hx, hVW⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hz W.isOpen`. Conclude with `⟨V, hV, hx, hVW⟩`. Take `⟨v, hv⟩` from `hu V hV (res (p.preimage_mono hVW) u)`. Establish `hx' : p (((f ≫ p) ≫ e) z) ∈ V` using `(congrArg (· ∈ V) (hep (p (f z)))).mpr hx`. Rewrite using `[← gm_res f z (p.preimage_mono hVW) hx, ← gm_res _ z (p.preimage_mono hVW) hx', hv, gm_pull _ _ _ _ hx, gm_pull _ _ _ _ hx', Category.assoc, he, Category.comp_id]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `quot : ∀ x y : X, ∃ h : Γ(Y, p ⁻¹ᵁ (U x ⊓ U y))ˣ, ∀ (Z : Scheme.{0}) (f : Z ⟶ Y) (z : Z) (i : N.ι), p (f z) ∈ U x → p (f z) ∈ U y → f z ∈ N.U i → gm f z _ h = gm f z _ (s y i) * (gm f z _ (s x i))⁻¹`. Introduce `x y`. Set `W : N.ι → Y.Opens` to `fun i => p ⁻¹ᵁ (U x ⊓ U y) ⊓ N.U i`. Establish `l₁ : ∀ i, W i ≤ p ⁻¹ᵁ U x ⊓ N.U i` using `fun i _ hz => ⟨hz.1.1, hz.2⟩`. Establish `l₂ : ∀ i, W i ≤ p ⁻¹ᵁ U y ⊓ N.U i` using `fun i _ hz => ⟨hz.1.2, hz.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v : ∀ (Z : Scheme.{0}) (f : Z ⟶ Y) (z : Z) (i : N.ι), f z ∈ W i → gm f z (W i) (res (l₂ i) (s y i) * (res (l₁ i) (s x i))⁻¹) = gm f z _ (s y i) * (gm f z _ (s x i))⁻¹` using `fun Z f z i hz => by`. Rewrite using `[map_mul, map_inv, gm_res f z _ hz, gm_res f z _ hz]`. Take `⟨h, hh⟩` from `glue_unit (p ⁻¹ᵁ (U x ⊓ U y)) W (fun _ => inf_le_left) (fun z hz => by`. Take `⟨i, hi⟩` from `exists_chart hN z`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, hz, hi⟩)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun i => res (l₂ i) (s y i) * (res (l₁ i) (s x i))⁻¹) (fun i j z hz => by`. Rewrite using `[v _ _ z i hz.1, v _ _ z j hz.2, hs x _ (𝟙 Y) z i j hz.1.1.1 hz.1.2 hz.2.2, hs y _ (𝟙 Y) z i j hz.1.1.2 hz.1.2 hz.2.2, mul_inv, _root_.mul_mul_mul_comm, mul_inv_cancel, _root_.one_mul])`. Use `⟨h, fun Z f z i hx hy hi => ?_⟩` and prove the remaining obligations. Establish `hz : f z ∈ W i` using `⟨⟨hx, hy⟩, hi⟩`. Rewrite using `[← v Z f z i hz, ← hh i, gm_res f z _ hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose h hh using quot`. Establish `l : ∀ x y, U x ⊓ U y ≤ e ⁻¹ᵁ (p ⁻¹ᵁ (U x ⊓ U y))` using `fun x y z hz => (congrArg (· ∈ U x ⊓ U y) (hep z)).mpr hz`. Set `N₀ : LB X` to `⟨X, U, fun x y => res (l x y) (pullU e _ (h x y))⟩`. Establish `g₀ : ∀ (Z : Scheme.{0}) (f : Z ⟶ X) (z : Z) (x y : X), f z ∈ U x → f z ∈ U y → gm f z (U x ⊓ U y) (N₀.g x y) = gm (f ≫ e) z _ (h x y)` using `fun Z f z x y hx hy => (gm_res f z (l x y) ⟨hx, hy⟩ _).trans (gm_pull f e z _ (l x y ⟨hx, hy⟩) _)`. Establish `coc : ∀ (z : X) (a b c : X), z ∈ U a → z ∈ U b → z ∈ U c → gm (𝟙 X) z (U a ⊓ U b) (N₀.g a b) * gm (𝟙 X) z (U b ⊓ U c) (N₀.g b c) = gm (𝟙 X) z (U a ⊓ U c) (N₀.g a c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z a b c ha hb hc`. Take `⟨i, hi⟩` from `exists_chart hN (e z)`. Establish `m : ∀ d, z ∈ U d → p ((𝟙 X ≫ e) z) ∈ U d` using `fun d hd => (congrArg (· ∈ U d) (hep z)).mpr hd`. Rewrite using `[g₀ _ _ z a b ha hb, g₀ _ _ z b c hb hc, g₀ _ _ z a c ha hc, hh a b _ _ z i (m a ha) (m b hb) hi, hh b c _ _ z i (m b hb) (m c hc) hi, hh a c _ _ z i (m a ha) (m c hc) hi, mul_comm, _root_.mul_assoc, inv_mul_cancel_left]`. Use `⟨N₀, ⟨top_unique fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hU x⟩, fun a => unit_ext fun z hz => ?_, fun a b c => unit_ext fun z hz => ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[gm_res _ z _ hz, map_one]`. Conclude with `mul_eq_left.1 (coc z a a a hz hz hz)`. Conclude with `(map_mul _ _ _).trans ((congrArg₂ (· * ·) (gm_res _ z _ hz _) (gm_res _ z _ hz _)).trans ((coc z a b c hz.1.1 hz.1.2 hz.2).trans (gm_res _ z _ hz _).symm))`. Establish `lw : ∀ (J : (N₀.pull p).ι) (k : N.ι), (N₀.pull p).U J ⊓ N.U k ≤ p ⁻¹ᵁ U (J PUnit.unit) ⊓ N.U k` using `fun J k z hz => ⟨mem_pull.1 hz.1, hz.2⟩`. Use `⟨⟨fun q => (res (lw q.1 q.2) (s (q.1 PUnit.unit) q.2))⁻¹⟩, (isGen_iff _).2 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `Z f z x y k k' hx hy hk hk'`. Establish `w : ∀ (a : X) (i : N.ι), p (f z) ∈ U a → f z ∈ N.U i → gw (L` using `N₀) (⟨fun q => (res (lw q.1 q.2) (s (q.1 PUnit.unit) q.2))⁻¹⟩ : LB.Iso N (N₀.pull p)) f z a i = (gm f z _ (s a i))⁻¹ := fun a i ha hi => (map_inv _ _).trans (congrArg (·⁻¹) (gm_res f z (lw (fun _ => a) i) ⟨mem_pull.2 ha, hi⟩ _))`. Establish `e₁` using `(g₀ Z (f ≫ p) z x y hx hy).trans ((base (U x ⊓ U y) _ Z f z ⟨hx, hy⟩).trans (hh x y Z f z k hx hy hk))`. Rewrite using `[w x k hx hk, w y k' hy hk']`. Use `Eq.trans ?_ (congrArg (fun t => t * _ * _) e₁).symm` and prove the remaining obligations.
-
-Rewrite using `[hs y Z f z k k' hy hk hk']`. Establish `grp : ∀ {G : Type} [CommGroup G] (a b c : G), a⁻¹ = b * c * a⁻¹ * b⁻¹ * c⁻¹` using `fun a b c => by`. Rewrite using `[_root_.mul_assoc, ← mul_inv, mul_right_comm, mul_inv_cancel, _root_.one_mul]`. Conclude with `grp _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lbIso_pull_of_local (p : Y ⟶ X) (e : X ⟶ Y) (he : e ≫ p = 𝟙 X) {N : LB Y} (hN : N.IsLB)
     (hu : ∀ V : X.Opens, IsAffineOpen V → ∀ u : Γ(Y, p ⁻¹ᵁ V)ˣ, ∃ v : Γ(X, V)ˣ, u = pullU p V v)
@@ -183,19 +179,17 @@ theorem exists_lbIso_pull_of_local (p : Y ⟶ X) (e : X ⟶ Y) (he : e ≫ p = �
     exact grp _ _ _
 
 /- English proof (translation)
-Use `haveI := SecOn.invertible hN hV`. Take `⟨s, a, ha, hs⟩` from `exists_generator_away (M := SecOn N (p ⁻¹ᵁ V)) E ((IsLocalRing.maximalIdeal (X.presheaf.stalk x)).comap (X.presheaf.germ V x hx).hom) (Ideal.comap_ne_top _ (IsLocalRing.maximalIdeal.isMaximal _).ne_top)`. Rewrite `hs` using `[hE]`. Establish `l : ∀ i, p ⁻¹ᵁ X.basicOpen a ⊓ N.U i ≤ p ⁻¹ᵁ V ⊓ N.U i` using `fun i => inf_le_inf_right _ (p.preimage_mono (X.basicOpen_le a))`. Establish `hu : ∀ i, IsUnit (rs Y (l i) (GlobalTheory.LB.coord s i))` using `fun i => Y.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hyb⟩` from `hV.exists_basicOpen_le (V := p ⁻¹ᵁ X.basicOpen a ⊓ N.U i) ⟨y, hy⟩ (l i hy).1`. Establish `hi : Y.basicOpen b ≤ N.U i` using `hb.trans inf_le_right`. Take `⟨n, t, ht⟩` from `SecOn.exists_pow_smul_eq_restrict hN hV.isCompact hV.isQuasiSeparated b (Y.basicOpen_le b) rfl ((SecOn.chart hN i hi).symm 1)`. Take `⟨r, hr⟩` from `hs t`. Establish `h₁` using `congrArg (fun m => SecOn.chart hN i hi (SecOn.restrict N (Y.basicOpen_le b) m)) hr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.map_smulₛₗ, ← ht, map_smul, LinearEquiv.apply_symm_apply, smul_eq_mul, _root_.mul_one] at h₁`. Establish `u₁ : IsUnit (rs Y (Y.basicOpen_le b) b)` using `Y.toRingedSpace.isUnit_res_basicOpen b`. Establish `u₂ : IsUnit (rs Y (Y.basicOpen_le b) ((p.app V).hom a))`. Establish `hle : Y.basicOpen b ≤ Y.basicOpen ((p.app V).hom a)`. Rewrite using `[← Scheme.preimage_basicOpen]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hb.trans inf_le_left`. Use `(Y.toRingedSpace.isUnit_res_basicOpen ((p.app V).hom a)).map (rs Y hle)` as an intermediate fact. Conclude with `(congrArg IsUnit (rs_rs (Y.basicOpen_le _) hle _)).mp this`. Establish `u₃` using `isUnit_of_mul_isUnit_right (h₁ ▸ u₂.mul (u₁.pow n))`. Establish `e₁ : SecOn.chart hN i hi (SecOn.restrict N (Y.basicOpen_le b) s) = rs Y hb (rs Y (l i) (GlobalTheory.LB.coord s i))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SecOn.chart_apply, SecOn.coord_restrict, rs_rs, rs_rs]`. Rewrite `u₃` using `[e₁]`. Conclude with `(congrArg IsUnit (TopCat.Presheaf.germ_res_apply Y.presheaf (homOfLE hb) y hyb _)).mp (u₃.map (Y.presheaf.germ _ y hyb).hom)`. Use `⟨X.basicOpen a, (X.mem_basicOpen a x hx).2 (IsLocalRing.notMem_maximalIdeal.1 ha), fun i => (hu i).unit, fun Z f z i j h hi hj => ?_⟩` and prove the remaining obligations. Set `O` to `p ⁻¹ᵁ X.basicOpen a ⊓ N.U i ⊓ N.U j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : f z ∈ O` using `⟨⟨h, hi⟩, hj⟩`. Establish `l₁ : O ≤ p ⁻¹ᵁ X.basicOpen a ⊓ N.U i` using `inf_le_left`. Establish `l₂ : O ≤ p ⁻¹ᵁ X.basicOpen a ⊓ N.U j` using `inf_le_inf_right _ inf_le_left`. Establish `l₃ : O ≤ N.U i ⊓ N.U j` using `inf_le_inf_right _ inf_le_right`. Establish `: res l₁ (hu i).unit = res l₃ (N.g i j) * res l₂ (hu j).unit` using `Units.ext <| (rs_rs (l i) l₁ _).trans ((SecOn.compat s i j _ (l₂.trans (l j)) l₃).trans (congrArg _ (rs_rs (l j) l₂ _).symm))`.
-
-Rewrite using `[← gm_res f z l₁ hz, this, map_mul, gm_res f z _ hz, gm_res f z _ hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_generator (p : Y ⟶ X) {N : LB Y} (hN : N.IsLB) {V : X.Opens}
     (hV : IsAffineOpen (p ⁻¹ᵁ V)) [IsDomain Γ(X, V)] [IsIntegrallyClosed Γ(X, V)] {σ : Type}
@@ -248,9 +242,9 @@ theorem exists_local_generator (p : Y ⟶ X) {N : LB Y} (hN : N.IsLB) {V : X.Ope
   rw [← gm_res f z l₁ hz, this, map_mul, gm_res f z _ hz, gm_res f z _ hz]
 
 /- English proof (translation)
-Use `letI := cstAlgebra f V`. Use `letI : Algebra (MvPolynomial σ K) (MvPolynomial σ Γ(X, V)) := MvPolynomial.algebraMvPolynomial`. Establish `h₁` using `isPushout_cst H hV (V' := p ⁻¹ᵁ V) rfl`. Establish `h₂` using `CommRingCat.isPushout_iff_isPushout.mpr (inferInstance : Algebra.IsPushout K (MvPolynomial σ K) Γ(X, V) (MvPolynomial σ Γ(X, V)))`. Use `⟨(IsPushout.isoIsPushout _ _ h₂ h₁).commRingCatIsoToRingEquiv, fun a => ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun q => q.hom a) (IsPushout.inr_isoIsPushout_hom _ _ h₂ h₁)` as an intermediate fact. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ringEquiv_mvPolynomial {K σ : Type} [CommRing K] {f : X ⟶ Spec (CommRingCat.of K)}
     {p : Y ⟶ X} {f' : Y ⟶ Spec (CommRingCat.of (MvPolynomial σ K))}
@@ -274,13 +268,11 @@ namespace GlobalTheory
 open PicAffineSpace
 
 /- English proof (translation)
-Introduce `K _ X _ _ hX g N hN`. Set `A : Over (Spec (CommRingCat.of K))` to `Over.mk (Spec.map (CommRingCat.ofHom (algebraMap K (MvPolynomial (Fin g) K))))`. Establish `H : IsPullback (snd A X).left (fst A X).left X.hom (Spec.map (CommRingCat.ofHom (algebraMap K (MvPolynomial (Fin g) K))))` using `(IsPullback.of_hasPullback A.hom X.hom).flip`. Set `z : MvPolynomial (Fin g) K →ₐ[K] K` to `MvPolynomial.aeval fun _ => 0`. Set `e : X.left ⟶ (A ⊗ X).left` to `H.lift (𝟙 _) (X.hom ≫ Spec.map (CommRingCat.ofHom z.toRingHom)) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[Category.id_comp, Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: z.toRingHom.comp (algebraMap K (MvPolynomial (Fin g) K)) = RingHom.id K` using `RingHom.ext fun a => z.commutes a`. Rewrite using `[this, CommRingCat.ofHom_id, Spec.map_id, Category.comp_id])`. Use `exists_lbIso_pull_of_local (snd A X).left e (H.lift_fst _ _ _) hN (fun V hV u => ?_) fun x => ?_` and prove the remaining obligations. Take `⟨E, hE⟩` from `exists_ringEquiv_mvPolynomial H hV`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, h⟩` from `MvPolynomial.isUnit_iff_eq_C_of_isReduced.mp (u.isUnit.map E.symm)`. Use `⟨hr.unit, Units.ext ?_⟩` and prove the remaining obligations. Conclude with `((E.apply_symm_apply _).symm.trans (congrArg E h)).trans (hE r)`. Take `⟨_, ⟨V, hV, rfl⟩, hx, -⟩` from `X.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ haveI : Nonempty V := ⟨⟨x, hx⟩⟩ haveI := isIntegrallyClosed_sections_of_stalks (Y := X.left) (fun y => haveI := hX y; inferInstance) hV`. Take `⟨E, hE⟩` from `exists_ringEquiv_mvPolynomial H hV`.
-
-Conclude with `exists_local_generator _ hN (isAffineOpen_preimage_of_isPullback H hV) E hE hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_lbIso_pull_affineSpace : ∀ (K : Type) [Field K] (X : Over (Spec (CommRingCat.of K))) [IsIntegral X.left] [IsLocallyNoetherian X.left], (∀ x : X.left, UniqueFactorizationMonoid (X.left.presheaf.stalk x)) → ∀ (g : ℕ) (N : LB (Over.mk (Spec.map (CommRingCat.ofHom (algebraMap K (MvPolynomial (Fin g) K)))) ⊗ X).left), N.IsLB → ∃ N₀ : LB X.left, N₀.IsLB ∧ LBIso N (N₀.pull (snd _ X).left) := by
   intro K _ X _ _ hX g N hN

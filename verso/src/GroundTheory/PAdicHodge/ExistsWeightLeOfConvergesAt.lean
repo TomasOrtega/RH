@@ -22,45 +22,43 @@ def ConvAll (b : T.B) : Prop := ∀ ρ : ℝ, 0 < ρ → ρ < 1 → ConvergesAt 
 variable {T}
 
 /- English proof (translation)
-Introduce `ρ h0 h1` and use `(T.convergesAt_coeffB_add h0 h1 (ha ρ h0 h1) (hb ρ h0 h1)).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ConvAll.add {a b : T.B} (ha : T.ConvAll a) (hb : T.ConvAll b) : T.ConvAll (a + b) :=
   fun ρ h0 h1 => (T.convergesAt_coeffB_add h0 h1 (ha ρ h0 h1) (hb ρ h0 h1)).1
 
 /- English proof (translation)
-Introduce `ρ h0 h1` and use `(T.convergesAt_coeffB_neg h0 h1 (ha ρ h0 h1)).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ConvAll.neg {a : T.B} (ha : T.ConvAll a) : T.ConvAll (-a) :=
   fun ρ h0 h1 => (T.convergesAt_coeffB_neg h0 h1 (ha ρ h0 h1)).1
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `ha.add hb.neg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ConvAll.sub {a b : T.B} (ha : T.ConvAll a) (hb : T.ConvAll b) : T.ConvAll (a - b) := by
   rw [sub_eq_add_neg]; exact ha.add hb.neg
 
 /- English proof (translation)
-Introduce `ρ h0 h1` and use `(T.convergesAt_coeffB_mul h0 h1 (ha ρ h0 h1) (hb ρ h0 h1)).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ConvAll.mul {a b : T.B} (ha : T.ConvAll a) (hb : T.ConvAll b) : T.ConvAll (a * b) :=
   fun ρ h0 h1 => (T.convergesAt_coeffB_mul h0 h1 (ha ρ h0 h1) (hb ρ h0 h1)).1
 
 /- English proof (translation)
-Introduce `_ h0 _` and use `(gaussNorm_π_pow c h0).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem convAll_π_pow (c : ℕ) : T.ConvAll (algebraMap Γ T.B T.π ^ c) :=
   fun _ h0 _ => (gaussNorm_π_pow c h0).1
 
 /- English proof (translation)
-Introduce `ρ _ _` and use `by rw [T.coeffB_zero_B]; exact convergesAt_zero`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem convAll_zero : T.ConvAll (0 : T.B) := fun ρ _ _ => by
   rw [T.coeffB_zero_B]; exact convergesAt_zero
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `convAll_zero`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`.
-
-Conclude with `(h i (Finset.mem_insert_self i s)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convAll_sum {ι : Type*} (s : Finset ι) (f : ι → T.B) (h : ∀ i ∈ s, T.ConvAll (f i)) :
     T.ConvAll (∑ i ∈ s, f i) := by
@@ -75,51 +73,51 @@ def ofAll (b : T.B) (hb : T.ConvAll b) (σ : Set.Ioo (0 : ℝ) 1) : T.RobbaExt �
   ((⟨b, hb σ σ.2.1 σ.2.2⟩ : T.Econ σ) : T.RobbaExt σ)
 
 /- English proof (translation)
-Rewrite using `[ofAll, ofAll, ofAll, ← Completion.coe_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ofAll_add {a b : T.B} (ha : T.ConvAll a) (hb : T.ConvAll b) (σ : Set.Ioo (0 : ℝ) 1) :
     T.ofAll (a + b) (ha.add hb) σ = T.ofAll a ha σ + T.ofAll b hb σ := by
   rw [ofAll, ofAll, ofAll, ← Completion.coe_add]; rfl
 
 /- English proof (translation)
-Rewrite using `[ofAll, ofAll, ofAll, ← Completion.coe_sub]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ofAll_sub {a b : T.B} (ha : T.ConvAll a) (hb : T.ConvAll b) (σ : Set.Ioo (0 : ℝ) 1) :
     T.ofAll (a - b) (ha.sub hb) σ = T.ofAll a ha σ - T.ofAll b hb σ := by
   rw [ofAll, ofAll, ofAll, ← Completion.coe_sub]; rfl
 
 /- English proof (translation)
-Rewrite using `[ofAll, ofAll, ofAll, ← Completion.coe_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ofAll_mul {a b : T.B} (ha : T.ConvAll a) (hb : T.ConvAll b) (σ : Set.Ioo (0 : ℝ) 1) :
     T.ofAll (a * b) (ha.mul hb) σ = T.ofAll a ha σ * T.ofAll b hb σ := by
   rw [ofAll, ofAll, ofAll, ← Completion.coe_mul]; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ofAll_congr {a b : T.B} (ha : T.ConvAll a) (hb : T.ConvAll b) (h : a = b)
     (σ : Set.Ioo (0 : ℝ) 1) : T.ofAll a ha σ = T.ofAll b hb σ := by
   subst h; rfl
 
 /- English proof (translation)
-The claim follows from `T.extNorm_coe ρ _`.
+A detailed English derivation is pending.
 -/
 theorem extNorm_ofAll {b : T.B} (hb : T.ConvAll b) {σ : Set.Ioo (0 : ℝ) 1}
     (ρ : Set.Ioc (0 : ℝ) σ) : T.extNorm σ ρ (T.ofAll b hb σ) = gaussNorm (T.coeffB b) ρ :=
   T.extNorm_coe ρ _
 
 /- English proof (translation)
-Rewrite using `[ofAll, res_coe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_ofAll {b : T.B} (hb : T.ConvAll b) {σ σ' : Set.Ioo (0 : ℝ) 1} (h : (σ' : ℝ) ≤ σ) :
     T.res h (T.ofAll b hb σ) = T.ofAll b hb σ' := by
   rw [ofAll, res_coe]; rfl
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero`. Rewrite using `[pow_zero, ofAll, ← Completion.coe_one]`. Use `congr 1`. Consider the case `succ c ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Rewrite using `[pow_succ, ih, πExt, ofAll, ofAll, ← Completion.coe_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem πExt_pow_eq_ofAll (c : ℕ) (σ : Set.Ioo (0 : ℝ) 1) :
     T.πExt σ ^ c = T.ofAll _ (convAll_π_pow c) σ := by
@@ -132,13 +130,13 @@ theorem πExt_pow_eq_ofAll (c : ℕ) (σ : Set.Ioo (0 : ℝ) 1) :
     congr 1
 
 /- English proof (translation)
-The claim follows from `F.convergesAt_toB_of_forall hb`.
+A detailed English derivation is pending.
 -/
 theorem TeichFrob.convAll_toB (F : T.TeichFrob) {b : T.B} (hb : T.ConvAll b) :
     T.ConvAll (F.toB b) := F.convergesAt_toB_of_forall hb
 
 /- English proof (translation)
-Rewrite using `[ofAll, F.extFrob_coe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem TeichFrob.extFrob_ofAll (F : T.TeichFrob) {b : T.B} (hb : T.ConvAll b)
     (σ : Set.Ioo (0 : ℝ) 1) :
@@ -153,7 +151,7 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] {T : TeichLift p L Γ}
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `(h.finite_le hε).bddAbove`. Use `⟨B + 1, fun k hk => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `hB (show k ∈ {n | ε ≤ ‖a n‖ * ρ ^ n} from (not_le.1 hc).le)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_weight_le_of_convergesAt {a : ℤ → L} {ρ : ℝ} (h : ConvergesAt a ρ) {ε : ℝ}
     (hε : 0 < ε) : ∃ K : ℤ, ∀ k, K ≤ k → ‖a k‖ * ρ ^ k ≤ ε := by
@@ -164,21 +162,19 @@ theorem exists_weight_le_of_convergesAt {a : ℤ → L} {ρ : ℝ} (h : Converge
   omega
 
 /- English proof (translation)
-Take `⟨K0, hK0⟩` from `exists_weight_le_of_convergesAt hb hε`. Take `⟨M, hMN, hMK⟩ : ∃ M : ℕ, T.den b ≤ M ∧ K0 ≤ (M : ℤ) - T.den b` from `⟨T.den b + K0.toNat, by omega, by omega⟩`. Use `⟨algebraMap Γ T.B (T.partialSum (T.num b) M) * IsLocalization.Away.invSelf T.π ^ T.den b, ?_, ?_⟩` and prove the remaining obligations. Introduce `ρ hρ0 hρ1`. Use `convergesAt_of_eventually hρ0 (T.coeffB_neg_exists _) fun δ hδ => ⟨(M : ℤ) - T.den b, fun k hk => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[T.coeffB_eq (T.mul_pow_eq_of_invSelf _)]`. Simplify using `only`. Use `lift k + (T.den b : ℤ) to ℕ using (by omega) with j hj`. Rewrite using `[zcoeff_natCast, partialSum, coeff_finSum, if_neg (by omega), norm_zero, zero_mul]`. Conclude with `hδ.le`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbd : b - algebraMap Γ T.B (T.partialSum (T.num b) M) * IsLocalization.Away.invSelf T.π ^ T.den b = algebraMap Γ T.B (T.num b - T.partialSum (T.num b) M) * IsLocalization.Away.invSelf T.π ^ T.den b`. Rewrite using `[map_sub, sub_mul, ← T.eq_num_mul b]`. Establish `hcb : ∀ k, T.coeffB (b - algebraMap Γ T.B (T.partialSum (T.num b) M) * IsLocalization.Away.invSelf T.π ^ T.den b) k = if k + (T.den b : ℤ) < M then 0 else T.coeffB b k`. Introduce `k`. Rewrite using `[hbd, T.coeffB_eq (T.mul_pow_eq_of_invSelf _), T.coeffB_eq (T.num_spec b)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only`. Break down `lt_or_ge (k + (T.den b : ℤ)) 0 with h | h` into its components or cases. Rewrite using `[T.zcoeff_of_neg _ h, T.zcoeff_of_neg _ h, if_pos (by omega)]`. Use `lift k + (T.den b : ℤ) to ℕ using h with j hj`. Rewrite using `[zcoeff_natCast, zcoeff_natCast, coeff_sub_partialSum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hjM : j < M`. Rewrite using `[if_pos hjM, if_pos (by exact_mod_cast hjM)]`. Rewrite using `[if_neg hjM, if_neg (by exact_mod_cast hjM)]`. Introduce `ρ hρ0 hρτ`. Establish `hbρ : ConvergesAt (T.coeffB b) ρ` using `convergesAt_of_le (T.coeffB_neg_exists b) hb hρ0 hρτ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : ∀ k, ‖T.coeffB (b - algebraMap Γ T.B (T.partialSum (T.num b) M) * IsLocalization.Away.invSelf T.π ^ T.den b) k‖ ≤ ‖T.coeffB b k‖` using `fun k => by`. Apply the tactic sequence `rw [hcb]; split_ifs <;> simp`. Use `⟨(convergesAt_of_norm_le hρ0 hle hbρ).1, gaussNorm_le fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[hcb]`. Use `split_ifs with hk`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_zero, zero_mul]`. Conclude with `hε.le`. Establish `hk0 : 0 ≤ k` using `by omega`. Use `le_trans ?_ (hK0 k (by omega))` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations.
-
-Use `lift k to ℕ using hk0`. Rewrite using `[zpow_natCast, zpow_natCast]`. Conclude with `pow_le_pow_left₀ hρ0.le hρτ k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_trunc {τ : ℝ} {b : T.B} (hb : ConvergesAt (T.coeffB b) τ) {ε : ℝ}
     (hε : 0 < ε) : ∃ d : T.B, T.ConvAll d ∧ ∀ ρ : ℝ, 0 < ρ → ρ ≤ τ →
@@ -227,7 +223,7 @@ theorem exists_trunc {τ : ℝ} {b : T.B} (hb : ConvergesAt (T.coeffB b) τ) {ε
       exact pow_le_pow_left₀ hρ0.le hρτ k
 
 /- English proof (translation)
-The claim follows from `gaussNorm_le fun n => (weight_le_max_of_mem_Icc hα hσ n).trans (max_le_max (hbα.le_gaussNorm n) (hbβ.le_gaussNorm n))`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_le_max_of_mem_Icc {b : T.B} {α β σ : ℝ} (hα : 0 < α) (hσ : σ ∈ Set.Icc α β)
     (hbα : ConvergesAt (T.coeffB b) α) (hbβ : ConvergesAt (T.coeffB b) β) :
@@ -243,9 +239,9 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] {T : TeichLift p L Γ}
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `T.exists_approx z r (half_pos hε)`. Take `⟨d, hd, hbd⟩` from `exists_trunc (T := T) (τ := σ) b.2 (half_pos hε)`. Use `⟨d, hd, fun ρ hρ => ?_⟩` and prove the remaining obligations. Establish `e : z - T.ofAll d hd σ = (z - b) + ((b : T.RobbaExt σ) - T.ofAll d hd σ)` using `by ring`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(T.extNorm_add_le ρ _ _).trans (max_le ((hb ρ hρ).le.trans (by linarith)) ?_)` and prove the remaining obligations. Rewrite using `[ofAll, ← Completion.coe_sub, extNorm_coe]`. Conclude with `((hbd ρ ρ.2.1 ρ.2.2).2).trans (by linarith)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_approx_convAll {σ : Set.Ioo (0 : ℝ) 1} (z : T.RobbaExt σ) (r : Set.Ioc (0 : ℝ) σ)
     {ε : ℝ} (hε : 0 < ε) : ∃ d : T.B, ∃ hd : T.ConvAll d, ∀ ρ : Set.Ioc (0 : ℝ) σ,
@@ -260,11 +256,11 @@ theorem exists_approx_convAll {σ : Set.Ioo (0 : ℝ) 1} (z : T.RobbaExt σ) (r 
   exact ((hbd ρ ρ.2.1 ρ.2.2).2).trans (by linarith)
 
 /- English proof (translation)
-Establish `hs : CauchySeq s`. Unfold `CauchySeq`. Express the relevant statement in the definitionally equal form `Cauchy (uniformSpace := ⨅ ρ, T.uniformAt σ ρ) _`. Establish `: Nonempty (Set.Ioc (0 : ℝ) σ)` using `⟨topRad σ⟩`. Rewrite using `[cauchy_iInf_uniformSpace]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `ρ`. Set `psm : PseudoMetricSpace (T.Econ σ)` to `(T.gaussSeminorm σ ρ).toSeminormedRing.toPseudoMetricSpace`. Establish `key : @CauchySeq _ _ psm.toUniformSpace _ s`. Use `(@Metric.cauchySeq_iff _ _ psm _ _ s).2 fun ε hε => ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `h ρ ε hε`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N, fun m hm n hn => by rw [T.dist_uniformAt']; exact hN m hm n hn⟩`. Conclude with `key`. Conclude with `cauchySeq_tendsto_of_complete ((Completion.uniformContinuous_coe _).comp_cauchySeq hs)`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_tendsto_of_gaussNorm {σ : Set.Ioo (0 : ℝ) 1} (s : ℕ → T.Econ σ)
     (h : ∀ ρ : Set.Ioc (0 : ℝ) σ, ∀ ε > 0, ∃ N, ∀ m ≥ N, ∀ n ≥ N,
@@ -289,13 +285,13 @@ namespace TeichFrob
 variable (F : T.TeichFrob)
 
 /- English proof (translation)
-Establish `hq` using `F.two_le_q ha`. Take `⟨d, hd, hzd⟩` from `exists_approx_convAll z r hε`. Establish `hr0 : (0 : ℝ) < r` using `r.2.1`. Establish `hr1 : (r : ℝ) < 1` using `rad_lt_one σ r`. Use `set D := max (gaussNorm (T.coeffB d) r) (gaussNorm (T.coeffB d) σ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : 0 ≤ D` using `le_max_of_le_left (gaussNorm_nonneg hr0)`. Choose the witnesses or unpack the hypotheses as in `⟨K, hK⟩ : ∃ K : ℕ, (r : ℝ) ^ (-((c * K : ℕ) : ℤ)) * (1 / 2 : ℝ) ^ ((p ^ F.a) ^ K - 1) * D ≤ ε := by`. Use `(tendsto_fwdConst_terms hq c hr0).mul_const D` as an intermediate fact. Rewrite `this` using `[zero_mul]`. Conclude with `(this.eventually (ge_mem_nhds hε)).exists`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, R, heq, ht, hR⟩` from `F.exists_approx_sol ha c hd K`. Use `⟨t, d, R, fun ρ h0 h1 => (ht ρ h0 h1).1, fun ρ h0 h1 => (hR ρ h0 h1).1, hd, heq, fun ρ hρ => ⟨hzd ρ hρ, ?_⟩, fun ρ h0 h1 => (ht ρ h0 h1).2⟩` and prove the remaining obligations. Establish `hρ0 : (0 : ℝ) < ρ` using `ρ.2.1`. Establish `hρ1 : (ρ : ℝ) < 1` using `rad_lt_one σ ρ`. Use `(hR ρ hρ0 hρ1).2.trans (le_trans ?_ hK)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdρ : gaussNorm (T.coeffB d) ρ ≤ D` using `gaussNorm_le_max_of_mem_Icc hr0 ⟨hρ, ρ.2.2⟩ (hd r hr0 hr1) (hd σ σ.2.1 σ.2.2)`. Establish `hz : (ρ : ℝ) ^ (-((c * K : ℕ) : ℤ)) ≤ (r : ℝ) ^ (-((c * K : ℕ) : ℤ))`. Rewrite using `[zpow_neg, zpow_neg, zpow_natCast, zpow_natCast]`. Conclude with `inv_anti₀ (pow_pos hr0 _) (pow_le_pow_left₀ hr0.le hρ _)`. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_right hz (by positivity)) hdρ (gaussNorm_nonneg hρ0) (by positivity)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_step [IsAlgClosed L] (ha : 0 < F.a) (c : ℕ) {σ : Set.Ioo (0 : ℝ) 1}
     (z : T.RobbaExt σ) (r : Set.Ioc (0 : ℝ) σ) {ε : ℝ} (hε : 0 < ε) :
@@ -344,13 +340,13 @@ namespace TeichFrob
 variable (F : T.TeichFrob)
 
 /- English proof (translation)
-The claim follows from `Completion.continuous_map`.
+A detailed English derivation is pending.
 -/
 theorem continuous_extFrob (σ : Set.Ioo (0 : ℝ) 1) : Continuous (F.extFrob σ) :=
   Completion.continuous_map
 
 /- English proof (translation)
-The claim follows from `pow_le_of_le_one σ.2.1.le σ.2.2.le F.q_pos.ne'`.
+A detailed English derivation is pending.
 -/
 theorem powRadius_le_self (σ : Set.Ioo (0 : ℝ) 1) : ((F.powRadius σ : Set.Ioo (0 : ℝ) 1) : ℝ) ≤ σ :=
   pow_le_of_le_one σ.2.1.le σ.2.2.le F.q_pos.ne'
@@ -360,14 +356,14 @@ def halvedRad (τ : Set.Ioo (0 : ℝ) 1) (N : ℕ) : Set.Ioc (0 : ℝ) τ :=
     mul_le_of_le_one_right τ.2.1.le (pow_le_one₀ (by norm_num) (by norm_num))⟩
 
 /- English proof (translation)
-The claim follows from `mul_le_mul_of_nonneg_left (pow_le_pow_of_le_one (by norm_num) (by norm_num) h) τ.2.1.le`.
+A detailed English derivation is pending.
 -/
 theorem halvedRad_anti (τ : Set.Ioo (0 : ℝ) 1) {m n : ℕ} (h : m ≤ n) :
     ((halvedRad τ n : Set.Ioc (0 : ℝ) τ) : ℝ) ≤ halvedRad τ m :=
   mul_le_mul_of_nonneg_left (pow_le_pow_of_le_one (by norm_num) (by norm_num) h) τ.2.1.le
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one (show 0 < ρ / τ from div_pos hρ τ.2.1) (by norm_num : (1 / 2 : ℝ) < 1)`. Use `⟨N, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(τ : ℝ) * (1 / 2) ^ N ≤ ρ`. Rewrite `hN` using `[lt_div_iff₀ τ.2.1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_halvedRad_le (τ : Set.Ioo (0 : ℝ) 1) {ρ : ℝ} (hρ : 0 < ρ) :
     ∃ N : ℕ, ((halvedRad τ N : Set.Ioc (0 : ℝ) τ) : ℝ) ≤ ρ := by
@@ -388,9 +384,9 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] {T : TeichLift p L Γ}
 
 /- English proof (translation)
-Break down `le_total n m with hnm | hmn` into its components or cases. Rewrite using `[← Finset.sum_Ico_eq_sub _ hnm]`. Conclude with `(T.gaussNorm_finsetSum_le _ f hρ0 hρ1 hδ fun k hk => ⟨hf k, h k (hn.trans (Finset.mem_Ico.1 hk).1)⟩).2`. Rewrite using `[← neg_sub, ← Finset.sum_Ico_eq_sub _ hmn]`. Take `⟨h1, h2⟩` from `T.gaussNorm_finsetSum_le (Finset.Ico m n) f hρ0 hρ1 hδ fun k hk => ⟨hf k, h k (hm.trans (Finset.mem_Ico.1 hk).1)⟩`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(T.convergesAt_coeffB_neg hρ0 hρ1 h1).2]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_sum_range_sub_le (f : ℕ → T.B) {ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ < 1)
     (hf : ∀ n, ConvergesAt (T.coeffB (f n)) ρ) {δ : ℝ} (hδ : 0 ≤ δ) {N0 : ℕ}
@@ -410,7 +406,7 @@ namespace TeichFrob
 variable (F : T.TeichFrob)
 
 /- English proof (translation)
-Rewrite using `[F.extFrob_ofAll, res_ofAll, πExt_pow_eq_ofAll, ← ofAll_mul, ← ofAll_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extFrob_sub_ofAll (c : ℕ) (ρ0 : Set.Ioo (0 : ℝ) 1) {b : T.B} (hb : T.ConvAll b) :
     F.extFrob ρ0 (T.ofAll b hb ρ0) -
@@ -433,47 +429,39 @@ namespace TeichFrob
 variable (F : T.TeichFrob)
 
 /- English proof (translation)
-Establish `hq` using `F.two_le_q ha`. Establish `hε : ∀ N : ℕ, (0 : ℝ) < (1 / 2) ^ N` using `fun N => by positivity`. Use `choose t d R ht hR hd heq hnear hbd using fun (z : T.RobbaExt (F.powRadius ρ0)) (N : ℕ) => F.exists_step ha c z (halvedRad (F.powRadius ρ0) N) (hε N)`. Take `⟨zs, hz0, hzs⟩ : ∃ zs : ℕ → T.RobbaExt (F.powRadius ρ0), zs 0 = y ∧ ∀ N, zs (N + 1) = zs N - T.ofAll (d (zs N) N - R (zs N) N) ((hd _ N).sub (hR _ N)) (F.powRadius ρ0)` from `⟨fun N => Nat.rec y (fun N zN => zN - T.ofAll (d zN N - R zN N) ((hd zN N).sub (hR zN N)) (F.powRadius ρ0)) N, rfl, fun N => rfl⟩`. Establish `hA : ∀ (N : ℕ) (ρ : Set.Ioc (0 : ℝ) (F.powRadius ρ0)), ((halvedRad (F.powRadius ρ0) N : Set.Ioc (0 : ℝ) _) : ℝ) ≤ ρ → T.extNorm _ ρ (zs (N + 1)) ≤ (1 / 2) ^ N`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N ρ hρ`. Establish `e : zs (N + 1) = (zs N - T.ofAll (d (zs N) N) (hd _ N) (F.powRadius ρ0)) + T.ofAll (R (zs N) N) (hR _ N) (F.powRadius ρ0)`. Rewrite using `[hzs N, ofAll_sub (hd _ N) (hR _ N)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(T.extNorm_add_le ρ _ _).trans (max_le (hnear _ N ρ hρ).1 ?_)` and prove the remaining obligations. Rewrite using `[extNorm_ofAll]`. Conclude with `(hnear _ N ρ hρ).2`. Establish `hB : ∀ (N : ℕ) (ρ : Set.Ioc (0 : ℝ) (F.powRadius ρ0)), ((halvedRad (F.powRadius ρ0) N : Set.Ioc (0 : ℝ) _) : ℝ) ≤ ρ → gaussNorm (T.coeffB (d (zs (N + 1)) (N + 1))) ρ ≤ (1 / 2) ^ N ∧ gaussNorm (T.coeffB (R (zs (N + 1)) (N + 1))) ρ ≤ (1 / 2) ^ N`. Introduce `N ρ hρ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ' : ((halvedRad (F.powRadius ρ0) (N + 1) : Set.Ioc (0 : ℝ) _) : ℝ) ≤ ρ` using `(halvedRad_anti _ (Nat.le_succ N)).trans hρ`. Establish `hhalf : ((1 : ℝ) / 2) ^ (N + 1) ≤ (1 / 2) ^ N` using `pow_le_pow_of_le_one (by norm_num) (by norm_num) (Nat.le_succ N)`. Use `⟨?_, (hnear _ (N + 1) ρ hρ').2.trans hhalf⟩` and prove the remaining obligations. Rewrite using `[← extNorm_ofAll (hd _ (N + 1))]`. Establish `e : T.ofAll (d (zs (N + 1)) (N + 1)) (hd _ (N + 1)) (F.powRadius ρ0) = zs (N + 1) + -(zs (N + 1) - T.ofAll (d (zs (N + 1)) (N + 1)) (hd _ (N + 1)) (F.powRadius ρ0))` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `(T.extNorm_add_le ρ _ _).trans (max_le (hA N ρ hρ) ?_)` and prove the remaining obligations. Rewrite using `[extNorm_neg]`. Conclude with `(hnear _ (N + 1) ρ hρ').1.trans hhalf`. Establish `hE : ∀ ρ : ℝ, 0 < ρ → ρ ≤ ρ0 → ∀ δ > 0, ∃ N0 : ℕ, ∀ n, N0 ≤ n → gaussNorm (T.coeffB (t (zs n) n)) ρ ≤ δ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ρ hρ0 hρρ0 δ hδ`. Establish `hρ1 : ρ < 1` using `lt_of_le_of_lt hρρ0 ρ0.2.2`. Use `set σ' := ρ ^ p ^ F.a`. Establish `hσ'0 : 0 < σ'` using `pow_pos hρ0 _`. Establish `hσ'1 : σ' < 1` using `pow_lt_one₀ hρ0.le hρ1 F.q_pos.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hσ'τ : σ' ≤ (F.powRadius ρ0 : ℝ)` using `pow_le_pow_left₀ hρ0.le hρρ0 _`. Set `σr : Set.Ioc (0 : ℝ) (F.powRadius ρ0)` to `⟨σ', hσ'0, hσ'τ⟩`. Use `set A := max (max 2 (fwdConst (p ^ F.a) c σ' * σ' ^ (-(c : ℤ)))) 1`. Establish `hA1 : 1 ≤ A` using `le_max_right _ _`. Take `⟨N1, hN1⟩` from `exists_halvedRad_le (F.powRadius ρ0) hσ'0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨N2, hN2⟩ : ∃ N2 : ℕ, A * (1 / 2 : ℝ) ^ N2 ≤ δ ^ p ^ F.a := by`. Use `(tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num)).const_mul A` as an intermediate fact. Rewrite `this` using `[mul_zero]`. Conclude with `(this.eventually (ge_mem_nhds (pow_pos hδ _))).exists`. Use `⟨max N1 N2 + 1, fun n hn => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Establish `hm1 : ((halvedRad (F.powRadius ρ0) m : Set.Ioc (0 : ℝ) _) : ℝ) ≤ σ'` using `(halvedRad_anti _ (show N1 ≤ m by omega)).trans hN1`. Take `⟨hdm, hRm⟩` from `hB m σr hm1`. Establish `hhalf : ((1 : ℝ) / 2) ^ m ≤ (1 / 2) ^ N2` using `pow_le_pow_of_le_one (by norm_num) (by norm_num) (show N2 ≤ m by omega)`. Use `set tn := t (zs (m + 1)) (m + 1)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set dn := d (zs (m + 1)) (m + 1)`. Use `set Rn := R (zs (m + 1)) (m + 1)`. Establish `htn : gaussNorm (T.coeffB tn) σ' ≤ A * (1 / 2) ^ m` using `(hbd _ (m + 1) σ' hσ'0 hσ'1).trans (mul_le_mul (le_max_left _ _) hdm (gaussNorm_nonneg hσ'0) (zero_le_one.trans hA1))`. Establish `hkey : F.toB tn = algebraMap Γ T.B T.π ^ c * tn + (dn - Rn)`. Rewrite using `[← heq]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `htc` using `ht (zs (m + 1)) (m + 1) σ' hσ'0 hσ'1`. Take `⟨hp1, hp2⟩` from `gaussNorm_π_pow (T := T) c hσ'0`. Take `⟨hm1c, hm1n⟩` from `T.convergesAt_coeffB_mul hσ'0 hσ'1 hp1 htc`. Establish `hdc` using `hd (zs (m + 1)) (m + 1) σ' hσ'0 hσ'1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hRc` using `hR (zs (m + 1)) (m + 1) σ' hσ'0 hσ'1`. Take `⟨hsc, hsn⟩` from `T.convergesAt_coeffB_add hσ'0 hσ'1 hdc (T.convergesAt_coeffB_neg hσ'0 hσ'1 hRc).1`. Rewrite `hsn` using `[(T.convergesAt_coeffB_neg hσ'0 hσ'1 hRc).2, ← sub_eq_add_neg]`. Rewrite `hsc` using `[← sub_eq_add_neg]`. Establish `hphi : gaussNorm (T.coeffB (F.toB tn)) σ' ≤ A * (1 / 2) ^ m`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hkey]`. Use `(T.convergesAt_coeffB_add hσ'0 hσ'1 hm1c hsc).2.trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[hm1n, hp2]`. Conclude with `(mul_le_of_le_one_left (gaussNorm_nonneg hσ'0) (pow_le_one₀ hσ'0.le hσ'1.le)).trans htn`. Conclude with `hsn.trans (max_le (hdm.trans (le_mul_of_one_le_left (by positivity) hA1)) (hRm.trans (le_mul_of_one_le_left (by positivity) hA1)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite `hphi` using `[F.gaussNorm_coeffB_toB hρ0 hρ1 (ht _ (m + 1) ρ hρ0 hρ1)]`. Use `hphi.trans ((mul_le_mul_of_nonneg_left hhalf (zero_le_one.trans hA1)).trans hN2)` as an intermediate fact. Conclude with `(pow_le_pow_iff_left₀ (gaussNorm_nonneg hρ0) hδ.le F.q_pos.ne').1 this`. Establish `hxs : ∀ N, T.ConvAll (∑ n ∈ Finset.range N, t (zs n) n)` using `fun N => convAll_sum _ _ fun n _ => ht (zs n) n`. Take `⟨x, hx⟩` from `exists_tendsto_of_gaussNorm (T := T) (σ := ρ0) (fun N => ⟨∑ n ∈ Finset.range N, t (zs n) n, hxs N ρ0 ρ0.2.1 ρ0.2.2⟩) fun ρ ε hε => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N0, hN0⟩` from `hE ρ ρ.2.1 ρ.2.2 (ε / 2) (half_pos hε)`. Use `⟨N0, fun m hm n hn => lt_of_le_of_lt ?_ (half_lt_self hε)⟩` and prove the remaining obligations. Conclude with `gaussNorm_sum_range_sub_le (fun k => t (zs k) k) ρ.2.1 (rad_lt_one ρ0 ρ) (fun k => ht (zs k) k ρ ρ.2.1 (rad_lt_one ρ0 ρ)) (half_pos hε).le hN0 m n hm hn`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `hH : ∀ N, F.extFrob ρ0 (T.ofAll _ (hxs N) ρ0) - T.πExt (F.powRadius ρ0) ^ c * T.res (F.powRadius_le_self ρ0) (T.ofAll _ (hxs N) ρ0) = y - zs N`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Rewrite using `[hz0, sub_self, ofAll_congr (hxs 0) convAll_zero (by simp)]`. Rewrite using `[F.extFrob_sub_ofAll, ofAll_congr _ convAll_zero (by simp)]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [ofAll]`. Conclude with `Completion.coe_zero`. Consider the case `succ N ih`. Rewrite using `[ofAll_congr (hxs (N + 1)) ((hxs N).add (ht (zs N) N)) (Finset.sum_range_succ _ _), ofAll_add (hxs N) (ht (zs N) N), map_add, map_add, mul_add, add_sub_add_comm, ih, F.extFrob_sub_ofAll, ofAll_congr _ ((hd _ N).sub (hR _ N)) (heq _ N), hzs N]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `set E : T.RobbaExt ρ0 → T.RobbaExt (F.powRadius ρ0) := fun w => F.extFrob ρ0 w - T.πExt (F.powRadius ρ0) ^ c * T.res (F.powRadius_le_self ρ0) w`. Establish `hEc : Continuous E` using `(F.continuous_extFrob ρ0).sub (continuous_const.mul (T.continuous_res _))`. Establish `hlim : Tendsto (fun N => E (T.ofAll _ (hxs N) ρ0)) atTop (𝓝 (E x))` using `(hEc.tendsto x).comp hx`. Establish `hzero : ∀ ρ : Set.Ioc (0 : ℝ) (F.powRadius ρ0), T.extNorm _ ρ (E x - y) = 0`. Introduce `ρ`.
-
-Establish `h1 : Tendsto (fun N => T.extNorm _ ρ (E (T.ofAll _ (hxs N) ρ0) - y)) atTop (𝓝 (T.extNorm _ ρ (E x - y)))` using `((T.continuous_extNorm ρ).tendsto _).comp (hlim.sub_const y)`. Establish `h2 : Tendsto (fun N => T.extNorm _ ρ (E (T.ofAll _ (hxs N) ρ0) - y)) atTop (𝓝 0)`. Take `⟨N1, hN1⟩` from `exists_halvedRad_le (F.powRadius ρ0) ρ.2.1`. Establish `hle : ∀ N, N1 ≤ N → T.extNorm _ ρ (E (T.ofAll _ (hxs (N + 1)) ρ0) - y) ≤ (1 / 2) ^ N` using `fun N hN => by`. Express the relevant statement in the definitionally equal form `T.extNorm _ ρ ((F.extFrob ρ0 (T.ofAll _ (hxs (N + 1)) ρ0) - T.πExt (F.powRadius ρ0) ^ c * T.res (F.powRadius_le_self ρ0) (T.ofAll _ (hxs (N + 1)) ρ0)) - y) ≤ _`.
-
-Rewrite using `[hH, sub_sub_cancel_left, extNorm_neg]`. Conclude with `hA N ρ ((halvedRad_anti _ hN).trans hN1)`. Rewrite using `[← tendsto_add_atTop_iff_nat 1]`. Use `squeeze_zero' (Eventually.of_forall fun N => T.extNorm_nonneg ρ _) (eventually_atTop.2 ⟨N1, hle⟩) ?_` and prove the remaining obligations. Conclude with `tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)`.
-
-Conclude with `tendsto_nhds_unique h1 h2`. Conclude with `sub_eq_zero.1 (T.eq_zero_of_forall_extNorm_eq_zero hzero)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_extFrob_sub_eq [IsAlgClosed L] (ha : 0 < F.a) (c : ℕ) (ρ0 : Set.Ioo (0 : ℝ) 1)
     (y : T.RobbaExt (F.powRadius ρ0)) :
@@ -640,7 +628,7 @@ def πTilde : T.RobbaTilde := T.edagToTilde ⟨algebraMap Γ T.B T.π, T.Econ_le
   (T.algebraMap_π_mem_Econ _)⟩
 
 /- English proof (translation)
-The claim follows from `(T.edagToTilde_apply (T.algebraMap_π_mem_Econ ρ1)).symm`.
+A detailed English derivation is pending.
 -/
 theorem ofRad_πExt (ρ1 : Set.Ioo (0 : ℝ) 1) : T.ofRad ρ1 (T.πExt ρ1) = T.πTilde :=
   (T.edagToTilde_apply (T.algebraMap_π_mem_Econ ρ1)).symm
@@ -650,9 +638,9 @@ namespace TeichFrob
 variable (F : T.TeichFrob)
 
 /- English proof (translation)
-Take `⟨σ, y0, rfl⟩` from `T.exists_ofRad y`. Establish `h : ((F.powRadius (F.rootRadius σ) : Set.Ioo (0 : ℝ) 1) : ℝ) ≤ σ`. Rewrite using `[F.powRadius_rootRadius]`. Take `⟨x0, hx0⟩` from `F.exists_extFrob_sub_eq ha c (F.rootRadius σ) (T.res h y0)`. Use `⟨T.ofRad (F.rootRadius σ) x0, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[F.tildeFrob_ofRad, ← T.ofRad_res (F.powRadius_le_self (F.rootRadius σ)) x0, ← ofRad_πExt (F.powRadius (F.rootRadius σ)), ← map_pow, ← map_mul, ← map_sub, hx0, T.ofRad_res]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tildeFrob_sub_surjective [IsAlgClosed L] (ha : 0 < F.a) (c : ℕ) (y : T.RobbaTilde) :
     ∃ x : T.RobbaTilde, F.tildeFrob x - T.πTilde ^ c * x = y := by

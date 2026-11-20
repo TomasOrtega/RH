@@ -10,9 +10,9 @@ noncomputable section
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `set v : V n := (InnerProductSpace.toDual ℂ (V n)).symm L with hv`. Establish `hL : ‖L‖ = ‖v‖`. Rewrite using `[hv, LinearIsometryEquiv.norm_map]`. Establish `hco : ∀ j, ‖L (EuclideanSpace.basisFun (Fin n) ℂ j)‖ = ‖v j‖`. Introduce `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← InnerProductSpace.toDual_symm_apply, ← hv, EuclideanSpace.basisFun_apply, EuclideanSpace.inner_single_right]`. Simplify using the standard rewrite rules. Rewrite using `[hL, EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`. Simplify using `only [hco]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma norm_sq_clm (L : V n →L[ℂ] ℂ) :
     ‖L‖ ^ 2 = ∑ j, ‖L (EuclideanSpace.basisFun (Fin n) ℂ j)‖ ^ 2 := by
@@ -29,11 +29,11 @@ lemma norm_sq_clm (L : V n →L[ℂ] ℂ) :
   simp only [hco]
 
 /- English proof (translation)
-Establish `hDa : DifferentiableAt ℂ F z` using `hF.differentiableAt (hΩ.mem_nhds hz)`. Establish `hpos : 0 < ‖F z‖` using `norm_pos_iff.mpr h0`. Establish `h1 : HasFDerivAt F ((fderiv ℂ F z).restrictScalars ℝ) z` using `hDa.hasFDerivAt.restrictScalars ℝ`. Establish `h2` using `h1.norm_sq`. Establish `h3` using `h2.log (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← norm_sq_clm, h3.fderiv]`. Use `set D := fderiv ℂ F z`. Establish `hM : ‖(‖F z‖ ^ 2)⁻¹ • (2 • (innerSL ℝ (F z)).comp (D.restrictScalars ℝ))‖ ≤ 2 * ‖D‖ / ‖F z‖`. Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun h => ?_` and prove the remaining obligations. Establish `hi : |inner ℝ (F z) (D h)| ≤ ‖F z‖ * (‖D‖ * ‖h‖)` using `(abs_real_inner_le_norm _ _).trans (mul_le_mul_of_nonneg_left (D.le_opNorm h) (norm_nonneg _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars', innerSL_apply_apply, nsmul_eq_mul, smul_eq_mul, Real.norm_eq_abs, abs_mul, abs_inv, Nat.cast_ofNat]`. Rewrite using `[abs_of_pos (by positivity : (0:ℝ) < ‖F z‖ ^ 2), abs_two]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma grad_log_sq {Ω : Set (V n)} {F : V n → ℂ} (hΩ : IsOpen Ω) (hF : DifferentiableOn ℂ F Ω)
     {z : V n} (hz : z ∈ Ω) (h0 : F z ≠ 0) :
@@ -67,43 +67,37 @@ lemma grad_log_sq {Ω : Set (V n)} {F : V n → ℂ} (hΩ : IsOpen Ω) (hF : Dif
 end
 
 /- English proof (translation)
-Take `⟨δ0, hδ0, hδ0Ω⟩` from `hK.exists_cthickening_subset_open hΩ hKΩ`. Use `set δ := δ0 / 2 with hδdef`. Establish `hδ : 0 < δ` using `by positivity`. Use `set T := cthickening δ K with hTdef`. Establish `hT : IsCompact T` using `hK.cthickening`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTΩ : T ⊆ Ω` using `(cthickening_mono (by linarith) K).trans hδ0Ω`. Establish `hball : ∀ z ∈ T, closedBall z δ ⊆ cthickening δ0 K` using `fun z hz => (closedBall_subset_cthickening hz δ).trans ((cthickening_cthickening_subset hδ.le hδ.le K).trans (by rw [hδdef]; ring_nf; rfl))`. Take `⟨M0, hM0⟩` from `(hK.cthickening (r := δ0)).exists_bound_of_continuousOn (hF.continuousOn.mono hδ0Ω)`. Use `set M := max M0 0`. Establish `hM : ∀ z ∈ cthickening δ0 K, ‖F z‖ ≤ M` using `fun z hz => (hM0 z hz).trans (le_max_left _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hM0' : 0 ≤ M` using `le_max_right _ _`. Take `⟨f, hf0, hf1, hf01⟩` from `exists_contMDiffMap_zero_one_of_isClosed (𝓘(ℝ, V n)) (n := 2) (isOpen_thickening (δ := δ) (E := K)).isClosed_compl hK.isClosed (disjoint_compl_left_iff_subset.2 (self_subset_thickening hδ K))`. Use `set ψ : V n → ℝ := ⇑f with hψdef`. Establish `hψ : ContDiff ℝ 2 ψ`. Use `contMDiff_iff_contDiff.1 f.contMDiff` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `this` after adjusting the coercions. Establish `hψT : tsupport ψ ⊆ T`. Use `(closure_mono ?_).trans (closure_thickening_subset_cthickening δ K)` and prove the remaining obligations. Introduce `x hx`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hx (hf0 h)`. Establish `hψ1 : ∀ z ∈ K, ψ z = 1` using `fun z hz => hf1 hz`. Establish `hψ0 : ∀ z, 0 ≤ ψ z` using `fun z => (hf01 z).1`. Use `set b := EuclideanSpace.basisFun (Fin n) ℂ`. Establish `hb1 : ∀ j, ‖b j‖ = 1` using `fun j => b.orthonormal.1 j`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcau : ∀ j, ∀ z ∈ T, ‖fderiv ℂ F z (b j)‖ ≤ M / δ ∧ ‖complexLineSecondDeriv F z (b j)‖ ≤ 4 * M / δ ^ 2` using `fun j z hz => cauchy_line hΩ hF (hb1 j) hδ ((hball z hz).trans hδ0Ω) (fun w hw => hM w (hball z hz hw))`. Establish `hMT : ∀ z ∈ T, ‖F z‖ ≤ M` using `fun z hz => hM z (hball z hz (mem_closedBall_self hδ.le))`. Use `set D : Fin n → ℂ → V n → ℝ := fun j μ z => fderiv ℝ (fun w => fderiv ℝ ψ w (μ • b j)) z (μ • b j) with hDdef`. Use `set C0 : ℝ := 4 * (∑ j, ((∫ z, |D j 1 z|) + ∫ z, |D j I z|)) * ((M ^ 2 + 2) ^ 2 / 2) with hC0def`. Establish `hC0 : 0 ≤ C0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 ≤ ∑ j, ((∫ z, |D j 1 z|) + ∫ z, |D j I z|)` using `Finset.sum_nonneg fun j _ => add_nonneg (integral_nonneg fun _ => abs_nonneg _) (integral_nonneg fun _ => abs_nonneg _)`. Check the signs of the components of the expression. Use `⟨ENNReal.ofReal C0, ENNReal.ofReal_lt_top, fun k hk => ?_⟩` and prove the remaining obligations. Use `set ε := Real.exp (-2 * k) with hεdef`. Establish `hε : 0 < ε` using `Real.exp_pos _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `gr : ∀ j, ∀ μ : ℂ, ‖μ‖ = 1 → _` using `fun j μ hμ => green_dir hΩ hF hT hTΩ hψ hψT hε (b j) μ hμ hMT (fun z hz => (hcau j z hz).1) (fun z hz => (hcau j z hz).2)`. Establish `g1` using `fun j => gr j 1 norm_one`. Establish `gI` using `fun j => gr j I Complex.norm_I`. Establish `hQi : ∀ j, Integrable (fun z => ψ z * lineSecondVariation ε (F z) (fderiv ℂ F z (b j) * 1) (complexLineSecondDeriv F z (b j) * 1 * 1) + ψ z * lineSecondVariation ε (F z) (fderiv ℂ F z (b j) * I) (complexLineSecondDeriv F z (b j) * I * I))` using `fun j => (g1 j).1.add (gI j).1`. Establish `hGi : Integrable (fun z => ∑ j, (ψ z * lineSecondVariation ε (F z) (fderiv ℂ F z (b j) * 1) (complexLineSecondDeriv F z (b j) * 1 * 1) + ψ z * lineSecondVariation ε (F z) (fderiv ℂ F z (b j) * I) (complexLineSecondDeriv F z (b j) * I * I)))` using `integrable_finsetSum _ fun j _ => hQi j`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGeq : ∀ z, (∑ j, (ψ z * lineSecondVariation ε (F z) (fderiv ℂ F z (b j) * 1) (complexLineSecondDeriv F z (b j) * 1 * 1) + ψ z * lineSecondVariation ε (F z) (fderiv ℂ F z (b j) * I) (complexLineSecondDeriv F z (b j) * I * I))) = ψ z * (4 * (‖F z‖ ^ 2 * halfLogRatioSqSecondDeriv ε …`. Introduce `z`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_add, lineSecondVariation_add_I]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hG0 : ∀ z, 0 ≤ ∑ j, (ψ z * lineSecondVariation ε (F z) (fderiv ℂ F z (b j) * 1) (complexLineSecondDeriv F z (b j) * 1 * 1) + ψ z * lineSecondVariation ε (F z) (fderiv ℂ F z (b j) * I) (complexLineSecondDeriv F z (b j) * I * I))` using `fun z => by`. Rewrite using `[hGeq z]`. Use `cut_rho_nonneg hε (by positivity : (0 : ℝ) ≤ ‖F z‖ ^ 2)` as an intermediate fact. Conclude with `mul_nonneg (hψ0 z) (mul_nonneg (by positivity) (Finset.sum_nonneg fun j _ => by positivity))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hIG : (∫ z, ∑ j, (ψ z * lineSecondVariation ε (F z) (fderiv ℂ F z (b j) * 1) (complexLineSecondDeriv F z (b j) * 1 * 1) + ψ z * lineSecondVariation ε (F z) (fderiv ℂ F z (b j) * I) (complexLineSecondDeriv F z (b j) * I * I))) = ∑ j, ((∫ z, D j 1 z * cutP ε (‖F z‖ ^ 2)) + ∫ z, D j …`. Rewrite using `[integral_finsetSum _ fun j _ => hQi j]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_add (g1 j).1 (gI j).1]`. Conclude with `congrArg₂ (· + ·) (g1 j).2.2.2.2 (gI j).2.2.2.2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hDb : ∀ j, ∀ μ : ℂ, ‖μ‖ = 1 → ∫ z, D j μ z * cutP ε (‖F z‖ ^ 2) ≤ (∫ z, |D j μ z|) * ((M ^ 2 + 2) ^ 2 / 2 * k ^ 2)`. Introduce `j μ hμ`. Take `⟨_, hi, hiD, hz0, _⟩` from `gr j μ hμ`. Rewrite using `[← integral_mul_const]`. Use `integral_mono hi (hiD.abs.mul_const _) (fun z => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Distinguish the cases in `hz : z ∈ T`. Establish `h1 : cutP ε (‖F z‖ ^ 2) ≤ (M ^ 2 + 2) ^ 2 / 2 * k ^ 2` using `(cutP_mono hε (by positivity) (pow_le_pow_left₀ (norm_nonneg _) (hMT z hz) 2)).trans (cutP_le hk (by positivity))`. Establish `h2` using `polydiscCutoff_nonneg ε (‖F z‖ ^ 2)`. Combine the equalities or inequalities in the displayed calculation. Establish `: D j μ z = 0` using `hz0 z hz`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[this]`. Establish `hbound : 4 * (∫ z, ∑ j, (ψ z * lineSecondVariation ε (F z) (fderiv ℂ F z (b j) * 1) (complexLineSecondDeriv F z (b j) * 1 * 1) + ψ z * lineSecondVariation ε (F z) (fderiv ℂ F z (b j) * I) (complexLineSecondDeriv F z (b j) * I * I))) ≤ C0 * k ^ 2`. Rewrite using `[hIG, hC0def]`. Establish `: ∑ j, ((∫ z, D j 1 z * cutP ε (‖F z‖ ^ 2)) + ∫ z, D j I z * cutP ε (‖F z‖ ^ 2)) ≤ ∑ j, ((∫ z, |D j 1 z|) + ∫ z, |D j I z|) * ((M ^ 2 + 2) ^ 2 / 2 * k ^ 2)` using `Finset.sum_le_sum fun j _ => by`. Rewrite using `[add_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_le_add (hDb j 1 norm_one) (hDb j I Complex.norm_I)`. Rewrite `this` using `[← Finset.sum_mul]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hpt : ∀ z ∈ K ∩ {z | F z ≠ 0 ∧ k ≤ -Real.log (‖F z‖ ^ 2) ∧ -Real.log (‖F z‖ ^ 2) ≤ 2 * k}, ‖fderiv ℝ (fun w => Real.log (‖F w‖ ^ 2)) z‖ₑ ^ 2 ≤ ENNReal.ofReal (4 * ∑ j, (ψ z * lineSecondVariation ε (F z) (fderiv ℂ F z (b j) * 1) (complexLineSecondDeriv F z (b j) * 1 * 1) + ψ z * l …`. Introduce and unpack `z ⟨hzK, hz0, -, hz2⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hzΩ` using `hKΩ hzK`. Establish `hF0 : 0 < ‖F z‖` using `norm_pos_iff.2 hz0`. Establish `hs0 : 0 < ‖F z‖ ^ 2` using `by positivity`. Establish `hεs : ε ≤ ‖F z‖ ^ 2`. Rewrite using `[hεdef, ← Real.exp_log hs0]`.
-
-Conclude with `Real.exp_le_exp.2 (by linarith)`. Establish `hg` using `grad_log_sq hΩ hF hzΩ hz0`. Establish `hr` using `cut_rho_ge hε hεs`. Rewrite using `[← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
-
-Rewrite using `[hGeq z, hψ1 z hzK, one_mul]`. Establish `hsum : 0 ≤ ∑ j, ‖fderiv ℂ F z (b j)‖ ^ 2` using `Finset.sum_nonneg fun j _ => by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hGi4` using `hGi.const_mul 4`. Combine the equalities or inequalities in the displayed calculation.
-
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[integral_const_mul]`. Conclude with `hbound`. Use `_ = ENNReal.ofReal C0 * ENNReal.ofReal (k ^ 2) := ENNReal.ofReal_mul hC0`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_cut {n : ℕ} {Ω : Set (V n)} {F : V n → ℂ} (hΩ : IsOpen Ω)
     (hF : DifferentiableOn ℂ F Ω) {K : Set (V n)} (hK : IsCompact K) (hKΩ : K ⊆ Ω) :

@@ -18,9 +18,9 @@ abbrev liftRep (ρ : Γ →* GL (Fin a) k) : MonoidAlgebra k Γ →ₐ[k] Matrix
   MonoidAlgebra.lift k (Matrix (Fin a) (Fin a) k) Γ (matHom ρ)
 
 /- English proof (translation)
-Proceed by induction on `α using MonoidAlgebra.induction_linear with`. Consider the case `zero => intro x _`. Simplify using `[W.zero_mem]`. Consider the case `add p q hp hq => intro x hx`. Rewrite using `[map_add, add_mulVec]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W.add_mem (hp x hx) (hq x hx)`. Consider the case `single g c`. Introduce `x hx`. Rewrite using `[MonoidAlgebra.lift_single, Matrix.smul_mulVec]`. Conclude with `W.smul_mem c (hW g x hx)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftRep_mem (ρ : Γ →* GL (Fin a) k) (W : Submodule k (Fin a → k))
     (hW : ∀ g, ∀ x ∈ W, (ρ g : Matrix (Fin a) (Fin a) k) *ᵥ x ∈ W) (α : MonoidAlgebra k Γ) :
@@ -34,9 +34,9 @@ theorem liftRep_mem (ρ : Γ →* GL (Fin a) k) (W : Submodule k (Fin a → k))
     exact W.smul_mem c (hW g x hx)
 
 /- English proof (translation)
-Use `haveI : Nonempty (Fin a) := ⟨⟨0, ha⟩⟩`. Establish `hirr : IsIrrSub ρ ⊤` using `⟨top_ne_bot, fun g v _ => Submodule.mem_top, fun W' _ hinv => h W' hinv⟩`. Establish `hs` using `GlobalTheory.BurnsideField.span_mat_eq_top_of_isIrrSub ρ hirr`. Introduce `X`. Establish `hle : Submodule.span k (Set.range (GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.mat ρ)) ≤ LinearMap.range (liftRep ρ).toLinearMap`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨MonoidAlgebra.single g 1, by simp⟩`. Take `⟨α, hα⟩` from `hle (hs ▸ Submodule.mem_top : X ∈ _)`. Conclude with `⟨α, hα⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem liftRep_surjective [IsAlgClosed k] (ρ : Γ →* GL (Fin a) k) (ha : 0 < a)
     (h : ∀ W : Submodule k (Fin a → k), (∀ g, ∀ x ∈ W, (ρ g : Matrix (Fin a) (Fin a) k) *ᵥ x ∈ W) →
@@ -56,35 +56,31 @@ theorem liftRep_surjective [IsAlgClosed k] (ρ : Γ →* GL (Fin a) k) (ha : 0 <
   exact ⟨α, hα⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨hb, ht⟩` from `hne`. Establish `hcp : ∀ α, (liftRep ρ α).charpoly = (liftRep ρ' α).charpoly` using `GlobalTheory.charpoly_lift_eq_of_charpoly_eq a (matHom ρ) (matHom ρ') hc`. Establish `hdet : ∀ α, (liftRep ρ α).det = (liftRep ρ' α).det` using `fun α => by`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_eq_sign_charpoly_coeff, det_eq_sign_charpoly_coeff, hcp]`. Take `⟨w, hw, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb`. Establish `ha : 0 < a`. Break down `Nat.eq_zero_or_pos a with h | h` into its components or cases. Substitute `h` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `absurd (Subsingleton.elim w 0) hw0`. Conclude with `h`. Use `haveI : Nonempty (Fin a) := ⟨⟨0, ha⟩⟩`. Establish `hsurj` using `liftRep_surjective ρ' ha h'`. Set `S : Set (Matrix (Fin a) (Fin a) k)` to `{X | ∃ α, (∀ x ∈ W, liftRep ρ α *ᵥ x = 0) ∧ liftRep ρ' α = X}`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Set `I : TwoSidedIdeal (Matrix (Fin a) (Fin a) k)` to `TwoSidedIdeal.mk' S ⟨0, fun x _ => by simp, by simp⟩ (by`. Introduce and unpack `_ _ ⟨α, hα, rfl⟩ ⟨β, hβ, rfl⟩`. Conclude with `⟨α + β, fun x hx => by rw [map_add, add_mulVec, hα x hx, hβ x hx, add_zero], map_add _ _ _⟩)`. Use the proof step `(by`. Introduce and unpack `_ ⟨α, hα, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨-α, fun x hx => by rw [map_neg, neg_mulVec, hα x hx, neg_zero], map_neg _ _⟩)`. Use the proof step `(by`. Introduce and unpack `X _ ⟨α, hα, rfl⟩`. Take `⟨β, rfl⟩` from `hsurj X`. Conclude with `⟨β * α, fun x hx => by rw [map_mul, ← mulVec_mulVec, hα x hx, mulVec_zero], map_mul _ _ _⟩)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use the proof step `(by`. Introduce and unpack `_ Y ⟨α, hα, rfl⟩`. Take `⟨β, rfl⟩` from `hsurj Y`. Conclude with `⟨α * β, fun x hx => by`. Rewrite using `[map_mul, ← mulVec_mulVec, hα _ (liftRep_mem ρ W hW β x hx)], map_mul _ _ _⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmem : ∀ X, X ∈ I ↔ X ∈ S` using `fun X => TwoSidedIdeal.mem_mk' _ _ _ _ _ _ X`. Break down `IsSimpleOrder.eq_bot_or_eq_top I with hI | hI` into its components or cases. Establish `h0 : ∀ α, (∀ x ∈ W, liftRep ρ α *ᵥ x = 0) → liftRep ρ' α = 0` using `fun α hα => by`. Establish `: liftRep ρ' α ∈ I` using `(hmem _).2 ⟨α, hα, rfl⟩`. Rewrite `this` using `[hI]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(TwoSidedIdeal.mem_bot _).1 this`. Set `ψ : MonoidAlgebra k Γ →ₗ[k] (Fin (Module.finrank k W) → Fin a → k)` to `{ toFun := fun α i => liftRep ρ α *ᵥ ((Module.finBasis k W i : W) : Fin a → k) map_add' := fun α β => by funext i; simp [add_mulVec] map_smul' := fun c α => by funext i; simp [Matrix.smul_mulVec] }`. Establish `hker : LinearMap.ker ψ ≤ LinearMap.ker (liftRep ρ').toLinearMap`. Introduce `α hα`. Rewrite `hα`, the goal using `[LinearMap.mem_ker]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `h0 α` to reduce the goal to its premises. Introduce `x hx`. Establish `hf : (Matrix.toLin' (liftRep ρ α)).comp W.subtype = 0` using `(Module.finBasis k W).ext fun i => by`. Use `congrFun hα i` as an intermediate fact. Simplify `this` using `[ψ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `LinearMap.congr_fun hf ⟨x, hx⟩` as an intermediate fact. Simplify using `using this`. Establish `hrange : LinearMap.range (liftRep ρ').toLinearMap = ⊤` using `LinearMap.range_eq_top.2 hsurj`. Set `q` to `(LinearMap.ker ψ).liftQ (liftRep ρ').toLinearMap hker`. Establish `hq : LinearMap.range q = ⊤` using `by rw [Submodule.range_liftQ, hrange]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Use `haveI : FiniteDimensional k (MonoidAlgebra k Γ ⧸ LinearMap.ker ψ) := LinearEquiv.finiteDimensional (ψ.quotKerEquivRange).symm`. Establish `h1 : Module.finrank k (Matrix (Fin a) (Fin a) k) ≤ Module.finrank k (MonoidAlgebra k Γ ⧸ LinearMap.ker ψ)`. Use `LinearMap.finrank_range_le q` as an intermediate fact. Rewrite `this` using `[hq, finrank_top]`. Then use the resulting hypothesis. Establish `h2 : Module.finrank k (MonoidAlgebra k Γ ⧸ LinearMap.ker ψ) ≤ Module.finrank k W * a`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[ψ.quotKerEquivRange.finrank_eq]`. Use `(Submodule.finrank_le _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `first`. Consider the case `simp [Module.finrank_pi_fintype, Module.finrank_fintype_fun_eq_card]`. Consider the case `rw [Module.finrank_pi_fintype]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Consider the case `simp [Module.finrank_pi]`. Establish `h3 : Module.finrank k W < a`. Use `Submodule.finrank_lt ht` as an intermediate fact. Simplify using `using this`.
-
-Rewrite `h1` using `[Module.finrank_matrix, Fintype.card_fin, Module.finrank_self, mul_one]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : (1 : Matrix (Fin a) (Fin a) k) ∈ I` using `by rw [hI]; exact TwoSidedIdeal.mem_top _`. Take `⟨κ, hκ, hκ1⟩` from `(hmem _).1 h1`. Establish `h0 : (liftRep ρ κ).det = 0` using `Matrix.exists_mulVec_eq_zero_iff.1 ⟨w, hw0, hκ w hw⟩`.
-
-Rewrite `h0` using `[hdet, hκ1, det_one]`. Conclude with `one_ne_zero h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irred_of_charpoly_eq [IsAlgClosed k] (ρ ρ' : Γ →* GL (Fin a) k)
     (hc : ∀ g, (ρ g : Matrix (Fin a) (Fin a) k).charpoly = (ρ' g : Matrix (Fin a) (Fin a) k).charpoly)
@@ -178,7 +174,7 @@ theorem irred_of_charpoly_eq [IsAlgClosed k] (ρ ρ' : Γ →* GL (Fin a) k)
     exact one_ne_zero h0
 
 /- English proof (translation)
-Introduce `ℓ _ a ρ ρ' hc h' W hW`. Conclude with `irred_of_charpoly_eq ρ ρ' hc (fun W hW => h' W fun g _ x hx => hW g x hx) W (fun g x hx => hW g (Subgroup.mem_top g) x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem litBNIrr (Γ : Type) [Group Γ] : LitBNIrr Γ := by
   intro ℓ _ a ρ ρ' hc h' W hW

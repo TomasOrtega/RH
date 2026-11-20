@@ -9,9 +9,9 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.BZPhiPG.TwFibre
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i t ψ hψ τ σ f y`. Take `⟨hl, hc⟩` from `GlobalTheory.T.locally_constant_compact_support_unipotent k i t τ σ f y`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : IsLocallyConstant (fun d : Fin (t + 1) → k => ψ (d (Fin.last t)))` using `(GlobalTheory.IrredSB.char_isLocallyConstant ψ hψ).comp_continuous (continuous_apply _)`. Establish `h2 : IsLocallyConstant (fun d : Fin (t + 1) → k => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ))` using `h1.comp (fun z : Circle => (((Circle.toUnits z)⁻¹ : ℂˣ) : ℂ))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsLocallyConstant.comp₂ h2 hl (fun a b => a • b)`. Use `hc.mono fun d hd h0 => hd ?_` and prove the remaining obligations. Establish `h0' : evX f (dEmb k i t d * y) = 0` using `h0`. Use `show (_ : ℂ) • evX f (dEmb k i t d * y) = 0`. Rewrite using `[h0', smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twisted_fibre_isLocallyConstant_hasCompactSupport : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (f : XS τ σ) (y : Mir k ((i + 1) + t + 1)), IsLocallyConstant (fun d : Fin (t + 1) → k => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX f (dEmb k i t d * y)) ∧ HasCompactSupport (fun d : Fin (t + 1) → k => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX f (dEmb k i t d * y)) := by
   intro k _ _ _ _ i t ψ hψ τ σ f y

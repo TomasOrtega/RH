@@ -5,11 +5,9 @@ noncomputable def UpperTheory.Reformulated.B.DYhc7.Iwa :
     fun {G : Type} [Group G] (P K : Subgroup G) ↦ ∀ (g : G), ∃ p ∈ P, ∃ k ∈ K, g = p * k
 
 /- English proof (translation)
-Introduce `G _ _ _ K P hK hP hI`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Set `h : G × K ≃ₜ G × K` to `{ toFun := fun y => (y.1 * (y.2 : G), y.2) invFun := fun y => (y.1 * (y.2 : G)⁻¹, y.2) left_inv := fun y => by simp right_inv := fun y => by simp continuous_toFun := by fun_prop continuous_invFun := by fun_prop }`. Establish `hι : Topology.IsClosedEmbedding (Prod.map (Subtype.val : P → G) (id : K → K))` using `hP.isClosedEmbedding_subtypeVal.prodMap Topology.IsClosedEmbedding.id`. Establish `hcl : IsClosedMap (fun x : ↥P × ↥K ↦ (x.1 : G) * (x.2 : G))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsClosedMap (Prod.fst : G × K → G)` using `isClosedMap_fst_of_compactSpace`. Conclude with `h1.comp (h.isClosedMap.comp hι.isClosedMap)`. Use `hcl.isQuotientMap (by fun_prop) ?_` and prove the remaining obligations. Introduce `g`. Take `⟨p, hp, k, hk, rfl⟩` from `hI g`.
-
-Conclude with `⟨(⟨p, hp⟩, ⟨k, hk⟩), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.DYhc7.main :
     ∀ {G : Type} [inst : Group G] [inst_1 : TopologicalSpace G] [IsTopologicalGroup G] {K P : Subgroup G},

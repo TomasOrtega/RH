@@ -9,7 +9,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FrameCob
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `((X.presheaf.map (homOfLE h₁).op ≫ X.presheaf.map (homOfLE h₂).op).hom) (x : Γ(X, U)) = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_comp {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (x : Γ(X, U)ˣ) :
     res h₂ (res h₁ x) = res (h₂.trans h₁) x := by
@@ -19,7 +19,7 @@ theorem res_comp {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W �
   rfl
 
 /- English proof (translation)
-Substitute `B C` using the available equality. Combine the equalities or inequalities in the displayed calculation.
+Substitute using the available equality. Chain the equalities or inequalities of the calculation.
 -/
 theorem comm_group_step {G : Type*} [CommGroup G] (a b c d e f g k : G) (A : a * b = c * d) (B : b = e * f)
     (C : d = g * k) : e * a * g⁻¹ * f = c * k := by
@@ -29,11 +29,11 @@ theorem comm_group_step {G : Type*} [CommGroup G] (a b c d e f g k : G) (A : a *
     _ = c * k := by rw [mul_left_comm c, inv_mul_cancel_left]
 
 /- English proof (translation)
-Introduce `X C _ V hV L L' u u' hL hL' ⟨w, hw⟩ ⟨τ, hτg, hτ⟩ ⟨τ', hτ'g, hτ'⟩`. Use `choose t ht htu using fun T => GlobalTheory.T.existsUnique_unit_ratio_generators_isomorphic_lineBundles X L L' (V T) w (τ T) (τ' T) hL hL' hw (hτg T) (hτ'g T)`. Use `⟨t, fun T T' a => ?_⟩` and prove the remaining obligations. Establish `key : u' T T' a * res (hV a) (t T) * (u T T' a)⁻¹ = t T'`. Use `htu T' _ (fun m m' => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hO : V T' ⊓ (L'.U m' ⊓ L.U m) ≤ V T ⊓ (L'.U m' ⊓ L.U m)` using `inf_le_inf_right _ (hV a)`. Establish `A` using `congrArg (res hO) (ht T m m')`. Establish `B` using `congrArg (res (inf_le_inf_left (V T') inf_le_left : V T' ⊓ (L'.U m' ⊓ L.U m) ≤ V T' ⊓ L'.U m')) (hτ' T T' a m')`. Establish `C'` using `congrArg (res (inf_le_inf_left (V T') inf_le_right : V T' ⊓ (L'.U m' ⊓ L.U m) ≤ V T' ⊓ L.U m)) (hτ T T' a m)`. Simplify using `only [map_mul, map_inv, res_comp] at A B C' ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `erw [res_comp] at A`. Conclude with `comm_group_step _ _ _ _ _ _ _ _ A B C'`. Rewrite using `[← key, inv_mul_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem frames_cohomologous : ∀ (X : Scheme.{0}) (C : Type) [Category.{0} C] (V : C → X.Opens)
     (hV : ∀ ⦃T T' : C⦄, (T ⟶ T') → V T' ≤ V T) (L L' : LB X)

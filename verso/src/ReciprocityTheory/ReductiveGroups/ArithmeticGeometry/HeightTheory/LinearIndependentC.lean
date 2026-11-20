@@ -9,7 +9,7 @@ attribute [local instance] MvPolynomial.algebraMvPolynomial
 variable {L E : Type} [Field L] [Field E] [Algebra L E] {σ : Type}
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, algebraMap_def, mul_comm, coeff_C_mul, coeff_map, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma coeff_smul_C (q : MvPolynomial σ L) (e : E) (m : σ →₀ ℕ) :
     coeff m (q • C e : MvPolynomial σ E) = algebraMap L E (coeff m q) * e := by
@@ -21,9 +21,9 @@ noncomputable def crd (p : MvPolynomial σ E) (i : n) : MvPolynomial σ L :=
   ∑ m ∈ p.support, monomial m (b.repr (coeff m p) i)
 
 /- English proof (translation)
-Rewrite using `[crd, coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[notMem_support_iff.1 h, map_zero, Finsupp.zero_apply]`.
+A detailed English derivation is pending.
 -/
 lemma coeff_crd (p : MvPolynomial σ E) (i : n) (m : σ →₀ ℕ) :
     coeff m (crd b p i) = b.repr (coeff m p) i := by
@@ -36,7 +36,7 @@ lemma coeff_crd (p : MvPolynomial σ E) (i : n) (m : σ →₀ ℕ) :
   · rw [notMem_support_iff.1 h, map_zero, Finsupp.zero_apply]
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_smul_C, coeff_crd, ← Algebra.smul_def]`. Conclude with `(b.sum_repr (coeff m p)).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma eq_sum_crd (p : MvPolynomial σ E) : p = ∑ i, crd b p i • (C (b i) : MvPolynomial σ E) := by
   ext m
@@ -45,9 +45,9 @@ lemma eq_sum_crd (p : MvPolynomial σ E) : p = ∑ i, crd b p i • (C (b i) : M
   exact (b.sum_repr (coeff m p)).symm
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Use extensionality with `m`. Establish `h` using `congrArg (coeff m) hg`. Rewrite `h` using `[coeff_sum, coeff_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [coeff_smul_C, ← Algebra.smul_def] at h`. Use `(Fintype.linearIndependent_iff.1 b.linearIndependent) (fun i => coeff m (g i)) h i` as an intermediate fact. Rewrite using `[this, coeff_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma linearIndependent_C : LinearIndependent (MvPolynomial σ L) (fun i => (C (b i) : MvPolynomial σ E)) := by
   rw [Fintype.linearIndependent_iff]

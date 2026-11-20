@@ -7,11 +7,11 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.TangentOrigin GlobalTheory.Toroid
 open scoped ComplexOrder
 
 /- English proof (translation)
-Use `⟨fun a i h => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `lt_or_ge k a with h' | h'` into its components or cases. Rewrite using `[hS a k h', zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT k i (h.trans_le h'), mul_zero]`. Rewrite using `[mul_apply]`. Use `Finset.sum_eq_single i (fun k _ hk => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hk with h' | h'` into its components or cases. Rewrite using `[hS i k h', zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT k i h', mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem tri_mul {K : Type} [CommRing K] {r : ℕ} {S T : Matrix (Fin r) (Fin r) K} (hS : IsTri S) (hT : IsTri T) :
     IsTri (S * T) ∧ ∀ i, (S * T) i i = S i i * T i i := by
@@ -30,9 +30,9 @@ private theorem tri_mul {K : Type} [CommRing K] {r : ℕ} {S T : Matrix (Fin r) 
 private def posE (dual : Bool) (r : ℕ) : Equiv.Perm (Fin r) := ⟨pos dual, pos dual, pos_pos dual, pos_pos dual⟩
 
 /- English proof (translation)
-Consider the cases of `dual`. Conclude with `⟨hU, fun i => by simpa [lieMat] using ht i⟩`. Use `invertibleOfIsUnitDet U hu` as an intermediate fact. Establish `h1 : IsTri U⁻¹` using `fun a i h => blockTriangular_inv_of_blockTriangular (b := id) (M := U) (fun a i h => hU a i h) h`. Use `⟨fun a i h => h1 _ _ (Fin.rev_lt_rev.2 h), fun i => ?_⟩` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `(tri_mul h1 hU).2 i`. Rewrite `h2` using `[nonsing_inv_mul _ hu, one_apply_eq, ht]`. Simplify using `only [lieMat, cond_true, transpose_apply, _root_.zpow_neg, zpow_one]`. Conclude with `Units.eq_inv_of_mul_eq_one_right h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem tri_lieMat {K : Type} [CommRing K] {r : ℕ} (dual : Bool) {U : Matrix (Fin r) (Fin r) K} (hU : IsTri U)
     (hu : IsUnit U.det) {t : Fin r → Kˣ} (ht : ∀ i, U i i = t i) :
@@ -50,13 +50,13 @@ private theorem tri_lieMat {K : Type} [CommRing K] {r : ℕ} (dual : Bool) {U : 
     exact Units.eq_inv_of_mul_eq_one_right h2.symm
 
 /- English proof (translation)
-Establish `h1 : (lieMat dual Q).map ψ = lieMat dual U * A`. Rewrite using `[← lieMat_map _ _ hQ, h, lieMat_mul, lieMat_lieMat _ hA]`. Establish `h2 : ((lieMat dual Q).map ψ).submatrix (pos dual) id = (lieMat dual U).submatrix (pos dual) (pos dual) * A.submatrix (pos dual) id`. Rewrite using `[h1]`. Conclude with `(submatrix_mul_equiv _ _ _ (posE dual r) _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h3, h4⟩` from `tri_lieMat dual hU hu ht`. Take `⟨h5, h6⟩` from `tri_mul h3 hA'`. Rewrite `h5`, `h6` using `[← h2]`. Establish `h7 : IsTri ((lieMat dual Q).submatrix (pos dual) id)` using `fun a i hi => hψ ((h5 a i hi).trans (map_zero ψ).symm)`. Establish `h8 : IsUnit ((lieMat dual Q).submatrix (pos dual) id).det`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `det_permute (posE dual r) (lieMat dual Q)` as an intermediate fact. Express the relevant statement in the definitionally equal form `((lieMat dual Q).submatrix (pos dual) id).det = _ at this`. Rewrite using `[this]`. Use `IsUnit.mul ?_ (isUnit_det_lieMat dual hQ)` and prove the remaining obligations. Conclude with `(Units.isUnit _).map (Int.castRingHom R)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h8` using `[det_of_upperTriangular (fun a i hi => h7 a i hi), IsUnit.prod_univ_iff]`. Use `⟨h7, fun i => ⟨h8 i, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← h4, mul_comm]`. Conclude with `(h6 i).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem key {R K : Type} [CommRing R] [CommRing K] {r : ℕ} (dual : Bool) (ψ : R →+* K)
     (hψ : Function.Injective ψ) {U A : Matrix (Fin r) (Fin r) K} {Q : Matrix (Fin r) (Fin r) R} (hU : IsTri U)
@@ -87,9 +87,9 @@ private theorem key {R K : Type} [CommRing R] [CommRing K] {r : ℕ} (dual : Boo
   exact (h6 i).symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e C τ X j M dual A fl hL hF ch hch y hy φ f f' t hT hf'`. Take `⟨k, hk⟩` from `exists_isMap_toFn (e := e) f hf'.1`. Take `⟨h1, h2⟩` from `hT.co τ hk`. Establish `h3 : Fits C.f0 τ y φ f (C.f0.co k τ)` using `(fits_iff hf'.1 hk).2 rfl`. Use `key dual (toFn y) (toFn_injective y) (U := k.co C.f0 τ) h1 (k.isUnit_det_co _ τ) h2 (hL.1.1 ch (gen_le j hy)) (hF ch hch (gen_le j hy)) (f.isUnit_det_co f' τ) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h3.eq_mul hf', ← Matrix.mul_assoc, EigFrame.co_mul, EigFrame.co_self, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.chart_frame_divisor :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (C : FlagCpt Z e) (τ : E →+* ℂ) (X : Scheme.{0}) (j : C.Y.X ⟶ X) (M : X.Modules) (dual : Bool) (A : Chart M (Dw.mult τ) → Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) C.Y.Fn) (fl : Vert.Flag M (Dw.mult τ)), IsLie C.f0 τ j dual A → IsFlag (genericPt C.Y ≫ j) dual A fl → ∀ ch : Chart M (Dw.mult τ), IsAdapted fl ch → ∀ y : C.Y.X, j y ∈ ch.U → ∀ (φ : c.F →+* C.Y.X.presheaf.stalk y) (f f' : StalkFrame C.π y φ) (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → C.Y.Fnˣ), f.Tri (toFn y) C.f0 t → Fits C.f0 τ y φ f' (lieMat dual (A ch)) → IsTri ((lieMat dual (f.co f' τ)).submatrix (pos dual) id) ∧ ∀ i, IsUnit (lieMat dual (f.co f' τ) (pos dual i) i) ∧ A ch (pos dual i) i * ((t τ (pos dual i) ^ (cond dual (-1) 1 : ℤ) : C.Y.Fnˣ) : C.Y.Fn) = toFn y (lieMat dual (f.co f' τ) (pos dual i) i) := by

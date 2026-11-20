@@ -6,21 +6,19 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTh
 open scoped Classical
 
 /- English proof (translation)
-Introduce `K _ H hu hl`. Establish `hdet : ∀ g : Matrix.SpecialLinearGroup (Fin 2) K, g.1 0 0 * g.1 1 1 - g.1 0 1 * g.1 1 0 = 1` using `fun g => by`. Establish `h` using `g.2`. Rewrite `h` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis. Establish `nU : ∀ b : K, ∃ g ∈ H, g.1 = !![1, b; 0, 1]` using `fun b => ⟨⟨!![1, b; 0, 1], by simp [Matrix.det_fin_two]⟩, hu _ b rfl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `nL : ∀ c : K, ∃ g ∈ H, g.1 = !![1, 0; c, 1]` using `fun c => ⟨⟨!![1, 0; c, 1], by simp [Matrix.det_fin_two]⟩, hl _ c rfl, rfl⟩`. Establish `key : ∀ g : Matrix.SpecialLinearGroup (Fin 2) K, g.1 1 0 ≠ 0 → g ∈ H`. Introduce `g hc`. Take `⟨x, hx, hx'⟩` from `nU ((g.1 0 0 - 1) / g.1 1 0)`. Take `⟨l, hl1, hl'⟩` from `nL (g.1 1 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hy'⟩` from `nU ((g.1 1 1 - 1) / g.1 1 0)`. Establish `hd` using `hdet g`. Establish `e : g = x * l * y`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_mul, hx', hl', hy']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> first | ring1 | linear_combination (-1 : K) * hd`. Rewrite using `[e]`. Conclude with `H.mul_mem (H.mul_mem hx hl1) hy`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_top_iff.2 fun g _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : g.1 1 0 = 0`. Take `⟨l, hl1, hl'⟩` from `nL 1`. Establish `hd` using `hdet g`. Establish `ha : g.1 0 0 ≠ 0`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `hd` using `[h0, hc]`. Simplify using `at hd`. Establish `h2 : l * g ∈ H`. Apply `key` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.SpecialLinearGroup.coe_mul, hl']`. Simplify `ha` using `[Matrix.mul_apply, Fin.sum_univ_two, hc]`. Establish `e : g = l⁻¹ * (l * g)` using `by group`. Rewrite using `[e]`. Conclude with `H.mul_mem (H.inv_mem hl1) h2`.
-
-Conclude with `key g hc`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.I.genSL :
     ∀ (K : Type) [Field K] (H : Subgroup (Matrix.SpecialLinearGroup (Fin 2) K)),

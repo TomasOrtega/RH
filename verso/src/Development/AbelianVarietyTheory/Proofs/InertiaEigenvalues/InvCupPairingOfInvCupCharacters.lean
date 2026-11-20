@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h : a • v = a.val • v` using `by conv_lhs => rw [← ZMod.natCast_zmod_val a]`. Conclude with `Nat.cast_smul_eq_nsmul (ZMod p) a.val v`. Rewrite using `[h, map_nsmul, AddMonoidHom.nsmul_apply, nsmul_eq_mul, ZMod.natCast_zmod_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma pairing_smul_left' {p : ℕ} [NeZero p] {M M' : Type} [AddCommGroup M] [AddCommGroup M']
     [Module (ZMod p) M] (β : M →+ M' →+ ZMod p) (a : ZMod p) (v : M) (m' : M') :
@@ -19,13 +19,11 @@ private lemma pairing_smul_left' {p : ℕ} [NeZero p] {M M' : Type} [AddCommGrou
   rw [h, map_nsmul, AddMonoidHom.nsmul_apply, nsmul_eq_mul, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Set `b` to `Module.Basis.ofVectorSpace (ZMod l) M`. Use `⟨_, hS.toFinset.biUnion (fun m => (b.repr m).support), fun i => (b.coord i).toAddMonoidHom, fun i => β (b i), ?_⟩` and prove the remaining obligations. Introduce `m hm m'`. Establish `hsub : (b.repr m).support ⊆ hS.toFinset.biUnion (fun m => (b.repr m).support)` using `Finset.subset_biUnion_of_mem (fun m => (b.repr m).support) (hS.mem_toFinset.2 hm)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' : m = ∑ i ∈ (b.repr m).support, b.repr m i • b i` using `by conv_lhs => rw [← b.linearCombination_repr m]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum]`. Use `conv_lhs => rw [hm']`. Rewrite using `[map_sum, AddMonoidHom.finset_sum_apply]`. Simplify using `only [pairing_smul_left', LinearMap.toAddMonoidHom_coe, Module.Basis.coord_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_subset hsub ?_` and prove the remaining obligations. Introduce `k _ hk`. Establish `hz : b.repr m k = 0`. Assume the negation of the conclusion as `h`. Conclude with `hk (Finsupp.mem_support_iff.2 h)`.
-
-Rewrite using `[hz, zero_mul]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum_mul_of_finite_torsion (l : ℕ) [Fact l.Prime] (M M' : Type) [AddCommGroup M]
     [AddCommGroup M'] [Module (ZMod l) M] (β : M →+ M' →+ ZMod l) (S : Set M)
@@ -54,17 +52,15 @@ theorem exists_sum_mul_of_finite_torsion (l : ℕ) [Fact l.Prime] (M M' : Type) 
   rw [hz, zero_mul]
 
 /- English proof (translation)
-Introduce `Γ _ _ _ _ l _ μ hμ e I u γ φ hchar M M' _ _ _ _ _ _ hl β x y hxc hyc hxa hya hyI w hw`. Use `haveI hp : Fact (l ^ 1).Prime := ⟨by rw [pow_one]; exact Fact.out⟩`. Use `haveI : NeZero (l ^ 1) := ⟨hp.out.ne_zero⟩`. Use `letI : Module (ZMod (l ^ 1)) M := AddCommGroup.zmodModule (fun m => by rw [pow_one]; exact hl m)`. Establish `hfin : (Set.range x).Finite` using `(isCompact_range hxc).finite_of_discrete`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ι, s, c, d, hdec⟩` from `exists_sum_mul_of_finite_torsion (l ^ 1) M M' β (Set.range x) hfin`. Establish `hmem : ∀ k, (fun q : Γ × Γ => c k (x q.1) * d k (y q.2)) ∈ Z2 μ`. Introduce `k`. Rewrite using `[mem_cocycles2]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `((continuous_of_discreteTopology.comp hxc).comp continuous_fst).mul ((continuous_of_discreteTopology.comp hyc).comp continuous_snd)`. Introduce `g h k'`. Simplify using `only [hμ, hxa, hya, map_add]`. Expand and normalize the polynomial expressions, which then agree. Set `W : ι → Z2 μ` to `fun k => ⟨_, hmem k⟩`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hWsum : w = ∑ k ∈ s, W k`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `q`. Break down `q with ⟨g, h⟩` into its components or cases. Rewrite using `[Submodule.coe_sum, Finset.sum_apply, hw g h]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdec (x g) ⟨g, rfl⟩ (y h)`. Establish `hW : ∀ k, e (Submodule.Quotient.mk (W k)) = u * (c k (x γ) * d k (y φ))` using `fun k => hchar (fun g => c k (x g)) (fun g => d k (y g)) (continuous_of_discreteTopology.comp hxc) (continuous_of_discreteTopology.comp hyc) (fun g h => by simp only [hxa, map_add]) (fun g h => by simp only [hya, map_add]) (fun g hg => by simp only [hyI g hg, map_zero]) (W k) (fu …`. Establish `hq : (Submodule.Quotient.mk (∑ k ∈ s, W k) : H2 μ) = ∑ k ∈ s, (Submodule.Quotient.mk (W k) : H2 μ)` using `map_sum (Submodule.mkQ _) W s`. Rewrite using `[hWsum, hq, map_sum]`. Simplify using `only [hW]`.
-
-Rewrite using `[← Finset.mul_sum, ← hdec (x γ) ⟨γ, rfl⟩ (y φ)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_cup_pairing_of_inv_cup_characters : ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] (l : ℕ) [Fact l.Prime] (μ : Representation (ZMod (l ^ 1)) Γ (ZMod (l ^ 1))), (∀ g m, μ g m = m) → ∀ (e : H2 μ →ₗ[ZMod (l ^ 1)] ZMod (l ^ 1)) (I : Γ → Prop) (u : ZMod (l ^ 1)) (γ φ : Γ), (∀ z y : Γ → ZMod (l ^ 1), Continuous z → Continuous y → (∀ g h, z (g * h) = z g + z h) → (∀ g h, y (g * h) = y g + y h) → (∀ g, I g → y g = 0) → ∀ w : Z2 μ, (∀ g h, w.1 (g, h) = z g * y h) → e (Submodule.Quotient.mk w) = u * (z γ * y φ)) → ∀ (M M' : Type) [AddCommGroup M] [TopologicalSpace M] [DiscreteTopology M] [AddCommGroup M'] [TopologicalSpace M'] [DiscreteTopology M'], (∀ m : M, l • m = 0) → ∀ (β : M →+ M' →+ ZMod (l ^ 1)) (x : Γ → M) (y : Γ → M'), Continuous x → Continuous y → (∀ g h, x (g * h) = x g + x h) → (∀ g h, y (g * h) = y g + y h) → (∀ g, I g → y g = 0) → ∀ w : Z2 μ, (∀ g h, w.1 (g, h) = β (x g) (y h)) → e (Submodule.Quotient.mk w) = u * β (x γ) (y φ) := by
   intro Γ _ _ _ _ l _ μ hμ e I u γ φ hchar M M' _ _ _ _ _ _ hl β x y hxc hyc hxa hya hyI w hw

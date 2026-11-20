@@ -12,7 +12,7 @@ namespace GlobalTheory.GLCuspNorm
 open scoped Classical in
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun w => ?_` and prove the remaining obligations. Establish `h1 : ‖pInf E x w‖ = ‖x.1 w‖` using `(InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).isometry.norm_map_of_map_zero (map_zero (InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w))) (x.1 w)`. Rewrite using `[h1, ← GroundTheory.Automorphic.CuspidalSpectrum.normAtPlace_ringEquiv_mixedSpace, mixedEmbedding.norm_eq_sup'_normAtPlace]`. Conclude with `Finset.le_sup' (fun w => mixedEmbedding.normAtPlace w _) (Finset.mem_univ w)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pInf_le (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (x : Ad E) :
     ‖pInf E x‖ ≤ ‖InfiniteAdeleRing.ringEquiv_mixedSpace E x.1‖ := by
@@ -25,9 +25,9 @@ theorem norm_pInf_le (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (
   exact Finset.le_sup' (fun w => mixedEmbedding.normAtPlace w _) (Finset.mem_univ w)
 
 /- English proof (translation)
-Introduce `E _ _ _ a`. Use `⟨1, zero_le_one, fun M => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul]`. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => ?_` and prove the remaining obligations. Use `(norm_pInf_le E (M i j)).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← GroundTheory.Automorphic.CuspidalSpectrum.archMat_apply]`. Conclude with `GroundTheory.Automorphic.CuspidalSpectrum.norm_entry_le_norm_archMatrix _ i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_toL_map_pInf_le : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), ∃ c : ℝ, 0 ≤ c ∧
     ∀ M : Matrix (Fin a) (Fin a) (Ad E),

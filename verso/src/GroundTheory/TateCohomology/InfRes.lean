@@ -12,7 +12,7 @@ universe u
 variable {k G : Type u} [CommRing k] [Group G]
 
 /- English proof (translation)
-Set `f : PUnit.{u + 1} →* H` to `1`. Set `g : G →* PUnit.{u + 1}` to `1`. Set `ψ : res g (res f A) ⟶ B` to `ofHom ⟨φ.hom.toLinearMap, fun x => φ.hom.isIntertwining' x⟩`. Establish `h : map 1 φ (n + 1) = map (f.comp g) ((resFunctor g).map (𝟙 (res f A)) ≫ ψ) (n + 1)` using `map_congr (by ext; rfl) rfl (n + 1)`. Rewrite using `[h, map_comp, (isZero_groupCohomology_succ_of_subsingleton (res f A) n).eq_zero_of_src (map g ψ (n + 1)), Limits.comp_zero]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_one_succ {H : Type u} [Group H] {A : Rep k H} {B : Rep k G}
     (φ : res (1 : G →* H) A ⟶ B) (n : ℕ) : map 1 φ (n + 1) = 0 := by
@@ -35,7 +35,7 @@ noncomputable abbrev restriction (n : ℕ) :
   map S.subtype (𝟙 _) n
 
 /- English proof (translation)
-Rewrite using `[← map_comp, Category.comp_id, groupCohomology.congr (QuotientGroup.mk'_comp_subtype S) (fun f φ => map f φ (n + 1)), map_one_succ]`. Use the proof step `@[simps X₁ X₂ X₃ f g]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inflation_comp_restriction (n : ℕ) :
     inflation A S (n + 1) ≫ restriction A S (n + 1) = 0 := by
@@ -52,9 +52,9 @@ noncomputable def infResShortComplex (n : ℕ) : ShortComplex (ModuleCat k) wher
   zero := inflation_comp_restriction A S n
 
 /- English proof (translation)
-Establish `ex` using `(map_cochainsFunctor_shortExact hX).homology_exact₃ 0 1 rfl`. Establish `e : Epi (map (MonoidHom.id G) X.g 0)` using `ex.epi_f (h1.eq_of_tgt _ _)`. Establish `hc` using `map_id_comp_H0Iso_hom X.g`. Establish `e2 : Epi ((H0Iso X.X₂).hom ≫ (invariantsFunctor k G).map X.g)`. Rewrite using `[← hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Establish `e3` using `epi_of_epi (H0Iso X.X₂).hom ((invariantsFunctor k G).map X.g)`. Conclude with `(ModuleCat.epi_iff_surjective _).1 e3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma invariants_map_surjective {X : ShortComplex (Rep k G)} (hX : X.ShortExact)
     (h1 : IsZero (groupCohomology X.X₁ 1)) :
@@ -76,7 +76,7 @@ Both sides reduce to the same expression.
 lemma toCoindOne_hom_apply (a : A) (x : G) : (toCoindOne A).hom a x = A.ρ x a := rfl
 
 /- English proof (translation)
-Introduce `a b h` and use `by have h' : A.ρ 1 a = A.ρ 1 b := congrFun h 1 simpa using h'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma toCoindOne_injective : Function.Injective (toCoindOne A).hom := fun a b h => by
   have h' : A.ρ 1 a = A.ρ 1 b := congrFun h 1
@@ -88,7 +88,7 @@ noncomputable abbrev shiftSC : ShortComplex (Rep k G) :=
   ShortComplex.mk (toCoindOne A) (cokernel.π (toCoindOne A)) (cokernel.condition _)
 
 /- English proof (translation)
-The claim follows from `ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel _) mono_f := inferInstanceAs (Mono (toCoindOne A)) epi_g := inferInstanceAs (Epi (cokernel.π _))`.
+A detailed English derivation is pending.
 -/
 lemma shiftSC_shortExact : (shiftSC A).ShortExact where
   exact := ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel _)
@@ -102,7 +102,7 @@ noncomputable abbrev shiftSCQ : ShortComplex (Rep k (G ⧸ S)) :=
   (shiftSC A).map (quotientToInvariantsFunctor k S)
 
 /- English proof (translation)
-The claim follows from `(Rep.mono_iff_injective _).2 fun x y h => Subtype.ext (toCoindOne_injective A (congrArg Subtype.val h)) epi_g := (Rep.epi_iff_surjective _).2 (invariants_map_surjective ((shortExact_res S.subtype).2 (shiftSC_shortExact A)) h1) exact := by rw [← ShortComplex.exact_map_iff_of_faith …`.
+A detailed English derivation is pending.
 -/
 lemma shiftSCQ_shortExact (h1 : IsZero (groupCohomology (res S.subtype A) 1)) :
     (shiftSCQ A S).ShortExact where
@@ -127,15 +127,13 @@ lemma shiftSCQ_shortExact (h1 : IsZero (groupCohomology (res S.subtype A) 1)) :
     exact x.2 s
 
 /- English proof (translation)
-Establish `hX` using `shiftSC_shortExact A`. Establish `hS` using `(shortExact_res S.subtype).2 hX`. Establish `hQ` using `shiftSCQ_shortExact A S (hA 1 one_pos (by omega))`. Establish `hC : ∀ i, 0 < i → i < n + 1 → IsZero (groupCohomology (res S.subtype (shiftSC A).X₃) i)`. Introduce `i hi hin`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, rfl⟩ : ∃ m, i = m + 1` from `⟨i - 1, by omega⟩`. Establish `hδ` using `isIso_δ_of_isZero hS (m + 1) (isZero_res_coindOne k A S m) (isZero_res_coindOne k A S (m + 1))`. Conclude with `(hA (m + 1 + 1) (by omega) (by omega)).of_iso (@asIso _ _ _ _ _ hδ)`. Take `⟨ihm, ihe⟩` from `ih (shiftSC A).X₃ hC`. Establish `hδQ` using `isIso_δ_of_isZero hQ (n + 1) (isZero_quotientToInvariants_coindOne k A S n) (isZero_quotientToInvariants_coindOne k A S (n + 1))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδX` using `isIso_δ_of_isZero hX (n + 1) (isZero_coindOne k G A n) (isZero_coindOne k G A (n + 1))`. Establish `hδS` using `isIso_δ_of_isZero hS (n + 1) (isZero_res_coindOne k A S n) (isZero_res_coindOne k A S (n + 1))`. Set `F : (shiftSCQ A S).map (resFunctor (QuotientGroup.mk' S)) ⟶ shiftSC A` to `{ τ₁ := ofHom (A.ρ.quotientToInvariants_lift S) τ₂ := ofHom ((coindOne k G A).ρ.quotientToInvariants_lift S) τ₃ := ofHom ((shiftSC A).X₃.ρ.quotientToInvariants_lift S) comm₁₂ := by ext; rfl comm₂₃ := by ext; rfl }`. Establish `h1 : δ hQ (n + 1) (n + 1 + 1) rfl ≫ inflation A S (n + 1 + 1) = inflation (shiftSC A).X₃ S (n + 1) ≫ δ hX (n + 1) (n + 1 + 1) rfl` using `δ_comp_map (QuotientGroup.mk' S) hQ hX F (n + 1) (n + 1 + 1) rfl`. Establish `h2 : δ hX (n + 1) (n + 1 + 1) rfl ≫ restriction A S (n + 1 + 1) = restriction (shiftSC A).X₃ S (n + 1) ≫ δ hS (n + 1) (n + 1 + 1) rfl` using `δ_comp_map_res S.subtype hX (n + 1) (n + 1 + 1) rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : infResShortComplex (shiftSC A).X₃ S n ≅ infResShortComplex A S (n + 1)` to `ShortComplex.isoMk (@asIso _ _ _ _ _ hδQ) (@asIso _ _ _ _ _ hδX) (@asIso _ _ _ _ _ hδS) h1 h2`. Use `⟨?_, (ShortComplex.exact_iff_of_iso e).1 ihe⟩` and prove the remaining obligations. Establish `hf : e.inv.τ₁ ≫ (infResShortComplex (shiftSC A).X₃ S n).f ≫ e.hom.τ₂ = (infResShortComplex A S (n + 1)).f`. Rewrite using `[← Category.assoc, e.inv.comm₁₂, Category.assoc, ← ShortComplex.comp_τ₂, e.inv_hom_id, ShortComplex.id_τ₂, Category.comp_id]`. Rewrite using `[← hf]`.
-
-Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infRes_step (n : ℕ)
     (ih : ∀ B : Rep k G, (∀ i, 0 < i → i < n + 1 → IsZero (groupCohomology (res S.subtype B) i)) →
@@ -182,7 +180,7 @@ theorem infRes_step (n : ℕ)
   infer_instance
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact fun A _ => ⟨inferInstanceAs (Mono (H1InfRes A S).f), H1InfRes_exact A S⟩`. Consider the case `succ n ih => exact fun A hA => infRes_step A S n ih hA`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem infResShortComplex_mono_exact (n : ℕ) :
     ∀ A : Rep k G, (∀ i, 0 < i → i < n + 1 → IsZero (groupCohomology (res S.subtype A) i)) →
@@ -194,7 +192,7 @@ theorem infResShortComplex_mono_exact (n : ℕ) :
 variable {A S}
 
 /- English proof (translation)
-Take `⟨n, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hq`. Conclude with `(ModuleCat.mono_iff_injective _).1 (infResShortComplex_mono_exact S n A hA).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inflation_injective {q : ℕ} (hq : q ≠ 0)
     (hA : ∀ i, 0 < i → i < q → IsZero (groupCohomology (res S.subtype A) i)) :
@@ -203,7 +201,7 @@ theorem inflation_injective {q : ℕ} (hq : q ≠ 0)
   exact (ModuleCat.mono_iff_injective _).1 (infResShortComplex_mono_exact S n A hA).1
 
 /- English proof (translation)
-Take `⟨n, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hq`. Conclude with `(infResShortComplex_mono_exact S n A hA).2.moduleCat_range_eq_ker`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem range_inflation_eq_ker_restriction {q : ℕ} (hq : q ≠ 0)
     (hA : ∀ i, 0 < i → i < q → IsZero (groupCohomology (res S.subtype A) i)) :
@@ -212,7 +210,7 @@ theorem range_inflation_eq_ker_restriction {q : ℕ} (hq : q ≠ 0)
   exact (infResShortComplex_mono_exact S n A hA).2.moduleCat_range_eq_ker
 
 /- English proof (translation)
-The claim follows from `inflation_injective two_ne_zero fun i hi hi2 => by obtain rfl : i = 1 := by omega exact h1`.
+A detailed English derivation is pending.
 -/
 theorem inflation_two_injective (h1 : IsZero (groupCohomology (res S.subtype A) 1)) :
     Function.Injective (inflation A S 2).hom :=
@@ -221,7 +219,7 @@ theorem inflation_two_injective (h1 : IsZero (groupCohomology (res S.subtype A) 
     exact h1
 
 /- English proof (translation)
-The claim follows from `range_inflation_eq_ker_restriction two_ne_zero fun i hi hi2 => by obtain rfl : i = 1 := by omega exact h1`.
+A detailed English derivation is pending.
 -/
 theorem range_inflation_two_eq_ker_restriction
     (h1 : IsZero (groupCohomology (res S.subtype A) 1)) :

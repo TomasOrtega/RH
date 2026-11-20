@@ -14,7 +14,7 @@ open GlobalTheory.LineNorm
 namespace GlobalTheory.LineNorm.Neg
 
 /- English proof (translation)
-Establish `key {A B C : Type} [CommGroup A] [CommGroup B] [CommGroup C] (p : B →* C) (q : A →* B) (a : A) : ∏ _k : PUnit.{1}, p (q a⁻¹) ^ (1 : ℤ) = (∏ _k : PUnit.{1}, p (q a) ^ (1 : ℤ))⁻¹`. Simplify using the standard rewrite rules. Conclude with `key _ _ (L.g (i PUnit.unit) (j PUnit.unit))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pull_dual_g {X Y : Scheme.{0}} (L : LB X) (f : Y ⟶ X) (i j : (L.pull f).ι) :
     ((CechPic.dual L).pull f).g i j = ((L.pull f).g i j)⁻¹ := by
@@ -24,7 +24,7 @@ theorem pull_dual_g {X Y : Scheme.{0}} (L : LB X) (f : Y ⟶ X) (i j : (L.pull f
   exact key _ _ (L.g (i PUnit.unit) (j PUnit.unit))
 
 /- English proof (translation)
-Use `⟨LB.isLB_pull (CechPic.isLB_dual hL) f, fun i j hij => ?_, fun i x hx => (h.isEqn i x hx).neg⟩` and prove the remaining obligations. Establish `e` using `h.isRatSec i j hij`. Establish `e' : fnOf _ hij (((CechPic.dual L).pull f).g i j).val = (fnOf _ hij ((L.pull f).g i j).val)⁻¹` using `(congrArg (fun u : Γ(Y, (L.pull f).U i ⊓ (L.pull f).U j)ˣ => fnOf _ hij u.val) (pull_dual_g L f i j)).trans (map_units_inv _ _)`. Use `Eq.trans ?_ (congrArg (· * _) e').symm` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, e, mul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -41,7 +41,7 @@ theorem presents_neg {X Y : Scheme.{0}} [IsIntegral Y] {L : LB X} (hL : L.IsLB) 
   rfl
 
 /- English proof (translation)
-Take `⟨_, ⟨a, rfl⟩, rfl⟩` from `hf`. Rewrite using `[← map_units_inv, SmallSec.valAt_algebraMap, SmallSec.valAt_algebraMap, map_units_inv]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt_inv {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] {y : Sp K ⟶ Z}
     {f : Z.functionField} (hf : UnitAt (below y) f) : valAt y f⁻¹ = (valAt y f)⁻¹ := by
@@ -49,13 +49,11 @@ theorem valAt_inv {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] {y : Sp K
   rw [← map_units_inv, SmallSec.valAt_algebraMap, SmallSec.valAt_algebraMap, map_units_inv]
 
 /- English proof (translation)
-Take `⟨M, L, m, r, hL, hP, hφ⟩` from `h`. Use `⟨M, CechPic.dual L, m, fun i => (r i)⁻¹, CechPic.isLB_dual hL, ?_, fun v e y yt i hy hi => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_neg]`. Conclude with `presents_neg hL M.j hP`. Establish `hmem : below y.1 ∈ (L.pull M.j).U i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (y.1 ≫ M.j) (IsLocalRing.closedPoint _) ∈ L.U (i PUnit.unit)`. Rewrite using `[← hy]`. Conclude with `hi (Set.mem_univ _)`. Conclude with `Set.mem_iInter.2 fun _ => h1`. Establish `hu : UnitAt (below y.1) (((t (below y.1))⁻¹ ^ (m : ℕ) * r i : Y.Fnˣ) : Y.Fn)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `((ht (below y.1)).nsmul m).iff_unitAt.1 (hP.isEqn i _ hmem)` as an intermediate fact. Rewrite `this` using `[← Units.val_div_eq_div_val, div_eq_inv_mul, ← inv_pow]`. Then use the resulting hypothesis. Establish `e1 : (((t (below y.1))⁻¹⁻¹ ^ (m : ℕ) * (r i)⁻¹ : Y.Fnˣ) : Y.Fn) = (((t (below y.1))⁻¹ ^ (m : ℕ) * r i : Y.Fnˣ) : Y.Fn)⁻¹`. Rewrite using `[← Units.val_inv_eq_inv_val, mul_inv, ← inv_pow]`. Express the relevant statement in the definitionally equal form `((m : ℕ) : ℝ) * -φ v e y = Real.log (e.w (valAt y.1 (((t (below y.1))⁻¹⁻¹ ^ (m : ℕ) * (r i)⁻¹ : Y.Fnˣ) : Y.Fn)))`.
-
-Rewrite using `[e1, valAt_inv hu, map_inv₀, Real.log_inv, mul_neg, hφ v e y yt i hy hi]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fromModel_neg (F : Type) [Field F] [NumberField F] (Y : Var F) (Δ : Y.Dv) (t : Y.X → Y.Fnˣ)
     (φ : PtFn Y) (ht : ∀ y, Δ.IsEqn y (t y)) (h : FromModel Y Δ t φ) :

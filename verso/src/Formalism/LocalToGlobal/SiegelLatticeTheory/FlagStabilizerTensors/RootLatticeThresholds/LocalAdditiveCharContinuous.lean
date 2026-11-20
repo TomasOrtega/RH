@@ -16,26 +16,26 @@ variable {D : D7} (p : PlF D)
 def th : (D.s.atP p).Ep := (D.s.atP p).ιE (D.host.sqq)
 
 /- English proof (translation)
-Rewrite using `[th, (D.s.atP p).cj_ιE, D.conjF_eq, Examples₂.conj_aE, map_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_th : (D.s.atP p).cj (th p) = -th p := by
   rw [th, (D.s.atP p).cj_ιE, D.conjF_eq, Examples₂.conj_aE, map_neg]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Examples₂.q_mod_four D.host`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 -/
 theorem q_ne : (D.host.q : ℕ) ≠ 0 := by
   obtain ⟨k, hk⟩ := Examples₂.q_mod_four D.host
   omega
 
 /- English proof (translation)
-Rewrite using `[th, ← map_mul, ← pow_two, Examples₂.aE_sq, map_neg, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem th_sq : th p * th p = -((D.host.q : ℕ) : (D.s.atP p).Ep) := by
   rw [th, ← map_mul, ← pow_two, Examples₂.aE_sq, map_neg, map_natCast]
 
 /- English proof (translation)
-Introduce `h`. Use `Examples₂.aE_sq D.host` as an intermediate fact. Rewrite `this` using `[h, zero_pow two_ne_zero, eq_comm, neg_eq_zero, Nat.cast_eq_zero]`. Conclude with `q_ne this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aE_ne : D.host.sqq ≠ 0 := by
   intro h
@@ -44,17 +44,15 @@ theorem aE_ne : D.host.sqq ≠ 0 := by
   exact q_ne this
 
 /- English proof (translation)
-Establish `hli : LinearIndependent D.host.F ![(1 : D.host.E), D.host.sqq]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Assume the negation of the conclusion as `hne`. Establish `ht : t ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `ht`. Substitute `ht` using the available equality. Simplify using `only [zero_smul, add_zero, smul_eq_zero, one_ne_zero, or_false] at hst`. Conclude with `hne ⟨hst, rfl⟩`. Establish `hmem : D.host.sqq ∈ D.host.F`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: D.host.sqq = algebraMap D.host.F D.host.E (-(s / t))`. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Rewrite using `[map_neg, map_div₀]`. Clear denominators, using `[(map_ne_zero (algebraMap D.host.F D.host.E)).2 ht]` for the nonvanishing conditions. Take the linear combination `hst`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(-(s / t)).2`. Establish `h1` using `(Examples₂.conj_eq_self_iff D.host _).2 hmem`. Rewrite `h1` using `[Examples₂.conj_aE]`. Conclude with `aE_ne (D := D) (by linear_combination -h1 / 2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsp` using `hli.span_eq_top_of_card_eq_finrank' (by simp [Examples₂.finrank_FE D.host])`. Establish `: x ∈ Submodule.span D.host.F (Set.range ![(1 : D.host.E), D.host.sqq])`. Rewrite using `[hsp]`. Discharge the goal by the elementary cases of `trivial`. Simplify using `only [Matrix.range_cons, Matrix.range_empty, Set.union_empty, Set.singleton_union] at this`.
-
-Conclude with `this`.
+Check the elementary cases of the proposition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_span_aE (x : D.host.E) :
     x ∈ Submodule.span D.host.F ({1, D.host.sqq} : Set D.host.E) := by
@@ -83,9 +81,9 @@ theorem mem_span_aE (x : D.host.E) :
   exact this
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← (D.s.atP p).span, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨a, b, hab⟩` from `Submodule.mem_span_pair.1 (mem_span_aE x)`. Rewrite using `[← hab, map_add, Algebra.smul_def, Algebra.smul_def, mul_one, map_mul, (D.s.atP p).compat, (D.s.atP p).compat]`. Use `Submodule.mem_span_pair.2 ⟨(D.s.atP p).ιF a, (D.s.atP p).ιF b, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, mul_one, th]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem span_th : Submodule.span (D.s.atP p).Fp ({1, th p} : Set (D.s.atP p).Ep) = ⊤ := by
   rw [eq_top_iff, ← (D.s.atP p).span, Submodule.span_le]
@@ -100,7 +98,7 @@ instance finEp : Module.Finite (D.s.atP p).Fp (D.s.atP p).Ep :=
   Module.finite_of_finrank_pos (by rw [(D.s.atP p).rank]; norm_num)
 
 /- English proof (translation)
-Use `linearIndependent_of_top_le_span_of_card_eq_finrank ?_ (by simp [(D.s.atP p).rank])` and prove the remaining obligations. Rewrite using `[← span_th p]`. Simplify using `only [Matrix.range_cons, Matrix.range_empty, Set.union_empty, Set.singleton_union, le_refl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem indep_th : LinearIndependent (D.s.atP p).Fp ![(1 : (D.s.atP p).Ep), th p] := by
   refine linearIndependent_of_top_le_span_of_card_eq_finrank ?_ (by simp [(D.s.atP p).rank])
@@ -108,7 +106,7 @@ theorem indep_th : LinearIndependent (D.s.atP p).Fp ![(1 : (D.s.atP p).Ep), th p
   simp only [Matrix.range_cons, Matrix.range_empty, Set.union_empty, Set.singleton_union, le_refl]
 
 /- English proof (translation)
-Establish `: y ∈ Submodule.span (D.s.atP p).Fp ({1, th p} : Set (D.s.atP p).Ep)` using `by rw [span_th]; trivial`. Take `⟨a, b, hab⟩` from `Submodule.mem_span_pair.1 this`. Conclude with `⟨a, b, by rw [← hab, Algebra.smul_def, Algebra.smul_def, mul_one]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem repr_th (y : (D.s.atP p).Ep) : ∃ a b : (D.s.atP p).Fp,
     y = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep a + algebraMap (D.s.atP p).Fp (D.s.atP p).Ep b * th p := by
@@ -117,7 +115,7 @@ theorem repr_th (y : (D.s.atP p).Ep) : ∃ a b : (D.s.atP p).Fp,
   exact ⟨a, b, by rw [← hab, Algebra.smul_def, Algebra.smul_def, mul_one]⟩
 
 /- English proof (translation)
-Use `(LinearIndependent.pair_iff.1 (indep_th p)) a b` as an intermediate fact. Apply `this` to reduce the goal to its premises. Rewrite using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Conclude with `h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_th (a b : (D.s.atP p).Fp)
     (h : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep a + algebraMap (D.s.atP p).Fp (D.s.atP p).Ep b * th p = 0) :
@@ -127,27 +125,25 @@ theorem eq_zero_th (a b : (D.s.atP p).Fp)
   rw [Algebra.smul_def, Algebra.smul_def, mul_one]; exact h
 
 /- English proof (translation)
-The claim follows from `(D.s.atP p).cj.commutes z`.
+A detailed English derivation is pending.
 -/
 theorem cj_alg' (z : (D.s.atP p).Fp) :
     (D.s.atP p).cj (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep z) = algebraMap _ _ z :=
   (D.s.atP p).cj.commutes z
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `repr_th p y`. Simplify using `only [map_add, map_mul, map_neg, cj_alg', cj_th, mul_neg, neg_neg]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem cj_cj (y : (D.s.atP p).Ep) : (D.s.atP p).cj ((D.s.atP p).cj y) = y := by
   obtain ⟨a, b, rfl⟩ := repr_th p y
   simp only [map_add, map_mul, map_neg, cj_alg', cj_th, mul_neg, neg_neg]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, b, rfl⟩` from `repr_th p y`. Simplify using `only [map_add, map_mul, cj_alg', cj_th] at h`. Establish `h2 : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep 0 + algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (2 * b) * th p = 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_zero, zero_add, map_mul, map_ofNat]`. Take the linear combination `-h`. Establish `hb` using `(eq_zero_th p 0 (2 * b) h2).2`. Establish `hb' : b = 0`. Use `(D.s.atP p).char0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 hb with h | h` into its components or cases. Conclude with `absurd h two_ne_zero`. Conclude with `h`. Conclude with `⟨a, by rw [hb', map_zero, zero_mul, add_zero]⟩`. Introduce and unpack `⟨a, rfl⟩`.
-
-Conclude with `cj_alg' p a`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem cj_fix (y : (D.s.atP p).Ep) :
     (D.s.atP p).cj y = y ↔ ∃ a : (D.s.atP p).Fp, algebraMap (D.s.atP p).Fp (D.s.atP p).Ep a = y := by
@@ -168,17 +164,17 @@ theorem cj_fix (y : (D.s.atP p).Ep) :
   · rintro ⟨a, rfl⟩; exact cj_alg' p a
 
 /- English proof (translation)
-Use `(D.s.atP p).char0` as an intermediate fact. Take `⟨a, b, rfl⟩` from `repr_th p y`. Establish `hq : ((D.host.q : ℕ) : (D.s.atP p).Fp) ≠ 0` using `Nat.cast_ne_zero.2 (q_ne (D := D))`. Establish `e : (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep a + algebraMap (D.s.atP p).Fp (D.s.atP p).Ep b * th p) * (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep a + algebraMap (D.s.atP p).Fp (D.s.atP p).Ep b * th p) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (a * a - (D.host.q : ℕ) * (b * b)) + …`. Use `th_sq p` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_sub, map_mul, map_natCast, map_ofNat]`. Take the linear combination `(algebraMap (D.s.atP p).Fp (D.s.atP p).Ep b) ^ 2 * this`. Rewrite `h` using `[e]`. Take `⟨h1, h2⟩` from `eq_zero_th p _ _ h`. Establish `hab : a = 0 ∨ b = 0`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 h2 with h | h` into its components or cases. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `absurd h two_ne_zero`. Conclude with `Or.inl h`. Conclude with `Or.inr h`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hab with ha | hb` into its components or cases. Substitute `ha` using the available equality. Establish `h3 : ((D.host.q : ℕ) : (D.s.atP p).Fp) * (b * b) = 0` using `by linear_combination -h1`. Establish `: b * b = 0` using `(mul_eq_zero.1 h3).resolve_left hq`. Establish `hb : b = 0` using `mul_self_eq_zero.1 this`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Substitute `hb` using the available equality. Establish `: a * a = 0` using `by simpa using h1`. Establish `ha : a = 0` using `mul_self_eq_zero.1 this`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `ha` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sq_eq_zero (y : (D.s.atP p).Ep) (h : y * y = 0) : y = 0 := by
   have := (D.s.atP p).char0
@@ -211,11 +207,11 @@ theorem sq_eq_zero (y : (D.s.atP p).Ep) (h : y * y = 0) : y = 0 := by
     subst ha; simp
 
 /- English proof (translation)
-Use `⟨fun y ⟨n, hn⟩ => ?_⟩` and prove the remaining obligations. Establish `key : ∀ k : ℕ, y ^ (2 ^ k) = 0 → y = 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `hk`. Apply `ih` to reduce the goal to its premises. Apply `sq_eq_zero` to reduce the goal to its premises. Rewrite using `[← pow_two, ← pow_mul, ← pow_succ]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk`. Apply `key n` to reduce the goal to its premises. Establish `: n ≤ 2 ^ n` using `Nat.lt_two_pow_self.le`. Rewrite using `[← Nat.sub_add_cancel this, pow_add, hn, mul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduced : IsReduced (D.s.atP p).Ep := by
   refine ⟨fun y ⟨n, hn⟩ => ?_⟩
@@ -239,7 +235,7 @@ namespace Formalism.L2.SG.Pf.LocCP
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.LocalSplitGroups ValuativeRel MeasureTheory
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.BasicNotions.Examples₂.resChar_prime v⟩`.
+Supply the required witnesses or components.
 -/
 theorem factRes {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) : Fact (Loc.resChar v).Prime :=
   ⟨Formalism.BasicNotions.Examples₂.resChar_prime v⟩
@@ -254,13 +250,13 @@ def trQ (y : (D.s.atP p).Ep) : ℚ_[Loc.resChar p] :=
   Algebra.trace ℚ_[Loc.resChar p] (D.s.atP p).Ep y
 
 /- English proof (translation)
-Unfold `trQ`. Conclude with `map_sub _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem trQ_sub (y z : (D.s.atP p).Ep) : trQ p (y - z) = trQ p y - trQ p z := by
   unfold trQ; exact map_sub _ _ _
 
 /- English proof (translation)
-Unfold `trQ`. Use `letI := ((algebraMap (D.s.atP p).Fp (D.s.atP p).Ep).comp (algebraMap ℚ_[Loc.resChar p] (D.s.atP p).Fp)).toAlgebra`. Use `haveI : IsScalarTower ℚ_[Loc.resChar p] (D.s.atP p).Fp (D.s.atP p).Ep := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Conclude with `Algebra.trace_eq_of_algEquiv ((D.s.atP p).cj.restrictScalars ℚ_[Loc.resChar p]) y`.
+Replace the relevant objects with their definitions. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem trQ_cj (y : (D.s.atP p).Ep) : trQ p ((D.s.atP p).cj y) = trQ p y := by
   unfold trQ
@@ -271,13 +267,13 @@ theorem trQ_cj (y : (D.s.atP p).Ep) : trQ p ((D.s.atP p).cj y) = trQ p y := by
   exact Algebra.trace_eq_of_algEquiv ((D.s.atP p).cj.restrictScalars ℚ_[Loc.resChar p]) y
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Rewrite using `[hden, hn, pow_zero]`. It suffices to derive a contradiction. Establish `hdvd : ℓ ∣ a.den` using `by rw [hden]; exact dvd_pow_self ℓ hn.ne'`. Establish `hnum : ¬ (ℓ : ℤ) ∣ a.num`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1 : ℓ ∣ a.num.natAbs` using `Int.natCast_dvd.1 h`. Establish `hg : ℓ ∣ Nat.gcd a.num.natAbs a.den` using `Nat.dvd_gcd h1 hdvd`. Rewrite `hg` using `[Nat.Coprime.gcd_eq_one a.reduced]`. Conclude with `hℓ.out.one_lt.ne' (Nat.dvd_one.1 hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hn1 : ‖(a.num : ℚ_[ℓ])‖ = 1` using `le_antisymm (Padic.norm_int_le_one _) (not_lt.1 fun h => hnum (Padic.norm_intCast_lt_one_iff.1 h))`. Establish `hd : ‖(a.den : ℚ_[ℓ])‖ = (ℓ : ℝ)⁻¹ ^ n`. Rewrite using `[hden, Nat.cast_pow, norm_pow, Padic.norm_p]`. Establish `e : ‖(a : ℚ_[ℓ])‖ = (ℓ : ℝ) ^ n`. Rewrite using `[Rat.cast_def, norm_div, hn1, hd, inv_pow, one_div, inv_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[e]`. Establish `hl : (1 : ℝ) < ℓ` using `by exact_mod_cast hℓ.out.one_lt`. Conclude with `absurd ha (not_le.2 (one_lt_pow₀ hl hn.ne'))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem den_one_of (ℓ : ℕ) [hℓ : Fact ℓ.Prime] (a : ℚ) (n : ℕ) (hden : a.den = ℓ ^ n)
     (ha : ‖(a : ℚ_[ℓ])‖ ≤ 1) : a.den = 1 := by
@@ -302,9 +298,9 @@ theorem den_one_of (ℓ : ℕ) [hℓ : Fact ℓ.Prime] (a : ℚ) (n : ℕ) (hden
   exact absurd ha (not_le.2 (one_lt_pow₀ hl hn.ne'))
 
 /- English proof (translation)
-Take `⟨a, ⟨n, hden⟩, hle, heq⟩` from `(D.s.atP p).psiE_def z`. Express the relevant statement in the definitionally equal form `‖trQ p z - (a : ℚ_[Loc.resChar p])‖ ≤ 1 at hle`. Rewrite `hle` using `[hz, zero_sub, norm_neg]`. Establish `h1` using `den_one_of (Loc.resChar p) a n hden hle`. Establish `ha : ((a.num : ℚ) : ℂ) = (a : ℂ)` using `by rw [Rat.coe_int_num_of_den_eq_one h1]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[heq, ← ha, Rat.cast_intCast, mul_comm]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I a.num`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiE_tr_zero (z : (D.s.atP p).Ep) (hz : trQ p z = 0) : (D.s.atP p).psiE z = 1 := by
   obtain ⟨a, ⟨n, hden⟩, hle, heq⟩ := (D.s.atP p).psiE_def z
@@ -316,7 +312,7 @@ theorem psiE_tr_zero (z : (D.s.atP p).Ep) (hz : trQ p z = 0) : (D.s.atP p).psiE 
   exact Complex.exp_int_mul_two_pi_mul_I a.num
 
 /- English proof (translation)
-Establish `h : (D.s.atP p).psiE ((D.s.atP p).cj y - y) = 1` using `psiE_tr_zero p _ (by rw [trQ_sub, trQ_cj, sub_self])`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem psiE_cj (y : (D.s.atP p).Ep) : (D.s.atP p).psiE ((D.s.atP p).cj y) = (D.s.atP p).psiE y := by
   have h : (D.s.atP p).psiE ((D.s.atP p).cj y - y) = 1 :=
@@ -383,14 +379,14 @@ def psi0 : AddChar (D.s.atP p).Ep ℂ :=
   (D.s.atP p).psiE.compAddMonoidHom (AddMonoidHom.mulRight (-(algebraMap (D.s.atP p).Fp (D.s.atP p).Ep δ⁻¹)))
 
 /- English proof (translation)
-Simplify using `[psi0, mul_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem local_additive_char_apply (y : (D.s.atP p).Ep) :
     psi0 p δ y = (D.s.atP p).psiE (-(y * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep δ⁻¹)) := by
   simp [psi0, mul_neg]
 
 /- English proof (translation)
-Rewrite using `[local_additive_char_apply, local_additive_char_apply, ← psiE_cj p (-(y * _))]`. Use `congr 1`. Rewrite using `[map_neg, map_mul, cj_alg']`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem local_additive_char_conj (y : (D.s.atP p).Ep) : psi0 p δ ((D.s.atP p).cj y) = psi0 p δ y := by
   rw [local_additive_char_apply, local_additive_char_apply, ← psiE_cj p (-(y * _))]
@@ -398,9 +394,7 @@ theorem local_additive_char_conj (y : (D.s.atP p).Ep) : psi0 p δ ((D.s.atP p).c
   rw [map_neg, map_mul, cj_alg']
 
 /- English proof (translation)
-Use `haveI := (D.s.atP p).top`. Use `haveI := (D.s.atP p).lf`. Use `haveI := IsModuleTopology.toContinuousAdd (D.s.atP p).Fp (D.s.atP p).Ep`. Use `haveI := IsModuleTopology.toContinuousSMul (D.s.atP p).Fp (D.s.atP p).Ep`. Establish `hl : Continuous (LinearMap.mulRight (D.s.atP p).Fp (-(algebraMap (D.s.atP p).Fp (D.s.atP p).Ep δ⁻¹)))` using `IsModuleTopology.continuous_of_linearMap _`.
-
-Conclude with `hc.comp hl`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem local_additive_char_continuous (hc : Continuous (D.s.atP p).psiE) : Continuous (psi0 p δ) := by
   haveI := (D.s.atP p).top
@@ -449,14 +443,14 @@ section Split
 variable {p : PlF D} (sg : Loc.SplitAt (D.s.atP p).Fp (D.s.atP p).Ep (D.s.atP p).cj (Loc.resChar p))
 
 /- English proof (translation)
-Apply `sg.e.injective` to reduce the goal to its premises. Rewrite using `[sg.e_cj, AlgEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem e_symm_cj (a b : (D.s.atP p).Fp) : (D.s.atP p).cj (sg.e.symm (a, b)) = sg.e.symm (b, a) := by
   apply sg.e.injective
   rw [sg.e_cj, AlgEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply]; rfl
 
 /- English proof (translation)
-Apply `sg.e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, AlgEquiv.commutes, AlgEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply]`. Apply the tactic sequence `ext <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inl_eq (y : (D.s.atP p).Fp) :
     sg.e.symm (y, 0) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep y * sg.e.symm (1, 0) := by
@@ -465,9 +459,9 @@ theorem inl_eq (y : (D.s.atP p).Fp) :
   ext <;> simp
 
 /- English proof (translation)
-Rewrite using `[(D.s.atP p).O_def, inl_eq]`. Use `IsIntegral.mul ?_ ?_` and prove the remaining obligations. Establish `: algebraMap (D.s.atP p).Fp (D.s.atP p).Ep y = algebraMap 𝒪[(D.s.atP p).Fp] (D.s.atP p).Ep ⟨y, hy⟩` using `rfl`. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Polynomial.X ^ 2 - Polynomial.X, Polynomial.monic_X_pow_sub (by rw [Polynomial.degree_X]; norm_num), ?_⟩` and prove the remaining obligations. Establish `h : sg.e.symm (1, 0) * sg.e.symm (1, 0) = sg.e.symm ((1 : (D.s.atP p).Fp), (0 : (D.s.atP p).Fp))`. Apply the tactic sequence `rw [← map_mul]; congr 1; ext <;> simp`. Simplify using `[Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, pow_two, h]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_O_inl (y : (D.s.atP p).Fp) (hy : y ∈ 𝒪[(D.s.atP p).Fp]) : sg.e.symm (y, 0) ∈ (D.s.atP p).O := by
   rw [(D.s.atP p).O_def, inl_eq]
@@ -481,9 +475,9 @@ theorem mem_O_inl (y : (D.s.atP p).Fp) (hy : y ∈ 𝒪[(D.s.atP p).Fp]) : sg.e.
     simp [Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, pow_two, h]
 
 /- English proof (translation)
-Rewrite `hz` using `[(D.s.atP p).O_def]`. Establish `f1` using `((AlgHom.fst (D.s.atP p).Fp (D.s.atP p).Fp (D.s.atP p).Fp).comp sg.e.toAlgHom).restrictScalars 𝒪[(D.s.atP p).Fp]`. Establish `f2` using `((AlgHom.snd (D.s.atP p).Fp (D.s.atP p).Fp (D.s.atP p).Fp).comp sg.e.toAlgHom).restrictScalars 𝒪[(D.s.atP p).Fp]`. Establish `h1 : IsIntegral 𝒪[(D.s.atP p).Fp] (sg.e z).1` using `hz.map (((AlgHom.fst (D.s.atP p).Fp (D.s.atP p).Fp (D.s.atP p).Fp).comp sg.e.toAlgHom).restrictScalars 𝒪[(D.s.atP p).Fp])`. Establish `h2 : IsIntegral 𝒪[(D.s.atP p).Fp] (sg.e z).2` using `hz.map (((AlgHom.snd (D.s.atP p).Fp (D.s.atP p).Fp (D.s.atP p).Fp).comp sg.e.toAlgHom).restrictScalars 𝒪[(D.s.atP p).Fp])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨(Valuation.integer.integers _).mem_of_integral h1, (Valuation.integer.integers _).mem_of_integral h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem comp_mem (z : (D.s.atP p).Ep) (hz : z ∈ (D.s.atP p).O) :
     (sg.e z).1 ∈ 𝒪[(D.s.atP p).Fp] ∧ (sg.e z).2 ∈ 𝒪[(D.s.atP p).Fp] := by
@@ -517,7 +511,7 @@ section Model
 variable (p : PlF D) (δ : (D.s.atP p).Fp)
 
 /- English proof (translation)
-Rewrite using `[local_additive_char_apply]`. Use `(hd 1).2 (D.s.atP p).O.one_mem z hz` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem local_additive_char_integers (hd : DualAt p δ) (z : (D.s.atP p).Ep) (hz : z ∈ (D.s.atP p).O) : psi0 p δ z = 1 := by
   rw [local_additive_char_apply]
@@ -535,9 +529,7 @@ Both sides reduce to the same expression.
 theorem psiFof_apply (y : (D.s.atP p).Fp) : psiFof p δ sg y = psi0 p δ (sg.e.symm (y, 0)) := rfl
 
 /- English proof (translation)
-Use `haveI := (D.s.atP p).top`. Use `haveI := (D.s.atP p).lf`. Use `haveI := IsModuleTopology.toContinuousAdd (D.s.atP p).Fp (D.s.atP p).Ep`. Use `haveI := IsModuleTopology.toContinuousSMul (D.s.atP p).Fp (D.s.atP p).Ep`. Establish `h1 : Continuous (sg.e.symm.toLinearMap.comp (LinearMap.inl (D.s.atP p).Fp (D.s.atP p).Fp (D.s.atP p).Fp))` using `IsModuleTopology.continuous_of_linearMap _`.
-
-Conclude with `(local_additive_char_continuous p δ hc).comp h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psiFof_cont (hc : Continuous (D.s.atP p).psiE) : Continuous (psiFof p δ sg) := by
   haveI := (D.s.atP p).top
@@ -549,15 +541,15 @@ theorem psiFof_cont (hc : Continuous (D.s.atP p).psiE) : Continuous (psiFof p δ
   exact (local_additive_char_continuous p δ hc).comp h1
 
 /- English proof (translation)
-Rewrite using `[psiFof_apply]`. Conclude with `local_additive_char_integers p δ hd _ (mem_O_inl sg y hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiFof_o (hd : DualAt p δ) (y : (D.s.atP p).Fp) (hy : y ∈ 𝒪[(D.s.atP p).Fp]) : psiFof p δ sg y = 1 := by
   rw [psiFof_apply]; exact local_additive_char_integers p δ hd _ (mem_O_inl sg y hy)
 
 /- English proof (translation)
-Rewrite using `[psiFof_apply]`. Establish `hx : x = sg.e.symm ((sg.e x).1, 0) + (D.s.atP p).cj (sg.e.symm ((sg.e x).2, 0))`. Rewrite using `[e_symm_cj, ← map_add]`. Apply the tactic sequence `apply sg.e.injective; rw [AlgEquiv.apply_symm_apply]; ext <;> simp`. Establish `hs : sg.e.symm ((sg.e x).1 + (sg.e x).2, 0) = sg.e.symm ((sg.e x).1, 0) + sg.e.symm ((sg.e x).2, 0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [← map_add]; congr 1; ext <;> simp`. Establish `e1 : psi0 p δ x = psi0 p δ (sg.e.symm ((sg.e x).1, 0)) * psi0 p δ (sg.e.symm ((sg.e x).2, 0))` using `by conv_lhs => rw [hx]`. Rewrite using `[AddChar.map_add_eq_mul, local_additive_char_conj]`. Rewrite using `[e1, hs, AddChar.map_add_eq_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem local_additive_char_eq_trace (x : (D.s.atP p).Ep) : psi0 p δ x = psiFof p δ sg ((sg.e x).1 + (sg.e x).2) := by
   rw [psiFof_apply]
@@ -572,13 +564,11 @@ theorem local_additive_char_eq_trace (x : (D.s.atP p).Ep) : psi0 p δ x = psiFof
   rw [e1, hs, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hq0 : ((sg.q : (D.s.atP p).Fp)) ≠ 0` using `fun h0 => sg.q_irr.ne_zero (Subtype.ext h0)`. Use `set x := algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((sg.q : (D.s.atP p).Fp))⁻¹ with hx`. Establish `hall : ∀ z ∈ (D.s.atP p).O, (D.s.atP p).psiE (-(x * z * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep δ⁻¹)) = 1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `z hz`. Take `⟨h1, h2⟩` from `comp_mem sg z hz`. Rewrite using `[← local_additive_char_apply, local_additive_char_eq_trace]`. Establish `e1 : (sg.e (x * z)).1 + (sg.e (x * z)).2 = (((sg.e z).1 + (sg.e z).2 : (D.s.atP p).Fp)) / (sg.q : (D.s.atP p).Fp)`. Rewrite using `[hx, map_mul, AlgEquiv.commutes]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Prod.algebraMap_apply, div_eq_inv_mul, mul_add]`. Rewrite using `[e1]`. Conclude with `h ⟨(sg.e z).1 + (sg.e z).2, add_mem h1 h2⟩`. Establish `hxO : x ∈ (D.s.atP p).O` using `(hd x).1 hall`. Establish `h1` using `(comp_mem sg x hxO).1`.
-
-Rewrite `h1` using `[hx, AlgEquiv.commutes]`. Conclude with `sg.q_irr.not_isUnit ⟨⟨sg.q, ⟨_, h1⟩, Subtype.ext (mul_inv_cancel₀ hq0), Subtype.ext (inv_mul_cancel₀ hq0)⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiFof_cond (hd : DualAt p δ) :
     ∃ y : 𝒪[(D.s.atP p).Fp], psiFof p δ sg ((y : (D.s.atP p).Fp) / (sg.q : (D.s.atP p).Fp)) ≠ 1 := by
@@ -623,7 +613,7 @@ def mkModel (p : PlF D) (δ : (D.s.atP p).Fp) (hc : Continuous (D.s.atP p).psiE)
   mu := μ
 
 /- English proof (translation)
-Unfold `Loc.Model.R RR mkModel`. Break down `h : (D.s.atP p).split with _ | sg` into its components or cases. Simplify using `only [Option.map_none]`. Both sides reduce to the same expression. Simplify using `only [Option.map_some]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -636,11 +626,9 @@ theorem mkModel_R (p : PlF D) (δ : (D.s.atP p).Fp) (hc : Continuous (D.s.atP p)
   · simp only [Option.map_some]; rfl
 
 /- English proof (translation)
-Use `⟨⟨(D.s.atP p).lf, (D.s.atP p).char0, (D.s.atP p).borel, ⟨hμ, hσ, ?_⟩⟩, hδ, rfl, rfl, fun y => local_additive_char_apply p (δf p) y, ?_⟩` and prove the remaining obligations. Use `show (μf p) ((mkModel p (δf p) (hcf p) (hdf p) (huf p) (μf p)).R : Set (D.s.atP p).Ep) = 1`. Rewrite using `[mkModel_R]`. Conclude with `h1`. Simplify using `only [mkModel] split`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Name the introduced variables `g sg hg hs`. Rewrite `hg` using `[hs]`. Simplify using `only [Option.map_some, Option.some.injEq] at hg`. Substitute `hg` using the available equality.
-
-Conclude with `⟨rfl, rfl⟩`. Apply the tactic sequence `rcases hs : (D.s.atP p).split with _ | sg <;> simp_all`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem agree_mk (δf : ∀ q : PlF D, (D.s.atP q).Fp) (hcf : ∀ q : PlF D, Continuous (D.s.atP q).psiE)
     (hdf : ∀ q : PlF D, DualAt q (δf q)) (huf : ∀ q : PlF D, UnramAt q) (μf : ∀ q : PlF D, Measure (D.s.atP q).Ep)
@@ -660,7 +648,7 @@ theorem agree_mk (δf : ∀ q : PlF D, (D.s.atP q).Fp) (hcf : ∀ q : PlF D, Con
     · rcases hs : (D.s.atP p).split with _ | sg <;> simp_all
 
 /- English proof (translation)
-Use `choose δ hδ hd hpin using h1 D hT`. Use `choose μ hμ hσ hR using h4 D hT`. Conclude with `⟨δ, fun p => mkModel p (δ p) (h3 D hT p) (hd p) (h2 D hT p) (μ p), fun p => agree_mk δ (h3 D hT) hd (h2 D hT) μ p (hμ p) (hσ p) (hR p) (hδ p), hpin⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locBody_of (D : D7) (hT : LocTied D) (h1 : LocDualC) (h2 : LocUnramC) (h3 : LocPsiContC) (h4 : LocHaarC) :
     ∃ (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep),
@@ -691,22 +679,20 @@ def PinHostC : Prop :=
         (D.s.atP p).ιF (((D.host.g 0 : ℕ) : D.host.F) * ((D.host.g 1 : ℕ) : D.host.F) / ((D.host.g i : ℕ) : D.host.F))
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qf52.not_both .. | (apply UpperTheory.Reformulated.B.Qf52.not_both <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qf52.not_both <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf52.not_both <;> assumption) | (intros; appl …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem not_both (D : D7) (p : PlF D) (h0 : ((D.host.g 0 : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal)
     (h1 : ((D.host.g 1 : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal) : False := by
   first | exact UpperTheory.Reformulated.B.Qf52.not_both .. | (apply UpperTheory.Reformulated.B.Qf52.not_both <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qf52.not_both <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf52.not_both <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qf52.not_both <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf52.not_both <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qf52.not_both D p h0 h1 | exact @UpperTheory.Reformulated.B.Qf52.not_both D p h0 | exact @UpperTheory.Reformulated.B.Qf52.not_both D p | exact @UpperTheory.Reformulated.B.Qf52.not_both D
 
 /- English proof (translation)
-Introduce `D hT p`. Establish `hred` using `reduced p`. Establish `hun` using `hU D hT p`. Take `⟨g1, g2, g3⟩` from `hG D hT p`. Distinguish the cases in `hty : ∃ i : Fin 2, ((D.host.g i : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨i, hi⟩` from `hty`. Take `⟨hirr, u, hu, hval⟩` from `hP D hT p i hi`. Establish `hd1` using `g3 hred hun hirr`. Establish `hdu` using `g2 1 u hu hd1`. Rewrite `hdu` using `[one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨(u : (D.s.atP p).Fp), fun h0 => ?_, hdu, ?_⟩` and prove the remaining obligations. Conclude with `hu.ne_zero (Subtype.ext h0)`. Introduce `j hj`. Establish `hji : j = i`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `hne rfl`. Conclude with `not_both D p hi hj`. Conclude with `not_both D p hj hi`. Conclude with `hne rfl`.
-
-Substitute `hji` using the available equality. Conclude with `hval`. Use `push_neg at hty`. Take `⟨δ, hδ, hd⟩` from `g1 hred hun`. Conclude with `⟨δ, hδ, hd, fun i hi => absurd hi (hty i)⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locDualC_of (hG : LocDualGenC) (hU : LocUnramC) (hP : PinHostC) : LocDualC := by
   intro D hT p
@@ -745,9 +731,9 @@ attribute [local instance] factRes
 variable {D : D7} (p : PlF D)
 
 /- English proof (translation)
-Take `⟨a, ⟨n, hden⟩, hle, heq⟩` from `(D.s.atP p).psiE_def z`. Express the relevant statement in the definitionally equal form `‖trQ p z - (a : ℚ_[Loc.resChar p])‖ ≤ 1 at hle`. Establish `ha : ‖(a : ℚ_[Loc.resChar p])‖ ≤ 1`. Establish `h` using `Padic.nonarchimedean (trQ p z) (-(trQ p z - (a : ℚ_[Loc.resChar p])))`. Rewrite `h` using `[norm_neg, ← sub_eq_add_neg, sub_sub_cancel]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.trans (max_le hz hle)`. Establish `h1` using `den_one_of (Loc.resChar p) a n hden ha`. Establish `ha' : ((a.num : ℚ) : ℂ) = (a : ℂ)` using `by rw [Rat.coe_int_num_of_den_eq_one h1]`. Rewrite using `[heq, ← ha', Rat.cast_intCast, mul_comm]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I a.num`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiE_of_norm (z : (D.s.atP p).Ep) (hz : ‖trQ p z‖ ≤ 1) : (D.s.atP p).psiE z = 1 := by
   obtain ⟨a, ⟨n, hden⟩, hle, heq⟩ := (D.s.atP p).psiE_def z
@@ -762,7 +748,7 @@ theorem psiE_of_norm (z : (D.s.atP p).Ep) (hz : ‖trQ p z‖ ≤ 1) : (D.s.atP 
   exact Complex.exp_int_mul_two_pi_mul_I a.num
 
 /- English proof (translation)
-Use `haveI := (D.s.atP p).lf`. Use `IsTopologicalAddGroup.t2Space_of_zero_sep fun x hx => ?_` and prove the remaining obligations. Establish `hv : ValuativeRel.valuation (D.s.atP p).Fp x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Use `⟨{z | ValuativeRel.valuation (D.s.atP p).Fp z < ValuativeRel.valuation (D.s.atP p).Fp x}, (IsValuativeTopology.mem_nhds_zero_iff _).2 ⟨Units.mk0 _ hv, fun z hz => by simpa using hz⟩, by intro h; simp only [Set.mem_setOf_eq] at h; exact lt_irrefl _ h⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem t2Fp : T2Space (D.s.atP p).Fp := by
   haveI := (D.s.atP p).lf
@@ -773,15 +759,11 @@ theorem t2Fp : T2Space (D.s.atP p).Fp := by
     by intro h; simp only [Set.mem_setOf_eq] at h; exact lt_irrefl _ h⟩
 
 /- English proof (translation)
-Use `haveI := (D.s.atP p).lf`. Use `haveI := t2Fp p`. Use `haveI := (D.s.atP p).top`. Use `haveI := (D.s.atP p).free`. Use `haveI := (D.s.atP p).qlFin`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := IsModuleTopology.toContinuousAdd (D.s.atP p).Fp (D.s.atP p).Ep`. Use `letI := ((algebraMap (D.s.atP p).Fp (D.s.atP p).Ep).comp (algebraMap ℚ_[Loc.resChar p] (D.s.atP p).Fp)).toAlgebra`. Use `haveI : IsScalarTower ℚ_[Loc.resChar p] (D.s.atP p).Fp (D.s.atP p).Ep := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : ContinuousSMul ℚ_[Loc.resChar p] (D.s.atP p).Fp := by`. Use `⟨?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (fun x : ℚ_[Loc.resChar p] × (D.s.atP p).Fp => x.1 • x.2) = fun x => algebraMap ℚ_[Loc.resChar p] (D.s.atP p).Fp x.1 * x.2`. Use function extensionality and compare the values at `x`. Conclude with `Algebra.smul_def _ _`. Rewrite using `[this]`. Conclude with `((D.s.atP p).qlCont.comp continuous_fst).mul continuous_snd`.
-
-Establish `e : trQ p = fun y => Algebra.trace ℚ_[Loc.resChar p] (D.s.atP p).Fp (Algebra.trace (D.s.atP p).Fp (D.s.atP p).Ep y)`. Use function extensionality and compare the values at `y`. Unfold `trQ`. Conclude with `(Algebra.trace_trace (S := (D.s.atP p).Fp) y).symm`. Rewrite using `[e]`.
-
-Establish `h1 : Continuous (Algebra.trace (D.s.atP p).Fp (D.s.atP p).Ep)` using `IsModuleTopology.continuous_of_linearMap _`. Establish `h2 : Continuous (Algebra.trace ℚ_[Loc.resChar p] (D.s.atP p).Fp)` using `LinearMap.continuous_of_finiteDimensional _`. Conclude with `h2.comp h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trQ_cont : Continuous (trQ p) := by
   haveI := (D.s.atP p).lf
@@ -812,13 +794,11 @@ theorem trQ_cont : Continuous (trQ p) := by
   exact h2.comp h1
 
 /- English proof (translation)
-Use `haveI := (D.s.atP p).top`. Use `haveI := (D.s.atP p).lf`. Use `haveI := IsModuleTopology.toContinuousAdd (D.s.atP p).Fp (D.s.atP p).Ep`. Use `haveI : IsTopologicalAddGroup (D.s.atP p).Ep := IsModuleTopology.topologicalAddGroup (D.s.atP p).Fp (D.s.atP p).Ep`. Establish `hU : IsOpen {y : (D.s.atP p).Ep | ‖trQ p y‖ ≤ 1}`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(IsUltrametricDist.isOpen_closedBall (0 : ℚ_[Loc.resChar p]) (one_ne_zero)).preimage (trQ_cont p)` as an intermediate fact. Simplify `this` using `[Metric.closedBall, dist_zero_right]`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `y`. Establish `hmem : {w : (D.s.atP p).Ep | ‖trQ p (w - y)‖ ≤ 1} ∈ 𝓝 y`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hc : Continuous fun w : (D.s.atP p).Ep => w - y` using `continuous_id.sub continuous_const`. Conclude with `(hU.preimage hc).mem_nhds (by simp [sub_self, trQ_sub])`. Use `(continuousAt_const (y := (D.s.atP p).psiE y)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hmem] with w hw`. Establish `hw' : (D.s.atP p).psiE (w - y) = 1` using `psiE_of_norm p _ hw`.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem psiE_cont : Continuous (D.s.atP p).psiE := by
   haveI := (D.s.atP p).top
@@ -840,7 +820,7 @@ theorem psiE_cont : Continuous (D.s.atP p).psiE := by
     _ = (D.s.atP p).psiE w := by rw [← AddChar.map_add_eq_mul, sub_add_cancel]
 
 /- English proof (translation)
-Introduce `_ _ p` and use `psiE_cont p`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locPsiContC : LocPsiContC := fun _ _ p => psiE_cont p
 

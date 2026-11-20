@@ -9,9 +9,7 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.LamF
 
 /- English proof (translation)
-Introduce `K _ _ oa hfin`. Use `⟨∏ᶠ v : HeightOneSpectrum (𝓞 K), (v.asIdeal : FractionalIdeal (𝓞 K)⁰ K) ^ oa v, ?_, fun p a ha => ?_⟩` and prove the remaining obligations. Use `finprod_induction (fun L : FractionalIdeal (𝓞 K)⁰ K => L ≠ 0) one_ne_zero (fun _ _ h h' => mul_ne_zero h h') fun v => ?_` and prove the remaining obligations. Conclude with `zpow_ne_zero _ (FractionalIdeal.coeIdeal_ne_zero.2 v.ne_bot)`. Rewrite using `[isLocGen_iff_valuation_eq, FractionalIdeal.count_finprod K p oa, ha]`.
-
-Conclude with `hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fractionalIdeal_isLocGen_of_valuation : ∀ (K : Type) [Field K] [NumberField K]
     (oa : HeightOneSpectrum (𝓞 K) → ℤ), (Function.support oa).Finite →

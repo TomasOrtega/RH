@@ -16,7 +16,7 @@ namespace GlobalTheory.Unf.StepFour
 variable {D : D7}
 
 /- English proof (translation)
-Use `⟨Matrix.vecMulVec z (fun i : Fin ρ => if i.1 + 1 = ρ then (1 : D.host.E) else 0), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `incA D (z i * (if j.1 + 1 = ρ then (1 : D.host.E) else 0)) = ratV z i * ell D ρ j`. Simplify using `only [ratV, ell]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zEll_mem_ratMx (T : HSp D) (ρ : ℕ) (z : Fin T.rank → D.host.E) : zEll T ρ z ∈ ratMx D T.rank ρ := by
   refine ⟨Matrix.vecMulVec z (fun i : Fin ρ => if i.1 + 1 = ρ then (1 : D.host.E) else 0), ?_⟩
@@ -26,7 +26,7 @@ theorem zEll_mem_ratMx (T : HSp D) (ρ : ℕ) (z : Fin T.rank → D.host.E) : zE
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hy : yZero S ρ z ∈ ratMx D S.rank ρ`. Rewrite using `[yZero]`. Conclude with `neg_mem (zEll_mem_ratMx S ρ z)`. Rewrite using `[HypDec.incAdj_apply, HypDec.incY_apply]`. Conclude with `ratMx_mul (rat_mem _) (ratMx_smul _ (ratMx_mul (ratMx_adj hy) (rat_mem _)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incAdj_yZero_mem {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D) (z : Fin S.rank → D.host.E) :
     d.incAdj S (yZero S ρ z) ∈ ratMx D T.rank S.rank := by
@@ -36,7 +36,7 @@ theorem incAdj_yZero_mem {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S :
   exact ratMx_mul (rat_mem _) (ratMx_smul _ (ratMx_mul (ratMx_adj hy) (rat_mem _)))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(starRingEnd ℂ) (ψ x) = _`. Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_eq_conj (hψ.1.2.1 x)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem star_psi {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (x : AF D.host.F) :
     star (ψ x) = ψ (-x) := by
@@ -52,11 +52,11 @@ namespace GlobalTheory.Unf.StepFour
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[HypDec.integrandT_eq, ← psi_yZero ψ dV dW z b, star_psi hψ, map_zero, add_zero]`. Take `⟨γ, hγ⟩` from `incAdj_yZero_mem dW V₀ z`. Establish `hx : dW.incX V₀ b = xZero dW ⬝ b` using `rfl`. Establish `hq` using `hf.quasi γ (xZero dW ⬝ b)`. Rewrite `hq` using `[show ratW W V₀ γ = dW.incAdj V₀ (yZero V₀ ρ z) from hγ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hx, add_comm (xZero dW ⬝ b), hq, ← mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Establish `hc : algebraMap D.host.F (AF D.host.F) (1 / 2) + algebraMap D.host.F (AF D.host.F) (1 / 2) = 1`. Rewrite using `[← map_add, add_halves, map_one]`. Establish `hs : symplO V₀ W (xZero dW ⬝ b) (dW.incAdj V₀ (yZero V₀ ρ z)) = -symplO V₀ W (dW.incAdj V₀ (yZero V₀ ρ z)) (xZero dW ⬝ b)` using `GlobalTheory.OrientedHeis.symplO_skew _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[symplOH, symplOH]`. Take the linear combination `(symplO V₀ W (dW.incAdj V₀ (yZero V₀ ρ z)) (xZero dW ⬝ b)) * hc - algebraMap D.host.F (AF D.host.F) (1 / 2) * hs`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem integrand_eq {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {V V₀ W W₀ : HSp D} {ρ : ℕ}
     (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ ρ) (z : Fin V₀.rank → D.host.E) (f : WO V₀ W → ℂ)
@@ -85,13 +85,13 @@ noncomputable section
 namespace GlobalTheory.Unf.StepFour
 
 /- English proof (translation)
-Introduce `D ψ ρ B J s Ψ hΨ`. Establish `hψ : IsStdChar D ψ (-1)` using `s.weil.std`. Establish `hf : ∀ x, IsThetaFunO ψ B.V₀ J.W (B.d.mixS J.W ψ s.vS.μ s.vS.𝓕 Ψ x)` using `fun x => (GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D ψ hψ).1 B.V B.V₀ J.W ρ B.d s.vS.μ s.vS.𝓕 s.vS.covol Ψ hΨ x`. Unfold `fl flatBF flat flatAt`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `u`. Simplify using `only [flFun, flatFun, evalAt, HypDec.mixT]`. Establish `hu : ∀ b, star (psiBes ψ B.d 1 (vecB B.o B.ζ) (B.d.nB b * B.d.levi u.1)) = star (psiUni ψ u.1) * star (psiBes ψ B.d 1 (vecB B.o B.ζ) (B.d.nB b))`. Introduce `b`. Rewrite using `[psiBes_mul B.d ψ 1 _ (B.d.nB_mem_NFlag b) (B.d.levi_mem_NFlag (mem_UX.1 u.2)), psiBes_levi, star_mul', mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hu, mul_assoc]`. Rewrite using `[integral_const_mul]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `b`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `integrand_eq hψ B.d J.d _ _ (hf _) b`.
+A detailed English derivation is pending.
 -/
 theorem fl_eq_flatBF : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (s : StepBF ψ B J)
     (Ψ : WO B.V J.W → ℂ), IsThetaFunO ψ B.V J.W Ψ →

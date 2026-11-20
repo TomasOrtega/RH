@@ -8,7 +8,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Stan
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocMod.LinTheta.isThetaFunO_placeModel | exact GlobalTheory.LocMod.LinTheta.isThetaFunO_placeModel | (intros; apply GlobalTheory.LocMod.LinTheta.isThetaFunO_placeModel <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.isThetaFun_splitPlaceSchroedingerModel : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D)
     (ΛS : Lat S) (ΛT : Lat T)

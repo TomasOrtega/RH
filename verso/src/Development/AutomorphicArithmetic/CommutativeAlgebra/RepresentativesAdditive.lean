@@ -7,15 +7,13 @@ noncomputable section
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Et
 
 /- English proof (translation)
-Introduce `A`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `R _ F V U g n z c ⟨α, rfl, rfl⟩`. Use `⟨zcomp (Cocycle.ofHom ((chains R).map (sch.map g))) α (zero_add n), rfl, ?_⟩` and prove the remaining obligations. Establish `h4` using `(A.evs R).2.2.2.1 (sch.map g) α.1 0 n (by simp) V (𝟙 V : V ⟶ V)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `(A.evs R).2.1 α.1 0 n (by simp) V U g (𝟙 U : U ⟶ U)`. Establish `e1 : Sx.map (sch.map g) (p` using `0) (𝟙 V : V ⟶ V) = g := Category.id_comp g`. Establish `e2 : Sx.res g (E` using `sch.obj U) (p := 0) (𝟙 U : U ⟶ U) = Sx.map (sch.map g) (p := 0) (𝟙 V : V ⟶ V) := e1.symm ▸ Category.comp_id g`. Conclude with `(h4.trans (congrArg (ev α.1 0 n (by simp) V) e2.symm)).trans h2.symm`. Introduce `R _ I U n ι t z c h classical`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hr` using `UpperTheory.cohomology_representatives A R I U (n - 1) n (n + 1) (by omega) rfl`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using hr.2.2.2.2.1`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hr.2.2.2.1 _ _ _ _ (h a) ih).1`. Introduce `q _ U i ζ`. Take `⟨α, hα⟩` from `(rootClass i ζ).mk_surjective`. Use `⟨α, hα, ?_⟩` and prove the remaining obligations. Rewrite `hα` using `[(A.unit q).2.2.2 i U ζ]`.
-
-Conclude with `((A.sec _ (tw q i) U).1 (twGen i ζ) α).2 hα`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.representatives_additive :
     SlopeTestRemainingChoices → (∀ (R : Type) [CommRing R] (F : Shv R) {V U : Scheme.{0}} (g : V ⟶ U) (n : ℤ) (z : Sec ((res R F).X n) U) (c : H R (sch.obj U) F n), Rep z c → Rep (Sec.res g z) (pull R (sch.map g) F n c)) ∧

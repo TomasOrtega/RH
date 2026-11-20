@@ -10,7 +10,7 @@ open Formalism.MainNotions.WeightAlgebra Formalism.BasicNotions NumberField IsDe
 namespace Formalism.MainNotions.Gaps.T0
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `h.1`. Use `⟨⟨S, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← h.2, ← hS, Submodule.span_span_of_tower]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem finDim_of_isLat {O K V : Type} [CommRing O] [Field K] [Algebra O K] [AddCommGroup V] [Module K V]
     [Module O V] [IsScalarTower O K V] (M : Submodule O V) (h : Formalism.LatticeIndexTer.IsLat O K V M) :
@@ -20,9 +20,9 @@ theorem finDim_of_isLat {O K V : Type} [CommRing O] [Field K] [Algebra O K] [Add
   rw [← h.2, ← hS, Submodule.span_span_of_tower]
 
 /- English proof (translation)
-Establish `hfin` using `Formalism.LatticeIndexTer.latFinite O K V M Θ hM hΘ`. Unfold `Formalism.LatticeIndexTer.qlen at hfin ⊢`. Set `g : ↥(M ⊓ W) →ₗ[O] (↥M ⧸ Θ.comap M.subtype)` to `(Θ.comap M.subtype).mkQ ∘ₗ Submodule.inclusion inf_le_left`. Establish `hker : LinearMap.ker g = (Θ ⊓ W).comap (M ⊓ W).subtype`. Use extensionality with `⟨y, hy⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [g, LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_inclusion, Submodule.mem_inf]`. Conclude with `⟨fun h => ⟨h, hy.2⟩, fun h => h.1⟩`. Establish `hle` using `Module.length_le_of_injective (g.ker.liftQ g le_rfl) (LinearMap.ker_eq_bot.1 (Submodule.ker_liftQ_eq_bot _ _ _ le_rfl))`. Rewrite `hle` using `[hker]`. Conclude with `ne_top_of_le_ne_top hfin hle`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qlen_inf_ne_top (O K V : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
     [Algebra O K] [IsFractionRing O K] [AddCommGroup V] [Module K V] [Module O V]
@@ -45,13 +45,13 @@ theorem qlen_inf_ne_top (O K V : Type) [CommRing O] [IsDomain O] [IsDiscreteValu
   exact ne_top_of_le_ne_top hfin hle
 
 /- English proof (translation)
-Set `g0 : ↥(A.comap f) →ₗ[O] ↥A` to `f.restrict (fun x hx => hx)`. Establish `hg : Function.Bijective g0`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hf` to reduce the goal to its premises. Conclude with `congrArg Subtype.val hxy`. Introduce and unpack `⟨y, hy⟩`. Take `⟨x, rfl⟩` from `hA hy`. Conclude with `⟨⟨x, hy⟩, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `g : ↥(A.comap f) ≃ₗ[O] ↥A` to `LinearEquiv.ofBijective g0 hg`. Use `(Submodule.Quotient.equiv _ _ g ?_).length_eq` and prove the remaining obligations. Use extensionality with `⟨y, hy⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, hx⟩, hxB, hxy⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: f x = y` using `congrArg Subtype.val hxy`. Simplify `hxB` using `[← this]`. Introduce `hyB`. Take `⟨x, rfl⟩` from `hA hy`. Conclude with `⟨⟨x, hy⟩, hyB, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem length_comap_eq {O V W : Type} [CommRing O] [AddCommGroup V] [Module O V] [AddCommGroup W]
     [Module O W] (f : W →ₗ[O] V) (hf : Function.Injective f) (A B : Submodule O V)
@@ -80,9 +80,9 @@ theorem length_comap_eq {O V W : Type} [CommRing O] [AddCommGroup V] [Module O V
     exact ⟨⟨x, hy⟩, hyB, rfl⟩
 
 /- English proof (translation)
-Unfold `Formalism.LatticeIndexTer.qlen`. Rewrite using `[Module.length_eq_zero_iff]`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using Submodule.Quotient.induction_on with`. Consider the case `_ x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `b using Submodule.Quotient.induction_on with`. Consider the case `_ y => exact (Submodule.Quotient.eq _).2 (h (x - y).2)`.
+Proceed by induction. Treat this case separately.
 -/
 theorem qlen_eq_zero_of_le {O V : Type} [CommRing O] [AddCommGroup V] [Module O V] (A B : Submodule O V)
     (h : B ≤ A) : Formalism.LatticeIndexTer.qlen O V B A = 0 := by
@@ -97,15 +97,15 @@ theorem qlen_eq_zero_of_le {O V : Type} [CommRing O] [AddCommGroup V] [Module O 
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
 /- English proof (translation)
-Take `⟨⟨hMlat, hΘlat⟩, ⟨hbc, hϖ, hϖ'⟩, hTie, hRes, hPts, hLead⟩` from `hOk`. Establish `: FiniteDimensional (X.Kl la) ↥(WL X ka la)` using `finDim_of_isLat _ hMlat`. Establish `hM₁` using `Formalism.LatticeBaseChangeAlt.isLattice_span_image_alt (X.Ol la) L.O' (X.Kl la) L.K' ↥(WL X ka la) L.V₁ L.bc hbc _ hMlat`. Establish `hΘ₁` using `Formalism.LatticeBaseChangeAlt.isLattice_span_image_alt (X.Ol la) L.O' (X.Kl la) L.K' ↥(WL X ka la) L.V₁ L.bc hbc _ hΘlat`. Establish `: FiniteDimensional L.K' L.V₁` using `finDim_of_isLat _ hM₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν : ∀ z, L.ν z ≤ nus la + cc D large₂ H.Cc H.Ac H.CRc wL * L.v z`. Introduce `z`. Establish `h` using `hH1.2.2.2 la (L.y z)`. Rewrite `h` using `[(hTie z).1]`. Conclude with `EReal.coe_le_coe_iff.1 h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19⟩` from `hRes`. Take `⟨p1, p2, p3, p4, p5, p6, p7, p8⟩` from `hPts`. Take `⟨l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11⟩` from `hLead`. Establish `key` using `Formalism.LatticeBaseChangeAlt.localStepClosed L.ι L.ep L.f L.ν L.v (nus la) (cc D large₂ H.Cc H.Ac H.CRc wL) T L.R L.I (fun z => (hTie z).2.2.1) hT hcc (fun z => (hTie z).2.2.2) hν L.O' L.K' L.K₁ L.V₁ L.Wsec (algebraMap (X.Ol la) L.O' L.ϖ) hϖ' (L.up (MW X ka la)) (L.up (ThW X S …`. Establish `hd : (0 : ℝ) < (finrank L.K' L.K₁ : ℝ)` using `by exact_mod_cast (finrank_pos : 0 < finrank L.K' L.K₁)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `desc` using `Formalism.LatticeBaseChangeAlt.localStepDescent (X.Ol la) L.O' (X.Kl la) L.K' ↥(WL X ka la) L.V₁ L.bc hbc L.ϖ hϖ hϖ' (MW X ka la) (ThW X S ka wL wF T la) U hMlat hΘlat (finrank L.K' L.K₁ : ℝ) ((L.R : ℝ) * ((T : ℝ) * cc D large₂ H.Cc H.Ac H.CRc wL * ∑ z, ((L.ep z : ℝ) * L.f z) * L …`. Use `le_trans key (le_of_eq ?_)` and prove the remaining obligations. Use the proof step `ring)`. Unfold `LocDat.err`. Rewrite using `[← mul_le_mul_iff_right₀ hd]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 
-Use `le_trans desc (le_of_eq ?_)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem idx_bound (large₂ : SizeData₂ D) (X : PJ D B P j) (H : KHyp) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) (T : ℕ)
     (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (la : HeightOneSpectrum (𝓞 B.KO)) (e : ℕ)
@@ -154,7 +154,7 @@ theorem idx_bound (large₂ : SizeData₂ D) (X : PJ D B P j) (H : KHyp) (S : Sc
   ring
 
 /- English proof (translation)
-Use `length_comap_eq ((WL X ka la).subtype.restrictScalars (X.Ol la)) ?_ (N ⊓ X.ofK la V') (N' ⊓ X.ofK la V') ?_` and prove the remaining obligations. Conclude with `Subtype.val_injective`. Introduce `x hx`. Conclude with `⟨⟨x, hV' hx.2⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem qlen_eq_inW (X : PJ D B P j) (ka : WeightFamilies.Wt D j) (la : HeightOneSpectrum (𝓞 B.KO))
     (N N' : Submodule (X.Ol la) (X.Vl la)) (V' : Submodule (X.Kl la) (X.Vl la))
@@ -170,11 +170,11 @@ theorem qlen_eq_inW (X : PJ D B P j) (ka : WeightFamilies.Wt D j) (la : HeightOn
     exact ⟨⟨x, hV' hx.2⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `large₂ X H S ka wL wF T nus la e hH1 hT hcc hΘM hTe L hOk V' hV'`. Establish `hb` using `idx_bound large₂ X H S ka wL wF T nus la e hH1 hT hcc hTe L hOk (V'.comap (WL X ka la).subtype)`. Establish `hrk : finrank (X.Kl la) ↥(V'.comap (WL X ka la).subtype) = finrank (X.Kl la) V'` using `(Submodule.comapSubtypeEquivOfLe hV').finrank_eq`. Establish `hq` using `qlen_eq_inW X ka la (X.loc la (X.Msup ka)) (X.loc la (X.Theta S ka wL wF T)) V' hV'`. Establish `hle : ThW X S ka wL wF T la ≤ MW X ka la` using `Submodule.comap_mono (Submodule.span_mono (Set.image_mono hΘM))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `qlen_eq_zero_of_le (MW X ka la ⊓ (V'.comap (WL X ka la).subtype).restrictScalars (X.Ol la)) (ThW X S ka wL wF T la ⊓ (V'.comap (WL X ka la).subtype).restrictScalars (X.Ol la)) (inf_le_inf_right _ hle)`. Establish `hfin` using `qlen_inf_ne_top (X.Ol la) (X.Kl la) ↥(WL X ka la) (MW X ka la) (ThW X S ka wL wF T la) hOk.1.1 hOk.1.2 ((V'.comap (WL X ka la).subtype).restrictScalars (X.Ol la))`. Rewrite using `[← hq]`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Rewrite `hb` using `[hrk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `Formalism.LatticeIndexTer.idx at hb`. Rewrite `hb` using `[h0]`. Establish `hb'` using `hb`. Simplify using `only [ENat.toNat_zero, Nat.cast_zero, sub_zero, Int.cast_natCast] at hb'`. Conclude with `hb'`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thm0Local : @Thm0Local D B P j := by
   intro large₂ X H S ka wL wF T nus la e hH1 hT hcc hΘM hTe L hOk V' hV'

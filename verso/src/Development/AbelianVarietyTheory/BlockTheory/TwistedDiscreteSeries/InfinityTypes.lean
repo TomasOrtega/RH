@@ -102,7 +102,7 @@ def WeightsMatchLev : Prop :=
     ∀ (i : Fin D.R.m) (t : T) (τ : D.what₂.Tau), InfTypesAt L i t τ
 
 /- English proof (translation)
-Establish `h' : (D.R.r : ℚ) = (pS D i τ : ℚ) + (qS D i τ : ℚ)` using `by exact_mod_cast h.symm`. Use `⟨fun a => ?_, fun c => ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.L2.NTheta.kapQ, Sum.elim_inl, aPlusQ, centred, h']`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Formalism.L2.NTheta.kapQ, Sum.elim_inr, dRowQ, centred, h']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -117,9 +117,9 @@ example (D : D7) (i : Fin D.R.m) (τ : D.what₂.Tau) (h : pS D i τ + qS D i τ
   · simp only [Formalism.L2.NTheta.kapQ, Sum.elim_inr, dRowQ, centred, h']; ring
 
 /- English proof (translation)
-Establish `h` using `D.sp.W_sigval ((i : ℕ) + 1) (Nat.le_add_left _ _) i.2 (tauE D τ)`. Use `⟨⟨?_, ?_⟩, D.sp.V_rank _ (Nat.le_add_left _ _) i.2⟩` and prove the remaining obligations. Use `show ((D.sp.W ((i : ℕ) + 1)).sig (tauE D τ)).1 = _`. Rewrite using `[h]`. Simplify using `[Ranks.sigW]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show ((D.sp.W ((i : ℕ) + 1)).sig (tauE D τ)).2 = _`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 example (D : D7) (i : Fin D.R.m) (τ : D.what₂.Tau) :
     (pS D i τ = D.R.k + i ∧ qS D i τ = D.R.m - ((i : ℕ) + 1)) ∧ (Vc D i).rank = D.R.r + D.R.t := by

@@ -16,7 +16,7 @@ omit [IsDomain 𝒪] [IsDiscreteValuationRing 𝒪] [IsDomain Λ] [IsDiscreteVal
   [IsLocalHom j] in
 include hxy in
 /- English proof (translation)
-Establish `e` using `(equation_iff _ _).mp hxy`. Simplify using `only [WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] at e`. Simplify using `only [WeierstrassCurve.Affine.polynomial, eval₂_sub, eval₂_add, eval₂_mul, eval₂_pow, eval₂_X, eval₂_C, coe_eval₂RingHom]`. Take the linear combination `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eval₂_polynomial_of_equation :
     W.toAffine.polynomial.eval₂ (eval₂RingHom j x) y = 0 := by
@@ -33,7 +33,7 @@ def coordEval : W.toAffine.CoordinateRing →+* Λ :=
 omit [IsDomain 𝒪] [IsDiscreteValuationRing 𝒪] [IsDomain Λ] [IsDiscreteValuationRing Λ]
   [IsLocalHom j] in
 /- English proof (translation)
-The claim follows from `AdjoinRoot.lift_mk _ _`.
+A detailed English derivation is pending.
 -/
 theorem coordEval_mk (p : 𝒪[X][Y]) :
     coordEval W j hxy (CoordinateRing.mk W p) = p.eval₂ (eval₂RingHom j x) y :=
@@ -42,7 +42,7 @@ theorem coordEval_mk (p : 𝒪[X][Y]) :
 omit [IsDomain 𝒪] [IsDiscreteValuationRing 𝒪] [IsDomain Λ] [IsDiscreteValuationRing Λ]
   [IsLocalHom j] in
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply 𝒪 𝒪[X] W.toAffine.CoordinateRing, AdjoinRoot.algebraMap_eq, coordEval, AdjoinRoot.lift_of]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coordEval_algebraMap (c : 𝒪) :
     coordEval W j hxy (algebraMap 𝒪 W.toAffine.CoordinateRing c) = j c := by
@@ -53,9 +53,9 @@ theorem coordEval_algebraMap (c : 𝒪) :
 include hxy in
 
 /- English proof (translation)
-Establish `e` using `(equation_iff _ _).mp hxy`. Rewrite using `[equation_iff]`. Use `congrArg (residue Λ) e` as an intermediate fact. Simplify using `only [WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆, map_add, map_mul, map_pow] at this ⊢`. Simplify using `only [← RingHom.comp_apply (ResidueField.map j), ResidueField.map_comp_residue]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify `this` using `only [RingHom.comp_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem equation_residue_of_equation :
     ((W.map (residue 𝒪)).map (ResidueField.map j)).toAffine.Equation (residue Λ x)
@@ -77,7 +77,7 @@ def coordEvalRed :
       (equation_residue_of_equation W j hxy))
 
 /- English proof (translation)
-Rewrite using `[← AdjoinRoot.mk_C, coordReduce, CoordinateRing.map_mk, Polynomial.map_C, ← AdjoinRoot.mk_C]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coordReduce_of (q : 𝒪[X]) :
     coordReduce W (AdjoinRoot.of _ q) = AdjoinRoot.of _ (q.map (residue 𝒪)) := by
@@ -85,7 +85,7 @@ theorem coordReduce_of (q : 𝒪[X]) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← AdjoinRoot.mk_X, coordReduce, CoordinateRing.map_mk, Polynomial.map_X, AdjoinRoot.mk_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coordReduce_root :
     coordReduce W (AdjoinRoot.root W.toAffine.polynomial) =
@@ -93,9 +93,9 @@ theorem coordReduce_root :
   rw [← AdjoinRoot.mk_X, coordReduce, CoordinateRing.map_mk, Polynomial.map_X, AdjoinRoot.mk_X]
 
 /- English proof (translation)
-Establish `: (residue Λ).comp (coordEval W j hxy) = (coordEvalRed W j hxy).comp (coordReduce W)`. Apply `AdjoinRoot.ringHom_ext` to reduce the goal to its premises. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [RingHom.comp_apply, coordReduce_of, coordEval, coordEvalRed, AdjoinRoot.lift_of, Polynomial.map_C, coe_eval₂RingHom, eval₂_C, ResidueField.map_residue]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply, coordReduce_of, coordEval, coordEvalRed, AdjoinRoot.lift_of, Polynomial.map_X, coe_eval₂RingHom, eval₂_X]`. Simplify using `only [RingHom.comp_apply, coordReduce_root, coordEval, coordEvalRed, AdjoinRoot.lift_root]`. Conclude with `congrArg (· a) this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem residue_coordEval (a : W.toAffine.CoordinateRing) :
     residue Λ (coordEval W j hxy a) = coordEvalRed W j hxy (coordReduce W a) := by
@@ -114,9 +114,9 @@ theorem residue_coordEval (a : W.toAffine.CoordinateRing) :
 omit [IsDomain 𝒪] [IsDiscreteValuationRing 𝒪] in
 
 /- English proof (translation)
-Establish `hc : ∀ c : 𝒪, algebraMap 𝒪 W.toAffine.CoordinateRing c = AdjoinRoot.of W.toAffine.polynomial (C c)` using `fun c => by`. Rewrite using `[IsScalarTower.algebraMap_apply 𝒪 𝒪[X] W.toAffine.CoordinateRing, AdjoinRoot.algebraMap_eq, Polynomial.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Apply `AdjoinRoot.ringHom_ext` to reduce the goal to its premises. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `h₁ c` using `only [RingHom.comp_apply, hc]`. Simplify `h₂` using `only [RingHom.comp_apply, AdjoinRoot.mk_C]`. Simplify `h₃` using `only [AdjoinRoot.mk_X]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coordinateRing_ringHom_ext {S : Type*} [CommRing S]
     {f g : W.toAffine.CoordinateRing →+* S}
@@ -139,7 +139,7 @@ variable (hx : Function.Injective (eval₂RingHom (ResidueField.map j) (residue 
 include hx in
 
 /- English proof (translation)
-Use `letI : Algebra (ResidueField 𝒪) (ResidueField Λ) := (ResidueField.map j).toAlgebra`. Establish `h : ((W.map (residue 𝒪)).baseChange (ResidueField Λ)).toAffine.Equation (residue Λ x) (residue Λ y)` using `equation_residue_of_equation W j hxy`. Establish `ht : Transcendental (ResidueField 𝒪) (residue Λ x)` using `transcendental_iff_injective.mpr hx`. Conclude with `evalAt_injective (W.map (residue 𝒪)) h ht`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coordEvalRed_injective : Function.Injective (coordEvalRed W j hxy) := by
   letI : Algebra (ResidueField 𝒪) (ResidueField Λ) := (ResidueField.map j).toAlgebra
@@ -150,7 +150,7 @@ theorem coordEvalRed_injective : Function.Injective (coordEvalRed W j hxy) := by
 
 include hx in
 /- English proof (translation)
-Assume the negation of the conclusion as `hs`. Establish `h0 : residue Λ (coordEval W j hxy s) = 0` using `(residue_eq_zero_iff _).2 ((mem_maximalIdeal _).2 hs)`. Rewrite `h0` using `[residue_coordEval]`. Conclude with `s.2 (RingHom.mem_ker.2 ((map_eq_zero_iff _ (coordEvalRed_injective W j hxy hx)).1 h0))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_coordEval (s : (gaussPrime W).primeCompl) : IsUnit (coordEval W j hxy s) := by
   by_contra hs
@@ -164,14 +164,14 @@ def gaussLift : gaussRing W →+* Λ :=
     (isUnit_coordEval W j hxy hx)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem gaussLift_algebraMap (a : W.toAffine.CoordinateRing) :
     gaussLift W j hxy hx (algebraMap _ _ a) = coordEval W j hxy a :=
   IsLocalization.lift_eq _ _
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply 𝒪 W.toAffine.CoordinateRing (gaussRing W), gaussLift_algebraMap, coordEval_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gaussLift_algebraMap_base (c : 𝒪) :
     gaussLift W j hxy hx (algebraMap 𝒪 (gaussRing W) c) = j c := by
@@ -202,9 +202,9 @@ def fieldEvalRed : (W.map (residue 𝒪)).toAffine.FunctionField →+* ResidueFi
   IsFractionRing.lift (coordEvalRed_injective W j hxy hx)
 
 /- English proof (translation)
-Apply `IsLocalization.ringHom_ext (nonZeroDivisors (W.toAffine.CoordinateRing ⧸ gaussPrime W))` to reduce the goal to its premises. Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, Ideal.algebraMap_quotient_residueField_mk]`. Establish `e : algebraMap W.toAffine.CoordinateRing (gaussPrime W).ResidueField a = residue (gaussRing W) (algebraMap _ (gaussRing W) a)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[IsScalarTower.algebraMap_apply _ (Localization.AtPrime (gaussPrime W)) (gaussPrime W).ResidueField, IsLocalRing.ResidueField.algebraMap_eq]`. Rewrite using `[e, ResidueField.map_residue, gaussLift_algebraMap, gaussResidue_residue, fieldEvalRed, IsFractionRing.lift_algebraMap, residue_coordEval]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem residueField_map_gaussLift :
     ResidueField.map (gaussLift W j hxy hx) = (fieldEvalRed W j hxy hx).comp (gaussResidue W) := by
@@ -220,21 +220,21 @@ theorem residueField_map_gaussLift :
     IsFractionRing.lift_algebraMap, residue_coordEval]
 
 /- English proof (translation)
-Rewrite using `[genX, fieldEvalRed, IsFractionRing.lift_algebraMap, coordEvalRed, AdjoinRoot.lift_mk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fieldEvalRed_genX : fieldEvalRed W j hxy hx (genX (W.map (residue 𝒪))) = residue Λ x := by
   rw [genX, fieldEvalRed, IsFractionRing.lift_algebraMap, coordEvalRed, AdjoinRoot.lift_mk]
   simp
 
 /- English proof (translation)
-Rewrite using `[genY, fieldEvalRed, IsFractionRing.lift_algebraMap, coordEvalRed, AdjoinRoot.lift_mk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fieldEvalRed_genY : fieldEvalRed W j hxy hx (genY (W.map (residue 𝒪))) = residue Λ y := by
   rw [genY, fieldEvalRed, IsFractionRing.lift_algebraMap, coordEvalRed, AdjoinRoot.lift_mk]
   simp
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply (ResidueField 𝒪) (W.map (residue 𝒪)).toAffine.CoordinateRing, fieldEvalRed, IsFractionRing.lift_algebraMap, IsScalarTower.algebraMap_apply (ResidueField 𝒪) (ResidueField 𝒪)[X], AdjoinRoot.algebraMap_eq, coordEvalRed, AdjoinRoot.lift_of]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fieldEvalRed_algebraMap (c : ResidueField 𝒪) :
     fieldEvalRed W j hxy hx (algebraMap (ResidueField 𝒪) _ c) = ResidueField.map j c := by
@@ -249,9 +249,9 @@ variable (K : Type*) [Field K] [Algebra 𝒪 K] [IsFractionRing 𝒪 K] (M : Typ
   [Algebra Λ M]
 
 /- English proof (translation)
-Apply `IsLocalization.ringHom_ext (gaussPrime W).primeCompl` to reduce the goal to its premises. Apply `coordinateRing_ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [RingHom.comp_apply, ← IsScalarTower.algebraMap_apply, gaussLift_algebraMap, coordEval_algebraMap, hσ, gaussLift_algebraMap_base]`. Simplify using `only [RingHom.comp_apply, gaussLift_algebraMap, coordEval_mk]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← gaussX, algebraMap_gaussX, hX]`. Simplify using the standard rewrite rules. Simplify using `only [RingHom.comp_apply, gaussLift_algebraMap, coordEval_mk]`. Rewrite using `[← gaussY, algebraMap_gaussY, hY]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem comp_algebraMap_gaussLift (σ : (W.baseChange K).toAffine.FunctionField →+* M)
     (hσ : ∀ c : 𝒪, σ (algebraMap 𝒪 _ c) = algebraMap Λ M (j c))

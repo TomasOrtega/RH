@@ -8,7 +8,7 @@ open Matrix
 namespace ReciprocityTheory.PGsh.Up
 
 /- English proof (translation)
-Simplify using `[stdJ, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, Finset.sum_sub_distrib, sub_eq_add_neg, add_comm]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma stdJ_form' {D : Type} [CommRing D] {g : ℕ}
     (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) D) (i j : Fin g ⊕ Fin g) :
@@ -20,7 +20,7 @@ private lemma stdJ_form' {D : Type} [CommRing D] {g : ℕ}
   ring
 
 /- English proof (translation)
-Rewrite using `[stdJ]`. Simplify using `[Matrix.fromBlocks_multiply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma stdJ_eq (D : Type) [CommRing D] (g : ℕ) :
     stdJ D g = fromBlocks 1 (-1) 0 1 * fromBlocks 1 0 1 1 * fromBlocks 1 (-1) 0 1 := by
@@ -28,34 +28,34 @@ private lemma stdJ_eq (D : Type) [CommRing D] (g : ℕ) :
   simp [Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Rewrite using `[stdJ_eq, Matrix.det_mul, Matrix.det_mul]`. Simplify using `[Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_zero₁₂]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma det_stdJ (D : Type) [CommRing D] (g : ℕ) : (stdJ D g).det = 1 := by
   rw [stdJ_eq, Matrix.det_mul, Matrix.det_mul]
   simp [Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_zero₁₂]
 
 /- English proof (translation)
-Introduce `S _ g m Ht Bt E cp εT εL π hπ hT hT1 hL hL1 hHt hE hBH`. Introduce `Bt'`. Establish `hBt' : Bt' = ∑ i, εL i * Bt * εT i` using `rfl`. Establish `hLt : ∀ i, (εL i)ᵀ * Ht = Ht * εT (π i)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hHt (π i)`. Rewrite `h` using `[hπ]`. Conclude with `h.symm`. Establish `hHtL : ∀ i, Htᵀ * εL i = (εT (π i))ᵀ * Htᵀ`. Introduce `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `congrArg Matrix.transpose (hLt i)`. Simplify `h` using `[Matrix.transpose_mul]`. Establish `part2 : ∀ i, Bt' * εT i = εL i * Bt'`. Introduce `i`. Establish `l : ∀ j, εL j * Bt * εT j * εT i = if j = i then εL j * Bt * εT j else 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[Matrix.mul_assoc (εL j * Bt), hT j i]`. Use `split_ifs with h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `r : ∀ j, εL i * (εL j * Bt * εT j) = if j = i then εL j * Bt * εT j else 0`. Introduce `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hL, if_pos rfl]`. Rewrite using `[if_neg h, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hL, if_neg (Ne.symm h), Matrix.zero_mul, Matrix.zero_mul]`. Rewrite using `[hBt', Matrix.sum_mul, Matrix.mul_sum]`. Simplify using `only [l, r]`. Establish `hA : Bt'ᵀ * Ht = ∑ i, (εT i)ᵀ * Btᵀ * Ht * εT (π i)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hBt', Matrix.transpose_sum, Matrix.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hLt i]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hB : Htᵀ * Bt' = ∑ i, (εT i)ᵀ * Htᵀ * Bt * εT (π i)`. Rewrite using `[hBt', Matrix.mul_sum, ← Equiv.sum_comp π (fun i => Htᵀ * (εL i * Bt * εT i))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[hHtL (π i), hπ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `part1 : Bt'ᵀ * Ht - Htᵀ * Bt' = cp • E`. Rewrite using `[hA, hB, ← Finset.sum_sub_distrib]`. Establish `h : ∀ i, (εT i)ᵀ * Btᵀ * Ht * εT (π i) - (εT i)ᵀ * Htᵀ * Bt * εT (π i) = cp • (E * εT (π i))`. Introduce `i`. Rewrite using `[Matrix.mul_assoc ((εT i)ᵀ) Btᵀ Ht, Matrix.mul_assoc ((εT i)ᵀ) Htᵀ Bt, ← Matrix.sub_mul, ← Matrix.mul_sub, hBH, Matrix.mul_smul, hE i, Matrix.smul_mul, Matrix.mul_assoc, hT, if_pos rfl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h]`. Rewrite using `[← Finset.smul_sum, ← Matrix.mul_sum, Equiv.sum_comp π εT, hT1, Matrix.mul_one]`. Establish `hJ : (Matrix.fromRows Ht Bt')ᵀ * stdJ S g * Matrix.fromRows Ht Bt' = cp • E`. Rewrite using `[← part1]`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[stdJ_form']`. Simplify using `[Matrix.sub_apply, Matrix.mul_apply, Finset.sum_sub_distrib]`. Use `⟨part1, part2, ?_⟩` and prove the remaining obligations. Rewrite using `[det_sq_eq E _ cp hJ, det_stdJ, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u1 : IsotypicAveragingStatement := by
   intro S _ g m Ht Bt E cp εT εL π hπ hT hT1 hL hL1 hHt hE hBH

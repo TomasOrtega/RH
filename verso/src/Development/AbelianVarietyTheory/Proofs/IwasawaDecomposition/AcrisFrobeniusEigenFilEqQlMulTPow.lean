@@ -26,23 +26,23 @@ noncomputable section
 namespace GlobalTheory.MemLoc.FixR
 
 /- English proof (translation)
-Establish `hit : ∀ n a, φ^[n] (i a) = i (f^[n] a)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => intro a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Function.iterate_succ_apply, hf, ih, Function.iterate_succ_apply]`. Establish `hpn : ∀ n, (φ ^ n) p = p`. Introduce `n`. Rewrite using `[RingHom.coe_pow]`. Conclude with `Function.iterate_fixed hφp n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hit' : ∀ n a, (φ ^ n) (i a) = i (f^[n] a)`. Introduce `n a`. Rewrite using `[RingHom.coe_pow]`. Conclude with `hit n a`. Establish `hxn : ∀ n, Θ ((φ ^ n) x) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using hx0`. Consider the case `succ n ih`. Rewrite using `[pow_succ, RingHom.mul_def, RingHom.comp_apply, hx]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_mul, ih, mul_zero]`. Establish `hwn : ∀ n, Θ ((φ ^ n) w) = 0`. Introduce `n`. Use `congrArg (fun y => Θ ((φ ^ n) y)) hw` as an intermediate fact. Simplify using `only [map_mul, map_pow, hpn, hit', hμ] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify `this` using `[hp]`. Take `⟨a, z, haz⟩` from `himg x`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : μ ∣ a := by`. Apply `hI` to reduce the goal to its premises. Introduce `n`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun y => Θ ((φ ^ n) y)) (hx.symm.trans haz)` as an intermediate fact. Simplify `this` using `only [map_mul, map_add, hxn, hwn, hit', mul_zero, zero_mul, add_zero, eq_comm]`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `hp0 : p ≠ 0` using `fun h => hp (by rw [h, map_zero])`. Establish `h1 : p ^ (r + 2) * x = t * (v * (p * i b + i μ ^ m * z))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hx.symm.trans haz`. Rewrite `e` using `[hb, map_mul]`. Rewrite using `[ht]`. Take the linear combination `p * e + z * hw - (i μ * (p * i b + i μ ^ m * z)) * hv`. Use `⟨_, h1, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set x' := v * (p * i b + i μ ^ m * z)`. Establish `h2` using `congrArg φ h1`. Rewrite `h2` using `[map_mul, map_mul, map_pow, hφp, hx, hφt]`. Apply `mul_left_cancel₀ (mul_ne_zero hp0 ht0)` to reduce the goal to its premises. Take the linear combination `p ^ (r + 1) * h1 - h2`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem step_abs {R A K : Type} [CommRing R] [CommRing A] [IsDomain A] [Field K]
     (i : R →+* A) (f : R →+* R) (φ : A →+* A) (Θ : A →+* K) (p : A) (hp : Θ p ≠ 0)
@@ -101,19 +101,19 @@ theorem step_abs {R A K : Type} [CommRing R] [CommRing A] [IsDomain A] [Field K]
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RingIface.tower l a`.
+A detailed English derivation is pending.
 -/
 theorem alg_eq (a : Per.Ainf l) : algebraMap (Per.Ainf l) (Per.Acris l) a =
     algebraMap (Per.Acris0 l) (Per.Acris l) (algebraMap (Per.Ainf l) (Per.Acris0 l) a) :=
   GlobalTheory.RingIface.tower l a
 
 /- English proof (translation)
-The claim follows from `map_natCast _ _`.
+A detailed English derivation is pending.
 -/
 theorem phi_nat (n : ℕ) : phiA l (n : Per.Acris l) = n := map_natCast _ _
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CrisMaps.phiA_extends l).alg a`.
+A detailed English derivation is pending.
 -/
 theorem phi_alg (a : Per.Ainf l) : phiA l (algebraMap (Per.Ainf l) (Per.Acris l) a) =
     algebraMap (Per.Ainf l) (Per.Acris l) (Per.φA l a) := (GlobalTheory.CrisMaps.phiA_extends l).alg a
@@ -122,7 +122,7 @@ set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris Per.Bcris
 
 /- English proof (translation)
-Rewrite using `[alg_eq, hj.on0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem j_alg {j : Per.Acris l →+* Per.BdRp l} (hj : IsCrisP j) (a : Per.Ainf l) :
     j (algebraMap (Per.Ainf l) (Per.Acris l) a) = aDp l a := by
@@ -130,9 +130,9 @@ theorem j_alg {j : Per.Acris l →+* Per.BdRp l} (hj : IsCrisP j) (a : Per.Ainf 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `n generalizing e with`. Consider the case `zero => simp [mu, he]`. Consider the case `succ n ih`. Establish `h : Per.φA l (mu e) = mu (e ^ l)`. Simplify using `only [mu, map_sub, map_one, GlobalTheory.RingIface.phiA_teich]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Function.iterate_succ_apply, h]`. Conclude with `ih _ (by rw [map_pow, he, one_pow])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_phi_mu (e : Per.Fl l) (he : e.untilt = 1) (n : ℕ) :
     Per.θ l ((Per.φA l)^[n] (mu e)) = 0 := by
@@ -145,7 +145,7 @@ theorem theta_phi_mu (e : Per.Fl l) (he : e.untilt = 1) (n : ℕ) :
     exact ih _ (by rw [map_pow, he, one_pow])
 
 /- English proof (translation)
-Take `⟨w, hw, -⟩` from `GlobalTheory.T.exists_teichmullerTiltMinusOne_pow_div_envelope l e he`. Establish `h : (l : Per.Acris0 l) * w = algebraMap (Per.Ainf l) (Per.Acris0 l) (mu e) ^ (l - 1)` using `Subtype.ext (by simpa using hw)`. Use `⟨algebraMap (Per.Acris0 l) (Per.Acris l) w, ?_⟩` and prove the remaining obligations. Rewrite using `[alg_eq, ← map_pow, ← h, map_mul, map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_w (e : Per.Fl l) (he : e.untilt = 1) : ∃ w : Per.Acris l,
     (l : Per.Acris l) * w = algebraMap (Per.Ainf l) (Per.Acris l) (mu e) ^ (l - 1) := by
@@ -156,11 +156,11 @@ theorem exists_w (e : Per.Fl l) (he : e.untilt = 1) : ∃ w : Per.Acris l,
   rw [alg_eq, ← map_pow, ← h, map_mul, map_natCast]
 
 /- English proof (translation)
-Take `⟨hF, hreg, -⟩` from `GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l C.ε (GlobalTheory.T.isPrimitiveTiltedRootOfUnity_localPeriodRingsData l C)`. Take `⟨-, h1, h2, -⟩` from `GlobalTheory.T.fontaine_t_isUnit_bcris_and_uniformizer_bdRPlus l C`. Take `⟨-, hk, hun, -⟩` from `GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l`. Rewrite `h`, `h1`, `h2`, the goal using `[hF]`. Take `⟨v, hv⟩` from `h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hvu : IsUnit v`. Apply `hun` to reduce the goal to its premises. Introduce `h0`. Take `⟨c, hc⟩` from `(hF _ _).1 ((hk v).1 h0)`. Conclude with `h2 ⟨c, by rw [hv, hc]; ring⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `h`. Rewrite using `[← hvu.dvd_mul_left]`. Use `⟨c, sub_eq_zero.1 (hreg _ ?_)⟩` and prove the remaining obligations. Rewrite `hc` using `[hv]`. Take the linear combination `hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem fil_div (C : Core l) (r : ℕ) (y : Per.BdRp l) (h : C.j C.t * y ∈ Per.FilP l (r + 1)) :
     y ∈ Per.FilP l r := by
@@ -189,15 +189,15 @@ set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris Per.Bcris
 
 /- English proof (translation)
-Proceed by induction on `r generalizing x with`. Consider the case `zero`. Take `⟨z, hz⟩` from `GlobalTheory.T.acris_frobenius_fixed_eq_padicInt l x (by simpa using hx)`. Conclude with `⟨z, 0, by simpa using hz⟩`. Consider the case `succ r ih`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Establish `he` using `GlobalTheory.T.isPrimitiveTiltedRootOfUnity_localPeriodRingsData l C`. Use `haveI := (GlobalTheory.T.bdRPlus_isDomain_bdR_isField l).1`. Use `haveI : IsDomain (Per.Acris l) := (GlobalTheory.T.acrisToBdRPlus_injective l C.j C.j_cris).isDomain C.j`. Take `⟨hFil, -⟩` from `GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l C.ε he`. Take `⟨-, hk, -, hth, -⟩` from `GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `exists_w C.ε he.1`. Take `⟨t, u, htl, hu, htu⟩` from `GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l C.ε he.1`. Establish `htt : C.t = t` using `(GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l C.ε t he.1 htl).1 _ C.t_log`. Establish `hΘ : ∀ a, ((Per.θD l).comp C.j) (algebraMap (Per.Ainf l) (Per.Acris l) a) = (Per.θ l a : ℂ_[l])` using `fun a => by`. Rewrite using `[RingHom.comp_apply, j_alg C.j_cris, hth]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl2 : l - 1 = (l - 2) + 1`. Use `(Fact.out : l.Prime).two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨x', h1, h2⟩` from `step_abs (algebraMap (Per.Ainf l) (Per.Acris l)) (Per.φA l) (phiA l) ((Per.θD l).comp C.j) (l : Per.Acris l) (by rw [map_natCast]; exact GlobalTheory.RingBasics.p_ne_zero) (phi_nat l) (phi_alg (l := l)) (mu C.ε) (fun n => by rw [hΘ, theta_phi_mu _ he.1]; rfl) (fun a ha => GlobalT …`. Establish `h3 : C.j x' ∈ Per.FilP l r`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `fil_div C` to reduce the goal to its premises. Rewrite using `[← map_mul, ← h1, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ hF`. Take `⟨z, k, hz⟩` from `ih x' h2 h3`. Conclude with `⟨z, k + (r + 2), by linear_combination (l : Per.Acris l) ^ k * h1 + C.t * hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fix_pow (l : ℕ) [Fact l.Prime] (C : Core l) (r : ℕ) (x : Per.Acris l)
     (hx : phiA l x = (l : Per.Acris l) ^ r * x) (hF : C.j x ∈ Per.FilP l r) :

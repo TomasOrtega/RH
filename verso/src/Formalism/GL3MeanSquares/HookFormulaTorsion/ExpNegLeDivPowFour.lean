@@ -6,9 +6,9 @@ open Finset Filter Topology
 namespace Formalism.HermitianLattices.GL2PrimeSums.TailSumsHookFormulaTorsion
 
 /- English proof (translation)
-Introduce `N hN`. Proceed by induction on `N, hN using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ N hN ih`. Rewrite using `[Finset.sum_Ioc_succ_top hN]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `h N hN` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma tele (g H : ℕ → ℝ) (M : ℕ) (h : ∀ n, M ≤ n → g (n + 1) ≤ H n - H (n + 1)) :
     ∀ N, M ≤ N → ∑ n ∈ Ioc M N, g n ≤ H M - H N := by
@@ -21,11 +21,11 @@ lemma tele (g H : ℕ → ℝ) (M : ℕ) (h : ∀ n, M ≤ n → g (n + 1) ≤ H
     linarith
 
 /- English proof (translation)
-Introduce `N hN`. Proceed by induction on `N, hN using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ N hN ih`. Rewrite using `[Finset.sum_Ioc_succ_top hN, Finset.sum_Icc_succ_top (by omega), Finset.sum_Icc_succ_top (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((N : ℂ) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero N`. Establish `h2 : ((N : ℂ) + 1 + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero (N + 1)`. Establish `e : ∑ n ∈ Icc 1 N, a n / (n : ℂ) = ∑ n ∈ Icc 1 M, a n / (n : ℂ) + ((∑ k ∈ Icc 1 N, a k) / ((N : ℂ) + 1) - (∑ k ∈ Icc 1 M, a k) / ((M : ℂ) + 1) + ∑ n ∈ Ioc M N, (∑ k ∈ Icc 1 n, a k) * (1 / (n : ℂ) - 1 / ((n : ℂ) + 1)))`. Rewrite using `[← ih]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma abel (a : ℕ → ℂ) (M : ℕ) : ∀ N, M ≤ N →
     ∑ n ∈ Icc 1 N, a n / (n : ℂ) - ∑ n ∈ Icc 1 M, a n / (n : ℂ) =
@@ -47,21 +47,19 @@ lemma abel (a : ℕ → ℂ) (M : ℕ) : ∀ N, M ≤ N →
     ring
 
 /- English proof (translation)
-Establish `hpos : ∀ n, M ≤ n → 0 ≤ β n`. Introduce `n hn`. Establish `h` using `(norm_nonneg _).trans (hβ n hn)`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast (lt_of_lt_of_le hM hn)`. Conclude with `nonneg_of_mul_nonneg_right h hn'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ n, M ≤ n → ‖(∑ k ∈ Icc 1 n, a k) / ((n : ℂ) + 1)‖ ≤ β n`. Introduce `n hn`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast (lt_of_lt_of_le hM hn)`. Establish `e : ‖((n : ℂ) + 1)‖ = (n : ℝ) + 1`. Establish `: ((n : ℂ) + 1) = (((n : ℝ) + 1 : ℝ) : ℂ)` using `by push_cast; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`. Rewrite using `[norm_div, e, div_le_iff₀ (by positivity)]`. Use `hβ n hn` as an intermediate fact. Use `hpos n hn` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hc : ∀ n, M ≤ n → ‖(∑ k ∈ Icc 1 n, a k) * (1 / (n : ℂ) - 1 / ((n : ℂ) + 1))‖ ≤ β n / n`. Introduce `n hn`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast (lt_of_lt_of_le hM hn)`. Establish `e : (1 / (n : ℂ) - 1 / ((n : ℂ) + 1)) = ((1 / ((n : ℝ) * ((n : ℝ) + 1)) : ℝ) : ℂ)`. Establish `h1 : (n : ℂ) ≠ 0` using `by exact_mod_cast hn'.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((n : ℂ) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero n`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[norm_mul, e, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `hβ n hn`. Establish `h4` using `hpos n hn`. Rewrite using `[mul_one_div, div_le_div_iff₀ (by positivity) hn']`. Use polynomial arithmetic with `[mul_nonneg hn'.le h4, mul_nonneg (mul_nonneg hn'.le hn'.le) h4]`. Use `le_of_tendsto ((hS.sub_const _).norm) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [eventually_ge_atTop M] with N hN`. Rewrite using `[abel a M N hN]`. Combine the equalities or inequalities in the displayed calculation. Use `add_le_add (add_le_add ((hb N hN).trans (h0 N hN)) ((hb M le_rfl).trans (h0 M le_rfl))) ?_` and prove the remaining obligations. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum ?_)` and prove the remaining obligations.
-
-Introduce `n hn`. Conclude with `hc n (Finset.mem_Ioc.mp hn).1.le`. Use `_ ≤ 2 * B₀ + B₁ := by have := h1 N hN; linarith`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma tail_abs (a : ℕ → ℂ) (S : ℂ)
     (hS : Tendsto (fun N : ℕ => ∑ n ∈ Icc 1 N, a n / (n : ℂ)) atTop (𝓝 S))
@@ -113,9 +111,9 @@ lemma tail_abs (a : ℕ → ℂ) (S : ℂ)
     _ ≤ 2 * B₀ + B₁ := by have := h1 N hN; linarith
 
 /- English proof (translation)
-Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `hn1 : (0 : ℝ) < ((n + 1 : ℕ) : ℝ)` using `by positivity`. Establish `h` using `Real.log_le_sub_one_of_pos (div_pos hn' hn1)`. Rewrite `h` using `[Real.log_div hn'.ne' hn1.ne']`. Establish `e : (n : ℝ) / ((n + 1 : ℕ) : ℝ) - 1 = - (1 / ((n + 1 : ℕ) : ℝ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma log_step (n : ℕ) (hn : 1 ≤ n) :
     1 / (((n + 1 : ℕ) : ℝ)) ≤ Real.log ((n + 1 : ℕ) : ℝ) - Real.log (n : ℝ) := by
@@ -131,15 +129,13 @@ lemma log_step (n : ℕ) (hn : 1 ≤ n) :
   linarith
 
 /- English proof (translation)
-Establish `h` using `tele (fun n : ℕ => (n : ℝ) ^ (-δ) / n) (fun n : ℕ => (n : ℝ) ^ (-δ) / δ) M ?_ N hN`. Establish `: 0 ≤ (N : ℝ) ^ (-δ) / δ` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `n hn`. Establish `hn1 : 1 ≤ n` using `hM.trans hn`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn1`. Establish `hn2 : (0 : ℝ) < ((n + 1 : ℕ) : ℝ)` using `by positivity`. Establish `hs` using `log_step n hn1`. Rewrite using `[Real.rpow_def_of_pos hn', Real.rpow_def_of_pos hn2]`. Use `set s := Real.log (n : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set t := Real.log ((n + 1 : ℕ) : ℝ)`. Establish `e1 : Real.exp (s * -δ) = Real.exp (t * -δ) * Real.exp (δ * (t - s))`. Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : δ * (t - s) + 1 ≤ Real.exp (δ * (t - s))` using `Real.add_one_le_exp _`. Establish `e3 : 0 < Real.exp (t * -δ)` using `Real.exp_pos _`. Rewrite using `[e1, ← sub_div, le_div_iff₀ hδ, div_eq_mul_one_div]`. Establish `e4 : Real.exp (t * -δ) * (1 / ((n + 1 : ℕ) : ℝ)) ≤ Real.exp (t * -δ) * (t - s)` using `mul_le_mul_of_nonneg_left hs e3.le`. Establish `e5 : Real.exp (t * -δ) * (δ * (t - s) + 1) ≤ Real.exp (t * -δ) * Real.exp (δ * (t - s))` using `mul_le_mul_of_nonneg_left e2 e3.le`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma sum_pow (δ : ℝ) (hδ : 0 < δ) (M : ℕ) (hM : 1 ≤ M) (N : ℕ) (hN : M ≤ N) :
     ∑ n ∈ Ioc M N, (n : ℝ) ^ (-δ) / n ≤ (M : ℝ) ^ (-δ) / δ := by
@@ -166,15 +162,15 @@ lemma sum_pow (δ : ℝ) (hδ : 0 < δ) (M : ℕ) (hM : 1 ≤ M) (N : ℕ) (hN :
     nlinarith
 
 /- English proof (translation)
-Establish `h` using `tele (fun n : ℕ => 1 / Real.log (n : ℝ) ^ 2 / n) (fun n : ℕ => 1 / Real.log (n : ℝ)) M ?_ N hN`. Establish `hN' : (1 : ℝ) ≤ N` using `by exact_mod_cast (le_trans (by omega) (hM.trans hN))`. Establish `: 0 ≤ 1 / Real.log (N : ℝ)`. Use `Real.log_nonneg hN'` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `n hn`. Establish `hn1 : 2 ≤ n` using `hM.trans hn`. Establish `hn' : (1 : ℝ) < n` using `by exact_mod_cast hn1`. Establish `hs` using `log_step n (by omega)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : 0 < Real.log (n : ℝ)` using `Real.log_pos hn'`. Use `set s := Real.log (n : ℝ)`. Use `set t := Real.log ((n + 1 : ℕ) : ℝ)`. Establish `hn2 : (0 : ℝ) < 1 / ((n + 1 : ℕ) : ℝ)` using `by positivity`. Establish `hst : s < t` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : 0 < t` using `hs0.trans hst`. Establish `e : 1 / s - 1 / t = (t - s) / (s * t)` using `by field_simp`. Rewrite using `[e, div_div, one_div]`. Rewrite `hs` using `[one_div]`. Establish `h1 : (t ^ 2 * ((n + 1 : ℕ) : ℝ))⁻¹ = (t ^ 2)⁻¹ * (((n + 1 : ℕ) : ℝ))⁻¹`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv]`. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation. Apply `div_le_div_of_nonneg_left (by linarith) (by positivity)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right hst.le ht0.le`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma sum_log (M : ℕ) (hM : 2 ≤ M) (N : ℕ) (hN : M ≤ N) :
     ∑ n ∈ Ioc M N, 1 / Real.log (n : ℝ) ^ 2 / n ≤ 1 / Real.log (M : ℝ) := by
@@ -208,7 +204,7 @@ lemma sum_log (M : ℕ) (hM : 2 ≤ M) (N : ℕ) (hN : M ≤ N) :
           exact mul_le_mul_of_nonneg_right hst.le ht0.le
 
 /- English proof (translation)
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hy.le, ← Real.rpow_neg hy.le, he]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma rpow_neg_k (y : ℝ) (hy : 0 < y) (k : ℕ) (e : ℝ) (he : e = -((k : ℝ) / 1600)) :
     y ^ e = ((y ^ ((1 : ℝ) / 1600)) ^ k)⁻¹ := by
@@ -217,19 +213,17 @@ lemma rpow_neg_k (y : ℝ) (hy : 0 < y) (k : ℕ) (e : ℝ) (he : e = -((k : ℝ
   ring
 
 /- English proof (translation)
-Establish `hM' : (0 : ℝ) < M` using `by exact_mod_cast hM`. Establish `hM1 : (1 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast (lt_of_lt_of_le hM hn)`. Establish `hMn : (M : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hQ' : 0 < Q` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0 : 0 ≤ Real.log ((n : ℝ) / M)` using `Real.log_nonneg (by rw [le_div_iff₀ hM']; linarith)`. Establish `hr1 : Real.log ((n : ℝ) / M) ≤ ((n : ℝ) / M) ^ ((1 : ℝ) / 1600) / (1 / 1600)` using `Real.log_le_rpow_div (by positivity) (by norm_num)`. Establish `hl0 : 0 ≤ Real.log (M * Q)` using `Real.log_nonneg (by nlinarith)`. Establish `e : Real.log (n * Q) = Real.log (M * Q) + Real.log ((n : ℝ) / M)`. Rewrite using `[Real.log_mul hn'.ne' hQ'.ne', Real.log_mul hM'.ne' hQ'.ne', Real.log_div hn'.ne' hM'.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hr1` using `[Real.div_rpow hn'.le hM'.le]`. Rewrite using `[e, rpow_neg_k n hn' 4 (-((1 : ℝ) / 400)) (by norm_num), rpow_neg_k n hn' 2 (-((1 : ℝ) / 800)) (by norm_num), rpow_neg_k M hM' 2 (-((1 : ℝ) / 800)) (by norm_num)]`. Use `set p := (n : ℝ) ^ ((1 : ℝ) / 1600)`. Use `set q := (M : ℝ) ^ ((1 : ℝ) / 1600)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set l := Real.log (M * Q)`. Use `set r := Real.log ((n : ℝ) / M)`. Establish `hp : 0 < p` using `Real.rpow_pos_of_pos hn' _`. Establish `hq : 0 < q` using `Real.rpow_pos_of_pos hM' _`. Establish `hr2 : r ≤ 1600 * (p / q)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: p / q / (1 / 1600) = 1600 * (p / q)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr3 : r ^ 2 ≤ 1600 ^ 2 * (p ^ 2 * (q ^ 2)⁻¹)`. Establish `: r ^ 2 ≤ (1600 * (p / q)) ^ 2` using `pow_le_pow_left₀ hr0 hr2 2`. Establish `e2 : (1600 * (p / q)) ^ 2 = 1600 ^ 2 * (p ^ 2 * (q ^ 2)⁻¹)`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : (l + r) ^ 2 ≤ 2 * l ^ 2 + 2 * (1600 ^ 2 * (p ^ 2 * (q ^ 2)⁻¹))`. Use polynomial arithmetic with `[sq_nonneg (l - r)]`. Establish `h5 : (p ^ 4)⁻¹ * (l + r) ^ 2 ≤ (p ^ 4)⁻¹ * (2 * l ^ 2 + 2 * (1600 ^ 2 * (p ^ 2 * (q ^ 2)⁻¹)))` using `mul_le_mul_of_nonneg_left h4 (by positivity)`.
-
-Use `h5.trans (le_of_eq ?_)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 lemma w_bound (M n : ℕ) (hM : 1 ≤ M) (hn : M ≤ n) (Q : ℝ) (hQ : 1 ≤ Q) :
     (n : ℝ) ^ (-((1 : ℝ) / 400)) * Real.log (n * Q) ^ 2 ≤
@@ -272,7 +266,7 @@ lemma w_bound (M n : ℕ) (hM : 1 ≤ M) (hn : M ≤ n) (Q : ℝ) (hQ : 1 ≤ Q)
   field_simp
 
 /- English proof (translation)
-Establish `h3 : (3 : ℝ) ≤ n` using `by exact_mod_cast hn`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_three` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma one_le_log_nat (n : ℕ) (hn : 3 ≤ n) : 1 ≤ Real.log (n : ℝ) := by
   have h3 : (3 : ℝ) ≤ n := by exact_mod_cast hn
@@ -281,31 +275,27 @@ lemma one_le_log_nat (n : ℕ) (hn : 3 ≤ n) : 1 ≤ Real.log (n : ℝ) := by
   linarith
 
 /- English proof (translation)
-Establish `hM' : (0 : ℝ) < M` using `by exact_mod_cast (lt_of_lt_of_le (by norm_num) hM)`. Use `set l := Real.log (M * Q) with hl`. Use `set m4 := (M : ℝ) ^ (-((1 : ℝ) / 400)) with hm4`. Use `set m8 := (M : ℝ) ^ (-((1 : ℝ) / 800)) with hm8`. Establish `hm4p : 0 < m4` using `Real.rpow_pos_of_pos hM' _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm8p : 0 < m8` using `Real.rpow_pos_of_pos hM' _`. Establish `hm88 : m8 * m8 = m4`. Rewrite using `[hm8, hm4, ← Real.rpow_add hM']`. Use `congr 1`. Evaluate the numerical expressions.
+Reduce the equality to equality of the corresponding arguments. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : ∀ n : ℕ, M ≤ n → (n : ℝ) ^ (-((1 : ℝ) / 400)) * Real.log (n * Q) ^ 2 ≤ 2 * l ^ 2 * (n : ℝ) ^ (-((1 : ℝ) / 400)) + 2 * 1600 ^ 2 * m8 * (n : ℝ) ^ (-((1 : ℝ) / 800))` using `fun n hn => w_bound M n (by omega) hn Q hQ`. Establish `h0 : ∀ n : ℕ, M ≤ n → P * ((n : ℝ) ^ (-((1 : ℝ) / 400)) * Real.log (n * Q) ^ 2) + E * (1 / Real.log (n : ℝ) ^ 2) ≤ P * ((2 * l ^ 2 + 2 * 1600 ^ 2) * m4) + E`. Introduce `n hn`. Establish `hMn : (M : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `a4 : (n : ℝ) ^ (-((1 : ℝ) / 400)) ≤ m4` using `Real.rpow_le_rpow_of_nonpos hM' hMn (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a8 : (n : ℝ) ^ (-((1 : ℝ) / 800)) ≤ m8` using `Real.rpow_le_rpow_of_nonpos hM' hMn (by norm_num)`. Establish `hlog` using `one_le_log_nat n (hM.trans hn)`. Establish `b1 : 1 / Real.log (n : ℝ) ^ 2 ≤ 1`. Rewrite using `[div_le_one (by positivity)]`. Conclude with `one_le_pow₀ hlog`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b2 : 2 * l ^ 2 * (n : ℝ) ^ (-((1 : ℝ) / 400)) ≤ 2 * l ^ 2 * m4` using `mul_le_mul_of_nonneg_left a4 (by positivity)`. Establish `b3 : 2 * 1600 ^ 2 * m8 * (n : ℝ) ^ (-((1 : ℝ) / 800)) ≤ 2 * 1600 ^ 2 * m8 * m8` using `mul_le_mul_of_nonneg_left a8 (by positivity)`. Establish `b4 : (n : ℝ) ^ (-((1 : ℝ) / 400)) * Real.log (n * Q) ^ 2 ≤ (2 * l ^ 2 + 2 * 1600 ^ 2) * m4`. Use `hw n hn` as an intermediate fact. Establish `e : 2 * 1600 ^ 2 * m8 * m8 = 2 * 1600 ^ 2 * m4` using `by rw [mul_assoc, hm88]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `b5` using `mul_le_mul_of_nonneg_left b4 hP`. Establish `b6` using `mul_le_mul_of_nonneg_left b1 hE`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ∀ N : ℕ, M ≤ N → ∑ n ∈ Ioc M N, (P * ((n : ℝ) ^ (-((1 : ℝ) / 400)) * Real.log (n * Q) ^ 2) + E * (1 / Real.log (n : ℝ) ^ 2)) / n ≤ P * ((800 * l ^ 2 + 1600 ^ 3) * m4) + E`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `N hN`. Establish `s4` using `sum_pow ((1 : ℝ) / 400) (by norm_num) M (by omega) N hN`. Establish `s8` using `sum_pow ((1 : ℝ) / 800) (by norm_num) M (by omega) N hN`. Establish `sl` using `sum_log M (by omega) N hN`. Establish `hlogM` using `one_le_log_nat M hM`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `sl' : 1 / Real.log (M : ℝ) ≤ 1`. Rewrite using `[div_le_one (by linarith)]; exact hlogM`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum ?_` and prove the remaining obligations. Introduce `n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn1 : M ≤ n` using `(Finset.mem_Ioc.mp hn).1.le`. Establish `hn' : (0 : ℝ) < n` using `lt_of_lt_of_le hM' (by exact_mod_cast hn1)`. Establish `c1` using `mul_le_mul_of_nonneg_left (hw n hn1) hP`. Rewrite using `[div_le_iff₀ hn']`. Establish `e : (P * (2 * l ^ 2) * ((n : ℝ) ^ (-((1 : ℝ) / 400)) / n) + P * (2 * 1600 ^ 2 * m8) * ((n : ℝ) ^ (-((1 : ℝ) / 800)) / n) + E * (1 / Real.log (n : ℝ) ^ 2 / n)) * n = P * (2 * l ^ 2 * (n : ℝ) ^ (-((1 : ℝ) / 400)) + 2 * 1600 ^ 2 * m8 * (n : ℝ) ^ (-((1 : ℝ) / 800))) + E * (1 / Real.l …`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = P * (2 * l ^ 2) * ∑ n ∈ Ioc M N, ((n : ℝ) ^ (-((1 : ℝ) / 400)) / n) + P * (2 * 1600 ^ 2 * m8) * ∑ n ∈ Ioc M N, ((n : ℝ) ^ (-((1 : ℝ) / 800)) / n) + E * ∑ n ∈ Ioc M N, (1 / Real.log (n : ℝ) ^ 2 / n) := by`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ ≤ P * (2 * l ^ 2) * (m4 / (1 / 400)) + P * (2 * 1600 ^ 2 * m8) * (m8 / (1 / 800)) + E * 1 := by`. Use `add_le_add (add_le_add ?_ ?_) ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left s4 (by positivity)`. Conclude with `mul_le_mul_of_nonneg_left s8 (by positivity)`. Conclude with `mul_le_mul_of_nonneg_left (sl.trans sl') hE`.
-
-Use `_ = P * ((800 * l ^ 2 + 1600 ^ 3) * m4) + E := by`. Rewrite using `[← hm88]`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `tail_abs a S hS M (by omega) _ _ _ hβ h0 h1`. Establish `: 0 ≤ P * m4` using `by positivity`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma tail_main (a : ℕ → ℂ) (S : ℂ)
     (hS : Tendsto (fun N : ℕ => ∑ n ∈ Icc 1 N, a n / (n : ℂ)) atTop (𝓝 S))
@@ -392,7 +382,7 @@ lemma tail_main (a : ℕ → ℂ) (S : ℂ)
   nlinarith
 
 /- English proof (translation)
-Establish `h` using `Real.pow_div_factorial_le_exp y hy.le 4`. Establish `h4 : ((Nat.factorial 4 : ℕ) : ℝ) = 24` using `by norm_num [Nat.factorial]`. Rewrite `h` using `[h4]`. Rewrite using `[Real.exp_neg, inv_eq_one_div, div_le_div_iff₀ (Real.exp_pos _) (by positivity)]`. Rewrite `h` using `[div_le_iff₀ (by norm_num)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -405,35 +395,33 @@ lemma exp_neg_le_div_pow_four (y : ℝ) (hy : 0 < y) : Real.exp (-y) ≤ 24 / y 
   linarith
 
 /- English proof (translation)
-Establish `hps : psum a (n : ℝ) = ∑ k ∈ Icc 1 n, a k` using `by simp [psum]`. Establish `hn3 : (3 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hn' : (0 : ℝ) < n` using `by linarith`. Establish `hlog` using `one_le_log_nat n hn`. Use `set L := Real.log Q with hLdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t := Real.log (n : ℝ) with ht`. Establish `hw : 0 ≤ (n : ℝ) ^ (-((1 : ℝ) / 400)) * Real.log (n * Q) ^ 2` using `by positivity`. Establish `hE1 : 0 ≤ 4 * L ^ 8 * Real.exp (-L)` using `by positivity`. Establish `hE2 : 0 ≤ 384 / c₁ ^ 4 * Real.exp (-(c₁ / 2 * L))` using `by positivity`. Establish `ht2 : 0 < t ^ 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← hps]`. Distinguish the cases in `h : Real.exp (L ^ 2) ≤ n`. Use `(H2 n h).trans ?_` and prove the remaining obligations. Rewrite using `[← ht]`. Use `set s := Real.sqrt t with hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hss : s ^ 2 = t` using `Real.sq_sqrt (by linarith)`. Establish `hLt : L ^ 2 ≤ t` using `by rw [ht, Real.le_log_iff_exp_le hn']; exact h`. Establish `hLs : L ≤ s` using `by rw [hs, Real.le_sqrt' (by linarith)]; exact hLt`. Establish `hs0 : 0 < s` using `by linarith`. Establish `e1 : Real.exp (-c₁ * s) = Real.exp (-(c₁ / 2 * s)) * Real.exp (-(c₁ / 2 * s))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : Real.exp (-(c₁ / 2 * s)) ≤ Real.exp (-(c₁ / 2 * L))`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: c₁ / 2 * L ≤ c₁ / 2 * s` using `mul_le_mul_of_nonneg_left hLs (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e3 : Real.exp (-(c₁ / 2 * s)) ≤ 24 / (c₁ / 2 * s) ^ 4` using `exp_neg_le_div_pow_four _ (by positivity)`. Establish `e4 : 24 / (c₁ / 2 * s) ^ 4 = 384 / c₁ ^ 4 * (1 / t ^ 2)`. Rewrite using `[← hss]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `e5 : Real.exp (-c₁ * s) ≤ 384 / c₁ ^ 4 * (1 / t ^ 2) * Real.exp (-(c₁ / 2 * L))`. Rewrite using `[e1, ← e4]`. Conclude with `mul_le_mul e3 e2 (Real.exp_pos _).le (by positivity)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `e6 : 0 ≤ 4 * L ^ 8 * Real.exp (-L) * (1 / t ^ 2)` using `by positivity`. Establish `e7 : Real.exp (-c₁ * s) ≤ ((n : ℝ) ^ (-((1 : ℝ) / 400)) * Real.log (n * Q) ^ 2) + (4 * L ^ 8 * Real.exp (-L) + 384 / c₁ ^ 4 * Real.exp (-(c₁ / 2 * L))) * (1 / t ^ 2)`. Use the polynomial consequences of the given equalities and inequalities. Establish `e8` using `mul_le_mul_of_nonneg_left e7 (mul_nonneg hC₁.le hn'.le)`. Use `e8.trans (le_of_eq ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[not_le]`. Establish `htL : t < L ^ 2` using `by rw [ht, Real.log_lt_iff_lt_exp hn']; exact h`. Use `(H1 n (by linarith)).trans ?_` and prove the remaining obligations. Establish `e1 : (n : ℝ) ^ (1 - (1 : ℝ) / 400) = n * (n : ℝ) ^ (-((1 : ℝ) / 400))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_add_neg, Real.rpow_add hn', Real.rpow_one]`. Establish `e2 : Real.log (n * Q) = t + L` using `Real.log_mul hn'.ne' hQ.ne'`. Establish `e3 : (1 : ℝ) / Q = Real.exp (-L)`. Rewrite using `[Real.exp_neg, hLdef, Real.exp_log hQ, one_div]`. Establish `hLL : L ≤ L ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : (t + L) ^ 2 ≤ 4 * L ^ 4`. Establish `h1 : t + L ≤ 2 * L ^ 2` using `by linarith`. Establish `h2 : (t + L) ^ 2 ≤ (2 * L ^ 2) ^ 2` using `pow_le_pow_left₀ (by linarith) h1 2`. Establish `: (2 * L ^ 2) ^ 2 = 4 * L ^ 4` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e5 : 1 ≤ L ^ 4 * (1 / t ^ 2)`. Rewrite using `[mul_one_div, le_div_iff₀ ht2, one_mul]`. Establish `h2 : t ^ 2 ≤ (L ^ 2) ^ 2` using `pow_le_pow_left₀ (by linarith) htL.le 2`. Establish `: (L ^ 2) ^ 2 = L ^ 4` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e6 : (t + L) ^ 2 ≤ 4 * L ^ 8 * (1 / t ^ 2)`. Establish `h1 : 4 * L ^ 4 * 1 ≤ 4 * L ^ 4 * (L ^ 4 * (1 / t ^ 2))` using `mul_le_mul_of_nonneg_left e5 (by positivity)`. Establish `: 4 * L ^ 4 * (L ^ 4 * (1 / t ^ 2)) = 4 * L ^ 8 * (1 / t ^ 2)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e7 : Real.exp (-L) * (t + L) ^ 2 ≤ Real.exp (-L) * (4 * L ^ 8 * (1 / t ^ 2))` using `mul_le_mul_of_nonneg_left e6 (Real.exp_pos _).le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `e8 : 0 ≤ 384 / c₁ ^ 4 * Real.exp (-(c₁ / 2 * L)) * (1 / t ^ 2)` using `by positivity`. Rewrite using `[e1, e2, div_eq_mul_one_div (n : ℝ) Q, e3]`. Establish `e9 : (n : ℝ) ^ (-((1 : ℝ) / 400)) * (t + L) ^ 2 + Real.exp (-L) * (t + L) ^ 2 ≤ (n : ℝ) ^ (-((1 : ℝ) / 400)) * (t + L) ^ 2 + (4 * L ^ 8 * Real.exp (-L) + 384 / c₁ ^ 4 * Real.exp (-(c₁ / 2 * L))) * (1 / t ^ 2)`. Use the polynomial consequences of the given equalities and inequalities. Establish `e10` using `mul_le_mul_of_nonneg_left e9 (mul_nonneg hC₁.le hn'.le)`.
-
-Apply the tactic sequence `refine le_trans (le_of_eq ?_) (e10.trans (le_of_eq ?_)) <;> ring`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma pointwise (a : ℕ → ℂ) (Q C₁ c₁ : ℝ) (hC₁ : 0 < C₁) (hc₁ : 0 < c₁) (hQ : 0 < Q)
     (hL : 1 ≤ Real.log Q)
@@ -520,19 +508,19 @@ lemma pointwise (a : ℕ → ℂ) (Q C₁ c₁ : ℝ) (hC₁ : 0 < C₁) (hc₁ 
     refine le_trans (le_of_eq ?_) (e10.trans (le_of_eq ?_)) <;> ring
 
 /- English proof (translation)
-Establish `hx0 : 0 < x` using `by linarith`. Use `set X := x ^ (400 : ℝ) with hX`. Establish `hX3 : 3 ≤ X`. Establish `: x ^ (1 : ℝ) ≤ x ^ (400 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le (by linarith) (by norm_num)`. Rewrite `this` using `[Real.rpow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hM3 : 3 ≤ ⌊X⌋₊` using `Nat.le_floor (by exact_mod_cast hX3)`. Establish `hMle : ((⌊X⌋₊ : ℕ) : ℝ) ≤ X` using `Nat.floor_le (by linarith)`. Establish `hMgt : X < ((⌊X⌋₊ : ℕ) : ℝ) + 1` using `Nat.lt_floor_add_one X`. Use `set M := ⌊X⌋₊`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM3' : (3 : ℝ) ≤ M` using `by exact_mod_cast hM3`. Establish `hM0 : (0 : ℝ) < M` using `by linarith`. Use `⟨hM3, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : X / 2 ≤ M` using `by linarith`. Establish `h2 : (M : ℝ) ^ (-((1 : ℝ) / 400)) ≤ (X / 2) ^ (-((1 : ℝ) / 400))` using `Real.rpow_le_rpow_of_nonpos (by linarith) h1 (by norm_num)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (X / 2) ^ (-((1 : ℝ) / 400)) = X ^ (-((1 : ℝ) / 400)) / (2 : ℝ) ^ (-((1 : ℝ) / 400))` using `Real.div_rpow (by linarith) (by norm_num) _`. Establish `h4 : X ^ (-((1 : ℝ) / 400)) = x⁻¹`. Rewrite using `[hX, ← Real.rpow_mul hx0.le, ← Real.rpow_neg_one]`. Use `congr 1`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : (2 : ℝ)⁻¹ ≤ (2 : ℝ) ^ (-((1 : ℝ) / 400))`. Rewrite using `[← Real.rpow_neg_one]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)`. Rewrite `h2` using `[h3, h4]`. Use `h2.trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_div_iff₀ (by positivity) hx0]`. Establish `: x⁻¹ * x = 1` using `inv_mul_cancel₀ hx0.ne'`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `Real.log_nonneg` to reduce the goal to its premises.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[Real.log_mul hM0.ne' (by linarith)]`. Establish `h1 : Real.log (M : ℝ) ≤ Real.log X` using `Real.log_le_log hM0 hMle`. Establish `h2 : Real.log X = 400 * Real.log x` using `by rw [hX, Real.log_rpow hx0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma bound1 (x Q : ℝ) (hx : 3 ≤ x) (hQ : 1 ≤ Q) :
     3 ≤ ⌊x ^ (400 : ℝ)⌋₊ ∧ ((⌊x ^ (400 : ℝ)⌋₊ : ℕ) : ℝ) ^ (-((1 : ℝ) / 400)) ≤ 2 / x ∧
@@ -577,15 +565,15 @@ lemma bound1 (x Q : ℝ) (hx : 3 ≤ x) (hQ : 1 ≤ Q) :
     linarith
 
 /- English proof (translation)
-Establish `hL0 : 0 < L` using `by linarith`. Establish `hY : 3 ≤ L ^ 800`. Establish `: L ^ 1 ≤ L ^ 800` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Rewrite `this` using `[pow_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1 : L ^ 800 ≤ ((⌈L ^ 800⌉₊ : ℕ) : ℝ)` using `Nat.le_ceil _`. Establish `h2 : ((⌈L ^ 800⌉₊ : ℕ) : ℝ) < L ^ 800 + 1` using `Nat.ceil_lt_add_one (by positivity)`. Use `set M := ⌈L ^ 800⌉₊`. Establish `hM3' : (3 : ℝ) ≤ M` using `by linarith`. Use `⟨by exact_mod_cast hM3', ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : (M : ℝ) ^ (-((1 : ℝ) / 400)) ≤ (L ^ 800) ^ (-((1 : ℝ) / 400))` using `Real.rpow_le_rpow_of_nonpos (by positivity) h1 (by norm_num)`. Establish `h4 : (L ^ 800) ^ (-((1 : ℝ) / 400)) = 1 / L ^ 2`. Rewrite using `[one_div (L ^ 2), ← Real.rpow_natCast L 800, ← Real.rpow_mul hL0.le, ← Real.rpow_natCast L 2, ← Real.rpow_neg hL0.le]`. Use `congr 1`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (M : ℝ) ≤ 2 * L ^ 800` using `by linarith`. Establish `h4 : Real.log (M : ℝ) ≤ Real.log (2 * L ^ 800)` using `Real.log_le_log (by linarith) h3`. Establish `h5 : Real.log (2 * L ^ 800) = Real.log 2 + 800 * Real.log L`. Rewrite using `[Real.log_mul (by norm_num) (by positivity), Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Establish `h6 : Real.log 2 ≤ 1`. Use `Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma bound2 (L : ℝ) (hL : 3 ≤ L) :
     3 ≤ ⌈L ^ 800⌉₊ ∧ ((⌈L ^ 800⌉₊ : ℕ) : ℝ) ^ (-((1 : ℝ) / 400)) ≤ 1 / L ^ 2 ∧
@@ -619,11 +607,11 @@ lemma bound2 (L : ℝ) (hL : 3 ≤ L) :
     linarith
 
 /- English proof (translation)
-Establish `T1` using `tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero (p + 8) 1 one_pos`. Establish `T2` using `tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero p (c₁ / 2) (by positivity)`. Establish `T` using `((T1.const_mul 4).add (T2.const_mul (384 / c₁ ^ 4))).const_mul C₁`. Simplify using `only [mul_zero, add_zero] at T`. Establish `E` using `T.eventually_le_const (by norm_num : (0 : ℝ) < 1 / 6)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `E2` using `E.and (eventually_gt_atTop (0 : ℝ))`. Take `⟨L₀, h⟩` from `eventually_atTop.mp E2`. Use `⟨L₀, fun L hL => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `h L hL`. Use `le_trans (le_of_eq ?_) h1` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.rpow_add h2, show ((8 : ℝ)) = ((8 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Establish `e1 : -1 * L = -L` using `by ring`. Establish `e2 : -(c₁ / 2) * L = -(c₁ / 2 * L)` using `by ring`. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma ev_small (p C₁ c₁ : ℝ) (hc₁ : 0 < c₁) :
     ∃ L₀ : ℝ, ∀ L : ℝ, L₀ ≤ L →
@@ -651,51 +639,49 @@ namespace Formalism.HermitianLattices.GL2PrimeSums
 open TailSumsHookFormulaTorsion in
 
 /- English proof (translation)
-Introduce `ε hε hε1 C₁ c₁ CM hC₁ hc₁ hCM`. Take `⟨L₀, hL₀⟩` from `ev_small (6 / ε) C₁ c₁ hc₁`. Use `set κ : ℝ := 1600 / ε + 1 with hκ`. Use `set K₂ : ℝ := 4 * C₁ * (804 * κ ^ 2 + 5000000000) with hK₂`. Establish `ev1 : ∀ᶠ x : ℝ in atTop, max L₀ 3 ≤ x ^ (ε / 6)` using `(tendsto_rpow_atTop (by positivity)).eventually_ge_atTop _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ev2 : ∀ᶠ x : ℝ in atTop, K₂ ≤ x ^ (ε / 2)` using `(tendsto_rpow_atTop (by positivity)).eventually_ge_atTop _`. Take `⟨x₀, hx₀⟩` from `eventually_atTop.mp ((ev1.and ev2).and (eventually_ge_atTop (3 : ℝ)))`. Use `⟨x₀, C₁ * (804 * 802 ^ 2 + 5000000000) + 2 + CM + 200, ?_⟩` and prove the remaining obligations. Introduce `x hx Q hQ hLlo hLhi a S hS hMert H1 H2`. Take `⟨⟨h1, h2⟩, hx3⟩` from `hx₀ x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L := Real.log Q with hLdef`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hLL₀ : L₀ ≤ L` using `(le_max_left _ _).trans (h1.trans hLlo)`. Establish `hL3 : 3 ≤ L` using `(le_max_right _ _).trans (h1.trans hLlo)`. Establish `hL0 : 0 < L` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hQ1 : 1 ≤ Q`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_le]`. Use `Real.log_nonpos hQ.le h.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set E := C₁ * (4 * L ^ 8 * Real.exp (-L) + 384 / c₁ ^ 4 * Real.exp (-(c₁ / 2 * L))) with hE`. Establish `hE0 : 0 ≤ E` using `by positivity`. Establish `hxL : x ≤ L ^ (6 / ε)`. Establish `h : (x ^ (ε / 6)) ^ (6 / ε) ≤ L ^ (6 / ε)` using `Real.rpow_le_rpow (by positivity) hLlo (by positivity)`. Rewrite `h` using `[← Real.rpow_mul hx0.le, show ε / 6 * (6 / ε) = 1 by field_simp, Real.rpow_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hxE : x * E ≤ 1 / 6` using `(mul_le_mul_of_nonneg_right hxL hE0).trans (hL₀ L hLL₀)`. Establish `hE6 : E ≤ 1 / 6`. Establish `h : 1 * E ≤ x * E` using `mul_le_mul_of_nonneg_right (by linarith) hE0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpw : ∀ n : ℕ, 3 ≤ n → ‖∑ k ∈ Icc 1 n, a k‖ ≤ n * (C₁ * ((n : ℝ) ^ (-((1 : ℝ) / 400)) * Real.log (n * Q) ^ 2) + E * (1 / Real.log (n : ℝ) ^ 2))` using `fun n hn => pointwise a Q C₁ c₁ hC₁ hc₁ hQ (by linarith) H1 H2 n hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion.
 
-Establish `hlogx : 1 ≤ Real.log x`. Rewrite using `[Real.le_log_iff_exp_le hx0]`. Combine the linear relations using `[Real.exp_one_lt_three]`. Prove the components needed by the constructor for the conclusion. Take `⟨hM3, hMp, hl0, hl1⟩` from `bound1 x Q hx3 hQ1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `T` using `tail_main a S hS _ hM3 Q hQ1 C₁ E hC₁.le hE0 (fun n hn => hpw n (hM3.trans hn))`. Use `set M := ⌊x ^ (400 : ℝ)⌋₊`. Use `set y := x ^ (ε / 4) with hy`. Establish `hy1 : 1 ≤ y` using `Real.one_le_rpow (by linarith) (by positivity)`. Establish `hy2 : y ^ 2 = x ^ (ε / 2)`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, ← Real.rpow_natCast, ← Real.rpow_mul hx0.le]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hy4 : y ^ 4 = x ^ ε`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hy, ← Real.rpow_natCast, ← Real.rpow_mul hx0.le]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hlx : Real.log x ≤ y / (ε / 4)` using `Real.log_le_rpow_div hx0.le (by positivity)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hl2 : Real.log (M * Q) ≤ κ * y`. Establish `e : 400 * (y / (ε / 4)) + y = κ * y` using `by rw [hκ]; field_simp; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl3 : Real.log (M * Q) ^ 2 ≤ κ ^ 2 * y ^ 2`. Establish `h` using `pow_le_pow_left₀ hl0 hl2 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h` using `[mul_pow]`. Then use the resulting hypothesis. Establish `hyy : 1 ≤ y ^ 2` using `one_le_pow₀ hy1`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hx0.le, ← hy4]`. Establish `s1 : (804 * Real.log (M * Q) ^ 2 + 5000000000) * (M : ℝ) ^ (-((1 : ℝ) / 400)) ≤ ((804 * κ ^ 2 + 5000000000) * y ^ 2) * (2 / x)`. Apply `mul_le_mul _ hMp (by positivity) (by positivity)` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `s2 : x * ‖S - ∑ n ∈ Icc 1 M, a n / (n : ℂ)‖ ≤ x * (C₁ * (((804 * κ ^ 2 + 5000000000) * y ^ 2) * (2 / x)) + 3 * E)`. Apply `mul_le_mul_of_nonneg_left _ hx0.le` to reduce the goal to its premises. Use `mul_le_mul_of_nonneg_left s1 hC₁.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `s3 : x * (C₁ * (((804 * κ ^ 2 + 5000000000) * y ^ 2) * (2 / x)) + 3 * E) = K₂ / 2 * y ^ 2 + 3 * (x * E)`. Rewrite using `[hK₂]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `s4 : K₂ * y ^ 2 ≤ y ^ 2 * y ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Rewrite `h2` using `[← hy2]`. Conclude with `mul_le_mul_of_nonneg_right h2 (by positivity)`. Establish `s5 : 1 ≤ y ^ 2 * y ^ 2` using `one_le_mul_of_one_le_of_one_le hyy hyy`. Establish `s6 : y ^ 4 = y ^ 2 * y ^ 2` using `by ring`. Rewrite using `[s6]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hM3, hMp, hlM⟩` from `bound2 L hL3`. Establish `T` using `tail_main a S hS _ hM3 Q hQ1 C₁ E hC₁.le hE0 (fun n hn => hpw n (hM3.trans hn))`. Use `set M := ⌈L ^ 800⌉₊`. Establish `hM3' : (3 : ℝ) ≤ M` using `by exact_mod_cast hM3`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : (0 : ℝ) < M` using `by linarith`. Establish `hlogL : Real.log L ≤ L`. Use `Real.log_le_sub_one_of_pos hL0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl : Real.log (M * Q) = Real.log (M : ℝ) + L` using `Real.log_mul hM0.ne' hQ.ne'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hl0 : 0 ≤ Real.log (M * Q)` using `Real.log_nonneg (one_le_mul_of_one_le_of_one_le (by linarith) hQ1)`. Establish `hl2 : Real.log (M * Q) ≤ 802 * L` using `by linarith`. Establish `hl3 : Real.log (M * Q) ^ 2 ≤ 802 ^ 2 * L ^ 2`. Establish `h` using `pow_le_pow_left₀ hl0 hl2 2`. Rewrite `h` using `[mul_pow]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hLL : 1 ≤ L ^ 2` using `one_le_pow₀ (by linarith)`. Establish `s1 : (804 * Real.log (M * Q) ^ 2 + 5000000000) * (M : ℝ) ^ (-((1 : ℝ) / 400)) ≤ 804 * 802 ^ 2 + 5000000000`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul _ hMp (by positivity) (by positivity)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = _ := by field_simp`. Establish `s2 : ‖∑ n ∈ Icc 1 M, a n / (n : ℂ)‖ ≤ Real.log (M : ℝ) + CM`. Establish `h` using `hMert M (by linarith)`. Rewrite `h` using `[Nat.floor_natCast]`. Use `(norm_sum_le _ _).trans (le_trans (le_of_eq ?_) h)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl (fun n _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_div, Complex.norm_natCast]`. Establish `s3 : Real.log L ≤ ε / 4 * Real.log x`. Establish `h` using `Real.log_le_log hL0 hLhi`. Rewrite `h` using `[Real.log_rpow hx0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `s4 : ‖S‖ ≤ ‖S - ∑ n ∈ Icc 1 M, a n / (n : ℂ)‖ + ‖∑ n ∈ Icc 1 M, a n / (n : ℂ)‖`. Establish `h` using `norm_add_le (S - ∑ n ∈ Icc 1 M, a n / (n : ℂ)) (∑ n ∈ Icc 1 M, a n / (n : ℂ))`. Simplify using `using h`. Establish `s5 : ε * Real.log x ≤ Real.log x`. Establish `h` using `mul_le_mul_of_nonneg_right hε1.le (by linarith : 0 ≤ Real.log x)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `s6` using `mul_le_mul_of_nonneg_left s1 hC₁.le`. Establish `s7 : (C₁ * (804 * 802 ^ 2 + 5000000000) + 2 + CM) * 1 ≤ (C₁ * (804 * 802 ^ 2 + 5000000000) + 2 + CM) * Real.log x` using `mul_le_mul_of_nonneg_left hlogx (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem tail_bound_joint : TailSumBound := by
   intro ε hε hε1 C₁ c₁ CM hC₁ hc₁ hCM

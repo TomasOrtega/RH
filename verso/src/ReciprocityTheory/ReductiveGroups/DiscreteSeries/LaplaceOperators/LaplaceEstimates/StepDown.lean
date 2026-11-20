@@ -20,27 +20,25 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap
 open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.Lap
 
 /- English proof (translation)
-Introduce `hIS k r ε u h hsg hp hq lam s hHC hGap hHC' hGap' hu hBNZ`. Take `⟨T, μ, P, z, c, Vp, _, _, _, π, μW, μN, hμ, hP, hBd, v₁, v₂, ξ, x₀, x, hx₀, hx, hne⟩` from `hBNZ`. Take `⟨hq0, hNeed⟩` from `gapNeed k r ε h hp hq hsg`. Take `⟨H, _, _, _, σ, D, E, V, ι, hσ, hD, hV, hc, hVK, hcoef⟩` from `LemK.psiDatum (2 * r + k + 1) ε lam h T μ hHC hGap hNeed hq0 hμ`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hPP' : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hdet`. Use `set y₀ : Mat k r := P * x₀ * P⁻¹ with hy₀`. Establish `hy₀J : y₀ ∈ UJset ε` using `CurveContinuity.inUJ_conj hP hx₀`. Establish `hy₀inv : y₀⁻¹ = P * (x₀⁻¹ * P⁻¹)`. Rewrite using `[hy₀, Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv P hdet]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set v : V := ι.symm v₁ with hv`. Use `set w : V := ι.symm v₂ with hw`. Establish `hper : per P μW μN (Formalism.MainNotions.S.psiGen k r z c) π (coefX σ y₀ ((w : D) : H) ((v : D) : H)) ξ x ≠ 0`. Establish `hcg : ∀ g ∈ UJset ε, coefX σ y₀ ((w : D) : H) ((v : D) : H) g = ⟪v₂, S7.PsiM T μ (y₀⁻¹ * g) v₁⟫_ℂ`. Introduce `g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : y₀⁻¹ * g ∈ UJset ε` using `CapelliClosureMembership.inUJ_mul (TDAux.inv_mem hy₀J) hg`. Unfold `coefX`. Rewrite using `[hcoef _ hm v w, hv, hw, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[QuotA.per_congr hP hBd _ hcg ξ hx]`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[← h0]`. Unfold `per aaFun`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Unfold `psiCoef`. Use `congr 2`. Rewrite using `[hy₀inv]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc P⁻¹ P, hPP', Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨β, hβ⟩` from `evalM k r ε u lam h H σ D E V T μ ι hσ hD hV hc hVK hμ hcoef hp hq hsg hHC hGap z c Vp π μW μN P hP hBd y₀ w v ξ s x hy₀J hx hu hper`. Establish `hGs : ∀ a b, ∀ m ∈ genSub E V, E a b m ∈ genSub E V` using `fun a b m hm => LemK.generated_submodule_stable_under_action V a b hm`. Establish `hvG : (v : D) ∈ genSub E V` using `LemK.le_generatedSubmodule_dual V v.2`. Establish `hC : ∀ m ∈ genSub E V, Capelli.capelliC E (((-(LemK.thV lam s)) : ℝ) : ℂ) m = 0`. Introduce `m hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[capVal (2 * r + k + 1) ε lam h H σ D E V T μ ι hσ hD hV hc hVK hμ hcoef hHC hGap hNeed hq0 _ m hm]`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ s) (by push_cast; ring), zero_smul]`. Establish `hxs : Capelli.nnMinus E β (((-(LemK.thV lam s)) : ℝ) : ℂ) (v : D) ∈ LemK.Xs (LemK.eeVd E) (genSub E V) (LemK.thVd lam s)`. Establish `he` using `(eig D (2 * r + k) E (genSub E V) (-(LemK.thV lam s)) β β (v : D) hD.glRep hGs hC hvG).2`. Establish `hθ : LemK.thVd lam s = -(LemK.thV lam s) - ((2 * r + k : ℕ) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `LemK.thV LemK.thVd`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hθ]`. Conclude with `he`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Wf, W', hWf, hW', hirr, hcas, hK, hinj⟩` from `quotM k r ε u lam h H σ D E V T μ ι hσ hD hV hc hVK hμ hcoef hp hq hsg hHC hGap z c Vp π μW μN P hP hBd y₀ w ξ s _ hy₀J hHC' hGap' hxs ⟨x, hx, hβ⟩`. Use `finStep hIS k r ε u (lam - Pi.single s 1) h z c Vp π μW μN P hP hBd hp hq hsg hHC' hGap' ξ Wf W' ?_ hW' hirr hcas hK hinj` and prove the remaining obligations. Introduce `F hF`. Take `⟨y, hy, rfl⟩` from `hWf F hF`. Establish `hyG : ∀ c', y c' ∈ genSub E V` using `(LemK.mem_euler_eigenspace_iff.1 hy).1`.
-
-Establish `hspec` using `tMapD_spec k r ε lam h H σ D E V T μ ι hσ hD hV hc hVK hμ hcoef hp hq hsg hHC hGap (xJ P z) y₀ w hy₀J y hyG`. Conclude with `⟨QuotA.contOn_of_smooth hspec.1.1, hspec.2.2 []⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stepDown : StepDownStatement := by
   intro hIS k r ε u h hsg hp hq lam s hHC hGap hHC' hGap' hu hBNZ

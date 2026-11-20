@@ -27,28 +27,28 @@ theorem sdE_eq (ι : Type) [Fintype ι] :
       then h.choose else 0 := rfl
 
 /- English proof (translation)
-Simplify using `only [chi, Pi.add_apply, add_mul, map_add, Finset.sum_add_distrib, psiV_add']`.
+Simplify using the standard rewrite rules.
 -/
 theorem chi_add_left (ι : Type) [Fintype ι] (x t y : ι → Fv F v ⊗[F] E) :
     chi (E := E) v ψ ι (t + x) y = chi (E := E) v ψ ι t y * chi (E := E) v ψ ι x y := by
   simp only [chi, Pi.add_apply, add_mul, map_add, Finset.sum_add_distrib, psiV_add']
 
 /- English proof (translation)
-Simplify using `only [chi, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chi_symm (ι : Type) [Fintype ι] (x y : ι → Fv F v ⊗[F] E) :
     chi (E := E) v ψ ι x y = chi (E := E) v ψ ι y x := by
   simp only [chi, mul_comm]
 
 /- English proof (translation)
-Simplify using `[chi, psiV_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chi_zero_right (ι : Type) [Fintype ι] (x : ι → Fv F v ⊗[F] E) :
     chi (E := E) v ψ ι x 0 = 1 := by
   simp [chi, psiV_zero]
 
 /- English proof (translation)
-Simplify using `only [chi, Pi.smul_apply, smul_mul_assoc, mul_smul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chi_smul (ι : Type) [Fintype ι] (c : Fv F v) (x y : ι → Fv F v ⊗[F] E) :
     chi (E := E) v ψ ι (c • x) y = chi (E := E) v ψ ι x (c • y) := by
@@ -60,13 +60,13 @@ def D1 : Set (Fv F v ⊗[F] E) :=
 def Dbox (ι : Type) : Set (ι → Fv F v ⊗[F] E) := Set.univ.pi fun _ => D1 (E := E) v ψ
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy i _ x hx`. Establish `h` using `hy (Pi.single i x) (fun j _ => by`. Distinguish the cases in `hj : j = i`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Simplify using `using hx`. Simplify `oev_zero v)` using `[Pi.single_apply, hj]`. Establish `hs : ∑ j, Algebra.trace (Fv F v) (Fv F v ⊗[F] E) ((Pi.single i x : ι → Fv F v ⊗[F] E) j * y j) = Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (x * y i)`. Rewrite using `[Finset.sum_eq_single i]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_apply, hj]`. Simplify using the standard rewrite rules. Simplify using `only [chi] at h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hs]`. Then use the resulting hypothesis. Introduce `hy x hx`. Simplify using `only [chi]`. Rewrite using `[psiV_sum]`. Conclude with `Finset.prod_eq_one fun i _ => hy i trivial (x i) (hx i trivial)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ann_obox (ι : Type) [Fintype ι] :
     ann (chi (E := E) v ψ ι) (Obox (E := E) v ι) = Dbox (E := E) v ψ ι := by
@@ -95,25 +95,25 @@ theorem ann_obox (ι : Type) [Fintype ι] :
 def ObS (ι : Type) : AddSubgroup (ι → Fv F v ⊗[F] E) := AddSubgroup.pi Set.univ fun _ => Osub (E := E) v
 
 /- English proof (translation)
-Simplify using `[ObS, AddSubgroup.coe_pi, Obox, Osub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_ObS (ι : Type) : (ObS (E := E) v ι : Set (ι → Fv F v ⊗[F] E)) = Obox (E := E) v ι := by
   simp [ObS, AddSubgroup.coe_pi, Obox, Osub]
 
 /- English proof (translation)
-The claim follows from `isCompact_univ_pi fun _ => isCompact_oev v`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_obox (ι : Type) [Fintype ι] : IsCompact (Obox (E := E) v ι) :=
   isCompact_univ_pi fun _ => isCompact_oev v
 
 /- English proof (translation)
-The claim follows from `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_oev v`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_obox (ι : Type) [Fintype ι] : IsOpen (Obox (E := E) v ι) :=
   isOpen_set_pi Set.finite_univ fun _ _ => isOpen_oev v
 
 /- English proof (translation)
-Introduce `_ _` and use `oev_zero v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zero_mem_obox (ι : Type) : (0 : ι → Fv F v ⊗[F] E) ∈ Obox (E := E) v ι :=
   fun _ _ => oev_zero v
@@ -121,19 +121,17 @@ theorem zero_mem_obox (ι : Type) : (0 : ι → Fv F v ⊗[F] E) ∈ Obox (E := 
 variable [SecondCountableTopology (Fv F v ⊗[F] E)]
 
 /- English proof (translation)
-Use `hμ.1` as an intermediate fact. Use `set L := ObS (E := E) v ι`. Establish `hLo : IsOpen (L : Set (ι → Fv F v ⊗[F] E))` using `by rw [coe_ObS]; exact isOpen_obox v ι`. Establish `hLc : IsCompact (L : Set (ι → Fv F v ⊗[F] E))` using `by rw [coe_ObS]; exact isCompact_obox v ι`. Establish `hcl : IsClopen (L : Set (ι → Fv F v ⊗[F] E))` using `⟨AddSubgroup.isClosed_of_isOpen L hLo, hLo⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Φ : (ι → Fv F v ⊗[F] E) → ℂ := (L : Set (ι → Fv F v ⊗[F] E)).indicator (fun _ => (1 : ℂ))`. Establish `hΦc : Continuous Φ` using `by classical`. Rewrite using `[show Φ = (L : Set _).piecewise (fun _ => (1 : ℂ)) (fun _ => 0) from (Set.piecewise_eq_indicator).symm]`. Conclude with `continuous_const.piecewise (by simp [hcl.frontier_eq]) continuous_const`. Establish `hΦs : HasCompactSupport Φ` using `HasCompactSupport.intro hLc fun x hx => Set.indicator_of_notMem hx _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hχ : ∀ x t y, chi (E` using `E) v ψ ι (t + x) y = chi (E := E) v ψ ι t y * chi (E := E) v ψ ι x y := chi_add_left v ψ ι`. Establish `hT : ∀ y, ∫ x, Φ x * chi (E` using `E) v ψ ι x y ∂μ = (Dbox (E := E) v ψ ι).indicator (fun _ => ((μ.real (Obox (E := E) v ι) : ℝ) : ℂ)) y := by`. Introduce `y`. Establish `h` using `transform_indicator μ (chi (E := E) v ψ ι) hχ L hLo y`. Rewrite `h` using `[coe_ObS, ann_obox]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hI : Integrable (fun y => ∫ x, Φ x * chi (E` using `E) v ψ ι x y ∂μ) μ := by`. Simplify using `only [hT]`. Rewrite using `[integrable_indicator_iff hA]`. Conclude with `integrableOn_const hfin.ne`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hμ.2 Φ hΦc hΦs hI 0`. Simplify using `only [hT] at h`. Simplify using `only [chi_zero_right, mul_one, neg_zero] at h`. Rewrite `h` using `[integral_indicator_const _ hA]`. Establish `h0 : Φ 0 = 1` using `by simp [Φ, L.zero_mem]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h` using `[h0]`. Establish `h2 : ((μ.real (Dbox (E` using `E) v ψ ι) * μ.real (Obox (E := E) v ι) : ℝ) : ℂ) = 1 := by`. Rewrite using `[← h]`. Simplify using `[Complex.real_smul]`. Establish `h3 : μ.real (Dbox (E` using `E) v ψ ι) * μ.real (Obox (E := E) v ι) = 1 := by exact_mod_cast h2`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sd_test (ι : Type) [Fintype ι] (μ : Measure (ι → Fv F v ⊗[F] E))
     (hμ : SelfDual μ (chi (E := E) v ψ ι)) (hA : MeasurableSet (Dbox (E := E) v ψ ι))

@@ -10,7 +10,7 @@ set_option backward.isDefEq.respectTransparency false
 namespace GlobalTheory.PrimeSection
 
 /- English proof (translation)
-Rewrite using `[← ConcreteCategory.comp_apply, Scheme.Hom.appLE_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_appLE {X Y : Scheme.{u}} (j : Y ⟶ X) {U : X.Opens} {W W' : Y.Opens}
     (h : W ≤ j ⁻¹ᵁ U) (h' : W' ≤ W) (s : Γ(X, U)) :
@@ -18,7 +18,7 @@ theorem res_appLE {X Y : Scheme.{u}} (j : Y ⟶ X) {U : X.Opens} {W W' : Y.Opens
   rw [← ConcreteCategory.comp_apply, Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Rewrite using `[← ConcreteCategory.comp_apply, Scheme.Hom.map_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_res {X Y : Scheme.{u}} (j : Y ⟶ X) {U U' : X.Opens} {W : Y.Opens}
     (h : W ≤ j ⁻¹ᵁ U') (h' : U' ≤ U) (s : Γ(X, U)) :
@@ -27,7 +27,7 @@ theorem appLE_res {X Y : Scheme.{u}} (j : Y ⟶ X) {U U' : X.Opens} {W : Y.Opens
   rw [← ConcreteCategory.comp_apply, Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Rewrite using `[← ConcreteCategory.comp_apply, Scheme.Hom.appLE_comp_appLE]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_appLE {X Y Z : Scheme.{u}} (i : Z ⟶ Y) (j : Y ⟶ X) {k : Z ⟶ X} (hk : i ≫ j = k)
     {U : X.Opens} {W : Y.Opens} {A : Z.Opens} (h : W ≤ j ⁻¹ᵁ U) (h' : A ≤ i ⁻¹ᵁ W)
@@ -37,7 +37,7 @@ theorem appLE_appLE {X Y Z : Scheme.{u}} (i : Z ⟶ Y) (j : Y ⟶ X) {k : Z ⟶ 
   rw [← ConcreteCategory.comp_apply, Scheme.Hom.appLE_comp_appLE]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[Scheme.Hom.appLE_eq_app]`. Use `j.isIso_app U hU` as an intermediate fact. Conclude with `ConcreteCategory.bijective_of_isIso _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem appLE_bijective {X Y : Scheme.{u}} (j : Y ⟶ X) [IsOpenImmersion j] {U : X.Opens}
     (hU : U ≤ j.opensRange) {W : Y.Opens} (h : W = j ⁻¹ᵁ U) :
@@ -48,7 +48,7 @@ theorem appLE_bijective {X Y : Scheme.{u}} (j : Y ⟶ X) [IsOpenImmersion j] {U 
   exact ConcreteCategory.bijective_of_isIso _
 
 /- English proof (translation)
-Substitute `h hj` using the available equality. Conclude with `le_antisymm (fun y hy ↦ ⟨hy, y, rfl⟩) fun y hy ↦ hy.1`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem eq_preimage_inf {X Y : Scheme.{u}} {j : Y ⟶ X} [IsOpenImmersion j] {D U : X.Opens}
     (hj : j.opensRange = D) {W : Y.Opens} (h : W = j ⁻¹ᵁ U) : W = j ⁻¹ᵁ (U ⊓ D) := by
@@ -56,7 +56,7 @@ theorem eq_preimage_inf {X Y : Scheme.{u}} {j : Y ⟶ X} [IsOpenImmersion j] {D 
   exact le_antisymm (fun y hy ↦ ⟨hy, y, rfl⟩) fun y hy ↦ hy.1
 
 /- English proof (translation)
-Introduce `s s' H`. Take `⟨y⟩` from `‹Nonempty Y›`. Use `res_inf_injective (D := j.opensRange) (genericPoint_mem ⟨y, rfl⟩) U ((appLE_bijective j inf_le_right (eq_preimage_inf rfl h)).1 ?_)` and prove the remaining obligations. Rewrite using `[appLE_res, appLE_res]`. Conclude with `H`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_injective {X Y : Scheme.{u}} [IsIntegral X] (j : Y ⟶ X) [IsOpenImmersion j]
     [Nonempty Y] {U : X.Opens} {W : Y.Opens} (h : W = j ⁻¹ᵁ U) :
@@ -83,13 +83,11 @@ omit [IsIntegral X] [IsLocallyNoetherian X] in
 include hj in
 
 /- English proof (translation)
-Establish `hb` using `fun a ↦ appLE_bijective j (inf_le_right.trans hj.ge) (eq_preimage_inf hj (hW a))`. Use `choose r' hr' using fun a ↦ (hb a).2 (r a)`. Take `⟨τ', hτ'⟩` from `exists_unit_eq_res t`. Establish `htop : (⊤ : Y.Opens) ≤ j ⁻¹ᵁ X.basicOpen t` using `fun y _ ↦ hj.le ⟨y, rfl⟩`. Establish `hττ : Units.map (j.appLE _ ⊤ htop).hom.toMonoidHom τ' = τ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `ext`. Rewrite using `[Units.coe_map, hτ, hτ']`. Conclude with `(appLE_res j _ _ _).trans (congrArg (fun φ : Γ(X, ⊤) ⟶ Γ(Y, ⊤) ↦ φ t) j.appLE_eq_app)`. Use `⟨r', τ', hτ', fun a b ↦ ?_, fun a h ↦ by rw [← hr', h, map_zero], fun a h ↦ ?_, fun n a s ↦ ?_⟩` and prove the remaining obligations. Establish `hab : W a ⊓ W b = j ⁻¹ᵁ (U a ⊓ U b)` using `by rw [hW, hW]; rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(appLE_bijective j (inf_le_right.trans hj.ge) (eq_preimage_inf hj hab)).1 ?_` and prove the remaining obligations. Use `hr a b` as an intermediate fact. Rewrite `this` using `[← hr' a, ← hr' b, res_appLE, res_appLE]`. Rewrite using `[map_mul, appLE_res, appLE_res, appLE_res]`. Conclude with `this`.
-
-Rewrite `h` using `[← hr' a]`. Conclude with `(isUnit_map_iff (RingEquiv.ofBijective _ (hb a)) _).1 h`. Rewrite using `[← (hb a).1.eq_iff, map_mul, appLE_res, appLE_res, hr', ← hττ, ← map_zpow, Units.coe_map]`. Conclude with `iff_of_eq (congrArg (_ = · * _) (res_appLE j htop le_top _).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_transport (r : ∀ a, Γ(Y, W a))
     (hr : ∀ a b, Y.presheaf.map (homOfLE inf_le_left).op (r a) =
@@ -130,7 +128,7 @@ theorem exists_transport (r : ∀ a, Γ(Y, W a))
 include hη hp hj in
 
 /- English proof (translation)
-Take `⟨r', τ', hτ', hr', h0, -, H⟩` from `exists_transport hj hW r hr τ hτ`. Simplify `existsUnique_zpow_mul hη hp hU hg τ' hτ' hr' (hr0.imp fun a ha h ↦ ha (h0 a h))` using `only [H]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem existsUnique_zpow_mul_appLE (hU : ∀ x : X, ∃ a, x ∈ U a) (hg : ∀ a b, IsUnit (g a b))
     (τ : Γ(Y, ⊤)ˣ) (hτ : (τ : Γ(Y, ⊤)) = j.appTop t) {r : ∀ a, Γ(Y, W a)}
@@ -151,15 +149,15 @@ theorem existsUnique_zpow_mul_appLE (hU : ∀ x : X, ∃ a, x ∈ U a) (hg : ∀
 include hη hp hj in
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : IsUnit (j.appTop t) := by`. Take `⟨τ', hτ'⟩` from `exists_unit_eq_res t`. Establish `htop : (⊤ : Y.Opens) ≤ j ⁻¹ᵁ X.basicOpen t` using `fun y _ ↦ hj.le ⟨y, rfl⟩`. Use `τ'.isUnit.map (j.appLE _ ⊤ htop).hom` as an intermediate fact. Rewrite `this` using `[hτ', appLE_res]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← show j.appLE ⊤ ⊤ _ = j.appTop from j.appLE_eq_app]` and apply the resulting hypothesis. Take `⟨r', τ', hτ', hr', -, hu', H⟩` from `exists_transport hj hW r hr τ hτ`. Take `⟨n, s, hsu, hc, hs⟩` from `exists_zpow_mul_isUnit hη hp hU hg τ' hτ' hr' fun a ↦ hu' a (hru a)`. Simplify using `only [H] at hs`. Establish `hnat : ∀ z : Γ(X, U a₀), k.appLE A A' hA'.le (e.appLE _ A hA z) = e'.appLE (W a₀) A' hA'' (j.appLE _ _ (hW a₀).le z)` using `fun z ↦ by`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h : A' ≤ (k ≫ e) ⁻¹ᵁ U a₀` using `hA'.le.trans (k.preimage_mono hA)`. Rewrite using `[appLE_appLE k e rfl _ _ h, appLE_appLE e' j he _ _ h]`. Set `φ : Γ(Y, ⊤) →+* Γ(T', A')` to `(e'.appLE (W a₀) A' hA'').hom.comp (Y.presheaf.map (homOfLE le_top).op).hom`. Choose the witnesses or unpack the hypotheses as in `rfl : n = 0 := by`. Use `zpow_eq_zero (k.appLE A A' hA'.le).hom (appLE_injective k hA') ((hsu a₀).map (e.appLE _ A hA).hom) hu (p := e.appLE _ A hA (X.presheaf.map (homOfLE (le_top : U a₀ ≤ ⊤)).op t)) (fun H ↦ hy ?_) (Units.map φ.toMonoidHom τ) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `T.basicOpen_of_isUnit H` as an intermediate fact. Rewrite `this` using `[Scheme.basicOpen_appLE, Scheme.basicOpen_res]`. Conclude with `(show y ∈ A ⊓ e ⁻¹ᵁ (U a₀ ⊓ X.basicOpen t) from this.ge hyA).2.2`. Rewrite using `[hnat, appLE_res, Units.coe_map, hτ, ← show j.appLE ⊤ ⊤ le_top = j.appTop from j.appLE_eq_app]`. Conclude with `congrArg (e'.appLE (W a₀) A' hA'') (res_appLE j _ _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hnat, hs, map_mul, hur, ← map_zpow, Units.coe_map]`. Both sides reduce to the same expression. Conclude with `⟨s, hsu, hc, fun a ↦ by simpa using hs a⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isUnit_appLE_eq (hU : ∀ x : X, ∃ a, x ∈ U a) (hg : ∀ a b, IsUnit (g a b))
     {r : ∀ a, Γ(Y, W a)}
@@ -209,17 +207,15 @@ theorem exists_isUnit_appLE_eq (hU : ∀ x : X, ∃ a, x ∈ U a) (hg : ∀ a b,
 end Immersion
 
 /- English proof (translation)
-Establish `hinj : ∀ U : X.Opens, IsAffineOpen U → Function.Injective (j.appLE U (j ⁻¹ᵁ U) le_rfl)` using `fun U hU s s' h ↦ by`. Use `hU.isLocalization_basicOpen (X.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op t)` as an intermediate fact. Use `IsLocalization.injective Γ(X, X.basicOpen (X.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op t)) ((Submonoid.powers_le).2 (ht U hU)) ?_` and prove the remaining obligations. Establish `he : X.basicOpen (X.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op t) = U ⊓ X.basicOpen t` using `X.basicOpen_res _ _`. Use `(appLE_bijective j (W := j ⁻¹ᵁ U) (he.le.trans (inf_le_right.trans hj.ge)) (he ▸ eq_preimage_inf hj rfl)).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(appLE_res j _ _ s).trans (h.trans (appLE_res j _ _ s').symm)`. Establish `: IsReduced X` using `⟨fun W ↦ ⟨fun s hs ↦ X.IsSheaf.section_ext fun x hx ↦ by`. Take `⟨U, hU, hxU, hUW⟩` from `exists_isAffineOpen_mem_and_subset hx`. Use `⟨U, hUW, hxU, hinj U hU ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((hs.map _).map _).eq_zero⟩⟩`. Establish `hdense : Dense (Set.range j)`. Use `dense_iff_inter_open.2 fun W hW ⟨x, hx⟩ ↦ ?_` and prove the remaining obligations. Take `⟨U, hU, hxU, hUW⟩` from `exists_isAffineOpen_mem_and_subset (U := ⟨W, hW⟩) hx`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbot : j ⁻¹ᵁ U = ⊥` using `eq_bot_iff.2 fun y hy ↦ hne ⟨j y, hUW hy, y, rfl⟩`. Establish `: Subsingleton Γ(Y, j ⁻¹ᵁ U)` using `by rw [hbot]; infer_instance`. Establish `: Nonempty U` using `⟨⟨x, hxU⟩⟩`. Conclude with `not_subsingleton Γ(X, U) (hinj U hU).subsingleton`. Establish `: IrreducibleSpace X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `(IrreducibleSpace.isIrreducible_univ Y).image j j.continuous.continuousOn`. Rewrite `h` using `[Set.image_univ]`. Establish `h'` using `h.closure`. Rewrite `h'` using `[hdense.closure_eq]`. Conclude with `(irreducibleSpace_def X).2 h'`.
-
-Conclude with `isIntegral_of_irreducibleSpace_of_isReduced X`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_basicOpen {X Y : Scheme.{u}} {t : Γ(X, ⊤)}
     (ht : ∀ U : X.Opens, IsAffineOpen U →
@@ -259,11 +255,11 @@ theorem isIntegral_of_basicOpen {X Y : Scheme.{u}} {t : Γ(X, ⊤)}
   exact isIntegral_of_irreducibleSpace_of_isReduced X
 
 /- English proof (translation)
-Use `le_antisymm (fun z hz ↦ ?_) (Ideal.map_le_iff_le_comap.2 fun a ha ↦ ?_)` and prove the remaining obligations. Set `J` to `(RingHom.ker β.hom).map α.hom`. Establish `hJ : RingHom.ker β.hom ≤ RingHom.ker ((Ideal.Quotient.mk J).comp α.hom)` using `fun a ha ↦ Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ ha)`. Set `ψ : C →+* B ⧸ J` to `RingHom.liftOfSurjective β.hom hβ ⟨_, hJ⟩`. Establish `w : α ≫ CommRingCat.ofHom (Ideal.Quotient.mk J) = β ≫ CommRingCat.ofHom ψ`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `a`. Conclude with `(RingHom.liftOfSurjective_comp_apply β.hom hβ ⟨_, hJ⟩ a).symm`. Use `congrArg (fun φ : B ⟶ CommRingCat.of (B ⧸ J) ↦ φ z) (h.inl_desc _ _ w)` as an intermediate fact. Rewrite `this` using `[CommRingCat.comp_apply, show γ z = 0 from hz, map_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 this.symm`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun φ : A ⟶ P ↦ φ a) h.w` as an intermediate fact. Simplify using `only [CommRingCat.comp_apply] at this`. Rewrite `this` using `[show β a = 0 from ha, map_zero]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_eq_map_of_isPushout {A B C P : CommRingCat.{u}} {α : A ⟶ B} {β : A ⟶ C} {γ : B ⟶ P}
     {δ : C ⟶ P} (h : IsPushout α β γ δ) (hβ : Function.Surjective β) :
@@ -285,9 +281,9 @@ theorem ker_eq_map_of_isPushout {A B C P : CommRingCat.{u}} {α : A ⟶ B} {β :
     exact this
 
 /- English proof (translation)
-Establish `hpo` using `(isIso_pushoutSection_iff h (US := ⊤) (UT := ⊤) (UX := U) (UY := i ⁻¹ᵁ U) le_top le_top (by simp)).1 (isIso_pushoutSection_of_isAffineOpen h _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) hU)`. Establish `hpo' : IsPushout ((Scheme.ΓSpecIso A).inv ≫ f.appLE ⊤ U le_top) β (i.app U) ((Scheme.ΓSpecIso C).inv ≫ f'.appLE ⊤ (i ⁻¹ᵁ U) le_top)`. Use `hpo.of_iso (Scheme.ΓSpecIso A) (Iso.refl _) (Scheme.ΓSpecIso C) (Iso.refl _) (by simp) ?_ (by simp [Scheme.Hom.appLE_eq_app]) (by simp)` and prove the remaining obligations. Rewrite using `[← Scheme.ΓSpecIso_naturality]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[ker_eq_map_of_isPushout hpo' hβ, hc, Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ker_app_eq_span {X Z : Scheme.{u}} {A C : CommRingCat.{u}} {β : A ⟶ C}
     (hβ : Function.Surjective β) {c : A} (hc : RingHom.ker β.hom = Ideal.span {c})

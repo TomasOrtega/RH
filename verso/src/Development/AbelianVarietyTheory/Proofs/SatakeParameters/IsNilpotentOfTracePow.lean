@@ -5,7 +5,7 @@ open Polynomial
 namespace GlobalTheory.NilpotentOfTracePowers
 
 /- English proof (translation)
-Rewrite using `[Polynomial.aeval_eq_sum_range, Finset.mul_sum, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, ← pow_succ', h (i + 1) (by omega), smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_mul_aeval {K : Type} [Field K] {V : Type} [AddCommGroup V] [Module K V]
     (f : Module.End K V) (h : ∀ k : ℕ, 1 ≤ k → LinearMap.trace K V (f ^ k) = 0) (p : K[X]) :
@@ -15,13 +15,13 @@ theorem trace_mul_aeval {K : Type} [Field K] {V : Type} [AddCommGroup V] [Module
   rw [mul_smul_comm, map_smul, ← pow_succ', h (i + 1) (by omega), smul_zero]
 
 /- English proof (translation)
-Establish `hp : f.charpoly ≠ 0` using `f.charpoly_monic.ne_zero`. Take `⟨q, hq, hnd⟩` from `exists_eq_pow_rootMultiplicity_mul_and_not_dvd f.charpoly hp 0`. Use `set m := rootMultiplicity 0 f.charpoly`. Establish `hc : q.coeff 0 ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hnd` to reduce the goal to its premises. Rewrite using `[map_zero, sub_zero]`. Conclude with `X_dvd_iff.mpr h0`. Establish `h0 : aeval f f.charpoly = 0` using `f.aeval_self_charpoly`. Establish `hpoly : (X : K[X]) ^ m = X ^ m * (X * (C (-(q.coeff 0)⁻¹) * q.divX)) + C (q.coeff 0)⁻¹ * f.charpoly`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : X * q.divX + C (q.coeff 0) = q` using `X_mul_divX_add q`. Establish `h2 : C (q.coeff 0)⁻¹ * C (q.coeff 0) = (1 : K[X])`. Rewrite using `[← map_mul, inv_mul_cancel₀ hc, map_one]`. Rewrite `hq` using `[map_zero, sub_zero]`. Rewrite using `[map_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `(-C (q.coeff 0)⁻¹) * hq + (C (q.coeff 0)⁻¹ * X ^ m) * h1 - X ^ m * h2`. Use `⟨m, C (-(q.coeff 0)⁻¹) * q.divX, ?_⟩` and prove the remaining obligations. Use `congrArg (aeval f) hpoly` as an intermediate fact. Rewrite `this` using `[map_add, map_mul (aeval f) _ f.charpoly, h0, mul_zero, add_zero, map_mul, map_pow, aeval_X]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq {K : Type} [Field K] {V : Type} [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (f : Module.End K V) :
@@ -50,17 +50,15 @@ theorem exists_pow_eq {K : Type} [Field K] {V : Type} [AddCommGroup V] [Module K
   exact this
 
 /- English proof (translation)
-Take `⟨m, g, hm⟩` from `exists_pow_eq f`. Establish `hiter : ∀ j : ℕ, f ^ m = f ^ m * aeval f ((X * g) ^ j)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j ih => rw [pow_succ', map_mul, ← mul_assoc, ← hm, ← ih]`. Use `set e : Module.End K V := aeval f ((X * g) ^ (m + 1)) with he`. Establish `he1 : e = aeval f (X * g ^ (m + 1)) * f ^ m`. Establish `: (X * g) ^ (m + 1) = (X * g ^ (m + 1)) * X ^ m` using `by ring`. Rewrite using `[he, this, map_mul (aeval f) _ (X ^ m), map_pow, aeval_X]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hid : IsIdempotentElem e`. Unfold `IsIdempotentElem`. Use `conv_lhs => enter [1]`. Rewrite using `[he1]`. Rewrite using `[mul_assoc, ← hiter (m + 1), ← he1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htr : LinearMap.trace K V e = 0`. Establish `: (X * g) ^ (m + 1) = X * (g ^ (m + 1) * X ^ m)` using `by ring`. Rewrite using `[he, this, map_mul, aeval_X]`. Conclude with `trace_mul_aeval f h _`. Establish `hproj : LinearMap.IsProj (LinearMap.range e) e` using `{ map_mem := fun x => LinearMap.mem_range_self e x map_id := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `LinearMap.congr_fun hid x }`. Establish `hrk : Module.finrank K (LinearMap.range e) = 0`. Use `hproj.trace` as an intermediate fact. Rewrite `this` using `[htr]`.
-
-Conclude with `this.symm` after adjusting the coercions. Establish `he0 : e = 0` using `LinearMap.range_eq_bot.mp (Submodule.finrank_eq_zero.mp hrk)`. Conclude with `⟨m, by rw [hiter (m + 1), ← he, he0, mul_zero]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isNilpotent_of_trace_pow {K : Type} [Field K] [CharZero K] {V : Type} [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] (f : Module.End K V)

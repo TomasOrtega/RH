@@ -25,7 +25,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Formalism.MainNoti
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Introduce `u _`. Establish `e : mat (1 : UA σ X.J) = 1` using `rfl`. Use `show u • (mat (1 : UA σ X.J) - 1) = 0`. Rewrite using `[e, sub_self, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_mem_UAt {n : ℕ} (X : Spc F E n) {R : Type} [Zero R] (ev : AF F → R) : (1 : UA σ X.J) ∈ UAt σ X ev := by
   intro u _
@@ -36,7 +36,7 @@ theorem one_mem_UAt {n : ℕ} (X : Spc F E n) {R : Type} [Zero R] (ev : AF F →
 variable {Bs : Base F E} {a a' : ℕ} {G : Geo σ a a'} {Xc : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThK.LocalOps.acts_exists (GlobalTheory.ThK.RealUniq.isPair_V' hT) v (1, h) (one_mem_UAt _ _) hh φ hφ`.
+A detailed English derivation is pending.
 -/
 theorem exists_image (hT : IsTriple Bs G Xc om om') (v : Pl F) {h : UA σ G.W.J} (hh : h ∈ UAt σ G.W (evFin F v))
     (φ : (Fin a' × Fin (a + a') → Fv F v) → ℂ) (hφ : φ ∈ SB (Fin a' × Fin (a + a') → Fv F v)) :
@@ -63,7 +63,7 @@ def locOp (hT : IsTriple Bs G Xc om om') (v : Pl F) {h : UA σ G.W.J} (hh : h �
     exact GlobalTheory.ThK.LocalOps.acts_unique v _ (c • φ).2 hs hl
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (exists_image hT v hh φ φ.2)).2`.
+A detailed English derivation is pending.
 -/
 theorem locOp_acts (hT : IsTriple Bs G Xc om om') (v : Pl F) {h : UA σ G.W.J} (hh : h ∈ UAt σ G.W (evFin F v))
     (φ : ↥(SB (Fin a' × Fin (a + a') → Fv F v))) :
@@ -72,14 +72,14 @@ theorem locOp_acts (hT : IsTriple Bs G Xc om om') (v : Pl F) {h : UA σ G.W.J} (
   (Classical.choose_spec (exists_image hT v hh φ φ.2)).2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, hh, locOp_acts hT v hh⟩`.
+Supply the required witnesses or components.
 -/
 theorem locOp_mem (hT : IsTriple Bs G Xc om om') (v : Pl F) {h : UA σ G.W.J} (hh : h ∈ UAt σ G.W (evFin F v)) :
     locOp hT v hh ∈ GlobalTheory.HoweGlobalPair.opFin om' v :=
   ⟨h, hh, locOp_acts hT v hh⟩
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨g, -, φ, hφ, φ₁, hφ₁, -, rfl⟩`. Conclude with `sub_mem hφ₁ hφ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem augAt_le_SB (v : Pl F) : augAt om' v ≤ SB (Fin a' × Fin (a + a') → Fv F v) := by
   refine Submodule.span_le.2 ?_
@@ -87,9 +87,9 @@ theorem augAt_le_SB (v : Pl F) : augAt om' v ≤ SB (Fin a' × Fin (a + a') → 
   exact sub_mem hφ₁ hφ
 
 /- English proof (translation)
-Use `⟨?_, Submodule.map_subtype_le _ _, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Conclude with `⟨⟨z, augAt_le_SB v hz⟩, hrel hz, rfl⟩`. Introduce and unpack `h hh φ ⟨x, hx, rfl⟩ φ₁ hφ₁ hA`. Establish `e` using `GlobalTheory.ThK.LocalOps.acts_unique v _ x.2 hA (locOp_acts hT v hh x)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `⟨locOp hT v hh x, hst _ (locOp_mem hT v hh) x hx, e.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem thetaSub_map (hT : IsTriple Bs G Xc om om') (v : Pl F) (N : Submodule ℂ ↥(SB (Fin a' × Fin (a + a') → Fv F v)))
     (hrel : GlobalTheory.HoweGlobalPair.relFin om' v ≤ N) (hst : ∀ g ∈ GlobalTheory.HoweGlobalPair.opFin om' v, ∀ x ∈ N, g x ∈ N) :
@@ -106,15 +106,15 @@ end GlobalTheory.HoweGlobalPair.FinPlaceSmall
 open GlobalTheory.HoweGlobalPair.FinPlaceSmall in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM hfin v`. Take `⟨⟨L, hL⟩, hker⟩` from `hfin v`. Establish `hT` using `hM.triple`. Use `⟨GlobalTheory.TripleAssembly.rank_SB_adicCompletion_le F _ v, ⟨L, fun m N hN hc => ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hL m (fun j => (N j).map (GlobalTheory.WeilM.SB _).subtype) ((Submodule.map_strictMono_of_injective (GlobalTheory.WeilM.SB _).injective_subtype).comp hN) (fun j => thetaSub_map hT v _ (hc j).1 (hc j).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N hrel hst hne x hx`. Establish `hne' : N.map (GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v)).subtype ≠ GlobalTheory.WeilM.SB _`. Introduce `heq`. Apply `hne` to reduce the goal to its premises. Apply `Submodule.map_injective_of_injective (GlobalTheory.WeilM.SB _).injective_subtype` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq, Submodule.map_top, Submodule.range_subtype]`. Conclude with `hker _ (thetaSub_map hT v N hrel hst) hne' x ⟨x, hx, rfl⟩`. Introduce `x hx`. Conclude with `hM.fin.inv' v hx`. Introduce and unpack `g ⟨h, hh, hg⟩ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx' : Rf.p' v (x : (Fin a' × Fin (a + a') → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) → ℂ) = 0` using `hx`. Establish `h0 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (GlobalTheory.AdelicU.evFin F v) (om (1, h)) (0 : (Fin a × Fin (a + a') → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) → ℂ) 0`. Introduce `r _`. Establish `ht : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.AdelicU.evFin F v) (0 : (Fin a × Fin (a + a') → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) → ℂ) r = 0`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens]`. Rewrite using `[ht, map_zero]`. Establish `e` using `hM.fin.equiv v h hh 0 (zero_mem _) x x.2 0 (zero_mem _) (g x) (g x).2 h0 (hg x) (by rw [hx', map_zero])`. Use `show Rf.p' v ((g x : GlobalTheory.WeilM.SB _) : (Fin a' × Fin (a + a') → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) → ℂ) = 0`. Rewrite using `[← e, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HoweGlobalPair.fin_place_howe_small : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

@@ -8,11 +8,7 @@ namespace GlobalTheory.PicLoc
 open Algebra in
 
 /- English proof (translation)
-Use `letI : Algebra K R := localizationAlgebra S A'`. Use `haveI : IsScalarTower B K R := isScalarTower_localizationAlgebra S A'`. Use `haveI : FormallyEtale A' R := FormallyEtale.of_isLocalization (algebraMapSubmonoid A' S)`. Use `haveI : FormallyUnramified B R := FormallyUnramified.comp B A' R`. Use `haveI : FormallyUnramified K R := FormallyUnramified.of_restrictScalars B K R`.
-
-Use `haveI : EssFiniteType A' R := EssFiniteType.of_isLocalization R (algebraMapSubmonoid A' S)`. Use `haveI : EssFiniteType B R := EssFiniteType.comp B A' R`. Use `haveI : EssFiniteType K R := EssFiniteType.of_comp B K R`. Use `haveI : Module.Finite K R := FormallyUnramified.finite_of_free K R`. Use `haveI : IsArtinianRing R := IsArtinianRing.of_finite K R`.
-
-Use `infer_instance`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem finite_maximalSpectrum_of_field (B : Type) [CommRing B] (S : Submonoid B) (K : Type)
     [Field K] [Algebra B K] [IsLocalization S K] (A' : Type) [CommRing A'] [Algebra B A']
@@ -32,19 +28,15 @@ theorem finite_maximalSpectrum_of_field (B : Type) [CommRing B] (S : Submonoid B
   infer_instance
 
 /- English proof (translation)
-Use `set S : Submonoid B := (IsUnit.submonoid (B ⧸ Ideal.span {f})).comap (Ideal.Quotient.mk (Ideal.span {f})).toMonoidHom ⊔ Submonoid.powers f with hS`. Use `haveI : IsDomain (Localization S) := IsLocalization.isDomain_localization (le_nonZeroDivisors_of_noZeroDivisors h0)`. Establish `hbot : ∀ Q : Ideal (Localization S), Q.IsPrime → Q = ⊥`. Introduce `Q hQ`. Use `set p := Q.comap (algebraMap B (Localization S)) with hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : p.IsPrime := Ideal.comap_isPrime _ Q`. Establish `hdisj : ∀ s ∈ S, s ∉ p`. Introduce `s hs hsp`. Conclude with `hQ.ne_top (Ideal.eq_top_of_isUnit_mem _ hsp (IsLocalization.map_units (Localization S) ⟨s, hs⟩))`. Establish `hp0 : p = ⊥`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Establish `hmax : p.IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance hne`. Establish `hf : f ∉ p` using `fun h => hdisj f (Submonoid.mem_sup_right (Submonoid.mem_powers f)) h`. Establish `htop : p ⊔ Ideal.span {f} = ⊤`. Use `hmax.1.2 _ (lt_of_le_of_ne le_sup_left fun h => hf ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self f)`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 (htop ▸ Submodule.mem_top : (1 : B) ∈ p ⊔ Ideal.span {f})`. Establish `hunit : IsUnit (Ideal.Quotient.mk (Ideal.span {f}) a)`. Establish `hb0 : Ideal.Quotient.mk (Ideal.span {f}) b = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `: Ideal.Quotient.mk (Ideal.span {f}) a = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk (Ideal.span {f})), ← hab, map_add, hb0, add_zero]`. Rewrite using `[this]`. Conclude with `isUnit_one`. Conclude with `hdisj a (Submonoid.mem_sup_left hunit) ha`.
-
-Rewrite using `[← IsLocalization.map_under S (Localization S) Q]`. Express the relevant statement in the definitionally equal form `Ideal.map _ p = ⊥`. Rewrite using `[hp0, Ideal.map_bot]`. Use `haveI : Ring.KrullDimLE 0 (Localization S) := by`. Rewrite using `[Ring.krullDimLE_zero_iff]`.
-
-Introduce `I hI`. Take `⟨m, hm, -⟩` from `Ideal.exists_le_maximal (⊥ : Ideal (Localization S)) bot_ne_top`. Rewrite using `[hbot I hI, ← hbot m hm.isPrime]`. Conclude with `hm`. Conclude with `Ring.KrullDimLE.isField_of_isDomain`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isField_localization (B : Type) [CommRing B] [IsDedekindDomain B] (f : B)
     (h0 : (0 : B) ∉ (IsUnit.submonoid (B ⧸ Ideal.span {f})).comap
@@ -94,11 +86,9 @@ end GlobalTheory.PicLoc
 namespace GlobalTheory.PicLoc
 
 /- English proof (translation)
-Introduce `B _ _ f A' _ _ _`. Use `set S : Submonoid B := (IsUnit.submonoid (B ⧸ Ideal.span {f})).comap (Ideal.Quotient.mk (Ideal.span {f})).toMonoidHom ⊔ Submonoid.powers f with hS`. It suffices to establish `Finite (MaximalSpectrum (Localization (Algebra.algebraMapSubmonoid A' S))) from inferInstance`. Distinguish the cases in `h0 : (0 : B) ∈ S`. Establish `h0' : (0 : A') ∈ Algebra.algebraMapSubmonoid A' S` using `Submonoid.mem_map.2 ⟨0, h0, map_zero _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI := IsLocalization.uniqueOfZeroMem (S := Localization (Algebra.algebraMapSubmonoid A' S)) h0'`. Use `haveI : IsEmpty (MaximalSpectrum (Localization (Algebra.algebraMapSubmonoid A' S))) := ⟨fun m => m.isMaximal.ne_top (by`. Rewrite using `[Ideal.eq_top_iff_one, Subsingleton.elim (1 : Localization _) 0]`. Conclude with `m.asIdeal.zero_mem)⟩`. Use `infer_instance`.
-
-Use `letI : Field (Localization S) := (isField_localization B f h0).toField`. Conclude with `finite_maximalSpectrum_of_field B S (Localization S) A' (Localization (Algebra.algebraMapSubmonoid A' S))`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem subsingleton_pic_localization : ∀ (B : Type) [CommRing B] [IsDedekindDomain B] (f : B) (A' : Type) [CommRing A'] [Algebra B A'] [Algebra.Etale B A'], Subsingleton (CommRing.Pic (Localization (Algebra.algebraMapSubmonoid A' ((IsUnit.submonoid (B ⧸ Ideal.span {f})).comap (Ideal.Quotient.mk (Ideal.span {f})).toMonoidHom ⊔ Submonoid.powers f)))) := by
   intro B _ _ f A' _ _ _

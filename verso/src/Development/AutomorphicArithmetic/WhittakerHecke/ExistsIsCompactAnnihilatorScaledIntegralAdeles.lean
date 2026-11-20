@@ -7,14 +7,14 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 nE)
 open scoped Classical
 
 /- English proof (translation)
-Rewrite using `[← Ideal.absNorm_eq_one_iff, absNorm_differentIdeal ℚ (𝓞 ℚ), Rat.numberField_discr]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem diff_top : differentIdeal ℤ (𝓞 ℚ) = ⊤ := by
   rw [← Ideal.absNorm_eq_one_iff, absNorm_differentIdeal ℚ (𝓞 ℚ), Rat.numberField_discr]
   rfl
 
 /- English proof (translation)
-Rewrite `hz` using `[GroundTheory.Global.mem_localInvDifferent_iff_valued, diff_top, FractionalIdeal.coeIdeal_top, FractionalIdeal.count_one, WithZero.exp_zero]`. Conclude with `hz`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem int_of_inv (v : HeightOneSpectrum (𝓞 ℚ)) {z : v.adicCompletion ℚ}
     (hz : z ∈ GroundTheory.Global.localInvDifferent v) : z ∈ v.adicCompletionIntegers ℚ := by
@@ -23,17 +23,15 @@ private theorem int_of_inv (v : HeightOneSpectrum (𝓞 ℚ)) {z : v.adicComplet
   exact hz
 
 /- English proof (translation)
-Introduce `N hN`. Establish `hNq : (N : ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`. Use `set c : FiniteAdeleRing (𝓞 ℚ) ℚ := algebraMap ℚ (FiniteAdeleRing (𝓞 ℚ) ℚ) (N : ℚ)⁻¹ with hc`. Establish `hcN : c * (N : FiniteAdeleRing (𝓞 ℚ) ℚ) = 1`. Establish `: (N : FiniteAdeleRing (𝓞 ℚ) ℚ) = algebraMap ℚ (FiniteAdeleRing (𝓞 ℚ) ℚ) (N : ℚ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, hc, ← map_mul, inv_mul_cancel₀ hNq, map_one]`. Use `⟨(fun z => c * z) '' (integralFiniteAdeles (𝓞 ℚ) ℚ : Set (FiniteAdeleRing (𝓞 ℚ) ℚ)), (GroundTheory.Global.isCompact_integralFiniteAdeles ℚ).image (continuous_const.mul continuous_id), fun x hx => ?_⟩` and prove the remaining obligations. Use `⟨x * (N : FiniteAdeleRing (𝓞 ℚ) ℚ), ?_, ?_⟩` and prove the remaining obligations. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `int_of_inv v ((GroundTheory.Global.forall_localAdelicChar_mul_eq_one_iff v _).mp fun a ha => ?_)` and prove the remaining obligations. Establish `hb : ∀ u, GroundTheory.Global.finiteAdeleSingleAdd v a u ∈ u.adicCompletionIntegers ℚ`. Introduce `u`. Break down `eq_or_ne u v with rfl | hu` into its components or cases. Rewrite using `[GroundTheory.Global.finiteAdeleSingleAdd_apply_self]` and apply the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GroundTheory.Global.finiteAdeleSingleAdd_apply_of_ne hu]`. Conclude with `zero_mem _`. Establish `h` using `hx _ hb`. Establish `e : x * ((N : FiniteAdeleRing (𝓞 ℚ) ℚ) * GroundTheory.Global.finiteAdeleSingleAdd v a) = GroundTheory.Global.finiteAdeleSingleAdd v (a * (x * (N : FiniteAdeleRing (𝓞 ℚ) ℚ)) v)`. Rewrite using `[← GroundTheory.Global.finiteAdeleSingleAdd_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Establish `h' : ((GroundTheory.Global.localAdelicChar ℚ v (a * (x * (N : FiniteAdeleRing (𝓞 ℚ) ℚ)) v) : Circle) : ℂ) = 1` using `h`. Conclude with `Circle.ext (by simpa using h')`. Use `show c * (x * (N : FiniteAdeleRing (𝓞 ℚ) ℚ)) = x`.
-
-Rewrite using `[mul_comm x, ← mul_assoc, hcN, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_isCompact_annihilator_scaled_integralAdeles :
     ∀ N : ℕ, 0 < N → ∃ K : Set (FiniteAdeleRing (𝓞 ℚ) ℚ), IsCompact K ∧ ∀ x : FiniteAdeleRing (𝓞 ℚ) ℚ,

@@ -7,9 +7,9 @@ open scoped NNReal ENNReal TensorProduct
 namespace GlobalTheory.HaarOpenEmb
 
 /- English proof (translation)
-Take `⟨y⟩` from `(inferInstance : Nonempty Y)`. Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds y`. Establish `h0 : ρ K ≠ 0` using `(Measure.measure_pos_of_mem_nhds ρ hKn).ne'`. Establish `hT : ρ K ≠ ∞` using `hK.measure_lt_top.ne`. Establish `e` using `congrArg (fun μ : Measure Y => μ K) h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at e`. Conclude with `(ENNReal.mul_left_inj h0 hT).1 e` after adjusting the coercions.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nnreal_smul_cancel {Y : Type} [TopologicalSpace Y] [MeasurableSpace Y] [LocallyCompactSpace Y]
     (ρ : Measure Y) [IsFiniteMeasureOnCompacts ρ] [ρ.IsOpenPosMeasure] [Nonempty Y] {a b : ℝ≥0}
@@ -23,17 +23,15 @@ theorem nnreal_smul_cancel {Y : Type} [TopologicalSpace Y] [MeasurableSpace Y] [
   exact_mod_cast (ENNReal.mul_left_inj h0 hT).1 e
 
 /- English proof (translation)
-Introduce `G G' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ j hj e e' hcomm`. Distinguish the cases in `hne : Nonempty G'`. Use `swap`. Establish `: IsEmpty G'` using `not_nonempty_iff.1 hne`. Conclude with `absurd ⟨0⟩ hne`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `μ : Measure G` to `Measure.addHaar`. Set `ν : Measure G'` to `μ.comap j`. Use `haveI : ν.IsAddHaarMeasure := Measure.IsAddHaarMeasure.comap (mH := inferInstance) μ hj`. Use `haveI : ν.Regular := inferInstance`. Establish `hjm : ∀ s, MeasurableSet s → MeasurableSet ((j : G' → G) '' s)` using `fun s hs => hj.measurableEmbedding.measurableSet_image' hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hem : ∀ s, MeasurableSet s → MeasurableSet ((e : G → G) '' s)` using `fun s hs => e.toHomeomorph.measurableEmbedding.measurableSet_image' hs`. Establish `he'm : ∀ s, MeasurableSet s → MeasurableSet ((e' : G' → G') '' s)` using `fun s hs => e'.toHomeomorph.measurableEmbedding.measurableSet_image' hs`. Establish `h1` using `addEquivAddHaarChar_smul_eq_comap μ e`. Establish `h2` using `addEquivAddHaarChar_smul_eq_comap ν e'`. Establish `hfun : (e : G → G) ∘ (j : G' → G) = (j : G' → G) ∘ (e' : G' → G')` using `funext hcomm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `key : addEquivAddHaarChar e • ν = addEquivAddHaarChar e' • ν`. Rewrite using `[h2]`. Express the relevant statement in the definitionally equal form `addEquivAddHaarChar e • μ.comap j = (μ.comap j).comap e'`. Rewrite using `[Measure.comap_comap he'm hj.injective hjm, ← hfun, ← Measure.comap_comap hjm e.injective hem, ← h1]`. Establish `hs : ∀ (c : ℝ≥0) (m : Measure G), c • m = (c : ℝ≥0∞) • m` using `fun c m => by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `s hs`. Rewrite using `[Measure.smul_apply, Measure.smul_apply]`. Both sides reduce to the same expression. Establish `hs' : ∀ (c : ℝ≥0) (m : Measure G'), c • m = (c : ℝ≥0∞) • m` using `fun c m => by`. Use extensionality with `s hs`.
-
-Rewrite using `[Measure.smul_apply, Measure.smul_apply]`. Both sides reduce to the same expression. Rewrite using `[hs, hs', Measure.comap_smul]`. Conclude with `nnreal_smul_cancel ν key`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addEquivAddHaarChar_eq_of_isOpenEmbedding :
     ∀ (G G' : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [AddCommGroup G'] [TopologicalSpace G'] [IsTopologicalAddGroup G'] [LocallyCompactSpace G'] [T2Space G'] [SecondCountableTopology G'] [MeasurableSpace G'] [BorelSpace G'] (j : G' →+ G), IsOpenEmbedding j → ∀ (e : G ≃ₜ+ G) (e' : G' ≃ₜ+ G'), (∀ x, e (j x) = j (e' x)) → addEquivAddHaarChar e = addEquivAddHaarChar e' := by

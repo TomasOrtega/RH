@@ -10,7 +10,7 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' p v t`. Take `⟨⟨ι, hι⟩, -, s2, k⟩` from `h F E σ n d B X W M om χX χW p.base ⟨_, _, p.herm⟩ ⟨_, _, p.skew⟩ p.weil v t`. Conclude with `⟨s2, ι, hι.bij, fun g hg => ⟨Matrix.GeneralLinearGroup.map (piW t) g.1, (k ι hι).1 g hg _ rfl⟩, (k ι hι).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem splitModel_of (h : PositivityTheory.KCo.DictX) : SplitModel := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' p v t
@@ -18,7 +18,7 @@ theorem splitModel_of (h : PositivityTheory.KCo.DictX) : SplitModel := by
   exact ⟨s2, ι, hι.bij, fun g hg => ⟨Matrix.GeneralLinearGroup.map (piW t) g.1, (k ι hι).1 g hg _ rfl⟩, (k ι hι).2⟩
 
 /- English proof (translation)
-The claim follows from `splitModel_of PositivityTheory.KCo.dictionary_extended`.
+A detailed English derivation is pending.
 -/
 theorem splitModel : SplitModel := splitModel_of PositivityTheory.KCo.dictionary_extended
 

@@ -12,7 +12,7 @@ noncomputable def clDown {B : Base} {X : PreX B.toPre} (I : TC B X) (u : B.Word)
       rfl⟩
 
 /- English proof (translation)
-Introduce `I _ u a i hi` and use `⟨I.clDown u a i hi⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem nonempty_clDown : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (u : B.Word) (a : I.ι) (i : ℕ), B.R.m < i →
     Nonempty ((I.stp u a i).Cl → (I.stp u I.mu0 i).Cl) :=

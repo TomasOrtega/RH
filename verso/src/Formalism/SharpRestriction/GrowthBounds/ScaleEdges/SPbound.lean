@@ -14,7 +14,7 @@ section Pos
 variable {n' : ℕ} [NeZero n']
 
 /- English proof (translation)
-Establish `h0 : (0:ℤ) < n'` using `by exact_mod_cast NeZero.pos n'`. Establish `h1` using `Int.emod_nonneg x h0.ne'`. Establish `h2` using `Int.emod_lt_of_pos x h0`. Simplify using `only [posOf]`. Rewrite using `[Nat.mod_eq_of_lt (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -27,11 +27,11 @@ theorem posOf_val (x : ℤ) : ((posOf n' x).val : ℤ) = x % n' := by
   omega
 
 /- English proof (translation)
-Establish `h'` using `congrArg (fun s : Fin n' => (s.val : ℤ)) h`. Simplify using `only [posOf_val] at h'`. Establish `hd : (n' : ℤ) ∣ a - b` using `(Int.ModEq.dvd h'.symm)`. Take `⟨k, hk⟩` from `hd`. Establish `h0 : (0:ℤ) < n'` using `by exact_mod_cast NeZero.pos n'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `lt_trichotomy k 0 with hk0 | hk0 | hk0` into its components or cases. Establish `: (n' : ℤ) * k ≤ -(n' : ℤ)` using `by nlinarith`. Use linear arithmetic over natural numbers and integers. Substitute `hk0` using the available equality. Simplify using `at hk`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `: (n' : ℤ) ≤ (n' : ℤ) * k` using `by nlinarith`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem posOf_inj {y a b : ℤ} (ha : y ≤ a ∧ a < y + n') (hb : y ≤ b ∧ b < y + n') (h : posOf n' a = posOf n' b) :
     a = b := by
@@ -48,7 +48,7 @@ theorem posOf_inj {y a b : ℤ} (ha : y ≤ a ∧ a < y + n') (hb : y ≤ b ∧ 
     omega
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Establish `h` using `posOf_val (n' := n') (s.val : ℤ)`. Establish `hs` using `s.isLt`. Establish `: ((s.val : ℤ) % (n' : ℤ)) = s.val` using `Int.emod_eq_of_lt (by omega) (by exact_mod_cast hs)`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem posOf_self (s : Fin n') : posOf n' (s.val : ℤ) = s := by
   apply Fin.ext
@@ -60,9 +60,7 @@ theorem posOf_self (s : Fin n') : posOf n' (s.val : ℤ) = s := by
 end Pos
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hx` using `[Finset.mem_filter]`. Conclude with `hf x hx.1 hx.2)`. Use `_ = (s.filter c).card * M := by rw [Finset.sum_const, smul_eq_mul]`.
-
-Use `_ ≤ n * M := Nat.mul_le_mul_right _ hc`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_ite_le {α : Type} (s : Finset α) (c : α → Prop) [DecidablePred c] (f : α → ℕ) (M n : ℕ)
     (hf : ∀ x ∈ s, c x → f x ≤ M) (hc : (s.filter c).card ≤ n) : ∑ x ∈ s, (if c x then f x else 0) ≤ n * M := by
@@ -79,9 +77,9 @@ section Fr
 variable {n' r : ℕ} [NeZero n'] {F : Frames n' r} {L₁ N₁ : ℕ}
 
 /- English proof (translation)
-Take `⟨-, -, hinc, -⟩` from `hV`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_lt hll`. Proceed by induction on `m with`. Consider the case `zero => exact hinc j l (by omega)`. Consider the case `succ m ih`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1` using `ih (by omega) (by omega)`. Establish `h2` using `hinc j (l + m + 1) (by omega)`. Use `show F.fr j l < F.fr j (l + m + 1 + 1)`. Conclude with `lt_trans h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fr_lt_fr_of_lt (hV : F.Valid L₁ N₁) (j : ℤ) {l l' : ℕ} (hll : l < l') (hl' : l' < r) :
     F.fr j l < F.fr j l' := by
@@ -96,7 +94,7 @@ private theorem fr_lt_fr_of_lt (hV : F.Valid L₁ N₁) (j : ℤ) {l l' : ℕ} (
     exact lt_trans h1 h2
 
 /- English proof (translation)
-Break down `Nat.lt_or_eq_of_le hll with h | rfl` into its components or cases. Conclude with `le_of_lt (fr_lt_fr_of_lt hV j h hl')`. Conclude with `le_rfl`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem fr_le_fr_of_le (hV : F.Valid L₁ N₁) (j : ℤ) {l l' : ℕ} (hll : l ≤ l') (hl' : l' < r) :
     F.fr j l ≤ F.fr j l' := by
@@ -105,9 +103,9 @@ private theorem fr_le_fr_of_le (hV : F.Valid L₁ N₁) (j : ℤ) {l l' : ℕ} (
   · exact le_rfl
 
 /- English proof (translation)
-Establish `h0 : ∀ i : ℤ, F.fr i 0 ≤ F.fr i (r - 1)` using `fun i => fr_le_fr_of_le hV i (Nat.zero_le _) (by omega)`. Take `⟨-, -, -, hnx, -⟩` from `hV`. Proceed by induction on `d with`. Consider the case `zero => simpa using hnx j`. Consider the case `succ d ih`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem fr_next (hV : F.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (d : ℕ) : F.fr j (r - 1) < F.fr (j + 1 + d) 0 := by
   have h0 : ∀ i : ℤ, F.fr i 0 ≤ F.fr i (r - 1) := fun i => fr_le_fr_of_le hV i (Nat.zero_le _) (by omega)
@@ -121,13 +119,13 @@ theorem fr_next (hV : F.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (d : ℕ) : F.
       _ = F.fr (j + 1 + ((d + 1 : ℕ) : ℤ)) 0 := by congr 1; push_cast; ring
 
 /- English proof (translation)
-Conclude with `fr_le_fr_of_le hV j (by omega) (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem fr_le_last (hV : F.Valid L₁ N₁) (j : ℤ) {l : ℕ} (hl : l < r) : F.fr j l ≤ F.fr j (r - 1) := by
   exact fr_le_fr_of_le hV j (by omega) (by omega)
 
 /- English proof (translation)
-Take `⟨d, hd⟩ : ∃ d : ℕ, j' = j + 1 + d` from `⟨(j' - j - 1).toNat, by omega⟩`. Substitute `hd` using the available equality. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Chain the equalities or inequalities of the calculation.
 -/
 theorem fr_lex (hV : F.Valid L₁ N₁) (hr : 1 ≤ r) {j j' : ℤ} (hjj : j < j') {l l' : ℕ} (hl : l < r) (hl' : l' < r) :
     F.fr j l < F.fr j' l' := by
@@ -138,21 +136,17 @@ theorem fr_lex (hV : F.Valid L₁ N₁) (hr : 1 ≤ r) {j j' : ℤ} (hjj : j < j
     _ ≤ F.fr (j + 1 + d) l' := fr_le_fr_of_le hV _ (Nat.zero_le _) hl'
 
 /- English proof (translation)
-Establish `hr0 : 0 < r` using `hr`. Establish `hlt : ∀ {c c' : ℕ} {i i' : Fin r}, (c < c' ∨ (c = c' ∧ i.val < i'.val)) → F.fr (c : ℤ) i.val < F.fr (c' : ℤ) i'.val`. Introduce `c c' i i' h`. Break down `h with h | ⟨rfl, h⟩` into its components or cases. Conclude with `fr_lex hV hr (by exact_mod_cast h) i.isLt i'.isLt`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `fr_lt_fr_of_lt hV _ h i'.isLt`. Establish `hper : F.fr (F.J : ℤ) 0 = F.fr 0 0 + n'`. Use `hV.2.1 0 0` as an intermediate fact. Simplify using `using this`. Establish `win : ∀ (c : ℕ) (i : Fin r), c < F.J → F.fr 0 0 ≤ F.fr c i.val ∧ F.fr c i.val < F.fr 0 0 + n'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c i hc`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos c with rfl | hc0` into its components or cases. Break down `Nat.eq_zero_or_pos i.val with h0 | h0` into its components or cases. Rewrite using `[h0]`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `hlt (c := 0) (c' := 0) (i := ⟨0, hr0⟩) (i' := i) (Or.inr ⟨rfl, h0⟩)` as an intermediate fact. Simplify using `using le_of_lt this`. Use `hlt (c := 0) (c' := c) (i := ⟨0, hr0⟩) (i' := i) (Or.inl hc0)` as an intermediate fact. Simplify using `using le_of_lt this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hper]`. Conclude with `hlt (c := c) (c' := F.J) (i := i) (i' := ⟨0, hr0⟩) (Or.inl hc)`. Rewrite using `[Finset.card_le_one]`. Introduce and unpack `⟨a1, a2⟩ ha ⟨b1, b2⟩ hb`. Simplify using `only [Finset.mem_filter, Finset.mem_product, Finset.mem_range, Finset.mem_univ, and_true] at ha hb`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : F.fr (a1 : ℤ) a2.val = F.fr (b1 : ℤ) b2.val`. Establish `wa` using `win a1 a2 ha.1`. Establish `wb` using `win b1 b2 hb.1`. Conclude with `posOf_inj ⟨wa.1, wa.2⟩ ⟨wb.1, wb.2⟩ (ha.2.symm.trans hb.2)`. Break down `lt_trichotomy a1 b1 with h | rfl | h` into its components or cases.
-
-Conclude with `absurd heq (ne_of_lt (hlt (Or.inl h)))`. Break down `lt_trichotomy a2.val b2.val with h2 | h2 | h2` into its components or cases. Conclude with `absurd heq (ne_of_lt (hlt (Or.inr ⟨rfl, h2⟩)))`. Rewrite using `[Fin.ext h2]`. Conclude with `absurd heq.symm (ne_of_lt (hlt (Or.inr ⟨rfl, h2⟩)))`.
-
-Conclude with `absurd heq.symm (ne_of_lt (hlt (Or.inl h)))`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_pairs (hV : F.Valid L₁ N₁) (hr : 1 ≤ r) (t : Fin n') :
     (((Finset.range F.J) ×ˢ (Finset.univ : Finset (Fin r))).filter
@@ -196,9 +190,9 @@ theorem frame_pairs (hV : F.Valid L₁ N₁) (hr : 1 ≤ r) (t : Fin n') :
   · exact absurd heq.symm (ne_of_lt (hlt (Or.inl h)))
 
 /- English proof (translation)
-Unfold `Arow`. Rewrite using `[List.getD_eq_getElem?_getD]`. Consider the cases of `h : (evensBefore F s)[l]? with`. Consider the case `none => left`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `some y => right`. Establish `hm : y ∈ evensBefore F s` using `List.mem_of_getElem? h`. Rewrite `hm` using `[Formalism.MainNotions.G.symbolGeneratorData.dv_ev_mem]`. Simplify using `only [Option.getD_some]`. Conclude with `⟨hm.1.2, hm.2.1⟩`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem arow_cases (F : Frames n' r) (s : ℤ) (l : ℕ) :
     Arow F s l = s ∨ (Arow F s l < s ∧ posOf n' (Arow F s l) ∈ F.TT) := by

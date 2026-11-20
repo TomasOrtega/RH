@@ -22,13 +22,13 @@ private theorem rootEnt_cases : ∀ a b i j : Fin 4, a ≠ b → wt i j = wt a b
     (i = a ∧ j = b) ∨ (j.rev = a ∧ i.rev = b ∧ rootEnt a b i j = -(sgn i * sgn j)) := by decide
 
 /- English proof (translation)
-Introduce `E _ _ a b hab`. Use `⟨Matrix.of fun i j => ((rootEnt a b i j : ℤ) : E), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show UpperTheory.V.GradeZeroInterpolatingElement.adj _ = -_`. Use extensionality with `i j`. Rewrite using `[adj_apply, Matrix.neg_apply, Matrix.of_apply, Matrix.of_apply, zsmul_eq_mul, ← Int.cast_mul, rootEnt_adj a b i j hab, Int.cast_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[rootEnt]`. Introduce `i j h`. Simplify using `[rootEnt_zero a b i j h]`. Introduce `Y hY i j h`. Break down `rootEnt_cases a b i j hab h with ⟨rfl, rfl⟩ | ⟨h1, h2, h3⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[rootEnt]`. Establish `hY' : UpperTheory.V.GradeZeroInterpolatingElement.adj Y = -Y` using `hY`. Establish `h4` using `congrFun (congrFun hY' i) j`. Rewrite `h4` using `[adj_apply, Matrix.neg_apply, h1, h2, zsmul_eq_mul]`. Rewrite using `[Matrix.of_apply, h3, Int.cast_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h4`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_sp4_root_vector_unique_on_weight :
     ∀ (E : Type) [Field E] [CharZero E] (a b : Fin 4), a ≠ b → ∃ X ∈ sp4 E, X a b = 1 ∧ (∀ i j, wt i j ≠ wt a b → X i j = 0) ∧ ∀ Y ∈ sp4 E, ∀ i j, wt i j = wt a b → Y i j = Y a b * X i j := by

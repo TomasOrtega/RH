@@ -37,15 +37,13 @@ def Split.e (h : Split S A B p q) : S ≃ₜ* A × B where
   continuous_invFun := ((continuous_subtype_val.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)).subtype_mk _
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace A := h.cA.locallyCompactSpace`. Use `haveI : LocallyCompactSpace B := h.cB.locallyCompactSpace`. Use `haveI : LocallyCompactSpace S := h.cS.locallyCompactSpace`. Establish `hm : (μ.map h.e).IsHaarMeasure` using `ContinuousMulEquiv.isHaarMeasure_map μ h.e`. Use `set c := Measure.haarScalarFactor (μ.map h.e) (α.prod β) with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : μ.map h.e = c • α.prod β` using `Measure.isMulLeftInvariant_eq_smul _ _`. Establish `hc0 : c ≠ 0` using `(Measure.haarScalarFactor_pos_of_isHaarMeasure _ _).ne'`. Establish `hme : MeasurableEmbedding h.e` using `h.e.toHomeomorph.measurableEmbedding`. Use `⟨c, hc0, fun f g hf hg => ?_, fun U hU hh => ?_⟩` and prove the remaining obligations. Establish `h1 : Integrable (fun x : A × B => f x.1 * g x.2) (μ.map h.e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `(hf.mul_prod hg).smul_measure_nnreal`. Use `⟨(hme.integrable_map_iff.1 h1 :), ?_⟩` and prove the remaining obligations. Establish `h2` using `hme.integral_map (μ := μ) (fun x : A × B => f x.1 * g x.2)`. Rewrite `h2` using `[he, integral_smul_nnreal_measure, integral_prod_mul (fun a : A => f a) (fun b : B => g b)]`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ (h2.symm.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Simplify using `[NNReal.smul_def]`. Establish `h2 : {x : S | x.1 ∈ U} = h.e ⁻¹' ({x : A | x.1 ∈ U} ×ˢ {x : B | x.1 ∈ U})` using `Set.ext fun x => hh _ x.2`. Rewrite using `[h2, ← hme.map_apply, he, Measure.smul_apply, Measure.prod_prod]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Split.fub (h : Split S A B p q) (μ : Measure S) (α : Measure A) (β : Measure B) [μ.IsHaarMeasure] [α.IsHaarMeasure]
     [β.IsHaarMeasure] : ∃ c : ℝ≥0, c ≠ 0 ∧
@@ -76,7 +74,7 @@ theorem Split.fub (h : Split S A B p q) (μ : Measure S) (α : Measure A) (β : 
     rfl
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace S := hS.locallyCompactSpace`. Set `K : TopologicalSpace.PositiveCompacts S` to `⟨⟨_, hc⟩, ⟨1, by simpa [ho.interior_eq] using h1⟩⟩`. Conclude with `⟨Measure.haarMeasure K, inferInstance, Measure.haarMeasure_self⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_haar (S : Subgroup G) (hS : IsClosed (S : Set G)) (U : Set G) (h1 : (1 : G) ∈ U)
     (hc : IsCompact {x : S | x.1 ∈ U}) (ho : IsOpen {x : S | x.1 ∈ U}) :
@@ -103,20 +101,20 @@ structure Sys (P : R → G →* G) (K : Subgroup G) (U : Set G) (good : R → Pr
 def part (P : R → G →* G) (K : Subgroup G) (a : R) : Subgroup G := K ⊓ (P a).eqLocus (MonoidHom.id G)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_part {P : R → G →* G} {K : Subgroup G} {a : R} {g : G} : g ∈ part P K a ↔ g ∈ K ∧ P a g = g := Iff.rfl
 
 variable {P : R → G →* G} {K : Subgroup G} {U : Set G} {good : R → Prop}
 
 /- English proof (translation)
-The claim follows from `s.cK.inter (isClosed_eq (s.cont a ha) continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem Sys.closed (s : Sys P K U good) {a : R} (ha : good a) : IsClosed (part P K a : Set G) :=
   s.cK.inter (isClosed_eq (s.cont a ha) continuous_id)
 
 /- English proof (translation)
-The claim follows from `s.cont a ha cq := s.cont b hb cA := s.closed ha cB := s.closed hb cS := s.closed (s.add a b ha hb hab).1 mA g hg := ⟨s.mK a ha g hg.1, by show P a (P a g) = P a g; rw [s.comp a a ha ha, s.idem a ha]⟩ mB g hg := ⟨s.mK b hb g hg.1, by show P b (P b g) = P b g; rw [s.comp b b hb hb, …`.
+A detailed English derivation is pending.
 -/
 theorem Sys.split (s : Sys P K U good) {a b : R} (ha : good a) (hb : good b) (hab : a * b = 0) :
     Split (part P K (a + b)) (part P K a) (part P K b) (P a) (P b) where
@@ -141,9 +139,9 @@ def CO (P : R → G →* G) (K : Subgroup G) (U : Set G) (a : R) : Prop :=
   IsCompact {x : part P K a | x.1 ∈ U} ∧ IsOpen {x : part P K a | x.1 ∈ U}
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simpa using hc`. Consider the case `insert i T hi ih`. Rewrite using `[Finset.sum_insert hi, add_assoc]`. Use `(s.add _ _ (he i) (ih fun j hj => hT j (Finset.mem_insert_of_mem hj)) ?_).1` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_add, Finset.mul_sum, Finset.sum_eq_zero fun j hj => ho i j (fun e => hi (e ▸ hj)), hT i (Finset.mem_insert_self _ _), add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Sys.good_sum (s : Sys P K U good) {ι : Type} [DecidableEq ι] (e : ι → R) (he : ∀ i, good (e i))
     (ho : ∀ i j, i ≠ j → e i * e j = 0) (c : R) (hc : good c) (T : Finset ι) (hT : ∀ i ∈ T, e i * c = 0) :
@@ -157,27 +155,23 @@ theorem Sys.good_sum (s : Sys P K U good) {ι : Type} [DecidableEq ι] (e : ι �
       add_zero]
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on generalizing b with`. Consider the case `empty`. Take `rfl : b = c` from `by simpa using hb`. Use `haveI := hμ.1`. Use `haveI := hβ.1`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : LocallyCompactSpace (part P K b) := (s.closed hc).locallyCompactSpace`. Establish `h1` using `Measure.isMulLeftInvariant_eq_smul μ β`. Establish `h2 : Measure.haarScalarFactor μ β = 1`. Use `hμ.2` as an intermediate fact. Rewrite `this` using `[h1, Measure.smul_apply, hβ.2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`. Rewrite `h1` using `[h2, one_smul]`. Establish `h3 : (fun x : part P K b => (∏ i ∈ (∅ : Finset ι), f i (P (e i) x)) * g (P b x)) = fun x : part P K b => g x`. Use function extensionality and compare the values at `x`. Rewrite using `[show P b x = x from x.2.2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using the standard rewrite rules. Rewrite using `[h3, h1]; exact ⟨hg, by simp⟩`. Consider the case `insert i T hi ih`. Establish `hT' : ∀ j ∈ T, e j * c = 0` using `fun j hj => hT j (Finset.mem_insert_of_mem hj)`. Establish `hg'` using `s.good_sum e he ho c hc T hT'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set b' := ∑ j ∈ T, e j + c with hb'`. Establish `h0 : e i * b' = 0`. Rewrite using `[hb', mul_add, Finset.mul_sum, Finset.sum_eq_zero fun j hj => ho i j (fun e => hi (e ▸ hj)), hT i (Finset.mem_insert_self _ _), add_zero]`. Take `rfl : b = e i + b'` from `by rw [hb, Finset.sum_insert hi, add_assoc]`. Take `⟨μ', hμ'⟩` from `exists_haar _ (s.closed hg') U s.one (hCO T (Finset.subset_insert _ _)).1 (hCO T (Finset.subset_insert _ _)).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i1, i2⟩` from `ih hT' (fun T' h => hCO T' (h.trans (Finset.subset_insert _ _))) b' rfl μ' hμ' (fun j hj => hf j (Finset.mem_insert_of_mem hj))`. Use `haveI := hμ.1`. Use `haveI := hμ'.1`. Use `haveI := (hα i).1`. Take `⟨k, -, k1, k2⟩` from `(s.split (he i) hg' h0).fub μ (α i) μ'`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk : k = 1`. Use `k2 U s.mU fun x hx => ⟨fun h => ⟨s.pU _ (he i) _ h, s.pU _ hg' _ h⟩, fun h => by` as an intermediate fact. Rewrite using `[← (s.split (he i) hg' h0).mul x hx]`. Conclude with `s.mul _ h.1 _ h.2⟩`. Rewrite `this` using `[hμ.2, (hα i).2, hμ'.2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this.symm`. Take `⟨j1, j2⟩` from `k1 (f i) (fun y => (∏ j ∈ T, f j (P (e j) y)) * g (P c y)) (hf i (Finset.mem_insert_self _ _)) i1`. Establish `h3 : (fun x : part P K (e i + b') => (∏ j ∈ insert i T, f j (P (e j) x)) * g (P c x)) = fun x : part P K (e i + b') => f i (P (e i) x) * ((∏ j ∈ T, f j (P (e j) (P b' x))) * g (P c (P b' x)))`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.prod_insert hi, mul_assoc, s.comp c b' hc hg']`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : c * b' = c`. Rewrite using `[hb', mul_add, Finset.mul_sum, Finset.sum_eq_zero fun j hj => by rw [mul_comm]; exact hT' j hj, zero_add, s.idem c hc]`. Rewrite using `[e1]`. Use `congr 2`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations.
-
-Establish `e2 : e j * b' = e j`. Rewrite using `[hb', mul_add, hT' j hj, add_zero, Finset.mul_sum, Finset.sum_eq_single_of_mem j hj fun l _ hl => ho j l hl.symm, s.idem _ (he j)]`. Rewrite using `[s.comp _ b' (he j) hg', e2]`. Rewrite using `[h3]`. Use `⟨j1, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[j2, i2, hk, Finset.prod_insert hi]`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Sys.prod (s : Sys P K U good) {ι : Type} [DecidableEq ι] (e : ι → R) (he : ∀ i, good (e i))
     (ho : ∀ i j, i ≠ j → e i * e j = 0) (c : R) (hc : good c) (α : ∀ i, Measure (part P K (e i)))
@@ -242,7 +236,7 @@ theorem Sys.prod (s : Sys P K U good) {ι : Type} [DecidableEq ι] (e : ι → R
 omit [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] in
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: mS = Subtype.instMeasurableSpace` using `hm.trans (@BorelSpace.measurable_eq S _ Subtype.instMeasurableSpace (Subtype.borelSpace _)).symm`. Substitute `this` using the available equality. Conclude with `⟨x, id, fun _ => rfl, fun _ => ⟨Iff.rfl, rfl⟩⟩`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem transport {S S' : Subgroup G} (h : S = S') (mS : MeasurableSpace S) (hm : mS = borel S) (x : @Measure S mS) :
     ∃ x' : Measure S', (@Measure.IsHaarMeasure _ _ _ mS x → x'.IsHaarMeasure) ∧
@@ -266,14 +260,14 @@ def unitP {A : Type} [Ring A] [Algebra R A] (a : R) : Aˣ →* Aˣ := by
         simp only [add_mul, mul_add, smul_mul_smul_comm, h, h1, h2, h3, zero_smul, mul_one, add_zero, zero_add] } else 1
 
 /- English proof (translation)
-Unfold `unitP`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_unitP {A : Type} [Ring A] [Algebra R A] {a : R} (h : a * a = a) (x : Aˣ) :
     (unitP a x : A) = a • (x : A) + (1 - a) • (1 : A) := by
   unfold unitP; rw [dif_pos h]; rfl
 
 /- English proof (translation)
-Unfold `unitP`. Rewrite using `[dif_pos h]`. Conclude with `Continuous.units_map _ (by show Continuous fun x : A => a • x + (1 - a) • (1 : A); fun_prop)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitInvariant_continuous {A : Type} [Ring A] [Algebra R A] [TopologicalSpace A] [IsTopologicalRing A] [ContinuousConstSMul R A] {a : R}
     (h : a * a = a) : Continuous (unitP (A := A) a) := by
@@ -281,7 +275,7 @@ theorem unitInvariant_continuous {A : Type} [Ring A] [Algebra R A] [TopologicalS
   exact Continuous.units_map _ (by show Continuous fun x : A => a • x + (1 - a) • (1 : A); fun_prop)
 
 /- English proof (translation)
-Establish `: a * b * (a * b) = a * b` using `by rw [mul_mul_mul_comm, ha, hb]`. Use `ext`. Rewrite using `[coe_unitP ha, coe_unitP hb, coe_unitP this]`. Use `module`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitInvariant_comp {A : Type} [Ring A] [Algebra R A] {a b : R} (ha : a * a = a) (hb : b * b = b) (x : Aˣ) :
     unitP a (unitP b x) = unitP (a * b) x := by
@@ -289,27 +283,27 @@ theorem unitInvariant_comp {A : Type} [Ring A] [Algebra R A] {a b : R} (ha : a *
   ext; rw [coe_unitP ha, coe_unitP hb, coe_unitP this]; module
 
 /- English proof (translation)
-Use the proof step `ext; rw [coe_unitP (by simp)]; simp`.
+A detailed English derivation is pending.
 -/
 theorem unitInvariant_zero {A : Type} [Ring A] [Algebra R A] (x : Aˣ) : unitP (0 : R) x = 1 := by
   ext; rw [coe_unitP (by simp)]; simp
 
 /- English proof (translation)
-Use the proof step `ext; rw [coe_unitP (by simp)]; simp`.
+A detailed English derivation is pending.
 -/
 theorem unitInvariant_one {A : Type} [Ring A] [Algebra R A] (x : Aˣ) : unitP (1 : R) x = x := by
   ext; rw [coe_unitP (by simp)]; simp
 
 /- English proof (translation)
-Take the linear combination `ha + hb + 2 * h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem idem_add {a b : R} (ha : a * a = a) (hb : b * b = b) (h : a * b = 0) : (a + b) * (a + b) = a + b := by
   linear_combination ha + hb + 2 * h
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[Units.val_mul, coe_unitP ha, coe_unitP hb, coe_unitP (idem_add ha hb h)]`. Establish `h1 : a * (1 - b) = a` using `by linear_combination -h`. Establish `h2 : (1 - a) * b = b` using `by linear_combination -h`. Establish `h3 : (1 - a) * (1 - b) = 1 - (a + b)` using `by linear_combination h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [add_mul, mul_add, smul_mul_smul_comm, h, h1, h2, h3, zero_smul, mul_one, one_mul, zero_add, add_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem unitInvariant_add {A : Type} [Ring A] [Algebra R A] {a b : R} (ha : a * a = a) (hb : b * b = b) (h : a * b = 0) (x : Aˣ) :
     unitP (a + b) x = unitP a x * unitP b x := by

@@ -9,13 +9,13 @@ namespace Formalism.MainNotions.SelectionLemmas.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.G.Joints.StandardMonomialSpace
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ X hX j e he`. Unfold `Dat.dS Dat.dV`. Rewrite using `[← Finset.sum_add_distrib]`. Establish `h1 : ∀ x ∈ X.toLate j, ((if Even x then 0 else ∑ c : Fin r, e (x, Fin.castAdd K c)) + (if Even x then ∑ c : Fin K, e (x, Fin.natAdd r c) else 0)) ≤ (r + K) * p ^ X.Rj p K j`. Introduce `x _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `a1 : ∑ c : Fin r, e (x, Fin.castAdd K c) ≤ r * p ^ X.Rj p K j`. Use `Finset.sum_le_card_nsmul Finset.univ (fun c : Fin r => e (x, Fin.castAdd K c)) (p ^ X.Rj p K j) (fun c _ => (he.2 _).le)` as an intermediate fact. Simplify using `using this`. Establish `a2 : ∑ c : Fin K, e (x, Fin.natAdd r c) ≤ K * p ^ X.Rj p K j`. Use `Finset.sum_le_card_nsmul Finset.univ (fun c : Fin K => e (x, Fin.natAdd r c)) (p ^ X.Rj p K j) (fun c _ => (he.2 _).le)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Rewrite using `[add_mul]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `h2` using `Finset.sum_le_card_nsmul (X.toLate j) _ _ h1`. Establish `h3 : (X.toLate j).card ≤ X.Ns` using `le_trans (by unfold Dat.toLate; exact Finset.card_filter_le _ _) (hX.card j)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem ell_degree_le_power_bound : EllDegreeLePowerBound := by
   intro p n' r K _ _ _ X hX j e he
@@ -43,9 +43,9 @@ theorem ell_degree_le_power_bound : EllDegreeLePowerBound := by
     _ = (r + K) * X.Ns * p ^ X.Rj p K j := by ring
 
 /- English proof (translation)
-Establish `h` using `degAt_prod (R := R) (x := x) (X.toLate j) (fun x' => ∏ c : Fin r, (MvPolynomial.X (x', c) : MvPolynomial (ℤ × Fin r) R) ^ e (x', Fin.castAdd K c)) (fun x' => ∑ c : Fin r, e (x', Fin.castAdd K c) * (if x' = x then 1 else 0)) (fun x' _ => degAt_prod Finset.univ _ _ (fun c _ => degA …`. Establish `hD : (∑ x' ∈ X.toLate j, ∑ c : Fin r, e (x', Fin.castAdd K c) * (if x' = x then 1 else 0)) = ∑ c : Fin r, e (x, Fin.castAdd K c)`. Rewrite using `[Finset.sum_eq_single x]`. Simplify using the standard rewrite rules. Introduce `y _ hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hy]`. Introduce `h`. Conclude with `absurd hx h`. Rewrite `h` using `[hD]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degAt_ellP {R : Type} [CommRing R] {n' r : ℕ} [NeZero n'] (X : Dat n' r) (K : ℕ) (j : ℤ)
     (e : ℤ × Fin (r + K) →₀ ℕ) (x : ℤ) (hx : x ∈ X.toLate j) :
@@ -65,9 +65,9 @@ theorem degAt_ellP {R : Type} [CommRing R] {n' r : ℕ} [NeZero n'] (X : Dat n' 
   exact h
 
 /- English proof (translation)
-Establish `h` using `degAt_prod (R := R) (x := x) (X.toLate j) (fun x' => ∏ c : Fin K, (MvPolynomial.X (x', c) : MvPolynomial (ℤ × Fin K) R) ^ e (x', Fin.natAdd r c)) (fun x' => ∑ c : Fin K, e (x', Fin.natAdd r c) * (if x' = x then 1 else 0)) (fun x' _ => degAt_prod Finset.univ _ _ (fun c _ => degAt_ …`. Establish `hD : (∑ x' ∈ X.toLate j, ∑ c : Fin K, e (x', Fin.natAdd r c) * (if x' = x then 1 else 0)) = ∑ c : Fin K, e (x, Fin.natAdd r c)`. Rewrite using `[Finset.sum_eq_single x]`. Simplify using the standard rewrite rules. Introduce `y _ hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hy]`. Introduce `h`. Conclude with `absurd hx h`. Rewrite `h` using `[hD]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degAt_ellN {R : Type} [CommRing R] {n' r : ℕ} [NeZero n'] (X : Dat n' r) (K : ℕ) (j : ℤ)
     (e : ℤ × Fin (r + K) →₀ ℕ) (x : ℤ) (hx : x ∈ X.toLate j) :
@@ -87,25 +87,25 @@ theorem degAt_ellN {R : Type} [CommRing R] {n' r : ℕ} [NeZero n'] (X : Dat n' 
   exact h
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ X O _ _ _ S j b e q I' I'' hc mm hmm x hx hW`. Establish `: Fact p.Prime` using `⟨hc.hX.prime⟩`. Take `⟨i, rfl⟩` from `segE_surj X.F j hx`. Take `⟨nu, ka⟩` from `q`. Take `⟨b', b'', ⟨P1, h1⟩, ⟨P2, h2⟩, hcond⟩` from `hc.hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hI'` using `hc.hI'`. Establish `hI''` using `hc.hI''`. Simplify using `only at h1 h2 hcond hI' hI'' hmm`. Rewrite `hI'`, `hcond`, `hmm` using `[← h1]`. Rewrite `hI''`, `hcond`, `hmm` using `[← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `u1` using `standard_polynomial_mem_bounds (segLL X.F j) b' (fun th M => (hA3 p O S _ r (segLL X.F j) b' th M).2) P1 I' hI'`. Establish `u2` using `standard_polynomial_mem_bounds (segLL X.F j) b'' (fun th M => (hA3 p O S _ K (segLL X.F j) b'' th M).2) P2 I'' hI''`. Take `⟨cE, cO, -⟩` from `(hcond i).2 hW`. Establish `hxl : segE X.F j i ∈ X.toLate j` using `(mem_late X j _).mpr ⟨hx, hW⟩`. Establish `hrows` using `hRow p n' r K X hc.hX j`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n3` using `hN3 p n' r K X hc.hX hc.hLa hc.hk j _ hxl`. Establish `hQ0 : (0 : ℝ) ≤ ((p ^ X.Rj p K j : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `dG : DegAt (segE X.F j i) (p ^ X.Rj p K j * b'' i + ∑ c : Fin K, e (segE X.F j i, Fin.natAdd r c)) (X.Gw p K (FF O) j e P2.mu I'')`. Unfold `Dat.Gw`. Conclude with `degAt_mul (degAt_pow (degAt_segRen X.F j u2.1 i) _) (degAt_ellN X K j e _ hxl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `dA : ¬ Even (segE X.F j i) → DegAt (segE X.F j i) (p ^ X.Rj p K j * b' i + ∑ c : Fin r, e (segE X.F j i, Fin.castAdd K c) + 0) (X.Aw p K (FF O) j e P1.mu I')`. Introduce `he`. Unfold `Dat.Aw`. Use `degAt_mul (degAt_mul (degAt_pow (degAt_segRen X.F j u1.1 i) _) (degAt_ellP X K j e _ hxl)) ?_` and prove the remaining obligations. Use `degAt_of_supported {v : ℤ × Fin r | Even v.1} (DlSeg_supported _ X p K j _ fun x' hx' a _ => ((hrows x' hx').2 a).2.1) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv hvx`. Conclude with `he (hvx ▸ hv)`. Establish `a1 : ∑ c : Fin r, e (segE X.F j i, Fin.castAdd K c) ≤ r * p ^ X.Rj p K j`. Use `Finset.sum_le_card_nsmul Finset.univ (fun c : Fin r => e (segE X.F j i, Fin.castAdd K c)) (p ^ X.Rj p K j) (fun c _ => (hc.he.2 _).le)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : ∑ c : Fin K, e (segE X.F j i, Fin.natAdd r c) ≤ K * p ^ X.Rj p K j`. Use `Finset.sum_le_card_nsmul Finset.univ (fun c : Fin K => e (segE X.F j i, Fin.natAdd r c)) (p ^ X.Rj p K j) (fun c _ => (hc.he.2 _).le)` as an intermediate fact. Simplify using `using this`. Establish `a1r : ((∑ c : Fin r, e (segE X.F j i, Fin.castAdd K c) : ℕ) : ℝ) ≤ (r : ℝ) * ((p ^ X.Rj p K j : ℕ) : ℝ)`. Conclude with `a1` after adjusting the coercions.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a2r : ((∑ c : Fin K, e (segE X.F j i, Fin.natAdd r c) : ℕ) : ℝ) ≤ (K : ℝ) * ((p ^ X.Rj p K j : ℕ) : ℝ)`. Conclude with `a2` after adjusting the coercions. Establish `hkd : Dat.k (r` using `r) K = (r : ℝ) + K := by unfold Dat.k; push_cast; ring`. Rewrite `n3` using `[hkd]`. Establish `hr0 : (0 : ℝ) ≤ (r : ℝ) * ((p ^ X.Rj p K j : ℕ) : ℝ)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hK0 : (0 : ℝ) ≤ (K : ℝ) * ((p ^ X.Rj p K j : ℕ) : ℝ)` using `by positivity`. Rewrite using `[ordDeg_prod dA (fun _ => dG) mm hmm]`. Use `le_trans ?_ n3` and prove the remaining obligations. Use `split_ifs with he`. Establish `hb` using `mul_le_mul_of_nonneg_left (cE he).2 hQ0`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[Nat.cast_add, Nat.cast_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb` using `mul_le_mul_of_nonneg_left (cO he).2 hQ0`. Rewrite using `[add_zero, Nat.cast_add, Nat.cast_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem word_order_bound_of_numeric_bound (D : Formalism.BasicNotions.D7) (hA3 : Formalism.MainNotions.CovariantDegrees.DefiniteRankOne D) (C₀ : ℝ) (hRow : LateIndexInjective) (hN3 : OrderNumericBound C₀) :
     ProductOrdersBounded C₀ := by

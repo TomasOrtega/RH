@@ -29,9 +29,9 @@ lemma incl_apply (j : Fin n) (x : H) (i : Fin n) :
     (incl j x : PiLp 2 (fun _ : Fin n => H)) i = (Pi.single j x : Fin n → H) i := rfl
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [diag_apply, incl_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 lemma diag_incl (T : H →L[ℂ] H) (j : Fin n) (x : H) :
     diag n T (incl j x) = incl j (T x) := by
@@ -42,14 +42,14 @@ lemma diag_incl (T : H →L[ℂ] H) (j : Fin n) (x : H) :
   · simp [Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[incl_apply, Finset.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma sum_incl (x : PiLp 2 (fun _ : Fin n => H)) : ∑ j, incl j (x j) = x := by
   ext i
   simp [incl_apply, Finset.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[← sum_incl x]`. Simplify using `only [map_sum, diag_incl]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[hc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma comm_diag (P : PiLp 2 (fun _ : Fin n => H) →L[ℂ] PiLp 2 (fun _ : Fin n => H))
     (c : Fin n → Fin n → ℂ) (hc : ∀ i j x, P (incl j x) i = c i j • x) (T : H →L[ℂ] H)
@@ -65,33 +65,31 @@ end IrreducibleUnitaryDensity
 open IrreducibleUnitaryDensity in
 
 /- English proof (translation)
-Set `a' : PiLp 2 (fun _ : Fin n => H)` to `WithLp.toLp 2 a`. Set `S : Submodule ℂ (PiLp 2 (fun _ : Fin n => H))` to `Submodule.span ℂ (Set.range fun g => diag n (π g) a')`. Set `W` to `S.topologicalClosure`. Establish `hmul : ∀ g g' x, diag n (π g) (diag n (π g') x) = diag n (π (g * g')) x`. Introduce `g g' x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i`. Simplify using the standard rewrite rules. Establish `hone : ∀ x, diag n (π 1) x = x`. Introduce `x`. Use extensionality with `i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Establish `hclos : ∀ (K : Submodule ℂ (PiLp 2 (fun _ : Fin n => H))), IsClosed (K : Set (PiLp 2 (fun _ : Fin n => H))) → (∀ g, diag n (π g) a' ∈ K) → W ≤ K`. Introduce `K hK hg`. Use `Submodule.topologicalClosure_minimal S ?_ hK` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `hg g`. Establish `hgen : ∀ g, diag n (π g) a' ∈ W` using `fun g => S.le_topologicalClosure (Submodule.subset_span ⟨g, rfl⟩)`. Establish `hinv : ∀ g, ∀ x ∈ W, diag n (π g) x ∈ W`. Introduce `g x hx`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hclos (W.comap (diag n (π g)).toLinearMap) (S.isClosed_topologicalClosure.preimage (diag n (π g)).continuous) (fun g' => by` as an intermediate fact. Express the relevant statement in the definitionally equal form `diag n (π g) (diag n (π g') a') ∈ W`. Rewrite using `[hmul]`. Conclude with `hgen _) hx`. Conclude with `this`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinner : ∀ g (x y : H), ⟪π g x, π g y⟫_ℂ = ⟪x, y⟫_ℂ` using `fun g x y => (LinearIsometry.mk (π g).toLinearMap (hu g)).inner_map_map x y`. Establish `hinner' : ∀ g x y, ⟪diag n (π g) x, diag n (π g) y⟫_ℂ = ⟪x, y⟫_ℂ`. Introduce `g x y`. Simplify using `[PiLp.inner_apply, hinner]`. Establish `hinv' : ∀ g, ∀ x ∈ Wᗮ, diag n (π g) x ∈ Wᗮ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g x hx`. Rewrite `hx`, the goal using `[Submodule.mem_orthogonal]`. Introduce `w hw`. Establish `h1 : w = diag n (π g) (diag n (π g⁻¹) w)` using `by rw [hmul, mul_inv_cancel, hone]`. Rewrite using `[h1, hinner']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx _ (hinv _ _ hw)`. Use `haveI : CompleteSpace W := S.isClosed_topologicalClosure.completeSpace_coe`. Set `P` to `W.starProjection`. Establish `hP : ∀ g x, P (diag n (π g) x) = diag n (π g) (P x)`. Introduce `g x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `Submodule.eq_starProjection_of_mem_orthogonal (hinv g _ (W.starProjection_apply_mem x)) ?_` and prove the remaining obligations. Rewrite using `[← map_sub]`. Conclude with `hinv' g _ (W.sub_starProjection_mem_orthogonal x)`. Establish `hblock : ∀ i j : Fin n, ∃ c : ℂ, ∀ x, P (incl j x) i = c • x`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨c, hc⟩` from `hs ((PiLp.proj 2 (fun _ : Fin n => H) i).comp (P.comp (incl j))) (by`. Introduce `g`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `P (incl j (π g x)) i = π g (P (incl j x) i)`. Rewrite using `[← diag_incl, hP, diag_apply])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨c, fun x => by simpa using congrArg (fun B : H →L[ℂ] H => B x) hc⟩`. Use `choose c hc using hblock`. Set `R : H →L[ℂ] H` to `(innerSL ℂ φ).smulRight u`. Establish `ha : a' ∈ W` using `hone a' ▸ hgen 1`. Establish `hRa : diag n R a' ∈ W`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : P a' = a'` using `Submodule.starProjection_eq_self_iff.2 ha`. Rewrite using `[← h1, ← comm_diag P c hc]`. Conclude with `W.starProjection_apply_mem _`. Set `L : PiLp 2 (fun _ : Fin n => H) →L[ℂ] ℂ` to `∑ j, (Λ j).comp (PiLp.proj 2 (fun _ : Fin n => H) j)`. Establish `hL : ∀ x, L x = ∑ j, Λ j (x j)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x`. Simplify using `[L]`. Establish `hker : W ≤ LinearMap.ker L.toLinearMap`. Use `hclos _ (ContinuousLinearMap.isClosed_ker L) fun g => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `L _ = 0`.
-
-Rewrite using `[hL]`. Conclude with `h g`. Establish `h0 : L (diag n R a') = 0` using `hker hRa`. Rewrite `h0` using `[hL]`. Simplify `h0` using `[R, a']`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem irreducibleUnitary_density (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (G : Type) [Group G] (π : G →* (H →L[ℂ] H)) (hu : ∀ g x, ‖π g x‖ = ‖x‖)

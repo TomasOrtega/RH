@@ -13,7 +13,7 @@ namespace GlobalTheory
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj in
 /- English proof (translation)
-The claim follows from `(_root_.GlobalTheory.AbLaw.FromCube.all_of_cubeGen (fun S P M a ↦ _root_.GlobalTheory.AbLaw.CubeAssembly.cube_gen S P M a)).2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 private theorem weil_pairing_properties : _root_.ReciprocityTheory.ChartRestriction.G.Out.WeilSt :=
   (_root_.GlobalTheory.AbLaw.FromCube.all_of_cubeGen
@@ -23,7 +23,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj in
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.cmPoint _root_.GlobalTheory.thetaUnifAV_all weil_pairing_properties`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.cmPoint_closed : _root_.GlobalTheory.CMPoint :=
   _root_.GlobalTheory.cmPoint _root_.GlobalTheory.thetaUnifAV_all weil_pairing_properties

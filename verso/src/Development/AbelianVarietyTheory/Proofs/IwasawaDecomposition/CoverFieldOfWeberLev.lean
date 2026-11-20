@@ -19,11 +19,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.Top.Bl.CoverAt
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ (E : Type) (_ : Field E) (_ : NumberField E) (_ : IsCMField E) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E), H.rt0 = r`. Take `⟨E₀, _, _, _, H₀, h₀⟩` from `h`. Take `⟨L₀, hL₀⟩` from `GlobalTheory.FinalJoin.CurveField.exists_periodPair H₀`. Take `⟨hfin, halg, -⟩` from `weberSet_finite_algebraic_permuted L₀ M (Nat.pos_of_ne_zero hM) (GlobalTheory.CompRat.Weber.g₂_ne_zero H₀ L₀ hL₀) (GlobalTheory.CompRat.Weber.g₃_ne_zero H₀ L₀ hL₀)`. Use `⟨hfin.toFinset, fun z hz => halg (GlobalTheory.WeberField.invariant_isAlgebraic H₀ L₀ hL₀) z (hfin.mem_toFinset.1 hz), ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `E _ _ _ H hH F hF L hL`. Establish `hw : ∀ s, GlobalTheory.CompRat.wC H s = GlobalTheory.CompRat.wC H₀ s` using `fun s => by`. Unfold `GlobalTheory.CompRat.wC`. Rewrite using `[hH, h₀]`. Establish `e : weberSet L M = weberSet L₀ M` using `GlobalTheory.FieldSize.SmallField.weberSet_congr (Submodule.ext fun z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hL z, hL₀ z]`. Simplify using `only [hw]) M`. Establish `hs : ∀ z ∈ weberSet L M, z ∈ F` using `fun z hz => hF z (hfin.mem_toFinset.2 (e ▸ hz))`. Conclude with `⟨hs _ (Set.mem_insert _ _), fun s hs' => hs _ (Set.mem_insert_of_mem _ ⟨_, (hL _).2 ⟨s, rfl⟩, hs', rfl⟩)⟩`. Conclude with `⟨∅, by simp, fun E _ _ _ H hH => absurd ⟨E, _, _, _, H, hH⟩ h⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_finset_weberIn (r : ℂ) (M : ℕ) (hM : M ≠ 0) : ∃ S : Finset ℂ, (∀ z ∈ S, IsAlgebraic ℚ z) ∧
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E), H.rt0 = r →
@@ -57,15 +57,13 @@ def WeberLev (B : Base) (f : Fr B.toPre) (T : TwDat B) : Prop :=
 open Classical in
 
 /- English proof (translation)
-Establish `h : ∀ (P : Pre) (Ξ : Set (HChar P.host.E)), ∃ Z : Finset ℂ, (∀ z ∈ Z, IsAlgebraic ℚ z) ∧ ({Q : HeightOneSpectrum (𝓞 P.host.E) | ∃ χ ∈ Ξ, ¬ χ.UnrAt Q}.Finite → ∀ S : Finset (HeightOneSpectrum (𝓞 P.host.E)), (∀ Q ∈ S, ∃ χ ∈ Ξ, ¬ χ.UnrAt Q) → ∀ (E : Type) [Field E] [NumberField E] [ …`. Introduce `P Ξ`. Establish `hne : ∀ S : Finset (HeightOneSpectrum (𝓞 P.host.E)), P.host.g 0 * P.host.g 1 * ∏ q ∈ S.image (fun Q => Nat.card (kP Q)), q ≠ 0` using `fun S => by`. Use `mul_ne_zero (mul_ne_zero (P.host.g_prime 0).ne_zero (P.host.g_prime 1).ne_zero) ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_ne_zero_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `q hq`. Take `⟨Q, -, rfl⟩` from `Finset.mem_image.1 hq`. Conclude with `GlobalTheory.Plug.TwistLevels.card_residueField_ne_zero Q`. Use `choose Z hZ hZ' using fun S => exists_finset_weberIn (P.host.φ₀ P.host.sqrtMinusD) _ (hne S)`. Distinguish the cases in `hA : {Q : HeightOneSpectrum (𝓞 P.host.E) | ∃ χ ∈ Ξ, ¬ χ.UnrAt Q}.Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨hA.toFinset.powerset.biUnion Z, fun z hz => ?_, fun _ S hS E _ _ _ H hH F hF => ?_⟩` and prove the remaining obligations. Take `⟨S, -, hz⟩` from `Finset.mem_biUnion.1 hz`. Conclude with `hZ S z hz`. Conclude with `hZ' S E H hH F fun z hz => hF z (Finset.mem_biUnion.2 ⟨S, Finset.mem_powerset.2 fun Q hQ => hA.mem_toFinset.2 (hS Q hQ), hz⟩)`. Conclude with `⟨∅, by simp, fun h => absurd h hA⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `choose Z hZ hZ' using h`. Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun P _ _ _ Ξ => Z P Ξ, by simp, fun P _ _ _ Ξ => hZ P Ξ, fun B f T _ hH _ _ S hS E _ _ _ H hr => ?_⟩` and prove the remaining obligations. Use `hZ' B.toPre (T.set f) ?_ S hS E H hr _ hH.2` and prove the remaining obligations. Use `((GlobalTheory.Mem.Top.TwFin.tw_fin B f T).1.biUnion fun χ hχ => GlobalTheory.Plug.TwistLevels.ram_finite B f T χ hχ).subset ?_` and prove the remaining obligations. Introduce and unpack `Q ⟨χ, hχ, hr⟩`.
-
-Conclude with `Set.mem_biUnion (x := χ) hχ hr`.
+A detailed English derivation is pending.
 -/
 theorem lg_weberLev (K : Ctx) : large₂ K WeberLev := by
   have h : ∀ (P : Pre) (Ξ : Set (HChar P.host.E)), ∃ Z : Finset ℂ, (∀ z ∈ Z, IsAlgebraic ℚ z) ∧
@@ -101,11 +99,11 @@ theorem lg_weberLev (K : Ctx) : large₂ K WeberLev := by
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `i t l₂ _ hM hA Xo₂ c₂ hc`. Establish `hP : z.core.Q.Pins` using `z.geo.fw.laws.pins`. Establish `hS : ∀ Q ∈ z.R.Q t, ∃ χ ∈ T.set f, ¬ χ.UnrAt Q` using `fun Q hQ => ⟨z.R.xiH t, by`. Rewrite using `[z.lev.xiH t, ← w.xi_range]`. Conclude with `⟨_, rfl⟩, (z.lev.is.Q_ram t Q).2 (Or.inl hQ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hw` using `hW (z.R.Q t) hS _ z.core.Q.H hP.1.2.2.1`. Establish `hlev : l₂.M = B.host.g 0 * B.host.g 1 * GlobalTheory.TwistField.tupPrime z.R.toRealDat t`. Rewrite using `[hM, show z.core.Q.l.M = _ from hP.2.1.1]`. Both sides reduce to the same expression. Establish `hw' : WeberIn z.core.Q.H c₂.F l₂.M`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hlev, hc]`. Conclude with `hw`. Use `GlobalTheory.FinalJoin.FieldAlg.fnAlgClosed_of_weberIn _ z.core.Q hP ((i : ℕ) + 1) ⟨Nat.succ_le_succ (Nat.zero_le _), i.2⟩ l₂ Xo₂ c₂ l₂.M (lt_of_lt_of_le (by norm_num) l₂.three_le) ?_ (Or.inl hw')` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level.M', hA, Nat.lcm_one_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coverField_of_weberLev {B : Base} {f : Fr B.toPre} {T : TwDat B} (hW : WeberLev B f T) (w : ColW B f T) (Z : w.Lt)
     (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : R3.Dat (w.st Z) w.I hX T Wt) :

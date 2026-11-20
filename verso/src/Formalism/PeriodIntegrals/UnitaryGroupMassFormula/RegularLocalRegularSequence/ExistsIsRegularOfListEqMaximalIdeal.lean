@@ -12,9 +12,9 @@ open scoped Pointwise
 universe u
 
 /- English proof (translation)
-Rewrite using `[isWeaklyRegular_cons_iff]`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Establish `h : (x • ⊤ : Submodule A A) = Ideal.span ({x} : Set A)`. Rewrite using `[← Submodule.ideal_span_singleton_smul, Ideal.smul_eq_mul, Ideal.mul_top]`. Establish `e : QuotSMulTop x A ≃ₗ[A] A ⧸ Ideal.span ({x} : Set A)` using `Submodule.quotEquivOfEq _ _ h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e.isWeaklyRegular_congr]`. Use `(isWeaklyRegular_map_algebraMap_iff (A ⧸ Ideal.span ({x} : Set A)) (A ⧸ Ideal.span ({x} : Set A)) ys).mp ?_` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.algebraMap_eq]`. Conclude with `hys`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeaklyRegular_cons_of_quotient {A : Type u} [CommRing A] {x : A}
     (hx : IsSMulRegular A x) (ys : List A)
@@ -34,25 +34,23 @@ theorem isWeaklyRegular_cons_of_quotient {A : Type u} [CommRing A] {x : A}
   exact hys
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `A _ _ h`. Use `⟨[], ?_, rfl, IsWeaklyRegular.nil A A⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.ofList_nil]`. Conclude with `((Submodule.spanFinrank_eq_zero_iff_eq_bot (IsNoetherian.noetherian (maximalIdeal A))).mp h).symm`. Consider the case `succ n IH`. Introduce `A _ _ h`. Establish `hsq : ¬ maximalIdeal A ≤ maximalIdeal A ^ 2`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hle`. Establish `hbot` using `maximalIdeal_eq_bot_of_le_sq A hle`. Rewrite `h` using `[hbot, Submodule.spanFinrank_bot]`. Use linear arithmetic over natural numbers and integers. Choose the witnesses or unpack the hypotheses as in `⟨x, hx, hx2⟩ : ∃ x, x ∈ maximalIdeal A ∧ x ∉ maximalIdeal A ^ 2 := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hsq fun y hy => hc y hy`. Establish `hreg : IsRegularLocalRing (A ⧸ Ideal.span ({x} : Set A))` using `quotient_span_singleton hx hx2`. Establish `hdim` using `spanFinrank_quotient_eq_and_ringKrullDim_add_one A hx hx2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : Submodule.spanFinrank (maximalIdeal (A ⧸ Ideal.span ({x} : Set A))) = n`. Establish `h3 : ((Submodule.spanFinrank (maximalIdeal A) : ℕ) : WithBot ℕ∞) = ringKrullDim A` using `_root_.IsRegularLocalRing.spanFinrank_maximalIdeal`. Establish `h2` using `hdim.2`. Rewrite `h2` using `[← hdim.1, ← h3, h]`. Establish `h4 : Submodule.spanFinrank (maximalIdeal (A ⧸ Ideal.span ({x} : Set A))) + 1 = n + 1` using `by exact_mod_cast h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨ys', hys'1, hys'2, hys'3⟩` from `IH (A ⧸ Ideal.span ({x} : Set A)) hn`. Establish `hsurj : Function.Surjective (Ideal.Quotient.mk (Ideal.span ({x} : Set A)))` using `Ideal.Quotient.mk_surjective`. Establish `hmap : (ys'.map (Function.surjInv hsurj)).map (Ideal.Quotient.mk (Ideal.span ({x} : Set A))) = ys'`. Rewrite using `[List.map_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable.
 
-Use `conv_rhs => rw [← List.map_id ys']`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `a _`. Conclude with `Function.surjInv_eq hsurj a`. Generalize the expression as in `hL : ys'.map (Function.surjInv hsurj) = L at hmap`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomap : Ideal.comap (Ideal.Quotient.mk (Ideal.span ({x} : Set A))) (maximalIdeal (A ⧸ Ideal.span ({x} : Set A))) = maximalIdeal A`. Establish `hmax` using `Ideal.comap_isMaximal_of_surjective (Ideal.Quotient.mk (Ideal.span ({x} : Set A))) hsurj (K := maximalIdeal (A ⧸ Ideal.span ({x} : Set A)))`. Conclude with `IsLocalRing.eq_maximalIdeal hmax`. Establish `hofl : Ideal.ofList (x :: L) = maximalIdeal A`. Rewrite using `[← hcomap, ← hys'1, ← hmap, ← Ideal.map_ofList, Ideal.comap_map_of_surjective _ hsurj, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, Ideal.ofList_cons, sup_comm]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx2 (zero_mem _)`. Establish `hxreg : IsSMulRegular A x` using `fun a b hab => mul_left_cancel₀ hx0 hab`. Use `⟨x :: L, hofl, by rw [← hL]; simp [hys'2], ?_⟩` and prove the remaining obligations.
-
-Use `isWeaklyRegular_cons_of_quotient hxreg _ ?_` and prove the remaining obligations. Rewrite using `[hmap]`. Conclude with `hys'3`.
+A detailed English derivation is pending.
 -/
 theorem exists_list_of_spanFinrank_eq :
     ∀ (n : ℕ) (A : Type u) [CommRing A] [IsRegularLocalRing A],
@@ -120,9 +118,9 @@ theorem exists_list_of_spanFinrank_eq :
     exact hys'3
 
 /- English proof (translation)
-Take `⟨xs, h1, h2, h3⟩` from `exists_list_of_spanFinrank_eq _ A rfl`. Use `⟨xs, h1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`. Conclude with `_root_.IsRegularLocalRing.spanFinrank_maximalIdeal`. Use `RingTheory.Sequence.IsRegular.of_isWeaklyRegular_of_mem_maximalIdeal A ?_ h3` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr`. Rewrite using `[← h1]`. Conclude with `Ideal.subset_span hr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isRegular_ofList_eq_maximalIdeal (A : Type u) [CommRing A]
     [IsRegularLocalRing A] :

@@ -17,7 +17,7 @@ noncomputable def vecStab {X : Type} [AddCommGroup X] [Module ℂ X] (ρ : Repre
   _root_.UpperTheory.Reformulated.B.VectorStabilizer.vecStab ρ x
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Gwa2.isSmooth_twAct ρ N θ s hs hc hρ`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_twAct [TopologicalSpace G] [TopologicalSpace M] [IsTopologicalGroup M]
     (ρ : Representation ℂ G V) (N : Subgroup G) (θ : N →* ℂˣ) (s : M →* G)
@@ -30,11 +30,11 @@ end General
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `show Continuous fun A : Matrix (Fin n) (Fin n) k => glEmbMat k n A i j`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `last => simpa [glEmbMat] using continuous_const`. Consider the case `cast j => simpa [glEmbMat] using continuous_const`. Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simpa [glEmbMat] using continuous_const`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cast j`. Simplify `(continuous_id.matrix_elem i j)` using `[glEmbMat]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_glEmbHom (n : ℕ) : Continuous (glEmbHom k n) := by
   refine continuous_matrix fun i j => ?_
@@ -51,19 +51,19 @@ theorem continuous_glEmbHom (n : ℕ) : Continuous (glEmbHom k n) := by
       simpa [glEmbMat] using (continuous_id.matrix_elem i j)
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_glEmbHom n)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_glEmb (n : ℕ) : Continuous (glEmb k n) :=
   Continuous.units_map _ (continuous_glEmbHom n)
 
 /- English proof (translation)
-The claim follows from `(continuous_glEmb n).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_levi (n : ℕ) : Continuous (levi k n) :=
   (continuous_glEmb n).subtype_mk _
 
 /- English proof (translation)
-Introduce `ψ n V _ _ τ hτ`. Conclude with `isSmooth_twAct τ (MirUin k (n + 1)) (mirChar k ψ n) ((levi k (n + 1)).comp (Mir k n).subtype) (levi_stab ψ n) ((continuous_levi (n + 1)).comp continuous_subtype_val) hτ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smPhiMinus (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     SmPhiMinus k := by

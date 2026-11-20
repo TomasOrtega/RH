@@ -18,7 +18,7 @@ section Lin
 variable {κ : Type} [Field κ] {n j : ℕ}
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (g : Matrix (Fin n) (Fin n) κ).mulVecLin`. Introduce `x y h`. Use `congrArg ((g⁻¹ : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ).mulVec h` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec]`. Conclude with `(Submodule.equivMapOfInjective _ hinj D).finrank_eq.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem map_finrank (g : GL (Fin n) κ) (D : Submodule κ (Fin n → κ)) :
     Module.finrank κ (D.map (g : Matrix (Fin n) (Fin n) κ).mulVecLin) = Module.finrank κ D := by
@@ -41,23 +41,21 @@ private theorem map_finrank (g : GL (Fin n) κ) (D : Submodule κ (Fin n → κ)
     rw [← Submodule.map_comp, Units.val_mul, Matrix.mulVecLin_mul]
 
 /- English proof (translation)
-Take `⟨C₁, h₁⟩` from `Submodule.exists_isCompl D₁`. Take `⟨C₂, h₂⟩` from `Submodule.exists_isCompl D₂`. Establish `hc : Module.finrank κ C₁ = Module.finrank κ C₂`. Establish `a₁` using `Submodule.finrank_add_eq_of_isCompl h₁`. Establish `a₂` using `Submodule.finrank_add_eq_of_isCompl h₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Set `eD : D₁ ≃ₗ[κ] D₂` to `LinearEquiv.ofFinrankEq _ _ h`. Set `eC : C₁ ≃ₗ[κ] C₂` to `LinearEquiv.ofFinrankEq _ _ hc`. Set `e : (Fin n → κ) ≃ₗ[κ] (Fin n → κ)` to `(Submodule.prodEquivOfIsCompl D₁ C₁ h₁).symm.trans ((eD.prodCongr eC).trans (Submodule.prodEquivOfIsCompl D₂ C₂ h₂))`. Establish `he : ∀ x : D₁, e x = eD x`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x`. Simplify using `only [e, LinearEquiv.trans_apply]`. Rewrite using `[Submodule.prodEquivOfIsCompl_symm_apply_left]`. Simplify using the standard rewrite rules. Set `M` to `LinearMap.toMatrix' (e : (Fin n → κ) →ₗ[κ] (Fin n → κ))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `M'` to `LinearMap.toMatrix' (e.symm : (Fin n → κ) →ₗ[κ] (Fin n → κ))`. Establish `hMM : M * M' = 1`. Simplify using `only [M, M']`. Rewrite using `[← LinearMap.toMatrix'_comp]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hMM' : M' * M = 1`. Simplify using `only [M, M']`. Rewrite using `[← LinearMap.toMatrix'_comp]`. Simplify using the standard rewrite rules. Use `⟨⟨M, M', hMM, hMM'⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlin : (M.mulVecLin) = (e : (Fin n → κ) →ₗ[κ] (Fin n → κ))`. Simplify using `only [M]`. Rewrite using `[Matrix.mulVecLin, ]`. Conclude with `Matrix.toLin'_toMatrix' _`. Use `show D₁.map M.mulVecLin = D₂`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hlin]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `he ⟨x, hx⟩` as an intermediate fact. Simplify using `only [LinearEquiv.coe_coe]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `(eD ⟨x, hx⟩).2`. Introduce `y hy`. Use `⟨(eD.symm ⟨y, hy⟩ : D₁), (eD.symm ⟨y, hy⟩).2, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.coe_coe]`.
-
-Rewrite using `[he]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_gl (D₁ D₂ : Submodule κ (Fin n → κ))
     (h : Module.finrank κ D₁ = Module.finrank κ D₂) :
@@ -118,13 +116,11 @@ private def stdU (n j : ℕ) (κ : Type) [Field κ] : Submodule κ (Fin n → κ
     simp [hx a ha]
 
 /- English proof (translation)
-Set `e : stdU n j κ ≃ₗ[κ] (Fin j → κ)` to `{ toFun := fun x b => x.1 (Fin.castLE hj b) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl invFun := fun y => ⟨fun a => if h : (a : ℕ) < j then y ⟨a, h⟩ else 0, by`. Introduce `a ha`. Simplify using `[not_lt.2 ha]⟩`. Use `left_inv := by`. Introduce `x`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Distinguish the cases in `h : (a : ℕ) < j`. Simplify using `[h, Fin.castLE]`. Simplify using `[h, x.2 a (not_lt.1 h)]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `right_inv := by`. Introduce `y`. Use function extensionality and compare the values at `b`. Simplify using `[Fin.castLE] }`. Rewrite using `[e.finrank_eq]`.
-
-Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem finrank_stdU (hj : j ≤ n) : Module.finrank κ (stdU n j κ) = j := by
   let e : stdU n j κ ≃ₗ[κ] (Fin j → κ) :=
@@ -149,9 +145,9 @@ private theorem finrank_stdU (hj : j ≤ n) : Module.finrank κ (stdU n j κ) = 
   simp
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, hx, rfl⟩ a ha`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : (b : ℕ) < j`. Rewrite using `[hg a b ha hb, zero_mul]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx b (not_lt.1 hb), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem stdU_map_le (g : GL (Fin n) κ) (j : ℕ)
     (hg : ∀ a b : Fin n, j ≤ (a : ℕ) → (b : ℕ) < j → (g : Matrix (Fin n) (Fin n) κ) a b = 0) :
@@ -164,13 +160,13 @@ private theorem stdU_map_le (g : GL (Fin n) κ) (j : ℕ)
   · rw [hx b (not_lt.1 hb), mul_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a b ha hb`. Establish `hmem : (Pi.single b 1 : Fin n → κ) ∈ stdU n j κ`. Introduce `c hc`. Establish `: c ≠ b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Simplify using `[this]`. Establish `h2 : (g : Matrix (Fin n) (Fin n) κ).mulVecLin (Pi.single b 1) ∈ stdU n j κ`. Rewrite using `[← h]`.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, hmem, rfl⟩`. Establish `h3` using `h2 a ha`. Simplify using `using h3`. Introduce `h`. Apply `Submodule.eq_of_le_of_finrank_eq (stdU_map_le g j h)` to reduce the goal to its premises.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_finrank]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_stdU_iff (g : GL (Fin n) κ) (hj : j ≤ n) :
     (stdU n j κ).map (g : Matrix (Fin n) (Fin n) κ).mulVecLin = stdU n j κ ↔
@@ -205,7 +201,7 @@ private def stabS (n j : ℕ) (κ : Type) [Field κ] (hj : j ≤ n) : Subgroup (
   @MulAction.stabilizer _ _ _ (actGr j) (x0 n j κ hj)
 
 /- English proof (translation)
-Rewrite using `[← map_stdU_iff g hj]`. Use `letI := actGr (κ := κ) (n := n) j`. Use `show g • x0 n j κ hj = x0 n j κ hj ↔ _`. Conclude with `⟨fun h => congrArg Subtype.val h, fun h => Subtype.ext h⟩`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem mem_stabS (hj : j ≤ n) (g : GL (Fin n) κ) :
     g ∈ stabS n j κ hj ↔
@@ -216,9 +212,9 @@ private theorem mem_stabS (hj : j ≤ n) (g : GL (Fin n) κ) :
   exact ⟨fun h => congrArg Subtype.val h, fun h => Subtype.ext h⟩
 
 /- English proof (translation)
-Use `letI := actGr (κ := κ) (n := n) j`. Establish `: MulAction.IsPretransitive (GL (Fin n) κ) (UpperTheory.Gal.crystallineComparison.Gr κ (Fin n → κ) j)`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `exists_gl x.1 y.1 (x.2.trans y.2.symm)`. Conclude with `⟨g, Subtype.ext hg⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Unfold `stabS`. Rewrite using `[MulAction.index_stabilizer, MulAction.orbit_eq_univ, Set.ncard_univ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem index_stabS (hj : j ≤ n) :
     (stabS n j κ hj).index = Nat.card (UpperTheory.Gal.crystallineComparison.Gr κ (Fin n → κ) j) := by
@@ -243,9 +239,9 @@ private def red (n : ℕ) : GLint (Fin n) O →* GL (Fin n) κ :=
   (Formalism.UG.bc (e : IsLocalRing.ResidueField O →+* κ)).comp (tjcosets_red O n)
 
 /- English proof (translation)
-Introduce `x`. Take `⟨k, hk⟩` from `tjcosets_red_surjective O n (Formalism.UG.bc (e.symm : κ →+* IsLocalRing.ResidueField O) x)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Use `show Formalism.UG.bc (e : IsLocalRing.ResidueField O →+* κ) (tjcosets_red O n k) = x`. Rewrite using `[hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Rewrite using `[tjcosets_bc_apply, tjcosets_bc_apply]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem red_surjective (n : ℕ) : Function.Surjective (red O e n) := by
   intro x
@@ -259,7 +255,7 @@ private theorem red_surjective (n : ℕ) : Function.Surjective (red O e n) := by
   simp
 
 /- English proof (translation)
-Use `show ((Formalism.UG.bc (e : IsLocalRing.ResidueField O →+* κ) (tjcosets_red O n (tjcosets_iso n O g)) : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ) a b = _`. Rewrite using `[tjcosets_red_iso, tjcosets_bc_apply, tjcosets_bc_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem red_iso_apply (n : ℕ) (g : GL (Fin n) O) (a b : Fin n) :
     ((red O e n (tjcosets_iso n O g) : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ) a b =
@@ -272,13 +268,11 @@ private theorem red_iso_apply (n : ℕ) (g : GL (Fin n) O) (a b : Fin n) :
 variable {O}
 
 /- English proof (translation)
-Rewrite using `[inv_inv]`. Prove the components needed by the constructor for the conclusion. Introduce `H a b ha hb`. Use `H a b` as an intermediate fact. Rewrite `this` using `[if_neg (by omega), if_pos hb, one_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hmax _).1 this`. Introduce `H a b`. Apply the tactic sequence `by_cases ha : (a : ℕ) < j <;> by_cases hb : (b : ℕ) < j`. Rewrite using `[if_pos ha, if_pos hb]`. Establish `: ϖ * (((h : Matrix (Fin n) (Fin n) O) a b : O) : L) * ϖ⁻¹ = (((h : Matrix (Fin n) (Fin n) O) a b : O) : L)` using `by field_simp`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `((h : Matrix (Fin n) (Fin n) O) a b).2`. Rewrite using `[if_pos ha, if_neg hb, mul_one]`. Conclude with `O.mul_mem hϖO ((h : Matrix (Fin n) (Fin n) O) a b).2`. Rewrite using `[if_neg ha, if_pos hb, one_mul, mul_comm]`.
-
-Conclude with `(hmax _).2 (H a b (by omega) hb)`. Rewrite using `[if_neg ha, if_neg hb, one_mul, mul_one]`. Conclude with `((h : Matrix (Fin n) (Fin n) O) a b).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem entries_iff (n j : ℕ) (ϖ : L) (hϖ : ϖ ≠ 0) (hϖO : ϖ ∈ O)
     (hmax : ∀ x : O, ϖ⁻¹ * (x : L) ∈ O ↔ IsLocalRing.residue O x = 0) (h : GL (Fin n) O) :
@@ -306,11 +300,11 @@ private theorem entries_iff (n j : ℕ) (ϖ : L) (hϖ : ϖ ≠ 0) (hϖO : ϖ ∈
       exact ((h : Matrix (Fin n) (Fin n) O) a b).2
 
 /- English proof (translation)
-Use `set d := tjcosets_dG n j ϖ⁻¹ (inv_ne_zero hϖ) with hd`. Establish `hinv : (d⁻¹ * Formalism.UG.bc O.subtype g * d)⁻¹ = d⁻¹ * Formalism.UG.bc O.subtype g⁻¹ * d`. Simplify using `only [map_inv]`. Use `group`. Establish `key : ∀ h : GL (Fin n) O, (∀ a b, ((d⁻¹ * Formalism.UG.bc O.subtype h * d : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a b ∈ O) ↔ red O e n (tjcosets_iso n O h) ∈ stabS n j κ hj`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite using `[mem_stabS]`. Simplify using `only [hd, tjcosets_conj_apply, tjcosets_bc_apply, Subring.coe_subtype, red_iso_apply]`. Rewrite using `[entries_iff n j ϖ hϖ hϖO hmax h]`. Simplify using `only [EmbeddingLike.map_eq_zero_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[tjcosets_mem_K_iff, hinv, key g, key g⁻¹, map_inv, map_inv]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, (stabS n j κ hj).inv_mem h⟩⟩`.
+A detailed English derivation is pending.
 -/
 private theorem conj_mem_iff (n j : ℕ) (hj : j ≤ n) (ϖ : L) (hϖ : ϖ ≠ 0) (hϖO : ϖ ∈ O)
     (hmax : ∀ x : O, ϖ⁻¹ * (x : L) ∈ O ↔ IsLocalRing.residue O x = 0) (g : GL (Fin n) O) :
@@ -334,9 +328,9 @@ private theorem conj_mem_iff (n j : ℕ) (hj : j ≤ n) (ϖ : L) (hϖ : ϖ ≠ 0
 include e in
 
 /- English proof (translation)
-Establish `hEq : ((GLint (Fin n) O).comap (MulAut.conj t).toMonoidHom).subgroupOf (GLint (Fin n) O) = (stabS n j κ hj).comap (red O e n)`. Use extensionality with `k`. Take `⟨g, rfl⟩` from `(tjcosets_iso n O).surjective k`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_comap, Subgroup.mem_comap, tjcosets_iso_coe, ← conj_mem_iff e n j hj ϖ hϖ hϖO hmax g, ht]`. Simplify using `[MulAut.conj_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Subgroup.relIndex, hEq, Subgroup.index_comap_of_surjective _ (red_surjective O e n), index_stabS]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem relIndex_eq (n j : ℕ) (hj : j ≤ n) (ϖ : L) (hϖ : ϖ ≠ 0) (hϖO : ϖ ∈ O)
     (hmax : ∀ x : O, ϖ⁻¹ * (x : L) ∈ O ↔ IsLocalRing.residue O x = 0) (t : GL (Fin n) L)
@@ -403,9 +397,9 @@ end UpperTheory.Gal.Int.Geo.Pl.Tj.LocalIndices
 
 open UpperTheory.Gal.Int.Geo.Pl.Tj.LocalIndices in
 /- English proof (translation)
-Introduce `E _ _ _ n w i hi t ht _`. Take `⟨ϖ, hϖ, htv⟩` from `ht`. Establish `hϖ0` using `Formalism.UG.P.tjcosets_ne_zero w ϖ hϖ`. Use `relIndex_eq (O := Formalism.UG.Ov E w) (resEquiv w) n i hi ϖ hϖ0 (GlobalTheory.LFun.mem_Ov_of_isUnifV hϖ) (Formalism.UG.P.tjcosets_hmax w ϖ hϖ) t ?_` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[htv]`. Use `show _ = Formalism.UG.diagJ n ϖ⁻¹⁻¹ i`. Rewrite using `[inv_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.Pl.Tj.locIdx :
     UpperTheory.Gal.Int.Geo.Pl.Tj.LocIdx := by

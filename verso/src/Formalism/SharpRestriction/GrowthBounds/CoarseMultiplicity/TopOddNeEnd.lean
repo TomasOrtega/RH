@@ -8,17 +8,15 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G MvPolynomial
 
 /- English proof (translation)
-Unfold `divDer`. Rewrite using `[Finset.mul_sum, coeff_sum]`. Establish `key : ∀ m ∈ u.support, coeff μ (monomial ν (1 : R) * (if ν ≤ m then monomial (m - ν) (coeff m u * ((ν.prod fun k i => (m k).choose i : ℕ) : R)) else 0)) = if m = μ then coeff μ u * ((ν.prod fun k i => (μ k).choose i : ℕ) : R) else 0`. Introduce `m _`. Distinguish the cases in `h1 : ν ≤ m`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h1, monomial_mul, one_mul, add_tsub_cancel_of_le h1, coeff_monomial]`. Distinguish the cases in `h2 : m = μ`. Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h2, if_neg h2]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1, mul_zero, coeff_zero]`. Distinguish the cases in `h2 : m = μ`. Substitute `h2` using the available equality. Rewrite using `[if_pos rfl]`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, ¬ ν k ≤ m k := by`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `h1 hcon`. Establish `hk' : m k < ν k` using `not_le.1 hk`. Establish `h0 : (ν.prod fun k i => (m k).choose i) = 0` using `Finset.prod_eq_zero (i := k) (Finsupp.mem_support_iff.2 (by omega)) (Nat.choose_eq_zero_of_lt hk')`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h2]`. Rewrite using `[Finset.sum_congr rfl key, Finset.sum_ite_eq']`. Use `split_ifs with h`.
-
-Both sides reduce to the same expression. Rewrite using `[notMem_support_iff.1 h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_one {R : Type} [CommSemiring R] {σ : Type} (ν μ : σ →₀ ℕ) (u : MvPolynomial σ R) :
     coeff μ (monomial ν (1 : R) * divDer ν u) = coeff μ u * ((ν.prod fun k i => (μ k).choose i : ℕ) : R) := by
@@ -53,7 +51,7 @@ theorem eig_one {R : Type} [CommSemiring R] {σ : Type} (ν μ : σ →₀ ℕ) 
   · rw [notMem_support_iff.1 h, zero_mul]
 
 /- English proof (translation)
-Introduce `O _ _ σ T q u μ`. Unfold `gOp gEv`. Rewrite using `[coeff_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, eig_one, Algebra.smul_def, map_mul, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -66,17 +64,15 @@ theorem eigAt : EigAt := by
   ring
 
 /- English proof (translation)
-Establish `hexp : ∀ v : MvPolynomial σ K, f v = ∑ μ ∈ v.support, monomial (ε μ) (v.coeff μ)`. Introduce `v`. Use `conv_lhs => rw [← v.support_sum_monomial_coeff]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun μ _ => hf μ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hco : ∀ (v : MvPolynomial σ K) (μ : σ →₀ ℕ), coeff (ε μ) (f v) = coeff μ v`. Introduce `v μ`. Rewrite using `[hexp, coeff_sum]`. Establish `: ∀ μ' ∈ v.support, coeff (ε μ) (monomial (ε μ') (v.coeff μ')) = if μ' = μ then v.coeff μ else 0`. Introduce `μ' _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[coeff_monomial]`. Distinguish the cases in `h : μ' = μ`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg fun h' => h (hε h')]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Finset.sum_congr rfl this, Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(notMem_support_iff.1 h).symm`. Establish `hsupp : (f u).support ⊆ u.support.image ε`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hexp]`. Use `(support_sum).trans ?_` and prove the remaining obligations. Introduce `m hm`. Take `⟨μ, hμ, hm⟩` from `Finset.mem_biUnion.1 hm`. Use `support_monomial_subset hm` as an intermediate fact.
-
-Rewrite `this` using `[Finset.mem_singleton]`. Conclude with `Finset.mem_image.2 ⟨μ, hμ, this.symm⟩`. Rewrite using `[Formalism.MainNotions.G.GLWeightTheory.fock_form_finset_sum _ _ _ hsupp, Finset.sum_image fun a _ b _ h => hε h]`. Conclude with `Finset.sum_congr rfl fun μ _ => by rw [hco, hco]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_monoMap {K : Type} [Field K] {σ τ : Type} (f : MvPolynomial σ K →ₗ[K] MvPolynomial τ K)
     (ε : (σ →₀ ℕ) → (τ →₀ ℕ)) (hε : Function.Injective ε) (hf : ∀ μ c, f (monomial μ c) = monomial (ε μ) c)
@@ -113,9 +109,9 @@ theorem fock_monoMap {K : Type} [Field K] {σ τ : Type} (f : MvPolynomial σ K 
   exact Finset.sum_congr rfl fun μ _ => by rw [hco, hco]
 
 /- English proof (translation)
-Introduce `i i' e`. Establish `e' : segPos X.TT j i = segPos X.TT j i'` using `congrArg Subtype.val e`. Establish `h1` using `(pos_spec X.TT j i).2`. Establish `h2` using `(pos_spec X.TT j i').2`. Rewrite `h1` using `[e']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(dist_strictMono X.TT j).injective (h1.symm.trans h2)`.
+A detailed English derivation is pending.
 -/
 theorem topOdd_inj (X : Loc) (j : Fin (numSeg X.TT)) : Function.Injective (topOdd X j) := by
   intro i i' e
@@ -126,7 +122,7 @@ theorem topOdd_inj (X : Loc) (j : Fin (numSeg X.TT)) : Function.Injective (topOd
   exact (dist_strictMono X.TT j).injective (h1.symm.trans h2)
 
 /- English proof (translation)
-Introduce `e`. Establish `e' : segPos X.TT j i = segNext X.TT j` using `congrArg Subtype.val e`. Conclude with `(pos_mem X.TT j i).2 (e' ▸ (next_mem X.TT j).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem topOdd_ne_end (X : Loc) (j : Fin (numSeg X.TT)) (i : Fin (segS X.TT j)) : topOdd X j i ≠ topEnd X j := by
   intro e

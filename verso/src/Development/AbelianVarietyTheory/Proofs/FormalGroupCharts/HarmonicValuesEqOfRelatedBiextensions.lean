@@ -28,7 +28,7 @@ section SlopeTestRemainingChoices
 variable {k : Type} [CommRing k] {d : ℕ}
 
 /- English proof (translation)
-Introduce `e he`. Rewrite using `[map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => h i e he`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jeq_sum {σ J : Type} {m : ℕ} (s : Finset J) {f g : J → MvPowerSeries σ k} (h : ∀ i, JEq m (f i) (g i)) :
     JEq m (∑ i ∈ s, f i) (∑ i ∈ s, g i) := by
@@ -37,16 +37,16 @@ theorem jeq_sum {σ J : Type} {m : ℕ} (s : Finset J) {f g : J → MvPowerSerie
   exact Finset.sum_congr rfl fun i _ => h i e he
 
 /- English proof (translation)
-Introduce `e he`. Rewrite using `[MvPowerSeries.coeff_smul, MvPowerSeries.coeff_smul, h e he]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem jeq_smul {σ : Type} {m : ℕ} (c : k) {f g : MvPowerSeries σ k} (h : JEq m f g) : JEq m (c • f) (c • g) := by
   intro e he
   rw [MvPowerSeries.coeff_smul, MvPowerSeries.coeff_smul, h e he]
 
 /- English proof (translation)
-Unfold `FB.expS`. Establish `hs : PowerSeries.HasSubst (0 : PS k n d)` using `PowerSeries.HasSubst.of_constantCoeff_zero (by simp)`. Use extensionality with `e`. Rewrite using `[PowerSeries.coeff_subst hs, finsum_eq_single _ 0]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j hj`. Simplify using `[hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem expS_zero [Algebra ℚ k] {n : ℕ} : FB.expS k (0 : PS k n d) = 1 := by
   unfold FB.expS
@@ -58,7 +58,7 @@ theorem expS_zero [Algebra ℚ k] {n : ℕ} : FB.expS k (0 : PS k n d) = 1 := by
     simp [hj]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [expS_zero]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, gt_expS_add _ _ (hf a) (by simp [map_sum, hf]), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem expS_sum [Algebra ℚ k] {n : ℕ} {J : Type} (s : Finset J) (f : J → PS k n d)
     (hf : ∀ i, MvPowerSeries.constantCoeff (f i) = 0) : FB.expS k (∑ i ∈ s, f i) = ∏ i ∈ s, FB.expS k (f i) := by
@@ -69,7 +69,7 @@ theorem expS_sum [Algebra ℚ k] {n : ℕ} {J : Type} (s : Finset J) (f : J → 
     rw [Finset.sum_insert ha, Finset.prod_insert ha, gt_expS_add _ _ (hf a) (by simp [map_sum, hf]), ih]
 
 /- English proof (translation)
-Establish `h` using `expS_sum (Finset.range q) (fun _ => f) (fun _ => hf)`. Rewrite `h` using `[Finset.sum_const, Finset.prod_const, Finset.card_range]`. Rewrite using `[← h, Nat.cast_smul_eq_nsmul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem expS_natSmul [Algebra ℚ k] {n : ℕ} (q : ℕ) (f : PS k n d)
     (hf : MvPowerSeries.constantCoeff f = 0) : FB.expS k ((q : k) • f) = FB.expS k f ^ q := by
@@ -78,7 +78,7 @@ theorem expS_natSmul [Algebra ℚ k] {n : ℕ} (q : ℕ) (f : PS k n d)
   rw [← h, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[← MvPowerSeries.coe_substAlgHom (gt_hasSubst a ha), map_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_sum {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) {J : Type} (s : Finset J) (f : J → PS k m d) :
     ev a (∑ i ∈ s, f i) = ∑ i ∈ s, ev a (f i) := by
@@ -86,7 +86,7 @@ theorem ev_sum {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) {J : 
   rw [← MvPowerSeries.coe_substAlgHom (gt_hasSubst a ha), map_sum]
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[← MvPowerSeries.coe_substAlgHom (gt_hasSubst a ha), map_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_smul {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) (c : k) (f : PS k m d) :
     ev a (c • f) = c • ev a f := by
@@ -94,7 +94,7 @@ theorem ev_smul {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) (c :
   rw [← MvPowerSeries.coe_substAlgHom (gt_hasSubst a ha), map_smul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `MvPowerSeries.subst (MvPowerSeries.X) f = f`. Rewrite using `[MvPowerSeries.subst_self]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_pt_self {n : ℕ} (f : PS k n d) : ev (fun b => pt k (n := n) d b) f = f := by
   change MvPowerSeries.subst (MvPowerSeries.X) f = f
@@ -102,7 +102,7 @@ theorem ev_pt_self {n : ℕ} (f : PS k n d) : ev (fun b => pt k (n := n) d b) f 
   rfl
 
 /- English proof (translation)
-Rewrite using `[gt_ev_ev' _ _ (single_point_zero_constant hx) (pair_points_zero_constant (gp_pt 0) (gp_comp1 _ _ ha (gp_pt 0))), eval_pair_points, evP_comp1 _ (single_point_zero_constant hx) _ _ (gp_pt 0), evP_pt _ (single_point_zero_constant hx)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_diag {n : ℕ} (a : Pt k 1 d) (x : Pt k n d) (ha : GP a) (hx : GP x) (g : PS k 2 d) :
     ev ![x] (ev (n := 1) ![pt k d 0, comp1 a (pt k d 0)] g) = ev ![x, comp1 a x] g := by
@@ -111,7 +111,7 @@ theorem ev_diag {n : ℕ} (a : Pt k 1 d) (x : Pt k n d) (ha : GP a) (hx : GP x) 
   rfl
 
 /- English proof (translation)
-Rewrite using `[gt_ev_ev' ![a, b] _ (pair_points_zero_constant ha hb) (pair_points_zero_constant (gp_comp1 _ _ hφ (gp_pt 0)) (gp_comp1 _ _ hφ (gp_pt 1))), eval_pair_points, evP_comp1 _ (pair_points_zero_constant ha hb) φ _ (gp_pt 0), evP_comp1 _ (pair_points_zero_constant ha hb) φ _ (gp_pt 1), …`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_pair {n : ℕ} (φ : Pt k 1 d) (hφ : GP φ) (a b : Pt k n d) (ha : GP a) (hb : GP b) (h : PS k 2 d) :
     ev ![a, b] (ev ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] h) =
@@ -123,23 +123,21 @@ theorem ev_pair {n : ℕ} (φ : Pt k 1 d) (hφ : GP φ) (a b : Pt k n d) (ha : G
   rfl
 
 /- English proof (translation)
-Establish `hφ : GP φ` using `hinv.1`. Establish `hφi : GP φi` using `hinv.2.1`. Establish `ha' : GP (comp1 φi (comp1 a φ))` using `gp_comp1 _ _ hφi (gp_comp1 _ _ ha hφ)`. Establish `hp : ∀ b : Fin n, GP (pt k (n` using `n) d b) := fun b => gp_pt b`. Establish `hΦ : ∀ b : Fin n, GP (comp1 φ (pt k (n` using `n) d b)) := fun b => gp_comp1 _ _ hφ (hp b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦi : ∀ b : Fin n, GP (comp1 φi (pt k (n` using `n) d b)) := fun b => gp_comp1 _ _ hφi (hp b)`. Use `set a' := comp1 φi (comp1 a φ) with ha'def`. Establish `hL : ∀ b : Fin n, ∀ j, GP (![pt k (n` using `n) d b, comp1 a' (pt k (n := n) d b)] j) := fun b => pair_points_zero_constant (hp b) (gp_comp1 _ _ ha' (hp b))`. Establish `hLa : ∀ b : Fin n, ∀ j, GP (![pt k (n` using `n) d b, comp1 a (pt k (n := n) d b)] j) := fun b => pair_points_zero_constant (hp b) (gp_comp1 _ _ ha (hp b))`. Establish `hcomp : ∀ g : PS k n d, ev (n` using `n) (fun b => comp1 φ (pt k (n := n) d b)) (ev (n := n) (fun b => comp1 φi (pt k (n := n) d b)) g) = g := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[gt_ev_ev' _ _ hΦ hΦi]`. Establish `: (fun j => evP (fun b => comp1 φ (pt k (n` using `n) d b)) (comp1 φi (pt k (n := n) d j))) = fun b => pt k (n := n) d b := by`. Use function extensionality and compare the values at `j`. Rewrite using `[evP_comp1 _ hΦ _ _ (hp j), evP_pt _ hΦ, gt_comp_inv' hinv _ (hp j)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ev_pt_self]`. Establish `hφa : ∀ b : Fin n, comp1 φ (comp1 a' (pt k (n` using `n) d b)) = comp1 a (comp1 φ (pt k (n := n) d b)) := by`. Introduce `b`. Rewrite using `[ha'def, gt_comp1_comp1 φi _ (gp_comp1 _ φ ha hφ) _ (hp b), gt_comp1_comp1 a φ hφ _ (hp b), gt_comp_inv hinv _ (gp_comp1 _ _ ha (hΦ b))]`. Establish `hterm : ∀ b : Fin n, ev (n` using `n) (fun b => comp1 φ (pt k (n := n) d b)) (ev ![pt k (n := n) d b, comp1 a (pt k (n := n) d b)] h) = ev ![pt k (n := n) d b, comp1 a' (pt k (n := n) d b)] (ev ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] h) := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Rewrite using `[ev_pair φ hφ _ _ (hp b) (gp_comp1 _ _ ha' (hp b)), hφa, gt_ev_ev' _ _ hΦ (hLa b), eval_pair_points, evP_comp1 _ hΦ _ _ (hp b), evP_pt _ hΦ]`. Use `set h0 := ev ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] h with h0def`. Establish `hh0 : MvPowerSeries.constantCoeff h0 = 0` using `gt_const_ev _ (pair_points_zero_constant (gp_comp1 _ _ hφ (gp_pt 0)) (gp_comp1 _ _ hφ (gp_pt 1))) _ hh`. Establish `cS : ∀ (V : Fin n → Fin 2 → Pt k n d), (∀ b j, GP (V b j)) → ∀ g : PS k 2 d, MvPowerSeries.constantCoeff g = 0 → MvPowerSeries.constantCoeff (∑ b, ev (V b) g) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `V hV g hg`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun b _ => gt_const_ev _ (hV b) _ hg`. Establish `cS' : ∀ (V : Fin n → Fin 2 → Pt k n d), (∀ b j, GP (V b j)) → ∀ g : PS k 2 d, MvPowerSeries.constantCoeff g = 0 → MvPowerSeries.constantCoeff ((q : k) • ∑ b, ev (V b) g) = 0`. Introduce `V hV g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.constantCoeff_smul, cS V hV g hg, smul_zero]`. Simplify using `only [ev_diag _ _ ha' (hp _), ev_diag _ _ ha (hp _)]`. Rewrite using `[gt_ev_mul _ hΦ, hcomp, gt_ev_expS _ hΦ _ (cS' _ hLa h hh), ev_smul _ hΦ, ev_sum _ hΦ]`. Simplify using `only [hterm]`. Establish `hE : ∏ b : Fin n, (ev ![pt k (n` using `n) d b, comp1 a' (pt k (n := n) d b)] (FB.expS k lam)) ^ q = FB.expS k ((q : k) • ∑ b : Fin n, ev ![pt k (n := n) d b, comp1 a' (pt k (n := n) d b)] lam) := by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[expS_natSmul _ _ (cS _ hL lam hl), expS_sum _ _ (fun b => gt_const_ev _ (hL b) _ hl), Finset.prod_pow]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun b _ => gt_ev_expS _ (hL b) _ hl`. Rewrite using `[hE, _root_.mul_assoc, ← gt_expS_add _ _ (cS' _ hL lam hl) (cS' _ hL h0 hh0), ← smul_add, ← Finset.sum_add_distrib]`. Use `((GlobalTheory.T.mvPowerSeriesJetEq_calculus k m).1 _ _ _ _ _ (JEq.refl m f') ?_).2.2` and prove the remaining obligations.
-
-Establish `hsum : (∑ b : Fin n, (ev ![pt k (n` using `n) d b, comp1 a' (pt k (n := n) d b)] lam + ev ![pt k (n := n) d b, comp1 a' (pt k (n := n) d b)] h0)) = ∑ b : Fin n, ev ![pt k (n := n) d b, comp1 a' (pt k (n := n) d b)] (h0 + lam) := Finset.sum_congr rfl fun b _ => by rw [gt_ev_add _ (hL b), add_comm]`. Rewrite using `[hsum]`. Use `((GlobalTheory.T.jetEq_formalExp_iff_and_exists_log k n d m).1 _ _ (cS' _ hL h' hh') (cS' _ hL _ (by rw [map_add, hh0, hl, add_zero]))).1 ?_` and prove the remaining obligations. Conclude with `jeq_smul _ (jeq_sum _ fun b => (GlobalTheory.T.mvPowerSeriesJetEq_calculus k m).2.2.2.1 d 2 n _ _ _ _ (hL b) (hL b) (fun _ _ => JEq.refl _ _) hj)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jeq_main [Algebra ℚ k] {n : ℕ} (m q : ℕ) (φ φi a : Pt k 1 d) (hinv : IsInvPair φ φi) (ha : GP a)
     (h h' lam : PS k 2 d) (hh : MvPowerSeries.constantCoeff h = 0) (hh' : MvPowerSeries.constantCoeff h' = 0)
@@ -220,27 +218,27 @@ end SlopeTestRemainingChoices
 open GlobalTheory.FBMap in
 
 /- English proof (translation)
-Introduce `R _ d O _ _ _ _ _ k _ _ _ B B' φ φi hrel h h' hh hh' T _ r cc isX σ h1 h2 h3 h4 u u' hu' hu n P hP w0 q f'`. Take `⟨ε, hε⟩` from `hrel (P.totalDegree + 2)`. Use `set m := P.totalDegree + 2 with hm`. Establish `hε1` using `(GlobalTheory.T.formalChartJetRel_unit_one_on_axes R d O m B B' φ φi ε hε).1`. Take `⟨lam, hl0, hle⟩` from `(GlobalTheory.T.jetEq_formalExp_iff_and_exists_log k 2 d m).2 (FB.toK k ε) (by simp [FB.toK, hε1])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbi` using `GlobalTheory.T.canonicalGauge_difference_biadditive_jet R d O m B B' φ φi ε hε k h h' lam hh hh' hl0 hle`. Take `⟨g', hg', hgg⟩` from `GlobalTheory.T.exists_biadditive_series_jetEq_of_biadditiveJet R d O B' k m (by omega) _ hbi`. Establish `hcan` using `GlobalTheory.T.isCanonicalGauge_sub_biadditive R d O B' k h' g' hh' hg'`. Establish `c0 : ∀ {C : FB R d O} {g : PS k 2 d}, C.IsCanonGauge k g → MvPowerSeries.constantCoeff g = 0`. Introduce `C g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg MvPowerSeries.constantCoeff hg.ax0` as an intermediate fact. Rewrite `this` using `[gt_const_ev_eq _ (pair_points_zero_constant gp_zero₂ (gp_pt 0)), map_zero]`. Then use the resulting hypothesis. Establish `hφ : NoConst φ` using `hε.inv.1`. Establish `hφi : NoConst φi` using `hε.inv.2.1`. Establish `hinv : IsInvPair (mapPt (algebraMap R k) φ) (mapPt (algebraMap R k) φi)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => by simp [mapPt, hφ i], fun i => by simp [mapPt, hφi i], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← mapPt_comp1 _ _ hφi, hε.inv.2.2.1, mapPt_pt]`. Rewrite using `[← mapPt_comp1 _ _ hφ, hε.inv.2.2.2, mapPt_pt]`. Establish `hact : B'.actK k w0 = comp1 (mapPt (algebraMap R k) φi) (comp1 (B.actK k w0) (mapPt (algebraMap R k) φ))`. Express the relevant statement in the definitionally equal form `mapPt (algebraMap R k) (B'.A.act w0) = comp1 _ (comp1 (mapPt (algebraMap R k) (B.A.act w0)) _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hε.act w0, mapPt_comp1 _ _ (nc_comp1 (nc_act _ _) hφ), mapPt_comp1 _ _ hφ]`. Establish `hF : B'.FK k = transF (mapLaw (algebraMap R k) B.G).F (mapPt (algebraMap R k) φ) (mapPt (algebraMap R k) φi)`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `MvPowerSeries.map (algebraMap R k) (B'.G.F i) = _`. Rewrite using `[hε.law i]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `transF`. Rewrite using `[map_ev1 _ (nc_addOf (nc_law _) (nc_comp1 hφ (nc_pt _)) (nc_comp1 hφ (nc_pt _))), mapPt_addOf _ _ (nc_comp1 hφ (nc_pt _)) (nc_comp1 hφ (nc_pt _)), mapPt_comp1 _ _ (nc_pt _), mapPt_comp1 _ _ (nc_pt _), mapPt_pt, mapPt_pt]`. Both sides reduce to the same expression. Establish `hd : dLin (mapPt (algebraMap R k) φ) = (dLin φ).map (algebraMap R k)`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[dLin, mapPt]`. Establish `hj : JEq m (h' - g') (ev ![comp1 (mapPt (algebraMap R k) φ) (pt k (n` using `2) d 0), comp1 (mapPt (algebraMap R k) φ) (pt k (n := 2) d 1)] h + lam) := by`. Introduce `e he`. Use `hgg e he` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_add, ← this]`. Express the relevant statement in the definitionally equal form `_ - (_ - MvPowerSeries.coeff e (ev ![comp1 (mapPt (algebraMap R k) φ) (pt k (n := 2) d 0), comp1 (mapPt (algebraMap R k) φ) (pt k (n := 2) d 1)] h) - _) = _`. Expand and normalize the polynomial expressions, which then agree. Establish `haK : GP (B.actK k w0)` using `fun i => by simp [FB.actK, B.A.const w0 i]`. Establish `key` using `jeq_main (n := n) m q _ _ (B.actK k w0) hinv haK h (h' - g') lam (c0 hh) (c0 hcan) hl0 hj (MvPowerSeries.map (algebraMap R k) f')`.
+Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ev (n := n) (fun b => comp1 φi (pt R (n := n) d b)) (f' * ∏ b : Fin n, (ev ![pt R (n := n) d b, comp1 (B'.A.act w0) (pt R (n := n) d b)] ε) ^ q), ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.harmonicValueCopies_gauge_independent R d O k B' h' (h' - g') hh' hcan T r cc isX σ h1 h2 h3 h4 u' hu' n P hP w0 q]`. Establish `hmap : MvPowerSeries.map (algebraMap R k) (ev (n` using `n) (fun b => comp1 φi (pt R (n := n) d b)) (f' * ∏ b : Fin n, (ev ![pt R (n := n) d b, comp1 (B'.A.act w0) (pt R (n := n) d b)] ε) ^ q)) = ev (n := n) (fun b => comp1 (mapPt (algebraMap R k) φi) (pt k (n := n) d b)) (MvPowerSeries.map (algebraMap R k) f' * ∏ b : Fin n, (ev ![pt k …`. Rewrite using `[map_ev _ (fun b => nc_comp1 hφi (nc_pt b)), map_mul, map_prod]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `b`. Rewrite using `[mapPt_comp1 _ _ (nc_pt _), mapPt_pt]`. Use `congr 1`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_ev2 _ (nc_pt _) (nc_comp1 (nc_act _ _) (nc_pt _)), mapPt_comp1 _ _ (nc_pt _), mapPt_pt, hle]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Unfold `nabValN FB.hL`. Rewrite using `[hmap, hF, hact, GlobalTheory.T.constantCoeff_invariantPolyOperator_jetEq k d n _ _ _ _ P m _ _ (by omega) key, GlobalTheory.T.invariantPolyOperatorCopies_transportedLaw k d n (mapLaw (algebraMap R k) B.G) _ _ hinv, gt_const_ev_eq _ (fun b => gp_comp1 _ _ hinv.1 (gp_pt b)), hd]`. Simplify using `only [hu]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_nabValN_eq : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] [Module.Free ℤ O] [Module.Finite ℤ O] [IsReduced O] (k : Type) [Field k] [Algebra ℚ k] [Algebra R k] (B B' : FB R d O) (φ φi : Pt R 1 d), (∀ m, ∃ ε : PS R 2 d, JRel m B B' φ φi ε) → ∀ h h' : PS k 2 d, B.IsCanonGauge k h → B'.IsCanonGauge k h' → ∀ (T : Type) [Fintype T] (r : T → ℕ) (cc : T → T) (isX : T → Prop) (σ : T → O →+* k), (∀ τ, cc (cc τ) = τ) → (∀ τ, isX τ ∨ isX (cc τ)) → (∀ τ a, σ (cc τ) a = σ τ (star a)) → (∀ τ τ', τ ≠ τ' → ∃ a, IsUnit (σ τ a - σ τ' a)) → ∀ u u' : (Σ τ : T, Fin (r τ)) → Fin d → k, (∀ l a, (dAct k B' a).mulVec (u' l) = σ l.1 a • u' l) → (∀ l, u l = ((dLin φ).map (algebraMap R k)).mulVec (u' l)) → ∀ (n : ℕ) (P : MvPolynomial (Letter T r n) k), P ∈ harmK r n k cc isX (fun _ => 1) → ∀ (w0 : O) (q : ℕ) (f' : PS R n d), ∃ f : PS R n d, nabValN B k h w0 q (MvPowerSeries.map (algebraMap R k) f) (fun ℓ : Letter T r n => ℓ.2.2) (fun ℓ : Letter T r n => u ⟨ℓ.1, ℓ.2.1⟩) P = nabValN B' k h' w0 q (MvPowerSeries.map (algebraMap R k) f') (fun ℓ : Letter T r n => ℓ.2.2) (fun ℓ : Letter T r n => u' ⟨ℓ.1, ℓ.2.1⟩) P := by
   intro R _ d O _ _ _ _ _ k _ _ _ B B' φ φi hrel h h' hh hh' T _ r cc isX σ h1 h2 h3 h4 u u' hu' hu n P hP w0 q f'

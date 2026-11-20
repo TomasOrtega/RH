@@ -9,7 +9,7 @@ import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.HermitianFo
 namespace Formalism.L2.LamCM
 
 /- English proof (translation)
-The claim follows from `Step5_of lambda_key_formula`.
+A detailed English derivation is pending.
 -/
 theorem lambda_lower_bound : Step5 := Step5_of lambda_key_formula
 

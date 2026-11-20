@@ -13,7 +13,7 @@ namespace GlobalTheory.DetEqv.OpenPart
 open Set Filter Topology Matrix MeasureTheory GlobalTheory.SplitWeil ValuativeRel
 
 /- English proof (translation)
-Use `⟨hl, ?_⟩` and prove the remaining obligations. Establish `hcl : IsClosed (Function.support f)` using `(hl.isClopen_fiber 0).compl.isClosed`. Use `hK.of_isClosed_subset (isClosed_tsupport _) ?_` and prove the remaining obligations. Rewrite using `[tsupport, hcl.closure_eq]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_SB_of_subset {X : Type} [TopologicalSpace X] {f : X → ℂ} (hl : IsLocallyConstant f)
     {K : Set X} (hK : IsCompact K) (h : ∀ x, f x ≠ 0 → x ∈ K) : f ∈ SB X := by
@@ -28,17 +28,15 @@ section Ext
 variable {W X T : Type} [TopologicalSpace W] [TopologicalSpace X] [TopologicalSpace T] [T2Space T]
 
 /- English proof (translation)
-Establish `hK : IsCompact (ι '' tsupport F)` using `hF.2.isCompact.image hι.continuous`. Establish `hs : ∀ x, Function.extend ι F 0 x ≠ 0 → x ∈ ι '' tsupport F`. Introduce `x hx`. Distinguish the cases in `h : ∃ w, ι w = x`. Take `⟨w, rfl⟩` from `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[hι.injective.extend_apply]`. Conclude with `⟨w, subset_tsupport _ hx, rfl⟩`. Rewrite `hx` using `[Function.extend_apply' _ _ _ h]`. Conclude with `absurd rfl hx`. Use `mem_SB_of_subset ?_ hK hs` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Distinguish the cases in `h : ∃ w, ι w = x`. Take `⟨w, rfl⟩` from `h`. Rewrite using `[← hι.map_nhds_eq, eventually_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hF.1.eventually_eq w] with v hv`. Rewrite using `[hι.injective.extend_apply, hι.injective.extend_apply, hv]`. Establish `hx : π x = t₀`. Assume the negation of the conclusion as `hne`. Conclude with `h ((hr x).2 hne)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hc : IsClosed (π '' (ι '' tsupport F))` using `(hK.image hπ).isClosed`. Establish `hn : π x ∈ (π '' (ι '' tsupport F))ᶜ`. Introduce and unpack `⟨_, ⟨w, -, rfl⟩, h2⟩`. Conclude with `(hr _).1 ⟨w, rfl⟩ (h2.trans hx)`. Use `filter_upwards [hπ.continuousAt.eventually (hc.isOpen_compl.mem_nhds hn)] with y hy`.
-
-Rewrite using `[Function.extend_apply' _ _ _ h]`. Assume the negation of the conclusion as `hne`. Conclude with `hy ⟨y, hs y hne, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem extend_mem_SB {ι : W → X} (hι : IsOpenEmbedding ι) {π : X → T} (hπ : Continuous π) (t₀ : T)
     (hr : ∀ x, x ∈ range ι ↔ π x ≠ t₀) {F : W → ℂ} (hF : F ∈ SB W) :
@@ -91,7 +89,7 @@ def extZero {ι : W → X} (hι : IsOpenEmbedding ι) {π : X → T} (hπ : Cont
     · simp [Function.extend_apply' _ _ _ h]
 
 /- English proof (translation)
-The claim follows from `hι.injective.extend_apply _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem extZero_apply {ι : W → X} (hι : IsOpenEmbedding ι) {π : X → T} (hπ : Continuous π) (t₀ : T)
     (hr : ∀ x, x ∈ range ι ↔ π x ≠ t₀) (F : SB W) (w : W) :
@@ -99,7 +97,7 @@ theorem extZero_apply {ι : W → X} (hι : IsOpenEmbedding ι) {π : X → T} (
   hι.injective.extend_apply _ _ _
 
 /- English proof (translation)
-The claim follows from `Function.extend_apply' _ _ _ fun h => (hr x).1 h hx`.
+A detailed English derivation is pending.
 -/
 theorem extZero_apply_off {ι : W → X} (hι : IsOpenEmbedding ι) {π : X → T} (hπ : Continuous π) (t₀ : T)
     (hr : ∀ x, x ∈ range ι ↔ π x ≠ t₀) (F : SB W) (x : X) (hx : π x = t₀) :
@@ -107,11 +105,11 @@ theorem extZero_apply_off {ι : W → X} (hι : IsOpenEmbedding ι) {π : X → 
   Function.extend_apply' _ _ _ fun h => (hr x).1 h hx
 
 /- English proof (translation)
-Establish `hcl : IsClosed (Function.support (Φ : X → ℂ))` using `(Φ.2.1.isClopen_fiber 0).compl.isClosed`. Establish `hK : IsCompact (Function.support (Φ : X → ℂ))`. Use `Φ.2.2.isCompact` as an intermediate fact. Rewrite `this` using `[tsupport, hcl.closure_eq]`. Then use the resulting hypothesis. Establish `hK' : IsCompact (ι ⁻¹' Function.support (Φ : X → ℂ))` using `hι.isInducing.isCompact_preimage' hK fun x hx => (hr x).2 fun h => hx (hΦ x h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `⟨⟨(Φ : X → ℂ) ∘ ι, mem_SB_of_subset (Φ.2.1.comp_continuous hι.continuous) hK' fun w hw => hw⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Distinguish the cases in `h : π x = t₀`. Rewrite using `[extZero_apply_off _ _ _ _ _ _ h, hΦ x h]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, rfl⟩` from `(hr x).2 h`. Rewrite using `[extZero_apply]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_extZero {ι : W → X} (hι : IsOpenEmbedding ι) {π : X → T} (hπ : Continuous π) (t₀ : T)
     (hr : ∀ x, x ∈ range ι ↔ π x ≠ t₀) (Φ : SB X) (hΦ : ∀ x, π x = t₀ → (Φ : X → ℂ) x = 0) :
@@ -162,7 +160,7 @@ end Tens
 section Local
 
 /- English proof (translation)
-Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `infer_instance`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem nonarchimedean_local_field_t2Space (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     T2Space k := by
@@ -173,7 +171,7 @@ theorem nonarchimedean_local_field_t2Space (k : Type) [Field k] [ValuativeRel k]
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Use `haveI := nonarchimedean_local_field_t2Space k`. Establish `h : (fun u => (F : (Fin p → k) × Z → ℂ) (u, z)) ∈ SB (Fin p → k)` using `mem_SB_of_subset (F.2.1.comp_continuous (continuous_id.prodMk continuous_const)) (F.2.2.isCompact.image continuous_fst) fun u hu => ⟨(u, z), subset_tsupport _ hu, rfl⟩`. Conclude with `h.1.continuous.integrable_of_hasCompactSupport h.2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_slice [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure]
     {Z : Type} [TopologicalSpace Z] {p : ℕ} (F : SB ((Fin p → k) × Z)) (z : Z) :
@@ -186,13 +184,11 @@ theorem integrable_slice [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν
   exact h.1.continuous.integrable_of_hasCompactSupport h.2
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Use `haveI := nonarchimedean_local_field_t2Space k`. Establish `hc : IsCompact (𝒪[k] : Set k)` using `IsNonarchimedeanLocalField.isCompact_closedBall k 1`. Establish `ho : IsOpen (𝒪[k] : Set k)` using `Valuation.isOpen_integer`. Use `set K : Set (Fin p → k) := Set.pi univ fun _ => (𝒪[k] : Set k) with hKdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKc : IsCompact K` using `isCompact_univ_pi fun _ => hc`. Establish `hKo : IsOpen K` using `isOpen_set_pi finite_univ fun _ _ => ho`. Establish `hcl : IsClopen K` using `⟨hKc.isClosed, hKo⟩`. Use `set m : Measure (Fin p → k) := Measure.pi fun _ : Fin p => ν`. Establish `h1 : m K ≠ 0` using `(hKo.measure_pos m ⟨0, fun _ _ => zero_mem 𝒪[k]⟩).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h2 : m K ≠ ⊤` using `hKc.measure_lt_top.ne`. Establish `h3 : (m.real K : ℂ) ≠ 0`. Conclude with `(ENNReal.toReal_pos h1 h2).ne'` after adjusting the coercions. Use `⟨⟨K.indicator fun _ => (m.real K : ℂ)⁻¹, mem_SB_of_subset (LocallyConstant.indicator (LocallyConstant.const _ (m.real K : ℂ)⁻¹) hcl).isLocallyConstant hKc fun x hx => ?_⟩, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
-
-Conclude with `hx (indicator_of_notMem hn _)`. Use `show ∫ u, K.indicator (fun _ => (m.real K : ℂ)⁻¹) u ∂m = 1`. Rewrite using `[integral_indicator_const _ hKo.measurableSet, Complex.real_smul, mul_inv_cancel₀ h3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_SB_integral_one [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure]
     (p : ℕ) : ∃ χ : SB (Fin p → k), ∫ u, (χ : (Fin p → k) → ℂ) u ∂(Measure.pi fun _ : Fin p => ν) = 1 := by
@@ -223,7 +219,7 @@ section Descent
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `mem_SB_of_subset (χ.2.1.comp_continuous (continuous_id.matrix_vecMul continuous_const)) (χ.2.2.isCompact.image (f := fun v => v ᵥ* ((g⁻¹ : GL (Fin m) k) : Matrix (Fin m) (Fin m) k)) (continuous_id.matrix_vecMul continuous_const)) fun u hu => ⟨_, subset_tsupport _ hu, ?_⟩` and prove the remaining obligations. Use `show (u ᵥ* _) ᵥ* _ = u`. Rewrite using `[vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, vecMul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_vecMul_mem_SB {m : ℕ} (χ : SB (Fin m → k)) (g : GL (Fin m) k) :
     (fun u => (χ : (Fin m → k) → ℂ) (u ᵥ* (g : Matrix (Fin m) (Fin m) k))) ∈ SB (Fin m → k) := by
@@ -234,11 +230,11 @@ theorem comp_vecMul_mem_SB {m : ℕ} (χ : SB (Fin m → k)) (g : GL (Fin m) k) 
   rw [vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, vecMul_one]
 
 /- English proof (translation)
-Establish `hd : (g : Matrix (Fin m) (Fin m) k)ᵀ.det ≠ 0`. Rewrite using `[det_transpose]`. Conclude with `(GeneralLinearGroup.det g).ne_zero`. Establish `h` using `integral_comp_mulVec_eq_smul ν (GeneralLinearGroup.mkOfDetNeZero _ hd) f`. Establish `e : GeneralLinearGroup.det (GeneralLinearGroup.mkOfDetNeZero _ hd) = GeneralLinearGroup.det g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `ext`. Conclude with `det_transpose _`. Rewrite `h` using `[e, Complex.real_smul, Complex.ofReal_inv]`. Rewrite using `[← h]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `u`. Use `congr 1`. Conclude with `(mulVec_transpose _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem integral_comp_vecMul [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure]
     {m : ℕ} (g : GL (Fin m) k) (f : (Fin m → k) → ℂ) :
@@ -259,19 +255,19 @@ theorem integral_comp_vecMul [MeasurableSpace k] [BorelSpace k] (ν : Measure k)
   exact (mulVec_transpose _ _).symm
 
 /- English proof (translation)
-Use `borelize k`. Use `haveI := nonarchimedean_local_field_t2Space k`. Set `ν : Measure k` to `Measure.addHaar`. Take `⟨χ, hχ⟩` from `exists_SB_integral_one ν m`. Establish `key : ∀ (F : SB ((Fin m → k) × (Y × Matrix (Fin n) (Fin m) k))) (G : SB (Y × Matrix (Fin n) (Fin m) k)), (∀ z, ∫ u, (F : (Fin m → k) × (Y × Matrix (Fin n) (Fin m) k) → ℂ) (u, z) ∂(Measure.pi fun _ : Fin m => ν) = (G : Y × Matrix (Fin n) (Fin m) k → ℂ) z) → L F = L (tens χ G)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `F G h`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Use `GlobalTheory.DetEqv.Transl.map_eq_zero_of_fiber_integral k ν _ m L ?_ _ fun z => ?_` and prove the remaining obligations. Introduce `c Φ Φ' hΦ`. Use `hL c 1 Φ Φ' fun u y R => by` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hΦ, Units.val_one, vecMul_one, Matrix.mul_one, add_comm]`. Simplify using `using this`. Use `integral_sub (integrable_slice ν F z) (integrable_slice ν (tens χ G) z)` as an intermediate fact. Simplify using `only [Submodule.coe_sub, Pi.sub_apply]`. Rewrite using `[this, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [tens_apply]`. Rewrite using `[integral_mul_const, hχ, one_mul, sub_self]`. Establish `h0 : L ∘ₗ tens χ = 0`. Use `hV Y m hnm (μ * GlobalTheory.SmGL.absPow k 1) (fun t ht => hμ (t - 1) ?_) _ fun g G G' hG => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_sub, sub_eq_add_neg, GlobalTheory.SmGL.absPow_add, ← ht, Complex.ofReal_one, GlobalTheory.SmGL.absPow_neg, mul_inv_cancel_right]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : (nabs k (GeneralLinearGroup.det g) : ℂ) ≠ 0`. Conclude with `(GlobalTheory.SmGL.nabs_pos' k _).ne'` after adjusting the coercions. Establish `e1` using `hL 0 g (tens χ G) (tens ⟨_, comp_vecMul_mem_SB χ g⟩ G') fun u y R => by`. Rewrite using `[tens_apply, tens_apply, zero_add, hG]`. Establish `e2` using `key (tens ⟨_, comp_vecMul_mem_SB χ g⟩ G') (((nabs k (GeneralLinearGroup.det g) : ℂ))⁻¹ • G') fun z => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [tens_apply]`. Rewrite using `[integral_mul_const, integral_comp_vecMul, hχ, mul_one]`. Both sides reduce to the same expression. Rewrite `e1` using `[e2, map_smul, map_smul, smul_eq_mul]`. Simplify using `only [LinearMap.comp_apply, MonoidHom.mul_apply, Units.val_mul, GlobalTheory.SmGL.val_absPow, Complex.cpow_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. By extensionality, compare the relevant components.
 
-Rewrite using `[mul_right_comm, ← e1]`. Clear the denominators using the available nonvanishing facts. Use extensionality with `F`. Rewrite using `[key F ⟨_, fibre_integral_mem_SB k ν _ m F F.2⟩ fun z => rfl]`. Conclude with `LinearMap.congr_fun h0 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descent {n : ℕ} (hV : VanishAt k n) {Y : Type} [TopologicalSpace Y] {m : ℕ} (hnm : n < m)
     (μ : kˣ →* ℂˣ) (hμ : ∀ t : ℝ, μ ≠ GlobalTheory.SmGL.absPow k (t : ℂ))
@@ -340,7 +336,7 @@ def blockMat {K : Type} [CommRing K] (c : Fin m → K) (g : Matrix (Fin m) (Fin 
   Matrix.of (vecCons (vecCons 1 c) fun i => vecCons 0 (g i))
 
 /- English proof (translation)
-Rewrite using `[det_succ_column_zero, Fin.sum_univ_succ]`. Simplify using `[blockMat]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem det_blockMat {K : Type} [CommRing K] (c : Fin m → K) (g : Matrix (Fin m) (Fin m) K) :
     (blockMat c g).det = g.det := by
@@ -349,14 +345,14 @@ theorem det_blockMat {K : Type} [CommRing K] (c : Fin m → K) (g : Matrix (Fin 
   rfl
 
 /- English proof (translation)
-Simplify using `[blockMat, Matrix.mul_apply, Fin.sum_univ_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_blockMat_zero {K : Type} [CommRing K] (X : Matrix (Fin (n + 1)) (Fin (m + 1)) K)
     (c : Fin m → K) (g : Matrix (Fin m) (Fin m) K) : (X * blockMat c g) 0 0 = X 0 0 := by
   simp [blockMat, Matrix.mul_apply, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun l => ?_) i <;> refine Fin.cases ?_ (fun j' => ?_) j <;>`. Simplify using `[chartMat, blockMat, Matrix.mul_apply, Fin.sum_univ_succ, vecMul, dotProduct, mul_add, add_mul, Finset.mul_sum, Finset.sum_add_distrib, mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chartMat_mul_blockMat {K : Type} [CommRing K] (u : Fin m → K) (s : K) (a : Fin n → K)
     (R : Matrix (Fin n) (Fin m) K) (c : Fin m → K) (g : Matrix (Fin m) (Fin m) K) :
@@ -404,19 +400,17 @@ def chart (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchi
 end Chart
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n hV Y _ m hnm μ hμ L hL Φ hΦ`. Use `haveI := nonarchimedean_local_field_t2Space k`. Establish `hπ : Continuous fun x : Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k => x.2 0 0` using `by fun_prop`. Establish `hU : IsOpen {x : Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k | x.2 0 0 ≠ 0}` using `isOpen_ne_fun hπ continuous_const`. Establish `hι : IsOpenEmbedding (Subtype.val ∘ chart k n m Y)` using `hU.isOpenEmbedding_subtypeVal.comp (chart k n m Y).isOpenEmbedding`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ∀ x, x ∈ range (Subtype.val ∘ chart k n m Y) ↔ x.2 0 0 ≠ 0`. Introduce `x`. Rewrite using `[(chart k n m Y).surjective.range_comp, Subtype.range_coe]`. Both sides reduce to the same expression. Establish `h0 : L ∘ₗ extZero hι hπ 0 hr = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `descent hV hnm μ hμ _ fun c g F F' hF => ?_` and prove the remaining obligations. Establish `hd : (blockMat c (g : Matrix (Fin m) (Fin m) k)).det ≠ 0`. Rewrite using `[det_blockMat]`. Conclude with `(GeneralLinearGroup.det g).ne_zero`. Establish `e : GeneralLinearGroup.det (GeneralLinearGroup.mkOfDetNeZero _ hd) = GeneralLinearGroup.det g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Conclude with `det_blockMat _ _`. Rewrite using `[← e]`. Use `hL _ _ _ fun y X => ?_` and prove the remaining obligations. Use `show _ = (extZero hι hπ 0 hr F : Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k → ℂ) (y, X * blockMat c g)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hX : X 0 0 = 0`. Rewrite using `[extZero_apply_off _ _ _ _ _ (y, X) hX, extZero_apply_off _ _ _ _ _ (y, X * blockMat c g) ((mul_blockMat_zero X _ _).trans hX)]`. Take `⟨⟨u, ⟨y', s, a⟩, R⟩, hw⟩` from `(hr (y, X)).2 hX`. Establish `h1 : y' = y` using `congrArg Prod.fst hw`. Establish `h2 : chartMat u s.1 a R = X` using `congrArg Prod.snd hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (y, X * blockMat c (g : Matrix (Fin m) (Fin m) k)) = (Subtype.val ∘ chart k n m Y) (c + u ᵥ* (g : Matrix (Fin m) (Fin m) k), (y', s, a), R * (g : Matrix (Fin m) (Fin m) k))`. Rewrite using `[← h1, ← h2, chartMat_mul_blockMat]`. Both sides reduce to the same expression. Rewrite using `[h3, ← hw, extZero_apply, extZero_apply, hF]`. Take `⟨F, rfl⟩` from `exists_extZero hι hπ 0 hr Φ fun x hx => hΦ x.1 x.2 hx`.
-
-Conclude with `LinearMap.congr_fun h0 F`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem vanish_of_vanish_on_corner_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ), GlobalTheory.DetEqv.VanishAt k n → ∀ (Y : Type) [TopologicalSpace Y] (m : ℕ), n < m →
     ∀ μ : kˣ →* ℂˣ, (∀ t : ℝ, μ ≠ GlobalTheory.SmGL.absPow k (t : ℂ)) → ∀ L : GlobalTheory.SplitWeil.SB (Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k) →ₗ[ℂ] ℂ,

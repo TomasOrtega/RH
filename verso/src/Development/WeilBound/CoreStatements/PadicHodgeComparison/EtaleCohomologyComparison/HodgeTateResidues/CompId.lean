@@ -24,7 +24,7 @@ def coL {m : ℕ} (L : Lv Y m) (M : Model l K) (r j : ℕ) : HG (L.QB M) r j →
   if h : ∃ co, IsCo L.γB M.q (L.QB M) L.θ L.tB_mem r j co then h.choose else 0
 
 /- English proof (translation)
-Rewrite using `[coL, dif_pos (hC L M hM r j h).2]`. Conclude with `(hC L M hM r j h).2.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCo (hC : CoEx l K) {m : ℕ} (L : Lv Y m) {M : Model l K} (hM : M.Sm) {r : ℕ} (j : ℕ) (h : r < m) :
     IsCo L.γB M.q (L.QB M) L.θ L.tB_mem r j (coL L M r j) := by
@@ -32,7 +32,7 @@ theorem isCo (hC : CoEx l K) {m : ℕ} (L : Lv Y m) {M : Model l K} (hM : M.Sm) 
   exact (hC L M hM r j h).2.choose_spec
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isCo hC L hM j h).smul, (isCo hC L hM j h).same, (isCo hC L hM j h).diff, (hC L M hM r j h).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem aCo (hC : CoEx l K) {m : ℕ} (L : Lv Y m) {M : Model l K} (hM : M.Sm) {r : ℕ} (j : ℕ) (h : r < m) :
     ACo (V := fun a => Hdg M.q a j) L.θ (fun a => L.μ M a r j) r (coL L M r j) :=
@@ -55,7 +55,7 @@ def idH {m : ℕ} (L : Lv Y m) : LHom L L (RingHom.id _) (fun _ => RingHom.id _)
   θc := map_one _
 
 /- English proof (translation)
-Use `(aCo hC L hN j (hr.trans_le h.le)).hom (aCo hC L' hM j hr) le_rfl sC h.θ h.oB (h.fW u hu r j) (fun a => pullH (Model.genMap u hu) (Model.genMap_q u hu) a j) (fun a => h.cB ^ (r - a)) (fun a _ y => hμ h u hu a r j y) w a φ` as an intermediate fact. Rewrite `this` using `[map_pow, h.θc]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem co_hom (hC : CoEx l K) (hμ : HomMu l K) {m m' : ℕ} {L : Lv Y m} {L' : Lv Y m'} {sΛ : Y.Λ →+* Y.Λ}
     {sn : ∀ n, Y.R n →+* Y.R n} {sC : ℂ_[l] →+* ℂ_[l]} {c : ℂ_[l]} (h : LHom L L' sΛ sn sC c) {M N : Model l K} (hM : M.Sm) (hN : N.Sm)
@@ -74,16 +74,16 @@ def pullM (Y : CB l K) {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p
     (DPMorphism.id _).isDPMorphism ((B.schMap u hu).ptK _) fun _ _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => congrArg φ (hF.pull_id M.q _ _ (genMap_id M h) a j x)`.
+A detailed English derivation is pending.
 -/
 theorem comp_id (hF : KForm) (M : Model l K) (h : 𝟙 M.X ≫ M.p = M.p) (a j : ℕ) (φ : Module.Dual K (Hdg M.q a j)) :
     φ ∘ₗ pullH (Model.genMap (𝟙 M.X) h) (Model.genMap_q _ h) a j = φ :=
   LinearMap.ext fun x => congrArg φ (hF.pull_id M.q _ _ (genMap_id M h) a j x)
 
 /- English proof (translation)
-Establish `h1` using `hR h (𝟙 M.X) (Category.id_comp _) (pullM Y (𝟙 M.X) (Category.id_comp _)) (fun _ _ _ => rfl) r j x w hw`. Establish `e : (fun n => (pdOm (pullM Y (𝟙 M.X) (Category.id_comp _) n) (RingHom.id _) (h.cris n) r).pull j (x n)) = x`. Use function extensionality and compare the values at `fun n => pd_id (pullM Y (𝟙 M.X) (Category.id_comp _) n) (h.cris n) (fun _ => rfl) (fun B₀ y => Category.comp_id (show Spec B₀ ⟶ M.X from y.1.2)) r j (x n)`. Rewrite `h1` using `[e]`. Use `⟨_, h1, funext fun a => AddMonoidHom.ext fun φ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[co_hom hC hμ h hM hM _ _ j hr, comp_id hF, one_pow, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem down (hC : CoEx l K) (hR : HomRho l K) (hμ : HomMu l K) (hF : KForm) {m m' : ℕ} {L : Lv Y m} {L' : Lv Y m'}
     (h : LHom L L' (RingHom.id _) (fun _ => RingHom.id _) (RingHom.id _) 1) {M : Model l K} (hM : M.Sm) {r j : ℕ} (hr : r < m')
@@ -120,9 +120,9 @@ variable (H : Hyp S) {M : Model l K} (hM : M.Sm)
 include H hM
 
 /- English proof (translation)
-Proceed by induction on `m, hm using Nat.le_induction with`. Consider the case `base`. Rewrite using `[gam, dif_pos ⟨w, hw⟩]`. Conclude with `congrArg _ ((H.ex.ex (S r) M hM r j r.lt_succ_self x hx).unique (Exists.choose_spec ⟨w, hw⟩) hw)`. Consider the case `succ m hm ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨w', h1, h2⟩` from `down H.co H.hom H.mu H.form (H.dn m).some hM (Nat.lt_succ_of_le hm) x w hw`. Conclude with `(ih h1).trans h2`.
+A detailed English derivation is pending.
 -/
 theorem gam_eq {r j m : ℕ} (hm : r ≤ m) {x : Y.Fam M r j} (hx : CB.Comp x) {w : HG ((S m).QB M) r j} (hw : (S m).Rho x w) :
     gam S x = coL (S m) M r j w := by
@@ -135,13 +135,13 @@ theorem gam_eq {r j m : ℕ} (hm : r ≤ m) {x : Y.Fam M r j} (hx : CB.Comp x) {
     exact (ih h1).trans h2
 
 /- English proof (translation)
-The claim follows from `(H.ex.ex (S m) M hM r j (Nat.lt_succ_of_le hm) x hx).exists`.
+A detailed English derivation is pending.
 -/
 theorem rho {r j m : ℕ} (hm : r ≤ m) {x : Y.Fam M r j} (hx : CB.Comp x) : ∃ w, (S m).Rho x w :=
   (H.ex.ex (S m) M hM r j (Nat.lt_succ_of_le hm) x hx).exists
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `H.rho hM le_rfl hx`. Take `⟨w', hw'⟩` from `H.rho hM le_rfl hy`. Rewrite using `[H.gam_eq hM le_rfl hxy (H.ex.add _ _ _ _ _ _ _ _ hw hw'), H.gam_eq hM le_rfl hx hw, H.gam_eq hM le_rfl hy hw', map_add]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem add {r j : ℕ} {x y : Y.Fam M r j} (hx : CB.Comp x) (hy : CB.Comp y) (hxy : CB.Comp (x + y)) (a : ℕ) :
     gam S (x + y) a = gam S x a + gam S y a := by
@@ -151,7 +151,7 @@ theorem add {r j : ℕ} {x y : Y.Fam M r j} (hx : CB.Comp x) (hy : CB.Comp y) (h
   rfl
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `H.rho hM le_rfl hx`. Rewrite using `[H.gam_eq hM le_rfl hc (H.ex.smul _ _ _ _ c _ _ hw), H.gam_eq hM le_rfl hx hw, ← (S r).θ_lam]`. Conclude with `(isCo H.co (S r) hM j r.lt_succ_self).smul _ _ _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin {r j : ℕ} (c : Y.Λ) {x : Y.Fam M r j} (hx : CB.Comp x) (hc : CB.Comp (c • x)) (a : ℕ) (φ : Module.Dual K (Hdg M.q a j)) :
     gam S (c • x) a φ = Y.θ c * gam S x a φ := by
@@ -160,7 +160,7 @@ theorem lin {r j : ℕ} (c : Y.Λ) {x : Y.Fam M r j} (hx : CB.Comp x) (hc : CB.C
   exact (isCo H.co (S r) hM j r.lt_succ_self).smul _ _ _ _
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `H.rho hM le_rfl hx`. Rewrite using `[H.gam_eq hM le_rfl hx hw, ← (S r).θ_K]`. Conclude with `(isCo H.co (S r) hM j r.lt_succ_self).lin _ _ _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin' {r j : ℕ} {x : Y.Fam M r j} (hx : CB.Comp x) (a : ℕ) (k : K) (φ : Module.Dual K (Hdg M.q a j)) :
     gam S x a (k • φ) = kC K k * gam S x a φ := by
@@ -169,7 +169,7 @@ theorem lin' {r j : ℕ} {x : Y.Fam M r j} (hx : CB.Comp x) (a : ℕ) (k : K) (�
   exact (isCo H.co (S r) hM j r.lt_succ_self).lin _ _ _ _
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `H.rho hM le_rfl hx`. Rewrite using `[H.gam_eq hM le_rfl hx hw]`. Conclude with `(isCo H.co (S r) hM j r.lt_succ_self).big a ha w`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem big {r j : ℕ} {x : Y.Fam M r j} (hx : CB.Comp x) (a : ℕ) (ha : r < a) : gam S x a = 0 := by
   obtain ⟨w, hw⟩ := H.rho hM le_rfl hx
@@ -178,9 +178,9 @@ theorem big {r j : ℕ} {x : Y.Fam M r j} (hx : CB.Comp x) (a : ℕ) (ha : r < a
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Establish `hr : r ≤ r'` using `by omega`. Take `⟨w, hw⟩` from `H.rho hM hr hx`. Rewrite using `[H.gam_eq hM le_rfl hs (H.mul.sh _ _ k h _ _ hw), H.gam_eq hM hr hx hw]`. Use `AddMonoidHom.ext fun φ => ?_` and prove the remaining obligations. Use `(aCo H.co (S r') hM j (Nat.lt_succ_of_le hr)).hom (aCo H.co (S r') hM j r'.lt_succ_self) hr (sB := RingHom.id _) (RingHom.id _) (fun _ => rfl) (fun _ => rfl) (shG ((S r').QB M) (S r').tB_mem k h j) (fun _ => LinearMap.id) (fun _ => 1) (fun a ha y => (H.mul.sh_μ _ _ k h a ha y).tr …` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[map_one, one_mul]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sh {r r' j : ℕ} (k : ℕ) (h : r + k = r') {x : Y.Fam M r j} (hx : CB.Comp x) (hs : CB.Comp (CB.shS k h x)) (a : ℕ) :
     gam S (CB.shS k h x) a = gam S x a := by
@@ -195,7 +195,7 @@ theorem sh {r r' j : ℕ} (k : ℕ) (h : r + k = r') {x : Y.Fam M r j} (hx : CB.
   exact this
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `H.rho hN le_rfl hx`. Establish `h1` using `H.hom h u hu mm hpt r j x w hw`. Take `rfl : x' = fun n => (pdOm (mm n) sΛ (h.cris n) r).pull j (x n)` from `funext e`. Rewrite using `[H.gam_eq hM le_rfl hx' h1, H.gam_eq hN le_rfl hx hw]`. Conclude with `co_hom H.co H.mu h hM hN u hu j r.lt_succ_self w a φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom' {N : Model l K} (hN : N.Sm) {sΛ : Y.Λ →+* Y.Λ} {sn : ∀ n, Y.R n →+* Y.R n} {sC : ℂ_[l] →+* ℂ_[l]} {c : ℂ_[l]} {r j : ℕ}
     (h : LHom (S r) (S r) sΛ sn sC c) (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p)
@@ -212,7 +212,7 @@ theorem hom' {N : Model l K} (hN : N.Sm) {sΛ : Y.Λ →+* Y.Λ} {sn : ∀ n, Y.
   exact co_hom H.co H.mu h hM hN u hu j r.lt_succ_self w a φ
 
 /- English proof (translation)
-Rewrite using `[H.hom' hM hN (idH (S r)) u hu (pullM Y u hu) (fun _ _ _ => rfl) hx x' hx' (fun _ _ => rfl) e, one_pow, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem nat {N : Model l K} (hN : N.Sm) {r j : ℕ} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p)
     {x : Y.Fam N r j} (hx : CB.Comp x) (x' : Y.Fam M r j) (hx' : CB.Comp x')
@@ -222,7 +222,7 @@ theorem nat {N : Model l K} (hN : N.Sm) {r j : ℕ} (u : M.X ⟶ N.X) (hu : u �
   rw [H.hom' hM hN (idH (S r)) u hu (pullM Y u hu) (fun _ _ _ => rfl) hx x' hx' (fun _ _ => rfl) e, one_pow, one_mul]; rfl
 
 /- English proof (translation)
-Break down `le_or_gt a r with ha | ha` into its components or cases. Rewrite using `[H.hom' hM hM h (𝟙 M.X) (Category.id_comp _) mm (fun n B₀ y => (hpt n B₀ y).trans (Category.comp_id _).symm) hx x' hx' hc e, comp_id H.form, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' ha]`. Rewrite using `[H.big hM hx a ha, H.big hM hx' a ha]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gal {sΛ : Y.Λ →+* Y.Λ} {sn : ∀ n, Y.R n →+* Y.R n} {sC : ℂ_[l] →+* ℂ_[l]} {c : ℂ_[l]} {r j : ℕ}
     (h : LHom (S r) (S r) sΛ sn sC c) (mm : ∀ n, GlobalTheory.LogCris.Mor (Y.L M n) (Y.L M n) (sn n))
@@ -237,9 +237,9 @@ theorem gal {sΛ : Y.Λ →+* Y.Λ} {sn : ∀ n, Y.R n →+* Y.R n} {sC : ℂ_[l
   · rw [H.big hM hx a ha, H.big hM hx' a ha]; simp
 
 /- English proof (translation)
-Establish `h1 : r ≤ s` using `by omega`. Establish `h2 : r' ≤ s` using `by omega`. Take `⟨w, hw⟩` from `H.rho hM h1 hx`. Take `⟨w', hw'⟩` from `H.rho hM h2 hy`. Take `⟨β, hβ⟩` from `CrystallineSemistableComparison.P.cup_bilin (grOkQ ((S s).QB M) h).pair (rfl : i + j = i + j)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[H.gam_eq hM le_rfl hxy (H.mul.cup _ _ h _ _ _ _ hw hw'), H.gam_eq hM h1 hx hw, H.gam_eq hM h2 hy hw']`. Use `(aCo H.co (S s) hM i (Nat.lt_succ_of_le h1)).cup (aCo H.co (S s) hM j (Nat.lt_succ_of_le h2)) (aCo H.co (S s) hM (i + j) s.lt_succ_self) h (kC K) (S s).θ_K β (fun e y y' => cupH M.q e rfl y y') (fun e => H.form.bilin M.q e rfl) (fun e ha ha' y y' => (hβ _ _).trans (H.mul.cup_μ _ …` as an intermediate fact. Rewrite `this` using `[hβ]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cup {r r' s i j : ℕ} (h : r + r' = s) {x : Y.Fam M r i} {y : Y.Fam M r' j} (hx : CB.Comp x) (hy : CB.Comp y)
     (hxy : CB.Comp (CB.cupS h x y)) {m m' : ℕ → ℕ} (b : ∀ a, Module.Basis (Fin (m a)) K (Hdg M.q a i))
@@ -260,14 +260,14 @@ theorem cup {r r' s i j : ℕ} (h : r + r' = s) {x : Y.Fam M r i} {y : Y.Fam M r
   exact this
 
 /- English proof (translation)
-Rewrite using `[H.gam_eq hM le_rfl h1 (H.mul.one (S 0) M), ← (S 0).θ_K]`. Conclude with `(isCo H.co (S 0) hM 0 Nat.one_pos).same 0 le_rfl _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one (h1 : CB.Comp (Y.oneS M)) (φ : Module.Dual K (Hdg M.q 0 0)) : gam S (Y.oneS M) 0 φ = kC K (φ (oneH M.q)) := by
   rw [H.gam_eq hM le_rfl h1 (H.mul.one (S 0) M), ← (S 0).θ_K]
   exact (isCo H.co (S 0) hM 0 Nat.one_pos).same 0 le_rfl _ _
 
 /- English proof (translation)
-Rewrite using `[H.gam_eq hM le_rfl hx (H.c1 (S 1) M Nat.one_lt_two D hD x c h1 h2)]`. Conclude with `⟨fun φ => ((isCo H.co (S 1) hM 2 Nat.one_lt_two).same 1 le_rfl _ _).trans ((S 1).θ_K _), fun a ha => (isCo H.co (S 1) hM 2 Nat.one_lt_two).diff a 1 ha _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem c1' (D : E.LineData M.X) (hD : sSup (𝒱D D) = ⊤) (x : Y.Fam M 1 2) (c : Hdg M.q 1 2) (hx : CB.Comp x) (h1 : CB.IsFirstChernClassInFamily D x)
     (h2 : IsDlogFirstChernClass M.q (genD D) c) : (∀ φ, gam S x 1 φ = kC K (φ c)) ∧ ∀ a, a ≠ 1 → gam S x a = 0 := by

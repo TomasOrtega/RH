@@ -7,7 +7,7 @@ open scoped Cardinal Polynomial IntermediateField
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Establish `h` using `Algebra.IsAlgebraic.cardinalMk_le_max ℚ F`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mk_le_aleph0_of_finite (F : IntermediateField ℚ ℂ) (hF : FiniteDimensional ℚ F) :
     Cardinal.mk F ≤ Cardinal.aleph0 := by
@@ -15,9 +15,9 @@ theorem mk_le_aleph0_of_finite (F : IntermediateField ℚ ℂ) (hF : FiniteDimen
   simpa using h
 
 /- English proof (translation)
-Establish `: Countable F[X]` using `Cardinal.mk_le_aleph0_iff.1 (Polynomial.cardinalMk_le_max.trans (max_le hF le_rfl))`. Establish `hs : Function.Surjective (fun p : F[X] × F[X] => algebraMap F[X] (RatFunc F) p.1 / algebraMap F[X] (RatFunc F) p.2)`. Introduce `x`. Take `⟨a, b, _, rfl⟩` from `IsFractionRing.div_surjective (A := F[X]) x`. Conclude with `⟨(a, b), rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `: Countable (RatFunc F)` using `hs.countable`. Conclude with `Cardinal.mk_le_aleph0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mk_ratFunc_le_aleph0 (F : Type) [Field F] (hF : Cardinal.mk F ≤ Cardinal.aleph0) :
     Cardinal.mk (RatFunc F) ≤ Cardinal.aleph0 := by
@@ -32,13 +32,13 @@ theorem mk_ratFunc_le_aleph0 (F : Type) [Field F] (hF : Cardinal.mk F ≤ Cardin
   exact Cardinal.mk_le_aleph0
 
 /- English proof (translation)
-Establish `hc1 : Transcendental F (c + 1)` using `fun h => hc (by simpa using h.sub (isAlgebraic_one (R := F) (A := ℂ)))`. Establish `i0 : Function.Injective (Polynomial.aeval (R` using `F) c).toRingHom := transcendental_iff_injective.1 hc`. Establish `i1 : Function.Injective (Polynomial.aeval (R` using `F) (c + 1)).toRingHom := transcendental_iff_injective.1 hc1`. Set `f : RatFunc F →+* ℂ` to `IsFractionRing.lift i0`. Set `g : RatFunc F →+* ℂ` to `IsFractionRing.lift i1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨σ, hσ⟩` from `ReciprocityTheory.ChartRestriction.B3.iop_extEmb f g (mk_ratFunc_le_aleph0 F hF) (by simp [Cardinal.mk_complex, Cardinal.aleph0_lt_continuum]) rfl`. Establish `hfa : ∀ p : F[X], f (algebraMap F[X] (RatFunc F) p) = Polynomial.aeval c p` using `fun p => IsFractionRing.lift_algebraMap i0 p`. Establish `hga : ∀ p : F[X], g (algebraMap F[X] (RatFunc F) p) = Polynomial.aeval (c + 1) p` using `fun p => IsFractionRing.lift_algebraMap i1 p`. Use `⟨σ, fun a ha => ?_, fun h => ?_⟩` and prove the remaining obligations. Use `hσ (algebraMap F[X] (RatFunc F) (Polynomial.C ⟨a, ha⟩))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hfa, hga]`. Simplify using `using this`. Use `hσ (algebraMap F[X] (RatFunc F) Polynomial.X)` as an intermediate fact. Rewrite `this` using `[hfa, hga]`. Simplify using `only [Polynomial.aeval_X] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[h]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_moved_of_transcendental (F : IntermediateField ℚ ℂ)
     (hF : Cardinal.mk F ≤ Cardinal.aleph0) (c : ℂ) (hc : Transcendental F c) :
@@ -68,19 +68,19 @@ theorem exists_moved_of_transcendental (F : IntermediateField ℚ ℂ)
     simpa using this
 
 /- English proof (translation)
-Establish `hi : IsIntegral F c` using `hc.isIntegral`. Establish `hsep : (minpoly F c).Separable` using `(minpoly.irreducible hi).separable`. Establish `hsplit : ((minpoly F c).map (algebraMap F ℂ)).Splits` using `IsAlgClosed.splits _`. Establish `hdeg : (minpoly F c).natDegree ≠ 1`. Introduce `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (minpoly F c).degree = 1`. Rewrite using `[Polynomial.degree_eq_natDegree (minpoly.ne_zero hi), h1]`. Both sides reduce to the same expression. Take `⟨a, rfl⟩` from `minpoly.mem_range_of_degree_eq_one F c this`. Conclude with `hcF a.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpos` using `minpoly.natDegree_pos hi`. Establish `hcard` using `Polynomial.card_rootSet_eq_natDegree (K := ℂ) hsep hsplit`. Establish `hmem : c ∈ (minpoly F c).rootSet ℂ`. Rewrite using `[Polynomial.mem_rootSet]`. Conclude with `⟨minpoly.ne_zero hi, minpoly.aeval F c⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨c', hc'⟩, hne⟩` from `Fintype.exists_ne_of_one_lt_card (by rw [hcard]; omega) (⟨c, hmem⟩ : (minpoly F c).rootSet ℂ)`. Establish `hne' : c' ≠ c` using `fun h => hne (Subtype.ext h)`. Establish `hroot : c' ∈ (minpoly F c).aroots ℂ`. Rewrite using `[Polynomial.mem_aroots]`. Conclude with `(Polynomial.mem_rootSet.1 hc')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g0 : F⟮c⟯ →ₐ[F] ℂ` to `(IntermediateField.algHomAdjoinIntegralEquiv F hi).symm ⟨c', hroot⟩`. Establish `hg0 : g0 (IntermediateField.AdjoinSimple.gen F c) = c'` using `IntermediateField.algHomAdjoinIntegralEquiv_symm_apply_gen F hi ⟨c', hroot⟩`. Establish `hfin : FiniteDimensional F F⟮c⟯` using `IntermediateField.adjoin.finiteDimensional hi`. Establish `hE : Cardinal.mk F⟮c⟯ ≤ Cardinal.aleph0` using `(Algebra.IsAlgebraic.cardinalMk_le_max F F⟮c⟯).trans (max_le hF le_rfl)`. Take `⟨σ, hσ⟩` from `ReciprocityTheory.ChartRestriction.B3.iop_extEmb (algebraMap F⟮c⟯ ℂ) g0.toRingHom hE (by simp [Cardinal.mk_complex, Cardinal.aleph0_lt_continuum]) rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨σ, fun a ha => ?_, fun h => ?_⟩` and prove the remaining obligations. Use `hσ (algebraMap F F⟮c⟯ ⟨a, ha⟩)` as an intermediate fact. Establish `h2 : g0.toRingHom (algebraMap F F⟮c⟯ ⟨a, ha⟩) = a`. Simplify using `using g0.commutes ⟨a, ha⟩`. Rewrite `this` using `[h2]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Use `hσ (IntermediateField.AdjoinSimple.gen F c)` as an intermediate fact. Establish `h2 : algebraMap F⟮c⟯ ℂ (IntermediateField.AdjoinSimple.gen F c) = c` using `rfl`. Rewrite `this` using `[h2, h]`. Conclude with `hne' (hg0.symm.trans this.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_moved_of_isAlgebraic (F : IntermediateField ℚ ℂ)
     (hF : Cardinal.mk F ≤ Cardinal.aleph0) (c : ℂ) (hc : IsAlgebraic F c) (hcF : c ∉ F) :
@@ -125,9 +125,9 @@ theorem exists_moved_of_isAlgebraic (F : IntermediateField ℚ ℂ)
     exact hne' (hg0.symm.trans this.symm)
 
 /- English proof (translation)
-Introduce `F c hF h`. Assume the negation of the conclusion as `hcF`. Establish `hcount` using `mk_le_aleph0_of_finite F hF`. Distinguish the cases in `hc : IsAlgebraic F c`. Take `⟨g, hg, hne⟩` from `exists_moved_of_isAlgebraic F hcount c hc hcF`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `hne (h g hg)`. Take `⟨g, hg, hne⟩` from `exists_moved_of_transcendental F hcount c hc`. Conclude with `hne (h g hg)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_fixed_aut : ∀ (F : IntermediateField ℚ ℂ) (c : ℂ), FiniteDimensional ℚ F →
     (∀ g : ℂ ≃+* ℂ, (∀ a ∈ F, g a = a) → g c = c) → c ∈ F := by

@@ -9,7 +9,7 @@ open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S 
 open scoped InnerProductSpace ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SnMass.RootUniq.rootMeas_unique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FBesselRootMeasureIndependentOfChoices.lean&line=537#L537)
 -/

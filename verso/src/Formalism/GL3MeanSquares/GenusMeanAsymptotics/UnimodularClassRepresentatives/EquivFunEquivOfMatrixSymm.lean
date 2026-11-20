@@ -18,9 +18,9 @@ local notation "jK" => algebraMap (𝓞 K) K
 def gramK (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ K V) : Matrix κ κ K := Matrix.of fun i j => h (b i) (b j)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[b.sum_equivFun x, b.sum_equivFun y]`. Use `_ = ∑ i, ∑ j, star (b.equivFun x i) * (b.equivFun y j * h (b i) (b j)) := by`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Use `_ = _ := by`. Simplify using `only [dotProduct, mulVec, Pi.star_apply, gramK, Matrix.of_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem form_repr (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ K V) (x y : V) :
     h x y = star (b.equivFun x) ⬝ᵥ (gramK h b *ᵥ b.equivFun y) := by
@@ -36,7 +36,7 @@ theorem form_repr (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ K V) (x y : V
         exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `hs.eq (b j) (b i)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gramK_conjTranspose {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (b : Basis κ K V) :
     (gramK h b)ᴴ = gramK h b := by
@@ -44,7 +44,7 @@ theorem gramK_conjTranspose {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (
   exact hs.eq (b j) (b i)
 
 /- English proof (translation)
-Take `⟨t, ht, z, e⟩` from `mem_SP.1 ha`. Use `(mem_locF 𝔭 _ _).2 ⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K (ι t), smul_smul, ← e, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_basis_mem {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] (b : Basis κ K V) {a : K} (ha : a ∈ SP K 𝔭)
     (i : κ) : a • b i ∈ locF 𝔭 (spanO b) := by
@@ -54,11 +54,11 @@ theorem smul_basis_mem {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] (b : Basis κ K V)
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Take `⟨t, ht, h1⟩` from `(mem_locF 𝔭 _ _).1 hx`. Establish `h2 : ι t • x = _` using `coe_eq_sum b ⟨_, h1⟩`. Generalize the expression as in `crd b ⟨_, h1⟩ = c at h2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Use `mem_SP.2 ⟨t, ht, c i, ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg (fun v => b.equivFun v i) h2`. Simplify using `only [← algebraMap_smul K (ι t), map_smul, map_sum, Pi.smul_apply, Finset.sum_apply, Basis.equivFun_self, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h3`. Conclude with `h3.symm`. Introduce `hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← b.sum_equivFun x]`. Conclude with `Submodule.sum_mem _ fun i _ => smul_basis_mem b (hx i) i`.
+A detailed English derivation is pending.
 -/
 theorem mem_locF_iff_repr {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] (b : Basis κ K V) (x : V) :
     x ∈ locF 𝔭 (spanO b) ↔ ∀ i, b.equivFun x i ∈ SP K 𝔭 := by
@@ -78,15 +78,15 @@ theorem mem_locF_iff_repr {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] (b : Basis κ K
     exact Submodule.sum_mem _ fun i _ => smul_basis_mem b (hx i) i
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.smul_induction_on' with`. Consider the case `smul r hr y hy`. Introduce `i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← algebraMap_smul K r, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `(inP_jK hr).mul (l := 0) ((mem_locF_iff_repr b y).1 hy i)`. Consider the case `add y _ z _ hy hz`. Introduce `i`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hy i).add (hz i)`. Introduce `hx`. Rewrite using `[← b.sum_equivFun x]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨t, ht, z, hz, e⟩` from `hx i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : jK (ι t) ≠ 0` using `jι_ne_zero (ne_zero_of_notMem ht)`. Establish `h1 : (jK (ι t))⁻¹ ∈ SP K 𝔭` using `mem_SP.2 ⟨t, ht, 1, by rw [map_one, mul_inv_cancel₀ ht0]⟩`. Establish `h2 : b.equivFun x i • b i = z • ((jK (ι t))⁻¹ • b i)`. Rewrite using `[← algebraMap_smul K z, smul_smul, e]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[h2]`. Conclude with `Submodule.smul_mem_smul hz (smul_basis_mem b h1 i)`.
+A detailed English derivation is pending.
 -/
 theorem mem_smul_locF_iff_repr {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] (b : Basis κ K V) (k : ℕ) (x : V) :
     x ∈ (extP K 𝔭 ^ k • locF 𝔭 (spanO b) : Submodule (𝓞 K) V) ↔ ∀ i, InP 𝔭 k (b.equivFun x i) := by
@@ -115,7 +115,7 @@ theorem mem_smul_locF_iff_repr {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] (b : Basis
     exact Submodule.smul_mem_smul hz (smul_basis_mem b h1 i)
 
 /- English proof (translation)
-Use `LinearMap.toMatrix_mulVec_repr b b (Matrix.toLin b b G) x` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix_toLin]`. Use function extensionality and compare the values at `i`. Conclude with `(congrFun this i).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem equivFun_toLin (b : Basis κ K V) (G : Matrix κ κ K) (x : V) :
     b.equivFun (Matrix.toLin b b G x) = G *ᵥ b.equivFun x := by
@@ -130,19 +130,19 @@ def equivOfMatrix (b : Basis κ K V) (G G' : Matrix κ κ K) (hG : G * G' = 1) :
     (by rw [← Matrix.toLin_mul, mul_eq_one_comm.1 hG, Matrix.toLin_one])
 
 /- English proof (translation)
-The claim follows from `equivFun_toLin b G x`.
+A detailed English derivation is pending.
 -/
 theorem equivFun_equivOfMatrix (b : Basis κ K V) (G G' : Matrix κ κ K) (hG : G * G' = 1) (x : V) :
     b.equivFun (equivOfMatrix b G G' hG x) = G *ᵥ b.equivFun x := equivFun_toLin b G x
 
 /- English proof (translation)
-The claim follows from `equivFun_toLin b G' x`.
+A detailed English derivation is pending.
 -/
 theorem equivFun_equivOfMatrix_symm (b : Basis κ K V) (G G' : Matrix κ κ K) (hG : G * G' = 1) (x : V) :
     b.equivFun ((equivOfMatrix b G G' hG).symm x) = G' *ᵥ b.equivFun x := equivFun_toLin b G' x
 
 /- English proof (translation)
-Introduce `x y`. Rewrite using `[form_repr h b, form_repr h b x y, equivFun_equivOfMatrix, equivFun_equivOfMatrix, form_mulVec, hU]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem equivOfMatrix_mem_isom (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ K V) (G G' : Matrix κ κ K)
     (hG : G * G' = 1) (hU : Gᴴ * gramK h b * G = gramK h b) :
@@ -151,18 +151,18 @@ theorem equivOfMatrix_mem_isom (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ 
   rw [form_repr h b, form_repr h b x y, equivFun_equivOfMatrix, equivFun_equivOfMatrix, form_mulVec, hU]
 
 /- English proof (translation)
-The claim follows from `(SP K 𝔭).sum_mem fun j _ => (SP K 𝔭).mul_mem (hG i j) (hv j)`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_mem {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {G : Matrix κ κ K} (hG : Ent (SP K 𝔭) G) {v : κ → K}
     (hv : ∀ i, v i ∈ SP K 𝔭) (i : κ) : (G *ᵥ v) i ∈ SP K 𝔭 :=
   (SP K 𝔭).sum_mem fun j _ => (SP K 𝔭).mul_mem (hG i j) (hv j)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[mem_locF_iff_repr]`. Introduce `i`. Establish `: b.equivFun (equivOfMatrix b G G' hG x) = G *ᵥ b.equivFun x` using `equivFun_equivOfMatrix b G G' hG x`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show b.equivFun (equivOfMatrix b G G' hG x) i ∈ _`. Rewrite using `[this]`. Conclude with `mulVec_mem h1 ((mem_locF_iff_repr b x).1 hx) i`. Introduce `x hx`. Use `⟨(equivOfMatrix b G G' hG).symm x, ?_, (equivOfMatrix b G G' hG).apply_symm_apply x⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show _ ∈ locF 𝔭 (spanO b)`. Rewrite using `[mem_locF_iff_repr]`. Introduce `i`. Rewrite using `[equivFun_equivOfMatrix_symm]`. Conclude with `mulVec_mem h2 ((mem_locF_iff_repr b x).1 hx) i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmap_equivOfMatrix {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] (b : Basis κ K V) (G G' : Matrix κ κ K)
     (hG : G * G' = 1) (h1 : Ent (SP K 𝔭) G) (h2 : Ent (SP K 𝔭) G') :

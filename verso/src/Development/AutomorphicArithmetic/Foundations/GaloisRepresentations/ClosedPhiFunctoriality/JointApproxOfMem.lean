@@ -19,7 +19,7 @@ def JointApprox {k Γ : Type} [NormedField k] [Group Γ] {a : ℕ} (r : Γ →* 
     (∀ g : Γ, ‖trc r g - ∑ ρ ∈ s, c ρ * trc ρ g‖ ≤ ε) ∧ ‖θ - ∑ ρ ∈ s, c ρ * p ρ‖ ≤ ε
 
 /- English proof (translation)
-Introduce `ε hε` and use `by obtain ⟨s, c, hs, h1, -⟩ := h ε hε exact ⟨s, c, hs, h1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem JointApprox.lin {k Γ : Type} [NormedField k] [Group Γ] {a : ℕ} {r : Γ →* GL (Fin a) k} {C : Set (Γ →* GL (Fin a) k)}
     {p : (Γ →* GL (Fin a) k) → k} {θ : k} (h : JointApprox r C p θ) : LinApprox r C := fun ε hε => by

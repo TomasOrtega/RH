@@ -12,13 +12,13 @@ open GlobalTheory.ZM
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `o _ _ X s d h`. Establish `hloc : IsZariskiLocalAtSource (@SmoothOfRelativeDimension d)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_openCover (P := @SmoothOfRelativeDimension d) (Scheme.Pullback.openCoverOfLeft X.affineOpenCover.openCover s (spMap (algebraMap o (FractionRing o)))) fun i => ?_` and prove the remaining obligations. Set `R : CommRingCat.{0}` to `X.affineOpenCover.X i`. Set `x : Spec R ⟶ X` to `X.affineOpenCover.f i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hx : IsOpenImmersion x` using `X.affineOpenCover.map_prop i`. Set `φ : CommRingCat.of o ⟶ R` to `Spec.preimage (x ≫ s)`. Use `letI : Algebra o R := φ.hom.toAlgebra`. Establish `hφ : x ≫ s = spMap (algebraMap o R)` using `(Spec.map_preimage (x ≫ s)).symm`. Establish `H` using `h R x hx hφ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sq` using `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct o (FractionRing o) R)`. Establish `sq' : IsPullback (Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R` using `o) (A := FractionRing o) (B := R)).toRingHom)) (spMap (algebraMap (FractionRing o) (FractionRing o ⊗[o] R))) (x ≫ s) (spMap (algebraMap o (FractionRing o))) := by`. Rewrite using `[hφ]`. Conclude with `sq.flip`. Establish `e : (Scheme.Pullback.openCoverOfLeft X.affineOpenCover.openCover s (spMap (algebraMap o (FractionRing o)))).f i ≫ pullback.snd s _ = sq'.isoPullback.inv ≫ spMap (algebraMap (FractionRing o) (FractionRing o ⊗[o] R))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsPullback.isoPullback_inv_snd]`. Conclude with `(pullback.lift_snd _ _ _).trans (Category.comp_id _)`. Rewrite using `[e]`. Establish `: MorphismProperty.RespectsIso (@SmoothOfRelativeDimension d)` using `hloc.1`. Conclude with `@MorphismProperty.RespectsIso.precomp _ _ (@SmoothOfRelativeDimension d) this _ _ _ sq'.isoPullback.inv sq'.isoPullback.isIso_inv _ H`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_genericFibre_of_affine :
     ∀ (o : Type) [CommRing o] [IsDomain o] (X : Scheme.{0}) (s : X ⟶ Sp o) (d : ℕ), (∀ (R : Type) [CommRing R] [Algebra o R] (x : Sp R ⟶ X), IsOpenImmersion x → x ≫ s = spMap (algebraMap o R) → SmoothOfRelativeDimension d (spMap (algebraMap (FractionRing o) (FractionRing o ⊗[o] R)))) → SmoothOfRelativeDimension d (pullback.snd s (spMap (algebraMap o (FractionRing o)))) := by

@@ -9,11 +9,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-Introduce `n k G _ _ _ D`. Take `⟨r, hss, hD⟩` from `exists_semisimple_rep_of_detLaw_of_isAlgClosed D.toDet`. Set `ρ : G →* Matrix (Fin n) (Fin n) k` to `(r : MonoidAlgebra k G →* Matrix (Fin n) (Fin n) k).comp (MonoidAlgebra.of k G)`. Establish `hr : GDet.repAlg ρ k = r`. Apply `MonoidAlgebra.algHom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `g`. Simplify using `[GDet.repAlg, ρ, MonoidAlgebra.lift_single]`. Use extensionality with `x`. Use `⟨ρ, hr ▸ hss, ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← GDet.ofDet_toDet (GDet.ofRep ρ), (d_toDet_ofRep (n := n) (A := k) (G := G)).1 ρ, hr, hD, GDet.ofDet_toDet]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (d_toDet D y).2.2.2, ← (d_ker D.toDet y).1, ← hD, d_ker_ss _ r hss, hr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.CA.groupDet_exists_semisimple_representation :
     ∀ {n : ℕ} {k G : Type} [Field k] [IsAlgClosed k] [Group G] (D : GDet n k G), ∃ ρ : G →* Matrix (Fin n) (Fin n) k, IsSemisimpleRing (GDet.repAlg ρ k).range ∧ GDet.ofRep ρ = D ∧ ∀ y, D.Kills y ↔ GDet.repAlg ρ k y = 0 := by

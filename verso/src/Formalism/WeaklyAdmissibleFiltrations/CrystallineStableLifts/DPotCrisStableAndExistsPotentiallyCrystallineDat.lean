@@ -83,7 +83,7 @@ variable {G : Type} [Group G] {Qp K₀ K K₀' K' : Type} [Field Qp] [Field K₀
     (ρ : Representation LL G V)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB, map_mul, AlgebraTensorModule.map_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pc_actVB_mul (PD : PeriodData G Qp K₀ K B BdR) (g h : G) (x : V ⊗[Qp] B) :
     actVB PD ρ (g * h) x = actVB PD ρ g (actVB PD ρ h x) := by
@@ -93,7 +93,7 @@ theorem pc_actVB_mul (PD : PeriodData G Qp K₀ K B BdR) (g h : G) (x : V ⊗[Qp
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB, AlgebraTensorModule.map_tmul, PotCrysData.resH, PC.actB_eq]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pc_actVB_res (h : PC.H) (x : V ⊗[Qp] B) :
     actVB PC.PD' (PC.resH ρ) h x = actVB PC.PD ρ (h : G) x := by
@@ -103,7 +103,7 @@ theorem pc_actVB_res (h : PC.H) (x : V ⊗[Qp] B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `only [PotCrysData.Dpcris, Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero, pc_actVB_res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pc_mem_Dpcris {x : V ⊗[Qp] B} :
     x ∈ PC.Dpcris ρ ↔ ∀ h : PC.H, actVB PC.PD ρ (h : G) x = x := by
@@ -111,9 +111,9 @@ theorem pc_mem_Dpcris {x : V ⊗[Qp] B} :
     LinearMap.id_apply, sub_eq_zero, pc_actVB_res]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[pc_mem_Dpcris]`. Introduce `h`. Establish `hmem : g⁻¹ * (h : G) * g ∈ PC.H`. Use `PC.normal.conj_mem (h : G) h.2 g⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e : (h : G) * g = g * (g⁻¹ * (h : G) * g)` using `by group`. Rewrite using `[← pc_actVB_mul, e, pc_actVB_mul, hx ⟨_, hmem⟩]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pc_Dpcris_stable (g : G) {x : V ⊗[Qp] B} (hx : x ∈ PC.Dpcris ρ) :
     actVB PC.PD ρ g x ∈ PC.Dpcris ρ := by
@@ -128,7 +128,7 @@ theorem pc_Dpcris_stable (g : G) {x : V ⊗[Qp] B} (hx : x ∈ PC.Dpcris ρ) :
 end Stable
 
 /- English proof (translation)
-Use `intros`. Apply `pc_Dpcris_stable` to reduce the goal to its premises. Apply the tactic sequence `all_goals assumption`.
+Fix the arbitrary inputs and assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem pc_dpcrisStable : DpcrisStable := by
   intros
@@ -136,7 +136,7 @@ theorem pc_dpcrisStable : DpcrisStable := by
   all_goals assumption
 
 /- English proof (translation)
-Unfold `ExPC`. Use `intros`. Conclude with `⟨PotCrysData.pcOfTop _, rfl, rfl⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem pc_exPC : ExPC := by
   unfold ExPC
@@ -144,7 +144,7 @@ theorem pc_exPC : ExPC := by
   exact ⟨PotCrysData.pcOfTop _, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pc_dpcrisStable, pc_exPC⟩`.
+Supply the required witnesses or components.
 -/
 theorem dPotCrisStable_and_existsPotentiallyCrystallineData : DpcrisStable ∧ ExPC := ⟨pc_dpcrisStable, pc_exPC⟩
 

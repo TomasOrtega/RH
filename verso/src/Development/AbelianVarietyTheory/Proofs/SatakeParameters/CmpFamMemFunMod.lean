@@ -13,9 +13,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.G Formalism.L2.Col Forma
 namespace CmpMem
 
 /- English proof (translation)
-Take `⟨g, hg, rfl⟩` from `hL`. Use `⟨(A : Matrix (Fin k) (Fin k) K) * g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 A.isUnit).mul hg`. Unfold `colSpan`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isLattice_map {R K : Type} [CommRing R] [Field K] [Algebra R K] {k : ℕ} (A : GL (Fin k) K)
     {L : Submodule R (Fin k → K)} (hL : IsLattice R L) :
@@ -32,7 +32,7 @@ variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
   {P : Places p O Kf}
 
 /- English proof (translation)
-Introduce `v` and use `isLattice_map (C.act v γ) (hL v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLatTup_smul (C : Level P) (γ : C.Γ) {L : P.Tup} (hL : P.IsLatTup L) : P.IsLatTup (C.smul γ L) :=
   fun v => isLattice_map (C.act v γ) (hL v)

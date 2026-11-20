@@ -15,9 +15,7 @@ namespace GlobalTheory.SgInf
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hc : Continuous (fun p : Mt k r × Mt k r => lmulM (Matrix.of p.2) p.1)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [lmulM, Matrix.mul_apply, Matrix.of_apply]`. Use `continuous_finsetSum _ fun l _ => ?_` and prove the remaining obligations. Use `fun_prop`.
-
-Conclude with `hc.measurable`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_lmul_swap :
     Measurable (fun p : Mt k r × Mt k r => lmulM (Matrix.of p.2) p.1) := by
@@ -29,7 +27,7 @@ theorem measurable_lmul_swap :
   exact hc.measurable
 
 /- English proof (translation)
-Take `⟨hGm, hGu⟩` from `GlobalTheory.unitaryGroup_matGroup_unimodular k r`. Conclude with `⟨hGm, hS.isMatGroup, hS.1, hG, hμS, (hGu μG hG).2, hU.1, hq⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem quotientMeasure_hypotheses_closed_bessel_subgroup {S : Set (Mat k r)} {μG μS ν : Measure (Mt k r)}
     (hS : IsClosedSub k r S) (hG : IsHaarOn (GG k r) μG) (hμS : IsHaarOn S μS)
@@ -39,7 +37,7 @@ theorem quotientMeasure_hypotheses_closed_bessel_subgroup {S : Set (Mat k r)} {�
   exact ⟨hGm, hS.isMatGroup, hS.1, hG, hμS, (hGu μG hG).2, hU.1, hq⟩
 
 /- English proof (translation)
-Use extensionality with `A hA`. Establish `hm` using `measurable_lmul_swap (k := k) (r := r)`. Rewrite using `[Measure.map_apply hm hA, ← lintegral_indicator_one hA, hq _ (measurable_one.indicator hA), ← lintegral_indicator_one (hm hA), lintegral_prod _ ((measurable_one.indicator (hm hA)).aemeasurable)]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eq_map_prod_of_isQuotMeas {μG μS ν : Measure (Mt k r)} [SFinite ν] [SFinite μS]
     (hq : IsQuotMeas μG μS ν) :
@@ -52,27 +50,23 @@ theorem eq_map_prod_of_isQuotMeas {μG μS ν : Measure (Mt k r)} [SFinite ν] [
   rfl
 
 /- English proof (translation)
-Introduce `k r S μG μS ν hS hG hμS hU hq`. Establish `hset` using `quotientMeasure_hypotheses_closed_bessel_subgroup hS hG hμS hU hq`. Establish `: SigmaFinite μS` using `hμS.1`. Establish `: SigmaFinite μG` using `hG.1`. Establish `hm` using `measurable_lmul_swap (k := k) (r := r)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f0, hf0pos, hf0m, hf0int⟩` from `exists_pos_lintegral_lt_of_sigmaFinite μG one_ne_zero`. Use `set g : Mt k r → ENNReal := fun x => ∫⁻ s, (f0 (lmulM (Matrix.of s) x) : ENNReal) ∂μS with hg`. Establish `hgm : Measurable g`. Establish `: Measurable (fun p : Mt k r × Mt k r => (f0 (lmulM (Matrix.of p.2) p.1) : ENNReal))` using `(measurable_coe_nnreal_ennreal.comp hf0m).comp hm`. Conclude with `this.lintegral_prod_right'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgpos : ∀ x, 0 < g x`. Introduce `x`. Rewrite using `[pos_iff_ne_zero]`. Introduce `h0`. Establish `hmx : Measurable (fun s : Mt k r => (f0 (lmulM (Matrix.of s) x) : ENNReal))` using `(measurable_coe_nnreal_ennreal.comp hf0m).comp (hm.comp measurable_prodMk_left)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `∫⁻ s, (f0 (lmulM (Matrix.of s) x) : ENNReal) ∂μS = 0 at h0`. Rewrite `h0` using `[lintegral_eq_zero_iff hmx]`. Establish `hall : ∀ᵐ s ∂μS, False` using `by filter_upwards [h0] with s hs`. Simplify using `only [Pi.zero_apply, ENNReal.coe_eq_zero] at hs`. Conclude with `(hf0pos _).ne' hs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hμS.2.1 (Measure.measure_univ_eq_zero.mp (by simpa using hall))`. Establish `hgint : ∫⁻ x, g x ∂ν < ⊤`. Use `hq (fun x => (f0 x : ENNReal)) (measurable_coe_nnreal_ennreal.comp hf0m)` as an intermediate fact. Establish `h2 : ∫⁻ x, g x ∂ν = ∫⁻ x, (f0 x : ENNReal) ∂μG` using `by rw [this]; rfl`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hf0int.trans ENNReal.one_lt_top`. Establish `hsig : SigmaFinite ν`. Use `Measure.sigmaFinite_of_countable (S := Set.range fun n : ℕ => {x | ((n : ENNReal) + 1)⁻¹ ≤ g x}) (Set.countable_range _) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`. Establish `hne : ((n : ENNReal) + 1)⁻¹ ≠ 0` using `ENNReal.inv_ne_zero.mpr (by simp)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hnt : ((n : ENNReal) + 1)⁻¹ ≠ ⊤` using `ENNReal.inv_ne_top.mpr (by simp)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.sUnion_range, Set.eq_univ_iff_forall]`. Introduce `x`. Take `⟨n, hn⟩` from `ENNReal.exists_inv_nat_lt (hgpos x).ne'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Set.mem_iUnion.mpr ⟨n, ?_⟩` and prove the remaining obligations. Use `show ((n : ENNReal) + 1)⁻¹ ≤ g x`. Use `le_trans ?_ hn.le` and prove the remaining obligations. Conclude with `ENNReal.inv_le_inv.mpr le_self_add`. Establish `hmap` using `eq_map_prod_of_isQuotMeas (μG := μG) (μS := μS) (ν := ν) hq`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hsig, ?_, hmap, ?_, ?_⟩` and prove the remaining obligations. Establish `hae` using `GlobalTheory.QuotRightInv.ae_mem_of_quot hset`. Rewrite `hae` using `[ae_iff]`. Simplify using `using hae`. Introduce `B _ _ _ f hf`.
-
-Rewrite `hf` using `[hmap]`. Establish `hf' : Integrable (fun p : Mt k r × Mt k r => f (lmulM (Matrix.of p.2) p.1)) (ν.prod μS)` using `(integrable_map_measure hf.aestronglyMeasurable hm.aemeasurable).mp hf`. Use `⟨hf'.integral_prod_left, ?_⟩` and prove the remaining obligations. Rewrite using `[hmap, integral_map hm.aemeasurable hf.aestronglyMeasurable, integral_prod _ hf']`. Introduce `F hF hFS y hy`.
-
-Conclude with `GlobalTheory.QuotRightInv.quotInv _ _ _ _ _ _ hset F hF (fun s hs x _ => hFS s hs x) y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weil_integrable :
     ∀ (k r : ℕ) (S : Set (Mat k r)) (μG μS ν : Measure (Mt k r)), IsClosedSub k r S →

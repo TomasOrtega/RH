@@ -15,11 +15,9 @@ namespace GlobalTheory.ClosedFibreTerm
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `expandsAt_val U e k σ f h`. Take `⟨jL, rfl⟩ : ∃ jL, j = fun _ => jL` from `⟨j 0, funext fun i => congrArg j (Subsingleton.elim i 0)⟩`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose J hJ using fun ψ : (thickObj R I e G).left ⟶ D.toPre.P.A.left => exists_chart D.toPre.P.isLB (ψ y)`. Establish `hJ : Good D.toPre.P.L y J` using `hJ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H` using `(hS _ (𝟙 _) y J hJ).2 jL (Set.mem_iInter.1 hy 0)`. Establish `hz : ∀ α, sval (f α) (𝟙 _ ≫ pGl U e) y J = 0` using `fun α => by`. Establish `m` using `hJ.mem (D.toPre.famφB α) (𝟙 _ ≫ pGl U e)`. Conclude with `(gs_pull (𝟙 _) _ y _ m _).symm.trans ((congrArg (gs (𝟙 _) y _) (h0 α _)).trans (gs_zero (𝟙 _) y _ m))`. Rewrite `H` using `[Finset.sum_eq_zero fun α _ => by rw [hz α, zero_mul]]`.
-
-Conclude with `(gs_pull (𝟙 _) _ y _ hy _).trans (((Units.mul_right_eq_zero _).1 H).trans (gs_zero (𝟙 _) y _ hy).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanish_of_terms_vanish {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
@@ -40,11 +38,11 @@ theorem vanish_of_terms_vanish {R : Type} [CommRing R] [IsDomain R] {I : Ideal R
   exact (gs_pull (𝟙 _) _ y _ hy _).trans (((Units.mul_right_eq_zero _).1 H).trans (gs_zero (𝟙 _) y _ hy).symm)
 
 /- English proof (translation)
-Introduce `V _ _ _ ϖ hϖ D A G _ _ U σ g hE hχ`. Establish `Q : ∀ α : D.toPre.X, (∀ j, ((U.gt 0).pG.left.app _).hom ((g α).f j) = 0) ↔ ∃ g' : D.toPre.SecB 1 α, SecIsMul D.toPre.P.A.hom ϖ (g α) g'` using `fun α => by`. Use `GlobalTheory.ExtDiv.main V ϖ hϖ D A G U 0 1 α (g α)` as an intermediate fact. Establish `hp : ϖ ^ (0 + 1) = ϖ` using `pow_one ϖ`. Rewrite `this` using `[hp]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← not_forall]`. Use `not_congr ⟨fun h => (Q 0).1 (WeightPf.weightIndep V _ D A G U 0 1 σ g h hE 0), fun h => ?_⟩` and prove the remaining obligations. Use `vanish_of_terms_vanish U 0 1 σ g hE fun α => (Q α).2 ?_` and prove the remaining obligations. Distinguish the cases in `hα : α = 0`. Substitute `hα` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `h`. Conclude with `hχ α hα`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G] (U : UnifPre (maximalIdeal V) D A G) (σ : H0 U.LG.L 1) (g : ∀ α : D.toPre.X, D.toPre.SecB 1 α), U.ExpandsAt 0 1 σ g → (∀ χ, χ ≠ 0 → ∃ g' : D.toPre.SecB 1 χ, SecIsMul D.toPre.P.A.hom ϖ (g χ) g') → ((∃ j, ((fstG (maximalIdeal V) 0 G).left.app _).hom (σ.f j) ≠ 0) ↔ ¬ ∃ g' : D.toPre.SecB 1 0, SecIsMul D.toPre.P.A.hom ϖ (g 0) g') := by
   intro V _ _ _ ϖ hϖ D A G _ _ U σ g hE hχ

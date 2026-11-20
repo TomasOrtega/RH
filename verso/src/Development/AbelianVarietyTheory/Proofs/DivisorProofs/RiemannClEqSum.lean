@@ -10,7 +10,7 @@ namespace GlobalTheory.DualFormValues
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `h` using `trace_eq_sum_embeddings (K := ℚ) (L := E) ℂ (x := x)`. Rewrite `h` using `[eq_ratCast]`. Rewrite using `[h]`. Conclude with `(Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ) (fun σ : E →+* ℂ => σ x) _ (fun σ => rfl)).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_eq_sum (x : E) : ((Algebra.trace ℚ E x : ℚ) : ℂ) = ∑ σ : E →+* ℂ, σ x := by
   have h := trace_eq_sum_embeddings (K := ℚ) (L := E) ℂ (x := x)
@@ -19,13 +19,13 @@ theorem trace_eq_sum (x : E) : ((Algebra.trace ℚ E x : ℚ) : ℂ) = ∑ σ : 
   exact (Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ) (fun σ : E →+* ℂ => σ x) _ (fun σ => rfl)).symm
 
 /- English proof (translation)
-Establish `hli : LinearIndependent ℂ (fun (τ : E →+* ℂ) => (fun x => τ x : E → ℂ))`. Establish `h0` using `linearIndependent_monoidHom E ℂ`. Establish `hinj : Function.Injective (fun τ : E →+* ℂ => (τ : E →* ℂ))`. Introduce `a b hab`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Conclude with `DFunLike.congr_fun hab x`. Conclude with `h0.comp _ hinj`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Establish `h1 : ∀ y : E, ∀ a : E →+* ℂ, ∑ b, c a b * b y = 0`. Introduce `y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hli (fun a => ∑ b, c a b * b y) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Use `h x y` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, Finset.sum_mul]`. Rewrite using `[← this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Conclude with `hli (c τ₁) (by`. Use function extensionality and compare the values at `y`. Simplify `h1 y τ₁) τ₂` using `[mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero (c : (E →+* ℂ) → (E →+* ℂ) → ℂ)
     (h : ∀ x y : E, ∑ τ₁, ∑ τ₂, c τ₁ τ₂ * (τ₁ x * τ₂ y) = 0) (τ₁ τ₂ : E →+* ℂ) : c τ₁ τ₂ = 0 := by
@@ -53,7 +53,7 @@ theorem coeff_eq_zero (c : (E →+* ℂ) → (E →+* ℂ) → ℂ)
 variable [IsCMField E]
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [riemannCl, riemann, LinearMap.coe_mk, AddHom.coe_mk, trace_eq_sum, LinearMap.sum_apply, LinearMap.smul_apply, map_mul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `[IsCMField.complexEmbedding_complexConj, ComplexEmbedding.conjugate_coe_eq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem riemannCl_eq_sum (ξ x : E) :
     riemannCl ξ x = ∑ σ : E →+* ℂ, σ (ξ * x) • (ComplexEmbedding.conjugate σ).toRatAlgHom.toLinearMap := by
@@ -64,23 +64,23 @@ theorem riemannCl_eq_sum (ξ x : E) :
   simp [IsCMField.complexEmbedding_complexConj, ComplexEmbedding.conjugate_coe_eq]
 
 /- English proof (translation)
-Set `b : (E →+* ℂ) → (E →+* ℂ) → ℂ` to `fun a a' => B a.toRatAlgHom.toLinearMap a'.toRatAlgHom.toLinearMap`. Set `c : (E →+* ℂ) → (E →+* ℂ) → ℂ` to `fun τ₁ τ₂ => τ₁ ξ * τ₂ ξ * b (ComplexEmbedding.conjugate τ₁) (ComplexEmbedding.conjugate τ₂) - if τ₂ = ComplexEmbedding.conjugate τ₁ then τ₁ ξ else 0`. Establish `hz : ∀ τ : E →+* ℂ, τ ξ ≠ 0` using `fun τ => by simpa using hξ`. Establish `hsum : ∀ x y : E, ∑ τ₁, ∑ τ₂, c τ₁ τ₂ * (τ₁ x * τ₂ y) = 0`. Introduce `x y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hB x y`. Rewrite `h1` using `[riemannCl_eq_sum, riemannCl_eq_sum]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul] at h1`. Establish `h2 : ((riemann ξ x y : ℚ) : ℂ) = ∑ σ : E →+* ℂ, σ ξ * σ x * ComplexEmbedding.conjugate σ y`. Simplify using `only [riemann, trace_eq_sum, map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `[IsCMField.complexEmbedding_complexConj, ComplexEmbedding.conjugate_coe_eq]`. Rewrite `h1` using `[h2]`. Simplify using `only [c, sub_mul, Finset.sum_sub_distrib, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∑ τ₁, ∑ τ₂, τ₁ ξ * τ₂ ξ * b (ComplexEmbedding.conjugate τ₁) (ComplexEmbedding.conjugate τ₂) * (τ₁ x * τ₂ y) = ∑ σ : E →+* ℂ, σ ξ * σ x * ComplexEmbedding.conjugate σ y`. Rewrite using `[← h1, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun τ₂ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ₁ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [b, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hcc : ∀ τ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ`. Introduce `τ`. Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `hc` using `coeff_eq_zero c hsum (ComplexEmbedding.conjugate ρ) (ComplexEmbedding.conjugate ρ')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [c, b, hcc] at hc`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Rewrite `hc` using `[hcc, if_pos rfl]`. Establish `h0` using `hz (ComplexEmbedding.conjugate ρ)`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : ComplexEmbedding.conjugate ρ ξ * (ρ ξ * B ρ.toRatAlgHom.toLinearMap (ComplexEmbedding.conjugate ρ).toRatAlgHom.toLinearMap - 1) = 0`. Take the linear combination `hc`. Establish `h5` using `(mul_eq_zero.1 h4).resolve_left h0`. Conclude with `eq_inv_of_mul_eq_one_right (sub_eq_zero.1 h5)`. Introduce `hne`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne' : ComplexEmbedding.conjugate ρ' ≠ ρ` using `fun h => hne (by rw [← h, hcc])`. Rewrite `hc` using `[if_neg hne', sub_zero]`. Conclude with `(mul_eq_zero.1 hc).resolve_left (mul_ne_zero (hz _) (hz _))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualForm_values (E : Type) [Field E] [NumberField E] [IsCMField E] (ξ : E) (hξ : ξ ≠ 0)
     (_hc : IsCMField.complexConj E ξ = -ξ) (B : LinearMap.BilinForm ℂ (Coh E)) (hB : IsDualForm ξ B)

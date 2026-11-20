@@ -15,7 +15,7 @@ def baseOf {F : Type} [Field F] (y : Sp F ⟶ Xo.XF c) : c.F →+* F :=
   (Spec.preimage (y ≫ pullback.snd _ _)).hom
 
 /- English proof (translation)
-Unfold `baseOf`. Rewrite using `[h]`. Simplify using `[spMap]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem baseOf_eq {F : Type} [Field F] {y : Sp F ⟶ Xo.XF c} {β : c.F →+* F}
     (h : y ≫ pullback.snd _ _ = spMap β) : baseOf y = β := by
@@ -28,7 +28,7 @@ def scale (a : c.F) (φ : FrameFn Xo c) : FrameFn Xo c := fun F _ y v w => baseO
 variable {U : Set (Xo.XF c)} {τ : E →+* ℂ} {φ : FrameFn Xo c} {a : c.F}
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero ((map_ne_zero _).2 ha) (h.ne F β y v w hf) chg F _ β y v w v' w' A B h1 h2 h3 h4 := by simp only [scale, _root_.mul_assoc, h.chg F β y v w v' w' A B h1 h2 h3 h4] nat F F' _ _ f β y v w y' v' w' h1 h2 h3 h4 := by have hb : baseOf y' = f.comp β := baseOf_eq (by rw [h2, …`.
+A detailed English derivation is pending.
 -/
 theorem isLineFn_scale (ha : a ≠ 0) (h : IsLineFn U τ φ) : IsLineFn U τ (scale a φ) where
   ne F _ β y v w hf := mul_ne_zero ((map_ne_zero _).2 ha) (h.ne F β y v w hf)
@@ -40,7 +40,7 @@ theorem isLineFn_scale (ha : a ≠ 0) (h : IsLineFn U τ φ) : IsLineFn U τ (sc
     simp only [scale, h.nat F F' f β y v w y' v' w' h1 h2 h3 h4, hb, baseOf_eq h1.1, map_mul, RingHom.comp_apply]
 
 /- English proof (translation)
-The claim follows from `h.mem line := isLineFn_scale ha h.line flat := by obtain ⟨e, ρ, he, hc⟩ := h.flat refine ⟨e, (a : ℂ) * ρ, he, fun P y v w V W C Fm B h1 h2 h3 h4 h5 h6 h7 h8 => ?_⟩ rw [← hc P y v w V W C Fm B h1 h2 h3 h4 h5 h6 h7 h8] simp only [scale, baseOf_eq h3.1, _root_.mul_assoc] rfl`.
+A detailed English derivation is pending.
 -/
 theorem isFlatGen_scale {g : ℕ} {ty : Fin g → (E →+* ℂ)} {FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty}
     {i : Fin FU.n} (ha : a ≠ 0) (h : IsFlatGen U τ φ FU i) : IsFlatGen U τ (scale a φ) FU i where
@@ -54,9 +54,9 @@ theorem isFlatGen_scale {g : ℕ} {ty : Fin g → (E →+* ℂ)} {FU : FamilyUni
     rfl
 
 /- English proof (translation)
-Use `⟨fun s y v w Γ Δ h1 h2 h3 => ?_, fun p κ V K _ _ _ _ _ _ j β y v w T tK m m' h1 h2 h3 h4 h5 => ?_⟩` and prove the remaining obligations. Use `h.1 s y v w Γ Δ h1 h2 h3` as an intermediate fact. Simplify using `only [scale, baseOf_eq h1.1, norm_mul, LogNorms.ofElt]`. Rewrite using `[Real.log_mul (norm_ne_zero_iff.2 ((map_ne_zero _).2 ha)) (norm_ne_zero_iff.2 (hl.ne _ s y v w h1))]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `h.2 p κ V K j β y v w T tK m m' h1 h2 h3 h4 h5` as an intermediate fact. Simplify using `only [scale, baseOf_eq h3.1, map_mul, norm_mul, LogNorms.ofElt]`. Rewrite using `[Real.log_mul (norm_ne_zero_iff.2 ((map_ne_zero _).2 ((map_ne_zero _).2 ha))) (norm_ne_zero_iff.2 ((map_ne_zero _).2 (hl.ne _ β y v w h3))), this, ← h2]`. Simplify using `only [RingHom.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hasNorms_scale (ha : a ≠ 0) (hl : IsLineFn U τ φ) {N : LogNorms c.F} (h : HasNorms U τ φ N) :
     HasNorms U τ (scale a φ)
@@ -74,7 +74,7 @@ theorem hasNorms_scale (ha : a ≠ 0) (hl : IsLineFn U τ φ) {N : LogNorms c.F}
     ring
 
 /- English proof (translation)
-The claim follows from `(h.1 s y v w Γ Δ h1 h2 h3).symm.trans (h'.1 s y v w Γ Δ h1 h2 h3)`.
+A detailed English derivation is pending.
 -/
 theorem inf_unique {N N' : LogNorms c.F} (h : HasNorms U τ φ N) (h' : HasNorms U τ φ N') (s : c.F →+* ℂ)
     (y : Sp ℂ ⟶ Xo.XF c) (v w Γ Δ) (h1 : IsFramed U τ s y v w)
@@ -83,7 +83,7 @@ theorem inf_unique {N N' : LogNorms c.F} (h : HasNorms U τ φ N) (h' : HasNorms
   (h.1 s y v w Γ Δ h1 h2 h3).symm.trans (h'.1 s y v w Γ Δ h1 h2 h3)
 
 /- English proof (translation)
-The claim follows from `one_ne_zero chg F _ β y v w v' w' A B _ _ _ _ := by have : IsEmpty (Fin D.p) := by rw [hp]; infer_instance have : IsEmpty (Fin D.q) := by rw [hq]; infer_instance simp [Matrix.det_isEmpty] nat _ _ _ _ f _ _ _ _ _ _ _ _ _ _ _ := (map_one f).symm`.
+A detailed English derivation is pending.
 -/
 theorem isLineFn_one (hp : D.p = 0) (hq : D.q = 0) : IsLineFn U τ (fun _ _ _ _ _ => 1) where
   ne _ _ _ _ _ _ _ := one_ne_zero
@@ -94,15 +94,15 @@ theorem isLineFn_one (hp : D.p = 0) (hq : D.q = 0) : IsLineFn U τ (fun _ _ _ _ 
   nat _ _ _ _ f _ _ _ _ _ _ _ _ _ _ _ := (map_one f).symm
 
 /- English proof (translation)
-Introduce `h'` and use `h'.ne F β y v w h rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isLineFn_zero {F : Type} [Field F] {β : c.F →+* F} {y : Sp F ⟶ Xo.XF c} {v w}
     (h : IsFramed U τ β y v w) : ¬ IsLineFn U τ (fun _ _ _ _ _ => 0) := fun h' => h'.ne F β y v w h rfl
 
 /- English proof (translation)
-Establish `h0 : epsMul (0 : R) = (algebraMap R (DualNumber R)).comp (TrivSqZeroExt.fstHom R R R).toRingHom`. Apply the tactic sequence `ext z <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `h1 : spMap (epsMul (0 : R)) = spMap (algebraMap R (DualNumber R)) ≫ spMap (TrivSqZeroExt.fstHom R R R).toRingHom`. Rewrite using `[h0, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1, Category.assoc]`. Use `erw [hv]`. Set `k : epsAt x ⟶ Over.mk x` to `Over.homMk (spMap (algebraMap R (DualNumber R))) rfl`. Use `congrArg (fun t => t.left) (MonObj.comp_one k (M := G))` as an intermediate fact. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem epsMul_zero_comp {S : Scheme.{0}} {R : Type} [CommRing R] {G : Over S} [GrpObj G] {x : Sp R ⟶ S}
     {v : epsAt x ⟶ G} (hv : IsTanAt G x v) : spMap (epsMul (0 : R)) ≫ v.left = (1 : epsAt x ⟶ G).left := by
@@ -118,11 +118,11 @@ theorem epsMul_zero_comp {S : Scheme.{0}} {R : Type} [CommRing R] {G : Over S} [
   exact this
 
 /- English proof (translation)
-Use `⟨fun j => if i = j then v j else 1, fun j => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Apply the tactic sequence `have h1 : epsMul (1 : R) = RingHom.id _ := by ext z <;> simp [epsMul]`. Simplify using `[h, Matrix.one_apply, h1, spMap]`. Simplify using `only [h, Matrix.one_apply, if_false]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(epsMul_zero_comp (hv j)).symm`. Proceed by induction on `n with`. Consider the case `zero => exact i.elim0`. Consider the case `succ n ih`. Rewrite using `[List.ofFn_succ, List.prod_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[List.prod_eq_one, (Fin.succ_ne_zero _).symm]`. Simplify using `only [Fin.succ_ne_zero, if_false, _root_.one_mul, Fin.succ_inj]`. Conclude with `ih (v := fun j => v j.succ) (fun j => hv _) i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isComb_one {S : Scheme.{0}} {R : Type} [CommRing R] {G : Over S} [GrpObj G] {x : Sp R ⟶ S} {n : ℕ}
     {v : Fin n → (epsAt x ⟶ G)} (hv : ∀ i, IsTanAt G x (v i)) (i : Fin n) :
@@ -149,7 +149,7 @@ def scaleOn (Z : Set (Xo.XF c)) (a : c.F) (φ : FrameFn Xo c) : FrameFn Xo c :=
   fun F _ y v w => (if Set.range y ⊆ Z then baseOf y a else 1) * φ F y v w
 
 /- English proof (translation)
-Establish `: Function.Surjective (spMap f)` using `fun z => ⟨default, Subsingleton.elim _ _⟩`. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, this.range_eq, Set.image_univ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_spMap_comp {F F' : Type} [Field F] [Field F'] (f : F →+* F') (y : Sp F ⟶ Xo.XF c) :
     Set.range (spMap f ≫ y) = Set.range y := by
@@ -157,13 +157,9 @@ theorem range_spMap_comp {F F' : Type} [Field F] [Field F'] (f : F →+* F') (y 
   rw [Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, this.range_eq, Set.image_univ]
 
 /- English proof (translation)
-Use `mul_ne_zero ?_ (h.ne F β y v w hf)` and prove the remaining obligations. Use `split_ifs`. Use `exacts [(map_ne_zero _).2 ha, one_ne_zero]`. Use `chg F _ β y v w v' w' A B h1 h2 h3 h4 := by`. Simplify using `only [scaleOn, _root_.mul_assoc, h.chg F β y v w v' w' A B h1 h2 h3 h4]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `nat F F' _ _ f β y v w y' v' w' h1 h2 h3 h4 := by`. Establish `hb : baseOf y' = f.comp β` using `baseOf_eq (by`. Rewrite using `[h2, Category.assoc, h1.1, ← Spec.map_comp]`. Use the proof step `rfl)`. Establish `hr : Set.range y' = Set.range y` using `by rw [h2, range_spMap_comp]`.
-
-Simplify using `only [scaleOn, h.nat F F' f β y v w y' v' w' h1 h2 h3 h4, hb, baseOf_eq h1.1, map_mul, RingHom.comp_apply]`. Use `split_ifs with p q q`. Both sides reduce to the same expression. Conclude with `absurd (hr ▸ p) q`. Conclude with `absurd (hr ▸ q) p`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLineFn_scaleOn (Z : Set (Xo.XF c)) (ha : a ≠ 0) (h : IsLineFn U τ φ) : IsLineFn U τ (scaleOn Z a φ) where
   ne F _ β y v w hf := by
@@ -185,7 +181,7 @@ theorem isLineFn_scaleOn (Z : Set (Xo.XF c)) (ha : a ≠ 0) (h : IsLineFn U τ �
     · simp
 
 /- English proof (translation)
-The claim follows from `h.mem line := isLineFn_scaleOn Z ha h.line flat := by obtain ⟨e, ρ, he, hc⟩ := h.flat refine ⟨e, ρ, he, fun P y v w V W C Fm B h1 h2 h3 h4 h5 h6 h7 h8 => ?_⟩ rw [← hc P y v w V W C Fm B h1 h2 h3 h4 h5 h6 h7 h8] simp only [scaleOn, if_neg (hZ P y h1 h2 h3.1), _root_.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem isFlatGen_scaleOn {g : ℕ} {ty : Fin g → (E →+* ℂ)} {FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty}
     {i : Fin FU.n} (Z : Set (Xo.XF c)) (ha : a ≠ 0) (h : IsFlatGen U τ φ FU i)

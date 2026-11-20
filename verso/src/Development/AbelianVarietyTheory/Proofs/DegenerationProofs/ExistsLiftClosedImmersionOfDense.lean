@@ -8,9 +8,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-It suffices to establish `IsDominant (equalizer.ι f g) from ext_of_isDominant_of_isSeparated t h (equalizer.ι f g) (equalizer.condition _ _)`. Use `⟨Dense.mono (fun x hx ↦ ?_) hD⟩` and prove the remaining obligations. Set `K` to `AlgebraicClosure (X.residueField x)`. Set `y : Sp K ⟶ X` to `Spec.map (CommRingCat.ofHom (algebraMap (X.residueField x) K)) ≫ X.fromSpecResidueField x`. Establish `hy : ∀ p, y p = x` using `fun p ↦ Scheme.fromSpecResidueField_apply x _`.
+Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hxy : y ≫ f = y ≫ g` using `H K y (by rintro _ ⟨p, rfl⟩; rwa [hy])`. Establish `p : Sp K` using `IsLocalRing.closedPoint K`. Use `⟨equalizer.lift y hxy p, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, equalizer.lift_ι, hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_ext_of_geometricPoints_dense {X Y S : Scheme.{0}} [IsReduced X] (t : Y ⟶ S)
     [IsSeparated t] (f g : X ⟶ Y) (h : f ≫ t = g ≫ t) (D : Set X) (hD : Dense D)
@@ -29,9 +29,9 @@ theorem hom_ext_of_geometricPoints_dense {X Y S : Scheme.{0}} [IsReduced X] (t :
   rw [← Scheme.Hom.comp_apply, equalizer.lift_ι, hy]
 
 /- English proof (translation)
-Establish `: IsDominant (pullback.snd i f)` using `⟨Dense.mono (fun x hx ↦ by`. Rewrite using `[Scheme.Pullback.range_snd]`. Conclude with `H x hx) hD⟩`. Establish `: Surjective (pullback.snd i f)` using `surjective_of_isDominant_of_isClosed_range _ (Scheme.Hom.isClosedEmbedding _).isClosed_range`. Use `isIso_of_isClosedImmersion_of_surjective (pullback.snd i f)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨inv (pullback.snd i f) ≫ pullback.fst i f, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, IsIso.inv_hom_id_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_closedImmersion_of_dense {X Y Z : Scheme.{0}} [IsReduced X] (i : Z ⟶ Y)
     [IsClosedImmersion i] (f : X ⟶ Y) (D : Set X) (hD : Dense D)
@@ -45,9 +45,9 @@ theorem exists_lift_closedImmersion_of_dense {X Y Z : Scheme.{0}} [IsReduced X] 
   rw [Category.assoc, pullback.condition, IsIso.inv_hom_id_assoc]
 
 /- English proof (translation)
-Introduce `X S _ s _ _ Sg hSg`. Establish `hD : Dense (s ⁻¹' Sg)` using `hSg.preimage s.isOpenMap`. Use `⟨hD, fun Y t _ f g hf hg H ↦ ?_, fun Y Z i _ f H ↦ ?_⟩` and prove the remaining obligations. Use `hom_ext_of_geometricPoints_dense t f g (hf.trans hg.symm) _ hD fun K _ _ x hx ↦ ?_` and prove the remaining obligations. Use `H K x ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `hx ⟨p, rfl⟩`. Conclude with `exists_lift_closedImmersion_of_dense i f _ hD H`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense_fibres_ext :
     ∀ (X S : Scheme.{0}) [IsReduced X] (s : X ⟶ S) [Flat s] [LocallyOfFinitePresentation s]

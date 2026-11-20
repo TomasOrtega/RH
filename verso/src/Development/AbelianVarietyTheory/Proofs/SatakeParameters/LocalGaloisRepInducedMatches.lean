@@ -20,27 +20,27 @@ open TensorProduct Module
 namespace GlobalTheory.Pst.QuotLine
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isPotentiallySemistable_coefficientField_enlarge`.
+A detailed English derivation is pending.
 -/
 theorem enl_isPst : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] {Gw : Subgroup (Ω ≃ₐ[E] Ω)} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω Gw O) {m : ℕ} {L₁ L₂ : FinExt l} (hL : L₁.1 ≤ L₂.1) (r₁ : ↥Gw →* GL (Fin m) ↥L₁.1), IsPst P (Bw.repE L₁ r₁) → IsPst P (Bw.repE L₂ (mapRep (IntermediateField.inclusion hL).toRingHom r₁)) := GlobalTheory.T.isPotentiallySemistable_coefficientField_enlarge
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.charpoly_weilDeligne_potSemistable_enlarge_coefficients`.
+A detailed English derivation is pending.
 -/
 theorem enl_charPol : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ) {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O) (h : IsPlaceOver A w) (hj : Induces Bw) {m : ℕ} {L₁ L₂ : FinExt l} (hL : L₁.1 ≤ L₂.1) (r₁ : ↥(Dec (F := E) A) →* GL (Fin m) ↥L₁.1), IsPst P (Bw.repE L₁ r₁) → IsPst P (Bw.repE L₂ (mapRep (IntermediateField.inclusion hL).toRingHom r₁)) → ∀ σ : ↥(Weil h), WD.charPol (wdPst P ι Bw h hj (Bw.repE L₂ (mapRep (IntermediateField.inclusion hL).toRingHom r₁))) σ = WD.charPol (wdPst P ι Bw h hj (Bw.repE L₁ r₁)) σ := GlobalTheory.T.charpoly_weilDeligne_potSemistable_enlarge_coefficients
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finrank_dpst_unramified_le_dim_representation`.
+A detailed English derivation is pending.
 -/
 theorem rank_Dpst_le : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l), IsDomain (Bst P) → (∀ (K : FinExt l) (b b' : Bst P), b ≠ 0 → (∀ g : ↥(GK K), b * actSt P (g : GQ l) b' = actSt P (g : GQ l) b * b') → ∃ c : ↥(MaximalUnramifiedExtension l), (c : Om l) ∈ K.1 ∧ b' = algebraMap ↥(MaximalUnramifiedExtension l) (Bst P) c * b) → ∀ {K : FinExt l} {LL : Type} [Field LL] [Algebra ℚ_[l] LL] {V : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V] [FiniteDimensional ℚ_[l] V] (ρ : Representation LL ↥(GK K) V), Module.rank ↥(MaximalUnramifiedExtension l) (DpstUr P ρ) ≤ finrank ℚ_[l] V := GlobalTheory.T.finrank_dpst_unramified_le_dim_representation
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.dpst_rank_le_dimension`.
+A detailed English derivation is pending.
 -/
 theorem exists_dmap_ne_zero : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K : FinExt l} {LL : Type} [Field LL] [Algebra ℚ_[l] LL] [FiniteDimensional ℚ_[l] LL], (∀ (W : Type) [AddCommGroup W] [Module LL W] [Module ℚ_[l] W] [IsScalarTower ℚ_[l] LL W] [FiniteDimensional ℚ_[l] W] (ρW : Representation LL ↥(GK K) W), Module.rank ↥(MaximalUnramifiedExtension l) (DpstUr P ρW) ≤ finrank ℚ_[l] W) → ∀ {V V' : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V] [FiniteDimensional LL V] [AddCommGroup V'] [Module LL V'] [Module ℚ_[l] V'] [IsScalarTower ℚ_[l] LL V'] {ρ : Representation LL ↥(GK K) V} {ρ' : Representation LL ↥(GK K) V'} {f : V →ₗ[LL] V'} (hf : ∀ g v, f (ρ g v) = ρ' g (f v)), IsPst P ρ → f ≠ 0 → ∃ x : ↥(Dpst P ρ), GlobalTheory.Pst.DpstMap.dmap P hf x ≠ 0 := GlobalTheory.T.dpst_rank_le_dimension
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [pow_succ', pow_succ', End.mul_apply, End.mul_apply, DpstMap.dmap_phiD, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem dmap_phiD_pow {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K : FinExt l} {LL : Type} [Field LL]
     [Algebra ℚ_[l] LL] {V V' : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]
@@ -53,7 +53,7 @@ theorem dmap_phiD_pow {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K : FinExt l} {
   | succ n ih => rw [pow_succ', pow_succ', End.mul_apply, End.mul_apply, DpstMap.dmap_phiD, ih]
 
 /- English proof (translation)
-The claim follows from `hV.finite; haveI := hV'.finite (wdRho P ι Bw h hj ρ' σ).charpoly ∣ (wdRho P ι Bw h hj ρ σ).charpoly := by haveI := hV.finite haveI := hV'.finite haveI := LL.2 have key := exists_dmap_ne_zero P hb hf hV hf0 obtain ⟨x, hx⟩ := key have key2 : ∃ n : ℕ, wdMk P ι ρ' ((phiD P ρ' ^ n) (D …`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_dvd_of_map {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ) {E Ω : Type} [Field E]
     [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω}
@@ -94,7 +94,7 @@ theorem charpoly_dvd_of_map {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l
   exact DpstMap.charpoly_dvd_of_surjective _ hsurj _ _ (DpstMap.wdLin_wdRho P ι Bw h hj hf σ)
 
 /- English proof (translation)
-The claim follows from `hr.finite; haveI := hc.finite (wdRho P ι Bw h hj (Bw.repE LL c) σ).charpoly ∣ (wdRho P ι Bw h hj (Bw.repE LL r) σ).charpoly := by have hf : ∀ g x, (Matrix.of fun (_ : Fin 1) i => v i).mulVecLin (Bw.repE LL r g x) = Bw.repE LL c g ((Matrix.of fun (_ : Fin 1) i => v i).mulVecLin x) …`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_dvd_one_field {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ) {E Ω : Type} [Field E]
     [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω}
@@ -128,11 +128,9 @@ theorem charpoly_dvd_one_field {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : O
   exact charpoly_dvd_of_map P ι Bw h hj hb hf hf0 hr hc (Module.finrank_fin_fun _) σ
 
 /- English proof (translation)
-Establish `hp₁'` using `enl_isPst P Bw h₁ r₁ hp₁`. Establish `hp₂'` using `enl_isPst P Bw h₂ c₂ hp₂`. Use `haveI := hp₁'.finite`. Use `haveI := hp₂'.finite`. Establish `k1` using `enl_charPol P ι Bw h hj h₁ r₁ hp₁ hp₁' σ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2` using `enl_charPol P ι Bw h hj h₂ c₂ hp₂ hp₂' σ`. Establish `k3` using `DpstMap.charPol_wdPst P ι Bw h hj (Bw.repE LL (mapRep (IntermediateField.inclusion h₁).toRingHom r₁)) hp₁' σ`. Establish `k4` using `DpstMap.charPol_wdPst P ι Bw h hj (Bw.repE LL (mapRep (IntermediateField.inclusion h₂).toRingHom c₂)) hp₂' σ`. Establish `k5` using `charpoly_dvd_one_field P ι Bw h hj hb _ _ hp₁' hp₂' v hv hrel σ`. Establish `e1` using `k1.symm.trans k3`.
-
-Establish `e2` using `k2.symm.trans k4`. Conclude with `(congrArg Polynomial.roots e2).trans_le ((Polynomial.roots.le_of_dvd (LinearMap.charpoly_monic _).ne_zero k5).trans_eq (congrArg Polynomial.roots e1.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem roots_le_of_models {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ) {E Ω : Type} [Field E]
     [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω}
@@ -163,19 +161,17 @@ theorem roots_le_of_models {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l 
     ((Polynomial.roots.le_of_dvd (LinearMap.charpoly_monic _).ne_zero k5).trans_eq (congrArg Polynomial.roots e1.symm))
 
 /- English proof (translation)
-Introduce `l _ P AI hT ι E Ω _ _ _ _ _ A w O _ _ _ Bw h hj a r c hr hc v hv hrel σ`. Establish `hS'` using `GlobalTheory.Pst.stRegular l P AI hT`. Take `⟨hdom, hfrac, -⟩` from `hS'`. Establish `hr'` using `wdAt_of_isPstAt ι Bw h hj hr`. Take `⟨L₁, r₁, hm₁, hp₁, e₁⟩` from `hr'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc'` using `wdAt_of_isPstAt ι Bw h hj hc`. Take `⟨L₂, c₂, hm₂, hp₂, e₂⟩` from `hc'`. Establish `hLL : ∃ LL : FinExt l, L₁.1 ≤ LL.1 ∧ L₂.1 ≤ LL.1 ∧ ∀ i, v i ∈ LL.1` using `by haveI : Finite (Set.range v) := Set.finite_range v`. Use `⟨supExt (supExt L₁ L₂) ⟨IntermediateField.adjoin ℚ_[l] (Set.range v), IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x⟩, le_sup_left.trans le_sup_left, le_sup_right.trans le_sup_left, fun i => ?_⟩` and prove the remaining obligations. Conclude with `(le_sup_right : IntermediateField.adjoin ℚ_[l] (Set.range v) ≤ _) (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hLL with ⟨LL, h₁, h₂, hvL⟩` into its components or cases. Establish `hm₁'` using `hm₁.enlarge h₁`. Establish `hm₂'` using `hm₂.enlarge h₂`. Establish `hv' : ∃ v' : Fin a → ↥LL.1, ∀ i, (v' i : Om l) = v i` using `⟨fun i => ⟨v i, hvL i⟩, fun _ => rfl⟩`. Break down `hv' with ⟨v', hv'⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `er : ∀ g i j, ((r g : Matrix (Fin a) (Fin a) (Om l)) i j) = (((mapRep (IntermediateField.inclusion h₁).toRingHom r₁ g : Matrix (Fin a) (Fin a) ↥LL.1) i j : ↥LL.1) : Om l)` using `fun g i j => by rw [← hm₁'.2]; rfl`. Establish `ec : ∀ g i j, ((c g : Matrix (Fin 1) (Fin 1) (Om l)) i j) = (((mapRep (IntermediateField.inclusion h₂).toRingHom c₂ g : Matrix (Fin 1) (Fin 1) ↥LL.1) i j : ↥LL.1) : Om l)` using `fun g i j => by rw [← hm₂'.2]; rfl`. Establish `hv0 : v' ≠ 0` using `fun h0 => hv (funext fun i => by rw [← hv' i, h0]; rfl)`. Establish `hrel' : ∀ g, Matrix.vecMul v' (mapRep (IntermediateField.inclusion h₁).toRingHom r₁ g : Matrix (Fin a) (Fin a) ↥LL.1) = (mapRep (IntermediateField.inclusion h₂).toRingHom c₂ g : Matrix (Fin 1) (Fin 1) ↥LL.1) 0 0 • v'`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Apply `Subtype.val_injective` to reduce the goal to its premises. Use `congrFun (hrel g) j` as an intermediate fact. Simplify using `only [Matrix.vecMul, dotProduct, Pi.smul_apply, smul_eq_mul] at this ⊢`. Simplify using `only [er, ec, ← hv'] at this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Conclude with `this`. Use `haveI := LL.2`. Establish `hb : ∀ (W : Type) [AddCommGroup W] [Module ↥LL.1 W] [Module ℚ_[l] W] [IsScalarTower ℚ_[l] ↥LL.1 W] [FiniteDimensional ℚ_[l] W] (ρW : Representation ↥LL.1 ↥(GK Bw.Kw) W), Module.rank ↥(MaximalUnramifiedExtension l) (DpstUr P ρW) ≤ finrank ℚ_[l] W` using `fun W _ _ _ _ _ ρW => rank_Dpst_le P hdom hfrac ρW`. Establish `key` using `roots_le_of_models P ι Bw h hj hb h₁ h₂ r₁ c₂ hp₁ hp₂ v' hv0 hrel' σ`.
-
-Rewrite using `[e₁, e₂]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotient_char_eig : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) → ∀ (ι : Om l ≃+* ℂ) {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O) (h : IsPlaceOver A w) (hj : Induces Bw) {a : ℕ} (r : ↥(Dec (F := E) A) →* GL (Fin a) (Om l)) (c : ↥(Dec (F := E) A) →* GL (Fin 1) (Om l)), IsPstAt P Bw r → IsPstAt P Bw c → ∀ v : Fin a → Om l, v ≠ 0 → (∀ g, Matrix.vecMul v (r g : Matrix (Fin a) (Fin a) (Om l)) = (c g : Matrix (Fin 1) (Fin 1) (Om l)) 0 0 • v) → ∀ σ : ↥(Weil h), (WD.charPol (wdAt P ι Bw h hj c) σ).roots ≤ (WD.charPol (wdAt P ι Bw h hj r) σ).roots := by
   intro l _ P AI hT ι E Ω _ _ _ _ _ A w O _ _ _ Bw h hj a r c hr hc v hv hrel σ

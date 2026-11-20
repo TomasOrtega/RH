@@ -14,21 +14,21 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
   GlobalTheory.SplitRead GlobalTheory.XiOver Formalism.L2.Host
 
 /- English proof (translation)
-Introduce `i`. Take `⟨ρ, hρ, hwd, -⟩` from `(h2 i).2.2 D.naut.etaTinv (-(D.R.t : ℝ) / 2) (inf_int D hA)`. Establish `hun : ∀ w, w ∉ placesOver D.host.E (D.nd.l i) → D.naut.unr (D.naut.wdOf i ρ w)` using `fun w hw => by`. Rewrite using `[hwd w hw]`. Conclude with `(D.naut.unr_tw _ _).2 (D.naut.etaTinv_def w).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfrob : ∀ w, w ∉ placesOver D.host.E (D.nd.l i) → ∀ (B : ValuationSubring D.nd.Om) (σ : G D.host.E D.nd.Om), IsPlaceOver (F` using `D.host.E) B w → IsFrob (F := D.host.E) B (normV w) σ → D.naut.frobEig (D.naut.lpTw (D.naut.locG D.naut.etaTinv w) (-(D.R.t : ℝ) / 2)) = {D.naut.iotaQC i (((ρ σ : GL (Fin 1) (Qbar (D.nd.l i))) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0)} := by`. Introduce `w hw B σ hB hσ`. Establish `e` using `D.naut.wdOf_frob i ρ w hw hρ (hun w hw) B σ hB hσ`. Take `⟨a, ha⟩` from `Multiset.card_eq_one.1 ((D.naut.frobEig_card _ (hun w hw)).trans (D.naut.wdOf_dim i ρ w))`. Rewrite `e` using `[ha, charpoly_fin_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Multiset.map_singleton, Multiset.prod_singleton, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C] at e`. Establish `e2` using `C_injective (sub_right_injective e)`. Rewrite using `[← hwd w hw, ha]`. Conclude with `congrArg _ e2.symm`. Set `d : G D.host.E D.nd.Om →* Qbar (D.nd.l i)` to `(Units.coeHom _).comp (Matrix.GeneralLinearGroup.det.comp ρ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hde : ∀ g, d g = ((ρ g : GL (Fin 1) (Qbar (D.nd.l i))) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0` using `fun g => Matrix.det_fin_one _`. Establish `hd : Continuous d`. Establish `: (d : G D.host.E D.nd.Om → Qbar (D.nd.l i)) = fun g => ((ρ g : GL (Fin 1) (Qbar (D.nd.l i))) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0` using `funext hde`. Rewrite using `[this]`. Conclude with `(continuous_apply_apply 0 0).comp hρ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : (placesOver D.host.E (D.nd.l i)).Finite` using `GlobalTheory.SplitRead.finite_placesOver _ (Fact.out : (D.nd.l i).Prime).ne_zero`. Establish `hS : closure {σ : G D.host.E D.nd.Om | ∃ w ∉ placesOver D.host.E (D.nd.l i), IsSplitPl D.host w ∧ ∃ B : ValuationSubring D.nd.Om, IsPlaceOver (F` using `D.host.E) B w ∧ IsFrob (F := D.host.E) B (normV w) σ} = Set.univ := by`. Establish `hd` using `(h5 hfin.toFinset).closure_eq`. Use `hd using 4 with σ` and compare the differences between its conclusion and the goal. Simplify using `[Set.Finite.mem_toFinset]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨ξ, hξc, hξ⟩` from `exists_integral_char D.nd D.naut i d hd _ hS (by`. Introduce and unpack `σ ⟨w, hw, -, B, hB, hσ⟩`. Take `⟨x, hx⟩` from `frob_value D C nch Tp T V w`. Establish `e` using `hfrob w hw B σ hB hσ`. Rewrite `e` using `[hx, Multiset.singleton_inj, ← D.naut.iota_LL i x, ← hde]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨_, (D.naut.iotaQC i).injective e⟩)`. Use `⟨ξ, hξc, fun w hw => ⟨fun σ hσ => ?_, fun B σ hB hσ => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `(D.naut.wdOf_unr i ρ w hw hρ).1 (hun w hw) σ hσ`. Apply `Units.ext` to reduce the goal to its premises. Apply `iota_inj D.nd D.naut i` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hξ, hde, h1]`. Simplify using the standard rewrite rules. Rewrite using `[hfrob w hw B σ hB hσ, ← hde, ← hξ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem xiOverO (D : D7) (C : Formalism.L2.Host.CharFrame D) (nch : NChoice D) (Tp : Formalism.L2.Host.TupTied D C nch)
     (T : Formalism.L2.Host.NCharTied D C nch Tp) (V : Formalism.L2.Host.ValLL0 D C) (hA : Formalism.MainNotions.SumRepresentations.At.TieAut D.nd D.naut)
@@ -91,11 +91,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.NoLocalInvariantsRankParts GlobalTh
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
 /- English proof (translation)
-Establish `e2 : (heckePol N i x w).map (iotaO N A i) = galPol A (A.lpTw (A.locV i P w) ((1 - (R.nV : ℝ)) / 2))` using `A.pt_loc i P x hP w hw`. Establish `s1` using `galPol_speh N A ⟨R.r, A.tw π A.etaTinv, 1⟩ w hu ((1 - (R.nV : ℝ)) / 2)`. Establish `s2` using `galPol_speh N A ⟨1, A.tw (A.muC i) A.etaTinv, R.t⟩ w (A.chi_mu i w hw).1 ((1 - (R.nV : ℝ)) / 2)`. Establish `e4 : isoLoc N A (twistIso N A ([⟨R.r, π, 1⟩] ++ [muPart N A i]) A.etaTinv) w = A.lpSum (spehLoc N A ⟨R.r, A.tw π A.etaTinv, 1⟩ w) (A.lpSum (spehLoc N A ⟨1, A.tw (A.muC i) A.etaTinv, R.t⟩ w) (A.lpZero w))` using `rfl`. Establish `e5 : ∏ c ∈ Finset.Icc 1 R.t, (X - C ((N.chi i c σ : (N.O i)ˣ) : N.O i)).map (iotaO N A i) = ∏ k ∈ Finset.range R.t, galPol A (A.lpTw (A.locG (A.tw (A.muC i) A.etaTinv) w) (((R.t : ℝ) - 1) / 2 - k + (1 - (R.nV : ℝ)) / 2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.Ico_add_one_right_eq_Icc, Finset.prod_Ico_eq_prod_range, Nat.add_sub_cancel]`. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hx : ((R.t : ℝ) - 1) / 2 - k + (1 - (R.nV : ℝ)) / 2 = ((R.t : ℝ) - 1) / 2 + (1 - (R.nV : ℝ)) / 2 + (-(k : ℝ))` using `by ring`. Rewrite using `[hx, galPol_block N A i hw hBw hσ, add_comm 1 k, chi_apply N i k (Finset.mem_range.mp hk)]`. Establish `hq` using `iota_eps N A i hw.2.1 hBw hσ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : iotaO N A i ((((eps N i σ) ^ k)⁻¹ : (N.O i)ˣ) : N.O i) = ((normV w : ℕ) : ℂ) ^ (((-(k : ℝ) : ℝ)) : ℂ)`. Rewrite using `[Complex.ofReal_neg, Complex.cpow_neg, Complex.ofReal_natCast, Complex.cpow_natCast, ← hq, map_units_inv, Units.val_pow_eq_pow_val, map_pow]`. Rewrite using `[Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, Units.val_mul, map_mul, hinv]`. Rewrite using `[e2, ← e3, e4, A.lpSum_zero, galPol_tw_sum N A _ _ s1.1 s2.1, s1.2, s2.2, e5]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hecke_of_loc (i : N.Loc) (x : N.X i) (π : A.CG R.r) (P : A.AV i) (hP : A.ptV i P = some x)
     {w : PlE H} (e3 : isoLoc N A (twistIso N A ([⟨R.r, π, 1⟩] ++ [muPart N A i]) A.etaTinv) w = A.locV i P w)
@@ -132,9 +132,9 @@ theorem hecke_of_loc (i : N.Loc) (x : N.X i) (π : A.CG R.r) (P : A.AV i) (hP : 
   simp
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `g`. Rewrite using `[ContinuousAt, ← tendsto_sub_nhds_zero_iff, (N.O_adic i).hasBasis_nhds_zero.tendsto_right_iff]`. Introduce `k _`. Take `⟨δ, hδ, hk⟩` from `GlobalTheory.XiOver.mem_pow_of_norm_lt N A i k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcd : ∀ᶠ x in nhds g, ‖iotaOQ N A i (u x) - iotaOQ N A i (u g)‖ < δ` using `(Metric.tendsto_nhds.1 (hd.tendsto g) δ hδ).mono fun x hx => by simpa [dist_eq_norm] using hx`. Use `filter_upwards [hcd] with x hx`. Apply `hk` to reduce the goal to its premises. Rewrite using `[map_sub]`. Conclude with `hx`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_iota (i : N.Loc) {Y : Type} [TopologicalSpace Y] (u : Y → N.O i)
     (hd : Continuous fun y => iotaOQ N A i (u y)) : Continuous u := by
@@ -151,47 +151,41 @@ theorem continuous_of_iota (i : N.Loc) {Y : Type} [TopologicalSpace Y] (u : Y �
   exact hx
 
 /- English proof (translation)
-Use `haveI : IsGalois H.E N.Om := {}`. Take `⟨ξ, hξc, hξ⟩` from `hXi a`. Establish `hιc : Continuous (iotaOQ N A a)` using `GlobalTheory.CoeffEmbedding.continuous_iotaOQ_of_data N A a`. Establish `hcomp : iotaO N A a = (A.iotaQC a).toRingHom.comp (iotaOQ N A a)` using `rfl`. Establish `hinj : Function.Injective (Polynomial.map (A.iotaQC a).toRingHom)` using `Polynomial.map_injective _ (A.iotaQC a).injective`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `R1` to `Formalism.MainNotions.SumRepresentations.At.twGL ρ₀ ((Units.map (iotaOQ N A a).toMonoidHom).comp ξ)`. Establish `hR1 : ∀ g, ((R1 g : GL _ _) : Matrix (Fin R.r) (Fin R.r) (Qbar (N.l a))) = iotaOQ N A a ((ξ g : (N.O a)ˣ) : N.O a) • ((ρ₀ g : GL _ _) : Matrix (Fin R.r) (Fin R.r) (Qbar (N.l a)))` using `fun g => coe_twGL _ _ g`. Establish `hR1c : Continuous fun g => ((R1 g : GL _ _) : Matrix (Fin R.r) (Fin R.r) (Qbar (N.l a)))`. Simplify using `only [hR1]`. Conclude with `(hιc.comp hξc).smul hc0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR1C : ∀ g, ((R1 g : GL _ _) : Matrix (Fin R.r) (Fin R.r) (Qbar (N.l a))).map (A.iotaQC a).toRingHom = iotaO N A a ((ξ g : (N.O a)ˣ) : N.O a) • ((ρ₀ g : GL _ _) : Matrix (Fin R.r) (Fin R.r) (Qbar (N.l a))).map (A.iotaQC a).toRingHom`. Introduce `g`. Rewrite using `[hR1, map_smul_matrix]`. Both sides reduce to the same expression. Establish `hfin` using `placesOver_finite_joint_conditions_zpowers H.E (N.l a) (N.lPrime a).out.ne_zero`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `χ : Fin R.t → G H.E N.Om →* (Qbar (N.l a))ˣ` to `fun c => (Units.map (iotaOQ N A a).toMonoidHom).comp (N.chi a ((c : ℕ) + 1))`. Set `Rq : G H.E N.Om →* GL (Fin (R.r + R.t)) (Qbar (N.l a))` to `(GlobalTheory.SSComplement.blockM finSumFinEquiv R1 (GlobalTheory.SSComplement.diagM χ).toHomUnits).toHomUnits`. Establish `hRq : ∀ g, ((Rq g : GL _ _) : Matrix (Fin (R.r + R.t)) (Fin (R.r + R.t)) (Qbar (N.l a))) = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks ((R1 g : GL _ _) : Matrix (Fin R.r) (Fin R.r) (Qbar (N.l a))) 0 0 (Matrix.diagonal fun c : Fin R.t => iotaOQ N A a ((N.chi a …` using `fun g => rfl`. Establish `hRqc : Continuous fun g => ((Rq g : GL _ _) : Matrix (Fin (R.r + R.t)) (Fin (R.r + R.t)) (Qbar (N.l a)))`. Simplify using `only [hRq]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Continuous.matrix_reindex ?_ _ _` and prove the remaining obligations. Use `Continuous.matrix_fromBlocks hR1c continuous_const continuous_const ?_` and prove the remaining obligations. Conclude with `Continuous.matrix_diagonal (continuous_pi fun c => hιc.comp (N.chi_cont a _))`. Establish `hRqs : IsSSRep Rq` using `GlobalTheory.SSComplement.blockM_ss _ _ _ (isSSRep_twGL _ _ hs0) (GlobalTheory.SSComplement.diagM_ss χ)`. Establish `hq : Formalism.MainNotions.SumRepresentations.At.IsHeckeGaloisQ N A a x Rq`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the first alternative.
 
-Use `⟨hRqc, hRqs, fun v hso B g hBv hg => ?_⟩` and prove the remaining obligations. Establish `h4 : A.unr (A.locG π v)` using `hun v fun k hk => hso.2.2.1 ((N.S_def a v).2 ⟨by fin_cases k`. Conclude with `Or.inl hk`. Conclude with `Or.inr (Or.inl hk), hso.2.1⟩)`. Establish `h5 : A.unr (A.locG (A.tw π A.etaTinv) v)`.
+Prove the second alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[A.locG_tw]`. Conclude with `A.unr_char _ _ (A.locG_dim _ _) h4 (A.etaTinv_def v).1`. Establish `h1` using `hso.2.1`. Establish `e3 : isoLoc N A (twistIso N A ([⟨R.r, π, 1⟩] ++ [muPart N A a]) A.etaTinv) v = A.locV a P v`. Rewrite using `[GlobalTheory.Proof.SplitPlaceGoodSignature.isoLoc_lift N A hLaw, hloc v hso.1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[isoLoc, spehLoc, A.lpSum_zero, A.lpTw_zero]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Polynomial.map_map, ← hcomp]`. Use `Eq.trans (congrArg (Polynomial.map (A.iotaQC a).toRingHom) ((congrArg Matrix.charpoly (hRq g)).trans (charpoly_block _ _))) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `symm`. Rewrite using `[Polynomial.map_mul, ← Matrix.charpoly_map, hR1C g, hecke_of_loc N A a x π P hP e3 hso h5 hBv hg, galPol_twist N A π h4 _ ((hξ v h1).2 B g hBv hg), charpoly_smul_of_prod _ _ _ (hfr v h1 h4 B g hBv hg), prod_Icc_eq_fin, Polynomial.map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Take `⟨rf, Pm, hPm⟩` from `hO a x Rq hq`. Establish `hval : ∀ g, ((rf g : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O a)).map (iotaOQ N A a) = ((Pm⁻¹ : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l a))) * (show Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l a)) from ((Rq g : GL _ _) : Matrix (Fin (R.r + R.t)) (Fin (R.r + R.t)) (Qbar ( …` using `fun g => congrArg Units.val (hPm g)`. Establish `hrc : Continuous fun g => ((rf g : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O a))`. Establish `hc : Continuous fun g => ((rf g : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O a)).map (iotaOQ N A a)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hval]`. Conclude with `(continuous_const.mul hRqc).mul continuous_const`. Conclude with `continuous_pi fun p => continuous_pi fun q => continuous_of_iota N A a _ (hc.matrix_elem p q)`. Establish `hrs : IsSSRep (mapRep (algebraMap (N.O a) (Kf N a)) rf)`. Use `GlobalTheory.Proof.SemisimpleRepresentationIntegralConjugate.isSSRep_of_mapRep (A.iotaQ a) _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.RowRepOcc.mapRep_mapRep]`. Conclude with `GlobalTheory.Proof.SemisimpleRepresentationIntegralConjugate.isSSRep_conj (ρ := (Rq : G H.E N.Om →* GL (Fin R.nV) (Qbar (N.l a)))) Pm⁻¹ (fun g => hPm g) hRqs`. Use `haveI : CharZero (Qbar (N.l a)) := (RingHom.charZero_iff (A.iotaQC a).toRingHom.injective).2 inferInstance`. Use `haveI : CharZero (Kf N a) := (RingHom.charZero_iff (A.iotaQ a).injective).2 inferInstance`. Establish `hkey' : ∀ g, (((rf g : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O a))).charpoly.map (iotaOQ N A a) = ((R1 g : GL _ _) : Matrix (Fin R.r) (Fin R.r) (Qbar (N.l a))).charpoly * ∏ c : Fin R.t, (X - C (iotaOQ N A a ((N.chi a ((c : ℕ) + 1) g : (N.O a)ˣ) : N.O a)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g`. Rewrite using `[← Matrix.charpoly_map, hval g, Matrix.coe_units_inv, Matrix.charpoly_units_conj']`. Conclude with `(congrArg Matrix.charpoly (hRq g)).trans (charpoly_block _ _)`. Take `⟨ρ', hρc, hρs, hρp⟩` from `GlobalTheory.LatticeComplement.exists_lattice_complement (G H.E N.Om) (N.O a) (Kf N a) R.r R.t (rf) (fun c : Fin R.t => N.chi a ((c : ℕ) + 1)) hrc hrs ⟨Qbar (N.l a), inferInstance, A.iotaQ a, R1, hkey'⟩`. Establish `hcan : ∀ g, ((ρ' g : GL _ _) : Matrix (Fin R.r) (Fin R.r) (N.O a)).charpoly.map (iotaOQ N A a) = ((R1 g : GL _ _) : Matrix (Fin R.r) (Fin R.r) (Qbar (N.l a))).charpoly`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g`. Establish `e1 : (((rf g : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O a))).charpoly.map (iotaOQ N A a) = ((ρ' g : GL _ _) : Matrix (Fin R.r) (Fin R.r) (N.O a)).charpoly.map (iotaOQ N A a) * ∏ c : Fin R.t, (X - C (iotaOQ N A a ((N.chi a ((c : ℕ) + 1) g : (N.O a)ˣ) : N.O a)))`. Use `congrArg (Polynomial.map (iotaOQ N A a)) (hρp g)` as an intermediate fact. Rewrite `this` using `[Polynomial.map_mul, Polynomial.map_prod]`. Use `this.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Establish `hne : (∏ c : Fin R.t, (X - C (iotaOQ N A a ((N.chi a ((c : ℕ) + 1) g : (N.O a)ˣ) : N.O a)))) ≠ 0` using `(monic_prod_of_monic _ _ fun c _ => monic_X_sub_C _).ne_zero`. Conclude with `mul_right_cancel₀ hne (e1.symm.trans (hkey' g))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Formalism.MainNotions.SumRepresentations.At.twGL ρ' ξ⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (fun g => ((Formalism.MainNotions.SumRepresentations.At.twGL ρ' ξ⁻¹ g : GL _ _) : Matrix (Fin R.r) (Fin R.r) (N.O a))) = fun g => ((ξ g⁻¹ : (N.O a)ˣ) : N.O a) • ((ρ' g : GL _ _) : Matrix (Fin R.r) (Fin R.r) (N.O a))`. Use function extensionality and compare the values at `g`. Rewrite using `[coe_twGL, MonoidHom.inv_apply, map_inv]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(hξc.comp continuous_inv).smul hρc`. Rewrite using `[mapRep_twGL]`. Conclude with `isSSRep_twGL _ _ hρs`. Use `filter_upwards [hfin.eventually_cofinite_notMem, A.locG_unr_ae π] with w h1 h2 B σ hBw hσ`. Establish `iso : isoLoc N A [⟨R.r, π, 1⟩] w = A.locG π w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[isoLoc, spehLoc, A.lpSum_zero, A.lpTw_zero]`. Rewrite using `[iso]`. Establish `h0` using `hfr w h1 h2 B σ hBw hσ`. Establish `c1 : (((ρ' σ : GL _ _) : Matrix (Fin R.r) (Fin R.r) (N.O a)).map (iotaO N A a)).charpoly = (((A.frobEig (A.lpTw (A.locG π w) ((1 - (R.r : ℝ)) / 2))).map (· * iotaO N A a ((ξ σ : (N.O a)ˣ) : N.O a))).map fun α => X - C α).prod`. Rewrite using `[Matrix.charpoly_map, hcomp, ← Polynomial.map_map, hcan σ, ← Matrix.charpoly_map, hR1C σ]`.
-
-Conclude with `charpoly_smul_of_prod _ _ _ h0`. Establish `c2` using `charpoly_smul_of_prod _ (iotaO N A a (((ξ⁻¹ σ : (N.O a)ˣ)) : N.O a)) _ c1`. Establish `huv : iotaO N A a ((ξ σ : (N.O a)ˣ) : N.O a) * iotaO N A a (((ξ⁻¹ σ : (N.O a)ˣ)) : N.O a) = 1`. Rewrite using `[← map_mul, MonoidHom.inv_apply, ← Units.val_mul, mul_inv_cancel]`. Simplify using the standard rewrite rules.
-
-Establish `hL : ((A.frobEig (A.lpTw (A.locG π w) ((1 - (R.r : ℝ)) / 2))).map (· * iotaO N A a ((ξ σ : (N.O a)ˣ) : N.O a))).map (· * iotaO N A a (((ξ⁻¹ σ : (N.O a)ˣ)) : N.O a)) = A.frobEig (A.lpTw (A.locG π w) ((1 - (R.r : ℝ)) / 2))`. Rewrite using `[Multiset.map_map]`. Use `(Multiset.map_congr rfl fun α _ => ?_).trans (Multiset.map_id _)` and prove the remaining obligations. Use `show α * _ * _ = α`. Rewrite using `[mul_assoc, huv, mul_one]`.
-
-Rewrite using `[← Matrix.charpoly_map, coe_twGL, map_smul_matrix, c2, hL]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lattice_of_point (hLaw : GlobalTheory.ThetaExh.ParamLaws N A) (hO : Formalism.MainNotions.SumRepresentations.At.OLarge N A)
     (hXi : GlobalTheory.SplitRead.XiOverO N A) (a : N.Loc) (x : N.X a) (P : A.AV a) (hP : A.ptV a P = some x) (π : A.CG R.r)

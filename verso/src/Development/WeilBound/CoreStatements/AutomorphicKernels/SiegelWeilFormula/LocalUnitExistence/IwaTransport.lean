@@ -15,17 +15,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hM` using `MU_gram (F := F) he he₀ r hr`. Establish `hM'` using `gram_inv_smul (cA σ) (MU b b₀ r) r hM`. Introduce `x`. Set `y : G2 σ Y₀` to `cj (cA σ) (MU b b₀ r)⁻¹ ((r⁻¹ : (AE F E)ˣ) : AE F E) hM' x`. Take `⟨p₀, t₀, hp₀, k₀, hk₀, hy⟩` from `hI y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hx : x = cj (cA σ) (MU b b₀ r) (r : AE F E) hM y` using `Subtype.ext (by simp only [y, cj_val]; group)`. Rewrite `hx` using `[hy, cj_mul]`. Take `⟨hpf, -⟩` from `par_to hb₀ hp₀`. Establish `hpf' : ParF b (cj (cA σ) (MU b b₀ r) (r : AE F E) hM p₀ : G2 σ Y)`. Unfold `ParF`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[inFrame_cj]`. Use extensionality with `i j`. Use `congrFun (congrFun hpf i) j` as an intermediate fact. Simplify using `only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.zero_apply] at this ⊢`. Rewrite using `[dg_entry, this, mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht, -⟩` from `par_of hb hpf'`. Use `⟨_, t, ht, _, ?_, hx⟩` and prove the remaining obligations. Take `⟨harch, hfin⟩` from `(hK₀ k₀).1 hk₀`. Use `(hK _).2 ⟨fun w => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[inFrame_cj]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dg_arch r _ (hri w) _ (harch w)`. Introduce and unpack `k' (rfl | rfl) i j`. Rewrite using `[inFrame_cj]`. Conclude with `dg_fin r hrf _ (hfin k₀ (Set.mem_insert _ _)) i j`. Rewrite using `[← cj_inv, inFrame_cj]`.
-
-Conclude with `dg_fin r hrf _ (hfin k₀⁻¹ (Set.mem_insert_of_mem _ rfl)) i j`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwa_transport {B : Base F E} (hσ : ∀ z, σ (σ z) = z) {Y Y₀ : Spc F E n} {b b₀ : GL (Fin n ⊕ Fin n) E}
     {ε ε₀ : ℤˣ} (hb : IsFrame2 σ Y b) (hb₀ : IsFrame2 σ Y₀ b₀) (he : b.1ᵀ * dbl Y.J * b.1.map σ = Ald.jeps n ε)

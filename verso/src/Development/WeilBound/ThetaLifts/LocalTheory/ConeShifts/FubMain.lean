@@ -17,14 +17,14 @@ open GlobalTheory.Doubling hiding npow norm_npow npow_ne_zero
 attribute [local instance] ae_ring ae_smul ae_t2 ae_lc ae_sc id_lc id_sc id_borel
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem inAt_iff (𝔞 : FractionalIdeal (𝓞 E)⁰ E) (v : Pl F) (l : (AE F E)ˣ) : InAt 𝔞 v (l : AE F E) ↔
     ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → vw w l ≤ WithZero.exp (-FractionalIdeal.count E w 𝔞) := Iff.rfl
 
 open Classical in
 /- English proof (translation)
-Use `prodW hB hz (Formalism.L2.Host.aboveF (L := E) F v) (fun w hw => hν w (mem_aboveF.1 hw)) (fun w => FractionalIdeal.count E w 𝔞) (c := 0) (by simp) (map_zero _) (by simp) (fun l h _ => by rw [← show PI 0 l = l from h.2, unitInvariant_zero, map_one]) _ (idem_eq_sum v) γ hγ` as an intermediate fact. Simplify using `only [unitInvariant_zero, one_mem, and_true, mem_aboveF] at this`. Simplify using `only [inAt_iff]`. Use `this` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem uLocP {B : Base F E} (hB : B.IsGood σ) {ν : Chr F E} {z : ℕ} (hz : 1 ≤ z) (𝔞 : FractionalIdeal (𝓞 E)⁰ E) {v : Pl F}
     (hν : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → UnrAt ν w) (γ : Measure (part (PI (F := F)) ⊤ (io (idem F v))))
@@ -40,7 +40,7 @@ theorem uLocP {B : Base F E} (hB : B.IsGood σ) {ν : Chr F E} {z : ℕ} (hz : 1
   convert this
 
 /- English proof (translation)
-The claim follows from `tendsto_atTop_finset_of_monotone (fun _ _ h _ hw => mem_ab.2 (Finset.union_subset_union_left h (mem_ab.1 hw))) fun w => ⟨{w.under (𝓞 F)}, mem_ab.2 (by simp)⟩`.
+A detailed English derivation is pending.
 -/
 theorem ab_tendsto (T₀ : Finset (Pl F)) [DecidableEq (Pl F)] :
     Tendsto (fun T : Finset (Pl F) => ab (E := E) (T ∪ T₀)) atTop atTop :=
@@ -49,15 +49,13 @@ theorem ab_tendsto (T₀ : Finset (Pl F)) [DecidableEq (Pl F)] :
 
 open Classical in
 /- English proof (translation)
-Establish `h1` using `((bounded_charFam (above E (S : Set (Pl F))) ν).converges (s := (z : ℂ)) (by`. Simplify using `only [Complex.natCast_re]; have : (2 : ℝ) ≤ z := by exact_mod_cast hz`. Use the proof step `linarith)).hasProd`. Establish `h2` using `(hasProd_subtype_iff_mulIndicator (s := {w | w ∉ above E (S : Set (Pl F))}) (f := fun w => locL (charFam ν) w (z : ℂ))).1 h1`. Establish `h3` using `(Tendsto.comp h2 (ab_tendsto T₀)).const_mul (∏ w ∈ ab (T₀ \ S), ((val ν w : ℂ) * npow w (-(z : ℂ))) ^ m w)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h3.congr fun T => ?_` and prove the remaining obligations. Simplify using `only [tw, Finset.prod_mul_distrib, Function.comp]`. Use `congr 1`. Use `Finset.prod_subset (fun w hw => ?_) fun w hw hw' => ?_` and prove the remaining obligations. Rewrite `hw`, the goal using `[mem_ab, Finset.mem_sdiff]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Finset.mem_union_right _ hw.1, hw.2⟩`. Rewrite `hw`, `hw'` using `[mem_ab, Finset.mem_sdiff]`. Rewrite using `[hm w fun h => hw' ⟨h, hw.2⟩, zpow_zero]`. Use `symm`. Use `Finset.prod_subset_one_on_sdiff (fun w hw => ?_) (fun w hw => ?_) fun w hw => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hw`, the goal using `[mem_ab]`. Conclude with `(Finset.mem_sdiff.1 hw).1`. Simplify using `only [Finset.mem_sdiff, mem_ab] at hw`. Conclude with `Set.mulIndicator_of_notMem (fun h => hw.2 ⟨hw.1, h⟩) _`. Establish `h` using `(Finset.mem_sdiff.1 (mem_ab.1 hw)).2`.
-
-Rewrite using `[Set.mulIndicator_of_mem (show w ∈ {w | w ∉ above E (S : Set (Pl F))} from h), locL, charFam_of_unrAt (hν w h)]`. Simplify using `[eulerFac, eulerPoly]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lim_tw {ν : Chr F E} {z : ℕ} (hz : 2 ≤ z) (m : HeightOneSpectrum (𝓞 E) → ℤ) (S T₀ : Finset (Pl F))
     (hν : UnrOff ν (S : Set (Pl F))) (hm : ∀ w, w.under (𝓞 F) ∉ T₀ → m w = 0) :
@@ -88,25 +86,23 @@ theorem lim_tw {ν : Chr F E} {z : ℕ} (hz : 2 ≤ z) (m : HeightOneSpectrum (�
 set_option maxHeartbeats 600000 in
 open Classical in
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.countable_heightOneSpectrum F`. Establish `hi` using `fun T : Finset (Pl F) => io_idem (E := E) (rest_idem T)`. Set `D : Finset (Pl F) → Set (part (PI (F` to `F) (E := E)) ⊤ (io (rest T))) := fun T' => {x | PI (io (rest (T' ∪ T₀))) x.1 ∈ UI F E}`. Establish `mD : ∀ T', MeasurableSet (D T')` using `fun T' => (isOpen_UI.preimage ((unitInvariant_continuous (hi _)).comp continuous_subtype_val)).measurableSet`. Establish `hD : ∀ (A : Finset (Pl F)) (x : (AE F E)ˣ), PI (io (rest A)) x ∈ UI F E ↔ ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) ∉ A → vw w x = 1` using `fun A x => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) ∉ A → vw w (PI (io (rest A)) x) = vw w x` using `fun w hw => by`. Rewrite using `[vw, cw_PI_one (hi A) (by rw [cw_rest, if_neg hw])]; rfl`. Use `⟨fun h w hw => (e w hw).symm.trans (h w), fun h w => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w.under (𝓞 F) ∈ A`. Rewrite using `[vw, cw_PI_zero (hi A) (rest_zero.2 hw), map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(e w hw).trans (h w hw)`. Establish `cov : AECover β atTop D`. Use `⟨Eventually.of_forall fun x => ?_, mD⟩` and prove the remaining obligations. Establish `f1 : ∀ y : (AE F E)ˣ, ∀ᶠ w in cofinite, vw w y ≤ 1` using `fun y => (fc F E y).2`. Establish `f2 : {w | ¬ vw w x.1 = 1}.Finite` using `((f1 x.1).and (f1 x.1⁻¹)).mono fun w h => le_antisymm h.1 (by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `filter_upwards [eventually_ge_atTop (f2.toFinset.image fun w => w.under (𝓞 F))] with T' h`. Use `(hD _ _).2 fun w hw => by_contra fun h' => hw (Finset.mem_union_left _ (h ?_))` and prove the remaining obligations. Conclude with `Finset.mem_image_of_mem _ (f2.mem_toFinset.2 h')`. Establish `key : ∀ ν : Chr F E, Continuous ν → UnrOff ν (T : Set (Pl F)) → ∀ T', IntegrableOn (fun x : part PI ⊤ (io (rest T)) => (if ∀ v ∉ T, InAt 𝔞 v (x.1 : AE F E) then (1 : ℂ) else 0) * wt ν z x.1) (D T') β ∧ ∫ x in D T', (if ∀ v ∉ T, InAt 𝔞 v (x.1 : AE F E) then (1 : ℂ) else 0) * wt ν …` using `fun ν hc hν T' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : T ⊆ T' ∪ T₀` using `hT.trans Finset.subset_union_right`. Use `prodW hB (z := z) (by omega) (ab ((T' ∪ T₀) \ T)) (fun w hw => hν w (Finset.mem_sdiff.1 (mem_ab.1 hw)).2) (fun w => FractionalIdeal.count E w 𝔞) (hi (T' ∪ T₀)) (inf_io (rest_fst _)) (fun w hw => ew_rest (Finset.mem_sdiff.1 (mem_ab.1 hw)).1) (fun l h hu => nu_rest hc (fun w hw => …` as an intermediate fact. Rewrite using `[← integrable_indicator_iff (mD T'), ← integral_indicator (mD T')]`. Establish `e : (D T').indicator (fun x : part PI ⊤ (io (rest T)) => (if ∀ v ∉ T, InAt 𝔞 v (x.1 : AE F E) then (1 : ℂ) else 0) * wt ν z x.1) = fun x : part PI ⊤ (io (rest T)) => (if (∀ w ∈ ab ((T' ∪ T₀) \ T), vw w x.1 ≤ WithZero.exp (-FractionalIdeal.count E w 𝔞)) ∧ PI (io (rest (T' ∪ T₀))) …`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hx : PI (io (rest (T' ∪ T₀))) x.1 ∈ UI F E`. Rewrite using `[Set.indicator_of_mem (show x ∈ D T' from hx)]`. Use `congr 1`. Use `if_congr ⟨fun h => ⟨fun w hw => (inAt_iff _ _ _).1 (h _ (Finset.mem_sdiff.1 (mem_ab.1 hw)).2) w rfl, hx⟩, fun h v hv => (inAt_iff _ _ _).2 fun w hw => ?_⟩ rfl rfl` and prove the remaining obligations. Substitute `hw` using the available equality.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h1 : w.under (𝓞 F) ∈ T' ∪ T₀`. Conclude with `h.1 w (mem_ab.2 (Finset.mem_sdiff.2 ⟨h1, hv⟩))`. Rewrite using `[(hD _ _).1 hx w h1, hm w fun h2 => h1 (Finset.mem_union_right _ h2)]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (show x ∉ D T' from hx), if_neg fun h => hx h.2, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `this` and compare the differences between its conclusion and the goal. Establish `u1 : UnrOff (1 : Chr F E) (T : Set (Pl F))` using `fun w _ x _ => map_one Circle.toUnits`. Take `⟨C, hC⟩` from `(lim_tw (ν := (1 : Chr F E)) hz (fun w => FractionalIdeal.count E w 𝔞) T T₀ u1 hm).norm.isBoundedUnder_le`. Establish `int : Integrable (fun x : part PI ⊤ (io (rest T)) => (if ∀ v ∉ T, InAt 𝔞 v (x.1 : AE F E) then (1 : ℂ) else 0) * wt ν z x.1) β`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `cov.integrable_of_integral_norm_bounded C (fun T' => (key ν hc hν T').1) (Eventually.mono hC fun T' h => le_trans ?_ h)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← (key 1 continuous_const u1 T').2]`. Establish `e : ∀ x : part (PI (F` using `F) (E := E)) ⊤ (io (rest T)), (if ∀ v ∉ T, InAt 𝔞 v (x.1 : AE F E) then (1 : ℂ) else 0) * wt 1 z x.1 = ((‖(if ∀ v ∉ T, InAt 𝔞 v (x.1 : AE F E) then (1 : ℂ) else 0) * wt ν z x.1‖ : ℝ) : ℂ) := fun x => by`. Establish `hn` using `Circle.norm_coe (ν x.1)`.
-
-Apply the tactic sequence `split_ifs <;> simp [wt, hn]`. Simplify using `only [e]`. Rewrite using `[integral_complex_ofReal, Complex.norm_real]`. Conclude with `le_abs_self _`. Use `⟨int, (cov.integral_tendsto_of_countably_generated int).congr fun T' => (key ν hc hν T').2⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tail {B : Base F E} (hB : B.IsGood σ) {z : ℕ} (hz : 2 ≤ z) (𝔞 : FractionalIdeal (𝓞 E)⁰ E) (T T₀ : Finset (Pl F))
     (hT : T ⊆ T₀) (hm : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) ∉ T₀ → FractionalIdeal.count E w 𝔞 = 0)
@@ -184,17 +180,17 @@ theorem tail {B : Base F E} (hB : B.IsGood σ) {z : ℕ} (hz : 2 ≤ z) (𝔞 : 
 
 open Classical in
 /- English proof (translation)
-Set `T₀` to `T ∪ fin.toFinset.image fun w => w.under (𝓞 F)`. Establish `hm0 : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) ∉ T₀ → FractionalIdeal.count E w 𝔞 = 0` using `fun w hw =>`. Assume the negation of the conclusion as `fun h => hw (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (fin.mem_toFinset.2 h)))`. Establish `t3` using `lim_tw hz (fun w => FractionalIdeal.count E w 𝔞) S T₀ hν hm0`. Establish `t5` using `tendsto_nhds_unique ((t2.const_mul (∏ v ∈ T \ S, u v)).congr fun T' => ?_) t3`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[t5]`. Use `congr 1`. Establish `hsub : fin.toFinset ⊆ ab (T₀ \ S)` using `fun w hw => mem_ab.2 (Finset.mem_sdiff.2 ⟨Finset.mem_union_right _ (Finset.mem_image_of_mem _ hw), fun h => fin.mem_toFinset.1 hw (hram w h).2⟩)`. Rewrite using `[← Finset.prod_subset hsub fun w _ hw => by rw [not_not.1 (mt fin.mem_toFinset.2 hw), zpow_zero], idealVal, finprod_eq_prod_of_mulSupport_subset _ (s := fin.toFinset) fun w hw => by`. Simplify using `only [Set.Finite.coe_toFinset, Set.mem_setOf_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h; exact hw (by simp only [h, zpow_zero])]`. Simplify using `only [mul_zpow, Finset.prod_mul_distrib, Units.coe_prod, Units.val_zpow_eq_zpow_val]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [charL, LS, eulerProd]`. Use `(tprod_subtype {w | w ∉ above E (S : Set (Pl F))} fun w => locL (charFam ν) w (z : ℂ)).trans (Eq.trans (tprod_congr fun w => ?_) (tprod_subtype {w | w ∉ above E (S₀ : Set (Pl F))} fun w => locL (charFam ν) w (z : ℂ)).symm)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : w.under (𝓞 F) ∈ S`. Establish `: locL (charFam ν) w (z : ℂ) = 1` using `by rw [locL, charFam, if_neg (hram w h).1, eulerFac_zero]`. Simplify using `only [Set.mulIndicator_apply, this, ite_self]`. Rewrite using `[Set.mulIndicator_of_mem (show w ∈ {w | w ∉ above E (S : Set (Pl F))} from h), Set.mulIndicator_of_mem (show w ∈ {w | w ∉ above E (S₀ : Set (Pl F))} from fun h' => h (hS h'))]`. Rewrite using `[Finset.prod_congr rfl fun v hv => hu2 v (Finset.mem_sdiff.1 hv).2, ← Finset.prod_biUnion (fun a _ b _ hab => Finset.disjoint_left.2 fun w h h' => hab ((mem_aboveF.1 h).symm.trans (mem_aboveF.1 h'))), ← Finset.prod_union (Finset.disjoint_left.2 fun w h h' => (Finset.mem_sdiff.1 ( …`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_biUnion, mem_aboveF, exists_eq_right', Finset.mem_sdiff] at h`. Conclude with `h.1))]`. Use `Finset.prod_congr (Finset.ext fun w => ?_) fun _ _ => rfl` and prove the remaining obligations. Simplify using `only [Finset.mem_union, Finset.mem_biUnion, mem_aboveF, exists_eq_right', Finset.mem_sdiff, mem_ab, T₀]`. Use `@hT (w.under (𝓞 F))` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. The claim follows by propositional logic.
 
-The claim follows by propositional logic.
+A detailed English derivation is pending.
 -/
 theorem euler {ν : Chr F E} {z : ℕ} (hz : 2 ≤ z) (𝔞 : FractionalIdeal (𝓞 E)⁰ E)
     (fin : {w | ¬ FractionalIdeal.count E w 𝔞 = 0}.Finite) {S₀ S T : Finset (Pl F)} (hS : S₀ ⊆ S) (hT : S ⊆ T)
@@ -238,39 +234,35 @@ theorem euler {ν : Chr F E} {z : ℕ} (hz : 2 ≤ z) (𝔞 : FractionalIdeal (�
     tauto
 
 /- English proof (translation)
-The claim follows from `map_mul (wtH ν z) a b`.
+A detailed English derivation is pending.
 -/
 theorem wt_mul (ν : Chr F E) (z : ℕ) (a b : (AE F E)ˣ) : wt ν z (a * b) = wt ν z a * wt ν z b := map_mul (wtH ν z) a b
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n X K m μ hB hm hμ 𝔞 z h𝔞 hz`. Establish `sy` using `sysI (F := F) (E := E)`. Establish `hi` using `fun T : Finset (Pl F) => io_idem (E := E) (rest_idem T)`. Establish `hr` using `io_idem (E := E) (real_idem (F := F))`. Establish `hv` using `fun v : Pl F => io_idem (E := E) (idem_idem v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `di` using `idAt_eq (E := E) (evI F) real_idem fun _ => at_inf_iff`. Establish `df` using `fun v => idAt_eq (E := E) (evFin F v) (idem_idem v) fun _ => at_fin_iff`. Establish `e1 : (⊤ : Subgroup (AE F E)ˣ) = part PI ⊤ (io (realAd F 1) + io (rest ∅))`. Rewrite using `[io, io, ← map_add, real_add_rest, map_one]`. Conclude with `Subgroup.ext fun g => ⟨fun h => ⟨h, unitInvariant_one g⟩, fun h => h.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `sp` using `sy.split hr (hi ∅) (io_orth (real_rest ∅))`. Set `et : (⊤ : Subgroup (AE F E)ˣ) ≃ₜ* (AE F E)ˣ` to `{ Subgroup.topEquiv with continuous_toFun := continuous_subtype_val continuous_invFun := continuous_id.subtype_mk _ }`. Establish `hme : MeasurableEmbedding et.symm` using `et.symm.toHomeomorph.measurableEmbedding`. Take `⟨μ', m1, -, m3⟩` from `transport e1 _ BorelSpace.measurable_eq (μ.map et.symm)`. Take `⟨α, a1, -, a3⟩` from `transport di _ rfl m.xi`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose γ g1 g2 g3 using fun v => transport (df v) _ rfl (m.xf v)`. Establish `hγ : ∀ v, (γ v).IsHaarMeasure ∧ γ v {x | x.1 ∈ (UI F E : Set (AE F E)ˣ)} = 1` using `fun v => ⟨g1 v (hm.xf v).1, by rw [g2, ← units_eq]; exact (hm.xf v).2⟩`. Use `choose β hβ using fun T : Finset (Pl F) => exists_haar _ (sy.closed (hi T)) _ (UI F E).one_mem (co_I (hi T) (inf_io (rest_fst T))).1 (co_I (hi T) (inf_io (rest_fst T))).2`. Use `haveI := m1 (ContinuousMulEquiv.isHaarMeasure_map μ et.symm)`. Use `haveI := a1 hm.xi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := (hβ ∅).1`. Take `⟨c, c0, c1, -⟩` from `sp.fub μ' α (β ∅)`. Establish `fin : {w | ¬ FractionalIdeal.count E w 𝔞 = 0}.Finite` using `FractionalIdeal.finite_factors 𝔞`. Set `κa : ℂ` to `∏ w ∈ fin.toFinset, npow w (-(z : ℂ)) ^ FractionalIdeal.count E w 𝔞`. Use `⟨fun l => ⟨PI (io (realAd F 1)) l, di ▸ PI_mem hr l⟩, fun v l => ⟨PI (io (idem F v)) l, (df v) ▸ PI_mem (hv v) l⟩, c * κa, mul_ne_zero (by exact_mod_cast c0) (Finset.prod_ne_zero_iff.2 fun w _ => zpow_ne_zero _ (npow_ne_zero _ _)), fun l => ⟨coe_PI_io real_idem l, fun v => coe_PI …` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hu` using `fun v (h : v ∉ S) => uLocP hB (ν := ν) (z := z) (by omega) 𝔞 (v := v) (fun w hw => hν w (by show ¬ (w.under (𝓞 F) ∈ (S : Set (Pl F))); rw [hw]; exact h)) (γ v) (hγ v)`. Establish `hu2 : ∀ v ∉ S, uLoc v (m.xf v) 𝔞 ν z = ∏ w ∈ Formalism.L2.Host.aboveF (L` using `E) F v, tw ν z (FractionalIdeal.count E w 𝔞) w := fun v h => (g3 v fun l => (if InAt 𝔞 v (l : AE F E) then 1 else 0) * wt ν z l).2.symm.trans (hu v h).2`. Use `⟨fun v h => ⟨by rw [hu2 v h]; exact Finset.prod_ne_zero_iff.2 fun w _ => tw_ne ν (by omega) _ _, (g3 v fun l => (if InAt 𝔞 v (l : AE F E) then 1 else 0) * wt ν z l).1.1 (hu v h).1⟩, fun T hT gi g i1 i2 => ?_⟩` and prove the remaining obligations. Set `T₀` to `T ∪ fin.toFinset.image fun w => w.under (𝓞 F)`. Establish `hm0 : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) ∉ T₀ → FractionalIdeal.count E w 𝔞 = 0` using `fun w hw =>`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Assume the negation of the conclusion as `fun h => hw (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (fin.mem_toFinset.2 h)))`. Take `⟨t1, t2⟩` from `tail hB hz 𝔞 T T₀ Finset.subset_union_left hm0 (β T) (hβ T) hc fun w hw => hν w fun h => hw (hT h)`. Establish `t4 : (∏ v ∈ T \ S, uLoc v (m.xf v) 𝔞 ν z) * ∫ x : part PI ⊤ (io (rest T)), (if ∀ v ∉ T, InAt 𝔞 v (x.1 : AE F E) then (1 : ℂ) else 0) * wt ν z x.1 ∂(β T) = κa * (idealVal ν 𝔞 : ℂ) * charL ν (S₀ : Set (Pl F)) (z : ℂ)` using `euler hz 𝔞 fin hS hT hν hram _ hu2 _ t2`. Establish `hsum : (io (rest ∅) : AE F E) = ∑ v ∈ T, io (idem F v) + io (rest T)`. Rewrite using `[sum_rest T, io, map_add, map_sum]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Take `⟨p1, p2⟩` from `sy.prod (fun v => io (idem F v)) hv (fun _ _ h => io_orth (idem_orth h)) _ (hi T) γ hγ (β T) (hβ T) T (fun v h => io_orth (idem_rest h)) (fun T' h => co_I (sy.good_sum _ hv (fun _ _ h => io_orth (idem_orth h)) _ (hi T) T' fun v h' => io_orth (idem_rest (h h'))) (by rw [map_add, i …`. Take `⟨q1, q2⟩` from `c1 (fun l => ext0 _ gi l * wt ν z l) (fun y => (∏ v ∈ T, ext0 _ (g v) (PI (io (idem F v)) y) * wt ν z (PI (io (idem F v)) y)) * ((if ∀ v ∉ T, InAt 𝔞 v (PI (io (rest T)) y : AE F E) then (1 : ℂ) else 0) * wt ν z (PI (io (rest T)) y))) ((a3 fun l => ext0 _ gi l * wt ν z l).1.2 (by …`. Rewrite `q2` using `[p2, (a3 fun l => ext0 _ gi l * wt ν z l).2]`. Simplify using `only [fun v => (g3 v fun l => ext0 _ (g v) l * wt ν z l).2, extendByZeroOnSubset_apply_coe] at q2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `r1 : ∀ v, (io (idem F v) * io (rest ∅) : AE F E) = io (idem F v)` using `fun v => by`. Rewrite using `[io_mul, rest, Finset.sum_empty, sub_zero, mul_sub, idem_real, mul_one, sub_zero]`. Establish `r2 : (io (rest T) * io (rest ∅) : AE F E) = io (rest T)`. Rewrite using `[io_mul, rest.eq_1 ∅, Finset.sum_empty, sub_zero, mul_sub, mul_one, mul_comm, real_rest, sub_zero]`. Establish `m4` using `m3 fun x => (ext0 _ gi (PI (io (realAd F 1)) x) * wt ν z (PI (io (realAd F 1)) x)) * ((∏ v ∈ T, ext0 _ (g v) (PI (io (idem F v)) (PI (io (rest ∅)) x)) * wt ν z (PI (io (idem F v)) (PI (io (rest ∅)) x))) * ((if ∀ v ∉ T, InAt 𝔞 v (PI (io (rest T)) (PI (io (rest ∅)) x) : AE F E) the …`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `q1` using `[m4.1, hme.integrable_map_iff]`. Rewrite `q2` using `[m4.2, hme.integral_map]`. Establish `ef : ∀ x : (AE F E)ˣ, (ext0 _ gi (PI (io (realAd F 1)) x) * wt ν z (PI (io (realAd F 1)) x)) * ((∏ v ∈ T, ext0 _ (g v) (PI (io (idem F v)) (PI (io (rest ∅)) x)) * wt ν z (PI (io (idem F v)) (PI (io (rest ∅)) x))) * ((if ∀ v ∉ T, InAt 𝔞 v (PI (io (rest T)) (PI (io (rest ∅)) x) : A …` using `fun x => by`. Establish `hx : wt ν z x = wt ν z (PI (io (realAd F 1)) x) * ((∏ v ∈ T, wt ν z (PI (io (idem F v)) x)) * wt ν z (PI (io (rest T)) x))`. Establish `h1` using `sp.mul x (e1 ▸ Subgroup.mem_top x)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[hsum, PI_sum _ hv (fun _ _ h => io_orth (idem_orth h)) _ (hi T) T fun v h => io_orth (idem_rest h)]`. Use `congrArg (wtH ν z) h1` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_prod]`. Conclude with `this.symm`. Establish `hin : (∀ v ∉ T, InAt 𝔞 v (PI (io (rest T)) x : AE F E)) ↔ ∀ v ∉ T, InAt 𝔞 v (x : AE F E)` using `forall₂_congr fun v h => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [inAt_iff]`. Use `forall₂_congr fun w hw => ?_` and prove the remaining obligations. Rewrite using `[vw, cw_PI_one (hi T) (by rw [cw_rest, hw, if_neg h])]; rfl`. Simplify using `only [fun v => unitInvariant_comp (hv v) (hi ∅) x, unitInvariant_comp (hi T) (hi ∅) x, r1, r2, hin, ← extendByZeroOnSubset_apply_coe gi, ← fun v => extendByZeroOnSubset_apply_coe (g v), Finset.prod_mul_distrib]`. Rewrite using `[hx]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `q3` using `q1.congr (Eventually.of_forall ef)`. Use `⟨q3, ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_congr_ae (Eventually.of_forall ef)]`. Use `(congrArg _ q2).trans ?_` and prove the remaining obligations.
-
-Take the linear combination `(c * (@integral _ _ _ _ (borel _) m.xi fun l => gi l * wt ν z l.1) * ∏ v ∈ T, @integral _ _ _ _ (borel _) (m.xf v) fun l => g v l * wt ν z l.1) * t4`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ideleFub : IdeleFub := by
   classical

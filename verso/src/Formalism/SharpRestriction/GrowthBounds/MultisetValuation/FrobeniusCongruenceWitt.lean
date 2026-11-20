@@ -11,9 +11,9 @@ open Formalism.InvariantFactorPaths.G7 (lgF lamF altF)
 variable {p : ℕ} [hp : Fact p.Prime]
 
 /- English proof (translation)
-Establish `hAB : (Matrix.of fun (r j : Fin (n' / 2)) => (sigW p)^[2 * j.val] (B.om r)) * (Matrix.of fun (j r' : Fin (n' / 2)) => (sigW p)^[2 * j.val] (B.omS r')) = 1`. Use `Matrix.ext fun r r' => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Matrix.one_apply, ← B.dual r r']`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [Matrix.of_apply, Matrix.of_apply, iterate_map_mul]`. Establish `hBA` using `mul_eq_one_comm.mp hAB`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrFun (congrFun hBA i) i'`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `using h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sx_dual_even {n' : ℕ} (B : OmBasis p n') (i i' : Fin (n' / 2)) :
     ∑ r, (sigW p)^[2 * i.val] (B.omS r) * (sigW p)^[2 * i'.val] (B.om r) = if i = i' then 1 else 0 := by
@@ -29,23 +29,23 @@ theorem sx_dual_even {n' : ℕ} (B : OmBasis p n') (i i' : Fin (n' / 2)) :
   simpa using h
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hev`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Set `i : Fin (n' / 2)` to `⟨a.val / 2, by omega⟩`. Set `i' : Fin (n' / 2)` to `⟨b.val / 2, by omega⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hE` using `sx_dual_even B i i'`. Establish `hii : (i = i') ↔ (a = b)`. Simplify using `only [i, i', Fin.ext_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `h`. Rewrite using `[h]`. Break down `Nat.mod_two_eq_zero_or_one a.val with h0 | h1` into its components or cases. Establish `e1 : (sigW p)^[a.val] = (sigW p)^[2 * i.val]`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `congr 1`. Use `show a.val = 2 * (a.val / 2)`. Use linear arithmetic over natural numbers and integers. Establish `e2 : (sigW p)^[b.val] = (sigW p)^[2 * i'.val]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Use `show b.val = 2 * (b.val / 2)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1, e2, hE]`. Distinguish the cases in `h : a = b`. Rewrite using `[if_pos h, if_pos (hii.mpr h)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg h, if_neg (fun h' => h (hii.mp h'))]`. Establish `e1 : (sigW p)^[a.val] = (sigW p) ∘ (sigW p)^[2 * i.val]`. Rewrite using `[← Function.iterate_succ']`. Use `congr 1`. Use `show a.val = 2 * (a.val / 2) + 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `e2 : (sigW p)^[b.val] = (sigW p) ∘ (sigW p)^[2 * i'.val]`. Rewrite using `[← Function.iterate_succ']`. Use `congr 1`. Use `show b.val = 2 * (b.val / 2) + 1`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[e1, e2]`. Simplify using `only [Function.comp_apply]`. Establish `hsig : ∑ r, sigW p ((sigW p)^[2 * i.val] (B.omS r)) * sigW p ((sigW p)^[2 * i'.val] (B.om r)) = sigW p (∑ r, (sigW p)^[2 * i.val] (B.omS r) * (sigW p)^[2 * i'.val] (B.om r))`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun r _ => (map_mul _ _ _).symm`. Rewrite using `[hsig, hE]`. Distinguish the cases in `h : a = b`. Rewrite using `[if_pos h, if_pos (hii.mpr h), map_one]`. Rewrite using `[if_neg h, if_neg (fun h' => h (hii.mp h')), map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem sx_dual {n' : ℕ} (B : OmBasis p n') (hev : Even n') (a b : Fin n') (hab : a.val % 2 = b.val % 2) :
     ∑ r, (sigW p)^[a.val] (B.omS r) * (sigW p)^[b.val] (B.om r) = if a = b then 1 else 0 := by
@@ -98,21 +98,21 @@ theorem sx_dual {n' : ℕ} (B : OmBasis p n') (hev : Even n') (a b : Fin n') (ha
     · rw [if_neg h, if_neg (fun h' => h (hii.mp h')), map_zero]
 
 /- English proof (translation)
-Conclude with `Function.IsPeriodicPt.iterate_mod_apply hx (s.val + e)`.
+A detailed English derivation is pending.
 -/
 theorem sx_iter_posAdd {n' : ℕ} (x : WW p) (hx : (sigW p)^[n'] x = x) (s : Fin n') (e : ℕ) :
     (sigW p)^[(posAdd s e).val] x = (sigW p)^[s.val + e] x := by
   exact Function.IsPeriodicPt.iterate_mod_apply hx (s.val + e)
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `Formalism.InvariantFactorPaths.G7.WModel.frob_sub_pow p a`. Conclude with `⟨y, by unfold sigW; linear_combination hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frobenius_congruence_witt (a : WW p) : ∃ y : WW p, sigW p a = a ^ p + p * y := by
   obtain ⟨y, hy⟩ := Formalism.InvariantFactorPaths.G7.WModel.frob_sub_pow p a
   exact ⟨y, by unfold sigW; linear_combination hy⟩
 
 /- English proof (translation)
-Use `⟨fun m => ⟨MvPowerSeries.coeff m f, hf m⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem sx_lift {ι K' : Type} [Field K'] {R : Subring K'} {f : MvPowerSeries ι K'} (hf : IntR R f) :
     ∃ f0 : MvPowerSeries ι R, MvPowerSeries.map R.subtype f0 = f := by
@@ -121,9 +121,9 @@ theorem sx_lift {ι K' : Type} [Field K'] {R : Subring K'} {f : MvPowerSeries ι
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simp [zero_pow hp.out.ne_zero]⟩`. Consider the case `insert a s ha ih`. Take `⟨r1, hr1⟩` from `ih`. Take `⟨r2, hr2⟩` from `exists_add_pow_prime_eq hp.out (x a) (∑ i ∈ s, x i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨r1 + x a * (∑ i ∈ s, x i) * r2, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hr2, hr1]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sx_sum_pow {A α : Type} [CommRing A] (s : Finset α) (x : α → A) :
     ∃ r : A, (∑ i ∈ s, x i) ^ p = ∑ i ∈ s, x i ^ p + (p : A) * r := by
@@ -138,11 +138,11 @@ theorem sx_sum_pow {A α : Type} [CommRing A] (s : Finset α) (x : α → A) :
     ring
 
 /- English proof (translation)
-Establish `hlift : ∀ i ∈ s, ∃ f0 : MvPowerSeries ι R, MvPowerSeries.map R.subtype f0 = x i` using `fun i hi => sx_lift (hx i hi)`. Use `choose y hy using hlift`. Set `y' : α → MvPowerSeries ι R` to `fun i => if h : i ∈ s then y i h else 0`. Take `⟨r, hr⟩` from `sx_sum_pow (p := p) s y'`. Use `⟨MvPowerSeries.map R.subtype r, fun n => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.coeff_map]`. Conclude with `(MvPowerSeries.coeff n r).2`. Establish `hsum : ∀ i ∈ s, MvPowerSeries.map R.subtype (y' i) = x i` using `fun i hi => by`. Simplify using `only [y', dif_pos hi]`. Conclude with `hy i hi`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (MvPowerSeries.map R.subtype) hr`. Simplify using `only [map_pow, map_sum, map_add, map_mul, map_natCast] at h2`. Establish `e3 : ∑ i ∈ s, (MvPowerSeries.map R.subtype (y' i)) ^ p = ∑ i ∈ s, x i ^ p` using `Finset.sum_congr rfl fun i hi => by rw [hsum i hi]`. Rewrite `h2` using `[Finset.sum_congr rfl hsum, e3]`. Rewrite using `[h2, map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sx_frob_sum {ι α K' : Type} [Field K'] (R : Subring K') (s : Finset α) (x : α → MvPowerSeries ι K')
     (hx : ∀ i ∈ s, IntR R (x i)) :

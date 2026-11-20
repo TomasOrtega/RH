@@ -10,7 +10,7 @@ open GlobalTheory.Desc
 namespace GlobalTheory.UnifEndo
 
 /- English proof (translation)
-Introduce `A _ hA L g u F hF`. Conclude with `GlobalTheory.HolUnifEnd.exists_isMonHom_of_map_lattice A g hA (GlobalTheory.TorusAction.smoothOfRelativeDimension_of_holUnif A hA u) L u F hF`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_isMonHom_of_map_lattice : ∀ (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → ∀ (L : LB A.left) (g : ℕ) (u : HolUnif A L g)
     (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), (∀ l ∈ u.Λ, F l ∈ u.Λ) → ∃ f : A ⟶ A, IsMonHom f ∧ ∀ z, u.ex (F z) = u.ex z ≫ f := by

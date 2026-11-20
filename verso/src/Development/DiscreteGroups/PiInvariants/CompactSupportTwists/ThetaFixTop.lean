@@ -6,12 +6,12 @@ import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstima
 namespace DiscreteGroups.T1.G
 
 /- English proof (translation)
-The claim follows from `thetaFixOf_of_mult PositivityTheory.jumpWindows.cuspidalMultiplicityOne`.
+A detailed English derivation is pending.
 -/
 theorem thetaFixOf : PositivityTheory.Rg.BcB.Desc.ThetaFixOf := thetaFixOf_of_mult PositivityTheory.jumpWindows.cuspidalMultiplicityOne
 
 /- English proof (translation)
-The claim follows from `oneEx_of thetaFixOf DiscreteGroups.T1.Desc.unitOf hA`.
+A detailed English derivation is pending.
 -/
 theorem oneEx_of_asc (hA : PositivityTheory.Rg.BcB.F.Rig.ThetaOfAsc) : PositivityTheory.Rg.BcB.Desc.OneEx :=
   oneEx_of thetaFixOf DiscreteGroups.T1.Desc.unitOf hA

@@ -11,7 +11,7 @@ namespace Formalism.L2.Forms
 variable {D : D7} {inQ : D.what₂.Tup → HeightOneSpectrum (𝓞 D.host.F) → Prop}
 
 /- English proof (translation)
-Rewrite using `[(Tw.fm u μ).Fi_zero, (D.fm u).Fi_zero, (W.atT u μ).Mu0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem TwFormsTied.Fi_zero {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {F : ∀ u, FormsTied D u} (W : TwFormsTied D Tw T F)
     (u : D.what₂.Word) (μ : D.what₂.Tup) :
@@ -19,7 +19,7 @@ theorem TwFormsTied.Fi_zero {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D i
   rw [(Tw.fm u μ).Fi_zero, (D.fm u).Fi_zero, (W.atT u μ).Mu0]
 
 /- English proof (translation)
-Rewrite using `[Tw.embed_mul_block_embedding, T.twisted_character_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twisted_embedding_level_zero (Tw : TwForms D) (T : Formalism.L2.Herm.TwChTied D inQ) (u : D.what₂.Word) (μ : D.what₂.Tup) (x : ((D.fm u).lat 0).V)
     (c : (D.mem u).C.cls 0) (y : (D.mem u).C.Y 0) :
@@ -27,7 +27,7 @@ theorem twisted_embedding_level_zero (Tw : TwForms D) (T : Formalism.L2.Herm.TwC
   rw [Tw.embed_mul_block_embedding, T.twisted_character_eq]
 
 /- English proof (translation)
-The claim follows from `twisted_embedding_level_zero Tw T u μ x c _`.
+A detailed English derivation is pending.
 -/
 theorem twisted_embedding_frames (Tw : TwForms D) (T : Formalism.L2.Herm.TwChTied D inQ) (F : ∀ u, FormsTied D u) (u : D.what₂.Word) (μ : D.what₂.Tup)
     (x : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0) (z : Fr D 0 (Nat.zero_le _)) :
@@ -36,7 +36,7 @@ theorem twisted_embedding_frames (Tw : TwForms D) (T : Formalism.L2.Herm.TwChTie
   twisted_embedding_level_zero Tw T u μ x c _
 
 /- English proof (translation)
-Unfold `lamTG lamT`. Rewrite using `[lam_tw Tw u μ j hj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lamTG_tw (Tw : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) (j : ℕ) (hj : j ≤ D.R.m) :
     lamTG (Tw.fm u μ) j = lamT u j := by

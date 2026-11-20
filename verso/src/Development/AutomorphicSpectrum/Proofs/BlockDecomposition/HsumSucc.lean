@@ -5,9 +5,9 @@ open Ad3 Ad3.S
 namespace GlobalTheory.CompanionTheory.HeckeEig
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_range_succ, Finset.mul_sum, add_comm]`. Use `congr 1`. Simplify using the standard rewrite rules. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i hi`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi' : i ≤ j` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Rewrite using `[show j + 1 - i = (j - i) + 1 by omega, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hsum_succ (α β : ℂ) (j : ℕ) :
     ∑ i ∈ Finset.range (j + 1 + 1), α ^ i * β ^ (j + 1 - i) =
@@ -22,19 +22,19 @@ theorem hsum_succ (α β : ℂ) (j : ℕ) :
     ring
 
 /- English proof (translation)
-Introduce `k N χ a h`. Take `⟨_, h1, hH⟩` from `h`. Establish `hcop : ∀ p, p.Prime → ∀ n, 0 < n → ¬ p ∣ n → a (p * n) = a p * a n`. Introduce `p hp n _ hpn`. Use `hH p n hp` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[if_neg hpn, add_zero]`. Conclude with `this.symm`. Establish `hrec : ∀ p, p.Prime → ∀ n, 0 < n → a (p * (p * n)) = a p * a (p * n) - (χ p * (p : ℂ) ^ (k - 1)) * a n`. Introduce `p hp n _`. Use `hH p (p * n) hp` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[if_pos (dvd_mul_right p n), Nat.mul_div_cancel_left n hp.pos]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun m n hmn => GlobalTheory.CompanionTheory.HeckeMult.apply_mul_of_coprime a (fun p => χ p * (p : ℂ) ^ (k - 1)) h1 hcop hrec m n hmn, ?_⟩` and prove the remaining obligations. Introduce `p hp α β hs hp' j`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `j using Nat.twoStepInduction with`. Consider the case `zero => simp [h1]`. Consider the case `one`. Simplify using `[Finset.sum_range_succ]`. Rewrite using `[← hs]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `more j ih0 ih1`. Establish `r` using `hH p (p ^ (j + 1)) hp`. Establish `hd : p ^ (j + 1) / p = p ^ j` using `by rw [pow_succ, Nat.mul_div_cancel _ hp.pos]`. Establish `hm : p * p ^ (j + 1) = p ^ (j + 2)` using `by ring`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `r` using `[if_pos (dvd_pow_self p (Nat.succ_ne_zero j)), hd, hm]`. Establish `e : a (p ^ (j + 2)) = a p * a (p ^ (j + 1)) - χ p * (p : ℂ) ^ (k - 1) * a (p ^ j)`. Rewrite using `[r]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ih1, ih0, ← hs, ← hp', show j + 2 = j + 1 + 1 by omega, hsum_succ α β (j + 1), hsum_succ α β j]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem e2a : E2a := by
   intro k N χ a h

@@ -5,35 +5,29 @@ open PositivityTheory.RgEis PositivityTheory.RgEis.So
 namespace GlobalTheory.CompanionTheory.RgEisSo
 
 /- English proof (translation)
-Introduce `hS hG hT F E R _ _ _ _ _ _ _ _ _ _ A ε ν r δ α ω ι _ _ i j hGood hB hi hJ`. Use `show IsCompact (cK α j : Set (cover A ν ι))`. Establish `hj : Continuous j` using `(hT F E R A ε ν r δ α ω ι i j hGood hB hi hJ).1`. Take `⟨-, -, -, hUT2, -, -, hUK⟩` from `hG E R A hGood ι ε`. Establish `hν : Continuous ν` using `hB.cont`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmapν : Continuous (Matrix.GeneralLinearGroup.map (n` using `ι ⊕ ι) ν) := by`. Use `Continuous.units_map _ ?_` and prove the remaining obligations. Conclude with `Continuous.matrix_map continuous_id hν`. Set `D : GL (ι ⊕ ι) R` to `dg ι (Units.map A.i.toMonoidHom δ)`. Set `M : GL (ι ⊕ ι) (NumberField.AdeleRing (NumberField.RingOfIntegers F) F) → GL (ι ⊕ ι) R` to `fun h => D⁻¹ * Matrix.GeneralLinearGroup.map ν h * D`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hM : Continuous M` using `(continuous_const.mul hmapν).mul continuous_const`. Set `φ : A.U ε ι × GL (ι ⊕ ι) (NumberField.AdeleRing (NumberField.RingOfIntegers F) F) → R` to `fun p => ((p.1.1 * (M p.2)⁻¹ : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R) (Sum.inl i) (Sum.inl i)`. Set `ψ : A.U ε ι × GL (ι ⊕ ι) (NumberField.AdeleRing (NumberField.RingOfIntegers F) F) → R` to `fun p => ((M p.2 * (p.1.1)⁻¹ : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R) (Sum.inl i) (Sum.inl i)`. Establish `hval : Continuous (Subtype.val : A.U ε ι → GL (ι ⊕ ι) R)` using `continuous_subtype_val`. Establish `hφ : Continuous φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Continuous fun p : A.U ε ι × GL (ι ⊕ ι) (NumberField.AdeleRing (NumberField.RingOfIntegers F) F) => (p.1.1 * (M p.2)⁻¹ : GL (ι ⊕ ι) R)` using `(hval.comp continuous_fst).mul (hM.comp continuous_snd).inv`. Conclude with `(Units.continuous_val.comp this).matrix_elem _ _`. Establish `hψ : Continuous ψ`. Establish `: Continuous fun p : A.U ε ι × GL (ι ⊕ ι) (NumberField.AdeleRing (NumberField.RingOfIntegers F) F) => (M p.2 * (p.1.1)⁻¹ : GL (ι ⊕ ι) R)` using `(hM.comp continuous_snd).mul (hval.comp continuous_fst).inv`. Conclude with `(Units.continuous_val.comp this).matrix_elem _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hrel : ∀ x : cover A ν ι, ((j x).1 : Matrix (ι ⊕ ι) (ι ⊕ ι) R) = (x.1.1 : R) • (M x.1.2 : Matrix (ι ⊕ ι) (ι ⊕ ι) R)` using `fun x => hJ x`. Establish `hφv : ∀ x : cover A ν ι, φ (j x, x.1.2) = (x.1.1 : R)`. Introduce `x`. Establish `e : (((j x).1 * (M x.1.2)⁻¹ : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R) = (x.1.1 : R) • 1`. Rewrite using `[Units.val_mul, hrel x, Matrix.smul_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (((j x).1 * (M x.1.2)⁻¹ : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R) (Sum.inl i) (Sum.inl i) = _`. Rewrite using `[e]`. Simplify using the standard rewrite rules. Establish `hψv : ∀ x : cover A ν ι, ψ (j x, x.1.2) = ((x.1.1⁻¹ : Rˣ) : R)`. Introduce `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : (x.1.1 : R) • ((M x.1.2 * ((j x).1)⁻¹ : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R) = 1`. Rewrite using `[Units.val_mul, ← Matrix.smul_mul, ← hrel x, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `e : ((M x.1.2 * ((j x).1)⁻¹ : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R) = ((x.1.1⁻¹ : Rˣ) : R) • 1`. Rewrite using `[← e0, smul_smul, Units.inv_mul, one_smul]`. Use `show ((M x.1.2 * ((j x).1)⁻¹ : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R) (Sum.inl i) (Sum.inl i) = _`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[e]`. Simplify using the standard rewrite rules. Set `C₂ : Set (GL (ι ⊕ ι) (NumberField.AdeleRing (NumberField.RingOfIntegers F) F))` to `((((adStd F).kGL (ι ⊕ ι)).map (MulAut.conj (dg ι α)).toMonoidHom : Subgroup _) : Set _)`. Establish `hC₂ : IsCompact C₂`. Establish `h0` using `((hS F).kcpt (ι ⊕ ι)).image (f := fun k => (MulAut.conj (dg ι α)).toMonoidHom k) (by show Continuous fun k => dg ι α * k * (dg ι α)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(continuous_const.mul continuous_id).mul continuous_const)`. Conclude with `h0`. Set `C₁ : Set (A.U ε ι)` to `(A.uK ε ι : Set (A.U ε ι))`. Establish `hC : IsCompact (C₁ ×ˢ C₂)` using `hUK.prod hC₂`. Establish `hS₁` using `hC.image hφ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS₂ : IsCompact (MulOpposite.op '' (ψ '' (C₁ ×ˢ C₂)))` using `(hC.image hψ).image MulOpposite.continuous_op`. Set `B : Set Rˣ` to `Units.embedProduct R ⁻¹' ((φ '' (C₁ ×ˢ C₂)) ×ˢ (MulOpposite.op '' (ψ '' (C₁ ×ˢ C₂))))`. Establish `hBc : IsCompact B` using `Units.isClosedEmbedding_embedProduct.isCompact_preimage (hS₁.prod hS₂)`. Establish `hdet : Continuous (Matrix.GeneralLinearGroup.det (n` using `ι ⊕ ι) (R := NumberField.AdeleRing (NumberField.RingOfIntegers F) F)) := by`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show Continuous fun g : GL (ι ⊕ ι) (NumberField.AdeleRing (NumberField.RingOfIntegers F) F) => (g : Matrix (ι ⊕ ι) (ι ⊕ ι) (NumberField.AdeleRing (NumberField.RingOfIntegers F) F)).det`. Conclude with `Continuous.matrix_det Units.continuous_val`. Use `show Continuous fun g : GL (ι ⊕ ι) (NumberField.AdeleRing (NumberField.RingOfIntegers F) F) => ((g⁻¹ : GL (ι ⊕ ι) (NumberField.AdeleRing (NumberField.RingOfIntegers F) F)) : Matrix (ι ⊕ ι) (ι ⊕ ι) (NumberField.AdeleRing (NumberField.RingOfIntegers F) F)).det`. Conclude with `Continuous.matrix_det (Units.continuous_val.comp continuous_inv)`. Establish `hσ : Continuous A.σ` using `hGood.σcont`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUσ : Continuous (Units.map A.σ.toMonoidHom)` using `Continuous.units_map _ hσ`. Establish `hUν : Continuous (Units.map ν.toMonoidHom)` using `Continuous.units_map _ hν`. Establish `hcl : IsClosed ((cover A ν ι : Subgroup _) : Set (Rˣ × GL (ι ⊕ ι) (NumberField.AdeleRing (NumberField.RingOfIntegers F) F)))`. Establish `hf : Continuous fun p : Rˣ × GL (ι ⊕ ι) (NumberField.AdeleRing (NumberField.RingOfIntegers F) F) => p.1 * Units.map A.σ.toMonoidHom p.1 * Units.map ν.toMonoidHom (Matrix.GeneralLinearGroup.det p.2)` using `(continuous_fst.mul (hUσ.comp continuous_fst)).mul (hUν.comp (hdet.comp continuous_snd))`. Conclude with `isClosed_singleton.preimage hf`.
-
-Establish `hemb` using `hcl.isClosedEmbedding_subtypeVal`. Establish `hP : IsCompact ((Subtype.val : cover A ν ι → _) ⁻¹' (B ×ˢ C₂))` using `hemb.isCompact_preimage (hBc.prod hC₂)`. Establish `hprj : Continuous (prj A ν ι)` using `continuous_snd.comp continuous_subtype_val`. Establish `hclK : IsClosed (cK α j : Set (cover A ν ι))` using `(hUK.isClosed.preimage hj).inter (hC₂.isClosed.preimage hprj)`. Use `hP.of_isClosed_subset hclK ?_` and prove the remaining obligations.
-
-Introduce `x hx`. Establish `h1 : j x ∈ C₁` using `hx.1`. Establish `h2 : x.1.2 ∈ C₂` using `hx.2`. Use `⟨?_, h2⟩` and prove the remaining obligations. Use `⟨⟨(j x, x.1.2), ⟨h1, h2⟩, hφv x⟩, ⟨ψ (j x, x.1.2), ⟨(j x, x.1.2), ⟨h1, h2⟩, rfl⟩, ?_⟩⟩` and prove the remaining obligations.
-
-Rewrite using `[hψv x]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jcpt : StdGood → GrpTop → JTop → JCpt := by
   intro hS hG hT F E R _ _ _ _ _ _ _ _ _ _ A ε ν r δ α ω ι _ _ i j hGood hB hi hJ

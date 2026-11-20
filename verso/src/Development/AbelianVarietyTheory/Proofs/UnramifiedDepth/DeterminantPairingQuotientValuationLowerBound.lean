@@ -12,9 +12,9 @@ namespace GlobalTheory.DetPairingBound
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Sh.PowerSeriesCoeffGaps
 
 /- English proof (translation)
-Use `show (Matrix.mvPolynomialX (Fin n) (Fin n) C).det.IsHomogeneous n`. Rewrite using `[Matrix.det_apply']`. Use `IsHomogeneous.sum _ _ _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← map_intCast (MvPolynomial.C : C →+* MvPolynomial (Fin n × Fin n) C)]`. Use `IsHomogeneous.C_mul ?_ _` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `IsHomogeneous.prod (Finset.univ : Finset (Fin n)) (fun i => Matrix.mvPolynomialX (Fin n) (Fin n) C (σ i) i) (fun _ => 1) (fun i _ => by simpa [Matrix.mvPolynomialX_apply] using isHomogeneous_X (R := C) ((σ i, i) : Fin n × Fin n))`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cayDet_isHomogeneous (n : ℕ) (C : Type) [CommRing C] :
     (cayDet n C).IsHomogeneous n := by
@@ -29,7 +29,7 @@ theorem cayDet_isHomogeneous (n : ℕ) (C : Type) [CommRing C] :
   simpa using h
 
 /- English proof (translation)
-Rewrite using `[← cayDet_map (R := C), ← map_pow, coeff_map, eq_intCast]`. Conclude with `intCast_nonneg v _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_cayDet_pow_nonneg (C : Type) [Field C] (v : AddValuation C (WithTop ℝ))
     (n x : ℕ) (A : Fin n × Fin n →₀ ℕ) : 0 ≤ v (coeff A (cayDet n C ^ x)) := by
@@ -37,7 +37,7 @@ theorem coeff_cayDet_pow_nonneg (C : Type) [Field C] (v : AddValuation C (WithTo
   exact intCast_nonneg v _
 
 /- English proof (translation)
-Establish `h` using `(cayDet_isHomogeneous n C).pow x`. Rewrite using `[← Finsupp.degree_eq_sum]`. Assume the negation of the conclusion as `hne`. Conclude with `(mem_support_iff.mp hA) (h.coeff_eq_zero hne)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem sum_eq_of_mem_support (C : Type) [CommRing C] (n x : ℕ) (A : Fin n × Fin n →₀ ℕ)
     (hA : A ∈ (cayDet n C ^ x).support) : ∑ j, A j = n * x := by
@@ -47,9 +47,9 @@ theorem sum_eq_of_mem_support (C : Type) [CommRing C] (n x : ℕ) (A : Fin n × 
   exact (mem_support_iff.mp hA) (h.coeff_eq_zero hne)
 
 /- English proof (translation)
-Establish `hD0 : D ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hD`. Break down `eq_or_ne N 0 with rfl | hN0` into its components or cases. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Take `⟨b, hb⟩` from `exists_real v hN0`. Rewrite using `[div_eq_coe v hD0 hb hD]`. Rewrite `hN` using `[hb, WithTop.coe_le_coe]`. Conclude with `WithTop.coe_le_coe.mpr (by linarith)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_val_div {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) {N D : C} {a d r : ℝ}
     (hN : (a : WithTop ℝ) ≤ v N) (hD : v D = d) (h : r ≤ a - d) : (r : WithTop ℝ) ≤ v (N / D) := by
@@ -64,27 +64,27 @@ theorem le_val_div {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) {N D 
     exact WithTop.coe_le_coe.mpr (by linarith)
 
 /- English proof (translation)
-Introduce `C _ _ v l hl hvl i n₀ s Q hs hn₀ hQ`. Establish `hvnat : ∀ m : ℕ, m ≠ 0 → v (m : C) = ((padicValNat l m : ℝ) : WithTop ℝ)`. Introduce `m hm`. Rewrite using `[natCast_eq_factorization v hl hvl hm, Nat.factorization_def m hl]`. Take `⟨-, hL2, hL3⟩` from `GlobalTheory.LegendreBounds.legendre_bounds l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hk0 : l ^ i * s ≠ 0` using `Nat.mul_ne_zero (pow_ne_zero _ hl.ne_zero) (by omega)`. Establish `hP` using `GlobalTheory.DetPowPairing.main C n₀ (l ^ i * s)`. Rewrite `hP` using `[← Nat.cast_prod, ← Nat.cast_prod]`. Establish `hF0 : (∏ c ∈ Finset.range n₀, c.factorial) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun c _ => Nat.factorial_ne_zero c`. Establish `hF1 : (∏ c ∈ Finset.range n₀, (l ^ i * s + c).factorial) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun c _ => Nat.factorial_ne_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF0' : ((∏ c ∈ Finset.range n₀, c.factorial : ℕ) : C) ≠ 0` using `Nat.cast_ne_zero.mpr hF0`. Establish `hDen` using `(eq_div_iff hF0').mpr ((mul_comm _ _).trans hP)`. Establish `hvD` using `div_eq_coe v hF0' (hvnat _ hF1) (hvnat _ hF0)`. Rewrite `hvD` using `[← hDen]`. Take `⟨wb, hwb⟩ : ∃ wb : ℝ, wb = (n₀ : ℝ) * ((l : ℝ) ^ i * s) / ((l : ℝ) - 1) - (n₀ : ℝ) ^ 2 * (Real.logb l ((n₀ : ℝ) * ((l : ℝ) ^ i * s)) + 1)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨qb, hqb⟩ : ∃ qb : ℝ, qb = (s : ℝ) / 8 - (n₀ : ℝ) ^ 2 * (Real.logb l (n₀ * s) + 1)` from `⟨_, rfl⟩`. Establish `hnum : ∀ A ∈ (cayDet n₀ C ^ (l ^ i * s)).support, ((wb + qb : ℝ) : WithTop ℝ) ≤ v (MvPolynomial.coeff A (cayDet n₀ C ^ (l ^ i * s)) * (A.prod fun _ e => (e.factorial : C)) * MvPolynomial.coeff A Q)`. Introduce `A hA`. Establish `hsum` using `sum_eq_of_mem_support C n₀ (l ^ i * s) A hA`. Establish `hW` using `hL2 (Fin n₀ × Fin n₀) A (by rw [hsum]; exact Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) hk0))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hW` using `[hsum]`. Simplify using `only [Fintype.card_prod, Fintype.card_fin] at hW`. Move the coercions through the operations in `at hW`. Establish `hwt : (A.prod fun _ e => (e.factorial : C)) = ((∏ j, (A j).factorial : ℕ) : C)`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => by simp), Nat.cast_prod]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : (∏ j, (A j).factorial) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun j _ => Nat.factorial_ne_zero _`. Establish `h2 : (wb : WithTop ℝ) ≤ ((padicValNat l (∏ j, (A j).factorial) : ℝ) : WithTop ℝ)` using `WithTop.coe_le_coe.mpr (by rw [hwb, sq]; linarith)`. Establish `h3 : (qb : WithTop ℝ) ≤ v (MvPolynomial.coeff A Q)`. Rewrite using `[hqb]`. Conclude with `hQ A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddValuation.map_mul, AddValuation.map_mul, hwt, hvnat _ hne]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[zero_add, WithTop.coe_add]`. Use `_ ≤ _ := add_le_add (add_le_add (coeff_cayDet_pow_nonneg C v n₀ _ A) h2) h3`. Use `le_val_div v (a := wb + qb) (AddValuation.map_le_sum v hnum) hvD ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.one_lt`. Establish `hn1 : (1 : ℝ) ≤ n₀` using `by exact_mod_cast hn₀`. Establish `hs1 : (1 : ℝ) ≤ s` using `by exact_mod_cast hs`. Establish `hn0 : (n₀ : ℝ) ≠ 0` using `(by linarith : (0 : ℝ) < n₀).ne'`. Establish `hs0 : (s : ℝ) ≠ 0` using `(by linarith : (0 : ℝ) < s).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli : (l : ℝ) ^ i ≠ 0` using `pow_ne_zero _ (by linarith : (0 : ℝ) < l).ne'`. Establish `hLn` using `Real.logb_nonneg hl1 hn1`. Establish `hLs` using `Real.logb_nonneg hl1 hs1`. Establish `hlK : Real.logb l ((n₀ : ℝ) * ((l : ℝ) ^ i * s)) = Real.logb l n₀ + i + Real.logb l s`. Rewrite using `[Real.logb_mul hn0 (mul_ne_zero hli hs0), Real.logb_mul hli hs0, Real.logb_pow, Real.logb_self_eq_one hl1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hlQ : Real.logb l ((n₀ : ℝ) * s) = Real.logb l n₀ + Real.logb l s` using `Real.logb_mul hn0 hs0`. Establish `h3` using `hL3 n₀ (l ^ i * s)`. Move the coercions through the operations in `at h3`. Establish `hsq : (n₀ : ℝ) * (Real.logb l n₀ + 1) ≤ (n₀ : ℝ) ^ 2 * (Real.logb l n₀ + 1)` using `mul_le_mul_of_nonneg_right (by nlinarith) (by linarith)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hwb, hqb, hlK, hlQ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem main : (∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (l : ℕ), l.Prime → v (l : C) = 1 → ∀ (i n₀ s : ℕ) (Q : MvPolynomial (Fin n₀ × Fin n₀) C), 1 ≤ s → 1 ≤ n₀ →
     (∀ A, (((s : ℝ) / 8 - (n₀ : ℝ) ^ 2 * (Real.logb l (n₀ * s) + 1) : ℝ) : WithTop ℝ) ≤ v (MvPolynomial.coeff A Q)) →

@@ -8,11 +8,11 @@ open scoped TensorProduct
 namespace UpperTheory.Gal.KunnethLefschetz
 
 /- English proof (translation)
-Unfold `QProj`. Introduce `hI l _ k _ G d e Z X p ι h n m r s t h1 h2 h3 h4 a b`. Establish `key : ∀ (x : Hl l (sch.obj X) n 0) (y : Hl l (sch.obj Z) m 0), G.q h h2 (cupV l Z h1 (pb l ι n ((1 : ℚ_[l]) ⊗ₜ x)) ((1 : ℚ_[l]) ⊗ₜ y)) = cupV l X h4 ((1 : ℚ_[l]) ⊗ₜ x) (G.q h h3 ((1 : ℚ_[l]) ⊗ₜ y))`. Introduce `x y`. Rewrite using `[LRingPf.pb_tmul, LRingPf.cupV_eq l hI.a11 Z, LRingPf.cupV_eq l hI.a11 X, LRingPf.cupQ_tmul]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Gys0.q, LinearMap.baseChange_tmul]`. Rewrite using `[LRingPf.cupQ_tmul]`. Use `congr 1`. Use `Subtype.ext (funext fun j => ?_)` and prove the remaining obligations. Conclude with `G.proj j h h1 h2 h3 h4 (x.1 j) (y.1 j)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfg : ((cupV l Z h1 ∘ₗ pb l ι n).compr₂ (G.q h h2)) = (cupV l X h4).compl₂ (G.q h h3)` using `LRingPf.ext2 fun x y => key x y`. Conclude with `DFunLike.congr_fun (DFunLike.congr_fun hfg a) b`.
+A detailed English derivation is pending.
 -/
 theorem qProj_holds : QProj := by
   unfold QProj

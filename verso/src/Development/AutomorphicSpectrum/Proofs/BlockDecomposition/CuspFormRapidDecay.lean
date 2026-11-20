@@ -15,27 +15,23 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.RapidDecay
 
 /- English proof (translation)
-Take `⟨q, b, Ω₀, Cv, δ₁, hb, hΩ₀, hδ₁, hCv, hmv⟩` from `GlobalTheory.T.siegel_set_uniform_smooth_bound F E σ h n J hJ`. Establish `hCm' : IsCompact ((fun x : GAd σ J × GAd σ J => x.1 * x.2) '' (Cm ×ˢ Ω₀))` using `(hCm.prod hΩ₀).image (by fun_prop)`. Use `choose B hB using fun i => hm _ (GlobalTheory.T.good_function_line_derivative F E σ h n J hJ U A ψ (b i) hψ (hb i)) _ hCm'`. Take `⟨B₀, hB₀⟩` from `hm ψ hψ Cm hCm`. Take `⟨M, hM0, hM⟩` from `GlobalTheory.T.siegel_domain_open_subgroup_bound F E σ h n J hJ r X Y hW Ω Cm c U hΩ hΩP hCm hc hU`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set R₀ := max 1 (M / δ₁) with hR₀`. Establish `hR1 : 1 ≤ R₀` using `le_max_left _ _`. Establish `hSum : 0 ≤ ∑ i, |B i|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Use `⟨R₀ * |B₀| + Cv * M * ∑ i, |B i|, fun p hp t ht a ha k hk => ?_⟩` and prove the remaining obligations. Establish `hR` using `one_le_rbar t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRpos : 0 < rbar t` using `by linarith`. Establish `hRe : 0 < rbar t ^ e` using `pow_pos hRpos e`. Establish `hRm : 0 < rbar t ^ m` using `pow_pos hRpos m`. Establish `hT : 0 ≤ Cv * M * ∑ i, |B i|` using `mul_nonneg (mul_nonneg hCv hM0) hSum`. Distinguish the cases in `hcase : rbar t ≤ R₀`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul hcase ((hB₀ p hp t ht a ha k hk).trans ?_) (by positivity) (by linarith)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self _) hRe.le`. Use `_ ≤ _ := by`. Rewrite using `[← mul_assoc, add_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Conclude with `le_add_of_nonneg_right (mul_nonneg hT hRe.le)`. Use `push Not at hcase`. Establish `hne : rbar t ≠ 1` using `fun e' => by`. Rewrite `hcase` using `[e']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Take `⟨s, hs⟩` from `(rbar_eq t).resolve_left hne`. Establish `hδ : M / rbar t ≤ δ₁`. Rewrite using `[div_le_iff₀ hRpos]`. Establish `h1 : M / δ₁ ≤ R₀` using `le_max_right _ _`. Rewrite `h1` using `[div_le_iff₀ hδ₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `set g := p * a * k with hg`. Use `set cc : Fin q → ℝ := fun i => |B i| * rbar t ^ e / rbar t ^ m with hcc`. Establish `hcc' : ∀ i, ∀ x ∈ Ω₀, ‖lineDer (b i) ψ (g * x)‖ ≤ cc i` using `fun i x hx => by`. Use `hB i p hp t ht a ha (k * x) ⟨(k, x), ⟨hk, hx⟩, rfl⟩` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[show p * a * (k * x) = g * x by rw [hg, mul_assoc (p * a)]]`. Rewrite using `[hcc, le_div_iff₀ hRm]`. Conclude with `this.trans (mul_le_mul_of_nonneg_right (le_abs_self _) hRe.le)`. Establish `hvar : ‖ψ g‖ ≤ Cv * (M / rbar t) * ∑ i, cc i`. Use `GlobalTheory.T.cuspidal_constant_term_small F E σ h n J hJ ψ hψ.left hψ.cont hψ.cusp _ (pre X s) (Nat.succ_pos _) (GlobalTheory.UAut.isIsoCols_of_isWittFrame hW (sigma_sigma h) hJ _) g _ fun m' hm' => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γ, hγ, u, κ, hu, hκU, hκf, e'⟩` from `hM p hp t ht a ha k hk s m' hm'`. Rewrite `hu` using `[← hs]`. Establish `: ψ (m' * g) = ψ (g * u)`. Rewrite using `[hg, e', hψ.level κ hκU hκf, mul_assoc γ, hψ.left γ hγ]`. Rewrite using `[this]`.
-
-Conclude with `hmv ψ hψ.smooth g u _ (div_nonneg hM0 hRpos.le) hδ hu cc hcc'`. Establish `hsum : ∑ i, cc i = (∑ i, |B i|) * rbar t ^ e / rbar t ^ m`. Rewrite using `[hcc, Finset.sum_mul, Finset.sum_div]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsum, pow_succ]`.
-
-Clear the denominators using the available nonvanishing facts. Use `_ ≤ _ := by`. Use `mul_le_mul_of_nonneg_right ?_ hRe.le` and prove the remaining obligations. Conclude with `le_add_of_nonneg_left (by positivity)`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem decay_step {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J) {r : ℕ}
@@ -106,19 +102,19 @@ theorem decay_step {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
           exact le_add_of_nonneg_left (by positivity)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ r X Y hW K Ω c hK hΩ hΩP hc φ hs hcu N`. Take `⟨U, hU, hlev⟩` from `hs.level`. Take `⟨A, hA⟩` from `hs.growth`. Establish `hG : Good σ J U A φ` using `⟨hs.left, hlev, hs.cont, hs.smooth, hA, hcu⟩`. Take `⟨b, hb⟩` from `GlobalTheory.T.height_bound_siegel_torus F E σ h n J hJ r X Y hW c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set e := b * A with he`. Establish `hbase : ∀ ψ, Good σ J U A ψ → ∀ Cm : Set (GAd σ J), IsCompact Cm → ∃ B : ℝ, ∀ p ∈ Ω, ∀ t ∈ cone r c, ∀ a, IsTorusElt σ J X Y t a → ∀ k ∈ Cm, ‖ψ (p * a * k)‖ * rbar t ^ 0 ≤ B * rbar t ^ e` using `fun ψ hψ Cm hCm => by`. Take `⟨H, hH0, hH⟩` from `hb Ω Cm hΩ hCm`. Take `⟨C, hC⟩` from `hψ.growth [] (by simp)`. Use `⟨|C| * H ^ A, fun p hp t ht a ha k hk => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hC (p * a * k)`. Establish `h2` using `hH p hp t ht a ha k hk`. Establish `h3 : (0 : ℝ) ≤ (height σ J (p * a * k) : ℝ)` using `NNReal.coe_nonneg _`. Simplify using `only [List.foldr_nil] at h1`. Rewrite using `[pow_zero, mul_one, he, pow_mul, mul_assoc |C|, ← mul_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1.trans ((mul_le_mul_of_nonneg_right (le_abs_self _) (pow_nonneg h3 _)).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ h3 h2 A) (abs_nonneg _)))`. Establish `hall : ∀ m : ℕ, ∀ ψ, Good σ J U A ψ → ∀ Cm : Set (GAd σ J), IsCompact Cm → ∃ B : ℝ, ∀ p ∈ Ω, ∀ t ∈ cone r c, ∀ a, IsTorusElt σ J X Y t a → ∀ k ∈ Cm, ‖ψ (p * a * k)‖ * rbar t ^ m ≤ B * rbar t ^ e` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => exact hbase`. Consider the case `succ m ih => exact fun ψ hψ Cm hCm => decay_step h hJ hW hΩ hΩP hc hU A e m ih ψ hψ Cm hCm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `hall (b * N + e) φ hG _ hK`. Take `⟨H, hH0, hH⟩` from `hb Ω K hΩ hK`. Use `⟨|B| * H ^ N, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, t, ht, a, ha, k, hk, rfl⟩`. Establish `hR` using `one_le_rbar t`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRpos : 0 < rbar t` using `by linarith`. Establish `h1` using `hB p hp t ht a ha k hk`. Establish `h2` using `hH p hp t ht a ha k hk`. Establish `h3 : (0 : ℝ) ≤ (height σ J (p * a * k) : ℝ)` using `NNReal.coe_nonneg _`. Establish `h4 : ‖φ (p * a * k)‖ * rbar t ^ (b * N) ≤ |B|`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[pow_add, ← mul_assoc]`. Establish `h5` using `h1.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (pow_pos hRpos e).le)`. Conclude with `le_of_mul_le_mul_right h5 (pow_pos hRpos e)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rapid_decrease : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∀ (K : Subgroup (GAd σ J)) (Ω : Set (GAd σ J)) (c : ℝ), IsCompact (K : Set (GAd σ J)) → IsCompact Ω → Ω ⊆ minParOne σ J X → 0 < c → ∀ φ : GAd σ J → ℂ, IsSmoothModerate σ J φ → IsCuspidal σ J φ → ∀ N : ℕ, ∃ C : ℝ, ∀ g ∈ siegelSet σ J X Y Ω c K, ‖φ g‖ * (height σ J g : ℝ) ^ N ≤ C := by
   intro F E _ _ _ _ _ σ h n J hJ r X Y hW K Ω c hK hΩ hΩP hc φ hs hcu N

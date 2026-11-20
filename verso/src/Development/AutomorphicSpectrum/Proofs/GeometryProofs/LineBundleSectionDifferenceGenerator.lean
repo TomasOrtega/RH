@@ -17,7 +17,7 @@ def gUnit (h : Y ⟶ X) (a b : L.ι) {V : Y.Opens} (hV : V ≤ h ⁻¹ᵁ (L.U a
   res hV (pullU h _ (L.g a b))
 
 /- English proof (translation)
-The claim follows from `(gm_res r z hV hz _).trans (gm_pull r h z _ (hV hz) _)`.
+A detailed English derivation is pending.
 -/
 theorem gm_gUnit (h : Y ⟶ X) (a b : L.ι) {V : Y.Opens} (hV : V ≤ h ⁻¹ᵁ (L.U a ⊓ L.U b)) (r : Z ⟶ Y) (z : Z)
     (hz : r z ∈ V) : gm r z V (gUnit L h a b hV) = gm (r ≫ h) z _ (L.g a b) :=
@@ -30,7 +30,7 @@ def chartGen (f f' : Y ⟶ X) (b : L.ι) (hb : ∀ y, f y ∈ L.U b) (hb' : ∀ 
     (gUnit L f' (i 1) b (V := LB.wchart L ![f, f'] i) (fun y hy => ⟨LB.wchart_le L ![f, f'] i 1 hy, hb' y⟩))⁻¹
 
 /- English proof (translation)
-The claim follows from `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_gUnit L f _ _ _ r z hz) ((map_inv _ _).trans (congrArg _ (gm_gUnit L f' _ _ _ r z hz))))`.
+A detailed English derivation is pending.
 -/
 theorem gm_chartGen (f f' : Y ⟶ X) (b : L.ι) (hb : ∀ y, f y ∈ L.U b) (hb' : ∀ y, f' y ∈ L.U b)
     (i : Fin 2 → L.ι) (r : Z ⟶ Y) (z : Z) (hz : r z ∈ LB.wchart L ![f, f'] i) :
@@ -40,13 +40,13 @@ theorem gm_chartGen (f f' : Y ⟶ X) (b : L.ι) (hb : ∀ y, f y ∈ L.U b) (hb'
     ((map_inv _ _).trans (congrArg _ (gm_gUnit L f' _ _ _ r z hz))))
 
 /- English proof (translation)
-Introduce `(i : Fin 2 → L.ι) (j : Fin 2 → L.ι)`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `hi : (𝟙 Y) y ∈ LB.wchart L ![f, f'] i` using `hy.1`. Establish `hj : (𝟙 Y) y ∈ LB.wchart L ![f, f'] j` using `hy.2`. Establish `hi0 : (𝟙 Y ≫ f) y ∈ L.U (i 0)` using `LB.wchart_le L ![f, f'] i 0 hy.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi1 : (𝟙 Y ≫ f') y ∈ L.U (i 1)` using `LB.wchart_le L ![f, f'] i 1 hy.1`. Establish `hj0 : (𝟙 Y ≫ f) y ∈ L.U (j 0)` using `LB.wchart_le L ![f, f'] j 0 hy.2`. Establish `hj1 : (𝟙 Y ≫ f') y ∈ L.U (j 1)` using `LB.wchart_le L ![f, f'] j 1 hy.2`. Establish `hb0 : (𝟙 Y ≫ f) y ∈ L.U b` using `hb y`. Establish `hb1 : (𝟙 Y ≫ f') y ∈ L.U b` using `hb' y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `A` using `gm_chartGen L f f' b hb hb' i (𝟙 Y) y hi`. Establish `B` using `gm_chartGen L f f' b hb hb' j (𝟙 Y) y hj`. Establish `C` using `gm_linComb L ![f, f'] ![1, -1] (𝟙 Y) y i j hi hj`. Use `((gm_res _ y _ hy _).trans A).trans (Eq.symm ((map_mul _ _ _).trans ((congrArg₂ (· * ·) C ((gm_res _ y _ hy _).trans B)).trans ?_)))` and prove the remaining obligations. Establish `T : (∏ k, gm (𝟙 Y ≫ (![f, f'] : Fin 2 → (Y ⟶ X)) k) y (L.U (i k) ⊓ L.U (j k)) (L.g (i k) (j k)) ^ (![1, -1] : Fin 2 → ℤ) k) = gm (𝟙 Y ≫ f) y _ (L.g (i 0) (j 0)) * (gm (𝟙 Y ≫ f') y _ (L.g (i 1) (j 1)))⁻¹` using `(Fin.prod_univ_two _).trans (congrArg₂ (· * ·) (zpow_one _) (zpow_neg_one _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[T, ← gm_cocycle hL (𝟙 Y ≫ f) y hi0 hj0 hb0, ← gm_cocycle hL (𝟙 Y ≫ f') y hi1 hj1 hb1, mul_inv]`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartGen_isGen (hL : L.IsLB) (f f' : Y ⟶ X) (b : L.ι) (hb : ∀ y, f y ∈ L.U b) (hb' : ∀ y, f' y ∈ L.U b) :
     (chartGen L f f' b hb hb').IsGen := by
@@ -74,15 +74,13 @@ theorem chartGen_isGen (hL : L.IsLB) (f f' : Y ⟶ X) (b : L.ι) (hb : ∀ y, f 
 end TauGen
 
 /- English proof (translation)
-Introduce `X L hL k _ p f f' e`. Take `⟨s₀⟩ : Nonempty (Sp k)` from `inferInstance`. Use `set w₀ : Sp (Jet k Unit p) := (spMap ((jetAug : Jet k Unit p →ₐ[k] k) : Jet k Unit p →+* k)) s₀ with hw`. Establish `hq : ∀ q : Sp (Jet k Unit p), q = w₀` using `fun q => (jet_pt p q s₀).symm`. Establish `e₀ : f' w₀ = f w₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun m => m s₀) e` as an intermediate fact. Simplify using `using this.symm`. Take `⟨b, hb₀⟩` from `exists_chart hL (f w₀)`. Establish `hb : ∀ y, f y ∈ L.U b` using `fun y => by rw [hq y]; exact hb₀`. Establish `hb' : ∀ y, f' y ∈ L.U b` using `fun y => by rw [hq y, e₀]; exact hb₀`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨chartGen L f f' b hb hb', chartGen_isGen L hL f f' b hb hb', ?_⟩` and prove the remaining obligations. Introduce `Z' r z J hJ`. Use `set ρ := r ≫ spMap ((jetAug : Jet k Unit p →ₐ[k] k) : Jet k Unit p →+* k) with hρ`. Establish `eρ : ρ ≫ f = ρ ≫ f'` using `by rw [hρ, Category.assoc, Category.assoc, e]`. Establish `hz` using `hJ.mem ![f, f'] ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[val]`. Use `(gm_chartGen L f f' b hb hb' _ ρ z hz).trans ?_` and prove the remaining obligations. Establish `key : ∀ ψ ψ' : Z' ⟶ X, ψ = ψ' → gm ψ z (L.U (J ψ) ⊓ L.U b) (L.g (J ψ) b) = gm ψ' z (L.U (J ψ') ⊓ L.U b) (L.g (J ψ') b)`. Introduce and unpack `_ _ rfl`. Both sides reduce to the same expression.
-
-Conclude with `mul_inv_eq_one.2 (key _ _ eρ)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jetPair_gen : ∀ (X : Scheme.{0}) (L : LB X), L.IsLB → ∀ (k : Type) [Field k] (p : ℕ) (f f' : Sp (Jet k Unit p) ⟶ X), spMap ((jetAug : Jet k Unit p →ₐ[k] k) : Jet k Unit p →+* k) ≫ f = spMap ((jetAug : Jet k Unit p →ₐ[k] k) : Jet k Unit p →+* k) ≫ f' → ∃ τ : LB.Gen (LB.LinComb L (K := Fin 2) ![f, f'] ![1, -1]), τ.IsGen ∧ ∀ (Z' : Scheme.{0}) (r : Z' ⟶ Sp k) (z : Z') (J : (Z' ⟶ X) → L.ι), Good L z J → val τ (r ≫ spMap ((jetAug : Jet k Unit p →ₐ[k] k) : Jet k Unit p →+* k)) z J = 1 := by
   intro X L hL k _ p f f' e

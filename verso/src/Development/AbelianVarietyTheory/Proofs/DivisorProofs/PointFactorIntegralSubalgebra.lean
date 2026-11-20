@@ -16,25 +16,23 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 /- English proof (translation)
-Introduce `K B E _ _ _ _ _ i hi hint T p _ t ht`. Establish `: IsAffine T` using `isAffine_of_isAffineHom p`. Use `set e := T.isoSpec`. Set `φ` to `Spec.preimage (e.inv ≫ p)`. Set `α` to `Spec.preimage (t ≫ e.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : Spec.map φ = e.inv ≫ p` using `Spec.map_preimage _`. Establish `hα : Spec.map α = t ≫ e.hom` using `Spec.map_preimage _`. Establish `hfin : φ.hom.Finite`. Rewrite using `[← IsFinite.SpecMap_iff, hφ]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcomp : φ ≫ α = CommRingCat.ofHom (algebraMap K B)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hα, hφ]`. Simplify `ht` using `[Category.assoc]`. Establish `hαφ : α.hom.comp φ.hom = algebraMap K B`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← CommRingCat.hom_comp, hcomp, CommRingCat.hom_ofHom]`. Establish `hmem : ∀ a, α.hom a ∈ i.range`. Introduce `a`. Apply `hint` to reduce the goal to its premises. Take `⟨P, hP, hPa⟩` from `hfin.to_isIntegral a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg α.hom hPa`. Rewrite `h2` using `[Polynomial.hom_eval₂, map_zero, hαφ]`. Conclude with `h2`. Set `eqv` to `AlgEquiv.ofInjective i hi`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `β : Γ(T, ⊤) →+* E` to `eqv.symm.toRingHom.comp (α.hom.codRestrict i.range hmem)`. Establish `hiβ : ∀ a, i (β a) = α.hom a`. Introduce `a`. Express the relevant statement in the definitionally equal form `i (eqv.symm ⟨α.hom a, hmem a⟩) = α.hom a`. Rewrite using `[← AlgEquiv.ofInjective_apply i hi]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg Subtype.val (eqv.apply_symm_apply _)`. Establish `hβφ : β.comp φ.hom = algebraMap K E`. Use extensionality with `k`. Apply `hi` to reduce the goal to its premises. Rewrite using `[RingHom.comp_apply, hiβ, ← RingHom.comp_apply, hαφ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(i.commutes k).symm`. Use `⟨Spec.map (CommRingCat.ofHom β) ≫ e.inv, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hφ, ← Spec.map_comp]`. Express the relevant statement in the definitionally equal form `_ = Spec.map (CommRingCat.ofHom (algebraMap K E))`. Use `congr 1`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Conclude with `congrArg (fun f : K →+* E => f x) hβφ`. Express the relevant statement in the definitionally equal form `t = Spec.map (CommRingCat.ofHom i.toRingHom) ≫ _`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Establish `hβα : CommRingCat.ofHom β ≫ CommRingCat.ofHom i.toRingHom = α`.
-
-Use extensionality with `x`. Conclude with `hiβ x`. Rewrite using `[hβα, hα, Category.assoc, e.hom_inv_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.point_factor_integral_subalgebra : ∀ (K B E : Type) [Field K] [CommRing B] [CommRing E]
     [Algebra K B] [Algebra K E] (i : E →ₐ[K] B), Function.Injective i →

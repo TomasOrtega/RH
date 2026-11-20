@@ -21,7 +21,7 @@ def Good (k r j : ℕ) (p q : Fin (2 * r + k + 1)) : Prop :=
   (p.val < j ∧ q.val < j) ∨ (2 * r + k < p.val + j ∧ 2 * r + k < q.val + j)
 
 /- English proof (translation)
-Unfold `RdV`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[hC k r j hj Z τ γ x t]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem rdV_levi (hC : CurveLevi) (x : MJ j) (f : Q.Mx k r → E) (Z : MJ j) :
     RdV (levi k r j x) f (x0 k r j hj Z τ γ) = RdV x (fun Z' => f (x0 k r j hj Z' τ γ)) Z := by
@@ -31,7 +31,7 @@ theorem rdV_levi (hC : CurveLevi) (x : MJ j) (f : Q.Mx k r → E) (Z : MJ j) :
   rw [hC k r j hj Z τ γ x t]
 
 /- English proof (translation)
-Unfold `EopZ`. Simplify using `[eI]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem EopZ_e (a b : Fin j) :
     EopZ (E := E) k r j (eI k r (Fin.castLE (by omega) a)) (eI k r (Fin.castLE (by omega) b)) = EZ a b := by
@@ -39,7 +39,7 @@ theorem EopZ_e (a b : Fin j) :
   simp [eI]
 
 /- English proof (translation)
-Unfold `EopZ`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Rewrite using `[dif_neg (by simp [esI]; omega), dif_pos (by simp [esI]; omega), dif_pos (by simp [esI]; omega)]`. Apply the tactic sequence `congr 1 <;> ext <;> simp [esI] <;> omega`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem EopZ_es (a b : Fin j) :
     EopZ (E := E) k r j (esI k r (Fin.castLE (by omega) a)) (esI k r (Fin.castLE (by omega) b)) = EZs a b := by
@@ -50,11 +50,11 @@ theorem EopZ_es (a b : Fin j) :
   congr 1 <;> ext <;> simp [esI] <;> omega
 
 /- English proof (translation)
-Establish `hjr : j ≤ r` using `by omega`. Break down `hpq with ⟨hp, hq⟩ | ⟨hp, hq⟩` into its components or cases. Take `⟨a, rfl⟩ : ∃ a : Fin j, p = eI k r (Fin.castLE hjr a)` from `⟨⟨p.val, hp⟩, Fin.ext rfl⟩`. Take `⟨b, rfl⟩ : ∃ b : Fin j, q = eI k r (Fin.castLE hjr b)` from `⟨⟨q.val, hq⟩, Fin.ext rfl⟩`. Rewrite using `[EopZ_e hj]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Unfold `EabH EZ`. Rewrite using `[(hH k r j hjr a b).1, (hH k r j hjr a b).2.1, rdV_levi hj τ γ hC, rdV_levi hj τ γ hC]`. Establish `hp2` using `p.isLt`. Establish `hq2` using `q.isLt`. Take `⟨a, rfl⟩ : ∃ a : Fin j, p = esI k r (Fin.castLE hjr a)` from `⟨⟨2 * r + k - p.val, by omega⟩, Fin.ext (by simp [esI]; omega)⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩ : ∃ b : Fin j, q = esI k r (Fin.castLE hjr b)` from `⟨⟨2 * r + k - q.val, by omega⟩, Fin.ext (by simp [esI]; omega)⟩`. Rewrite using `[EopZ_es hj]`. Unfold `EabH EZs`. Rewrite using `[(hH k r j hjr a b).2.2.1, (hH k r j hjr a b).2.2.2, rdV_levi hj τ γ hC, rdV_levi hj τ γ hC]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eab_pull (hC : CurveLevi) (hH : HpartLevi) (p q : Fin (2 * r + k + 1)) (hpq : Good k r j p q)
     (f : Q.Mx k r → E) (Z : MJ j) :
@@ -77,7 +77,7 @@ theorem eab_pull (hC : CurveLevi) (hH : HpartLevi) (p q : Fin (2 * r + k + 1)) (
     rw [(hH k r j hjr a b).2.2.1, (hH k r j hjr a b).2.2.2, rdV_levi hj τ γ hC, rdV_levi hj τ γ hC]
 
 /- English proof (translation)
-Unfold `QuantumDeterminants.Top TopG`. Rewrite using `[eab_pull hj τ γ hC hH p q hpq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem top_pull (hC : CurveLevi) (hH : HpartLevi) (u : ℂ) (p q : Fin (2 * r + k + 1)) (hpq : Good k r j p q)
     (f : Q.Mx k r → E) (Z : MJ j) :
@@ -90,7 +90,7 @@ def Rel (T : (Q.Mx k r → E) → Q.Mx k r → E) (S : (MJ j → E) → MJ j →
   ∀ (f : Q.Mx k r → E) (Z : MJ j), T f (x0 k r j hj Z τ γ) = S (fun Z' => f (x0 k r j hj Z' τ γ)) Z
 
 /- English proof (translation)
-The claim follows from `| [], [], _ => fun _ _ => rfl | T :: L₁, S :: L₂, List.Forall₂.cons h hL => by intro f Z simp only [List.foldr_cons] rw [h] congr 1 funext Z' exact foldr_pull L₁ L₂ hL f Z'`.
+A detailed English derivation is pending.
 -/
 theorem foldr_pull : ∀ (L₁ : List ((Q.Mx k r → E) → Q.Mx k r → E)) (L₂ : List ((MJ j → E) → MJ j → E)),
     List.Forall₂ (Rel (E := E) hj τ γ) L₁ L₂ →
@@ -107,7 +107,7 @@ theorem foldr_pull : ∀ (L₁ : List ((Q.Mx k r → E) → Q.Mx k r → E)) (L�
     exact foldr_pull L₁ L₂ hL f Z'
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _ => by simp | n + 1, F, G, h => by rw [List.ofFn_succ, List.ofFn_succ] exact List.Forall₂.cons (h 0) (forall₂_ofFn R n _ _ (fun i => h i.succ))`.
+A detailed English derivation is pending.
 -/
 theorem forall₂_ofFn {α β : Type*} (R : α → β → Prop) : ∀ (n : ℕ) (F : Fin n → α) (G : Fin n → β),
     (∀ i, R (F i) (G i)) → List.Forall₂ R (List.ofFn F) (List.ofFn G)
@@ -117,9 +117,9 @@ theorem forall₂_ofFn {α β : Type*} (R : α → β → Prop) : ∀ (n : ℕ) 
     exact List.Forall₂.cons (h 0) (forall₂_ofFn R n _ _ (fun i => h i.succ))
 
 /- English proof (translation)
-Unfold `qminorOp qminG`. Simplify using `only [Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Use `congr 1`. Use `foldr_pull hj τ γ _ _ ?_ f Z` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `forall₂_ofFn (Rel (E := E) hj τ γ) t _ _ (fun i f' Z' => top_pull hj τ γ hC hH _ _ _ (hab σ i) f' Z')`.
+A detailed English derivation is pending.
 -/
 theorem qmin_pull (hC : CurveLevi) (hH : HpartLevi) {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ)
     (hab : ∀ (σ : Equiv.Perm (Fin t)) (i : Fin t), Good k r j (a (σ i)) (b i)) (f : Q.Mx k r → E) (Z : MJ j) :
@@ -133,13 +133,11 @@ theorem qmin_pull (hC : CurveLevi) (hH : HpartLevi) {t : ℕ} (a b : Fin t → F
   exact forall₂_ofFn (Rel (E := E) hj τ γ) t _ _ (fun i f' Z' => top_pull hj τ γ hC hH _ _ _ (hab σ i) f' Z')
 
 /- English proof (translation)
-Unfold `C3.AAop AZ`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Use `split_ifs with hc`. Establish `hcoef : (Matrix.of fun a l : Fin m => herm (Hpk k r) (x0 k r j hj Z τ γ *ᵥ bvec (c l)) (bvec (eI k r (Fin.castLE hm a)))) = Matrix.of fun a l => cZ Z (c l) (Fin.castLE hmj a)`. Use extensionality with `a l`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hXC k r j hj Z τ γ (Fin.castLE hmj a) (c l)`. Rewrite using `[hcoef]`. Distinguish the cases in `hall : ∀ l, (c l).val < j`. Rewrite using `[qmin_pull hj τ γ hC hH]`. Introduce `σ i`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `left`. Conclude with `⟨by simp [C3.xR, eI]; omega, hall i⟩`. Use `push Not at hall`. Take `⟨l, hl⟩` from `hall`. Rewrite using `[Matrix.det_eq_zero_of_column_eq_zero l (fun a => by simp [cZ]; omega)]`.
-
-Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem AAop_pull (hC : CurveLevi) (hH : HpartLevi) (hXC : XiCoef) (m : ℕ) (hm : m ≤ r) (hmj : m ≤ j) (u : ℂ)
     (f : Q.Mx k r → E) (Z : MJ j) :
@@ -166,13 +164,11 @@ theorem AAop_pull (hC : CurveLevi) (hH : HpartLevi) (hXC : XiCoef) (m : ℕ) (hm
   · rfl
 
 /- English proof (translation)
-Unfold `C3.AAvop AvZ`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Use `split_ifs with hc`. Establish `hcoef : (Matrix.of fun a l : Fin m => ((x0 k r j hj Z τ γ)⁻¹ *ᵥ bvec (eI k r (Fin.castLE hm a))) (c l)) = Matrix.of fun a l => cvZ k r Z (c l) (Fin.castLE hmj a)`. Use extensionality with `a l`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hXV k r j hj Z τ γ hZ hτ hγ (Fin.castLE hmj a) (c l)`. Rewrite using `[hcoef]`. Distinguish the cases in `hall : ∀ l, 2 * r + k < (c l).val + j`. Rewrite using `[qmin_pull hj τ γ hC hH]`. Introduce `σ i`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `right`. Use `i.isLt` as an intermediate fact. Conclude with `⟨hall (σ i), by simp [C3.sR, esI]; omega⟩`. Use `push Not at hall`. Take `⟨l, hl⟩` from `hall`.
-
-Rewrite using `[Matrix.det_eq_zero_of_column_eq_zero l (fun a => by simp [cvZ]; omega)]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem AAvop_pull (hC : CurveLevi) (hH : HpartLevi) (hXV : XiCoefV) (m : ℕ) (hm : m ≤ r) (hmj : m ≤ j)
     (ell : ℂ) (f : Q.Mx k r → E) (Z : MJ j) (hZ : Z.det ≠ 0) (hτ : τ ≠ 0) (hγ : γ ∈ B.GV k (r - (j + 1))) :
@@ -200,9 +196,9 @@ theorem AAvop_pull (hC : CurveLevi) (hH : HpartLevi) (hXV : XiCoefV) (m : ℕ) (
   · rfl
 
 /- English proof (translation)
-Use `show ((Zhat k r z z' (x0 k r j hj Z τ γ)).submatrix (Fin.castLE (by omega : j ≤ r + 1)) (Fin.castLE (by omega : j ≤ r + 1))).det = Z.det`. Use `congr 1`. Use extensionality with `a b`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.submatrix_apply, Zhat, fvec]`. Rewrite using `[dif_pos (by simp; omega), dif_pos (by simp; omega)]`. Use `hXC k r j hj Z τ γ a (eI k r ⟨b.val, by omega⟩)` as an intermediate fact. Simplify using `only [eI] at this ⊢`. Simplify `this` using `[hb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Dmin_pull (hXC : XiCoef) (z z' : Fin (2 * r + k + 1) → ℂ) (Z : MJ j) :
     Dmin k r z z' (x0 k r j hj Z τ γ) ⟨j, by omega⟩ = Z.det := by
@@ -219,7 +215,7 @@ theorem Dmin_pull (hXC : XiCoef) (z z' : Fin (2 * r + k + 1) → ℂ) (Z : MJ j)
   simpa [hb] using this
 
 /- English proof (translation)
-Unfold `D.vLet Aform`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[Dmin_pull hj τ γ hXC, AAop_pull hj τ γ hC hH hXC]`. Rewrite using `[Dmin_pull hj τ γ hXC, AAvop_pull hj τ γ hC hH hXV _ _ _ _ _ Z hZ hτ hγ]`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vLet_pull (hC : CurveLevi) (hH : HpartLevi) (hXC : XiCoef) (hXV : XiCoefV)
     (z z' : Fin (2 * r + k + 1) → ℂ) (l : C.Letter) (e : Fin 2) (Φ : Q.Mx k r → E) (Z : MJ j)
@@ -262,7 +258,7 @@ def linOf {T : (MJ j → E) → MJ j → E} (hT : ZOp T) : (MJ j → E) →ₗ[�
   LinearMap.pi fun Z => if hZ : Z.det ≠ 0 then Classical.choose (LinearMap.exists_extend (fW hT Z hZ)) else 0
 
 /- English proof (translation)
-Simplify using `only [linOf, LinearMap.pi_apply, dif_pos hZ]`. Use `Classical.choose_spec (LinearMap.exists_extend (fW hT Z hZ))` as an intermediate fact. Conclude with `congrArg (fun L : W E Z →ₗ[ℂ] E => L ⟨h, hh⟩) this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linOf_eq {T : (MJ j → E) → MJ j → E} (hT : ZOp T) {Z : MJ j} (hZ : Z.det ≠ 0) {h : MJ j → E}
     (hh : h ∈ W E Z) : linOf hT h Z = T h Z := by
@@ -271,25 +267,23 @@ theorem linOf_eq {T : (MJ j → E) → MJ j → E} (hT : ZOp T) {Z : MJ j} (hZ :
   exact congrArg (fun L : W E Z →ₗ[ℂ] E => L ⟨h, hh⟩) this
 
 /- English proof (translation)
-Unfold `PBP.dz`. Rewrite using `[h.fderiv_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dz_congr {F G : ℂ → E} {τ : ℂ} (h : F =ᶠ[𝓝 τ] G) : PBP.dz F τ = PBP.dz G τ := by
   unfold PBP.dz; rw [h.fderiv_eq]
 
 /- English proof (translation)
-Unfold `PBP.dzb`. Rewrite using `[h.fderiv_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dzb_congr {F G : ℂ → E} {τ : ℂ} (h : F =ᶠ[𝓝 τ] G) : PBP.dzb F τ = PBP.dzb G τ := by
   unfold PBP.dzb; rw [h.fderiv_eq]
 
 /- English proof (translation)
-Introduce `U κ hU hUi hκ`. Take `⟨t1, t2⟩` from `hT.par U κ hU hUi hκ`. Establish `hsl : ∀ τ : ℂ, IsOpen {Z : MJ j | ((τ, (Z : Fin j → Fin j → ℂ)) : ℂ × (Fin j → Fin j → ℂ)) ∈ U}` using `fun τ => hU.preimage (contDiff_pair τ).continuous`. Establish `key : ∀ (τ : ℂ) (Z : MJ j), ((τ, (Z : Fin j → Fin j → ℂ)) : ℂ × (Fin j → Fin j → ℂ)) ∈ U → linOf hT (κ τ) Z = T (κ τ) Z`. Introduce `τ Z hτZ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `linOf_eq hT (hUi hτZ) ⟨_, hsl τ, hτZ, hκ.comp (contDiff_pair τ).contDiffOn (fun _ h => h)⟩`. Use `⟨t1.congr (fun q hq => key q.1 (Matrix.of q.2) hq), fun q hq => ?_⟩` and prove the remaining obligations. Establish `hev : (fun τ => linOf hT (κ τ) (Matrix.of q.2)) =ᶠ[𝓝 q.1] (fun τ => T (κ τ) (Matrix.of q.2))`. Establish `hop : IsOpen {τ : ℂ | ((τ, q.2) : ℂ × (Fin j → Fin j → ℂ)) ∈ U}` using `hU.preimage (continuous_id.prodMk continuous_const)`. Use `filter_upwards [hop.mem_nhds (show (q.1, q.2) ∈ U from hq)] with τ hτ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `key τ _ hτ`. Take `⟨d1, d2⟩` from `hD j E U κ hU hκ q.1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[dz_congr hev, (t2 q hq).1]`. Conclude with `(linOf_eq hT (hUi hq) ⟨_, hsl q.1, hq, d1⟩).symm`.
-
-Rewrite using `[dzb_congr hev, (t2 q hq).2]`. Conclude with `(linOf_eq hT (hUi hq) ⟨_, hsl q.1, hq, d2⟩).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linOf_par (hD : DzSlice) {T : (MJ j → E) → MJ j → E} (hT : ZOp T) : ParamComm (linOf hT) := by
   intro U κ hU hUi hκ
@@ -316,11 +310,11 @@ theorem linOf_par (hD : DzSlice) {T : (MJ j → E) → MJ j → E} (hT : ZOp T) 
 end lin
 
 /- English proof (translation)
-Introduce `k r j hj z z' E _ _ l e _ _`. Use `⟨linOf (zop_Aform (E := E) hR k r j hj l e), linOf_par hD _, ?_⟩` and prove the remaining obligations. Introduce `Dm Φ _ _ hsm Z τ γ hZ hτ hγ hmem`. Rewrite using `[vLet_pull hj τ γ hC hH hXC hXV z z' l e Φ Z hZ hτ hγ]`. Use `(linOf_eq _ hZ ?_).symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨UF, F, hUF, hgUF, hF, hΦF⟩` from `hsm _ ⟨hXM k r j hj Z τ γ hZ hτ hγ, hmem⟩`. Establish `hcont` using `(hXS k r j hj τ γ).continuousOn`. Use `⟨{Z' | Z'.det ≠ 0} ∩ (fun Z' => x0 k r j hj Z' τ γ) ⁻¹' UF, hcont.isOpen_inter_preimage isOpen_inv hUF, ⟨hZ, hgUF⟩, ?_⟩` and prove the remaining obligations. Use `(hF.comp ((hXS k r j hj τ γ).mono Set.inter_subset_left) (fun _ h => h.2)).congr ?_` and prove the remaining obligations. Introduce `Z' hZ'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hΦF _ hZ'.2 (hXM k r j hj Z' τ γ hZ'.1 hτ hγ)`.
+A detailed English derivation is pending.
 -/
 theorem zOnly_of_parts (hC : CurveLevi) (hH : HpartLevi) (hXC : XiCoef) (hXV : XiCoefV) (hXM : XiMem)
     (hXS : XiSmooth) (hR : ZOpRd) (hD : DzSlice) : ZOnly := by

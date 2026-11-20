@@ -14,14 +14,14 @@ open GlobalTheory.RootEx
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, map_inv₀, map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_inv_pow {ϖ : kˣ} (n : ℕ) :
     valuation k (((ϖ ^ n)⁻¹ : kˣ) : k) = (valuation k (ϖ : k) ^ n)⁻¹ := by
   rw [Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, map_inv₀, map_pow]
 
 /- English proof (translation)
-Rewrite using `[val_inv_pow, val_inv_pow]`. Establish `h0 : valuation k (ϖ : k) ≠ 0` using `by simp`. Establish `h1 : valuation k (ϖ : k) ≤ 1` using `hϖ ▸ uniformizer_lt_one.le`. Conclude with `inv_anti₀ (pow_pos (zero_lt_iff.2 h0) _) (pow_le_pow_of_le_one zero_le' h1 h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_inv_pow_mono {ϖ : kˣ} (hϖ : IsUnif ϖ) {n n' : ℕ} (h : n ≤ n') :
     valuation k (((ϖ ^ n)⁻¹ : kˣ) : k) ≤ valuation k (((ϖ ^ n')⁻¹ : kˣ) : k) := by
@@ -31,9 +31,9 @@ theorem val_inv_pow_mono {ϖ : kˣ} (hϖ : IsUnif ϖ) {n n' : ℕ} (h : n ≤ n'
   exact inv_anti₀ (pow_pos (zero_lt_iff.2 h0) _) (pow_le_pow_of_le_one zero_le' h1 h)
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Conclude with `⟨0, by simp [ha]⟩`. Establish `hv : valuation k a ≠ 0` using `by simpa using ha`. Take `⟨n, hn⟩` from `exists_pow_lt₀ (hϖ ▸ uniformizer_lt_one : valuation k (ϖ : k) < 1) (Units.mk0 _ hv)⁻¹`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[val_inv_pow]`. Establish `h0 : valuation k (ϖ : k) ≠ 0` using `by simp`. Simplify using `only [Units.val_inv_eq_inv_val, Units.val_mk0] at hn`. Use `le_of_lt hn` as an intermediate fact. Rewrite `this` using `[le_inv_comm₀ (pow_pos (zero_lt_iff.2 h0) _) (zero_lt_iff.2 hv)]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_le {ϖ : kˣ} (hϖ : IsUnif ϖ) (a : k) :
     ∃ n : ℕ, valuation k a ≤ valuation k (((ϖ ^ n)⁻¹ : kˣ) : k) := by
@@ -49,13 +49,11 @@ theorem exists_le {ϖ : kˣ} (hϖ : IsUnif ϖ) (a : k) :
   rwa [le_inv_comm₀ (pow_pos (zero_lt_iff.2 h0) _) (zero_lt_iff.2 hv)] at this
 
 /- English proof (translation)
-Use `choose nA hnA using fun p : m × m => exists_le hϖ (A.val p.1 p.2)`. Use `choose nB hnB using fun p : n × n => exists_le hϖ ((B⁻¹ : GL n k).val p.1 p.2)`. Use `set N0 := Finset.univ.sup nA ⊔ Finset.univ.sup nB`. Establish `hc : valuation k (((ϖ ^ (N0 + N0))⁻¹ : kˣ) : k) = valuation k (((ϖ ^ N0)⁻¹ : kˣ) : k) * valuation k (((ϖ ^ N0)⁻¹ : kˣ) : k)`. Rewrite using `[val_inv_pow, val_inv_pow, pow_add, mul_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set c := valuation k (((ϖ ^ N0)⁻¹ : kˣ) : k)`. Establish `hA : ∀ r a, valuation k (A.val r a) ≤ c` using `fun r a => (hnA (r, a)).trans (val_inv_pow_mono hϖ (le_sup_left.trans' (Finset.le_sup (f := nA) (Finset.mem_univ (r, a)))))`. Establish `hB : ∀ b s, valuation k ((B⁻¹ : GL n k).val b s) ≤ c` using `fun b s => (hnB (b, s)).trans (val_inv_pow_mono hϖ (le_sup_right.trans' (Finset.le_sup (f := nB) (Finset.mem_univ (b, s)))))`. Use `⟨N0 + N0, fun Z hZ r s => ?_⟩` and prove the remaining obligations. Establish `hZ' : Z = A.val * ((A⁻¹ : GL m k).val * Z * B.val) * (B⁻¹ : GL n k).val`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Rewrite using `[hZ', hc]`. Use `set W := (A⁻¹ : GL m k).val * Z * B.val`. Simplify using `only [Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun b _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_mul]`. Use `mul_le_mul' (Valuation.map_sum_le _ fun a _ => ?_) (hB b s)` and prove the remaining obligations. Rewrite using `[map_mul]`. Simplify using `using mul_le_mul' (hA r a) (show valuation k (W a b) ≤ 1 from hZ a b)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_bound_conj {ϖ : kˣ} (hϖ : IsUnif ϖ) {m n : Type} [Fintype m] [DecidableEq m] [Fintype n]
     [DecidableEq n] (A : GL m k) (B : GL n k) :
@@ -89,23 +87,21 @@ theorem exists_bound_conj {ϖ : kˣ} (hϖ : IsUnif ϖ) {m n : Type} [Fintype m] 
 open Matrix in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ G hs ψ ν ϖ e T keep g hϖ hT`. Use `choose N hN using fun b : Edge => exists_bound_conj hϖ (Assignment.one.read (g b.tgt)) (Assignment.one.read (g b.src))`. Use `⟨(oppositePath G.m).toFinset.sup N, fun x y hne => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, flatIntegrand hs ψ (moved G keep g T) x y v ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at h`. Apply `hne` to reduce the goal to its premises. Unfold `flatTensor`. Simplify using `[h]`. Establish `hT0 : T (G.moveArgs .one g (fill hs x y v)) ≠ 0`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Apply `hv` to reduce the goal to its premises. Simplify using `[flatIntegrand, moved, Grid.pathAct, h0]`. Establish `key : ∀ b ∈ oppositePath G.m, ∀ r s, valuation k (fill hs x y v b r s) ≤ valuation k (((ϖ ^ (oppositePath G.m).toFinset.sup N)⁻¹ : kˣ) : k)`. Introduce `b hb r s`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_trans (hN b _ (fun r s => ?_) r s) (val_inv_pow_mono hϖ (Finset.le_sup (f := N) (List.mem_toFinset.2 hb)))` and prove the remaining obligations. Establish `hm : (G.moveArgs .one g (fill hs x y v)) b ∈ matLat _ (GlobalTheory.SplitFlip.stdLat k _)`. Assume the negation of the conclusion as `h`. Conclude with `hT0 (hT.2.1 _ b hb h)`. Conclude with `mem_matLat_stdLat.1 hm r s`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `⟨fun j hj r s hr => ?_, fun i hi r s => ?_⟩` and prove the remaining obligations. Establish `hmem : Edge.theta G.m j ∈ oppositePath G.m` using `by simp [oppositePath]; omega`. Distinguish the cases in `hj' : j < G.m - 1`. Establish `h` using `key _ hmem (frame (b := G.rank (G.m, j)) (c := G.m - 2 - j + 1) (by have := topRank_add hs j; omega) (Sum.inl s)) (frame (b := G.rank (G.m, j + 1)) (c := G.m - 2 - j) (by have := topRank_add hs (j + 1); omega) (Sum.inl r))`. Rewrite `h` using `[fill_theta, transpose_apply, downMap, dif_pos hj']`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h` using `[reindex_apply, submatrix_apply, Equiv.symm_apply_apply, stepPt, basePt, Free, Kept]`. Establish `hjm : j + 1 = G.m` using `by omega`. Establish `hrk` using `topRank_add hs (j + 1)`. Establish `hrk'` using `topRank_add hs j`. Establish `hr' : r.val < G.rank (G.m, j + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hr hjm` as an intermediate fact. Establish `h2 : (topLast G (j + 1)).val = topRank G (j + 1) - 1` using `rfl`. Rewrite `this` using `[Ne, Fin.ext_iff, h2]`. Use `r.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `key _ hmem (show Fin (G.rank (G.m, j)) from ⟨s.val, by have := s.2; omega⟩) (show Fin (G.rank (G.m, j + 1)) from ⟨r.val, hr'⟩)`. Rewrite `h` using `[fill_theta, transpose_apply, downMap, dif_neg hj', dif_pos hjm]`. Simplify using `using h`. Establish `hmem : Edge.ex i G.m ∈ oppositePath G.m` using `by simp [oppositePath]; omega`. Establish `h` using `key _ hmem s r`.
-
-Rewrite `h` using `[fill_ex, transpose_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem flatTensor_support : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (G : Grid k) (hs : 1 ≤ G.s) (ψ : AddChar k Circle) (ν : Measure k) (ϖ : kˣ) (e : ℕ) (T : G.Args → ℂ) (keep : Bool) (g : G.VertexGroup), IsUnif ϖ → G.IsTensor ϖ e (oppositePath G.m) T → ∃ n : ℕ, ∀ (x : ColArgs G) (y : RowArgs G), flatTensor hs ψ ν (moved G keep g T) x y ≠ 0 → (∀ j, j < G.m → ∀ r s, (j + 1 = G.m → r ≠ topLast G (j + 1)) → valuation k (x j r s) ≤ valuation k (((ϖ ^ n)⁻¹ : kˣ) : k)) ∧ ∀ i, i < G.m → ∀ r s, valuation k (y i r s) ≤ valuation k (((ϖ ^ n)⁻¹ : kˣ) : k) := by
   classical

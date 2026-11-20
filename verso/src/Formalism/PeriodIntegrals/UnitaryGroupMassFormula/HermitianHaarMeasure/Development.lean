@@ -86,7 +86,7 @@ def Glue : Prop :=
     HermHaar
 
 /- English proof (translation)
-Introduce `hRd hSM hCC hMV hMC hYL hGl hEP`. Conclude with `hG (hA hSM hCC hMV hMC) hT (hE hRd hEP hT hI) hM hI hY hX hH hEP hGl hYL`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hermFromSteps_of (hA : HermAlgFrom) (hE : EabAdjFrom) (hT : EabTest) (hM : MulTest) (hI : TestInt)
     (hY : YbRel) (hX : XbRel) (hH : HmFacts) (hG : Glue) : HermFromSteps := by
@@ -94,7 +94,7 @@ theorem hermFromSteps_of (hA : HermAlgFrom) (hE : EabAdjFrom) (hT : EabTest) (hM
   exact hG (hA hSM hCC hMV hMC) hT (hE hRd hEP hT hI) hM hI hY hX hH hEP hGl hYL
 
 /- English proof (translation)
-The claim follows from `hermFromSteps_of hA hE hT hM hI hY hX hH hG`.
+A detailed English derivation is pending.
 -/
 theorem qnHermHaar_of (hA : HermAlgFrom) (hE : EabAdjFrom) (hT : EabTest) (hM : MulTest) (hI : TestInt)
     (hY : YbRel) (hX : XbRel) (hH : HmFacts) (hG : Glue) :

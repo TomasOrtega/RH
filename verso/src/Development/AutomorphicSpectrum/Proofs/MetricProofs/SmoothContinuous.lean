@@ -17,13 +17,13 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.Cj
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Introduce `z` and use `by simp [fsHerm_h, refNorm]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fs_conj (a : K → ℤ) : IsConjInvariantH (fsHerm ι a) := fun z => by
   simp [fsHerm_h, refNorm]
 
 /- English proof (translation)
-Substitute `hP` using the available equality. Introduce `h`. Use `h.2 1 trivial` as an intermediate fact. Simplify using `at this`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_mem_top {P : Ideal (MRing ι)} (hP : P = ⊤) (z : (Σ k, ι k) → ℂ) : z ∉ mcPts P := by
   subst hP
@@ -32,7 +32,7 @@ theorem not_mem_top {P : Ideal (MRing ι)} (hP : P = ⊤) (z : (Σ k, ι k) → 
   simp at this
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Conclude with `⟨fun k => c k.1, fun k => hc k.1, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sameOrbit_base {σ : Type} (blk : σ → Option K) {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') :
     SameOrbit (basePart blk z) (basePart blk z') := by
@@ -40,9 +40,9 @@ theorem sameOrbit_base {σ : Type} (blk : σ → Option K) {z z' : (Σ k, ι k) 
   exact ⟨fun k => c k.1, fun k => hc k.1, rfl⟩
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `A.cover x`. Establish `h1 : ContinuousAt (f ∘ (A.chart j).symm) (A.chart j x)`. Establish `hm : (A.chart j).target ∩ (A.chart j).symm ⁻¹' Set.univ ∈ nhds (A.chart j x)`. Simplify using `using (A.chart j).open_target.mem_nhds ((A.chart j).map_source hj)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `((hf j).contDiffAt hm).continuousAt`. Establish `h2` using `h1.comp ((A.chart j).continuousAt hj)`. Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[Function.comp, (A.chart j).left_inv hy]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smooth_continuous {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X} {f : X → ℝ}
     (hf : A.Smooth f) : Continuous f := by
@@ -60,7 +60,7 @@ theorem smooth_continuous {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolA
 def clampT (T t : ℝ) : ℝ := if 0 < t ∧ t ≤ T then t else T
 
 /- English proof (translation)
-Unfold `clampT`. Use `split_ifs with h`. Conclude with `h.1`. Conclude with `hT`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem clampT_pos {T : ℝ} (hT : 0 < T) (t : ℝ) : 0 < clampT T t := by
   unfold clampT; split_ifs with h
@@ -68,7 +68,7 @@ theorem clampT_pos {T : ℝ} (hT : 0 < T) (t : ℝ) : 0 < clampT T t := by
   · exact hT
 
 /- English proof (translation)
-Unfold `clampT`. Use `split_ifs with h`. Conclude with `h.2`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem clampT_le {T : ℝ} (t : ℝ) : clampT T t ≤ T := by
   unfold clampT; split_ifs with h
@@ -76,7 +76,7 @@ theorem clampT_le {T : ℝ} (t : ℝ) : clampT T t ≤ T := by
   · exact le_rfl
 
 /- English proof (translation)
-Unfold `clampT`. Rewrite using `[if_pos ⟨h0, h1⟩]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem clampT_eq {T t : ℝ} (h0 : 0 < t) (h1 : t ≤ T) : clampT T t = t := by
   unfold clampT; rw [if_pos ⟨h0, h1⟩]
@@ -123,9 +123,9 @@ def avgRe {D : ℕ} {σ : Type} {S : AnSys D (Option σ)} {P : Ideal (MRing ι)}
 variable {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ} {Ψ : Type} {N j : ℕ}
 
 /- English proof (translation)
-Introduce `z z' hb hk`. Express the relevant statement in the definitionally equal form `Real.sqrt |A.h z * A.h (cj z)| = Real.sqrt |A.h z' * A.h (cj z')|`. Rewrite using `[hA z z' hb hk, hA (cj z) (cj z') ?_ ?_]`. Use function extensionality and compare the values at `q`. Conclude with `congrArg (starRingEnd ℂ) (congrFun hb q)`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk' m`. Conclude with `congrArg (starRingEnd ℂ) (hk k hk' m)`.
+A detailed English derivation is pending.
 -/
 theorem onStep_conjAvg (M : FlagModel y Ψ N j) {p : Ψ × Fin N} {A : HermLine ι} (hA : M.OnStep p A) :
     M.OnStep p (conjAvg A) := by
@@ -138,75 +138,69 @@ theorem onStep_conjAvg (M : FlagModel y Ψ N j) {p : Ψ × Fin N} {A : HermLine 
     exact congrArg (starRingEnd ℂ) (hk k hk' m)
 
 /- English proof (translation)
-Establish `hdeg : IsDegreeOff FA.S.A FA.Re.R.A FA.Re.π 1 ∅`. Use `FA.Re.degree` as an intermediate fact. Rewrite `this` using `[FA.deg_one, FA.br_empty]`. Then use the resulting hypothesis. Take `⟨g, hgπ, hπg, hgh⟩` from `GlobalTheory.T.holomorphic_degree_one_biholomorphism FA.S.A FA.Re.R.A FA.Re.π FA.Re.holo hdeg`. Establish `hsys` using `GlobalTheory.T.biholomorphic_lift_system FA.J_top FA.Re.R FA.S.A g FA.Re.π hgπ hπg hgh FA.Re.holo`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hspec, hcont, hinv⟩` from `GlobalTheory.T.lift_system_complex_conjugation hsys`. Establish `hanal` using `GlobalTheory.T.conjugation_antiholomorphic_charts hsys c hspec hcont`. Establish `hmem : ∀ r, FA.Re.R.lift r r ∈ mcPts (mCoordIdeal y)` using `fun r => FA.Re.R.mem r r (FA.Re.R.mem_U r)`. Establish `hbase : ∀ x, SameOrbit (BM.Rb.lift (FA.pr (c x)) (FA.pr (c x))) (cj (BM.Rb.lift (FA.pr x) (FA.pr x)))`. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1` using `FA.pr_eq (g (c x))`. Establish `e2` using `FA.pr_eq (g x)`. Rewrite `e1`, `e2` using `[hπg]`. Establish `e3` using `sameOrbit_base M.blk (hspec x)`. Use `sameOrbit_trans (sameOrbit_symm e1) (sameOrbit_trans e3 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sameOrbit_cj e2`. Establish `hs_eq : ∀ x, FA.S.s x x = BM.s (FA.pr x) (FA.pr x)` using `fun x => by rw [FA.s_eq]`. Establish `hbd : ∀ x, x ∈ bdry FA.S.s ↔ FA.pr x ∈ bdry BM.s` using `fun x => by`. Express the relevant statement in the definitionally equal form `FA.S.s x x = 0 ↔ BM.s (FA.pr x) (FA.pr x) = 0`. Rewrite using `[hs_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrW : ∀ x, rW FA.S.L FA.S.s x = rW BM.L BM.s (FA.pr x)` using `fun x => by`. Unfold `rW logNormSec`. Rewrite using `[hs_eq, FA.L_eq]`. Both sides reduce to the same expression. Establish `hcb : ∀ x, c x ∈ bdry FA.S.s ↔ x ∈ bdry FA.S.s` using `fun x => by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbd, hbd]`. Conclude with `(h1 _ _ (hbase x)).1`. Establish `hcr : ∀ x, rW FA.S.L FA.S.s (c x) = rW FA.S.L FA.S.s x` using `fun x => by`. Rewrite using `[hrW, hrW]`. Conclude with `(h1 _ _ (hbase x)).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `href : ∀ a, IsConjInvariantH (FA.Re.ref a)` using `fun a => by`. Consider the cases of `a with`. Consider the case `none => rw [FA.ref_none]`. Conclude with `fs_conj _`. Consider the case `some p => rw [FA.ref_some]`.
+Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `fs_conj _`. Establish `hth : ∀ a x, ∃ V : Set FA.S.X, IsOpen V ∧ x ∈ V ∧ ∃ G : FA.S.X → ℂ, FA.S.A.HoloOn V G ∧ ∀ y' ∈ V, (FA.S.th a).φ (c x) (c y') - (FA.S.th a).φ x y' = (G y').re` using `fun a => GlobalTheory.T.lift_system_real_structure hsys c hspec hcont hanal (FA.Re.ref a) (href a) (FA.S.th a) fun x => by`. Take `⟨V, hV, hxV, G, hG, hGe⟩` from `FA.Re.ref_pot a (g x) (Set.mem_univ _)`. Use `⟨g ⁻¹' V, hV.preimage hgh.1, hxV, G ∘ g, holoOn_comp hgh hG, fun y' hy' => ?_⟩` and prove the remaining obligations. Use `hGe (g y') hy'` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [potOf, LocPot.pullback, hπg] at this`. Conclude with `this`. Establish `hph : ∀ p, ∀ x ∉ bdry FA.S.s, FA.S.ph (some p) (c x) = FA.S.ph (some p) x`. Introduce `p x hx`. Establish `hx' : c x ∉ bdry FA.S.s` using `fun h => hx ((hcb x).1 h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `FA.hom_eq p (g x) (by rw [hπg]; exact hx)`. Establish `e2` using `FA.hom_eq p (g (c x)) (by rw [hπg]; exact hx')`. Rewrite `e1`, `e2` using `[hπg]`. Establish `hpx : FA.pr x ∉ bdry BM.s` using `fun h => hx ((hbd x).2 h)`. Establish `hzz` using `FA.pr_eq (g x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hzz` using `[hπg]`. Establish `hinvh : (BM.hom p).h (cj (FA.Re.R.lift (g x) (g x))) = (BM.hom p).h (FA.Re.R.lift (g x) (g x))` using `h2 p _ (hmem (g x)) (FA.pr x) hpx hzz`. Establish `ho` using `log_sub_orbit (BM.hom p) (FA.Re.ref (some p)) (by rw [BM.hom_deg, FA.ref_some]; rfl) (cj_nonzero (hmem (g x)).1) (hspec x)`. Establish `hr : (FA.Re.ref (some p)).h (cj (FA.Re.R.lift (g x) (g x))) = (FA.Re.ref (some p)).h (FA.Re.R.lift (g x) (g x))` using `href (some p) _`. Rewrite `ho` using `[hinvh, hr]`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hphall : ∀ a, ∀ x ∉ bdry FA.S.s, FA.S.ph a (c x) = FA.S.ph a x` using `fun a => by`. Consider the cases of `a with`. Consider the case `none => intro x _`. Rewrite using `[FA.ph_none.1]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Consider the case `some p => exact hph p`. Establish `hreg : ∀ a, ∃ C' t' : ℝ, IsRegFamily FA.S.A FA.S.Θ FA.S.L FA.S.s (FA.S.th a) (FA.S.ph a) (fun t y' => (FA.S.phT a t y' + FA.S.phT a t (c y')) / 2) C' t' ∧ IsRegFamilyC2 FA.S.A FA.S.s (FA.S.ph a) fun t y' => (FA.S.phT a t y' + FA.S.phT a t (c y')) / 2` using `fun a => GlobalTheory.T.conjugation_invariant_singular_potential (d + 1) FA.S.X FA.S.A FA.S.Θ FA.S.L FA.S.s FA.S.nb FA.S.m FA.S.W FA.S.potL FA.S.sec FA.S.snc FA.S.norm_le FA.S.potΘ FA.S.posΘ c hcont hinv hanal hcb hcr (FA.S.th a) (FA.S.ph a) (FA.S.phT a) FA.S.C FA.S.t₀ (FA.S.sing …`. Use `choose Cf tf hregf hc2f using hreg`. Establish `hne : (Finset.univ : Finset (Option (Ψ × Fin N))).Nonempty` using `⟨none, Finset.mem_univ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set T : ℝ := min (min (Finset.univ.inf' hne tf) FA.S.t₀) (Real.exp (-1)) with hTdef`. Establish `ht00 : 0 < FA.S.t₀` using `(FA.S.reg none).1`. Establish `hT0 : 0 < T`. Use `lt_min (lt_min ?_ ht00) (Real.exp_pos _)` and prove the remaining obligations. Rewrite using `[Finset.lt_inf'_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `fun a _ => (hregf a).1`. Establish `hTS : T ≤ FA.S.t₀` using `(min_le_left _ _).trans (min_le_right _ _)`. Establish `hTf : ∀ a, T ≤ tf a` using `fun a => ((min_le_left _ _).trans (min_le_left _ _)).trans (Finset.inf'_le _ (Finset.mem_univ a))`. Establish `hTe : T ≤ Real.exp (-1)` using `min_le_right _ _`. Use `set Cs : ℝ := ∑ a, |Cf a| with hCs`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hCle : ∀ a, |Cf a| ≤ Cs` using `fun a => Finset.single_le_sum (f := fun a => |Cf a|) (fun _ _ => abs_nonneg _) (Finset.mem_univ a)`. Establish `hreg' : ∀ a, IsRegFamily FA.S.A FA.S.Θ FA.S.L FA.S.s (FA.S.th a) (FA.S.ph a) (fun t y' => (FA.S.phT a t y' + FA.S.phT a t (c y')) / 2) Cs T` using `fun a => (GlobalTheory.T.singular_weight_monotone_regularization (d + 1) FA.S.X FA.S.A FA.S.Θ FA.S.L FA.S.s FA.S.nb FA.S.m FA.S.W FA.S.potL FA.S.sec FA.S.snc FA.S.norm_le FA.S.potΘ FA.S.posΘ).2.1 _ _ _ _ _ _ _ (hCle a) hT0 (hTf a) hTe (hregf a) (FA.S.sing a).1`. Establish `hline : ∀ a t, 0 < t → t ≤ T → ∀ x, Real.log ((avgLine FA.Re T a t).h (FA.Re.R.lift x x)) = Real.log ((FA.Re.ref a).h (FA.Re.R.lift x x)) + (FA.S.phT a t (FA.Re.π x) + FA.S.phT a t (c (FA.Re.π x))) / 2`. Introduce `a t h0 ht x`. Consider the cases of `a with`.
+Simplify using the standard rewrite rules. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `none`. Establish `e` using `FA.Re.line_eq none t h0 (ht.trans hTS) x`. Express the relevant statement in the definitionally equal form `Real.log ((FA.Re.line none t).h (FA.Re.R.lift x x)) = _`. Rewrite using `[e, FA.ph_none.2 t]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Consider the case `some p`. Express the relevant statement in the definitionally equal form `Real.log ((conjAvg (FA.Re.line (some p) (clampT T t))).h (FA.Re.R.lift x x)) = _`. Rewrite using `[clampT_eq h0 ht, conjAvg_log _ (hmem x).1]`. Establish `e1` using `FA.Re.line_eq (some p) t h0 (ht.trans hTS) x`. Establish `e2` using `FA.Re.line_eq (some p) t h0 (ht.trans hTS) (g (c (FA.Re.π x)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `e2` using `[hπg]`. Establish `hsp` using `hspec (FA.Re.π x)`. Rewrite `hsp` using `[hgπ]`. Establish `ho` using `log_sub_orbit (FA.Re.line (some p) t) (FA.Re.ref (some p)) (FA.Re.line_deg _ _) (cj_nonzero (hmem x).1) hsp`. Establish `hr : (FA.Re.ref (some p)).h (cj (FA.Re.R.lift x x)) = (FA.Re.ref (some p)).h (FA.Re.R.lift x x)` using `href (some p) _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `ho` using `[hr]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpot : ∀ a t, (∀ y', FA.S.phT a t (c y') = FA.S.phT a t y') → (avgSys FA.S c Cs T hreg' hc2f).potT a t = FA.S.potT a t`. Introduce `a t h`. Establish `e : (fun y' => (FA.S.phT a t y' + FA.S.phT a t (c y')) / 2) = FA.S.phT a t`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y'`. Rewrite using `[h y']`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `FA.S.th a + LocPot.ofFun (fun y' => (FA.S.phT a t y' + FA.S.phT a t (c y')) / 2) = FA.S.th a + LocPot.ofFun (FA.S.phT a t)`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ S := avgSys FA.S c Cs T hreg' hc2f Re := avgRe FA.Re c Cs T hreg' hc2f hT0 hTS hline J_top := FA.J_top deg_one := FA.deg_one br_empty := FA.br_empty ref_some := FA.ref_some ref_none := FA.ref_none line_none := FA.line_none ph_none := ⟨FA.ph_none.1, fun t => ?_⟩ pos_none := ?_ …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(fun y' => (FA.S.phT none t y' + FA.S.phT none t (c y')) / 2) = 0`. Rewrite using `[FA.ph_none.2 t]`. Use function extensionality and compare the values at `y'`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c₀, hc₀, hp⟩` from `FA.pos_none`. Use `⟨c₀, hc₀, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hpot none t fun y' => by rw [FA.ph_none.2 t]; rfl]`. Conclude with `hp t`. Use `fun p (x : FA.Re.R.X) (x' : FA.Re.R.X) hpr hblk => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hph0, hpt⟩` from `FA.step_ph p x x' hpr hblk`. Use `⟨hph0, fun t => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(FA.S.phT (some p) t (FA.Re.π x) + FA.S.phT (some p) t (c (FA.Re.π x))) / 2 = (FA.S.phT (some p) t (FA.Re.π x') + FA.S.phT (some p) t (c (FA.Re.π x'))) / 2`. Establish `hinj : FA.pr (c (FA.Re.π x)) = FA.pr (c (FA.Re.π x'))`. Use `BM.Rb.inj _ _ (not_mem_top rfl _) (sameOrbit_trans (hbase (FA.Re.π x)) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hpr' : FA.pr (FA.Re.π x) = FA.pr (FA.Re.π x')` using `hpr`. Rewrite using `[hpr']`. Conclude with `sameOrbit_symm (hbase (FA.Re.π x'))`. Establish `hb : ∀ k, M.blk p = some k → ∃ a : ℂ, ∀ m : ι k, FA.Re.R.lift (g (c (FA.Re.π x))) (g (c (FA.Re.π x))) ⟨k, m⟩ = a * FA.Re.R.lift (g (c (FA.Re.π x'))) (g (c (FA.Re.π x'))) ⟨k, m⟩`. Introduce `k hk`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `hblk k hk`. Establish `hs1` using `hspec (FA.Re.π x)`. Establish `hs2` using `hspec (FA.Re.π x')`. Rewrite `hs1`, `hs2` using `[hgπ]`. Take `⟨b, hb0, hbe⟩` from `hs1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Take `⟨b', hb0', hbe'⟩` from `hs2`. Use `⟨b k * starRingEnd ℂ a * (b' k)⁻¹, fun m => ?_⟩` and prove the remaining obligations. Establish `e1` using `congrFun hbe ⟨k, m⟩`. Establish `e2` using `congrFun hbe' ⟨k, m⟩`. Rewrite using `[e1, e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : FA.Re.R.lift x x ⟨k, m⟩ = a * FA.Re.R.lift x' x' ⟨k, m⟩` using `ha m`. Simplify using `only [cj]`. Rewrite using `[e3, map_mul]`. Use `hb0' k` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hlast` using `(FA.step_ph p (g (c (FA.Re.π x))) (g (c (FA.Re.π x'))) (by rw [hπg, hπg]; exact hinj) hb).2 t`. Rewrite `hlast` using `[hπg, hπg]`. Rewrite using `[hpt t, hlast]`. Introduce `p hp t`. Establish `hs : FA.S.A.Smooth (FA.S.ph (some p))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `((FA.S.reg (some p)).2.2 FA.S.t₀ ht00 le_rfl).1`. Rewrite `h0` using `[(FA.flat p hp FA.S.t₀).2.2]`. Then use the resulting hypothesis. Establish `hc1` using `smooth_continuous hs`. Establish `hd : Dense (bdry FA.S.s)ᶜ` using `interior_eq_empty_iff_dense_compl.1 (LeviFormBoundaryTopology.interior_bdry_eq_empty FA.S.sec FA.S.snc)`. Establish `hcp : ∀ y', FA.S.ph (some p) (c y') = FA.S.ph (some p) y'` using `congrFun (Continuous.ext_on hd (hc1.comp hcont) hc1 fun y' hy' => hph p y' hy')`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨f1, f2, f3⟩` from `FA.flat p hp t`. Establish `hpt : ∀ y', FA.S.phT (some p) t (c y') = FA.S.phT (some p) t y'`. Rewrite using `[f3]`. Conclude with `hcp`. Establish `e` using `hpot (some p) t hpt`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `f1`. Rewrite using `[e]`. Conclude with `f2`.
-
-Express the relevant statement in the definitionally equal form `(fun y' => (FA.S.phT (some p) t y' + FA.S.phT (some p) t (c y')) / 2) = FA.S.ph (some p)`. Use function extensionality and compare the values at `y'`. Rewrite using `[hpt y', f3]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a t`.
-
-Consider the cases of `a with`. Consider the case `none`. Express the relevant statement in the definitionally equal form `IsConjInvariantH (FA.Re.line none t)`. Rewrite using `[FA.line_none]`. Conclude with `fs_conj _`.
-
-Consider the case `some p => exact conjAvg_conj _`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem conj_of_flagAn [Fintype Ψ] {M : FlagModel y Ψ N j} {n d : ℕ} {BM : BaseMetric M n}
     (FA : FlagAn BM d)
@@ -436,7 +430,7 @@ end GlobalTheory.CompanionTheory.Ar.PB.Cj
 namespace GlobalTheory.CompanionTheory.Ar.PB
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d BM hFA h1 h2`. Take `⟨FA⟩` from `hFA`. Conclude with `Cj.conj_of_flagAn FA h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem flagAn_conj : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n), Nonempty (FlagAn BM d) → (∀ x x', SameOrbit (BM.Rb.lift x' x') (fun q => starRingEnd ℂ (BM.Rb.lift x x q)) → (x' ∈ bdry BM.s ↔ x ∈ bdry BM.s) ∧ rW BM.L BM.s x' = rW BM.L BM.s x) → (∀ p, ∀ z ∈ mcPts (mCoordIdeal y), ∀ x, x ∉ bdry BM.s → SameOrbit (basePart M.blk z) (BM.Rb.lift x x) → (BM.hom p).h (fun q => starRingEnd ℂ (z q)) = (BM.hom p).h z) → ∃ FA : FlagAn BM d, ∀ a t, IsConjInvariantH (FA.Re.line a t) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d BM hFA h1 h2

@@ -12,7 +12,7 @@ open MeasureTheory NumberField IsDedekindDomain Formalism.L2.Host Formalism.Conj
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.T
 
 /- English proof (translation)
-Rewrite using `[← GroundTheory.Global.IdeleGroup.ideleModule_finiteEmbedding v x]`. Conclude with `h _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_loc {K : Type} [Field K] [NumberField K] {χ : HChar K} {s : ℂ} (h : IsPow χ s)
     (v : HeightOneSpectrum (𝓞 K)) (x : (v.adicCompletion K)ˣ) :
@@ -21,9 +21,9 @@ private theorem pow_loc {K : Type} [Field K] [NumberField K] {χ : HChar K} {s :
   exact h _
 
 /- English proof (translation)
-Use `⟨fun x hx => Units.ext ?_, ?_⟩` and prove the remaining obligations. Establish `hx' : Valued.v (x : v.adicCompletion K) = 1` using `hx`. Rewrite using `[pow_loc h, FinitePlace.norm_def, hx']`. Simplify using the standard rewrite rules. Establish `hx' : Valued.v ((atFin v (unif v) : (v.adicCompletion K)ˣ) : v.adicCompletion K) = WithZero.exp (-1 : ℤ)` using `unif_spec v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(pow_loc h v (atFin v (unif v))).trans ?_` and prove the remaining obligations. Rewrite using `[FinitePlace.norm_def, hx', WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero]`. Establish `e : Multiplicative.toAdd (WithZero.unzero (WithZero.exp_ne_zero (a` using `(-1 : ℤ)))) = -1 := rfl`. Establish `e' : normV v = Ideal.absNorm v.asIdeal` using `rfl`. Rewrite using `[e, e', zpow_neg_one, NNReal.coe_inv, Complex.ofReal_inv, NNReal.coe_natCast, Complex.ofReal_natCast, Complex.inv_cpow _ _ (by rw [Complex.natCast_arg]; exact Real.pi_ne_zero.symm), Complex.cpow_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pow_val {K : Type} [Field K] [NumberField K] {χ : HChar K} {s : ℂ} (h : IsPow χ s)
     (v : HeightOneSpectrum (𝓞 K)) : χ.UnrAt v ∧ ((χ.val v : ℂˣ) : ℂ) = (normV v : ℂ) ^ (-s) := by
@@ -41,9 +41,9 @@ private theorem pow_val {K : Type} [Field K] [NumberField K] {χ : HChar K} {s :
       Complex.inv_cpow _ _ (by rw [Complex.natCast_arg]; exact Real.pi_ne_zero.symm), Complex.cpow_neg]
 
 /- English proof (translation)
-Use `Filter.Eventually.mono h fun w hw f hf => ?_` and prove the remaining obligations. Take `⟨B, hB, B', hB', e⟩` from `hw f hf`. Establish `hv : ν'.val w = ν.val (w.under (𝓞 K)) ^ f`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, (pow_val hν _).2, (pow_val hν' _).2, hf, Nat.cast_pow, ← Complex.cpow_nat_mul, Complex.natCast_cpow_natCast_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, satake_twist_holds K n π ν _ B (pow_val hν _).1 hB, fun i => (B' i).map (· * ν'.val w), fun i => satake_twist_holds M _ (P i) ν' w _ (pow_val hν' _).1 (hB' i), ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (map_sum (Multiset.mapAddMonoidHom (· * ν'.val w)) B' Finset.univ)` and prove the remaining obligations. Rewrite using `[← e]`. Simplify using `[Multiset.map_map, hv, mul_pow]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem bc_twist {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M] [IsTotallyComplex K]
     [IsTotallyComplex M] {ν : HChar K} {ν' : HChar M} {z : ℂ} (hν : IsPow ν z) (hν' : IsPow ν' z) {n : ℕ} (π : CG K n)
@@ -62,15 +62,15 @@ private theorem bc_twist {K M : Type} [Field K] [NumberField K] [Field M] [Numbe
   simp [Multiset.map_map, hv, mul_pow]
 
 /- English proof (translation)
-Introduce `hC F E _ _ _ _ _ _ _ _ σ hσ hp n hn hlow π`. Set `μF : Measure (normOneGL F n)` to `Measure.haar`. Set `μE : Measure (normOneGL E n)` to `Measure.haar`. Take `⟨χ, ⟨s, hχ⟩, V, hV⟩` from `Dp.exTwist F n μF π hn`. Take `⟨hex, hpw⟩` from `powTwist F E`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨χ', hχ'⟩` from `(hex s).2`. Take `⟨hi, hi', hrest⟩` from `hpw s χ χ' hχ hχ'`. Establish `hback` using `(hrest n hn).1 π`. Take `⟨-, -, hrest'⟩` from `hpw (-s) χ⁻¹ χ'⁻¹ hi hi'`. Take `⟨-, -, hL, hCj, -⟩` from `hrest' n hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c1, -, c3, c4, -, θ, hθ, c6⟩` from `carryLift F E σ hσ hp n hn μE μF`. Take `⟨Λ, t, hAt⟩` from `c1 V hV.summand`. Distinguish the cases in `hO : OffAll F n (bcInf (K := E) Λ) (bcSat t)`. Take `⟨V', hV', hst, hAt'⟩` from `hC F E σ hσ hp n hn μE μF θ hθ V Λ t hV.summand hAt hO`. Take `⟨P, hP, -⟩` from `Dp.exCusp E n μE V' hV'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hL _ _ (c3 _ P V V' Λ t _ _ hV hP hAt hAt' rfl (Filter.Eventually.of_forall fun _ => rfl))`. Rewrite `h1` using `[hback]`. Conclude with `Or.inr ⟨_, h1, fun g => hCj _ _ ((c6 P V' hP).2 hst g)⟩`. Take `⟨ι, _, m, Q, hm, hι, hW⟩` from `c4 _ V Λ t hV hAt (famParts F E σ hσ hp n hn hlow _ _ hO)`. Use `Or.inl ⟨ι, inferInstance, m, fun i => (Q i).twist χ'⁻¹, hm, hι, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the second alternative. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `bc_twist hi hi' _ Q hW`. Establish `e : (CG.mk (π.twist χ)).twist χ⁻¹ = CG.mk π` using `congrArg CG.mk hback`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.ConvolutionTheory.T.liftStep :
     UpperTheory.ConvolutionTheory.T.CoreLift → UpperTheory.ConvolutionTheory.T.LiftStep := by

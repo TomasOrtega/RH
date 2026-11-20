@@ -22,13 +22,13 @@ section Alg
 variable {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ} {E : Fin n → Fin n → Module.End ℂ V}
 
 /- English proof (translation)
-Introduce `c`. Establish `h` using `congrArg (fun T : Module.End ℂ V => T z) (hE c c a b)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hz c, map_smul] at h`. Rewrite `h` using `[sub_eq_iff_eq_add]`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h1 : c = a`. Substitute `h1` using the available equality. Distinguish the cases in `h2 : b = c`. Substitute `h2` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h3 : ¬ c = b` using `fun h => h2 h.symm`. Simplify using `[h2, h3, add_smul, add_comm]`. Distinguish the cases in `h2 : b = c`. Substitute `h2` using the available equality. Simplify using `[h1, sub_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Establish `h3 : ¬ c = b` using `fun h => h2 h.symm`. Simplify using `[h1, h2, h3]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isWeight_step (hE : GlRel E) {ν : Fin n → ℝ} {z : V} (hz : IsWeight E ν z) (a b : Fin n) :
     IsWeight E (fun c => ν c + (if c = a then 1 else 0) - (if c = b then 1 else 0)) (E a b z) := by
@@ -51,7 +51,7 @@ theorem isWeight_step (hE : GlRel E) {ν : Fin n → ℝ} {z : V} (hz : IsWeight
       simp [h1, h2, h3]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact ⟨ν, by simpa [ew] using hz⟩`. Consider the case `cons p w ih`. Take `⟨ν', h⟩` from `ih`. Conclude with `⟨_, by simpa [ew] using isWeight_step hE h p.1 p.2⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isWeight_word (hE : GlRel E) {ν : Fin n → ℝ} {z : V} (hz : IsWeight E ν z)
     (w : List (Fin n × Fin n)) : ∃ ν' : Fin n → ℝ, IsWeight E ν' (ew E w z) := by
@@ -62,15 +62,15 @@ theorem exists_isWeight_word (hE : GlRel E) {ν : Fin n → ℝ} {z : V} (hz : I
     exact ⟨_, by simpa [ew] using isWeight_step hE h p.1 p.2⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono fun _ ⟨ν, h1, h2⟩ => ⟨ν, h1, fun a => (h2 a).trans h⟩`.
+A detailed English derivation is pending.
 -/
 theorem wtSpan_mono {R R' : ℝ} (h : R ≤ R') : wtSpan E R ≤ wtSpan E R' :=
   Submodule.span_mono fun _ ⟨ν, h1, h2⟩ => ⟨ν, h1, fun a => (h2 a).trans h⟩
 
 /- English proof (translation)
-Establish `: wtSpan E R ≤ (wtSpan E (R + 1)).comap (E a b)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨ν, h1, h2⟩`. Use `Submodule.subset_span ⟨_, isWeight_step hE h1 a b, fun c => ?_⟩` and prove the remaining obligations. Use `abs_le.1 (h2 c)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[abs_le]`. Apply the tactic sequence `split_ifs <;> constructor <;> linarith [this.1, this.2]`. Conclude with `this hz`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem step_mem_wtSpan (hE : GlRel E) {R : ℝ} (a b : Fin n) {z : V} (hz : z ∈ wtSpan E R) :
     E a b z ∈ wtSpan E (R + 1) := by
@@ -84,7 +84,7 @@ theorem step_mem_wtSpan (hE : GlRel E) {R : ℝ} (a b : Fin n) {z : V} (hz : z �
   exact this hz
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simpa [ew] using hz`. Consider the case `cons p w ih`. Use `step_mem_wtSpan hE p.1 p.2 ih` as an intermediate fact. Simplify `this` using `[ew, add_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem word_mem_wtSpan (hE : GlRel E) {R : ℝ} (w : List (Fin n × Fin n)) {z : V}
     (hz : z ∈ wtSpan E R) : ew E w z ∈ wtSpan E (R + w.length) := by
@@ -101,9 +101,9 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n : ℕ} {
   {E : Fin n → Fin n → Module.End ℂ V}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Establish `: wtSpan E R ≤ LinearMap.ker (innerₛₗ ℂ y)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨ν, h1, h2⟩`. Establish `hne : μ ≠ ν`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hlt (h2 a)`. Conclude with `kWtOrth V n ε E μ ν y z hU hμ h1 hne`. Establish `h0 : ⟪y, y⟫_ℂ = 0` using `this hy`. Conclude with `hy0 (inner_self_eq_zero.1 h0)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weight_le_of_mem_wtSpan (hU : KUnit ε E) {R : ℝ} {μ : Fin n → ℝ} {y : V}
     (hy : y ∈ wtSpan E R) (hy0 : y ≠ 0) (hμ : IsWeight E μ y) (a : Fin n) : |μ a| ≤ R := by
@@ -119,13 +119,13 @@ theorem weight_le_of_mem_wtSpan (hU : KUnit ε E) {R : ℝ} {μ : Fin n → ℝ}
   exact hy0 (inner_self_eq_zero.1 h0)
 
 /- English proof (translation)
-Establish `hl` using `(kLow V n ε E μ u (glRel_kRel ε E hE) hu).1`. Rewrite using `[hl]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨w, hw, rfl⟩`. Establish `hmem : ew E w u ∈ kSpan ε E u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[hl]`. Conclude with `Submodule.subset_span ⟨w, hw, rfl⟩`. Distinguish the cases in `h0 : ew E w u = 0`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ν, hν⟩` from `exists_isWeight_word hE hu.1 w`. Establish `hb` using `kWtBound V n ε E μ ν u _ (glRel_kRel ε E hE) hU hu hmem h0 hν`. Use `Submodule.subset_span ⟨ν, hν, fun a => ?_⟩` and prove the remaining obligations. Apply `Real.abs_le_sqrt` to reduce the goal to its premises. Use `le_trans ?_ hb` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.REAL.nsq Formalism.REAL.dot`. Rewrite using `[sq]`. Conclude with `Finset.single_le_sum (f := fun a => ν a * ν a) (fun i _ => mul_self_nonneg _) (Finset.mem_univ a)`.
+A detailed English derivation is pending.
 -/
 theorem kSpan_le_wtSpan (hE : GlRel E) (hU : KUnit ε E) {μ : Fin n → ℝ} {u : V}
     (hu : KHighest ε E μ u) : kSpan ε E u ≤ wtSpan E (Real.sqrt (ckv ε μ)) := by
@@ -148,7 +148,7 @@ theorem kSpan_le_wtSpan (hE : GlRel E) (hU : KUnit ε E) {μ : Fin n → ℝ} {u
     (Finset.mem_univ a)
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨w, hw, -, y, hy, rfl⟩`. Use `wtSpan_mono ?_ (word_mem_wtSpan hE w (kSpan_le_wtSpan hE hU hu hy))` and prove the remaining obligations. Establish `: (w.length : ℝ) ≤ j` using `by exact_mod_cast hw`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem pfil_le_wtSpan (hE : GlRel E) (hU : KUnit ε E) {μ : Fin n → ℝ} {u : V}
     (hu : KHighest ε E μ u) (j : ℕ) : pfil ε E u j ≤ wtSpan E (Real.sqrt (ckv ε μ) + j) := by
@@ -161,11 +161,11 @@ theorem pfil_le_wtSpan (hE : GlRel E) (hU : KUnit ε E) {μ : Fin n → ℝ} {u 
 end Inner
 
 /- English proof (translation)
-Introduce `V _ _ n ε E μ c u hE hU hu hc hfd j x hx`. Establish `hK` using `isUnitary_kUnit ε E hU`. Take `⟨-, -, hst, -, hcyc, -, hfin⟩` from `pfilFacts V n ε E u hE`. Establish `hb` using `kCasBound V n ε E (pfil ε E u j) (Real.sqrt (ckv ε μ) + j) (hfin hfd j) (glRel_kRel ε E hE) hK (hst j) (by positivity) (fun ν y hy hy0 hν a => weight_le_of_mem_wtSpan hK (pfil_le_wtSpan hE hK hu j hy) hy0 hν a) x hx`. Establish `hcas` using `casOnCyc V n E c u hE hc x (hcyc j hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `congrArg Complex.re (sumOfSquaresIdentity_holds V n ε E x hU)`. Rewrite `hs` using `[Complex.ofReal_re, LinearMap.sub_apply, hcas, two_smul, LinearMap.add_apply, inner_sub_right, inner_add_right, inner_smul_right, inner_self_eq_norm_sq_to_K]`. Establish `h2 : ((c : ℂ) * ((‖x‖ : ℂ)) ^ 2).re = c * ‖x‖ ^ 2`. Rewrite using `[← Complex.ofReal_pow, ← Complex.ofReal_mul, Complex.ofReal_re]`. Rewrite `hs` using `[Complex.sub_re, Complex.add_re]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ((c : ℂ) * (RCLike.ofReal ‖x‖ : ℂ) ^ 2).re = c * ‖x‖ ^ 2` using `h2`. Rewrite `hs` using `[h3]`. Rewrite using `[hs]`. Establish `h4 : -c * ‖x‖ ^ 2 ≤ |c| * ‖x‖ ^ 2` using `mul_le_mul_of_nonneg_right (neg_le_abs c) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem uGrowth : UGrowth := by
   intro V _ _ n ε E μ c u hE hU hu hc hfd j x hx

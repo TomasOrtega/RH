@@ -11,11 +11,11 @@ open IsDedekindDomain in
 open scoped nonZeroDivisors Pointwise in
 
 /- English proof (translation)
-Establish `hfin : (Function.mulSupport fun v : HeightOneSpectrum R => (v.asIdeal : FractionalIdeal R⁰ L) ^ (FractionalIdeal.count L v I / N)).Finite`. Use `(Filter.eventually_cofinite.mp (FractionalIdeal.finite_factors (K := L) I)).subset ?_` and prove the remaining obligations. Introduce `v hv`. Rewrite `hv` using `[Function.mem_mulSupport]`. Introduce `h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hv` to reduce the goal to its premises. Simplify using `[h0]`. Use `⟨∏ᶠ v : HeightOneSpectrum R, (v.asIdeal : FractionalIdeal R⁰ L) ^ (FractionalIdeal.count L v I / N), ?_⟩` and prove the remaining obligations. Rewrite using `[finprod_pow hfin]`. Use `conv_rhs => rw [← FractionalIdeal.finprod_heightOneSpectrum_factorization' L hI]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finprod_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, Int.mul_ediv_cancel' (h v)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.DivisorDescent.exists_pow_eq_of_dvd_count {R L : Type} [CommRing R] [IsDedekindDomain R]
     [Field L] [Algebra R L] [IsFractionRing R L] (N : ℕ) (I : FractionalIdeal R⁰ L) (hI : I ≠ 0)
@@ -41,9 +41,9 @@ open IsDedekindDomain in
 open scoped nonZeroDivisors Pointwise in
 
 /- English proof (translation)
-Establish `ha' : a ∈ (Ideal A)⁰` using `mem_nonZeroDivisors_of_ne_zero ha`. Take `⟨d, hd⟩` from `hCl (ClassGroup.mk0 ⟨a, ha'⟩)`. Take `⟨b, rfl⟩` from `ClassGroup.mk0_surjective d`. Rewrite `hd` using `[← map_pow, ClassGroup.mk0_eq_mk0_iff]`. Take `⟨x, y, hx, hy, hxy⟩` from `hd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, x, y, nonZeroDivisors.coe_ne_zero b, hx, hy, by simpa using hxy⟩`.
+Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.DivisorDescent.exists_pow_class {A : Type} [CommRing A]
     [IsDedekindDomain A] (N : ℕ)
@@ -60,11 +60,11 @@ theorem _root_.GlobalTheory.DivisorDescent.exists_pow_class {A : Type} [CommRing
 open IsDedekindDomain in
 open scoped nonZeroDivisors Pointwise in
 /- English proof (translation)
-Use `letI := IsIntegralClosure.MulSemiringAction A₀ K₀ L R`. Use `haveI : Algebra.IsIntegral A₀ R := IsIntegralClosure.isIntegral_algebra A₀ L`. Use `haveI : IsGaloisGroup (L ≃ₐ[K₀] L) A₀ R := IsGaloisGroup.of_isFractionRing _ A₀ R K₀ L`. Establish `hpre` using `Ideal.isPretransitive_of_isGaloisGroup (v.asIdeal.comap (algebraMap A₀ R)) (L ≃ₐ[K₀] L) (B := R)`. Establish `h1 : v.asIdeal ∈ (v.asIdeal.comap (algebraMap A₀ R)).primesOver R` using `⟨v.isPrime, ⟨rfl⟩⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : v'.asIdeal ∈ (v.asIdeal.comap (algebraMap A₀ R)).primesOver R` using `⟨v'.isPrime, ⟨h⟩⟩`. Take `⟨τ, hτ⟩` from `hpre.exists_smul_eq ⟨v'.asIdeal, h2⟩ ⟨v.asIdeal, h1⟩`. Use `⟨τ, ?_⟩` and prove the remaining obligations. Establish `hτ' : τ • v'.asIdeal = v.asIdeal` using `congrArg Subtype.val hτ`. Rewrite using `[← hτ']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `r`. Rewrite using `[Ideal.mem_comap, Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Rewrite using `[show ((galRestrict A₀ K₀ L R) τ).toRingEquiv r = τ • r from rfl, inv_smul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_galois_comap_eq_of_comap_eq {A₀ R K₀ L : Type} [CommRing A₀]
     [IsDedekindDomain A₀] [CommRing R] [IsDedekindDomain R] [Field K₀] [Field L]
@@ -93,7 +93,7 @@ private theorem exists_galois_comap_eq_of_comap_eq {A₀ R K₀ L : Type} [CommR
 open IsDedekindDomain in
 open scoped nonZeroDivisors Pointwise in
 /- English proof (translation)
-Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul]`. Rewrite using `[Ne, FractionalIdeal.spanSingleton_eq_zero_iff]` and apply the resulting hypothesis. Rewrite using `[Ne, FractionalIdeal.spanSingleton_eq_zero_iff]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem count_spanSingleton_mul {R L : Type} [CommRing R] [IsDedekindDomain R]
     [Field L] [Algebra R L] [IsFractionRing R L] (v : HeightOneSpectrum R) {x y : L} (hx : x ≠ 0)
@@ -108,7 +108,7 @@ private theorem count_spanSingleton_mul {R L : Type} [CommRing R] [IsDedekindDom
 open IsDedekindDomain in
 open scoped nonZeroDivisors Pointwise in
 /- English proof (translation)
-Establish `h` using `count_spanSingleton_mul (R := R) v (div_ne_zero hx hy) hy`. Rewrite `h` using `[div_mul_cancel₀ x hy]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem count_spanSingleton_div {R L : Type} [CommRing R] [IsDedekindDomain R]
     [Field L] [Algebra R L] [IsFractionRing R L] (v : HeightOneSpectrum R) {x y : L} (hx : x ≠ 0)
@@ -123,7 +123,7 @@ private theorem count_spanSingleton_div {R L : Type} [CommRing R] [IsDedekindDom
 open IsDedekindDomain in
 open scoped nonZeroDivisors Pointwise in
 /- English proof (translation)
-Rewrite using `[← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe]`. Simplify using `using hr`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem count_spanSingleton_algebraMap_eq_count_factors {R L : Type} [CommRing R] [IsDedekindDomain R]
     [Field L] [Algebra R L] [IsFractionRing R L] (v : HeightOneSpectrum R) {r : R} (hr : r ≠ 0) :
@@ -135,7 +135,7 @@ private theorem count_spanSingleton_algebraMap_eq_count_factors {R L : Type} [Co
 open IsDedekindDomain in
 open scoped nonZeroDivisors Pointwise in
 /- English proof (translation)
-Establish `h` using `_root_.GlobalTheory.QNorm.intValuation_of_eq_comap e v v' hv r`. Rewrite `h` using `[HeightOneSpectrum.intValuation_if_neg _ hr, HeightOneSpectrum.intValuation_if_neg _ (e.map_ne_zero_iff.mpr hr)]`. Conclude with `neg_injective (WithZero.exp_injective h)` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem count_factors_span_eq_of_comap_ringEquiv {R : Type} [CommRing R] [IsDedekindDomain R] (e : R ≃+* R)
     (v v' : HeightOneSpectrum R) (hv : v'.asIdeal = Ideal.comap e v.asIdeal) {r : R} (hr : r ≠ 0) :
@@ -149,11 +149,11 @@ private theorem count_factors_span_eq_of_comap_ringEquiv {R : Type} [CommRing R]
 open IsDedekindDomain in
 open scoped nonZeroDivisors Pointwise in
 /- English proof (translation)
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := R) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hbL : algebraMap R L b ≠ 0` using `(IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb)`. Establish `haL : algebraMap R L a ≠ 0`. Introduce `h`. Conclude with `hx (by rw [h, zero_div])`. Use `set g := (galRestrict A₀ K₀ L R σ).toRingEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hga : g a ≠ 0` using `g.map_ne_zero_iff.mpr ha0`. Establish `hgb : g b ≠ 0` using `g.map_ne_zero_iff.mpr hb0`. Establish `hσa : σ (algebraMap R L a) = algebraMap R L (g a)` using `(algebraMap_galRestrict_apply A₀ σ a).symm`. Establish `hσb : σ (algebraMap R L b) = algebraMap R L (g b)` using `(algebraMap_galRestrict_apply A₀ σ b).symm`. Rewrite using `[map_div₀, hσa, hσb, count_spanSingleton_div v' haL hbL, count_spanSingleton_div v (by simpa using hga) (by simpa using hgb), count_spanSingleton_algebraMap_eq_count_factors v' ha0, count_spanSingleton_algebraMap_eq_count_factors v' hb0, count_spanSingleton_algebraMap_eq_count_fa …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem count_galois_conj_spanSingleton {A₀ R K₀ L : Type} [CommRing A₀]
     [IsDedekindDomain A₀] [CommRing R] [IsDedekindDomain R] [Field K₀] [Field L]
@@ -188,7 +188,7 @@ private theorem count_galois_conj_spanSingleton {A₀ R K₀ L : Type} [CommRing
 open IsDedekindDomain in
 open scoped nonZeroDivisors Pointwise in
 /- English proof (translation)
-Rewrite using `[← FractionalIdeal.count_pow, FractionalIdeal.spanSingleton_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem count_spanSingleton_pow {R L : Type} [CommRing R] [IsDedekindDomain R]
     [Field L] [Algebra R L] [IsFractionRing R L] (v : HeightOneSpectrum R) (x : L) (n : ℕ) :
@@ -199,13 +199,11 @@ private theorem count_spanSingleton_pow {R L : Type} [CommRing R] [IsDedekindDom
 open IsDedekindDomain in
 open scoped nonZeroDivisors Pointwise in
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap A₀ R)`. Introduce `a b hab`. Apply `IsFractionRing.injective A₀ K₀` to reduce the goal to its premises. Apply `(algebraMap K₀ L).injective` to reduce the goal to its premises. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply A₀ R L, IsScalarTower.algebraMap_apply A₀ R L b, hab]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hfR : algebraMap A₀ R f ≠ 0`. Introduce `h`. Conclude with `hf (hinj (by rw [h, map_zero]))`. Use `haveI : Q.asIdeal.LiesOver P.asIdeal := ⟨hP⟩`. Use `haveI : FaithfulSMul A₀ R := (faithfulSMul_iff_algebraMap_injective A₀ R).mpr hinj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `he : P.asIdeal.ramificationIdx' Q.asIdeal = 1`. Apply `Ideal.ramificationIdx_spec` to reduce the goal to its premises. Rewrite using `[pow_one, hP]`. Conclude with `Ideal.map_comap_le`. Rewrite using `[hP]`.
-
-Conclude with `hQ`. Establish `hv` using `HeightOneSpectrum.intValuation_liesOver P Q f`. Rewrite `hv` using `[he, pow_one, HeightOneSpectrum.intValuation_if_neg _ hf, HeightOneSpectrum.intValuation_if_neg _ hfR]`. Rewrite using `[IsScalarTower.algebraMap_apply A₀ R L, count_spanSingleton_algebraMap_eq_count_factors Q hfR, count_spanSingleton_algebraMap_eq_count_factors P hf]`. Conclude with `(neg_injective (WithZero.exp_injective hv)).symm` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem count_algebraMap_of_unramified_lemma_6 {A₀ R K₀ L : Type} [CommRing A₀]
     [IsDedekindDomain A₀] [CommRing R] [IsDedekindDomain R] [Field K₀] [Field L]
@@ -246,43 +244,39 @@ open IsDedekindDomain in
 open scoped nonZeroDivisors Pointwise in
 
 /- English proof (translation)
-Introduce `A₀ R K₀ L _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ N hN hunr hCl w hw hconj`. Establish `hinj : Function.Injective (algebraMap A₀ R)`. Introduce `a b hab`. Apply `IsFractionRing.injective A₀ K₀` to reduce the goal to its premises. Apply `(algebraMap K₀ L).injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply A₀ R L, IsScalarTower.algebraMap_apply A₀ R L b, hab]`. Use `haveI : FaithfulSMul A₀ R := (faithfulSMul_iff_algebraMap_injective A₀ R).mpr hinj`. Use `haveI : Algebra.IsIntegral A₀ R := IsIntegralClosure.isIntegral_algebra A₀ L`. Establish `hex : ∀ P : HeightOneSpectrum A₀, ∃ Q : HeightOneSpectrum R, P.asIdeal = Q.asIdeal.comap (algebraMap A₀ R)`. Introduce `P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨Q, hQp, hQo⟩⟩` from `Ideal.nonempty_primesOver (S := R) P.asIdeal`. Use `⟨⟨Q, hQp, ?_⟩, hQo.over⟩` and prove the remaining obligations. Introduce `hQ`. Apply `P.ne_bot` to reduce the goal to its premises. Rewrite using `[hQo.over, hQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.comap_bot_of_injective _ hinj`. Use `choose Qof hQof using hex`. Establish `hcong : ∀ Q Q' : HeightOneSpectrum R, Q.asIdeal.comap (algebraMap A₀ R) = Q'.asIdeal.comap (algebraMap A₀ R) → (N : ℤ) ∣ FractionalIdeal.count L Q' (FractionalIdeal.spanSingleton R⁰ w) - FractionalIdeal.count L Q (FractionalIdeal.spanSingleton R⁰ w)`. Introduce `Q Q' h`. Take `⟨σ, hσ⟩` from `exists_galois_comap_eq_of_comap_eq (K₀ := K₀) (L := L) Q Q' h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨u, hu, hσw⟩` from `hconj σ`. Rewrite using `[count_galois_conj_spanSingleton σ Q Q' hσ hw, hσw, count_spanSingleton_mul Q hw (pow_ne_zero _ hu), count_spanSingleton_pow]`. Conclude with `⟨FractionalIdeal.count L Q (FractionalIdeal.spanSingleton R⁰ u), by ring⟩`. Use `set r : HeightOneSpectrum A₀ → ℤ := fun P => FractionalIdeal.count L (Qof P) (FractionalIdeal.spanSingleton R⁰ w) % N with hr`. Establish `hr0 : ∀ P, 0 ≤ r P` using `fun P => Int.emod_nonneg _ (by exact_mod_cast hN.ne')`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfinQ` using `Filter.eventually_cofinite.mp (FractionalIdeal.finite_factors (K := L) (FractionalIdeal.spanSingleton R⁰ w))`. Establish `hfinr : {P | r P ≠ 0}.Finite`. Use `(hfinQ.preimage (f := Qof) ?_).subset ?_` and prove the remaining obligations. Introduce `P _ P' _ hPP'`. Conclude with `HeightOneSpectrum.ext (by rw [hQof P, hQof P', hPP'])`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `P hP h0`. Apply `hP` to reduce the goal to its premises. Simplify using `only [hr, h0, Int.zero_emod]`. Use `set aF : FractionalIdeal A₀⁰ K₀ := ∏ᶠ P : HeightOneSpectrum A₀, (P.asIdeal : FractionalIdeal A₀⁰ K₀) ^ r P with haF`. Establish `hcount_a : ∀ P, FractionalIdeal.count K₀ P aF = r P` using `fun P => FractionalIdeal.count_finprod K₀ P r (Filter.eventually_cofinite.mpr (by simpa using hfinr))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul_fin : (Function.mulSupport fun P : HeightOneSpectrum A₀ => P.asIdeal ^ (r P).toNat).Finite`. Use `hfinr.subset ?_` and prove the remaining obligations. Introduce `P hP h0`. Apply `hP` to reduce the goal to its premises. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set a : Ideal A₀ := ∏ᶠ P : HeightOneSpectrum A₀, P.asIdeal ^ (r P).toNat with ha`. Establish `hacoe : (a : FractionalIdeal A₀⁰ K₀) = aF`. Establish `hmap` using `MonoidHom.map_finprod (FractionalIdeal.coeIdealHom A₀⁰ K₀).toMonoidHom hmul_fin`. Simplify using `only [RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, map_pow, FractionalIdeal.coeIdealHom_apply] at hmap`. Rewrite using `[ha, haF, hmap]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `finprod_congr fun P => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg (hr0 P)]`. Establish `haF0 : aF ≠ 0`. Rewrite using `[haF]`. Use `finprod_induction (fun I : FractionalIdeal A₀⁰ K₀ => I ≠ 0) one_ne_zero (fun _ _ hx hy => mul_ne_zero hx hy) fun P => zpow_ne_zero _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `FractionalIdeal.coeIdeal_ne_zero.mpr P.ne_bot`. Establish `ha0 : a ≠ ⊥`. Introduce `h`. Apply `haF0` to reduce the goal to its premises. Rewrite using `[← hacoe, h, FractionalIdeal.coeIdeal_bot]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨b, x, y, hb, hx, hy, hxy⟩` from `_root_.GlobalTheory.DivisorDescent.exists_pow_class N hCl a ha0`. Establish `hxyP : ∀ P : HeightOneSpectrum A₀, FractionalIdeal.count K₀ P (FractionalIdeal.spanSingleton A₀⁰ (algebraMap A₀ K₀ x)) + r P = FractionalIdeal.count K₀ P (FractionalIdeal.spanSingleton A₀⁰ (algebraMap A₀ K₀ y)) + N * FractionalIdeal.count K₀ P (b : FractionalIdeal A₀⁰ K₀)`. Introduce `P`. Establish `h` using `congrArg (fun I : Ideal A₀ => FractionalIdeal.count K₀ P (I : FractionalIdeal A₀⁰ K₀)) hxy`. Simplify using `only [FractionalIdeal.coeIdeal_mul, FractionalIdeal.coeIdeal_pow, FractionalIdeal.coeIdeal_span_singleton] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[FractionalIdeal.count_mul, FractionalIdeal.count_mul, FractionalIdeal.count_pow, hacoe, hcount_a]`. Conclude with `h`. Apply the tactic sequence `all_goals first`. Consider the case `exact pow_ne_zero _ (FractionalIdeal.coeIdeal_ne_zero.mpr hb)`. Consider the case `(rw [hacoe]; exact haF0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Consider the case `(rw [Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective A₀ K₀)).mpr (by assumption))`. Establish `hxK : algebraMap A₀ K₀ x ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective A₀ K₀)).mpr hx`. Establish `hyK : algebraMap A₀ K₀ y ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective A₀ K₀)).mpr hy`. Establish `hxL : algebraMap A₀ L x ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[IsScalarTower.algebraMap_apply A₀ K₀ L]`. Conclude with `(map_ne_zero _).mpr hxK`. Establish `hyL : algebraMap A₀ L y ≠ 0`. Rewrite using `[IsScalarTower.algebraMap_apply A₀ K₀ L]`. Conclude with `(map_ne_zero _).mpr hyK`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwf : w / algebraMap K₀ L (algebraMap A₀ K₀ y / algebraMap A₀ K₀ x) = w * algebraMap A₀ L x / algebraMap A₀ L y`. Rewrite using `[map_div₀, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Clear the denominators using the available nonvanishing facts. Establish `hI0 : FractionalIdeal.spanSingleton R⁰ (w * algebraMap A₀ L x / algebraMap A₀ L y) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`.
+Supply the required witnesses or components. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_ne_zero (mul_ne_zero hw hxL) hyL`. Establish `hdvd : ∀ Q : HeightOneSpectrum R, (N : ℤ) ∣ FractionalIdeal.count L Q (FractionalIdeal.spanSingleton R⁰ (w * algebraMap A₀ L x / algebraMap A₀ L y))`. Introduce `Q`. Establish `hP : (HeightOneSpectrum.under A₀ Q).asIdeal = Q.asIdeal.comap (algebraMap A₀ R)` using `rfl`. Establish `hQ` using `hunr Q.asIdeal Q.isPrime Q.ne_bot`.
-
-Rewrite using `[count_spanSingleton_div Q (mul_ne_zero hw hxL) hyL, count_spanSingleton_mul Q hw hxL, count_algebraMap_of_unramified_lemma_6 (K₀ := K₀) Q _ hP hQ hx, count_algebraMap_of_unramified_lemma_6 (K₀ := K₀) Q _ hP hQ hy]`. Establish `h1` using `hxyP (HeightOneSpectrum.under A₀ Q)`. Take `⟨k, hk⟩` from `hcong (Qof (HeightOneSpectrum.under A₀ Q)) Q (by rw [← hQof (HeightOneSpectrum.under A₀ Q), hP])`. Establish `h3` using `Int.mul_ediv_add_emod (FractionalIdeal.count L (Qof (HeightOneSpectrum.under A₀ Q)) (FractionalIdeal.spanSingleton R⁰ w)) N`. Establish `h4 : r (HeightOneSpectrum.under A₀ Q) = FractionalIdeal.count L (Qof (HeightOneSpectrum.under A₀ Q)) (FractionalIdeal.spanSingleton R⁰ w) % N` using `rfl`.
-
-Conclude with `⟨k + FractionalIdeal.count L (Qof (HeightOneSpectrum.under A₀ Q)) (FractionalIdeal.spanSingleton R⁰ w) / N + FractionalIdeal.count K₀ (HeightOneSpectrum.under A₀ Q) (b : FractionalIdeal A₀⁰ K₀), by`. Take the linear combination `h1 + hk - h3 - h4⟩`. Take `⟨J, hJ⟩` from `_root_.GlobalTheory.DivisorDescent.exists_pow_eq_of_dvd_count N _ hI0 hdvd`. Conclude with `⟨algebraMap A₀ K₀ y / algebraMap A₀ K₀ x, J, div_ne_zero hyK hxK, by`. Rewrite using `[hwf, ← FractionalIdeal.coe_pow, hJ, FractionalIdeal.coe_spanSingleton]⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.DivisorDescent.descent_submodule : ∀ (A₀ R K₀ L : Type) [CommRing A₀]
     [IsDedekindDomain A₀] [CommRing R] [IsDedekindDomain R] [Field K₀] [Field L]

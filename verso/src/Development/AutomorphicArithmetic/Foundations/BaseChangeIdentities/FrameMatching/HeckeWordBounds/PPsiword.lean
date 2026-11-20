@@ -17,19 +17,19 @@ open UpperTheory.BaseChangeIdentities.FrameWordIdentity
 attribute [local instance] borelG borelF borelA GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hG hPL hW hLO hId hFF hR E _ _ _ n π S T F₀ F i ws`. Establish `ha : F₀.C.a i ≤ n` using `F₀.C.le i`. Establish `hE` using `hW E n F.d F.ok (F₀.C.a i) ha (.inr (.inl ()))`. Establish `hB` using `hW E n F.d F.ok (F₀.C.a i) ha (.inl ())`. Establish `hFx : (F.d.fixL (F₀.C.a i)).Ok F.d.P` using `(hLO E n F.d F.ok (F₀.C.a i) ha).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFe : ((F.d.eL (F₀.C.a i)).mul (F.d.fixL (F₀.C.a i))).Eqv F.d.P (F.d.fixL (F₀.C.a i))` using `(hId E n F.d F.ok (F₀.C.a i) ha _ (Or.inr (Or.inl rfl))).2`. Establish `hP : (↑F.d.P : Set (Pl E)) ⊆ F₀.Sec` using `(hFF hR E n π S T F₀ F).2.2.2`. Set `l : List (BGen (F.B i) × LM F.d.kap (F₀.C.a i) (n - F₀.C.a i))` to `(Sum.inr (F.t₁ i), F.d.fixL (F₀.C.a i)) :: (ws.map fun w => List.replicate F.m ((Sum.inr (F.β i), F.d.betaL (F₀.C.a i) ha) : BGen (F.B i) × LM F.d.kap (F₀.C.a i) (n - F₀.C.a i)) ++ w.map fun p => (gl F i p, locL F.d (F₀.C.a i) ha (lt F p))).flatten`. Establish `e1 : l.map Prod.fst = Sum.inr (F.t₁ i) :: (ws.map (bw F i)).flatten`. Simplify using `only [l, bw, List.map_cons, List.map_flatten, List.map_map, Function.comp_def, List.map_append, List.map_replicate]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `e2 : (l.map Prod.snd).foldr LM.mul (F.d.eL (F₀.C.a i)) = prodL F.d (UpperTheory.BaseChangeIdentities.FrameWordIdentity.lw F ws) (F₀.C.a i)`. Establish `: l.map Prod.snd = F.d.fixL (F₀.C.a i) :: (UpperTheory.BaseChangeIdentities.FrameWordIdentity.lw F ws).map (locL F.d (F₀.C.a i) ha)`. Simplify using `only [l, UpperTheory.BaseChangeIdentities.FrameWordIdentity.lw, List.map_cons, List.map_flatten, List.map_map, Function.comp_def, List.map_append, List.map_replicate]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[this, prodL, dif_pos ha]`. Establish `hl : ∀ x ∈ l, x.2.Ok F.d.P ∧ ((F.d.eL (F₀.C.a i)).mul x.2).Eqv F.d.P x.2 ∧ ((∃ c, x.1 = Sum.inl c ∧ x.2 = F.d.eL (F₀.C.a i)) ∨ ∃ s, x.1 = Sum.inr s ∧ s.ψ = fm F₀.Sec F.d.P (F.B i) (Equiv.refl _) x.2)`. Introduce `x hx`. Break down `List.mem_cons.1 hx with rfl | hx` into its components or cases. Conclude with `⟨hFx, hFe, Or.inr ⟨_, rfl, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Take `⟨y, hy, hxy⟩` from `List.mem_flatten.1 hx`. Take `⟨w, -, rfl⟩` from `List.mem_map.1 hy`. Break down `List.mem_append.1 hxy with h | h` into its components or cases. Rewrite using `[List.eq_of_mem_replicate h]`. Conclude with `⟨hB.1, hB.2.1, Or.inr ⟨_, rfl, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨p, -, rfl⟩` from `List.mem_map.1 h`. Establish `hp` using `hW E n F.d F.ok (F₀.C.a i) ha (lt F p)`. Use `⟨hp.1, hp.2.1, ?_⟩` and prove the remaining obligations. Break down `hPL hR E n π S T F₀ F i p with ⟨c, h1, h2⟩ | ⟨s, h1, h2⟩` into its components or cases. Conclude with `Or.inl ⟨c, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr ⟨s, h1, h2⟩`. Establish `key` using `hG E F.d.kap F₀.Sec F.d.P (F.B i) (Equiv.refl _) F₀.hSec hP (F₀.u₁ _) (F₀.u₂ _) (F.d.eL (F₀.C.a i)) (F.t₂ i) hE.1 hE.2.1 rfl l hl`. Rewrite `key` using `[e1, e2]`. Conclude with `key`.
+Prove the second alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.BaseChangeIdentities.FrameWordIdentity.psiword_pf :
     PsiGen → PsiLet → heckeLevelWordBase → LocOk → MLM.MatchLMId → FrFacts → PsiWord := by

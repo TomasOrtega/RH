@@ -11,7 +11,7 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.BStepSuccO
 namespace ReciprocityTheory.ChartRestriction.DS.Xi
 
 /- English proof (translation)
-The claim follows from `xiExists_of_induction_steps (aStepBase_of h (tBothH iwB h)) (aStepSucc_of h iwB (tLeftH iwB h) FormulaFAux.formulaF_all (ch_of c1)) (bStepBase_of h) (bStepSucc_of h iwB FormulaFAux.formulaF_all (oscillatoryBound' (tailFin_of (ch_of c1)) c1 quadraticSublevelDecay' ker slow)) (coef …`.
+A detailed English derivation is pending.
 -/
 theorem xiExists_of_in (h : InductiveHeisenbergInputs) : Formalism.FourierDecayAlt.B.XiExists :=
   xiExists_of_induction_steps (aStepBase_of h (tBothH iwB h))
@@ -22,7 +22,7 @@ theorem xiExists_of_in (h : InductiveHeisenbergInputs) : Formalism.FourierDecayA
     (coefStep_of h (tBothH iwB h) (det_of h)) (xiIntH h)
 
 /- English proof (translation)
-The claim follows from `xiExists_of_in heisenbergHaarFacts_hold`.
+A detailed English derivation is pending.
 -/
 theorem xiExists : Formalism.FourierDecayAlt.B.XiExists := xiExists_of_in heisenbergHaarFacts_hold
 

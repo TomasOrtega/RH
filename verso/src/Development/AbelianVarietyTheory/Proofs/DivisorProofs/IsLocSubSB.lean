@@ -34,7 +34,7 @@ def UAtGrp {R : Type} [Zero R] (ev : AF F → R) : Subgroup (UA σ X.J) where
     rw [e, smul_neg, ← Matrix.mul_smul, ha u hu, Matrix.mul_zero, neg_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_UAtGrp {R : Type} [Zero R] (ev : AF F → R) (g : UA σ X.J) : g ∈ UAtGrp σ X ev ↔ g ∈ UAt σ X ev := Iff.rfl
 

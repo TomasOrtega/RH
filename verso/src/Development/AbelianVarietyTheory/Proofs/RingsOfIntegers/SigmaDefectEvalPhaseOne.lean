@@ -19,9 +19,9 @@ variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 
 omit [Algebra ℚ k] in
 /- English proof (translation)
-Establish `h1 : ∀ j, GP ((![a] : Fin 1 → Pt k n d) j)` using `single_point_zero_constant ha`. Establish `e : sgOf k h i = 0 - ev (n` using `1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), i) h) := by`. Rewrite using `[zero_sub]`. Both sides reduce to the same expression. Establish `z : evP ![a] (0 : Pt k 1 d) = 0` using `funext fun _ => gt_ev_zero _ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[e, gt_ev_sub _ h1, gt_ev_zero _ h1, zero_sub, gt_ev_ev' _ _ h1 hX0, eval_pair_points, evP_pt _ h1, z]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_sgOf (h : PS k 2 d) (i : Fin d) {n : ℕ} (a : Pt k n d) (ha : GP a) :
     ev ![a] (sgOf k h i) = -ev ![a, 0] (pderiv k ((1 : Fin 2), i) h) := by
@@ -35,13 +35,13 @@ theorem ev_sgOf (h : PS k 2 d) (i : Fin d) {n : ℕ} (a : Pt k n d) (ha : GP a) 
 
 omit [Algebra ℚ k] in
 /- English proof (translation)
-The claim follows from `constantCoeff_mapP_eq_zero _ _ B.G.const`.
+A detailed English derivation is pending.
 -/
 theorem GP_FK (B : FB R d O) : GP (B.FK k) := constantCoeff_mapP_eq_zero _ _ B.G.const
 
 omit [Algebra ℚ k] in
 /- English proof (translation)
-Use `congrArg (mapP (algebraMap R k)) (unit_right B.G)` as an intermediate fact. Rewrite `this` using `[baseChange_addOf _ _ _ _ (gp_pt 0) gp_zero₂, baseChange_pt, show mapP (algebraMap R k) (0 : Pt R 1 d) = 0 from funext fun i => map_zero _]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FK_unit_right (B : FB R d O) : evP (n := 1) ![pt k d 0, 0] (B.FK k) = pt k d 0 := by
   have := congrArg (mapP (algebraMap R k)) (unit_right B.G)
@@ -51,9 +51,9 @@ theorem FK_unit_right (B : FB R d O) : evP (n := 1) ![pt k d 0, 0] (B.FK k) = pt
 
 omit [Algebra ℚ k] in
 /- English proof (translation)
-Use `congrArg (MvPowerSeries.map (algebraMap R k)) B.cocycleLeft_zero_thd` as an intermediate fact. Rewrite `this` using `[map_ev _ _ hDown, map_one]`. Rewrite using `[← this]`. Use `congr 1`. Use function extensionality and compare the values at `j i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases j <;> simp [pt]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sigma_defect_eval_phase_one (B : FB R d O) :
     ev (n := 2) ![pt k d 0, pt k d 1, 0] (FB.toK k B.ph1) = 1 := by
@@ -65,13 +65,11 @@ theorem sigma_defect_eval_phase_one (B : FB R d O) :
   fin_cases j <;> simp [pt]
 
 /- English proof (translation)
-Establish `hF` using `GP_FK (k := k) B`. Establish `hp : ∀ j : Fin 2, GP (pt k d j)` using `gp_pt`. Establish `h0 : constantCoeff h = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Conclude with `coeff_eq_zero_of_vanish_first_axis h hc.ax0 0 fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `u0 : (pt k d 0 : Pt k 3 d) = up (pt k d 0)` using `(evP_pt _ (hUp (k := k) (d := d)) 0).symm`. Establish `u1 : (pt k d 1 : Pt k 3 d) = up (pt k d 1)` using `(evP_pt _ (hUp (k := k) (d := d)) 1).symm`. Establish `uF : addOf (B.FK k) (pt k d 0 : Pt k 3 d) (pt k d 1) = up (B.FK k)` using `rfl`. Establish `hE : FB.toK k B.ph1 = GlobalTheory.FormalCalc.formalExp (ev ![up (pt k d 0), pt k d 2] h + ev ![up (pt k d 1), pt k d 2] h - ev ![up (B.FK k), pt k d 2] h)`. Rewrite using `[← u0, ← u1, ← uF]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc.ph1`. Establish `c : ∀ a : Pt k 2 d, GP a → constantCoeff (ev ![up a, pt k d 2] h) = 0` using `fun a ha => gt_const_ev _ (pair_points_zero_constant (constantCoeff_up_eq_zero₂ ha) (gp_pt 2)) h h0`. Establish `hD` using `GlobalTheory.FormalCalc.pderiv_formalExp (f := ev ![up (pt k d 0), pt k d 2] h + ev ![up (pt k d 1), pt k d 2] h - ev ![up (B.FK k), pt k d 2] h) (by rw [map_sub, map_add, c _ (hp 0), c _ (hp 1), c _ hF]; simp) ((2 : Fin 3), i)`. Rewrite `hD` using `[← hE]`. Rewrite using `[hD, gt_ev_mul _ hDown, sigma_defect_eval_phase_one, one_mul, map_sub, map_add, gt_ev_sub _ hDown, gt_ev_add _ hDown, dz_right _ _ (hp 0), dz_right _ _ (hp 1), dz_right _ _ hF, ev_sgOf _ _ _ hF, ev_sgOf _ _ _ (hp 0), ev_sgOf _ _ _ (hp 1)]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sgOf_defect (B : FB R d O) (h : PS k 2 d) (hc : B.IsCanonGauge k h) (i : Fin d) :
     ev ![B.FK k] (sgOf k h i) = ev (n := 2) ![pt k d 0] (sgOf k h i) +
@@ -101,7 +99,7 @@ theorem sgOf_defect (B : FB R d O) (h : PS k 2 d) (hc : B.IsCanonGauge k h) (i :
 
 omit [Algebra ℚ k] in
 /- English proof (translation)
-The claim follows from `intAA_subst (fun p => ha p.1 p.2) (fun p => hai p.1 p.2) hf`.
+A detailed English derivation is pending.
 -/
 theorem intAA_ev {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j))
     (hai : ∀ j i, IntAA (R := R) k (a j i)) {f : PS k m d} (hf : IntAA (R := R) k f) :
@@ -109,9 +107,9 @@ theorem intAA_ev {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j))
   intAA_subst (fun p => ha p.1 p.2) (fun p => hai p.1 p.2) hf
 
 /- English proof (translation)
-Introduce `R _ d O _ _ k _ _ _ B h hc u i`. Establish `hl : lin (fun j => algebraMap R k (u j)) (sgOf k h i) = (sg1 k h).mulVec (fun j => algebraMap R k (u j)) i`. Simplify using `only [lin, const_pderiv, Matrix.mulVec, dotProduct, sg1, mul_comm]`. Rewrite using `[dof_eq _ (GP_FK B) (FK_unit_right B), sgOf_defect B h hc, dy_add, dy_add, formalSecondPointDerivative_subst_first_point, formalSecondPointDerivative_subst_second_point, hl, zero_add, add_sub_cancel_left]`. Use `intAA_sum _ fun j _ => intAA_mul (intAA_C _) (intAA_ev _ hX0 ?_ (intAA_pderiv _ (intAA_ev _ hDown ?_ (intAA_pderiv _ (intAA_map _)))))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `l s fin_cases l exacts [intAA_X _, intAA_zero]`. Introduce `l s fin_cases l exacts [intAA_X _, intAA_X _, intAA_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem main : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O) (h : PS k 2 d), B.IsCanonGauge k h → ∀ (u : Fin d → R) (i : Fin d), IntAA (R := R) k (Dof (B.FK k) (fun j => algebraMap R k (u j)) (sgOf k h i) - C ((sg1 k h).mulVec (fun j => algebraMap R k (u j)) i)) := by
   intro R _ d O _ _ k _ _ _ B h hc u i

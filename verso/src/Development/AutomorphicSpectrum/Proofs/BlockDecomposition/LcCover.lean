@@ -6,21 +6,21 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 namespace GlobalTheory.CompanionTheory.LcCoverProof
 
 /- English proof (translation)
-Introduce `U ι f`. Set `O : ι → U.Opens` to `fun a => ⟨f ⁻¹' {a}, f.isLocallyConstant.isOpen_fiber a⟩`. Establish `hcov : iSup O = ⊤` using `eq_top_iff.2 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨f x, rfl⟩`. Establish `hval : ∀ (a : ι) (v : (O a).toScheme), f ((O a).ι v) = a` using `fun a v => v.2`. Use `⟨fun a => (O a).toScheme, fun a => (O a).ι, hval, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `V g a hg`. Establish `hr : Set.range g ⊆ Set.range (O a).ι`. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hg v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨IsOpenImmersion.lift (O a).ι g hr, IsOpenImmersion.lift_fac _ _ _⟩`. Introduce `x y h`. Use `U.sheaf.eq_of_locally_eq' O ⊤ (fun a => homOfLE le_top) hcov.ge x y fun a => ?_` and prove the remaining obligations. Establish `e : O a ≤ (O a).ι ''ᵁ ⊤` using `by simp`. Establish `hm : U.presheaf.map (homOfLE le_top : O a ⟶ ⊤).op = U.presheaf.map (homOfLE (x` using `(O a).ι ''ᵁ ⊤) le_top).op ≫ U.presheaf.map (homOfLE e).op := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression. Use `congrArg (U.presheaf.map (homOfLE e).op).hom (h a)` as an intermediate fact. Express the relevant statement in the definitionally equal form `(U.presheaf.map (homOfLE le_top : O a ⟶ ⊤).op).hom x = (U.presheaf.map (homOfLE le_top : O a ⟶ ⊤).op).hom y`. Rewrite using `[hm]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Introduce `R _ G x`. Establish `hG` using `(isSheaf_iff_isSheaf_of_type _ _).1 ((Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget (ModuleCat.{1} (ULift.{1} R)))).1 G.cond)`. Establish `hS : Sieve.ofArrows (fun a => (O a).toScheme) (fun a => (O a).ι) ∈ Scheme.etaleTopology U` using `Scheme.zariskiTopology_le_etaleTopology _ (Scheme.Cover.mem_grothendieckTopology (U.openCoverOfIsOpenCover O hcov))`. Establish `hsf` using `hG _ hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hsf` using `[Sieve.ofArrows, ← Presieve.isSheafFor_iff_generate, Presieve.isSheafFor_arrows_iff]`. Use `hsf x ?_` and prove the remaining obligations. Introduce `a b Z gi gj h`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: gi = gj` using `by rwa [cancel_mono] at h`. Rewrite using `[this]`. Establish `hE : IsEmpty Z` using `⟨fun z => hab (by`. Establish `h1` using `hval a (gi z)`. Establish `h2` using `hval b (gj z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[← Scheme.Hom.comp_apply, h, Scheme.Hom.comp_apply, h2]`. Conclude with `h1.symm)⟩`. Establish `hz` using `(Sheaf.isTerminalOfBotCover G Z (Scheme.bot_mem_grothendieckTopology Z)).isZero`. Use `ModuleCat.subsingleton_of_isZero hz` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lcCover : CrystallineSemistableComparison.E.LcCover := by
   intro U ι f

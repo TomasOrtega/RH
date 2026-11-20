@@ -17,9 +17,9 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [IsSepClosure F Ω] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[Algebra.norm_zero]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `a.ne_zero hy.symm`. Conclude with `⟨Units.mk0 y hy0, Units.ext (by simp [hy])⟩`. Introduce and unpack `⟨u, rfl⟩`. Conclude with `⟨u, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_norm_iff_mem_range_normUnits (E : IntermediateField F Ω) [FiniteDimensional F E]
     (a : Fˣ) : (∃ y : E, Algebra.norm F y = (a : F)) ↔ a ∈ (normUnits F E).range := by
@@ -36,7 +36,7 @@ theorem exists_norm_iff_mem_range_normUnits (E : IntermediateField F Ω) [Finite
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [IsSepClosure F Ω] in
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hy`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_norm_of_eq {E₁ E₂ : IntermediateField F Ω} (h : E₁ = E₂) {a : F}
     (hy : ∃ y : E₁, Algebra.norm F y = a) : ∃ y : E₂, Algebra.norm F y = a := by
@@ -44,15 +44,13 @@ theorem exists_norm_of_eq {E₁ E₂ : IntermediateField F Ω} (h : E₁ = E₂)
   exact hy
 
 /- English proof (translation)
-Use `set E := fixedField H with hE`. Establish `hfix : E.fixingSubgroup = H` using `InfiniteGalois.fixingSubgroup_fixedField ⟨H, Subgroup.isClosed_of_isOpen H hH⟩`. Establish `hfin : FiniteDimensional F E` using `(InfiniteGalois.isOpen_iff_finite E).1 (by rw [hfix]; exact hH)`. Establish `hgal : IsGalois F E` using `(InfiniteGalois.normal_iff_isGalois E).1 (by rw [hfix]; infer_instance)`. Establish `hc : ∀ σ' τ' : Gal(E/F), σ' * τ' = τ' * σ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ' τ'`. Take `⟨σ, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := F) (K₁ := E) (E := Ω) σ'`. Take `⟨τ, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := F) (K₁ := E) (E := Ω) τ'`. Establish `hk : σ * τ * σ⁻¹ * τ⁻¹ ∈ (AlgEquiv.restrictNormalHom E).ker`. Rewrite using `[E.restrictNormalHom_ker, hfix]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hcomm σ τ`. Rewrite `hk` using `[MonoidHom.mem_ker, map_mul, map_mul, map_mul, map_inv, map_inv]`. Establish `key : ∀ {M : Type _} [Group M] (x y : M), x * y * x⁻¹ * y⁻¹ = 1 → x * y = y * x`. Introduce `M _ x y hxy`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `key _ _ hk`. Establish `: IsAbelianGalois F E` using `{ toIsGalois := hgal, toIsMulCommutative := ⟨⟨hc⟩⟩ }`. Establish `hidx` using `index_range_normUnits_of_isAbelianGalois (Ω := Ω) E`. Establish `htop : (normUnits F E).range = ⊤` using `eq_top_iff.2 fun a _ => (exists_norm_iff_mem_range_normUnits E a).1 (h a)`. Rewrite `hidx` using `[htop, Subgroup.index_top]`.
-
-Establish `hbot : E = ⊥` using `IntermediateField.finrank_eq_one_iff.1 hidx.symm`. Rewrite using `[← hfix, hbot, IntermediateField.fixingSubgroup_bot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_top_of_forall_exists_norm (H : Subgroup Gal(Ω/F)) [H.Normal]
     (hH : IsOpen (H : Set Gal(Ω/F))) (hcomm : ∀ σ τ : Gal(Ω/F), σ * τ * σ⁻¹ * τ⁻¹ ∈ H)
@@ -86,31 +84,27 @@ theorem eq_top_of_forall_exists_norm (H : Subgroup Gal(Ω/F)) [H.Normal]
   rw [← hfix, hbot, IntermediateField.fixingSubgroup_bot]
 
 /- English proof (translation)
-Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Conclude with `hn Nat.cast_zero`. Establish `: NeZero n` using `⟨hn0⟩`. Use `set P := (powMonoidHom n : Fˣ →* Fˣ).range with hP`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPopen : IsOpen (P : Set Fˣ)` using `isOpen_range_pow hn`. Establish `hPfin : Finite (Fˣ ⧸ P)` using `finite_quotient_range_pow hn`. Establish `: P.FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`. Establish `hkill : ∀ q : Additive (Fˣ ⧸ P), n • q = 0`. Introduce `q`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `QuotientGroup.mk_surjective (Additive.toMul q)`. Establish `hq : q = Additive.ofMul (x : Fˣ ⧸ P)` using `by rw [hx]; rfl`. Rewrite using `[hq, ← ofMul_pow, ← QuotientGroup.mk_pow, (QuotientGroup.eq_one_iff (x ^ n)).2 (MonoidHom.mem_range.2 ⟨x, rfl⟩), ofMul_one]`. Establish `hane : Additive.ofMul (a : Fˣ ⧸ P) ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (a : Fˣ ⧸ P) = 1` using `congrArg Additive.toMul h0`. Take `⟨b, hb⟩` from `(QuotientGroup.eq_one_iff _).1 h1`. Conclude with `ha b hb`. Take `⟨χ, hχ⟩` from `zmod_exists_apply_ne_zero (A := Additive (Fˣ ⧸ P)) hkill hane`. Set `φ : Fˣ →* Multiplicative (ZMod n)` to `(AddMonoidHom.toMultiplicativeRight χ).comp (QuotientGroup.mk' P)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφ : ∀ x : Fˣ, φ x = Multiplicative.ofAdd (χ (Additive.ofMul (x : Fˣ ⧸ P)))` using `fun _ => rfl`. Establish `hPle : P ≤ φ.ker`. Introduce `x hx`. Rewrite using `[MonoidHom.mem_ker, hφ, (QuotientGroup.eq_one_iff _).2 hx, ofMul_one, map_zero, ofAdd_zero]`. Establish `hH'open : IsOpen (φ.ker : Set Fˣ)` using `Subgroup.isOpen_mono hPle hPopen`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: φ.ker.FiniteIndex` using `Subgroup.finiteIndex_of_le hPle`. Establish `haH' : a ∉ φ.ker`. Rewrite using `[MonoidHom.mem_ker, hφ]`. Introduce `h1`. Conclude with `hχ (Multiplicative.ofAdd.injective h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨E, hEfin, hEab, hEH⟩` from `exists_isAbelianGalois_range_normUnits_eq (Ω := Ω) φ.ker hH'open`. Use `hEfin` as an intermediate fact. Use `hEab` as an intermediate fact. Set `φbar : Fˣ ⧸ (normUnits F E).range →* Multiplicative (ZMod n)` to `QuotientGroup.lift _ φ (le_of_eq hEH)`. Establish `hφbar : Function.Injective φbar`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Use `(injective_iff_map_eq_one φbar).2 fun q hq => ?_` and prove the remaining obligations. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H x`. Establish `hx : x ∈ φ.ker` using `hq`. Rewrite `hx` using `[← hEH]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `(QuotientGroup.eq_one_iff _).2 hx`. Set `ψ : Gal(Ω/F) →* Multiplicative (ZMod n)` to `(φbar.comp (localReciprocityAbelian E).toMonoidHom).comp (AlgEquiv.restrictNormalHom E)`. Establish `hker : ψ.ker = E.fixingSubgroup`. Rewrite using `[← E.restrictNormalHom_ker]`. Use extensionality with `σ`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Establish `h2 : (localReciprocityAbelian E) (AlgEquiv.restrictNormalHom E σ) = 1` using `hφbar (h1.trans (map_one φbar).symm)`. Conclude with `(MulEquiv.map_eq_one_iff _).1 h2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h1`. Express the relevant statement in the definitionally equal form `φbar ((localReciprocityAbelian E) (AlgEquiv.restrictNormalHom E σ)) = 1`. Rewrite using `[h1, map_one, map_one]`. Use `⟨ψ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hker]`.
-
-Conclude with `IntermediateField.fixingSubgroup_isOpen E`. Establish `hfE : fixedField ψ.ker = E`. Rewrite using `[hker]`. Conclude with `InfiniteGalois.fixedField_fixingSubgroup E`. Introduce `hy`.
-
-Use `(exists_norm_iff_mem_range_normUnits E a).1 (exists_norm_of_eq hfE hy)` as an intermediate fact. Rewrite `this` using `[hEH]`. Conclude with `haH' this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_zmod_char_not_norm {n : ℕ} (hn : (n : F) ≠ 0) (a : Fˣ) (ha : ∀ b : Fˣ, b ^ n ≠ a) :
     ∃ ψ : Gal(Ω/F) →* Multiplicative (ZMod n), IsOpen (ψ.ker : Set Gal(Ω/F)) ∧

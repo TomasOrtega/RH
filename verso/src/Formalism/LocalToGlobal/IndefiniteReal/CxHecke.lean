@@ -14,26 +14,24 @@ open Formalism.DivisionValues Formalism.L2.Indef Formalism.L2.DIV
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[cpt]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cpt_smul (σ : K →+* ℂ) {n : ℕ} (a : K) (x : Fin n → K) : cpt σ (a • x) = σ a • cpt σ x := by
   funext i
   simp [cpt]
 
 /- English proof (translation)
-Establish `hsol : ∀ e ∈ LinearMap.range f, f (solve f e) = e`. Introduce and unpack `e ⟨y, rfl⟩`. Establish `h : ∃ y', f y' = f y` using `⟨y, rfl⟩`. Simplify using `only [solve, dif_pos h]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hk : ∀ i k, σ (kOf σ (relMat f (S ∘ₗ f) i k)) = relMat f (S ∘ₗ f) i k`. Introduce `i k`. Take `⟨a, ha⟩` from `hr i k`. Establish `h : ∃ a : K, σ a = relMat f (S ∘ₗ f) i k` using `⟨a, ha⟩`. Simplify using `only [kOf, dif_pos h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h.choose_spec`. Establish `hc : cpt σ ((kMat σ (relMat f (S ∘ₗ f))).mulVec x) = (relMat f (S ∘ₗ f)).mulVec (cpt σ x)`. Use function extensionality and compare the values at `i`. Simplify using `only [cpt, Matrix.mulVec, dotProduct, kMat, Matrix.map_apply, map_sum, map_mul, hk]`. Rewrite using `[hc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hv : ∀ v : Fin D → ℂ, v = ∑ k, v k • (Pi.single k (1 : ℂ) : Fin D → ℂ)` using `fun v => by`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hcol : ∀ k, f (fun i => relMat f (S ∘ₗ f) i k) = S (f (Pi.single k 1))`. Introduce `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h : (fun i => relMat f (S ∘ₗ f) i k) = solve f (S (f (Pi.single k 1)))`. Use function extensionality and compare the values at `i`. Simplify using `[relMat]`. Rewrite using `[h, hsol _ (hS _)]`. Establish `hM : (relMat f (S ∘ₗ f)).mulVec (cpt σ x) = ∑ k, (cpt σ x) k • (fun i => relMat f (S ∘ₗ f) i k)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Rewrite using `[hM, map_sum]`. Use `conv_rhs => rw [hv (cpt σ x), map_sum, map_sum]`.
-
-Simplify using `only [map_smul, hcol]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem relMat_op_key (σ : K →+* ℂ) {E : Type} [AddCommGroup E] [Module ℂ E] {D : ℕ} (f : (Fin D → ℂ) →ₗ[ℂ] E)
     (S : Module.End ℂ E) (hS : ∀ y, S (f y) ∈ LinearMap.range f) (hr : IsRat σ (relMat f (S ∘ₗ f)))
@@ -73,17 +71,15 @@ theorem relMat_op_key (σ : K →+* ℂ) {E : Type} [AddCommGroup E] [Module ℂ
   simp only [map_smul, hcol]
 
 /- English proof (translation)
-Establish `hcinj : ∀ {a b : Fin D → K}, cpt σ a = cpt σ b → a = b` using `fun h =>`. Use function extensionality and compare the values at `fun i => σ.injective (congrFun h i)`. Establish `key : ∀ x, x ∈ P.comap (f.comp (cptL σ D)) ↔ f (cpt σ x) ∈ P` using `fun x => Iff.rfl`. Use extensionality with `x`. Rewrite using `[key]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, Matrix.toLin'_apply, sub_eq_zero]`. Establish `hmem : f (cpt σ x) ∈ LinearMap.range f` using `LinearMap.mem_range_self f _`. Prove the components needed by the constructor for the conclusion. Introduce `hx T`. Establish `h1 : f (cpt σ x) ∈ P ⊓ LinearMap.range f` using `Submodule.mem_inf.mpr ⟨hx, hmem⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[hP]`. Establish `h2` using `(Submodule.mem_iInf _).mp (Submodule.mem_inf.mp h1).1 T`. Rewrite `h2` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Apply `hcinj` to reduce the goal to its premises. Apply `hf` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[relMat_op_key σ f (S T) (hS T) (hr T) x, cpt_smul, map_smul]`. Conclude with `h2`. Introduce `hx`. Establish `h1 : f (cpt σ x) ∈ P ⊓ LinearMap.range f`. Rewrite using `[hP]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_inf.mpr ⟨(Submodule.mem_iInf _).mpr fun T => ?_, hmem⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Establish `h3` using `relMat_op_key σ f (S T) (hS T) (hr T) x`. Rewrite `h3` using `[hx T, cpt_smul, map_smul]`. Conclude with `h3.symm`.
-
-Conclude with `(Submodule.mem_inf.mp h1).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_transport (σ : K →+* ℂ) {E : Type} [AddCommGroup E] [Module ℂ E] {D : ℕ} {H : Type}
     (f : (Fin D → ℂ) →ₗ[ℂ] E) (hf : Function.Injective f) (S : H → Module.End ℂ E)
@@ -157,7 +153,7 @@ def HeckeWC.hWK (H : X.HeckeWC b cf) (j : Bs.J) (T : cf.Hk) : Module.End K (Fin 
   Matrix.toLin' (kMat Bs.v0.embedding (relMat (X.w0C b j) (H.hC j T ∘ₗ X.w0C b j)))
 
 /- English proof (translation)
-Rewrite using `[h2.2.2]`. Apply `H.maps` to reduce the goal to its premises. Rewrite using `[← h2.2.2]`. Conclude with `LinearMap.mem_range_self _ y`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HeckeRowsC.maps' (h2 : X.H2 cr b) (H : X.HeckeRowsC cr b cf) (T : cf.Hk) (y) :
     H.hC T (X.iC cr b Bs.μ0 y) ∈ LinearMap.range (X.iC cr b Bs.μ0) := by
@@ -167,7 +163,7 @@ theorem HeckeRowsC.maps' (h2 : X.H2 cr b) (H : X.HeckeRowsC cr b cf) (T : cf.Hk)
   exact LinearMap.mem_range_self _ y
 
 /- English proof (translation)
-Simplify `relMat_op_key Bs.v0.embedding (X.iC cr b Bs.μ0) (H.hC T) (H.maps' h2 T) (H.rat T) x` using `[HeckeRowsC.hEK, Matrix.toLin'_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem HeckeRowsC.key (h2 : X.H2 cr b) (H : X.HeckeRowsC cr b cf) (T : cf.Hk)
     (x : Fin ((lv (fc X.zs) b).dQ Bs.μ0) → K) :
@@ -176,7 +172,7 @@ theorem HeckeRowsC.key (h2 : X.H2 cr b) (H : X.HeckeRowsC cr b cf) (T : cf.Hk)
     relMat_op_key Bs.v0.embedding (X.iC cr b Bs.μ0) (H.hC T) (H.maps' h2 T) (H.rat T) x
 
 /- English proof (translation)
-Simplify `relMat_op_key Bs.v0.embedding (X.w0C b j) (H.hC j T) (H.maps j T) (H.rat j T) x` using `[HeckeWC.hWK, Matrix.toLin'_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem HeckeWC.key (H : X.HeckeWC b cf) (j : Bs.J) (T : cf.Hk) (x : Fin (X.dW b j) → K) :
     X.w0C b j (cpt Bs.v0.embedding (H.hWK j T x)) = H.hC j T (X.w0C b j (cpt Bs.v0.embedding x)) := by
@@ -184,7 +180,7 @@ theorem HeckeWC.key (H : X.HeckeWC b cf) (j : Bs.J) (T : cf.Hk) (x : Fin (X.dW b
     relMat_op_key Bs.v0.embedding (X.w0C b j) (H.hC j T) (H.maps j T) (H.rat j T) x
 
 /- English proof (translation)
-Establish `h` using `eig_transport Bs.v0.embedding (X.iC cr b Bs.μ0) h2.1 H.hC (H.maps' h2) H.rat (X.EEp c) (cf.ev c) (by rw [h2.2.2]; exact H.eig c)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem HeckeRowsC.eigE (h2 : X.H2 cr b) (H : X.HeckeRowsC cr b cf) (c : Bs.Ix) :
     X.Ep cr b c = ⨅ T, LinearMap.ker (H.hEK T - cf.ev c T • LinearMap.id) := by
@@ -193,13 +189,13 @@ theorem HeckeRowsC.eigE (h2 : X.H2 cr b) (H : X.HeckeRowsC cr b cf) (c : Bs.Ix) 
   exact h
 
 /- English proof (translation)
-Establish `hinjW : Function.Injective (X.wC b j Bs.v0)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `c' hc`. Simplify using `only [wC, lin, Fintype.linearCombination_apply] at hc`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Fintype.linearIndependent_iff.mp (hk j Bs.v0).1 c' hc i`. Establish `hinjE : Function.Injective (X.eW b j)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h` using `he j x x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hx, inner_zero_left]`. Establish `h' : ((X.nP b : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `h'' : ⟪x, x⟫_ℂ = 0` using `(mul_eq_zero.mp h.symm).resolve_left h'`. Conclude with `inner_self_eq_zero.mp h''`. Establish `hinj : Function.Injective (X.w0C b j)` using `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact hinjE.comp hinjW`. Consider the case `(simp only [w0C, LinearMap.coe_comp]; exact hinjE.comp hinjW)`. Conclude with `eig_transport Bs.v0.embedding (X.w0C b j) hinj (H.hC j) (H.maps j) (H.rat j) (X.Wp j c) (cf.ev c) (H.eig j c)`.
+A detailed English derivation is pending.
 -/
 theorem HeckeWC.eigW (hk : X.KForm b) (he : X.EWnorm b) (hn : 0 < X.nP b) (H : X.HeckeWC b cf) (j : Bs.J)
     (c : Bs.Ix) :
@@ -236,13 +232,13 @@ def heckeAll_of (h2 : X.H2 cr b) (hk : X.KForm b) (he : X.EWnorm b) (hn : 0 < X.
   eigW := HW.eigW hk he hn
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨heckeAll_of h2 hk he (hp.2.2 false) H HW⟩`.
+Supply the required witnesses or components.
 -/
 theorem heckeB_of (h2 : X.H2 cr false) (hk : X.KForm false) (he : X.EWnorm false) (hp : X.H4pos)
     (H : X.HeckeRowsC cr false cf) (HW : X.HeckeWC false cf) : Nonempty (HeckeAll cf (X.data cr false)) := ⟨heckeAll_of h2 hk he (hp.2.2 false) H HW⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨heckeRows_of h2 H⟩`.
+Supply the required witnesses or components.
 -/
 theorem heckeC_of (h2 : X.H2 cr true) (H : X.HeckeRowsC cr true cf) : Nonempty (HeckeRows cf (X.data cr true)) := ⟨heckeRows_of h2 H⟩
 

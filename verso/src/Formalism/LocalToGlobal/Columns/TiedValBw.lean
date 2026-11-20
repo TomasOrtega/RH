@@ -41,7 +41,7 @@ variable {d : ColDat} (a : ColArgs d) (hS : SpStd d.toColBase) (hH : HostHyp d) 
   (hi : i ≤ d.R.m)
 
 /- English proof (translation)
-Introduce `w hw hs v x`. Rewrite using `[hY]`. Conclude with `hBw w hw (@of_decide_eq_true _ (Classical.propDecidable _) hs) v x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bwTie_of (Wv : CF.ValTied (D := d.colRec a) u (atTTied a hH u).eV i hi (classAgreement a hS hH hP u i hi))
     (hY : Wv.eY = valEY (Pr := d.Pr) d.W d.lev d.σ₀ u i (valCrd a hS hH u i hi))

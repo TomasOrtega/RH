@@ -10,9 +10,9 @@ namespace GlobalTheory.TypeAsm
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hb : 0 < large₂.sc.b` using `Real.exp_pos _`. Establish `hS : 0 ≤ k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ` using `le_trans zero_le_one (one_le_sigma_product _ j δ)`. Unfold `k2a`. Use `mul_nonneg (mul_nonneg (mul_nonneg (Real.rpow_nonneg (div_nonneg hC (Nat.cast_nonneg _)) _) (Real.rpow_nonneg (minor_norm_nonneg j δ) _)) (Real.rpow_nonneg ?_ _)) (Real.rpow_nonneg hS _)` and prove the remaining obligations. Unfold `Formalism.MainNotions.S.Cnt.Hb`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `Real.rpow_nonneg hb.le _`.
+A detailed English derivation is pending.
 -/
 theorem termAmplitudeFactor_nonneg {D : D7} (large₂ : SizeData₂ D) (CH Cs C : ℝ) (hC : 0 ≤ C) (j : ℕ) (δ : ℕ → D.host.E) :
     0 ≤ k2a large₂ CH Cs C j δ := by
@@ -25,17 +25,17 @@ theorem termAmplitudeFactor_nonneg {D : D7} (large₂ : SizeData₂ D) (CH Cs C 
   exact Real.rpow_nonneg hb.le _
 
 /- English proof (translation)
-Introduce `hAmp hPairs Cg cb Cw cT CT C0 hcb hcT`. Take `⟨CH, hCH, hA⟩` from `hAmp Cg cb Cw cT CT C0 hcb hcT`. Take `⟨Ch, Cp, hCh, hCp, C'₁, Cl₁, hP⟩` from `hPairs Cg cb Cw cT CT C0 CH hCH`. Use `⟨CH, Ch, Cp, hCH, hCh, hCp, fun Cs hCs => ?_⟩` and prove the remaining obligations. Take `⟨C₀, hC₀, hA2⟩` from `hA Cs (by linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨C₀, fun C hC => ?_⟩` and prove the remaining obligations. Take `⟨C'₂, Cl₂, hA3⟩` from `hA2 C hC`. Use `⟨max C'₁ C'₂, max Cl₁ Cl₂, fun C' Cl hC' hCl D large₂ X Y u hTies hK hConc => ?_⟩` and prove the remaining obligations. Establish `amp` using `hA3 C' Cl (le_of_max_le_right hC') (le_of_max_le_right hCl) D large₂ X Y u hTies hK hConc`. Establish `pairs` using `hP C' Cl (le_of_max_le_left hC') (le_of_max_le_left hCl) D large₂ X Y u hK hConc`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j' hj' j'' hj'' δ' δ'' S hS`. Establish `hC0 : 0 ≤ C` using `le_trans hC₀ hC`. Establish `hdpi : 0 ≤ dpiC X u` using `Nat.cast_nonneg _`. Establish `hsq : Real.sqrt (dpiC X u) * Real.sqrt (dpiC X u) = dpiC X u` using `Real.mul_self_sqrt hdpi`. Establish `ha'` using `termAmplitudeFactor_nonneg large₂ CH Cs C hC0 j' δ'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha''` using `termAmplitudeFactor_nonneg large₂ CH Cs C hC0 j'' δ''`. Establish `hK0 : 0 ≤ dpiC X u * (k2a large₂ CH Cs C j' δ' * k2a large₂ CH Cs C j'' δ'')` using `mul_nonneg hdpi (mul_nonneg ha' ha'')`. Establish `hterm : ∀ p ∈ S, ‖(Y.tO u u).vec p.1‖ * ‖(Y.tO u u).vec p.2‖ ≤ dpiC X u * (k2a large₂ CH Cs C j' δ' * k2a large₂ CH Cs C j'' δ'') * ((Formalism.L2.SG.TermOp.wt p.1 * Formalism.L2.SG.TermOp.wt p.2) * (omT p.1 * omT p.2))`. Introduce `p hp`. Take `⟨hmem, hj1, hj2, hl1, hl2⟩` from `hS p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `amp p.1 hmem.1`. Establish `h2` using `amp p.2 hmem.2.1`. Rewrite `h1` using `[hj1, hl1]`. Rewrite `h2` using `[hj2, hl2]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `_ ≤ dpiC X u * (k2a large₂ CH Cs C j' δ' * k2a large₂ CH Cs C j'' δ'') * (massC Y u * (k2e large₂ CH Ch Cp j' δ' * k2e large₂ CH Ch Cp j'' δ'')) := mul_le_mul_of_nonneg_left (pairs j' hj' j'' hj'' δ' δ'' S hS) hK0`. Use `_ = _ := by ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeBound_of_amplitude_pairs : AmpP → PairsP → TypeP := by
   intro hAmp hPairs Cg cb Cw cT CT C0 hcb hcT

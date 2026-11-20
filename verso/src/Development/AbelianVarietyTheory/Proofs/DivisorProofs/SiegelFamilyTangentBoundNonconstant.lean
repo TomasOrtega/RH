@@ -24,19 +24,17 @@ def acts (W : Matrix (Fin 8) (Fin 8) ℤ) : (Fin 8 × Fin 8) ⊕ Bool → Matrix
   | .inr false => (W + W.transpose).adjugate * W.transpose
 
 /- English proof (translation)
-Introduce `h n _ h3 hodd K _ _ r β c hc hun`. Establish `hn : n ≠ 0` using `by omega`. Take `⟨L1, L2⟩` from `GlobalTheory.abelianSchemeLaws_all`. Take `⟨W, hW, hbasAll⟩` from `GlobalTheory.ZM.exists_isE8_isSharpBasis`. Take `⟨bas, hbas⟩` from `hbasAll h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hζ : (cycBase hn).ζ ^ n = 1` using `Units.ext (by`. Rewrite using `[Units.val_pow_eq_pow_val, cycBase_ζ]`. Conclude with `Subtype.ext (Complex.isPrimitiveRoot_exp n hn).pow_eq_one)`. Establish `hdet : (W + W.transpose).det = 1` using `hW.2`. Establish `hw : (W + W.transpose) * acts W (.inr true) = W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [acts]`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_adjugate, hdet, one_smul, Matrix.one_mul]`. Establish `hw' : (W + W.transpose) * acts W (.inr false) = W.transpose`. Simplify using `only [acts]`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_adjugate, hdet, one_smul, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : ∀ u v : Fin 8, ∃ j, acts W j = Matrix.single u v 1` using `fun u v => ⟨.inl (u, v), rfl⟩`. Take `⟨t, ht⟩` from `GlobalTheory.SiegelPower.exists_tObj_isSharp L1 L2 h (8 * h) W _ (acts W) bas hW hbas n (cycAway n) (cycBase hn) _ _ c hodd h3 hζ hc`. Use `GlobalTheory.PowerTangent.main L1 L2 GlobalTheory.Moduli.cube_of_isLB h (8 * h) W _ (acts W) bas hW hbas (.inr true) (.inr false) hw hw' n (cycAway n) (cycBase hn) K r β t c hc ht ?_` and prove the remaining obligations. Introduce `lam t' m₁ m₂`. Establish `hf : spMap (dirMap lam) ≫ spMap ((algebraMap K (TrivSqZeroExt K (Fin r → K))).comp β) = spMap ((algebraMap K (DualNumber K)).comp β) ≫ spMap (RingHom.id (cycAway n))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← spMap_comp, ← spMap_comp]`. Conclude with `congrArg spMap (RingHom.ext fun z => by`. Simplify using `[dirMap, TrivSqZeroExt.algebraMap_eq_inl])`. Take `⟨c', hc'⟩` from `(GlobalTheory.SiegelRingChange.siegPre_pull_ringChange h n _ _ (zetaAway n) (zetaAway n) (RingHom.id _) _ _ _ _ (spMap (dirMap lam)) rfl hf).1 c`. Establish `hc'P` using `(GlobalTheory.SiegelRingChange.siegPre_pull_ringChange h n _ _ (zetaAway n) (zetaAway n) (RingHom.id _) _ _ _ _ (spMap (dirMap lam)) rfl hf).2.1 c c' hc' hc`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t'', ht''⟩` from `GlobalTheory.SiegelPower.exists_tObj_isSharp L1 L2 h (8 * h) W _ (acts W) bas hW hbas n (cycAway n) (cycBase hn) _ _ c' hodd h3 hζ hc'P`. Establish `m₃ : TMap t'' t (spMap (dirMap lam))` using `(GlobalTheory.PowerPullback.main L1 L2 h (8 * h) W _ (acts W) bas hW hbas n _ (cycBase hn) _ _ _ _ c c' t t'' (spMap (dirMap lam)) hc hc'P ht ht'').1 hc'`. Establish `m₄ : TMap t'' t' (𝟙 _)` using `((GlobalTheory.ZM.tmap_id_comp_cancel _ _ _ _ _ _ _ _ _ _ _ t t' t'').2 _ (𝟙 _) m₁).2 (by rwa [Category.id_comp])`. Establish `m₅ : TMap t'' t (constPt (spMap (dirMap lam)))`. Use `((GlobalTheory.ZM.tmap_id_comp_cancel _ _ _ _ _ _ _ _ _ _ _ t t' t'').2 _ (𝟙 _) m₂).1 m₄` as an intermediate fact.
-
-Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Conclude with `hun lam c' hc' ((GlobalTheory.PowerPullback.main L1 L2 h (8 * h) W _ (acts W) bas hW hbas n _ (cycBase hn) _ _ _ _ c c' t t'' _ hc hc'P ht ht'').2 he m₅)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem main : ∀ (h n : ℕ), 1 ≤ h → 3 ≤ n → Odd n → ∀ (K : Type) [Field K] [IsAlgClosed K] (r : ℕ) (β : cycAway n →+* K) (c : SiegPre h n (zetaAway n) (spMap ((algebraMap K (TrivSqZeroExt K (Fin r → K))).comp β))), c.Principal → (∀ (lam : (Fin r → K) →ₗ[K] K) (c' : SiegPre h n (zetaAway n) (spMap ((algebraMap K (DualNumber K)).comp β))), SiegPB c' c (spMap (dirMap lam)) → SiegPB c' c (constPt (spMap (dirMap lam))) → lam = 0) → r ≤ h * (h + 1) / 2 := by
   intro h n _ h3 hodd K _ _ r β c hc hun

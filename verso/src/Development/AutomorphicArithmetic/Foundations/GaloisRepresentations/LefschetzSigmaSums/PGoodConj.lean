@@ -4,7 +4,7 @@ open UpperTheory.Gal.LocalSmoothExtension
 open GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen
 
 /- English proof (translation)
-Unfold `oneP`. Distinguish the cases in `h : g ∈ (Kp G : Set (Gr G 1))`. Simplify using `[Set.indicator_of_mem h]`. Simplify using `[Set.indicator_of_notMem h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma map_oneP (σ : ℂ ≃+* ℂ) {p : ℕ} [Fact p.Prime] (G : HTGroup p) (g : Gr G 1) :
     σ (oneP G g) = oneP G g := by
@@ -14,7 +14,7 @@ private lemma map_oneP (σ : ℂ ≃+* ℂ) {p : ℕ} [Fact p.Prime] (G : HTGrou
   · simp [Set.indicator_of_notMem h]
 
 /- English proof (translation)
-Unfold `GlobalTheory.LKCount.pointSum`. Use `Eq.trans ?_ (AddEquiv.map_finsum σ.toAddEquiv _).symm` and prove the remaining obligations. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `[map_mul, map_inv₀, map_natCast, hφ]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma pointSum_conj (σ : ℂ ≃+* ℂ) {Γ G₁ G₂ : Type} [Group Γ] [Group G₁] [Group G₂] (ι₁ : Γ →* G₁)
     (ι₂ : Γ →* G₂) (θ : G₂ →* G₂) (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (γ : G₁) (δ : G₂) (f : G₁ → ℂ)
@@ -27,7 +27,7 @@ private lemma pointSum_conj (σ : ℂ ≃+* ℂ) {Γ G₁ G₂ : Type} [Group Γ
   simp [map_mul, map_inv₀, map_natCast, hφ]
 
 /- English proof (translation)
-Unfold `GlobalTheory.LKCount.orbC`. Use `Eq.trans ?_ (AddEquiv.map_finsum σ.toAddEquiv _).symm` and prove the remaining obligations. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `[map_mul, map_inv₀, map_ratCast]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma orbC_conj (σ : ℂ ≃+* ℂ) {H : Type} [Group H] (θ : H →* H) (K C : Subgroup H) (δ : H) (F : H → ℂ) :
     GlobalTheory.LKCount.orbC θ K C δ (fun g => σ (F g)) = σ (GlobalTheory.LKCount.orbC θ K C δ F) := by
@@ -37,11 +37,11 @@ private lemma orbC_conj (σ : ℂ ≃+* ℂ) {H : Type} [Group H] (θ : H →* H
   simp [map_mul, map_inv₀, map_ratCast]
 
 /- English proof (translation)
-Introduce `σ p _ G K f h`. Use `⟨fun g hg => h.reg g fun h0 => hg (by simp [h0]), fun P hm hi => ?_, fun B x t hx y hy => ?_⟩` and prove the remaining obligations. Establish `h0` using `h.pairs P hm hi`. Unfold `Pair.term at h0 ⊢`. Use `split_ifs at h0 ⊢ with hh`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `Pair.termAt at h0 ⊢`. Rewrite using `[pointSum_conj σ _ _ _ _ _ _ _ f _ (map_oneP σ G), h0, map_zero]`. Both sides reduce to the same expression. Establish `h0` using `h.forms B x t hx y hy`. Unfold `GlobalTheory.LKCount.orbK at h0 ⊢`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `e : (fun h : G.GAf × Gr G 1 => σ (f h.1) * oneP G h.2) = fun h : G.GAf × Gr G 1 => σ (f h.1 * oneP G h.2)`. Use function extensionality and compare the values at `h`. Rewrite using `[map_mul, map_oneP]`. Rewrite using `[e, orbC_conj σ, h0, map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.LocalSmoothExtension.goodConj_of :
     GoodConj := by

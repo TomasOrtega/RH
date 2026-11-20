@@ -11,25 +11,23 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core
 noncomputable section
 
 /- English proof (translation)
-Introduce `hA hPt hTh hE hPR hGL hDU`. Introduce `Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ v e hH hk l hl Bw Bw' hBw hBw'`. Take `⟨hB, hFr, hGa, hQQ⟩` from `hH`. Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Take `⟨X⟩` from `Formalism.FourierDecayAlt.P.actual_operators_exist (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π' hPl`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd1, hd2, hd3, hd4⟩` from `Formalism.FourierDecayAlt.P.normal_form_actual (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π' hPl X`. Establish `hAct : ActHyp (D.parOf S v) (T v).base X d` using `⟨hPl, hd1, hd2, hd3, hd4⟩`. Take `⟨SS, hSS⟩` from `hPt (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (T v).base hk X d hAct l hl`. Take `⟨Pr, hPr⟩` from `hPR (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (T v).base hPl hk`. Take `⟨θ, hθ⟩` from `hTh (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (T v).base hk X d hAct l hl SS hSS Pr hPr Bw Bw' hBw hBw'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hFrB : Gauge.IsFrameB (D.parOf S v) (T v).base e` using `hFr`. Establish `hGQ : GQQ (D.parOf S v) (T v).base e` using `hQQ`. Establish `hSSF` using `hA (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (T v).base hk X d hAct e hFrB hGQ`. Use `⟨θ, fun ζ hζ π ρ hup => ?_⟩` and prove the remaining obligations. Establish `hent` using `hE (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (T v).base hk X d hAct e hFrB hSSF l hl SS hSS ζ hζ π ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hent` using `[if_pos hup]`. Take `⟨hP1, hH1, -, -⟩` from `hDU Cc E Wp Wq S T f χ ν' m₀ top A₀ hB v ζ hζ`. Use `set n0 := SSn.nu0 S.G.k S.G.r (T v).base.z (T v).base.z' (T v).base.μsec ζ with hn0`. Establish `hN0 : PRho.nrmW S.G.k S.G.r (T v).base.z n0 = 1`. Unfold `PRho.nrmW`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP1, hH1]`. Simplify using the standard rewrite rules. Take `⟨-, -, hrest⟩` from `hPr`. Establish `hpos : 0 < PRho.nrmW S.G.k S.G.r (T v).base.z n0` using `by rw [hN0]; norm_num`. Establish `hfix : ∀ τ y, Pr τ n0 (e τ ζ y) = e τ ζ y`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ y`. Use `((hrest n0 hpos).2.2.2 τ (e τ ζ y)).2 ?_` and prove the remaining obligations. Introduce `Fr hFrm w`. Rewrite `hFrm` using `[hP1]`. Conclude with `hGL Cc E Wp Wq S T f χ ν' m₀ top A₀ v e ⟨hB, hFr, hGa, hQQ⟩ hk ζ hζ τ Fr hFrm w y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfixc : ∀ τ, (Pr τ n0).comp (e τ ζ) = e τ ζ` using `fun τ => by ext y; exact hfix τ y`. Establish `hsa` using `(hrest n0 hpos).2.1 ρ`. Establish `hfib : e π ζ ∈ NF.Fib S.G.k S.G.r (T v).base.z (T v).base.z' (T v).base.μsec (T v).base.π (T v).base.π' ζ` using `((hFrB.2 ζ hζ).1 π)`. Use `set B0 : Wq (S.pl v) →L[ℂ] Wp (S.pl v) := tht S.G.k S.G.r (T v).base.z (T v).base.z' (T v).base.π (T v).base.π' Bw Bw' n0 (SSn.nu0' S.G.k S.G.r (T v).base.z (T v).base.z' (T v).base.μsec ζ) (SSn.io0 S.G.k S.G.r (T v).base.z (T v).base.z' (T v).base.μsec ζ) (e π ζ) with hB0`. Establish `key : (Pr ρ n0).comp (SS ζ (e π ζ)) = θ π • (Pr ρ n0).comp B0` using `hθ ζ hζ π ρ hup (e π ζ) hfib (hfixc π)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmove : ∀ Y : Wq (S.pl v) →L[ℂ] Wp (S.pl v), inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec ((Pr ρ n0).comp Y)) = inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec Y)`. Introduce `Y`. Establish `h1` using `hsInner_lmul (Pr ρ n0) hsa Y (e ρ ζ)`. Simplify using `only [B.hsInner, lmul_apply] at h1`. Rewrite `h1` using `[hfixc ρ]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Conclude with `h1`. Establish `hsm : ∀ (c : ℂ) (A : Wq (S.pl v) →L[ℂ] Wp (S.pl v)), B.hsVec (c • A) = c • B.hsVec A`. Introduce `c A`. Unfold `B.hsVec`. Use extensionality with `i`.
-
-Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem theta_gauge_constancy_holds : ThtGaugeConstOfCore := by
   intro hA hPt hTh hE hPR hGL hDU

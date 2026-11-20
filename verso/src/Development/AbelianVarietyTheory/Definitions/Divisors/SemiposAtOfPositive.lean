@@ -27,7 +27,7 @@ def cost {K : Type} [Field K] [NumberField K] (e : HeightOneSpectrum (𝓞 K) �
   ((e.sum fun la a => a * Real.log (Ideal.absNorm la.asIdeal : ℝ)) + ∑ σ, t σ) / (Module.finrank ℚ K : ℝ)
 
 /- English proof (translation)
-Establish `h : (Module.finrank ℚ K : ℝ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Simplify using `[cost, NumberField.Embeddings.card, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example {K : Type} [Field K] [NumberField K] (s : ℝ) : cost (K := K) 0 (fun _ => s) = s := by
   have h : (Module.finrank ℚ K : ℝ) ≠ 0 := by exact_mod_cast Module.finrank_pos.ne'
@@ -128,13 +128,13 @@ def DeRhamHodgeTateDifferenceKilledAt : Prop := ∀ (Sx : Finset ℕ) (R : ℝ) 
     Y.arMix Sx R p (tagHT D.what₂.Tau _ (pk D _ τ k) * (tagDR D.what₂.Tau _ Q - tagHT D.what₂.Tau _ Q)) = 0
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example (V : DivX D) (P : DIV.Align.PrinLev V) : LatticeTransfer.PointsLemma D V P ↔
     ∀ S κ, HidaSetting D V S κ → DIV.Align.LevB P κ → DeRhamMinusHodgeTateGoodPrimesAt (V.shv S κ) := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example (V : DivX D) (P : DIV.Align.PrinLev V) : WeightThresholdDefs.TrivialFlagIntersectionCond V P ↔
     ∀ S κ, HidaSetting D V S κ → DIV.Align.LevB P κ → DeRhamHodgeTateDifferenceKilledAt (V.shv S κ) := Iff.rfl
@@ -172,7 +172,7 @@ def SemiposAt {D : D7} {Y : ShimX D.what₂.Tau} (A : SlopeTestRemainingChoices 
     NefCond Y B (A.sh u s) → Y.semipos (Y.Mbar B u s)
 
 /- English proof (translation)
-Introduce `Λ` and use `have ⟨s₀, h₀, hs⟩ := hs Λ ⟨s₀, h₀, fun B hB u s hu hΛ h₁ h₂ hd hn => ⟨hs B hB u s hu hΛ h₁ h₂ hd hn, h B hB u s hu h₁ hd hn (hs B hB u s hu hΛ h₁ h₂ hd hn)⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NefAt.positive {D : D7} {Y : ShimX D.what₂.Tau} {A : SlopeTestRemainingChoices Y} (h : NefAt A) (hs : SemiposAt A) : Positive A :=
   fun Λ => have ⟨s₀, h₀, hs⟩ := hs Λ
@@ -182,7 +182,7 @@ theorem NefAt.positive {D : D7} {Y : ShimX D.what₂.Tau} {A : SlopeTestRemainin
 open Filter Topology in
 
 /- English proof (translation)
-Introduce `Λ` and use `by choose s₀ hs₀ K hK using fun c => hF c (Λ + ‖A.dir‖) obtain ⟨s₁, hs₁, hs1, hle⟩ : ∃ s₁ : ℝ, 0 < s₁ ∧ s₁ ≤ 1 ∧ ∀ c, s₁ ≤ s₀ c := by have : ∀ᶠ s in 𝓝[>] (0 : ℝ), 0 < s ∧ s ≤ 1 ∧ ∀ c, s ≤ s₀ c := by refine eventually_mem_nhdsWithin.and (Eventually.filter_mono nhdsWithin_le_nhds ? …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem semiposAt_of_famS {D : D7} {Y : ShimX D.what₂.Tau} {T : Real0 Y} {A : SlopeTestRemainingChoices Y} (hF : ∀ c, (T.F c).FamS)
     (hM : TieM T A) : SemiposAt A := fun Λ => by

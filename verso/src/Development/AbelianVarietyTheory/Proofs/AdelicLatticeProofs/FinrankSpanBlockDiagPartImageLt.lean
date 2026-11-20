@@ -6,15 +6,15 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Introduce `ι _ _ Γ e a ha ha0 hblk`. Set `L : Matrix ι ι ℂ →ₗ[ℂ] Matrix ι ι ℂ` to `{ toFun := fun x => blk e x map_add' := fun x y => by`. Simplify using `only [blk, Matrix.mul_add, Matrix.add_mul]`. Normalize the expressions using the abelian group laws. Use the proof step `map_smul' := fun c x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Simplify using `only [blk, Matrix.mul_smul, Matrix.smul_mul, RingHom.id_apply, smul_add] }`. Establish `himg : Submodule.span ℂ (blk e '' Γ) = (Submodule.span ℂ Γ).map L`. Rewrite using `[Submodule.map_span]`. Both sides reduce to the same expression. Rewrite using `[himg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `set S := Submodule.span ℂ Γ with hS`. Set `f` to `L.domRestrict S`. Establish `hrange : LinearMap.range f = S.map L` using `LinearMap.range_domRestrict S L`. Establish `hker : (⟨a, ha⟩ : S) ∈ LinearMap.ker f`. Simplify using `only [LinearMap.mem_ker, f, LinearMap.domRestrict_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hblk`. Establish `hne : LinearMap.ker f ≠ ⊥`. Introduce `h`. Rewrite `hker` using `[h, Submodule.mem_bot]`. Conclude with `ha0 (congrArg Subtype.val hker)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hpos : 0 < Module.finrank ℂ (LinearMap.ker f)` using `Nat.pos_of_ne_zero fun h => hne (Submodule.finrank_eq_zero.mp h)`. Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker f`. Rewrite `hrn` using `[hrange]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem finrank_span_blk_image_lt :
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)) (e : Matrix ι ι ℚ) (a : Matrix ι ι ℂ), a ∈ Submodule.span ℂ Γ → a ≠ 0 → blk e a = 0 → Module.finrank ℂ (Submodule.span ℂ (blk e '' Γ)) < Module.finrank ℂ (Submodule.span ℂ Γ) := by

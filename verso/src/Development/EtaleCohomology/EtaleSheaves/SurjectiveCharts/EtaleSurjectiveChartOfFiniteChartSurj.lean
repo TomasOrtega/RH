@@ -5,11 +5,11 @@ noncomputable section
 namespace LateralTheory.E.LSurjChartPf
 
 /- English proof (translation)
-Rewrite using `[Function.Bijective, and_iff_right (by exact IsLocalization.map_injective_of_injective _ _ _ Subtype.val_injective), Localization.awayMap_surjective_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `H x`. Take `⟨b, m, e⟩` from `H x`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e' : (b : A') = r.1 ^ m * x` using `e`. Rewrite using `[← e']`. Conclude with `b.2`. Introduce `H x`. Take `⟨m, hm⟩` from `H x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨_, hm⟩, m, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem bij_iff {A A' : Type} [CommRing A] [CommRing A'] [Algebra A A'] (S : Subalgebra A A') (r : S) :
     Function.Bijective (Localization.awayMap S.val.toRingHom r) ↔ ∀ x : A', ∃ m : ℕ, r.1 ^ m * x ∈ S := by
@@ -27,9 +27,9 @@ theorem bij_iff {A A' : Type} [CommRing A] [CommRing A'] [Algebra A A'] (S : Sub
     exact ⟨⟨_, hm⟩, m, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sup_empty, Algebra.toSubmodule_bot]`. Rewrite using `[Submodule.one_eq_span]`. Conclude with `Submodule.fg_span_singleton 1`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sup_insert, ← Subalgebra.mul_toSubmodule]`. Conclude with `(h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+A detailed English derivation is pending.
 -/
 theorem fg_sup {A A' : Type} [CommRing A] [CommRing A'] [Algebra A A'] {ι : Type} (s : Finset ι)
     (S : ι → Subalgebra A A') (h : ∀ i ∈ s, (S i).toSubmodule.FG) : (s.sup S).toSubmodule.FG := by
@@ -41,29 +41,25 @@ theorem fg_sup {A A' : Type} [CommRing A] [CommRing A'] [Algebra A A'] {ι : Typ
     exact (h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Introduce `A _ I A' _ _ φ H`. Set `T : Set A'` to `{h | ∃ S' : Subalgebra A A', S'.toSubmodule.FG ∧ h ∈ S' ∧ ∀ x : A', ∃ m : ℕ, h ^ m * x ∈ S'}`. Establish `htop : Ideal.span T ⊔ RingHom.ker φ = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨q, hq, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨S', hfg, r, hr, hb⟩` from `H q hq.isPrime (le_trans le_sup_right hle)`. Conclude with `hr (hle (Ideal.mem_sup_left (Ideal.subset_span ⟨S', hfg, r.2, (bij_iff S' r).mp hb⟩)))`. Establish `h1 : (1 : A') ∈ Ideal.span T ⊔ RingHom.ker φ` using `by rw [htop]; trivial`. Take `⟨y, hy, k, hk, hyk⟩` from `Submodule.mem_sup.mp h1`. Take `⟨s, hsT, hys⟩` from `Submodule.mem_span_finite_of_mem_span hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, -, hc⟩` from `(Submodule.mem_span_finset).mp hys`. Establish `hT : ∀ h ∈ s, ∃ S' : Subalgebra A A', S'.toSubmodule.FG ∧ h ∈ S' ∧ ∀ x : A', ∃ m : ℕ, h ^ m * x ∈ S'` using `fun h hh => hsT hh`. Use `choose! Sh hfg hmem hx using hT`. Use `choose! m hm using hx`. Use `choose a ha using fun h : A' => Ideal.Quotient.mk_surjective (I := I) (φ (c h))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S` to `s.sup Sh`. Establish `hS : ∀ h ∈ s, h ∈ S` using `fun h hh => (Finset.le_sup (f := Sh) hh) (hmem h hh)`. Set `f : A' → S` to `fun h => if hh : h ∈ S then ⟨algebraMap A A' (a h) * h, S.mul_mem (S.algebraMap_mem _) hh⟩ else 0`. Establish `hf : ∀ h ∈ s, (f h : A') = algebraMap A A' (a h) * h` using `fun h hh => by simp [f, hS h hh]`. Set `r : S` to `∑ h ∈ s, f h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hr : (r : A') = ∑ h ∈ s, algebraMap A A' (a h) * h` using `by show S.val (∑ h ∈ s, f h) = _`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl hf`. Use `⟨S, fg_sup s Sh hfg, r, ?_, ?_⟩` and prove the remaining obligations. Establish `: φ r.1 = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr, map_sum]`. Establish `e1 : φ y = 1`. Establish `: φ k = 0` using `hk`. Rewrite using `[← map_one φ, ← hyk, map_add, this, add_zero]`. Rewrite using `[← e1, ← hc, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, AlgHom.commutes, smul_eq_mul, map_mul]`. Simplify using `[Ideal.Quotient.algebraMap_eq, ha]`. Rewrite using `[this]`. Conclude with `isUnit_one`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bij_iff]`. Introduce `x`. Set `n` to `s.sup (fun h => m h x)`. Establish `hpow : ∀ h ∈ s, h ^ n * x ∈ S` using `fun h hh => by`. Establish `hle : m h x ≤ n` using `Finset.le_sup (f := fun h => m h x) hh`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_assoc]`. Conclude with `S.mul_mem (S.pow_mem (hS h hh) _) ((Finset.le_sup (f := Sh) hh) (hm h hh x))`. Set `K : Ideal S` to `{ carrier := {z | z.1 * x ∈ S} add_mem' := fun {u v} hu hv => by`. Simplify using `only [Set.mem_setOf_eq, Subalgebra.coe_add, add_mul] at *`. Conclude with `S.add_mem hu hv`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun u v hv => by`. Simplify using `only [Set.mem_setOf_eq, smul_eq_mul, Subalgebra.coe_mul, mul_assoc] at *`. Conclude with `S.mul_mem u.2 hv }`. Establish `hspan : Ideal.span ((fun h => f h ^ (n + 1)) '' (s : Set A')) ≤ K`.
-
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨h, hh, rfl⟩`. Use `show ((f h ^ (n + 1) : S) : A') * x ∈ S`. Rewrite using `[SubmonoidClass.coe_pow, hf h hh, mul_pow, mul_assoc]`. Use `S.mul_mem (S.pow_mem (S.algebraMap_mem _) _) ?_` and prove the remaining obligations.
-
-Rewrite using `[pow_succ', mul_assoc]`. Conclude with `S.mul_mem (hS h hh) (hpow h hh)`. Conclude with `⟨s.card * n + 1, by`. Use `hspan (Ideal.sum_pow_mem_span_pow s f n)` as an intermediate fact. Simplify `this⟩` using `[K, r]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem graphPatch : GraphPatch := by
   intro A _ I A' _ _ φ H
@@ -130,7 +126,7 @@ theorem graphPatch : GraphPatch := by
       simpa [K, r] using this⟩
 
 /- English proof (translation)
-The claim follows from `LSurjChart_of graphPatch hB`.
+A detailed English derivation is pending.
 -/
 theorem etale_surjective_chart_of_finite_chart_surj (hB : FiniteChartSurj) : LateralTheory.E.LChartPf.LSurjChart :=
   LSurjChart_of graphPatch hB

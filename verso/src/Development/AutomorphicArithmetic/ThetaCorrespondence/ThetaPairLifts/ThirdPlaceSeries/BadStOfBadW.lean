@@ -43,13 +43,13 @@ section Point
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} {p : PtAt ex Csz}
 /- English proof (translation)
-Take `⟨hC, hOk, -, -, hRk, -⟩` from `_root_.GlobalTheory.T.links2_of_single_index_twisted _ _ _ _ _ _ _ _ _ _ p hR hm.1`. Take `⟨hc, hinj, z, act, y, ht⟩` from `hrec.1.tied`. Establish `hU : (F2 p).P0 ≤ (mirIncl (R2 p)).range` using `fun g hg => by`. Take `⟨u, -, e⟩` from `(mem_base_iff hC.grp.levels g).1 hg`. Conclude with `⟨u, e⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨v₁, -⟩` from `exists_place3 D.what₂.LL`. Establish `hmem` using `mem_eig_iff (ht v₁ j).1 (ht v₁ j).2 hC.grp hU`. Establish `hf` using `finrank_eq_of_bij _ (GlobalTheory.OnTies.toForms_bijective (hrec.1.ok.laws v₁).p (fw2 p) j (z j)) _ _ hmem`. Establish `hd0 : O.d0 j = (finrank D.what₂.LL (GlobalTheory.CovTop.spType (R2 p) (F2 p) j) : ℝ)`. Unfold `OnObj.d0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `congrArg (fun n : ℕ => (n : ℝ)) hf`. Establish `hV : ∀ x ∈ GlobalTheory.CovTop.spType (R2 p) (F2 p) j, goodOp (R2 p) j x ∈ GlobalTheory.CovTop.spType (R2 p) (F2 p) j` using `fun x hx g => by`. Rewrite using `[← GlobalTheory.BigOn.goodOp_rho_comm hOk.irr j (g : p.P.Gp) x, hx g, map_smul]`. Establish `hsplit` using `finrank_inf_range_add_inf_ker (goodOp (R2 p) j) (fun x => LinearMap.congr_fun (goodOp_idem hOk.irr j) x) _ hV`. Establish `hD : (S2 p).D = finrank D.what₂.LL ((R2 p).WL (F2 p) false j)` using `(hRk.2 j).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbad' : (finrank D.what₂.LL (GlobalTheory.CovTop.spType (R2 p) (F2 p) j ⊓ LinearMap.ker (goodOp (R2 p) j) : Submodule D.what₂.LL _) : ℝ) ≤ del * finrank D.what₂.LL (GlobalTheory.CovTop.spType (R2 p) (F2 p) j)` using `hbad`. Establish `hs : (finrank D.what₂.LL ((R2 p).WL (F2 p) false j) : ℝ) + (finrank D.what₂.LL (GlobalTheory.CovTop.spType (R2 p) (F2 p) j ⊓ LinearMap.ker (goodOp (R2 p) j) : Submodule D.what₂.LL _) : ℝ) = finrank D.what₂.LL (GlobalTheory.CovTop.spType (R2 p) (F2 p) j)`. Conclude with `hsplit` after adjusting the coercions. Rewrite using `[hd0, hD]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem bad_rec_alt (hR : p.PointConditions') (hm : More p) {Pm : ParameterChoice' D L} {Tp : ParamsT D L Pm} {r : TwoRuns p.T p.P.Gp}
     {c : OnConst} {O : Obj p c} (hrec : RecAt p Tp r O) {del : ℝ} (j : Fin D.R.m) (hbad : BadW p j del) :
@@ -84,9 +84,9 @@ end GlobalTheory.BadOnRec
 namespace GlobalTheory.BigOn
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Introduce `hB`. Use `(hB.and GlobalTheory.T.badShareSize_bounds_along_family).imp fun Fm CH _ H => ?_` and prove the remaining obligations. Take `⟨⟨x1, H1⟩, ⟨x2, H2⟩⟩` from `H`. Use `⟨0, fun c _ _ => ⟨max x1 x2, fun x hx hle i p hR hm r O hrec => ?_⟩⟩` and prove the remaining obligations. Establish `hb` using `H1 x hx ((le_max_left _ _).trans hle) i p hR hm r hrec.1.ok hrec.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hq` using `(H2 x hx ((le_max_right _ _).trans hle) i).2.2.1`. Introduce `j`. Conclude with `⟨_, (Real.exp_pos _).le, hq, _root_.GlobalTheory.BadOnRec.bad_rec_alt hR hm hrec j (hb j)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem badSt_of_badW_alt : _root_.GlobalTheory.ShareOn.BadWeightStatement → _root_.GlobalTheory.BigOn.BadPlacesStatement := by
   intro hB

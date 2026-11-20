@@ -8,7 +8,7 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo
 open MeasureTheory GlobalTheory.ChartGlue GlobalTheory.Mean4O.CoverInt
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mean4O.CoverInt.mInt_eq_potMeas` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMIntEqDifferencePotentialMeasures.lean&line=165#L165)
 -/

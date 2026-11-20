@@ -8,9 +8,9 @@ open scoped TensorProduct
 namespace GlobalTheory.StabUnfold
 
 /- English proof (translation)
-Establish `hc : a⁻¹ * b ∈ Γ` using `Γ.mul_mem (Γ.inv_mem ha) hb`. Establish `hc1 : a⁻¹ * b ≠ 1` using `fun h => hab (inv_mul_eq_one.mp h)`. Establish `hset : (fun y => a⁻¹ * y) ⁻¹' fund ∩ (fun y => b⁻¹ * y) ⁻¹' fund ⊆ (fun y => a⁻¹ * y) ⁻¹' ((fun y => (a⁻¹ * b) * y) '' fund ∩ fund)`. Introduce and unpack `y ⟨h1, h2⟩`. Use `⟨⟨b⁻¹ * y, h2, ?_⟩, h1⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show a⁻¹ * b * (b⁻¹ * y) = a⁻¹ * y`. Use `group`. Use `measure_mono_null hset (nonpos_iff_eq_zero.mp ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem translate_inter_null {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (Γ : Subgroup G)
     (μ : Measure G) (fund : Set G) (hμ : ∀ γ ∈ Γ, μ.map (fun y => γ * y) = μ) (hf : MeasurableSet fund)
@@ -32,11 +32,11 @@ theorem translate_inter_null {G : Type} [Group G] [MeasurableSpace G] [Measurabl
     _ = 0 := by rw [hμ _ (Γ.inv_mem ha)]; exact hd _ hc hc1
 
 /- English proof (translation)
-Establish `hT : MeasurableSet ((fun y => a⁻¹ * y) ⁻¹' fund)` using `hf.preimage (measurable_const_mul _)`. Rewrite using `[withDensity_apply _ hT, ← lintegral_indicator hT, ← lintegral_indicator hf]`. Establish `hm : Measurable (((fun y => a⁻¹ * y) ⁻¹' fund).indicator Φ)` using `hΦ.indicator hT`. Establish `key` using `MeasureTheory.lintegral_map (μ := μ) hm (measurable_const_mul a)`. Rewrite `key` using `[hμa]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[key]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ fund`. Establish `hx' : a * x ∈ (fun y => a⁻¹ * y) ⁻¹' fund` using `by show a⁻¹ * (a * x) ∈ fund`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[inv_mul_cancel_left]` and apply the resulting hypothesis. Rewrite using `[Set.indicator_of_mem hx', Set.indicator_of_mem hx]`. Establish `hx' : a * x ∉ (fun y => a⁻¹ * y) ⁻¹' fund` using `by show a⁻¹ * (a * x) ∉ fund`. Rewrite using `[inv_mul_cancel_left]` and apply the resulting hypothesis. Rewrite using `[Set.indicator_apply, Set.indicator_apply, if_neg hx', if_neg hx]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 private theorem withDensity_preimage_inv_mul_eq_setLIntegral {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G]
     (μ : Measure G) (Φ : G → ENNReal) (hΦ : Measurable Φ) (a : G) (hμa : μ.map (fun y => a * y) = μ)
@@ -62,11 +62,11 @@ private theorem withDensity_preimage_inv_mul_eq_setLIntegral {G : Type} [Group G
     rw [Set.indicator_apply, Set.indicator_apply, if_neg hx', if_neg hx]
 
 /- English proof (translation)
-Establish `hT : MeasurableSet ((fun y => s * y) ⁻¹' Q)` using `hQ.preimage (measurable_const_mul _)`. Rewrite using `[withDensity_apply _ hT, withDensity_apply _ hQ, ← lintegral_indicator hT, ← lintegral_indicator hQ]`. Establish `key` using `MeasureTheory.lintegral_map (μ := μ) (hΦ.indicator hQ) (measurable_const_mul s)`. Rewrite `key` using `[hμs]`. Rewrite using `[key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : s * y ∈ Q`. Establish `hy' : y ∈ (fun y => s * y) ⁻¹' Q` using `hy`. Rewrite using `[Set.indicator_of_mem hy', Set.indicator_of_mem hy, hΦs]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : y ∉ (fun y => s * y) ⁻¹' Q` using `hy`. Rewrite using `[Set.indicator_apply, Set.indicator_apply, if_neg hy', if_neg hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem withDensity_preimage_mul_eq_of_invariant {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G]
     (μ : Measure G) (Φ : G → ENNReal) (hΦ : Measurable Φ) (s : G) (hμs : μ.map (fun y => s * y) = μ)
@@ -87,29 +87,25 @@ private theorem withDensity_preimage_mul_eq_of_invariant {G : Type} [Group G] [M
     rw [Set.indicator_apply, Set.indicator_apply, if_neg hy', if_neg hy]
 
 /- English proof (translation)
-Introduce `G _ _ _ Γ S μ fund Φ ι _ r hΓ hSΓ hμ hf hcov hd hΦ hΦS hr hrep`. Establish `hTm : ∀ a : G, MeasurableSet ((fun y => a⁻¹ * y) ⁻¹' fund)` using `fun a => hf.preimage (measurable_const_mul _)`. Establish `hSc : (S : Set G).Countable` using `hΓ.mono hSΓ`. Establish `hD0m : MeasurableSet (⋃ i, (fun y => (r i)⁻¹ * y) ⁻¹' fund)` using `MeasurableSet.iUnion fun i => hTm _`. Establish `hnull : ∀ a b : G, a ∈ Γ → b ∈ Γ → a ≠ b → μ.withDensity Φ ((fun y => a⁻¹ * y) ⁻¹' fund ∩ (fun y => b⁻¹ * y) ⁻¹' fund) = 0` using `fun a b ha hb hab => withDensity_absolutelyContinuous μ Φ (translate_inter_null Γ μ fund hμ hf hd ha hb hab)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : ∫⁻ g in fund, ∑' i, Φ (r i * g) ∂μ = μ.withDensity Φ (⋃ i, (fun y => (r i)⁻¹ * y) ⁻¹' fund)`. Rewrite using `[lintegral_tsum (f := fun i g => Φ (r i * g)) fun i => (hΦ.comp (measurable_const_mul (r i))).aemeasurable]`. Rewrite using `[measure_iUnion₀ ?_ fun i => (hTm _).nullMeasurableSet]`. Conclude with `tsum_congr fun i => (withDensity_preimage_inv_mul_eq_setLIntegral μ Φ hΦ (r i) (hμ _ (hr i)) fund hf).symm`. Introduce `i j hij`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hnull _ _ (hr i) (hr j) fun he => hij ?_` and prove the remaining obligations. Establish `h1 : r i * (r i)⁻¹ ∈ S` using `by simpa using S.one_mem`. Conclude with `(hrep _ (hr i)).unique h1 (by rw [he]; simpa using S.one_mem)`. Rewrite using `[hL]`. Unfold `GlobalTheory.FlagMeas.covol`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `le_iInf fun D => le_iInf fun hDm => le_iInf fun hDc => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `measure_mono fun x hx => ?_` and prove the remaining obligations. Take `⟨s, hs, hsx⟩` from `hDc x (Set.mem_univ x)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Set.mem_biUnion hs ⟨hx, hsx⟩`. Use `_ ≤ ∑' p : (S : Set G), μ.withDensity Φ ((⋃ i, (fun y => (r i)⁻¹ * y) ⁻¹' fund) ∩ (fun y => (p : G) * y) ⁻¹' D) := measure_biUnion_le _ hSc _`. Use `_ = ∑' p : (S : Set G), μ.withDensity Φ ((fun y => (p : G)⁻¹ * y) ⁻¹' (⋃ i, (fun y => (r i)⁻¹ * y) ⁻¹' fund) ∩ D) := by`. Use `tsum_congr fun p => ?_` and prove the remaining obligations. Establish `hpS : (p : G) ∈ S` using `p.2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← withDensity_preimage_mul_eq_of_invariant μ Φ hΦ (p : G) (hμ _ (hSΓ hpS)) (fun g => hΦS _ hpS g) _ ((hD0m.preimage (measurable_const_mul _)).inter hDm)]`. Use `congr 1`. Use extensionality with `y`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, inv_mul_cancel_left]`. Use `_ = μ.withDensity Φ (⋃ s ∈ (S : Set G), (fun y => s⁻¹ * y) ⁻¹' (⋃ i, (fun y => (r i)⁻¹ * y) ⁻¹' fund) ∩ D) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `(measure_biUnion₀ hSc ?_ fun s _ => ((hD0m.preimage (measurable_const_mul _)).inter hDm).nullMeasurableSet).symm` and prove the remaining obligations. Introduce `s hs s' hs' hne`. Establish `hsub : ((fun y => s⁻¹ * y) ⁻¹' (⋃ i, (fun y => (r i)⁻¹ * y) ⁻¹' fund) ∩ D) ∩ ((fun y => s'⁻¹ * y) ⁻¹' (⋃ i, (fun y => (r i)⁻¹ * y) ⁻¹' fund) ∩ D) ⊆ ⋃ i, ⋃ j, (fun y => (s * r i)⁻¹ * y) ⁻¹' fund ∩ (fun y => (s' * r j)⁻¹ * y) ⁻¹' fund`. Introduce and unpack `y ⟨⟨hy1, -⟩, hy2, -⟩`. Simplify using `only [Set.mem_preimage, Set.mem_iUnion] at hy1 hy2`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, hi⟩` from `hy1`. Take `⟨j, hj⟩` from `hy2`. Simplify using `only [Set.mem_iUnion, Set.mem_inter_iff, Set.mem_preimage, _root_.mul_inv_rev, mul_assoc]`. Conclude with `⟨i, j, hi, hj⟩`. Use `measure_mono_null hsub (measure_iUnion_null fun i => measure_iUnion_null fun j => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `hnull _ _ (Γ.mul_mem (hSΓ hs) (hr i)) (Γ.mul_mem (hSΓ hs') (hr j)) fun he => hne ?_` and prove the remaining obligations. Establish `h1 : s * r i * (r i)⁻¹ ∈ S` using `by rw [mul_inv_cancel_right]; exact hs`. Establish `h2 : s * r i * (r j)⁻¹ ∈ S` using `by rw [he, mul_inv_cancel_right]; exact hs'`. Establish `hij` using `(hrep _ (Γ.mul_mem (hSΓ hs) (hr i))).unique h1 h2`. Substitute `hij` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel he`. Use `_ ≤ μ.withDensity Φ D := measure_mono (Set.iUnion₂_subset fun _ _ => Set.inter_subset_right)`. Use `iInf_le_of_le _ (iInf_le_of_le hD0m (iInf_le _ ?_))` and prove the remaining obligations. Introduce `x _`. Take `⟨γ, hγ, hγx⟩` from `hcov x`.
-
-Take `⟨i, hi, -⟩` from `hrep γ⁻¹ (Γ.inv_mem hγ)`. Use `⟨(γ⁻¹ * (r i)⁻¹)⁻¹, S.inv_mem hi, Set.mem_iUnion.mpr ⟨i, ?_⟩⟩` and prove the remaining obligations. Use `show (r i)⁻¹ * ((γ⁻¹ * (r i)⁻¹)⁻¹ * x) ∈ fund`. Establish `e : (r i)⁻¹ * ((γ⁻¹ * (r i)⁻¹)⁻¹ * x) = γ * x` using `by group`. Rewrite using `[e]`.
-
-Conclude with `hγx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_tsum_cosets_eq_covol : ∀ (G : Type) [Group G] [MeasurableSpace G] [MeasurableMul G] (Γ S : Subgroup G) (μ : Measure G) (fund : Set G) (Φ : G → ENNReal) (ι : Type) [Countable ι] (r : ι → G), (Γ : Set G).Countable → S ≤ Γ → (∀ γ ∈ Γ, μ.map (fun y => γ * y) = μ) → MeasurableSet fund → (∀ y, ∃ γ ∈ Γ, γ * y ∈ fund) → (∀ γ ∈ Γ, γ ≠ 1 → μ ((fun y => γ * y) '' fund ∩ fund) = 0) → Measurable Φ → (∀ γ ∈ S, ∀ g, Φ (γ * g) = Φ g) → (∀ i, r i ∈ Γ) → (∀ γ ∈ Γ, ∃! i, γ * (r i)⁻¹ ∈ S) → ∫⁻ g in fund, ∑' i, Φ (r i * g) ∂μ = covol (S : Set G) (μ.withDensity Φ) Set.univ := by
   intro G _ _ _ Γ S μ fund Φ ι _ r hΓ hSΓ hμ hf hcov hd hΦ hΦS hr hrep

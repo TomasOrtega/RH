@@ -9,9 +9,9 @@ open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW GlobalT
 open scoped TensorProduct ENNReal NNReal Matrix
 
 /- English proof (translation)
-Establish `hB : B.map ψ = (B.map α).map φ`. Use extensionality with `i j`. Simplify using `[hφ]`. Use `congrArg (fun X => X.map φ) h` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hB, ← Matrix.transpose_map]`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isometry_map_ringHom {ι R S K : Type} [Fintype ι] [CommRing R] [CommRing S] [CommRing K]
     (φ : R →+* S) (α : K →+* R) (ψ : K →+* S) (hφ : ∀ x, φ (α x) = ψ x)
@@ -27,9 +27,7 @@ theorem isometry_map_ringHom {ι R S K : Type} [Fintype ι] [CommRing R] [CommRi
   simpa using this
 
 /- English proof (translation)
-Use `⟨fun ω w => ?_, fun ω => ?_⟩` and prove the remaining obligations. Conclude with `isometry_map_ringHom ((Pi.evalRingHom (fun _ : InfinitePlace F => ℝ) w).comp ((e : Ainf F →+* (InfinitePlace F → ℝ)).comp (fstA F : AF F →+* Ainf F))) (algebraMap F (AF F)) (ρ w) (fun x => by`. Establish `h1 : fstA F (algebraMap F (AF F) x) = algebraMap F (Ainf F) x` using `(fstA F).commutes x`. Simplify `he x w)` using `[h1]`. Use the proof step `(gmat (AF F) σ J b ω⁻¹) B (hB ω⁻¹)`.
-
-Conclude with `isometry_map_ringHom (sndA F : AF F →+* Af F) (algebraMap F (AF F)) (algebraMap F (Af F)) (fun x => (sndA F).commutes x) (gmat (AF F) σ J b ω⁻¹) B (hB ω⁻¹)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ginf_gfin_isometry (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E]
     (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (d : ℕ)

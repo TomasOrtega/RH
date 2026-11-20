@@ -14,16 +14,16 @@ section
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Simplify using `[weightSp, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_weightSpace_iff_diagonal (E : GLOps n K V) (mu : Fin n → ℤ) (x : V) :
     x ∈ weightSp E mu ↔ ∀ a, E a a x = (mu a : K) • x := by
   simp [weightSp, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Function.ne_iff.1 h`. Establish `e1` using `(mem_weightSpace_iff_diagonal E mu x).1 h1 a`. Establish `e2` using `(mem_weightSpace_iff_diagonal E ka x).1 h2 a`. Rewrite `e2` using `[e1]`. Establish `e3 : ((mu a : K) - (ka a : K)) • x = 0` using `by rw [sub_smul, e2, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `smul_eq_zero.1 e3 with h0 | h0` into its components or cases. Conclude with `absurd (by exact_mod_cast sub_eq_zero.1 h0) ha`. Conclude with `h0`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem weightSpace_disjoint [CharZero K] (E : GLOps n K V) {mu ka : Fin n → ℤ} (h : mu ≠ ka) {x : V}
     (h1 : x ∈ weightSp E mu) (h2 : x ∈ weightSp E ka) : x = 0 := by
@@ -45,9 +45,9 @@ def lagrangeFactor (E : GLOps n K V) (mu nu : Fin n → ℤ) : Module.End K V :=
         (nu (Classical.choose (Function.ne_iff.1 h)) : K) • (1 : Module.End K V))
 
 /- English proof (translation)
-Unfold `lagrangeFactor`. Use `split_ifs with h`. Conclude with `⟨1, by simp⟩`. Use `set a := Classical.choose (Function.ne_iff.1 h)`. Use `⟨((mu a : K) - (nu a : K))⁻¹ * ((ka a : K) - (nu a : K)), ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.smul_apply, LinearMap.sub_apply, Module.End.one_apply]`. Rewrite using `[(mem_weightSpace_iff_diagonal E ka x).1 hx a, ← sub_smul, smul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem lagrange_factor_acts_scalar (E : GLOps n K V) (mu nu ka : Fin n → ℤ) {x : V} (hx : x ∈ weightSp E ka) :
     ∃ c : K, lagrangeFactor E mu nu x = c • x := by
@@ -60,9 +60,9 @@ theorem lagrange_factor_acts_scalar (E : GLOps n K V) (mu nu ka : Fin n → ℤ)
     rw [(mem_weightSpace_iff_diagonal E ka x).1 hx a, ← sub_smul, smul_smul]
 
 /- English proof (translation)
-Unfold `lagrangeFactor`. Use `split_ifs with h`. Simplify using the standard rewrite rules. Establish `ha` using `Classical.choose_spec (Function.ne_iff.1 h) set a := Classical.choose (Function.ne_iff.1 h)`. Simplify using `only [LinearMap.smul_apply, LinearMap.sub_apply, Module.End.one_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(mem_weightSpace_iff_diagonal E mu x).1 hx a, ← sub_smul, smul_smul, inv_mul_cancel₀, one_smul]`. Introduce `h0`. Conclude with `ha (by exact_mod_cast (sub_eq_zero.1 h0).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lagrange_factor_fixes_weight [CharZero K] (E : GLOps n K V) (mu nu : Fin n → ℤ) {x : V} (hx : x ∈ weightSp E mu) :
     lagrangeFactor E mu nu x = x := by
@@ -77,7 +77,7 @@ theorem lagrange_factor_fixes_weight [CharZero K] (E : GLOps n K V) (mu nu : Fin
     exact ha (by exact_mod_cast (sub_eq_zero.1 h0).symm)
 
 /- English proof (translation)
-Unfold `lagrangeFactor`. Rewrite using `[dif_neg h]`. Use `set a := Classical.choose (Function.ne_iff.1 h)`. Simplify using `only [LinearMap.smul_apply, LinearMap.sub_apply, Module.End.one_apply]`. Rewrite using `[(mem_weightSpace_iff_diagonal E nu x).1 hx a, sub_self, smul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lagrange_factor_kills_other (E : GLOps n K V) {mu nu : Fin n → ℤ} (h : nu ≠ mu) {x : V} (hx : x ∈ weightSp E nu) :
     lagrangeFactor E mu nu x = 0 := by
@@ -88,7 +88,7 @@ theorem lagrange_factor_kills_other (E : GLOps n K V) {mu nu : Fin n → ℤ} (h
   rw [(mem_weightSpace_iff_diagonal E nu x).1 hx a, sub_self, smul_zero]
 
 /- English proof (translation)
-Unfold `lagrangeFactor`. Use `split_ifs with h`. Simplify using `using hx`. Simplify using `only [LinearMap.smul_apply, LinearMap.sub_apply, Module.End.one_apply]`. Conclude with `U.smul_mem _ (U.sub_mem (hU _ x hx) (U.smul_mem _ hx))`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lagrange_factor_preserves_stable (E : GLOps n K V) (mu nu : Fin n → ℤ) (U : Submodule K V)
     (hU : ∀ a, ∀ x ∈ U, E a a x ∈ U) {x : V} (hx : x ∈ U) : lagrangeFactor E mu nu x ∈ U := by
@@ -102,9 +102,9 @@ def lagrangeProjector (E : GLOps n K V) (mu : Fin n → ℤ) (L : List (Fin n �
   (L.map fun nu => lagrangeFactor E mu nu).prod
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact ⟨1, by simp [lagrangeProjector]⟩`. Consider the case `cons nu L ih`. Take `⟨c, hc⟩` from `ih`. Take `⟨d, hd⟩` from `lagrange_factor_acts_scalar E mu nu ka hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c * d, ?_⟩` and prove the remaining obligations. Establish `: lagrangeProjector E mu (nu :: L) x = lagrangeFactor E mu nu (lagrangeProjector E mu L x)`. Simplify using `[lagrangeProjector, Module.End.mul_apply]`. Rewrite using `[this, hc, map_smul, hd, smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lagrange_projector_acts_scalar (E : GLOps n K V) (mu ka : Fin n → ℤ) (L : List (Fin n → ℤ)) {x : V}
     (hx : x ∈ weightSp E ka) : ∃ c : K, lagrangeProjector E mu L x = c • x := by
@@ -119,9 +119,9 @@ theorem lagrange_projector_acts_scalar (E : GLOps n K V) (mu ka : Fin n → ℤ)
     rw [this, hc, map_smul, hd, smul_smul]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [lagrangeProjector]`. Consider the case `cons nu L ih`. Establish `: lagrangeProjector E mu (nu :: L) x = lagrangeFactor E mu nu (lagrangeProjector E mu L x)`. Simplify using `[lagrangeProjector, Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, ih, lagrange_factor_fixes_weight E mu nu hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lagrange_projector_fixes_weight [CharZero K] (E : GLOps n K V) (mu : Fin n → ℤ) (L : List (Fin n → ℤ)) {x : V}
     (hx : x ∈ weightSp E mu) : lagrangeProjector E mu L x = x := by
@@ -133,9 +133,9 @@ theorem lagrange_projector_fixes_weight [CharZero K] (E : GLOps n K V) (mu : Fin
     rw [this, ih, lagrange_factor_fixes_weight E mu nu hx]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp at hL`. Consider the case `cons nu L ih`. Establish `e : lagrangeProjector E mu (nu :: L) x = lagrangeFactor E mu nu (lagrangeProjector E mu L x)`. Simplify using `[lagrangeProjector, Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Break down `List.mem_cons.1 hL with rfl | hL'` into its components or cases. Take `⟨c, hc⟩` from `lagrange_projector_acts_scalar E mu ka L hx`. Rewrite using `[hc, map_smul, lagrange_factor_kills_other E h hx, smul_zero]`. Rewrite using `[ih hL', map_zero]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lagrange_projector_kills_other (E : GLOps n K V) {mu ka : Fin n → ℤ} (h : ka ≠ mu) (L : List (Fin n → ℤ)) (hL : ka ∈ L)
     {x : V} (hx : x ∈ weightSp E ka) : lagrangeProjector E mu L x = 0 := by
@@ -151,9 +151,9 @@ theorem lagrange_projector_kills_other (E : GLOps n K V) {mu ka : Fin n → ℤ}
     · rw [ih hL', map_zero]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simpa [lagrangeProjector] using hx`. Consider the case `cons nu L ih`. Establish `e : lagrangeProjector E mu (nu :: L) x = lagrangeFactor E mu nu (lagrangeProjector E mu L x)`. Simplify using `[lagrangeProjector, Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `lagrange_factor_preserves_stable E mu nu U hU ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lagrange_projector_preserves_stable (E : GLOps n K V) (mu : Fin n → ℤ) (L : List (Fin n → ℤ)) (U : Submodule K V)
     (hU : ∀ a, ∀ x ∈ U, E a a x ∈ U) {x : V} (hx : x ∈ U) : lagrangeProjector E mu L x ∈ U := by
@@ -172,13 +172,11 @@ section
 variable {n : ℕ} {K V : Type*} [Field K] [CharZero K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Establish `hx : x ∈ ⨆ mu ∈ t, weightSp E mu` using `ht Submodule.mem_top`. Use `Submodule.iSup_induction (fun mu => ⨆ (_ : mu ∈ t), weightSp E mu) (motive := fun x => ∑ mu ∈ t, lagrangeProjector E mu t.toList x = x) hx ?_ ?_ ?_` and prove the remaining obligations. Introduce `ka y hy`. Distinguish the cases in `hk : ka ∈ t`. Establish `hy' : y ∈ weightSp E ka` using `by simpa [hk] using hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_eq_single ka]`. Conclude with `lagrange_projector_fixes_weight E ka _ hy'`. Introduce `mu _ hne`. Conclude with `lagrange_projector_kills_other E (Ne.symm hne) _ (by simpa using hk) hy'`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `absurd hk h`. Establish `: y = 0` using `by simpa [hk] using hy`. Simplify using `[this]`. Simplify using the standard rewrite rules. Introduce `y z hy hz`.
-
-Simplify using `only [map_add, Finset.sum_add_distrib, hy, hz]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_lagrange_projectors_eq_self (E : GLOps n K V) (t : Finset (Fin n → ℤ))
     (ht : (⊤ : Submodule K V) ≤ ⨆ mu ∈ t, weightSp E mu) (x : V) :
@@ -201,13 +199,11 @@ theorem sum_lagrange_projectors_eq_self (E : GLOps n K V) (t : Finset (Fin n →
     simp only [map_add, Finset.sum_add_distrib, hy, hz]
 
 /- English proof (translation)
-Establish `hx : x ∈ ⨆ mu ∈ t, weightSp E mu` using `ht Submodule.mem_top`. Use `Submodule.iSup_induction (fun mu => ⨆ (_ : mu ∈ t), weightSp E mu) (motive := fun x => lagrangeProjector E mu t.toList x ∈ weightSp E mu) hx ?_ ?_ ?_` and prove the remaining obligations. Introduce `ka y hy`. Distinguish the cases in `hk : ka ∈ t`. Establish `hy' : y ∈ weightSp E ka` using `by simpa [hk] using hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hkm : ka = mu`. Substitute `hkm` using the available equality. Rewrite using `[lagrange_projector_fixes_weight E ka _ hy']`. Conclude with `hy'`. Rewrite using `[lagrange_projector_kills_other E hkm _ (by simpa using hk) hy']; exact Submodule.zero_mem _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: y = 0` using `by simpa [hk] using hy`. Simplify using `[this]`. Simplify using the standard rewrite rules. Introduce `y z hy hz`. Rewrite using `[map_add]`.
-
-Conclude with `Submodule.add_mem _ hy hz`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lagrange_projector_mem_weightSpace (E : GLOps n K V) (t : Finset (Fin n → ℤ))
     (ht : (⊤ : Submodule K V) ≤ ⨆ mu ∈ t, weightSp E mu) (mu : Fin n → ℤ) (x : V) :
@@ -229,9 +225,9 @@ theorem lagrange_projector_mem_weightSpace (E : GLOps n K V) (t : Finset (Fin n 
     rw [map_add]; exact Submodule.add_mem _ hy hz
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hk`. Apply `h0` to reduce the goal to its premises. Rewrite using `[← sum_lagrange_projectors_eq_self E t ht y]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `mu hmu`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc⟩` from `lagrange_projector_acts_scalar E mu ka t.toList hy`. Establish `h1` using `lagrange_projector_mem_weightSpace E t ht mu y`. Establish `h2 : lagrangeProjector E mu t.toList y ∈ weightSp E ka` using `by rw [hc]; exact Submodule.smul_mem _ _ hy`. Conclude with `weightSpace_disjoint E (by rintro rfl; exact hk hmu) h1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nonzero_weight_mem_support (E : GLOps n K V) (t : Finset (Fin n → ℤ))
     (ht : (⊤ : Submodule K V) ≤ ⨆ mu ∈ t, weightSp E mu) {ka : Fin n → ℤ} {y : V}
@@ -247,9 +243,9 @@ theorem nonzero_weight_mem_support (E : GLOps n K V) (t : Finset (Fin n → ℤ)
   exact weightSpace_disjoint E (by rintro rfl; exact hk hmu) h1 h2
 
 /- English proof (translation)
-Take `⟨x, hx, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `h0` to reduce the goal to its premises. Rewrite using `[← sum_lagrange_projectors_eq_self E t ht x]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `mu hmu`. Assume the negation of the conclusion as `hP`. Conclude with `hcon mu hmu _ (lagrange_projector_preserves_stable E mu _ U hU hx) hP (lagrange_projector_mem_weightSpace E t ht mu x)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem stable_subspace_has_weight_vector (E : GLOps n K V) (t : Finset (Fin n → ℤ))
     (ht : (⊤ : Submodule K V) ≤ ⨆ mu ∈ t, weightSp E mu) (U : Submodule K V)
@@ -267,13 +263,13 @@ theorem stable_subspace_has_weight_vector (E : GLOps n K V) (t : Finset (Fin n �
 
 omit [CharZero K] in
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_weightSpace_iff_diagonal]`. Introduce `c`. Establish `h` using `congrArg (fun f : Module.End K V => f x) (hrel c c a b)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Rewrite `h` using `[hx c, map_smul, sub_eq_iff_eq_add]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Distinguish the cases in `hca : c = a`. Substitute `hca` using the available equality. Establish `hbc : ¬ b = c` using `fun h => hab h.symm`. Simplify using `only [if_true, if_neg hbc, LinearMap.zero_apply, sub_zero, rootW, Pi.add_apply, Pi.sub_apply, Pi.single_eq_same, Pi.single_eq_of_ne hab]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Rewrite using `[add_smul, one_smul, add_comm]`. Distinguish the cases in `hcb : c = b`. Substitute `hcb` using the available equality. Simplify using `only [if_neg hca, if_true, LinearMap.zero_apply, zero_sub, rootW, Pi.add_apply, Pi.sub_apply, Pi.single_eq_same, Pi.single_eq_of_ne hca]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Rewrite using `[add_smul, neg_smul, one_smul, add_comm]`. Establish `hbc : ¬ b = c` using `fun h => hcb h.symm`. Simplify using `only [if_neg hca, if_neg hbc, LinearMap.zero_apply, sub_zero, rootW, Pi.add_apply, Pi.sub_apply, Pi.single_eq_of_ne hca, Pi.single_eq_of_ne hcb, zero_add, add_zero]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem raising_shifts_weight_by_root (E : GLOps n K V)
     (hrel : ∀ a b c d, E a b * E c d - E c d * E a b = (if b = c then E a d else 0) - (if d = a then E c b else 0))
@@ -305,7 +301,7 @@ theorem raising_shifts_weight_by_root (E : GLOps n K V)
 def weightHeight (mu : Fin n → ℤ) : ℤ := ∑ c : Fin n, ((c : ℕ) : ℤ) * mu c
 
 /- English proof (translation)
-Simplify using `[weightHeight, rootW, mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, Pi.single_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weightHeight_add_root (mu : Fin n → ℤ) (a b : Fin n) :
     weightHeight (mu + rootW a b) = weightHeight mu + ((a : ℕ) : ℤ) - ((b : ℕ) : ℤ) := by
@@ -313,11 +309,11 @@ theorem weightHeight_add_root (mu : Fin n → ℤ) (a b : Fin n) :
   ring
 
 /- English proof (translation)
-Establish `hT : (t.filter (fun mu => ∃ x ∈ U, x ≠ 0 ∧ x ∈ weightSp E mu)).Nonempty`. Take `⟨mu, hmu, h⟩` from `stable_subspace_has_weight_vector E t ht U (fun a => hU a a) hne`. Conclude with `⟨mu, Finset.mem_filter.2 ⟨hmu, h⟩⟩`. Take `⟨mu, hmu, hmin⟩` from `Finset.exists_min_image _ weightHeight hT`. Take `⟨_, x, hxU, hx0, hxw⟩` from `Finset.mem_filter.1 hmu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨mu, x, hxU, hx0, hxw, fun a b hab => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hy`. Establish `hw` using `raising_shifts_weight_by_root E hrel (ne_of_lt hab) hxw`. Establish `hin` using `nonzero_weight_mem_support E t ht hw hy`. Establish `h1` using `hmin _ (Finset.mem_filter.2 ⟨hin, _, hU a b x hxU, hy, hw⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[weightHeight_add_root]`. Establish `h2 : ((a : ℕ) : ℤ) < ((b : ℕ) : ℤ)` using `by exact_mod_cast hab`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_highest_weight_vector (E : GLOps n K V)
     (hrel : ∀ a b c d, E a b * E c d - E c d * E a b = (if b = c then E a d else 0) - (if d = a then E c b else 0))
@@ -340,7 +336,7 @@ theorem exists_highest_weight_vector (E : GLOps n K V)
 
 omit [CharZero K] in
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qf30.isotypic_stable_under_operators .. | (apply UpperTheory.Reformulated.B.Qf30.isotypic_stable_under_operators <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qf30.isotypic_stable_under_operators <;> assumption) | (apply @Upp …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isotypic_stable_under_operators (E : GLOps n K V) (mu : Fin n → ℤ) (a b : Fin n) {x : V} (hx : x ∈ isoSub E mu) :
     E a b x ∈ isoSub E mu := by
@@ -349,15 +345,13 @@ theorem isotypic_stable_under_operators (E : GLOps n K V) (mu : Fin n → ℤ) (
 end
 
 /- English proof (translation)
-Take `⟨hrel, _, hw⟩` from `hE`. Establish `hst : ∀ a b, ∀ x ∈ (⨆ mu : Fin n → ℤ, isoSub E mu), E a b x ∈ (⨆ mu : Fin n → ℤ, isoSub E mu)`. Introduce `a b x hx`. Use `Submodule.iSup_induction (fun mu => isoSub E mu) (motive := fun x => E a b x ∈ (⨆ mu : Fin n → ℤ, isoSub E mu)) hx ?_ ?_ ?_` and prove the remaining obligations. Introduce `mu y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.mem_iSup_of_mem mu (isotypic_stable_under_operators E mu a b hy)`. Simplify using the standard rewrite rules. Introduce `y z hy hz`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W', hc, hW'⟩` from `h2 K V n E ⟨hrel, ‹_›, hw⟩ _ hst`. Take `⟨t, ht⟩` from `CompleteLattice.IsCompactElement.exists_finset_of_le_iSup (Submodule K V) ((Submodule.fg_iff_compact (⊤ : Submodule K V)).1 Module.Finite.fg_top) (fun mu => weightSp E mu) (le_of_eq hw.symm)`. Establish `hbot : W' = ⊥`. Assume the negation of the conclusion as `hne`. Take `⟨mu, x, hxW, hx⟩` from `exists_highest_weight_vector E hrel t ht W' hW' hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : x ∈ (⨆ mu : Fin n → ℤ, isoSub E mu)` using `Submodule.mem_iSup_of_mem mu (Submodule.subset_span ⟨1, Submonoid.one_mem _, x, hx, rfl⟩)`. Establish `h0 : x ∈ (⨆ mu : Fin n → ℤ, isoSub E mu) ⊓ W'` using `⟨h1, hxW⟩`. Rewrite `h0` using `[hc.inf_eq_bot]`. Conclude with `hx.1 (by simpa using h0)`. Use `hc.sup_eq_top` as an intermediate fact.
-
-Rewrite `this` using `[hbot, sup_bot_eq]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isotypic_subspaces_span_top (D : Formalism.BasicNotions.D7) (h2 : adm2 D) (K V : Type) [Field K] [CharZero K] [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] (n : ℕ) (E : GLOps n K V) (hE : IsGLRep E) :
@@ -388,13 +382,11 @@ theorem isotypic_subspaces_span_top (D : Formalism.BasicNotions.D7) (h2 : adm2 D
   rwa [hbot, sup_bot_eq] at this
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ n E hE lam e he Y hY`. Establish `hY' : Y ∈ (⨆ mu : Fin n → ℤ, isoSub E mu)`. Rewrite using `[isotypic_subspaces_span_top D h2 K V n E hE]`. Conclude with `Submodule.mem_top`. Rewrite using `[← hY]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.iSup_induction (fun mu => isoSub E mu) (motive := fun y => e y ∈ isoSub E lam) hY' ?_ ?_ ?_` and prove the remaining obligations. Introduce `mu y hy`. Distinguish the cases in `hm : mu = lam`. Substitute `hm` using the available equality. Rewrite using `[he.1 y hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Rewrite using `[he.2 mu hm y hy]`. Conclude with `Submodule.zero_mem _`. Simplify using the standard rewrite rules. Introduce `y z hy hz`.
-
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isotypic_projector_fixed_mem (D : Formalism.BasicNotions.D7) (h2 : adm2 D) : IsotypicProjectorFixedMem := by
   intro K V _ _ _ _ _ n E hE lam e he Y hY

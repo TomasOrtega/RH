@@ -12,11 +12,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BcPolar
 
 /- English proof (translation)
-Take `⟨v₀⟩ : Nonempty (InfinitePlace (maximalRealSubfield K))` from `inferInstance`. Establish `hval : ∀ (k : ℕ) v, (χ * quadChar K ^ k).locInf v (-1) = χ.locInf v₀ (-1) * (-1) ^ k` using `fun k v => by`. Rewrite using `[HChar.locInf_mul, locInf_pow, quadChar_locInf, h v v₀]`. Establish `h2 : χ.locInf v₀ (-1) ^ 2 = 1` using `by rw [← map_pow, neg_one_sq, map_one]`. Establish `h3 : ((χ.locInf v₀ (-1) : ℂˣ) : ℂ) ^ 2 = 1` using `by rw [← Units.val_pow_eq_pow_val, h2, Units.val_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hval, Units.ext_iff, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_zpow_eq_zpow_val, Units.val_neg, Units.val_one]`. Apply the tactic sequence `rcases sq_eq_one_iff.1 h3 with e | e <;> rcases Int.even_or_odd b with hb' | hb' <;> rw [e, hb'.neg_one_zpow]`. Conclude with `⟨0, fun _ => by simp⟩`. Conclude with `⟨1, fun _ => by simp⟩`. Conclude with `⟨1, fun _ => by simp⟩`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_sign_twist {K : Type} [Field K] [NumberField K] [IsCMField K] (χ : HChar (maximalRealSubfield K))
     (h : ∀ v v' : InfinitePlace (maximalRealSubfield K), χ.locInf v (-1) = χ.locInf v' (-1)) (b : ℤ) :
@@ -35,9 +35,9 @@ theorem exists_sign_twist {K : Type} [Field K] [NumberField K] [IsCMField K] (χ
   · exact ⟨0, fun _ => by simp⟩
 
 /- English proof (translation)
-Introduce `hL F K _ _ _ _ _ _ _ h2 a ha π χ P hreg hpol hBC`. Use `⟨(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨m, hm, hnd, hz⟩` from `hreg (InfinitePlace.mk (τ.comp (algebraMap F K)))`. Rewrite using `[CG.HasInfChar.infChar_eq (π := CG.mk P) (hBC.inf τ m hm)]`. Conclude with `⟨hnd, hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨χ', hs, hd⟩` from `GlobalTheory.T.base_change_dual_compatible hL.aut.js.1 hL.aut.gk F K h2 a ha π χ P hpol hBC`. Take `⟨k, hk⟩` from `GlobalTheory.BcPolar.exists_sign_twist χ' hs a`. Use `⟨χ' * quadChar K ^ k, fun v => (hk v).trans (zpow_natCast _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, compNorm_quadChar, one_pow, mul_one]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem bc_regAlg_polarizedPair : GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (F K : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field K] [NumberField K] [IsCMField K] [Algebra F K], Module.finrank F K = 2 → ∀ (a : ℕ), 1 ≤ a → ∀ (π : TR.CuspSub F a) (χ : HChar F) (P : CuspSub K a), π.IsRegAlg → π.Polarized χ → IsBC π P → (CG.mk P).IsRegAlg ∧ ∃ χ' : HChar (maximalRealSubfield K), GlobalTheory.ContraPair.PolarizedPair P χ' := by
   intro hL F K _ _ _ _ _ _ _ h2 a ha π χ P hreg hpol hBC

@@ -40,7 +40,7 @@ theorem J_eq {p q r s : ℕ} {T0 : GrpData (p * r + q * s) (p * s + q * r)} {T1 
     {T2 : GrpData r s} (F : FockData T0 T1 T2) : F.J = jointHarm p q r s := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isIntw_iff {p q r s : ℕ} {T0 : GrpData (p * r + q * s) (p * s + q * r)} {T1 : GrpData p q}
     {T2 : GrpData r s} (F : FockData T0 T1 T2) (M1 : GKMod p q) (M2 : GKMod r s)
@@ -48,7 +48,7 @@ theorem isIntw_iff {p q r s : ℕ} {T0 : GrpData (p * r + q * s) (p * s + q * r)
   Iff.rfl
 
 /- English proof (translation)
-Introduce `α β`. Conclude with `F.fockIP α β`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isFockIsometry_of_fockData {p q r s : ℕ} {T0 : GrpData (p * r + q * s) (p * s + q * r)}
     {T1 : GrpData p q} {T2 : GrpData r s} (F : FockData T0 T1 T2) : IsFockIP F.ι := by

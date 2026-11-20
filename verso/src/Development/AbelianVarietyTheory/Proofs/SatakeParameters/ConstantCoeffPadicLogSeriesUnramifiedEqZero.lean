@@ -21,7 +21,7 @@ open MvPowerSeries
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.BeProps.coeff_subst_range ha f 0`. Simplify `h` using `[hf]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem constantCoeff_psubst {K κ : Type} [CommRing K] {a : MvPowerSeries κ K} (ha : constantCoeff a = 0)
     {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) : constantCoeff (PowerSeries.subst a f) = 0 := by
@@ -29,25 +29,25 @@ theorem constantCoeff_psubst {K κ : Type} [CommRing K] {a : MvPowerSeries κ K}
   simpa [hf] using h
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Simplify using `[FormalGroupSystem.logF]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_padicLogSeries_unramified_eq_zero : PowerSeries.constantCoeff (FormalGroupSystem.logF p) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]
   simp [FormalGroupSystem.logF]
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Simplify using `[Formalism.MainNotions.GL3Theta.logF]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_logF_C : PowerSeries.constantCoeff (Formalism.MainNotions.GL3Theta.logF p) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]
   simp [Formalism.MainNotions.GL3Theta.logF]
 
 /- English proof (translation)
-Establish `hf' : constantCoeff (MvPowerSeries.map (Formalism.L2.G.Pend.k0ToC p) f) = 0`. Simplify using `[hf]`. Use extensionality with `n`. Rewrite using `[coeff_map]`. Unfold `product_zeroth_first_parts.expS`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[GlobalTheory.BeProps.coeff_subst_range hf']`. Establish `hd : (n.sum fun _ k => k) = n.degree`. Simplify using `[Finsupp.sum, Finsupp.degree_apply]`. Rewrite using `[hd]`. Express the relevant statement in the definitionally equal form `Formalism.L2.G.Pend.k0ToC p (∑ k ∈ Finset.range (n.degree + 1), ((k.factorial : FormalGroupSystem.K0 p))⁻¹ * MvPowerSeries.coeff n (f ^ k)) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀, map_natCast, PowerSeries.coeff_exp, ← map_pow, coeff_map]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_expS {ι : Type} {f : MvPowerSeries ι (FormalGroupSystem.K0 p)} (hf : constantCoeff f = 0) :
     MvPowerSeries.map (Formalism.L2.G.Pend.k0ToC p) (FormalGroupSystem.expS p f) =
@@ -69,11 +69,11 @@ theorem map_expS {ι : Type} {f : MvPowerSeries ι (FormalGroupSystem.K0 p)} (hf
   simp
 
 /- English proof (translation)
-Establish `hs : HasSubst η` using `hasSubst_of_constantCoeff_zero hη`. Establish `h2 : HasSubst (![MvPowerSeries.X i, MvPowerSeries.X j] : Fin 2 → MvPowerSeries Eσ (FormalGroupSystem.K0 p))`. Use `hasSubst_of_constantCoeff_zero fun s => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases s <;> simp`. Establish `h2' : HasSubst (fun s => MvPowerSeries.map (Formalism.L2.G.Pend.k0ToC p) ((![MvPowerSeries.X i, MvPowerSeries.X j] : Fin 2 → MvPowerSeries Eσ (FormalGroupSystem.K0 p)) s))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `hasSubst_of_constantCoeff_zero fun s => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases s <;> simp`. Unfold `sub2 GlobalTheory.ThBe0.at2`. Rewrite using `[map_subst h2, subst_comp_subst_apply h2' hs]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `s`. Apply the tactic sequence `fin_cases s <;> simp [subst_X hs]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst_bivariateSeries_difference_pair {τ : Type} {Eσ : Type} [Finite Eσ] (be : MvPowerSeries (Fin 2) (FormalGroupSystem.K0 p))
     {η : Eσ → MvPowerSeries τ ℂ_[p]} (hη : ∀ i, constantCoeff (η i) = 0) (i j : Eσ) :
@@ -95,25 +95,25 @@ theorem subst_bivariateSeries_difference_pair {τ : Type} {Eσ : Type} [Finite E
   fin_cases s <;> simp [subst_X hs]
 
 /- English proof (translation)
-Establish `hJs : HasSubst J` using `hasSubst_of_constantCoeff_zero hJ`. Establish `hξs : HasSubst ξ` using `hasSubst_of_constantCoeff_zero hξ`. Establish `ha` using `hasSubst_coordZ (r0 := r0) (r1 := r1) B`. Establish `ha0 : ∀ i, constantCoeff (coordZ B (FormalGroupSystem.K0 p) 1 i : MvPowerSeries (Zidx n' r0 r1) (FormalGroupSystem.K0 p)) = 0` using `fun i => (ha.const_coeff i).eq_zero`. Establish `ham : HasSubst (fun i => MvPowerSeries.map (Formalism.L2.G.Pend.k0ToC p) (coordZ B (FormalGroupSystem.K0 p) 1 i : MvPowerSeries (Zidx n' r0 r1) (FormalGroupSystem.K0 p)))` using `hasSubst_of_constantCoeff_zero fun i => by simp [ha0 i]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη0 : ∀ i, constantCoeff (PowerSeries.subst (ξ i) (Formalism.MainNotions.GL3Theta.logF p)) = 0` using `fun i => constantCoeff_psubst (hξ i) constantCoeff_logF_C`. Establish `hηs : HasSubst (fun i => PowerSeries.subst (ξ i) (Formalism.MainNotions.GL3Theta.logF p))` using `hasSubst_of_constantCoeff_zero hη0`. Establish `hbe0 : constantCoeff be = 0`. Assume the negation of the conclusion as `hc`. Use `(hbe.ab 0 (by simpa using hc)).1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Simplify using `at this`. Establish `hsub0 : ∀ e : Eidx n' r0 r1, constantCoeff (sub2 p be (MvPowerSeries.X (Sum.inl e) : MvPowerSeries (Eidx n' r0 r1 ⊕ Eidx n' r0 r1) (FormalGroupSystem.K0 p)) (MvPowerSeries.X (Sum.inr e))) = 0`. Introduce `e`. Establish `h2 : ∀ s, constantCoeff ((![MvPowerSeries.X (Sum.inl e), MvPowerSeries.X (Sum.inr e)] : Fin 2 → MvPowerSeries (Eidx n' r0 r1 ⊕ Eidx n' r0 r1) (FormalGroupSystem.K0 p)) s) = 0`. Apply the tactic sequence `intro s; fin_cases s <;> simp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero h2) h2 hbe0`. Use `set Φ : MvPowerSeries (Eidx n' r0 r1 ⊕ Eidx n' r0 r1) (FormalGroupSystem.K0 p) := ∑ e : Eidx n' r0 r1, sub2 p be (MvPowerSeries.X (Sum.inl e)) (MvPowerSeries.X (Sum.inr e)) with hΦ`. Establish `hΦ0 : constantCoeff (-Φ) = 0`. Rewrite using `[map_neg, hΦ, map_sum, Finset.sum_eq_zero fun e _ => hsub0 e, neg_zero]`. Establish `hΦm : constantCoeff (MvPowerSeries.map (Formalism.L2.G.Pend.k0ToC p) (-Φ)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[constantCoeff_map, hΦ0, map_zero]`. Establish `hexp : MvPowerSeries.subst (fun i => PowerSeries.subst (ξ i) (Formalism.MainNotions.GL3Theta.logF p)) (MvPowerSeries.map (Formalism.L2.G.Pend.k0ToC p) (FormalGroupSystem.expS p (-Φ))) = product_zeroth_first_parts.expS ℂ_[p] (-(∑ e : Eidx n' r0 r1, GlobalTheory.ThBe0.at2 (MvPowerS …`. Rewrite using `[map_expS hΦ0]`. Unfold `product_zeroth_first_parts.expS`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.subst_exp _ hη0 hΦm]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← coe_substAlgHom hηs, map_neg, map_neg, hΦ, map_sum, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[coe_substAlgHom hηs]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `subst_bivariateSeries_difference_pair be hη0 _ _`. Establish `hL0 : ∀ i : Eidx n' r0 r1 ⊕ Eidx n' r0 r1, constantCoeff (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Eidx n' r0 r1 ⊕ Eidx n' r0 r1) (FormalGroupSystem.K0 p)) (FormalGroupSystem.logF p)) = 0` using `fun i => constantCoeff_psubst (by simp) constantCoeff_padicLogSeries_unramified_eq_zero`. Establish `hLm : ∀ i : Eidx n' r0 r1 ⊕ Eidx n' r0 r1, MvPowerSeries.map (Formalism.L2.G.Pend.k0ToC p) (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Eidx n' r0 r1 ⊕ Eidx n' r0 r1) (FormalGroupSystem.K0 p)) (FormalGroupSystem.logF p)) = PowerSeries.subst (MvPowerSeries.X i) (Formalis …`. Introduce `i`. Rewrite using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero (by simp)), map_X, Formalism.L2.G.Pend.logF_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hLc : ∀ i : Eidx n' r0 r1 ⊕ Eidx n' r0 r1, constantCoeff (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Eidx n' r0 r1 ⊕ Eidx n' r0 r1) ℂ_[p]) (Formalism.MainNotions.GL3Theta.logF p)) = 0` using `fun i => constantCoeff_psubst (by simp) constantCoeff_logF_C`. Establish `hcof : MvPowerSeries.subst ξ (MvPowerSeries.map (Formalism.L2.G.Pend.k0ToC p) (inParam p U)) = MvPowerSeries.subst (fun i => PowerSeries.subst (ξ i) (Formalism.MainNotions.GL3Theta.logF p)) (MvPowerSeries.map (Formalism.L2.G.Pend.k0ToC p) U)`. Unfold `inParam`. Rewrite using `[map_subst (hasSubst_of_constantCoeff_zero hL0)]`. Repeatedly rewrite using `[hLm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero hLc) hξs]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[GlobalTheory.BeProps.subst_psubst hξs (by simp), subst_X hξs]`. Rewrite using `[hcof, ← hexp, ← subst_mul hηs, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Unfold `thOne ThZ`. Rewrite using `[map_subst ha, subst_comp_subst_apply ham hJs]`. Repeatedly rewrite using `[h]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem read_thOne {n' r0 r1 : ℕ} {κ : Type} (B : OmBasis p n') (be : MvPowerSeries (Fin 2) (FormalGroupSystem.K0 p)) (hbe : BeProp p be)
     (U : MvPowerSeries (Eidx n' r0 r1 ⊕ Eidx n' r0 r1) (FormalGroupSystem.K0 p)) (J : Zidx n' r0 r1 → MvPowerSeries κ ℂ_[p])

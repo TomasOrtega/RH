@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Cryst
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.CrystallineTowers.LocTowerHolds
 
 /- English proof (translation)
-Introduce `hFin hCr E Ω _ _ _ _ _ l _ H θ hN a ρ₀ hMat w hw n ϑ hCong P AI hT A hA O _ _ _ Bw hj`. Take `⟨hD, hDV, hf, hnorm, hcard, C, hOnto, hCg⟩` from `UpperTheory.Ru.crystallineComparison.congBC E Ω l _ H θ w hw n ϑ hCong A hA O Bw hj`. Take `⟨ρ₁, hM₁, hρ₁⟩` from `UpperTheory.Gal.Seam.locTower_holds l E ↥Bw.Kw.1 Ω _ (UpperTheory.Gal.Seam.kOf Bw) Bw.j (fun _ => rfl) H hN _ θ a ρ₀ hMat`. Take `⟨V, i₁, i₂, i₃, ρ, T, b, hcr, hann, hinj, hact, heig⟩` from `UpperTheory.Ru.crystallineComparison.geoLoc hFin hCr l P AI hT Bw.Kw _ hf hcard (UpperTheory.Gal.Int.Geo.bcAlong H (UpperTheory.Gal.Seam.kOf Bw)) θ (UpperTheory.Gal.Seam.niceBc _ _ (UpperTheory.Gal.Seam.kOf Bw) H hN) C hOnto n ϑ hCg a ρ₁ hM₁`. Rewrite using `[hnorm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨V, i₁, i₂, i₃, ρ, T, b, hcr, hann, hinj, fun g x => ?_, heig⟩` and prove the remaining obligations. Establish `h` using `hact (Bw.e g) x`. Rewrite `h` using `[hρ₁ (g : Ω ≃ₐ[E] Ω) _ fun y => Bw.e_comm g y]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.Gal.Int.Geo.geoSide_of :
     UpperTheory.Gal.crystallineComparison.Br.FinAll → CrystallineSemistableComparison.SmoothModelCrystalline → UpperTheory.Ru.crystallineComparison.GeoSide := by

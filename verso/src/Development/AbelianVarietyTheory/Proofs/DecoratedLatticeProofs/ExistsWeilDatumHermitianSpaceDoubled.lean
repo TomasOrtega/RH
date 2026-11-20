@@ -14,9 +14,9 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Core.Rk
 
 /- English proof (translation)
-Introduce `H D ψ A B χA χB om h`. Establish `h0 : ResEta D 1 0`. Establish `h1` using `resEta_parity (m := 0) (resEta_mul h.resS (resEta_inv h.resS)) (by omega)`. Rewrite `h1` using `[show χA * χA⁻¹ = 1 from mul_inv_cancel χA]`. Then use the resulting hypothesis. Establish `h2 : IsHeckeChar D 1` using `⟨continuous_const, fun _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `H D ψ (dblSp A) B 1 χB h.1 h2 h.3 (resEta_parity h0 (by change 0 % 2 = (A.rank + A.rank) % 2; omega)) h.resT`.
+A detailed English derivation is pending.
 -/
 theorem exists_doubled_weilDatum : GlobalTheory.Published.WeilRepresentationUnitaryPair → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) (om : WRep A B), IsWeilDatumO ψ A B χA χB om → ∃ omh : WRep (dblSp A) B, IsWeilDatumO ψ (dblSp A) B 1 χB omh := by
   intro H D ψ A B χA χB om h

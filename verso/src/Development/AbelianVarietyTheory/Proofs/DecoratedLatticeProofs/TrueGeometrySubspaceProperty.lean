@@ -15,19 +15,15 @@ noncomputable section
 namespace GlobalTheory.TopVol
 
 /- English proof (translation)
-Establish `hT` using `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Use `haveI := hT.1`. Use `haveI := hT.2.1`. Use `haveI := hT.2.2.1`. Use `haveI := hT.2.2.2.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `haveI := hT.2.2.2.2.1`. Use `haveI := v.haar`. Use `haveI : (GinfC V).Normal := inferInstanceAs ((finHom V).ker.Normal)`. Set `K : Subgroup (GA D V)` to `GinfC V ⊔ U`. Establish `hKset : (K : Set (GA D V)) = {g | ∃ k ∈ GinfC V, ∃ κ ∈ U, g = k * κ}` using `by show ((GinfC V ⊔ U : Subgroup (GA D V)) : Set (GA D V)) = _`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Subgroup.normal_mul]`. Use extensionality with `g`. Simplify using `only [Set.mem_mul, SetLike.mem_coe, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, κ, hκ, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨k, hk, κ, hκ, rfl⟩`. Introduce and unpack `⟨k, hk, κ, hκ, rfl⟩`. Conclude with `⟨k, hk, κ, hκ, rfl⟩`. Establish `hvol : GlobalTheory.SeeSaw.volLev v U = (v.μ K).toReal`. Unfold `GlobalTheory.SeeSaw.volLev`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hKset]`. Establish `hKc : IsCompact (K : Set (GA D V))` using `by show IsCompact ((GinfC V ⊔ U : Subgroup (GA D V)) : Set (GA D V))`. Rewrite using `[Subgroup.normal_mul]`. Conclude with `hK.mul hc`. Establish `hKo : IsOpen (K : Set (GA D V))`.
-
-Establish `ho' : IsOpen (((U.subgroupOf (GfC V)).comap (GlobalTheory.AutMult.toFin V) : Subgroup (GA D V)) : Set (GA D V))` using `ho.preimage (GlobalTheory.AutMult.continuous_toFin V)`. Use `Subgroup.isOpen_mono (fun g hg => ?_) ho'` and prove the remaining obligations. Use `show g ∈ (K : Set (GA D V))`. Rewrite using `[hKset]`. Conclude with `⟨GlobalTheory.AutMult.toInf V g, (GlobalTheory.AutMult.toInf V g).2, GlobalTheory.AutMult.toFin V g, Subgroup.mem_subgroupOf.mp (Subgroup.mem_comap.mp hg), (GlobalTheory.AutMult.toInf_mul_toFin g).symm⟩`.
-
-Establish `hKfin : v.μ K ≠ ⊤` using `hKc.measure_lt_top.ne`. Establish `hKpos : 0 < v.μ K` using `hKo.measure_pos v.μ ⟨1, K.one_mem⟩`. Rewrite using `[hvol]`. Conclude with `(ENNReal.toReal_pos hKpos.ne' hKfin).ne'`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volLev_ne_zero_of_isCompact {D : D7} (V : HSp D) (hK : IsCompact (GinfC V : Set (GA D V))) (v : GlobalTheory.Unf.Vol V)
     (U : Subgroup (GA D V)) (hle : U ≤ GfC V) (hc : IsCompact (U : Set (GA D V)))
@@ -72,7 +68,7 @@ theorem volLev_ne_zero_of_isCompact {D : D7} (V : HSp D) (hK : IsCompact (GinfC 
   exact (ENNReal.toReal_pos hKpos.ne' hKfin).ne'
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a _ _ U hle hc ho`. Conclude with `volLev_ne_zero_of_isCompact _ (Formalism.IndefR.Eqv.isCompact_GinfC (I.rec7 l Z).sp.X'_sig fun τ => Or.inl ((I.rec7 l Z).X'_posDef τ)) _ U hle hc ho`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem volLev_top_ne_zero : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ U : Subgroup (GA (I.rec7 l Z) (I.rec7 l Z).sp.X'), U ≤ GfC _ → IsCompact (U : Set (GA (I.rec7 l Z) (I.rec7 l Z).sp.X')) → IsOpen ((U.subgroupOf (GfC _) : Subgroup (GfC (I.rec7 l Z).sp.X')) : Set (GfC (I.rec7 l Z).sp.X')) → volLev a.g.volT U ≠ 0 := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a _ _ U hle hc ho

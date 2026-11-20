@@ -6,7 +6,7 @@ open GlobalTheory.W1 GlobalTheory.PD GlobalTheory.CechDR KaehlerDifferential
 namespace GlobalTheory.W1
 
 /- English proof (translation)
-Rewrite using `[map_smul, smul_assoc, smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_smul_mapDR (k K L : Type) [Field k] [Field K] [Field L] [Algebra k K] [Algebra k L] [Algebra K L]
     [IsScalarTower k K L] (c : K) (x : L) (ω : DR k K) :
@@ -14,27 +14,27 @@ theorem smul_smul_mapDR (k K L : Type) [Field k] [Field K] [Field L] [Algebra k 
   rw [map_smul, smul_assoc, smul_comm]
 
 /- English proof (translation)
-Introduce `k K L _ _ _ _ _ _ _ _ _`. Take `⟨hspan, hind⟩` from `GlobalTheory.T.mapDR_span_and_linearIndependent_baseChange k K L`. Establish `uniq : ∀ T T' : DR k L →ₗ[k] DR k K, IsTrDR k K L T → IsTrDR k K L T' → T = T'`. Introduce `T T' hT hT'`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, b, ω, rfl⟩` from `hspan y`. Simplify using `only [map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hT, hT']`. Set `e` to `Module.finBasis K L`. Set `n` to `Module.finrank K L`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ : (Fin n → DR k K) →ₗ[k] DR k L` to `{ toFun := fun ω => ∑ j, e j • mapDR k K L (ω j) map_add' := fun a b => by simp [smul_add, Finset.sum_add_distrib] map_smul' := fun c a => by`. Simplify using `only [Pi.smul_apply, RingHom.id_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K c (a j), map_smul, algebraMap_smul, smul_comm] }`. Establish `hφ : Function.Bijective φ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `ω hω`. Use function extensionality and compare the values at `j`. Conclude with `hind n e ω e.linearIndependent hω j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y`. Take `⟨m, b, ω, rfl⟩` from `hspan y`. Use `⟨fun j => ∑ i, e.repr (b i) j • ω i, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ j, e j • mapDR k K L (∑ i, e.repr (b i) j • ω i) = _`. Simplify using `only [map_sum, Finset.smul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [← smul_smul_mapDR]`. Rewrite using `[← Finset.sum_smul, e.sum_repr]`. Set `ψ` to `(LinearEquiv.ofBijective φ hφ).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Set `g : (Fin n → DR k K) →ₗ[k] DR k K` to `{ toFun := fun ω => ∑ j, Algebra.trace K L (e j) • ω j map_add' := fun a b => by simp [smul_add, Finset.sum_add_distrib] map_smul' := fun c a => by`. Simplify using `only [Pi.smul_apply, RingHom.id_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm] }`. Establish `ex : IsTrDR k K L (g ∘ₗ ψ.toLinearMap)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b ω`. Establish `hb : b • mapDR k K L ω = φ (fun j => e.repr b j • ω)`. Express the relevant statement in the definitionally equal form `_ = ∑ j, e j • mapDR k K L (e.repr b j • ω)`. Simplify using `only [← smul_smul_mapDR]`. Rewrite using `[← Finset.sum_smul, e.sum_repr]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.comp_apply, hb]`. Establish `: ψ (φ (fun j => e.repr b j • ω)) = fun j => e.repr b j • ω` using `(LinearEquiv.ofBijective φ hφ).symm_apply_apply _`. Rewrite using `[LinearEquiv.coe_coe, this]`. Express the relevant statement in the definitionally equal form `∑ j, Algebra.trace K L (e j) • e.repr b j • ω = _`. Simplify using `only [smul_smul, ← Finset.sum_smul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `conv_rhs => rw [← e.sum_repr b]`. Simplify using `only [map_sum, map_smul, smul_eq_mul, mul_comm]`. Establish `htr : IsTrDR k K L (trDR k K L)`. Establish `h : ∃ T, IsTrDR k K L T` using `⟨_, ex⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Unfold `trDR`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`. Conclude with `⟨htr, fun T hT => uniq T _ hT htr⟩`.
+A detailed English derivation is pending.
 -/
 theorem trDR_isTrDR_unique : ∀ (k K L : Type) [Field k] [CharZero k] [Field K] [Field L] [Algebra k K] [Algebra k L]
     [Algebra K L] [IsScalarTower k K L] [FiniteDimensional K L],

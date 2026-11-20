@@ -18,7 +18,7 @@ section Val
 variable {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z]
 
 /- English proof (translation)
-Use `choose S hS using hA`. Conclude with `⟨Matrix.of S, Matrix.ext fun i j => (hS i j).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift (y : Sp K ⟶ Z) {m n : Type} {A : Matrix m n Z.functionField} (hA : ∀ i j, RegAt (below y) (A i j)) :
     ∃ S : Matrix m n (Z.presheaf.stalk (below y)), A = S.map (algebraMap _ Z.functionField) := by
@@ -26,14 +26,14 @@ theorem exists_lift (y : Sp K ⟶ Z) {m n : Type} {A : Matrix m n Z.functionFiel
   exact ⟨Matrix.of S, Matrix.ext fun i j => (hS i j).symm⟩
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => SmallSec.valAt_algebraMap (S i j)`.
+A detailed English derivation is pending.
 -/
 theorem map_lift (y : Sp K ⟶ Z) {m n : Type} (S : Matrix m n (Z.presheaf.stalk (below y))) :
     (S.map (algebraMap _ Z.functionField)).map (valAt y) = S.map (Scheme.stalkClosedPointTo y).hom :=
   Matrix.ext fun i j => SmallSec.valAt_algebraMap (S i j)
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `exists_lift y hA`. Take `⟨S', rfl⟩` from `exists_lift y hB`. Rewrite using `[← Matrix.map_mul, map_lift, map_lift, map_lift]`. Conclude with `⟨fun i j => ⟨(S * S') i j, rfl⟩, Matrix.map_mul⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem val_mul (y : Sp K ⟶ Z) {m n o : Type} [Fintype n] {A : Matrix m n Z.functionField}
     {B : Matrix n o Z.functionField} (hA : ∀ i j, RegAt (below y) (A i j)) (hB : ∀ i j, RegAt (below y) (B i j)) :
@@ -44,11 +44,11 @@ theorem val_mul (y : Sp K ⟶ Z) {m n o : Type} [Fintype n] {A : Matrix m n Z.fu
   exact ⟨fun i j => ⟨(S * S') i j, rfl⟩, Matrix.map_mul⟩
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `exists_lift y hA`. Establish `hinv : ∀ {R S' : Type} [CommRing R] [CommRing S'] (f : R →+* S') (X : Matrix n n R), IsUnit X.det → (X.map f)⁻¹ = X⁻¹.map f`. Introduce `R S' _ _ f X hX`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul X hX, Matrix.map_one _ (map_zero f) (map_one f)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : valAt y (S.map (algebraMap _ Z.functionField)).det = (Scheme.stalkClosedPointTo y).hom S.det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `SmallSec.valAt_algebraMap _`. Use `⟨by rw [h1, map_lift, RingHom.map_det, RingHom.mapMatrix_apply], fun h => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit S.det` using `isUnit_of_map_unit (Scheme.stalkClosedPointTo y).hom _ (Ne.isUnit h)`. Rewrite using `[hinv _ _ hu, map_lift, map_lift, hinv _ _ hu]`. Conclude with `⟨fun i j => ⟨S⁻¹ i j, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem val_inv (y : Sp K ⟶ Z) {n : Type} [Fintype n] [DecidableEq n] {A : Matrix n n Z.functionField}
     (hA : ∀ i j, RegAt (below y) (A i j)) :
@@ -70,9 +70,9 @@ theorem val_inv (y : Sp K ⟶ Z) {n : Type} [Fintype n] [DecidableEq n] {A : Mat
   exact ⟨fun i j => ⟨S⁻¹ i j, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `val_mul y (B := L.transpose) hJ fun i j => hL j i`. Use `⟨fun i k => ?_, Matrix.ext fun i k => ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun l => ?_) (fun l => ?_) k` and prove the remaining obligations. Simplify `hU i l` using `only [ConstLat.compl, Matrix.of_apply, Fin.addCases_left]`. Simplify `h1 i l.rev` using `only [ConstLat.compl, Matrix.of_apply, Fin.addCases_right]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Fin.addCases (fun l => ?_) (fun l => ?_) k` and prove the remaining obligations. Simplify using `only [ConstLat.compl, Matrix.of_apply, Fin.addCases_left, Matrix.map_apply]`. Simplify using `only [ConstLat.compl, Matrix.of_apply, Fin.addCases_right, Matrix.map_apply]`. Conclude with `congrFun (congrFun h2 i) l.rev`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_compl (y : Sp K ⟶ Z) {g : ℕ} {U : Matrix (Fin (g + g)) (Fin g) Z.functionField}
     {L : Matrix (Fin g) (Fin (g + g)) Z.functionField} {Ji : Matrix (Fin (g + g)) (Fin (g + g)) Z.functionField}
@@ -90,16 +90,16 @@ theorem val_compl (y : Sp K ⟶ Z) {g : ℕ} {U : Matrix (Fin (g + g)) (Fin g) Z
       exact congrFun (congrFun h2 i) l.rev
 
 /- English proof (translation)
-Rewrite using `[div_eq_mul_inv, SmallSec.valAt_mul ha.regAt hb.inv.regAt, GlobalTheory.LineNorm.Neg.valAt_inv hb, div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_div (y : Sp K ⟶ Z) {a b : Z.functionField} (ha : UnitAt (below y) a) (hb : UnitAt (below y) b) :
     valAt y (a / b) = valAt y a / valAt y b := by
   rw [div_eq_mul_inv, SmallSec.valAt_mul ha.regAt hb.inv.regAt, GlobalTheory.LineNorm.Neg.valAt_inv hb, div_eq_mul_inv]
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Prove the components needed by the constructor for the conclusion. Take `⟨U', hU', b, hb⟩` from `hf.exists_fnOf`. Rewrite using `[← hb]`. Conclude with `regAt_fnOf (((IsLocalRing.specializes_closedPoint ((spMap O.subtype) (IsLocalRing.closedPoint K))).map yt.continuous).mem_open U'.isOpen hU') _ b`.
+Substitute using the available equality. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hf`. Rewrite using `[GlobalTheory.HalfGlue.val_stalk]`. Conclude with `((Scheme.stalkClosedPointTo yt).hom a).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reg_of_closed (O : ValuationSubring K) (yt : Sp O ⟶ Z) (y : Sp K ⟶ Z) (hy : spMap O.subtype ≫ yt = y)
     {f : Z.functionField} (hf : RegAt (yt (IsLocalRing.closedPoint O)) f) : RegAt (below y) f ∧ valAt y f ∈ O := by
@@ -114,9 +114,9 @@ theorem reg_of_closed (O : ValuationSubring K) (yt : Sp O ⟶ Z) (y : Sp K ⟶ Z
     exact ((Scheme.stalkClosedPointTo yt).hom a).2
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Take `⟨a, ha, rfl⟩` from `hf`. Rewrite using `[GlobalTheory.HalfGlue.val_stalk]`. Use `le_antisymm ((hO _).1 ((Scheme.stalkClosedPointTo yt).hom a).2) (not_lt.1 fun h => ?_)` and prove the remaining obligations. Rewrite `h` using `[GlobalTheory.HalfGlue.lt_one_iff w O hO]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((ha.map (Scheme.stalkClosedPointTo yt).hom).map (IsLocalRing.residue O)).ne_zero h`.
+A detailed English derivation is pending.
 -/
 theorem norm_of_unit (w : AbsoluteValue K ℝ) (O : ValuationSubring K) (hO : ∀ x, x ∈ O ↔ w x ≤ 1) (yt : Sp O ⟶ Z)
     (y : Sp K ⟶ Z) (hy : spMap O.subtype ≫ yt = y) {f : Z.functionField}
@@ -131,7 +131,7 @@ theorem norm_of_unit (w : AbsoluteValue K ℝ) (O : ValuationSubring K) (hO : �
 end Val
 
 /- English proof (translation)
-Establish `h1 : IsIntegral ℤ (algebraMap F (AlgebraicClosure F) x)` using `hx.algebraMap`. Establish `h2 : IsIntegral e.O (algebraMap F (AlgebraicClosure F) x)` using `h1.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Rewrite using `[← hy]`. Conclude with `(e.mem_O _).1 y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem w_le_one {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) {x : F}
     (hx : IsIntegral ℤ x) : e.w (algebraMap F (AlgebraicClosure F) x) ≤ 1 := by
@@ -142,7 +142,7 @@ theorem w_le_one {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (�
   exact (e.mem_O _).1 y.2
 
 /- English proof (translation)
-Use `Fin.addCases (fun l => ?_) (fun l => ?_) k` and prove the remaining obligations. Simplify `hU i l` using `only [ConstLat.compl, Matrix.of_apply, Fin.addCases_left]`. Simplify `FrameCmp.mul_le w hw Ji L.transpose zero_le_one zero_le_one hJ (fun i j => hL j i) i l.rev` using `only [ConstLat.compl, Matrix.of_apply, Fin.addCases_right, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem compl_le {K : Type} [Field K] (w : AbsoluteValue K ℝ) (hw : IsNonarchimedean w) {g : ℕ}
     {U : Matrix (Fin (g + g)) (Fin g) K} {L : Matrix (Fin g) (Fin (g + g)) K} {Ji : Matrix (Fin (g + g)) (Fin (g + g)) K}
@@ -154,65 +154,57 @@ theorem compl_le {K : Type} [Field K] (w : AbsoluteValue K ℝ) (hw : IsNonarchi
       FrameCmp.mul_le w hw Ji L.transpose zero_le_one zero_le_one hJ (fun i j => hL j i) i l.rev
 
 /- English proof (translation)
-Introduce `F _ _ Y C g A A' p n k k' hp hn V W ι U0 H0 d T J P Q κ hκ hJ hSL hiso hLA hLA' a b Ua Ub Um' Um Lf' Lf c' c hUa hUb hcr hfa hfb hdet v hv e y hy z yt hz hyt ha hb hle i`. Establish `hw` using `isNonarchimedean_w e`. Establish `hpv : ((p : 𝓞 F)) ∈ v.asIdeal`. Establish `h0 : ((p : ℕ) : 𝓞 F ⧸ v.asIdeal) = 0` using `(ringChar.spec _ p).2 (by rw [← hv]; rfl)`. Rewrite `h0` using `[← map_natCast (Ideal.Quotient.mk v.asIdeal)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h0`. Establish `hwp : e.w (p : AlgebraicClosure F) < 1`. Establish `h` using `e.w_alg (p : F)`. Rewrite `h` using `[map_natCast]`. Rewrite using `[h, ← map_natCast (algebraMap (𝓞 F) F) p, ← FinitePlace.norm_embedding]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(FinitePlace.norm_lt_one_iff_mem F v _).2 hpv`. Establish `hpO : ¬ IsUnit ((p : ℕ) : e.O)`. Establish `h1` using `(GlobalTheory.HalfGlue.lt_one_iff e.w e.O e.mem_O (p : e.O)).1 (by simpa using hwp)`. Rewrite `h1` using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Then use the resulting hypothesis. Establish `hpx : ¬ IsUnit ((p : ℕ) : V.X.presheaf.stalk (yt (IsLocalRing.closedPoint e.O)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hpO` to reduce the goal to its premises. Use `h.map (Scheme.stalkClosedPointTo yt).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hPin : ∀ U' : V.X.Opens, ⊤ ≤ yt ⁻¹ᵁ U' → V.j (below z) ∈ U'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `U' ha'`. Establish `e2 : V.j (below z) = yt ((spMap e.O.subtype) (IsLocalRing.closedPoint (AlgebraicClosure F)))`. Express the relevant statement in the definitionally equal form `(z ≫ V.j) _ = _`. Rewrite using `[← hyt]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `ha' trivial`. Establish `hπ : V.π (below z) = below y.1` using `by rw [← hz]; rfl`. Use `set α := algebraMap F (AlgebraicClosure F) with hα`. Establish `hc : ∀ f : F, valAt z (V.φ (algebraMap F Y.Fn f)) = α f` using `fun f => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[V.valAt_φ z (Var.regAt_algebraMap Y _ f), hz]`. Conclude with `OfLattice.valAt_const y.1 y.2 f`. Establish `hκv : ∀ f : F, valAt (z ≫ V.j) (κ f) = α f` using `fun f => (hκ z f).trans (hc f)`. Establish `hκr : ∀ f : F, RegAt (below (z ≫ V.j)) (κ f)`. Introduce `f`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `h0 : f = 0`. Rewrite using `[h0, map_zero]`. Conclude with `regAt_zero _`. Assume the negation of the conclusion as `h`. Establish `h1` using `hκv f`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[TrueGeo.valAt, dif_neg h]`. Conclude with `(map_ne_zero α).2 h0 h1.symm`. Establish `hmap : ∀ M : Matrix (Fin (g + g)) (Fin (g + g)) F, (M.map κ).map (valAt (z ≫ V.j)) = M.map α` using `fun M => Matrix.ext fun i j => hκv (M i j)`. Establish `hJinv : ∀ (L : Type) [CommRing L], (J.map (Int.castRingHom L))⁻¹ = J⁻¹.map (Int.castRingHom L)`. Introduce `L _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul J hJ, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hint : ∀ (L : Type) [CommRing L] (f : F →+* L) (M : Matrix (Fin (g + g)) (Fin (g + g)) ℤ), (M.map (Int.castRingHom F)).map f = M.map (Int.castRingHom L)` using `fun L _ f M => Matrix.ext fun i j => by simp`. Take `⟨hPQ, hnint, s, hs, hsint⟩` from `hSL`. Use `set Ji := (J.map (Int.castRingHom F))⁻¹ with hJi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hJJ : J.map (Int.castRingHom F) * Ji = 1`. Rewrite using `[hJi, hJinv, ← Matrix.map_mul, Matrix.mul_nonsing_inv J hJ, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e1 : (J.map (Int.castRingHom V.X.functionField))⁻¹ = Ji.map κ` using `by rw [hJi, hJinv, hJinv, hint]`. Establish `e2 : P.map κ * Ji.map κ * (P.map κ).transpose = (P * Ji * P.transpose).map κ`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hdet`, the goal using `[e1, e2]`. Take `⟨hLU', hreg', hun', hB'⟩` from `hfa`. Take `⟨hLU, hreg, hun, hB⟩` from `hfb`. Take `⟨-, B', hB't, hB'd, hB'⟩` from `hB' v hv e y hy z yt hz hyt ha`. Take `⟨-, B, hBt, hBd, hB⟩` from `hB v hv e y hy z yt hz hyt hb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `rU'` using `fun r l => reg_of_closed e.O yt _ hyt (hreg' _ (ha trivial) hpx r l).1`. Establish `rL'` using `fun l r => reg_of_closed e.O yt _ hyt (hreg' _ (ha trivial) hpx r l).2`. Establish `rU` using `fun r l => reg_of_closed e.O yt _ hyt (hreg _ (hb trivial) hpx r l).1`. Establish `rL` using `fun l r => reg_of_closed e.O yt _ hyt (hreg _ (hb trivial) hpx r l).2`. Take `⟨rM', vM'⟩` from `val_compl (z ≫ V.j) (Ji := (P * Ji * P.transpose).map κ) (fun r l => (rU' r l).1) (fun l r => (rL' l r).1) fun i j => hκr _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨rM, vM⟩` from `val_compl (z ≫ V.j) (Ji := Ji.map κ) (fun r l => (rU r l).1) (fun l r => (rL l r).1) fun i j => hκr _`. Rewrite `vM`, `vM'` using `[hmap]`. Establish `hd1` using `norm_of_unit e.w e.O e.mem_O yt _ hyt (hdet _ (ha trivial) hpx)`. Take `⟨vd, hinv⟩` from `val_inv (z ≫ V.j) rM'`. Take `⟨rI, vI⟩` from `hinv fun h => by rw [h, map_zero] at hd1; exact zero_ne_one hd1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨rIP, vIP⟩` from `val_mul (z ≫ V.j) (B := P.map κ) rI fun i j => hκr _`. Take `⟨-, vX⟩` from `val_mul (z ≫ V.j) rIP rM`. Rewrite `vX` using `[vIP, vI, vM, vM', hmap]`. Rewrite `hd1` using `[vd, vM']`. Establish `hone : ∀ m : ℕ, (1 : Matrix (Fin m) (Fin m) V.X.functionField).map (valAt (z ≫ V.j)) = 1` using `fun m => Matrix.map_one _ (by simpa using hκv 0) (by simpa using hκv 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hva : valMat V (P.map (V.φ.comp (algebraMap F Y.Fn)) * H0 a) (T (below y.1)) z = P.map α * valMat V (H0 a) (T (below y.1)) z`. Establish `hr` using `hcr (below z) (hUa (hPin _ ha))`. Rewrite `hr` using `[hπ]`. Rewrite using `[valMat, Matrix.mul_assoc, (val_mul z (A := P.map (V.φ.comp (algebraMap F Y.Fn))) (fun i j => V.regAt_φ (Var.regAt_algebraMap Y _ _)) hr).2]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.ext fun i j => hc (P i j)`. Rewrite `hB'` using `[hva]`. Establish `hun1 : ∀ (A₀ : Fin g → Adl C Y) (c₀ : Fin g → V.G.functionFieldˣ), LineBase V d A₀ p → (∀ l, UnitAt (below z) (V.φ (genAt (A₀ l).D (V.π (below z))) * c₀ l)) → ∀ l, UnitAt (below z) (V.φ (d (below y.1) l : Y.Fn) / (c₀ l : V.G.functionField))`. Introduce `A₀ c₀ h₁ h₂ l`. Establish `h3` using `(V.unitAt_φ (h₁.1 l (V.π (below z)))).mul (h₂ l).inv`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[hπ]`. Establish `hg : V.φ (genAt (A₀ l).D (below y.1)) ≠ 0` using `(map_ne_zero _).2 (Units.ne_zero _)`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `u'` using `hun1 A' c' hLA' fun l => hun' l _ (hPin _ ha)`. Establish `u` using `hun1 A c hLA fun l => hun l _ (hPin _ hb)`. Establish `hdφ : ∀ l, V.φ (d (below y.1) l : Y.Fn) ≠ 0` using `fun l => (map_ne_zero _).2 (Units.ne_zero _)`. Establish `hwn : 0 < e.w (n : AlgebraicClosure F)` using `e.w.pos (Nat.cast_ne_zero.2 hn)`. Establish `hwZ : ∀ m : ℤ, e.w (m : AlgebraicClosure F) ≤ 1` using `fun m => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using w_le_one e (x := (m : F)) (isIntegral_algebraMap (R := ℤ) (x := m))`. Establish `hwn' : ∀ x : F, IsIntegral ℤ ((n : F) * x) → e.w (α x) ≤ (e.w (n : AlgebraicClosure F))⁻¹` using `fun x hx => by`. Establish `h` using `w_le_one e hx`. Rewrite `h` using `[map_mul, map_mul, map_natCast]`. Rewrite using `[← mul_one (_⁻¹), le_inv_mul_iff₀ hwn]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hws : e.w (s : AlgebraicClosure F) = 1`. Use `le_antisymm (by simpa using hwZ s) (not_lt.1 fun h => ?_)` and prove the remaining obligations. Take `⟨a₀, b₀, hab⟩` from `Nat.isCoprime_iff_coprime.2 hs`. Establish `h1 : (a₀ : AlgebraicClosure F) * s + b₀ * p = 1` using `by exact_mod_cast congrArg (Int.cast (R := AlgebraicClosure F)) hab`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hw ((a₀ : AlgebraicClosure F) * s) (b₀ * p)`. Rewrite `h2` using `[h1, map_one, map_mul, map_mul]`. Establish `h3 : e.w (a₀ : AlgebraicClosure F) * e.w (s : AlgebraicClosure F) < 1` using `mul_lt_one_of_nonneg_of_lt_one_right (hwZ a₀) (e.w.nonneg _) h`. Establish `h4 : e.w (b₀ : AlgebraicClosure F) * e.w (p : AlgebraicClosure F) < 1` using `mul_lt_one_of_nonneg_of_lt_one_right (hwZ b₀) (e.w.nonneg _) hwp`. Conclude with `absurd h2 (not_le.2 (max_lt h3 h4))`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hiso'` using `fun a₀ h => hiso v hv e y hy z yt hz hyt a₀ h`. Establish `ha0 : ⊤ ≤ yt ⁻¹ᵁ U0 a` using `fun x hx => hUa (ha hx)`. Establish `hb0 : ⊤ ≤ yt ⁻¹ᵁ U0 b` using `fun x hx => hUb (hb hx)`. Establish `hQP : Q * P = 1` using `mul_eq_one_comm.1 hPQ`. Establish `H` using `FrameCmp.frame_change_tri e.w hw (Um.map (valAt (z ≫ V.j))) (Um'.map (valAt (z ≫ V.j))) (valMat V (H0 a) (T (below y.1)) z) (valMat V (H0 b) (T (below y.1)) z) (Lf.map (valAt (z ≫ V.j))) (Lf'.map (valAt (z ≫ V.j))) (J.map (Int.castRingHom _)) (Ji.map α) ((P * Ji * P.transpose).ma …`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Q.transpose * J.map (Int.castRingHom F) * Q * (P * Ji * P.transpose) = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hQP, Matrix.mul_one, hJJ, Matrix.mul_one, ← Matrix.transpose_mul, hPQ, Matrix.transpose_one]`. Rewrite using `[← hint _ α, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)])`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Use the proof step `(by rw [← (val_mul (z ≫ V.j) (fun l r => (rL l r).1) fun r l => (rU r l).1).2, hLU, hone])`. Use the proof step `(by rw [← (val_mul (z ≫ V.j) (fun l r => (rL' l r).1) fun r l => (rU' r l).1).2, hLU', hone])`. Use `hBt hB't (fun l => by rw [hBd]; exact SmallSec.valAt_ne_zero (u l))`. Use the proof step `(fun l => by rw [hB'd]; exact SmallSec.valAt_ne_zero (u' l)) hB hB' (fun i j => hwZ _)`. Use the proof step `(fun i j => ⟨hwn' _ (hnint i j).1, hwn' _ (hnint i j).2⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Use the proof step `(compl_le e.w hw (fun r l => (e.mem_O _).1 (rU r l).2) (fun l r => (e.mem_O _).1 (rL l r).2) fun i j => by`. Rewrite using `[hJi, hJinv, hint]`. Conclude with `hwZ _)`. Use the proof step `(compl_le e.w hw (fun r l => (e.mem_O _).1 (rU' r l).2) (fun l r => (e.mem_O _).1 (rL' l r).2) fun i j => by`. Establish `h` using `w_le_one e (hsint i j).2`.
-
-Rewrite using `[map_mul, map_mul, map_natCast, hws, one_mul] at h)` and apply the resulting hypothesis. Use `hd1 (hiso' a ha0).1 ((hiso' a ha0).2 b hb0) ((hiso' b hb0).2 a ha0) i`. Rewrite `H` using `[← vX]`. Use `⟨fun j hj => (H.1 j hj).trans hle, le_trans (le_of_eq ?_) (H.2.trans hle)⟩` and prove the remaining obligations. Use `congr 2`.
-
-Use `Fin.addCases (fun l => ?_) (fun l => ?_) i` and prove the remaining obligations. Simplify using `only [finSumFinEquiv_symm_apply_castAdd, Sum.elim_inl, Fin.addCases_left]`. Rewrite using `[hBd, hB'd, ← val_div z (u l) (u' l), Units.val_div_eq_div_val]`. Use `congr 1`. Use `hdφ l` as an intermediate fact.
-
-Clear the denominators using the available nonvanishing facts. Simplify using `only [finSumFinEquiv_symm_apply_natAdd, Sum.elim_inr, Fin.addCases_right]`. Rewrite using `[hBd, hB'd, ← val_div z (u' l.rev) (u l.rev), inv_div_inv, Units.val_div_eq_div_val]`. Use `congr 1`. Use `hdφ l.rev` as an intermediate fact.
-
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem change_tri : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F} {g : ℕ} (A A' : Fin g → Adl C Y) (p n k k' : ℕ),
     p.Prime → n ≠ 0 → ∀ (V : Cover Y) (W : Y.X.Opens) {ι : Type} (U0 : ι → V.X.Opens)

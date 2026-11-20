@@ -9,7 +9,7 @@ namespace Formalism.L2.GlobalTheoryTheory.TraceIntegrality
 open Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Col Formalism.MainNotions.flipTwoThree
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam`. Unfold `TSpan VV Formalism.GradedWeylDivisibility.tensorLat`. Simplify using `only [nablaSq_eq_delSq]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem translate_span_eq : TSpanEqVV := by
   intro K _ _ ι _ n lam
@@ -18,12 +18,12 @@ theorem translate_span_eq : TSpanEqVV := by
   rfl
 
 /- English proof (translation)
-The claim follows from `colSlopeEq_of translate_span_eq h2 D h3`.
+A detailed English derivation is pending.
 -/
 theorem colSlopeEq_of_two (h2 : ZBasisStd) (D : D7) (h3 : QSlope D) : ColSlopeEq D := colSlopeEq_of translate_span_eq h2 D h3
 
 /- English proof (translation)
-The claim follows from `Link5F_of_three translate_span_eq h2 h3`.
+A detailed English derivation is pending.
 -/
 theorem Link5F_of_two (h2 : ZBasisStd) (h3 : ∀ D, QSlope D) : Link5F := Link5F_of_three translate_span_eq h2 h3
 

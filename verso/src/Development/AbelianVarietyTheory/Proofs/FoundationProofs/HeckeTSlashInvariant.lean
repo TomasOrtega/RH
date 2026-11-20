@@ -14,13 +14,13 @@ namespace GlobalTheory.HkInv
 open GlobalTheory.HeckeFamilyMatrices
 
 /- English proof (translation)
-Distinguish the cases in `hi : (i : ℕ) < q`. Establish `e : tqFam q σ i = !![(1 : ℤ), ((i : ℕ) : ℤ); 0, (q : ℤ)]` using `by rw [tqFam, if_pos hi]`. Rewrite using `[e]`. Distinguish the cases in `hd : (q : ℤ) ∣ mat γ 0 0 + ((i : ℕ) : ℤ) * mat γ 1 0`. Take `⟨γ', h1, h2⟩` from `GlobalTheory.T.upper_mul_eq_mul_diamond_diag_gamma1InterGamma0 N l q i σ γ hq hqN hσ hi hγ hd`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `⟨Fin.last q, γ', h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, tqFam, if_neg (by simp)]`. Take `⟨j', hj', γ', h1, h2⟩` from `GlobalTheory.T.upperTriangular_mul_eq_mul_upperTriangular_gamma1InterGamma0 N l q i γ hq hqN hi hγ hd`. Use `⟨⟨j', by omega⟩, γ', h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, tqFam, if_pos (by simpa using hj')]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : tqFam q σ i = mat σ * dg q 1` using `by rw [tqFam, if_neg hi]`. Rewrite using `[e]`. Distinguish the cases in `hd : (q : ℤ) ∣ mat γ 1 0`. Take `⟨γ', h1, h2⟩` from `GlobalTheory.T.diamond_diag_mul_eq_mul_of_dvd_lowerLeft_gamma1InterGamma0 N l q σ γ hq hqN hσ hγ hd`. Use `⟨Fin.last q, γ', h1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2, tqFam, if_neg (by simp)]`. Take `⟨j', hj', γ', h1, h2⟩` from `GlobalTheory.T.diamond_diag_mul_eq_mul_upperTriangular_of_not_dvd_lowerLeft N l q σ γ hq hqN hσ hγ hd`. Use `⟨⟨j', by omega⟩, γ', h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, tqFam, if_pos (by simpa using hj')]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem reps (N l q : ℕ) (σ γ : SL(2, ℤ)) (hq : q.Prime) (hqN : ¬ q ∣ N * l) (hσ : GlobalTheory.Hk.IsDia N l q σ)
     (hγ : γ ∈ GlobalTheory.Hk.lev N l) (i : Fin (q + 1)) :
@@ -46,13 +46,13 @@ theorem reps (N l q : ℕ) (σ γ : SL(2, ℤ)) (hq : q.Prime) (hqN : ¬ q ∣ N
       rw [h2, tqFam, if_pos (by simpa using hj')]
 
 /- English proof (translation)
-Use `choose π g hg he using reps N l q σ γ hq hqN hσ hγ`. Establish `hinj : Function.Injective π`. Introduce `i₁ i₂ h`. Establish `e1` using `he i₁`. Establish `e2` using `he i₂`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[h]`. Apply `GlobalTheory.T.heckeTqRepresentatives_cosets_distinct q σ (g i₁ * (g i₂)⁻¹) i₁ i₂ hq` to reduce the goal to its premises. Establish `hγi : mat γ * mat γ⁻¹ = 1`. Rewrite using `[← Matrix.SpecialLinearGroup.coe_mul, mul_inv_cancel, Matrix.SpecialLinearGroup.coe_one]`. Establish `hgi : mat (g i₂)⁻¹ * mat (g i₂) = 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel, Matrix.SpecialLinearGroup.coe_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, ← Matrix.mul_assoc (mat (g i₂)⁻¹), hgi, Matrix.one_mul]`. Use `_ = mat (g i₁ * (g i₂)⁻¹) * (tqFam q σ i₂ * mat γ * mat γ⁻¹) := by`. Rewrite using `[← e2, show mat (g i₁ * (g i₂)⁻¹) = mat (g i₁) * mat (g i₂)⁻¹ from Matrix.SpecialLinearGroup.coe_mul _ _]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = mat (g i₁ * (g i₂)⁻¹) * tqFam q σ i₂ := by rw [Matrix.mul_assoc, hγi, Matrix.mul_one]`. Conclude with `⟨Equiv.ofBijective π hinj.bijective_of_finite, fun i => ⟨g i, hg i, he i⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem perm (N l q : ℕ) (σ γ : SL(2, ℤ)) (hq : q.Prime) (hqN : ¬ q ∣ N * l) (hσ : GlobalTheory.Hk.IsDia N l q σ)
     (hγ : γ ∈ GlobalTheory.Hk.lev N l) :
@@ -79,7 +79,7 @@ theorem perm (N l q : ℕ) (σ γ : SL(2, ℤ)) (hq : q.Prime) (hqN : ¬ q ∣ N
   exact ⟨Equiv.ofBijective π hinj.bijective_of_finite, fun i => ⟨g i, hg i, he i⟩⟩
 
 /- English proof (translation)
-Unfold `tqFam`. Use `split_ifs`. Simplify using `[Matrix.det_fin_two_of, hq.ne']`. Rewrite using `[Matrix.det_mul]`. Simplify using `[dg, Matrix.det_fin_two_of, hq.ne']`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_tqFam (q : ℕ) (hq : 0 < q) (σ : SL(2, ℤ)) (i : Fin (q + 1)) : (tqFam q σ i).det ≠ 0 := by
   unfold tqFam
@@ -88,13 +88,13 @@ theorem det_tqFam (q : ℕ) (hq : 0 < q) (σ : SL(2, ℤ)) (i : Fin (q + 1)) : (
   · rw [Matrix.det_mul]; simp [dg, Matrix.det_fin_two_of, hq.ne']
 
 /- English proof (translation)
-Introduce `N l q k σ f _ hq hqN hσ hf γ hγ`. Take `⟨π, hπ⟩` from `perm N l q σ γ hq hqN hσ hγ`. Establish `hq0` using `hq.pos`. Establish `hmat : (mat γ).det ≠ 0` using `by simp [mat]`. Rewrite using `[← GlobalTheory.SlashUpperTriangularMatrices.tq_eq k q σ f hq0, TqF, hkF]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ i, (f ∣[k] toGL (tqFam q σ i)) ∣[k] γ = f ∣[k] toGL (tqFam q σ (π i))`. Introduce `i`. Take `⟨γ', hγ', he⟩` from `hπ i`. Establish `hmat' : (mat γ').det ≠ 0` using `by simp [mat]`. Rewrite using `[ModularForm.SL_slash, ← SlashAction.slash_mul, ← GlobalTheory.SlashUpperTriangularMatrices.toGL_SL, ← GlobalTheory.SlashUpperTriangularMatrices.toGL_mul _ _ (det_tqFam q hq0 σ i) hmat, he, GlobalTheory.SlashUpperTriangularMatrices.toGL_mul _ _ hmat' (det_tqFam q hq0 σ _), SlashA …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∀ (s : Finset (Fin (q + 1))) (F : Fin (q + 1) → ℍ → ℂ), (∑ i ∈ s, F i) ∣[k] γ = ∑ i ∈ s, F i ∣[k] γ`. Introduce `s F`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [SlashAction.zero_slash]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, SlashAction.add_slash, ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hsum, Finset.sum_congr rfl (fun i _ => key i)]`. Conclude with `Equiv.sum_comp π (fun i => f ∣[k] toGL (tqFam q σ i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeT_slash_invariant : ∀ (N l q : ℕ) (k : ℤ) (σ : SL(2, ℤ)) (f : ℍ → ℂ), 0 < N → q.Prime → ¬ q ∣ N * l →
     GlobalTheory.Hk.IsDia N l q σ → (∀ γ ∈ GlobalTheory.Hk.lev N l, f ∣[k] γ = f) →

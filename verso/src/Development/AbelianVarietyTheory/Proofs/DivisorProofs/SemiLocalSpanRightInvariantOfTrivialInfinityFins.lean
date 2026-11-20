@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep Formalism.UG GlobalTheory
 namespace GlobalTheory.JSW.MirSemi
 
 /- English proof (translation)
-Introduce `w _`. Establish `h` using `pFin_infGL (E := E) (a := a) y`. Use extensionality with `i j`. Use `congrArg (fun z : GL (Fin a) (Af E) => (pLoc E w) ((z : Matrix (Fin a) (Fin a) (Af E)) i j)) h` as an intermediate fact. Simplify `this` using `[Matrix.one_apply, apply_ite]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem infGL_mem_supS {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
     (S : Finset (HeightOneSpectrum (𝓞 E))) (y : GL (Fin a) (Cinf E)) : infGL E a y ∈ GlobalTheory.JSW.supS E a S := by
@@ -18,11 +18,11 @@ theorem infGL_mem_supS {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
   simpa [Matrix.one_apply, apply_ite] using this
 
 /- English proof (translation)
-Introduce `E _ _ _ a S F₀ k hInf hS hF₀`. Set `V : Submodule ℂ (GA E a → ℂ)` to `{ carrier := {F | ∀ g, F (g * k) = F g} add_mem' := fun {F G} hF hG g => by simp only [Pi.add_apply, hF g, hG g] zero_mem' := fun _ => rfl smul_mem' := fun c F hF g => by simp only [Pi.smul_apply, hF g] }`. Establish `hc : ∀ h ∈ GlobalTheory.JSW.supS E a S, h * k = k * h` using `fun h hh => GlobalTheory.T.adelicGL_complementary_supports_commute E a S h k hh hInf hS`. Use `fun F hF => (locSpan_le (V := V) hF₀ ?_ ?_) hF` and prove the remaining obligations. Introduce `F hF h hh g show F (g * k * h) = F (g * h)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_assoc, ← hc h hh, ← mul_assoc, hF]`. Introduce `F hF X _ ν _ k' γ _ g show GlobalTheory.JSW.kerInf ν k' γ F (g * k) = GlobalTheory.JSW.kerInf ν k' γ F g`. Unfold `GlobalTheory.JSW.kerInf`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[mul_assoc, ← hc _ (infGL_mem_supS S (γ x)), ← mul_assoc, hF]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locSpan_rightInv : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (F₀ : GA E a → ℂ) (k : GA E a),

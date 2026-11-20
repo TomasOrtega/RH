@@ -11,17 +11,17 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Introduce `E _ _ _ n μ _ π hn`. Set `x : GlobalTheory.ResW.Letter E` to `⟨n, π⟩`. Establish `hd : ((n : ℂ) * (Module.finrank ℚ E : ℂ)) ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.2 (by omega)) (Nat.cast_ne_zero.2 Module.finrank_pos.ne')`. Set `z : ℂ` to `-GlobalTheory.ResW.cex x / ((n : ℂ) * (Module.finrank ℚ E : ℂ))`. Set `χ : Formalism.L2.Host.HChar E` to `GlobalTheory.CuspRep.Model.absC E z`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hspec` using `(GlobalTheory.ResW.letter_centralExponent E x).1`. Establish `htr : (Matrix.of (GlobalTheory.CuspRep.oneL E n)).trace = (n : ℝ) • (1 : GlobalTheory.CuspRep.Cinf E)`. Express the relevant statement in the definitionally equal form `(Matrix.of (fun i j : Fin n => if i = j then (1 : GlobalTheory.CuspRep.Cinf E) else 0)).trace = _`. Simplify using `[Matrix.trace, Nat.cast_smul_eq_nsmul]`. Establish `hz : ∀ φ ∈ (π.twist χ).V, GlobalTheory.CuspRep.lie E n (GlobalTheory.CuspRep.oneL E n) φ = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨ψ, hψ, rfl⟩`. Establish `e0 : GlobalTheory.CuspRep.lie E n (GlobalTheory.CuspRep.oneL E n) ψ = GlobalTheory.ResW.cex x • ψ` using `hspec ψ hψ`. Establish `e1 : GlobalTheory.CuspRep.dchi χ (Matrix.of (GlobalTheory.CuspRep.oneL E n)).trace = -GlobalTheory.ResW.cex x`. Rewrite using `[htr, map_smul, GlobalTheory.ResW.dchi_absC_one_finrank]`. Establish `hzd : z * ((n : ℂ) * (Module.finrank ℚ E : ℂ)) = -GlobalTheory.ResW.cex x` using `div_mul_cancel₀ _ hd`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Complex.real_smul, Complex.ofReal_natCast]`. Take the linear combination `hzd`. Express the relevant statement in the definitionally equal form `GlobalTheory.CuspRep.lie E n (GlobalTheory.CuspRep.oneL E n) (GlobalTheory.CuspRep.mulChi n χ ψ) = 0`. Rewrite using `[GlobalTheory.CuspRep.lie_mulChi, e0, e1, ← add_smul, add_neg_cancel, zero_smul, map_zero]`. Take `⟨b, hb⟩` from `GlobalTheory.AbsTwist.exists_eq_mul_log_module (F := E) (GlobalTheory.Mem.Chr.CharModel.logNorm E) (GlobalTheory.Mem.Chr.CharModel.continuous_logNorm E) (GlobalTheory.Mem.Chr.CharModel.logNorm_mul E) (GlobalTheory.Mem.Chr.CharModel.logNorm_principal E)`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨χ, ⟨z * b, fun y => ?_⟩, _, (UpperTheory.ConvolutionTheory.Dp.exSummand E n μ (π.twist χ) _).2 ⟨Cm.carrier_le_central _ hz, rfl⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Complex.exp (z * GlobalTheory.Mem.Chr.CharModel.logNorm E y) = _`. Establish `hpos` using `(GroundTheory.Global.IdeleGroup.ideleModule E y).2`. Rewrite using `[hb y, Complex.cpow_def_of_ne_zero (by exact_mod_cast hpos.ne'), ← Complex.ofReal_log hpos.le]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.exTwist :
     UpperTheory.ConvolutionTheory.Dp.ExTwist := by

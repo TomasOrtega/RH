@@ -28,7 +28,7 @@ open Formalism.IndefR.Fin.LevelGroupLemmas.Lat Matrix
 set_option synthInstance.maxHeartbeats 400000
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [genE, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, mul_liftE, toEAf_cA, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cA_smul_genE {D : D7} {S T : HSp D} (e : AE D) (c : EAf D) (τ : Fin T.rank → EAf D)
     (σ : Fin S.rank → EAf D) :
@@ -39,21 +39,17 @@ theorem cA_smul_genE {D : D7} {S T : HSp D} (e : AE D) (c : EAf D) (τ : Fin T.r
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D S T ΛS ΛT βS βT hS hT fS fT P e he hP u hu hh`. Establish `hx : cA D e • u = u` using `Matrix.ext fun i j => hh i j`. Rewrite using `[← hx]`. Use `clear hx hh`. Proceed by induction on `hu using AddSubgroup.closure_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem w hw`. Take `⟨α, hα, _, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Use `show IsIntM (frMapAdj S T βS βT (cA D e • genL S T α a s t))`. Rewrite using `[genL_eq_genE, cA_smul_genE, frMapAdj_genE]`. Introduce `i j`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul]`. Establish `h1 : sR D (sR D (toEAf D e) * (eToEAf D a * ((1 : D.host.E) ⊗ₜ[D.host.F] α))) = (toEAf D e * eToEAf D (D.sp.cm.sig a)) * ((1 : D.host.E) ⊗ₜ[D.host.F] α)`. Rewrite using `[map_mul, map_mul, sR_sR, sR_eTo, mul_assoc]`. Use `congr 2`. Use `show (star (1 : D.host.E)) ⊗ₜ[D.host.F] α = _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[star_one]`. Rewrite using `[h1]`. Use `mul_mem (mul_mem (GlobalTheory.IdemIntegral.conj_mem_intAf D e P he hP a ha) (Subring.subset_closure (Or.inr ⟨⟨α, fun v => hα v⟩, rfl⟩))) (mul_mem ?_ ?_)` and prove the remaining obligations. Conclude with `(fS _).1 (mem_hatL_of_mem hs) i`. Rewrite using `[Matrix.vecMul_vecMul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hcol : (fun l => (GE T * (βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D))) l j) = GE T *ᵥ (fun i => (βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) i j)`. Use function extensionality and compare the values at `l`. Rewrite using `[Matrix.mul_apply]`. Both sides reduce to the same expression. Use `show (fun k => sR D (eToEAf D (t k))) ⬝ᵥ (fun l => (GE T * (βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D))) l j) ∈ _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately.
 
-Rewrite using `[hcol]`. Conclude with `hform_int hT ht (col_mem_hatL fT j)`. Consider the case `zero`. Rewrite using `[smul_zero, Formalism.IndefR.Fin.LevelGroupLemmas.Lat.frMapAdj_zero]`. Conclude with `fun _ _ => zero_mem _`.
-
-Consider the case `add x y _ _ hx hy`. Rewrite using `[smul_add, Formalism.IndefR.Fin.LevelGroupLemmas.Lat.frMapAdj_add]`. Conclude with `isIntM_add hx hy`. Consider the case `neg x _ hx`. Rewrite using `[smul_neg, Formalism.IndefR.Fin.LevelGroupLemmas.Lat.frMapAdj_neg]`.
-
-Conclude with `fun i j => neg_mem (hx i j)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem frMapAdj_int_of_half : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → Formalism.L2.DIV.IsFrame βS ΛS → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D), IsIdemSum e P → (∀ PP ∈ P, ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ u : WO S T, u ∈ latO S T ΛS ΛT (fun _ => True) → IsHalf (cA D e) u → IsIntM (frMapAdj S T βS βT u) := by
   intro D S T ΛS ΛT βS βT hS hT fS fT P e he hP u hu hh

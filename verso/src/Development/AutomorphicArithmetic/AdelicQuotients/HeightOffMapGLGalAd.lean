@@ -8,7 +8,7 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc PositivityTheory.Rg.
 open scoped NumberField.AdeleRing
 
 /- English proof (translation)
-The claim follows from `le_antisymm (AutomorphicForm.locHeight_le (AutomorphicForm.one_le_locHeight h) (fun i j => (h₁ i j).le.trans (AutomorphicForm.norm_apply_le_locHeight h i j)) (fun i j => (h₂ i j).le.trans (AutomorphicForm.norm_inv_apply_le_locHeight h i j))) (AutomorphicForm.locHeight_le (Automor …`.
+A detailed English derivation is pending.
 -/
 private theorem locHeight_congr {A B : Type*} [NormedField A] [NormedField B] {n : ℕ}
     (g : GL (Fin n) A) (h : GL (Fin n) B)
@@ -28,7 +28,7 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.norm_galois_smul_adele_component_at_smul_place F E σ ((g : Matrix (Fin n) (Fin n) 𝔸[E]) i j)).1 w`.
+A detailed English derivation is pending.
 -/
 private theorem fin_norm (σ : E ≃ₐ[F] E) {n : ℕ} (w : HeightOneSpectrum (𝓞 E))
     (g : AdelicGLn.AdelicGL E n) (i j : Fin n) :
@@ -36,7 +36,7 @@ private theorem fin_norm (σ : E ≃ₐ[F] E) {n : ℕ} (w : HeightOneSpectrum (
   (UpperTheory.norm_galois_smul_adele_component_at_smul_place F E σ ((g : Matrix (Fin n) (Fin n) 𝔸[E]) i j)).1 w
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.norm_galois_smul_adele_component_at_smul_place F E σ ((g : Matrix (Fin n) (Fin n) 𝔸[E]) i j)).2 w`.
+A detailed English derivation is pending.
 -/
 private theorem inf_norm (σ : E ≃ₐ[F] E) {n : ℕ} (w : InfinitePlace E)
     (g : AdelicGLn.AdelicGL E n) (i j : Fin n) :
@@ -44,7 +44,7 @@ private theorem inf_norm (σ : E ≃ₐ[F] E) {n : ℕ} (w : InfinitePlace E)
   (UpperTheory.norm_galois_smul_adele_component_at_smul_place F E σ ((g : Matrix (Fin n) (Fin n) 𝔸[E]) i j)).2 w
 
 /- English proof (translation)
-Use `locHeight_congr _ _ (fin_norm σ w g) fun i j => ?_` and prove the remaining obligations. Rewrite using `[← finAt_inv, ← finAt_inv, ← map_inv]`. Conclude with `fin_norm σ w g⁻¹ i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem locHeight_fin (σ : E ≃ₐ[F] E) {n : ℕ} (w : HeightOneSpectrum (𝓞 E))
     (g : AdelicGLn.AdelicGL E n) :
@@ -55,7 +55,7 @@ private theorem locHeight_fin (σ : E ≃ₐ[F] E) {n : ℕ} (w : HeightOneSpect
   exact fin_norm σ w g⁻¹ i j
 
 /- English proof (translation)
-Use `locHeight_congr _ _ (inf_norm σ w g) fun i j => ?_` and prove the remaining obligations. Rewrite using `[← infAt_inv, ← infAt_inv, ← map_inv]`. Conclude with `inf_norm σ w g⁻¹ i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem locHeight_inf (σ : E ≃ₐ[F] E) {n : ℕ} (w : InfinitePlace E)
     (g : AdelicGLn.AdelicGL E n) :
@@ -66,7 +66,7 @@ private theorem locHeight_inf (σ : E ≃ₐ[F] E) {n : ℕ} (w : InfinitePlace 
   exact inf_norm σ w g⁻¹ i j
 
 /- English proof (translation)
-Establish `h : (σ • w).IsReal ↔ w.IsReal` using `InfinitePlace.isReal_smul_iff`. Unfold `InfinitePlace.mult`. Distinguish the cases in `hw : w.IsReal`. Rewrite using `[if_pos (h.2 hw), if_pos hw]`. Rewrite using `[if_neg (fun h' => hw (h.1 h')), if_neg hw]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mult_smul (σ : E ≃ₐ[F] E) (w : InfinitePlace E) : (σ • w).mult = w.mult := by
   have h : (σ • w).IsReal ↔ w.IsReal := InfinitePlace.isReal_smul_iff
@@ -76,7 +76,7 @@ private theorem mult_smul (σ : E ≃ₐ[F] E) (w : InfinitePlace E) : (σ • w
   · rw [if_neg (fun h' => hw (h.1 h')), if_neg hw]
 
 /- English proof (translation)
-Use `(Equiv.prod_comp (MulAction.toPerm σ) (fun w : InfinitePlace E => AutomorphicForm.locHeight (infAt w (mapGL n (galAd σ) g)) ^ w.mult)).symm.trans (Finset.prod_congr rfl fun w _ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `AutomorphicForm.locHeight (infAt (σ • w) (mapGL n (galAd σ) g)) ^ (σ • w).mult = _`. Rewrite using `[locHeight_inf, mult_smul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem inf_prod (σ : E ≃ₐ[F] E) {n : ℕ} (g : AdelicGLn.AdelicGL E n) :
     (∏ w : InfinitePlace E, AutomorphicForm.locHeight (infAt w (mapGL n (galAd σ) g)) ^ w.mult) =
@@ -88,7 +88,7 @@ private theorem inf_prod (σ : E ≃ₐ[F] E) {n : ℕ} (g : AdelicGLn.AdelicGL 
   rw [locHeight_inf, mult_smul]
 
 /- English proof (translation)
-Use `(finprod_comp_equiv (MulAction.toPerm σ : Equiv.Perm (HeightOneSpectrum (𝓞 E))) (f := fun w : HeightOneSpectrum (𝓞 E) => ∏ᶠ (_ : below F w ≠ q), AutomorphicForm.locHeight (finAt w (mapGL n (galAd σ) g)))).symm.trans (finprod_congr fun w => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∏ᶠ (_ : below F (σ • w) ≠ q), AutomorphicForm.locHeight (finAt (σ • w) (mapGL n (galAd σ) g))) = _`. Establish `hb : below F (σ • w) = below F w` using `HeightOneSpectrum.ext (Ideal.under_smul (𝓞 F) w.asIdeal σ)`. Rewrite using `[locHeight_fin, hb]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fin_prod (σ : E ≃ₐ[F] E) {n : ℕ} (q : HeightOneSpectrum (𝓞 F))
     (g : AdelicGLn.AdelicGL E n) :
@@ -109,7 +109,7 @@ private theorem fin_prod (σ : E ≃ₐ[F] E) {n : ℕ} (q : HeightOneSpectrum (
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n q g`. Unfold `heightOff`. Rewrite using `[inf_prod, fin_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.heightOff_mapGL_galAd :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E ≃ₐ[F] E) (n : ℕ) (q : HeightOneSpectrum (𝓞 F)) (g : AdelicGLn.AdelicGL E n),

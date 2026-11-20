@@ -9,17 +9,15 @@ namespace GroundTheory.Heights₂.Heights.TheoremB
 open MvPolynomial Filter Topology
 
 /- English proof (translation)
-Introduce `σ _ Pt u w M C3 s0 hs0 hM`. Use `set g : ℚ → ℝ := fun s => eval (fun o : Option σ => o.elim (s : ℝ) (fun p => u p - s * w p)) Pt with hg`. Establish `hgc : Continuous g`. Use `(MvPolynomial.continuous_eval Pt).comp ?_` and prove the remaining obligations. Use `continuous_pi fun o => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `o with _ | p` into its components or cases. Conclude with `Rat.continuous_coe_real`. Conclude with `continuous_const.sub (Rat.continuous_coe_real.mul continuous_const)`. Establish `hg0 : g 0 = eval (fun o : Option σ => o.elim (0 : ℝ) u) Pt`. Simplify using `only [hg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `congr 2`. Use function extensionality and compare the values at `o`. Apply the tactic sequence `rcases o with _ | p <;> simp`. Establish `h1 : Tendsto g (𝓝[>] (0 : ℚ)) (𝓝 (g 0))` using `(hgc.tendsto 0).mono_left nhdsWithin_le_nhds`. Establish `hC : Tendsto (fun s : ℚ => C3 * (s : ℝ)) (𝓝[>] (0 : ℚ)) (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h : Tendsto (fun s : ℚ => C3 * (s : ℝ)) (𝓝 (0 : ℚ)) (𝓝 (C3 * ((0 : ℚ) : ℝ)))` using `(continuous_const.mul Rat.continuous_coe_real).tendsto 0`. Simplify using `using h.mono_left nhdsWithin_le_nhds`. Establish `hlt : ∀ᶠ s : ℚ in 𝓝 (0 : ℚ), (s : ℝ) < s0`. Establish `h : Tendsto (fun s : ℚ => (s : ℝ)) (𝓝 (0 : ℚ)) (𝓝 ((0 : ℚ) : ℝ))` using `Rat.continuous_coe_real.tendsto 0`. Rewrite `h` using `[Rat.cast_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h.eventually (gt_mem_nhds hs0)`. Establish `hev : ∀ᶠ s : ℚ in 𝓝[>] (0 : ℚ), ‖M s - g s‖ ≤ C3 * (s : ℝ)` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds hlt] with s hs hs'`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `hM s hs hs'.le`. Establish `h2 : Tendsto (fun s => M s - g s) (𝓝[>] (0 : ℚ)) (𝓝 0)` using `squeeze_zero_norm' hev hC`.
-
-Rewrite using `[← hg0]`. Simplify using `using h1.add h2`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem LimitTheorem.proof : LimitTheorem.Statement := by
   intro σ _ Pt u w M C3 s0 hs0 hM

@@ -10,7 +10,7 @@ namespace GlobalTheory.DieudonneTest
 open PDivGroup Sandwich Dieudonne
 
 /- English proof (translation)
-Take `⟨h1, h2, ε, hv, hε⟩` from `PadicComplexHost.main p`. Conclude with `⟨ℂ_[p], inferInstance, inferInstance, inferInstance, Valued.v, _, inferInstance, inferInstance, hv, h1, h2, ε, hε⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem setting_inhabited (p : ℕ) [Fact p.Prime] :
     ∃ (C : Type) (_ : Field C) (_ : IsAlgClosed C) (_ : CharZero C) (v : Valuation C NNReal)
@@ -25,7 +25,7 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
   [IsAdicComplete (span {(p : O)}) O]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨phiInv p O a, frobenius_injective (by rw [map_mul, frobenius_phiInv, h])⟩`.
+Supply the required witnesses or components.
 -/
 theorem xi_dvd_of_eigen {ε : PreTilt O p} {a : Ainf p O}
     (h : WittVector.frobenius a = WittVector.frobenius (xi ε) * a) : xi ε ∣ a :=
@@ -35,19 +35,17 @@ open WittVector Ideal CategoryTheory Opposite Function in
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
   [IsAdicComplete (span {(p : O)}) O] in
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hp : p.Prime` using `Fact.out`. Use `set Q : Polynomial R := Polynomial.X ^ p - Polynomial.C (t ^ (p - 1)) * Polynomial.X with hQ`. Establish `hdeg : Q.natDegree = p`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ, Polynomial.natDegree_sub_eq_left_of_natDegree_lt, Polynomial.natDegree_X_pow]`. Rewrite using `[Polynomial.natDegree_X_pow]`. Conclude with `lt_of_le_of_lt ((Polynomial.natDegree_C_mul_le _ _).trans (by simp)) hp.one_lt`. Establish `hQ0 : Q ≠ 0` using `fun h0 => by`. Rewrite `hdeg` using `[h0, Polynomial.natDegree_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hp.ne_zero hdeg.symm`. Establish `hroot : ∀ y, y ^ p = t ^ (p - 1) * y → y ∈ Q.roots` using `fun y hy => by`. Rewrite using `[Polynomial.mem_roots hQ0, Polynomial.IsRoot, hQ]`. Simplify using `[hy]`. Use `set f : ZMod p → R := fun k => ZMod.castHom (dvd_refl p) R k * t with hf_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hf : Function.Injective f` using `fun k l hkl => ZMod.castHom_injective R (mul_right_cancel₀ ht hkl)`. Establish `htp : t ^ p = t ^ (p - 1) * t` using `by rw [← pow_succ, Nat.sub_add_cancel hp.one_le]`. Establish `hfroot : ∀ k, f k ^ p = t ^ (p - 1) * f k`. Introduce `k`. Simplify using `only [hf_def, mul_pow, ← map_pow, ZMod.pow_card, htp]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsub : insert x (Finset.univ.image f) ⊆ Q.roots.toFinset`. Introduce `y hy`. Rewrite using `[Multiset.mem_toFinset]`. Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hroot _ hx`. Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `hroot _ (hfroot k)`. Establish `hnot : x ∉ Finset.univ.image f` using `fun hm => by`. Take `⟨k, -, hk⟩` from `Finset.mem_image.1 hm`.
-
-Conclude with `hne k hk.symm`. Establish `hcard` using `Finset.card_le_card hsub`. Rewrite `hcard` using `[Finset.card_insert_of_notMem hnot, Finset.card_image_of_injective _ hf, Finset.card_univ, ZMod.card]`. Establish `h2` using `(Multiset.toFinset_card_le Q.roots).trans (Polynomial.card_roots' Q)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem exists_zmod_mul_of_pow_eq_pow_pred_mul {R : Type*} [CommRing R] [IsDomain R]
     {p : ℕ} [Fact p.Prime] [CharP R p] {t x : R} (ht : t ≠ 0)
@@ -96,31 +94,29 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
   [IsAdicComplete (span {(p : O)}) O] in
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hrp : _root_.GlobalTheory.Sandwich.root ε ^ p = ε`. Unfold `_root_.GlobalTheory.Sandwich.root`. Conclude with `frobeniusEquiv_symm_pow_p (PreTilt O p) p ε`. Establish `hε1 : ε ≠ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Establish `hr1 : _root_.GlobalTheory.Sandwich.root ε = 1`. Unfold `_root_.GlobalTheory.Sandwich.root`. Rewrite using `[h1, map_one]`. Rewrite `hε` using `[hr1, map_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hε.eq_orderOf`. Rewrite `h2` using `[orderOf_one]`. Conclude with `hp.one_lt.ne' h2`. Use `set t : PreTilt O p := ε - 1 with ht_def`. Establish `ht : t ≠ 0` using `sub_ne_zero.2 hε1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set s : PreTilt O p := ∑ i ∈ Finset.range p, _root_.GlobalTheory.Sandwich.root ε ^ i with hs`. Establish `hst : s ^ p * t = t ^ p`. Establish `h1 : (_root_.GlobalTheory.Sandwich.root ε - 1) * s = t` using `by rw [hs, mul_geom_sum, hrp]`. Establish `h2 : (_root_.GlobalTheory.Sandwich.root ε - 1) ^ p = t` using `by rw [sub_pow_char, one_pow, hrp]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsp : s ^ p = t ^ (p - 1)`. Apply `mul_right_cancel₀ ht` to reduce the goal to its premises. Rewrite using `[hst, ← pow_succ, Nat.sub_add_cancel hp.one_le]`. Establish `hξ0 : WittVector.coeff (_root_.GlobalTheory.Sandwich.xi ε) 0 = s`. Rewrite using `[← WittVector.constantCoeff_apply]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `_root_.GlobalTheory.Sandwich.xi`. Simplify using `[map_sum, map_pow, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero, hs]`. Establish `hμ0 : WittVector.coeff (_root_.GlobalTheory.Sandwich.mu ε) 0 = t`. Unfold `_root_.GlobalTheory.Sandwich.mu`. Rewrite using `[← WittVector.constantCoeff_apply, map_sub, map_one, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `ha0 : WittVector.coeff a 0 ^ p = t ^ (p - 1) * WittVector.coeff a 0`. Establish `h3` using `congrArg (fun x => WittVector.coeff x 0) h`. Simplify using `only [WittVector.mul_coeff_zero, WittVector.coeff_frobenius_charP, hξ0] at h3`. Rewrite using `[h3, hsp]`. Take `⟨k, hk⟩` from `exists_zmod_mul_of_pow_eq_pow_pred_mul ht ha0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨(k.val : ℤ), ?_⟩` and prove the remaining obligations. Use `set d : _root_.GlobalTheory.Sandwich.Ainf p O := a - ((k.val : ℤ) : _root_.GlobalTheory.Sandwich.Ainf p O) * _root_.GlobalTheory.Sandwich.mu ε with hd`. Establish `hd0 : WittVector.coeff d 0 = 0`. Rewrite using `[← WittVector.constantCoeff_apply, hd, map_sub, map_mul, map_intCast, WittVector.constantCoeff_apply, WittVector.constantCoeff_apply, hμ0, hk]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hφd : WittVector.frobenius d = WittVector.frobenius (_root_.GlobalTheory.Sandwich.xi ε) * d`. Rewrite using `[hd, map_sub, map_mul, map_intCast, h, _root_.GlobalTheory.Dieudonne.frobenius_mu]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpd : ∃ b : _root_.GlobalTheory.Sandwich.Ainf p O, d = (p : _root_.GlobalTheory.Sandwich.Ainf p O) * b`. Distinguish the cases in `hd00 : d = 0`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨0, by rw [hd00, mul_zero]⟩`. Take `⟨m, b, hb0, hmb⟩` from `WittVector.exists_eq_pow_p_mul d hd00`. Consider the cases of `m with`. Consider the case `zero`. Rewrite `hmb` using `[pow_zero, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hd0` using `[hmb]`. Conclude with `absurd hd0 hb0`. Consider the case `succ m => exact ⟨(p : _root_.GlobalTheory.Sandwich.Ainf p O) ^ m * b, by rw [hmb, pow_succ']; ring⟩`. Take `⟨b, hb⟩` from `hpd`. Use `⟨b, by rw [← hb, hd]; ring, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hp0 : (p : _root_.GlobalTheory.Sandwich.Ainf p O) ≠ 0` using `WittVector.p_nonzero p _`. Apply `mul_left_cancel₀ hp0` to reduce the goal to its premises. Establish `h4` using `hφd`. Rewrite `h4` using `[hb, map_mul, map_natCast]`. Rewrite using `[h4]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.DieudonneTest.eigen_step [IsDomain (PreTilt O p)] {ε : PreTilt O p}
     (hε : IsPrimitiveRoot (_root_.GlobalTheory.Sandwich.root ε).untilt p) {a : _root_.GlobalTheory.Sandwich.Ainf p O}
@@ -194,9 +190,9 @@ theorem _root_.GlobalTheory.DieudonneTest.eigen_step [IsDomain (PreTilt O p)] {�
   ring
 
 /- English proof (translation)
-Proceed by induction on `n generalizing a with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ n ih`. Take `⟨c, b, rfl, hb⟩` from `eigen_step hε h`. Take `⟨d, e, he⟩` from `ih hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c + p * d, e, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ', mul_assoc, ← he]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eigen_approx [IsDomain (PreTilt O p)] {ε : PreTilt O p}
     (hε : IsPrimitiveRoot (root ε).untilt p) (n : ℕ) {a : Ainf p O}
@@ -213,7 +209,7 @@ theorem eigen_approx [IsDomain (PreTilt O p)] {ε : PreTilt O p}
     ring
 
 /- English proof (translation)
-Take `⟨M, H, ψ, r, ι, π, -, -, -, -, -, -, hex, -, -, hf, -⟩` from `h`. Take `⟨⟨-, h2, h3⟩, -, -⟩` from `hf G`. Take `⟨hι, he, hπ⟩` from `hex G`. Establish `h4` using `Submodule.finrank_quotient_add_finrank (LinearMap.ker (π G))`. Rewrite `h4` using `[((π G).quotKerEquivOfSurjective hπ).finrank_eq, he.linearMap_ker_eq, LinearMap.finrank_range_of_inj hι, h3]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -229,7 +225,7 @@ theorem finrank_add [IsDomain O] {ε : PreTilt O p} (h : CovariantDieudonneAt ε
   omega
 
 /- English proof (translation)
-Take `⟨M, H, ψ, r, ι, π, -, hM, -, -, hr, nr, hex, nι, nπ, -⟩` from `h`. Use `⟨M, (hM _).2.2, (hM _).2.2, fun f m => ((hr _).2 _).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← nr]`. Take `⟨w, hw⟩` from `((hex _).2.1 (r _ m)).1 (Subsingleton.elim _ _)`. Rewrite using `[← hw, nι, Subsingleton.elim (omegaDualMap _ _ f w) 0, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_const_mu_mem {ε : PreTilt O p} (h : CovariantDieudonneAt ε) :
     ∃ M : PDivGroup p O ⥤ ModuleCat.{0} (Ainf p O),
@@ -256,7 +252,7 @@ def trivialGroup : PDivGroup p O where
       simpa using (PDiv.mulBy O O (p ^ n)).toAlgHom.commutes a)
 
 /- English proof (translation)
-The claim follows from `hom_ext fun n => BialgHom.ext fun a => ((Hom.app (𝟙 (trivialGroup : PDivGroup p O)) n).toAlgHom.commutes a).trans ((Hom.app (0 : (trivialGroup : PDivGroup p O) ⟶ trivialGroup) n).toAlgHom.commutes a).symm`.
+A detailed English derivation is pending.
 -/
 theorem trivialGroup_id : 𝟙 (trivialGroup : PDivGroup p O) = 0 :=
   hom_ext fun n => BialgHom.ext fun a =>

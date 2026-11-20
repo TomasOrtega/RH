@@ -13,39 +13,31 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraT
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `l _ F n O _ _ _ _ _ r B _ _ _ u hΦ hn Z hZ`. Use `letI := F.grp`. Use `letI := F.top`. Use `haveI := F.tgrp`. Use `haveI := F.cpt`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := F.tdisc`. Use `haveI : CompactSpace F.G₀ := by`. Establish `hc : IsClosed (F.η.ker : Set F.Γ)` using `Subgroup.isClosed_of_isOpen _ F.η_open`. Conclude with `isCompact_iff_compactSpace.mp hc.isCompact`. Take `⟨DE, hCH, hpull⟩` from `d_quotDet u.D u.cont Z (fun z hz => (hZ z hz).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hl : ((l : ℕ) : B) ∈ maximalIdeal B`. Establish `h1 : ((l : ℕ) : O) ∈ maximalIdeal O` using `by haveI := (IsCoef.char (l := l) (O := O))`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_natCast]`. Conclude with `CharP.cast_eq_zero _ l`. Rewrite using `[← map_natCast (algebraMap O B), IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `fun hu => ((IsLocalRing.mem_maximalIdeal _).mp h1) (isUnit_of_map_unit (algebraMap O B) _ hu)`. Establish `hM : Submodule.span B ((MonoidHom.mrange (MonoidAlgebra.of B F.G₀) : Submonoid (MonoidAlgebra B F.G₀)) : Set (MonoidAlgebra B F.G₀)) = ⊤`. Rewrite using `[Submodule.eq_top_iff']`. Introduce `x`. Use `MonoidAlgebra.induction_on x ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce `m`. Conclude with `Submodule.subset_span ⟨m, rfl⟩`. Introduce `x y hx hy`. Conclude with `Submodule.add_mem _ hx hy`. Introduce `b x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ b hx`. Establish `hlam : ∀ x ∈ MonoidHom.mrange (MonoidAlgebra.of B F.G₀), ∀ i : ℕ, 1 ≤ i → i ≤ n → u.D.toDet.lam i (MulOpposite.unop (F.starOp O B n x)) = u.D.toDet.lam i x`. Introduce and unpack `_ ⟨g, rfl⟩ i _ _`. Rewrite using `[(d_toDet u.D _).2.1, (d_toDet u.D _).2.1]`. Conclude with `u.P i g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hop, hCHs, -⟩` from `d_star u.D.toDet (F.starOp O B n) _ hM hlam`. Establish `hstarCH : ∀ z ∈ u.D.CH, F.star O B n z ∈ TwoSidedIdeal.span (u.D.CH ∪ Z)`. Introduce `z hz`. Establish `hz' : z ∈ u.D.toDet.CH`. Rewrite using `[d_toDet_CH]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `TwoSidedIdeal.subset_span hz`. Establish `h2` using `hCHs z hz'`. Rewrite `h2` using `[d_toDet_CH]`. Conclude with `TwoSidedIdeal.span_mono Set.subset_union_left h2`. Establish `hI : ∀ y, y ∈ u.D.chBar Z → F.star O B n y ∈ u.D.chBar Z`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Unfold `GDet.chBar`. Use `star_closure F n O B (maximalIdeal B) (u.D.CH ∪ Z) hl ?_` and prove the remaining obligations. Introduce and unpack `z (hz | hz)`. Conclude with `hstarCH z hz`. Conclude with `TwoSidedIdeal.subset_span (Or.inr (hZ z hz).2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : ∀ a b, u.D.toQuot Z a = u.D.toQuot Z b ↔ a - b ∈ u.D.chBar Z`. Introduce `a b`. Unfold `GDet.toQuot`. Conclude with `Iff.trans (RingCon.eq _) (TwoSidedIdeal.rel_iff _ _ _)`. Establish `hsurj : Function.Surjective (u.D.toQuot Z)` using `RingCon.mkₐ_surjective _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ψ : u.D.CHQuot Z →ₐ[B] (u.D.CHQuot Z)ᵐᵒᵖ` to `RingCon.liftₐ (u.D.chBar Z).ringCon ((AlgHom.op (u.D.toQuot Z)).comp (F.starOp O B n)) (by`. Introduce `a b hab`. Rewrite `hab` using `[TwoSidedIdeal.rel_iff]`. Use `show MulOpposite.op (u.D.toQuot Z (F.star O B n a)) = MulOpposite.op (u.D.toQuot Z (F.star O B n b))`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq, ← (star_basic F n O B).2.2.2.2.2.1]`. Conclude with `hI _ hab)`. Establish `hψ : ∀ y, MulOpposite.unop (ψ (u.D.toQuot Z y)) = u.D.toQuot Z (F.star O B n y)` using `fun y => rfl`. Take `⟨t, ht⟩` from `(d_tr DE).1 hn`. Establish `htq : ∀ w, DE.tr (u.D.toQuot Z w) = u.D.toDet.tr w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Use `show (-1) ^ 1 * (DE.chi _).coeff (n - 1) = (-1) ^ 1 * (u.D.toDet.chi w).coeff (n - 1)`. Rewrite using `[← hpull, (d_pull DE (u.D.toQuot Z)).1 w]`. Establish `hinv : ∀ w, u.D.toDet.chi (F.star O B n w) = u.D.toDet.chi w`. Introduce `w`.
-
-Use `conv_rhs => rw [← hop]`. Rewrite using `[(d_pull _ (F.starOp O B n)).1 w]`. Conclude with `((d_op _).1 (F.star O B n w)).symm`. Use `⟨DE, { st := { toFun := fun x => MulOpposite.unop (ψ x) map_add' := fun x y => by simp map_smul' := fun b x => by simp } st_mul := fun x y => by simp st_st := ?_ tr := t tr_comm := ?_ tr_st := ?_ }, hCH, hpull, fun y => hψ y, fun y => ht y⟩` and prove the remaining obligations. Introduce `x`.
-
-Take `⟨y, rfl⟩` from `hsurj x`. Express the relevant statement in the definitionally equal form `MulOpposite.unop (ψ (MulOpposite.unop (ψ (u.D.toQuot Z y)))) = u.D.toQuot Z y`. Rewrite using `[hψ, hψ, (star_basic F n O B).1]`. Introduce `x y`. Rewrite using `[ht, ht]`.
-
-Conclude with `(d_tr DE).2.1 1 x y`. Introduce `x`. Take `⟨y, rfl⟩` from `hsurj x`. Express the relevant statement in the definitionally equal form `t (MulOpposite.unop (ψ (u.D.toQuot Z y))) = t (u.D.toQuot Z y)`. Rewrite using `[hψ, ht, ht, htq, htq]`.
-
-Use `show (-1) ^ 1 * (u.D.toDet.chi _).coeff (n - 1) = (-1) ^ 1 * (u.D.toDet.chi y).coeff (n - 1)`. Rewrite using `[hinv]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.trinv :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] {r : Resid F O n} {B : Type} [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B), PhiCond F.G₀ l → 1 ≤ n → ∀ Z : Set (MonoidAlgebra B F.G₀), (∀ z ∈ Z, u.D.Kills z ∧ F.star O B n z ∈ Z) → ∃ (DE : Det n B (u.D.CHQuot Z)) (T : TrInv B (u.D.CHQuot Z)), DE.IsCH ∧ DE.pull (u.D.toQuot Z) = u.D.toDet ∧ (∀ y, T.st (u.D.toQuot Z y) = u.D.toQuot Z (F.star O B n y)) ∧ ∀ y, T.tr y = DE.tr y := by

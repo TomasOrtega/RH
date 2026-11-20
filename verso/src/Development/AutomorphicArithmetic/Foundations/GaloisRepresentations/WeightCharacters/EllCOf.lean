@@ -8,19 +8,17 @@ open UpperTheory.Gal.Gen (IsLevel fixedBy)
 open UpperTheory.Gal.Wt
 
 /- English proof (translation)
-Introduce `E _ _ _ a C hC hneat`. Use `set D : Subgroup (UA E a) := C ⊔ infU E a with hDdef`. Establish `hDC : D ≤ C.comap GlobalTheory.EllU.finPart` using `sup_le (fun c hc => by`. Express the relevant statement in the definitionally equal form `GlobalTheory.EllU.finPart c ∈ C`. Rewrite using `[GlobalTheory.EllU.finPart_of_finU (hC hc)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hc)`. Use the proof step `(fun x hx => by`. Express the relevant statement in the definitionally equal form `GlobalTheory.EllU.finPart x ∈ C`. Rewrite using `[GlobalTheory.EllU.finPart_of_infU hx]`. Conclude with `C.one_mem)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `f : D →* C` to `(GlobalTheory.EllU.finPart.comp D.subtype).codRestrict C (fun d => hDC d.2)`. Establish `hyp : ∀ g : UA E a, ∀ γ ∈ ratU E a, ∀ d : D, γ * g = g * d → f d = 1`. Introduce `g γ hγ d h`. Establish `hfd : GlobalTheory.EllU.finPart (d : UA E a) ∈ C` using `hDC d.2`. Establish `e : γ * g = g * GlobalTheory.EllU.finPart (d : UA E a) * ((GlobalTheory.EllU.finPart (d : UA E a))⁻¹ * (d : UA E a))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[h]`. Use `group`. Establish `h1` using `hneat g γ hγ _ hfd _ (GlobalTheory.EllU.inv_finPart_mul_mem (d : UA E a)) e`. Conclude with `Subtype.ext h1`. Take `⟨ℓ, h1, h2⟩` from `UpperTheory.Gal.Gen.ellGrp_holds (UA E a) C (ratU E a) D f hyp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinf : ∀ x ∈ infU E a, ∀ g, ℓ (g * x) = ℓ g`. Introduce `x hx g`. Establish `e : f ⟨x, le_sup_right (a` using `C) hx⟩ = 1 := Subtype.ext (GlobalTheory.EllU.finPart_of_infU hx)`. Use `h2 g ⟨x, le_sup_right (a := C) hx⟩` as an intermediate fact. Simplify using `only [e, mul_one] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `this`. Establish `hC' : ∀ (c : C) g, ℓ (g * c) = ℓ g * c`. Introduce `c g`. Establish `e : f ⟨c, le_sup_left (b` using `infU E a) c.2⟩ = c := Subtype.ext (GlobalTheory.EllU.finPart_of_finU (hC c.2))`. Use `h2 g ⟨c, le_sup_left (b := infU E a) c.2⟩` as an intermediate fact.
-
-Simplify using `only [e] at this`. Conclude with `this`. Conclude with `⟨ℓ, ⟨h1, hC', hinf⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Wt.ellC_of :
     UpperTheory.Gal.Wt.EllC := by

@@ -10,11 +10,11 @@ open scoped BigOperators
 namespace GlobalTheory.EvenTheta
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨hb, hc⟩` from `hne`. Rewrite `hn` using `[norm_mul]`. Establish `h1 : ‖c‖ = max 1 ‖b‖`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: c = 1 + -b` using `by linear_combination h`. Rewrite using `[this, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by simpa using hb.symm)]`. Simplify using the standard rewrite rules. Establish `h2 : ‖b‖ = max 1 ‖c‖`. Establish `: b = 1 + -c` using `by linear_combination h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by simpa using hc.symm)]`. Simplify using the standard rewrite rules. Establish `h3 : 1 ≤ ‖c‖` using `h1 ▸ le_max_left _ _`. Establish `h4 : 1 ≤ ‖b‖` using `h2 ▸ le_max_left _ _`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_eq_one_or_of_add_eq_one {L : Type*} [NormedField L] [IsUltrametricDist L] {b c : L}
     (h : b + c = 1) (hn : ‖b * c‖ < 1) : ‖b‖ = 1 ∨ ‖c‖ = 1 := by
@@ -35,9 +35,9 @@ theorem norm_eq_one_or_of_add_eq_one {L : Type*} [NormedField L] [IsUltrametricD
   nlinarith
 
 /- English proof (translation)
-Establish `h2 : ‖(2 : ℂ_[2])‖ < 1`. Establish `: (2 : ℂ_[2]) = algebraMap ℚ_[2] ℂ_[2] ((2 : ℕ) : ℚ_[2])` using `by simp [map_ofNat]`. Rewrite using `[this, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`. Establish `hk : ‖(k : ℂ_[2])‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one _ k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[norm_mul]`. Use polynomial arithmetic with `[norm_nonneg (k : ℂ_[2]), norm_nonneg (2 : ℂ_[2])]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_two_mul_natCast_lt_one (k : ℕ) : ‖((2 * k : ℕ) : ℂ_[2])‖ < 1 := by
   have h2 : ‖(2 : ℂ_[2])‖ < 1 := by
@@ -50,25 +50,25 @@ theorem norm_two_mul_natCast_lt_one (k : ℕ) : ‖((2 * k : ℕ) : ℂ_[2])‖ 
   nlinarith [norm_nonneg (k : ℂ_[2]), norm_nonneg (2 : ℂ_[2])]
 
 /- English proof (translation)
-Introduce `D lam`. Establish `hm : ∀ x, D.host.φ₀ x ∈ Qbar` using `fun x => by`. Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom D.host.φ₀.toRatAlgHom`. Take `⟨a, ha⟩` from `GlobalTheory.NormSum.exists_integer_map_eq_w0 D`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd16 : D.host.d % 16 = 7` using `D.host.hyp.2.2.2.1`. Take `⟨k, hk⟩ : ∃ k : ℕ, D.host.d + 1 = 8 * k` from `⟨(D.host.d + 1) / 8, by omega⟩`. Establish `hk' : (D.host.d : ℂ) + 1 = 8 * (k : ℂ)` using `by exact_mod_cast hk`. Establish `hs : ((Real.sqrt D.host.d : ℝ) : ℂ) ^ 2 = (D.host.d : ℂ)`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hw : StandardLatticesGL3.w0 D = (1 + Complex.I * (Real.sqrt D.host.d : ℂ)) / 2` using `rfl`. Establish `hw' : 1 - StandardLatticesGL3.w0 D = (1 - Complex.I * (Real.sqrt D.host.d : ℂ)) / 2`. Rewrite using `[hw]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hc : starRingEnd ℂ (StandardLatticesGL3.w0 D) = 1 - StandardLatticesGL3.w0 D`. Rewrite using `[hw', hw, map_div₀, map_add, map_mul, map_one, map_ofNat, Complex.conj_I, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Establish `hp : StandardLatticesGL3.w0 D * (1 - StandardLatticesGL3.w0 D) = ((2 * k : ℕ) : ℂ)`. Rewrite using `[hw', hw]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Take the linear combination `(1 / 4 : ℂ) * hk' + (1 / 4 : ℂ) * hs - (1 / 4 : ℂ) * ((Real.sqrt D.host.d : ℝ) : ℂ) ^ 2 * Complex.I_sq`. Establish `hQ : StandardLatticesGL3.w0 D ∈ Qbar` using `ha ▸ hm _`. Establish `hQ' : 1 - StandardLatticesGL3.w0 D ∈ Qbar` using `Qbar.sub_mem Qbar.one_mem hQ`. Establish `hadd : lamC lam (StandardLatticesGL3.w0 D) + lamC lam (1 - StandardLatticesGL3.w0 D) = 1`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [lamC, dif_pos hQ, dif_pos hQ']`. Rewrite using `[← map_add, ← map_one lam]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmul : lamC lam (StandardLatticesGL3.w0 D) * lamC lam (1 - StandardLatticesGL3.w0 D) = ((2 * k : ℕ) : ℂ_[2])`. Simplify using `only [lamC, dif_pos hQ, dif_pos hQ']`. Rewrite using `[← map_mul, ← map_natCast lam]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hp.trans (by simp; exact Or.inl rfl)`. Break down `norm_eq_one_or_of_add_eq_one hadd (hmul ▸ norm_two_mul_natCast_lt_one k) with h | h` into its components or cases. Use `⟨a, StandardLatticesGL3.w0 D, k, ha, hQ, h, by rw [hc]; ring, by rw [hc, hp], ?_⟩` and prove the remaining obligations. Introduce `Λ t ht`. Conclude with `⟨ht.2.1, hw' ▸ ht.2.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1 - a, 1 - StandardLatticesGL3.w0 D, k, ?_, hQ', h, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha]`. Simplify using the standard rewrite rules. Rewrite using `[map_sub, map_one, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_sub, map_one, hc, ← hp]`. Expand and normalize the polynomial expressions, which then agree. Introduce `Λ t ht`. Rewrite using `[sub_sub_cancel]`. Conclude with `⟨hw' ▸ ht.2.2, ht.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_int_trace_one_unit_at_two :
     ∀ (D : D7) (lam : Qbar →+* ℂ_[2]), ∃ (a : 𝓞 D.host.K) (β : ℂ) (k : ℕ), D.host.φ₀ (((a : D.host.K) : D.host.E)) = β ∧ β ∈ Qbar ∧ ‖lamC lam β‖ = 1 ∧ β + starRingEnd ℂ β = 1 ∧ β * starRingEnd ℂ β = ((2 * k : ℕ) : ℂ) ∧ ∀ (Λ : AddSubgroup ℂ) (t₀ : ℂ), GL3Theta.IsTwoTorsionPointUnkilled D Λ t₀ → β * t₀ ∉ Λ ∧ (1 - β) * t₀ ∉ Λ := by

@@ -15,7 +15,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K) {G : Type
   (r : Representation K G S.Forms) (X : Finset (G → K)) (P : Subgroup G) (ψ : P →* Kˣ)
 
 /- English proof (translation)
-Rewrite using `[← range_V0E S r X P ψ (idemOf_mul_self X hX) (idemOf_central X hX _)]`. Conclude with `⟨F, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem level_subspace_image_mem (hX : ∀ χ ∈ X, IsAbsIrrChar χ) (F : Fin (S.BaseDimension r X P ψ) → K) :
     (S.V0E r X P ψ).mulVec F ∈ LinearMap.range (S.gaMat r (idemOf X)).mulVecLin ⊓ S.lvlPart r P ψ := by
@@ -23,7 +23,7 @@ theorem level_subspace_image_mem (hX : ∀ χ ∈ X, IsAbsIrrChar χ) (F : Fin (
   exact ⟨F, rfl⟩
 
 /- English proof (translation)
-Establish `hl` using `(level_idempotent_spec K v0 h0 G P ψ).1`. Establish `h1 : S.lvlE r P ψ * S.lvlPr r P ψ = S.gaMat r (lvlIdem P ψ)` using `(orthogonal_projection_spec K v0 h0 S hpos G r hr (lvlIdem P ψ) hl.idem hl.selfAdj).2`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h1]`. Conclude with `CSD.lvlIdem_mulVec_of_mem S r P ψ _ (level_subspace_image_mem S r X P ψ hX F).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lvlE_lvlPr_V0E {v0 : InfinitePlace K} (h0 : IsConjAt v0) (hpos : (S.H.map v0.embedding).PosDef) (hr : S.ActGood r)
     (hX : ∀ χ ∈ X, IsAbsIrrChar χ) (F : Fin (S.BaseDimension r X P ψ) → K) :
@@ -35,7 +35,7 @@ theorem lvlE_lvlPr_V0E {v0 : InfinitePlace K} (h0 : IsConjAt v0) (hpos : (S.H.ma
   exact CSD.lvlIdem_mulVec_of_mem S r P ψ _ (level_subspace_image_mem S r X P ψ hX F).2
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `(level_subspace_image_mem S r X P ψ hX F).1`. Establish `hfix : (S.gaMat r (idemOf X)).mulVec ((S.V0E r X P ψ).mulVec F) = (S.V0E r X P ψ).mulVec F`. Rewrite using `[← hy, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, ← (group_action_matrix_hom K S G r).2, idemOf_mul_self X hX]`. Unfold `CSD.lvlOp`. Rewrite using `[← Matrix.mulVec_mulVec, lvlE_lvlPr_V0E S r X P ψ h0 hpos hr hX F, ← Matrix.mulVec_mulVec, hfix, ← Matrix.mulVec_mulVec]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lvlOp_V0E {v0 : InfinitePlace K} (h0 : IsConjAt v0) (hpos : (S.H.map v0.embedding).PosDef) (hr : S.ActGood r)
     (hX : ∀ χ ∈ X, IsAbsIrrChar χ) (F : Fin (S.BaseDimension r X P ψ) → K) :
@@ -49,7 +49,7 @@ theorem lvlOp_V0E {v0 : InfinitePlace K} (h0 : IsConjAt v0) (hpos : (S.H.map v0.
     ← Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Use `show (S.lvlE r P ψ).mulVec ((S.lvlPr r P ψ * S.V0E r X P ψ).mulVec F) ∈ S.nabLat ↔ (S.V0E r X P ψ).mulVec F ∈ S.nabLat`. Rewrite using `[lvlE_lvlPr_V0E S r X P ψ h0 hpos hr hX F]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lvlNab_V0E {v0 : InfinitePlace K} (h0 : IsConjAt v0) (hpos : (S.H.map v0.embedding).PosDef) (hr : S.ActGood r)
     (hX : ∀ χ ∈ X, IsAbsIrrChar χ) (F : Fin (S.BaseDimension r X P ψ) → K) :
@@ -65,7 +65,7 @@ variable {D : Formalism.BasicNotions.D7} {G : Type} [Group G] [Fintype G] {Pl0 T
   {A : FamIn D.what₂.LL G Pl0 T m}
 
 /- English proof (translation)
-The claim follows from `lvlOp_V0E (A.fam.R t).S (A.fam.R t).r A.fam.X P ψ hOk.conj ((hOk.what₂ t).hpos _) (hOk.what₂ t).act hOk.irr F`.
+A detailed English derivation is pending.
 -/
 theorem level_operator_fixes_image {s : ℕ} (hOk : A.fam.Ok s) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (t : T)
     (F : Fin ((A.side P ψ Zs).nV t) → D.what₂.LL) :
@@ -73,7 +73,7 @@ theorem level_operator_fixes_image {s : ℕ} (hOk : A.fam.Ok s) (P : Subgroup G)
   lvlOp_V0E (A.fam.R t).S (A.fam.R t).r A.fam.X P ψ hOk.conj ((hOk.what₂ t).hpos _) (hOk.what₂ t).act hOk.irr F
 
 /- English proof (translation)
-The claim follows from `lvlNab_V0E (A.fam.R t).S (A.fam.R t).r A.fam.X P ψ hOk.conj ((hOk.what₂ t).hpos _) (hOk.what₂ t).act hOk.irr F`.
+A detailed English derivation is pending.
 -/
 theorem image_mem_nabla_iff {s : ℕ} (hOk : A.fam.Ok s) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (t : T)
     (F : Fin ((A.side P ψ Zs).nV t) → D.what₂.LL) :

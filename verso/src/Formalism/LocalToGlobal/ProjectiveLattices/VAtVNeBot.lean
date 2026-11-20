@@ -87,7 +87,7 @@ def evI {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) (f : Rul Xo c) : 
   evR Xo c f y.1
 
 /- English proof (translation)
-Set `` to `io.toAlgebra`. Conclude with `evalAt_add _ _ f g y.1`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem evI_add {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) (f g : Rul Xo c) :
     evI y (f + g) = evI y f + evI y g := by
@@ -95,7 +95,7 @@ theorem evI_add {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) (f g : Ru
   exact evalAt_add _ _ f g y.1
 
 /- English proof (translation)
-Set `` to `io.toAlgebra`. Conclude with `evalAt_smul _ _ a f y.1`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem evI_smul {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) (a : c.F) (f : Rul Xo c) :
     evI y (a • f) = io a * evI y f := by
@@ -103,7 +103,7 @@ theorem evI_smul {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) (a : c.F
   exact evalAt_smul _ _ a f y.1
 
 /- English proof (translation)
-Set `` to `io.toAlgebra`. Conclude with `evalAt_mul _ _ f g y.1`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem evI_mul {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) (f g : Rul Xo c) :
     evI y (f * g) = evI y f * evI y g := by
@@ -111,7 +111,7 @@ theorem evI_mul {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) (f g : Ru
   exact evalAt_mul _ _ f g y.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ f g => evI_add y f g, fun _ a f => evI_smul y a f, fun _ _ f g => evI_mul y f g⟩`.
+Supply the required witnesses or components.
 -/
 theorem isEval_evI {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) :
     IsEval (W := Unit) (Cusp := fun _ => Rul Xo c) (fun _ _ => ()) (fun _ _ f g => f * g) io
@@ -152,7 +152,7 @@ theorem vAtV_mk (la : HeightOneSpectrum (𝓞 c.F)) {T : CDVR} {io : c.F →+* T
 variable {la : HeightOneSpectrum (𝓞 c.F)}
 
 /- English proof (translation)
-Break down `y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩` into its components or cases. Use `show nval T.V e (evI y 0) = ⊤`. Rewrite using `[(isEval_evI y).zero (), nval_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vAtV_zero (y : PtV Xo c cls PY lies la) : vAtV y 0 = ⊤ := by
   rcases y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩
@@ -160,14 +160,14 @@ theorem vAtV_zero (y : PtV Xo c cls PY lies la) : vAtV y 0 = ⊤ := by
   rw [(isEval_evI y).zero (), nval_zero]
 
 /- English proof (translation)
-Break down `y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩` into its components or cases. Conclude with `nval_ne_bot e _`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem vAtV_ne_bot (y : PtV Xo c cls PY lies la) (f : Rul Xo c) : vAtV y f ≠ ⊥ := by
   rcases y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩
   exact nval_ne_bot e _
 
 /- English proof (translation)
-Break down `y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩` into its components or cases. Use `show min (nval T.V e (evI y f)) (nval T.V e (evI y g)) ≤ nval T.V e (evI y (f + g))`. Rewrite using `[evI_add]`. Conclude with `nval_add e _ _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vAtV_add (y : PtV Xo c cls PY lies la) (f g : Rul Xo c) :
     min (vAtV y f) (vAtV y g) ≤ vAtV y (f + g) := by
@@ -176,7 +176,7 @@ theorem vAtV_add (y : PtV Xo c cls PY lies la) (f g : Rul Xo c) :
   rw [evI_add]; exact nval_add e _ _
 
 /- English proof (translation)
-Break down `y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩` into its components or cases. Use `show nval T.V e (evI y (a • f)) = _ + nval T.V e (evI y f)`. Rewrite using `[evI_smul]`. Conclude with `nval_smul ho ha _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vAtV_smul (y : PtV Xo c cls PY lies la) (a : c.F) (f : Rul Xo c) (ha : a ≠ 0) :
     vAtV y (a • f) = (((vLa la a : ℤ) : ℝ) : EReal) + vAtV y f := by
@@ -185,7 +185,7 @@ theorem vAtV_smul (y : PtV Xo c cls PY lies la) (a : c.F) (f : Rul Xo c) (ha : a
   rw [evI_smul]; exact nval_smul ho ha _
 
 /- English proof (translation)
-Break down `y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩` into its components or cases. Use `show nval T.V e (evI y (f * g)) = nval T.V e (evI y f) + nval T.V e (evI y g)`. Rewrite using `[evI_mul]`. Conclude with `nval_mul e _ _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vAtV_mul (y : PtV Xo c cls PY lies la) (f g : Rul Xo c) :
     vAtV y (f * g) = vAtV y f + vAtV y g := by

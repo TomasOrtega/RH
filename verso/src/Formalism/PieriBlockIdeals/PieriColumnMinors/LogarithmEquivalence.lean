@@ -10,11 +10,11 @@ namespace Formalism.CohomologicalDescent
 open Classical
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hcop : IsCoprime (l : ℤ) (l' : ℤ)`. Rewrite using `[Nat.isCoprime_iff_coprime]`. Conclude with `(Nat.coprime_primes hl hl').mpr hne`. Establish `hmul : (l : ℤ) * l' ∣ |n|`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dvd_abs]`. Conclude with `hcop.mul_dvd hd hd'`. Establish `hle : (l : ℤ) * l' ≤ |n|` using `Int.le_of_dvd (abs_pos.mpr hn) hmul`. Establish `hle' : (l : ℝ) * l' ≤ ((|n| : ℤ) : ℝ)` using `by exact_mod_cast hle`. Establish `hsq : L ^ 2 < (l : ℝ) * l'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[sq]`. Conclude with `mul_lt_mul'' hLl hLl' hL hL`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem eq_of_dvd_of_abs_lt_sq {L : ℝ} (hL : 0 ≤ L) {n : ℤ} (hn : n ≠ 0) (hnL : ((|n| : ℤ) : ℝ) < L ^ 2)
     {l l' : ℕ} (hl : l.Prime) (hl' : l'.Prime) (hLl : L < (l : ℝ)) (hLl' : L < (l' : ℝ))
@@ -34,9 +34,9 @@ theorem eq_of_dvd_of_abs_lt_sq {L : ℝ} (hL : 0 ≤ L) {n : ℤ} (hn : n ≠ 0)
   linarith
 
 /- English proof (translation)
-Introduce `L T P hL hT hP`. Use `choose! f hfT hfd using fun l (hl : l ∈ P) => (hP l hl).2.2`. Apply `Finset.card_le_card_of_injOn f` to reduce the goal to its premises. Introduce `l hl`. Conclude with `hfT l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `l hl l' hl' heq`. Establish `h1` using `hT (f l) (hfT l hl)`. Use `eq_of_dvd_of_abs_lt_sq hL h1.1 h1.2 (hP l hl).1 (hP l' hl').1 (hP l hl).2.1 (hP l' hl').2.1 (hfd l hl) ?_` and prove the remaining obligations. Rewrite using `[heq]`. Conclude with `hfd l' hl'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem largePrimeDivisorCount_holds : PrimeCount := by
   intro L T P hL hT hP
@@ -52,27 +52,25 @@ theorem largePrimeDivisorCount_holds : PrimeCount := by
     exact hfd l' hl'
 
 /- English proof (translation)
-Introduce `h L xm xp mB P hL hhL hmB hmx hxx hxh hP`. Take `⟨P', hP'⟩ : ∃ P' : Finset ℕ, P' = P.filter (fun l : ℕ => ∃ y : ℤ, xm ≤ y ∧ y ≤ xp ∧ (l : ℤ) ∣ y - mB)` from `⟨_, rfl⟩`. Establish `hmem : ∀ l, l ∈ P' ↔ l ∈ P ∧ ∃ y : ℤ, xm ≤ y ∧ y ≤ xp ∧ (l : ℤ) ∣ y - mB`. Introduce `l`. Rewrite using `[hP', Finset.mem_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `choose! g hg1 hg2 hg3 using fun l (hl : l ∈ P') => ((hmem l).mp hl).2`. Establish `hh1 : (1 : ℝ) ≤ h`. Establish `: (1 : ℤ) ≤ h` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hlogh : 0 ≤ Real.log (h : ℝ)` using `Real.log_nonneg hh1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hterm : ∀ l ∈ P', Real.log (l : ℝ) ≤ Real.log (h : ℝ)`. Introduce `l hl`. Establish `hlP` using `((hmem l).mp hl).1`. Establish `hpos : 0 < g l - mB`. Use `hg1 l hl` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hdle : (l : ℤ) ≤ g l - mB` using `Int.le_of_dvd hpos (hg3 l hl)`. Establish `hle : (l : ℤ) ≤ h`. Use `hg2 l hl` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl0 : (0 : ℝ) < l` using `by exact_mod_cast (hP l hlP).1.pos`. Conclude with `Real.log_le_log hl0 (by exact_mod_cast hle)`. Establish `hcard : P'.card ≤ (Finset.Icc xm xp).card`. Apply `Finset.card_le_card_of_injOn g` to reduce the goal to its premises. Introduce `l hl`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.mem_Icc.mpr ⟨hg1 l hl, hg2 l hl⟩`. Introduce `l hl l' hl' heq`. Establish `hlP` using `((hmem l).mp hl).1`. Establish `hlP'` using `((hmem l').mp hl').1`. Establish `hpos : 0 < g l - mB`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hg1 l hl` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hlt : ((|g l - mB| : ℤ) : ℝ) < L ^ 2`. Establish `h1 : |g l - mB| ≤ (h : ℤ)`. Rewrite using `[abs_of_pos hpos]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `hg2 l hl` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h2 : ((|g l - mB| : ℤ) : ℝ) ≤ (h : ℝ)` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion. Use `eq_of_dvd_of_abs_lt_sq hL hpos.ne' hlt (hP l hlP).1 (hP l' hlP').1 (hP l hlP).2 (hP l' hlP').2 (hg3 l hl) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Conclude with `hg3 l' hl'`. Establish `hcardR : ((Finset.Icc xm xp).card : ℝ) = ((xp - xm : ℤ) : ℝ) + 1`. Establish `h0 : (0 : ℤ) ≤ xp + 1 - xm` using `by omega`. Rewrite using `[Int.card_Icc, ← Int.cast_natCast, Int.toNat_of_nonneg h0]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∑ l ∈ P', Real.log (l : ℝ) ≤ (((xp - xm : ℤ) : ℝ) + 1) * Real.log (h : ℝ)`. Combine the equalities or inequalities in the displayed calculation. Use `Eq.trans_le ?_ key` and prove the remaining obligations.
-
-Rewrite using `[hP', Finset.sum_filter]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Unfold `IlInd`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem residueIndicatorPrimeSum_holds : ISum := by
   intro h L xm xp mB P hL hhL hmB hmx hxx hxh hP

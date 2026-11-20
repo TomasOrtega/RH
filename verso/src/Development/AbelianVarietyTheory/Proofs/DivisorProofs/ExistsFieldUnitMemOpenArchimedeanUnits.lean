@@ -7,11 +7,11 @@ namespace GlobalTheory.UnitsDense
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Establish `h1` using `NumberField.InfiniteAdeleRing.denseRange_algebraMap E`. Establish `hs : Function.Surjective (Pi.map fun w : InfinitePlace E => InfinitePlace.Completion.extensionEmbedding w)`. Introduce `y`. Use `choose x hx using fun w : InfinitePlace E => InfinitePlace.Completion.surjective_extensionEmbedding_of_isComplex (IsTotallyComplex.isComplex w) (y w)`. Conclude with `⟨x, funext hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hc : Continuous (Pi.map fun w : InfinitePlace E => InfinitePlace.Completion.extensionEmbedding w)` using `continuous_pi fun w => (InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp (continuous_apply w)`. Use `hs.denseRange.comp h1 hc` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x w`. Express the relevant statement in the definitionally equal form `w.embedding x = InfinitePlace.Completion.extensionEmbedding w (algebraMap E (InfiniteAdeleRing E) x w)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[InfiniteAdeleRing.algebraMap_apply]`. Use `InfinitePlace.Completion.extensionEmbedding_coe (v := w) ((WithAbs.equiv w.1).symm x)` as an intermediate fact. Simplify using `only [RingEquiv.apply_symm_apply] at this`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem denseRange_embeddings' : DenseRange fun (x : E) (w : InfinitePlace E) => w.embedding x := by
   have h1 := NumberField.InfiniteAdeleRing.denseRange_algebraMap E
@@ -34,13 +34,11 @@ theorem denseRange_embeddings' : DenseRange fun (x : E) (w : InfinitePlace E) =>
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ V hV ⟨v, hv⟩`. Establish `hU : IsOpen (Units.val '' V)` using `Units.isOpenEmbedding_val.isOpenMap V hV`. Establish `hd : DenseRange fun x : E => pInf E (algebraMap E (Ad E) x)`. Establish `: (fun x : E => pInf E (algebraMap E (Ad E) x)) = fun (x : E) (w : InfinitePlace E) => w.embedding x`. Use function extensionality and compare the values at `x w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `pInf_algebraMap x w`. Rewrite using `[this]`. Conclude with `denseRange_embeddings'`. Take `⟨x, u, hu, hxu⟩` from `hd.exists_mem_open hU ⟨v.1, v, hv, rfl⟩`. Establish `hx : x ≠ 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl`. Simplify using `only [map_zero] at hxu`. Use `haveI : Nonempty (InfinitePlace E) := inferInstance`. Conclude with `u.ne_zero hxu`. Use `⟨Units.mk0 x hx, ?_⟩` and prove the remaining obligations.
-
-Use `hu using 1` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using `[hxu]`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unit_mem_open :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (V : Set (Cinf E)ˣ), IsOpen V → V.Nonempty →

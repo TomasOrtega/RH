@@ -13,9 +13,9 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
   (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) {wL : WeightFamilies.Wt D j} (w : Fin N → B.Cusp j wL)
 
 /- English proof (translation)
-Rewrite using `[lwZ_alg, rzMap_emb]`. Establish `h1 : IsUnit ((1 : X.Kl la) ⊗ₜ[B.KO] gF F)`. Simplify using `using (IsUnit.mk0 _ hF).map (Algebra.TensorProduct.includeRight : Ω →ₐ[B.KO] X.Kl la ⊗[B.KO] Ω)`. Establish `h2 : IsUnit ((1 : Kp X la N) ⊗ₜ[X.Kl la] ((1 : X.Kl la) ⊗ₜ[B.KO] gF F))`. Simplify using `using h1.map (Algebra.TensorProduct.includeRight : X.Kl la ⊗[B.KO] Ω →ₐ[X.Kl la] Kp X la N ⊗[X.Kl la] (X.Kl la ⊗[B.KO] Ω))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `h2.map _`.
+A detailed English derivation is pending.
 -/
 theorem curveUnit_isUnit_emb (Ω : Type) [Field Ω] [Algebra B.KO Ω] (gF : X.Forms →ₐ[B.KO] Ω)
     (F : X.Forms) (hF : gF F ≠ 0) :
@@ -30,7 +30,7 @@ theorem curveUnit_isUnit_emb (Ω : Type) [Field Ω] [Algebra B.KO Ω] (gF : X.Fo
   exact h2.map _
 
 /- English proof (translation)
-Use `IsUnit.of_mul_eq_one (lwZ X la N Ω gF w (algebraMap (Rp X la N) (Lw X la w) (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0))) ?_` and prove the remaining obligations. Rewrite using `[← map_mul, mul_comm, section_mul_inverse_eq_one, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem curveUnit_isUnit_w0inv (Ω : Type) [CommRing Ω] [Algebra B.KO Ω] (gF : X.Forms →ₐ[B.KO] Ω) :
     IsUnit (lwZ X la N Ω gF w (w0inv X la w)) := by
@@ -41,7 +41,7 @@ variable {ι : Type} (Ω : ι → Type) [∀ Z, Field (Ω Z)] [∀ Z, Algebra B.
   (gF : ∀ Z, X.Forms →ₐ[B.KO] Ω Z)
 
 /- English proof (translation)
-Use `hInj b fun Z => ?_` and prove the remaining obligations. Rewrite using `[phiZ_apply]`. Establish `h1` using `congrArg (lwZ X la N (Ω Z) (gF Z) w) hb`. Rewrite `h1` using `[map_mul, map_zero]`. Conclude with `(curveUnit_isUnit_emb X la N w (Ω Z) (gF Z) F (hF Z)).mul_left_eq_zero.mp h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonzero_divisor_cusp_form
     (hInj : ∀ f : ↥(Frac0 X la w), (∀ Z, phiZ X la N (Ω Z) (gF Z) w f = 0) → f = 0)
@@ -54,13 +54,13 @@ theorem nonzero_divisor_cusp_form
   exact (curveUnit_isUnit_emb X la N w (Ω Z) (gF Z) F (hF Z)).mul_left_eq_zero.mp h1
 
 /- English proof (translation)
-Establish `hmem : ∀ b : ↥(Frac0 X la w), b * u ∈ Jid X la w → b ∈ Jid X la w`. Introduce `b hb`. Use `LocalUnitReduction.mem_of_forall_sup_ker (Jid X la w) (R := fun Z => RZs X la N (Ω Z) (gF Z) w) (fun Z => phiZ X la N (Ω Z) (gF Z) w) hInj hone fun Z => ?_` and prove the remaining obligations. Use `LocalUnitReduction.mem_sup_ker (Jid X la w) (R := fun Z => RZs X la N (Ω Z) (gF Z) w) (fun Z => phiZ X la N (Ω Z) (gF Z) w) (hloc Z) ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `hu Z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1 : phiZ X la N (Ω Z) (gF Z) w (b * u) ∈ Ideal.map (phiZ X la N (Ω Z) (gF Z) w) (Jid X la w)` using `Ideal.mem_map_of_mem _ hb`. Rewrite `h1` using `[map_mul, ← hv]`. Establish `h2` using `Ideal.mul_mem_right (↑v⁻¹ : RZs X la N (Ω Z) (gF Z) w) _ h1`. Rewrite `h2` using `[mul_assoc, Units.mul_inv, mul_one]`. Then use the resulting hypothesis. Establish `hinj : Function.Injective (LinearMap.mulRight (Kp X la N) (toOsK X la w u))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨b, rfl⟩` from `toOsK_surjective X la w y`. Rewrite `hy` using `[LinearMap.mulRight_apply, ← map_mul, toOsK_eq_zero_iff]`. Rewrite using `[toOsK_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmem b hy`. Take `⟨y, hy⟩` from `(LinearMap.injective_iff_surjective.mp hinj) 1`. Rewrite `hy` using `[LinearMap.mulRight_apply]`. Conclude with `IsUnit.of_mul_eq_one y (by rw [mul_comm]; exact hy)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem curveUnit_unit_gen [Fintype ι]
     (hInj : ∀ f : ↥(Frac0 X la w), (∀ Z, phiZ X la N (Ω Z) (gF Z) w f = 0) → f = 0)
@@ -105,7 +105,7 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
   {hM : IntAtExt X E} {ka wL wF : WeightFamilies.Wt D j}
 
 /- English proof (translation)
-Rewrite using `[phiZ_apply]`. Use `show IsUnit (lwZ (xplus X E hM) la G.N Ω gF G.w (frac (xplus X E hM) la G.w e (emb (xplus X E hM) la G.N (X.inc wF g0) * emb (xplus X E hM) la G.N (X.inc w' θ))))`. Simplify using `only [frac_apply, map_mul, map_pow]`. Conclude with `((curveUnit_isUnit_emb _ la G.N G.w Ω gF _ hg).mul (curveUnit_isUnit_emb _ la G.N G.w Ω gF _ hθ)).mul ((curveUnit_isUnit_w0inv _ la G.N G.w Ω gF).pow e)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phi_unit_product_cusp_forms (G : GlobalFamilyData (xplus X E hM) ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO))
     (g0 : B.Cusp j wF) {e : ℕ} {w' : WeightFamilies.Wt D j} (θ : B.Cusp j w') (hw : wadd wF w' = wsmul e wL)
@@ -127,7 +127,7 @@ variable {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (hj : InR D j)
   (hG : GenFrEx (T.Q.Xo j) T.Q.c) (hT : GenFromTest (T.Q.Xo j) T.Q.c hG)
 
 /- English proof (translation)
-The claim follows from `formsEvR_single j hG hT Z _ _`.
+A detailed English derivation is pending.
 -/
 theorem curveUnit_gF_inc (Z : Comp (T.Q.Xo j) T.Q.c) (u : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j u) :
     formsEvR j hG hT Z ((recPJ h j hj).inc u F) = evC hG Z (F : T.R j) :=
@@ -137,7 +137,7 @@ variable {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData (recPlus h j h
   (la : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO)) (g0 : (recB h.toLawsCore).Cusp j wF)
 
 /- English proof (translation)
-Introduce `b hb` and use `nonzero_divisor_cusp_form (recPlus h j hj) la G.N G.w (fun Z => Om Z) (fun Z => formsEvR j hG hT Z) hInj _ (fun Z h0 => hg0 Z ((curveUnit_gF_inc h j hj hG hT Z wF g0).symm.trans h0)) b hb`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nonzero_divisor_cusp_form_record
     (hInj : ∀ f : ↥(Frac0 (recPlus h j hj) la G.w),
@@ -153,7 +153,7 @@ theorem nonzero_divisor_cusp_form_record
     hInj _ (fun Z h0 => hg0 Z ((curveUnit_gF_inc h j hj hG hT Z wF g0).symm.trans h0)) b hb
 
 /- English proof (translation)
-The claim follows from `curveUnit_unit_gen (recPlus h j hj) la G.N G.w (fun Z => Om Z) (fun Z => formsEvR j hG hT Z) hInj hone hloc hfd _ fun Z => phi_unit_product_cusp_forms G la g0 θ hw (Om Z) (formsEvR j hG hT Z) (fun h0 => hg0 Z ((curveUnit_gF_inc h j hj hG hT Z wF g0).symm.trans h0)) (fun h0 => hθ …`.
+A detailed English derivation is pending.
 -/
 theorem unit_ideal_cusp_form_record [Fintype (Comp (T.Q.Xo j) T.Q.c)]
     {e : ℕ} {w' : WeightFamilies.Wt D j} (θ : (recB h.toLawsCore).Cusp j w') (hw : wadd wF w' = wsmul e wL)

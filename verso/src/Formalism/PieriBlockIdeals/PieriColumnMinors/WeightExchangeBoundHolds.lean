@@ -10,7 +10,7 @@ namespace Formalism.CohomologicalDescent
 open Classical
 
 /- English proof (translation)
-The claim follows from `|Bm.sum - Y.sum| ≤ (Multiset.card X : ℤ) * (hi - lo) := by subst hA have noMem : hi < lo → ∀ S : Multiset ℤ, (∀ a ∈ S, lo ≤ a ∧ a ≤ hi) → Multiset.card S = 0 := by intro hlt S hS by_contra hne obtain ⟨a, ha⟩ := Multiset.card_pos_iff_exists_mem.1 (Nat.pos_of_ne_zero hne) have := h …`.
+A detailed English derivation is pending.
 -/
 theorem we_msum (Y A Bm X : Multiset ℤ) (lo hi : ℤ) (hYA : Y ≤ A) (hA : A = Bm + X)
     (hc : Multiset.card Y = Multiset.card Bm) (hin : ∀ a ∈ A, lo ≤ a ∧ a ≤ hi) :
@@ -61,47 +61,45 @@ theorem we_msum (Y A Bm X : Multiset ℤ) (lo hi : ℤ) (hYA : Y ≤ A) (hA : A 
   constructor <;> linarith
 
 /- English proof (translation)
-Introduce `l b t κ U kap hl htl hU hkap hle`. Establish `: NeZero l` using `⟨by omega⟩`. Establish `hlpos : (0 : ℤ) < (l : ℤ)` using `by exact_mod_cast hl`. Take `⟨lo, hlo⟩ : ∃ lo : ℤ, lo = b - (κ : ℤ)` from `⟨_, rfl⟩`. Take `⟨hi, hhi⟩ : ∃ hi : ℤ, hi = b + (t : ℤ) - 1 + (κ : ℤ)` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hwin : hi < lo + l` using `by omega`. Take `⟨g, hg⟩ : ∃ g : ℤ → ℤ, ∀ u, g u = lo + (u - lo) % (l : ℤ)` from `⟨_, fun _ => rfl⟩`. Establish `g_ge : ∀ u, lo ≤ g u` using `fun u => by`. Rewrite using `[hg]`. Use `Int.emod_nonneg (u - lo) hlpos.ne'` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `g_fix : ∀ v, lo ≤ v → v ≤ hi → g v = v` using `fun v h1 h2 => by`. Rewrite using `[hg, Int.emod_eq_of_lt (by linarith) (by linarith)]`. Expand and normalize the polynomial expressions, which then agree. Establish `g_mod : ∀ u, g u ≡ u [ZMOD (l : ℤ)]` using `fun u => by`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h` using `(Int.mod_modEq (u - lo) (l : ℤ)).add_left lo`. Rewrite using `[hg]`. Rewrite `h` using `[show lo + (u - lo) = u by ring]`. Then use the resulting hypothesis. Establish `g_cong : ∀ u v, u ≡ v [ZMOD (l : ℤ)] → g u = g v` using `fun u v h => by`. Establish `e : (u - lo) % (l : ℤ) = (v - lo) % (l : ℤ)` using `Int.ModEq.sub_right lo h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hg, hg, e]`. Take `⟨ρ, hρ⟩ : ∃ ρ : ZMod l → ℤ, ∀ u : ℤ, ρ (u : ZMod l) = g u` from `⟨fun z => lo + ((z - (lo : ZMod l)).val : ℤ), fun u => by show lo + ((((u : ZMod l) - (lo : ZMod l))).val : ℤ) = g u`. Rewrite using `[← Int.cast_sub, ZMod.val_intCast, hg]⟩`. Establish `hvW : ∀ s : Fin t, lo ≤ b + ((s : ℕ) : ℤ) - kap s ∧ b + ((s : ℕ) : ℤ) - kap s ≤ hi` using `fun s => by`. Establish `h1` using `s.isLt`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `abs_le.1 (hkap s)`. Use linear arithmetic over natural numbers and integers. Establish `hY : Multiset.map (fun s : Fin t => b + ((s : ℕ) : ℤ) - kap s) Finset.univ.val ≤ Multiset.map g U.val`. Establish `h1` using `Multiset.map_le_map (f := ρ) hle`. Rewrite `h1` using `[Multiset.map_map, Multiset.map_map]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Eq.trans_le (Multiset.map_congr rfl fun s _ => ?_) (h1.trans_eq (Multiset.map_congr rfl fun u _ => ?_))` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[hρ, g_fix _ (hvW s).1 (hvW s).2]`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hρ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hYA : Multiset.map (fun s : Fin t => b + ((s : ℕ) : ℤ) - kap s) Finset.univ.val ≤ Multiset.filter (fun x => x ≤ hi) (Multiset.map g U.val)`. Establish `hself : Multiset.filter (fun x => x ≤ hi) (Multiset.map (fun s : Fin t => b + ((s : ℕ) : ℤ) - kap s) Finset.univ.val) = Multiset.map (fun s : Fin t => b + ((s : ℕ) : ℤ) - kap s) Finset.univ.val` using `Multiset.filter_eq_self.2 (fun a ha => by`. Rewrite `ha` using `[Multiset.mem_map]`. Take `⟨s, -, rfl⟩` from `ha`. Conclude with `(hvW s).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hself]`. Conclude with `Multiset.filter_le_filter (p := fun x => x ≤ hi) hY`. Establish `hin : ∀ a ∈ Multiset.filter (fun x => x ≤ hi) (Multiset.map g U.val), lo ≤ a ∧ a ≤ hi`. Introduce `a ha`. Rewrite `ha` using `[Multiset.mem_filter, Multiset.mem_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨⟨u, -, rfl⟩, h⟩` from `ha`. Conclude with `⟨g_ge u, h⟩`. Establish `hF : Multiset.filter (fun x => x ≤ hi) (Multiset.map g U.val) = Multiset.map g (Multiset.filter (fun u => g u ≤ hi) U.val)`. Rewrite using `[Multiset.filter_map]`. Conclude with `congrArg (Multiset.map g) (Multiset.filter_congr fun _ _ => Iff.rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfirst : Multiset.filter (fun u => u ∈ Finset.Icc b (b + (t : ℤ) - 1)) (Multiset.filter (fun u => g u ≤ hi) U.val) = Multiset.map (fun s : Fin t => b + ((s : ℕ) : ℤ)) Finset.univ.val`. Establish `hinj : Function.Injective (fun s : Fin t => b + ((s : ℕ) : ℤ))`. Introduce `s1 s2 h`. Establish `h' : b + ((s1 : ℕ) : ℤ) = b + ((s2 : ℕ) : ℤ)` using `h`. Conclude with `Fin.ext (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hnd1 : (Multiset.filter (fun u => u ∈ Finset.Icc b (b + (t : ℤ) - 1)) (Multiset.filter (fun u => g u ≤ hi) U.val)).Nodup`. Apply `Multiset.Nodup.filter` to reduce the goal to its premises. Apply `Multiset.Nodup.filter` to reduce the goal to its premises. Conclude with `U.nodup`. Rewrite using `[Multiset.Nodup.ext hnd1 (Multiset.Nodup.map hinj (Finset.nodup _))]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `a`. Simplify using `only [Multiset.mem_filter, Finset.mem_val, Finset.mem_Icc, Multiset.mem_map, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨-, -⟩, h1, h2⟩`. Establish `hn` using `Int.toNat_of_nonneg (show 0 ≤ a - b by omega)`.
+Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨(a - b).toNat, by omega⟩, ?_⟩` and prove the remaining obligations. Use `show b + (((a - b).toNat : ℕ) : ℤ) = a`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨s, rfl⟩`. Establish `hs` using `s.isLt`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨hU s, ?_⟩, by omega, by omega⟩` and prove the remaining obligations. Rewrite using `[g_fix _ (by omega) (by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `hA : Multiset.filter (fun x => x ≤ hi) (Multiset.map g U.val) = Multiset.map (fun s : Fin t => b + ((s : ℕ) : ℤ)) Finset.univ.val + Multiset.map g (Multiset.filter (fun u => u ∉ Finset.Icc b (b + (t : ℤ) - 1)) (Multiset.filter (fun u => g u ≤ hi) U.val))`. Rewrite using `[hF]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [← Multiset.filter_add_not (p := fun u => u ∈ Finset.Icc b (b + (t : ℤ) - 1)) (s := Multiset.filter (fun u => g u ≤ hi) U.val)]`. Rewrite using `[Multiset.map_add, hfirst, Multiset.map_map]`. Use `congr 1`. Conclude with `Multiset.map_congr rfl fun s _ => by`. Establish `hs` using `s.isLt`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Function.comp_apply]`. Conclude with `g_fix _ (by omega) (by omega)`. Establish `hR : ∀ u, (∃ x ∈ Finset.Icc (b - (κ : ℤ)) (b + (t : ℤ) - 1 + (κ : ℤ)), x ≡ u [ZMOD (l : ℤ)]) ↔ g u ≤ hi`. Introduce `u`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, hx, hxu⟩`. Rewrite `hx` using `[Finset.mem_Icc]`. Rewrite using `[← g_cong x u hxu, g_fix x (by omega) (by omega)]`. Use linear arithmetic over natural numbers and integers. Introduce `hu`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨g u, Finset.mem_Icc.2 ⟨by have := g_ge u; omega, by omega⟩, g_mod u⟩`. Establish `hcard : Multiset.card (Multiset.filter (fun u => u ∉ Finset.Icc b (b + (t : ℤ) - 1)) (Multiset.filter (fun u => g u ≤ hi) U.val)) = mwCount l b t κ U`. Unfold `mwCount`. Rewrite using `[← Finset.card_val, Finset.filter_val, Finset.filter_val, Multiset.filter_filter, Multiset.filter_filter]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
-Establish `e : Multiset.filter (fun a => a ∉ Finset.Icc b (b + (t : ℤ) - 1) ∧ g a ≤ hi) U.val = Multiset.filter (fun a => (∃ x ∈ Finset.Icc (b - (κ : ℤ)) (b + (t : ℤ) - 1 + (κ : ℤ)), x ≡ a [ZMOD (l : ℤ)]) ∧ a ∉ Finset.Icc b (b + (t : ℤ) - 1)) U.val` using `Multiset.filter_congr (fun u _ => by rw [hR u]; exact and_comm)`. Use `e using 2` and compare the differences between its conclusion and the goal. Establish `key` using `we_msum _ _ _ _ lo hi hYA hA (by rw [Multiset.card_map, Multiset.card_map]) hin`. Rewrite `key` using `[Multiset.card_map, hcard]`. Establish `hBs : (Multiset.map (fun s : Fin t => b + ((s : ℕ) : ℤ)) Finset.univ.val).sum = ∑ s : Fin t, (b + ((s : ℕ) : ℤ))` using `(Finset.sum_eq_multiset_sum _ _).symm`.
-
-Establish `hYs : (Multiset.map (fun s : Fin t => b + ((s : ℕ) : ℤ) - kap s) Finset.univ.val).sum = ∑ s : Fin t, (b + ((s : ℕ) : ℤ) - kap s)` using `(Finset.sum_eq_multiset_sum _ _).symm`. Rewrite `key` using `[hBs, hYs, Finset.sum_sub_distrib, sub_sub_cancel]`. Use `key.trans (mul_le_mul_of_nonneg_left ?_ (by positivity))` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem shiftSumBound_holds : KapSum := by
   intro l b t κ U kap hl htl hU hkap hle
@@ -237,17 +235,15 @@ theorem shiftSumBound_holds : KapSum := by
   omega
 
 /- English proof (translation)
-Introduce `k j t q l h κ mw mwp U U' kc kp _ _ hU0 hU'h hsum htop hkc hkp`. Establish `hlkp : (l : ℤ) * kp ≤ (l : ℤ) * ((mwp : ℤ) * ((t : ℤ) + 2 * κ))` using `mul_le_mul_of_nonneg_left ((le_abs_self kp).trans hkp) (by positivity)`. Establish `hkc' : -kc ≤ (mw : ℤ) * ((t : ℤ) + 2 * κ)` using `(neg_le_abs kc).trans hkc`. Establish `hq : ∑ a ∈ Finset.univ.filter (fun a : Fin (k + j + t + q) => k + j ≤ (a : ℕ) ∧ (a : ℕ) < k + j + q), (h : ℤ) ≤ (q : ℤ) * h`. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Establish `hc : (Finset.univ.filter (fun a : Fin (k + j + t + q) => k + j ≤ (a : ℕ) ∧ (a : ℕ) < k + j + q)).card ≤ q`. Use `le_trans (Finset.card_le_card_of_injOn (fun a => (a : ℕ) - (k + j)) ?_ ?_) (Finset.card_range q).le` and prove the remaining obligations. Introduce `a ha`. Simplify using `at ha ⊢`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `a ha a' ha' hab`. Simplify using `at ha ha'`. Establish `hab' : (a : ℕ) - (k + j) = (a' : ℕ) - (k + j)` using `hab`. Conclude with `Fin.ext (by omega)`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc` after adjusting the coercions. Rewrite `hq` using `[Finset.sum_filter]`. Establish `hpt : ∀ a ∈ (Finset.univ : Finset (Fin (k + j + t + q))), (if (a : ℕ) < k + j then U a - U' a else 0) + (if k + j ≤ (a : ℕ) ∧ (a : ℕ) < k + j + t then U a else 0) ≤ (if k + j ≤ (a : ℕ) ∧ (a : ℕ) < k + j + q then (h : ℤ) else 0) + (if k + j + q ≤ (a : ℕ) then U' a else 0) + (U a - …`. Introduce `a _`. Establish `h1` using `hU0 a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2` using `hU'h a`. Apply the tactic sequence `split_ifs <;> omega`. Establish `hsumle` using `Finset.sum_le_sum hpt`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib] at hsumle`. Simplify using `only [Finset.sum_filter] at htop ⊢`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem weightExchangeBound_holds : WEArith := by
   intro k j t q l h κ mw mwp U U' kc kp _ _ hU0 hU'h hsum htop hkc hkp

@@ -11,11 +11,11 @@ open scoped TensorProduct
 namespace GlobalTheory.LevelCommensurable
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hA`. Establish `h : ∀ x : W, ∃ n : ℕ, n ≠ 0 ∧ n • f x ∈ L` using `fun x => GlobalTheory.Mem.Full.exists_nsmul_mem_of_span L (f x) (by rw [hL]; trivial)`. Use `choose c hc0 hc using h`. Use `⟨∏ x ∈ s, c x, Finset.prod_ne_zero_iff.2 fun x _ => hc0 x, fun x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `mem y hy`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem c (Finset.mem_coe.1 hy)`. Rewrite using `[hk, mul_comm, mul_smul]`. Conclude with `L.toAddSubmonoid.nsmul_mem (hc y) k`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => rw [map_add, smul_add]`. Conclude with `L.add_mem hy hz`. Consider the case `smul r y _ hy`. Rewrite using `[← algebraMap_smul K r y, map_smul, smul_comm, algebraMap_smul]`. Conclude with `L.smul_mem r hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_map_mem {K V W : Type*} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W]
@@ -41,27 +41,23 @@ theorem exists_nsmul_map_mem {K V W : Type*} [Field K] [NumberField K] [AddCommG
 open GlobalTheory.LevelIndexCompare GlobalTheory.IndefiniteRowSideFullHecke.IndexAtLevelRanks in
 
 /- English proof (translation)
-Introduce `D u hst hinj w`. Establish `hex : ∀ v, ∃ g, IsScaledU D u w v g` using `fun v => (exists_isScaledU_iff D u w v).2 (hst v)`. Use `choose g hg using hex`. Use `haveI : Module.Finite D.what₂.LL (LT.Vl D u 0) := Module.Finite.of_basis ((D.fm u).lat 0).b`. Establish `hgi : ∀ v, IsUnit (g v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Rewrite using `[LinearMap.isUnit_iff_ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h1` using `hg v x`. Rewrite `h1` using `[hx, Submodule.coe_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(smul_eq_zero.1 h1.symm).resolve_left (zpow_ne_zero _ (T_ne_zero D u))`. Establish `h3` using `hinj v _ x.2 h2`. Conclude with `Subtype.ext ((D.fm u).emb_inj 0 (h3.trans (map_zero _).symm))`. Use `set G : Module.End D.what₂.LL (D.fm u).ramSub := ((LT.VVT D u w).toList.map g).prod ^ D.R.m with hG`. Establish `hGu : IsUnit G`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `IsUnit.pow _ (List.prod_isUnit fun a ha => ?_)` and prove the remaining obligations. Take `⟨v, -, rfl⟩` from `List.mem_map.1 ha`. Conclude with `hgi v`. Take `⟨H, hH⟩` from `hGu.exists_right_inv`. Establish `hmem : ∀ x, D.nuIn u x ∈ (D.fm u).ramSub` using `fun x => D.nuIn_range u ▸ ⟨x, rfl⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `e : (D.div.Nu u).V →ₗ[D.what₂.LL] (D.fm u).ramSub` to `LinearMap.codRestrict _ (D.nuIn u) hmem`. Take `⟨n₁, hn₁, h₁⟩` from `exists_nsmul_map_mem (DV.MramL D u) (D.MramL_fg u) ((D.fm u).lat 0).L ((D.fm u).lat_good 0).2.2 ((D.fm u).ramSub.subtype ∘ₗ H ∘ₗ e)`. Take `⟨n₂, hn₂, h₂⟩` from `exists_nsmul_map_mem (DV.MramL D u) (D.MramL_fg u) ((D.fm u).lat 0).L ((D.fm u).lat_good 0).2.2 ((D.fm u).ramSub.subtype ∘ₗ G ∘ₗ e)`. Use `⟨n₁ * n₂, mul_ne_zero hn₁ hn₂, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_Nlam_iff D u w g (fun v _ => hg v)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hL : (((n₁ * n₂) • H (e x) : (D.fm u).ramSub) : LT.Vl D u 0) ∈ ((D.fm u).lat 0).L`. Rewrite using `[mul_comm, mul_smul, Submodule.coe_smul_of_tower, Submodule.coe_smul_of_tower]`. Conclude with `((D.fm u).lat 0).L.toAddSubmonoid.nsmul_mem (h₁ x hx) n₂`. Use `⟨⟨_, ⟨Submodule.subset_span hL, ((n₁ * n₂) • H (e x)).2⟩⟩, ?_⟩` and prove the remaining obligations. Use `show _ = ((G ((n₁ * n₂) • H (e x)) : (D.fm u).ramSub) : LT.Vl D u 0)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_nsmul G, ← Module.End.mul_apply, hH, map_nsmul]`. Both sides reduce to the same expression. Rewrite `hx` using `[mem_Nlam_iff D u w g (fun v _ => hg v)]`. Take `⟨y, hy⟩` from `hx`. Take `⟨s, hs, hsy⟩` from `D.inLoc_of_mem_locW w _ _ y.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : (y : LT.Vl D u 0) ∈ LinearMap.range (D.nuIn u) := by`. Rewrite using `[D.nuIn_range u]`. Conclude with `y.2.2`. Establish `hsm : ∀ t, D.nuIn u (s • t) = s • D.nuIn u t` using `fun t => map_smul ((D.nuIn u).restrictScalars (𝓞 D.what₂.LL)) s t`. Establish `hzM : s • z ∈ DV.MramL D u` using `by show D.nuIn u (s • z) ∈ ((D.fm u).lat 0).L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsm, hz]`. Conclude with `hsy`. Establish `h3` using `h₂ _ hzM`. Establish `hez : e z = incl D u w y` using `Subtype.ext hz`. Establish `h4 : ((D.fm u).ramSub.subtype ∘ₗ G ∘ₗ e) (s • z) = s • D.nuIn u x`.
-
-Rewrite using `[← algebraMap_smul D.what₂.LL s z, map_smul, algebraMap_smul, hy]`. Use `show s • ((G (e z) : (D.fm u).ramSub) : LT.Vl D u 0) = _`. Rewrite using `[hez]`. Rewrite `h3` using `[h4]`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
-
-Use `show D.nuIn u (s • (n₁ * n₂) • x) ∈ ((D.fm u).lat 0).L`. Rewrite using `[hsm, map_nsmul, smul_comm, mul_smul]`. Conclude with `((D.fm u).lat 0).L.toAddSubmonoid.nsmul_mem h3 n₁`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commensurable : ∀ (D : D7) (u : D.what₂.Word), (∀ v, ∀ x ∈ (D.fm u).ramSub, ∃ y ∈ (D.fm u).ramSub, (D.fm u).emb 0 y = LT.Uop D u 0 v ((D.fm u).emb 0 x)) → (∀ v, ∀ φ ∈ (D.mem u).A.Mram, LT.Uop D u 0 v φ = 0 → φ = 0) → ∀ w : D.what₂.places.Pl, ∃ n : ℕ, n ≠ 0 ∧ (∀ x ∈ DV.MramL D u, D.nuIn u (n • x) ∈ LT.Nlam D u w) ∧ ∀ x, D.nuIn u x ∈ LT.Nlam D u w → InLoc (D.plEq w) (DV.MramL D u) (n • x) := by
   classical

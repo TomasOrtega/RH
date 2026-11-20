@@ -7,15 +7,13 @@ set_option autoImplicit false
 namespace GlobalTheory.SteinFibre
 
 /- English proof (translation)
-Use `set a := X.presheaf.germ ⊤ z trivial t with ha_def`. Establish `ha : a ≠ 0` using `fun h => h0 (germ_injective_of_isIntegral X (U := ⊤) z trivial (h.trans (map_zero _).symm))`. Establish `hna : ¬ IsUnit a` using `(mem_under_iff z t).1 ht`. Establish `e : algebraMap Γ(X, ⊤) X.functionField t = algebraMap (X.presheaf.stalk z) X.functionField a`. Use `letI : Algebra Γ(X, ⊤) (X.presheaf.stalk z) := X.presheaf.algebra_section_stalk (⟨z, trivial⟩ : (⊤ : X.Opens))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI := functionField_isScalarTower X ⊤ ⟨z, trivial⟩`. Conclude with `IsScalarTower.algebraMap_apply Γ(X, ⊤) (X.presheaf.stalk z) X.functionField t`. Use `haveI : Ring.KrullDimLE 1 (X.presheaf.stalk z) := krullDimLE_of_coheight_le hz.le`. Establish `hnz` using `mem_nonZeroDivisors_of_ne_zero ha`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.1 (Ring.ord_ne_top hnz)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hord : Scheme.ord (algebraMap Γ(X, ⊤) X.functionField t) z = n`. Rewrite using `[e]`. Use `(Scheme.ord_eq_iff hz ((map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 ha)).2 ?_` and prove the remaining obligations. Conclude with `(Ring.ordFrac_eq_ord _ ha).trans (Ring.ordMonoidWithZeroHom_eq_coe _ hnz hn.symm)`. Rewrite using `[hord]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: Nontrivial (X.presheaf.stalk z ⧸ Ideal.span {a})` using `Ideal.Quotient.nontrivial_iff.2 (by rwa [ne_eq, Ideal.span_singleton_eq_top])`. Establish `hpos : (0 : ℕ∞) < Ring.ord (X.presheaf.stalk z) a`. Unfold `Ring.ord`. Conclude with `Module.length_pos`. Rewrite `hpos` using `[← hn]`.
-
-Establish `: 0 < n` using `by exact_mod_cast hpos`. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem ord_pos_of_mem_under (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (z : X)
     (t : Γ(X, ⊤)) (ht : t ∈ under z) (h0 : t ≠ 0) (hz : Order.coheight z = 1) :

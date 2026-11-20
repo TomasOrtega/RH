@@ -14,11 +14,9 @@ section Main
 variable {O : Type} [CommRing O] {bar : O → O}
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `h0`. Establish `key : maxMult bar q φ ≤ ((M - 1 : ℕ) : ℕ∞)`. Unfold `maxMult`. Use `iSup_le fun X => iSup_le fun i1 => iSup_le fun i2 => iSup_le fun i3 => iSup_le fun i4 => iSup_le fun hX => iSup_le fun m => iSup_le fun δ => iSup_le fun hc => iSup_le fun hli => iSup_le fun hp => ?_` and prove the remaining obligations. Establish `hle : ((cellMult bar fun i => (⟨δ i, hc.mem i⟩ : balForms bar X)) : ℕ∞) ≤ M`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_trans ?_ h` and prove the remaining obligations. Unfold `maxMult`. Conclude with `le_iSup_of_le X <| le_iSup_of_le i1 <| le_iSup_of_le i2 <| le_iSup_of_le i3 <| le_iSup_of_le i4 <| le_iSup_of_le hX <| le_iSup_of_le m <| le_iSup_of_le δ <| le_iSup_of_le hc <| le_iSup_of_le hli <| le_iSup_of_le hp le_rfl`. Establish `hne : cellMult bar (fun i => (⟨δ i, hc.mem i⟩ : balForms bar X)) ≠ M` using `fun he => (hR X hX m δ ⟨hc, hli, hp, he⟩).elim fun k _ => k.elim0`. Establish `hle' : cellMult bar (fun i => (⟨δ i, hc.mem i⟩ : balForms bar X)) ≤ M` using `by exact_mod_cast hle`.
-
-Conclude with `(show cellMult bar (fun i => (⟨δ i, hc.mem i⟩ : balForms bar X)) ≤ M - 1 by omega)` after adjusting the coercions. Conclude with `key.trans_lt (by exact_mod_cast (show M - 1 < M by omega))`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem maxMult_lt_of_among_zero {q M : ℕ} {φ : InvFun O} (hM : 1 ≤ M) (h : maxMult bar q φ ≤ M)
     (h0 : MultCellsAmong bar q φ M 0) : maxMult bar q φ < M := by
@@ -42,13 +40,13 @@ theorem maxMult_lt_of_among_zero {q M : ℕ} {φ : InvFun O} (hM : 1 ≤ M) (h :
 end Main
 
 /- English proof (translation)
-Introduce `E _ _ _ H q φ lab hD hP hT hL hS hfin h2`. Use `set M := (maxMult H.bar q φ).toNat with hMdef`. Establish `hMe : maxMult H.bar q φ = M` using `(ENat.coe_toNat hfin.ne).symm`. Establish `hM2 : 2 ≤ M` using `by rw [hMe] at h2; exact_mod_cast h2`. Take `⟨n, hn⟩` from `GlobalTheory.T.exists_multCellsAmong_of_isPolyFan E H q φ hP M`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ (n : ℕ) (φ lab : InvFun (𝓞 E)), IsPolyFan H.bar q φ → IsTwInv H φ → IsTwInv H lab → SimpLab H.bar q φ lab → maxMult H.bar q φ ≤ M → MultCellsAmong H.bar q φ M n → ∃ φ' lab' : InvFun (𝓞 E), IsPolyFan H.bar q φ' ∧ IsTwInv H φ' ∧ IsTwInv H lab' ∧ SimpLab H.bar q φ' lab' ∧ Su …`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `φ lab hP hT hL hS hle h0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨φ, lab, hP, hT, hL, hS, Subordinate.refl φ, maxMult_lt_of_among_zero (by omega) hle h0⟩`. Consider the case `succ n ih`. Introduce `φ lab hP hT hL hS hle h0`. Take `⟨φ₁, lab₁, hP₁, hT₁, hL₁, hS₁, hs₁, hle₁, h₁⟩` from `GlobalTheory.T.exists_starSubdivision_removes_maxMultiplicity_cells E H q φ lab hD hP hT hL hS M n hM2 hle h0`. Take `⟨φ', lab', hP', hT', hL', hS', hs', hlt⟩` from `ih φ₁ lab₁ hP₁ hT₁ hL₁ hS₁ hle₁ h₁`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨φ', lab', hP', hT', hL', hS', hs'.trans hs₁, hlt⟩`. Take `⟨φ', lab', hP', hT', hL', hS', hs', hlt⟩` from `key n φ lab hP hT hL hS hMe.le hn`. Conclude with `⟨φ', lab', hP', hT', hL', hS', hs', hMe ▸ hlt⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_round_lt_maxMult : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ)
     (φ lab : InvFun (𝓞 E)),

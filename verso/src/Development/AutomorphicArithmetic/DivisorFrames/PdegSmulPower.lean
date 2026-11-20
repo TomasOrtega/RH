@@ -11,17 +11,17 @@ open GlobalTheory.VertCmp
 open scoped Classical
 
 /- English proof (translation)
-Set `φ : O →+* Γ(Z, ⊤)` to `((Scheme.ΓSpecIso (.of O)).inv ≫ (i ≫ B.str).appTop).hom`. Establish `hφ : ∀ a ∈ maximalIdeal O, φ a = 0` using `fun a ha => by`. Establish `e : φ a = i.appTop (B.const a)`. Rewrite using `[Vert.Model.const, Vert.Model.const_eq]`. Simplify using `only [φ, Scheme.Hom.comp_appTop]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `h0 : B.str (i (genericPoint Z)) = closedPoint O` using `not_not.1 (mt Vert.Model.mem_gen.2 h)`. Establish `h1 : genericPoint Z ∉ Z.basicOpen (φ a)`. Rewrite using `[e, ← Scheme.preimage_basicOpen_top]`. Introduce `hx`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Vert.Model.mem_basicOpen_const.1 hx (h0 ▸ ha)`. Rewrite using `[← basicOpen_eq_bot_iff]`. Assume the negation of the conclusion as `hne`. Use `h1 (((genericPoint_spec Z).mem_open_set_iff (Z.basicOpen (φ a)).isOpen).2 ?_)` and prove the remaining obligations. Take `⟨x, hx⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hne`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, trivial, hx⟩`. Set `ψ : ResidueField O →+* Γ(Z, ⊤)` to `Ideal.Quotient.lift _ φ hφ`. Use `letI : Algebra (ZMod p) (ResidueField O) := ZMod.algebra _ p`. Set `g : Z ⟶ Sp (ResidueField O)` to `Z.toSpecΓ ≫ Spec.map (CommRingCat.ofHom ψ)`. Establish `h₁ : g ≫ spMap (residue O) = i ≫ B.str`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : CommRingCat.ofHom (residue O) ≫ CommRingCat.ofHom ψ = (Scheme.ΓSpecIso (.of O)).inv ≫ (i ≫ B.str).appTop` using `rfl`. Use `(Category.assoc _ _ _).trans ((congrArg (Z.toSpecΓ ≫ ·) ((Spec.map_comp _ _).symm.trans (congrArg Spec.map e))).trans ?_)` and prove the remaining obligations. Rewrite using `[Spec.map_comp, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`. Establish `h₂ : strHom (ZMod p) Z = g ≫ spMap (algebraMap (ZMod p) _)` using `((Category.assoc _ _ _).trans (congrArg (Z.toSpecΓ ≫ ·) ((Spec.map_comp _ _).symm.trans (congrArg (fun f => Spec.map (CommRingCat.ofHom f)) (RingHom.ext_zmod (ψ.comp (algebraMap (ZMod p) _)) (algebraMap _ _)))))).symm`. Establish `: IsProper (g ≫ spMap (residue O))` using `h₁ ▸ inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper g` using `IsProper.of_comp g (spMap (residue O))`. Establish `: IsFinite (spMap (algebraMap (ZMod p) (ResidueField O)))` using `(IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 Module.Finite.of_finite)`. Rewrite using `[h₂]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isProper_strHom_of_not_mem_gen {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (p : ℕ) [Fact p.Prime] [CharP (ResidueField O) p] [Finite (ResidueField O)] (B : Vert.Model O)
@@ -64,11 +64,11 @@ private theorem isProper_strHom_of_not_mem_gen {O : Type} [CommRing O] [IsDomain
   infer_instance
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B d m L N hL hN e ζ hζ`. Distinguish the cases in `h : ∃ a, IsDeg p L ζ a`. Take `⟨a, Z, i, hi, hZ, alg, hz, hd, ha⟩` from `h`. Rewrite using `[UpperTheory.pdeg_eq_of_isDeg p B.X d L hL ζ _ ⟨Z, i, hi, hZ, alg, hz, hd, rfl⟩, UpperTheory.pdeg_eq_of_isDeg p B.X d N hN ζ _ ⟨Z, i, hi, hZ, alg, hz, hd, rfl⟩]`. Use `isProper_strHom_of_not_mem_gen p B i (hz ▸ hζ)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨A, hA⟩` from `B.exists_isAmpleLB`. Establish `H` using `(hA.pull_of_isClosedImmersion i).diffVanish_chiPic_of_isProper (algebraMap_eq_strHom (ZMod p) Z) (structureModule Z) (d := d) (by rw [GlobalTheory.QCoh.suppDim_structureModule, hd])`. Rewrite using `[H.interNum_of_cls_eq_zsmul (P := fun j => (L j).pull i) (Q := fun j => (N j).pull i) (fun j => pull_isLB (hL j) i) (fun j => pull_isLB (hN j) i) (fun _ => (m : ℤ)) fun j => by`. Rewrite using `[CechPic.cls_pull (hN j), CechPic.cls_pull (hL j), e, map_nsmul, natCast_zsmul]]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h' : ¬ ∃ a, IsDeg p N ζ a` using `fun ⟨_, Z, i, hi, hZ, alg, hz, hd, _⟩ => h ⟨_, Z, i, hi, hZ, alg, hz, hd, rfl⟩`. Rewrite using `[pdeg, pdeg, dif_neg h, dif_neg h', mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.pdeg_smul_power :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharP (ResidueField O) p] [Finite (ResidueField O)] (B : Vert.Model O) (d m : ℕ) (L N : Fin d → LB B.X) (hL : ∀ k, (L k).IsLB) (hN : ∀ k, (N k).IsLB), (∀ k, cls (N k) (hN k) = m • cls (L k) (hL k)) → ∀ ζ : B.X, ζ ∉ B.gen → pdeg p N ζ = (m : ℤ) ^ d * pdeg p L ζ := by

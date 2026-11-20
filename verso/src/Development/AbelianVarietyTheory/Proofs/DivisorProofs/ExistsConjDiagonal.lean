@@ -3,17 +3,17 @@ import Mathlib
 namespace GlobalTheory.DiagonalConjugateExistence
 
 /- English proof (translation)
-Establish `hev : ∀ i, ∃ v : Fin n → ℂ, v ≠ 0 ∧ A.mulVec v = t i • v`. Introduce `i`. Establish `h0 : (Matrix.scalar (Fin n) (t i) - A).det = 0`. Rewrite using `[← Matrix.eval_charpoly, hA, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, hv0⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Rewrite `hv0` using `[Matrix.sub_mulVec, sub_eq_zero]`. Rewrite using `[← hv0]`. Use extensionality with `j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.scalar_apply, Matrix.mulVec_diagonal]`. Use `choose v hv0 hv using hev`. Establish `hli : LinearIndependent ℂ v`. Use `Module.End.eigenvectors_linearIndependent' (Matrix.toLin' A) t ht v ?_` and prove the remaining obligations. Introduce `i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, hv0 i⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff, Matrix.toLin'_apply, hv]`. Establish `hu : IsUnit (Matrix.of fun i j => v j i : Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[← Matrix.linearIndependent_cols_iff_isUnit]`. Conclude with `hli`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[hu.unit_spec]`. Use extensionality with `i j`. Use `congrFun (hv j) i` as an intermediate fact. Rewrite using `[Matrix.mul_diagonal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at this`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[this, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem exists_conj_diagonal {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (t : Fin n → ℂ)
     (ht : Function.Injective t)

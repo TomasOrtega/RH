@@ -9,14 +9,14 @@ noncomputable section
 namespace GlobalTheory.NLink.Adm4Tab
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Qk8.exists_place <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem placesOver_nonempty (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p.Prime) :
     (placesOver E p).Nonempty :=
   by apply _root_.UpperTheory.Reformulated.B.Qk8.exists_place <;> assumption
 
 /- English proof (translation)
-Establish `hf` using `FamilyRepresentationConstants.placesOver_finite D.host.E l hl`. Rewrite using `[TwistedPlaces.sumOver, finsum_mem_eq_finite_toFinset_sum _ hf, Finset.sum_const, Set.ncard_eq_toFinset_card _ hf, nsmul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sumOver_const (D : D7) (l : ℕ) (hl : l ≠ 0) (k : ℝ) :
     TwistedPlaces.sumOver D l (fun _ => k) = ((placesOver D.host.E l).ncard : ℝ) * k := by
@@ -25,7 +25,7 @@ theorem sumOver_const (D : D7) (l : ℕ) (hl : l ≠ 0) (k : ℝ) :
     nsmul_eq_mul]
 
 /- English proof (translation)
-Establish `hf` using `FamilyRepresentationConstants.placesOver_finite D.host.E l hl`. Rewrite using `[TwistedPlaces.sumOver, TwistedPlaces.sumOver, finsum_mem_eq_finite_toFinset_sum _ hf, finsum_mem_eq_finite_toFinset_sum _ hf]`. Conclude with `Finset.sum_le_sum fun lam _ => h lam`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumOver_mono (D : D7) (l : ℕ) (hl : l ≠ 0) {f g : HeightOneSpectrum (𝓞 D.host.E) → ℝ}
     (h : ∀ lam, f lam ≤ g lam) : TwistedPlaces.sumOver D l f ≤ TwistedPlaces.sumOver D l g := by
@@ -34,7 +34,7 @@ theorem sumOver_mono (D : D7) (l : ℕ) (hl : l ≠ 0) {f g : HeightOneSpectrum 
   exact Finset.sum_le_sum fun lam _ => h lam
 
 /- English proof (translation)
-Unfold `KillingConditions.supZ`. Rewrite using `[dif_pos ⟨π, hπ⟩]`. Conclude with `Finset.le_sup' f hπ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_supZ {D : D7} (i : D.nd.Loc) (f : D.nd.X i → ℝ) {π : D.nd.X i} (hπ : π ∈ D.nd.Zgood i) :
     f π ≤ KillingConditions.supZ i f := by
@@ -47,33 +47,33 @@ end GlobalTheory.NLink.Adm4Tab
 open GlobalTheory.NLink.Adm4Tab in
 
 /- English proof (translation)
-Introduce `D L P X C tf hC h23 i hi hg π hπ`. Establish `key : ∀ b, Bd X.ρ i π b → b ≤ TwistedPlaces.sumOver D (D.nd.l i) ((tab L X tf C).len i) + (tab L X tf C).BB i → (D.nd.vcc i π : ℝ) ≤ (tab L X tf C).s i π + TwistedPlaces.sumOver D (D.nd.l i) ((tab L X tf C).len i) + TwistedPlaces.VVr D (D.nd.l i) + TwistedPlaces.vhE D (D.nd.l i) …`. Introduce `b hb hle`. Unfold `Bd at hb`. Establish `hs : (tab L X tf C).s i π = (Br.sPi D.loc D.nbr i (X.ρ i) π : ℝ)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl0 : D.nd.l i ≠ 0` using `(D.nd.lPrime i).out.ne_zero`. Establish `hq3 : D.host.q ≠ 3` using `D.host.q_ne_three`. Establish `hd3 : D.host.d ≠ 3` using `by have := D.host.hyp.2.2.2.1; omega`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzero : TwistedPlaces.sumOver D (D.nd.l i) (fun _ => (0 : ℝ)) = 0`. Rewrite using `[sumOver_const D _ hl0, mul_zero]`. Distinguish the cases in `h2 : D.nd.l i ∈ D.host.small`. Apply `key _ (h23 i hi (Or.inl h2) π hπ)` to reduce the goal to its premises. Establish `hlen : (tab L X tf C).len i = fun _ => 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `lam`. Simplify using `only [tab, if_pos h2]`. Establish `hBB : (tab L X tf C).BB i = TwistedPlaces.sumOver D (D.nd.l i) (tf.len i) + tf.BB i`. Simplify using `only [tab, if_pos h2]`. Rewrite using `[hlen, hzero, hBB, zero_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h3 : D.nd.l i = 3`. Apply `key _ (h23 i hi (Or.inr h3) π hπ)` to reduce the goal to its premises. Establish `hBB : (tab L X tf C).BB i = 0`. Establish `hq : ¬ (D.nd.l i = D.host.q ∨ D.nd.l i = D.host.d)`. Apply the tactic sequence `rw [h3]; rintro (h | h) <;> [exact hq3 h.symm; exact hd3 h.symm]`.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hR : ¬ KillingConditions.RangeAD L X.exc (D.nd.l i)` using `fun h => h.1 (Or.inr h3)`. Simplify using `only [tab, if_neg h2, if_neg hq, if_neg hR]`. Establish `hlen : (tab L X tf C).len i = fun _ => (TwistedPlaces.sumOver D 3 (tf.len i) + tf.BB i) / ((placesOver D.host.E 3).ncard : ℝ)`. Use function extensionality and compare the values at `lam`. Simplify using `only [tab, if_neg h2, if_pos h3]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hBB, hlen, h3, sumOver_const D 3 (by norm_num)]`. Establish `hf3` using `FamilyRepresentationConstants.placesOver_finite D.host.E 3 (by norm_num)`. Establish `hpos : 0 < (placesOver D.host.E 3).ncard` using `(Set.ncard_pos hf3).2 (placesOver_nonempty D.host.E 3 Nat.prime_three)`. Establish `hpos' : ((placesOver D.host.E 3).ncard : ℝ) ≠ 0` using `by exact_mod_cast hpos.ne'`. Rewrite using `[mul_div_cancel₀ _ hpos', add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hqd : D.nd.l i = D.host.q ∨ D.nd.l i = D.host.d`. Apply `key _ (hC.ram i hi hqd π hπ)` to reduce the goal to its premises. Establish `hR : ¬ KillingConditions.RangeAD L X.exc (D.nd.l i)` using `fun h => h.2.1 hqd`. Establish `hlen : (tab L X tf C).len i = fun _ => 0`. Use function extensionality and compare the values at `lam`.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [tab, if_neg h2, if_neg h3, if_neg hR]`. Establish `hBB : (tab L X tf C).BB i = TwistedPlaces.midG L C (D.nd.l i)`. Simplify using `only [tab, if_neg h2, if_pos hqd]`. Rewrite using `[hlen, hzero, hBB, zero_add]`. Distinguish the cases in `hR : KillingConditions.RangeAD L X.exc (D.nd.l i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hm` using `hC.mid i hi hg hR π hπ`. Establish `hb : Bd X.ρ i π (TwistedPlaces.sumOver D (D.nd.l i) (X.len0 i π) + X.errorBoundHub i π)`. Unfold `Bd`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `key _ hb` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hlen : (tab L X tf C).len i = KillingConditions.lenR X.len0 i`. Use function extensionality and compare the values at `lam`. Simplify using `only [tab, if_neg h2, if_neg h3, if_pos hR]`. Establish `hBB : (tab L X tf C).BB i = KillingConditions.supZ i (X.errorBoundHub i)`. Simplify using `only [tab, if_neg h2, if_neg hqd, if_pos hR]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hlen, hBB]`. Establish `h1 : TwistedPlaces.sumOver D (D.nd.l i) (X.len0 i π) ≤ TwistedPlaces.sumOver D (D.nd.l i) (KillingConditions.lenR X.len0 i)` using `sumOver_mono D _ hl0 fun lam => le_supZ i (fun π => X.len0 i π lam) hπ`. Establish `h2' : X.errorBoundHub i π ≤ KillingConditions.supZ i (X.errorBoundHub i)` using `le_supZ i (X.errorBoundHub i) hπ`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlt : TwistedPlaces.lStar L < (D.nd.l i : ℝ) ∧ D.nd.l i ∉ X.exc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hR ⟨fun h => h.elim h2 h3, hqd, hc⟩`. Apply `key _ (hC.large i hi hlt.1 hg hlt.2 π hπ)` to reduce the goal to its premises. Establish `hlen : (tab L X tf C).len i = fun _ => 0`. Use function extensionality and compare the values at `lam`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [tab, if_neg h2, if_neg h3, if_neg hR]`. Establish `hBB : (tab L X tf C).BB i = 0`. Simplify using `only [tab, if_neg h2, if_neg hqd, if_neg hR]`. Rewrite using `[hlen, hzero, hBB, add_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.NLink.admissible_table_of_conclusion : ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (X : KillingConditions.HubData D) (C : ℝ) (tf : TwistedPlaces.Tab L),
     Concl L P X C → (∀ i, TwistedPlaces.TwLoc D i → (D.nd.l i ∈ D.host.small ∨ D.nd.l i = 3) → ∀ π ∈ D.nd.Zgood i,

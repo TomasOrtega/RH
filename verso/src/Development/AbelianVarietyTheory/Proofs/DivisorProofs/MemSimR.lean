@@ -30,7 +30,7 @@ def simR (R : Type) [CommRing R] {A : Type} [CommRing A] [Algebra R A] (c : A �
       _ = algebraMap R A ((s⁻¹ : Rˣ) : R) := by rw [← mul_assoc, h1, one_mul]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_simR {R : Type} [CommRing R] {A : Type} [CommRing A] [Algebra R A] {c : A →ₐ[R] A} {x : Aˣ} :
     x ∈ simR R c ↔ ∃ t : Rˣ, (x : A) * c x = algebraMap R A t := Iff.rfl

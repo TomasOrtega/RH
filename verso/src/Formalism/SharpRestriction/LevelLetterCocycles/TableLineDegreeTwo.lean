@@ -333,9 +333,9 @@ def HerrLat (W : LocWach PD LL O v n) : Prop :=
     (∀ (a : W.EE) x, ψ (W.φE a • x) = a • ψ x) ∧ ∀ g x, ψ (W.γD T g x) = W.γD T g (ψ x)
 
 /- English proof (translation)
-Introduce `_ _`. Take `⟨hs, hk⟩` from `h.1 T`. Use `⟨hs, fun w => (hk w).trans ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨m, hm, e⟩`. Conclude with `⟨m, hm, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨m, hm, e⟩`. Conclude with `⟨m, hm, e⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem prop_two_a_of_herr_lattice (W : LocWach PD LL O v n) (h : HerrLat W)
     (T : LocLat G Qp LL O) : Formalism.MainNotions.DeltaInvariantLattices.p2aK W T := by
@@ -446,7 +446,7 @@ def adm17 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
       HerrExt ((HW l).W K 1 LL hA.2.2) ((F l).E K 1 LL hA.2.2).tie
 
 /- English proof (translation)
-The claim follows from `((HW l).W K 1 LL hA.2.2).gamK_eq_one ((HW l).W_s K 1 LL hA.2.2) (by rw [(D.loc l).PD_p]; exact hA.2.1)`.
+A detailed English derivation is pending.
 -/
 theorem gamK_eq_gam (D : D7) (HW : HWOf D.loc) (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hA : CaseA K LL) :
     ((HW l).W K 1 LL hA.2.2).gamK = ((HW l).W K 1 LL hA.2.2).gam :=
@@ -454,7 +454,7 @@ theorem gamK_eq_gam (D : D7) (HW : HWOf D.loc) (l : ℕ) [Fact l.Prime] (K LL : 
     (by rw [(D.loc l).PD_p]; exact hA.2.1)
 
 /- English proof (translation)
-The claim follows from `prop_two_a_of_herr_lattice _ (h l K LL hA) T`.
+A detailed English derivation is pending.
 -/
 theorem prop_two_a_of_herr_hypothesis (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (h : adm16 D HW F) (l : ℕ) [Fact l.Prime] (K LL : FinExt l)
     (hA : CaseA K LL) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) :
@@ -491,13 +491,7 @@ def admitted (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf 
 def Stmt (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) : Prop := admitted D HW F Cm → aux₃ D HW F
 
 /- English proof (translation)
-Take `⟨h1, hc, h2, _⟩` from `h`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> intro l _ K s LL hg`. Conclude with `(h1 l K s LL hg).1.1`. Conclude with `(h1 l K s LL hg).2.1`. Conclude with `(h1 l K s LL hg).2.2.1`.
-
-Conclude with `(h1 l K s LL hg).2.2.2.1`. Conclude with `(h1 l K s LL hg).2.2.2.2.1`. Conclude with `(h1 l K s LL hg).2.2.2.2.2.1`. Conclude with `(h1 l K s LL hg).2.2.2.2.2.2.1`. Conclude with `(h1 l K s LL hg).2.2.2.2.2.2.2.1`.
-
-Conclude with `(h1 l K s LL hg).2.2.2.2.2.2.2.2.1`. Conclude with `(h1 l K s LL hg).2.2.2.2.2.2.2.2.2.1`. Conclude with `Formalism.MainNotions.DeltaInvariantLattices.gamma_semisimple_of_consequences _ _ (hc l K s LL hg)`. Conclude with `(h2 l K s LL hg).1`. Conclude with `(h2 l K s LL hg).2.1`.
-
-Conclude with `(h2 l K s LL hg).2.2.1`. Conclude with `(h2 l K s LL hg).2.2.2`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hypotheses_of_theorem_top (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (h : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
     adm1 D HW F ∧ adm2 D HW F ∧ adm3 D HW F Cm ∧ ArchimedeanSignatureMatching D HW F Cm ∧ adm5 D HW F ∧ adm6 D HW F ∧ adm7 D HW F ∧ adm8 D HW F ∧ adm9 D HW F ∧ adm10 D HW F ∧
@@ -521,7 +515,7 @@ theorem hypotheses_of_theorem_top (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.
   · exact (h2 l K s LL hg).2.2.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem ainf_clauses_of_theorem (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (h : Formalism.MainNotions.DeltaInvariantLattices.ConclusionE D HW F) : adm23 D HW F ∧ FrobeniusExpansionCongruence D HW F := ⟨h.1, h.2⟩
 

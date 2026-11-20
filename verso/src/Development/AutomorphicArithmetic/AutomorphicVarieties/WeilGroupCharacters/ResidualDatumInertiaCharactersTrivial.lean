@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacter
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `h' : ((x : k) - 1) ^ l ^ m = 0`. Rewrite using `[sub_pow_char_pow, one_pow, ← Units.val_pow_eq_pow_val, h, Units.val_one, sub_self]`. Conclude with `sub_eq_zero.mp ((pow_eq_zero_iff (pow_ne_zero m (Fact.out : l.Prime).ne_zero)).mp h')`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unit_eq_one_of_pow {k : Type} [Field k] (l : ℕ) [Fact l.Prime] [CharP k l] (x : kˣ) (m : ℕ)
     (h : x ^ l ^ m = 1) : x = 1 := by
@@ -13,9 +13,9 @@ private theorem unit_eq_one_of_pow {k : Type} [Field k] (l : ℕ) [Fact l.Prime]
   exact sub_eq_zero.mp ((pow_eq_zero_iff (pow_ne_zero m (Fact.out : l.Prime).ne_zero)).mp h')
 
 /- English proof (translation)
-Establish `hg : (QuotientGroup.mk' (commutator (F.Gv v)).topologicalClosure (g : F.Gv v)) ∈ CommGroup.primaryComponent (TopologicalAbelianization (F.Gv v)) l` using `g.2`. Take `⟨m, hm⟩ : ∃ m : ℕ, (QuotientGroup.mk' (commutator (F.Gv v)).topologicalClosure (g : F.Gv v)) ^ l ^ m = 1` from `by first`. Consider the case `exact hg`. Consider the case `(obtain ⟨m, hm⟩ := hg; exact ⟨m, by rw [← hm]; exact pow_orderOf_eq_one _⟩)`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hm` using `[← map_pow, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Conclude with `hm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mu_pow {l : ℕ} [Fact l.Prime] (F : GFrame l) (v : F.Vl) (g : F.mu v) :
     ∃ m : ℕ, (g : F.Gv v) ^ l ^ m ∈ (commutator (F.Gv v)).topologicalClosure := by
@@ -30,9 +30,9 @@ private theorem mu_pow {l : ℕ} [Fact l.Prime] (F : GFrame l) (v : F.Vl) (g : F
   exact hm
 
 /- English proof (translation)
-Introduce `l _ F O _ _ _ _ n r v i g`. Take `⟨m, hm⟩` from `mu_pow F v g`. Prove the components needed by the constructor for the conclusion. Apply `unit_eq_one_of_pow l _ m` to reduce the goal to its premises. Rewrite using `[← map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : (commutator (F.Gv v)).topologicalClosure ≤ (r.psib v i).ker` using `Subgroup.topologicalClosure_minimal _ (Abelianization.commutator_subset_ker _) (Subgroup.isClosed_of_isOpen _ (r.psib_open v i))`. Conclude with `hle hm`. Apply `unit_eq_one_of_pow l _ m` to reduce the goal to its premises. Rewrite using `[← map_pow, ← map_pow, r.th_comm v i (g ^ l ^ m) (by simpa using hm), map_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.W.residualDatum_inertia_characters_trivial :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] [CharP (ResidueField O) l] (n : ℕ) (r : Resid F O n) (v : F.Vl) (i : Fin n) (g : F.mu v), r.psib v i g = 1 ∧ Units.map (residue O : O →* ResidueField O) (r.th v i g) = 1 := by

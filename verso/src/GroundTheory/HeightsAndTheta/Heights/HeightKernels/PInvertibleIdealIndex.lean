@@ -24,25 +24,25 @@ Both sides reduce to the same expression.
 @[simp] theorem mulBy_apply (c x : L) : mulBy c x = c * x := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `mul_left_cancel₀ hc h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mulBy_injective {c : L} (hc : c ≠ 0) : Function.Injective (mulBy c) :=
   fun _ _ h => mul_left_cancel₀ hc h
 
 /- English proof (translation)
-Establish `hMβ : M.map (mulBy β) = J.map (mulBy δ)`. Use extensionality with `z`. Simplify using `only [AddSubgroup.mem_map, mulBy_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨y, hy, h⟩` from `(hM x).1 hx`. Conclude with `⟨y, hy, h.symm⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨δ * y / β, (hM _).2 ⟨y, hy, by field_simp⟩, by field_simp⟩` and prove the remaining obligations. Use `set C := (J.map (mulBy β)).map (mulBy δ) with hC`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hC' : C = (J.map (mulBy δ)).map (mulBy β)`. Rewrite using `[hC, AddSubgroup.map_map, AddSubgroup.map_map]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hCA : C ≤ J.map (mulBy δ)` using `AddSubgroup.map_mono hβJ`. Establish `hCB : C ≤ X.map (mulBy β)`. Rewrite using `[hC']`. Conclude with `AddSubgroup.map_mono (le_trans (AddSubgroup.map_mono hJX) hδX)`. Establish `e1 : C.relIndex (J.map (mulBy δ)) = (J.map (mulBy β)).relIndex J` using `AddSubgroup.relIndex_map_map_of_injective _ _ (mulBy_injective hδ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : C.relIndex (X.map (mulBy β)) = (J.map (mulBy δ)).relIndex X`. Rewrite using `[hC']`. Conclude with `AddSubgroup.relIndex_map_map_of_injective _ _ (mulBy_injective hβ)`. Establish `e3 : (J.map (mulBy β)).relIndex J * J.relIndex X = (X.map (mulBy β)).relIndex X * J.relIndex X`. Rewrite using `[AddSubgroup.relIndex_mul_relIndex _ _ _ hβJ hJX, ← AddSubgroup.relIndex_mul_relIndex _ _ _ (AddSubgroup.map_mono hJX) hβX, AddSubgroup.relIndex_map_map_of_injective (f := mulBy β) _ _ (mulBy_injective hβ)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.mul_comm _ _`. Establish `e4 : (J.map (mulBy δ)).relIndex X = J.relIndex X * (X.map (mulBy δ)).relIndex X`. Rewrite using `[← AddSubgroup.relIndex_mul_relIndex _ _ _ (AddSubgroup.map_mono hJX) hδX, AddSubgroup.relIndex_map_map_of_injective (f := mulBy δ) _ _ (mulBy_injective hδ)]`. Establish `e3' : (J.map (mulBy β)).relIndex J = (X.map (mulBy β)).relIndex X` using `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hJ) e3`. Establish `hCne : C.relIndex (X.map (mulBy β)) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e2, e4]`. Conclude with `mul_ne_zero hJ hδ'`. Rewrite using `[← KLinesLineDegree.genIndex_map_of_injective (mulBy β) (mulBy_injective hβ), hMβ, IndefiniteRowSideFullHecke.Kernels.genIndex_eq_div_of_le hCA hCB hCne, e1, e2, e3', e4]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem genIndex_eq {X J M : AddSubgroup L} {β δ : L} (hβ : β ≠ 0) (hδ : δ ≠ 0) (hJX : J ≤ X)
     (hβX : X.map (mulBy β) ≤ X) (hδX : X.map (mulBy δ) ≤ X) (hβJ : J.map (mulBy β) ≤ J)
@@ -94,21 +94,21 @@ theorem genIndex_eq {X J M : AddSubgroup L} {β δ : L} (hβ : β ≠ 0) (hδ : 
   ring
 
 /- English proof (translation)
-The claim follows from `(IsIntegral.of_finite ℤ (⟨b, hb⟩ : B)).map (B.subtype.toIntAlgHom)`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_mem {B : Subring L} [Module.Finite ℤ B] {b : L} (hb : b ∈ B) :
     IsIntegral ℤ b :=
   (IsIntegral.of_finite ℤ (⟨b, hb⟩ : B)).map (B.subtype.toIntAlgHom)
 
 /- English proof (translation)
-Conclude with `S.smul_mem (⟨b, isIntegral_of_mem hb⟩ : 𝓞 L) hz`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_of_mem [NumberField L] {B : Subring L} [Module.Finite ℤ B] {S : Submodule (𝓞 L) L} {b z : L}
     (hb : b ∈ B) (hz : z ∈ S) : b * z ∈ S := by
   exact S.smul_mem (⟨b, isIntegral_of_mem hb⟩ : 𝓞 L) hz
 
 /- English proof (translation)
-Establish `h` using `mul_mem_of_mem (S := 1) hb (Submodule.mem_one.mpr ⟨1, map_one _⟩)`. Rewrite `h` using `[mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_one_of_mem [NumberField L] {B : Subring L} [Module.Finite ℤ B] {b : L} (hb : b ∈ B) :
     b ∈ (1 : Submodule (𝓞 L) L) := by
@@ -116,15 +116,13 @@ theorem mem_one_of_mem [NumberField L] {B : Subring L} [Module.Finite ℤ B] {b 
   rwa [mul_one] at h
 
 /- English proof (translation)
-Use `set S := Submodule.span (𝓞 L) (Set.range a)`. Set `J : Ideal B` to `{ carrier := {b | (b : L) * z ∈ S} add_mem' := fun {x y} hx hy => by show ((x : L) + y) * z ∈ S`. Rewrite using `[add_mul]`. Conclude with `S.add_mem hx hy`. Use the proof step `zero_mem' := by show ((0 : B) : L) * z ∈ S`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using the standard rewrite rules. Use the proof step `smul_mem' := fun c x hx => by show ((c : L) * x) * z ∈ S`. Rewrite using `[mul_assoc]`. Conclude with `mul_mem_of_mem c.2 hx }`. Assume the negation of the conclusion as `hzS`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hJ : J ≠ ⊤`. Introduce `h`. Establish `h1 : (1 : B) ∈ J` using `h ▸ Submodule.mem_top`. Establish `h2 : ((1 : B) : L) * z ∈ S` using `h1`. Apply `hzS` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using h2`. Take `⟨m, hm, hJm⟩` from `Ideal.exists_le_maximal J hJ`. Take `⟨i, hi⟩` from `hloc m hm`. Take `⟨b, c, hbm, hbc⟩` from `hi z hz`. Apply `hbm` to reduce the goal to its premises.
-
-Apply `hJm` to reduce the goal to its premises. Use `show (b : L) * z ∈ S`. Rewrite using `[hbc]`. Conclude with `mul_mem_of_mem c.2 (Submodule.subset_span ⟨i, rfl⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_of_local [NumberField L] {B : Subring L} [Module.Finite ℤ B] {M : AddSubgroup L} {ι : Type}
     {a : ι → L}
@@ -161,7 +159,7 @@ theorem mem_span_of_local [NumberField L] {B : Subring L} [Module.Finite ℤ B] 
   exact mul_mem_of_mem c.2 (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Establish `hinj : Function.Injective B.subtype.toAddMonoidHom` using `Subtype.val_injective`. Establish `hr : (⊤ : AddSubgroup B).map B.subtype.toAddMonoidHom = B.toAddSubgroup`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[← hr, ← AddSubgroup.relIndex_comap, AddSubgroup.comap_map_eq_self_of_injective hinj, AddSubgroup.relIndex_top_right]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_map_subtype (B : Subring L) (H : AddSubgroup B) :
     (H.map B.subtype.toAddMonoidHom).relIndex B.toAddSubgroup = H.index := by
@@ -173,9 +171,9 @@ theorem relIndex_map_subtype (B : Subring L) (H : AddSubgroup B) :
     AddSubgroup.relIndex_top_right]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_map, mulBy_apply, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨⟨y, hy⟩ * β, ⟨⟨y, hy⟩, rfl⟩, by simp [mul_comm]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, ⟨c, rfl⟩, rfl⟩`. Conclude with `⟨c, c.2, by simp [mul_comm]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem map_mul_eq (B : Subring L) (β : B) :
     B.toAddSubgroup.map (mulBy (β : L)) =
@@ -190,13 +188,11 @@ theorem map_mul_eq (B : Subring L) (β : B) :
     exact ⟨c, c.2, by simp [mul_comm]⟩
 
 /- English proof (translation)
-Establish `hspan : Submodule.span (𝓞 L) ((fun y : B => (y : L)) '' ((Ideal.span {β} : Ideal B) : Set B)) = Submodule.span (𝓞 L) {(β : L)}`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `show (c : L) * (β : L) ∈ _`. Conclude with `mul_mem_of_mem c.2 (Submodule.subset_span rfl)`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `Submodule.subset_span ⟨β, Ideal.mem_span_singleton_self β, rfl⟩`. Rewrite using `[hspan]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_map, mulBy_apply, Submodule.mem_toAddSubgroup, Submodule.mem_one, Submodule.mem_span_singleton, Algebra.smul_def]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨c, rfl⟩, rfl⟩`. Conclude with `⟨c, mul_comm _ _⟩`.
-
-Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨_, ⟨c, rfl⟩, mul_comm _ _⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_mul_eq_span [NumberField L] {B : Subring L} [Module.Finite ℤ B] (β : B) :
     (1 : Submodule (𝓞 L) L).toAddSubgroup.map (mulBy (β : L)) =
@@ -222,7 +218,7 @@ theorem map_mul_eq_span [NumberField L] {B : Subring L} [Module.Finite ℤ B] (�
     exact ⟨_, ⟨c, rfl⟩, mul_comm _ _⟩
 
 /- English proof (translation)
-Establish `: Infinite (1 : Submodule (𝓞 L) L).toAddSubgroup` using `Infinite.of_injective (fun n : ℕ => (⟨(n : L), Submodule.mem_one.mpr ⟨n, by simp⟩⟩ : (1 : Submodule (𝓞 L) L).toAddSubgroup)) (fun m n h => Nat.cast_injective (R := L) (congrArg Subtype.val h))`. Conclude with `Nat.card_eq_zero_of_infinite`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_one_eq_zero [NumberField L] : Nat.card (1 : Submodule (𝓞 L) L).toAddSubgroup = 0 := by
   have : Infinite (1 : Submodule (𝓞 L) L).toAddSubgroup :=
@@ -232,7 +228,7 @@ theorem card_one_eq_zero [NumberField L] : Nat.card (1 : Submodule (𝓞 L) L).t
   exact Nat.card_eq_zero_of_infinite
 
 /- English proof (translation)
-Establish `: Infinite B.toAddSubgroup` using `Infinite.of_injective (fun n : ℕ => (⟨(n : L), by simp⟩ : B.toAddSubgroup)) (fun m n h => Nat.cast_injective (R := L) (congrArg Subtype.val h))`. Conclude with `Nat.card_eq_zero_of_infinite`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_subring_eq_zero [NumberField L] (B : Subring L) : Nat.card B.toAddSubgroup = 0 := by
   have : Infinite B.toAddSubgroup :=
@@ -245,35 +241,33 @@ end InvertibleIdealIndexAlt
 open InvertibleIdealIndexAlt in
 
 /- English proof (translation)
-Introduce `L _ _ B M ι _ a hB hBM haM hden hloc`. Use `hB` as an intermediate fact. Distinguish the cases in `hM0 : M = ⊥`. Establish `ha0 : ∀ i, a i = 0` using `fun i => by simpa [hM0] using haM i`. Establish `hT0 : Submodule.span (𝓞 L) (Set.range a) = ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `ha0 i`. Simplify using `only [hM0, hT0, Submodule.bot_toAddSubgroup, genIndex, AddSubgroup.relIndex_bot_left, AddSubgroup.relIndex_bot_right, card_subring_eq_zero, card_one_eq_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨r, s, hs, hrank, hfin, hidx⟩` from `h1 L B hB`. Take `⟨β, δ, I, hβ, hδ, hIs, hMI⟩` from `h2 L B M ι a hB hBM haM hden hloc hM0 s hs`. Establish `hβL : (β : L) ≠ 0` using `fun h => hβ (Subtype.ext h)`. Establish `hδL : (δ : L) ≠ 0` using `fun h => hδ (Subtype.ext h)`. Establish `hI0 : I ≠ ⊥`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hI`. Take `⟨⟨x, hxM⟩, hx0⟩` from `AddSubgroup.ne_bot_iff_exists_ne_zero.mp hM0`. Take `⟨y, hy, hxy⟩` from `(hMI x).1 hxM`. Rewrite `hy` using `[hI, Ideal.mem_bot]`. Substitute `hy` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hx : x ≠ 0` using `fun h => hx0 (Subtype.ext h)`. Simplify using `[hβL, hx] at hxy`. Establish `hspanβ : Ideal.span {β} ≠ ⊥` using `by rw [Ne, Ideal.span_singleton_eq_bot]; exact hβ`. Establish `hspanδ : Ideal.span {δ} ≠ ⊥` using `by rw [Ne, Ideal.span_singleton_eq_bot]; exact hδ`. Establish `g1` using `genIndex_eq (X := B.toAddSubgroup) (J := I.toAddSubgroup.map B.subtype.toAddMonoidHom) (M := M) hβL hδL (by rintro _ ⟨y, _, rfl⟩; exact y.2) (by rintro _ ⟨y, hy, rfl⟩; exact B.mul_mem β.2 hy) (by rintro _ ⟨y, hy, rfl⟩; exact B.mul_mem δ.2 hy) (by rintro _ ⟨_, ⟨y, hy, rfl⟩, rfl⟩; …`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[hMI x]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h⟩`. Conclude with `⟨y, ⟨y, hy, rfl⟩, h⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, h⟩`. Conclude with `⟨y, hy, h⟩)`. Use the proof step `(by rw [relIndex_map_subtype]; exact hfin I hI0)`. Use the proof step `(by rw [map_mul_eq, relIndex_map_subtype]; exact hfin _ hspanδ)`. Rewrite `g1` using `[map_mul_eq, map_mul_eq, relIndex_map_subtype, relIndex_map_subtype, relIndex_map_subtype]`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hJ2 : Submodule.span (𝓞 L) ((fun y : B => (y : L)) '' (I : Set B)) ≤ 1` using `Submodule.span_le.mpr (by rintro _ ⟨y, _, rfl⟩; exact mem_one_of_mem y.2)`. Establish `hTJ : (Submodule.span (𝓞 L) (Set.range a)).map (LinearMap.mulLeft (𝓞 L) (β : L)) = (Submodule.span (𝓞 L) ((fun y : B => (y : L)) '' (I : Set B))).map (LinearMap.mulLeft (𝓞 L) (δ : L))`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.map_le_iff_le_comap, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨y, hy, h⟩` from `(hMI (a i)).1 (haM i)`. Use `show (LinearMap.mulLeft (𝓞 L) (β : L)) (a i) ∈ Submodule.map _ _`. Rewrite using `[LinearMap.mulLeft_apply, h]`. Conclude with `⟨y, Submodule.subset_span ⟨y, hy, rfl⟩, rfl⟩`. Rewrite using `[Submodule.map_le_iff_le_comap, Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hx : (δ : L) * y / β ∈ M` using `(hMI _).2 ⟨y, hy, by field_simp⟩`. Use `show (LinearMap.mulLeft (𝓞 L) (δ : L)) (y : L) ∈ Submodule.map _ _`. Conclude with `⟨_, mem_span_of_local hloc hx, by simp only [LinearMap.mulLeft_apply]; field_simp⟩`. Establish `g2` using `genIndex_eq (X := (1 : Submodule (𝓞 L) L).toAddSubgroup) (J := (Submodule.span (𝓞 L) ((fun y : B => (y : L)) '' (I : Set B))).toAddSubgroup) (M := (Submodule.span (𝓞 L) (Set.range a)).toAddSubgroup) hβL hδL (fun x hx => hJ2 hx) (by rintro _ ⟨y, hy, rfl⟩; exact mul_mem_of_mem β.2 …`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Simplify using `only [Submodule.mem_toAddSubgroup]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hm` using `Submodule.mem_map_of_mem (f := LinearMap.mulLeft (𝓞 L) (β : L)) hx`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `hm` using `[hTJ]`. Take `⟨y, hy, h⟩` from `hm`. Conclude with `⟨y, hy, by simpa using h.symm⟩`. Introduce and unpack `⟨y, hy, h⟩`. Establish `hm` using `Submodule.mem_map_of_mem (f := LinearMap.mulLeft (𝓞 L) (δ : L)) hy`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[← hTJ]`. Take `⟨x', hx', h'⟩` from `hm`. Simplify using `only [LinearMap.mulLeft_apply] at h'`. Establish `hxx : x' = x` using `mul_left_cancel₀ hβL (h'.trans h.symm)`. Conclude with `hxx ▸ hx')`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use the proof step `(by rw [hidx I hI0 (Or.inr hIs)]; exact pow_ne_zero _ (hfin I hI0))`. Use the proof step `(by`. Rewrite using `[map_mul_eq_span δ, hidx _ hspanδ (Or.inl ⟨⟨δ, rfl⟩⟩)]`. Conclude with `pow_ne_zero _ (hfin _ hspanδ))`. Rewrite `g2` using `[map_mul_eq_span β, map_mul_eq_span δ, hidx _ hspanβ (Or.inl ⟨⟨β, rfl⟩⟩), hidx _ hspanδ (Or.inl ⟨⟨δ, rfl⟩⟩), hidx I hI0 (Or.inr hIs)]`.
-
-Rewrite using `[g1, g2, hrank]`. Use `push_cast`. Rewrite using `[← mul_pow, ← div_pow, Real.log_pow]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem InvertibleIdealIndex.proof (h1 : OrderIdealIndexExtension.Statement)
     (h2 : LocallyPrincipalCoprime.Statement) : InvertibleIdealIndex.Statement := by

@@ -22,7 +22,7 @@ def tmulLeft (l : L) : 𝔸[K] →ₗ[𝔸[K]] L ⊗[K] 𝔸[K] where
     rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
 /- English proof (translation)
-Rewrite using `[map_mul, adeleTensorEquiv_tmul, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adeleTensorEquiv_one_tmul_mul (a : 𝔸[K]) (t : L ⊗[K] 𝔸[K]) :
     adeleTensorEquiv K L ((1 ⊗ₜ a) * t) = adeleMap K L a * adeleTensorEquiv K L t := by
@@ -120,7 +120,7 @@ def adeleTensorContinuousAlgEquivAdele :
     continuous_invFun := (adeleTensorHomeomorph K L).continuous_invFun }
 
 /- English proof (translation)
-Set `` to `moduleTopology 𝔸[K] (L ⊗[K] 𝔸[K])`. Establish `: IsModuleTopology 𝔸[K] (L ⊗[K] 𝔸[K])` using `⟨rfl⟩`. Conclude with `IsModuleTopology.iso { (adeleTensorAlgEquivAdele K L).toLinearEquiv with continuous_toFun := (adeleTensorHomeomorph K L).continuous_toFun continuous_invFun := (adeleTensorHomeomorph K L).continuous_invFun }`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isModuleTopology_adeleRing : IsModuleTopology 𝔸[K] 𝔸[L] := by
   let := moduleTopology 𝔸[K] (L ⊗[K] 𝔸[K])
@@ -136,7 +136,7 @@ def normalizedTrace : L →ₗ[K] K :=
   (finrank K L : K)⁻¹ • Algebra.trace K L
 
 /- English proof (translation)
-Rewrite using `[normalizedTrace, LinearMap.smul_apply, ← map_one (algebraMap K L), Algebra.trace_algebraMap, nsmul_eq_mul, mul_one, smul_eq_mul, inv_mul_cancel₀]`. Conclude with `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normalizedTrace_one : normalizedTrace K L 1 = 1 := by
   rw [normalizedTrace, LinearMap.smul_apply, ← map_one (algebraMap K L), Algebra.trace_algebraMap,
@@ -160,7 +160,7 @@ def traceRetraction : L ⊗[K] 𝔸[K] →ₗ[𝔸[K]] 𝔸[K] where
     | add s t hs ht => simp only [smul_add, map_add, hs, ht, mul_add]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `TensorProduct.lid K 𝔸[K] (LinearMap.rTensor 𝔸[K] (normalizedTrace K L) (1 ⊗ₜ a)) = a`. Rewrite using `[LinearMap.rTensor_tmul, TensorProduct.lid_tmul, normalizedTrace_one, one_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem traceRetraction_one_tmul (a : 𝔸[K]) : traceRetraction K L (1 ⊗ₜ a) = a := by
   change TensorProduct.lid K 𝔸[K] (LinearMap.rTensor 𝔸[K] (normalizedTrace K L) (1 ⊗ₜ a)) = a
@@ -172,7 +172,7 @@ def adeleRetraction (y : 𝔸[L]) : 𝔸[K] :=
   traceRetraction K L ((adeleTensorEquiv K L).symm y)
 
 /- English proof (translation)
-Establish `: (adeleTensorEquiv K L).symm (adeleMap K L a) = 1 ⊗ₜ a`. Rewrite using `[AlgEquiv.symm_apply_eq, adeleTensorEquiv_tmul, map_one, one_mul]`. Rewrite using `[adeleRetraction, this, traceRetraction_one_tmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem adeleRetraction_adeleMap (a : 𝔸[K]) : adeleRetraction K L (adeleMap K L a) = a := by
   have : (adeleTensorEquiv K L).symm (adeleMap K L a) = 1 ⊗ₜ a := by
@@ -180,7 +180,7 @@ theorem adeleRetraction_adeleMap (a : 𝔸[K]) : adeleRetraction K L (adeleMap K
   rw [adeleRetraction, this, traceRetraction_one_tmul]
 
 /- English proof (translation)
-Set `` to `moduleTopology 𝔸[K] (L ⊗[K] 𝔸[K])`. Establish `: IsModuleTopology 𝔸[K] (L ⊗[K] 𝔸[K])` using `⟨rfl⟩`. Conclude with `(IsModuleTopology.continuous_of_linearMap (traceRetraction K L)).comp (adeleTensorHomeomorph K L).symm.continuous`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_adeleRetraction : Continuous (adeleRetraction K L) := by
   let := moduleTopology 𝔸[K] (L ⊗[K] 𝔸[K])
@@ -189,13 +189,13 @@ theorem continuous_adeleRetraction : Continuous (adeleRetraction K L) := by
     (adeleTensorHomeomorph K L).symm.continuous
 
 /- English proof (translation)
-The claim follows from `Function.LeftInverse.injective (g := adeleRetraction K L) adeleRetraction_adeleMap`.
+A detailed English derivation is pending.
 -/
 theorem adeleMap_injective : Function.Injective (adeleMap K L) :=
   Function.LeftInverse.injective (g := adeleRetraction K L) adeleRetraction_adeleMap
 
 /- English proof (translation)
-The claim follows from `haveI : T2Space (FiniteAdeleRing (𝓞 L) L) := inferInstanceAs (T2Space (Πʳ w : HeightOneSpectrum (𝓞 L), [w.adicCompletion L, w.adicCompletionIntegers L])) haveI : T2Space (InfiniteAdeleRing L) := inferInstanceAs (T2Space ((w : NumberField.InfinitePlace L) → w.Completion)) haveI : …`.
+A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_adeleMap : IsClosedEmbedding (adeleMap K L) :=
   haveI : T2Space (FiniteAdeleRing (𝓞 L) L) := inferInstanceAs (T2Space

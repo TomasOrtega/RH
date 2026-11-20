@@ -16,13 +16,11 @@ namespace GlobalTheory
 open SqZero
 
 /- English proof (translation)
-Establish `hJ2 : J ^ 2 = ⊥`. Rewrite using `[← le_bot_iff, pow_two, ← hJ]`. Conclude with `Ideal.mul_mono_right hJ'`. Set `c : Fin d → J` to `fun j => ⟨_, hδ j⟩`. Establish `hc : ∀ j, (c j : A) * (c j : A) = 0` using `fun j => mul_eq_zero_of_sq hJ2 (c j).2 (c j).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ∀ j, epsTo R (c j : A) (hc j) (TrivSqZeroExt.inr 1) = c j` using `fun j => epsTo_eps _ _`. Establish `key` using `GlobalTheory.T.jetPoint_add_sqZero_eq_prod_mul_tangent R G hG d v hv x hx₁ hx₂ hx₃ A aug J hJ hJ' m ψ ψ' hψ hψ' (fun j => epsTo R (c j : A) (hc j)) (fun j => by rw [he]; exact (c j).2) (fun j => by rw [he]; exact (add_sub_cancel _ _).symm)`. Rewrite `key` using `[← h]`. Establish `h1 : lieExp v (fun j => (c j : A)) hc = 1` using `mul_eq_right.1 key.symm`. Establish `h0 : c = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(expHom_bijective hv hJ2).1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `congrArg Additive.ofMul (Subtype.ext h1)`. Use `jet_ext fun j => ?_` and prove the remaining obligations. Establish `: ψ' (zR m j) - ψ (zR m j) = 0` using `congrArg Subtype.val (congrFun h0 j)`.
-
-Conclude with `(sub_eq_zero.1 this).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jetCoord_eq_of_sub_mem {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))}
     [GrpObj G] [IsCommMonObj G] (hG : Smooth G.hom) {d : ℕ} {v : Fin d → (epsR R ⟶ G)}
@@ -55,17 +53,15 @@ theorem jetCoord_eq_of_sub_mem {R : Type} [CommRing R] {G : Over (Spec (CommRing
   exact (sub_eq_zero.1 this).symm
 
 /- English proof (translation)
-Use `set N := RingHom.ker aug with hNdef`. Establish `main : ∀ k j, ψ' (zR m j) - ψ (zR m j) ∈ N ^ (k + 1)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[zero_add, pow_one, hNdef, RingHom.mem_ker, map_sub, ← AlgHom.comp_apply, ← AlgHom.comp_apply, hψ, hψ', sub_self]`. Consider the case `succ k ih`. Set `q : A →ₐ[R] A ⧸ N ^ (k + 1 + 1)` to `Ideal.Quotient.mkₐ R _`. Establish `hq : Function.Surjective q` using `Ideal.Quotient.mkₐ_surjective R _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `aug' : (A ⧸ N ^ (k + 1 + 1)) →ₐ[R] R` to `Ideal.Quotient.liftₐ _ aug (fun a ha => Ideal.pow_le_self (by omega) ha)`. Establish `haug : aug'.comp q = aug` using `AlgHom.ext fun _ => rfl`. Establish `hker : RingHom.ker aug' = N.map q`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `hq a`. Conclude with `Ideal.mem_map_of_mem _ ha`. Conclude with `Ideal.map_le_iff_le_comap.2 fun a ha => ha`. Establish `e` using `jetCoord_eq_of_sub_mem hG hv hx₁ hx₂ hx₃ aug' ((N ^ (k + 1)).map q) (by rw [hker, ← Ideal.map_mul, ← pow_succ]; exact Ideal.map_quotient_self _) (by rw [hker]; exact Ideal.map_mono (Ideal.pow_le_self (by omega))) (q.comp ψ) (q.comp ψ') (by rw [← AlgHom.comp_assoc, haug, hψ]) (by …`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, ← map_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_map_of_mem _ (ih j))`. Use the proof step `(by rw [← spMap_comp, ← spMap_comp, Category.assoc, Category.assoc, h])`. Introduce `j`. Conclude with `Ideal.Quotient.eq.1 (AlgHom.congr_fun e (zR m j)).symm`. Use `jet_ext fun j => ?_` and prove the remaining obligations.
-
-Use `main m j` as an intermediate fact. Rewrite `this` using `[hN, Ideal.mem_bot]`. Conclude with `(sub_eq_zero.1 this).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetCoord_unique (R : Type) [CommRing R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G]
     [IsCommMonObj G] (hG : Smooth G.hom) (d : ℕ) (v : Fin d → (epsR R ⟶ G)) (hv : IsLieBasis v)

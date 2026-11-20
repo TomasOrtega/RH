@@ -43,9 +43,9 @@ def ExistsOverBase : Prop :=
       (letI := D.host.cmStar; (Lv u).Lb) ≤ N ∧ levelU D Lv u ≤ stabHat D N
 
 /- English proof (translation)
-Establish `hT : (1 : ℝ) < (D.mem u).A.T` using `by exact_mod_cast (D.mem u).A.T_prime.one_lt`. Establish `hk : D.R.k ≠ 0`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hTk : (1 : ℝ) < ((D.mem u).A.T : ℝ) ^ D.R.k` using `one_lt_pow₀ hT hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Conclude with `pow_pos (by linarith) _`.
+A detailed English derivation is pending.
 -/
 theorem factorT_pos (D : D7) (u : D.what₂.Word) :
     0 < (((D.mem u).A.T : ℝ) ^ D.R.k - 1) ^ D.R.f := by
@@ -57,7 +57,7 @@ theorem factorT_pos (D : D7) (u : D.what₂.Word) :
   exact pow_pos (by linarith) _
 
 /- English proof (translation)
-Introduce `g hg`. Unfold `stabHat levelAfL level at hg`. Conclude with `(Subgroup.mem_inf.mp hg).1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem stabHat_le (D : D7) (N : Submodule (𝓞 D.host.E) (Fin D.R.k → D.host.E)) :
     letI := D.host.cmStar

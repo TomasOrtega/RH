@@ -20,7 +20,7 @@ abbrev SV (E : Type) [Field E] [NumberField E] [Algebra F E] (v : HeightOneSpect
 section Trace
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e a`. Simplify using `[adelstabT, Algebra.TensorProduct.tmul_mul_tmul, mul_smul_comm]`. Consider the case `add x y hx hy => rw [mul_add, map_add, map_add, hx, hy, mul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem T_mul (c : 𝔸) (z : 𝒜) : adelstabT F E (((1 : E) ⊗ₜ[F] c) * z) = c * adelstabT F E z := by
   induction z using TensorProduct.induction_on with
@@ -30,9 +30,9 @@ theorem T_mul (c : 𝔸) (z : 𝒜) : adelstabT F E (((1 : E) ⊗ₜ[F] c) * z) 
   | add x y hx hy => rw [mul_add, map_add, map_add, hx, hy, mul_add]
 
 /- English proof (translation)
-Introduce `v`. Establish `h1` using `adelstabT_mem (afsplit_IE_int v _ (hz v))`. Rewrite `h1` using `[afsplit_decomp, afsplitEps, Algebra.TensorProduct.one_def, afsplitIE_tmul, T_mul]`. Establish `h2` using `h1 v`. Rewrite `h2` using `[afsplit_mul_apply, afsplitI_self, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem T_int (z : 𝒜) (hz : ∀ v, prV (E := E) v z ∈ SV E v) : adelstabT F E z ∈ intAd F := by
   intro v
@@ -43,11 +43,11 @@ theorem T_int (z : 𝒜) (hz : ∀ v, prV (E := E) v z ∈ SV E v) : adelstabT F
   exact h2
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e a`. Establish `he` using `((Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) β).sum_repr e`. Simplify using `only [LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply] at he`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [← he]`. Rewrite using `[TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, TensorProduct.smul_tmul, mul_comm e (β i)]`. Simplify using `[adelstabT]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add x y hx hy => conv_lhs => rw [hx, hy]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_add, map_add, TensorProduct.tmul_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expand {ι : Type} [Fintype ι] [DecidableEq ι] (β : Module.Basis ι F E) (z : 𝒜) :
     z = ∑ i, ((Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) β i) ⊗ₜ[F]
@@ -69,15 +69,15 @@ theorem expand {ι : Type} [Fintype ι] [DecidableEq ι] (β : Module.Basis ι F
     rw [mul_add, map_add, TensorProduct.tmul_add]
 
 /- English proof (translation)
-Set `β₀` to `Module.finBasis F E`. Take `⟨m₁, hm₁, hi₁⟩` from `adelstabL_den (fun i => β₀ i)`. Establish `hu : ∀ _ : Fin (Module.finrank F E), IsUnit ((m₁ : ℤ) : F)` using `fun _ => (Int.cast_ne_zero.2 hm₁).isUnit`. Set `β` to `β₀.isUnitSMul hu`. Establish `hβ : ∀ i, IsIntegral ℤ (β i)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i`. Establish `: β i = (m₁ : E) * β₀ i`. Rewrite using `[Module.Basis.isUnitSMul_apply, Algebra.smul_def, map_intCast]`. Rewrite using `[this]`. Conclude with `hi₁ i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m₂, hm₂, hi₂⟩` from `adelstabL_den (fun i => (Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) β i)`. Use `⟨m₂, hm₂, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[expand β z, Finset.mul_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `ht : adelstabT F E ((β i ⊗ₜ[F] (1 : 𝔸)) * z) ∈ intAd F`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `T_int _ fun v => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `mul_mem ?_ (hz v)` and prove the remaining obligations. Conclude with `Subring.subset_closure (Or.inl ⟨⟨β i, ⟨⟨β i, hβ i⟩, rfl⟩⟩, rfl⟩)`. Establish `h1 : inclE (F` using `F) 𝔸 (m₂ : E) * ((Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) β i ⊗ₜ[F] adelstabT F E ((β i ⊗ₜ[F] (1 : 𝔸)) * z)) = algebraMap (𝓞 E) E ⟨_, hi₂ i⟩ ⊗ₜ[F] adelstabT F E ((β i ⊗ₜ[F] (1 : 𝔸)) * z) := by show ((m₂ : E) ⊗ₜ[F] (1 : 𝔸)) * _ = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `levelaf_tmul_mem _ ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den : ∃ d : ℤ, d ≠ 0 ∧ ∀ z : 𝒜, (∀ v, prV (E := E) v z ∈ SV E v) →
     inclE (F := F) 𝔸 (d : E) * z ∈ 𝒮 := by
@@ -117,13 +117,13 @@ variable {n : Type} [Fintype n] [DecidableEq n]
 
 omit [Fintype n] [DecidableEq n] [NumberField F] [Algebra F E] in
 /- English proof (translation)
-Use `Fintype.ofFinite n` as an intermediate fact. Take `⟨s, hs⟩ : Λ.FG` from `Module.Finite.iff_fg.mp hfin`. Take `⟨m, hm0, hm⟩` from `adelstabL_den (fun p : s × n => (p.1 : n → E) p.2)`. Use `⟨m, hm0, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[← hs]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => intro k`. Conclude with `hm (⟨x, hx⟩, k)`. Consider the case `zero => intro k`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[isIntegral_zero]`. Consider the case `add x y _ _ hx hy => intro k`. Simplify `(hx k).add (hy k)` using `[mul_add]`. Consider the case `smul r x _ hx`. Introduce `k`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (m : E) * (r • x) k = algebraMap (𝓞 E) E r * ((m : E) * x k)`. Simplify using `[Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `(RingOfIntegers.isIntegral_coe r).mul (hx k)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem den_upper (Λ : Submodule (𝓞 E) (n → E)) [Finite n] (hfin : Module.Finite (𝓞 E) Λ) :
     ∃ m : ℤ, m ≠ 0 ∧ ∀ x ∈ Λ, ∀ k, IsIntegral ℤ ((m : E) * x k) := by
@@ -147,13 +147,13 @@ theorem den_upper (Λ : Submodule (𝓞 E) (n → E)) [Finite n] (hfin : Module.
 
 omit [NumberField F] [Algebra F E] in
 /- English proof (translation)
-Establish `hk : ∀ k : n, ∃ N : ℕ, ∃ f : Fin N → E, ∃ w : Fin N → Λ, ∑ j, f j • (w j : n → E) = Pi.single k 1`. Introduce `k`. Establish `: (Pi.single k 1 : n → E) ∈ Submodule.span E (Λ : Set (n → E))`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨N, f, w, h⟩` from `Submodule.mem_span_set'.1 this`. Conclude with `⟨N, f, fun j => ⟨w j, (w j).2⟩, h⟩`. Use `choose N f w hw using hk`. Take `⟨m, hm0, hm⟩` from `adelstabL_den (fun p : Σ k : n, Fin (N k) => f p.1 p.2)`. Use `⟨m, hm0, fun k => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (Pi.single k (m : E) : n → E) = ∑ j, (⟨(m : E) * f k j, hm ⟨k, j⟩⟩ : 𝓞 E) • (w k j : n → E)`. Establish `h1 : (Pi.single k (m : E) : n → E) = (m : E) • (Pi.single k 1 : n → E)`. Rewrite using `[← Pi.single_smul', smul_eq_mul, mul_one]`. Rewrite using `[h1, ← hw k, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← algebraMap_smul E, smul_smul]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `sum_mem fun j _ => Λ.smul_mem _ (w k j).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem den_lower (Λ : Submodule (𝓞 E) (n → E)) (hspan : Submodule.span E (Λ : Set (n → E)) = ⊤) :
     ∃ m : ℤ, m ≠ 0 ∧ ∀ k, (Pi.single k (m : E) : n → E) ∈ Λ := by
@@ -180,7 +180,7 @@ theorem den_lower (Λ : Submodule (𝓞 E) (n → E)) (hspan : Submodule.span E 
   exact sum_mem fun j _ => Λ.smul_mem _ (w k j).2
 
 /- English proof (translation)
-Apply `Subring.subset_closure` to reduce the goal to its premises. Use `left`. Conclude with `⟨⟨e, ⟨⟨e, he⟩, rfl⟩⟩, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem incl_int (v : HeightOneSpectrum (𝓞 F)) (e : E) (he : IsIntegral ℤ e) :
     inclE (F := F) (v.adicCompletion F) e ∈ SV E v := by
@@ -189,11 +189,11 @@ theorem incl_int (v : HeightOneSpectrum (𝓞 F)) (e : E) (he : IsIntegral ℤ e
   exact ⟨⟨e, ⟨⟨e, he⟩, rfl⟩⟩, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy'`. Take `⟨x, hx, rfl⟩` from `hy'`. Rewrite using `[← map_mul]`. Conclude with `incl_int v _ (hm x hx i)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Simplify using `only [Pi.add_apply, mul_add]`. Conclude with `add_mem ha hb`. Consider the case `smul s a _ ha`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, Subring.smul_def, smul_eq_mul]`. Rewrite using `[mul_left_comm]`. Conclude with `mul_mem s.2 ha`.
+A detailed English derivation is pending.
 -/
 theorem loc_upper (Λ : Submodule (𝓞 E) (n → E)) (m : ℤ) (hm : ∀ x ∈ Λ, ∀ k, IsIntegral ℤ ((m : E) * x k))
     (v : HeightOneSpectrum (𝓞 F)) (y : n → E ⊗[F] v.adicCompletion F)
@@ -214,11 +214,9 @@ theorem loc_upper (Λ : Submodule (𝓞 E) (n → E)) (m : ℤ) (hm : ∀ x ∈ 
     exact mul_mem s.2 ha
 
 /- English proof (translation)
-Establish `key : (fun i => inclE (F` using `F) (v.adicCompletion F) (m : E) * y i) = ∑ k, (⟨y k, hy k⟩ : SV E v) • (fun i => inclE (F := F) (v.adicCompletion F) ((Pi.single k (m : E) : n → E) i)) := by`. Use extensionality with `i`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single i]`. Use `show _ = y i * inclE (F := F) (v.adicCompletion F) ((Pi.single i (m : E) : n → E) i)`. Rewrite using `[Pi.single_eq_same, mul_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ hk show y k * inclE (F := F) (v.adicCompletion F) ((Pi.single k (m : E) : n → E) i) = 0`. Rewrite using `[Pi.single_eq_of_ne (Ne.symm hk), map_zero, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Rewrite using `[key]`.
-
-Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hm k, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_lower (Λ : Submodule (𝓞 E) (n → E)) (m : ℤ) (hm : ∀ k, (Pi.single k (m : E) : n → E) ∈ Λ)
     (v : HeightOneSpectrum (𝓞 F)) (y : n → E ⊗[F] v.adicCompletion F) (hy : ∀ i, y i ∈ SV E v) :
@@ -260,24 +258,22 @@ def latLoc (F : Type) [Field F] [NumberField F] [Algebra F E] (Λ : Submodule (�
     rw [this]; exact Submodule.smul_mem _ _ (ha v)
 
 /- English proof (translation)
-Simplify using `only [levelafC, inclE, map_intCast]`. Rewrite using `[← Algebra.TensorProduct.includeRight_apply, map_intCast]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem levelafC_int (m : ℤ) : levelafC E (m : 𝓞 F) = inclE (F := F) 𝔸 (m : E) := by
   simp only [levelafC, inclE, map_intCast]
   rw [← Algebra.TensorProduct.includeRight_apply, map_intCast]
 
 /- English proof (translation)
-Take `⟨m₁, hm₁, h₁⟩` from `den_lower Λ hspan`. Take `⟨m₂, hm₂, h₂⟩` from `den_upper Λ hfin`. Take `⟨d, hd, h₃⟩` from `exists_den (F := F) (E := E)`. Use `adelstab_core σ J hτ hH hdet hdef (latLoc F Λ) U ?_ (m₁ : 𝓞 F) ((d * m₂ : ℤ) : 𝓞 F) (Int.cast_ne_zero.2 hm₁) (Int.cast_ne_zero.2 (mul_ne_zero hd hm₂)) ?_ ?_ g` and prove the remaining obligations. Introduce `x hx y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ v : HeightOneSpectrum (𝓞 F), (fun i => prV (E` using `E) v (((x : Matrix n n 𝒜) *ᵥ y) i)) = ((bc (prV (E := E) v) x : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F)) *ᵥ fun i => prV (E := E) v (y i) := by`. Introduce `v`. Use extensionality with `i`. Conclude with `RingHom.map_mulVec (prV (E := E) v) (x : Matrix n n 𝒜) y i`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy v`. Rewrite using `[key v]`. Conclude with `(hU x hx v _).1 (hy v)`. Introduce `hy v`. Use `hy v` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[key v]`. Conclude with `(hU x hx v _).2 this`. Introduce `w hw v`. Establish `: (fun i => prV (E` using `E) v (levelafC E (m₁ : 𝓞 F) * w i)) = fun i => inclE (F := F) (v.adicCompletion F) (m₁ : E) * prV (E := E) v (w i) := by`. Use extensionality with `i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[levelafC_int, map_mul, afsplit_prV_inclE]`. Rewrite using `[this]`. Conclude with `loc_lower Λ m₁ h₁ v _ fun i => afsplit_prV_int v _ (hw i)`. Introduce `w hw i`. Rewrite using `[levelafC_int, Int.cast_mul, map_mul, mul_assoc]`.
-
-Use `h₃ _ fun v => ?_` and prove the remaining obligations. Rewrite using `[map_mul, afsplit_prV_inclE]`. Conclude with `loc_upper Λ m₂ h₂ v _ (hw v) i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_stabAt_of_local (σ : E →ₐ[F] E) (J : Matrix n n E)
     (hτ : ∀ τ : E →+* ℂ, τ.comp (σ : E →+* E) = (starRingEnd ℂ).comp τ)

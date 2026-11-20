@@ -16,42 +16,42 @@ namespace SqInt
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `revM`. Conclude with `(Matrix.submatrix_mul_equiv A B Fin.rev Fin.revPerm Fin.rev).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem revM_mul (A B : Matrix (Fin n) (Fin n) ℂ) : revM (A * B) = revM A * revM B := by
   unfold revM
   exact (Matrix.submatrix_mul_equiv A B Fin.rev Fin.revPerm Fin.rev).symm
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[revM, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem revM_one : revM (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   ext i j
   simp [revM, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[revM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem revM_revM (A : Matrix (Fin n) (Fin n) ℂ) : revM (revM A) = A := by
   ext i j
   simp [revM]
 
 /- English proof (translation)
-Unfold `revM`. Conclude with `(Matrix.conjTranspose_submatrix A Fin.rev Fin.rev).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem revM_conjTranspose (A : Matrix (Fin n) (Fin n) ℂ) : revM Aᴴ = (revM A)ᴴ := by
   unfold revM
   exact (Matrix.conjTranspose_submatrix A Fin.rev Fin.rev).symm
 
 /- English proof (translation)
-Unfold `revM Jm revE`. Conclude with `Matrix.submatrix_diagonal _ Fin.rev Fin.rev_injective`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem revM_Jm (ε : Fin n → Bool) : revM (Jm ε) = Jm (revE ε) := by
   unfold revM Jm revE
   exact Matrix.submatrix_diagonal _ Fin.rev Fin.rev_injective
 
 /- English proof (translation)
-Unfold `inUJ at *`. Rewrite using `[← revM_Jm, ← revM_conjTranspose, ← revM_mul, ← revM_mul, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inUJ_rev (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ} (h : inUJ ε g) :
     inUJ (revE ε) (revM g) := by
@@ -64,7 +64,7 @@ def revHom : Matrix (Fin n) (Fin n) ℂ →* Matrix (Fin n) (Fin n) ℂ where
   map_mul' := revM_mul
 
 /- English proof (translation)
-Use `show inUJ ε (revM (umat g))`. Establish `h` using `inUJ_rev (revE ε) (g.2 : inUJ (revE ε) (umat g))`. Rewrite `h` using `[revE_revE]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_fwd (ε : Fin n → Bool) (g : UJ (revE ε)) :
     Units.map (revHom (n := n)) (g : (Matrix (Fin n) (Fin n) ℂ)ˣ) ∈ UJ ε := by
@@ -73,7 +73,7 @@ theorem mem_fwd (ε : Fin n → Bool) (g : UJ (revE ε)) :
   rwa [revE_revE] at h
 
 /- English proof (translation)
-Use `show inUJ (revE ε) (revM (umat g))`. Conclude with `inUJ_rev ε (g.2 : inUJ ε (umat g))`.
+A detailed English derivation is pending.
 -/
 theorem mem_bwd (ε : Fin n → Bool) (g : UJ ε) :
     Units.map (revHom (n := n)) (g : (Matrix (Fin n) (Fin n) ℂ)ˣ) ∈ UJ (revE ε) := by
@@ -94,7 +94,7 @@ def phiE (ε : Fin n → Bool) : UJ (revE ε) ≃* UJ ε where
     exact revM_mul (umat g) (umat h)
 
 /- English proof (translation)
-Rewrite using `[(isClosedEmbeddingMatrix n ε).1.isInducing.continuous_iff]`. Use `show Continuous (fun g : UJ (revE ε) => (coeMatrixAlt (revE ε) g).submatrix Fin.rev Fin.rev)`. Conclude with `(continuous_coeMatrix (revE ε)).matrix_submatrix Fin.rev Fin.rev`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiE_cont (ε : Fin n → Bool) : Continuous (phiE ε) := by
   rw [(isClosedEmbeddingMatrix n ε).1.isInducing.continuous_iff]
@@ -102,7 +102,7 @@ theorem phiE_cont (ε : Fin n → Bool) : Continuous (phiE ε) := by
   exact (continuous_coeMatrix (revE ε)).matrix_submatrix Fin.rev Fin.rev
 
 /- English proof (translation)
-Rewrite using `[(isClosedEmbeddingMatrix n (revE ε)).1.isInducing.continuous_iff]`. Use `show Continuous (fun g : UJ ε => (coeMatrixAlt ε g).submatrix Fin.rev Fin.rev)`. Conclude with `(continuous_coeMatrix ε).matrix_submatrix Fin.rev Fin.rev`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiE_symm_cont (ε : Fin n → Bool) : Continuous (phiE ε).symm := by
   rw [(isClosedEmbeddingMatrix n (revE ε)).1.isInducing.continuous_iff]
@@ -113,11 +113,11 @@ end SqInt
 
 open SqInt in
 /- English proof (translation)
-Introduce `n ε H _ _ σ hs v w`. Establish `hmap : (Measure.map (phiE ε) (muG (revE ε))).IsHaarMeasure` using `(phiE ε).isHaarMeasure_map (muG (revE ε)) (phiE_cont ε) (phiE_symm_cont ε)`. Establish `heq` using `Measure.isMulLeftInvariant_eq_smul (Measure.map (phiE ε) (muG (revE ε))) (muG ε)`. Establish `h1 : MemLp (coefOn (ε` using `ε) σ (Cj.un v) (Cj.un w)) 2 (Measure.map (phiE ε) (muG (revE ε))) := by`. Rewrite using `[heq, ENNReal.smul_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hs _ _).smul_measure ENNReal.coe_ne_top`. Establish `h2` using `(memLp_map_measure_iff h1.1 (phiE_cont ε).measurable.aemeasurable).1 h1`. Establish `e : coefOn (ε` using `revE ε) (sigC σ) v w = star (coefOn (ε := ε) σ (Cj.un v) (Cj.un w) ∘ phiE ε) := by`. Use function extensionality and compare the values at `g`. Use `show ⟪w, cjOp (σ (revM (umat g))) v⟫_ℂ = star ⟪Cj.un w, σ (revM (umat g)) (Cj.un v)⟫_ℂ`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Cj.inner_def, cjOp_apply]`. Conclude with `(inner_conj_symm _ _).symm`. Rewrite using `[e]`. Conclude with `h2.star`.
+A detailed English derivation is pending.
 -/
 theorem square_integrable_conj : SqIntConj := by
   intro n ε H _ _ σ hs v w

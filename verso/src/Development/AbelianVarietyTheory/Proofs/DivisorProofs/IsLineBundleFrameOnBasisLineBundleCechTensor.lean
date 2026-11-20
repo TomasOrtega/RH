@@ -8,17 +8,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LBObs
 
 /- English proof (translation)
-Introduce `X C _ V hV L L' u u' ⟨τ, hτg, hτf⟩ ⟨τ', hτ'g, hτ'f⟩`. Simplify using `only [IsFrame, IsGenOn, tens]`. Use `⟨fun T p ↦ res (inf_le_inf_left (V T) (inf_le_left : L.U p.1 ⊓ L'.U p.2 ≤ L.U p.1)) (τ T p.1) * res (inf_le_inf_left (V T) (inf_le_right : L.U p.1 ⊓ L'.U p.2 ≤ L'.U p.2)) (τ' T p.2), ?_, ?_⟩` and prove the remaining obligations. Introduce `T p q`. Use `unit_ext fun y hy ↦ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrArg (gm (𝟙 X) y _) (hτg T p.1 q.1)`. Establish `h2` using `congrArg (gm (𝟙 X) y _) (hτ'g T p.2 q.2)`. Establish `m1 : (𝟙 X : X ⟶ X) y ∈ V T ⊓ L.U p.1 ⊓ L.U q.1` using `⟨⟨hy.1.1, hy.1.2.1⟩, hy.2.1⟩`. Establish `m2 : (𝟙 X : X ⟶ X) y ∈ V T ⊓ L'.U p.2 ⊓ L'.U q.2` using `⟨⟨hy.1.1, hy.1.2.2⟩, hy.2.2⟩`. Establish `m3 : (𝟙 X : X ⟶ X) y ∈ L.U p.1 ⊓ L'.U p.2 ⊓ (L.U q.1 ⊓ L'.U q.2)` using `⟨hy.1.2, hy.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m4 : (𝟙 X : X ⟶ X) y ∈ V T ⊓ (L.U p.1 ⊓ L'.U p.2)` using `hy.1`. Establish `m5 : (𝟙 X : X ⟶ X) y ∈ V T ⊓ (L.U q.1 ⊓ L'.U q.2)` using `⟨hy.1.1, hy.2⟩`. Simplify using `only [map_mul, gm_res (𝟙 X) y _ m1] at h1`. Simplify using `only [map_mul, gm_res (𝟙 X) y _ m2] at h2`. Simplify using `only [map_mul, gm_res (𝟙 X) y _ hy, gm_res (𝟙 X) y _ m3, gm_res (𝟙 X) y _ m4, gm_res (𝟙 X) y _ m5]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2]`. The two sides agree by associativity and commutativity. Introduce `T T' a p`. Use `unit_ext fun y hy ↦ ?_` and prove the remaining obligations. Establish `h1` using `congrArg (gm (𝟙 X) y _) (hτf T T' a p.1)`.
+Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (gm (𝟙 X) y _) (hτ'f T T' a p.2)`. Establish `m1 : (𝟙 X : X ⟶ X) y ∈ V T' ⊓ L.U p.1` using `⟨hy.1, hy.2.1⟩`. Establish `m2 : (𝟙 X : X ⟶ X) y ∈ V T' ⊓ L'.U p.2` using `⟨hy.1, hy.2.2⟩`. Establish `m3 : (𝟙 X : X ⟶ X) y ∈ V T ⊓ (L.U p.1 ⊓ L'.U p.2)` using `⟨hV a hy.1, hy.2⟩`. Simplify using `only [map_mul, gm_res (𝟙 X) y _ m1] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, gm_res (𝟙 X) y _ m2] at h2`. Simplify using `only [map_mul, gm_res (𝟙 X) y _ hy, gm_res (𝟙 X) y _ m1, gm_res (𝟙 X) y _ m2, gm_res (𝟙 X) y _ m3]`. Rewrite using `[h1, h2]`. The two sides agree by associativity and commutativity.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity.
 -/
 theorem isFrame_tens : ∀ (X : Scheme.{0}) (C : Type) [Category.{0} C] (V : C → X.Opens)
     (hV : ∀ ⦃T T' : C⦄, (T ⟶ T') → V T' ≤ V T) (L L' : LB X) (u u' : ∀ (T T' : C) (_ : T ⟶ T'), Γ(X, V T')ˣ),

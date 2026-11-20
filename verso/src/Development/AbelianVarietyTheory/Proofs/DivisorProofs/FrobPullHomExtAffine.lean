@@ -104,7 +104,7 @@ omit [Fact q.Prime] in
 include k in
 
 /- English proof (translation)
-The claim follows from `SS.FrobField.cast_zero_of_hom f (natCast_eq_zero C q k)`.
+A detailed English derivation is pending.
 -/
 theorem cast_eq_zero (f : T ⟶ C) : (q : Γ(T, ⊤)) = 0 := SS.FrobField.cast_zero_of_hom f (natCast_eq_zero C q k)
 
@@ -121,9 +121,9 @@ section Ext
 variable {X : Scheme.{0}} {F G : X.Modules}
 
 /- English proof (translation)
-Use `Scheme.Modules.hom_ext _ _ fun W ↦ ?_` and prove the remaining obligations. Use extensionality with `s`. Use `QCoh.section_eq_of_cover _ (fun U : {U : X.Opens // IsAffineOpen U ∧ U ≤ W} ↦ U.1) (fun U ↦ U.2.2) ?_ _ _ fun U ↦ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨U, hU, hxU, hle⟩` from `QCoh.exists_affine_mem_le x hx`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨U, hU, hle⟩, hxU⟩`. Conclude with `(QCoh.hom_app_res _ _ _).symm.trans ((h _ U.2.1 _).trans (QCoh.hom_app_res _ _ _))`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext_affine {φ ψ : F ⟶ G}
     (h : ∀ (V : X.Opens), IsAffineOpen V → ∀ s : Γ(F, V), φ.app V s = ψ.app V s) : φ = ψ := by
@@ -137,7 +137,7 @@ theorem hom_ext_affine {φ ψ : F ⟶ G}
   · exact (QCoh.hom_app_res _ _ _).symm.trans ((h _ U.2.1 _).trans (QCoh.hom_app_res _ _ _))
 
 /- English proof (translation)
-Use `hom_ext_affine fun V _ s ↦ dual_ext fun W hW t ↦ ?_` and prove the remaining obligations. Use `AffinePairingGlue.fun_ext_affine fun U hU hUW ↦ ?_` and prove the remaining obligations. Establish `k (χ : E ⟶ dual F) : resG X hUW (dualApp (χ.app V s) hW t) = dualApp (χ.app U (Twist.resM E (hUW.trans hW) s)) le_rfl (Twist.resM F hUW t)`. Rewrite using `[Twist.app_resM, dualApp_res, dualApp_resM]`. Rewrite using `[k, k, h U hU]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_dual_ext_affine {E : X.Modules} {φ ψ : E ⟶ dual F}
     (h : ∀ (V : X.Opens), IsAffineOpen V → ∀ (s : Γ(E, V)) (t : Γ(F, V)),
@@ -150,9 +150,9 @@ theorem hom_dual_ext_affine {E : X.Modules} {φ ψ : E ⟶ dual F}
   rw [k, k, h U hU]
 
 /- English proof (translation)
-Set `adj` to `Scheme.Modules.pullbackPushforwardAdjunction (frob X p h0)`. Apply `(adj.homEquiv _ _).injective` to reduce the goal to its premises. Use `hom_ext_affine fun V hV s ↦ ?_` and prove the remaining obligations. Establish `k (χ : (frobPull p h0).obj F ⟶ G) : (adj.homEquiv _ _ χ).app V s = χ.app V (QCoh.pullbackSections (frob X p h0) F (le_refl V) s)`. Rewrite using `[Adjunction.homEquiv_unit]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (χ.app V) (QCoh.res_self _ (le_refl V) _).symm`. Rewrite using `[k, k, h V hV]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobPull_hom_ext_affine (p : ℕ) [Fact p.Prime] (h0 : (p : Γ(X, ⊤)) = 0) {φ ψ : (frobPull p h0).obj F ⟶ G}
     (h : ∀ (V : X.Opens), IsAffineOpen V → ∀ s : Γ(F, V),

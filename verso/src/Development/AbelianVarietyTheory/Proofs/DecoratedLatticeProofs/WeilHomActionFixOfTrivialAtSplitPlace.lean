@@ -16,11 +16,11 @@ open scoped TensorProduct
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨α, hεα, hv, hw⟩` from `hε`. Take `⟨h0, hc⟩` from `placeIdempotent_infinite_and_finite_components D v ε α hεα`. Establish `hc' : ∀ w, compAt D w (algebraMap (AF D.host.F) (AE D) ε) = if w = v then 1 else 0`. Introduce `w`. Rewrite using `[hc w]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, hv]`. Both sides reduce to the same expression. Rewrite using `[if_neg h, hw w h, TensorProduct.zero_tmul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hx0` using `(SetCut.mem_idOff_iff_mul (· = v) _ h0 hc' x).1 hx`. Rewrite using `[← hy, ← mul_assoc, mul_comm x, hx0, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem idOff_mul_eq_zero {v : Pl D} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) {x y : AE D}
     (hx : x ∈ idOff D (· = v)) (hy : algebraMap (AF D.host.F) (AE D) ε * y = y) : x * y = 0 := by
@@ -37,15 +37,15 @@ theorem idOff_mul_eq_zero {v : Pl D} {ε : AF D.host.F} (hε : IsPlaceIdem D v �
   rw [← hy, ← mul_assoc, mul_comm x, hx0, zero_mul]
 
 /- English proof (translation)
-Break down `hu with hu | hu | hu` into its components or cases. Introduce `i j`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, -, hα0, a, -, s, -, t, -, rfl⟩` from `hw`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hmem : algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) ∈ idAt D (· = p.v)`. Take `⟨h0, hc⟩` from `placeIdempotent_infinite_and_finite_components D p.v _ α rfl`. Rewrite using `[mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere]`. Conclude with `⟨h0, fun w hw => by rw [hc w, hα0 w hw, TensorProduct.zero_tmul]⟩`. Rewrite using `[Matrix.of_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `hfac : (pairA D.host.F 0 α) ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j) = algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j))`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[hfac]`. Conclude with `((placeIdem_acts D p.v ε hε).1 _).1 (Ideal.mul_mem_right _ _ hmem)`. Consider the case `zero => simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => simp only [Matrix.add_apply, mul_add, hx, hy]`. Consider the case `neg x _ hx => simp only [Matrix.neg_apply, mul_neg, hx]`. Introduce `i j`. Establish `hce : algebraMap (AF D.host.F) (AE D) ε * p.e = p.e`. Rewrite using `[← hsum, add_mul, p.split.1, mul_comm (cA D p.e), p.split.2.1, add_zero]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu i j, ← mul_assoc, hce]`. Introduce `i j`. Establish `hce : algebraMap (AF D.host.F) (AE D) ε * cA D p.e = cA D p.e`. Rewrite using `[← hsum, add_mul, p.split.2.1, zero_add, ← map_mul, p.split.1]`. Rewrite using `[← hu i j, ← mul_assoc, hce]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supp_of_mem {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) {ε : AF D.host.F} (hε : IsPlaceIdem D p.v ε)
@@ -83,13 +83,13 @@ theorem supp_of_mem {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [
     rw [← hu i j, ← mul_assoc, hce]
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p S T LS LT g h hg hh u hu`. Take `⟨ε, hε, hsum⟩` from `p.above`. Establish `hsupp` using `supp_of_mem p hε hsum S T LS LT u hu`. Establish `hA : ∀ i j, (Formalism.L2.Theta.mt T h - 1) i j ∈ idOff D (· = p.v)` using `(SetCut.mem_congGrp_iff T (idOff D (· = p.v)) h).1 hh`. Establish `hB : ∀ i j, (Formalism.L2.Theta.mt S g⁻¹ - 1) i j ∈ idOff D (· = p.v)` using `(SetCut.mem_congGrp_iff S (idOff D (· = p.v)) g⁻¹).1 (inv_mem hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `U : Matrix (Fin T.rank) (Fin S.rank) (AE D)` to `u`. Establish `hU : ∀ i j, algebraMap (AF D.host.F) (AE D) ε * U i j = U i j` using `hsupp`. Establish `h1 : HMul.hMul (Formalism.L2.Theta.mt T h - 1) U = (0 : Matrix (Fin T.rank) (Fin S.rank) (AE D))`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun l _ => idOff_mul_eq_zero hε (hA i l) (hU l j)`. Establish `h2 : HMul.hMul U (Formalism.L2.Theta.mt S g⁻¹ - 1) = (0 : Matrix (Fin T.rank) (Fin S.rank) (AE D))`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Conclude with `Finset.sum_eq_zero fun l _ => by rw [mul_comm]; exact idOff_mul_eq_zero hε (hB l j) (hU i l)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : HMul.hMul (Formalism.L2.Theta.mt T h) U = U` using `by rw [Matrix.sub_mul, Matrix.one_mul, sub_eq_zero] at h1; exact h1`. Establish `e2 : HMul.hMul U (Formalism.L2.Theta.mt S g⁻¹) = U` using `by rw [Matrix.mul_sub, Matrix.mul_one, sub_eq_zero] at h2; exact h2`. Use `show HMul.hMul (HMul.hMul (Formalism.L2.Theta.mt T h) U) (Formalism.L2.Theta.mt S g⁻¹) = U`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actO_eq_of_grpOff : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (S T : HSp D) (LS : Lat S) (LT : Lat T) (g : GA D S) (h : GA D T),

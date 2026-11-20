@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.ThK.PlaneEv
 
 /- English proof (translation)
-Establish `hcomp : ⇑(ei F hd f) = ⇑f ∘ ⇑(insertZerosCLM F hd)` using `rfl`. Use function extensionality and compare the values at `x`. Rewrite using `[ei_apply, hg, hcomp]`. Simplify using `only [dH]`. Establish `hf : DifferentiableAt ℝ (⇑f) (insertZerosCLM F hd x)` using `f.differentiableAt`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[fderiv_comp x hf (insertZerosCLM F hd).differentiableAt, ContinuousLinearMap.fderiv]`. Establish `hs : (∑ i, ins0 hd x i * ins0 hd b i) = ∑ i, x i * b i` using `ins0_dotProduct_ins0 hd x b`. Rewrite using `[hs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ei_dH (F : Type) [Field F] [NumberField F] (n d d₁ : ℕ) (hd : d = d₁ + 2)
     (a b : Fin n × Fin d₁ → mixedEmbedding.mixedSpace F)

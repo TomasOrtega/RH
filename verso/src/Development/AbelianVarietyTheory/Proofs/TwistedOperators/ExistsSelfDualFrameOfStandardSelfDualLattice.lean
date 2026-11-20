@@ -19,7 +19,7 @@ namespace GlobalTheory
 namespace SDFrameCompletion
 
 /- English proof (translation)
-Introduce `D V Λ hΛ hsd`. Conclude with `GlobalTheory.AdelicFrame.exists_isSDFrame D V Λ hΛ (GlobalTheory.AdIsom.dualL_eq hsd)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_isSDFrame_of_isSelfDualC : ∀ (D : D7) (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), (Λ : Set (Fin V.rank → D.host.E)) = L0c D V → IsSelfDualC V Λ → ∃ β, IsSDFrame V β Λ 1 := by
   intro D V Λ hΛ hsd

@@ -14,7 +14,7 @@ namespace GlobalTheory.LastVertexVac
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (1 : GA D _) ∈ GfC _`. Conclude with `one_mem _`. Conclude with `(topLast ((S.N.u (.top D.R.m))⁻¹ * g * S.N.u (.top D.R.m))).2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem colPt_mem_GfC (S : GridChoice W U) (t : T) (g : FinPt G (.top D.R.m)) :
     (colPt S t g).1 ∈ GfC _ ∧ (colPt S t g).2 ∈ GfC _ := by
@@ -24,11 +24,9 @@ theorem colPt_mem_GfC (S : GridChoice W U) (t : T) (g : FinPt G (.top D.R.m)) :
   · exact (topLast ((S.N.u (.top D.R.m))⁻¹ * g * S.N.u (.top D.R.m))).2
 
 /- English proof (translation)
-Introduce `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Use `⟨actO _ _ (colPt S t g).1⁻¹ (colPt S t g).2⁻¹ u, (hlat u).2 hu, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.WeilVacMove.actO_inv_actO (colPt S t g).1⁻¹ (colPt S t g).2⁻¹ u` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[inv_inv, inv_inv]`. Conclude with `this.symm`. Introduce and unpack `⟨u₀, hu₀, rfl⟩`. Use `(hlat _).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.WeilVacMove.actO_inv_actO]`.
-
-Conclude with `hu₀`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latMove (S : GridChoice W U) (t : T) (g : FinPt G (.top D.R.m))
     (hlat : ∀ x, actO _ _ (colPt S t g).1⁻¹ (colPt S t g).2⁻¹ x ∈ stdLat S (.top t (lastIx D)) ↔ x ∈ stdLat S (.top t (lastIx D))) :
@@ -46,11 +44,11 @@ theorem latMove (S : GridChoice W U) (t : T) (g : FinPt G (.top D.R.m))
     exact hu₀
 
 /- English proof (translation)
-Establish `hp : DefPair D.R.m (Pair.top t (j : ℕ))` using `defPair_top t j`. Establish `hIn : (Pair.top t (j : ℕ) : Pair T).InRange D.R.m` using `inRange_top t j`. Establish `hn` using `hp.nodes`. Establish `hvac : IsVacO W.ψ W.θ (G.V (.top (j : ℕ))) (G.V (.top ((j : ℕ) + 1))) (W.cart (.top (j : ℕ))) (W.cart (.top ((j : ℕ) + 1))) (colLat (S.N.fr (.top (j : ℕ))) : Set _) (colLat (S.N.fr (.top ((j : ℕ) + 1))) : Set _) (S.Z.vac (.top t (j : ℕ)))` using `S.Z.vac_is _ hp`. Establish `hW : IsWeilDatumO W.ψ (G.V (.top (j : ℕ))) (G.V (.top ((j : ℕ) + 1))) (G.chrS (.top t (j : ℕ))) (G.chrT (.top t (j : ℕ))) (W.om (.top t (j : ℕ)))` using `W.om_is _ hIn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmove : IsVacO W.ψ W.θ (G.V (.top (j : ℕ))) (G.V (.top ((j : ℕ) + 1))) (W.cart (.top (j : ℕ))) (W.cart (.top ((j : ℕ) + 1))) (colLat (S.N.fr (.top (j : ℕ))) : Set _) (colLat (S.N.fr (.top ((j : ℕ) + 1))) : Set _) (W.om (.top t (j : ℕ)) (q.1, q.2) (S.Z.vac (.top t (j : ℕ))))` using `GlobalTheory.WeilVacMove.isVacO_om D W.ψ W.θ _ _ _ _ _ hW W.θ_is _ _ _ _ _ _ _ _ q.1 q.2 (fun τ => by rw [GlobalTheory.FockRealMove.compAt_mt_of_mem_GfC _ _ _ hq1, Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [GlobalTheory.FockRealMove.compAt_mt_of_mem_GfC _ _ _ hq2, Matrix.m …`. Establish `hS1 : (G.V (.top (j : ℕ))).SigOK` using `hn.1.sigOK G`. Establish `hS2 : (G.V (.top ((j : ℕ) + 1))).SigOK` using `hn.2.sigOK G`. Establish `hC1 : ∀ τ, IsCartanInv (gramAt D (G.V (.top (j : ℕ))) τ) (W.cart (.top (j : ℕ)) τ)` using `fun τ => W.cart_is _ hn.1.inRange τ`. Establish `hC2 : ∀ τ, IsCartanInv (gramAt D (G.V (.top ((j : ℕ) + 1))) τ) (W.cart (.top ((j : ℕ) + 1)) τ)` using `fun τ => W.cart_is _ hn.2.inRange τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD1 : IsSelfDualC (G.V (.top (j : ℕ))) (colLat (S.N.fr (.top (j : ℕ))))` using `S.N.selfDual hn.1`. Establish `hD2 : IsSelfDualC (G.V (.top ((j : ℕ) + 1))) (colLat (S.N.fr (.top ((j : ℕ) + 1))))` using `S.N.selfDual hn.2`. Take `⟨c, -, hc⟩` from `GlobalTheory.VacUnique.vacUniqueO D W.ψ W.θ hvac.1 W.θ_is _ _ _ _ hS1 hS2 hC1 hC2 _ _ hD1 hD2 _ _ hvac hmove`. Conclude with `⟨c, hc⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem om_vac_top (S : GridChoice W U) (t : T) (j : Fin D.R.m)
     (q : GA D (G.V (.top (j : ℕ))) × GA D (G.V (.top ((j : ℕ) + 1)))) (hq1 : q.1 ∈ GfC _) (hq2 : q.2 ∈ GfC _)
@@ -82,7 +80,7 @@ theorem om_vac_top (S : GridChoice W U) (t : T) (j : Fin D.R.m)
   exact ⟨c, hc⟩
 
 /- English proof (translation)
-Introduce `D T L sc G W U S t g hlat`. Take `⟨hx, hy⟩` from `colPt_mem_GfC S t g`. Rewrite using `[colShift_eq]`. Conclude with `om_vac_top S t (lastIx D) (colPt S t g) hx hy (latMove S t g hlat)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colShift_vac_eq_smul : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) (t : T) (g : FinPt G (.top D.R.m)),

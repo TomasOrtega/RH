@@ -18,9 +18,7 @@ open scoped Classical
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Express the relevant statement in the definitionally equal form `Continuous fun x : InfiniteAdeleRing F => ((fun (v : {w : InfinitePlace F // w.IsReal}) => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)), (fun (v : {w : InfinitePlace F // w.IsComplex}) => InfinitePlace.Completion.extensionEmbedding v.1 (x v)))`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`.
-
-Conclude with `h.comp continuous_fst`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_evI : Continuous (evI F) := by
   have h : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
@@ -39,20 +37,20 @@ def intAdeles : AddSubgroup (AF F) where
   neg_mem' := fun ha v => by rw [map_neg]; exact neg_mem (ha v)
 
 /- English proof (translation)
-The claim follows from `(RestrictedProduct.isOpen_forall_mem fun v : HeightOneSpectrum (𝓞 F) => Valued.isOpen_valuationSubring (v.adicCompletion F)).preimage continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_intAdeles : IsOpen (intAdeles F : Set (AF F)) :=
   (RestrictedProduct.isOpen_forall_mem fun v : HeightOneSpectrum (𝓞 F) =>
     Valued.isOpen_valuationSubring (v.adicCompletion F)).preimage continuous_snd
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨AddSubgroup.isClosed_of_isOpen _ (isOpen_intAdeles F), isOpen_intAdeles F⟩`.
+Supply the required witnesses or components.
 -/
 theorem isClopen_intAdeles : IsClopen (intAdeles F : Set (AF F)) :=
   ⟨AddSubgroup.isClosed_of_isOpen _ (isOpen_intAdeles F), isOpen_intAdeles F⟩
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Conclude with `IsModuleTopology.continuous_of_linearMap (Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).equivFun.toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coord : Continuous (coord F E) := by
   haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩
@@ -61,7 +59,7 @@ theorem continuous_coord : Continuous (coord F E) := by
     (Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).equivFun.toLinearMap
 
 /- English proof (translation)
-Unfold `size`. Conclude with `continuous_finset_sum _ fun i _ => ((continuous_evI F).comp ((continuous_apply i).comp (continuous_coord F E))).norm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_size : Continuous (size F E) := by
   unfold size
@@ -69,11 +67,11 @@ theorem continuous_size : Continuous (size F E) := by
     ((continuous_evI F).comp ((continuous_apply i).comp (continuous_coord F E))).norm
 
 /- English proof (translation)
-Establish `hS : IsClopen {l : (AE F E)ˣ | ∀ i v, evFin F v ((m : AF F) * coord F E l.1 i) ∈ v.adicCompletionIntegers F}`. Establish `: {l : (AE F E)ˣ | ∀ i v, evFin F v ((m : AF F) * coord F E l.1 i) ∈ v.adicCompletionIntegers F} = ⋂ i, (fun l : (AE F E)ˣ => (m : AF F) * coord F E l.1 i) ⁻¹' (intAdeles F : Set (AF F))`. Use extensionality with `l`. Simplify using `[intAdeles]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `isClopen_iInter_of_finite fun i => (isClopen_intAdeles F).preimage ?_` and prove the remaining obligations. Conclude with `continuous_const.mul ((continuous_apply i).comp ((continuous_coord F E).comp Units.continuous_val))`. Establish `hf : Continuous fun l : (AE F E)ˣ => ((1 + size F E l.1) ^ N)⁻¹` using `((continuous_const.add ((continuous_size F E).comp Units.continuous_val)).pow N).inv₀ fun l => pow_ne_zero _ (add_pos_of_pos_of_nonneg one_pos (size_nonneg _)).ne'`. Unfold `decay`. Use `continuous_if ?_ hf.continuousOn continuous_const.continuousOn` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Rewrite `ha` using `[hS.frontier_eq]`. Conclude with `absurd ha (Set.notMem_empty a)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_decay (N m : ℕ) : Continuous (decay F E N m) := by
   have hS : IsClopen {l : (AE F E)ˣ | ∀ i v, evFin F v ((m : AF F) * coord F E l.1 i) ∈ v.adicCompletionIntegers F} := by
@@ -93,7 +91,7 @@ theorem continuous_decay (N m : ℕ) : Continuous (decay F E N m) := by
   exact absurd ha (Set.notMem_empty a)
 
 /- English proof (translation)
-Use `letI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Conclude with `(continuous_decay F E N m).measurable`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem measurable_decay (N m : ℕ) : Measurable (decay F E N m) := by
   letI : BorelSpace (AE F E)ˣ := ⟨rfl⟩

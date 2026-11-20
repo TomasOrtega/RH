@@ -14,9 +14,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.SncBase
 
 /- English proof (translation)
-Establish `hP : (MvPolynomial.map (Int.castRingHom ℂ) G).IsHomogeneous d` using `hG.map _`. Rewrite using `[MvPolynomial.eval_eq', MvPolynomial.eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hd : ∑ i, m i = d`. Use `hP (MvPolynomial.mem_support_iff.1 hm)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum_fintype]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_map_mul_of_isHomogeneous {σ : Type} [Fintype σ] {G : MvPolynomial σ ℤ} {d : ℕ} (hG : G.IsHomogeneous d)
     (r : σ → ℂ) (t : ℂ) :
@@ -32,15 +32,15 @@ theorem eval_map_mul_of_isHomogeneous {σ : Type} [Fintype σ] {G : MvPolynomial
   ring
 
 /- English proof (translation)
-Proceed by induction on `G using MvPolynomial.induction_on with`. Consider the case `C n`. Establish `h : ratEval x c (MvPolynomial.C n) = ((n : S) : Ω)` using `by simp [ratEval]`. Use `⟨h ▸ (n : S).2, ?_⟩` and prove the remaining obligations. Establish `e : (⟨ratEval x c (MvPolynomial.C n), h ▸ (n : S).2⟩ : S) = (n : S)` using `Subtype.ext h`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Simplify using the standard rewrite rules. Consider the case `add f g hf hg`. Take `⟨ha, hA⟩` from `hf`. Take `⟨hb, hB⟩` from `hg`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h : ratEval x c (f + g) = ((⟨_, ha⟩ + ⟨_, hb⟩ : S) : Ω)` using `by simp [ratEval]`. Use `⟨h ▸ (⟨_, ha⟩ + ⟨_, hb⟩ : S).2, ?_⟩` and prove the remaining obligations. Establish `e : (⟨ratEval x c (f + g), h ▸ (⟨_, ha⟩ + ⟨_, hb⟩ : S).2⟩ : S) = ⟨_, ha⟩ + ⟨_, hb⟩` using `Subtype.ext h`. Rewrite using `[e, map_add, hA, hB]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `mul_X f i hf`. Take `⟨ha, hA⟩` from `hf`. Establish `h : ratEval x c (f * MvPolynomial.X i) = ((⟨_, ha⟩ * ⟨_, hreg i.2⟩ : S) : Ω)` using `by simp [ratEval]`. Use `⟨h ▸ (⟨_, ha⟩ * ⟨_, hreg i.2⟩ : S).2, ?_⟩` and prove the remaining obligations. Establish `e : (⟨ratEval x c (f * MvPolynomial.X i), h ▸ (⟨_, ha⟩ * ⟨_, hreg i.2⟩ : S).2⟩ : S) = ⟨_, ha⟩ * ⟨_, hreg i.2⟩` using `Subtype.ext h`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, map_mul, hA, hval]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_ratEval_val {Ω : Type} [Field Ω] {N : ℕ} {S : Subring Ω} (φ : S →+* ℂ) (x : Fin (N + 1) → Ω)
     (c : Fin (N + 1)) (r : Fin (N + 1) → ℂ) (hreg : ∀ i, x i / x c ∈ S) (hval : ∀ i, φ ⟨_, hreg i⟩ = r i)
@@ -72,21 +72,19 @@ theorem exists_ratEval_val {Ω : Type} [Field Ω] {N : ℕ} {S : Subring Ω} (φ
     simp
 
 /- English proof (translation)
-Introduce `Ω _ X ξ N x B hξ hB z w hC`. Take `⟨hu, hco⟩` from `hC`. Take `⟨c, hc⟩` from `hu ()`. Take `⟨hxc, hr⟩` from `hco () c hc`. Use `choose r hrV hrw using hr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, -⟩` from `hrV c`. Take `⟨φ, hφ, hφu⟩` from `ValHom.exists_valAt_hom X Ω ξ ℂ z h hξ`. Establish `hreg : ∀ i, x i / x c ∈ regAt ξ ⟨centre z, h⟩` using `fun i => ((hφ _ _).1 (hrV i)).choose`. Establish `hval : ∀ i, φ ⟨_, hreg i⟩ = r i` using `fun i => ((hφ _ _).1 (hrV i)).choose_spec`. Establish `hchart : InChart ξ x c ⟨centre z, h⟩` using `⟨hxc, hreg⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : Char0 ξ ⟨centre z, h⟩` using `char_zero_centre_complex_point Ω X ξ z h hξ`. Establish `hw0 : w ⟨(), c⟩ ≠ 0` using `hc.ne_zero`. Establish `hw : w = fun p : (Σ _ : Unit, Fin (N + 1)) => r p.2 * w ⟨(), c⟩`. Use function extensionality and compare the values at `⟨u, i⟩`. Conclude with `hrw i`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ (G : MRing (fun _ : Unit => Fin (N + 1))) (d : ℕ), G.IsHomogeneous d → (MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) G) = 0 ↔ ¬ unitAt ξ ⟨centre z, h⟩ (ratEval x c G))`. Introduce `G d hG`. Take `⟨ha, hA⟩` from `exists_ratEval_val φ x c r hreg hval G`. Establish `hu'` using `hφu ⟨_, ha⟩`. Rewrite using `[hw, eval_map_mul_of_isHomogeneous hG, ← hA]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_eq_zero, pow_eq_zero_iff', hw0, false_and, false_or]`. Rewrite using `[← show IsUnit (φ ⟨_, ha⟩) ↔ unitAt ξ ⟨centre z, h⟩ (ratEval x c G) from hu', isUnit_iff_ne_zero, not_not]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hv⟩`. Use `⟨h, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hpB`. Take `⟨G, hG, hGu⟩` from `hB c ⟨centre z, h⟩ hp0 hchart hpB`. Take `⟨d, hd, -⟩` from `id hG`. Conclude with `(key G d hd).1 (hv G (Ideal.subset_span hG)) hGu`. Introduce and unpack `⟨h', hpB⟩`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Use `⟨fun _ => ⟨c, hw0⟩, fun f hf => ?_⟩` and prove the remaining obligations. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨d, hd, hv⟩` from `hG`. Conclude with `(key G d hd).2 (hv c _ hpB hchart)`.
-
-Consider the case `zero => simp`. Consider the case `add f g _ _ hf hg => simp [hf, hg]`. Consider the case `smul a f _ hf => simp [hf]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_mcPts_span_bdGens_iff : ∀ (Ω : Type) [Field Ω] (X : Scheme.{0}) (ξ : Sp Ω ⟶ X) (N : ℕ)
     (x : Fin (N + 1) → Ω) (B : Set (Cpt ξ)), IsCptGen ξ →

@@ -14,13 +14,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Ht.UpperTower
 
 /- English proof (translation)
-Use `⟨fun k => hz.1 (Sum.inl k), fun f hf => ?_⟩` and prove the remaining obligations. Establish `key : ∀ g : MRing ι₁, mConeMap (joinVec y₁ y₂) (rename (joinInl ι₁ ι₂) g) = rename (Sum.inl : K₁ → K₁ ⊕ K₂) (mConeMap y₁ g)`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp`. Simplify using `only [map_mul, hp, rename_X]`. Use `congr 1`. Simplify using `only [mConeMap, aeval_X, map_mul, rename_C, rename_X]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hmem : rename (joinInl ι₁ ι₂) f ∈ mCoordIdeal (joinVec y₁ y₂)`. Establish `hf' : mConeMap y₁ f = 0` using `hf`. Express the relevant statement in the definitionally equal form `mConeMap (joinVec y₁ y₂) (rename (joinInl ι₁ ι₂) f) = 0`. Rewrite using `[key, hf', map_zero]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hz.2 _ hmem`. Rewrite `h` using `[aeval_rename]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_inl_mem {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂] {ι₁ : K₁ → Type} {ι₂ : K₂ → Type}
     [∀ k, Fintype (ι₁ k)] [∀ k, Fintype (ι₂ k)] {Ω : Type} [Field Ω] (y₁ : (Σ k, ι₁ k) → Ω) (y₂ : (Σ k, ι₂ k) → Ω)
@@ -49,13 +49,13 @@ theorem proj_inl_mem {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂] {ι₁ : K
 variable {Ψ : Type} [Fintype Ψ] {N : ℕ}
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem weightAbsEntrySum_nonneg (mu : Wt Ψ N) : 0 ≤ l1 mu :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _
 
 /- English proof (translation)
-Establish `h1 : ∀ τ i, |mu τ i| ≤ 2` using `fun τ i => ((norm_le_pi_norm (mu τ) i).trans (norm_le_pi_norm mu τ)).trans h`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem l1_le_card_mul_norm (mu : Wt Ψ N) (h : ‖mu‖ ≤ 2) : l1 mu ≤ (Fintype.card Ψ : ℝ) * (N * 2) := by
   have h1 : ∀ τ i, |mu τ i| ≤ 2 := fun τ i =>
@@ -65,11 +65,11 @@ theorem l1_le_card_mul_norm (mu : Wt Ψ N) (h : ‖mu‖ ≤ 2) : l1 mu ≤ (Fin
     _ = _ := by simp
 
 /- English proof (translation)
-Establish `hD : 0 ≤ D` using `(abs_nonneg _).trans (hw none)`. Establish `h1 : ∀ j, R.coef mu s j * lineHt (R.line t j) L w ≤ |R.coef mu s j| * D` using `fun j => (le_abs_self _).trans (by rw [abs_mul]; exact mul_le_mul_of_nonneg_left (hw j) (abs_nonneg _))`. Use `(Finset.sum_le_sum fun j _ => h1 j).trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`. Use `mul_le_mul_of_nonneg_right ?_ hD` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.sum_option, add_comm]`. Use `add_le_add (le_of_eq ?_) ?_` and prove the remaining obligations. Simplify using `[RootModel.coef, l1, Fintype.sum_prod_type]`. Establish `hk : (1 : ℝ) ≤ R.kA` using `by exact_mod_cast R.kA_pos`. Simplify using `only [RootModel.coef, abs_div, Nat.abs_cast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `div_le_self (abs_nonneg _) hk`.
+A detailed English derivation is pending.
 -/
 theorem rootHt_le (R : RootModel Ψ N) (t : ℝ) (mu : Wt Ψ N) (s D : ℝ) (L : Type) [Field L] [NumberField L]
     (w : (Σ k, R.ι k) → L) (hw : ∀ j, |lineHt (R.line t j) L w| ≤ D) :
@@ -88,34 +88,32 @@ theorem rootHt_le (R : RootModel Ψ N) (t : ℝ) (mu : Wt Ψ N) (s D : ℝ) (L :
     exact div_le_self (abs_nonneg _) hk
 
 /- English proof (translation)
-The claim follows from `| some r => R.x_smooth t r | none => R.A_smooth`.
+A detailed English derivation is pending.
 -/
 theorem line_smooth (R : RootModel Ψ N) (t : ℝ) : ∀ j, IsSmoothHerm (R.line t j)
   | some r => R.x_smooth t r
   | none => R.A_smooth
 
 /- English proof (translation)
-Introduce `Ψ _ _ N T II R hII href c₀ hc₀`. Take `⟨C, s₀, hs₀, href⟩` from `href`. Take `⟨θ₁, hθ₁, hθ₁1, hwt⟩` from `GlobalTheory.T.dominant_weight_gap_shift Ψ N T.j T.nu c₀ T.j_pos T.j_lt hc₀`. Use `choose D hD using fun c : T.Comp => GlobalTheory.T.bounded_height_points_dense (R c).K (R c).ι (R c).P _ (R c).arith _ ((R c).line 1) (line_smooth (R c) 1)`. Use `set D' : ℝ := ∑ c, |D c| with hD'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDle : ∀ c, D c ≤ D'` using `fun c => (le_abs_self _).trans (Finset.single_le_sum (f := fun c => |D c|) (fun _ _ => abs_nonneg _) (Finset.mem_univ c))`. Establish `hD'0 : 0 ≤ D'` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Use `set Λ : ℝ := (Fintype.card Ψ : ℝ) * (N * 2) + 1 with hΛ`. Establish `hΛ0 : 0 ≤ Λ` using `by positivity`. Use `⟨min θ₁ s₀, lt_min hθ₁ hs₀, 2 * (Λ * D' + |C|) + Λ * |C|, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `B hB c lam θ s _ hlam hθ hθle hs hgap hcg`. Establish `hθ1 : θ ≤ θ₁` using `hθle.trans (min_le_left _ _)`. Establish `hθs : θ ≤ s₀` using `hθle.trans (min_le_right _ _)`. Establish `hsθ : (s : ℝ) ≤ θ` using `by rw [hs]; nlinarith`. Establish `hs0 : (0 : ℝ) < s` using `by rw [hs]; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hdom, hnorm, -⟩` from `hwt lam θ hlam hθ hθ1 hgap hcg`. Rewrite `hdom`, `hnorm` using `[← hs]`. Take `⟨i, u, hclose, harch⟩` from `href B hB c`. Establish `harch'` using `harch (T.lamS lam s) s hdom hnorm hs0 (hsθ.trans hθs)`. Establish `hl : l1 (T.lamS lam s) + |(s : ℝ)| ≤ Λ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[abs_of_pos hs0]`. Conclude with `add_le_add (l1_le_card_mul_norm _ hnorm) (by linarith)`. Establish `hl0 : 0 ≤ l1 (T.lamS lam s) + |(s : ℝ)|` using `add_nonneg (weightAbsEntrySum_nonneg _) (abs_nonneg _)`. Establish `hlog : 1 ≤ 2 * Real.log B`. Establish `h2 : Real.log 2 ≤ Real.log B` using `Real.log_le_log (by norm_num) (by exact_mod_cast hB)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Real.log_two_gt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨{W | (T.M B c).IsPt W ∧ T.mbarHt II B c lam s W ≤ (2 * (Λ * D' + |C|) + Λ * |C|) * Real.log B}, ?_, fun W hW => hW⟩` and prove the remaining obligations. Introduce `f hf hfP`. Take `⟨L, _, _, L', _, _, e, w, z, hz, hw, hQ, hze, hfz⟩` from `GlobalTheory.T.join_model_points_lift Ψ N (T.M B c) (R c) i (fun L _ w => ∀ _ : NumberField L, ∀ j, |lineHt ((R c).line 1 j) L w| ≤ D c) (fun g hg hgP => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨L, _, _, w, hw, hgw, hb⟩` from `hD c g hg hgP`. Conclude with `⟨L, inferInstance, inferInstance, w, hw, hgw, fun _ => hb⟩) f hf hfP`. Establish `hz₁ : (fun p => z (joinInl (T.M B c).ι (R c).ι p)) ∈ ptsOver L' (T.M B c).P` using `proj_inl_mem _ _ hz`. Take `⟨hA, hle, hmem, hht⟩` from `GlobalTheory.T.number_field_point_height _ _ II hII _ _ (T.M B c).arith L' _ hz₁`. Use `⟨mCoordIdeal fun p => z (joinInl (T.M B c).ι (R c).ι p), ⟨⟨hA, hle⟩, ?_⟩, fun h => hfz ((hmem f hf).1 h)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : T.mbarHt II B c lam s (mCoordIdeal fun p => z (joinInl (T.M B c).ι (R c).ι p)) = rootHt (T.M B c) (scale s) (T.lamS lam s) s L' (fun p => z (joinInl (T.M B c).ι (R c).ι p))`. Simplify using `only [RootTower.mbarHt, RootModel.ht, rootHt, Finset.sum_div, mul_div_assoc]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hht _ (line_smooth _ _ j)]`. Establish `hcl` using `(GlobalTheory.T.root_height_difference_bound Ψ N (T.M B c) (R c) i u _ _ _ _ _ _ hclose harch' L' z hz).2`. Establish `hR : rootHt (R c) 1 (T.lamS lam s) s L' (fun p => z (joinInr (T.M B c).ι (R c).ι p)) ≤ (l1 (T.lamS lam s) + |(s : ℝ)|) * D'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `rootHt_le _ _ _ _ _ _ _ fun j => ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.line_height_invariant_scaling _ _ ((R c).line 1 j) L L' e w (fun _ => 1) hw.1 (fun _ => one_ne_zero)`. Simplify using `only [one_mul] at h`. Rewrite using `[hze, h]`. Conclude with `(hQ inferInstance j).trans (hDle c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Establish `hlog0 : 0 ≤ Real.log B` using `by linarith`. Establish `b1 : (l1 (T.lamS lam s) + |(s : ℝ)|) * D' ≤ Λ * D'` using `mul_le_mul_of_nonneg_right hl hD'0`. Establish `b2 : (l1 (T.lamS lam s) + |(s : ℝ)|) * (C * Real.log B) ≤ Λ * (|C| * Real.log B)` using `(mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right (le_abs_self C) hlog0) hl0).trans (mul_le_mul_of_nonneg_right hl (mul_nonneg (abs_nonneg _) hlog0))`. Establish `b3 : Λ * D' + |C| ≤ (Λ * D' + |C|) * (2 * Real.log B)` using `le_mul_of_one_le_right (add_nonneg (mul_nonneg hΛ0 hD'0) (abs_nonneg _)) hlog`.
-
-Establish `b4` using `le_abs_self C`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tower_upper : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N) (II : IntersectionSystem)
     (R : T.Comp → RootModel Ψ N), IsIntersectionSystem II → HasRef T R → T.I6 II := by

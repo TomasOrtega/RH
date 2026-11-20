@@ -147,7 +147,7 @@ def RetwistW (p : WP) (P P' : CP) : Prop :=
     DQ.TwAllAt (w.D Z) c.O.nch c.O.xd ∧ P' K B f T w Z c
 
 /- English proof (translation)
-Introduce `W V S N` and use `let ⟨a, b, ⟨t⟩⟩ := h W V S N; ⟨a, b, ⟨t.toColT⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GIs2.gIs {w : ColW B f T} {G : GJStage B w.C} (h : GIs2 K w G) : GIs K w G := fun W V S N =>
   let ⟨a, b, ⟨t⟩⟩ := h W V S N; ⟨a, b, ⟨t.toColT⟩⟩

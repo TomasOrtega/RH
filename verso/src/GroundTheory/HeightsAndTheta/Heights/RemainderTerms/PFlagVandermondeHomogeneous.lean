@@ -8,7 +8,7 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open MvPolynomial Finset
 
 /- English proof (translation)
-Introduce `f N`. Establish `hblock : ∀ τ : Fin f, (vandermondeOf (fun i : Fin N => (X (τ, i) : RootRing f N))).IsHomogeneous (N * (N - 1) / 2)` using `fun τ => VandermondeOfHomogeneous.proof _ _ N _ (fun i => isHomogeneous_X ℚ (τ, i))`. Establish `h` using `IsHomogeneous.prod (Finset.univ : Finset (Fin f)) (fun τ => vandermondeOf (fun i : Fin N => (X (τ, i) : RootRing f N))) (fun _ => N * (N - 1) / 2) (fun τ _ => hblock τ)`. Simplify `h` using `[blockVandermonde, topDegree, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem FlagVandermondeHomogeneous.proof : FlagVandermondeHomogeneous.Statement := by
   intro f N

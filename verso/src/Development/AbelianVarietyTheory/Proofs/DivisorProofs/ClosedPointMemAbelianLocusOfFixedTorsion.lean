@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.FixedTorsionTrait
 
 /- English proof (translation)
-Introduce `x hx K _ _ t ht`. Establish `hp : IsProper ((Over.pullback t).obj H).hom` using `hx K t ht`. Conclude with `GlobalTheory.Mum.RetractGeneric.isProper_of_retract ((Over.pullback t).map i) ((Over.pullback t).map r) (by rw [← CategoryTheory.Functor.map_comp, h, CategoryTheory.Functor.map_id]) hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem abLocus_of_retract {S : Scheme.{0}} (G H : Over S) (i : G ⟶ H) (r : H ⟶ G) (h : i ≫ r = 𝟙 G) :
     ∀ x ∈ abLocus H, x ∈ abLocus G := by
@@ -33,21 +33,19 @@ theorem abLocus_of_retract {S : Scheme.{0}} (G H : Over S) (i : G ⟶ H) (r : H 
     (by rw [← CategoryTheory.Functor.map_comp, h, CategoryTheory.Functor.map_id]) hp
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D A G _ _ hG U V _ _ _ φ hV hφ n hn hu H`. Take `⟨l₁, l₂, -⟩` from `GlobalTheory.firstFiveLaws`. Establish `hG' : IsSemiAbelian ((Over.pullback (spMap φ)).obj G)` using `IsSemiAbelian.pullback (spMap φ) G hG`. Establish `: IsCommMonObj ((Over.pullback (spMap φ)).obj G)` using `Functor.isCommMonObj_obj`. Take `⟨A', ψ, hψ⟩` from `GlobalTheory.UnifProperOpen.exists_polGeneric_pullback R A G U.gen U.gen_hom V φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W, _, _, _, io, em, D₈, Q, H₈, _, _, U₈, i, r, hW, hfin, hinj, hem, hc, hH₈, htot, hr, hir, hmono⟩` from `GlobalTheory.T.degeneration_extension_local_domain V hV A' _ hG' ψ hψ`. Establish `hem' : ∀ w : W, w ≠ 0 → IsUnit (em w)` using `fun w hw => IsUnit.mk0 _ ((map_ne_zero_iff em hem).2 hw)`. Use `letI : Algebra (FractionRing W) (AlgebraicClosure (FractionRing V)) := (IsFractionRing.lift (A := W) (K := FractionRing W) (g := em) hem).toAlgebra`. Establish `hlift : ∀ w : W, algebraMap (FractionRing W) (AlgebraicClosure (FractionRing V)) (algebraMap W _ w) = em w` using `fun w => IsFractionRing.lift_algebraMap _ _`. Establish `hcompat : ∀ v, algebraMap (FractionRing W) (AlgebraicClosure (FractionRing V)) (algebraMap W _ (io v)) = algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V)) (algebraMap V _ v)` using `fun v => (hlift _).trans (hc v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨N, hN⟩` from `GlobalTheory.T.exists_dvr_algClosure_over_finite_dvr_extension V W hV hW io hfin hinj (AlgebraicClosure (FractionRing V)) hcompat`. Establish `hsub : Subsingleton D₈.toPre.X`. Use `GlobalTheory.T.characterGroup_subsingleton_of_bounded_ramification W hW D₈ Q H₈ hH₈ U₈ htot (AlgebraicClosure (FractionRing V)) n N hn fun j => ?_` and prove the remaining obligations. Take `⟨T', hT', f, hf, hirr, hfix⟩` from `H j`. Take `⟨T'', hT'', g, e, hle, hg, he1, heN, hπ⟩` from `hN T' hT' f hf hirr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨T'', hT'', g, e, hg, he1, heN, hπ, fun σ hσ x hx => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.fixedTorsion_transfer_jointlyMonic_homs V W io _ hcompat _ H₈ r hr hmono σ (fun w => hσ _ (by rw [← hg w]; exact (g w).2)) (n ^ j) (fun y hy => hfix σ (fun z hz => hσ z (hle hz)) y hy) x hx`. Use `hW.1` as an intermediate fact. Use `hW.2.2` as an intermediate fact. Establish `hab : IsAbelianScheme H₈` using `GlobalTheory.isAbelianScheme_of_unif_of_subsingleton l₁ l₂ W hW.2.1 D₈ Q H₈ hH₈ U₈ hsub`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₈ : closedPoint W ∈ abLocus H₈` using `fun K _ _ t _ => by`. Use `hab.proper` as an intermediate fact. Use `infer_instance`. Establish `h₁ : closedPoint W ∈ abLocus ((Over.pullback (spMap io)).obj ((Over.pullback (spMap φ)).obj G))` using `abLocus_of_retract _ H₈ i (r 0) hir _ h₈`. Establish `h₂` using `(abLocus_pullback (G' := (Over.pullback (spMap io)).obj ((Over.pullback (spMap φ)).obj G)) abLocusOne hG' (IsPullback.of_hasPullback ((Over.pullback (spMap φ)).obj G).hom (spMap io)) (closedPoint W)).2 h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra V W := io.toAlgebra`. Establish `: Algebra.IsIntegral V W` using `⟨fun w => hfin.to_isIntegral w⟩`. Establish `hm : (maximalIdeal W).comap io = maximalIdeal V` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := V) (maximalIdeal W))`. Establish `: IsLocalHom io` using `((IsLocalRing.local_hom_TFAE io).out 4 0).1 hm`. Establish `e : spMap io (closedPoint W) = closedPoint V`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h : ⇑(spMap io) = PrimeSpectrum.comap io`. Use extensionality with `x : 1`. Simplify using `[spMap, Spec.map_base]`. Both sides reduce to the same expression. Rewrite using `[h]`.
-
-Conclude with `IsLocalRing.comap_closedPoint io`. Rewrite using `[← e]`. Conclude with `h₂`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closedPoint_mem_abLocus_of_fixedTorsion : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → Unif (maximalIdeal R) D A G → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (φ : R →+* V), GlobalTheory.LN.CDvr V → Function.Injective φ → ∀ n : ℕ, 2 ≤ n → IsUnit (n : V) → (∀ j : ℕ, ∃ (T' : Subring (AlgebraicClosure (FractionRing V))) (_ : IsDiscreteValuationRing T') (f : V →+* T'), (∀ v : V, (f v : AlgebraicClosure (FractionRing V)) = algebraMap (FractionRing V) _ (algebraMap V _ v)) ∧ (∀ π, Irreducible π → Irreducible (f π)) ∧ ∀ σ : AlgebraicClosure (FractionRing V) ≃+* AlgebraicClosure (FractionRing V), (∀ z ∈ T', σ z = z) → ∀ x : TF (R := V) (AlgebraicClosure (FractionRing V)) ⟶ (Over.pullback (spMap φ)).obj G, x ^ (n ^ j) = 1 → spMap σ.toRingHom ≫ x.left = x.left) → closedPoint V ∈ abLocus ((Over.pullback (spMap φ)).obj G) := by
   intro R _ _ _ hR D A G _ _ hG U V _ _ _ φ hV hφ n hn hu H

@@ -8,15 +8,15 @@ noncomputable section
 namespace GlobalTheory.NormUnits
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← norm_neg y]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_le_max' {K : Type} [NormedField K] [IsUltrametricDist K] (x y : K) : ‖x - y‖ ≤ max ‖x‖ ‖y‖ := by
   rw [sub_eq_add_neg, ← norm_neg y]; exact IsUltrametricDist.norm_add_le_max _ _
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Assume the negation of the conclusion as `hlt push_neg at hlt`. Establish `: ‖y‖ ≤ max ‖x‖ ‖x - y‖`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Apply the tactic sequence `rcases le_max_iff.1 this with h1 | h1 <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_eq_of_norm_sub_lt {K : Type} [NormedField K] [IsUltrametricDist K] {x y : K} (h : ‖x - y‖ < ‖y‖) :
     ‖x‖ = ‖y‖ := by
@@ -32,21 +32,17 @@ theorem norm_eq_of_norm_sub_lt {K : Type} [NormedField K] [IsUltrametricDist K] 
     rcases le_max_iff.1 this with h1 | h1 <;> linarith
 
 /- English proof (translation)
-Use `haveI : IsUltrametricDist E := hU.ultraE`. Use `haveI : LocallyCompactSpace F := hU.lcF`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Take `⟨y, hy⟩` from `hU.star_ne`. Establish `hyF : ∀ b : F, algebraMap F E b ≠ y` using `fun b hb => hy (by rw [← hb, hU.star_fix])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `g : F → ℝ` to `fun b => ‖y - algebraMap F E b‖`. Establish `hg : Continuous g` using `continuous_norm.comp (continuous_const.sub (continuous_algebraMap F E))`. Take `⟨b₀, -, hmin⟩` from `(isCompact_closedBall (0 : F) ‖y‖).exists_isMinOn ⟨0, by simp⟩ hg.continuousOn`. Establish `hmin' : ∀ b : F, g b₀ ≤ g b`. Introduce `b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hb : ‖b‖ ≤ ‖y‖`. Conclude with `hmin (mem_closedBall_zero_iff.2 hb)`. Use `push_neg at hb`. Establish `h0 : g b₀ ≤ g 0` using `hmin (by simp)`. Use `h0.trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [g, map_zero, sub_zero]`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `: ‖algebraMap F E b‖ ≤ max ‖y‖ ‖y - algebraMap F E b‖`. Combine the equalities or inequalities in the displayed calculation.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[norm_algebraMap']`. Apply the tactic sequence `rcases le_max_iff.1 this with h | h <;> linarith`. Establish `hz0 : y - algebraMap F E b₀ ≠ 0` using `sub_ne_zero.2 (hyF b₀).symm`. Take `⟨x, hx⟩` from `hU.unram (y - algebraMap F E b₀)`. Establish `hnx : ‖algebraMap F E x‖ = ‖y - algebraMap F E b₀‖` using `by rw [norm_algebraMap', hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxE : algebraMap F E x ≠ 0`. Introduce `h`. Rewrite `hnx` using `[h, norm_zero]`. Conclude with `hz0 (norm_eq_zero.1 hnx.symm)`. Use `⟨(y - algebraMap F E b₀) / algebraMap F E x, ?_, fun b => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[norm_div, hnx, div_self (norm_ne_zero_iff.2 hz0)]`. Establish `e : (y - algebraMap F E b₀) / algebraMap F E x - algebraMap F E b = (y - algebraMap F E (b₀ + x * b)) / algebraMap F E x`. Rewrite using `[map_add, map_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e, norm_div, hnx, le_div_iff₀ (norm_pos_iff.2 hz0), one_mul]`. Conclude with `hmin' (b₀ + x * b)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_far_unit (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [hU : Unram F E] :
@@ -93,21 +89,21 @@ end GlobalTheory.NormUnits
 namespace GlobalTheory.NormUnits
 
 /- English proof (translation)
-Establish `hζF : ∀ b : F, algebraMap F E b ≠ ζ` using `fun b h => by`. Use `hζ b` as an intermediate fact. Rewrite `this` using `[h, sub_self, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hli : LinearIndependent F ![(1 : E), ζ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `c d h`. Distinguish the cases in `hd : d = 0`. Substitute `hd` using the available equality. Rewrite `h` using `[zero_smul, add_zero, Algebra.smul_def, mul_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨(map_eq_zero _).1 h, rfl⟩`. It suffices to derive a contradiction. Establish `hdE : algebraMap F E d ≠ 0` using `(map_ne_zero _).2 hd`. Apply `hζF (-(c / d))` to reduce the goal to its premises. Rewrite `h` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`.
+Supply the required witnesses or components. It suffices to derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_neg, map_div₀]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-1 : E) * h`. Set `B` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp [hU.finrank_eq])`. Establish `hB : ⇑B = ![(1 : E), ζ]` using `coe_basisOfLinearIndependentOfCardEqFinrank _ _`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hspan : ∀ w : E, ∃ a b : F, algebraMap F E a + algebraMap F E b * ζ = w`. Introduce `w`. Use `⟨B.repr w 0, B.repr w 1, ?_⟩` and prove the remaining obligations. Use `B.sum_repr w` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_two, hB]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[Algebra.smul_def]`. Establish `hsζ : star ζ ≠ ζ`. Introduce `h`. Take `⟨y, hy⟩` from `hU.star_ne`. Take `⟨a, b, rfl⟩` from `hspan y`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply `hy` to reduce the goal to its premises. Rewrite using `[star_add, star_mul, hU.star_fix, hU.star_fix, h, mul_comm]`. Introduce `w hw`. Take `⟨a, b, rfl⟩` from `hspan w`. Rewrite `hw` using `[star_add, star_mul, hU.star_fix, hU.star_fix]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : algebraMap F E b * (star ζ - ζ) = 0` using `by linear_combination hw`. Break down `mul_eq_zero.1 h0 with hb | hb` into its components or cases. Conclude with `⟨a, by rw [hb, zero_mul, add_zero]⟩`. Conclude with `absurd (sub_eq_zero.1 hb) hsζ`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fixed_mem_range (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [hU : Unram F E] (ζ : E) (hζ : ∀ b : F, 1 ≤ ‖ζ - algebraMap F E b‖) :
@@ -151,23 +147,21 @@ theorem fixed_mem_range (F E : Type) [NontriviallyNormedField F] [NontriviallyNo
   · exact absurd (sub_eq_zero.1 hb) hsζ
 
 /- English proof (translation)
-Use `haveI : IsUltrametricDist E := hU.ultraE`. Use `haveI : IsUltrametricDist F := hU.ultraF`. Use `haveI : LocallyCompactSpace F := hU.lcF`. Establish `hns : ‖star ζ‖ = 1` using `by rw [hU.norm_star, hζ1]`. Establish `hdiff : ‖ζ - star ζ‖ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_antisymm ((norm_sub_le_max' _ _).trans (by rw [hns, hζ1, max_self])) (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Establish `h2le : ‖(2 : F)‖ ≤ 1`. Rewrite using `[← one_add_one_eq_two]; exact (IsUltrametricDist.norm_add_le_max _ _).trans (by simp)`. Establish `h2E : ‖(2 : E)‖ = ‖(2 : F)‖` using `by rw [← map_ofNat (algebraMap F E) 2, norm_algebraMap']`. Break down `h2le.lt_or_eq with h2n | h2n` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htn : ‖t‖ ≤ 1` using `by rw [← norm_algebraMap' E t, ht, norm_mul, hζ1, hns, one_mul]`. Take `⟨r, hr1, hr⟩` from `exists_sqrt_mod F t htn h2n`. Establish `hζr : ‖ζ - algebraMap F E r‖ ≤ 1` using `(norm_sub_le_max' _ _).trans (max_le hζ1.le (by rw [norm_algebraMap']; exact hr1))`. Establish `e1 : (ζ - algebraMap F E r) ^ 2 = ζ * (ζ - star ζ) + algebraMap F E (t - r ^ 2) - 2 * algebraMap F E r * (ζ - algebraMap F E r)`. Rewrite using `[map_sub, map_pow, ht]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hA : ‖ζ * (ζ - star ζ)‖ < 1` using `by rw [norm_mul, hζ1, one_mul]; exact hlt`. Establish `hB : ‖algebraMap F E (t - r ^ 2)‖ < 1` using `by rw [norm_algebraMap', norm_sub_rev]; exact hr`. Establish `hC : ‖2 * algebraMap F E r * (ζ - algebraMap F E r)‖ < 1`. Rewrite using `[norm_mul, norm_mul, h2E, norm_algebraMap']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hsq : ‖ζ - algebraMap F E r‖ ^ 2 < 1`. Rewrite using `[← norm_pow, e1]`. Conclude with `(norm_sub_le_max' _ _).trans_lt (max_lt ((IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt hA hB)) hC)`. Use `hζ r` as an intermediate fact.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[norm_nonneg (ζ - algebraMap F E r)]`. Establish `h2E1 : ‖(2 : E)‖ = 1` using `h2E.trans h2n`. Establish `h2ne : (2 : E) ≠ 0` using `by intro h; rw [h, norm_zero] at h2E1; exact zero_ne_one h2E1`. Establish `e1 : ζ - algebraMap F E (s / 2) = (ζ - star ζ) / 2`. Rewrite using `[map_div₀, hs, map_ofNat]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `hζ (s / 2)` as an intermediate fact. Rewrite `this` using `[e1, norm_div, h2E1, div_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ζ - star ζ ≠ 0` using `by intro h; rw [h, norm_zero] at hdiff; exact zero_ne_one hdiff`. Establish `hne' : star ζ - ζ ≠ 0` using `by rw [← neg_sub]; exact neg_ne_zero.2 hne`. Use `⟨ζ / (ζ - star ζ), by rw [norm_div, hζ1, hdiff, div_one], ?_⟩` and prove the remaining obligations. Rewrite using `[star_div₀, star_sub, star_star]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_trace_one (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [hU : Unram F E] (ζ : E) (hζ1 : ‖ζ‖ = 1) (hζ : ∀ b : F, 1 ≤ ‖ζ - algebraMap F E b‖)
@@ -221,49 +215,43 @@ end GlobalTheory.NormUnits
 namespace GlobalTheory.NormUnits
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU u hu`. Use `haveI : IsUltrametricDist E := hU.ultraE`. Use `haveI : IsUltrametricDist F := hU.ultraF`. Use `haveI : LocallyCompactSpace F := hU.lcF`. Use `haveI : LocallyCompactSpace E := hU.lcE`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `haveI : ProperSpace E := ProperSpace.of_locallyCompactSpace E`. Use `haveI : CharZero F := hU.charZero`. Establish `hN : ∀ v : E, ‖v * star v‖ = ‖v‖ ^ 2` using `fun v => by rw [norm_mul, hU.norm_star, sq]`. Establish `hsc : Continuous (fun y : E => star y)`. Establish `: LipschitzWith 1 (fun y : E => star y)` using `LipschitzWith.of_dist_le_mul fun x y => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `[dist_eq_norm, ← star_sub, hU.norm_star]`. Conclude with `this.continuous`. Take `⟨ζ, hζ1, hζ⟩` from `exists_far_unit F E`. Establish `hfix` using `fixed_mem_range F E ζ hζ`. Take `⟨s, hs⟩` from `hfix (ζ + star ζ) (by rw [star_add, star_star, add_comm])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `hfix (ζ * star ζ) (by rw [star_mul, star_star, mul_comm])`. Take `⟨e, he1, he⟩` from `exists_trace_one F E ζ hζ1 hζ s t hs ht`. Establish `hsn : ‖s‖ ≤ 1`. Rewrite using `[← norm_algebraMap' E s, hs]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hζ1.le (by rw [hU.norm_star, hζ1]))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `htn : ‖t‖ = 1`. Rewrite using `[← norm_algebraMap' E t, ht, hN, hζ1, one_pow]`. Take `⟨a, b, z, -, hb, hz, hone, hQ⟩` from `exists_point_mod F _ _ u hsn htn.le hu.le`. Establish `hw : (algebraMap F E a + algebraMap F E b * ζ) * star (algebraMap F E a + algebraMap F E b * ζ) = algebraMap F E (a ^ 2 + s * a * b + t * b ^ 2)`. Establish `hsw : star (algebraMap F E a + algebraMap F E b * ζ) = algebraMap F E a + algebraMap F E b * star ζ`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[star_add, star_mul, hU.star_fix, hU.star_fix, mul_comm]`. Rewrite using `[hsw]`. Simplify using `only [map_add, map_mul, map_pow, hs, ht]`. Expand and normalize the polynomial expressions, which then agree. Establish `hwb : ‖b‖ ≤ ‖algebraMap F E a + algebraMap F E b * ζ‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hb0 : b = 0`. Simplify using `[hb0]`. Establish `hbE : algebraMap F E b ≠ 0` using `(map_ne_zero _).2 hb0`. Establish `e1 : algebraMap F E a + algebraMap F E b * ζ = algebraMap F E b * (ζ - algebraMap F E (-(a / b)))`. Rewrite using `[map_neg, map_div₀, sub_neg_eq_add]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, norm_mul, norm_algebraMap']`. Conclude with `le_mul_of_one_le_right (norm_nonneg _) (hζ _)`. Establish `hz1 : ‖z‖ = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_antisymm hz (not_lt.1 fun hzl => ?_)` and prove the remaining obligations. Establish `hcz : ‖u * z ^ 2‖ < 1`. Rewrite using `[norm_mul, norm_pow, hu, one_mul]`. Conclude with `pow_lt_one₀ (norm_nonneg _) hzl two_ne_zero`. Establish `hQ1 : ‖a ^ 2 + s * a * b + t * b ^ 2‖ < 1`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `IsUltrametricDist.norm_add_le_max (a ^ 2 + s * a * b + t * b ^ 2 - u * z ^ 2) (u * z ^ 2)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Conclude with `this.trans_lt (max_lt hQ hcz)`. Establish `hw1 : ‖algebraMap F E a + algebraMap F E b * ζ‖ < 1`. Establish `: ‖algebraMap F E a + algebraMap F E b * ζ‖ ^ 2 < 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[← hN, hw, norm_algebraMap']`. Conclude with `hQ1`. Use polynomial arithmetic with `[norm_nonneg (algebraMap F E a + algebraMap F E b * ζ)]`. Establish `hb1 : ‖b‖ < 1` using `hwb.trans_lt hw1`. Establish `ha1 : ‖a‖ < 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← norm_algebraMap' E a]`. Establish `: algebraMap F E a = (algebraMap F E a + algebraMap F E b * ζ) - algebraMap F E b * ζ` using `by ring`. Rewrite using `[this]`. Use `(norm_sub_le_max' _ _).trans_lt (max_lt hw1 ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_algebraMap', hζ1, mul_one]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hb1`. Apply the tactic sequence `rcases hone with h | h | h <;> linarith`. Establish `hzE : algebraMap F E z ≠ 0` using `(map_ne_zero _).2 (by rintro rfl; simp at hz1)`. Establish `hz0 : z ≠ 0` using `by rintro rfl; simp at hz1`. Choose the witnesses or unpack the hypotheses as in `⟨v₁, hv₁⟩ : ∃ v₁ : E, ‖v₁ * star v₁ - algebraMap F E u‖ < 1 := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(algebraMap F E a + algebraMap F E b * ζ) / algebraMap F E z, ?_⟩` and prove the remaining obligations. Establish `e1 : (algebraMap F E a + algebraMap F E b * ζ) / algebraMap F E z * star ((algebraMap F E a + algebraMap F E b * ζ) / algebraMap F E z) - algebraMap F E u = algebraMap F E ((a ^ 2 + s * a * b + t * b ^ 2 - u * z ^ 2) / z ^ 2)`. Rewrite using `[star_div₀, hU.star_fix, div_mul_div_comm, hw]`. Simplify using `only [map_div₀, map_sub, map_mul, map_pow, map_add]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[e1, norm_algebraMap', norm_div, norm_pow, hz1, one_pow, div_one]`. Conclude with `hQ`. Set `f : E → ℝ` to `fun v => ‖v * star v - algebraMap F E u‖`. Establish `hf : Continuous f` using `continuous_norm.comp ((continuous_id.mul hsc).sub continuous_const)`. Establish `hsph : ∀ v : E, f v < 1 → v ∈ Metric.sphere (0 : E) 1`.
+Supply the required witnesses or components. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v hv`. Rewrite using `[mem_sphere_zero_iff_norm]`. Establish `h1 : ‖v * star v‖ = 1`. Rewrite using `[norm_eq_of_norm_sub_lt (hv.trans_le (by rw [norm_algebraMap', hu])), norm_algebraMap', hu]`. Rewrite `h1` using `[hN]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h1`. Take `⟨v₀, hv₀S, hmin⟩` from `(isCompact_sphere (0 : E) 1).exists_isMinOn ⟨v₁, hsph v₁ hv₁⟩ hf.continuousOn`. Establish `hv₀1 : ‖v₀‖ = 1` using `mem_sphere_zero_iff_norm.1 hv₀S`. Establish `hρ1 : f v₀ < 1` using `(hmin (hsph v₁ hv₁)).trans_lt hv₁`. Distinguish the cases in `hρ0 : f v₀ = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨v₀, sub_eq_zero.1 (norm_eq_zero.1 hρ0)⟩`. It suffices to derive a contradiction. Establish `hρpos : 0 < f v₀` using `lt_of_le_of_ne (norm_nonneg _) (Ne.symm hρ0)`. Establish `hN₀ : ‖v₀ * star v₀‖ = 1` using `by rw [hN, hv₀1, one_pow]`. Establish `hN₀0 : v₀ * star v₀ ≠ 0` using `by intro h; rw [h, norm_zero] at hN₀; exact zero_ne_one hN₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x, hxN, hxn, hsx⟩ : ∃ x : E, v₀ * star v₀ * (1 + x) = algebraMap F E u ∧ ‖x‖ = f v₀ ∧ star x = x := by`. Use `⟨algebraMap F E u / (v₀ * star v₀) - 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show (1 : E) + (algebraMap F E u / (v₀ * star v₀) - 1) = algebraMap F E u / (v₀ * star v₀) by ring, mul_div_cancel₀ _ hN₀0]`. Establish `: algebraMap F E u / (v₀ * star v₀) - 1 = (algebraMap F E u - v₀ * star v₀) / (v₀ * star v₀)`. Rewrite using `[sub_div, div_self hN₀0]`.
-
-Rewrite using `[this, norm_div, hN₀, div_one, norm_sub_rev]`. Rewrite using `[star_sub, star_one, star_div₀, hU.star_fix, star_mul, star_star]`. Establish `hyn : ‖x * e‖ ≤ f v₀` using `by rw [norm_mul, hxn]; exact mul_le_of_le_one_right hρpos.le he1`. Establish `hv'S : v₀ * (1 + x * e) ∈ Metric.sphere (0 : E) 1`. Rewrite using `[mem_sphere_zero_iff_norm, norm_mul, hv₀1, one_mul, norm_eq_of_norm_sub_lt (by rw [add_sub_cancel_left, norm_one]; exact hyn.trans_lt hρ1), norm_one]`.
-
-Establish `hfv' : f (v₀ * (1 + x * e)) = ‖x * e‖ ^ 2`. Establish `e1 : v₀ * (1 + x * e) * star (v₀ * (1 + x * e)) - algebraMap F E u = v₀ * star v₀ * (x * e * (x * star e))`. Rewrite using `[star_mul, star_add, star_one, star_mul, hsx]`. Take the linear combination `(v₀ * star v₀ * x) * he + hxN`. Use `show ‖v₀ * (1 + x * e) * star (v₀ * (1 + x * e)) - algebraMap F E u‖ = _`.
-
-Rewrite using `[e1, norm_mul, hN₀, one_mul, norm_mul (x * e), norm_mul x (star e), hU.norm_star, norm_mul, sq]`. Establish `hle : f v₀ ≤ f (v₀ * (1 + x * e))` using `hmin hv'S`. Rewrite `hle` using `[hfv']`. Establish `: ‖x * e‖ ^ 2 ≤ f v₀ ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) hyn 2`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_onto_units : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (u : F), ‖u‖ = 1 → ∃ v : E, v * star v = algebraMap F E u := by

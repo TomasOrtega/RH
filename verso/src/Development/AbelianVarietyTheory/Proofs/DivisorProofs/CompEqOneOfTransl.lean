@@ -23,7 +23,7 @@ def sq2 {A A' : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A'
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `h` using `o.eta_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (a := o.eta 0) (by rw [_root_.mul_one]; exact h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eta_zero {b : Base D R} {M : ℕ} {s : S ⟶ Sp R} (o : Obj b M s) : o.eta 0 = 1 := by
   have h := o.eta_add 0 0
@@ -31,7 +31,7 @@ theorem eta_zero {b : Base D R} {M : ℕ} {s : S ⟶ Sp R} (o : Obj b M s) : o.e
   exact mul_left_cancel (a := o.eta 0) (by rw [_root_.mul_one]; exact h.symm)
 
 /- English proof (translation)
-Apply `eq_inv_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← o.eta_add, add_neg_cancel, eta_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_neg {b : Base D R} {M : ℕ} {s : S ⟶ Sp R} (o : Obj b M s) (x : D.La) :
     o.eta (-x) = (o.eta x)⁻¹ := by
@@ -50,20 +50,20 @@ def heckeSub {b : Base D R} {M : ℕ} {s : S ⟶ Sp R} (o : Obj b M s) (g : D.La
     exact ⟨-x, by rw [map_neg, smul_neg, eta_neg]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_heckeSub {b : Base D R} {M : ℕ} {s : S ⟶ Sp R} (o : Obj b M s) (g : D.La →ₗ[D.O] D.La) (N : ℕ)
     (x : D.La) : o.eta (N • g x) ∈ heckeSub o g N := ⟨x, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[transl, comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique (1 ≫ toUnit A) (𝟙 _), Category.id_comp, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_comp_transl {A : Over S} [GrpObj A] (h : 𝟙_ (Over S) ⟶ A) : (1 : 𝟙_ (Over S) ⟶ A) ≫ transl h = h := by
   rw [transl, comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique (1 ≫ toUnit A) (𝟙 _),
     Category.id_comp, _root_.one_mul]
 
 /- English proof (translation)
-Establish `e : transl h ≫ ψ = ψ` using `Over.OverMorphism.ext hh`. Rewrite using `[← one_comp_transl h, Category.assoc, e, one_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_eq_one_of_transl {A A' : Over S} [GrpObj A] [GrpObj A'] (ψ : A ⟶ A') [IsMonHom ψ]
     (h : 𝟙_ (Over S) ⟶ A) (hh : (transl h).left ≫ ψ.left = ψ.left) : h ≫ ψ = 1 := by

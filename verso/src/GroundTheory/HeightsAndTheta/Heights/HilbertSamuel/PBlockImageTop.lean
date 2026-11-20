@@ -17,9 +17,9 @@ set_option linter.unusedSectionVars false
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨t, -, ht⟩` from `Finset.mem_biUnion.mp (MvPolynomial.support_sum hm)`. Rewrite `ht` using `[C_mul_X_eq_monomial]`. Establish `hmt` using `Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset ht)`. Substitute `hmt` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality. Simplify using `[blockDeg, Finsupp.single_apply]`. Simplify using `[blockDeg, hk, Sigma.ext_iff]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_blockForms (k₀ : K) (M : Matrix (Ix κ) (ι k₀) ℤ) (q : Σ k, GlobalTheory κ k) :
     IsMultiHomog (blockForms k₀ M q) (blockDeg k₀ 1) := by
@@ -35,11 +35,11 @@ theorem isMultiHomog_blockForms (k₀ : K) (M : Matrix (Ix κ) (ι k₀) ℤ) (q
   · simp [blockDeg, hk, Sigma.ext_iff]
 
 /- English proof (translation)
-Establish `hf : ∀ j, mConeMap y (blockForms k₀ M j) = MvPolynomial.C (x j) * MvPolynomial.X k₀`. Introduce `j`. Rewrite using `[h.1 j, map_sum, Finset.sum_mul]`. Simplify using `[blockForms, mConeMap, map_sum, mul_assoc]`. Establish `hX : mConeMap y (X ⟨k₀, i⟩) = MvPolynomial.C (y ⟨k₀, i⟩) * MvPolynomial.X k₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[mConeMap]`. Rewrite using `[mCoordIdeal, RingHom.mem_ker, map_sub, map_sum]`. Simplify using `only [map_mul, hf]`. Rewrite using `[hX, h.2 i, map_sum, Finset.sum_mul, sub_eq_zero]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[mConeMap, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sub_mem_mCoordIdeal {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} {k₀ : K} {M : Matrix (Ix κ) (ι k₀) ℤ}
     {N : Matrix (ι k₀) (Ix κ) ℤ} {x : Ix κ → Ω} (h : IsBlockImage y k₀ M N x) (i : ι k₀) :
@@ -57,9 +57,9 @@ theorem sub_mem_mCoordIdeal {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} {k�
   simp [mConeMap, mul_assoc]
 
 /- English proof (translation)
-Introduce `k₂ i`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, ← Finset.mul_prod_erase _ _ (Finset.mem_univ k₀)]`. Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Establish `hspan : ∑ j, C (N (i k₀) j) * blockForms k₀ M j ∈ Ideal.span (Set.range fun j : GlobalTheory κ k₂ => blockForms k₀ M ⟨k₂, j⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j.2, ?_⟩)` and prove the remaining obligations. Consider the cases of `k₂`. Both sides reduce to the same expression. Use `Ideal.add_mem _ (Ideal.mem_sup_left (sub_mem_mCoordIdeal h (i k₀))) (Ideal.mem_sup_right hspan)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isBasePtFree_blockForms {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} {k₀ : K} {M : Matrix (Ix κ) (ι k₀) ℤ}
     {N : Matrix (ι k₀) (Ix κ) ℤ} {x : Ix κ → Ω} (h : IsBlockImage y k₀ M N x) :
@@ -77,7 +77,7 @@ theorem isBasePtFree_blockForms {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω}
   rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Use `hm.mono fun z hz => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz ()`. Conclude with `fun h0 => hi (congrFun h0 _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_ofCone {m : ConeMetric ℂ (Ix κ)} (hm : IsSmoothMetric m) :
     IsSmoothHerm (HermLine.ofCone m) := by
@@ -86,7 +86,7 @@ theorem isSmoothHerm_ofCone {m : ConeMetric ℂ (Ix κ)} (hm : IsSmoothMetric m)
   exact fun h0 => hi (congrFun h0 _)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `[formApply, blockForms, blockMapC]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem formApply_blockForms (k₀ : K) (M : Matrix (Ix κ) (ι k₀) ℤ) (z : (Σ k, ι k) → ℂ) :
     formApply (blockForms k₀ M) z = blockMapC k₀ M z := by
@@ -98,9 +98,9 @@ end BlockImageTop
 open BlockImageTop in
 
 /- English proof (translation)
-Introduce `D K _ _ ι _ Ω _ _ κ _ I y k₀ A M N x m hI hP hB hx hBI ha hA hm hh`. Take `⟨G, J, hJ, hJ1⟩` from `hDeg D K ι Ω κ y k₀ M N x hP hB hx hBI`. Establish `himg` using `hIm K ι Ω κ y k₀ M N x hBI`. Establish `key` using `hCM I hI K ι Unit (GlobalTheory κ) (mCoordIdeal y) (D + 1) (blockForms k₀ M) (fun _ => blockDeg k₀ 1) G J (fun _ => HermLine.ofCone m) (fun _ => A) hP (isMultiHomog_blockForms k₀ M) (isBasePtFree_blockForms hBI) (by rw [himg]; exact hx) hJ (fun _ => isSmoothHerm_ofCone hm) (fun _ …`. Rewrite using `[ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases hk : k = k₀ <;> simp [unitDeg, blockDeg, HermLine.ofCone, hk])`. Use the proof step `(fun _ z hz => by rw [hh z hz, formApply_blockForms]; rfl)`. Rewrite `key` using `[himg, hJ1]`. Simplify `key` using `[top]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem BlockImageTop.proof (hCM : GraphChangeOfModel.Statement) (hIm : BlockGraphImage.Statement)
     (hDeg : BlockGraphDeg.Statement) : BlockImageTop.Statement := by

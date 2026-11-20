@@ -22,9 +22,9 @@ structure IsOrthogonalProjection (P : E →L[ℂ] E) : Prop where
   sa : adjoint P = P
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use extensionality with `x`. Use `congrArg (fun T : E →L[ℂ] E => T x) h.idem` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply] at this`. Simplify using `[this]`.
+Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sub, h.sa]`. Use `congr 1`. Conclude with `((eq_adjoint_iff _ _).2 (fun x y => rfl)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem IsOrthogonalProjection.compl {P : E →L[ℂ] E} (h : IsOrthogonalProjection P) : IsOrthogonalProjection (ContinuousLinearMap.id ℂ E - P) := by
   constructor
@@ -37,13 +37,11 @@ theorem IsOrthogonalProjection.compl {P : E →L[ℂ] E} (h : IsOrthogonalProjec
     exact ((eq_adjoint_iff _ _).2 (fun x y => rfl)).symm
 
 /- English proof (translation)
-Establish `h1 : ⟪P x, P x⟫_ℂ = ⟪x, P x⟫_ℂ`. Establish `: ⟪P x, P x⟫_ℂ = ⟪x, (adjoint P) (P x)⟫_ℂ` using `(adjoint_inner_right P x (P x)).symm`. Rewrite using `[this, h.sa]`. Establish `h2` using `congrArg (fun T : E →L[ℂ] E => T x) h.idem`. Simplify using `only [ContinuousLinearMap.comp_apply] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2]`. Establish `h3 : ‖P x‖ ^ 2 ≤ ‖x‖ * ‖P x‖`. Establish `h4` using `inner_self_eq_norm_sq (𝕜 := ℂ) (P x)`. Establish `h5 : (⟪P x, P x⟫_ℂ).re = ‖P x‖ ^ 2` using `by simpa using h4`. Rewrite using `[← h5, h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_trans (Complex.re_le_norm _) (norm_inner_le_norm _ _)`. Distinguish the cases in `h0 : ‖P x‖ = 0`. Rewrite using `[h0]`. Conclude with `norm_nonneg _`. Establish `hpos : 0 < ‖P x‖` using `lt_of_le_of_ne (norm_nonneg _) (Ne.symm h0)`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem IsOrthogonalProjection.norm_le {P : E →L[ℂ] E} (h : IsOrthogonalProjection P) (x : E) : ‖P x‖ ≤ ‖x‖ := by
   have h1 : ⟪P x, P x⟫_ℂ = ⟪x, P x⟫_ℂ := by
@@ -70,7 +68,7 @@ variable {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteD
   [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F]
 
 /- English proof (translation)
-Establish `h2` using `congrArg (fun T : E →L[ℂ] E => T x) h.idem`. Simplify using `using h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsOrthogonalProjection.app {P : E →L[ℂ] E} (h : IsOrthogonalProjection P) (x : E) : P (P x) = P x := by
   have h2 := congrArg (fun T : E →L[ℂ] E => T x) h.idem

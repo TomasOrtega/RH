@@ -13,13 +13,13 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `n V _ _`. Use `⟨fun f f' e X => GlobalTheory.CompanionTheory.RCalc.Rd_congr X e, fun f hf => ⟨fun X => GlobalTheory.CompanionTheory.RCalc.Rd_contDiffOn X hf, fun X Y g hg => GlobalTheory.CompanionTheory.RCalc.Rd_bracket X Y hf hg, fun h hh X g hg => ?_⟩⟩` and prove the remaining obligations. Establish `hdet : IsUnit h.det` using `isUnit_iff_ne_zero.2 hh`. Establish `hhg : h * g ∈ GLs n` using `by show (h * g).det ≠ 0`. Rewrite using `[Matrix.det_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero hh hg`. Establish `hgh : g * h ∈ GLs n` using `by show (g * h).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero hg hh`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth hf hhg`. Establish `hc : HasFDerivAt (fun y : Mat n => f (h * y)) ((fderiv ℝ f (h * g)).comp (GlobalTheory.CompanionTheory.RCalc.mulL h)) g` using `HasFDerivAt.comp (g := f) (f := fun y : Mat n => h * y) g hd.hasFDerivAt (GlobalTheory.CompanionTheory.RCalc.mulL h).hasFDerivAt`. Simplify using `only [Rd, hc.fderiv, ContinuousLinearMap.comp_apply, GlobalTheory.CompanionTheory.RCalc.mulL_apply, mul_assoc]`. Establish `hd` using `GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth hf hgh`. Establish `hc : HasFDerivAt (fun y : Mat n => f (y * h)) ((fderiv ℝ f (g * h)).comp (GlobalTheory.CompanionTheory.RCalc.mulR h)) g` using `HasFDerivAt.comp (g := f) (f := fun y : Mat n => y * h) g hd.hasFDerivAt (GlobalTheory.CompanionTheory.RCalc.mulR h).hasFDerivAt`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : g * h * (h⁻¹ * X * h) = g * X * h`. Rewrite using `[Matrix.mul_assoc g h, ← Matrix.mul_assoc h, ← Matrix.mul_assoc h, Matrix.mul_nonsing_inv h hdet, Matrix.one_mul, Matrix.mul_assoc]`. Simplify using `only [Rd, hc.fderiv, ContinuousLinearMap.comp_apply, GlobalTheory.CompanionTheory.RCalc.mulR_apply, e]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.rdcalc :
     ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V],

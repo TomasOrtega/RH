@@ -14,38 +14,38 @@ section Cz
 variable {L : Type} [Field L]
 
 /- English proof (translation)
-Simplify using `[cz, not_le.mpr hk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cz_neg (f : PowerSeries L) {k : ℤ} (hk : k < 0) : cz f k = 0 := by
   simp [cz, not_le.mpr hk]
 
 /- English proof (translation)
-Simplify using `[cz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cz_nat (f : PowerSeries L) (k : ℕ) : cz f (k : ℤ) = PowerSeries.coeff k f := by
   simp [cz]
 
 /- English proof (translation)
-Apply the tactic sequence `unfold cz; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cz_add (f g : PowerSeries L) (k : ℤ) : cz (f + g) k = cz f k + cz g k := by
   unfold cz; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `unfold cz; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cz_sum {ι : Type} (s : Finset ι) (f : ι → PowerSeries L) (k : ℤ) :
     cz (∑ i ∈ s, f i) k = ∑ i ∈ s, cz (f i) k := by
   unfold cz; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `unfold cz; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cz_C_mul (c : L) (f : PowerSeries L) (k : ℤ) : cz (PowerSeries.C c * f) k = c * cz f k := by
   unfold cz; split_ifs <;> simp
 
 /- English proof (translation)
-Break down `lt_or_ge k 0 with h | h` into its components or cases. Simplify using `[cz_neg _ h]`. Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le h`. Simplify using `[cz_nat, PowerSeries.coeff_rescale]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem cz_rescale (c : L) (f : PowerSeries L) (k : ℤ) :
     cz (PowerSeries.rescale c f) k = c ^ k * cz f k := by
@@ -55,9 +55,9 @@ theorem cz_rescale (c : L) (f : PowerSeries L) (k : ℤ) :
     simp [cz_nat, PowerSeries.coeff_rescale]
 
 /- English proof (translation)
-Break down `lt_or_ge k 0 with h | h` into its components or cases. Rewrite using `[cz_neg _ h]`. Break down `lt_or_ge (k + (w : ℤ)) 0 with h' | h'` into its components or cases. Conclude with `cz_neg _ h'`. Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le h'`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, cz_nat, PowerSeries.coeff_X_pow_mul', if_neg (by omega)]`. Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le h`. Rewrite using `[← Nat.cast_add, cz_nat, cz_nat, PowerSeries.coeff_X_pow_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cz_X_pow_mul (w : ℕ) (f : PowerSeries L) (k : ℤ) :
     cz (PowerSeries.X ^ w * f) (k + (w : ℤ)) = cz f k := by
@@ -71,11 +71,11 @@ theorem cz_X_pow_mul (w : ℕ) (f : PowerSeries L) (k : ℤ) :
     rw [← Nat.cast_add, cz_nat, cz_nat, PowerSeries.coeff_X_pow_mul]
 
 /- English proof (translation)
-Break down `lt_or_ge k 0 with h | h` into its components or cases. Rewrite using `[cz_neg _ h]`. Use `(Finset.sum_eq_zero fun i _ => ?_).symm` and prove the remaining obligations. Rewrite using `[cz_neg _ (by omega), mul_zero]`. Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[cz_nat, PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`. Rewrite using `[← Finset.sum_subset (Finset.range_subset_range.mpr (show m + 1 ≤ N by omega))]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `: i ≤ m` using `by simpa [Nat.lt_succ_iff] using hi`. Rewrite using `[← Nat.cast_sub this, cz_nat]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _ hi`. Establish `: m < i` using `by simpa using hi`. Rewrite using `[cz_neg _ (by omega), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cz_mul (g f : PowerSeries L) (k : ℤ) (N : ℕ) (hN : k < (N : ℤ)) :
     cz (g * f) k = ∑ i ∈ Finset.range N, PowerSeries.coeff i g * cz f (k - (i : ℤ)) := by
@@ -94,15 +94,15 @@ theorem cz_mul (g f : PowerSeries L) (k : ℤ) (N : ℕ) (hN : k < (N : ℤ)) :
       rw [cz_neg _ (by omega), mul_zero]
 
 /- English proof (translation)
-Take `⟨N, hN⟩ : ∃ N : ℕ, k + (w : ℤ) < (N : ℤ)` from `⟨(k + (w : ℤ)).toNat + 1, by omega⟩`. Rewrite using `[finsum_eq_sum_of_support_subset (s := Finset.range N)]`. Establish `key : ∀ j, cz (A j) (k + (w' : ℤ)) = ∑ i ∈ Finset.range N, ∑ p, PowerSeries.coeff i g * (κ ^ (k - (i : ℤ)) * (cz (Bs p) (k - (i : ℤ) + (w : ℤ)) * c j p))`. Introduce `j`. Establish `h1` using `congrArg (fun f => cz f (k + (w : ℤ) + (w' : ℤ))) (hA j)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[cz_X_pow_mul, mul_pow, ← map_pow, mul_assoc, cz_C_mul, add_right_comm, cz_X_pow_mul, cz_mul _ _ _ N hN]`. Apply `mul_left_cancel₀ (pow_ne_zero w hκ)` to reduce the goal to its premises. Rewrite using `[h1, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[cz_sum, Finset.mul_sum, Finset.mul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[cz_C_mul, cz_rescale, show k + (w : ℤ) - (i : ℤ) = k - (i : ℤ) + (w : ℤ) by ring, zpow_add₀ hκ, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [key, Finset.sum_smul, map_sum, map_smul, hD, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Introduce `i hi`. Assume the negation of the conclusion as `hc`. Apply `hi` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: N ≤ i` using `by simpa using hc`. Establish `hz : ∀ p, cz (Bs p) (k - (i : ℤ) + (w : ℤ)) = 0` using `fun p => cz_neg _ (by omega)`. Simplify using `[hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem series_transport {M M' : Type} [AddCommGroup M] [Module L M] [AddCommGroup M'] [Module L M']
     {r r' : ℕ} (w w' : ℕ) (A : Fin r' → PowerSeries L) (Bs : Fin r → PowerSeries L) (κ : L) (hκ : κ ≠ 0)
@@ -142,17 +142,17 @@ theorem series_transport {M M' : Type} [AddCommGroup M] [Module L M] [AddCommGro
 end Cz
 
 /- English proof (translation)
-Establish `hu : IsUnit (J t ^ w' * σS (J t) ^ w * J q)` using `((ht.pow _).mul ((ht.map σS).pow _)).mul hq`. Apply `hu.smul_left_cancel.mp` to reduce the goal to its premises. Establish `e1 : (J t ^ w' * σS (J t) ^ w * J q) • h (d p) = ∑ k, J (t ^ w' * ∑ i, H k i * σ (U i p)) • bn' k`. Establish `: (J t ^ w' * σS (J t) ^ w * J q) • h (d p) = J t ^ w' • J q • h (J t ^ w • d p)`. Rewrite using `[hh, map_pow, smul_smul, smul_smul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hd, map_sum, Finset.smul_sum, Finset.smul_sum]`. Simplify using `only [hh, smul_comm (J q), hH, Finset.smul_sum, smul_smul, map_mul, map_sum, map_pow, hJ, Finset.mul_sum, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (J t ^ w' * σS (J t) ^ w * J q) • ∑ j, J (Cm j p) • d' j = ∑ k, J (σ t ^ w * q * ∑ j, U' k j * Cm j p) • bn' k`. Establish `: ∀ j, (J t ^ w' * σS (J t) ^ w * J q) • J (Cm j p) • d' j = (σS (J t) ^ w * J q * J (Cm j p)) • J t ^ w' • d' j`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.smul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [this, hd', Finset.smul_sum, smul_smul, map_mul, map_sum, map_pow, hJ, Finset.mul_sum, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1, e2]`. Simplify using `only [hU]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem basis_transport {C S : Type} [CommRing C] [CommRing S] (J : C →+* S) (σ : C →+* C) (σS : S →+* S)
     (hJ : ∀ a, J (σ a) = σS (J a)) {M M' : Type} [AddCommGroup M] [Module S M] [AddCommGroup M'] [Module S M']
@@ -197,13 +197,11 @@ theorem basis_transport {C S : Type} [CommRing C] [CommRing S] (J : C →+* S) (
   simp only [hU]
 
 /- English proof (translation)
-Establish `h1 : V' * H = q • (Cm * V.map σ)`. Establish `h2 : U.map σ * V.map σ = 1`. Rewrite using `[← Matrix.map_mul, hUV, Matrix.map_one _ (map_zero σ) (map_one σ)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h2, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = q • (Cm * V.map σ) := by`. Rewrite using `[hU, Matrix.mul_smul, ← Matrix.mul_assoc, mul_eq_one_comm.mp hUV', Matrix.one_mul, Matrix.smul_mul]`. Establish `h3 : σ ∘ (V *ᵥ c) = V.map σ *ᵥ (σ ∘ c)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec σ V c i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : q • (V' *ᵥ c') = q • (q' • Cm *ᵥ (σ ∘ (V *ᵥ c)))`. Rewrite using `[← Matrix.mulVec_smul, hc, Matrix.mulVec_smul, Matrix.mulVec_mulVec, h1, h3, Matrix.mulVec_mulVec, Matrix.smul_mulVec, smul_comm]`. Use function extensionality and compare the values at `i`. Establish `h5` using `congrFun h4 i`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h5 ⊢`.
-
-Conclude with `sub_eq_zero.mp (hq _ (by rw [mul_sub, h5, sub_self]))`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coord_transport {A : Type} [CommRing A] (σ : A →+* A) {r r' : ℕ} (U V : Matrix (Fin r) (Fin r) A)
     (U' V' : Matrix (Fin r') (Fin r') A) (H Cm : Matrix (Fin r') (Fin r) A) (q q' : A)

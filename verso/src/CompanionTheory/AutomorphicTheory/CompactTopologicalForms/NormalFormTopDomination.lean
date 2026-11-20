@@ -8,14 +8,14 @@ open Formalism.FourierDecayAlt Formalism.QuantumDeterminants Filter Topology Mea
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `nfTopDomAll_of_tieC NormalFormRelations.normal_form_hat_compact`.
+A detailed English derivation is pending.
 -/
 theorem normal_form_top_domination : NFTopDomAll := nfTopDomAll_of_tieC NormalFormRelations.normal_form_hat_compact
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-The claim follows from `thmBpAt_dom normal_form_top_domination Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`.
+A detailed English derivation is pending.
 -/
 theorem thmBpAt_top (Cb C₃ CΛ C₀ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ) (hC₀ : 1 / 2 ≤ C₀) :
     ∃ C₄ c₃ Cc Cc' Cc'' : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -54,7 +54,7 @@ noncomputable section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-The claim follows from `thmBpAt_eqR_dom normal_form_top_domination Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`.
+A detailed English derivation is pending.
 -/
 theorem thmBpAt_eqR_top (Cb C₃ CΛ C₀ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ) (hC₀ : 1 / 2 ≤ C₀) :
     ∃ C₄ c₃ Cc Cc' Cc'' : ℝ, ∀ (P : M.Par) (Wp Wq : Type)

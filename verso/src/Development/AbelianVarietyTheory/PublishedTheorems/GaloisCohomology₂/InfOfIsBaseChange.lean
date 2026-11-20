@@ -30,7 +30,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 omit [IsCMField E] in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocGL.nonempty_equiv_multiProd_one (SmIrr.triv _).smooth _ (fun a i => Fin.ext (by rw [GlobalTheory.SmGL.stdBlocks_val]; simp [Subsingleton.elim a 0]))`.
+A detailed English derivation is pending.
 -/
 theorem equiv_triv (w : HeightOneSpectrum (𝓞 E)) :
     Nonempty ((Representation.trivial ℂ (GL (Fin n) (w.adicCompletion E)) ℂ).Equiv
@@ -43,16 +43,16 @@ section Triv
 variable {H W : Type} [Group H] [AddCommGroup W] [Module ℂ W] {ρ : Representation ℂ H W}
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `e.toLinearEquiv.surjective v`. Conclude with `(LinearMap.congr_fun (e.isIntertwining' g) c).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem act_eq (e : (Representation.trivial ℂ H ℂ).Equiv ρ) (g : H) (v : W) : ρ g v = v := by
   obtain ⟨c, rfl⟩ := e.toLinearEquiv.surjective v
   exact (LinearMap.congr_fun (e.isIntertwining' g) c).symm
 
 /- English proof (translation)
-Use `⟨GlobalTheory.Parabolic.isIrreducible_of_equiv e (by letI : TopologicalSpace H := ⊥; exact (SmIrr.triv H).irred), (LinearMap.toSpanSingleton ℂ _ (fun _ => 1)).comp e.toLinearEquiv.symm.toLinearMap, fun h => ?_, fun v => Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _) …` and prove the remaining obligations. Use `congrFun (LinearMap.congr_fun h (e.toLinearEquiv 1)) 1` as an intermediate fact. Establish `h2 : e.toLinearEquiv.symm (e.toLinearEquiv 1) • (1 : ℂ) = 0` using `this`. Rewrite `h2` using `[LinearEquiv.symm_apply_apply]`. Simplify using `at h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[act_eq e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem compAlong_triv (e : (Representation.trivial ℂ H ℂ).Equiv ρ) (Gv : Subgroup (UA E n)) (p : Gv →* H) :
     IsCompAlong (constU E n) Gv p ρ := by
@@ -67,7 +67,7 @@ theorem compAlong_triv (e : (Representation.trivial ℂ H ℂ).Equiv ρ) (Gv : S
   · rw [act_eq e]; rfl
 
 /- English proof (translation)
-The claim follows from `(Submodule.ne_bot_iff _).2 ⟨e.toLinearEquiv 1, GlobalTheory.LGrp.mem_fixed.2 fun k _ => act_eq e k _, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem spherical_triv (e : (Representation.trivial ℂ H ℂ).Equiv ρ) (K : Subgroup H) : GlobalTheory.LGrp.IsSpherical ρ K :=
   (Submodule.ne_bot_iff _).2 ⟨e.toLinearEquiv 1, GlobalTheory.LGrp.mem_fixed.2 fun k _ => act_eq e k _, by simp⟩
@@ -75,9 +75,9 @@ theorem spherical_triv (e : (Representation.trivial ℂ H ℂ).Equiv ρ) (K : Su
 end Triv
 
 /- English proof (translation)
-Use `⟨spherical_triv e _, fun x _ h0 => ?_⟩` and prove the remaining obligations. Set `f : W →ₗ[ℂ] (GL (Fin 1) (w.adicCompletion E) → ℂ)` to `(LinearMap.toSpanSingleton ℂ _ (fun _ => 1)).comp e.toLinearEquiv.symm.toLinearMap`. Establish `hi : Function.Injective f` using `fun a b h => by`. Use `congrFun h 1` as an intermediate fact. Establish `h2 : e.toLinearEquiv.symm a • (1 : ℂ) = e.toLinearEquiv.symm b • (1 : ℂ)` using `this`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e.toLinearEquiv.symm.injective (smul_left_injective ℂ one_ne_zero h2)`. Use `GlobalTheory.LFun.IsSatVecGL.of_map (ρ' := rightReg ℂ _ ℂ) f (fun g y => by rw [act_eq e]; rfl) hi ?_` and prove the remaining obligations. Use `GlobalTheory.LFun.isSatVecGL_of_isSpherical (w := w) (α := fun _ : Fin 1 => 1) (φ := f x) (fun b g k _ _ => by simp [f, chiDelta]) (fun h => h0 (hi (by rw [h, map_zero])))` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sat_triv (w : HeightOneSpectrum (𝓞 E)) {W : Type} [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ (GL (Fin 1) (w.adicCompletion E)) W} (e : (Representation.trivial ℂ _ ℂ).Equiv ρ) :
@@ -95,7 +95,7 @@ theorem sat_triv (w : HeightOneSpectrum (𝓞 E)) {W : Type} [AddCommGroup W] [M
   simpa using this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearMap.toSpanSingleton ℂ _ (oneFn E n), fun h => oneFn_ne_zero ((one_smul ℂ _).symm.trans (LinearMap.congr_fun h (1 : ℂ))), fun _ => Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _), fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem locComp_triv (w : HeightOneSpectrum (𝓞 E)) :
     IsLocCompGL (Submodule.span ℂ {oneFn E n}) w (SmIrr.triv _) :=
@@ -106,7 +106,7 @@ theorem locComp_triv (w : HeightOneSpectrum (𝓞 E)) :
 def zeroWt (n : ℕ) : DomWeight n := ⟨fun _ => 0, fun _ _ _ => le_rfl⟩
 
 /- English proof (translation)
-Use `⟨by simp [infOfWeight], fun u φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hφ`. Rewrite using `[map_smul, cap_oneFn, smul_comm]`. Use `congr 1`. Simplify using `[infOfWeight, zeroWt, Finset.prod, Function.comp_def]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem infChar_triv (τ : E →+* ℂ) : HasInfCharGL (Submodule.span ℂ {oneFn E n}) τ (infOfWeight (zeroWt n)) := by
   refine ⟨by simp [infOfWeight], fun u φ hφ => ?_⟩
@@ -116,15 +116,15 @@ theorem infChar_triv (τ : E →+* ℂ) : HasInfCharGL (Submodule.span ℂ {oneF
   simp [infOfWeight, zeroWt, Finset.prod, Function.comp_def]
 
 /- English proof (translation)
-Establish `h0 : lam.natW = 0`. Use function extensionality and compare the values at `i`. Simplify using `[DomWeight.natW, DomWeight.detShift, Subsingleton.elim i 0]`. Establish `hv : MvPolynomial.IsWeightedHomogeneous (Formalism.GradedWeylDivisibility.colW 1 1) v.1 lam.natW` using `v.2.1`. Rewrite `hv` using `[h0]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : v.1 = MvPolynomial.C (MvPolynomial.coeff 0 v.1)` using `by classical`. Use extensionality with `d`. Rewrite using `[MvPolynomial.coeff_C]`. Use `split_ifs with h`. Rewrite using `[← h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hd`. Use `congrFun (hv hd) 0` as an intermediate fact. Apply `h` to reduce the goal to its premises. Use extensionality with `i`. Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype, Formalism.GradedWeylDivisibility.colW, Fintype.sum_prod_type] at this`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim i (0, 0)]`. Simplify using `[this]`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `sqAct ℂ 1 lam g v.1 = _ • v.1`. Rewrite using `[hc]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[sqAct, detPow, DomWeight.detShift, Formalism.GradedWeylDivisibility.rowAct, MvPolynomial.algebraMap_eq, Matrix.det_fin_one]`.
+A detailed English derivation is pending.
 -/
 theorem sqRep_one (lam : DomWeight 1) (g : GL (Fin 1) ℂ) (v : nablaSq ℂ 1 lam) :
     GlobalTheory.Branching.sqRep ℂ 1 lam g v = (g.val 0 0) ^ lam.w 0 • v := by
@@ -152,7 +152,7 @@ theorem sqRep_one (lam : DomWeight 1) (g : GL (Fin 1) ℂ) (v : nablaSq ℂ 1 la
   simp [sqAct, detPow, DomWeight.detShift, Formalism.GradedWeylDivisibility.rowAct, MvPolynomial.algebraMap_eq, Matrix.det_fin_one]
 
 /- English proof (translation)
-Unfold `coord`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `(Complex.exp_conj _).symm`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coord_expU (τ : E →+* ℂ) (z : Cinf E) : coord τ (expU z).val = Complex.exp (coord τ z) := by
   unfold coord
@@ -161,7 +161,7 @@ theorem coord_expU (τ : E →+* ℂ) (z : Cinf E) : coord τ (expU z).val = Com
   · exact (Complex.exp_conj _).symm
 
 /- English proof (translation)
-Unfold `coord atEmb`. Apply the tactic sequence `split_ifs <;> simp [Pi.single_eq_of_ne h]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coord_atEmb_ne {τ τ' : E →+* ℂ} (h : InfinitePlace.mk τ' ≠ InfinitePlace.mk τ) (z : ℂ) :
     coord τ' (atEmb τ z) = 0 := by
@@ -197,7 +197,7 @@ def rot (τ : E →+* ℂ) (θ : ℝ) : UA E 1 :=
     · rw [map_mul, c2, h2]; simp⟩
 
 /- English proof (translation)
-Rewrite using `[← coord_expU]`. Conclude with `congrArg (coord τ') (congrArg (fun x : GL (Fin 1) (Cinf E) => x.val 0 0) (pInf_infGL (CG.oneByOne (expU (atEmb τ (θ * Complex.I))))))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cEmb_rot (τ τ' : E →+* ℂ) (θ : ℝ) :
     (cEmb τ' (rot τ θ)).val 0 0 = Complex.exp (coord τ' (atEmb τ (θ * Complex.I))) := by
@@ -206,7 +206,7 @@ theorem cEmb_rot (τ τ' : E →+* ℂ) (θ : ℝ) :
     (pInf_infGL (CG.oneByOne (expU (atEmb τ (θ * Complex.I))))))
 
 /- English proof (translation)
-Use `⟨pFin_infGL _, Subgroup.mem_iInf.2 fun τ' => Subgroup.mem_iInf.2 fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker]`. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0, cEmb_rot, coord_atEmb_ne h]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rot_mem (τ : E →+* ℂ) (θ : ℝ) : rot τ θ ∈ embU 1 τ := by
   refine ⟨pFin_infGL _, Subgroup.mem_iInf.2 fun τ' => Subgroup.mem_iInf.2 fun h => ?_⟩
@@ -216,11 +216,11 @@ theorem rot_mem (τ : E →+* ℂ) (θ : ℝ) : rot τ θ ∈ embU 1 τ := by
   simp
 
 /- English proof (translation)
-Take `⟨-, f, h0, hm, hf⟩` from `h`. Assume the negation of the conclusion as `hk`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, f v ≠ 0 := by`. Assume the negation of the conclusion as `hh`. Use `push Not at hh`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `h0 (LinearMap.ext hh)`. Establish `h1` using `hf ⟨_, rot_mem τ (Real.pi / lam.w 0)⟩ v`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (hm v)`. Establish `h2 : ∀ x, RU E 1 x (f v) = f v` using `fun x => by rw [← hc]; rfl`. Rewrite `h1` using `[sqRep_one, map_smul, h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h3` using `smul_left_injective ℂ hv (h1.trans (one_smul ℂ _).symm)`. Express the relevant statement in the definitionally equal form `(cEmb τ (rot τ _)).val 0 0 ^ lam.w 0 = 1 at h3`. Establish `hk' : ((lam.w 0 : ℤ) : ℂ) ≠ 0` using `by exact_mod_cast hk`. Rewrite `h3` using `[cEmb_rot, coord_atEmb, ← Complex.exp_int_mul, show ((lam.w 0 : ℤ) : ℂ) * (((Real.pi / lam.w 0 : ℝ) : ℂ) * Complex.I) = Real.pi * Complex.I by push_cast; field_simp, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions using `at h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem weight_eq_zero (τ : E →+* ℂ) (lam : DomWeight 1) (h : HasWeightAt (constU E 1) τ lam) : lam.w 0 = 0 := by
   obtain ⟨-, f, h0, hm, hf⟩ := h
@@ -242,17 +242,17 @@ theorem weight_eq_zero (τ : E →+* ℂ) (lam : DomWeight 1) (h : HasWeightAt (
   norm_num at h3
 
 /- English proof (translation)
-Establish `hv : ∀ v : nablaSq ℂ 1 (zeroWt 1), v.1 = MvPolynomial.C (MvPolynomial.coeff 0 v.1)` using `fun v => by`. Establish `h` using `sqRep_one (zeroWt 1) (CG.oneByOne (Units.mk0 2 two_ne_zero)) v`. Establish `h0 : (zeroWt 1).natW = 0`. Use function extensionality and compare the values at `i`. Simplify using `[DomWeight.natW, DomWeight.detShift, zeroWt]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hv : MvPolynomial.IsWeightedHomogeneous (Formalism.GradedWeylDivisibility.colW 1 1) v.1 (zeroWt 1).natW` using `v.2.1`. Rewrite `hv` using `[h0]`. Use extensionality with `d`. Rewrite using `[MvPolynomial.coeff_C]`. Use `split_ifs with h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Assume the negation of the conclusion as `hd`. Use `congrFun (hv hd) 0` as an intermediate fact. Apply `h` to reduce the goal to its premises. Use extensionality with `i`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype, Formalism.GradedWeylDivisibility.colW, Fintype.sum_prod_type] at this`. Rewrite using `[Subsingleton.elim i (0, 0)]`. Simplify using `[this]`. Set `l : nablaSq ℂ 1 (zeroWt 1) →ₗ[ℂ] ℂ` to `(MvPolynomial.lcoeff ℂ 0).comp (Submodule.subtype _)`. Establish `hi : Function.Injective l` using `fun a b h => Subtype.ext (by rw [hv a, hv b]; exact congrArg _ h)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv0⟩` from `exists_ne (0 : nablaSq ℂ 1 (zeroWt 1))`. Establish `hl : l v ≠ 0` using `fun h => hv0 (hi (by rw [h, map_zero]))`. Establish `hs : Function.Surjective l` using `fun c => ⟨(c / l v) • v, by rw [map_smul, smul_eq_mul, div_mul_cancel₀ _ hl]⟩`. Conclude with `compAlong_triv (Representation.Equiv.mk (LinearEquiv.ofBijective l ⟨hi, hs⟩).symm fun g => LinearMap.ext fun c => by`. Express the relevant statement in the definitionally equal form `_ = GlobalTheory.Branching.sqRep ℂ 1 (zeroWt 1) g _`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sqRep_one]`. Simplify using `[zeroWt]`. Conclude with `(one_smul ℂ _).symm) _ _`.
+A detailed English derivation is pending.
 -/
 theorem hasWeightAt_zero (τ : E →+* ℂ) : HasWeightAt (constU E 1) τ (zeroWt 1) := by
   have hv : ∀ v : nablaSq ℂ 1 (zeroWt 1), v.1 = MvPolynomial.C (MvPolynomial.coeff 0 v.1) := fun v => by
@@ -284,7 +284,7 @@ theorem hasWeightAt_zero (τ : E →+* ℂ) : HasWeightAt (constU E 1) τ (zeroW
     rw [sqRep_one]; simp [zeroWt]; exact (one_smul ℂ _).symm) _ _
 
 /- English proof (translation)
-The claim follows from `one_pos discrete _ := GlobalTheory.IdeleCovolume.isDiscrete_const_one E csd _ := isCsdGL_const loc _ := locComp_triv inf _ := infChar_triv unram w _ := (equiv_triv w).elim fun e => spherical_triv e _ inert w s ϖ q _ _ α _ := (equiv_triv w).elim fun e => by have : GlobalTheory.LGr …`.
+A detailed English derivation is pending.
 -/
 theorem isBaseChange_const :
     IsBaseChange (constU E 1) (N := fun _ : Fin 1 => 1) (sum_one 1) (fun _ => Submodule.span ℂ {oneFn E 1})
@@ -303,7 +303,7 @@ theorem isBaseChange_const :
     simp [infOfWeight, zeroWt, weight_eq_zero τ lam h]
 
 /- English proof (translation)
-The claim follows from `(equiv_triv w).elim fun e => ⟨compAlong_triv e _ _, spherical_triv e _⟩`.
+A detailed English derivation is pending.
 -/
 theorem split_unram_const (w : HeightOneSpectrum (𝓞 E)) :
     IsCompAlong (constU E n) (locU n w) ((cLoc w).comp (locU n w).subtype)
@@ -312,9 +312,7 @@ theorem split_unram_const (w : HeightOneSpectrum (𝓞 E)) :
   (equiv_triv w).elim fun e => ⟨compAlong_triv e _ _, spherical_triv e _⟩
 
 /- English proof (translation)
-Establish `key : ∀ (u : HeightOneSpectrum (𝓞 E)) (_ : w = u) (φ : u.adicCompletion E →+* w.adicCompletion E), Continuous φ → (∀ x : E, φ (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x)) → φ (pLoc E u y) = s (pLoc E w y)`. Introduce and unpack `u rfl φ hφ h`. Conclude with `congrFun ((HeightOneSpectrum.denseRange_algebraMap E w).equalizer hφ (GlobalTheory.Mem.Chr.continuous_of_valued_eq (w.valuedAdicCompletion_surjective E) s hv) (funext fun x => (h x).trans (hs x).symm)) _`. Rewrite using `[pLoc_conjFin]`. Use `key _ (eq_conjSrc fun x => ?_) _ (conjLoc_spec _ w).1 (conjLoc_spec _ w).2.1` and prove the remaining obligations.
-
-Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _).symm.trans ((congrArg Valued.v (hs x).symm).trans ((hv _).trans (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _)))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pLoc_conj (w : HeightOneSpectrum (𝓞 E)) (s : w.adicCompletion E →+* w.adicCompletion E)
     (hs : ∀ x : E, s (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x))
@@ -333,15 +331,15 @@ theorem pLoc_conj (w : HeightOneSpectrum (𝓞 E)) (s : w.adicCompletion E →+*
     ((congrArg Valued.v (hs x).symm).trans ((hv _).trans (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _)))
 
 /- English proof (translation)
-Establish `hJ : antiJ (w.adicCompletion E) 1 = 1`. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Simplify using `[antiJ]`. Establish `hm : ∀ x : UA E 1, cLoc w x ∈ GU s 1` using `fun x => by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hx : cT (conjAd E) x.1.val * 1 * x.1.val = 1` using `x.2`. Express the relevant statement in the definitionally equal form `cT s (cLoc w x).val * antiJ _ 1 * (cLoc w x).val = antiJ _ 1`. Rewrite using `[hJ]`. Use extensionality with `i j : 1`. Use `congrArg (fun y => pLoc E w (pFin E y)) (congrFun (congrFun hx 0) 0)` as an intermediate fact.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Simplify using `only [Matrix.mul_one, Matrix.mul_apply, Fin.sum_univ_one, cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.one_apply_eq, map_mul, map_one] at this ⊢`. Rewrite `this` using `[show pFin E (conjAd E (x.1.val 0 0)) = conjFin (IsCMField.complexConj E).toRingEquiv (pFin E (x.1.val 0 0)) from rfl, pLoc_conj w s hs hU.2.1]`. Conclude with `this`. Use `⟨1, one_mem _, by rw [hJ]; simp [cT_one], (((cLoc w).codRestrict _ hm)).comp (locU 1 w).subtype, fun x => by simp, SmIrr.triv _, compAlong_triv (.refl _) _ _, spherical_triv (.refl _) _, fun x _ h0 => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `f : ℂ →ₗ[ℂ] (GU s 1 → ℂ)` to `LinearMap.toSpanSingleton ℂ _ (fun _ => 1)`. Establish `hi : Function.Injective f` using `fun a b h => by simpa [f] using congrFun h 1`. Use `GlobalTheory.LFun.IsSatVecU.of_map hU (ρ' := rightReg ℂ _ ℂ) f (fun g y => rfl) hi (GlobalTheory.LFun.isSatVecU_of_isSphericalU hU (fun b g k _ _ => ?_) fun h => h0 (hi (h.trans (map_zero f).symm)))` and prove the remaining obligations. Establish `: chiDeltaU q (fun i => (α i : ℂ)) b = 1` using `Finset.prod_eq_one fun i _ => absurd i.2 (by simp)`. Rewrite using `[this, one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem hasSatAt_const (w : HeightOneSpectrum (𝓞 E)) (s : w.adicCompletion E →+* w.adicCompletion E)
     (ϖ : w.adicCompletion E) (q : ℕ)
@@ -371,7 +369,7 @@ theorem hasSatAt_const (w : HeightOneSpectrum (𝓞 E)) (s : w.adicCompletion E 
   rw [this, one_mul]; rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isAutRepU_const, _, _, _, _, _, _, isBaseChange_const⟩`.
+Supply the required witnesses or components.
 -/
 theorem conclusion_const : IsAutRepU (constU E 1) ∧
     ∃ (c : ℕ) (N : Fin c → ℕ) (h : ∑ i, N i = 1) (V : ∀ i, Submodule ℂ (Sm E (N i)))
@@ -380,7 +378,7 @@ theorem conclusion_const : IsAutRepU (constU E 1) ∧
   ⟨isAutRepU_const, _, _, _, _, _, _, isBaseChange_const⟩
 
 /- English proof (translation)
-Rewrite using `[H.weight τ _ (hasWeightAt_zero τ)]`. Simplify using `[infOfWeight, zeroWt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inf_of_isBaseChange {c : ℕ} {N : Fin c → ℕ} {h : ∑ i, N i = 1} {V σ m}
     (H : IsBaseChange (constU E 1) h V σ m) (τ : E →+* ℂ) : ∑ i, m i τ = {0} := by

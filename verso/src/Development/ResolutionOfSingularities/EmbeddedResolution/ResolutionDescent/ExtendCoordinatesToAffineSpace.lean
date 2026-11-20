@@ -18,9 +18,9 @@ def specHomOfGlobalSections (A : Scheme.{u}) [AlgebraicGeometry.IsAffine A] {B' 
 
 @[simp]
 /- English proof (translation)
-Establish `hcomp : specHomOfGlobalSections A σ ≫ A.isoSpec.hom = Spec.map σ`. Simplify using `[specHomOfGlobalSections]`. Establish `h : (Scheme.ΓSpecIso Γ(A, ⊤)).hom ≫ (specHomOfGlobalSections A σ).appTop = (Spec.map σ).appTop`. Rewrite using `[← Scheme.toSpecΓ_appTop, ← Scheme.isoSpec_hom, ← Scheme.Hom.comp_appTop, hcomp]`. Establish `h3 : (specHomOfGlobalSections A σ).appTop = σ ≫ (Scheme.ΓSpecIso B').inv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← cancel_epi (Scheme.ΓSpecIso Γ(A, ⊤)).hom, Scheme.ΓSpecIso_inv_naturality, Iso.hom_inv_id_assoc]`. Conclude with `h`. Rewrite using `[h3, CommRingCat.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem specHomOfGlobalSections_appTop (A : Scheme.{u}) [AlgebraicGeometry.IsAffine A]
     {B' : CommRingCat.{u}} (σ : Γ(A, ⊤) ⟶ B') (s : Γ(A, ⊤)) :
@@ -52,7 +52,7 @@ def specToAffineSpaceExtendCoords (k : Type u) [Field k] (A : Scheme.{u}) [Algeb
 
 @[simp]
 /- English proof (translation)
-Simplify using `[specToAffineSpaceExtendCoords]`. Use the proof step `@[simp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem specToAffineSpaceExtendCoords_comp_toSpec (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)
@@ -64,7 +64,7 @@ theorem specToAffineSpaceExtendCoords_comp_toSpec (k : Type u) [Field k] (A : Sc
 
 @[simp]
 /- English proof (translation)
-Simplify using `[specToAffineSpaceExtendCoords]`. Use the proof step `@[simp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem specToAffineSpaceExtendCoords_appTop_coord_inl (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)
@@ -79,7 +79,7 @@ theorem specToAffineSpaceExtendCoords_appTop_coord_inl (k : Type u) [Field k] (A
 
 @[simp]
 /- English proof (translation)
-Simplify using `[specToAffineSpaceExtendCoords]`.
+Simplify using the standard rewrite rules.
 -/
 theorem specToAffineSpaceExtendCoords_appTop_coord_inr (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)
@@ -92,7 +92,7 @@ theorem specToAffineSpaceExtendCoords_appTop_coord_inr (k : Type u) [Field k] (A
   simp [specToAffineSpaceExtendCoords]
 
 /- English proof (translation)
-Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Simplify using `[he]`. Introduce and unpack `⟨a⟩`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.comp_apply, projLeft_appTop_coord, specToAffineSpaceExtendCoords_appTop_coord_inl]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem specToAffineSpaceExtendCoords_comp_projLeft (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)
@@ -107,19 +107,19 @@ theorem specToAffineSpaceExtendCoords_comp_projLeft (k : Type u) [Field k] (A : 
       specToAffineSpaceExtendCoords_appTop_coord_inl]
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective ⇑(e.appTop)` using `(AlgebraicGeometry.IsClosedImmersion.isAffine_surjective_of_isAffine e).2`. Establish `hproj : specToAffineSpaceExtendCoords k A pA M e σ n b ≫ projLeft k M n = specHomOfGlobalSections A σ ≫ e` using `specToAffineSpaceExtendCoords_comp_projLeft k A pA M e σ n b he`. Establish `hsec : ∀ s : Γ(A, ⊤), ∃ P, (specToAffineSpaceExtendCoords k A pA M e σ n b).appTop P = (Scheme.ΓSpecIso B').inv (σ s)`. Introduce `s`. Take `⟨P, hPs⟩` from `hsurj s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨(projLeft k M n).appTop P, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (fun g : Spec B' ⟶ affineSpaceIndexedBy k (ULift.{u} (Fin M)) => g.appTop P) hproj`. Simplify using `only [Scheme.Hom.comp_appTop, CommRingCat.comp_apply] at h2`. Rewrite using `[h2, hPs, specHomOfGlobalSections_appTop]`. Establish `key : ∀ p : MvPolynomial (Fin n) Γ(A, ⊤), ∃ P, (specToAffineSpaceExtendCoords k A pA M e σ n b).appTop P = (Scheme.ΓSpecIso B').inv (MvPolynomial.eval₂ σ.hom b p)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C s`. Take `⟨P, hP⟩` from `hsec s`. Use `⟨P, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPolynomial.eval₂_C]`. Conclude with `hP`. Consider the case `add p q hp hq`. Take `⟨P, hP⟩` from `hp`. Take `⟨Q, hQ⟩` from `hq`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨P + Q, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, MvPolynomial.eval₂_add, map_add, hP, hQ]`. Consider the case `mul_X p j hp`. Take `⟨P, hP⟩` from `hp`. Use `⟨P * AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up (Sum.inr j) : ULift.{u} (Fin M ⊕ Fin n)), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hP, specToAffineSpaceExtendCoords_appTop_coord_inr, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_X, map_mul]`. Introduce `y`. Take `⟨p, hp⟩` from `hgen ((Scheme.ΓSpecIso B').hom y)`. Take `⟨P, hP⟩` from `key p`. Use `⟨P, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, hp]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem specToAffineSpaceExtendCoords_appTop_surjective (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)
@@ -172,7 +172,7 @@ theorem specToAffineSpaceExtendCoords_appTop_surjective (k : Type u) [Field k] (
   simp
 
 /- English proof (translation)
-The claim follows from `AlgebraicGeometry.IsClosedImmersion.of_surjective_of_isAffine _ (specToAffineSpaceExtendCoords_appTop_surjective k A pA M e σ n b he hgen)`.
+A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_specToAffineSpaceExtendCoords (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)

@@ -10,9 +10,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.KerKilledFibreOpen
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `Scheme.hom_ext_of_forall _ _ fun p => ?_` and prove the remaining obligations. Take `⟨U, hp, hx⟩` from `h p`. Use `⟨U, hp, ?_⟩` and prove the remaining obligations. Establish `h1 : (Over.homMk U.ι : Over.mk (U.ι ≫ T.hom) ⟶ T) ≫ (1 : T ⟶ G) = 1` using `MonObj.comp_one _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hx` using `[← h1]`. Conclude with `congrArg (fun q => q.left) hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_local {S' : Scheme.{0}} {G : Over S'} [GrpObj G] (T : Over S') (x : T ⟶ G)
     (h : ∀ p : T.left, ∃ U : T.left.Opens, p ∈ U ∧
@@ -26,11 +26,11 @@ theorem eq_one_of_local {S' : Scheme.{0}} {G : Over S'} [GrpObj G] (T : Over S')
   exact congrArg (fun q => q.left) hx
 
 /- English proof (translation)
-Introduce `S' W s hs d hd`. Set `x : W.toScheme` to `⟨s, hs⟩`. Establish `h1 : IsUnit ((d : ℕ) : W.toScheme.residueField x)`. Use `hd.map (W.toScheme.evaluation ⊤ x trivial).hom` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hx : W.ι.base x = s` using `rfl`. Rewrite `h1`, the goal using `[isUnit_iff_ne_zero]`. Introduce `h0`. Apply `h1` to reduce the goal to its premises. Use `congrArg (Scheme.Hom.residueFieldMap W.ι x).hom (hx ▸ h0 : ((d : ℕ) : S'.residueField (W.ι.base x)) = 0)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unit_residue : ∀ (S' : Scheme.{0}) (W : S'.Opens) (s : S'), s ∈ W → ∀ d : ℕ, IsUnit ((d : ℕ) : Γ(W.toScheme, ⊤)) → IsUnit ((d : ℕ) : S'.residueField s) := by
   intro S' W s hs d hd
@@ -48,17 +48,17 @@ theorem unit_residue : ∀ (S' : Scheme.{0}) (W : S'.Opens) (s : S'), s ∈ W �
 open ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison GlobalTheory.KerKilledLocal in
 
 /- English proof (translation)
-Introduce `d S' G _ _ P V h T x hs`. Apply `down_injective G V` to reduce the goal to its premises. Rewrite using `[down_pow, down_one]`. Set `T' : Over S'` to `Over.mk (T.hom ≫ V.ι)`. Set `GV` to `(Over.pullback V.ι).obj G`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hr : Set.range T'.hom.base ⊆ (V : Set S')`. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `h' : T'.hom.base t ∈ Set.range V.ι.base` using `⟨T.hom.base t, rfl⟩`. Rewrite `h'` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis. Use `h T' (down G V x) hr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Set `Y : Over V.toScheme` to `Over.mk ((snd G T').left ≫ T.hom)`. Establish `w1 : (fst G T').left ≫ G.hom = (G ⊗ T').hom` using `Over.w (fst G T')`. Establish `w2 : (snd G T').left ≫ (T.hom ≫ V.ι) = (G ⊗ T').hom` using `Over.w (snd G T')`. Set `u : Y ⟶ GV` to `Over.homMk (pullback.lift (fst G T').left ((snd G T').left ≫ T.hom) (by`. Rewrite using `[w1, Category.assoc, w2])) (pullback.lift_snd _ _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `v : Y ⟶ T` to `Over.homMk (snd G T').left rfl`. Establish `heq : (lift u v).left ≫ (lift (snd GV T ≫ x) (fst GV T)).left ≫ pφ₂ V.ι G = (lift (snd G T' ≫ down G V x) (fst G T')).left ≫ 𝟙 _`. Rewrite using `[Category.comp_id]`. Apply `adelic_GL2_ext_of_local_components G` to reduce the goal to its premises. Simplify using `only [Category.assoc, pφ₂_fst]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[lift_left_fst'_assoc, lift_left_fst']`. Simplify using `only [Over.comp_left, Category.assoc]`. Rewrite using `[lift_left_snd'_assoc]`. Both sides reduce to the same expression. Simplify using `only [Category.assoc, pφ₂_snd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[lift_left_snd'_assoc, lift_left_snd', lift_left_fst'_assoc]`. Express the relevant statement in the definitionally equal form `pullback.lift _ _ _ ≫ pullback.fst G.hom V.ι = _`. Rewrite using `[pullback.lift_fst]`. Take `⟨t, ht⟩` from `gen_pull3 P (pφ₂ V.ι G) _ (lift u v).left _ (𝟙 _) heq hs`. Conclude with `gen_chartPull (chartPullUnpull _ _ rfl) t ht`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem kerKilledOn_of_global : ∀ (d : ℕ) (S' : Scheme.{0}) (G : Over S') [GrpObj G] [IsCommMonObj G] (P : LB (G2 G).left) (V : S'.Opens), (∀ (T : Over S') (x : T ⟶ G), Set.range T.hom.base ⊆ (V : Set S') → (∃ c : (P.pull (lift (snd G T ≫ x) (fst G T)).left).Gen, c.IsGen) → x ^ d = 1) → GlobalTheory.KerKilledLocus.KerKilledOn d G P V := by
   intro d S' G _ _ P V h T x hs
@@ -94,7 +94,7 @@ theorem kerKilledOn_of_global : ∀ (d : ℕ) (S' : Scheme.{0}) (G : Over S') [G
   exact gen_chartPull (chartPullUnpull _ _ rfl) t ht
 
 /- English proof (translation)
-The claim follows from `| 0 => by rw [pow_zero, pow_zero, MonObj.comp_one] | n + 1 => by rw [pow_succ, pow_succ, MonObj.comp_mul, comp_pow_overScheme_grpObj u x n]`.
+A detailed English derivation is pending.
 -/
 theorem comp_pow_overScheme_grpObj {S' : Scheme.{0}} {G T T' : Over S'} [GrpObj G] (u : T' ⟶ T) (x : T ⟶ G) :
     ∀ n : ℕ, u ≫ x ^ n = (u ≫ x) ^ n
@@ -102,13 +102,13 @@ theorem comp_pow_overScheme_grpObj {S' : Scheme.{0}} {G T T' : Over S'} [GrpObj 
   | n + 1 => by rw [pow_succ, pow_succ, MonObj.comp_mul, comp_pow_overScheme_grpObj u x n]
 
 /- English proof (translation)
-Introduce `d S' _ G _ _ P hA hP hg₁ hg₂ hsym W hamp hd s hs hfib`. Take `⟨V₀, Z, i, hs₀, hmono, hfin, h1, hmul, hinv, hfac, hloc⟩` from `GlobalTheory.T.exists_finite_kernel_near_diagonal_ample S' G P hA hP hg₁ hg₂ hsym W hamp s hs`. Establish `hfibZ : ∀ (T : Over S') (z : T ⟶ Z), (∃ f : T.left ⟶ Spec (S'.residueField s), T.hom = f ≫ S'.fromSpecResidueField s) → (z ≫ i) ^ d = 1`. Introduce and unpack `T z ⟨f, hf⟩`. Establish `hT : Set.range T.hom.base ⊆ (V₀ : Set S')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Establish `e : (f ≫ S'.fromSpecResidueField s).base p = s` using `Set.mem_singleton_iff.mp (Scheme.range_fromSpecResidueField s ▸ Set.mem_range_self (f.base p))`. Rewrite using `[hf, e]`. Conclude with `hs₀`. Use `eq_one_of_local T _ fun p => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hp, c, hc⟩` from `hloc T z hT p`. Use `⟨U, hp, ?_⟩` and prove the remaining obligations. Rewrite using `[comp_pow_overScheme_grpObj]`. Conclude with `hfib (Over.mk (U.ι ≫ T.hom)) _ ⟨U.ι ≫ f, by simp [hf]⟩ ⟨c, hc⟩`. Take `⟨V, hsV, hVV₀, hV⟩` from `GlobalTheory.T.finite_subgroup_killed_near_point_of_fibre S' G Z i V₀ d s hmono hs₀ hfin h1 hmul hinv (unit_residue S' W s hs d hd) hfibZ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨V, hsV, kerKilledOn_of_global d S' G P V fun T x hT hx => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hfac T x (hT.trans hVV₀) hx`. Conclude with `hV T z hT`.
+A detailed English derivation is pending.
 -/
 theorem kerKilledOn_near_of_fibre : ∀ (d : ℕ) (S' : Scheme.{0}) [IsLocallyNoetherian S'] (G : Over S') [GrpObj G] [IsCommMonObj G] (P : LB (G2 G).left), IsAbelianScheme G → P.IsLB → (∃ s : (P.pull (lift (1 : G ⟶ G) (𝟙 G)).left).Gen, s.IsGen) → (∃ s : (P.pull (lift (𝟙 G) (1 : G ⟶ G)).left).Gen, s.IsGen) → LBIso P (P.pull (lift (snd G G) (fst G G)).left) → ∀ W : S'.Opens, (∀ V : S'.Opens, V ≤ W → Out.RelAmple ((Over.pullback V.ι).obj G) ((P.pull (Pdiv.PullbackComparison.pφ₂ V.ι G)).pull (lift (𝟙 ((Over.pullback V.ι).obj G)) (𝟙 ((Over.pullback V.ι).obj G))).left)) → IsUnit ((d : ℕ) : Γ(W.toScheme, ⊤)) → ∀ s ∈ W, GlobalTheory.KerKilledNear.FibreKilled d G P s → ∃ V : S'.Opens, s ∈ V ∧ GlobalTheory.KerKilledLocus.KerKilledOn d G P V := by
   intro d S' _ G _ _ P hA hP hg₁ hg₂ hsym W hamp hd s hs hfib

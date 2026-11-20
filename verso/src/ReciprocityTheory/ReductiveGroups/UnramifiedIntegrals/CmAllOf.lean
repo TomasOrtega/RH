@@ -10,7 +10,7 @@ namespace ReciprocityTheory.ChartRestriction.L1
 open Formalism.L2.Th1.CM
 
 /- English proof (translation)
-The claim follows from `goodReduction_of_integral_unramified jInt (jUnram hH hC)`.
+A detailed English derivation is pending.
 -/
 theorem cm2 (hH : _root_.Neutral.HilbertClassField.Statement) (hC : ChebOmSt) : CM2 :=
   goodReduction_of_integral_unramified jInt (jUnram hH hC)

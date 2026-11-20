@@ -19,23 +19,23 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨{ ζ := I.ζ, ζ_prim := I.ζ_prim, ζ_pow := I.ζ_pow ev := fun n a => φ.symm (fun i => I.ev n (e a i)) add := ?_, lin := ?_, ker := ?_, onto := ?_, tower := ?_, isom := ?_ }⟩` and prove the remaining obligations. Introduce `n a b`. Rewrite using `[← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[I.add]`. Introduce `n c a`. Apply `φ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `[hact, I.lin]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `n hn a`. Rewrite using `[MulEquiv.map_eq_one_iff, funext_iff]`. Simplify using `only [Pi.one_apply, I.ker n hn]`. Prove the components needed by the constructor for the conclusion. Introduce `h choose b hb using h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨e.symm b, e.injective ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[hb i]`. Introduce and unpack `⟨b, rfl⟩ i`. Conclude with `⟨e b i, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `n hn x`. Rewrite using `[← φ.map_eq_one_iff, map_pow, funext_iff]`. Simplify using `only [Pi.pow_apply, Pi.one_apply, I.onto n hn]`. Prove the components needed by the constructor for the conclusion. Introduce `h choose b hb using h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨e.symm b, φ.injective ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[hb i]`. Introduce and unpack `⟨a, rfl⟩ i`. Conclude with `⟨e a i, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `n m hn hm a`. Rewrite using `[← map_pow]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[I.tower n m hn hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `n hn a b`. Establish `hz : I.ζ n ^ Dw'.EF a b = ∏ i, I.ζ n ^ Dw.EF (e a i) (e b i)`. Rewrite using `[he]`. Conclude with `map_prod (zpowersHom Fˣ (I.ζ n)) (fun i => Multiplicative.ofAdd (Dw.EF (e a i) (e b i))) Finset.univ`. Rewrite using `[hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hw n hn` to reduce the goal to its premises. Introduce `i`. Simplify using `using I.isom n hn (e a i) (e b i)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem nonempty_tateIso_of_mulEquiv_pi {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     (Dw Dw' : Datum H) (j : ℕ) (e : Dw'.La ≃ₗ[𝓞 E] (Fin j → Dw.La))
@@ -94,13 +94,11 @@ theorem nonempty_tateIso_of_mulEquiv_pi {E : Type} [Field E] [NumberField E] [Is
     simpa using I.isom n hn (e a i) (e b i)
 
 /- English proof (translation)
-Set `f : (T ⟶ G') →* (Fin j → (T ⟶ G))` to `MonoidHom.mk' (fun x i => x ≫ p.pr i) (by`. Introduce `x y`. Use function extensionality and compare the values at `i`. Use `p.hom i` as an intermediate fact. Conclude with `MonObj.mul_comp x y (p.pr i))`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Apply `p.lim.hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrFun h i`. Introduce `y`. Use `⟨p.lim.lift (Fan.mk T y), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `p.lim.fac (Fan.mk T y) ⟨i⟩`.
-
-Conclude with `⟨MulEquiv.ofBijective f hf, fun _ _ => rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mulEquiv_points_of_isPowGrp {S : Scheme.{0}} {G' G : Over S} [GrpObj G'] [GrpObj G] {j : ℕ}
     (p : IsPowGrp G' G j) (T : Over S) :
@@ -123,9 +121,9 @@ theorem exists_mulEquiv_points_of_isPowGrp {S : Scheme.{0}} {G' G : Over S} [Grp
   exact ⟨MulEquiv.ofBijective f hf, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Introduce `h1 h2 h4 htw E _ _ _ H R _ _ j A A' pA F _ _ act act' hact Dw I`. Take `⟨Dw', e, he, -, -⟩` from `GlobalTheory.T.hermitian_datum_direct_power E H Dw j`. Take `⟨φ, hφ⟩` from `exists_mulEquiv_points_of_isPowGrp pA.toIsPowGrp (TFK (R := R) F)`. Use `⟨Dw', nonempty_tateIso_of_mulEquiv_pi Dw Dw' j e he F _ _ φ _ _ ?_ _ _ ?_ I⟩` and prove the remaining obligations. Introduce `a x i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hφ, Category.assoc, hact]`. Introduce `k hk x x' c hc`. Simplify using `only [hφ] at hc`. Conclude with `GlobalTheory.T.weilPairing_powPolAV_eq_prod_field h1 h2 h4 htw R j A A' pA F k hk x x' c hc`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_tateIso_of_isPowPolAV : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] (j : ℕ) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (pA : IsPowPolAV A' A j) (F : Type) [Field F] [Algebra (FractionRing R) F] (act : 𝓞 E → (A.A ⟶ A.A)) (act' : 𝓞 E → (A'.A ⟶ A'.A)), (∀ a i, act' a ≫ pA.pr i = pA.pr i ≫ act a) → ∀ (Dw : Datum H) (_I : TateIso Dw F (TFK (R := R) F ⟶ A.A) (fun a x => x ≫ act a) (fun k x x' z => WeilIs A.A A.L k x x' (unitOn z))), ∃ Dw' : Datum H, Nonempty (TateIso Dw' F (TFK (R := R) F ⟶ A'.A) (fun a x => x ≫ act' a) (fun k x x' z => WeilIs A'.A A'.L k x x' (unitOn z))) := by
   intro h1 h2 h4 htw E _ _ _ H R _ _ j A A' pA F _ _ act act' hact Dw I

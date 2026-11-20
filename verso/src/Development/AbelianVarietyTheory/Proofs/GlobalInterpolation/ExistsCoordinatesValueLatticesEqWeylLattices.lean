@@ -18,7 +18,7 @@ def jj (w : D.what₂.places.Pl) (v : B.ch.A.vT) : (M.Lc v).K →+* D.what₂.LL
     ((if B.Z.seenP w then RingHom.id B.E else starRingEnd B.E).comp (R.iK v).symm.toRingHom)
 
 /- English proof (translation)
-Unfold `jj`. Apply the tactic sequence `split_ifs <;> simp [starRingEnd_apply]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jj_iK (w : D.what₂.places.Pl) (v : B.ch.A.vT) (x : B.E) :
     jj R w v (R.iK v x) = B.emb (B.Z.tauOf w (B.pr v)) (if B.Z.seenP w then x else star x) := by
@@ -31,7 +31,7 @@ def co : M.Val →ₗ[ℂ] Pol ℂ D.what₂.Tau (D.R.N i) :=
   polOf (Gr B.emb D.what₂.embLL (D.R.N i)) (shiftOf (B.lam i)) (fr0 B.emb D.what₂.embLL (D.R.N i)) ∘ₗ M.Val.subtype
 
 /- English proof (translation)
-Use `GlobalTheory.TilClass.polOf_fnOf_one B.emb D.what₂.embLL (shiftOf (B.lam i)) P` as an intermediate fact. Rewrite `this` using `[← h]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem co_of_eq {y : M.Val} {P : Pol ℂ D.what₂.Tau (D.R.N i)}
     (h : y.1 = fnOf (Gr B.emb D.what₂.embLL (D.R.N i)) (shiftOf (B.lam i)) 1 P) : co M y = P := by
@@ -41,7 +41,7 @@ theorem co_of_eq {y : M.Val} {P : Pol ℂ D.what₂.Tau (D.R.N i)}
 
 include R in
 /- English proof (translation)
-Establish `h : y.1 ∈ ValC (Gr B.emb D.what₂.embLL (D.R.N i)) (B.lam i)` using `R.val_eq ▸ y.2`. Take `⟨F, hF⟩` from `(GlobalTheory.TilClass.mem_ValC_iff B.emb D.what₂.embLL (B.lam i) _).1 h`. Conclude with `⟨F, hF.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pol (y : M.Val) : ∃ F : Formalism.L2.DIV.VV ℂ (B.lam i),
     y.1 = fnOf (Gr B.emb D.what₂.embLL (D.R.N i)) (shiftOf (B.lam i)) 1 F.1 := by
@@ -51,7 +51,7 @@ theorem exists_pol (y : M.Val) : ∃ F : Formalism.L2.DIV.VV ℂ (B.lam i),
 
 include R in
 /- English proof (translation)
-Take `⟨F, hF⟩` from `exists_pol R y`. Rewrite using `[co_of_eq hF, hF]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem fn_co (y : M.Val) : y.1 = fnOf (Gr B.emb D.what₂.embLL (D.R.N i)) (shiftOf (B.lam i)) 1 (co M y) := by
   obtain ⟨F, hF⟩ := exists_pol R y
@@ -59,14 +59,14 @@ theorem fn_co (y : M.Val) : y.1 = fnOf (Gr B.emb D.what₂.embLL (D.R.N i)) (shi
 
 include R in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by rw [fn_co R y, h]; rfl, fun h => co_of_eq h⟩`.
+Supply the required witnesses or components.
 -/
 theorem co_eq_iff (y : M.Val) (F : B.V i) : co M y = MvPolynomial.map D.what₂.embLL F.1 ↔ y.1 = B.ev i F :=
   ⟨fun h => by rw [fn_co R y, h]; rfl, fun h => co_of_eq h⟩
 
 variable (B i) in
 /- English proof (translation)
-Establish `h` using `Formalism.MainNotions.product_first_zeroth_parts.natW_wSh (B.ch.fm.lam i τ) ((i : ℤ) * (((D.R.t + 1) / 2 : ℕ) : ℤ))`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem natW_lam (τ : D.what₂.Tau) : (B.ch.fm.lam i τ).natW = (B.lam i τ).natW := by
   have h := Formalism.MainNotions.product_first_zeroth_parts.natW_wSh (B.ch.fm.lam i τ) ((i : ℤ) * (((D.R.t + 1) / 2 : ℕ) : ℤ))
@@ -75,9 +75,9 @@ theorem natW_lam (τ : D.what₂.Tau) : (B.ch.fm.lam i τ).natW = (B.lam i τ).n
 
 variable (B i) in
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `h : ((i * (D.R.t + 1) / 2 : ℕ) : ℤ) = (i : ℤ) * (((D.R.t + 1) / 2 : ℕ) : ℤ)`. Take `⟨c, hc⟩` from `D.R.t_odd`. Establish `h2 : D.R.t + 1 = 2 * (c + 1)` using `by omega`. Rewrite using `[h2, Nat.mul_div_cancel_left _ two_pos, mul_left_comm, Nat.mul_div_cancel_left _ two_pos, Nat.cast_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `PtModel.lamT`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamT_eq : PtModel.lamT B.ch i = B.lam i := by
   funext τ
@@ -91,13 +91,13 @@ theorem lamT_eq : PtModel.lamT B.ch i = B.lam i := by
 
 include R in
 /- English proof (translation)
-Establish `hd : ∀ τ, delSq ℂ _ (B.ch.fm.lam i τ) = delSq ℂ _ (B.lam i τ)` using `fun τ => by unfold delSq; rw [natW_lam B i τ]`. Establish `e : Formalism.MainNotions.product_first_zeroth_parts.CSpan (B.ch.fm.lam i) = CSpan (B.lam i)`. Unfold `Formalism.MainNotions.product_first_zeroth_parts.CSpan`. Simplify using `only [hd]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Use extensionality with `P`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Establish `h : y.1 ∈ ValC (Gr B.emb D.what₂.embLL (D.R.N i)) (B.lam i)` using `R.val_eq ▸ y.2`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨Q, hQ, hy⟩` from `h`. Rewrite using `[co_of_eq hy.symm]` and apply the resulting hypothesis. Introduce `hP`. Establish `h : fnOf (Gr B.emb D.what₂.embLL (D.R.N i)) (shiftOf (B.lam i)) 1 P ∈ M.Val`. Rewrite using `[R.val_eq]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_map_of_mem hP`. Conclude with `⟨⟨_, h⟩, co_of_eq rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem co_range : LinearMap.range (co M) = Formalism.MainNotions.product_first_zeroth_parts.CSpan (B.ch.fm.lam i) := by
   have hd : ∀ τ, delSq ℂ _ (B.ch.fm.lam i τ) = delSq ℂ _ (B.lam i τ) := fun τ => by unfold delSq; rw [natW_lam B i τ]
@@ -137,7 +137,7 @@ def woff (w : D.what₂.places.Pl) (z : M.Z) : AddSubgroup M.Val :=
     (wl M w ((B.I.S i).Lsh b d)).comap (M.act g⁻¹).toAddMonoidHom
 
 /- English proof (translation)
-Simplify using `only [woff, AddSubgroup.mem_iInf, AddSubgroup.mem_comap]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_woff (w : D.what₂.places.Pl) (z : M.Z) (y : M.Val) : y ∈ woff R w z ↔
     ∀ (g : M.G) (b) (d : (B.I.S i).D b), (g • R.pt b d).1 = z → M.act g⁻¹ y ∈ wl M w ((B.I.S i).Lsh b d) := by
@@ -159,9 +159,9 @@ def gm (w : D.what₂.places.Pl) (v : B.ch.A.vT) (h : GL (Fin (D.R.N i)) (M.Lc v
   if B.Z.seenP w then inside₂ _ _ (Formalism.UG.bc (jj R w v) h) else Formalism.UG.bc (jj R w v) h
 
 /- English proof (translation)
-Unfold `PtModel.Coord.mov`. Rewrite using `[blk_roundAct, lamT_eq]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Use `show inside₂ ℂ _ (if B.Z.seenP w = true then _ else _) = _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Unfold `gm`. Use `split_ifs`. Conclude with `Units.ext rfl`. Conclude with `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem mov_eq (hS : B.Sees) (w : D.what₂.places.Pl) (h : ∀ v, GL (Fin (D.R.N i)) (M.Lc v).K) :
     (coord R hS).mov w h = actP (B.lam i) fun τ =>
@@ -177,9 +177,7 @@ theorem mov_eq (hS : B.Sees) (w : D.what₂.places.Pl) (h : ∀ v, GL (Fin (D.R.
   · exact Units.ext rfl
 
 /- English proof (translation)
-Unfold `gm`. Use `split_ifs with hs`. Use `congr 1`. Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Conclude with `(jj_iK R w v _).trans (by rw [if_pos hs]; rfl)`.
-
-Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Conclude with `(jj_iK R w v _).trans (by rw [if_neg hs]; rfl)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gm_iK (w : D.what₂.places.Pl) (v : B.ch.A.vT) (g : GL (Fin (D.R.N i)) B.E) :
     gm R w v (Matrix.GeneralLinearGroup.map (R.iK v).toRingHom g) =
@@ -194,7 +192,7 @@ theorem gm_iK (w : D.what₂.places.Pl) (v : B.ch.A.vT) (g : GL (Fin (D.R.N i)) 
     exact (jj_iK R w v _).trans (by rw [if_neg hs]; rfl)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Matrix.GeneralLinearGroup.map (R.iK v).symm.toRingHom h, Units.ext (Matrix.ext fun _ _ => ((R.iK v).apply_symm_apply _).symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_map (v : B.ch.A.vT) (h : GL (Fin (D.R.N i)) (M.Lc v).K) :
     ∃ g, h = Matrix.GeneralLinearGroup.map (R.iK v).toRingHom g :=
@@ -202,13 +200,13 @@ theorem exists_map (v : B.ch.A.vT) (h : GL (Fin (D.R.N i)) (M.Lc v).K) :
     Units.ext (Matrix.ext fun _ _ => ((R.iK v).apply_symm_apply _).symm)⟩
 
 /- English proof (translation)
-Rewrite using `[isBasisAt_iff]`. Establish `e : ∀ x : Fin (D.R.N i) → B.E, (Matrix.GeneralLinearGroup.map (R.iK v).toRingHom g).val *ᵥ (fun a => R.iK v (x a)) = fun a => R.iK v ((g.val *ᵥ x) a)` using `fun x =>`. Use function extensionality and compare the values at `fun a => (RingHom.map_mulVec (R.iK v).toRingHom g.val x a).symm`. Establish `e2 : ∀ x : Fin (D.R.N i) → B.E, (fun a => R.iK v (x a)) ∈ (M.Lc v).std (D.R.N i) ↔ ∀ a, (B.pr v).1.valuation B.E (x a) ≤ 1`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `LocF.std`. Rewrite using `[Submodule.mem_pi]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[← R.iK_O, Submodule.mem_one]`. Conclude with `⟨fun h => by obtain ⟨y, hy⟩ := h trivial; exact hy ▸ y.2, fun h _ => ⟨⟨_, h⟩, rfl⟩⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Unfold `PtModel.IsFrameS`. Prove the components needed by the constructor for the conclusion. Introduce `h x`. Rewrite using `[← hs, ← e, h, e2]`. Introduce `h y`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, rfl⟩ : ∃ x : Fin (D.R.N i) → B.E, y = fun a => R.iK v (x a)` from `⟨fun a => (R.iK v).symm (y a), funext fun a => ((R.iK v).apply_symm_apply _).symm⟩`. Rewrite using `[e, hs, h, e2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_iff (v : B.ch.A.vT) (s : Set (Fin (D.R.N i) → (M.Lc v).K)) (L : Submodule (𝓞 B.E) (Fin (D.R.N i) → B.E))
     (hs : ∀ x, (fun a => R.iK v (x a)) ∈ s ↔ x ∈ localization₂ (B.pr v).1.asIdeal L) (g : GL (Fin (D.R.N i)) B.E) :
@@ -236,7 +234,7 @@ theorem frame_iff (v : B.ch.A.vT) (s : Set (Fin (D.R.N i) → (M.Lc v).K)) (L : 
     rw [e, hs, h, e2]
 
 /- English proof (translation)
-Establish `h` using `fun x => (D.val_nonneg_iff w _).symm.trans (hS w hw (B.pr v) x)`. Rewrite using `[gm_iK]`. Use `split_ifs at h ⊢ with hs`. Conclude with `basis_seen B.emb _ _ _ h hL hg`. Conclude with `basis_conj B.emb _ _ _ h hL hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_basis (hS : B.Sees) {w : D.what₂.places.Pl} (hw : OverT B.ch w) {L : Submodule (𝓞 B.E) (Fin (D.R.N i) → B.E)}
     (hL : Submodule.IsLattice B.E L) (v : B.ch.A.vT) {g : GL (Fin (D.R.N i)) B.E} (hg : IsBasisAt (B.pr v).1 L g) :
@@ -249,13 +247,13 @@ theorem gm_basis (hS : B.Sees) {w : D.what₂.places.Pl} (hw : OverT B.ch w) {L 
   · exact basis_conj B.emb _ _ _ h hL hg
 
 /- English proof (translation)
-Establish `hL' : Submodule.IsLattice B.E (if B.Z.seenP w then L else dual (hStd B.E _) L)` using `by split_ifs`. Conclude with `hL`. Conclude with `dual_lattice hL`. Establish `key : ∀ g : B.ch.A.vT → GL (Fin (D.R.N i)) B.E, (∀ v, IsBasisAt (B.pr v).1 L (g v)) → ∀ F : B.V i, F ∈ B.valAt w i (if B.Z.seenP w then L else dual (hStd B.E _) L) ↔ ∃ z ∈ localization₂ (D.plEq w).asIdeal (delStd D.what₂.LL (B.lam i)), F.1 = actP (B.lam i) (fun τ => gm R w ((B.ch …`. Introduce `g hg F`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mem_localization_delAtr B.emb (B.lam i) (D.plEq w) hL' _ (fun τ => ?_) F` and prove the remaining obligations. Use `gm_basis R hS hw hL ((B.ch.fm.tauOf w).symm τ) (hg _)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Then use the resulting hypothesis. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, z, hz, e⟩ choose g hg using fun v => exists_map R v (h v)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : h = _` from `funext hg`. Take `⟨z₀, hz₀, rfl⟩` from `(mem_intSpan_iff D w _ _ (natW_lam B i) z).1 hz`. Rewrite `e` using `[mov_eq, ← map_actP]`. Set `F : B.V i` to `⟨_, polyAction_mem_VV (B.lam i) (fun τ => gm R w ((B.ch.fm.tauOf w).symm τ) (Matrix.GeneralLinearGroup.map (R.iK _).toRingHom (g ((B.ch.fm.tauOf w).symm τ)))) (mem_VV_of_locP _ _ hz₀)⟩`. Conclude with `⟨F, (key g (fun v => (frame_iff R v _ L (hs v) _).1 (hh v)) F).2 ⟨z₀, hz₀, rfl⟩, (co_eq_iff R y F).1 e⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨F, hF, e⟩ choose g hg using fun v : B.ch.A.vT => basisAtEx B.E _ L hL (B.pr v).1`. Take `⟨z₀, hz₀, hFz⟩` from `(key g hg F).1 hF`. Use `⟨fun v => Matrix.GeneralLinearGroup.map (R.iK v).toRingHom (g v), fun v => (frame_iff R v _ L (hs v) _).2 (hg v), _, (mem_intSpan_iff D w _ _ (natW_lam B i) _).2 ⟨z₀, hz₀, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mov_eq, ← map_actP, ← hFz]`. Conclude with `(co_eq_iff R y F).2 e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valB_iff (hS : B.Sees) {w : D.what₂.places.Pl} (hw : OverT B.ch w) (V : Finset B.ch.A.vT) (p : M.Pt)
     {L : Submodule (𝓞 B.E) (Fin (D.R.N i) → B.E)} (hL : Submodule.IsLattice B.E L)
@@ -296,7 +294,7 @@ theorem valB_iff (hS : B.Sees) {w : D.what₂.places.Pl} (hw : OverT B.ch w) (V 
     exact (co_eq_iff R y F).2 e
 
 /- English proof (translation)
-Rewrite using `[((B.hJ.tied i).ok b d).mem_locP_L]`. Use `and_congr (R.pt_L b d v x) ?_` and prove the remaining obligations. Use `R.pt_f b d v x` as an intermediate fact. Conclude with `⟨fun h => this.symm.trans h, fun h => this.trans h⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ker_iff (b) (d : (B.I.S i).D b) (v : B.ch.A.vT) (x : Fin (D.R.N i) → B.E) :
     (fun a => R.iK v (x a)) ∈ ((R.pt b d).2 v).ker ↔ x ∈ localization₂ (B.pr v).1.asIdeal ((B.J.A i).deco b d).L := by
@@ -306,15 +304,11 @@ theorem ker_iff (b) (d : (B.I.S i).D b) (v : B.ch.A.vT) (x : Fin (D.R.N i) → B
   exact ⟨fun h => this.symm.trans h, fun h => this.trans h⟩
 
 /- English proof (translation)
-Establish `hd` using `(B.hJ.tied i).ok b d`. Take `⟨a, ha⟩` from `exists_sepElt sp.nonconj`. Distinguish the cases in `hs : B.Z.seenP w = true`. Use `valB_iff R hS hw ∅ (R.pt b d) hd.Lsh_lattice (fun v x => by` as an intermediate fact. Rewrite using `[if_pos ⟨hs, Finset.notMem_empty v⟩, hd.locP_Lsh ha (B.pr v)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `R.pt_L b d v x) y`. Rewrite `this` using `[if_pos hs]`. Rewrite using `[(B.hJ.tied i).Lsh_eq]`. Conclude with `this`. Use `valB_iff R hS hw ∅ (R.pt b d) hd.L_lattice (fun v x => by` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[if_neg fun h => hs h.1]`. Conclude with `ker_iff R b d v x) y`. Rewrite `this` using `[if_neg hs]`. Rewrite using `[(B.hJ.tied i).Lsh_eq]`. Conclude with `this`.
-
-Use `ker w hw hs b d y := by`. Use `valB_iff R hS hw Finset.univ (R.pt b d) ((B.hJ.tied i).ok b d).L_lattice (fun v x => by` as an intermediate fact. Rewrite using `[if_neg fun h => h.2 (Finset.mem_univ v)]`. Conclude with `ker_iff R b d v x) y`. Rewrite `this` using `[if_pos hs]`.
-
-Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valIs (hS : B.Sees) : R.ValIs (coord R hS) where
   dual w hw b d y := by
@@ -341,11 +335,9 @@ theorem valIs (hS : B.Sees) : R.ValIs (coord R hS) where
     exact this
 
 /- English proof (translation)
-Establish `hd` using `(B.hJ.tied i).ok b d`. Take `⟨a, ha⟩` from `exists_sepElt sp.nonconj`. Use `valB_iff R hS hw {v} (R.pt b d) (hd.LshKer_lattice ha (B.pr v)) (fun v' x => by` as an intermediate fact. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_neg fun h => h.2 (Finset.mem_singleton_self _), hd.locP_LshKer_self ha, localization_kerAt_eq hd]`. Conclude with `ker_iff R b d v' x`. Rewrite using `[if_pos ⟨hs, fun h' => h (Finset.mem_singleton.1 h')⟩, hd.locP_LshKer_ne ha (P := B.pr v) (Q := B.pr v') h, hd.locP_Lsh ha (B.pr v')]`. Conclude with `R.pt_L b d v' x) y`. Rewrite `this` using `[if_pos hs]`.
-
-Rewrite using `[(B.hJ.tied i).ker_eq]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valB_single (hS : B.Sees) {w : D.what₂.places.Pl} (hw : OverT B.ch w) (hs : B.Z.seenP w = true) (v : B.ch.A.vT) (b)
     (d : (B.I.S i).D b) (y : M.Val) :
@@ -365,22 +357,20 @@ theorem valB_single (hS : B.Sees) {w : D.what₂.places.Pl} (hw : OverT B.ch w) 
   exact this
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LvT.BuiltChain.evV_rho B.emb D.what₂.embLL (B.I.S i) (B.lam i) b g F`.
+A detailed English derivation is pending.
 -/
 theorem ev_rho (b) (g : (B.I.S i).G b) (F : B.V i) :
     B.ev i ((B.I.S i).rho B.emb (B.lam i) b g F) = (B.I.S i).tr B.emb D.what₂.embLL b g (B.ev i F) :=
   GlobalTheory.LvT.BuiltChain.evV_rho B.emb D.what₂.embLL (B.I.S i) (B.lam i) b g F
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ c`. Take `⟨s, hs, hx⟩` from `(D.mem_locW_iff w _ _).1 hx`. Conclude with `⟨x.1 c, (lc_mem_locP _ _ _).2 ⟨s, hs, hx c⟩, rfl⟩`. Introduce `h choose F hF hφF using h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `` to `B.I.clFin B.hI i`. Set `x : (B.I.S i).FormsK B.emb (B.lam i) (B.lf.fam i)` to `⟨F, fun c γ => by`. Apply `evV_injective B.emb 1 (B.lam i) D.what₂.embLL (fr0 B.emb D.what₂.embLL _)` to reduce the goal to its premises. Establish `h1` using `(hφ c).2 γ`. Rewrite `h1` using `[hφF c, ← ev_rho]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1⟩`. Use `⟨x, (D.mem_locW_iff w _ _).2 ?_, funext fun c => (hφF c).symm⟩` and prove the remaining obligations. Use `choose s hs hsm using fun c => (lc_mem_locP _ _ _).1 (hF c)`. Use `⟨∏ c, s c, fun hm => ?_, fun c => ?_⟩` and prove the remaining obligations. Take `⟨c, -, hc⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := (D.plEq w).isPrime)).1 hm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs c hc`. Establish `e : (∏ c, s c) = (∏ c' ∈ Finset.univ.erase c, s c') * s c`. Rewrite using `[mul_comm, Finset.mul_prod_erase _ _ (Finset.mem_univ c)]`. Express the relevant statement in the definitionally equal form `(∏ c, s c) • F c ∈ _`. Rewrite using `[e]`.
-
-Conclude with `(mul_smul _ (s c) (F c)).symm ▸ (delAtr B.emb (B.lam i) (L c)).smul_mem _ (hsm c)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem forms_iff (w : D.what₂.places.Pl) (L : (B.I.S i).Cl → Submodule (𝓞 B.E) (Fin (D.R.N i) → B.E))
     (φ : (B.I.S i).Cl → Fr B.emb D.what₂.embLL (D.R.N i) → ℂ) (hφ : φ ∈ (B.I.S i).Fi B.emb D.what₂.embLL (B.lam i)) :
@@ -413,11 +403,9 @@ theorem forms_iff (w : D.what₂.places.Pl) (L : (B.I.S i).Cl → Submodule (�
 
 include R in
 /- English proof (translation)
-Use `forall_congr' fun c => ?_` and prove the remaining obligations. Use `replace hW : ∀ y, y ∈ W (M.rep c) ↔ y ∈ wl M w (L c) := fun y => (R.rep_eq c).symm ▸ hW c y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, hF, e⟩`. Establish `hm : B.ev i F ∈ M.Val`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[R.val_eq]`. Conclude with `evV_mem_ValC B.emb 1 _ D.what₂.embLL F`. Conclude with `⟨⟨_, hm⟩, (hW _).2 ⟨F, hF, rfl⟩, e⟩`. Introduce and unpack `⟨y, hy, e⟩`. Take `⟨F, hF, e'⟩` from `(hW y).1 hy`.
-
-Conclude with `⟨F, hF, e.trans e'⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem valIn_iff (w : D.what₂.places.Pl) (L : (B.I.S i).Cl → Submodule (𝓞 B.E) (Fin (D.R.N i) → B.E))
     (W : M.Pt → Set M.Val) (hW : ∀ c y, y ∈ W (R.pt c.1 ((B.I.S i).rep c)) ↔ y ∈ wl M w (L c)) (φ : Fn B.ch i) :
@@ -435,9 +423,9 @@ theorem valIn_iff (w : D.what₂.places.Pl) (L : (B.I.S i).Cl → Submodule (�
     exact ⟨F, hF, e.trans e'⟩
 
 /- English proof (translation)
-Take `⟨F, hF, e⟩` from `hy`. Use `⟨(B.I.S i).rho B.emb (B.lam i) b g F, ?_, by rw [R.act_hom, ev_rho, e]⟩` and prove the remaining obligations. Take `⟨s, hs, hF⟩` from `(lc_mem_locP _ _ _).1 hF`. Use `(lc_mem_locP _ _ _).2 ⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `h : delAtr B.emb (B.lam i) ((B.I.S i).Lsh b (g • d)) = (delAtr B.emb (B.lam i) ((B.I.S i).Lsh b d)).map (((B.I.S i).rho B.emb (B.lam i) b g).restrictScalars (𝓞 D.what₂.LL))` using `(B.lf.fam i b).del_smul g d`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h]`. Conclude with `⟨_, hF, LinearMap.map_smul_of_tower _ _ _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem wl_hom (w : D.what₂.places.Pl) (b) (g : (B.I.S i).G b) (d : (B.I.S i).D b) {y : M.Val}
     (hy : y ∈ wl M w ((B.I.S i).Lsh b d)) : M.act (R.hom b g) y ∈ wl M w ((B.I.S i).Lsh b (g • d)) := by
@@ -451,7 +439,7 @@ theorem wl_hom (w : D.what₂.places.Pl) (b) (g : (B.I.S i).G b) (d : (B.I.S i).
   exact ⟨_, hF, LinearMap.map_smul_of_tower _ _ _⟩
 
 /- English proof (translation)
-Take `⟨F, hF, e⟩` from `hy`. Use `⟨((ζ.1 : (D.what₂.LL)ˣ) : D.what₂.LL) • F, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(B.valAt w i _).smul_mem (⟨_, BarPass.isIntegral_torsion ζ⟩ : 𝓞 D.what₂.LL) hF`. Rewrite using `[R.act_zeta, BarPass.ev_smul, ← e]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem wl_zeta (w : D.what₂.places.Pl) (L : Submodule (𝓞 B.E) (Fin (D.R.N i) → B.E)) (ζ) {y : M.Val}
     (hy : y ∈ wl M w L) : M.act (R.zeta ζ) y ∈ wl M w L := by
@@ -462,15 +450,15 @@ theorem wl_zeta (w : D.what₂.places.Pl) (L : Submodule (𝓞 B.E) (Fin (D.R.N 
     rfl
 
 /- English proof (translation)
-Rewrite using `[mem_woff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `h 1 b d (by rw [one_smul])` as an intermediate fact. Rewrite `this` using `[inv_one, map_one, Module.End.one_apply]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `hy g b' d' h`. Take `⟨ζ, g', rfl⟩` from `R.gen b' g`. Rewrite `h` using `[mul_smul, ← R.pt_smul]`. Take `rfl` from `R.idx _ _ _ _ _ h`. Take `⟨k, hk, -, hr⟩` from `(R.fst _ _ _ _).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hT : ((B.J.T : ℕ) : 𝓞 D.what₂.LL) ∉ (D.plEq w).asIdeal` using `fun hm => hw (GlobalTheory.LvT.Inh.resChar_eq_of_mem_plEq D w B.hJ.T_prime hm)`. Establish `e1 : (B.I.S i).Lsh b' (k • g' • d') = (B.I.S i).Lsh b' (g' • d')`. Use extensionality with `x`. Use `(B.hI.step i).lsh_smul b' k (g' • d') x` as an intermediate fact. Rewrite `this` using `[hk, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e2 : B.valAt w i ((B.I.S i).Lsh b' (g' • d')) = B.valAt w i ((B.I.S i).Lsh b' d)`. Rewrite using `[← e1, (B.hJ.tied i).Lsh_eq, (B.hJ.tied i).Lsh_eq]`. Conclude with `delAtr_off B.emb (B.lam i) ((B.hJ.tied i).ok _ _) ((B.hJ.tied i).ok _ _) sp.T_mem (sp.off_lat _ _ _ hr) hT`. Establish `h1 : y ∈ wl M w ((B.I.S i).Lsh b' (g' • d'))`. Take `⟨F, hF, e⟩` from `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨F, by rw [e2]; exact hF, e⟩`. Establish `h2` using `wl_hom R w b' g'⁻¹ _ (wl_zeta R w _ ζ⁻¹ h1)`. Rewrite `h2` using `[inv_smul_smul, ← Module.End.mul_apply, ← map_mul, map_inv, map_inv, ← _root_.mul_inv_rev]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem woff_pt {w : D.what₂.places.Pl} (hw : ¬ OverT B.ch w) (b) (d : (B.I.S i).D b) (y : M.Val) :
     y ∈ woff R w (R.pt b d).1 ↔ y ∈ wl M w ((B.I.S i).Lsh b d) := by
@@ -500,9 +488,9 @@ theorem woff_pt {w : D.what₂.places.Pl} (hw : ¬ OverT B.ch w) (b) (d : (B.I.S
     rwa [inv_smul_smul, ← Module.End.mul_apply, ← map_mul, map_inv, map_inv, ← _root_.mul_inv_rev] at h2
 
 /- English proof (translation)
-Rewrite `hy`, the goal using `[mem_woff]`. Introduce `h b d e`. Establish `h1` using `M.smul_fst g⁻¹ _ _ e`. Rewrite `h1` using `[inv_smul_smul, ← mul_smul]`. Establish `h2` using `hy _ b d h1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[_root_.mul_inv_rev, inv_inv, map_mul, Module.End.mul_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem woff_act (w : D.what₂.places.Pl) (g : M.G) (p : M.Pt) (y : M.Val) (hy : y ∈ woff R w p.1) :
     M.act g y ∈ woff R w (g • p).1 := by
@@ -514,9 +502,9 @@ theorem woff_act (w : D.what₂.places.Pl) (g : M.G) (p : M.Pt) (y : M.Val) (hy 
   rwa [_root_.mul_inv_rev, inv_inv, map_mul, Module.End.mul_apply] at h2
 
 /- English proof (translation)
-Establish `e : B.Z.tauOf w (B.pr ((B.ch.fm.tauOf w).symm τ)) = τ` using `(B.Z.tauOf w).apply_symm_apply τ`. Rewrite using `[gm_iK, e]`. Use `split_ifs`. Conclude with `Units.ext rfl`. Establish `h2 : (γ⁻¹).val = _` using `Units.inv_eq_of_mul_eq_one_left hγ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Units.ext (Matrix.ext fun a c => ?_)` and prove the remaining obligations. Use `show _ = D.what₂.embLL (B.emb τ ((γ⁻¹).val c a))`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gm_unit (w : D.what₂.places.Pl) {γ : GL (Fin (D.R.N i)) B.E} (hγ : γ.valᴴ * γ.val = 1) (τ : D.what₂.Tau) :
     Formalism.UG.bc D.what₂.embLL (gm R w ((B.ch.fm.tauOf w).symm τ) (Matrix.GeneralLinearGroup.map (R.iK _).toRingHom γ)) =
@@ -532,13 +520,11 @@ theorem gm_unit (w : D.what₂.places.Pl) {γ : GL (Fin (D.R.N i)) B.E} (hγ : �
     rfl
 
 /- English proof (translation)
-Take `⟨γ, ζ, hγ, hl, ha⟩` from `R.rat g`. Take `⟨k, hk, h⟩` from `(isOfFinOrder_iff_pow_eq_one).1 ((CommGroup.mem_torsion _).1 ζ.2)`. Use `⟨((ζ.1 : (D.what₂.LL)ˣ) : D.what₂.LL), k, hk, by rw [← Units.val_pow_eq_pow_val, h, Units.val_one], fun y => ?_⟩` and prove the remaining obligations. Take `⟨F, hF⟩` from `exists_pol R y`. Establish `h1` using `GlobalTheory.TilClass.trFr_fnOf B.emb D.what₂.embLL (B.lam i) γ ζ.1 F`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hF, ← map_smul]`. Establish `h2 : co M (M.act g y) = _` using `co_of_eq ((ha y).trans h1)`. Establish `h3 : co M y = _` using `co_of_eq hF`. Use `show co M (M.act g y) = _ • (coord R hS).mov w (fun v => M.loc v g) (co M y)`. Rewrite using `[h2, h3, mov_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hl, gm_unit R w hγ]`. Both sides reduce to the same expression. Use `S_on w hw φ hφ := (forms_iff w (fun c => (B.I.S i).Lsh c.1 ((B.I.S i).rep c)) φ hφ).trans (valIn_iff R w _ _ (fun c y => (valIs R hS).dual w hw c.1 _ y) φ)`. Use `B_on w hw hs v φ hφ := (forms_iff w (fun c => (B.J.A i).ker c.1 ((B.I.S i).rep c) (B.pr v)) φ hφ).trans (valIn_iff R w _ _ (fun c y => valB_single R hS hw hs v c.1 _ y) φ)`. Use `off_act w _ g p y := ⟨fun h => by`.
-
-Use `woff_act R w g⁻¹ (g • p) _ h` as an intermediate fact. Rewrite using `[inv_smul_smul, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] at this,` and apply the resulting hypothesis. Use `woff_act R w g p y⟩`. Use `S_off w hw φ hφ := (forms_iff w (fun c => (B.I.S i).Lsh c.1 ((B.I.S i).rep c)) φ hφ).trans (valIn_iff R w _ (fun p => (woff R w p.1 : Set M.Val)) (fun c y => woff_pt R hw c.1 _ y) φ)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem coord_ok (hS : B.Sees) : (coord R hS).Ok where
   act_co w _ g := by
@@ -569,7 +555,7 @@ theorem coord_ok (hS : B.Sees) : (coord R hS).Ok where
       (valIn_iff R w _ (fun p => (woff R w p.1 : Set M.Val)) (fun c y => woff_pt R hw c.1 _ y) φ)
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ R _ hS` and use `⟨coord R hS, coord_ok R hS, valIs R hS⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_coord : ∀ (D : D7) (u : D.what₂.Word) (B : Built.Dat D u) (i : ℕ) (sp : Split (B.J.A i) B.J.T) (M : PtModel B.ch i) (R : B.Real i sp M), i ≤ D.R.m → B.Sees → ∃ Co : M.Coord, Co.Ok ∧ R.ValIs Co :=
   fun _ _ _ _ _ _ R _ hS => ⟨coord R hS, coord_ok R hS, valIs R hS⟩

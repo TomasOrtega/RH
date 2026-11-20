@@ -9,14 +9,14 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.AntidiagMulDiagonal
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `levelInequalityOfSteps splitByLastSize schurRecursion_true diagStep singleBlockStep longBlockStep`.
+A detailed English derivation is pending.
 -/
 theorem one_level_inequality_split_by_size : Formalism.FourierDecayAlt.TB.OneLevel :=
   levelInequalityOfSteps splitByLastSize schurRecursion_true diagStep
     singleBlockStep longBlockStep
 
 /- English proof (translation)
-The claim follows from `towerBoundOfSteps one_level_inequality_split_by_size limitStep joint_theorem_A'`.
+A detailed English derivation is pending.
 -/
 theorem sharp_recursion_theorem_a : Formalism.FourierDecayAlt.TB.TheoremA :=
   towerBoundOfSteps one_level_inequality_split_by_size limitStep joint_theorem_A'

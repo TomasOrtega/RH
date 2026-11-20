@@ -8,11 +8,11 @@ noncomputable section
 namespace GlobalTheory.EulerAbs
 
 /- English proof (translation)
-Introduce `X V Y _ _ _ _ pf K hX θ θv hθ δ x`. Simplify using `only [twCent, Subgroup.mem_mk, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Use `congrArg (pf v) h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[map_mul, hθ]`. Introduce `h`. Apply `hX.ext` to reduce the goal to its premises. Introduce `w`. Conclude with `isEmptyElim w`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Simplify `h v` using `[map_mul, hθ]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_twCent_iff_forall_comp : ∀ {X V : Type} {Y : V → Type} [Group X] [TopologicalSpace X] [∀ v, Group (Y v)] [∀ v, TopologicalSpace (Y v)] (pf : ∀ v, X →* Y v) (K : ∀ v, Subgroup (Y v)), GlobalTheory.RestrMeas.IsRestrGroup (GlobalTheory.RestrMeas.noArch X) pf K → ∀ (θ : X →* X) (θv : ∀ v, Y v →* Y v), (∀ v x, pf v (θ x) = θv v (pf v x)) → ∀ (δ x : X), x ∈ twCent θ δ ↔ ∀ v, pf v x ∈ twCent (θv v) (pf v δ) := by
   intro X V Y _ _ _ _ pf K hX θ θv hθ δ x

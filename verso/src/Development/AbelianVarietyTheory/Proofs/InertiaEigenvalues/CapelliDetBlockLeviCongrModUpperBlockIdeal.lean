@@ -18,9 +18,9 @@ def upperSpan {r m : ℕ} (X : Fin (r + m) → Fin (r + m) → A) : Submodule �
   Submodule.span ℂ {y | ∃ (p : Fin r) (q : Fin m) (w : A), y = X (Fin.castAdd m p) (Fin.natAdd r q) * w}
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span (hS y hy a)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `add_mem hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ c hx`.
+A detailed English derivation is pending.
 -/
 theorem span_mul_right_mem {S : Set A} (hS : ∀ y ∈ S, ∀ a : A, y * a ∈ S) {x : A}
     (hx : x ∈ Submodule.span ℂ S) (a : A) : x * a ∈ Submodule.span ℂ S := by
@@ -31,17 +31,15 @@ theorem span_mul_right_mem {S : Set A} (hS : ∀ y ∈ S, ∀ a : A, y * a ∈ S
   | smul c x _ hx => rw [smul_mul_assoc]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨p, q, w, rfl⟩` from `hy`. Establish `h` using `hX (Fin.natAdd r s) (Fin.natAdd r t) (Fin.castAdd m p) (Fin.natAdd r q)`. Establish `hne : Fin.natAdd r t ≠ Fin.castAdd m p`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[if_neg hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h' : X (Fin.natAdd r s) (Fin.natAdd r t) * X (Fin.castAdd m p) (Fin.natAdd r q) = X (Fin.castAdd m p) (Fin.natAdd r q) * X (Fin.natAdd r s) (Fin.natAdd r t) + (0 - if Fin.natAdd r q = Fin.natAdd r s then X (Fin.castAdd m p) (Fin.natAdd r t) else 0)`. Rewrite using `[← h]`. Normalize the expressions using the abelian group laws. Rewrite using `[← mul_assoc, h', add_mul, mul_assoc]`. Use `add_mem (Submodule.subset_span ⟨p, q, _, rfl⟩) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[zero_sub, neg_mul]`. Use `neg_mem ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `Submodule.subset_span ⟨p, t, w, rfl⟩`. Rewrite using `[zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`.
-
-Consider the case `smul c x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ c hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem levi_mul_mem {r m : ℕ} {X : Fin (r + m) → Fin (r + m) → A} (hX : GlRel X) (s t : Fin m)
     {y : A} (hy : y ∈ upperSpan X) : X (Fin.natAdd r s) (Fin.natAdd r t) * y ∈ upperSpan X := by
@@ -68,13 +66,13 @@ theorem levi_mul_mem {r m : ℕ} {X : Fin (r + m) → Fin (r + m) → A} (hX : G
   | smul c x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro g _ h`. Take `⟨i, _⟩` from `h`. Conclude with `i.elim0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `g hg h z`. Take `⟨i, hi⟩` from `h`. Rewrite using `[List.ofFn_succ, List.prod_cons, mul_assoc]`. Distinguish the cases in `h0 : ∀ y, g 0 * y ∈ J`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `h0 _`. Establish `hp : ∀ y ∈ J, g 0 * y ∈ J` using `(hg 0).resolve_right h0`. Apply `hp` to reduce the goal to its premises. Use `ih (fun j => g j.succ) (fun j => hg _) ?_ z` and prove the remaining obligations. Consider the cases of `i using Fin.cases with`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact absurd hi h0`. Consider the case `succ j => exact ⟨j, hi⟩`.
+A detailed English derivation is pending.
 -/
 theorem prod_mul_mem (J : Submodule ℂ A) : ∀ (k : ℕ) (g : Fin k → A),
     (∀ i, (∀ y ∈ J, g i * y ∈ J) ∨ (∀ y, g i * y ∈ J)) → (∃ i, ∀ y, g i * y ∈ J) →
@@ -96,21 +94,21 @@ theorem prod_mul_mem (J : Submodule ℂ A) : ∀ (k : ℕ) (g : Fin k → A),
       | succ j => exact ⟨j, hi⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem qminor_cast {n t t' : ℕ} (X : Fin n → Fin n → A) (h : t' = t) (a b : Fin t → Fin n) (u : ℂ) :
     qminor X (a ∘ finCongr h) (b ∘ finCongr h) u = qminor X a b u := by
   subst h; rfl
 
 /- English proof (translation)
-Unfold `Tm`. Simplify using `[hf.eq_iff]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem Tm_restrict {n k : ℕ} (X : Fin n → Fin n → A) (f : Fin k → Fin n) (hf : Function.Injective f)
     (w : ℂ) (p q : Fin k) : Tm (fun p q => X (f p) (f q)) w p q = Tm X w (f p) (f q) := by
   unfold Tm; simp [hf.eq_iff]
 
 /- English proof (translation)
-Introduce `a b c d`. Use `hX (f a) (f b) (f c) (f d)` as an intermediate fact. Simplify `this` using `[hf.eq_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem glRel_restrict {n k : ℕ} {X : Fin n → Fin n → A} (hX : GlRel X) (f : Fin k → Fin n)
     (hf : Function.Injective f) : GlRel (fun p q => X (f p) (f q)) := by
@@ -119,9 +117,9 @@ theorem glRel_restrict {n k : ℕ} {X : Fin n → Fin n → A} (hX : GlRel X) (f
   simpa [hf.eq_iff] using this
 
 /- English proof (translation)
-Establish `hc` using `qminor_cast X (add_comm m r) (id : Fin (r + m) → Fin (r + m)) id u`. Use `set c : Fin (m + r) ≃ Fin (r + m) := finCongr (add_comm m r) with hcdef`. Use `set τ : Equiv.Perm (Fin (m + r)) := finAddFlip.trans (finCongr (add_comm r m)) with hτ`. Establish `he : (⇑(finAddFlip : Fin (m + r) ≃ Fin (r + m))) = ⇑c ∘ ⇑τ`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[c, τ]`. Rewrite using `[he, quantumMinorRowSkew_holds A (r + m) (m + r) X (⇑c) (⇑c ∘ ⇑τ) τ u, quantumMinorColSkew_holds A (r + m) (m + r) X hX ⇑c ⇑c τ u, ← mul_assoc, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one, one_mul]`. Conclude with `hc.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qdet_eq_flip {r m : ℕ} (X : Fin (r + m) → Fin (r + m) → A) (hX : GlRel X) (u : ℂ) :
     qdet X u = qminor X (finAddFlip : Fin (m + r) ≃ Fin (r + m)) finAddFlip u := by
@@ -136,9 +134,9 @@ theorem qdet_eq_flip {r m : ℕ} (X : Fin (r + m) → Fin (r + m) → A) (hX : G
   exact hc.symm
 
 /- English proof (translation)
-Unfold `Tm`. Rewrite using `[add_mul]`. Use `add_mem ?_ (levi_mul_mem hX s t hy)` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[← Algebra.smul_def]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ w hy`. Rewrite using `[zero_mul]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem Tm_levi_mem {r m : ℕ} {X : Fin (r + m) → Fin (r + m) → A} (hX : GlRel X) (w : ℂ) (s t : Fin m)
     {y : A} (hy : y ∈ upperSpan X) : Tm X w (Fin.natAdd r s) (Fin.natAdd r t) * y ∈ upperSpan X := by
@@ -150,9 +148,9 @@ theorem Tm_levi_mem {r m : ℕ} {X : Fin (r + m) → Fin (r + m) → A} (hX : Gl
   · rw [zero_mul]; exact zero_mem _
 
 /- English proof (translation)
-Unfold `Tm`. Establish `hne : Fin.castAdd m p ≠ Fin.natAdd r q`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hne, zero_add]`. Conclude with `Submodule.subset_span ⟨p, q, y, rfl⟩`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tm_upper_mem {r m : ℕ} (X : Fin (r + m) → Fin (r + m) → A) (w : ℂ) (p : Fin r) (q : Fin m)
     (y : A) : Tm X w (Fin.castAdd m p) (Fin.natAdd r q) * y ∈ upperSpan X := by
@@ -163,31 +161,29 @@ theorem Tm_upper_mem {r m : ℕ} (X : Fin (r + m) → Fin (r + m) → A) (w : �
   exact Submodule.subset_span ⟨p, q, y, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[qdet_eq_flip X hX u]`. Use `set G : Equiv.Perm (Fin (m + r)) → A := fun σ => ((Equiv.Perm.sign σ : ℤ) : A) * (List.ofFn fun k : Fin (m + r) => Tm X (u - (k : ℂ)) ((finAddFlip : Fin (m + r) ≃ Fin (r + m)) (σ k)) (finAddFlip k)).prod with hG`. Establish `h1 : qminor X (finAddFlip : Fin (m + r) ≃ Fin (r + m)) finAddFlip u = ∑ σ, G σ` using `rfl`. Rewrite using `[h1, ← Equiv.sum_comp (Equiv.permCongr finSumFinEquiv) G]`. Use `set S := (Finset.univ : Finset (Equiv.Perm (Fin m) × Equiv.Perm (Fin r))).image (fun p => Equiv.Perm.sumCongr p.1 p.2) with hS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_add_sum_compl S]`. Establish `hblock : ∑ π ∈ S, G (Equiv.permCongr finSumFinEquiv π) = qdet (fun p q : Fin m => X (Fin.natAdd r p) (Fin.natAdd r q)) u * qdet (fun p q : Fin r => X (Fin.castAdd m p) (Fin.castAdd m q)) (u - m)`. Establish `hinj : Set.InjOn (fun p : Equiv.Perm (Fin m) × Equiv.Perm (Fin r) => Equiv.Perm.sumCongr p.1 p.2) (Finset.univ : Finset (Equiv.Perm (Fin m) × Equiv.Perm (Fin r)))`. Introduce `x _ y _ hxy`. Conclude with `Equiv.Perm.sumCongrHom_injective (α := Fin m) (β := Fin r) hxy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS, Finset.sum_image hinj, Fintype.sum_prod_type]`. Unfold `qdet qminor`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun α _ => Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Simplify using `only [hG, Equiv.permCongr_def, Equiv.Perm.sign_symm_trans_trans, Equiv.Perm.sign_sumCongr, Units.val_mul, Int.cast_mul, List.ofFn_add, List.prod_append]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ∀ (a b : ℤ) (P Q : A), (a : A) * b * (P * Q) = a * P * (b * Q) by`. Introduce `a b P Q`. Rewrite using `[mul_assoc, ← mul_assoc (b : A), Int.cast_comm b P, mul_assoc, mul_assoc]]`. Use `congr 3`. Use `congrArg List.ofFn (funext fun i => ?_)` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (Fin.castLE (by omega) i : Fin (m + r)) = Fin.castAdd r i` using `rfl`. Simplify using `only [e, Equiv.trans_apply, finSumFinEquiv_symm_apply_castAdd, Equiv.sumCongr_apply, Sum.map_inl, finSumFinEquiv_apply_left, finAddFlip_apply_castAdd, Fin.val_castAdd, id]`. Conclude with `(Tm_restrict X (Fin.natAdd r) (fun a b h => Fin.ext (by simpa using congrArg Fin.val h)) _ _ _).symm`. Use `congrArg List.ofFn (funext fun i => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.trans_apply, finSumFinEquiv_symm_apply_natAdd, Equiv.sumCongr_apply, Sum.map_inr, finSumFinEquiv_apply_right, finAddFlip_apply_natAdd, Fin.val_natAdd, id]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Tm_restrict X (Fin.castAdd m) (fun a b h => Fin.ext (by simpa using congrArg Fin.val h))]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hblock, add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.sum_mem _ fun π hπ => ?_` and prove the remaining obligations. Establish `hπ' : π ∉ S` using `Finset.mem_compl.1 hπ`. Establish `hmaps : ¬ Set.MapsTo π (Set.range Sum.inl) (Set.range Sum.inl)`. Introduce `hm`. Take `⟨⟨α, β⟩, hαβ⟩` from `Equiv.Perm.mem_sumCongrHom_range_of_perm_mapsTo_inl hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Conclude with `hπ' (Finset.mem_image.2 ⟨(α, β), Finset.mem_univ _, hαβ⟩)`. Choose the witnesses or unpack the hypotheses as in `⟨i₀, l₀, hl₀⟩ : ∃ i₀ : Fin m, ∃ l : Fin r, π (Sum.inl i₀) = Sum.inr l := by`. Assume the negation of the conclusion as `hc`. Apply `hmaps` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the cases of `h : π (Sum.inl i) with`. Consider the case `inl j => exact ⟨j, rfl⟩`. Consider the case `inr l => exact absurd ⟨i, l, h⟩ hc`. Use `show ((Equiv.Perm.sign _ : ℤ) : A) * _ ∈ _`. Rewrite using `[← zsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `zsmul_mem ?_ _` and prove the remaining obligations. Rewrite using `[List.ofFn_add, List.prod_append]`. Use `prod_mul_mem _ m _ ?_ ⟨i₀, ?_⟩ _` and prove the remaining obligations. Introduce `i`. Establish `e : (Fin.castLE (by omega) i : Fin (m + r)) = Fin.castAdd r i` using `rfl`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [e, Equiv.permCongr_apply, finSumFinEquiv_symm_apply_castAdd, finAddFlip_apply_castAdd]`. Consider the cases of `h : π (Sum.inl i) with`. Consider the case `inl j => left`. Introduce `y hy`. Simplify using `only [finSumFinEquiv_apply_left, finAddFlip_apply_castAdd]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Tm_levi_mem hX _ _ _ hy`. Consider the case `inr l => right`. Introduce `y`. Simplify using `only [finSumFinEquiv_apply_right, finAddFlip_apply_natAdd]`. Conclude with `Tm_upper_mem X _ _ _ y`.
-
-Introduce `y`. Establish `e : (Fin.castLE (by omega) i₀ : Fin (m + r)) = Fin.castAdd r i₀` using `rfl`. Simplify using `only [e, Equiv.permCongr_apply, finSumFinEquiv_symm_apply_castAdd, finAddFlip_apply_castAdd, hl₀, finSumFinEquiv_apply_right, finAddFlip_apply_natAdd]`. Conclude with `Tm_upper_mem X _ _ _ y`.
+A detailed English derivation is pending.
 -/
 theorem two_block {r m : ℕ} (X : Fin (r + m) → Fin (r + m) → A) (hX : GlRel X) (u : ℂ) :
     qdet X u - qdet (fun p q : Fin m => X (Fin.natAdd r p) (Fin.natAdd r q)) u *
@@ -269,11 +265,11 @@ theorem two_block {r m : ℕ} (X : Fin (r + m) → Fin (r + m) → A) (hX : GlRe
     exact Tm_upper_mem X _ _ _ y
 
 /- English proof (translation)
-Establish `h` using `hX (Fin.natAdd r s) (Fin.natAdd r t) (Fin.castAdd m p) (Fin.castAdd m q)`. Establish `h1 : Fin.natAdd r t ≠ Fin.castAdd m p`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2 : Fin.castAdd m q ≠ Fin.natAdd r s`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[if_neg h1, if_neg h2, sub_zero]`. Conclude with `sub_eq_zero.1 h`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_comm {r m : ℕ} {X : Fin (r + m) → Fin (r + m) → A} (hX : GlRel X) (s t : Fin m)
     (p q : Fin r) :
@@ -287,7 +283,7 @@ theorem entry_comm {r m : ℕ} {X : Fin (r + m) → Fin (r + m) → A} (hX : GlR
   exact sub_eq_zero.1 h
 
 /- English proof (translation)
-Use `split_ifs`. Conclude with `Algebra.commute_algebraMap_left c z`. Conclude with `Commute.zero_left z`.
+A detailed English derivation is pending.
 -/
 theorem ite_algebraMap_comm (P : Prop) [Decidable P] (c : ℂ) (z : A) :
     Commute (if P then algebraMap ℂ A c else 0) z := by
@@ -296,9 +292,9 @@ theorem ite_algebraMap_comm (P : Prop) [Decidable P] (c : ℂ) (z : A) :
   · exact Commute.zero_left z
 
 /- English proof (translation)
-Unfold `qdet qminor`. Use `Commute.sum_left _ _ _ fun α _ => Commute.sum_right _ _ _ fun β _ => ?_` and prove the remaining obligations. Use `Commute.mul_left (Int.cast_commute _ _) (Commute.mul_right (Int.cast_commute _ _).symm ?_)` and prove the remaining obligations. Use `Commute.list_prod_left _ _ fun x hx => Commute.list_prod_right _ _ fun y hy => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hx`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩` from `List.mem_ofFn.1 hy`. Unfold `Tm`. Conclude with `Commute.add_left (ite_algebraMap_comm _ _ _) (Commute.add_right (ite_algebraMap_comm _ _ _).symm (entry_comm hX _ _ _ _))`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qdet_comm {r m : ℕ} {X : Fin (r + m) → Fin (r + m) → A} (hX : GlRel X) (v w : ℂ) :
     Commute (qdet (fun p q : Fin m => X (Fin.natAdd r p) (Fin.natAdd r q)) v)
@@ -314,7 +310,7 @@ theorem qdet_comm {r m : ℕ} {X : Fin (r + m) → Fin (r + m) → A} (hX : GlRe
     (Commute.add_right (ite_algebraMap_comm _ _ _).symm (entry_comm hX _ _ _ _))
 
 /- English proof (translation)
-Unfold `modExp`. Simplify using `only [Fintype.card_fin, Finset.sum_filter, Fin.sum_univ_castSucc, Fin.castSucc_lt_castSucc_iff, Fin.castSucc_lt_last, if_true]`. Establish `: ¬ Fin.last c < Fin.castSucc j` using `not_lt.2 (Fin.castSucc_lt_last j).le`. Simplify using `only [this, if_false]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem modExp_castSucc {c : ℕ} (n : Fin (c + 1) → ℕ) (j : Fin c) :
     modExp (fun i => Fin (n i)) (Fin.castSucc j) =
@@ -327,7 +323,7 @@ theorem modExp_castSucc {c : ℕ} (n : Fin (c + 1) → ℕ) (j : Fin c) :
   ring
 
 /- English proof (translation)
-Unfold `modExp`. Simplify using `only [Fintype.card_fin, Finset.sum_filter, Fin.sum_univ_castSucc, Fin.castSucc_lt_last, if_true, lt_irrefl, if_false]`. Establish `: ∀ i : Fin c, ¬ Fin.last c < Fin.castSucc i` using `fun i => not_lt.2 (Fin.castSucc_lt_last i).le`. Simplify using `only [this, if_false, Finset.sum_const_zero]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -342,33 +338,31 @@ theorem modExp_last {c : ℕ} (n : Fin (c + 1) → ℕ) :
   ring
 
 /- English proof (translation)
-Introduce `c`. Proceed by induction on `c with`. Consider the case `zero`. Introduce `N n h X hX u`. Establish `hN : N = 0` using `by rw [← h]; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hN` using the available equality. Establish `h1 : qdet X (u + (((0 : ℕ) : ℂ) - 1) / 2) = 1` using `by unfold qdet qminor; simp`. Rewrite using `[h1]`. Simplify using the standard rewrite rules. Consider the case `succ c ih`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `N n h X hX u`. Use `set r := ∑ i : Fin c, n (Fin.castSucc i) with hr`. Use `set m := n (Fin.last c) with hm`. Establish `hN : r + m = N` using `by rw [← h, Fin.sum_univ_castSucc]`. Substitute `hN` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set n' : Fin c → ℕ := fun i => n (Fin.castSucc i) with hn'`. Establish `hr' : ∑ i, n' i = r` using `rfl`. Establish `hL1 : ∀ (i : Fin c) (p : Fin (n (Fin.castSucc i))), stdBlocks n h ⟨Fin.castSucc i, p⟩ = Fin.castAdd m (stdBlocks n' hr' ⟨i, p⟩)`. Introduce `i p`. Apply `Fin.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[stdBlocks_val, Fin.val_castAdd, stdBlocks_val]`. Both sides reduce to the same expression. Establish `hL2 : ∀ q : Fin m, stdBlocks n h ⟨Fin.last c, q⟩ = Fin.natAdd r q`. Introduce `q`. Apply `Fin.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[stdBlocks_val, Fin.val_natAdd]`. Both sides reduce to the same expression. Establish `hblkF : ∀ p : Fin r, blk (stdBlocks n h) (Fin.castAdd m p) = Fin.castSucc (blk (stdBlocks n' hr') p)`. Introduce `p`. Take `⟨⟨i, p0⟩, rfl⟩` from `(stdBlocks n' hr').surjective p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hL1, blk_apply, blk_apply]`. Establish `hblkS : ∀ q : Fin m, blk (stdBlocks n h) (Fin.natAdd r q) = Fin.last c`. Introduce `q`. Rewrite using `[← hL2, blk_apply]`. Establish `hS : ∀ y ∈ {y : A | ∃ (p q : Fin (r + m)) (w : A), blk (stdBlocks n h) p < blk (stdBlocks n h) q ∧ y = X p q * w}, ∀ a : A, y * a ∈ {y : A | ∃ (p q : Fin (r + m)) (w : A), blk (stdBlocks n h) p < blk (stdBlocks n h) q ∧ y = X p q * w}`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨p, q, w, hpq, rfl⟩ a`. Conclude with `⟨p, q, w * a, hpq, mul_assoc _ _ _⟩`. Establish `hJ1 : upperSpan X ≤ Submodule.span ℂ {y : A | ∃ (p q : Fin (r + m)) (w : A), blk (stdBlocks n h) p < blk (stdBlocks n h) q ∧ y = X p q * w}`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, q, w, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.subset_span ⟨_, _, w, by rw [hblkF, hblkS]; exact Fin.castSucc_lt_last _, rfl⟩`. Establish `hJ2 : Submodule.span ℂ {y : A | ∃ (p q : Fin r) (w : A), blk (stdBlocks n' hr') p < blk (stdBlocks n' hr') q ∧ y = X (Fin.castAdd m p) (Fin.castAdd m q) * w} ≤ Submodule.span ℂ {y : A | ∃ (p q : Fin (r + m)) (w : A), blk (stdBlocks n h) p < blk (stdBlocks n h) q ∧ y = X p q * w}`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, q, w, hpq, rfl⟩`. Conclude with `Submodule.subset_span ⟨_, _, w, by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hblkF, hblkF]`. Conclude with `Fin.castSucc_lt_castSucc_iff.2 hpq, rfl⟩`. Establish `injC : Function.Injective (Fin.castAdd m : Fin r → Fin (r + m))` using `(fun a b h => Fin.ext (by simpa using congrArg Fin.val h))`. Establish `h3` using `ih n' hr' (fun p q : Fin r => X (Fin.castAdd m p) (Fin.castAdd m q)) (glRel_restrict hX _ injC) (u - (m : ℂ) / 2)`. Establish `h2` using `two_block X hX (u + (((r + m : ℕ) : ℂ) - 1) / 2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[(qdet_comm hX _ _).eq]`. Establish `hv : u - (m : ℂ) / 2 + ((r : ℂ) - 1) / 2 = u + (((r + m : ℕ) : ℂ) - 1) / 2 - m` using `by push_cast; ring`. Rewrite `h3` using `[hv]`. Rewrite using `[List.ofFn_succ', List.prod_concat]`. Establish `hF : (List.ofFn fun i : Fin c => qdet (fun p q : Fin (n (Fin.castSucc i)) => X (stdBlocks n h ⟨Fin.castSucc i, p⟩) (stdBlocks n h ⟨Fin.castSucc i, q⟩)) (u + ((n (Fin.castSucc i) : ℂ) - 1) / 2 - (modExp (fun i => Fin (n i)) (Fin.castSucc i) : ℂ) / 2)) = List.ofFn fun i : Fin c => …`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congrArg List.ofFn (funext fun i => ?_)` and prove the remaining obligations. Simplify using `only [hL1]`. Use `congr 1`. Rewrite using `[modExp_castSucc]`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hSb : qdet (fun p q : Fin m => X (stdBlocks n h ⟨Fin.last c, p⟩) (stdBlocks n h ⟨Fin.last c, q⟩)) (u + ((m : ℂ) - 1) / 2 - (modExp (fun i => Fin (n i)) (Fin.last c) : ℂ) / 2) = qdet (fun p q : Fin m => X (Fin.natAdd r p) (Fin.natAdd r q)) (u + (((r + m : ℕ) : ℂ) - 1) / 2)`. Simplify using `only [hL2]`. Use `congr 1`. Rewrite using `[modExp_last, ← hr]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hF, hSb]`. Use `(show ∀ (a b c d : A), a - c * d = (a - b * d) + (b - c) * d by intros; noncomm_ring) _ (qdet (fun p q : Fin r => X (Fin.castAdd m p) (Fin.castAdd m q)) (u + (((r + m : ℕ) : ℂ) - 1) / 2 - m)) _ _ ▸ ?_` and prove the remaining obligations. Conclude with `add_mem (hJ1 h2) (span_mul_right_mem hS (hJ2 h3) _)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem qdet_blocks : ∀ (c : ℕ) {N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n i = N) (X : Fin N → Fin N → A),
     GlRel X → ∀ u : ℂ, qdet X (u + ((N : ℂ) - 1) / 2) - (List.ofFn fun i : Fin c =>
@@ -467,7 +461,7 @@ theorem qdet_blocks : ∀ (c : ℕ) {N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n 
 end GlobalTheory.CapHC
 
 /- English proof (translation)
-Introduce `A _ _ c N n h X hX u`. Conclude with `GlobalTheory.CapHC.qdet_blocks c n h X hX u`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CapHC.qdet_blocks_congr : ∀ (A : Type) [Ring A] [Algebra ℂ A] {c N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n i = N) (X : Fin N → Fin N → A), Formalism.REAL.GlRel X → ∀ u : ℂ, Formalism.REAL.qdet X (u + ((N : ℂ) - 1) / 2) - (List.ofFn fun i : Fin c => Formalism.REAL.qdet (fun p q : Fin (n i) => X (stdBlocks n h ⟨i, p⟩) (stdBlocks n h ⟨i, q⟩)) (u + ((n i : ℂ) - 1) / 2 - (modExp (fun i => Fin (n i)) i : ℂ) / 2)).prod ∈ Submodule.span ℂ {y : A | ∃ (p q : Fin N) (w : A), blk (stdBlocks n h) p < blk (stdBlocks n h) q ∧ y = X p q * w} := by
   intro A _ _ c N n h X hX u

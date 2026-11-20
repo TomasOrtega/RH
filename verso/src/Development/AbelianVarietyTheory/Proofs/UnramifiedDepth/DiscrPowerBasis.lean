@@ -20,11 +20,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PowerBasisDiscr
 
 /- English proof (translation)
-Establish `h` using `Finset.prod_prod_Ioi_mul_eq_prod_prod_off_diag (fun i j : Fin n => v (a j - a i))`. Rewrite using `[Matrix.det_vandermonde, map_pow, Up.discr]`. Simplify using `only [map_prod]`. Rewrite using `[sq, ← Finset.prod_mul_distrib]`. Simplify using `only [← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ i : Fin n, Finset.univ.erase i = ({i}ᶜ : Finset (Fin n))`. Introduce `i`. Use extensionality with `j`. Simplify using the standard rewrite rules. Simplify using `only [h2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h]`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_sub_swap v (a i) (a j)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem val_discr {C : Type} [Field C] (v : Valuation C NNReal) {n : ℕ} (a : Fin n → C) :
     v (discr a) = v ((Matrix.vandermonde a).det ^ 2) := by
@@ -41,9 +41,9 @@ private theorem val_discr {C : Type} [Field C] (v : Valuation C NNReal) {n : ℕ
   rw [Valuation.map_sub_swap v (a i) (a j)]
 
 /- English proof (translation)
-Introduce `i j hij`. Assume the negation of the conclusion as `hne`. Apply `h` to reduce the goal to its premises. Use `Finset.prod_eq_zero (Finset.mem_univ i) (Finset.prod_eq_zero (i := j) ?_ ?_)` and prove the remaining obligations. Simplify using `[Ne.symm hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hij, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem inj_of_discr {C : Type} [Field C] {n : ℕ} (a : Fin n → C) (h : discr a ≠ 0) :
     Function.Injective a := by
@@ -55,9 +55,9 @@ private theorem inj_of_discr {C : Type} [Field C] {n : ℕ} (a : Fin n → C) (h
   · rw [hij, sub_self]
 
 /- English proof (translation)
-Use `⟨algebraMap R O (b.toMatrix b').det, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(b.isUnit_det b').map _`. Rewrite using `[← Matrix.det_transpose (b.toMatrix b'), RingHom.map_det, ← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.of_apply, Matrix.mul_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.transpose_apply, Module.Basis.toMatrix_apply]`. Use `conv_lhs => rw [← b.sum_repr (b' i)]`. Simplify using `only [map_sum, map_smul, Algebra.smul_def]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem det_change {R M O : Type} [CommRing R] [AddCommGroup M] [Module R M] [CommRing O]
     [Algebra R O] {n : ℕ} (b b' : Module.Basis (Fin n) R M) (f : Fin n → M →ₗ[R] O) :
@@ -73,19 +73,19 @@ private theorem det_change {R M O : Type} [CommRing R] [AddCommGroup M] [Module 
     simp only [map_sum, map_smul, Algebra.smul_def]
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ hv hp _ _ OE _ _ _ _ _ _ w t vd hvd α b hb`. Take `⟨b', hb'⟩` from `hvd`. Take `⟨u, hu, hdet⟩` from `det_change b b' (fun j => (tauExt ((t j : Emb (O := O) w.e) : OE →+* O)).toLinearMap ∘ₗ w.Ow.subtype)`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, AlgHom.toLinearMap_apply] at hdet`. Establish `hM : (Matrix.of fun i j => tauExt ((t j : Emb (O` using `O) w.e) : OE →+* O) (b i : ℤ_[p] ⊗[ℤ] OE)) = (Matrix.vandermonde fun j => tauExt ((t j : Emb (O := O) w.e) : OE →+* O) α)ᵀ := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Establish `h1 : tauExt ((t j : Emb (O` using `O) w.e) : OE →+* O) w.e = 1 := (t j).2`. Simplify using `[hb, h1, Matrix.vandermonde_apply]`. Establish `hvu : v (algebraMap O C u) = 1` using `hv.isUnit_iff_valuation_eq_one.1 hu`. Establish `key : v (discr fun j => algebraMap O C (tauExt ((t j : Emb (O` using `O) w.e) : OE →+* O) α)) = v (algebraMap O C (Matrix.det (Matrix.of fun i j => tauExt ((t j : Emb (O := O) w.e) : OE →+* O) (b' i : ℤ_[p] ⊗[ℤ] OE)) ^ 2)) := by`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[val_discr, hdet, hM, Matrix.det_transpose, mul_pow, map_mul, map_mul, map_pow, map_pow, map_pow, hvu, one_pow, _root_.one_mul, map_pow, map_pow, RingHom.map_det]`. Use `congr 3`. Use extensionality with `i j`. Simplify using `[Matrix.vandermonde_apply]`. Establish `hq0 : 0 < (v (algebraMap O C (p : O)) : ℝ)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: v (algebraMap O C (p : O)) ≠ 0`. Rewrite using `[map_natCast, Valuation.ne_zero_iff]`. Conclude with `(Fact.out : p.Prime).ne_zero` after adjusting the coercions. Conclude with `pos_iff_ne_zero.2 this` after adjusting the coercions. Establish `hq1 : (v (algebraMap O C (p : O)) : ℝ) < 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: v (algebraMap O C (p : O)) < 1` using `lt_of_le_of_ne (hv.map_le_one _) fun h => hp.out (hv.isUnit_iff_valuation_eq_one.2 h)`. Conclude with `this` after adjusting the coercions. Use `⟨?_, ?_, by rw [key, hb']⟩` and prove the remaining obligations. Use `Function.Injective.of_comp (f := algebraMap O C) (inj_of_discr _ fun h0 => ?_)` and prove the remaining obligations. Establish `h3` using `Real.rpow_pos_of_pos hq0 ((w.n : ℝ) * vd)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[← hb', ← key]`. Establish `h4 : discr (fun j => algebraMap O C (tauExt ((t j : Emb (O` using `O) w.e) : OE →+* O) α)) = 0 := h0`. Rewrite `h3` using `[h4]`. Simplify using `at h3`. Assume the negation of the conclusion as `hneg`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `Real.one_lt_rpow_of_pos_of_lt_one_of_neg hq0 hq1 (not_le.1 hneg)`. Rewrite `h3` using `[← hb']`. Establish `h4` using `hv.map_le_one (Matrix.det (Matrix.of fun i j => tauExt ((t j : Emb (O := O) w.e) : OE →+* O) (b' i : ℤ_[p] ⊗[ℤ] OE)) ^ 2)`. Conclude with `absurd h4 (not_le.2 (by exact_mod_cast h3))`.
+A detailed English derivation is pending.
 -/
 theorem discr_power_basis : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] (OE : Type) [CommRing OE] [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE] [StarRing OE] (w : Place p OE) (t : Fin w.n ≃ Emb (O := O) w.e) (vd : ℝ), HasVd p v w t vd → ∀ (α : ℤ_[p] ⊗[ℤ] OE) (b : Module.Basis (Fin w.n) ℤ_[p] w.Ow), (∀ k, (b k : ℤ_[p] ⊗[ℤ] OE) = w.e * α ^ (k : ℕ)) → Function.Injective (fun j => tauExt ((t j : Emb (O := O) w.e) : OE →+* O) α) ∧ 0 ≤ (w.n : ℝ) * vd ∧ (v (discr fun j => algebraMap O C (tauExt ((t j : Emb (O := O) w.e) : OE →+* O) α)) : ℝ) = (v (algebraMap O C (p : O)) : ℝ) ^ ((w.n : ℝ) * vd) := by
   intro p _ C _ _ _ v O _ _ hv hp _ _ OE _ _ _ _ _ _ w t vd hvd α b hb

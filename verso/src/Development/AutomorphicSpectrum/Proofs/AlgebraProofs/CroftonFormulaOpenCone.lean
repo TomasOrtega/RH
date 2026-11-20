@@ -11,25 +11,25 @@ open scoped ENNReal
 namespace GlobalTheory.CompanionTheory.Ar.Short.Crofton
 
 /- English proof (translation)
-Introduce `n e δ h W f hW hf hδ A hA hAs`. Establish `hle : e + 1 ≤ n` using `chowGroups_le hW hf hδ`. Establish `hδpos : 1 ≤ δ` using `ChowDegreePos.proof n (e + 1) δ W f (Nat.succ_pos e) hW hf hδ`. Establish `hfib` using `ConeFibreDegree.full n e δ h W f hW hf hδ`. Establish `hfin : ∀ᵐ π : Fin (e + 1) → Fin n → ℂ, ∀ᵐ w : EuclideanSpace ℂ (Fin (e + 1)), fibreCount h W π w ≠ ⊤` using `by filter_upwards [hfib] with π hπ filter_upwards [hπ] with w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hw]`. Conclude with `ENat.natCast_ne_top δ`. Take `⟨K, hK0, hKtop, hK⟩` from `GlobalTheory.T.hausdorff_cone_ball_measure n (e + 1) (Nat.succ_pos e) hle`. Establish `hball : Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ) (coneBall h W) < ⊤` using `ConeBallFinite.full n e h W f hW hf`. Establish `hmass : ∀ B : Set (EuclideanSpace ℂ (Fin n)), Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ) {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1 ∧ y ∈ coneSet h W ∩ B} < ⊤` using `fun B => lt_of_le_of_lt (measure_mono (show _ ⊆ coneBall h W from fun y hy => And.intro hy.1 hy.2.1)) hball`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ B : Set (EuclideanSpace ℂ (Fin n)), IsOpen B → IsScaleStable B → volume (Metric.ball (0 : EuclideanSpace ℂ (Fin (e + 1))) 1) * ∫⁻ π : Fin (e + 1) → Fin n → ℂ, matGauss π * cntOver (coneSet h W ∩ B) π (firstCoordVec (e + 1)) = K * (Measure.hausdorffMeasure ((2 * (e + 1) : …`. Introduce `B hB hBs`. Establish `h1` using `hK h W hW hfin B hB.measurableSet (fun y hy t ht => by`. Use `hBs y hy (t : ℂ) (by exact_mod_cast ht.ne')` as an intermediate fact. Simplify using `using this) (hmass B)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.T.ball_average_fibre_count n e (coneSet h W ∩ B) ((isScaleStable_coneSet h hW).inter hBs) (isSigmaCompact_cone_inter h W hB) id measurable_id`. Simplify using `only [id] at h2`. Rewrite using `[← h2, h1]`. Establish `hΓ : gaussM (e + 1) n Set.univ = ∫⁻ π : Fin (e + 1) → Fin n → ℂ, matGauss π`. Rewrite using `[gaussM, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcnt : ∫⁻ π : Fin (e + 1) → Fin n → ℂ, matGauss π * cntOver (coneSet h W ∩ Set.univ) π (firstCoordVec (e + 1)) = gaussM (e + 1) n Set.univ * (δ : ℝ≥0∞)`. Rewrite using `[hΓ, ← lintegral_mul_const' _ _ (ENNReal.natCast_ne_top δ)]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.T.ae_fibre_points_card_eq_degree n e δ h W f hW hf hδ] with π hπ`. Establish `: cntOver (coneSet h W ∩ Set.univ) π (firstCoordVec (e + 1)) = (δ : ℝ≥0∞)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Set.inter_univ, cntOver]`. Establish `: (ptsOver (coneSet h W) π (firstCoordVec (e + 1))).encard = δ` using `hπ`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hcb : {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1 ∧ y ∈ coneSet h W ∩ Set.univ} = coneBall h W`. Use extensionality with `y`. Simplify using `[coneBall, coneSet]`. Establish `hmf : Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ) (coneBall h W) = (δ : ℝ≥0∞) * planeMass n e` using `ConeMassOfFibre.full n (e + 1) δ h W hW hfib`. Establish `hV0 : volume (Metric.ball (0 : EuclideanSpace ℂ (Fin (e + 1))) 1) ≠ 0` using `(Metric.measure_ball_pos _ _ one_pos).ne'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVtop : volume (Metric.ball (0 : EuclideanSpace ℂ (Fin (e + 1))) 1) ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `hδ0 : (δ : ℝ≥0∞) ≠ 0` using `by exact_mod_cast (by omega : δ ≠ 0)`. Establish `hδtop : (δ : ℝ≥0∞) ≠ ⊤` using `ENNReal.natCast_ne_top δ`. Establish `hVΓ : volume (Metric.ball (0 : EuclideanSpace ℂ (Fin (e + 1))) 1) * gaussM (e + 1) n Set.univ = K * planeMass n e`. Establish `h0` using `key Set.univ isOpen_univ (fun _ _ _ _ => Set.mem_univ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h0` using `[hcnt, hcb, hmf]`. Use `(ENNReal.mul_left_inj hδ0 hδtop).1 ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, h0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA1` using `key A hA hAs`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `(ENNReal.mul_right_inj hV0 hVtop).1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem setCrofton : ∀ (n e δ : ℕ) (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ))
   (f : MvPolynomial (Fin (e + 1) × Fin n) ℂ), IsProjPrime W → IsChowForm W (e + 1) f → IsMultiHomog δ f →

@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_
 namespace LateralTheory.E.KillCokPf.Glue
 
 /- English proof (translation)
-Use `letI : ∀ k, Algebra D (D₁ k) := fun k => (e k).hom.toAlgebra`. Use `haveI : ∀ k, Algebra.Etale D (D₁ k) := he`. Establish `h : Algebra.Etale D (∀ k, D₁ k)` using `inferInstance`. Conclude with `h`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem et_pi {D : CommRingCat.{0}} {ι : Type} [Finite ι] (D₁ : ι → CommRingCat.{0}) (e : ∀ k, D ⟶ D₁ k)
     (he : ∀ k, Et (e k)) : Et (piMap D₁ e) := by
@@ -25,14 +25,14 @@ def PushGlue : Prop := Coprod → ∀ (q : ℕ) [NeZero q] (i : ℤ) {D Y' : Com
     pull _ (sch.map (Spec.map u)) (tw q i) m y ∈ Set.range (pull _ (sch.map (Spec.map φ'')) (tw q i) m)
 
 /- English proof (translation)
-Introduce `hC q _ i D Y' φ' m y ι _ D₁ e he hk`. Conclude with `⟨et_pi D₁ e he, hP hC q i φ' m y D₁ e he hk⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ProdGlue_of (hP : PushGlue) : ProdGlue := by
   intro hC q _ i D Y' φ' m y ι _ D₁ e he hk
   exact ⟨et_pi D₁ e he, hP hC q i φ' m y D₁ e he hk⟩
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.KillCokPf.KillCok_of hC hP (Assemble_of (ProdGlue_of hG))`.
+A detailed English derivation is pending.
 -/
 theorem KillCok_of' (hC : Coprod) (hP : LateralTheory.E.KillCokPf.Pointwise) (hG : PushGlue) : LateralTheory.E.DescLocPf.Fine.KillCok :=
   LateralTheory.E.KillCokPf.KillCok_of hC hP (Assemble_of (ProdGlue_of hG))

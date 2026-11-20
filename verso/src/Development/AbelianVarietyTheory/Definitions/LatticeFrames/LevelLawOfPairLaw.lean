@@ -14,30 +14,30 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {c : Com D} {s s' : PiLocalization₂ D}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Subgroup.one_mem _, by rw [map_one]; exact Subgroup.one_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem inFlag_one : s.InFlag 1 := ⟨Subgroup.one_mem _, by rw [map_one]; exact Subgroup.one_mem _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Subgroup.mul_mem _ h.1 h'.1, by rw [map_mul]; exact Subgroup.mul_mem _ h.2 h'.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem inFlag_mul {κ κ' : GA D s.V} (h : s.InFlag κ) (h' : s.InFlag κ') : s.InFlag (κ * κ') :=
   ⟨Subgroup.mul_mem _ h.1 h'.1, by rw [map_mul]; exact Subgroup.mul_mem _ h.2 h'.2⟩
 
 /- English proof (translation)
-The claim follows from `Lev.levChi_ne_zero _ _`.
+A detailed English derivation is pending.
 -/
 theorem ch_ne_zero (κ : GA D s.V) : s.ch κ ≠ 0 := Lev.levChi_ne_zero _ _
 
 /- English proof (translation)
-Unfold `PiLocalization₂.ch Lev.levChi`. Rewrite using `[map_mul, Lev.levFn_flag_mul h.2 h'.2, Units.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ch_mul {κ κ' : GA D s.V} (h : s.InFlag κ) (h' : s.InFlag κ') : s.ch (κ * κ') = s.ch κ * s.ch κ' := by
   unfold PiLocalization₂.ch Lev.levChi
   rw [map_mul, Lev.levFn_flag_mul h.2 h'.2, Units.val_mul]
 
 /- English proof (translation)
-Establish `h` using `ch_mul (s := s) inFlag_one inFlag_one`. Rewrite `h` using `[mul_one]`. Conclude with `(mul_eq_left₀ (ch_ne_zero _)).1 h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ch_one : s.ch 1 = 1 := by
   have h := ch_mul (s := s) inFlag_one inFlag_one
@@ -45,13 +45,13 @@ theorem ch_one : s.ch 1 = 1 := by
   exact (mul_eq_left₀ (ch_ne_zero _)).1 h.symm
 
 /- English proof (translation)
-Introduce `w g`. Rewrite using `[ch_one, mul_one, inv_one, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem moved_one (y : s.CC c) : Moved 1 y y := by
   intro w g; rw [ch_one, mul_one, inv_one, one_mul]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `LinearMap.ext fun w => funext fun g => ?_` and prove the remaining obligations. Conclude with `(ha w g).trans (hb w g).symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem moved_unique {κ : GA D s.V} {y a b : s.CC c} (ha : Moved κ y a) (hb : Moved κ y b) : a = b := by
   apply Subtype.ext
@@ -59,7 +59,7 @@ theorem moved_unique {κ : GA D s.V} {y a b : s.CC c} (ha : Moved κ y a) (hb : 
   exact (ha w g).trans (hb w g).symm
 
 /- English proof (translation)
-Introduce `w g`. Rewrite using `[hb w g, ha w (g * κ), ch_mul h h', mul_assoc g, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem moved_mul {κ κ' : GA D s.V} (h : s.InFlag κ) (h' : s.InFlag κ') {y a b : s.CC c}
     (ha : Moved κ' y a) (hb : Moved κ a b) : Moved (κ * κ') y b := by
@@ -67,20 +67,18 @@ theorem moved_mul {κ κ' : GA D s.V} (h : s.InFlag κ) (h' : s.InFlag κ') {y a
   rw [hb w g, ha w (g * κ), ch_mul h h', mul_assoc g, mul_inv]; ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1, h.2, rfl⟩, fun h => ⟨h.1, h.2.1⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem inFlag_iff (κ : GA D s.V) :
     s.InFlag κ ↔ Lev.IsLevelLift s.V s.β s.L (rTup s.β s.L (Lev.finE s.V κ)) κ :=
   ⟨fun h => ⟨h.1, h.2, rfl⟩, fun h => ⟨h.1, h.2.1⟩⟩
 
 /- English proof (translation)
-Take `⟨hr, ξ, hL⟩` from `hs.lev`. Establish `h1 : ext1 s.L.P.H s.L.P.chi (rTup s.β s.L (Lev.finE s.V κ)) = 1`. Establish `hb : s.L.P.H = ⊥` using `by rw [hL]; exact hP`. Unfold `ext1`. Use `split_ifs with hh`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `: (⟨_, hh⟩ : s.L.P.H) = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hh` as an intermediate fact. Rewrite `this` using `[hb]`. Conclude with `Subgroup.mem_bot.1 this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this, map_one]`. Both sides reduce to the same expression. Establish `h2 : ext1 (Lev.flagL s.L).P.H (Lev.flagL s.L).P.chi (rTup s.β (Lev.flagL s.L) (Lev.finE s.V κ)) = 1` using `Lev.subgroupCharExtension_one_apply _ _`. Unfold `PiLocalization₂.ch Lev.levChi levFn`. Rewrite using `[h1, h2]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ch_eq_levChi {j : ℕ} (hs : s.Is c j) (hP : c.P.H = ⊥) (κ : GA D s.V) :
     s.ch κ = Lev.levChi s.V s.β s.L κ := by
@@ -103,7 +101,7 @@ theorem ch_eq_levChi {j : ℕ} (hs : s.Is c j) (hP : c.P.H = ⊥) (κ : GA D s.V
   rfl
 
 /- English proof (translation)
-Take `⟨hr, ξ, hL⟩` from `hs.lev`. Establish `hb : s.L.P.H = ⊥` using `by rw [hL]; exact hP`. Establish `h : rTup s.β s.L (Lev.finE s.V κ) ∈ s.L.P.H` using `hκ.2.2`. Rewrite `h` using `[hb]`. Conclude with `Subgroup.mem_bot.1 h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rTup_eq_one {j : ℕ} (hs : s.Is c j) (hP : c.P.H = ⊥) {κ : GA D s.V} (hκ : κ ∈ Lev.levG s.V s.β s.L) :
     rTup s.β s.L (Lev.finE s.V κ) = 1 := by
@@ -114,9 +112,9 @@ theorem rTup_eq_one {j : ℕ} (hs : s.Is c j) (hP : c.P.H = ⊥) {κ : GA D s.V}
   exact Subgroup.mem_bot.1 h
 
 /- English proof (translation)
-Unfold `SameBlock`. Rewrite using `[h, h']`. Take `⟨hr, ξ, hL⟩` from `hs.lev`. Take `⟨hr', ξ', hL'⟩` from `hs'.lev`. Rewrite using `[hL, hL']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `HEq.rfl`.
+A detailed English derivation is pending.
 -/
 theorem sameBlock_of_one {j j' : ℕ} (hs : s.Is c j) (hs' : s'.Is c j') {κ : GA D s.V} {κ' : GA D s'.V}
     (h : rTup s.β s.L (Lev.finE s.V κ) = 1) (h' : rTup s'.β s'.L (Lev.finE s'.V κ') = 1) : SameBlock s s' κ κ' := by
@@ -128,9 +126,9 @@ theorem sameBlock_of_one {j j' : ℕ} (hs : s.Is c j) (hs' : s'.Is c j') {κ : G
   exact HEq.rfl
 
 /- English proof (translation)
-Take `⟨hr, ξ, hL⟩` from `hs.lev`. Take `⟨hr', ξ', hL'⟩` from `hs'.lev`. Establish `e : G0 s.L.Pg s.L.r = G0 s'.L.Pg s'.L.r` using `by rw [hL, hL']; rfl`. Take `⟨κ', h1, h2, h3⟩` from `hl (cast e (rTup s.β s.L (Lev.finE s.V κ)))`. Use `⟨κ', ⟨h1, h2⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `SameBlock`. Rewrite using `[h3]`. Conclude with `(cast_heq _ _).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sameBlock {j j' : ℕ} (hs : s.Is c j) (hs' : s'.Is c j') (hl : Lev.LiftsExist s'.V s'.β s'.L)
     (κ : GA D s.V) : ∃ κ', s'.InFlag κ' ∧ SameBlock s s' κ κ' := by
@@ -144,9 +142,9 @@ theorem exists_sameBlock {j j' : ℕ} (hs : s.Is c j) (hs' : s'.Is c j') (hl : L
   exact (cast_heq _ _).symm
 
 /- English proof (translation)
-Introduce `hg c hc k hk s s' hs hs' p hp hP φ`. Establish `H` using `h hg c hc k hk s s' hs hs' p hp hP`. Establish `o : rTup s.β s.L (Lev.finE s.V 1) = 1` using `by rw [map_one]; exact rTup_one`. Establish `o' : rTup s'.β s'.L (Lev.finE s'.V 1) = 1` using `by rw [map_one]; exact rTup_one`. Use `⟨fun κ hκ => ?_, fun κ hκ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `H κ 1 ⟨hκ.1, hκ.2.1⟩ inFlag_one (sameBlock_of_one hs hs' (rTup_eq_one hs hP hκ) o') φ` as an intermediate fact. Rewrite using `[this, ch_one, ch_eq_levChi hs hP, inv_one, mul_one]`. Use `H 1 κ inFlag_one ⟨hκ.1, hκ.2.1⟩ (sameBlock_of_one hs hs' o (rTup_eq_one hs' hP hκ)) φ` as an intermediate fact. Rewrite using `[this, ch_one, ch_eq_levChi hs' hP, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem levelLaw_of_pairLaw (h : PairLaw D) : ForStep D fun c _ s s' p => c.P.H = ⊥ → ∀ φ,
     VecLaw p.ω (Lev.levG s.V s.β s.L) (Lev.levChi s.V s.β s.L) (Lev.levG s'.V s'.β s'.L)
@@ -162,9 +160,9 @@ theorem levelLaw_of_pairLaw (h : PairLaw D) : ForStep D fun c _ s s' p => c.P.H 
     rw [this, ch_one, ch_eq_levChi hs' hP, one_mul]
 
 /- English proof (translation)
-Use `⟨fun k hk => ⟨hW.ωY k hk, ⟨W.xiR (), W.vac k, ?_⟩, hW.ptY k hk, hW.ItY k hk, hW.ioY k (by omega)⟩, ⟨hW.ωX, ⟨W.xiR (), W.vacX, ?_⟩, hW.ptX, hW.ItX, hW.ioX⟩⟩` and prove the remaining obligations. Use `hW.vY k hk` as an intermediate fact. Rewrite `this` using `[hQ]`. Conclude with `this`. Use `hW.vX` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hQ]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem steps_of_is (W : GlobalTheory.Core.Rk.Tower D) (hW : W.Is) (hQ : W.Q () = ∅) :
     (∀ k, k + 1 < D.R.m → (stepY W k).Is (k + 1)) ∧ (stepX W).Is D.R.m := by
@@ -178,7 +176,7 @@ theorem steps_of_is (W : GlobalTheory.Core.Rk.Tower D) (hW : W.Is) (hQ : W.Q () 
     exact this
 
 /- English proof (translation)
-Use `⟨fun j => ⟨r_le_Y j, W.xiR (), ?_⟩, ⟨r_le_X, W.xiR (), ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← hQ]`. Both sides reduce to the same expression. Rewrite using `[← hQ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lev_of_Q (W : GlobalTheory.Core.Rk.Tower D) (hQ : W.Q () = ∅) :
     (∀ j, ∃ hr ξ, (stageY W j).L = Lev.datY (stageY W j).V.rank D.R.r D.R.t j hr (comOf W).Pg ∅ (comOf W).P (comOf W).chi ξ Lev.Frm.B) ∧
@@ -189,7 +187,7 @@ theorem lev_of_Q (W : GlobalTheory.Core.Rk.Tower D) (hQ : W.Q () = ∅) :
   · rw [← hQ]; rfl
 
 /- English proof (translation)
-Use `Finset.eq_empty_of_forall_notMem fun PP hP => ?_` and prove the remaining obligations. Establish `h` using `(hW.chars.Q_ram () PP).2 (Or.inl hP)`. Rewrite `h` using `[hW.chars.xi_base]`. Conclude with `h fun x _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_empty (W : GlobalTheory.Core.Rk.Tower D) (hW : W.Is) : W.Q () = ∅ := by
   refine Finset.eq_empty_of_forall_notMem fun PP hP => ?_
@@ -198,7 +196,7 @@ theorem q_empty (W : GlobalTheory.Core.Rk.Tower D) (hW : W.Is) : W.Q () = ∅ :=
   exact h fun x _ => rfl
 
 /- English proof (translation)
-The claim follows from `steps_of_is W hW (q_empty W hW)`.
+A detailed English derivation is pending.
 -/
 theorem steps_of_is' (W : GlobalTheory.Core.Rk.Tower D) (hW : W.Is) :
     (∀ k, k + 1 < D.R.m → (stepY W k).Is (k + 1)) ∧ (stepX W).Is D.R.m := steps_of_is W hW (q_empty W hW)

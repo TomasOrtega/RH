@@ -6,17 +6,15 @@ open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 namespace GlobalTheory.CompanionTheory.Casselman
 
 /- English proof (translation)
-Introduce `_ _ hfact _ t hdom y hy`. Take `⟨-, hNl, hM⟩` from `hdom`. Take `⟨u, hu, b, hb, n, hn, hyf⟩` from `hfact y⁻¹ (J.inv_mem hy)`. Take `⟨huJ, -⟩` from `Subgroup.mem_inf.1 hu`. Take `⟨hbJ, x, rfl⟩` from `Subgroup.mem_inf.1 hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hnJ, hnN⟩` from `Subgroup.mem_inf.1 hn`. Establish `hy' : y = n⁻¹ * (leviEmb k (stdBlocks d hd) x)⁻¹ * u⁻¹`. Establish `: y = (y⁻¹)⁻¹` using `(inv_inv y).symm`. Rewrite using `[this, hyf]`. Use `group`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n⁻¹, (KN k N J d hd).inv_mem (Subgroup.mem_inf.2 ⟨hnJ, hnN⟩), ?_⟩` and prove the remaining obligations. Establish `hred : (n⁻¹)⁻¹ * y = (leviEmb k (stdBlocks d hd) x)⁻¹ * u⁻¹`. Rewrite using `[hy']`. Use `group`. Rewrite using `[hred]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g := leviEmb k (stdBlocks d hd) t with hg`. Establish `hxKM : x⁻¹ ∈ KM k N J d hd` using `(KM k N J d hd).inv_mem (show x ∈ (J).comap (leviEmb k (stdBlocks d hd)) from hbJ)`. Establish `h1 : g⁻¹ * (leviEmb k (stdBlocks d hd) x)⁻¹ * g ∈ J`. Establish `h2 : t⁻¹ * x⁻¹ * t ∈ KM k N J d hd` using `(hM _ hxKM).2`. Establish `h3 : leviEmb k (stdBlocks d hd) (t⁻¹ * x⁻¹ * t) ∈ J` using `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `h3` using `[hg, map_mul, map_inv]`. Establish `h4 : g⁻¹ * u⁻¹ * g ∈ J` using `(Subgroup.mem_inf.1 (hNl _ ((KNl k N J d hd).inv_mem hu))).1`. Use `Subgroup.mem_inf.2 ⟨J.mul_mem (J.inv_mem hbJ) (J.inv_mem huJ), ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_map.2 ⟨(g⁻¹ * (leviEmb k (stdBlocks d hd) x)⁻¹ * g) * (g⁻¹ * u⁻¹ * g), J.mul_mem h1 h4, ?_⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.coe_coe, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`.
-
-Use `group`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_mem_KN_inv_mul_mem_inf_map_conj
     (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]

@@ -7,7 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 namespace UpperTheory.Gal.KunnethLefschetz
 
 /- English proof (translation)
-Establish `hF : Flat p'` using `inferInstance`. Take `⟨x, hx⟩` from `p'.surjective (IsLocalRing.closedPoint K)`. Establish `h` using `p'.one_le_finrank_map x`. Rewrite `h` using `[hx]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem rank_pos {K : Type} [Field K] {Z' : Scheme.{0}} (p' : Z' ⟶ TranscendenceTraces.gp K) [IsFinite p'] [Surjective p'] :
     1 ≤ p'.finrank (IsLocalRing.closedPoint K) := by
@@ -17,15 +17,13 @@ private theorem rank_pos {K : Type} [Field K] {Z' : Scheme.{0}} (p' : Z' ⟶ Tra
   rwa [hx] at h
 
 /- English proof (translation)
-Introduce `hT l _ X Y π hfin hsurj hint hloc hl n`. Take `⟨hW, -, hD, hTr⟩` from `hT`. Use `haveI := hfin`. Use `haveI := hsurj`. Use `haveI := hint`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hw : TranscendenceTraces.IsNwt π (TranscendenceTraces.nwt π)` using `hW π hloc`. Set `g : TranscendenceTraces.gp (Y.residueField (genericPoint Y)) ⟶ Y` to `Y.fromSpecResidueField (genericPoint Y)`. Establish `hpt : TranscendenceTraces.pt g = genericPoint Y` using `Scheme.fromSpecResidueField_apply _ _`. Establish `hpush` using `hD (Y.residueField (genericPoint Y)) (pullback.fst π g) (pullback.snd π g) π g (IsPullback.of_hasPullback π g) hloc hpt`. Establish `hd` using `rank_pos (pullback.snd π g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `htr` using `hTr l n 0 π (TranscendenceTraces.nwt π) _ hw.1 hl hpush`. Introduce `a b hab`. Establish `key : ∀ c, ((Scheme.Hom.finrank (pullback.snd π g) (IsLocalRing.closedPoint (Y.residueField (genericPoint Y))) : ℤ) : ℚ_[l]) • c = TranscendenceTraces.trHQ l π (TranscendenceTraces.nwt π) n 0 (pb l π n c)`. Introduce `c`. Use `LinearMap.congr_fun htr c` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.id_apply] at this`. Rewrite using `[this, Int.cast_smul_eq_zsmul]`. Establish `hne : ((Scheme.Hom.finrank (pullback.snd π g) (IsLocalRing.closedPoint (Y.residueField (genericPoint Y))) : ℤ) : ℚ_[l]) ≠ 0`. Use `norm_cast`. Use linear arithmetic over natural numbers and integers.
-
-Apply `smul_right_injective _ hne` to reduce the goal to its premises. Simplify using `only [key, hab]`.
+Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem injL_holds : InjL := by
   intro hT l _ X Y π hfin hsurj hint hloc hl n

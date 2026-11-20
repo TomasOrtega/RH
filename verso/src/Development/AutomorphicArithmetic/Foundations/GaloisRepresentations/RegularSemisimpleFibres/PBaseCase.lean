@@ -10,7 +10,7 @@ private def selfPl {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (
   ⟨v, ⟨Ideal.ext fun _ => Iff.rfl⟩⟩
 
 /- English proof (translation)
-Use `congrFun ((HeightOneSpectrum.denseRange_algebraMap K v).equalizer (continuous_completionMap v (selfPl v).1) continuous_id (funext fun y => ?_)) x` and prove the remaining obligations. Simplify using `only [Function.comp_apply, id]`. Rewrite using `[completionMap_algebraMap]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cm_id {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K))
     (x : v.adicCompletion K) : completionMap v (selfPl v).1 x = x := by
@@ -21,7 +21,7 @@ private theorem cm_id {K : Type} [Field K] [NumberField K] (v : HeightOneSpectru
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_refl {R : Type} [CommRing R] {n : ℕ} (g : GL (Fin n) R) :
     Matrix.GeneralLinearGroup.map (RingEquiv.refl R).toRingHom g = g := by
@@ -29,11 +29,11 @@ private theorem map_refl {R : Type} [CommRing R] {n : ℕ} (g : GL (Fin n) R) :
   simp
 
 /- English proof (translation)
-Introduce `hC hI K Ω _ _ _ _ _ n π A Θ v e e' he he' τ τ' hτ hτ' a ha`. Establish `H : ∃ (r : 𝓀[v.adicCompletion K] →+* 𝓀[v.adicCompletion K]) (j : AlgebraicClosure 𝓀[v.adicCompletion K] ≃+* AlgebraicClosure 𝓀[v.adicCompletion K]), (∀ (x y : 𝒪[v.adicCompletion K]), (y : v.adicCompletion K) = x → IsLocalRing.residue _ y = r (IsLocalRing.residue _ x)) ∧ (∀ x, j ( …`. Take `⟨r, j, h1, h2, h3⟩` from `hC K K Ω A v (selfPl v) e e' he he'`. Conclude with `⟨r, j, fun x y h => h1 x y (h.trans (cm_id v _).symm), h2, h3⟩`. Take `⟨r, j, h1, h2, h3⟩` from `H`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨E⟩` from `GlobalTheory.CuspRep.LocUniq.isLocComp_unique π v τ τ' hτ hτ'`. Establish `hθ : (Θ.comp e'.toMonoidHom).comp j.toMonoidHom = Θ.comp e.toMonoidHom`. Use extensionality with `x`. Simplify using `[h3]`. Use `hI (v.adicCompletion K) (v.adicCompletion K) (RingEquiv.refl _) (fun _ => Iff.rfl) j ?_ (Θ.comp e'.toMonoidHom) n τ.V τ'.V τ.ρ τ'.ρ E.toLinearEquiv ?_ a (by rw [hθ]; exact ha)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x y hxy`. Rewrite using `[h2, h1 x y hxy]`. Introduce `g x`. Rewrite using `[map_refl]`. Conclude with `LinearMap.congr_fun (E.isIntertwining' g) x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.baseCase :
     ResEmbCompat → LblIso → BaseCase := by

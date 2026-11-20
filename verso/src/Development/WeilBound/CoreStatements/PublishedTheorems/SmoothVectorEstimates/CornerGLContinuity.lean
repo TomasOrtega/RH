@@ -12,7 +12,7 @@ namespace CornerGLContinuity
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem glmap_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T)
     (x : GL (Fin a) R) :
@@ -20,7 +20,7 @@ theorem glmap_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R 
   ext i j; rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin a) (Fin a) S) i j - s ((1 : Matrix (Fin a) (Fin a) R) i j) + s ((1 + posM Subtype.val y) i j) = (1 + posM Subtype.val fun t => s (y t)) i j`. Simplify using `only [posM, Matrix.add_apply, Matrix.sum_apply, map_add, map_sum, Matrix.single_apply, apply_ite s, map_zero]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem cornerGL_blkU {R S : Type} [CommRing R] [CommRing S] (s : R →ₙ+* S) (k : ℕ) (y : UnipotentBlockColumnIndex a k k → R) :
     cornerGL a s (blkU y) = blkU fun t => s (y t) := by
@@ -33,14 +33,14 @@ theorem cornerGL_blkU {R S : Type} [CommRing R] [CommRing S] (s : R →ₙ+* S) 
   abel
 
 /- English proof (translation)
-The claim follows from `glmap_comp _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem cLoc_eq (w : Pl E) (x : GA E a) :
     cLoc w x = GeneralLinearGroup.map (pLoc E w) (GeneralLinearGroup.map (pFin E) x) :=
   glmap_comp _ _ x
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => FiniteAdeleRing.ext _ fun w => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun x : GL (Fin a) (w.adicCompletion E) => x i j) (H w)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gf_ext {g h : GL (Fin a) (Af E)}
     (H : ∀ w, GeneralLinearGroup.map (pLoc E w) g = GeneralLinearGroup.map (pLoc E w) h) : g = h := by
@@ -48,9 +48,9 @@ theorem gf_ext {g h : GL (Fin a) (Af E)}
   exact congrArg (fun x : GL (Fin a) (w.adicCompletion E) => x i j) (H w)
 
 /- English proof (translation)
-Use `gf_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hk, mul_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pLoc_locGL_of_ne hw, mul_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locGL_mul_comm {v : Pl E} (h : GL (Fin a) (v.adicCompletion E)) {k : GL (Fin a) (Af E)}
     (hk : GeneralLinearGroup.map (pLoc E v) k = 1) : locGL E a v h * k = k * locGL E a v h := by
@@ -63,7 +63,7 @@ theorem locGL_mul_comm {v : Pl E} (h : GL (Fin a) (v.adicCompletion E)) {k : GL 
 
 open Classical in
 /- English proof (translation)
-The claim follows from `| [], _ => by simp | w :: l, h => by rw [List.map_cons, List.prod_cons, map_mul, map_pLoc_prod g v l (List.nodup_cons.1 h).2] by_cases hv : v = w · subst hv rw [pLoc_locGL, if_neg (List.nodup_cons.1 h).1, mul_one] simp · rw [pLoc_locGL_of_ne hv, one_mul] simp [hv]`.
+A detailed English derivation is pending.
 -/
 theorem map_pLoc_prod (g : GA E a) (v : Pl E) : ∀ l : List (Pl E), l.Nodup →
     GeneralLinearGroup.map (pLoc E v) (l.map fun w => locGL E a w (cLoc w g)).prod =
@@ -79,7 +79,7 @@ theorem map_pLoc_prod (g : GA E a) (v : Pl E) : ∀ l : List (Pl E), l.Nodup →
       simp [hv]
 
 /- English proof (translation)
-Use `Continuous.units_map _ ?_` and prove the remaining obligations. Conclude with `continuous_pi fun i => continuous_pi fun j => hp.comp ((continuous_apply j).comp (continuous_apply i))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_glmap {R S : Type} [CommRing R] [CommRing S] [TopologicalSpace R] [TopologicalSpace S]
     [IsTopologicalRing R] [IsTopologicalRing S] (p : R →+* S) (hp : Continuous p) :
@@ -88,7 +88,7 @@ theorem continuous_glmap {R S : Type} [CommRing R] [CommRing S] [TopologicalSpac
   exact continuous_pi fun i => continuous_pi fun j => hp.comp ((continuous_apply j).comp (continuous_apply i))
 
 /- English proof (translation)
-Use `Continuous.units_map _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun x : Matrix (Fin a) (Fin a) R => 1 - matN a s 1 + matN a s x`. Use `continuous_const.add ?_` and prove the remaining obligations. Conclude with `continuous_pi fun i => continuous_pi fun j => hs.comp ((continuous_apply j).comp (continuous_apply i))`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_cornerGL' {R S : Type} [CommRing R] [CommRing S] [TopologicalSpace R] [TopologicalSpace S]
     [IsTopologicalRing R] [IsTopologicalRing S] (s : R →ₙ+* S) (hs : Continuous s) :
@@ -102,17 +102,15 @@ end CornerGLContinuity
 
 open CornerGLContinuity in
 /- English proof (translation)
-Introduce `E _ _ _ a`. Establish `hpInf : Continuous (pInf E)` using `(continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)).comp continuous_fst`. Establish `hpLoc : ∀ w : Pl E, Continuous (pLoc E w)` using `fun w => RestrictedProduct.continuous_eval (R := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) (A := fun v => (v.adicCompletionIntegers E : Set (v.adicCompletion E))) w`. Establish `hfin : Continuous (finGL E a)` using `continuous_cornerGL' _ (continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))`. Establish `hinf : Continuous (infGL E a)` using `continuous_cornerGL' _ ((continuous_infEq E).prodMk continuous_const : Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun y => pInf_infGL y, fun w y => ?_, fun w u => pInf_finGL _, fun w u => ?_, fun w v u hvw => ?_, fun g h h1 h2 => ?_, fun g hg y => ?_, fun w g hg u => ?_, fun k y => cornerGL_blkU _ k y, fun w k y => ?_, fun S g => ?_, ?_, fun w => ?_, fun w => ?_, hinf⟩` and prove the remaining obligations. Rewrite using `[cLoc_eq, pFin_infGL, map_one]`. Rewrite using `[cLoc_eq, fl, MonoidHom.comp_apply, pFin_finGL, pLoc_locGL]`. Rewrite using `[cLoc_eq, fl, MonoidHom.comp_apply, pFin_finGL, pLoc_locGL_of_ne hvw]`. Conclude with `ga_ext h1 (gf_ext fun w => by rw [← cLoc_eq, ← cLoc_eq]; exact h2 w)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg' : GeneralLinearGroup.map (pInf E) g = 1` using `hg`. Conclude with `ga_ext (by rw [map_mul, map_mul, hg', pInf_infGL, one_mul, mul_one]) (by rw [map_mul, map_mul, pFin_infGL, one_mul, mul_one])`. Establish `hg' : GeneralLinearGroup.map (pLoc E w) (GeneralLinearGroup.map (pFin E) g) = 1`. Rewrite using `[← cLoc_eq]`. Conclude with `hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `ga_ext (by rw [map_mul, map_mul, fl, MonoidHom.comp_apply, pInf_finGL, one_mul, mul_one]) (by rw [map_mul, map_mul, fl, MonoidHom.comp_apply, pFin_finGL]; exact (locGL_mul_comm u hg').symm)`. Rewrite using `[fl, MonoidHom.comp_apply, locGL, cornerGL_blkU, finGL, cornerGL_blkU]`. Use `⟨infGL E a (cInf g) * finGL E a (S.toList.map fun w => locGL E a w (cLoc w g)).prod, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pInf E) _ = _`. Rewrite using `[map_mul, pInf_infGL, pInf_finGL, mul_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Rewrite using `[cLoc_eq, map_mul, map_mul, pFin_infGL, pFin_finGL, map_one, one_mul, map_pLoc_prod g w _ S.nodup_toList, if_pos (Finset.mem_toList.2 hw)]`. Introduce `w hw`. Rewrite using `[cLoc_eq, map_mul, map_mul, pFin_infGL, pFin_finGL, map_one, one_mul, map_pLoc_prod g w _ S.nodup_toList, if_neg (fun h => hw (Finset.mem_toList.1 h))]`. Conclude with `continuous_glmap _ hpInf`.
-
-Conclude with `continuous_glmap _ ((hpLoc w).comp continuous_snd)`. Conclude with `hfin.comp (continuous_cornerGL' _ (CuspSub.continuous_sLoc w))`.
+A detailed English derivation is pending.
 -/
 theorem standard_stabiliser_bound : G0 := by
   intro E _ _ _ a

@@ -12,11 +12,11 @@ namespace GlobalTheory.CompanionTheory.ConvTest
 variable (X : Ctx)
 
 /- English proof (translation)
-Introduce `y hy`. Assume the negation of the conclusion as `hmem`. Apply `hy` to reduce the goal to its premises. Establish `hz : ∀ z : X.G, φ z * ψ (z⁻¹ * y) = 0`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Establish `h1 : φ z ≠ 0` using `left_ne_zero_of_mul hne`. Establish `h2 : ψ (z⁻¹ * y) ≠ 0` using `right_ne_zero_of_mul hne`. Apply `hmem` to reduce the goal to its premises. Use `Set.mem_mul.2 ⟨z, subset_tsupport _ h1, z⁻¹ * y, subset_tsupport _ h2, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `group`. Simplify using `[cv, hz]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem support_cv_subset (φ ψ : X.G → ℂ) :
     Function.support (cv X.μ φ ψ) ⊆ tsupport φ * tsupport ψ := by
@@ -34,11 +34,11 @@ theorem support_cv_subset (φ ψ : X.G → ℂ) :
   simp [cv, hz]
 
 /- English proof (translation)
-Establish `hK : IsCompact (tsupport φ)` using `hφ.2`. Establish `hEq : cv X.μ φ ψ = fun y => ∫ z in tsupport φ, φ z * ψ (z⁻¹ * y) ∂X.μ`. Use function extensionality and compare the values at `y`. Use `(setIntegral_eq_integral_of_forall_compl_eq_zero ?_).symm` and prove the remaining obligations. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[image_eq_zero_of_notMem_tsupport hz]`. Rewrite using `[hEq]`. Use `continuous_parametric_integral_of_continuous (f := fun (y z : X.G) => φ z * ψ (z⁻¹ * y)) ?_ hK` and prove the remaining obligations. Establish `h1 : Continuous fun p : X.G × X.G => φ p.2` using `hφ.1.comp continuous_snd`. Establish `h2 : Continuous fun p : X.G × X.G => ψ (p.2⁻¹ * p.1)` using `hψ.1.comp (continuous_snd.inv.mul continuous_fst)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.mul h2`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cv {φ ψ : X.G → ℂ} (hφ : Tst φ) (hψ : Tst ψ) : Continuous (cv X.μ φ ψ) := by
   have hK : IsCompact (tsupport φ) := hφ.2
@@ -56,7 +56,7 @@ theorem continuous_cv {φ ψ : X.G → ℂ} (hφ : Tst φ) (hψ : Tst ψ) : Cont
   exact h1.mul h2
 
 /- English proof (translation)
-Establish `hc : Continuous fun z : X.G => ψ (z⁻¹ * y)` using `hψ.1.comp (continuous_inv.mul continuous_const)`. Establish `hs : HasCompactSupport fun z : X.G => ψ (z⁻¹ * y)` using `hψ.2.comp_homeomorph ((Homeomorph.inv X.G).trans (Homeomorph.mulRight y))`. Conclude with `(hc.integrable_of_hasCompactSupport hs).norm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_reflect {ψ : X.G → ℂ} (hψ : Tst ψ) (y : X.G) :
     Integrable (fun z => ‖ψ (z⁻¹ * y)‖) X.μ := by
@@ -67,11 +67,9 @@ theorem integrable_reflect {ψ : X.G → ℂ} (hψ : Tst ψ) (y : X.G) :
   exact (hc.integrable_of_hasCompactSupport hs).norm
 
 /- English proof (translation)
-Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 1)`. Establish `hshift : ∫ z, ‖ψ (z⁻¹ * y)‖ ∂X.μ = ∫ z, ‖ψ z⁻¹‖ ∂X.μ`. Establish `h` using `integral_mul_left_eq_self (μ := X.μ) (fun z => ‖ψ z⁻¹‖) y⁻¹`. Simplify `h` using `[mul_inv_rev]`. Establish `hle : ‖cv X.μ φ ψ y‖ ≤ ∫ z, B * ‖ψ (z⁻¹ * y)‖ ∂X.μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `norm_integral_le_of_norm_le ((integrable_reflect X hψ y).const_mul B) ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun z => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hB z) (norm_nonneg _)`. Rewrite `hle` using `[integral_const_mul, hshift]`.
-
-Conclude with `hle`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_cv_le {φ ψ : X.G → ℂ} (hψ : Tst ψ) (B : ℝ) (hB : ∀ z, ‖φ z‖ ≤ B) (y : X.G) :
     ‖cv X.μ φ ψ y‖ ≤ B * ∫ z, ‖ψ z⁻¹‖ ∂X.μ := by
@@ -88,9 +86,9 @@ theorem norm_cv_le {φ ψ : X.G → ℂ} (hψ : Tst ψ) (B : ℝ) (hB : ∀ z, �
   exact hle
 
 /- English proof (translation)
-Introduce `X φ ψ hφ hψ`. Establish `hsupp` using `support_cv_subset X φ ψ`. Use `⟨⟨continuous_cv X hφ hψ, ?_⟩, hsupp, fun B hB y => norm_cv_le X hψ B hB y⟩` and prove the remaining obligations. Establish `hK : IsCompact (tsupport φ * tsupport ψ)` using `IsCompact.mul hφ.2 hψ.2`. Use `HasCompactSupport.intro hK fun y hy => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hy (hsupp hne)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem cvTest : CvTest := by
   intro X φ ψ hφ hψ

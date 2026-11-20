@@ -5,18 +5,18 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Use extensionality with `A B g`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem etFF_eq_toMorphismProperty :
     EtFF = RingHom.toMorphismProperty (fun f => RingHom.Etale f ∧ RingHom.FaithfullyFlat f) := by
   ext A B g; rfl
 
 /- English proof (translation)
-Establish `he : Etale (Spec.map g) ↔ g.hom.Etale` using `HasRingHomProperty.Spec_iff`. Establish `hs : Surjective (Spec.map g) ↔ Function.Surjective (PrimeSpectrum.comap g.hom)`. Rewrite using `[surjective_iff]`. Both sides reduce to the same expression. Rewrite using `[he, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `g.hom.Etale ∧ g.hom.FaithfullyFlat ↔ _`. Rewrite using `[RingHom.FaithfullyFlat.iff_flat_and_comap_surjective]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, -, h2⟩`. Conclude with `⟨h1, h2⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, (RingHom.Etale.iff_flat_and_formallyUnramified.1 h1).1, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem etFF_iff_spec {A B : CommRingCat.{0}} (g : A ⟶ B) :
     EtFF g ↔ Etale (Spec.map g) ∧ Surjective (Spec.map g) := by
@@ -31,7 +31,7 @@ theorem etFF_iff_spec {A B : CommRingCat.{0}} (g : A ⟶ B) :
   · rintro ⟨h1, h2⟩; exact ⟨h1, (RingHom.Etale.iff_flat_and_formallyUnramified.1 h1).1, h2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨RingHom.Etale.of_bijective Function.bijective_id, RingHom.FaithfullyFlat.of_bijective Function.bijective_id⟩ comp_mem f g hf hg := by change (f ≫ g).hom.Etale ∧ (f ≫ g).hom.FaithfullyFlat rw [CommRingCat.hom_comp] exact ⟨RingHom.Etale.stableUnderComposition _ _ hf.1 hg.1, RingHo …`.
+Supply the required witnesses or components.
 -/
 theorem etFF_isMultiplicative : EtFF.IsMultiplicative where
   id_mem A := ⟨RingHom.Etale.of_bijective Function.bijective_id,
@@ -43,7 +43,7 @@ theorem etFF_isMultiplicative : EtFF.IsMultiplicative where
       RingHom.FaithfullyFlat.stableUnderComposition _ _ hf.2 hg.2⟩
 
 /- English proof (translation)
-Rewrite using `[etFF_eq_toMorphismProperty]`. Conclude with `RingHom.isStableUnderCobaseChange_toMorphismProperty_iff.2 (RingHom.Etale.isStableUnderBaseChange.and RingHom.FaithfullyFlat.isStableUnderBaseChange)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etFF_isStableUnderCobaseChange : EtFF.IsStableUnderCobaseChange := by
   rw [etFF_eq_toMorphismProperty]
@@ -51,7 +51,7 @@ theorem etFF_isStableUnderCobaseChange : EtFF.IsStableUnderCobaseChange := by
     (RingHom.Etale.isStableUnderBaseChange.and RingHom.FaithfullyFlat.isStableUnderBaseChange)
 
 /- English proof (translation)
-Rewrite using `[etFF_eq_toMorphismProperty]`. Conclude with `RingHom.toMorphismProperty_respectsIso_iff.1 (RingHom.Etale.respectsIso.and RingHom.FaithfullyFlat.respectsIso)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etFF_respectsIso : EtFF.RespectsIso := by
   rw [etFF_eq_toMorphismProperty]
@@ -59,7 +59,7 @@ theorem etFF_respectsIso : EtFF.RespectsIso := by
     (RingHom.Etale.respectsIso.and RingHom.FaithfullyFlat.respectsIso)
 
 /- English proof (translation)
-Use `letI := g.hom.toAlgebra`. Use `haveI : Algebra.Etale A B := RingHom.Etale.toAlgebra hg.1`. Conclude with `Algebra.FiniteType.trans hA inferInstance`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem finiteType_of_etFF {A B : CommRingCat.{0}} (g : A ⟶ B) (hg : EtFF g)
     (hA : Algebra.FiniteType ℤ A) : Algebra.FiniteType ℤ B := by
@@ -68,7 +68,7 @@ theorem finiteType_of_etFF {A B : CommRingCat.{0}} (g : A ⟶ B) (hg : EtFF g)
   exact Algebra.FiniteType.trans hA inferInstance
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨etFF_isMultiplicative, etFF_isStableUnderCobaseChange, etFF_respectsIso⟩, fun _ _ g => etFF_iff_spec g, fun _ _ g hg hA => finiteType_of_etFF g hg hA⟩`.
+Supply the required witnesses or components.
 -/
 theorem etFF_basic :
     (EtFF.IsMultiplicative ∧ EtFF.IsStableUnderCobaseChange ∧ EtFF.RespectsIso) ∧

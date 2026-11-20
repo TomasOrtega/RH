@@ -43,7 +43,7 @@ def twIn {n : ℕ} (r : L →ₗ[O] (Fin n → O)) : TwMod s L →ₗ[O] (Fin n 
     rw [map_mul, s.symm_apply_apply]
 
 /- English proof (translation)
-Establish `hx : f (r (show L from x)) = (show L from x)` using `LinearMap.congr_fun h _`. Use `show f (fun i => s (s.symm (r (show L from x) i))) = (show L from x)`. Simplify using `using hx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem twOut_twIn {n : ℕ} (f : (Fin n → O) →ₗ[O] L) (r : L →ₗ[O] (Fin n → O)) (h : f ∘ₗ r = LinearMap.id)
     (x : TwMod s L) : twOut s L f (twIn s L r x) = x := by
@@ -52,7 +52,7 @@ theorem twOut_twIn {n : ℕ} (f : (Fin n → O) →ₗ[O] L) (r : L →ₗ[O] (F
   simpa using hx
 
 /- English proof (translation)
-Introduce `x`. Take `⟨v, hv⟩` from `hf (show L from x)`. Use `⟨fun i => s.symm (v i), ?_⟩` and prove the remaining obligations. Use `show f (fun i => s (s.symm (v i))) = (show L from x)`. Simplify using `using hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem twOut_surjective {n : ℕ} (f : (Fin n → O) →ₗ[O] L) (hf : Function.Surjective f) :
     Function.Surjective (twOut s L f) := by
@@ -63,14 +63,14 @@ theorem twOut_surjective {n : ℕ} (f : (Fin n → O) →ₗ[O] L) (hf : Functio
   simpa using hv
 
 /- English proof (translation)
-Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' O L`. Conclude with `Module.Finite.of_surjective _ (twOut_surjective s L f hf)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_twMod [Module.Finite O L] : Module.Finite O (TwMod s L) := by
   obtain ⟨n, f, hf⟩ := Module.Finite.exists_fin' O L
   exact Module.Finite.of_surjective _ (twOut_surjective s L f hf)
 
 /- English proof (translation)
-Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' O L`. Take `⟨r, hr⟩` from `Module.projective_lifting_property f LinearMap.id hf`. Conclude with `Module.Projective.of_split (twIn s L r) (twOut s L f) (LinearMap.ext (twOut_twIn s L f r hr))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem projective_twMod [Module.Finite O L] [Module.Projective O L] : Module.Projective O (TwMod s L) := by
   obtain ⟨n, f, hf⟩ := Module.Finite.exists_fin' O L
@@ -79,14 +79,14 @@ theorem projective_twMod [Module.Finite O L] [Module.Projective O L] : Module.Pr
     (LinearMap.ext (twOut_twIn s L f r hr))
 
 /- English proof (translation)
-The claim follows from `(rank_eq_of_equiv_equiv (s : O → O) (AddEquiv.refl (TwMod s L) : TwMod s L ≃+ L) s.bijective (fun _ _ => rfl))`.
+A detailed English derivation is pending.
 -/
 theorem rank_twMod : Module.rank O (TwMod s L) = Module.rank O L :=
   (rank_eq_of_equiv_equiv (s : O → O) (AddEquiv.refl (TwMod s L) : TwMod s L ≃+ L) s.bijective
     (fun _ _ => rfl))
 
 /- English proof (translation)
-Rewrite using `[Module.finrank, Module.finrank, rank_twMod]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_twMod : Module.finrank O (TwMod s L) = Module.finrank O L := by
   rw [Module.finrank, Module.finrank, rank_twMod]
@@ -97,7 +97,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Introduce `O _ _ s L _ _ _ _`. Conclude with `⟨finite_twMod s L, projective_twMod s L, finrank_twMod s L⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.TwModule.twMod_finite_projective_finrank :
     ∀ (O : Type) [CommRing O] [IsDomain O] (s : O ≃+* O) (L : Type) [AddCommGroup L] [Module O L]

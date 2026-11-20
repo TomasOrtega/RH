@@ -10,9 +10,9 @@ open scoped MvPowerSeries.WithPiTopology
 variable {σ τ υ R : Type*} [CommRing R]
 
 /- English proof (translation)
-Establish `h : constantCoeff (killCompl e (a s)) = constantCoeff (a s)`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, ← coeff_zero_eq_constantCoeff_apply, coeff_killCompl, Finsupp.embDomain_zero]`. Rewrite using `[h]`. Conclude with `ha.const_coeff s`. Use `coeff_zero d := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(ha.coeff_zero (Finsupp.embDomain e d)).subset ?_` and prove the remaining obligations. Introduce `s hs`. Simplify `hs` using `[coeff_killCompl]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasSubst_killCompl (e : υ ↪ τ) {a : σ → MvPowerSeries τ R} (ha : HasSubst a) :
     HasSubst (fun s => killCompl e (a s)) where
@@ -27,9 +27,9 @@ theorem hasSubst_killCompl (e : υ ↪ τ) {a : σ → MvPowerSeries τ R} (ha :
     simpa [coeff_killCompl] using hs
 
 /- English proof (translation)
-Apply `continuous_pi` to reduce the goal to its premises. Introduce `x`. Establish `: (fun p : MvPowerSeries τ R => (killCompl e p) x) = fun p => coeff (Finsupp.embDomain e x) p`. Use function extensionality and compare the values at `p`. Conclude with `coeff_killCompl p x`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `WithPiTopology.continuous_coeff R _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_killCompl [UniformSpace R] [DiscreteUniformity R] (e : υ ↪ τ) :
     Continuous (killCompl (R := R) e : MvPowerSeries τ R → MvPowerSeries υ R) := by
@@ -41,7 +41,7 @@ theorem continuous_killCompl [UniformSpace R] [DiscreteUniformity R] (e : υ ↪
   exact WithPiTopology.continuous_coeff R _
 
 /- English proof (translation)
-Set `_ : UniformSpace R` to `⊥`. Establish `_ : DiscreteUniformity R` using `⟨rfl⟩`. Establish `hb` using `hasSubst_killCompl e ha`. Rewrite using `[comp_subst_apply ha (continuous_killCompl e) f, ← coe_substAlgHom hb, substAlgHom_eq_aeval]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem killCompl_subst (e : υ ↪ τ) {a : σ → MvPowerSeries τ R} (ha : HasSubst a)
     (f : MvPowerSeries σ R) :
@@ -52,7 +52,7 @@ theorem killCompl_subst (e : υ ↪ τ) {a : σ → MvPowerSeries τ R} (ha : Ha
   rw [comp_subst_apply ha (continuous_killCompl e) f, ← coe_substAlgHom hb, substAlgHom_eq_aeval]
 
 /- English proof (translation)
-Use `killCompl_subst e (HasSubst.X (S := R) (σ := τ)) f` as an intermediate fact. Rewrite `this` using `[subst_self]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killCompl_eq_subst (e : υ ↪ τ) (f : MvPowerSeries τ R) :
     killCompl e f = subst (fun t => killCompl e (X t : MvPowerSeries τ R)) f := by

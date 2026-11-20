@@ -11,7 +11,7 @@ noncomputable section
 namespace NormalDoublePointsGeneric
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_quotient]`. Use `iSup_le fun l => ?_` and prove the remaining obligations. Take `⟨K, hKW, hK⟩` from `h l.head.1.asIdeal l.head.1.isPrime l.head.2`. Set `l' : LTSeries (PrimeSpectrum.zeroLocus (R` to `R) K) := ⟨l.length, fun i => ⟨(l i).1, show (K : Set R) ⊆ (l i).1.asIdeal from hKW.trans (l.head_le i)⟩, fun i => l.step i⟩`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation.
 -/
 theorem ringKrullDim_quotient_le_of_primes {R : Type*} [CommRing R] (I : Ideal R) (k : WithBot ℕ∞)
     (h : ∀ W : Ideal R, W.IsPrime → I ≤ W → ∃ K : Ideal R, K ≤ W ∧ ringKrullDim (R ⧸ K) ≤ k) :
@@ -28,14 +28,14 @@ theorem ringKrullDim_quotient_le_of_primes {R : Type*} [CommRing R] (I : Ideal R
     _ ≤ k := hK
 
 /- English proof (translation)
-The claim follows from `ringKrullDim_le_of_surjective (Ideal.Quotient.factor h) (Ideal.Quotient.factor_surjective h)`.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quotient_anti {R : Type*} [CommRing R] {K K' : Ideal R} (h : K ≤ K') :
     ringKrullDim (R ⧸ K') ≤ ringKrullDim (R ⧸ K) :=
   ringKrullDim_le_of_surjective (Ideal.Quotient.factor h) (Ideal.Quotient.factor_surjective h)
 
 /- English proof (translation)
-Establish `hne : Ideal.Quotient.mk p g ≠ 0` using `by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor (mem_nonZeroDivisors_of_ne_zero hne)`. Establish `e : ((MvPolynomial (Fin n) ℂ ⧸ p) ⧸ Ideal.span {Ideal.Quotient.mk p g}) ≃+* MvPolynomial (Fin n) ℂ ⧸ (p ⊔ Ideal.span {g})` using `(Ideal.quotEquivOfEq (by rw [Ideal.map_span, Set.image_singleton])).trans (DoubleQuot.quotQuotEquivQuotSup p (Ideal.span {g}))`. Rewrite `h` using `[ringKrullDim_eq_of_ringEquiv e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ringKrullDim_quot_sup_span_add_one_le {n : ℕ} (p : Ideal (MvPolynomial (Fin n) ℂ)) [p.IsPrime]
     {g : MvPolynomial (Fin n) ℂ} (hg : g ∉ p) :
@@ -54,7 +54,7 @@ def belowNat : ℕ → WithBot ℕ∞
   | e + 1 => (e : WithBot ℕ∞)
 
 /- English proof (translation)
-Consider the cases of `d with`. Consider the case `zero => exact WithBot.bot_lt_coe _`. Consider the case `succ e => show ((e : ℕ) : WithBot ℕ∞) < ((e + 1 : ℕ) : WithBot ℕ∞)`. Conclude with `Nat.lt_succ_self e` after adjusting the coercions.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem belowNat_lt (d : ℕ) : belowNat d < (d : WithBot ℕ∞) := by
   cases d with
@@ -64,11 +64,11 @@ theorem belowNat_lt (d : ℕ) : belowNat d < (d : WithBot ℕ∞) := by
     exact_mod_cast Nat.lt_succ_self e
 
 /- English proof (translation)
-Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact bot_le`. Consider the case `coe e`. Proceed by induction on `e using ENat.recTopCoe with`. Consider the case `top`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-It suffices to derive a contradiction. Establish `h2 : ((⊤ : ℕ∞) : WithBot ℕ∞) ≤ (((d + 1 : ℕ) : ℕ∞) : WithBot ℕ∞)`. Rewrite `h` using `[← WithBot.coe_one, ← WithBot.coe_add, top_add, ← WithBot.coe_add, top_add]`. Conclude with `h` after adjusting the coercions. Conclude with `absurd (WithBot.coe_le_coe.1 h2) (by simp)`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `coe k`. Establish `h2 : k + 1 + 1 ≤ d + 1` using `by exact_mod_cast h`. Consider the cases of `d with`. Consider the case `zero => omega`. Consider the case `succ e => show ((k : ℕ∞) : WithBot ℕ∞) ≤ ((e : ℕ) : WithBot ℕ∞); exact_mod_cast (by omega : k ≤ e)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem le_belowNat_of_add_two_le {x : WithBot ℕ∞} {d : ℕ}
     (h : x + 1 + 1 ≤ ((d + 1 : ℕ) : WithBot ℕ∞)) : x ≤ belowNat d := by
@@ -89,35 +89,31 @@ theorem le_belowNat_of_add_two_le {x : WithBot ℕ∞} {d : ℕ}
       | succ e => show ((k : ℕ∞) : WithBot ℕ∞) ≤ ((e : ℕ) : WithBot ℕ∞); exact_mod_cast (by omega : k ≤ e)
 
 /- English proof (translation)
-Introduce `n d J u M hJ hdim hu`. Use `choose a b hbJ hab using M.birational`. Use `set bb : MvPolynomial (Fin n) ℂ := ∏ i, b i with hbb`. Establish `hbbJ : bb ∉ J` using `fun h => by`. Take `⟨i, -, hi⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hJ)).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hbJ i hi`. Use `set K : Ideal (MvPolynomial (Fin n) ℂ) := J ⊔ Ideal.span {bb} with hK`. Establish `hfin : K.minimalPrimes.Finite` using `Ideal.finite_minimalPrimes_of_isNoetherianRing _ K`. Use `set S : Finset (Ideal (MvPolynomial (Fin n) ℂ)) := hfin.toFinset.filter (fun P => linForm u ∉ P) with hS`. Establish `memS : ∀ P, P ∈ S ↔ P ∈ K.minimalPrimes ∧ linForm u ∉ P` using `fun P => by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hS]`. Use `⟨S.inf (fun P => P ⊔ Ideal.span {linForm u}), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Finset.le_inf fun P hP => sup_le_sup_right ?_ _` and prove the remaining obligations. Conclude with `le_sup_left.trans ((memS P).1 hP).1.1.2`. Use `hJ` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdimK : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ K) + 1 ≤ ((d + 1 : ℕ) : WithBot ℕ∞)` using `hdim ▸ ringKrullDim_quot_sup_span_add_one_le J hbbJ`. Use `lt_of_le_of_lt (ringKrullDim_quotient_le_of_primes _ (belowNat d) fun W hW hIW => ?_) (belowNat_lt d)` and prove the remaining obligations. Take `⟨P, hPS, hPW⟩` from `(hW.inf_le').1 hIW`. Use `⟨_, hPW, le_belowNat_of_add_two_le ?_⟩` and prove the remaining obligations. Take `⟨hPm, huP⟩` from `(memS P).1 hPS`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hPm.1.1` as an intermediate fact. Establish `h1` using `ringKrullDim_quot_sup_span_add_one_le P huP`. Establish `h2 : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ P) ≤ ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ K)` using `ringKrullDim_quotient_anti hPm.1.2`. Combine the equalities or inequalities in the displayed calculation. Introduce `q _ hqu hqI`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `evu : ∀ x, eval x (linForm u) = linEval u x` using `fun x => by simp [linForm, linEval]`. Establish `hqP : ∀ P ∈ S, q ∉ zeroSet P`. Introduce `P hP hqP`. Apply `hqI` to reduce the goal to its premises. Introduce `f hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf' : f ∈ P ⊔ Ideal.span {linForm u}` using `(Finset.inf_le (f := fun P => P ⊔ Ideal.span {linForm u}) hP) hf`. Take `⟨p, hp, r, hr, rfl⟩` from `Submodule.mem_sup.1 hf'`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hr`. Simplify using `[hqP p hp, evu, hqu]`. Establish `hclosed : ∀ P : Ideal (MvPolynomial (Fin n) ℂ), IsClosed (zeroSet P)` using `fun P => by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: zeroSet P = ⋂ f ∈ P, {x : Fin n → ℂ | eval x f = 0}`. Use extensionality with `x`. Simplify using `[zeroSet]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun f _ => isClosed_eq (MvPolynomial.continuous_eval f) continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨⋂ P ∈ S, (zeroSet P)ᶜ, (Filter.biInter_finset_mem S).2 fun P hP => (hclosed P).isOpen_compl.mem_nhds (hqP P hP), ?_⟩` and prove the remaining obligations. Introduce `w hw w' hw' hww hxN hne`. Use `set x := IndefiniteRowSideFullHecke.ComplexSets.firstCoords w with hx`. Establish `hwx : (w ∘ Sum.inl) = x` using `rfl`. Establish `hw'x : (w' ∘ Sum.inl) = x` using `by rw [hww]; rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hxJ : ∀ f ∈ J, eval x f = 0` using `fun f hf => by`. Establish `hf' : rename Sum.inl f ∈ M.ideal`. Rewrite `hf` using `[← M.comap_eq]`. Conclude with `hf`. Use `hw _ hf'` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[eval_rename, hwx]`. Then use the resulting hypothesis. Establish `hbx : eval x bb = 0`. Assume the negation of the conclusion as `hb`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Break down `s with i | i` into its components or cases. Conclude with `congrFun hww i`. Establish `hbi : eval x (b i) ≠ 0` using `fun h0 => hb (by`. Rewrite using `[hbb, map_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) h0)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hw _ (hab i)`. Establish `e2` using `hw' _ (hab i)`. Simplify using `only [map_sub, map_mul, eval_rename, eval_X, hwx, hw'x] at e1 e2`. Conclude with `mul_left_cancel₀ hbi (by linear_combination e1 - e2)`. Establish `hKx : K ≤ RingHom.ker (eval x)` using `sup_le (fun f hf => RingHom.mem_ker.2 (hxJ f hf)) (Ideal.span_le.2 (Set.singleton_subset_iff.2 (RingHom.mem_ker.2 hbx)))`.
-
-Establish `: (RingHom.ker (eval x)).IsPrime` using `RingHom.ker_isPrime _`. Take `⟨P, hPm, hPx⟩` from `Ideal.exists_minimalPrimes_le hKx`. Distinguish the cases in `huP : linForm u ∈ P`. Rewrite using `[← evu]`. Conclude with `RingHom.mem_ker.1 (hPx huP)`.
-
-It suffices to derive a contradiction. Establish `hPS : P ∈ S` using `(memS P).2 ⟨hPm, huP⟩`. Establish `hxP : x ∈ zeroSet P` using `fun f hf => RingHom.mem_ker.1 (hPx hf)`. Conclude with `(Set.mem_iInter₂.1 hxN P hPS) hxP`.
+A detailed English derivation is pending.
 -/
 theorem proof : NormalDoublePointsGeneric.Statement := by
   intro n d J u M hJ hdim hu

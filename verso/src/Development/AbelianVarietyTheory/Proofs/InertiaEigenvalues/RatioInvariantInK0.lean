@@ -9,11 +9,11 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.Per.FracInv
 
 /- English proof (translation)
-Introduce `l _ P AI T K a b hb h`. Establish `hF : IsField P.R.BdR` using `GlobalTheory.Per.FontaineBound.isField_of_tied T`. Establish `h' : ∀ g, b * (P.PD K).actB g a = (P.PD K).actB g b * a`. Introduce `g`. Use `h g.1 g.2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[P.PD_actB, P.PD_actB, mul_comm, this, mul_comm]`. Take `⟨c, hc⟩` from `GlobalTheory.Per.FontaineBound.frac_dR (P.PD K) hF ((P.PD K).ι b) ((P.PD K).ι a) (fun h0 => hb ((P.PD K).ι_inj (h0.trans (map_zero _).symm))) (fun g => by rw [← (P.PD K).ι_comm, ← (P.PD K).ι_comm, ← map_mul, ← map_mul, h' g])`. Establish `hcU : (c : Om l) ∈ MaximalUnramifiedExtension l`. Use `GlobalTheory.FracAlg.mem_Kur_of_ratio l P AI T a b (c : Om l) hb ?_` and prove the remaining obligations. Establish `h1` using `hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[P.PD_ι, P.PD_ι]`. Conclude with `h1`. Use `⟨⟨c, c.2, hcU⟩, (P.PD K).ι_inj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, AlgHom.commutes, hc]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tied_frac_invariant : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI →
     ∀ (K : FinExt l) (a b : P.R.B), b ≠ 0 → (∀ g ∈ GK K, P.actQ g a * b = a * P.actQ g b) →

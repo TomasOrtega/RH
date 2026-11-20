@@ -7,7 +7,7 @@ namespace GlobalTheory.JR.HermInv
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
 /- English proof (translation)
-The claim follows from `Unram.star_fix x`.
+A detailed English derivation is pending.
 -/
 theorem star_algebraMap [Unram F E] (x : F) : star (algebraMap F E x) = algebraMap F E x := Unram.star_fix x
 
@@ -18,17 +18,17 @@ def starLin [Unram F E] : E →ₗ[F] E where
     simp only [Algebra.smul_def, RingHom.id_apply, star_mul, star_algebraMap, mul_comm]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hli : LinearIndependent F ![(1 : E), y]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using `only [zero_smul, add_zero] at hst`. Conclude with `⟨(smul_eq_zero.mp hst).resolve_right one_ne_zero, rfl⟩`. It suffices to derive a contradiction.
+Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hne (-(s / t))` to reduce the goal to its premises. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `htE : algebraMap F E t ≠ 0` using `by simpa using ht`. Rewrite using `[map_neg, map_div₀]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-hst`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ (Unram.finrank_eq (F := F) (E := E))`. Establish `htop` using `hli.span_eq_top_of_card_eq_finrank' (by simp [Unram.finrank_eq (F := F) (E := E)])`. Take `⟨z, hz⟩` from `Unram.star_ne (F := F) (E := E)`. Apply `hz` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : Submodule.span F (Set.range ![(1 : E), y]) ≤ LinearMap.ker (starLin (F` using `F) (E := E) - LinearMap.id) := by`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `fin_cases i`. Simplify using `[starLin]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[starLin, hy]`. Use `hle (htop ▸ Submodule.mem_top : z ∈ Submodule.span F (Set.range ![(1 : E), y]))` as an intermediate fact. Simplify `this` using `[starLin, sub_eq_zero]`.
+A detailed English derivation is pending.
 -/
 theorem fixed_mem_range [Unram F E] {y : E} (hy : star y = y) : ∃ x : F, algebraMap F E x = y := by
   by_contra hne
@@ -64,11 +64,11 @@ section Gen
 variable {r : ℕ} {K : Type} [CommRing K]
 
 /- English proof (translation)
-Establish `h0` using `Matrix.aeval_self_charpoly Y.1`. Rewrite `h0` using `[Polynomial.aeval_eq_sum_range, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, Finset.sum_range_succ, Finset.sum_range]`. Establish `hc : Y.1.charpoly.coeff r = 1`. Use `(Matrix.charpoly_monic Y.1).coeff_natDegree` as an intermediate fact. Rewrite `this` using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h0` using `[hc, one_smul, add_comm]`. Establish `hA : Y.1 ^ r = -∑ i : Fin r, Y.1.charpoly.coeff i • Y.1 ^ (i : ℕ)` using `eq_neg_iff_add_eq_zero.mpr h0`. Rewrite using `[hA, Matrix.neg_mulVec]`. Use `congr 1`. Use extensionality with `j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [mulVec, dotProduct, Bm, of_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem pow_r_mulVec [Nontrivial K] (Y : Gl r K) :
     Y.1 ^ r *ᵥ Y.2.1 = -(Bm Y *ᵥ fun i : Fin r => Y.1.charpoly.coeff i) := by
@@ -89,9 +89,9 @@ theorem pow_r_mulVec [Nontrivial K] (Y : Gl r K) :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Establish `: (Y.1 ^ k * Bm Y) = Matrix.of fun i (j : Fin r) => ((Y.1 ^ (k + (j : ℕ))) *ᵥ Y.2.1) i`. Use extensionality with `i j`. Simplify using `only [mul_apply, Bm, of_apply, pow_add, ← mulVec_mulVec]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Simplify using `only [vecMul, mom, dotProduct, of_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mulBm_eq (Y : Gl r K) (k : ℕ) : Y.2.2.1 ᵥ* (Y.1 ^ k * Bm Y) = fun j : Fin r => mom Y (k + j) := by
   funext j
@@ -103,7 +103,7 @@ theorem mulBm_eq (Y : Gl r K) (k : ℕ) : Y.2.2.1 ᵥ* (Y.1 ^ k * Bm Y) = fun j 
   simp only [vecMul, mom, dotProduct, of_apply]
 
 /- English proof (translation)
-Rewrite using `[← mulBm_eq, ← dotProduct_mulVec, ← mulVec_mulVec, ← dotProduct_neg, ← mulVec_neg, ← hq, mulVec_mulVec, ← pow_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mom_add_r (Y : Gl r K) (q : Fin r → K) (hq : Y.1 ^ r *ᵥ Y.2.1 = -(Bm Y *ᵥ q)) (k : ℕ) :
     mom Y (k + r) = -((fun j : Fin r => mom Y (k + j)) ⬝ᵥ q) := by
@@ -111,9 +111,9 @@ theorem mom_add_r (Y : Gl r K) (q : Fin r → K) (hq : Y.1 ^ r *ᵥ Y.2.1 = -(Bm
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Distinguish the cases in `hn : n < r`. Conclude with `h n hn`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩ : ∃ k, n = k + r` from `⟨n - r, by omega⟩`. Rewrite using `[hu, hv]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Conclude with `ih _ (by omega)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem seq_eq {u v : ℕ → K} (q : Fin r → K) (hu : ∀ k, u (k + r) = -((fun j : Fin r => u (k + j)) ⬝ᵥ q))
     (hv : ∀ k, v (k + r) = -((fun j : Fin r => v (k + j)) ⬝ᵥ q)) (h : ∀ k < r, u k = v k) : u = v := by
@@ -131,9 +131,9 @@ theorem seq_eq {u v : ℕ → K} (q : Fin r → K) (hu : ∀ k, u (k + r) = -((f
 def ev (r : ℕ) (K : Type) [CommRing K] (j : ℕ) : Fin r → K := fun i => if (i : ℕ) = j then 1 else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, ev, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single ⟨j, by omega⟩]`. Simplify using `[companion, show j + 1 ≠ r by omega]`. Introduce `l _ hl`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Conclude with `fun h => hl (Fin.ext h)`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules.
 -/
 theorem comp_mulVec_ev (p : Fin r → K) (j : ℕ) (hj : j + 1 < r) : companion p *ᵥ ev r K j = ev r K (j + 1) := by
   funext i
@@ -146,7 +146,7 @@ theorem comp_mulVec_ev (p : Fin r → K) (j : ℕ) (hj : j + 1 < r) : companion 
   · simp
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ', ← mulVec_mulVec, ih (by omega), comp_mulVec_ev p j hj]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_pow_ev (p : Fin r → K) (j : ℕ) (hj : j < r) : companion p ^ j *ᵥ ev r K 0 = ev r K j := by
   induction j with
@@ -154,11 +154,11 @@ theorem comp_pow_ev (p : Fin r → K) (j : ℕ) (hj : j < r) : companion p ^ j *
   | succ j ih => rw [pow_succ', ← mulVec_mulVec, ih (by omega), comp_mulVec_ev p j hj]
 
 /- English proof (translation)
-Consider the cases of `r with`. Consider the case `zero => funext i`. Conclude with `i.elim0`. Consider the case `succ s`. Rewrite using `[pow_succ', ← mulVec_mulVec, comp_pow_ev p s (by omega)]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, ev, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single ⟨s, by omega⟩]`. Simplify using `[companion]`. Introduce `l _ hl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Conclude with `fun h => hl (Fin.ext h)`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comp_pow_r (p : Fin r → K) : companion p ^ r *ᵥ ev r K 0 = -p := by
   cases r with
@@ -180,7 +180,7 @@ Both sides reduce to the same expression.
 theorem sec_snd (a : Inv r K) : (sec a).2.1 = ev r K 0 := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Bm, of_apply, sec_snd]`. Rewrite using `[show (sec a).1 = companion a.1 from rfl, comp_pow_ev a.1 j j.2]`. Simplify using `[ev, one_apply, Fin.ext_iff, eq_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Bm_sec (a : Inv r K) : Bm (sec a) = 1 := by
   ext i j
@@ -189,16 +189,16 @@ theorem Bm_sec (a : Inv r K) : Bm (sec a) = 1 := by
   simp [ev, one_apply, Fin.ext_iff, eq_comm]
 
 /- English proof (translation)
-The claim follows from `mom_add_r (sec a) a.1 (by rw [Bm_sec, one_mulVec]; exact comp_pow_r a.1) k`.
+A detailed English derivation is pending.
 -/
 theorem sec_rec (a : Inv r K) (k : ℕ) :
     mom (sec a) (k + r) = -((fun j : Fin r => mom (sec a) (k + j)) ⬝ᵥ a.1) :=
   mom_add_r (sec a) a.1 (by rw [Bm_sec, one_mulVec]; exact comp_pow_r a.1) k
 
 /- English proof (translation)
-Simplify using `only [mom]`. Rewrite using `[show (sec a).1 = companion a.1 from rfl, sec_snd, comp_pow_ev a.1 i i.2]`. Simplify using `only [dotProduct, ev, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[show (sec a).2.2.1 = a.2.1 from rfl]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `l _ hl`. Rewrite using `[if_neg]`. Conclude with `fun h => hl (Fin.ext h)`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules.
 -/
 theorem mom_sec_lt (a : Inv r K) (i : Fin r) : mom (sec a) i = a.2.1 i := by
   simp only [mom]
@@ -215,7 +215,7 @@ section Herm
 variable {r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [HasInv, GlobalTheory.JR.inv, Inv.map, Prod.mk.injEq, funext_iff]`. Conclude with `and_congr Iff.rfl (and_congr Iff.rfl (algebraMap F E).injective.eq_iff)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasInv_iff (X : Hn r F E) (a : Inv r F) : HasInv X a ↔
     (∀ i : Fin r, X.1.1.charpoly.coeff i = algebraMap F E (a.1 i)) ∧
@@ -224,9 +224,9 @@ theorem hasInv_iff (X : Hn r F E) (a : Inv r F) : HasInv X a ↔
   exact and_congr Iff.rfl (and_congr Iff.rfl (algebraMap F E).injective.eq_iff)
 
 /- English proof (translation)
-Establish `hT : A.map (starRingEnd E) = Aᵀ`. Use extensionality with `k l`. Use `congrFun (congrFun hA l) k` as an intermediate fact. Rewrite `this` using `[Matrix.star_apply]`. Rewrite using `[Matrix.map_apply, Matrix.transpose_apply, starRingEnd_apply, this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Polynomial.coeff_map]`. Both sides reduce to the same expression. Use `_ = A.charpoly.coeff i := by rw [← Matrix.charpoly_map, hT, Matrix.charpoly_transpose]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem charpoly_coeff_star (A : Matrix (Fin r) (Fin r) E) (hA : IsSelfAdjoint A) (i : ℕ) :
     star (A.charpoly.coeff i) = A.charpoly.coeff i := by
@@ -240,19 +240,19 @@ theorem charpoly_coeff_star (A : Matrix (Fin r) (Fin r) E) (hA : IsSelfAdjoint A
     _ = A.charpoly.coeff i := by rw [← Matrix.charpoly_map, hT, Matrix.charpoly_transpose]
 
 /- English proof (translation)
-The claim follows from `hA`.
+A detailed English derivation is pending.
 -/
 theorem conjT_eq (A : Matrix (Fin r) (Fin r) E) (hA : IsSelfAdjoint A) : Aᴴ = A := hA
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_mulVec, ← dotProduct_mulVec, Matrix.conjTranspose_pow, conjT_eq A hA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_pow (A : Matrix (Fin r) (Fin r) E) (hA : IsSelfAdjoint A) (v w : Fin r → E) (k : ℕ) :
     star (A ^ k *ᵥ v) ⬝ᵥ w = star v ⬝ᵥ (A ^ k *ᵥ w) := by
   rw [Matrix.star_mulVec, ← dotProduct_mulVec, Matrix.conjTranspose_pow, conjT_eq A hA]
 
 /- English proof (translation)
-Use `show star (star X.2.1 ⬝ᵥ (X.1.1 ^ k *ᵥ X.2.1)) = star X.2.1 ⬝ᵥ (X.1.1 ^ k *ᵥ X.2.1)`. Use `conv_lhs => rw [star_dotProduct, star_star]`. Rewrite using `[form_pow X.1.1 X.1.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mom_star (X : Hn r F E) (k : ℕ) : star (mom X.toGl k) = mom X.toGl k := by
   show star (star X.2.1 ⬝ᵥ (X.1.1 ^ k *ᵥ X.2.1)) = star X.2.1 ⬝ᵥ (X.1.1 ^ k *ᵥ X.2.1)
@@ -262,7 +262,7 @@ theorem mom_star (X : Hn r F E) (k : ℕ) : star (mom X.toGl k) = mom X.toGl k :
 variable [Unram F E]
 
 /- English proof (translation)
-Use `choose p hp using fun i : Fin r => fixed_mem_range (F := F) (charpoly_coeff_star X.1.1 X.1.2 i)`. Use `choose m hm using fun i : Fin r => fixed_mem_range (F := F) (mom_star X i)`. Conclude with `⟨(p, m, X.2.2), (hasInv_iff X _).2 ⟨fun i => (hp i).symm, fun i => (hm i).symm, rfl⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem part1 (X : Hn r F E) : ∃ a : Inv r F, HasInv X a := by
   choose p hp using fun i : Fin r => fixed_mem_range (F := F) (charpoly_coeff_star X.1.1 X.1.2 i)
@@ -275,19 +275,19 @@ section Act
 variable {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `Matrix.mem_unitaryGroup_iff'.1 g.2`.
+A detailed English derivation is pending.
 -/
 theorem starU_mul (g : Matrix.unitaryGroup (Fin r) E) : star g.1 * g.1 = 1 := Matrix.mem_unitaryGroup_iff'.1 g.2
 
 /- English proof (translation)
-The claim follows from `Matrix.mem_unitaryGroup_iff.1 g.2`.
+A detailed English derivation is pending.
 -/
 theorem mul_starU (g : Matrix.unitaryGroup (Fin r) E) : g.1 * star g.1 = 1 := Matrix.mem_unitaryGroup_iff.1 g.2
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [mul_starU g]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih, pow_succ]`. Simplify using `only [mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc (star g.1) g.1, starU_mul g, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_conj_pow (g : Matrix.unitaryGroup (Fin r) E) (A : Matrix (Fin r) (Fin r) E) (k : ℕ) :
     (g.1 * A * star g.1) ^ k = g.1 * A ^ k * star g.1 := by
@@ -299,7 +299,7 @@ theorem unit_conj_pow (g : Matrix.unitaryGroup (Fin r) E) (A : Matrix (Fin r) (F
     rw [← mul_assoc (star g.1) g.1, starU_mul g, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, ← Matrix.star_eq_conjTranspose, starU_mul g, one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_form (g : Matrix.unitaryGroup (Fin r) E) (v w : Fin r → E) :
     star (g.1 *ᵥ v) ⬝ᵥ (g.1 *ᵥ w) = star v ⬝ᵥ w := by
@@ -307,7 +307,7 @@ theorem unit_form (g : Matrix.unitaryGroup (Fin r) E) (v w : Fin r → E) :
     starU_mul g, one_mulVec]
 
 /- English proof (translation)
-Use `show (g.1 * X.1.1 * star g.1).charpoly = _`. Rewrite using `[Matrix.charpoly_mul_comm, ← mul_assoc, starU_mul g, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_actU (g : Matrix.unitaryGroup (Fin r) E) (X : Hn r F E) :
     (actU g X).1.1.charpoly = X.1.1.charpoly := by
@@ -315,7 +315,7 @@ theorem charpoly_actU (g : Matrix.unitaryGroup (Fin r) E) (X : Hn r F E) :
   rw [Matrix.charpoly_mul_comm, ← mul_assoc, starU_mul g, one_mul]
 
 /- English proof (translation)
-Use `show star (g.1 *ᵥ X.2.1) ⬝ᵥ ((g.1 * X.1.1 * star g.1) ^ k *ᵥ (g.1 *ᵥ X.2.1)) = star X.2.1 ⬝ᵥ (X.1.1 ^ k *ᵥ X.2.1)`. Rewrite using `[unit_conj_pow, mulVec_mulVec, mul_assoc, mul_assoc, starU_mul g, mul_one, ← mulVec_mulVec, unit_form]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mom_actU (g : Matrix.unitaryGroup (Fin r) E) (X : Hn r F E) (k : ℕ) :
     mom (actU g X).toGl k = mom X.toGl k := by
@@ -324,7 +324,7 @@ theorem mom_actU (g : Matrix.unitaryGroup (Fin r) E) (X : Hn r F E) (k : ℕ) :
     ← mulVec_mulVec, unit_form]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `(hasInv_iff X a).1 h`. Conclude with `(hasInv_iff _ a).2 ⟨fun i => by rw [charpoly_actU]; exact h1 i, fun i => by rw [mom_actU]; exact h2 i, h3⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem part2 (g : Matrix.unitaryGroup (Fin r) E) (X : Hn r F E) (a : Inv r F) (h : HasInv X a) :
     HasInv (actU g X) a := by
@@ -337,11 +337,11 @@ section Gen2
 variable {r : ℕ} {K : Type} [CommRing K]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hL : (Y.1 * Bm Y) i j = (Y.1 ^ ((j : ℕ) + 1) *ᵥ Y.2.1) i`. Rewrite using `[pow_succ', ← mulVec_mulVec]`. Simplify using `[mul_apply, Bm, mulVec, dotProduct]`. Rewrite using `[hL]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hj : (j : ℕ) + 1 = r`. Rewrite using `[hj, hq]`. Simplify using `[mul_apply, companion, hj, mulVec, dotProduct]`. Rewrite using `[mul_apply, Finset.sum_eq_single ⟨(j : ℕ) + 1, by omega⟩]`. Simplify using `[companion, hj, Bm]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `l _ hl`. Establish `: ¬ ((l : ℕ) = (j : ℕ) + 1)` using `fun h => hl (Fin.ext h)`. Simplify using `[companion, hj, this]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mul_Bm (Y : Gl r K) (q : Fin r → K) (hq : Y.1 ^ r *ᵥ Y.2.1 = -(Bm Y *ᵥ q)) :
     Y.1 * Bm Y = Bm Y * companion q := by
@@ -361,9 +361,9 @@ theorem mul_Bm (Y : Gl r K) (q : Fin r → K) (hq : Y.1 ^ r *ᵥ Y.2.1 = -(Bm Y 
     · simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, ev, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single ⟨0, i.pos⟩]`. Simplify using `[Bm]`. Introduce `l _ hl`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Conclude with `fun h => hl (Fin.ext h)`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules.
 -/
 theorem Bm_ev (Y : Gl r K) : Bm Y *ᵥ ev r K 0 = Y.2.1 := by
   funext i
@@ -379,11 +379,11 @@ section Main
 variable {r : ℕ}
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `(hasInv_iff X a).1 h`. Establish `hq : X.toGl.1 ^ r *ᵥ X.toGl.2.1 = -(Bm X.toGl *ᵥ fun i => algebraMap F E (a.1 i))`. Use `pow_r_mulVec X.toGl` as an intermediate fact. Rewrite `this` using `[show (fun i : Fin r => X.toGl.1.charpoly.coeff i) = fun i => algebraMap F E (a.1 i) from funext h1]`. Then use the resulting hypothesis. Establish `hS : ∀ k, algebraMap F E (mom (sec a) (k + r)) = -((fun j : Fin r => algebraMap F E (mom (sec a) (k + j))) ⬝ᵥ fun i => algebraMap F E (a.1 i))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[sec_rec]`. Simplify using `[dotProduct, map_sum, map_mul]`. Use `seq_eq (u := fun n => mom X.toGl n) (v := fun n => algebraMap F E (mom (sec a) n)) _ (mom_add_r X.toGl _ hq) hS (fun k hk => by` as an intermediate fact. Establish `e1` using `h2 ⟨k, hk⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `mom_sec_lt a ⟨k, hk⟩`. Simplify using `only at e1 e2 ⊢`. Rewrite using `[e1, e2])`. Conclude with `congrFun this n`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mom_map (X : Hn r F E) (a : Inv r F) (h : HasInv X a) (n : ℕ) :
     mom X.toGl n = algebraMap F E (mom (sec a) n) := by
@@ -405,7 +405,7 @@ theorem mom_map (X : Hn r F E) (a : Inv r F) (h : HasInv X a) (n : ℕ) :
   exact congrFun this n
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `: ((Bm X.toGl)ᴴ * Bm X.toGl) i j = star (X.1.1 ^ (i : ℕ) *ᵥ X.2.1) ⬝ᵥ (X.1.1 ^ (j : ℕ) *ᵥ X.2.1)`. Simplify using `only [mul_apply, conjTranspose_apply, Bm, of_apply, dotProduct, Pi.star_apply]`. Both sides reduce to the same expression. Rewrite using `[this, form_pow X.1.1 X.1.2, mulVec_mulVec, ← pow_add]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -418,7 +418,7 @@ theorem gram (X : Hn r F E) : (Bm X.toGl)ᴴ * Bm X.toGl = Matrix.of fun i j : F
   rfl
 
 /- English proof (translation)
-Rewrite using `[gram]`. Use extensionality with `i j`. Simplify using `[hankel, mom_map X a h]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gram_hankel (X : Hn r F E) (a : Inv r F) (h : HasInv X a) :
     (Bm X.toGl)ᴴ * Bm X.toGl = (hankel a).map (algebraMap F E) := by
@@ -427,7 +427,7 @@ theorem gram_hankel (X : Hn r F E) (a : Inv r F) (h : HasInv X a) :
   simp [hankel, mom_map X a h]
 
 /- English proof (translation)
-Establish `: (hᴴ * h).det ≠ 0`. Rewrite using `[hh, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 hΔ`. Rewrite `this` using `[det_mul]`. Conclude with `isUnit_iff_ne_zero.2 (right_ne_zero_of_mul this)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_unit (a : Inv r F) (hΔ : Delta a ≠ 0) (h : Matrix (Fin r) (Fin r) E)
     (hh : hᴴ * h = (hankel a).map (algebraMap F E)) : IsUnit h.det := by
@@ -443,7 +443,7 @@ section Three
 variable {r : ℕ}
 
 /- English proof (translation)
-Take `⟨h1, -, -⟩` from `(hasInv_iff X a).1 h`. Use `pow_r_mulVec X.toGl` as an intermediate fact. Rewrite `this` using `[show (fun i : Fin r => X.toGl.1.charpoly.coeff i) = fun i => algebraMap F E (a.1 i) from funext h1]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pow_r_of (X : Hn r F E) (a : Inv r F) (h : HasInv X a) :
     X.1.1 ^ r *ᵥ X.2.1 = -(Bm X.toGl *ᵥ fun i => algebraMap F E (a.1 i)) := by
@@ -452,7 +452,7 @@ theorem pow_r_of (X : Hn r F E) (a : Inv r F) (h : HasInv X a) :
   rwa [show (fun i : Fin r => X.toGl.1.charpoly.coeff i) = fun i => algebraMap F E (a.1 i) from funext h1] at this
 
 /- English proof (translation)
-Establish `e1 : g.1 * X₁.1.1 * star g.1 = X₂.1.1` using `congrArg (fun Y : Hn r F E => Y.1.1) hact`. Rewrite using `[← e1, mul_assoc _ (star g.1), starU_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem semiconj_of_act (g : Matrix.unitaryGroup (Fin r) E) (X₁ X₂ : Hn r F E) (hact : actU g X₁ = X₂) :
     g.1 * X₁.1.1 = X₂.1.1 * g.1 := by
@@ -460,9 +460,9 @@ theorem semiconj_of_act (g : Matrix.unitaryGroup (Fin r) E) (X₁ X₂ : Hn r F 
   rw [← e1, mul_assoc _ (star g.1), starU_mul, mul_one]
 
 /- English proof (translation)
-Establish `hs` using `semiconj_of_act g X₁ X₂ hact`. Establish `e2 : g.1 *ᵥ X₁.2.1 = X₂.2.1` using `congrArg (fun Y : Hn r F E => Y.2.1) hact`. Establish `hp : ∀ k : ℕ, g.1 * X₁.1.1 ^ k = X₂.1.1 ^ k * g.1` using `fun k => SemiconjBy.pow_right hs k`. Use extensionality with `i j`. Establish `: (g.1 * Bm X₁.toGl) i j = (g.1 *ᵥ (X₁.1.1 ^ (j : ℕ) *ᵥ X₁.2.1)) i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [mul_apply, Bm, of_apply, mulVec, dotProduct]`. Both sides reduce to the same expression. Rewrite using `[this, mulVec_mulVec, hp, ← mulVec_mulVec, e2]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem g_Bm (g : Matrix.unitaryGroup (Fin r) E) (X₁ X₂ : Hn r F E) (hact : actU g X₁ = X₂) :
     g.1 * Bm X₁.toGl = Bm X₂.toGl := by
@@ -477,19 +477,17 @@ theorem g_Bm (g : Matrix.unitaryGroup (Fin r) E) (X₁ X₂ : Hn r F E) (hact : 
   rfl
 
 /- English proof (translation)
-Establish `G₁` using `gram_hankel X₁ a h₁`. Establish `G₂` using `gram_hankel X₂ a h₂`. Establish `u₁` using `det_unit a hΔ _ G₁`. Establish `hB₁ : Bm X₁.toGl * (Bm X₁.toGl)⁻¹ = 1` using `mul_nonsing_inv _ u₁`. Establish `hB₁' : (Bm X₁.toGl)⁻¹ * Bm X₁.toGl = 1` using `nonsing_inv_mul _ u₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B₁ := Bm X₁.toGl with hB1def`. Use `set B₂ := Bm X₂.toGl with hB2def`. Establish `hstar : star (B₂ * B₁⁻¹) * (B₂ * B₁⁻¹) = 1`. Rewrite using `[star_eq_conjTranspose, conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : B₂ * B₁⁻¹ ∈ Matrix.unitaryGroup (Fin r) E` using `Matrix.mem_unitaryGroup_iff'.2 hstar`. Establish `hmul : (B₂ * B₁⁻¹) * star (B₂ * B₁⁻¹) = 1` using `Matrix.mem_unitaryGroup_iff.1 hmem`. Establish `C₁ : X₁.1.1 * B₁ = B₁ * companion (fun i => algebraMap F E (a.1 i))` using `mul_Bm X₁.toGl _ (pow_r_of X₁ a h₁)`. Establish `C₂ : X₂.1.1 * B₂ = B₂ * companion (fun i => algebraMap F E (a.1 i))` using `mul_Bm X₂.toGl _ (pow_r_of X₂ a h₂)`. Establish `hs : (B₂ * B₁⁻¹) * X₁.1.1 = X₂.1.1 * (B₂ * B₁⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc B₁⁻¹ X₁.1.1 B₁, C₁, ← mul_assoc B₁⁻¹ B₁, hB₁', one_mul]`. Use `_ = X₂.1.1 * (B₂ * B₁⁻¹) := by rw [← C₂]; simp only [mul_assoc]`. Take `⟨-, -, l₁⟩` from `(hasInv_iff X₁ a).1 h₁`. Take `⟨-, -, l₂⟩` from `(hasInv_iff X₂ a).1 h₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨B₂ * B₁⁻¹, hmem⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : (B₂ * B₁⁻¹) * X₁.1.1 * star (B₂ * B₁⁻¹) = X₂.1.1` using `by rw [hs, mul_assoc, hmul, mul_one]`. Establish `b1 : B₁ *ᵥ ev r E 0 = X₁.2.1` using `Bm_ev X₁.toGl`. Establish `b2 : B₂ *ᵥ ev r E 0 = X₂.2.1` using `Bm_ev X₂.toGl`. Establish `e2 : (B₂ * B₁⁻¹) *ᵥ X₁.2.1 = X₂.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← b1, mulVec_mulVec, mul_assoc, hB₁', mul_one, b2]`. Conclude with `Prod.ext (Subtype.ext e1) (Prod.ext e2 (l₁.trans l₂.symm))`. Introduce `g hg`. Apply `Subtype.ext` to reduce the goal to its premises. Use `g_Bm g X₁ X₂ hg` as an intermediate fact.
-
-Rewrite `this` using `[← hB1def, ← hB2def]`. Use `show g.1 = B₂ * B₁⁻¹`. Rewrite using `[← this, mul_assoc, hB₁, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem part3 (X₁ X₂ : Hn r F E) (a : Inv r F) (hΔ : Delta a ≠ 0) (h₁ : HasInv X₁ a) (h₂ : HasInv X₂ a) :
     ∃! g : Matrix.unitaryGroup (Fin r) E, actU g X₁ = X₂ := by
@@ -539,7 +537,7 @@ section Four
 variable {r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [map_apply, companion, of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem comp_map {K L : Type} [CommRing K] [CommRing L] (f : K →+* L) (p : Fin r → K) :
     (companion p).map f = companion (fun i => f (p i)) := by
@@ -548,16 +546,16 @@ theorem comp_map {K L : Type} [CommRing K] [CommRing L] (f : K →+* L) (p : Fin
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[hankel, add_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hankel_symm {K : Type} [CommRing K] (a : Inv r K) : (hankel a)ᵀ = hankel a := by
   ext i j
   simp [hankel, add_comm]
 
 /- English proof (translation)
-Distinguish the cases in `hj : (j : ℕ) + 1 = r`. Rewrite using `[add_assoc, hj, sec_rec]`. Simplify using `[mul_apply, companion, hj, hankel, dotProduct]`. Rewrite using `[mul_apply, Finset.sum_eq_single ⟨(j : ℕ) + 1, by omega⟩]`. Simplify using `[companion, hj, hankel, add_assoc]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `l _ hl`. Establish `: ¬ ((l : ℕ) = (j : ℕ) + 1)` using `fun h => hl (Fin.ext h)`. Simplify using `[companion, hj, this]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem HC_apply {K : Type} [CommRing K] (a : Inv r K) (i j : Fin r) :
     (hankel a * companion a.1) i j = mom (sec a) ((i : ℕ) + j + 1) := by
@@ -572,7 +570,7 @@ theorem HC_apply {K : Type} [CommRing K] (a : Inv r K) (i j : Fin r) :
     · simp
 
 /- English proof (translation)
-Establish `: (hankel a * companion a.1)ᵀ = hankel a * companion a.1`. Use extensionality with `i j`. Rewrite using `[transpose_apply, HC_apply, HC_apply, add_comm (j : ℕ)]`. Rewrite using `[← this, transpose_mul, hankel_symm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem HC_symm {K : Type} [CommRing K] (a : Inv r K) :
     (companion a.1)ᵀ * hankel a = hankel a * companion a.1 := by
@@ -582,9 +580,9 @@ theorem HC_symm {K : Type} [CommRing K] (a : Inv r K) :
   rw [← this, transpose_mul, hankel_symm]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [hh']`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih, pow_succ]`. Simplify using `only [mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc h' h, hh, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_pow' (h h' M : Matrix (Fin r) (Fin r) E) (hh : h' * h = 1) (hh' : h * h' = 1) (k : ℕ) :
     (h * M * h') ^ k = h * M ^ k * h' := by
@@ -596,9 +594,9 @@ theorem conj_pow' (h h' M : Matrix (Fin r) (Fin r) E) (hh : h' * h = 1) (hh' : h
     rw [← mul_assoc h' h, hh, one_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, ev, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `l _ hl`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Conclude with `fun h => hl (Fin.ext h)`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_ev {K : Type} [CommRing K] (M : Matrix (Fin r) (Fin r) K) (j : Fin r) :
     M *ᵥ ev r K j = fun i => M i j := by
@@ -610,25 +608,23 @@ theorem mulVec_ev {K : Type} [CommRing K] (M : Matrix (Fin r) (Fin r) K) (j : Fi
   · simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, hX⟩`. Conclude with `⟨Bm X.toGl, gram_hankel X a hX⟩`. Introduce and unpack `⟨h, hh⟩`. Establish `u` using `det_unit a hΔ h hh`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hinv : h * h⁻¹ = 1` using `mul_nonsing_inv _ u`. Establish `hinv' : h⁻¹ * h = 1` using `nonsing_inv_mul _ u`. Use `set p : Fin r → E := fun i => algebraMap F E (a.1 i) with hp`. Use `set CE := companion p with hCE`. Establish `hCEm : CE = (companion a.1).map (algebraMap F E)` using `by rw [hCE, comp_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hCEH : CEᴴ = ((companion a.1)ᵀ).map (algebraMap F E)`. Rewrite using `[hCEm]`. Use extensionality with `i j`. Simplify using `[conjTranspose_apply, star_algebraMap]`. Establish `hM : CEᴴ * (hᴴ * h) = (hᴴ * h) * CE`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hh, hCEH, hCEm, ← Matrix.map_mul, ← Matrix.map_mul, HC_symm]`. Establish `hA : IsSelfAdjoint (h * CE * h⁻¹)` using `by show star (h * CE * h⁻¹) = h * CE * h⁻¹`. Establish `e0 : star (h * CE * h⁻¹) = (h⁻¹)ᴴ * CEᴴ * hᴴ`. Rewrite using `[star_eq_conjTranspose]`. Simplify using `only [conjTranspose_mul, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e0]`. Combine the equalities or inequalities in the displayed calculation. Set `X : Hn r F E` to `(⟨h * CE * h⁻¹, hA⟩, h *ᵥ ev r E 0, a.2.2)`. Establish `hpow : ∀ k : ℕ, X.1.1 ^ k *ᵥ X.2.1 = h *ᵥ (CE ^ k *ᵥ ev r E 0)`. Introduce `k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (h * CE * h⁻¹) ^ k *ᵥ (h *ᵥ ev r E 0) = _`. Rewrite using `[conj_pow' h h⁻¹ CE hinv' hinv, mulVec_mulVec, mul_assoc, hinv', mul_one, ← mulVec_mulVec]`. Establish `hBm : Bm X.toGl = h`. Use extensionality with `i j`. Use `show (X.1.1 ^ (j : ℕ) *ᵥ X.2.1) i = h i j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hpow, hCE, comp_pow_ev p j j.2, mulVec_ev]`. Establish `G` using `gram X`. Rewrite `G` using `[hBm, hh]`. Use `⟨X, (hasInv_iff X a).2 ⟨?_, ?_, rfl⟩⟩` and prove the remaining obligations. Establish `e1` using `pow_r_mulVec X.toGl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : X.1.1 ^ r *ᵥ X.2.1 = -(h *ᵥ p)`. Rewrite using `[hpow, hCE, comp_pow_r, mulVec_neg]`. Rewrite `e1` using `[show X.toGl.1 = X.1.1 from rfl, show X.toGl.2.1 = X.2.1 from rfl, e2, hBm, neg_inj]`. Establish `e3` using `congrArg (fun v => h⁻¹ *ᵥ v) e1`. Simplify using `only [mulVec_mulVec, hinv', one_mulVec] at e3`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `i`. Conclude with `(congrFun e3 i).symm`. Introduce `i`. Establish `e4` using `congrFun (congrFun G ⟨0, i.pos⟩) i`. Simplify using `only [map_apply, of_apply, hankel, Fin.val_mk, zero_add] at e4`.
-
-Rewrite using `[← e4, mom_sec_lt]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem part4 [Unram F E] (a : Inv r F) (hΔ : Delta a ≠ 0) :
     (∃ X : Hn r F E, HasInv X a) ↔ ∃ h : Matrix (Fin r) (Fin r) E, hᴴ * h = (hankel a).map (algebraMap F E) := by
@@ -684,7 +680,7 @@ theorem part4 [Unram F E] (a : Inv r F) (hΔ : Delta a ≠ 0) :
 end Four
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ r`. Conclude with `⟨fun X => part1 X, fun g X a h => part2 g X a h, fun X₁ X₂ a hΔ h₁ h₂ => part3 X₁ X₂ a hΔ h₁ h₂, fun a hΔ => part4 a hΔ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem herm_invariants : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ), (∀ X : Hn r F E, ∃ a : Inv r F, HasInv X a) ∧ (∀ (g : Matrix.unitaryGroup (Fin r) E) (X : Hn r F E) (a : Inv r F), HasInv X a → HasInv (actU g X) a) ∧ (∀ (X₁ X₂ : Hn r F E) (a : Inv r F), Delta a ≠ 0 → HasInv X₁ a → HasInv X₂ a → ∃! g : Matrix.unitaryGroup (Fin r) E, actU g X₁ = X₂) ∧ ∀ a : Inv r F, Delta a ≠ 0 → ((∃ X : Hn r F E, HasInv X a) ↔ ∃ h : Matrix (Fin r) (Fin r) E, hᴴ * h = (hankel a).map (algebraMap F E)) := by
   intro F E _ _ _ _ _ r

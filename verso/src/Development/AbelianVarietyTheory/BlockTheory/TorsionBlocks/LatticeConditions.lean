@@ -23,7 +23,7 @@ def fracMap : FractionRing O₀ →+* FractionRing O' :=
   IsFractionRing.map (A := O₀) (B := O') (K := FractionRing O₀) (L := FractionRing O') hf
 
 /- English proof (translation)
-Simplify using `[fracMap, IsFractionRing.map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fracMap_alg (c : O₀) :
     fracMap f hf (algebraMap O₀ (FractionRing O₀) c) = algebraMap O' (FractionRing O') (f c) := by
@@ -103,17 +103,15 @@ def toOk (i : tw.Tw) (k : ℕ) : tw.O0 i →+* tw.Ok i k :=
   (algebraMap (tw.O i) (tw.Ok i k)).comp (algebraMap (tw.O0 i) (tw.O i))
 
 /- English proof (translation)
-The claim follows from `(tw.Ok_inj i k).comp (tw.O_inj i)`.
+A detailed English derivation is pending.
 -/
 theorem toOk_inj (i : tw.Tw) (k : ℕ) : Function.Injective (toOk tw i k) :=
   (tw.Ok_inj i k).comp (tw.O_inj i)
 
 /- English proof (translation)
-Use `haveI : CharZero (FractionRing (N.O a)) := (N.embK a).charZero_iff (N.embK a).injective |>.1 inferInstance`. Use `haveI : CharZero (N.O a) := (algebraMap (N.O a) (FractionRing (N.O a))).charZero`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Assume the negation of the conclusion as `hne`. Establish `hp : (RingHom.ker (tw.twist₂ a)).IsPrime` using `RingHom.ker_isPrime _`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (RingHom.ker (tw.twist₂ a)).IsMaximal` using `hp.isMaximal hne`. Establish `he` using `IsLocalRing.eq_maximalIdeal hm`. Use `haveI := tw.twistBaseCoefficientRing_residueField_finite (tw.twOf a)`. Use `haveI := Fintype.ofFinite (IsLocalRing.ResidueField (tw.O0 (tw.twOf a)))`. Establish `h0 : ((Fintype.card (IsLocalRing.ResidueField (tw.O0 (tw.twOf a))) : ℕ) : IsLocalRing.ResidueField (tw.O0 (tw.twOf a))) = 0` using `FiniteField.cast_card_eq_zero _`.
-
-Establish `h1 : ((Fintype.card (IsLocalRing.ResidueField (tw.O0 (tw.twOf a))) : ℕ) : tw.O0 (tw.twOf a)) ∈ RingHom.ker (tw.twist₂ a)`. Rewrite using `[he, ← IsLocalRing.residue_eq_zero_iff, map_natCast]`. Conclude with `h0`. Rewrite `h1` using `[RingHom.mem_ker, map_natCast, Nat.cast_eq_zero]`. Conclude with `Fintype.card_ne_zero h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twO_inj (a : N.Loc) : Function.Injective (tw.twist₂ a) := by
   haveI : CharZero (FractionRing (N.O a)) := (N.embK a).charZero_iff (N.embK a).injective |>.1 inferInstance

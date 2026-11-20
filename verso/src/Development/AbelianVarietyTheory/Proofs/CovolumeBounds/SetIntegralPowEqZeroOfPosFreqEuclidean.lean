@@ -11,9 +11,9 @@ section Products
 variable {ι : Type*} [Fintype ι] {J : ι → Type*}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SummablePiProd.summable_pi_prod`. Consider the case `exact _root_.GlobalTheory.SummablePiProd.summable_pi_prod`. Consider the case `(apply _root_.GlobalTheory.SummablePiProd.summable_pi_prod <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SummablePiProd.summable_pi_prod <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SummablePiProd.summable_pi_prod <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SummablePiProd.summable_pi_prod ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem summable_prod_tuples {u : ∀ i, J i → ℝ} (h0 : ∀ i j, 0 ≤ u i j) (hu : ∀ i, Summable (u i)) :
     Summable fun t : ∀ i, J i => ∏ i, u i (t i) := by
@@ -29,7 +29,7 @@ variable {𝕜 : Type*} [NontriviallyNormedField 𝕜] {V : ι → Type*} [∀ i
   [∀ i, NormedSpace 𝕜 (V i)] {W : Type*} [NormedAddCommGroup W] [NormedSpace 𝕜 W]
 
 /- English proof (translation)
-The claim follows from `.of_nonneg_of_le (fun _ => norm_nonneg _) (fun _ => M.le_opNorm _) ((summable_prod_tuples (fun i j => norm_nonneg (x i j)) hx).mul_left ‖M‖)`.
+A detailed English derivation is pending.
 -/
 theorem summable_norm_multilinear_tuples (M : ContinuousMultilinearMap 𝕜 V W)
     {x : ∀ i, J i → V i} (hx : ∀ i, Summable fun j => ‖x i j‖) :
@@ -38,11 +38,11 @@ theorem summable_norm_multilinear_tuples (M : ContinuousMultilinearMap 𝕜 V W)
     ((summable_prod_tuples (fun i j => norm_nonneg (x i j)) hx).mul_left ‖M‖)
 
 /- English proof (translation)
-Establish `hs` using `(summable_norm_multilinear_tuples M hx).of_norm.hasSum`. Establish `hpi : Tendsto (fun s : ∀ i, Finset (J i) => Fintype.piFinset s) atTop atTop`. Use `tendsto_atTop_atTop_of_monotone (fun s s' hss => Fintype.piFinset_subset _ _ hss) fun T => ⟨fun i => T.image fun t => t i, fun t ht => ?_⟩` and prove the remaining obligations. Conclude with `Fintype.mem_piFinset.2 fun i => Finset.mem_image_of_mem _ ht`. Establish `h1 : Tendsto (fun s : ∀ i, Finset (J i) => M fun i => ∑ j ∈ s i, x i j) atTop (𝓝 (M A))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(M.cont.tendsto A).comp (tendsto_pi_nhds.2 fun i => ?_)` and prove the remaining obligations. Use `Tendsto.comp (hA i) (g := fun s => ∑ j ∈ s, x i j) (f := fun s : ∀ i, Finset (J i) => s i) ?_` and prove the remaining obligations. Use `tendsto_atTop_atTop_of_monotone (fun s s' hss => hss i) fun T => ?_` and prove the remaining obligations. Conclude with `⟨Function.update (fun _ => ∅) i T, by simp⟩`. Establish `h2 : Tendsto (fun s : ∀ i, Finset (J i) => M fun i => ∑ j ∈ s i, x i j) atTop (𝓝 (∑' t : ∀ i, J i, M fun i => x i (t i)))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : Tendsto (fun s : Finset (∀ i, J i) => ∑ t ∈ s, M fun i => x i (t i)) atTop (𝓝 (∑' t : ∀ i, J i, M fun i => x i (t i)))` using `hs`. Conclude with `(hs'.comp hpi).congr fun s => (M.map_sum_finset x s).symm`. Rewrite using `[tendsto_nhds_unique h1 h2]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hasSum_multilinear_tuples [CompleteSpace W] (M : ContinuousMultilinearMap 𝕜 V W)
     {x : ∀ i, J i → V i} {A : ∀ i, V i} (hx : ∀ i, Summable fun j => ‖x i j‖)

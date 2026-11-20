@@ -19,7 +19,7 @@ noncomputable def toRadicalClasses (Δ : Subgroup Kˣ) : Δ →* radicalClasses 
     (fun a => Subgroup.mem_map_of_mem _ a.2)
 
 /- English proof (translation)
-Introduce and unpack `⟨x, a, ha, rfl⟩`. Conclude with `⟨⟨a, ha⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma toRadicalClasses_surjective (Δ : Subgroup Kˣ) :
     Function.Surjective (toRadicalClasses K n Δ) := by
@@ -27,9 +27,9 @@ lemma toRadicalClasses_surjective (Δ : Subgroup Kˣ) :
   exact ⟨⟨a, ha⟩, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf, ← QuotientGroup.eq_one_iff (N := unitsPow K n)]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `congrArg Subtype.val h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 lemma ker_toRadicalClasses (Δ : Subgroup Kˣ) :
     (toRadicalClasses K n Δ).ker = (unitsPow K n).subgroupOf Δ := by
@@ -59,13 +59,13 @@ def kummerExtension (Ω : Type*) [Field Ω] [Algebra K Ω] (Δ : Subgroup Kˣ) :
   adjoin K {α : Ω | ∃ a ∈ Δ, α ^ n = algebraMap K Ω a}
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[kummerExtension, adjoin_le_iff]`. Introduce and unpack `α ⟨a, ha, hα⟩`. Conclude with `subset_adjoin _ _ ⟨a, Subgroup.mem_map_of_mem _ ha, hα⟩`. Rewrite using `[kummerField, adjoin_le_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `α ⟨a, ⟨b, hb, hab⟩, hα⟩`. Take `⟨c, hc⟩` from `mem_unitsPow.mp (QuotientGroup.eq.mp hab)`. Establish `hc0 : algebraMap K Ω (c : K) ≠ 0` using `(map_ne_zero (algebraMap K Ω)).mpr c.ne_zero`. Establish `ha : (a : K) = (b : K) * (c : K) ^ n`. Establish `h1 : (c : K) ^ n = (b : K)⁻¹ * (a : K)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `congrArg Units.val hc` using `only [Units.val_pow_eq_pow_val, Units.val_mul, Units.val_inv_eq_inv_val]`. Rewrite using `[h1, ← mul_assoc, mul_inv_cancel₀ b.ne_zero, one_mul]`. Establish `hβ : (α / algebraMap K Ω (c : K)) ^ n = algebraMap K Ω (b : K)`. Rewrite using `[div_pow, hα, ha, map_mul, map_pow]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hmem : α / algebraMap K Ω (c : K) ∈ kummerExtension K n Ω Δ` using `subset_adjoin _ _ ⟨b, hb, hβ⟩`. Establish `: α = α / algebraMap K Ω (c : K) * algebraMap K Ω (c : K)` using `by field_simp`. Rewrite using `[SetLike.mem_coe, this]`. Conclude with `mul_mem hmem (IntermediateField.algebraMap_mem _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kummerExtension_eq_kummerField (Ω : Type*) [Field Ω] [Algebra K Ω] (Δ : Subgroup Kˣ) :
     kummerExtension K n Ω Δ = kummerField K n Ω (radicalClasses K n Δ) := by
@@ -108,7 +108,7 @@ instance kummerExtension_isMulCommutative : IsMulCommutative Gal(kummerExtension
   exact kummerField_isMulCommutative K n Ω _
 
 /- English proof (translation)
-Rewrite using `[kummerExtension_eq_kummerField]`. Conclude with `kummerField_exponent_dvd K n Ω _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kummerExtension_exponent_dvd : Monoid.exponent Gal(kummerExtension K n Ω Δ/K) ∣ n := by
   rw [kummerExtension_eq_kummerField]
@@ -121,7 +121,7 @@ instance finite_radicalClasses [Finite (Δ ⧸ (unitsPow K n).subgroupOf Δ)] :
 variable [IsSepClosed Ω]
 
 /- English proof (translation)
-Rewrite using `[kummerExtension_eq_kummerField]`. Conclude with `kummerGroup_kummerField K n Ω _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kummerGroup_kummerExtension :
     kummerGroup K n (kummerExtension K n Ω Δ) = radicalClasses K n Δ := by
@@ -129,9 +129,9 @@ theorem kummerGroup_kummerExtension :
   exact kummerGroup_kummerField K n Ω _
 
 /- English proof (translation)
-Establish `h1 : (QuotientGroup.mk' (unitsPow K n)).ker ≤ unitsPowIn K n (kummerExtension K n Ω Δ)`. Rewrite using `[QuotientGroup.ker_mk']`. Conclude with `unitsPow_le_unitsPowIn K n _`. Establish `h2 : (QuotientGroup.mk' (unitsPow K n)).ker ≤ Δ`. Rewrite using `[QuotientGroup.ker_mk']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hΔ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[kummerGroup_kummerExtension]`. Use `_ = Δ := Subgroup.comap_map_eq_self h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitsPowIn_kummerExtension (hΔ : unitsPow K n ≤ Δ) :
     unitsPowIn K n (kummerExtension K n Ω Δ) = Δ := by
@@ -155,7 +155,7 @@ instance kummerExtension_finiteDimensional : FiniteDimensional K (kummerExtensio
   exact finiteDimensional_kummerField K n Ω _
 
 /- English proof (translation)
-Rewrite using `[kummerExtension_eq_kummerField, finrank_kummerField, Nat.card_congr (radicalQuotientEquiv K n Δ).toEquiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_kummerExtension :
     Module.finrank K (kummerExtension K n Ω Δ) = Nat.card (Δ ⧸ (unitsPow K n).subgroupOf Δ) := by

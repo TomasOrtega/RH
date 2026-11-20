@@ -6,7 +6,7 @@ noncomputable section
 namespace Formalism.MainNotions.G.SymmetricFormBlocks
 
 /- English proof (translation)
-The claim follows from `closed_of_splitting_matrix D (orthSplit_of_min hO) hM h`.
+A detailed English derivation is pending.
 -/
 theorem closed_of_minimal_vector (D : Formalism.BasicNotions.D7) (hO : OrthMin) (hM : GoodLeSmallMat) (h : RestWinE D) :
     Formalism.MainNotions.flipOneThree.IntegralityFromMetricForLargeConstants D :=

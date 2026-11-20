@@ -15,7 +15,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan
 
 /- English proof (translation)
-Take `rfl : m = AddCommGroup.toIntModule Y` from `Subsingleton.elim _ _`. Establish `: Module.Free ℤ Y` using `inferInstance`. Conclude with `hasRedCover_int Y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasRedCover_int_proj (Y : Type) [AddCommGroup Y] [m : Module ℤ Y] [Module.Finite ℤ Y] [Module.Projective ℤ Y] :
     HasRedCover (id : ℤ → ℤ) Y := by
@@ -24,7 +24,7 @@ theorem hasRedCover_int_proj (Y : Type) [AddCommGroup Y] [m : Module ℤ Y] [Mod
   exact hasRedCover_int Y
 
 /- English proof (translation)
-Take `rfl : m = AddCommGroup.toIntModule Y` from `Subsingleton.elim _ _`. Establish `: Module.Free ℤ Y` using `inferInstance`. Conclude with `GlobalTheory.T.integer_lattice_dominates Y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dominates_int_proj (Y : Type) [AddCommGroup Y] [m : Module ℤ Y] [Module.Finite ℤ Y] [Module.Projective ℤ Y] :
     Dominates (id : ℤ → ℤ) Y := by
@@ -33,7 +33,7 @@ theorem dominates_int_proj (Y : Type) [AddCommGroup Y] [m : Module ℤ Y] [Modul
   exact GlobalTheory.T.integer_lattice_dominates Y
 
 /- English proof (translation)
-Introduce `g`. Establish `hpoly : IsPolyFan (id : ℤ → ℤ) g (vorFun ℤ g)` using `GlobalTheory.T.voronoi_fan_is_polyhedral ℤ id g g (fun Y _ _ _ _ => hasRedCover_int_proj Y) (by simp)`. Establish `htw : IsTwG (0 : ℤ) (vorFun ℤ g)` using `fun σ _ n B => baseFun_twist _ _ _ σ n B`. Take `⟨φ, h₁, h₂, -, -⟩` from `GlobalTheory.T.exists_smooth_polyhedral_fan_refinement ℤ id 0 cmOrd_int_id g (vorFun ℤ g) (fun Y _ _ _ _ => dominates_int_proj Y) hpoly htw`. Conclude with `⟨φ, h₁, h₂⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_smooth_fan_int : ∀ g : ℕ, ∃ φ : InvFun ℤ, IsPolFan id g φ ∧ NoSelfInt id g φ := by
   intro g

@@ -14,15 +14,15 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν hle hov p _ _ _ yb yy P π ψ y hHT β hβ σ`. Take `⟨⟨h1, -⟩, -, hF, -⟩` from `hHT`. Use `set g : Sp ℂ_[p] ⟶ Sp c'.F := yy ≫ pullback.snd _ _ with hg`. Establish `hgm : spMap (Spec.preimage g).hom = g`. Simplify using `[spMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set gm : c'.F →+* ℂ_[p] := (Spec.preimage g).hom`. Establish `inj : ∀ {A B : Type} [CommRing A] [CommRing B] (f f' : A →+* B), spMap f = spMap f' → f = f'`. Introduce `A B _ _ f f' h`. Use `Spec.map_injective h` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e1 : (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp β = gm.comp (c'.V W).subtype`. Apply `inj` to reduce the goal to its premises. Use `congrArg (fun t => spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ t) hβ` as an intermediate fact. Rewrite `this` using `[← Category.assoc, h1, Category.assoc, Model.j_s, ← Category.assoc]`. Rewrite using `[← spMap_spMap, ← spMap_spMap, ← this, hgm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : gm.comp (IntermediateField.inclusion hle).toRingHom = algebraMap c.F ℂ_[p]`. Apply `inj` to reduce the goal to its premises. Rewrite using `[← spMap_spMap, hgm, hg, Category.assoc, ← hov, ← Category.assoc, ← hF]`. Conclude with `pullback.lift_snd _ _ _`. Use `RingHom.ext fun a => P.integers.hom_inj ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[algebraMap_embInt]`. Use `congrArg (fun f => f (embV c' W σ a)) e1` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Rewrite using `[RingHom.comp_apply, this, ← e2, RingHom.comp_apply]`. Conclude with `congrArg gm (Subtype.ext rfl)`.
+A detailed English derivation is pending.
 -/
 theorem htAt_embV_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ)

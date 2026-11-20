@@ -12,13 +12,11 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-Take `⟨b, -, -, hsp, hb⟩` from `exists_linearIndepOn_extension (K := F) (v := M.col) (linearIndepOn_empty F M.col) (Set.empty_subset Set.univ)`. Establish `h1 : Submodule.span F (M.col '' b) = Submodule.span F (Set.range M.col)`. Use `le_antisymm (Submodule.span_mono (Set.image_subset_range _ _)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hsp ⟨i, Set.mem_univ _, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2 : Module.finrank F (Submodule.span F (M.col '' b)) = Fintype.card b`. Rewrite using `[Set.image_eq_range]`. Conclude with `finrank_span_eq_card hb`. Rewrite `h2` using `[h1, ← Matrix.rank_eq_finrank_span_cols, hM.rank_matrix, Fintype.card_fin]`. Establish `hS : b.toFinset.card = r` using `by rw [Set.toFinset_card]; exact h2.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨b.toFinset, hS, ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ c, b.toFinset.orderEmbOfFin hS c ∈ b` using `fun c => Set.mem_toFinset.1 (b.toFinset.orderEmbOfFin_mem hS c)`. Establish `hli : LinearIndependent F (M.submatrix id (b.toFinset.orderEmbOfFin hS)).col` using `hb.comp (fun c => ⟨_, hmem c⟩) fun c c' h => by`. Establish `h'` using `congrArg Subtype.val h`. Conclude with `(b.toFinset.orderEmbOfFin hS).injective h'`.
-
-Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.linearIndependent_cols_iff_isUnit.1 hli)).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_minor_ne_zero {F : Type} [Field F] {r N : ℕ} (M : Matrix (Fin r) (Fin N) F)
     (hM : LinearIndependent F M.row) :
@@ -49,7 +47,7 @@ section Flag
 variable {K : Type} {ι : K → Type}
 
 /- English proof (translation)
-Simplify using `[flagMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flagMap_X_inr (P : Ideal (MRing ι)) {N1 n : ℕ} (B : Matrix (Fin n) (Fin N1) (FnField P))
     (j : Fin (n - 1)) (S : PluckerBlocks N1 n j) :
@@ -58,9 +56,9 @@ theorem flagMap_X_inr (P : Ideal (MRing ι)) {N1 n : ℕ} (B : Matrix (Fin n) (F
   simp [flagMap]
 
 /- English proof (translation)
-Rewrite using `[flagMinor, flagMinor, RingHom.map_det, RingHom.mapMatrix_apply]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.submatrix_apply]`. Use `erw [Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[genMat]`.
+A detailed English derivation is pending.
 -/
 theorem eval_one_flagMinor (P : Ideal (MRing ι)) {N1 n : ℕ} (B : Matrix (Fin n) (Fin N1) (FnField P))
     (j : Fin (n - 1)) (S : PluckerBlocks N1 n j) :
@@ -74,9 +72,9 @@ theorem eval_one_flagMinor (P : Ideal (MRing ι)) {N1 n : ℕ} (B : Matrix (Fin 
   simp [genMat]
 
 /- English proof (translation)
-Establish `hj : (j : ℕ) + 1 ≤ n` using `by have := j.2; omega`. Take `⟨S, hS, hne⟩` from `exists_minor_ne_zero (B.submatrix (Fin.castLE hj) id) (hB.comp _ (Fin.castLE_injective hj))`. Use `⟨⟨S, hS⟩, fun h => hne ?_⟩` and prove the remaining obligations. Rewrite `h` using `[flagIdeal, RingHom.mem_ker, flagMap_X_inr]`. Use `eval_one_flagMinor P B j ⟨S, hS⟩` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[h, map_zero]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_X_inr_notMem (P : Ideal (MRing ι)) [P.IsPrime] {N1 n : ℕ}
     (B : Matrix (Fin n) (Fin N1) (FnField P)) (hB : LinearIndependent (FnField P) B)
@@ -91,9 +89,9 @@ theorem exists_X_inr_notMem (P : Ideal (MRing ι)) [P.IsPrime] {N1 n : ℕ}
   exact this.symm
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Rewrite `ha` using `[← Ideal.Quotient.mk_algebraMap, MvPolynomial.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h' : a ∈ I.comap (C : ℤ →+* MRing ι)` using `ha`. Rewrite `h'` using `[show I.comap (C : ℤ →+* MRing ι) = ⊥ from h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Submodule.mem_bot ℤ).mp h'`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_int_injective (I : Ideal (MRing ι)) (h : IsHorizontal I) :
     Function.Injective (algebraMap ℤ (MRing ι ⧸ I)) := by
@@ -107,19 +105,19 @@ theorem algebraMap_int_injective (I : Ideal (MRing ι)) (h : IsHorizontal I) :
 end Flag
 
 /- English proof (translation)
-Introduce `K _ ι _ N1 t n P d c m B hP hc hB`. Use `hP.2.1.1` as an intermediate fact. Establish `hHor : IsHorizontal (flagIdeal P B)`. Establish `h` using `hP.2.2.1`. Rewrite `h` using `[← imageZ_flagIdeal P B]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Eq.trans (Ideal.ext fun a => ?_) h` and prove the remaining obligations. Simplify using `only [Ideal.mem_comap, imageZ, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_C]`. Establish `hprime : (flagIdeal P B).IsPrime` using `RingHom.ker_isPrime _`. Use `⟨⟨Sum.inl hP.1.some⟩, ⟨hprime, hMH K ι N1 t n P c m B hP.2.1.1 hP.2.1.2.1 hc.1 hB, ?_⟩, hHor, ?_⟩` and prove the remaining obligations. Introduce and unpack `(k | j)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨i, hi⟩` from `hP.2.1.2.2 k`. Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations. Rewrite using `[← imageZ_flagIdeal P B]`. Use `show rename inlV (X ⟨k, i⟩) ∈ flagIdeal P B`. Rewrite using `[rename_X]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS⟩` from `exists_X_inr_notMem P B hB.1 j`. Conclude with `⟨S, hS⟩`. Establish `dimP` using `hDim (MRing ι ⧸ P) (algebraMap_int_injective P hP.2.2.1)`. Establish `dimF` using `hDim (MRing (FlagBundleBlocks ι N1 n) ⧸ flagIdeal P B) (algebraMap_int_injective _ hHor)`. Rewrite `dimF` using `[hTr K ι N1 n P B hP.2.1.1 hP.2.2.1 hB.1]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `dimP` using `[hP.2.2.2]`. Rewrite using `[dimF]`. Establish `hK : 0 < Fintype.card K` using `Fintype.card_pos_iff.2 hP.1`. Establish `h1 : ((d + Fintype.card K : ℕ) : ℕ∞) = (Algebra.trdeg ℤ (MRing ι ⧸ P)).toENat + 1`. Conclude with `dimP` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [map_add, map_natCast, Fintype.card_sum, Fintype.card_fin]`. Generalize the expression as in `(Algebra.trdeg ℤ (MRing ι ⧸ P)).toENat = s at h1 ⊢`. Proceed by induction on `s using ENat.recTopCoe with`. Consider the case `top => simp at h1`. Consider the case `coe s`.
+Proceed by induction. Treat this case separately. Treat this case separately. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities.
 
-Normalize the coercions in `at h1 ⊢`. Rewrite using `[show s + (flagDim n + (n - 1)) + 1 = flagDim n + d + (Fintype.card K + (n - 1)) by omega]`.
+A detailed English derivation is pending.
 -/
 theorem FlagArith.proof (hMH : FlagMultiHomog.Statement) (hTr : FlagConeTrdeg.Statement)
     (hDim : IntDomainDim.Statement) : FlagArith.Statement := by

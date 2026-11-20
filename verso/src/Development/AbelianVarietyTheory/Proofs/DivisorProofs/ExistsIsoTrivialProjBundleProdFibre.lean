@@ -10,14 +10,14 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Use extensionality with `n U x`. Conclude with `CategoryTheory.Functor.hext (fun _ => rfl) (fun _ _ _ => heq_of_eq rfl)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem comp_trivV (N : ℕ) {E E' : Spc} (f : E' ⟶ E) : f ≫ trivV N E = trivV N E' := by
   ext n U x
   exact CategoryTheory.Functor.hext (fun _ => rfl) (fun _ _ _ => heq_of_eq rfl)
 
 /- English proof (translation)
-Use extensionality with `n U x`. Conclude with `Subsingleton.elim (α := PLift _) _ _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem hom_ext_invertibleLocus (q : ℕ) {E : Spc} (f g : E ⟶ disc.obj (invP q)) : f = g := by
   ext n U x
@@ -31,7 +31,7 @@ def toInvP (q : ℕ) (F : PSh) (hF : Inv q (disc.obj F)) : disc.obj F ⟶ disc.o
 def fibQ.snd (q N : ℕ) : fibQ q N ⟶ PGL N := pullback.snd _ _
 
 /- English proof (translation)
-Use `show trivV N (pullback (trivV N (disc.obj (invP q))) (PGL.pr N)) = pullback.snd _ _ ≫ PGL.pr N`. Rewrite using `[← comp_trivV N (pullback.fst (trivV N (disc.obj (invP q))) (PGL.pr N))]`. Conclude with `pullback.condition`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibQ.cond (q N : ℕ) : trivV N (fibQ q N) = fibQ.snd q N ≫ PGL.pr N := by
   show trivV N (pullback (trivV N (disc.obj (invP q))) (PGL.pr N)) = pullback.snd _ _ ≫ PGL.pr N
@@ -43,26 +43,26 @@ def fibQ.lift {q N : ℕ} {X : Spc} (a : X ⟶ disc.obj (invP q)) (b : X ⟶ PGL
   pullback.lift a b (by rw [comp_trivV]; exact h)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem fibQ.lift_snd {q N : ℕ} {X : Spc} (a : X ⟶ disc.obj (invP q)) (b : X ⟶ PGL N)
     (h : trivV N X = b ≫ PGL.pr N) : fibQ.lift a b h ≫ fibQ.snd q N = b :=
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.hom_ext (hom_ext_invertibleLocus q _ _) h`.
+A detailed English derivation is pending.
 -/
 theorem fibQ.hom_ext {q N : ℕ} {X : Spc} {f g : X ⟶ fibQ q N} (h : f ≫ fibQ.snd q N = g ≫ fibQ.snd q N) : f = g :=
   pullback.hom_ext (hom_ext_invertibleLocus q _ _) h
 
 /- English proof (translation)
-Establish `h1 : prod.fst ≫ trivV N (disc.obj F) = (prod.snd ≫ fibQ.snd q N) ≫ PGL.pr N`. Rewrite using `[comp_trivV, Category.assoc, ← fibQ.cond, comp_trivV]`. Establish `h2 : trivV N (pullback (trivV N (disc.obj F)) (PGL.pr N)) = pullback.snd _ _ ≫ PGL.pr N`. Rewrite using `[← comp_trivV N (pullback.fst (trivV N (disc.obj F)) (PGL.pr N))]`. Conclude with `pullback.condition`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `hom : disc.obj F ⨯ fibQ q N ⟶ pullback (trivV N (disc.obj F)) (PGL.pr N)` to `pullback.lift prod.fst (prod.snd ≫ fibQ.snd q N) h1`. Set `inv : pullback (trivV N (disc.obj F)) (PGL.pr N) ⟶ disc.obj F ⨯ fibQ q N` to `prod.lift (pullback.fst _ _) (fibQ.lift (pullback.fst _ _ ≫ toInvP q F hF) (pullback.snd _ _) h2)`. Use `⟨{ hom := hom, inv := inv, hom_inv_id := ?_, inv_hom_id := ?_ }, ?_, ?_⟩` and prove the remaining obligations. Apply `prod.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, prod.lift_fst, pullback.lift_fst, Category.id_comp]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `fibQ.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, ← Category.assoc inv, prod.lift_snd, fibQ.lift_snd, pullback.lift_snd, Category.id_comp]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, prod.lift_fst, Category.id_comp]`. Rewrite using `[Category.assoc, pullback.lift_snd, ← Category.assoc, prod.lift_snd, fibQ.lift_snd, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pullback.lift_fst _ _ _`. Rewrite using `[← Category.assoc, pullback.lift_snd, Category.assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trivProj_iso (q N : ℕ) (F : PSh) (hF : Inv q (disc.obj F)) :
     ∃ θ : disc.obj F ⨯ fibQ q N ≅ pullback (trivV N (disc.obj F)) (PGL.pr N),

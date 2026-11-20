@@ -58,7 +58,7 @@ def SemiBialgHom.liftOver {ρ : R →+* R''} (f : SemiBialgHom ρ A A'') (τ : R
         | tmul a b => simp [hg] }
 
 /- English proof (translation)
-The claim follows from `(Algebra.smul_def (τ r) (f a)).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem SemiBialgHom.liftOver_tmul {ρ : R →+* R''} (f : SemiBialgHom ρ A A'')
     (τ : R' →+* R'') (h : ∀ r, ρ r = τ (algebraMap R R' r)) (r : R') (a : A) :
@@ -73,7 +73,7 @@ variable {p : ℕ} [hp : Fact p.Prime] {R : Type} [CommRing R]
 abbrev frobRing (h : (p : R) = 0) : R →+* R := SS.FrobField.powHom R p 1 hp.out h
 
 /- English proof (translation)
-The claim follows from `congrArg (r ^ ·) (pow_one p)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem frobRing_apply (h : (p : R) = 0) (r : R) : frobRing h r = r ^ p :=
   congrArg (r ^ ·) (pow_one p)
@@ -81,7 +81,7 @@ The claim follows from `congrArg (r ^ ·) (pow_one p)`.
 omit hp in
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap R A), h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_eq_zero_of_algebra (h : (p : R) = 0) (A : Type) [CommRing A] [Algebra R A] :
     (p : A) = 0 := by
@@ -101,7 +101,7 @@ def frobBialg (h : (p : R) = 0) (A : Type) [CommRing A] [Bialgebra R A] :
     | tmul a b => simp [Algebra.TensorProduct.tmul_pow]
 
 /- English proof (translation)
-The claim follows from `frobRing_apply (natCast_eq_zero_of_algebra h A) a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem frobBialg_apply (h : (p : R) = 0) {A : Type} [CommRing A] [Bialgebra R A] (a : A) :
     frobBialg h A a = a ^ p := frobRing_apply (natCast_eq_zero_of_algebra h A) a
@@ -128,7 +128,7 @@ def SemiHom.liftOver {G'' : PDivGroup p O''} {ρ : O →+* O''} (s : SemiHom ρ 
     | tmul r a => simp [s.res_app]⟩
 
 /- English proof (translation)
-The claim follows from `(s.app n).liftOver_tmul τ h r a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem SemiHom.liftOver_app {G'' : PDivGroup p O''} {ρ : O →+* O''} (s : SemiHom ρ G'' G)
     (τ : O' →+* O'') (h : ∀ r, ρ r = τ (algebraMap O O' r)) (n : ℕ) (r : O') (a : G.A n) :
@@ -137,9 +137,9 @@ The claim follows from `(s.app n).liftOver_tmul τ h r a`.
 variable (O') in
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact h0`. Consider the case `add x y hx hy => exact h2 x y hx hy`. Consider the case `tmul r a`. Establish `e : r • (G.toBase O').app n a = r ⊗ₜ[O] a` using `by rw [toBase_app, smul_tmul', smul_eq_mul, mul_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `e ▸ h1 r a`.
+A detailed English derivation is pending.
 -/
 theorem baseChange_induction (n : ℕ) {P : (G.baseChange O').A n → Prop} (h0 : P 0)
     (h1 : ∀ (r : O') a, P (r • (G.toBase O').app n a)) (h2 : ∀ x y, P x → P y → P (x + y))
@@ -154,7 +154,7 @@ theorem baseChange_induction (n : ℕ) {P : (G.baseChange O').A n → Prop} (h0 
 variable [Fact p.Prime]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `CartierDual.baseChange O O' (G.A n) (1 ⊗ₜ χ) (1 ⊗ₜ a) = _`. Rewrite using `[CartierDual.baseChange_tmul_tmul, one_mul, Algebra.algebraMap_eq_smul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualBaseChange_toBase (n : ℕ) (χ : CartierDual O (G.A n)) (a : G.A n) :
     ((PerfdLat.dualBaseChange O' G).hom.app n ((G.dual.toBase O').app n χ)).ofConv
@@ -163,9 +163,9 @@ theorem dualBaseChange_toBase (n : ℕ) (χ : CartierDual O (G.A n)) (a : G.A n)
   rw [CartierDual.baseChange_tmul_tmul, one_mul, Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Use `CartierDual.eq_of_forall_apply (R := O') fun φ => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩ : ∃ z, (PerfdLat.dualBaseChange O' G).hom.app n z = φ` from `(CartierDual.baseChange O O' (G.A n)).surjective φ`. Proceed by induction on `z using baseChange_induction O' (G := G.dual) n with`. Consider the case `h0 => simp`. Consider the case `h1 r χ => rw [map_smul, ofConv_smul, LinearMap.smul_apply, LinearMap.smul_apply, h]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `h2 z w hz hw => rw [map_add, ofConv_add, LinearMap.add_apply, LinearMap.add_apply, hz, hw]`.
+Treat this case separately.
 -/
 theorem baseChange_ext_dual (n : ℕ) {x y : (G.baseChange O').A n}
     (h : ∀ χ : CartierDual O (G.A n),
@@ -188,7 +188,7 @@ def absFrob : SemiHom (frobRing h) G G :=
   ⟨fun n => frobBialg h (G.A n), fun n a => by simp only [frobBialg_apply, map_pow]⟩
 
 /- English proof (translation)
-The claim follows from `frobBialg_apply h a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem absFrob_app (n : ℕ) (a : G.A n) : (absFrob h G).app n a = a ^ p :=
   frobBialg_apply h a
@@ -215,7 +215,7 @@ def frobLift (s : SemiHom (frobRing h) H G) : H ⟶ frobTwist h G :=
 variable {G} in
 
 /- English proof (translation)
-The claim follows from `letI := (frobRing h).toAlgebra (SemiHom.lift_app (O := R) (O' := R) s n 1 a).trans (one_smul _ _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem frobLift_app_frobProj (s : SemiHom (frobRing h) H G) (n : ℕ) (a : G.A n) :
     (frobLift h s).app n ((frobProj h G).app n a) = s.app n a :=
@@ -245,7 +245,7 @@ Both sides reduce to the same expression.
     (frobTwistMap h f).app n ((frobProj h H).app n a) = (frobProj h G).app n (f.app n a) := rfl
 
 /- English proof (translation)
-The claim follows from `letI := (frobRing h).toAlgebra baseChange_induction R n h0 h1 h2 x`.
+A detailed English derivation is pending.
 -/
 theorem frobTwist_induction (n : ℕ) {P : (frobTwist h G).A n → Prop} (h0 : P 0)
     (h1 : ∀ (r : R) a, P (r • (frobProj h G).app n a)) (h2 : ∀ x y, P x → P y → P (x + y))
@@ -254,7 +254,7 @@ theorem frobTwist_induction (n : ℕ) {P : (frobTwist h G).A n → Prop} (h0 : P
   baseChange_induction R n h0 h1 h2 x
 
 /- English proof (translation)
-The claim follows from `letI := (frobRing h).toAlgebra baseChange_hom_ext e`.
+A detailed English derivation is pending.
 -/
 theorem frobTwist_hom_ext {f g : H ⟶ frobTwist h G}
     (e : ∀ n a, f.app n ((frobProj h G).app n a) = g.app n ((frobProj h G).app n a)) : f = g :=
@@ -262,19 +262,19 @@ theorem frobTwist_hom_ext {f g : H ⟶ frobTwist h G}
   baseChange_hom_ext e
 
 /- English proof (translation)
-The claim follows from `frobTwist_hom_ext h fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem frobTwistMap_id : frobTwistMap h (𝟙 G) = 𝟙 _ := frobTwist_hom_ext h fun _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `frobTwist_hom_ext h fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem frobTwistMap_comp (f : G ⟶ H) (g : H ⟶ K) :
     frobTwistMap h (f ≫ g) = frobTwistMap h f ≫ frobTwistMap h g :=
   frobTwist_hom_ext h fun _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `letI := (frobRing h).toAlgebra baseChangeMap_add R f g`.
+A detailed English derivation is pending.
 -/
 theorem frobTwistMap_add (f g : G ⟶ H) :
     frobTwistMap h (f + g) = frobTwistMap h f + frobTwistMap h g :=
@@ -282,14 +282,14 @@ theorem frobTwistMap_add (f g : G ⟶ H) :
   baseChangeMap_add R f g
 
 /- English proof (translation)
-The claim follows from `(frobLift_app_frobProj h _ n a).trans (absFrob_app h G n a)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem relFrob_app_frobProj (n : ℕ) (a : G.A n) :
     (relFrob h G).app n ((frobProj h G).app n a) = a ^ p :=
   (frobLift_app_frobProj h _ n a).trans (absFrob_app h G n a)
 
 /- English proof (translation)
-The claim follows from `letI := (frobRing h).toAlgebra (dualBaseChange_toBase (O' := R) n χ a).trans (frobRing_apply h _)`.
+A detailed English derivation is pending.
 -/
 theorem frobTwistDual_frobProj (n : ℕ) (χ : CartierDual R (G.A n)) (a : G.A n) :
     ((frobTwistDual h G).hom.app n ((frobProj h G.dual).app n χ)).ofConv
@@ -298,7 +298,7 @@ theorem frobTwistDual_frobProj (n : ℕ) (χ : CartierDual R (G.A n)) (a : G.A n
   (dualBaseChange_toBase (O' := R) n χ a).trans (frobRing_apply h _)
 
 /- English proof (translation)
-The claim follows from `letI := (frobRing h).toAlgebra baseChange_ext_dual (O' := R) n e`.
+A detailed English derivation is pending.
 -/
 theorem frobTwist_ext_dual (n : ℕ) {x y : (frobTwist h G).A n}
     (e : ∀ χ : CartierDual R (G.A n),
@@ -308,7 +308,7 @@ theorem frobTwist_ext_dual (n : ℕ) {x y : (frobTwist h G).A n}
   baseChange_ext_dual (O' := R) n e
 
 /- English proof (translation)
-Use `(CartierDual.apply_bidual_symm _ _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((relFrob h G.dual).app n (((frobTwistDual h G).inv ≫ (frobTwistDual h G).hom).app n ((frobProj h G.dual).app n χ))).ofConv a = _`. Rewrite using `[Iso.inv_hom_id]`. Conclude with `congrArg (fun φ : CartierDual R (G.A n) => φ a) (relFrob_app_frobProj h (G := G.dual) n χ)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobTwistDual_verschiebung (n : ℕ) (χ : CartierDual R (G.A n)) (a : G.A n) :
     ((frobTwistDual h G).hom.app n ((frobProj h G.dual).app n χ)).ofConv
@@ -326,7 +326,7 @@ def SemiHom.frobTwist (h' : (p : S) = 0) {σ : R →+* S} {G' : PDivGroup p S} (
     (frobRing_apply h' _).trans ((map_pow σ r p).symm.trans (congrArg σ (frobRing_apply h r).symm))
 
 /- English proof (translation)
-The claim follows from `letI := (frobRing h).toAlgebra (SemiHom.liftOver_app ((frobProj h' G').comp s) σ _ n 1 a).trans (by rw [map_one, one_smul, SemiHom.comp_app])`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem SemiHom.frobTwist_app_frobProj (h' : (p : S) = 0) {σ : R →+* S}
     {G' : PDivGroup p S} (s : SemiHom σ G' G) (n : ℕ) (a : G.A n) :
@@ -374,7 +374,7 @@ def frobTwistBaseChange : frobTwist h' (G.baseChange S) ≅ (frobTwist h G).base
       exact congrArg _ ((SemiHom.liftOver_app _ _ _ n 1 a).trans (by rw [map_one, one_smul]; rfl))
 
 /- English proof (translation)
-The claim follows from `(SemiHom.lift_app _ n 1 x).trans (one_smul _ _)`.
+A detailed English derivation is pending.
 -/
 theorem frobTwistBaseChange_hom_app (n : ℕ) (x : (frobTwist h G).A n) :
     (frobTwistBaseChange h G h').hom.app n (((frobTwist h G).toBase S).app n x) =

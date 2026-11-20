@@ -4,7 +4,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.DataN
 open Formalism.MainNotions.N
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.twistedIntertwiner_decomp_of_quadraticKernel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FTwistedIntertwinerDecompOfQuadraticKernel.lean&line=102#L102)
 -/

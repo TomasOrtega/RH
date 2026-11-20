@@ -16,14 +16,14 @@ noncomputable def comapSubscheme {V W : Scheme.{u}} (f : V ⟶ W) (D : W.IdealSh
   Scheme.IdealSheafData.subschemeMap (D.comap f) D f (D.le_map_comap f)
 
 /- English proof (translation)
-Simplify using `[comapSubscheme]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comapSubscheme_comp {V W : Scheme.{u}} (f : V ⟶ W) (D : W.IdealSheafData) :
     comapSubscheme f D ≫ D.subschemeι = (D.comap f).subschemeι ≫ f := by
   simp [comapSubscheme]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, comapSubscheme_comp, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comapSubscheme_comp_assoc {V W T : Scheme.{u}} (f : V ⟶ W) (D : W.IdealSheafData)
     (g : W ⟶ T) :
@@ -43,14 +43,14 @@ structure OpenImmersionStability (k : Type u) [Field k] : Prop where
       IsSmoothDivisor p D → IsSmoothDivisor (f ≫ p) (D.comap f)
 
 /- English proof (translation)
-Rewrite using `[Scheme.IdealSheafData.support_comap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem coe_support_comap {V W : Scheme.{u}} (f : V ⟶ W) (Z : W.IdealSheafData) :
     ((Z.comap f).support : Set ↥V) = ⇑f.base ⁻¹' ((Z.support : Set ↥W)) := by
   rw [Scheme.IdealSheafData.support_comap]; rfl
 
 /- English proof (translation)
-Use extensionality with `w`. Conclude with `Iff.rfl`.
+By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem preimage_base_comp {A B C : Scheme.{u}} (a : A ⟶ B) (b : B ⟶ C) (S : Set ↥C) :
     ⇑(a ≫ b).base ⁻¹' S = ⇑a.base ⁻¹' (⇑b.base ⁻¹' S) := by
@@ -58,7 +58,7 @@ private theorem preimage_base_comp {A B C : Scheme.{u}} (a : A ⟶ B) (b : B ⟶
   exact Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[← preimage_base_comp, ← preimage_base_comp, e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem preimage_base_preimage_base_of_comp_eq {A B C D : Scheme.{u}} {a : A ⟶ B} {b : B ⟶ D} {c : A ⟶ C}
     {d : C ⟶ D} (e : a ≫ b = c ≫ d) (S : Set ↥D) :
@@ -66,7 +66,7 @@ private theorem preimage_base_preimage_base_of_comp_eq {A B C D : Scheme.{u}} {a
   rw [← preimage_base_comp, ← preimage_base_comp, e]
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Substitute `hI` using the available equality. Substitute `hM` using the available equality. Substitute `hZ` using the available equality. Conclude with `h`.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem principalizationCertificate_congr {k : Type u} [Field k] {A : Scheme.{u}}
     {p₁ p₂ : A ⟶ Spec (CommRingCat.of k)} {I₁ I₂ : A.IdealSheafData} {m : ℕ}
@@ -76,7 +76,7 @@ private theorem principalizationCertificate_congr {k : Type u} [Field k] {A : Sc
   subst hp; subst hI; subst hM; subst hZ; exact h
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Substitute `hN` using the available equality. Substitute `hM` using the available equality. Substitute `hZ` using the available equality. Conclude with `h`.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem orderCertificate_congr {k : Type u} [Field k] {A : Scheme.{u}}
     {p₁ p₂ : A ⟶ Spec (CommRingCat.of k)} {N₁ N₂ : A.IdealSheafData} {μ : ℕ}
@@ -98,7 +98,7 @@ private def IsOrderCertificateOnOpens {k : Type u} [Field k] (W : Scheme.{u})
     OrderCertificate V (f ≫ p) (N.comap f) μ (⇑f.base ⁻¹' Mem) (Z.comap f)
 
 /- English proof (translation)
-Introduce `V f _hf`. Use `PrincipalizationCertificate.memory ?_` and prove the remaining obligations. Rewrite using `[coe_support_comap]`. Conclude with `Set.preimage_mono h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comapPrincipalizationCertificate_of_support_subset {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ} {Mem : Set ↥W}
@@ -110,7 +110,7 @@ private theorem comapPrincipalizationCertificate_of_support_subset {k : Type u} 
   exact Set.preimage_mono h
 
 /- English proof (translation)
-Introduce `V f _hf`. Use `OrderCertificate.memory ?_` and prove the remaining obligations. Rewrite using `[coe_support_comap]`. Conclude with `Set.preimage_mono h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comapOrderCertificate_of_support_subset {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ} {Mem : Set ↥W}
@@ -122,7 +122,7 @@ private theorem comapOrderCertificate_of_support_subset {k : Type u} [Field k] {
   exact Set.preimage_mono h
 
 /- English proof (translation)
-Introduce `V f _hf`. Conclude with `PrincipalizationCertificate.large hm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem comapPrincipalizationCertificate_of_two_le {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ} {Mem : Set ↥W}
@@ -131,7 +131,7 @@ private theorem comapPrincipalizationCertificate_of_two_le {k : Type u} [Field k
   exact PrincipalizationCertificate.large hm
 
 /- English proof (translation)
-Introduce `V f _hf`. Conclude with `OrderCertificate.large hmu`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem comapOrderCertificate_of_two_le {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ} {Mem : Set ↥W}
@@ -140,9 +140,9 @@ private theorem comapOrderCertificate_of_two_le {k : Type u} [Field k] {W : Sche
   exact OrderCertificate.large hmu
 
 /- English proof (translation)
-Introduce `V f hf`. Use `PrincipalizationCertificate.toOrder (M.comap f) (N.comap f) μ ?_ ?_ hmu ?_ (ih V f hf)` and prove the remaining obligations. Rewrite using `[hI, Scheme.IdealSheafData.comap_mul]`. Rewrite using `[coe_support_comap]`. Conclude with `Set.preimage_mono hM`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_support_comap]`. Introduce `y hy`. Rewrite using `[mem_orderAtLeastLocus_iff]`. Conclude with `le_trans ((mem_orderAtLeastLocus_iff N μ (f.base y)).mp (hZ hy)) (orderAt_le_orderAt_comap f N y)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comapPrincipalizationCertificate_of_mul_of_order {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ} {Mem : Set ↥W}
@@ -162,11 +162,11 @@ private theorem comapPrincipalizationCertificate_of_mul_of_order {k : Type u} [F
       (orderAt_le_orderAt_comap f N y)
 
 /- English proof (translation)
-Introduce `V f hf`. Establish `: IsOpenImmersion f` using `hf`. Establish `hsup : ∀ (y : ↥V), y ∈ (Z.comap f).support → f.base y ∈ Z.support`. Introduce `y hy`. Establish `h1 : y ∈ ((Z.comap f).support : Set ↥V)` using `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[coe_support_comap]`. Conclude with `h1`. Use `PrincipalizationCertificate.localize (fun y hy => f ⁻¹ᵁ U (f.base y) (hsup y hy)) (fun y hy => hU _ _) ?_` and prove the remaining obligations. Introduce `y hy`. Establish `e1 : (f ∣_ U (f.base y) (hsup y hy)) ≫ (U (f.base y) (hsup y hy)).ι = (f ⁻¹ᵁ U (f.base y) (hsup y hy)).ι ≫ f` using `morphismRestrict_ι ..`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `principalizationCertificate_congr (ih (f.base y) (hsup y hy) _ (f ∣_ U (f.base y) (hsup y hy)) inferInstance) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, e1, Category.assoc]`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, e1]`. Conclude with `preimage_base_preimage_base_of_comp_eq e1 Mem`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comapPrincipalizationCertificate_of_open_cover {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ} {Mem : Set ↥W}
@@ -196,11 +196,11 @@ private theorem comapPrincipalizationCertificate_of_open_cover {k : Type u} [Fie
   · rw [← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, e1]
 
 /- English proof (translation)
-Introduce `V f hf`. Establish `: IsOpenImmersion f` using `hf`. Establish `hsup : ∀ (y : ↥V), y ∈ (Z.comap f).support → f.base y ∈ Z.support`. Introduce `y hy`. Establish `h1 : y ∈ ((Z.comap f).support : Set ↥V)` using `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[coe_support_comap]`. Conclude with `h1`. Use `OrderCertificate.localize (fun y hy => f ⁻¹ᵁ U (f.base y) (hsup y hy)) (fun y hy => hU _ _) ?_` and prove the remaining obligations. Introduce `y hy`. Establish `e1 : (f ∣_ U (f.base y) (hsup y hy)) ≫ (U (f.base y) (hsup y hy)).ι = (f ⁻¹ᵁ U (f.base y) (hsup y hy)).ι ≫ f` using `morphismRestrict_ι ..`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `orderCertificate_congr (ih (f.base y) (hsup y hy) _ (f ∣_ U (f.base y) (hsup y hy)) inferInstance) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, e1, Category.assoc]`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, e1]`. Conclude with `preimage_base_preimage_base_of_comp_eq e1 Mem`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comapOrderCertificate_of_open_cover {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ} {Mem : Set ↥W}
@@ -230,7 +230,7 @@ private theorem comapOrderCertificate_of_open_cover {k : Type u} [Field k] {W : 
   · rw [← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, e1]
 
 /- English proof (translation)
-Establish `e1 : (f ∣_ U') ≫ U'.ι = (f ⁻¹ᵁ U').ι ≫ f` using `morphismRestrict_ι ..`. Establish `h2` using `hin.comap_isSmoothDivisor (f ∣_ U') (U'.ι ≫ p) Hd h`. Establish `e4 : (f ∣_ U') ≫ (U'.ι ≫ p) = (f ⁻¹ᵁ U').ι ≫ (f ≫ p)`. Rewrite using `[← Category.assoc, e1, Category.assoc]`. Rewrite `h2` using `[e4]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem isSmoothDivisor_comap_morphismRestrict {k : Type u} [Field k] (hin : OpenImmersionStability k)
     {V W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} (f : V ⟶ W) [IsOpenImmersion f]
@@ -244,7 +244,7 @@ private theorem isSmoothDivisor_comap_morphismRestrict {k : Type u} [Field k] (h
   rwa [e4] at h2
 
 /- English proof (translation)
-Establish `e1 : (f ∣_ U') ≫ U'.ι = (f ⁻¹ᵁ U').ι ≫ f` using `morphismRestrict_ι ..`. Establish `e5 : (K.comap f).comap (f ⁻¹ᵁ U').ι = (K.comap U'.ι).comap (f ∣_ U')`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, e1]`. Rewrite using `[e5, coe_support_comap (f ∣_ U') (K.comap U'.ι), coe_support_comap (f ∣_ U') Hd]`. Conclude with `Set.preimage_mono h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem support_comap_morphismRestrict_subset {V W : Scheme.{u}} (f : V ⟶ W) (U' : W.Opens)
     (Hd : U'.toScheme.IdealSheafData) (K : W.IdealSheafData)
@@ -258,7 +258,7 @@ private theorem support_comap_morphismRestrict_subset {V W : Scheme.{u}} (f : V 
   exact Set.preimage_mono h
 
 /- English proof (translation)
-Establish `e1 : (f ∣_ U') ≫ U'.ι = (f ⁻¹ᵁ U').ι ≫ f` using `morphismRestrict_ι ..`. Establish `e5 : (K.comap f).comap (f ⁻¹ᵁ U').ι = (K.comap U'.ι).comap (f ∣_ U')`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, e1]`. Rewrite using `[e5, coe_support_comap (f ∣_ U') (K.comap U'.ι), preimage_base_preimage_base_of_comp_eq (comapSubscheme_comp (f ∣_ U') Hd).symm (((K.comap U'.ι).support : Set ↥U'.toScheme))]`. Conclude with `h.preimage (comapSubscheme (f ∣_ U') Hd).base.hom.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isOpen_preimage_support_comap_morphismRestrict {V W : Scheme.{u}} (f : V ⟶ W) (U' : W.Opens)
     (Hd : U'.toScheme.IdealSheafData) (K : W.IdealSheafData)
@@ -275,7 +275,7 @@ private theorem isOpen_preimage_support_comap_morphismRestrict {V W : Scheme.{u}
   exact h.preimage (comapSubscheme (f ∣_ U') Hd).base.hom.continuous
 
 /- English proof (translation)
-Establish `: IsOpenImmersion (comapSubscheme (f ∣_ U') Hd)` using `hin.isOpenImmersion_comapSubscheme (f ∣_ U') Hd`. Conclude with `hin.comap_nonzeroOnComponents (comapSubscheme (f ∣_ U') Hd) Jz h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem nonzeroOnComponents_comap_comapSubscheme {k : Type u} [Field k] (hin : OpenImmersionStability k)
     {V W : Scheme.{u}} (f : V ⟶ W) [IsOpenImmersion f] (U' : W.Opens)
@@ -287,13 +287,13 @@ private theorem nonzeroOnComponents_comap_comapSubscheme {k : Type u} [Field k] 
   exact hin.comap_nonzeroOnComponents (comapSubscheme (f ∣_ U') Hd) Jz h
 
 /- English proof (translation)
-Establish `e1 : (f ∣_ U') ≫ U'.ι = (f ⁻¹ᵁ U').ι ≫ f` using `morphismRestrict_ι ..`. Establish `e2 : comapSubscheme (f ∣_ U') Hd ≫ Hd.subschemeι = (Hd.comap (f ∣_ U')).subschemeι ≫ (f ∣_ U')` using `comapSubscheme_comp ..`. Establish `e3 : comapSubscheme (f ∣_ U') Hd ≫ Hd.subschemeι ≫ U'.ι = (Hd.comap (f ∣_ U')).subschemeι ≫ (f ⁻¹ᵁ U').ι ≫ f`. Rewrite using `[← Category.assoc, e2, Category.assoc, e1]`. Establish `h9 : (Hd.subschemeι ≫ U'.ι).base ((comapSubscheme (f ∣_ U') Hd).base x) = f.base (((Hd.comap (f ∣_ U')).subschemeι ≫ (f ⁻¹ᵁ U').ι).base x)` using `congrArg (fun t : (Hd.comap (f ∣_ U')).subscheme ⟶ W => t.base x) e3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx' : (Hd.subschemeι ≫ U'.ι).base ((comapSubscheme (f ∣_ U') Hd).base x) ∉ Mem`. Introduce `hmem`. Apply `hx` to reduce the goal to its premises. Use `show f.base (((Hd.comap (f ∣_ U')).subschemeι ≫ (f ⁻¹ᵁ U').ι).base x) ∈ Mem`. Rewrite using `[← h9]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hmem`. Take `⟨V₀, hxV₀, hV₀⟩` from `h _ hx'`. Use `⟨(comapSubscheme (f ∣_ U') Hd) ⁻¹ᵁ V₀, hxV₀, ?_⟩` and prove the remaining obligations. Establish `hc` using `congrArg (fun K => Scheme.IdealSheafData.comap K ((comapSubscheme (f ∣_ U') Hd) ∣_ V₀)) hV₀`. Establish `e7 : ((comapSubscheme (f ∣_ U') Hd) ⁻¹ᵁ V₀).ι ≫ comapSubscheme (f ∣_ U') Hd = ((comapSubscheme (f ∣_ U') Hd) ∣_ V₀) ≫ V₀.ι` using `(morphismRestrict_ι ..).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e8 : ((comapSubscheme (f ∣_ U') Hd) ⁻¹ᵁ V₀).ι ≫ (Hd.comap (f ∣_ U')).subschemeι ≫ (f ⁻¹ᵁ U').ι ≫ f = ((comapSubscheme (f ∣_ U') Hd) ∣_ V₀) ≫ V₀.ι ≫ Hd.subschemeι ≫ U'.ι`. Rewrite using `[← e3, ← Category.assoc, e7, Category.assoc]`. Simplify using `only [← Scheme.IdealSheafData.comap_comp] at hc ⊢`. Rewrite using `[e7, e8]`. Conclude with `hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_isOpen_comap_eq_comap_morphismRestrict {V W : Scheme.{u}} (f : V ⟶ W) (U' : W.Opens)
     (Hd : U'.toScheme.IdealSheafData) (N : W.IdealSheafData) (Mem : Set ↥W)
@@ -337,11 +337,11 @@ private theorem exists_isOpen_comap_eq_comap_morphismRestrict {V W : Scheme.{u}}
   exact hc
 
 /- English proof (translation)
-Establish `hq : IsOpenImmersion (comapSubscheme (f ∣_ U') Hd)` using `hin.isOpenImmersion_comapSubscheme (f ∣_ U') Hd`. Establish `e1 : (f ∣_ U') ≫ U'.ι = (f ⁻¹ᵁ U').ι ≫ f` using `morphismRestrict_ι ..`. Establish `e2 : comapSubscheme (f ∣_ U') Hd ≫ Hd.subschemeι = (Hd.comap (f ∣_ U')).subschemeι ≫ (f ∣_ U')` using `comapSubscheme_comp ..`. Establish `e3 : comapSubscheme (f ∣_ U') Hd ≫ Hd.subschemeι ≫ U'.ι = (Hd.comap (f ∣_ U')).subschemeι ≫ (f ⁻¹ᵁ U').ι ≫ f`. Rewrite using `[← Category.assoc, e2, Category.assoc, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3' : comapSubscheme (f ∣_ U') Hd ≫ (Hd.subschemeι ≫ U'.ι) = ((Hd.comap (f ∣_ U')).subschemeι ≫ (f ⁻¹ᵁ U').ι) ≫ f`. Rewrite using `[Category.assoc]`. Conclude with `e3`. Use `principalizationCertificate_congr (h _ (comapSubscheme (f ∣_ U') Hd) hq) ?_ rfl ?_ ?_` and prove the remaining obligations. Establish `h5` using `congrArg (fun t : (Hd.comap (f ∣_ U')).subscheme ⟶ W => t ≫ p) e3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h5` using `only [Category.assoc]`. Conclude with `preimage_base_preimage_base_of_comp_eq e3' Mem`. Simplify using `only [← Scheme.IdealSheafData.comap_comp]`. Rewrite using `[e3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem principalizationCertificate_comapSubscheme_of_isOpenImmersion {k : Type u} [Field k] (hin : OpenImmersionStability k)
     {V W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} (f : V ⟶ W) [IsOpenImmersion f]
@@ -373,25 +373,23 @@ private theorem principalizationCertificate_comapSubscheme_of_isOpenImmersion {k
     rw [e3]
 
 /- English proof (translation)
-Introduce `V f hf`. Establish `: IsOpenImmersion f` using `hf`. Establish `hsup : ∀ (y : ↥V), y ∈ (Z.comap f).support → f.base y ∈ Z.support`. Introduce `y hy`. Establish `h1 : y ∈ ((Z.comap f).support : Set ↥V)` using `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[coe_support_comap]`. Conclude with `h1`. Use `OrderCertificate.descend (fun y hy => f ⁻¹ᵁ U (f.base y) (hsup y hy)) (fun y hy => hU _ _) (fun y hy => (H (f.base y) (hsup y hy)).comap (f ∣_ U (f.base y) (hsup y hy))) (fun y hy => isSmoothDivisor_comap_morphismRestrict hin f (U (f.base y) (hsup y hy)) (H (f.base y) (hsup y hy) …` and prove the remaining obligations. Introduce `y hy hnone`. Establish `hJn : J (f.base y) (hsup y hy) = none`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hJ : J (f.base y) (hsup y hy) with`. Consider the case `none => rfl`. Consider the case `some Jz`. Rewrite `hnone` using `[hJ]`. Simplify using `at hnone`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isOpen_preimage_support_comap_morphismRestrict f (U (f.base y) (hsup y hy)) (H (f.base y) (hsup y hy)) Z (hJnone _ _ hJn)`. Introduce `y hy Jz' hsome`. Consider the cases of `hJ : J (f.base y) (hsup y hy) with`. Consider the case `none`. Rewrite `hsome` using `[hJ]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `at hsome`. Consider the case `some Jz`. Rewrite `hsome` using `[hJ]`. Establish `hJz : Jz.comap (comapSubscheme (f ∣_ U (f.base y) (hsup y hy)) (H (f.base y) (hsup y hy))) = Jz'` using `Option.some.inj hsome`. Substitute `hJz` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Conclude with `nonzeroOnComponents_comap_comapSubscheme hin f (U (f.base y) (hsup y hy)) (H (f.base y) (hsup y hy)) Jz (hJcomp _ _ Jz hJ)`. Introduce `y hy Jz' hsome x hx`. Consider the cases of `hJ : J (f.base y) (hsup y hy) with`. Consider the case `none`. Rewrite `hsome` using `[hJ]`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hsome`. Consider the case `some Jz`. Rewrite `hsome` using `[hJ]`. Establish `hJz : Jz.comap (comapSubscheme (f ∣_ U (f.base y) (hsup y hy)) (H (f.base y) (hsup y hy))) = Jz'` using `Option.some.inj hsome`. Substitute `hJz` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Conclude with `exists_isOpen_comap_eq_comap_morphismRestrict f (U (f.base y) (hsup y hy)) (H (f.base y) (hsup y hy)) N Mem Jz (hJloc _ _ Jz hJ) x hx`. Introduce `y hy Jz' hsome`. Consider the cases of `hJ : J (f.base y) (hsup y hy) with`. Consider the case `none`. Rewrite `hsome` using `[hJ]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `at hsome`. Consider the case `some Jz`. Rewrite `hsome` using `[hJ]`. Establish `hJz : Jz.comap (comapSubscheme (f ∣_ U (f.base y) (hsup y hy)) (H (f.base y) (hsup y hy))) = Jz'` using `Option.some.inj hsome`. Substitute `hJz` using the available equality.
-
-Conclude with `principalizationCertificate_comapSubscheme_of_isOpenImmersion hin f (U (f.base y) (hsup y hy)) (H (f.base y) (hsup y hy)) Z μ Mem Jz (ih _ _ Jz hJ)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem comapOrderCertificate_of_smoothDivisor_cover {k : Type u} [Field k] (hin : OpenImmersionStability k)
     {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ}
@@ -489,7 +487,7 @@ private theorem comapOrderCertificate_of_smoothDivisor_cover {k : Type u} [Field
           Jz (ih _ _ Jz hJ)
 
 /- English proof (translation)
-The claim follows from `PrincipalizationCertificate.rec (motive_1 := fun W p I m Mem Z _ => IsPrincipalizationCertificateOnOpens W p I m Mem Z) (motive_2 := fun W p N μ Mem Z _ => IsOrderCertificateOnOpens W p N μ Mem Z) (fun h => comapPrincipalizationCertificate_of_support_subset h) (fun hm => comapPri …`.
+A detailed English derivation is pending.
 -/
 private theorem comapPrincipalizationCertificate_of_principalizationCertificate {k : Type u} [Field k] (hin : OpenImmersionStability k)
     {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ}
@@ -509,7 +507,7 @@ private theorem comapPrincipalizationCertificate_of_principalizationCertificate 
     h
 
 /- English proof (translation)
-The claim follows from `OrderCertificate.rec (motive_1 := fun W p I m Mem Z _ => IsPrincipalizationCertificateOnOpens W p I m Mem Z) (motive_2 := fun W p N μ Mem Z _ => IsOrderCertificateOnOpens W p N μ Mem Z) (fun h => comapPrincipalizationCertificate_of_support_subset h) (fun hm => comapPrincipalizati …`.
+A detailed English derivation is pending.
 -/
 private theorem comapOrderCertificate_of_orderCertificate {k : Type u} [Field k] (hin : OpenImmersionStability k)
     {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ}
@@ -529,7 +527,7 @@ private theorem comapOrderCertificate_of_orderCertificate {k : Type u} [Field k]
     h
 
 /- English proof (translation)
-The claim follows from `comapPrincipalizationCertificate_of_principalizationCertificate hin h V f inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem PrincipalizationCertificate.comap_of_openImmersionStability {k : Type u} [Field k]
     (hin : OpenImmersionStability k) {W : Scheme.{u}}
@@ -540,7 +538,7 @@ theorem PrincipalizationCertificate.comap_of_openImmersionStability {k : Type u}
   comapPrincipalizationCertificate_of_principalizationCertificate hin h V f inferInstance
 
 /- English proof (translation)
-The claim follows from `comapOrderCertificate_of_orderCertificate hin h V f inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem OrderCertificate.comap_of_isOpenImmersion {k : Type u} [Field k]
     (hin : OpenImmersionStability k) {W : Scheme.{u}}
@@ -551,7 +549,7 @@ theorem OrderCertificate.comap_of_isOpenImmersion {k : Type u} [Field k]
   comapOrderCertificate_of_orderCertificate hin h V f inferInstance
 
 /- English proof (translation)
-The claim follows from `h.comap_of_isOpenImmersion hin U.ι`.
+A detailed English derivation is pending.
 -/
 theorem OrderCertificate.restrict {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ}

@@ -21,20 +21,20 @@ def colonI (s c : R) : Ideal R where
     exact Ideal.mul_mem_left _ _ hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_colonI {s c r : R} : r ∈ colonI s c ↔ r * c ∈ Ideal.span {s} := Iff.rfl
 
 /- English proof (translation)
-Establish `hS : ({J : Ideal R | ∃ b : R, b ∉ Ideal.span {s} ∧ colonI s a ≤ colonI s b ∧ colonI s b = J} : Set (Ideal R)).Nonempty` using `⟨colonI s a, a, ha, le_rfl, rfl⟩`. Take `⟨M, hM, hmax⟩ : ∃ M ∈ ({J : Ideal R | ∃ b : R, b ∉ Ideal.span {s} ∧ colonI s a ≤ colonI s b ∧ colonI s b = J} : Set (Ideal R)), ∀ I ∈ ({J : Ideal R | ∃ b : R, b ∉ Ideal.span {s} ∧ colonI s a ≤ colonI s b ∧ colonI s b = J} : Set (Ideal R)), ¬ M < I` from `by first`. Consider the case `exact set_has_maximal_iff_noetherian.mpr inferInstance _ hS`. Consider the case `exact WellFounded.has_min (wellFounded_submodule_gt R R) _ hS`. Take `⟨b, hb, hab, rfl⟩` from `hM`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨b, hb, hab, fun q1 q2 h => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : q1 ∈ colonI s b`. Conclude with `Or.inl h1`. Use `right`. Establish `hle : colonI s b ≤ colonI s (q1 * b)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr`. Rewrite `hr`, the goal using `[mem_colonI]`. Establish `e : r * (q1 * b) = q1 * (r * b)` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ q1 hr`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnot : q1 * b ∉ Ideal.span {s}` using `fun h' => h1 (mem_colonI.2 h')`. Establish `heq : colonI s b = colonI s (q1 * b)`. Assume the negation of the conclusion as `hne`. Conclude with `hmax _ ⟨q1 * b, hnot, hab.trans hle, rfl⟩ (lt_of_le_of_ne hle hne)`. Rewrite using `[heq, mem_colonI]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h'` using `mem_colonI.1 h`. Establish `e : q2 * (q1 * b) = q1 * q2 * b` using `by ring`. Rewrite using `[e]`. Conclude with `h'`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_colon [IsNoetherianRing R] (s a : R) (ha : a ∉ Ideal.span {s}) :
     ∃ b : R, b ∉ Ideal.span {s} ∧ colonI s a ≤ colonI s b ∧
@@ -76,51 +76,43 @@ end KrullColonIdeal
 open KrullColonIdeal in
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, b, hb0, hxab⟩ : ∃ a b : R, b ≠ 0 ∧ x * algebraMap R K b = algebraMap R K a := by`. Take `⟨⟨a, ⟨b, hb⟩⟩, hx'⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors R) x`. Use `⟨a, b, nonZeroDivisors.ne_zero hb, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx']`. Conclude with `IsLocalization.mk'_spec K a ⟨b, hb⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbK : algebraMap R K b ≠ 0`. Introduce `h`. Apply `hb0` to reduce the goal to its premises. Apply `IsFractionRing.injective R K` to reduce the goal to its premises. Rewrite using `[h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Establish `ha : a ∉ Ideal.span {b}`. Introduce `h`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 h`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r, ?_⟩` and prove the remaining obligations. Apply `mul_right_cancel₀ hbK` to reduce the goal to its premises. Rewrite using `[hxab, ← hr, map_mul]`. Take `⟨c, hc, hac, hprime⟩` from `exists_prime_colon b a ha`. Establish `hc0 : c ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hc (Ideal.zero_mem _)`. Establish `hbP : b ∈ colonI b c` using `mem_colonI.2 (Ideal.mul_mem_right c _ (Ideal.mem_span_singleton_self b))`. Establish `hPne : colonI b c ≠ ⊥`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb'` using `hbP`. Rewrite `hb'` using `[h, Ideal.mem_bot]`. Conclude with `hb0 hb'`. Establish `hPprime : (colonI b c).IsPrime`. Use `⟨?_, fun h => hprime _ _ h⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(Ideal.ne_top_iff_one _).2 (fun h1 => hc ?_)` and prove the remaining obligations. Establish `h1'` using `mem_colonI.1 h1`. Rewrite `h1'` using `[one_mul]`. Then use the resulting hypothesis. Establish `key : ∃ q0 ∈ colonI b c, ∃ u : R, u ∉ colonI b c ∧ u * b = q0 * c`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_neg at hcon`. Apply `hc` to reduce the goal to its premises. Establish `hint : IsIntegral R (algebraMap R K c / algebraMap R K b)`. Use `isIntegral_of_smul_mem_submodule (Submodule.map (Algebra.linearMap R K) (colonI b c)) ?_ ?_ _ ?_` and prove the remaining obligations. Introduce `hbot`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hmem : algebraMap R K b ∈ Submodule.map (Algebra.linearMap R K) (colonI b c)` using `Submodule.mem_map_of_mem hbP`. Rewrite `hmem` using `[hbot, Submodule.mem_bot]`. Conclude with `hbK hmem`. Conclude with `(IsNoetherian.noetherian (colonI b c)).map _`. Introduce `n hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨q, hq, rfl⟩` from `Submodule.mem_map.1 hn`. Take `⟨v, hv⟩` from `Ideal.mem_span_singleton'.1 (mem_colonI.1 hq)`. Establish `hvP : v ∈ colonI b c`. Assume the negation of the conclusion as `hv'`. Conclude with `hcon q hq v hv' hv`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `Submodule.mem_map.2 ⟨v, hvP, ?_⟩` and prove the remaining obligations. Establish `hv2 : algebraMap R K v * algebraMap R K b = algebraMap R K q * algebraMap R K c`. Rewrite using `[← map_mul, ← map_mul, hv]`. Simplify using `only [Algebra.linearMap_apply, smul_eq_mul]`. Use `first`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `(rw [div_mul_eq_mul_div, eq_div_iff hbK]; linear_combination hv2)`. Consider the case `(field_simp; linear_combination hv2)`. Consider the case `(field_simp; linear_combination -hv2)`. Take `⟨r, hr⟩ : ∃ r : R, algebraMap R K r = algebraMap R K c / algebraMap R K b` from `by first`. Consider the case `exact IsIntegrallyClosed.isIntegral_iff.1 hint`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `exact IsIntegrallyClosed.algebraMap_eq_of_integral hint`. Establish `hrc : r * b = c`. Apply `IsFractionRing.injective R K` to reduce the goal to its premises. Rewrite using `[map_mul, hr]`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Consider the case `exact div_mul_cancel₀ _ hbK`. Consider the case `field_simp`. Conclude with `Ideal.mem_span_singleton'.2 ⟨r, hrc⟩`. Take `⟨q0, hq0, u, hu, huq⟩` from `key`. Establish `huP : ∀ q ∈ colonI b c, u * q ∈ Ideal.span {q0}`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `q hq`. Take `⟨v, hv⟩` from `Ideal.mem_span_singleton'.1 (mem_colonI.1 hq)`. Use `Ideal.mem_span_singleton'.2 ⟨v, ?_⟩` and prove the remaining obligations. Apply `mul_right_cancel₀ hc0` to reduce the goal to its premises. Take the linear combination `(-v) * huq + u * hv`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmin : colonI b c ∈ (Ideal.span {q0}).minimalPrimes`. Use `⟨⟨hPprime, ?_⟩, fun Q hQ hQP => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hq0`. Introduce `q hq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `huq' : u * q ∈ Q` using `hQ.2 (huP q hq)`. Break down `hQ.1.mem_or_mem huq' with h | h` into its components or cases. Conclude with `absurd (hQP h) hu`. Conclude with `h`. Use `haveI : Submodule.IsPrincipal (Ideal.span {q0}) := ⟨⟨q0, rfl⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle1 : (colonI b c).height ≤ 1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes (Ideal.span {q0}) _ hmin`. Establish `hge1 : (1 : ℕ∞) ≤ (colonI b c).height`. Unfold `Ideal.height`. Use `le_iInf₂ (fun J hJ => ?_)` and prove the remaining obligations. Establish `hJP : colonI b c ≤ J` using `hJ.1.2`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hJne : J ≠ ⊥` using `fun h => hPne (eq_bot_iff.2 (h ▸ hJP))`. Use `haveI : J.IsPrime := hJ.1.1`. Use `show 1 ≤ Order.height (⟨J, hJ.1.1⟩ : PrimeSpectrum R)`. Rewrite using `[ENat.one_le_iff_ne_zero, Ne, Order.height_eq_zero]`. Introduce `hmin`.
-
-Establish `hlt : (⟨⊥, inferInstance⟩ : PrimeSpectrum R) < ⟨J, hJ.1.1⟩`. Use `lt_of_le_of_ne ?_ ?_` and prove the remaining obligations. Use `first`. Consider the case `exact (bot_le : (⊥ : Ideal R) ≤ J)`. Consider the case `exact (PrimeSpectrum.asIdeal_le_asIdeal _ _).1 bot_le`.
-
-Introduce `h`. Conclude with `hJne (congrArg PrimeSpectrum.asIdeal h).symm`. Conclude with `hmin.not_lt hlt`. Establish `hheight : (colonI b c).height = 1` using `le_antisymm hle1 hge1`. Take `⟨a', s', hs', hs'x⟩` from `hx (colonI b c) hPprime hheight`.
-
-Apply `hs'` to reduce the goal to its premises. Apply `hac` to reduce the goal to its premises. Rewrite using `[mem_colonI]`. Use `Ideal.mem_span_singleton'.2 ⟨a', ?_⟩` and prove the remaining obligations. Apply `IsFractionRing.injective R K` to reduce the goal to its premises.
-
-Rewrite using `[map_mul, map_mul, ← hs'x, ← hxab]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_heightOne_localizations {R K : Type*} [CommRing R] [IsDomain R] [IsNoetherianRing R]
     [IsIntegrallyClosed R] [Field K] [Algebra R K] [IsFractionRing R K] (x : K)

@@ -13,7 +13,7 @@ section SlopeTestRemainingChoices
 variable {k k' : Type} [Field k] [Field k'] [Algebra k k'] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap k k') (LinearMap.ker_eq_bot.mpr (algebraMap k k').injective)`. Conclude with `⟨g, fun c => by simpa using LinearMap.congr_fun hg c⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_retraction : ∃ l : k' →ₗ[k] k, ∀ c : k, l (algebraMap k k' c) = c := by
   obtain ⟨g, hg⟩ := LinearMap.exists_leftInverse_of_injective (Algebra.linearMap k k')
@@ -21,7 +21,7 @@ theorem exists_retraction : ∃ l : k' →ₗ[k] k, ∀ c : k, l (algebraMap k k
   exact ⟨g, fun c => by simpa using LinearMap.congr_fun hg c⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def, map_smul, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_mulVec (l : k' →ₗ[k] k) (A : Matrix (Fin n) (Fin n) k) (x : Fin n → k') :
     (fun i => l ((A.map (algebraMap k k')).mulVec x i)) = A.mulVec (fun i => l (x i)) := by
@@ -31,7 +31,7 @@ theorem form_mulVec (l : k' →ₗ[k] k) (A : Matrix (Fin n) (Fin n) k) (x : Fin
   rw [← Algebra.smul_def, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ext_mulVec (A : Matrix (Fin n) (Fin n) k) (v : Fin n → k) :
     (A.map (algebraMap k k')).mulVec (fun i => algebraMap k k' (v i))
@@ -44,15 +44,15 @@ def extSub (k' : Type) [Field k'] [Algebra k k'] (W : Submodule k (Fin n → k))
   Submodule.span k' ((fun (v : Fin n → k) (i : Fin n) => algebraMap k k' (v i)) '' W)
 
 /- English proof (translation)
-Establish `key : ∀ c : k', (fun i => l (c * x i)) ∈ W`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨w, hw, rfl⟩` from `hy`. Introduce `c`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `W.smul_mem (l c) hw using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm c, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`. Consider the case `zero`. Introduce `c`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `W.zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `add y z _ _ hy hz`. Introduce `c`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `W.add_mem (hy c) (hz c) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[mul_add]`. Consider the case `smul a y _ hy`. Introduce `c`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hy (c * a) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[mul_assoc]`. Simplify using `using key 1`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem form_mem (l : k' →ₗ[k] k) (W : Submodule k (Fin n → k)) (x : Fin n → k')
     (hx : x ∈ extSub k' W) : (fun i => l (x i)) ∈ W := by
@@ -82,11 +82,11 @@ theorem form_mem (l : k' →ₗ[k] k) (W : Submodule k (Fin n → k)) (x : Fin n
   simpa using key 1
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨w, hw, rfl⟩` from `hy`. Rewrite using `[ext_mulVec]`. Conclude with `Submodule.subset_span ⟨_, hA w hw, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero`. Rewrite using `[Matrix.mulVec_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz`. Rewrite using `[Matrix.mulVec_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy`. Rewrite using `[Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ a hy`.
+A detailed English derivation is pending.
 -/
 theorem extSub_stable (A : Matrix (Fin n) (Fin n) k) (W : Submodule k (Fin n → k))
     (hA : ∀ v ∈ W, A.mulVec v ∈ W) (x : Fin n → k') (hx : x ∈ extSub k' W) :
@@ -138,19 +138,17 @@ def descCompl (l : k' →ₗ[k] k) (W : Submodule k (Fin n → k)) (U : Submodul
       rw [← Algebra.smul_def, map_smul, a, smul_zero]
 
 /- English proof (translation)
-Establish `hmem : ∀ v ∈ W, (fun i => algebraMap k k' (v i)) ∈ extSub k' W` using `fun v hv => Submodule.subset_span ⟨v, hv, rfl⟩`. Establish `hback : ∀ v : Fin n → k, (fun i => l (algebraMap k k' (v i))) = v` using `fun v => funext fun i => hl (v i)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `v hv ⟨x, hx, u, hu, h1, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hu' : u ∈ extSub k' W`. Establish `e : u = (fun i => algebraMap k k' (v i)) - x` using `by rw [← h1]; abel`. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (hmem v hv) hx`. Establish `hu0 : u = 0` using `(Submodule.disjoint_def.mp h.disjoint) u hu' hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hu0, add_zero]`. Rewrite `h2` using `[h1, hback]`. Conclude with `h2`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `v _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : (fun i => algebraMap k k' (v i)) ∈ extSub k' W ⊔ U`. Rewrite using `[h.sup_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨x, hx, u, hu, hxu⟩` from `Submodule.mem_sup.mp hv`. Take `⟨w, hw⟩ : ∃ w : Fin n → k, w = fun i => l (x i)` from `⟨_, rfl⟩`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwW : w ∈ W` using `hw ▸ form_mem l W x hx`. Establish `hd : v - w ∈ descCompl l W U`. Use `⟨x - fun i => algebraMap k k' (w i), Submodule.sub_mem _ hx (hmem w hwW), u, hu, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `e` using `congrFun hxu i`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, Pi.sub_apply, map_sub] at e ⊢`. Rewrite using `[← e]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `i`. Simplify using `[hw, hl]`.
-
-Simplify using `using Submodule.add_mem_sup hwW hd`.
+Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isCompl_descCompl (l : k' →ₗ[k] k) (hl : ∀ c : k, l (algebraMap k k' c) = c)
     (W : Submodule k (Fin n → k)) (U : Submodule k' (Fin n → k'))
@@ -190,7 +188,7 @@ theorem isCompl_descCompl (l : k' →ₗ[k] k) (hl : ∀ c : k, l (algebraMap k 
     simpa using Submodule.add_mem_sup hwW hd
 
 /- English proof (translation)
-Introduce and unpack `v ⟨x, hx, u, hu, h1, h2⟩`. Use `⟨(A.map (algebraMap k k')).mulVec x, extSub_stable A W hA x hx, (A.map (algebraMap k k')).mulVec u, hU u hu, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_add, h1, ext_mulVec]`. Rewrite using `[form_mulVec, h2, Matrix.mulVec_zero]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem descCompl_stable (l : k' →ₗ[k] k) (A : Matrix (Fin n) (Fin n) k)
     (W : Submodule k (Fin n → k)) (U : Submodule k' (Fin n → k'))
@@ -206,11 +204,9 @@ theorem descCompl_stable (l : k' →ₗ[k] k) (A : Matrix (Fin n) (Fin n) k)
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Set `_ : Algebra k k'` to `ι.toAlgebra`. Establish `hcoe : ∀ g, ((mapRep ι ρ g : GL (Fin n) k') : Matrix (Fin n) (Fin n) k') = (ρ g : Matrix (Fin n) (Fin n) k).map (algebraMap k k')` using `fun _ => rfl`. Take `⟨l, hl⟩` from `exists_retraction (k := k) (k' := k')`. Introduce `W hW`. Establish `hWe : IsInv (mapRep ι ρ) (extSub k' W)` using `fun g x hx => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hcoe]`. Conclude with `extSub_stable _ W (hW g) x hx`. Take `⟨U, hU, hc⟩` from `h _ hWe`. Use `⟨descCompl l W U, fun g => ?_, isCompl_descCompl l hl W U hc⟩` and prove the remaining obligations. Conclude with `descCompl_stable l _ W U (hW g) fun u hu => by`.
-
-Rewrite using `[← hcoe]`. Conclude with `hU g u hu`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSSRep_of_mapRep {Γ k k' : Type} [Group Γ] [Field k] [Field k'] {n : ℕ}
     (ι : k →+* k') (ρ : Γ →* GL (Fin n) k) (h : IsSSRep (mapRep ι ρ)) : IsSSRep ρ := by

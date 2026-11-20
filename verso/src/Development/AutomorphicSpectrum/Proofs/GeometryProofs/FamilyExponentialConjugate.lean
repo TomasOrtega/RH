@@ -18,14 +18,14 @@ section Points
 variable {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
 
 /- English proof (translation)
-Use `show Spec.map (CommRingCat.ofHom (g.comp f)) = Spec.map (CommRingCat.ofHom g) ≫ Spec.map (CommRingCat.ofHom f)`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_comp_ring (f : A →+* B) (g : B →+* C) : spMap (g.comp f) = spMap g ≫ spMap f := by
   show Spec.map (CommRingCat.ofHom (g.comp f)) = Spec.map (CommRingCat.ofHom g) ≫ Spec.map (CommRingCat.ofHom f)
   rw [CommRingCat.ofHom_comp, Spec.map_comp]
 
 /- English proof (translation)
-Establish `h : (starRingEnd ℂ).comp (starRingEnd ℂ) = RingHom.id ℂ`. Use extensionality with `c`. Simplify using the standard rewrite rules. Rewrite using `[← spMap_comp_ring, h]`. Conclude with `Spec.map_id _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_conj_point : κ ≫ κ = 𝟙 (Sp ℂ) := by
   have h : (starRingEnd ℂ).comp (starRingEnd ℂ) = RingHom.id ℂ := by
@@ -35,7 +35,7 @@ theorem conj_conj_point : κ ≫ κ = 𝟙 (Sp ℂ) := by
   exact Spec.map_id _
 
 /- English proof (translation)
-Establish `h : (dualMap (starRingEnd ℂ)).comp (dualMap (starRingEnd ℂ)) = RingHom.id (DualNumber ℂ)`. Apply the tactic sequence `ext c <;> simp [dualMap]`. Rewrite using `[← spMap_comp_ring, h]`. Conclude with `Spec.map_id _`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_conj_dual : δ ≫ δ = 𝟙 (Sp (DualNumber ℂ)) := by
   have h : (dualMap (starRingEnd ℂ)).comp (dualMap (starRingEnd ℂ)) = RingHom.id (DualNumber ℂ) := by
@@ -44,13 +44,13 @@ theorem conj_conj_dual : δ ≫ δ = 𝟙 (Sp (DualNumber ℂ)) := by
   exact Spec.map_id _
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, conj_conj_point, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_conj_apply {X : Scheme.{0}} (y : Sp ℂ ⟶ X) : κ ≫ κ ≫ y = y := by
   rw [← Category.assoc, conj_conj_point, Category.id_comp]
 
 /- English proof (translation)
-Establish `h : dualMap ((starRingEnd ℂ).comp f) = (dualMap (starRingEnd ℂ)).comp (dualMap f)`. Apply the tactic sequence `ext c <;> simp [dualMap]`. Rewrite using `[h, spMap_comp_ring]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_dualMap_comp (f : A →+* ℂ) :
     spMap (dualMap ((starRingEnd ℂ).comp f)) = δ ≫ spMap (dualMap f) := by
@@ -59,7 +59,7 @@ theorem spMap_dualMap_comp (f : A →+* ℂ) :
   rw [h, spMap_comp_ring]
 
 /- English proof (translation)
-Establish `h : (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom.comp (dualMap (starRingEnd ℂ)) = (starRingEnd ℂ).comp (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom`. Apply the tactic sequence `ext c <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[← spMap_comp_ring, ← spMap_comp_ring, h]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem fst_conj :
     spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ δ = κ ≫ spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom := by
@@ -69,7 +69,7 @@ theorem fst_conj :
   rw [← spMap_comp_ring, ← spMap_comp_ring, h]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.comp_preimage]`. Introduce `p _`. Conclude with `h (show a p ∈ (⊤ : T.Opens) from trivial)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_comp {T T' X : Scheme.{0}} (a : T' ⟶ T) (x : T ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) :
     ⊤ ≤ (a ≫ x) ⁻¹ᵁ U := by
@@ -78,7 +78,7 @@ theorem top_le_comp {T T' X : Scheme.{0}} (a : T' ⟶ T) (x : T ⟶ X) {U : X.Op
   exact h (show a p ∈ (⊤ : T.Opens) from trivial)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by have h' := top_le_comp κ _ h rwa [conj_conj_apply] at h', top_le_comp _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem top_le_conj_iff {X : Scheme.{0}} (y : Sp ℂ ⟶ X) (U : X.Opens) :
     ⊤ ≤ (κ ≫ y) ⁻¹ᵁ U ↔ ⊤ ≤ y ⁻¹ᵁ U :=
@@ -87,9 +87,9 @@ theorem top_le_conj_iff {X : Scheme.{0}} (y : Sp ℂ ⟶ X) (U : X.Opens) :
     rwa [conj_conj_apply] at h', top_le_comp _ _⟩
 
 /- English proof (translation)
-Establish `e1 : (spMap φ ≫ x).appLE U ⊤ h' = x.appLE U ⊤ h ≫ (spMap φ).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm`. Establish `e2` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ)`. Establish `e3 : x.appLE U ⊤ h ≫ (spMap φ).appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of B)).hom = x.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of A)).hom ≫ CommRingCat.ofHom φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Rewrite using `[e1]`. Conclude with `congrArg (fun q => CommRingCat.Hom.hom q f) e3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_spMap {X : Scheme.{0}} (φ : A →+* B) (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (h' : ⊤ ≤ (spMap φ ≫ x) ⁻¹ᵁ U) (f : Γ(X, U)) :
@@ -106,9 +106,9 @@ theorem eval_spMap {X : Scheme.{0}} (φ : A →+* B) (x : Sp A ⟶ X) (U : X.Ope
   exact congrArg (fun q => CommRingCat.Hom.hom q f) e3
 
 /- English proof (translation)
-Distinguish the cases in `h : ⊤ ≤ y ⁻¹ᵁ U`. Establish `h'` using `top_le_comp κ y h`. Rewrite using `[valAt', dif_pos h', valAt', dif_pos h]`. Conclude with `eval_spMap _ y U h h' f`. Establish `h'` using `mt (top_le_conj_iff y U).1 h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[valAt', dif_neg h', valAt', dif_neg h, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem valAt'_conj {X : Scheme.{0}} (y : Sp ℂ ⟶ X) (U : X.Opens) (f : Γ(X, U)) :
     valAt' (κ ≫ y) U f = starRingEnd ℂ (valAt' y U f) := by
@@ -120,9 +120,9 @@ theorem valAt'_conj {X : Scheme.{0}} (y : Sp ℂ ⟶ X) (U : X.Opens) (f : Γ(X,
     rw [valAt', dif_neg h', valAt', dif_neg h, map_zero]
 
 /- English proof (translation)
-Distinguish the cases in `hF : DifferentiableAt ℂ F 0`. Establish `d` using `hF.hasFDerivAt.star_star`. Rewrite `d` using `[star_zero]`. Rewrite using `[d.fderiv]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hG : ¬ DifferentiableAt ℂ (star ∘ F ∘ star) 0` using `fun hG => hF (by`. Use `hG.star_star` as an intermediate fact. Establish `e : star ∘ (star ∘ F ∘ star) ∘ star = F` using `funext fun z => by simp`. Rewrite using `[star_zero, e] at this)` and apply the resulting hypothesis. Rewrite using `[fderiv_zero_of_not_differentiableAt hF, fderiv_zero_of_not_differentiableAt hG]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -141,13 +141,11 @@ theorem fderiv_conj_zero {g : ℕ} (F : (Fin g → ℂ) → ℂ) (w : Fin g → 
     simp
 
 /- English proof (translation)
-Take `⟨h0, hd⟩` from `h`. Establish `hv' : v' = δ ≫ v` using `by rw [hv, ← Category.assoc, conj_conj_dual, Category.id_comp]`. Use `⟨?_, fun U h f => ?_⟩` and prove the remaining obligations. Use `show _ ≫ v = κ ≫ e (star 0)`. Rewrite using `[star_zero, ← h0, hv, ← Category.assoc, fst_conj, Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : ⊤ ≤ v' ⁻¹ᵁ U`. Rewrite using `[hv']`. Conclude with `top_le_comp _ _ h`. Establish `e1 : (Scheme.ΓSpecIso (CommRingCat.of (DualNumber ℂ))).hom.hom ((v.appLE U ⊤ h).hom f) = dualMap (starRingEnd ℂ) ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber ℂ))).hom.hom ((v'.appLE U ⊤ h').hom f))`. Substitute `hv` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `eval_spMap _ v' U h' h f`. Establish `e2 : (fun z => valAt' (κ ≫ e (star z)) U f) = star ∘ (fun z => valAt' (e z) U f) ∘ star`. Use function extensionality and compare the values at `fun z => valAt'_conj _ U f`. Establish `e3` using `fderiv_conj_zero (fun z => valAt' (e z) U f) w`. Rewrite `e3` using `[hw]`.
-
-Use `show TrivSqZeroExt.snd ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber ℂ))).hom.hom ((v.appLE U ⊤ h).hom f)) = _`. Rewrite using `[e1, e2, e3, ← hd U h' f]`. Simplify using `[dualMap]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDerivAt0_conj {g : ℕ} {X : Scheme.{0}} (e : (Fin g → ℂ) → (Sp ℂ ⟶ X)) (w : Fin g → ℂ) (hw : star w = w)
     (v v' : Sp (DualNumber ℂ) ⟶ X) (hv : v = δ ≫ v') (h : IsDerivAt0 e w v') :
@@ -173,7 +171,7 @@ theorem isDerivAt0_conj {g : ℕ} {X : Scheme.{0}} (e : (Fin g → ℂ) → (Sp 
     simp [dualMap]
 
 /- English proof (translation)
-Introduce `z hz`. Establish `h1 : DifferentiableAt ℂ f (star z)` using `hf.differentiableAt (hS.mem_nhds hz)`. Establish `h2` using `h1.star_star`. Rewrite `h2` using `[star_star]`. Conclude with `h2.differentiableWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentiableOn_conj_preimage {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F] [StarAddMonoid F]
     [StarModule ℂ F] [ContinuousStar F] {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [StarAddMonoid V]
@@ -190,7 +188,7 @@ end Points
 variable {R : Type} [CommRing R] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[conjPts, star_star, spMap_comp_ring]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_conjPts (ψ : (Fin n → ℂ) → (R →+* ℂ)) (b : Fin n → ℂ) :
     spMap (conjPts ψ (star b)) = κ ≫ spMap (ψ b) := by
@@ -209,14 +207,14 @@ def conjFwd (ψ : (Fin n → ℂ) → (R →+* ℂ)) (b : Fin n → ℂ) :
     rw [spMap_conjPts])
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext conj_conj_point`.
+A detailed English derivation is pending.
 -/
 theorem conjBack_conjFwd (ψ : (Fin n → ℂ) → (R →+* ℂ)) (b : Fin n → ℂ) :
     conjBack ψ b ≫ conjFwd ψ b = 𝟙 _ :=
   Over.OverMorphism.ext conj_conj_point
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext conj_conj_point`.
+A detailed English derivation is pending.
 -/
 theorem conjFwd_conjBack (ψ : (Fin n → ℂ) → (R →+* ℂ)) (b : Fin n → ℂ) :
     conjFwd ψ b ≫ conjBack ψ b = 𝟙 _ :=
@@ -238,7 +236,7 @@ theorem exOf_left (b : Fin n → ℂ) (x : Fin g → ℂ) :
     (exOf e' b x).left = κ ≫ (e'.ex (star b) (star x)).left := rfl
 
 /- English proof (translation)
-Rewrite using `[exOf, star_add, e'.add _ (star_mem_ball.2 hb), MonObj.comp_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exOf_add {b : Fin n → ℂ} (hb : b ∈ Metric.ball (0 : Fin n → ℂ) ρ) (z w : Fin g → ℂ) :
     exOf e' b (z + w) = exOf e' b z * exOf e' b w := by
@@ -246,9 +244,9 @@ theorem exOf_add {b : Fin n → ℂ} (hb : b ∈ Metric.ball (0 : Fin n → ℂ)
   rfl
 
 /- English proof (translation)
-Introduce `U f`. Take `⟨ho, hd⟩` from `e'.hol U f`. Establish `hS : {bz ∈ Metric.ball (0 : Fin n → ℂ) ρ ×ˢ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ (exOf e' bz.1 bz.2).left ⁻¹ᵁ U} = star ⁻¹' {bz ∈ Metric.ball (0 : Fin n → ℂ) ρ ×ˢ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ (e'.ex bz.1 bz.2).left ⁻¹ᵁ U}`. Use extensionality with `bz`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, Set.mem_prod, Set.mem_univ, and_true, exOf_left, Prod.fst_star, Prod.snd_star, star_mem_ball]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `and_congr_right fun _ => top_le_conj_iff _ _`. Rewrite using `[hS]`. Use `⟨ho.preimage continuous_star, ?_⟩` and prove the remaining obligations. Use `(differentiableOn_conj_preimage ho hd).congr fun bz _ => ?_` and prove the remaining obligations. Conclude with `valAt'_conj (e'.ex (star bz.1) (star bz.2)).left U f`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exOf_hol : IsHolTo (Metric.ball (0 : Fin n → ℂ) ρ ×ˢ (Set.univ : Set (Fin g → ℂ)))
     (fun bz : (Fin n → ℂ) × (Fin g → ℂ) => (exOf e' bz.1 bz.2).left) := by
@@ -267,11 +265,11 @@ theorem exOf_hol : IsHolTo (Metric.ball (0 : Fin n → ℂ) ρ ×ˢ (Set.univ : 
   exact valAt'_conj (e'.ex (star bz.1) (star bz.2)).left U f
 
 /- English proof (translation)
-Establish `h` using `e'.diff (star b) (star_mem_ball.2 hb) a`. Establish `hw : star (Pi.single a 1 : Fin g → ℂ) = Pi.single a 1`. Use extensionality with `k`. Distinguish the cases in `hk : k = a`. Substitute `hk` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hk]`. Use `isDerivAt0_conj (fun z => (e'.ex (star b) z).left) _ hw _ _ ?_ h` and prove the remaining obligations. Establish `h1 : conjPts ψ (star b) = (starRingEnd ℂ).comp (ψ b)`. Rewrite using `[conjPts, star_star]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, spMap_dualMap_comp, ← Category.assoc, ← Category.assoc, conj_conj_dual, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exOf_diff {b : Fin n → ℂ} (hb : b ∈ Metric.ball (0 : Fin n → ℂ) ρ) (a : Fin g) :
     IsDerivAt0 (fun z => (exOf e' b z).left) (Pi.single a 1)
@@ -289,21 +287,17 @@ theorem exOf_diff {b : Fin n → ℂ} (hb : b ∈ Metric.ball (0 : Fin n → ℂ
   rw [h1, spMap_dualMap_comp, ← Category.assoc, ← Category.assoc, conj_conj_dual, Category.id_comp]
 
 /- English proof (translation)
-Take `⟨V, N, f, L', h1, h2, h3, h4⟩` from `e'.log (star b₀) (star_mem_ball.2 hb)`. Establish `hval : (fun j => valAt' (exOf e' b₀ 0).left V (f j)) = star (fun j => valAt' (e'.ex (star b₀) 0).left V (f j))`. Use function extensionality and compare the values at `j`. Rewrite using `[exOf_left, star_zero, valAt'_conj]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hcp : Tendsto (star : (Fin n → ℂ) × (Fin N → ℂ) → _) (𝓝 (b₀, star (fun j => valAt' (e'.ex (star b₀) 0).left V (f j)))) (𝓝 (star b₀, fun j => valAt' (e'.ex (star b₀) 0).left V (f j)))`. Establish `h` using `(continuous_star (R := (Fin n → ℂ) × (Fin N → ℂ))).tendsto (b₀, star (fun j => valAt' (e'.ex (star b₀) 0).left V (f j)))`. Rewrite `h` using `[show star ((b₀, star (fun j => valAt' (e'.ex (star b₀) 0).left V (f j))) : (Fin n → ℂ) × (Fin N → ℂ)) = (star b₀, fun j => valAt' (e'.ex (star b₀) 0).left V (f j)) from Prod.ext rfl (star_star _)]`. Then use the resulting hypothesis. Establish `hcz : Tendsto (star : (Fin n → ℂ) × (Fin g → ℂ) → _) (𝓝 (b₀, 0)) (𝓝 (star b₀, 0))`. Establish `h` using `(continuous_star (R := (Fin n → ℂ) × (Fin g → ℂ))).tendsto (b₀, 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[show star ((b₀, 0) : (Fin n → ℂ) × (Fin g → ℂ)) = (star b₀, 0) from Prod.ext rfl (star_zero _)]`. Then use the resulting hypothesis. Use `⟨V, N, f, fun p => star (L' (star p)), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[exOf_left, star_zero]`. Conclude with `top_le_comp _ _ h1`. Rewrite using `[hval]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.SCV.analyticAt_iff_eventually_differentiableAt.2 ?_` and prove the remaining obligations. Use `filter_upwards [hcp.eventually h2.eventually_analyticAt] with q hq`. Simplify `hq.differentiableAt.star_star` using `[Function.comp_def]`. Use `filter_upwards [hcz.eventually h3] with bz hbz`. Establish `e1 : star ((bz.1, fun j => valAt' (exOf e' bz.1 bz.2).left V (f j)) : (Fin n → ℂ) × (Fin N → ℂ)) = ((star bz).1, fun j => valAt' (e'.ex (star bz).1 (star bz).2).left V (f j))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Prod.ext rfl (funext fun j => ?_)` and prove the remaining obligations. Use `show star (valAt' (exOf e' bz.1 bz.2).left V (f j)) = _`. Rewrite using `[exOf_left, valAt'_conj]`. Simplify using the standard rewrite rules. Use `show star (L' (star ((bz.1, fun j => valAt' (exOf e' bz.1 bz.2).left V (f j)) : (Fin n → ℂ) × (Fin N → ℂ)))) = bz.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hbz]`. Conclude with `star_star _`. Rewrite using `[hval] filter_upwards [hcp.eventually h4] with p hp x hx hxv`. Establish `h5` using `hp (conjFwd ψ p.1 ≫ x) (top_le_comp _ _ hx) (fun j => by show valAt' (κ ≫ x.left) V (f j) = star p.2 j`. Rewrite using `[valAt'_conj, hxv]`.
-
-Use the proof step `rfl)`. Use `show x = conjBack ψ p.1 ≫ e'.ex (star p.1) (star (star (L' (star p))))`. Rewrite using `[star_star]`. Use `Eq.trans ?_ (congrArg (fun y => conjBack ψ p.1 ≫ y) h5)` and prove the remaining obligations. Use `show x = conjBack ψ p.1 ≫ conjFwd ψ p.1 ≫ x`.
-
-Rewrite using `[← Category.assoc, conjBack_conjFwd, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exOf_log {b₀ : Fin n → ℂ} (hb : b₀ ∈ Metric.ball (0 : Fin n → ℂ) ρ) :
     ∃ (V : G.left.Opens) (N : ℕ) (f : Fin N → Γ(G.left, V))
@@ -367,11 +361,11 @@ def famExpOfConj : Flat.FamExp G M (Metric.ball 0 ρ) ψ where
   log _ hb := exOf_log e' hb
 
 /- English proof (translation)
-Establish `hone : ∀ {A A' : Over (Sp R)} (c : A ⟶ A'), c ≫ (1 : A' ⟶ G) = 1` using `fun c => by`. Rewrite using `[Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (c ≫ toUnit _) (toUnit _)]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : conjBack ψ b ≫ e'.ex (star b) (star p) = 1` using `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show e'.ex (star b) (star p) = 1`. Establish `h2` using `congrArg (fun y => conjFwd ψ b ≫ y) h1`. Simplify using `only [hone, ← Category.assoc, conjFwd_conjBack, Category.id_comp] at h2`. Conclude with `h2`. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : e'.ex (star b) (star p) = 1` using `h`. Use `show conjBack ψ b ≫ e'.ex (star b) (star p) = 1`. Rewrite using `[h1, hone]`.
+A detailed English derivation is pending.
 -/
 theorem mem_per_famExpOfConj (b : Fin n → ℂ) (p : Fin g → ℂ) :
     p ∈ (famExpOfConj e').per b ↔ star p ∈ e'.per (star b) := by
@@ -390,7 +384,7 @@ theorem mem_per_famExpOfConj (b : Fin n → ℂ) (p : Fin g → ℂ) :
     rw [h1, hone]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ e'` and use `⟨famExpOfConj e', mem_per_famExpOfConj e'⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_famExp_of_conj : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] (g n : ℕ) (M : LieModel G (𝟙 (Sp R)) (Fin g → R)) (ρ : ℝ) (ψ : (Fin n → ℂ) → (R →+* ℂ)) (e' : Flat.FamExp G M (Metric.ball 0 ρ) (Flat.Conj.conjPts ψ)), ∃ e : Flat.FamExp G M (Metric.ball 0 ρ) ψ, ∀ b p, p ∈ e.per b ↔ star p ∈ e'.per (star b) :=
   fun _ _ _ _ _ _ _ _ _ e' => ⟨famExpOfConj e', mem_per_famExpOfConj e'⟩

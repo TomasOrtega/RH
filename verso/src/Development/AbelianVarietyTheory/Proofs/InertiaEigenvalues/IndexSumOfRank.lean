@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.IndexCount
 
 /- English proof (translation)
-Establish `hV : (Vc D i).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Establish `hW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Use `D.R.rank_add_five_le` as an intermediate fact. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_le (D : D7) (i : Fin D.R.m) : 2 * (Wc D i).rank + 5 ≤ (Vc D i).rank := by
   have hV : (Vc D i).rank = D.R.r + D.R.t := D.sp.V_rank _ (Nat.le_add_left _ _) i.2
@@ -30,9 +30,9 @@ theorem rank_le (D : D7) (i : Fin D.R.m) : 2 * (Wc D i).rank + 5 ≤ (Vc D i).ra
   omega
 
 /- English proof (translation)
-Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `v.isPrime.ne_top`. Establish `: 2 ≤ Ideal.absNorm v.asIdeal` using `by omega`. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem two_le_absNorm {D : D7} (v : HeightOneSpectrum (𝓞 D.host.F)) : (2 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ) := by
   have h0 : Ideal.absNorm v.asIdeal ≠ 0 := by
@@ -43,19 +43,17 @@ theorem two_le_absNorm {D : D7} (v : HeightOneSpectrum (𝓞 D.host.F)) : (2 : �
   exact_mod_cast this
 
 /- English proof (translation)
-Set `q : HeightOneSpectrum (𝓞 D.host.F) → ℝ` to `fun v => (Ideal.absNorm v.asIdeal : ℝ)`. Set `z : HeightOneSpectrum (𝓞 D.host.F) → ℝ` to `fun v => (∏ i ∈ Finset.range W.rank, (1 - q v ^ ((i : ℝ) - (n : ℝ) / 2))⁻¹) ^ 2 - 1`. Establish `hq : ∀ v, 2 ≤ q v` using `fun v => two_le_absNorm v`. Establish `hσ : (W.rank : ℝ) + 5 / 2 ≤ (n : ℝ) / 2`. Establish `: ((2 * W.rank + 5 : ℕ) : ℝ) ≤ n` using `by exact_mod_cast hn`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz : ∀ v, z v < 1 ∧ z v ≤ 16 * q v ^ (-(3 : ℝ))` using `fun v => GlobalTheory.lattice_zeta_sq_bound (q v) W.rank ((n : ℝ) / 2) (hq v) hσ`. Establish `h8 : ∀ v, 8 * q v ^ (-(4 : ℝ)) ≤ 8 * q v ^ (-(3 : ℝ)) ∧ 8 * q v ^ (-(4 : ℝ)) ≤ 1 / 2`. Introduce `v`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (1 : ℝ) ≤ q v` using `le_trans (by norm_num) (hq v)`. Establish `hle : q v ^ (-(4 : ℝ)) ≤ q v ^ (-(3 : ℝ))` using `Real.rpow_le_rpow_of_exponent_le h1 (by norm_num)`. Use `⟨by linarith, ?_⟩` and prove the remaining obligations. Establish `: q v ^ (-(4 : ℝ)) ≤ (2 : ℝ) ^ (-(4 : ℝ))` using `Real.rpow_le_rpow_of_nonpos (by norm_num) (hq v) (by norm_num)`. Establish `h2 : (2 : ℝ) ^ (-(4 : ℝ)) = 1 / 16`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.rpow_neg (by norm_num)]; norm_num`. Rewrite `this` using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨fun v => max (z v) (8 * q v ^ (-(4 : ℝ))), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hs : Summable fun v : HeightOneSpectrum (𝓞 D.host.F) => 16 * q v ^ (-(3 : ℝ))` using `(GlobalTheory.summable_absNorm_rpow_heightOneSpectrum D.host.F 3 (by norm_num)).mul_left 16`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Summable.of_nonneg_of_le (fun v => ?_) (fun v => ?_) hs` and prove the remaining obligations. Conclude with `le_trans (by positivity) (le_max_right _ _)`. Use `max_le (hz v).2 ?_` and prove the remaining obligations. Establish `h3 : 0 ≤ q v ^ (-(3 : ℝ))` using `by positivity`. Combine the linear relations using `[(h8 v).1]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Conclude with `max_lt (hz v).1 (by linarith [(h8 v).2])`. Introduce `v f hf C hC hd`. Break down `GlobalTheory.T.finite_place_split_idempotent_or_inert D v f hf with hs | hi` into its components or cases. Conclude with `le_trans (GlobalTheory.T.split_place_lattice_index_sum_le_zeta_sq_sub_one D W n hn v f hf hs C hC hd) (le_max_left _ _)`.
-
-Conclude with `le_trans (GlobalTheory.T.inertPlace_latticeIndex_sum_bound D W n hn v f hf hi C hC hd) (le_max_right _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem indexSum_of_rank {D : D7} (W : HSp D) (n : ℕ) (hn : 2 * W.rank + 5 ≤ n) : IndexSum W n := by
   let q : HeightOneSpectrum (𝓞 D.host.F) → ℝ := fun v => (Ideal.absNorm v.asIdeal : ℝ)
@@ -92,7 +90,7 @@ theorem indexSum_of_rank {D : D7} (W : HSp D) (n : ℕ) (hn : 2 * W.rank + 5 ≤
     · exact le_trans (GlobalTheory.T.inertPlace_latticeIndex_sum_bound D W n hn v f hf hi C hC hd) (le_max_right _ _)
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F _ _ i`. Conclude with `indexSum_of_rank (Wc D i) (Vc D i).rank (rank_le D i)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem indexSum_holds : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → ∀ i, IndexSum (Wc D i) (Vc D i).rank := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F _ _ i

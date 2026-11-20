@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.La
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult Zc Zc.M
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LanglandsMultiseg.langlandsMultisegments_of_clauses | exact GlobalTheory.CompanionTheory.LanglandsMultiseg.langlandsMultisegments_of_clauses | (intros; apply GlobalTheory.CompanionTheory.LanglandsMultiseg.langlandsMultisegments_of_claus …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.langlands_multisegments_of_exhaustion_gl : (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) → (∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], LSocleGL k) → (∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], LSegJacquet k) → (∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], LOrderFree k) → GlobalTheory.Published.LanglandsExhaustionGL → GlobalTheory.Published.LanglandsMultisegments := by
   first | exact @GlobalTheory.CompanionTheory.LanglandsMultiseg.langlandsMultisegments_of_clauses | exact GlobalTheory.CompanionTheory.LanglandsMultiseg.langlandsMultisegments_of_clauses | (intros; apply GlobalTheory.CompanionTheory.LanglandsMultiseg.langlandsMultisegments_of_clauses <;> assumption)

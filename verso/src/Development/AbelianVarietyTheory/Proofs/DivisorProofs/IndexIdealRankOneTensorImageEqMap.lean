@@ -17,7 +17,7 @@ open NumberField
 
 namespace GlobalTheory.IdxTensor
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.latticeDeterminantIndexIdeal_map_injective_eq_colon`.
+A detailed English derivation is pending.
 -/
 theorem cut_idxmap : ∀ {F V : Type} [Field F] [NumberField F] [AddCommGroup V] [Module F V] [Module (𝓞 F) V]
     [IsScalarTower (𝓞 F) F V] (p : ℕ) (φ : (Fin p → F) →ₗ[F] V), Function.Injective φ →
@@ -26,14 +26,14 @@ theorem cut_idxmap : ∀ {F V : Type} [Field F] [NumberField F] [AddCommGroup V]
       (GlobalTheory.IdxTensor.dets F p N).colon (GlobalTheory.IdxTensor.dets F p L : Set F) := GlobalTheory.T.latticeDeterminantIndexIdeal_map_injective_eq_colon
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.latticeDeterminantSpan_span_eq_generator_dets`.
+A detailed English derivation is pending.
 -/
 theorem cut_detsspan : ∀ {F : Type} [Field F] [NumberField F] (p : ℕ) (S : Set (Fin p → F)),
     GlobalTheory.IdxTensor.dets F p (Submodule.span (𝓞 F) S) =
       Submodule.span (𝓞 F) {d | ∃ y : Fin p → Fin p → F, (∀ i, y i ∈ S) ∧ d = (Matrix.of y).det} := GlobalTheory.T.latticeDeterminantSpan_span_eq_generator_dets
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.rankOne_fg_lattice_eq_fractionalIdeal_smul_vector`.
+A detailed English derivation is pending.
 -/
 theorem cut_rankone : ∀ {K : Type} [Field K] [NumberField K] {m : ℕ} (ell : Submodule (𝓞 K) (Fin m → K)),
     ReciprocityTheory.GeometryOfNumbersTheory.latRank K ell = 1 → ell.FG →
@@ -41,7 +41,7 @@ theorem cut_rankone : ∀ {K : Type} [Field K] [NumberField K] {m : ℕ} (ell : 
       ∀ e, e ∈ ell ↔ ∃ β ∈ 𝔟, e = β • v := GlobalTheory.T.rankOne_fg_lattice_eq_fractionalIdeal_smul_vector
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.linearIndependent_images_of_iSupIndep_rankOne`.
+A detailed English derivation is pending.
 -/
 theorem cut_linindep : ∀ {K : Type} [Field K] [NumberField K] {p m n : ℕ} (ell : Submodule (𝓞 K) (Fin m → K))
     (M : Fin p → ((Fin m → K) →ₗ[K] (Fin n → K))) (v : Fin m → K), v ≠ 0 → ∀ (𝔟 : Submodule (𝓞 K) K),
@@ -51,14 +51,14 @@ theorem cut_linindep : ∀ {K : Type} [Field K] [NumberField K] {p m n : ℕ} (e
     LinearIndependent K (fun a => M a v) := GlobalTheory.T.linearIndependent_images_of_iSupIndep_rankOne
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.colon_pow_mul_cancel_fg_fractional`.
+A detailed English derivation is pending.
 -/
 theorem cut_cancel : ∀ {K : Type} [Field K] [NumberField K] (𝔟 : Submodule (𝓞 K) K), 𝔟.FG → 𝔟 ≠ ⊥ →
     ∀ (p : ℕ) (A N : Submodule (𝓞 K) K),
     (𝔟 ^ p * N).colon ((𝔟 ^ p * A : Submodule (𝓞 K) K) : Set K) = N.colon (A : Set K) := GlobalTheory.T.colon_pow_mul_cancel_fg_fractional
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.colon_one_span_image_eq_map_colon`.
+A detailed English derivation is pending.
 -/
 theorem cut_extend : ∀ {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K]
     (τ : 𝓞 E →+* 𝓞 K) (τE : E →+* K), (∀ x : 𝓞 E, τE x = ((τ x : 𝓞 K) : K)) →
@@ -67,7 +67,7 @@ theorem cut_extend : ∀ {E K : Type} [Field E] [NumberField E] [Field K] [Numbe
       ((1 : Submodule (𝓞 E) E).colon (A : Set E)).map τ := GlobalTheory.T.colon_one_span_image_eq_map_colon
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.span_scaled_mapped_row_dets_eq_pow_mul_span`.
+A detailed English derivation is pending.
 -/
 theorem cut_twistgens : ∀ {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K]
     (τ : 𝓞 E →+* 𝓞 K) (τE : E →+* K), (∀ x : 𝓞 E, τE x = ((τ x : 𝓞 K) : K)) → ∀ (p : ℕ)
@@ -77,9 +77,9 @@ theorem cut_twistgens : ∀ {E K : Type} [Field E] [NumberField E] [Field K] [Nu
       𝔟 ^ p * Submodule.span (𝓞 K) (τE '' GlobalTheory.IdxTensor.dets E p Λ) := GlobalTheory.T.span_scaled_mapped_row_dets_eq_pow_mul_span
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `x ⟨y, hy, rfl⟩`. Take `⟨z, rfl⟩` from `Submodule.mem_one.1 hy`. Conclude with `Submodule.mem_one.2 ⟨τ z, (hτ z).symm⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.one_le]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨1, Submodule.mem_one.2 ⟨1, map_one _⟩, map_one τE⟩`.
+Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem span_image_one {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K]
     (τ : 𝓞 E →+* 𝓞 K) (τE : E →+* K) (hτ : ∀ x : 𝓞 E, τE x = ((τ x : 𝓞 K) : K)) :
@@ -94,9 +94,9 @@ theorem span_image_one {E K : Type} [Field E] [NumberField E] [Field K] [NumberF
     exact ⟨1, Submodule.mem_one.2 ⟨1, map_one _⟩, map_one τE⟩
 
 /- English proof (translation)
-Unfold `dets`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun a => Pi.single a 1, h, ?_⟩` and prove the remaining obligations. Establish `hI : Matrix.of (fun a : Fin p => (Pi.single a (1 : F) : Fin p → F)) = 1`. Use extensionality with `i j`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, Matrix.one_apply, hij, Ne.symm hij]`. Rewrite using `[hI, Matrix.det_one]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_mem_dets {F : Type} [Field F] [NumberField F] (p : ℕ) (L : Submodule (𝓞 F) (Fin p → F))
     (h : ∀ a, (Pi.single a (1 : F) : Fin p → F) ∈ L) : (1 : F) ∈ dets F p L := by
@@ -111,15 +111,15 @@ theorem one_mem_dets {F : Type} [Field F] [NumberField F] (p : ℕ) (L : Submodu
   rw [hI, Matrix.det_one]
 
 /- English proof (translation)
-Rewrite using `[cut_detsspan]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `d ⟨y, hy, rfl⟩`. Use `choose f hf using fun i => Set.mem_range.1 (hy i)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hM : Matrix.of y = (Matrix.of fun i j => (Pi.single (f i) (1 : 𝓞 F) : Fin p → 𝓞 F) j).map (algebraMap (𝓞 F) F)`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.map_apply]`. Rewrite using `[← hf i]`. Distinguish the cases in `hij : j = f i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hij]`. Rewrite using `[hM]`. Conclude with `Submodule.mem_one.2 ⟨_, RingHom.map_det _ _⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Submodule.one_le]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun a => Pi.single a 1, fun i => ⟨i, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hI : Matrix.of (fun a : Fin p => (Pi.single a (1 : F) : Fin p → F)) = 1`. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, Matrix.one_apply, hij, Ne.symm hij]`. Rewrite using `[hI, Matrix.det_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dets_std {F : Type} [Field F] [NumberField F] (p : ℕ) :
     dets F p (Submodule.span (𝓞 F) (Set.range fun a => (Pi.single a (1 : F) : Fin p → F))) = 1 := by
@@ -149,11 +149,11 @@ theorem dets_std {F : Type} [Field F] [NumberField F] (p : ℕ) :
     rw [hI, Matrix.det_one]
 
 /- English proof (translation)
-Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, e, he, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨β, hβ, rfl⟩` from `(hell e).1 he`. Use `⟨β • fun a => τE (c a), ⟨β, hβ, c, hc, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.coe_restrictScalars, Fintype.linearCombination_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, map_smul, smul_smul, smul_eq_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, ⟨β, hβ, c, hc, rfl⟩, rfl⟩`. Use `⟨c, hc, β • v, (hell _).2 ⟨β, hβ, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.coe_restrictScalars, Fintype.linearCombination_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, map_smul, smul_smul, smul_eq_mul, mul_comm]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem big_eq_map {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] (τE : E →+* K) {p m n : ℕ}
     (ell : Submodule (𝓞 K) (Fin m → K)) (M : Fin p → ((Fin m → K) →ₗ[K] (Fin n → K)))
@@ -179,7 +179,7 @@ theorem big_eq_map {E K : Type} [Field E] [NumberField E] [Field K] [NumberField
     rw [Pi.smul_apply, map_smul, smul_smul, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `a _ hab`. Simplify using `[Pi.single_apply, hab]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma sum_single_smul_eq_apply {E K : Type} [Field E] [Field K] (τE : E →+* K) {p m n : ℕ}
     (M : Fin p → ((Fin m → K) →ₗ[K] (Fin n → K))) (b : Fin p) (e : Fin m → K) :
@@ -191,15 +191,13 @@ private lemma sum_single_smul_eq_apply {E K : Type} [Field E] [Field K] (τE : E
   · simp
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun b => ?_` and prove the remaining obligations. Introduce and unpack `w ⟨e, he, rfl⟩`. Conclude with `Submodule.subset_span ⟨Pi.single b 1, Submodule.subset_span ⟨b, rfl⟩, e, he, (sum_single_smul_eq_apply τE M b e).symm⟩`. Rewrite using `[Submodule.span_le]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `w ⟨c, hc, e, he, rfl⟩`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, rfl⟩` from `hx`. Use `beta_reduce`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[sum_single_smul_eq_apply τE M b e]`. Conclude with `Submodule.mem_iSup_of_mem b ⟨e, he, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Simplify using `only [Pi.add_apply, map_add, add_smul, Finset.sum_add_distrib]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx`. Establish `key : ∀ a, τE ((r • x) a) • M a e = τ r • (τE (x a) • M a e)`. Introduce `a`. Rewrite using `[Pi.smul_apply, Algebra.smul_def r (x a), map_mul, mul_smul, ← algebraMap_smul K (τ r)]`.
-
-Use `congr 1`. Conclude with `hτ r`. Rewrite using `[Finset.sum_congr rfl (fun a _ => key a), ← Finset.smul_sum]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem small_eq_big_std {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K]
     (τ : 𝓞 E →+* 𝓞 K) (τE : E →+* K) (hτ : ∀ x : 𝓞 E, τE x = ((τ x : 𝓞 K) : K)) {p m n : ℕ}
@@ -234,9 +232,9 @@ theorem small_eq_big_std {E K : Type} [Field E] [NumberField E] [Field K] [Numbe
       exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `h`. Rewrite using `[cut_detsspan]`. Apply `Submodule.fg_span` to reduce the goal to its premises. Use `((Set.Finite.pi (fun _ : Fin p => S.finite_toSet)).image (fun y : Fin p → Fin p → F => (Matrix.of y).det)).subset ?_` and prove the remaining obligations. Introduce and unpack `d ⟨y, hy, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y, fun i _ => hy i, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem dets_fg {F : Type} [Field F] [NumberField F] (p : ℕ) (L : Submodule (𝓞 F) (Fin p → F)) (h : L.FG) :
     (dets F p L).FG := by
@@ -249,7 +247,7 @@ theorem dets_fg {F : Type} [Field F] [NumberField F] (p : ℕ) (L : Submodule (�
   exact ⟨y, fun i _ => hy i, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[cut_detsspan]`. Conclude with `cut_twistgens τ τE hτ p 𝔟 Λ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dets_twist {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K]
     (τ : 𝓞 E →+* 𝓞 K) (τE : E →+* K) (hτ : ∀ x : 𝓞 E, τE x = ((τ x : 𝓞 K) : K)) (p : ℕ)
@@ -260,15 +258,15 @@ theorem dets_twist {E K : Type} [Field E] [NumberField E] [Field K] [NumberField
   exact cut_twistgens τ τE hτ p 𝔟 Λ
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ τ τE hτ p m n ell M Λ hfg hrk hinj hind hΛfg hΛ`. Take `⟨v, hv, 𝔟, h𝔟fg, h𝔟, hell⟩` from `cut_rankone ell hrk hfg`. Establish `hφ : Function.Injective (Fintype.linearCombination K (fun a => M a v))` using `(cut_linindep ell M v hv 𝔟 h𝔟 hell hinj hind).fintypeLinearCombination_injective`. Establish `hsing : ∀ a, (Pi.single a (1 : E) : Fin p → E) ∈ Λ`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hΛ (Pi.single a 1)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `b`. Distinguish the cases in `hab : b = a`. Substitute `hab` using the available equality.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hab]`. Establish `hD1 : (1 : E) ∈ GlobalTheory.IdxTensor.dets E p Λ` using `one_mem_dets p Λ hsing`. Establish `hDfg : (GlobalTheory.IdxTensor.dets E p Λ).FG` using `dets_fg p Λ hΛfg`. Establish `hR` using `cut_idxmap (V := Fin p → E) p (LinearMap.id) Function.injective_id Λ (Submodule.span (𝓞 E) (Set.range fun a => (Pi.single a (1 : E) : Fin p → E)))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmapid : ∀ L : Submodule (𝓞 E) (Fin p → E), L.map ((LinearMap.id : (Fin p → E) →ₗ[E] (Fin p → E)).restrictScalars (𝓞 E)) = L`. Introduce `L`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite `hR` using `[hmapid, hmapid]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hR, small_eq_big_std τ τE hτ ell M, big_eq_map τE ell M Λ v 𝔟 hell, big_eq_map τE ell M _ v 𝔟 hell, cut_idxmap p _ hφ, dets_twist τ τE hτ, dets_twist τ τE hτ, dets_std, span_image_one τ τE hτ, cut_cancel 𝔟 h𝔟fg h𝔟 p _ 1]`. Conclude with `cut_extend τ τE hτ _ hDfg hD1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idx_image_eq_map : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] (τ : 𝓞 E →+* 𝓞 K) (τE : E →+* K),
     (∀ x : 𝓞 E, τE x = ((τ x : 𝓞 K) : K)) → ∀ (p m n : ℕ) (ell : Submodule (𝓞 K) (Fin m → K))

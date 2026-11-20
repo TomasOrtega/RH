@@ -10,7 +10,7 @@ variable {C : Type u} [Category.{v} C] [Preadditive C] {A B : CochainComplex C �
   [HomologicalComplex.HasHomotopyCofiber φ] (M : CochainComplex C ℤ)
 
 /- English proof (translation)
-Rewrite using `[mappingCone.δ_descCochain _ _ _ _ _ hn']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma δ_desc' {m n : ℤ} (α : Cochain A M m) (β : Cochain B M n) (h : m + 1 = n) (n' : ℤ) (hn' : n + 1 = n') :
     δ n n' (mappingCone.descCochain φ α β h) = mappingCone.descCochain φ
@@ -18,9 +18,9 @@ lemma δ_desc' {m n : ℤ} (α : Cochain A M m) (β : Cochain B M n) (h : m + 1 
   rw [mappingCone.δ_descCochain _ _ _ _ _ hn']; rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Establish `h1` using `congrArg (fun w => (mappingCone.inl φ).comp w (show -1 + n = m by omega)) e`. Establish `h2` using `congrArg (fun w => (Cochain.ofHom (mappingCone.inr φ)).comp w (zero_add n)) e`. Simplify using `only [mappingCone.inl_descCochain, mappingCone.inr_descCochain] at h1 h2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨h1, h2⟩`. Introduce and unpack `⟨rfl, rfl⟩`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 -/
 lemma desc_eq_iff {m n : ℤ} (h : m + 1 = n) (α α' : Cochain A M m) (β β' : Cochain B M n) :
     mappingCone.descCochain φ α β h = mappingCone.descCochain φ α' β' h ↔ α = α' ∧ β = β' := by
@@ -33,21 +33,21 @@ lemma desc_eq_iff {m n : ℤ} (h : m + 1 = n) (α α' : Cochain A M m) (β β' :
   · rintro ⟨rfl, rfl⟩; rfl
 
 /- English proof (translation)
-Simplify using `[mappingCone.descCochain]`.
+Simplify using the standard rewrite rules.
 -/
 lemma desc_zero {m n : ℤ} (h : m + 1 = n) :
     mappingCone.descCochain φ (0 : Cochain A M m) (0 : Cochain B M n) h = 0 := by
   simp [mappingCone.descCochain]
 
 /- English proof (translation)
-Rewrite using `[← desc_zero φ M h, desc_eq_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma desc_eq_zero_iff {m n : ℤ} (h : m + 1 = n) (α : Cochain A M m) (β : Cochain B M n) :
     mappingCone.descCochain φ α β h = 0 ↔ α = 0 ∧ β = 0 := by
   rw [← desc_zero φ M h, desc_eq_iff]
 
 /- English proof (translation)
-Rewrite using `[mappingCone.ext_cochain_from_iff φ p d hp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma eq_desc {p d : ℤ} (hp : p + 1 = d) (y : Cochain (mappingCone φ) M d) :
     y = mappingCone.descCochain φ ((mappingCone.inl φ).comp y (show -1 + d = p by omega))
@@ -56,7 +56,7 @@ lemma eq_desc {p d : ℤ} (hp : p + 1 = d) (y : Cochain (mappingCone φ) M d) :
   simp
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hE (mappingCone.descCochain φ (-((d + 1).negOnePow • g)) b hp) (by`. Rewrite using `[δ_desc' _ _ _ _ _ _ rfl]`. Simplify using `[hb, hg, desc_zero])`. Use `⟨(Cochain.ofHom (mappingCone.inr φ)).comp y (zero_add p), ?_⟩` and prove the remaining obligations. Rewrite using `[δ_ofHom_comp, hy, mappingCone.inr_descCochain]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma core_inj (d p : ℤ) (hp : p + 1 = d)
     (hE : ∀ z : Cochain (mappingCone φ) M d, δ d (d + 1) z = 0 → ∃ y : Cochain (mappingCone φ) M p, δ p d y = z)
@@ -69,9 +69,9 @@ lemma core_inj (d p : ℤ) (hp : p + 1 = d)
   rw [δ_ofHom_comp, hy, mappingCone.inr_descCochain]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hE (mappingCone.descCochain φ a 0 rfl) (by`. Rewrite using `[δ_desc' _ _ _ _ _ _ rfl]`. Simplify using `[ha, desc_zero])`. Rewrite `hy` using `[eq_desc φ M hp y, δ_desc' _ _ _ _ _ _ rfl, desc_eq_iff]`. Take `⟨h1, h2⟩` from `hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨(d + 1).negOnePow • (Cochain.ofHom (mappingCone.inr φ)).comp y (zero_add d), (mappingCone.inl φ).comp y (show -1 + d = p by omega), by simp [h2], ?_⟩` and prove the remaining obligations. Rewrite using `[← h1, Cochain.comp_units_smul, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma core_surj (d p : ℤ) (hp : p + 1 = d)
     (hE : ∀ z : Cochain (mappingCone φ) M (d + 1), δ (d + 1) (d + 1 + 1) z = 0 →
@@ -88,13 +88,13 @@ lemma core_surj (d p : ℤ) (hp : p + 1 = d)
   rw [← h1, Cochain.comp_units_smul, add_comm]
 
 /- English proof (translation)
-Establish `hzd` using `eq_desc φ M (rfl : p + 1 = p + 1) z`. Use `set α := (mappingCone.inl φ).comp z (show -1 + (p + 1) = p by omega)`. Use `set β := (Cochain.ofHom (mappingCone.inr φ)).comp z (zero_add (p + 1))`. Rewrite `hz` using `[hzd, δ_desc' _ _ _ _ _ _ rfl, desc_eq_zero_iff]`. Take `⟨hX, hY⟩` from `hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨β'', hβ''⟩` from `hI β hY (-((p + 1 + 1).negOnePow • α)) (by`. Rewrite using `[δ_neg, δ_units_smul, eq_neg_of_add_eq_zero_left hX, smul_neg, neg_neg, smul_smul, Int.units_mul_self, one_smul])`. Take `⟨c, e, hc, he⟩` from `hS (α + (p + 1 + 1).negOnePow • (Cochain.ofHom φ).comp β'' (zero_add p)) (by`. Rewrite using `[δ_add, δ_units_smul, δ_ofHom_comp, hβ'', hX])`. Use `⟨mappingCone.descCochain φ e (β'' + (p + 1).negOnePow • c) hk, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[δ_desc' _ _ _ _ _ _ rfl, hzd, desc_eq_iff]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Cochain.comp_add, Cochain.comp_units_smul, smul_add, smul_smul, Int.units_mul_self, one_smul]`. Establish `he' : δ k p e = α + (p + 1 + 1).negOnePow • (Cochain.ofHom φ).comp β'' (zero_add p) - (Cochain.ofHom φ).comp c (zero_add p)` using `by rw [he]; abel`. Rewrite using `[he', Int.negOnePow_succ (p + 1)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [Units.neg_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[δ_add, δ_units_smul, hβ'', hc, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma core_E (p k : ℤ) (hk : k + 1 = p)
     (hI : ∀ b : Cochain B M (p + 1), δ (p + 1) (p + 1 + 1) b = 0 → ∀ g : Cochain A M p,
@@ -125,11 +125,11 @@ lemma core_E (p k : ℤ) (hk : k + 1 = p)
   · rw [δ_add, δ_units_smul, hβ'', hc, smul_zero, add_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hs z hz`. Establish `h0` using `Subsingleton.elim (CohomologyClass.mk (Cocycle.mk z (n + 1) rfl hz)) 0`. Rewrite `h0` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ m hm]`. Simplify using `using h0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `x.mk_surjective`. Take `⟨y, rfl⟩` from `y.mk_surjective`. Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ m hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _ (Cocycle.δ_eq_zero _ _)`.
+A detailed English derivation is pending.
 -/
 lemma sub_iff (X : CochainComplex C ℤ) (n m : ℤ) (hm : m + 1 = n) :
     Subsingleton (CohomologyClass X M n) ↔
@@ -149,13 +149,13 @@ lemma sub_iff (X : CochainComplex C ℤ) (n m : ℤ) (hm : m + 1 = n) :
 
 omit [HomologicalComplex.HasHomotopyCofiber φ] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hi b hb g hg`. Establish `h0 : cpre (Cocycle.ofHom φ) M n n (zero_add n) (CohomologyClass.mk (Cocycle.mk b (n + 1) rfl hb)) = 0`. Rewrite using `[cpre_mk, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ m hm]`. Conclude with `⟨g, by simp [zcomp, hg]⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `h1` using `(injective_iff_map_eq_zero _).1 hi _ h0`. Rewrite `h1` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ m hm]`. Simplify using `using h1`. Introduce `h`. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Take `⟨b, rfl⟩` from `x.mk_surjective`. Rewrite `hx` using `[cpre_mk, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ m hm]`. Take `⟨g, hg⟩` from `hx`. Take `⟨y, hy⟩` from `h b.1 (Cocycle.δ_eq_zero _ _) g (by simpa [zcomp] using hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ m hm]`. Conclude with `⟨y, hy⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma inj_iff (n m : ℤ) (hm : m + 1 = n) :
     Function.Injective (cpre (Cocycle.ofHom φ) M n n (zero_add n)) ↔
@@ -181,13 +181,13 @@ lemma inj_iff (n m : ℤ) (hm : m + 1 = n) :
 
 omit [HomologicalComplex.HasHomotopyCofiber φ] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hs a ha`. Take `⟨x, hx⟩` from `hs (CohomologyClass.mk (Cocycle.mk a (n + 1) rfl ha))`. Take `⟨c, rfl⟩` from `x.mk_surjective`. Rewrite `hx` using `[cpre_mk, ← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ m hm]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨e, he⟩` from `hx`. Use `⟨c.1, -e, Cocycle.δ_eq_zero _ _, ?_⟩` and prove the remaining obligations. Simplify using `[zcomp] at he`. Rewrite using `[δ_neg, he]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Introduce `h x`. Take `⟨a, rfl⟩` from `x.mk_surjective`. Take `⟨c, e, hc, he⟩` from `h a.1 (Cocycle.δ_eq_zero _ _)`. Use `⟨CohomologyClass.mk (Cocycle.mk c (n + 1) rfl hc), ?_⟩` and prove the remaining obligations. Rewrite using `[cpre_mk, ← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ m hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨-e, ?_⟩` and prove the remaining obligations. Simplify using `[zcomp, he]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma surj_iff (n m : ℤ) (hm : m + 1 = n) :
     Function.Surjective (cpre (Cocycle.ofHom φ) M n n (zero_add n)) ↔
@@ -214,9 +214,9 @@ lemma surj_iff (n m : ℤ) (hm : m + 1 = n) :
     simp [zcomp, he]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h n hn`. Take `⟨p, rfl⟩ : ∃ p, n = p + 1` from `⟨n - 1, by omega⟩`. Rewrite using `[sub_iff M _ (p + 1) p rfl]`. Conclude with `core_E φ M p (p - 1) (by omega) ((inj_iff φ M (p + 1) p rfl).1 ((h (p + 1)).2 hn)) ((surj_iff φ M p (p - 1) (by omega)).1 ((h p).1 (by omega)).2)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h n`. Establish `hinj : n < c → Function.Injective (cpre (Cocycle.ofHom φ) M n n (zero_add n))` using `fun hn => (inj_iff φ M n (n - 1) (by omega)).2 (core_inj φ M n (n - 1) (by omega) ((sub_iff M _ n (n - 1) (by omega)).1 (h n hn)))`. Use `⟨fun hn => ⟨hinj (by omega), ?_⟩, hinj⟩` and prove the remaining obligations. Conclude with `(surj_iff φ M n (n - 1) (by omega)).2 (core_surj φ M n (n - 1) (by omega) ((sub_iff M _ (n + 1) n rfl).1 (h (n + 1) (by omega))))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conn_iff (c : ℤ) :
     (∀ n : ℤ, (n < c - 1 → Function.Bijective (cpre (Cocycle.ofHom φ) M n n (zero_add n))) ∧
@@ -239,7 +239,7 @@ theorem conn_iff (c : ℤ) :
 end LateralTheory.E.LeafRelPf
 
 /- English proof (translation)
-Introduce `R _ F c K L f`. Conclude with `LateralTheory.E.LeafRelPf.conn_iff f (res R F) c`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LateralTheory.E.t_E6Cut.LeafRel_of : LateralTheory.E.t_E6Cut.LeafRel := by
   intro R _ F c K L f

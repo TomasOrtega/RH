@@ -11,21 +11,21 @@ open HeckeCharacterZeroLocus.SiegelWeilU NumberField IsDedekindDomain Filter Top
 open Formalism.L2.SG.Pf.RescaleCore.NCov.AdCocptW
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Ue24.eq_one_of_pow_near h`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow_near {z : ℂ} (h : ∀ k : ℕ, ‖z ^ (2 ^ k) - 1‖ ≤ 1 / 2) : z = 1 :=
   _root_.UpperTheory.Reformulated.B.Ue24.eq_one_of_pow_near h
 
 /- English proof (translation)
-Establish `ht : Tendsto (fun p : G × G => p.1 - p.2) (𝓝 ((0 : G), (0 : G))) (𝓝 ((0 : G) - 0))` using `(continuous_fst.sub continuous_snd : Continuous fun p : G × G => p.1 - p.2).tendsto ((0 : G), (0 : G))`. Rewrite `ht` using `[sub_zero]`. Establish `h1` using `ht hV`. Rewrite `h1` using `[Filter.mem_map, nhds_prod_eq, Filter.mem_prod_self_iff]`. Take `⟨W, hW, hWV⟩` from `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hU : ∀ c ∈ C, (fun y => y - c) ⁻¹' W ∈ 𝓝 c` using `fun c _ => (continuous_id.sub continuous_const).continuousAt.preimage_mem_nhds (by simpa using hW)`. Take `⟨t, -, hcov⟩` from `hC.elim_nhds_subcover _ hU`. Establish `hch : ∀ a : G, ∃ c : G, a ∈ s → c ∈ t ∧ a - c ∈ W`. Introduce `a`. Distinguish the cases in `ha : a ∈ s`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `hcov (hs ha)` as an intermediate fact. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, exists_prop] at this`. Take `⟨c, hc, hac⟩` from `this`. Conclude with `⟨c, fun _ => ⟨hc, hac⟩⟩`. Conclude with `⟨a, fun h => absurd h ha⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose f hf using hch`. Take `⟨a, ha, b, hb, hab, hfab⟩` from `hi.exists_ne_map_eq_of_mapsTo (f := f) (t := (t : Set G)) (fun a ha => (hf a ha).1) t.finite_toSet`. Use `⟨a, ha, b, hb, hab, ?_⟩` and prove the remaining obligations. Establish `h2 : (a - f a, b - f b) ∈ W ×ˢ W` using `⟨(hf a ha).2, (hf b hb).2⟩`. Establish `h3` using `hWV h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h3` using `[hfab]`.
+A detailed English derivation is pending.
 -/
 theorem exists_sub_mem_of_infinite {G : Type*} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     {C s : Set G} (hC : IsCompact C) (hs : s ⊆ C) (hi : s.Infinite) {V : Set G} (hV : V ∈ 𝓝 (0 : G)) :
@@ -58,37 +58,37 @@ theorem exists_sub_mem_of_infinite {G : Type*} [AddCommGroup G] [TopologicalSpac
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `show ((0 : Ainf F), u + w) = ((0 : Ainf F), u) + ((0 : Ainf F), w)`. Rewrite using `[Prod.mk_add_mk, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairA_add_snd (u w : Af F) : pairA F 0 (u + w) = pairA F 0 u + pairA F 0 w := by
   show ((0 : Ainf F), u + w) = ((0 : Ainf F), u) + ((0 : Ainf F), w)
   rw [Prod.mk_add_mk, add_zero]
 
 /- English proof (translation)
-Use `show (u + w, (0 : Af F)) = (u, (0 : Af F)) + (w, (0 : Af F))`. Rewrite using `[Prod.mk_add_mk, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairA_add_fst (u w : Ainf F) : pairA F (u + w) 0 = pairA F u 0 + pairA F w 0 := by
   show (u + w, (0 : Af F)) = (u, (0 : Af F)) + (w, (0 : Af F))
   rw [Prod.mk_add_mk, add_zero]
 
 /- English proof (translation)
-Use `show ((0 : Ainf F), n • u) = n • ((0 : Ainf F), u)`. Rewrite using `[Prod.smul_mk, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairA_nsmul_snd (n : ℕ) (u : Af F) : pairA F 0 (n • u) = n • pairA F 0 u := by
   show ((0 : Ainf F), n • u) = n • ((0 : Ainf F), u)
   rw [Prod.smul_mk, smul_zero]
 
 /- English proof (translation)
-Use `show (n • u, (0 : Af F)) = n • (u, (0 : Af F))`. Rewrite using `[Prod.smul_mk, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairA_nsmul_fst (n : ℕ) (u : Ainf F) : pairA F (n • u) 0 = n • pairA F u 0 := by
   show (n • u, (0 : Af F)) = n • (u, (0 : Af F))
   rw [Prod.smul_mk, smul_zero]
 
 /- English proof (translation)
-Establish `hU' : U ∈ 𝓝 (0 : ∀ w : InfinitePlace F, w.Completion)` using `hU`. Take `⟨δ, hδ, hb⟩` from `Metric.mem_nhds_iff.1 hU'`. Use `⟨δ, hδ, fun x hx => hb ?_⟩` and prove the remaining obligations. Establish `hx' : ∀ w, dist ((x : ∀ w : InfinitePlace F, w.Completion) w) ((0 : ∀ w : InfinitePlace F, w.Completion) w) < δ` using `fun w => by`. Rewrite using `[Pi.zero_apply, dist_zero_right]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx w`. Conclude with `mem_ball.2 ((dist_pi_lt_iff hδ).2 hx')`.
+A detailed English derivation is pending.
 -/
 theorem exists_polydisc {U : Set (Ainf F)} (hU : U ∈ 𝓝 (0 : Ainf F)) :
     ∃ δ > 0, ∀ x : Ainf F, (∀ w, ‖x w‖ < δ) → x ∈ U := by
@@ -100,7 +100,7 @@ theorem exists_polydisc {U : Set (Ainf F)} (hU : U ∈ 𝓝 (0 : Ainf F)) :
   exact mem_ball.2 ((dist_pi_lt_iff hδ).2 hx')
 
 /- English proof (translation)
-Establish `h : Metric.ball (0 : ∀ w : InfinitePlace F, w.Completion) ε ∈ 𝓝 (0 : ∀ w : InfinitePlace F, w.Completion)` using `Metric.ball_mem_nhds _ hε`. Use `Filter.mem_of_superset h fun x hx w => ?_` and prove the remaining obligations. Establish `h1` using `(dist_pi_lt_iff hε).1 (mem_ball.1 hx) w`. Rewrite `h1` using `[Pi.zero_apply, dist_zero_right]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem polydisc_mem_nhds {ε : ℝ} (hε : 0 < ε) : {x : Ainf F | ∀ w, ‖x w‖ < ε} ∈ 𝓝 (0 : Ainf F) := by
   have h : Metric.ball (0 : ∀ w : InfinitePlace F, w.Completion) ε ∈ 𝓝 (0 : ∀ w : InfinitePlace F, w.Completion) :=
@@ -110,7 +110,7 @@ theorem polydisc_mem_nhds {ε : ℝ} (hε : 0 < ε) : {x : Ainf F | ∀ w, ‖x 
   rwa [Pi.zero_apply, dist_zero_right] at h1
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 F)`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField F)⟩`. Use `⟨0, 1, fun h => ?_⟩` and prove the remaining obligations. Establish `h2 : (0 : v.adicCompletion F) = 1` using `congrArg (fun x : FiniteAdeleRing (𝓞 F) F => x v) h`. Conclude with `zero_ne_one h2`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem af_nontrivial : Nontrivial (Af F) := by
   obtain ⟨P, hP⟩ := Ideal.exists_maximal (𝓞 F)
@@ -121,14 +121,14 @@ theorem af_nontrivial : Nontrivial (Af F) := by
   exact zero_ne_one h2
 
 /- English proof (translation)
-Conclude with `RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v y`.
+A detailed English derivation is pending.
 -/
 theorem single_self (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v) : (singleV F v y) v = y := by
   classical
   exact RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v y
 
 /- English proof (translation)
-Conclude with `RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) y h`.
+A detailed English derivation is pending.
 -/
 theorem single_ne (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v) {w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) :
     (singleV F v y) w = 0 := by
@@ -136,9 +136,9 @@ theorem single_ne (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v) {w : HeightOneSp
   exact RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) y h
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun w => ?_)` and prove the remaining obligations. Use `show u w * (singleV F v y) w = (singleV F v (u v * y)) w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[single_self, single_self]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[single_ne v _ h, single_ne v _ h, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem mul_single (u : Af F) (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v) :
     u * singleV F v y = singleV F v (u v * y) := by
@@ -150,7 +150,7 @@ theorem mul_single (u : Af F) (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v) :
   · rw [single_ne v _ h, single_ne v _ h, mul_zero]
 
 /- English proof (translation)
-Establish `h' : ∀ w : HeightOneSpectrum (𝓞 F), a w ∈ w.adicCompletionIntegers F` using `h`. Conclude with `h' w`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem int_at {a : Af F} (h : a ∈ Formalism.UG.intAd F) (w : HeightOneSpectrum (𝓞 F)) :
     a w ∈ w.adicCompletionIntegers F := by
@@ -158,17 +158,15 @@ theorem int_at {a : Af F} (h : a ∈ Formalism.UG.intAd F) (w : HeightOneSpectru
   exact h' w
 
 /- English proof (translation)
-Establish `hc : Continuous fun y : Af F => ψ (pairA F 0 y)` using `hψ.1.comp (Continuous.prodMk continuous_const continuous_id)`. Use `set n : Set (Af F × Af F) := {p | ‖ψ (pairA F 0 (p.1 * p.2)) - 1‖ < 1 / 2} with hn`. Establish `hno : IsOpen n`. Establish `: Continuous fun p : Af F × Af F => ‖ψ (pairA F 0 (p.1 * p.2)) - 1‖` using `((hc.comp (continuous_fst.mul continuous_snd)).sub continuous_const).norm`. Conclude with `isOpen_lt this continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h00 : ψ (pairA F 0 0) = 1`. Establish `: pairA F (0 : Ainf F) (0 : Af F) = 0` using `rfl`. Rewrite using `[this]`. Conclude with `AddChar.map_zero_eq_one ψ`. Establish `hI : IsCompact (Formalism.UG.intAd F : Set (Af F))` using `(finiteAdeleIntegers_compactOpen F).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨u, w, hu, -, h0u, hIw, huw⟩` from `generalized_tube_lemma (isCompact_singleton (x := (0 : Af F))) hI hno (by`. Introduce and unpack `⟨a, b⟩ ⟨ha, -⟩`. Establish `ha' : a = 0` using `ha`. Substitute `ha'` using the available equality. Simplify using `[hn, h00])`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := af_nontrivial (F := F)`. Establish `hinj : Function.Injective fun β : 𝓞 F => algebraMap F (Af F) (β : F)` using `(algebraMap F (Af F)).injective.comp RingOfIntegers.coe_injective`. Take `⟨a, ⟨β₁, rfl⟩, b, ⟨β₂, rfl⟩, hab, hsub⟩` from `exists_sub_mem_of_infinite hI (s := Set.range fun β : 𝓞 F => algebraMap F (Af F) (β : F)) (by rintro _ ⟨β, rfl⟩; exact NCovAd_int_mem β) (Set.infinite_range_of_injective hinj) (hu.mem_nhds (h0u rfl))`. Use `⟨β₁ - β₂, fun h => hab ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[sub_eq_zero.1 h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hal : algebraMap F (Af F) ((β₁ - β₂ : 𝓞 F) : F) = algebraMap F (Af F) (β₁ : F) - algebraMap F (Af F) (β₂ : F)`. Rewrite using `[show ((β₁ - β₂ : 𝓞 F) : F) = (β₁ : F) - (β₂ : F) from map_sub (algebraMap (𝓞 F) F) _ _, map_sub]`. Rewrite using `[hal]`. Use `eq_one_of_pow_near fun k => ?_` and prove the remaining obligations. Establish `e : ψ (pairA F 0 ((algebraMap F (Af F) (β₁ : F) - algebraMap F (Af F) (β₂ : F)) * y)) ^ (2 ^ k) = ψ (pairA F 0 ((algebraMap F (Af F) (β₁ : F) - algebraMap F (Af F) (β₂ : F)) * ((2 ^ k : ℕ) • y)))`.
-
-Rewrite using `[← AddChar.map_nsmul_eq_pow, ← pairA_nsmul_snd, mul_smul_comm]`. Rewrite using `[e]`. Establish `hm : (2 ^ k : ℕ) • y ∈ Formalism.UG.intAd F` using `nsmul_mem hy _`. Conclude with `(huw (Set.mk_mem_prod hsub (hIw hm))).le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_int_kernel {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) :
     ∃ α : 𝓞 F, α ≠ 0 ∧ ∀ y ∈ Formalism.UG.intAd F, ψ (pairA F 0 (algebraMap F (Af F) (α : F) * y)) = 1 := by
@@ -211,23 +209,19 @@ theorem exists_int_kernel {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) :
     exact (huw (Set.mk_mem_prod hsub (hIw hm))).le
 
 /- English proof (translation)
-Establish `hα0 : (α : F) ≠ 0` using `by exact_mod_cast hα`. Take `⟨R, hR⟩` from `NCovAd_inf_approx (F := F)`. Use `choose β hβ using fun t : F => hR (algebraMap F (Ainf F) (t / α))`. Use `set d : F → F := fun t => t - (α : F) * (β t : F) with hdd`. Establish `hdK : ∀ t ∈ T, d t ∈ K`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t ht`. Establish `h1 : (β t) • (α : F) ∈ K` using `K.smul_mem _ hαK`. Establish `h2 : (β t) • (α : F) = (α : F) * (β t : F)`. Rewrite using `[Algebra.smul_def, mul_comm]`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `K.sub_mem (hTK ht) h1`. Establish `hinjF : Function.Injective (algebraMap F (Ainf F))` using `(algebraMap F (Ainf F)).injective`. Establish `hdinj : Set.InjOn d T`. Introduce `s hs t ht hst`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Apply `hd s hs t ht hne (β s - β t)` to reduce the goal to its premises. Establish `: s - (α : F) * (β s : F) = t - (α : F) * (β t : F)` using `hst`. Use `push_cast`. Take the linear combination `this`. Use `set C : Set (Ainf F) := Set.univ.pi fun w : InfinitePlace F => closedBall (0 : w.Completion) (‖algebraMap F (Ainf F) (α : F) w‖ * R) with hC`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hCc : IsCompact C` using `isCompact_univ_pi fun w => NCovAd_ball_compact w _`. Establish `hsC : (algebraMap F (Ainf F) ∘ d) '' T ⊆ C`. Introduce and unpack `_ ⟨t, -, rfl⟩ w -`. Rewrite using `[mem_closedBall, dist_zero_right]`. Establish `e : algebraMap F (Ainf F) (d t) = algebraMap F (Ainf F) (α : F) * (algebraMap F (Ainf F) (t / α) - algebraMap F (Ainf F) (β t : F))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← map_sub, ← map_mul]`. Use `congr 1`. Simplify using `only [hdd]`. Clear the denominators using the available nonvanishing facts. Use `show ‖algebraMap F (Ainf F) (d t) w‖ ≤ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `show ‖algebraMap F (Ainf F) (α : F) w * (algebraMap F (Ainf F) (t / α) - algebraMap F (Ainf F) (β t : F)) w‖ ≤ _`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hβ t w) (norm_nonneg _)`. Establish `hinf : ((algebraMap F (Ainf F) ∘ d) '' T).Infinite` using `hT.image (hinjF.comp_injOn hdinj)`.
-
-Take `⟨_, ⟨s, hs, rfl⟩, _, ⟨t, ht, rfl⟩, hab, hsub⟩` from `exists_sub_mem_of_infinite hCc hsC hinf hV`. Use `⟨d s - d t, K.sub_mem (hdK s hs) (hdK t ht), fun h => hab ?_, ?_⟩` and prove the remaining obligations. Use `show algebraMap F (Ainf F) (d s) = algebraMap F (Ainf F) (d t)`. Rewrite using `[sub_eq_zero.1 h]`. Rewrite using `[map_sub]`.
-
-Conclude with `hsub`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_small_of_infinite (K : Submodule (𝓞 F) F) {α : 𝓞 F} (hα : α ≠ 0) (hαK : (α : F) ∈ K)
     {T : Set F} (hTK : T ⊆ K) (hT : T.Infinite)
@@ -279,21 +273,19 @@ theorem exists_small_of_infinite (K : Submodule (𝓞 F) F) {α : 𝓞 F} (hα :
   · rw [map_sub]; exact hsub
 
 /- English proof (translation)
-Establish `hc : Continuous fun y : Ainf F => ψ (pairA F y 0)` using `hψ.1.comp (Continuous.prodMk continuous_id continuous_const)`. Establish `h00 : ψ (pairA F 0 0) = 1`. Establish `: pairA F (0 : Ainf F) (0 : Af F) = 0` using `rfl`. Rewrite using `[this]`. Conclude with `AddChar.map_zero_eq_one ψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU : {y : Ainf F | ‖ψ (pairA F y 0) - 1‖ < 1 / 2} ∈ 𝓝 (0 : Ainf F)`. Establish `hcn : Continuous fun y : Ainf F => ‖ψ (pairA F y 0) - 1‖` using `(hc.sub continuous_const).norm`. Conclude with `(isOpen_lt hcn continuous_const).mem_nhds (by simp [h00])`. Take `⟨δ, hδ, hδU⟩` from `exists_polydisc hU`. Take `⟨R, hR⟩` from `NCovAd_inf_approx (F := F)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hR1 : 0 < |R| + 1` using `by positivity`. Take `⟨k, hkK, hk0, hkV⟩` from `hs _ (polydisc_mem_nhds (div_pos hδ hR1))`. Establish `hall : ∀ y : Ainf F, ‖ψ (pairA F y 0) - 1‖ ≤ 1 / 2`. Introduce `y`. Take `⟨β, hβ⟩` from `hR (y * algebraMap F (Ainf F) k⁻¹)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set z := y * algebraMap F (Ainf F) k⁻¹ - algebraMap F (Ainf F) (β : F) with hz`. Establish `hone : algebraMap F (Ainf F) k * algebraMap F (Ainf F) k⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hk0, map_one]`. Establish `e : y = algebraMap F (Ainf F) (k * (β : F)) + algebraMap F (Ainf F) k * z`. Rewrite using `[hz, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `(-y) * hone`. Establish `hsm : k * (β : F) ∈ K`. Establish `h1 : β • k ∈ K` using `K.smul_mem _ hkK`. Establish `h2 : β • k = k * (β : F)`. Rewrite using `[Algebra.smul_def, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Establish `hin : algebraMap F (Ainf F) k * z ∈ {y : Ainf F | ‖ψ (pairA F y 0) - 1‖ < 1 / 2}`. Use `hδU _ fun w => ?_` and prove the remaining obligations. Use `show ‖algebraMap F (Ainf F) k w * z w‖ < δ`. Rewrite using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h1` using `hkV w`. Establish `h2 : ‖z w‖ ≤ |R| + 1` using `((hβ w).trans (le_abs_self R)).trans (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : ψ (pairA F y 0) = ψ (pairA F (algebraMap F (Ainf F) k * z) 0)` using `by conv_lhs => rw [e, pairA_add_fst, AddChar.map_add_eq_mul, hK _ hsm, one_mul]`. Rewrite using `[e2]`.
-
-Conclude with `le_of_lt hin`. Use `eq_one_of_pow_near fun k => ?_` and prove the remaining obligations. Rewrite using `[← AddChar.map_nsmul_eq_pow, ← pairA_nsmul_fst]`. Conclude with `hall _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_trivial_of_small {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (K : Submodule (𝓞 F) F)
     (hK : ∀ x ∈ K, ψ (pairA F (algebraMap F (Ainf F) x) 0) = 1)
@@ -344,11 +336,11 @@ theorem inf_trivial_of_small {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (K 
   exact hall _
 
 /- English proof (translation)
-Establish `hα0 : (α : F) ≠ 0` using `by exact_mod_cast hα`. Take `⟨y, hy⟩` from `NCovAd_fin_approx (F := F) (algebraMap F (Af F) (α : F)⁻¹ * x.2)`. Use `set e := algebraMap F (Af F) (α : F)⁻¹ * x.2 - algebraMap F (Af F) y with he`. Establish `hone : algebraMap F (Af F) (α : F) * algebraMap F (Af F) (α : F)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hα0, map_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : x = algebraMap F (AF F) ((α : F) * y) + pairA F (x.1 - algebraMap F (Ainf F) ((α : F) * y)) 0 + pairA F 0 (algebraMap F (Af F) (α : F) * e)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show x.1 = algebraMap F (Ainf F) ((α : F) * y) + (x.1 - algebraMap F (Ainf F) ((α : F) * y)) + 0`. Expand and normalize the polynomial expressions, which then agree. Use `show x.2 = algebraMap F (Af F) ((α : F) * y) + 0 + algebraMap F (Af F) (α : F) * e`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, map_mul]`. Take the linear combination `(-x.2) * hone`. Rewrite using `[e1, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, hψ.2.2.1, hinf, hk _ hy]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trivial_of_parts {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) {α : 𝓞 F} (hα : α ≠ 0)
     (hk : ∀ y ∈ Formalism.UG.intAd F, ψ (pairA F 0 (algebraMap F (Af F) (α : F) * y)) = 1)
@@ -370,41 +362,33 @@ theorem trivial_of_parts {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) {α : �
   simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hB`. Use `set B := {v : HeightOneSpectrum (𝓞 F) | ∃ a : Fv F v, a ∉ v.adicCompletionIntegers F ∧ ∀ b ∈ v.adicCompletionIntegers F, psiV F ψ v (a * b) = 1} with hBdef`. Establish `hBi : B.Infinite` using `hB`. Take `⟨α, hα, hk⟩` from `exists_int_kernel hψ`. Establish `hα0 : (α : F) ≠ 0` using `by exact_mod_cast hα`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : algebraMap F (Af F) (α : F) * algebraMap F (Af F) (α : F)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hα0, map_one]`. Establish `h0 : ψ (pairA F 0 0) = 1`. Establish `: pairA F (0 : Ainf F) (0 : Af F) = 0` using `rfl`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `AddChar.map_zero_eq_one ψ`. Set `K : Submodule (𝓞 F) F` to `{ carrier := {x | ∀ c : 𝓞 F, ψ (pairA F 0 (algebraMap F (Af F) ((c : F) * x))) = 1} add_mem' := fun {x y} hx hy c => by`. Rewrite using `[mul_add, map_add, pairA_add_snd, AddChar.map_add_eq_mul, hx c, hy c, one_mul]`. Use the proof step `zero_mem' := fun c => by rw [mul_zero, map_zero]; exact h0`. Use the proof step `smul_mem' := fun c' x hx c => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (c : F) * (c' • x) = ((c * c' : 𝓞 F) : F) * x`. Rewrite using `[Algebra.smul_def]`. Use `show (c : F) * ((c' : F) * x) = ((c : F) * (c' : F)) * x`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx _ }`. Establish `hKmem : ∀ x : F, x ∈ K ↔ ∀ c : 𝓞 F, ψ (pairA F 0 (algebraMap F (Af F) ((c : F) * x))) = 1` using `fun x => Iff.rfl`. Establish `hKinf : ∀ x ∈ K, ψ (pairA F (algebraMap F (Ainf F) x) 0) = 1`. Introduce `x hx`. Establish `h1` using `(hKmem x).1 hx 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[show ((1 : 𝓞 F) : F) = 1 from rfl, one_mul]`. Establish `e : algebraMap F (AF F) x = pairA F (algebraMap F (Ainf F) x) 0 + pairA F 0 (algebraMap F (Af F) x)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show algebraMap F (Ainf F) x = algebraMap F (Ainf F) x + 0`. Rewrite using `[add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show algebraMap F (Af F) x = 0 + algebraMap F (Af F) x`. Rewrite using `[zero_add]`. Establish `h2` using `hψ.2.2.1 x`. Rewrite `h2` using `[e, AddChar.map_add_eq_mul, h1, mul_one]`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `hαK : (α : F) ∈ K`. Use `(hKmem _).2 fun c => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, map_mul]`. Conclude with `hk _ (NCovAd_int_mem c)`. Establish `hch : ∀ v : HeightOneSpectrum (𝓞 F), ∃ a : Fv F v, v ∈ B → a ∉ v.adicCompletionIntegers F ∧ ∀ b ∈ v.adicCompletionIntegers F, psiV F ψ v (a * b) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `v`. Distinguish the cases in `hv : v ∈ B`. Take `⟨a, ha⟩` from `hv`. Conclude with `⟨a, fun _ => ha⟩`. Conclude with `⟨0, fun h => absurd h hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `choose a ha using hch`. Use `choose y hy using fun v => NCovAd_fin_approx (F := F) (algebraMap F (Af F) (α : F)⁻¹ * singleV F v (a v))`. Use `set E : HeightOneSpectrum (𝓞 F) → Af F := fun v => algebraMap F (Af F) (α : F)⁻¹ * singleV F v (a v) - algebraMap F (Af F) (y v) with hE`. Use `set t : HeightOneSpectrum (𝓞 F) → F := fun v => (α : F) * y v with ht`. Establish `hsplit : ∀ v, singleV F v (a v) = algebraMap F (Af F) (α : F) * E v + algebraMap F (Af F) (t v)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `v`. Simplify using `only [hE, ht, map_mul]`. Take the linear combination `(-singleV F v (a v)) * hone`. Establish `hkey : ∀ v ∈ B, ∀ v', v ≠ v' → ∀ β : 𝓞 F, t v - t v' ≠ (α : F) * (β : F)`. Introduce `v hv v' hne β heq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hX : algebraMap F (Af F) (α : F) * (E v - E v') + algebraMap F (Af F) ((α : F) * (β : F)) ∈ Formalism.UG.intAd F` using `add_mem (mul_mem (NCovAd_int_mem α) (sub_mem (hy v) (hy v'))) (NCovAd_int_mem (α * β))`. Establish `e : singleV F v (a v) - singleV F v' (a v') = algebraMap F (Af F) (α : F) * (E v - E v') + algebraMap F (Af F) ((α : F) * (β : F))`. Rewrite using `[← heq, map_sub, hsplit v, hsplit v']`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hX` using `[← e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `int_at hX v`. Establish `h2 : (singleV F v (a v) - singleV F v' (a v')) v = a v` using `by show (singleV F v (a v)) v - (singleV F v' (a v')) v = a v`. Rewrite using `[single_self, single_ne v' _ hne, sub_zero]`. Rewrite `h1` using `[h2]`. Conclude with `(ha v hv).1 h1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htinj : Set.InjOn t B`. Introduce `v hv v' hv' e`. Assume the negation of the conclusion as `hne`. Use `hkey v hv v' hne 0 ?_` and prove the remaining obligations. Rewrite using `[e, sub_self]`.
-
-Simplify using the standard rewrite rules. Establish `hTK : t '' B ⊆ K`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Use `(hKmem _).2 fun c => ?_` and prove the remaining obligations. Establish `e : algebraMap F (Af F) ((c : F) * t v) = singleV F v (a v * (algebraMap F (Af F) (c : F)) v) + algebraMap F (Af F) (α : F) * (-(algebraMap F (Af F) (c : F) * E v))`.
-
-Rewrite using `[mul_comm (a v), ← mul_single, hsplit v, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcO : (algebraMap F (Af F) (c : F)) v ∈ v.adicCompletionIntegers F` using `int_at (NCovAd_int_mem c) v`. Rewrite using `[e, pairA_add_snd, AddChar.map_add_eq_mul, hk _ (neg_mem (mul_mem (NCovAd_int_mem c) (hy v))), mul_one]`. Conclude with `(ha v hv).2 _ hcO`.
-
-Establish `hd : ∀ s ∈ t '' B, ∀ s' ∈ t '' B, s ≠ s' → ∀ β : 𝓞 F, s - s' ≠ (α : F) * (β : F)`. Introduce and unpack `_ ⟨v, hv, rfl⟩ _ ⟨v', hv', rfl⟩ hne β`. Conclude with `hkey v hv v' (fun h => hne (by rw [h])) β`. Establish `hsmall : ∀ V ∈ 𝓝 (0 : Ainf F), ∃ k ∈ K, k ≠ 0 ∧ algebraMap F (Ainf F) k ∈ V` using `fun V hV => exists_small_of_infinite K hα hαK hTK (hBi.image htinj) hd hV`. Establish `hinf` using `inf_trivial_of_small hψ K hKinf hsmall`.
-
-Take `⟨x, hx⟩` from `hψ.2.2.2`. Conclude with `hx (trivial_of_parts hψ hα hk hinf x)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_bad {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) :
     {v : HeightOneSpectrum (𝓞 F) | ∃ a : Fv F v, a ∉ v.adicCompletionIntegers F ∧
@@ -510,13 +494,11 @@ theorem finite_bad {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) :
   exact hx (trivial_of_parts hψ hα hk hinf x)
 
 /- English proof (translation)
-Establish `hα0 : (α : F) ≠ 0` using `by exact_mod_cast hα`. Establish `hy : singleV F v (algebraMap F (Fv F v) ((α : F)⁻¹) * a) ∈ Formalism.UG.intAd F`. Introduce `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[single_self]`. Conclude with `mul_mem hv ha`. Rewrite using `[single_ne v _ h]`. Conclude with `zero_mem _`. Establish `e : algebraMap F (Af F) (α : F) * singleV F v (algebraMap F (Fv F v) ((α : F)⁻¹) * a) = singleV F v a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[mul_single]`. Use `congr 1`. Establish `e1 : (algebraMap F (Af F) (α : F)) v = algebraMap F (Fv F v) (α : F)` using `rfl`. Rewrite using `[e1, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hα0, map_one, one_mul]`. Use `hk _ hy` as an intermediate fact.
-
-Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem good_of_unit {ψ : AddChar (AF F) ℂ} {α : 𝓞 F}
     (hk : ∀ y ∈ Formalism.UG.intAd F, ψ (pairA F 0 (algebraMap F (Af F) (α : F) * y)) = 1)
@@ -541,11 +523,9 @@ theorem good_of_unit {ψ : AddChar (AF F) ℂ} {α : 𝓞 F}
   rwa [e] at this
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ`. Take `⟨α, hα, hk⟩` from `exists_int_kernel hψ`. Establish `h1 : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, algebraMap F (Fv F v) ((α : F)⁻¹) ∈ v.adicCompletionIntegers F` using `(algebraMap F (Af F) ((α : F)⁻¹)).2`. Establish `h2` using `(finite_bad hψ).eventually_cofinite_notMem`. Use `filter_upwards [h1, h2] with v hv hb a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `ha`. Conclude with `hb ⟨a, ha, h⟩`. Introduce `ha b hb'`.
-
-Conclude with `good_of_unit hk v hα hv (mul_mem ha hb')`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem psiCond : PositivityTheory.SiegelWeilFormula.Gunr.PsiCond := by
   intro F _ _ ψ hψ

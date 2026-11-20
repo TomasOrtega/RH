@@ -12,25 +12,25 @@ open UpperTheory.ConvolutionTheory.R2.C
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Simplify using `only [q4, Pi.neg_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem quadraticForm_neg (δ : F) (y : V4 F) : q4 δ (-y) = q4 δ y := by
   simp only [q4, Pi.neg_apply]
   ring
 
 /- English proof (translation)
-Simplify using `only [B4, Pi.neg_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem quaternaryForm_neg_right (δ : F) (y v : V4 F) : B4 δ (-y) (-v) = B4 δ y v := by
   simp only [B4, Pi.neg_apply]
   ring
 
 /- English proof (translation)
-Introduce `F _ _ δ hδ b c hc φ v`. Establish `hmem` using `(pcMem F δ).2 hδ b φ.1 φ.2`. Establish `h2` using `(ftBasic F δ hδ _ hmem).2.1 (-v)`. Rewrite `h2` using `[neg_neg]`. Rewrite using `[← h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∀ y, ft4 δ (Pc δ (b : A F) φ.1) y * ψ (B4 δ y (-v)) = c * ψ (-(((b⁻¹ : (A F)ˣ) : A F) * q4 δ y)) * ft4 δ φ.1 (-y) * ψ (B4 δ y (-v))` using `fun y => by`. Rewrite using `[idxFt F δ b c hc φ y]`. Use `conv_lhs => rw [ft4]`. Simplify using `only [e1]`. Rewrite using `[← integral_neg_eq_self _ (adeleMeasurePi F)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [neg_neg, quadraticForm_neg, quaternaryForm_neg_right]`. Rewrite using `[ft4, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.C.gaussOp :
     ∀ (F : Type) [Field F] [NumberField F] (δ : F), δ ≠ 0 → ∀ (b : (A F)ˣ) (c : ℂ), IsIdx δ (b : A F) c → ∀ (φ : S4 F) (v : V4 F),

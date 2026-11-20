@@ -18,22 +18,20 @@ noncomputable def commEval (k : Type*) [CommSemiring k] [Algebra k A] (a : σ �
     (aeval fun i => (⟨a i, Algebra.subset_adjoin ⟨i, rfl⟩⟩ : Algebra.adjoin k (Set.range a)))
 
 /- English proof (translation)
-Simplify using `[commEval]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem commEval_X (a : σ → A) (ha : ∀ i j, Commute (a i) (a j)) (i : σ) :
     commEval k a ha (X i) = a i := by
   simp [commEval]
 
 /- English proof (translation)
-The claim follows from `algHom_C _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem commEval_C (a : σ → A) (ha : ∀ i j, Commute (a i) (a j)) (c : k) :
     commEval k a ha (C c) = algebraMap k A c := algHom_C _ _
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => rw [commEval_C]`. Conclude with `(Algebra.commutes c b).symm`. Consider the case `add P Q hP hQ => rw [map_add]`. Conclude with `hP.add_right hQ`.
-
-Consider the case `mul_X P i hP => rw [map_mul, commEval_X]`. Conclude with `hP.mul_right (hb i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem commute_commEval {a : σ → A} (ha : ∀ i j, Commute (a i) (a j)) {b : A}
     (hb : ∀ i, Commute b (a i)) (P : MvPolynomial σ k) : Commute b (commEval k a ha P) := by
@@ -43,7 +41,7 @@ theorem commute_commEval {a : σ → A} (ha : ∀ i j, Commute (a i) (a j)) {b :
   | mul_X P i hP => rw [map_mul, commEval_X]; exact hP.mul_right (hb i)
 
 /- English proof (translation)
-Apply the tactic sequence `rcases v with v | v <;> rcases w with w | w <;> refine LinearMap.ext fun z => ?_`. Simplify using `[← mul_assoc, (ha v w).eq]`. Simplify using `[mul_assoc]`. Simplify using `[mul_assoc]`. Simplify using `[mul_assoc, (ha' v w).eq]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem commute_mulLeft_mulRight {a : ι → A} {a' : κ → A} (ha : ∀ i j, Commute (a i) (a j))
     (ha' : ∀ i j, Commute (a' i) (a' j)) (v w : ι ⊕ κ) :
@@ -66,13 +64,13 @@ variable {a : ι → A} {a' : κ → A} (ha : ∀ i j, Commute (a i) (a j))
   (ha' : ∀ i j, Commute (a' i) (a' j))
 
 /- English proof (translation)
-Simplify using `[orderedEval, Algebra.algebraMap_eq_smul_one]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem orderedEval_C (c : k) : orderedEval k a a' ha ha' (C c) = algebraMap k A c := by
   simp [orderedEval, Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Rewrite using `[← C_1, orderedEval_C, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem orderedEval_one : orderedEval k a a' ha ha' 1 = 1 := by
   rw [← C_1, orderedEval_C, map_one]
@@ -88,19 +86,19 @@ def multiChoose (n β : σ →₀ ℕ) : ℕ := β.prod fun i e => (n i).choose 
 def multiFactorial (β : σ →₀ ℕ) : ℕ := β.prod fun _ e => e.factorial
 
 /- English proof (translation)
-Simplify using `[multiChoose]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem multiChoose_zero (n : σ →₀ ℕ) : multiChoose n 0 = 1 := by simp [multiChoose]
 
 /- English proof (translation)
-The claim follows from `(Finsupp.mul_prod_erase' β i _ fun _ => Nat.choose_zero_right _).symm`.
+A detailed English derivation is pending.
 -/
 theorem multiChoose_eq_mul_erase (n β : σ →₀ ℕ) (i : σ) :
     multiChoose n β = (n i).choose (β i) * multiChoose n (β.erase i) :=
   (Finsupp.mul_prod_erase' β i _ fun _ => Nat.choose_zero_right _).symm
 
 /- English proof (translation)
-Use `Finsupp.prod_congr fun j hj => ?_` and prove the remaining obligations. Establish `: i ≠ j` using `by rintro rfl; exact Finsupp.mem_support_iff.mp hj h`. Simplify using `[Finsupp.single_eq_of_ne' this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem multiChoose_add_single_left {β : σ →₀ ℕ} {i : σ} (h : β i = 0) (n : σ →₀ ℕ) (e : ℕ) :
     multiChoose (n + Finsupp.single i e) β = multiChoose n β := by
@@ -109,7 +107,7 @@ theorem multiChoose_add_single_left {β : σ →₀ ℕ} {i : σ} (h : β i = 0)
   simp [Finsupp.single_eq_of_ne' this]
 
 /- English proof (translation)
-Introduce `i`. Rewrite `h` using `[multiChoose_eq_mul_erase n β i]`. Assume the negation of the conclusion as `hi`. Conclude with `h (by rw [Nat.choose_eq_zero_of_lt (not_le.mp hi), zero_mul])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem le_of_multiChoose_ne_zero {n β : σ →₀ ℕ} (h : multiChoose n β ≠ 0) : β ≤ n := by
   intro i
@@ -118,14 +116,14 @@ theorem le_of_multiChoose_ne_zero {n β : σ →₀ ℕ} (h : multiChoose n β �
   exact h (by rw [Nat.choose_eq_zero_of_lt (not_le.mp hi), zero_mul])
 
 /- English proof (translation)
-Rewrite using `[Finsupp.erase_add, Finsupp.erase_single, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem erase_add_single_self (β : σ →₀ ℕ) (i : σ) (e : ℕ) :
     (β + Finsupp.single i e).erase i = β.erase i := by
   rw [Finsupp.erase_add, Finsupp.erase_single, add_zero]
 
 /- English proof (translation)
-Rewrite using `[multiChoose_eq_mul_erase _ _ i, multiChoose_eq_mul_erase n (β + _) i, multiChoose_eq_mul_erase n β i, erase_add_single_self, multiChoose_add_single_left Finsupp.erase_same]`. Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same, Nat.choose_succ_succ', add_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem multiChoose_pascal (n β : σ →₀ ℕ) (i : σ) :
     multiChoose (n + Finsupp.single i 1) (β + Finsupp.single i 1) =
@@ -137,7 +135,7 @@ theorem multiChoose_pascal (n β : σ →₀ ℕ) (i : σ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[multiChoose_eq_mul_erase n (β + _) i, multiChoose_eq_mul_erase n β i, erase_add_single_self]`. Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same]`. Use `Nat.choose_succ_right_eq (n i) (β i)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem multiChoose_mul_sub (n β : σ →₀ ℕ) (i : σ) :
     multiChoose n β * (n i - β i) = (β i + 1) * multiChoose n (β + Finsupp.single i 1) := by
@@ -153,7 +151,7 @@ noncomputable def dividedDeriv (β : σ →₀ ℕ) : Module.End R (MvPolynomial
   (basisMonomials σ R).constr R fun n => multiChoose n β • monomial (n - β) 1
 
 /- English proof (translation)
-Establish `h : (monomial n c : MvPolynomial σ R) = c • basisMonomials σ R n`. Simplify using `[smul_monomial]`. Rewrite using `[h, map_smul, dividedDeriv, Module.Basis.constr_basis, smul_comm, smul_monomial, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dividedDeriv_monomial (β n : σ →₀ ℕ) (c : R) :
     dividedDeriv R β (monomial n c) = multiChoose n β • monomial (n - β) c := by
@@ -163,11 +161,11 @@ theorem dividedDeriv_monomial (β n : σ →₀ ℕ) (c : R) :
     mul_one]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial n c`. Rewrite using `[dividedDeriv_monomial, coeff_smul, coeff_monomial, coeff_monomial]`. Distinguish the cases in `h : n = m + β`. Substitute `h` using the available equality.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg h, smul_zero]`. Distinguish the cases in `h0 : multiChoose n β = 0`. Rewrite using `[h0, zero_smul]`. Rewrite using `[if_neg, smul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `h (tsub_add_cancel_of_le (le_of_multiChoose_ne_zero h0)).symm`. Consider the case `add P Q hP hQ => simp only [map_add, coeff_add, hP, hQ, smul_add]`.
+Assume the hypotheses and unpack their components. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coeff_dividedDeriv (β m : σ →₀ ℕ) (P : MvPolynomial σ R) :
     coeff m (dividedDeriv R β P) = multiChoose (m + β) β • coeff (m + β) P := by
@@ -186,14 +184,14 @@ theorem coeff_dividedDeriv (β m : σ →₀ ℕ) (P : MvPolynomial σ R) :
   | add P Q hP hQ => simp only [map_add, coeff_add, hP, hQ, smul_add]
 
 /- English proof (translation)
-Use `LinearMap.ext fun P => MvPolynomial.ext _ _ fun m => ?_` and prove the remaining obligations. Simplify using `[coeff_dividedDeriv]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem dividedDeriv_zero : dividedDeriv R (0 : σ →₀ ℕ) = 1 := by
   refine LinearMap.ext fun P => MvPolynomial.ext _ _ fun m => ?_
   simp [coeff_dividedDeriv]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial n c`. Rewrite using `[dividedDeriv_monomial, dividedDeriv_monomial, map_nsmul, pderiv_monomial, smul_smul, ← multiChoose_mul_sub, tsub_tsub, mul_smul, smul_monomial (n i - β i)]`. Simplify using `[mul_comm]`. Consider the case `add P Q hP hQ => simp only [map_add, hP, hQ, smul_add]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem pderiv_dividedDeriv (β : σ →₀ ℕ) (i : σ) (P : MvPolynomial σ R) :
     pderiv i (dividedDeriv R β P) = (β i + 1) • dividedDeriv R (β + Finsupp.single i 1) P := by
@@ -205,14 +203,14 @@ theorem pderiv_dividedDeriv (β : σ →₀ ℕ) (i : σ) (P : MvPolynomial σ R
   | add P Q hP hQ => simp only [map_add, hP, hQ, smul_add]
 
 /- English proof (translation)
-Simplify using `using (pderiv_dividedDeriv 0 i P).symm`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dividedDeriv_single_one (i : σ) (P : MvPolynomial σ R) :
     dividedDeriv R (Finsupp.single i 1) P = pderiv i P := by
   simpa using (pderiv_dividedDeriv 0 i P).symm
 
 /- English proof (translation)
-Distinguish the cases in `h : i = j`. Rewrite using `[h]`. Rewrite using `[← dividedDeriv_single_one j, ← dividedDeriv_single_one i P, pderiv_dividedDeriv, pderiv_dividedDeriv, add_comm (Finsupp.single j 1), Finsupp.single_eq_of_ne h, Finsupp.single_eq_of_ne' h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_pderiv_comm (i j : σ) (P : MvPolynomial σ R) :
     pderiv i (pderiv j P) = pderiv j (pderiv i P) := by
@@ -223,16 +221,16 @@ theorem pderiv_pderiv_comm (i j : σ) (P : MvPolynomial σ R) :
       Finsupp.single_eq_of_ne' h]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun P => pderiv_pderiv_comm i j P`.
+A detailed English derivation is pending.
 -/
 theorem commute_pderiv (i j : σ) :
     Commute ((pderiv i).toLinearMap : Module.End R (MvPolynomial σ R)) (pderiv j).toLinearMap :=
   LinearMap.ext fun P => pderiv_pderiv_comm i j P
 
 /- English proof (translation)
-Proceed by induction on `β using Finsupp.induction with`. Consider the case `zero => exact h0`. Consider the case `single_add i e f _ _ hf => clear * - hf h`. Proceed by induction on `e with`. Consider the case `zero => simpa using hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `succ e ih => rw [Finsupp.single_add, add_right_comm]`. Conclude with `h _ _ ih`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finsupp_induction_single {p : (σ →₀ ℕ) → Prop} (h0 : p 0)
     (h : ∀ β i, p β → p (β + Finsupp.single i 1)) (β : σ →₀ ℕ) : p β := by
@@ -245,9 +243,9 @@ theorem finsupp_induction_single {p : (σ →₀ ℕ) → Prop} (h0 : p 0)
     | succ e ih => rw [Finsupp.single_add, add_right_comm]; exact h _ _ ih
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial n c`. Establish `hX (m : σ →₀ ℕ) : X i * monomial m c = monomial (m + Finsupp.single i 1) c`. Rewrite using `[monomial_add_single, pow_one, mul_comm]`. Rewrite using `[hX, dividedDeriv_monomial, dividedDeriv_monomial, dividedDeriv_monomial, multiChoose_pascal, add_smul, add_tsub_add_eq_tsub_right, mul_smul_comm, hX]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : multiChoose n (β + Finsupp.single i 1) = 0`. Simplify using `[h0]`. Take `⟨m, rfl⟩` from `exists_add_of_le (le_of_multiChoose_ne_zero h0)`. Rewrite using `[add_tsub_cancel_left, add_assoc β, add_tsub_cancel_left, add_comm m]`. Consider the case `add P Q hP hQ => simp only [mul_add, map_add, hP, hQ]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -267,9 +265,9 @@ theorem dividedDeriv_add_single_X_mul (β : σ →₀ ℕ) (i : σ) (P : MvPolyn
   | add P Q hP hQ => simp only [mul_add, map_add, hP, hQ]; abel
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial n c`. Establish `hX (m : σ →₀ ℕ) : X i * monomial m c = monomial (m + Finsupp.single i 1) c`. Rewrite using `[monomial_add_single, pow_one, mul_comm]`. Rewrite using `[hX, dividedDeriv_monomial, dividedDeriv_monomial, multiChoose_add_single_left h, mul_smul_comm, hX]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : multiChoose n β = 0`. Simplify using `[h0]`. Rewrite using `[tsub_add_eq_add_tsub (le_of_multiChoose_ne_zero h0)]`. Consider the case `add P Q hP hQ => simp only [mul_add, map_add, hP, hQ]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem dividedDeriv_X_mul_of_eq_zero {β : σ →₀ ℕ} {i : σ} (h : β i = 0) (P : MvPolynomial σ R) :
     dividedDeriv R β (X i * P) = X i * dividedDeriv R β P := by
@@ -291,11 +289,11 @@ section Contraction
 variable {R S : Type*} [CommSemiring R] [CommSemiring S] {ι κ : Type*}
 
 /- English proof (translation)
-It suffices to establish `H : ∀ t : κ →₀ ℕ, p (monomial (s + t.mapDomain Sum.inr) c) by simpa using H 0`. Proceed by induction on `s using finsupp_induction_single with`. Consider the case `h0 => intro t`. Simplify `h0 t` using `[rename_monomial]`. Consider the case `h s v ih`.
+Reduce the argument to an intermediate assertion. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `t`. Break down `v with i | j` into its components or cases. Rewrite using `[add_right_comm, monomial_add_single, pow_one, mul_comm]`. Conclude with `h _ _ (ih t)`. Use `ih (Finsupp.single j 1 + t)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Finsupp.mapDomain_add, Finsupp.mapDomain_single, ← add_assoc]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem monomial_induction_inl {p : MvPolynomial (ι ⊕ κ) R → Prop} (c : R)
     (h0 : ∀ t : κ →₀ ℕ, p (rename Sum.inr (monomial t c)))
@@ -312,7 +310,7 @@ theorem monomial_induction_inl {p : MvPolynomial (ι ⊕ κ) R → Prop} (c : R)
       rwa [Finsupp.mapDomain_add, Finsupp.mapDomain_single, ← add_assoc] at this
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial s c => exact monomial_induction_inl c (fun t => h0 _) (fun s i => h _ i) s`. Consider the case `add P Q hP hQ => exact hadd P Q hP hQ`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem induction_inl {p : MvPolynomial (ι ⊕ κ) R → Prop}
     (h0 : ∀ q : MvPolynomial κ R, p (rename Sum.inr q))
@@ -328,14 +326,14 @@ noncomputable def rowContraction (γ : ι → κ → R) (i : ι) : Module.End R 
   ∑ j, γ i j • (pderiv (Sum.inr j)).toLinearMap
 
 /- English proof (translation)
-Simplify using `[rowContraction, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowContraction_apply (γ : ι → κ → R) (i : ι) (P : MvPolynomial (ι ⊕ κ) R) :
     rowContraction γ i P = ∑ j, γ i j • pderiv (Sum.inr j) P := by
   simp [rowContraction, LinearMap.sum_apply]
 
 /- English proof (translation)
-The claim follows from `Commute.sum_right _ _ _ fun _ _ => (commute_pderiv _ _).smul_right _`.
+A detailed English derivation is pending.
 -/
 theorem commute_pderiv_rowContraction (γ : ι → κ → R) (v : ι ⊕ κ) (i : ι) :
     Commute ((pderiv v).toLinearMap : Module.End R (MvPolynomial (ι ⊕ κ) R))
@@ -343,14 +341,14 @@ theorem commute_pderiv_rowContraction (γ : ι → κ → R) (v : ι ⊕ κ) (i 
   Commute.sum_right _ _ _ fun _ _ => (commute_pderiv _ _).smul_right _
 
 /- English proof (translation)
-The claim follows from `Commute.sum_left _ _ _ fun _ _ => (commute_pderiv_rowContraction _ _ _).smul_left _`.
+A detailed English derivation is pending.
 -/
 theorem commute_rowContraction (γ : ι → κ → R) (i i' : ι) :
     Commute (rowContraction γ i) (rowContraction γ i') :=
   Commute.sum_left _ _ _ fun _ _ => (commute_pderiv_rowContraction _ _ _).smul_left _
 
 /- English proof (translation)
-Simplify using `[rowContraction_apply, Finset.mul_sum, pderiv_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowContraction_X_inl_mul (γ : ι → κ → R) (i i' : ι) (P : MvPolynomial (ι ⊕ κ) R) :
     rowContraction γ i (X (Sum.inl i') * P) = X (Sum.inl i') * rowContraction γ i P := by
@@ -358,7 +356,7 @@ theorem rowContraction_X_inl_mul (γ : ι → κ → R) (i i' : ι) (P : MvPolyn
   simp [rowContraction_apply, Finset.mul_sum, pderiv_X]
 
 /- English proof (translation)
-Simplify using `[rowContraction_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem rowContraction_C (γ : ι → κ → R) (i : ι) (c : R) :
     rowContraction γ i (C c) = 0 := by
@@ -370,14 +368,14 @@ noncomputable def contraction (γ : ι → κ → R) : Module.End R (MvPolynomia
   ∑ i, ∑ j, γ i j • ((pderiv (Sum.inl i)).toLinearMap ∘ₗ (pderiv (Sum.inr j)).toLinearMap)
 
 /- English proof (translation)
-Simplify using `[contraction, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem contraction_apply (γ : ι → κ → R) (P : MvPolynomial (ι ⊕ κ) R) :
     contraction γ P = ∑ i, ∑ j, γ i j • pderiv (Sum.inl i) (pderiv (Sum.inr j) P) := by
   simp [contraction, LinearMap.sum_apply]
 
 /- English proof (translation)
-Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Simplify using `[contraction_apply, rowContraction_apply, LinearMap.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem contraction_eq_sum (γ : ι → κ → R) :
     contraction γ = ∑ i, (pderiv (Sum.inl i)).toLinearMap * rowContraction γ i := by
@@ -385,7 +383,7 @@ theorem contraction_eq_sum (γ : ι → κ → R) :
   simp [contraction_apply, rowContraction_apply, LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[contraction_eq_sum]`. Conclude with `Commute.sum_left _ _ _ fun i' _ => (commute_pderiv_rowContraction _ _ _).mul_left (commute_rowContraction _ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_contraction_rowContraction (γ : ι → κ → R) (i : ι) :
     Commute (contraction γ) (rowContraction γ i) := by
@@ -394,9 +392,9 @@ theorem commute_contraction_rowContraction (γ : ι → κ → R) (i : ι) :
     (commute_pderiv_rowContraction _ _ _).mul_left (commute_rowContraction _ _ _)
 
 /- English proof (translation)
-Rewrite using `[contraction_apply]`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pderiv_pderiv_comm, pderiv_eq_zero_of_notMem_vars (i := Sum.inl i), map_zero, smul_zero]`. Introduce `h`. Take `⟨j, -, hj⟩` from `mem_vars_rename _ _ h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Consider the cases of `hj`.
+Split into cases according to the possible forms of the given data.
 -/
 theorem contraction_rename_inr (γ : ι → κ → R) (q : MvPolynomial κ R) :
     contraction γ (rename Sum.inr q) = 0 := by
@@ -409,7 +407,7 @@ theorem contraction_rename_inr (γ : ι → κ → R) (q : MvPolynomial κ R) :
   cases hj
 
 /- English proof (translation)
-Simplify using `[contraction_eq_sum, LinearMap.sum_apply, rowContraction_X_inl_mul, Finset.mul_sum, pderiv_X, Finset.sum_add_distrib, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem contraction_X_inl_mul (γ : ι → κ → R) (i : ι) (P : MvPolynomial (ι ⊕ κ) R) :
     contraction γ (X (Sum.inl i) * P) = X (Sum.inl i) * contraction γ P + rowContraction γ i P := by
@@ -418,7 +416,7 @@ theorem contraction_X_inl_mul (γ : ι → κ → R) (i : ι) (P : MvPolynomial 
     pderiv_X, Finset.sum_add_distrib, Pi.single_apply]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [contraction_X_inl_mul]`. Consider the case `succ n ih`. Establish `hc (Q) : contraction γ (rowContraction γ i Q) = rowContraction γ i (contraction γ Q)` using `LinearMap.congr_fun (commute_contraction_rowContraction γ i).eq Q`. Rewrite using `[pow_succ' _ (n + 1), Module.End.mul_apply, ih, map_add, contraction_X_inl_mul, map_nsmul, hc, Module.End.mul_apply, ← Module.End.mul_apply (contraction γ) (contraction γ ^ n), ← pow_succ', succ_nsmul' _ (n + 1), add_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem contraction_pow_X_inl_mul (γ : ι → κ → R) (n : ℕ) (i : ι) (P : MvPolynomial (ι ⊕ κ) R) :
     (contraction γ ^ (n + 1)) (X (Sum.inl i) * P) =
@@ -442,19 +440,19 @@ noncomputable def dividedContraction (γ : ι → κ → R) (n : ℕ) :
       dividedDeriv R (α.mapDomain Sum.inl)
 
 /- English proof (translation)
-Simplify using `[dividedContraction]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem dividedContraction_zero (γ : ι → κ → R) : dividedContraction γ 0 = 1 := by
   simp [dividedContraction]
 
 /- English proof (translation)
-Rewrite using `[dividedContraction, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun α hα => ?_` and prove the remaining obligations. Establish `hne : α ≠ 0` using `by rintro rfl; simp at hα`. Take `⟨i, hi⟩` from `Finsupp.ne_iff.mp hne`. It suffices to establish `dividedDeriv R (α.mapDomain Sum.inl) (rename (Sum.inr : κ → ι ⊕ κ) q) = 0 by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion.
 
-Rewrite using `[Module.End.mul_apply, this, map_zero]`. Proceed by induction on `q using MvPolynomial.induction_on' with`. Consider the case `monomial t c`. Rewrite using `[rename_monomial, dividedDeriv_monomial]`. Establish `: multiChoose (t.mapDomain (Sum.inr : κ → ι ⊕ κ)) (α.mapDomain Sum.inl) = 0`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `le_of_multiChoose_ne_zero h (Sum.inl i)` as an intermediate fact. Rewrite `this` using `[Finsupp.mapDomain_apply Sum.inl_injective, Finsupp.mapDomain_notin_range _ _ (by simp)]`. Conclude with `hi (Nat.le_zero.mp this)`. Rewrite using `[this, zero_smul]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem dividedContraction_succ_rename_inr (γ : ι → κ → R) (n : ℕ) (q : MvPolynomial κ R) :
     dividedContraction γ (n + 1) (rename Sum.inr q) = 0 := by
@@ -478,19 +476,17 @@ theorem dividedContraction_succ_rename_inr (γ : ι → κ → R) (n : ℕ) (q :
   | add p q hp hq => rw [map_add, map_add, hp, hq, add_zero]
 
 /- English proof (translation)
-Use `set E := commEval R (rowContraction γ) (commute_rowContraction γ) with hE`. Establish `hX (p : MvPolynomial ι R) (Q : MvPolynomial (ι ⊕ κ) R) : E p (X (Sum.inl i) * Q) = X (Sum.inl i) * E p Q` using `(LinearMap.congr_fun (commute_commEval (commute_rowContraction γ) (b := LinearMap.mulLeft R (X (Sum.inl i))) (fun i' => LinearMap.ext fun Q => (rowContraction_X_inl_mul γ i' i Q).symm) p).eq Q).symm`. Establish `key (α : ι →₀ ℕ) : E (monomial α 1) (dividedDeriv R (α.mapDomain Sum.inl) (X (Sum.inl i) * P)) = X (Sum.inl i) * E (monomial α 1) (dividedDeriv R (α.mapDomain Sum.inl) P) + if α i = 0 then 0 else rowContraction γ i (E (monomial (α - Finsupp.single i 1) 1) (dividedDeriv R ((α - Fi …` using `by split_ifs with h`. Rewrite using `[dividedDeriv_X_mul_of_eq_zero (by rwa [Finsupp.mapDomain_apply Sum.inl_injective]), hX, add_zero]`. Take `⟨β, rfl⟩ : ∃ β, α = β + Finsupp.single i 1` from `⟨α - Finsupp.single i 1, (tsub_add_cancel_of_le (Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr h))).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_tsub_cancel_right, Finsupp.mapDomain_add, Finsupp.mapDomain_single, dividedDeriv_add_single_X_mul, map_add, hX]`. Use `congr 1`. Rewrite using `[monomial_add_single, pow_one, mul_comm, map_mul, hE, commEval_X, Module.End.mul_apply]`. Simplify using `only [dividedContraction, LinearMap.sum_apply, Module.End.mul_apply, ← hE, key, Finset.sum_add_distrib, Finset.mul_sum, map_sum]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hsum (β : ι →₀ ℕ) : Finset.univ.sum ⇑(β + Finsupp.single i 1 : ι →₀ ℕ) = Finset.univ.sum ⇑β + 1`. Express the relevant statement in the definitionally equal form `∑ x, (β + Finsupp.single i 1 : ι →₀ ℕ) x = ∑ x, β x + 1`. Simplify using `[Finset.sum_add_distrib, Finsupp.single_apply]`. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, zero_add]`. Use `symm`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_nbij' (fun β => β + Finsupp.single i 1) (fun α => α - Finsupp.single i 1) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `β hβ`. Simplify using `only [Finset.mem_finsuppAntidiag, Finset.mem_filter, Finset.subset_univ, and_true] at hβ ⊢`. Conclude with `⟨by rw [hsum, hβ], by simp⟩`. Introduce `α hα`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_finsuppAntidiag, Finset.mem_filter, Finset.subset_univ, and_true] at hα ⊢`. Take `⟨β, rfl⟩ : ∃ β, α = β + Finsupp.single i 1` from `⟨α - Finsupp.single i 1, (tsub_add_cancel_of_le (Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr hα.2))).symm⟩`. Establish `h1` using `hα.1`. Rewrite `h1` using `[hsum]`. Rewrite using `[add_tsub_cancel_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `β _`. Conclude with `add_tsub_cancel_right _ _`. Introduce `α hα`. Conclude with `tsub_add_cancel_of_le (Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr (Finset.mem_filter.mp hα).2))`.
-
-Introduce `β _`. Rewrite using `[add_tsub_cancel_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dividedContraction_succ_X_inl_mul (γ : ι → κ → R) (n : ℕ) (i : ι)
     (P : MvPolynomial (ι ⊕ κ) R) :
@@ -549,11 +545,11 @@ theorem dividedContraction_succ_X_inl_mul (γ : ι → κ → R) (n : ℕ) (i : 
   · intro β _; rw [add_tsub_cancel_right]
 
 /- English proof (translation)
-Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply]`. Proceed by induction on `P using induction_inl generalizing n with`. Consider the case `h0 q`. Break down `n with _ | n` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Rewrite using `[dividedContraction_succ_rename_inr, pow_succ, Module.End.mul_apply, contraction_rename_inr, map_zero, smul_zero]`. Consider the case `hadd P Q hP hQ => rw [map_add, map_add, smul_add, hP, hQ]`. Consider the case `h P i hP`. Break down `n with _ | n` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Rewrite using `[dividedContraction_succ_X_inl_mul, contraction_pow_X_inl_mul, smul_add, ← mul_smul_comm, hP, ← hP n, map_nsmul, smul_smul, Nat.factorial_succ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem factorial_smul_dividedContraction (γ : ι → κ → R) (n : ℕ) :
     n.factorial • dividedContraction γ n = contraction γ ^ n := by
@@ -573,7 +569,7 @@ theorem factorial_smul_dividedContraction (γ : ι → κ → R) (n : ℕ) :
         hP, ← hP n, map_nsmul, smul_smul, Nat.factorial_succ]
 
 /- English proof (translation)
-Simplify using `using factorial_smul_dividedContraction γ 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 @[simp] theorem dividedContraction_one (γ : ι → κ → R) : dividedContraction γ 1 = contraction γ := by
   simpa using factorial_smul_dividedContraction γ 1
@@ -616,7 +612,7 @@ variable [Fintype ι] {a b : ι → A} {a' b' : κ → A} {γ : ι → κ → k}
 end Formula
 
 /- English proof (translation)
-Use `⟨0, fun _ => Polynomial.derivative, fun _ => LinearMap.mulLeft ℚ Polynomial.X, 0, fun _ _ => 1, 1, one_ne_zero, rfl, fun _ _ => Commute.refl _, fun _ _ => Commute.zero_left _, fun _ _ => Commute.refl _, fun _ _ => Commute.refl _, fun _ _ => Commute.zero_right _, fun _ _ => Commut …` and prove the remaining obligations. Use `LinearMap.ext fun p => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 example : ∃ (a b : Unit → Module.End ℚ (Polynomial ℚ)) (a' b' : Unit → Module.End ℚ (Polynomial ℚ))
     (γ : Unit → Unit → ℚ) (v : Polynomial ℚ), v ≠ 0 ∧ γ () () = 1 ∧
@@ -634,7 +630,7 @@ example : ∃ (a b : Unit → Module.End ℚ (Polynomial ℚ)) (a' b' : Unit →
   simp
 
 /- English proof (translation)
-Rewrite using `[dividedContraction_succ_X_inl_mul, dividedContraction_succ_X_inl_mul, dividedContraction_succ_X_inl_mul]`. Simplify using `only [dividedContraction_succ_rename_inr]`. Establish `h : pderiv (Sum.inr ()) (2 : MvPolynomial (Unit ⊕ Unit) ℤ) = 0` using `pderiv_C (a := 2)`. Simplify using `[rowContraction_apply, pderiv_X, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example : dividedContraction (fun _ _ : Unit => (1 : ℤ)) 2
     (X (Sum.inl ()) * (X (Sum.inl ()) * rename Sum.inr (X () ^ 2))) = 2 := by

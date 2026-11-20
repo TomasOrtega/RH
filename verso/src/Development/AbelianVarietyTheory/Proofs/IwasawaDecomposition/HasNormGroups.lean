@@ -23,14 +23,14 @@ def Lifts {w : HeightOneSpectrum (𝓞 E)} (ι : Ω →ₐ[E] Kbar w) (g : GalLo
   ∀ z, g (ι z) = ι (σ z)
 
 /- English proof (translation)
-Introduce `z` and use `by rw [AlgEquiv.mul_apply, H', H]; rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Lifts.mul {w : HeightOneSpectrum (𝓞 E)} {ι : Ω →ₐ[E] Kbar w} {g g' : GalLoc w} {σ σ' : G E Ω}
     (H : Lifts ι g σ) (H' : Lifts ι g' σ') : Lifts ι (g * g') (σ * σ') := fun z => by
   rw [AlgEquiv.mul_apply, H', H]; rfl
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.ext fun z => ι.toRingHom.injective ((H z).symm.trans (H' z))`.
+A detailed English derivation is pending.
 -/
 theorem Lifts.eq {w : HeightOneSpectrum (𝓞 E)} {ι : Ω →ₐ[E] Kbar w} {g : GalLoc w} {σ σ' : G E Ω}
     (H : Lifts ι g σ) (H' : Lifts ι g σ') : σ = σ' :=

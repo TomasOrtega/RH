@@ -8,7 +8,7 @@ open GlobalTheory.AboveL
 namespace GlobalTheory.AboveL
 
 /- English proof (translation)
-Introduce `K L Ω _ _ _ _ _ _ _ _ _ _ _ A v v' h h' x x' hr`. Take `⟨n, a, b, rfl, rfl, hN, hρ⟩` from `hr`. Use `⟨by rw [WD.lpDim_mk, WD.lpDim_mk], by rw [WD.monodromyZero_ofWeilDeligneRepClass_iff, WD.monodromyZero_ofWeilDeligneRepClass_iff, hN], fun σ σ' hs => ?_⟩` and prove the remaining obligations. Rewrite using `[WD.charPol_mk, WD.charPol_mk, hρ σ σ' hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem restricts_lpDim_mono0_charPol : ∀ (K L Ω : Type) [Field Ω] [Field K] [NumberField K] [Algebra K Ω]
     [IsAlgClosure K Ω] [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω] [Algebra K L]

@@ -22,35 +22,29 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 open scoped Classical in
 
 /- English proof (translation)
-Take `⟨hei, hev, hloc⟩` from `hL`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f, ei f ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hei (ContinuousLinearMap.ext h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, ei f y ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hf (SchwartzMap.ext h)`. Set `pt : (Fin n₁ × Fin d₁ → Fv F v) → (Fin n₁ × Fin d₁ → AF F)` to `fun t i => GlobalTheory.HeisSchA.mk ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i)) 0 + GlobalTheory.LatVac.liftV v (t i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hI : ∀ t, (fun i => evI F (pt t i)) = y` using `fun t => funext fun i => by`. Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i) + 0) = y i`. Rewrite using `[add_zero, RingEquiv.apply_symm_apply]`. Establish `h0 : ∀ w a, evFin F w (GlobalTheory.HeisSchA.mk a 0) = 0` using `fun w a => map_zero (evalV F w)`. Establish `hv : ∀ t, (fun i => evFin F v (pt t i)) = t` using `fun t => funext fun i => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [pt, map_add, h0, GlobalTheory.LatVac.evFin_liftV, zero_add]`. Establish `hw : ∀ t w, w ≠ v → (fun i => evFin F w (pt t i)) = 0` using `fun t w hw => funext fun i => by`. Simplify using `only [pt, map_add, h0, zero_add]`. Conclude with `evalV_singleFin_ne hw _`. Establish `hupd : ∀ χ : ∀ w : Pl F, (Fin n × Fin d → Fv F w) → ℂ, (∀ w, χ w ∈ SB _) → ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ∀ w, Function.update χ v φ w ∈ SB _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `χ hχ φ hφ w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hφ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.update_of_ne hw]`. Conclude with `hχ w`. Establish `hcof : ∀ χ : ∀ w : Pl F, (Fin n × Fin d → Fv F w) → ℂ, (∀ᶠ w in cofinite, χ w = M.vac w) → ∀ φ, ∀ᶠ w in cofinite, Function.update χ v φ w = M.vac w`. Introduce `χ hχ φ`. Use `filter_upwards [hχ, Filter.eventually_cofinite_ne v] with w h1 hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne hw, h1]`. Establish `hstd : ∀ χ : ∀ w : Pl F, (Fin n × Fin d → Fv F w) → ℂ, (∀ᶠ w in cofinite, χ w = M.vac w) → ∀ᶠ w in cofinite, χ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1`. Introduce `χ hχ`. Use `filter_upwards [hχ, hM.std] with w h1 h2`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hfin : {w | M₁.vac w 0 ≠ 1}.Finite`. Assume the negation of the conclusion as `hinf`. Take `⟨r, -, hr⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f M.vac hM.std`. Establish `h1` using `congrFun (hloc f _ (hupd M.vac (fun w => (hM.vac w).1) 0 (zero_mem _)) (hcof M.vac (Eventually.of_forall fun _ => rfl) 0)) (pt 0)`. Establish `hz : tens (evFin F v) (0 : (Fin n × Fin d → Fv F v) → ℂ) r = 0` using `funext fun x => zero_mul _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Rewrite `h1` using `[← hr, hz, map_zero, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, hI, finprod_of_infinite_mulSupport, mul_one]`. Conclude with `hy h1.symm`. Use `Set.Infinite.mono ?_ (Set.Infinite.diff hinf (Set.finite_singleton v))` and prove the remaining obligations. Introduce and unpack `w ⟨h2, h3⟩`. Establish `h3' : w ≠ v` using `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.mem_mulSupport, Function.update_of_ne h3', (hev w).1, hw 0 w h3']`. Conclude with `h2`. Establish `hex : ∀ w, ∃ χ ∈ SB (Fin n × Fin d → Fv F w), ev w χ 0 = 1 ∧ (M₁.vac w 0 = 1 → χ = M.vac w)`. Introduce `w`. Distinguish the cases in `h : M₁.vac w 0 = 1`.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨M.vac w, (hM.vac w).1, by rw [(hev w).1, h], fun _ => rfl⟩`. Establish `hm` using `GlobalTheory.StdVacuum.indicator_mem_SB (κ := Fin n₁ × Fin d₁) w`. Rewrite `hm` using `[← (hev w).2]`. Take `⟨χ, hχ, hχe⟩` from `hm`. Use `⟨χ, hχ, ?_, fun h' => absurd h' h⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hχe, Set.indicator_of_mem (by intro i; exact zero_mem _)]`. Both sides reduce to the same expression. Use `choose χ hχ hχ1 hχv using hex`. Establish `hχc : ∀ᶠ w in cofinite, χ w = M.vac w` using `(show ∀ᶠ w in cofinite, M₁.vac w 0 = 1 from hfin).mono fun w h => hχv w h`. Take `⟨r, hr0, hr⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f χ (hstd χ hχc)`.
-
-Establish `hRest : ∀ φ ∈ SB (Fin n × Fin d → Fv F v), Rest (evFin F v) φ r` using `fun φ hφ => ⟨hr0, by`. Rewrite using `[hr φ]`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f _ (hupd χ hχ φ hφ) (hstd _ (hcof χ hχc φ))⟩`. Establish `key : ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ∀ t, e (tens (evFin F v) φ r) (pt t) = ei f y * ev v φ t`. Introduce `φ hφ t`.
-
-Rewrite using `[hr, hloc f _ (hupd χ hχ φ hφ) (hcof χ hχc φ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, hI, finprod_eq_single _ v]`. Rewrite using `[Function.update_self, hv]`. Introduce `w h`. Rewrite using `[Function.update_of_ne h, hw t w h, hχ1]`. Use function extensionality and compare the values at `t`.
-
-Use `mul_left_cancel₀ hy ?_` and prove the remaining obligations. Rewrite using `[← key φ₁ hφ₁, ← key φ hφ, ← hA r (hRest φ hφ), hT _ (hRest φ hφ).2]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locPart_inv (B : Base F E) {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
     {M : Model σ X W} {M₁ : Model σ X₁ W₁} (hM : M.IsGood B.ψ) {e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁} {ei ev}
@@ -145,13 +139,13 @@ open scoped GlobalTheory.VacAny in
 open GlobalTheory.VanishLoc GlobalTheory.LatVac in
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B a b G G₁ H H' hC e' hE ei ev hL X om om' hT v φ hφ`. Establish `hψ : Continuous B.ψ` using `hT.base.std.1`. Establish `hψv : Continuous (psiAt B.ψ v)` using `GlobalTheory.SchrSB.continuous_psiAt B.ψ hψ v`. Establish `hne : psiAt B.ψ v ≠ 1` using `GlobalTheory.PsiNontriv.psiAt_ne_one B.ψ hT.base.std v`. Use `set U : Set (Fv F v ⊗[F] E) := {t | schr (psiAt B.ψ v) (locCo G.M'.co v (uAt H H' v t)) φ = φ} with hUdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : U ∈ nhds 0` using `(GlobalTheory.T.local_coefficient_tendsto_zero G.M' H H' v).eventually (GlobalTheory.T.schrodinger_locally_constant v (psiAt B.ψ v) hψv φ hφ)`. Use `⟨_, GlobalTheory.T.trace_character_annihilator_compact v (psiAt B.ψ v) hψv hne U hU, fun l _ hl => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_forall] at hl`. Take `⟨t, ht, hne1⟩` from `hl`. Establish `ht' : schr (psiAt B.ψ v) (locCo G.M'.co v (uAt H H' v t)) φ = φ` using `ht`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(locOp_rho G.M'.co hψ v (shiftB σ H H' l) hφ).2]`. Establish `hS : schr (psiAt B.ψ v) (locCo G.M'.co v (shiftB σ H H' l)) φ ∈ SB _` using `GlobalTheory.SchrSB.schr_mem_SB B.ψ hψ v _ φ hφ`. Establish `h1` using `locPart_inv B hT.geo.hM' hL v _ (hE.inv _ (uAt_mem_isoB H H' v t)) hS (GlobalTheory.SchrSB.schr_mem_SB B.ψ hψ v _ _ hS) (GlobalTheory.VacBridge.rho_acts_locCo G.M'.co B.ψ v _ (at_uAt H H' v t) _)`. Rewrite `h1` using `[schr_comm, ht', map_smul, GlobalTheory.T.local_coefficient_idele_scaling B G G₁ H H' hC X om om' hT v t l]`. Establish `h2 : (psiAt B.ψ v (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (t * compFin F E v l.1)) - 1) • ev v (schr (psiAt B.ψ v) (locCo G.M'.co v (shiftB σ H H' l)) φ) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_smul, h1, one_smul, sub_self]`. Conclude with `(smul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hne1)`.
+A detailed English derivation is pending.
 -/
 theorem ev_shift_eq_zero_off_compact : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)

@@ -14,7 +14,7 @@ Both sides reduce to the same expression.
 theorem sigD_eq_star' (D : D7) (x : D.host.E) : (sigD D : D.host.E →+* D.host.E) x = star x := rfl
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `zero => rfl`. Consider the case `succ i => show (chAt _ _ _ _ _ _ _ _ _ I _ _ _ _ (i + 1) La).B.1.submatrix _ _ = _`. Simplify using `only [chAt, dif_pos hj]`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cpB_eq_bAt {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC}
   {ex : Extra D L hT Gi Gl Kc Dx cX} {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl}
@@ -32,9 +32,9 @@ theorem cpB_eq_bAt {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D 
     rfl
 
 /- English proof (translation)
-Establish `hs : star (c * g * B) = cT σ (c * g * B)`. Use extensionality with `i k`. Simplify using `only [cT, Matrix.star_apply, Matrix.transpose_apply, Matrix.map_apply, hσ]`. Rewrite using `[hs, cT_mul, cT_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hc, hg, hB]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitary_product_of_hermitian_relations {E : Type} [Field E] [StarRing E] (σ : E →+* E) (hσ : ∀ x, σ x = star x) {N : ℕ}
     (J c g B : Matrix (Fin N) (Fin N) E) (hc : cT σ c * c = J) (hg : cT σ g * J * g = J) (hB : cT σ B * J * B = 1) :
@@ -48,13 +48,13 @@ theorem unitary_product_of_hermitian_relations {E : Type} [Field E] [StarRing E]
     _ = 1 := by rw [hc, hg, hB]
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S d j hj h La`. Establish `hB` using `(GlobalTheory.T.kernelSite_chartBasis_orthonormal_levelIndependent S j hj La.1).1`. Establish `hc` using `J.pins.crd_orth j hj`. Establish `hg' : (d.gam j hj La)⁻¹ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D j hj)` using `inv_mem (d.mem j hj La)`. Establish `hval : (mM d j hj La).1 = (J.A.crd j hj).1 * ((d.gam j hj La)⁻¹).1 * (bAt J j hj La.1).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mM, Units.val_mul]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `StdU`. Rewrite using `[hval]`. Conclude with `unitary_product_of_hermitian_relations _ (sigD_eq_star' D) _ _ _ _ hc hg' hB`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Rewrite using `[GlobalTheory.T.frM_eq_map_crd_mul_gam_inv_mul_basis S d j hj h La v, cpB_eq_bAt J std j hj h La, show ((J.A.crd j hj * (d.gam j hj La)⁻¹ : GL (Fin (D.R.N j)) D.host.E) : Matrix _ _ D.host.E).submatrix (Fin.cast h) (Fin.cast h) = ((J.A.crd j hj * (d.gam j hj La)⁻¹ : GL (Fin (D.R. …`. Both sides reduce to the same expression. Establish `hdet : ((d.gam j hj La)⁻¹).1.det * (d.gam j hj La).1.det = 1`. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.det_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval, uB, Units.val_mul, Matrix.det_mul, Matrix.det_mul, Matrix.det_mul]`. Take the linear combination `((J.A.crd j hj).1.det * (bAt J j hj La.1).1.det) * hdet`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem changed_frame_unitary : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => ∀ (d : Dec J std) j (hj : j ≤ D.R.m) (h : ((sysS H X std).Pj j).m + 1 = D.R.N j) (La : (sysS H X std).Lt j), StdU D (mM d j hj La) ∧ FrIs d.fd2 (J.rho std) j La h (mM d j hj La) ∧ (mM d j hj La).1.det * (d.gam j hj La).1.det = (uB J j hj La.1).1.det) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S d j hj h La

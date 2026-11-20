@@ -1,13 +1,13 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.HomologyRank.RankHomology
 
 /- English proof (translation)
-Introduce `h Γ Y _ _ y hB`. Take `⟨c, hc⟩` from `hB`. Use `⟨c, ?_⟩` and prove the remaining obligations. Introduce `X _ p hp hsurj D hD d ξ`. Rewrite using `[h Γ X Y p hp y hsurj d ξ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(hc _).trans ?_` and prove the remaining obligations. Establish `h1 : Cardinal.mk ↥(UpperTheory.V.Af.CohB.fib p hp y) ≤ D` using `hD`. Establish `hfin : Finite ↥(UpperTheory.V.Af.CohB.fib p hp y)` using `Cardinal.lt_aleph0_iff_finite.mp (h1.trans_lt (Cardinal.nat_lt_aleph0 D))`. Establish `hr : Module.rank ℂ ↑(Rep.of (UpperTheory.V.Af.CohB.fibRep p hp y ξ)) = Cardinal.mk ↥(UpperTheory.V.Af.CohB.fib p hp y) * d`. Express the relevant statement in the definitionally equal form `Module.rank ℂ (↥(UpperTheory.V.Af.CohB.fib p hp y) → Fin d → ℂ) = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[rank_pi]`. Simplify using `only [rank_fun', Fintype.card_fin]`. Rewrite using `[Cardinal.sum_const']`. Rewrite using `[hr]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[mul_assoc]`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.orbit_bound_of_shapiro_functorial :
     UpperTheory.V.Af.CohB.ShapiroFun → UpperTheory.V.Af.CohB.OrbBound := by

@@ -20,7 +20,7 @@ def frameProd {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolU
   ∏ k, u.fr (j k) (z k) ^ ε k
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (u.fr_ne _ _ (h k))`.
+A detailed English derivation is pending.
 -/
 theorem frameProd_ne_zero {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) {K : Type}
     [Fintype K] {j : K → L.ι} {z : K → (Fin g → ℂ)} (ε : K → ℤ) (h : ∀ k, ⊤ ≤ (u.ex (z k)).left ⁻¹ᵁ L.U (j k)) :
@@ -28,7 +28,7 @@ theorem frameProd_ne_zero {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : �
   Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (u.fr_ne _ _ (h k))
 
 /- English proof (translation)
-Simplify using `only [top_le_preimage_iff_mem]`. Conclude with `Set.mem_iInter`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem top_le_wchart_iff {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (j : K → L.ι)
     (x : Sp ℂ ⟶ Y) : ⊤ ≤ x ⁻¹ᵁ LB.wchart L φ j ↔ ∀ k, ⊤ ≤ (x ≫ φ k) ⁻¹ᵁ L.U (j k) := by
@@ -36,7 +36,7 @@ theorem top_le_wchart_iff {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (
   exact Set.mem_iInter
 
 /- English proof (translation)
-The claim follows from `(exists_chart hL (x (default : PrimeSpectrum ℂ))).imp fun _ h => (top_le_preimage_iff_mem x _).2 h`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart_complexPoint {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (x : Sp ℂ ⟶ X) :
     ∃ i, ⊤ ≤ x ⁻¹ᵁ L.U i :=
@@ -47,14 +47,14 @@ section Dict
 variable {O : Type} [CommRing O] [StarRing O] [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ]
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`. Conclude with `Spec.map_id _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jFK_comp_jK_complex : Out.jFK (R := ℂ) ℂ ≫ Out.jK ℂ = 𝟙 (Sp ℂ) := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]
   exact Spec.map_id _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Out.jFK (R := ℂ) ℂ ≫ Out.jK ℂ) ≫ p.left = _`. Rewrite using `[jFK_comp_jK_complex]`. Conclude with `Category.id_comp _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toUnit_TF_comp_left {B : Over (Sp ℂ)} (p : 𝟙_ (Over (Sp ℂ)) ⟶ B) :
     (show Sp ℂ ⟶ _ from (toUnit (Out.TF (R := ℂ) ℂ) ≫ p).left) = p.left := by
@@ -116,21 +116,19 @@ structure SecFn where
   fn_val : ∀ (j : ℕ) [NeZero j] α s, d.IsFamFn j α s (fn j α s)
 
 /- English proof (translation)
-Rewrite using `[d.ex₀_b]`. Conclude with `toUnit_TF_comp_left _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex₀_b_left (v : d.A.V) : (show Sp ℂ ⟶ _ from (d.ex₀ v).b.left) = (d.u.ex v.2).left := by
   rw [d.ex₀_b]; exact toUnit_TF_comp_left _
 
 /- English proof (translation)
-Rewrite using `[(d.u.ker 0).2 (zero_mem _), Hom.one_def, toUnit_unit, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_zero : d.u.ex 0 = η[D₀.P.A] := by
   rw [(d.u.ker 0).2 (zero_mem _), Hom.one_def, toUnit_unit, Category.id_comp]
 
 /- English proof (translation)
-Use `fin_cases k`. Use `Eq.trans ?_ (toUnit_TF_comp_left _)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(toUnit _ ≫ D₀.c (d.eX x) * (d.ex₀ v).b).left = (toUnit _ ≫ d.u.ex (d.A.ct x + v.2)).left`. Rewrite using `[d.ex₀_b, d.u.ex_add, MonObj.comp_mul, d.ex_ct]`. Conclude with `(toUnit_TF_comp_left _).trans (congrArg (·.left) (d.ex_ct x).symm)`.
-
-Conclude with `d.ex₀_b_left v`. Conclude with `(toUnit_TF_comp_left _).trans (congrArg (·.left) d.ex_zero.symm)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gtφ_eq (v : d.A.V) (x : d.A.X) (k : Fin 4) :
     (show Sp ℂ ⟶ _ from Out.DegPre.gtφ D₀ ℂ (d.ex₀ v).b (d.eX x) k) =
@@ -144,9 +142,9 @@ theorem gtφ_eq (v : d.A.V) (x : d.A.X) (k : Fin 4) :
   · exact (toUnit_TF_comp_left _).trans (congrArg (·.left) d.ex_zero.symm)
 
 /- English proof (translation)
-Establish `h : ∀ p : 𝟙_ (Over (Sp ℂ)) ⟶ D₀.P.A, d.u.ex z ≫ toUnit D₀.P.A ≫ p = p` using `fun p => by`. Rewrite using `[← Category.assoc, comp_toUnit, toUnit_unit, Category.id_comp]`. Use `fin_cases k`. Conclude with `Category.comp_id _`. Express the relevant statement in the definitionally equal form `(d.u.ex z ≫ (𝟙 D₀.P.A * toUnit _ ≫ D₀.c (d.eX α))).left = (d.u.ex (z + d.A.ct α)).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[MonObj.comp_mul, h, Category.comp_id, d.u.ex_add, d.ex_ct]`. Express the relevant statement in the definitionally equal form `(d.u.ex z ≫ toUnit _ ≫ D₀.c (d.eX α)).left = (d.u.ex (d.A.ct α)).left`. Rewrite using `[h, d.ex_ct]`. Express the relevant statement in the definitionally equal form `(d.u.ex z ≫ toUnit _ ≫ η[D₀.P.A]).left = (d.u.ex 0).left`. Rewrite using `[h, d.ex_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_comp_famφB (z : Fin d.A.gB → ℂ) (α : d.A.X) (k : Fin 4) :
     (d.u.ex z).left ≫ D₀.famφB (d.eX α) k = (d.u.ex (![z, z + d.A.ct α, d.A.ct α, 0] k)).left := by
@@ -162,7 +160,7 @@ theorem ex_comp_famφB (z : Fin d.A.gB → ℂ) (α : d.A.X) (k : Fin 4) :
     rw [h, d.ex_zero]
 
 /- English proof (translation)
-Use `(top_le_wchart_iff D₀.P.L (Y := Sp ℂ) _ j (𝟙 _)).trans (forall_congr' fun k => ?_)` and prove the remaining obligations. Rewrite using `[Category.id_comp, ← d.gtφ_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem top_le_gtChart_iff (v : d.A.V) (x : d.A.X) (j : Fin 4 → D₀.P.L.ι) :
     ⊤ ≤ LB.wchart D₀.P.L (Out.DegPre.gtφ D₀ ℂ (d.ex₀ v).b (d.eX x)) j ↔
@@ -171,7 +169,7 @@ theorem top_le_gtChart_iff (v : d.A.V) (x : d.A.X) (j : Fin 4 → D₀.P.L.ι) :
   rw [Category.id_comp, ← d.gtφ_eq]
 
 /- English proof (translation)
-Use `(top_le_wchart_iff D₀.P.L _ i (d.u.ex z).left).trans (forall_congr' fun k => ?_)` and prove the remaining obligations. Rewrite using `[← d.ex_comp_famφB]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem top_le_famChart_iff (z : Fin d.A.gB → ℂ) (α : d.A.X) (i : Fin 4 → D₀.P.L.ι) :
     ⊤ ≤ (d.u.ex z).left ⁻¹ᵁ LB.wchart D₀.P.L (D₀.famφB (d.eX α)) i ↔
@@ -180,7 +178,7 @@ theorem top_le_famChart_iff (z : Fin d.A.gB → ℂ) (α : d.A.X) (i : Fin 4 →
   rw [← d.ex_comp_famφB]
 
 /- English proof (translation)
-Introduce `U f`. Simplify using `only [d.ex₀_b_left, Set.mem_univ, true_and]`. Conclude with `⟨(d.u.hol U f).1.preimage continuous_snd, (d.u.hol U f).2.comp differentiable_snd.differentiableOn fun _ h => h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem hol_b : IsHolTo Set.univ (fun v => (show Sp ℂ ⟶ _ from (d.ex₀ v).b.left)) := by
   intro U f
@@ -189,9 +187,9 @@ theorem hol_b : IsHolTo Set.univ (fun v => (show Sp ℂ ⟶ _ from (d.ex₀ v).b
     (d.u.hol U f).2.comp differentiable_snd.differentiableOn fun _ h => h⟩
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `d.eX.surjective x`. Use `DifferentiableOn.congr ?_ fun v hv => d.chi_val v x j hv` and prove the remaining obligations. Establish `h1 : Differentiable ℂ fun v : d.A.V => v.1 x` using `(d.A.evalCLM x).differentiable.comp differentiable_fst`. Use `DifferentiableOn.mul (Differentiable.differentiableOn (by unfold eTwoPi; fun_prop)) ?_` and prove the remaining obligations. It suffices to establish `hk : ∀ k, DifferentiableOn ℂ (fun v : d.A.V => d.u.fr (j k) (![d.A.ct x + v.2, d.A.ct x, v.2, 0] k) ^ Out.DegPre.gtε k) {v | ⊤ ≤ LB.wchart D₀.P.L (Out.DegPre.gtφ D₀ ℂ (d.ex₀ v).b (d.eX x)) j} by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion.
 
-Simplify using `only [frameProd, Fin.prod_univ_four]`. Conclude with `(((hk 0).mul (hk 1)).mul (hk 2)).mul (hk 3)`. Use `fun k => DifferentiableOn.zpow ?_ (Or.inl fun v hv => d.u.fr_ne _ _ ((d.top_le_gtChart_iff v x j).1 hv k))` and prove the remaining obligations. Use `(d.u.fr_hol (j k)).comp (f := fun v : d.A.V => ![d.A.ct x + v.2, d.A.ct x, v.2, 0] k) (Differentiable.differentiableOn ?_) fun v hv => (d.top_le_gtChart_iff v x j).1 hv k` and prove the remaining obligations. Apply the tactic sequence `fin_cases k <;> simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hol_chi (x : D₀.X) (j : Fin 4 → D₀.P.L.ι) : DifferentiableOn ℂ (fun v => chiVal (d.ex₀ v) x j)
     {v | ⊤ ≤ LB.wchart D₀.P.L (Out.DegPre.gtφ D₀ ℂ (d.ex₀ v).b x) j} := by
@@ -211,9 +209,9 @@ theorem hol_chi (x : D₀.X) (j : Fin 4 → D₀.P.L.ι) : DifferentiableOn ℂ 
   fin_cases k <;> simp
 
 /- English proof (translation)
-Use `⟨by rw [d.ex₀_b, hv, d.ex_zero], fun x j hc hj => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `d.eX.surjective x`. Establish `h01 : j 0 = j 1` using `hc 0 1 ((d.gtφ_eq v x 0).trans (Eq.trans (by simp [hv]) (d.gtφ_eq v x 1).symm))`. Establish `h23 : j 2 = j 3` using `hc 2 3 ((d.gtφ_eq v x 2).trans (Eq.trans (by simp [hv]) (d.gtφ_eq v x 3).symm))`. Establish `n1` using `d.u.fr_ne _ _ ((d.top_le_gtChart_iff v x j).1 hj 1)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n3` using `d.u.fr_ne _ _ ((d.top_le_gtChart_iff v x j).1 hj 3)`. Rewrite using `[d.chi_val v x j hj, frameProd, Fin.prod_univ_four, h01, h23]`. Simplify using `[hv, Out.DegPre.gtε] at n1 n3 ⊢`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem isTorusPt_ex₀ {v : d.A.V} (hv : v.2 = 0) : IsTorusPt (d.ex₀ v) fun x => eTwoPi (v.1 (d.eX.symm x)) := by
   refine ⟨by rw [d.ex₀_b, hv, d.ex_zero], fun x j hc hj => ?_⟩
@@ -227,26 +225,26 @@ theorem isTorusPt_ex₀ {v : d.A.V} (hv : v.2 = 0) : IsTorusPt (d.ex₀ v) fun x
   field_simp
 
 /- English proof (translation)
-The claim follows from `d.isTorusPt_ex₀ (v := w • d.A.N la) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem shift (w : ℂ) (la : d.A.La) :
     IsTorusPt (d.ex₀ (w • d.A.N la)) fun x => eTwoPi (w * d.A.be la.y (d.eX.symm x)) :=
   d.isTorusPt_ex₀ (v := w • d.A.N la) (by simp)
 
 /- English proof (translation)
-The claim follows from `(d.ker 0).2 ⟨0, rfl, (map_zero _).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem isZero_ex₀_zero : (d.ex₀ 0).IsZero := (d.ker 0).2 ⟨0, rfl, (map_zero _).symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => d.ex₀ ((i : ℕ) • v), by simpa using d.isZero_ex₀_zero, fun i => by simpa [succ_nsmul] using d.add ((i : ℕ) • v) v, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isNsmul_ex₀ (k : ℕ) (v : d.A.V) : Out.GtPtF.IsNsmul k (d.ex₀ v) (d.ex₀ (k • v)) :=
   ⟨fun i => d.ex₀ ((i : ℕ) • v), by simpa using d.isZero_ex₀_zero,
     fun i => by simpa [succ_nsmul] using d.add ((i : ℕ) • v) v, rfl⟩
 
 /- English proof (translation)
-Set `` to `TorusExt.gtGroup D₀ ℂ`. Establish `h` using `(TorusExt.isAdd_iff_eq _ _ _).1 (d.add (v - v') v')`. Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[← d.ker, TorusExt.isZero_iff_eq, h, add_eq_right]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ex₀_eq_iff (v v' : d.A.V) : d.ex₀ v = d.ex₀ v' ↔ ∃ la : d.A.La, la.y = 0 ∧ v - v' = d.A.P0 la := by
   let := TorusExt.gtGroup D₀ ℂ
@@ -272,11 +270,11 @@ Both sides reduce to the same expression.
 @[simp] theorem qk_g (k : ℕ) [NeZero k] (la : d.A.La) : (d.qk k la).g = d.ex₀ ((k : ℂ)⁻¹ • d.A.P0 la) := rfl
 
 /- English proof (translation)
-Set `` to `TorusExt.gtGroup D₀ ℂ`. Introduce `q`. Take `⟨v, hv⟩` from `d.onto q.g`. Take `⟨y, hy⟩` from `d.eX.surjective q.y`. Take `⟨h, h₁, h₂⟩` from `q.eq`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e1 : d.ex₀ (k • v) = h`. Rewrite using `[(TorusExt.isNsmul_iff_eq _ _ _).1 h₁, (TorusExt.isNsmul_iff_eq _ _ _).1 (d.isNsmul_ex₀ k v), hv]`. Establish `e2 : h = d.ex₀ (d.A.P0 (AnArc.La.mk y 0 0))` using `TorusExt.isIota_unique h₂ (hy ▸ d.iota (AnArc.La.mk y 0 0))`. Take `⟨la, hla, e⟩` from `(d.ex₀_eq_iff _ _).1 (e1.trans e2)`. Use `⟨la + AnArc.La.mk y 0 0, TorusExt.qk_ext (by simp [hla, hy]) ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[qk_g, map_add, ← e, sub_add_cancel, ← Nat.cast_smul_eq_nsmul ℂ, inv_smul_smul₀ (Nat.cast_ne_zero.2 (NeZero.ne k)), hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qk_surjective (k : ℕ) [NeZero k] : Function.Surjective (d.qk k) := by
   let := TorusExt.gtGroup D₀ ℂ
@@ -294,7 +292,7 @@ theorem qk_surjective (k : ℕ) [NeZero k] : Function.Surjective (d.qk k) := by
     inv_smul_smul₀ (Nat.cast_ne_zero.2 (NeZero.ne k)), hv]
 
 /- English proof (translation)
-Use `⟨d.eX la'.y, by simp, _, d.iota la', ?_⟩` and prove the remaining obligations. Rewrite using `[qk_g, qk_g, map_add, map_nsmul, smul_add, ← Nat.cast_smul_eq_nsmul ℂ, inv_smul_smul₀ (Nat.cast_ne_zero.2 (NeZero.ne k))]`. Conclude with `d.add _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qk_equiv_add (k : ℕ) [NeZero k] (la la' : d.A.La) :
     Out.QkPt.Equiv D₀ ℂ (d.qk k la) (d.qk k (la + k • la')) := by
@@ -304,13 +302,13 @@ theorem qk_equiv_add (k : ℕ) [NeZero k] (la la' : d.A.La) :
   exact d.add _ _
 
 /- English proof (translation)
-Use `⟨fun ⟨z, hz, h, h₁, h₂⟩ => ?_, fun ⟨m, hm⟩ => hm ▸ d.qk_equiv_add k la m⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `d.eX.surjective z`. Take `rfl : h = d.ex₀ (d.A.P0 (AnArc.La.mk y 0 0))` from `TorusExt.isIota_unique h₁ (d.iota (AnArc.La.mk y 0 0))`. Take `⟨n, hn, e⟩` from `(d.ex₀_eq_iff _ _).1 (TorusExt.isAdd_unique h₂ (d.add _ _))`. Establish `hk : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne k)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy : la'.y = la.y + k • y` using `d.eX.injective (by simpa using hz)`. Establish `e' : d.A.P0 (la' - (la + k • (AnArc.La.mk y 0 0 + n))) = 0`. Rewrite using `[map_sub, map_add, map_nsmul, map_add, ← e, ← Nat.cast_smul_eq_nsmul ℂ]`. Simplify using `only [smul_add, smul_sub, smul_inv_smul₀ hk]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Use `⟨AnArc.La.mk y 0 0 + n, sub_eq_zero.1 ?_⟩` and prove the remaining obligations. Establish `hy' : (la' - (la + k • (AnArc.La.mk y 0 0 + n))).y = 0` using `by simp [hy, hn]`. Generalize the expression as in `la' - (la + k • (AnArc.La.mk y 0 0 + n)) = m at e' hy'`. Establish `hl : m.l = 0` using `Subtype.ext (by simpa [hy'] using congrArg Prod.snd e')`. Use `AnArc.La.ext hy' (AddMonoidHom.ext fun x => ?_) hl` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `congrArg (fun v : d.A.V => v.1 x) e'` using `[hy', hl]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem qk_equiv_iff (k : ℕ) [NeZero k] (la la' : d.A.La) :
     Out.QkPt.Equiv D₀ ℂ (d.qk k la) (d.qk k la') ↔ ∃ m, la' = la + k • m := by
@@ -332,14 +330,14 @@ theorem qk_equiv_iff (k : ℕ) [NeZero k] (la la' : d.A.La) :
   simpa [hy', hl] using congrArg (fun v : d.A.V => v.1 x) e'
 
 /- English proof (translation)
-The claim follows from `d.isAH.2.2.2 ⟨l, d.lam_eq.ge l.2⟩ i z h`.
+A detailed English derivation is pending.
 -/
 theorem fr_eq_ah_mul (l : d.A.abelian₂) (i : D₀.P.L.ι) (z : Fin d.A.gB → ℂ) (h : ⊤ ≤ (d.u.ex z).left ⁻¹ᵁ D₀.P.L.U i) :
     d.u.fr i z = d.A.ah l z * d.u.fr i (z + l) :=
   d.isAH.2.2.2 ⟨l, d.lam_eq.ge l.2⟩ i z h
 
 /- English proof (translation)
-Rewrite using `[d.u.ex_add, (d.u.ker l).2 (d.lam_eq.ge l.2), _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_add_lam (z : Fin d.A.gB → ℂ) (l : d.A.abelian₂) : d.u.ex (z + l) = d.u.ex z := by
   rw [d.u.ex_add, (d.u.ker l).2 (d.lam_eq.ge l.2), _root_.mul_one]
@@ -349,9 +347,9 @@ def fn₁ (th : D₀.P.L.Sec) (z : Fin d.A.gB → ℂ) : ℂ :=
     d.u.fr (exists_chart_complexPoint D₀.P.isLB (d.u.ex z).left).choose z
 
 /- English proof (translation)
-Introduce `i z hi`. Establish `hj` using `(exists_chart_complexPoint D₀.P.isLB (d.u.ex z).left).choose_spec`. Rewrite using `[fn₁]`. Generalize the expression as in `(exists_chart_complexPoint D₀.P.isLB (d.u.ex z).left).choose = j at hj`. Establish `hij` using `(top_le_preimage_inf (d.u.ex z).left _ _).2 ⟨hi, hj⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `h` using `congrArg (valAt' (d.u.ex z).left _) (th.compat i j)`. Rewrite `h` using `[valAt'_mul, valAt'_map _ _ _ hij, valAt'_map _ _ _ hij]`. Use `d.u.fr_ne j z hj` as an intermediate fact. Rewrite using `[h, d.u.fr_compat i j z hij]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem isFn_fn₁ (th : D₀.P.L.Sec) : d.u.IsFn th (d.fn₁ th) := by
   intro i z hi
@@ -366,7 +364,7 @@ theorem isFn_fn₁ (th : D₀.P.L.Sec) : d.u.IsFn th (d.fn₁ th) := by
   field_simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Take `⟨i, hi⟩` from `exists_chart_complexPoint D₀.P.isLB (d.u.ex z).left`. Conclude with `mul_right_cancel₀ (d.u.fr_ne i z hi) ((h i z hi).symm.trans (d.isFn_fn₁ th i z hi))`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_fn₁ {th : D₀.P.L.Sec} {θ : (Fin d.A.gB → ℂ) → ℂ} (h : d.u.IsFn th θ) : θ = d.fn₁ th := by
   funext z
@@ -374,11 +372,11 @@ theorem eq_fn₁ {th : D₀.P.L.Sec} {θ : (Fin d.A.gB → ℂ) → ℂ} (h : d.
   exact mul_right_cancel₀ (d.u.fr_ne i z hi) ((h i z hi).symm.trans (d.isFn_fn₁ th i z hi))
 
 /- English proof (translation)
-Use `⟨fun z => ?_, fun l z => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart_complexPoint D₀.P.isLB (d.u.ex z).left`. Take `⟨ho, hd⟩` from `d.u.hol _ (th.f i)`. Use `DifferentiableOn.differentiableAt ((hd.mul ((d.u.fr_hol i).inv (d.u.fr_ne i))).congr fun z' hz' => ?_) (ho.mem_nhds hi)` and prove the remaining obligations. Conclude with `eq_div_of_mul_eq (d.u.fr_ne i z' hz') (d.isFn_fn₁ th i z' hz').symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `exists_chart_complexPoint D₀.P.isLB (d.u.ex z).left`. Establish `hi' : ⊤ ≤ (d.u.ex (z + l)).left ⁻¹ᵁ D₀.P.L.U i` using `by rwa [d.ex_add_lam]`. Establish `h1` using `d.isFn_fn₁ th i _ hi'`. Rewrite `h1` using `[d.ex_add_lam, d.isFn_fn₁ th i z hi, d.fr_eq_ah_mul l i z hi]`. Use `mul_right_cancel₀ (d.u.fr_ne i _ hi') ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Simplify using `only [map_zero, AnArc.H_zero_left, mul_zero, Complex.exp_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fn₁_mem (th : D₀.P.L.Sec) : d.fn₁ th ∈ d.A.Theta 1 0 := by
   refine ⟨fun z => ?_, fun l z => ?_⟩
@@ -397,9 +395,9 @@ theorem fn₁_mem (th : D₀.P.L.Sec) : d.fn₁ th ∈ d.A.Theta 1 0 := by
     ring
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `h`. Introduce `h0`. Use `D₀.P.isAb.smooth` as an intermediate fact. Use `isReduced_of_smooth_complex _ D₀.P.A.hom inferInstance` as an intermediate fact. Use `hj (ComplexPoints.eq_of_valAt'_eq D₀.P.A.hom _ _ _ fun x hp hx => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz⟩` from `d.u.ex_onto (Over.homMk x hp)`. Take `rfl : (d.u.ex z).left = x` from `congrArg (·.left) hz`. Rewrite using `[d.isFn_fn₁ th j z hx, h0, valAt'_zero, Pi.zero_apply, zero_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem fn₁_ne_zero {th : D₀.P.L.Sec} (h : ∃ j, th.f j ≠ 0) : d.fn₁ th ≠ 0 := by
   obtain ⟨j, hj⟩ := h
@@ -412,7 +410,7 @@ theorem fn₁_ne_zero {th : D₀.P.L.Sec} (h : ∃ j, th.f j ≠ 0) : d.fn₁ th
   rw [d.isFn_fn₁ th j z hx, h0, valAt'_zero, Pi.zero_apply, zero_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Use `choose i hi using fun k : Fin 4 => exists_chart_complexPoint D₀.P.isLB (d.u.ex (![z, z + d.A.ct α, d.A.ct α, 0] k)).left`. Establish `hi'` using `(d.top_le_famChart_iff z α i).2 hi`. Conclude with `mul_right_cancel₀ (frameProd_ne_zero d.u _ hi) ((h z i hi').symm.trans (h' z i hi'))`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsFamFn.unique {j : ℕ} {α : d.A.X} {s : D₀.SecB j (d.eX α)} {θ θ' : (Fin d.A.gB → ℂ) → ℂ}
     (h : d.IsFamFn j α s θ) (h' : d.IsFamFn j α s θ') : θ = θ' := by
@@ -425,7 +423,7 @@ theorem IsFamFn.unique {j : ℕ} {α : d.A.X} {s : D₀.SecB j (d.eX α)} {θ θ
 variable {d}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (IsFamFn.unique d (σ.fn_val j α s'') fun z i hi => by refine (congrArg _ (h i)).trans ((valAt'_add _ _ _ _).trans ?_) rw [σ.fn_val j α s z i hi, σ.fn_val j α s' z i hi, ← add_mul]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem SecFn.fn_add (σ : d.SecFn) {j : ℕ} [NeZero j] {α : d.A.X} {s s' s'' : D₀.SecB j (d.eX α)}
     (h : ∀ i, s''.f i = s.f i + s'.f i) : σ.fn j α s'' = σ.fn j α s + σ.fn j α s' :=
@@ -434,7 +432,7 @@ theorem SecFn.fn_add (σ : d.SecFn) {j : ℕ} [NeZero j] {α : d.A.X} {s s' s'' 
     rw [σ.fn_val j α s z i hi, σ.fn_val j α s' z i hi, ← add_mul]; rfl)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (IsFamFn.unique d (σ.fn_val j α s') fun z i hi => by refine (congrArg _ (h i)).trans ((valAt'_mul _ _ _ _).trans ?_) rw [σ.fn_val j α s z i hi] exact (congrArg (· * _) (valAt'_constFn _ _ (Over.w (d.u.ex z)) _ _ hi)).trans (mul_assoc _ _ _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem SecFn.fn_smul (σ : d.SecFn) {j : ℕ} [NeZero j] {α : d.A.X} {s s' : D₀.SecB j (d.eX α)} (a : ℂ)
     (h : ∀ i, s'.f i = constFn D₀.P.A.hom _ a * s.f i) : σ.fn j α s' = a • σ.fn j α s :=
@@ -452,7 +450,7 @@ namespace ToricDict
 open ToricData Out.Inh Out.InhTate
 
 /- English proof (translation)
-The claim follows from `(valAt'_res (𝟙 (Sp ℂ)) le_top _ h).trans (valAt'_id_top _)`.
+A detailed English derivation is pending.
 -/
 theorem valAt'_gv_unitOn (t : ℂˣ) {W : (Sp ℂ).Opens} (h : ⊤ ≤ W) : valAt' (𝟙 (Sp ℂ)) W (gv (unitOn t) W).val = t :=
   (valAt'_res (𝟙 (Sp ℂ)) le_top _ h).trans (valAt'_id_top _)
@@ -468,9 +466,9 @@ Both sides reduce to the same expression.
     (expChar l (Multiplicative.ofAdd x) : ℂ) = eTwoPi (l x) := rfl
 
 /- English proof (translation)
-Introduce `t`. Set `f : ℂ →ₗ[ℤ] Additive ℂˣ` to `(AddMonoidHom.toMultiplicativeLeft.symm (expChar (AddMonoidHom.id ℂ))).toIntLinearMap`. Establish `hf : Function.Surjective f` using `fun a => ⟨Complex.log (Additive.toMul a : ℂˣ) / (2 * Real.pi * Complex.I), by`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `eTwoPi (Complex.log (Additive.toMul a : ℂˣ) / (2 * Real.pi * Complex.I)) = (Additive.toMul a : ℂˣ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[eTwoPi, mul_div_cancel₀ _ Complex.two_pi_I_ne_zero, Complex.exp_log (Units.ne_zero _)]⟩`. Take `⟨l, hl⟩` from `Module.projective_lifting_property f (AddMonoidHom.toMultiplicativeLeft.symm t).toIntLinearMap hf`. Conclude with `⟨l.toAddMonoidHom, MonoidHom.ext fun x => LinearMap.congr_fun hl x.toAdd⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem expChar_surjective {X : Type} [AddCommGroup X] [Module.Free ℤ X] :
     Function.Surjective (expChar (X := X)) := by
@@ -484,11 +482,11 @@ theorem expChar_surjective {X : Type} [AddCommGroup X] [Module.Free ℤ X] :
   exact ⟨l.toAddMonoidHom, MonoidHom.ext fun x => LinearMap.congr_fun hl x.toAdd⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: ∀ x, ∃ n : ℤ, l x = n` using `fun x => by`. Establish `h1 : eTwoPi (l x) = 1` using `congrArg Units.val (DFunLike.congr_fun h (Multiplicative.ofAdd x))`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.1 h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, mul_left_cancel₀ Complex.two_pi_I_ne_zero (hn.trans (mul_comm _ _))⟩`. Use `choose n hn using this`. Use `⟨AddMonoidHom.mk' n fun a b => ?_, hn⟩` and prove the remaining obligations. Conclude with `(hn (a + b)).symm.trans ((map_add l a b).trans (congrArg₂ (· + ·) (hn a) (hn b)))` after adjusting the coercions. Introduce and unpack `⟨n, hn⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MonoidHom.ext fun x => Units.ext (by`. Express the relevant statement in the definitionally equal form `eTwoPi (l x.toAdd) = 1`. Rewrite using `[hn, AnArc.e_intCast])`.
+A detailed English derivation is pending.
 -/
 theorem expChar_eq_one_iff {X : Type} [AddCommGroup X] (l : X →+ ℂ) :
     expChar l = 1 ↔ ∃ n : X →+ ℤ, ∀ x, l x = n x := by
@@ -523,13 +521,13 @@ def zeroUnif : HolUnif (zeroPolAV (Sp ℂ)).A (zeroPolAV (Sp ℂ)).L A.gB where
   fr_compat _ _ _ h := ((_root_.mul_one _).trans (valAt'_one _ h)).symm
 
 /- English proof (translation)
-The claim follows from `Finset.prod_eq_one fun _ _ => one_zpow _`.
+A detailed English derivation is pending.
 -/
 theorem frameProd_zeroUnif {K : Type} [Fintype K] (j z) (ε : K → ℤ) : frameProd (zeroUnif A) j z ε = 1 :=
   Finset.prod_eq_one fun _ _ => one_zpow _
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Subsingleton.elim _ _)`.
+A detailed English derivation is pending.
 -/
 theorem lam_eq_zero (l : A.abelian₂) : l = 0 := Subtype.ext (Subsingleton.elim _ _)
 
@@ -581,7 +579,7 @@ def dict : GtDict (toricPre ℂ A.X q) (toricOAct q O h) where
 omit [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [show θ = fun _ => θ 0 from funext fun z => congrArg θ (Subsingleton.elim _ _)] exact differentiable_const _, fun l z => by simp [lam_eq_zero A l, AnArc.ah]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_Theta (j : ℕ) (α : A.X) (θ : (Fin A.gB → ℂ) → ℂ) : θ ∈ A.Theta j α :=
   ⟨by
@@ -614,7 +612,7 @@ def psiFrac (x : A.X) : (FractionRing ℂ)ˣ := Units.map (algebraMap ℂ (Fract
 omit [IsEmpty (Fin A.gB)] in
 
 /- English proof (translation)
-The claim follows from `(IsScalarTower.algebraMap_apply ℂ (FractionRing ℂ) ℂ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_psiFrac (x : A.X) : algebraMap (FractionRing ℂ) ℂ (psiFrac A x) = A.psi x :=
   (IsScalarTower.algebraMap_apply ℂ (FractionRing ℂ) ℂ _).symm
@@ -623,9 +621,9 @@ omit [IsEmpty (Fin A.gB)] [IsScalarTower ℂ (FractionRing ℂ) ℂ] in
 include hq in
 
 /- English proof (translation)
-Establish `key : ∀ y z, algebraMap (FractionRing ℂ) ℂ (polar q y z) = eTwoPi (A.T y z)` using `fun y z => by`. Establish `h1` using `(A.psi y).ne_zero`. Establish `h2` using `(A.psi z).ne_zero`. Simplify using `[polar, hq, A.psi_add]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `Units.ext ((algebraMap (FractionRing ℂ) ℂ).injective (by rw [key, key, A.T_adj]))`.
+A detailed English derivation is pending.
 -/
 theorem polar_bal (a : O) (y z : A.X) : polar q (a • y) z = polar q y (star a • z) := by
   have key : ∀ y z, algebraMap (FractionRing ℂ) ℂ (polar q y z) = eTwoPi (A.T y z) := fun y z => by
@@ -642,12 +640,12 @@ def tate (τ₀ : ℂ) : GtDict (toricPre ℂ (AnArc.tate τ₀).X (psiFrac (AnA
   dict _ _ (algebraMap_psiFrac _) _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨secFn _ _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 example (τ₀ : ℂ) : Nonempty (tate τ₀).SecFn := ⟨secFn _ _ _ _⟩
 
 /- English proof (translation)
-Introduce `h`. Take `⟨n, hn⟩` from `(expChar_eq_one_iff _).1 ((isZero_pt _ ℂ _).1 h)`. Establish `h1 : (2 : ℂ)⁻¹ * ((1 : ℤ) : ℂ) = n (1 : ℤ)` using `hn (1 : ℤ)`. Establish `h2 : ((2 * n (1 : ℤ) : ℤ) : ℂ) = (1 : ℤ)` using `by push_cast at h1 ⊢; rw [← h1]; norm_num`. Establish `h3` using `Int.cast_injective h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/

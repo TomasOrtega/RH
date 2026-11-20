@@ -14,17 +14,15 @@ namespace PositivityTheory.AdelicQuotientData
 namespace BlockMirrorMap
 
 /- English proof (translation)
-Introduce `p q hpq` and use `h p q (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blk_mono {R : Type} [CommRing R] {a i j : ℕ} (hij : i ≤ j) {c : GL (Fin a) R} (h : GlobalTheory i c) : GlobalTheory j c :=
   fun p q hpq => h p q (by omega)
 
 /- English proof (translation)
-Introduce `p q hpq`. Rewrite using `[Units.val_mul]`. Break down `hpq with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun s _ => by rw [hc p s (Or.inl h)]`. Use `_ = _ := by rw [Matrix.one_mul]; exact hc' p q (Or.inl h)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun s _ => by rw [hc' s q (Or.inr h)]`.
-
-Use `_ = _ := by rw [Matrix.mul_one]; exact hc p q (Or.inr h)`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blk_mul {R : Type} [CommRing R] {a j : ℕ} {c c' : GL (Fin a) R} (hc : GlobalTheory j c) (hc' : GlobalTheory j c') :
     GlobalTheory j (c * c') := by
@@ -41,7 +39,7 @@ theorem blk_mul {R : Type} [CommRing R] {a j : ℕ} {c c' : GL (Fin a) R} (hc : 
       _ = _ := by rw [Matrix.mul_one]; exact hc p q (Or.inr h)
 
 /- English proof (translation)
-Introduce `p q hpq`. Use `show f (g.val p q) = _`. Rewrite using `[h p q hpq, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mir_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {a m : ℕ} {g : GL (Fin a) R}
     (h : Mir m g) : Mir m (GeneralLinearGroup.map f g) := by
@@ -51,9 +49,9 @@ theorem mir_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {a m :
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `U hU`. Take `⟨V, hV, hVU⟩` from `exists_nhds_one_split hU`. Take `⟨x, C, hCV, hQ, hbC, hB⟩` from `h V hV`. Take `⟨x', C₀, hC₀V, hQ', hb₀, hB'⟩` from `hs V hV x C hQ hB`. Use `⟨x', Set.image2 (· * ·) C C₀, ?_, hQ', ?_, hB'⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Conclude with `hVU a (hCV ha) b (hC₀V hb)`. Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Conclude with `hbl a b (hbC a ha) (hi b (hb₀ b hb))`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem grow {G X : Type} [TopologicalSpace G] [MulOneClass G] [ContinuousMul G] {Q : X → Prop}
     {bl bi : G → Prop} {B B' : Set G → X → Prop}
@@ -75,41 +73,39 @@ theorem grow {G X : Type} [TopologicalSpace G] [MulOneClass G] [ContinuousMul G]
 end BlockMirrorMap
 
 /- English proof (translation)
-Introduce `hS10 hG0 h4a h4b E _ _ _ k wt ρ J hW ψ hψ S Y hY j hj U hU x hxY hxS hxL h1`. Establish `ins1 : InS S (1 : GA E k)` using `fun v _ => map_one _`. Establish `uu1 : UU 0 (1 : GA E k)` using `⟨fun p q h => by rw [Units.val_one, Matrix.one_apply_ne (ne_of_lt h).symm], fun p => by simp, fun p q _ => rfl⟩`. Establish `ps1 : psN ψ (1 : GA E k) = 1`. Establish `e : (∑ p : Fin k × Fin k with (p.2 : ℕ) = p.1 + 1, (1 : GA E k).val p.1 p.2) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_filter]`. Rewrite using `[Units.val_one, Matrix.one_apply_ne]`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hp` using `[h]`. Use linear arithmetic over natural numbers and integers. Unfold `psN`. Rewrite using `[e, AddChar.map_zero_eq_one]`. Establish `om0 : ∀ g : GA E k, Om 0 0 g → g = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g hg`. Apply `(hG0 E k).2.2.2.2.2.1` to reduce the goal to its premises. Rewrite using `[(hS10 _ k 0).2.1 _ hg.1, map_one]`. Introduce `v`. Rewrite using `[(hS10 _ k 0).2.1 _ (hg.2 v), map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `start : Bump ψ S (Om 0 0) {1} (Wh ψ (J x))`. Use `⟨isCompact_singleton, ?_, ⟨1, one_pos, by rw [h1]; simp⟩, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Rewrite using `[Set.mem_singleton_iff.mp hc]`. Conclude with `ins1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg _`. Take `rfl` from `om0 g hg`. Conclude with `⟨1, 1, rfl, 1, uu1, ins1, (mul_one 1).symm, zero_le_one, by rw [h1, ps1]; simp⟩`. Set `P : ℕ → (Pl E → ℕ) → Prop` to `fun n m => ∀ V ∈ 𝓝 (1 : GA E k), ∃ x' C, C ⊆ V ∧ (J x' ∈ Y ∧ SmV (ρ.comp (infGL E k)) x' ∧ Lev S (J x')) ∧ (∀ c ∈ C, GlobalTheory j c) ∧ Bump ψ S (Om n m) C (Wh ψ (J x'))`. Establish `p0 : P 0 0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `V hV`. Conclude with `⟨x, {1}, Set.singleton_subset_iff.mpr (mem_of_mem_nhds hV), ⟨hxY, hxS, hxL⟩, fun c hc => by rw [Set.mem_singleton_iff.mp hc]; exact (hS10 _ k j).2.2.2.1, start⟩`. Establish `stepInf : ∀ n, n ≤ j → P n 0`. Introduce `n`. Proceed by induction on `n with`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => intro _`. Conclude with `p0`. Consider the case `succ n ih`. Introduce `hn`. Use `BlockMirrorMap.grow (fun a b ha hb => BlockMirrorMap.blk_mul ha hb) (fun c hc => BlockMirrorMap.blk_mono hn hc) (ih (by omega)) ?_` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `V hV x C hQ hB`. Take `⟨x', C₀, a, b, c, d, e, f⟩` from `h4a E k wt ρ J hW ψ hψ S Y hY n 0 (by omega) (fun _ _ => rfl) V hV x C hQ.1 hQ.2.1 hQ.2.2 hB`. Conclude with `⟨x', C₀, a, ⟨b, c, d⟩, e, f⟩`. Establish `stepFin : ∀ (v : Pl E), v ∈ S → ∀ m : Pl E → ℕ, m v = 0 → (∀ u, u ∉ S → m u = 0) → P j m → ∀ i, i ≤ j → P j (Function.update m v i)`. Introduce `v hv m hmv hm hP i`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `i with`. Consider the case `zero => intro _`. Rewrite using `[Function.update_eq_self_iff.mpr hmv.symm]`. Conclude with `hP`. Consider the case `succ i ih`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hi`. Establish `supp : ∀ u, u ∉ S → Function.update m v i u = 0`. Introduce `u hu`. Establish `hne : u ≠ v` using `fun h => hu (h ▸ hv)`. Rewrite using `[Function.update_of_ne hne]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hm u hu`. Use `BlockMirrorMap.grow (bi := fun c => GlobalTheory (Function.update m v i v + 1) c) (fun a b ha hb => BlockMirrorMap.blk_mul ha hb) (fun c hc => BlockMirrorMap.blk_mono (by simp; omega) hc) (ih (by omega)) ?_` and prove the remaining obligations. Introduce `V hV x C hQ hB`. Take `⟨x', C₀, a, b, c, d, e, f⟩` from `h4b E k wt ρ J hW ψ hψ S Y hY j (Function.update m v i) v hv (by simp; omega) supp V hV x C hQ.1 hQ.2.1 hQ.2.2 hB`. Simplify using `only [Function.update_self, Function.update_idem] at f`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨x', C₀, a, ⟨b, c, d⟩, e, f⟩`. Establish `key : ∀ T : Finset (Pl E), T ⊆ S → P j (fun w => if w ∈ T then j else 0)`. Introduce `T`. Use `Finset.induction_on T ?_ ?_` and prove the remaining obligations. Introduce `_`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun w : Pl E => if w ∈ (∅ : Finset (Pl E)) then j else 0) = 0`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `stepInf j le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Introduce `v T hv ih hT`. Establish `h` using `stepFin v (hT (Finset.mem_insert_self v T)) (fun w => if w ∈ T then j else 0) (by simp [hv]) (fun u hu => by simp [show u ∉ T from fun h => hu (hT (Finset.mem_insert_of_mem h))]) (ih (subset_trans (Finset.subset_insert v T) hT)) j le_rfl`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = v`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hw` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hw]`. Take `⟨x', C, hCU, ⟨hY', hS', hL'⟩, hbl, hB⟩` from `key S subset_rfl U hU`. Use `⟨x', C, hCU, hY', hS', hL', hbl, hB.1, hB.2.1, hB.2.2.1, fun g hg hW0 => hB.2.2.2 g ?_ hW0⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨BlockMirrorMap.mir_map _ hg.2, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`. Simplify using `only [hv, if_true]`. Conclude with `BlockMirrorMap.mir_map _ hg.2`. Simplify using `only [hv, if_false]`.
-
-Rewrite using `[hg.1 v hv]`. Conclude with `(hS10 _ k 0).2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem kept_block_at_of_pair_level_chain_threshold : jumpWindows.MirabolicColumnBlock → jumpWindows.G0 → InfinitePlaceStep → FinitePlaceStep → K4 := by
   classical

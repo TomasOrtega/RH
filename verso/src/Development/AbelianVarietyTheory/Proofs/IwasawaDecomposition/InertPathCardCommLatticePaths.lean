@@ -6,13 +6,13 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_eq_finsetCard]`. Use `Nat.card_congr { toFun := fun e => ⟨e.1.1.N, e.1.2.lat, e.1.2.uni, ?_, ?_⟩ invFun := fun Y => ⟨⟨{ N := Y.1, f := d.1.f, be := d.1.be }, d.2.replN Y.2.1 Y.2.2.1 (fun R => hi_sameAt_inert (hST R) Y.2.2.2.1) (fun w => hi_sameAt_inert (hSG w) Y.2.2.2.1)⟩, ?_⟩ left_inv := ?_ right_inv …` and prove the remaining obligations. Establish `h` using `(Finset.mem_filter.1 e.2).1`. Rewrite `h` using `[DecoSet.mem_inertNb P.ne_bot]`. Conclude with `h.1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `(Finset.mem_filter.1 e.2).2`. Rewrite `h` using `[DecoSet.mem_inertNb P.ne_bot]`. Conclude with `h.1`. Use `Finset.mem_filter.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[DecoSet.mem_inertNb P.ne_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Y.2.2.2.1, rfl, rfl⟩`. Rewrite using `[DecoSet.mem_inertNb P.ne_bot]`. Conclude with `⟨Y.2.2.2.2, hf, hbe⟩`. Introduce `e`. Establish `h` using `Finset.mem_filter.1 e.2`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[DecoSet.mem_inertNb P.ne_bot, DecoSet.mem_inertNb P.ne_bot]`. Conclude with `Subtype.ext (Subtype.ext (Deco.ext rfl h.1.2.1.symm h.1.2.2.symm))`. Introduce `Y`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inertPath_card_eq_natCard {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
     (P : HeightOneSpectrum (𝓞 E)) {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
@@ -48,7 +48,7 @@ theorem inertPath_card_eq_natCard {E : Type} [Field E] [NumberField E] [StarRing
     rfl
 
 /- English proof (translation)
-Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce `e he hfe`. Rewrite `he`, `hfe` using `[DecoSet.mem_inertNb P.ne_bot]`. Conclude with `h ⟨hfe.2.1.trans he.2.1, hfe.2.2.trans he.2.2⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inertPath_card_eq_zero {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
     (P : HeightOneSpectrum (𝓞 E)) {ST SG : Finset (HeightOneSpectrum (𝓞 E))} (s t : List ℕ)
@@ -60,7 +60,7 @@ theorem inertPath_card_eq_zero {E : Type} [Field E] [NumberField E] [StarRing E]
   exact h ⟨hfe.2.1.trans he.2.1, hfe.2.2.trans he.2.2⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ n P ST SG hST hSG s t d f ⟨φ⟩`. Distinguish the cases in `hdec : f.1.f = d.1.f ∧ f.1.be = d.1.be`. Rewrite using `[inertPath_card_eq_natCard P hST hSG s t d f hdec.1 hdec.2, inertPath_card_eq_natCard P hST hSG t s d f hdec.1 hdec.2]`. Conclude with `Nat.card_congr φ`. Rewrite using `[inertPath_card_eq_zero P s t d f hdec, inertPath_card_eq_zero P t s d f hdec]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inertPath_card_comm : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E))
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}, (∀ R : ST, R.1 ≠ P) → (∀ w : SG, w.1 ≠ P) →

@@ -19,13 +19,13 @@ def mkUP (X Y : MP p) (hX : IsLoUni X) (hY : IsUpUni Y) : UP p :=
       MulOpposite.op (uUpU Y (fun a b h => (hY a b).1 h) (fun a => (hY a a).2 rfl))), hX, hY⟩
 
 /- English proof (translation)
-Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, rfl⟩`. Proceed by induction on `X using Quotient.inductionOn with`. Consider the case `h x`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Take `⟨hxN, k, hk, hxk⟩` from `x.2`. Use `⟨pairOfU a πa hker x.1 (MonoidHom.mem_ker.1 hxN), rfl, ?_⟩` and prove the remaining obligations. Use `⟨(((k : GG p).1 : GLp p)).val, (((k : GG p).2.unop : GLp p)).val, hk.1, hk.2, ?_⟩` and prove the remaining obligations. Conclude with `hxk`. Introduce and unpack `⟨pr, rfl, l, ρ, hl, hρ, he⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hv : IsLoUni pr.1.1` using `fun i j => ⟨pr.2.1.2.1 i j, fun h => h ▸ pr.2.1.1 i⟩`. Establish `hu : IsUpUni pr.1.2` using `fun i j => ⟨pr.2.2.2 i j, fun h => h ▸ pr.2.2.1 i⟩`. Use `set x := mkUP pr.1.1 pr.1.2 hv hu with hxdef`. Establish `hxN : πa x = 1` using `(hker x).2 ⟨hv, fun i j hij hb => pr.2.1.2.2 i j hij hb⟩`. Use `set k := mkUP l ρ (Formalism.L2.SG.Pf.ProdEP2Cut.loUni_of_int M hl) (Formalism.L2.SG.Pf.ProdEP2Cut.upUni_of_int M hρ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hk : k ∈ KU M p` using `⟨hl, hρ⟩`. Use `⟨Quotient.mk _ ⟨x, MonoidHom.mem_ker.2 hxN, k, hk, he⟩, ?_⟩` and prove the remaining obligations. Use `show Quotient.mk _ (pairOfU a πa hker x hxN) = _`. Use `congr 1`.
+A detailed English derivation is pending.
 -/
 theorem fC_range : Set.range (fC M a πa hker g) =
     {c | ∃ pr : Formalism.L2.SG.Pf.Coef.CellPair a, Quotient.mk _ pr = c ∧
@@ -52,7 +52,7 @@ theorem fC_range : Set.range (fC M a πa hker g) =
 
 include hker in
 /- English proof (translation)
-Rewrite using `[← fC_range M a πa hker g, Set.ncard_range_of_injective (fC_inj M a πa hker g)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_cellRel : Nat.card (Quotient (CountAb.cellRel (a.mat) πa.ker (KU M p) g)) =
     {c : Quotient (Formalism.L2.SG.Pf.Coef.cellSetoid (M p) a) | ∃ pr : Formalism.L2.SG.Pf.Coef.CellPair a,

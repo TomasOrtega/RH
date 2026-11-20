@@ -9,13 +9,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 namespace GlobalTheory.CompanionTheory.Principalise
 
 /- English proof (translation)
-Take `⟨σ, hσdef⟩ : ∃ σ : V ⟶ P, σ = inv (a ≫ b) ≫ a` from `⟨_, rfl⟩`. Establish `hσ : σ ≫ b = 𝟙 V` using `by simp [hσdef]`. Establish `haσ : (a ≫ b) ≫ σ = a` using `by simp [hσdef]`. Establish `hid : IsIso (σ ≫ b)` using `by rw [hσ]; infer_instance`. Establish `: IsClosedImmersion (σ ≫ b)` using `by rw [hσ]; infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsClosedImmersion σ` using `IsClosedImmersion.of_comp σ b`. Establish `hr : Set.range a ⊆ Set.range σ`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨(a ≫ b) x, by rw [← Scheme.Hom.comp_apply, haσ]⟩`. Establish `hcl : IsClosed (Set.range σ)` using `σ.isClosedEmbedding.isClosed_range`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `: Surjective σ` using `⟨Set.range_eq_univ.1 (by`. Establish `h` using `(hd.mono hr).closure_eq`. Rewrite using `[hcl.closure_eq] at h)⟩` and apply the resulting hypothesis. Establish `: IsIso σ` using `isIso_of_isClosedImmersion_of_surjective σ`. Establish `hb : IsIso b` using `IsIso.of_isIso_comp_left σ b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨hb, IsIso.of_isIso_comp_right a b⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIso_of_isIso_comp_of_dense_range {A P V : Scheme.{0}} (a : A ⟶ P) (b : P ⟶ V) [IsIso (a ≫ b)]
     [IsSeparated b] [IsReduced P] (hd : Dense (Set.range a)) : IsIso b ∧ IsIso a := by
@@ -37,9 +37,9 @@ theorem isIso_of_isIso_comp_of_dense_range {A P V : Scheme.{0}} (a : A ⟶ P) (b
   exact ⟨hb, IsIso.of_isIso_comp_right a b⟩
 
 /- English proof (translation)
-Use `⟨fun x => ?_⟩` and prove the remaining obligations. Take `⟨U, f, hx, hf, e⟩` from `h x`. Establish `hf0 : f = 0`. Establish `: f ∈ (⊥ : W.IdealSheafData).ideal U` using `e ▸ Ideal.mem_span_singleton_self f`. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: Nonempty U.1` using `⟨⟨x, hx⟩⟩`. Conclude with `nonZeroDivisors.ne_zero hf hf0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isEmpty_of_effCartier_bot {W : Scheme.{0}} (h : FinalTheorems.EffCartier (⊥ : W.IdealSheafData)) : IsEmpty W := by
   refine ⟨fun x => ?_⟩
@@ -51,13 +51,11 @@ theorem isEmpty_of_effCartier_bot {W : Scheme.{0}} (h : FinalTheorems.EffCartier
   exact nonZeroDivisors.ne_zero hf hf0
 
 /- English proof (translation)
-Establish `hZ : Z ≠ ⊥`. Introduce and unpack `rfl`. Establish `h` using `hB.1`. Rewrite `h` using `[Scheme.IdealSheafData.comap_bot]`. Conclude with `(isEmpty_of_effCartier_bot h).false (Nonempty.some inferInstance)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hO` using `GlobalTheory.Principalise.nonempty_compl_support hZ`. Establish `hiso : IsIso (π ∣_ Z.support.compl)` using `GlobalTheory.Principalise.isIso_restrict_of_blowup hB _ fun x hx => hx`. Establish `hdO : Dense (Z.support.compl : Set X₁)` using `Z.support.compl.isOpen.dense hO`. Establish `hdU : Dense (U.ι ⁻¹' (Z.support.compl : Set X₁))` using `hdO.preimage U.ι.isOpenMap`. Use `hdU.mono fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `(π ∣_ Z.support.compl).surjective ⟨x.1, hx⟩`. Establish `hw : π y.1 = x.1`. Use `morphismRestrict_base_coe π Z.support.compl y` as an intermediate fact. Rewrite `this` using `[hy]`. Conclude with `this.symm`.
-
-Use `⟨⟨y.1, show π y.1 ∈ U by rw [hw]; exact x.2⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `(morphismRestrict_base_coe π U ⟨y.1, _⟩).trans hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dense_range_restrict_of_blowup {X₁ X₂ : Scheme.{0}} [IsIntegral X₁] [Nonempty X₂] {π : X₂ ⟶ X₁}
     {Z : X₁.IdealSheafData} (hB : FinalTheorems.Blowup π Z) (U : X₁.Opens) : Dense (Set.range (π ∣_ U)) := by
@@ -81,7 +79,7 @@ theorem dense_range_restrict_of_blowup {X₁ X₂ : Scheme.{0}} [IsIntegral X₁
   exact (morphismRestrict_base_coe π U ⟨y.1, _⟩).trans hw
 
 /- English proof (translation)
-Introduce `X X₁ X₂ s π Z V hX hs hB hne he`. Establish `he' : IsIso (π ∣_ (s ⁻¹ᵁ V) ≫ s ∣_ V)`. Rewrite using `[← morphismRestrict_comp]`. Conclude with `he`. Conclude with `isIso_of_isIso_comp_of_dense_range (π ∣_ (s ⁻¹ᵁ V)) (s ∣_ V) (dense_range_restrict_of_blowup hB _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_restrict_of_isIso_restrict_comp_blowup : ∀ {X X₁ X₂ : Scheme.{0}} (s : X₁ ⟶ X) (π : X₂ ⟶ X₁)
     (Z : X₁.IdealSheafData) (V : X.Opens), IsIntegral X₁ → IsSeparated s → FinalTheorems.Blowup π Z → Nonempty X₂ →

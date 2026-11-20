@@ -19,21 +19,19 @@ namespace GlobalTheory.BlowAmpleNoeth
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.ProjSpace GlobalTheory.ProjBlowup
 
 /- English proof (translation)
-Introduce `R _ _ _ X X' N s J b ν EX hs hb hν hEX L hL`. Take `⟨L₀, m, σ, hL₀, hσ⟩` from `GlobalTheory.T.exists_lineBundle_sections_generate_idealSheaf R X s J hs`. Take `⟨c, hc, hprop, hci⟩` from `GlobalTheory.T.exists_closedImmersion_blowup_generatingSections R X X' s J b L₀ m σ hs hb hσ`. Establish `hψ : Proportional σ (ν ≫ b) (ν ≫ c)` using `hprop.comp ν`. Establish `hiso` using `GlobalTheory.T.pullback_O1_iso_blowup_twist_dual R X N J L₀ m σ (ν ≫ b) (ν ≫ c) EX hL₀ hσ hψ hEX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper s`. Take `⟨n, i, hi, rfl⟩` from `hs`. Use `isProper_str R n` as an intermediate fact. Use `infer_instance`. Take `⟨T₀, hT₀⟩` from `Filter.eventually_atTop.1 (GlobalTheory.AmpleDominates.eventually_isAmpleLB s hL hL₀)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨T₀, fun T hT => ?_⟩` and prove the remaining obligations. Establish `hA` using `hT₀ T hT`. Establish `hO` using `isAmple_projective_O_one R m`. Use `set A := LB.div (lbPow L T) L₀ with hAdef`. Use `set p := pullback.fst s (PSpace.str R m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set q := pullback.snd s (PSpace.str R m)`. Use `set B := tens (A.pull p) ((O1 R m).pull q)`. Establish `hBL : B.IsLB` using `isLB_tens (LB.isLB_pull hA.isLB _) (LB.isLB_pull hO.isLB _)`. Establish `hB : IsAmpleLB B`. Use `hA.box hO hBL (IsPullback.of_hasPullback s (PSpace.str R m)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression.
 
-Establish `h1` using `LB.isLB_div hBL (LB.isLB_pull hA.isLB p)`. Use `(cls_eq_zero_iff (LB.isLB_div h1 (LB.isLB_pull hO.isLB q))).1 ?_` and prove the remaining obligations. Rewrite using `[cls_div h1 (LB.isLB_pull hO.isLB q), cls_div hBL (LB.isLB_pull hA.isLB p), cls_tens (LB.isLB_pull hA.isLB p) (LB.isLB_pull hO.isLB q)]`. Normalize the expressions using the abelian group laws. Set `h : N ⟶ pullback s (PSpace.str R m)` to `ν ≫ pullback.lift b c hc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hp : h ≫ p = ν ≫ b`. Simplify using `only [h, p, Category.assoc]`. Rewrite using `[pullback.lift_fst]`. Establish `hq : h ≫ q = ν ≫ c`. Simplify using `only [h, q, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[pullback.lift_snd]`. Establish `h2` using `hB.pull_of_isAffineHom h`. Establish `hT : (CechPic.tens (lbPow (L.pull (ν ≫ b)) T) (CechPic.dual EX.lb)).IsLB` using `isLB_tens (isLB_lbPow (LB.isLB_pull hL.isLB _) T) (isLB_dual EX.isLB_lb)`. Use `h2.of_lbIso hT ((cls_eq_iff hT (LB.isLB_pull hBL h)).1 ?_)` and prove the remaining obligations. Establish `hG` using `(cls_eq_iff (LB.isLB_pull hO.isLB _) (isLB_tens (LB.isLB_pull hL₀ _) (isLB_dual EX.isLB_lb))).2 hiso`.
-
-Rewrite `hG` using `[cls_tens (LB.isLB_pull hL₀ _) (isLB_dual EX.isLB_lb), cls_dual EX.isLB_lb, cls_pull hO.isLB, cls_pull hL₀]`. Rewrite using `[cls_pull hBL, cls_tens (LB.isLB_pull hA.isLB p) (LB.isLB_pull hO.isLB q), cls_pull hA.isLB, cls_pull hO.isLB, cls_div (isLB_lbPow hL.isLB T) hL₀, cls_lbPow hL.isLB, cls_tens (isLB_lbPow (LB.isLB_pull hL.isLB _) T) (isLB_dual EX.isLB_lb), cls_dual EX.isLB_lb, cls_lbPow (LB.isLB_p …`. Simplify using `only [map_sub, map_nsmul]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem ample_twist_of_blowup : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (X X' N : Scheme.{0})
     (s : X ⟶ Sp R) (J : X.IdealSheafData) (b : X' ⟶ X) (ν : N ⟶ X') (EX : EffCartierData N), IsProjOver s →

@@ -19,24 +19,22 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.TensRig
 
 /- English proof (translation)
-Introduce `_ _` and use `(map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem oneGen_isGen' {X Y : Scheme.{0}} (L : LB X) : (LB.oneGen L (Y := Y)).IsGen := fun _ _ =>
   (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm
 
 /- English proof (translation)
-Use `show _ = toUnit _ ≫ η[B]`. Rewrite using `[toUnit_unique (toUnit (𝟙_ (Over S))) (𝟙 _), Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eta_eq_one {S : Scheme.{0}} (B : Over S) [GrpObj B] : (η[B] : 𝟙_ (Over S) ⟶ B) = 1 := by
   show _ = toUnit _ ≫ η[B]
   rw [toUnit_unique (toUnit (𝟙_ (Over S))) (𝟙 _), Category.id_comp]
 
 /- English proof (translation)
-Take `⟨⟨i, j⟩, m⟩` from `k`. Establish `hi : η[A] ≫ pr i = η[B]` using `IsMonHom.one_hom _`. Establish `hj : η[A] ≫ pr j = η[B]` using `IsMonHom.one_hom _`. Establish `key : ∀ x : A ⟶ B, η[A] ≫ x = η[B] → eSec A ≫ x.left = eSec B` using `fun x hx => by`. Rewrite using `[eSec, eSec, ← Over.comp_left, hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `fin_cases m`. Use `key _ ?_` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, hi, hj, eta_eq_one, _root_.mul_one]`. Conclude with `key _ hi`. Conclude with `key _ hj`.
-
-Use `key _ ?_` and prove the remaining obligations. Rewrite using `[MonObj.comp_one, eta_eq_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eSec_tensφ {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] {r : ℕ} (pr : Fin r → (A ⟶ B))
     (hpr : ∀ i, IsMonHom (pr i)) (k : (Fin r × Fin r) × Fin 4) : eSec A ≫ tensφ pr k = eSec B := by
@@ -57,13 +55,13 @@ end GlobalTheory.Mum.TensRig
 
 open GlobalTheory.Mum.TensRig in
 /- English proof (translation)
-Introduce `R _ _ D r W A' _ L' hL' pr hpr w hw`. Establish `hform : FormEq (X` using `D.P.A.left) (Y := (𝟙_ (Over (Spec (CommRingCat.of R)))).left) (PEmpty.elim : PEmpty → _) PEmpty.elim (GlobalTheory.LamBiext.flatφ (tensφ pr) (fun _ : PUnit => eSec A')) (GlobalTheory.LamBiext.flatε (tensε W) (fun _ : PUnit => (1 : ℤ))) := by`. Introduce `U _ h`. Simplify using `only [GlobalTheory.LamBiext.flatφ, GlobalTheory.LamBiext.flatε, eSec_tensφ pr hpr, one_mul, Finset.univ_eq_empty, Finset.prod_empty, Fintype.prod_prod_type, Fin.prod_univ_four, tensε, Oε]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take `⟨t, ht, htv⟩` from `exists_gen D.P.isLB hform (LB.oneGen D.P.L) (oneGen_isGen' _)`. Take `⟨a, ha, hmaps⟩` from `Transport.exists_transport (DVR.linComb_isLB L' hL' (fun _ : PUnit => eSec A') (fun _ => 1)) (DVR.linComb_isLB _ (DVR.linComb_isLB D.P.L D.P.isLB (tensφ pr) (tensε W)) (fun _ : PUnit => eSec A') (fun _ => 1)) (LB.linCombIso w (fun _ : PUnit => eSec A') (fun _ => 1)) (DVR.linCombI …`. Use `⟨a, ha, fun z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Establish `hPM` using `(GlobalTheory.GtCubeCompare.maps_iff_pm w (fun _ : PUnit => eSec A') (fun _ => 1) a _).1 hmaps`. Establish `hp : (toUnit (TK R)).left z ∈ LB.wchart (LB.LinComb D.P.L (tensφ pr) (tensε W)) (fun _ : PUnit => eSec A') (fun _ => fun k => J (ptK η[A'] ≫ tensφ pr k))` using `Set.mem_iInter.2 fun _ => Set.mem_iInter.2 fun k => hJ (ptK η[A'] ≫ tensφ pr k)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : (toUnit (TK R)).left z ∈ LB.wchart L' (fun _ : PUnit => eSec A') (fun _ => J' (ptK η[A']))` using `Set.mem_iInter.2 fun _ => hJ' (ptK η[A'])`. Establish `E` using `hPM _ (toUnit (TK R)).left z _ _ hp hq`. Establish `L1 : gm (toUnit (TK R)).left z (LB.wchart (LB.LinComb D.P.L (tensφ pr) (tensε W)) (fun _ : PUnit => eSec A') (fun _ => fun k => J (ptK η[A'] ≫ tensφ pr k))) ((GlobalTheory.LamBiext.nest D.P.L (tensφ pr) (tensε W) (fun _ : PUnit => eSec A') (fun _ => 1) t).s (fun _ => fun k => J ( …`. Use `(gm_res _ z (GlobalTheory.LamBiext.nest_le D.P.L (tensφ pr) (tensε W) (fun _ : PUnit => eSec A') _) hp _).trans ?_` and prove the remaining obligations. Conclude with `(val_of t (toUnit (TK R)).left z J (fun p => J (ptK η[A'] ≫ tensφ pr p.2)) (fun x => congrArg J (Category.assoc _ _ _).symm)).symm.trans ((htv _ _ z J hJ).trans (val_one _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `E` using `[L1, Fintype.prod_unique, zpow_one]`. Rewrite using `[val_pull hJ' a (toUnit (TK R)).left (𝟙 _), val_of a _ z J' (fun _ => J' (ptK η[A'])) (fun _ => by rw [Category.id_comp]; rfl), Category.id_comp, mul_comm]`. Conclude with `E.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.TensRig.rig_exists : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (A' : Over (Spec (CommRingCat.of R))) [GrpObj A'] (L' : LB A'.left), L'.IsLB → ∀ (pr : Fin r → (A' ⟶ D.P.A)), (∀ i, IsMonHom (pr i)) → ∀ (w : LB.Iso L' (LB.LinComb D.P.L (tensφ pr) (tensε W))), w.IsGen → ∃ rig : LB.Gen (L'.pull (eSec A')), rig.IsGen ∧ ∀ (z : (TK R).left) (J : ((TK R).left ⟶ D.P.A.left) → D.P.L.ι) (J' : ((TK R).left ⟶ A'.left) → L'.ι), Good D.P.L z J → Good L' z J' → val (LB.pullGen L' _ _ rig (toUnit (TK R)).left) (𝟙 _) z J' * gm (ptK η[A']) z _ (w.s (fun k => J (ptK η[A'] ≫ tensφ pr k), J' (ptK η[A']))) = 1 := by
   intro R _ _ D r W A' _ L' hL' pr hpr w hw

@@ -28,7 +28,7 @@ def avg (Γ : AddSubgroup G) (Φ : G → ℂ) : ℂ :=
   then ∫ x in h.choose.2, Φ x ∂h.choose.1 else 0
 
 /- English proof (translation)
-Use `letI : MeasurableSpace G := borel G`. Simplify using `only [avg]`. Use `split_ifs`. Conclude with `integral_const_mul _ _`. Simplify using the standard rewrite rules.
+Equip the data with the indicated structure. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem avg_const_mul (Γ : AddSubgroup G) (c : ℂ) (Φ : G → ℂ) : avg Γ (fun x => c * Φ x) = c * avg Γ Φ := by
   letI : MeasurableSpace G := borel G
@@ -51,15 +51,13 @@ def ratV (ι : Type) : AddSubgroup (ι → Ad E) :=
   (AddMonoidHom.compLeft (algebraMap E (Ad E)).toAddMonoidHom ι).range
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨U, hU, h0⟩` from `GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero E`. Take `⟨V, hVU, hVo, hV0⟩` from `mem_nhds_iff.1 hU`. Use `discreteTopology_of_isOpen_singleton_zero ?_` and prove the remaining obligations. Establish `hW : IsOpen (Set.pi Set.univ fun _ : ι => V)` using `isOpen_set_pi Set.finite_univ fun _ _ => hVo`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hW.preimage (continuous_subtype_val (p := fun x => x ∈ ratV E ι)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `⟨_, x, rfl⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h p _`. Establish `h1` using `congrFun (congrArg Subtype.val (Set.mem_singleton_iff.1 h)) p`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h1.symm ▸ hV0`. Introduce `h`. Establish `hx : x = 0` using `funext fun p => h0 (x p) (hVU (h p trivial))`. Substitute `hx` using the available equality. Conclude with `Subtype.ext (map_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨K, hK, h⟩` from `GlobalTheory.AdeleCocompact.exists_compact_adele E`. Use `⟨Set.pi Set.univ fun _ => K, isCompact_univ_pi fun _ => hK, fun x => ?_⟩` and prove the remaining obligations. Use `choose y hy using fun p => h (x p)`. Use `⟨_, ⟨fun p => -y p, rfl⟩, fun p _ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap E (Ad E) (-y p) + x p ∈ K`.
-
-Rewrite using `[map_neg, neg_add_eq_sub]`. Conclude with `hy p`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCoLat_ratV (ι : Type) [Finite ι] : IsCoLat (ratV E ι) := by
   refine ⟨?_, ?_⟩
@@ -98,7 +96,7 @@ def posM (p : ι → Fin a × Fin a) (x : ι → R) : Matrix (Fin a) (Fin a) R :
   ∑ t, Matrix.single (p t).1 (p t).2 (x t)
 
 /- English proof (translation)
-Simplify using `only [posM, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_eq_zero fun s _ => Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Conclude with `Matrix.single_mul_single_of_ne _ _ _ _ (hp _ _) _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem posM_mul {p : ι → Fin a × Fin a} (hp : IsNil p) (x y : ι → R) : posM p x * posM p y = 0 := by
   simp only [posM, Finset.sum_mul, Finset.mul_sum]
@@ -106,7 +104,7 @@ theorem posM_mul {p : ι → Fin a × Fin a} (hp : IsNil p) (x y : ι → R) : p
   exact Matrix.single_mul_single_of_ne _ _ _ _ (hp _ _) _
 
 /- English proof (translation)
-Simplify using `only [posM, Pi.add_apply, Matrix.single_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem posM_add (p : ι → Fin a × Fin a) (x y : ι → R) : posM p (x + y) = posM p x + posM p y := by
   simp only [posM, Pi.add_apply, Matrix.single_add, Finset.sum_add_distrib]
@@ -120,7 +118,7 @@ Both sides reduce to the same expression.
 theorem posU_val {p : ι → Fin a × Fin a} (hp : IsNil p) (x : ι → R) : (posU hp x).val = 1 + posM p x := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `1 + posM p (x + y) = (1 + posM p x) * (1 + posM p y)`. Rewrite using `[posM_add]`. Simplify using `only [mul_add, add_mul, one_mul, mul_one, posM_mul hp]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem posU_add {p : ι → Fin a × Fin a} (hp : IsNil p) (x y : ι → R) : posU hp (x + y) = posU hp x * posU hp y := by
   apply Units.ext
@@ -128,7 +126,7 @@ theorem posU_add {p : ι → Fin a × Fin a} (hp : IsNil p) (x y : ι → R) : p
   rw [posM_add]; simp only [mul_add, add_mul, one_mul, mul_one, posM_mul hp]; abel
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `1 + posM p 0 = 1`. Simplify using `[posM]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem posU_zero {p : ι → Fin a × Fin a} (hp : IsNil p) : posU hp (0 : ι → R) = 1 := by
   apply Units.ext
@@ -136,9 +134,9 @@ theorem posU_zero {p : ι → Fin a × Fin a} (hp : IsNil p) : posU hp (0 : ι �
   simp [posM]
 
 /- English proof (translation)
-Establish `h : Continuous fun x : ι → R => posM p x`. Use `continuous_finset_sum _ fun t _ => ?_` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.single_apply]`. Use `split_ifs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `continuous_apply t`. Conclude with `continuous_const`. Use `Units.continuous_iff.2 ⟨continuous_const.add h, continuous_const.sub h⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem continuous_posU [TopologicalSpace R] [IsTopologicalRing R] {p : ι → Fin a × Fin a} (hp : IsNil p) :
     Continuous (posU hp : (ι → R) → GL (Fin a) R) := by
@@ -154,7 +152,7 @@ theorem continuous_posU [TopologicalSpace R] [IsTopologicalRing R] {p : ι → F
 abbrev UnipotentBlockColumnIndex (a r m : ℕ) : Type := {p : Fin a × Fin a // (p.1 : ℕ) < r ∧ r ≤ (p.2 : ℕ) ∧ (p.2 : ℕ) ≤ m}
 
 /- English proof (translation)
-Introduce `s t e` and use `by have h1 := s.2.2.1 have h2 := t.2.1 rw [e] at h1 omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isNil_blk (a r m : ℕ) : IsNil (Subtype.val : UnipotentBlockColumnIndex a r m → Fin a × Fin a) := fun s t e => by
   have h1 := s.2.2.1
@@ -173,9 +171,9 @@ variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 omit [NumberField E] in
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `φ ((1 + posM p x) i j) = (1 + posM p fun t => φ (x t)) i j`. Simplify using `only [posM, Matrix.add_apply, Matrix.sum_apply, map_add, map_sum, Matrix.one_apply, Matrix.single_apply]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `split_ifs <;> simp`. Apply the tactic sequence `refine Finset.sum_congr rfl fun t _ => ?_ split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_posU {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {ι : Type} [Fintype ι]
     {p : ι → Fin a × Fin a} (hp : IsNil p) (x : ι → R) :
@@ -228,15 +226,15 @@ structure Good (ψ : AddChar (Ad E) ℂ) (m : ℕ) (f : GA E a → ℂ) : Prop w
   van : ∀ r, 0 < r → r ≤ m → ∀ g : GA E a, avg (ratV E (UnipotentBlockColumnIndex a r m)) (fun x => f (blkU x * g)) = 0
 
 /- English proof (translation)
-The claim follows from `map_posU _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ratGL_blkU {r m : ℕ} (c : UnipotentBlockColumnIndex a r m → E) :
     ratGL E a (blkU c) = blkU (fun t => algebraMap E (Ad E) (c t)) := map_posU _ _ _
 
 /- English proof (translation)
-Introduce `i k h`. Express the relevant statement in the definitionally equal form `(1 + posM Subtype.val c : Matrix (Fin a) (Fin a) E) i k = _`. Rewrite using `[Matrix.add_apply, posM, Matrix.sum_apply, Finset.sum_eq_zero, add_zero]`. Introduce `t _`. Establish `h1` using `t.2`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.single_apply_of_ne]`. Introduce and unpack `⟨e1, e2⟩`. Rewrite `h` using `[← e1, ← e2]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem isMir_blkU {r m : ℕ} (c : UnipotentBlockColumnIndex a r m → E) : IsMir m (blkU c) := by
   intro i k h
@@ -252,7 +250,7 @@ theorem isMir_blkU {r m : ℕ} (c : UnipotentBlockColumnIndex a r m → E) : IsM
 variable {ψ : AddChar (Ad E) ℂ}
 
 /- English proof (translation)
-Establish `: dot ξ ((fun t => algebraMap E (Ad E) (c t)) + x) = algebraMap E (Ad E) (∑ t, ξ t * c t) + dot ξ x`. Simplify using `only [dot, Pi.add_apply, mul_add, Finset.sum_add_distrib, map_sum, map_mul]`. Rewrite using `[this, AddChar.map_add_eq_mul, hψ.rat, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem StdPsi.map_dot (hψ : StdPsi ψ) {ι : Type} [Fintype ι] (ξ c : ι → E) (x : ι → Ad E) :
     ψ (dot ξ ((fun t => algebraMap E (Ad E) (c t)) + x)) = ψ (dot ξ x) := by
@@ -262,15 +260,15 @@ theorem StdPsi.map_dot (hψ : StdPsi ψ) {ι : Type} [Fintype ι] (ξ c : ι →
   rw [this, AddChar.map_add_eq_mul, hψ.rat, one_mul]
 
 /- English proof (translation)
-The claim follows from `continuous_finset_sum _ fun t _ => continuous_const.mul (continuous_apply t)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_dot {ι : Type} [Fintype ι] (ξ : ι → E) : Continuous (dot ξ : (ι → Ad E) → Ad E) :=
   continuous_finset_sum _ fun t _ => continuous_const.mul (continuous_apply t)
 
 /- English proof (translation)
-Use `⟨hc.comp ((continuous_posU _).mul continuous_const), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩ x`. Establish `e : (AddMonoidHom.compLeft (algebraMap E (Ad E)).toAddMonoidHom (UnipotentBlockColumnIndex a r m)) c = fun t => algebraMap E (Ad E) (c t)` using `rfl`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `f (posU _ _ * g) = _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[posU_add, mul_assoc]`. Express the relevant statement in the definitionally equal form `f (blkU _ * _) = _`. Rewrite using `[← ratGL_blkU, hl]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem per_blk {r m : ℕ} {f : GA E a → ℂ} (hc : Continuous f)
     (hl : ∀ (c : UnipotentBlockColumnIndex a r m → E) g, f (ratGL E a (blkU c) * g) = f g) (g : GA E a) :
@@ -287,9 +285,9 @@ theorem per_blk {r m : ℕ} {f : GA E a → ℂ} (hc : Continuous f)
   rfl
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `per_blk hc hl g`. Use `⟨((hψ.cont.comp (continuous_dot ξ).neg).mul h1), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩ x`. Establish `e` using `h2 _ ⟨c, rfl⟩ x`. Simplify using `only at e ⊢`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, AddChar.map_neg_eq_inv, AddChar.map_neg_eq_inv]`. Use `congr 2`. Conclude with `hψ.map_dot ξ c x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem per_coef (hψ : StdPsi ψ) {k : ℕ} (ξ : UnipotentBlockColumnIndex a k k → E) {f : GA E a → ℂ} (hc : Continuous f)
     (hl : ∀ (c : UnipotentBlockColumnIndex a k k → E) g, f (ratGL E a (blkU c) * g) = f g) (g : GA E a) :

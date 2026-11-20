@@ -12,9 +12,9 @@ open GlobalTheory.W1 GlobalTheory.PD GlobalTheory.CechDR KaehlerDifferential
 namespace GlobalTheory.W1
 
 /- English proof (translation)
-Introduce `k K L _ _ _ _ _ _ _ _ _ α β`. Take `⟨m, b, ω, rfl⟩` from `(GlobalTheory.T.mapDR_span_and_linearIndependent_baseChange k K L).1 β`. Establish `hT` using `(GlobalTheory.T.deRhamFormTrace_exists_unique k K L).1`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Finset.mul_sum, map_sum, map_sum, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, ← map_mul, hT, hT, mul_smul_comm]`. Rewrite using `[Finset.sum_mul, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, ← map_mul, hT, hT, smul_mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trDR_projection : ∀ (k K L : Type) [Field k] [CharZero k] [Field K] [Field L] [Algebra k K] [Algebra k L]
     [Algebra K L] [IsScalarTower k K L] [FiniteDimensional K L], ∀ (α : DR k K) (β : DR k L),

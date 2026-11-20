@@ -43,29 +43,29 @@ variable {ε : Fin n → Bool} {ε₀ : Fin n₀ → Bool} {B : ∀ i, Matrix (F
   {B₀ : Matrix (Fin n) (Fin n₀) ℂ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc, h.2.2.2.2.2.1, ← Matrix.mul_assoc, h.2.2.2.1 i, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsFrame.J_B₀ (h : IsFrame ε ε₀ B B₀) (i : Fin a) : (B i)ᴴ * Jm ε * B₀ = 0 := by
   rw [Matrix.mul_assoc, h.2.2.2.2.2.1, ← Matrix.mul_assoc, h.2.2.2.1 i, Matrix.zero_mul]
 
 /- English proof (translation)
-Establish `e` using `congrArg Matrix.conjTranspose (h.2.2.2.1 i)`. Simplify `e` using `[Matrix.conjTranspose_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsFrame.B₀_B (h : IsFrame ε ε₀ B B₀) (i : Fin a) : B₀ᴴ * B i = 0 := by
   have e := congrArg Matrix.conjTranspose (h.2.2.2.1 i)
   simpa [Matrix.conjTranspose_mul] using e
 
 /- English proof (translation)
-Establish `e` using `congrArg Matrix.conjTranspose (h.J_B₀ i)`. Simplify `e` using `[Matrix.conjTranspose_mul, Jm_conjTranspose, Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsFrame.B₀_J (h : IsFrame ε ε₀ B B₀) (i : Fin a) : B₀ᴴ * Jm ε * B i = 0 := by
   have e := congrArg Matrix.conjTranspose (h.J_B₀ i)
   simpa [Matrix.conjTranspose_mul, Jm_conjTranspose, Matrix.mul_assoc] using e
 
 /- English proof (translation)
-Rewrite using `[Matrix.sum_mul, Finset.sum_eq_single i]`. Rewrite using `[Matrix.mul_assoc, h.1 i, Matrix.mul_one]`. Introduce `k _ hk`. Rewrite using `[Matrix.mul_assoc, h.2.1 k i hk, Matrix.mul_zero]`. Introduce `hi`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ i) hi`.
+A detailed English derivation is pending.
 -/
 theorem IsFrame.sum_mul (h : IsFrame ε ε₀ B B₀) {m : Type} (y : ∀ i, Matrix m (Fin (j i)) ℂ) (i : Fin a) :
     (∑ k, y k * (B k)ᴴ) * B i = y i := by
@@ -79,11 +79,9 @@ theorem IsFrame.sum_mul (h : IsFrame ε ε₀ B B₀) {m : Type} (y : ∀ i, Mat
 variable (x x' : ∀ i, Matrix (Fin (j i)) (Fin (j i)) ℂ) (g g' : Matrix (Fin n₀) (Fin n₀) ℂ)
 
 /- English proof (translation)
-Establish `eJ : ∀ k, (B k)ᴴ * (Jm ε * B i) = 0` using `fun k => by`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `h.2.2.1 k i`. Establish `s1 : (∑ k, B k * x k * (B k)ᴴ) * B i = B i * x i` using `h.sum_mul (fun k => B k * x k) i`. Establish `s2 : (∑ k, Jm ε * B k * (x k)⁻¹ᴴ * (B k)ᴴ * Jm ε) * B i = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sum_mul]`. Conclude with `Finset.sum_eq_zero fun k _ => by simp only [Matrix.mul_assoc, eJ, Matrix.mul_zero]`. Establish `s3 : B₀ * g * B₀ᴴ * B i = 0`. Simplify using `only [Matrix.mul_assoc, h.B₀_B i, Matrix.mul_zero]`. Unfold `lev`.
-
-Rewrite using `[Matrix.add_mul, Matrix.add_mul, s1, s2, s3, add_zero, add_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsFrame.lev_mul_B (h : IsFrame ε ε₀ B B₀) (i : Fin a) : lev ε B B₀ x g * B i = B i * x i := by
   have eJ : ∀ k, (B k)ᴴ * (Jm ε * B i) = 0 := fun k => by
@@ -99,15 +97,13 @@ theorem IsFrame.lev_mul_B (h : IsFrame ε ε₀ B B₀) (i : Fin a) : lev ε B B
   rw [Matrix.add_mul, Matrix.add_mul, s1, s2, s3, add_zero, add_zero]
 
 /- English proof (translation)
-Establish `hJJ : ∀ {m : Type} (M : Matrix (Fin n) m ℂ), Jm ε * (Jm ε * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, Jm_mul_self, Matrix.one_mul]`. Establish `eJ : ∀ k, (B k)ᴴ * (Jm ε * B i) = 0` using `fun k => by`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `h.2.2.1 k i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₀ : B₀ᴴ * (Jm ε * B i) = 0`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `h.B₀_J i`. Establish `s1 : (∑ k, B k * x k * (B k)ᴴ) * (Jm ε * B i) = 0`. Rewrite using `[Matrix.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun k _ => by simp only [Matrix.mul_assoc, eJ, Matrix.mul_zero]`. Establish `s2 : (∑ k, Jm ε * B k * (x k)⁻¹ᴴ * (B k)ᴴ * Jm ε) * (Jm ε * B i) = Jm ε * B i * (x i)⁻¹ᴴ`. Rewrite using `[Matrix.sum_mul, Finset.sum_eq_single i]`. Simplify using `only [Matrix.mul_assoc, hJJ, h.1 i, Matrix.mul_one]`. Introduce `k _ hk`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc, hJJ, h.2.1 k i hk, Matrix.mul_zero]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Establish `s3 : B₀ * g * B₀ᴴ * (Jm ε * B i) = 0`. Simplify using `only [Matrix.mul_assoc, e₀, Matrix.mul_zero]`.
-
-Unfold `lev`. Rewrite using `[Matrix.add_mul, Matrix.add_mul, s1, s2, s3, zero_add, add_zero]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsFrame.lev_mul_JB (h : IsFrame ε ε₀ B B₀) (i : Fin a) :
     lev ε B B₀ x g * (Jm ε * B i) = Jm ε * B i * (x i)⁻¹ᴴ := by
@@ -135,11 +131,11 @@ theorem IsFrame.lev_mul_JB (h : IsFrame ε ε₀ B B₀) (i : Fin a) :
   rw [Matrix.add_mul, Matrix.add_mul, s1, s2, s3, zero_add, add_zero]
 
 /- English proof (translation)
-Establish `eJ : ∀ k, (B k)ᴴ * (Jm ε * B₀) = 0` using `fun k => by`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `h.J_B₀ k`. Establish `s1 : (∑ k, B k * x k * (B k)ᴴ) * B₀ = 0`. Rewrite using `[Matrix.sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_eq_zero fun k _ => by`. Simplify using `only [Matrix.mul_assoc, h.2.2.2.1 k, Matrix.mul_zero]`. Establish `s2 : (∑ k, Jm ε * B k * (x k)⁻¹ᴴ * (B k)ᴴ * Jm ε) * B₀ = 0`. Rewrite using `[Matrix.sum_mul]`. Conclude with `Finset.sum_eq_zero fun k _ => by simp only [Matrix.mul_assoc, eJ, Matrix.mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Establish `s3 : B₀ * g * B₀ᴴ * B₀ = B₀ * g`. Simplify using `only [Matrix.mul_assoc, h.2.2.2.2.1, Matrix.mul_one]`. Unfold `lev`. Rewrite using `[Matrix.add_mul, Matrix.add_mul, s1, s2, s3, zero_add, zero_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsFrame.lev_mul_B₀ (h : IsFrame ε ε₀ B B₀) : lev ε B B₀ x g * B₀ = B₀ * g := by
   have eJ : ∀ k, (B k)ᴴ * (Jm ε * B₀) = 0 := fun k => by
@@ -158,9 +154,9 @@ theorem IsFrame.lev_mul_B₀ (h : IsFrame ε ε₀ B B₀) : lev ε B B₀ x g *
   rw [Matrix.add_mul, Matrix.add_mul, s1, s2, s3, zero_add, zero_add]
 
 /- English proof (translation)
-Establish `h2' : ∀ i, M * Jm ε * B i = N * Jm ε * B i` using `fun i => by`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h2 i]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h.2.2.2.2.2.2]`. Simplify using `only [Matrix.mul_add, Matrix.mul_sum, ← Matrix.mul_assoc, h1, h2', h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = N := Matrix.mul_one N`.
+A detailed English derivation is pending.
 -/
 theorem IsFrame.ext (h : IsFrame ε ε₀ B B₀) {m : Type} {M N : Matrix m (Fin n) ℂ} (h1 : ∀ i, M * B i = N * B i)
     (h2 : ∀ i, M * (Jm ε * B i) = N * (Jm ε * B i)) (h3 : M * B₀ = N * B₀) : M = N := by
@@ -173,7 +169,7 @@ theorem IsFrame.ext (h : IsFrame ε ε₀ B B₀) {m : Type} {M N : Matrix m (Fi
     _ = N := Matrix.mul_one N
 
 /- English proof (translation)
-Unfold `lev`. Simplify using `only [inv_one, Matrix.conjTranspose_one, Matrix.mul_one]`. Conclude with `h.2.2.2.2.2.2`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsFrame.lev_one (h : IsFrame ε ε₀ B B₀) : lev ε B B₀ (fun _ => 1) 1 = 1 := by
   unfold lev
@@ -181,7 +177,7 @@ theorem IsFrame.lev_one (h : IsFrame ε ε₀ B B₀) : lev ε B B₀ (fun _ => 
   exact h.2.2.2.2.2.2
 
 /- English proof (translation)
-Use `h.ext (fun i => ?_) (fun i => ?_) ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc (lev ε B B₀ x g), h.lev_mul_B x' g', ← Matrix.mul_assoc (lev ε B B₀ x g), h.lev_mul_B x g, h.lev_mul_B, Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc (lev ε B B₀ x g), h.lev_mul_JB x' g', ← Matrix.mul_assoc (lev ε B B₀ x g), h.lev_mul_JB x g, h.lev_mul_JB]`. Simplify using `only [Matrix.mul_inv_rev, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc (lev ε B B₀ x g), h.lev_mul_B₀ x' g', ← Matrix.mul_assoc (lev ε B B₀ x g), h.lev_mul_B₀ x g, h.lev_mul_B₀, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsFrame.lev_mul (h : IsFrame ε ε₀ B B₀) :
     lev ε B B₀ (fun i => x i * x' i) (g * g') = lev ε B B₀ x g * lev ε B B₀ x' g' := by
@@ -195,7 +191,7 @@ theorem IsFrame.lev_mul (h : IsFrame ε ε₀ B B₀) :
       h.lev_mul_B₀ x g, h.lev_mul_B₀, Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `lev`. Simplify using `only [Matrix.conjTranspose_add, Matrix.conjTranspose_sum, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Jm_conjTranspose, Matrix.conjTranspose_nonsing_inv, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem lev_conjTranspose : (lev ε B B₀ x g)ᴴ = lev ε B B₀ (fun i => (x i)ᴴ) gᴴ := by
   unfold lev
@@ -204,15 +200,13 @@ theorem lev_conjTranspose : (lev ε B B₀ x g)ᴴ = lev ε B B₀ (fun i => (x 
     Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hl : ∀ i, (x i)⁻¹ * x i = 1` using `fun i => Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (hx i))`. Establish `hr : ∀ i, (x i)ᴴ * ((x i)ᴴ)⁻¹ = 1` using `fun i => by`. Rewrite using `[← Matrix.conjTranspose_nonsing_inv, ← Matrix.conjTranspose_mul, hl i, Matrix.conjTranspose_one]`. Establish `hJJ : ∀ {m : Type} (M : Matrix (Fin n) m ℂ), Jm ε * (Jm ε * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, Jm_mul_self, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ₀ : ∀ {m : Type} (M : Matrix (Fin n₀) m ℂ), Jm ε * (B₀ * M) = B₀ * (Jm ε₀ * M)` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, h.2.2.2.2.2.1, Matrix.mul_assoc]`. Establish `hg' : gᴴ * (Jm ε₀ * g) = Jm ε₀`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eB : ∀ (y : ∀ i, Matrix (Fin (j i)) (Fin (j i)) ℂ) (k : Matrix (Fin n₀) (Fin n₀) ℂ) (i : Fin a) {m : Type} (M : Matrix (Fin (j i)) m ℂ), lev ε B B₀ y k * (B i * M) = B i * (y i * M)` using `fun y k i {_} M => by rw [← Matrix.mul_assoc, h.lev_mul_B, Matrix.mul_assoc]`. Establish `eJB : ∀ (y : ∀ i, Matrix (Fin (j i)) (Fin (j i)) ℂ) (k : Matrix (Fin n₀) (Fin n₀) ℂ) (i : Fin a) {m : Type} (M : Matrix (Fin (j i)) m ℂ), lev ε B B₀ y k * (Jm ε * (B i * M)) = Jm ε * (B i * ((y i)⁻¹ᴴ * M))` using `fun y k i {_} M => by`. Rewrite using `[← Matrix.mul_assoc (Jm ε), ← Matrix.mul_assoc, h.lev_mul_JB]`. Simplify using `only [Matrix.mul_assoc]`. Establish `eB₀ : ∀ (y : ∀ i, Matrix (Fin (j i)) (Fin (j i)) ℂ) (k : Matrix (Fin n₀) (Fin n₀) ℂ) {m : Type} (M : Matrix (Fin n₀) m ℂ), lev ε B B₀ y k * (B₀ * M) = B₀ * (k * M)` using `fun y k {_} M => by rw [← Matrix.mul_assoc, h.lev_mul_B₀, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (lev ε B B₀ x g)ᴴ * Jm ε * lev ε B B₀ x g = Jm ε`. Rewrite using `[lev_conjTranspose]`. Use `h.ext (fun i => ?_) (fun i => ?_) ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_assoc, h.lev_mul_B, eJB, Matrix.conjTranspose_nonsing_inv, Matrix.conjTranspose_conjTranspose, hl, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc, h.lev_mul_JB, hJJ, eB, Matrix.conjTranspose_nonsing_inv, hr, Matrix.mul_one]`.
-
-Simplify using `only [Matrix.mul_assoc, h.lev_mul_B₀, hJ₀, eB₀, hg', h.2.2.2.2.2.1]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsFrame.inUJ_lev (h : IsFrame ε ε₀ B B₀) (hx : ∀ i, (x i).det ≠ 0) (hg : inUJ ε₀ g) :
     inUJ ε (lev ε B B₀ x g) := by
@@ -248,9 +242,9 @@ theorem IsFrame.inUJ_lev (h : IsFrame ε ε₀ B B₀) (hx : ∀ i, (x i).det �
   · simp only [Matrix.mul_assoc, h.lev_mul_B₀, hJ₀, eB₀, hg', h.2.2.2.2.2.1]
 
 /- English proof (translation)
-Establish `hB : ∀ i, B i * x i = B i * x' i` using `fun i => by`. Rewrite using `[← h.lev_mul_B x g i, e, h.lev_mul_B]`. Establish `hB₀ : B₀ * g = B₀ * g'`. Rewrite using `[← h.lev_mul_B₀ x g, e, h.lev_mul_B₀]`. Use `⟨funext fun i => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e'` using `congrArg ((B i)ᴴ * ·) (hB i)`. Simplify `e'` using `[← Matrix.mul_assoc, h.1 i]`. Establish `e'` using `congrArg (B₀ᴴ * ·) hB₀`. Simplify `e'` using `[← Matrix.mul_assoc, h.2.2.2.2.1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsFrame.lev_inj (h : IsFrame ε ε₀ B B₀) (e : lev ε B B₀ x g = lev ε B B₀ x' g') : x = x' ∧ g = g' := by
   have hB : ∀ i, B i * x i = B i * x' i := fun i => by

@@ -14,7 +14,7 @@ def lvlPoly (l : ℕ) (R : Type) [CommRing R] (k : ℕ) : Polynomial R :=
 variable {l : ℕ} {R S : Type} [CommRing R] [CommRing S]
 
 /- English proof (translation)
-Use `map_sum (Polynomial.coeToPowerSeries.ringHom (R := R)) (fun i => ((1 + Polynomial.X : Polynomial R) ^ l ^ k) ^ i) (Finset.range l)` as an intermediate fact. Rewrite `this` using `[Polynomial.coeToPowerSeries.ringHom_apply]`. Rewrite using `[lvlPoly, this, lvl]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lvlPoly_coe (k : ℕ) : ((lvlPoly l R k : Polynomial R) : R⟦X⟧) = lvl l R k := by
   have := map_sum (Polynomial.coeToPowerSeries.ringHom (R := R))
@@ -24,20 +24,20 @@ theorem lvlPoly_coe (k : ℕ) : ((lvlPoly l R k : Polynomial R) : R⟦X⟧) = lv
   simp
 
 /- English proof (translation)
-Simplify using `[lvlPoly, Polynomial.map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lvlPoly_map (j : R →+* S) (k : ℕ) : (lvlPoly l R k).map j = lvlPoly l S k := by
   simp [lvlPoly, Polynomial.map_sum]
 
 /- English proof (translation)
-Rewrite using `[lvlPoly, geom_sum_mul, ← pow_mul, pow_succ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lvlPoly_mul (k : ℕ) :
     lvlPoly l R k * ((1 + Polynomial.X) ^ l ^ k - 1) = (1 + Polynomial.X) ^ l ^ (k + 1) - 1 := by
   rw [lvlPoly, geom_sum_mul, ← pow_mul, pow_succ]
 
 /- English proof (translation)
-Establish `h : lvlPoly l R k = (Polynomial.cyclotomic (l ^ (k + 1)) R).comp (Polynomial.X + Polynomial.C 1)`. Rewrite using `[Polynomial.cyclotomic_prime_pow_eq_geom_sum hl.out, lvlPoly]`. Simplify using `[Polynomial.sum_comp, add_comm]`. Rewrite using `[h]`. Conclude with `(Polynomial.cyclotomic.monic _ _).comp_X_add_C _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lvlPoly_monic [Nontrivial R] [hl : Fact l.Prime] (k : ℕ) : (lvlPoly l R k).Monic := by
   have h : lvlPoly l R k =
@@ -48,7 +48,7 @@ theorem lvlPoly_monic [Nontrivial R] [hl : Fact l.Prime] (k : ℕ) : (lvlPoly l 
   exact (Polynomial.cyclotomic.monic _ _).comp_X_add_C _
 
 /- English proof (translation)
-Establish `h` using `lvlPoly_mul (l := l) (R := F) k`. Rewrite `h` using `[add_pow_char_pow, add_pow_char_pow, one_pow, one_pow, add_sub_cancel_left, add_sub_cancel_left]`. Establish `hle : l ^ k ≤ l ^ (k + 1)` using `Nat.pow_le_pow_right hl.out.pos (Nat.le_succ k)`. Apply `mul_right_cancel₀ (pow_ne_zero (l ^ k) Polynomial.X_ne_zero)` to reduce the goal to its premises. Rewrite using `[h, ← pow_add, Nat.sub_add_cancel hle]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem lvlPoly_charP {F : Type} [Field F] [hl : Fact l.Prime] [CharP F l] (k : ℕ) :
     lvlPoly l F k = Polynomial.X ^ (l ^ (k + 1) - l ^ k) := by
@@ -60,11 +60,11 @@ theorem lvlPoly_charP {F : Type} [Field F] [hl : Fact l.Prime] [CharP F l] (k : 
   rw [h, ← pow_add, Nat.sub_add_cancel hle]
 
 /- English proof (translation)
-Use `⟨⟨fun {n} hn => ?_⟩, lvlPoly_monic k⟩` and prove the remaining obligations. Establish `h0 : (l : IsLocalRing.ResidueField R) = 0`. Rewrite using `[← map_natCast (IsLocalRing.residue R), IsLocalRing.residue_eq_zero_iff]`. Conclude with `h`. Use `haveI : CharP (IsLocalRing.ResidueField R) l := (CharP.charP_iff_prime_eq_zero hl.out).2 h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `lvlPoly_map (l := l) (IsLocalRing.residue R) k`. Rewrite `h1` using `[lvlPoly_charP]`. Establish `h2 : (lvlPoly l R k).natDegree = l ^ (k + 1) - l ^ k`. Rewrite using `[← (lvlPoly_monic (l := l) (R := R) k).natDegree_map (IsLocalRing.residue R), h1, Polynomial.natDegree_X_pow]`. Establish `h3` using `congrArg (fun p => Polynomial.coeff p n) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hn` using `[h2]`. Simplify using `only [Polynomial.coeff_map, Polynomial.coeff_X_pow, hn.ne, if_false] at h3`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).1 h3`.
+A detailed English derivation is pending.
 -/
 theorem lvlPoly_distinguished [hl : Fact l.Prime] [IsLocalRing R] (h : ¬ IsUnit (l : R)) (k : ℕ) :
     (lvlPoly l R k).IsDistinguishedAt (IsLocalRing.maximalIdeal R) := by
@@ -83,11 +83,11 @@ theorem lvlPoly_distinguished [hl : Fact l.Prime] [IsLocalRing R] (h : ¬ IsUnit
   exact (IsLocalRing.residue_eq_zero_iff _).1 h3
 
 /- English proof (translation)
-Establish `hN : 0 < l ^ (k + 1)` using `pow_pos hl.out.pos _`. Establish `hs : ((1 + Polynomial.X : Polynomial K) ^ l ^ (k + 1) - 1).Separable`. Take `⟨M, hM⟩ : ∃ M, l ^ (k + 1) = M + 1` from `⟨_, (Nat.succ_pred_eq_of_pos hN).symm⟩`. Rewrite using `[hM, Polynomial.separable_def']`. Establish `hc : ((M : K) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero M`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨-1, Polynomial.C ((M : K) + 1)⁻¹ * (1 + Polynomial.X), ?_⟩` and prove the remaining obligations. Establish `e : Polynomial.C ((M : K) + 1)⁻¹ * Polynomial.C ((M : K) + 1) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hc, map_one]`. Simplify using `only [Polynomial.derivative_sub, Polynomial.derivative_one, Polynomial.derivative_pow_succ, Polynomial.derivative_add, Polynomial.derivative_X, zero_add, mul_one, sub_zero]`. Take the linear combination `((1 + Polynomial.X : Polynomial K) ^ (M + 1)) * e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `hs` using `[← lvlPoly_mul]`. Conclude with `hs.of_mul_left`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lvlPoly_separable {K : Type} [Field K] [CharZero K] [hl : Fact l.Prime] (k : ℕ) :
     (lvlPoly l K k).Separable := by
@@ -106,13 +106,11 @@ theorem lvlPoly_separable {K : Type} [Field K] [CharZero K] [hl : Fact l.Prime] 
   exact hs.of_mul_left
 
 /- English proof (translation)
-Rewrite `ha`, the goal using `[← lvlPoly_coe]`. Establish `H` using `lvlPoly_distinguished h k`. Take `⟨r, -, hr⟩` from `GlobalTheory.NB.LT.exists_poly_mod H a`. Establish `h1 : ((lvlPoly l O k : Polynomial O) : O⟦X⟧) ∣ ((r ^ 2 : Polynomial O) : O⟦X⟧)`. Rewrite using `[Polynomial.coe_pow, show (r : O⟦X⟧) ^ 2 = a ^ 2 - (a - r) * (a + r) by ring]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `ha.sub (hr.mul_right _)`. Establish `h2` using `GlobalTheory.NB.LT.poly_dvd_of_dvd H h1`. Set `K` to `FractionRing O`. Use `haveI : CharZero K := algebraRat.charZero K`. Establish `h3` using `Polynomial.map_dvd (algebraMap O K) h2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[Polynomial.map_pow, lvlPoly_map]`. Establish `h4` using `(lvlPoly_separable (l := l) (K := K) k).squarefree.dvd_pow_iff_dvd two_ne_zero |>.1 h3`. Rewrite `h4` using `[← lvlPoly_map (algebraMap O K), Polynomial.map_dvd_map _ (IsFractionRing.injective O K) H.monic]`. Take `⟨s, hs⟩` from `h4`. Establish `h5 : ((lvlPoly l O k : Polynomial O) : O⟦X⟧) ∣ (r : O⟦X⟧)` using `⟨s, by rw [hs, Polynomial.coe_mul]⟩`.
-
-Simplify using `using hr.add h5`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lvl_dvd_of_dvd_sq {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [CharZero O]

@@ -15,9 +15,9 @@ section Alg
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `Polynomial.hom_eval₂ p (algebraMap R (Matrix (Fin n) (Fin n) R)) (f.mapMatrix (m := Fin n)) A`. Establish `hc : (f.mapMatrix (m` using `Fin n)).comp (algebraMap R (Matrix (Fin n) (Fin n) R)) = (algebraMap S (Matrix (Fin n) (Fin n) S)).comp f := by`. Use extensionality with `x i j`. Simplify using `[Matrix.algebraMap_matrix_apply, Matrix.one_apply, apply_ite f]`. Rewrite `h` using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[aeval_def, aeval_def, eval₂_map]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_aeval_matrix {R S : Type} [CommRing R] [CommRing S] (f : R →+* S)
     (A : Matrix (Fin n) (Fin n) R) (p : R[X]) :
@@ -33,9 +33,7 @@ private theorem map_aeval_matrix {R S : Type} [CommRing R] [CommRing S] (f : R �
   exact h
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `hp.add_right hq`. Consider the case `monomial m a`. Rewrite using `[aeval_monomial]`.
-
-Conclude with `Commute.mul_right (Algebra.commutes a x).symm (h.pow_right m)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem commute_aeval {R : Type} [CommRing R] {x A : Matrix (Fin n) (Fin n) R}
     (h : Commute x A) (p : R[X]) : Commute x (aeval A p) := by
@@ -46,7 +44,7 @@ private theorem commute_aeval {R : Type} [CommRing R] {x A : Matrix (Fin n) (Fin
     exact Commute.mul_right (Algebra.commutes a x).symm (h.pow_right m)
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, ← hp, ← hq, mul_add, add_mul]`. Consider the case `monomial m a`. Rewrite using `[aeval_monomial, aeval_monomial, Units.conj_pow']`. Simplify using `only [← Algebra.smul_def, mul_smul_comm, smul_mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem conj_aeval {R : Type} [CommRing R] (g : GL (Fin n) R)
     (A : Matrix (Fin n) (Fin n) R) (p : R[X]) :
@@ -65,7 +63,7 @@ section Int
 variable {K : Type} [Field K] [ValuativeRel K]
 
 /- English proof (translation)
-Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `i`. Conclude with `⟨⟨_, (Valuation.mem_integer_iff _ _).2 (h i)⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem lifts_of_int (q : K[X]) (h : ∀ i, valuation K (q.coeff i) ≤ 1) :
     q ∈ Polynomial.lifts (algebraMap 𝒪[K] K) := by
@@ -74,7 +72,7 @@ private theorem lifts_of_int (q : K[X]) (h : ∀ i, valuation K (q.coeff i) ≤ 
   exact ⟨⟨_, (Valuation.mem_integer_iff _ _).2 (h i)⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨q', rfl⟩` from `(Polynomial.mem_lifts _).1 h`. Conclude with `⟨aeval Y q', map_aeval_matrix _ Y q'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem lift_aeval {n : ℕ} (Y : Matrix (Fin n) (Fin n) 𝒪[K]) {q : K[X]}
     (h : q ∈ Polynomial.lifts (algebraMap 𝒪[K] K)) :
@@ -88,37 +86,31 @@ end UpperTheory.Gal.InertialTypesAlt.L
 
 open UpperTheory.Gal.InertialTypesAlt.L in
 /- English proof (translation)
-Introduce `k K _ _ _ _ _ _ _ _ _ _ _ _ _ F₀ F₁ _ _ _ _ _ rk rK s sb h n γ hγ`. Use `set G : Matrix (Fin n) (Fin n) k := (γ : Matrix (Fin n) (Fin n) k) with hG`. Establish `hmon : G.charpoly.Monic` using `Matrix.charpoly_monic G`. Establish `h0 : valuation k (G.charpoly.coeff 0) = 1`. Establish `e` using `Matrix.det_eq_sign_charpoly_coeff G`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `hγ.2`. Rewrite `hv` using `[← hG, e, map_mul, map_pow, Valuation.map_neg, map_one, one_pow, one_mul]`. Conclude with `hv`. Take `⟨p, hp, hdvd⟩` from `UpperTheory.Gal.InertialTypesAlt.L.normPoly k K F₀ F₁ rk rK s sb h G.charpoly hmon hγ.1 h0`. Use `set A : Matrix (Fin n) (Fin n) K := (incl K n γ : Matrix (Fin n) (Fin n) K) with hA`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hAG : A = G.map (algebraMap k K)` using `rfl`. Set `ps : ℕ → K[X]` to `fun i => p.map ((s ^ i : K ≃ₐ[k] K) : K →+* K)`. Establish `hprod : aeval A (∏ i ∈ Finset.range (Module.finrank k K), ps i) = A`. Take `⟨q, hq⟩` from `hdvd`. Establish `hz : aeval A (G.charpoly.map (algebraMap k K)) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Matrix.charpoly_map, ← hAG]`. Conclude with `Matrix.aeval_self_charpoly A`. Establish `e` using `congrArg (aeval A) hq`. Rewrite `e` using `[map_sub, aeval_X, map_mul, hz, zero_mul, sub_eq_zero]`. Conclude with `e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAs : ∀ i, A.map ((s ^ i : K ≃ₐ[k] K) : K →+* K) = A`. Introduce `i`. Use extensionality with `a b`. Conclude with `(s ^ i : K ≃ₐ[k] K).commutes ((γ : Matrix (Fin n) (Fin n) k) a b)`. Establish `hmapps : ∀ i, (aeval A p).map ((s ^ i : K ≃ₐ[k] K) : K →+* K) = aeval A (ps i)` using `fun i => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `map_aeval_matrix ((s ^ i : K ≃ₐ[k] K) : K →+* K) A p`. Rewrite `e` using `[hAs]`. Then use the resulting hypothesis. Take `⟨e, he⟩ : ∃ e, Module.finrank k K = e + 1` from `Nat.exists_eq_succ_of_ne_zero Module.finrank_pos.ne'`. Set `r : K[X]` to `∏ i ∈ Finset.range e, ps (i + 1)`. Establish `hps0 : ps 0 = p` using `by show p.map ((s ^ 0 : K ≃ₐ[k] K) : K →+* K) = p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_zero]`. Conclude with `Polynomial.map_id`. Establish `hpr : aeval A (p * r) = A`. Establish `e'` using `hprod`. Rewrite `e'` using `[he, Finset.prod_range_succ', hps0, mul_comm]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e'`. Establish `hδ1 : aeval A p * (aeval A r * (((incl K n γ)⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) = 1`. Rewrite using `[← mul_assoc, ← map_mul (aeval A), hpr]`. Conclude with `Units.mul_inv _`. Set `δ : GL (Fin n) K` to `⟨aeval A p, aeval A r * (((incl K n γ)⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K), hδ1, mul_eq_one_comm.1 hδ1⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨δ, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Establish `hj : ∀ j : Fin (Module.finrank k K), ((galAct (s ^ (j : ℕ)) n δ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = aeval A (ps j)` using `fun j => hmapps j`. Establish `e1 : ((List.ofFn fun j : Fin (Module.finrank k K) => galAct (s ^ (j : ℕ)) n δ).prod : GL (Fin n) K).val = (List.ofFn fun j : Fin (Module.finrank k K) => ((galAct (s ^ (j : ℕ)) n δ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)).prod`. Establish `e'` using `map_list_prod (Units.coeHom (Matrix (Fin n) (Fin n) K)) (List.ofFn fun j : Fin (Module.finrank k K) => galAct (s ^ (j : ℕ)) n δ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e'` using `[List.map_ofFn]`. Conclude with `e'`. Establish `e2 : (List.ofFn fun j : Fin (Module.finrank k K) => aeval A (ps j)).prod = aeval A (List.ofFn fun j : Fin (Module.finrank k K) => ps j).prod`. Establish `e'` using `map_list_prod (aeval A) (List.ofFn fun j : Fin (Module.finrank k K) => ps j)`. Rewrite `e'` using `[List.map_ofFn]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e'.symm`. Establish `e3 : (List.ofFn fun j : Fin (Module.finrank k K) => ps j).prod = ∏ i ∈ Finset.range (Module.finrank k K), ps i`. Rewrite using `[List.prod_ofFn, Fin.prod_univ_eq_prod_range ps]`. Use `show ((List.ofFn fun j : Fin (Module.finrank k K) => galAct (s ^ (j : ℕ)) n δ).prod : GL (Fin n) K).val = A`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [hj]`. Rewrite using `[e2, e3, hprod]`. Introduce `x hx`. Conclude with `Commute.units_val_iff.1 (commute_aeval (Commute.units_val_iff.2 hx) p)`. Introduce and unpack `g ⟨y, hy⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hB : (y : Matrix (Fin n) (Fin n) 𝒪[K]).map (algebraMap 𝒪[K] K) = ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * A * (g : Matrix (Fin n) (Fin n) K)` using `congrArg Units.val hy`. Establish `hlp : p ∈ Polynomial.lifts (algebraMap 𝒪[K] K)` using `lifts_of_int p hp`. Establish `hlr : r ∈ Polynomial.lifts (algebraMap 𝒪[K] K)` using `Subsemiring.prod_mem _ fun i _ => lifts_of_int _ fun j => by`. Rewrite using `[Polynomial.coeff_map]`. Use `show valuation K ((s ^ (i + 1) : K ≃ₐ[k] K) (p.coeff j)) ≤ 1`.
-
-Rewrite using `[GroundTheory.LocalField.valuation_algEquiv_apply k K]`. Conclude with `hp j`. Take `⟨Cp, hCp⟩` from `lift_aeval (y : Matrix (Fin n) (Fin n) 𝒪[K]) hlp`. Take `⟨Cr, hCr⟩` from `lift_aeval (y : Matrix (Fin n) (Fin n) 𝒪[K]) hlr`. Establish `inj : Function.Injective fun M : Matrix (Fin n) (Fin n) 𝒪[K] => M.map (algebraMap 𝒪[K] K)` using `Matrix.map_injective Subtype.val_injective`.
-
-Establish `h1 : Cp * (Cr * ((y⁻¹ : GL (Fin n) 𝒪[K]) : Matrix (Fin n) (Fin n) 𝒪[K])) = 1`. Apply `inj` to reduce the goal to its premises. Use `show (Cp * (Cr * ((y⁻¹ : GL (Fin n) 𝒪[K]) : Matrix (Fin n) (Fin n) 𝒪[K]))).map (algebraMap 𝒪[K] K) = (1 : Matrix (Fin n) (Fin n) 𝒪[K]).map (algebraMap 𝒪[K] K)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hCp, hCr, ← mul_assoc, ← map_mul (aeval ((y : Matrix (Fin n) (Fin n) 𝒪[K]).map (algebraMap 𝒪[K] K))), hB, ← conj_aeval, hpr, ← hB, ← Matrix.map_mul, Units.mul_inv]`. Use `⟨⟨Cp, Cr * ((y⁻¹ : GL (Fin n) 𝒪[K]) : Matrix (Fin n) (Fin n) 𝒪[K]), h1, mul_eq_one_comm.1 h1⟩, ?_⟩` and prove the remaining obligations.
-
-Apply `Units.ext` to reduce the goal to its premises. Use `show Cp.map (algebraMap 𝒪[K] K) = ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * aeval A p * (g : Matrix (Fin n) (Fin n) K)`. Rewrite using `[hCp, hB, conj_aeval]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.L.goodDelta :
     UpperTheory.Gal.InertialTypesAlt.L.GoodDelta := by

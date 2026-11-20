@@ -42,17 +42,15 @@ variable {L : SizeData₂ (I.rec7 l Z)}
   {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : B.Word}
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Use `letI := GlobalTheory.Mem.Col2.starE B`. Establish `hm : j ≤ B.R.m` using `by omega`. Take `⟨k₀, h, -, h1, h2, h3, -⟩` from `hJ.pen j hj β`. Establish `h4 : ¬ ∃ i, (J.G i).q.v = P.1.under (𝓞 B.host.F)`. Introduce and unpack `⟨i, hi⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hi` using `[(GlobalTheory.LocMod.PinEx.place_facts _ (J.G i).idem).1]`. Establish `h5` using `((TwistPrimes.twist_primes_away I hW.tr.ok).2 u (W.P.I.tup t) (J.pl i) ((hW.tq.Q t _).1 (J.mem i))).1`. Break down `(under_eq_iff B.host (J.pl i) P.1).1 hi.symm with h6 | h6` into its components or cases. Conclude with `h5.2.1 (h6 ▸ hP)`. Conclude with `h5.2.2.2.1 (h6 ▸ hP)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `finM_map_prV _ (rankN (I.rec7 l Z) j hm) h3 h4`. Establish `h6` using `(TrueColsTest.kStd_spec X u (B.R.N j)).2.1 (P.1.under (𝓞 B.host.F)) fun hT => Formalism.L2.Col.rls_T_notUnder l.pr u _ hT ⟨P.1, hP, rfl⟩`. Establish `hk : Formalism.UG.bc (Formalism.UG.prV (E` using `B.host.E) (P.1.under (𝓞 B.host.F))) (J.A.kb j β) = 1 := by`. Use `Units.ext ?_` and prove the remaining obligations. Establish `h7` using `(hJ.is.kA j hm β).2.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h7` using `[h2, GlobalTheory.AdForm.Model.finM_mul, h1]`. Establish `h8 : (J.A.kb j β).1.map (Formalism.UG.prV (E` using `B.host.E) (P.1.under (𝓞 B.host.F))) = 1 := by`. Rewrite using `[← h7]`. Use `Matrix.map_mul.trans ?_` and prove the remaining obligations. Establish `h6' : (TC.kStd X u (B.R.N j)).1.map (Formalism.UG.prV (E` using `B.host.E) (P.1.under (𝓞 B.host.F))) = 1 := congrArg Units.val h6`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(congrArg₂ (fun x y : Matrix (Fin (B.R.N j)) (Fin (B.R.N j)) (B.host.E ⊗[B.host.F] (P.1.under (𝓞 B.host.F)).adicCompletion B.host.F) => x * y) h6' h5).trans (one_mul _)`. Conclude with `h8`. Establish `e : Formalism.L2.Col.frsF I.sel (I.tup (W.P.I.tup t)) (J.A.p0 j β).1.1 P = (J.A.p0 j β).1.1.deco.1.liftFr ⟨P.1, hP⟩` using `dif_pos hP`. Establish `h9` using `(hJ.is.base j hm β).1`. Rewrite using `[e]`.
-
-Conclude with `GlobalTheory.SeeSaw.BaseFrame.lift_near_one (y := 1) (by rw [one_mul]; exact h9) (by rw [one_mul]; exact h9) h9 (hJ.is.base j hm β).2 ⟨P.1, hP⟩ hk (GlobalTheory.TopStep.liftFr_spec (J.A.p0 j β).1.1.deco.2 ⟨P.1, hP⟩) r c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_frs_sub_kronecker_lt_one (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) {a : _root_.GlobalTheory.Fam.GeometricFamily W u} {t : W.P.T} {J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t} (hJ : J.Reads) (P : BadPr I (W.P.I.tup t))
     (hP : P.1 ∈ (B.primes X).vGs) {j : ℕ} (hj : j + 1 = B.R.m) (β : J.Ch₀ j) (r c) :
@@ -89,17 +87,15 @@ theorem valuation_frs_sub_kronecker_lt_one (hW : _root_.GlobalTheory.Fam.AllFami
     ⟨P.1, hP⟩ hk (GlobalTheory.TopStep.liftFr_spec (J.A.p0 j β).1.1.deco.2 ⟨P.1, hP⟩) r c
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Use `letI := a.fld`. Use `letI := a.val`. Use `letI := a.top`. Use `letI := a.loc`. Establish `hA' : ∀ j (h : j = (I.rec7 l Z).R.m) r s, (a.g.oT j h).iA r s = if r.val = s.val then 1 else 0`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Introduce and unpack `_ rfl`. Conclude with `hA`. Establish `hB' : ∀ j (h : j = (I.rec7 l Z).R.m) r, ((a.g.oT j h).iB *ᵥ a.o.ζ₀) r = if r.val + 1 = B.R.N B.R.m then ((X.piT u : 𝓞 B.host.E) : B.host.E) else 0`. Introduce and unpack `_ rfl r`. Conclude with `hTr.z0 r`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, ⟨e, he, hT⟩, hz⟩` from `hIs.stdG n`. Rewrite using `[(a.G n).last]`. Use `⟨fun c => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[fromCols_apply_inl, hT, Matrix.mul_apply, Finset.sum_eq_single (e c)]`. Rewrite using `[Matrix.submatrix_apply, id, Matrix.one_apply_eq, mul_one, Matrix.map_apply, ← he c]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(congrArg (_root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n) (hA' _ _ r (e c))).trans ?_` and prove the remaining obligations. Use `split_ifs`. Use `exacts [map_one _, map_zero _]`. Introduce `b _ hb`. Rewrite using `[Matrix.submatrix_apply, id, Matrix.one_apply_ne hb, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fun h => absurd (Finset.mem_univ _) h`. Rewrite using `[fromCols_apply_inr, hz]`. Use `Eq.trans ?_ (congrArg (_root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n) (hB' _ (a.G n).hs r))` and prove the remaining obligations. Use `Eq.trans ?_ (map_sum (_root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n) (fun b => (a.g.oT _ (a.G n).hs).iB r b * a.o.ζ₀ b) Finset.univ).symm` and prove the remaining obligations. Use `show ∑ b, _root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n ((a.g.oT _ (a.G n).hs).iB r b) * _root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n (a.o.ζ₀ b) = _`.
-
-Conclude with `Finset.sum_congr rfl fun b _ => (map_mul (_root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n) _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem fm_beta_eq {a : _root_.GlobalTheory.Fam.GeometricFamily W u} (hIs : a.Is) (hTr : a.True) (hA : ∀ r s, (a.g.oT B.R.m rfl).iA r s = if r.val = s.val then 1 else 0)
     (n : Fin a.n) (r) : (∀ c, (a.G n).FM.β r (Sum.inl c) = if r.val = GlobalTheory.SymBridge.zPos c then 1 else 0) ∧
@@ -130,33 +126,31 @@ theorem fm_beta_eq {a : _root_.GlobalTheory.Fam.GeometricFamily W u} (hIs : a.Is
     exact Finset.sum_congr rfl fun b _ => (map_mul (_root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n) _ _).symm
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a hIs hTr hA n t J hJ α γ P hP C hC hj z`. Establish `hint : ∀ x : B.fields.E, _root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n x ∈ 𝒪[(a.G n).k] ↔ Formalism.L2.Col.IntAt P.1 x`. Establish `hR` using `(hIs.tie (fun t => (TopLocFac.nonempty_rowCh (_root_.GlobalTheory.Fam.pk_z W) (_root_.GlobalTheory.Fam.complexLevelStructure W) u a.g hTr.pinX.std t).some) fun t => (TopLocFac.nonempty_colCh _ _).some).2`. Rewrite using `[hP]`. Conclude with `(GlobalTheory.LocMod.PinEx.place_facts _ (hR.idem n).1).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : (a.G n).s + 1 + 1 = B.R.m` using `(a.G n).hs`. Establish `hm : (a.G n).s + 1 ≤ B.R.m` using `Nat.le_of_succ_le hj`. Establish `hPv : P.1 ∈ (B.primes X).vGs` using `hP ▸ (hW.lev.2.1 _).1 (a.pl n).2`. Establish `hlt` using `GlobalTheory.SeeSaw.LevelData.val_lt_one_iff hint`. Take `⟨e', he'⟩` from `exists_xOrd B.R ((a.G n).s + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `exists_topOrd B.R (a.G n).s hs`. Establish `hF` using `_root_.GlobalTheory.Fam.TopFrames.valuation_frs_sub_kronecker_lt_one hW hJ P hPv hs (J.ι _ α)`. Establish `hF'` using `top_near hW.tr.ok hJ.is P hPv hs (J.ι _ γ)`. Establish `hq` using `intAt_q_mul (A := J.A) P hPv hs (J.ι _ α)`. Establish `hco` using `hJ.cosG n α e' he'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : locXi J.A ((a.G n).s + 1) (J.ι _ α) (J.ι _ γ) P (homOf I l Z ((a.G n).s + 1) hj z) = GlobalTheory.TopStep.locTop I.Ch I.sel (I.tup (W.P.I.tup t)) (I.cst (W.P.I.tup t)) (a.G n).s P (castSp B.fields.E (congrArg B.R.N hs) ∘ₗ Formalism.L2.Col.inFr (Formalism.L2.Col.frsF I.sel (I …`. Unfold `locXi`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), dif_pos hs]`. Both sides reduce to the same expression. Rewrite using `[hx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Use `clear hx`. Generalize the expression as in `Formalism.L2.Col.frsF I.sel (I.tup (W.P.I.tup t)) (J.A.p0 ((a.G n).s + 1) (J.ι _ α)).1.1 P = f at hF hq ⊢`. Generalize the expression as in `Formalism.L2.Col.frsF I.sel (I.tup (W.P.I.tup t)) (J.A.p0 ((a.G n).s + 1 + 1) (J.ι _ γ)).1.1 P = f' at hF' ⊢`. Generalize the expression as in `Formalism.L2.Col.repY (J.A.p0 ((a.G n).s + 1) (J.ι _ α)).1.2 = y at hq hco ⊢`. Take `⟨-, -, -, -, -, -, -, -, -, -, g10⟩` from `id (GlobalTheory.SeeSaw.LevelData.type_prime hPv)`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hqv : HeightOneSpectrum.valuation B.fields.E P.1 (Formalism.L2.Col.qOf P.1 : B.fields.E) = WithZero.exp (-1 : ℤ)`. Take `⟨i, g1, -, -, g4, -⟩` from `GlobalTheory.SeeSaw.LevelData.type_prime hPv`. Conclude with `GlobalTheory.AtTypeExists.valuation_norm P.1 (g1 ▸ g4)`. Establish `hy : (Submodule.Quotient.mk ((a.G n).S.y0 (Fin B.R.t)) : _ ⧸ box _ (1 : (a.G n).kˣ)) = Submodule.Quotient.mk fun r => _root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n (f.symm y (e' r))`. Use `GlobalTheory.SeeSaw.StdMatch.mk_eq_mk_of_int fun c => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `(hint _).2 (intAt_sub_of_near hqv hF hq (e' c))`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply, map_sub]`. Establish `h2 : _root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n (y (e' c)) - (a.G n).S.y0 (Fin B.R.t) c ∈ 𝒪[(a.G n).k]` using `hco c`. Establish `h3` using `sub_mem h2 h1`. Rewrite `h3` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Eq.trans ?_ (hC e' (e.trans (finCongr (congrArg B.R.N hs))) he' (fun r => he r) _ _ hq)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (fun w => ((a.G n).S.T (Fin B.R.t)).xiTop (box _ (1 : (a.G n).kˣ)) (a.G n).S.ψ (a.G n).ν (-1) w _) hy)` and prove the remaining obligations. Establish `e1` using `GlobalTheory.SeeSaw.StdMatch.mul_toLoc (_root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n) (rankN (I.rec7 l Z) _ hm) (rankN (I.rec7 l Z) _ hj) f f' e' e (Matrix.of fun r c => _root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n (f (Pi.single (e' c) 1) (finCongr (rank …`. Use `xiTop_frames (a.G n).unitVol (a.G n).S (Fin B.R.t) ((a.G n).FX _ le_rfl) (a.G n).FM (GlobalTheory.SeeSaw.StdMatch.gamma_int (a.G n).q _ (Set.ext (hTr.pinX.xs _ hm).2.2) ((a.G n).latX _ le_rfl)) (GlobalTheory.SeeSaw.StdMatch.gamma_int (a.G n).q _ (Set.ext (hTr.pinX.xs _ hj).2.2) ( …` and prove the remaining obligations. Take `⟨e₁, h1, h2⟩` from `(hIs.stdG n).1 ((a.G n).s + 1) le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `(hlt _).2 (hF (finCongr (rankN (I.rec7 l Z) _ hm) r) (e' c))`. Rewrite `h3` using `[map_sub, apply_ite (_root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n), map_one, map_zero, (he' c).trans (h1 c).symm]`. Establish `h4 : ((a.G n).FX ((a.G n).s + 1) le_rfl).β r c = if r.val = (e₁ c).val then 1 else 0` using `(congrFun (congrFun h2 r) c).trans (Matrix.one_apply.trans (if_congr Fin.ext_iff rfl rfl))`. Conclude with `(congrArg (fun w => valuation (a.G n).k (_ - w)) h4).trans_lt h3`. Establish `h3` using `(hlt _).2 (hF' (finCongr (rankN (I.rec7 l Z) _ hj) r) (e c))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h3` using `[map_sub, apply_ite (_root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n), map_one, map_zero, he c]`. Take `⟨h1, h2⟩` from `_root_.GlobalTheory.Fam.TopFrames.fm_beta_eq hIs hTr hA n r`. Use `show valuation (a.G n).k (_ - (a.G n).FM.β r c) < 1`. Break down `c with c | c` into its components or cases. Conclude with `(congrArg (fun w => valuation (a.G n).k (_ - w)) (h1 c)).trans_lt h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(congrArg (fun w => valuation (a.G n).k (_ - w)) h2).trans_lt ?_` and prove the remaining obligations. Establish `h4` using `(hlt ((X.piT u - 1 : 𝓞 B.host.E) : B.host.E)).2 ((P.1.valuation_lt_one_iff_mem _).2 (g10 u))`. Establish `h5 : _root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n ((X.piT u - 1 : 𝓞 B.host.E) : B.host.E) = _root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n ((X.piT u : 𝓞 B.host.E) : B.host.E) - 1` using `((_root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n).map_sub ((X.piT u : 𝓞 B.host.E) : B.host.E) 1).trans (congrArg _ (_root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n).map_one)`. Rewrite `h4` using `[h5]`. Use `replace h3 : valuation (a.G n).k (_root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n (f' (Pi.single (e (Sum.inr c)) 1) (finCongr (rankN (I.rec7 l Z) _ hj) r)) - if (finCongr (rankN (I.rec7 l Z) _ hj) r).val = B.R.N B.R.m - 1 then 1 else 0) < 1 := h3`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h6 : 0 < B.R.N B.R.m`. Use `(e (Sum.inr c)).2` as an intermediate fact. Rewrite using `[← hs]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hr : r.val + 1 = B.R.N B.R.m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[if_pos (show (finCongr (rankN (I.rec7 l Z) _ hj) r).val = B.R.N B.R.m - 1 from Nat.eq_sub_of_add_eq hr)]`. Rewrite using `[if_pos hr]`. Establish `h7` using `Valuation.map_sub_lt _ h3 h4`. Rewrite `h7` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Rewrite using `[if_neg (show ¬ (finCongr (rankN (I.rec7 l Z) _ hj) r).val = B.R.N B.R.m - 1 from fun h => hr (by`.
-
-Establish `h8 : r.val = B.R.N B.R.m - 1` using `h`. Use the proof step `omega))] at h3`. Rewrite using `[if_neg hr, map_zero]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem xiStd_eq_const_mul_locXi_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → (∀ r s, (a.g.oT B.R.m rfl).iA r s = if r.val = s.val then 1 else 0) → ∀ (n : Fin a.n) (t : W.P.T) (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t), J.Reads → ∀ (α : J.Ch ((a.G n).s + 1)) (γ : J.Ch ((a.G n).s + 1 + 1)) (P : GlobalTheory.QTw.BadPr I (W.P.I.tup t)), P.1 = (a.pl n).1 → ∀ C : ℂ,
   (∀ (e' : GlobalTheory.StepData.XIx (Fin B.R.k) (Fin B.R.t) ((a.G n).s + 1) ≃ Fin (B.R.N ((a.G n).s + 1))) (e : GlobalTheory.StepData.Ix (Fin B.R.k ⊕ Fin ((a.G n).s + 1)) (Fin B.R.t) ((a.G n).s + 2) ⊕ Unit ≃ Fin (B.R.N B.R.m)),

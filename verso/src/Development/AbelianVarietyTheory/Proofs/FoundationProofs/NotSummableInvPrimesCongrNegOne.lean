@@ -9,11 +9,11 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hp : (0 : ℝ) < n` using `by exact_mod_cast (zero_lt_one.trans hn)`. Establish `e : (n : ℝ) ^ x = (n : ℝ) ^ (x - 1) * n`. Rewrite using `[Real.rpow_sub_one hp.ne' x]`. Clear the denominators using the available nonvanishing facts. Establish `hq : 0 < (n : ℝ) ^ (x - 1)` using `Real.rpow_pos_of_pos hp _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hl : (x - 1) * Real.log n ≤ (n : ℝ) ^ (x - 1)`. Rewrite using `[Real.rpow_def_of_pos hp]`. Use `Real.add_one_le_exp (Real.log n * (x - 1))` as an intermediate fact. Use polynomial arithmetic with `[this]`. Establish `hrw : (x - 1) * (Real.log n / (n : ℝ) ^ x) = ((x - 1) * Real.log n / (n : ℝ) ^ (x - 1)) * (1 / n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hrw]`. Use `mul_le_of_le_one_left (by positivity) ((div_le_one hq).2 hl)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem sub_one_mul_log_div_rpow_le (n : ℕ) (hn : 1 < n) {x : ℝ} (hx : 1 < x) :
     (x - 1) * (Real.log n / (n : ℝ) ^ x) ≤ 1 / n := by
@@ -32,19 +32,17 @@ theorem sub_one_mul_log_div_rpow_le (n : ℕ) (hn : 1 < n) {x : ℝ} (hx : 1 < x
   refine mul_le_of_le_one_left (by positivity) ((div_le_one hq).2 hl)
 
 /- English proof (translation)
-Introduce `M hM hs`. Use `haveI : NeZero M := ⟨hM.ne'⟩`. Establish `hD` using `Formalism.HF.apLogDensity M (-1 : ZMod M) isUnit_one.neg`. Unfold `Formalism.HF.LogDensity at hD`. Use `set S := {p : ℕ | p.Prime ∧ p ∈ {p : ℕ | (p : ZMod M) = -1}} with hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : Tendsto (fun x : ℝ => ∑' n : ℕ, (x - 1) * S.indicator (fun m : ℕ => Real.log m / (m : ℝ) ^ x) n) (𝓝[>] 1) (𝓝 (∑' _ : ℕ, (0 : ℝ)))`. Use `tendsto_tsum_of_dominated_convergence hs (fun n => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hn : n ∈ S`. Simplify using `only [Set.indicator_of_mem hn]`. Establish `hp : (0 : ℝ) < n` using `by exact_mod_cast hn.1.pos`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : Continuous fun x : ℝ => (x - 1) * (Real.log n / (n : ℝ) ^ x)`. Use `(continuous_id.sub continuous_const).mul (continuous_const.div ?_ ?_)` and prove the remaining obligations. Conclude with `continuous_const.rpow continuous_id (fun _ => Or.inl hp.ne')`. Introduce `x`. Conclude with `(Real.rpow_pos_of_pos hp x).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(hc.tendsto 1).mono_left (nhdsWithin_le_nhds (s := Set.Ioi (1 : ℝ)))` as an intermediate fact. Simplify using `using this`. Simplify using `only [Set.indicator_of_notMem hn, mul_zero]`. Conclude with `tendsto_const_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with x hx n`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : (1 : ℝ) < x` using `hx`. Distinguish the cases in `hn : n ∈ S`. Establish `hc : n.Prime ∧ (n : ZMod M) = -1` using `hn`. Simplify using `only [Set.indicator_of_mem hn, if_pos hc]`. Establish `hlog : 0 ≤ Real.log n` using `Real.log_nonneg (by exact_mod_cast hc.1.one_lt.le)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (by linarith) (div_nonneg hlog (Real.rpow_nonneg n.cast_nonneg _)))]`. Conclude with `sub_one_mul_log_div_rpow_le n hc.1.one_lt hx`. Establish `hc : ¬ (n.Prime ∧ (n : ZMod M) = -1)` using `hn`. Simplify using `only [Set.indicator_of_notMem hn, if_neg hc, mul_zero, norm_zero, le_refl]`. Simplify using `only [tsum_zero, tsum_mul_left] at h0`.
-
-Establish `hu` using `tendsto_nhds_unique hD h0`. Establish `ht : (0 : ℝ) < M.totient` using `by exact_mod_cast Nat.totient_pos.2 hM`. Rewrite `hu` using `[one_div]`. Conclude with `(inv_pos.2 ht).ne' hu`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_summable_one_div_primes_eq_neg_one :
     ∀ M : ℕ, 0 < M → ¬ Summable fun p : ℕ =>

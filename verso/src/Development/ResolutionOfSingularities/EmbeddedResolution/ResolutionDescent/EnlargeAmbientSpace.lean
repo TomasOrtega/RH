@@ -29,7 +29,7 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
   {p : Y ⟶ Spec (CommRingCat.of k)}
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, hτ, G.comp_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem emb_comp_comp_eq_of_comp_eq (G : EmbeddingDatum k Y p) {A' : Scheme.{u}}
     (q : A' ⟶ Spec (CommRingCat.of k)) (τ : G.ambient ⟶ A')
@@ -49,7 +49,7 @@ def enlargeAmbient (G : EmbeddingDatum k Y p) (A' : Scheme.{u}) [AlgebraicGeomet
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem enlargeAmbient_ambient (G : EmbeddingDatum k Y p) (A' : Scheme.{u})
     [AlgebraicGeometry.IsAffine A'] (q : A' ⟶ Spec (CommRingCat.of k))
@@ -62,7 +62,7 @@ theorem enlargeAmbient_ambient (G : EmbeddingDatum k Y p) (A' : Scheme.{u})
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem enlargeAmbient_ambientToSpec (G : EmbeddingDatum k Y p) (A' : Scheme.{u})
     [AlgebraicGeometry.IsAffine A'] (q : A' ⟶ Spec (CommRingCat.of k))
@@ -87,7 +87,7 @@ theorem enlargeAmbient_emb (G : EmbeddingDatum k Y p) (A' : Scheme.{u})
     (G.enlargeAmbient A' q τ hτ hker hsnc).emb = G.emb ≫ τ := rfl
 
 /- English proof (translation)
-The claim follows from `(Scheme.Hom.ker_comp e σ).symm`.
+A detailed English derivation is pending.
 -/
 private theorem imageIdealSheaf_ker_eq_ker_comp {Yc A A' : Scheme.{u}} (e : Yc ⟶ A)
     [AlgebraicGeometry.IsClosedImmersion e] (σ : A ⟶ A') :
@@ -95,9 +95,9 @@ private theorem imageIdealSheaf_ker_eq_ker_comp {Yc A A' : Scheme.{u}} (e : Yc �
   (Scheme.Hom.ker_comp e σ).symm
 
 /- English proof (translation)
-Establish `himg : imageIdealSheaf τ (Scheme.Hom.ker G.emb) = Scheme.Hom.ker (G.emb ≫ τ)` using `imageIdealSheaf_ker_eq_ker_comp G.emb τ`. Establish `hJ : NonzeroOnComponents (imageIdealSheaf τ (Scheme.Hom.ker G.emb))`. Rewrite using `[himg]`. Conclude with `hker`. Establish `key : ∀ (J : A'.IdealSheafData) (hJ' : NonzeroOnComponents J), J = Scheme.Hom.ker (G.emb ≫ τ) → IsPushforwardBlowupSeq τ (G.toEmbeddedBlowupSequence Alg).ambientSeq (Alg k A' q J hJ' ([] : List A'.IdealSheafData) hsnc).toSequenceOfBlowups → IsPushforwardBlowupSeq τ (G.toEmbeddedB …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `J hJ' rfl h`. Conclude with `h`. Conclude with `key _ hJ himg (hAlg.pushforward k G.ambient A' G.ambientStruct q τ hτ c hc hcodim (Scheme.Hom.ker G.emb) G.nonzeroOnComponents_ker hJ G.sncEmpty hsnc)`.
+A detailed English derivation is pending.
 -/
 theorem isPushforwardBlowupSeq_ambientBlowups_enlargeAmbient [AlgebraicGeometry.IsAffine Y]
     [AlgebraicGeometry.LocallyOfFiniteType p]
@@ -129,7 +129,7 @@ theorem isPushforwardBlowupSeq_ambientBlowups_enlargeAmbient [AlgebraicGeometry.
       (Scheme.Hom.ker G.emb) G.nonzeroOnComponents_ker hJ G.sncEmpty hsnc)
 
 /- English proof (translation)
-Establish `P : ChartPushforward (G.toEmbeddedBlowupSequence Alg) ((G.enlargeAmbient A' q τ hτ hker hsnc).toEmbeddedBlowupSequence Alg)` using `@ChartPushforward.ofIsPushforwardSeq k _ _ Y _ p _ (G.toEmbeddedBlowupSequence Alg) ((G.enlargeAmbient A' q τ hτ hker hsnc).toEmbeddedBlowupSequence Alg) τ (inferInstanceAs (AlgebraicGeometry.IsClosedImmersion τ)) rfl (isPushforwardBlowupSeq_ambientBlowups_enlargeAmbient G Alg hA …`. Conclude with `P.inducedBlowupsWithoutIso_isomorphic (hw k Y p G) (hw k Y p (G.enlargeAmbient A' q τ hτ hker hsnc))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isomorphic_embeddedResolutionRule_enlargeAmbient [AlgebraicGeometry.IsAffine Y]
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.LocallyOfFiniteType p]

@@ -15,15 +15,15 @@ section Nsmul
 variable {k Γ : Type u} [CommRing k] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
 
 /- English proof (translation)
-Set `L : B →ₗ[k] B` to `m • LinearMap.id`. Set `e : B ≃ₗ[k] B` to `LinearEquiv.ofBijective L hB`. Establish `he : ∀ b : B, e b = m • b` using `fun _ => rfl`. Set `φ : B ⟶ B` to `Rep.ofHom ⟨e.symm.toLinearMap, fun g => by`. Use extensionality with `b`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. By extensionality, compare the relevant components.
 
-Apply `e.injective` to reduce the goal to its premises. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Rewrite using `[he, ← map_nsmul, ← he, LinearEquiv.apply_symm_apply]⟩`. Establish `h1 : (m • 𝟙 B) ≫ φ = 𝟙 B`. Use extensionality with `b`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `e.symm (m • b) = b`. Rewrite using `[← he, LinearEquiv.symm_apply_apply]`. Establish `h2 : φ ≫ (m • 𝟙 B) = 𝟙 B`. Use extensionality with `b`. Express the relevant statement in the definitionally equal form `m • e.symm b = b`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← he, LinearEquiv.apply_symm_apply]`. Establish `hf : (fun x : cohomology B n => m • x) = (cohomologyMap (m • 𝟙 B) n).hom`. Use function extensionality and compare the values at `x`. Rewrite using `[cohomologyMap_nsmul_id_apply]`. Rewrite using `[hf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Function.bijective_iff_has_inverse.2 ⟨(cohomologyMap φ n).hom, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← ModuleCat.comp_apply, ← cohomologyMap_comp, h1, cohomologyMap_id]`. Both sides reduce to the same expression. Rewrite using `[← ModuleCat.comp_apply, ← cohomologyMap_comp, h2, cohomologyMap_id]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bijective_nsmul_cohomology (B : Rep.{u} k Γ) [IsDiscreteRep B] (m : ℕ)
     (hB : Function.Bijective fun b : B => m • b) (n : ℕ) :
@@ -91,7 +91,7 @@ noncomputable def coindTraceTermMor (c : G ⧸ (U : Subgroup G)) :
 omit [IsDiscreteRep A] in
 
 /- English proof (translation)
-Use extensionality with `f`. Express the relevant statement in the definitionally equal form `(coindTrace (U : Subgroup G) A).hom f = (∑ c, coindTraceTermMor U A c).hom f`. Rewrite using `[coindTrace_hom_apply, Rep.sum_hom, Representation.IntertwiningMap.sum_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resFunctor_map_coindTrace :
     (Rep.resFunctor (U : Subgroup G).subtype).map (coindTrace (U : Subgroup G) A) =
@@ -112,9 +112,9 @@ instance isDiscreteRep_resFunctor_obj_coind_res :
   isDiscreteRep_res_subtype _ _
 
 /- English proof (translation)
-Rewrite using `[← cohomologyMapAlong_id_eq_cohomologyMap]`. Use `conv_lhs => rw [← Category.id_comp (cohomologyRes _ _ n), ← cohomologyInnerConj_eq_id n (Rep.coind (U : Subgroup G).subtype (Rep.res (U : Subgroup G).subtype A)) x]`. Rewrite using `[cohomologyRes, cohomologyInnerConj, shapiroMap, cohomologyConj, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]`. Use `cohomologyMapAlong_congr _ _ _ _ (by ext s; simp) (fun f => ?_) n` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `coindTraceTerm (U : Subgroup G) A (x : G ⧸ (U : Subgroup G)) ((Rep.coind (U : Subgroup G).subtype (Rep.res (U : Subgroup G).subtype A)).ρ x f) = A.ρ x (f.1 1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coindTraceTerm_apply]`. Express the relevant statement in the definitionally equal form `A.ρ x (f.1 (x⁻¹ * x)) = A.ρ x (f.1 1)`. Rewrite using `[inv_mul_cancel]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyRes_comp_cohomologyMap_coindTraceTermMor (n : ℕ) (x : G) :
     cohomologyRes (Rep.coind (U : Subgroup G).subtype (Rep.res (U : Subgroup G).subtype A))
@@ -134,7 +134,7 @@ theorem cohomologyRes_comp_cohomologyMap_coindTraceTermMor (n : ℕ) (x : G) :
   rw [inv_mul_cancel]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction with`. Consider the case `empty => simp [cohomologyMap_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, cohomologyMap_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cohomologyMap_sum {Γ : Type u} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     {B C : Rep.{u} k Γ} [IsDiscreteRep B] [IsDiscreteRep C] {ι : Type*} (s : Finset ι)
@@ -146,7 +146,7 @@ theorem cohomologyMap_sum {Γ : Type u} [Group Γ] [TopologicalSpace Γ] [IsTopo
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, cohomologyMap_add, ih]
 
 /- English proof (translation)
-Rewrite using `[cohomologyCores, Category.assoc, cohomologyMap_comp_cohomologyRes, resFunctor_map_coindTrace, cohomologyMap_sum, Preadditive.comp_sum, Preadditive.comp_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [(QuotientGroup.out_eq' c).symm]`. Rewrite using `[cohomologyRes_comp_cohomologyMap_coindTraceTermMor, IsIso.inv_hom_id_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyCores_comp_cohomologyRes (n : ℕ) :
     cohomologyCores U A n ≫ cohomologyRes A (U : Subgroup G) n =
@@ -158,7 +158,7 @@ theorem cohomologyCores_comp_cohomologyRes (n : ℕ) :
   rw [cohomologyRes_comp_cohomologyMap_coindTraceTermMor, IsIso.inv_hom_id_assoc]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f => f.hom x) (cohomologyCores_comp_cohomologyRes U A n)`. Simplify `h` using `only [ModuleCat.hom_comp, ModuleCat.hom_sum, LinearMap.comp_apply, LinearMap.sum_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cohomologyRes_cohomologyCores_apply (n : ℕ)
     (x : cohomology (Rep.res (U : Subgroup G).subtype A) n) :
@@ -178,9 +178,9 @@ include hA
 omit [(U : Subgroup G).Normal] in
 
 /- English proof (translation)
-Introduce `x y h`. Establish `hc : ∀ z : cohomology A n, (cohomologyCores U A n).hom ((cohomologyRes A (U : Subgroup G) n).hom z) = (U : Subgroup G).index • z` using `fun z => by`. Rewrite using `[← ModuleCat.comp_apply, cohomologyRes_comp_cohomologyCores]`. Both sides reduce to the same expression. Apply `(bijective_nsmul_cohomology A _ hA n).1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `(U : Subgroup G).index • x = (U : Subgroup G).index • y`. Rewrite using `[← hc, ← hc, h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cohomologyRes_injective_of_bijective (n : ℕ) :
     Function.Injective (cohomologyRes A (U : Subgroup G) n).hom := by
@@ -194,13 +194,13 @@ theorem cohomologyRes_injective_of_bijective (n : ℕ) :
   rw [← hc, ← hc, h]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `cohomologyRes_apply_mem_cohomologyConjInvariants A _ n z`. Introduce `x hx`. Establish `hAU : Function.Bijective fun a : Rep.res (U : Subgroup G).subtype A => (U : Subgroup G).index • a` using `hA`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbij` using `bijective_nsmul_cohomology (Rep.res (U : Subgroup G).subtype A) _ hAU n`. Take `⟨x', hx'⟩` from `hbij.2 x`. Simplify using `only at hx'`. Establish `hinv : ∀ g : G, (cohomologyConj A (U : Subgroup G) n g).hom x' = x'` using `fun g => by`. Apply `hbij.1` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[← map_nsmul, hx']`. Conclude with `hx g`. Use `⟨(cohomologyCores U A n).hom x', ?_⟩` and prove the remaining obligations. Rewrite using `[cohomologyRes_cohomologyCores_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hinv, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← hx', Subgroup.index_eq_card, Nat.card_eq_fintype_card]`.
+A detailed English derivation is pending.
 -/
 theorem range_cohomologyRes_of_bijective (n : ℕ) :
     LinearMap.range (cohomologyRes A (U : Subgroup G) n).hom =

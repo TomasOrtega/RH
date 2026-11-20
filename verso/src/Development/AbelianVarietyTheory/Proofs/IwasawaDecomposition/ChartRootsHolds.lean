@@ -14,11 +14,11 @@ open GlobalTheory.LocM GlobalTheory.LocM.Cht
 namespace GlobalTheory.LocM.RootsPrescribe
 
 /- English proof (translation)
-Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 (show (1 : R) ∈ I ⊔ J from hc ▸ Submodule.mem_top)`. Establish `h1 : u • x ∈ (I * J) • (⊤ : Submodule R L)`. Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem_smul hu hJ`. Establish `h2 : v • x ∈ (I * J) • (⊤ : Submodule R L)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem_smul hv hI`. Establish `h3 : x ∈ (I * J) • (⊤ : Submodule R L)`. Use `Submodule.add_mem _ h1 h2` as an intermediate fact. Rewrite `this` using `[← add_smul, huv, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h3` using `[hp, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨b, -, hb⟩` from `h3`. Conclude with `⟨b, hb.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smul_of_mem_of_coprime {R L : Type*} [CommRing R] [AddCommGroup L] [Module R L] {I J : Ideal R} {r : R}
     (hc : I ⊔ J = ⊤) (hp : I * J = Ideal.span {r}) {x : L} (hI : x ∈ I • (⊤ : Submodule R L))
@@ -36,13 +36,11 @@ theorem exists_smul_of_mem_of_coprime {R L : Type*} [CommRing R] [AddCommGroup L
   exact ⟨b, hb.symm⟩
 
 /- English proof (translation)
-Establish `hN : 0 < l.A * m` using `Nat.mul_pos l.A_pos hm`. Establish `hM : 0 < l.M` using `by have := l.three_le; omega`. Establish `: NeZero (l.A * m)` using `⟨hN.ne'⟩`. Establish `hζ : IsPrimitiveRoot ((I.ζ (l.A * m) : kˣ) : k) (l.A * m)` using `IsPrimitiveRoot.coe_units_iff.2 (I.ζ_prim _ hN)`. Take `⟨i, -, hi, hiz⟩` from `(hζ.isPrimitiveRoot_iff).1 (IsPrimitiveRoot.coe_units_iff.2 hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hiz' : I.ζ (l.A * m) ^ i = w` using `Units.ext (by rw [Units.val_pow_eq_pow_val, hiz])`. Establish `hi1 : (l.A : ℤ) ∣ (i : ℤ) - 1`. Rewrite using `[← (I.ζ_prim l.A l.A_pos).zpow_eq_one_iff_dvd, zpow_sub, zpow_one, zpow_natCast, mul_inv_eq_one]`. Use `conv_lhs => rw [← I.ζ_pow l.A m l.A_pos hm, ← pow_mul, mul_comm m, pow_mul, hiz', hA]`. Take `⟨g, hg, -, hgM, hgA⟩` from `GlobalTheory.SimMult.exists_sim_trivial_of_mult GlobalTheory.SimAlg.sim_group GlobalTheory.exists_sim_lift E H Dw l (l.A * m) i hN (Nat.isCoprime_iff_coprime.2 hi) hi1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨GlobalTheory.LevelTwist.twist I g ((GlobalTheory.SimAlg.sim_group E H Dw hpq).1 g), ?_, fun a => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LevelTwist.twist_ζ, GlobalTheory.LevelTwist.zeta_zpow_congr I hN hg, zpow_natCast, hiz']`. Conclude with `GlobalTheory.LevelTwist.ev_congr I l.A_pos (hgA a)`. Use `GlobalTheory.LevelTwist.ev_congr I hM ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `exists_smul_of_mem_of_coprime l.coprime l.prod (hgM a) (Submodule.sub_mem _ (GlobalTheory.LevelTwist.map_mem_smul_top _ _ ha) ha)`.
-
-Conclude with `⟨b, hb.trans (Nat.cast_smul_eq_nsmul _ _ _)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_one {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     (l : Level H) {k : Type} [Field k] {Q : Type} [Group Q] {act : 𝓞 E → Q → Q} {e : ℕ → Q → Q → kˣ → Prop}
@@ -70,11 +68,11 @@ theorem exists_one {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Recip
     exact ⟨b, hb.trans (Nat.cast_smul_eq_nsmul _ _ _)⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l k _ Q _ act e I z hpq hz hzp hA`. Establish `hM : 0 < l.M` using `by have := l.three_le; omega`. Establish `key` using `fun j : ℕ => exists_one l I hpq j.factorial_pos (hz _ (Nat.mul_pos l.A_pos j.factorial_pos)) ((hzp _ _ l.A_pos j.factorial_pos).trans hA)`. Use `choose J hJ hJA hJM using key`. Take `⟨I', hI'⟩` from `GlobalTheory.Ex.TateLimit.exists_limit E H Dw k Q act e J`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨I', fun n hn => ?_, fun a => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨j, hj, -, h⟩` from `hI' n hn n`. Take `⟨t, ht⟩ : n ∣ l.A * j.factorial` from `(Nat.dvd_factorial hn hj).mul_left _`. Establish `ht0 : 0 < t` using `Nat.pos_of_mul_pos_left (ht ▸ Nat.mul_pos l.A_pos j.factorial_pos : 0 < n * t)`. Rewrite using `[h, ← (J j).ζ_pow n t hn ht0, ← hzp n t hn ht0, ← ht, hJ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j, -, h, -⟩` from `hI' l.A l.A_pos 0`. Rewrite using `[h, hJA]`. Take `⟨j, -, h, -⟩` from `hI' l.M hM 0`. Rewrite using `[h, hJM j a ha]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem roots : GlobalTheory.LocM.Cht.RootsSt := by
   intro E _ _ _ H Dw l k _ Q _ act e I z hpq hz hzp hA

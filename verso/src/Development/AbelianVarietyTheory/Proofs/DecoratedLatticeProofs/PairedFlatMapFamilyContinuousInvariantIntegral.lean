@@ -25,7 +25,7 @@ namespace GlobalTheory.Unf.FB.TFlatFam
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ}
 
 /- English proof (translation)
-Establish `e : ((a, h) : GA D J.W × GA D B.V) = (a, 1) * (1, h)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem om_split (s : StepFB ψ J B) (a : GA D J.W) (h : GA D B.V) (Φ : WO J.W B.V → ℂ) :
     s.om (a, h) Φ = s.om (a, 1) (s.om (1, h) Φ) := by
@@ -33,9 +33,9 @@ theorem om_split (s : StepFB ψ J B) (a : GA D J.W) (h : GA D B.V) (Φ : WO J.W 
   rw [e, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Establish `hc` using `GlobalTheory.T.jacobiToBesselFlat_intertwines_weilAction D hD ψ σ J B s (s.om (1, h) Φ) (s.weil.om_pres _ _ hΦ) h₀ 1`. Rewrite `hc` using `[(embA B.d B.o).map_one, ← om_split]`. Establish `h1 : B.o.emb ((1 : GA D B.A), (1 : GA D B.L)) = 1` using `B.o.emb.map_one`. Rewrite `hc` using `[h1]`. Unfold `tFlat pairKer`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hc, h1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tFlat_eq_pairKer (hD : Descent D) (s : StepFB ψ J B) (vL : VolM D B.L.rank J.W₀.rank)
     (Y : GA D J.W₀ → WO J.W₀ B.L → ℂ) (Φ : WO J.W B.V → ℂ) (hΦ : IsThetaFunO ψ J.W B.V Φ) (h₀ : GA D J.W₀)
@@ -49,13 +49,13 @@ theorem tFlat_eq_pairKer (hD : Descent D) (s : StepFB ψ J B) (vL : VolM D B.L.r
   rw [hc, h1]
 
 /- English proof (translation)
-Simplify using `[symplOH, symplO, hO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplOH_zero_left (S T : HSp D) (y : WO S T) : symplOH S T 0 y = 0 := by
   simp [symplOH, symplO, hO]
 
 /- English proof (translation)
-Establish `h` using `Complex.conj_mul' (ψ a)`. Rewrite `h` using `[hψ.1.2.1 a]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem star_psi_mul (hψ : IsStdChar D ψ (-1)) (a : AF D.host.F) : star (ψ a) * ψ a = 1 := by
   have h := Complex.conj_mul' (ψ a)
@@ -63,13 +63,13 @@ theorem star_psi_mul (hψ : IsStdChar D ψ (-1)) (a : AF D.host.F) : star (ψ a)
   simpa using h
 
 /- English proof (translation)
-Take `⟨γ₀, rfl⟩` from `mem_ratMx.1 hγ`. Establish `hmem : (o.resT J.W₀).symm (0, rat γ₀) ∈ ratL B.V₀ J.W₀`. Rewrite using `[o.mem_ratL_resT, AddEquiv.apply_symm_apply]`. Conclude with `⟨zero_mem _, ⟨γ₀, rfl⟩⟩`. Take `⟨g₀, hg₀⟩` from `hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hg : ratW B.V₀ J.W₀ g₀ = (o.resT J.W₀).symm (0, rat γ₀)` using `hg₀`. Establish `hsplit : (o.resT J.W₀).symm (0, rat γ₀ + v) = ratW B.V₀ J.W₀ g₀ + (o.resT J.W₀).symm (0, v)`. Rewrite using `[hg, ← map_add, Prod.mk_add_mk, zero_add]`. Establish `hsym : symplOH J.W₀ B.V₀ (ratW B.V₀ J.W₀ g₀) ((o.resT J.W₀).symm (0, v)) = symplOH J.W₀ B.L (ratW B.L J.W₀ γ₀) v`. Rewrite using `[hg, o.symplOH_resT, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_left, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hy'` using `hy γ₀ v`. Establish `hrat : ratW B.L J.W₀ γ₀ = rat γ₀` using `rfl`. Rewrite `hy'` using `[hrat]`. Rewrite using `[hsplit, hΞ.quasi, hsym, hy', hrat, star_mul']`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem pair_periodic (hψ : IsStdChar D ψ (-1)) (o : OrthDec B.V₀ B.A B.L) (Ξ : WO J.W₀ B.V₀ → ℂ)
     (hΞ : IsThetaFunO ψ J.W₀ B.V₀ Ξ) (y : WO J.W₀ B.L → ℂ)
@@ -117,19 +117,17 @@ theorem tFlat_eq_int {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {J : J
     tFlat s vL y Ψ = ∫ v in vL.𝓕, flatFB s Ψ ((B.o.resT J.W₀).symm (0, v)) * star (y v) ∂vL.μ := rfl
 
 /- English proof (translation)
-Introduce `D hD ψ σ J B s vL Y Φ hY hΦ`. Establish `hψ : IsStdChar D ψ (-1)` using `s.weil.std`. Establish `hflat : ∀ h, IsThetaFunO ψ J.W₀ B.V₀ (flatFB s (s.om (1, h) Φ))` using `fun h => (GlobalTheory.T.flatThetaMaps_preserve_thetaFunctions D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) ψ).2 σ J B s _ (s.weil.om_pres _ _ hΦ)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hxo, hx⟩` from `GlobalTheory.T.exists_mem_orb_rat_eq_x0 D σ B`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hfl` using `GlobalTheory.T.continuous_flatMap_weilRepresentation_joint D ψ J.W J.W₀ B.V B.V₀ (σ + 1) σ J.d B.d s.vS s.vT s.χV s.χW s.om s.weil s.vU x hxo.1 Φ hΦ`. Rewrite `hfl` using `[hx]`. Set `f : Mx D B.L.rank J.W₀.rank × (GA D J.W₀ × GA D B.V) → (GA D J.W × GA D B.V) × Mx D J.W₀.rank σ × WO J.W₀ B.V₀` to `fun vp => ((J.d.emb0 vp.2.1, vp.2.2), ((0 : Mx D J.W₀.rank σ), (B.o.resT J.W₀).symm (0, vp.1)))`. Establish `hf : Continuous f` using `((J.d.continuous_embed.comp (continuous_fst.comp continuous_snd)).prodMk (continuous_snd.comp continuous_snd)).prodMk (continuous_const.prodMk ((B.o.continuous_resT_symm J.W₀).comp (continuous_const.prodMk continuous_fst)))`. Establish `h1` using `hfl.comp hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `K : Mx D B.L.rank J.W₀.rank → GA D J.W₀ × GA D B.V → ℂ` to `fun v p => flatFB s (s.om (J.d.emb0 p.1, p.2) Φ) ((B.o.resT J.W₀).symm (0, v)) * star (Y p.1 v)`. Establish `h2 : Continuous fun vp : Mx D B.L.rank J.W₀.rank × (GA D J.W₀ × GA D B.V) => star (Y vp.2.1 vp.1)` using `continuous_star.comp (hY.cont.comp ((continuous_fst.comp continuous_snd).prodMk continuous_fst))`. Establish `hKc : Continuous (Function.uncurry K)`. Establish `e : Function.uncurry K = fun vp => (fun q : (GA D J.W × GA D B.V) × Mx D J.W₀.rank σ × WO J.W₀ B.V₀ => flatAt ψ J.d B.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 s.vU.ν (x0 B) q.2.1 (s.om q.1 Φ) q.2.2) (f vp) * star (Y vp.2.1 vp.1)`. Use function extensionality and compare the values at `vp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.uncurry, K, f, flatFB_eq]`. Rewrite using `[e]`. Conclude with `h1.mul h2`. Establish `hKp : ∀ γ ∈ ratMx D B.L.rank J.W₀.rank, ∀ v p, K (γ + v) p = K v p`. Introduce `γ hγ v p`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hΞ : IsThetaFunO ψ J.W₀ B.V₀ (flatFB s (s.om (J.d.emb0 p.1, p.2) Φ))` using `(GlobalTheory.T.flatThetaMaps_preserve_thetaFunctions D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) ψ).2 σ J B s _ (s.weil.om_pres _ _ hΦ)`. Conclude with `pair_periodic hψ B.o _ hΞ (Y p.1) (hY.quasi p.1) γ hγ v`. Establish `hK` using `(GlobalTheory.T.adelicMatrixQuotient_periodicIntegral_continuous_param D B.L.rank J.W₀.rank vL (GA D J.W₀ × GA D B.V) K hKc hKp).2.1`. Simplify using `only [tFlat_eq_int]`. Conclude with `hK`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ hγ h₀ h`. Rewrite using `[tFlat_eq_pairKer hD s vL Y Φ hΦ, tFlat_eq_pairKer hD s vL Y Φ hΦ]`. Conclude with `(GlobalTheory.T.pairedThetaKernel_continuous_and_rationally_invariant D ψ σ J B s vL Y _ hY (hflat h)).2.1 γ hγ h₀ 1`. Introduce `h`. Unfold `handFB`.
-
-Use `congr 1`. Use function extensionality and compare the values at `h₀`. Conclude with `(tFlat_eq_pairKer hD s vL Y Φ hΦ h₀ h).symm`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7), Descent D → ∀ (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (J : JacLev D (σ + 1)) (B : BesLev D σ) (s : StepFB ψ J B), ∀ (vL : VolM D B.L.rank J.W₀.rank) (Y : GA D J.W₀ → WO J.W₀ B.L → ℂ) (Φ : WO J.W B.V → ℂ), IsQuasiFam ψ J.W₀ B.L Y → IsThetaFunO ψ J.W B.V Φ → (Continuous fun p : GA D J.W₀ × GA D B.V => tFlat s vL (Y p.1) (s.om (J.d.emb0 p.1, p.2) Φ)) ∧ (∀ γ ∈ GQ J.W₀, ∀ h₀ h, tFlat s vL (Y (γ * h₀)) (s.om (J.d.emb0 (γ * h₀), h) Φ) = tFlat s vL (Y h₀) (s.om (J.d.emb0 h₀, h) Φ)) ∧ ∀ h, handFB s vL Y (flatFB s (s.om (1, h) Φ)) 1 = ∫ h₀ in J.v0.𝓕, tFlat s vL (Y h₀) (s.om (J.d.emb0 h₀, h) Φ) ∂J.v0.μ := by
   intro D hD ψ σ J B s vL Y Φ hY hΦ

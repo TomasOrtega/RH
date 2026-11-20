@@ -21,11 +21,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {F : Type} [Field F] {e : F ≃+* c.F} {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ N}
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Take `⟨g₁, hg₁, p₁, hp₁, hc₁⟩` from `hL`. Take `⟨t, ht⟩` from `GlobalTheory.T.eigen_frame_weyl_permutation hV f₀ w (RingHom.id Ω) ψ rfl rfl g₁ g a hg₁ hg`. Establish `hc₁' : (Φ.C i).Carries p₁ g`. Take `⟨y, ψ', φ₁, f, t₀, t', hp', hf0, hf⟩` from `hc₁`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, ψ', φ₁, f, t₀, _, hp', hf0, GlobalTheory.T.eigen_frame_composition f g₁ g ψ' (RingHom.id Ω) t' t hf ht⟩`. Establish `hs : (spMap ψ ≫ hV.fromSpec) ≫ genStr Z = spMap (ψ.comp φV)`. Rewrite using `[Category.assoc, hstr]`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Take `⟨q, _, hq⟩` from `Φ.lifts Ω (ψ.comp φV) (spMap ψ ≫ hV.fromSpec) hs g`. Establish `h1` using `hq ⟨j, p⟩ ⟨hp, hc⟩`. Establish `h2` using `hq ⟨i, p₁⟩ ⟨hp₁, hc₁'⟩`. Conclude with `congrArg Sigma.fst (h1.trans h2.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lands_unique (Φ : FlagTor Z e U) {V : (gen Z).Opens} (hV : IsAffineOpen V) {φV : c.F →+* Γ(gen Z, V)}
     (f₀ : EigFrame Z φV (hV.fromSpec ≫ genι Z)) (hstr : hV.fromSpec ≫ genStr Z = spMap φV)

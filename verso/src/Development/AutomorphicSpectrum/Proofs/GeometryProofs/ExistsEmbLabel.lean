@@ -10,19 +10,17 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GroundTheory.Heights₂.Heig
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.FamEx
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ConjEqNegOfSquare.conj_eq_neg_of_sq hd h`.
+A detailed English derivation is pending.
 -/
 theorem conj_eq_neg_of_sq {d : ℕ} (hd : 0 < d) {z : ℂ} (h : z ^ 2 = -(d : ℂ)) : starRingEnd ℂ z = -z :=
   _root_.UpperTheory.Reformulated.B.ConjEqNegOfSquare.conj_eq_neg_of_sq hd h
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c κ lab`. Break down `lab with τ | τ` into its components or cases. Use `⟨κ.comp (τ.1.codRestrict c.F (c.conj τ.1)), rfl, fun ρ hρ => ?_⟩ show κ _ = κ ρ` and prove the remaining obligations. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `τ.2.trans hρ.symm`. Use `⟨κ.comp ((τ.1.codRestrict c.F (c.conj τ.1)).comp (IsCMField.complexConj E : E →+* E)), ?_, fun ρ hρ => ?_⟩` and prove the remaining obligations. Use `RingHom.ext fun a => ?_ show κ _ = κ _` and prove the remaining obligations. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show τ.1 ((H.bar a : 𝓞 E) : E) = τ.1 (IsCMField.complexConj E (a : E))`. Rewrite using `[H.bar_eq]`. Use `show κ _ = -κ ρ`. Rewrite using `[← map_neg]`. Use `congr 1`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show τ.1 (IsCMField.complexConj E (H.rt : E)) = -(ρ : ℂ)`. Rewrite using `[IsCMField.complexEmbedding_complexConj, τ.2, hρ]`. Conclude with `conj_eq_neg_of_sq H.d_prime.pos H.sqrt_neg_disc_sq`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_emb_label : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Tor.Level H) (c : Coeff l) (κ : c.F →+* ℂ) (lab : CMType H ⊕ CMType H), ∃ s : E →+* ℂ, κ.comp (labelEmb c lab) = s.comp (algebraMap (𝓞 E) E) ∧ ∀ ρ : c.F, (ρ : ℂ) = H.rt0 → s (H.rt : E) = Sum.elim (fun _ => κ ρ) (fun _ => -κ ρ) lab := by
   intro E _ _ _ H l c κ lab

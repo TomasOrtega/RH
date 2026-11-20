@@ -19,12 +19,12 @@ variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 abbrev stabR (h : Hfin X u) : Subgroup (Hfin X u) := gamR X u ⊓ (kR X u).map (MulAut.conj h).toMonoidHom
 
 /- English proof (translation)
-The claim follows from `(Formalism.UG.stabGL X.B.I.Lf).one_mem`.
+A detailed English derivation is pending.
 -/
 theorem kset_one : (1 : X.B.I.Gf) ∈ X.B.I.Kset := (Formalism.UG.stabGL X.B.I.Lf).one_mem
 
 /- English proof (translation)
-Rewrite `hg` using `[mem_map_conj, mem_kR_iff]`. Establish `e : h⁻¹ * g⁻¹ * h = (h⁻¹ * g * h)⁻¹` using `by group`. Rewrite using `[e, Subgroup.coe_inv]`. Conclude with `kset_inv' X.B.I hg`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_kset {h g : Hfin X u} (hg : g ∈ (kR X u).map (MulAut.conj h).toMonoidHom) :
     ((h⁻¹ * g⁻¹ * h : Hfin X u) : X.B.I.Gf) ∈ X.B.I.Kset := by
@@ -38,7 +38,7 @@ variable {X u}
 def matR {g : Hfin X u} (hg : g ∈ gamR X u) : GL (Fin X.B.I.n) X.B.I.E := Classical.choose (gamR_mat hg)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (gamR_mat hg)`.
+A detailed English derivation is pending.
 -/
 theorem matR_spec {g : Hfin X u} (hg : g ∈ gamR X u) :
     matR hg ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J ∧
@@ -46,9 +46,9 @@ theorem matR_spec {g : Hfin X u} (hg : g ∈ gamR X u) :
   Classical.choose_spec (gamR_mat hg)
 
 /- English proof (translation)
-Take `⟨hM, hMf⟩` from `matR_spec (Subgroup.mem_inf.1 hg).1`. Establish `hfix : ∀ y ∈ fixSet X u, (matR (Subgroup.mem_inf.1 hg).1 : Matrix _ _ _).map (Formalism.UG.inclE (F` using `X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F)) *ᵥ incl X.B.I y = incl X.B.I y := fun y hy => by`. Rewrite using `[← hMf]`. Conclude with `hfin_fix X u g y hy`. Use `⟨matE_isom X _ hM, fun a => matE_fix X u _ hfix _ (Or.inl (Or.inl ⟨a, rfl⟩)), fun a => matE_fix X u _ hfix _ (Or.inl (Or.inr ⟨a, rfl⟩)), matE_fix X u _ hfix _ (Or.inr rfl), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : g * h * (h⁻¹ * g⁻¹ * h) = h` using `by group`. Use `lat_act X u g h (h⁻¹ * g⁻¹ * h) _ hMf (stab_kset X u (Subgroup.mem_inf.1 hg).2)` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matR_mem (h g : Hfin X u) (hg : g ∈ stabR X u h) :
     matE X (matR (Subgroup.mem_inf.1 hg).1) ∈ AH X u (lat X u h) := by
@@ -64,21 +64,19 @@ theorem matR_mem (h g : Hfin X u) (hg : g ∈ stabR X u h) :
   exact this.symm
 
 /- English proof (translation)
-Set `Φ : ↥(stabR X u h) → ↥(AH X u (lat X u h))` to `fun g => ⟨matE X (matR (Subgroup.mem_inf.1 g.2).1), matR_mem h g g.2⟩`. Establish `hinj : Function.Injective Φ`. Introduce `g g' hgg`. Establish `e1 : matE X (matR (Subgroup.mem_inf.1 g.2).1) = matE X (matR (Subgroup.mem_inf.1 g'.2).1)` using `congrArg Subtype.val hgg`. Establish `e2` using `matE_inj X e1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f1` using `(matR_spec (Subgroup.mem_inf.1 g.2).1).2`. Establish `f2` using `(matR_spec (Subgroup.mem_inf.1 g'.2).1).2`. Establish `e3 : X.B.I.fmat ((g : Hfin X u) : X.B.I.Gf) = X.B.I.fmat ((g' : Hfin X u) : X.B.I.Gf)`. Rewrite using `[f1, f2, e2]`. Conclude with `Subtype.ext (Subtype.ext (Subtype.ext (Units.ext e3)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective Φ`. Introduce and unpack `⟨γ, hγ⟩`. Take `⟨hi, he, hf, hz, hl⟩` from `hγ`. Use `set g := gOf X u γ hi he hf hz with hgdef`. Establish `hgR : g ∈ gamR X u` using `(mem_gamR_iff X u g).2 ⟨glOf X γ, glOf_unitary X γ hi, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlat : lat X u (g * h * 1) = lat X u h`. Rewrite using `[lat_act X u g h 1 (glOf X γ) rfl (kset_one X), matE_glOf, hl]`. Establish `hgK : g ∈ (kR X u).map (MulAut.conj h).toMonoidHom`. Rewrite using `[mem_map_conj, mem_kR_iff]`. Establish `hK` using `LatDictK.dict_K X ((h : X.B.I.Gf) * X.xu u) (((g * h * 1 : Hfin X u) : X.B.I.Gf) * X.xu u) (latOf X u h) (fun y => Iff.rfl) (fun y => by show y ∈ latOf X u h ↔ y ∈ latOf X u (g * h * 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← lat_coe X u h, ← lat_coe X u (g * h * 1), hlat])`. Establish `e4 : ((h : X.B.I.Gf) * X.xu u)⁻¹ * (((g * h * 1 : Hfin X u) : X.B.I.Gf) * X.xu u) = (X.xu u)⁻¹ * ((h⁻¹ * g * h : Hfin X u) : X.B.I.Gf) * X.xu u`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_one]`. Use `group`. Rewrite `hK` using `[e4]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e5 : ((h⁻¹ * g * h : Hfin X u) : X.B.I.Gf) = X.xu u * ((X.xu u)⁻¹ * ((h⁻¹ * g * h : Hfin X u) : X.B.I.Gf) * X.xu u) * (X.xu u)⁻¹` using `by group`. Rewrite using `[e5]`. Conclude with `kset_mul' X.B.I (kset_mul' X.B.I (X.xu_K u) hK) (kset_inv' X.B.I (X.xu_K u))`. Establish `hg : g ∈ stabR X u h` using `Subgroup.mem_inf.2 ⟨hgR, hgK⟩`. Use `⟨⟨g, hg⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show matE X (matR (Subgroup.mem_inf.1 hg).1) = γ`. Establish `f1` using `(matR_spec (Subgroup.mem_inf.1 hg).1).2`. Establish `e6 : matR (Subgroup.mem_inf.1 hg).1 = glOf X γ`. Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.map_injective (inclInj_holds X)` to reduce the goal to its premises.
-
-Use `show ((matR (Subgroup.mem_inf.1 hg).1 : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F)) = ((glOf X γ : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map …`. Rewrite using `[← f1]`. Both sides reduce to the same expression. Rewrite using `[e6, matE_glOf]`. Conclude with `Nat.card_congr (Equiv.ofBijective Φ ⟨hinj, hsurj⟩)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_stab (h : Hfin X u) : Nat.card ↥(stabR X u h) = Nat.card ↥(AH X u (lat X u h)) := by
   let Φ : ↥(stabR X u h) → ↥(AH X u (lat X u h)) := fun g =>

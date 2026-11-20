@@ -20,7 +20,7 @@ def hypComplement (h : HermitianForm F E W) (v w : W) : Submodule E W :=
   LinearMap.ker (h.toSesq v) ⊓ LinearMap.ker (h.toSesq w)
 
 /- English proof (translation)
-Simplify using `[hypComplement]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_hypComplement {h : HermitianForm F E W} {v w x : W} :
     x ∈ hypComplement h v w ↔ h.toSesq v x = 0 ∧ h.toSesq w x = 0 := by
@@ -37,14 +37,14 @@ namespace GaussianPlane
 def w0G : Fin 2 → Eg := ![1 / 2, -1 / 2]
 
 /- English proof (translation)
-The claim follows from `map_ofNat _ 2`.
+A detailed English derivation is pending.
 -/
 theorem conj_two_G : conj ℚ Eg (2 : Eg) = 2 := map_ofNat _ 2
 
 /- English proof (translation)
-Rewrite `hx` using `[mem_hypComplement, hG_apply, hG_apply]`. Take `⟨h1, h2⟩` from `hx`. Simplify using `[v0, w0G, conj_two_G] at h1 h2`. Establish `e0 : x 0 = 0` using `by linear_combination h2 + (1 / 2 : Eg) * h1`. Establish `e1 : x 1 = 0` using `by linear_combination h2 - (1 / 2 : Eg) * h1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `e0`. Conclude with `e1`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem_hypComplementG {x : Fin 2 → Eg} (hx : x ∈ hypComplement hG v0 w0G) :
     x = 0 := by

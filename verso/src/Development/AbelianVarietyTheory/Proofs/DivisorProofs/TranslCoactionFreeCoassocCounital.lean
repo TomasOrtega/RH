@@ -12,15 +12,15 @@ variable {R A B : Type} [CommRing R] [CommRing A] [HopfAlgebra R A] [CommRing B]
   (f : A →ₐc[R] B)
 
 /- English proof (translation)
-Set `F : A ⊗[R] (A ⊗[R] A) →ₗ[R] A ⊗[R] (B ⊗[R] B)` to `(TensorProduct.map (f : A →ₗ[R] B) (f : A →ₗ[R] B)).lTensor A`. Establish `h1 : ∀ w : A ⊗[R] A, TensorProduct.assoc R A B B (((f : A →ₗ[R] B).lTensor A ∘ₗ comul).rTensor B ((f : A →ₗ[R] B).lTensor A w)) = F (TensorProduct.assoc R A A A ((comul (R` using `R)).rTensor A w)) := by`. Introduce `w`. Proceed by induction on `w with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a b`. Simplify using `only [LinearMap.lTensor_tmul, LinearMap.rTensor_tmul, LinearMap.comp_apply]`. Generalize the expression as in `comul (R := R) a = w`. Proceed by induction on `w with`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add u v hu hv => simp only [map_add, add_tmul, hu, hv]`. Consider the case `tmul u v => simp [F]`. Establish `h2 : ∀ w : A ⊗[R] A, (comul (R` using `R) (A := B)).lTensor A ((f : A →ₗ[R] B).lTensor A w) = F ((comul (R := R)).lTensor A w) := by`. Introduce `w`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a b`. Simplify using `only [LinearMap.lTensor_tmul, F]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Conclude with `(LinearMap.congr_fun (CoalgHomClass.map_comp_comul f) b).symm`. Rewrite using `[h1, h2, Coalgebra.coassoc_apply]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coassoc (a : A) :
     TensorProduct.assoc R A B B (((f : A →ₗ[R] B).lTensor A ∘ₗ comul).rTensor B
@@ -57,7 +57,7 @@ theorem coassoc (a : A) :
   rw [h1, h2, Coalgebra.coassoc_apply]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, CoalgHomClass.counit_comp, Coalgebra.lTensor_counit_comul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem counit_law (a : A) :
     TensorProduct.rid R A ((counit (R := R) (A := B)).lTensor A
@@ -69,11 +69,11 @@ theorem counit_law (a : A) :
 end GlobalTheory.TranslFree
 
 /- English proof (translation)
-Introduce `p R _ G n`. Use `⟨fun a => GlobalTheory.TranslFree.coassoc (G.resOne n) a, fun a => GlobalTheory.TranslFree.counit_law (G.resOne n) a, fun z => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `LinearMap.lTensor_surjective (G.A (n + 1)) (g := (G.resOne n : G.A (n + 1) →ₗ[R] G.A 1)) (G.resOne_surjective n) z`. Take `⟨x, rfl⟩` from `GlobalTheory.HopfQuot.shear_surjective (R := R) y`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Consider the case `tmul u v`. Rewrite using `[Algebra.TensorProduct.productMap_apply_tmul, GlobalTheory.HopfQuot.shear_tmul, transl_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `comul (R := R) v = w`. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, mul_add, smul_add, hs, ht]`. Consider the case `tmul s t => simp [TensorProduct.smul_tmul']`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem GlobalTheory.PDivGroup.transl_free :
     ∀ {p : ℕ} {R : Type} [CommRing R] (G : PDivGroup p R) (n : ℕ), (∀ a, TensorProduct.assoc R (G.A (n + 1)) (G.A 1) (G.A 1) ((G.transl n).toLinearMap.rTensor (G.A 1) (G.transl n a)) = (Coalgebra.comul (R := R) (A := G.A 1)).lTensor (G.A (n + 1)) (G.transl n a)) ∧ (∀ a, TensorProduct.rid R (G.A (n + 1)) ((Coalgebra.counit (R := R) (A := G.A 1)).lTensor (G.A (n + 1)) (G.transl n a)) = a) ∧ Function.Surjective (Algebra.TensorProduct.productMap (Algebra.TensorProduct.includeLeft : G.A (n + 1) →ₐ[R] G.A (n + 1) ⊗[R] G.A 1) (G.transl n)) := by

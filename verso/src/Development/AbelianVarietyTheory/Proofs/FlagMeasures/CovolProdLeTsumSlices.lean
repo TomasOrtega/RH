@@ -6,21 +6,19 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.FlagMeas
 
 /- English proof (translation)
-Introduce `G₁ G₂ _ _ _ _ _ μ₁ μ₂ _ _ _ Γ K A ι _ x Γc Ac hK hΓ hA hfin`. Use `ENNReal.le_of_forall_pos_le_add fun ε hε hb => ?_` and prove the remaining obligations. Take `⟨ε', hε', hsum⟩` from `ENNReal.exists_pos_sum_of_countable (ε := (ε : ENNReal)) (by exact_mod_cast hε.ne') ι`. Establish `key : ∀ c, ∃ D : Set G₁, MeasurableSet D ∧ μ₂ K * μ₁ D ≤ μ₂ K * covol (Γc c) μ₁ (Ac c) + ε' c ∧ (D = Set.univ ∨ ∀ y ∈ Ac c, ∃ g ∈ Γc c, g * y ∈ D)`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h0 : μ₂ K = 0`. Conclude with `⟨Set.univ, MeasurableSet.univ, by simp [h0], Or.inl rfl⟩`. Establish `hc : μ₂ K * covol (Γc c) μ₁ (Ac c) ≠ ⊤` using `ne_top_of_le_ne_top hb.ne (mul_le_mul_right (ENNReal.le_tsum c) _)`. Establish `hlt : μ₂ K * covol (Γc c) μ₁ (Ac c) < μ₂ K * covol (Γc c) μ₁ (Ac c) + ε' c` using `ENNReal.lt_add_right hc (by exact_mod_cast (hε' c).ne')`. Establish `h2 : μ₂ K * covol (Γc c) μ₁ (Ac c) = ⨅ (D : Set G₁) (_ : MeasurableSet D) (_ : ∀ y ∈ Ac c, ∃ g ∈ Γc c, g * y ∈ D), μ₂ K * μ₁ D`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [covol, ENNReal.mul_iInf_of_ne h0 hfin]`. Rewrite `hlt` using `[h2]`. Simplify using `only [iInf_lt_iff] at hlt`. Take `⟨D, hD, hcov, hlt⟩` from `hlt`. Rewrite `hlt` using `[← h2]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨D, hD, hlt.le, Or.inr hcov⟩`. Use `choose D hDm hDle hDcov using key`. Establish `hKm : ∀ c, MeasurableSet ((fun g => (x c)⁻¹ * g) ⁻¹' (K : Set G₂))` using `fun c => measurable_const_mul _ hK`. Establish `h1 : covol (Γ : Set (G₁ × G₂)) (μ₁.prod μ₂) A ≤ (μ₁.prod μ₂) (⋃ c, D c ×ˢ ((fun g => (x c)⁻¹ * g) ⁻¹' (K : Set G₂)))`. Use `iInf_le_of_le _ (iInf_le_of_le (MeasurableSet.iUnion fun c => (hDm c).prod (hKm c)) (iInf_le_of_le ?_ le_rfl))` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨c, γ, hγ, k, hk, h2, h1⟩` from `hA y hy`. Break down `hDcov c with hu | hcov` into its components or cases. Use `⟨γ, hγ, Set.mem_iUnion.2 ⟨c, by simp [hu], ?_⟩⟩` and prove the remaining obligations. Simplify `hk` using `[h2]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hgD⟩` from `hcov _ h1`. Take `⟨δ, hδ, rfl, hδK⟩` from `hΓ c g hg`. Use `⟨δ * γ, Γ.mul_mem hδ hγ, Set.mem_iUnion.2 ⟨c, by simpa [mul_assoc] using hgD, ?_⟩⟩` and prove the remaining obligations. Use `K.mul_mem hδK hk` as an intermediate fact. Simplify `this` using `[mul_assoc, h2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.trans ((measure_iUnion_le _).trans ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.tsum_le_tsum fun c => ?_` and prove the remaining obligations. Rewrite using `[Measure.prod_prod, measure_preimage_mul, mul_comm]`. Conclude with `hDle c`.
-
-Use `_ ≤ _ := by`. Rewrite using `[ENNReal.tsum_add, ENNReal.tsum_mul_left]`. Conclude with `add_le_add le_rfl hsum.le`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covol_prod_le_tsum_slices : ∀ (G₁ G₂ : Type) [Group G₁] [Group G₂] [MeasurableSpace G₁] [MeasurableSpace G₂] [MeasurableMul G₂] (μ₁ : Measure G₁) (μ₂ : Measure G₂) [SigmaFinite μ₁] [SigmaFinite μ₂] [μ₂.IsMulLeftInvariant] (Γ : Subgroup (G₁ × G₂)) (K : Subgroup G₂) (A : Set (G₁ × G₂)) (ι : Type) [Countable ι] (x : ι → G₂) (Γc Ac : ι → Set G₁), MeasurableSet (K : Set G₂) → (∀ c, ∀ g ∈ Γc c, ∃ γ ∈ Γ, γ.1 = g ∧ (x c)⁻¹ * γ.2 * x c ∈ K) → (∀ y ∈ A, ∃ c, ∃ γ ∈ Γ, ∃ k ∈ K, γ.2 * y.2 = x c * k ∧ γ.1 * y.1 ∈ Ac c) → μ₂ K ≠ ⊤ → covol (Γ : Set (G₁ × G₂)) (μ₁.prod μ₂) A ≤ μ₂ K * ∑' c, covol (Γc c) μ₁ (Ac c) := by
   intro G₁ G₂ _ _ _ _ _ μ₁ μ₂ _ _ _ Γ K A ι _ x Γc Ac hK hΓ hA hfin

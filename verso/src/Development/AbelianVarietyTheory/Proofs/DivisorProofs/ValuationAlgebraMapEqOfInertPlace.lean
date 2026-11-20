@@ -7,9 +7,9 @@ open scoped Matrix
 namespace GlobalTheory.InertValRestr
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Establish `hP : w.asIdeal.IsPrime` using `w.isPrime`. Establish `hc : (w.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E))).IsPrime` using `inferInstance`. Use `v.isMaximal.eq_of_le hc.ne_top ?_` and prove the remaining obligations. Use `show v.asIdeal ≤ w.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hin]`. Conclude with `Ideal.le_comap_map`.
+A detailed English derivation is pending.
 -/
 theorem liesOver_of_isInertAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E))
@@ -23,7 +23,7 @@ theorem liesOver_of_isInertAt {F E : Type} [Field F] [NumberField F] [Field E] [
   exact Ideal.le_comap_map
 
 /- English proof (translation)
-Establish `hP : w.asIdeal.IsPrime` using `w.isPrime`. Apply `Ideal.ramificationIdx'_spec` to reduce the goal to its premises. Rewrite using `[hin, pow_one]`. Rewrite using `[hin]`. Conclude with `not_le_of_gt (Ideal.pow_succ_lt_pow w.ne_bot 1 |>.trans_eq (pow_one _))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramificationIdx'_eq_one_of_isInertAt {F E : Type} [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E))
@@ -35,7 +35,7 @@ theorem ramificationIdx'_eq_one_of_isInertAt {F E : Type} [Field F] [NumberField
     exact not_le_of_gt (Ideal.pow_succ_lt_pow w.ne_bot 1 |>.trans_eq (pow_one _))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v w hin x`. Use `liesOver_of_isInertAt v w hin` as an intermediate fact. Rewrite using `[← HeightOneSpectrum.valuation_liesOver (K := F) E v w x, ramificationIdx'_eq_one_of_isInertAt v w hin, pow_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_algebraMap_of_isInertAt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E)),

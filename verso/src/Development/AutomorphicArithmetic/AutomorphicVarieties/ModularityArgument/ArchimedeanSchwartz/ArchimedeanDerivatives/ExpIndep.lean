@@ -7,7 +7,7 @@ open Polynomial
 namespace UpperTheory.V.Z.Inf
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hp`. Establish `e` using `congrArg leadingCoeff (sub_eq_zero.mp h)`. Rewrite `e` using `[leadingCoeff_mul, leadingCoeff_mul, leadingCoeff_C, leadingCoeff_C, leadingCoeff_taylor]`. Conclude with `hxy (mul_right_cancel₀ (leadingCoeff_ne_zero.mpr hp) e)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma shift_inj {x y : ℂ} (hxy : x ≠ y) {p : ℂ[X]} (h : C x * taylor 1 p - C y * p = 0) : p = 0 := by
   by_contra hp
@@ -16,7 +16,7 @@ private lemma shift_inj {x y : ℂ} (hxy : x ≠ y) {p : ℂ[X]} (h : C x * tayl
   exact hxy (mul_right_cancel₀ (leadingCoeff_ne_zero.mpr hp) e)
 
 /- English proof (translation)
-Rewrite using `[← mul_sub, degree_C_mul hx]`. Establish `hne : taylor 1 p ≠ 0` using `fun h0 => hp (degree_eq_bot.mp (by rw [← degree_taylor p 1, h0, degree_zero]))`. Establish `e` using `degree_sub_lt (degree_taylor p 1) hne (leadingCoeff_taylor 1 p)`. Rewrite `e` using `[degree_taylor]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private lemma shift_lt {x : ℂ} (hx : x ≠ 0) {p : ℂ[X]} (hp : p ≠ 0) :
     (C x * taylor 1 p - C x * p).degree < p.degree := by
@@ -27,9 +27,9 @@ private lemma shift_lt {x : ℂ} (hx : x ≠ 0) {p : ℂ[X]} (hp : p ≠ 0) :
   rwa [degree_taylor] at e
 
 /- English proof (translation)
-Simplify using `only [eval_sub, eval_mul, eval_C, taylor_eval, sub_mul, Finset.sum_sub_distrib]`. Establish `e1 : ∑ t ∈ T, Complex.exp t * (P t).eval (s + 1) * Complex.exp (t * s) = ∑ t ∈ T, (P t).eval (s + 1) * Complex.exp (t * (s + 1))` using `Finset.sum_congr rfl fun t _ => by rw [mul_add, mul_one, Complex.exp_add]; ring`. Establish `e2 : ∑ t ∈ T, y * (P t).eval s * Complex.exp (t * s) = y * ∑ t ∈ T, (P t).eval s * Complex.exp (t * s)`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, h, h, mul_zero, sub_zero]`.
+A detailed English derivation is pending.
 -/
 private lemma shift_sum (T : Finset ℝ) (P : ℝ → ℂ[X]) (y : ℂ)
     (h : ∀ s : ℂ, ∑ t ∈ T, (P t).eval s * Complex.exp (t * s) = 0) (s : ℂ) :
@@ -45,25 +45,21 @@ private lemma shift_sum (T : Finset ℝ) (P : ℝ → ℂ[X]) (y : ℂ)
   rw [e1, e2, h, h, mul_zero, sub_zero]
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => intro P _ t ht`. Simplify using `at ht`. Consider the case `@insert t0 T' ht0 ih`. Establish `zero_case : ∀ P : ℝ → ℂ[X], P t0 = 0 → (∀ s : ℂ, ∑ t ∈ insert t0 T', (P t).eval s * Complex.exp (t * s) = 0) → ∀ t ∈ insert t0 T', P t = 0`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Introduce `P h0 hP t ht`. Break down `Finset.mem_insert.mp ht with rfl | ht` into its components or cases. Conclude with `h0`. Use `ih P (fun s => ?_) t ht` and prove the remaining obligations. Establish `e` using `hP s`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `e` using `[Finset.sum_insert ht0, h0, eval_zero, zero_mul, zero_add]`. Then use the resulting hypothesis. Establish `main : ∀ n : ℕ, ∀ P : ℝ → ℂ[X], (P t0).natDegree < n → (∀ s : ℂ, ∑ t ∈ insert t0 T', (P t).eval s * Complex.exp (t * s) = 0) → ∀ t ∈ insert t0 T', P t = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro P h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `absurd h (Nat.not_lt_zero _)`. Consider the case `succ n ihn`. Introduce `P hn hP`. Distinguish the cases in `h0 : P t0 = 0`. Conclude with `zero_case P h0 hP`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `set Q : ℝ → ℂ[X] := fun t => C (Complex.exp t) * taylor 1 (P t) - C (Complex.exp t0) * P t with hQ`. Establish `hQs : ∀ s : ℂ, ∑ t ∈ insert t0 T', (Q t).eval s * Complex.exp (t * s) = 0` using `shift_sum _ P _ hP`. Establish `hQ0 : ∀ t ∈ insert t0 T', Q t = 0`. Distinguish the cases in `hq : Q t0 = 0`. Conclude with `zero_case Q hq hQs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `ihn Q ?_ hQs` and prove the remaining obligations. Establish `hdeg : (Q t0).degree < (P t0).degree` using `shift_lt (Complex.exp_ne_zero _) h0`. Use `natDegree_lt_natDegree hq hdeg` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hT' : ∀ t ∈ T', P t = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `t ht`. Establish `hne : t ≠ t0` using `fun e => ht0 (e ▸ ht)`. Use `shift_inj (x := Complex.exp t) (y := Complex.exp t0) ?_ (hQ0 t (Finset.mem_insert_of_mem ht))` and prove the remaining obligations. Introduce `e`. Apply `hne` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[← Complex.ofReal_exp, ← Complex.ofReal_exp]`. Conclude with `Real.exp_injective (Complex.ofReal_injective e)`. Establish `hP0 : P t0 = 0`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `s`.
-
-Establish `e` using `hP s`. Establish `hz : ∑ t ∈ T', (P t).eval s * Complex.exp (t * s) = 0` using `Finset.sum_eq_zero fun t ht => by rw [hT' t ht, eval_zero, zero_mul]`. Rewrite `e` using `[Finset.sum_insert ht0, hz, add_zero]`. Simplify `e` using `[Complex.exp_ne_zero]`. Conclude with `zero_case P hP0 hP`.
-
-Introduce `P hP`. Conclude with `main _ P (Nat.lt_succ_self _) hP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma indep (T : Finset ℝ) : ∀ (P : ℝ → ℂ[X]),
     (∀ s : ℂ, ∑ t ∈ T, (P t).eval s * Complex.exp (t * s) = 0) → ∀ t ∈ T, P t = 0 := by
@@ -123,7 +119,7 @@ private lemma indep (T : Finset ℝ) : ∀ (P : ℝ → ℂ[X]),
     exact main _ P (Nat.lt_succ_self _) hP
 
 /- English proof (translation)
-Simplify using `only [ite_mul, zero_mul]`. Rewrite using `[Finset.sum_ite_mem, Finset.inter_eq_right.mpr hTS]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma extend {T S : Finset ℝ} (hTS : T ⊆ S) (a : ℝ → ℂ) (s : ℂ) :
     ∑ t ∈ S, (if t ∈ T then a t else 0) * Complex.exp (t * s) = ∑ t ∈ T, a t * Complex.exp (t * s) := by
@@ -132,15 +128,13 @@ private lemma extend {T S : Finset ℝ} (hTS : T ⊆ S) (a : ℝ → ℂ) (s : �
   rw [Finset.sum_ite_mem, Finset.inter_eq_right.mpr hTS]
 
 /- English proof (translation)
-Introduce and unpack `p q U V ⟨T, a, hU⟩ ⟨T', b, hV⟩ hU0 h`. Choose the witnesses or unpack the hypotheses as in `⟨t, htT, hat⟩ : ∃ t ∈ T, a t ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hU0 (funext fun s => by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hU, Pi.zero_apply]`. Conclude with `Finset.sum_eq_zero fun t ht => by rw [hc t ht, zero_mul])`. Establish `key` using `indep (T ∪ T') (fun t => C (if t ∈ T then a t else 0) * p - C (if t ∈ T' then b t else 0) * q) (fun s => ?_) t (Finset.mem_union_left _ htT)`. Rewrite `key` using `[if_pos htT]`. Conclude with `⟨a t, _, hat, sub_eq_zero.mp key⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `extend (Finset.subset_union_left : T ⊆ T ∪ T') a s`. Establish `e2` using `extend (Finset.subset_union_right : T' ⊆ T ∪ T') b s`. Rewrite `e1` using `[← hU]`. Rewrite `e2` using `[← hV]`. Simplify using `only [eval_sub, eval_mul, eval_C, sub_mul, Finset.sum_sub_distrib]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `f1 : ∑ t ∈ T ∪ T', (if t ∈ T then a t else 0) * eval s p * Complex.exp (t * s) = eval s p * ∑ t ∈ T ∪ T', (if t ∈ T then a t else 0) * Complex.exp (t * s)`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Establish `f2 : ∑ t ∈ T ∪ T', (if t ∈ T' then b t else 0) * eval s q * Complex.exp (t * s) = eval s q * ∑ t ∈ T ∪ T', (if t ∈ T' then b t else 0) * Complex.exp (t * s)`. Rewrite using `[Finset.mul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[f1, f2, e1, e2, h s, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expIndep : ExpIndep := by
   classical

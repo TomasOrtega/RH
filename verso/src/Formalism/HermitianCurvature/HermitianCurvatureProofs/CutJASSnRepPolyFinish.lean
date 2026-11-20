@@ -5,7 +5,7 @@ open Polynomial
 namespace Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eval_map]`. Establish `hx : (x : ℂ) = starRingEnd ℂ (x : ℂ)` using `(Complex.conj_ofReal x).symm`. Use `conv_lhs => rw [hx]`. Conclude with `Polynomial.eval₂_at_apply _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pf_conj_eval' (q : ℂ[X]) (x : ℝ) :
     (q.map (starRingEnd ℂ)).eval (x : ℂ) = starRingEnd ℂ (q.eval (x : ℂ)) := by
@@ -15,11 +15,11 @@ theorem pf_conj_eval' (q : ℂ[X]) (x : ℝ) :
   exact Polynomial.eval₂_at_apply _ _
 
 /- English proof (translation)
-Establish `hroots : Set.Infinite {z : ℂ | IsRoot (q * q.map (starRingEnd ℂ) - Polynomial.C (C : ℂ) * (X - Polynomial.C (a : ℂ)) ^ (2 * n)) z}`. Use `Set.infinite_of_injective_forall_mem (f := fun m : ℕ => ((a + 1 + m : ℝ) : ℂ)) ?_ ?_` and prove the remaining obligations. Introduce `s t hst`. Use `Complex.ofReal_injective hst` as an intermediate fact. Conclude with `(by linarith : (s : ℝ) = t)` after adjusting the coercions.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Simplify using `only [Set.mem_ofPred_eq, IsRoot, eval_sub, eval_mul, eval_C, eval_pow, eval_X]`. Establish `hx : a < a + 1 + (m : ℝ)` using `by have := m.cast_nonneg (α := ℝ); linarith`. Rewrite using `[pf_conj_eval', Complex.mul_conj, h _ hx]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `sub_eq_zero.1 (Polynomial.eq_zero_of_infinite_isRoot _ hroots)`.
+A detailed English derivation is pending.
 -/
 theorem pf_id (q : ℂ[X]) (n : ℕ) (a C : ℝ)
     (h : ∀ x : ℝ, a < x → Complex.normSq (q.eval (x : ℂ)) = C * (x - a) ^ (2 * n)) :
@@ -39,17 +39,17 @@ theorem pf_id (q : ℂ[X]) (n : ℕ) (a C : ℝ)
   exact sub_eq_zero.1 (Polynomial.eq_zero_of_infinite_isRoot _ hroots)
 
 /- English proof (translation)
-Introduce `q n a C h`. Establish `hid` using `pf_id q n a C h`. Distinguish the cases in `hq : q = 0`. Conclude with `⟨0, by simp [hq]⟩`. Establish `hqb : q.map (starRingEnd ℂ) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[Ne, Polynomial.map_eq_zero_iff (RingHom.injective _)]` and apply the resulting hypothesis. Establish `hC : (C : ℂ) ≠ 0`. Introduce `h0`. Rewrite `hid` using `[h0, Polynomial.C_0, zero_mul]`. Conclude with `mul_ne_zero hq hqb hid`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hroot : ∀ b ∈ q.roots, b = (a : ℂ)`. Introduce `b hb`. Establish `hb0 : q.eval b = 0` using `(Polynomial.mem_roots hq).1 hb`. Use `congrArg (Polynomial.eval b) hid` as an intermediate fact. Simplify using `only [eval_mul, hb0, zero_mul, eval_C, eval_pow, eval_sub, eval_X] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `(mul_eq_zero.1 this.symm).resolve_left hC`. Conclude with `sub_eq_zero.1 (pow_eq_zero_iff'.1 h2).1`. Establish `hcard : Multiset.card q.roots = q.natDegree` using `by first`. Consider the case `exact (Polynomial.natDegree_eq_card_roots' (IsAlgClosed.splits q)).symm`. Consider the case `exact IsAlgClosed.card_roots_eq_natDegree`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrep : q.roots = Multiset.replicate q.natDegree (a : ℂ)`. Rewrite using `[← hcard]`. Conclude with `Multiset.eq_replicate.2 ⟨rfl, hroot⟩`. Establish `hform : q = Polynomial.C q.leadingCoeff * (X - Polynomial.C (a : ℂ)) ^ q.natDegree` using `by conv_lhs => rw [← Polynomial.C_leadingCoeff_mul_prod_multiset_X_sub_C hcard]`. Rewrite using `[hrep, Multiset.map_replicate, Multiset.prod_replicate]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdeg : q.natDegree = n`. Establish `h1` using `congrArg Polynomial.natDegree hid`. Rewrite `h1` using `[Polynomial.natDegree_mul hq hqb, Polynomial.natDegree_map_eq_of_injective (RingHom.injective _), Polynomial.natDegree_C_mul hC, Polynomial.natDegree_pow, Polynomial.natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨q.leadingCoeff, by rw [← hdeg]; exact hform⟩`.
+Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem polynomial_finish_holds : PolyFinish := by
   intro q n a C h

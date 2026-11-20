@@ -32,7 +32,7 @@ def toHtData (G : GlobalFamilyData X ka wL wF) (Qf : ∀ la, LocalPointData G la
   vEt la ζ := (X.vAt la ((Qf la).y ζ) (X.inc _ G.et)).toReal
 
 /- English proof (translation)
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem heights_of_htConcl (G : GlobalFamilyData X ka wL wF) (Qf : ∀ la, LocalPointData G la) (Gc PH Prw Pet : ℝ)
     (h : HtConcl (toHtData G Qf Gc PH Prw Pet)) : Heights Qf Gc PH Prw Pet := by

@@ -11,7 +11,7 @@ variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ : Representa
   {f f' : G → ℂ} {x : V}
 
 /- English proof (translation)
-Use `Eq.symm (((ρ g).toAddMonoidHom.map_finsum (finite_heckeVec hK hf ρ x)).trans (finsum_congr fun c => ?_))` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hAct_orbit (hK : IsCommensurated K) (hf : f ∈ Hecke ℂ K) (ρ : Representation ℂ G V) (x : V) (g : G) :
     hAct K f (fun y => ρ y x) g = ρ g (heckeVec ρ K f x) := by
@@ -19,7 +19,7 @@ theorem hAct_orbit (hK : IsCommensurated K) (hf : f ∈ Hecke ℂ K) (ρ : Repre
   simp
 
 /- English proof (translation)
-Introduce `γ g κ`. Establish `: (γ : G) = 1` using `Subgroup.mem_bot.1 γ.2`. Simplify using `[this, GlobalTheory.LGrp.mem_fixed.1 hx κ κ.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem orbit_mem_amf (hx : x ∈ fixed ρ K) :
     (fun y => ρ y x) ∈ AMF ℂ ⊥ K (Representation.trivial ℂ (⊥ : Subgroup G) V) := by
@@ -28,7 +28,7 @@ theorem orbit_mem_amf (hx : x ∈ fixed ρ K) :
   simp [this, GlobalTheory.LGrp.mem_fixed.1 hx κ κ.2]
 
 /- English proof (translation)
-Use `GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_` and prove the remaining obligations. Use `Final.HeckeActMem G ⊥ K ℂ V _ hK f hf _ (orbit_mem_amf hx) 1 1 ⟨k, hk⟩` as an intermediate fact. Simplify `this` using `[hAct_orbit hK hf]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem heckeVec_mem_fixed (hK : IsCommensurated K) (hf : f ∈ Hecke ℂ K) (hx : x ∈ fixed ρ K) :
     heckeVec ρ K f x ∈ fixed ρ K := by
@@ -37,7 +37,7 @@ theorem heckeVec_mem_fixed (hK : IsCommensurated K) (hf : f ∈ Hecke ℂ K) (hx
   simpa [hAct_orbit hK hf] using this
 
 /- English proof (translation)
-Use `congrFun (Final.HeckeActMul G ⊥ K ℂ V _ hK f hf f' hf' _ (orbit_mem_amf hx)) 1` as an intermediate fact. Rewrite `this` using `[funext (hAct_orbit hK hf' ρ x), hAct_orbit hK hf, hAct_orbit hK (Final.HeckeConvMem G K ℂ hK f hf f' hf')]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem heckeVec_conv (hK : IsCommensurated K) (hf : f ∈ Hecke ℂ K) (hf' : f' ∈ Hecke ℂ K) (hx : x ∈ fixed ρ K) :
     heckeVec ρ K (conv K f f') x = heckeVec ρ K f (heckeVec ρ K f' x) := by
@@ -47,7 +47,7 @@ theorem heckeVec_conv (hK : IsCommensurated K) (hf : f ∈ Hecke ℂ K) (hf' : f
   simpa using this
 
 /- English proof (translation)
-Use `congrFun (Final.HeckeActOne G ⊥ K ℂ V _ _ (orbit_mem_amf hx)) 1` as an intermediate fact. Rewrite `this` using `[hAct_orbit hK (Final.DosetIndMem G K ℂ 1)]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem heckeVec_one (hK : IsCommensurated K) (hx : x ∈ fixed ρ K) : heckeVec ρ K (dosetInd ℂ K 1) x = x := by
   have := congrFun (Final.HeckeActOne G ⊥ K ℂ V _ _ (orbit_mem_amf hx)) 1
@@ -55,7 +55,7 @@ theorem heckeVec_one (hK : IsCommensurated K) (hx : x ∈ fixed ρ K) : heckeVec
   simpa using this
 
 /- English proof (translation)
-Unfold `heckeVec`. Rewrite using `[← finsum_add_distrib (finite_heckeVec hK hf ρ x) (finite_heckeVec hK hf' ρ x)]`. Conclude with `finsum_congr fun c => by simp [add_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeVec_add_left (hK : IsCommensurated K) (hf : f ∈ Hecke ℂ K) (hf' : f' ∈ Hecke ℂ K) (x : V) :
     heckeVec ρ K (f + f') x = heckeVec ρ K f x + heckeVec ρ K f' x := by
@@ -64,7 +64,7 @@ theorem heckeVec_add_left (hK : IsCommensurated K) (hf : f ∈ Hecke ℂ K) (hf'
   exact finsum_congr fun c => by simp [add_smul]
 
 /- English proof (translation)
-Unfold `heckeVec`. Rewrite using `[smul_finsum' c (finite_heckeVec hK hf ρ x)]`. Conclude with `finsum_congr fun c => by simp [mul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeVec_smul_left (hK : IsCommensurated K) (hf : f ∈ Hecke ℂ K) (c : ℂ) (x : V) :
     heckeVec ρ K (c • f) x = c • heckeVec ρ K f x := by
@@ -73,7 +73,7 @@ theorem heckeVec_smul_left (hK : IsCommensurated K) (hf : f ∈ Hecke ℂ K) (c 
   exact finsum_congr fun c => by simp [mul_smul]
 
 /- English proof (translation)
-Simplify using `[heckeVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heckeVec_zero_left (x : V) : heckeVec ρ K 0 x = 0 := by simp [heckeVec]
 
@@ -92,7 +92,7 @@ Both sides reduce to the same expression.
     heckeLin hK hf ρ x = heckeVec ρ K f x := rfl
 
 /- English proof (translation)
-The claim follows from `(heckeLin hK hf ρ).map_smul c x`.
+A detailed English derivation is pending.
 -/
 theorem heckeVec_smul (hK : IsCommensurated K) (hf : f ∈ Hecke ℂ K) (c : ℂ) (x : V) :
     heckeVec ρ K f (c • x) = c • heckeVec ρ K f x := (heckeLin hK hf ρ).map_smul c x

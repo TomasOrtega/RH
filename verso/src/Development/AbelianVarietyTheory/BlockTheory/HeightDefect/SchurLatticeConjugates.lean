@@ -13,9 +13,9 @@ noncomputable def conjDifferent {E K : Type} [Field E] [NumberField E] [Field K]
   (differentIdeal ℤ (𝓞 E)).map (RingOfIntegers.mapRingHom σ)
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (RingOfIntegers.mapRingHom σ)`. Introduce `x y h`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Apply `σ.injective` to reduce the goal to its premises. Simplify using `using congrArg (fun z : 𝓞 K => (z : K)) h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `conjDifferent`. Rewrite using `[Ne, Ideal.map_eq_bot_iff_of_injective hinj]`. Conclude with `differentIdeal_ne_bot`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjDifferent_ne_bot {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K]
     (σ : E →+* K) : conjDifferent σ ≠ ⊥ := by
@@ -29,7 +29,7 @@ theorem conjDifferent_ne_bot {E K : Type} [Field E] [NumberField E] [Field K] [N
   exact differentIdeal_ne_bot
 
 /- English proof (translation)
-Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `n'.ne_zero` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_natCast_ne_bot {K : Type} [Field K] [NumberField K] (n' : ℕ+) :
     Ideal.span {((n' : ℕ) : 𝓞 K)} ≠ ⊥ := by
@@ -68,7 +68,7 @@ def DefectSumBound : Prop :=
       normSum (defect_vw E (K := K) n' a) ≤ (lrd E + Real.log ((n' : ℕ) : ℝ)) * κ
 
 /- English proof (translation)
-Rewrite using `[max_div_div_right he.le, defectAt_vw]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem defectAt_vw_eq_mul {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K]
     (σ : E →+* K) (n' : ℕ+) (a : ℕ) (la : HeightOneSpectrum (𝓞 K)) (e : ℝ) (he : 0 < e) :
@@ -79,7 +79,7 @@ theorem defectAt_vw_eq_mul {E K : Type} [Field E] [NumberField E] [Field K] [Num
   field_simp
 
 /- English proof (translation)
-The claim follows from `Finset.le_sup (f := fun σ : E →+* K => defectAt_vw σ n' a la) (Finset.mem_univ σ)`.
+A detailed English derivation is pending.
 -/
 theorem defectAt_vw_le {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K]
     (σ : E →+* K) (n' : ℕ+) (a : ℕ) (la : HeightOneSpectrum (𝓞 K)) :
@@ -87,7 +87,7 @@ theorem defectAt_vw_le {E K : Type} [Field E] [NumberField E] [Field K] [NumberF
   Finset.le_sup (f := fun σ : E →+* K => defectAt_vw σ n' a la) (Finset.mem_univ σ)
 
 /- English proof (translation)
-Establish `h1 : 0 < ord_vw la (Ideal.span {((n' : ℕ) : 𝓞 K)})` using `dvd_iff_multiplicity_pos.mpr (Ideal.dvd_span_singleton.mpr h)`. Conclude with `Nat.le_mul_of_pos_right _ (lt_of_lt_of_le h1 (le_max_right _ _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_defectAt_vw_of_mem {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K]
     (σ : E →+* K) (n' : ℕ+) (a : ℕ) (la : HeightOneSpectrum (𝓞 K))

@@ -18,7 +18,7 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : �
 variable (β : S.V ≃ₗ[E] S.V) (hβ : β ∈ Formalism.HermitianLatticesTheory.isom S.hT) {T T' : E}
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [Submodule.mem_inf, Submodule.mem_map_equiv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_inf_equiv (A B : Submodule E S.V) :
     (A ⊓ B).map (β : S.V →ₗ[E] S.V) = A.map (β : S.V →ₗ[E] S.V) ⊓ B.map (β : S.V →ₗ[E] S.V) := by
@@ -26,7 +26,7 @@ theorem map_inf_equiv (A B : Submodule E S.V) :
   simp only [Submodule.mem_inf, Submodule.mem_map_equiv]
 
 /- English proof (translation)
-Simplify using `only [Xplus, FlagG.Xplus]`. Rewrite using `[Submodule.map_sup, ← Formalism.L2.SG.Pf.X_mapFlag β hβ, Submodule.map_span, Set.image_singleton]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Xplus_mapL (F : LFlag S r T) : Xplus (mapL β hβ F) = (Xplus F).map (β : S.V →ₗ[E] S.V) := by
   simp only [Xplus, FlagG.Xplus]
@@ -35,7 +35,7 @@ theorem Xplus_mapL (F : LFlag S r T) : Xplus (mapL β hβ F) = (Xplus F).map (β
 
 include hβ in
 /- English proof (translation)
-Rewrite using `[Hp, Hp, Formalism.L2.SG.Pf.UUE_mapL β hβ, Formalism.L2.SG.Pf.orth_map_sat β hβ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Hp_mapL (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' : LFlag S r T') :
     Hp (Formalism.HermitianLatticesTheory.gmap β Λ) (mapL β hβ F) (mapL β hβ F') = (Hp Λ F F').map (β : S.V →ₗ[E] S.V) := by
@@ -43,7 +43,7 @@ theorem Hp_mapL (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' : LFlag S r 
 
 include hβ in
 /- English proof (translation)
-Rewrite using `[Ylift, Ylift, Formalism.L2.SG.Pf.UUE_mapL β hβ, Xplus_mapL β hβ, Formalism.L2.SG.Pf.orth_map_sat β hβ, map_inf_equiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Ylift_mapL (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' : LFlag S r T') :
     Ylift (Formalism.HermitianLatticesTheory.gmap β Λ) (mapL β hβ F) (mapL β hβ F') = (Ylift Λ F F').map (β : S.V →ₗ[E] S.V) := by
@@ -51,7 +51,7 @@ theorem Ylift_mapL (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' : LFlag S
 
 include hβ in
 /- English proof (translation)
-Rewrite using `[Ylift', Ylift', Formalism.L2.SG.Pf.UUE_mapL β hβ, Xplus_mapL β hβ, Formalism.L2.SG.Pf.orth_map_sat β hβ, map_inf_equiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Ylift'_mapL (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' : LFlag S r T') :
     Ylift' (Formalism.HermitianLatticesTheory.gmap β Λ) (mapL β hβ F) (mapL β hβ F') = (Ylift' Λ F F').map (β : S.V →ₗ[E] S.V) := by
@@ -59,11 +59,11 @@ theorem Ylift'_mapL (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' : LFlag 
     map_inf_equiv]
 
 /- English proof (translation)
-Simplify using `only [SgRel, Formalism.L2.SG.Pf.Xsp_mapL β hβ, Formalism.L2.SG.Pf.zt_mapL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, x', hx', h⟩`. Take `⟨x0, hx0, rfl⟩` from `Submodule.mem_map.1 hx`. Take `⟨x0', hx0', rfl⟩` from `Submodule.mem_map.1 hx'`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨x0, hx0, x0', hx0', β.injective ?_⟩` and prove the remaining obligations. Simplify using `only [map_sub, map_add, map_smul, LinearEquiv.coe_coe] at h ⊢`. Conclude with `h`. Introduce and unpack `⟨x, hx, x', hx', h⟩`. Use `⟨β x, Submodule.mem_map_of_mem hx, β x', Submodule.mem_map_of_mem hx', ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_sub, h]`. Simplify using `only [map_add, map_smul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sgRel_mapL (F : LFlag S r T) (F' : LFlag S r T') (y y' : S.V) (al al' : E) :
     SgRel (mapL β hβ F) (mapL β hβ F') (β y) (β y') al al' ↔ SgRel F F' y y' al al' := by
@@ -134,7 +134,7 @@ variable {u u' F0 what₂}
 namespace BwdBetaCut
 
 /- English proof (translation)
-Establish `h` using `Formalism.L2.SG.Pf.Xsp_mapL n (isom_of_N0F hn) (lf D F0)`. Rewrite `h` using `[mapL_lf hn]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotent_preserves_x {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ unipotentFrameFixers F0) :
     (Xsp (lf D F0)).map (n : (VS D).V →ₗ[D.host.E] (VS D).V) = Xsp (lf D F0) := by
@@ -143,16 +143,16 @@ theorem unipotent_preserves_x {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n �
   exact h.symm
 
 /- English proof (translation)
-Rewrite using `[← Formalism.L2.SG.Pf.orth_map_sat n (isom_of_N0F hn), unipotent_preserves_x hn]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unipotent_preserves_orth {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ unipotentFrameFixers F0) :
     (orth (VS D) (Xsp (lf D F0))).map (n : (VS D).V →ₗ[D.host.E] (VS D).V) = orth (VS D) (Xsp (lf D F0)) := by
   rw [← Formalism.L2.SG.Pf.orth_map_sat n (isom_of_N0F hn), unipotent_preserves_x hn]
 
 /- English proof (translation)
-Establish `h1 : n.symm v ∈ orth (VS D) (Xsp (lf D F0))`. Rewrite `hv` using `[← unipotent_preserves_orth hn]`. Rewrite `hv` using `[Submodule.mem_map_equiv]`. Conclude with `hv`. Establish `h2` using `hn.2.2.1 _ h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem unipotent_inv_sub_mem {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ unipotentFrameFixers F0) {v : (VS D).V}
     (hv : v ∈ orth (VS D) (Xsp (lf D F0))) : v - n.symm v ∈ Xsp (lf D F0) := by
@@ -164,9 +164,9 @@ theorem unipotent_inv_sub_mem {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n �
   rwa [LinearEquiv.apply_symm_apply] at h2
 
 /- English proof (translation)
-Introduce `w hw`. Rewrite using `[Formalism.L2.SG.Pf.mem_orth_iff_sat 1 (Subgroup.one_mem _)]`. Establish `hw'` using `hw`. Rewrite `hw'` using `[Hp, Formalism.L2.SG.Pf.mem_orth_iff_sat 1 (Subgroup.one_mem _)]`. Introduce `e he`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hw' e ?_` and prove the remaining obligations. Use `(Submodule.span_le.2 ?_) he` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Use `PI.PairCorankPos.W.frame_mem_UUE Λ hΛ (lf D F0) F' hL hL' (Sum.inl a.castSucc)` as an intermediate fact. Simplify `this` using `[FlagG.fvec]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Hp_le_orthX (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : Submodule.IsLattice D.host.E Λ) {T' : D.host.E}
     (F' : LFlag (VS D) D.R.rS T') (hL : IsLift Λ (lf D F0)) (hL' : IsLift Λ F') :
@@ -187,7 +187,7 @@ end BwdBetaCut
 namespace BwdBetaCut
 
 /- English proof (translation)
-Rewrite using `[← Submodule.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_mul_eq (a b : (VS D).V ≃ₗ[D.host.E] (VS D).V) (U : Submodule D.host.E (VS D).V) :
     U.map ((a * b : (VS D).V ≃ₗ[D.host.E] (VS D).V) : (VS D).V →ₗ[D.host.E] (VS D).V) =
@@ -195,7 +195,7 @@ theorem map_mul_eq (a b : (VS D).V ≃ₗ[D.host.E] (VS D).V) (U : Submodule D.h
   rw [← Submodule.map_comp]; rfl
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite `hv`, the goal using `[Formalism.L2.SG.Pf.mem_orth_iff_sat 1 (Subgroup.one_mem _)]`. Conclude with `fun x hx => hv x (le_sup_left (a := Xsp F) hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem orth_Xplus_le {T : D.host.E} (F : LFlag (VS D) D.R.rS T) :
     orth (VS D) (Xplus F) ≤ orth (VS D) (Xsp F) := by
@@ -206,35 +206,31 @@ theorem orth_Xplus_le {T : D.host.E} (F : LFlag (VS D) D.R.rS T) :
 end BwdBetaCut
 
 /- English proof (translation)
-Introduce `hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg hT hPD hG`. Take `⟨β₂, hiso, hgm, hfl, hz, hI, hW, hSc⟩` from `h hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ ⟨n, hn, himg⟩ hT hPD hG`. Establish `hni` using `isom_of_N0F hn`. Establish `hF : mapL n hni (lf D F0) = lf D F0` using `mapL_lf hn`. Establish `hΛ : Formalism.HermitianLatticesTheory.gmap n Λ₂ = γ.lam` using `gmap_eq_of_image himg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix` using `(hC.2.1.1 γ.lam γ.mem).2.1`. Establish `hL₂ : IsLift Λ₂ (lf D F0)`. Use `Formalism.L2.SG.Pf.IsLift_mapL n hni Λ₂ (lf D F0)` as an intermediate fact. Rewrite `this` using `[hF, hΛ]`. Conclude with `this.1 hfix.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hX'' : Xsp (mapL n hni (liftF F'₂)) = (Xsp (liftF F'₂)).map (n : (VS D).V →ₗ[D.host.E] (VS D).V)` using `Formalism.L2.SG.Pf.Xsp_mapL n hni _`. Use `⟨n * β₂, ⟨⟨Subgroup.mul_mem _ hni hiso, ?_⟩, ?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.Pf.gmap_mul_sat, hgm, hΛ]`. Introduce `j`. Rewrite using `[Formalism.L2.SG.Pf.Xflag_mapL n hni, ← hfl j, BwdBetaCut.map_mul_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show n (β₂ (repF γ).fl.z) = n (liftF F'₂).fl.z`. Rewrite using `[hz]`. Introduce `x' hx' l hl`. Establish `hN : NgX γ.lam (gS D) (lf D F0) (mapL n hni (liftF F'₂)) = Formalism.HermitianLatticesTheory.gmap n (NgX Λ₂ (gS D) (lf D F0) (liftF F'₂))`. Rewrite using `[← Formalism.L2.SG.Pf.NgX_mapL n hni, hF, hΛ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hLr : Lrep γ.lam (lf D F0) = Formalism.HermitianLatticesTheory.gmap n (Lrep Λ₂ (lf D F0))`. Rewrite using `[← Formalism.L2.SG.Pf.Lrep_mapL n hni, hF, hΛ]`. Establish `hl₂ : n.symm l ∈ Lrep Λ₂ (lf D F0)`. Rewrite `hl` using `[hLr, Formalism.L2.SG.Saturated.mem_gmap_iff]`. Conclude with `hl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hlo : l ∈ orth (VS D) (Xsp (lf D F0))` using `(Submodule.mem_inf.1 hl).2`. Rewrite using `[hI x' hx' l hl (n.symm l) hl₂ (BwdBetaCut.unipotent_inv_sub_mem hn hlo), hN, Formalism.L2.SG.Saturated.mem_gmap_iff]`. Simplify using `only [map_sub]`. Rewrite using `[show n.symm ((n * β₂) x') = β₂ x' from n.symm_apply_apply (β₂ x')]`. Introduce `w hw`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w₂, hw₂, h1, h2⟩` from `hW w hw`. Use `Submodule.mem_map.2 ⟨(w, n w₂), ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.NGCut.CorankRelation.mem_ThPairs]`. Establish `hHp : Hp γ.lam (lf D F0) (mapL n hni (liftF F'₂)) = (Hp Λ₂ (lf D F0) (liftF F'₂)).map (n : (VS D).V →ₗ[D.host.E] (VS D).V)`. Rewrite using `[← BwdBetaCut.Hp_mapL n hni, hF, hΛ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hw₂o` using `BwdBetaCut.Hp_le_orthX Λ₂ hΛ₂.1 (liftF F'₂) hL₂ hT.1.1 hw₂`. Use `⟨hw, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hHp]`. Conclude with `Submodule.mem_map_of_mem hw₂`. Establish `h3` using `hn.2.2.1 w₂ hw₂o`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: w - n w₂ = (w - w₂) - (n w₂ - w₂)` using `by abel`. Use `show w - n w₂ ∈ Xsp (lf D F0)`. Rewrite using `[this]`. Conclude with `sub_mem h1 h3`. Use `show n (β₂ w) - n w₂ ∈ Xsp (mapL n hni (liftF F'₂))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_sub, hX'']`. Conclude with `Submodule.mem_map_of_mem h2`. Introduce `y1 hy1 y2 hy2 y1' hy1' y2'' hy2'' hd1 hd2 al al'`. Establish `hY : Ylift γ.lam (lf D F0) (mapL n hni (liftF F'₂)) = (Ylift Λ₂ (lf D F0) (liftF F'₂)).map (n : (VS D).V →ₗ[D.host.E] (VS D).V)`. Rewrite using `[← BwdBetaCut.Ylift_mapL n hni, hF, hΛ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hY' : Ylift' γ.lam (lf D F0) (mapL n hni (liftF F'₂)) = (Ylift' Λ₂ (lf D F0) (liftF F'₂)).map (n : (VS D).V →ₗ[D.host.E] (VS D).V)`. Rewrite using `[← BwdBetaCut.Ylift'_mapL n hni, hF, hΛ]`. Establish `hy2o : y2 ∈ orth (VS D) (Xsp (lf D F0))` using `BwdBetaCut.orth_Xplus_le (lf D F0) (Submodule.mem_inf.1 hy2).2`. Rewrite `hy2` using `[hY, Submodule.mem_map_equiv]`. Rewrite `hy2''` using `[hY', Submodule.mem_map_equiv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : y1 - n.symm y2 ∈ Xsp (lf D F0)`. Establish `: y1 - n.symm y2 = (y1 - y2) + (y2 - n.symm y2)` using `by abel`. Rewrite using `[this]`. Conclude with `add_mem hd1 (BwdBetaCut.unipotent_inv_sub_mem hn hy2o)`. Establish `e2 : n.symm y2'' - β₂ y1' ∈ Xsp (liftF F'₂)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd2' : y2'' - (n * β₂) y1' ∈ (Xsp (liftF F'₂)).map (n : (VS D).V →ₗ[D.host.E] (VS D).V)`. Rewrite using `[← hX'']`. Conclude with `hd2`. Rewrite `hd2'` using `[Submodule.mem_map_equiv]`. Establish `: n.symm (y2'' - (n * β₂) y1') = n.symm y2'' - β₂ y1'`.
-
-Rewrite using `[map_sub]`. Use `congr 1`. Conclude with `n.symm_apply_apply (β₂ y1')`. Rewrite `hd2'` using `[this]`. Then use the resulting hypothesis. Rewrite using `[hSc y1 hy1 _ hy2 y1' hy1' _ hy2'' e1 e2 al al']`.
-
-Establish `hs` using `BwdBetaCut.sgRel_mapL n hni (lf D F0) (liftF F'₂) (n.symm y2) (n.symm y2'') al al'`. Rewrite `hs` using `[hF, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Conclude with `hs.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem betaCore_of₂ (h : BetaCore₂ Zd u u' F0 what₂) : BetaCore Zd u u' F0 what₂ := by
   intro hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg hT hPD hG

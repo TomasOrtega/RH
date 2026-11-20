@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R _ I J g hIJ h`. Establish `key : ∀ (K : Ideal R) (j : Fin 2), Matrix.vecMul ![0, 1] ((Matrix.GeneralLinearGroup.map (Ideal.Quotient.mk K) g : GL (Fin 2) (R ⧸ K)) : Matrix (Fin 2) (Fin 2) (R ⧸ K)) j = Ideal.Quotient.mk K ((g : Matrix (Fin 2) (Fin 2) R) 1 j)`. Introduce `K j`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two, Matrix.GeneralLinearGroup.map]`. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hj` using `congrArg (Ideal.Quotient.factor hIJ) ((key I j).symm.trans (congrFun h j))`. Rewrite `hj` using `[Ideal.Quotient.factor_mk]`. Rewrite using `[key J j, hj]`. Apply the tactic sequence `fin_cases j <;> simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem UpperTheory.mirabolic_row_congruence :
     ∀ {R : Type} [CommRing R] (I J : Ideal R) (g : GL (Fin 2) R), I ≤ J →

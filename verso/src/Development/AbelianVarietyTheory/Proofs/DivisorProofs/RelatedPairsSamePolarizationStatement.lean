@@ -6,7 +6,7 @@ open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMi
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.LKMid.Pair.rel_pol_c) | (exact GlobalTheory.LKMid.Pair.rel_pol_c) | (intros; apply GlobalTheory.LKMid.Pair.rel_pol_c <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.related_pairs_same_polarization : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P Q : Pair G), P.Rel Q → Q.pol = P.pol ∧ Q.c = P.c := by
   first | (exact @GlobalTheory.LKMid.Pair.rel_pol_c) | (exact GlobalTheory.LKMid.Pair.rel_pol_c) | (intros; apply GlobalTheory.LKMid.Pair.rel_pol_c  <;> assumption)

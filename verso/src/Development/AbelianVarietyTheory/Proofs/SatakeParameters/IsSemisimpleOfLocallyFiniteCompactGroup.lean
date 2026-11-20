@@ -6,13 +6,11 @@ namespace GlobalTheory.LocFinSemisimple
 variable {K V : Type} [Group K] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ K V}
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `Y hY hn hne`. Distinguish the cases in `hA : IsAtom Y`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨Y, hA, le_rfl⟩`. Establish `: ∃ Z, Z < Y ∧ Z ≠ ⊥`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hA ⟨hne, hc⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Z, hZY, hZ⟩` from `this`. Establish `hlt : Z.toSubmodule < Y.toSubmodule` using `lt_of_le_of_ne hZY.le fun h => hZY.ne (Subrepresentation.toSubmodule_injective h)`. Establish `hZf : FiniteDimensional ℂ Z.toSubmodule` using `Submodule.finiteDimensional_of_le hlt.le`. Establish `hr` using `Submodule.finrank_lt_finrank_of_lt hlt`. Take `⟨T, hT, hTZ⟩` from `ih _ (hn ▸ hr) Z hZf rfl hZ`.
-
-Conclude with `⟨T, hT, hTZ.trans hZY.le⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isAtom_le : ∀ (n : ℕ) (Y : Subrepresentation ρ),
     FiniteDimensional ℂ Y.toSubmodule → Module.finrank ℂ Y.toSubmodule = n → Y ≠ ⊥ →
@@ -41,9 +39,9 @@ def ofInvariant (U : Submodule ℂ V) (hU : ∀ k, ∀ u ∈ U, ρ k u ∈ U) : 
 variable [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℂ (ofInvariant U hU).toSubmodule := hfd`. Use `GlobalTheory.isSemisimpleRepresentation_of_continuous_coeff _ fun l v => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `LinearMap.exists_extend (p := U) l`. Establish `h : ∀ k, l ((ofInvariant U hU).toRepresentation k v) = g (ρ k v)` using `fun k => by`. Rewrite using `[← hg]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [h]`. Conclude with `hc g v v.2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSemisimple_ofInvariant (U : Submodule ℂ V) (hU : ∀ k, ∀ u ∈ U, ρ k u ∈ U)
     (hfd : FiniteDimensional ℂ U)
@@ -58,27 +56,23 @@ theorem isSemisimple_ofInvariant (U : Submodule ℂ V) (hU : ∀ k, ∀ u ∈ U,
   exact hc g v v.2
 
 /- English proof (translation)
-Use `set N := ⨆ (S : Subrepresentation ρ) (_ : IsAtom S ∧ S ≤ X), S.toSubmodule with hNdef`. Establish `hNX : N ≤ X.toSubmodule` using `iSup₂_le fun S hS => hS.2`. Establish `hNinv : ∀ k, ∀ x ∈ N, ρ k x ∈ N`. Introduce `k`. Establish `: N ≤ N.comap (ρ k)` using `iSup₂_le fun S hS x hx => (le_iSup₂ (f := fun (S : Subrepresentation ρ) (_ : IsAtom S ∧ S ≤ X) => S.toSubmodule) S hS) (S.apply_mem_toSubmodule k hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun x hx => this hx`. Introduce `x hxX`. Take `⟨U, hxU, hfd, hU, hc⟩` from `H x`. Set `R` to `ofInvariant U hU`. Use `haveI : ComplementedLattice (Subrepresentation R.toRepresentation) := isSemisimple_ofInvariant U hU hfd hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `W : Subrepresentation R.toRepresentation` to `⟨N.comap U.subtype, fun k w hw => hNinv k _ hw⟩`. Take `⟨W', hW'⟩` from `exists_isCompl W`. Establish `hdis : W.toSubmodule ⊓ W'.toSubmodule = ⊥` using `congrArg Subrepresentation.toSubmodule hW'.inf_eq_bot`. Establish `hsup : W.toSubmodule ⊔ W'.toSubmodule = ⊤` using `congrArg Subrepresentation.toSubmodule hW'.sup_eq_top`. Set `Xc : Submodule ℂ U` to `X.toSubmodule.comap U.subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Set `Y : Subrepresentation ρ` to `⟨(W'.toSubmodule ⊓ Xc).map U.subtype, by`. Introduce and unpack `k _ ⟨u, ⟨hu1, hu2⟩, rfl⟩`. Conclude with `⟨R.toRepresentation k u, ⟨W'.apply_mem_toSubmodule k hu1, X.apply_mem_toSubmodule k hu2⟩, rfl⟩⟩`. Establish `hY : Y = ⊥`. Assume the negation of the conclusion as `hne`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℂ Y.toSubmodule := Submodule.finiteDimensional_of_le (S₂ := U) (fun y hy => by obtain ⟨u, _, rfl⟩ := Submodule.mem_map.1 hy; exact u.2)`. Take `⟨T, hT, hTY⟩` from `exists_isAtom_le _ Y this rfl hne`. Establish `hTX : T ≤ X`. Introduce `t ht`. Take `⟨u, ⟨_, hu2⟩, rfl⟩` from `hTY ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hu2`. Establish `hTN : T.toSubmodule ≤ N` using `le_iSup₂ (f := fun (S : Subrepresentation ρ) (_ : IsAtom S ∧ S ≤ X) => S.toSubmodule) T ⟨hT, hTX⟩`. Establish `hT0 : T.toSubmodule ≠ ⊥` using `fun h => hT.1 (Subrepresentation.toSubmodule_injective h)`. Take `⟨t, ht, ht0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hT0`. Take `⟨u, ⟨hu1, _⟩, rfl⟩` from `hTY ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : u ∈ W.toSubmodule ⊓ W'.toSubmodule` using `⟨hTN ht, hu1⟩`. Rewrite `hu` using `[hdis]`. Establish `hu0 : ((u : R.toSubmodule) : V) = 0` using `congrArg Subtype.val ((Submodule.mem_bot ℂ (M := R.toSubmodule) (x := u)).1 hu)`. Conclude with `ht0 hu0`. Establish `hx' : (⟨x, hxU⟩ : R.toSubmodule) ∈ W.toSubmodule ⊔ W'.toSubmodule` using `by rw [hsup]; trivial`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw, w', hw', hww⟩` from `Submodule.mem_sup.1 hx'`. Establish `hsum : (w : V) + (w' : V) = x` using `congrArg Subtype.val hww`. Establish `hw'X : w' ∈ Xc`. Establish `h1 : (w : V) ∈ X.toSubmodule` using `hNX hw`. Establish `h2 : (w' : V) = x - w`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hsum]`. Normalize the expressions using the abelian group laws. Use `show (w' : V) ∈ X.toSubmodule`. Rewrite using `[h2]`. Conclude with `X.toSubmodule.sub_mem hxX h1`.
-
-Establish `hw'0 : (w' : V) ∈ Y.toSubmodule` using `⟨w', ⟨hw', hw'X⟩, rfl⟩`. Rewrite `hw'0` using `[hY]`. Establish `: (w' : V) = 0` using `(Submodule.mem_bot ℂ).1 hw'0`. Establish `hxw : x = w`. Rewrite using `[← hsum, ‹(w' : V) = 0›, add_zero]`.
-
-Rewrite using `[hxw]`. Conclude with `hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_iSup_atoms
     (H : ∀ v : V, ∃ U : Submodule ℂ V, v ∈ U ∧ FiniteDimensional ℂ U ∧ (∀ k, ∀ u ∈ U, ρ k u ∈ U) ∧
@@ -148,15 +142,15 @@ theorem le_iSup_atoms
   exact hw
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ ρ H`. Establish `hle` using `le_iSup_atoms H`. Use `⟨?_, ?_, fun X => le_antisymm (hle X) (iSup₂_le fun S hS => hS.2)⟩` and prove the remaining obligations. Rewrite using `[Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule, ← sSup_simples_eq_top_iff_isSemisimpleModule]`. Set `e` to `Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := ρ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `set s := sSup {m : Submodule (MonoidAlgebra ℂ K) ρ.asModule | IsSimpleModule (MonoidAlgebra ℂ K) m} with hs`. Establish `hZ : (e.symm s).toSubmodule = ⊤`. Use `eq_top_iff.2 ((hle ⊤).trans (iSup₂_le fun S hS => ?_))` and prove the remaining obligations. Establish `: S ≤ e.symm s` using `e.le_symm_apply.2 (le_sSup (isSimpleModule_iff_isAtom.2 ((e.isAtom_iff S).2 hS.1)))`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : e.symm s = ⊤` using `Subrepresentation.toSubmodule_injective hZ`. Rewrite using `[← e.apply_symm_apply s, h1, e.map_top]`. Introduce `S hS`. Establish `hS0 : S.toSubmodule ≠ ⊥` using `fun h => hS.1 (Subrepresentation.toSubmodule_injective h)`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hS0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨U, hvU, hfd, hU, -⟩` from `H v`. Break down `hS.le_iff.1 (inf_le_left : S ⊓ ofInvariant U hU ≤ S) with h | h` into its components or cases. Establish `hm : v ∈ (S ⊓ ofInvariant U hU).toSubmodule` using `⟨hv, hvU⟩`. Rewrite `hm` using `[h]`. Conclude with `absurd ((Submodule.mem_bot ℂ).1 hm) hv0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hSU : S.toSubmodule ≤ U`. Rewrite using `[← h]`. Conclude with `fun x hx => hx.2`. Conclude with `Submodule.finiteDimensional_of_le hSU`.
+A detailed English derivation is pending.
 -/
 theorem semisimple_of_locallyFinite : ∀ (K V : Type) [Group K] [TopologicalSpace K]
     [IsTopologicalGroup K] [CompactSpace K] [AddCommGroup V] [Module ℂ V]

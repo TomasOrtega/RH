@@ -14,17 +14,15 @@ section Density
 variable {L : Type*} [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L))
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[mem_closure_iff_nhds]`. Introduce `s hs`. Take `⟨γ, hγ⟩` from `Valued.mem_nhds.1 hs`. Establish `h1 : {y : w.adicCompletion L | Valued.v.restrict (y - x) < γ.1} ∈ nhds x` using `Valued.mem_nhds.2 ⟨γ, subset_rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : {y : w.adicCompletion L | Valued.v.restrict (y - x) < ((1 : (MonoidWithZeroHom.ValueGroup₀ (.ofClass (Valued.v : Valuation (w.adicCompletion L) ℤᵐ⁰)))ˣ) : _)} ∈ nhds x` using `Valued.mem_nhds.2 ⟨1, subset_rfl⟩`. Take `⟨k, hk1, hk2⟩` from `(denseRange_algebraMap (R := 𝓞 L) (K := L) w).mem_nhds (Filter.inter_mem h1 h2)`. Simplify using `only [Set.mem_ofPred_eq, Units.val_one, Valuation.restrict_lt_iff_lt_embedding] at hk1 hk2`. Use `set c := MonoidWithZeroHom.ValueGroup₀.embedding γ.1 with hc`. Establish `hc0 : c ≠ 0` using `by simp [hc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : Valued.v x ≤ 1` using `hx`. Establish `hkv : w.valuation L k ≤ 1`. Rewrite using `[← valuedAdicCompletion_eq_valuation' w k]`. Establish `: (k : w.adicCompletion L) = (algebraMap L (w.adicCompletion L) k - x) + x`. Rewrite using `[sub_add_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le hk2.le hx1)`. Take `⟨r, hr⟩` from `exists_valuation_sub_lt_of_integer w hkv (Units.mk0 c hc0)`. Use `⟨_, hγ ?_, r, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_ofPred_eq, Valuation.restrict_lt_iff_lt_embedding]`. Establish `hr' : Valued.v (algebraMap L (w.adicCompletion L) (algebraMap (𝓞 L) L r) - algebraMap L (w.adicCompletion L) k) < c`. Rewrite using `[← map_sub]`. Conclude with `(valuedAdicCompletion_eq_valuation' w _).trans_lt hr`. Establish `: algebraMap L (w.adicCompletion L) (algebraMap (𝓞 L) L r) - x = (algebraMap L (w.adicCompletion L) (algebraMap (𝓞 L) L r) - algebraMap L (w.adicCompletion L) k) + (algebraMap L (w.adicCompletion L) k - x)`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Valuation.map_add_lt _ hr' hk1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adicCompletionIntegers_subset_closure_ringOfIntegers :
     (w.adicCompletionIntegers L : Set (w.adicCompletion L)) ⊆
@@ -76,7 +74,7 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
   [IsScalarTower K (v.adicCompletion K) (w.adicCompletion L)]
 
 /- English proof (translation)
-The claim follows from `(Valuation.integer.integers (valuation (w.adicCompletion L))).mem_of_integral (hx.tower_top (A := 𝒪[w.adicCompletion L]))`.
+A detailed English derivation is pending.
 -/
 theorem mem_integer_of_isIntegral {x : w.adicCompletion L}
     (hx : IsIntegral 𝒪[v.adicCompletion K] x) : x ∈ 𝒪[w.adicCompletion L] :=
@@ -88,7 +86,7 @@ omit [Algebra K L] [w.asIdeal.LiesOver v.asIdeal]
   [IsScalarTower K (v.adicCompletion K) (w.adicCompletion L)] in
 
 /- English proof (translation)
-Take `⟨p, hp, hroot⟩` from `RingOfIntegers.isIntegral_coe r`. Use `⟨p.map (Int.castRingHom _), hp.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, show (algebraMap 𝒪[v.adicCompletion K] (w.adicCompletion L)).comp (Int.castRingHom _) = (algebraMap L (w.adicCompletion L)).comp (algebraMap ℤ L) from RingHom.ext_int _ _, ← Polynomial.hom_eval₂]`. Conclude with `(congrArg (algebraMap L (w.adicCompletion L)) hroot).trans (map_zero _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_algebraMap_ringOfIntegers (r : 𝓞 L) :
     IsIntegral 𝒪[v.adicCompletion K]
@@ -104,7 +102,7 @@ omit [Algebra K L] [w.asIdeal.LiesOver v.asIdeal]
   [IsScalarTower K (v.adicCompletion K) (w.adicCompletion L)] in
 
 /- English proof (translation)
-Use `continuousSMul_of_algebraMap _ _ ?_` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_eq 𝒪[v.adicCompletion K] (v.adicCompletion K)]`. Conclude with `(continuous_algebraMap (v.adicCompletion K) (w.adicCompletion L)).comp continuous_subtype_val`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousSMul_integer :
     ContinuousSMul 𝒪[v.adicCompletion K] (w.adicCompletion L) := by
@@ -114,13 +112,11 @@ theorem continuousSMul_integer :
     continuous_subtype_val
 
 /- English proof (translation)
-Establish `: CharZero (v.adicCompletion K)` using `charZero_of_injective_algebraMap (algebraMap K (v.adicCompletion K)).injective`. Establish `: ContinuousSMul 𝒪[v.adicCompletion K] (w.adicCompletion L)` using `continuousSMul_integer v w`. Establish `hfin : Module.Finite 𝒪[v.adicCompletion K] (integralClosure 𝒪[v.adicCompletion K] (w.adicCompletion L))` using `IsIntegralClosure.finite 𝒪[v.adicCompletion K] (v.adicCompletion K) (w.adicCompletion L) _`. Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' 𝒪[v.adicCompletion K] (integralClosure 𝒪[v.adicCompletion K] (w.adicCompletion L))`. Set `g` to `(integralClosure 𝒪[v.adicCompletion K] (w.adicCompletion L)).val.toLinearMap ∘ₗ f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hg : Continuous g` using `LinearMap.continuous_on_pi g`. Establish `: ((integralClosure 𝒪[v.adicCompletion K] (w.adicCompletion L) : Set (w.adicCompletion L))) = Set.range g`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc⟩` from `hf ⟨y, hy⟩`. Conclude with `⟨c, by simp [g, hc]⟩`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `(f c).2`. Rewrite using `[this]`.
-
-Conclude with `(isCompact_range hg).isClosed`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_integralClosure :
     IsClosed ((integralClosure 𝒪[v.adicCompletion K] (w.adicCompletion L) :
@@ -149,7 +145,7 @@ theorem isClosed_integralClosure :
   exact (isCompact_range hg).isClosed
 
 /- English proof (translation)
-Establish `hx' : x ∈ w.adicCompletionIntegers L` using `(mem_valuationInteger_iff w x).1 hx`. Establish `hsub : (Set.range fun r : 𝓞 L ↦ algebraMap L (w.adicCompletion L) (algebraMap (𝓞 L) L r)) ⊆ (integralClosure 𝒪[v.adicCompletion K] (w.adicCompletion L) : Set (w.adicCompletion L))`. Introduce and unpack `_ ⟨r, rfl⟩`. Conclude with `isIntegral_algebraMap_ringOfIntegers v w r`. Conclude with `closure_minimal hsub (isClosed_integralClosure v w) (adicCompletionIntegers_subset_closure_ringOfIntegers w hx')`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_mem_integer {x : w.adicCompletion L} (hx : x ∈ 𝒪[w.adicCompletion L]) :
     IsIntegral 𝒪[v.adicCompletion K] x := by
@@ -175,7 +171,7 @@ section MaximalIdeal
 variable {F : Type*} [Field F] [NumberField F] (u : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext h map_le_one y := by have h : (y : u.adicCompletion F) ∈ u.adicCompletionIntegers F := (mem_valuationInteger_iff u (y : u.adicCompletion F)).1 y.2 exact h exists_of_le_one x hx := ⟨⟨x, (mem_valuationInteger_iff u x).2 hx⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem integers_valued :
     (Valued.v : Valuation (u.adicCompletion F) ℤᵐ⁰).Integers 𝒪[u.adicCompletion F] where
@@ -187,7 +183,7 @@ theorem integers_valued :
   exists_of_le_one x hx := ⟨⟨x, (mem_valuationInteger_iff u x).2 hx⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (integers_valued u).isUnit_iff_valuation_eq_one]`. Conclude with `⟨fun h ↦ lt_of_le_of_ne ((integers_valued u).map_le_one y) h, ne_of_lt⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_maximalIdeal_iff_valued_lt_one (y : 𝒪[u.adicCompletion F]) :
     y ∈ 𝓂[u.adicCompletion F] ↔ Valued.v (y : u.adicCompletion F) < 1 := by
@@ -196,13 +192,13 @@ theorem mem_maximalIdeal_iff_valued_lt_one (y : 𝒪[u.adicCompletion F]) :
   exact ⟨fun h ↦ lt_of_le_of_ne ((integers_valued u).map_le_one y) h, ne_of_lt⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Establish `h` using `(mem_maximalIdeal_iff_valued_lt_one u ϖ).1 hϖ.not_isUnit`. Establish `h' : Valued.v (ϖ : u.adicCompletion F) < WithZero.exp (-1) * WithZero.exp 1`. Rewrite using `[← WithZero.exp_add, neg_add_cancel, WithZero.exp_zero]` and apply the resulting hypothesis. Conclude with `(WithZero.lt_mul_exp_iff_le (by simp)).1 h'`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hlt : WithZero.exp (-1 : ℤ) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Take `⟨y, hy⟩` from `valuedAdicCompletion_surjective F u (WithZero.exp (-1))`. Establish `hy1 : Valued.v y ≤ 1` using `by rw [hy]; exact hlt.le`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `y' : 𝒪[u.adicCompletion F]` to `⟨y, (mem_valuationInteger_iff u y).2 hy1⟩`. Establish `hy' : y' ∈ 𝓂[u.adicCompletion F]`. Rewrite using `[mem_maximalIdeal_iff_valued_lt_one]`. Express the relevant statement in the definitionally equal form `Valued.v y < 1`. Rewrite using `[hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hlt`. Rewrite `hy'` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hy'`. Rewrite using `[← hy, show y = ((c * ϖ : 𝒪[u.adicCompletion F]) : u.adicCompletion F) by rw [hc], Subring.coe_mul, map_mul]`. Conclude with `mul_le_of_le_one_left zero_le ((integers_valued u).map_le_one c)`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_of_irreducible_integer {ϖ : 𝒪[u.adicCompletion F]} (hϖ : Irreducible ϖ) :
     Valued.v (ϖ : u.adicCompletion F) = WithZero.exp (-1) := by
@@ -227,7 +223,7 @@ theorem valued_of_irreducible_integer {ϖ : 𝒪[u.adicCompletion F]} (hϖ : Irr
     exact mul_le_of_le_one_left zero_le ((integers_valued u).map_le_one c)
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[u.adicCompletion F]`. Establish `h` using `(integers_valued u).maximalIdeal_pow_eq_setOfPred_le_v_algebraMap_pow hϖ n`. Rewrite using `[← SetLike.mem_coe, h, Set.mem_ofPred_eq]`. Express the relevant statement in the definitionally equal form `Valued.v (y : u.adicCompletion F) ≤ Valued.v (ϖ : u.adicCompletion F) ^ n ↔ _`. Rewrite using `[valued_of_irreducible_integer u hϖ, ← WithZero.exp_nsmul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -255,7 +251,7 @@ instance charZero_adicCompletion {F : Type*} [Field F] [NumberField F]
   charZero_of_injective_algebraMap (algebraMap F (u.adicCompletion F)).injective
 
 /- English proof (translation)
-Rewrite using `[Module.isTorsionFree_iff_algebraMap_injective, IsScalarTower.algebraMap_eq 𝒪[v.adicCompletion K] (v.adicCompletion K) (w.adicCompletion L)]`. Conclude with `(algebraMap (v.adicCompletion K) (w.adicCompletion L)).injective.comp Subtype.val_injective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTorsionFree_integer_adicCompletion :
     Module.IsTorsionFree 𝒪[v.adicCompletion K] (w.adicCompletion L) := by
@@ -265,20 +261,20 @@ theorem isTorsionFree_integer_adicCompletion :
     Subtype.val_injective
 
 /- English proof (translation)
-The claim follows from `IsIntegralClosure.finite 𝒪[v.adicCompletion K] (v.adicCompletion K) (w.adicCompletion L) _`.
+A detailed English derivation is pending.
 -/
 theorem finite_integer : Module.Finite 𝒪[v.adicCompletion K] 𝒪[w.adicCompletion L] :=
   IsIntegralClosure.finite 𝒪[v.adicCompletion K] (v.adicCompletion K) (w.adicCompletion L) _
 
 /- English proof (translation)
-The claim follows from `have := isTorsionFree_integer_adicCompletion v w IsIntegralClosure.module_free 𝒪[v.adicCompletion K] (v.adicCompletion K) (w.adicCompletion L) _`.
+A detailed English derivation is pending.
 -/
 theorem free_integer : Module.Free 𝒪[v.adicCompletion K] 𝒪[w.adicCompletion L] :=
   have := isTorsionFree_integer_adicCompletion v w
   IsIntegralClosure.module_free 𝒪[v.adicCompletion K] (v.adicCompletion K) (w.adicCompletion L) _
 
 /- English proof (translation)
-The claim follows from `have := isTorsionFree_integer_adicCompletion v w IsIntegralClosure.rank 𝒪[v.adicCompletion K] (v.adicCompletion K) (w.adicCompletion L) _`.
+A detailed English derivation is pending.
 -/
 theorem finrank_integer :
     Module.finrank 𝒪[v.adicCompletion K] 𝒪[w.adicCompletion L] =
@@ -287,11 +283,11 @@ theorem finrank_integer :
   IsIntegralClosure.rank 𝒪[v.adicCompletion K] (v.adicCompletion K) (w.adicCompletion L) _
 
 /- English proof (translation)
-Use `finite_integer v w` as an intermediate fact. Use `free_integer v w` as an intermediate fact. Establish `hp0 : 𝓂[v.adicCompletion K] ≠ ⊥` using `IsDiscreteValuationRing.not_a_field _`. Establish `hset` using `IsLocalRing.primesOver_eq 𝒪[w.adicCompletion L] hp0`. Establish `hmem : 𝓂[w.adicCompletion L] ∈ 𝓂[v.adicCompletion K].primesOver 𝒪[w.adicCompletion L]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hset]`. Both sides reduce to the same expression. Set `: Unique (𝓂[v.adicCompletion K].primesOver 𝒪[w.adicCompletion L])` to `{ default := ⟨_, hmem⟩ uniq := fun q ↦ Subtype.ext ((Set.ext_iff.1 hset q).1 q.2) }`. Establish `h` using `Ideal.sum_ramification_inertia_eq_finrank 𝓂[v.adicCompletion K] 𝒪[w.adicCompletion L]`. Rewrite `h` using `[Fintype.sum_unique, finrank_integer]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem ramificationIdx_mul_inertiaDeg_integer :
     𝓂[w.adicCompletion L].ramificationIdx 𝒪[v.adicCompletion K] *
@@ -311,9 +307,9 @@ theorem ramificationIdx_mul_inertiaDeg_integer :
   exact h
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[v.adicCompletion K]`. Establish `key : ∀ n : ℕ, Ideal.map (algebraMap 𝒪[v.adicCompletion K] 𝒪[w.adicCompletion L]) 𝓂[v.adicCompletion K] ≤ 𝓂[w.adicCompletion L] ^ n ↔ n ≤ v.asIdeal.ramificationIdx' w.asIdeal`. Introduce `n`. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton, Ideal.span_singleton_le_iff_mem, mem_maximalIdeal_pow_iff, GroundTheory.LocalField.coe_algebraMap_integer, valued_algebraMap_adicCompletion', valued_of_irreducible_integer v hϖ, ← WithZero.exp_nsmul, WithZero.exp_le_exp]`. Simplify using `only [smul_neg, nsmul_eq_mul, mul_one, neg_le_neg_iff, Nat.cast_le]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h` using `Ideal.ramificationIdx'_spec ((key _).2 le_rfl) (fun h ↦ by simpa using (key _).1 h)`. Rewrite using `[← Ideal.ramificationIdx'_eq_ramificationIdx 𝓂[v.adicCompletion K] 𝓂[w.adicCompletion L] (IsDiscreteValuationRing.not_a_field _), h, Ideal.ramificationIdx'_eq_ramificationIdx v.asIdeal w.asIdeal v.ne_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ramificationIdx_integer :
     𝓂[w.adicCompletion L].ramificationIdx 𝒪[v.adicCompletion K] =

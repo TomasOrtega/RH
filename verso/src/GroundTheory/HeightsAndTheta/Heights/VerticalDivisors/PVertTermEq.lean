@@ -9,7 +9,7 @@ open MvPolynomial NumberField IsDedekindDomain
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `(Ideal.finite_minimalPrimes_of_isNoetherianRing _ _).subset fun _ hW => hW.1.1`.
+A detailed English derivation is pending.
 -/
 theorem vertComps_finite {K : Type*} [Field K] [NumberField K] {n : ℕ}
     (I : Ideal (MvPolynomial (Fin n) K)) (u : Fin n → 𝓞 K) (v : HeightOneSpectrum (𝓞 K)) :
@@ -17,9 +17,9 @@ theorem vertComps_finite {K : Type*} [Field K] [NumberField K] {n : ℕ}
   (Ideal.finite_minimalPrimes_of_isNoetherianRing _ _).subset fun _ hW => hW.1.1
 
 /- English proof (translation)
-Introduce `K _ _ n e I u v`. Establish `hfin` using `vertComps_finite I u v`. Unfold `vertTermAt vertDeg`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, Nat.cast_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem VertTermEq.proof : VertTermEq.Statement := by
   intro K _ _ n e I u v

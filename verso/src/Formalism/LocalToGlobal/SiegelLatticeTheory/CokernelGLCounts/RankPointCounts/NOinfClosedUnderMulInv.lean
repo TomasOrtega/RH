@@ -9,9 +9,9 @@ namespace Formalism.L2.SG.Pf.NcReal.JX
 open Formalism.BasicNotions Formalism.L2.SG.HidaSetting
 
 /- English proof (translation)
-Establish `hK` using `Formalism.L2.SG.Closed.level_subgroup_is_group X`. Establish `hc` using `Formalism.L2.SG.Pf.NOsub_coe X u hK`. Use `⟨fun s hs => Formalism.L2.SG.Pf.no_sub_ninf X u hs, fun δ hδ δ' hδ' => ?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite `hδ`, `hδ'`, the goal using `[← hc]`. Conclude with `(Formalism.L2.SG.Pf.NOsub X u hK).mul_mem hδ hδ'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hδ`, the goal using `[← hc]`. Conclude with `(Formalism.L2.SG.Pf.NOsub X u hK).inv_mem hδ`.
+A detailed English derivation is pending.
 -/
 theorem nOinf_closed_under_mul_inv {D : D7} (X : HidaSetting D) (u : D.what₂.Word) :
     Formalism.L2.SG.PoincareInHH.PoincareSetting.NOinf X u ⊆ X.NinfU u ∧

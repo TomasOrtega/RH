@@ -6,17 +6,15 @@ open MvPolynomial
 namespace GlobalTheory.WeylIntExpansion
 
 /- English proof (translation)
-Introduce `N Y hY hrep f hf`. Use `set μ : Fin N → ℕ := fun r => Y.rowLen r with hμ`. Use `set N0 := Formalism.GradedWeylDivisibility.fockQ (Formalism.GradedWeylDivisibility.hw ℚ (le_refl N) μ) (Formalism.GradedWeylDivisibility.hw ℚ (le_refl N) μ) with hN0`. Establish `hN0ne : N0 ≠ 0` using `((Formalism.GradedWeylDivisibility.fockQPos _ _ (Formalism.GradedWeylDivisibility.hw ℚ (le_refl N) μ)).2 (Formalism.GradedWeylDivisibility.hwNe ℚ N N le_rfl _)).ne'`. Establish `hanti : Antitone μ` using `fun a b hab => Y.rowLen_anti _ _ hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfQ : Formalism.GradedWeylDivisibility.intQ N N f ∈ Formalism.GradedWeylDivisibility.bDual N N le_rfl μ ((Formalism.GradedWeylDivisibility.dualWeyl ℤ N N μ).map (Formalism.GradedWeylDivisibility.intQ N N))`. Rewrite using `[← GlobalTheory.StdDual.weylEqDualNabla N N le_rfl μ hanti]`. Conclude with `⟨f, hf, rfl⟩`. Establish `hmem : ∀ J, GlobalTheory.WeylMinorDual.colProd ℤ N Y hY J ∈ Formalism.GradedWeylDivisibility.dualWeyl ℤ N N μ`. Introduce `J`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hμ, GlobalTheory.WeylMinorDual.dualWeyl_eq_span_colProd ℤ N Y hY]`. Conclude with `Submodule.subset_span ⟨J, rfl⟩`. Establish `hz : ∀ J, ∃ z : ℤ, Formalism.GradedWeylDivisibility.fockQ (map (Int.castRingHom ℚ) f) (map (Int.castRingHom ℚ) (GlobalTheory.WeylMinorDual.colProd ℤ N Y hY J)) = z * N0` using `fun J => hfQ.2 _ ⟨_, hmem J, rfl⟩`. Use `choose z hz using hz`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : ∀ J, map (Int.castRingHom ℚ) (GlobalTheory.WeylMinorDual.colProd ℤ N Y hY J) = GlobalTheory.WeylMinorDual.colProd ℚ N Y hY J` using `fun J => by`. Unfold `GlobalTheory.WeylMinorDual.colProd`. Conclude with `Formalism.L2.DIV.fk_map_bidet _ _ _ _`. Establish `h` using `hrep (map (Int.castRingHom ℚ) f) hfQ.1`. Establish `hc : ∀ J, Formalism.GradedWeylDivisibility.fockQ (GlobalTheory.WeylMinorDual.colProd ℚ N Y hY J) (map (Int.castRingHom ℚ) f) = z J * N0` using `fun J => by rw [(Formalism.GradedWeylDivisibility.fockQPos _ _ _).1, ← hmap, hz]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hc] at h`. Apply `MvPolynomial.map_injective (Int.castRingHom ℚ) Int.cast_injective` to reduce the goal to its premises. Apply `smul_right_injective _ hN0ne` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[← h, map_sum, Finset.smul_sum]`.
-
-Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, hmap, ← Int.cast_smul_eq_zsmul ℚ, smul_smul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weyl_int_expansion : ∀ (N : ℕ) (Y : YoungDiagram) (hY : Y.colLen 0 ≤ N), (∀ f ∈ Formalism.GradedWeylDivisibility.dualWeyl ℚ N N (fun r : Fin N => Y.rowLen r),
       ∑ J : (∀ c : Fin (Y.rowLen 0), Fin (Y.colLen c) ↪o Fin N),

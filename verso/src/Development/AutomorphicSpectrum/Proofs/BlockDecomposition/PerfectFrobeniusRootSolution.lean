@@ -8,9 +8,9 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.PerfectRing
 
 /- English proof (translation)
-Introduce `p _ A _ B _ _ m n k a c hB hS`. Take `⟨y, hy⟩` from `hS`. Take `⟨-, -, hroot, hinj, -⟩` from `pf_facts p B hB`. Take `⟨F, hF⟩` from `GlobalTheory.CompanionTheory.Frobenius.exists_ringHom_pow_prime_pow p B hB.char k`. Use `choose y' hy' using fun j => hroot k (y j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y', fun i => hinj k _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[← hF, ← hF, map_sum, hF, ← map_pow, ← hy i]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hF, Algebra.smul_def, Algebra.smul_def, mul_pow, map_pow, hy' j]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem solv_of_solv_pow : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A](B : Type) [CommRing B] [Algebra A B] (m n k : ℕ) (a : Fin m → Fin n → A) (c : Fin m → A), Pf p B → Solv B (fun t j => a t j ^ p ^ k) (fun t => c t ^ p ^ k) → Solv B a c := by
   intro p _ A _ B _ _ m n k a c hB hS

@@ -20,20 +20,20 @@ theorem mulMat_eq_map (a : B.A) :
     mulMat e b a = (e : K.E →+* w.adicCompletion E).mapMatrix (LinearMap.toMatrix b b (LinearMap.mulLeft K.E a)) := rfl
 
 /- English proof (translation)
-Rewrite using `[mulMat_eq_map, LinearMap.mulLeft_one, LinearMap.toMatrix_id, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulMat_one : mulMat e b (1 : B.A) = 1 := by
   rw [mulMat_eq_map, LinearMap.mulLeft_one, LinearMap.toMatrix_id, map_one]
 
 /- English proof (translation)
-Rewrite using `[mulMat_eq_map, mulMat_eq_map, mulMat_eq_map, LinearMap.mulLeft_mul, ← map_mul, ← LinearMap.toMatrix_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mulMat_mul (a a' : B.A) : mulMat e b (a * a') = mulMat e b a * mulMat e b a' := by
   rw [mulMat_eq_map, mulMat_eq_map, mulMat_eq_map, LinearMap.mulLeft_mul, ← map_mul, ← LinearMap.toMatrix_mul]
   rfl
 
 /- English proof (translation)
-Introduce `a a' h`. Establish `h1 : LinearMap.toMatrix b b (LinearMap.mulLeft K.E a) = LinearMap.toMatrix b b (LinearMap.mulLeft K.E a')` using `Matrix.map_injective e.injective h`. Establish `h2` using `congrArg (fun f : B.A →ₗ[K.E] B.A => f 1) ((LinearMap.toMatrix b b).injective h1)`. Simplify using `using h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mulMat_injective : Function.Injective (mulMat e b) := by
   intro a a' h
@@ -54,7 +54,7 @@ Both sides reduce to the same expression.
 theorem mulU_val (a : B.Aˣ) : (mulU e b a).val = mulMat e b a := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Units.ext (mulMat_injective e b (congrArg Units.val h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mulU_injective : Function.Injective (mulU e b) :=
   fun _ _ h => Units.ext (mulMat_injective e b (congrArg Units.val h))

@@ -18,13 +18,13 @@ namespace LelongWeightLimit
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨U, hU, hZU, hfU⟩` from `hf`. Establish `hK : IsCompact (Z ∩ tsupport f)` using `hfc.isCompact.inter_left hZ`. Take `⟨V, hV, hKV, hVU, -⟩` from `exists_open_between_and_isCompact_closure hK hU (inter_subset_left.trans hZU)`. Take `⟨θ, hθ, -, hθs, hθ1⟩` from `exists_contMDiff_support_eq_eq_one_iff 𝓘(ℝ, Fin n → ℂ) (n := ⊤) hV hK.isClosed hKV`. Rewrite `hθ` using `[contMDiff_iff_contDiff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨θ * f, ?_, hfc.mul_left, fun x hx => ?_⟩` and prove the remaining obligations. Use `contDiff_iff_contDiffAt.mpr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ U`. Conclude with `hθ.contDiffAt.mul (hfU.contDiffAt (hU.mem_nhds hx))`. Establish `hev : θ * f =ᶠ[𝓝 x] fun _ => 0` using `by filter_upwards [isClosed_closure.isOpen_compl.mem_nhds fun h => hx (hVU h)] with y hy`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: θ y = 0`. Assume the negation of the conclusion as `h`. Conclude with `hy (subset_closure (hθs ▸ (Function.mem_support.mpr h)))`. Simplify using `[this]`. Conclude with `contDiffAt_const.congr_of_eventuallyEq hev`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hxf : x ∈ tsupport f`. Rewrite using `[Pi.mul_apply, (hθ1 x).1 ⟨hx, hxf⟩, one_mul]`. Rewrite using `[Pi.mul_apply, image_eq_zero_of_notMem_tsupport hxf, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_contDiff_eqOn {Z : Set (Fin n → ℂ)} (hZ : IsClosed Z) {f : (Fin n → ℂ) → ℝ}
     (hf : SmoothNear Z f) (hfc : HasCompactSupport f) :
@@ -52,7 +52,7 @@ theorem exists_contDiff_eqOn {Z : Set (Fin n → ℂ)} (hZ : IsClosed Z) {f : (F
     · rw [Pi.mul_apply, image_eq_zero_of_notMem_tsupport hxf, mul_zero]
 
 /- English proof (translation)
-Unfold `varInt chartInt`. Use `split_ifs`. Rewrite using `[CutOffDominated.chartDens_congr_zeroSet h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem varInt_congr {J : Ideal (MvPolynomial (Fin n) ℂ)} {d : ℕ} {f g : (Fin n → ℂ) → ℝ}
     (h : ∀ x ∈ ComplexSets.zeroSet J, f x = g x) (φ : Fin d → (Fin n → ℂ) → ℝ) :
@@ -63,9 +63,9 @@ theorem varInt_congr {J : Ideal (MvPolynomial (Fin n) ℂ)} {d : ℕ} {f g : (Fi
   · rfl
 
 /- English proof (translation)
-Take `⟨U, hU, hZU, hkU⟩` from `hk`. Use `⟨U ∩ k ⁻¹' Ioi 0, hkU.continuousOn.isOpen_inter_preimage hU isOpen_Ioi, fun x hx => ⟨hZU hx, hk0 x hx⟩, ?_⟩` and prove the remaining obligations. Use `ContDiffOn.div_const (ContDiffOn.log ?_ fun x hx => ?_) _` and prove the remaining obligations. Conclude with `((contDiff_norm_sq ℝ).comp (contDiff_linEval u)).contDiffOn.add (contDiffOn_const.mul ((hkU.mono inter_subset_left).pow 2))`. Establish `h1 : 0 < ε * k x ^ 2` using `mul_pos hε (pow_pos hx.2 2)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 0 ≤ ‖linEval u x‖ ^ 2` using `sq_nonneg _`. Conclude with `(by linarith : (0 : ℝ) < ‖linEval u x‖ ^ 2 + ε * k x ^ 2).ne'`.
+A detailed English derivation is pending.
 -/
 theorem smoothNear_weight {Z : Set (Fin n → ℂ)} (u : Fin n → ℂ) {k : (Fin n → ℂ) → ℝ}
     (hk : SmoothNear Z k) (hk0 : ∀ x ∈ Z, 0 < k x) {ε : ℝ} (hε : 0 < ε) :
@@ -85,11 +85,11 @@ end LelongWeightLimit
 open LelongWeightLimit in
 
 /- English proof (translation)
-Introduce `n d J u f k φ hJ hdim hu hf hfc hφ hk hk0`. Take `⟨g, hg, hgc, hgf⟩` from `exists_contDiff_eqOn (GroundTheory.Heights₂.Heights.SheetSumMeasurable.isClosed_zeroSet J) hf hfc`. Establish `hsum : (∑ᶠ (W : Ideal (MvPolynomial (Fin n) ℂ)) (_ : W ∈ (J ⊔ Ideal.span {linForm u}).minimalPrimes), (localMult (J ⊔ Ideal.span {linForm u}) W : ℝ) * varInt W d g φ) = ∑ᶠ (W : Ideal (MvPolynomial (Fin n) ℂ)) (_ : W ∈ (J ⊔ Ideal.span {linForm u}).minimalPrimes), (localMult (J ⊔ I …`. Use `finsum_congr fun W => finsum_congr fun hW => ?_` and prove the remaining obligations. Rewrite using `[varInt_congr (fun x hx => hgf x fun q hq => hx q (le_sup_left.trans hW.1.2 hq)) φ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hlim` using `(hL n d J u g φ hJ hdim hu hg hgc hφ).add (hD n d J u g k φ hJ hdim hu hg hgc hφ hk hk0)`. Rewrite `hlim` using `[hsum, add_zero]`. Use `hlim.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ε (hε : 0 < ε)`. Rewrite using `[varInt_congr (fun x hx => (hgf x hx).symm) (vecCons _ φ), hS n d J g _ φ hJ hdim (smoothNear_of_contDiff hg) (smoothNear_weight u hk hk0 hε) hφ (Or.inl hgc), hS n d J g (logReg u ε) φ hJ hdim (smoothNear_of_contDiff hg) (smoothNear_of_contDiff (contDiff_logReg u hε)) hφ (Or.inl …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem LelongWeightLimit.proof (hL : GroundTheory.Heights₂.Heights.LelongLimit.Statement)
     (hS : GroundTheory.Heights₂.Heights.StokesOnVariety.Statement) (hD : LelongWeightDiff.Statement) :

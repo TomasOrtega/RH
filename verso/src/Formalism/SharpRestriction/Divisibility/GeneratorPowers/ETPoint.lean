@@ -10,9 +10,9 @@ namespace Formalism.MainNotions.ModuliIntegralCharts.H1
 open NumberField Formalism.MainNotions.ModuliIntegralCharts ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction.G.Out IsLocalRing
 
 /- English proof (translation)
-Set `S : Set ℕ` to `Set.range fun z : X => (Q (y + R' • z)).toNat`. Establish `hS : S.Nonempty` using `⟨_, 0, rfl⟩`. Take `⟨z, hz⟩` from `Nat.sInf_mem hS`. Use `⟨z, fun z' => ?_⟩` and prove the remaining obligations. Establish `h1 : sInf S ≤ (Q (y + R' • z')).toNat` using `Nat.sInf_le ⟨z', rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `hQ (y + R' • z)`. Establish `h3` using `hQ (y + R' • z')`. Establish `h4 : (Q (y + R' • z)).toNat = sInf S` using `hz`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem etPoint_min {X : Type} [AddCommGroup X] (Q : X → ℤ) (hQ : ∀ a, 0 ≤ Q a) (y : X) (R' : ℕ) :
     ∃ z : X, ∀ z' : X, Q (y + R' • z) ≤ Q (y + R' • z') := by

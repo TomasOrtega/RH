@@ -16,14 +16,14 @@ section Place
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : SplitPt D k)
 
 /- English proof (translation)
-Use `q.sec_pr 1` as an intermediate fact. Rewrite `this` using `[map_one, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sec_one' : q.sec 1 = q.e := by
   have := q.sec_pr 1
   rwa [map_one, mul_one] at this
 
 /- English proof (translation)
-Establish `h` using `q.sec_pr (q.sec x * q.sec y)`. Rewrite `h` using `[map_mul, q.pr_sec, q.pr_sec, ← mul_assoc, ← GlobalTheory.FrameGlob.sec_eq_mul]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_mul' (x y : k) : q.sec x * q.sec y = q.sec (x * y) := by
   have h := q.sec_pr (q.sec x * q.sec y)
@@ -31,9 +31,9 @@ theorem sec_mul' (x y : k) : q.sec x * q.sec y = q.sec (x * y) := by
   exact h.symm
 
 /- English proof (translation)
-Establish `h1` using `sec_mul' q x y`. Rewrite `h1` using `[h, sec_one']`. Establish `h2` using `GlobalTheory.FrameGlob.sec_eq_mul q x`. Establish `h3` using `GlobalTheory.FrameGlob.sec_eq_mul q y`. Establish `h4` using `q.split.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `h1 + h2 + h3 + h4`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem idlU_mul (x y : k) (h : x * y = 1) : (q.sec x + (1 - q.e)) * (q.sec y + (1 - q.e)) = 1 := by
   have h1 := sec_mul' q x y
@@ -47,16 +47,16 @@ def idlU (x : kˣ) : (AE D)ˣ :=
   ⟨q.sec x + (1 - q.e), q.sec (x⁻¹ : kˣ) + (1 - q.e), idlU_mul q _ _ x.mul_inv, idlU_mul q _ _ x.inv_mul⟩
 
 /- English proof (translation)
-The claim follows from `Units.continuous_iff.2 ⟨(q.cont_sec.comp Units.continuous_val).add continuous_const, (q.cont_sec.comp Units.continuous_coe_inv).add continuous_const⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_idlU : Continuous (idlU q) :=
   Units.continuous_iff.2 ⟨(q.cont_sec.comp Units.continuous_val).add continuous_const,
     (q.cont_sec.comp Units.continuous_coe_inv).add continuous_const⟩
 
 /- English proof (translation)
-Take `⟨r₀, s, hs, e⟩` from `ha`. Establish `hs0 : (algebraMap (𝓞 D.host.E) D.host.E s) ≠ 0` using `RingOfIntegers.coe_ne_zero_iff.2 (by rintro rfl; exact hs (zero_mem _))`. Use `haveI := PP.isMaximal`. Use `letI := Ideal.Quotient.field PP.asIdeal`. Establish `hu : Ideal.Quotient.mk PP.asIdeal s ≠ 0` using `by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsp` using `Formalism.L2.Col.reduction_spec PP hs e`. Establish `h1` using `hr s (Units.mk0 _ hs0) (Units.mk0 _ hu) rfl rfl`. Establish `h2` using `hr r₀ (Units.mk0 _ hs0 * Units.mk0 _ ha0) (Units.mk0 _ hu * r) (by simp [e]) (by simp [hra, hsp])`. Rewrite `h2` using `[map_mul, map_mul, h1]`. Conclude with `mul_left_cancel h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_eq_locK {PP : Formalism.L2.DIV.Pl D.host.E} {H : Formalism.L2.Host.HChar D.host.E}
     {c : (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ} (hr : Formalism.IndefR.Links.IsRes H PP c) {a : D.host.E} (ha : IntAt PP a)
@@ -85,9 +85,9 @@ open Formalism.L2.Col (IntAt)
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : SplitPt D k)
 
 /- English proof (translation)
-Conclude with `hχ.2 PP q.e ⟨h.1.1, by`. Take `⟨ε, hε, hs⟩` from `q.above`. Conclude with `⟨q.v, ε, hε, Or.inl ⟨h.1.2.1, hs⟩⟩, h.2⟩ (Units.mk0 _ ha0) (idlU q u) (by`. Express the relevant statement in the definitionally equal form `q.sec u + (1 - q.e) = 1 + q.e * (incA D a - 1)`. Rewrite using `[hu]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `q.sec (q.pr _) + _ = _`. Rewrite using `[q.sec_pr]`. Use the proof step `ring)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_idlU_rat {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) {χ : (AE D)ˣ →* Circle}
     {H : Formalism.L2.Host.HChar D.host.E} (hχ : Formalism.IndefR.Links.ChrEq χ H) {a : D.host.E} (ha0 : a ≠ 0) (u : kˣ)
@@ -113,9 +113,9 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
 def prOU : 𝓞 D.host.E →+* k := (q.pr.comp (incA D)).comp (algebraMap (𝓞 D.host.E) D.host.E)
 
 /- English proof (translation)
-Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Simplify using the standard rewrite rules. Establish `h0 : prOU q z ≠ 0` using `(map_ne_zero (q.pr.comp (incA D))).2 (RingOfIntegers.coe_ne_zero_iff.2 hz)`. Rewrite using `[h.2 z hz, ← q.sec_pr, ← q.int_iff]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(q.pr.comp (incA D)) _ ∉ _ ↔ _`. Rewrite using `[map_inv₀, Valuation.mem_integer_iff, map_inv₀, not_le]`. Conclude with `one_lt_inv₀ (a := valuation k (prOU q z)) (zero_lt_iff.2 ((map_ne_zero _).2 h0))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prOU_lt {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) (z : 𝓞 D.host.E) :
     z ∈ PP.asIdeal ↔ valuation k (prOU q z) < 1 := by
@@ -128,7 +128,7 @@ theorem prOU_lt {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) (z : �
   exact one_lt_inv₀ (a := valuation k (prOU q z)) (zero_lt_iff.2 ((map_ne_zero _).2 h0))
 
 /- English proof (translation)
-The claim follows from `(Valuation.mem_integer_iff _ _).1 ((hi _).2 ⟨z, 1, (Ideal.ne_top_iff_one _).1 PP.isPrime.ne_top, by simp⟩)`.
+A detailed English derivation is pending.
 -/
 theorem prOU_le {PP : Formalism.L2.DIV.Pl D.host.E} (hi : ∀ x, (ofSplit q).pr x ∈ 𝒪[k] ↔ IntAt PP x)
     (z : 𝓞 D.host.E) : valuation k (prOU q z) ≤ 1 :=
@@ -138,27 +138,25 @@ theorem prOU_le {PP : Formalism.L2.DIV.Pl D.host.E} (hi : ∀ x, (ofSplit q).pr 
 end Place
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ q PP h hi hd χ H c μ hχ hr hμ`. Establish `comp : ∀ x : kˣ, (μ x : ℂ) = χ (idlU q x)` using `fun x => hμ x (idlU q x) rfl`. Establish `val : ∀ (a : D.host.E) (u : kˣ) (r : (Formalism.L2.DIV.kP PP)ˣ), IntAt PP a → (r : Formalism.L2.DIV.kP PP) = Formalism.L2.Col.redP PP a → (u : k) = (ofSplit q).pr a → μ u = c r`. Introduce `a u r ha hra hu`. Establish `ha0 : a ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `u.ne_zero (hu.trans (q.pr.comp (incA D)).map_zero)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[comp u, chi_idlU_rat q h hχ ha0 u hu, res_eq_locK hr ha ha0 r hra]`. Use `⟨?_, val⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `rat : ∀ (a : D.host.E) (y : kˣ), (y : k) = (ofSplit q).pr a → valuation k ((y : k) - 1) < 1 → χ (idlU q y) = 1`. Introduce `a y hy hy1`. Establish `hv : valuation k (y : k) = 1` using `by simpa using Valuation.map_one_add_of_lt (valuation k) hy1`. Establish `ha : IntAt PP a` using `(hi a).1 (by rw [← hy, Valuation.mem_integer_iff, hv])`. Establish `hred : Formalism.L2.Col.redP PP a = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r₀, s, hs, e⟩` from `ha`. Establish `hsp` using `Formalism.L2.Col.reduction_spec PP hs e`. Establish `e' : prOU q s * y = prOU q r₀`. Rewrite using `[hy]`. Conclude with `((q.pr.comp (incA D)).map_mul _ _).symm.trans (congrArg (q.pr.comp (incA D)) e)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrs : r₀ - s ∈ PP.asIdeal`. Rewrite using `[prOU_lt q h, map_sub, ← e', ← mul_sub_one, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `haveI := PP.isMaximal`. Use `letI := Ideal.Quotient.field PP.asIdeal`.
+Chain the equalities or inequalities of the calculation. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu : Ideal.Quotient.mk PP.asIdeal s ≠ 0` using `by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]`. Establish `e2 : Ideal.Quotient.mk PP.asIdeal r₀ = Ideal.Quotient.mk PP.asIdeal s` using `Ideal.Quotient.eq.2 hrs`. Rewrite `hsp` using `[e2]`. Conclude with `mul_left_cancel₀ hu (hsp.trans (mul_one _).symm)`. Establish `h1` using `val a y 1 ha (by rw [Units.val_one, hred]) hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[map_one]`. Establish `h2` using `comp y`. Rewrite `h2` using `[h1, Units.val_one]`. Conclude with `Circle.coe_injective h2.symm`. Introduce `x hx`.
+Reduce the argument to an intermediate assertion. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-It suffices to establish `hs : χ (idlU q x) = 1 by`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[comp x, hs]`. Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : Continuous fun y => χ (idlU q y)` using `hχ.1.1.comp (continuous_idlU q)`. Establish `h1 : {y : kˣ | χ (idlU q y) ≠ 1} ∈ nhds x` using `(isOpen_ne_fun hc continuous_const).mem_nhds hne`. Rewrite `h1` using `[Units.isEmbedding_val₀.isInducing.nhds_eq_comap, Filter.mem_comap]`. Take `⟨W, hW, hW'⟩` from `h1`. Establish `h2 : {y : k | valuation k (y - x) < 1} ∈ nhds (x : k)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[IsValuativeTopology.mem_nhds_iff']`. Conclude with `⟨1, by simp⟩`. Take `⟨a, ha1, ha2, ha3⟩` from `hd.mem_nhds (Filter.inter_mem hW (Filter.inter_mem h2 (isOpen_ne.mem_nhds x.ne_zero)))`. Use `hW' (a := Units.mk0 _ ha3) ha1 (rat a _ rfl ?_)` and prove the remaining obligations. Use `Valuation.map_add_lt (valuation k) ha2 hx` as an intermediate fact.
-
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tame_and_res : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (PP : Formalism.L2.DIV.Pl D.host.E), Formalism.L2.NTheta.IsIdemAt q.e PP → (∀ x, (ofSplit q).pr x ∈ 𝒪[k] ↔ Formalism.L2.Col.IntAt PP x) → DenseRange (ofSplit q).pr → ∀ (χ : (AE D)ˣ →* Circle) (H : Formalism.L2.Host.HChar D.host.E) (c : (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ) (μ : kˣ →* ℂˣ), ChrEq χ H → IsRes H PP c → (ofSplit q).IsComp χ μ → IsTame μ ∧ ∀ (a : D.host.E) (u : kˣ) (r : (Formalism.L2.DIV.kP PP)ˣ), Formalism.L2.Col.IntAt PP a → (r : Formalism.L2.DIV.kP PP) = Formalism.L2.Col.redP PP a → (u : k) = (ofSplit q).pr a → μ u = c r := by
   intro D k _ _ _ _ q PP h hi hd χ H c μ hχ hr hμ

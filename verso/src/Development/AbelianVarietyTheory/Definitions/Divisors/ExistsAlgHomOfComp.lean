@@ -30,7 +30,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 section Glue
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ χ with commutes' := fun r => by rw [← f.commutes, ← g.commutes]; exact h _ }, fun _ => rfl, AlgHom.ext h⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_algHom_of_comp {K S A B : Type} [CommRing K] [CommRing S] [Algebra K S] [CommRing A] [Algebra K A]
     [CommRing B] [Algebra K B] (f : S →ₐ[K] A) (g : S →ₐ[K] B) (χ : A →+* B) (h : ∀ r, χ (f r) = g r) :
@@ -38,21 +38,19 @@ theorem exists_algHom_of_comp {K S A B : Type} [CommRing K] [CommRing S] [Algebr
   ⟨{ χ with commutes' := fun r => by rw [← f.commutes, ← g.commutes]; exact h _ }, fun _ => rfl, AlgHom.ext h⟩
 
 /- English proof (translation)
-Set `lo (f : S) : S →ₐ[K] Localization.Away f` to `IsScalarTower.toAlgHom K S (Localization.Away f)`. Set `t : Set S` to `{f | ∃ k, ⊤ ≤ (spMap (lo f).toRingHom ≫ z) ⁻¹ᵁ U k}`. Establish `ht : Ideal.span t = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Set `p : PrimeSpectrum S` to `⟨m, hm.isPrime⟩`. Establish `: z p ∈ ⨆ k, U k` using `by rw [hc]; trivial`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`. Take `⟨_, ⟨f, rfl⟩, hf, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (show p ∈ ((z ⁻¹ᵁ U k : (Sp S).Opens) : Set (Sp S)) from hk) (z ⁻¹ᵁ U k).isOpen`. Use `hf (hle (Ideal.subset_span ⟨k, fun q _ => hsub ?_⟩))` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(PrimeSpectrum.localization_away_comap_range (Localization.Away f) f).le ⟨q, rfl⟩`. Establish `comp : ∀ {S' S'' : Type} [CommRing S'] [Algebra K S'] [CommRing S''] [Algebra K S''] (ψ : S →ₐ[K] S') (χ : S' →ₐ[K] S'') (k : J), ⊤ ≤ (spMap ψ.toRingHom ≫ z) ⁻¹ᵁ U k → ⊤ ≤ (spMap (χ.comp ψ).toRingHom ≫ z) ⁻¹ᵁ U k` using `fun ψ χ k h => by`. Rewrite using `[show spMap (χ.comp ψ).toRingHom = spMap χ.toRingHom ≫ spMap ψ.toRingHom from (spMap_comp' _ _).symm, Category.assoc]`. Conclude with `le_preimage_comp _ h`. Establish `vcongr : ∀ {S' : Type} [CommRing S'] [Algebra K S'] (ψ ψ' : S →ₐ[K] S') (e : ψ = ψ') k k' h h', val S' ψ k h = val S' ψ' k' h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Introduce `S' _ _ ψ ψ' e k k' h h'`. Substitute `e` using the available equality. Conclude with `nat S' S' ψ (AlgHom.id K S') k' k h' h`. Take `⟨a, ha, hu⟩` from `Localization.existsUnique_algebraMap_eq_of_span_eq_top t ht (fun f => val _ (lo f.1) f.2.choose f.2.choose_spec) (fun f g => by`. Take `⟨χ₁, h₁, e₁⟩` from `exists_algHom_of_comp (K := K) (lo f.1) (lo (f.1 * g.1)) (IsLocalization.Away.awayToAwayRight f.1 g.1) (fun r => IsLocalization.Away.awayToAwayRight_eq f.1 g.1 r)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨χ₂, h₂, e₂⟩` from `exists_algHom_of_comp (K := K) (lo g.1) (lo (f.1 * g.1)) (IsLocalization.Away.awayToAwayLeft g.1 f.1) (fun r => IsLocalization.Away.awayToAwayLeft_eq g.1 f.1 r)`. Establish `a1` using `nat _ _ (lo f.1) χ₁ f.2.choose f.2.choose f.2.choose_spec (comp _ χ₁ _ f.2.choose_spec)`. Establish `a2` using `nat _ _ (lo g.1) χ₂ g.2.choose g.2.choose g.2.choose_spec (comp _ χ₂ _ g.2.choose_spec)`. Rewrite using `[← h₁, ← h₂, ← a1, ← a2]`. Conclude with `vcongr _ _ (e₁.trans e₂.symm) _ _ _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨a, fun S' _ _ ψ k h => ?_, fun b hb => hu b fun f => hb _ (lo f.1) _ _⟩` and prove the remaining obligations. Establish `ht' : Ideal.span (ψ '' t) = ⊤`. Rewrite using `[← Ideal.map_span ψ t, ht, Ideal.map_top]`. Apply `Localization.algebraMap_injective_of_span_eq_top _ ht'` to reduce the goal to its premises. Use function extensionality and compare the values at `⟨_, f, hf, rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `lo' : S' →ₐ[K] Localization.Away (ψ f)` to `IsScalarTower.toAlgHom K S' _`. Set `χ : Localization.Away f →ₐ[K] Localization.Away (ψ f)` to `IsLocalization.Away.mapₐ _ _ ψ f`. Establish `e : χ.comp (lo f) = lo'.comp ψ` using `AlgHom.ext fun r => by simp [χ, lo, lo', IsLocalization.Away.map]`. Use `show lo' (ψ a) = lo' (val S' ψ k h)`. Rewrite using `[← nat _ _ ψ lo' k k h (comp _ _ _ h), ← vcongr _ _ e _ _ (comp _ _ _ hf.choose_spec), nat _ _ _ χ _ _ hf.choose_spec, ← ha ⟨f, hf⟩]`.
-
-Conclude with `(congrArg (fun g : S →ₐ[K] _ => g a) e).symm`.
+A detailed English derivation is pending.
 -/
 theorem glue_val {K S : Type} [CommRing K] [CommRing S] [Algebra K S] {Z : Scheme.{0}} (z : Sp S ⟶ Z) {J : Type}
     {U : J → Z.Opens} (hc : ⨆ k, U k = ⊤)
@@ -125,24 +123,22 @@ def liftTan (y : Sp S ⟶ Xo.XF c) {w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} 
   Y.m0.cart.1.lift w (spMap (algebraMap S (DualNumber S)) ≫ y) (by rw [hw.1, Category.assoc])
 
 /- English proof (translation)
-The claim follows from `Y.m0.cart.1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem liftTan_univ (y : Sp S ⟶ Xo.XF c) {w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left}
     (hw : IsTanAt (y ≫ pullback.fst _ _) w) : liftTan Y y hw ≫ Y.m0.toSABMap.φ = w := Y.m0.cart.1.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `Y.m0.cart.1.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem liftTan_over (y : Sp S ⟶ Xo.XF c) {w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left}
     (hw : IsTanAt (y ≫ pullback.fst _ _) w) :
     liftTan Y y hw ≫ Y.oF.t.G.hom = spMap (algebraMap S (DualNumber S)) ≫ y := Y.m0.cart.1.lift_snd _ _ _
 
 /- English proof (translation)
-Establish `h1 : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ liftTan Y y hw = (1 : Over.mk y ⟶ Y.oF.t.G).left`. Apply `Y.m0.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, liftTan_univ, hw.2]`. Conclude with `grpPull_one Y.m0.cart (Over.mk y)`. Establish `hid : (TrivSqZeroExt.fstHom S S S).toRingHom.comp (algebraMap S (DualNumber S)) = RingHom.id S` using `RingHom.ext fun r => by simp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, liftTan_over, ← Category.assoc, spMap_comp', hid, Over.w]`. Conclude with `(congrArg (· ≫ y) (Spec.map_id _)).trans (Category.id_comp _)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Y.m.cart.1.w, ← Category.assoc, liftTan_over, Category.assoc]`. Both sides reduce to the same expression.
-
-Rewrite using `[← Category.assoc, h1]`. Conclude with `(grpPull_one Y.m.cart (Over.mk y)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTanAtG_liftTan (y : Sp S ⟶ Xo.XF c) {w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left}
     (hw : IsTanAt (y ≫ pullback.fst _ _) w) : IsTanAtG Y.t (y ≫ Y.j) (liftTan Y y hw ≫ Y.m.φ) := by
@@ -174,9 +170,9 @@ theorem toModel_left (y : Sp S ⟶ Xo.XF c) {x₀ : Sp S ⟶ Xo.X} (h₀ : y ≫
     (tv (toModel Y y h₀ hx hw)).left = liftTan Y y (h₀ ▸ hw) ≫ Y.m.φ := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨_, liftTan_over _ _, liftTan_univ _ _, rfl⟩`. Introduce and unpack `⟨u, h1, h2, h3⟩`. Apply `tan_ext_left` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[toModel_left, ← h3]`. Use `congr 1`. Conclude with `Y.m0.cart.1.hom_ext ((liftTan_univ _ _).trans h2.symm) ((liftTan_over _ _).trans h1.symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem toModel_eq_iff (y : Sp S ⟶ Xo.XF c) {x₀ : Sp S ⟶ Xo.X} (h₀ : y ≫ pullback.fst _ _ = x₀) {x : Sp S ⟶ Y.X}
     (hx : y ≫ Y.j = x) {w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hw : IsTanAt x₀ w) (v : TanM x Y.t.G) :
@@ -193,7 +189,7 @@ theorem toModel_eq_iff (y : Sp S ⟶ Xo.XF c) {x₀ : Sp S ⟶ Xo.X} (h₀ : y �
     exact Y.m0.cart.1.hom_ext ((liftTan_univ _ _).trans h2.symm) ((liftTan_over _ _).trans h1.symm)
 
 /- English proof (translation)
-Establish `h : liftTan Y y (h₀ ▸ hw) = liftTan Y y (h₀ ▸ hw')` using `Y.m.cart.1.hom_ext (congrArg (fun v => (tv v).left) e) ((liftTan_over _ _).trans (liftTan_over _ _).symm)`. Conclude with `(liftTan_univ y _).symm.trans ((congrArg (· ≫ Y.m0.toSABMap.φ) h).trans (liftTan_univ y _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toModel_injective (y : Sp S ⟶ Xo.XF c) {x₀ : Sp S ⟶ Xo.X} (h₀ : y ≫ pullback.fst _ _ = x₀) {x : Sp S ⟶ Y.X}
     (hx : y ≫ Y.j = x) {w w' : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hw : IsTanAt x₀ w) (hw' : IsTanAt x₀ w')
@@ -203,7 +199,7 @@ theorem toModel_injective (y : Sp S ⟶ Xo.XF c) {x₀ : Sp S ⟶ Xo.X} (h₀ : 
   exact (liftTan_univ y _).symm.trans ((congrArg (· ≫ Y.m0.toSABMap.φ) h).trans (liftTan_univ y _))
 
 /- English proof (translation)
-Use `((toModel_eq_iff y' h₀' hx' hw' _).2 ⟨spMap (dualMap φ) ≫ liftTan Y y (h₀ ▸ hw), ?_, ?_, ?_⟩).symm` and prove the remaining obligations. Rewrite using `[Category.assoc, liftTan_over, ← ey, ← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', dualMap_comp_alg]`. Rewrite using `[Category.assoc, liftTan_univ, ew]`. Rewrite using `[Category.assoc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tanPull_toModel (φ : S →+* S') (y : Sp S ⟶ Xo.XF c) {x₀ : Sp S ⟶ Xo.X} (h₀ : y ≫ pullback.fst _ _ = x₀)
     {x : Sp S ⟶ Y.X} (hx : y ≫ Y.j = x) {w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hw : IsTanAt x₀ w)
@@ -220,9 +216,9 @@ theorem tanPull_toModel (φ : S →+* S') (y : Sp S ⟶ Xo.XF c) {x₀ : Sp S �
 variable [Algebra c.F S]
 
 /- English proof (translation)
-Use `Y.jQ_open` as an intermediate fact. Rewrite using `[← cancel_mono Y.jQ]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, Y.jQ_over, hy, hy']`.
+A detailed English derivation is pending.
 -/
 theorem xF_ext {y y' : Sp S ⟶ Xo.XF c} (hy : y ≫ pullback.snd _ _ = spMap (algebraMap c.F S))
     (hy' : y' ≫ pullback.snd _ _ = spMap (algebraMap c.F S)) (e : y ≫ Y.j = y' ≫ Y.j) : y = y' := by
@@ -233,15 +229,15 @@ theorem xF_ext {y y' : Sp S ⟶ Xo.XF c} (hy : y ≫ pullback.snd _ _ = spMap (a
   · rw [Category.assoc, Category.assoc, Y.jQ_over, hy, hy']
 
 /- English proof (translation)
-Establish `fwd : ∀ w (hw : IsTanAt x₀ w), Λ.Vec cv w → toModel Y y h₀ hx hw = vec M x h cv`. Introduce and unpack `_ hw ⟨v', u', h1, h2, rfl⟩`. Use `(toModel_eq_iff y h₀ hx hw _).2 ⟨u'.left ≫ Λ.m'.φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Λ.m'.cart.1.w, ← Category.assoc, Over.w, ey]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Category.assoc, ← Λ.liftedChartMap_eq]`. Rewrite using `[Category.assoc, ← Λ.matrix_two_by_two_congr]`. Establish `e` using `congrArg (fun V => V.left) ((PullbackSections.isLieComb_iff Λ.m2.cart cv v' u').1 h2)`. Use `e.trans ?_` and prove the remaining obligations. Establish `hid : spMap (RingHom.id S) ≫ x = spMap (ev x M.U h) ≫ M.hU.fromSpec` using `((congrArg (· ≫ x) (Spec.map_id _)).trans (Category.id_comp _)).trans (spMap_ev x M.hU h).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hl : ∀ v : TanM x Y.t.G, (tv (tanPull (RingHom.id S) hid v)).left = (tv v).left` using `fun v => (congrArg (· ≫ (tv v).left) (GlobalTheory.ModelChart.spMap_dualMapR_id S)).trans (Category.id_comp _)`. Rewrite using `[← hl, vec_apply, map_sum, tv_sum']`. Use `congrArg Over.Hom.left (Finset.prod_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, PullbackSections.tv_smul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hl, lieBasis_left]`. Conclude with `h1 j`. Use `⟨fwd w hw, fun e => ?_⟩` and prove the remaining obligations. Take `⟨b1, b2, -⟩` from `vec_bijective E H Dw l Xo c O β Y M S _ x₀ Λ`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hw', -⟩` from `b1 cv`. Rewrite using `[toModel_injective y h₀ hx hw (b2 _ _ hw') (e.trans (fwd w' _ hw').symm)]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem vec_iff_toModel {M : MChart Y} {x : Sp S ⟶ Y.X} (h : ⊤ ≤ x ⁻¹ᵁ M.U) {x₀ : Sp S ⟶ Xo.X}
     (Λ : M.Lift (ev x M.U h) x₀) {y : Sp S ⟶ Xo.XF c} (ey : Λ.xF = y) (h₀ : y ≫ pullback.fst _ _ = x₀)
@@ -275,24 +271,24 @@ def frX (P : FrPt Xo c S) : Sp S ⟶ Xo.XF c :=
   pullback.lift P.x (spMap (algebraMap c.F S)) (P.x_over.trans (spMap_comp' _ _).symm)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem frX_fst (P : FrPt Xo c S) : frX P ≫ pullback.fst _ _ = P.x := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem frX_snd (P : FrPt Xo c S) : frX P ≫ pullback.snd _ _ = spMap (algebraMap c.F S) := pullback.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.hom_ext (h₁.trans (frX_fst P).symm) (h₂.trans (frX_snd P).symm)`.
+A detailed English derivation is pending.
 -/
 theorem eq_frX (P : FrPt Xo c S) {y : Sp S ⟶ Xo.XF c} (h₁ : y ≫ pullback.fst _ _ = P.x)
     (h₂ : y ≫ pullback.snd _ _ = spMap (algebraMap c.F S)) : y = frX P :=
   pullback.hom_ext (h₁.trans (frX_fst P).symm) (h₂.trans (frX_snd P).symm)
 
 /- English proof (translation)
-The claim follows from `eq_frX P' (by rw [Category.assoc, frX_fst, h.1]) (by rw [Category.assoc, frX_snd, spMap_comp'] exact congrArg spMap ψ.comp_algebraMap)`.
+A detailed English derivation is pending.
 -/
 theorem frX_frMap [Algebra c.F S'] {ψ : S →ₐ[c.F] S'} {P : FrPt Xo c S} {P' : FrPt Xo c S'} (h : FrMap ψ P P') :
     spMap ψ.toRingHom ≫ frX P = frX P' :=
@@ -306,7 +302,7 @@ def frVec (P : FrPt Xo c S) {x : Sp S ⟶ Y.X} (hx : frX P ≫ Y.j = x) (σ : E 
     TanM x Y.t.G := toModel Y (frX P) (frX_fst P) hx (P.tan σ i)
 
 /- English proof (translation)
-The claim follows from `tanPull_toModel _ _ _ _ _ (frX_frMap h) _ _ _ _ (h.2.1 σ i)`.
+A detailed English derivation is pending.
 -/
 theorem tanPull_frVec [Algebra c.F S'] {ψ : S →ₐ[c.F] S'} {P : FrPt Xo c S} {P' : FrPt Xo c S'} (h : FrMap ψ P P')
     {x : Sp S ⟶ Y.X} (hx : frX P ≫ Y.j = x) {x' : Sp S' ⟶ Y.X} (hx' : frX P' ≫ Y.j = x')
@@ -323,7 +319,7 @@ def eigLie (x : Sp S ⟶ Y.X) (σ : E →+* ℂ) : Submodule S (TanM x Y.t.G) wh
   smul_mem' := fun r v hv a => by rw [map_smul, hv a, smul_comm]
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun a => by rw [actR_vec, ← map_smul, (vec M x h).injective.eq_iff]`.
+A detailed English derivation is pending.
 -/
 theorem vec_mem_eigLie (M : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (σ : E →+* ℂ) (cv : Fin M.n → S) :
     vec M x h cv ∈ eigLie c x σ ↔ M.Eig (ev x M.U h) σ cv :=
@@ -336,7 +332,7 @@ section Theta
 variable {S T : Type} [CommRing S] [CommRing T]
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun f => ev z ⊤ le_top (CommRingCat.Hom.hom f a)) (Scheme.Hom.appLE_eq_app (f := π) (U := ⊤)).symm).trans (ev_appLE z π le_rfl le_top le_top a)`.
+A detailed English derivation is pending.
 -/
 theorem ev_appTop {Z Z' : Scheme.{0}} (z : Sp S ⟶ Z') (π : Z' ⟶ Z) (a : Γ(Z, ⊤)) :
     ev z ⊤ le_top (π.appTop.hom a) = ev (z ≫ π) ⊤ le_top a :=
@@ -344,7 +340,7 @@ theorem ev_appTop {Z Z' : Scheme.{0}} (z : Sp S ⟶ Z') (π : Z' ⟶ Z) (a : Γ(
     (ev_appLE z π le_rfl le_top le_top a)
 
 /- English proof (translation)
-Establish `h` using `spMap_ev ρ (isAffineOpen_top (Sp S)) le_top`. Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Rewrite using `[← spMap_comp']`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_ev_top (ρ : Sp T ⟶ Sp S) : spMap ((ev ρ ⊤ le_top).comp (toΓ S)) = ρ := by
   have h := spMap_ev ρ (isAffineOpen_top (Sp S)) le_top
@@ -362,7 +358,7 @@ def secMul {Z : Scheme.{0}} {L : LB Z} (g : Γ(Z, ⊤)) (s : L.Sec) : L.Sec wher
     ring
 
 /- English proof (translation)
-Introduce `i k`. Establish `e1 : resG Z inf_le_left (s'.f i) = (show Γ(Z, N.U i ⊓ L.U k) from (w.s (i, k)).val) * resG Z inf_le_right (s.f k)` using `h i k`. Use `show resG Z inf_le_left (resG Z le_top g * s'.f i) = (show Γ(Z, N.U i ⊓ L.U k) from (w.s (i, k)).val) * resG Z inf_le_right (resG Z le_top g * s.f k)`. Rewrite using `[map_mul, map_mul, resG_resG, resG_resG, e1]`. Conclude with `mul_left_comm _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoMaps_secMul {Z : Scheme.{0}} {L N : LB Z} (w : LB.Iso L N) {s : L.Sec} {s' : N.Sec} (h : IsoMaps w s s')
     (g : Γ(Z, ⊤)) : IsoMaps w (secMul g s) (secMul g s') := by
@@ -375,7 +371,7 @@ theorem isoMaps_secMul {Z : Scheme.{0}} {L N : LB Z} (w : LB.Iso L N) {s : L.Sec
   exact mul_left_comm _ _ _
 
 /- English proof (translation)
-Use `show ev r W hr (resG Z h (resG Z le_top g * s.f k)) = _`. Rewrite using `[map_mul, map_mul, resG_resG, ev_res r _ hr le_top]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_res_secMul {Z : Scheme.{0}} {L : LB Z} (g : Γ(Z, ⊤)) (s : L.Sec) (k : L.ι) {W : Z.Opens} (h : W ≤ L.U k)
     (r : Sp T ⟶ Z) (hr : ⊤ ≤ r ⁻¹ᵁ W) :
@@ -384,7 +380,7 @@ theorem ev_res_secMul {Z : Scheme.{0}} {L : LB Z} (g : Γ(Z, ⊤)) (s : L.Sec) (
   rw [map_mul, map_mul, resG_resG, ev_res r _ hr le_top]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `ext_ev fun T _ r hr => ?_` and prove the remaining obligations. Rewrite using `[ev_res r _ hr le_top, ev_appTop, ev_appLE r g h hr (le_preimage_map _ h hr), ev_res _ _ _ le_top, ev_appTop, Category.assoc]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_res_appTop {Z Z' B : Scheme.{0}} (g : Z' ⟶ Z) (p : Z ⟶ B) (p' : Z' ⟶ B) (e : g ≫ p = p') {U : Z.Opens}
     {V : Z'.Opens} (h : V ≤ g ⁻¹ᵁ U) (b : Γ(B, ⊤)) :
@@ -410,7 +406,7 @@ def ThRel {x₀ : Sp S ⟶ Xo.X} {x : Sp S ⟶ Y.X} {t' : SAB H (Sp S)} (m1 : SA
         s1.f j = (g.appLE _ _ h).hom (s.f (fun _ => j PUnit.unit))
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨m2, rfl, fun _ _ _ h => h⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem thRel_cast {x₀ : Sp S ⟶ Xo.X} {x x' : Sp S ⟶ Y.X} (e : x = x') {t' : SAB H (Sp S)}
     (m1 : SABMap t' Xo.univ.t x₀) (m2 : SABMap t' Y.t x) : ∃ m2' : SABMap t' Y.t x', m2'.φ = m2.φ ∧
@@ -419,13 +415,11 @@ theorem thRel_cast {x₀ : Sp S ⟶ Xo.X} {x x' : Sp S ⟶ Y.X} (e : x = x') {t'
   exact ⟨m2, rfl, fun _ _ _ h => h⟩
 
 /- English proof (translation)
-Establish `hw : m2.φ ≫ Y.t.G.hom = t'.G.hom ≫ x` using `m2.cart.1.w`. Take `⟨w1, w2, σ, s1, r1, r2, i1, a, d⟩` from `hs`. Use `⟨w1, w2, secMul (t'.G.hom.appTop.hom (toΓ S (ev x _ hh (thRat M M')))) σ, secMul _ s1, r1, r2, isoMaps_secMul w1 i1 _, fun j k W h₁ h₂ => ?_, fun g g1 g2 j hj => ?_⟩` and prove the remaining obligations. Establish `h₁' : W ≤ m2.φ ⁻¹ᵁ (Y.t.G.hom ⁻¹ᵁ M.U ⊓ Y.t.PP.L.U j)` using `fun q hq => ⟨by show (m2.φ ≫ Y.t.G.hom) q ∈ M.U`. Rewrite using `[hw]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hh (Set.mem_univ (t'.G.hom q))).1, (h₁ hq).2⟩`. Use `ext_ev fun T _ r hr => ?_` and prove the remaining obligations. Establish `e1` using `congrArg (ev r W hr) (a j k W h₁' h₂)`. Establish `hx : (r ≫ m2.φ) ≫ Y.t.G.hom = spMap ((ev (r ≫ t'.G.hom) ⊤ le_top).comp (toΓ S)) ≫ x`. Rewrite using `[spMap_ev_top, Category.assoc, hw, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ⊤ ≤ ((r ≫ m2.φ) ≫ Y.t.G.hom) ⁻¹ᵁ (M.U ⊓ M'.U)` using `by rw [hx]; exact le_preimage_comp _ hh`. Establish `e2` using `ev_thRat M M' (r ≫ m2.φ) j (le_preimage_map _ h₁' hr) (le_preimage_map _ h₁ hr) hm`. Rewrite `e1` using `[ev_appLE r _ h₁' hr (le_preimage_map _ h₁' hr)]`. Rewrite `e2` using `[ev_congr hx _ hm (le_preimage_comp _ hh), ev_spMap _ x _ hh, e1]`. Rewrite using `[ev_appLE r _ h₁ hr (le_preimage_map _ h₁ hr), e2, map_mul, map_mul, ev_res_secMul, ev_appTop]`.
-
-Conclude with `mul_left_comm _ _ _`. Conclude with `(congrArg₂ (· * ·) (appLE_res_appTop g _ _ g2 hj _) (d g g1 g2 j hj)).trans (map_mul _ _ _).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thRel_change (M M' : GChart Y) {x : Sp S ⟶ Y.X} (hh : ⊤ ≤ x ⁻¹ᵁ (M.U ⊓ M'.U)) {x₀ : Sp S ⟶ Xo.X}
     {t' : SAB H (Sp S)} (m1 : SABMap t' Xo.univ.t x₀) (m2 : SABMap t' Y.t x) {s : LB.Sec (PPx x₀)}
@@ -455,7 +449,7 @@ theorem thRel_change (M M' : GChart Y) {x : Sp S ⟶ Y.X} (hh : ⊤ ≤ x ⁻¹�
 variable [Algebra c.F S]
 
 /- English proof (translation)
-Take `⟨n, hn, hn'⟩` from `thRel_cast (spMap_ev x M.hU h) Λ.m1 Λ.m2`. Take `⟨n', hm, hm'⟩` from `thRel_cast (spMap_ev x M'.hU h').symm Λ.m1 n`. Establish `key` using `hm' _ _ _ (thRel_change M M' hh Λ.m1 n (hn' _ _ _ hs))`. Set `Λ'' : M'.toMChart.Lift (ev x M'.U h') x₀` to `⟨Λ.xF, Λ.xF_fst, Λ.xF_snd, Λ.xF_j.trans ((spMap_ev x M.hU h).trans (spMap_ev x M'.hU h').symm), Λ.t', Λ.m', Λ.m1, n', Λ.liftedChartMap_eq, hm.trans (hn.trans Λ.matrix_two_by_two_congr)⟩`. Rewrite using `[TieUniq.thTie_unique Λ'' (LiftUnique.thTie Λ' Λ'' s' hs') key]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -473,11 +467,11 @@ theorem thTie_change (M M' : GChart Y) {x : Sp S ⟶ Y.X} (h : ⊤ ≤ x ⁻¹�
   rfl
 
 /- English proof (translation)
-Take `⟨x₀, xo, v, t1, t2, t3, s, t4⟩` from `P`. Take `⟨x', xo', v', t1', t2', t3', s', t4'⟩` from `Q`. Take `⟨Λ, hv, hs⟩` from `hP`. Take `⟨Λ', hv', hs'⟩` from `hQ`. Take `rfl : x₀ = x'` from `Λ.xF_fst.symm.trans ((congrArg (· ≫ pullback.fst _ _) (xF_ext Λ.xF_snd Λ'.xF_snd (Λ.xF_j.trans Λ'.xF_j.symm))).trans Λ'.xF_fst)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k1, k2⟩` from `LiftUnique.lift_indep E H Dw l Xo c O β Y M S _ x₀ Λ' Λ`. Choose the witnesses or unpack the hypotheses as in `rfl : v = v' := by`. Use function extensionality and compare the values at `τ i`. Conclude with `((vec_bijective E H Dw l Xo c O β Y M S _ x₀ Λ).1 _).unique (hv τ i) (k1 _ _ (hv' τ i))`. Take `rfl : s = s'` from `TieUniq.thTie_unique Λ hs (k2 _ hs')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem frPt_eq_of_tie {M : MChart Y} {x : Sp S ⟶ Y.X} (h : ⊤ ≤ x ⁻¹ᵁ M.U)
     {u : ∀ τ : E →+* ℂ, Matrix (Fin M.n) (Fin (Dw.mult τ)) S} {P Q : FrPt Xo c S} (hP : M.Comparison₂ (ev x M.U h) u P)
@@ -496,13 +490,13 @@ theorem frPt_eq_of_tie {M : MChart Y} {x : Sp S ⟶ Y.X} (h : ⊤ ≤ x ⁻¹ᵁ
   rfl
 
 /- English proof (translation)
-Establish `eX : frX P' = frX P` using `xF_ext (frX_snd _) (frX_snd _) (hx'.trans hx.symm)`. Establish `e : P'.x = P.x` using `by rw [← frX_fst, eX, frX_fst]`. Establish `hs'` using `hs e`. Take `⟨Λ₀⟩` from `MChart.nonempty_lift E H Dw l Xo c O β Y M S (ev x M.U h) (frX P) (frX_snd P) (hx.trans (spMap_ev x M.hU h).symm)`. Set `Λ : M.Lift (ev x M.U h) P.x` to `frX_fst P ▸ Λ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `eΛ : Λ.xF = frX P` using `eq_frX P Λ.xF_fst Λ.xF_snd`. Establish `hv' : ∀ σ i, IsCombAt P.x (P.u σ) (fun j => b σ j i) (P'.u σ i)` using `fun σ i => by`. Use `(VecComb.isCombAt_iff_vec E H Dw l Xo c O β Y M S _ P.x Λ _ (fun j => (vec M x h).symm (frVec Y P hx σ j)) (P.u σ) _ _ fun j => (vec_iff_toModel h Λ eΛ (frX_fst P) hx _ (P.tan σ j)).2 (LinearEquiv.apply_symm_apply _ _).symm).2 ?_` and prove the remaining obligations. Use `(vec_iff_toModel h Λ eΛ (frX_fst P) hx _ (e ▸ P'.tan σ i)).2 ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, LinearEquiv.apply_symm_apply]`. Rewrite using `[← hv]`. Take `⟨u, hu⟩` from `(toModel_eq_iff _ (frX_fst P') hx' (P'.tan σ i) _).1 rfl`. Conclude with `(toModel_eq_iff _ _ _ _ _).2 ⟨u, eX ▸ hu⟩`. Take `⟨x', xo', v', t1', t2', t3', s', t4'⟩` from `P'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Simplify using `only at e`. Substitute `e` using the available equality. Use `⟨rfl, fun σ i => ⟨fun j => b σ j i, hd σ i, fun j hj => hb σ hj, hv' σ i⟩, 𝟙 _, Category.id_comp _, Category.id_comp _, fun i hi => (id_appLE_apply _ _ hi _).trans (hs' i).symm⟩` and prove the remaining obligations.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem frBor_of_frVec {M : MChart Y} {x : Sp S ⟶ Y.X} (h : ⊤ ≤ x ⁻¹ᵁ M.U) {P P' : FrPt Xo c S}
     (hx : frX P ≫ Y.j = x) (hx' : frX P' ≫ Y.j = x) (t : Ix Dw → Sˣ)
@@ -533,11 +527,11 @@ theorem frBor_of_frVec {M : MChart Y} {x : Sp S ⟶ Y.X} (h : ⊤ ≤ x ⁻¹ᵁ
     Category.id_comp _, fun i hi => (id_appLE_apply _ _ hi _).trans (hs' i).symm⟩
 
 /- English proof (translation)
-Establish `eX : frX P' = frX P` using `xF_ext (frX_snd _) (frX_snd _) (hx'.trans hx.symm)`. Establish `e : P'.x = P.x` using `hB.1`. Use `choose cf h1 h2 h3 using hB.2.1 σ`. Use `⟨fun j i => cf i j, fun j i hj => h2 i j hj, h1, fun i => ?_⟩` and prove the remaining obligations. Take `⟨Λ₀⟩` from `MChart.nonempty_lift E H Dw l Xo c O β Y M S (ev x M.U h) (frX P) (frX_snd P) (hx.trans (spMap_ev x M.hU h).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `Λ : M.Lift (ev x M.U h) P.x` to `frX_fst P ▸ Λ₀`. Establish `eΛ : Λ.xF = frX P` using `eq_frX P Λ.xF_fst Λ.xF_snd`. Establish `h4` using `(VecComb.isCombAt_iff_vec E H Dw l Xo c O β Y M S _ P.x Λ _ (fun j => (vec M x h).symm (frVec Y P hx σ j)) (P.u σ) _ _ fun j => (vec_iff_toModel h Λ eΛ (frX_fst P) hx _ (P.tan σ j)).2 (LinearEquiv.apply_symm_apply _ _).symm).1 (h3 i)`. Establish `h5` using `(vec_iff_toModel h Λ eΛ (frX_fst P) hx _ (e ▸ P'.tan σ i)).1 h4`. Rewrite `h5` using `[map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, LinearEquiv.apply_symm_apply] at h5`. Rewrite using `[← h5]`. Take `⟨u, hu⟩` from `(toModel_eq_iff _ (frX_fst P') hx' (P'.tan σ i) _).1 rfl`. Conclude with `((toModel_eq_iff _ _ _ _ _).2 ⟨u, eX ▸ hu⟩).symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem frVec_of_frBor {M : MChart Y} {x : Sp S ⟶ Y.X} (h : ⊤ ≤ x ⁻¹ᵁ M.U) {P P' : FrPt Xo c S}
     (hx : frX P ≫ Y.j = x) (hx' : frX P' ≫ Y.j = x) {t : Ix Dw → Sˣ} (hB : FrBor t P P') (σ : E →+* ℂ) :
@@ -562,7 +556,7 @@ theorem frVec_of_frBor {M : MChart Y} {x : Sp S ⟶ Y.X} (h : ⊤ ≤ x ⁻¹ᵁ
   exact ((toModel_eq_iff _ _ _ _ _).2 ⟨u, eX ▸ hu⟩).symm
 
 /- English proof (translation)
-The claim follows from `eq_frX P ((frX_fst P').trans hB.1) (frX_snd P')`.
+A detailed English derivation is pending.
 -/
 theorem frX_frBor {P P' : FrPt Xo c S} {t : Ix Dw → Sˣ} (hB : FrBor t P P') : frX P' = frX P :=
   eq_frX P ((frX_fst P').trans hB.1) (frX_snd P')

@@ -78,14 +78,14 @@ def evalPairing (D M : Rep.{u} k G) : M ⊗ dualRep D M ⟶ D :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `pairingHom_tmul (A := M) (B := dualRep D M) (dualEvalBilin D M) _ m f`.
+A detailed English derivation is pending.
 -/
 theorem evalPairing_tmul (D M : Rep.{u} k G) (m : M) (f : M →ₗ[k] D) :
     (evalPairing D M).hom (m ⊗ₜ[k] (f : dualRep D M) : (M ⊗ dualRep D M : Rep k G)) = f m :=
   pairingHom_tmul (A := M) (B := dualRep D M) (dualEvalBilin D M) _ m f
 
 /- English proof (translation)
-Use extensionality with `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a f => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensorHom_evalPairing (D : Rep.{u} k G) {A B : Rep.{u} k G} (φ : A ⟶ B) :
     (φ ⊗ₘ 𝟙 (dualRep D B)) ≫ evalPairing D B = (𝟙 A ⊗ₘ dualMap D φ) ≫ evalPairing D A := by
@@ -182,7 +182,7 @@ section ZModMul
 variable {G : Type u} [Group G]
 
 /- English proof (translation)
-Take `⟨e⟩` from `h`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, map_zero, nsmul_eq_mul, ZMod.natCast_self, zero_mul]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem nsmul_eq_zero_of_nonempty_addEquiv {n : ℕ} {D : Type*} [AddCommGroup D]
     (h : Nonempty (D ≃+ ZMod n)) (d : D) : n • d = 0 := by
@@ -191,7 +191,7 @@ theorem nsmul_eq_zero_of_nonempty_addEquiv {n : ℕ} {D : Type*} [AddCommGroup D
   rw [map_nsmul, map_zero, nsmul_eq_mul, ZMod.natCast_self, zero_mul]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `(ZMod.intCast_eq_intCast_iff_dvd_sub b a n).1 h.symm`. Establish `h0 : (a - b) • d = 0`. Rewrite using `[hc, mul_comm, mul_zsmul, natCast_zsmul, hD, zsmul_zero]`. Rewrite `h0` using `[sub_smul, sub_eq_zero]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem zsmul_eq_zsmul_of_intCast_eq {n : ℕ} {D : Type*} [AddCommGroup D]
     (hD : ∀ d : D, n • d = 0) {a b : ℤ} (h : (a : ZMod n) = b) (d : D) : a • d = b • d := by
@@ -254,7 +254,7 @@ def zmodMulPairing (n : ℕ) (D : Rep.{u} (ULift.{u} ℤ) G) (hD : ∀ d : D, n 
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[zmodMulPairing, pairingHom_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem zmodMulPairing_tmul (n : ℕ) (D : Rep.{u} (ULift.{u} ℤ) G) (hD : ∀ d : D, n • d = 0)
     (a : ZMod n) (d : D) :

@@ -7,17 +7,15 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.Dieu
 
 /- English proof (translation)
-Introduce `hθ hsemi L`. Set `σ : WittVector p k →+* k` to `(WittVector.constantCoeff).comp e.symm.toRingHom`. Establish `hσ : Function.Surjective σ`. Introduce `x`. Take `⟨a, ha⟩ : ∃ a : WittVector p k, WittVector.constantCoeff a = x` from `⟨WittVector.teichmuller p x, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e a, by simp [σ, ha]⟩`. Use `letI : Algebra (WittVector p k) k := σ.toAlgebra`. Use `letI : Module (WittVector p k) U := Module.compHom U σ`. Use `haveI : IsScalarTower (WittVector p k) k U := ⟨fun a b u => by show (σ a * b) • u = σ a • (b • u)`. Conclude with `mul_smul _ _ _⟩`.
+Supply the required witnesses or components. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlenU : Module.length (WittVector p k) U = Module.finrank k U`. Rewrite using `[Module.length_eq_of_surjective (R := k) (S := WittVector p k) (M := U) hσ, Module.length_eq_finrank]`. Set `θl : N →ₗ[WittVector p k] U` to `{ toFun := θ map_add' := θ.map_add map_smul' := fun a n => by`. Establish `h` using `hsemi (e.symm a) n`. Rewrite `h` using `[RingEquiv.apply_symm_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h }`. Establish `hθl : Function.Surjective θl` using `hθ`. Use `⟨fun hL => ?_, fun hL => ?_⟩` and prove the remaining obligations. Establish `hle : L ≤ LinearMap.ker θl` using `fun n hn => hL n hn`. Rewrite using `[← hlenU]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Module.length_le_of_surjective (L.liftQ θl hle) (by`. Introduce `u`. Take `⟨n, rfl⟩` from `hθl u`. Conclude with `⟨Submodule.Quotient.mk n, rfl⟩)`. Establish `hK : L = LinearMap.ker θl`.
-
-Use extensionality with `n`. Conclude with `hL n`. Rewrite using `[← hlenU, hK]`. Conclude with `(θl.quotKerEquivOfSurjective hθl).length_eq`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_ge_finrank_of_semilinear_surj (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p]
     [PerfectRing k p] (N U : Type) [AddCommGroup N] [Module (WittVector p k) N] [AddCommGroup U]

@@ -23,15 +23,15 @@ noncomputable section
 namespace GlobalTheory.TripleSpace
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Fintype.card_congr e` as an intermediate fact. Simplify using `only [Fintype.card_fin, Fintype.card_sum] at this`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Set `Q : Matrix (Fin n) (Fin q ⊕ Fin p) ℂ` to `(P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).submatrix e Sum.swap`. Use `⟨Q.map star, ?_⟩` and prove the remaining obligations. Establish `hQ : (Q.map star)ᵀ = Qᴴ` using `rfl`. Establish `hQ2 : (Q.map star).map star = Q` using `by ext a b; simp`. Rewrite using `[hQ, hQ2, Matrix.mul_neg, Matrix.neg_mul]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : Qᴴ * M * Q = ((Formalism.UG.cT (starRingEnd ℂ) (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)) * Matrix.reindex e e M * (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)).submatrix Sum.swap Sum.swap`. Establish `hc : Formalism.UG.cT (starRingEnd ℂ) (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)ᴴ` using `by ext a b; rfl`. Establish `hM : M = (Matrix.reindex e e M).submatrix e e` using `by ext a b; simp`. Establish `hQh : Qᴴ = (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)ᴴ.submatrix Sum.swap e`. Simplify using `only [Q, Matrix.conjTranspose_submatrix]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, hQh, hM, ← Matrix.submatrix_mul _ _ _ e _ e.bijective, Matrix.reindex_apply, Matrix.submatrix_submatrix]`. Simplify using `only [Q]`. Rewrite using `[← Matrix.submatrix_mul _ _ _ e _ e.bijective]`. Simplify using `[Matrix.reindex_apply]`. Rewrite using `[key, hP]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [Formalism.UG.Jpq, Matrix.fromBlocks, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hasSig_neg_of_hasSignature {n p q : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.UG.HasSignature M p q) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig (-M) q p := by
@@ -64,17 +64,15 @@ theorem hasSig_neg_of_hasSignature {n p q : ℕ} {M : Matrix (Fin n) (Fin n) ℂ
 open Formalism.IndefR.Datum in
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Establish `hsG : sᴴ * G = G * s`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (sᴴ * G * s) * s := by simp only [Matrix.mul_assoc]`. Use `_ = G * s := by rw [h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : sᵀ * G.map star * s.map star = G.map star`. Use `congrArg (fun X => X.map (starRingEnd ℂ)) h2` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Establish `a1 : sᴴ.map (starRingEnd ℂ) = sᵀ` using `by ext a b; simp [Matrix.conjTranspose_apply]`. Establish `a2 : ∀ M : Matrix (Fin n) (Fin n) ℂ, M.map (starRingEnd ℂ) = M.map star` using `fun M => rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[a1, a2, a2]`. Conclude with `this`. Use `⟨by rw [neg_mul_neg, h1], ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : (-s).map star = -(s.map star)` using `by ext a b; simp`. Rewrite using `[e1, Matrix.transpose_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, neg_neg, e2]`. Introduce `x hx`. Establish `hz` using `h3.dotProduct_mulVec_pos hx`. Establish `hGs : (G.map star) *ᵥ star x = star (G *ᵥ x)`. Use extensionality with `i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mulVec, dotProduct, star_sum]`. Establish `key : ((-s) *ᵥ x) ⬝ᵥ ((-(G.map star)) *ᵥ star x) = star (star x ⬝ᵥ (G * s) *ᵥ x)`. Rewrite using `[Matrix.neg_mulVec, Matrix.neg_mulVec, neg_dotProduct, dotProduct_neg, neg_neg, hGs, ← star_star (s *ᵥ x), star_dotProduct_star]`. Use `congr 1`. Rewrite using `[star_mulVec, dotProduct_comm, ← dotProduct_mulVec, Matrix.mulVec_mulVec, hsG]`.
-
-Rewrite using `[key, Complex.star_def, Complex.conj_re]`. Conclude with `(Complex.pos_iff.1 hz).1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCartan_neg_conj {n : ℕ} {G s : Matrix (Fin n) (Fin n) ℂ} (h : IsCartanInv G s) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan (-(G.map star)) (-s) := by
@@ -107,15 +105,15 @@ theorem isCartan_neg_conj {n : ℕ} {G s : Matrix (Fin n) (Fin n) ℂ} (h : IsCa
     exact (Complex.pos_iff.1 hz).1
 
 /- English proof (translation)
-The claim follows from `V.herm.eq (V.frame a) (V.frame b)`.
+A detailed English derivation is pending.
 -/
 theorem star_gram {D : D7} (V : HSp D) (a b : Fin V.rank) : star (V.gram a b) = V.gram b a :=
   V.herm.eq (V.frame a) (V.frame b)
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, dotProduct, Matrix.mulVec, Matrix.smul_apply, star_sum, Pi.star_apply, star_star, star_mul', star_gram, Finset.mul_sum, smul_eq_mul]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show y b * (-1 * V.gram b a * star (x a)) = -(star (x a) * V.gram b a * y b)`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem form_neg_eq {D : D7} (V : HSp D) (y x : Fin V.rank → D.host.E) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form D.sp.cm.sig ((-1 : D.host.E) • V.gram) y x =
@@ -130,11 +128,11 @@ theorem form_neg_eq {D : D7} (V : HSp D) (y x : Fin V.rank → D.host.E) :
   ring
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.Col.mem_starLat, hsd.2]`. Prove the components needed by the constructor for the conclusion. Introduce `H x hx`. Take `⟨b, hb⟩` from `H (star x) hx`. Rewrite using `[form_neg_eq, ← hb]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((RingOfIntegers.isIntegral_coe b).map (starRingEnd D.host.E).toIntAlgHom).neg`. Introduce `H x hx`. Establish `h` using `H (star x) (by rw [Formalism.L2.Col.mem_starLat, star_star]; exact hx)`. Rewrite `h` using `[form_neg_eq, star_star]`. Establish `h2` using `h.neg.map (starRingEnd D.host.E).toIntAlgHom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[neg_neg]`. Conclude with `⟨⟨_, h2⟩, star_star (R := D.host.E) _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_starLat_iff_form {D : D7} (V : HSp D) {Λ₀ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hsd : IsSelfDualC V Λ₀) (y : Fin V.rank → D.host.E) :
@@ -154,17 +152,15 @@ theorem mem_starLat_iff_form {D : D7} (V : HSp D) {Λ₀ : Submodule (𝓞 D.hos
     exact ⟨⟨_, h2⟩, star_star (R := D.host.E) _⟩
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W i j B τf hB`. Establish `hR : Node.InRange D.R.m (.grid (i : ℕ) (j : ℕ))` using `⟨i.2.le, j.2.le⟩`. Establish `hV` using `node_isV G hL hR`. Establish `hsd : IsSelfDualC (spW₁ G i j) (G.Λ (.grid (i : ℕ) (j : ℕ)))` using `hV.sd`. Establish `hlat : Submodule.IsLattice D.host.E (Formalism.L2.Col.starLat D.host.E (G.Λ (.grid (i : ℕ) (j : ℕ))))` using `Formalism.L2.Col.brp_starLat_lattice _ _ hsd.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ v : B.P, ∃ β, GlobalTheory.AdelicU.IsSplitBasis (B.τ v) (Formalism.L2.Col.starLat D.host.E (G.Λ (.grid (i : ℕ) (j : ℕ)))) β` using `fun v => GlobalTheory.AdelicU.exists_isSplitBasis (B.τ v) _ (GlobalTheory.AdelicU.isCMExt_host D)`. Use `⟨Formalism.L2.Col.starLat D.host.E (G.Λ (.grid (i : ℕ) (j : ℕ))), fun v => if h : v ∈ B.P then (hb ⟨v, h⟩).choose else 1, ⟨?_, ?_, hlat, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `a b show star (((-1 : D.host.E) • (spW₁ G i j).gram) b a) = ((-1 : D.host.E) • (spW₁ G i j).gram) a b`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, star_mul', star_neg, star_one, star_gram]`. Introduce `w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs` using `hV.sigOK (B.emb w).1`. Rewrite `hs` using `[hV.sig, ← hV.rank]`. Establish `eJ : ((-1 : D.host.E) • (spW₁ G i j).gram).map (B.emb w).1 = -((spW₁ G i j).gram.map (B.emb w).1)`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig (((-1 : D.host.E) • (spW₁ G i j).gram).map (B.emb w).1) _ _`. Rewrite using `[eJ]`. Conclude with `hasSig_neg_of_hasSignature hs`. Introduce `y`. Conclude with `mem_starLat_iff_form (spW₁ G i j) hsd y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `w`. Establish `eJ : ((-1 : D.host.E) • (spW₁ G i j).gram).map (B.emb w).1 = -((gramAt D (spW₁ G i j) (τf w)).map star)`. Use extensionality with `a b`. Simplify using `[gramAt, hB]`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan (((-1 : D.host.E) • (spW₁ G i j).gram).map (B.emb w).1) _`.
-
-Rewrite using `[eJ]`. Conclude with `isCartan_neg_conj (W.cart_is _ hR (τf w))`. Introduce `v show GlobalTheory.AdelicU.IsSplitBasis _ _ (if h : v.1 ∈ B.P then (hb ⟨v.1, h⟩).choose else 1)`. Rewrite using `[dif_pos v.2]`. Conclude with `(hb v).choose_spec`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem negConj_isHerm : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (W : G.Weil)
     (i j : Fin D.R.m) (B : Base D.host.F D.host.E) (τf : InfinitePlace D.host.F → D.what₂.Tau),

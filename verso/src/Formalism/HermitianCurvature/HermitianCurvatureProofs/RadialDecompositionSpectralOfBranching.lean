@@ -8,7 +8,7 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q
 
 /- English proof (translation)
-Introduce `hB` and use `q_radial_decomposition_of_pieces second_contraction_adapted contractions_covariant capelli_two_by_two right_type_action hB qnTPres`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem radialDecompositionSpectral_of_branching : Branching → RadialDecompositionSpectral := fun hB =>
   q_radial_decomposition_of_pieces second_contraction_adapted contractions_covariant capelli_two_by_two

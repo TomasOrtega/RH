@@ -8,9 +8,9 @@ open MvPolynomial Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Establish `hI : (Set.Ioc (-Real.pi) Real.pi).Infinite` using `Set.Ioc_infinite (by linarith [Real.pi_pos])`. Use `Set.infinite_of_injOn_mapsTo (f := fun θ : ℝ => Complex.cos θ + Complex.sin θ * Complex.I) ?_ ?_ hI` and prove the remaining obligations. Introduce `a ha b hb hab`. Establish `h1` using `congrArg Complex.arg hab`. Simplify using `only at h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[Complex.arg_cos_add_sin_mul_I ha, Complex.arg_cos_add_sin_mul_I hb]`. Then use the resulting hypothesis. Introduce `θ _`. Conclude with `Complex.norm_cos_add_sin_mul_I θ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem setOf_norm_eq_one_infinite : ({z : ℂ | ‖z‖ = 1} : Set ℂ).Infinite := by
   have hI : (Set.Ioc (-Real.pi) Real.pi).Infinite := Set.Ioc_infinite (by linarith [Real.pi_pos])
@@ -24,7 +24,7 @@ private theorem setOf_norm_eq_one_infinite : ({z : ℂ | ‖z‖ = 1} : Set ℂ)
     exact Complex.norm_cos_add_sin_mul_I θ
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.funext_set_iff (fun _ => {z : ℂ | ‖z‖ = 1}) (fun _ => setOf_norm_eq_one_infinite)]`. Introduce `x hx`. Rewrite using `[map_zero]`. Conclude with `h x (fun i => hx i (Set.mem_univ i))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cz_torus_zero {ι : Type*} [Fintype ι] (Q : MvPolynomial ι ℂ)
     (h : ∀ z : ι → ℂ, (∀ i, ‖z i‖ = 1) → eval z Q = 0) : Q = 0 := by
@@ -38,11 +38,11 @@ def czFam {N : ℕ} (u v : Matrix (Fin N) (Fin N) ℂ) (P : MvPolynomial (Fin N 
   bind₁ (fun w : Fin N × Fin N => ∑ c : Fin N, C (u w.1 c * v c w.2) * X c) P
 
 /- English proof (translation)
-Establish `h1 : eval z (czFam u v P) = eval (fun w : Fin N × Fin N => eval z (∑ c : Fin N, C (u w.1 c * v c w.2) * X c)) P`. Unfold `czFam`. Conclude with `MvPolynomial.eval₂Hom_bind₁ _ _ _ _`. Rewrite using `[h1]`. Unfold `evalM`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun x => eval x P) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Simplify using `only [map_sum, map_mul, MvPolynomial.eval_C, MvPolynomial.eval_X]`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem czFam_eval {N : ℕ} (u v : Matrix (Fin N) (Fin N) ℂ) (P : MvPolynomial (Fin N × Fin N) ℂ)
     (z : Fin N → ℂ) : eval z (czFam u v P) = evalM (u * diagonal z * v) P := by
@@ -61,9 +61,9 @@ theorem czFam_eval {N : ℕ} (u v : Matrix (Fin N) (Fin N) ℂ) (P : MvPolynomia
   ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `h1` using `RCLike.mul_conj (z i)`. Rewrite `h1` using `[hz i]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cz_diag_unitary {N : ℕ} (z : Fin N → ℂ) (hz : ∀ i, ‖z i‖ = 1) :
     diagonal z ∈ unitaryGroup (Fin N) ℂ := by
@@ -76,29 +76,25 @@ theorem cz_diag_unitary {N : ℕ} (z : Fin N → ℂ) (hz : ∀ i, ‖z i‖ = 1
   simpa using h1
 
 /- English proof (translation)
-Establish `hA : (gᴴ * g).IsHermitian` using `Matrix.isHermitian_conjTranspose_mul_self g`. Establish `hnn : ∀ i, 0 ≤ hA.eigenvalues i` using `Matrix.eigenvalues_conjTranspose_mul_self_nonneg g`. Use `set W : Matrix (Fin N) (Fin N) ℂ := (hA.eigenvectorUnitary : Matrix (Fin N) (Fin N) ℂ) with hW`. Establish `hWu : W ∈ unitaryGroup (Fin N) ℂ` using `hA.eigenvectorUnitary.2`. Establish `hWW : Wᴴ * W = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.mem_unitaryGroup_iff'.mp hWu`. Establish `hWW' : W * Wᴴ = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.mem_unitaryGroup_iff.mp hWu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hD : Wᴴ * (gᴴ * g) * W = diagonal (RCLike.ofReal ∘ hA.eigenvalues)`. Establish `h1` using `hA.conjStarAlgAut_star_eigenvectorUnitary`. Rewrite `h1` using `[Unitary.conjStarAlgAut_apply, Unitary.coe_star, star_star]`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : (diagonal (RCLike.ofReal ∘ hA.eigenvalues) : Matrix (Fin N) (Fin N) ℂ).det ≠ 0`. Establish `h1 : Wᴴ.det * W.det = 1` using `by rw [← Matrix.det_mul, hWW, Matrix.det_one]`. Establish `h2 : gᴴ.det ≠ 0`. Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `star_ne_zero.mpr hg.ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hD, Matrix.det_mul, Matrix.det_mul, Matrix.det_mul]`. Conclude with `mul_ne_zero (mul_ne_zero (left_ne_zero_of_mul_eq_one h1) (mul_ne_zero h2 hg.ne_zero)) (right_ne_zero_of_mul_eq_one h1)`. Establish `hpos : ∀ i, 0 < hA.eigenvalues i`. Introduce `i`. Rewrite `hdet` using `[Matrix.det_diagonal]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `Finset.prod_ne_zero_iff.mp hdet i (Finset.mem_univ i)`. Establish `h2 : hA.eigenvalues i ≠ 0`. Introduce `h3`. Apply `h1` to reduce the goal to its premises. Simplify using `[h3]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `lt_of_le_of_ne (hnn i) (Ne.symm h2)`. Use `set s : Fin N → ℂ := fun i => ((Real.sqrt (hA.eigenvalues i) : ℝ) : ℂ) with hs`. Establish `hs0 : ∀ i, s i ≠ 0`. Introduce `i`. Simplify using `only [hs, ne_eq, Complex.ofReal_eq_zero]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(Real.sqrt_pos.mpr (hpos i)).ne'`. Establish `hs2 : ∀ i, star (s i) * s i = RCLike.ofReal (hA.eigenvalues i)`. Introduce `i`. Express the relevant statement in the definitionally equal form `star (s i) * s i = ((hA.eigenvalues i : ℝ) : ℂ)`. Simplify using `only [hs, Complex.star_def, Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt (hnn i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨g * W * diagonal (fun i => (s i)⁻¹), ?_, Wᴴ, ?_, s, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.diagonal_conjTranspose]`. Establish `key : diagonal (star fun i => (s i)⁻¹) * (Wᴴ * gᴴ) * (g * W * diagonal fun i => (s i)⁻¹) = diagonal (star fun i => (s i)⁻¹) * (Wᴴ * (gᴴ * g) * W) * diagonal fun i => (s i)⁻¹`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[key, hD, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `h1` using `hs2 i`. Establish `h2 : star (s i) ≠ 0` using `star_ne_zero.mpr (hs0 i)`. Simplify using `only [Pi.star_apply, Function.comp_apply, star_inv₀, ← h1]`.
-
-Clear the denominators using the available nonvanishing facts. Conclude with `div_self (hs0 i)`. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]`. Conclude with `hWW`. Rewrite using `[Matrix.mul_assoc (g * W), Matrix.diagonal_mul_diagonal]`.
-
-Establish `h1 : (fun i => (s i)⁻¹ * s i) = fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `i`. Conclude with `inv_mul_cancel₀ (hs0 i)`. Rewrite using `[h1, Matrix.diagonal_one, Matrix.mul_one, Matrix.mul_assoc, hWW', Matrix.mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cz_svd {N : ℕ} (g : Matrix (Fin N) (Fin N) ℂ) (hg : IsUnit g.det) :
     ∃ u ∈ unitaryGroup (Fin N) ℂ, ∃ v ∈ unitaryGroup (Fin N) ℂ, ∃ z : Fin N → ℂ,
@@ -165,9 +161,9 @@ theorem cz_svd {N : ℕ} (g : Matrix (Fin N) (Fin N) ℂ) (hg : IsUnit g.det) :
     rw [h1, Matrix.diagonal_one, Matrix.mul_one, Matrix.mul_assoc, hWW', Matrix.mul_one]
 
 /- English proof (translation)
-Take `⟨u, hu, v, hv, z, rfl⟩` from `cz_svd g hg`. Establish `hQ : czFam u v P = 0`. Apply `cz_torus_zero` to reduce the goal to its premises. Introduce `w hw`. Rewrite using `[czFam_eval]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _ (Submonoid.mul_mem _ (Submonoid.mul_mem _ hu (cz_diag_unitary w hw)) hv)`. Establish `h1` using `czFam_eval u v P z`. Rewrite `h1` using `[hQ, map_zero]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cz_zariski {N : ℕ} (P : MvPolynomial (Fin N × Fin N) ℂ)
     (h : ∀ u ∈ unitaryGroup (Fin N) ℂ, evalM u P = 0) (g : Matrix (Fin N) (Fin N) ℂ)

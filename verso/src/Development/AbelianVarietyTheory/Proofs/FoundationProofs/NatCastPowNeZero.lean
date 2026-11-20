@@ -7,21 +7,19 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.BlochKatoRank
 
 /- English proof (translation)
-Set `A'` to `A.comap Z.subtype`. Set `g : A' →ₗ[O] (Z ⧸ B.comap Z.subtype)` to `(Submodule.mkQ _).comp A'.subtype`. Establish `hg : LinearMap.range g = A'.map (Submodule.mkQ (B.comap Z.subtype))`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`. Set `f0 : A' →ₗ[O] Zf` to `{ toFun := fun a => ⟨φ a.1.1, h1 _ a.2⟩ map_add' := fun a b => Subtype.ext (by simp) map_smul' := fun c a => Subtype.ext (by simp) }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `f : A' →ₗ[O] (Zf ⧸ BV.comap Zf.subtype)` to `((Submodule.mkQ (BV.comap Zf.subtype)).restrictScalars O).comp f0`. Establish `hgk : ∀ a : A', g a = 0 ↔ a.1.1 ∈ B` using `fun a => Submodule.Quotient.mk_eq_zero _`. Establish `hfk : ∀ a : A', f a = 0 ↔ φ a.1.1 ∈ BV` using `fun a => Submodule.Quotient.mk_eq_zero _`. Establish `hle : LinearMap.ker g ≤ LinearMap.ker f` using `fun a ha => (hfk a).2 (h2 _ ((hgk a).1 ha))`. Set `F` to `(LinearMap.ker g).liftQ f hle`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : IsLocalizedModule (nonZeroDivisors O) F := by`. Use `⟨fun s => ?_, fun y => ?_, fun {x y} h => ?_⟩` and prove the remaining obligations. Establish `hs : algebraMap O K s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Rewrite using `[Module.End.isUnit_iff]`. Use `⟨fun a b h => ?_, fun a => ⟨(algebraMap O K s)⁻¹ • a, ?_⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Module.algebraMap_end_apply] at h`. Rewrite `h` using `[← algebraMap_smul K, ← algebraMap_smul K (s : O) b]`. Conclude with `smul_right_injective _ hs h`. Rewrite using `[Module.algebraMap_end_apply, ← algebraMap_smul K, smul_inv_smul₀ hs]`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm, a, haZ, haA, ha⟩` from `h4 y.1 y.2`. Use `⟨(Submodule.Quotient.mk ⟨⟨a, haZ⟩, haA⟩, ⟨m, mem_nonZeroDivisors_of_ne_zero hm⟩), ?_⟩` and prove the remaining obligations. Establish `: f0 ⟨⟨a, haZ⟩, haA⟩ = m • y` using `Subtype.ext ha`. Express the relevant statement in the definitionally equal form `m • ((BV.comap Zf.subtype).mkQ.restrictScalars O) y = ((BV.comap Zf.subtype).mkQ.restrictScalars O) (f0 ⟨⟨a, haZ⟩, haA⟩)`. Rewrite using `[this, map_smul]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the argument to an intermediate assertion.
 
-Rewrite `h` using `[← sub_eq_zero, ← map_sub]`. It suffices to establish `H : ∃ m : O, m ≠ 0 ∧ m • (x - y) = 0 by`. Take `⟨m, hm, H⟩` from `H`. Conclude with `⟨⟨m, mem_nonZeroDivisors_of_ne_zero hm⟩, by`. Rewrite `H` using `[smul_sub, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `H⟩`. Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective _ (x - y)`. Rewrite `h`, the goal using `[← ha]`. Take `⟨m, hm, H⟩` from `h3 _ ((hfk a).1 h)`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `(hgk _).2 H`. Rewrite using `[← hg, ← (LinearMap.quotKerEquivRange g).rank_eq, IsLocalization.rank_eq K (nonZeroDivisors O) le_rfl, IsLocalizedModule.rank_eq (nonZeroDivisors O) le_rfl F]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_subquotient_eq {O K X Y : Type} [CommRing O] [IsDomain O] [Field K] [Algebra O K]
     [IsFractionRing O K] [AddCommGroup X] [Module O X] [AddCommGroup Y] [Module K Y] [Module O Y]
@@ -87,7 +85,7 @@ variable {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E 
 
 include Bw in
 /- English proof (translation)
-Introduce `h`. Use `congrArg Bw.toLL h` as an intermediate fact. Rewrite `this` using `[map_pow, map_natCast, map_zero]`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast (eq_zero_of_pow_eq_zero this))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_pow_ne_zero (N : ℕ) : (l : O₀) ^ N ≠ 0 := by
   intro h
@@ -96,9 +94,9 @@ theorem natCast_pow_ne_zero (N : ℕ) : (l : O₀) ^ N ≠ 0 := by
   exact (Fact.out : l.Prime).ne_zero (by exact_mod_cast (eq_zero_of_pow_eq_zero this))
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_pow_mul_mem_OL Bw.LL c hc`. Use `⟨(l : O₀) ^ N, natCast_pow_ne_zero Bw N, fun g j => Bw.eO.symm ⟨_, hN g j⟩, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_pi fun j => Bw.eO_symm_cont.comp ?_` and prove the remaining obligations. Conclude with `Continuous.subtype_mk (continuous_const.mul ((continuous_apply j).comp hc)) _`. Introduce `g j show ((Bw.eO (Bw.eO.symm _) : Loc.OL Bw.LL) : Bw.LL.1) = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingEquiv.apply_symm_apply, map_pow, map_natCast]`.
+A detailed English derivation is pending.
 -/
 theorem exists_integral {X : Type} [TopologicalSpace X] [CompactSpace X]
     (c : X → Fin m → ↥Bw.LL.1) (hc : Continuous c) :

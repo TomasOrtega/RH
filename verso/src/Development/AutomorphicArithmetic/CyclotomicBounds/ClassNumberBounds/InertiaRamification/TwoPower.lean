@@ -8,11 +8,11 @@ open DirichletCharacter
 variable {N : ℕ} [NeZero N]
 
 /- English proof (translation)
-Establish `h4 : 4 ∣ 2 ^ k` using `(pow_dvd_pow 2 h2 : 2 ^ 2 ∣ 2 ^ k)`. Establish `h4N : 4 ∣ N` using `h4.trans hk`. Set `χ : DirichletCharacter ℂ 4` to `ZMod.χ₄.ringHomComp (Int.castRingHom ℂ)`. Use `⟨changeLevel h4N χ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(mem_condDvd_iff _ _).1]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(conductor_dvd_of_mem_conductorSet _ (changeLevel_factorsThrough χ h4N)).trans h4`. Establish `h` using `changeLevel_eq_cast_of_dvd' χ h4N (a := -1) (isCoprime_one_left.neg_left)`. Establish `h' : ZMod.χ₄ (-1) = -1` using `by decide`. Unfold `DirichletCharacter.Odd`. Move the coercions through the operations in `at h`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Simplify using `[χ, h']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem twoPower_exists_odd {k : ℕ} (hk : 2 ^ k ∣ N) (h2 : 2 ≤ k) :
     ∃ ψ ∈ condDvd N (2 ^ k), ψ.Odd := by
@@ -30,9 +30,9 @@ private theorem twoPower_exists_odd {k : ℕ} (hk : 2 ^ k ∣ N) (h2 : 2 ≤ k) 
     simp [χ, h']
 
 /- English proof (translation)
-Establish `hc : Nat.card (condDvd N (2 ^ k)) = Nat.totient (2 ^ k)` using `(mem_condDvd_iff (2 ^ k) 1).2 hk`. Break down `Nat.lt_or_ge k 2 with h | h` into its components or cases. Apply the tactic sequence `have h1 : Nat.totient (2 ^ k) = 1 := by interval_cases k <;> simp`. Establish `hle : Nat.card (evenPart (condDvd N (2 ^ k))) ≤ Nat.card (condDvd N (2 ^ k))` using `Subgroup.card_le_of_le inf_le_left`. Establish `hpos : 0 < Nat.card (evenPart (condDvd N (2 ^ k)))` using `Nat.card_pos`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show k - 2 = 0 by omega, pow_zero]`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `(card_evenPart (condDvd N (2 ^ k))).2 (twoPower_exists_odd hk h)`. Rewrite `h2` using `[hc, Nat.totient_prime_pow Nat.prime_two (by omega), show k - 1 = (k - 2) + 1 by omega, pow_succ]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_evenPart_condDvd_two_pow {k : ℕ} (hk : 2 ^ k ∣ N) :
     Nat.card (evenPart (condDvd N (2 ^ k))) = 2 ^ (k - 2) := by
@@ -52,21 +52,21 @@ theorem card_evenPart_condDvd_two_pow {k : ℕ} (hk : 2 ^ k ∣ N) :
     omega
 
 /- English proof (translation)
-Establish `hcard` using `card_evenPart_condDvd_two_pow hk`. Use `set X := evenPart (condDvd N (2 ^ k)) with hX`. Establish `hXle : X ≤ condDvd N (2 ^ k)` using `inf_le_left`. Establish `hF` using `(fieldCond_sup X X 1).2.2`. Establish `hram : ramIdx 2 X = Nat.card X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbot : (localPart N 2).ker ⊓ X = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `ψ ⟨h1, h2⟩`. Establish `h1' : ¬ 2 ∣ ψ.conductor` using `(localPart_eq_one_iff 2 ψ).2.1 h1`. Establish `h2' : ψ.conductor ∣ 2 ^ k` using `(mem_condDvd_iff _ _).1.1 (hXle h2)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, -, hj⟩` from `(Nat.dvd_prime_pow Nat.prime_two).1 h2'`. Rewrite using `[Subgroup.mem_bot, eq_one_iff_conductor_eq_one, hj]`. Break down `j with _ | j` into its components or cases. Both sides reduce to the same expression. Conclude with `absurd (hj ▸ dvd_pow_self 2 (Nat.succ_ne_zero j)) h1'`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `ramIdx`. Rewrite using `[← Subgroup.relIndex_ker, ← Subgroup.inf_relIndex_right, hbot, Subgroup.relIndex_bot_left]`. Use `⟨?_, hram.trans hcard, ?_⟩` and prove the remaining obligations. Take `⟨j, hjk, hj⟩` from `(Nat.dvd_prime_pow Nat.prime_two).1 ((hF _).2 hXle)`. Rewrite using `[hj]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Break down `hjk.eq_or_lt with rfl | hlt` into its components or cases. Both sides reduce to the same expression. It suffices to derive a contradiction. Establish `hle : X ≤ condDvd N (2 ^ (k - 1))` using `(hF _).1 (hj ▸ pow_dvd_pow 2 (by omega))`. Establish `hle' : X ≤ evenPart (condDvd N (2 ^ (k - 1)))` using `le_inf hle inf_le_right`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `Subgroup.card_le_of_le hle'`. Rewrite `h` using `[hcard, card_evenPart_condDvd_two_pow ((pow_dvd_pow 2 (Nat.sub_le k 1)).trans hk)]`. Use `(Nat.pow_le_pow_iff_right (by norm_num : 1 < 2)).1 h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e2 : ramIdxUnits 2 (charKer X) * (inertiaUnits N 2 ⊔ charKer X).index = (charKer X).index`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `ramIdxUnits`. Rewrite using `[← Subgroup.relIndex_ker, QuotientGroup.ker_mk', ← Subgroup.relIndex_sup_right, Subgroup.relIndex_mul_index le_sup_right]`. Rewrite `e2` using `[← ramIdx_eq_ramIdxUnits, hram, ← (annihilator_charKer X ⊥).2.2]`. Establish `hpos : 0 < Nat.card X` using `Nat.card_pos`. Establish `h1 : (inertiaUnits N 2 ⊔ charKer X).index = 1` using `Nat.eq_of_mul_eq_mul_left hpos (by rw [e2, mul_one])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `resDeg`. Rewrite using `[Subgroup.index_eq_one.1 h1, Subgroup.relIndex_top_left]`.
+A detailed English derivation is pending.
 -/
 theorem fieldCond_evenPart_condDvd_two_pow {k : ℕ} (hk : 2 ^ k ∣ N) (h3 : 3 ≤ k) :
     fieldCond (evenPart (condDvd N (2 ^ k))) = 2 ^ k ∧

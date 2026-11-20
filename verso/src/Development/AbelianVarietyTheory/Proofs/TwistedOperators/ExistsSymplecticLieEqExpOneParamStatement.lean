@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Re
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SymplecticOneParam.exists_mem_sp_eq_exp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsSymplecticLieEqExpOneParam.lean&line=53#L53)
 -/

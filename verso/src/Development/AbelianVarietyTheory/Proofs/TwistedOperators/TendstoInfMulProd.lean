@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HeckeInfExp
 
 /- English proof (translation)
-Establish `hlim` using `GlobalTheory.Mem.Chr.CharModel.tendsto_prod_local (F := L) k`. Establish `hcont : Continuous fun a => ((χ.1 a : ℂˣ) : ℂ)` using `Units.continuous_val.comp χ.2.1`. Establish `h1` using `(hcont.tendsto _).comp hlim`. Establish `hd : ((χ.1 (GlobalTheory.Mem.Chr.diagUnits L k) : ℂˣ) : ℂ) = 1` using `congrArg Units.val (χ.2.2 k)`. Rewrite `h1` using `[hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h1.congr fun T => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, map_mul, map_prod, Units.val_mul, Units.coe_prod]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem tendsto_inf_mul_prod {L : Type} [Field L] [NumberField L] (χ : HChar L) (k : Lˣ) :
     Filter.Tendsto (fun T : Finset (HeightOneSpectrum (𝓞 L)) =>
@@ -32,15 +32,11 @@ theorem tendsto_inf_mul_prod {L : Type} [Field L] [NumberField L] (χ : HChar L)
   rfl
 
 /- English proof (translation)
-Establish `hS : (HeightOneSpectrum.Support (𝓞 L) (k : L) ∪ HeightOneSpectrum.Support (𝓞 L) ((k : L)⁻¹)).Finite` using `(HeightOneSpectrum.Support.finite _ _).union (HeightOneSpectrum.Support.finite _ _)`. Establish `hN0 : (N : 𝓞 L) ≠ 0`. Introduce `h`. Establish `h'` using `congrArg (algebraMap (𝓞 L) L) h`. Rewrite `h'` using `[map_natCast, map_zero, Nat.cast_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hD : {P : HeightOneSpectrum (𝓞 L) | P.asIdeal ∣ Ideal.span {(N : 𝓞 L)}}.Finite` using `Ideal.finite_factors (by simpa only [Submodule.zero_eq_bot, ne_eq, Ideal.span_singleton_eq_bot] using hN0)`. Use `(hS.union hD).subset ?_` and prove the remaining obligations. Introduce `P hP`. Rewrite `hP` using `[Set.mem_ofPred_eq, not_and_or, not_not]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `hP with h | h` into its components or cases. Use `left`. Break down `lt_or_gt_of_ne h with h' | h'` into its components or cases. Use `right show 1 < P.valuation L ((k : L)⁻¹)`. Rewrite using `[map_inv₀]`.
-
-Establish `h0 : P.valuation L (k : L) ≠ 0` using `by simp`. Conclude with `one_lt_inv_iff₀.mpr ⟨zero_lt_iff.mpr h0, h'⟩`. Use `left`. Conclude with `h'`. Use `right`.
-
-Conclude with `Ideal.dvd_span_singleton.mpr h`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_bad {L : Type} [Field L] [NumberField L] (k : Lˣ) (N : ℕ) (hN : 0 < N) :
     {P : HeightOneSpectrum (𝓞 L) | ¬ (P.valuation L (k : L) = 1 ∧ (N : 𝓞 L) ∉ P.asIdeal)}.Finite := by
@@ -70,17 +66,15 @@ theorem finite_bad {L : Type} [Field L] [NumberField L] (k : Lˣ) (N : ℕ) (hN 
     exact Ideal.dvd_span_singleton.mpr h
 
 /- English proof (translation)
-Take `⟨ι, hι1, hι2, hι3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Establish `hid` using `GlobalTheory.PlaceIdem.exists_isPlIdem D ι hι1 hι2 hι3`. Take `⟨N, hN, hprod⟩` from `GlobalTheory.CharLocProd.char_eq_prod_locK D ι hι1 hι2 hid c χ hc`. Establish `hfin` using `finite_bad k N hN`. Establish `hcomp : ∀ P : HeightOneSpectrum (𝓞 D.host.E), ι (finPart D (y : AE D)) P = algebraMap D.host.E (P.adicCompletion D.host.E) (k : D.host.E)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `P`. Rewrite using `[hy', hι1]`. Conclude with `GlobalTheory.CharLocProd.evalAt_algebraMap P (k : D.host.E)`. Establish `hval : ∀ P : HeightOneSpectrum (𝓞 D.host.E), Valued.v (ι (finPart D (y : AE D)) P) = P.valuation D.host.E (k : D.host.E)`. Introduce `P`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcomp]`. Conclude with `GlobalTheory.CharLocProd.val_algebraMap P _`. Establish `hT : ∀ T : Finset (HeightOneSpectrum (𝓞 D.host.E)), hfin.toFinset ⊆ T → ((c y : Circle) : ℂ) = ∏ P ∈ T, ((χ.locK P k : ℂˣ) : ℂ)`. Introduce `T hsub`. Use `hprod y hy T (fun _ => k) (fun P _ => ⟨hval P, ?_⟩) (fun P hP => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcomp, sub_self, map_zero]`. Conclude with `zero_le`. Establish `hP' : P ∉ hfin.toFinset` using `fun h => hP (hsub h)`. Rewrite `hP'` using `[Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_not]`. Conclude with `⟨(hval P).trans hP'.1, hP'.2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hev : (fun T : Finset (HeightOneSpectrum (𝓞 D.host.E)) => ((χ.inf k : ℂˣ) : ℂ) * ∏ P ∈ T, ((χ.locK P k : ℂˣ) : ℂ)) =ᶠ[Filter.atTop] fun _ => ((χ.inf k : ℂˣ) : ℂ) * ((c y : Circle) : ℂ)` using `by filter_upwards [Filter.eventually_ge_atTop hfin.toFinset] with T hsub`. Rewrite using `[hT T hsub]`. Establish `h1 : ((χ.inf k : ℂˣ) : ℂ) * ((c y : Circle) : ℂ) = 1` using `tendsto_nhds_unique tendsto_const_nhds ((tendsto_inf_mul_prod χ k).congr' hev)`. Establish `h2 : ((c x : Circle) : ℂ) * ((c y : Circle) : ℂ) = 1`. Establish `h` using `hc.1.2 k`.
-
-Rewrite `h` using `[hxy, map_mul]`. Rewrite using `[← Circle.coe_mul, h, Circle.coe_one]`. Conclude with `mul_right_cancel₀ (Circle.coe_ne_zero _) (h2.trans h1.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_inf (D : D7) (c : (AE D)ˣ →* Circle) (χ : HChar D.host.E) (hc : ChrEq c χ) (k : D.host.Eˣ)
     (x y : (AE D)ˣ) (hxy : Units.map (incA D).toMonoidHom k = x * y) (hy : infPart D (y : AE D) = 1)
@@ -123,7 +117,7 @@ theorem eq_inf (D : D7) (c : (AE D)ˣ →* Circle) (χ : HChar D.host.E) (hc : C
   exact mul_right_cancel₀ (Circle.coe_ne_zero _) (h2.trans h1.symm)
 
 /- English proof (translation)
-Rewrite using `[Circle.coe_exp]`. Establish `hn : ((‖(z : ℂ)‖ : ℝ) : ℂ) ≠ 0`. Conclude with `(norm_ne_zero_iff.mpr (Units.ne_zero z))` after adjusting the coercions. Rewrite using `[eq_div_iff hn]`. Take the linear combination `Complex.norm_mul_exp_arg_mul_I (z : ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem coe_circle_exp_arg_eq_div_norm (z : ℂˣ) :
     ((Circle.exp (Complex.arg (z : ℂ)) : Circle) : ℂ) = (z : ℂ) / ((‖(z : ℂ)‖ : ℝ) : ℂ) := by
@@ -137,37 +131,31 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.FockCompare GlobalTheory.HeckeFinTrivial in
 
 /- English proof (translation)
-Introduce `D c χ a hc hχ τ`. Take `⟨n, hn, hinf⟩` from `hχ`. Unfold `HasInfExp AllSome`. Use `⟨n τ, hn τ, ?_, ?_⟩` and prove the remaining obligations. Take `⟨⟨θ0, hθ0⟩, -⟩` from `GlobalTheory.Member.infiniteAdele_bijective D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨fun ρ => θ0 (tauE D ρ), fun ρ => hθ0 (tauE D ρ)⟩`. Introduce `θ hθ x hx1 hx2`. Take `⟨-, A, B, hA, -, hAB, hAparts, hBparts⟩` from `GlobalTheory.IdeleParts.congr_open_and_parts D`. Set `e : ℂˣ →* Circle` to `MonoidHom.mk' (fun z => Circle.exp (Complex.arg (z : ℂ))) (by`. Introduce `z w`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Circle.ext` to reduce the goal to its premises. Rewrite using `[Circle.coe_mul, coe_circle_exp_arg_eq_div_norm, coe_circle_exp_arg_eq_div_norm, coe_circle_exp_arg_eq_div_norm, Units.val_mul, norm_mul, Complex.ofReal_mul, div_mul_div_comm])`. Set `h : D.what₂.Tau → ((AE D)ˣ →* Circle)` to `fun ρ => (zpowGroupHom (n ρ)).comp (e.comp (Units.map ((θ ρ).comp (infPart D)).toMonoidHom))`. Set `g : (AE D)ˣ →* Circle` to `c.comp A * (∏ ρ, h ρ)⁻¹`. Establish `hcoe : ∀ (z : (AE D)ˣ) (ρ : D.what₂.Tau), ((h ρ z : Circle) : ℂ) = (θ ρ (infPart D (z : AE D)) / ((‖θ ρ (infPart D (z : AE D))‖ : ℝ) : ℂ)) ^ (n ρ)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `z ρ`. Use `show ((Circle.exp (Complex.arg ((Units.map ((θ ρ).comp (infPart D)).toMonoidHom z : ℂˣ) : ℂ)) ^ (n ρ) : Circle) : ℂ) = _`. Rewrite using `[Circle.coe_zpow, coe_circle_exp_arg_eq_div_norm]`. Both sides reduce to the same expression. Establish `hprodv : ∀ z : (AE D)ˣ, (((∏ ρ, h ρ) z : Circle) : ℂ) = ∏ ρ, ((h ρ z : Circle) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Rewrite using `[MonoidHom.finsetProd_apply]`. Conclude with `map_prod Circle.coeHom (fun ρ => h ρ z) Finset.univ`. Establish `hne : ∀ (z : (AE D)ˣ) (ρ : D.what₂.Tau), θ ρ (infPart D (z : AE D)) ≠ 0` using `fun z ρ => ((z.isUnit.map (infPart D)).map (θ ρ)).ne_zero`. Establish `hcont_h : ∀ ρ, Continuous (h ρ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `ρ`. Apply `continuous_induced_rng.mpr` to reduce the goal to its premises. Use `show Continuous fun z : (AE D)ˣ => ((h ρ z : Circle) : ℂ)`. Repeatedly rewrite using `[hcoe]`. Establish `hc1 : Continuous fun z : (AE D)ˣ => θ ρ (infPart D (z : AE D))` using `(continuous_comp hθ ρ).comp Units.continuous_val`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc2 : Continuous fun z : (AE D)ˣ => ((‖θ ρ (infPart D (z : AE D))‖ : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp (continuous_norm.comp hc1)`. Establish `hn2 : ∀ z : (AE D)ˣ, ((‖θ ρ (infPart D (z : AE D))‖ : ℝ) : ℂ) ≠ 0` using `fun z => by`. Conclude with `(norm_ne_zero_iff.mpr (hne z ρ))` after adjusting the coercions. Conclude with `(hc1.div hc2 hn2).zpow₀ (n ρ) fun z => Or.inl (div_ne_zero (hne z ρ) (hn2 z))`. Establish `hP : Continuous fun z => (∏ ρ, h ρ) z`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Repeatedly rewrite using `[MonoidHom.finsetProd_apply]`. Conclude with `continuous_finsetProd _ fun ρ _ => hcont_h ρ`. Establish `hg_cont : Continuous g` using `by show Continuous fun z => c (A z) * ((∏ ρ, h ρ) z)⁻¹`. Conclude with `(hc.1.1.comp hA).mul hP.inv`. Establish `hg_E : ∀ k : D.host.Eˣ, g (Units.map (incA D).toMonoidHom k) = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `k`. Establish `hAu : ((c (A (Units.map (incA D).toMonoidHom k)) : Circle) : ℂ) = ((χ.inf k : ℂˣ) : ℂ)`. Use `eq_inf D c χ hc k _ (B (Units.map (incA D).toMonoidHom k)) (hAB _) (hBparts _).1 ?_` and prove the remaining obligations. Rewrite using `[(hBparts _).2]`. Use `show (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)) ((1 : AF D.host.F) ⊗ₜ[D.host.F] (k : D.host.E)) = _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression. Establish `hθk : ∀ ρ, θ ρ (infPart D ((Units.map (incA D).toMonoidHom k : (AE D)ˣ) : AE D)) = tauE D ρ (k : D.host.E)` using `fun ρ => comp_incA hθ ρ (k : D.host.E)`. Apply `Circle.ext` to reduce the goal to its premises. Use `show ((c (A (Units.map (incA D).toMonoidHom k)) * ((∏ ρ, h ρ) (Units.map (incA D).toMonoidHom k))⁻¹ : Circle) : ℂ) = ((1 : Circle) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Circle.coe_mul, Circle.coe_inv, hprodv, hAu, Circle.coe_one]`. Repeatedly rewrite using `[hcoe, hθk]`. Rewrite using `[← hinf k]`. Conclude with `mul_inv_cancel₀ (Units.ne_zero _)`. Establish `hg_fin : ∀ z : (AE D)ˣ, infPart D (z : AE D) = 1 → g z = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `z hz`. Establish `hA1 : A z = 1` using `Units.ext (GlobalTheory.PlaceIdem.parts_inj D _ _ (by rw [(hAparts z).1, hz, Units.val_one, map_one]) (by rw [(hAparts z).2, Units.val_one, map_one]))`. Apply `Circle.ext` to reduce the goal to its premises. Use `show ((c (A z) * ((∏ ρ, h ρ) z)⁻¹ : Circle) : ℂ) = ((1 : Circle) : ℂ)`. Rewrite using `[hA1, map_one, one_mul, Circle.coe_inv, hprodv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hcoe, hz, map_one, norm_one, Complex.ofReal_one, div_one, one_zpow, Finset.prod_const_one, inv_one, Circle.coe_one]`. Establish `hg1` using `eq_one_of_trivial_on_finite D g ⟨hg_cont, hg_E⟩ hg_fin`. Establish `hB1 : B x = 1` using `Units.ext (GlobalTheory.PlaceIdem.parts_inj D _ _ (by rw [(hBparts x).1, Units.val_one, map_one]) (by rw [(hBparts x).2, hx1, Units.val_one, map_one]))`. Establish `hxA : x = A x`. Establish `hx` using `hAB x`.
-
-Rewrite `hx` using `[hB1, mul_one]`. Conclude with `hx`. Establish `hcx : ((c x : Circle) : ℂ) = (((∏ ρ, h ρ) x : Circle) : ℂ)`. Establish `hgx : c (A x) * ((∏ ρ, h ρ) x)⁻¹ = 1` using `hg1 x`. Rewrite `hgx` using `[← hxA]`.
-
-Rewrite using `[mul_inv_eq_one.mp hgx]`. Rewrite using `[hcx, hprodv, Finset.prod_eq_single τ]`. Conclude with `hcoe x τ`. Introduce `ρ _ hρ`. Rewrite using `[hcoe, hx2 ρ hρ, norm_one, Complex.ofReal_one, div_one, one_zpow]`.
-
-Introduce `hτ`. Conclude with `absurd (Finset.mem_univ τ) hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasInfExp_of_chrEq : ∀ (D : D7) (c : (AE D)ˣ →* Circle) (χ : Formalism.L2.Host.HChar D.host.E) (a : D.what₂.Tau → ℚ), ChrEq c χ → χ.HasInfQ (tauE D) a → ∀ τ, HasInfExp D c τ (a τ) := by
   intro D c χ a hc hχ τ

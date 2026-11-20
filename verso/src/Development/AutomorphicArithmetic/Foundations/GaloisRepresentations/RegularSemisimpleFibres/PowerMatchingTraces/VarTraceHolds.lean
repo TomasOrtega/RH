@@ -6,17 +6,17 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Regul
 namespace UpperTheory.Gal.InertialTypesAlt.G
 
 /- English proof (translation)
-The claim follows from `varTrace`.
+A detailed English derivation is pending.
 -/
 theorem varTrace_holds : VarTrace := varTrace
 
 /- English proof (translation)
-The claim follows from `varEx`.
+A detailed English derivation is pending.
 -/
 theorem varEx_holds : VarEx := varEx
 
 /- English proof (translation)
-The claim follows from `normInt`.
+A detailed English derivation is pending.
 -/
 theorem normInt_holds : NormInt := normInt
 

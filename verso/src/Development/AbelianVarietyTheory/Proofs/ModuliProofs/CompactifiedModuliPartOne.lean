@@ -17,7 +17,7 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.partI_of_semistableReduction _root_.GlobalTheory.SS.semistableReductionSt`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.partI_closed : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PartI :=
   _root_.GlobalTheory.partI_of_semistableReduction _root_.GlobalTheory.SS.semistableReductionSt

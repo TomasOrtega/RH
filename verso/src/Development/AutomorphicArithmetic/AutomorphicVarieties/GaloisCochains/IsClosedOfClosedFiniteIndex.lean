@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.Fr UpperTheory.V.GC
 
 /- English proof (translation)
-Use `haveI : (J.subgroupOf I).FiniteIndex := ⟨h⟩`. Establish `e : (I : Set Γ) = ⋃ q : I ⧸ J.subgroupOf I, (fun g : Γ => ((q.out : I) : Γ)⁻¹ * g) ⁻¹' (J : Set Γ)`. Use extensionality with `g`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hg`. Use `⟨(QuotientGroup.mk (⟨g, hg⟩ : I)), ?_⟩` and prove the remaining obligations. Use `QuotientGroup.eq.1 (QuotientGroup.out_eq' (QuotientGroup.mk (⟨g, hg⟩ : I) : I ⧸ J.subgroupOf I))` as an intermediate fact. Conclude with `Subgroup.mem_subgroupOf.1 this`. Introduce and unpack `⟨q, hq⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `I.mul_mem (q.out : I).2 (hJI hq)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Rewrite using `[e]`. Conclude with `isClosed_iUnion_of_finite fun q => hJ.preimage (by fun_prop)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isClosed_of_closed_finite_index {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     (I J : Subgroup Γ) (hJI : J ≤ I) (hJ : IsClosed (J : Set Γ)) (h : J.relIndex I ≠ 0) : IsClosed (I : Set Γ) := by
@@ -28,19 +28,17 @@ private theorem isClosed_of_closed_finite_index {Γ : Type} [Group Γ] [Topologi
   exact isClosed_iUnion_of_finite fun q => hJ.preimage (by fun_prop)
 
 /- English proof (translation)
-Introduce `l hl Γ _ _ _ _ _ _ k _ _ _ M _ _ _ _ _ ρ hρ I J _ _ φ hJI hJ hidx hJρ hφ hd z hz`. Use `haveI : Finite M := Module.finite_of_finite k`. Establish `hker : IsOpen (ρ.ker : Set Γ)`. Establish `e : (ρ.ker : Set Γ) = ⋂ m : M, (fun g : Γ => ρ g m) ⁻¹' {m}`. Use extensionality with `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_iInter, Set.mem_preimage, Set.mem_singleton_iff]`. Conclude with `⟨fun h m => by rw [h]; rfl, fun h => LinearMap.ext h⟩`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun m => (isOpen_discrete _).preimage (Continuous.comp hρ (Continuous.prodMk_left m))`. Establish `hI : IsClosed (I : Set Γ)` using `isClosed_of_closed_finite_index I J hJI hJ (fun h => hidx (h ▸ dvd_zero l))`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha1, ha2, ha3⟩` from `UpperTheory.V.Alg.exists_locallyConstant_dOne_eq_cocycle_of_tame_inertia l k Γ M ρ hker I J hI hJ hJI (fun j hj => hJρ j hj) hidx ⟨φ, hφ⟩ (by`. Introduce `n`. Take `⟨d, hd1, hd2, hd3⟩` from `hd (l ^ n) (pow_pos hl.out.pos n)`. Use `haveI : NeZero (l ^ n) := ⟨(pow_pos hl.out.pos n).ne'⟩`. Use `⟨d.ker, hd1.isOpen_fiber 1, fun s hs => hd2 s hs, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : d.range = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Use `⟨φ ^ (Multiplicative.toAdd x).val, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, hd3, ← ofAdd_nsmul, nsmul_eq_mul, mul_one, ZMod.natCast_zmod_val, ofAdd_toAdd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.index_ker, hs, Subgroup.card_top, Nat.card_congr Multiplicative.toAdd, Nat.card_zmod])`. Use the proof step `z.1 ((IsLocallyConstant.iff_continuous _).2 z.2.1)`. Use the proof step `(by`. Introduce `s t u`. Establish `e` using `z.2.2 s t u`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← sub_eq_zero, ← e]`. Use the proof step `abel) hz`. Use `⟨a, ha1, ha2, fun s t => ?_⟩` and prove the remaining obligations. Rewrite using `[← ha3]`. Simplify using `only [UpperTheory.V.Alg.dOne]`.
-
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GC.H2_unramified_inflation :
     ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] [TotallyDisconnectedSpace Γ] (k : Type) [Field k] [Finite k] [CharP k l] (M : Type) [AddCommGroup M] [Module k M] [Module.Finite k M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation k Γ M), ContAction ρ → ∀ (I J : Subgroup Γ) [I.Normal] [J.Normal] (φ : Γ), J ≤ I → IsClosed (J : Set Γ) → ¬ l ∣ J.relIndex I → (∀ j ∈ J, ρ j = 1) →

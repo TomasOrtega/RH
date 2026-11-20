@@ -13,7 +13,7 @@ open GlobalTheory.HodgeCoh GlobalTheory.CechDR
 variable {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
 
 /- English proof (translation)
-Use `letI := algΓ q`. Express the relevant statement in the definitionally equal form `((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ q.appLE ⊤ W le_top).hom r = (((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ q.appTop) ≫ X.presheaf.map (homOfLE le_top).op).hom r`. Use `congr 2`.
+Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem algebraMap_sec (W : X.Opens) (r : K) :
     letI := algΓ q
@@ -24,7 +24,7 @@ theorem algebraMap_sec (W : X.Opens) (r : K) :
   congr 2
 
 /- English proof (translation)
-Use `letI := algΓ q`. Rewrite using `[← algebraMap_smul (Sec q W) r x]`. Establish `h` using `((toOmega q a).app (op W)).hom.map_smul (algebraMap K (Sec q W) r) x`. Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[algebraMap_sec q W r]`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -42,7 +42,7 @@ theorem toOm_smul (a : ℕ) (W : X.Opens) (r : K) (x : OmU q W a) :
 variable {ι : Type} (U : ι → X.Opens) (a : ℕ)
 
 /- English proof (translation)
-Use `letI := algΓ q`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `res _ (inter_le_capO U i) (CrystallineSemistableComparison.Om.Cech.toOm q a (Pb.capO U i) (r • c i)) = (smulAbRingHom (Omega q a) (algebraMap K Γ(X, ⊤) r)).hom.app (op (inter U i)) (res _ (inter_le_capO U i) (CrystallineSemistableComparison.Om.Cech.toOm q a (Pb.capO U i) (c i)))`. Rewrite using `[toOm_smul]`. Conclude with `(ConcreteCategory.congr_hom ((smulAbRingHom (Omega q a) (algebraMap K Γ(X, ⊤) r)).hom.naturality (homOfLE (inter_le_capO U i)).op) _).symm`.
+Equip the data with the indicated structure. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formCoch_smul (n : ℕ) (r : K) (c : (Glob.formCos q U a).X n) :
     letI := algΓ q
@@ -59,11 +59,11 @@ theorem formCoch_smul (n : ℕ) (r : K) (c : (Glob.formCos q U a).X n) :
       (homOfLE (inter_le_capO U i)).op) _).symm
 
 /- English proof (translation)
-Use `letI := algΓ q`. Take `⟨⟨c, hc⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hc' : (Glob.formCos q U a).cx.d j c = 0` using `hc`. Establish `hrc : (Glob.formCos q U a).cx.d j (r • c) = 0` using `by rw [map_smul, hc', smul_zero]`. Express the relevant statement in the definitionally equal form `formToCO q U a j ((Glob.formCos q U a).cx.cls (r • c) hrc) = r • formToCO q U a j ((Glob.formCos q U a).cx.cls c hc')`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[formToCO_cls, formToCO_cls]`. Establish `hd : d (modulesAb (Omega q a)).obj U j (formCoch q U a j c) = 0`. Rewrite using `[← formCoch_d]`. Conclude with `(congrArg _ hc').trans (map_zero _)`. Express the relevant statement in the definitionally equal form `_ = GroundTheory.Arith.SchemeCoh.cechHMap U (smulAbRingHom (Omega q a) (algebraMap K Γ(X, ⊤) r)).hom j (GroundTheory.Arith.SchemeCoh.cls (formCoch q U a j c) hd)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GroundTheory.Arith.SchemeCoh.cechHMap_cls]`. Conclude with `GroundTheory.Arith.SchemeCoh.cls_congr U (formCoch_smul q U a j r c) _ _`.
+A detailed English derivation is pending.
 -/
 theorem formToCO_smul (j : ℕ) (r : K) (x : (Glob.formCos q U a).cx.H j) :
     formToCO q U a j (r • x) = r • formToCO q U a j x := by

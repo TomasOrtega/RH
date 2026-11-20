@@ -23,7 +23,7 @@ def drVia (la : AllWt.Weight S.Dw) (p : ℕ) [Fact p.Prime] {K : Type} [Field K]
         ((Φ.C k).gr_spec (below y)).choose_spec.choose.v τ i) p (a.1 p) a.2.2)
 
 /- English proof (translation)
-The claim follows from `mul_nonneg (norm_nonneg _) (Real.exp_pos _).le`.
+A detailed English derivation is pending.
 -/
 theorem drVia_nonneg (la : AllWt.Weight S.Dw) (p : ℕ) [Fact p.Prime] {K : Type} [Field K] (y : Sp K ⟶ (Φ.C k).Y.X)
     (φ : K →+* ℂ_[p]) (f : (Φ.C k).Y.Fn) : 0 ≤ drVia Φ k la p y φ f :=

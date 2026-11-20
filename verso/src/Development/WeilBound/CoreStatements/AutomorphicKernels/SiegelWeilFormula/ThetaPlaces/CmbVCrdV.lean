@@ -12,7 +12,7 @@ open PositivityTheory.SiegelWeilFormula.ThetaDictR.PureA
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := f.toRingHom)`.
+A detailed English derivation is pending.
 -/
 theorem map_mul_alg {A B : Type} [CommRing A] [CommRing B] [Algebra F A] [Algebra F B] (f : A →ₐ[F] B) {p q r : ℕ}
     (M : Matrix (Fin p) (Fin q) A) (N : Matrix (Fin q) (Fin r) A) : (M * N).map f = M.map f * N.map f :=
@@ -30,14 +30,14 @@ abbrev Av : Matrix (Fin n) (Fin n) (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v �
 abbrev Bv : Matrix (Fin n) (Fin n) (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E) := ((u.1)ᵀ).map (mapV v)
 
 /- English proof (translation)
-Rewrite using `[Av, Bv, ← map_mul_alg, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Av_mul_Bv : Av u v * Bv u v = 1 := by
   rw [Av, Bv, ← map_mul_alg, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Rewrite using `[Av, Bv, ← map_mul_alg, ← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bv_mul_Av : Bv u v * Av u v = 1 := by
   rw [Av, Bv, ← map_mul_alg, ← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]
@@ -50,14 +50,14 @@ def cmbV (c : Fin m × Fin n × Fin 2 → HeckeCharacterZeroLocus.SiegelWeilU.Fv
   Matrix.of fun i j => ∑ kk, c (i, j, kk) • Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) bs kk
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `(Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) bs).sum_repr (N i j)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cmbV_crdV (N : Matrix (Fin m) (Fin n) (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E)) : cmbV bs v (crdV bs v N) = N := by
   ext i j
   exact (Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) bs).sum_repr (N i j)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [crdV, cmbV, Matrix.of_apply]`. Rewrite using `[(Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) bs).repr_sum_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem crdV_cmbV (c : Fin m × Fin n × Fin 2 → HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) : crdV bs v (cmbV bs v c) = c := by
   funext k
@@ -98,7 +98,7 @@ def eH : (Fin n → Fin m → HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] 
           continuous_invFun := IsModuleTopology.continuous_of_linearMap (eL bs u v).symm.toLinearMap }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hφ.1.comp_continuous (eH bs u v).continuous, hφ.2.comp_homeomorph (eH bs u v)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSB_comp (φ : (Fin m × Fin n × Fin 2 → HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) → ℂ)
     (hφ : IsLocallyConstant φ ∧ HasCompactSupport φ) :
@@ -108,11 +108,9 @@ theorem isSB_comp (φ : (Fin m × Fin n × Fin 2 → HeckeCharacterZeroLocus.Sie
 end Top
 
 /- English proof (translation)
-Use `filter_upwards [ev_matmul_int bs ((u⁻¹ : GL (Fin n) (HeckeCharacterZeroLocus.SiegelWeilU.AF F ⊗[F] E)).1)ᵀ, ev_matmul_int bs (u.1)ᵀ] with v h1 h2`. Introduce `Y`. Establish `e1 : (∀ k, crdV bs v (toMxV v Y * Av u v) k ∈ (v : HeightOneSpectrum (𝓞 F)).adicCompletionIntegers F) ↔ IntM bs v (toMxV v Y * Av u v)` using `⟨fun h i j kk => h (i, j, kk), fun h k => h k.1 k.2.1 k.2.2⟩`. Establish `e2 : Y ∈ HeckeCharacterZeroLocus.SiegelWeilU.latV bs v ↔ IntM bs v (toMxV v Y)` using `⟨fun h i j kk => h j i kk, fun h a i kk => h i a kk⟩`. Rewrite using `[e1, e2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `h2 _ _ h` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, ← Bv, Av_mul_Bv, Matrix.mul_one]`. Then use the resulting hypothesis. Introduce `h`.
-
-Conclude with `h1 _ _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem int_iff : ∀ᶠ v in cofinite, ∀ Y : Fin n → Fin m → HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E,
     (∀ k, crdV bs v (toMxV v Y * Av u v) k ∈ (v : HeightOneSpectrum (𝓞 F)).adicCompletionIntegers F) ↔

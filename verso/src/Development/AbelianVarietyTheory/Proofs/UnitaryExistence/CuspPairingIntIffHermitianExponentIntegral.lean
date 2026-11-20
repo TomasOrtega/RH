@@ -25,25 +25,25 @@ noncomputable abbrev dif (E : Type) [Field E] [NumberField E] : FractionalIdeal 
   ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E)
 
 /- English proof (translation)
-Rewrite using `[← div_eq_mul_inv, FractionalIdeal.mem_div_iff_of_ne_zero hA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_mul_inv_iff {A B : FractionalIdeal (𝓞 E)⁰ E} (hA : A ≠ 0) (x : E) :
     x ∈ B * A⁻¹ ↔ ∀ y ∈ A, x * y ∈ B := by
   rw [← div_eq_mul_inv, FractionalIdeal.mem_div_iff_of_ne_zero hA]
 
 /- English proof (translation)
-Rewrite using `[FractionalIdeal.mem_one_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_one_iff_range (x : E) :
     x ∈ Set.range (algebraMap (𝓞 E) E) ↔ x ∈ (1 : FractionalIdeal (𝓞 E)⁰ E) := by
   rw [FractionalIdeal.mem_one_iff]; rfl
 
 /- English proof (translation)
-Rewrite using `[mem_mul_inv_iff hA]`. Prove the components needed by the constructor for the conclusion. Introduce `h a ha`. Rewrite using `[mem_inv_different_iff]`. Introduce `o ho`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : a * o ∈ A`. Use `FractionalIdeal.mul_mem_mul ha (mem_one_fractionalIdeal_iff.2 ho)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Rewrite using `[mul_assoc]`. Conclude with `h _ hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h a ha`. Simplify using `using mem_inv_different_iff.1 (h a ha) 1 isIntegral_one`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem trace_dual_iff {A : FractionalIdeal (𝓞 E)⁰ E} (hA : A ≠ 0) (y : E) :
     (∀ a ∈ A, ∃ n : ℤ, Algebra.trace ℚ E (y * a) = n) ↔ y ∈ (dif E)⁻¹ * A⁻¹ := by
@@ -61,7 +61,7 @@ theorem trace_dual_iff {A : FractionalIdeal (𝓞 E)⁰ E} (hA : A ≠ 0) (y : E
     simpa using mem_inv_different_iff.1 (h a ha) 1 isIntegral_one
 
 /- English proof (translation)
-Establish `hd : dif E ≠ 0` using `coe_different_ne_zero`. Establish `h0 : (dif E)⁻¹ * A⁻¹ ≠ 0` using `mul_ne_zero (inv_ne_zero hd) (inv_ne_zero hA)`. Establish `e : dif E * A = 1 * ((dif E)⁻¹ * A⁻¹)⁻¹` using `by rw [mul_inv, inv_inv, inv_inv, one_mul]`. Rewrite using `[e, mem_mul_inv_iff h0]`. Simplify using `only [trace_dual_iff hA, mem_one_iff_range]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coord_iff {A : FractionalIdeal (𝓞 E)⁰ E} (hA : A ≠ 0) (u : E) :
     (∀ y : E, (∀ a ∈ A, ∃ n : ℤ, Algebra.trace ℚ E (y * a) = n) →
@@ -78,7 +78,7 @@ noncomputable def pairIdeal (N : ℕ) (A B : FractionalIdeal (𝓞 E)⁰ E) : Fr
   FractionalIdeal.spanSingleton (𝓞 E)⁰ (N : E) * A * (dif E * conjFrac B)
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (mul_ne_zero (FractionalIdeal.spanSingleton_ne_zero_iff.2 (Nat.cast_ne_zero.2 hN.ne')) hA) (mul_ne_zero coe_different_ne_zero (conjFrac_ne_zero hB))`.
+A detailed English derivation is pending.
 -/
 theorem pairIdeal_ne_zero {N : ℕ} (hN : 0 < N) {A B : FractionalIdeal (𝓞 E)⁰ E} (hA : A ≠ 0)
     (hB : B ≠ 0) : pairIdeal N A B ≠ 0 :=
@@ -86,22 +86,22 @@ theorem pairIdeal_ne_zero {N : ℕ} (hN : 0 < N) {A B : FractionalIdeal (𝓞 E)
     (Nat.cast_ne_zero.2 hN.ne')) hA) (mul_ne_zero coe_different_ne_zero (conjFrac_ne_zero hB))
 
 /- English proof (translation)
-The claim follows from `map_mul _ a b`.
+A detailed English derivation is pending.
 -/
 theorem ccm (a b : E) : cc (a * b) = cc a * cc b := map_mul _ a b
 /- English proof (translation)
-The claim follows from `map_add _ a b`.
+A detailed English derivation is pending.
 -/
 theorem cca (a b : E) : cc (a + b) = cc a + cc b := map_add _ a b
 /- English proof (translation)
-The claim follows from `IsCMField.complexConj_apply_apply E a`.
+A detailed English derivation is pending.
 -/
 theorem ccc (a : E) : cc (cc a) = a := IsCMField.complexConj_apply_apply E a
 
 /- English proof (translation)
-Establish `e : pairIdeal N B A = conjFrac (pairIdeal N A B)`. Establish `hN : cc (N : E) = N` using `map_natCast _ N`. Unfold `pairIdeal`. Rewrite using `[map_mul, map_mul, map_mul, conjFrac_conjFrac, conjFrac_spanSingleton, hN, conjFrac_different]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `cc_mem_conjFrac.2 hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_pairIdeal {N : ℕ} {A B : FractionalIdeal (𝓞 E)⁰ E} {s : E}
     (hs : s ∈ pairIdeal N A B) : cc s ∈ pairIdeal N B A := by
@@ -115,11 +115,11 @@ theorem conj_mem_pairIdeal {N : ℕ} {A B : FractionalIdeal (𝓞 E)⁰ E} {s : 
   exact cc_mem_conjFrac.2 hs
 
 /- English proof (translation)
-Establish `hd : dif E ≠ 0` using `coe_different_ne_zero`. Establish `hB'` using `conjFrac_ne_zero hB`. Establish `h0 : (dif E)⁻¹ * (conjFrac B)⁻¹ ≠ 0` using `mul_ne_zero (inv_ne_zero hd) (inv_ne_zero hB')`. Establish `e : pairIdeal N A B = (FractionalIdeal.spanSingleton (𝓞 E)⁰ (N : E) * A) * ((dif E)⁻¹ * (conjFrac B)⁻¹)⁻¹`. Rewrite using `[mul_inv, inv_inv, inv_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e, mem_mul_inv_iff h0]`. Use `forall_congr' fun y => imp_congr ?_ FractionalIdeal.mem_singleton_mul.symm` and prove the remaining obligations. Rewrite using `[← trace_dual_iff hB']`. Prove the components needed by the constructor for the conclusion.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h a ha`. Use `h _ (mem_conjFrac.1 ha)` as an intermediate fact. Rewrite `this` using `[ccc]`. Then use the resulting hypothesis. Introduce `h a ha`. Conclude with `h _ (cc_mem_conjFrac.2 ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem entry_iff (N : ℕ) (A : FractionalIdeal (𝓞 E)⁰ E) {B : FractionalIdeal (𝓞 E)⁰ E}
     (hB : B ≠ 0) (s : E) :
@@ -142,15 +142,15 @@ theorem entry_iff (N : ℕ) (A : FractionalIdeal (𝓞 E)⁰ E) {B : FractionalI
     exact h _ (cc_mem_conjFrac.2 ha)
 
 /- English proof (translation)
-Establish `hd : dif E ≠ 0` using `coe_different_ne_zero`. Establish `hB'` using `conjFrac_ne_zero hB`. Establish `hN' : (N : E) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `hs : FractionalIdeal.spanSingleton (𝓞 E)⁰ (N : E) ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.2 hN'`. Establish `hc : conjFrac (dif E * B) = dif E * conjFrac B` using `by rw [map_mul, conjFrac_different]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (dif E)⁻¹ * (pairIdeal N A B)⁻¹ = FractionalIdeal.spanSingleton (𝓞 E)⁰ (N : E)⁻¹ * (1 * (dif E * conjFrac B)⁻¹ * (dif E * A)⁻¹)`. Rewrite using `[← FractionalIdeal.spanSingleton_inv]`. Unfold `pairIdeal`. Simplify using `only [mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[trace_dual_iff (pairIdeal_ne_zero hN hA hB), e, FractionalIdeal.mem_singleton_mul]`. Simplify using `only [mem_mul_inv_iff (mul_ne_zero hd hA), mem_mul_inv_iff (mul_ne_zero hd hB')]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ u hu m hm`. Use `hy u hu (cc m) (hc ▸ cc_mem_conjFrac.2 hm)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Introduce `h`. Use `⟨(N : E) * x, fun u hu m hm => ?_, by field_simp⟩` and prove the remaining obligations. Use `h u hu (cc m) (mem_conjFrac.1 (hc ▸ hm))` as an intermediate fact.
+Apply an available result and prove the equalities needed to match it to the conclusion. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[ccc]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pair_iff {N : ℕ} (hN : 0 < N) {A B : FractionalIdeal (𝓞 E)⁰ E} (hA : A ≠ 0)
     (hB : B ≠ 0) (x : E) :
@@ -185,11 +185,11 @@ theorem pair_iff {N : ℕ} (hN : 0 < N) {A B : FractionalIdeal (𝓞 E)⁰ E} (h
     ring
 
 /- English proof (translation)
-Establish `h1 : FJ.prE X χ β = (Algebra.trace ℚ E (Matrix.trace (χ.transpose * β) / (X.κ0 / 2)) : ℝ) / 2`. Rewrite using `[← X.re_sum_Psi, Complex.re_sum]`. Both sides reduce to the same expression. Establish `h2 : Matrix.trace (χ.transpose * β) / X.ξ0 = ∑ a, ∑ b, χ a b * (β a b / X.ξ0)`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_div, mul_div_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Rewrite using `[h1, ← h2]`. Establish `key : ∀ (q : ℚ) (n : ℤ), (q : ℝ) / 2 = n ↔ q = 2 * n` using `fun q n => by`. Rewrite using `[div_eq_iff two_ne_zero, mul_comm]`. Conclude with `Iff.rfl` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [key]`. Break down `X.κ0_xi with h | h` into its components or cases. Rewrite using `[h, mul_div_cancel_left₀ _ two_ne_zero]`. Rewrite using `[h, neg_div, mul_div_cancel_left₀ _ two_ne_zero, div_neg, map_neg]`. Apply the tactic sequence `constructor <;> rintro ⟨n, hn⟩ <;> exact ⟨-n, by push_cast; linarith⟩`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem prE_int_iff {r ρ : ℕ} (X : Data E r) (χ β : Matrix (Fin ρ) (Fin ρ) E) :
     (∃ n : ℤ, FJ.prE X χ β = n) ↔
@@ -212,25 +212,21 @@ theorem prE_int_iff {r ρ : ℕ} (X : Data E r) (χ β : Matrix (Fin ρ) (Fin ρ
     constructor <;> rintro ⟨n, hn⟩ <;> exact ⟨-n, by push_cast; linarith⟩
 
 /- English proof (translation)
-Establish `hξ` using `X.ξ0_ne`. Establish `hc0 : cc (0 : E) = 0` using `map_zero _`. Simplify using `only [prE_int_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h a b s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `S : Matrix (Fin ρ) (Fin ρ) E` to `Matrix.of fun i j => (if a = i ∧ b = j then s else 0) + (if b = i ∧ a = j then cc s else 0)`. Establish `hS : ∀ i j, (X.ξ0 • S) i j / X.ξ0 = S i j` using `fun i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, mul_div_cancel_left₀ _ hξ]`. Take `⟨n, hn⟩` from `h (X.ξ0 • S) (fun i j => by`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, S, Matrix.of_apply, ccm, cca, X.ξ0_im, apply_ite cc, ccc, hc0, and_comm (a := a = j), and_comm (a := b = j)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use the proof step `ring) (fun i j => by`. Rewrite using `[hS]`. Use `Submodule.add_mem (I i j : Submodule (𝓞 E) E) ?_ ?_` and prove the remaining obligations. Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hs`. Conclude with `zero_mem _`. Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`. Conclude with `hI _ _ s hs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `zero_mem _)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `e : ∑ i, ∑ j, χ i j * ((X.ξ0 • S) i j / X.ξ0) = χ a b * s + cc (χ a b * s)`. Simplify using `only [hS]`. Simplify using `only [S, Matrix.of_apply, mul_add, Finset.sum_add_distrib, ite_and, mul_ite, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ccm, hχ a b]`. Simplify using the standard rewrite rules. Rewrite `hn` using `[e, map_add, trace_cc]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h β hβ hm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hreal : cc (∑ a, ∑ b, χ a b * (β a b / X.ξ0)) = ∑ a, ∑ b, χ a b * (β a b / X.ξ0)`. Establish `h1 : ∀ a b, IsCMField.complexConj E (χ a b) = χ b a` using `hχ`. Establish `h2 : ∀ a b, IsCMField.complexConj E (β a b) = -β b a` using `hβ`. Establish `h3 : IsCMField.complexConj E X.ξ0 = -X.ξ0` using `X.ξ0_im`. Simplify using `only [cc, map_sum, map_mul, map_div₀, h1, h2, h3, neg_div_neg_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `(DiagDifferent.trace_even_real_iff E H 1 _ (fun a ha => mem_one_fractionalIdeal_iff.2 (isIntegral_cc (mem_one_fractionalIdeal_iff.1 ha))) hreal).2 (fun o ho => ?_) 1 (FractionalIdeal.one_mem_one _) (map_one _)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Establish `hh : ∀ a b, ∃ n : ℤ, Algebra.trace ℚ E (χ a b * (β a b / X.ξ0 * o)) = n` using `fun a b => h a b _ (by`. Use `FractionalIdeal.mul_mem_mul (hm a b) ho` as an intermediate fact.
-
-Rewrite using `[mul_one] at this)` and apply the resulting hypothesis. Use `choose k hk using hh`. Use `⟨∑ a, ∑ b, k a b, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_mul, map_sum, mul_assoc, hk]`. Use `push_cast`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem skew_iff (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) {r ρ : ℕ} (X : Data E r)
     (I : Fin ρ → Fin ρ → FractionalIdeal (𝓞 E)⁰ E) (hI : ∀ a b, ∀ s ∈ I a b, cc s ∈ I b a)
@@ -290,13 +286,13 @@ theorem skew_iff (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) {r ρ
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ H r ρ X N cc' χ hN hc hχ`. Establish `h1` using `skew_iff H X (fun a b => pairIdeal N (cc' a) (cc' b)) (fun a b s hs => conj_mem_pairIdeal hs) χ hχ`. Simplify using `only [entry_iff N _ (hc _), coord_iff (hc _)]`. Rewrite using `[h1]`. Simplify using `only [pair_iff hN (hc _) (hc _), mem_one_iff_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h u m hu hm`. Simplify using `only [Finset.mul_sum]`. Conclude with `Submodule.sum_mem ((1 : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) fun i _ => Submodule.sum_mem _ fun k _ => h i k _ (hu i) _ (hm k)`. Introduce `h a b u hu m hm`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc0 : cc (0 : E) = 0` using `map_zero _`. Establish `hs : ∀ (a : Fin ρ) (u : E), u ∈ dif E * cc' a → ∀ i, (Pi.single a u : Fin ρ → E) i ∈ dif E * cc' i` using `fun a u hu i => by`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using `using hu`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hi]`. Conclude with `FractionalIdeal.zero_mem _`. Use `h _ _ (hs a u hu) (hs b m hm)` as an intermediate fact. Simplify `this` using `[Pi.single_apply, apply_ite cc, hc0]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem prE_int_iff_values_integral : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (r ρ : ℕ) (X : Data E r) (N : ℕ) (cc' : Fin ρ → FractionalIdeal (𝓞 E)⁰ E) (χ : Matrix (Fin ρ) (Fin ρ) E), 0 < N → (∀ b, cc' b ≠ 0) → FJ.IsHermE χ → ((∀ β, FJ.IsSkew β → (∀ a b (y : E), (∀ a' ∈ cc' b, ∃ n : ℤ, Algebra.trace ℚ E (y * cc a') = n) → ∃ z ∈ cc' a, β a b / X.ξ0 * y = (N : E) * z) → ∃ n : ℤ, FJ.prE X χ β = n) ↔ ∀ u m : Fin ρ → E, (∀ a (y : E), (∀ a' ∈ cc' a, ∃ n : ℤ, Algebra.trace ℚ E (y * a') = n) → u a * y ∈ Set.range (algebraMap (𝓞 E) E)) → (∀ a (y : E), (∀ a' ∈ cc' a, ∃ n : ℤ, Algebra.trace ℚ E (y * a') = n) → m a * y ∈ Set.range (algebraMap (𝓞 E) E)) → (N : E) * ∑ i, ∑ k, u i * χ i k * cc (m k) ∈ Set.range (algebraMap (𝓞 E) E)) := by
   intro E _ _ _ H r ρ X N cc' χ hN hc hχ

@@ -5,13 +5,13 @@ namespace GlobalTheory
 open Module in
 
 /- English proof (translation)
-Introduce `R M _ _ _ _ _ r hr s hs`. Establish `hspan : Submodule.span R (Set.range s) = ⊤`. Establish `: Subsingleton (M ⧸ Submodule.span R (Set.range s))` using `Module.support_eq_empty_iff.1 hs`. Conclude with `Submodule.Quotient.subsingleton_iff.1 this`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← linearIndependent_iff_injective_fintypeLinearCombination]`. Use `LinearIndependent.of_isLocalized_maximal (fun P _ => Localization.AtPrime P) (fun P _ => LocalizedModule P.primeCompl M) (fun P _ => LocalizedModule.mkLinearMap P.primeCompl M) s fun P hP => ?_` and prove the remaining obligations. Establish `hfree : Module.Free (Localization.AtPrime P) (LocalizedModule P.primeCompl M)` using `Module.free_of_flat_of_isLocalRing`. Establish `hrk : Module.finrank (Localization.AtPrime P) (LocalizedModule P.primeCompl M) = r` using `hr ⟨P, hP.isPrime⟩`. Establish `hsp : Submodule.span (Localization.AtPrime P) (Set.range (LocalizedModule.mkLinearMap P.primeCompl M ∘ s)) = ⊤`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.range_comp]`. Conclude with `span_eq_top_of_isLocalizedModule (Localization.AtPrime P) P.primeCompl (LocalizedModule.mkLinearMap P.primeCompl M) hspan`. Establish `hsurj : Function.Surjective (Fintype.linearCombination (Localization.AtPrime P) (LocalizedModule.mkLinearMap P.primeCompl M ∘ s))`. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination, hsp]`. Set `b` to `Module.finBasisOfFinrankEq (Localization.AtPrime P) (LocalizedModule P.primeCompl M) hrk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj` using `OrzechProperty.injective_of_surjective_endomorphism (b.equivFun.toLinearMap ∘ₗ Fintype.linearCombination (Localization.AtPrime P) (LocalizedModule.mkLinearMap P.primeCompl M ∘ s)) (b.equivFun.surjective.comp hsurj)`. Rewrite using `[linearIndependent_iff_injective_fintypeLinearCombination]`. Conclude with `Function.Injective.of_comp (f := ⇑b.equivFun) hinj`. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination, hspan]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_linearCombination_of_rankAtStalk :
     ∀ (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] [Module.Finite R M] [Module.Flat R M] (r : ℕ),

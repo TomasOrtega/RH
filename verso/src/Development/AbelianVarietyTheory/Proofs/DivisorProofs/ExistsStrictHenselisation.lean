@@ -8,19 +8,17 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ _ Ω _ _ hΩ`. Take `⟨H, _, _, _, _, hflat, hmax, hbij, hind⟩` from `GlobalTheory.T.exists_etale_localization_filtration_henselization R`. Set `e : ResidueField R ≃+* ResidueField H` to `RingEquiv.ofBijective _ hbij`. Use `letI algH : Algebra (ResidueField H) Ω := ((algebraMap (ResidueField R) Ω).comp e.symm.toRingHom).toAlgebra`. Establish `he : (algebraMap (ResidueField H) Ω).comp e.toRingHom = (RingEquiv.refl Ω : Ω →+* Ω).comp (algebraMap (ResidueField R) Ω)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[RingHom.algebraMap_toAlgebra]`. Use `haveI : IsSepClosure (ResidueField H) Ω := ⟨hΩ.sep_closed, Algebra.IsSeparable.of_equiv_equiv e (RingEquiv.refl Ω) he⟩`. Take `⟨T, _, _, _, _, hsc, hflat2, hmax2, ⟨e2⟩, hind2⟩` from `GlobalTheory.T.exists_etale_localization_filtration_strictHenselization H Ω`. Use `letI algRT : Algebra R T := ((algebraMap H T).comp (algebraMap R H)).toAlgebra`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : IsScalarTower R H T := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI hloc : IsLocalHom (algebraMap R T) := by`. Express the relevant statement in the definitionally equal form `IsLocalHom ((algebraMap H T).comp (algebraMap R H))`. Use `infer_instance`. Use `⟨T, inferInstance, algRT, inferInstance, hloc, hsc, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI := hflat`. Use `haveI := hflat2`. Conclude with `Module.Flat.trans R H T`. Rewrite using `[IsScalarTower.algebraMap_eq R H T, ← Ideal.map_map, hmax, hmax2]`. Use `⟨{ e2 with commutes' := ?_ }⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Take `⟨x, rfl⟩` from `residue_surjective x`. Establish `h1 : algebraMap (ResidueField R) (ResidueField T) (residue R x) = algebraMap (ResidueField H) (ResidueField T) (residue H (algebraMap R H x))`. Rewrite using `[ResidueField.algebraMap_residue, ResidueField.algebraMap_residue]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : algebraMap (ResidueField H) Ω (residue H (algebraMap R H x)) = algebraMap (ResidueField R) Ω (residue R x)`. Rewrite using `[RingHom.algebraMap_toAlgebra]`. Simplify using `only [RingHom.comp_apply]`. Use `congr 1`. Apply `e.symm_apply_eq.mpr` to reduce the goal to its premises.
-
-Both sides reduce to the same expression. Use `show e2 (algebraMap (ResidueField R) (ResidueField T) (residue R x)) = _`. Rewrite using `[h1, AlgEquiv.commutes, h2]`. Conclude with `GlobalTheory.T.indEtale_localizedPieces_trans R H T hind hind2`.
+A detailed English derivation is pending.
 -/
 theorem exists_strictHenselisation : ∀ (R : Type) [CommRing R] [IsLocalRing R] (Ω : Type) [Field Ω] [Algebra (ResidueField R) Ω] [IsSepClosure (ResidueField R) Ω], ∃ (S : Type) (_ : CommRing S) (_ : Algebra R S) (_ : HenselianLocalRing S) (_ : IsLocalHom (algebraMap R S)), IsSepClosed (ResidueField S) ∧ Module.Flat R S ∧ (maximalIdeal R).map (algebraMap R S) = maximalIdeal S ∧ Nonempty (ResidueField S ≃ₐ[ResidueField R] Ω) ∧ (∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra R S), Monotone Si ∧ (∀ s : S, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] Si i)) := by
   intro R _ _ Ω _ _ hΩ

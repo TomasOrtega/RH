@@ -6,11 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 namespace LateralTheory.E.GenPf
 
 /- English proof (translation)
-Use `haveI : NeZero (q : K) := ⟨ζ.2.1.ne_zero⟩`. Use `haveI : NeZero q := NeZero.of_neZero_natCast K`. Establish `hp : ∀ η : Prim q K, IsPrimitiveRoot η.1 q` using `fun η => by`. Rewrite using `[← Polynomial.isRoot_cyclotomic_iff, ← Polynomial.map_cyclotomic_int, Polynomial.IsRoot.def, Polynomial.eval_map]`. Conclude with `η.2.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨i, hi, hc, he⟩` from `(hp ζ).isPrimitiveRoot_iff.1 (hp ξ)`. Use `⟨ZMod.unitOfCoprime i hc, ?_, fun b hb => ?_⟩` and prove the remaining obligations. Simplify using `only [ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi, he]`. Apply `Units.ext` to reduce the goal to its premises. Use `(hp ζ).pow_inj (ZMod.val_lt (b : ZMod q)) hi (hb.symm.trans he.symm)` as an intermediate fact.
-
-Rewrite using `[ZMod.coe_unitOfCoprime, ← this, ZMod.natCast_zmod_val]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem field_log {q : ℕ} {K : Type} [Field K] (ζ ξ : Prim q K) :
     ∃! a : (ZMod q)ˣ, ξ.1 = ζ.1 ^ (a : ZMod q).val := by
@@ -28,9 +26,7 @@ theorem field_log {q : ℕ} {K : Type} [Field K] (ζ ξ : Prim q K) :
     rw [ZMod.coe_unitOfCoprime, ← this, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Use `haveI : NeZero (q : K) := ⟨ζ.2.1.ne_zero⟩`. Use `haveI : NeZero q := NeZero.of_neZero_natCast K`. Establish `hp : IsPrimitiveRoot ζ.1 q`. Rewrite using `[← Polynomial.isRoot_cyclotomic_iff, ← Polynomial.map_cyclotomic_int, Polynomial.IsRoot.def, Polynomial.eval_map]`. Conclude with `ζ.2.2`.
-
-Rewrite using `[ZMod.val_mul, ← pow_mul, ← pow_eq_pow_mod _ hp.pow_eq_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem field_pow {q : ℕ} {K : Type} [Field K] (ζ : Prim q K) (a b : ZMod q) :
     ζ.1 ^ (a * b).val = (ζ.1 ^ a.val) ^ b.val := by
@@ -43,15 +39,13 @@ theorem field_pow {q : ℕ} {K : Type} [Field K] (ζ : Prim q K) (a b : ZMod q) 
   rw [ZMod.val_mul, ← pow_mul, ← pow_eq_pow_mod _ hp.pow_eq_one]
 
 /- English proof (translation)
-Use `choose lg hlg hu using fun ξ => field_log ζ ξ`. Set `φ : (Prim q K →₀ ULift.{1} (ZMod q)) →ₗ[ULift.{1} (ZMod q)] ULift.{1} (ZMod q)` to `Finsupp.linearCombination _ (fun ξ => ULift.up ((lg ξ ^ j : (ZMod q)ˣ) : ZMod q))`. Establish `hk : twRel q j K ≤ LinearMap.ker φ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨η, ξ, a, hξ, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : lg η * a = lg ξ` using `hu ξ _ (by show ξ.1 = ζ.1 ^ ((lg η * a : (ZMod q)ˣ) : ZMod q).val`. Rewrite using `[Units.val_mul, field_pow, ← hlg η, hξ])`. Use `show φ _ = 0`. Rewrite using `[map_sub]`. Simplify using `only [φ, Finsupp.linearCombination_single, ← e, one_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[sub_eq_zero, mul_zpow]`. Apply `ULift.ext` to reduce the goal to its premises. Simplify using `only [ULift.mul_down, Units.val_mul, ULift.one_down]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : lg ζ = 1` using `by haveI : NeZero (q : K) := ⟨ζ.2.1.ne_zero⟩ haveI : NeZero q := NeZero.of_neZero_natCast K`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : lg ζ * lg ζ = lg ζ` using `hu ζ _ (by show ζ.1 = ζ.1 ^ ((lg ζ * lg ζ : (ZMod q)ˣ) : ZMod q).val`. Rewrite using `[Units.val_mul, field_pow, ← hlg ζ, ← hlg ζ])`. Simplify using `using e`. Use `hk h` as an intermediate fact. Simplify using `only [LinearMap.mem_ker, φ, Finsupp.linearCombination_single, h1, one_zpow, smul_eq_mul] at this`.
-
-Conclude with `(mul_one c).symm.trans this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem field_ann {q : ℕ} (j : ℤ) {K : Type} [Field K] (ζ : Prim q K) (c : ULift.{1} (ZMod q))
     (h : Finsupp.single ζ c ∈ twRel q j K) : c = 0 := by
@@ -83,7 +77,7 @@ theorem field_ann {q : ℕ} (j : ℤ) {K : Type} [Field K] (ζ : Prim q K) (c : 
   exact (mul_one c).symm.trans this
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `Ideal.exists_maximal A`. Use `letI := Ideal.Quotient.field M`. Use `twRel_le q j (Ideal.Quotient.mk M) h` as an intermediate fact. Rewrite `this` using `[Submodule.mem_comap, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`. Conclude with `field_ann j _ c this`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ring_ann {q : ℕ} (j : ℤ) {A : Type} [CommRing A] [Nontrivial A] (ζ : Prim q A) (c : ULift.{1} (ZMod q))
     (h : Finsupp.single ζ c ∈ twRel q j A) : c = 0 := by
@@ -94,11 +88,9 @@ theorem ring_ann {q : ℕ} (j : ℤ) {A : Type} [CommRing A] [Nontrivial A] (ζ 
   exact field_ann j _ c this
 
 /- English proof (translation)
-Establish `h0 : ofRings.sec (twF q j) X (Submodule.Quotient.mk (Finsupp.single ζ c) : (twF q j).obj Γ(X, ⊤)) = ofRings.sec (twF q j) X 0`. Rewrite using `[sec_single, h]`. Conclude with `(map_zero _).symm`. Establish `hS` using `Presheaf.equalizerSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q j)) (X := op X) _ _ h0`. Use `sep _ hS _ _ (fun Y f hf => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hf' : (Submodule.Quotient.mk (Finsupp.mapDomain (Prim.map f.appTop.hom) (Finsupp.single ζ c)) : (twF q j).obj Γ(Y, ⊤)) = 0` using `Eq.trans hf (map_zero _)`. Rewrite `hf'` using `[Finsupp.mapDomain_single]`. Distinguish the cases in `hY : Nonempty Y`. Use `haveI : Nontrivial Γ(Y, ⊤) := by haveI : Nonempty (⊤ : Y.Opens) := hY.elim fun y => ⟨⟨y, trivial⟩⟩ infer_instance`. Establish `hc` using `ring_ann j _ c ((Submodule.Quotient.mk_eq_zero _).1 hf')`.
-
-Rewrite using `[hc, zero_smul]`. Use `haveI : IsEmpty Y := not_nonempty_iff.1 hY`. Conclude with `sep ⊥ (by exact Scheme.bot_mem_grothendieckTopology Y) _ _ (fun _ _ hg => hg.elim)`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ann {q : ℕ} (j l : ℤ) {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) (c : ULift.{1} (ZMod q))
     (h : c • twGen j ζ = 0) : c • twGen l ζ = 0 := by
@@ -122,14 +114,14 @@ theorem ann {q : ℕ} (j l : ℤ) {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) (c :
     exact sep ⊥ (by exact Scheme.bot_mem_grothendieckTopology Y) _ _ (fun _ _ hg => hg.elim)
 
 /- English proof (translation)
-Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.coe_comp, Function.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_comp {q : ℕ} {j : ℤ} {X Y Z : Scheme.{0}} (h : Z ⟶ Y) (f : Y ⟶ X) (x : Sec (tw q j) X) :
     Sec.res (h ≫ f) x = Sec.res h (Sec.res f x) := by
   simp only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.coe_comp, Function.comp_apply]
 
 /- English proof (translation)
-Rewrite using `[← genRes]`. Conclude with `map_smul _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_smul_gen {q : ℕ} {j : ℤ} {X Y : Scheme.{0}} (f : Y ⟶ X) (ζ : Prim q Γ(X, ⊤)) (c : ULift.{1} (ZMod q)) :
     Sec.res f (c • twGen j ζ) = c • twGen j (ζ.map f.appTop.hom) := by
@@ -137,7 +129,7 @@ theorem res_smul_gen {q : ℕ} {j : ℤ} {X Y : Scheme.{0}} (f : Y ⟶ X) (ζ : 
   exact map_smul _ _ _
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[← sub_eq_zero, ← sub_smul]`. Conclude with `ann j l ζ _ h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ann2 {q : ℕ} (j l : ℤ) {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) (c d : ULift.{1} (ZMod q))
     (h : c • twGen j ζ = d • twGen j ζ) : c • twGen l ζ = d • twGen l ζ := by
@@ -145,11 +137,11 @@ theorem ann2 {q : ℕ} (j l : ℤ) {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) (c 
   exact ann j l ζ _ h
 
 /- English proof (translation)
-Take `⟨S, hS, hp⟩` from `hR q X ζ {ξ}`. Use `sep S hS _ _ (fun Y f hf => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `hp f hf ξ (Finset.mem_singleton_self _)`. Establish `e1` using `congrArg (Sec.res f) h1`. Establish `e2` using `congrArg (Sec.res f) h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1`, `e2`, the goal using `[res_smul_gen, res_smul_gen]`. Rewrite `e1`, `e2`, the goal using `[twGen_pow _ _ _ a ha, smul_smul]`. Establish `f1` using `ann2 _ l _ _ _ e1`. Establish `f2` using `ann2 _ l _ _ _ e2`. Rewrite using `[mul_smul, f2, smul_smul, mul_comm c, mul_smul, f1, smul_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Substitute `h` using the available equality. Rewrite using `[zpow_add]`. Apply `ULift.ext` to reduce the goal to its premises. Simplify using `only [ULift.mul_down, Units.val_mul]`.
+Reduce the equality to equality of the corresponding arguments. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -178,7 +170,7 @@ def Good {q : ℕ} {j k l : ℤ} {X : Scheme.{0}} (y : Sec (tw q k) X) (x : Sec 
     x = c • twGen j ζ ∧ y = d • twGen k ζ ∧ z = (c * d) • twGen l ζ
 
 /- English proof (translation)
-Break down `hg with ⟨rfl, rfl⟩ | ⟨ζ, c, d, rfl, rfl, rfl⟩` into its components or cases. Conclude with `Or.inl ⟨map_zero _, map_zero _⟩`. Conclude with `Or.inr ⟨_, c, d, res_smul_gen _ _ _, res_smul_gen _ _ _, res_smul_gen _ _ _⟩`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem Good.res {q : ℕ} {j k l : ℤ} {X Y : Scheme.{0}} {y : Sec (tw q k) X} {x : Sec (tw q j) X} {z : Sec (tw q l) X}
     (hg : Good y x z) (f : Y ⟶ X) : Good (Sec.res f y) (Sec.res f x) (Sec.res f z) := by
@@ -187,9 +179,9 @@ theorem Good.res {q : ℕ} {j k l : ℤ} {X Y : Scheme.{0}} {y : Sec (tw q k) X}
   · exact Or.inr ⟨_, c, d, res_smul_gen _ _ _, res_smul_gen _ _ _, res_smul_gen _ _ _⟩
 
 /- English proof (translation)
-Apply the tactic sequence `rcases hg with ⟨hy, hz⟩ | ⟨ζ, c, d, hx, hy, hz⟩ <;> rcases hg' with ⟨hy', hz'⟩ | ⟨ξ, c', d', hx', hy', hz'⟩`. Rewrite using `[hz, hz']`. Rewrite using `[hz, hz', mul_smul, ann k l ξ d' (hy'.symm.trans hy), smul_zero]`. Rewrite using `[hz, hz', mul_smul, ann k l ζ d (hy.symm.trans hy'), smul_zero]`. Rewrite using `[hz, hz']`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `wd hR h _ _ _ _ _ _ (hx.symm.trans hx') (hy.symm.trans hy')`.
+A detailed English derivation is pending.
 -/
 theorem Good.uniq (hR : RootPow) {q : ℕ} {j k l : ℤ} (h : j + k = l) {X : Scheme.{0}} {y : Sec (tw q k) X}
     {x : Sec (tw q j) X} {z z' : Sec (tw q l) X} (hg : Good y x z) (hg' : Good y x z') : z = z' := by
@@ -201,7 +193,7 @@ theorem Good.uniq (hR : RootPow) {q : ℕ} {j k l : ℤ} (h : j + k = l) {X : Sc
     exact wd hR h _ _ _ _ _ _ (hx.symm.trans hx') (hy.symm.trans hy')
 
 /- English proof (translation)
-Take `⟨S, hS, hp⟩` from `LocGen_of hR q j X ζ x`. Use `⟨S, hS, fun Y f hf => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hp f hf`. Conclude with `⟨c, hc.trans (Int.cast_smul_eq_zsmul _ _ _).symm⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem locGen' (hR : RootPow) {q : ℕ} {j : ℤ} {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) (x : Sec (tw q j) X) :
     ∃ S ∈ Scheme.etaleTopology X, ∀ ⦃Y : Scheme.{0}⦄ (f : Y ⟶ X), S f →
@@ -224,17 +216,15 @@ def locSieve {q : ℕ} {j k : ℤ} (l : ℤ) {X : Scheme.{0}} (y : Sec (tw q k) 
       rwa [show Sec.res g (z + z') = Sec.res g z + Sec.res g z' from map_add _ _ _] at this
 
 /- English proof (translation)
-Take `⟨S, hS, hv⟩` from `locPres y`. Use `Scheme.etaleTopology.transitive hS _ (fun Y f hf => ?_)` and prove the remaining obligations. Take `⟨v, hv⟩` from `hv f hf`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ v`. Distinguish the cases in `hne : Nonempty (Prim q Γ(Y, ⊤))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨ζ⟩` from `hne`. Take `⟨S1, hS1, h1⟩` from `locGen' hR ζ (Sec.res f y)`. Take `⟨S2, hS2, h2⟩` from `locGen' hR ζ (Sec.res f x)`. Take `⟨S3, hS3, h3⟩` from `locGen' hR ζ (Sec.res f x')`. Use `Scheme.etaleTopology.superset_covering ?_ (Scheme.etaleTopology.intersection_covering hS1 (Scheme.etaleTopology.intersection_covering hS2 hS3))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `Z g ⟨g1, g2, g3⟩`. Take `⟨d, hd⟩` from `h1 g g1`. Take `⟨c, hc⟩` from `h2 g g2`. Take `⟨c', hc'⟩` from `h3 g g3`. Rewrite `hd`, `hc`, `hc'` using `[← res_comp]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨_, _, Or.inr ⟨_, c, d, hc, hd, rfl⟩, Or.inr ⟨_, c', d, hc', hd, rfl⟩, Or.inr ⟨_, c + c', d, ?_, hd, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[add_smul, ← hc, ← hc']`. Conclude with `map_add _ _ _`. Rewrite using `[add_mul, add_smul]`. Establish `hw : w = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `ξ`. Conclude with `(hne ⟨ξ⟩).elim`. Establish `hy : Sec.res f y = 0`. Rewrite using `[hv, hw]`. Conclude with `map_zero _`.
-
-Establish `hm : locSieve l y x x' f` using `⟨0, 0, Or.inl ⟨hy, rfl⟩, Or.inl ⟨hy, rfl⟩, Or.inl ⟨hy, add_zero _⟩⟩`. Rewrite using `[Sieve.pullback_eq_top_of_mem _ hm]`. Conclude with `Scheme.etaleTopology.top_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locSieve_mem (hR : RootPow) {q : ℕ} {j k : ℤ} (l : ℤ) {X : Scheme.{0}} (y : Sec (tw q k) X) (x x' : Sec (tw q j) X) :
     locSieve l y x x' ∈ Scheme.etaleTopology X := by
@@ -272,13 +262,11 @@ def Rel {q : ℕ} {j k l : ℤ} {X : Scheme.{0}} (y : Sec (tw q k) X) (x : Sec (
   ∀ ⦃Y : Scheme.{0}⦄ (f : Y ⟶ X) (t : Sec (tw q l) Y), Good (Sec.res f y) (Sec.res f x) t → Sec.res f z = t
 
 /- English proof (translation)
-Establish `hS` using `locSieve_mem hR l y x x`. Establish `hsh` using `(isSheaf_iff_isSheaf_of_type _ _).1 ((sheafCompose Scheme.etaleTopology (forget _)).obj (tw q l)).2 _ hS`. Establish `hz : ∀ ⦃Y : Scheme.{0}⦄ (f : Y ⟶ X), locSieve l y x x f → ∃ z : Sec (tw q l) Y, Good (Sec.res f y) (Sec.res f x) z` using `fun Y f hf => hf.imp fun _ hz => hz.choose_spec.1`. Use `choose z hz using hz`. Take `⟨t, ht, -⟩` from `hsh z (fun Y₁ Y₂ Z g₁ g₂ f₁ f₂ h₁ h₂ e => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `a1` using `(hz f₁ h₁).res g₁`. Establish `a2` using `(hz f₂ h₂).res g₂`. Rewrite `a1`, `a2` using `[← res_comp, ← res_comp]`. Rewrite `a1` using `[e]`. Conclude with `a1.uniq hR h a2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, fun Y f s hs => ?_⟩` and prove the remaining obligations. Use `sep _ (Scheme.etaleTopology.pullback_stable f hS) _ _ (fun Z g hg => ?_)` and prove the remaining obligations. Establish `e : Sec.res (F` using `tw q l) (g ≫ f) t = z (g ≫ f) hg := ht (g ≫ f) hg`. Use `(res_comp g f t).symm.trans (e.trans ?_)` and prove the remaining obligations. Establish `a1` using `hs.res g`.
-
-Rewrite `a1` using `[← res_comp, ← res_comp]`. Conclude with `(hz _ hg).uniq hR h a1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_ex (hR : RootPow) {q : ℕ} {j k l : ℤ} (h : j + k = l) {X : Scheme.{0}} (y : Sec (tw q k) X) (x : Sec (tw q j) X) :
     ∃ z : Sec (tw q l) X, Rel y x z := by
@@ -302,7 +290,7 @@ theorem rel_ex (hR : RootPow) {q : ℕ} {j k l : ℤ} (h : j + k = l) {X : Schem
   exact (hz _ hg).uniq hR h a1
 
 /- English proof (translation)
-Introduce `Z g t ht`. Rewrite `ht` using `[← res_comp, ← res_comp]`. Rewrite using `[← res_comp]`. Conclude with `hr _ t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rel.res {q : ℕ} {j k l : ℤ} {X Y : Scheme.{0}} {y : Sec (tw q k) X} {x : Sec (tw q j) X} {z : Sec (tw q l) X}
     (hr : Rel y x z) (f : Y ⟶ X) : Rel (Sec.res f y) (Sec.res f x) (Sec.res f z) := by
@@ -312,7 +300,7 @@ theorem Rel.res {q : ℕ} {j k l : ℤ} {X Y : Scheme.{0}} {y : Sec (tw q k) X} 
   exact hr _ t ht
 
 /- English proof (translation)
-Use `sep _ (locSieve_mem hR l y x x) _ _ ?_` and prove the remaining obligations. Introduce and unpack `Y f ⟨t, -, ht, -⟩`. Rewrite using `[hg f t ht, hg' f t ht]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem Rel.uniq (hR : RootPow) {q : ℕ} {j k l : ℤ} {X : Scheme.{0}} {y : Sec (tw q k) X}
     {x : Sec (tw q j) X} {z z' : Sec (tw q l) X} (hg : Rel y x z) (hg' : Rel y x z') : z = z' := by
@@ -321,11 +309,9 @@ theorem Rel.uniq (hR : RootPow) {q : ℕ} {j k l : ℤ} {X : Scheme.{0}} {y : Se
   rw [hg f t ht, hg' f t ht]
 
 /- English proof (translation)
-Introduce `q`. Use `choose m hm using fun (j k l : ℤ) (h : j + k = l) (X : Scheme.{0}) (y : Sec (tw q k) X) (x : Sec (tw q j) X) => rel_ex hR h y x`. Use `⟨fun j k l h X y => AddMonoidHom.mk' (m j k l h X y) (fun x x' => ?_), ?_, ?_⟩` and prove the remaining obligations. Use `sep _ (locSieve_mem hR l y x x') _ _ ?_` and prove the remaining obligations. Introduce and unpack `Y f ⟨t, t', h1, h2, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm j k l h X y _ f _ h3, ← hm j k l h X y _ f _ h1, ← hm j k l h X y _ f _ h2]`. Conclude with `(map_add _ _ _).symm`. Introduce `j k l h X Y f y x`. Conclude with `((hm j k l h X y x).res f).uniq hR (hm j k l h Y _ _)`. Introduce `j k l h X ζ`.
-
-Use `sep ⊤ (Scheme.etaleTopology.top_mem _) _ _ (fun Y f _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `refine hm j k l h X _ _ f _ (Good.res (Or.inr ⟨ζ, 1, 1, ?_, ?_, ?_⟩) f) <;> simp only [mul_one, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem Gen_of (hR : RootPow) : LateralTheory.E.MulPf.Gen := by
   intro q
@@ -342,7 +328,7 @@ theorem Gen_of (hR : RootPow) : LateralTheory.E.MulPf.Gen := by
     refine hm j k l h X _ _ f _ (Good.res (Or.inr ⟨ζ, 1, 1, ?_, ?_, ?_⟩) f) <;> simp only [mul_one, one_smul]
 
 /- English proof (translation)
-The claim follows from `Gen_of hR`.
+A detailed English derivation is pending.
 -/
 theorem Gen_of' (hR : LateralTheory.E.MulPf.RootPow) : LateralTheory.E.MulPf.Gen := Gen_of hR
 

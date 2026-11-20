@@ -7,7 +7,7 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.HintLevelPt
 
 /- English proof (translation)
-Introduce `H _ K L u hLK hfin hu`. Conclude with `GlobalTheory.CompanionTheory.HintLevel.hint_eq_level H K L u hLK (fun l hl x => hu l hl x) hfin`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hint_eq_level_of_forall : ∀ (H : Type) [Group H] (K L : Subgroup H) (u : H → ℂ), L ≤ K →
     L.relIndex K ≠ 0 → (∀ l ∈ L, ∀ x, u (x * l) = u x) →

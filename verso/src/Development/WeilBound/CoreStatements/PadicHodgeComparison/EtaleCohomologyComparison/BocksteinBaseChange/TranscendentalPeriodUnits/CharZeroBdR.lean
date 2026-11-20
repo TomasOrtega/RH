@@ -24,7 +24,7 @@ abbrev Fr : Subfield (BdR l) :=
 def cK (g : K.fixingSubgroup) : BdR l := qQ l (period_ring_base.κ g.1) * tQ l
 
 /- English proof (translation)
-The claim follows from `(period_ring_base.base l).σ_u g.1`.
+A detailed English derivation is pending.
 -/
 theorem σ_uQ (g : K.fixingSubgroup) : σD g.1 (uQ l) = uQ l + cK g := (period_ring_base.base l).σ_u g.1
 

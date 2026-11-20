@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.AlgebraicTheory.AlgebraicTheoryProofs.NormInter
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.AlgTh.local_norm_intertwiner`.
+A detailed English derivation is pending.
 -/
 theorem locNormInter : Formalism.L2.AlgTh.LocNormInter := Formalism.L2.AlgTh.local_norm_intertwiner
 

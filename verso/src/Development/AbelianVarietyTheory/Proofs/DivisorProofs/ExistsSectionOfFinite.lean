@@ -5,13 +5,13 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory.FiniteSectionLift
 
 /- English proof (translation)
-Establish `hmem : ∀ a, f.hom a ∈ φ.hom.range`. Introduce `a`. Take `⟨q, hq, h0⟩` from `hg.to_isIntegral a`. Take `⟨r, hr⟩` from `hint (f.hom a) ⟨q, hq, by`. Rewrite using `[← hf, CommRingCat.hom_comp, ← Polynomial.hom_eval₂, h0, map_zero]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨r, hr⟩`. Set `e : R ≃+* φ.hom.range` to `RingEquiv.ofBijective φ.hom.rangeRestrict ⟨fun a b h => hinj (congrArg Subtype.val h), φ.hom.rangeRestrict_surjective⟩`. Set `t : A →+* R` to `e.symm.toRingHom.comp (f.hom.codRestrict φ.hom.range hmem)`. Establish `hkey : ∀ a, φ.hom (t a) = f.hom a`. Introduce `a`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : e (e.symm ⟨f.hom a, hmem a⟩) = ⟨f.hom a, hmem a⟩` using `e.apply_symm_apply _`. Conclude with `congrArg Subtype.val h1`. Use `⟨CommRingCat.ofHom t, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `φ.hom (t (g.hom r)) = φ.hom r`. Rewrite using `[hkey, ← hf]`. Both sides reduce to the same expression. Use extensionality with `a`. Conclude with `hkey a`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_section_of_finite (R A K : CommRingCat) (φ : R ⟶ K)
     (hinj : Function.Injective φ.hom)
@@ -41,15 +41,13 @@ theorem exists_section_of_finite (R A K : CommRingCat) (φ : R ⟶ K)
     exact hkey a
 
 /- English proof (translation)
-Introduce `R K φ hinj hint Z P p ξ₀ y hp hy`. Use `haveI : IsAffine (pullback p ξ₀) := isAffine_of_isAffineHom (pullback.snd p ξ₀)`. Set `l : Spec K ⟶ pullback p ξ₀` to `pullback.lift y (Spec.map φ) hy`. Set `g : R ⟶ Γ(pullback p ξ₀, ⊤)` to `Spec.preimage ((pullback p ξ₀).isoSpec.inv ≫ pullback.snd p ξ₀)`. Set `f : Γ(pullback p ξ₀, ⊤) ⟶ K` to `Spec.preimage (l ≫ (pullback p ξ₀).isoSpec.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hgS : Spec.map g = (pullback p ξ₀).isoSpec.inv ≫ pullback.snd p ξ₀` using `Spec.map_preimage _`. Establish `hfS : Spec.map f = l ≫ (pullback p ξ₀).isoSpec.hom` using `Spec.map_preimage _`. Establish `hgfin : g.hom.Finite`. Rewrite using `[← IsFinite.SpecMap_iff, hgS]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hf : g ≫ f = φ`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hfS, hgS]`. Simplify using `only [l, Category.assoc, Iso.hom_inv_id_assoc]`. Conclude with `pullback.lift_snd _ _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs1, hs2⟩` from `exists_section_of_finite R _ K φ hinj hint g hgfin f hf`. Use `⟨Spec.map s ≫ (pullback p ξ₀).isoSpec.inv ≫ pullback.fst p ξ₀, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Spec.map_comp, hs2, hfS]`. Simplify using `only [l, Category.assoc, Iso.hom_inv_id_assoc]`. Conclude with `pullback.lift_fst _ _ _`.
-
-Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc _ (pullback.snd p ξ₀), ← hgS, ← Category.assoc, ← Spec.map_comp, hs1, Spec.map_id, Category.id_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_of_finite : ∀ (R K : CommRingCat) (φ : R ⟶ K),
     Function.Injective (⇑(CommRingCat.Hom.hom φ) : (↑R : Type) → (↑K : Type)) →

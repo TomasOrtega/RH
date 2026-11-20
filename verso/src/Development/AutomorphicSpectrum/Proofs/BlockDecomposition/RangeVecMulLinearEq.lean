@@ -5,7 +5,7 @@ namespace GlobalTheory.CompanionTheory.MatrixRowSpace
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[Matrix.mul_apply, Matrix.vecMul, dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem row_mul {m n r : ℕ} (x : Matrix (Fin m) (Fin r) K) (c : Matrix (Fin r) (Fin n) K)
     (i : Fin m) : (x * c) i = c.vecMulLinear (x i) := by
@@ -13,9 +13,9 @@ theorem row_mul {m n r : ℕ} (x : Matrix (Fin m) (Fin r) K) (c : Matrix (Fin r)
   simp [Matrix.mul_apply, Matrix.vecMul, dotProduct]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[Matrix.vecMulLinear_apply, Matrix.vecMul_eq_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨Pi.single i 1, ?_⟩` and prove the remaining obligations. Use extensionality with `j`. Simplify using `[Matrix.vecMul, dotProduct, Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem range_vecMulLinear_eq {n r : ℕ} (c : Matrix (Fin r) (Fin n) K) :
     LinearMap.range c.vecMulLinear = Submodule.span K (Set.range c) := by
@@ -30,9 +30,9 @@ theorem range_vecMulLinear_eq {n r : ℕ} (c : Matrix (Fin r) (Fin n) K) :
     simp [Matrix.vecMul, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[row_mul]`. Conclude with `Submodule.mem_map_of_mem (Submodule.subset_span ⟨i, rfl⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_le_iff_le_comap, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, ← row_mul]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_rows_mul {m n r : ℕ} (x : Matrix (Fin m) (Fin r) K) (c : Matrix (Fin r) (Fin n) K) :
     Submodule.span K (Set.range (x * c)) =
@@ -48,9 +48,9 @@ theorem span_rows_mul {m n r : ℕ} (x : Matrix (Fin m) (Fin r) K) (c : Matrix (
     exact Submodule.subset_span ⟨i, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.rank_eq_finrank_span_row]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Submodule.eq_top_of_finrank_eq (h.trans (by simp))`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : Submodule.span K (Set.range x.row) = ⊤` using `h`. Rewrite using `[h', finrank_top]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_rows_eq_top_iff {m r : ℕ} (x : Matrix (Fin m) (Fin r) K) :
     x.rank = r ↔ Submodule.span K (Set.range x) = ⊤ := by
@@ -64,7 +64,7 @@ theorem span_rows_eq_top_iff {m r : ℕ} (x : Matrix (Fin m) (Fin r) K) :
     simp
 
 /- English proof (translation)
-Rewrite using `[span_rows_mul, (span_rows_eq_top_iff x).mp hx, Submodule.map_top, range_vecMulLinear_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem span_rows_mul_of_rank {m n r : ℕ} (x : Matrix (Fin m) (Fin r) K)
     (c : Matrix (Fin r) (Fin n) K) (hx : x.rank = r) :

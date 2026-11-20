@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.HermDouble
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨v, hv, hMv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Use `h.2.2 (star v) (by simpa using hv)` as an intermediate fact. Rewrite `this` using `[star_star, hMv, dotProduct_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_isCartan {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h : IsCartan M θ) : M.det ≠ 0 := by
   intro h0
@@ -22,9 +22,9 @@ theorem det_ne_zero_of_isCartan {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Use `⟨hX.herm, fun h0 => ?_⟩` and prove the remaining obligations. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Apply `det_ne_zero_of_isCartan (hX.cartan w)` to reduce the goal to its premises. Use `RingHom.map_det ((B.emb w).1 : E →+* ℂ) X.J` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem isHermND_of_isHerm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {n r s : ℕ} {X : Spc F E n} (hX : X.IsHerm σ B r s) : IsHermND σ X.J := by
@@ -36,7 +36,7 @@ theorem isHermND_of_isHerm {F E : Type} [Field F] [NumberField F] [Field E] [Num
   exact this.symm
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B hB n r s' X hX`. Set `X₂ : Spc F E (n + n)` to `{ J := dblGram finSumFinEquiv X.J L := sumLat finSumFinEquiv X.L X.L θ := fun w => blkMat finSumFinEquiv (X.θ w) (-X.θ w) bas := fun v => blkGL finSumFinEquiv (X.bas v, X.bas v) }`. Establish `hK` using `GlobalTheory.StabHaar.isStab_stabK (σ := σ) B X₂`. Use `⟨X₂, GlobalTheory.DefDoubling.ioA σ X.J, GlobalTheory.StabHaar.stabK (σ := σ) B X₂, rfl, rfl, fun _ => rfl, fun _ _ => rfl, hK, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.DblIwasawa.isCompact_and_iwasawaOf F E σ hB.cm hB.unram B n X (isHermND_of_isHerm hX) hX.lat hX.dual hX.cartan X₂ rfl rfl (fun _ => rfl) _ hK).2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isDbl : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ → ∀ (n r s' : ℕ) (X : Spc F E n), X.IsHerm σ B r s' →
     ∃ (X₂ : Spc F E (n + n)) (i : UA σ X.J × UA σ X.J →* UA σ X₂.J) (K₂ : Subgroup (UA σ X₂.J)), IsDbl B X X₂ i K₂ := by

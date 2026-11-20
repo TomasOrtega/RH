@@ -18,13 +18,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CentralOps.polyFun_mem_smF D θ V R P`.
+A detailed English derivation is pending.
 -/
 theorem polyFun_mem (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (R : RealPoints θ V) (P : PolyE V) : polyFun θ V P ∈ SmF θ V := GlobalTheory.CentralOps.polyFun_mem_smF D θ V R P
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.rightLieDerivative_realEntryPolynomialFunction D θ V R τ X P`.
+A detailed English derivation is pending.
 -/
 theorem lieDer_polyFun (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (R : RealPoints θ V) (τ : D.what₂.Tau) (X : LieAt V τ) (P : PolyE V) :
@@ -33,9 +33,9 @@ theorem lieDer_polyFun (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.hos
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[map_sub, MvPolynomial.derivation_C, sub_zero, matDer_X]`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Simplify using `only [if_true, map_sum, map_mul, MvPolynomial.aeval_X, MvPolynomial.aeval_C, Matrix.single_apply, Algebra.algebraMap_self, RingHom.id_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Prod.mk.injEq, true_and]`. Simplify using `only [h, if_false, map_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg]`. Introduce `h'`. Conclude with `h (congrArg Prod.fst h').symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem aeval_matDer_single {T : Type} {n : ℕ} (τ τ' : T) (a b c d : Fin n) :
     MvPolynomial.aeval (fun p : T × Fin n × Fin n => if p.2.1 = p.2.2 then (1 : ℂ) else 0)
@@ -53,20 +53,20 @@ theorem aeval_matDer_single {T : Type} {n : ℕ} (τ τ' : T) (a b c d : Fin n) 
 variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[polyFun]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem polyFun_add (P Q : PolyE V) : polyFun θ V (P + Q) = polyFun θ V P + polyFun θ V Q := by
   funext g; simp [polyFun]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[polyFun, MvPolynomial.smul_eval]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem polyFun_smul (c : ℂ) (P : PolyE V) : polyFun θ V (c • P) = c • polyFun θ V P := by
   funext g; simp [polyFun, MvPolynomial.smul_eval]
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[← envIncl_ι, envRepAll_envIncl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem envRepAll_ι_of (R : RealPoints θ V) (τ : D.what₂.Tau) (y : ℂ ⊗[ℝ] LieAt V τ) :
     envRepAll R (UniversalEnvelopingAlgebra.ι ℂ (DirectSum.of (fun τ => ℂ ⊗[ℝ] LieAt V τ) τ y)) =
@@ -74,17 +74,13 @@ theorem envRepAll_ι_of (R : RealPoints θ V) (τ : D.what₂.Tau) (y : ℂ ⊗[
   rw [← envIncl_ι, envRepAll_envIncl]
 
 /- English proof (translation)
-Set `S : Subalgebra ℂ (GlobalTheory.AutFinLit.Env V)` to `{ carrier := {u | ∀ P, (envRepAll R u ⟨polyFun θ V P, polyFun_mem D θ V R P⟩).1 = polyFun θ V (polyRep V u P)} mul_mem' := fun {u v} hu hv P => by`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, ← hu]`. Use `congr 2`. Conclude with `Subtype.ext (hv P)`. Use the proof step `add_mem' := fun {u v} hu hv P => by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, Submodule.coe_add, hu, hv, polyFun_add]`. Use the proof step `algebraMap_mem' := fun c P => by`. Rewrite using `[AlgHom.commutes, AlgHom.commutes, Module.algebraMap_end_apply, Module.algebraMap_end_apply, Submodule.coe_smul, polyFun_smul] }`. Establish `hι : ∀ x, UniversalEnvelopingAlgebra.ι ℂ x ∈ S`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `S.zero_mem`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `S.add_mem hx hy`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `of τ y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `S.zero_mem`. Consider the case `add y y' hy hy' => rw [map_add, map_add]`.
-
-Conclude with `S.add_mem hy hy'`. Consider the case `tmul c X`. Introduce `P`. Rewrite using `[envRepAll_ι_of, polyRep_ι_of, placeRep_tmul, show c ⊗ₜ[ℝ] X = c • ((1 : ℂ) ⊗ₜ[ℝ] X) by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one], map_smul, map_smul, envRep_ι, LinearMap.smul_apply, LinearMap.smul_apply, Submodule.coe_smul, opInf_coe, polyFun_smul, lieDer_polyFun D θ V …`. Both sides reduce to the same expression.
-
-Conclude with `GlobalTheory.EnvCentre.mem_of_ι_mem (AlgHom.id ℂ _) S hι u P`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem envRepAll_polyFun (R : RealPoints θ V) (u : GlobalTheory.AutFinLit.Env V) (P : PolyE V) :
     (envRepAll R u ⟨polyFun θ V P, polyFun_mem D θ V R P⟩).1 = polyFun θ V (polyRep V u P) := by
@@ -119,7 +115,7 @@ theorem envRepAll_polyFun (R : RealPoints θ V) (u : GlobalTheory.AutFinLit.Env 
   exact GlobalTheory.EnvCentre.mem_of_ι_mem (AlgHom.id ℂ _) S hι u P
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [realEntries, R.2.2.2.2.1 1 (one_mem _) p.1, Matrix.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem realEntries_one (R : RealPoints θ V) :
     realEntries θ V 1 = fun p => if p.2.1 = p.2.2 then (1 : ℂ) else 0 := by
@@ -130,45 +126,37 @@ set_option maxHeartbeats 1000000 in
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `u hu`. Set `ρ : ∀ τ, LieAt V τ → GlobalTheory.AutFinLit.Env V` to `fun τ X => UniversalEnvelopingAlgebra.ι ℂ (DirectSum.of (fun τ => ℂ ⊗[ℝ] LieAt V τ) τ ((1 : ℂ) ⊗ₜ[ℝ] X))`. Establish `hadd : ∀ τ (X Y : LieAt V τ), ρ τ (X + Y) = ρ τ X + ρ τ Y` using `fun τ X Y => by`. Simplify using `only [ρ, TensorProduct.tmul_add, map_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsmul : ∀ τ (c : ℝ) (X : LieAt V τ), ρ τ (c • X) = (c : ℂ) • ρ τ X` using `fun τ c X => by`. Establish `e1 : (1 : ℂ) ⊗ₜ[ℝ] (c • X) = (c : ℂ) • ((1 : ℂ) ⊗ₜ[ℝ] X)`. Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, mul_one, Complex.real_smul, mul_one]`. Simplify using `only [ρ]`. Rewrite using `[e1, ← DirectSum.lof_eq_of ℂ, map_smul, map_smul, DirectSum.lof_eq_of]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hbrk : ∀ τ (X Y Z : LieAt V τ), Z.1 = X.1 * Y.1 - Y.1 * X.1 → ρ τ Z = ρ τ X * ρ τ Y - ρ τ Y * ρ τ X` using `fun τ X Y Z hZ => by`. Establish `: Z = ⁅X, Y⁆` using `Subtype.ext hZ`. Simplify using `only [ρ]`. Rewrite using `[this, ← Ring.lie_def, ← LieHom.map_lie, DirectSum.lie_of_same, LieAlgebra.ExtendScalars.bracket_tmul, one_mul]`. Use `choose P Q hPQ hrest using fun τ => GlobalTheory.UnitaryLieComplexification.glRel_and_span V.rank (gramAt D V τ) (R.1 τ).1 (R.1 τ).2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgl` using `fun τ => (hrest τ (GlobalTheory.AutFinLit.Env V) (ρ τ) (hadd τ) (hsmul τ) (hbrk τ)).1`. Establish `hsp` using `fun τ => (hrest τ (GlobalTheory.AutFinLit.Env V) (ρ τ) (hadd τ) (hsmul τ) (hbrk τ)).2`. Set `e : D.what₂.Tau × Fin V.rank × Fin V.rank → GlobalTheory.AutFinLit.Env V` to `fun p => ρ p.1 (P p.1 p.2.1 p.2.2) + Complex.I • ρ p.1 (Q p.1 p.2.1 p.2.2)`. Establish `hρe : ∀ τ X, ρ τ X ∈ Submodule.span ℂ (Set.range e)` using `fun τ X => Submodule.span_mono (by rintro _ ⟨p, rfl⟩; exact ⟨(τ, p.1, p.2), rfl⟩) (hsp τ X)`. Establish `hgen : Algebra.adjoin ℂ (Set.range e) = ⊤`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_top_iff.2 ((GlobalTheory.EnvCentre.adjoin_range_ι_eq_top _).symm.le.trans (Algebra.adjoin_le ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Use `Algebra.span_le_adjoin ℂ _ ?_` and prove the remaining obligations. Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => rw [map_zero]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `of τ y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `add y y' hy hy' => rw [map_add, map_add]`. Conclude with `add_mem hy hy'`. Consider the case `tmul c X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show c ⊗ₜ[ℝ] X = c • ((1 : ℂ) ⊗ₜ[ℝ] X) by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one], ← DirectSum.lof_eq_of ℂ, map_smul, map_smul]`. Conclude with `Submodule.smul_mem _ c (hρe τ X)`. Establish `hcomm : ∀ τ τ', τ ≠ τ' → ∀ X Y, Commute (ρ τ X) (ρ τ' Y)` using `fun τ τ' h X Y => by`. Establish `h1 : ρ τ X * ρ τ' Y - ρ τ' Y * ρ τ X = 0`. Simplify using `only [ρ]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[← Ring.lie_def, ← LieHom.map_lie, DirectSum.lie_of, dif_neg h, map_zero]`. Conclude with `sub_eq_zero.1 h1`. Establish `hbr : ∀ p q, e p * e q - e q * e p ∈ Submodule.span ℂ (Set.range e)`. Introduce and unpack `⟨τ, a, b⟩ ⟨τ', c, d⟩`. Distinguish the cases in `h : τ = τ'`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Use `hgl τ a b c d` as an intermediate fact. Simplify using `only at this`. Express the relevant statement in the definitionally equal form `(ρ τ (P τ a b) + Complex.I • ρ τ (Q τ a b)) * (ρ τ (P τ c d) + Complex.I • ρ τ (Q τ c d)) - (ρ τ (P τ c d) + Complex.I • ρ τ (Q τ c d)) * (ρ τ (P τ a b) + Complex.I • ρ τ (Q τ a b)) ∈ _`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `sub_mem ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `Submodule.subset_span ⟨(τ, a, d), rfl⟩`. Conclude with `zero_mem _`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨(τ, c, b), rfl⟩`. Conclude with `zero_mem _`. Establish `hc : Commute (e (τ, a, b)) (e (τ', c, d))`. Simplify using `only [e]`. Use `Commute.add_left (Commute.add_right ?_ ?_) (Commute.add_right ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `hcomm τ τ' h _ _`. Conclude with `(hcomm τ τ' h _ _).smul_right _`. Conclude with `(hcomm τ τ' h _ _).smul_left _`. Conclude with `((hcomm τ τ' h _ _).smul_left _).smul_right _`. Rewrite using `[hc.eq, sub_self]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Conclude with `zero_mem _`. Establish `hπρ : ∀ τ (X : LieAt V τ), polyRep V (ρ τ X) = (matDer τ X.1 : Module.End ℂ (PolyE V))` using `fun τ X => by`. Simplify using `only [ρ]`. Rewrite using `[polyRep_ι_of, placeRep_ι]`. Establish `hE : ∀ τ a b, (P τ a b).1 + Complex.I • (Q τ a b).1 = Matrix.single a b (1 : ℂ)` using `fun τ a b => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[(hPQ τ a b).1, (hPQ τ a b).2, smul_smul]`. Establish `: Complex.I * (1 / (2 * Complex.I)) = 1 / 2` using `by field_simp`. Rewrite using `[this]`. Use `module`. Establish `hπe : ∀ p, polyRep V (e p) = (matDer p.1 (Matrix.single p.2.1 p.2.2 (1 : ℂ)) : Module.End ℂ (PolyE V))` using `fun p => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [e]`. Rewrite using `[map_add, map_smul, hπρ, hπρ, ← hE, matDer_add, matDer_smul]`. Both sides reduce to the same expression. Establish `hder : ∀ p (x y : PolyE V), polyRep V (e p) (x * y) = polyRep V (e p) x * y + x * polyRep V (e p) y` using `fun p x y => by`. Rewrite using `[hπe]`.
-
-Express the relevant statement in the definitionally equal form `matDer _ _ (x * y) = matDer _ _ x * y + x * matDer _ _ y`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Set `pt : D.what₂.Tau × Fin V.rank × Fin V.rank → ℂ` to `fun p => if p.2.1 = p.2.2 then (1 : ℂ) else 0`. Set `χ : PolyE V →ₐ[ℂ] ℂ` to `MvPolynomial.aeval pt`.
-
-Set `a : D.what₂.Tau × Fin V.rank × Fin V.rank → PolyE V` to `fun p => MvPolynomial.X p - MvPolynomial.C (pt p)`. Establish `ha0 : ∀ k, χ (a k) = 0` using `fun k => by simp [χ, a]`. Establish `hδ : ∀ i k, χ (polyRep V (e i) (a k)) = if i = k then 1 else 0`. Introduce and unpack `⟨τ, a', b'⟩ ⟨τ', c, d⟩`. Rewrite using `[hπe]`.
-
-Conclude with `aeval_matDer_single τ τ' a' b' c d`. Use `GlobalTheory.T.faithful_of_derivations_dualFamily _ _ _ e hgen hbr (polyRep V) hder χ a ha0 hδ u fun x => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (envRepAll_polyFun R u x) 1`. Rewrite `h1` using `[hu, LinearMap.zero_apply, ZeroMemClass.coe_zero, Pi.zero_apply]`. Establish `h2 : polyFun θ V (polyRep V u x) 1 = χ (polyRep V u x)`.
-
-Rewrite using `[polyFun, realEntries_one R, MvPolynomial.aeval_eq_eval₂Hom, Algebra.algebraMap_self]`. Both sides reduce to the same expression. Rewrite using `[← h2, ← h1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem envRepAll_injective (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (_hθ : IsInfFam θ)
     (V : HSp D) (R : RealPoints θ V) : Function.Injective (envRepAll R) := by
@@ -276,9 +264,9 @@ theorem envRepAll_injective (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[
   rw [← h2, ← h1]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_env hθ R z hz.1`. Use `⟨u, mem_center_of_comm u fun x => envRepAll_injective _ _ hθ V R ?_, hu⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Use `GlobalTheory.EnvCommLie.envRepAll_comm_lie _ _ hθ V R u (fun a ha f hfa => ?_) x` and prove the remaining obligations. Rewrite using `[← hu, ← hu]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Conclude with `hz.2 f.1 (isSm_of_smF hθ R f) a ha g`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_center {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D} (hθ : IsInfFam θ)
     (R : RealPoints θ V) {z : List (ℝ → GA D V) →₀ ℂ} (hz : GlobalTheory.UAut.IsCentral D.sp.cm.sig V.gram z) :

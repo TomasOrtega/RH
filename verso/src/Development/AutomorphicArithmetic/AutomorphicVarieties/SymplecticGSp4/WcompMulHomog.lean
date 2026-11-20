@@ -6,13 +6,13 @@ section SlopeTestRemainingChoices
 open MvPowerSeries
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_wcomp, coeff_mul, coeff_mul]`. Use `split_ifs with h`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : Finsupp.weight wt p.2 = w`. Rewrite using `[coeff_wcomp, if_pos]`. Rewrite using `[← h, ← hp', map_add, h2, add_sub_cancel_right]`. Rewrite using `[he _ h2, mul_zero, mul_zero]`. Use `symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Distinguish the cases in `h2 : Finsupp.weight wt p.2 = w`. Rewrite using `[coeff_wcomp, if_neg, zero_mul]`. Introduce `h1`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Rewrite using `[← hp', map_add, h1, h2, sub_add_cancel]`. Rewrite using `[he _ h2, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wcomp_mul_homog (O : Type) [CommRing O] {σ X : Type} [AddCommGroup X] (wt : σ → X)
     {w : X} {e : MvPowerSeries σ O} (he : e ∈ wtPart O wt w) (G : MvPowerSeries σ O) (j : X) :
@@ -38,23 +38,21 @@ private theorem wcomp_mul_homog (O : Type) [CommRing O] {σ X : Type} [AddCommGr
     · rw [he _ h2, mul_zero]
 
 /- English proof (translation)
-Establish `hg' : ∀ i, ∃ e ∈ wtPart O W.wt (c i), W.π e = g i` using `fun i => hg i`. Use `choose e he heg using hg'`. Establish `hl : ∃ f, W.π f = x ∧ ∃ s : Finset X, (∀ j ∈ s, ∃ n, u n = j) ∧ ∀ n, Finsupp.weight W.wt n ∉ s → coeff n f = 0`. Use `Submodule.iSup_induction (fun n => W.part (u n)) (motive := fun z : R => ∃ f, W.π f = z ∧ ∃ s : Finset X, (∀ j ∈ s, ∃ n, u n = j) ∧ ∀ n, Finsupp.weight W.wt n ∉ s → coeff n f = 0) hx' ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `i _ ⟨f, hf, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨f, rfl, {u i}, fun j hj => ⟨i, (Finset.mem_singleton.1 hj).symm⟩, fun n hn => hf n (by simpa using hn)⟩`. Conclude with `⟨0, map_zero _, ∅, by simp, fun n _ => map_zero _⟩`. Introduce and unpack `a b ⟨f, hf, s, ht, hs⟩ ⟨f', hf', s', ht', hs'⟩`. Use `⟨f + f', by rw [map_add, hf, hf'], s ∪ s', fun j hj => ?_, fun n hn => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_union.1 hj with h | h` into its components or cases.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ht j h`. Conclude with `ht' j h`. Rewrite `hn` using `[Finset.mem_union, not_or]`. Rewrite using `[map_add, hs n hn.1, hs' n hn.2, add_zero]`. Take `⟨f, hf, s, ht, hs⟩` from `hl`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : f = ∑ j ∈ s, wcomp O W.wt j f`. Use extensionality with `n`. Rewrite using `[map_sum]`. Simplify using `only [coeff_wcomp]`. Rewrite using `[Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `hs n h`. Take `⟨a, ha⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hx`. Use `choose G hG using fun i => W.surj (a i)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : f - ∑ i, G i * e i ∈ RingHom.ker W.π`. Rewrite using `[RingHom.mem_ker, map_sub, hf, ← ha, map_sum]`. Simplify using `[hG, heg]`. Establish `key : ∀ j, W.π (wcomp O W.wt j f) = ∑ i, W.π (wcomp O W.wt (j - c i) (G i)) * g i`. Introduce `j`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `W.homog _ h1 j`. Rewrite `h2` using `[RingHom.mem_ker, map_sub, map_sub, sub_eq_zero, map_sum, map_sum]`. Rewrite using `[h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[wcomp_mul_homog O W.wt (he i), map_mul, heg]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨fun i => ∑ j ∈ s, W.π (wcomp O W.wt (j - c i) (G i)), fun i => ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun j hj => ?_` and prove the remaining obligations. Take `⟨n, rfl⟩` from `ht j hj`. Conclude with `hB n i ⟨_, wcomp_mem O W.wt _ _, rfl⟩`. Rewrite using `[← hf] conv_lhs => rw [hsum]`.
-
-Rewrite using `[map_sum]`. Simplify using `only [key, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+A detailed English derivation is pending.
 -/
 private theorem span_coeffs {O R X κ N : Type} [CommRing O] [CommRing R] [Algebra O R] [AddCommGroup X]
     (W : WPres O X R) [Fintype κ] (g : κ → R) (c : κ → X) (hg : ∀ i, g i ∈ W.part (c i)) (u : N → X)
@@ -113,21 +111,19 @@ private theorem span_coeffs {O R X κ N : Type} [CommRing O] [CommRing R] [Algeb
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D _ M`. Use `⟨fun f => ⟨fun hf => ?_, fun hf => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : (f : M.R) ∈ RingHom.ker M.π` using `congrArg Subtype.val hf`. Rewrite `h0` using `[M.ker, ← Set.Sum.elim_range, ← Set.Sum.elim_range]`. Take `⟨a, ha, hfa⟩` from `span_coeffs M.W (Sum.elim (Sum.elim M.F M.E) M.Z) (fun i => ((0 : ℤ), Sum.elim (Sum.elim (fun _ => (-1 : ℤ)) (fun _ => 1)) (fun _ => 0) i)) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `((i | i) | i)`. Conclude with `M.hF i`. Conclude with `M.hE i`. Conclude with `(M.hZ i).1)`. Use the proof step `(fun n : ℤ => ((0 : ℤ), n)) (Subalgebra.toSubmodule M.A)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun n i x hx => M.aPart_le (n := n - Sum.elim (Sum.elim (fun _ => (-1 : ℤ)) (fun _ => 1)) (fun _ => 0) i) (by simpa [Model.aPart] using hx))`. Use `f f.2 h0`. Establish `hf' : f = ∑ i, (⟨a i, ha i⟩ : M.A) * Sum.elim (Sum.elim M.eqns.F M.eqns.E) M.eqns.Z i`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hfa, AddSubmonoidClass.coe_finset_sum]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Apply the tactic sequence `rintro ((i | i) | i) - <;> rfl`. Rewrite using `[hf']`. Use `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ?_)` and prove the remaining obligations. Break down `i with (i | i) | i` into its components or cases.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Or.inl (Or.inl (Or.inl (Or.inl ⟨i, rfl⟩)))`. Conclude with `Or.inl (Or.inl (Or.inr ⟨i, rfl⟩))`. Conclude with `Or.inr ⟨i, rfl⟩`. Establish `hle : M.eqns.ideal ≤ RingHom.ker M.toSS`. Use `Ideal.span_le.2 fun x hx => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the first alternative.
 
-Establish `hk : (x : M.R) ∈ RingHom.ker M.π`. Rewrite using `[M.ker]`. Use `Ideal.subset_span ?_` and prove the remaining obligations. Break down `hx with (((⟨i, rfl⟩ | ⟨i, rfl⟩) | ⟨i, rfl⟩) | ⟨i, rfl⟩) | ⟨i, rfl⟩` into its components or cases. Conclude with `Or.inl (Or.inl ⟨i, rfl⟩)`.
+Prove the second alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `i.elim0`. Conclude with `Or.inl (Or.inr ⟨i, rfl⟩)`. Conclude with `i.elim0`. Conclude with `Or.inr ⟨i, rfl⟩`. Conclude with `Subtype.ext hk`.
-
-Conclude with `hle hf`. Introduce and unpack `n x ⟨f, hf, hfx⟩`. Conclude with `⟨⟨f, M.aPart_le (n := n) hf⟩, hf, Subtype.ext hfx⟩`. Introduce `n f hf`. Conclude with `⟨f, hf, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.kerA :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ M : Model D, (∀ f : M.A, M.toSS f = 0 ↔ f ∈ M.eqns.ideal) ∧ (∀ n (x : M.SS), x.1 ∈ M.sPart (0, n) → ∃ f ∈ M.gr n, M.toSS f = x) ∧ ∀ n, ∀ f ∈ M.gr n, (M.toSS f).1 ∈ M.sPart (0, n) := by

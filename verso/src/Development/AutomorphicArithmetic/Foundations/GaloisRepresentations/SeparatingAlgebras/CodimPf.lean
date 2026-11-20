@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Separ
 namespace UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Introduce `k V M _ _ _ _ _ _ Ψ A B _ h`. Set `f : V →ₗ[k] M ⧸ A` to `A.mkQ ∘ₗ Ψ`. Establish `hker : LinearMap.ker f = A.comap Ψ`. Use extensionality with `v`. Simplify using `[f, Submodule.Quotient.mk_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hrange : LinearMap.range f ≤ B.map A.mkQ`. Introduce and unpack `_ ⟨v, rfl⟩`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp (h v)`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Establish `hz : A.mkQ a = 0` using `by simpa [Submodule.Quotient.mk_eq_zero] using ha`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [f, LinearMap.comp_apply, ← hab, map_add, hz, zero_add]`. Use `haveI : FiniteDimensional k (B.map A.mkQ) := Module.Finite.map B A.mkQ`. Establish `h1 : Module.finrank k (LinearMap.range f) ≤ Module.finrank k (B.map A.mkQ)` using `Submodule.finrank_mono hrange`. Establish `h2 : Module.finrank k (B.map A.mkQ) ≤ Module.finrank k B` using `Submodule.finrank_map_le A.mkQ B`. Establish `h3` using `LinearMap.finrank_range_add_finrank_ker f`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hker]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem codim_pf : Codim := by
   intro k V M _ _ _ _ _ _ Ψ A B _ h

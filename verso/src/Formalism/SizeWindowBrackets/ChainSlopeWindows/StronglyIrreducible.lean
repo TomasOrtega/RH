@@ -15,33 +15,33 @@ section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
 /- English proof (translation)
-Use `revert e`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 lemma zmod_two_cases_bis (e : ZMod 2) : e = 0 ∨ e = 1 := by
   revert e
   decide
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma inPhi_iff (g : E0 × H) : InPhi g ↔ g.1.1 = 0 := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[inPhi_iff]`. Apply the tactic sequence `rcases zmod_two_cases_bis g.1.1 with h | h <;> rw [h] <;> decide`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma not_inPhi_iff (g : E0 × H) : ¬ InPhi g ↔ g.1.1 = 1 := by
   rw [inPhi_iff]
   rcases zmod_two_cases_bis g.1.1 with h | h <;> rw [h] <;> decide
 
 /- English proof (translation)
-Rewrite `hx`, `hy`, the goal using `[inPhi_iff]`. Simplify using `[hx, hy]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma inPhi_add {x y : E0 × H} (hx : InPhi x) (hy : InPhi y) : InPhi (x + y) := by
   rw [inPhi_iff] at hx hy ⊢
   simp [hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => rw [zero_smul]`. Conclude with `(inPhi_iff _).2 rfl`. Consider the case `succ n ih => rw [succ_nsmul]`. Conclude with `inPhi_add ih hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma inPhi_nsmul {x : E0 × H} (hx : InPhi x) (i : ℕ) : InPhi (i • x) := by
   induction i with
@@ -49,7 +49,7 @@ lemma inPhi_nsmul {x : E0 × H} (hx : InPhi x) (i : ℕ) : InPhi (i • x) := by
   | succ n ih => rw [succ_nsmul]; exact inPhi_add ih hx
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `[inPhi_iff, topPl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma filter_notPhi_eq (t : H) :
     (univ.filter (fun g : E0 × H => ¬ InPhi g)) = univ.filter (fun g : E0 × H => ¬ InPhi (g + topPl t)) := by
@@ -57,25 +57,25 @@ lemma filter_notPhi_eq (t : H) :
   simp [inPhi_iff, topPl]
 
 /- English proof (translation)
-Simplify using `[partner, cconj, topPl]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem partner_fst_lemma (t : H) (g : E0 × H) : (partner t g).1.1 = 1 + g.1.1 := by
   simp [partner, cconj, topPl]
 
 /- English proof (translation)
-Simplify using `[topPl, cconj]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sub_fst_lemma_2 (t : H) (ρ : E0 × H) : (ρ - topPl t - cconj).1.1 = ρ.1.1 - 1 := by
   simp [topPl, cconj]
 
 /- English proof (translation)
-Use `Finset.sum_nbij' (partner t) (fun ρ => ρ - topPl t - cconj) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha`. Simplify using `only [PhiSet, Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[inPhi_iff, partner_fst_lemma, (not_inPhi_iff a).1 ha]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Evaluate the decidable proposition. Introduce `a ha`. Simplify using `only [PhiSet, Finset.mem_filter, Finset.mem_univ, true_and] at ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[not_inPhi_iff, sub_fst_lemma_2, (inPhi_iff a).1 ha]`.
+Evaluate the decidable proposition. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Evaluate the decidable proposition. Introduce `a _`. Simplify using `only [partner]`. Normalize the expressions using the abelian group laws. Introduce `a _`.
+Evaluate the decidable proposition. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [partner]`. Normalize the expressions using the abelian group laws. Introduce `a _`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 lemma sum_partner {β : Type*} [AddCommMonoid β] (t : H) (F : E0 × H → β) :
     ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), F (partner t g) = ∑ ρ ∈ PhiSet (H := H), F ρ := by
@@ -100,14 +100,14 @@ lemma sum_partner {β : Type*} [AddCommMonoid β] (t : H) (F : E0 × H → β) :
     rfl
 
 /- English proof (translation)
-Establish `h` using `sum_partner (H := H) (β := ℕ) 0 (fun _ => 1)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma card_notPhi : (univ.filter (fun g : E0 × H => ¬ InPhi g)).card = (PhiSet (H := H)).card := by
   have h := sum_partner (H := H) (β := ℕ) 0 (fun _ => 1)
   simpa using h
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (AddChar.map_neg_eq_conj ψ g).symm`. Consider the case `rw [AddChar.map_neg_eq_inv, Complex.inv_eq_conj (AddChar.norm_apply ψ g)]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma conj_eq_neg (ψ : AddChar (E0 × H) ℂ) (g : E0 × H) : starRingEnd ℂ (ψ g) = ψ (-g) := by
   first
@@ -115,7 +115,7 @@ lemma conj_eq_neg (ψ : AddChar (E0 × H) ℂ) (g : E0 × H) : starRingEnd ℂ (
   | rw [AddChar.map_neg_eq_inv, Complex.inv_eq_conj (AddChar.norm_apply ψ g)]
 
 /- English proof (translation)
-Repeatedly rewrite using `[conj_eq_neg, ← AddChar.map_add_eq_mul]`. Rewrite using `[AddChar.sum_apply_eq_ite]`. Simplify using `only [neg_add_eq_sub, sub_eq_zero]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma ortho (g h : E0 × H) :
     ∑ ψ : AddChar (E0 × H) ℂ, starRingEnd ℂ (ψ g) * ψ h
@@ -130,9 +130,9 @@ Both sides reduce to the same expression.
 lemma chC_apply' (g : E0 × H) : (chC : AddChar (E0 × H) ℂ) g = if g.1.1 = 0 then 1 else -1 := rfl
 
 /- English proof (translation)
-Establish `h1 : (-g).1.1 = g.1.1`. Simplify using `only [Prod.fst_neg]`. Generalize the expression as in `g.1.1 = e`. Use `revert e`. Evaluate the decidable proposition.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Evaluate the decidable proposition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chC_apply', chC_apply', h1]`.
+A detailed English derivation is pending.
 -/
 lemma chC_neg (g : E0 × H) : (chC : AddChar (E0 × H) ℂ) (-g) = chC g := by
   have h1 : (-g).1.1 = g.1.1 := by
@@ -143,14 +143,14 @@ lemma chC_neg (g : E0 × H) : (chC : AddChar (E0 × H) ℂ) (-g) = chC g := by
   rw [chC_apply', chC_apply', h1]
 
 /- English proof (translation)
-Rewrite using `[chC_apply']`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma chC_sq (g : E0 × H) : (chC : AddChar (E0 × H) ℂ) g * chC g = 1 := by
   rw [chC_apply']
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `first`. Consider the case `exact AddChar.zero_apply g`. Consider the case `rfl`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem zero_apply_lemma (g : E0 × H) : (0 : AddChar (E0 × H) ℂ) g = 1 := by
   first
@@ -159,16 +159,16 @@ private theorem zero_apply_lemma (g : E0 × H) : (0 : AddChar (E0 × H) ℂ) g =
   | simp
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[AddChar.mul_apply, chC_sq, zero_apply_lemma]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 lemma chC_mul_self : (chC : AddChar (E0 × H) ℂ) * chC = 0 := by
   ext g
   rw [AddChar.mul_apply, chC_sq, zero_apply_lemma]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `g`. Establish `h1 : ((ψ * chC : AddChar (E0 × H) ℂ)) g = (0 : AddChar (E0 × H) ℂ) g` using `by rw [h]`. Rewrite `h1` using `[AddChar.mul_apply, zero_apply_lemma]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `rfl`. Conclude with `chC_mul_self`.
+Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma mul_chC_eq_zero_iff (ψ : AddChar (E0 × H) ℂ) : ψ * chC = 0 ↔ ψ = chC := by
   constructor
@@ -183,9 +183,9 @@ lemma mul_chC_eq_zero_iff (ψ : AddChar (E0 × H) ℂ) : ψ * chC = 0 ↔ ψ = c
     exact chC_mul_self
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (chC : AddChar (E0 × H) ℂ) (((1, 0), 0) : E0 × H) = (0 : AddChar (E0 × H) ℂ) (((1, 0), 0) : E0 × H)` using `by rw [h]`. Establish `h2 : ¬ ((((1, 0), 0) : E0 × H).1.1 = 0)` using `by show ¬ ((1 : ZMod 2) = 0)`. Evaluate the decidable proposition. Rewrite `h1` using `[chC_apply', if_neg h2, zero_apply_lemma]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Evaluate the decidable proposition. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at h1`.
+Evaluate the numerical expressions.
 -/
 lemma chC_ne_zero : (chC : AddChar (E0 × H) ℂ) ≠ 0 := by
   intro h
@@ -198,7 +198,7 @@ lemma chC_ne_zero : (chC : AddChar (E0 × H) ℂ) ≠ 0 := by
   norm_num at h1
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_ne_zero]`. Apply `Finset.card_ne_zero.mpr` to reduce the goal to its premises. Conclude with `⟨0, by simp [PhiSet, inPhi_iff]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 -/
 lemma phi_card_ne_zero : ((PhiSet (H := H)).card : ℂ) ≠ 0 := by
   rw [Nat.cast_ne_zero]
@@ -206,9 +206,9 @@ lemma phi_card_ne_zero : ((PhiSet (H := H)).card : ℂ) ≠ 0 := by
   exact ⟨0, by simp [PhiSet, inPhi_iff]⟩
 
 /- English proof (translation)
-Establish `hN : Fintype.card (E0 × H) = 2 * (PhiSet (H` using `H)).card := by first`. Consider the case `rw [← Finset.card_univ, ← Finset.filter_card_add_filter_neg_card_eq_card (p := InPhi), card_notPhi]`. Consider the case `rw [← Finset.card_univ, ← Finset.card_filter_add_card_filter_not (p := InPhi), card_notPhi]`. Simplify using `only [PhiSet]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `hN` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 lemma card_G : (Fintype.card (E0 × H) : ℂ) = 2 * ((PhiSet (H := H)).card : ℂ) := by
   have hN : Fintype.card (E0 × H) = 2 * (PhiSet (H := H)).card := by
@@ -228,11 +228,11 @@ section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
 /- English proof (translation)
-Introduce `t`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg show InPhi (partner t g)`. Rewrite using `[inPhi_iff, partner_fst_lemma, (not_inPhi_iff g).1 hg]`. Evaluate the decidable proposition.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 
-Introduce `x _ y _ hxy`. Simplify using `only [partner] at hxy`. Conclude with `add_left_cancel (add_right_cancel hxy)`. Introduce `ρ hρ`. Use `⟨ρ - topPl t - cconj, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show ¬ InPhi (ρ - topPl t - cconj)`. Rewrite using `[not_inPhi_iff, sub_fst_lemma_2, (inPhi_iff ρ).1 hρ]`. Evaluate the decidable proposition. Simplify using `only [partner]`. Normalize the expressions using the abelian group laws.
+Evaluate the decidable proposition. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem partner_bijection : PartnerBij (H := H) := by
   intro t
@@ -253,21 +253,21 @@ theorem partner_bijection : PartnerBij (H := H) := by
       abel
 
 /- English proof (translation)
-Introduce `ψ`. Establish `hneg : ∀ F : E0 × H → ℂ, ∑ g : E0 × H, F (-g) = ∑ g : E0 × H, F g` using `fun F => Fintype.sum_equiv (Equiv.neg _) _ _ (fun _ => rfl)`. Establish `hind : ∀ g : E0 × H, (if ¬ InPhi g then (1 : ℂ) else 0) = (1 - chC g) / 2`. Introduce `g`. Rewrite using `[chC_apply']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : g.1.1 = 0`. Rewrite using `[if_pos h, if_neg (show ¬¬InPhi g from not_not.2 h)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_pos (show ¬InPhi g from h)]`. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : ∀ g : E0 × H, (if ¬ InPhi g then starRingEnd ℂ (ψ g) else 0) = (starRingEnd ℂ (ψ g) - chC g * starRingEnd ℂ (ψ g)) / 2`. Introduce `g`. Rewrite using `[← boole_mul, hind]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : ∑ g : E0 × H, starRingEnd ℂ (ψ g) = if ψ = 0 then (Fintype.card (E0 × H) : ℂ) else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Repeatedly rewrite using `[conj_eq_neg]`. Rewrite using `[hneg (⇑ψ), AddChar.sum_eq_ite]`. Establish `hB : ∑ g : E0 × H, chC g * starRingEnd ℂ (ψ g) = if ψ = chC then (Fintype.card (E0 × H) : ℂ) else 0`. Establish `h4 : ∀ g : E0 × H, chC g * starRingEnd ℂ (ψ g) = ((ψ * chC : AddChar (E0 × H) ℂ)) (-g)`. Introduce `g`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AddChar.mul_apply, conj_eq_neg, ← chC_neg, mul_comm]`. Repeatedly rewrite using `[h4]`. Rewrite using `[hneg (⇑(ψ * chC : AddChar (E0 × H) ℂ)), AddChar.sum_eq_ite]`. Simplify using `only [mul_chC_eq_zero_iff]`. Rewrite using `[Finset.sum_filter]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[e1]`. Rewrite using `[← Finset.sum_div, Finset.sum_sub_distrib, hA, hB, card_G]`. Establish `hne` using `chC_ne_zero (H := H)`. Distinguish the cases in `h0 : ψ = 0`. Establish `h1 : ¬ ψ = chC` using `fun h => hne (h ▸ h0)`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [if_pos h0, if_neg h1]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h1 : ψ = chC`. Simplify using `only [if_neg h0, if_pos h1]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [if_neg h0, if_neg h1]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem colour_sum : ColourSum (H := H) := by
   intro ψ
@@ -312,9 +312,9 @@ theorem colour_sum : ColourSum (H := H) := by
       ring
 
 /- English proof (translation)
-Introduce `D n`. Unfold `primVal`. Use `Finset.prod_eq_one (fun p _ => ?_)` and prove the remaining obligations. Unfold `cosetMean`. Simplify using `only [zero_apply_lemma, Finset.sum_const, nsmul_eq_mul, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `div_self ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_ne_zero]`. Conclude with `Finset.card_ne_zero.mpr ⟨0, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primitive_value_trivial : PrimValTriv (H := H) := by
   intro D n
@@ -327,7 +327,7 @@ theorem primitive_value_trivial : PrimValTriv (H := H) := by
   exact Finset.card_ne_zero.mpr ⟨0, by simp⟩
 
 /- English proof (translation)
-Introduce `D ψ p i hp hi`. Unfold `primVal`. Use `first`. Consider the case `rw [Nat.primeFactors_prime_pow (by omega) hp, Finset.prod_singleton, hp.factorization_pow, Finsupp.single_eq_same]`. Consider the case `simp [Nat.primeFactors_prime_pow (by omega : i ≠ 0) hp, hp.factorization_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem primitive_value_pow : PrimValPow (H := H) := by
   intro D ψ p i hp hi
@@ -338,21 +338,21 @@ theorem primitive_value_pow : PrimValPow (H := H) := by
   | simp [Nat.primeFactors_prime_pow (by omega : i ≠ 0) hp, hp.factorization_pow]
 
 /- English proof (translation)
-Simplify using `[sgc0]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sgc0_fst_lemma_3 (x : E0 × H) : (x + sgc0).1.1 = x.1.1 + 1 := by
   simp [sgc0]
 
 /- English proof (translation)
-Introduce `D hD i`. Distinguish the cases in `hf : InPhi (i • D.frob D.d)`. Use `⟨i • D.frob D.d + sgc0, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hD.inertia_d] right`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[not_inPhi_iff, sgc0_fst_lemma_3, (inPhi_iff _).1 hf]`. Evaluate the decidable proposition. Introduce and unpack `y ⟨hy1, hy2⟩`. Break down `(hD.inertia_d _).1 hy1 with h | h` into its components or cases. Conclude with `absurd (by rw [sub_eq_zero.1 h]; exact hf) hy2`.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[sub_eq_iff_eq_add]`. Rewrite using `[h, add_comm]`. Use `⟨i • D.frob D.d, ⟨?_, hf⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hD.inertia_d] left`. Conclude with `sub_self _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce and unpack `y ⟨hy1, hy2⟩`. Break down `(hD.inertia_d _).1 hy1 with h | h` into its components or cases. Conclude with `sub_eq_zero.1 h`. It suffices to derive a contradiction. Apply `hy2` to reduce the goal to its premises.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 
-Rewrite `h` using `[sub_eq_iff_eq_add]`. Rewrite using `[h, inPhi_iff, add_comm, sgc0_fst_lemma_3, (not_inPhi_iff _).1 hf]`. Evaluate the decidable proposition.
+A detailed English derivation is pending.
 -/
 theorem double_coset_singleton : DCosetSingle (H := H) := by
   intro D hD i
@@ -387,7 +387,7 @@ section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [Nat.card_eq_fintype_card]; exact Fintype.card_subtype _)`. Consider the case `(rw [Nat.card_eq_fintype_card]; convert Fintype.card_subtype (fun x => x ∈ I))`. Consider the case `simp [Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma natCard_eq_filter (I : AddSubgroup (E0 × H)) [DecidablePred (fun x => x ∈ I)] :
     Nat.card I = (univ.filter (fun x => x ∈ I)).card := by
@@ -398,15 +398,15 @@ lemma natCard_eq_filter (I : AddSubgroup (E0 × H)) [DecidablePred (fun x => x �
 
 open Classical in
 /- English proof (translation)
-Establish `hS : Nat.card I = (univ.filter (fun x => x ∈ I)).card` using `natCard_eq_filter I`. Establish `hc : ((univ.filter (fun x => x ∈ I)).card : ℂ) ≠ 0`. Rewrite using `[Nat.cast_ne_zero]`. Conclude with `Finset.card_ne_zero.mpr ⟨0, by simp⟩`. Establish `e1 : ∀ ψ : AddChar (E0 × H) ℂ, cosetMean I h ψ = (∑ x ∈ univ.filter (fun x => x ∈ I), ψ (h + x)) / ((univ.filter (fun x => x ∈ I)).card : ℂ)` using `fun ψ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[e1]`. Establish `e2 : ∑ ψ : AddChar (E0 × H) ℂ, starRingEnd ℂ (ψ g) * ((∑ x ∈ univ.filter (fun x => x ∈ I), ψ (h + x)) / ((univ.filter (fun x => x ∈ I)).card : ℂ)) = (∑ x ∈ univ.filter (fun x => x ∈ I), ∑ ψ : AddChar (E0 × H) ℂ, starRingEnd ℂ (ψ g) * ψ (h + x)) / ((univ.filter (fun x => x ∈ I)).c …`. Rewrite using `[Finset.sum_comm, Finset.sum_div]`. Use `Finset.sum_congr rfl (fun ψ _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_div_assoc', Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Establish `e3 : ∀ x : E0 × H, (h + x = g) ↔ (x = g - h)` using `fun x => by`. Rewrite using `[eq_sub_iff_add_eq, add_comm]`. Repeatedly rewrite using `[ortho, e3]`. Simplify using `only [Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_filter, Finset.mem_univ, true_and]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS]`. Establish `hΦ` using `phi_card_ne_zero (H := H)`. Use `split_ifs`. Rewrite using `[card_G] first`. Consider the case `(field_simp; done)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `(field_simp; ring)`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 lemma ortho_coset (I : AddSubgroup (E0 × H)) (h g : E0 × H) :
     (1 / ((PhiSet (H := H)).card : ℂ)) * ∑ ψ : AddChar (E0 × H) ℂ, starRingEnd ℂ (ψ g) * cosetMean I h ψ
@@ -446,7 +446,7 @@ section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
 /- English proof (translation)
-Introduce `D p i hp hi g`. Establish `hv : ∀ ψ : AddChar (E0 × H) ℂ, primVal D ψ (p ^ i) = cosetMean (D.inertia p) (i • D.frob p) ψ` using `fun ψ => primitive_value_pow D ψ p i hp hi`. Repeatedly rewrite using `[hv]`. Use `ortho_coset (D.inertia p) (i • D.frob p) g` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem orthogonality_ramified : OrthoRam (H := H) := by
   intro D p i hp hi g
@@ -456,9 +456,9 @@ theorem orthogonality_ramified : OrthoRam (H := H) := by
   convert ortho_coset (D.inertia p) (i • D.frob p) g
 
 /- English proof (translation)
-Introduce `D hD p i hp h2 hq hd hi g`. Use `(orthogonality_ramified D p i hp hi g).trans ?_` and prove the remaining obligations. Rewrite using `[hD.unram p hp h2 hq hd]`. Distinguish the cases in `hc : i • D.frob p = g`. Substitute `hc` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg hc, if_neg]`. Introduce `hm`. Rewrite `hm` using `[AddSubgroup.mem_bot, sub_eq_zero]`. Conclude with `hc hm.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthogonality_unramified : OrthoUnram (H := H) := by
   intro D hD p i hp h2 hq hd hi g
@@ -478,27 +478,23 @@ section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_product']`. Use `symm`. Use `Finset.sum_bij_ne_zero (fun x _ _ => x.1 ^ x.2) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx hne`. Rewrite `hx` using `[Finset.mem_product, Finset.mem_filter, Finset.mem_range, Finset.mem_Icc]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨_, hp⟩, hi1, _⟩` from `hx`. Establish `hle : x.1 ^ x.2 ≤ N`. Assume the negation of the conclusion as `hlt`. Conclude with `hne (by rw [hX x.1 x.2 hp hi1 (not_le.1 hlt), mul_zero])`. Use `show x.1 ^ x.2 ∈ Icc 1 N`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Finset.mem_Icc]`. Conclude with `⟨Nat.one_le_pow _ _ hp.pos, hle⟩`. Introduce `x hx _ y hy _ hxy`. Establish `hxy' : x.1 ^ x.2 = y.1 ^ y.2` using `hxy`. Rewrite `hx`, `hy` using `[Finset.mem_product, Finset.mem_filter, Finset.mem_Icc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨_, hp⟩, hi1, _⟩` from `hx`. Take `⟨⟨_, hq⟩, hj1, _⟩` from `hy`. Establish `hpq : x.1 = y.1`. Establish `hd : x.1 ∣ y.1 ^ y.2`. Rewrite using `[← hxy']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `dvd_pow_self _ (by omega)`. Conclude with `(Nat.prime_dvd_prime_iff_eq hp hq).1 (hp.dvd_of_dvd_pow hd)`. Establish `hij : x.2 = y.2`. Rewrite `hxy'` using `[hpq]`. Conclude with `Nat.pow_right_injective hq.two_le hxy'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Prod.ext hpq hij`. Introduce `n hn hne`. Rewrite `hn` using `[Finset.mem_Icc]`. Establish `hΛ : Λ n ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Use `show (Λ n : ℂ) * X n = 0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Rewrite `hΛ` using `[ArithmeticFunction.vonMangoldt_ne_zero_iff, isPrimePow_nat_iff]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, k, hp, hk, rfl⟩` from `hΛ`. Establish `h1 : p ≤ p ^ k` using `Nat.le_self_pow (by omega) p`. Establish `h2 : k < p ^ k` using `by first`. Consider the case `exact Nat.lt_pow_self hp.one_lt`. Consider the case `exact Nat.lt_pow_self hp.one_lt k`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(p, k), ?_, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_product, Finset.mem_filter, Finset.mem_range, Finset.mem_Icc]`. Conclude with `⟨⟨Nat.lt_succ_of_le (h1.trans hn.2), hp⟩, hk, (h2.trans_le hn.2).le⟩`. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
-
-Use `show (Λ (p ^ k) : ℂ) * X (p ^ k) = 0`. Rewrite using `[ArithmeticFunction.vonMangoldt_apply_pow (by omega), ArithmeticFunction.vonMangoldt_apply_prime hp]`. Conclude with `h0`. Introduce `x hx _`. Rewrite `hx` using `[Finset.mem_product, Finset.mem_filter, Finset.mem_Icc]`.
-
-Use `show (Real.log x.1 : ℂ) * X (x.1 ^ x.2) = (Λ (x.1 ^ x.2) : ℂ) * X (x.1 ^ x.2)`. Rewrite using `[ArithmeticFunction.vonMangoldt_apply_pow (by omega), ArithmeticFunction.vonMangoldt_apply_prime hx.1.2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sum_vonMangoldt_primePow (N : ℕ) (X : ℕ → ℂ)
     (hX : ∀ p i, p.Prime → 1 ≤ i → N < p ^ i → X (p ^ i) = 0) :
@@ -561,16 +557,16 @@ lemma sum_vonMangoldt_primePow (N : ℕ) (X : ℕ → ℂ)
       ArithmeticFunction.vonMangoldt_apply_prime hx.1.2]
 
 /- English proof (translation)
-Rewrite using `[inPhi_iff, partner_fst_lemma, (not_inPhi_iff g).1 hg]`. Evaluate the decidable proposition.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 -/
 lemma partner_inPhi {g : E0 × H} (t : H) (hg : ¬ InPhi g) : InPhi (partner t g) := by
   rw [inPhi_iff, partner_fst_lemma, (not_inPhi_iff g).1 hg]
   decide
 
 /- English proof (translation)
-Establish `hρ` using `partner_inPhi t hg`. Establish `hwρ` using `hw _ hρ`. Establish `h1 : a / w (partner t g) < m` using `lt_of_le_of_lt (hN _ hρ) hm`. Establish `hm0 : (0 : ℝ) < m` using `lt_of_le_of_lt (Nat.cast_nonneg N) hm`. Establish `h3 : a < m * w (partner t g)` using `(div_lt_iff₀ hwρ).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : a / m < w (partner t g)`. Rewrite using `[div_lt_iff₀ hm0]`. Combine the linear relations using `[mul_comm m (w (partner t g))]`. Conclude with `max_eq_right (by linarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma max_zero_of_gt {N : ℕ} {a : ℝ} {t : H} {w : E0 × H → ℝ} (hw : ∀ ρ, InPhi ρ → 0 < w ρ)
     (hN : ∀ ρ, InPhi ρ → a / w ρ ≤ N) {g : E0 × H} (hg : ¬ InPhi g) {m : ℝ} (hm : (N : ℝ) < m) :
@@ -586,9 +582,9 @@ lemma max_zero_of_gt {N : ℕ} {a : ℝ} {t : H} {w : E0 × H → ℝ} (hw : ∀
   exact max_eq_right (by linarith)
 
 /- English proof (translation)
-Unfold `askD`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i hi`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `g hg`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg' : ¬ InPhi g` using `(Finset.mem_filter.1 hg).2.2`. Establish `hi1 : 1 ≤ i` using `(Finset.mem_Icc.1 hi).1`. Apply `max_zero_of_gt hw hN hg'` to reduce the goal to its premises. Establish `h3 : D.d ≤ D.d ^ i` using `Nat.le_self_pow (by omega) _`. Conclude with `lt_of_lt_of_le hdN h3` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma askD_zero_of_gt (D : ArithData H) (hD : HostFacts D) {N : ℕ} {a : ℝ} {t : H} {w : E0 × H → ℝ}
     (hw : ∀ ρ, InPhi ρ → 0 < w ρ) (hN : ∀ ρ, InPhi ρ → a / w ρ ≤ N) (hdN : N < D.d) :
@@ -606,11 +602,9 @@ lemma askD_zero_of_gt (D : ArithData H) (hD : HostFacts D) {N : ℕ} {a : ℝ} {
   exact_mod_cast lt_of_lt_of_le hdN h3
 
 /- English proof (translation)
-Establish `h0 : (0 : E0 × H) ≠ sgc0`. Introduce `h`. Establish `h' : (0 : E0 × H).1.1 = (sgc0 : E0 × H).1.1` using `by rw [h]`. Simplify using `[sgc0] at h'`. Establish `hs : (univ.filter (fun x : E0 × H => x ∈ D.inertia D.d)) = {0, sgc0}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Conclude with `hD.inertia_d x`. Establish `hc : Nat.card (D.inertia D.d) = 2`. Rewrite using `[natCard_eq_filter, hs, Finset.card_pair h0]`.
-
-Conclude with `hc` after adjusting the coercions.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma card_inertia_d (D : ArithData H) (hD : HostFacts D) : (Nat.card (D.inertia D.d) : ℂ) = 2 := by
   classical
@@ -638,11 +632,11 @@ def Fc (a : ℝ) (t : H) (w : E0 × H → ℝ) (n : ℕ) (g : E0 × H) : ℂ :=
   ((max (a / (n : ℝ) - w (partner t g)) 0 : ℝ) : ℂ)
 
 /- English proof (translation)
-Establish `hK : ∀ i, 1 ≤ i → ∀ g, Kc D (p ^ i) g = if i • D.frob p = g then 2 else 0` using `fun i hi g => orthogonality_unramified D hD p i hp h2 hq hd hi g`. Establish `hin : ∀ i ∈ Icc 1 N, (Real.log p : ℂ) * ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), Kc D (p ^ i) g * Fc a t w (p ^ i) g = (((if ¬ InPhi (i • D.frob p) then 2 * Real.log p * max (a / (p : ℝ) ^ i - w (partner t (i • D.frob p))) 0 else 0) : ℝ) : ℂ)`. Introduce `i hi`. Repeatedly rewrite using `[hK i (Finset.mem_Icc.1 hi).1, ite_mul, zero_mul]`. Simplify using `only [Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_filter, Finset.mem_univ, true_and]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first`. Consider the case `(simp; done)`. Consider the case `(simp only [Fc]; push_cast; ring)`. Rewrite using `[Finset.sum_congr rfl hin, ← Complex.ofReal_sum]`. Use `congr 1`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `askP`. Rewrite using `[Finset.sum_filter, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma local_unram (D : ArithData H) (hD : HostFacts D) (N : ℕ) (a : ℝ) (t : H) (w : E0 × H → ℝ)
     {p : ℕ} (hp : p.Prime) (h2 : p ≠ 2) (hq : p ≠ D.q1) (hd : p ≠ D.d) :
@@ -668,13 +662,13 @@ lemma local_unram (D : ArithData H) (hD : HostFacts D) (N : ℕ) (a : ℝ) (t : 
   split_ifs <;> ring
 
 /- English proof (translation)
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i hi`. Establish `hi1 : 1 ≤ i` using `(Finset.mem_Icc.1 hi).1`. Rewrite using `[Finset.sum_eq_zero, mul_zero]`. Introduce `g hg`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg' : ¬ InPhi g` using `(Finset.mem_filter.1 hg).2`. Establish `hK : Kc D (p ^ i) g = 0`. Use `(orthogonality_ramified D p i hp hi1 g).trans ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `hm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hg'` to reduce the goal to its premises. Establish `h1` using `hD.split_inertia p h2 _ hm`. Establish `h3` using `inPhi_nsmul (hD.split_frob p h2) i`. Establish `h4` using `inPhi_add h1 h3`. Rewrite `h4` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hK, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma local_split (D : ArithData H) (hD : HostFacts D) (N : ℕ) (a : ℝ) (t : H) (w : E0 × H → ℝ)
     {p : ℕ} (hp : p.Prime) (h2 : p = 2 ∨ p = D.q1) :
@@ -698,11 +692,11 @@ lemma local_split (D : ArithData H) (hD : HostFacts D) (N : ℕ) (a : ℝ) (t : 
   rw [hK, zero_mul]
 
 /- English proof (translation)
-Establish `hc` using `card_inertia_d D hD`. Establish `hK : ∀ i, 1 ≤ i → ∀ g, Kc D (D.d ^ i) g = if g - i • D.frob D.d ∈ D.inertia D.d then 1 else 0`. Introduce `i hi g`. Use `(orthogonality_ramified D D.d i hD.d_prime hi g).trans ?_` and prove the remaining obligations. Rewrite using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> norm_num`. Unfold `askD`. Use `push_cast`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i hi => ?_)` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Repeatedly rewrite using `[hK i (Finset.mem_Icc.1 hi).1, ite_mul, one_mul, zero_mul]`. Rewrite using `[Finset.sum_filter, Finset.sum_filter]`. Use `Finset.sum_congr rfl (fun g _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases h1 : InPhi g <;> by_cases h2 : g - i • D.frob D.d ∈ D.inertia D.d <;> simp [h1, h2, Fc]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma local_d (D : ArithData H) (hD : HostFacts D) (N : ℕ) (a : ℝ) (t : H) (w : E0 × H → ℝ) :
     ∑ i ∈ Icc 1 N, (Real.log D.d : ℂ) * ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g),
@@ -732,33 +726,31 @@ section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
 /- English proof (translation)
-Introduce `D hD a t w ha hw N hN`. Establish `step1 : (1 / ((PhiSet (H` using `H)).card : ℂ)) * ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∑ ψ : AddChar (E0 × H) ℂ, starRingEnd ℂ (ψ g) * ∑ n ∈ Icc 1 N, (Λ n : ℂ) * primVal D ψ n * ((max (a / n - w (partner t g)) 0 : ℝ) : ℂ) = ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∑ n ∈ Icc 1 N, (Λ n : ℂ) * ( …`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun g _ => ?_)` and prove the remaining obligations. Simplify using `only [Kc, Fc, Finset.mul_sum, Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun n _ => Finset.sum_congr rfl (fun ψ _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `step2 : ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∑ n ∈ Icc 1 N, (Λ n : ℂ) * (Kc D n g * Fc a t w n g) = ∑ n ∈ Icc 1 N, (Λ n : ℂ) * ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), Kc D n g * Fc a t w n g`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[Finset.mul_sum]`. Establish `hX : ∀ p i, p.Prime → 1 ≤ i → N < p ^ i → ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), Kc D (p ^ i) g * Fc a t w (p ^ i) g = 0`. Introduce `p i _ _ hlt`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `g hg`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg' : ¬ InPhi g` using `(Finset.mem_filter.1 hg).2`. Establish `hF : Fc a t w (p ^ i) g = 0`. Simplify using `only [Fc]`. Rewrite using `[max_zero_of_gt (m := ((p ^ i : ℕ) : ℝ)) hw hN hg' (by exact_mod_cast hlt), Complex.ofReal_zero]`. Rewrite using `[hF, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[step1, step2, sum_vonMangoldt_primePow N (fun n => ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), Kc D n g * Fc a t w n g) hX]`. Establish `hloc : ∀ p ∈ (range (N + 1)).filter Nat.Prime, ∑ i ∈ Icc 1 N, (Real.log p : ℂ) * ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), Kc D (p ^ i) g * Fc a t w (p ^ i) g = (((if IsInert D p then 2 * Real.log p * askP D N a t w p else 0) + (if p = D.d then Real.log D.d * askD D N a t …`. Introduce `p hp`. Establish `hp' : p.Prime` using `(Finset.mem_filter.1 hp).2`. Distinguish the cases in `hs : p = 2 ∨ p = D.q1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[local_split D hD N a t w hp' hs]`. Establish `h1 : ¬ IsInert D p` using `fun h => hs.elim h.2.1 h.2.2.1`. Establish `h2 : p ≠ D.d` using `fun h => hs.elim (fun h2' => hD.d_ne_two (h.symm.trans h2')) (fun hq' => hD.firstPrime_ne_secondPrime (h.symm.trans hq').symm)`. Simplify using `[h1, h2]`. Use `push_neg at hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hdd : p = D.d`. Substitute `hdd` using the available equality. Rewrite using `[local_d D hD N a t w]`. Establish `h1 : ¬ IsInert D D.d` using `fun h => h.2.2.2.1 rfl`. Simplify using `[h1]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[local_unram D hD N a t w hp' hs.1 hs.2 hdd]`. Distinguish the cases in `hin : IsInert D p`. Simplify using `[hin, hdd]`. Establish `hphi : InPhi (D.frob p)`. Assume the negation of the conclusion as `hc`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hin ⟨hp', hs.1, hs.2, hdd, hc⟩`. Establish `h0 : askP D N a t w p = 0`. Unfold `askP`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i hi`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (inPhi_nsmul hphi i) (Finset.mem_filter.1 hi).2`. Simplify using `[hin, hdd, h0]`. Rewrite using `[Finset.sum_congr rfl hloc, ← Complex.ofReal_sum]`. Unfold `ASK`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_add_distrib]`. Use `congr 1`. Rewrite using `[← Finset.sum_filter, Finset.filter_filter]`. Use `Finset.sum_congr ?_ (fun _ _ => rfl)` and prove the remaining obligations. Use extensionality with `p`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter]`. Conclude with `⟨fun h => ⟨h.1, h.2.1, h.2⟩, fun h => ⟨h.1, h.2.2⟩⟩`. Simplify using `only [Finset.sum_ite_eq', Finset.sum_ite_eq]`. Distinguish the cases in `hdm : D.d ∈ (range (N + 1)).filter Nat.Prime`. Rewrite using `[if_pos hdm]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[if_neg hdm]`. Establish `hdN : N < D.d`. Assume the negation of the conclusion as `hc`. Apply `hdm` to reduce the goal to its premises. Rewrite using `[Finset.mem_filter, Finset.mem_range]`.
-
-Conclude with `⟨by omega, hD.d_prime⟩`. Rewrite using `[askD_zero_of_gt D hD hw hN hdN, mul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem characterSum_expansion : AskExpansion (H := H) := by
   classical
@@ -850,7 +842,7 @@ section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
 /- English proof (translation)
-Establish `hw' : w * (a / w) = a` using `by first`. Consider the case `field_simp`. Consider the case `rw [mul_div_assoc', mul_comm, mul_div_assoc, div_self hw, mul_one]`. Rewrite using `[mul_sub, mul_one, mul_div_assoc', hw']`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma term_real (a w : ℝ) (hw : w ≠ 0) (n : ℕ) : a / n - w = w * (a / w / n - 1) := by
   have hw' : w * (a / w) = a := by
@@ -860,17 +852,17 @@ lemma term_real (a w : ℝ) (hw : w ≠ 0) (n : ℕ) : a / n - w = w * (a / w / 
   rw [mul_sub, mul_one, mul_div_assoc', hw']
 
 /- English proof (translation)
-Establish `hMN : ⌊a / W⌋₊ ≤ N`. Establish `h1 : ((⌊a / W⌋₊ : ℕ) : ℝ) ≤ N` using `(Nat.floor_le (by positivity)).trans hN`. Conclude with `h1` after adjusting the coercions. Establish `hterm : ∀ n ∈ Icc 1 N, (Λ n : ℂ) * primVal D ψ n * ((max (a / n - W) 0 : ℝ) : ℂ) = if n ≤ ⌊a / W⌋₊ then (Λ n : ℂ) * primVal D ψ n * ((a / n - W : ℝ) : ℂ) else 0`. Introduce `n hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast (Finset.mem_Icc.1 hn).1`. Establish `hn0 : (0 : ℝ) < n` using `by linarith`. Use `split_ifs with h`. Establish `h2 : (n : ℝ) ≤ a / W` using `(Nat.le_floor_iff (by positivity)).1 h`. Rewrite `h2` using `[le_div_iff₀ hW]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : W ≤ a / n`. Rewrite using `[le_div_iff₀ hn0]`. Combine the linear relations using `[mul_comm W (n : ℝ)]`. Rewrite using `[max_eq_left (by linarith)]`. Establish `h2 : a / W < n` using `(Nat.floor_lt (by positivity)).1 (not_le.1 h)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[div_lt_iff₀ hW]`. Establish `h3 : a / n < W`. Rewrite using `[div_lt_iff₀ hn0]`. Combine the linear relations using `[mul_comm W (n : ℝ)]`. Rewrite using `[max_eq_right (by linarith)]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl hterm, ← Finset.sum_filter]`. Use `Finset.sum_congr ?_ (fun _ _ => rfl)` and prove the remaining obligations. Use extensionality with `n`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, _⟩, h2⟩`. Conclude with `⟨h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨h1, h2.trans hMN⟩, h2⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma sum_cut (D : ArithData H) (ψ : AddChar (E0 × H) ℂ) (N : ℕ) (a W : ℝ) (ha : 0 < a) (hW : 0 < W)
     (hN : a / W ≤ N) :
@@ -909,17 +901,17 @@ lemma sum_cut (D : ArithData H) (ψ : AddChar (E0 × H) ℂ) (N : ℕ) (a W : �
     exact ⟨⟨h1, h2.trans hMN⟩, h2⟩
 
 /- English proof (translation)
-Unfold `GPsi`. Use `split_ifs with h0`. Substitute `h0` using the available equality. Simplify using `only [Gz, Sz]`. Repeatedly rewrite using `[primitive_value_trivial D, mul_one, ← Complex.ofReal_mul]`.
+Replace the relevant objects with their definitions. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.ofReal_sum, ← Complex.ofReal_add]`. Use `congr 1`. Establish `hS : w * ∑ n ∈ Icc 1 ⌊a / w⌋₊, Λ n * (a / w / n - 1) = ∑ n ∈ Icc 1 ⌊a / w⌋₊, Λ n * (a / n - w)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun n _ => ?_)` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[term_real a w hw.ne' n]`. Expand and normalize the polynomial expressions, which then agree. Establish `hwa' : w * (a / w) = a` using `by field_simp`. Rewrite using `[Real.log_div ha.ne' hw.ne', ← hS]`. Take the linear combination `(Real.log a - Real.log w - (1 + Real.eulerMascheroniConstant)) * hwa'`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hwa' : w * (a / w) = a` using `by field_simp`. Establish `hwa : (w : ℂ) * ((a / w : ℝ) : ℂ) = a`. Rewrite using `[← Complex.ofReal_mul, hwa']`. Rewrite using `[mul_add, Finset.mul_sum]`. Establish `hs : ∀ n ∈ Icc 1 ⌊a / w⌋₊, (w : ℂ) * ((Λ n : ℂ) * primVal D ψ n * ((a / w / n - 1 : ℝ) : ℂ)) = (Λ n : ℂ) * primVal D ψ n * ((a / n - w : ℝ) : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n _`. Rewrite using `[term_real a w hw.ne' n]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hs, ← mul_assoc, hwa]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma inner_eq (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (ψ : AddChar (E0 × H) ℂ) (a w : ℝ)
     (ha : 0 < a) (hw : 0 < w) :
@@ -962,21 +954,21 @@ section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
 /- English proof (translation)
-Introduce `D hD ell a t w ha hw N hN`. Rewrite using `[characterSum_expansion D hD a t w ha hw N hN]`. Establish `hinner : ∀ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∀ ψ : AddChar (E0 × H) ℂ, ∑ n ∈ Icc 1 N, (Λ n : ℂ) * primVal D ψ n * ((max (a / n - w (partner t g)) 0 : ℝ) : ℂ) = ((w (partner t g) : ℝ) : ℂ) * GPsi D ell ψ (a / w (partner t g)) + (if ψ = 0 then ((a * Real.log a - a * Re …`. Introduce `g hg ψ`. Establish `hg' : ¬ InPhi g` using `(Finset.mem_filter.1 hg).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hρ` using `partner_inPhi t hg'`. Rewrite using `[sum_cut D ψ N a (w (partner t g)) ha (hw _ hρ) (hN _ hρ), inner_eq D ell ψ a (w (partner t g)) ha (hw _ hρ)]`. Establish `hsum : ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∑ ψ : AddChar (E0 × H) ℂ, starRingEnd ℂ (ψ g) * ∑ n ∈ Icc 1 N, (Λ n : ℂ) * primVal D ψ n * ((max (a / n - w (partner t g)) 0 : ℝ) : ℂ) = ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∑ ψ : AddChar (E0 × H) ℂ, starRingEnd …`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun g hg => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun ψ _ => ?_)` and prove the remaining obligations. Rewrite using `[hinner g hg ψ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcorr : ∀ ψ : AddChar (E0 × H) ℂ, ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), starRingEnd ℂ (ψ g) * (if ψ = 0 then ((a * Real.log a - a * Real.log (w (partner t g)) - (1 + Real.eulerMascheroniConstant) * a : ℝ) : ℂ) else -(a : ℂ) * ell ψ) = (if ψ = 0 then ∑ g ∈ univ.filter ( …` using `H)).card : ℂ) else 0) := by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `ψ`. Distinguish the cases in `h0 : ψ = 0`. Establish `h1 : ¬ ψ = chC` using `fun h => chC_ne_zero (h ▸ h0)`. Rewrite using `[if_pos h0, if_neg h1, add_zero]`. Use `Finset.sum_congr rfl (fun g _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_pos h0, h0, zero_apply_lemma, map_one, one_mul]`. Rewrite using `[if_neg h0, zero_add]`. Simplify using `only [if_neg h0]`. Rewrite using `[← Finset.sum_mul, colour_sum ψ, if_neg h0]`. Distinguish the cases in `h1 : ψ = chC`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h1, if_pos h1, h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h1, if_neg h1, zero_mul]`. Establish `hB : ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∑ ψ : AddChar (E0 × H) ℂ, starRingEnd ℂ (ψ g) * (if ψ = 0 then ((a * Real.log a - a * Real.log (w (partner t g)) - (1 + Real.eulerMascheroniConstant) * a : ℝ) : ℂ) else -(a : ℂ) * ell ψ) = ∑ g ∈ univ.filter (fun g : E0 × H => …` using `H)).card : ℂ) := by`. Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl (fun ψ _ => hcorr ψ), Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hC : ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), (a * Real.log a - a * Real.log (w (partner t g)) - (1 + Real.eulerMascheroniConstant) * a) = ((PhiSet (H` using `H)).card : ℝ) * (a * Real.log a - (1 + Real.eulerMascheroniConstant) * a) - a * ∑ ρ ∈ PhiSet (H := H), Real.log (w ρ) := by`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_sub_distrib, Finset.sum_const, Finset.sum_const, ← Finset.mul_sum, sum_partner t (fun ρ => Real.log (w ρ)), card_notPhi]`. Simplify using `only [nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hsum, hB, ← Complex.ofReal_sum, hC]`. Establish `hΦ` using `phi_card_ne_zero (H := H)`. Unfold `De MAIN`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

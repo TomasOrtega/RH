@@ -16,7 +16,7 @@ namespace GlobalTheory.AbelianPrim
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `haveI : IsIso ((𝟙_ (Over (Sp R))).hom ≫ 𝟙 _) := inferInstanceAs (IsIso (𝟙 (Sp R) ≫ 𝟙 _))`. Rewrite using `[Hom.one_def, ← pullOver_pullOver, firstDeRham_base_eq_zero _ (pullOver (dp0 R) (𝟙 _) η[A] c), map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullOver_one_eq_zero {Y A : Over (Sp R)} [GrpObj A] (c : FirstDeRham (A.hom ≫ 𝟙 _)) :
     pullOver (dp0 R) (𝟙 _) (1 : Y ⟶ A) c = 0 := by
@@ -24,17 +24,17 @@ theorem pullOver_one_eq_zero {Y A : Over (Sp R)} [GrpObj A] (c : FirstDeRham (A.
   rw [Hom.one_def, ← pullOver_pullOver, firstDeRham_base_eq_zero _ (pullOver (dp0 R) (𝟙 _) η[A] c), map_zero]
 
 /- English proof (translation)
-The claim follows from `IsMor.pullCohomologyOne_id _ _`.
+A detailed English derivation is pending.
 -/
 theorem pullOver_id_apply {A : Over (Sp R)} (c : FirstDeRham (A.hom ≫ 𝟙 _)) :
     pullOver (dp0 R) (𝟙 _) (𝟙 A) c = c := IsMor.pullCohomologyOne_id _ _
 
 /- English proof (translation)
-Take `⟨f1, p1, r1, -⟩` from `H R A g hA hg`. Take `⟨f2, p2, r2, -⟩` from `H R (A ⊗ A) (g + g) (AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA) (GlobalTheory.AbDual.smooth_prod hg hg)`. Set `r : FirstDeRham ((A ⊗ A).hom ≫ 𝟙 _) →ₗ[R] FirstDeRham (A.hom ≫ 𝟙 _) × FirstDeRham (A.hom ≫ 𝟙 _)` to `(pullOver (dp0 R) (𝟙 _) (lift (𝟙 A) 1)).prod (pullOver (dp0 R) (𝟙 _) (lift 1 (𝟙 A)))`. Establish `hv : ∀ x, r x = (pullOver (dp0 R) (𝟙 _) (lift (𝟙 A) 1) x, pullOver (dp0 R) (𝟙 _) (lift 1 (𝟙 A)) x)` using `fun _ ↦ rfl`. Establish `hr : ∀ a b, r (pullOver (dp0 R) (𝟙 _) (fst A A) a + pullOver (dp0 R) (𝟙 _) (snd A A) b) = (a, b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b`. Rewrite using `[hv]`. Simplify using `only [map_add, pullOver_pullOver, lift_fst, lift_snd, pullOver_one_eq_zero, pullOver_id_apply, add_zero, zero_add]`. Establish `hs : Function.Surjective r` using `fun x ↦ ⟨_, hr x.1 x.2⟩`. Establish `hb : Function.Bijective r` using `Module.bijective_of_surjective_of_rankAtStalk_eq hs fun m _ ↦ by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Module.rankAtStalk_prod, Pi.add_apply, r1, r2]`. Expand and normalize the polynomial expressions, which then agree. Use `eq_top_iff.2 fun c _ ↦ (mem_prim_iff _ _ A c).2 (hb.1 ?_)` and prove the remaining obligations. Rewrite using `[hr, hv]`. Simplify using `only [pullOver_pullOver, ← Hom.mul_def, _root_.mul_one, _root_.one_mul, pullOver_id_apply]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem allPrim_of_free (H : GlobalTheory.Published.AbelianDeRhamFree) {A : Over (Sp R)} [GrpObj A] {g : ℕ}
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) : AllPrim (dp0 R) (𝟙 _) A := by
@@ -60,7 +60,7 @@ theorem allPrim_of_free (H : GlobalTheory.Published.AbelianDeRhamFree) {A : Over
   simp only [pullOver_pullOver, ← Hom.mul_def, _root_.mul_one, _root_.one_mul, pullOver_id_apply]
 
 /- English proof (translation)
-The claim follows from `fun R _ A _ g hA hg ↦ ⟨allPrim_of_free H hA hg, H R A g hA hg⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem abelianDeRham_free (H : GlobalTheory.Published.AbelianDeRhamFree) : GlobalTheory.Published.AbelianDeRham.Free :=
   fun R _ A _ g hA hg ↦ ⟨allPrim_of_free H hA hg, H R A g hA hg⟩

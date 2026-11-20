@@ -27,13 +27,13 @@ noncomputable section
 namespace GlobalTheory.SplitCharValue
 
 /- English proof (translation)
-Establish `: IsCMField D.host.E` using `D.host.isCMField_hostE`. Take `⟨hz, H⟩` from `GlobalTheory.HeckeVal.root_value (tauE D) m b z K hK h`. Use `⟨⟨hz, fun σ => H ℂ σ fun τ => ?_⟩, fun q hq hb lam => ?_⟩` and prove the remaining obligations. Use `IsCMField.complexEmbedding_complexConj D.host.E (σ.comp τ) (b : D.host.E)` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Complex.norm_conj]`. Take `⟨M, hM, i1⟩` from `GlobalTheory.KerTie.MuqUnit.exists_coprime_mul_isIntegral hq.out (b : D.host.E) fun P hP => (hb P hP).le`. Take `⟨M', hM', i2⟩` from `GlobalTheory.KerTie.MuqUnit.exists_coprime_mul_isIntegral hq.out (b : D.host.E)⁻¹ fun P hP => by rw [map_inv₀, hb P hP, inv_one]`. Establish `key : ∀ ψ : D.host.E →+* ℂ_[q], ‖ψ (b : D.host.E)‖ = 1` using `fun ψ => by`. Establish `j1` using `GlobalTheory.HeckeVal.norm_le_one_of_denom ψ hM i1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `j2` using `GlobalTheory.HeckeVal.norm_le_one_of_denom ψ hM' i2`. Rewrite `j2` using `[map_inv₀, norm_inv]`. Establish `h0 : 0 < ‖ψ b‖` using `norm_pos_iff.2 ((map_ne_zero _).2 b.ne_zero)`. Conclude with `le_antisymm j1 ((inv_le_one₀ h0).1 j2)`. Rewrite using `[Formalism.MainNotions.TaylorLogMetric.lamC, dif_pos hz]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `H _ lam fun τ => ?_` and prove the remaining obligations. Conclude with `(key (lam.comp τ)).trans (key ((lam.comp τ).comp (IsCMField.complexConj D.host.E : D.host.E →+* D.host.E))).symm`.
+A detailed English derivation is pending.
 -/
 theorem values_of_rel (D : D7) (z : ℂ) (K : ℕ) (b : D.host.Eˣ) (m : D.what₂.Tau → ℤ) (hK : 0 < K)
     (h : z ^ K * ∏ τ, (tauE D τ (b : D.host.E) / (‖tauE D τ (b : D.host.E)‖ : ℂ)) ^ m τ = 1) :
@@ -61,15 +61,15 @@ theorem values_of_rel (D : D7) (z : ℂ) (K : ℕ) (b : D.host.Eˣ) (m : D.what�
       (key ((lam.comp τ).comp (IsCMField.complexConj D.host.E : D.host.E →+* D.host.E))).symm
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩ : ∃ θ : InfFam D, IsInfFam θ` from `GlobalTheory.DualPairCompare.exists_infFam D`. Establish `H : ∀ τ, ∃ m : ℤ, ∀ x : (Formalism.L2.Theta.AE D)ˣ, Formalism.L2.Theta.finPart D (x : Formalism.L2.Theta.AE D) = 1 → (∀ τ', τ' ≠ τ → θ τ' (Formalism.L2.Theta.infPart D (x : Formalism.L2.Theta.AE D)) = 1) → ((c x : Circle) : ℂ) = (θ τ (Formalism.L2.Theta.infPart D (x : Formalism.L …` using `fun τ => by`. Take `⟨a, m, -, -, h⟩` from `GlobalTheory.SplitCharExp.exists_hasInfExp D θ c n τ hθ hc hr`. Conclude with `⟨m, h θ hθ⟩`. Use `choose m hm using H`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, fun k x hx1 hx2 => ?_⟩` and prove the remaining obligations. Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨e, -, e1, e2⟩` from `GlobalTheory.SplitCharExp.exists_real_hom h`. Set `z : D.what₂.Tau → ℂˣ` to `fun τ => Units.map (tauE D τ).toMonoidHom k`. Set `f : ∀ _ : D.what₂.Tau, ℂ →* Formalism.L2.Theta.AE D` to `fun τ => e.comp (MonoidHom.mulSingle (fun _ : D.what₂.Tau => ℂ) τ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hθk : ∀ τ, θ τ (Formalism.L2.Theta.infPart D (Formalism.L2.Theta.incA D (k : D.host.E))) = tauE D τ k` using `fun τ => (hθ τ).1 k`. Establish `ex : x = ∏ τ, Units.map (f τ) (z τ)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_prod]`. Establish `e3 : (∏ τ, ((Units.map (f τ) (z τ) : (Formalism.L2.Theta.AE D)ˣ) : Formalism.L2.Theta.AE D)) = e (fun τ => tauE D τ k)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `∏ τ, e (Pi.mulSingle τ (tauE D τ k)) = _`. Rewrite using `[← map_prod, Finset.univ_prod_mulSingle]`. Rewrite using `[e3]`. Conclude with `GlobalTheory.SplitCharExp.ext_of_chart h (hx1.trans (e1 _).symm) fun τ => by rw [hx2, hθk, e2]`. Rewrite using `[ex, map_prod]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(map_prod Circle.coeHom _ _).trans (Finset.prod_congr rfl fun τ _ => ?_)` and prove the remaining obligations. Establish `f2 : ∀ τ', θ τ' (Formalism.L2.Theta.infPart D ((Units.map (f τ) (z τ) : (Formalism.L2.Theta.AE D)ˣ) : Formalism.L2.Theta.AE D)) = (Pi.mulSingle τ (tauE D τ k) : D.what₂.Tau → ℂ) τ'` using `fun τ' => e2 _ τ'`. Use `hm τ (Units.map (f τ) (z τ)) (e1 _) fun τ' ht => by rw [f2, Pi.mulSingle_eq_of_ne ht]` as an intermediate fact. Rewrite `this` using `[f2, Pi.mulSingle_eq_same]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_val (D : D7) (c : (Formalism.L2.Theta.AE D)ˣ →* Circle) (n : ℕ) (hc : Formalism.L2.Theta.IsHeckeChar D c)
     (hr : Formalism.L2.Theta.ResEta D c n) : ∃ m : D.what₂.Tau → ℤ, ∀ (k : D.host.Eˣ) (x : (Formalism.L2.Theta.AE D)ˣ),
@@ -110,13 +110,13 @@ def finIso (D : D7) : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAdeleRing
   (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).toRingEquiv.trans (GlobalTheory.Mem.Col2.afIso D.host.F D.host.E)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Mem.Col2.afIso_tmul_one _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem finIso_one_tmul (D : D7) (x : D.host.E) : finIso D ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) =
     algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) x := GlobalTheory.Mem.Col2.afIso_tmul_one _ _ x
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.HostAdeleIso.mem_intAE_iff_comm D y).trans (GlobalTheory.Mem.Col2.mem_rInt_iff _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem mem_intAE_iff (D : D7) (y : Af D.host.F ⊗[D.host.F] D.host.E) :
     y ∈ intAE D ↔ ∀ P : HeightOneSpectrum (𝓞 D.host.E), Valued.v (finIso D y P) ≤ 1 :=
@@ -125,19 +125,19 @@ theorem mem_intAE_iff (D : D7) (y : Af D.host.F ⊗[D.host.F] D.host.E) :
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨Φ, -, -, h1, -, h3⟩` from `GlobalTheory.DetRootRead.exists_adele_equiv_fin D (finIso D) (finIso_one_tmul D) (mem_intAE_iff D)`. Take `⟨s, hs, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `hs1 : ∀ z : Formalism.L2.Theta.AE D, (s z).1 = Formalism.L2.Theta.infPart D z` using `fun z => (hs z).1`. Establish `hs2 : ∀ z : Formalism.L2.Theta.AE D, (s z).2 = Formalism.L2.Theta.finPart D z` using `fun z => (hs z).2`. Establish `hfi` using `GlobalTheory.Mem.UnitIndex.finiteIndex_unitIdl_sup D.host.E`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, hu, _, ⟨k, rfl⟩, e⟩` from `Subgroup.mem_sup.1 ((GlobalTheory.Mem.Chr.unitIdl D.host.E ⊔ (Neutral.B1.diagUnits D.host.E).range).pow_index_mem (Units.map Φ.toRingHom.toMonoidHom x))`. Generalize the expression as in `hh : (GlobalTheory.Mem.Chr.unitIdl D.host.E ⊔ (Neutral.B1.diagUnits D.host.E).range).index = h at e`. Establish `h0 : 0 < h` using `hh ▸ Nat.pos_of_ne_zero hfi.index_ne_zero`. Set `Ψ : (AdeleRing (𝓞 D.host.E) D.host.E)ˣ →* (Formalism.L2.Theta.AE D)ˣ` to `Units.map Φ.symm.toRingHom.toMonoidHom`. Establish `hΨ : ∀ a, Φ ((Ψ a : (Formalism.L2.Theta.AE D)ˣ) : Formalism.L2.Theta.AE D) = a` using `fun a => Φ.apply_symm_apply _`.
+Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `K : (Formalism.L2.Theta.AE D)ˣ` to `Units.map (Formalism.L2.Theta.incA D).toMonoidHom k`. Establish `e' : Ψ u * K = x ^ h`. Establish `a1 : Ψ (Neutral.B1.diagUnits D.host.E k) = K` using `Units.ext (Φ.symm_apply_eq.2 (h1 k).symm)`. Establish `a2 : Ψ (Units.map Φ.toRingHom.toMonoidHom x) = x` using `Units.ext (Φ.symm_apply_apply _)`. Rewrite using `[← a1, ← map_mul, e, map_pow, a2]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `g : Formalism.L2.Theta.AE D →* Formalism.L2.Theta.AE D` to `s.symm.toRingHom.toMonoidHom.comp ((MonoidHom.inl _ (Af D.host.F ⊗[D.host.F] D.host.E)).comp (Formalism.L2.Theta.infPart D).toMonoidHom)`. Establish `g1 : ∀ a, Formalism.L2.Theta.infPart D (g a) = Formalism.L2.Theta.infPart D a` using `fun a => (hs1 _).symm.trans (congrArg Prod.fst (s.apply_symm_apply (Formalism.L2.Theta.infPart D a, 1)))`. Establish `g2 : ∀ a, Formalism.L2.Theta.finPart D (g a) = 1` using `fun a => (hs2 _).symm.trans (congrArg Prod.snd (s.apply_symm_apply (Formalism.L2.Theta.infPart D a, 1)))`. Establish `hint : ∀ a ∈ GlobalTheory.Mem.Chr.unitIdl D.host.E, ∀ b : (Formalism.L2.Theta.AE D)ˣ, Formalism.L2.Theta.finPart D ((Ψ a * Units.map g b : (Formalism.L2.Theta.AE D)ˣ) : Formalism.L2.Theta.AE D) ∈ intAE D` using `fun a ha b => by`. Establish `: Formalism.L2.Theta.finPart D ((Units.map g b : (Formalism.L2.Theta.AE D)ˣ) : Formalism.L2.Theta.AE D) = 1` using `g2 _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, RingHom.map_mul, this, mul_one, mem_intAE_iff, ← (h3 _).2, hΨ]`. Conclude with `fun P => (ha P).le`. Use `⟨h, k, Units.map g K, Ψ u * Units.map g K, h0, ⟨?_, hint u hu K, ?_⟩, g2 _, g1 _, ?_, fun P hP => ?_⟩` and prove the remaining obligations. Establish `a1 : Formalism.L2.Theta.infPart D ((Units.map g K : (Formalism.L2.Theta.AE D)ˣ) : Formalism.L2.Theta.AE D) = Formalism.L2.Theta.infPart D (K : Formalism.L2.Theta.AE D)` using `g1 _`. Rewrite using `[Units.val_mul, RingHom.map_mul, a1, ← RingHom.map_mul, ← Units.val_mul, e', Units.val_pow_eq_pow_val, RingHom.map_pow, hx, one_pow]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv, ← Ψ.map_inv u, ← (Units.map g).map_inv K]`. Conclude with `hint u⁻¹ ((GlobalTheory.Mem.Chr.unitIdl D.host.E).inv_mem hu) K⁻¹`. Rewrite using `[← e', mul_right_comm]`. Establish `a1 : (u : AdeleRing (𝓞 D.host.E) D.host.E).2 P * algebraMap D.host.E (P.adicCompletion D.host.E) (k : D.host.E) = ((Φ (x : Formalism.L2.Theta.AE D)).2 P) ^ h` using `congrArg (fun a : (AdeleRing (𝓞 D.host.E) D.host.E)ˣ => (a : AdeleRing (𝓞 D.host.E) D.host.E).2 P) e`. Rewrite `a1` using `[(h3 _).2, hP, one_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `a2` using `congrArg (Valued.v : Valuation (P.adicCompletion D.host.E) _) a1`. Rewrite `a2` using `[map_mul, hu P, one_mul, map_one]`. Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P (k : D.host.E)).symm.trans a2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_rel (D : D7) (x : (Formalism.L2.Theta.AE D)ˣ) (hx : Formalism.L2.Theta.infPart D (x : Formalism.L2.Theta.AE D) = 1) :
     ∃ (h : ℕ) (k : D.host.Eˣ) (y w : (Formalism.L2.Theta.AE D)ˣ), 0 < h ∧ Formalism.L2.Pj.FinUnit w ∧ Formalism.L2.Theta.finPart D (y : Formalism.L2.Theta.AE D) = 1 ∧
@@ -188,13 +188,13 @@ theorem exists_pow_rel (D : D7) (x : (Formalism.L2.Theta.AE D)ˣ) (hx : Formalis
     exact (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P (k : D.host.E)).symm.trans a2
 
 /- English proof (translation)
-Take `⟨h1, h2, v, ε, hε, h4⟩` from `he`. Establish `hv` using `hq v ε hε h4`. Take `⟨α, rfl, -, hα⟩` from `hε`. Establish `hne : P.under (𝓞 D.host.F) ≠ v`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `hv` to reduce the goal to its premises. Use `show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (q : 𝓞 D.host.F) ∈ P.asIdeal`. Rewrite using `[map_natCast]` and apply the resulting hypothesis. Establish `h5 : finIso D (Formalism.L2.Theta.finPart D (e + cA D e)) P = 0`. Rewrite using `[h4]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.SplitProj.afIso_one_tmul_apply α P).trans ?_` and prove the remaining obligations. Establish `: α (P.under (𝓞 D.host.F)) = 0` using `hα _ hne`. Rewrite using `[GlobalTheory.AdeleBaseChange.adMap_apply, this, map_zero]`. Establish `h6 : e = e * (e + cA D e)` using `by rw [mul_add, h1, h2, add_zero]`. Rewrite using `[h6, RingHom.map_mul, RingEquiv.map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show finIso D (Formalism.L2.Theta.finPart D e) P * finIso D (Formalism.L2.Theta.finPart D (e + cA D e)) P = 0`. Rewrite using `[h5, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem finIso_idem (D : D7) {e : Formalism.L2.Theta.AE D} (he : IsSplitIdem D e) {q : ℕ} (hq : GlobalTheory.MovedKappaEx.OffPrime e q)
     (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : ((q : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal) : finIso D (Formalism.L2.Theta.finPart D e) P = 0 := by
@@ -217,11 +217,11 @@ theorem finIso_idem (D : D7) {e : Formalism.L2.Theta.AE D} (he : IsSplitIdem D e
   rw [h5, mul_zero]
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `inf_val D c n hc hr`. Take `⟨-, -, -, M, hM, hMu⟩` from `GlobalTheory.CharFin.char_finUnit_finite_order D c hc.1`. Establish `hinf : Formalism.L2.Theta.infPart D (x₀ : Formalism.L2.Theta.AE D) = 1`. Rewrite using `[hx, RingHom.map_add, RingHom.map_sub, RingHom.map_mul, RingHom.map_one, GlobalTheory.SplitScalar.infPart_splitIdem he, zero_mul, sub_zero, zero_add]`. Take `⟨h, k, y, w, hh, hw, hy1, hy2, e1, hk⟩` from `exists_pow_rel D x₀ hinf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e2 : c x₀ ^ (h * M) * c y ^ M = 1`. Rewrite using `[pow_mul, ← mul_pow, ← map_pow, ← map_mul, e1, map_mul, hc.2 k, mul_one, hMu w hw]`. Establish `e3 : ((c x₀ : Circle) : ℂ) ^ (h * M) * ∏ τ, (tauE D τ (k : D.host.E) / (‖tauE D τ (k : D.host.E)‖ : ℂ)) ^ (m τ * M) = 1`. Simplify using `only [zpow_mul, zpow_natCast]`. Rewrite using `[Finset.prod_pow, ← hm k y hy1 hy2, ← Circle.coe_pow, ← Circle.coe_pow, ← Circle.coe_mul, e2, Circle.coe_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `values_of_rel D _ (h * M) k (fun τ => m τ * M) (Nat.mul_pos hh hM) e3`. Use `⟨h1, fun q _ hq => h2 q fun P hP => hk P ?_⟩` and prove the remaining obligations. Rewrite using `[hx, RingHom.map_add, RingHom.map_sub, RingHom.map_mul, RingHom.map_one, RingEquiv.map_add, RingEquiv.map_sub, RingEquiv.map_mul, RingEquiv.map_one]`. Use `show finIso D (Formalism.L2.Theta.finPart D e) P * finIso D (Formalism.L2.Theta.finPart D a) P + (1 - finIso D (Formalism.L2.Theta.finPart D e) P) = 1`. Rewrite using `[finIso_idem D he hq P hP, zero_mul, sub_zero, zero_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_split_value (D : D7) (c : (Formalism.L2.Theta.AE D)ˣ →* Circle) (n : ℕ) (hc : Formalism.L2.Theta.IsHeckeChar D c)
     (hr : Formalism.L2.Theta.ResEta D c n) (e : Formalism.L2.Theta.AE D) (he : IsSplitIdem D e) (x₀ : (Formalism.L2.Theta.AE D)ˣ)
@@ -248,22 +248,22 @@ theorem char_split_value (D : D7) (c : (Formalism.L2.Theta.AE D)ˣ →* Circle) 
   rw [finIso_idem D he hq P hP, zero_mul, sub_zero, zero_add]
 
 /- English proof (translation)
-Introduce `v ε hv hε` and use `h v ε hv (by rw [← hε, GlobalTheory.MovedIdem.cA_cA, add_comm])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem offPrime_conj {D : D7} {e : Formalism.L2.Theta.AE D} {q : ℕ} (h : GlobalTheory.MovedKappaEx.OffPrime e q) :
     GlobalTheory.MovedKappaEx.OffPrime (cA D e) q := fun v ε hv hε =>
   h v ε hv (by rw [← hε, GlobalTheory.MovedIdem.cA_cA, add_comm])
 
 /- English proof (translation)
-Apply the tactic sequence `cases p <;> simp only [DefPair, Pair.InRange, Pair.big, Node.InRange] at h ⊢ <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem defPair_inRange {T : Type} {m : ℕ} {p : Pair T} (h : DefPair m p) : p.InRange m := by
   cases p <;> simp only [DefPair, Pair.InRange, Pair.big, Node.InRange] at h ⊢ <;> omega
 
 /- English proof (translation)
-Introduce `_ _ D Γ _ _ Pl0 T A Ks _ _ _ R ch _ p hp e he x₀ hx`. Establish `hW` using `ch.W.om_is p (defPair_inRange hp)`. Choose the witnesses or unpack the hypotheses as in `⟨e', he', hoff, a, hx'⟩ : ∃ e' : Formalism.L2.Theta.AE D, IsSplitIdem D e' ∧ (∀ q, GlobalTheory.MovedKappaEx.OffPrime e q → GlobalTheory.MovedKappaEx.OffPrime e' q) ∧ ∃ a : Formalism.L2.Theta.AE D, (x₀ : Formalism.L2.Theta.AE D) = e' * a + (1 - e') := by`. Take `⟨a, ha | ha⟩` from `hx`. Conclude with `⟨e, he, fun _ h => h, a, ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨cA D e, GlobalTheory.ConjAdjWeil.isSplitIdem_conj he, fun _ h => offPrime_conj h, a, ha⟩`. Establish `hS` using `char_split_value D _ _ hW.hecS hW.resS e' he' x₀ a hx'`. Establish `hT` using `char_split_value D _ _ hW.hecT hW.resT e' he' x₀ a hx'`. Conclude with `⟨⟨hS.1, hT.1⟩, fun q _ hq => ⟨hS.2 q (hoff q hq), hT.2 q (hoff q hq)⟩⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem split_chars : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}

@@ -6,17 +6,17 @@ open GlobalTheory.UnitLemma Polynomial Matrix
 namespace GlobalTheory.InertUnitOrb
 
 /- English proof (translation)
-Take `⟨-, hg, hh⟩` from `h`. Take `⟨-, hg', hh'⟩` from `h'`. Use `set f : (Fin n → K.E) →ₗ[K.E] (Fin n → K.E) := ψ.toLinearMap ∘ₗ LinearMap.mulLeft K.E (v : B.A) ∘ₗ ψ'.symm.toLinearMap with hf`. Establish `key : ∀ a b, stdH K n (f a) (f b) = stdH K n a b`. Introduce `a b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `ψ'.surjective a`. Take `⟨z, rfl⟩` from `ψ'.surjective b`. Simplify using `only [hf, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, LinearMap.mulLeft_apply]`. Rewrite using `[hh, hh', hx]`. Unfold `InvAlg.herm`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨LinearMap.toMatrix' f, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `k` using `key (Pi.single j 1) (Pi.single i 1)`. Simplify using `only [stdH] at k`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, LinearMap.toMatrix'_apply, Matrix.one_apply]`. Rewrite using `[show (∑ x, K.c (f (Pi.single i 1) x) * f (Pi.single j 1) x) = ∑ x, f (Pi.single j 1) x * K.c (f (Pi.single i 1) x) from Finset.sum_congr rfl fun _ _ => mul_comm _ _, k]`. Simplify using `[Pi.single_apply, eq_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_mul, Matrix.toLin'_toMatrix']`. Use `LinearMap.ext fun a => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `ψ'.surjective a`. Simplify using `only [hf, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, LinearMap.mulLeft_apply, Matrix.toLin'_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg, ← hg', LinearEquiv.symm_apply_apply, ← mul_assoc, ← mul_assoc, mul_comm B.g]`.
+A detailed English derivation is pending.
 -/
 theorem conj_of_norm_class (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.InvAlg K) (n : ℕ)
     (γ γ' : Matrix (Fin n) (Fin n) K.E) (x x' v : B.Aˣ) (ψ ψ' : B.A ≃ₗ[K.E] (Fin n → K.E))

@@ -22,23 +22,21 @@ namespace GlobalTheory.IsoRankMult
 
 open GlobalTheory.RepCount in
 /- English proof (translation)
-Introduce `H S0 S X _ _ _ _ _ _ _ σ0 σ ρ C h0 h1 f hf hne`. Set `R` to `MonoidAlgebra ℂ H`. Use `haveI : IsSimpleModule R σ0.asModule := (Representation.irreducible_iff_isSimpleModule_asModule σ0).mp h0`. Use `haveI : IsSimpleModule R σ.asModule := (Representation.irreducible_iff_isSimpleModule_asModule σ).mp h1`. Set `N' : Submodule R ρ.asModule` to `⨆ (g : S0 →ₗ[ℂ] X) (hg : g ∈ homInto σ0 ρ C), LinearMap.range (modMap g hg.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hN'iso : N' ≤ isotypicComponent R ρ.asModule σ0.asModule`. Use `iSup₂_le fun g hg => ?_` and prove the remaining obligations. Break down `LinearMap.injective_or_eq_zero (modMap (σ := σ0) (ρ := ρ) g hg.2) with hi | hz` into its components or cases. Conclude with `le_sSup ⟨(LinearEquiv.ofInjective _ hi).symm⟩`. Rewrite using `[hz, LinearMap.range_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `bot_le`. Establish `hsub : (⨆ g ∈ homInto σ0 ρ C, LinearMap.range g) ≤ (N'.restrictScalars ℂ).comap ρ.asModuleEquiv.symm.toLinearMap`. Use `iSup₂_le fun g hg => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`. Establish `hmem : modMap (σ` using `σ0) (ρ := ρ) g hg.2 (σ0.asModuleEquiv.symm s) ∈ N' := (le_iSup₂_of_le (f := fun (g : S0 →ₗ[ℂ] X) (hg : g ∈ homInto σ0 ρ C) => LinearMap.range (modMap (σ := σ0) (ρ := ρ) g hg.2)) g hg le_rfl) ⟨_, rfl⟩`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show ρ.asModuleEquiv.symm (g s) ∈ N'`. Use `hmem using 1` and compare the differences between its conclusion and the goal. Apply `ρ.asModuleEquiv.injective` to reduce the goal to its premises. Rewrite using `[modMap_apply]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Set `F` to `modMap (σ := σ) (ρ := ρ) f hf.2`. Establish `hFi : Function.Injective F`. Break down `LinearMap.injective_or_eq_zero F with hi | hz` into its components or cases. Conclude with `hi`. It suffices to derive a contradiction.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Use extensionality with `s`. Use `congrArg (fun φ => ρ.asModuleEquiv (φ (σ.asModuleEquiv.symm s))) hz` as an intermediate fact. Simplify using `only [F, modMap_apply, LinearMap.zero_apply, map_zero] at this`. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hle : LinearMap.range F ≤ isotypicComponent R ρ.asModule σ0.asModule`. Use `le_trans ?_ hN'iso` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx` using `hsub (hf.1 (σ.asModuleEquiv x))`. Establish `: ρ.asModuleEquiv.symm (f (σ.asModuleEquiv x)) = F x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Apply `ρ.asModuleEquiv.injective` to reduce the goal to its premises. Simplify using `[F, modMap_apply]`. Rewrite using `[← this]`. Conclude with `hx`. Set `e` to `LinearEquiv.ofInjective F hFi`.
-
-Use `haveI : IsSimpleModule R (LinearMap.range F) := IsSimpleModule.congr e.symm`. Take `⟨e'⟩` from `isIsotypicOfType_submodule_iff.mp (IsIsotypicOfType.isotypicComponent R ρ.asModule σ0.asModule) (LinearMap.range F) hle`. Conclude with `⟨e.trans e'⟩`.
+A detailed English derivation is pending.
 -/
 theorem iso_of_hom_into_sum : ∀ (H S0 S X : Type) [Group H] [AddCommGroup S0] [Module ℂ S0] [AddCommGroup S] [Module ℂ S] [AddCommGroup X] [Module ℂ X] (σ0 : Representation ℂ H S0) (σ : Representation ℂ H S) (ρ : Representation ℂ H X) (C : Submodule ℂ X), σ0.IsIrreducible → σ.IsIrreducible → ∀ f ∈ homInto σ ρ (⨆ g ∈ homInto σ0 ρ C, LinearMap.range g), f ≠ 0 → Nonempty (σ.asModule ≃ₗ[MonoidAlgebra ℂ H] σ0.asModule) := by
   intro H S0 S X _ _ _ _ _ _ _ σ0 σ ρ C h0 h1 f hf hne

@@ -31,16 +31,16 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : �
   {n : ℕ} {Q Q' : AM B Λ} {t : E n ⟶ Q.V} {t' : E (n + 1) ⟶ Q'.V}
 
 /- English proof (translation)
-Rewrite using `[mv, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mv_one {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') (x : Fin h → A) :
     mv φ 1 x = piMap φ (Fin h) x := by
   rw [mv, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.one_mulVec]; rfl
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `k.exists_equiv hW (hD n hn.le) rfl`. Take `⟨e', he'⟩` from `k'.exists_equiv hW (hD (n + 1) hn) rfl`. Use `⟨e.toLinearMap.toAddMonoidHom.comp ((D.ψ n).comp e'.symm.toLinearMap.toAddMonoidHom), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[zero_add, pow_one]`. Establish `a` using `(GlobalTheory.RingChain.FrobLin.main Γ(B.X, W) p Γ(Q'.V, W) (Qt (D.L (n + 1)) (baseOn h π W)) (Qt (D.L n) (baseOn h π W))).2.2.2.1 p e'.symm (D.ψ n) (D.ψ_lin n hn)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.RingChain.FrobLin.main Γ(B.X, W) p Γ(Q'.V, W) (Qt (D.L n) (baseOn h π W)) Γ(Q.V, W)).2.2.2.2 p _ e a`. Introduce `s' s x' x hx' hx hψ`. Express the relevant statement in the definitionally equal form `e (D.ψ n (e'.symm (t'.app W s'))) = _`. Rewrite using `[← he' s' x' hx', LinearEquiv.symm_apply_apply, hψ, he s x hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_psi [Mono (ι n)] [Mono (ι (n + 1))] (hn : n < o) (k : IsQuot M (ι n) (baseOn h π) Q t)
     (k' : IsQuot M (ι (n + 1)) (baseOn h π) Q' t') {W : B.X.Opens} (hW : IsAffineOpen W)
@@ -61,7 +61,7 @@ theorem exists_psi [Mono (ι n)] [Mono (ι (n + 1))] (hn : n < o) (k : IsQuot M 
     rw [← he' s' x' hx', LinearEquiv.symm_apply_apply, hψ, he s x hx]
 
 /- English proof (translation)
-Take `⟨s', rfl⟩` from `(k'.2 W hW).1 u`. Set `x' : D.L (n + 1)` to `⟨crd (ι (n + 1)) W s', by rw [hD (n + 1) hn]; exact ⟨s', rfl⟩⟩`. Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective _ (D.ψ n (Submodule.Quotient.mk x'))`. Take `⟨s, hs⟩ : x.1 ∈ latOf (ι n) W` from `hD n hn.le ▸ x.2`. Conclude with `⟨s', s, x', x, rfl, hs.symm, hx.symm, rfl⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rep (hn : n < o) (k' : IsQuot M (ι (n + 1)) (baseOn h π) Q' t') {W : B.X.Opens} (hW : IsAffineOpen W)
     (D : ChainOn p h o Lie Om π γ W) (hD : Fits ι D) (u : Γ(Q'.V, W)) :
@@ -74,9 +74,9 @@ theorem exists_rep (hn : n < o) (k' : IsQuot M (ι (n + 1)) (baseOn h π) Q' t')
   exact ⟨s', s, x', x, rfl, hs.symm, hx.symm, rfl⟩
 
 /- English proof (translation)
-Take `⟨s', s, x', x, hx', hx, e, rfl⟩` from `exists_rep hn k' hW D hD u`. Rewrite using `[hψ s' s x' x hx' hx e, ← GlobalTheory.Twist.app_resM, ← GlobalTheory.Twist.app_resM]`. Use `hχ _ _ ⟨_, hr.mem _ _ x'.2⟩ ⟨_, hr.mem _ _ x.2⟩ ?_ ?_ (hr.ψ n hn x' _ x _ rfl rfl e)` and prove the remaining obligations. Rewrite using `[crd_resM, ← hx']`. Conclude with `mv_one _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[crd_resM, ← hx]`. Conclude with `mv_one _ _`.
+A detailed English derivation is pending.
 -/
 theorem psi_res (hn : n < o) (k' : IsQuot M (ι (n + 1)) (baseOn h π) Q' t') {W W' : B.X.Opens} (hW : IsAffineOpen W)
     (hle : W' ≤ W) (D : ChainOn p h o Lie Om π γ W) (hD : Fits ι D) (D' : ChainOn p h o Lie Om π γ W')
@@ -95,13 +95,11 @@ theorem psi_res (hn : n < o) (k' : IsQuot M (ι (n + 1)) (baseOn h π) Q' t') {W
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ B Λ _ h o Lie Om π γ M E ι I V D hp hL n hn Q Q' t t' k k'`. Take `⟨hV, hc, hVV, hE, hF, hO, hA⟩` from `hL`. Use `haveI := (hE n).2`. Use `haveI := (hE (n + 1)).2`. Use `haveI := k.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := k'.1`. Use `choose ψ hψ1 hψ2 using fun i => exists_psi hn k k' (hV i) (D i) (hF i)`. Take `⟨e⟩` from `GlobalTheory.T.additive_maps_glue_affine_cover O p B Λ hp Q' Q I V 0 ψ hV hc hVV hψ1 (fun i i' => by`. Take `⟨D', hD', r1, r2⟩` from `hO i i'`. Take `⟨χ, hχ1, hχ2⟩` from `exists_psi hn k k' (hVV i i') D' hD'`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨χ, hχ1, psi_res hn k' (hV i) _ (D i) (hF i) D' r1 _ _ (hψ2 i) hχ2, psi_res hn k' (hV i') _ (D i') (hF i') D' r2 _ _ (hψ2 i') hχ2⟩) (fun i a u => by`. Take `⟨s', s, x', x, hx', hx, e, rfl⟩` from `exists_rep hn k' (hV i) (D i) (hF i) u`. Establish `m'` using `(hA i a).mem _ _ x'.2`. Establish `m` using `(hA i a).mem _ _ x.2`. Take `⟨z', hz'⟩ : mv (RingHom.id _) (M a) x'.1 ∈ latOf (ι (n + 1)) (V i)` from `hF i (n + 1) hn ▸ m'`.
-
-Take `⟨z, hz⟩ : mv (RingHom.id _) (M a) x.1 ∈ latOf (ι n) (V i)` from `hF i n hn.le ▸ m`. Rewrite using `[hψ2 i s' s x' x hx' hx e, (k'.2 _ (hV i)).2.2 a s' z' (by rw [hz', hx']), (k.2 _ (hV i)).2.2 a s z (by rw [hz, hx])]`. Conclude with `hψ2 i z' z ⟨_, m'⟩ ⟨_, m⟩ hz'.symm hz.symm ((hA i a).ψ n hn x' _ x _ rfl rfl e))`. Conclude with `⟨e.symm⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] (B : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] (h o : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (E : ℕ → B.X.Modules) (ι : ∀ n, E n ⟶ freeModule B.X (Fin h)) (I : Type) (V : I → B.X.Opens) (D : ∀ i, ChainOn p h o Lie Om π γ (V i)) (hp : (p : Γ((fibI p B).subscheme, ⊤)) = 0), IsLoc M ι V D → ∀ n < o, ∀ (Q Q' : AM B Λ) (t : E n ⟶ Q.V) (t' : E (n + 1) ⟶ Q'.V), IsQuot M (ι n) (baseOn h π) Q t → IsQuot M (ι (n + 1)) (baseOn h π) Q' t' → Nonempty (Q ≅ frobA p hp Q') := by
   intro O _ _ _ p _ B Λ _ h o Lie Om π γ M E ι I V D hp hL n hn Q Q' t t' k k'

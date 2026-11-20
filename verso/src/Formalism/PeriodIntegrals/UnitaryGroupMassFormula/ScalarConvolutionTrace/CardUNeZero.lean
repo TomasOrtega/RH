@@ -67,9 +67,9 @@ def DimPos : Prop :=
     (π : Representation ℂ (GL (Fin k) F) V), π.IsIrreducible → 0 < Module.finrank ℂ V
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_ne_zero]`. Unfold `cardU`. Use `Nat.card_ne_zero.2 ⟨⟨⟨1, ?_⟩⟩, inferInstance⟩` and prove the remaining obligations. Use `first`. Consider the case `(simp [IsUni]; intro i j h; simp [Matrix.one_apply, ne_of_gt h])`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [IsUni]`. Consider the case `(unfold IsUni; simp)`. Consider the case `(unfold IsUni; intro i j h; simp [Matrix.one_apply, ne_of_gt h])`. Consider the case `decide`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cardU_ne_zero (F : Type) [Field F] [Fintype F] (k : ℕ) : (cardU F k : ℂ) ≠ 0 := by
   rw [Nat.cast_ne_zero]

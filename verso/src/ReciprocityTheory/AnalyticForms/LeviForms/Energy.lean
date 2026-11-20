@@ -16,7 +16,7 @@ def MixFamZeroStatement : Prop :=
     mixFam e 0 Φ w = fun _ => Φ
 
 /- English proof (translation)
-Introduce `e X _ Φ w`. Use function extensionality and compare the values at `k`. Simplify using `[mixFam]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mixFam_zero : MixFamZeroStatement := by
   intro e X _ Φ w
@@ -29,11 +29,11 @@ def MixFamSuccStatement : Prop :=
       mixFam e i Φ w ⟨i, hi⟩ = Φ
 
 /- English proof (translation)
-Introduce `e X _ Φ w i hi`. Use `⟨?_, by simp [mixFam]⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = ⟨i, hi⟩`. Substitute `hk` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[mixFam]`. Rewrite using `[Function.update_of_ne hk]`. Establish `hk' : k.val ≠ i` using `fun h => hk (Fin.ext h)`. Simplify using `only [mixFam]`. Distinguish the cases in `h1 : k.val < i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h1, if_pos (by omega)]`. Rewrite using `[if_neg h1, if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mixFam_succ : MixFamSuccStatement := by
   intro e X _ Φ w i hi
@@ -57,9 +57,9 @@ def MIntUpdateAddStatement : Prop :=
         mInt A (Function.update F k P) g + mInt A (Function.update F k Q) g
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j' => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `only [Function.comp_apply, Fin.cons_succ, Fin.tail]`. Rewrite using `[Function.update_of_ne]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, Equiv.swap_apply_eq_iff, Equiv.swap_apply_right]`. Conclude with `Fin.succ_ne_zero j'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem update_comp_swap {e : ℕ} {X : Type} [TopologicalSpace X] (F : Fin (e + 1) → LocPot X)
     (k : Fin (e + 1)) (P : LocPot X) :
@@ -73,7 +73,7 @@ theorem update_comp_swap {e : ℕ} {X : Type} [TopologicalSpace X] (F : Fin (e +
     exact Fin.succ_ne_zero j'
 
 /- English proof (translation)
-Rewrite using `[← update_comp_swap, mIntSymm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mInt_update_eq {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas (e + 1) X)
     (F : Fin (e + 1) → LocPot X) (k : Fin (e + 1)) (P : LocPot X) (g : X → ℝ) :
@@ -81,7 +81,7 @@ theorem mInt_update_eq {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtla
   rw [← update_comp_swap, mIntSymm]
 
 /- English proof (translation)
-Introduce `e X _ _ _ A F k P Q hF hP hQ g hg`. Establish `hΦ : ∀ i, IsPotential A (Fin.tail (F ∘ Equiv.swap 0 k) i)` using `fun i => hF _`. Rewrite using `[mInt_update_eq, mInt_update_eq A F k P, mInt_update_eq A F k Q]`. Conclude with `mIntAdd A P Q _ hP hQ hΦ g (mIntegrableCont A _ (fun i => Fin.cases hP hΦ i) g hg) (mIntegrableCont A _ (fun i => Fin.cases hQ hΦ i) g hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mInt_update_add : MIntUpdateAddStatement := by
   intro e X _ _ _ A F k P Q hF hP hQ g hg
@@ -97,9 +97,9 @@ def MIntUpdateNonposStatement : Prop :=
       mInt A (Function.update F k (LocPot.ofFun v)) v ≤ 0
 
 /- English proof (translation)
-Introduce `e X _ _ _ A F k v hv hF hpsh`. Establish `hΦ : ∀ i, IsPotential A (Fin.tail (F ∘ Equiv.swap 0 k) i)` using `fun i => hF _`. Establish `hne : ∀ i : Fin e, Equiv.swap 0 k i.succ ≠ k`. Introduce `i`. Rewrite using `[Ne, Equiv.swap_apply_eq_iff, Equiv.swap_apply_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fin.succ_ne_zero i`. Establish `hΦp : ∀ i, IsPsh A (Fin.tail (F ∘ Equiv.swap 0 k) i)` using `fun i => hpsh _ (hne i)`. Rewrite using `[mInt_update_eq]`. Conclude with `byPartsNonpos A v hv _ hΦ hΦp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mInt_update_nonpos : MIntUpdateNonposStatement := by
   intro e X _ _ _ A F k v hv hF hpsh
@@ -113,15 +113,13 @@ theorem mInt_update_nonpos : MIntUpdateNonposStatement := by
   exact byPartsNonpos A v hv _ hΦ hΦp
 
 /- English proof (translation)
-Introduce `e X _ _ _ A Φ w hΦ hw hΦp hΦwp i hi`. Take `⟨e', rfl⟩ : ∃ e', e = e' + 1` from `⟨e - 1, by omega⟩`. Establish `hi' : i < e' + 1` using `by omega`. Take `⟨hupd, hposition⟩` from `mixFam_succ Φ w i hi'`. Establish `hwP : IsPotential A (LocPot.ofFun w)` using `isPotential_ofFun A w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hΦw : IsPotential A (Φ + LocPot.ofFun w)` using `isPotentialAdd A _ _ hΦ hwP`. Establish `hF : ∀ k, IsPotential A (mixFam (e' + 1) i Φ w k)`. Introduce `k`. Simplify using `only [mixFam]`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hΦw`. Conclude with `hΦ`. Establish `hFp : ∀ k, IsPsh A (mixFam (e' + 1) i Φ w k)`. Introduce `k`. Simplify using `only [mixFam]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `hΦwp`. Conclude with `hΦp`. Rewrite using `[hupd, mInt_update_add A _ _ Φ (LocPot.ofFun w) hF hΦ hwP w (projLine_continuous_of_smooth A hw)]`. Establish `h1 : Function.update (mixFam (e' + 1) i Φ w) ⟨i, hi'⟩ Φ = mixFam (e' + 1) i Φ w`.
-
-Conclude with `Function.update_eq_self_iff.2 hposition.symm`. Rewrite using `[h1]`. Establish `h2` using `mInt_update_nonpos A (mixFam (e' + 1) i Φ w) ⟨i, hi'⟩ w hw hF (fun k _ => hFp k)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem energyStep : EnergyStepStatement := by
   intro e X _ _ _ A Φ w hΦ hw hΦp hΦwp i hi
@@ -146,11 +144,11 @@ theorem energyStep : EnergyStepStatement := by
   linarith
 
 /- English proof (translation)
-Introduce `e X _ _ _ A Φ w hΦ hw hΦp hΦwp`. Establish `hmono : ∀ i, i ≤ e → mInt A (mixFam e i Φ w) w ≤ mInt A (fun _ => Φ) w`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[mixFam_zero]`. Consider the case `succ i ih`. Introduce `hi`. Conclude with `(energyStep A Φ w hΦ hw hΦp hΦwp i hi).trans (ih (by omega))`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem energySum : EnergySumStatement := by
   intro e X _ _ _ A Φ w hΦ hw hΦp hΦwp

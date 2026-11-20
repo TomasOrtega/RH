@@ -25,39 +25,35 @@ namespace GlobalTheory.ChartDerivation
 open Polynomial
 
 /- English proof (translation)
-Establish `hq1 : q ≠ 1`. Introduce and unpack `rfl`. Simplify using `at hqθ`. Establish `key : ∀ (n : ℕ) (P P' : Polynomial A), (P.map φ).eval θ - (P'.map φ).eval θ ∈ maximalIdeal R ^ n → (P.map α).eval ζ - (P'.map α).eval ζ ∈ maximalIdeal V ^ n`. Introduce `n P P' h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hD` using `Polynomial.modByMonic_add_div (P - P') q`. Establish `e1 : (P.map φ).eval θ - (P'.map φ).eval θ = (((P - P') %ₘ q).map φ).eval θ`. Rewrite using `[← Polynomial.eval_sub, ← Polynomial.map_sub]`. Use `conv_lhs => rw [← hD]`. Simplify using `only [Polynomial.map_add, Polynomial.map_mul, Polynomial.eval_add, Polynomial.eval_mul, hqθ, zero_mul, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : (P.map α).eval ζ - (P'.map α).eval ζ = (((P - P') %ₘ q).map α).eval ζ`. Rewrite using `[← Polynomial.eval_sub, ← Polynomial.map_sub]`. Use `conv_lhs => rw [← hD]`. Simplify using `only [Polynomial.map_add, Polynomial.map_mul, Polynomial.eval_add, Polynomial.eval_mul, hqζ, zero_mul, add_zero]`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[e1]`. Conclude with `GlobalTheory.eval_map_mem_maximalIdeal_pow_of_coeff_mem α n _ (hinj n _ (Polynomial.natDegree_modByMonic_lt _ hq hq1) h) ζ`. Establish `hmem : ∀ (n : ℕ) (x : V), x ∈ (maximalIdeal V ^ n) • (⊤ : Submodule V V) ↔ x ∈ maximalIdeal V ^ n` using `fun n x => GlobalTheory.mem_ideal_smul_top_iff_mem _ x`. Establish `ex : ∀ r : R, ∃ L : V, ∀ (n : ℕ) (P : Polynomial A), r - (P.map φ).eval θ ∈ maximalIdeal R ^ n → L - (P.map α).eval ζ ∈ maximalIdeal V ^ n`. Introduce `r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `choose Pn hPn using fun n => happ n r`. Establish `hc : ∀ {m n : ℕ}, m ≤ n → ((Pn m).map α).eval ζ ≡ ((Pn n).map α).eval ζ [SMOD (maximalIdeal V ^ m • (⊤ : Submodule V V))]`. Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem, hmem]`. Apply `key` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1 : r - ((Pn n).map φ).eval θ ∈ maximalIdeal R ^ m` using `Ideal.pow_le_pow_right hmn (hPn n)`. Use `Ideal.sub_mem _ h1 (hPn m)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨L, hL⟩` from `IsPrecomplete.prec (f := fun k => ((Pn k).map α).eval ζ) inferInstance hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨L, fun n P hP => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hmem n _).1 ((SModEq.sub_mem).1 (hL n))`. Establish `h2 : ((Pn n).map α).eval ζ - (P.map α).eval ζ ∈ maximalIdeal V ^ n`. Apply `key` to reduce the goal to its premises. Use `Ideal.sub_mem _ hP (hPn n)` as an intermediate fact.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `Ideal.sub_mem _ h2 h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `haus : ∀ x : V, (∀ n, x ∈ maximalIdeal V ^ n) → x = 0`. Introduce `x hx`. Conclude with `IsHausdorff.haus inferInstance x fun n => SModEq.sub_mem.2 (by rw [sub_zero, hmem]; exact hx n)`. Use `choose ψ0 hψ0 using ex`. Establish `char : ∀ (x : R) (b : V), (∀ n, ∃ P : Polynomial A, x - (P.map φ).eval θ ∈ maximalIdeal R ^ n ∧ b - (P.map α).eval ζ ∈ maximalIdeal V ^ n) → ψ0 x = b`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x b h`. Rewrite using `[← sub_eq_zero]`. Apply `haus` to reduce the goal to its premises. Introduce `n`. Take `⟨P, h1, h2⟩` from `h n`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Ideal.sub_mem _ (hψ0 x n P h1) h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Set `ψ : R →+* V` to `{ toFun := ψ0 map_one' := char 1 1 fun n => ⟨1, by simp, by simp⟩ map_zero' := char 0 0 fun n => ⟨0, by simp, by simp⟩ map_add' := fun x y => char _ _ fun n => by`. Take `⟨Px, hx⟩` from `happ n x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨Py, hy⟩` from `happ n y`. Use `⟨Px + Py, ?_, ?_⟩` and prove the remaining obligations. Use `Ideal.add_mem _ hx hy` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Polynomial.map_add, Polynomial.eval_add]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Use `Ideal.add_mem _ (hψ0 x n Px hx) (hψ0 y n Py hy)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Polynomial.map_add, Polynomial.eval_add]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Use the proof step `map_mul' := fun x y => char _ _ fun n => by`. Take `⟨Px, hx⟩` from `happ n x`. Take `⟨Py, hy⟩` from `happ n y`. Use `⟨Px * Py, ?_, ?_⟩` and prove the remaining obligations. Use `Ideal.add_mem _ (Ideal.mul_mem_right y _ hx) (Ideal.mul_mem_left _ ((Px.map φ).eval θ) hy)` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Polynomial.map_mul, Polynomial.eval_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `Ideal.add_mem _ (Ideal.mul_mem_right (ψ0 y) _ (hψ0 x n Px hx)) (Ideal.mul_mem_left _ ((Px.map α).eval ζ) (hψ0 y n Py hy))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Simplify using `only [Polynomial.map_mul, Polynomial.eval_mul]`. Use `ring }`. Use `⟨ψ, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a show ψ0 (φ a) = α a`. Conclude with `char _ _ fun n => ⟨Polynomial.C a, by simp, by simp⟩`.
-
-Use `show ψ0 θ = ζ`. Conclude with `char _ _ fun n => ⟨Polynomial.X, by simp, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem lift_with_value {A R V : Type} [CommRing A] [IsLocalRing A] [CommRing R]
     [IsLocalRing R] [CommRing V] [IsLocalRing V] [IsAdicComplete (maximalIdeal V) V]
@@ -172,17 +168,15 @@ theorem lift_with_value {A R V : Type} [CommRing A] [IsLocalRing A] [CommRing R]
     exact char _ _ fun n => ⟨Polynomial.X, by simp, by simp⟩
 
 /- English proof (translation)
-Establish `hpow : ∀ (g : R →+* V), g.comp φ = g₁.comp φ → ∀ n, ∀ x ∈ maximalIdeal R ^ n, g x ∈ maximalIdeal V ^ n`. Introduce `g hg n x hx`. Rewrite `hx` using `[← hm, ← Ideal.map_pow]`. Establish `hle : Ideal.map g ((maximalIdeal A ^ n).map φ) ≤ maximalIdeal V ^ n`. Rewrite using `[Ideal.map_map, hg, Ideal.map_pow]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Ideal.pow_right_mono` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Conclude with `hloc a ha`. Conclude with `hle (Ideal.mem_map_of_mem g hx)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hev : ∀ (g : R →+* V) (P : Polynomial A), g ((P.map φ).eval θ) = P.eval₂ (g.comp φ) (g θ)`. Introduce `g P`. Rewrite using `[Polynomial.eval_map, Polynomial.hom_eval₂]`. Use extensionality with `r`. Rewrite using `[← sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsHausdorff.haus (inferInstance : IsHausdorff (maximalIdeal V) V) _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, sub_zero, GlobalTheory.mem_ideal_smul_top_iff_mem]`. Take `⟨P, hP⟩` from `happ n r`. Establish `h1` using `hpow g₁ rfl n _ hP`. Establish `h2` using `hpow g₂ h.symm n _ hP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : g₁ ((P.map φ).eval θ) = g₂ ((P.map φ).eval θ)`. Rewrite using `[hev, hev, h, hθ]`. Use `Ideal.sub_mem _ h1 h2` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, h3]`. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ringHom_ext_of_approx {A R V : Type} [CommRing A] [IsLocalRing A] [CommRing R]
     [IsLocalRing R] [CommRing V] [IsLocalRing V] [IsHausdorff (maximalIdeal V) V]
@@ -225,31 +219,27 @@ namespace GlobalTheory.ChartDerivation
 open Polynomial
 
 /- English proof (translation)
-Introduce `A _ _ k _ _ m d ψ hψ δ`. Take `⟨hflat, hmax, hfin⟩` from `hψ`. Establish `hloc : ∀ a ∈ maximalIdeal A, ψ a ∈ maximalIdeal (ChartRing k m d)` using `fun a ha => hmax ▸ Ideal.mem_map_of_mem ψ ha`. Use `haveI : IsLocalHom ψ := ⟨fun a ha => by`. Assume the negation of the conclusion as `hna`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `(mem_maximalIdeal _).1 (hloc a ((mem_maximalIdeal a).2 hna)) ha⟩`. Use `haveI : CharZero (ChartRing k m d) := (RingHom.charZero_iff (algebraMap k (ChartRing k m d)).injective).1 inferInstance`. Use `haveI : IsAdicComplete (maximalIdeal k) k := by rw [maximalIdeal_eq_bot]; infer_instance`. Use `haveI hRA : IsAdicComplete (maximalIdeal (ChartRing k m d)) (ChartRing k m d) := GlobalTheory.PlaceInt.isAdicComplete_mvPowerSeries_finite (V := k) _`. Establish `hur` using `GlobalTheory.GenFan.formallyUnramified_residue_comp_of_isEtaleCompletion k m d ψ ⟨hflat, hmax, hfin⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨θ, q, hqm, hqθ, hqu, happ1, hind⟩` from `GlobalTheory.exists_hensel_generator_of_residue_finite_unramified ψ hfin hur`. Establish `happ` using `GlobalTheory.exists_poly_sub_mem_maximalIdeal_pow ψ hmax θ happ1`. Establish `hinj` using `GlobalTheory.coeff_mem_pow_of_flat_of_indep_mod_max ψ hflat hmax θ q hqm hqθ happ hind`. Take `⟨hVloc, -, hVcomp, -, -, -⟩` from `GlobalTheory.DualNumberLocal.main (ChartRing k m d)`. Apply the tactic sequence `let α : A →+* DualNumber (ChartRing k m d) := { toFun := fun a => TrivSqZeroExt.inl (ψ a) + TrivSqZeroExt.inr (ψ (δ a)) map_one' := by ext <;> simp map_zero' := by ext <;> simp map_add' := fun a b => by ext <;> simp <;> ring map_mul' := fun a b => by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Establish an intermediate fact.
 
-Use `ext`. Simplify using the standard rewrite rules. Simplify using `[TrivSqZeroExt.snd_mul, Derivation.leibniz]`. Use `ring_nf }`. Establish `hαfst : ∀ a, (α a).fst = ψ a` using `fun a => by simp [α]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hαsnd : ∀ a, (α a).snd = ψ (δ a)` using `fun a => by simp [α]`. Establish `hαloc : IsLocalHom α` using `⟨fun a ha => by`. Rewrite `ha` using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, hαfst]`. Conclude with `IsUnit.of_map ψ a ha⟩`. Set `fstR : DualNumber (ChartRing k m d) →+* ChartRing k m d` to `(TrivSqZeroExt.fstHom (ChartRing k m d) (ChartRing k m d) (ChartRing k m d)).toRingHom`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfstR : ∀ x, fstR x = x.fst` using `fun x => rfl`. Establish `hfα : fstR.comp α = ψ` using `by ext a; simp [hfstR, hαfst]`. Establish `hfev : ∀ (P : Polynomial A) (x : DualNumber (ChartRing k m d)), ((P.map α).eval x).fst = (P.map ψ).eval x.fst`. Introduce `P x`. Rewrite using `[← hfstR, Polynomial.eval_map, Polynomial.hom_eval₂, hfα, hfstR, Polynomial.eval_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set w := (q.map α).eval (TrivSqZeroExt.inl θ) with hw`. Use `set t := (q.derivative.map ψ).eval θ with ht`. Establish `hw0 : w.fst = 0` using `by rw [hw, hfev, TrivSqZeroExt.fst_inl, hqθ]`. Use `set u : ChartRing k m d := -((hqu.unit⁻¹ : (ChartRing k m d)ˣ) : ChartRing k m d) * w.snd with hu`. Use `set ζ : DualNumber (ChartRing k m d) := TrivSqZeroExt.inl θ + TrivSqZeroExt.inr u with hζ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : (TrivSqZeroExt.inr u : DualNumber (ChartRing k m d)) ^ 2 = 0`. Rewrite using `[pow_two, TrivSqZeroExt.inr_mul_inr]`. Establish `hqζ : (q.map α).eval ζ = 0`. Rewrite using `[hζ, Polynomial.eval_add_of_sq_eq_zero _ _ _ hsq, ← hw]`. Establish `hD : ((q.map α).derivative.eval (TrivSqZeroExt.inl θ)).fst = t`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.derivative_map, hfev, TrivSqZeroExt.fst_inl]`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[hw0]`. Establish `h1 : t * ((hqu.unit⁻¹ : (ChartRing k m d)ˣ) : ChartRing k m d) = 1` using `hqu.mul_val_inv show (w + _).snd = (0 : DualNumber (ChartRing k m d)).snd`. Rewrite using `[TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_mul, TrivSqZeroExt.snd_inr, TrivSqZeroExt.fst_inr, hD, TrivSqZeroExt.snd_zero, MulOpposite.op_zero, zero_smul, add_zero, smul_eq_mul, hu]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← _root_.mul_assoc, mul_neg, h1, neg_mul, _root_.one_mul, add_neg_cancel]`. Take `⟨Ψ, hΨ, hΨθ⟩` from `lift_with_value ψ α hαloc θ ζ q hqm hqθ hqζ happ hinj`. Establish `hid : RingHom.id (ChartRing k m d) = fstR.comp Ψ`. Use `ringHom_ext_of_approx ψ hmax θ happ _ _ (fun a ha => hloc a ha) ?_ ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, hΨ, hfα]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Both sides reduce to the same expression. Simplify using `[hfstR, hΨθ, hζ]`. Establish `hfst : ∀ r, (Ψ r).fst = r` using `fun r => (RingHom.congr_fun hid r).symm`. Set `L : ChartRing k m d →ₗ[ℤ] ChartRing k m d` to `(AddMonoidHom.mk' (fun r => (Ψ r).snd) (fun x y => by simp)).toIntLinearMap`. Establish `hL : ∀ r, L r = (Ψ r).snd` using `fun r => rfl`.
-
-Use `⟨{ toLinearMap := L map_one_eq_zero' := by show (Ψ 1).snd = 0` and prove the remaining obligations. Rewrite using `[map_one]`. Both sides reduce to the same expression. Use the proof step `leibniz' := fun x y => by show (Ψ (x * y)).snd = x • (Ψ y).snd + y • (Ψ x).snd`. Rewrite using `[map_mul, TrivSqZeroExt.snd_mul, hfst, hfst, smul_eq_mul, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`.
-
-Use `ring }, fun a => ?_⟩`. Use `show (Ψ (ψ a)).snd = ψ (δ a)`. Rewrite using `[← RingHom.comp_apply, hΨ, hαsnd]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (A : Type) [CommRing A] [IsLocalRing A] (k : Type) [Field k] [CharZero k] (m d : ℕ) (ψ : A →+* ChartRing k m d), IsEtaleCompletion ψ → ∀ δ : Derivation ℤ A A, ∃ D' : Derivation ℤ (ChartRing k m d) (ChartRing k m d), ∀ a, D' (ψ a) = ψ (δ a) := by
   intro A _ _ k _ _ m d ψ hψ δ

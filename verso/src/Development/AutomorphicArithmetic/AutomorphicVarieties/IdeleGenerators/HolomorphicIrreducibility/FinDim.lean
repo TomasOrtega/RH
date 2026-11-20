@@ -4,11 +4,11 @@ open CongruenceSubgroup UpperHalfPlane UpperTheory.V.Af Filter Asymptotics Funct
 open scoped MatrixGroups ModularForm Topology
 
 /- English proof (translation)
-Establish `hF` using `ModularFormClass.analyticAt_cuspFunction_zero f one_pos hΓ`. Establish `hle : ((m : ℕ) : ℕ∞) ≤ analyticOrderAt (cuspFunction 1 f) 0`. Rewrite using `[natCast_le_analyticOrderAt_iff_iteratedDeriv_eq_zero hF]`. Introduce `i hi`. Establish `hc` using `h i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hc` using `[qExpansion_coeff]`. Simplify `hc` using `[Nat.factorial_ne_zero]`. Take `⟨g, hg, hev⟩` from `(natCast_le_analyticOrderAt hF).mp hle`. Establish `hq` using `qParam_tendsto_atImInfty (h := 1) one_pos`. Establish `hev' : ∀ᶠ τ : ℍ in atImInfty, Periodic.qParam 1 τ ^ m * g (Periodic.qParam 1 τ) = f τ` using `by filter_upwards [hq.eventually hev] with τ hτ`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← SlashInvariantFormClass.eq_cuspFunction f τ hΓ one_ne_zero, hτ, sub_zero, smul_eq_mul]`. Establish `hb : (fun τ : ℍ => g (Periodic.qParam 1 τ)) =O[atImInfty] (fun _ => (1 : ℂ))` using `(hg.continuousAt.tendsto.comp hq).isBigO_one ℂ`. Establish `key` using `(isBigO_refl (fun τ : ℍ => Periodic.qParam 1 τ ^ m) atImInfty).mul hb`. Simplify using `only [mul_one] at key`. Conclude with `key.congr' hev' (Eventually.of_forall fun _ => rfl)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fd_bigO {F : Type*} [FunLike F ℍ ℂ] {Γ : Subgroup (GL (Fin 2) ℝ)} {k : ℤ} [ModularFormClass F Γ k]
     (hΓ : (1 : ℝ) ∈ Γ.strictPeriods) (f : F) (m : ℕ) (h : ∀ n < m, (qExpansion 1 f).coeff n = 0) :
@@ -33,15 +33,15 @@ private theorem fd_bigO {F : Type*} [FunLike F ℍ ℂ] {Γ : Subgroup (GL (Fin 
   exact key.congr' hev' (Eventually.of_forall fun _ => rfl)
 
 /- English proof (translation)
-Establish `hF` using `ModularFormClass.analyticAt_cuspFunction_zero f one_pos hΓ`. Establish `hq` using `qParam_tendsto_atImInfty (h := 1) one_pos`. Establish `hle : ((m : ℕ) : ℕ∞) ≤ analyticOrderAt (cuspFunction 1 f) 0`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp (ne_top_of_lt hlt)`. Rewrite `hlt` using `[← hn, Nat.cast_lt]`. Take `⟨g, hg, hg0, hev⟩` from `hF.analyticOrderAt_eq_natCast.mp hn.symm`. Take `⟨C, hC⟩` from `h.bound`. Establish `key : ∀ᶠ τ : ℍ in atImInfty, ‖g (Periodic.qParam 1 τ)‖ ≤ C * ‖Periodic.qParam 1 τ‖ ^ (m - n)` using `by filter_upwards [hC, hq.eventually hev] with τ h1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← SlashInvariantFormClass.eq_cuspFunction f τ hΓ one_ne_zero, h2, sub_zero, smul_eq_mul, norm_mul, norm_pow, norm_pow]`. Establish `hpos : 0 < ‖Periodic.qParam 1 (τ : ℂ)‖ ^ n` using `pow_pos (norm_pos_iff.mpr (Periodic.qParam_ne_zero _)) n`. Establish `hsplit : ‖Periodic.qParam 1 (τ : ℂ)‖ ^ m = ‖Periodic.qParam 1 (τ : ℂ)‖ ^ n * ‖Periodic.qParam 1 (τ : ℂ)‖ ^ (m - n)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hlt.le]`. Rewrite `h1` using `[hsplit, mul_left_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_of_mul_le_mul_left h1 hpos`. Establish `t1 : Tendsto (fun τ : ℍ => ‖g (Periodic.qParam 1 τ)‖) atImInfty (𝓝 ‖g 0‖)` using `(hg.continuousAt.tendsto.comp hq).norm`. Establish `t2 : Tendsto (fun τ : ℍ => C * ‖Periodic.qParam 1 τ‖ ^ (m - n)) atImInfty (𝓝 (C * ‖(0 : ℂ)‖ ^ (m - n)))` using `(hq.norm.pow (m - n)).const_mul C`. Establish `hlim` using `le_of_tendsto_of_tendsto t1 t2 key`. Rewrite `hlim` using `[norm_zero, zero_pow (by omega), mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hg0 (norm_le_zero_iff.mp hlim)`. Introduce `n hn`. Establish `hz` using `(natCast_le_analyticOrderAt_iff_iteratedDeriv_eq_zero hF).mp hle n hn`. Simplify using `[qExpansion_coeff, hz]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fd_order {F : Type*} [FunLike F ℍ ℂ] {Γ : Subgroup (GL (Fin 2) ℝ)} {k : ℤ} [ModularFormClass F Γ k]
     (hΓ : (1 : ℝ) ∈ Γ.strictPeriods) (f : F) (m : ℕ)
@@ -81,13 +81,13 @@ private theorem fd_order {F : Type*} [FunLike F ℍ ℂ] {Γ : Subgroup (GL (Fin
   simp [qExpansion_coeff, hz]
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite ((𝒮ℒ) ⧸ Γ.subgroupOf 𝒮ℒ)`. Establish `hb : ∀ q : (𝒮ℒ) ⧸ Γ.subgroupOf 𝒮ℒ, SlashInvariantForm.quotientFunc (𝒢` using `Γ) (k := k) f q =O[atImInfty] (fun _ => (1 : ℂ)) := by`. Introduce `q`. Proceed by induction on `q using Quotient.inductionOn with`. Consider the case `h r`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨_, γ, rfl⟩` from `r`. Rewrite using `[SlashInvariantForm.quotientFunc_mk]`. Establish `hbd` using `ModularFormClass.bdd_at_infty_slash f γ⁻¹`. Rewrite `hbd` using `[ModularForm.SL_slash]`. Establish `e : (Matrix.SpecialLinearGroup.mapGL ℝ γ)⁻¹ = Matrix.SpecialLinearGroup.mapGL ℝ γ⁻¹` using `(map_inv _ _).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `IsBigO.trans ?_ (isBigO_const_const (1 : ℝ) (one_ne_zero (α := ℂ)) atImInfty)` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mk, e]`. Conclude with `hbd`. Establish `hP : (fun τ => ∏ q ∈ Finset.univ.erase ⟦(1 : 𝒮ℒ)⟧, SlashInvariantForm.quotientFunc (𝒢` using `Γ) (k := k) f q τ) =O[atImInfty] (fun _ => (1 : ℂ)) := by`. Simplify using `using IsBigO.finsetProd (s := Finset.univ.erase ⟦(1 : 𝒮ℒ)⟧) (fun q _ => hb q)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsBigO.congr ((isBigO_refl (⇑f) atImInfty).mul hP) (fun τ => ?_) (fun τ => mul_one _)` and prove the remaining obligations. Rewrite using `[ModularForm.coe_norm, Finset.prod_apply, ← Finset.mul_prod_erase Finset.univ (fun q => SlashInvariantForm.quotientFunc (𝒢 := Γ) (k := k) f q τ) (Finset.mem_univ ⟦(1 : 𝒮ℒ)⟧)]`. Simplify using `[SlashInvariantForm.quotientFunc_mk]`. Use `left`. Use `rfl` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 private theorem fd_norm {F : Type*} [FunLike F ℍ ℂ] {Γ : Subgroup (GL (Fin 2) ℝ)} {k : ℤ} [ModularFormClass F Γ k]
     [Γ.IsArithmetic] (f : F) : (ModularForm.norm 𝒮ℒ f : ℍ → ℂ) =O[atImInfty] (f : ℍ → ℂ) := by
@@ -119,9 +119,9 @@ private theorem fd_norm {F : Type*} [FunLike F ℍ ℂ] {Γ : Subgroup (GL (Fin 
   convert rfl
 
 /- English proof (translation)
-Use `⟨(k * Nat.card (𝒮ℒ ⧸ (Γ.subgroupOf 𝒮ℒ))).toNat / 12 + 1, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h1` using `fd_order one_mem_strictPeriods_SL (ModularForm.norm 𝒮ℒ f) _ ((fd_norm f).trans (fd_bigO hΓ f _ hf))`. Establish `h2 : ModularForm.norm 𝒮ℒ f = 0`. Apply `ModularForm.sturm_bound_levelOne` to reduce the goal to its premises. Use `lt_of_lt_of_le ?_ (PowerSeries.nat_le_order _ _ h1)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Nat.lt_succ_self _` after adjusting the coercions. Rewrite `h2` using `[ModularForm.norm_eq_zero_iff]`. Use extensionality with `τ`. Simplify using `using congr_fun h2 τ`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem fd_sturm {Γ : Subgroup (GL (Fin 2) ℝ)} [Γ.IsArithmetic] (hΓ : (1 : ℝ) ∈ Γ.strictPeriods) (k : ℤ) :
     ∃ m : ℕ, ∀ f : CuspForm Γ k, (∀ n < m, (qExpansion 1 f).coeff n = 0) → f = 0 := by
@@ -136,13 +136,13 @@ private theorem fd_sturm {Γ : Subgroup (GL (Fin 2) ℝ)} [Γ.IsArithmetic] (hΓ
   simpa using congr_fun h2 τ
 
 /- English proof (translation)
-Introduce `N k _`. Establish `hΓ : (1 : ℝ) ∈ (Subgroup.map (Matrix.SpecialLinearGroup.mapGL ℝ) (Gamma1 N)).strictPeriods`. Simplify using the standard rewrite rules. Take `⟨m, hm⟩` from `fd_sturm hΓ (k : ℤ)`. Use `⟨?_, fun f hf => hm f fun n _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `L : CuspForm (Subgroup.map (Matrix.SpecialLinearGroup.mapGL ℝ) (Gamma1 N)) (k : ℤ) →ₗ[ℂ] (Fin m → ℂ)` to `{ toFun := fun f i => (qExpansion 1 f).coeff i map_add' := fun f g => by`. Use extensionality with `i`. Simplify using `only [CuspForm.coe_add, ModularForm.qExpansion_add one_pos hΓ f g, map_add, Pi.add_apply]`. Use the proof step `map_smul' := fun c f => by`. Use extensionality with `i`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [CuspForm.coe_smul, ModularForm.qExpansion_smul one_pos hΓ c f, PowerSeries.coeff_smul, smul_eq_mul, Pi.smul_apply, RingHom.id_apply] }`. Use `Module.Finite.of_injective L fun f g hfg => ?_` and prove the remaining obligations. Establish `hfg0 : f - g = 0` using `hm (f - g) fun n hn => by`. Establish `hc` using `congrFun hfg ⟨n, hn⟩`. Simplify using `only [L, LinearMap.coe_mk, AddHom.coe_mk] at hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CuspForm.coe_sub, ModularForm.qExpansion_sub one_pos hΓ f g, map_sub, hc, sub_self]`. Conclude with `sub_eq_zero.mp hfg0`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `CuspFormClass.qExpansion_coeff_zero f one_pos hΓ`. Conclude with `hf n hn`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.finDim :
     UpperTheory.V.Sd.FinDim := by

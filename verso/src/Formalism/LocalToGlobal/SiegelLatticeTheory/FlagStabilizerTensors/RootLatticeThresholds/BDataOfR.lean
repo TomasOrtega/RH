@@ -34,9 +34,9 @@ def JointAmplitudeFactorizationRotated {τ₀ Rw I₀ H H₁ : Type} [Fintype I�
       ENNReal.ofReal (N.jacobianSquareBound γ) ≤ ENNReal.ofReal Cfac * ∏ τ, ENNReal.ofReal (hsNormSq ((A τ).J (νR τ) (g τ)))
 
 /- English proof (translation)
-Use `Finset.induction_on s (by simp) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Break down `le_or_gt 0 (x a) with h | h` into its components or cases. Rewrite using `[ENNReal.ofReal_mul h]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Rewrite using `[ENNReal.ofReal_of_nonpos h.le, zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma prod_ofReal_le_lemma {ι : Type*} (s : Finset ι) (x : ι → ℝ) :
     ∏ i ∈ s, ENNReal.ofReal (x i) ≤ ENNReal.ofReal (∏ i ∈ s, x i) := by
@@ -49,11 +49,11 @@ private lemma prod_ofReal_le_lemma {ι : Type*} (s : Finset ι) (x : ι → ℝ)
   · rw [ENNReal.ofReal_of_nonpos h.le, zero_mul]; simp
 
 /- English proof (translation)
-Introduce `γ w hpt hw hrow`. Distinguish the cases in `hpos : 0 < N.jacobianSquareBound γ`. Take `⟨g, θ', νR, hτ, hle⟩` from `hF γ w hpt hw hrow hpos`. Establish `h1 : ∏ τ, ENNReal.ofReal (hsNormSq ((I.A τ).J (νR τ) (g τ))) ≤ ∏ τ, (ENNReal.ofReal (I.K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2)) * orbSq ((bdOf I.toInputs hok).L τ) ((bdOf I.toInputs hok).f τ) (Formalism.MainNotions.S.Pv.Frames.turnPt (ptLoc D τ w)))`. Apply `Finset.prod_le_prod'` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `τ _`. Conclude with `le_trans (I.hJ τ (g τ) (ptLoc D τ w) (hτ τ).1 (θ' τ) (hτ τ).2.1 (νR τ) (hτ τ).2.2) (by gcongr; exact orbSqO_le_bdOf I.toInputs hok hka τ _)`. Rewrite `h1` using `[Finset.prod_mul_distrib]`. Establish `h2` using `prod_ofReal_le_lemma Finset.univ (fun τ => I.K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2))`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.ofReal_mul hCfac, mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[ENNReal.ofReal_of_nonpos (not_lt.mp hpos)]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jointAmplitude_bound_rotated {τ₀ Rw I₀ H H₁ : Type} [Fintype I₀] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (X : Formalism.FourierDecayAlt.PB.Terms τ₀ Rw I₀ H H₁)
@@ -103,11 +103,11 @@ def RelPtExPR (u u' : D.what₂.Word) {θ : ℝ} (C : Choice X θ) : Prop :=
       RelPt D (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) (gamP C u u' w τ) (ptLoc D τ w)
 
 /- English proof (translation)
-Establish `h1 : p.1.map Prod.snd = q.1.map Prod.snd` using `congrArg (fun s => s.1.blocks) h`. Establish `key : ∀ r : Formalism.MainNotions.S.Point K (i + 1), List.ofFn (Formalism.L2.SG.RowsConc.toPts r).2 = r.1.map Prod.fst`. Introduce `r`. Apply `List.ext_get` to reduce the goal to its premises. Simplify using `[Formalism.L2.SG.RowsConc.toPts, Composition.length]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Introduce `n h1 h2`. Simplify using `[Formalism.L2.SG.RowsConc.toPts]`. Establish `h2 : p.1.map Prod.fst = q.1.map Prod.fst`. Rewrite using `[← key p, ← key q]`. Conclude with `congrArg (fun s : (Σ c : Composition (i + 1), (Fin c.length → K)) => List.ofFn s.2) h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← List.zip_unzip p.1, ← List.zip_unzip q.1, List.unzip_fst, List.unzip_snd, List.unzip_fst, List.unzip_snd, h1, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma toPts_inj_lemma {K : Type} [Zero K] {i : ℕ} (p q : Formalism.MainNotions.S.Point K (i + 1))
     (h : Formalism.L2.SG.RowsConc.toPts p = Formalism.L2.SG.RowsConc.toPts q) : p = q := by
@@ -126,7 +126,7 @@ private lemma toPts_inj_lemma {K : Type} [Zero K] {i : ℕ} (p q : Formalism.Mai
     List.unzip_snd, h1, h2]
 
 /- English proof (translation)
-Introduce `f hf`. Rewrite using `[h f hf]`. Simplify using `only [lintegral_smul_measure, smul_eq_mul]`. Rewrite using `[lintegral_const_mul' _ _ hct, ← mul_assoc, ENNReal.inv_mul_cancel hc0 hct, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma quot_scale_lemma_2 {k r : ℕ} {μG μS ν : Measure (Formalism.QuantumDeterminants.Mt k r)}
     (h : Formalism.MainNotions.S.IsQuotMeas μG μS ν) {c : ENNReal} (hc0 : c ≠ 0) (hct : c ≠ ⊤) :
@@ -137,25 +137,21 @@ private lemma quot_scale_lemma_2 {k r : ℕ} {μG μS ν : Measure (Formalism.Qu
   rw [lintegral_const_mul' _ _ hct, ← mul_assoc, ENNReal.inv_mul_cancel hc0 hct, one_mul]
 
 /- English proof (translation)
-Introduce `γ w hpt hw hrow hpos`. Establish `hJB : (NOf2 Y u u' νL ν ng).jacobianSquareBound γ = J2of Y u u' ν γ` using `rfl`. Rewrite `hpos`, the goal using `[hJB]`. Substitute `hw` using the available equality. Take `⟨w', hw', hrep⟩` from `isPtRep_of_J2of hpos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `hww : w' = w` using `toPts_inj_lemma w' w hw'`. Substitute `hww` using the available equality. Establish `hP1 : 0 < localAmplitudeProduct u u' hB w'` using `hP w' hrow hpos`. Use `haveI := Formalism.L2.SG.Pf.LTL.tau_nonempty D`. Establish `hn : 0 < Fintype.card D.what₂.Tau` using `Fintype.card_pos`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ0 : thetaP u u' hB (J2of Y u u' ν (toPts w')) w' = (localAmplitudeProduct u u' hB w' / J2of Y u u' ν (toPts w')) ^ ((1 : ℝ) / (2 * Fintype.card D.what₂.Tau))`. Simplify using `only [thetaP, if_pos (And.intro hpos hP1)]`. Establish `hθpos : 0 < thetaP u u' hB (J2of Y u u' ν (toPts w')) w'`. Rewrite using `[hθ0]`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `div_pos hP1 hpos`. Establish `hν1 : ∀ τ, RMeas D (locW C u u' τ) (gamP C u u' w' τ) 1 (nu1P C u u' w' τ)` using `fun τ => by`. Establish `h` using `hM w' hrow hrep τ`. Simplify using `only [nu1P, dif_pos h]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsc : ∀ τ, RMeas D (locW C u u' τ) (gamP C u u' w' τ) (thetaP u u' hB (J2of Y u u' ν (toPts w')) w') (ENNReal.ofReal (thetaP u u' hB (J2of Y u u' ν (toPts w')) w')⁻¹ • nu1P C u u' w' τ)` using `fun τ => by`. Take `⟨p, μR, hroot, hq⟩` from `hν1 τ`. Use `⟨p, μR, hroot, ?_⟩` and prove the remaining obligations. Rewrite `hq` using `[ENNReal.ofReal_one, one_smul]`. Rewrite using `[ENNReal.ofReal_inv_of_pos hθpos]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `quot_scale_lemma_2 hq (ENNReal.ofReal_pos.mpr hθpos).ne' ENNReal.ofReal_ne_top`. Use `⟨fun τ => gamP C u u' w' τ, fun _ => thetaP u u' hB (J2of Y u u' ν (toPts w')) w', fun τ => ENNReal.ofReal (thetaP u u' hB (J2of Y u u' ν (toPts w')) w')⁻¹ • nu1P C u u' w' τ, fun τ => ⟨hR w' hrow hrep τ, hT w' hrow hpos, hsc τ⟩, ?_⟩` and prove the remaining obligations. Use `set θ0 := thetaP u u' hB (J2of Y u u' ν (toPts w')) w' with hθdef`. Use `set J2 := J2of Y u u' ν (toPts w') with hJ2def`. Establish `hfac : ∀ τ, hsNormSq ((AX hB u u' τ).J (ENNReal.ofReal θ0⁻¹ • nu1P C u u' w' τ) (gamP C u u' w' τ)) = θ0⁻¹ * θ0⁻¹ * hsNormSq ((locS hB u u' τ).J (nu1P C u u' w' τ) (gamP C u u' w' τ))` using `fun τ => by show hsNormSq ((locS hB u u' τ).J (ENNReal.ofReal θ0⁻¹ • nu1P C u u' w' τ) (gamP C u u' w' τ)) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Formalism.L2.SG.Pf.LTL.locJ_smul, Formalism.L2.SG.Pf.LTL.hsNormSq_smul, Complex.normSq_ofReal, ENNReal.toReal_ofReal (inv_nonneg.mpr hθpos.le)]`. Establish `hpow : θ0 ^ (2 * Fintype.card D.what₂.Tau) = localAmplitudeProduct u u' hB w' / J2`. Rewrite using `[hθ0, ← Real.rpow_natCast, ← Real.rpow_mul (div_pos hP1 hpos).le]`. Establish `: (1 : ℝ) / (2 * Fintype.card D.what₂.Tau) * ((2 * Fintype.card D.what₂.Tau : ℕ) : ℝ) = 1` using `by push_cast; field_simp`. Rewrite using `[this, Real.rpow_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hprod : ∏ τ, (θ0⁻¹ * θ0⁻¹ * hsNormSq ((locS hB u u' τ).J (nu1P C u u' w' τ) (gamP C u u' w' τ))) = J2`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Express the relevant statement in the definitionally equal form `(θ0⁻¹ * θ0⁻¹) ^ Fintype.card D.what₂.Tau * localAmplitudeProduct u u' hB w' = J2`. Establish `e : (θ0⁻¹ * θ0⁻¹) ^ Fintype.card D.what₂.Tau = (θ0 ^ (2 * Fintype.card D.what₂.Tau))⁻¹`. Rewrite using `[← mul_inv, ← pow_two, inv_pow, ← pow_mul]`.
-
-Rewrite using `[e, hpow, inv_div, div_mul_cancel₀ _ hP1.ne']`. Rewrite using `[ENNReal.ofReal_one, one_mul]`. Simplify using `only [hfac]`. Rewrite using `[← ENNReal.ofReal_prod_of_nonneg (fun τ _ => by`. Use `Formalism.L2.SG.Pf.LTL.hsNormSq_nonneg ((locS hB u u' τ).J (nu1P C u u' w' τ) (gamP C u u' w' τ))` as an intermediate fact.
-
-Use the proof step `positivity), hprod]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jointAmplitudeFactorizationRotated_of (Y : Full X) (u u' : D.what₂.Word) (large₂ : SizeData₂ D) (C1 : ℝ) {θ : ℝ} (C : Choice X θ)
     (hB : WuBessel C) (ν νL : X.B.I.Ginf → Measure X.B.I.Ginf) (ng : Formalism.FourierDecayAlt.PN.Pts D.host.E D.R.rS → ℝ)
@@ -227,9 +223,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hb : 0 < large₂.sc.b`. Establish `h` using `Formalism.MainNotions.exp_one_le_b_rpow large₂ (Cβ := 1) le_rfl`. Rewrite `h` using `[Real.rpow_one]`. Combine the linear relations using `[Real.exp_pos 1]`. Establish `hv : 0 < D.host.v` using `Formalism.MainNotions.BridgeLemma.sza_v_pos D`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Set `I` to `ampInOf hAmp hH hTT hθw hT hT' (WX Cc u u') (AX hBs u u') (fun τ => goodW_of Cc u u' τ (hloc τ).1 (hloc τ).2.1 (hloc τ).2.2.1 (hloc τ).2.2.2.1 (hloc τ).2.2.2.2.1) (fun τ => goodS_of hBs u u' τ (hloc τ).2.2.2.2.2)`. Establish `hok : ∀ τ, LocOk D Ch Cs (I.L τ) (lamSH D.R (D.hc τ)) (kaRe D) (large₂.sc.b ^ Cβ) (kaRe D)` using `fun τ => locOk_locB D τ u u' θ _ _ _ _ hT hT' hka hv hθ0 (hStd hH τ u u').1 (hTF hH u) (hTF hH u')`. Establish `hK : 0 ≤ ∏ τ, (I.K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2))` using `Finset.prod_nonneg fun τ _ => mul_nonneg (I.hK τ).le (Real.rpow_nonneg hb.le _)`. Use `⟨bdOf I.toInputs hok, 1, Cfac * ∏ τ, (I.K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2)), zero_le_one, mul_nonneg hCfac hK, gaps_bdOf I.toInputs hok (fun τ => (hStd hH τ u u').2) hCs le_rfl, hpt, hwt, jointAmplitude_bound_rotated XT N I hok hka hCfac hJF, normTie_bdOf I hok hCfac hIre …` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ties_coreR {τ₀ Rw I₀ H H₁ : Type} [Fintype I₀] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (XT : Formalism.FourierDecayAlt.PB.Terms τ₀ Rw I₀ H H₁)
@@ -283,7 +279,7 @@ def RowBDataR {D : D7} (large₂ : SizeData₂ D) {X : HidaSetting D} (Y : Full 
           ENNReal.ofReal (large₂.sc.b ^ (Cn * (D.R.m : ℝ) ^ 2 * D.R.f) * Ire)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hIre, θ, C, hB, hθ0, hθw, hloc, 1, zero_le_one, fun νL ng => jointAmplitudeFactorizationRotated_of Y u u' large₂ C1 C hB ν νL ng hR hM hP hT, fun sec hsec => by rw [ENNReal.ofReal_one, one_mul]; exact hN sec hsec⟩`.
+Supply the required witnesses or components.
 -/
 theorem rowBDataR_of {D : D7} {X : HidaSetting D} (large₂ : SizeData₂ D) (Y : Full X) (u u' : D.what₂.Word)
     (ν : X.B.I.Ginf → Measure X.B.I.Ginf) (C1 Cn Ire : ℝ) (hIre : 0 ≤ Ire) {θ : ℝ} (C : Choice X θ) (hB : WuBessel C)
@@ -337,23 +333,23 @@ def RowBDataUnifGR : Prop :=
       ∀ ν, Pinned X u u ν → RowBDataGR large₂ Y u ν C1 Cn Ire
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0 A`. Take `⟨C1, Cn, c₀, d₀, hR2⟩` from `hR Cg cb Cw cT CT C0`. Take `⟨Ca, -, a₀, b₀, hA2⟩` from `hA Cg cb Cw cT CT C0 C1`. Take `⟨g₀, h₀, hP2⟩` from `hP Cg cb Cw cT CT C0`. Take `⟨Cb, Cg₀, hB1⟩` from `hB (A : ℝ) (|CT| + 1 / 8 + 2 * |Cg|) (Nat.cast_nonneg A)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hCB : 0 ≤ max 0 Cb * max 2 Cw + |Ca| + |Cn|`. Establish `h1 : 0 ≤ max 0 Cb` using `le_max_left _ _`. Establish `h2 : 0 ≤ max 2 Cw` using `le_trans (by norm_num) (le_max_left _ _)`. Use `mul_nonneg h1 h2` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Use `⟨max 0 Cb * max 2 Cw + |Ca| + |Cn|, hCB, max a₀ (max c₀ g₀), max 8 (max (128 * max Cg₀ 0) (max b₀ (max d₀ h₀))), ?_⟩` and prove the remaining obligations. Introduce `C' Cl hC' hCl D large₂ X Y u u' hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin νL ng`. Establish `hC'a : a₀ ≤ C'` using `le_trans (le_max_left _ _) hC'`. Establish `hC'c : c₀ ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC'`. Establish `hC'g : g₀ ≤ C'` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCl8 : 8 ≤ Cl` using `le_trans (le_max_left _ _) hCl`. Establish `hCls : 128 * max Cg₀ 0 ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCl`. Establish `hClb : b₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hCl`. Establish `hCld : d₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl`. Establish `hClh : h₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cw cT CT C0` using `hctx.1`. Establish `hTT` using `hypTT_of hctx.2.1`. Take `⟨hT, hT'⟩` from `tr_pos hctx.2.1`. Establish `hm` using `cl_le_m hH`. Establish `hs0 : 0 ≤ max Cg₀ 0` using `le_max_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmR : (128 : ℝ) * |max Cg₀ 0| ≤ D.R.m` using `by rw [abs_of_nonneg hs0]; linarith`. Establish `hmR' : |max Cg₀ 0| ≤ D.R.m` using `by rw [abs_of_nonneg hs0]; linarith`. Establish `hβ2 : (2 : ℝ) ≤ max 2 Cw` using `le_max_left _ _`. Establish `hCh0 : (0 : ℝ) ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by positivity`. Establish `hChT : CT ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)` using `by nlinarith`. Establish `h2 : CT ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by have := le_abs_self CT; have := abs_nonneg Cg; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hChg : 1 / 8 + 2 * Cg ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)`. Establish `h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 1 / 8 + 2 * Cg ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by have := le_abs_self Cg; have := abs_nonneg CT; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hStd` using `Formalism.MainNotions.BridgeLemma.stdOfHyp_rec D large₂ C' Cl Cg cb Cw cT CT C0 (|CT| + 1 / 8 + 2 * |Cg|) (max Cg₀ 0) (max Cg₀ 0) (max 2 Cw) hCl8 hCh0 hβ2 (le_max_right _ _) hChT hChg hmR hmR'`. Establish `hka` using `(Formalism.MainNotions.BridgeLemma.std_kaS hH hCl8).1`. Take `⟨hIre, θ, Cc, hBs, hθ0, hθw, hloc, Cfac, hCfac, hJF, hNF⟩` from `hR2 C' Cl hC'c hCld D large₂ X Y u u' hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hTB : 0 ≤ Real.exp ((max 0 Cb * max 2 Cw + |Ca| + |Cn|) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b) * Ire` using `mul_nonneg (Real.exp_pos _).le hIre`. Conclude with `pointSum_of_B3R (Y.tO u u') (NOf2 Y u u' νL ν ng) (hB1 (max Cg₀ 0) (le_max_left _ _) D) (fun γ => Formalism.L2.SG.ThmBUse.J2of_nonneg' Y u u' ν γ) hTB (ties_coreR (Y.tO u u') (NOf2 Y u u' νL ν ng) u u' A hH hTT hT hT' (hA2 C' Cl hC'a hClb D large₂) hStd (fun _ => hctx.2.2.2.2.2.2 …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stepThmBPinnedC_ofR (hB : JointNormBoundRotatedUniform) (hA : AmpUnif) (hP : PtUnif)
     (hR : RowBDataUnifR) : StepThmBPinnedC := by
@@ -413,23 +409,23 @@ theorem stepThmBPinnedC_ofR (hB : JointNormBoundRotatedUniform) (hA : AmpUnif) (
       (hJF νL ng) hNF hs0 hka (by linarith))
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0 A`. Take `⟨C1, Cn, c₀, d₀, hR2⟩` from `hR Cg cb Cw cT CT C0`. Take `⟨Ca, -, a₀, b₀, hA2⟩` from `hA Cg cb Cw cT CT C0 C1`. Take `⟨g₀, h₀, hP2⟩` from `hP Cg cb Cw cT CT C0`. Take `⟨Cb, Cg₀, hB1⟩` from `hB (A : ℝ) (|CT| + 1 / 8 + 2 * |Cg|) (Nat.cast_nonneg A)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hCB : 0 ≤ max 0 Cb * max 2 Cw + |Ca| + |Cn|`. Establish `h1 : 0 ≤ max 0 Cb` using `le_max_left _ _`. Establish `h2 : 0 ≤ max 2 Cw` using `le_trans (by norm_num) (le_max_left _ _)`. Use `mul_nonneg h1 h2` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Use `⟨max 0 Cb * max 2 Cw + |Ca| + |Cn|, hCB, max a₀ (max c₀ g₀), max 8 (max (128 * max Cg₀ 0) (max b₀ (max d₀ h₀))), ?_⟩` and prove the remaining obligations. Introduce `C' Cl hC' hCl D large₂ X Y u hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin νL ng`. Establish `hC'a : a₀ ≤ C'` using `le_trans (le_max_left _ _) hC'`. Establish `hC'c : c₀ ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC'`. Establish `hC'g : g₀ ≤ C'` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCl8 : 8 ≤ Cl` using `le_trans (le_max_left _ _) hCl`. Establish `hCls : 128 * max Cg₀ 0 ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCl`. Establish `hClb : b₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hCl`. Establish `hCld : d₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl`. Establish `hClh : h₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cw cT CT C0` using `hctx.1`. Establish `hTT` using `hypTT_of hctx.2.1`. Take `⟨hT, -⟩` from `tr_pos hctx.2.1`. Establish `hm` using `cl_le_m hH`. Establish `hs0 : 0 ≤ max Cg₀ 0` using `le_max_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmR : (128 : ℝ) * |max Cg₀ 0| ≤ D.R.m` using `by rw [abs_of_nonneg hs0]; linarith`. Establish `hmR' : |max Cg₀ 0| ≤ D.R.m` using `by rw [abs_of_nonneg hs0]; linarith`. Establish `hβ2 : (2 : ℝ) ≤ max 2 Cw` using `le_max_left _ _`. Establish `hCh0 : (0 : ℝ) ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by positivity`. Establish `hChT : CT ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)` using `by nlinarith`. Establish `h2 : CT ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by have := le_abs_self CT; have := abs_nonneg Cg; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hChg : 1 / 8 + 2 * Cg ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)`. Establish `h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 1 / 8 + 2 * Cg ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by have := le_abs_self Cg; have := abs_nonneg CT; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hStd` using `Formalism.MainNotions.BridgeLemma.stdOfHyp_rec D large₂ C' Cl Cg cb Cw cT CT C0 (|CT| + 1 / 8 + 2 * |Cg|) (max Cg₀ 0) (max Cg₀ 0) (max 2 Cw) hCl8 hCh0 hβ2 (le_max_right _ _) hChT hChg hmR hmR'`. Establish `hka` using `(Formalism.MainNotions.BridgeLemma.std_kaS hH hCl8).1`. Take `⟨hIre, θ, Cc, hBs, hθ0, hθw, hloc, Cfac, hCfac, hJF, hNF⟩` from `hR2 C' Cl hC'c hCld D large₂ X Y u hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hTB : 0 ≤ Real.exp ((max 0 Cb * max 2 Cw + |Ca| + |Cn|) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b) * Ire` using `mul_nonneg (Real.exp_pos _).le hIre`. Conclude with `pointSum_of_B3R (genT (Y.tO u u)) (NOfG Y u νL ν ng) (hB1 (max Cg₀ 0) (le_max_left _ _) D) (fun γ => Formalism.L2.SG.ThmBUse.J2of_nonneg' Y u u ν γ) hTB (ties_coreR (genT (Y.tO u u)) (NOfG Y u νL ν ng) u u A hH hTT hT hT (hA2 C' Cl hC'a hClb D large₂) hStd (fun _ => hctx.2.2.2.2. …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stepThmBG_ofR (hB : JointNormBoundRotatedUniform) (hA : AmpUnif) (hP : PtUnifG)
     (hR : RowBDataUnifGR) : StepThmBG := by

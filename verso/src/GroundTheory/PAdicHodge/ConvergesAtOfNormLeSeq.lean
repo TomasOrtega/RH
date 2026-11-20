@@ -16,14 +16,14 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] (T : TeichLift p L Γ)
 
 /- English proof (translation)
-Use `show ‖T.coeff (T.ptElt hc : Γ) 0‖ = ‖c‖`. Rewrite using `[coeff_zero, coe_ptElt, map_sub, red_π, red_teich, zero_sub, norm_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptRad_ptElt {c : L} (hc : ‖c‖ ≤ 1) : T.ptRad (T.ptElt hc) = ‖c‖ := by
   show ‖T.coeff (T.ptElt hc : Γ) 0‖ = ‖c‖
   rw [coeff_zero, coe_ptElt, map_sub, red_π, red_teich, zero_sub, norm_neg]
 
 /- English proof (translation)
-Use `set hξ := T.isPrimOne_ptElt hc0 hc1`. Establish `h0` using `T.ptE_ξ hξ`. Rewrite `h0` using `[coe_ptElt, sub_eq_add_neg, T.ptE_add hξ (T.convergesAt_π _) (T.convergesAt_zcoeff_neg (T.ptRad_pos' hξ) (T.ptRad_lt_one' hξ) (T.convergesAt_teich c _)), T.ptE_neg hξ (T.convergesAt_teich c _), ptE_π, ptE_teich]`. Conclude with `add_neg_eq_zero.1 h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptPi_ptElt {c : L} (hc0 : c ≠ 0) (hc1 : ‖c‖ < 1) :
     T.ptPi (T.isPrimOne_ptElt hc0 hc1) = T.ptSharp (T.isPrimOne_ptElt hc0 hc1) c := by
@@ -35,7 +35,7 @@ theorem ptPi_ptElt {c : L} (hc0 : c ≠ 0) (hc1 : ‖c‖ < 1) :
   exact add_neg_eq_zero.1 h0
 
 /- English proof (translation)
-Use `squeeze_zero (fun n => by positivity) (fun n => ?_) ha` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (h n) (zpow_pos hρ n).le`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem convergesAt_of_norm_le_seq {a a' : ℤ → L} {ρ : ℝ} (ha : ConvergesAt a ρ)
     (h : ∀ n, ‖a' n‖ ≤ ‖a n‖) (hρ : 0 < ρ) : ConvergesAt a' ρ := by
@@ -45,83 +45,71 @@ theorem convergesAt_of_norm_le_seq {a a' : ℤ → L} {ρ : ℝ} (ha : Converges
 variable [IsAlgClosed L] {ρ0 : Set.Ioo (0 : ℝ) 1}
 
 /- English proof (translation)
-Use `set rr : Set.Ioc (0 : ℝ) ρ0 := ⟨r, h.1, h.2.le⟩`. Use `set b := T.approx hx h`. Establish `hb : T.extNorm ρ0 rr (x - b) < T.extNorm ρ0 rr x` using `T.approx_spec hx h rr le_rfl (mid_rad h).2.2.le`. Use `set N := T.extNorm ρ0 rr x with hNdef`. Establish `hNpos : 0 < N` using `T.extNorm_pos hx rr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a : ℤ → L := T.coeffB b with hadef`. Establish `ha : ConvergesAt a r` using `T.convergesAt_rad ρ0 b rr`. Establish `hgn : Laurent.gaussNorm a r = N`. Establish `e1` using `T.extNorm_eq_of_lt hb`. Rewrite `e1` using `[extNorm_coe]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `e1`. Establish `ha0 : a ≠ 0`. Introduce `h0`. Rewrite `hgn` using `[h0]`. Simplify using `[Laurent.gaussNorm] at hgn`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set lo := lowIndex a r`. Use `set hi := highIndex a r`. Establish `hlo` using `T.lowIdx_eq_approx hx h`. Establish `hhi` using `T.highIdx_eq_approx hx h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmult : T.mult x r = hi - lo` using `by rw [mult, hlo, hhi]`. Establish `hwlo : ‖a lo‖ * r ^ lo = N`. Use `lowIndex_mem h.1 ha ha0` as an intermediate fact. Simplify using `only [domSet, Set.mem_setOf_eq] at this`. Rewrite using `[this, hgn]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwhi : ‖a hi‖ * r ^ hi = N`. Use `highIndex_mem h.1 ha ha0` as an intermediate fact. Simplify using `only [domSet, Set.mem_setOf_eq] at this`. Rewrite using `[this, hgn]`. Establish `hwle : ∀ n, ‖a n‖ * r ^ n ≤ N` using `fun n => hgn ▸ ha.le_gaussNorm n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set m : ℕ := (hi - lo).toNat`. Establish `hm' : (m : ℤ) = hi - lo` using `Int.toNat_of_nonneg (by omega)`. Establish `hm1 : 1 ≤ m` using `by omega`. Establish `hhi' : hi = lo + m` using `by omega`. Use `set P : Polynomial L := ∑ i ∈ Finset.range (m + 1), Polynomial.C (a (lo + i)) * Polynomial.X ^ i with hPdef`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcoeff : ∀ k, P.coeff k = if k < m + 1 then a (lo + k) else 0` using `fun k => by`. Rewrite using `[hPdef, Polynomial.finset_sum_coeff]`. Simplify using `only [Polynomial.coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_ite_eq (Finset.range (m + 1)) k (fun i => a (lo + i))]`. Simplify using `[Finset.mem_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlo0 : a lo ≠ 0`. Introduce `h0`. Rewrite `hwlo` using `[h0, norm_zero, zero_mul]`. Conclude with `hNpos.ne hwlo`. Establish `hhi0 : a hi ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `h0`. Rewrite `hwhi` using `[h0, norm_zero, zero_mul]`. Conclude with `hNpos.ne hwhi`. Establish `hdeg : P.natDegree = m`. Use `Polynomial.natDegree_eq_of_le_of_coeff_ne_zero ?_ (by rw [hcoeff, if_pos (by omega), ← hhi']; exact hhi0)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun i hi' => ?_` and prove the remaining obligations. Use `(Polynomial.natDegree_C_mul_X_pow_le _ _).trans ?_` and prove the remaining obligations. Use `Finset.mem_range.1 hi'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hP0 : P.coeff 0 ≠ 0` using `by rw [hcoeff, if_pos (by omega)]; simpa using hlo0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Take `⟨c, hroot, hcj⟩` from `exists_isRoot_forall_norm_pow_mul_le (by omega : 0 < P.natDegree) hP0`. Establish `hcoeff0 : P.coeff 0 = a lo` using `by rw [hcoeff, if_pos (by omega)]; simp`. Establish `hrel : ‖a lo‖ = ‖a hi‖ * r ^ m`. Establish `e1 : r ^ hi = r ^ lo * r ^ m`. Rewrite using `[hhi', zpow_add₀ h.1.ne', zpow_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hwlo.trans hwhi.symm` as an intermediate fact. Rewrite `this` using `[e1]`. Establish `hlp` using `zpow_pos h.1 lo`. Clear denominators, using `at this` for the nonvanishing conditions. Use polynomial arithmetic with `[this]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcle : ‖c‖ ≤ r`. Use `hcj m` as an intermediate fact. Rewrite `this` using `[hcoeff, if_pos (by omega), ← hhi', hcoeff0, hrel]`. Establish `hn : 0 < ‖a hi‖` using `norm_pos_iff.2 hhi0`. Establish `: ‖c‖ ^ m ≤ r ^ m` using `by nlinarith`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) h.1.le (by omega)).1 this`. Establish `hcge : r ≤ ‖c‖`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hbound : ∀ i ∈ Finset.range m, ‖a (lo + (i + 1)) * c ^ (i + 1)‖ < ‖a lo‖`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _`. Rewrite using `[norm_mul, norm_pow]`. Establish `hw` using `hwle (lo + (i + 1))`. Rewrite `hw` using `[← hwlo, zpow_add₀ h.1.ne']`. Establish `hz : r ^ ((i : ℤ) + 1) = r ^ (i + 1)` using `by rw [← zpow_natCast]; push_cast; rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hw` using `[hz]`. Establish `hlp` using `zpow_pos h.1 lo`. Establish `h1 : ‖a (lo + (i + 1))‖ * r ^ (i + 1) ≤ ‖a lo‖`. Establish `: (‖a (lo + (i + 1))‖ * r ^ (i + 1)) * r ^ lo ≤ ‖a lo‖ * r ^ lo` using `by nlinarith`. Conclude with `le_of_mul_le_mul_right this hlp`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcpow : ‖c‖ ^ (i + 1) < r ^ (i + 1)` using `pow_lt_pow_left₀ hlt (norm_nonneg _) (by omega)`. Break down `(norm_nonneg (a (lo + (i + 1)))).lt_or_eq with hpos | heq` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← heq, zero_mul]`. Conclude with `norm_pos_iff.2 hlo0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i0, hi0mem, hi0max⟩` from `(Finset.range m).exists_max_image (fun i => ‖a (lo + (i + 1)) * c ^ (i + 1)‖) ⟨0, Finset.mem_range.2 (by omega)⟩`. Establish `hrest : ‖∑ i ∈ Finset.range m, a (lo + (i + 1)) * c ^ (i + 1)‖ < ‖a lo‖` using `(norm_finset_sum_le_ultra _ _ (norm_nonneg _) fun i hi' => hi0max i hi').trans_lt (hbound i0 hi0mem)`. Establish `hPc : P.eval c = a lo + ∑ i ∈ Finset.range m, a (lo + (i + 1)) * c ^ (i + 1)`. Rewrite using `[hPdef, Polynomial.eval_finset_sum, Finset.sum_range_succ']`. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, pow_zero, mul_one, Nat.cast_zero, add_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `: P.eval c ≠ 0`. Rewrite using `[hPc]`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `ultra_norm_sub_eq_left (a := a lo) (b := -∑ i ∈ Finset.range m, a (lo + (i + 1)) * c ^ (i + 1)) (by rw [norm_neg]; exact hrest)` as an intermediate fact. Rewrite `this` using `[sub_neg_eq_add, h0, norm_zero]`. Conclude with `hlo0 (norm_eq_zero.1 this.symm)`. Conclude with `this hroot`. Establish `hcr : ‖c‖ = r` using `le_antisymm hcle hcge`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hc0 : c ≠ 0` using `by intro h0; rw [h0, norm_zero] at hcr; exact h.1.ne hcr`. Establish `hc1 : ‖c‖ < 1` using `hcr ▸ (h.2.trans ρ0.2.2)`. Establish `hrad : T.ptRad (T.ptElt hc1.le) = r` using `(T.ptRad_ptElt hc1.le).trans hcr`. Use `⟨c, hc0, hc1, hrad, ?_⟩` and prove the remaining obligations. Use `set hξ0 := T.isPrimOne_ptElt hc0 hc1`.
+Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `set hr0 := hrad.trans_le h.2.le`. Establish `hIoc : T.ptRadIoc hξ0 hr0 = rr` using `Subtype.ext hrad`. Establish `har : ConvergesAt a (T.ptRad (T.ptElt hc1.le))` using `by rw [hrad]; exact ha`. Establish `hvb : T.ptEval hξ0 hr0 ((b : T.Econ ρ0) : T.RobbaExt ρ0) = T.ptEvalSeq hξ0 a`. Rewrite using `[ptEval_coe]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Both sides reduce to the same expression. Establish `hterm : ∀ n, T.ptTerm hξ0 a n = T.ptSharp hξ0 (c ^ n * a n)`. Introduce `n`. Rewrite using `[ptTerm, T.ptPi_ptElt hc0 hc1, map_mul, map_zpow₀]`. Use `set S : Finset ℤ := (Finset.range (m + 1)).image (fun i : ℕ => lo + i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hSmem : ∀ n, n ∈ S ↔ lo ≤ n ∧ n ≤ hi`. Introduce `n`. Simplify using `only [S, Finset.mem_image, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi', rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨h1, h2⟩; exact ⟨(n - lo).toNat, by omega, by omega⟩`. Use `set ablock : ℤ → L := fun n => if n ∈ S then a n else 0`. Use `set arest : ℤ → L := fun n => if n ∈ S then 0 else a n`. Apply the tactic sequence `have hcb : ConvergesAt ablock (T.ptRad (T.ptElt hc1.le)) := convergesAt_of_norm_le_seq har (fun n => by simp only [ablock]; split_ifs <;> simp) (T.ptRad_pos' hξ0)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `have hcr' : ConvergesAt arest (T.ptRad (T.ptElt hc1.le)) := convergesAt_of_norm_le_seq har (fun n => by simp only [arest]; split_ifs <;> simp) (T.ptRad_pos' hξ0)`. Establish `hsplit : T.ptEvalSeq hξ0 a = T.ptEvalSeq hξ0 ablock + T.ptEvalSeq hξ0 arest`. Rewrite using `[ptEvalSeq, ptEvalSeq, ptEvalSeq, ← (T.summable_ptTerm hξ0 hcb).tsum_add (T.summable_ptTerm hξ0 hcr')]`. Use `congr 1`. Use function extensionality and compare the values at `n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [ptTerm, ablock, arest]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hblock : T.ptEvalSeq hξ0 ablock = ∑ i ∈ Finset.range (m + 1), T.ptSharp hξ0 (c ^ (lo + i) * a (lo + i))`. Rewrite using `[ptEvalSeq, tsum_eq_sum (s := S) (fun n hn => by simp [ptTerm, ablock, hn]), Finset.sum_image (fun i _ j _ hij => by simpa using hij)]`. Use `Finset.sum_congr rfl fun i hi' => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hin : lo + (i : ℤ) ∈ S` using `Finset.mem_image_of_mem _ hi'`. Simplify using `only [ptTerm, ablock, if_pos hin, T.ptPi_ptElt hc0 hc1, map_mul, map_zpow₀]`. Establish `hsum0 : ∑ i ∈ Finset.range (m + 1), c ^ (lo + i) * a (lo + i) = 0`. Establish `hev : P.eval c = ∑ i ∈ Finset.range (m + 1), a (lo + i) * c ^ i`. Rewrite using `[hPdef, Polynomial.eval_finset_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]`. Establish `: ∑ i ∈ Finset.range (m + 1), c ^ (lo + i) * a (lo + i) = c ^ lo * P.eval c`. Rewrite using `[hev, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_add₀ hc0, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hroot.eq_zero, mul_zero]`. Establish `hA : ‖T.ptEvalSeq hξ0 ablock‖ ≤ r * N`. Rewrite using `[hblock]`. Use `T.norm_sum_sharp_sub_le hξ0 (Finset.range (m + 1)) (fun i => c ^ (lo + i) * a (lo + i)) hNpos.le fun i _ => by` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_zpow, hcr, mul_comm]`. Conclude with `hwle _`. Rewrite `this` using `[hsum0, map_zero, sub_zero, hrad]`. Then use the resulting hypothesis. Establish `hB : ‖T.ptEvalSeq hξ0 arest‖ < N`. Use `(T.norm_ptEvalSeq_le hξ0 hcr').trans_lt ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrad]`. Distinguish the cases in `h0 : arest = 0`. Rewrite using `[h0]`. Simplify using `[Laurent.gaussNorm]`. Conclude with `hNpos`.
-
-Establish `hcr'' : ConvergesAt arest r` using `hrad ▸ hcr'`. Establish `hmem` using `lowIndex_mem h.1 hcr'' h0`. Establish `hne` using `ne_zero_of_mem_domSet h.1 hcr'' h0 hmem`. Simplify using `only [domSet, Set.mem_setOf_eq] at hmem`. Rewrite using `[← hmem]`.
-
-Use `set n1 := lowIndex arest r`. Establish `hn1S : n1 ∉ S`. Introduce `hS`. Apply `hne` to reduce the goal to its premises. Simplify using `[arest, hS]`.
-
-Establish `hn1 : arest n1 = a n1` using `by simp [arest, hn1S]`. Rewrite using `[hn1, ← hgn]`. Rewrite `hn1S` using `[hSmem]`. Break down `(not_and_or.1 hn1S) with h1 | h1` into its components or cases. Conclude with `weight_lt_of_lt_lowIndex h.1 ha ha0 (by omega)`.
-
-Conclude with `weight_lt_of_highIndex_lt h.1 ha ha0 (by omega)`. Establish `hbval : ‖T.ptEval hξ0 hr0 ((b : T.Econ ρ0) : T.RobbaExt ρ0)‖ < N`. Rewrite using `[hvb, hsplit]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ hB)` and prove the remaining obligations. Conclude with `hA.trans_lt (by nlinarith [h.2.trans ρ0.2.2])`.
-
-Establish `hxb : ‖T.ptEval hξ0 hr0 (x - ((b : T.Econ ρ0) : T.RobbaExt ρ0))‖ < N`. Use `(T.norm_ptEval_le hξ0 hr0 _).trans_lt ?_` and prove the remaining obligations. Rewrite using `[hIoc]`. Conclude with `hb`. Establish `e : x = ((b : T.Econ ρ0) : T.RobbaExt ρ0) + (x - ((b : T.Econ ρ0) : T.RobbaExt ρ0))` using `by ring`.
-
-Rewrite using `[e, map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt hbval hxb)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_start_point {x : T.RobbaExt ρ0} (hx : x ≠ 0) {r : ℝ} (h : 0 < r ∧ r < ρ0)
     (hm : 1 ≤ T.mult x r) :
@@ -326,7 +314,7 @@ variable [IsAlgClosed L] {ρ0 : Set.Ioo (0 : ℝ) 1} {x : T.RobbaExt ρ0} {r : �
 
 omit [IsAlgClosed L] in
 /- English proof (translation)
-Rewrite using `[coe_movePt, T.teich_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem movePt_zero {ξ : T.int} (hξ : T.IsPrimOne ξ) (h0 : ‖(0 : L)‖ < T.ptRad ξ) :
     (T.movePt hξ h0 : Γ) = ξ := by
@@ -342,17 +330,17 @@ structure GoodPt (x : T.RobbaExt ρ0) (r : ℝ) (h : 0 < r ∧ r < ρ0) where
 variable (h : 0 < r ∧ r < ρ0)
 
 /- English proof (translation)
-Take `⟨η, hη, hrad, hlt⟩` from `P`. Substitute `hrad` using the available equality. Establish `hNpos : 0 < T.extNorm ρ0 ⟨T.ptRad η, h.1, h.2.le⟩ x` using `T.extNorm_pos hx _`. Distinguish the cases in `hε : T.ptEval hη h.2.le x = 0`. Establish `h0 : ‖(0 : L)‖ < T.ptRad η` using `by rw [norm_zero]; exact T.ptRad_pos' hη`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hη'` using `T.isPrimOne_movePt hη h0`. Establish `hrad' : T.ptRad (T.movePt hη h0) = T.ptRad η` using `T.ptRad_movePt hη h0`. Take `⟨y, hy⟩` from `(T.ptEval_eq_zero_iff hη h.2.le x).1 hε`. Establish `hval : T.ptEval hη' (hrad'.trans_le h.2.le) x = 0`. Rewrite using `[hy, map_mul, T.ptEval_ξExt_movePt hη h0, map_zero, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJpart : ∃ J : ℕ, 1 ≤ J ∧ (J : ℤ) ≤ T.mult x (T.ptRad η) ∧ (‖(0 : L)‖ / T.ptRad η) ^ J ≤ ‖T.ptEval hη h.2.le x‖ / T.extNorm ρ0 ⟨T.ptRad η, h.1, h.2.le⟩ x`. Use `⟨1, le_rfl, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_zero, zero_div, zero_pow one_ne_zero]`. Conclude with `div_nonneg (norm_nonneg _) hNpos.le`. Establish `hlt' : ‖T.ptEval hη' (hrad'.trans_le h.2.le) x‖ < T.extNorm ρ0 ⟨T.ptRad η, h.1, h.2.le⟩ x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval, norm_zero]`. Conclude with `hNpos`. Establish `hle' : ‖T.ptEval hη' (hrad'.trans_le h.2.le) x‖ ≤ ‖T.ptEval hη h.2.le x‖ * max (T.ptRad η) (‖(0 : L)‖ / T.ptRad η)`. Rewrite using `[hval, norm_zero]`. Conclude with `mul_nonneg (norm_nonneg _) (le_max_of_le_left h.1.le)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨0, ⟨T.movePt hη h0, hη', hrad', hlt'⟩, ?_, by rw [norm_zero]; exact h.1, hJpart, hle'⟩` and prove the remaining obligations. Use `show (T.movePt hη h0 : Γ) = η - T.teich 0`. Rewrite using `[coe_movePt]`. Establish `hεN : ‖T.ptEval hη h.2.le x‖ < T.extNorm ρ0 (T.ptRadIoc hη h.2.le) x` using `hlt`. Take `⟨s, hs, J, hJ1, hJm, hratio, hnew⟩` from `T.step_estimate hη h.2 hx hε hεN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrad' : T.ptRad (T.movePt hη hs) = T.ptRad η` using `T.ptRad_movePt hη hs`. Establish `hfac : max (T.ptRad η) (‖s‖ / T.ptRad η) < 1` using `max_lt (h.2.trans ρ0.2.2) ((div_lt_one h.1).2 hs)`. Establish `hεpos : 0 < ‖T.ptEval hη h.2.le x‖` using `norm_pos_iff.2 hε`. Use `⟨s, ⟨T.movePt hη hs, T.isPrimOne_movePt hη hs, hrad', ?_⟩, rfl, hs, ⟨J, hJ1, hJm, hratio⟩, hnew⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_next (hx : x ≠ 0) (hm : 1 ≤ T.mult x r) (P : T.GoodPt x r h) :
     ∃ (s : L) (P' : T.GoodPt x r h), (P'.η : Γ) = P.η - T.teich s ∧ ‖s‖ < r ∧
@@ -406,17 +394,15 @@ end Iterate
 section Limit
 
 /- English proof (translation)
-Establish `hr1` using `T.ptRad_lt_one' hξ`. Establish `hδ1 : δ < 1` using `hδ.trans hr1`. Establish `hrad : T.ptRad (ξ - Y) = T.ptRad ξ` using `by show ‖T.coeff ((ξ - Y : T.int) : Γ) 0‖ = ‖T.coeff (ξ : Γ) 0‖`. Rewrite using `[show ((ξ - Y : T.int) : Γ) = (ξ : Γ) - Y from rfl, coeff_zero, coeff_zero, map_sub]`. Use `ultra_norm_sub_eq_left ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← coeff_zero]`. Conclude with `(hY 0 (Nat.zero_le _)).trans_lt hδ`. Use `⟨⟨?_, ?_, ?_⟩, hrad⟩` and prove the remaining obligations. Introduce `h0`. Use `hrad` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[ptRad, h0, norm_zero]`. Conclude with `(T.ptRad_pos' hξ).ne this`. Use `hrad` as an intermediate fact. Rewrite `this` using `[ptRad]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hr1`. Establish `hx : T.PrefixLe (ξ : Γ) 1 1` using `fun m _ => T.mem_int_iff.1 ξ.2 m`. Establish `hy : T.PrefixLe (-(Y : Γ)) 1 δ` using `T.prefixLe_neg hY`. Establish `hh` using `T.norm_coeff_add_sub_le 1 hδ0 hδ1.le hx hy 1 le_rfl`. Rewrite `hh` using `[Real.one_rpow, one_mul, ← sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ht0, -⟩` from `coeffHolderExp_pos_le_one (p := p) 1`. Establish `hlt : δ ^ coeffHolderExp p 1 < 1` using `Real.rpow_lt_one hδ0 hδ1 ht0`. Establish `e1 : ‖T.coeff (ξ : Γ) 1‖ = 1` using `hξ.norm_coeff_one`. Rewrite using `[show ((ξ - Y : T.int) : Γ) = (ξ : Γ) - Y from rfl]`. Use `ultra_norm_sub_eq_left (a := T.coeff (ξ : Γ) 1) (b := T.coeff (ξ : Γ) 1 - T.coeff ((ξ : Γ) - Y) 1) (by` as an intermediate fact.
-
-Rewrite using `[norm_sub_rev, e1]`. Conclude with `hh.trans_lt hlt)`. Rewrite `this` using `[sub_sub_cancel, e1]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrimOne_sub_of_prefix {ξ : T.int} (hξ : T.IsPrimOne ξ) {Y : T.int} {δ : ℝ}
     (hδ0 : 0 ≤ δ) (hδ : δ < T.ptRad ξ) (hY : T.PrefixLe (Y : Γ) 1 δ) :
@@ -453,91 +439,77 @@ variable [IsAlgClosed L] [CompleteSpace L] {ρ0 : Set.Ioo (0 : ℝ) 1} {x : T.Ro
   (h : 0 < r ∧ r < ρ0)
 
 /- English proof (translation)
-Use `choose sF PF hrel hsr hJ hdec using T.exists_next h hx hm`. Use `set pts : ℕ → T.GoodPt x r h := fun k => PF^[k] P0 with hpts`. Establish `hpts_succ : ∀ k, pts (k + 1) = PF (pts k)` using `fun k => Function.iterate_succ_apply' PF k P0`. Use `set s : ℕ → L := fun k => sF (pts k)`. Use `set N := T.extNorm ρ0 ⟨r, h.1, h.2.le⟩ x with hNdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNpos : 0 < N` using `T.extNorm_pos hx _`. Use `set ε : ℕ → ℝ := fun k => ‖T.ptEval (pts k).hη ((pts k).hrad.trans_le h.2.le) x‖`. Establish `hεnn : ∀ k, 0 ≤ ε k` using `fun k => norm_nonneg _`. Establish `hεN : ∀ k, ε k < N` using `fun k => (pts k).hlt`. Establish `hsr' : ∀ k, ‖s k‖ < r` using `fun k => hsr (pts k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdec' : ∀ k, ε (k + 1) ≤ ε k * max r (‖s k‖ / r)` using `fun k => by show ‖T.ptEval (pts (k + 1)).hη _ x‖ ≤ _`. Use `hdec (pts k)` as an intermediate fact. Rewrite `this` using `[← hpts_succ]`. Conclude with `this`. Establish `hmax : ∀ k, max r (‖s k‖ / r) < 1` using `fun k => max_lt (h.2.trans ρ0.2.2) ((div_lt_one h.1).2 (hsr' k))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hεmono : ∀ k, ε (k + 1) ≤ ε k` using `fun k => (hdec' k).trans (mul_le_of_le_one_right (hεnn k) (hmax k).le)`. Establish `hεle0 : ∀ k, ε k ≤ ε 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Consider the case `succ k ih => exact (hεmono k).trans ih`. Use `set M : ℕ := (T.mult x r).toNat`. Establish `hM : (M : ℤ) = T.mult x r` using `Int.toNat_of_nonneg (T.mult_nonneg x r)`. Establish `hM1 : 1 ≤ M` using `by omega`. Use `set q := ε 0 / N`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq0 : 0 ≤ q` using `div_nonneg (hεnn 0) hNpos.le`. Establish `hq1 : q < 1` using `(div_lt_one hNpos).2 (hεN 0)`. Take `⟨lam0, hl0, hl1, hql⟩ : ∃ l : ℝ, 0 < l ∧ l < 1 ∧ q < l ^ M` from `by set t := q ^ ((M : ℝ)⁻¹) with htdef`. Establish `ht0 : 0 ≤ t` using `Real.rpow_nonneg hq0 _`. Establish `ht1 : t < 1` using `Real.rpow_lt_one hq0 hq1 (inv_pos.2 (by exact_mod_cast hM1))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨(t + 1) / 2, by linarith, by linarith, ?_⟩` and prove the remaining obligations. Establish `htM : t ^ M = q` using `Real.rpow_inv_natCast_pow hq0 (by omega)`. Rewrite using `[← htM]`. Conclude with `pow_lt_pow_left₀ (by linarith) ht0 (by omega)`. Establish `ht_le : ∀ k, ‖s k‖ / r ≤ lam0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨J, hJ1, hJM, hJr⟩` from `hJ (pts k)`. Establish `hJM' : J ≤ M` using `by omega`.
+Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht1 : ‖s k‖ / r ≤ 1` using `((div_lt_one h.1).2 (hsr' k)).le`. Establish `h1 : (‖s k‖ / r) ^ M ≤ (‖s k‖ / r) ^ J` using `pow_le_pow_of_le_one (div_nonneg (norm_nonneg _) h.1.le) ht1 hJM'`. Establish `h2 : lam0 ^ M < (‖s k‖ / r) ^ M` using `pow_lt_pow_left₀ hcon hl0.le (by omega)`. Establish `h3 : ε k / N ≤ q` using `div_le_div_of_nonneg_right (hεle0 k) hNpos.le`. Use `hJr` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation.
 
-Express the relevant statement in the definitionally equal form `(‖s k‖ / r) ^ J ≤ ε k / N at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set lam := max r lam0`. Establish `hlam1 : lam < 1` using `max_lt (h.2.trans ρ0.2.2) hl1`. Establish `hlam0 : 0 ≤ lam` using `le_max_of_le_left h.1.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hεgeom : ∀ k, ε k ≤ lam ^ k * ε 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `set mu := lam ^ ((M : ℝ)⁻¹)`. Establish `hmu0 : 0 ≤ mu` using `Real.rpow_nonneg hlam0 _`. Establish `hmu1 : mu < 1` using `Real.rpow_lt_one hlam0 hlam1 (inv_pos.2 (by exact_mod_cast hM1))`. Establish `hmuM : mu ^ M = lam` using `Real.rpow_inv_natCast_pow hlam0 (by omega)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs_geom : ∀ k, ‖s k‖ ≤ mu ^ k`. Introduce `k`. Take `⟨J, hJ1, hJM, hJr⟩` from `hJ (pts k)`. Establish `hJM' : J ≤ M` using `by omega`. Express the relevant statement in the definitionally equal form `(‖s k‖ / r) ^ J ≤ ε k / N at hJr`.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht1 : ‖s k‖ / r ≤ 1` using `((div_lt_one h.1).2 (hsr' k)).le`. Establish `h1 : (‖s k‖ / r) ^ M ≤ lam ^ k`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖s k‖ / r ≤ mu ^ k`. Assume the negation of the conclusion as `hcon`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `push_neg at hcon`. Use `pow_lt_pow_left₀ hcon (pow_nonneg hmu0 k) (by omega : M ≠ 0)` as an intermediate fact. Rewrite `this` using `[← pow_mul, mul_comm, pow_mul, hmuM]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `set S : ℕ → Γ := fun k => ∑ i ∈ Finset.range k, T.teich (s i) with hSdef`. Establish `hs1 : ∀ k, ‖s k‖ ≤ 1` using `fun k => ((hsr' k).trans (h.2.trans ρ0.2.2)).le`. Establish `hSint : ∀ k, S k ∈ T.int` using `fun k => Subring.sum_mem _ fun i _ => T.teich_mem_int (hs1 i)`. Establish `hSsucc : ∀ k, S (k + 1) = S k + T.teich (s k)` using `fun k => by`. Simplify using `only [S, Finset.sum_range_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hSpts : ∀ k, ((pts k).η : Γ) = P0.η - S k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [S, pts]`. Consider the case `succ k ih`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpts_succ, hrel (pts k), ih, hSsucc]`. Simplify using `only [s]`. Expand and normalize the polynomial expressions, which then agree. Establish `hstep : ∀ n k, ‖T.coeff (S (k + 1)) n - T.coeff (S k) n‖ ≤ (mu ^ coeffHolderExp p n) ^ k`. Introduce `n k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxp : T.PrefixLe (S k) n 1` using `fun m _ => T.mem_int_iff.1 (hSint k) m`. Establish `hyp : T.PrefixLe (T.teich (s k)) n ‖s k‖` using `T.prefixLe_teich' (s k) n le_rfl`. Use `T.norm_coeff_add_sub_le n (norm_nonneg _) (hs1 k) hxp hyp n le_rfl` as an intermediate fact. Rewrite `this` using `[Real.one_rpow, one_mul]`. Rewrite using `[hSsucc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `this.trans ?_` and prove the remaining obligations. Take `⟨ht0, -⟩` from `coeffHolderExp_pos_le_one (p := p) n`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul hmu0, ← Real.rpow_mul hmu0, mul_comm]`. Establish `hcauchy : ∀ n, CauchySeq (fun k => T.coeff (S k) n)` using `fun n => by`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ht0, -⟩` from `coeffHolderExp_pos_le_one (p := p) n`. Use `cauchySeq_of_le_geometric (mu ^ coeffHolderExp p n) 1 (Real.rpow_lt_one hmu0 hmu1 ht0) fun k => ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm, norm_sub_rev, one_mul]`. Conclude with `hstep n k`. Use `choose a ha using fun n => cauchySeq_tendsto_of_complete (hcauchy n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha1 : ∀ n, ‖a n‖ ≤ 1` using `fun n => le_of_tendsto ((continuous_norm.tendsto _).comp (ha n)) (Filter.Eventually.of_forall fun k => T.mem_int_iff.1 (hSint k) n)`. Use `set X := T.ofCoeff a with hXdef`. Establish `hXc : ∀ n, T.coeff X n = a n` using `fun n => by rw [hXdef, coeff_ofCoeff]`. Establish `hXint : X ∈ T.int` using `T.mem_int_iff.2 fun n => by rw [hXc]; exact ha1 n`. Use `set δ := r * lam0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsδ : ∀ i, ‖s i‖ ≤ δ` using `fun i => by`. Use `ht_le i` as an intermediate fact. Rewrite `this` using `[div_le_iff₀ h.1]`. Use `show ‖s i‖ ≤ r * lam0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ0 : 0 ≤ δ` using `mul_nonneg h.1.le hl0.le`. Establish `hSpre : ∀ k, T.PrefixLe (S k) 1 δ` using `fun k => T.prefixLe_sum _ _ hδ0 fun i _ => T.prefixLe_teich' (s i) 1 (hsδ i)`. Establish `hXpre : T.PrefixLe X 1 δ` using `fun m hm => by`. Rewrite using `[hXc]`. Conclude with `le_of_tendsto ((continuous_norm.tendsto _).comp (ha m)) (Filter.Eventually.of_forall fun k => hSpre k m hm)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hδr : δ < T.ptRad P0.η`. Rewrite using `[P0.hrad]`. Use `show r * lam0 < r`. Use polynomial arithmetic with `[h.1]`. Take `⟨hξi, hradi'⟩` from `T.isPrimOne_sub_of_prefix P0.hη (Y := ⟨X, hXint⟩) hδ0 hδr hXpre`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ξi : T.int := P0.η - ⟨X, hXint⟩ with hξidef`. Establish `hradi : T.ptRad ξi = r` using `hradi'.trans P0.hrad`. Establish `hri : T.ptRad ξi ≤ ρ0` using `hradi.trans_le h.2.le`. Establish `hIoci : T.ptRadIoc hξi hri = ⟨r, h.1, h.2.le⟩` using `Subtype.ext hradi`. Establish `hr1 : r < 1` using `h.2.trans ρ0.2.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hDint : ∀ k, X - S k ∈ T.int` using `fun k => sub_mem hXint (hSint k)`. Use `set G : ℕ → ℝ := fun k => gaussNorm (T.zcoeff (X - S k)) r`. Establish `hG : Tendsto G atTop (𝓝 0)`. Rewrite using `[Metric.tendsto_atTop]`. Introduce `e he`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set e' := min e 1 / 2 with he'`. Establish `he'0 : 0 < e'` using `by positivity`. Establish `he'1 : e' < 1`. Use `min_le_right e 1` as an intermediate fact. Rewrite using `[he']`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `he'e : e' < e`. Use `min_le_left e 1` as an intermediate fact. Rewrite using `[he']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨n0, hn0⟩` from `exists_pow_lt_of_lt_one he'0 hr1`. Use `set tol := e' ^ (p ^ n0 : ℕ)`. Establish `htol0 : 0 < tol` using `by positivity`. Establish `htol1 : tol ≤ 1` using `pow_le_one₀ he'0.le he'1.le`. Establish `htole : tol ^ ((p ^ n0 : ℕ) : ℝ)⁻¹ = e'` using `Real.pow_rpow_inv_natCast he'0.le (pow_ne_zero _ hp.out.ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ k in atTop, ∀ i ∈ Finset.range (n0 + 1), ‖a i - T.coeff (S k) i‖ < tol`. Use `(Finset.eventually_all _).2 fun i _ => ?_` and prove the remaining obligations. Use `(ha i).eventually (Metric.ball_mem_nhds (a i) htol0)` as an intermediate fact. Use `filter_upwards [this] with k hk`. Rewrite `hk` using `[dist_eq_norm, norm_sub_rev]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk`. Take `⟨K, hK⟩` from `Filter.eventually_atTop.1 hev`. Use `⟨K, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[Real.dist_eq, sub_zero, abs_of_nonneg (gaussNorm_nonneg h.1)]`. Establish `hpre` using `T.prefixLe_sub_of_coeff_close (u := X) (v := S k) (n := n0) htol0.le htol1 (fun i _ => by rw [hXc]; exact ha1 i) (fun i _ => T.mem_int_iff.1 (hSint k) i) (fun i hi => by rw [hXc]; exact (hK k hk i (Finset.mem_range.2 (by omega))).le)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hpre` using `[Real.one_rpow, one_mul, htole]`. Use `lt_of_le_of_lt (gaussNorm_le fun n => ?_) he'e` and prove the remaining obligations. Break down `lt_or_ge n 0 with hn | hn` into its components or cases. Rewrite using `[T.zcoeff_of_neg _ hn, norm_zero, zero_mul]`. Conclude with `he'0.le`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le hn`. Rewrite using `[T.zcoeff_natCast, zpow_natCast]`. Distinguish the cases in `hmn : m ≤ n0`. Combine the equalities or inequalities in the displayed calculation. Establish `hc1 : ‖T.coeff (X - S k) m‖ ≤ 1` using `T.mem_int_iff.1 (hDint k) m`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hbound : ∀ k, ‖T.ptEval hξi hri x‖ ≤ max (ε k) (G k * (N / r))`. Introduce `k`. Establish `hrk : T.ptRad (pts k).η ≤ ρ0` using `(pts k).hrad.trans_le h.2.le`. Use `set D := T.divStep (pts k).hη hrk x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ‖T.ptEval hξi hri (T.liftExt ρ0 D.z D.hV)‖ ≤ ε k`. Use `(T.norm_ptEval_le hξi hri _).trans ?_` and prove the remaining obligations. Rewrite using `[T.extNorm_liftExt _ _ D.hred, D.hz]`. Establish `h2 : ‖T.ptEval hξi hri (T.ξExt (pts k).η ρ0)‖ ≤ G k`. Rewrite using `[ξExt, T.ptEval_coe_algebraMap hξi hri]`.
-
-Establish `hr0'` using `T.ptRad_pos' hξi`. Establish `hr1'` using `T.ptRad_lt_one' hξi`. Establish `hdiff : ((pts k).η : Γ) = (ξi : Γ) + (X - S k)`. Rewrite using `[hSpts k, hξidef]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdiff, T.ptE_add hξi (T.convergesAt_of_mem_int ξi.2 hr0' hr1') (T.convergesAt_of_mem_int (hDint k) hr0' hr1'), T.ptE_ξ hξi, zero_add]`. Use `(T.norm_ptE_le hξi (T.convergesAt_of_mem_int (hDint k) hr0' hr1')).trans ?_` and prove the remaining obligations. Rewrite using `[hradi]`. Establish `h3 : ‖T.ptEval hξi hri D.next‖ ≤ N / r`.
-
-Use `(T.norm_ptEval_le hξi hri _).trans ?_` and prove the remaining obligations. Rewrite using `[hIoci]`. Use `T.extNorm_next_le (hξ := (pts k).hη) (hr := hrk) x` as an intermediate fact. Establish `hIock : T.ptRadIoc (pts k).hη hrk = ⟨r, h.1, h.2.le⟩` using `Subtype.ext (pts k).hrad`. Rewrite `this` using `[hIock, (pts k).hrad]`.
-
-Rewrite using `[le_div_iff₀ h.1, mul_comm]`. Conclude with `this`. Establish `e` using `D.eq`. Rewrite using `[e, map_add, map_mul]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max h1 ?_)` and prove the remaining obligations.
-
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul h2 h3 (norm_nonneg _) (gaussNorm_nonneg h.1)`. Establish `hεlim : Tendsto ε atTop (𝓝 0)`. Use `(tendsto_pow_atTop_nhds_zero_of_lt_one hlam0 hlam1).mul_const (ε 0)` as an intermediate fact. Rewrite `this` using `[zero_mul]`.
-
-Conclude with `squeeze_zero hεnn hεgeom this`. Establish `hmaxlim : Tendsto (fun k => max (ε k) (G k * (N / r))) atTop (𝓝 0)`. Use `hεlim.max (hG.mul_const (N / r))` as an intermediate fact. Rewrite `this` using `[zero_mul, max_self]`. Then use the resulting hypothesis. Establish `hz : ‖T.ptEval hξi hri x‖ = 0` using `le_antisymm (ge_of_tendsto' hmaxlim hbound) (norm_nonneg _)`.
-
-Conclude with `⟨ξi, hξi, hradi, norm_eq_zero.1 hz⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_zero_of_goodPt (hx : x ≠ 0) (hm : 1 ≤ T.mult x r) (P0 : T.GoodPt x r h) :
     ∃ (η : T.int) (hη : T.IsPrimOne η) (hrad : T.ptRad η = r),
@@ -790,7 +762,7 @@ end Limit
 variable [IsAlgClosed L] [CompleteSpace L] in
 
 /- English proof (translation)
-Take `⟨c, hc0, hc1, hrad, hlt⟩` from `T.exists_start_point hx ⟨hr0, hrρ⟩ hm`. Take `⟨η, hη, hrad', hval⟩` from `T.exists_zero_of_goodPt ⟨hr0, hrρ⟩ hx hm ⟨T.ptElt hc1.le, T.isPrimOne_ptElt hc0 hc1, hrad, hlt⟩`. Take `⟨y, hy⟩` from `(T.ptEval_eq_zero_iff hη _ x).1 hval`. Conclude with `⟨η, hη, hrad', y, hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_point_dvd {ρ0 : Set.Ioo (0 : ℝ) 1} {x : T.RobbaExt ρ0} (hx : x ≠ 0) {r : ℝ}
     (hr0 : 0 < r) (hrρ : r < ρ0) (hm : 1 ≤ T.mult x r) :

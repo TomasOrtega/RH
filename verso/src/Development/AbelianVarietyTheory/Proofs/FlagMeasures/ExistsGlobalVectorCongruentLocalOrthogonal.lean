@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LocApprox
 
 /- English proof (translation)
-Take `⟨sg, hsg, hq, -⟩` from `Formalism.L2.SG.Pf.FrameGlobalPatching.FStar.typed_data Z p g hs`. Use `⟨(D.s.atP p).ιE ((Formalism.MainNotions.BridgeLemma.oth p : ℕ) : D.host.E), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_natCast]`. Conclude with `natCast_mem _ _`. Rewrite using `[hq, sg.q_eq, ← Formalism.MainNotions.BridgeLemma.gpart_mul_oth p, Formalism.MainNotions.BridgeLemma.gpart_some p sg hsg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.cast_mul, map_mul, map_natCast]`.
+A detailed English derivation is pending.
 -/
 theorem iota_gS_typed {D : D7} (Z : LocDat D) (p : PlF D) (g : Loc.SplitG (Z.M p).L) (hs : (Z.M p).split = some g) :
     ∃ w ∈ (D.s.atP p).O,
@@ -35,29 +35,27 @@ namespace GlobalTheory.LocApprox
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D Z p hc Λ hΛ T F x hx hxp`. Establish `hO : (Z.M p).L.O = (D.s.atP p).O` using `(Z.agree p).2.2.2.1`. Break down `hs : (Z.M p).split with _ | g` into its components or cases. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations. Establish `ht : Formalism.MainNotions.S.LocNG.theta (Z.M p) = 1` using `by simp [Formalism.MainNotions.S.LocNG.theta, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[ht, map_one, map_zero, sub_zero]`. Conclude with `Submodule.subset_span ⟨x, hx, one_smul _ _⟩`. Establish `ht : Formalism.MainNotions.S.LocNG.theta (Z.M p) = (g.q : (D.s.atP p).Fp)` using `by simp [Formalism.MainNotions.S.LocNG.theta, hs]`. Take `⟨w, hw, he⟩` from `iota_gS_typed Z p g hs`. Rewrite using `[ht]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hspan` using `GlobalTheory.LocExt.perp_le Z p F hxp`. Establish `hsat` using `Formalism.L2.SG.Pf.locSatC_holds D Z p Λ (orth (VS D) (Xsp F)) hΛ.fg`. Establish `hxL : x ∈ lattice₂ D Z.M p (Lrep Λ F)`. Establish `: x ∈ (lattice₂ D Z.M p (Λ ⊓ toO (VS D) (orth (VS D) (Xsp F))) : Set (Vp D p))`. Rewrite using `[hsat]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hx, hspan⟩`. Conclude with `this`. Use `clear hx hxp hspan hsat`. Proceed by induction on `hxL using Submodule.span_induction with`. Consider the case `mem v hv`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨l, hl, rfl⟩` from `hv`. Conclude with `⟨l, hl, by rw [sub_self]; exact zero_mem _⟩`. Consider the case `zero => exact ⟨0, zero_mem _, by rw [map_zero, sub_zero]; exact zero_mem _⟩`. Consider the case `add u v _ _ ihu ihv`. Take `⟨l, hl, h⟩` from `ihu`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨l', hl', h'⟩` from `ihv`. Use `⟨l + l', add_mem hl hl', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, show u + v - (baseChange₂ D p l + baseChange₂ D p l') = (u - baseChange₂ D p l) + (v - baseChange₂ D p l') by abel]`. Conclude with `add_mem h h'`. Consider the case `smul o v _ ih`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨l, hl, h⟩` from `ih`. Establish `ho : (o : (D.s.atP p).Ep) ∈ (D.s.atP p).O` using `hO ▸ o.2`. Take `⟨a, o', ho', hco⟩` from `hc _ ho`. Use `⟨a • l, Submodule.smul_mem _ a hl, ?_⟩` and prove the remaining obligations. Establish `hbl : baseChange₂ D p l ∈ lattice₂ D Z.M p Λ` using `Submodule.subset_span ⟨l, hl.1, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `e1 : baseChange₂ D p (a • l) = (D.s.atP p).ιE (a : D.host.E) • baseChange₂ D p l`. Rewrite using `[← baseChange_smul₂]`. Use `congr 1`. Conclude with `(algebraMap_smul D.host.E a l).symm`. Establish `key : ∀ (oo ia ig th : (D.s.atP p).Ep) (vv b : Vp D p), oo = ia + ig * o' → ig = th * w → oo • vv - ia • b = oo • (vv - b) + th • ((w * o') • b)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Introduce `oo ia ig th vv b h1 h2`. Substitute `h1 h2` using the available equality. Simplify using `only [smul_sub, add_smul, smul_smul, ← mul_assoc]`. Normalize the expressions using the abelian group laws. Establish `hov : o • v = (o : (D.s.atP p).Ep) • v` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hob : (o : (D.s.atP p).Ep) • (v - baseChange₂ D p l) ∈ (locH Z p).smulLat (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp)) (lattice₂ D Z.M p Λ)` using `Submodule.smul_mem _ o h`. Establish `hwo : w * o' ∈ (Z.M p).L.O` using `hO ▸ mul_mem hw ho'`. Establish `k1` using `key (o : (D.s.atP p).Ep) _ _ _ v (baseChange₂ D p l) hco he`. Establish `h3 : (w * o') • baseChange₂ D p l ∈ lattice₂ D Z.M p Λ` using `(lattice₂ D Z.M p Λ).smul_mem ⟨_, hwo⟩ hbl`. Establish `h4 : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) • ((w * o') • baseChange₂ D p l) ∈ (locH Z p).smulLat (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp)) (lattice₂ D Z.M p Λ)` using `Submodule.subset_span ⟨_, h3, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : (o : (D.s.atP p).Ep) • v - (D.s.atP p).ιE (a : D.host.E) • baseChange₂ D p l ∈ (locH Z p).smulLat (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp)) (lattice₂ D Z.M p Λ)`. Rewrite using `[k1]`. Conclude with `add_mem hob h4`. Establish `h6 : o • v - baseChange₂ D p (a • l) = (o : (D.s.atP p).Ep) • v - (D.s.atP p).ιE (a : D.host.E) • baseChange₂ D p l`. Rewrite using `[hov, e1]`.
-
-Rewrite using `[h6]`. Conclude with `h5`.
+A detailed English derivation is pending.
 -/
 theorem approx : ∀ (D : D7) (Z : LocDat D) (p : PlF D), (∀ c ∈ (D.s.atP p).O, ∃ a : 𝓞 D.host.E, ∃ o ∈ (D.s.atP p).O, c = (D.s.atP p).ιE (a : D.host.E) + (D.s.atP p).ιE ((gS D : ℕ) : D.host.E) * o) → ∀ (Λ : Submodule (𝓞 D.host.E) (VS D).V), Submodule.IsLattice D.host.E Λ → ∀ {T : D.host.E} (F : LFlag (VS D) D.R.rS T), ∀ x ∈ lattice₂ D Z.M p Λ, x ∈ (locH Z p).perp ((locH Z p).X (scaled Z p (frame F))) → ∃ l ∈ Lrep Λ F, x - baseChange₂ D p l ∈ (locH Z p).smulLat (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Formalism.MainNotions.S.LocNG.theta (Z.M p))) (lattice₂ D Z.M p Λ) := by
   intro D Z p hc Λ hΛ T F x hx hxp

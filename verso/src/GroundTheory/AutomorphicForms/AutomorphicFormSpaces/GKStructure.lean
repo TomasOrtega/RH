@@ -13,17 +13,15 @@ namespace AutomorphicForm
 set_option linter.unusedSectionVars false
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `exists_finset_eval_eq_zero W`. Establish `key : ∀ y : X, ∃ w ∈ W, ∀ x ∈ insert y S, w x = d x`. Introduce `y`. Set `T : Finset X` to `insert y S`. Set `ev : (X → ℂ) →ₗ[ℂ] (T → ℂ)` to `{ toFun := fun f x => f x map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hR : IsClosed ((W.map ev : Submodule ℂ _) : Set (T → ℂ))` using `Submodule.closed_of_finiteDimensional _`. Establish `hder : HasDerivAt (fun t => ev (c t)) (ev d) 0` using `hasDerivAt_pi.2 fun x => hd x`. Establish `hlim` using `hasDerivAt_iff_tendsto_slope.1 hder`. Establish `hmem : ev d ∈ W.map ev`. Use `hR.mem_of_tendsto hlim (Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[slope_def_module]`. Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.sub_mem _ ⟨_, hc t, rfl⟩ ⟨_, hc 0, rfl⟩)`. Take `⟨w, hw, hwd⟩` from `hmem`. Conclude with `⟨w, hw, fun x hx => congrFun hwd ⟨x, hx⟩⟩`. Break down `isEmpty_or_nonempty X with hX | ⟨⟨y₀⟩⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `: d = 0` using `funext fun x => (IsEmpty.false x).elim`. Rewrite using `[this]`. Conclude with `W.zero_mem`. Use `choose w hwW hwd using key`. Establish `huniq : ∀ y, w y = w y₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Use `hS _ (W.sub_mem (hwW y) (hwW y₀)) fun x hx => by` as an intermediate fact. Rewrite using `[Pi.sub_apply, hwd y x (Finset.mem_insert_of_mem hx), hwd y₀ x (Finset.mem_insert_of_mem hx), sub_self]`. Conclude with `sub_eq_zero.1 this`. Establish `: d = w y₀` using `funext fun y => by`.
-
-Rewrite using `[← huniq y, hwd y y (Finset.mem_insert_self y S)]`. Rewrite using `[this]`. Conclude with `hwW y₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_hasDerivAt {X : Type*} (W : Submodule ℂ (X → ℂ)) [FiniteDimensional ℂ W]
     {c : ℝ → X → ℂ} (hc : ∀ t, c t ∈ W) {d : X → ℂ}
@@ -70,7 +68,7 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 open Reduction
 
 /- English proof (translation)
-Introduce `_ hφ` and use `hφ.isSmooth.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smoothKZ_le_archSmooth : smoothKZ K n ≤ archSmooth K n := fun _ hφ => hφ.isSmooth.1
 
@@ -149,7 +147,7 @@ Both sides reduce to the same expression.
       rightTranslate (infEmb K n k) (φ : AdelicGLn.AdelicGL K n → ℂ) := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Subtype.val (uAction_rtFin u h (toArchSmooth φ))` as an intermediate fact. Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem uActionKZ_finRepKZ (u : UEnv K n) (h : AdelicGLn.FiniteAdelicGL K n) (φ : smoothKZ K n) :
     uActionKZ K n u (finRepKZ K n h φ) = finRepKZ K n h (uActionKZ K n u φ) := by
@@ -158,7 +156,7 @@ theorem uActionKZ_finRepKZ (u : UEnv K n) (h : AdelicGLn.FiniteAdelicGL K n) (φ
   exact this
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Subtype.val (uAction_rtInf ((isExpLieAlgebra K n).AdU (k : archGroup K n) u) (k : archGroup K n) (toArchSmooth φ))` as an intermediate fact. Rewrite `this` using `[IsExpLieAlgebra.AdU_inv_apply]`. Conclude with `this.symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archCompactRepKZ_uActionKZ (k : archCompact K n) (u : UEnv K n) (φ : smoothKZ K n) :
     archCompactRepKZ K n k (uActionKZ K n u φ) =
@@ -170,7 +168,7 @@ theorem archCompactRepKZ_uActionKZ (k : archCompact K n) (u : UEnv K n) (φ : sm
   exact this.symm
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Simplify using `only [coe_finRepKZ, coe_archCompactRepKZ, GroundTheory.Automorphic.rightTranslate, mul_assoc, infEmb_mul_finEmb_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem archCompactRepKZ_finRepKZ (k : archCompact K n) (h : AdelicGLn.FiniteAdelicGL K n)
     (φ : smoothKZ K n) :
@@ -181,11 +179,11 @@ theorem archCompactRepKZ_finRepKZ (k : archCompact K n) (h : AdelicGLn.FiniteAde
     infEmb_mul_finEmb_comm]
 
 /- English proof (translation)
-Use `set Wf := W.map (smoothKZ K n).subtype`. Take `⟨S, hS⟩` from `exists_finset_eval_eq_zero Wf`. Set `ev : W →ₗ[ℂ] (S → ℂ)` to `{ toFun := fun w x => ((w : smoothKZ K n) : AdelicGLn.AdelicGL K n → ℂ) x map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hker : LinearMap.ker ev = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Establish `h0` using `hS _ ⟨(w : smoothKZ K n), w.2, rfl⟩ fun x hx => congrFun hw ⟨x, hx⟩`. Conclude with `Subtype.ext (Subtype.ext h0)`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (K := ℂ) (V := W) (V' := S → ℂ) ev hker`. Use `⟨S, φ ∘ₗ W.subtype ∘ₗ g, fun w hw => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: g (ev ⟨w, hw⟩) = ⟨w, hw⟩` using `by rw [← LinearMap.comp_apply, hg, LinearMap.id_apply]`. Use `show φ w = φ (W.subtype (g (ev ⟨w, hw⟩)))`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_linearMap_eval_eq (W : Submodule ℂ (smoothKZ K n)) [FiniteDimensional ℂ W]
     (φ : Module.Dual ℂ (smoothKZ K n)) :
@@ -211,7 +209,7 @@ theorem exists_linearMap_eval_eq (W : Submodule ℂ (smoothKZ K n)) [FiniteDimen
   rfl
 
 /- English proof (translation)
-Use `letI := (isExpLieAlgebra K n).chartedSpace`. Conclude with `(hφ g).continuous`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem continuous_archSlice {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsArchSmooth φ)
     (g : AdelicGLn.AdelicGL K n) : Continuous (archSlice φ g) := by
@@ -219,13 +217,11 @@ theorem continuous_archSlice {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsArch
   exact (hφ g).continuous
 
 /- English proof (translation)
-Use `set Wf := Submodule.span ℂ (range fun k : (maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => rightTranslate (k : AdelicGLn.AdelicGL K n) (v : AdelicGLn.AdelicGL K n → ℂ))`. Establish `: FiniteDimensional ℂ Wf` using `v.2.isKFinite`. Use `set W := Submodule.span ℂ (range fun k : archCompact K n => archCompactRepKZ K n k v)`. Establish `hW : ∀ w : W, ((w : smoothKZ K n) : AdelicGLn.AdelicGL K n → ℂ) ∈ Wf`. Introduce and unpack `⟨w, hw⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.span_induction (p := fun w _ => ((w : smoothKZ K n) : AdelicGLn.AdelicGL K n → ℂ) ∈ Wf) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.subset_span ⟨⟨infEmb K n k, k.2⟩, rfl⟩`. Conclude with `Wf.zero_mem`. Introduce `x y _ _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Wf.add_mem hx hy`. Introduce `c x _ hx`. Conclude with `Wf.smul_mem c hx`. Use `FiniteDimensional.of_injective (((smoothKZ K n).subtype ∘ₗ W.subtype).codRestrict Wf hW) ?_` and prove the remaining obligations. Introduce `x y hxy`.
-
-Use `congrArg Subtype.val hxy` as an intermediate fact. Conclude with `Subtype.ext (Subtype.ext this)`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_span_archCompactRepKZ (v : smoothKZ K n) :
     FiniteDimensional ℂ (Submodule.span ℂ (range fun k : archCompact K n => archCompactRepKZ K n k v)) := by
@@ -251,9 +247,9 @@ theorem finiteDimensional_span_archCompactRepKZ (v : smoothKZ K n) :
   exact Subtype.ext (Subtype.ext this)
 
 /- English proof (translation)
-Introduce `φ v`. Use `finiteDimensional_span_archCompactRepKZ v` as an intermediate fact. Take `⟨S, ψ, hψ⟩` from `exists_linearMap_eval_eq (Submodule.span ℂ (range fun k : archCompact K n => archCompactRepKZ K n k v)) φ`. Establish `e : (fun k : archCompact K n => φ (archCompactRepKZ K n k v)) = fun k : archCompact K n => ψ (fun x : S => archSlice (v : AdelicGLn.AdelicGL K n → ℂ) x (k : archGroup K n))`. Use function extensionality and compare the values at `fun k => hψ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Use `(LinearMap.continuous_of_finiteDimensional ψ).comp (continuous_pi fun x => ?_)` and prove the remaining obligations. Conclude with `(continuous_archSlice v.2.isSmooth.1 x).comp continuous_subtype_val`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasContinuousCoeff_archCompactRepKZ :
     Representation.HasContinuousCoeff (archCompactRepKZ K n) := by
@@ -270,7 +266,7 @@ theorem hasContinuousCoeff_archCompactRepKZ :
   exact (continuous_archSlice v.2.isSmooth.1 x).comp continuous_subtype_val
 
 /- English proof (translation)
-Establish `h` using `(isExpLieAlgebra K n).hasDerivAt_rightDeriv (v.2.isSmooth.1 x) X 1`. Simplify using `only [one_mul] at h`. Rewrite using `[coe_uActionKZ, uAction_ι_apply]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_uActionKZ_ι (X : archLie K n) (v : smoothKZ K n) (x : AdelicGLn.AdelicGL K n) :
     HasDerivAt (fun t : ℝ => (v : AdelicGLn.AdelicGL K n → ℂ)
@@ -283,13 +279,11 @@ theorem hasDerivAt_uActionKZ_ι (X : archLie K n) (v : smoothKZ K n) (x : Adelic
   exact h
 
 /- English proof (translation)
-Use `set W := Submodule.span ℂ (range fun k : archCompact K n => archCompactRepKZ K n k v)`. Establish `: FiniteDimensional ℂ W` using `finiteDimensional_span_archCompactRepKZ v`. Use `set Xv := uActionKZ K n (UniversalEnvelopingAlgebra.ι ℝ ((isExpLieAlgebra K n).toLie X)) v`. Establish `hmem : Xv ∈ W`. Establish `hf : ((Xv : smoothKZ K n) : AdelicGLn.AdelicGL K n → ℂ) ∈ W.map (smoothKZ K n).subtype` using `mem_of_hasDerivAt (W.map (smoothKZ K n).subtype) (c := fun t => ((archCompactRepKZ K n ⟨(isExpLieAlgebra K n).expG (t • X), hX t⟩ v : smoothKZ K n) : AdelicGLn.AdelicGL K n → ℂ)) (fun t => ⟨_, Submodule.subset_span ⟨_, rfl⟩, rfl⟩) (hasDerivAt_uActionKZ_ι X v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨w, hw, e⟩` from `hf`. Rewrite `hw` using `[show w = Xv from Subtype.ext e]`. Then use the resulting hypothesis. Take `⟨S, ψ, hψ⟩` from `exists_linearMap_eval_eq W φ`. Establish `hpi : HasDerivAt (fun t : ℝ => fun x : S => (v : AdelicGLn.AdelicGL K n → ℂ) (x * infEmb K n ((isExpLieAlgebra K n).expG (t • X)))) (fun x : S => ((Xv : smoothKZ K n) : AdelicGLn.AdelicGL K n → ℂ) x) 0` using `hasDerivAt_pi.2 fun x => hasDerivAt_uActionKZ_ι X v x`. Establish `hcomp` using `((LinearMap.toContinuousLinearMap ψ).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hpi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ((LinearMap.toContinuousLinearMap ψ).restrictScalars ℝ) (fun x : S => ((Xv : smoothKZ K n) : AdelicGLn.AdelicGL K n → ℂ) x) = φ Xv`. Rewrite using `[hψ _ hmem]`. Both sides reduce to the same expression. Rewrite `hcomp` using `[e1]`. Use `hcomp.congr_of_eventuallyEq (Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
-
-Conclude with `hψ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_archCompactRepKZ (X : archLie K n)
     (hX : ∀ t : ℝ, (isExpLieAlgebra K n).expG (t • X) ∈ archCompact K n)
@@ -324,7 +318,7 @@ theorem hasDerivAt_archCompactRepKZ (X : archLie K n)
   exact hψ _ (Submodule.subset_span ⟨_, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[archCompactRepKZ_uActionKZ, IsExpLieAlgebra.AdU_ι]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem archCompactRepKZ_uActionKZ_ι (k : archCompact K n) (X : archLie K n) (v : smoothKZ K n) :
     archCompactRepKZ K n k
@@ -366,7 +360,7 @@ Both sides reduce to the same expression.
     (gkModule K n).σ k v = archCompactRepKZ K n k v := rfl
 
 /- English proof (translation)
-The claim follows from `uActionKZ_finRepKZ _ h v`.
+A detailed English derivation is pending.
 -/
 theorem gkModule_ρ_finRepKZ (X : (isExpLieAlgebra K n).lieSubalgebra)
     (h : AdelicGLn.FiniteAdelicGL K n) (v : smoothKZ K n) :
@@ -374,7 +368,7 @@ theorem gkModule_ρ_finRepKZ (X : (isExpLieAlgebra K n).lieSubalgebra)
   uActionKZ_finRepKZ _ h v
 
 /- English proof (translation)
-The claim follows from `archCompactRepKZ_finRepKZ k h v`.
+A detailed English derivation is pending.
 -/
 theorem gkModule_σ_finRepKZ (k : archCompact K n) (h : AdelicGLn.FiniteAdelicGL K n)
     (v : smoothKZ K n) :

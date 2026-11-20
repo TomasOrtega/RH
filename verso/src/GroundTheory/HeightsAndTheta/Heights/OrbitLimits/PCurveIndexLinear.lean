@@ -20,14 +20,14 @@ def cu (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (a : K → ℤ) : Ω :=
 
 omit [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Simplify using `[chartUnit, cu]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartUnit_one (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (a : K → ℤ) : chartUnit y c a 1 = cu y c a := by
   simp [chartUnit, cu]
 
 omit [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc k)`.
+A detailed English derivation is pending.
 -/
 theorem cu_ne_zero {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (a : K → ℤ) :
     cu y c a ≠ 0 :=
@@ -35,7 +35,7 @@ theorem cu_ne_zero {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y �
 
 omit [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Rewrite using `[cu, cu, cu, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => zpow_add₀ (hc k) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cu_add {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (a a' : K → ℤ) :
     cu y c (a + a') = cu y c a * cu y c a' := by
@@ -45,7 +45,7 @@ theorem cu_add {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, 
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[cu, cu, ← Finset.prod_div_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => (div_zpow _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cu_div (y : (Σ k, ι k) → Ω) (c c' : ∀ k, ι k) (a : K → ℤ) :
     cu y c' a / cu y c a = ∏ k, (y ⟨k, c' k⟩ / y ⟨k, c k⟩) ^ a k := by
@@ -55,7 +55,7 @@ theorem cu_div (y : (Σ k, ι k) → Ω) (c c' : ∀ k, ι k) (a : K → ℤ) :
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `e : ∀ c : ∀ k, ι k, ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * a k)) = (cu y c a)⁻¹`. Introduce `c`. Simplify using `[cu, zpow_neg, Finset.prod_inv_distrib]`. Use `show (∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → s * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * a k)) ∈ chartRingZ y c) ↔ _`. Simplify using `only [e, div_eq_mul_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_chartLat_one {y : (Σ k, ι k) → Ω} {a : K → ℤ} {s : Ω} :
     s ∈ chartLat y a 1 ↔ ∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → s / cu y c a ∈ chartRingZ y c := by
@@ -74,7 +74,7 @@ def gen (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (a : K → ℤ) (c' : ∀ k,
 
 omit [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-The claim follows from `div_ne_zero (cu_ne_zero hc' a) (cu_ne_zero hc a)`.
+A detailed English derivation is pending.
 -/
 theorem gen_ne_zero {y : (Σ k, ι k) → Ω} {c c' : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (hc' : ∀ k, y ⟨k, c' k⟩ ≠ 0) (a : K → ℤ) : gen y c a c' ≠ 0 :=
@@ -82,7 +82,7 @@ theorem gen_ne_zero {y : (Σ k, ι k) → Ω} {c c' : ∀ k, ι k} (hc : ∀ k, 
 
 omit [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Rewrite using `[gen, gen, gen, cu_add hc, cu_add hc', mul_div_mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gen_add {y : (Σ k, ι k) → Ω} {c c' : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (hc' : ∀ k, y ⟨k, c' k⟩ ≠ 0) (a a' : K → ℤ) : gen y c (a + a') c' = gen y c a c' * gen y c a' c' := by
@@ -91,13 +91,13 @@ theorem gen_add {y : (Σ k, ι k) → Ω} {c c' : ∀ k, ι k} (hc : ∀ k, y �
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `hu` using `cu_ne_zero hc a`. Rewrite using `[secIdeal, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ c' hc'`. Establish `hu'` using `cu_ne_zero hc' a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `mem_chartLat_one.mp hx c' hc' using 1` and compare the differences between its conclusion and the goal. Simplify using `only [AddMonoidHom.coe_mulLeft, gen]`. Clear the denominators using the available nonvanishing facts. Introduce `h`. Use `⟨z * cu y c a, mem_chartLat_one.mpr fun c' hc' => ?_, ?_⟩` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu'` using `cu_ne_zero hc' a`. Use `h c' hc' using 1` and compare the differences between its conclusion and the goal. Simplify using `only [gen]`. Clear the denominators using the available nonvanishing facts. Use `show (cu y c a)⁻¹ * (z * cu y c a) = z`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm z, ← mul_assoc, inv_mul_cancel₀ hu, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem mem_secIdeal {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {a : K → ℤ} {z : Ω} :
     z ∈ secIdeal y c a ↔ ∀ c' : ∀ k, ι k, (∀ k, y ⟨k, c' k⟩ ≠ 0) → z / gen y c a c' ∈ chartRingZ y c' := by
@@ -121,7 +121,7 @@ theorem mem_secIdeal {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y 
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Introduce `b hb z hz`. Rewrite `hz`, the goal using `[mem_secIdeal hc]`. Introduce `c' hc'`. Rewrite using `[mul_div_assoc]`. Conclude with `(chartRingZ y c').mul_mem (mem_curveRing.mp hb c' hc') (hz c' hc')`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_secIdeal {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {a : K → ℤ} :
     ∀ b ∈ curveRing y, ∀ z ∈ secIdeal y c a, b * z ∈ secIdeal y c a := by
@@ -134,9 +134,9 @@ theorem mul_mem_secIdeal {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `hu` using `cu_ne_zero hc a`. Establish `hinj : Function.Injective (AddMonoidHom.mulLeft (cu y c a)⁻¹)` using `fun x x' h => mul_right_injective₀ (inv_ne_zero hu) h`. Establish `hB : (curveRing y).toAddSubgroup = (curveMul y (cu y c a)).map (AddMonoidHom.mulLeft (cu y c a)⁻¹)`. Rewrite using `[curveMul, AddSubgroup.map_map]`. Establish `e : (AddMonoidHom.mulLeft (cu y c a)⁻¹).comp (AddMonoidHom.mulLeft (cu y c a)) = AddMonoidHom.id Ω`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[hu]`. Rewrite using `[e, AddSubgroup.map_id]`. Rewrite using `[chartIndexLog, chartUnit_one, hB, secIdeal, genIndex, genIndex, AddSubgroup.relIndex_map_map_of_injective _ _ hinj, AddSubgroup.relIndex_map_map_of_injective _ _ hinj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem chartIndexLog_eq {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (a : K → ℤ) :
     chartIndexLog y c a 1 = Real.log (genIndex (secIdeal y c a) (curveRing y).toAddSubgroup) := by
@@ -179,7 +179,7 @@ def locRing {y : (Σ k, ι k) → Ω} (m : Ideal (curveRing y)) (hm : m.IsPrime)
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `ofNat n => rw [Int.ofNat_eq_natCast, zpow_natCast]`. Conclude with `S.pow_mem hx n`. Consider the case `negSucc n => rw [zpow_negSucc, ← inv_pow]`. Conclude with `S.pow_mem hx' _`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem zpow_mem_of {S : Subring Ω} {x : Ω} (hx : x ∈ S) (hx' : x⁻¹ ∈ S) (n : ℤ) : x ^ n ∈ S := by
   cases n with
@@ -189,9 +189,7 @@ theorem zpow_mem_of {S : Subring Ω} {x : Ω} (hx : x ∈ S) (hx' : x⁻¹ ∈ S
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `hle : chartRingZ y c' ≤ subalgebraOfSubring (locRing m hm (curveRing y) fun b => b.2)`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Take `⟨α, β, hβ, e⟩` from `hr p`. Conclude with `mem_subalgebraOfSubring.mpr ⟨β, hβ, by rw [e]; exact α.2⟩`.
-
-Conclude with `mem_subalgebraOfSubring.mp (hle hrc)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chartRingZ_le_loc {y : (Σ k, ι k) → Ω} {m : Ideal (curveRing y)} (hm : m.IsPrime) {c' : ∀ k, ι k}
     (hr : ∀ p : Σ k, ι k, ∃ α β : curveRing y, β ∉ m ∧ (β : Ω) * (y p / y ⟨p.1, c' p.1⟩) = α) {r : Ω}
@@ -204,13 +202,13 @@ theorem chartRingZ_le_loc {y : (Σ k, ι k) → Ω} {m : Ideal (curveRing y)} (h
   exact mem_subalgebraOfSubring.mp (hle hrc)
 
 /- English proof (translation)
-Use `choose f hf using h`. Set `F : (∀ k, ι k) → curveRing y` to `fun c'' => if h : (∀ k, y ⟨k, c'' k⟩ ≠ 0) then f c'' h else 1`. Establish `hF : ∀ c'', F c'' ∈ m.primeCompl`. Introduce `c''`. Distinguish the cases in `h : ∀ k, y ⟨k, c'' k⟩ ≠ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [F, dif_pos h]`. Conclude with `(hf c'' h).1`. Simplify using `only [F, dif_neg h]`. Conclude with `m.primeCompl.one_mem`. Use `⟨∏ c'', F c'', Submonoid.prod_mem _ fun c'' _ => hF c'', fun c'' hc'' => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨q, hq⟩ : F c'' ∣ ∏ c, F c` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ _)`. Rewrite using `[hq]`. Establish `h2 : (F c'' : Ω) * r c'' ∈ chartRingZ y c''` using `by simpa [F, dif_pos hc''] using (hf c'' hc'').2`. Establish `h3 : (q : Ω) ∈ chartRingZ y c''` using `mem_curveRing.mp q.2 c'' hc''`. Use `(chartRingZ y c'').mul_mem h3 h2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem uniform_denom {y : (Σ k, ι k) → Ω} {m : Ideal (curveRing y)} (hm : m.IsPrime) (r : (∀ k, ι k) → Ω)
     (h : ∀ c'' : ∀ k, ι k, (∀ k, y ⟨k, c'' k⟩ ≠ 0) →
@@ -236,17 +234,17 @@ theorem uniform_denom {y : (Σ k, ι k) → Ω} {m : Ideal (curveRing y)} (hm : 
   ring
 
 /- English proof (translation)
-Establish `hg` using `gen_ne_zero hc hc' a`. Use `⟨?_, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hloc : ∀ c'' : ∀ k, ι k, (∀ k, y ⟨k, c'' k⟩ ≠ 0) → ∃ b : curveRing y, b ∉ m ∧ (b : Ω) * (cu y c' a / cu y c'' a) ∈ chartRingZ y c''`. Introduce `c'' hc''`. Establish `hS : ∀ b : curveRing y, (b : Ω) ∈ (chartRingZ y c'').toSubring` using `fun b => mem_curveRing.mp b.2 c'' hc''`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `T` to `locRing m hm (chartRingZ y c'').toSubring hS`. Establish `hT : cu y c' a / cu y c'' a ∈ T`. Rewrite using `[cu_div]`. Use `prod_mem fun k _ => zpow_mem_of ?_ ?_ _` and prove the remaining obligations. Use `⟨1, fun h => hm.ne_top ((Ideal.eq_top_iff_one _).mpr h), ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[OneMemClass.coe_one, one_mul]`. Conclude with `Algebra.subset_adjoin ⟨⟨k, c' k⟩, rfl⟩`. Take `⟨α, β, hβ, e⟩` from `hr ⟨k, c'' k⟩`. Use `⟨β, hβ, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_div, e]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hS α`. Conclude with `hT`. Take `⟨b, hb, hb'⟩` from `uniform_denom hm _ hloc`. Use `⟨b, hb, (mem_secIdeal hc).mpr fun c'' hc'' => ?_⟩` and prove the remaining obligations. Establish `hu''` using `cu_ne_zero hc'' a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Establish `hu` using `cu_ne_zero hc a`. Use `hb' c'' hc'' using 1` and compare the differences between its conclusion and the goal. Simplify using `only [gen]`. Clear the denominators using the available nonvanishing facts. Establish `h1` using `(mem_secIdeal hc).mp hz c' hc'`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨b, hb, hb'⟩` from `chartRingZ_le_loc hm hr h1`. Use `⟨b, ⟨_, hb'⟩, hb, ?_⟩` and prove the remaining obligations. Simplify using `only`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem local_gen {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {m : Ideal (curveRing y)}
     (hm : m.IsPrime) {c' : ∀ k, ι k} (hc' : ∀ k, y ⟨k, c' k⟩ ≠ 0)
@@ -287,17 +285,15 @@ theorem local_gen {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use `set S := Subfield.closure (curveRing y : Set Ω) with hSdef`. Establish `hB : ∀ b ∈ curveRing y, b ∈ S` using `fun b hb => Subfield.subset_closure hb`. Establish `hrat : ∀ p : Σ k, ι k, y p / y ⟨p.1, c0 p.1⟩ ∈ S`. Introduce `p`. Take `⟨α, β, hβ, e⟩` from `hr p`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hβ0 : (β : Ω) ≠ 0` using `fun h0 => hβ (by`. Establish `: β = 0` using `Subtype.ext h0`. Rewrite using `[this]`. Conclude with `m.zero_mem)`. Establish `: y p / y ⟨p.1, c0 p.1⟩ = α / β` using `by rw [← e]; field_simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `S.div_mem (hB _ α.2) (hB _ β.2)`. Establish `hx : gen y c a c' ∈ S`. Rewrite using `[gen, cu_div]`. Use `prod_mem fun k _ => S.zpow_mem ?_ _` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : y ⟨k, c' k⟩ / y ⟨k, c k⟩ = (y ⟨k, c' k⟩ / y ⟨k, c0 k⟩) / (y ⟨k, c k⟩ / y ⟨k, c0 k⟩)` using `(div_div_div_cancel_right₀ (hc0 k) _ _).symm`. Rewrite using `[e]`. Conclude with `S.div_mem (hrat ⟨k, c' k⟩) (hrat ⟨k, c k⟩)`. Take `⟨u, hu, v, hv, huv⟩` from `Subfield.mem_closure_iff.mp hx`. Rewrite `hu`, `hv` using `[Subring.closure_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv0 : v ≠ 0`. Introduce and unpack `rfl`. Rewrite `huv` using `[div_zero]`. Conclude with `gen_ne_zero hc hc' a huv.symm`. Use `⟨v, hv, hv0, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← huv, mul_div_cancel₀ _ hv0]`. Conclude with `hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_frac {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {m : Ideal (curveRing y)}
     {c0 : ∀ k, ι k} (hc0 : ∀ k, y ⟨k, c0 k⟩ ≠ 0)
@@ -338,9 +334,9 @@ end CurveIndexLinearAlt
 open CurveIndexLinearAlt in
 
 /- English proof (translation)
-Rewrite using `[chartIndexLog_eq hc, chartIndexLog_eq hc, chartIndexLog_eq hc]`. Take `⟨m0, hm0⟩` from `Ideal.exists_maximal (curveRing y)`. Take `⟨c0, hc0, hr0⟩` from `hC K ι Ω y hP m0 hm0`. Establish `hfrac : ∀ (b : K → ℤ) (i : {c' : ∀ k, ι k // ∀ k, y ⟨k, c' k⟩ ≠ 0}), ∃ d ∈ curveRing y, d ≠ 0 ∧ d * gen y c b i.1 ∈ curveRing y` using `fun b i => gen_frac hc hc0 hr0 i.1 i.2 b`. Take `⟨h1, h2, h3⟩` from `hI Ω (curveRing y) (secIdeal y c a) (secIdeal y c a') (secIdeal y c (a + a')) {c' : ∀ k, ι k // ∀ k, y ⟨k, c' k⟩ ≠ 0} (fun i => gen y c a i.1) (fun i => gen y c a' i.1) (hF K ι Ω y hP) (mul_mem_secIdeal hc) (mul_mem_secIdeal hc) (mul_mem_secIdeal hc) (fun i => gen_ne_zero hc i.2 …`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c', hc', hr⟩` from `hC K ι Ω y hP m hm`. Use `⟨⟨c', hc'⟩, local_gen hc hm.isPrime hc' hr a, local_gen hc hm.isPrime hc' hr a', ?_⟩` and prove the remaining obligations. Simplify using `only [← gen_add hc hc']`. Conclude with `local_gen hc hm.isPrime hc' hr (a + a'))`. Rewrite using `[h3, Real.log_mul h1.ne' h2.ne']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CurveIndexLinear.add (hF : CurveRingFinite.Statement) (hC : CurveClosedPointChart.Statement)
     (hI : InvertibleIndexMul.Statement) {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type}
@@ -365,17 +361,17 @@ theorem CurveIndexLinear.add (hF : CurveRingFinite.Statement) (hC : CurveClosedP
   rw [h3, Real.log_mul h1.ne' h2.ne']
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y c hP hc`. Establish `hadd` using `CurveIndexLinear.add hF hC hI hP hc`. Use `⟨hadd, fun a τ => ?_⟩` and prove the remaining obligations. Establish `hτ : chartIndexLog y c a τ = chartIndexLog y c (fun k => (τ : ℤ) * a k) 1`. Establish `e1 : chartLat y a τ = chartLat y (fun k => (τ : ℤ) * a k) 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `s`. Use `show (∀ c' : ∀ k, ι k, (∀ k, y ⟨k, c' k⟩ ≠ 0) → s * ∏ k, y ⟨k, c' k⟩ ^ (-((τ : ℤ) * a k)) ∈ chartRingZ y c') ↔ (∀ c' : ∀ k, ι k, (∀ k, y ⟨k, c' k⟩ ≠ 0) → s * ∏ k, y ⟨k, c' k⟩ ^ (-(((1 : ℕ) : ℤ) * ((τ : ℤ) * a k))) ∈ chartRingZ y c')`. Simplify using `only [Nat.cast_one, one_mul]`. Establish `e2 : chartUnit y c a τ = chartUnit y c (fun k => (τ : ℤ) * a k) 1`. Simplify using `[chartUnit]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chartIndexLog, chartIndexLog, e1, e2]`. Rewrite using `[hτ]`. Use `clear hτ`. Proceed by induction on `τ with`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `hadd 0 0`. Rewrite `h0` using `[add_zero]`. Establish `e : (fun k => ((0 : ℕ) : ℤ) * a k) = 0` using `funext fun k => by simp`. Rewrite using `[e]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ n ih`. Establish `e : (fun k => ((n + 1 : ℕ) : ℤ) * a k) = (fun k => (n : ℤ) * a k) + a`. Use function extensionality and compare the values at `fun k => by simp only [Pi.add_apply]; push_cast; ring`. Rewrite using `[e, hadd, ih]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem CurveIndexLinear.proof (hF : CurveRingFinite.Statement) (hC : CurveClosedPointChart.Statement)
     (hI : InvertibleIndexMul.Statement) : CurveIndexLinear.Statement := by

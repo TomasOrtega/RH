@@ -7,17 +7,15 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 namespace QH
 
 /- English proof (translation)
-Establish `hp2 : 2 ≤ p` using `hp.two_le`. Establish `key : ∀ n ∈ (Icc 1 N).filter (fun n => IsPrimePow n ∧ n.minFac = p), ∃ k ∈ Icc 1 N, p ^ k = n`. Introduce `n hn`. Rewrite `hn` using `[Finset.mem_filter, Finset.mem_Icc]`. Take `⟨⟨_, hnN⟩, hpp, hmin⟩` from `hn`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, k, hq, hk, rfl⟩` from `(isPrimePow_nat_iff _).1 hpp`. Rewrite `hmin` using `[hq.pow_minFac hk.ne']`. Substitute `hmin` using the available equality. Use `⟨k, Finset.mem_Icc.2 ⟨hk, ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `((Nat.lt_pow_self (by omega : 1 < q)).le).trans hnN`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hlogp : 0 ≤ Real.log p` using `Real.log_nonneg (by exact_mod_cast hp.one_lt.le)`. Unfold `sP`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Take `⟨k, hk, rfl⟩` from `key n hn`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk0 : k ≠ 0` using `by have := (Finset.mem_Icc.1 hk).1; omega`. Rewrite using `[cN, ArithmeticFunction.vonMangoldt_apply_pow hk0, ArithmeticFunction.vonMangoldt_apply_prime hp]`. Use `_ ≤ ∑ n ∈ (Icc 1 N).image (fun k => p ^ k), Real.log p * min 1 (x / (n : ℝ)) := by`. Use `Finset.sum_le_sum_of_subset_of_nonneg ?_ fun n _ _ => ?_` and prove the remaining obligations. Introduce `n hn`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk, rfl⟩` from `key n hn`. Conclude with `Finset.mem_image.2 ⟨k, hk, rfl⟩`. Conclude with `mul_nonneg hlogp (le_min zero_le_one (div_nonneg hx0 (Nat.cast_nonneg _)))`. Use `_ = ∑ k ∈ Icc 1 N, Real.log p * min 1 (x / (p : ℝ) ^ k) := by`. Rewrite using `[Finset.sum_image fun a _ b _ h => Nat.pow_right_injective hp2 h]`.
-
-Use `push_cast`. Both sides reduce to the same expression. Use `_ = _ := (Finset.mul_sum _ _ _).symm`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma primePowerSum_le_log_mul_sum_min {x : ℝ} (hx0 : 0 ≤ x) (N : ℕ) {p : ℕ} (hp : p.Prime) :
     sP (cN x) N p ≤ Real.log p * ∑ i ∈ Icc 1 N, min 1 (x / (p : ℝ) ^ i) := by
@@ -55,15 +53,15 @@ private lemma primePowerSum_le_log_mul_sum_min {x : ℝ} (hx0 : 0 ≤ x) (N : �
     _ = _ := (Finset.mul_sum _ _ _).symm
 
 /- English proof (translation)
-Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.two_le`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Use `set r : ℝ := 1 / p with hr`. Establish `hr0 : 0 ≤ r` using `by positivity`. Establish `hr2 : r ≤ 1 / 2` using `by rw [hr]; exact one_div_le_one_div_of_le (by norm_num) hp2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hterm : ∀ i ∈ Icc 1 N, min 1 (x / (p : ℝ) ^ i) ≤ x * r ^ i`. Introduce `i _`. Use `(min_le_right _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hr, one_div_pow, mul_one_div]`. Use `(Finset.sum_le_sum hterm).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.mul_sum]`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Rewrite using `[Finset.Icc_eq_empty (by norm_num), Finset.sum_empty, mul_zero]`. Check the signs of the components of the expression. Establish `h1` using `dA_tail_geo r hr0 hr2 1 N hN`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [pow_one] at h1`. Establish `hsplit : ∑ i ∈ Icc 1 N, r ^ i = r + ∑ i ∈ Ioc 1 N, r ^ i`. Rewrite using `[dA_Icc_one_eq_Ioc, ← Finset.sum_Ioc_consecutive _ (Nat.zero_le 1) hN]`. Simplify using the standard rewrite rules. Establish `hle : ∑ i ∈ Icc 1 N, r ^ i ≤ 2 * r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit]`. Combine the linear relations using `[pow_nonneg hr0 N]`. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma sum_min_le_div {x : ℝ} (hx0 : 0 ≤ x) (N : ℕ) {p : ℕ} (hp : p.Prime) :
     ∑ i ∈ Icc 1 N, min 1 (x / (p : ℝ) ^ i) ≤ 2 * (x / p) := by
@@ -93,17 +91,17 @@ private lemma sum_min_le_div {x : ℝ} (hx0 : 0 ≤ x) (N : ℕ) {p : ℕ} (hp :
       _ = 2 * (x / p) := by rw [hr]; ring
 
 /- English proof (translation)
-Use `⟨3, by norm_num, fun y hy N p => ?_⟩` and prove the remaining obligations. Establish `hy0 : 0 < y` using `by linarith`. Establish `hly : 0 ≤ Real.log y` using `Real.log_nonneg (by linarith)`. Distinguish the cases in `hp : p.Prime`. Establish `h1` using `primePowerSum_le_log_mul_sum_min hy0.le N hp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp.pos`. Establish `hlogp : 0 ≤ Real.log p` using `Real.log_nonneg (by exact_mod_cast hp.one_lt.le)`. Break down `le_total (p : ℝ) y with hpy | hpy` into its components or cases. Establish `h2` using `dA_sum_min_pow y (by linarith) p hp.two_le N`. Establish `h3 : Real.log p ≤ Real.log y` using `Real.log_le_log hp0 hpy`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `mul_le_mul_of_nonneg_left (sum_min_le_div hy0.le N hp) hlogp`. Establish `he : Real.exp 1 ≤ y` using `by linarith [Real.exp_one_lt_d9]`. Establish `h4 : Real.log p / p ≤ Real.log y / y` using `Real.log_div_self_antitoneOn he (le_trans he hpy) hpy`. Establish `h5 : Real.log p * (2 * (y / p)) ≤ 2 * Real.log y`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Real.log p * (2 * (y / p)) = 2 * y * (Real.log p / p)` using `by ring`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : sP (cN y) N p = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Unfold `sP`. Use `Finset.sum_eq_zero fun n hn => ?_` and prove the remaining obligations. Rewrite `hn` using `[Finset.mem_filter]`. Take `⟨_, hpp, hmin⟩` from `hn`. Conclude with `absurd (hmin ▸ Nat.minFac_prime hpp.ne_one) hp`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem exists_primePowerSum_le_mul_log :
     ∃ C : ℝ, 0 < C ∧ ∀ y : ℝ, 3 ≤ y → ∀ N p : ℕ, sP (cN y) N p ≤ C * Real.log y := by

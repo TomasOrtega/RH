@@ -16,15 +16,11 @@ noncomputable section
 namespace GlobalTheory.ParabolicCoord
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ K _ _ _ _ _ _ _ _ T _ _ _ _ _ _ _ _ Q κ m δ μK μT hQ hκ hm hδ hμK hμT hGuni hQuni hn hconj hinj hP hdec f hf hfQ hint g`. Use `haveI : LocallyCompactSpace Q := hQ.locallyCompactSpace`. Set `μQ : Measure Q` to `Measure.haar`. Use `haveI : μQ.IsMulRightInvariant := hQuni μQ inferInstance`. Take `⟨β, hβm, hβ1⟩` from `GlobalTheory.Orb.FubiniQuot.exists_bruhat_nnreal hQ μQ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set ν := GlobalTheory.ParabolicCoord.coordMeasure Q κ m δ μQ μT μK with hν`. Use `haveI hc : IsFiniteMeasureOnCompacts ν := GlobalTheory.T.compact_torus_quotient_fubini G K T Q κ m δ μK μT μQ hQ hκ hm hδ hμK hμT inferInstance hn hinj hP hdec`. Use `haveI hl : ν.IsMulLeftInvariant := GlobalTheory.T.compact_torus_quotient_measure G K T Q κ m hQ hκ hm hn hinj hP hdec ν hc (GlobalTheory.T.compact_torus_quotient_integration G K T Q κ m δ μK μT μQ hQ hκ hm hδ hμK hμT inferInstance) (GlobalTheory.T.compact_torus_quotient_invarianc …`. Set `μG : Measure G` to `Measure.haar`. Use `haveI : μG.IsMulRightInvariant := hGuni μG inferInstance`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hνG : ν = Measure.haarScalarFactor ν μG • μG` using `Measure.isMulLeftInvariant_eq_smul ν μG`. Establish `hright : ∀ φ : G → ℂ, ∫ x, φ (x * g) ∂ν = ∫ x, φ x ∂ν`. Introduce `φ`. Rewrite using `[hνG, integral_smul_nnreal_measure, integral_smul_nnreal_measure, integral_mul_right_eq_self]`. Establish `h1 : Integrable (fun p : K × T => f ((m p.2)⁻¹ * κ p.1 * 1) * ((δ p.2 : ℝ) : ℂ)) (μK.prod μT)`.
-
-Simplify `hint 1` using `only [mul_one]`. Establish `eg` using `GlobalTheory.T.compact_torus_quotient_equivariance G K T Q κ m δ μK μT μQ hQ hκ hm hδ hμK hμT inferInstance β hβm hβ1 f hf hfQ g (hint g)`. Establish `e1` using `GlobalTheory.T.compact_torus_quotient_equivariance G K T Q κ m δ μK μT μQ hQ hκ hm hδ hμK hμT inferInstance β hβm hβ1 f hf hfQ 1 h1`. Simplify using `only [mul_one] at e1`. Rewrite using `[← eg, ← e1]`.
-
-Conclude with `hright (fun x => ((β x : ℝ) : ℂ) * f x)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotIntegral_right_invariant : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]

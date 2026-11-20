@@ -6,11 +6,11 @@ open scoped NNReal
 namespace GlobalTheory.AlmostEt
 
 /- English proof (translation)
-Introduce `p hp G _ _ _ hG`. Take `⟨n, hn, hc⟩` from `hG.nontrivial_iff_card.1 inferInstance`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Take `⟨K, hK⟩` from `Sylow.exists_subgroup_card_pow_prime (G := G) p (n := m) (by rw [hc]; exact pow_dvd_pow p (Nat.le_succ m))`. Establish `hi : K.index = p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `K.card_mul_index` as an intermediate fact. Rewrite `this` using `[hK, hc, pow_succ]`. Conclude with `Nat.eq_of_mul_eq_mul_left (pow_pos hp.out.pos m) this`. Use `haveI : K.Normal := Subgroup.normal_of_index_eq_minFac_card (by`. Rewrite using `[hi, hc, hp.out.pow_minFac (Nat.succ_ne_zero m)])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `e : (G ⧸ K) ≃* Multiplicative (ZMod p)` to `mulEquivOfPrimeCardEq (p := p) (by rw [← hi]; rfl) (by simp)`. Use `⟨e.toMonoidHom.comp (QuotientGroup.mk' K), ?_⟩` and prove the remaining obligations. Conclude with `e.surjective.comp (QuotientGroup.mk'_surjective K)`.
+A detailed English derivation is pending.
 -/
 theorem exists_surj_hom_zmod_of_isPGroup :
     ∀ (p : ℕ) [Fact p.Prime] (G : Type) [Group G] [Finite G] [Nontrivial G],

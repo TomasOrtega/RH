@@ -9,11 +9,11 @@ open UpperTheory.Gal.G3 (sp)
 open UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Introduce `z hz`. Establish `hu' : L.CongOne 1 u ∧ L.CongOne 1 u⁻¹` using `hu`. Take `⟨w1, hw1, e1⟩` from `hu'.2 z hz`. Establish `hz' : L.actG u⁻¹ z ∈ LaHat D`. Rewrite using `[e1, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hz hw1`. Take `⟨w2, hw2, e2⟩` from `hv _ hz'`. Take `⟨w3, hw3, e3⟩` from `hu'.1 w2 hw2`. Use `⟨L.actG u w2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e3, one_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `add_mem hw2 hw3`. Establish `key : L.actG u (L.actG u⁻¹ z) = z`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, e2, map_add, map_nsmul, key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conj_congOne {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G) {u v : G.GAf} {N : ℕ}
     (hu : u ∈ L.KN 1) (hv : L.CongOne N v) : L.CongOne N (u * v * u⁻¹) := by
@@ -33,13 +33,13 @@ private theorem conj_congOne {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup
     rw [map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, e2, map_add, map_nsmul, key]
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, x, fun v => by rw [map_one]; exact one_mem _, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem inAf_mem' {p : ℕ} [Fact p.Prime] (D : Datum p) (x : D.La) : inAf D x ∈ LaHat D :=
   AddSubgroup.subset_closure ⟨1, x, fun v => by rw [map_one]; exact one_mem _, rfl⟩
 
 /- English proof (translation)
-Substitute `hc ha` using the available equality. Conclude with `⟨C, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem cl_cast {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} {L : Link D G} {E : Type} [Field E] [NumberField E]
     {gb : GBase D.toG E} {w : HeightOneSpectrum (𝓞 E)} {q : ℕ} [Fact q.Prime] {r : ℤ} {𝔴 𝔫 : Ideal (𝓞 D.F)}
@@ -49,27 +49,25 @@ private theorem cl_cast {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} {
   exact ⟨C, rfl⟩
 
 /- English proof (translation)
-Introduce `hPC hPI hPF hPS hCRT hBO p _ D G L hSc E _ _ gb w q _ r 𝔴 𝔫 S k T K₀ hK M c a hNum C`. Establish `hM` using `hNum.1`. Establish `hGen` using `hNum.2`. Set `N0 : Lv p` to `⟨S.N₀, S.std.three, S.cop⟩`. Establish `hMpos : 0 < M.1` using `by have := M.2.1; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdvd : S.N₀ ∣ M.1` using `⟨c, hM⟩`. Establish `hup` using `S.upow`. Establish `hcop : S.N₀.Coprime q` using `S.std.cop`. Establish `hK₀le : K₀ ≤ L.KN S.N₀`. Establish `key : ∀ g, g ∈ K₀ → L.CongOne S.N₀ g` using `fun g hg => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(hK g).1 hg`. Establish `h2` using `h.2`. Rewrite `h2` using `[S.lev]`. Conclude with `(((hCRT p D G L q r S.N₀ S.𝔞 hcop hup g (integ_of_mem h.1)).1).1 h2).1`. Conclude with `fun g hg => ⟨key g hg, key _ (inv_mem hg)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hKM : L.KN M.1 ≤ K₀`. Introduce `g hg`. Establish `h1 : g ∈ L.KN 1` using `KN_anti (one_dvd _) hg`. Establish `hcrt` using `hCRT p D G L q r S.N₀ S.𝔞 hcop hup g (integ_of_mem h1)`. Establish `h2 : L.CongOne S.N₀ g` using `(KN_anti hdvd hg).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : CongId L S.𝔞 g` using `(hcrt.2 a M.1 hMpos M.2.2 hGen).2 fun y => hg.1 _ (inAf_mem' D _)`. Conclude with `(hK g).2 ⟨h1, by rw [S.lev]; exact hcrt.1.2 ⟨h2, h3⟩⟩`. Establish `hX : T.X.K (T.lev M) = L.KN M.1` using `T.K_eq M`. Establish `hX0 : T.X.K (T.lev N0) = L.KN S.N₀` using `T.K_eq N0`. Use `⟨?ov, ?le, ?idx, ?adm, ?inv, ?fib, ?free, ?onto⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e, -⟩` from `hPF p D G L E gb w q r 𝔴 𝔫 S k T M c a hNum C`. Conclude with `e`. Rewrite using `[hX]`. Conclude with `hKM`. Rewrite using `[hX]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `T.X.idx (T.lev M) (T.lev N0)`. Rewrite `h` using `[hX, hX0]`. Conclude with `fun e => h (Subgroup.relIndex_eq_zero_of_le_right hK₀le e)`. Introduce `u hu`. Establish `hu1` using `((hK u).1 hu).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(T.Δ_eq u).2 (integ_of_mem hu1), fun v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[hX]`. Use `⟨conj_congOne L hu1 hv.1, ?_⟩` and prove the remaining obligations. Establish `e : (u * v * u⁻¹)⁻¹ = u * v⁻¹ * u⁻¹` using `by group`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `conj_congOne L hu1 hv.2`. Introduce `u hu x y`. Take `⟨C', hC'⟩` from `cl_cast (a' := ((1 : ℕ) : 𝓞 D.F) * a) S T M (_root_.mul_one c) (by simp) C`. Establish `h` using `hPI p D G L E gb w q r 𝔴 𝔫 S k T K₀ hK M M 1 c a (_root_.mul_one _).symm hNum C' C u hu x y`. Rewrite `h` using `[hC']`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `Ω _ _ x y h`. Conclude with `hPS p D G L E gb w q r 𝔴 𝔫 S k T K₀ hK M c a hNum C Ω x y h`. Introduce `u hu x y Ω _ _ z hz`. Conclude with `T.X.free _ (T.lev N0) (by rw [hX, hX0]; exact KN_anti hdvd) u (by rw [hX0]; exact hK₀le hu) x y Ω z hz`. Introduce `Ω _ _ y σ hy`.
-
-Take `⟨x₀, hx₀, -⟩` from `hBO p D G L hSc E gb w q r 𝔴 𝔫 S k T M c a hNum C Ω (y ≫ (GlobalTheory.KS.pow S.Y.univ.A k).hom) σ (by simpa using hy)`. Establish `hpb` using `(hPC _ _ _ (T.M M).univ.A S.Y.univ.A S.Y.univ.A C.j (𝟙 _) C.m.φ (𝟙 _) C.m.cart.1.w (by simp) k).1 C.m.cart.1`. Use `⟨hpb.lift y x₀ hx₀.symm ≫ (T.e M).inv, ?_⟩` and prove the remaining obligations. Simplify using `only [Site.pi, Cls.pw, Category.assoc, Iso.inv_hom_id_assoc]`. Conclude with `hpb.lift_fst _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.quotOf_holds :
     PowCart → PiInv → PiFet → PiSep → CongCRT → BaseOnto → QuotOf := by

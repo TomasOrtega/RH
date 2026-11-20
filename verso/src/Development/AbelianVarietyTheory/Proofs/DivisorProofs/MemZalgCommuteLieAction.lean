@@ -7,9 +7,9 @@ open NumberField GlobalTheory.CuspRep
 namespace GlobalTheory.CuspRep
 
 /- English proof (translation)
-Introduce `E _ _ _ a X z hz`. Establish `h : GlobalTheory.CuspRep.Zalg E a ≤ Subalgebra.centralizer ℂ {GlobalTheory.CuspRep.lie E a X}`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, u, rfl⟩`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.mem_singleton_iff.1 hy]`. Conclude with `(commute_cap_lie τ u X).eq.symm`. Conclude with `((Subalgebra.mem_centralizer_iff ℂ).1 (h hz) _ rfl).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Zalg_mul_lie : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (X : GlobalTheory.CuspRep.Lie E a)
     (z : Module.End ℂ (GlobalTheory.CuspRep.Sm E a)), z ∈ GlobalTheory.CuspRep.Zalg E a →

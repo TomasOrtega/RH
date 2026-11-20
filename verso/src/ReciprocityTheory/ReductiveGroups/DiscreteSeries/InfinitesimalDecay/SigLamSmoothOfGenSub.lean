@@ -15,7 +15,7 @@ variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] 
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Use `S7.compactSpace_KG ε` as an intermediate fact. Establish `: IsFiniteMeasureOnCompacts (S7.muK ε)` using `by unfold S7.muK; infer_instance`. Conclude with `integrableOn_univ.mp (hf.continuousOn.integrableOn_compact isCompact_univ)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem intK {E : Type*} [NormedAddCommGroup E] {f : S7.KG ε → E} (hf : Continuous f) :
     Integrable f (S7.muK ε) := by
@@ -24,14 +24,14 @@ theorem intK {E : Type*} [NormedAddCommGroup E] {f : S7.KG ε → E} (hf : Conti
   exact integrableOn_univ.mp (hf.continuousOn.integrableOn_compact isCompact_univ)
 
 /- English proof (translation)
-The claim follows from `(hσ.2.2 u).comp_continuous S7.IdA.continuous_toMK fun k => smd_inUJ_of_Kset k.2`.
+A detailed English derivation is pending.
 -/
 theorem orbitK_continuous (hσ : IsURepOn (UJset ε) σ) (u : H) :
     Continuous fun k : S7.KG ε => σ (S7.toMK k) u :=
   (hσ.2.2 u).comp_continuous S7.IdA.continuous_toMK fun k => smd_inUJ_of_Kset k.2
 
 /- English proof (translation)
-Rewrite using `[show S7.toMK (k₀ * k) = S7.toMK k₀ * S7.toMK k from rfl, hσ.1.2 _ (smd_inUJ_of_Kset k₀.2) _ (smd_inUJ_of_Kset k.2)]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toMK_mul_apply (hσ : IsURepOn (UJset ε) σ) (k₀ k : S7.KG ε) (u : H) :
     σ (S7.toMK (k₀ * k)) u = σ (S7.toMK k₀) (σ (S7.toMK k) u) := by
@@ -40,23 +40,19 @@ theorem toMK_mul_apply (hσ : IsURepOn (UJset ε) σ) (k₀ k : S7.KG ε) (u : H
   rfl
 
 /- English proof (translation)
-Use `S7.compactSpace_KG ε` as an intermediate fact. Use `set x := ∫ k, α k • σ (S7.toMK k) u ∂(S7.muK ε)`. Take `⟨ι, _, a, β, hab⟩` from `hα`. Establish `hint : ∀ γ : C(S7.KG ε, ℂ), Integrable (fun k => γ k • σ (S7.toMK k) u) (S7.muK ε)` using `fun γ => intK (γ.continuous.smul (orbitK_continuous hσ u))`. Use `set T : Submodule ℂ H := Submodule.span ℂ (Set.range fun i => ∫ κ, β i κ • σ (S7.toMK κ) u ∂(S7.muK ε))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : FiniteDimensional ℂ T` using `FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Establish `key : ∀ k₀ : S7.KG ε, σ (S7.toMK k₀) x ∈ T`. Introduce `k₀`. Establish `e1 : σ (S7.toMK k₀) x = ∫ k, α k • σ (S7.toMK (k₀ * k)) u ∂(S7.muK ε)`. Rewrite using `[← (σ (S7.toMK k₀)).integral_comp_comm (hint α)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [map_smul, toMK_mul_apply hσ]`. Use `set f : S7.KG ε → H := fun κ => α (k₀⁻¹ * κ) • σ (S7.toMK κ) u`. Establish `e2 : ∫ k, α k • σ (S7.toMK (k₀ * k)) u ∂(S7.muK ε) = ∫ κ, f κ ∂(S7.muK ε)`. Rewrite using `[← integral_mul_left_eq_self f k₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [f, inv_mul_cancel_left]`. Establish `e3 : ∫ κ, f κ ∂(S7.muK ε) = ∑ i, a i k₀⁻¹ • ∫ κ, β i κ • σ (S7.toMK κ) u ∂(S7.muK ε)`. Establish `: f = fun κ => ∑ i, a i k₀⁻¹ • (β i κ • σ (S7.toMK κ) u)`. Use function extensionality and compare the values at `κ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [f, hab, Finset.sum_smul, smul_smul]`. Rewrite using `[this]`. Use `show ∫ κ, ∑ i, a i k₀⁻¹ • (β i κ • σ (S7.toMK κ) u) ∂(S7.muK ε) = _`. Rewrite using `[integral_finsetSum Finset.univ (f := fun i κ => a i k₀⁻¹ • (β i κ • σ (S7.toMK κ) u)) (fun i _ => (hint (β i)).smul (a i k₀⁻¹))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integral_smul]`. Rewrite using `[e1, e2, e3]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `set S : Submodule ℂ H := Submodule.span ℂ (Set.range fun k : S7.KG ε => σ (S7.toMK k) x)`. Establish `hST : S ≤ T` using `Submodule.span_le.2 fun v ⟨k, hk⟩ => hk ▸ key k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨S, Submodule.finiteDimensional_of_le hST, ?_, ?_⟩` and prove the remaining obligations. Establish `: σ (S7.toMK (1 : S7.KG ε)) x = x`. Rewrite using `[show S7.toMK (1 : S7.KG ε) = 1 from rfl, hσ.1.1]`. Both sides reduce to the same expression. Conclude with `this ▸ Submodule.subset_span ⟨1, rfl⟩`.
-
-Introduce `g hg v hv`. Take `⟨k', rfl⟩` from `ffa_Kset (ε := ε) hg`. Establish `hle : S ≤ S.comap (σ (S7.toMK k'))` using `Submodule.span_le.2 fun w ⟨k, hk⟩ => by`. Rewrite using `[← hk]`. Use `show σ (S7.toMK k') (σ (S7.toMK k) x) ∈ S`.
-
-Rewrite using `[← toMK_mul_apply hσ]`. Conclude with `Submodule.subset_span ⟨k' * k, rfl⟩`. Conclude with `hle hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kfin_integral (hσ : IsURepOn (UJset ε) σ) (u : H) {α : C(S7.KG ε, ℂ)} (hα : Mult1.Down.KF.Fin2 α) :
     Formalism.MainNotions.S.IsKFin ε σ (∫ k, α k • σ (S7.toMK k) u ∂(S7.muK ε)) := by
@@ -109,9 +105,9 @@ theorem kfin_integral (hσ : IsURepOn (UJset ε) σ) (u : H) {α : C(S7.KG ε, �
     exact hle hv
 
 /- English proof (translation)
-Use `S7.compactSpace_KG ε` as an intermediate fact. Establish `hint1 : Integrable (fun k => α k • σ (S7.toMK k) u) (S7.muK ε)` using `intK (α.continuous.smul (orbitK_continuous hσ u))`. Establish `hint2 : Integrable (fun k => α k • dSW σ w (σ (S7.toMK k) u)) (S7.muK ε)` using `intK (α.continuous.smul (continuous_dSW_orbit hσ hw hu))`. Use `sub_eq_zero.1 (hsep _ fun y hy => ?_)` and prove the remaining obligations. Establish `hwr : ∀ X ∈ w.reverse, inG ε X` using `fun X hX => hw X (List.mem_reverse.1 hX)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[inner_sub_right, sub_eq_zero, inner_dSW hσ hw hy hx, ← integral_inner hint1, ← integral_inner hint2, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [inner_smul_right]`. Rewrite using `[inner_dSW hσ hw hy (IsSmoothVecU.kStable hσ k.2 hu)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dSW_integral (hσ : IsURepOn (UJset ε) σ)
     (hsep : ∀ z : H, (∀ y, IsSmoothVecU ε σ y → inner ℂ y z = 0) → z = 0)
@@ -139,7 +135,7 @@ variable {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)} {Ψ : Matrix (Fin
   {v₀ : T.V}
 
 /- English proof (translation)
-Establish `h` using `(mem_smD_iff ε (rreg ε) (y : L2 ε)).1 y.2`. Conclude with `smoothOnGV_clm (Hlam ε Ψ v₀).orthogonalProjectionOnto h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sigLam_smooth_of_genSub {y : smD ε (rreg ε)}
     (hyH : ((y : smD ε (rreg ε)) : L2 ε) ∈ Hlam ε Ψ v₀) :
@@ -148,11 +144,11 @@ theorem sigLam_smooth_of_genSub {y : smD ε (rreg ε)}
   exact smoothOnGV_clm (Hlam ε Ψ v₀).orthogonalProjectionOnto h
 
 /- English proof (translation)
-Establish `hcl : IsClosed {v : L2 ε | inner ℂ v (z : L2 ε) = 0}` using `isClosed_eq (continuous_id.inner continuous_const) continuous_const`. Establish `hsub : (((genSub (smE ε (rreg ε)) (datumV ε Ψ v₀)).map (smD ε (rreg ε)).subtype : Submodule ℂ (L2 ε)) : Set (L2 ε)) ⊆ {v : L2 ε | inner ℂ v (z : L2 ε) = 0}`. Introduce and unpack `v ⟨y, hy, rfl⟩`. Establish `hyH : ((y : smD ε (rreg ε)) : L2 ε) ∈ Hlam ε Ψ v₀` using `Submodule.le_topologicalClosure _ ⟨y, hy, rfl⟩`. Use `hz _ (sigLam_smooth_of_genSub hyH)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Submodule.coe_inner]`. Then use the resulting hypothesis. Establish `hzc : (z : L2 ε) ∈ closure (((genSub (smE ε (rreg ε)) (datumV ε Ψ v₀)).map (smD ε (rreg ε)).subtype : Submodule ℂ (L2 ε)) : Set (L2 ε))`. Use `z.2` as an intermediate fact. Unfold `Hlam closGen at this`. Rewrite using `[← Submodule.topologicalClosure_coe]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `h0 : inner ℂ (z : L2 ε) (z : L2 ε) = (0 : ℂ)` using `hcl.closure_subset_iff.2 hsub hzc`. Conclude with `Subtype.ext (inner_self_eq_zero.1 h0)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sigLam_sep (z : Hlam ε Ψ v₀)
     (hz : ∀ y, IsSmoothVecU ε (sigLam ε Ψ v₀) y → inner ℂ y z = 0) : z = 0 := by

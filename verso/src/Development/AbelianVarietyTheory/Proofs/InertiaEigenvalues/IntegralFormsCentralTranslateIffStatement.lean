@@ -15,7 +15,7 @@ open GlobalTheory.HeightCounting.Up (PrN)
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CentralTranslate.mem_mtLat_iff_translate` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FIntegralFormsCentralTranslateIff.lean&line=100#L100)
 -/

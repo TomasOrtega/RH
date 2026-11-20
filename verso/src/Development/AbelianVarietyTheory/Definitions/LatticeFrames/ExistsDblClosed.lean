@@ -12,7 +12,7 @@ namespace GlobalTheory.LocMod.PinModel
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `let e := Fintype.equivFinOfCardEq h ⟨⟨(1 : Matrix (Fin N) (Fin N) k).submatrix id e, (1 : Matrix (Fin N) (Fin N) k).submatrix e id, by rw [submatrix_mul_equiv]; simp, by rw [← submatrix_mul (he₂ := Function.bijective_id)]; simp⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_frame (k : Type) [Field k] {N : ℕ} (Y : Type) [Fintype Y] [DecidableEq Y] (h : Fintype.card Y = N) :
     Nonempty (GlobalTheory.LocMod.Frame k N Y) :=
@@ -21,7 +21,7 @@ theorem nonempty_frame (k : Type) [Field k] {N : ℕ} (Y : Type) [Fintype Y] [De
     by rw [submatrix_mul_equiv]; simp, by rw [← submatrix_mul (he₂ := Function.bijective_id)]; simp⟩⟩
 
 /- English proof (translation)
-Take `⟨G₀, h₀⟩` from `Witness.exists_bes p B hs F₀`. Take `⟨G₁, h₁⟩` from `Witness.exists_jac p J hs (Witness.hz_ne p B) F₁`. Take `⟨G₂, h₂⟩` from `Witness.exists_bes p B' (mul_ne_zero hs (Witness.xi_ne p)) F₂`. Conclude with `⟨⟨s, hs, F₀, F₁, F₂, G₀, G₁, G₂, h₀, h₁, h₂⟩, rfl, rfl, rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_dbl (p : Place D k) {σ : ℕ} (B : BesLev D (σ + 1)) (J : JacLev D (σ + 1)) (B' : BesLev D σ) (n₀ n₁ n₂ : Type)
     [Fintype n₀] [DecidableEq n₀] [Fintype n₁] [DecidableEq n₁] [Fintype n₂] [DecidableEq n₂] {s : k} (hs : s ≠ 0)
@@ -33,18 +33,18 @@ theorem exists_dbl (p : Place D k) {σ : ℕ} (B : BesLev D (σ + 1)) (J : JacLe
   exact ⟨⟨s, hs, F₀, F₁, F₂, G₀, G₁, G₂, h₀, h₁, h₂⟩, rfl, rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Use `F.bes'.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem Dbl_c (p : Place D k) {σ : ℕ} {B : BesLev D (σ + 1)} {J : JacLev D (σ + 1)} {B' : BesLev D σ} {n₀ n₁ n₂ : Type}
     [Fintype n₀] [DecidableEq n₀] [Fintype n₁] [DecidableEq n₁] [Fintype n₂] [DecidableEq n₂] {c : ℕ}
     (F : Dbl p B J B' n₀ n₁ n₂ c) : c = 2 * σ := by have := F.bes'.1; omega
 
 /- English proof (translation)
-Take `⟨v, ⟨p⟩⟩` from `Witness.nonempty_place D`. Use `letI := GlobalTheory.LocalData.complRel v`. Use `haveI := GlobalTheory.LocalData.isLocalField v`. Take `⟨ψ, hψ⟩` from `(Inhab.exists_chain D).1`. Set `B : BesLev D 1` to `Inhab.besPlane (GlobalTheory.RegSW.Model.hypFour D) (Inhab.cmHost_imaginaryGenerator_ne_zero D)`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `J : JacLev D 1` to `Inhab.jacLine (hypDecThree D)`. Set `B' : BesLev D 0` to `Inhab.besPlane (Inhab.hypRefl (Inhab.plane D)) one_ne_zero`. Establish `e : D.host.xi0⁻¹ • B.ζ = B'.ζ` using `funext fun _ => inv_mul_cancel₀ (Inhab.cmHost_imaginaryGenerator_ne_zero D)`. Establish `l : Link B B.L B'.ζ` using `e ▸ Inhab.selfLink B`. Take `⟨F⟩` from `nonempty_frame (v.adicCompletion D.host.F) (N := 1) Unit (by simp)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨G, -⟩` from `exists_dbl (σ := 0) p B J B' Unit Unit Unit one_ne_zero F F F`. Conclude with `⟨_, _, _, _, _, p, ψ, B, J, B', Inhab.nonempty_stepBF hψ B J, Inhab.nonempty_stepFB hψ J B', ⟨l⟩, ⟨G⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dbl_closed (D : D7) : ∃ (k : Type) (_ : Field k) (_ : ValuativeRel k) (_ : TopologicalSpace k)
     (_ : IsNonarchimedeanLocalField k) (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ) (B : BesLev D 1) (J : JacLev D 1) (B' : BesLev D 0),
@@ -66,9 +66,9 @@ theorem exists_dbl_closed (D : D7) : ∃ (k : Type) (_ : Field k) (_ : Valuative
 variable {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
 
 /- English proof (translation)
-Use `⟨⟨Set.indicator {x | ∀ r q, x r q ∈ 𝒪[k]} fun _ => 1, mem_SB_of_periodic (fun x hx => ?_) fun x y hy => ?_⟩, rfl, ?_⟩` and prove the remaining obligations. Conclude with `(Set.mem_of_indicator_ne_zero hx)`. Establish `: (∀ r q, (x + y) r q ∈ 𝒪[k]) ↔ ∀ r q, x r q ∈ 𝒪[k]` using `⟨fun h r q => by simpa using sub_mem (h r q) (hy.intM r q), fun h r q => add_mem (h r q) (hy.intM r q)⟩`. Distinguish the cases in `hx : ∀ r q, x r q ∈ 𝒪[k]`. Rewrite using `[Set.indicator_of_mem (by exact this.2 hx), Set.indicator_of_mem (by exact hx)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem (by exact fun h => hx (this.1 h)), Set.indicator_of_notMem (by exact hx)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isOne : ∃ Φ : SB (Matrix Y Y' k), IsOne Φ ∧ Φ.1 0 = 1 := by
   refine ⟨⟨Set.indicator {x | ∀ r q, x r q ∈ 𝒪[k]} fun _ => 1, mem_SB_of_periodic (fun x hx => ?_) fun x y hy => ?_⟩, rfl, ?_⟩
@@ -81,9 +81,9 @@ theorem exists_isOne : ∃ Φ : SB (Matrix Y Y' k), IsOne Φ ∧ Φ.1 0 = 1 := b
   · simp
 
 /- English proof (translation)
-Use `⟨fun u hu => ?_, fun Tm _ Φ₀ Φ h₀ h => ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`. Substitute `hu` using the available equality. Introduce `i j`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `rfl : Φ = Φ₀` from `Subtype.ext (h.trans h₀.symm)`. Use function extensionality and compare the values at `w`. Simplify using `[comb, Finsupp.support_single_ne_zero, heisO, symplOH, symplO, hO]`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem isCombAt_one (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (FS : GlobalTheory.LocMod.Frame k S.rank Y')
     (FT : GlobalTheory.LocMod.Frame k T.rank Y) :
@@ -96,14 +96,14 @@ theorem isCombAt_one (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp
     simp [comb, Finsupp.support_single_ne_zero, heisO, symplOH, symplO, hO]
 
 /- English proof (translation)
-Use `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).surjective.comp ?_` and prove the remaining obligations. Conclude with `Algebra.TensorProduct.map_surjective _ _ (fun α => ⟨pairA _ 0 α, rfl⟩) Function.surjective_id`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem toEAf_surj (D : D7) : Function.Surjective (toEAf D) := by
   refine (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).surjective.comp ?_
   exact Algebra.TensorProduct.map_surjective _ _ (fun α => ⟨pairA _ 0 α, rfl⟩) Function.surjective_id
 
 /- English proof (translation)
-Establish `h1 : finPart D a = finPart D b` using `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).injective h`. Establish `h2 : p.e * a = p.e * b` using `GlobalTheory.SplitScalar.adele_ext (by rw [map_mul, map_mul, GlobalTheory.SplitScalar.infPart_splitIdem p.split, zero_mul, zero_mul]) (by rw [map_mul, map_mul, h1])`. Rewrite using `[← p.π_ι (p.π a), p.ι_π, h2, ← p.ι_π, p.π_ι]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pi_congr (p : Place D k) {a b : Formalism.L2.Theta.AE D} (h : toEAf D a = toEAf D b) : p.π a = p.π b := by
   have h1 : finPart D a = finPart D b := (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).injective h
@@ -112,11 +112,11 @@ theorem pi_congr (p : Place D k) {a b : Formalism.L2.Theta.AE D} (h : toEAf D a 
   rw [← p.π_ι (p.π a), p.ι_π, h2, ← p.ι_π, p.π_ι]
 
 /- English proof (translation)
-Use `choose f hf using toEAf_surj D`. Establish `key : ∀ b : Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.Theta.AE D), b.map (toEAf D) = β.val → ((β⁻¹).val.map f).map p.π * b.map p.π = 1` using `fun b hb => by`. Establish `e : ((β⁻¹).val.map f * b).map (toEAf D) = (1 : Matrix _ _ (Formalism.L2.Theta.AE D)).map (toEAf D)`. Rewrite using `[Matrix.map_mul, hb, show ((β⁻¹).val.map f).map (toEAf D) = (β⁻¹).val from by ext i j; exact hf _, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_one p.π (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Conclude with `pi_congr p (congrFun (congrFun e i) j)`. Establish `k0` using `key (β.val.map f) (by ext i j; exact hf _)`. Establish `h1 : M * ((β⁻¹).val.map f).map p.π * ((β.val.map f).map p.π * M') = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc _ _ M', k0, Matrix.one_mul, hM]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg, hg'⟩` from `Witness.exists_isLoc p (S := V) (Frame.ofGL 1) ⟨_, _, h1, mul_eq_one_comm.1 h1⟩`. Use `⟨g, hg, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, hg']`. Simplify using `only [Frame.ofGL, Units.val_one, inv_one, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[Matrix.mul_assoc, key b hb, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_movedTo (p : Place D k) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) {M M' : Matrix (Fin V.rank) (Fin V.rank) k}
     (hM : M * M' = 1) : ∃ g, SuppAt p.e V g ∧ MovedTo p V g β M := by
@@ -139,7 +139,7 @@ theorem exists_movedTo (p : Place D k) (V : HSp D) (β : GL (Fin V.rank) (Lev.EA
   rw [Matrix.mul_assoc, key b hb, Matrix.mul_one]
 
 /- English proof (translation)
-Use `choose f hf using toEAf_surj D`. Establish `e : (β.val.map f).map (toEAf D) = β.val` using `by ext i j; exact hf _`. Conclude with `(h _ e).symm.trans (h' _ e)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem movedTo_unique (p : Place D k) (V : HSp D) (g : GA D V) (β : GL (Fin V.rank) (Lev.EAf D))
     {M M' : Matrix (Fin V.rank) (Fin V.rank) k} (h : MovedTo p V g β M) (h' : MovedTo p V g β M') : M = M' := by
@@ -148,7 +148,7 @@ theorem movedTo_unique (p : Place D k) (V : HSp D) (g : GA D V) (β : GL (Fin V.
   exact (h _ e).symm.trans (h' _ e)
 
 /- English proof (translation)
-Establish `h' : κ + l + j * τ = N` using `by simpa using h`. Use `⟨((finSumFinEquiv.sumCongr finProdFinEquiv).trans finSumFinEquiv).trans (finCongr h'), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rintro ((i | i) | ⟨a, b⟩) <;> simp [GlobalTheory.SymBridge.zPos]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_ord (κ l τ j N : ℕ) (h : Fintype.card (Ix (Fin κ ⊕ Fin l) (Fin τ) j) = N) :
     ∃ e : Ix (Fin κ ⊕ Fin l) (Fin τ) j ≃ Fin N, GlobalTheory.SymBridge.IsOrd GlobalTheory.SymBridge.zPos e := by
@@ -160,25 +160,23 @@ theorem exists_ord (κ l τ j N : ℕ) (h : Fintype.card (Ix (Fin κ ⊕ Fin l) 
 variable {u : D.what₂.Word}
 
 /- English proof (translation)
-Use `set p := ofSplit q with hp`. Establish `hx : p.xi ≠ 0` using `Witness.xi_ne p`. Establish `hc0 : c ≠ 0` using `by rintro rfl; simp at hc`. Set `sc : ℕ → k` to `fun j => c * p.xi ^ (j / 2) / p.xi ^ (s / 2)`. Establish `sc0 : ∀ j, sc j ≠ 0` using `fun j => div_ne_zero (mul_ne_zero hc0 (pow_ne_zero _ hx)) (pow_ne_zero _ hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hodd` using `S.odd`. Set `Q : ∀ j c, j + c = s + 1 → GlobalTheory.LocMod.Frame k (d.st j).V.rank (XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Fin c) → Prop` to `fun j => match j with`. Consider the case `0 => fun _ _ _ => True`. Consider the case `j + 1 => fun c hc F => ∀ ρ h, p.IsJacFrame ((d.jac j ρ h).lev (d.x (j + 1)).vol) (sc j) (p.hz (d.B j ρ h)) (FX (j + 1) (by omega)) F`. Establish `hFY : ∀ j c (hc : j + c = s + 1), ∃ F : GlobalTheory.LocMod.Frame k (d.st j).V.rank (XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Fin c), (∀ ρ h, p.IsBesFrame (d.B j ρ h) (sc j) (FX j (by omega)) F) ∧ Q j c hc F`.
+Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j c hc`. Distinguish the cases in `hj : j % 2 = 0`. Take `⟨ρ, rfl⟩ : ∃ ρ, c = 2 * ρ + 1` from `⟨c / 2, by omega⟩`. Establish `h : j + 2 * ρ + 2 = D.R.m` using `by omega`. Take `⟨F, hF⟩` from `Witness.exists_bes p (d.B j ρ h) (sc0 j) (FX j (by omega))`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨F, fun ρ' h' => ?_, ?_⟩` and prove the remaining obligations. Take `rfl : ρ' = ρ` from `by omega`. Conclude with `hF`. Consider the cases of `j with`. Consider the case `zero => trivial`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `succ j => intro ρ' h'`. Use linear arithmetic over natural numbers and integers. Take `⟨j, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Take `⟨ρ, rfl⟩ : ∃ ρ, c = 2 * ρ` from `⟨c / 2, by omega⟩`. Establish `h : j + 2 * ρ + 2 = D.R.m` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨F, hF⟩` from `Witness.exists_jac p ((d.jac j ρ h).lev (d.x (j + 1)).vol) (sc0 j) (Witness.hz_ne p (d.B j ρ h)) (FX (j + 1) (by omega))`. Use `⟨F, fun ρ' h' => by omega, fun ρ' h' => ?_⟩` and prove the remaining obligations. Take `rfl : ρ' = ρ` from `by omega`. Conclude with `hF`. Use `choose FY hB hJ using hFY`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `ht : ∀ j, ∃ g : GA D (d.st j).V, SuppAt q.e _ g ∧ ∀ c (hc : j + c = s + 1), ∃ e : Ix (Fin D.R.k ⊕ Fin (s + 1)) (Fin D.R.t) j ≃ Fin (d.st j).V.rank, GlobalTheory.SymBridge.IsOrd GlobalTheory.SymBridge.zPos e ∧ MovedTo p (d.st j).V g (d.st j).β (((FY j c hc).β * ((S.T (Fin D.R.t)). …`. Introduce `j`. Distinguish the cases in `hj : j ≤ s + 1`. Take `⟨c, hc⟩ : ∃ c, j + c = s + 1` from `⟨s + 1 - j, by omega⟩`. Take `⟨e, he⟩` from `exists_ord D.R.k (s + 1) D.R.t j (d.st j).V.rank ((Fintype.card_congr (stdOrd _ _ j c hc)).trans (Witness.card_frame (FY j c hc)).symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨g, hg, hg'⟩` from `exists_movedTo p (d.st j).V (d.st j).β (M := ((FY j c hc).β * ((S.T (Fin D.R.t)).bas j c hc).val).submatrix id (e.symm.trans (stdOrd (Fin D.R.k) (Fin D.R.t) j c hc))) (M' := ((((S.T (Fin D.R.t)).bas j c hc)⁻¹).val * (FY j c hc).γ).submatrix (e.symm.trans (stdOrd (Fin D.R.k) (Fin …`. Use `⟨g, hg, fun c' hc' => ?_⟩` and prove the remaining obligations. Take `rfl : c' = c` from `by omega`. Conclude with `⟨e, he, hg'⟩`. Conclude with `⟨1, fun i j => by simp [Formalism.L2.Theta.mt], fun c hc => by omega⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `choose t' ht1 ht2 using ht`. Use `⟨t', ht1, ⟨⟨k, ν, unitVol, q, idem, unit, s, hs, S, char, mu, FX, FT, FM, FY, sc, fun j => ?_, fun j => ?_, hz_unit, fun j ρ h c hc => hB j c hc ρ h, fun j ρ h c hc => hJ (j + 1) c hc ρ h, z₀, last, fun h => ?_, latX, latM, ht2, frameTop, cg, cg_mid, cg_pen, cg_top⟩⟩⟩` and prove the remaining obligations. Simplify using `[sc, hc, hxi]`. Simplify using `only [sc]`. Rewrite using `[show (j + 1 + 1) / 2 = j / 2 + 1 by omega, pow_succ, ← hp]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `: sc s = c` using `by simp only [sc]; field_simp`. Rewrite using `[this]`. Conclude with `tau h`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gAt (d : Dat D u) (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (PP : Formalism.L2.DIV.Pl D.host.E)
     [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (unitVol : IsUnitVol ν) (q : GlobalTheory.FinPl.SplitPt D k)

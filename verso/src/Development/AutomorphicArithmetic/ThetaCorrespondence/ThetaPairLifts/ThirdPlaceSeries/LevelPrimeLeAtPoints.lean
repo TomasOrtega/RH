@@ -22,7 +22,7 @@ end GlobalTheory.LevelPrimeUpper
 namespace GlobalTheory.LevelPrimeUpper
 open Formalism.MainNotions.StandardLattice Finset
 /- English proof (translation)
-Introduce `hL p`. Conclude with `eventually_trace_le.mono fun _ _ _ H β _ _ _ _ => H β`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem levelPrime_le_at_points_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL),
     GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p)

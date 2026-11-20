@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra Matrix UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ hl hu S hS hω`. Take `⟨hτ, -, -, -⟩` from `One.intE O K Δ τ hl hu`. Establish `hne : τ ^ 2 - 4 ≠ 0`. Take `⟨v, hv⟩` from `hu`. Rewrite using `[← hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Units.map (algebraMap O K).toMonoidHom v).ne_zero`. Establish `hg : PK.Gen1 O (ω : Etau K τ)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `hτ` using `[QuadraticAlgebra.trace]`. Conclude with `⟨1, by simp [QuadraticAlgebra.norm]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hu`. Conclude with `PK.Gen1.princ hl hne hg hS hω`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.One.princ :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ τ : K), IsLoc O Δ →

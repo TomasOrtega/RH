@@ -16,13 +16,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Gaga
 
 /- English proof (translation)
-Use `letI : Algebra R A := f.hom.toAlgebra`. Use `letI : Algebra R B := g.hom.toAlgebra`. Use `letI : Algebra A C := i.hom.toAlgebra`. Use `letI : Algebra B C := j.hom.toAlgebra`. Use `letI : Algebra R C := (f ≫ i).hom.toAlgebra`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : IsScalarTower R A C := .of_algebraMap_eq fun r => rfl`. Use `haveI : IsScalarTower R B C := .of_algebraMap_eq fun r => congr($(h.w) r)`. Use `haveI : Algebra.IsPushout R B A C := CommRingCat.isPushout_iff_isPushout.mp h.flip`. Take `⟨t, rfl⟩` from `(Algebra.IsPushout.equiv R B A C).surjective c`. Proceed by induction on `t with`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `tmul b a`. Rewrite using `[Algebra.IsPushout.equiv_tmul]`. Conclude with `AddSubmonoid.subset_closure ⟨a, b, mul_comm _ _⟩`. Consider the case `add x y hx hy`.
-
-Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_closure_of_isPushout {R A B C : CommRingCat.{0}} {f : R ⟶ A} {g : R ⟶ B} {i : A ⟶ C}
     {j : B ⟶ C} (h : IsPushout f g i j) (c : C) :
@@ -46,7 +44,7 @@ theorem mem_closure_of_isPushout {R A B C : CommRingCat.{0}} {f : R ⟶ A} {g : 
     exact add_mem hx hy
 
 /- English proof (translation)
-Substitute `hD` using the available equality. Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `d.app_surjective O hO`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_surjective {X Z : Scheme.{0}} (d : X ⟶ Z) [IsClosedImmersion d] {O : Z.Opens}
     (hO : IsAffineOpen O) {D : X.Opens} (hD : D = d ⁻¹ᵁ O) (e : D ≤ d ⁻¹ᵁ O) :
@@ -56,15 +54,15 @@ theorem appLE_surjective {X Z : Scheme.{0}} (d : X ⟶ Z) [IsClosedImmersion d] 
   exact d.app_surjective O hO
 
 /- English proof (translation)
-Establish `H` using `IsPullback.of_hasPullback p p`. Take `⟨hO, po⟩` from `Conormal.isAffineOpen_and_isPushout H (U := ⊤) (T₀ := W) (W := V) (isAffineOpen_top _) hW hV le_top le_top`. Establish `d1 : pullback.diagonal p ≫ pullback.fst p p = 𝟙 Y` using `pullback.diagonal_fst p`. Establish `d2 : pullback.diagonal p ≫ pullback.snd p p = 𝟙 Y` using `pullback.diagonal_snd p`. Establish `hD : V ⊓ W = pullback.diagonal p ⁻¹ᵁ (pullback.fst p p ⁻¹ᵁ V ⊓ pullback.snd p p ⁻¹ᵁ W)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.preimage_inf, ← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, d1, d2]`. Simplify using the standard rewrite rules. Take `⟨c, rfl⟩` from `appLE_surjective (pullback.diagonal p) hO hD hD.le g`. Establish `hc` using `mem_closure_of_isPushout po c`. Proceed by induction on `hc using AddSubmonoid.closure_induction with`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `mem x hx`. Take `⟨a, b, rfl⟩` from `hx`. Rewrite using `[map_mul]`. Use `AddSubmonoid.subset_closure ⟨a, b, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₁` using `Conormal.appLE_appLE d1 (U := V) (V := pullback.fst p p ⁻¹ᵁ V ⊓ pullback.snd p p ⁻¹ᵁ W) (W := V ⊓ W) inf_le_left hD.le (by simpa using inf_le_left) a`. Establish `e₂` using `Conormal.appLE_appLE d2 (U := W) (V := pullback.fst p p ⁻¹ᵁ V ⊓ pullback.snd p p ⁻¹ᵁ W) (W := V ⊓ W) inf_le_right hD.le (by simpa using inf_le_right) b`. Rewrite using `[e₁, e₂]`. Conclude with `congrArg₂ (· * ·) (Conormal.id_appLE _ a) (Conormal.id_appLE _ b)`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+A detailed English derivation is pending.
 -/
 theorem mem_closure_inf {S Y : Scheme.{0}} [IsAffine S] (p : Y ⟶ S) [IsSeparated p] {V W : Y.Opens}
     (hV : IsAffineOpen V) (hW : IsAffineOpen W) (g : Γ(Y, V ⊓ W)) :
@@ -107,9 +105,9 @@ def GensBdd (V W : Y.Opens) {n : ℕ} (u : Fin n → Γ(Y, V))
 variable {V W : Y.Opens} {n : ℕ} {u : Fin n → Γ(Y, V)}
 
 /- English proof (translation)
-Take `⟨r₁, m₁, w₁, h₁⟩` from `hF`. Take `⟨r₂, m₂, w₂, h₂⟩` from `hG`. Use `⟨r₁ + r₂, max m₁ m₂, Fin.append w₁ w₂, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hB : (1 : ℝ) ≤ 1 + ∑ l, ‖ev p (RingHom.id ℂ) V (u l) y‖` using `le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => norm_nonneg _)`. Rewrite using `[Fin.sum_univ_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.append_left, Fin.append_right]`. Establish `s₁ : 0 ≤ ∑ k, ‖ev p (RingHom.id ℂ) W (w₁ k) y‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `s₂ : 0 ≤ ∑ k, ‖ev p (RingHom.id ℂ) W (w₂ k) y‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem GensBdd.add {F G : CxPts p (RingHom.id ℂ) → ℂ} (hF : GensBdd V W u F)
     (hG : GensBdd V W u G) : GensBdd V W u fun y => F y + G y := by
@@ -133,13 +131,13 @@ theorem GensBdd.add {F G : CxPts p (RingHom.id ℂ) → ℂ} (hF : GensBdd V W u
     _ = _ := by ring
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on generalizing b with`. Consider the case `C a`. Use `⟨1, 0, fun _ => algX p W a * b, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy'` using `mem_ptsIn_inf.1 hy`. Simplify using `[ev_mul, ev_algX hy'.1, ev_algX hy'.2]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `add f g hf hg`. Simplify `(hf b).add (hg b)` using `only [map_add, ev_add, add_mul]`. Consider the case `mul_X f l hf`. Take `⟨r, m, w, h⟩` from `hf b`. Use `⟨r, m + 1, w, fun y hy => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB : ‖ev p (RingHom.id ℂ) V (u l) y‖ ≤ 1 + ∑ l, ‖ev p (RingHom.id ℂ) V (u l) y‖` using `(Finset.single_le_sum (f := fun l => ‖ev p (RingHom.id ℂ) V (u l) y‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ l)).trans (le_add_of_nonneg_left zero_le_one)`. Establish `s : 0 ≤ (∑ k, ‖ev p (RingHom.id ℂ) W (w k) y‖) * (1 + ∑ l, ‖ev p (RingHom.id ℂ) V (u l) y‖) ^ m` using `(norm_nonneg _).trans (h y hy)`. Establish `e : ev p (RingHom.id ℂ) V (MvPolynomial.eval₂Hom (algX p V) u (f * MvPolynomial.X l)) y * ev p (RingHom.id ℂ) W b y = (ev p (RingHom.id ℂ) V (MvPolynomial.eval₂Hom (algX p V) u f) y * ev p (RingHom.id ℂ) W b y) * ev p (RingHom.id ℂ) V (u l) y`. Rewrite using `[map_mul, MvPolynomial.eval₂Hom_X', ev_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `beta_reduce`. Rewrite using `[e, norm_mul, pow_succ, ← mul_assoc]`. Conclude with `mul_le_mul (h y hy) hB (norm_nonneg _) s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gensBdd_eval₂ (f : MvPolynomial (Fin n) ℂ) (b : Γ(Y, W)) :
     GensBdd V W u fun y => ev p (RingHom.id ℂ) V (MvPolynomial.eval₂Hom (algX p V) u f) y *
@@ -171,17 +169,15 @@ theorem gensBdd_eval₂ (f : MvPolynomial (Fin n) ℂ) (b : Γ(Y, W)) :
     exact mul_le_mul (h y hy) hB (norm_nonneg _) s
 
 /- English proof (translation)
-Introduce `Y p hs hl V hV`. Establish `hc : (algX p V).FiniteType` using `(HasRingHomProperty.appLE @LocallyOfFiniteType p inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨V, hV⟩ _).comp (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv).2)`. Use `letI : Algebra ℂ Γ(Y, V) := (algX p V).toAlgebra`. Use `haveI : Algebra.FiniteType ℂ Γ(Y, V) := hc`. Take `⟨n, φ, hφ⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 (inferInstance : Algebra.FiniteType ℂ Γ(Y, V))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hφe (f : MvPolynomial (Fin n) ℂ) : φ f = MvPolynomial.eval₂Hom (algX p V) (fun l => φ (MvPolynomial.X l)) f` using `by conv_lhs => rw [MvPolynomial.aeval_unique φ]`. Both sides reduce to the same expression. Use `⟨n, fun l => φ (MvPolynomial.X l), fun W hW g => ?_⟩` and prove the remaining obligations. Establish `key : GensBdd V W (p` using `p) (fun l => φ (MvPolynomial.X l)) (ev p (RingHom.id ℂ) (V ⊓ W) g) := by`. Proceed by induction on `mem_closure_inf p hV hW g using AddSubmonoid.closure_induction with`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Use `⟨0, 0, Fin.elim0, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `[ev_eq hy]`. Consider the case `mem x hx`. Take `⟨a, b, rfl⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, rfl⟩` from `hφ a`. Take `⟨r, m, w, h⟩` from `gensBdd_eval₂ (V := V) (W := W) (p := p) (u := fun l => φ (MvPolynomial.X l)) f b`. Use `⟨r, m, w, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy'` using `mem_ptsIn_inf.1 hy`. Rewrite using `[ev_mul, ev_res _ hy, ev_res _ hy, hφe]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `h y hy`. Consider the case `add x y _ _ hx hy`. Establish `e : ev p (RingHom.id ℂ) (V ⊓ W) (x + y) = fun z => ev p (RingHom.id ℂ) (V ⊓ W) x z + ev p (RingHom.id ℂ) (V ⊓ W) y z`. Use function extensionality and compare the values at `fun z => ev_add x y z`. Rewrite using `[e]`.
-
-Conclude with `hx.add hy`. Conclude with `key`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gens_bound : ∀ (Y : Scheme.{0}) (p : Y ⟶ Sp ℂ), IsSeparated p → LocallyOfFiniteType p → ∀ (V : Y.Opens), IsAffineOpen V → ∃ (n : ℕ) (u : Fin n → Γ(Y, V)), ∀ (W : Y.Opens), IsAffineOpen W → ∀ g : Γ(Y, V ⊓ W), ∃ (r m : ℕ) (w : Fin r → Γ(Y, W)), ∀ y ∈ ptsIn p (RingHom.id ℂ) (V ⊓ W), ‖ev p (RingHom.id ℂ) (V ⊓ W) g y‖ ≤ (∑ k, ‖ev p (RingHom.id ℂ) W (w k) y‖) * (1 + ∑ l, ‖ev p (RingHom.id ℂ) V (u l) y‖) ^ m := by
   intro Y p hs hl V hV

@@ -24,9 +24,9 @@ def polLat {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) (emb : D.what
   Submodule.span O {y | ∃ F ∈ nabAtr emb lam M, y = GlobalTheory.CoefModel.mapVV σ lam F}
 
 /- English proof (translation)
-Unfold `coefLatFn polLat`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `φ`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨F, hF, rfl⟩`. Conclude with `⟨_, ⟨F, hF, rfl⟩, coefFn_map σ lam _⟩`. Introduce and unpack `⟨_, ⟨F, hF, rfl⟩, rfl⟩`. Conclude with `⟨F, hF, coefFn_map σ lam _⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem coefLatFn_eq {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) (emb : D.what₂.Tau → (D.host.E →+* K))
     (O : Subring ℂ) (lam : D.what₂.Tau → DomWeight n) (M : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) :
@@ -42,13 +42,11 @@ theorem coefLatFn_eq {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) (em
     exact ⟨F, hF, coefFn_map σ lam _⟩
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem _ h`. Take `⟨F, hF, rfl⟩` from `h`. Use `Submodule.subset_span ⟨F, hF, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MvPolynomial.map (τ : ℂ →+* ℂ) (MvPolynomial.map σ F.1) = MvPolynomial.map σ F.1`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[MvPolynomial.map_map, show (τ : ℂ →+* ℂ).comp σ = σ from RingHom.ext hτ]`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add _ _ _ _ h1 h2 => rw [map_add]`. Conclude with `add_mem h1 h2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `smul a y _ h1`. Establish `e : GlobalTheory.CoefModel.mapVV (τ : ℂ →+* ℂ) lam (a • y) = (⟨τ a, hO a a.2⟩ : O') • GlobalTheory.CoefModel.mapVV (τ : ℂ →+* ℂ) lam y`. Rewrite using `[Subring.smul_def, Subring.smul_def, map_smulₛₗ]`. Both sides reduce to the same expression. Rewrite using `[e]`.
-
-Conclude with `Submodule.smul_mem _ _ h1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polLat_conj {K : Type} [Field K] [NumberField K] {σ : K →+* ℂ} {emb : D.what₂.Tau → (D.host.E →+* K)}
     {O O' : Subring ℂ} {lam : D.what₂.Tau → DomWeight n} {M : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (τ : ℂ ≃+* ℂ)
@@ -70,7 +68,7 @@ theorem polLat_conj {K : Type} [Field K] [NumberField K] {σ : K →+* ℂ} {emb
     exact Submodule.smul_mem _ _ h1
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MvPolynomial.map (τ.symm : ℂ →+* ℂ) (MvPolynomial.map (τ : ℂ →+* ℂ) y.1) = y.1`. Rewrite using `[MvPolynomial.map_map]`. Establish `: (τ.symm : ℂ →+* ℂ).comp (τ : ℂ →+* ℂ) = RingHom.id ℂ` using `RingHom.ext fun a => τ.symm_apply_apply a`. Rewrite using `[this, MvPolynomial.map_id]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mapVV_symm_mapVV (lam : D.what₂.Tau → DomWeight n) (τ : ℂ ≃+* ℂ) (y : VV ℂ lam) :
     GlobalTheory.CoefModel.mapVV (τ.symm : ℂ →+* ℂ) lam (GlobalTheory.CoefModel.mapVV (τ : ℂ →+* ℂ) lam y) = y := by
@@ -85,7 +83,7 @@ section Base
 variable {i : Fin D.R.m} {B : Base (Vc D i) (Wc D i)}
 
 /- English proof (translation)
-Take `⟨e, -⟩` from `hB.sigOK (tauE D τ)`. Rewrite `e` using `[← hB.sig τ]`. Use `Fintype.card_congr e` as an intermediate fact. Simplify using `only [Fintype.card_fin, Fintype.card_sum] at this`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pq_le (hB : B.Good) (τ : D.what₂.Tau) : B.w.p τ + B.w.q τ ≤ (Wc D i).rank := by
   obtain ⟨e, -⟩ := hB.sigOK (tauE D τ)
@@ -97,11 +95,11 @@ theorem pq_le (hB : B.Good) (τ : D.what₂.Tau) : B.w.p τ + B.w.q τ ≤ (Wc D
 variable (Φ : VsV D i ℂ →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank) {κ : ℂ}
 
 /- English proof (translation)
-Use `show Φ x ∈ harmLat σ emb O _ B.w B.F.BS (B.latAt h) ↔ _`. Rewrite using `[mem_harmLat, hlam, coefLatFn_eq, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, y, hy, he⟩`. Establish `e : coefLin (lamV D i) y = coefLin (lamV D i) (κ • x)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul]`. Conclude with `he.trans (hκ x)`. Conclude with `coefLin_injective _ e ▸ hy`. Introduce `hx`. Use `⟨hval x, κ • x, hx, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `coefLin (lamV D i) (κ • x) = _`. Rewrite using `[map_smul, hκ]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mem_coefLat_iff (hlam : B.w.lam = lamV D i) (hval : ∀ x, Φ x ∈ B.valSpace)
     (hκ : ∀ x : VsV D i ℂ, harmFn (Wc D i).rank B.w B.F.BS (Φ x) =
@@ -124,11 +122,11 @@ theorem mem_coefLat_iff (hlam : B.w.lam = lamV D i) (hval : ∀ x, Φ x ∈ B.va
     rfl
 
 /- English proof (translation)
-Introduce `P hP`. Establish `h1 : harmFn (Wc D i).rank B.w B.F.BS P ∈ (harm (Wc D i).rank B.w B.F.BS).map (harmFn (Wc D i).rank B.w B.F.BS)` using `Submodule.mem_map_of_mem hP`. Rewrite `h1` using `[GlobalTheory.T.fockHarmonicValueSpace_map_eq_dualWeylModuleFunctions D _ _ B.w B.F.BS hB.wt (pq_le hB), hlam]`. Establish `hs : Submodule.span ℂ {φ | ∃ F : VV ℂ (lamV D i), φ = coefFn (RingHom.id ℂ) (lamV D i) (F : Pol ℂ D.what₂.Tau (Vc D i).rank)} ≤ LinearMap.range (coefLin (lamV D i))` using `Submodule.span_le.2 (by rintro _ ⟨F, rfl⟩; exact ⟨F, rfl⟩)`. Take `⟨y, hy⟩` from `hs h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hy' : coefLin (lamV D i) y = harmFn (Wc D i).rank B.w B.F.BS P` using `hy`. Establish `hv : ∀ x, harmFn (Wc D i).rank B.w B.F.BS (Φ x) = κ • coefLin (lamV D i) x` using `hκ`. Use `⟨κ⁻¹ • y, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e : harmFn (Wc D i).rank B.w B.F.BS (Φ (κ⁻¹ • y) - P) = 0`. Rewrite using `[map_sub, hv, map_smul, smul_smul, mul_inv_cancel₀ hκ0, one_smul, hy', sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(sub_eq_zero.1 (GlobalTheory.T.harmonic_polynomial_eq_zero_of_function D _ _ B.w B.F.BS hB.wt (pq_le hB) _ (sub_mem (hval _) hP) e)).symm`. Use `coefLin_injective (lamV D i) ?_` and prove the remaining obligations. Establish `e` using `hv x`. Rewrite `e` using `[← hx, ← hy']`. Rewrite using `[map_smul, e, smul_smul, inv_mul_cancel₀ hκ0, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_eq (hB : B.Good) (hlam : B.w.lam = lamV D i) (hκ0 : κ ≠ 0) (hval : ∀ x, Φ x ∈ B.valSpace)
     (hκ : ∀ x : VsV D i ℂ, harmFn (Wc D i).rank B.w B.F.BS (Φ x) =
@@ -154,11 +152,11 @@ theorem existsUnique_eq (hB : B.Good) (hlam : B.w.lam = lamV D i) (hκ0 : κ ≠
     rw [map_smul, e, smul_smul, inv_mul_cancel₀ hκ0, one_smul]
 
 /- English proof (translation)
-Rewrite using `[mem_coefLat_iff Φ hlam hval hκ, mem_coefLat_iff Φ hlam hval hκ]`. Establish `hx' : x' = GlobalTheory.CoefModel.mapVV (τ : ℂ →+* ℂ) (lamV D i) x` using `Subtype.ext hx`. Establish `e : κ • ((τ κ / κ) • x') = GlobalTheory.CoefModel.mapVV (τ : ℂ →+* ℂ) (lamV D i) (κ • x)`. Rewrite using `[smul_smul, mul_div_cancel₀ _ hκ0, map_smulₛₗ, hx']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Conclude with `polLat_conj τ hτ fun a ha => Subring.mem_map.2 ⟨a, ha, rfl⟩`. Introduce `h'`. Establish `hτ' : ∀ a : K, τ.symm (σ a) = σ a` using `fun a => by rw [τ.symm_apply_eq, hτ]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `polLat_conj τ.symm hτ' (fun a ha => by` as an intermediate fact. Take `⟨b, hb, rfl⟩` from `Subring.mem_map.1 ha`. Simplify using `using hb) h'`. Rewrite `this` using `[mapVV_symm_mapVV]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem conj_mem_iff (hlam : B.w.lam = lamV D i) (hκ0 : κ ≠ 0) (hval : ∀ x, Φ x ∈ B.valSpace)
     (hκ : ∀ x : VsV D i ℂ, harmFn (Wc D i).rank B.w B.F.BS (Φ x) =
@@ -182,13 +180,13 @@ theorem conj_mem_iff (hlam : B.w.lam = lamV D i) (hκ0 : κ ≠ 0) (hval : ∀ x
     rwa [mapVV_symm_mapVV] at this
 
 /- English proof (translation)
-Set `Ψ : VsV D i ℂ →ₗ[O] PolF D (Wc D i).rank (Vc D i).rank` to `(Φ ∘ₗ (κ⁻¹ • LinearMap.id)).restrictScalars O`. Establish `hΨ : ∀ y, Ψ y = Φ (κ⁻¹ • y)` using `fun _ => rfl`. Establish `e : B.coefLat σ emb O h = (polLat σ emb O (lamV D i) (B.latAt h)).map Ψ`. Use extensionality with `P`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hP`. Take `⟨x, rfl, -⟩` from `existsUnique_eq Φ hB hlam hκ0 hval hκ P (Submodule.mem_inf.1 hP).1`. Use `⟨κ • x, (mem_coefLat_iff Φ hlam hval hκ σ emb O h x).1 hP, ?_⟩` and prove the remaining obligations. Rewrite using `[hΨ, smul_smul, inv_mul_cancel₀ hκ0, one_smul]`. Introduce and unpack `⟨y, hy, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hΨ, mem_coefLat_iff Φ hlam hval hκ, smul_smul, mul_inv_cancel₀ hκ0, one_smul]`. Conclude with `hy`. Rewrite using `[e, polLat, Submodule.map_span]`. Use `congr 1`. Use extensionality with `P`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨F, hF, rfl⟩, rfl⟩`. Conclude with `⟨F, hF, rfl⟩`. Introduce and unpack `⟨F, hF, rfl⟩`. Conclude with `⟨_, ⟨F, hF, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coefLat_eq_span (hB : B.Good) (hlam : B.w.lam = lamV D i) (hκ0 : κ ≠ 0) (hval : ∀ x, Φ x ∈ B.valSpace)
     (hκ : ∀ x : VsV D i ℂ, harmFn (Wc D i).rank B.w B.F.BS (Φ x) =

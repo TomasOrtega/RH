@@ -29,9 +29,9 @@ section ArcQuot
 variable {Y : Scheme.{0}} {W : Y.Opens}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(spMap φ) s ∈ hW.fromSpec ⁻¹ᵁ Y.basicOpen q ↔ _`. Rewrite using `[hW.fromSpec_preimage_basicOpen q]`. Use `haveI := s.isPrime`. Establish `hs : s.asIdeal = ⊥` using `Ideal.eq_bot_of_prime _`. Express the relevant statement in the definitionally equal form `q ∉ (Ideal.comap φ s.asIdeal) ↔ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Simplify using `[Ideal.mem_comap]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem arcPt_mem_basicOpen (hW : IsAffineOpen W) (φ : Γ(Y, W) →+* ℂ) (q : Γ(Y, W)) (s : Sp ℂ) :
     (spMap φ ≫ (show Sp Γ(Y, W) ⟶ Y from hW.fromSpec)) s ∈ Y.basicOpen q ↔ φ q ≠ 0 := by
@@ -44,7 +44,7 @@ theorem arcPt_mem_basicOpen (hW : IsAffineOpen W) (φ : Γ(Y, W) →+* ℂ) (q :
   simp [Ideal.mem_comap]
 
 /- English proof (translation)
-Use `GlobalTheory.TangentOrigin.eq_spec_fromSpec hW _ h` as an intermediate fact. Simplify using `only [spMap] at this`. Rewrite `this` using `[cancel_mono]`. Use `Spec.map_injective this` as an intermediate fact. Conclude with `(congrArg CommRingCat.Hom.hom this).symm`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem evalPt_arcPt (hW : IsAffineOpen W) (φ : Γ(Y, W) →+* ℂ)
     (h : ⊤ ≤ (spMap φ ≫ (show Sp Γ(Y, W) ⟶ Y from hW.fromSpec)) ⁻¹ᵁ W) :
@@ -56,7 +56,7 @@ theorem evalPt_arcPt (hW : IsAffineOpen W) (φ : Γ(Y, W) →+* ℂ)
   exact (congrArg CommRingCat.Hom.hom this).symm
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.comp_preimage]`. Express the relevant statement in the definitionally equal form `⊤ ≤ spMap φ ⁻¹ᵁ (hW.fromSpec ⁻¹ᵁ W)`. Rewrite using `[hW.fromSpec_preimage_self]`. Conclude with `le_rfl`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arcPt_top_le (hW : IsAffineOpen W) (φ : Γ(Y, W) →+* ℂ) :
     ⊤ ≤ (spMap φ ≫ (show Sp Γ(Y, W) ⟶ Y from hW.fromSpec)) ⁻¹ᵁ W := by
@@ -66,9 +66,9 @@ theorem arcPt_top_le (hW : IsAffineOpen W) (φ : Γ(Y, W) →+* ℂ) :
   exact le_rfl
 
 /- English proof (translation)
-Establish `ha` using `hf.analyticOnNhd Metric.isOpen_ball`. Establish `h0 : (0 : ℂ) ∈ Metric.ball (0 : ℂ) r` using `Metric.mem_ball_self hr`. Break down `(ha 0 h0).eventually_eq_zero_or_eventually_ne_zero with hz | hz` into its components or cases. Conclude with `absurd (ha.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball (0 : ℂ) r).isPreconnected h0 hz hu₀) h₀`. Rewrite `hz` using `[eventually_nhdsWithin_iff, Metric.eventually_nhds_iff_ball]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε, hz⟩` from `hz`. Use `⟨min ε r, lt_min hε hr, min_le_right _ _, fun u hu hu0 => hz u ?_ hu0⟩` and prove the remaining obligations. Conclude with `Metric.ball_subset_ball (min_le_left _ _) hu`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_punctured_ne_zero {f : ℂ → ℂ} {r : ℝ} (hf : DifferentiableOn ℂ f (Metric.ball 0 r))
     {u₀ : ℂ} (hu₀ : u₀ ∈ Metric.ball (0 : ℂ) r) (h₀ : f u₀ ≠ 0) (hr : 0 < r) :
@@ -90,15 +90,15 @@ end GlobalTheory.Vanishing
 namespace GlobalTheory.Vanishing
 
 /- English proof (translation)
-Introduce `k _ Y p B O m W hW i hWi ψ r hψ hout`. Take `⟨hr, hhol⟩` from `hψ`. Establish `hu₀ : ((r / 2 : ℝ) : ℂ) ∈ Metric.ball (0 : ℂ) r`. Rewrite using `[Metric.mem_ball, dist_zero_right, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (half_pos hr)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hu₀0 : ((r / 2 : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (half_pos hr).ne'`. Take `⟨s⟩ : Nonempty (Sp ℂ)` from `inferInstance`. Establish `hyO : (spMap (ψ (r / 2 : ℝ)) ≫ (show Sp Γ(Y, W) ⟶ Y from hW.fromSpec)) s ∈ O` using `hout _ hu₀ hu₀0 (show s ∈ (⊤ : (Sp ℂ).Opens) from trivial)`. Establish `hyW : (spMap (ψ (r / 2 : ℝ)) ≫ (show Sp Γ(Y, W) ⟶ Y from hW.fromSpec)) s ∈ W` using `arcPt_top_le hW (ψ (r / 2 : ℝ)) (show s ∈ (⊤ : (Sp ℂ).Opens) from trivial)`. Take `⟨q, hqle, hqy⟩` from `hW.exists_basicOpen_le (V := O ⊓ B.U i) ⟨_, hyO, hWi hyW⟩ hyW`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hq0 : ψ (r / 2 : ℝ) q ≠ 0` using `(arcPt_mem_basicOpen hW _ q s).1 hqy`. Use `haveI := hW.isLocalization_basicOpen q`. Take `⟨n, a, hna⟩` from `IsLocalization.Away.surj q (resG Y hqle (m.loc i))`. Take `⟨ρ, hρ, hρr, hne⟩` from `exists_punctured_ne_zero (hhol q) hu₀ hq0 hr`. Use `⟨ρ, a, q ^ n, hρ, hρr, fun u hu hu0 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hqu : ψ u q ≠ 0` using `hne u hu hu0`. Use `⟨by rw [map_pow]; exact pow_ne_zero _ hqu, fun hO hi => ?_⟩` and prove the remaining obligations. Establish `hD : ⊤ ≤ (spMap (ψ u) ≫ (show Sp Γ(Y, W) ⟶ Y from hW.fromSpec)) ⁻¹ᵁ Y.basicOpen q` using `fun s _ => (arcPt_mem_basicOpen hW (ψ u) q s).2 hqu`. Establish `hWx` using `arcPt_top_le hW (ψ u)`. Establish `e` using `congrArg (GlobalTheory.TangentOrigin.evalPt _ _ hD) hna`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres (z : Γ(Y, W)) : GlobalTheory.TangentOrigin.evalPt _ _ hD (algebraMap Γ(Y, W) Γ(Y, Y.basicOpen q) z) = ψ u z`. Conclude with `(GlobalTheory.TangentOrigin.evalPt_res _ (Y.basicOpen_le q) hWx hD z).trans (DFunLike.congr_fun (evalPt_arcPt hW (ψ u) hWx) z)`. Rewrite `e` using `[map_mul, map_pow, hres, hres]`. Rewrite using `[H0.val_apply, ← GlobalTheory.TangentOrigin.evalPt_res _ hqle _ hD, map_pow, e]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_quot_along_arc : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {B : LB Y} {O : Y.Opens} (m : H0 p B O) (W : Y.Opens) (hW : IsAffineOpen W) (i : B.ι), W ≤ B.U i → ∀ (ψ : ℂ → (Γ(Y, W) →+* ℂ)) (r : ℝ), IsHolPts ψ r → (∀ u ∈ Metric.ball (0 : ℂ) r, u ≠ 0 → ⊤ ≤ (spMap (ψ u) ≫ (show Sp Γ(Y, W) ⟶ Y from hW.fromSpec)) ⁻¹ᵁ O) → ∃ (ρ : ℝ) (a b : Γ(Y, W)), 0 < ρ ∧ ρ ≤ r ∧ ∀ u ∈ Metric.ball (0 : ℂ) ρ, u ≠ 0 → ψ u b ≠ 0 ∧ ∀ (hO : ⊤ ≤ (spMap (ψ u) ≫ (show Sp Γ(Y, W) ⟶ Y from hW.fromSpec)) ⁻¹ᵁ O) (hi : ⊤ ≤ (spMap (ψ u) ≫ (show Sp Γ(Y, W) ⟶ Y from hW.fromSpec)) ⁻¹ᵁ B.U i), H0.val (spMap (ψ u) ≫ (show Sp Γ(Y, W) ⟶ Y from hW.fromSpec)) i hO hi m * ψ u b = ψ u a := by
   intro k _ Y p B O m W hW i hWi ψ r hψ hout

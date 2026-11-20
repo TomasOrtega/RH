@@ -33,13 +33,13 @@ open GlobalTheory.AboveL
 namespace GlobalTheory.SolvUp
 
 /- English proof (translation)
-Take `⟨H, hH, hle⟩` from `(eq_top_or_exists_le_coatom (commutator Γ)).resolve_left (Group.IsSolvable.commutator_lt_top_of_nontrivial Γ).ne`. Establish `hn : H.Normal` using `⟨fun n hn g => by`. Establish `h1 : g * n * g⁻¹ * n⁻¹ ∈ H` using `hle (Subgroup.commutator_mem_commutator (Subgroup.mem_top g) (Subgroup.mem_top n))`. Simplify using `using H.mul_mem h1 hn⟩`. Use `⟨H, hn, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, hp, hd⟩` from `Nat.exists_prime_and_dvd (n := Nat.card (Γ ⧸ H)) (mt Subgroup.index_eq_one.1 hH.1)`. Use `haveI := Fact.mk hp`. Take `⟨g, hg⟩` from `exists_prime_orderOf_dvd_card' p hd`. Establish `h1 : (Subgroup.zpowers g).comap (QuotientGroup.mk' H) = ⊤`. Use `hH.2 _ (lt_of_le_of_ne (fun x hx => ?_) fun e => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_comap, QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff x).2 hx]`. Conclude with `one_mem _`. Take `⟨x, rfl⟩` from `QuotientGroup.mk'_surjective H g`. Establish `hx : x ∈ H` using `e ▸ Subgroup.mem_zpowers _`. Rewrite `hg` using `[QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff x).2 hx, orderOf_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp.one_lt.ne hg`. Establish `h2 : Subgroup.zpowers g = ⊤` using `Subgroup.comap_injective (QuotientGroup.mk'_surjective H) (h1.trans (Subgroup.comap_top _).symm)`. Rewrite using `[Subgroup.index, ← Subgroup.card_top, ← h2, Nat.card_zpowers, hg]`. Conclude with `hp`.
+A detailed English derivation is pending.
 -/
 theorem exists_normal_prime_index (Γ : Type) [Group Γ] [Finite Γ] [Nontrivial Γ] [Group.IsSolvable Γ] :
     ∃ H : Subgroup Γ, H.Normal ∧ H.index.Prime := by
@@ -67,9 +67,7 @@ theorem exists_normal_prime_index (Γ : Type) [Group Γ] [Finite Γ] [Nontrivial
   exact hp
 
 /- English proof (translation)
-Use `letI : Algebra A B := e.toRingHom.toAlgebra`. Use `haveI : IsTotallyComplex B := isTotallyComplex_of_algebra A B`. Use `letI : Algebra (maximalRealSubfield A) B := ((e : A →+* B).comp (algebraMap (maximalRealSubfield A) A)).toAlgebra`. Set `f : A ≃ₐ[maximalRealSubfield A] B` to `{ e with commutes' := fun _ => rfl }`. Use `haveI : Module.Free (maximalRealSubfield A) B := Module.Free.of_equiv f.toLinearEquiv`.
-
-Use `haveI : Algebra.IsQuadraticExtension (maximalRealSubfield A) B := ⟨by rw [← f.toLinearEquiv.finrank_eq]; exact Algebra.IsQuadraticExtension.finrank_eq_two _ _⟩`. Conclude with `IsCMField.ofCMExtension (maximalRealSubfield A) B`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isCMField_of_ringEquiv {A B : Type} [Field A] [NumberField A] [Field B] [NumberField B] [IsCMField A]
     (e : A ≃+* B) : IsCMField B := by
@@ -88,9 +86,7 @@ end GlobalTheory.SolvUp
 namespace GlobalTheory.SolvUp
 
 /- English proof (translation)
-Set `f` to `IsScalarTower.toAlgHom K M Ω`. Use `haveI : NumberField f.fieldRange := NumberField.of_ringEquiv M _ (AlgEquiv.ofInjectiveField f).toRingEquiv`. Use `haveI : NumberField (L.map f) := NumberField.of_ringEquiv L _ (IntermediateField.equivMap L f).toRingEquiv`. Use `haveI : IsCMField f.fieldRange := isCMField_of_ringEquiv (AlgEquiv.ofInjectiveField f).toRingEquiv`. Establish `hle : L.map f ≤ f.fieldRange`.
-
-Introduce `y hy`. Take `⟨x, -, rfl⟩` from `(IntermediateField.mem_map L).1 hy`. Conclude with `AlgHom.mem_fieldRange.2 ⟨x, rfl⟩`. Use `haveI : IsCMField (L.map f) := (GlobalTheory.T.cm_subfields_compositum_closed Ω K).2.1 f.fieldRange (L.map f) hle inferInstance`. Conclude with `isCMField_of_ringEquiv (IntermediateField.equivMap L f).symm.toRingEquiv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCMField_intermediate (Ω : Type) [Field Ω] (K : Type) [Field K] [NumberField K] [IsCMField K] [Algebra K Ω]
     [IsAlgClosure K Ω] (M : Type) [Field M] [NumberField M] [IsCMField M] [Algebra M Ω] [Algebra K M]

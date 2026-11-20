@@ -10,49 +10,43 @@ namespace PositivityTheory.SiegelWeilFormula.KAway
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `set A := X.toBlocks₁₁ with hA`. Use `set C := X.toBlocks₂₁ with hC`. Establish `h1 : (1 : AF F) ∈ Submodule.span (AF F) {a : AF F | ∃ g, IsEH σ ε g ∧ algebraMap (AF F) (AE F E) a = (A - incM F g * C).det * cA σ (A - incM F g * C).det}`. Use `span_top' hcm ε hε X hX` as an intermediate fact. Express the relevant statement in the definitionally equal form `(1 : AF F) ∈ Ideal.span _`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Rewrite using `[this]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨T, hTS, hT⟩` from `Submodule.mem_span_finite_of_mem_span h1`. Take `⟨f, -, hf⟩` from `Submodule.mem_span_finset.1 hT`. Establish `hg : ∀ i : T, ∃ g, IsEH σ ε g ∧ algebraMap (AF F) (AE F E) i.1 = (A - incM F g * C).det * cA σ (A - incM F g * C).det` using `fun i => hTS i.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose g hgE hgN using hg`. Take `⟨η, hηi, hηo, hη1, hηu⟩` from `GlobalTheory.QSA.exists_idem_pick_unit F T (fun i => i.1) (fun i => f i.1) (by`. Establish `: ∑ i : T, f i.1 * i.1 = 1`. Rewrite using `[← hf, ← Finset.sum_coe_sort T]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Conclude with `isUnit_one)`. Use `set t : Matrix (Fin n) (Fin n) (AE F E) := (1 - e) • ∑ i, η i • incM F (g i) with ht`. Establish `hee : e * (1 - e) = 0` using `by rw [mul_sub, mul_one, he, sub_self]`. Use `⟨t, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `qs_smul ε _ (qs_sum ε _ _ fun i _ => qs_smul ε _ (qs_incM ε (hgE i)))`. Rewrite using `[ht, smul_smul, hee, zero_smul]`. Use `set ae := algebraMap (AF F) (AE F E) with hae`. Set `fo : Option T → AF F` to `fun o => o.elim e (fun i => (1 - e) * η i)`. Set `Mo : Option T → Matrix (Fin n) (Fin n) (AE F E)` to `fun o => o.elim A (fun i => A - incM F (g i) * C)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h1e : (1 - e) * (1 - e) = 1 - e`. Rewrite using `[sub_mul, one_mul, mul_sub, mul_one, he, sub_self, sub_zero]`. Establish `hfi : ∀ o, fo o * fo o = fo o`. Introduce and unpack `(_ | i)`. Conclude with `he`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(1 - e) * η i * ((1 - e) * η i) = (1 - e) * η i`. Combine the equalities or inequalities in the displayed calculation. Establish `hfo : ∀ o o', o ≠ o' → fo o * fo o' = 0`. Introduce and unpack `(_ | i) (_ | j) h`. Conclude with `absurd rfl h`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `e * ((1 - e) * η j) = 0`. Rewrite using `[← mul_assoc, hee, zero_mul]`. Express the relevant statement in the definitionally equal form `(1 - e) * η i * e = 0`. Rewrite using `[mul_comm, ← mul_assoc, hee, zero_mul]`. Express the relevant statement in the definitionally equal form `(1 - e) * η i * ((1 - e) * η j) = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hij : i ≠ j` using `fun h' => h (by rw [h'])`. Combine the equalities or inequalities in the displayed calculation. Establish `hf1 : ∑ o, fo o = 1`. Rewrite using `[Fintype.sum_option]`. Express the relevant statement in the definitionally equal form `e + ∑ i, (1 - e) * η i = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Finset.mul_sum, hη1, mul_one, add_sub_cancel]`. Establish `htC : t * C = ∑ i, ((1 - e) * η i) • (incM F (g i) * C)`. Rewrite using `[ht, Matrix.smul_mul, Finset.sum_mul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, smul_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : A - t * C = ∑ o, (ae (fo o)) • Mo o`. Simplify using `only [hae, algebraMap_smul]`. Rewrite using `[Fintype.sum_option, htC]`. Express the relevant statement in the definitionally equal form `A - _ = e • A + ∑ i, ((1 - e) * η i) • (A - incM F (g i) * C)`. Simplify using `only [smul_sub, Finset.sum_sub_distrib, ← Finset.sum_smul, ← Finset.mul_sum, hη1, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Establish `hdet` using `det_idem_sum (fun o => ae (fo o)) (fun o => by rw [← map_mul, hfi]) (fun o o' h => by`. Rewrite using `[← map_mul, hfo o o' h, map_zero]) (by rw [← map_sum, hf1, map_one]) Mo`. Rewrite `hdet` using `[← hsum, Fintype.sum_option]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hAeq : A = ∑ b : Bool, (ae (if b then e else 1 - e)) • (if b then (1 : Matrix (Fin n) (Fin n) (AE F E)) else A)`. Simplify using `only [Fintype.sum_bool, if_true, Bool.false_eq_true, if_false, hae, algebraMap_smul]`. Rewrite using `[← heA, sub_smul, one_smul, add_sub_cancel]`. Establish `hA2` using `det_idem_sum (fun b : Bool => ae (if b then e else 1 - e)) (fun b => by`. Apply the tactic sequence `rw [← map_mul]; cases b <;> simp [he, h1e]) (fun b b' h => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_mul]`. Apply the tactic sequence `cases b <;> cases b'`. Conclude with `absurd rfl h`. Simplify using `only [if_true, Bool.false_eq_true, if_false]`. Rewrite using `[mul_comm, hee, map_zero]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [if_true, Bool.false_eq_true, if_false]`. Rewrite using `[hee, map_zero]`. Conclude with `absurd rfl h) (by`. Rewrite using `[Fintype.sum_bool]`. Use the proof step `simp) (fun b => if b then (1 : Matrix (Fin n) (Fin n) (AE F E)) else A)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hA2` using `[← hAeq, Fintype.sum_bool]`. Simplify using `only [if_true, Bool.false_eq_true, if_false, Matrix.det_one, mul_one] at hA2`. Establish `heA' : ae e * A.det = ae e`. Combine the equalities or inequalities in the displayed calculation. Use `set zs := ∑ i, ae (η i) * (A - incM F (g i) * C).det with hzs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hcz : cA σ zs = ∑ i, ae (η i) * cA σ (A - incM F (g i) * C).det`. Rewrite using `[hzs, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hae, AlgHom.commutes]`. Establish `hzz : zs * cA σ zs = ae (∑ i, η i * i.1)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcz, hzs, sum_idem_mul (fun i => ae (η i)) (fun i => by rw [← map_mul, hηi]) (fun i j h => by`. Rewrite using `[← map_mul, hηo i j h, map_zero]), map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hgN i]`. Establish `hzu : IsUnit zs` using `isUnit_of_mul_isUnit_left (hzz ▸ hηu.map ae)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : (A - t * C).det = ae e + ae (1 - e) * zs`. Rewrite using `[hdet]`. Express the relevant statement in the definitionally equal form `ae e * A.det + ∑ i, ae ((1 - e) * η i) * (A - incM F (g i) * C).det = _`. Rewrite using `[heA', hzs, Finset.mul_sum]`. Use `congr 1`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ae ((1 - e) * η i) * _ = _`. Rewrite using `[map_mul, mul_assoc]`. Rewrite using `[hfin]`. Take `⟨u, hu⟩` from `hzu`.
-
-Use `isUnit_iff_exists_inv.2 ⟨ae e + ae (1 - e) * ↑u⁻¹, ?_⟩` and prove the remaining obligations. Establish `h1 : ae e * ae e = ae e` using `by rw [← map_mul, he]`. Establish `h2 : zs * ↑u⁻¹ = 1` using `by rw [← hu, Units.mul_inv]`. Rewrite using `[map_sub, map_one]`. Rewrite `*` using `[map_sub, map_one]`.
-
-Take the linear combination `(2 - ↑u⁻¹ - zs + (zs * ↑u⁻¹ - 1)) * h1 + (1 - ae e) * h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem free_etale_sheaf_zmod_exists_hom_sending_generator (hcm : IsCMExt F E σ) {n : ℕ} (ε : ℤ) (hε : ε * ε = 1)
     (X : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) (hX : IsUnit X.det) (e : AF F) (he : e * e = e)

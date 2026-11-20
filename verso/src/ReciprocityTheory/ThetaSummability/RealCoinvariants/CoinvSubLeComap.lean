@@ -16,9 +16,9 @@ def jointEig (Y : ι → Module.End ℂ M) (μ : ι → ℂ) : Submodule ℂ M :
 abbrev Coinv (Y : ι → Module.End ℂ M) (μ : ι → ℂ) := M ⧸ coinvSub Y μ
 
 /- English proof (translation)
-Unfold `coinvSub`. Apply `iSup_le` to reduce the goal to its premises. Introduce `i`. Introduce and unpack `x ⟨y, rfl⟩`. Rewrite using `[Submodule.mem_comap]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Apply `Submodule.mem_iSup_of_mem i` to reduce the goal to its premises. Use `⟨T y, ?_⟩` and prove the remaining obligations. Establish `hc : T (Y i y) = Y i (T y)`. Rewrite using `[← Module.End.mul_apply, (hT i).eq, Module.End.mul_apply]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_smul, hc]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coinvSub_le_comap {Y : ι → Module.End ℂ M} (μ : ι → ℂ) {T : Module.End ℂ M}
     (hT : ∀ i, Commute T (Y i)) : coinvSub Y μ ≤ (coinvSub Y μ).comap T := by

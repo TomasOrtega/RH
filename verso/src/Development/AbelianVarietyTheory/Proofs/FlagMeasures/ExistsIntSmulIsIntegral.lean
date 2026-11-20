@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.IntSmulIsIntegral
 
 /- English proof (translation)
-Establish `h : IsAlgebraic ℤ a` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic a)`. Conclude with `h.exists_integral_multiple`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_int_smul_isIntegral {E : Type} [Field E] [NumberField E] (a : E) :
     ∃ d : ℤ, d ≠ 0 ∧ IsIntegral ℤ (d • a) := by
@@ -12,15 +12,15 @@ theorem exists_int_smul_isIntegral {E : Type} [Field E] [NumberField E] (a : E) 
   exact h.exists_integral_multiple
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span E (↑M : Set (Fin n → E))` using `hM ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨c, hc, hcy⟩` from `hy`. Take `⟨d, hd, hdz⟩` from `hz`. Use `⟨c * d, mul_ne_zero hc hd, ?_⟩` and prove the remaining obligations. Establish `e : (c * d) • (y + z) = d • (c • y) + c • (d • z)`. Rewrite using `[smul_add, smul_smul, smul_smul, mul_comm d c]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `M.add_mem (zsmul_mem hcy d) (zsmul_mem hdz c)`. Consider the case `smul a y _ hy`. Take `⟨c, hc, hcy⟩` from `hy`. Take `⟨d, hd, hda⟩` from `exists_int_smul_isIntegral a`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d * c, mul_ne_zero hd hc, ?_⟩` and prove the remaining obligations. Establish `h` using `M.smul_mem (⟨d • a, hda⟩ : NumberField.RingOfIntegers E) hcy`. Establish `e : (d * c) • (a • y) = (⟨d • a, hda⟩ : NumberField.RingOfIntegers E) • (c • y)`. Express the relevant statement in the definitionally equal form `_ = (d • a) • (c • y)`. Rewrite using `[smul_assoc, smul_comm a c y, smul_smul d c]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem exists_int_smul_mem {E : Type} [inst : Field E] [NumberField E] {n : ℕ}
     (M : Submodule (NumberField.RingOfIntegers E) (Fin n → E))

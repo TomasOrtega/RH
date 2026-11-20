@@ -17,7 +17,7 @@ namespace GlobalTheory.LocBaseRel
 variable {D : D7}
 
 /- English proof (translation)
-Establish `e1 : (locH Z p).h (baseChange₂ D p x) (baseChange₂ D p y) = (D.s.atP p).ιE (brS (VS D) x y)` using `baseChangeAt_form Z.M p (Z.hcj p) x y`. Rewrite using `[(locH Z p).h_smul_left, (locH Z p).h_herm (b • baseChange₂ D p y) (baseChange₂ D p x), (locH Z p).h_smul_left, (locH Z p).h_herm (baseChange₂ D p x) (baseChange₂ D p y), map_mul, (Z.M p).L.cj_cj, e1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem hs_lemma (Z : LocDat D) (p : PlF D) (a b : (D.s.atP p).Ep) (x y : (VS D).V) :
     (locH Z p).h (a • baseChange₂ D p x) (b • baseChange₂ D p y) =
@@ -30,7 +30,7 @@ private theorem hs_lemma (Z : LocDat D) (p : PlF D) (a b : (D.s.atP p).Ep) (x y 
   ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply]`. Simplify using `only [Formalism.MainNotions.S.Loc.HermSp.Zhat, Matrix.of_apply, scaled, frame]`. Rewrite using `[hs_lemma]`. Simplify using `only [Formalism.MainNotions.S.Zhat]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -47,9 +47,9 @@ theorem zhat_scaled (Z : LocDat D) (p : PlF D) {T T' : D.host.E} (F : LFlag (VS 
   ring
 
 /- English proof (translation)
-Establish `hA : ((locH Z p).Zhat (scaled Z p (frame F)) (scaled Z p (frame F'))).submatrix (Fin.castLE hl) (Fin.castLE hl) = Matrix.diagonal (fun i => (Z.M p).L.cj (frFac Z.δ p (Fin.castLE hl i))) * ((Formalism.MainNotions.S.Zhat F.fl F'.fl).map (D.s.atP p).ιE).submatrix (Fin.castLE hl) (Fi …`. Rewrite using `[zhat_scaled]`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Establish `hB : ((Formalism.MainNotions.S.Zhat F.fl F'.fl).map (D.s.atP p).ιE).submatrix (Fin.castLE hl) (Fin.castLE hl) = (D.s.atP p).ιE.mapMatrix ((Formalism.MainNotions.S.Zhat F.fl F'.fl).submatrix (Fin.castLE hl) (Fin.castLE hl))` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Formalism.MainNotions.S.Loc.HermSp.Dl, dif_pos hl, hA, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal, hB, ← RingHom.map_det, Finset.prod_mul_distrib]`. Simplify using `only [Formalism.MainNotions.S.Dl, Formalism.MainNotions.S.leadMinorE, dif_pos hl]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dl_scaled (Z : LocDat D) (p : PlF D) {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') (l : ℕ) (hl : l ≤ D.R.rS + 1) :
@@ -72,17 +72,15 @@ theorem dl_scaled (Z : LocDat D) (p : PlF D) {T T' : D.host.E} (F : LFlag (VS D)
   ring
 
 /- English proof (translation)
-Introduce `hA hB hT hT' hG`. Establish `hl1 : D.R.rS + 1 ≤ D.R.rS + 1` using `le_refl _`. Establish `hl0 : D.R.rS ≤ D.R.rS + 1` using `Nat.le_succ _`. Establish `e1` using `dl_scaled Z p F F' (D.R.rS + 1) hl1`. Establish `e0` using `dl_scaled Z p F F' D.R.rS hl0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlast : frFac Z.δ p (Fin.castLE hl1 (Fin.last D.R.rS)) = 1`. Establish `h1 : Fin.castLE hl1 (Fin.last D.R.rS) = Fin.last D.R.rS` using `Fin.ext rfl`. Rewrite using `[h1]`. Simplify using `[frFac]`. Establish `hc1 : (∏ i : Fin (D.R.rS + 1), (Z.M p).L.cj (frFac Z.δ p (Fin.castLE hl1 i)) * frFac Z.δ p (Fin.castLE hl1 i)) = ∏ i : Fin D.R.rS, (Z.M p).L.cj (frFac Z.δ p (Fin.castLE hl0 i)) * frFac Z.δ p (Fin.castLE hl0 i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Fin.prod_univ_castSucc, hlast, map_one, one_mul, mul_one]`. Both sides reduce to the same expression. Establish `hU : ∀ a, IsUnit (frFac Z.δ p a)`. Introduce `a`. Establish `h` using `(Formalism.L2.SG.Pf.LocFacts.isUnit_localConstant p Z).pow (D.R.rS - a.val)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h.ringInverse`. Establish `hcU : IsUnit (∏ i : Fin D.R.rS, (Z.M p).L.cj (frFac Z.δ p (Fin.castLE hl0 i)) * frFac Z.δ p (Fin.castLE hl0 i))` using `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one (fun i _ => ((hU _).map (Z.M p).L.cj).mul (hU _))`. Establish `key : P.Gv = ((∏ i : Fin D.R.rS, (Z.M p).L.cj (frFac Z.δ p (Fin.castLE hl0 i)) * frFac Z.δ p (Fin.castLE hl0 i)) * (Z.M p).L.cj (∏ i : Fin D.R.rS, (Z.M p).L.cj (frFac Z.δ p (Fin.castLE hl0 i)) * frFac Z.δ p (Fin.castLE hl0 i))) * (D.s.atP p).ιE (Gval F F')`. Simplify using `only [Formalism.MainNotions.S.LocNG.FPair.Gv, Formalism.MainNotions.S.Loc.HermSp.Gdet, Formalism.MainNotions.S.Loc.HermSp.normE]`. Rewrite using `[hA, hB, hT, hT', e1, e0, hc1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Gval, Formalism.MainNotions.S.Gflag, map_sub, map_mul, cj_iota (Z.hcj p), map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Introduce `h0`. Rewrite `h0` using `[(hcU.mul (hcU.map (Z.M p).L.cj)).mul_right_eq_zero]`.
-
-Conclude with `(map_ne_zero (D.s.atP p).ιE).mpr hG h0`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gv_ne_of (Z : LocDat D) (p : PlF D) (n n' : ℕ) (F : LFlag (VS D) D.R.rS ((n : ℕ) : D.host.E))
     (F' : LFlag (VS D) D.R.rS ((n' : ℕ) : D.host.E)) (P : Formalism.MainNotions.S.LocNG.FPair (locH Z p) D.R.rS) :
@@ -124,27 +122,25 @@ theorem gv_ne_of (Z : LocDat D) (p : PlF D) (n n' : ℕ) (F : LFlag (VS D) D.R.r
   exact (map_ne_zero (D.s.atP p).ιE).mpr hG h0
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hm⟩` from `Z.agree p`. Consider the cases of `hs : (D.s.atP p).split with`. Consider the case `none => simp only [hg, hs] at hm`. Consider the case `some sg`. Simplify using `only [hg, hs] at hm`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Establish `hq : (g.q : (D.s.atP p).Fp) = ((Loc.resChar p : ℕ) : (D.s.atP p).Fp)`. Rewrite using `[hm.2]`. Conclude with `sg.q_eq`. Establish `hmem` using `(D.s_split p).mp (by simp [hs])`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨m', hm'⟩ : (Loc.resChar p) ^ 2 ∣ D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2 := by`. Apply the tactic sequence `rcases hmem with h | h <;> rw [h]`. Conclude with `⟨D.host.QS * D.host.q * D.host.d * D.host.g 1 ^ 2, by ring⟩`. Conclude with `⟨D.host.QS * D.host.q * D.host.d * D.host.g 0 ^ 2, by ring⟩`. Take `⟨π, -, hπ, hπ1⟩` from `D.T_norm u`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `Ideal.mem_span_singleton'.mp hπ1`. Rewrite `hx` using `[hm']`. Establish `hxE` using `congrArg (algebraMap (𝓞 D.host.E) D.host.E) hx`. Simplify using `only [map_mul, map_sub, map_one, map_natCast, ← RingOfIntegers.coe_eq_algebraMap] at hxE`. Move the coercions through the operations in `at hxE`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hιπ : (D.s.atP p).ιE (π : D.host.E) = 1 + ((Loc.resChar p : ℕ) : (D.s.atP p).Ep) ^ 2 * ((m' : (D.s.atP p).Ep) * (D.s.atP p).ιE (x : D.host.E))`. Establish `h` using `congrArg (D.s.atP p).ιE hxE`. Simplify using `only [map_mul, map_sub, map_one, map_pow, map_natCast] at h`. Take the linear combination `-h`. Establish `hιπc : (D.s.atP p).ιE (D.host.conj (π : D.host.E)) = 1 + ((Loc.resChar p : ℕ) : (D.s.atP p).Ep) ^ 2 * ((m' : (D.s.atP p).Ep) * (D.s.atP p).cj ((D.s.atP p).ιE (x : D.host.E)))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← D.conjF_eq, ← (D.s.atP p).cj_ιE, hιπ]`. Simplify using `only [map_add, map_one, map_mul, map_pow, map_natCast]`. Establish `hXO : (D.s.atP p).ιE (x : D.host.E) ∈ (D.s.atP p).O` using `PI.CntNotIntW.iE_mem_O D p x`. Establish `hXcO : (D.s.atP p).cj ((D.s.atP p).ιE (x : D.host.E)) ∈ (D.s.atP p).O` using `Formalism.L2.SG.Pf.LocFacts.lf_cj_mem p _ hXO`. Establish `hYO : (m' : (D.s.atP p).Ep) * (D.s.atP p).ιE (x : D.host.E) + (m' : (D.s.atP p).Ep) * (D.s.atP p).cj ((D.s.atP p).ιE (x : D.host.E)) + ((Loc.resChar p : ℕ) : (D.s.atP p).Ep) ^ 2 * ((m' : (D.s.atP p).Ep) * (D.s.atP p).ιE (x : D.host.E)) * ((m' : (D.s.atP p).Ep) * (D.s.atP p).cj (( …` using `add_mem (add_mem (mul_mem (natCast_mem _ _) hXO) (mul_mem (natCast_mem _ _) hXcO)) (mul_mem (mul_mem (pow_mem (natCast_mem _ _) _) (mul_mem (natCast_mem _ _) hXO)) (mul_mem (natCast_mem _ _) hXcO))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ((Tu D u : ℕ) : (D.s.atP p).Ep) = 1 + ((Loc.resChar p : ℕ) : (D.s.atP p).Ep) ^ 2 * ((m' : (D.s.atP p).Ep) * (D.s.atP p).ιE (x : D.host.E) + (m' : (D.s.atP p).Ep) * (D.s.atP p).cj ((D.s.atP p).ιE (x : D.host.E)) + ((Loc.resChar p : ℕ) : (D.s.atP p).Ep) ^ 2 * ((m' : (D.s.atP p …`. Establish `hTE : ((Tu D u : ℕ) : D.host.E) = (π : D.host.E) * D.host.conj (π : D.host.E)` using `hπ.symm`. Establish `h` using `congrArg (D.s.atP p).ιE hTE`. Rewrite `h` using `[map_natCast, map_mul, hιπ, hιπc]`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hc0` using `(D.s.atP p).char0`. Establish `hℓ0 : ((Loc.resChar p : ℕ) : (D.s.atP p).Fp) ≠ 0` using `Nat.cast_ne_zero.mpr (D.s.atP p).ellPrime.out.ne_zero`. Establish `hℓ2 : ((Loc.resChar p : ℕ) : (D.s.atP p).Fp) ^ 2 ≠ 0` using `pow_ne_zero 2 hℓ0`. Establish `hw0 : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((((Tu D u : ℕ) : (D.s.atP p).Fp) - 1) / ((Loc.resChar p : ℕ) : (D.s.atP p).Fp) ^ 2) ∈ (D.s.atP p).O`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (((Loc.resChar p : ℕ) : (D.s.atP p).Fp) ^ 2))` using `(isUnit_iff_ne_zero.mpr hℓ2).map _`. Establish `he : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((((Tu D u : ℕ) : (D.s.atP p).Fp) - 1) / ((Loc.resChar p : ℕ) : (D.s.atP p).Fp) ^ 2) = (m' : (D.s.atP p).Ep) * (D.s.atP p).ιE (x : D.host.E) + (m' : (D.s.atP p).Ep) * (D.s.atP p).cj ((D.s.atP p).ιE (x : D.host.E)) + ((Loc.resChar p : …`. Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← map_mul, mul_div_cancel₀ _ hℓ2, map_sub, map_natCast, map_one, map_pow, map_natCast, hT]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `hYO`. Use `⟨⟨_, Formalism.L2.SG.Pf.LocFacts.lf_int_of_alg p _ hw0⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hq]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem exists_Tu_eq_one_add_sq_mul (Z : LocDat D) (p : PlF D) (u : D.what₂.Word) (g : Formalism.MainNotions.S.Loc.SplitG (Z.M p).L)
     (hg : (Z.M p).split = some g) :
@@ -231,21 +227,19 @@ namespace GlobalTheory.LocBaseRel
 open ValuativeRel
 variable {D : D7}
 /- English proof (translation)
-Introduce `hA hB`. Establish `hc0` using `(D.s.atP p).char0`. Establish `hn : Tu D u ≠ 0` using `(D.mem u).A.T_prime.ne_zero`. Establish `hn' : Tu D u' ≠ 0` using `(D.mem u').A.T_prime.ne_zero`. Establish `hU : ∀ (g : Formalism.MainNotions.S.Loc.SplitG (Z.M p).L) (w : 𝒪[(D.s.atP p).Fp]), IsUnit (1 + g.q ^ 2 * w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g w`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (-(g.q ^ 2 * w)) with h | h` into its components or cases. Establish `h2 : IsUnit (g.q ^ 2 * w)` using `by simpa using h.neg`. Conclude with `absurd ((isUnit_pow_iff two_ne_zero).mp (isUnit_of_mul_isUnit_left h2)) g.q_irr.not_isUnit`. Simplify `h` using `[sub_neg_eq_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hA]`. Conclude with `natCast_mem _ _`. Rewrite using `[hA]`. Conclude with `hn` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hB]`. Conclude with `natCast_mem _ _`. Rewrite using `[hB]`. Conclude with `hn'` after adjusting the coercions. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `exists_Tu_eq_one_add_sq_mul Z p u g hg`. Take `⟨w', hw'⟩` from `exists_Tu_eq_one_add_sq_mul Z p u' g hg`. Use `⟨?_, w - w', ?_⟩` and prove the remaining obligations. Take `⟨U, hU1⟩` from `hU g w`. Take `⟨U', hU1'⟩` from `hU g w'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨((U⁻¹ : (𝒪[(D.s.atP p).Fp])ˣ) : 𝒪[(D.s.atP p).Fp]), ((U'⁻¹ : (𝒪[(D.s.atP p).Fp])ˣ) : 𝒪[(D.s.atP p).Fp]), ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg Subtype.val U.inv_mul`. Rewrite `h1` using `[hU1]`. Rewrite using `[hA, hw]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `congrArg Subtype.val U'.inv_mul`. Rewrite `h1` using `[hU1']`. Rewrite using `[hB, hw']`. Simplify using `using h1`. Rewrite using `[hA, hB, hw, hw']`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem normsOK_of (Z : LocDat D) (p : PlF D) (u u' : D.what₂.Word) (P : Formalism.MainNotions.S.LocNG.FPair (locH Z p) D.R.rS) :
     P.A.T = ((Tu D u : ℕ) : (D.s.atP p).Fp) → P.B.T = ((Tu D u' : ℕ) : (D.s.atP p).Fp) → P.NormsOK := by
@@ -294,7 +288,7 @@ namespace GlobalTheory.LocBaseRel
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[finrank_Vp]`. Take `⟨j, hj⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Simplify using `only [Formalism.BasicNotions.Ranks.r, Formalism.BasicNotions.Ranks.rS, hj]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_eq (p : PlF D) :
     Module.finrank (D.s.atP p).Ep (Vp D p) = D.R.k + 2 * D.R.rS + 1 := by
@@ -305,21 +299,21 @@ theorem finrank_eq (p : PlF D) :
   omega
 
 /- English proof (translation)
-Set `Ψ : (VS D).V →ₗ[D.host.E] (Fin r → D.host.E)` to `LinearMap.pi (fun i => (VS D).hT (F.e i))`. Establish `hΨ : ∀ y i, Ψ y i = (VS D).hT (F.e i) y` using `fun _ _ => rfl`. Establish `hsurj : Function.Surjective Ψ`. Rewrite using `[← LinearMap.range_eq_top]`. Assume the negation of the conclusion as `hne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨φ, hφ0, hφ⟩` from `(LinearMap.range Ψ).exists_le_ker_of_lt_top (lt_top_iff_ne_top.mpr hne)`. Apply `hφ0` to reduce the goal to its premises. Establish `hsum : ∀ v : Fin r → D.host.E, φ v = ∑ i, v i * φ (fun j => if i = j then 1 else 0)`. Introduce `v`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ φ v]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_eq_mul]`. Establish `hz : ∀ y, ∑ i, (VS D).hT (F.e i) y * φ (fun j => if i = j then 1 else 0) = 0`. Introduce `y`. Establish `h` using `hφ (LinearMap.mem_range_self Ψ y)`. Rewrite `h` using `[LinearMap.mem_ker, hsum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h` using `only [hΨ]`. Establish `hx : ∀ y, (VS D).hT (∑ i, star (φ (fun j => if i = j then 1 else 0)) • F.e i) y = 0`. Introduce `y`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `(Finset.sum_congr rfl (fun i _ => ?_)).trans (hz y)` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, star_star, smul_eq_mul, mul_comm]`. Establish `hx0` using `(VS D).nondeg.1 _ hx`. Establish `hc : ∀ i, φ (fun j => if i = j then 1 else 0) = 0`. Introduce `i`. Establish `h` using `Fintype.linearIndependent_iff.mp F.e_indep _ hx0 i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using h`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[hsum]`. Simplify using `[hc]`. Use `choose y hy using fun j => hsurj (fun i => if i = j then (1 : D.host.E) else 0)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, fun i j => ?_⟩` and prove the remaining obligations. Establish `h1 : (VS D).hT (F.e i) (y j) = if i = j then 1 else 0`. Rewrite using `[← hΨ, hy j]`. Establish `h2` using `LinearMap.isSymm_def.mp (VS D).herm (F.e i) (y j)`. Rewrite using `[brS, ← h2, h1, starRingEnd_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 private theorem exists_dual_family_of_flag {r : ℕ} {T : D.host.E} (F : FlagG (VS D) r T) :
     ∃ y : Fin r → (VS D).V, ∀ i j, brS (VS D) (F.e i) (y j) = if i = j then 1 else 0 := by
@@ -361,21 +355,21 @@ private theorem exists_dual_family_of_flag {r : ℕ} {T : D.host.E} (F : FlagG (
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hU : ∀ a, IsUnit (frFac Z.δ p a)`. Introduce `a`. Conclude with `((Formalism.L2.SG.Pf.LocFacts.isUnit_localConstant p Z).pow (D.R.rS - a.val)).ringInverse`. Establish `hlast : frFac Z.δ p (Fin.last D.R.rS) = 1` using `by simp [frFac]`. Establish `hsym : ∀ x y : (VS D).V, (VS D).hT y x = star ((VS D).hT x y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Rewrite using `[← LinearMap.isSymm_def.mp (VS D).herm x y, starRingEnd_apply]`. Take `⟨y, hy⟩` from `exists_dual_family_of_flag F.fl`. Use `(D.s.atP p).char0` as an intermediate fact. Use `GlobalTheory.LocDual.frameD_exists (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS (scaled Z p (frame F)) (n : (D.s.atP p).Fp) (by exact_mod_cast _hn) ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Simplify using `only [scaled]`. Rewrite using `[hs_lemma]`. Establish `h0 : brS (VS D) (frame F a) (frame F b) = 0`. Simplify using `only [frame, FlagG.fvec, brS]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨a', rfl⟩ | rfl <;>`. Break down `Fin.eq_castSucc_or_eq_last b with ⟨b', rfl⟩ | rfl` into its components or cases. Simplify using `only [Fin.snoc_castSucc]`. Conclude with `F.fl.e_iso b' a'`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsym, F.fl.z_orth a', star_zero]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`. Conclude with `F.fl.z_orth b'`. Simplify using `at hab`. Rewrite using `[h0, map_zero, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [scaled]`. Rewrite using `[hs_lemma, hlast, map_one, one_mul, one_mul]`. Simplify using `only [frame, FlagG.fvec, brS, Fin.snoc_last]`. Rewrite using `[F.fl.z_norm, map_neg, map_natCast, map_natCast]`. Use `⟨fun j => (Z.M p).L.cj (Ring.inverse (frFac Z.δ p j.castSucc)) • baseChange₂ D p (y j), fun i j => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [scaled]`. Rewrite using `[hs_lemma, (Z.M p).L.cj_cj]`. Establish `hf : frame F i.castSucc = F.fl.e i`. Simplify using `only [frame, FlagG.fvec, Fin.snoc_castSucc]`. Rewrite using `[hf, hy]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[map_one, mul_one]`. Conclude with `Ring.mul_inverse_cancel _ (hU _)`. Rewrite using `[map_zero, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem frame_ex (Z : LocDat D) (p : PlF D) (n : ℕ) (_hn : n ≠ 0) (F : LFlag (VS D) D.R.rS ((n : ℕ) : D.host.E)) :
     ∃ Fr : Formalism.MainNotions.S.LocNG.FrameD (locH Z p) D.R.rS, Fr.f = scaled Z p (frame F) ∧ Fr.T = (n : (D.s.atP p).Fp) := by
@@ -422,9 +416,9 @@ theorem frame_ex (Z : LocDat D) (p : PlF D) (n : ℕ) (_hn : n ≠ 0) (F : LFlag
     · rw [map_zero, mul_zero]
 
 /- English proof (translation)
-Introduce `D Z u u' w F00 F'0 hw hG p`. Establish `hn : Tu D u ≠ 0` using `(D.mem u).A.T_prime.ne_zero`. Establish `hn' : Tu D u' ≠ 0` using `(D.mem u').A.T_prime.ne_zero`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨A, hA1, hA2⟩` from `frame_ex Z p (Tu D u) hn F00`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB1, hB2⟩` from `frame_ex Z p (Tu D u') hn' F'0`. Conclude with `⟨⟨A, B⟩, hA1, hB1, hA2, hB2⟩`. Introduce and unpack `P ⟨h1, h2, h3, h4⟩`. Conclude with `GlobalTheory.RelGPoint.relG_of_point (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS D.R.k P (finrank_eq p) (GlobalTheory.LocOver.isPoint_of_scaled D Z p F00 F'0 w P hw h1 h2) (normsOK_of Z p u u' P h3 h4) (gv_ne_of Z p (Tu D u) (Tu D u') F00 F'0 P h1 h2 h3 h4 hG)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem atBase_relG : ∀ (D : D7) (Z : LocDat D), ∀ (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1))
     (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)),

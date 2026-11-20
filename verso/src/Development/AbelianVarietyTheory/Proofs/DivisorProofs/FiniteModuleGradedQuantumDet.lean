@@ -16,9 +16,9 @@ section Alg
 variable {A A' : Type} [Ring A] [Algebra ℂ A] [Ring A'] [Algebra ℂ A']
 
 /- English proof (translation)
-Unfold `Formalism.REAL.qdet Formalism.REAL.qminor Formalism.REAL.Tm`. Simplify using `only [map_sum, map_mul, map_intCast, map_list_prod, List.map_ofFn]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 3`. Use function extensionality and compare the values at `k`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, map_add]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qdet_map (φ : A →ₐ[ℂ] A') {n : ℕ} (E : Fin n → Fin n → A) (u : ℂ) :
     φ (Formalism.REAL.qdet E u) = Formalism.REAL.qdet (fun a b => φ (E a b)) u := by
@@ -31,9 +31,9 @@ theorem qdet_map (φ : A →ₐ[ℂ] A') {n : ℕ} (E : Fin n → Fin n → A) (
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Formalism.REAL.qdet Formalism.REAL.qminor`. Use `Subalgebra.sum_mem _ fun σ _ => Subalgebra.mul_mem _ (Subalgebra.intCast_mem _ _) (Subalgebra.list_prod_mem _ ?_)` and prove the remaining obligations. Introduce `x hx`. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Unfold `Formalism.REAL.Tm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Use `Subalgebra.add_mem _ ?_ (h _ _)` and prove the remaining obligations. Use `split_ifs`. Conclude with `Subalgebra.algebraMap_mem _ _`. Conclude with `Subalgebra.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem qdet_mem (S : Subalgebra ℂ A) {n : ℕ} {E : Fin n → Fin n → A} (h : ∀ a b, E a b ∈ S) (u : ℂ) :
     Formalism.REAL.qdet E u ∈ S := by
@@ -49,9 +49,9 @@ theorem qdet_mem (S : Subalgebra ℂ A) {n : ℕ} {E : Fin n → Fin n → A} (h
   · exact Subalgebra.zero_mem _
 
 /- English proof (translation)
-Unfold `Formalism.REAL.qdet Formalism.REAL.qminor`. Use `Commute.sum_right _ _ _ fun σ _ => Commute.mul_right (Int.cast_commute _ _).symm ?_` and prove the remaining obligations. Use `Commute.list_prod_right _ _ fun y hy => ?_` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hy`. Unfold `Formalism.REAL.Tm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Conclude with `Commute.add_right (GlobalTheory.CapHC.ite_algebraMap_comm _ _ _).symm (h _ _)`.
+A detailed English derivation is pending.
 -/
 theorem comm_qdet {n : ℕ} {E : Fin n → Fin n → A} {z : A} (h : ∀ a b, Commute z (E a b)) (u : ℂ) :
     Commute z (Formalism.REAL.qdet E u) := by
@@ -63,14 +63,14 @@ theorem comm_qdet {n : ℕ} {E : Fin n → Fin n → A} {z : A} (h : ∀ a b, Co
   exact Commute.add_right (GlobalTheory.CapHC.ite_algebraMap_comm _ _ _).symm (h _ _)
 
 /- English proof (translation)
-Unfold `Formalism.REAL.qdet Formalism.REAL.qminor Formalism.REAL.Tm`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem qdet_one (E : Fin 1 → Fin 1 → A) (u : ℂ) : Formalism.REAL.qdet E u = algebraMap ℂ A u + E 0 0 := by
   unfold Formalism.REAL.qdet Formalism.REAL.qminor Formalism.REAL.Tm
   simp
 
 /- English proof (translation)
-Establish `h` using `hX a b c d`. Rewrite `h` using `[if_neg hbc, if_neg hda, sub_zero]`. Conclude with `sub_eq_zero.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glComm {n : ℕ} {X : Fin n → Fin n → A} (hX : Formalism.REAL.GlRel X) {a b c d : Fin n} (hbc : b ≠ c)
     (hda : d ≠ a) : Commute (X a b) (X c d) := by
@@ -91,16 +91,16 @@ def stab (N : Submodule ℂ M) : Subalgebra ℂ (Module.End ℂ M) where
   algebraMap_mem' := fun c x hx => by simpa [Module.algebraMap_end_apply] using N.smul_mem c hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_stab {N : Submodule ℂ M} {f : Module.End ℂ M} : f ∈ stab N ↔ ∀ x ∈ N, f x ∈ N := Iff.rfl
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨p, q, w, rfl⟩` from `hy`. Introduce `x hx`. Conclude with `hY p q _ (mem_stab.1 w.2 x hx)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `zero => intro x _`. Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb => intro x hx`. Simplify using `using K.add_mem (ha x hx) (hb x hx)`. Consider the case `smul c a _ ha => intro x hx`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using K.smul_mem c (ha x hx)`.
+A detailed English derivation is pending.
 -/
 theorem upperSpan_maps {N K : Submodule ℂ M} {r m : ℕ} (Y : Fin (r + m) → Fin (r + m) → stab N)
     (hY : ∀ p q, ∀ x ∈ N, (Y (Fin.castAdd m p) (Fin.natAdd r q) : Module.End ℂ M) x ∈ K)
@@ -119,7 +119,7 @@ end Stab
 section Main
 
 /- English proof (translation)
-Rewrite using `[blk_y]`. Apply the tactic sequence `refine Fin.addCases (fun a => ?_) (fun k => ?_) p <;> simp [blk]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blk_castAdd_lt {n₁ : ℕ} (p : Fin (1 + n₁)) (q : Fin 1) :
     blk n₁ (Fin.castAdd 1 p) < blk n₁ (Fin.natAdd (1 + n₁) q) := by

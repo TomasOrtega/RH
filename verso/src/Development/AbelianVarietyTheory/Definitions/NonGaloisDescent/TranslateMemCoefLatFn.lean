@@ -36,7 +36,7 @@ def fockSubst (p : D.what₂.Tau → ℕ) (u : GLR D n) : PolF D m n →ₐ[ℂ]
     else ∑ b, C ((u v.1).val b v.2.2) * X (v.1, v.2.1, b)
 
 /- English proof (translation)
-Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[fockSubst, aeval_X, AlgHom.id_apply]`. Use `split_ifs`. Rewrite using `[Finset.sum_eq_single v.2.2 (fun b _ hb => by simp [Matrix.one_apply, Ne.symm hb]) (by simp)]; simp`. Rewrite using `[Finset.sum_eq_single v.2.2 (fun b _ hb => by simp [Matrix.one_apply, hb]) (by simp)]; simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fockSubst_one (p : D.what₂.Tau → ℕ) : fockSubst (m := m) p (1 : GLR D n) = AlgHom.id ℂ _ := by
   refine MvPolynomial.algHom_ext fun v => ?_
@@ -46,9 +46,9 @@ theorem fockSubst_one (p : D.what₂.Tau → ℕ) : fockSubst (m := m) p (1 : GL
   · rw [Finset.sum_eq_single v.2.2 (fun b _ hb => by simp [Matrix.one_apply, hb]) (by simp)]; simp
 
 /- English proof (translation)
-Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, fockSubst, fockSubst, fockSubst, aeval_X, aeval_X]`. Use `split_ifs with h`. Simplify using `only [map_sum, map_mul, aeval_C, aeval_X, if_pos h, Pi.mul_apply, _root_.mul_inv_rev, Units.val_mul, Matrix.mul_apply, algebraMap_eq, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_mul, aeval_C, aeval_X, if_neg h, Pi.mul_apply, Units.val_mul, Matrix.mul_apply, algebraMap_eq, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem fockSubst_mul (p : D.what₂.Tau → ℕ) (u u' : GLR D n) :
     fockSubst (m := m) p (u * u') = (fockSubst p u).comp (fockSubst p u') := by
@@ -91,17 +91,15 @@ def harm (m : ℕ) (w : Weight D n) (B : GLR D n) : Submodule ℂ (PolF D m n) :
   Submodule.span ℂ (Set.range fun u => fockGL m w B u (w.delta m))
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨1, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem delta_mem_harm (w : Weight D n) (B : GLR D n) : w.delta m ∈ harm m w B :=
   Submodule.subset_span ⟨1, by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem _ h`. Take `⟨u', rfl⟩` from `h`. Use `Submodule.subset_span ⟨u * u', ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.map_mul, Module.End.mul_apply]`. Consider the case `zero => rw [LinearMap.map_zero]`. Conclude with `zero_mem _`. Consider the case `add _ _ _ _ h1 h2 => rw [LinearMap.map_add]`. Conclude with `add_mem h1 h2`.
-
-Consider the case `smul c _ _ h1 => rw [LinearMap.map_smul]`. Conclude with `Submodule.smul_mem _ c h1`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fockGL_mem_harm (w : Weight D n) (B u : GLR D n) {P : PolF D m n} (h : P ∈ harm m w B) :
     fockGL m w B u P ∈ harm m w B := by
@@ -120,9 +118,9 @@ def fockPt (p : D.what₂.Tau → ℕ) (y : GLR D n) (v : FVar D m n) : ℂ :=
   else (if h : v.2.1.val - p v.1 < n then ((y v.1)⁻¹).val (Fin.rev ⟨v.2.1.val - p v.1, h⟩) v.2.2 else 0)
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply]`. Use `congr 1`. Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, fockSubst, aeval_X, aeval_X]`. Distinguish the cases in `h : v.2.1.val < p v.1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Apply the tactic sequence `by_cases h' : v.2.1.val < n <;>`. Simplify using `[fockPt, h, h', Matrix.mul_apply]`. Apply the tactic sequence `by_cases h' : v.2.1.val - p v.1 < n <;>`. Simplify using `[fockPt, h, h', Matrix.mul_apply, mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem aeval_fockPt_fockSubst (p : D.what₂.Tau → ℕ) (u y : GLR D n) (P : PolF D m n) :
     aeval (fockPt p y) (fockSubst p u P) = aeval (fockPt p (u⁻¹ * y)) P := by
@@ -146,9 +144,9 @@ theorem harmFn_apply (w : Weight D n) (B x : GLR D n) (P : PolF D m n) :
     harmFn m w B P x = ((detFam w.c (B⁻¹ * x) : ℂˣ) : ℂ) * aeval (fockPt w.p (B⁻¹ * x)) P := rfl
 
 /- English proof (translation)
-Rewrite using `[harmFn_apply, harmFn_apply, fockGL_apply, map_smul, aeval_fockPt_fockSubst, smul_eq_mul, ← mul_assoc, ← Units.val_mul]`. Use `congr 2`. Simplify using `only [map_mul, map_inv]`. Rewrite using `[mul_assoc, mul_comm (detFam w.c x)]`. Establish `: (inBasis B u)⁻¹ * (B⁻¹ * x) = B⁻¹ * (u⁻¹ * x)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[inBasis, mul_assoc]`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem harmFn_fockGL (w : Weight D n) (B u x : GLR D n) (P : PolF D m n) :
     harmFn m w B (fockGL m w B u P) x = harmFn m w B P (u⁻¹ * x) := by
@@ -168,13 +166,13 @@ def coefFn (lam : D.what₂.Tau → DomWeight n) (F : Pol K D.what₂.Tau n) (x 
   ((detFam (fun τ => (lam τ).detShift) x : ℂˣ) : ℂ) * eval₂Hom σ (fun v => (x v.1).val v.2.1 v.2.2) F
 
 /- English proof (translation)
-Establish `he : ∀ τ a, σ (emb τ a) = tauE D τ a` using `fun τ a => RingHom.congr_fun (hemb τ) a`. Establish `e1 : ((rhoVr emb lam γ F : VV K lam) : Pol K D.what₂.Tau n) = detTwK lam (invTrK (embGL emb γ)) • trAct (invTrK (embGL emb γ)) (F : Pol K D.what₂.Tau n)` using `rfl`. Establish `e2 : (eval₂Hom σ (fun v : D.what₂.Tau × Fin n × Fin n => (x v.1).val v.2.1 v.2.2)).comp (trAct (invTrK (embGL emb γ)) : Pol K D.what₂.Tau n →+* Pol K D.what₂.Tau n) = eval₂Hom σ (fun v => (((embGL (tauE D) γ)⁻¹ * x) v.1).val v.2.1 v.2.2)`. Use `MvPolynomial.ringHom_ext (fun a => by simp [trAct, Formalism.GradedWeylDivisibility.blockAct]) fun v => ?_` and prove the remaining obligations. Establish `: ∀ a b, σ (((embGL emb γ v.1)⁻¹).val a b) = ((embGL (tauE D) γ v.1)⁻¹).val a b` using `fun a b => he _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, trAct, Formalism.GradedWeylDivisibility.blockAct, aeval_X, map_sum, map_mul, eval₂Hom_C, eval₂Hom_X', Pi.mul_apply, Pi.inv_apply, Units.val_mul, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun b _ => congrArg (· * _) (this _ _)`. Establish `e3 : σ (detTwK lam (invTrK (embGL emb γ))) = ((detFam (fun τ => (lam τ).detShift) (embGL (tauE D) γ)⁻¹ : ℂˣ) : ℂ)`. Simplify using `only [detTwK, detPow, detFam, map_prod, MonoidHom.coe_mk, OneHom.coe_mk, Units.coe_prod, Units.val_zpow_eq_zpow_val, map_zpow₀, GeneralLinearGroup.val_det_apply]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Express the relevant statement in the definitionally equal form `σ (((embGL emb γ τ)⁻¹).valᵀ).det = _`. Rewrite using `[det_transpose, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he _ _`. Rewrite using `[coefFn, coefFn, e1, smul_eq_C_mul, map_mul, eval₂Hom_C, e3, ← e2, map_mul, Units.val_mul]`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coefFn_rhoVr {emb : D.what₂.Tau → (D.host.E →+* K)} (hemb : ∀ τ, σ.comp (emb τ) = tauE D τ)
     (lam : D.what₂.Tau → DomWeight n) (γ : GL (Fin n) D.host.E) (F : VV K lam) (x : GLR D n) :
@@ -220,7 +218,7 @@ def harmLat (m : ℕ) (w : Weight D n) (B : GLR D n) (M : Submodule (𝓞 D.host
   (harm m w B).restrictScalars O ⊓ (coefLatFn σ emb O w.lam M).comap ((harmFn m w B).restrictScalars O)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_harmLat {w : Weight D n} {B : GLR D n} {M : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} {P : PolF D m n} :
     P ∈ harmLat σ emb O m w B M ↔ P ∈ harm m w B ∧ harmFn m w B P ∈ coefLatFn σ emb O w.lam M := Iff.rfl
@@ -228,11 +226,11 @@ theorem mem_harmLat {w : Weight D n} {B : GLR D n} {M : Submodule (𝓞 D.host.E
 variable {σ emb O}
 
 /- English proof (translation)
-Establish `hM' : M' = M.map ((Matrix.mulVecLin γ.val).restrictScalars (𝓞 D.host.E))`. Use extensionality with `x`. Rewrite using `[hM, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, hx, by simp [Matrix.mulVec_mulVec]⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify `hy` using `[Matrix.mulVec_mulVec]`. Unfold `nabAtr`. Establish `: ∀ τ, tauLat emb τ M' = gLat (embGL emb γ τ) (tauLat emb τ M)` using `fun τ => by`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[hM']`. Conclude with `tauLatG _ K _ n emb τ M γ`. Repeatedly rewrite using `[this, Formalism.L2.Col.dualFr_gLat]`. Conclude with `Formalism.L2.Col.nabK_gLat lam _ (invTrK (embGL emb γ))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nabAtr_of_mem_iff (lam : D.what₂.Tau → DomWeight n) (γ : GL (Fin n) D.host.E)
     {M M' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (hM : ∀ x, x ∈ M' ↔ (γ⁻¹).val *ᵥ x ∈ M) :
@@ -252,9 +250,9 @@ theorem nabAtr_of_mem_iff (lam : D.what₂.Tau → DomWeight n) (γ : GL (Fin n)
   exact Formalism.L2.Col.nabK_gLat lam _ (invTrK (embGL emb γ))
 
 /- English proof (translation)
-Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem _ h`. Take `⟨F, hF, rfl⟩` from `h`. Use `Submodule.subset_span ⟨rhoVr emb lam γ F, ?_, funext fun x => (coefFn_rhoVr σ hemb lam γ F x).symm⟩` and prove the remaining obligations. Rewrite using `[nabAtr_of_mem_iff lam γ hM]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_map_of_mem hF`. Consider the case `zero => exact zero_mem _`. Consider the case `add _ _ _ _ h1 h2 => exact add_mem h1 h2`. Consider the case `smul c _ _ h1 => exact Submodule.smul_mem _ c h1`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem translate_mem_coefLatFn (hemb : ∀ τ, σ.comp (emb τ) = tauE D τ) (lam : D.what₂.Tau → DomWeight n)
     (γ : GL (Fin n) D.host.E) {M M' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
@@ -271,7 +269,7 @@ theorem translate_mem_coefLatFn (hemb : ∀ τ, σ.comp (emb τ) = tauE D τ) (l
   | smul c _ _ h1 => exact Submodule.smul_mem _ c h1
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_harmLat]`. Use `⟨fockGL_mem_harm w B _ h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[show harmFn m w B (fockGL m w B (embGL (tauE D) γ) P) = fun x => harmFn m w B P ((embGL (tauE D) γ)⁻¹ * x) from`. Use function extensionality and compare the values at `fun x => harmFn_fockGL w B _ x P]`. Conclude with `translate_mem_coefLatFn hemb w.lam γ hM h.2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fockGL_mem_harmLat (hemb : ∀ τ, σ.comp (emb τ) = tauE D τ) (w : Weight D n) (B : GLR D n) (γ : GL (Fin n) D.host.E)
     {M M' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (hM : ∀ x, x ∈ M' ↔ (γ⁻¹).val *ᵥ x ∈ M)
@@ -297,7 +295,7 @@ def Weight.first (D : D7) (n : ℕ) (p q : D.what₂.Tau → ℕ) (c : D.what₂
     split_ifs <;> omega⟩
 
 /- English proof (translation)
-The claim follows from `h lam_eq τ i := by have := hp τ simp only [Weight.first] split_ifs <;> first | omega | simp`.
+A detailed English derivation is pending.
 -/
 theorem Weight.first_good {p q : D.what₂.Tau → ℕ} (c : D.what₂.Tau → ℤ) (hp : ∀ τ, 0 < p τ) (h : ∀ τ, p τ + q τ ≤ n) :
     (Weight.first D n p q c).Good where
@@ -308,21 +306,21 @@ theorem Weight.first_good {p q : D.what₂.Tau → ℕ} (c : D.what₂.Tau → �
     split_ifs <;> first | omega | simp
 
 /- English proof (translation)
-Simplify using `[fockPt, hi]`.
+Simplify using the standard rewrite rules.
 -/
 example (p : D.what₂.Tau → ℕ) (y : GLR D n) (τ : D.what₂.Tau) (i a : Fin n) (hi : i.val < p τ) :
     aeval (fockPt (m := n) p y) (X (τ, i, a) : PolF D n n) = (y τ).val a i := by
   simp [fockPt, hi]
 
 /- English proof (translation)
-Simplify using `[fockPt]`.
+Simplify using the standard rewrite rules.
 -/
 example (y : GLR D (n + 1)) (τ : D.what₂.Tau) (a : Fin (n + 1)) :
     aeval (fockPt (m := 1) (fun _ => 0) y) (X (τ, 0, a) : PolF D 1 (n + 1)) = ((y τ)⁻¹).val (Fin.last n) a := by
   simp [fockPt]
 
 /- English proof (translation)
-Rewrite using `[fockGL_apply, map_one]`. Use `congr 2`. Simplify using `[detFam, Finset.prod_inv_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 example (w : Weight D n) (B u : GLR D n) :
     fockGL m w B u 1 = ((∏ τ, GeneralLinearGroup.det (u τ) ^ (-w.c τ) : ℂˣ) : ℂ) • (1 : PolF D m n) := by

@@ -20,7 +20,7 @@ open GlobalTheory.AbLaw
 open GlobalTheory.KeyPow GlobalTheory.KeyKa
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeyFam.keyFormula_holds | exact GlobalTheory.KeyFam.keyFormula_holds | (intros; apply GlobalTheory.KeyFam.keyFormula_holds <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exactKeyFormula_proof : KeyFormula := by
   first | exact @GlobalTheory.KeyFam.keyFormula_holds | exact GlobalTheory.KeyFam.keyFormula_holds | (intros; apply GlobalTheory.KeyFam.keyFormula_holds <;> assumption)

@@ -43,14 +43,14 @@ def LatticeInclusionLength : Prop :=
 end Parts
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ramified_rank_formula D u M hS, hb, ramified_max_slope_le_of_model D u M hS hd, hl⟩`.
+Supply the required witnesses or components.
 -/
 theorem ramified_lattice_props_of_model (D : D7) (u : D.what₂.Word) (M : FreeRankModel (D.mem u).A) (hS : HidaSetting D u) (hd : 0 < D.duS u)
     (hb : RamifiedSlopeFormula D u) (hl : LatticeInclusionLength D u) : Conclusion2 D u :=
   ⟨ramified_rank_formula D u M hS, hb, ramified_max_slope_le_of_model D u M hS hd, hl⟩
 
 /- English proof (translation)
-Introduce `D u hF hS hA`. Take `⟨⟨M⟩, hd, hb, hl⟩` from `h D u hF hS hA`. Conclude with `ramified_lattice_props_of_model D u M hS hd hb hl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ramified_lattice_of_free_model
     (h : ∀ (D : D7) (u : D.what₂.Word), FormsCompatible D u → HidaSetting D u → admS D u →

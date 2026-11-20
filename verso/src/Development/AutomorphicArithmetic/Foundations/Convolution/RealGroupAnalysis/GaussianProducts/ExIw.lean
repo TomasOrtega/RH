@@ -10,9 +10,9 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
 /- English proof (translation)
-Introduce `F _ _ _ _ π`. Take `⟨f, hf, g, -, hg⟩` from `UpperTheory.ConvolutionTheory.R2.Pp.wfNe F π`. Take `⟨b, a, k, hk, rfl⟩` from `UpperTheory.ConvolutionTheory.R2.M.iwa F g`. Use `⟨f, hf, a, k, hk, fun h => hg ?_⟩` and prove the remaining obligations. Establish `e : gl (nU b * mD a * k) = gl (nU b) * gl (mD a * k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc]`. Conclude with `map_mul _ _ _`. Rewrite using `[e, ((UpperTheory.ConvolutionTheory.R2.Pp.wfBasic F f.1 (UpperTheory.ConvolutionTheory.R2.Pp.cuspZero F π f hf).1).2.1 b _), h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.exIw :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (M : Meas F) (π : TR.CuspSub F 2), ∃ f ∈ π.V, ∃ a, ∃ k ∈ KK F, Wf f.1 (gl (mD a * k)) ≠ 0 := by

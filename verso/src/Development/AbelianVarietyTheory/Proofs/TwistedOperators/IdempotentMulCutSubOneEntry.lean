@@ -17,7 +17,7 @@ section Pure
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `h1 : b * (1 - b) = 0` using `by linear_combination -hb`. Establish `h2 : (1 - b) * b = 0` using `by linear_combination -hb`. Establish `h3 : (1 - b) * (1 - b) = 1 - b` using `by linear_combination hb`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, smul_add, hb, h1, h2, h3, zero_smul, add_zero, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mix_mul {l m n : Type} [Fintype m] {b : R} (hb : b * b = b) (A A' : Matrix l m R) (B B' : Matrix m n R) :
     (b • A + (1 - b) • A') * (b • B + (1 - b) • B') = b • (A * B) + (1 - b) • (A' * B') := by
@@ -28,7 +28,7 @@ theorem mix_mul {l m n : Type} [Fintype m] {b : R} (hb : b * b = b) (A A' : Matr
     zero_smul, add_zero, zero_add]
 
 /- English proof (translation)
-Rewrite using `[← add_smul, add_sub_cancel, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mix_self {l m : Type} (b : R) (A : Matrix l m R) : b • A + (1 - b) • A = A := by
   rw [← add_smul, add_sub_cancel, one_smul]
@@ -39,9 +39,9 @@ def mixGL {n : Type} [Fintype n] [DecidableEq n] {b : R} (hb : b * b = b) (g : G
     by rw [mix_mul hb, Units.inv_mul, Matrix.mul_one, mix_self]⟩
 
 /- English proof (translation)
-Establish `e : ((b • M + (1 - b) • (1 : Matrix n n R)).map σ)ᵀ = b • (M.map σ)ᵀ + (1 - b) • 1`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, hc, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Rewrite using `[if_pos hij, if_pos hij.symm, map_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hij, if_neg (Ne.symm hij), map_zero]`. Rewrite using `[e]`. Use `conv_lhs => rw [← mix_self b J]`. Rewrite using `[mix_mul hb, mix_mul hb, h, Matrix.one_mul, Matrix.mul_one, mix_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mix_unitary {n : Type} [Fintype n] [DecidableEq n] (σ : R →+* R) {b : R} (hb : b * b = b) (hc : σ b = b)
     (J M : Matrix n n R) (h : (M.map σ)ᵀ * J * M = J) :
@@ -58,9 +58,9 @@ theorem mix_unitary {n : Type} [Fintype n] [DecidableEq n] (σ : R →+* R) {b :
   rw [mix_mul hb, mix_mul hb, h, Matrix.one_mul, Matrix.mul_one, mix_self]
 
 /- English proof (translation)
-Set `I : Ideal R` to `LinearMap.ker (LinearMap.mulLeft R a)`. Establish `hI : ∀ x y, x - y ∈ I ↔ a * x = a * y` using `fun x y => by`. Express the relevant statement in the definitionally equal form `a * (x - y) = 0 ↔ _`. Rewrite using `[mul_sub, sub_eq_zero]`. Rewrite using `[← hI, ← Ideal.Quotient.eq, RingHom.map_det, RingHom.map_det]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i j`. Conclude with `Ideal.Quotient.eq.2 ((hI _ _).2 (h i j))`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mul_det_eq {n : Type} [Fintype n] [DecidableEq n] (a : R) (M N : Matrix n n R)
     (h : ∀ i j, a * M i j = a * N i j) : a * M.det = a * N.det := by
@@ -74,7 +74,7 @@ theorem mul_det_eq {n : Type} [Fintype n] [DecidableEq n] (a : R) (M N : Matrix 
   exact Ideal.Quotient.eq.2 ((hI _ _).2 (h i j))
 
 /- English proof (translation)
-Rewrite using `[k1, k2]`. Take the linear combination `(-(d - 1) ^ 2) * h3`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem det_split {e e' d d₁ d₂ : R} (h3 : e * e' = 0) (k1 : e * d₁ = e * d)
     (k2 : e' * d₂ = e' * d) : (e + e') * d + (1 - (e + e')) = (e * d₁ + (1 - e)) * (e' * d₂ + (1 - e')) := by
@@ -82,7 +82,7 @@ theorem det_split {e e' d d₁ d₂ : R} (h3 : e * e' = 0) (k1 : e * d₁ = e * 
   linear_combination (-(d - 1) ^ 2) * h3
 
 /- English proof (translation)
-Establish `: (1 - b) * m = b' * m` using `by linear_combination (b - 1) * hm - m * hb - m * h`. Rewrite using `[this, ← mul_assoc, hb']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem idempotent_mul_cut_sub_one_entry {b b' m : R} (hb : b * b = b) (hb' : b' * b' = b') (h : b * b' = 0)
     (hm : (b + b') * m = m) : b' * ((1 - b) * m) = (1 - b) * m := by
@@ -90,18 +90,18 @@ theorem idempotent_mul_cut_sub_one_entry {b b' m : R} (hb : b * b = b) (hb' : b'
   rw [this, ← mul_assoc, hb']
 
 /- English proof (translation)
-Rewrite using `[h ((g⁻¹).val.mulVec y), Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem keep_inv {n : Type} [Fintype n] [DecidableEq n] (p : (n → R) → Prop) (g : GL n R)
     (h : ∀ y, p y ↔ p (g.val.mulVec y)) (y : n → R) : p y ↔ p ((g⁻¹).val.mulVec y) := by
   rw [h ((g⁻¹).val.mulVec y), Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `c0 : σ e' * σ e' = σ e'` using `by rw [← map_mul, a0]`. Establish `c1 : σ e * σ e' = 0` using `by rw [← map_mul, a1, map_zero]`. Establish `c2 : σ e' * e = 0`. Use `congrArg σ a2` as an intermediate fact. Rewrite `this` using `[map_mul, cc, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `c3 : σ e * σ e = σ e` using `by rw [← map_mul, h1]`. Establish `hb : (e + σ e) * (e + σ e) = e + σ e` using `by linear_combination h1 + c3 + 2 * h2`. Establish `hc : σ (e + σ e) = e + σ e` using `by rw [map_add, cc, add_comm]`. Apply the tactic sequence `refine ⟨hb, hc, by linear_combination hb, by rw [map_sub, map_one, hc], by linear_combination h1 + h2, by linear_combination -a1 - a2, fun m hm => idempotent_mul_cut_sub_one_entry hb (by linear_combination a0 + c0 + 2 * a3) (by linear_combination a1 + a2 + c1 + c2) ?_⟩`. Rewrite `hm` using `[map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[add_add_add_comm]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem idem_laws (σ : R →+* R) (cc : ∀ x, σ (σ x) = x) {e e' : R} (h1 : e * e = e) (h2 : e * σ e = 0)
     (a0 : e' * e' = e') (a1 : e * e' = 0) (a2 : e' * σ e = 0) (a3 : e' * σ e' = 0) :
@@ -123,7 +123,7 @@ theorem idem_laws (σ : R →+* R) (cc : ∀ x, σ (σ x) = x) {e e' : R} (h1 : 
   rwa [add_add_add_comm]
 
 /- English proof (translation)
-Rewrite using `[hp, hc, map_mul, Module.End.mul_apply, h₂, map_smul, h₁, smul_smul, Circle.coe_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem om_mul_eig {G M : Type} [Monoid G] [AddCommGroup M] [Module ℂ M] (om : G →* Module.End ℂ M) {p p₁ p₂ : G}
     {c c₁ c₂ : Circle} {f : M} (hp : p = p₁ * p₂) (h₁ : om p₁ f = (c₁ : ℂ) • f) (h₂ : om p₂ f = (c₂ : ℂ) • f)
@@ -137,7 +137,7 @@ variable {D : D7}
 open GlobalTheory.AdelicLatMove (mt_mul mt_one)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem ext_mt {V : HSp D} {g g' : GA D V} (h : mt V g = mt V g') : g = g' := Subtype.ext (Units.ext h)
 
@@ -152,12 +152,12 @@ Both sides reduce to the same expression.
 theorem mt_cut (V : HSp D) (g : GA D V) : mt V (cut b hb hc V g) = b • mt V g + (1 - b) • 1 := rfl
 
 /- English proof (translation)
-The claim follows from `ext_mt rfl`.
+A detailed English derivation is pending.
 -/
 theorem cut_inv (V : HSp D) (g : GA D V) : (cut b hb hc V g)⁻¹ = cut b hb hc V g⁻¹ := ext_mt rfl
 
 /- English proof (translation)
-Use `ext_mt ?_` and prove the remaining obligations. Rewrite using `[mt_mul, mt_cut, mt_cut, sub_sub_cancel, add_comm ((1 - b) • _), mix_mul hb, Matrix.mul_one, Matrix.one_mul, mix_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cut_mul_cut (hb' : (1 - b) * (1 - b) = 1 - b) (hc' : cA D (1 - b) = 1 - b) (V : HSp D) (g : GA D V) :
     cut b hb hc V g * cut (1 - b) hb' hc' V g = g := by
@@ -166,7 +166,7 @@ theorem cut_mul_cut (hb' : (1 - b) * (1 - b) = 1 - b) (hc' : cA D (1 - b) = 1 - 
     mix_self]
 
 /- English proof (translation)
-Simplify using `only [mt_cut, Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mt_cut_sub (V : HSp D) (g : GA D V) (i j : Fin V.rank) :
     (mt V (cut b hb hc V g) - 1) i j = b * (mt V g - 1) i j := by
@@ -174,7 +174,7 @@ theorem mt_cut_sub (V : HSp D) (g : GA D V) (i j : Fin V.rank) :
   ring
 
 /- English proof (translation)
-Use `mul_det_eq a _ _ fun i j => ?_` and prove the remaining obligations. Simplify using `only [mt_cut, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `(mt V g i j - (1 : Matrix _ _ (AE D)) i j) * ha`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mul_det_cut (V : HSp D) (g : GA D V) {a : AE D} (ha : a * b = a) :
     a * (mt V (cut b hb hc V g)).det = a * (mt V g).det := by
@@ -183,7 +183,7 @@ theorem mul_det_cut (V : HSp D) (g : GA D V) {a : AE D} (ha : a * b = a) :
   linear_combination (mt V g i j - (1 : Matrix _ _ (AE D)) i j) * ha
 
 /- English proof (translation)
-Unfold `actO`. Rewrite using `[cut_inv, mt_cut, mt_cut]`. Use `conv_lhs => rw [← mix_self b u]`. Rewrite using `[mix_mul hb, mix_mul hb, Matrix.one_mul, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actO_cut (S T : HSp D) (g : GA D S) (h : GA D T) (u : WO S T) :
     actO S T (cut b hb hc S g) (cut b hb hc T h) u = b • actO S T g h u + (1 - b) • u := by
@@ -195,7 +195,7 @@ theorem actO_cut (S T : HSp D) (g : GA D S) (h : GA D T) (u : WO S T) :
 variable {S T : HSp D}
 
 /- English proof (translation)
-Use `⟨fun H => ⟨fun u => (H u).1, fun u hu => (H _).2 ?_⟩, fun H u => ⟨H.1 u, fun hu => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.AdelicLatMove.actO_actO_inv]` and apply the resulting hypothesis. Use `H.2 _ hu` as an intermediate fact. Rewrite `this` using `[GlobalTheory.SplitHecke.actO_inv_actO]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem stable_iff {Λ : AddSubgroup (WO S T)} {g : GA D S} {h : GA D T} :
     (∀ u, u ∈ Λ ↔ actO S T g h u ∈ Λ) ↔
@@ -206,9 +206,9 @@ theorem stable_iff {Λ : AddSubgroup (WO S T)} {g : GA D S} {h : GA D T} :
     rwa [GlobalTheory.SplitHecke.actO_inv_actO] at this
 
 /- English proof (translation)
-Establish `hb' : (1 - b) * (1 - b) = 1 - b` using `by linear_combination hb`. Rewrite `H`, the goal using `[stable_iff]`. Rewrite using `[cut_inv, cut_inv]`. Use `⟨fun u hu => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[actO_cut]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (GlobalTheory.PlaceModelSum.idem_smul_latO hb (H.1 u hu)) (GlobalTheory.PlaceModelSum.idem_smul_latO hb' hu)`. Rewrite using `[actO_cut]`. Conclude with `add_mem (GlobalTheory.PlaceModelSum.idem_smul_latO hb (H.2 u hu)) (GlobalTheory.PlaceModelSum.idem_smul_latO hb' hu)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stable_cut {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)} {g : GA D S} {h : GA D T}
     (H : ∀ u, u ∈ (latO S T LS LT fun _ => True) ↔ actO S T g h u ∈ latO S T LS LT fun _ => True) :
@@ -226,7 +226,7 @@ theorem stable_cut {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank �
 variable {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.StabLat`. Rewrite using `[MonoidHom.map_inv]`. Conclude with `keep_inv (fun y => y ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ) _ hg`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabLat_inv {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} {g : GA D V}
     (hg : GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.StabLat V Λ g) : GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.StabLat V Λ g⁻¹ := by
@@ -235,11 +235,9 @@ theorem stabLat_inv {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → 
   exact keep_inv (fun y => y ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ) _ hg
 
 /- English proof (translation)
-Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem u hu`. Take `⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩` from `hu`. Establish `e` using `GlobalTheory.AdelicLatMove.rankOne_pure S T a s t 1 α`. Rewrite `e` using `[mul_one]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← e, GlobalTheory.AdelicLatMove.actO_rankOne]`. Conclude with `GlobalTheory.AdelicLatMove.rankOne_mem_latO S T ΛS ΛT a ha _ ((hg _).1 (GlobalTheory.AdelicLatMove.pure_mem_hatL ΛS 1 (one_mem _) s hs)) _ ((hh _).1 (GlobalTheory.AdelicLatMove.pure_mem_hatL ΛT α hα t ht))`. Consider the case `zero => simp only [actO, Matrix.mul_zero, Matrix.zero_mul]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => simp only [actO, Matrix.mul_add, Matrix.add_mul] at hy hz ⊢`.
-
-Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => simp only [actO, Matrix.mul_neg, Matrix.neg_mul] at hy ⊢`. Conclude with `neg_mem hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem actO_mem_of_stab {g : GA D S} {h : GA D T} (hg : GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.StabLat S ΛS g)
     (hh : GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.StabLat T ΛT h) (u : WO S T) (hu : u ∈ latO S T ΛS ΛT fun _ => True) :
@@ -258,7 +256,7 @@ theorem actO_mem_of_stab {g : GA D S} {h : GA D T} (hg : GlobalTheory.Indefinite
   | neg y _ hy => simp only [actO, Matrix.mul_neg, Matrix.neg_mul] at hy ⊢; exact neg_mem hy
 
 /- English proof (translation)
-The claim follows from `Units.ext (hx.trans (det_split h0 (mul_det_cut hb hc V g h1) (mul_det_cut hb' hc' V g h2)))`.
+A detailed English derivation is pending.
 -/
 theorem split_det {e e' : AE D} (he : e * e = e) (he' : e' * e' = e') (h0 : e * e' = 0) (h1 : e * b = e)
     (h2 : e' * (1 - b) = e') (hb' : (1 - b) * (1 - b) = 1 - b) (hc' : cA D (1 - b) = 1 - b) {V : HSp D} {g : GA D V}
@@ -267,16 +265,16 @@ theorem split_det {e e' : AE D} (he : e * e = e) (he' : e' * e' = e') (h0 : e * 
   Units.ext (hx.trans (det_split h0 (mul_det_cut hb hc V g h1) (mul_det_cut hb' hc' V g h2)))
 
 /- English proof (translation)
-Rewrite using `[splitFacO, splitFacO, splitFacO, χS.map_mul, χT.map_mul, mul_inv, mul_mul_mul_comm, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem splitFacO_mul (χS χT : (AE D)ˣ →* Circle) (x x' y y' : (AE D)ˣ) :
     splitFacO χS χT (x * x') (y * y') = splitFacO χS χT x' y' * splitFacO χS χT x y := by
   rw [splitFacO, splitFacO, splitFacO, χS.map_mul, χT.map_mul, mul_inv, mul_mul_mul_comm, mul_comm]
 
 /- English proof (translation)
-Take `⟨hb, hc, hb', hc', d2, d3, d4⟩` from `idem_laws (cA D) GlobalTheory.DualPairCheck.cA_cA he.1 he.2.1 a0 a1 a2 a3`. Establish `s1 : ∀ (V : HSp D) (g : GA D V), SuppAt e V (cut _ hb hc V g)` using `fun V g i j => by`. Rewrite using `[mt_cut_sub, ← mul_assoc, hb]`. Establish `s2 : ∀ (V : HSp D) (g : GA D V), SuppAt (e + e') V g → SuppAt e' V (cut _ hb' hc' V g)` using `fun V g hg i j => by`. Rewrite using `[mt_cut_sub]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `d4 _ (hg i j)`. Establish `r1` using `GlobalTheory.VecInv.om_latVac_split D ψ S T ΛS ΛT χS χT om hW hS hT e he _ _ (s1 S g) (s1 T h) (stable_cut hb hc hL) _ _ (GlobalTheory.VecInv.isDetAt_detAt e he.1 S _) (GlobalTheory.VecInv.isDetAt_detAt e he.1 T _) f hf hvac`. Establish `r2` using `ih _ _ (s2 S g hg) (s2 T h hh) (stable_cut hb' hc' hL) _ _ (GlobalTheory.VecInv.isDetAt_detAt e' a0 S _) (GlobalTheory.VecInv.isDetAt_detAt e' a0 T _)`. Establish `e1 : (g, h) = (cut _ hb hc S g, cut _ hb hc T h) * (cut _ hb' hc' S g, cut _ hb' hc' T h)` using `Prod.ext (cut_mul_cut hb hc hb' hc' S g).symm (cut_mul_cut hb hc hb' hc' T h).symm`. Conclude with `om_mul_eig om e1 r1 r2 ((congrArg₂ (splitFacO χS χT) (split_det hb hc he.1 a0 a1 d2 d3 hb' hc' hx) (split_det hb hc he.1 a0 a1 d2 d3 hb' hc' hy)).trans (splitFacO_mul χS χT _ _ _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem om_latVac_step {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS χT om) (hS : IsSelfDualC S ΛS)
@@ -306,17 +304,15 @@ theorem om_latVac_step {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →*
     (split_det hb hc he.1 a0 a1 d2 d3 hb' hc' hy)).trans (splitFacO_mul χS χT _ _ _ _))
 
 /- English proof (translation)
-Proceed by induction on `P using Finset.induction_on with`. Consider the case `empty`. Introduce `_ _ _ g h hg hh _ x y hx hy`. Rewrite `hg`, `hh`, `hx`, `hy` using `[Finset.sum_empty]`. Establish `k : ∀ (V : HSp D) (g : GA D V), SuppAt 0 V g → g = 1` using `fun V g hg => ext_mt (by`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mt_one, ← sub_eq_zero]`. Use extensionality with `i j`. Rewrite using `[← hg i j, RingHom.map_zero, add_zero, zero_mul, Matrix.zero_apply])`. Establish `k' : ∀ (V : HSp D) (g : GA D V) (x : (AE D)ˣ), IsDetAt 0 V g x → x = 1` using `fun V g x hx => Units.ext (hx.trans (by rw [zero_mul, zero_add, sub_zero, Units.val_one]))`. Rewrite using `[k S g hg, k T h hh, k' S g x hx, k' T h y hy, Prod.mk_one_one, map_one, splitFacO, map_one, map_one, inv_one, mul_one, Circle.coe_one, one_smul, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `insert i P hi ih`. Introduce `h1 h2 h3 g h hg hh hL x y hx hy`. Establish `m0` using `Finset.mem_insert_self i P`. Establish `h1' : ∀ j ∈ P, IsSplitIdem D (es j)` using `fun j hj => h1 j (Finset.mem_insert_of_mem hj)`. Establish `h2' : ∀ j ∈ P, ∀ k ∈ P, k ≠ j → es j * es k = 0` using `fun j hj k hk => h2 j (Finset.mem_insert_of_mem hj) k (Finset.mem_insert_of_mem hk)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ih'` using `ih h1' h2' fun j hj k hk => h3 j (Finset.mem_insert_of_mem hj) k (Finset.mem_insert_of_mem hk)`. Establish `a0 : (∑ j ∈ P, es j) * ∑ j ∈ P, es j = ∑ j ∈ P, es j` using `GlobalTheory.PlaceModelSum.IsOrthSum.idem ⟨ι, P, es, h1', h2', rfl⟩`. Establish `a1 : es i * ∑ j ∈ P, es j = 0`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun j hj => h2 i m0 j (Finset.mem_insert_of_mem hj) fun h => hi (h ▸ hj)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a2 : (∑ j ∈ P, es j) * cA D (es i) = 0`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero fun j hj => h3 j (Finset.mem_insert_of_mem hj) i m0`. Establish `a3 : (∑ j ∈ P, es j) * cA D (∑ j ∈ P, es j) = 0`. Rewrite using `[map_sum, Finset.sum_mul_sum]`.
-
-Conclude with `Finset.sum_eq_zero fun j hj => Finset.sum_eq_zero fun k hk => h3 j (Finset.mem_insert_of_mem hj) k (Finset.mem_insert_of_mem hk)`. Rewrite `hg`, `hh`, `hx`, `hy` using `[Finset.sum_insert hi]`. Conclude with `om_latVac_step hW hS hT hf hvac (h1 i m0) a0 a1 a2 a3 ih' hg hh hL hx hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_latVac_sum {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS χT om) (hS : IsSelfDualC S ΛS)
@@ -364,7 +360,7 @@ theorem om_latVac_sum {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* 
     exact om_latVac_step hW hS hT hf hvac (h1 i m0) a0 a1 a2 a3 ih' hg hh hL hx hy
 
 /- English proof (translation)
-Break down `he with he | ⟨P, he⟩` into its components or cases. Conclude with `⟨⟨Unit, {()}, fun _ => e, fun _ _ => he, fun _ _ _ _ h => absurd rfl h, (Finset.sum_singleton (fun _ => e) ()).symm⟩, he.2.1⟩`. Conclude with `⟨GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he, he.2⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_orth {e : AE D} (he : GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.IsSplitSum e) :
     GlobalTheory.PlaceModelSum.IsOrthSum e ∧ e * cA D e = 0 := by
@@ -374,11 +370,11 @@ theorem exists_orth {e : AE D} (he : GlobalTheory.IndefiniteRowSideFullHecke.Spl
   · exact ⟨GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he, he.2⟩
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT om hW sS sT ΛS ΛT hS hT f₀ hf e he`. Take `⟨ho, hec⟩` from `exists_orth he`. Establish `key : ∀ a, GlobalTheory.PlaceModelSum.IsOrthSum a → ∀ Tm, IsPlaceModel ψ (symplO S T) (heisO ψ S T) a (latO S T ΛS ΛT fun _ => True) 1 f₀ Tm → GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.LinearLaw S T χS χT om ΛS ΛT e a Tm`. Introduce `a ha Tm hTm g h hg hh sg sh x y hx hy Φ hΦ`. Establish `hL` using `stable_iff.2 ⟨actO_mem_of_stab sg sh, actO_mem_of_stab (stabLat_inv sg) (stabLat_inv sh)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨ι, P, es, h1, h2, rfl⟩` from `ho`. Establish `h3 : ∀ i ∈ P, ∀ j ∈ P, es i * cA D (es j) = 0` using `fun i hi j hj => by`. Rewrite using `[← GlobalTheory.PlaceModelSum.mul_sum_orth h1 h2 hi, ← GlobalTheory.PlaceModelSum.mul_sum_orth h1 h2 hj, RingHom.map_mul, mul_mul_mul_comm, hec, mul_zero]`. Establish `h0` using `om_latVac_sum hW hS hT hf.2.theta hf.2.lat es P h1 h2 h3 g h hg hh hL x y hx hy`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.factor_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.pullPt_eq_actO]`. Conclude with `GlobalTheory.SchrodSubst.om_placeModel D ψ S T χS χT om ΛS ΛT a f₀ Tm hW hS hT ha.idem ha.infPart_eq hf.2.theta hTm g h _ hL h0 Φ hΦ`. Conclude with `⟨key e ho, key _ ho.conj⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem weilSplitFormula : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.WeilSplitFormula D := by
   intro D ψ θ S T χS χT om hW sS sT ΛS ΛT hS hT f₀ hf e he

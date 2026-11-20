@@ -11,7 +11,7 @@ open Formalism.DworkPowerSeriesWeights (JetsIntegral)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D` and use `Formalism.L2.Ker.KS.kappaSplit D`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kappaSplit_all : ∀ D : D7, KappaSplit D :=
   fun D => Formalism.L2.Ker.KS.kappaSplit D

@@ -32,9 +32,9 @@ def Stmt (P : LocPrime l) : Prop :=
 def RealisationStatementAll (L : LocTheory) : Prop := ∀ (l : ℕ) [Fact l.Prime], Stmt (L l)
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, ha, hb, smul_add]`. Consider the case `tmul a x`. Rewrite using `[coefRep_tmul, twistRep_apply, smul_tmul']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Express the relevant statement in the definitionally equal form `((Γ.χ₁⁻¹ g : Oˣ) : O) • (((Γ.chi c g : Oˣ) : O) • a) = _`. Rewrite using `[smul_smul, ← Units.val_mul]`. Use `congr 2`. Simplify using `[GalData.chi]`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem twCoef_Wchi {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [Field LL]
     [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] (Γ : GalData G Qp LL O) (c : ℕ)
@@ -52,7 +52,7 @@ theorem twCoef_Wchi {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [
     simp [GalData.chi]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨le_rfl, exData_T1_T2_T3_fortyOne⟩`.
+Supply the required witnesses or components.
 -/
 example : 2 ≤ exData.t ∧ exData.T1 41 ∧ exData.T2 41 ∧ exData.T3 41 := ⟨le_rfl, exData_T1_T2_T3_fortyOne⟩
 

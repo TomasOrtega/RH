@@ -290,13 +290,13 @@ def TransferInert : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (w : Pl E), ¬ IsSplitAt w → HasTransfer n w
 
 /- English proof (translation)
-Introduce `H E _ _ _ hE _ n hn π hπ hu` and use `H E hE n hn π hπ fun w hw => Or.inl (hu w hw)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem baseChangeSph_of_bcCore : BCCore → BaseChangeSph := fun H E _ _ _ hE _ n hn π hπ hu =>
   H E hE n hn π hπ fun w hw => Or.inl (hu w hw)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H w h2 => by_contra fun hs => H w hs h2, fun H w hs h2 => hs (H w h2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem oddInert_iff (E : Type) [Field E] [NumberField E] [IsCMField E] :
     OddInert E ↔ ∀ w : Pl E, (2 : 𝓞 E) ∈ w.asIdeal → IsSplitAt w :=
@@ -307,12 +307,12 @@ def BCCoreOdd : Prop :=
     ∀ π : Submodule ℂ (UA E n → ℂ), IsAutRepU π → (∀ w, ¬ IsSplitAt w → IsUnramU π w ∨ HasTransfer n w) → HasBC π
 
 /- English proof (translation)
-Introduce `H E _ _ _ hE _` and use `H E hE`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bcCoreOdd_of_bcCore : BCCore → BCCoreOdd := fun H E _ _ _ hE _ => H E hE
 
 /- English proof (translation)
-The claim follows from `H E hE n hn π hπ fun w hw => Or.inr (T E hE n w hw)`.
+A detailed English derivation is pending.
 -/
 example (H : BCCore) (T : TransferInert) (E : Type) [Field E] [NumberField E] [IsCMField E] (hE : Unr E) (n : ℕ)
     (hn : 1 ≤ n) (π : Submodule ℂ (UA E n → ℂ)) (hπ : IsAutRepU π) : HasBC π :=

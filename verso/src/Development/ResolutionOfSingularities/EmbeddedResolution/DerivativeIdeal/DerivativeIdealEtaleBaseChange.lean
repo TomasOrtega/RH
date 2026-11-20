@@ -38,9 +38,9 @@ private theorem algebraMap_comp_derivation_apply (k : Type*) [CommRing k] (S : T
     algebraMapCompDerivation k S T D s = algebraMap S T (D s) := rfl
 
 /- English proof (translation)
-Establish `key : D₁.liftKaehlerDifferential = D₂.liftKaehlerDifferential`. Use `(basisKaehler k ι S).ext ?_` and prove the remaining obligations. Introduce `i`. Rewrite using `[basisKaehler_apply, Derivation.liftKaehlerDifferential_comp_D, Derivation.liftKaehlerDifferential_comp_D]`. Conclude with `h i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Derivation.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[← Derivation.liftKaehlerDifferential_comp_D D₁ x, ← Derivation.liftKaehlerDifferential_comp_D D₂ x, key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivation_ext_of_coord (k : Type*) [CommRing k] (ι : Type*) (S : Type*) [CommRing S]
     [Algebra (MvPolynomial ι k) S] [Algebra k S] [IsScalarTower k (MvPolynomial ι k) S]
@@ -59,11 +59,11 @@ theorem derivation_ext_of_coord (k : Type*) [CommRing k] (ι : Type*) (S : Type*
     ← Derivation.liftKaehlerDifferential_comp_D D₂ x, key]
 
 /- English proof (translation)
-Establish `key : derivationCompAlgebraMap k S T (partialDeriv k (ι ⊕ κ) T (Sum.inr j)) = 0`. Use `derivation_ext_of_coord k ι S T _ _ ?_` and prove the remaining obligations. Introduce `i`. Rewrite using `[derivation_comp_algebraMap_apply, hcoord i, partialDeriv_coord_of_ne k (ι ⊕ κ) T (Sum.inr j) (Sum.inl i) (by simp)]`. Establish `h0 : ((0 : Derivation k S T)) (coord k ι S i) = 0` using `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0]`. Establish `h2` using `DFunLike.congr_fun key s`. Rewrite `h2` using `[derivation_comp_algebraMap_apply]`. Establish `h0 : ((0 : Derivation k S T)) s = 0` using `rfl`. Rewrite `h2` using `[h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem partialDeriv_inr_algebraMap (k : Type*) [CommRing k] (ι : Type*) (κ : Type*)
     (S : Type*) [CommRing S] (T : Type*) [CommRing T]
@@ -90,11 +90,11 @@ theorem partialDeriv_inr_algebraMap (k : Type*) [CommRing k] (ι : Type*) (κ : 
   exact h2
 
 /- English proof (translation)
-Establish `key : derivationCompAlgebraMap k S T (partialDeriv k (ι ⊕ κ) T (Sum.inl i)) = algebraMapCompDerivation k S T (partialDeriv k ι S i)`. Use `derivation_ext_of_coord k ι S T _ _ ?_` and prove the remaining obligations. Introduce `j`. Rewrite using `[derivation_comp_algebraMap_apply, algebraMap_comp_derivation_apply, hcoord j]`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Rewrite using `[partialDeriv_coord_self, partialDeriv_coord_self, map_one]`. Rewrite using `[partialDeriv_coord_of_ne k (ι ⊕ κ) T (Sum.inl i) (Sum.inl j) (by simpa using hij), partialDeriv_coord_of_ne k ι S i j hij, map_zero]`. Establish `h2` using `DFunLike.congr_fun key s`. Rewrite `h2` using `[derivation_comp_algebraMap_apply, algebraMap_comp_derivation_apply]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem partialDeriv_inl_algebraMap (k : Type*) [CommRing k] (ι : Type*) (κ : Type*)
     [DecidableEq ι] [DecidableEq κ]
@@ -124,31 +124,27 @@ theorem partialDeriv_inl_algebraMap (k : Type*) [CommRing k] (ι : Type*) (κ : 
   exact h2
 
 /- English proof (translation)
-Establish `key1 : ∀ (D : Derivation k S S) (y : S), y ∈ J → algebraMap S T (D y) ∈ derivIdeal k (Ideal.map (algebraMap S T) J)`. Introduce `D y hy`. Establish `hsp : D ∈ Submodule.span S (Set.range (partialDeriv k ι S))`. Rewrite using `[span_range_partialDeriv]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `hsp using Submodule.span_induction with`. Consider the case `mem D hD`. Take `⟨i, rfl⟩` from `hD`. Rewrite using `[← partialDeriv_inl_algebraMap k ι κ S T hcoord i y]`. Conclude with `derivation_apply_mem_derivIdeal k _ _ (Ideal.mem_map_of_mem _ hy)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero`. Establish `h0 : ((0 : Derivation k S S)) y = 0` using `rfl`. Rewrite using `[h0, map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `h0 : (a + b) y = a y + b y` using `rfl`. Rewrite using `[h0, map_add]`. Conclude with `Ideal.add_mem _ ha hb`. Consider the case `smul c a _ ha`. Establish `h0 : (c • a) y = c * a y` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h0, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ ha`. Establish `key2 : ∀ (D' : Derivation k T T) (y : S), y ∈ J → D' (algebraMap S T y) ∈ Ideal.map (algebraMap S T) (derivIdeal k J)`. Introduce `D' y hy`. Establish `hsp : D' ∈ Submodule.span T (Set.range (partialDeriv k (ι ⊕ κ) T))`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Rewrite using `[span_range_partialDeriv]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hsp using Submodule.span_induction with`. Consider the case `mem D hD`. Take `⟨x, rfl⟩` from `hD`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the cases of `x with`. Consider the case `inl i`. Rewrite using `[partialDeriv_inl_algebraMap k ι κ S T hcoord i y]`. Conclude with `Ideal.mem_map_of_mem _ (derivation_apply_mem_derivIdeal k J (partialDeriv k ι S i) hy)`. Consider the case `inr j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[partialDeriv_inr_algebraMap k ι κ S T hcoord j y]`. Conclude with `Submodule.zero_mem _`. Consider the case `zero`. Establish `h0 : ((0 : Derivation k T T)) (algebraMap S T y) = 0` using `rfl`. Rewrite using `[h0]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `h0 : (a + b) (algebraMap S T y) = a (algebraMap S T y) + b (algebraMap S T y)` using `rfl`. Rewrite using `[h0]`. Conclude with `Ideal.add_mem _ ha hb`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `smul c a _ ha`. Establish `h0 : (c • a) (algebraMap S T y) = c * a (algebraMap S T y)` using `rfl`. Rewrite using `[h0]`. Conclude with `Ideal.mul_mem_left _ _ ha`. Use `le_antisymm ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap, derivIdeal_le_iff]`. Use `⟨fun y hy => Ideal.mem_comap.mpr (le_derivIdeal k _ (Ideal.mem_map_of_mem _ hy)), ?_⟩` and prove the remaining obligations. Introduce `D y hy`. Conclude with `Ideal.mem_comap.mpr (key1 D y hy)`. Rewrite using `[derivIdeal_le_iff]`.
-
-Use `⟨Ideal.map_mono (le_derivIdeal k J), ?_⟩` and prove the remaining obligations. Introduce `D' z hz`. Establish `hspan : Ideal.map (algebraMap S T) J = Ideal.span ((algebraMap S T) '' (J : Set S))`. Rewrite using `[← Ideal.map_span, Ideal.span_eq]`. Rewrite `hz` using `[hspan]`.
-
-Use `derivation_apply_mem_of_mem_span D' ?_ ?_ hz` and prove the remaining obligations. Rewrite using `[← hspan]`. Conclude with `Ideal.map_mono (le_derivIdeal k J)`. Introduce and unpack `g ⟨y, hy, rfl⟩`. Conclude with `key2 D' y hy`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem map_derivIdeal_sum (k : Type*) [CommRing k] (ι : Type*) (κ : Type*)
     [Fintype ι] [Fintype κ] [DecidableEq ι] [DecidableEq κ]

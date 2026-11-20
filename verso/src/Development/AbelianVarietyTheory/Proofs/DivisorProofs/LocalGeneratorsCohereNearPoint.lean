@@ -9,11 +9,11 @@ open scoped Classical
 namespace GlobalTheory.LatChain
 
 /- English proof (translation)
-Establish `hT : Fr R (A⁻¹ * B)` using `hA.inv.mul hB`. Take `⟨h0, H'⟩` from `GlobalTheory.T.triangular_modulus_inverse K N R (γ * b) 1 (A⁻¹ * B) d hs R.one_mem hT.1 (by rw [one_smul]; exact hT.2.2) (by rw [mul_one, mul_one]; exact H)`. Establish `e₁ : (A⁻¹ * B).mulVec (fun l => B⁻¹ l j) = fun l => A⁻¹ l j`. Establish `: A⁻¹ * B * B⁻¹ = A⁻¹` using `by rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hB.1.isUnit, Matrix.mul_one]`. Use function extensionality and compare the values at `l`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `conv_rhs => rw [← this]`. Both sides reduce to the same expression. Establish `e₂ : (A⁻¹ * B)⁻¹.mulVec (fun l => A⁻¹ l j) = fun l => B⁻¹ l j`. Rewrite using `[← e₁, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hT.1.isUnit, Matrix.one_mulVec]`. Take `⟨a₁, a₂⟩` from `GlobalTheory.T.tridiagonal_module_local_generators K N R γ b (A⁻¹ * B) d (fun l => B⁻¹ l j) hγ hb hT.2.1 (fun l => hB.2.2 l j) H`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b₁, b₂⟩` from `GlobalTheory.T.tridiagonal_module_local_generators K N R γ b (A⁻¹ * B)⁻¹ _ (fun l => A⁻¹ l j) hγ hb hT.2.2 (fun l => hA.2.2 l j) H'`. Rewrite `a₁`, `a₂` using `[e₁]`. Rewrite `b₂` using `[e₂]`. Conclude with `⟨fun i s => ⟨b₂ i s, a₂ i s⟩, fun i => ⟨⟨h0 i, (a₁ i).1, (b₁ i).1⟩, (a₁ i).2⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gens_change {K : Type} [Field K] {N : ℕ} {R : Subring K} {γ b : K} {A B : Matrix (Fin N) (Fin N) K} {d : Fin N → K}
     (j : Fin N) (hγ : γ ∈ R) (hb : b ∈ R) (hs : Small R (γ * b)) (hA : Fr R A) (hB : Fr R B)
@@ -39,11 +39,11 @@ theorem gens_change {K : Type} [Field K] {N : ℕ} {R : Subring K} {γ b : K} {A
   exact ⟨fun i s => ⟨b₂ i s, a₂ i s⟩, fun i => ⟨⟨h0 i, (a₁ i).1, (b₁ i).1⟩, (a₁ i).2⟩⟩
 
 /- English proof (translation)
-Introduce `X _ p k a N M c j γ hγ hreg hc x hx`. Take `⟨h₁, h₂⟩` from `hc x hx`. Use `filter_upwards [h₁.eventually, h₂] with z hz hz' hp`. Establish `e : (p : X.functionField) ^ (k + 1 + a) = γ * ((p : X.functionField) ^ (k + 1) * ((p : X.functionField) ^ a / γ))`. Rewrite using `[pow_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `hb : (p : X.functionField) ^ (k + 1) * ((p : X.functionField) ^ a / γ) ∈ loc z` using `mul_mem (pow_mem (natCast_mem _ p) _) (hreg z hp).2`. Establish `hs : Small (loc z) ((p : X.functionField) ^ (k + 1 + a))`. Rewrite using `[show k + 1 + a = k + a + 1 by ring]; exact small_pow hp _`. Establish `H` using `hz' hp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs`, `H` using `[e]`. Take `⟨r₁, r₂⟩` from `gens_change j (hreg z hp).1 hb hs hz (hc z hp).1 H`. Conclude with `⟨r₁, fun i => ⟨(unitAt_iff (r₂ i).1.1).2 (r₂ i).1.2, (r₂ i).2⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coh_gens : ∀ (X : Scheme.{0}) [IsIntegral X] (p k a N : ℕ) (M : X → Matrix (Fin N) (Fin N) X.functionField) (c : X → Fin N → X.functionFieldˣ) (j : Fin N) (γ : X.functionField), γ ≠ 0 → (∀ x, Ov p x → RegAt x γ ∧ RegAt x ((p : X.functionField) ^ a / γ)) → Coh p (k + 1 + a) M c → ∀ x, Ov p x → ∀ᶠ z in 𝓝 x, Ov p z → (∀ i s, Lc (loc z) (gens γ (fun l => (M x)⁻¹ l j) i) (gens γ (fun l => (M z)⁻¹ l j) i s) ∧ Lc (loc z) (gens γ (fun l => (M z)⁻¹ l j) i) (gens γ (fun l => (M x)⁻¹ l j) i s)) ∧ ∀ i : Fin N, UnitAt z ((c x i : X.functionField) / c z i) ∧ Lc (loc z) (gens γ (fun l => (M z)⁻¹ l j) i.succ) ((M x)⁻¹ i j - (c x i : X.functionField) / c z i * (M z)⁻¹ i j) := by
   intro X _ p k a N M c j γ hγ hreg hc x hx

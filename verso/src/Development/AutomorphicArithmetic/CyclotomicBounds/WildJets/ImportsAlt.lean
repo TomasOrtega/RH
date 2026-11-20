@@ -21,15 +21,15 @@ open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `⟨1, one_pos, ?_⟩` and prove the remaining obligations. Introduce `D large₂ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch CF _ _ _ _ hI hDict S δ hL t p hp k d hk hd hz hP x y hR w l hl hw hA a v hv`. Establish `hn` using `DefPair.nodes hp`. Take `⟨k', hk', hd', hle, hsp⟩` from `UpperTheory.WildA.depth large₂ hS.size d hP w l hl hw hA k hk hd`. Take `⟨r, U, hU, e, hx⟩` from `UpperTheory.WildA.toStd ch.S.toGridChoice p.small hn.1 l hl x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r', U', hU', e', hy⟩` from `UpperTheory.WildA.toStd ch.S.toGridChoice p.big hn.2 l hl y`. Establish `hmv` using `UpperTheory.WildA.move ch.S.Z hS.core.lev t p hp d x r y r' U U' hU hU'`. Establish `hR' : ch.S.Z.IsRatAt d (r * x) (r' * y)`. Introduce `i j`. Use `UpperTheory.WildA.ratMove D _ _ _ _ _ _ hmv (fun i j => by` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hR i j` as an intermediate fact. Rewrite using `[Normal.kkIn, LinearMap.toMatrix_apply] at this) i j` and apply the resulting hypothesis. Rewrite using `[Normal.kkIn, LinearMap.toMatrix_apply]` and apply the resulting hypothesis. Establish `h1` using `UpperTheory.WildA.kerStd D large₂ Γ Pl0 T A Ks R F hS ch hI hDict S δ hL t p hp k' d hk' hd' hz hP _ _ hR' w l hl hw hsp hx hy large₂.sc.b`. Establish `h2` using `(UpperTheory.WildA.latMove D _ w a _ U v).2 hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[← e]`. Establish `h3` using `UpperTheory.WildA.matLat D _ _ w l hl hw _ _ hx hy _ _ h1 a _ h2`. Establish `h4` using `LinearMap.congr_fun hmv v`. Rewrite `h4` using `[LinearMap.comp_apply, LinearMap.comp_apply]`. Rewrite `h3` using `[h4, e']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `GlobalTheory.SumSize.TopInt.inLat_mono ((UpperTheory.WildA.latMove D _ w _ _ U' _).1 h3) ?_` and prove the remaining obligations. Rewrite using `[mul_one]`. Conclude with `add_le_add le_rfl (mul_le_mul_of_nonneg_left (GlobalTheory.SumSize.TopInt.kerLoss_mono _ _ _ _ _ _ _ hle) (by exact_mod_cast GlobalTheory.SumSize.TopInt.vw_natCast_nonneg w l))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.WildA.ker :
     ∃ C1 : ℝ, 0 < C1 ∧ ∀ (D : D7) (large₂ : SizeData₂ D) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 T : Type) (A : FamIn D.what₂.LL Γ Pl0 T D.R.m)

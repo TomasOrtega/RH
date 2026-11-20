@@ -15,7 +15,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Top.TowerOverReals
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_option]`. Simplify using `only [linA, toA, linRoot, map_neg, map_sum, map_mul, rename_C, rename_X, neg_add_rev, C_neg]`. Simplify using `only [Prod.mk.eta]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem linA_eq (c : Option (Ψ × Fin N) → ℝ) :
     linA (fun τ i => c (some (τ, i))) (-c none) = -∑ x, C (c x) * X x := by
@@ -28,9 +28,9 @@ def scaleNone (u : ℝ) (Q : MvPolynomial (Option (Ψ × Fin N)) ℝ) : MvPolyno
   ∑ m ∈ Q.support, monomial m (u ^ m none * coeff m Q)
 
 /- English proof (translation)
-Rewrite using `[scaleNone, coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq' Q.support m]`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[notMem_support_iff.1 h, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_scaleNone (u : ℝ) (Q : MvPolynomial (Option (Ψ × Fin N)) ℝ) (m : Option (Ψ × Fin N) →₀ ℕ) :
     coeff m (scaleNone u Q) = u ^ m none * coeff m Q := by
@@ -43,7 +43,7 @@ theorem coeff_scaleNone (u : ℝ) (Q : MvPolynomial (Option (Ψ × Fin N)) ℝ) 
   · rw [notMem_support_iff.1 h, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[scaleNone, map_sum, eval_eq']`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[eval_monomial, Finsupp.prod_fintype _ _ (fun i => pow_zero _)]`. Simplify using `only [Fintype.prod_option, Option.elim, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_scaleNone (u : ℝ) (Q : MvPolynomial (Option (Ψ × Fin N)) ℝ) (c : Option (Ψ × Fin N) → ℝ) :
     eval c (scaleNone u Q) = eval (fun o : Option (Ψ × Fin N) => o.elim (u * c none) fun p => c (some p)) Q := by
@@ -54,7 +54,7 @@ theorem eval_scaleNone (u : ℝ) (Q : MvPolynomial (Option (Ψ × Fin N)) ℝ) (
   ring
 
 /- English proof (translation)
-The claim follows from `|Φ (monomial m 1)| ≤ |coeff m (PB.toWtS Q)| := by obtain ⟨Pl, -, hev, -, hle⟩ := GlobalTheory.T.polarization_polynomial_coeff_bound (Option (Ψ × Fin N)) d Φ have hkR : (1 : ℝ) ≤ k := by exact_mod_cast hk have hnR : (1 : ℝ) ≤ n := by exact_mod_cast hn set u : ℝ := -(k : ℝ)⁻¹ with …`.
+A detailed English derivation is pending.
 -/
 theorem abs_le_coeff (d : ℕ) (Φ : RPA Ψ N →ₗ[ℝ] ℝ) (n k : ℕ) (hn : 0 < n) (hk : 0 < k)
     (Q : MvPolynomial (Option (Ψ × Fin N)) ℝ)
@@ -81,9 +81,9 @@ theorem abs_le_coeff (d : ℕ) (Φ : RPA Ψ N →ₗ[ℝ] ℝ) (n k : ℕ) (hn :
     _ ≤ |coeff m (PB.toWtS Q)| := mul_le_of_le_one_left (abs_nonneg _) (pow_le_one₀ (abs_nonneg _) hu1)
 
 /- English proof (translation)
-Establish `h1 : (monomial m 1 : RPA Ψ N) = basisMonomials (Option (Ψ × Fin N)) ℝ m` using `by simp`. Rewrite using `[h1, RootModel.PP, Module.Basis.constr_basis]`. Establish `h2 : (fun t => M.arMono II t m) = fun _ => 0`. Use function extensionality and compare the values at `t`. Simplify using `[RootModel.arMono, hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2]`. Conclude with `tendsto_const_nhds.limUnder_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PP_monomial_of_ne (II : IntersectionSystem) (M : RootModel Ψ N) (m : Option (Ψ × Fin N) →₀ ℕ)
     (hm : m.degree ≠ dimFl Ψ N + 1) : M.PP II (monomial m 1) = 0 := by
@@ -96,21 +96,21 @@ theorem PP_monomial_of_ne (II : IntersectionSystem) (M : RootModel Ψ N) (m : Op
   exact tendsto_const_nhds.limUnder_eq
 
 /- English proof (translation)
-Introduce `hCo hAg hI II hII Ψ _ _ N T R hL`. Take `⟨Cl, thH, Pfix, hth, hlink⟩` from `hL`. Establish `hpos : ∀ c, 0 < (R.Sys c).t₀` using `fun c => ((R.Sys c).reg none).1`. Use `choose C₂ hC₂ using fun c => hCo hI (dimFl Ψ N) N Ψ (R.Sys c) (thH c) (hth c)`. Use `set A : ℝ := ∑ c, ∑ m ∈ (Pfix c).support, |coeff m (Pfix c)| with hA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0 : 0 ≤ A` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hAle : ∀ c m, |coeff m (Pfix c)| ≤ A`. Introduce `c m`. Distinguish the cases in `hm : m ∈ (Pfix c).support`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[notMem_support_iff.1 hm, abs_zero]`. Conclude with `hA0`. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Establish `hS0 : 0 ≤ ∑ c, |C₂ c| * |Cl|` using `Finset.sum_nonneg fun _ _ => by positivity`. Unfold `RootTower.I1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨A / Real.log 2 + ∑ c, |C₂ c| * |Cl|, fun B hB c m => ?_⟩` and prove the remaining obligations. Establish `hlogB : Real.log 2 ≤ Real.log B` using `Real.log_le_log two_pos (by exact_mod_cast hB)`. Establish `hlog0 : 0 ≤ Real.log B` using `hl2.le.trans hlogB`. Distinguish the cases in `hm : m.degree = dimFl Ψ N + 1`. Take `⟨C₃, s₀, -, hag⟩` from `hAg hI _ _ (R.Sys c) 0 (hpos c)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htend` using `(hag II hII _ _ _ (R.tie B c).Re).1`. Establish `hnum` using `GlobalTheory.T.real_tower_arith_agreement hI II hII Ψ N (T.M B c) (R.Sys c) (R.n c) (R.tie B c)`. Establish `hle` using `abs_le_coeff (dimFl Ψ N + 1) ((T.M B c).PP II) (R.n c) (T.M B c).kA (hnum 0 0).1 (T.M B c).kA_pos ((R.tie B c).Re.PB II) (fun lam s => ((hnum lam s).2.2 htend (hpos c)).2) m hm`. Take `⟨K, iK, ι, iι, P, Re, Re', Sf, α, H, h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `hlink B hB c`. Establish `hd` using `((hC₂ c II hII K ι P Re).2 Re' Sf α H h3 h4 h5 h6 h7 h8).1 m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hd` using `[h1, h2]`. Establish `hsum0 : 0 ≤ ∑ p ∈ Sf, α p * Real.log p` using `Finset.sum_nonneg fun p hp => mul_nonneg (h4 p hp).2 (Real.log_natCast_nonneg p)`. Establish `hd2 : |coeff m ((R.tie B c).Re.PBs II) - coeff m (Pfix c)| ≤ |C₂ c| * |Cl| * Real.log B`. Combine the equalities or inequalities in the displayed calculation. Establish `hc1 : |coeff m ((R.tie B c).Re.PBs II)| ≤ A + |C₂ c| * |Cl| * Real.log B`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `abs_sub_abs_le_abs_sub (coeff m ((R.tie B c).Re.PBs II)) (coeff m (Pfix c))` as an intermediate fact. Combine the linear relations using `[hAle c m]`. Establish `hA2 : A ≤ A / Real.log 2 * Real.log B`. Combine the equalities or inequalities in the displayed calculation. Establish `hS : |C₂ c| * |Cl| ≤ ∑ c, |C₂ c| * |Cl|` using `Finset.single_le_sum (f := fun c => |C₂ c| * |Cl|) (fun _ _ => by positivity) (Finset.mem_univ c)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hS2` using `mul_le_mul_of_nonneg_right hS hlog0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[PP_monomial_of_ne II _ m hm, abs_zero]`. Conclude with `mul_nonneg (add_nonneg (by positivity) hS0) hlog0`.
+A detailed English derivation is pending.
 -/
 theorem tower_I1_of_reference_linked : PB.Coefficients → PB.AgreementPos → PB.Inputs → ∀ II : IntersectionSystem,
     IsFullIntersectionSystem II → ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N)

@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (p : PlF D)
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.SG.LsDatumB.sgnP, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sconj_apply (ρ : MP p) (a b : Fin (D.R.rS + 1)) :
     (Formalism.L2.SG.LsDatumB.sgnP p * ρ * Formalism.L2.SG.LsDatumB.sgnP p) a b =
@@ -21,9 +21,9 @@ theorem sconj_apply (ρ : MP p) (a b : Fin (D.R.rS + 1)) :
   simp [Formalism.L2.SG.LsDatumB.sgnP, Matrix.mul_diagonal, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Introduce `a b`. Use `⟨fun hab => ?_, fun hab => ?_⟩` and prove the remaining obligations. Rewrite using `[sconj_apply, (h a b).1 hab]`. Simplify using the standard rewrite rules. Substitute `hab` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Rewrite using `[sconj_apply, (h a a).2 rfl, mul_one, ← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sconj_up {ρ : MP p} (h : IsUpUni ρ) :
     IsUpUni (Formalism.L2.SG.LsDatumB.sgnP p * ρ * Formalism.L2.SG.LsDatumB.sgnP p) := by
@@ -40,17 +40,15 @@ theorem tau_second_value (x : GG p) : (((tau p x).2.unop : GLp p) : MP p) =
     Formalism.L2.SG.LsDatumB.sgnP p * ((x.2.unop : GLp p) : MP p) * Formalism.L2.SG.LsDatumB.sgnP p := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hx.1, by rw [tau_second_value]; exact sconj_up p hx.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem tau_mem_UP {x : GG p} (hx : x ∈ UP p) : tau p x ∈ UP p :=
   ⟨hx.1, by rw [tau_second_value]; exact sconj_up p hx.2⟩
 
 /- English proof (translation)
-Use `⟨hx.1, ?_⟩` and prove the remaining obligations. Use `show Formalism.MainNotions.S.TieN.IntUp (M p) (((tau p x).2.unop : GLp p) : MP p)`. Rewrite using `[tau_second_value]`. Take `⟨h1, h2, h3⟩` from `hx.2`. Use `⟨fun a => ?_, fun a b hab => ?_, fun a b => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sconj_apply, h1 a, mul_one, ← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Rewrite using `[sconj_apply, h2 a b hab]`. Simplify using the standard rewrite rules. Rewrite using `[sconj_apply]`.
-
-Conclude with `Subring.mul_mem _ (Subring.mul_mem _ (Subring.pow_mem _ (Subring.neg_mem _ (Subring.one_mem _)) _) (h3 a b)) (Subring.pow_mem _ (Subring.neg_mem _ (Subring.one_mem _)) _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_mem_KP {x : GG p} (hx : x ∈ KP M p) : tau p x ∈ KP M p := by
   refine ⟨hx.1, ?_⟩
@@ -68,11 +66,11 @@ def phi (δ : ∀ p : PlF D, (D.s.atP p).Fp) (T T' : ℕ) (w : Point D.host.E (D
   Z * Formalism.L2.SG.LsDatumB.sgnP p + Formalism.L2.SG.Pf.LocOrbSumPf.shM δ T T' p w
 
 /- English proof (translation)
-Establish `hss` using `Formalism.L2.SG.Pf.FibQ.permSign_mul_self₂ (D := D) p`. Establish `hc : ((x.1 : GLp p) : MP p) * Formalism.L2.SG.Pf.LocOrbSumPf.shM δ T T' p w * (Formalism.L2.SG.LsDatumB.sgnP p * ((x.2.unop : GLp p) : MP p) * Formalism.L2.SG.LsDatumB.sgnP p) = Formalism.L2.SG.Pf.LocOrbSumPf.shM δ T T' p w`. Establish `hu` using `sconj_up p hx.2`. Use `Formalism.L2.SG.Pf.FibQ.corner_fix p (fun a b h => (hx.1 a b).1 h) (fun a => (hx.1 a a).2 rfl) (fun a b h => (hu a b).1 h) (fun a => (hu a a).2 rfl) (fun a b h => ?_)` and prove the remaining obligations. Simplify using `only [Formalism.L2.SG.Pf.LocOrbSumPf.shM, Matrix.of_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h]`. Simplify using `only [phi, smul_def, tau_second_value]`. Use `show ((x.1 : GLp p) : MP p) * Z * ((x.2.unop : GLp p) : MP p) * Formalism.L2.SG.LsDatumB.sgnP p + Formalism.L2.SG.Pf.LocOrbSumPf.shM δ T T' p w = ((x.1 : GLp p) : MP p) * (Z * Formalism.L2.SG.LsDatumB.sgnP p + Formalism.L2.SG.Pf.LocOrbSumPf.shM δ T T' p w) * (Formalism.L2.SG.LsDa …`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, hc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Formalism.L2.SG.LsDatumB.sgnP p) (Formalism.L2.SG.LsDatumB.sgnP p), hss, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_smul (δ : ∀ p : PlF D, (D.s.atP p).Fp) (T T' : ℕ) (w : Point D.host.E (D.R.rS + 1)) {x : GG p}
     (hx : x ∈ UP p) (Z : MP p) : phi p δ T T' w (x • Z) = tau p x • phi p δ T T' w Z := by
@@ -96,7 +94,7 @@ theorem phi_smul (δ : ∀ p : PlF D, (D.s.atP p).Fp) (T T' : ℕ) (w : Point D.
   rw [← Matrix.mul_assoc (Formalism.L2.SG.LsDatumB.sgnP p) (Formalism.L2.SG.LsDatumB.sgnP p), hss, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hss` using `Formalism.L2.SG.Pf.FibQ.permSign_mul_self₂ (D := D) p`. Unfold `phi at h`. Establish `h2` using `add_right_cancel h`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem phi_inj (δ : ∀ p : PlF D, (D.s.atP p).Fp) (T T' : ℕ) (w : Point D.host.E (D.R.rS + 1)) {Z Z' : MP p}
     (h : phi p δ T T' w Z = phi p δ T T' w Z') : Z = Z' := by

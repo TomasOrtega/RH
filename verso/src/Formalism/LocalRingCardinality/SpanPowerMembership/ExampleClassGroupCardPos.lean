@@ -27,7 +27,7 @@ structure LocalGap {R : Ranks} (H : Host R) where
   nlocT : ∀ (l : ℕ) [Fact l.Prime], LocTied l (nloc l) (nlocA l)
 
 /- English proof (translation)
-The claim follows from `tameHyp H`.
+A detailed English derivation is pending.
 -/
 theorem LocalGap.tame {R : Ranks} {H : Host R} (_G : LocalGap H) : TameHyp H := tameHyp H
 
@@ -43,7 +43,7 @@ variable (H : Host R0) (T : ℕ) [hT : Fact T.Prime]
 abbrev Tau0 : Type := ↥(R0.Psi)
 
 /- English proof (translation)
-Unfold `exampleClassGroupCard`. Use `Finset.prod_pos (fun k _ => pow_pos ?_ _)` and prove the remaining obligations. Establish `: NeZero (H.g k)` using `⟨(H.g_prime k).ne_zero⟩`. Conclude with `Nat.card_pos`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exampleClassGroupCard_pos {R : Ranks} (H : Host R) : 0 < exampleClassGroupCard H := by
   unfold exampleClassGroupCard
@@ -58,7 +58,7 @@ abbrev rowsH : Rows.Data R0 :=
 abbrev memT : Member R0 Tau0 (fun _ => hc0) := trivialMember Tau0 T (dstarOf T) (dstarOf_pos T)
 
 /- English proof (translation)
-Introduce `p _ e _ _` and use `shaExample_eq H p e hcard := rfl hg := hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nHypH (hg : ∀ k, (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E) :
     NHyp H (rowsH H T) where
@@ -67,7 +67,7 @@ theorem nHypH (hg : ∀ k, (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H
   hg := hg
 
 /- English proof (translation)
-Simplify using `[Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normAt_empty {K V ι : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [Fintype ι] [DecidableEq ι] [IsEmpty ι] (b : Module.Basis ι K V)

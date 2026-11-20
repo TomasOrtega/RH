@@ -9,13 +9,11 @@ open NumberField Module IsDedekindDomain Formalism.BasicNotions Formalism.MainNo
 open scoped Classical
 
 /- English proof (translation)
-Establish `hs2 : s ^ 2 = 1`. Use extensionality with `x`. Simplify using `[pow_two, hs]`. Establish `hs1 : s ≠ 1`. Take `⟨x, hx⟩` from `h1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Conclude with `hx (by rw [h]; rfl)`. Establish `hord : orderOf s = 2` using `orderOf_eq_prime hs2 hs1`. Use `haveI : Finite (k ≃+* k) := Finite.of_injective (fun f : k ≃+* k => (f : k → k)) (fun a b h => RingEquiv.ext (congrFun h))`. Use `haveI : Fintype (Subgroup.zpowers s) := Fintype.ofFinite _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : FaithfulSMul (Subgroup.zpowers s) k := ⟨fun {g₁ g₂} h => Subtype.ext (RingEquiv.ext h)⟩`. Establish `hcardG : Fintype.card (Subgroup.zpowers s) = 2`. Rewrite using `[Fintype.card_eq_nat_card]`. Conclude with `(Nat.card_zpowers s).trans hord`. Establish `hfin : Module.finrank (FixedPoints.subfield (Subgroup.zpowers s) k) k = 2` using `(FixedPoints.finrank_eq_card (Subgroup.zpowers s) k).trans hcardG`.
-
-Use `haveI : Fintype k := Fintype.ofFinite k`. Use `haveI : Fintype (FixedPoints.subfield (Subgroup.zpowers s) k) := Fintype.ofFinite _`. Establish `hk : Fintype.card k = Fintype.card (FixedPoints.subfield (Subgroup.zpowers s) k) ^ Module.finrank (FixedPoints.subfield (Subgroup.zpowers s) k) k` using `Module.card_eq_pow_finrank`. Use `⟨Fintype.card (FixedPoints.subfield (Subgroup.zpowers s) k), ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_eq_fintype_card, hk, hfin, pow_two]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSquare_card_of_involution {k : Type} [Field k] [Finite k] (s : k ≃+* k)
     (hs : ∀ x, s (s x) = x) (h1 : ∃ x, s x ≠ x) : IsSquare (Nat.card k) := by
@@ -48,19 +46,17 @@ theorem isSquare_card_of_involution {k : Type} [Field k] [Finite k] (s : k ≃+*
   rw [Nat.card_eq_fintype_card, hk, hfin, pow_two]
 
 /- English proof (translation)
-Introduce `E _ _ _ hE P hP`. Set `c : 𝓞 E →+* 𝓞 E` to `RingOfIntegers.mapRingHom (starRingEnd E)`. Establish `hc : ∀ x : 𝓞 E, algebraMap (𝓞 E) E (c x) = star (algebraMap (𝓞 E) E x)` using `fun x => rfl`. Establish `hcc : ∀ x : 𝓞 E, c (c x) = x` using `fun x => RingOfIntegers.ext (by simp [c])`. Establish `hle : P.asIdeal ≤ P.asIdeal.comap c`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[Ideal.mem_comap, ← hP]`. Conclude with `Ideal.subset_span ⟨x, hx, hc x⟩`. Use `haveI hmax : P.asIdeal.IsMaximal := P.isMaximal`. Use `letI : Field (𝓞 E ⧸ P.asIdeal) := Ideal.Quotient.field P.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `sb : (𝓞 E ⧸ P.asIdeal) →+* (𝓞 E ⧸ P.asIdeal)` to `Ideal.quotientMap P.asIdeal c hle`. Establish `hsb_mk : ∀ x : 𝓞 E, sb (Ideal.Quotient.mk P.asIdeal x) = Ideal.Quotient.mk P.asIdeal (c x)` using `fun x => Ideal.quotientMap_mk`. Establish `hsb : ∀ y, sb (sb y) = y`. Introduce `y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hsb_mk, hsb_mk, hcc]`. Set `s : (𝓞 E ⧸ P.asIdeal) ≃+* (𝓞 E ⧸ P.asIdeal)` to `{ sb with invFun := sb, left_inv := hsb, right_inv := hsb }`. Establish `hN : Ideal.absNorm P.asIdeal = Nat.card (𝓞 E ⧸ P.asIdeal)`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Finite (𝓞 E ⧸ P.asIdeal) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[← hN]`. Conclude with `fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`. Take `⟨θ, t, ht, hθ⟩` from `hE.2.2 P.asIdeal P.isMaximal`. Establish `htc : t = c θ` using `FaithfulSMul.algebraMap_injective (𝓞 E) E (ht.trans (hc θ).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hN]`. Use `isSquare_card_of_involution s hsb ⟨Ideal.Quotient.mk P.asIdeal θ, fun h => hθ ?_⟩` and prove the remaining obligations. Establish `h2 : Ideal.Quotient.mk P.asIdeal θ = Ideal.Quotient.mk P.asIdeal t`. Rewrite using `[htc, ← hsb_mk]`. Conclude with `h.symm`.
-
-Conclude with `Ideal.Quotient.eq.mp h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSquare_absNorm : ∀ (E : Type) [Field E] [NumberField E] [StarRing E], Formalism.HermitianLatticesTheory.IsCMUnram E → ∀ P : HeightOneSpectrum (𝓞 E), Formalism.HermitianLatticesTheory.conjIdeal (K := E) P.asIdeal = P.asIdeal → IsSquare (Ideal.absNorm P.asIdeal) := by
   intro E _ _ _ hE P hP

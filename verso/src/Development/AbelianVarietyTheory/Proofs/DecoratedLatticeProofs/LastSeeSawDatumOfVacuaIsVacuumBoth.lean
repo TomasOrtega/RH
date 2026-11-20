@@ -23,7 +23,7 @@ theorem lastBi_apply {V₀ A L S X T L'' : HSp D} (o : OrthDec V₀ A L) (o'' : 
     lastBi o o'' τ Ξ Φ₂ u v = Φ₂ (o''.resT S v).1 * Ξ ((o.resS S).symm (u, kap τ S (o''.resT S v).2)) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `only [heisO, lastBi_apply]`. Establish `e : (o.resS S).symm (u + a, kap τ S (o''.resT S v).2) = (o.resS S).symm (u, kap τ S (o''.resT S v).2) + (o.resS S).symm (a, 0)`. Rewrite using `[← map_add, Prod.mk_add_mk, add_zero]`. Rewrite using `[e, GlobalTheory.LastBiTheta.sOH_resS_symm, GlobalTheory.LastBiTheta.sOH_zero_right, add_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -40,11 +40,11 @@ theorem heis_left (ψ : AddChar (AF D.host.F) ℂ) {V₀ A L S X T L'' : HSp D} 
   ring
 
 /- English proof (translation)
-Take `⟨kadd, -, -, -, ksympl, -⟩` from `GlobalTheory.LinkKappa.kappa_props D L L'' S τ (-1) (by rw [Int.cast_neg, Int.cast_one, neg_one_mul]; exact hτ) (kap τ S) (fun _ => rfl)`. Establish `kH : ∀ w w', symplOH L S (kap τ S w) (kap τ S w') = symplOH S L'' w w'` using `fun w w' => by`. Unfold `symplOH`. Rewrite using `[ksympl]`. Simplify using `only [Int.cast_neg, Int.cast_one, neg_one_mul, neg_neg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show heisO ψ S X b (o''.boxT S Φ₂ fun w => Ξ ((o.resS S).symm (u, kap τ S w))) = _`. Rewrite using `[o''.heisO_boxT]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using `only [heisO]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : (o.resS S).symm (u, kap τ S (w + (o''.resT S b).2)) = (o.resS S).symm (u, kap τ S w) + (o.resS S).symm (0, kap τ S (o''.resT S b).2)`. Rewrite using `[kadd, ← map_add, Prod.mk_add_mk, add_zero]`. Rewrite using `[e, GlobalTheory.LastBiTheta.sOH_resS_symm, GlobalTheory.LastBiTheta.sOH_zero_right, zero_add, kH]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heis_right (ψ : AddChar (AF D.host.F) ℂ) {V₀ A L S X T L'' : HSp D} (o : OrthDec V₀ A L) (o'' : OrthDec X T L'')
     (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E)
@@ -69,7 +69,7 @@ theorem heis_right (ψ : AddChar (AF D.host.F) ℂ) {V₀ A L S X T L'' : HSp D}
   rw [e, GlobalTheory.LastBiTheta.sOH_resS_symm, GlobalTheory.LastBiTheta.sOH_zero_right, zero_add, kH]
 
 /- English proof (translation)
-Introduce `γ u` and use `h.quasiL γ u v level := by obtain ⟨U, hU, hl⟩ := h.levL exact ⟨U, hU, fun a ha h0 => hl a ha h0 v⟩ cont := h.cont.comp (continuous_id.prodMk continuous_const) smooth := fun n L hL h0 u => by have := h.smooth n L 0 hL continuous_const h0 (fun _ => Matrix.map_zero _ (map_zero (finP …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem slice_left {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D} {C : WO A S → WO S A' → ℂ} (h : IsBiTheta ψ A S A' C)
     (v : WO S A') : IsThetaFunO ψ A S fun u => C u v where
@@ -83,7 +83,7 @@ theorem slice_left {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D} {C : WO A S
     simpa using this
 
 /- English proof (translation)
-Introduce `γ v` and use `h.quasiR γ u v level := by obtain ⟨U, hU, hl⟩ := h.levR exact ⟨U, hU, fun a ha h0 => hl a ha h0 u⟩ cont := h.cont.comp (continuous_const.prodMk continuous_id) smooth := fun n L hL h0 v => by have := h.smooth n 0 L continuous_const hL (fun _ => Matrix.map_zero _ (map_zero (finPart …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem slice_right {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D} {C : WO A S → WO S A' → ℂ} (h : IsBiTheta ψ A S A' C)
     (u : WO A S) : IsThetaFunO ψ S A' (C u) where
@@ -97,7 +97,7 @@ theorem slice_right {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D} {C : WO A 
     simpa using this
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [mul_left_comm, h l j]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHalf_mul_left {e : AE D} {k m n : ℕ} (P : Mx D k m) {y : Mx D m n} (h : IsHalf e y) : IsHalf e (P * y) := by
   intro i j
@@ -105,7 +105,7 @@ theorem isHalf_mul_left {e : AE D} {k m n : ℕ} (P : Mx D k m) {y : Mx D m n} (
   exact Finset.sum_congr rfl fun l _ => by rw [mul_left_comm, h l j]
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [← mul_assoc, h i l]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHalf_mul_right {e : AE D} {k m n : ℕ} {y : Mx D k m} (P : Mx D m n) (h : IsHalf e y) : IsHalf e (y * P) := by
   intro i j
@@ -113,27 +113,27 @@ theorem isHalf_mul_right {e : AE D} {k m n : ℕ} {y : Mx D k m} (P : Mx D m n) 
   exact Finset.sum_congr rfl fun l _ => by rw [← mul_assoc, h i l]
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.add_apply, mul_add, hy i j, hz i j]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHalf_add {e : AE D} {m n : ℕ} {y z : Mx D m n} (hy : IsHalf e y) (hz : IsHalf e z) : IsHalf e (y + z) := by
   intro i j
   rw [Matrix.add_apply, mul_add, hy i j, hz i j]
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.zero_apply, mul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_zero (e : AE D) (m n : ℕ) : IsHalf e (0 : Mx D m n) := fun i j => by
   rw [Matrix.zero_apply, mul_zero]
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, mul_left_comm, h i j]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHalf_smul {e : AE D} {m n : ℕ} (c : AE D) {y : Mx D m n} (h : IsHalf e y) : IsHalf e (c • y) := by
   intro i j
   rw [Matrix.smul_apply, smul_eq_mul, mul_left_comm, h i j]
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [adj, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[← map_mul, h j i]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHalf_adj {e : AE D} {m n : ℕ} {y : Mx D m n} (h : IsHalf e y) : IsHalf (cA D e) (adj y) := by
   intro i j
@@ -141,7 +141,7 @@ theorem isHalf_adj {e : AE D} {m n : ℕ} {y : Mx D m n} (h : IsHalf e y) : IsHa
   rw [← map_mul, h j i]
 
 /- English proof (translation)
-Unfold `kap GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj`. Conclude with `isHalf_smul _ (isHalf_mul_left _ (isHalf_mul_right _ (isHalf_adj (isHalf_mul_left _ h))))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isHalf_kap {e : AE D} {L L'' : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (S : HSp D) {w : WO S L''}
     (h : IsHalf e w) : IsHalf (cA D e) (kap τ S w) := by
@@ -149,9 +149,9 @@ theorem isHalf_kap {e : AE D} {L L'' : HSp D} (τ : Matrix (Fin L.rank) (Fin L''
   exact isHalf_smul _ (isHalf_mul_left _ (isHalf_mul_right _ (isHalf_adj (isHalf_mul_left _ h))))
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a e`. Simplify using `only [cA, sigR]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `congr 1`. Conclude with `star_star e`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem cA_cA (x : AE D) : cA D (cA D x) = x := by
   induction x using TensorProduct.induction_on with
@@ -164,7 +164,7 @@ theorem cA_cA (x : AE D) : cA D (cA D x) = x := by
     exact star_star e
 
 /- English proof (translation)
-Take `⟨h1, h2, v, ε, hε, h3⟩` from `he`. Use `⟨by rw [← map_mul, h1], ?_, v, ε, hε, ?_⟩` and prove the remaining obligations. Rewrite using `[cA_cA, mul_comm, h2]`. Rewrite using `[cA_cA, add_comm, h3]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSplitIdem_cA {e : AE D} (he : IsSplitIdem D e) : IsSplitIdem D (cA D e) := by
   obtain ⟨h1, h2, v, ε, hε, h3⟩ := he
@@ -173,7 +173,7 @@ theorem isSplitIdem_cA {e : AE D} (he : IsSplitIdem D e) : IsSplitIdem D (cA D e
   · rw [cA_cA, add_comm, h3]
 
 /- English proof (translation)
-Rewrite using `[OrthDec.resS_symm_apply]`. Conclude with `isHalf_add (isHalf_mul_right _ ha) (isHalf_mul_right _ hb)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHalf_resS_symm {e : AE D} {V₀ A L : HSp D} (o : OrthDec V₀ A L) (S : HSp D) {a : WO A S} {b : WO L S}
     (ha : IsHalf e a) (hb : IsHalf e b) : IsHalf e ((o.resS S).symm (a, b)) := by
@@ -181,7 +181,7 @@ theorem isHalf_resS_symm {e : AE D} {V₀ A L : HSp D} (o : OrthDec V₀ A L) (S
   exact isHalf_add (isHalf_mul_right _ ha) (isHalf_mul_right _ hb)
 
 /- English proof (translation)
-Rewrite using `[OrthDec.resT_apply]`. Conclude with `⟨isHalf_mul_left _ h, isHalf_mul_left _ h⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isHalf_resT {e : AE D} {X T L'' : HSp D} (o'' : OrthDec X T L'') (S : HSp D) {w : WO S X} (h : IsHalf e w) :
     IsHalf e (o''.resT S w).1 ∧ IsHalf e (o''.resT S w).2 := by
@@ -189,11 +189,11 @@ theorem isHalf_resT {e : AE D} {X T L'' : HSp D} (o'' : OrthDec X T L'') (S : HS
   exact ⟨isHalf_mul_left _ h, isHalf_mul_left _ h⟩
 
 /- English proof (translation)
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, hv, a, ha, z, hz, rfl⟩` from `hy`. Rewrite `ha` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use `AddSubgroup.subset_closure ⟨α, hα, hv, c, hc, z, hz, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `add y y' _ _ h h' => rw [smul_add]`. Conclude with `add_mem h h'`. Consider the case `neg y _ h => rw [smul_neg]`. Conclude with `neg_mem h`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_latV_mem_latA {S : HSp D} (L : Lat S) (P : Pl D → Prop) {c : D.host.E} (hc : c ∈ D.host.AA)
     {w : Fin S.rank → AE D} (hw : w ∈ latV S L P) : ((1 : AF D.host.F) ⊗ₜ[D.host.F] c : AE D) • w ∈ latA S L P := by
@@ -210,13 +210,13 @@ theorem smul_latV_mem_latA {S : HSp D} (L : Lat S) (P : Pl D → Prop) {c : D.ho
   | neg y _ h => rw [smul_neg]; exact neg_mem h
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, hv, a, ha, z, hz, rfl⟩` from `hy`. Establish `h0 : (fun i => pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 * z i) : Fin S.rank → AE D) ∈ latV S L (· = x)` using `AddSubgroup.subset_closure ⟨α, hα, hv, 1, Set.mem_singleton _, z, hz, rfl⟩`. Establish `e : (fun i => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * z i) : Fin S.rank → AE D) = ((1 : AF D.host.F) ⊗ₜ[D.host.F] a : AE D) • (fun i => pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 * z i))`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Take `⟨hA, hB⟩` from `(hO _).1 h0`. Rewrite using `[e, Matrix.mulVec_smul, Matrix.mulVec_smul]`. Conclude with `⟨smul_latV_mem_latA LA _ ha hA, smul_latV_mem_latA LB _ ha hB⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Consider the case `zero => simp only [Matrix.mulVec_zero]`. Conclude with `⟨zero_mem _, zero_mem _⟩`. Consider the case `add y y' _ _ h h' => simp only [Matrix.mulVec_add]`. Conclude with `⟨add_mem h.1 h'.1, add_mem h.2 h'.2⟩`. Consider the case `neg y _ h => simp only [Matrix.mulVec_neg]`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨neg_mem h.1, neg_mem h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem latA_orth {S A B : HSp D} (o : OrthDec S A B) (L : Lat S) (LA : Lat A) (LB : Lat B) (x : Pl D)
     (hO : OrthAt o L LA LB x) {z : Fin S.rank → AE D} (hz : z ∈ latA S L (· = x)) :
@@ -238,9 +238,9 @@ theorem latA_orth {S A B : HSp D} (o : OrthDec S A B) (L : Lat S) (LA : Lat A) (
   | neg y _ h => simp only [Matrix.mulVec_neg]; exact ⟨neg_mem h.1, neg_mem h.2⟩
 
 /- English proof (translation)
-Introduce `D V₀ A L S o M LA LL LS x hM hLA hLL hLS hO a b ha hb`. Rewrite `ha` using `[GlobalTheory.FinPl.LatMem.mem_latO_iff D A S LA LS hLA hLS]`. Rewrite `hb` using `[GlobalTheory.FinPl.LatMem.mem_latO_iff D L S LL LS hLL hLS]`. Rewrite using `[GlobalTheory.FinPl.LatMem.mem_latO_iff D V₀ S M LS hM hLS, OrthDec.resS_symm_apply]`. Use `⟨fun i j => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.add_apply, Matrix.mul_apply, Matrix.mul_apply]`. Conclude with `add_mem (sum_mem fun k _ => Ideal.mul_mem_right _ _ (ha.1 i k)) (sum_mem fun k _ => Ideal.mul_mem_right _ _ (hb.1 i k))`. Take `⟨hA, hB⟩` from `(hO y).1 hy`. Rewrite using `[Matrix.add_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `add_mem (ha.2 _ hA) (hb.2 _ hB)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extLat : ∀ (D : D7) (V₀ A L S : HSp D) (o : OrthDec V₀ A L) (M : Lat V₀) (LA : Lat A) (LL : Lat L) (LS : Lat S)
     (x : Pl D), IsSelfDualC V₀ M → IsSelfDualC A LA → IsSelfDualC L LL → IsSelfDualC S LS → OrthAt o M LA LL x →
@@ -259,11 +259,9 @@ theorem extLat : ∀ (D : D7) (V₀ A L S : HSp D) (o : OrthDec V₀ A L) (M : L
     exact add_mem (ha.2 _ hA) (hb.2 _ hB)
 
 /- English proof (translation)
-Introduce `D X T L'' S o'' LX LT LZ LS x hLX hLT hLZ hLS hO w hw`. Rewrite `hw` using `[GlobalTheory.FinPl.LatMem.mem_latO_iff D S X LS LX hLS hLX]`. Rewrite using `[GlobalTheory.FinPl.LatMem.mem_latO_iff D S T LS LT hLS hLT, GlobalTheory.FinPl.LatMem.mem_latO_iff D S L'' LS LZ hLS hLZ, OrthDec.resT_apply]`. Use `⟨⟨fun i j => ?_, fun y hy => ?_⟩, ⟨fun i j => ?_, fun y hy => ?_⟩⟩` and prove the remaining obligations. Use `show (o''.pA * (w : Matrix (Fin X.rank) (Fin S.rank) (AE D)) : Matrix (Fin T.rank) (Fin S.rank) (AE D)) i j ∈ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => Ideal.mul_mem_left _ _ (hw.1 k j)`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `(latA_orth o'' LX LT LZ x hO (hw.2 y hy)).1`. Use `show (o''.pB * (w : Matrix (Fin X.rank) (Fin S.rank) (AE D)) : Matrix (Fin L''.rank) (Fin S.rank) (AE D)) i j ∈ _`.
-
-Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => Ideal.mul_mem_left _ _ (hw.1 k j)`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `(latA_orth o'' LX LT LZ x hO (hw.2 y hy)).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resLat : ∀ (D : D7) (X T L'' S : HSp D) (o'' : OrthDec X T L'') (LX : Lat X) (LT : Lat T) (LZ : Lat L'') (LS : Lat S)
     (x : Pl D), IsSelfDualC X LX → IsSelfDualC T LT → IsSelfDualC L'' LZ → IsSelfDualC S LS → OrthAt o'' LX LT LZ x →
@@ -282,19 +280,19 @@ theorem resLat : ∀ (D : D7) (X T L'' S : HSp D) (o'' : OrthDec X T L'') (LX : 
   · rw [← Matrix.mulVec_mulVec]; exact (latA_orth o'' LX LT LZ x hO (hw.2 y hy)).2
 
 /- English proof (translation)
-Introduce `D ψ hψ V₀ A L S X T L'' o o'' τ hL hL'' hτ P M LA LS LX LT hM hLA hLS hLX hLT hP Ξ Φ₂ hΞ hΦ`. Establish `hB` using `GlobalTheory.LastBiTheta.isBiTheta_lastBi D ψ hψ V₀ A L S X T L'' o o'' τ hτ Ξ Φ₂ hΞ.1 hΦ.1`. Take `⟨kadd, -, -, -, -, -⟩` from `GlobalTheory.LinkKappa.kappa_props D L L'' S τ (-1) (by rw [Int.cast_neg, Int.cast_one, neg_one_mul]; exact hτ) (kap τ S) (fun _ => rfl)`. Establish `mono : ∀ {S' T' : HSp D} (LS' : Lat S') (LT' : Lat T') (x : Pl D), P x → ∀ w, w ∈ latO S' T' (LS' : Set _) (LT' : Set _) (· = x) → w ∈ latO S' T' (LS' : Set _) (LT' : Set _) P` using `fun LS' LT' x hx w hw => GlobalTheory.VacLoc.latO_mono _ _ _ _ (fun v hv => hv ▸ hx) hw`. Use `⟨fun v => ⟨slice_left hB v, GlobalTheory.VacLoc.latVac_of_places ψ A S LA LS P _ (slice_left hB v) fun x hx => ?_⟩, fun u => ⟨slice_right hB u, GlobalTheory.VacLoc.latVac_of_places ψ S X LS LX P _ (slice_right hB u) fun x hx => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, LL, LZ, hLL, hLZ, hOM, -, -⟩` from `hP x hx`. Use `⟨slice_left hB v, fun a ha => ?_, fun e he a ha hh => ?_⟩` and prove the remaining obligations. Establish `hm` using `mono M LS x hx _ (extLat D V₀ A L S o M LA LL LS x hM hLA hLL hLS hOM a 0 ha (zero_mem _))`. Establish `e2 : (o.resS S).symm (2 • a, 0) = 2 • (o.resS S).symm (a, 0)`. Simplify using `only [two_nsmul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_add, Prod.mk_add_mk, add_zero]`. Rewrite using `[heis_left, e2, hΞ.2.1 _ hm]`. Both sides reduce to the same expression. Establish `hm` using `mono M LS x hx _ (extLat D V₀ A L S o M LA LL LS x hM hLA hLL hLS hOM a 0 ha (zero_mem _))`. Rewrite using `[heis_left, hΞ.2.2 e he _ hm (isHalf_resS_symm o S hh (isHalf_zero e _ _))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨-, LL, LZ, hLL, hLZ, hOM, hOX, hk⟩` from `hP x hx`. Use `⟨slice_right hB u, fun b hb => ?_, fun e he b hb hh => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `resLat D X T L'' S o'' LX LT LZ LS x hLX hLT hLZ hLS hOX b hb`. Establish `hm1` using `mono LS LT x hx _ h1`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm2` using `mono M LS x hx _ (extLat D V₀ A L S o M LA LL LS x hM hLA hLL hLS hOM 0 _ (zero_mem _) (hk _ h2))`. Establish `e1 : (o''.resT S (2 • b)).1 = 2 • (o''.resT S b).1`. Simplify using `only [two_nsmul, map_add, Prod.fst_add]`. Establish `e2 : (o.resS S).symm (0, kap τ S (o''.resT S (2 • b)).2) = 2 • (o.resS S).symm (0, kap τ S (o''.resT S b).2)`. Simplify using `only [two_nsmul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_add, Prod.snd_add, kadd, ← map_add, Prod.mk_add_mk, add_zero]`. Rewrite using `[heis_right ψ o o'' τ hτ, e1, e2, hΦ.2.1 _ hm1, hΞ.2.1 _ hm2]`. Both sides reduce to the same expression. Take `⟨h1, h2⟩` from `resLat D X T L'' S o'' LX LT LZ LS x hLX hLT hLZ hLS hOX b hb`. Establish `hm1` using `mono LS LT x hx _ h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm2` using `mono M LS x hx _ (extLat D V₀ A L S o M LA LL LS x hM hLA hLL hLS hOM 0 _ (zero_mem _) (hk _ h2))`. Take `⟨he1, he2⟩` from `isHalf_resT o'' S hh`. Rewrite using `[heis_right ψ o o'' τ hτ, hΦ.2.2 e he _ hm1 he1, hΞ.2.2 (cA D e) (isSplitIdem_cA he) _ hm2 (isHalf_resS_symm o S (isHalf_zero _ _ _) (isHalf_kap τ S he2))]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lastVac : ∀ D : D7, GlobalTheory.FinPl.LastVac D := by
   intro D ψ hψ V₀ A L S X T L'' o o'' τ hL hL'' hτ P M LA LS LX LT hM hLA hLS hLX hLT hP Ξ Φ₂ hΞ hΦ

@@ -13,13 +13,13 @@ open UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZe
 namespace UpperTheory.V.Cu.RankFourTensorSourceAtPrime
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime]
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem toB_chi (c : Coef l) (g : G ℚ Ω) : toB (chiO ℚ Ω l c.O) g = cycBar ℚ Ω l g := by
   ext
   rfl
 /- English proof (translation)
-Use `haveI : FaithfulSMul E Ω := (faithfulSMul_iff_algebraMap_injective E Ω).2 (algebraMap E Ω).injective`. Use `haveI : Module.IsTorsionFree E Ω := DivisionSemiring.to_moduleIsTorsionFree`. Use `haveI : IsAlgClosure E Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) E⟩`. Conclude with `(galEmbTop ℚ E Ω).1.continuous`.
+A detailed English derivation is pending.
 -/
 private theorem cont_emb (E : Type) [Field E] [NumberField E] [Algebra E Ω] : Continuous (galEmb ℚ E Ω) := by
   haveI : FaithfulSMul E Ω := (faithfulSMul_iff_algebraMap_injective E Ω).2 (algebraMap E Ω).injective
@@ -27,11 +27,11 @@ private theorem cont_emb (E : Type) [Field E] [NumberField E] [Algebra E Ω] : C
   haveI : IsAlgClosure E Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) E⟩
   exact (galEmbTop ℚ E Ω).1.continuous
 /- English proof (translation)
-The claim follows from `cont_emb F`.
+A detailed English derivation is pending.
 -/
 private theorem cont_res (F : IntermediateField ℚ Ω) [NumberField F] : Continuous (resQ F) := cont_emb F
 /- English proof (translation)
-Establish `h : Continuous fun g => ((toB d.δ g : (Qbar l)ˣ) : Qbar l)` using `((UpperTheory.integrality_of_norm_coefficients l).2 d.c _ _).1 d.tw.cont`. Use `Units.continuous_iff.2 ⟨h, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_inv_eq_inv_val]`. Conclude with `h.inv₀ fun g => (toB d.δ g).ne_zero`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cont_delta (d : UpperTheory.V.Cu.Dat Ω l) : Continuous (toB d.δ) := by
   have h : Continuous fun g => ((toB d.δ g : (Qbar l)ˣ) : Qbar l) := ((UpperTheory.integrality_of_norm_coefficients l).2 d.c _ _).1 d.tw.cont
@@ -41,15 +41,13 @@ private theorem cont_delta (d : UpperTheory.V.Cu.Dat Ω l) : Continuous (toB d.�
 end UpperTheory.V.Cu.RankFourTensorSourceAtPrime
 open UpperTheory.V.Cu.RankFourTensorSourceAtPrime in
 /- English proof (translation)
-Introduce `hne hW hI hA Ω _ _ _ l _ d T hT hok hrw`. Establish `hi` using `hI Ω l d T hT hok`. Take `⟨π, h1, h2⟩` from `hA Ω l d T hT hok hi`. Take `⟨U, j, hU, hj⟩` from `d.tw.wt`. Establish `hm` using `d.tau.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk` using `d.big`. Set `φ : G ℚ Ω →* (Qbar l)ˣ` to `(toB d.δ)⁻¹ ^ 2 * cycBar ℚ Ω l ^ j`. Establish `hle : U ≤ φ.ker` using `fun g hg => by`. Use `congrArg (Units.map (algebraMap d.c.O (PadicAlgCl l)).toMonoidHom) (hj _ hg)` as an intermediate fact. Rewrite `this` using `[map_pow, map_zpow]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : toB d.δ g ^ 2 = cycBar ℚ Ω l g ^ j` using `this.trans (congrArg (· ^ j) (toB_chi d.c g))`. Use `show (toB d.δ g)⁻¹ ^ 2 * cycBar ℚ Ω l g ^ j = 1`. Rewrite using `[← e, inv_pow, inv_mul_cancel]`. Use `haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω`. Use `haveI : Finite (G ℚ Ω ⧸ φ.ker) := Subgroup.quotient_finite_of_isOpen _ (Subgroup.isOpen_mono hle hU)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `haveI : φ.ker.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Apply the tactic sequence `refine ⟨hi, _, ((toB d.δ).comp (resQ T.L))⁻¹, π, -j, φ.ker.index, fun i => ?_, hW Ω l d T U j hU hj, ((cont_delta d).comp (cont_res T.L)).inv, Nat.pos_of_ne_zero Subgroup.FiniteIndex.index_ne_zero, ⟨(d.k : ℤ) - 1 + d.m, by simp <;> ring⟩, fun A _ s _ => ?_, _root_.UpperTheory.V.Z …`. Use `fin_cases i`. Apply the tactic sequence `exact ⟨2 * (d.m : ℤ), by omega, by simp <;> ring⟩`. Apply the tactic sequence `exact ⟨(d.k : ℤ) - 1 - 2 * d.m, by omega, by simp <;> ring⟩`.
-
-Apply the tactic sequence `exact ⟨2 * (d.m : ℤ), by omega, by simp <;> ring⟩`. Use `φ.ker.pow_index_mem (resQ T.L s)` as an intermediate fact. Rewrite `this` using `[MonoidHom.mem_ker, map_pow]`. Rewrite using `[neg_neg]`. Conclude with `this`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cu.tower_is_initial_of_ok :
     UpperTheory.V.Cu.AlNe → UpperTheory.V.Cu.WtsOf4 → UpperTheory.V.Cu.IrrOf4 → UpperTheory.V.Cu.AutOf4 → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime]

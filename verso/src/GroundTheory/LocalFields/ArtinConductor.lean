@@ -12,7 +12,7 @@ section Codim
 variable {H V : Type*} [Group H] [Fintype H] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
 
 /- English proof (translation)
-Establish `hpos : (Nat.card H : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Set `_ : Invertible (Nat.card H : ℂ)` to `invertibleOfNonzero hpos`. Establish `h1` using `card_inv_mul_sum_char_eq_finrank ρ`. Establish `hle : finrank ℂ (invariants ρ) ≤ finrank ℂ V` using `Submodule.finrank_le _`. Rewrite using `[Nat.cast_sub hle, ← h1, Finset.sum_sub_distrib, mul_sub, char_one, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -30,9 +30,9 @@ theorem codim_invariants_eq (ρ : Representation ℂ H V) :
 omit [Fintype H] [FiniteDimensional ℂ V] in
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [Submodule.mem_top, iff_true, mem_invariants]`. Introduce `h`. Establish `h1 : (h : H) = 1`. Substitute `hS` using the available equality.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `Subgroup.mem_bot.mp h.2`. Simplify using `[h1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem invariants_comp_subtype_of_eq_bot (ρ : Representation ℂ H V) {S : Subgroup H} (hS : S = ⊥) :
     invariants (ρ.comp S.subtype) = ⊤ := by
@@ -55,11 +55,11 @@ section Count
 open Classical in
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp (lowerIndex_ne_top hσ)`. Establish `hnN : n ≤ N`. Assume the negation of the conclusion as `hlt'`. Establish `hlt` using `not_le.mp hlt'`. Establish `hmem : σ ∈ lowerRamificationGroup K L N`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem_lowerRamificationGroup_natCast_iff_lowerIndex, ← hn]`. Conclude with `hlt` after adjusting the coercions. Rewrite `hmem` using `[hN, Subgroup.mem_bot]`. Conclude with `hσ hmem`. Establish `hfilter : (Finset.range N).filter (fun i : ℕ ↦ σ ∈ lowerRamificationGroup K L i) = Finset.range n`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Rewrite using `[Finset.mem_filter, Finset.mem_range, Finset.mem_range, mem_lowerRamificationGroup_natCast_iff_lowerIndex, ← hn, Nat.cast_le]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hfilter, Finset.card_range, ← hn, ENat.toNat_natCast]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_filter_mem_lowerRamificationGroup {N : ℕ} (hN : lowerRamificationGroup K L N = ⊥)
     {σ : L ≃ₐ[K] L} (hσ : σ ≠ 1) :
@@ -95,9 +95,9 @@ def artinCharacter (σ : L ≃ₐ[K] L) : ℤ :=
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `h : σ = 1`. Substitute `h` using the available equality. Simplify using `only [artinCharacter, if_true]`. Use `push_cast`. Rewrite using `[Finset.sum_erase_eq_sub (Finset.mem_univ _)]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [artinCharacter, h, if_false]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem artinCharacter_eq (σ : L ≃ₐ[K] L) :
     (artinCharacter K L σ : ℂ) = residueDegree K L *
@@ -113,7 +113,7 @@ theorem artinCharacter_eq (σ : L ≃ₐ[K] L) :
     ring
 
 /- English proof (translation)
-Unfold `artinCharacter`. Rewrite using `[if_neg hσ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem artinCharacter_of_ne_one {σ : L ≃ₐ[K] L} (hσ : σ ≠ 1) :
     artinCharacter K L σ = -((residueDegree K L * (lowerIndex K L σ).toNat : ℕ) : ℤ) := by
@@ -122,11 +122,9 @@ theorem artinCharacter_of_ne_one {σ : L ≃ₐ[K] L} (hσ : σ ≠ 1) :
   rw [if_neg hσ]
 
 /- English proof (translation)
-Establish `h : ∀ σ : L ≃ₐ[K] L, χ σ * (artinCharacter K L σ : ℂ) = residueDegree K L * ((if σ = 1 then χ 1 * ∑ τ : L ≃ₐ[K] L, ((lowerIndex K L τ).toNat : ℂ) else 0) - (lowerIndex K L σ).toNat * χ σ)`. Introduce `σ`. Rewrite using `[artinCharacter_eq]`. Use `split_ifs with hσ`. Substitute `hσ` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun σ _ ↦ h σ, ← Finset.mul_sum, Finset.sum_sub_distrib, Finset.sum_ite_eq', if_pos (Finset.mem_univ _)]`. Use `congr 1`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`.
-
-Conclude with `Finset.sum_congr rfl fun σ _ ↦ by ring`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_mul_artinCharacter (χ : (L ≃ₐ[K] L) → ℂ) :
     ∑ σ : L ≃ₐ[K] L, χ σ * (artinCharacter K L σ : ℂ) =
@@ -158,9 +156,9 @@ def artinConductor (ρ : Representation ℂ (L ≃ₐ[K] L) V) : ℚ :=
 omit [FiniteDimensional ℂ V] in
 
 /- English proof (translation)
-Unfold `artinConductor`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Function.mem_support]`. Rewrite using `[Finset.coe_range, Set.mem_Iio]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h'`. Apply `hi` to reduce the goal to its premises. Establish `hle : lowerRamificationGroup K L i ≤ lowerRamificationGroup K L N` using `lowerRamificationGroup_antitone K L (by exact_mod_cast not_lt.mp h')`. Rewrite using `[invariants_comp_subtype_of_eq_bot ρ (eq_bot_iff.mpr (hN ▸ hle)), finrank_top, Nat.sub_self]`. Simplify using the standard rewrite rules.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem artinConductor_eq_sum (ρ : Representation ℂ (L ≃ₐ[K] L) V) {N : ℕ}
     (hN : lowerRamificationGroup K L N = ⊥) :
@@ -182,7 +180,7 @@ theorem artinConductor_eq_sum (ρ : Representation ℂ (L ≃ₐ[K] L) V) {N : �
 omit [FiniteDimensional ℂ V] in
 
 /- English proof (translation)
-The claim follows from `finsum_nonneg fun _ ↦ mul_nonneg (div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (Nat.cast_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem artinConductor_nonneg (ρ : Representation ℂ (L ≃ₐ[K] L) V) : 0 ≤ artinConductor ρ :=
   finsum_nonneg fun _ ↦ mul_nonneg (div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))
@@ -194,7 +192,7 @@ def charArtinConductor (χ : (L ≃ₐ[K] L) → ℂ) : ℂ :=
   (Nat.card (L ≃ₐ[K] L) : ℂ)⁻¹ * ∑ σ : L ≃ₐ[K] L, χ σ * artinCharacter K L σ
 
 /- English proof (translation)
-Rewrite using `[IsGalois.card_aut_eq_finrank, ← ramificationIndex_mul_residueDegree, card_lowerRamificationGroup_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_aut_eq_card_lowerRamificationGroup_zero_mul [IsGalois K L] :
     Nat.card (L ≃ₐ[K] L) = Nat.card (lowerRamificationGroup K L 0) * residueDegree K L := by
@@ -202,7 +200,7 @@ theorem card_aut_eq_card_lowerRamificationGroup_zero_mul [IsGalois K L] :
     card_lowerRamificationGroup_zero]
 
 /- English proof (translation)
-Establish `hf : (residueDegree K L : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (residueDegree_pos K L).ne'`. Rewrite using `[charArtinConductor, sum_mul_artinCharacter, card_aut_eq_card_lowerRamificationGroup_zero_mul]`. Use `push_cast`. Rewrite using `[mul_inv, mul_assoc, ← mul_assoc (residueDegree K L : ℂ)⁻¹, inv_mul_cancel₀ hf, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem charArtinConductor_eq_sum_lowerIndex [IsGalois K L] (χ : (L ≃ₐ[K] L) → ℂ) :
     charArtinConductor K L χ = (Nat.card (lowerRamificationGroup K L 0) : ℂ)⁻¹ *
@@ -213,15 +211,15 @@ theorem charArtinConductor_eq_sum_lowerIndex [IsGalois K L] (χ : (L ≃ₐ[K] L
   rw [mul_inv, mul_assoc, ← mul_assoc (residueDegree K L : ℂ)⁻¹, inv_mul_cancel₀ hf, one_mul]
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_lowerRamificationGroup_eq_bot K L`. Establish `hN' : lowerRamificationGroup K L (N : ℕ) = ⊥` using `hN N le_rfl`. Establish `he : (Nat.card (lowerRamificationGroup K L 0) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `hterm : ∀ i : ℕ, (((Nat.card (lowerRamificationGroup K L i) / Nat.card (lowerRamificationGroup K L 0) : ℚ) * ((finrank ℂ V - finrank ℂ (invariants (ρ.comp (lowerRamificationGroup K L i).subtype)) : ℕ) : ℚ) : ℚ) : ℂ) = (Nat.card (lowerRamificationGroup K L 0) : ℂ)⁻¹ * ∑ σ : L ≃ₐ[K …`. Introduce `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc` using `codim_invariants_eq (ρ.comp (lowerRamificationGroup K L i).subtype)`. Establish `hci : (Nat.card (lowerRamificationGroup K L i) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `hsum : ∑ h : lowerRamificationGroup K L i, (Representation.character (ρ.comp (lowerRamificationGroup K L i).subtype) 1 - Representation.character (ρ.comp (lowerRamificationGroup K L i).subtype) h) = ∑ σ : L ≃ₐ[K] L, if σ ∈ lowerRamificationGroup K L i then ρ.character 1 - ρ.chara …`. Rewrite using `[← Finset.sum_filter]`. Conclude with `(Finset.sum_subtype _ (by simp) (fun σ ↦ ρ.character 1 - ρ.character σ)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[hc, hsum]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[artinConductor_eq_sum ρ hN', Rat.cast_sum, Finset.sum_congr rfl fun i _ ↦ hterm i, ← Finset.mul_sum, Finset.sum_comm, charArtinConductor_eq_sum_lowerIndex]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun σ _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul]`. Distinguish the cases in `hσ : σ = 1`. Substitute `hσ` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[card_filter_mem_lowerRamificationGroup hN' hσ]`.
+A detailed English derivation is pending.
 -/
 theorem artinConductor_eq_charArtinConductor [IsGalois K L] (ρ : Representation ℂ (L ≃ₐ[K] L) V) :
     (artinConductor ρ : ℂ) = charArtinConductor K L ρ.character := by
@@ -266,7 +264,7 @@ section Discriminant
 variable [IsGalois K L]
 
 /- English proof (translation)
-Establish `h` using `differentExponent_eq_sum_lowerIndex K L`. Rewrite `h` using `[Finset.sum_congr rfl fun σ hσ ↦ (ENat.natCast_toNat (lowerIndex_ne_top (Finset.ne_of_mem_erase hσ))).symm, ← Nat.cast_sum]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentExponent_eq_sum_toNat [DecidableEq (L ≃ₐ[K] L)] :
     differentExponent K L =
@@ -277,7 +275,7 @@ theorem differentExponent_eq_sum_toNat [DecidableEq (L ≃ₐ[K] L)] :
   exact_mod_cast h
 
 /- English proof (translation)
-Unfold `artinCharacter`. Rewrite using `[if_pos rfl, differentExponent_eq_sum_toNat]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem artinCharacter_one :
     artinCharacter K L 1 = ((residueDegree K L * differentExponent K L : ℕ) : ℤ) := by
@@ -286,7 +284,7 @@ theorem artinCharacter_one :
   rw [if_pos rfl, differentExponent_eq_sum_toNat]
 
 /- English proof (translation)
-Rewrite using `[addVal_discr, artinCharacter_one, Int.toNat_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem addVal_discr_eq_artinCharacter_one {ι : Type*} [Fintype ι] [DecidableEq ι]
     (b : Module.Basis ι 𝒪[K] 𝒪[L]) :
@@ -296,7 +294,7 @@ theorem addVal_discr_eq_artinCharacter_one {ι : Type*} [Fintype ι] [DecidableE
 open Classical in
 
 /- English proof (translation)
-Establish `hG : (Nat.card (L ≃ₐ[K] L) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Rewrite using `[charArtinConductor]`. Repeatedly rewrite using `[ite_mul, zero_mul]`. Rewrite using `[Finset.sum_ite_eq', if_pos (Finset.mem_univ _), artinCharacter_one, ← mul_assoc, inv_mul_cancel₀ hG, one_mul]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -318,9 +316,9 @@ section Regular
 variable {G : Type*} [Group G] [Fintype G]
 
 /- English proof (translation)
-Rewrite using `[Representation.character, Representation.ofMulAction_def]`. Establish `: ((MonoidAlgebra.coeffLinearEquiv ℂ).symm.toLinearMap ∘ₗ Finsupp.lmapDomain ℂ ℂ (g • · : G → G) ∘ₗ (MonoidAlgebra.coeffLinearEquiv ℂ).toLinearMap) = (MonoidAlgebra.coeffLinearEquiv (R` using `ℂ) (S := ℂ) (M := G)).symm.conj (Finsupp.lmapDomain ℂ ℂ (g • · : G → G)) := by`. Use extensionality with `x`. Simplify using `[LinearEquiv.conj_apply]`. Rewrite using `[this, LinearMap.trace_conj', LinearMap.trace_eq_matrix_trace ℂ (Finsupp.basisSingleOne), Matrix.trace]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.diag, LinearMap.toMatrix_apply, Finsupp.coe_basisSingleOne, Finsupp.basisSingleOne_repr, LinearEquiv.refl_apply, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single, Finsupp.single_apply, smul_eq_mul, mul_eq_right]`. Use `split_ifs with hg`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem character_leftRegular [DecidableEq G] (g : G) :
     (Representation.leftRegular ℂ G).character g = if g = 1 then (Fintype.card G : ℂ) else 0 := by
@@ -361,7 +359,7 @@ def swanConductor (ρ : Representation ℂ (L ≃ₐ[K] L) V) : ℚ :=
 omit [FiniteDimensional ℂ V] in
 
 /- English proof (translation)
-The claim follows from `finsum_nonneg fun _ ↦ mul_nonneg (div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (Nat.cast_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem swanConductor_nonneg (ρ : Representation ℂ (L ≃ₐ[K] L) V) : 0 ≤ swanConductor ρ :=
   finsum_nonneg fun _ ↦ mul_nonneg (div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))
@@ -370,9 +368,9 @@ theorem swanConductor_nonneg (ρ : Representation ℂ (L ≃ₐ[K] L) V) : 0 ≤
 omit [FiniteDimensional ℂ V] in
 
 /- English proof (translation)
-Unfold `swanConductor`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Function.mem_support]`. Rewrite using `[Finset.coe_range, Set.mem_Iio]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h'`. Apply `hi` to reduce the goal to its premises. Establish `hle : lowerRamificationGroup K L ((i + 1 : ℕ) : ℤ) ≤ lowerRamificationGroup K L N` using `lowerRamificationGroup_antitone K L (by push_cast; omega)`. Rewrite using `[invariants_comp_subtype_of_eq_bot ρ (eq_bot_iff.mpr (hN ▸ hle)), finrank_top, Nat.sub_self]`. Simplify using the standard rewrite rules.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem swanConductor_eq_sum (ρ : Representation ℂ (L ≃ₐ[K] L) V) {N : ℕ}
     (hN : lowerRamificationGroup K L N = ⊥) :
@@ -395,7 +393,7 @@ theorem swanConductor_eq_sum (ρ : Representation ℂ (L ≃ₐ[K] L) V) {N : �
   simp
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_lowerRamificationGroup_eq_bot K L`. Rewrite using `[artinConductor_eq_sum ρ (hN ((N + 1 : ℕ) : ℤ) (by push_cast; omega)), swanConductor_eq_sum ρ (hN N le_rfl), Finset.sum_range_succ', add_comm]`. Establish `h0 : (Nat.card (lowerRamificationGroup K L 0) : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Use `congr 1`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem artinConductor_eq_codim_add_swanConductor (ρ : Representation ℂ (L ≃ₐ[K] L) V) :
     artinConductor ρ = ((finrank ℂ V -
@@ -410,15 +408,15 @@ theorem artinConductor_eq_codim_add_swanConductor (ρ : Representation ℂ (L �
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[artinConductor_eq_codim_add_swanConductor]`. Establish `hs` using `swanConductor_nonneg ρ`. Establish `hc : ((finrank ℂ V - finrank ℂ (invariants (ρ.comp (lowerRamificationGroup K L 0).subtype)) : ℕ) : ℚ) = 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Nat.cast_nonneg (α := ℚ) (finrank ℂ V - finrank ℂ (invariants (ρ.comp (lowerRamificationGroup K L 0).subtype)))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hle : finrank ℂ (invariants (ρ.comp (lowerRamificationGroup K L 0).subtype)) ≤ finrank ℂ V` using `Submodule.finrank_le _`. Establish `htop : invariants (ρ.comp (lowerRamificationGroup K L 0).subtype) = ⊤` using `Submodule.eq_top_of_finrank_eq (by rw [Nat.cast_eq_zero] at hc; omega)`. Introduce `σ hσ`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `v`. Establish `hv : v ∈ invariants (ρ.comp (lowerRamificationGroup K L 0).subtype)` using `htop ▸ trivial`. Conclude with `hv ⟨σ, hσ⟩`. Introduce `h`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `htop : invariants (ρ.comp (lowerRamificationGroup K L i).subtype) = ⊤`. Use extensionality with `v`. Simplify using `only [Submodule.mem_top, iff_true, mem_invariants]`. Introduce `g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hg : (g : L ≃ₐ[K] L) ∈ lowerRamificationGroup K L 0` using `lowerRamificationGroup_antitone K L (by omega) g.2`. Simplify using `[h _ hg]`. Rewrite using `[htop, finrank_top, Nat.sub_self]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem artinConductor_eq_zero_iff (ρ : Representation ℂ (L ≃ₐ[K] L) V) :
     artinConductor ρ = 0 ↔ ∀ σ ∈ lowerRamificationGroup K L 0, ρ σ = 1 := by
@@ -465,15 +463,15 @@ def charSwanConductor (χ : (L ≃ₐ[K] L) → ℂ) : ℂ :=
   (Nat.card (L ≃ₐ[K] L) : ℂ)⁻¹ * ∑ σ : L ≃ₐ[K] L, χ σ * swanCharacter K L σ
 
 /- English proof (translation)
-Establish `hG0 : (Nat.card (lowerRamificationGroup K L 0) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `hf : (residueDegree K L : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (residueDegree_pos K L).ne'`. Establish `hcard : (Nat.card (L ≃ₐ[K] L) : ℂ) = Nat.card (lowerRamificationGroup K L 0) * residueDegree K L`. Conclude with `card_aut_eq_card_lowerRamificationGroup_zero_mul` after adjusting the coercions. Establish `hsub : ∑ σ : L ≃ₐ[K] L, (if σ ∈ lowerRamificationGroup K L 0 then ρ.character σ else 0) = ∑ h : lowerRamificationGroup K L 0, ρ.character h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_filter]`. Conclude with `Finset.sum_subtype _ (by simp) _`. Establish `hc` using `codim_invariants_eq (ρ.comp (lowerRamificationGroup K L 0).subtype)`. Establish `hc' : ∑ h : lowerRamificationGroup K L 0, (Representation.character (ρ.comp (lowerRamificationGroup K L 0).subtype) 1 - Representation.character (ρ.comp (lowerRamificationGroup K L 0).subtype) h) = Nat.card (lowerRamificationGroup K L 0) * ρ.character 1 - ∑ h : lowerRamificationG …`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hsplit` using `artinConductor_eq_codim_add_swanConductor ρ`. Establish `hswan : (swanConductor ρ : ℂ) = (artinConductor ρ : ℂ) - ((finrank ℂ V - finrank ℂ (invariants (ρ.comp (lowerRamificationGroup K L 0).subtype)) : ℕ) : ℂ)`. Rewrite using `[hsplit]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∑ σ : L ≃ₐ[K] L, ρ.character σ * (swanCharacter K L σ : ℂ) = ∑ σ : L ≃ₐ[K] L, ρ.character σ * (artinCharacter K L σ : ℂ) - (Nat.card (L ≃ₐ[K] L) * ρ.character 1 - residueDegree K L * ∑ h : lowerRamificationGroup K L 0, ρ.character h)`. Establish `hpt : ∀ σ : L ≃ₐ[K] L, ρ.character σ * (swanCharacter K L σ : ℂ) = ρ.character σ * artinCharacter K L σ - ((if σ = 1 then (Nat.card (L ≃ₐ[K] L) : ℂ) * ρ.character 1 else 0) - residueDegree K L * (if σ ∈ lowerRamificationGroup K L 0 then ρ.character σ else 0))`. Introduce `σ`. Simplify using `only [swanCharacter]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `push_cast`. Apply the tactic sequence `split_ifs with h1 h2 <;> (try subst h1) <;> ring`. Rewrite using `[Finset.sum_congr rfl fun σ _ ↦ hpt σ, Finset.sum_sub_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq', if_pos (Finset.mem_univ _), ← Finset.mul_sum, hsub]`. Rewrite using `[hswan, artinConductor_eq_charArtinConductor, hc, hc', charSwanConductor, charArtinConductor, hsum, hcard]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem swanConductor_eq_charSwanConductor [IsGalois K L] (ρ : Representation ℂ (L ≃ₐ[K] L) V) :
     (swanConductor ρ : ℂ) = charSwanConductor K L ρ.character := by

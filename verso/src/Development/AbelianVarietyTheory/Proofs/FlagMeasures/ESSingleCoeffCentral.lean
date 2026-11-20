@@ -8,9 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LabPi
 namespace GlobalTheory.LabIdem
 
 /- English proof (translation)
-Introduce `D t _`. Establish `e : (ES {t} : MonoidAlgebra ℂ (G0g D.nd)) = GlobalTheory.RowLev.zTup D t` using `GlobalTheory.RowLev.ES_singleton (D := D) t`. Use `⟨fun γ => ?_, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `GlobalTheory.RowLev.zTup_comm t b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ES_single_coeff_central : ∀ (D : D7) (t : Tup2 D), (∀ k v, IsLabel D k (t k v)) →
     (∀ γ, (ES {t}).coeff γ = serCoef t γ) ∧ ∀ b, ES {t} * b = b * ES {t} := by

@@ -13,7 +13,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Rewrite using `[hx, sOf, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cspB_over {S : Type} [CommRing S] [Algebra c.F S] {x : Sp S ⟶ Xo.X} (hx : x ≫ Xo.s = sOf c S) :
     x ≫ Xo.s = spMap (algebraMap c.F S) ≫ spMap (IntermediateField.inclusion c.le).toRingHom := by
@@ -25,7 +25,7 @@ def cspB_lift {S : Type} [CommRing S] [Algebra c.F S] (x : Sp S ⟶ Xo.X) (hx : 
   pullback.lift x (spMap (algebraMap c.F S)) (cspB_over hx)
 
 /- English proof (translation)
-Unfold `cspB_lift`. Conclude with `pullback.lift_fst _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cspB_lift_fst {S : Type} [CommRing S] [Algebra c.F S] (x : Sp S ⟶ Xo.X) (hx : x ≫ Xo.s = sOf c S) :
     cspB_lift x hx ≫ pullback.fst _ _ = x := by
@@ -33,7 +33,7 @@ theorem cspB_lift_fst {S : Type} [CommRing S] [Algebra c.F S] (x : Sp S ⟶ Xo.X
   exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Unfold `cspB_lift`. Conclude with `pullback.lift_snd _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cspB_lift_snd {S : Type} [CommRing S] [Algebra c.F S] (x : Sp S ⟶ Xo.X) (hx : x ≫ Xo.s = sOf c S) :
     cspB_lift x hx ≫ pullback.snd _ _ = spMap (algebraMap c.F S) := by
@@ -41,7 +41,7 @@ theorem cspB_lift_snd {S : Type} [CommRing S] [Algebra c.F S] (x : Sp S ⟶ Xo.X
   exact pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[cspB_lift_fst, Category.assoc, cspB_lift_fst, hzx]`. Rewrite using `[cspB_lift_snd, Category.assoc, cspB_lift_snd, ← Spec.map_comp]`. Conclude with `congrArg (fun f => Spec.map (CommRingCat.ofHom f)) (AlgHom.comp_algebraMap φ).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cspB_lift_map {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T)
     {x : Sp S ⟶ Xo.X} (hx : x ≫ Xo.s = sOf c S) {z : Sp T ⟶ Xo.X} (hz : z ≫ Xo.s = sOf c T)
@@ -52,15 +52,15 @@ theorem cspB_lift_map {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Al
     exact congrArg (fun f => Spec.map (CommRingCat.ofHom f)) (AlgHom.comp_algebraMap φ).symm
 
 /- English proof (translation)
-Establish `key : ∀ x y : S, IsIdempotentElem x → IsIdempotentElem y → (∀ q : PrimeSpectrum S, x ∉ q.asIdeal → y ∉ q.asIdeal) → x = x * y`. Introduce `x y hx hy hxy`. Establish `hid : x * (1 - y) * (x * (1 - y)) = x * (1 - y)`. Take the linear combination `(1 - y) ^ 2 * hx.eq + x * hy.eq`. Establish `hmem : x * (1 - y) ∈ nilradical S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[nilradical_eq_sInf, Ideal.mem_sInf]`. Introduce `J hJ`. Distinguish the cases in `hxJ : x ∈ J`. Conclude with `J.mul_mem_right _ hxJ`. Establish `hyJ : y ∉ J` using `hxy ⟨J, hJ⟩ hxJ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `J.mul_mem_left` to reduce the goal to its premises. Establish `h0 : y * (1 - y) = 0` using `by linear_combination -hy.eq`. Establish `h1 : y * (1 - y) ∈ J` using `by rw [h0]; exact J.zero_mem`. Conclude with `(hJ.mem_or_mem h1).resolve_left hyJ`. Take `⟨n, hn⟩` from `mem_nilradical.mp hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpow : ∀ k : ℕ, (x * (1 - y)) ^ (k + 1) = x * (1 - y)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [zero_add, pow_one]`. Consider the case `succ k ih => rw [pow_succ, ih, hid]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h0 : x * (1 - y) = 0` using `by rw [← hpow n, pow_succ, hn, zero_mul]`. Take the linear combination `h0`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cspB_idem_eq_of {S : Type} [CommRing S] {a b : S} (ha : IsIdempotentElem a) (hb : IsIdempotentElem b)
     (hab : ∀ q : PrimeSpectrum S, a ∉ q.asIdeal ↔ b ∉ q.asIdeal) : a = b := by
@@ -98,7 +98,7 @@ def cspB_idem {S : Type} [CommRing S] [Algebra c.F S] (x : Sp S ⟶ Xo.X) (hx : 
     ⟨(cspB_lift x hx) ⁻¹' C, hC.preimage (cspB_lift x hx).continuous⟩).1
 
 /- English proof (translation)
-Unfold `cspB_idem`. Conclude with `((PrimeSpectrum.isIdempotentElemEquivClopens (R := S)).symm _).2`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cspB_idem_idem {S : Type} [CommRing S] [Algebra c.F S] (x : Sp S ⟶ Xo.X) (hx : x ≫ Xo.s = sOf c S) :
     IsIdempotentElem (cspB_idem C hC x hx) := by
@@ -106,7 +106,7 @@ theorem cspB_idem_idem {S : Type} [CommRing S] [Algebra c.F S] (x : Sp S ⟶ Xo.
   exact ((PrimeSpectrum.isIdempotentElemEquivClopens (R := S)).symm _).2
 
 /- English proof (translation)
-Establish `h1` using `(PrimeSpectrum.isIdempotentElemEquivClopens (R := S)).apply_symm_apply ⟨(cspB_lift x hx) ⁻¹' C, hC.preimage (cspB_lift x hx).continuous⟩`. Establish `h2 : q ∈ ((((PrimeSpectrum.isIdempotentElemEquivClopens (R` using `S)) ((PrimeSpectrum.isIdempotentElemEquivClopens (R := S)).symm ⟨(cspB_lift x hx) ⁻¹' C, hC.preimage (cspB_lift x hx).continuous⟩)) : TopologicalSpace.Clopens (PrimeSpectrum S)) : Set (PrimeSpectrum S)) ↔ q ∈ (cspB_lift x hx) ⁻¹' C := by`. Rewrite using `[h1]`. Both sides reduce to the same expression. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cspB_idem_spec {S : Type} [CommRing S] [Algebra c.F S] (x : Sp S ⟶ Xo.X) (hx : x ≫ Xo.s = sOf c S)
     (q : PrimeSpectrum S) : cspB_idem C hC x hx ∉ q.asIdeal ↔ cspB_lift x hx q ∈ C := by
@@ -122,7 +122,7 @@ theorem cspB_idem_spec {S : Type} [CommRing S] [Algebra c.F S] (x : Sp S ⟶ Xo.
   exact h2
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cspB_idem_congr {S : Type} [CommRing S] [Algebra c.F S] {x x' : Sp S ⟶ Xo.X}
     (hx : x ≫ Xo.s = sOf c S) (hx' : x' ≫ Xo.s = sOf c S) (h : x' = x) :
@@ -131,7 +131,7 @@ theorem cspB_idem_congr {S : Type} [CommRing S] [Algebra c.F S] {x x' : Sp S ⟶
   rfl
 
 /- English proof (translation)
-Apply `cspB_idem_eq_of ((cspB_idem_idem C hC x hx).map φ) (cspB_idem_idem C hC z hz)` to reduce the goal to its premises. Introduce `q`. Rewrite using `[cspB_idem_spec C hC z hz q, cspB_lift_map φ hx hz hzx]`. Conclude with `cspB_idem_spec C hC x hx (PrimeSpectrum.comap φ.toRingHom q)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cspB_idem_map {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T)
     {x : Sp S ⟶ Xo.X} (hx : x ≫ Xo.s = sOf c S) {z : Sp T ⟶ Xo.X} (hz : z ≫ Xo.s = sOf c T)
@@ -142,11 +142,9 @@ theorem cspB_idem_map {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Al
   exact cspB_idem_spec C hC x hx (PrimeSpectrum.comap φ.toRingHom q)
 
 /- English proof (translation)
-Establish `hi` using `cspB_idem_idem C hC x hx`. Establish `hne : cspB_idem C hC x hx ≠ 0`. Introduce `h0`. Establish `h3` using `(cspB_idem_spec C hC x hx q).mpr hq`. Rewrite `h3` using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3 q.asIdeal.zero_mem`. Establish `h2 : cspB_idem C hC x hx * (cspB_idem C hC x hx - 1) = 0`. Rewrite using `[mul_sub, mul_one, hi.eq, sub_self]`. Break down `mul_eq_zero.mp h2 with h | h` into its components or cases. Conclude with `absurd h hne`.
-
-Conclude with `sub_eq_zero.mp h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem cspB_idem_field_one {K' : Type} [Field K'] [Algebra c.F K'] (x : Sp K' ⟶ Xo.X)
     (hx : x ≫ Xo.s = sOf c K') (q : PrimeSpectrum K') (hq : cspB_lift x hx q ∈ C) :
@@ -164,7 +162,7 @@ theorem cspB_idem_field_one {K' : Type} [Field K'] [Algebra c.F K'] (x : Sp K' �
   · exact sub_eq_zero.mp h
 
 /- English proof (translation)
-Establish `h1 : cspB_idem C hC x hx ∈ q.asIdeal`. Assume the negation of the conclusion as `h`. Conclude with `hq ((cspB_idem_spec C hC x hx q).mp h)`. Assume the negation of the conclusion as `hne`. Conclude with `q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h1 (Ne.isUnit hne))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem cspB_idem_field_zero {K' : Type} [Field K'] [Algebra c.F K'] (x : Sp K' ⟶ Xo.X)
     (hx : x ≫ Xo.s = sOf c K') (q : PrimeSpectrum K') (hq : cspB_lift x hx q ∉ C) :
@@ -180,7 +178,7 @@ variable (Xo c) in
 def cspB_rule : Rul Xo c := fun _ y => cspB_idem C hC y.x y.x_over
 
 /- English proof (translation)
-Introduce `p q φ y z hyz`. Use `first`. Consider the case `exact cspB_idem_map C hC φ y.x_over z.x_over hyz.1`. Consider the case `exact (cspB_idem_map C hC φ y.x_over z.x_over hyz.1).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cspB_rule_natural : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z)
     (cspB_rule Xo c C hC) := by
@@ -190,16 +188,16 @@ theorem cspB_rule_natural : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun
   | exact (cspB_idem_map C hC φ y.x_over z.x_over hyz.1).symm
 
 /- English proof (translation)
-Conclude with `cspB_idem_congr C hC y.x_over y'.x_over hb.1`.
+A detailed English derivation is pending.
 -/
 theorem cspB_rule_bor (p : TRing c.F) (t : Ix Dw → (p.R)ˣ) (y y' : FrPt Xo c p.R) (hb : FrBor t y y') :
     cspB_rule Xo c C hC p y' = cspB_rule Xo c C hC p y := by
   exact cspB_idem_congr C hC y.x_over y'.x_over hb.1
 
 /- English proof (translation)
-Establish `hg' : _ ∧ _` using `hg`. Take `⟨hgN, hgW⟩` from `hg'`. Use `show _ ∧ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `p q φ y z hyz show cspB_rule Xo c C hC q z * g q z = φ (cspB_rule Xo c C hC p y * g p y)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ← cspB_rule_natural C hC p q φ y z hyz, ← hgN p q φ y z hyz]`. Introduce `p t y y' hb show cspB_rule Xo c C hC p y' * g p y' = wchar (ex Dw a n) t * (cspB_rule Xo c C hC p y * g p y)`. Rewrite using `[cspB_rule_bor C hC p t y y' hb, hgW p t y y' hb]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cspB_rule_mul_mem {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {g : Rul Xo c} (hg : g ∈ sec Xo c a n) :
     cspB_rule Xo c C hC * g ∈ sec Xo c a n := by
@@ -216,9 +214,9 @@ theorem cspB_rule_mul_mem {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {g : Rul 
     ring
 
 /- English proof (translation)
-Use `show _ ∧ _`. Use `⟨cspB_rule_natural C hC, ?_⟩` and prove the remaining obligations. Introduce `p t y y' hb`. Rewrite using `[cspB_rule_bor C hC p t y y' hb]`. Unfold `wchar ex`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [Finset.prod_eq_one (fun i _ => by cases i <;> simp), one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem split_rule_mem_weight_zero : cspB_rule Xo c C hC ∈ sec Xo c 0 0 := by
   show _ ∧ _
@@ -229,7 +227,7 @@ theorem split_rule_mem_weight_zero : cspB_rule Xo c C hC ∈ sec Xo c 0 0 := by
   rw [Finset.prod_eq_one (fun i _ => by cases i <;> simp), one_mul]
 
 /- English proof (translation)
-Unfold `evR evalAt`. Rewrite using `[dif_pos hy]`. Use `first`. Consider the case `exact cspB_idem_map C hC _ _ _ hy.choose_spec.choose_spec.choose_spec.1`. Consider the case `exact cspB_idem_map C hC _ _ _ hy.choose_spec.choose_spec.choose_spec.1.1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cspB_evR {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S)
     (hy : FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y) :
@@ -241,7 +239,7 @@ theorem cspB_evR {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S)
   | exact cspB_idem_map C hC _ _ _ hy.choose_spec.choose_spec.choose_spec.1.1
 
 /- English proof (translation)
-Unfold `evR evalAt`. Rewrite using `[dif_neg hy]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cspB_evR_zero {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S)
     (hy : ¬ FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y) (f : Rul Xo c) :
@@ -250,16 +248,16 @@ theorem cspB_evR_zero {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S)
   rw [dif_neg hy]
 
 /- English proof (translation)
-Conclude with `evalAt_mul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f g y`.
+A detailed English derivation is pending.
 -/
 theorem cspB_evR_mul {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (f g : Rul Xo c) :
     evR Xo c (f * g) y = evR Xo c f y * evR Xo c g y := by
   exact evalAt_mul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f g y
 
 /- English proof (translation)
-Unfold `genPt`. Establish `hcl : IsClosed (Z : Set (Xo.XF c))` using `isClosed_of_mem_irreducibleComponents _ Z.2`. Establish `hS : IsIrreducible (Z : Set (Xo.XF c))` using `Z.2.1`. Establish `hg : IsGenericPoint hS.genericPoint (closure (Z : Set (Xo.XF c)))` using `by first`. Consider the case `exact hS.isGenericPoint_genericPoint_closure`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact hS.genericPoint_spec`. Rewrite `hg` using `[hcl.closure_eq]`. Conclude with `hg.mem`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cspB_genPt_mem (Z : Comp Xo c) : genPt Z ∈ (Z : Set (Xo.XF c)) := by
   unfold genPt
@@ -273,11 +271,11 @@ theorem cspB_genPt_mem (Z : Comp Xo c) : genPt Z ∈ (Z : Set (Xo.XF c)) := by
   exact hg.mem
 
 /- English proof (translation)
-Establish `e0 : Spec.map (CommRingCat.ofHom (algebraMap c.F (kap Z))) = genSp Z ≫ strK` using `by show Spec.map (CommRingCat.ofHom (Spec.preimage (genSp Z ≫ strK)).hom) = _`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `e : cspB_lift (genFr hG Z).x (genFr hG Z).x_over = spMap (algebraMap (kap Z) (Om Z)) ≫ genSp Z`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[cspB_lift_fst, (isGenFr_genFr hG Z).1, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[cspB_lift_snd, Category.assoc] show _ = spMap (algebraMap (kap Z) (Om Z)) ≫ (genSp Z ≫ strK)`. Rewrite using `[← e0]`. Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(Scheme.Hom.comp_apply (spMap (algebraMap (kap Z) (Om Z))) (genSp Z) q).trans (Scheme.fromSpecResidueField_apply (genPt Z) _)`.
+A detailed English derivation is pending.
 -/
 theorem cspB_lift_genFr (hG : GenFrEx Xo c) (Z : Comp Xo c) (q : PrimeSpectrum (Om Z)) :
     cspB_lift (genFr hG Z).x (genFr hG Z).x_over q = genPt Z := by
@@ -298,13 +296,13 @@ theorem cspB_lift_genFr (hG : GenFrEx Xo c) (Z : Comp Xo c) (q : PrimeSpectrum (
     (Scheme.fromSpecResidueField_apply (genPt Z) _)
 
 /- English proof (translation)
-Use `CompFin.finite_comp Xo c` as an intermediate fact. Use `⟨isClosed_of_mem_irreducibleComponents _ Z.2, ?_⟩` and prove the remaining obligations. Establish `hU : (Z : Set (Xo.XF c)) = (⋃ Z' : {Z' : Comp Xo c // Z' ≠ Z}, (Z'.1 : Set (Xo.XF c)))ᶜ`. Use extensionality with `p`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hp hp'`. Take `⟨⟨Z', hne⟩, hZ'⟩` from `Set.mem_iUnion.1 hp'`. Conclude with `Set.disjoint_left.1 (hdisj Z Z' (Ne.symm hne)) hp hZ'`. Introduce `hp`. Establish `hall : p ∈ ⋃₀ irreducibleComponents (Xo.XF c)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sUnion_irreducibleComponents]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨W, hW, hpW⟩` from `Set.mem_sUnion.1 hall`. Assume the negation of the conclusion as `hpZ`. Use `hp (Set.mem_iUnion.2 ⟨⟨⟨W, hW⟩, fun hWZ => hpZ ?_⟩, hpW⟩)` and prove the remaining obligations.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hWZ]`. Conclude with `hpW`. Rewrite using `[hU]`. Conclude with `(isClosed_iUnion_of_finite fun Z' : {Z' : Comp Xo c // Z' ≠ Z} => isClosed_of_mem_irreducibleComponents _ Z'.1.2).isOpen_compl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cspB_isClopen (hdisj : ∀ Z Z' : Comp Xo c, Z ≠ Z' → Disjoint (Z : Set (Xo.XF c)) Z')
     (Z : Comp Xo c) : IsClopen (Z : Set (Xo.XF c)) := by
@@ -329,11 +327,11 @@ theorem cspB_isClopen (hdisj : ∀ Z Z' : Comp Xo c, Z ≠ Z' → Disjoint (Z : 
     isClosed_of_mem_irreducibleComponents _ Z'.1.2).isOpen_compl
 
 /- English proof (translation)
-Establish `h1 : X.χ 0 γ = X.χ 0 γ * X.χ 0 γ`. Establish `h3` using `X.χ_add 0 0 γ hγ`. Rewrite `h3` using `[add_zero]`. Then use the resulting hypothesis. Take `⟨n, hn, hpow⟩` from `X.χ_fin 0`. Establish `hne : X.χ 0 γ ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h4` using `hpow γ hγ`. Rewrite `h4` using `[h0, zero_pow hn.ne']`. Conclude with `zero_ne_one h4`. Establish `h2 : X.χ 0 γ * (X.χ 0 γ - 1) = 0` using `by rw [mul_sub, mul_one, ← h1, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.mp h2 with h | h` into its components or cases. Conclude with `absurd h hne`. Conclude with `sub_eq_zero.mp h`.
+A detailed English derivation is pending.
 -/
 theorem cspB_chi_zero {r : ℕ} (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : X.χ 0 γ = 1 := by
   have h1 : X.χ 0 γ = X.χ 0 γ * X.χ 0 γ := by
@@ -352,13 +350,13 @@ theorem cspB_chi_zero {r : ℕ} (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈
 
 open Classical in
 /- English proof (translation)
-Establish `hdom : Dom (0 : (E →+* ℂ) × ℕ → ℕ) 0` using `⟨fun _ _ _ _ => le_rfl, ⟨0, rfl⟩⟩`. Establish `hsec` using `hU.2.2.2.2.1 0 0 hdom _ (split_rule_mem_weight_zero C hC) k`. Establish `hla : laU U 0 0 k = 0`. Use function extensionality and compare the values at `τ j`. Simplify using `[laU]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `hsec` using `[hla]`. Use `⟨fun x hx => ?_, hsec.1, fun x hx b hb => ?_, fun γ hγ x hx => ?_⟩` and prove the remaining obligations. Use `show (if h : x ∈ (U.X k).dom then toC (evR Xo c (cspB_rule Xo c C hC) (U.un k ⟨x, h⟩)) else 0) = 0 ∨ (if h : x ∈ (U.X k).dom then toC (evR Xo c (cspB_rule Xo c C hC) (U.un k ⟨x, h⟩)) else 0) = 1`. Rewrite using `[dif_pos hx]`. Distinguish the cases in `ht : FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (U.un k ⟨x, hx⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cspB_evR C hC _ ht]`. Establish `he` using `cspB_idem_idem C hC (U.un k ⟨x, hx⟩).x (U.un k ⟨x, hx⟩).x_over`. Conclude with `IsIdempotentElem.iff_eq_zero_or_one (G₀ := ℂ) |>.1 he`. Rewrite using `[cspB_evR_zero _ ht] left`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsec.2.1 x hx b hb]`. Simplify using `[bchar]`. Rewrite using `[hsec.2.2 γ hγ x hx, cspB_chi_zero _ hγ, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cspB_isIdemFn {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) (hU : IsUnf U) (k : U.Comp) :
     CompSplitPfA.IsIdemFn (U.X k) (rdU U (cspB_rule Xo c C hC) k) := by
@@ -385,9 +383,9 @@ theorem cspB_isIdemFn {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) (hU : I
 
 open Classical in
 /- English proof (translation)
-Use function extensionality and compare the values at `k x`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, Pi.mul_apply]`. Use `split_ifs with h`. Rewrite using `[cspB_evR_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem cspB_rdU_mul {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) (g : Rul Xo c) :
     rdU U (cspB_rule Xo c C hC * g) = fun k => rdU U (cspB_rule Xo c C hC) k * rdU U g k := by

@@ -7,9 +7,9 @@ open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HermTools
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set A : Matrix (J × Fin δ) (J × Fin δ) E := Matrix.of fun i i' : J × Fin δ => if i.1 = i'.1 then g i.2 ^ e * R i.2 i'.2 else 0 with hA`. Establish `key : Matrix.reindex (Equiv.prodComm J (Fin δ)) (Equiv.prodComm J (Fin δ)) A = Matrix.blockDiagonal (fun _ : J => Matrix.diagonal (fun p => g p ^ e) * R)`. Use extensionality with `⟨p, j⟩ ⟨p', j'⟩`. Simplify using `[A, Matrix.blockDiagonal_apply, Matrix.diagonal_mul]`. Rewrite using `[← Matrix.det_reindex_self (Equiv.prodComm J (Fin δ)) A, key, Matrix.det_blockDiagonal]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_ne_zero_iff.mpr fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, Matrix.det_diagonal]`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun p _ => pow_ne_zero _ (hg p)) hR`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_blockSymbolMatrix_ne_zero (E : Type) [Field E] (J : Type) [Fintype J] [DecidableEq J]
     (δ e : ℕ) (g : Fin δ → E) (R : Matrix (Fin δ) (Fin δ) E) (hg : ∀ p, g p ≠ 0) (hR : R.det ≠ 0) :

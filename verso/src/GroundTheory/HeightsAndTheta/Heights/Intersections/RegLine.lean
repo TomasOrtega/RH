@@ -26,16 +26,16 @@ theorem logNorm_eq_log_secNorm (E : HermLine ι) (t : MRing ι) (z : (Σ k, ι k
     logNorm E t z = Real.log (secNorm E t z) := rfl
 
 /- English proof (translation)
-The claim follows from `div_nonneg (norm_nonneg _) (E.pos z hz).le`.
+A detailed English derivation is pending.
 -/
 theorem secNorm_nonneg (E : HermLine ι) (t : MRing ι) {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     0 ≤ secNorm E t z :=
   div_nonneg (norm_nonneg _) (E.pos z hz).le
 
 /- English proof (translation)
-Establish `he` using `eval_bsmul_of_isMultiHomog ht c z`. Establish `hh : E.h (bsmul c z) = (∏ k, ‖c k‖ ^ E.a k) * E.h z` using `E.smul c z hc`. Establish `hpos : 0 < ∏ k, ‖c k‖ ^ E.a k` using `Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.mpr (hc k)) _`. Establish `hn : ‖∏ k, c k ^ a k‖ = ∏ k, ‖c k‖ ^ E.a k`. Rewrite using `[norm_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow, hE k, zpow_natCast]`. Express the relevant statement in the definitionally equal form `‖eval (bsmul c z) (map (Int.castRingHom ℂ) t)‖ / E.h (bsmul c z) = _`. Rewrite using `[he, hh, norm_mul, hn, mul_div_mul_left _ _ hpos.ne']`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem secNorm_smul {E : HermLine ι} {t : MRing ι} {a : K → ℕ} (hE : ∀ k, E.a k = a k)
     (ht : IsMultiHomog t a) {c : K → ℂ} (hc : ∀ k, c k ≠ 0) (z : (Σ k, ι k) → ℂ) :
@@ -68,21 +68,21 @@ Both sides reduce to the same expression.
 theorem regLine_a : (regLine E t ht ε).a = 0 := rfl
 
 /- English proof (translation)
-Simplify using `[regLine, HermLine.ofWeight]`.
+Simplify using the standard rewrite rules.
 -/
 theorem regLine_h (z : (Σ k, ι k) → ℂ) :
     (regLine E t ht ε).h z = Real.exp (Real.log (secNorm E t z ^ 2 + ε) / 2) := by
   simp [regLine, HermLine.ofWeight]
 
 /- English proof (translation)
-Rewrite using `[regLine_h, Real.log_exp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem log_regLine_h (z : (Σ k, ι k) → ℂ) :
     Real.log ((regLine E t ht ε).h z) = Real.log (secNorm E t z ^ 2 + ε) / 2 := by
   rw [regLine_h, Real.log_exp]
 
 /- English proof (translation)
-Proceed by induction on `t using MvPolynomial.induction_on with`. Consider the case `C a => simpa using contDiff_const`. Consider the case `add p q hp hq => simpa using hp.add hq`. Consider the case `mul_X p v hp => simpa using hp.mul (contDiff_apply ℝ ℂ v)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem contDiff_eval_map (t : MRing ι) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, ι k) → ℂ => eval z (map (Int.castRingHom ℂ) t)) := by
@@ -92,9 +92,9 @@ theorem contDiff_eval_map (t : MRing ι) :
   | mul_X p v hp => simpa using hp.mul (contDiff_apply ℝ ℂ v)
 
 /- English proof (translation)
-Unfold `IsSmoothHerm`. Establish `hn : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, ι k) → ℂ => ‖eval z (map (Int.castRingHom ℂ) t)‖ ^ 2)` using `(contDiff_norm_sq ℝ).comp (contDiff_eval_map t)`. Establish `hq : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => ‖eval z (map (Int.castRingHom ℂ) t)‖ ^ 2 / E.h z ^ 2 + ε) {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `(hn.contDiffOn.div (hE.pow 2) fun z hz => pow_ne_zero _ (E.pos z hz).ne').add contDiffOn_const`. Establish `hl` using `(hq.log fun z hz => (add_pos_of_nonneg_of_pos (div_nonneg (sq_nonneg _) (sq_nonneg _)) hε).ne').div_const 2`. Use `(Real.contDiff_exp.comp_contDiffOn hl).congr fun z _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[regLine_h, secNorm, div_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isSmoothHerm_regLine (hE : IsSmoothHerm E) (hε : 0 < ε) : IsSmoothHerm (regLine E t ht ε) := by
   unfold IsSmoothHerm
@@ -112,9 +112,9 @@ theorem isSmoothHerm_regLine (hE : IsSmoothHerm E) (hε : 0 < ε) : IsSmoothHerm
   rfl
 
 /- English proof (translation)
-Rewrite using `[log_regLine_h, logNorm_eq_log_secNorm]`. Establish `hpos : 0 < secNorm E t z` using `div_pos (norm_pos_iff.mpr ht0) (E.pos z hz)`. Establish `h2 : Real.log (secNorm E t z) = Real.log (secNorm E t z ^ 2) / 2`. Rewrite using `[Real.log_pow]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Conclude with `div_le_div_of_nonneg_right (Real.log_le_log (by positivity) (by linarith)) (by norm_num)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logNorm_le_log_regLine_h (hε : 0 ≤ ε) {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0)
     (ht0 : eval z (map (Int.castRingHom ℂ) t) ≠ 0) :
@@ -131,14 +131,14 @@ theorem logNorm_le_log_regLine_h (hε : 0 ≤ ε) {z : (Σ k, ι k) → ℂ} (hz
 end Objects
 
 /- English proof (translation)
-Take `⟨a, ha, hm, -⟩` from `isSectionOn_coordinate_plane i`. Conclude with `⟨a, ha, hm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isMultiHomog_planeCoordinate (i : Fin 3) : ∃ a : Unit → ℕ, (∀ k, (fsLine 3).a k = a k) ∧ IsMultiHomog (Xc 3 i) a := by
   obtain ⟨a, ha, hm, -⟩ := isSectionOn_coordinate_plane i
   exact ⟨a, ha, hm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isSmoothHerm_regLine (isSmoothHerm_fsLine 3) one_pos, rfl, fun _ hz h0 => logNorm_le_log_regLine_h zero_le_one hz.1 h0⟩`.
+Supply the required witnesses or components.
 -/
 theorem regLine.inhabited :
     IsSmoothHerm (regLine (fsLine 3) (Xc 3 0) (isMultiHomog_planeCoordinate 0) 1) ∧

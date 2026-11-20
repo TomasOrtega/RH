@@ -15,13 +15,13 @@ section
 variable {R : Type} [CommRing R] {N r K : ℕ}
 
 /- English proof (translation)
-Unfold `multideg`. Rewrite using `[Fin.sum_univ_add]`. Establish `h1 : ∀ c : Fin r, (m.mapDomain (plVar (K` using `K))) (i, Fin.castAdd K c) = m (i, c) := by`. Introduce `c`. Establish `: (i, Fin.castAdd K c) = plVar (K` using `K) (i, c) := rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this, Finsupp.mapDomain_apply]`. Introduce `a b h`. Simplify using `only [plVar, Prod.mk.injEq] at h`. Conclude with `Prod.ext h.1 (Fin.castAdd_injective r K h.2)`. Establish `h2 : ∀ c : Fin K, (m.mapDomain (plVar (K` using `K))) (i, Fin.natAdd r c) = 0 := by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Apply `Finsupp.mapDomain_of_notMem_range` to reduce the goal to its premises. Introduce and unpack `⟨⟨l, a⟩, h⟩`. Simplify using `only [plVar, Prod.mk.injEq] at h`. Use `congrArg Fin.val h.2` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at this`. Use linear arithmetic over natural numbers and integers. Simplify using `only [h1, h2, Finset.sum_const_zero, add_zero]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem multideg_mapDomain_headVar (m : Fin N × Fin r →₀ ℕ) (i : Fin N) :
     multideg (m.mapDomain (plVar (K := K))) i = multideg m i := by
@@ -46,13 +46,13 @@ theorem multideg_mapDomain_headVar (m : Fin N × Fin r →₀ ℕ) (i : Fin N) :
   simp only [h1, h2, Finset.sum_const_zero, add_zero]
 
 /- English proof (translation)
-Unfold `multideg`. Rewrite using `[Fin.sum_univ_add]`. Establish `h1 : ∀ c : Fin K, (m.mapDomain (tanVar (r` using `r))) (i, Fin.natAdd r c) = m (i, c) := by`. Introduce `c`. Establish `: (i, Fin.natAdd r c) = tanVar (r` using `r) (i, c) := rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this, Finsupp.mapDomain_apply]`. Introduce `a b h`. Simplify using `only [tanVar, Prod.mk.injEq] at h`. Conclude with `Prod.ext h.1 (Fin.natAdd_injective K r h.2)`. Establish `h2 : ∀ c : Fin r, (m.mapDomain (tanVar (r` using `r))) (i, Fin.castAdd K c) = 0 := by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Apply `Finsupp.mapDomain_of_notMem_range` to reduce the goal to its premises. Introduce and unpack `⟨⟨l, a⟩, h⟩`. Simplify using `only [tanVar, Prod.mk.injEq] at h`. Use `congrArg Fin.val h.2` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at this`. Use linear arithmetic over natural numbers and integers. Simplify using `only [h1, h2, Finset.sum_const_zero, zero_add]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem multideg_mapDomain_tailVar (m : Fin N × Fin K →₀ ℕ) (i : Fin N) :
     multideg (m.mapDomain (tanVar (r := r))) i = multideg m i := by
@@ -77,7 +77,7 @@ theorem multideg_mapDomain_tailVar (m : Fin N × Fin K →₀ ℕ) (i : Fin N) :
   simp only [h1, h2, Finset.sum_const_zero, zero_add]
 
 /- English proof (translation)
-Unfold `multideg`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem multideg_add_apply {n : ℕ} (x y : Fin N × Fin n →₀ ℕ) (i : Fin N) :
     multideg (x + y) i = multideg x i + multideg y i := by
@@ -85,13 +85,13 @@ theorem multideg_add_apply {n : ℕ} (x y : Fin N × Fin n →₀ ℕ) (i : Fin 
   simp only [Finsupp.add_apply, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Rewrite `h1`, `h2`, the goal using `[Pol, MvPolynomial.mem_restrictSupport_iff]`. Introduce `m hm`. Establish `hm'` using `MvPolynomial.support_mul _ _ (Finset.mem_coe.1 hm)`. Take `⟨m1, hm1, m2, hm2, rfl⟩` from `Finset.mem_add.1 hm'`. Establish `g1` using `MvPolynomial.support_rename_of_injective (p := G1) (f := plVar (K := K)) (by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a b h`. Simplify using `only [plVar, Prod.mk.injEq] at h`. Conclude with `Prod.ext h.1 (Fin.castAdd_injective r K h.2))`. Establish `g2` using `MvPolynomial.support_rename_of_injective (p := G2) (f := tanVar (r := r)) (by`. Introduce `a b h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [tanVar, Prod.mk.injEq] at h`. Conclude with `Prod.ext h.1 (Fin.natAdd_injective K r h.2))`. Rewrite `hm1` using `[g1]`. Rewrite `hm2` using `[g2]`. Take `⟨n1, hn1, rfl⟩` from `Finset.mem_image.1 hm1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨n2, hn2, rfl⟩` from `Finset.mem_image.1 hm2`. Introduce `i`. Rewrite using `[multideg_add_apply, multideg_mapDomain_headVar, multideg_mapDomain_tailVar, h1 (Finset.mem_coe.2 hn1) i, h2 (Finset.mem_coe.2 hn2) i, hb i]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_mul_rename_mem_multihomogeneous {b' b'' B : Fin N → ℕ} (hb : ∀ i, b' i + b'' i = B i) {G1 : MvPolynomial (Fin N × Fin r) R}
     {G2 : MvPolynomial (Fin N × Fin K) R} (h1 : G1 ∈ Pol R r b') (h2 : G2 ∈ Pol R K b'') :
@@ -119,9 +119,9 @@ theorem rename_mul_rename_mem_multihomogeneous {b' b'' B : Fin N → ℕ} (hb : 
 end
 
 /- English proof (translation)
-Take `⟨b', b'', hb, ⟨P1, h1⟩, ⟨P2, h2⟩⟩` from `x.2.1`. Unfold `pvec PsiPl PsiTan`. Use `rename_mul_rename_mem_multihomogeneous hb ?_ ?_` and prove the remaining obligations. Rewrite using `[← h1]`. Conclude with `standardWord_mem_multihomogeneous R P1 _ (h1 ▸ x.2.2.1)`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2]`. Conclude with `standardWord_mem_multihomogeneous R P2 _ (h2 ▸ x.2.2.2)`.
+A detailed English derivation is pending.
 -/
 theorem productBasis_mem_multihomogeneous (R : Type) [CommRing R] (N r K : ℕ) (LL : Letters (Fin N)) (B : Fin N → ℕ)
     (x : PIdx r K LL B) : pvec R r K LL B x ∈ Pol R (r + K) B := by
@@ -134,15 +134,11 @@ theorem productBasis_mem_multihomogeneous (R : Type) [CommRing R] (N r K : ℕ) 
     exact standardWord_mem_multihomogeneous R P2 _ (h2 ▸ x.2.2.2)
 
 /- English proof (translation)
-Rewrite `h1` using `[← (standardPath_basis_any_ring R N r LL b').2]`. Rewrite `h2` using `[← (standardPath_basis_any_ring R N K LL b'').2]`. Proceed by induction on `h1 using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨P1, I', hI', rfl⟩` from `hy`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `h2 using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨P2, I'', hI'', rfl⟩` from `hz`. Conclude with `Submodule.subset_span ⟨⟨((P1.mu, I'), (P2.mu, I'')), ⟨b', b'', hb, ⟨P1, rfl⟩, ⟨P2, rfl⟩⟩, hI', hI''⟩, rfl⟩`. Consider the case `zero => rw [map_zero, mul_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add, mul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [map_smul, mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ ha`.
-
-Consider the case `zero => rw [map_zero, zero_mul]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add, add_mul]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [map_smul, smul_mul_assoc]`.
-
-Conclude with `Submodule.smul_mem _ _ ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rename_mul_rename_mem_span_productBasis (R : Type) [CommRing R] (N r K : ℕ) (LL : Letters (Fin N)) (B : Fin N → ℕ)
     {b' b'' : Fin N → ℕ} (hb : ∀ i, b' i + b'' i = B i) {G1 : MvPolynomial (Fin N × Fin r) R}
@@ -166,7 +162,7 @@ theorem rename_mul_rename_mem_span_productBasis (R : Type) [CommRing R] (N r K :
   | smul c a _ ha => rw [map_smul, smul_mul_assoc]; exact Submodule.smul_mem _ _ ha
 
 /- English proof (translation)
-Introduce `a b h`. Simplify using `only [plVar, Prod.mk.injEq] at h`. Conclude with `Prod.ext h.1 (Fin.castAdd_injective r K h.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem headVar_injective (N r K : ℕ) : Function.Injective (plVar (N := N) (r := r) (K := K)) := by
   intro a b h
@@ -174,7 +170,7 @@ theorem headVar_injective (N r K : ℕ) : Function.Injective (plVar (N := N) (r 
   exact Prod.ext h.1 (Fin.castAdd_injective r K h.2)
 
 /- English proof (translation)
-Introduce `a b h`. Simplify using `only [tanVar, Prod.mk.injEq] at h`. Conclude with `Prod.ext h.1 (Fin.natAdd_injective K r h.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tailVar_injective (N r K : ℕ) : Function.Injective (tanVar (N := N) (r := r) (K := K)) := by
   intro a b h
@@ -182,13 +178,13 @@ theorem tailVar_injective (N r K : ℕ) : Function.Injective (tanVar (N := N) (r
   exact Prod.ext h.1 (Fin.natAdd_injective K r h.2)
 
 /- English proof (translation)
-Use extensionality with `⟨i, c⟩`. Rewrite using `[Finsupp.add_apply]`. Use `Fin.addCases (fun a => ?_) (fun a => ?_) c` and prove the remaining obligations. Establish `e1 : (i, Fin.castAdd K a) = plVar (K` using `K) (i, a) := rfl`. Rewrite using `[e1, Finsupp.mapDomain_apply (headVar_injective N r K), Finsupp.comapDomain_apply, Finsupp.mapDomain_of_notMem_range, add_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨⟨l, b⟩, h⟩`. Simplify using `only [tanVar, plVar, Prod.mk.injEq] at h`. Use `congrArg Fin.val h.2` as an intermediate fact. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at this`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `e1 : (i, Fin.natAdd r a) = tanVar (r` using `r) (i, a) := rfl`. Rewrite using `[e1, Finsupp.mapDomain_apply (tailVar_injective N r K), Finsupp.comapDomain_apply, Finsupp.mapDomain_of_notMem_range, zero_add]`. Introduce and unpack `⟨⟨l, b⟩, h⟩`. Simplify using `only [tanVar, plVar, Prod.mk.injEq] at h`. Use `congrArg Fin.val h.2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finsupp_eq_head_add_tail {N r K : ℕ} (m : Fin N × Fin (r + K) →₀ ℕ) :
     m = (m.comapDomain plVar (headVar_injective N r K).injOn).mapDomain plVar +
@@ -215,9 +211,9 @@ theorem finsupp_eq_head_add_tail {N r K : ℕ} (m : Fin N × Fin (r + K) →₀ 
     omega
 
 /- English proof (translation)
-Rewrite using `[Pol, MvPolynomial.mem_restrictSupport_iff]`. Introduce `m' hm'`. Use `MvPolynomial.support_monomial_subset (Finset.mem_coe.1 hm')` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Substitute `this` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Introduce `i`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem monomial_mem_multihomogeneous_multideg (R : Type) [CommRing R] {N n : ℕ} (m : Fin N × Fin n →₀ ℕ) :
     monomial m (1 : R) ∈ Pol R n (fun i => multideg m i) := by
@@ -231,13 +227,13 @@ theorem monomial_mem_multihomogeneous_multideg (R : Type) [CommRing R] {N n : �
   rfl
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `productBasis_mem_multihomogeneous R N r K LL B x`. Introduce `G hG`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hG` using `[Pol, MvPolynomial.mem_restrictSupport_iff]`. Rewrite using `[G.as_sum]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Establish `hB` using `hG (Finset.mem_coe.2 hm)`. Use `set m1 := m.comapDomain plVar (headVar_injective N r K).injOn with hm1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m2 := m.comapDomain tanVar (tailVar_injective N r K).injOn with hm2`. Establish `hs : m = m1.mapDomain plVar + m2.mapDomain tanVar` using `finsupp_eq_head_add_tail m`. Establish `hmon : monomial m (coeff m G) = coeff m G • (rename (plVar (K` using `K)) (monomial m1 (1 : R)) * rename (tanVar (r := r)) (monomial m2 (1 : R))) := by`. Rewrite using `[rename_monomial, rename_monomial, monomial_mul, ← hs, smul_monomial, one_mul, smul_eq_mul, mul_one]`. Rewrite using `[hmon]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Submodule.smul_mem _ _ (rename_mul_rename_mem_span_productBasis R N r K LL B (b' := fun i => multideg m1 i) (b'' := fun i => multideg m2 i) ?_ (monomial_mem_multihomogeneous_multideg R m1) (monomial_mem_multihomogeneous_multideg R m2))` and prove the remaining obligations. Introduce `i`. Use `hB i` as an intermediate fact. Rewrite `this` using `[hs, multideg_add_apply, multideg_mapDomain_headVar, multideg_mapDomain_tailVar]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_productBasis_eq_multihomogeneous (R : Type) [CommRing R] (N r K : ℕ) (LL : Letters (Fin N)) (B : Fin N → ℕ) :
     Submodule.span R (Set.range (pvec R r K LL B)) = Pol R (r + K) B := by

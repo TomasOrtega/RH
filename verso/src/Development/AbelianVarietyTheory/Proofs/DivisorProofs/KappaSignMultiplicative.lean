@@ -15,9 +15,9 @@ namespace GlobalTheory.KapSignMul
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Establish `hx' : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Establish `hy' : Valued.v y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy`. Establish `hxy' : Valued.v (x * y) ≠ 0` using `(Valuation.ne_zero_iff _).2 (mul_ne_zero hx hy)`. Unfold `ordL`. Rewrite using `[dif_neg hx', dif_neg hy', dif_neg hxy']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `: WithZero.unzero hxy' = WithZero.unzero hx' * WithZero.unzero hy'`. Apply `WithZero.coe_injective` to reduce the goal to its premises. Rewrite using `[WithZero.coe_unzero, WithZero.coe_mul, WithZero.coe_unzero, WithZero.coe_unzero, Valuation.map_mul]`. Rewrite using `[this, toAdd_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ordL_mul [Valued K (WithZero (Multiplicative ℤ))] {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
     ordL (x * y) = ordL x + ordL y := by
@@ -33,9 +33,9 @@ theorem ordL_mul [Valued K (WithZero (Multiplicative ℤ))] {x y : K} (hx : x �
   ring
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `hσd : σ d ≠ 0` using `(map_ne_zero σ).2 hd`. Establish `hσo : ordL (σ d) = ordL d`. Unfold `ordL`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [hσ]`. Rewrite using `[ordL_mul (mul_ne_zero hσd hd) hx, ordL_mul hσd hd, hσo, zpow_add₀ (by norm_num), ← two_mul, (even_two_mul (ordL d)).neg_one_zpow, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sign_norm [Valued K (WithZero (Multiplicative ℤ))] (σ : K →+* K) (hσ : ∀ x, Valued.v (σ x) = Valued.v x)
     {d : K} (hd : d ≠ 0) (x : K) : (-1 : ℂ) ^ ordL (σ d * d * x) = (-1 : ℂ) ^ ordL x := by
@@ -49,14 +49,14 @@ theorem sign_norm [Valued K (WithZero (Multiplicative ℤ))] (σ : K →+* K) (h
     (even_two_mul (ordL d)).neg_one_zpow, one_mul]
 
 /- English proof (translation)
-The claim follows from `b.linearIndependent.map' W.subtype W.ker_subtype`.
+A detailed English derivation is pending.
 -/
 theorem li_coe {n : ℕ} {W : Submodule K (Fin n → K)} {ι : Type} (b : Module.Basis ι K W) :
     LinearIndependent K (fun i => (b i : Fin n → K)) :=
   b.linearIndependent.map' W.subtype W.ker_subtype
 
 /- English proof (translation)
-Establish `: (Set.range fun i => (b i : Fin n → K)) = W.subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, b.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem span_coe {n : ℕ} {W : Submodule K (Fin n → K)} {ι : Type} (b : Module.Basis ι K W) :
     Submodule.span K (Set.range fun i => (b i : Fin n → K)) = W := by
@@ -65,7 +65,7 @@ theorem span_coe {n : ℕ} {W : Submodule K (Fin n → K)} {ι : Type} (b : Modu
   rw [this, Submodule.span_image, b.span_eq, Submodule.map_top, Submodule.range_subtype]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.gram_det_change_of_basis' σ W u u' hu hsu hu' hsu'`.
+A detailed English derivation is pending.
 -/
 theorem gram_change (σ : K →+* K) {n : ℕ} (W : Submodule K (Fin n → K)) {ι ι' : Type} [Fintype ι] [Fintype ι']
     [DecidableEq ι] [DecidableEq ι'] (u : ι → Fin n → K) (u' : ι' → Fin n → K) (hu : LinearIndependent K u)
@@ -76,7 +76,7 @@ theorem gram_change (σ : K →+* K) {n : ℕ} (W : Submodule K (Fin n → K)) {
   GlobalTheory.T.gram_det_change_of_basis' σ W u u' hu hsu hu' hsu'
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.ker_aeval_orthogonal_range_unitary_selfReciprocal σ γ hγ Q hQ x z hx`.
+A detailed English derivation is pending.
 -/
 theorem csr_orth (σ : K →+* K) {n : ℕ} (γ : Matrix (Fin n) (Fin n) K) (hγ : (γ.map σ)ᵀ * γ = 1) (Q : K[X])
     (hQ : C (σ (Q.coeff 0)) * Q = (Q.map σ).reverse) (x z : Fin n → K) (hx : aeval γ Q *ᵥ x = 0) :
@@ -84,7 +84,7 @@ theorem csr_orth (σ : K →+* K) {n : ℕ} (γ : Matrix (Fin n) (Fin n) K) (hγ
   GlobalTheory.T.ker_aeval_orthogonal_range_unitary_selfReciprocal σ γ hγ Q hQ x z hx
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.gram_det_ne_zero_of_ker_orth' σ A u hu hsu horth hdec`.
+A detailed English derivation is pending.
 -/
 theorem gram_ne_zero (σ : K →+* K) {n : ℕ} (A : Matrix (Fin n) (Fin n) K) {ι : Type} [Fintype ι] [DecidableEq ι]
     (u : ι → Fin n → K) (hu : LinearIndependent K u)
@@ -95,7 +95,7 @@ theorem gram_ne_zero (σ : K →+* K) {n : ℕ} (A : Matrix (Fin n) (Fin n) K) {
   GlobalTheory.T.gram_det_ne_zero_of_ker_orth' σ A u hu hsu horth hdec
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.unitary_conj_maps_ker_aeval_basis_and_gram σ γ g hg Q u hu hsu`.
+A detailed English derivation is pending.
 -/
 theorem conj_ker (σ : K →+* K) {n : ℕ} (γ g : GL (Fin n) K) (hg : ((g : Matrix (Fin n) (Fin n) K).map σ)ᵀ * g = 1)
     (Q : K[X]) {ι : Type} (u : ι → Fin n → K) (hu : LinearIndependent K u)
@@ -114,9 +114,9 @@ namespace GlobalTheory.KapSignMul
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `hQ`. Establish `hcop : IsCoprime Q R` using `Polynomial.Separable.isCoprime (by rw [← hR]; exact hsep)`. Take `⟨a, c, hac⟩` from `hcop`. Introduce `v`. Use `⟨aeval γ a *ᵥ v, aeval γ (c * R) *ᵥ v, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mulVec_mulVec, ← map_mul, show Q * (c * R) = c * (Q * R) by ring, ← hR, map_mul, aeval_self_charpoly, mul_zero, zero_mulVec]`. Rewrite using `[mulVec_mulVec, ← map_mul, ← add_mulVec, ← map_add, show Q * a + c * R = a * Q + c * R by ring, hac, map_one, one_mulVec]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem dec_of_dvd {n : ℕ} (γ : Matrix (Fin n) (Fin n) K) (Q : K[X]) (hsep : γ.charpoly.Separable)
     (hQ : Q ∣ γ.charpoly) : ∀ v, ∃ z y, aeval γ Q *ᵥ y = 0 ∧ v = aeval γ Q *ᵥ z + y := by
@@ -131,9 +131,9 @@ theorem dec_of_dvd {n : ℕ} (γ : Matrix (Fin n) (Fin n) K) (Q : K[X]) (hsep : 
       one_mulVec]
 
 /- English proof (translation)
-Take `⟨a, c, hac⟩` from `hcop`. Use `⟨aeval γ a *ᵥ y, ?_⟩` and prove the remaining obligations. Establish `: y = aeval γ (a * Q₁ + c * Q₂) *ᵥ y` using `by rw [hac, map_one, one_mulVec]`. Rewrite using `[mulVec_mulVec, ← map_mul, mul_comm Q₁ a]`. Use `conv_lhs => rw [this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, add_mulVec, map_mul (aeval γ) c, ← mulVec_mulVec, hy, mulVec_zero, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem mem_im_of_coprime {n : ℕ} (γ : Matrix (Fin n) (Fin n) K) {Q₁ Q₂ : K[X]} (hcop : IsCoprime Q₁ Q₂)
     {y : Fin n → K} (hy : aeval γ Q₂ *ᵥ y = 0) : ∃ z, y = aeval γ Q₁ *ᵥ z := by
@@ -145,7 +145,7 @@ theorem mem_im_of_coprime {n : ℕ} (γ : Matrix (Fin n) (Fin n) K) {Q₁ Q₂ :
   rw [map_add, add_mulVec, map_mul (aeval γ) c, ← mulVec_mulVec, hy, mulVec_zero, add_zero]
 
 /- English proof (translation)
-Use `congr 1`. Conclude with `(aeval_algHom_apply (Matrix.toLinAlgEquiv' : Matrix (Fin n) (Fin n) K ≃ₐ[K] _).toAlgHom M P).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ker_toLin' {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (P : K[X]) :
     LinearMap.ker (Matrix.toLin' (aeval M P)) = LinearMap.ker (aeval (Matrix.toLin' M) P) := by
@@ -153,7 +153,7 @@ theorem ker_toLin' {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (P : K[X]) :
   exact (aeval_algHom_apply (Matrix.toLinAlgEquiv' : Matrix (Fin n) (Fin n) K ≃ₐ[K] _).toAlgHom M P).symm
 
 /- English proof (translation)
-Use `γ.2` as an intermediate fact. Simplify using `only [UL, if_neg hs] at this`. Simplify `this` using `[UJ, cT]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_UL {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {w : Pl E} (hs : ¬ IsSplitAt w) (γ : UL n w) :
     (((γ.1 : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map (cj w))ᵀ * (γ.1 : GLw n w) = 1 := by
@@ -162,17 +162,17 @@ theorem mem_UL {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {w :
   simpa [UJ, cT] using this
 
 /- English proof (translation)
-Establish `hsup : LinearMap.ker (Matrix.toLin' (aeval M Q₁)) ⊔ LinearMap.ker (Matrix.toLin' (aeval M Q₂)) = LinearMap.ker (Matrix.toLin' (aeval M (Q₁ * Q₂)))`. Simplify using `only [ker_toLin']`. Conclude with `sup_ker_aeval_eq_ker_aeval_mul_of_coprime _ hcop`. Establish `hdis : Disjoint (LinearMap.ker (Matrix.toLin' (aeval M Q₁))) (LinearMap.ker (Matrix.toLin' (aeval M Q₂)))`. Simplify using `only [ker_toLin']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `disjoint_ker_aeval_of_isCoprime _ hcop`. Establish `hli : LinearIndependent K (Sum.elim (fun i => (b₁ i : Fin n → K)) (fun i => (b₂ i : Fin n → K)))` using `(li_coe b₁).sum_type (li_coe b₂) (by rw [span_coe, span_coe]; exact hdis)`. Establish `hsp : Submodule.span K (Set.range (Sum.elim (fun i => (b₁ i : Fin n → K)) (fun i => (b₂ i : Fin n → K)))) = LinearMap.ker (Matrix.toLin' (aeval M (Q₁ * Q₂)))`. Rewrite using `[Set.Sum.elim_range, Submodule.span_union, span_coe, span_coe, hsup]`. Take `⟨d, hd, hdet⟩` from `gram_change σ _ _ (fun i => (b i : Fin n → K)) hli hsp (li_coe b) (span_coe b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hblk : (Matrix.of fun i j => ∑ k, σ ((Sum.elim (fun i => (b₁ i : Fin n → K)) (fun i => (b₂ i : Fin n → K)) i) k) * (Sum.elim (fun i => (b₁ i : Fin n → K)) (fun i => (b₂ i : Fin n → K)) j) k) = fromBlocks (Matrix.of fun i j => ∑ k, σ ((b₁ i : Fin n → K) k) * (b₁ j : Fin n → K) k) …`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [fromBlocks_apply₂₁, Matrix.zero_apply, of_apply, Sum.elim_inr, Sum.elim_inl]`. Establish `hy : aeval M Q₂ *ᵥ (b₂ i : Fin n → K) = 0`. Use `(b₂ i).2` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, Matrix.toLin'_apply]`. Then use the resulting hypothesis. Establish `hx : aeval M Q₁ *ᵥ (b₁ j : Fin n → K) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(b₁ j).2` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, Matrix.toLin'_apply]`. Then use the resulting hypothesis. Take `⟨z, hz⟩` from `mem_im_of_coprime M hcop hy`. Rewrite using `[hz]`. Conclude with `csr_orth σ M hM Q₁ hQ₁ _ z hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite `hdet` using `[hblk, det_fromBlocks_zero₂₁]`. Establish `h1` using `gram_ne_zero σ (aeval M Q₁) _ (li_coe b₁) (span_coe b₁) (fun x z hx => csr_orth σ M hM Q₁ hQ₁ x z hx) (dec_of_dvd M Q₁ hsep (dvd_trans (dvd_mul_right _ _) hdvd))`. Establish `h2` using `gram_ne_zero σ (aeval M Q₂) _ (li_coe b₂) (span_coe b₂) (fun x z hx => csr_orth σ M hM Q₂ hQ₂ x z hx) (dec_of_dvd M Q₂ hsep (dvd_trans (dvd_mul_left _ _) hdvd))`. Rewrite using `[hdet, sign_norm σ hσ hd, ordL_mul h1 h2, zpow_add₀ (by norm_num)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_sign [Valued K (WithZero (Multiplicative ℤ))] (σ : K →+* K) (hσ : ∀ x, Valued.v (σ x) = Valued.v x)
     {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (hM : (M.map σ)ᵀ * M = 1) {Q₁ Q₂ : K[X]} (hsep : M.charpoly.Separable)
@@ -224,7 +224,7 @@ theorem mul_sign [Valued K (WithZero (Multiplicative ℤ))] (σ : K →+* K) (h�
   rw [hdet, sign_norm σ hσ hd, ordL_mul h1 h2, zpow_add₀ (by norm_num)]
 
 /- English proof (translation)
-Take `⟨hli, hsp, hgr⟩` from `conj_ker σ γ g hg Q _ (li_coe b') (span_coe b')`. Take `⟨d, hd, hdet⟩` from `gram_change σ _ _ _ (li_coe b) (span_coe b) hli hsp`. Rewrite `hdet` using `[hgr]`. Rewrite using `[hdet, sign_norm σ hσ hd]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_sign [Valued K (WithZero (Multiplicative ℤ))] (σ : K →+* K) (hσ : ∀ x, Valued.v (σ x) = Valued.v x)
     {n : ℕ} (γ g : GL (Fin n) K) (hg : ((g : Matrix (Fin n) (Fin n) K).map σ)ᵀ * g = 1) (Q : K[X])
@@ -239,13 +239,13 @@ theorem conj_sign [Valued K (WithZero (Multiplicative ℤ))] (σ : K →+* K) (h
   rw [hdet, sign_norm σ hσ hd]
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n _ w Q₁ Q₂ Q₃ γ g hsep hdvd hcop hc1 hc2`. Distinguish the cases in `hs : IsSplitAt w`. Simplify using `[kapSign, hs]`. Establish `hv` using `(GlobalTheory.ConjAtPlace.main E hU w).2.2.1`. Establish `hQ₁ : C (cj w (Q₁.coeff 0)) * Q₁ = (Q₁.map (cj w)).reverse` using `hc1.resolve_left hs`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ₂ : C (cj w (Q₂.coeff 0)) * Q₂ = (Q₂.map (cj w)).reverse` using `hc2.resolve_left hs`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [kapSign, if_neg hs]`. Conclude with `mul_sign (cj w) hv _ (mem_UL hs γ) hsep hdvd hcop hQ₁ hQ₂ _ _ _`. Simplify using `only [kapSign, if_neg hs]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hg' : ((g⁻¹ * γ * g : UL n w) : GLw n w) = (g : GLw n w)⁻¹ * γ * g` using `by simp`. Rewrite using `[hg']`. Conclude with `conj_sign (cj w) hv γ.1 g.1 (mem_UL hs g) Q₃ _ _`. Simplify using `only [kapSign, if_neg hs]`. Break down `Int.even_or_odd (ordL (Matrix.of fun i j => ∑ k, cj w ((Module.finBasis (w.adicCompletion E) (LinearMap.ker (Matrix.toLin' (aeval γ.1.val Q₃))) i).1 k) * (Module.finBasis (w.adicCompletion E) (LinearMap.ker (Matrix.toLin' (aeval γ.1.val Q₃))) j).1 k).det) with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inl h.neg_one_zpow`. Conclude with `Or.inr h.neg_one_zpow`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (w : Pl E) (Q₁ Q₂ Q₃ : (w.adicCompletion E)[X]) (γ g : UL n w), γ.1.val.charpoly.Separable → Q₁ * Q₂ ∣ γ.1.val.charpoly → IsCoprime Q₁ Q₂ → IsCsr w Q₁ → IsCsr w Q₂ → kapSign n w (Q₁ * Q₂) γ.1 = kapSign n w Q₁ γ.1 * kapSign n w Q₂ γ.1 ∧ kapSign n w Q₃ (g⁻¹ * γ * g).1 = kapSign n w Q₃ γ.1 ∧ (kapSign n w Q₃ γ.1 = 1 ∨ kapSign n w Q₃ γ.1 = -1) := by
   intro E _ _ _ hU n _ w Q₁ Q₂ Q₃ γ g hsep hdvd hcop hc1 hc2

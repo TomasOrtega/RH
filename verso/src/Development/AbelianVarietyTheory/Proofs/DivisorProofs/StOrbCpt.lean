@@ -7,7 +7,7 @@ open MeasureTheory GlobalTheory.Orb
 namespace GlobalTheory.PsCo.Pc1
 
 /- English proof (translation)
-Introduce `n ε μ _ s hs hT dt _ _ y f hf hc`. Use `haveI : μ.IsMulRightInvariant := GlobalTheory.haar_UJ_isMulRightInvariant n ε μ`. Conclude with `GlobalTheory.hasOrbInt_of_isCompact_cent_conj _ μ s hT dt (isProperOrbit_realUJ hs) y f hf hc`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stOrbCpt : GlobalTheory.PsCo.Pc1.StOrbCpt := by
   intro n ε μ _ s hs hT dt _ _ y f hf hc

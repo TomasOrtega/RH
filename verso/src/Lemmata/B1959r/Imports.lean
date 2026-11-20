@@ -4,17 +4,17 @@ import Mathlib
 namespace Bl.general_b_fact_upper_bis_form
 
 /- English proof (translation)
-Introduce `n f hmono i`. Unfold `PI.FJM.nP`. Prove the components needed by the constructor for the conclusion. Introduce `hi`. Establish `hsub : Finset.Iic i ⊆ Finset.filter (fun j => 0 < f j) Finset.univ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j hj`. Simplify using `only [Finset.mem_Iic] at hj`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Break down `lt_or_eq_of_le hj with h | h` into its components or cases. Conclude with `hmono j i h hi`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `hi`. Establish `hc` using `Finset.card_le_card hsub`. Rewrite `hc` using `[Fin.card_Iic]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `hi`. Assume the negation of the conclusion as `hneg`. Establish `hsub : Finset.filter (fun j => 0 < f j) Finset.univ ⊆ Finset.Iio i`. Introduce `j hj`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [Finset.mem_Iio]`. Assume the negation of the conclusion as `hji`. Rewrite `hji` using `[not_lt]`. Break down `lt_or_eq_of_le hji with h | h` into its components or cases. Conclude with `hneg (hmono i j h hj)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `hneg (by rw [h]; exact hj)`. Establish `hc` using `Finset.card_le_card hsub`. Rewrite `hc` using `[Fin.card_Iio]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {n : Nat} (f : Fin n → Rat),

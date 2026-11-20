@@ -12,49 +12,45 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
 
 open LocalSpans in
 /- English proof (translation)
-Establish `: 𝔭.IsPrime` using `h𝔭.isPrime`. Establish `hp0 : 𝔭 ≠ ⊥` using `fun h => RingOfIntegers.not_isField F (Ring.isField_iff_maximal_bot.2 (h ▸ h𝔭))`. Establish `: IsDedekindDomain (RP K 𝔭)` using `IsLocalization.isDedekindDomain (𝓞 K) (sF_le 𝔭) _`. Establish `: IsPrincipalIdealRing (RP K 𝔭)` using `IsDedekindDomain.isPrincipalIdealRing_localization_over_prime (𝓞 K) 𝔭 hp0`. Take `⟨a0, -, ha0⟩` from `exists_basis_locF hA₀ h𝔭`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b0, -, hb0⟩` from `exists_basis_locF hB₀ h𝔭`. Take `⟨⟨c, hc⟩, hcint⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (𝓞 K)) (fun p : Fin (finrank K V) × Fin (finrank K V) => a0.repr (b0 p.1) p.2)`. Establish `hc0 : c ≠ 0` using `nonZeroDivisors.ne_zero hc`. Establish `hcK : algebraMap (𝓞 K) K c ≠ 0`. Simplify using `using hc0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `MA : Submodule (RP K 𝔭) V` to `Submodule.span (RP K 𝔭) (Set.range a0)`. Set `MB : Submodule (RP K 𝔭) V` to `Submodule.span (RP K 𝔭) (Set.range b0)`. Set `μ : V →ₗ[RP K 𝔭] V` to `((algebraMap (𝓞 K) K c) • (LinearMap.id : V →ₗ[K] V)).restrictScalars (RP K 𝔭)`. Establish `hμ : ∀ x, μ x = algebraMap (𝓞 K) K c • x` using `fun x => rfl`. Establish `hμi : Function.Injective μ` using `fun x y hxy => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hxy` using `[hμ, hμ]`. Conclude with `smul_right_injective V hcK hxy`. Set `N' : Submodule (RP K 𝔭) V` to `MB.map μ`. Establish `hN' : N' ≤ MA` using `by show Submodule.map μ (Submodule.span _ _) ≤ MA`. Rewrite using `[Submodule.map_span, Submodule.span_le]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Rewrite using `[hμ, ← a0.sum_repr (b0 i), Finset.smul_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `hcint (i, j)`. Rewrite using `[smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: algebraMap (𝓞 K) K c * a0.repr (b0 i) j = algebraMap (𝓞 K) K z`. Rewrite using `[hz, Algebra.smul_def]`. Rewrite using `[this, algebraMap_smul, ← algebraMap_smul (RP K 𝔭)]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hliA : LinearIndependent (RP K 𝔭) a0` using `a0.linearIndependent.restrict_scalars' (RP K 𝔭)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hliB : LinearIndependent (RP K 𝔭) b0` using `b0.linearIndependent.restrict_scalars' (RP K 𝔭)`. Establish `hfA : finrank (RP K 𝔭) MA = finrank K V`. Rewrite using `[finrank_span_eq_card hliA, Fintype.card_fin]`. Establish `hfB : finrank (RP K 𝔭) MB = finrank K V`. Rewrite using `[finrank_span_eq_card hliB, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `N : Submodule (RP K 𝔭) MA` to `N'.comap MA.subtype`. Establish `hfN : finrank (RP K 𝔭) N = finrank (RP K 𝔭) MA`. Rewrite using `[hfA, ← hfB, (Submodule.comapSubtypeEquivOfLe hN').finrank_eq, (Submodule.equivMapOfInjective μ hμi MB).finrank_eq]`. Take `⟨b', α, ab', hab⟩` from `Submodule.exists_smith_normal_form_of_rank_eq (Basis.span hliA) hfN`. Establish `hlatA : Submodule.IsLattice K MA` using `{ fg := Submodule.fg_span (Set.finite_range _) span_eq_top := by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[eq_top_iff, ← a0.span_eq]`. Conclude with `Submodule.span_mono Submodule.subset_span }`. Set `a` to `b'.extendOfIsLattice K`. Establish `ha : ∀ i, a i = (b' i : V)` using `fun i => Basis.extendOfIsLattice_apply K b' i`. Establish `hα0 : ∀ i, α i ≠ 0` using `fun i h0 => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hab i`. Rewrite `h1` using `[h0, zero_smul]`. Conclude with `ab'.ne_zero i (Subtype.ext h1)`. Establish `hα : ∀ i, ∃ (z : 𝓞 K) (t : 𝓞 F), t ∉ 𝔭 ∧ (α i : K) = algebraMap (𝓞 K) K z * (algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) t))⁻¹` using `fun i => by`. Take `⟨z, s, ⟨t, ht, rfl⟩, hz⟩` from `(α i).2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨z, t, ht, hz⟩`. Use `choose e t ht he using hα`. Establish `ht0 : ∀ i, algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) (t i)) ≠ 0`. Introduce `i h0`. Establish `h1` using `(FaithfulSMul.algebraMap_injective (𝓞 K) K) (h0.trans (map_zero _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `h2` using `(FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 K)) (h1.trans (map_zero _).symm)`. Conclude with `ht i (h2 ▸ 𝔭.zero_mem)`. Establish `he0 : ∀ i, e i ≠ 0` using `fun i h0 => hα0 i (Subtype.ext (by rw [he, h0]; simp))`. Establish `heK : ∀ i, algebraMap (𝓞 K) K (e i) ≠ 0` using `fun i => by`. Simplify using `using he0 i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `b` to `a.unitsSMul fun i => Units.mk0 (algebraMap (𝓞 K) K (e i) * (algebraMap (𝓞 K) K c)⁻¹) (mul_ne_zero (heK i) (inv_ne_zero hcK))`. Establish `hb : ∀ i, b i = (algebraMap (𝓞 K) K (e i) * (algebraMap (𝓞 K) K c)⁻¹) • a i` using `fun i => by`. Rewrite using `[Basis.unitsSMul_apply, Units.smul_def, Units.val_mk0]`. Establish `hcb : ∀ i, algebraMap (𝓞 K) K c • b i = algebraMap (𝓞 K) K (e i) • a i` using `fun i => by`. Rewrite using `[hb, smul_smul, mul_comm, mul_assoc, inv_mul_cancel₀ hcK, mul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `habV : ∀ i, (((ab' i : N) : MA) : V) = (α i : K) • a i` using `fun i => by`. Rewrite using `[hab, ha]`. Both sides reduce to the same expression. Establish `hτ : ∀ i, μ (b i) = algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) (t i)) • (((ab' i : N) : MA) : V)` using `fun i => by`. Rewrite using `[hμ, hcb, habV, he, smul_smul, mul_comm, mul_assoc, inv_mul_cancel₀ (ht0 i), mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsA : Submodule.span (RP K 𝔭) (Set.range a) = MA`. Establish `h1 : Set.range a = MA.subtype '' Set.range b'`. Rewrite using `[← Set.range_comp]`. Conclude with `congrArg _ (funext ha)`. Rewrite using `[h1, ← Submodule.map_span, b'.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsN : Submodule.span (RP K 𝔭) (Set.range fun i => (((ab' i : N) : MA) : V)) = N'`. Establish `h1 : (Set.range fun i => (((ab' i : N) : MA) : V)) = MA.subtype '' (N.subtype '' Set.range ab')`. Rewrite using `[← Set.range_comp, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[h1, ← Submodule.map_span, ← Submodule.map_span, ab'.span_eq, Submodule.map_top, Submodule.range_subtype, Submodule.map_comap_subtype, inf_eq_right.2 hN']`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsB : Submodule.span (RP K 𝔭) (Set.range b) = MB`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨y, hy, hyx⟩ : (((ab' i : N) : MA) : V) ∈ N'` from `(ab' i).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : μ (b i) = μ (algebraMap (𝓞 F) (𝓞 K) (t i) • y)`. Rewrite using `[hτ, ← hyx, hμ, hμ, ← algebraMap_smul K (algebraMap (𝓞 F) (𝓞 K) (t i)), smul_comm]`. Rewrite using `[hμi h1, ← algebraMap_smul (RP K 𝔭)]`. Conclude with `Submodule.smul_mem _ _ hy`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Establish `h1 : μ (b0 j) ∈ N'` using `⟨b0 j, Submodule.subset_span ⟨j, rfl⟩, rfl⟩`. Establish `h2 : N' ≤ (Submodule.span (RP K 𝔭) (Set.range b)).map μ`. Rewrite using `[← hsN, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Set `u : RP K 𝔭` to `⟨(algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) (t i)))⁻¹, ⟨1, _, ⟨t i, ht i, rfl⟩, by simp⟩⟩`. Use `⟨u • b i, Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hτ, Subalgebra.smul_def, smul_smul, inv_mul_cancel₀ (ht0 i), one_smul]`. Take `⟨y, hy, hyx⟩` from `h2 h1`. Conclude with `hμi hyx ▸ hy`.
-
-Use `⟨a, b, e, c, hc0, he0, ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← ha0]`. Use extensionality with `x`. Rewrite using `[← mem_span_RP, ← mem_span_RP, Submodule.span_span_of_tower, Submodule.span_span_of_tower, hsA]`. Rewrite using `[← hb0]`.
-
-Use extensionality with `x`. Rewrite using `[← mem_span_RP, ← mem_span_RP, Submodule.span_span_of_tower, Submodule.span_span_of_tower, hsB]`. Rewrite using `[← algebraMap_smul K, ← algebraMap_smul K (e i), hcb]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smith {A₀ B₀ : Submodule (𝓞 K) V} (hA₀ : Submodule.IsLattice K A₀)
     (hB₀ : Submodule.IsLattice K B₀) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) :
@@ -185,14 +181,14 @@ theorem exists_smith {A₀ B₀ : Submodule (𝓞 K) V} (hA₀ : Submodule.IsLat
   · rw [← algebraMap_smul K, ← algebraMap_smul K (e i), hcb]
 
 /- English proof (translation)
-The claim follows from `LocF.le_locF 𝔭 _ (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem basis_mem_locF {κ : Type} (a : Basis κ K V) (𝔭 : Ideal (𝓞 F)) (i : κ) :
     a i ∈ locF 𝔭 (Submodule.span (𝓞 K) (Set.range a)) :=
   LocF.le_locF 𝔭 _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Take `⟨t, ht, hx⟩` from `(LocF.mem_locF_iff h𝔭.isPrime _ x).1 hx`. Take `⟨z, hz⟩` from `(a.mem_span_iff_repr_mem (𝓞 K) _).1 hx i`. Use `(mem_pK h𝔭).2 ⟨t, ht, z, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, ← algebraMap_smul K, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem repr_mem_pK_zero {κ : Type} (a : Basis κ K V) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     {x : V} (hx : x ∈ locF 𝔭 (Submodule.span (𝓞 K) (Set.range a))) (i : κ) :
@@ -204,13 +200,13 @@ theorem repr_mem_pK_zero {κ : Type} (a : Basis κ K V) {𝔭 : Ideal (𝓞 F)} 
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Proceed by induction on `hx using Submodule.smul_induction_on' with`. Consider the case `smul r hr n hn`. Establish `h1 : algebraMap (𝓞 K) K r ∈ pK K 𝔭 k` using `LocF.le_locF 𝔭 _ ⟨r, hr, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Establish `h2` using `mul_mem_pK h𝔭 h1 (repr_mem_pK_zero a h𝔭 hn i)`. Rewrite using `[← algebraMap_smul K, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Simplify using `using h2`. Consider the case `add x _ y _ hx hy`. Rewrite using `[map_add, Finsupp.add_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pK K 𝔭 k).add_mem hx hy`. Introduce `hx`. Rewrite using `[← a.sum_repr x]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `h0 : a i ∈ extP K 𝔭 ^ 0 • locF 𝔭 (Submodule.span (𝓞 K) (Set.range a))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_zero_smul]`. Conclude with `basis_mem_locF a 𝔭 i`. Simplify using `using smul_mem_smul h𝔭 _ (hx i) h0`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_smul_span_iff {κ : Type} [Fintype κ] (a : Basis κ K V) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     (k : ℕ) (x : V) :
@@ -236,11 +232,11 @@ theorem mem_smul_span_iff {κ : Type} [Fintype κ] (a : Basis κ K V) {𝔭 : Id
     simpa using smul_mem_smul h𝔭 _ (hx i) h0
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hD i j`. Rewrite using `[LinearMap.toMatrix_apply]`. Conclude with `(mem_smul_span_iff a h𝔭 k _).1 (hD _ (basis_mem_locF a 𝔭 j)) i`. Introduce `hD x hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← a.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Establish `h1 : D (a j) ∈ extP K 𝔭 ^ k • locF 𝔭 (Submodule.span (𝓞 K) (Set.range a))` using `(mem_smul_span_iff a h𝔭 k _).2 fun i => by`. Rewrite using `[← LinearMap.toMatrix_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hD i j`. Simplify using `using smul_mem_smul h𝔭 _ (repr_mem_pK_zero a h𝔭 hx j) h1`.
+A detailed English derivation is pending.
 -/
 theorem mem_endL_iff {κ : Type} [Fintype κ] [DecidableEq κ] (a : Basis κ K V) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     (k : ℕ) (D : V →ₗ[K] V) :
@@ -262,11 +258,11 @@ theorem mem_endL_iff {κ : Type} [Fintype κ] [DecidableEq κ] (a : Basis κ K V
     simpa using smul_mem_smul h𝔭 _ (repr_mem_pK_zero a h𝔭 hx j) h1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hs i j`. Conclude with `hs _ (basis_mem_locF a 𝔭 i) _ (basis_mem_locF a 𝔭 j)`. Introduce `hs x hx y hy`. Rewrite using `[← a.sum_repr x, ← a.sum_repr y, map_sum]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul]`. Establish `h1` using `mul_mem_pK h𝔭 (repr_mem_pK_zero a h𝔭 hy j) (mul_mem_pK h𝔭 (star_mem_pK hF h𝔭 (repr_mem_pK_zero a h𝔭 hx i)) (hs i j))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[zero_add, zero_add]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem mem_sesqL_iff (hF : IsFixF K F) {κ : Type} [Fintype κ] (a : Basis κ K V)
     {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) (s : V →ₗ⋆[K] V →ₗ[K] K) :

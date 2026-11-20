@@ -19,39 +19,35 @@ noncomputable section
 namespace GlobalTheory.RigTorsTriv
 
 /- English proof (translation)
-Introduce `S A _ _ hA M hM hrig k hk hpow hfib`. Establish `key : ∀ {Y : Scheme.{0}} (f : Y ⟶ A.left), (∃ t : (M.pull f).Gen, t.IsGen) ↔ pull f (cls M hM) = 0` using `fun f => (cls_eq_zero_iff (pull_isLB hM f)).symm.trans (by rw [cls_pull hM f])`. Establish `hsurj : ∀ V : S.Opens, Function.Surjective (A.hom ∣_ V).appTop.hom` using `fun V => by`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Establish `h1` using `hG _ _ (Out.TLinPf.isAb_pullback V.ι A hA)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e` to `IsPullback.isoIsPullback _ _ (isPullback_morphismRestrict A.hom V) (IsPullback.of_hasPullback A.hom V.ι).flip`. Establish `he : e.hom ≫ pullback.snd A.hom V.ι = A.hom ∣_ V` using `IsPullback.isoIsPullback_hom_fst _ _ _ _`. Establish `hi : Function.Surjective e.hom.appTop.hom`. Establish `: IsIso (e.hom.app ⊤)` using `inferInstance`. Conclude with `(ConcreteCategory.bijective_of_isIso (e.hom.app ⊤)).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he, Scheme.Hom.comp_appTop, CommRingCat.hom_comp]`. Conclude with `hi.comp h1.2`. Establish `hc0 : pull (1 : 𝟙_ (Over S) ⟶ A).left (cls M hM) = 0` using `(key _).1 hrig`. Establish `hkM : k • cls M hM = 0`. Establish `h` using `(cls_eq_zero_iff (LB.isLB_linComb hM _ _)).2 hpow`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h` using `[cls_linComb hM]`. Simplify `h` using `[pull_id]`. Use `GlobalTheory.CubeGlue.triv_of_locally_triv hM A.hom (1 : 𝟙_ (Over S) ⟶ A).left (by simpa using Over.w (1 : 𝟙_ (Over S) ⟶ A)) hsurj hrig ?_` and prove the remaining obligations. Introduce `s`. Take `⟨R, j, hj, ⟨p, hp⟩, -⟩` from `Scheme.exists_affine_mem_range_and_range_subset (x := s) (U := ⊤) trivial`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `j' : Sp R ⟶ S` to `j`. Use `haveI : IsOpenImmersion j' := hj`. Set `A'` to `(Over.pullback j').obj A`. Establish `hA' : IsAbelianScheme A'` using `Out.TLinPf.isAb_pullback j' A hA`. Set `φ` to `pullback.fst A.hom j'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM' : (M.pull φ).IsLB` using `pull_isLB hM φ`. Establish `key' : ∀ {Y : Scheme.{0}} (f : Y ⟶ A'.left), (∃ t : ((M.pull φ).pull f).Gen, t.IsGen) ↔ pull (f ≫ φ) (cls M hM) = 0` using `fun f => (cls_eq_zero_iff (pull_isLB hM' f)).symm.trans (by rw [cls_pull hM' f, cls_pull hM φ, pull_comp])`. Establish `hone : (1 : 𝟙_ (Over (Sp R)) ⟶ A').left ≫ φ = j' ≫ (1 : 𝟙_ (Over S) ⟶ A).left`. Establish `h` using `GlobalTheory.TorsFrameInt.one_comm (isGrpPullback_pullback A j')`. Rewrite using `[Hom.one_def, Hom.one_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `hrig'` using `(key' _).2 (by rw [hone, pull_comp, hc0, map_zero])`. Establish `hk' : IsUnit (k : R)`. Establish `h` using `hk.map ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom.comp j'.appTop.hom)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hpow' : ∃ t : (GlobalTheory.UPel.HT.Hecke.lbPow (M.pull φ) k).Gen, t.IsGen`. Use `(cls_eq_zero_iff (LB.isLB_linComb hM' _ _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_linComb hM']`. Simplify using `[pull_id, cls_pull hM φ, ← map_nsmul, hkM]`. Set `P : PrimeSpectrum R` to `p`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : P.asIdeal.IsPrime := P.isPrime`. Set `F` to `AlgebraicClosure P.asIdeal.ResidueField`. Set `ψ : R →+* F` to `(algebraMap P.asIdeal.ResidueField F).comp (algebraMap R P.asIdeal.ResidueField)`. Establish `hfib' : ∃ t : ((M.pull φ).pull (pullback.fst A'.hom (spMap ψ))).Gen, t.IsGen`. Rewrite using `[key']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `(key _).1 (hfib F (spMap ψ ≫ j'))`. Establish `e : pullback.fst A'.hom (spMap ψ) ≫ φ = pullback.lift (pullback.fst A'.hom (spMap ψ) ≫ φ) (pullback.snd A'.hom (spMap ψ)) (by`. Establish `hc : pullback.fst A'.hom (spMap ψ) ≫ A'.hom = pullback.snd A'.hom (spMap ψ) ≫ spMap ψ` using `pullback.condition`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Conclude with `(congrArg (· ≫ j') hc).trans (Category.assoc _ _ _))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use the proof step `≫ pullback.fst A.hom (spMap ψ ≫ j') := (pullback.lift_fst _ _ _).symm`. Rewrite using `[e, pull_comp, h0, map_zero]`. Take `⟨r, hr, ht⟩` from `GlobalTheory.T.localTriviality_of_noetherian_descent (GlobalTheory.T.torsionLineBundle_trivial_basicOpen_of_trivial_fibre GlobalTheory.T.exists_generator_torsion_bundle_abelianScheme_sqZero) R A' hA' (M.pull φ) hM' hrig' k hk' hpow' F ψ hfib'`. Establish `hrp : P ∈ PrimeSpectrum.basicOpen r`. Introduce `hm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Apply `hr` to reduce the goal to its premises. Use `show algebraMap _ F (algebraMap R P.asIdeal.ResidueField r) = 0`. Rewrite using `[(Ideal.algebraMap_residueField_eq_zero).2 hm, map_zero]`. Use `⟨j' ''ᵁ PrimeSpectrum.basicOpen r, ⟨p, hrp, hp⟩, ?_⟩` and prove the remaining obligations. Use `(key _).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `D : (Sp R).Opens` to `PrimeSpectrum.basicOpen r`. Set `W` to `A.hom ⁻¹ᵁ (j' ''ᵁ D)`. Establish `h1 : Set.range (W.ι ≫ A.hom) ⊆ Set.range j'`. Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨q, -, hq⟩` from `y.2`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨q, hq⟩`. Set `m : W.toScheme ⟶ A'.left` to `pullback.lift W.ι (IsOpenImmersion.lift j' (W.ι ≫ A.hom) h1) (IsOpenImmersion.lift_fac _ _ _).symm`. Establish `h2 : Set.range m ⊆ Set.range (A'.hom ⁻¹ᵁ D).ι`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : m ≫ A'.hom = IsOpenImmersion.lift j' (W.ι ≫ A.hom) h1` using `pullback.lift_snd _ _ _`. Use `show (m ≫ A'.hom) y ∈ D`. Rewrite using `[e]`. Take `⟨q, hqD, hq⟩` from `y.2`. Establish `: IsOpenImmersion.lift j' (W.ι ≫ A.hom) h1 y = q` using `j'.isOpenEmbedding.injective (by`.
-
-Rewrite using `[← Scheme.Hom.comp_apply, IsOpenImmersion.lift_fac]`. Conclude with `hq.symm)`. Rewrite using `[this]`. Conclude with `hqD`. Establish `hfac : W.ι = IsOpenImmersion.lift (A'.hom ⁻¹ᵁ D).ι m h2 ≫ (A'.hom ⁻¹ᵁ D).ι ≫ φ`.
-
-Rewrite using `[← Category.assoc, IsOpenImmersion.lift_fac]`. Conclude with `(pullback.lift_fst _ _ _).symm`. Rewrite using `[hfac, pull_comp, (key' _).1 ht, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_of_geometricFibres : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (M : LB A.left), M.IsLB → (∃ t : (M.pull (1 : 𝟙_ (Over S) ⟶ A).left).Gen, t.IsGen) → ∀ k : ℕ, IsUnit ((k : Γ(S, ⊤))) → (∃ t : (GlobalTheory.UPel.HT.Hecke.lbPow M k).Gen, t.IsGen) → (∀ (K : Type) [Field K] [IsAlgClosed K] (y : Sp K ⟶ S), ∃ t : (M.pull (pullback.fst A.hom y)).Gen, t.IsGen) → ∃ t : M.Gen, t.IsGen := by
   intro S A _ _ hA M hM hrig k hk hpow hfib

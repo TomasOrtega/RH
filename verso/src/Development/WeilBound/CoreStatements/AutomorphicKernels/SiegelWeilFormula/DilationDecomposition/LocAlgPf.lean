@@ -20,7 +20,7 @@ open Matrix
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.parabolic_decomposition_upper_half_space n p hp`.
+A detailed English derivation is pending.
 -/
 theorem up_decomp_pf (p : GR n) (hp : (mR p).toBlocks₂₁ = 0) :
     ∃ (nb ma : GR n) (b a : Matrix (Fin n) (Fin n) ℂ), bᴴ = b ∧ IsUnit a.det ∧ mR nb = nU b ∧ mR ma = mLoc a ∧
@@ -28,14 +28,14 @@ theorem up_decomp_pf (p : GR n) (hp : (mR p).toBlocks₂₁ = 0) :
   GlobalTheory.T.parabolic_decomposition_upper_half_space n p hp
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.iteratedDeriv_gaussian_exponential_at_zero m n X v).2 r`.
+A detailed English derivation is pending.
 -/
 theorem fam_deriv_pf (m : ℕ) (X : Fin n → ℝ) (v : Fin m → Fin n → ℂ) (r : ℕ) :
     iteratedDeriv r (fun z => fam m X z v) 0 = fP ((dil (2 * Real.pi) X ^ r) 1) v :=
   (GlobalTheory.T.iteratedDeriv_gaussian_exponential_at_zero m n X v).2 r
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.iteratedDeriv_integral_gaussian_exponential m n X K hK hK1`.
+A detailed English derivation is pending.
 -/
 theorem fam_int_hol_pf (m : ℕ) (X : Fin n → ℝ) (K : (Fin m → Fin n → ℂ) → ℂ) (hK : Continuous K)
     (hK1 : ∀ v, ‖K v‖ ≤ 1) :
@@ -45,7 +45,7 @@ theorem fam_int_hol_pf (m : ℕ) (X : Fin n → ℝ) (K : (Fin m → Fin n → �
   GlobalTheory.T.iteratedDeriv_integral_gaussian_exponential m n X K hK hK1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.iteratedDeriv_eq_of_eq_on_real_segment f g ρ hρ hf hg hfg r`.
+A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_eq_of_real_pf {f g : ℂ → ℂ} {ρ : ℝ} (hρ : 0 < ρ) (hf : DifferentiableOn ℂ f (Metric.ball 0 ρ))
     (hg : DifferentiableOn ℂ g (Metric.ball 0 ρ)) (hfg : ∀ s : ℝ, |s| < ρ → f s = g s) (r : ℕ) :
@@ -53,14 +53,14 @@ theorem iteratedDeriv_eq_of_real_pf {f g : ℂ → ℂ} {ρ : ℝ} (hρ : 0 < ρ
   GlobalTheory.T.iteratedDeriv_eq_of_eq_on_real_segment f g ρ hρ hf hg hfg r
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.bruhat_cell_parabolic_unipotent_factorization n y hy`.
+A detailed English derivation is pending.
 -/
 theorem dcell_pf (y : GR n) (hy : ((mR y).toBlocks₂₂).det ≠ 0) :
     ∃ (p nbb : GR n) (c : Matrix (Fin n) (Fin n) ℂ), (mR p).toBlocks₂₁ = 0 ∧ cᴴ = c ∧ mR nbb = nbLoc c ∧ y = p * nbb :=
   GlobalTheory.T.bruhat_cell_parabolic_unipotent_factorization n y hy
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.holomorphic_parameter_integral_gaussian_bound m n Φ ρ C δ hρ hδ hd hc hb K hK hK1`.
+A detailed English derivation is pending.
 -/
 theorem hol_int_pf {m : ℕ} (Φ : ℂ → (Fin m → Fin n → ℂ) → ℂ) (ρ C δ : ℝ) (hρ : 0 < ρ) (hδ : 0 < δ)
     (hd : ∀ v, DifferentiableOn ℂ (fun z => Φ z v) (Metric.ball 0 ρ))
@@ -74,7 +74,7 @@ theorem hol_int_pf {m : ℕ} (Φ : ℂ → (Fin m → Fin n → ℂ) → ℂ) (�
   GlobalTheory.T.holomorphic_parameter_integral_gaussian_bound m n Φ ρ C δ hρ hδ hd hc hb K hK hK1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.fourier_injective_matrix_space m n s hs g hg hgi h0`.
+A detailed English derivation is pending.
 -/
 theorem ft_uniq_pf {m : ℕ} (s : ℂ) (hs : s ≠ 0) (g : (Fin m → Fin n → ℂ) → ℂ) (hg : Continuous g) (hgi : Integrable g)
     (h0 : ∀ u : Fin m → Fin n → ℂ, ∫ v, Complex.exp (2 * Real.pi * Complex.I *
@@ -82,37 +82,37 @@ theorem ft_uniq_pf {m : ℕ} (s : ℂ) (hs : s ≠ 0) (g : (Fin m → Fin n → 
   GlobalTheory.T.fourier_injective_matrix_space m n s hs g hg hgi h0
 
 /- English proof (translation)
-The claim follows from `@up_decomp_pf`.
+A detailed English derivation is pending.
 -/
 theorem up_decomp_closed : type_of% @up_decomp_pf := @up_decomp_pf
 
 /- English proof (translation)
-The claim follows from `@fam_deriv_pf`.
+A detailed English derivation is pending.
 -/
 theorem fam_deriv_closed : type_of% @fam_deriv_pf := @fam_deriv_pf
 
 /- English proof (translation)
-The claim follows from `@fam_int_hol_pf`.
+A detailed English derivation is pending.
 -/
 theorem fam_int_hol_closed : type_of% @fam_int_hol_pf := @fam_int_hol_pf
 
 /- English proof (translation)
-The claim follows from `@iteratedDeriv_eq_of_real_pf`.
+A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_eq_of_real_closed : type_of% @iteratedDeriv_eq_of_real_pf := @iteratedDeriv_eq_of_real_pf
 
 /- English proof (translation)
-The claim follows from `@dcell_pf`.
+A detailed English derivation is pending.
 -/
 theorem dcell_closed : type_of% @dcell_pf := @dcell_pf
 
 /- English proof (translation)
-The claim follows from `@hol_int_pf`.
+A detailed English derivation is pending.
 -/
 theorem hol_int_closed : type_of% @hol_int_pf := @hol_int_pf
 
 /- English proof (translation)
-The claim follows from `@ft_uniq_pf`.
+A detailed English derivation is pending.
 -/
 theorem ft_uniq_closed : type_of% @ft_uniq_pf := @ft_uniq_pf
 

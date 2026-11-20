@@ -9,7 +9,7 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.Ar.RegFin
 
 /- English proof (translation)
-Introduce `x j y hy w`. Distinguish the cases in `hw : w = 0`. Substitute `hw` using the available equality. Rewrite using `[levi_zero]`. Conclude with `(h x j y hy w hw).le`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPsh_of_posPot {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Θ : LocPot X) (h : IsPosPot A Θ) : IsPsh A Θ := by
@@ -19,7 +19,7 @@ theorem isPsh_of_posPot {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtl
   · exact (h x j y hy w hw).le
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.CompanionTheory.Ar.Giv.log_inv_bounds ht hte`. Establish `hl : 0 < Real.log (1 / t)` using `lt_of_lt_of_le (Real.exp_pos 1) h1`. Use `⟨div_nonneg (by linarith) hl.le, ?_⟩` and prove the remaining obligations. Rewrite using `[div_le_one hl]`. Use `Real.log_le_sub_one_of_pos hl` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -34,7 +34,7 @@ theorem quot_mem_unit {t : ℝ} (ht : 0 < t) (hte : t ≤ Real.exp (-Real.exp 1)
   linarith
 
 /- English proof (translation)
-Establish `ht'` using `ht.trans_le htt`. Establish `h1` using `(GlobalTheory.CompanionTheory.Ar.Giv.log_inv_bounds ht' hte).1`. Establish `hle : Real.log (1 / t') ≤ Real.log (1 / t)` using `Real.log_le_log (by positivity) (one_div_le_one_div_of_le ht htt)`. Conclude with `Real.log_div_self_antitoneOn (Set.mem_Ici.2 h1) (Set.mem_Ici.2 (h1.trans hle)) hle`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem quot_mono {t t' : ℝ} (ht : 0 < t) (htt : t ≤ t') (hte : t' ≤ Real.exp (-Real.exp 1)) :
     Real.log (Real.log (1 / t)) / Real.log (1 / t) ≤
@@ -46,53 +46,51 @@ theorem quot_mono {t t' : ℝ} (ht : 0 < t) (htt : t ≤ t') (hte : t' ≤ Real.
   exact Real.log_div_self_antitoneOn (Set.mem_Ici.2 h1) (Set.mem_Ici.2 (h1.trans hle)) hle
 
 /- English proof (translation)
-Introduce `e X _ A B Θ L th s ph C₅ K Cl t₀ f F hΘ hΘp hth hs hcov hph hK hCl ht₀ ht₀e hF hf hmono`. Establish `hΘpsh` using `isPsh_of_posPot A Θ hΘp`. Take `⟨C, hCdef⟩ : ∃ C : ℝ, C = Cl * (1 + K) + |C₅| + 1` from `⟨_, rfl⟩`. Establish `hC5` using `abs_nonneg C₅`. Establish `hClK : 0 ≤ Cl * K` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC1 : 1 ≤ C` using `by nlinarith`. Establish `hCK : Cl * (1 + K) ≤ C` using `by linarith`. Establish `hCl' : Cl ≤ C` using `by nlinarith`. Establish `hKCl : K * Cl ≤ C` using `by nlinarith`. Establish `hr : ∀ y, Real.exp 1 ≤ rW L s y` using `rW_ge L s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he1 : (1 : ℝ) ≤ Real.exp 1` using `by linarith [Real.add_one_le_exp (1 : ℝ)]`. Establish `hpt : ∀ y, ∃ j, y ∈ chartBall B j (5 / 4)` using `fun y => by`. Take `⟨j, hj⟩` from `hcov y`. Conclude with `⟨j, chartBall_mono B j (by norm_num) hj⟩`. Establish `ht₀1 : t₀ < 1` using `lt_of_le_of_lt ht₀e (by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `Real.exp_lt_exp.2 (show -Real.exp 1 < 0 by linarith [Real.exp_pos 1])` as an intermediate fact. Rewrite using `[Real.exp_zero] at this)` and apply the resulting hypothesis. Use `⟨C, ht₀, ht₀1, fun t ht htt => ?_⟩` and prove the remaining obligations. Establish `hte` using `htt.trans ht₀e`. Take `⟨hl1, hll⟩` from `GlobalTheory.CompanionTheory.Ar.Giv.log_inv_bounds ht hte`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hg0, hg1⟩` from `quot_mem_unit ht hte`. Take `⟨g, hgdef⟩ : ∃ g : ℝ, g = Real.log (Real.log (1 / t)) / Real.log (1 / t)` from `⟨_, rfl⟩`. Rewrite `hg0`, `hg1` using `[← hgdef]`. Establish `hεC : epsT C t = C * g` using `by rw [GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul, hgdef]`. Establish `hεl : epsT Cl t = Cl * g` using `by rw [GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul, hgdef]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hsm, hpsh, hFf⟩` from `hF t ht htt`. Establish `hKg : K * (Cl * g) ≤ K * Cl`. Use `mul_le_mul_of_nonneg_left hg1 (by linarith : (0 : ℝ) ≤ Cl)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hKg0 : 0 ≤ K * (Cl * g)` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hFC : ∀ y, F t y ≤ Cl * (1 + K)` using `fun y => by`. Take `⟨j, hj⟩` from `hpt y`. Establish `h1` using `(hFf j y hj).2`. Establish `h2` using `(hf t ht htt j y hj).1`. Rewrite `h1` using `[hεl]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `⟨hsm, fun y => (hFC y).trans hCK, fun y hy => ?_, fun y => ?_, ?_, fun y hy hyr => ?_, fun y hy => ?_, fun t' htt' ht' y => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hpt y`. Conclude with `((hf t ht htt j y hj).2.2 hy).1.trans (hFf j y hj).1`. Take `⟨j, hj⟩` from `hpt y`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `(hFf j y hj).1`. Establish `h2` using `(hf t ht htt j y hj).2.1`. Establish `: Cl * Real.log (Real.log (1 / t)) ≤ C * Real.log (Real.log (1 / t))` using `mul_le_mul_of_nonneg_right hCl' (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `GlobalTheory.CompanionTheory.Ar.Giv.isPsh_rsmul_mono A Θ th (F t) hΘ hΘpsh hth hsm ?_ hpsh` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hεl, hεC]`. Use `mul_le_mul_of_nonneg_right hKCl hg0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Take `⟨j, hj⟩` from `hpt y`. Establish `h1` using `(hFf j y hj).2`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `((hf t ht htt j y hj).2.2 hy).2 hyr`. Rewrite `h1` using `[hεl]`. Rewrite using `[hεC]`. Use `mul_le_mul_of_nonneg_right hKCl hg0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `hpt y`. Establish `h1` using `(hFf j y hj).2`. Establish `hfj` using `hf t ht htt j y hj`. Rewrite `h1` using `[hεl]`. Rewrite using `[hεC]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hry` using `hr y`. Establish `hrpos : 0 < rW L s y` using `by linarith`. Establish `ht3 : 0 ≤ t ^ ((1 : ℝ) / 3)` using `by positivity`. Establish `hCg0 : 0 ≤ C * g` using `by positivity`. Distinguish the cases in `hyr : rW L s y ≤ Real.log (1 / t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h2` using `(hfj.2.2 hy).2 hyr`. Establish `h3 : C * g ≤ C * g * rW L s y` using `le_mul_of_one_le_right hCg0 (by linarith)`. Use `mul_le_mul_of_nonneg_right hKCl hg0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `push_neg at hyr`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlog : Real.log (rW L s y) / rW L s y ≤ g`. Rewrite using `[hgdef]`. Conclude with `Real.log_div_self_antitoneOn (Set.mem_Ici.2 hl1) (Set.mem_Ici.2 hry) hyr.le`. Establish `hlog' : Real.log (rW L s y) ≤ g * rW L s y`. Rewrite `hlog` using `[div_le_iff₀ hrpos]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlpos : 0 < Real.log (1 / t)` using `by linarith [Real.exp_pos 1]`. Establish `hgr : 1 ≤ g * rW L s y`. Establish `e1 : g * rW L s y = Real.log (Real.log (1 / t)) * (rW L s y / Real.log (1 / t))`. Rewrite using `[hgdef]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : 1 ≤ rW L s y / Real.log (1 / t)`. Rewrite using `[le_div_iff₀ hlpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e1]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hlr0 : 0 ≤ Real.log (rW L s y)` using `Real.log_nonneg (by linarith)`. Establish `hph1` using `hph y hy`. Establish `hph2 : -|C₅| * Real.log (rW L s y) ≤ -C₅ * Real.log (rW L s y)` using `mul_le_mul_of_nonneg_right (by linarith [le_abs_self C₅]) hlr0`. Establish `h4 : |C₅| * Real.log (rW L s y) ≤ |C₅| * (g * rW L s y)` using `mul_le_mul_of_nonneg_left hlog' hC5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : Cl * (1 + K) ≤ Cl * (1 + K) * (g * rW L s y)` using `le_mul_of_one_le_right (by positivity) hgr`. Establish `hCg : C * g * rW L s y = (Cl * (1 + K) + |C₅| + 1) * (g * rW L s y)`. Rewrite using `[hCdef]`. Expand and normalize the polynomial expressions, which then agree. Use `hFC y` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `ht'0 : 0 < t'` using `ht.trans_le htt'`. Establish `hte'` using `ht'.trans ht₀e`. Take `⟨hg0', hg1'⟩` from `quot_mem_unit ht'0 hte'`. Establish `hgm` using `quot_mono ht htt' hte'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨g', hgdef'⟩ : ∃ g' : ℝ, g' = Real.log (Real.log (1 / t')) / Real.log (1 / t')` from `⟨_, rfl⟩`. Rewrite `hg0'`, `hg1'` using `[← hgdef']`. Rewrite `hgm` using `[← hgdef, ← hgdef']`. Establish `hεC' : epsT C t' = C * g'` using `by rw [GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul, hgdef']`. Establish `hεl' : epsT Cl t' = Cl * g'` using `by rw [GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul, hgdef']`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `hpt y`. Establish `h1` using `(hFf j y hj).2`. Establish `h2` using `hmono t t' ht htt' ht' j y hj`. Establish `h3` using `((hF t' ht'0 ht').2.2 j y hj).1`. Rewrite `h1` using `[hεl]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[hεl']`. Rewrite using `[hεC']`. Establish `h4 : K * (Cl * g) ≤ K * (Cl * g')` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hgm (by linarith)) hK.le`. Establish `h5 : Cl * (1 + K) * g' ≤ C * g'` using `mul_le_mul_of_nonneg_right hCK hg0'`. Establish `h6 : C * g' ≤ C * (C * g')` using `le_mul_of_one_le_left (by positivity) hC1`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isRegFamily_of_glue : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A B : FinHolAtlas e X) (Θ L th : LocPot X) (s : X → X → ℂ) (ph : X → ℝ) (C₅ K Cl t₀ : ℝ) (f : ℝ → Fin B.n → X → ℝ) (F : ℝ → X → ℝ), IsPotential A Θ → IsPosPot A Θ → IsPotential A th → (∀ y, logNormSec L s y ≤ 0) → (∀ y, ∃ j, y ∈ chartBall B j 1) → (∀ y ∉ bdry s, -C₅ * Real.log (rW L s y) ≤ ph y) → 0 < K → 1 ≤ Cl → 0 < t₀ → t₀ ≤ Real.exp (-Real.exp 1) → (∀ t, 0 < t → t ≤ t₀ → A.Smooth (F t) ∧ IsPsh A (th + LocPot.ofFun (F t) + Θ.rsmul (K * epsT Cl t)) ∧ ∀ j, ∀ y ∈ chartBall B j (5 / 4), f t j y ≤ F t y ∧ F t y ≤ f t j y + K * epsT Cl t) → (∀ t, 0 < t → t ≤ t₀ → ∀ j, ∀ y ∈ chartBall B j (5 / 4), f t j y ≤ Cl ∧ -Cl * Real.log (Real.log (1 / t)) ≤ f t j y ∧ (y ∉ bdry s → ph y ≤ f t j y ∧ (rW L s y ≤ Real.log (1 / t) → f t j y ≤ ph y + t ^ ((1 : ℝ) / 3)))) → (∀ t t', 0 < t → t ≤ t' → t' ≤ t₀ → ∀ j, ∀ y ∈ chartBall B j (5 / 4), f t j y ≤ f t' j y + epsT Cl t') → ∃ C : ℝ, IsRegFamily A Θ L s th ph F C t₀ := by
   intro e X _ A B Θ L th s ph C₅ K Cl t₀ f F hΘ hΘp hth hs hcov hph hK hCl ht₀ ht₀e hF hf hmono

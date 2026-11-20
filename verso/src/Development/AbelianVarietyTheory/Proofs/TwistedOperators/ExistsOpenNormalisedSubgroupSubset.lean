@@ -10,15 +10,13 @@ open scoped ENNReal
 namespace GlobalTheory.SmGL
 
 /- English proof (translation)
-Introduce `U hU`. Take `⟨_, _⟩` from `SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `: NonarchimedeanAddGroup k` using `⟨fun V hV => by`. Take `⟨s, hs⟩` from `SplitWeil.exists_cball_subset hV`. Conclude with `⟨⟨⟨⟨⟨SplitWeil.cball s, SplitWeil.add_mem_cball⟩, by simp [SplitWeil.cball]⟩, SplitWeil.neg_mem_cball⟩, SplitWeil.isOpen_cball s⟩, hs⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `: TotallyDisconnectedSpace k` using `inferInstance`. Establish `: TotallyDisconnectedSpace (Matrix n n k)` using `inferInstanceAs (TotallyDisconnectedSpace (n → n → k))`. Establish `: TotallyDisconnectedSpace (GL n k)` using `⟨(SplitFlip.isEmbedding_val_GL (k := k) (n := n)).isTotallyDisconnected (isTotallyDisconnected_of_totallyDisconnectedSpace _)⟩`. Establish `: CompactSpace (KO k n)` using `isCompact_iff_compactSpace.1 (SplitFlip.isCompact_KO (k := k) (n := n))`. Establish `hV : IsOpen ((fun x : KO k n => (x : GL n k)) ⁻¹' interior U)` using `isOpen_interior.preimage continuous_subtype_val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : KO k n) ∈ (fun x : KO k n => (x : GL n k)) ⁻¹' interior U` using `mem_interior_iff_mem_nhds.2 hU`. Take `⟨H, hH⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hV h1`. Use `⟨H.toSubgroup.map (KO k n).subtype, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(SplitFlip.isOpen_KO (k := k) (n := n)).isOpenMap_subtype_val _ H.isOpen`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Conclude with `interior_subset (hH hy)`. Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `y.2`. Introduce and unpack `x hx _ ⟨y, hy, rfl⟩`. Establish `hc : (⟨x, hx⟩ : KO k n) * y * (⟨x, hx⟩ : KO k n)⁻¹ ∈ H.toSubgroup` using `H.isNormal'.conj_mem y hy (⟨x, hx⟩ : KO k n)`.
-
-Conclude with `Subgroup.mem_map_of_mem (KO k n).subtype hc`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_open_normalised_subgroup_subset (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] :

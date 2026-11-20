@@ -17,7 +17,7 @@ def ext {ξ : Spec (CommRingCat.of Ω) ⟶ X} {k : Type} [Field k] (i : Ω →+*
     Over.mk (spMap i ≫ ξ) ⟶ Over.mk ξ := Over.homMk (spMap i) rfl
 
 /- English proof (translation)
-Set `i` to `algebraMap Ω (AlgebraicClosure Ω)`. Set `c : (AlgebraicClosure Ω)ˣ` to `Units.map i.toMonoidHom (e x g)`. Establish `h1` using `(h.weil x g hx hg _ i (ext i ≫ x) (ext i ≫ g) c rfl rfl).2 rfl`. Establish `h2` using `(h'.weil x g hx hg _ i (ext i ≫ x) (ext i ≫ g) c rfl rfl).1 h1`. Conclude with `Units.ext (i.injective h2)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unique {G : Over X} [GrpObj G] {L : LB G.left} {ξ : Spec (CommRingCat.of Ω) ⟶ X} {n : ℕ}
     {e e' : (Over.mk ξ ⟶ G) → (Over.mk ξ ⟶ G) → Ωˣ} (h : GenWeil G L ξ n e) (h' : GenWeil G L ξ n e')
@@ -29,9 +29,9 @@ theorem unique {G : Over X} [GrpObj G] {L : LB G.left} {ξ : Spec (CommRingCat.o
   exact Units.ext (i.injective h2)
 
 /- English proof (translation)
-Introduce `h`. Set `i` to `algebraMap Ω (AlgebraicClosure Ω)`. Establish `key : ∀ c : (AlgebraicClosure Ω)ˣ, (c : AlgebraicClosure Ω) = i (e 1 1)` using `fun c => (h.weil 1 1 (one_pow n) (one_pow n) _ i (ext i ≫ 1) (ext i ≫ 1) c rfl rfl).1 (hL _ _ _ _)`. Take `⟨a, ha⟩` from `Infinite.exists_notMem_finset ({0, 1} : Finset (AlgebraicClosure Ω))`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at ha`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `ha.2 ((key (Units.mk0 a ha.1)).trans (key 1).symm)`.
+A detailed English derivation is pending.
 -/
 theorem not_of_all {G : Over X} [GrpObj G] {L : LB G.left} {ξ : Spec (CommRingCat.of Ω) ⟶ X} {n : ℕ}
     (hL : ∀ (T : Over X) (x y : T ⟶ G) (c : Γ(T.left, ⊤)ˣ), WeilIs G L n x y c)
@@ -46,7 +46,7 @@ theorem not_of_all {G : Over X} [GrpObj G] {L : LB G.left} {ξ : Spec (CommRingC
   exact ha.2 ((key (Units.mk0 a ha.1)).trans (key 1).symm)
 
 /- English proof (translation)
-Use `ext`. Conclude with `congrArg (fun f => f.hom (u : Ω)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom i)).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem unitOn_ext {k : Type} [Field k] (i : Ω →+* k) (u : Ωˣ) :
     Units.map (spMap i).appTop.hom.toMonoidHom (unitOn u) = unitOn (Units.map i.toMonoidHom u) := by
@@ -54,45 +54,43 @@ theorem unitOn_ext {k : Type} [Field k] (i : Ω →+* k) (u : Ωˣ) :
   exact congrArg (fun f => f.hom (u : Ω)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom i)).symm
 
 /- English proof (translation)
-The claim follows from `(Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.symm.toMulEquiv).bijective`.
+A detailed English derivation is pending.
 -/
 theorem unitOn_bij {R : Type} [CommRing R] : Function.Bijective (unitOn (R := R)) :=
   (Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.symm.toMulEquiv).bijective
 
 /- English proof (translation)
-The claim follows from `map_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem unitOn_mul {R : Type} [CommRing R] (a b : Rˣ) : unitOn (a * b) = unitOn a * unitOn b := map_mul _ _ _
 
 /- English proof (translation)
-The claim follows from `map_one _`.
+A detailed English derivation is pending.
 -/
 theorem unitOn_one {R : Type} [CommRing R] : unitOn (1 : Rˣ) = 1 := map_one _
 
 /- English proof (translation)
-Establish `hnK : (n : K) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Use `haveI : IsCommMonObj P.A := P.isAb.comm`. Take `⟨hu, hm, -, -⟩` from `GlobalTheory.PairingLawZeroCounterexample.laws.1 _ P n (baseOver _)`. Establish `hex : ∀ x g : baseOver _ ⟶ P.A, ∃ c : Kˣ, x ^ n = 1 → g ^ n = 1 → WeilIs P.A P.L n x g (unitOn c)`. Introduce `x g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : x ^ n = 1 ∧ g ^ n = 1`. Take `⟨c, hc, -⟩` from `hu x g h.1 h.2`. Take `⟨d, rfl⟩` from `(unitOn_bij (R := K)).2 c`. Conclude with `⟨d, fun _ _ => hc⟩`. Conclude with `⟨1, fun a b => (h ⟨a, b⟩).elim⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose e he using hex`. Establish `huq : ∀ (x g : baseOver _ ⟶ P.A) (c : Kˣ), x ^ n = 1 → g ^ n = 1 → WeilIs P.A P.L n x g (unitOn c) → c = e x g` using `fun x g c hx hg h => (unitOn_bij (R := K)).1 ((hu x g hx hg).unique h (he x g hx hg))`. Establish `hmulT : ∀ x y : baseOver _ ⟶ P.A, x ^ n = 1 → y ^ n = 1 → (x * y) ^ n = 1` using `fun x y hx hy => by`. Rewrite using `[mul_pow, hx, hy, _root_.mul_one]`. Establish `hl : ∀ x x' g, x ^ n = 1 → x' ^ n = 1 → g ^ n = 1 → e (x * x') g = e x g * e x' g` using `fun x x' g a b c => (huq _ _ _ (hmulT _ _ a b) c (by rw [unitOn_mul]; exact hm _ _ _ _ _ (he x g a c) (he x' g b c))).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ∀ x g g', x ^ n = 1 → g ^ n = 1 → g' ^ n = 1 → e x (g * g') = e x g * e x g'` using `fun x g g' a b c => (huq _ _ _ a (hmulT _ _ b c) (by rw [unitOn_mul]; exact GlobalTheory.PairingLawZeroCounterexample.mul_right P n (he x g a b) (he x g' a c))).symm`. Establish `hnl : ∀ x, x ^ n = 1 → (∀ g, g ^ n = 1 → e x g = 1) → x = 1` using `fun x hx h => GlobalTheory.PairingLawZeroCounterexample.laws.2.1 K P n hnK x hx fun y hy => by`. Use `he x y hx hy` as an intermediate fact. Rewrite `this` using `[h y hy, unitOn_one]`. Then use the resulting hypothesis. Establish `hnr : ∀ g, g ^ n = 1 → (∀ x, x ^ n = 1 → e x g = 1) → g = 1` using `fun g hg h => GlobalTheory.PairingLawZeroCounterexample.laws.2.1 K P n hnK g hg fun y hy => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `he y g hy hg` as an intermediate fact. Rewrite `this` using `[h y hy, unitOn_one]`. Simplify using `using GlobalTheory.PairingLawZeroCounterexample.skew P n this`. Establish `hfin : Finite {x : baseOver _ ⟶ P.A // x ^ n = 1}`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Rewrite using `[show Nat.card {x : baseOver _ ⟶ P.A // x ^ n = 1} = _ from (GlobalTheory.MulLawTest.mulN _ P n hn).2.2.2.2 K (𝟙 _) hnK]`. Check the signs of the components of the expression. Use `⟨e, hfin, hl, hr, ?_, hnr, ?_⟩` and prove the remaining obligations. Introduce `χ hχ`. Set `T : Subgroup (baseOver (Spec (CommRingCat.of K)) ⟶ P.A)` to `(powMonoidHom n).ker`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Finite T := hfin`. Set `ch : T → (T →* Kˣ)` to `fun x => MonoidHom.mk' (fun g => e x g) fun g g' => hr _ _ _ x.2 g.2 g'.2`. Set `Φ : T →* (T →* Kˣ)` to `MonoidHom.mk' ch fun x x' => by`. Use extensionality with `g : 1`. Conclude with `hl _ _ _ x.2 x'.2 g.2`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hinj : Function.Injective Φ` using `(injective_iff_map_eq_one Φ).2 fun x hx => Subtype.ext (hnl x x.2 fun g hg => DFunLike.congr_fun hx ⟨g, hg⟩)`. Use `haveI : NeZero ((Monoid.exponent T : ℕ) : K) := ⟨Nat.cast_ne_zero.2 Monoid.exponent_ne_zero_of_finite⟩`. Establish `hcard` using `CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity T K`. Use `haveI : Finite (T →* Kˣ) := Nat.finite_of_card_ne_zero (hcard ▸ Nat.card_pos.ne')`. Establish `hbij` using `hinj.bijective_of_nat_card_le hcard.le`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `hbij.2 (MonoidHom.mk' (fun g : T => χ g) fun g g' => hχ _ _ g.2 g'.2)`. Conclude with `⟨x, x.2, fun g hg => (DFunLike.congr_fun hx ⟨g, hg⟩).symm⟩`. Introduce `x g hx hg k _ _ i xk gk c hxk hgk`. Take `rfl : xk = ext i ≫ x` from `Over.OverMorphism.ext hxk`. Take `rfl : gk = ext i ≫ g` from `Over.OverMorphism.ext hgk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp` using `(GlobalTheory.weilIs_alternating_skew_natural GlobalTheory.laws_without_cohomology.1 GlobalTheory.PairingLawZeroCounterexample.lifts _ P n _).2.2 _ (ext i) x g _ (he x g hx hg)`. Establish `hp' : WeilIs P.A P.L n (ext i ≫ x) (ext i ≫ g) (unitOn (Units.map i.toMonoidHom (e x g)))` using `unitOn_ext i (e x g) ▸ hp`. Establish `hx' : (ext i ≫ x) ^ n = 1` using `by rw [← MonObj.comp_pow, hx, MonObj.comp_one]`. Establish `hg' : (ext i ≫ g) ^ n = 1` using `by rw [← MonObj.comp_pow, hg, MonObj.comp_one]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Use `(unitOn_bij (R := k)).1 (((GlobalTheory.PairingLawZeroCounterexample.laws.1 _ P n _).1 _ _ hx' hg').unique h hp')` as an intermediate fact. Rewrite using `[this]`. Both sides reduce to the same expression. Introduce `h`.
-
-Take `rfl : c = Units.map i.toMonoidHom (e x g)` from `Units.ext h`. Conclude with `hp'`.
+A detailed English derivation is pending.
 -/
 theorem exists_of_polAV (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (P : PolAV (Spec (CommRingCat.of K)))
     (n : ℕ) (hn : 1 ≤ n) : ∃ e, GenWeil P.A P.L (𝟙 (Spec (CommRingCat.of K))) n e := by
@@ -167,9 +165,9 @@ theorem exists_of_polAV (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (P : P
       exact hp'
 
 /- English proof (translation)
-Take `⟨P, g, hP, hg, hg2⟩` from `GlobalTheory.PairingLawZeroCounterexample.exists_order_two ℂ (by norm_num)`. Take `⟨e, he⟩` from `exists_of_polAV ℂ P 2 (by norm_num)`. Use `mt (he.nondeg g hg2) hg` as an intermediate fact. Use `push Not at this`. Take `⟨x, hx, hne⟩` from `this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨P, e, hP, he, x, g, hx, hg2, hne⟩`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial : ∃ (P : PolAV (Spec (CommRingCat.of ℂ))) (e : _),
     P.g = 1 ∧ GenWeil P.A P.L (𝟙 (Spec (CommRingCat.of ℂ))) 2 e ∧ ∃ x g, x ^ 2 = 1 ∧ g ^ 2 = 1 ∧ e x g ≠ 1 := by
@@ -181,7 +179,7 @@ theorem nontrivial : ∃ (P : PolAV (Spec (CommRingCat.of ℂ))) (e : _),
   exact ⟨P, e, hP, he, x, g, hx, hg2, hne⟩
 
 /- English proof (translation)
-Take `⟨P, e, -, he, x, g, hx, hg, hne⟩` from `nontrivial`. Conclude with `⟨P, fun h => hne (unique he h hx hg)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem not_const : ∃ P : PolAV (Spec (CommRingCat.of ℂ)),
     ¬ GenWeil P.A P.L (𝟙 (Spec (CommRingCat.of ℂ))) 2 fun _ _ => 1 := by
@@ -189,7 +187,7 @@ theorem not_const : ∃ P : PolAV (Spec (CommRingCat.of ℂ)),
   exact ⟨P, fun h => hne (unique he h hx hg)⟩
 
 /- English proof (translation)
-The claim follows from `not_of_all (fun _ x y c => GlobalTheory.ThetaGroupTest.weilIs_noCharts _ x y c) e`.
+A detailed English derivation is pending.
 -/
 theorem not_noCharts {G : Over X} [GrpObj G] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {n : ℕ}
     (e : (Over.mk ξ ⟶ G) → (Over.mk ξ ⟶ G) → Ωˣ) : ¬ GenWeil G ⟨PEmpty, PEmpty.elim, fun i => i.elim⟩ ξ n e :=

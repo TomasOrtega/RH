@@ -21,7 +21,7 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.SigBlockSum
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.conjTranspose]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma cT_eq_conjTranspose {m p : Type} (M : Matrix m p ℂ) :
     Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ := by
@@ -30,7 +30,7 @@ lemma cT_eq_conjTranspose {m p : Type} (M : Matrix m p ℂ) :
 def sgn (p q : ℕ) : Fin p ⊕ Fin q → ℂ := Sum.elim (fun _ => 1) (fun _ => -1)
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; rcases i with i | i <;> rcases j with j | j <;>`. Apply the tactic sequence `simp [sgn, Matrix.one_apply, Matrix.diagonal_apply] <;> split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma fromBlocks_one_neg_one (p q : ℕ) :
     (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = Matrix.diagonal (sgn p q) := by
@@ -38,7 +38,7 @@ lemma fromBlocks_one_neg_one (p q : ℕ) :
     simp [sgn, Matrix.one_apply, Matrix.diagonal_apply] <;> split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hG : G = (G.reindex e e).submatrix e e` using `by ext i j; simp`. Rewrite using `[hG, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, h, fromBlocks_one_neg_one]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma rows_reindex {n : Type} [Fintype n] [DecidableEq n] {p q : ℕ} (G : Matrix n n ℂ) (e : n ≃ Fin p ⊕ Fin q)
     (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)
@@ -54,9 +54,9 @@ def sortCols (pa qa pb qb : ℕ) :
   (Equiv.sumCongr finSumFinEquiv.symm finSumFinEquiv.symm).trans (Equiv.sumSumSumComm _ _ _ _)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Break down `x with i | i` into its components or cases. Apply the tactic sequence `rcases h : (finSumFinEquiv.symm i : Fin pa ⊕ Fin pb) with k | k <;>`. Simplify using `[sortCols, sgn, h]`. Apply the tactic sequence `rcases h : (finSumFinEquiv.symm i : Fin qa ⊕ Fin qb) with k | k <;>`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[sortCols, sgn, h]`.
+Simplify using the standard rewrite rules.
 -/
 lemma sgn_sortCols (pa qa pb qb : ℕ) :
     Sum.elim (sgn pa qa) (sgn pb qb) ∘ sortCols pa qa pb qb = sgn (pa + pb) (qa + qb) := by
@@ -68,21 +68,19 @@ lemma sgn_sortCols (pa qa pb qb : ℕ) :
       simp [sortCols, sgn, h]
 
 /- English proof (translation)
-Introduce `a b d e GA GB pa qa pb qb κ hκ hA hB`. Take `⟨eA, PA, hPA⟩` from `hA`. Take `⟨eB, PB, hPB⟩` from `hB`. Rewrite `hPA`, `hPB` using `[cT_eq_conjTranspose]`. Establish `hQA` using `rows_reindex GA eA _ hPA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hQB` using `rows_reindex GB eB _ hPB`. Use `set QA := (PA : Matrix (Fin pa ⊕ Fin qa) (Fin pa ⊕ Fin qa) ℂ).submatrix eA id`. Use `set QB := (PB : Matrix (Fin pb ⊕ Fin qb) (Fin pb ⊕ Fin qb) ℂ).submatrix eB id`. Establish `hca : a = pa + qa` using `by simpa using Fintype.card_congr eA`. Establish `hcb : b = pb + qb` using `by simpa using Fintype.card_congr eB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hcd : a + b = d` using `by simpa using Fintype.card_congr e`. Set `τ` to `sortCols pa qa pb qb`. Set `Q0 : Matrix (Fin a ⊕ Fin b) ((Fin pa ⊕ Fin qa) ⊕ (Fin pb ⊕ Fin qb)) ℂ` to `Matrix.fromBlocks QA 0 0 QB`. Set `Q : Matrix (Fin d) (Fin (pa + pb) ⊕ Fin (qa + qb)) ℂ` to `Q0.submatrix e.symm τ`. Establish `hQ : Qᴴ * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e GA GB * Q = Matrix.fromBlocks 1 0 0 (-1)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : Q0ᴴ * Matrix.fromBlocks GA 0 0 GB * Q0 = Matrix.diagonal (Sum.elim (sgn pa qa) (sgn pb qb))`. Simplify using `only [Q0, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply]`. Simplify using `[hQA, hQB, Matrix.fromBlocks_diagonal]`. Establish `hb : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e GA GB = (Matrix.fromBlocks GA 0 0 GB).submatrix e.symm e.symm` using `rfl`. Rewrite using `[hb, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, h0, Matrix.submatrix_diagonal_equiv, sgn_sortCols, fromBlocks_one_neg_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨by omega, ((((Real.sqrt κ)⁻¹ : ℝ) : ℂ)) • Q.map star, ?_⟩` and prove the remaining obligations. Use `set c : ℂ := (((Real.sqrt κ)⁻¹ : ℝ) : ℂ)`. Establish `h1 : (c • Q.map star)ᵀ = c • Qᴴ`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h2 : (c • Q.map star).map star = c • Q`. Use extensionality with `i j`. Simplify using `[c, Complex.conj_ofReal]`. Establish `h3 : c * (κ : ℂ) * c = 1`. Establish `hs : Real.sqrt κ ≠ 0` using `(Real.sqrt_pos.2 hκ).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: (Real.sqrt κ)⁻¹ * κ * (Real.sqrt κ)⁻¹ = 1` using `by field_simp; nlinarith [Real.mul_self_sqrt hκ.le, Real.sq_sqrt hκ.le]`. Simplify using `only [c]`. Conclude with `this` after adjusting the coercions. Rewrite using `[h1, h2]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, hQ]`.
-
-Use `one_smul ℂ (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin (pa + pb) ⊕ Fin (qa + qb)) (Fin (pa + pb) ⊕ Fin (qa + qb)) ℂ) using 2` and compare the differences between its conclusion and the goal. Take the linear combination `h3`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hasSig_smul_blk : ∀ {a b d : ℕ} (e : Fin a ⊕ Fin b ≃ Fin d) (GA : Matrix (Fin a) (Fin a) ℂ) (GB : Matrix (Fin b) (Fin b) ℂ) {pa qa pb qb : ℕ} {κ : ℝ},
     0 < κ → Formalism.UG.HasSignature GA pa qa → Formalism.UG.HasSignature GB pb qb →

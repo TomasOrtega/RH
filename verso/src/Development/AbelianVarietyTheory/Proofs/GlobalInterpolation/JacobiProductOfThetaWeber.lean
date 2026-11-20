@@ -15,9 +15,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber
 namespace GlobalTheory.ThetaWeberRoad
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hTW`. Unfold `JacobiProduct`. Rewrite using `[h1, h2, h3]`. Establish `hs : ((Real.sqrt 2 : ℝ) : ℂ) ^ 2 = 2`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (by norm_num)]; norm_num`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(ModularForm.eta (τ : ℂ)) ^ 3 * (weberF τ * weberF₁ τ * weberF₂ τ + ((Real.sqrt 2 : ℝ) : ℂ)) * hw + ModularForm.eta (τ : ℂ) ^ 3 * hs`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem jacobiProduct_of_thetaWeber {τ : UpperHalfPlane} (hTW : ThetaWeber τ)
     (hw : weberF τ * weberF₁ τ * weberF₂ τ = ((Real.sqrt 2 : ℝ) : ℂ)) : JacobiProduct τ := by
@@ -31,7 +31,7 @@ theorem jacobiProduct_of_thetaWeber {τ : UpperHalfPlane} (hTW : ThetaWeber τ)
     ModularForm.eta (τ : ℂ) ^ 3 * hs
 
 /- English proof (translation)
-Establish `hTW` using `GlobalTheory.T.thetaConstEqEtaWeberSq_of_tripleProduct GlobalTheory.T.jacobiTripleProduct_twoVariableTheta`. Establish `hJ : ∀ τ : UpperHalfPlane, JacobiProduct τ` using `fun τ ↦ jacobiProduct_of_thetaWeber (hTW τ) (GlobalTheory.T.weberFunction_product_eq_sqrt_two τ)`. Establish `hH` using `GlobalTheory.T.halfPeriodDiffThetaFourth_of_sigmaStar_addition hSA (GlobalTheory.T.gaussianOddJacobiTheta_eq_deriv_mul_sgStar hTL hSB) (GlobalTheory.T.hasDerivAt_oddJacobiTheta_zero_eta_cube GlobalTheory.T.jacobiTripleProduct_twoVariableTheta) hJ`. Introduce `τ`. Conclude with `⟨hH τ, hJ τ, hTW τ, GlobalTheory.T.weberFunctionsRootsOfCubic_of_halfPeriodDiff τ (hH τ) (hJ τ) (hTW τ)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem thetaWeberStatement_of (hTL : Formalism.L2.Th1.F.ThetaLine) (hSB : Formalism.L2.Th1.F.SgStarBasic)
     (hSA : Formalism.L2.Th1.F.SgStarAdd) : ThetaWeberStatement := by

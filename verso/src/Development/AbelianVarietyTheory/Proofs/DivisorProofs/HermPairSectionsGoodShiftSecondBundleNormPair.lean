@@ -10,7 +10,7 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSNef
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖ratVal (P.loc a b f (pick (P.L.φ σ).isLB y) (pick (P.A.φ σ).isLB y)) y‖ * Real.exp (-(a * (P.L.φ σ).φ (pick (P.L.φ σ).isLB y) y + b * ((P.A.φ σ).φ (pick (P.A.φ σ).isLB y) y + 2 * u)) / 2) = _`. Rewrite using `[Pair.nu, mul_assoc, ← Real.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nu_shiftA {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} (P : Pair p) (u : ℝ)
     (a b : ℤ) (σ : k →+* ℂ) (y : CxPts p σ) (f : X.functionField) :
@@ -23,9 +23,9 @@ theorem nu_shiftA {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X
   ring
 
 /- English proof (translation)
-Use `⟨hf.1, fun σ y => ?_⟩` and prove the remaining obligations. Rewrite using `[nu_shiftA]`. Establish `h1 : Real.exp (-(b * u)) ≤ 1` using `Real.exp_le_one_iff.2 (by`. Establish `: (0 : ℝ) ≤ b` using `by exact_mod_cast hb`. Use the proof step `nlinarith)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ P.nu a b σ y f` using `by unfold Pair.nu; positivity`. Establish `h2 : R ≥ P.nu a b σ y f` using `hf.2 σ y`. Use polynomial arithmetic with `[Real.exp_pos (-(b * u))]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem Bl_subset_shiftA {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} (P : Pair p) {u : ℝ}
     (hu : 0 ≤ u) (a b : ℤ) (hb : 0 ≤ b) {R : ℝ} {f : X.functionField} (hf : f ∈ P.Bl a b R) :
@@ -40,7 +40,7 @@ theorem Bl_subset_shiftA {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X]
   nlinarith [Real.exp_pos (-(b * u))]
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX P b s t u hu h`. Conclude with `{ ample := h.ample nef := GlobalTheory.NefShift.isNef_shift_nonneg k X p D hX P.A u hu h.nef pos := h.pos s_mem := Bl_subset_shiftA P hu 0 1 zero_le_one h.s_mem s_ne := h.s_ne t_mem := Bl_subset_shiftA P hu (-1) b (Int.natCast_nonneg b) h.t_mem t_ne := h.t_ne reg := h.reg }`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem good_shiftA : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D →
     ∀ (P : Pair p) (b : ℕ) (s t : X.functionField) (u : ℝ), 0 ≤ u → P.Good D b s t → (shiftA P u).Good D b s t := by

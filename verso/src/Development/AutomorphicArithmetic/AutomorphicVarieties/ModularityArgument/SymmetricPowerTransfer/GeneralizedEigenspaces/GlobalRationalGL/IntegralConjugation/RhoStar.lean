@@ -8,15 +8,15 @@ open UpperTheory.V.W (Plc Lp)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `L _ _ _ P v x a hx w h`. Establish `hu : un (conjSrc (IsCMField.complexConj L).toRingEquiv w) = v`. Rewrite using `[← h]`. Conclude with `GlobalTheory.LocInj.under_conjSrc w`. Establish `hφ : ∀ y : Kv v, conjLoc (IsCMField.complexConj L).toRingEquiv w (P.φ v _ hu y) = P.φ v w h y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Use `congrFun ((HeightOneSpectrum.denseRange_algebraMap (Lp L) v).equalizer ((conjLoc_spec _ w).1.comp (P.φ_cont v _ hu)) (P.φ_cont v w h) (funext fun b => ?_)) y` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[P.φ_alg, P.φ_alg, (conjLoc_spec _ w).2.1]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `AlgEquiv.commutes (IsCMField.complexConj L) b`. Establish `hrt : conjLoc (IsCMField.complexConj L).toRingEquiv w (P.rt (conjSrc (IsCMField.complexConj L).toRingEquiv w)) = - P.rt w`. Rewrite using `[Pre.rt, (conjLoc_spec _ w).2.1, Pre.rt, ← map_neg, ← map_neg]`. Use `congr 1`. Establish `hs : star (QuadraticAlgebra.omega : Lsq (Lp L) P.Δ) = - QuadraticAlgebra.omega`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition.
 
-Apply the tactic sequence `ext <;> simp`. Express the relevant statement in the definitionally equal form `IsCMField.complexConj L (P.e QuadraticAlgebra.omega) = _`. Rewrite using `[← P.e_star, hs]`. Rewrite using `[cjF, pLoc_conjFin, ← hx _ hu]`. Express the relevant statement in the definitionally equal form `P.φ v w h (star x).re + P.φ v w h (star x).im * P.rt w = conjLoc (IsCMField.complexConj L).toRingEquiv w (P.φ v _ hu x.re + P.φ v _ hu x.im * P.rt _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_add, map_mul, hφ, hφ, hrt]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Dict.Br.rhoStar :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (P : Pre L), ∀ v (x : Lsq (Kv v) (cv v P.Δ)) (a : Af L), (∀ w h, P.rho v w h x = pLoc L w a) → ∀ w h, P.rho v w h (star x) = pLoc L w (cjF a) := by

@@ -14,13 +14,13 @@ def TopG : Prop :=
     (∀ {eps : ℝ} (Fm : FamP eps), G.cls la Fm → HypV Fm.toFamCore) → FamilyClassConnected (G.cls la)
 
 /- English proof (authored)
-Take the eventual threshold x₁ + 1. At each x beyond this threshold and each index i, membership in the character family gives the two conditions defining GChi at the corresponding host. Its second condition is the VVle bound required by HypV.
+Take the eventual threshold x₁ + 1. At each x beyond this threshold and each index i, membership in the character family gives the two bounds at the corresponding host. The second is the required eventual volume bound.
 -/
 theorem hypV_of_cls (ψ : PChar) (la : ℝ) {eps : ℝ} (Fm : FamP eps) (h : (GChi ψ).cls la Fm) : HypV Fm.toFamCore :=
   ⟨Fm.x1 + 1, fun x hx i => (h.2 x (by linarith) i).2⟩
 
 /- English proof (authored)
-Use the constant 4 and the eventual threshold x₁ + 1. The first condition in GChi gives EAtH at the chosen host. Its scale coordinates are x and ε, by the two scale identities for the family. Substituting these coordinates gives the asserted eventual condition.
+Use the constant 4 and the eventual threshold x₁ + 1. The character-family hypothesis supplies the cyclic-level estimate at the chosen host. Its scale coordinates are x and ε, by the two scale identities for the family. Substituting these coordinates gives the asserted eventual condition.
 -/
 theorem eFamC_of_cls (ψ : PChar) (la : ℝ) {eps : ℝ} (Fm : FamP eps) (h : (GChi ψ).cls la Fm) :
     EFamC (Level.cyc ψ) Fm.toFamCore := by
@@ -30,7 +30,7 @@ theorem eFamC_of_cls (ψ : PChar) (la : ℝ) {eps : ℝ} (Fm : FamP eps) (h : (G
   exact h1
 
 /- English proof (authored)
-Use the cyclic tied-window nonvanishing theorem with families FamP and the tie relation ChainTied. Its comparison hypotheses are the level bound on family scales and the form-B theorem. For each ψ, feed TopG the host-existence input for GChi ψ and the HypV bound that follows from membership in that class. This gives the exponents, a positive ε cutoff, and the required families. Each family supplies EFamC by eFamC_of_cls, its windows directly from class membership, and the tie data from connectedness. The resulting nonvanishing theorem applies to every primitive character.
+Use the cyclic tied-window nonvanishing theorem with the given scaled families and their chain relation. Its comparison hypotheses are the level bound on family scales and the form-B theorem. For each ψ, apply the connectedness criterion using the host existence and eventual volume bound for the family class of ψ. This gives the exponents, a positive ε cutoff, and the required families. Each family supplies the eventual cyclic-level estimate by the preceding lemma, its windows directly from class membership, and the tie data from connectedness. The resulting nonvanishing theorem applies to every primitive character.
 -/
 theorem zeroFreeAll_of_topG {la : ℝ} (hla : 1 < la) (h : TopG) (hS : ∀ ψ : PChar, HostExW la (GChi ψ).req) : ZeroFreeAll := by
   have key : ZeroFreeOn fun _ => True :=

@@ -25,9 +25,9 @@ noncomputable section
 namespace GlobalTheory.SqTower.StageExists
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `h`. Use `⟨e, Matrix.GeneralLinearGroup.map (starRingEnd ℂ) P, ?_⟩` and prove the remaining obligations. Use `congrArg (fun A => Matrix.map A (starRingEnd ℂ)) hP` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Establish `hJ : (Formalism.UG.Jpq p q : Matrix _ _ ℂ).map (starRingEnd ℂ) = Formalism.UG.Jpq p q`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `ext (a | a) (b | b) <;> simp [Formalism.UG.Jpq, Matrix.one_apply, apply_ite]`. Rewrite `this` using `[hJ]`. Conclude with `this`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSignature_map_conj {n p q : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.UG.HasSignature M p q) :
     Formalism.UG.HasSignature (M.map (starRingEnd ℂ)) p q := by
@@ -43,9 +43,9 @@ theorem hasSignature_map_conj {n p q : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h 
 def withIdx {D : D7} (V : HSp D) (p : ℕ) : HSp D := { V with sig := fun _ => (V.rank - p, p) }
 
 /- English proof (translation)
-Introduce `σ`. Use `show Formalism.UG.HasSignature (V.gram.map σ) (V.rank - p) p`. Take `⟨τ, hσ | hσ⟩` from `GlobalTheory.DefiniteMult.exists_tauE_or_conj D σ`. Substitute `hσ` using the available equality. Simplify `h τ` using `[gramAt]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality.
 
-Substitute `hσ` using the available equality. Establish `h1` using `hasSignature_map_conj (by simpa [gramAt] using h τ)`. Rewrite `h1` using `[Matrix.map_map]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem withIdx_sigOK {D : D7} {V : HSp D} {p : ℕ} (h : NegIdx V p) : (withIdx V p).SigOK := by
   intro σ
@@ -61,7 +61,7 @@ theorem withIdx_sigOK {D : D7} {V : HSp D} {p : ℕ} (h : NegIdx V p) : (withIdx
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle in
 
 /- English proof (translation)
-Take `⟨r, e, hr⟩` from `GlobalTheory.T.self_dual_lattice_has_rigidification D (withIdx V p) Λ (withIdx_sigOK h) hΛ`. Conclude with `⟨⟨r.Λ, r.β, r.s, r.B⟩, e, hr⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rig_exists {D : D7} {V : HSp D} {p : ℕ} (h : NegIdx V p) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hΛ : IsSelfDualC V Λ) : ∃ r : Rig V, r.Λ = Λ ∧ r.Is := by
@@ -71,9 +71,9 @@ theorem rig_exists {D : D7} {V : HSp D} {p : ℕ} (h : NegIdx V p) (Λ : Submodu
 open GlobalTheory.Grid GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle in
 
 /- English proof (translation)
-Establish `hneg : IsSelfDualC (neg S) r.Λ`. Use `⟨h.1.1, fun y => (h.1.2 y).trans (forall₂_congr fun x _ => ⟨fun ⟨c, hc⟩ => ⟨-c, ?_⟩, fun ⟨c, hc⟩ => ⟨-c, ?_⟩⟩)⟩` and prove the remaining obligations. Simplify using `[neg_gram, hc]`. Simplify using `[neg_gram] at hc ⊢`. Conclude with `neg_eq_iff_eq_neg.2 hc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Take `⟨f, h0, h1, ⟨a, b, c, d⟩, h2, h3, h4⟩` from `GlobalTheory.VacuumO.vacExists D ψ θ hψ hθ (neg (withIdx S p)) (withIdx WW q) (fun τ => -r.s τ) rW.s (sigOK_sgn true (withIdx_sigOK hS)) (withIdx_sigOK hW) (fun τ => isCartanInv_sgn true S τ (h.2.2 τ).1) (fun τ => (h'.2.2 τ).1) r.Λ rW.Λ hneg h'.1`. Conclude with `⟨f, h0, h1, ⟨a, b, c, d⟩, h2, h3, h4⟩`. Take `⟨f, h0, h1, ⟨a, b, c, d⟩, h2, h3, h4⟩` from `GlobalTheory.VacuumO.vacExists D ψ θ hψ hθ (withIdx S p) (withIdx WW q) r.s rW.s (withIdx_sigOK hS) (withIdx_sigOK hW) (fun τ => (h.2.2 τ).1) (fun τ => (h'.2.2 τ).1) r.Λ rW.Λ h.1 h'.1`. Conclude with `⟨f, h0, h1, ⟨a, b, c, d⟩, h2, h3, h4⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem vac_exists {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {S WW : HSp D} {p q : ℕ} (hS : NegIdx S p) (hW : NegIdx WW q) {r : Rig S} {rW : Rig WW} (h : r.Is) (h' : rW.Is) :
@@ -96,13 +96,11 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.Grid GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle GlobalTheory.HeckeCharsOfSquare in
 
 /- English proof (translation)
-Introduce `_`. Use `⟨0, fun _ _ _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ hL G W hψ i j p q A A' WW ΛA ΛA' ΛW sA sA' sW hp hq kA kA' nA nA' nW hrk => ?_⟩⟩` and prove the remaining obligations. Take `⟨rA, eA, hA⟩` from `rig_exists nA _ sA`. Take `⟨rA', eA', hA'⟩` from `rig_exists nA' _ sA'`. Take `⟨rW, eW, hW⟩` from `rig_exists nW _ sW`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ch` using `TopExists.chars G hL W i j`. Establish `hθ` using `W.θ_is`. Establish `hη` using `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Use `choose ω hω using fun t => GlobalTheory.ConstRatio.exists_isWeil hψ hη true A WW (ch t).2.1 (ch t).2.2.2.1 (resEta_of_mod (ch t).2.2.2.2.2.1 (by omega)) (resEta_of_mod (ch t).2.2.2.2.2.2.2 (by omega))`. Use `choose ω' hω' using fun t => GlobalTheory.ConstRatio.exists_isWeil hψ hη false A' WW (ch t).1 (ch t).2.2.1 (resEta_of_mod (ch t).2.2.2.2.1 (by omega)) (resEta_of_mod (ch t).2.2.2.2.2.2.1 (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨vac, hv⟩` from `(vac_exists hψ hθ nA nW hA hW).1`. Take `⟨vac', hv'⟩` from `(vac_exists hψ hθ nA' nW hA' hW).2`. Use `choose e he using TopExists.idem_exists G hL W`. Use `choose c hc using fun t w => GlobalTheory.ConstRatio.exists_expAt (nuH G t i j) w`. Establish `hI : ∀ t, (∏ w ∈ locPl G t, w.asIdeal ^ c t w) ≠ ⊥` using `fun t => Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ w.ne_bot`.
-
-Use `choose f hf _ using fun t => GlobalTheory.T.first_standard_pair_member_has_theta_function D W.ψ W.θ _ WW rA rW _ _ _ _ _ hA hW (ch t).2.2.1 (he t) (hI t) hv`. Use `choose f' hf' _ using fun t => GlobalTheory.T.exists_thetaFunction_standardPairSecond D W.ψ W.θ _ WW rA' rW _ _ _ _ A.rank _ hA' hW (ch t).2.2.1 (he t) (hI t) hv'`. Take `⟨m, fd, hm⟩` from `GlobalTheory.ConstRatio.exists_meas A`. Take `⟨m', fd', hm'⟩` from `GlobalTheory.ConstRatio.exists_meas A'`. Conclude with `⟨⟨rA, rA', rW, ω, ω', vac, vac', e, c, f, f', m, fd, m', fd'⟩, ⟨hp, hq, kA, kA', nA, nA', nW, ⟨hrk, hA, hA', hW, hω, hω', hv, hv', he, fun t w _ => hc t w, hf, hf', hm, hm'⟩⟩, eA, eA', eW⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stage_exists : GlobalTheory.FunPr.Hypotheses₂ → GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (p q : ℕ)
     (A A' WW : HSp D) (ΛA : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)) (ΛA' : Submodule (𝓞 D.host.E) (Fin A'.rank → D.host.E))

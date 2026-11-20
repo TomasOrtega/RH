@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n f`. Use `haveI : IsTopologicalRing k := inferInstance`. Establish `key : ∀ M : Matrix (Fin n) (Fin n) k, f M = ∑ i, ∑ j, M i j * f (Matrix.single i j 1)`. Introduce `M`. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single M]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: Matrix.single i j (M i j) = (M i j) • Matrix.single i j (1 : k)`. Simplify using `[Matrix.smul_single]`. Rewrite using `[this, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⇑f : Matrix (Fin n) (Fin n) k → k) = fun M => ∑ i, ∑ j, M i j * f (Matrix.single i j 1)` using `funext key`. Rewrite using `[this]`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(continuous_id.matrix_elem i j).mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.DYlb5.main :
     ∀ {k : Type} [inst : Field k] [inst_1 : ValuativeRel k] [inst_2 : TopologicalSpace k] [IsNonarchimedeanLocalField k]

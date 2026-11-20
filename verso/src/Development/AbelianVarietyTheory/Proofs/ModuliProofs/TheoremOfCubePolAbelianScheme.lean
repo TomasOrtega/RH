@@ -11,7 +11,7 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.Moduli
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AbLaw.CubeAssembly.cube_gen`.
+A detailed English derivation is pending.
 -/
 theorem cube_of_isLB :
     ∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB →

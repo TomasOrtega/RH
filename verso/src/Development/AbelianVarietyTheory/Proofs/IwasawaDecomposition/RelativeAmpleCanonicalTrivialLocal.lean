@@ -27,7 +27,7 @@ namespace GlobalTheory.PolLocal
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨relAmple_pull m.cart.1 t.PP.isLB t'.PP.isLB ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top S) (fun _ => trivial) hA, kTriv_pull m.cart t.PP.isLB t'.PP.isLB ((isGen_iff w).1 hw) hK⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pull_ample_kTriv {S S' : Scheme.{0}} [IsAffine S] {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S}
     (m : SABMap t' t f) (hA : Out.RelAmple t.G t.PP.L) (hK : Out.KTriv t.G t.PP.L) :
@@ -37,7 +37,7 @@ theorem pull_ample_kTriv {S S' : Scheme.{0}} [IsAffine S] {t : SAB H S} {t' : SA
     (fun _ => trivial) hA, kTriv_pull m.cart t.PP.isLB t'.PP.isLB ((isGen_iff w).1 hw) hK⟩
 
 /- English proof (translation)
-Take `⟨n, -⟩` from `GlobalTheory.ObjMaps.exists_sab_id t`. Take `⟨m', -⟩` from `GlobalTheory.ArcObj.exists_sab_fac m n (g := inv j) (by simp)`. Conclude with `pull_ample_kTriv m' hA hK`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ample_kTriv_of_iso {S S' : Scheme.{0}} [IsAffine S'] {t : SAB H S} {u : SAB H S'} {j : S' ⟶ S} [IsIso j]
     (m : SABMap u t j) (hA : Out.RelAmple u.G u.PP.L) (hK : Out.KTriv u.G u.PP.L) :
@@ -47,7 +47,7 @@ theorem ample_kTriv_of_iso {S S' : Scheme.{0}} [IsAffine S'] {t : SAB H S} {u : 
   exact pull_ample_kTriv m' hA hK
 
 /- English proof (translation)
-Establish `: IsIso (CommRingCat.ofHom f)` using `(RingEquiv.ofBijective f hf).toCommRingCatIso.isIso_hom`. Unfold `spMap`. Use `infer_instance`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isIso_spMap {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (hf : Function.Bijective f) :
     IsIso (spMap f) := by
@@ -56,7 +56,7 @@ theorem isIso_spMap {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (h
   infer_instance
 
 /- English proof (translation)
-Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -65,14 +65,14 @@ theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (
   rfl
 
 /- English proof (translation)
-Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull Out.CubePf.cubePull f t`. Conclude with `⟨_, ⟨m⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pull {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) : ∃ t' : SAB H S', Nonempty (SABMap t' t f) := by
   obtain ⟨PP', cub, sym, adj, prim, m, -⟩ := sabPull Out.CubePf.cubePull f t
   exact ⟨_, ⟨m⟩⟩
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback m.cart.1 hp`.
+A detailed English derivation is pending.
 -/
 theorem isProper_of_map {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S} (m : SABMap t' t f)
     (hp : IsProper t.G.hom) : IsProper t'.G.hom :=
@@ -83,9 +83,9 @@ end GlobalTheory.PolLocal
 namespace GlobalTheory.PolLocal
 
 /- English proof (translation)
-Use `⟨IsFractionRing.injective O (FractionRing O), fun z => ?_⟩` and prove the remaining obligations. Take `⟨⟨x, y⟩, hxy⟩` from `IsLocalization.surj (nonZeroDivisors O) z`. Take `⟨b, hb⟩` from `hf.mul_inv_cancel (nonZeroDivisors.ne_zero y.2)`. Use `⟨x * b, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_mul, map_mul, ← mul_assoc, ← hxy]`. Use `_ = z := by rw [hb, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_fractionRing_bijective (O : Type) [CommRing O] [IsDomain O] (hf : IsField O) :
     Function.Bijective (algebraMap O (FractionRing O)) := by
@@ -98,7 +98,7 @@ theorem algebraMap_fractionRing_bijective (O : Type) [CommRing O] [IsDomain O] (
     _ = z := by rw [hb, map_one, mul_one]
 
 /- English proof (translation)
-Establish `e` using `IsLocalization.atUnit O (Localization.Away r) r hr`. Establish `h : ⇑(algebraMap O (Localization.Away r)) = ⇑e` using `funext fun x => by`. Simplify using `using (e.commutes x).symm`. Rewrite using `[h]`. Conclude with `e.bijective`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_away_bijective {O : Type} [CommRing O] (r : O) (hr : IsUnit r) :
     Function.Bijective (algebraMap O (Localization.Away r)) := by
@@ -109,17 +109,15 @@ theorem algebraMap_away_bijective {O : Type} [CommRing O] (r : O) (hr : IsUnit r
   exact e.bijective
 
 /- English proof (translation)
-Introduce `E _ _ _ H O _ _ _ _ _ hIC t hprop hpol`. Distinguish the cases in `hf : IsField O`. Take `⟨u, ⟨mu⟩⟩` from `exists_pull (Out.jK O) t`. Take `⟨hA, hK⟩` from `GlobalTheory.LocM.PolFibre.ample_kTriv_of_polAt mu hpol`. Use `haveI : IsIso (Out.jK O) := isIso_spMap _ (algebraMap_fractionRing_bijective O hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `ample_kTriv_of_iso mu hA hK`. Take `⟨V, _, _, _, ρ, hρ, hloc⟩` from `GlobalTheory.KTrivSpread.exists_dvr O hf`. Take `⟨tV, ⟨mV⟩⟩` from `exists_pull (spMap ρ) t`. Take `⟨tK, ⟨mK⟩⟩` from `exists_pull (spMap (algebraMap V (FractionRing V))) tV`. Set `ψ : FractionRing O →+* FractionRing V` to `IsLocalization.map (M := nonZeroDivisors O) (T := nonZeroDivisors V) (FractionRing V) ρ (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective ρ hρ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : spMap ψ ≫ Out.jK O = Out.jK V ≫ spMap ρ` using `by show spMap ψ ≫ spMap (algebraMap O (FractionRing O)) = spMap (algebraMap V (FractionRing V)) ≫ spMap ρ`. Rewrite using `[← spMap_comp, ← spMap_comp, IsLocalization.map_comp]`. Establish `hpV : GlobalTheory.LN.PolAt tV (Out.jK V)` using `GlobalTheory.DatUniq.polAt_pull mV hpol (Out.jK V) (spMap ψ) heq`. Take `⟨hAK, hKK⟩` from `GlobalTheory.LocM.PolFibre.ample_kTriv_of_polAt mK hpV`. Take `⟨hAV, hKV⟩` from `GlobalTheory.PolDvr.relAmple_kTriv_of_generic_fibre GlobalTheory.HomExtExamples.homExtSt_holds GlobalTheory.allSixLaws.1 GlobalTheory.allSixLaws.2.1 E H V (FractionRing V) tV tK mK (isProper_of_map mV hprop) hAK hKK`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨uk, ⟨mk⟩⟩` from `exists_pull (spMap (IsLocalRing.residue V)) tV`. Take `⟨hAk, hKk⟩` from `pull_ample_kTriv mk hAV hKV`. Take `⟨n, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp mV mk`. Set `β : O →+* IsLocalRing.ResidueField V` to `(IsLocalRing.residue V).comp ρ`. Establish `hpβ : GlobalTheory.LN.PolAt t (spMap β)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[spMap_comp]`. Conclude with `GlobalTheory.LocM.PolFibre.polAt_of_map n (by haveI := hprop; infer_instance) hAk hKk`. Take `⟨r, hr, t', m', -, hA', hK'⟩` from `GlobalTheory.T.proper_after_localization E H O hIC t hpol (IsLocalRing.ResidueField V) β hpβ`. Establish `hu : IsUnit r` using `isUnit_of_map_unit ρ r ((IsLocalRing.residue_ne_zero_iff_isUnit _).1 hr)`. Use `haveI := isIso_spMap _ (algebraMap_away_bijective r hu)`.
-
-Conclude with `ample_kTriv_of_iso m' hA' hK'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relAmple_kTriv_of_polAt_generic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (O : Type)
     [CommRing O] [IsDomain O] [IsLocalRing O] [IsNoetherianRing O] [CharZero O], IsIntegrallyClosed O →

@@ -18,7 +18,7 @@ variable {σ : Type} [DecidableEq σ] {F : Fock σ} {v : F.H} {E : MvPowerSeries
 omit [DecidableEq σ] in
 
 /- English proof (translation)
-Rewrite using `[← FockSeq.mfact_cast, ← FockSeq.mfact_cast, Oscillator.mfact_add_single]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_factorial_add_single (α : σ →₀ ℕ) (l : σ) :
     (α + Finsupp.single l 1).prod (fun _ k => (k.factorial : ℂ)) =
@@ -28,7 +28,7 @@ theorem prod_factorial_add_single (α : σ →₀ ℕ) (l : σ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.X, MvPolynomial.monomial_mul, one_mul, add_comm, h, prod_factorial_add_single]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_X_mul_monomial (h : HasCoeff F v E) (l : σ) (α : σ →₀ ℕ) :
     inner ℂ (F.ι (MvPolynomial.X l * MvPolynomial.monomial α 1)) v =
@@ -38,9 +38,9 @@ theorem inner_X_mul_monomial (h : HasCoeff F v E) (l : σ) (α : σ →₀ ℕ) 
   ring
 
 /- English proof (translation)
-Establish `e : ∀ (γ : σ →₀ ℕ) (c : ℂ), (MvPolynomial.monomial γ c : MvPolynomial σ ℂ) = c • MvPolynomial.monomial γ 1` using `fun γ c => by simp [MvPolynomial.smul_monomial]`. Rewrite using `[MvPolynomial.pderiv_monomial, e, map_smul, inner_smul_left, h, MvPowerSeries.X_def, MvPowerSeries.coeff_monomial_mul]`. Distinguish the cases in `h0 : α m = 0`. Establish `: ¬ Finsupp.single m 1 ≤ α` using `by rw [Finsupp.single_le_iff, h0]; omega`. Simplify using `[h0, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hle : Finsupp.single m 1 ≤ α` using `Finsupp.single_le_iff.2 (Nat.pos_of_ne_zero h0)`. Take `⟨β, rfl⟩` from `exists_add_of_le hle`. Rewrite using `[if_pos hle, add_tsub_cancel_left, add_comm, prod_factorial_add_single]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_pderiv_monomial (h : HasCoeff F v E) (m : σ) (α : σ →₀ ℕ) :
     inner ℂ (F.ι (MvPolynomial.pderiv m (MvPolynomial.monomial α 1))) v =
@@ -59,13 +59,13 @@ theorem inner_pderiv_monomial (h : HasCoeff F v E) (m : σ) (α : σ →₀ ℕ)
     ring
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `add f g hf hg`. Simplify using `only [mul_add, map_add, inner_add_left, hf, hg, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `monomial α b`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Establish `e : (MvPolynomial.monomial α b : MvPolynomial σ ℂ) = b • MvPolynomial.monomial α 1`. Simplify using `[MvPolynomial.smul_monomial]`. Establish `e2 : ((MvPolynomial.C c + ∑ k, MvPolynomial.C (a k) * MvPolynomial.X (m k) : MvPolynomial σ ℂ) : MvPowerSeries σ ℂ) = MvPowerSeries.C c + ∑ k, MvPowerSeries.C (a k) * MvPowerSeries.X (m k)`. Rewrite using `[← MvPolynomial.coeToMvPowerSeries.ringHom_apply, map_add, map_sum]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, mul_smul_comm]`. Simplify using `only [Derivation.map_smul, map_smul, inner_smul_left]`. Simplify using `only [inner_X_mul_monomial h, inner_pderiv_monomial h, h α, hE, e2, add_mul, Finset.sum_mul, map_add, map_sum, mul_assoc, MvPowerSeries.coeff_C_mul, mul_add, Finset.mul_sum]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem inner_X_mul_of_deriv {κ : Type} [Fintype κ] (h : HasCoeff F v E) (l : σ) (c : ℂ) (a : κ → ℂ) (m : κ → σ)
     (hE : ∀ α : σ →₀ ℕ, ((α l : ℂ) + 1) * MvPowerSeries.coeff (α + Finsupp.single l 1) E =
@@ -98,7 +98,7 @@ end General
 variable {P Q : ℕ}
 
 /- English proof (translation)
-Simplify using `only [gaussPoly, map_add, map_sum, mul_assoc, MvPolynomial.pderiv_mul, MvPolynomial.pderiv_X, Pi.single_apply]`. Rewrite using `[add_comm, Finset.sum_comm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_inl_gaussPoly (A : Matrix (Fin P) (Fin Q) ℂ) (x : Ix P Q → ℂ) (i : Fin P) :
     MvPolynomial.pderiv (Sum.inl i) (gaussPoly A x) =
@@ -109,7 +109,7 @@ theorem pderiv_inl_gaussPoly (A : Matrix (Fin P) (Fin Q) ℂ) (x : Ix P Q → �
   simp
 
 /- English proof (translation)
-Simplify using `only [gaussPoly, map_add, map_sum, mul_assoc, MvPolynomial.pderiv_mul, MvPolynomial.pderiv_X, Pi.single_apply]`. Rewrite using `[add_comm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_inr_gaussPoly (A : Matrix (Fin P) (Fin Q) ℂ) (x : Ix P Q → ℂ) (j : Fin Q) :
     MvPolynomial.pderiv (Sum.inr j) (gaussPoly A x) =
@@ -120,7 +120,7 @@ theorem pderiv_inr_gaussPoly (A : Matrix (Fin P) (Fin Q) ℂ) (x : Ix P Q → �
   simp
 
 /- English proof (translation)
-Use `⟨fun i f => ?_, fun j f => ?_⟩` and prove the remaining obligations. Use `inner_X_mul_of_deriv h _ _ (fun j => A i j) (fun j => Sum.inr j) (fun α => ?_) f` and prove the remaining obligations. Rewrite using `[GlobalTheory.OscExpDeriv.coeff_deriv_expPS _ _ (coeff_zero_gaussPoly A x), pderiv_inl_gaussPoly]`. Use `inner_X_mul_of_deriv h _ _ (fun i => A i j) (fun i => Sum.inl i) (fun α => ?_) f` and prove the remaining obligations. Rewrite using `[GlobalTheory.OscExpDeriv.coeff_deriv_expPS _ _ (coeff_zero_gaussPoly A x), pderiv_inr_gaussPoly]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gauss_annihilator (P Q : ℕ) (F : Fock (Ix P Q)) (A : Matrix (Fin P) (Fin Q) ℂ) (x : Ix P Q → ℂ) (v : F.H)
     (h : HasCoeff F v (expPS (gaussPoly A x))) :

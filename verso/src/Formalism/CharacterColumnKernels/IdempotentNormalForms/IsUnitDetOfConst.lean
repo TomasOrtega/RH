@@ -16,9 +16,9 @@ def Fr (T' : Subalgebra O (X' → O)) : Subring (X' → FractionRing O) :=
   T'.toSubring.map liftHom
 
 /- English proof (translation)
-Simplify using `only [Fr, Subring.mem_map, Subalgebra.mem_toSubring]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨f, hf, fun x' => rfl⟩`. Introduce and unpack `⟨f, hf, h⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨f, hf, funext h⟩`.
+Supply the required witnesses or components.
 -/
 lemma mem_Fr {T' : Subalgebra O (X' → O)} {φ : X' → FractionRing O} :
     φ ∈ Fr T' ↔ ∃ f ∈ T', ∀ x', algebraMap O (FractionRing O) (f x') = φ x' := by
@@ -56,7 +56,7 @@ def coefMat (n : ℕ) (a : Matrix d d (PowerSeries (X' → FractionRing O))) :
   fun x' i j => PowerSeries.coeff n (a i j) x'
 
 /- English proof (translation)
-Use extensionality with `x' i j`. Simplify using `only [coefMat, Matrix.mul_apply, map_sum, PowerSeries.coeff_mul, Finset.sum_apply, Matrix.sum_apply, Pi.mul_apply]`. Conclude with `Finset.sum_comm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma coefMat_mul (n : ℕ) (a b : Matrix d d (PowerSeries (X' → FractionRing O))) :
     coefMat n (a * b) = ∑ p ∈ antidiagonal n, coefMat p.1 a * coefMat p.2 b := by
@@ -66,7 +66,7 @@ lemma coefMat_mul (n : ℕ) (a b : Matrix d d (PowerSeries (X' → FractionRing 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use extensionality with `x' i j`. Simplify using `[coefMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma coefMat_add (n : ℕ) (a b : Matrix d d (PowerSeries (X' → FractionRing O))) :
     coefMat n (a + b) = coefMat n a + coefMat n b := by
@@ -74,7 +74,7 @@ lemma coefMat_add (n : ℕ) (a b : Matrix d d (PowerSeries (X' → FractionRing 
   simp [coefMat]
 
 /- English proof (translation)
-Use extensionality with `x' i j`. Simplify using `[coefMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma coefMat_neg (n : ℕ) (a : Matrix d d (PowerSeries (X' → FractionRing O))) :
     coefMat n (-a) = -coefMat n a := by
@@ -82,7 +82,7 @@ lemma coefMat_neg (n : ℕ) (a : Matrix d d (PowerSeries (X' → FractionRing O)
   simp [coefMat]
 
 /- English proof (translation)
-Use extensionality with `x' i j`. Simplify using `[coefMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma coefMat_zero (n : ℕ) :
     coefMat n (0 : Matrix d d (PowerSeries (X' → FractionRing O))) = 0 := by
@@ -90,7 +90,7 @@ lemma coefMat_zero (n : ℕ) :
   simp [coefMat]
 
 /- English proof (translation)
-Use extensionality with `x' i j`. Apply the tactic sequence `by_cases hn : n = 0 <;> by_cases hij : i = j <;>`. Simplify using `[coefMat, Matrix.one_apply, hn, hij, PowerSeries.coeff_one]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 lemma coefMat_one (n : ℕ) :
     coefMat n (1 : Matrix d d (PowerSeries (X' → FractionRing O))) = if n = 0 then 1 else 0 := by
@@ -123,9 +123,9 @@ section Trunc
 variable {K : Type*} [CommRing K]
 
 /- English proof (translation)
-Establish `hdiv : ∀ i j, (PowerSeries.X : PowerSeries K) ^ (m + 1) ∣ U i j - V i j` using `fun i j => PowerSeries.X_pow_dvd_iff.2 (fun k hk => by rw [map_sub, h i j k (by omega), sub_self])`. Establish `hUV : (Ideal.Quotient.mk (Ideal.span {(PowerSeries.X : PowerSeries K) ^ (m + 1)})).mapMatrix U = (Ideal.Quotient.mk (Ideal.span {(PowerSeries.X : PowerSeries K) ^ (m + 1)})).mapMatrix V`. Use extensionality with `i j`. Conclude with `Ideal.Quotient.eq.2 (Ideal.mem_span_singleton.2 (hdiv i j))`. Establish `hdet : Ideal.Quotient.mk (Ideal.span {(PowerSeries.X : PowerSeries K) ^ (m + 1)}) U.det = Ideal.Quotient.mk (Ideal.span {(PowerSeries.X : PowerSeries K) ^ (m + 1)}) V.det`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det, RingHom.map_det, hUV]`. Establish `hd` using `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 hdet)`. Establish `h0` using `PowerSeries.X_pow_dvd_iff.1 hd m (by omega)`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma coeff_det_congr {ι : Type} [Fintype ι] [DecidableEq ι] (m : ℕ)
     (U V : Matrix ι ι (PowerSeries K))
@@ -152,17 +152,15 @@ def psi (m : ℕ) : MvPolynomial (Fin m) K →+* PowerSeries K :=
   MvPolynomial.eval₂Hom (PowerSeries.C) (fun j : Fin m => PowerSeries.X ^ (j.1 + 1))
 
 /- English proof (translation)
-Establish `hbnd : ∀ e : Fin m →₀ ℕ, wt e = m → e ∈ Finset.Iic (bnd m)`. Introduce `e he`. Rewrite using `[Finset.mem_Iic, Finsupp.le_def]`. Introduce `j`. Establish `hb : bnd m j = m` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hb]`. Establish `h1 : (j.1 + 1) * e j ≤ wt e` using `Finset.single_le_sum (f := fun j : Fin m => (j.1 + 1) * e j) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Combine the equalities or inequalities in the displayed calculation. Establish `hpsi : ∀ (e : Fin m →₀ ℕ) (c : K), psi m (MvPolynomial.monomial e c) = PowerSeries.C c * PowerSeries.X ^ wt e`. Introduce `e c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[psi, MvPolynomial.eval₂Hom_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Repeatedly rewrite using `[← pow_mul]`. Rewrite using `[Finset.prod_pow_eq_pow_sum]`. Both sides reduce to the same expression. Use `conv_lhs => rw [P.as_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, map_sum]`. Simplify using `only [hpsi, PowerSeries.coeff_C_mul_X_pow]`. Establish `h1 : ∑ e ∈ P.support, (if m = wt e then MvPolynomial.coeff e P else 0) = ∑ e ∈ P.support ∪ Finset.Iic (bnd m), (if m = wt e then MvPolynomial.coeff e P else 0)` using `Finset.sum_subset Finset.subset_union_left (fun e _ he => by`. Rewrite using `[MvPolynomial.notMem_support_iff.1 he]`. Use the proof step `simp)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∑ e ∈ Finset.Iic (bnd m), (if wt e = m then MvPolynomial.coeff e P else 0) = ∑ e ∈ P.support ∪ Finset.Iic (bnd m), (if wt e = m then MvPolynomial.coeff e P else 0)` using `Finset.sum_subset Finset.subset_union_right (fun e _ he => if_neg (fun h => he (hbnd e h)))`. Rewrite using `[h1, h2]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : wt e = m`. Rewrite using `[if_pos h, if_pos h.symm]`.
-
-Rewrite using `[if_neg h, if_neg (Ne.symm h)]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma coeff_psi (m : ℕ) (P : MvPolynomial (Fin m) K) :
     PowerSeries.coeff m (psi m P) =
@@ -215,15 +213,15 @@ def HypDet (T' : Subalgebra O (X' → O)) (R' : Subalgebra O (X' → Matrix d d 
         ((r i : X' → Matrix d d (FractionRing O)) x').map MvPolynomial.C))
 
 /- English proof (translation)
-Establish `hL : PowerSeries.coeff n a.det x' = PowerSeries.coeff n ((PowerSeries.map (Pi.evalRingHom (fun _ : X' => FractionRing O) x')).mapMatrix a).det`. Rewrite using `[← RingHom.map_det, PowerSeries.coeff_map]`. Both sides reduce to the same expression. Establish `hmat : (psi (n + Fintype.card d)).mapMatrix (∑ j : Fin (n + Fintype.card d), (MvPolynomial.X j : MvPolynomial _ (FractionRing O)) • (((⟨coefMat j.1 a, ha j.1⟩ : R') : X' → Matrix d d (FractionRing O)) x').map MvPolynomial.C) = (PowerSeries.X : PowerSeries (FractionRing O)) • ∑ j …`. Use extensionality with `i k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, psi, MvPolynomial.eval₂Hom_X', MvPolynomial.eval₂Hom_C, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL, RingHom.map_det, hmat, Matrix.det_smul, PowerSeries.coeff_X_pow_mul', if_pos (by omega), Nat.add_sub_cancel]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Apply `coeff_det_congr` to reduce the goal to its premises. Introduce `i j k hk`. Establish `hd0 : 0 < Fintype.card d` using `Fintype.card_pos_iff.2 ⟨i⟩`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_sum, RingHom.mapMatrix_apply, PowerSeries.coeff_map]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single ⟨k, by omega⟩]`. Rewrite using `[mul_comm, PowerSeries.coeff_C_mul_X_pow, if_pos rfl]`. Both sides reduce to the same expression. Introduce `b _ hb`. Rewrite using `[mul_comm, PowerSeries.coeff_C_mul_X_pow, if_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hb (Fin.ext h.symm)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma coeff_det_eq (R' : Subalgebra O (X' → Matrix d d (FractionRing O)))
     (a : Matrix d d (PowerSeries (X' → FractionRing O))) (ha : a ∈ goodM R') (n : ℕ) (x' : X') :
@@ -267,11 +265,11 @@ lemma coeff_det_eq (R' : Subalgebra O (X' → Matrix d d (FractionRing O)))
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use `show ∀ n, PowerSeries.coeff n a.det ∈ Fr T'`. Introduce `n`. Set `r : Fin (n + Fintype.card d) → R'` to `fun j => ⟨coefMat j.1 a, ha j.1⟩`. Use `choose F hF hFx using fun e : Fin (n + Fintype.card d) →₀ ℕ => hyp (n + Fintype.card d) r e`. Use `mem_Fr.2 ⟨∑ e ∈ Finset.Iic (bnd (n + Fintype.card d)), if wt e = n + Fintype.card d then F e else 0, ?_, fun x' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Subalgebra.sum_mem _ fun e _ => ?_ split_ifs` and prove the remaining obligations. Conclude with `hF e`. Conclude with `Subalgebra.zero_mem _`. Rewrite using `[coeff_det_eq R' a ha n x', coeff_psi, Finset.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : wt e = n + Fintype.card d`. Rewrite using `[if_pos h, if_pos h]`. Conclude with `hFx e x'`. Rewrite using `[if_neg h, if_neg h]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 lemma detGood (T' : Subalgebra O (X' → O)) (R' : Subalgebra O (X' → Matrix d d (FractionRing O)))
     (hyp : HypDet T' R') {a : Matrix d d (PowerSeries (X' → FractionRing O))}
@@ -300,7 +298,7 @@ section Inv
 variable {d : Type} [Fintype d] [DecidableEq d]
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.isUnit_iff_constantCoeff, RingHom.map_det, hA, Matrix.det_one]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isUnit_det_of_const {ι : Type} [Fintype ι] [DecidableEq ι]
     (A : Matrix ι ι (PowerSeries (X' → FractionRing O)))
@@ -309,17 +307,17 @@ lemma isUnit_det_of_const {ι : Type} [Fintype ι] [DecidableEq ι]
   exact isUnit_one
 
 /- English proof (translation)
-Establish `hAB : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A (isUnit_det_of_const A hc)`. Establish `h0 : coefMat 0 A = 1`. Use extensionality with `x' i j`. Establish `h1` using `congrArg (fun M => M i j x') hc`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [coefMat, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Rewrite using `[h1]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Use `show ∀ n, coefMat n A⁻¹ ∈ R'`. Introduce `n`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Establish `e` using `congrArg (coefMat n) hAB`. Rewrite `e` using `[coefMat_mul, coefMat_one]`. Establish `hmem : ((0 : ℕ), n) ∈ antidiagonal n` using `by simp`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : coefMat n A⁻¹ = (if n = 0 then 1 else 0) - ∑ p ∈ (antidiagonal n).erase (0, n), coefMat p.1 A * coefMat p.2 A⁻¹`. Rewrite using `[← e, ← Finset.add_sum_erase _ _ hmem, h0, one_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[hB]`. Apply `Subalgebra.sub_mem` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `split_ifs`. Conclude with `Subalgebra.one_mem _`. Conclude with `Subalgebra.zero_mem _`. Apply `Subalgebra.sum_mem` to reduce the goal to its premises. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hp` using `[Finset.mem_erase]`. Establish `hp2 : p.1 + p.2 = n` using `by simpa using hp.2`. Apply `Subalgebra.mul_mem _ (hA p.1) (ih p.2 ?_)` to reduce the goal to its premises. Assume the negation of the conclusion as `hlt`. Conclude with `hp.1 (Prod.ext (by simp; omega) (by simp; omega))`.
+A detailed English derivation is pending.
 -/
 lemma invGood (R' : Subalgebra O (X' → Matrix d d (FractionRing O)))
     {A : Matrix d d (PowerSeries (X' → FractionRing O))} (hA : A ∈ goodM R')
@@ -377,25 +375,25 @@ def SchurP (T' : Subalgebra O (X' → O)) (R' : Subalgebra O (X' → Matrix d d 
     (PowerSeries.constantCoeff).mapMatrix Φ = 1 → Φ.det ∈ goodS T'
 
 /- English proof (translation)
-Establish `hFin : ∀ n : ℕ, SchurP T' R' (Fin n)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `_ Φ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.det_isEmpty]`. Conclude with `(goodS T').one_mem`. Consider the case `succ n ih`. Introduce `_ Φ hΦ hc`. Set `E : Fin (n + 1) × d ≃ d ⊕ (Fin n × d)` to `((finSuccEquiv n).prodCongr (Equiv.refl d)).trans (optEquiv (Fin n) d)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hE : ∀ i, E.symm (Sum.inl i) = (0, i)` using `fun i => by simp [E, optEquiv]`. Establish `hE' : ∀ (p : Fin n) i, E.symm (Sum.inr (p, i)) = (p.succ, i)` using `fun p i => by simp [E, optEquiv]`. Set `A : Matrix d d (PowerSeries (X' → FractionRing O))` to `Matrix.of fun i j => Φ (0, i) (0, j)`. Set `B : Matrix d (Fin n × d) (PowerSeries (X' → FractionRing O))` to `Matrix.of fun i Q => Φ (0, i) (Q.1.succ, Q.2)`. Set `C : Matrix (Fin n × d) d (PowerSeries (X' → FractionRing O))` to `Matrix.of fun P j => Φ (P.1.succ, P.2) (0, j)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `D : Matrix (Fin n × d) (Fin n × d) (PowerSeries (X' → FractionRing O))` to `Matrix.of fun P Q => Φ (P.1.succ, P.2) (Q.1.succ, Q.2)`. Establish `hblk : Matrix.reindex E E Φ = Matrix.fromBlocks A B C D`. Apply the tactic sequence `ext (i | ⟨p, i⟩) (j | ⟨q, j⟩) <;> simp [A, B, C, D, Matrix.reindex_apply, hE, hE']`. Establish `hc' : ∀ P Q, PowerSeries.constantCoeff (Φ P Q) = if P = Q then 1 else 0` using `fun P Q => by`. Establish `h1` using `congrFun (congrFun hc P) Q`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1` using `[Matrix.one_apply]`. Establish `hAc : (PowerSeries.constantCoeff).mapMatrix A = 1`. Use extensionality with `i j`. Simplify using `[A, hc', Matrix.one_apply]`. Establish `hAg : A ∈ goodM R'` using `hΦ 0 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Invertible A := Matrix.invertibleOfIsUnitDet A (isUnit_det_of_const A hAc)`. Rewrite using `[← Matrix.det_reindex_self E Φ, hblk, Matrix.det_fromBlocks₁₁]`. Apply `(goodS T').mul_mem (detGood T' R' hyp hAg)` to reduce the goal to its premises. Apply `ih` to reduce the goal to its premises. Introduce `p q`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hb : (Matrix.of fun i j => (D - C * ⅟A * B) (p, i) (q, j)) = (Matrix.of fun i j => Φ (p.succ, i) (q.succ, j)) - (Matrix.of fun i j => Φ (p.succ, i) (0, j)) * A⁻¹ * (Matrix.of fun i j => Φ (0, i) (q.succ, j))`. Use extensionality with `i j`. Simplify using `[A, B, C, D, Matrix.mul_apply, Matrix.invOf_eq_nonsing_inv]`. Rewrite using `[hb]`. Conclude with `(goodM R').sub_mem (hΦ p.succ q.succ) ((goodM R').mul_mem ((goodM R').mul_mem (hΦ p.succ 0) (invGood R' hAg hAc)) (hΦ 0 q.succ))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `P Q`. Simplify using `[A, B, C, D, Matrix.mul_apply, hc', Matrix.one_apply, Matrix.invOf_eq_nonsing_inv, Fin.succ_ne_zero]`. Apply the tactic sequence `all_goals simp only [← Prod.ext_iff]`. Introduce `_ Φ hΦ hc`. Set `e` to `Fintype.equivFin g`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `E : g × d ≃ Fin (Fintype.card g) × d` to `e.prodCongr (Equiv.refl d)`. Establish `h` using `hFin (Fintype.card g) (Matrix.reindex E E Φ) ?_ ?_`. Rewrite `h` using `[Matrix.det_reindex_self]`. Then use the resulting hypothesis. Introduce `p q`. Establish `hb : (Matrix.of fun i j => Matrix.reindex E E Φ (p, i) (q, j)) = Matrix.of fun i j => Φ (e.symm p, i) (e.symm q, j)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[E]`. Rewrite using `[hb]`. Conclude with `hΦ _ _`. Rewrite using `[show (PowerSeries.constantCoeff).mapMatrix (Matrix.reindex E E Φ) = Matrix.reindex E E ((PowerSeries.constantCoeff).mapMatrix Φ) from rfl, hc, Matrix.reindex_apply, Matrix.submatrix_one_equiv]`.
+A detailed English derivation is pending.
 -/
 lemma schur (T' : Subalgebra O (X' → O)) (R' : Subalgebra O (X' → Matrix d d (FractionRing O)))
     (hyp : HypDet T' R') (g : Type) [Fintype g] : SchurP T' R' g := by
@@ -471,9 +469,9 @@ def phiMat (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) {g : Type} [
     Matrix.of fun P Q => PowerSeries.C (fun x' => (Θ P.1 Q.1 : X' → Matrix d d (FractionRing O)) x' P.2 Q.2)
 
 /- English proof (translation)
-Establish `hX : ∀ (c : X' → FractionRing O) (k : ℕ), PowerSeries.coeff k (PowerSeries.X * PowerSeries.C c) = if k = 1 then c else 0`. Introduce `c k`. Rewrite using `[mul_comm, ← pow_one (PowerSeries.X : PowerSeries (X' → FractionRing O)), PowerSeries.coeff_C_mul_X_pow]`. Use extensionality with `x' i j`. Simplify using `only [coefMat, phiMat, Matrix.of_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, map_sub, hX, Matrix.one_apply, Prod.mk.injEq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases hn0 : n = 0 <;> by_cases hn1 : n = 1 <;> by_cases hpq : p = q <;> by_cases hij : i = j <;>`. Apply the tactic sequence `simp [hn0, hn1, hpq, hij, PowerSeries.coeff_one, Matrix.one_apply] <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma phiMat_block (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) {g : Type} [Fintype g]
     [DecidableEq g] (Θ : Matrix g g R') (p q : g) (n : ℕ) :
@@ -491,9 +489,7 @@ lemma phiMat_block (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) {g :
     simp [hn0, hn1, hpq, hij, PowerSeries.coeff_one, Matrix.one_apply] <;> omega
 
 /- English proof (translation)
-Use `show ∀ n, coefMat n _ ∈ R'`. Introduce `n`. Rewrite using `[phiMat_block]`. Apply `Subalgebra.sub_mem` to reduce the goal to its premises. Use `split_ifs`.
-
-Conclude with `Subalgebra.one_mem _`. Conclude with `Subalgebra.zero_mem _`. Use `split_ifs`. Conclude with `(Θ p q).2`. Conclude with `Subalgebra.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma phiMat_good (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) {g : Type} [Fintype g]
     [DecidableEq g] (Θ : Matrix g g R') (p q : g) :
@@ -510,7 +506,7 @@ lemma phiMat_good (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) {g : 
     · exact Subalgebra.zero_mem _
 
 /- English proof (translation)
-Use extensionality with `P Q`. Simplify using `[phiMat, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma phiMat_const (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) {g : Type} [Fintype g]
     [DecidableEq g] (Θ : Matrix g g R') :
@@ -519,9 +515,9 @@ lemma phiMat_const (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) {g :
   simp [phiMat, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hL : PowerSeries.coeff (Fintype.card (g × d)) (phiMat R' Θ).det x' = PowerSeries.coeff (Fintype.card (g × d)) ((PowerSeries.map (Pi.evalRingHom (fun _ : X' => FractionRing O) x')).mapMatrix (phiMat R' Θ)).det`. Rewrite using `[← RingHom.map_det, PowerSeries.coeff_map]`. Both sides reduce to the same expression. Establish `hM : (PowerSeries.map (Pi.evalRingHom (fun _ : X' => FractionRing O) x')).mapMatrix (phiMat R' Θ) = (Polynomial.coeToPowerSeries.ringHom).mapMatrix (1 - (Polynomial.X : Polynomial (FractionRing O)) • (bigMat (fun r : R' => (r : X' → Matrix d d (FractionRing O)) x') Θ).map Polynom …`. Use extensionality with `P Q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `by_cases hPQ : P = Q <;>`. Apply the tactic sequence `simp [phiMat, bigMat, Matrix.one_apply, hPQ, Polynomial.coe_X, Polynomial.coe_C] <;> ring`. Rewrite using `[hL, hM, ← RingHom.map_det]`. Rewrite using `[show (Polynomial.coeToPowerSeries.ringHom : Polynomial (FractionRing O) →+* PowerSeries (FractionRing O)) (Matrix.det (1 - (Polynomial.X : Polynomial (FractionRing O)) • (bigMat (fun r : R' => (r : X' → Matrix d d (FractionRing O)) x') Θ).map Polynomial.C)) = (((bigMat (fun r : …`. Rewrite using `[Polynomial.coeff_coe, ← Matrix.reverse_charpoly, Polynomial.coeff_reverse, Matrix.charpoly_natDegree_eq_dim, Polynomial.revAt_le (le_refl _), Nat.sub_self, Matrix.det_eq_sign_charpoly_coeff]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma phiMat_eval [IsDomain O] (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) {g : Type}
     [Fintype g] [DecidableEq g] (Θ : Matrix g g R') (x' : X') :
@@ -556,7 +552,7 @@ end BlockDetAlt
 
 open BlockDetAlt in
 /- English proof (translation)
-Introduce `O _ _ X' T' d _ _ R' hyp g _ _ Θ`. Establish `hS` using `schur T' R' hyp g (phiMat R' Θ) (fun p q => phiMat_good R' Θ p q) (phiMat_const R' Θ)`. Take `⟨f, hf, hfx⟩` from `mem_Fr.1 (hS (Fintype.card (g × d)))`. Use `⟨(-1) ^ Fintype.card (g × d) * f, T'.mul_mem (T'.pow_mem (T'.neg_mem T'.one_mem) _) hf, fun x' => ?_⟩` and prove the remaining obligations. Rewrite using `[phiMat_eval R' Θ x', ← hfx x']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

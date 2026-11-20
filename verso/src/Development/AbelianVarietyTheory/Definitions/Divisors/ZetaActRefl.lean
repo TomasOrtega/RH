@@ -73,14 +73,14 @@ open Classical in
 def cP (N : ℕ) (x : Fin 2 → ZMod N) (k : ℕ) : ℂ := if x = 0 then 0 else cB N x k - cG N k
 
 /- English proof (translation)
-Rewrite using `[wB, gN, wp, add_div]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wB_eq (N : ℕ) (x : Fin 2 → ZMod N) (τ : ℍ) :
     wB N x τ = (EisensteinSeries.G2 τ + (tauPair τ).weierstrassP (tors N τ x)) / (2 * Real.pi * Complex.I) ^ 2 := by
   rw [wB, gN, wp, add_div]
 
 /- English proof (translation)
-Simplify using `[gact]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gact_one (N : ℕ) (α : GL (Fin 2) (ZMod N)) (γ : SL(2, ℤ)) : gact N 1 α γ = α * redGL N γ := by
   simp [gact]

@@ -24,7 +24,7 @@ def itg (om : V →L[ℝ] V →L[ℝ] ℝ) (ρ : V → B →L[ℂ] B) (ι : Y �
   (h y * ph om ι v y) • ρ (ι y) (g v)
 
 /- English proof (translation)
-Unfold `ph`. Rewrite using `[show (2 * π * I * (om v (ι y) : ℂ)) = ((2 * π * om v (ι y) : ℝ) : ℂ) * I by push_cast; ring]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_ph (om : V →L[ℝ] V →L[ℝ] ℝ) (ι : Y →L[ℝ] V) (v : V) (y : Y) : ‖ph om ι v y‖ = 1 := by
   unfold ph
@@ -32,7 +32,7 @@ theorem norm_ph (om : V →L[ℝ] V →L[ℝ] ℝ) (ι : Y →L[ℝ] V) (v : V) 
   exact Complex.norm_exp_ofReal_mul_I _
 
 /- English proof (translation)
-The claim follows from `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp ((om v).continuous.comp ι.continuous)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ph (om : V →L[ℝ] V →L[ℝ] ℝ) (ι : Y →L[ℝ] V) (v : V) : Continuous (ph om ι v) :=
   Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp ((om v).continuous.comp ι.continuous)))
@@ -40,21 +40,21 @@ theorem continuous_ph (om : V →L[ℝ] V →L[ℝ] ℝ) (ι : Y →L[ℝ] V) (v
 variable {om : V →L[ℝ] V →L[ℝ] ℝ} {ρ : V → B →L[ℂ] B} {ι : Y →L[ℝ] V} {ν : Measure Y}
 
 /- English proof (translation)
-The claim follows from `(hh.mul (continuous_ph om ι v)).smul ((hρ.2.2.2 (g v)).comp ι.continuous)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_itg (hρ : IsHeis (fun x y => om x y) ρ) {h : Y → ℂ} (hh : Continuous h) (g : V → B) (v : V) :
     Continuous (itg om ρ ι h g v) :=
   (hh.mul (continuous_ph om ι v)).smul ((hρ.2.2.2 (g v)).comp ι.continuous)
 
 /- English proof (translation)
-Simplify using `[itg, norm_smul, norm_ph, hρ.2.2.1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_itg (hρ : IsHeis (fun x y => om x y) ρ) (h : Y → ℂ) (g : V → B) (v : V) (y : Y) :
     ‖itg om ρ ι h g v y‖ = ‖h y‖ * ‖g v‖ := by
   simp [itg, norm_smul, norm_ph, hρ.2.2.1]
 
 /- English proof (translation)
-Use `Integrable.mono' ((hh.2 0).mul_const ‖g v‖) (continuous_itg hρ hh.1 g v).aestronglyMeasurable (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Rewrite using `[norm_itg hρ]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integrable_itg (hρ : IsHeis (fun x y => om x y) ρ) {h : Y → ℂ} (hh : Mom ν h) (g : V → B) (v : V) :
     Integrable (itg om ρ ι h g v) ν := by
@@ -66,9 +66,9 @@ def dh (om : V →L[ℝ] V →L[ℝ] ℝ) (ι : Y →L[ℝ] V) (h : Y → ℂ) (
   h y * (2 * π * I * (om z (ι y) : ℂ))
 
 /- English proof (translation)
-Use `⟨hh.1.mul (continuous_const.mul (Complex.continuous_ofReal.comp ((om z).continuous.comp ι.continuous))), fun n => ?_⟩` and prove the remaining obligations. Use `Integrable.mono' ((hh.2 (n + 1)).const_mul (2 * π * ‖om‖ * ‖z‖ * ‖ι‖)) ((continuous_norm.pow n).mul (continuous_norm.comp (hh.1.mul (continuous_const.mul (Complex.continuous_ofReal.comp ((om z).continuous.comp ι.continuous)))))).aestronglyMeasurable (Filter.Eventually.of_forall f …` and prove the remaining obligations. Establish `e1 : ‖om z (ι y)‖ ≤ ‖om‖ * ‖z‖ * (‖ι‖ * ‖y‖)` using `(om.le_opNorm₂ z (ι y)).trans (by gcongr; exact ι.le_opNorm y)`. Establish `e2 : ‖(2 * π * I : ℂ)‖ = 2 * π` using `by simp [abs_of_pos Real.pi_pos]`. Rewrite using `[Real.norm_of_nonneg (by positivity), dh, norm_mul, norm_mul (2 * π * I : ℂ), e2, Complex.norm_real]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Real.pi_pos` as an intermediate fact. Establish `hy` using `norm_nonneg y`. Establish `hhy` using `norm_nonneg (h y)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mom_dh {h : Y → ℂ} (hh : Mom ν h) (z : V) : Mom ν (dh om ι h z) := by
   refine ⟨hh.1.mul (continuous_const.mul (Complex.continuous_ofReal.comp ((om z).continuous.comp ι.continuous))),
@@ -94,7 +94,7 @@ def dI (om : V →L[ℝ] V →L[ℝ] ℝ) (ρ : V → B →L[ℂ] B) (ι : Y →
     (h y • (ph om ι v y • ((2 * π * I : ℂ) • (Complex.ofRealCLM.comp (om.flip (ι y)))))).smulRight (ρ (ι y) (g v))
 
 /- English proof (translation)
-Simplify using `only [dI, itg, dh, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.smulRight_apply, Complex.ofRealCLM_apply, ContinuousLinearMap.flip_apply, smul_eq_mul, smul_smul]`. Rewrite using `[add_comm]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dI_apply (h : Y → ℂ) (g : V → B) (v : V) (y : Y) (z : V) :
     dI om ρ ι h g v y z = itg om ρ ι (dh om ι h z) g v y + itg om ρ ι h (fun w => fderiv ℝ g w z) v y := by
@@ -106,7 +106,7 @@ theorem dI_apply (h : Y → ℂ) (g : V → B) (v : V) (y : Y) (z : V) :
   ring
 
 /- English proof (translation)
-Establish `b1 : HasFDerivAt (fun w : V => ((om w (ι y) : ℝ) : ℂ)) (Complex.ofRealCLM.comp (om.flip (ι y))) v` using `(Complex.ofRealCLM.comp (om.flip (ι y))).hasFDerivAt`. Establish `b2` using `((b1.const_mul (2 * π * I : ℂ)).cexp).const_mul (h y)`. Establish `b3 : HasFDerivAt (fun w => ρ (ι y) (g w)) (((ρ (ι y)).restrictScalars ℝ).comp (fderiv ℝ g v)) v` using `((ρ (ι y)).restrictScalars ℝ).hasFDerivAt.comp v (hg v).hasFDerivAt`. Conclude with `b2.smul b3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_itg {g : V → B} (hg : Differentiable ℝ g) (h : Y → ℂ) (v : V) (y : Y) :
     HasFDerivAt (fun w => itg om ρ ι h g w y) (dI om ρ ι h g v y) v := by
@@ -118,9 +118,9 @@ theorem hasFDerivAt_itg {g : V → B} (hg : Differentiable ℝ g) (h : Y → ℂ
   exact b2.smul b3
 
 /- English proof (translation)
-Establish `e1 : ‖om z (ι y)‖ ≤ ‖om‖ * ‖z‖ * (‖ι‖ * ‖y‖)` using `(om.le_opNorm₂ z (ι y)).trans (by gcongr; exact ι.le_opNorm y)`. Establish `e2 : ‖(2 * π * I : ℂ)‖ = 2 * π` using `by simp [abs_of_pos Real.pi_pos]`. Rewrite using `[dh, norm_mul, norm_mul (2 * π * I : ℂ), e2, Complex.norm_real]`. Use `Real.pi_pos` as an intermediate fact. Establish `hhy` using `norm_nonneg (h y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_dh_le (h : Y → ℂ) (z : V) (y : Y) :
     ‖dh om ι h z y‖ ≤ 2 * π * ‖om‖ * ‖ι‖ * ‖y‖ * ‖z‖ * ‖h y‖ := by
@@ -134,7 +134,7 @@ theorem norm_dh_le (h : Y → ℂ) (z : V) (y : Y) :
     _ = 2 * π * ‖om‖ * ‖ι‖ * ‖y‖ * ‖z‖ * ‖h y‖ := by ring
 
 /- English proof (translation)
-Use `continuous_clm_apply.2 fun z => ?_` and prove the remaining obligations. Simplify using `only [dI_apply]`. Conclude with `(continuous_itg hρ (hh.mul (continuous_const.mul (Complex.continuous_ofReal.comp ((om z).continuous.comp ι.continuous)))) g v).add (continuous_itg hρ hh _ v)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_dI (hρ : IsHeis (fun x y => om x y) ρ) {h : Y → ℂ} (hh : Continuous h) (g : V → B) (v : V) :
     Continuous (dI om ρ ι h g v) := by
@@ -144,11 +144,11 @@ theorem continuous_dI (hρ : IsHeis (fun x y => om x y) ρ) {h : Y → ℂ} (hh 
     (Complex.continuous_ofReal.comp ((om z).continuous.comp ι.continuous)))) g v).add (continuous_itg hρ hh _ v)
 
 /- English proof (translation)
-Take `⟨Cg, hCg⟩` from `(isCompact_closedBall v₀ 1).exists_bound_of_continuousOn hg.continuous.continuousOn`. Take `⟨Cd, hCd⟩` from `(isCompact_closedBall v₀ 1).exists_bound_of_continuousOn (hg.continuous_fderiv (by simp)).continuousOn`. Establish `hCg0 : 0 ≤ Cg` using `(norm_nonneg _).trans (hCg v₀ (Metric.mem_closedBall_self zero_le_one))`. Establish `hCd0 : 0 ≤ Cd` using `(norm_nonneg _).trans (hCd v₀ (Metric.mem_closedBall_self zero_le_one))`. Establish `hK : 0 ≤ 2 * π * ‖om‖ * ‖ι‖ * Cg` using `by have := Real.pi_pos; positivity`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun y => ‖h y‖ * (Cd + 2 * π * ‖om‖ * ‖ι‖ * Cg * ‖y‖), ?_, fun y v hv => ?_⟩` and prove the remaining obligations. Use `(((hh.2 0).const_mul Cd).add ((hh.2 1).const_mul (2 * π * ‖om‖ * ‖ι‖ * Cg))).congr (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply, pow_zero, pow_one]`. Expand and normalize the polynomial expressions, which then agree. Use `ContinuousLinearMap.opNorm_le_bound _ (mul_nonneg (norm_nonneg _) (add_nonneg hCd0 (mul_nonneg hK (norm_nonneg _)))) fun z => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dI_apply]`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_itg hρ, norm_itg hρ]`. Establish `hDz : ‖fderiv ℝ g v z‖ ≤ Cd * ‖z‖` using `((fderiv ℝ g v).le_opNorm z).trans (mul_le_mul_of_nonneg_right (hCd v hv) (norm_nonneg _))`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_bound (hρ : IsHeis (fun x y => om x y) ρ) {h : Y → ℂ} (hh : Mom ν h) {g : V → B}
     (hg : ContDiff ℝ ∞ g) (v₀ : V) : ∃ bd : Y → ℝ, Integrable bd ν ∧
@@ -178,7 +178,7 @@ theorem exists_bound (hρ : IsHeis (fun x y => om x y) ρ) {h : Y → ℂ} (hh :
       _ = ‖h y‖ * (Cd + 2 * π * ‖om‖ * ‖ι‖ * Cg * ‖y‖) * ‖z‖ := by ring
 
 /- English proof (translation)
-Take `⟨bd, hbd, hb⟩` from `exists_bound hρ hh hg v₀`. Conclude with `hasFDerivAt_integral_of_dominated_of_fderiv_le (Metric.closedBall_mem_nhds v₀ one_pos) (Filter.Eventually.of_forall fun v => (continuous_itg hρ hh.1 g v).aestronglyMeasurable) (integrable_itg hρ hh g v₀) (continuous_dI hρ hh.1 g v₀).aestronglyMeasurable (Filter.Eventually.of_fora …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_int (hρ : IsHeis (fun x y => om x y) ρ) {h : Y → ℂ} (hh : Mom ν h) {g : V → B}
     (hg : ContDiff ℝ ∞ g) (v₀ : V) :
@@ -191,7 +191,7 @@ theorem hasFDerivAt_int (hρ : IsHeis (fun x y => om x y) ρ) {h : Y → ℂ} (h
     (Filter.Eventually.of_forall fun y v _ => hasFDerivAt_itg (hg.differentiable (by simp)) h v y)
 
 /- English proof (translation)
-Take `⟨bd, hbd, hb⟩` from `exists_bound hρ hh hg v`. Establish `hi : Integrable (dI om ρ ι h g v) ν` using `hbd.mono' (continuous_dI hρ hh.1 g v).aestronglyMeasurable (Filter.Eventually.of_forall fun y => hb y v (Metric.mem_closedBall_self zero_le_one))`. Rewrite using `[(hasFDerivAt_int hρ hh hg v).fderiv, ContinuousLinearMap.integral_apply hi]`. Simplify using `only [dI_apply]`. Conclude with `integral_add (integrable_itg hρ (mom_dh hh z) g v) (integrable_itg hρ hh _ v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fderiv_int_apply (hρ : IsHeis (fun x y => om x y) ρ) {h : Y → ℂ} (hh : Mom ν h) {g : V → B}
     (hg : ContDiff ℝ ∞ g) (v z : V) :
@@ -205,11 +205,9 @@ theorem fderiv_int_apply (hρ : IsHeis (fun x y => om x y) ρ) {h : Y → ℂ} (
   exact integral_add (integrable_itg hρ (mom_dh hh z) g v) (integrable_itg hρ hh _ v)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `h hh g hg`. Conclude with `contDiff_zero.2 (Differentiable.continuous fun v => (hasFDerivAt_int hρ hh hg v).differentiableAt)`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh g hg`. Rewrite using `[Nat.cast_succ, contDiff_succ_iff_fderiv_apply]`. Use `⟨fun v => (hasFDerivAt_int hρ hh hg v).differentiableAt, by simp, fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [fderiv_int_apply hρ hh hg]`. Establish `hg' : ContDiff ℝ ∞ fun w => fderiv ℝ g w z` using `(hg.fderiv_right (m := ∞) (by simp)).clm_apply contDiff_const`.
-
-Conclude with `(ih _ (mom_dh hh z) g hg).add (ih h hh _ hg')`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_int (hρ : IsHeis (fun x y => om x y) ρ) (n : ℕ) : ∀ h : Y → ℂ, Mom ν h → ∀ g : V → B,
     ContDiff ℝ ∞ g → ContDiff ℝ n fun v => ∫ y, itg om ρ ι h g v y ∂ν := by
@@ -229,15 +227,15 @@ theorem contDiff_int (hρ : IsHeis (fun x y => om x y) ρ) (n : ℕ) : ∀ h : Y
 end Superpos
 
 /- English proof (translation)
-Introduce `V Y _ _ _ _ _ _ _ _ ν B _ _ _ om ρ hom hρ ι c hc hm f hf`. Establish `skew : ∀ v w, om w v = -om v w`. Introduce `v w`. Use `hom (v + w)` as an intermediate fact. Simplify using `only [map_add, ContinuousLinearMap.add_apply, hom] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `comm : ∀ v w b, ρ v (ρ w b) = cexp (2 * π * I * (om v w : ℂ)) • ρ w (ρ v b)`. Introduce `v w b`. Rewrite using `[hρ.2.1 v w, hρ.2.1 w v, smul_smul, ← Complex.exp_add, add_comm w v]`. Simplify using `only [skew v w]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : Integrable (fun y => c y • ρ (ι y) f) ν`. Use `Integrable.mono' ((hm 0).mul_const ‖f‖) (hc.smul ((hρ.2.2.2 f).comp ι.continuous)).aestronglyMeasurable (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[norm_smul, hρ.2.2.1]`. Establish `e : (fun v => ρ v (∫ y, c y • ρ (ι y) f ∂ν)) = fun v => ∫ y, Superpos.itg om ρ ι c (fun w => ρ w f) v y ∂ν`. Use function extensionality and compare the values at `v`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ hint]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Superpos.itg, Superpos.ph, map_smul, comm v (ι y), smul_smul]`. Unfold `Sm`. Rewrite using `[e]`. Conclude with `contDiff_infty.2 fun n => Superpos.contDiff_int hρ n c ⟨hc, hm⟩ _ hf`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sm_superpos : ∀ (V Y : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [NormedAddCommGroup Y] [NormedSpace ℝ Y] [FiniteDimensional ℝ Y] [MeasurableSpace Y] [BorelSpace Y] (ν : MeasureTheory.Measure Y) (B : Type) [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] (om : V →L[ℝ] V →L[ℝ] ℝ) (ρ : V → B →L[ℂ] B), (∀ x, om x x = 0) → GlobalTheory.RealWeil.IsHeis (fun x y => om x y) ρ → ∀ (ι : Y →L[ℝ] V) (c : Y → ℂ), Continuous c → (∀ n : ℕ, MeasureTheory.Integrable (fun y => ‖y‖ ^ n * ‖c y‖) ν) → ∀ f : B, GlobalTheory.RealWeil.Sm ρ f → GlobalTheory.RealWeil.Sm ρ (∫ y, c y • ρ (ι y) f ∂ν) := by
   intro V Y _ _ _ _ _ _ _ _ ν B _ _ _ om ρ hom hρ ι c hc hm f hf

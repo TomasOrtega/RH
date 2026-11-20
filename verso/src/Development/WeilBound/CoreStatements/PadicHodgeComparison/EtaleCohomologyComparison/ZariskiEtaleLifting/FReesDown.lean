@@ -8,7 +8,7 @@ open CategoryTheory Polynomial CrystallineSemistableComparison CrystallineSemist
 universe w w' v u v' u' v'' u''
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.CompanionTheory.ReesDown.main`.
+A detailed English derivation is pending.
 -/
 theorem CrystallineSemistableComparison.B.P.rees_down : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C'] {F : C ⥤ ModuleCat.{w} R} (Φ : Flt F) (G : C' ⥤ C) (n N : ℕ), (∀ T, (Φ.S 0).S T = ⊤) → RI ((X : ℤ[X]) ^ N) n Φ.rees G → ∀ j ≤ n, InjUpTo (Φ.μ ^ N) ((Mor.restrict F G).pull j) ∧ ∀ y, ∃ x ∈ (Φ.S N).img j, (Mor.restrict F G).pull j x = Φ.μ ^ N • y :=
   @GlobalTheory.CompanionTheory.ReesDown.main

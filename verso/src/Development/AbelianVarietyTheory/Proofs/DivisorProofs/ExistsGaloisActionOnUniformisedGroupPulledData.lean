@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R R' _ _ _ _ _ _ ρ hB hF hG D D' hD A' G' _ _ hS U'`. Conclude with `GlobalTheory.T.nonempty_galoisAction_pulledBack_uniformisation R hB R' ρ hF hG D D' hD A' G' hS U'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem galAct_exists : ∀ (R R' : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), Base R → FinExt ρ → IsGal ρ → ∀ (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R') D' A' G'), Nonempty (GalAct ρ hD U') := by
   intro R R' _ _ _ _ _ _ ρ hB hF hG D D' hD A' G' _ _ hS U'

@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.C
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Distinguish the cases in `h : γ ∈ F.η.ker`. Conclude with `Or.inl ⟨⟨γ, h⟩, rfl⟩`. Use `Or.inr ⟨⟨γ * F.c, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite `h`, the goal using `[MonoidHom.mem_ker]`. Rewrite using `[map_mul, F.η_c, (Int.units_eq_one_or (F.η γ)).resolve_left h]`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `show γ = γ * F.c * F.c`. Rewrite using `[mul_assoc, F.c_sq, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cases_c {l : ℕ} [Fact l.Prime] (F : GFrame l) (γ : F.Γ) :
     (∃ g : F.G₀, γ = g) ∨ ∃ g : F.G₀, γ = g * F.c := by
@@ -20,9 +20,9 @@ private theorem cases_c {l : ℕ} [Fact l.Prime] (F : GFrame l) (γ : F.Γ) :
       rw [mul_assoc, F.c_sq, mul_one]
 
 /- English proof (translation)
-Establish `a : A = -(Q * Xᵀ * P)`. Rewrite using `[← Matrix.one_mul A, ← h1, Matrix.mul_assoc, hA, one_smul, Matrix.mul_neg, Matrix.mul_assoc]`. Establish `b : B = -(e • (Q * Yᵀ * P))`. Rewrite using `[← Matrix.one_mul B, ← h1, Matrix.mul_assoc, hB, Matrix.mul_neg, Matrix.mul_smul, Matrix.mul_assoc]`. Establish `c : Q * Xᵀ * P * (Q * Yᵀ * P) = Q * (Xᵀ * Yᵀ * P)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc P Q, h2, Matrix.one_mul]`. Rewrite using `[a, b, neg_mul_neg, Matrix.mul_smul, c, trace_smul, smul_eq_mul, trace_mul_comm, Matrix.mul_assoc, h2, Matrix.mul_one, ← transpose_mul, trace_transpose, trace_mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tr_c {R : Type} [CommRing R] {n : ℕ} (P Q X Y A B : Matrix (Fin n) (Fin n) R) (e : R) (h1 : Q * P = 1) (h2 : P * Q = 1)
     (hA : P * A = -((1 : R) • (Xᵀ * P))) (hB : P * B = -(e • (Yᵀ * P))) : (A * B).trace = e * (X * Y).trace := by
@@ -37,7 +37,7 @@ private theorem tr_c {R : Type} [CommRing R] {n : ℕ} (P Q X Y A B : Matrix (Fi
     ← transpose_mul, trace_transpose, trace_mul_comm]
 
 /- English proof (translation)
-Establish `c : a * X * a' * (a * Y * a') = a * (X * Y * a')`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc a' a, h1, Matrix.one_mul]`. Rewrite using `[one_smul, Matrix.mul_smul, c, trace_smul, smul_eq_mul, trace_mul_comm, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tr_g {R : Type} [CommRing R] {n : ℕ} (a a' X Y : Matrix (Fin n) (Fin n) R) (e : R) (h1 : a' * a = 1) :
     (((1 : R) • (a * X * a')) * (e • (a * Y * a'))).trace = e * (X * Y).trace := by
@@ -47,29 +47,29 @@ private theorem tr_g {R : Type} [CommRing R] {n : ℕ} (a a' X Y : Matrix (Fin n
   rw [one_smul, Matrix.mul_smul, c, trace_smul, smul_eq_mul, trace_mul_comm, Matrix.mul_assoc, h1, Matrix.mul_one]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 private theorem red_mul {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (m : ℕ) (A B : Matrix (Fin n) (Fin n) O) :
     red m (A * B) = red m A * red m B := Matrix.map_mul
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 private theorem red_one {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (m : ℕ) : red m (1 : Matrix (Fin n) (Fin n) O) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Introduce `l _ L G G0 h O _ _ _ _ _ n y m hc`. Take `⟨k, τ, hk, hnd, hlin⟩` from `pairO l O m`. Set `b : Mm O n m →+ Mm O n m →+ ZMod (l ^ k)` to `{ toFun := fun X => { toFun := fun Y => τ (X * Y).trace map_zero' := by simp map_add' := fun Y Y' => by rw [Matrix.mul_add, trace_add, map_add] } map_zero' := by ext Y; simp map_add' := fun X X' => by ext Y; simp [Matrix.add_mul] }`. Establish `hb : ∀ X Y, b X Y = τ (X * Y).trace` using `fun _ _ => rfl`. Establish `hl : ∀ X : Mm O n m, (∀ Y, b X Y = 0) → X = 0` using `fun X hX => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Use `hnd _ fun z => ?_` and prove the remaining obligations. Use `hX (Matrix.single j i z)` as an intermediate fact. Rewrite `this` using `[hb, Matrix.trace_mul_single]`. Simplify `this` using `[mul_comm]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨k, b, hk, fun rep rep' hr hr' => ⟨hl, fun Y hY => hl Y fun X => by rw [hb, trace_mul_comm]; exact hY X, ?_⟩⟩` and prove the remaining obligations. Establish `hg : ∀ (g : G.G₀) X Y, b (rep g X) (rep' g Y) = PadicInt.toZModPow k ((G.ε g : ℤ_[l]ˣ) : ℤ_[l]) * b X Y`. Introduce `g X Y`. Establish `e : y.ρm h m g⁻¹ * y.ρm h m g = 1` using `by show red m _ * red m _ = 1`. Rewrite using `[← red_mul, ← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one, red_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, hr.1 g X, hr'.1 g Y, tr_g _ _ _ _ _ e, hb]`. Conclude with `hlin _ _`. Establish `hcc : ∀ X Y, b (rep G.c X) (rep' G.c Y) = PadicInt.toZModPow k ((G.ε G.c : ℤ_[l]ˣ) : ℤ_[l]) * b X Y`. Introduce `X Y`. Establish `e1 : red m ((y.P⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) * red m (y.P : Matrix (Fin n) (Fin n) O) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← red_mul, Units.inv_mul, red_one]`. Establish `e2 : red m (y.P : Matrix (Fin n) (Fin n) O) * red m ((y.P⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) = 1`. Rewrite using `[← red_mul, Units.mul_inv, red_one]`. Rewrite using `[hb, hb]`. Conclude with `(congrArg τ (tr_c _ _ X Y _ _ _ e1 e2 (hr.2 X) (hr'.2 Y))).trans (hlin _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `γ X Y`. Break down `cases_c G.frame γ with ⟨g, rfl⟩ | ⟨g, rfl⟩` into its components or cases. Conclude with `hg g X Y`. Use `show b (rep ((g : G.Γ) * G.c) X) (rep' ((g : G.Γ) * G.c) Y) = PadicInt.toZModPow k ((G.ε ((g : G.Γ) * G.c) : ℤ_[l]ˣ) : ℤ_[l]) * b X Y`. Rewrite using `[map_mul rep, map_mul rep', Module.End.mul_apply, Module.End.mul_apply, hg, hcc, map_mul, Units.val_mul, map_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.pairP :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (y : Pt G0.frame O n) (m : ℕ), G.ε G.c = -1 → ∃ (k : ℕ) (b : Mm O n m →+ Mm O n m →+ ZMod (l ^ k)), 0 < k ∧ ∀ rep rep', IsAd0 h y m rep → IsAd1 h y m rep' → DualPair k G.ε rep rep' b := by

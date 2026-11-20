@@ -16,7 +16,7 @@ namespace CrystallineSemistableComparison.Om.Nt2
 open GroundTheory.Arith.SchemeCoh GlobalTheory.SheafPull CrystallineSemistableComparison.Om.Cech
 
 /- English proof (translation)
-The claim follows from `| 0, G, G', hG, hG', φ, x => CrystallineSemistableComparison.Om.Nt2.cechHZero_pull' f V hV U hU τ hτ φ x | 1, G, G', hG, hG', φ, x => by obtain ⟨α, rfl⟩ := GlobalTheory.T.injective_resolution_lift_pushforward f φ exact CrystallineSemistableComparison.Om.Nt2.cechHOne_pull' f V hV …`.
+A detailed English derivation is pending.
 -/
 theorem cechHEquiv_pull_compat {X Y : TopCat.{0}} (f : X ⟶ Y) {BY : Opens Y → Prop}
     {GoodY : ∀ {κ : Type}, Opens Y → (κ → Opens Y) → Prop} {BX : Opens X → Prop}
@@ -45,7 +45,7 @@ theorem cechHEquiv_pull_compat {X Y : TopCat.{0}} (f : X ⟶ Y) {BY : Opens Y �
         (injectiveSequence_goodAcyclic hCY G hG) (injectiveSequence_goodAcyclic hCX G' hG') α.τ₃ y) x
 
 /- English proof (translation)
-Introduce `X Y f BY GoodY BX GoodX hCY hCX κ ι V hV hVB U hU hUB τ hτ n G G' hG hG' φ x`. Conclude with `cechHEquiv_pull_compat f hCY hCX V hV hVB U hU hUB τ hτ n hG hG' φ x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cechHEquiv_pullC : ∀ {X Y : TopCat.{0}} (f : X ⟶ Y) {BY : Opens Y → Prop}
     {GoodY : ∀ {κ : Type}, Opens Y → (κ → Opens Y) → Prop} {BX : Opens X → Prop}

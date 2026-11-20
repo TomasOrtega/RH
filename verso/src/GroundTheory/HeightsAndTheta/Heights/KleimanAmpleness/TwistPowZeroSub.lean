@@ -12,7 +12,7 @@ section
 variable {S : Type} [CommRing S] {N : ℕ} {Ω : Type} [Field Ω] [Algebra S Ω] {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Unfold `IndefiniteRowSideFullHecke.Kleiman.secs`. Conclude with `iInf_congr fun i => iInf_congr fun hi => h i hi`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem secs_congr {F F' : Fin (N + 1) → Submodule S Ω} (h : ∀ i, x i ≠ 0 → F i = F' i) :
     IndefiniteRowSideFullHecke.Kleiman.secs S x F = IndefiniteRowSideFullHecke.Kleiman.secs S x F' := by
@@ -20,11 +20,11 @@ theorem secs_congr {F F' : Fin (N + 1) → Submodule S Ω} (h : ∀ i, x i ≠ 0
   exact iInf_congr fun i => iInf_congr fun hi => h i hi
 
 /- English proof (translation)
-Rewrite using `[← mul_eq_twist]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.mul_le]`. Introduce `g hg a ha`. Rewrite `ha` using `[Submodule.restrictScalars_mem, pow_zero_sub]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg`, the goal using `[Submodule.restrictScalars_mem]`. Rewrite using `[mul_comm]`. Conclude with `Submodule.smul_mem _ (⟨a, ha⟩ : Kleiman.chartRing S x I) hg`. Introduce `g hg`. Establish `h1 : (1 : Ω) ∈ ((B.pow 0).sub I).restrictScalars S`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.restrictScalars_mem, pow_zero_sub]`. Conclude with `one_mem _`. Simplify using `using Submodule.mul_mem_mul hg h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem twist_pow_zero_sub (G B : Kleiman.SubSystem S x Ω) (I : Kleiman.Chart x) :
     ((G.twist (B.pow 0)).sub I).restrictScalars S = (G.sub I).restrictScalars S := by
@@ -43,9 +43,9 @@ theorem twist_pow_zero_sub (G B : Kleiman.SubSystem S x Ω) (I : Kleiman.Chart x
     simpa using Submodule.mul_mem_mul hg h1
 
 /- English proof (translation)
-Rewrite using `[← secs.equiv]`. Apply `secs_congr` to reduce the goal to its premises. Introduce `i hi`. Establish `e1 : IndefiniteRowSideFullHecke.Kleiman.lmul S G' (IndefiniteRowSideFullHecke.Kleiman.lpow S B' b) i = IndefiniteRowSideFullHecke.Kleiman.lmul S (toIndefiniteRowSideFullHecke G) (IndefiniteRowSideFullHecke.Kleiman.lpow S (toIndefiniteRowSideFullHecke B) b) i`. Simplify using `only [IndefiniteRowSideFullHecke.Kleiman.lmul, IndefiniteRowSideFullHecke.Kleiman.lpow, hG i hi, hB i hi]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Break down `Nat.eq_zero_or_pos b with rfl | hb` into its components or cases. Rewrite using `[IndefiniteRowSideFullHecke.Kleiman.lmul, lpow_zero, mul_one, chartModule_of_ne_zero _ hi, chartModule_of_ne_zero _ hi, twist_pow_zero_sub]`. Rewrite using `[IndefiniteRowSideFullHecke.Kleiman.lmul, lpow.equiv B hb hi]`. Conclude with `lmul.equiv G (B.pow b) hi`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secs_lmul_lpow (G B : Kleiman.SubSystem S x Ω) (G' B' : Fin (N + 1) → Submodule S Ω)
     (hG : ∀ i, x i ≠ 0 → G' i = toIndefiniteRowSideFullHecke G i) (hB : ∀ i, x i ≠ 0 → B' i = toIndefiniteRowSideFullHecke B i) (b : ℕ) :
@@ -63,25 +63,23 @@ theorem secs_lmul_lpow (G B : Kleiman.SubSystem S x Ω) (G' B' : Fin (N + 1) →
     exact lmul.equiv G (B.pow b) hi
 
 /- English proof (translation)
-Establish `hsecs : IndefiniteRowSideFullHecke.Kleiman.secs S x B' = B.secs`. Rewrite using `[← secs.equiv]`. Conclude with `secs_congr hB`. Establish `key : ∀ {i : Fin (N + 1)} (h : x i ≠ 0), Submodule.span S (Set.image2 (· • ·) (ReciprocityTheory.ChartRestriction.G.Geo.chartRing S x i : Set Ω) (Set.range η)) = (Submodule.span (Kleiman.chartRing S x (Kleiman.singleChart h)) (Set.range η)).restrictScalars S`. Introduce `i h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chartRing.equiv S x h]`. Conclude with `span_image2_eq _ _`. Unfold `IndefiniteRowSideFullHecke.Kleiman.IsGeneratedBy`. Rewrite using `[hsecs]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨hη, hg⟩`. Use `⟨hη, fun I => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(Kleiman.mem_support x).mp (I.2.2 hi)`. Establish `hsub : {i} ⊆ I.1` using `Finset.singleton_subset_iff.mpr hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi' : B.sub (Kleiman.singleChart hxi) = Submodule.span (Kleiman.chartRing S x (Kleiman.singleChart hxi)) (Set.range η)`. Use `hg i hxi` as an intermediate fact. Rewrite `this` using `[key hxi, hB i hxi, chartModule_of_ne_zero _ hxi]`. Conclude with `Submodule.restrictScalars_injective S _ _ this`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `hη j` as an intermediate fact. Rewrite `this` using `[Kleiman.SubSystem.secs, Submodule.mem_iInf]`. Conclude with `this I`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨a, ⟨u, hu⟩, hay⟩` from `(B.mem_iff (Kleiman.singleChart hxi) I hsub y).mp hy`. Rewrite `hay` using `[hi']`. Establish `hmono : ∀ w ∈ Submodule.span (Kleiman.chartRing S x (Kleiman.singleChart hxi)) (Set.range η), w ∈ Submodule.span (Kleiman.chartRing S x I) (Set.range η)`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem z hz => exact Submodule.subset_span hz`. Consider the case `zero => exact zero_mem _`. Consider the case `add p q _ _ hp hq => exact add_mem hp hq`. Consider the case `smul c w _ hw`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: c • w = (Kleiman.chartIncl hsub c) • w` using `rfl`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hw`. Establish `hay'` using `hmono _ hay`. Establish `hinv : ((↑u⁻¹ : Kleiman.chartRing S x I) : Ω) * (a : Ω) = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Subtype.val (Units.inv_mul u)` as an intermediate fact. Rewrite `this` using `[hu]`. Conclude with `this`. Establish `hy' : y = (↑u⁻¹ : Kleiman.chartRing S x I) • ((a : Ω) • y)`. Rewrite using `[Subalgebra.smul_def, ← mul_smul, hinv, one_smul]`.
-
-Rewrite using `[hy']`. Conclude with `Submodule.smul_mem _ _ hay'`. Introduce and unpack `⟨hη, hg⟩`. Use `⟨hη, fun i hxi => ?_⟩` and prove the remaining obligations. Rewrite using `[key hxi, hB i hxi, chartModule_of_ne_zero _ hxi, hg]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGeneratedBy_iff (B : Kleiman.SubFamily S x Ω) (B' : Fin (N + 1) → Submodule S Ω)
     (hB : ∀ i, x i ≠ 0 → B' i = toIndefiniteRowSideFullHecke B.toSubSystem i) {r : ℕ} (η : Fin (r + 1) → Ω) :
@@ -143,13 +141,13 @@ theorem isGeneratedBy_iff (B : Kleiman.SubFamily S x Ω) (B' : Fin (N + 1) → S
     rw [key hxi, hB i hxi, chartModule_of_ne_zero _ hxi, hg]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[iSup_le_iff]`. Introduce `k`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, _, rfl, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `ha` using `[SetLike.mem_coe]`. Unfold `IndefiniteRowSideFullHecke.Kleiman.secZ at ha`. Use `split_ifs at ha with hd`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.mp ha`. Conclude with `Submodule.subset_span ⟨k, f, ((b : ℤ) - bk k).toNat, (mem_homogeneousSubmodule _ _).mp hf, by omega, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `ha` using `[Submodule.mem_bot]`. Simplify using `[ha]`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, f, e, hf, he, rfl⟩`. Use `Submodule.mem_iSup_of_mem k (Submodule.subset_span ⟨aeval η f, ?_, s k, rfl, rfl⟩)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : ((b : ℤ) - bk k) = (e : ℤ)` using `by omega`. Rewrite using `[hd, SetLike.mem_coe]`. Unfold `IndefiniteRowSideFullHecke.Kleiman.secZ`. Rewrite using `[if_pos (by positivity), Int.toNat_natCast]`. Conclude with `Submodule.mem_map.mpr ⟨f, (mem_homogeneousSubmodule _ _).mpr hf, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSup_span_secZ_eq {r n : ℕ} (η : Fin (r + 1) → Ω) (bk : Fin n → ℕ) (s : Fin n → Ω) (b : ℕ) :
     (⨆ k, Submodule.span S (Set.image2 (· * ·) (IndefiniteRowSideFullHecke.Kleiman.secZ S η ((b : ℤ) - bk k) : Set Ω) {s k})) =
@@ -178,13 +176,13 @@ theorem iSup_span_secZ_eq {r n : ℕ} (η : Fin (r + 1) → Ω) (bk : Fin n → 
     exact Submodule.mem_map.mpr ⟨f, (mem_homogeneousSubmodule _ _).mpr hf, rfl⟩
 
 /- English proof (translation)
-Establish `hmon : ∀ (d : Fin (r + 1) →₀ ℕ) (t : Finset (Fin (r + 1))), ∏ j ∈ t, η j ^ d j ∈ Q ^ (∑ j ∈ t, d j)`. Introduce `d t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty, Finset.sum_empty, pow_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Consider the case `insert j t hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj, pow_add]`. Conclude with `Submodule.mul_mem_mul (Submodule.pow_mem_pow _ (hη j) _) ih`. Rewrite using `[f.as_sum, map_sum]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, ← Algebra.smul_def]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hdeg : Finsupp.degree d = e`. Rewrite using `[Finsupp.degree_eq_weight_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hf (mem_support_iff.mp hd)`. Use `hmon d d.support` as an intermediate fact. Rewrite `this` using `[show (∑ j ∈ d.support, d j) = e from hdeg]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem aeval_mem_pow {r : ℕ} {Q : Submodule S Ω} {η : Fin (r + 1) → Ω} (hη : ∀ j, η j ∈ Q)
     {f : MvPolynomial (Fin (r + 1)) S} {e : ℕ} (hf : f.IsHomogeneous e) : aeval η f ∈ Q ^ e := by
@@ -212,23 +210,21 @@ theorem aeval_mem_pow {r : ℕ} {Q : Submodule S Ω} {η : Fin (r + 1) → Ω} (
 end
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hA S _ _ N Ω _ _ x G' B' r η hx hgen`. Take `⟨G, hG⟩` from `(hL S N Ω x).2 G'`. Take `⟨B, hB⟩` from `(hL S N Ω x).2 B'`. Establish `hgen'` using `(isGeneratedBy_iff B.toSubFamily B'.mods hB η).mp hgen`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, deg, gen, hgen1, hle⟩` from `hA S Ω N x G B r η hx hgen'.1 hgen'.2`. Establish `hsecs` using `secs_lmul_lpow G.toSubSystem B.toSubSystem G'.mods B'.mods hG hB`. Use `⟨n, deg, gen, fun k => ?_, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[hsecs]`. Conclude with `hgen1 k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iSup_span_secZ_eq]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[hsecs]`. Conclude with `hle b`. Rewrite using `[Submodule.span_le]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨k, f, e, hf, he, rfl⟩`. Establish `hk` using `hgen1 k`. Rewrite `hk` using `[← hsecs]`. Simplify using `only [IndefiniteRowSideFullHecke.Kleiman.secs, SetLike.mem_coe, Submodule.mem_iInf] at hk ⊢`. Introduce `i hi`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hη : ∀ j, η j ∈ B'.mods i`. Introduce `j`. Use `hgen.1 j` as an intermediate fact. Simplify using `only [IndefiniteRowSideFullHecke.Kleiman.secs, Submodule.mem_iInf] at this`. Conclude with `this i hi`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `ha` using `aeval_mem_pow hη hf`. Establish `hki` using `hk i hi`. Use `show aeval η f * gen k ∈ G'.mods i * B'.mods i ^ b`. Express the relevant statement in the definitionally equal form `gen k ∈ G'.mods i * B'.mods i ^ deg k at hki`. Establish `hmul : B'.mods i ^ e * (G'.mods i * B'.mods i ^ deg k) = G'.mods i * B'.mods i ^ (e + deg k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pow_add, mul_left_comm]`. Rewrite using `[← he, ← hmul]`. Conclude with `Submodule.mul_mem_mul ha hki`. Introduce `hB' S _ _ Ω _ _ N x G B r η hx hη hspan`. Take `⟨G', hG⟩` from `(hL S N Ω x).1 G`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨B', hB⟩` from `(hL S N Ω x).1 B`. Establish `hgen : IndefiniteRowSideFullHecke.Kleiman.IsGeneratedBy S x B'.mods η` using `(isGeneratedBy_iff B.toSubFamily B'.mods (fun i _ => hB i) η).mpr ⟨hη, hspan⟩`. Take `⟨n, bk, s, hs, heq⟩` from `hB' S N Ω x G' B' r η hx hgen`. Establish `hsecs` using `secs_lmul_lpow G.toSubSystem B.toSubSystem G'.mods B'.mods (fun i _ => hG i) (fun i _ => hB i)`. Use `⟨n, bk, s, fun k => ?_, fun b => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hsecs]`. Conclude with `hs k`. Rewrite using `[← hsecs, heq b, iSup_span_secZ_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TwistFinite.equiv_ne (hL : TranslateEq.LineBundle.Statement) :
     Kleiman.TwistFinite.Statement.{0, 0} ↔ TwistFiniteNe.Statement := by

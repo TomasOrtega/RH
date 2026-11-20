@@ -11,11 +11,11 @@ open MvPolynomial MeasureTheory NumberField
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ _ n e δ h I f u σ hI hf hδ hu`. Take `⟨hprime, c, hc, g, hg, heq⟩` from `hB K n (e + 1) I f σ hI hf`. Establish `hδσ : IsMultiHomog δ (MvPolynomial.map σ f)` using `(isMultiHomog_iff _ _).mpr fun i => IsWeightedHomogeneous.map' ((isMultiHomog_iff _ _).mp hδ i) σ`. Establish `hne : MvPolynomial.map σ f ≠ 0` using `fun h0 => hf.1 (map_injective σ σ.injective (by rw [h0, map_zero]))`. Rewrite `hδσ`, `hne` using `[heq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨δW, hδW, hsum⟩` from `exists_degrees_of_chowFormCycle (Nat.succ_pos e) _ c g hg hδσ hne`. Unfold `cycleIntegral`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hsum]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem BaseChangeLogBound.proof (hB : ChowFormBaseChange.Statement) (hAv : BaseChangeAvoid.Statement)
     (hC : ConeLogBound.Statement) : BaseChangeLogBound.Statement := by

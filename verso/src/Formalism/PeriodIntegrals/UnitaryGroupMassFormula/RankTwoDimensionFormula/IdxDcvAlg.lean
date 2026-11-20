@@ -8,14 +8,14 @@ namespace PI.UnitaryDimensionFormula.FrameAlg
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] (σ : A →+* A) (J : Matrix n n A)
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_add_right (x y y' : n → A) :
     Formalism.UG.hform σ J x (y + y') = Formalism.UG.hform σ J x y + Formalism.UG.hform σ J x y' := by
   simp only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem h_smul_right (x y : n → A) (a : A) :
     Formalism.UG.hform σ J x (a • y) = a * Formalism.UG.hform σ J x y := by
@@ -23,20 +23,20 @@ theorem h_smul_right (x y : n → A) (a : A) :
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_sub_right (x y y' : n → A) :
     Formalism.UG.hform σ J x (y - y') = Formalism.UG.hform σ J x y - Formalism.UG.hform σ J x y' := by
   simp only [Formalism.UG.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_zero_right (x : n → A) : Formalism.UG.hform σ J x 0 = 0 := by
   simp [Formalism.UG.hform]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [h_zero_right]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h_add_right, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem h_sum_right {ι : Type} (s : Finset ι) (x : n → A) (v : ι → n → A) :
     Formalism.UG.hform σ J x (∑ l ∈ s, v l) = ∑ l ∈ s, Formalism.UG.hform σ J x (v l) := by
@@ -46,14 +46,14 @@ theorem h_sum_right {ι : Type} (s : Finset ι) (x : n → A) (v : ι → n → 
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h_add_right, ih]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_add_left (x x' y : n → A) :
     Formalism.UG.hform σ J (x + x') y = Formalism.UG.hform σ J x y + Formalism.UG.hform σ J x' y := by
   simp only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem h_smul_left (x y : n → A) (a : A) :
     Formalism.UG.hform σ J (a • x) y = σ a * Formalism.UG.hform σ J x y := by
@@ -61,13 +61,13 @@ theorem h_smul_left (x y : n → A) (a : A) :
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_zero_left (y : n → A) : Formalism.UG.hform σ J 0 y = 0 := by
   simp [Formalism.UG.hform]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [h_zero_left]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h_add_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem h_sum_left {ι : Type} (s : Finset ι) (v : ι → n → A) (y : n → A) :
     Formalism.UG.hform σ J (∑ l ∈ s, v l) y = ∑ l ∈ s, Formalism.UG.hform σ J (v l) y := by
@@ -77,9 +77,9 @@ theorem h_sum_left {ι : Type} (s : Finset ι) (v : ι → n → A) (y : n → A
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h_add_left, ih]
 
 /- English proof (translation)
-Establish `hJ' : ∀ i j, J i j = σ (J j i)` using `fun i j => by`. Establish `h` using `congrFun (congrFun hJ i) j`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply] at h`. Conclude with `h.symm`. Simplify using `only [Formalism.UG.hform, map_sum, map_mul, hσ]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ' j i]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem h_symm (hJ : Formalism.UG.cT σ J = J) (hσ : ∀ a, σ (σ a) = a) (x y : n → A) :
     Formalism.UG.hform σ J y x = σ (Formalism.UG.hform σ J x y) := by
@@ -107,7 +107,7 @@ structure Hyp (e f : Fin r → n → A) (z : n → A) : Prop where
   fz : ∀ a, Formalism.UG.hform σ J (f a) z = 0
 
 /- English proof (translation)
-Simplify using `only [Q, h_add_right, h_smul_right, h_sub_right, h_sum_right]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem Q_eq_hform_expansion (e f : Fin r → n → A) (z y w : n → A) :
     Formalism.UG.hform σ J w (Q σ J e f z y) =
@@ -116,9 +116,9 @@ private theorem Q_eq_hform_expansion (e f : Fin r → n → A) (z y w : n → A)
   simp only [Q, h_add_right, h_smul_right, h_sub_right, h_sum_right]
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun hM i) j`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul] at h`. Rewrite using `[h_sum_left]`. Simplify using `only [h_smul_left, hσ]`. Rewrite using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dual_fix (hσ : ∀ a, σ (σ a) = a) {k : ℕ} (b c : Fin k → n → A) (ε : A) (M : Matrix (Fin k) (Fin k) A)
     (hM : M * Matrix.of (fun l j => Formalism.UG.hform σ J (c l) (b j)) = ε • (1 : Matrix (Fin k) (Fin k) A))
@@ -132,7 +132,7 @@ theorem dual_fix (hσ : ∀ a, σ (σ a) = a) {k : ℕ} (b c : Fin k → n → A
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.smul_mul, Matrix.adjugate_mul, smul_smul]`. Use `congr 1`. Take the linear combination `hy`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem inv_on {k : ℕ} (G : Matrix (Fin k) (Fin k) A) (ε y : A) (hy : ε * G.det * y = ε) :
     ((ε * y) • G.adjugate) * G = ε • (1 : Matrix (Fin k) (Fin k) A) := by
@@ -141,13 +141,13 @@ theorem inv_on {k : ℕ} (G : Matrix (Fin k) (Fin k) A) (ε y : A) (hy : ε * G.
   linear_combination hy
 
 /- English proof (translation)
-Establish `hfe : ∀ a b, Formalism.UG.hform σ J (f b) (e a) = if a = b then E₁ else 0` using `fun a b => by`. Apply the tactic sequence `rw [h_symm σ J hJ hσ (e a) (f b), hef]; split_ifs <;> simp [hEs]`. Establish `hze : ∀ a, Formalism.UG.hform σ J z (e a) = 0` using `fun a => by rw [h_symm σ J hJ hσ (e a) z, hez, map_zero]`. Establish `hzf : ∀ a, Formalism.UG.hform σ J z (f a) = 0` using `fun a => by rw [h_symm σ J hJ hσ (f a) z, hfz, map_zero]`. Establish `hEe : ∀ b, Formalism.UG.hform σ J (e b) y = Formalism.UG.hform σ J (e b) y * E₁` using `fun b => by conv_lhs => rw [he b, h_smul_left, hEs]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hEf : ∀ b, Formalism.UG.hform σ J (f b) y = Formalism.UG.hform σ J (f b) y * E₁` using `fun b => by conv_lhs => rw [hf b, h_smul_left, hEs]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `refine ⟨fun b => ?_, fun b => ?_, ?_⟩ <;> rw [Q_eq_hform_expansion]`. Simplify using `[hee, hef, hez]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hEe b]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hfe, hff, hfz]`. Rewrite using `[← hEf b]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[hze, hzf]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Q_perp_idem (hJ : Formalism.UG.cT σ J = J) (hσ : ∀ a, σ (σ a) = a) {e f : Fin r → n → A} {z : n → A} (E₁ : A)
     (hE : E₁ * E₁ = E₁) (hEs : σ E₁ = E₁) (he : ∀ a, e a = E₁ • e a) (hf : ∀ a, f a = E₁ • f a)

@@ -16,7 +16,7 @@ def FibreOfEtale : Prop := ∀ (k : Type) [Field k] {X P : Scheme.{0}} (p : X �
   ∀ V : P.Opens, Etale (π ∣_ V) → ∀ t : Pt r, (∀ x, t.1.base x ∈ V) → Etale (equalizer.ι π (p ≫ t.1) ≫ p)
 
 /- English proof (translation)
-Introduce `k _ _ X P _ _ p r π hπ hr hfin hsurj hun`. Take `⟨V, hV, hE⟩` from `h1 k p r π hπ hr hfin hsurj hun`. Take `⟨t, ht⟩` from `h2 k r hr V hV`. Conclude with `⟨t, h3 k p r π hπ V hE t ht⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Fibre_of (h1 : GenEtale) (h2 : RatPtIn) (h3 : FibreOfEtale) : Fibre := by
   intro k _ _ X P _ _ p r π hπ hr hfin hsurj hun

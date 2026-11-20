@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.SmoothNormalise
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hF.mul_inv_cancel (a := (⟨f, hf⟩ : O)) (fun e => h0 (congrArg Subtype.val e))`. Establish `: f * (y : κ') = 1` using `congrArg Subtype.val hy`. Rewrite using `[inv_eq_of_mul_eq_one_right this]`. Conclude with `y.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem_of_isField {κ' : Type} [Field κ'] {O : Subring κ'} (hF : IsField O) {f : κ'}
     (hf : f ∈ O) (h0 : f ≠ 0) : f⁻¹ ∈ O := by
@@ -27,11 +27,11 @@ theorem inv_mem_of_isField {κ' : Type} [Field κ'] {O : Subring κ'} (hF : IsFi
   rw [inv_eq_of_mul_eq_one_right this]; exact y.2
 
 /- English proof (translation)
-Establish `hc : ∀ f ∈ O, ∃ α : ℂ, f = algebraMap ℂ κ' α`. Introduce `f hf`. Take `⟨α, hα, h⟩` from `hR f hf`. Use `⟨α, ?_⟩` and prove the remaining obligations. Break down `h with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `sub_eq_zero.1 h`. Assume the negation of the conclusion as `hne`. Conclude with `h (inv_mem_of_isField hF hα (sub_ne_zero.2 hne))`. Introduce `x`. Take `⟨a, ha, b, hb, hb0, e⟩` from `hO.frac x`.
+Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨α, rfl⟩` from `hc a ha`. Take `⟨β, rfl⟩` from `hc b hb`. Use `⟨α / β, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, eq_div_iff hb0, e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_of_isField {κ' : Type} [Field κ'] [Algebra ℂ κ'] {O : Subring κ'}
     (hO : IsLocModel (algebraMap ℂ κ') O) (hR : RatRes (algebraMap ℂ κ') O) (hF : IsField O) :
@@ -52,17 +52,15 @@ theorem const_of_isField {κ' : Type} [Field κ'] [Algebra ℂ κ'] {O : Subring
   rw [map_div₀, eq_div_iff hb0, e]
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective ((algebraMap ℂ κ').codRestrict (⊤ : Subring κ') (fun _ => trivial))` using `fun x => by obtain ⟨α, hα⟩ := hc x; exact ⟨α, Subtype.ext hα.symm⟩`. Set `hB : IsLocModel (algebraMap ℂ κ') ⊤` to `{ const_mem := fun _ => trivial isLocalRing := (Subring.topEquiv (R := κ')).symm.isLocalRing essFiniteType := (RingHom.FiniteType.of_surjective _ hsurj).essFiniteType frac := fun f => ⟨f, trivial, 1, trivial, one_ne_zero, mul_one f⟩ }`. Use `⟨hB, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r _`. Take `⟨α, hα⟩` from `hc r`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨α, by rw [hα, sub_self]; exact nonUnit_zero _⟩`. Use `letI := hB.isLocalRing`. Establish `hfield : IsField (⊤ : Subring κ')`. Use `⟨⟨0, 1, zero_ne_one⟩, mul_comm, fun {a} ha => ?_⟩` and prove the remaining obligations. Establish `ha' : (a : κ') ≠ 0` using `fun e => ha (Subtype.ext e)`.
+Supply the required witnesses or components. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨⟨(a : κ')⁻¹, trivial⟩, Subtype.ext (mul_inv_cancel₀ ha')⟩`. Rewrite using `[Set.range_eq_empty, Ideal.span_empty]`. Conclude with `IsLocalRing.isField_iff_maximalIdeal_eq.1 hfield`. Establish `hb : Function.Bijective (MvPolynomial.eval₂Hom ((algebraMap ℂ κ').codRestrict ⊤ hB.const_mem) (Fin.elim0 : Fin 0 → (⊤ : Subring κ')))`. Use `⟨fun P Q e => ?_, fun x => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `e`, the goal using `[MvPolynomial.eq_C_of_isEmpty P, MvPolynomial.eq_C_of_isEmpty Q]`. Simplify using `only [MvPolynomial.eval₂Hom_C] at e`. Conclude with `congrArg _ (((algebraMap ℂ κ').codRestrict ⊤ hB.const_mem).injective e)`. Take `⟨α, hα⟩` from `hsurj x`. Conclude with `⟨MvPolynomial.C α, by simpa using hα⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI := (MvPolynomial.eval₂Hom ((algebraMap ℂ κ').codRestrict ⊤ hB.const_mem) (Fin.elim0 : Fin 0 → (⊤ : Subring κ'))).toAlgebra`. Conclude with `Algebra.FormallyEtale.of_equiv (AlgEquiv.ofBijective (Algebra.ofId _ _) hb)`. Establish `e : (algebraMap ℂ κ').toAlgebra = (inferInstance : Algebra ℂ κ')` using `Algebra.algebra_ext _ _ fun _ => rfl`. Unfold `TrBasis`. Rewrite using `[e, isTranscendenceBasis_iff_algebraicIndependent_isAlgebraic]`.
-
-Use `⟨algebraicIndependent_empty_type, ⟨fun x => ?_⟩⟩` and prove the remaining obligations. Take `⟨α, rfl⟩` from `hc x`. Conclude with `isAlgebraic_algebraMap (algebraMap ℂ (Algebra.adjoin ℂ (Set.range (fun i : Fin 0 => ((Fin.elim0 i : (⊤ : Subring κ')) : κ')))) α)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem top_model_of_const {κ' : Type} [Field κ'] [Algebra ℂ κ']
     (hc : ∀ x : κ', ∃ α : ℂ, x = algebraMap ℂ κ' α) :
@@ -106,7 +104,7 @@ theorem top_model_of_const {κ' : Type} [Field κ'] [Algebra ℂ κ']
     exact isAlgebraic_algebraMap (algebraMap ℂ (Algebra.adjoin ℂ (Set.range (fun i : Fin 0 => ((Fin.elim0 i : (⊤ : Subring κ')) : κ')))) α)
 
 /- English proof (translation)
-Introduce `h`. Use `(F.ord_nonneg_iff (inv_ne_zero hf)).2 (hBF h)` as an intermediate fact. Rewrite `this` using `[F.ord_inv]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem inv_not_mem {κ' : Type} [Field κ'] [Algebra ℂ κ'] (F : Place (algebraMap ℂ κ'))
     {B : Subring κ'} (hBF : B ≤ F.ring.toSubring) {f : κ'} (hf : f ≠ 0) (hp : 0 < F.ord f) :
@@ -117,7 +115,7 @@ theorem inv_not_mem {κ' : Type} [Field κ'] [Algebra ℂ κ'] (F : Place (algeb
   omega
 
 /- English proof (translation)
-Establish `hx'` using `(nonUnit_iff (R := B) ⟨x, hx.1⟩).1 hx`. Establish `hy'` using `(nonUnit_iff (R := B) ⟨y, hy.1⟩).1 hy`. Establish `h` using `(nonUnit_iff (R := B) (⟨x, hx.1⟩ - ⟨y, hy.1⟩)).2`. Conclude with `h ((IsLocalRing.mem_maximalIdeal _).1 (Ideal.sub_mem _ ((IsLocalRing.mem_maximalIdeal _).2 hx') ((IsLocalRing.mem_maximalIdeal _).2 hy')))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nonUnit_sub {κ' : Type} [Field κ'] {B : Subring κ'} [IsLocalRing B] {x y : κ'}
     (hx : NonUnit B x) (hy : NonUnit B y) : NonUnit B (x - y) := by
@@ -128,39 +126,35 @@ theorem nonUnit_sub {κ' : Type} [Field κ'] {B : Subring κ'} [IsLocalRing B] {
     ((IsLocalRing.mem_maximalIdeal _).2 hx') ((IsLocalRing.mem_maximalIdeal _).2 hy')))
 
 /- English proof (translation)
-Introduce `κ' _ _ O l a hO hR ha`. Take `⟨j, hj⟩` from `Function.ne_iff.1 ha`. Distinguish the cases in `hF : IsField O`. Establish `hc` using `const_of_isField hO hR hF`. Take `⟨hB, h1, h2, h3, h4⟩` from `top_model_of_const hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨⊤, hB, 0, Fin.elim0, h1, fun f hf => ⟨trivial, fun hn => ?_⟩, h2, h3, h4, j, hj, fun _ => trivial⟩` and prove the remaining obligations. Use `⟨trivial, Or.inl ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Break down `hn.2 with h | h` into its components or cases. Conclude with `h0 h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `h (inv_mem_of_isField hF hf h0)`. Take `⟨F, hFO, hpos⟩` from `GlobalTheory.T.exists_place_dominating_local_domain_complex O hO hF`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀, hdiv⟩ : ∃ j₀, a j₀ ≠ 0 ∧ ∀ i, a i / a j₀ ∈ F.ring := by`. Take `⟨j₀, hj₀s, hmin⟩` from `(Finset.univ.filter (fun i => a i ≠ 0)).exists_min_image (fun i => F.ord (a i)) ⟨j, by simpa using hj⟩`. Establish `hj₀ : a j₀ ≠ 0` using `(Finset.mem_filter.1 hj₀s).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `⟨j₀, hj₀, fun i => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : a i = 0`. Rewrite using `[hi, zero_div]`. Conclude with `zero_mem _`. Establish `hne : a i / a j₀ ≠ 0` using `div_ne_zero hi hj₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← F.ord_nonneg_iff hne, div_eq_mul_inv, F.ord_mul hi (inv_ne_zero hj₀), F.ord_inv]`. Use `hmin i (Finset.mem_filter.2 ⟨Finset.mem_univ _, hi⟩)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `letI : Algebra ℂ O := ((algebraMap ℂ κ').codRestrict O hO.const_mem).toAlgebra`. Use `haveI : Algebra.EssFiniteType ℂ O := hO.essFiniteType`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨σ, hσ⟩` from `(Algebra.essFiniteType_iff ℂ O).1 inferInstance`. Set `S : Finset κ'` to `σ.image (fun x : O => (x : κ')) ∪ Finset.univ.image (fun i => a i / a j₀)`. Establish `hS : ∀ x ∈ S, x ∈ F.ring`. Introduce `x hx`. Break down `Finset.mem_union.1 hx with hx | hx` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `hFO _ y.2`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `hdiv i`. Take `⟨A, hAs, hAF, hSA, hAfrac⟩` from `GlobalTheory.T.exists_smooth_finiteType_subalgebra_in_ring F S hS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Take `⟨B, hB, hRB, hAB, hBF, hsm⟩` from `GlobalTheory.T.exists_pointLocalRing_closedPoint_centre_of_place F A hAs hAF hAfrac`. Take `⟨r, τ, hm, het, htr⟩` from `GlobalTheory.T.exists_etaleCoords_localRingOfVarietyPoint_residueComplex B hB hRB hsm`. Establish `hSB : ∀ x ∈ S, x ∈ B` using `fun x hx => hAB (hSA x hx)`. Use `letI := hB.isLocalRing`. Use `letI := hO.isLocalRing`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hadj : ∀ t : O, t ∈ Algebra.adjoin ℂ (σ : Set O) → (t : κ') ∈ B`. Introduce `t ht`. Proceed by induction on `ht using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hSB _ (Finset.mem_union_left _ (Finset.mem_image_of_mem _ hx))`. Consider the case `algebraMap α => exact hB.const_mem α`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Consider the case `add x y _ _ hx hy => exact B.add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact B.mul_mem hx hy`. Establish `hnon : ∀ f ∈ B, NonUnit O f → NonUnit B f`. Introduce `f hfB hn`. Use `⟨hfB, ?_⟩` and prove the remaining obligations.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Distinguish the cases in `h0 : f = 0`. Conclude with `Or.inl h0`. Use `Or.inr (inv_not_mem F hBF h0 (hpos ⟨f, hn.1⟩ ?_ h0))` and prove the remaining obligations. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 ((nonUnit_iff (R := O) ⟨f, hn.1⟩).1 hn)`. Establish `hunit : ∀ t : O, IsUnit t → (t : κ') ∈ B → (t : κ')⁻¹ ∈ B`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t ht htB`. Assume the negation of the conclusion as `hinv`. Establish `htn : NonUnit B (t : κ')` using `⟨htB, Or.inr hinv⟩`. Take `⟨α, hα⟩` from `hR t t.2`. Establish `hαB : algebraMap ℂ κ' α ∈ B` using `hB.const_mem α`.
+Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hu : NonUnit B ((t : κ') - algebraMap ℂ κ' α)` using `hnon _ (B.sub_mem htB hαB) hα`. Establish `hc : NonUnit B (algebraMap ℂ κ' α)`. Simplify using `using nonUnit_sub htn hu`. Distinguish the cases in `hα0 : α = 0`. Substitute `hα0` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_zero, sub_zero] at hα`. Conclude with `(nonUnit_iff (R := O) t).1 hα ht`. Break down `hc.2 with h | h` into its components or cases. Conclude with `hα0 ((map_eq_zero_iff _ (algebraMap ℂ κ').injective).1 h)`. Conclude with `h (by rw [← map_inv₀]; exact hB.const_mem _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `⟨B, hB, r, τ, hRB, fun f hf => ?_, hm, het, htr, j₀, hj₀, fun i => hSB _ (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))⟩` and prove the remaining obligations. Take `⟨t, htA, htu, hft⟩` from `hσ ⟨f, hf⟩`. Establish `htB` using `hadj t htA`. Establish `hfB : f ∈ B`. Establish `h1` using `hadj _ hft`.
-
-Establish `h2` using `hunit t htu htB`. Establish `ht0 : (t : κ') ≠ 0` using `fun e => htu.ne_zero (Subtype.ext e)`. Establish `: f = (f * (t : κ')) * (t : κ')⁻¹` using `by field_simp`. Rewrite using `[this]`. Conclude with `B.mul_mem h1 h2`.
-
-Conclude with `⟨hfB, hnon f hfB⟩`.
+A detailed English derivation is pending.
 -/
 theorem normalise_at_smooth_point : ∀ {κ' : Type} [Field κ'] [Algebra ℂ κ'] (O : Subring κ') (l : ℕ) (a : Fin l → κ'),
   IsLocModel (algebraMap ℂ κ') O → RatRes (algebraMap ℂ κ') O → a ≠ 0 →

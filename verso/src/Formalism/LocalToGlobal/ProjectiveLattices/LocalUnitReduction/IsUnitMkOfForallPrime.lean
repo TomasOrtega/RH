@@ -9,9 +9,9 @@ variable {K' Fr : Type*} [Field K'] [CommRing Fr] [Algebra K' Fr] (J : Ideal Fr)
   (φ : ∀ c, Fr →ₐ[K'] R c)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hne : Ideal.span {Ideal.Quotient.mk I p} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]` and apply the resulting hypothesis. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Use `haveI := hM.isPrime`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hp (M.comap (Ideal.Quotient.mk I)) inferInstance (fun x hx => ?_) ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hx]`. Conclude with `M.zero_mem`. Conclude with `hle (Ideal.mem_span_singleton_self _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_mk_of_forall_prime {I : Ideal Fr} {p : Fr}
     (hp : ∀ Q : Ideal Fr, Q.IsPrime → I ≤ Q → p ∉ Q) : IsUnit (Ideal.Quotient.mk I p) := by
@@ -26,23 +26,21 @@ theorem isUnit_mk_of_forall_prime {I : Ideal Fr} {p : Fr}
   · exact hle (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Establish `key : ∀ Q : Ideal Fr, Q.IsPrime → J ≤ Q → RingHom.ker (φ c) ≤ Q → ∀ y ∈ Ideal.map (φ c) J, ∃ s g : Fr, s ∉ Q ∧ g ∈ J ∧ φ c s * y = φ c g`. Introduce `Q hQ hJQ hkQ y hy`. Establish `h1Q : (1 : Fr) ∉ Q` using `fun h1 => hQ.ne_top ((Ideal.eq_top_iff_one Q).mpr h1)`. Establish `hy' : y ∈ Submodule.span (R c) (φ c '' J)` using `hy`. Use `clear hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, hj, rfl⟩` from `hx`. Conclude with `⟨1, j, h1Q, hj, by simp⟩`. Consider the case `zero => exact ⟨1, 0, h1Q, J.zero_mem, by simp⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `add y1 y2 _ _ ih1 ih2`. Take `⟨s1, g1, hs1, hg1, e1⟩` from `ih1`. Take `⟨s2, g2, hs2, hg2, e2⟩` from `ih2`. Use `⟨s1 * s2, s2 * g1 + s1 * g2, fun h => (hQ.mem_or_mem h).elim hs1 hs2, J.add_mem (J.mul_mem_left _ hg1) (J.mul_mem_left _ hg2), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_add, map_mul, map_mul, ← e1, ← e2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `smul r y _ ih`. Take `⟨s, g, hs, hg, e⟩` from `ih`. Take `⟨a, p, hp, ep⟩` from `hloc r`. Use `⟨p * s, a * g, fun h => (hQ.mem_or_mem h).elim (hp Q hQ hJQ hkQ) hs, J.mul_mem_left _ hg, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_mul, map_mul, map_mul, ← e, ← ep]`. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion as `hfL`. Set `C : Ideal Fr` to `{ carrier := {x | x * f ∈ J ⊔ RingHom.ker (φ c)} add_mem' := fun {a b} ha hb => by`. Simplify `(J ⊔ RingHom.ker (φ c)).add_mem ha hb` using `[add_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun r x hx => by`. Simplify `(J ⊔ RingHom.ker (φ c)).mul_mem_left r hx }` using `[smul_eq_mul, mul_assoc]`. Establish `hC : C ≠ ⊤` using `fun h => by`. Establish `h1 : (1 : Fr) ∈ C` using `h ▸ Submodule.mem_top`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hfL (by simpa [C] using h1)`. Take `⟨Q, hQ, hCQ⟩` from `Ideal.exists_le_maximal C hC`. Establish `hLC : J ⊔ RingHom.ker (φ c) ≤ C` using `fun x hx => (show x * f ∈ J ⊔ RingHom.ker (φ c) from (J ⊔ RingHom.ker (φ c)).mul_mem_right f hx)`. Establish `hLQ` using `hLC.trans hCQ`. Take `⟨s, g, hs, hg, e⟩` from `key Q hQ.isPrime (le_sup_left.trans hLQ) (le_sup_right.trans hLQ) (φ c f) hf`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hs` to reduce the goal to its premises. Apply `hCQ` to reduce the goal to its premises. Use `show s * f ∈ J ⊔ RingHom.ker (φ c)`. Establish `hk : s * f - g ∈ RingHom.ker (φ c)`. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, e, sub_self]`.
-
-Establish `hsum` using `(J ⊔ RingHom.ker (φ c)).add_mem (Submodule.mem_sup_left hg) (Submodule.mem_sup_right hk)`. Simplify using `using hsum`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_sup_ker {c : ι}
     (hloc : ∀ r : R c, ∃ a p : Fr,
@@ -99,21 +97,19 @@ theorem mem_sup_ker {c : ι}
   simpa using hsum
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hfJ`. Set `C : Ideal Fr` to `{ carrier := {x | x * f ∈ J} add_mem' := fun {a b} ha hb => by simpa [add_mul] using J.add_mem ha hb zero_mem' := by simp smul_mem' := fun r x hx => by simpa [smul_eq_mul, mul_assoc] using J.mul_mem_left r hx }`. Establish `hC : C ≠ ⊤` using `fun h => by`. Establish `h1 : (1 : Fr) ∈ C` using `h ▸ Submodule.mem_top`. Conclude with `hfJ (by simpa [C] using h1)`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ, hCQ⟩` from `Ideal.exists_le_maximal C hC`. Use `haveI := hQ.isPrime`. Establish `hJQ : J ≤ Q` using `fun x hx => hCQ (show x * f ∈ J from J.mul_mem_right f hx)`. Establish `h1Q : (1 : Fr) ∉ Q` using `fun h1 => hQ.ne_top ((Ideal.eq_top_iff_one Q).mpr h1)`. Establish `ht : ∀ c, ∃ t : Fr, (¬ RingHom.ker (φ c) ≤ Q → t ∈ RingHom.ker (φ c)) ∧ t ∉ Q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `c`. Distinguish the cases in `h : RingHom.ker (φ c) ≤ Q`. Conclude with `⟨1, fun h' => absurd h h', h1Q⟩`. Take `⟨t, htk, htQ⟩` from `Set.not_subset.mp h`. Conclude with `⟨t, fun _ => htk, htQ⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose t ht2 htQ using ht`. Establish `hTQ : ∏ c, t c ∉ Q` using `fun h => by`. Take `⟨c, -, hc⟩` from `Ideal.IsPrime.prod_mem_iff.mp h`. Conclude with `htQ c hc`. Establish `hTk : ∀ c, ¬ RingHom.ker (φ c) ≤ Q → φ c (∏ c, t c) = 0` using `fun c hc => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ c) ((RingHom.mem_ker).mp (ht2 c hc))`. Distinguish the cases in `h0 : ∃ c0, RingHom.ker (φ c0) ≤ Q`. Take `⟨c0, hc0⟩` from `h0`. Take `⟨j, hj, k0, hk0, rfl⟩` from `Submodule.mem_sup.mp (hf c0)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTk0 : (∏ c, t c) * k0 = 0` using `hinj _ fun c => by`. Distinguish the cases in `hc : c = c0`. Substitute `hc` using the available equality. Rewrite using `[map_mul, (RingHom.mem_ker).mp hk0, mul_zero]`. Establish `hcQ : ¬ RingHom.ker (φ c) ≤ Q` using `fun h => hc (hone Q hQ.isPrime hJQ c c0 h hc0)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, hTk c hcQ, zero_mul]`. Apply `hTQ` to reduce the goal to its premises. Apply `hCQ` to reduce the goal to its premises. Use `show (∏ c, t c) * (j + k0) ∈ J`. Rewrite using `[mul_add, hTk0, add_zero]`.
-
-Conclude with `J.mul_mem_left _ hj`. Use `push_neg at h0`. Establish `hT0 : ∏ c, t c = 0` using `hinj _ fun c => hTk c (h0 c)`. Conclude with `hTQ (hT0 ▸ Q.zero_mem)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_forall_sup_ker [Fintype ι] (hinj : ∀ f : Fr, (∀ c, φ c f = 0) → f = 0)
     (hone : ∀ Q : Ideal Fr, Q.IsPrime → J ≤ Q → ∀ c c', RingHom.ker (φ c) ≤ Q →
@@ -167,11 +163,11 @@ theorem mem_of_forall_sup_ker [Fintype ι] (hinj : ∀ f : Fr, (∀ c, φ c f = 
 end
 
 /- English proof (translation)
-Introduce `K' Fr _ _ _ J ι _ R _ _ φ hinj hone hloc hfin`. Set `Ψ : Fr ⧸ J →ₐ[K'] (∀ c, R c ⧸ Ideal.map (φ c) J)` to `Pi.algHom _ _ fun c => Ideal.quotientMapₐ (Ideal.map (φ c) J) (φ c) Ideal.le_comap_map`. Establish `hinjΨ : Function.Injective Ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Use `mem_of_forall_sup_ker J φ hinj hone fun c => mem_sup_ker J φ (hloc c) ?_` and prove the remaining obligations. Establish `hc` using `congr_fun hx c`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc`. Use `haveI : ∀ c, FiniteDimensional K' (R c ⧸ Ideal.map (φ c) J) := fun c => (hfin c).1`. Use `haveI : ∀ c, IsReduced (R c ⧸ Ideal.map (φ c) J) := fun c => (hfin c).2`. Conclude with `⟨FiniteDimensional.of_injective Ψ.toLinearMap hinjΨ, isReduced_of_injective Ψ hinjΨ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finRed : FinRedStatement := by
   intro K' Fr _ _ _ J ι _ R _ _ φ hinj hone hloc hfin

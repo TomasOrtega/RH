@@ -19,9 +19,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Number
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hb` using `(factEmb D.R D.host).1`. Establish `h1 : Nat.card (D.R.GG) = Nat.card (D.host.E →+* ℂ)` using `Nat.card_congr (Equiv.ofBijective _ hb)`. Establish `h2 : Nat.card (D.host.E →+* ℂ) = Module.finrank ℚ D.host.E`. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `NumberField.Embeddings.card D.host.E ℂ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : Nat.card (D.R.GG) = 4 * D.R.ord` using `D.R.natCard_GG`. Rewrite using `[← h2, ← h1, h4]`. Simplify using `only [Ranks.f, Ranks.n]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sza_finrank_host (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
   have hb := (factEmb D.R D.host).1
@@ -34,9 +34,9 @@ theorem sza_finrank_host (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := b
   ring
 
 /- English proof (translation)
-Establish `: IsTotallyComplex D.host.E` using `D.sp.cm.cmUnram.1`. Establish `h1` using `NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := D.host.E)`. Establish `h2` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank D.host.E`. Establish `h3 : NumberField.InfinitePlace.nrRealPlaces D.host.E = 0`. Rewrite using `[NumberField.nrRealPlaces_eq_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Establish `h4` using `sza_finrank_host D`. Unfold `Formalism.HermitianLatticesTheory.fDeg`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sza_fDeg_host (D : D7) : Formalism.HermitianLatticesTheory.fDeg D.host.E = D.R.f := by
   have : IsTotallyComplex D.host.E := D.sp.cm.cmUnram.1
@@ -49,14 +49,14 @@ theorem sza_fDeg_host (D : D7) : Formalism.HermitianLatticesTheory.fDeg D.host.E
   omega
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.vInv Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE`. Rewrite using `[sza_fDeg_host, sza_finrank_host, Nat.cast_mul, Nat.cast_ofNat]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sza_vInv_host (D : D7) : Formalism.HermitianLatticesTheory.vInv D.host.E = D.host.v := by
   unfold Formalism.HermitianLatticesTheory.vInv Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE
   rw [sza_fDeg_host, sza_finrank_host, Nat.cast_mul, Nat.cast_ofNat]
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE`. Establish `h : ((NumberField.discr D.host.E : ℤ) : ℝ) ≠ 0`. Conclude with `NumberField.discr_ne_zero (K := D.host.E)` after adjusting the coercions. Conclude with `half_pos (Real.rpow_pos_of_pos (abs_pos.mpr h) _)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sza_v_pos (D : D7) : 0 < D.host.v := by
   unfold Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE
@@ -65,14 +65,14 @@ theorem sza_v_pos (D : D7) : 0 < D.host.v := by
   exact half_pos (Real.rpow_pos_of_pos (abs_pos.mpr h) _)
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_eq_fintype_card, Nat.card_congr D.eTau]`. Conclude with `(factCardPsi D.R D.host).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sza_card_Tau (D : D7) : Fintype.card D.what₂.Tau = D.R.f := by
   rw [← Nat.card_eq_fintype_card, Nat.card_congr D.eTau]
   exact (factCardPsi D.R D.host).1
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Unfold `Formalism.BasicNotions.Ranks.rS`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sza_m_eq (D : D7) : 2 * D.R.rS + 2 = D.R.m := by
   obtain ⟨j, hj⟩ := D.R.m_even
@@ -84,7 +84,7 @@ def szaMass (D : D7) (M : ℕ) : ℝ :=
   Formalism.HermitianLatticesTheory.mass (Formalism.HermitianLatticesTheory.massTelescope_form D.host.E M) (Formalism.HermitianLatticesTheory.massTelescope_lat D.host.E M)
 
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticesTheory.massTelescope_std_pos D.host.E D.sp.cm.cmUnram M`.
+A detailed English derivation is pending.
 -/
 theorem szaMass_pos (D : D7) (M : ℕ) : 0 < szaMass D M :=
   Formalism.HermitianLatticesTheory.massTelescope_std_pos D.host.E D.sp.cm.cmUnram M
@@ -104,13 +104,13 @@ def szaData (D : D7) (u : D.what₂.Word) : Formalism.FourierDecayAlt.Sz.SizeDat
   du := (D.duS u : ℝ)
 
 /- English proof (translation)
-Use `show Fintype.card D.what₂.Tau = D.R.f`. Conclude with `sza_card_Tau D`.
+A detailed English derivation is pending.
 -/
 theorem szaData_f (D : D7) (u : D.what₂.Word) : (szaData D u).f = D.R.f := by
   show Fintype.card D.what₂.Tau = D.R.f
   exact sza_card_Tau D
 /- English proof (translation)
-Establish `h` using `sza_m_eq D`. Use `show D.R.k + (2 * D.R.rS + 2) - 1 = D.R.r`. Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem szaData_n (D : D7) (u : D.what₂.Word) : (szaData D u).n = D.R.r := by
   have h := sza_m_eq D
@@ -119,11 +119,11 @@ theorem szaData_n (D : D7) (u : D.what₂.Word) : (szaData D u).n = D.R.r := by
   omega
 
 /- English proof (translation)
-Establish `step : ∀ (i : ℕ) (h : i + 1 < D.R.k), uS D u τ ⟨i + 1, h⟩ < uS D u τ ⟨i, by omega⟩`. Introduce `i h`. Establish `h1` using `(D.hcW u τ).u_gt_v ⟨i, by omega⟩`. Establish `h2` using `(D.hcW u τ).v_gt_u ⟨i, by omega⟩`. Unfold `Formalism.MainNotions.S.uS`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `h2.trans h1` after adjusting the coercions. Introduce `⟨a, ha⟩ ⟨b, hb⟩ hab`. Simplify using `only [Fin.mk_lt_mk] at hab`. Use `replace hab : a + 1 ≤ b := hab`. Use `revert hb`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base => intro hb`. Conclude with `step a hb`. Consider the case `succ n hn ih => intro hb; exact (step n hb).trans (ih (by omega))`.
+A detailed English derivation is pending.
 -/
 theorem sza_u_anti (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : StrictAnti (uS D u τ) := by
   have step : ∀ (i : ℕ) (h : i + 1 < D.R.k),
@@ -142,9 +142,9 @@ theorem sza_u_anti (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : StrictAn
   | succ n hn ih => intro hb; exact (step n hb).trans (ih (by omega))
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.vand`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `a _`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `b hb`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hab : a < b` using `(Finset.mem_filter.mp hb).2`. Conclude with `sub_pos.mpr (sza_u_anti D u τ hab)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sza_vand_pos (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : 0 < vand (uS D u τ) := by
   unfold Formalism.MainNotions.S.vand
@@ -156,7 +156,7 @@ theorem sza_vand_pos (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : 0 < va
   exact sub_pos.mpr (sza_u_anti D u τ hab)
 
 /- English proof (translation)
-Use `D.R.m_add_three_le_k; show 1 ≤ D.R.k; omega hv := sza_v_pos D hdF := by show (2 * D.host.v) ^ D.R.f = (2 * D.host.v) ^ (szaData D u).f; rw [szaData_f] hg1 := (D.host.g_prime 0).two_le hg2 := (D.host.g_prime 1).two_le hT := (D.mem u).A.T_prime.two_le hvol := szaMass_pos D _ hVu := …` as an intermediate fact.
+Establish an intermediate fact.
 -/
 theorem szaData_ok (D : D7) (u : D.what₂.Word) : (szaData D u).Ok where
   hk := by have := D.R.m_add_three_le_k; show 1 ≤ D.R.k; omega
@@ -169,9 +169,9 @@ theorem szaData_ok (D : D7) (u : D.what₂.Word) : (szaData D u).Ok where
   hVu := sza_vand_pos D u
 
 /- English proof (translation)
-Introduce `M hk _`. Establish `hk' : D.R.k < M` using `hk`. Establish `h3` using `D.R.m_add_three_le_k`. Establish `h` using `Formalism.HermitianLattices.GlobalBoundRefinements.log_l_value_field_bound D.host.E D.sp.cm.cmUnram M (by omega)`. Use `⟨h.2.1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `h.2.2`. Rewrite `h2` using `[sza_fDeg_host]`. Rewrite using `[szaData_f]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem szaData_LBound (D : D7) (u : D.what₂.Word) : (szaData D u).LBound := by
   intro M hk _
@@ -185,11 +185,11 @@ theorem szaData_LBound (D : D7) (u : D.what₂.Word) : (szaData D u).LBound := b
   exact h2
 
 /- English proof (translation)
-Introduce `M hk _`. Establish `hk' : D.R.k < M` using `hk`. Establish `h3` using `D.R.m_add_three_le_k`. Establish `h` using `hM M (by omega) (Fin M → D.host.E) (Fin (M - 1) → D.host.E) (Formalism.HermitianLatticesTheory.massTelescope_form D.host.E M) (Formalism.HermitianLatticesTheory.massTelescope_form D.host.E (M - 1)) (Formalism.HermitianLatticesTheory.massTelescope_lat D.host.E M) (Formalism.Hermit …`. Establish `h' : szaMass D M / szaMass D (M - 1) = Formalism.HermitianLatticesTheory.massRatioRightSide D.host.E M` using `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h'` using `[div_eq_iff (szaMass_pos D (M - 1)).ne']`. Use `show szaMass D M = _`. Rewrite using `[h']`. Unfold `Formalism.HermitianLatticesTheory.massRatioRightSide`. Rewrite using `[sza_vInv_host, sza_fDeg_host, szaData_f]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show _ = (((M - 1).factorial : ℝ) * (D.host.v / Real.pi) ^ M) ^ D.R.f * ((2 * D.host.v) ^ D.R.f) ^ (-(1 / 2 : ℝ)) * Formalism.HermitianLatticesTheory.lValEta D.host.E M * szaMass D (M - 1)`. Establish `hp : (0 : ℝ) ≤ (2 * D.host.v) ^ D.R.f` using `by have := sza_v_pos D; positivity`. Rewrite using `[Real.rpow_neg hp, ← Real.sqrt_eq_rpow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem szaData_MassRatios (D : D7) (u : D.what₂.Word) (hM : LocalBesselAndTopKernel.FamilySchurFormalDegree D) : (szaData D u).MassRatios := by
   intro M hk _
@@ -217,7 +217,7 @@ def SzaSpl (D : D7) : Prop :=
     φ (D.host.g 0) ^ D.R.f * φ (D.host.g 1) ^ D.R.f
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [Finset.Icc_eq_empty]`. Consider the case `succ n ih => rw [Finset.prod_Icc_succ_top (Nat.le_add_left 1 n), ih, Finset.prod_range_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem sza_prod_Icc (g : ℕ → ℝ) (k : ℕ) : ∏ i ∈ Icc 1 k, g i = ∏ j ∈ range k, g (j + 1) := by
   induction k with
@@ -225,9 +225,9 @@ theorem sza_prod_Icc (g : ℕ → ℝ) (k : ℕ) : ∏ i ∈ Icc 1 k, g i = ∏ 
   | succ n ih => rw [Finset.prod_Icc_succ_top (Nat.le_add_left 1 n), ih, Finset.prod_range_succ]
 
 /- English proof (translation)
-Establish `e : ∏ i ∈ Icc 1 k, (q ^ i - 1) = ∏ j ∈ range k, (q ^ (j + 1) - 1)` using `sza_prod_Icc (fun i => q ^ i - 1) k`. Unfold `Formalism.FourierDecayAlt.Sz.glCard`. Rewrite using `[e, ← Finset.sum_range_id, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_range_reflect (fun j => q ^ (j + 1) - 1) k, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hj' : j < k` using `Finset.mem_range.mp hj`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show q ^ k - q ^ j = q ^ j * (q ^ (k - 1 - j + 1) - 1)`. Rewrite using `[show k - 1 - j + 1 = k - j by omega, mul_sub, mul_one, ← pow_add, Nat.add_sub_of_le hj'.le]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sza_glCard (k : ℕ) (q : ℝ) :
     Formalism.FourierDecayAlt.Sz.glCard k q = q ^ (k * (k - 1) / 2) * ∏ i ∈ Icc 1 k, (q ^ i - 1) := by
@@ -242,9 +242,9 @@ theorem sza_glCard (k : ℕ) (q : ℝ) :
   rw [show k - 1 - j + 1 = k - j by omega, mul_sub, mul_one, ← pow_add, Nat.add_sub_of_le hj'.le]
 
 /- English proof (translation)
-Establish `h` using `hs (fun q => ∏ i ∈ Icc 1 D.R.k, (q ^ i - 1))`. Unfold `gaG`. Rewrite using `[h]`. Unfold `Formalism.FourierDecayAlt.Sz.SizeData.idxCol Formalism.FourierDecayAlt.Sz.colIdx`. Rewrite using `[szaData_f, sza_glCard, sza_glCard]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ((D.host.g 0 : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast (D.host.g_prime 0).ne_zero`. Establish `h1 : ((D.host.g 1 : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast (D.host.g_prime 1).ne_zero`. Use `show _ = ((((D.host.g 0 : ℕ) : ℝ) ^ (D.R.k * (D.R.k - 1) / 2) * _) / ((D.host.g 0 : ℕ) : ℝ) ^ (D.R.k * (D.R.k - 1) / 2)) ^ D.R.f * ((((D.host.g 1 : ℕ) : ℝ) ^ (D.R.k * (D.R.k - 1) / 2) * _) / ((D.host.g 1 : ℕ) : ℝ) ^ (D.R.k * (D.R.k - 1) / 2)) ^ D.R.f`. Rewrite using `[mul_div_cancel_left₀ _ (pow_ne_zero _ h0), mul_div_cancel_left₀ _ (pow_ne_zero _ h1)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sza_gaG (D : D7) (u : D.what₂.Word) (hs : SzaSpl D) : gaG D = (szaData D u).idxCol := by
   have h := hs (fun q => ∏ i ∈ Icc 1 D.R.k, (q ^ i - 1))
@@ -260,7 +260,7 @@ theorem sza_gaG (D : D7) (u : D.what₂.Word) (hs : SzaSpl D) : gaG D = (szaData
   rfl
 
 /- English proof (translation)
-Establish `h` using `sza_m_eq D`. Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sza_r_eq (D : D7) : D.R.r = D.R.k + 2 * D.R.rS + 1 := by
   have h := sza_m_eq D
@@ -268,9 +268,9 @@ theorem sza_r_eq (D : D7) : D.R.r = D.R.k + 2 * D.R.rS + 1 := by
   omega
 
 /- English proof (translation)
-Establish `h` using `hs (fun q => LocalBesselAndTopKernel.cardGL q D.R.r / (q ^ LocalBesselAndTopKernel.dimNS D * q ^ (D.R.k * (D.R.k - 1) / 2)))`. Unfold `LocalBesselAndTopKernel.idxRows`. Rewrite using `[h]`. Unfold `Formalism.FourierDecayAlt.Sz.SizeData.idxRow Formalism.FourierDecayAlt.Sz.rowIdx`. Rewrite using `[szaData_f]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = (Formalism.FourierDecayAlt.Sz.glCard (D.R.k + 2 * D.R.rS + 1) _ / _) ^ D.R.f * (Formalism.FourierDecayAlt.Sz.glCard (D.R.k + 2 * D.R.rS + 1) _ / _) ^ D.R.f`. Rewrite using `[← sza_r_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sza_idxRows (D : D7) (u : D.what₂.Word) (hs : SzaSpl D) : LocalBesselAndTopKernel.idxRows D = (szaData D u).idxRow := by
   have h := hs (fun q => LocalBesselAndTopKernel.cardGL q D.R.r / (q ^ LocalBesselAndTopKernel.dimNS D * q ^ (D.R.k * (D.R.k - 1) / 2)))
@@ -283,9 +283,9 @@ theorem sza_idxRows (D : D7) (u : D.what₂.Word) (hs : SzaSpl D) : LocalBesselA
   rfl
 
 /- English proof (translation)
-Establish `h` using `(hR (Fin D.R.k → D.host.E) (Formalism.HermitianLatticesTheory.massTelescope_form D.host.E D.R.k) (Formalism.HermitianLatticesTheory.massTelescope_lat D.host.E D.R.k) (Formalism.HermitianLatticesTheory.massTelescope_symm D.host.E D.R.k)).1 (Formalism.HermitianLatticesTheory.massTe …`. Unfold `Formalism.FourierDecayAlt.Sz.SizeData.ColumnCount`. Rewrite using `[← sza_gaG D u hs, szaData_f]`. Use `show (D.duS u : ℝ) = szaMass D D.R.k * gaG D * (∏ w, vand (uS D u w) / ((Formalism.FourierDecayAlt.Sz.sfac D.R.k : ℕ) : ℝ)) * ((((D.mem u).A.T : ℕ) : ℝ) ^ D.R.k - 1) ^ D.R.f`. Rewrite using `[h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.FourierDecayAlt.Sz.sfac szaMass Tr`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem szaData_ColumnCount (D : D7) (u : D.what₂.Word) (hR : LocalBesselAndTopKernel.FamilyMidVolume D) (hs : SzaSpl D) :
     (szaData D u).ColumnCount := by
@@ -302,7 +302,7 @@ theorem szaData_ColumnCount (D : D7) (u : D.what₂.Word) (hR : LocalBesselAndTo
   rfl
 
 /- English proof (translation)
-Establish `h` using `(hR (Fin D.R.r → D.host.E) (Formalism.HermitianLatticesTheory.massTelescope_form D.host.E D.R.r) (Formalism.HermitianLatticesTheory.massTelescope_lat D.host.E D.R.r) (Formalism.HermitianLatticesTheory.massTelescope_symm D.host.E D.R.r)).2 (Formalism.HermitianLatticesTheory.massTe …`. Unfold `Formalism.FourierDecayAlt.Sz.SizeData.Dstar`. Rewrite using `[← sza_idxRows D u hs, szaData_n, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem szaData_Dstar (D : D7) (u : D.what₂.Word) (hR : LocalBesselAndTopKernel.FamilyMidVolume D) (hs : SzaSpl D) :
     (szaData D u).Dstar = D.what₂.Dstar := by
@@ -314,11 +314,11 @@ theorem szaData_Dstar (D : D7) (u : D.what₂.Word) (hR : LocalBesselAndTopKerne
   rfl
 
 /- English proof (translation)
-Establish `hm` using `sza_m_eq D`. Establish `hm1 : 1 ≤ D.R.m` using `by omega`. Establish `hdiv : 2 ∣ D.R.m * (D.R.m - 1)`. Use `⟨(D.R.rS + 1) * (2 * D.R.rS + 1), ?_⟩` and prove the remaining obligations. Rewrite using `[← hm, show 2 * D.R.rS + 2 - 1 = 2 * D.R.rS + 1 by omega]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hc : ((D.R.m * (D.R.m - 1) / 2 : ℕ) : ℝ) = (D.R.m : ℝ) * ((D.R.m : ℝ) - 1) / 2`. Rewrite using `[Nat.cast_div hdiv (by norm_num), Nat.cast_mul, Nat.cast_sub hm1, Nat.cast_one, Nat.cast_ofNat]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_add, Nat.cast_mul, Nat.cast_sub hm1, Nat.cast_one, hc]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_add, Nat.cast_mul, hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sza_cast_exp (D : D7) :
     (((D.R.m - 1) * D.R.k + D.R.m * (D.R.m - 1) / 2 : ℕ) : ℝ) =
@@ -338,14 +338,14 @@ theorem sza_cast_exp (D : D7) :
   · rw [Nat.cast_add, Nat.cast_mul, hc]
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Host.ka`. Conclude with `div_pos Real.pi_pos (sza_v_pos D)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sza_ka_pos (D : D7) : 0 < D.host.ka := by
   unfold Formalism.BasicNotions.Host.ka
   exact div_pos Real.pi_pos (sza_v_pos D)
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.gg`. Establish `h0 : (0 : ℝ) < (D.host.g 0 : ℝ)` using `by exact_mod_cast (D.host.g_prime 0).pos`. Establish `h1 : (0 : ℝ) < (D.host.g 1 : ℝ)` using `by exact_mod_cast (D.host.g_prime 1).pos`. Conclude with `mul_pos h0 h1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sza_gg_pos (D : D7) : 0 < gg D := by
   unfold Formalism.MainNotions.S.gg
@@ -354,17 +354,15 @@ theorem sza_gg_pos (D : D7) : 0 < gg D := by
   exact mul_pos h0 h1
 
 /- English proof (translation)
-Establish `hk0 : (D.R.k : ℝ) ≠ 0`. Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : D.R.k ≠ 0)` after adjusting the coercions. Establish `hka` using `sza_ka_pos D`. Establish `hv` using `sza_v_pos D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrv : D.host.rdE = 2 * D.host.v` using `by unfold Formalism.BasicNotions.Host.v; ring`. Establish `hrd : 0 < D.host.rdE` using `by rw [hrv]; linarith`. Establish `hgg` using `sza_gg_pos D`. Establish `hvand` using `sza_vand_pos D u τ`. Establish `hds : 0 ≤ D.dsig τ` using `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact (D.dsig_pos τ).le`. Consider the case `exact D.dsig_nonneg τ`. Consider the case `exact (D.dsig_pos' τ).le`. Consider the case `exact (D.hdsig τ).le`. Consider the case `exact (D.dsig_spec τ).le`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hVV : 0 ≤ VV D τ`. Unfold `Formalism.MainNotions.S.VV`. Conclude with `mul_nonneg hds (Finset.prod_nonneg fun i _ => by positivity)`. Take `⟨c1, c2⟩` from `sza_cast_exp D`. Establish `hX : 0 ≤ D.host.ka ^ (-(((D.R.m : ℝ) - 1) * D.R.k + (D.R.m : ℝ) * ((D.R.m : ℝ) - 1) / 2)) * D.host.rdE ^ (-(((D.R.m : ℝ) - 1) / 2)) * gg D ^ ((D.R.k : ℝ) * D.R.m + (D.R.m : ℝ) * ((D.R.m : ℝ) - 1) / 2) * VV D τ / vand (uS D u τ)` using `div_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (Real.rpow_nonneg hka.le _) (Real.rpow_nonneg hrd.le _)) (Real.rpow_nonneg hgg.le _)) hVV) hvand.le`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.MainNotions.S.Tcrit`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hX, one_div, inv_mul_cancel₀ hk0, Real.rpow_one]`. Simplify using `only [Formalism.FourierDecayAlt.Sz.SizeData.TcritPow, Formalism.FourierDecayAlt.Sz.TcritPow, Formalism.FourierDecayAlt.Sz.SizeData.ka, Formalism.FourierDecayAlt.Sz.SizeData.rd, Formalism.FourierDecayAlt.Sz.SizeData.g, Formalism.FourierDecayAlt.Sz.SizeData.VV, Formalism.FourierDec …`. Rewrite using `[sza_m_eq D, ← c1, ← c2, Real.rpow_neg hka.le, Real.rpow_natCast, Real.rpow_natCast, hrv]`. Unfold `Formalism.BasicNotions.Host.ka Formalism.MainNotions.S.gg Formalism.MainNotions.S.VV Formalism.FourierDecayAlt.Sz.sfac Formalism.BasicNotions.Ranks.r`.
-
-Use `push_cast`. Apply the tactic sequence `try ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem sza_tcritPow (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     Tcrit D u τ ^ D.R.k = (szaData D u).TcritPow τ := by
@@ -405,17 +403,17 @@ theorem sza_tcritPow (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) :
   try ring
 
 /- English proof (translation)
-Introduce `u`. Establish `hk5` using `D.R.m_add_three_le_k`. Establish `hm2` using `D.R.two_le_m`. Establish `hA` using `Formalism.FourierDecayAlt.P.massRatioFormula D.what₂.Tau (szaData D u) (szaData_ok D u) (szaData_MassRatios D u hM) (szaData_ColumnCount D u hR hs)`. Establish `hE` using `Formalism.FourierDecayAlt.P.exponent_sizes D.what₂.Tau (szaData D u) (szaData_ok D u) (szaData_LBound D u) (show 2 ≤ D.R.k by omega) (hg 0) (hg 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hA` using `[szaData_Dstar D u hR hs]`. Establish `hP : ∏ w, ((szaData D u).TcritPow w / (((szaData D u).T : ℕ) : ℝ) ^ (szaData D u).k) = ∏ τ, (Tcrit D u τ / Tr D u) ^ D.R.k`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[div_pow, sza_tcritPow]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `hA` using `[hP]`. Establish `hA' : D.what₂.Dstar / (D.duS u : ℝ) = (szaData D u).Ea * ∏ τ, (Tcrit D u τ / Tr D u) ^ D.R.k` using `hA`. Rewrite using `[hA']`. Establish `h2 : (2 : ℝ) ^ ((3 : ℝ) - D.R.k) = 8 / 2 ^ D.R.k`. Rewrite using `[Real.rpow_sub (by norm_num), Real.rpow_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[h2]`. Establish `hP0 : 0 ≤ ∏ τ, (Tcrit D u τ / Tr D u) ^ D.R.k` using `Finset.prod_nonneg fun τ _ => D.R.k_even.pow_nonneg _`. Take `⟨hpos, hlog⟩` from `hE`. Rewrite `hlog` using `[szaData_f]`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlog' : |Real.log (szaData D u).Ea| ≤ (D.R.f : ℝ) * (8 / 2 ^ D.R.k)` using `hlog`. Rewrite `hlog'` using `[abs_le]`. Prove the components needed by the constructor for the conclusion. Use `mul_le_mul_of_nonneg_right ?_ hP0` and prove the remaining obligations. Rewrite using `[← Real.exp_log hpos]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.exp_le_exp.2 hlog'.1`. Use `mul_le_mul_of_nonneg_right ?_ hP0 conv_lhs => rw [← Real.exp_log hpos]` and prove the remaining obligations. Conclude with `Real.exp_le_exp.2 hlog'.2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem degree_ratio_product_formula (D : D7) (hM : LocalBesselAndTopKernel.FamilySchurFormalDegree D) (hR : LocalBesselAndTopKernel.FamilyMidVolume D) (hs : SzaSpl D)
     (hg : ∀ i, 4 ≤ D.host.g i) : LocalBesselAndTopKernel.projection_sandwich_lattice D := by
@@ -454,14 +452,14 @@ theorem degree_ratio_product_formula (D : D7) (hM : LocalBesselAndTopKernel.Fami
     exact Real.exp_le_exp.2 hlog'.2
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, _, h0, h1, _⟩` from `h`. Conclude with `finprod_typedPl D h0 h1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sza_spl_of_data {D : D7} {C0 : ℝ} (h : StandingNumericalData D C0) : SzaSpl D := by
   obtain ⟨_, _, _, _, _, _, _, _, _, _, h0, h1, _⟩ := h
   exact finprod_typedPl D h0 h1
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Scale.b Formalism.BasicNotions.Scale.L`. Establish `hx : 0 < large₂.sc.x` using `lt_trans zero_lt_one large₂.sc.one_lt_alt`. Conclude with `Real.one_le_exp (Real.rpow_pos_of_pos hx _).le`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sza_b_ge_one {D : D7} (large₂ : SizeData₂ D) : 1 ≤ large₂.sc.b := by
   unfold Formalism.BasicNotions.Scale.b Formalism.BasicNotions.Scale.L
@@ -469,11 +467,11 @@ theorem sza_b_ge_one {D : D7} (large₂ : SizeData₂ D) : 1 ≤ large₂.sc.b :
   exact Real.one_le_exp (Real.rpow_pos_of_pos hx _).le
 
 /- English proof (translation)
-Establish `hb : (1 : ℝ) ≤ large₂.sc.b` using `sza_b_ge_one large₂`. Establish `hk : (5 : ℝ) ≤ (D.R.k : ℝ)`. Establish `h1` using `D.R.m_add_three_le_k`. Establish `h2` using `D.R.two_le_m`. Conclude with `(by omega : 5 ≤ D.R.k)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkb : (5 : ℝ) ≤ (D.R.k : ℝ) * large₂.sc.b` using `by nlinarith`. Establish `h8 : (4 : ℝ) ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 8`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [StandingHypotheses] at h`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, h12, -, h14, -⟩` from `h`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.forall_fin_two.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `h8.trans h12` after adjusting the coercions. Conclude with `h8.trans h14` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem sza_g_ge {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ} (h : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) :
     ∀ i, 4 ≤ D.host.g i := by
@@ -493,7 +491,7 @@ theorem sza_g_ge {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ
   · exact_mod_cast h8.trans h14
 
 /- English proof (translation)
-Introduce `hM _ hR hH`. Take `⟨hD, hH0, _⟩` from `hH`. Conclude with `degree_ratio_product_formula D hM hR (sza_spl_of_data hD) (sza_g_ge hH0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem degree_ratio_formula_statement (D : D7) (large₂ : SizeData₂ D) (C0 C' Cl Cg cb Cu cT CT : ℝ) :
     LocalBesselAndTopKernel.FamilyExpansionSecond D large₂ C0 C' Cl Cg cb Cu cT CT := by
@@ -502,7 +500,7 @@ theorem degree_ratio_formula_statement (D : D7) (large₂ : SizeData₂ D) (C0 C
   exact degree_ratio_product_formula D hM hR (sza_spl_of_data hD) (sza_g_ge hH0)
 
 /- English proof (translation)
-Introduce `hM1 hM2 hR`. Take `⟨x0, h0⟩` from `hR`. Use `Exists.intro x0 ?_` and prove the remaining obligations. Introduce `x hx i hH`. Conclude with `degree_ratio_formula_statement (Fm.D x i) (Fm.L x i) C0 _ _ Cg cb Cu cT CT (hM1 x i) (hM2 x i) (h0 x hx i hH) hH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem level_formula_family {eps : ℝ} (Fm : FamP eps) (C0 Cg cb Cu cT CT : ℝ) :
     LocalBesselAndTopKernel.FamilyUnfoldingCount Fm C0 Cg cb Cu cT CT := by
@@ -514,13 +512,13 @@ theorem level_formula_family {eps : ℝ} (Fm : FamP eps) (C0 Cg cb Cu cT CT : �
     (h0 x hx i hH) hH
 
 /- English proof (translation)
-Establish `hka` using `sza_ka_pos D`. Establish `hrd : 0 < D.host.rdE`. Establish `hv` using `sza_v_pos D`. Unfold `Formalism.BasicNotions.Host.v at hv`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hgg` using `sza_gg_pos D`. Establish `hvand` using `sza_vand_pos D u τ`. Establish `hds : 0 < D.dsig τ` using `by first`. Consider the case `exact D.dsig_pos τ`. Consider the case `exact D.hdsig τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact D.dsig_pos' τ`. Consider the case `exact D.dsig_spec τ`. Establish `hVV : 0 < VV D τ`. Unfold `Formalism.MainNotions.S.VV`. Conclude with `mul_pos hds (Finset.prod_pos fun i _ => by positivity)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.MainNotions.S.Tcrit`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Conclude with `div_pos (mul_pos (mul_pos (mul_pos (Real.rpow_pos_of_pos hka _) (Real.rpow_pos_of_pos hrd _)) (Real.rpow_pos_of_pos hgg _)) hVV) hvand`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem sza_tcrit_pos (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : 0 < Tcrit D u τ := by
   have hka := sza_ka_pos D
@@ -545,7 +543,7 @@ theorem sza_tcrit_pos (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : 0 < T
     (Real.rpow_pos_of_pos hgg _)) hVV) hvand
 
 /- English proof (translation)
-Establish `h : 2 ≤ (D.mem u).A.T` using `(szaData_ok D u).hT`. Unfold `Formalism.MainNotions.S.Tr`. Conclude with `(by omega : 0 < (D.mem u).A.T)` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sza_Tr_pos (D : D7) (u : D.what₂.Word) : 0 < Tr D u := by
   have h : 2 ≤ (D.mem u).A.T := (szaData_ok D u).hT
@@ -553,51 +551,47 @@ theorem sza_Tr_pos (D : D7) (u : D.what₂.Word) : 0 < Tr D u := by
   exact_mod_cast (by omega : 0 < (D.mem u).A.T)
 
 /- English proof (translation)
-Introduce `u u'`. Establish `hk5 : 5 ≤ D.R.k`. Establish `h1` using `D.R.m_add_three_le_k`. Establish `h2` using `D.R.two_le_m`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hf1 : 1 ≤ D.R.f`. Establish `: 0 < D.R.n` using `by unfold Ranks.n; positivity`. Unfold `Ranks.f`. Use linear arithmetic over natural numbers and integers. Take `⟨_, _, _, _, _, _, _, _, _, hwin, _⟩` from `hD`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use `set x : ℝ := (D.R.f : ℝ) * (2 : ℝ) ^ ((3 : ℝ) - D.R.k) with hx`. Use `set A : D.what₂.Word → ℝ := fun w => ∏ τ, (Tcrit D w τ / Tr D w) ^ D.R.k with hA`. Use `set P : D.what₂.Word → ℝ := fun w => ∏ τ, Tcrit D w τ ^ D.R.k with hP`. Establish `hApos : ∀ w, 0 < A w` using `fun w => Finset.prod_pos fun τ _ => pow_pos (div_pos (sza_tcrit_pos D w τ) (sza_Tr_pos D w)) _`. Establish `hPpos : ∀ w, 0 < P w` using `fun w => Finset.prod_pos fun τ _ => pow_pos (sza_tcrit_pos D w τ) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hAP : ∀ w, Tr D w ^ (D.R.k * D.R.f) * A w = P w`. Introduce `w`. Simplify using `only [hA, hP, div_pow]`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, sza_card_Tau, ← pow_mul]`. Clear denominators, using `[(pow_pos (sza_Tr_pos D w) (D.R.k * D.R.f)).ne']` for the nonvanishing conditions.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : ∀ w, 0 < D.what₂.Dstar / (D.duS w : ℝ)` using `fun w => lt_of_lt_of_le (mul_pos (Real.exp_pos _) (hApos w)) (ha w).1`. Establish `hd0 : ∀ w, (0 : ℝ) ≤ (D.duS w : ℝ)` using `fun w => Nat.cast_nonneg _`. Establish `hdpos : ∀ w, (0 : ℝ) < (D.duS w : ℝ)`. Introduce `w`. Break down `(hd0 w).lt_or_eq with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Use `hR w` as an intermediate fact. Rewrite `this` using `[← h, div_zero]`. Conclude with `absurd this (lt_irrefl _)`. Establish `hDs : 0 < D.what₂.Dstar`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hR u` as an intermediate fact. Rewrite `this` using `[div_pos_iff_of_pos_right (hdpos u)]`. Then use the resulting hypothesis. Establish `hdd : (D.duS u : ℝ) ≤ C0 ^ 2 * (D.duS u' : ℝ)`. Establish `h1` using `(hwin u).2`. Establish `h2` using `(hwin u').1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `h1` using `[D.GamP_eq u]`. Rewrite `h2` using `[D.GamP_eq u']`. Rewrite `h2` using `[div_le_iff₀ (by linarith)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hRR : D.what₂.Dstar / (D.duS u' : ℝ) ≤ C0 ^ 2 * (D.what₂.Dstar / (D.duS u : ℝ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_iff₀ (hdpos u')]`. Establish `: C0 ^ 2 * (D.what₂.Dstar / (D.duS u : ℝ)) * (D.duS u' : ℝ) = D.what₂.Dstar * ((C0 ^ 2 * (D.duS u' : ℝ)) / (D.duS u : ℝ))` using `by ring`. Rewrite using `[this]`. Establish `h1 : 1 ≤ (C0 ^ 2 * (D.duS u' : ℝ)) / (D.duS u : ℝ)`. Rewrite using `[le_div_iff₀ (hdpos u)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Establish `hAA : A u' ≤ Real.exp (2 * x) * C0 ^ 2 * A u`. Establish `h1 : A u' ≤ Real.exp x * (D.what₂.Dstar / (D.duS u' : ℝ))`. Use `(ha u').1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Real.exp x * (Real.exp (-x) * A u') = A u'`. Rewrite using `[← mul_assoc, ← Real.exp_add]`. Simplify using the standard rewrite rules. Rewrite using `[← h2]`. Conclude with `mul_le_mul_of_nonneg_left this (Real.exp_pos _).le`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(ha u).2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[two_mul, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hC1 : 0 < C1`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : Nonempty D.what₂.Tau`. Rewrite using `[← Fintype.card_pos_iff, sza_card_Tau]`. Use linear arithmetic over natural numbers and integers. Take `⟨τ⟩` from `hne`. Use `hb u u τ` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[div_self (sza_tcrit_pos D u τ).ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPP : P u ≤ C1 ^ (D.R.k * D.R.f) * P u'`. Establish `h1 : ∀ τ, Tcrit D u τ ^ D.R.k ≤ C1 ^ D.R.k * Tcrit D u' τ ^ D.R.k`. Introduce `τ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hb u u' τ` as an intermediate fact. Rewrite `this` using `[div_le_iff₀ (sza_tcrit_pos D u' τ)]`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (sza_tcrit_pos D u τ).le this _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, sza_card_Tau, ← pow_mul]`. Establish `hkf2 : 2 ≤ D.R.k * D.R.f` using `by nlinarith`. Establish `hx2 : 2 * x ≤ ((D.R.k * D.R.f : ℕ) : ℝ)`. Establish `h2 : (2 : ℝ) ^ ((3 : ℝ) - D.R.k) ≤ 1`. Apply `Real.rpow_le_one_of_one_le_of_nonpos (by norm_num)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk5`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk5`. Establish `hf : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hx]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsm : Real.exp (2 * x) * C0 ^ 2 ≤ (C0 * Real.exp 1) ^ (D.R.k * D.R.f)`. Rewrite using `[mul_pow, mul_comm]`. Apply `mul_le_mul (pow_le_pow_right₀ hC0 hkf2) _ (Real.exp_pos _).le (by positivity)` to reduce the goal to its premises.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← Real.exp_nat_mul, mul_one]`. Conclude with `Real.exp_le_exp.2 hx2`. Establish `hmain : Tr D u ^ (D.R.k * D.R.f) ≤ (C1 * (C0 * Real.exp 1) * Tr D u') ^ (D.R.k * D.R.f)`. Establish `h1 : Tr D u ^ (D.R.k * D.R.f) * A u ≤ (C1 * (C0 * Real.exp 1) * Tr D u') ^ (D.R.k * D.R.f) * A u`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Check the signs of the components of the expression. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hAA (pow_pos (sza_Tr_pos D u') _).le`. Use `_ = C1 ^ (D.R.k * D.R.f) * Tr D u' ^ (D.R.k * D.R.f) * A u * (Real.exp (2 * x) * C0 ^ 2) := by ring`. Use `_ ≤ C1 ^ (D.R.k * D.R.f) * Tr D u' ^ (D.R.k * D.R.f) * A u * (C0 * Real.exp 1) ^ (D.R.k * D.R.f) := by`. Apply `mul_le_mul_of_nonneg_left hsm` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Use `hApos u` as an intermediate fact. Use `sza_Tr_pos D u'` as an intermediate fact. Check the signs of the components of the expression. Use `_ = (C1 * (C0 * Real.exp 1) * Tr D u') ^ (D.R.k * D.R.f) * A u := by`. Simplify using `only [mul_pow]`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `le_of_mul_le_mul_right h1 (hApos u)`. Establish `hle : Tr D u ≤ C1 * (C0 * Real.exp 1) * Tr D u'`. Establish `hpos : 0 ≤ C1 * (C0 * Real.exp 1) * Tr D u'`. Use `sza_Tr_pos D u'` as an intermediate fact.
-
-Establish `: 0 < C0` using `by linarith`. Check the signs of the components of the expression. Conclude with `(pow_le_pow_iff_left₀ (sza_Tr_pos D u).le hpos (by omega)).1 hmain`. Rewrite using `[div_le_iff₀ (sza_Tr_pos D u')]`. Conclude with `hle`.
+A detailed English derivation is pending.
 -/
 theorem level_ratio_bound (D : D7) (C0 C1 : ℝ) (hD : StandingNumericalData D C0) (hC0 : 1 ≤ C0) (ha : LocalBesselAndTopKernel.projection_sandwich_lattice D) (hb : LocalBesselAndTopKernel.MassRatio₂ D C1) :
     LocalBesselAndTopKernel.kernel_index_full_lattice D (C1 * (C0 * Real.exp 1)) := by
@@ -727,16 +721,16 @@ theorem level_ratio_bound (D : D7) (C0 C1 : ℝ) (hD : StandingNumericalData D C
   exact hle
 
 /- English proof (translation)
-Introduce `u u'`. Conclude with `(h u u').trans hC`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem level_ratio_bound_mono {D : D7} {C2 C2' : ℝ} (h : LocalBesselAndTopKernel.kernel_index_full_lattice D C2) (hC : C2 ≤ C2') : LocalBesselAndTopKernel.kernel_index_full_lattice D C2' := by
   intro u u'
   exact (h u u').trans hC
 
 /- English proof (translation)
-Take `⟨x1, h1⟩` from `ha`. Take `⟨x2, h2⟩` from `hb`. Use `Exists.intro (max x1 x2) ?_` and prove the remaining obligations. Introduce `x hx i hH`. Establish `hx1 : x ≥ x1` using `le_trans (le_max_left _ _) hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx2 : x ≥ x2` using `le_trans (le_max_right _ _) hx`. Establish `ha'` using `h1 x hx1 i hH`. Establish `hb'` using `h2 x hx2 i hH`. Take `⟨hD, -, hC0⟩` from `hH`. Conclude with `level_ratio_bound_mono (level_ratio_bound (Fm.D x i) C0 C1 hD hC0 ha' hb') hC2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem family_level_ratio_bound {eps : ℝ} (Fm : FamP eps) (C0 Cg cb Cu cT CT C1 C2 : ℝ)
     (hC2 : C1 * (C0 * Real.exp 1) ≤ C2) (ha : LocalBesselAndTopKernel.FamilyBesselBoundFirstPart Fm C0 Cg cb Cu cT CT)
@@ -753,11 +747,9 @@ theorem family_level_ratio_bound {eps : ℝ} (Fm : FamP eps) (C0 Cg cb Cu cT CT 
   exact level_ratio_bound_mono (level_ratio_bound (Fm.D x i) C0 C1 hD hC0 ha' hb') hC2
 
 /- English proof (translation)
-Establish `h1 : 1 < ((M : ℂ)).re`. Rewrite using `[Complex.natCast_re]`. Conclude with `(by omega : 1 < M)` after adjusting the coercions. Rewrite using `[zeta_eq_tsum_one_div_nat_add_one_cpow h1]`. Establish `e : ∀ n : ℕ, (1 : ℂ) / ((n : ℂ) + 1) ^ (M : ℂ) = (((1 : ℝ) / ((n : ℝ) + 1) ^ M : ℝ) : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Rewrite using `[Complex.cpow_natCast]`. Use `push_cast`. Apply the tactic sequence `try ring`. Repeatedly rewrite using `[e]`.
-
-Rewrite using `[← Complex.ofReal_tsum, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sza_zeta (M : ℕ) (hM : 2 ≤ M) : (riemannZeta (M : ℂ)).re = ∑' n : ℕ, 1 / ((n : ℝ) + 1) ^ M := by
   have h1 : 1 < ((M : ℂ)).re := by
@@ -773,7 +765,7 @@ theorem sza_zeta (M : ℕ) (hM : 2 ≤ M) : (riemannZeta (M : ℂ)).re = ∑' n 
   rw [← Complex.ofReal_tsum, Complex.ofReal_re]
 
 /- English proof (translation)
-Introduce `M hM`. Establish `h` using `(Formalism.HermitianLattices.GlobalBoundRefinements.log_l_value_field_bound D.host.E D.sp.cm.cmUnram M hM).2.2`. Rewrite `h` using `[sza_fDeg_host]`. Rewrite using `[sza_zeta M hM]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sza_stMassL (D : D7) : UnitaryVolumeMass.stMassL D := by
   intro M hM
@@ -783,14 +775,14 @@ theorem sza_stMassL (D : D7) : UnitaryVolumeMass.stMassL D := by
   exact h
 
 /- English proof (translation)
-Introduce `i hi`. Conclude with `sza_stMassL D i (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mass_two_bound_single_holds (D : D7) : LocalBesselAndTopKernel.GL5LogLValueBoundByZeta D := by
   intro i hi
   exact sza_stMassL D i (by omega)
 
 /- English proof (translation)
-Introduce `x i`. Conclude with `mass_two_bound_single_holds _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mass_two_bound_family_holds {eps : ℝ} (Fm : FamP eps) : LocalBesselAndTopKernel.BesselFormLine Fm := by
   intro x i

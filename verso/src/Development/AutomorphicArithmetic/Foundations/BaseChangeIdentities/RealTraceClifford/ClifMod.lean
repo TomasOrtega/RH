@@ -98,7 +98,7 @@ structure UF {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (F : Fi
   unit : ∀ a b (x y : V), ⟪F a b x, y⟫_ℂ = ⟪x, F b a y⟫_ℂ
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a b c d`. Simplify using the standard rewrite rules. Introduce `a b x y`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem uf_zero {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] : UF (fun _ _ : Fin n => (0 : Module.End ℂ V)) := by
   refine ⟨?_, ?_⟩

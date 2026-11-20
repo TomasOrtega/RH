@@ -9,19 +9,17 @@ open MeasureTheory Filter Topology PositivityTheory.RgEis GlobalTheory.Companion
 namespace GlobalTheory.CompanionTheory.TubeFourier
 
 /- English proof (translation)
-Introduce `X _ _ _ Ω G hΩ hconv hG x hx x' hx' t`. Establish `hhor : ∀ a b c : ℝ, (∀ s ∈ Set.uIcc a b, (s, c) ∈ Ω) → GlobalTheory.CompanionTheory.TubeFourier.phi G (a, c) t = GlobalTheory.CompanionTheory.TubeFourier.phi G (b, c) t`. Introduce `a b c h`. Break down `le_total a b with hab | hba` into its components or cases. Conclude with `GlobalTheory.T.tube_transform_horizontal_invariance X Ω G hG a b c hab (fun s hs => h s (Set.Icc_subset_uIcc hs)) t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.T.tube_transform_horizontal_invariance X Ω G hG b a c hba (fun s hs => h s (Set.Icc_subset_uIcc' hs)) t).symm`. Establish `hver : ∀ a b c : ℝ, (∀ s ∈ Set.uIcc a b, (c, s) ∈ Ω) → GlobalTheory.CompanionTheory.TubeFourier.phi G (c, a) t = GlobalTheory.CompanionTheory.TubeFourier.phi G (c, b) t`. Introduce `a b c h`. Break down `le_total a b with hab | hba` into its components or cases. Conclude with `GlobalTheory.T.tube_transform_vertical_invariance X Ω G hG a b c hab (fun s hs => h s (Set.Icc_subset_uIcc hs)) t`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(GlobalTheory.T.tube_transform_vertical_invariance X Ω G hG b a c hba (fun s hs => h s (Set.Icc_subset_uIcc' hs)) t).symm`. Establish `hf : IsLocallyConstant (fun p : Ω => GlobalTheory.CompanionTheory.TubeFourier.phi G (p : ℝ × ℝ) t)`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce and unpack `⟨⟨p₁, p₂⟩, hp⟩`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hΩ (p₁, p₂) hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : {q : Ω | (q : ℝ × ℝ) ∈ Metric.ball (p₁, p₂) ε} ∈ 𝓝 (⟨(p₁, p₂), hp⟩ : Ω)` using `continuousAt_subtype_val.preimage_mem_nhds (Metric.ball_mem_nhds _ hε)`. Use `filter_upwards [hmem]`. Introduce and unpack `⟨⟨q₁, q₂⟩, hq⟩ hqball`. Establish `hd : dist q₁ p₁ < ε ∧ dist q₂ p₂ < ε`. Establish `h' : dist (q₁, q₂) (p₁, p₂) < ε` using `hqball`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h'` using `[Prod.dist_eq, max_lt_iff]`. Then use the resulting hypothesis. Take `⟨h₁, h₂⟩` from `hd`. Rewrite `h₁`, `h₂` using `[Real.dist_eq]`. Establish `hv : GlobalTheory.CompanionTheory.TubeFourier.phi G (q₁, p₂) t = GlobalTheory.CompanionTheory.TubeFourier.phi G (q₁, q₂) t`. Use `hver p₂ q₂ q₁ (fun s hs => hball ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Metric.mem_ball, Prod.dist_eq, max_lt_iff, Real.dist_eq, Real.dist_eq]`. Conclude with `⟨h₁, lt_of_le_of_lt (Set.abs_sub_left_of_mem_uIcc hs) h₂⟩`. Establish `hh : GlobalTheory.CompanionTheory.TubeFourier.phi G (p₁, p₂) t = GlobalTheory.CompanionTheory.TubeFourier.phi G (q₁, p₂) t`. Use `hhor p₁ q₁ p₂ (fun s hs => hball ?_)` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, Prod.dist_eq, max_lt_iff, dist_self, Real.dist_eq]`.
-
-Conclude with `⟨lt_of_le_of_lt (Set.abs_sub_left_of_mem_uIcc hs) h₁, hε⟩`. Use `show GlobalTheory.CompanionTheory.TubeFourier.phi G (q₁, q₂) t = GlobalTheory.CompanionTheory.TubeFourier.phi G (p₁, p₂) t`. Rewrite using `[← hv, ← hh]`. Use `haveI : PreconnectedSpace Ω := Subtype.preconnectedSpace hconv.isPreconnected`. Conclude with `hf.apply_eq_of_isPreconnected isPreconnected_univ (Set.mem_univ (⟨x, hx⟩ : Ω)) (Set.mem_univ (⟨x', hx'⟩ : Ω))`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_eq_of_convex : ∀ (X : Type) [NormedAddCommGroup X] [NormedSpace ℂ X] [CompleteSpace X]
     (Ω : Set (ℝ × ℝ)) (G : ℂ × ℂ → X), IsOpen Ω → Convex ℝ Ω → GaussTube G Ω →

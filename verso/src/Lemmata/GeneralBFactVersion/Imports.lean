@@ -5,9 +5,9 @@ universe u_1
 namespace Bl.general_b_fact_version
 
 /- English proof (translation)
-Introduce `Y _ _ g y R M hR hd hM`. Establish `hy : y ∈ Metric.ball y (2 * R)` using `Metric.mem_ball_self (by positivity)`. Establish `hmaps : Set.MapsTo g (Metric.ball y (2 * R)) (Metric.closedBall (g y) (2 * M))`. Introduce `v hv`. Rewrite using `[Metric.mem_closedBall, dist_eq_norm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h` using `Complex.norm_fderiv_le_div_of_mapsTo_ball hd hmaps (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem goal1 :
   ∀ {Y : Type u_1} [inst : NormedAddCommGroup.{u_1} Y] [inst_1 : NormedSpace.{0, u_1} Complex Y] {g : Y → Complex} {y : Y}

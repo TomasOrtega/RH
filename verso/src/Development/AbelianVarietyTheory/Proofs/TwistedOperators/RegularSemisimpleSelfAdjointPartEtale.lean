@@ -8,11 +8,11 @@ open scoped TensorProduct
 namespace GlobalTheory.RegSS
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ n _ _ σ J γ hreg hA hbij`. Establish `: Nontrivial E` using `quad_nontrivial hreg.quad`. Establish `: Module.Finite F E` using `quad_finite hreg.quad`. Take `⟨b⟩` from `hA.2.2.1`. Establish `: Module.Free E (genAlg (γ : Matrix n n E))` using `Module.Free.of_basis b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Module.Finite E (genAlg (γ : Matrix n n E))` using `Module.Finite.of_basis b`. Establish `: Module.Finite F (genAlg (γ : Matrix n n E))` using `Module.Finite.trans E _`. Establish `: Module.Finite F (plusAlg σ J (γ : Matrix n n E))` using `Module.Finite.of_injective (plusAlg σ J (γ : Matrix n n E)).val.toLinearMap Subtype.val_injective`. Establish `: IsReduced (genAlg (γ : Matrix n n E))` using `genAlg_isReduced hreg hA`. Establish `: IsReduced (plusAlg σ J (γ : Matrix n n E))` using `isReduced_of_injective (plusAlg σ J (γ : Matrix n n E)).val Subtype.val_injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨etale_of_isReduced _, ?_, hbij⟩` and prove the remaining obligations. Establish `hdim` using `(AlgEquiv.ofBijective _ hbij).toLinearEquiv.finrank_eq`. Rewrite `hdim` using `[Module.finrank_tensorProduct, hreg.quad.finrank_eq, ← Module.finrank_mul_finrank F E (genAlg (γ : Matrix n n E)), hreg.quad.finrank_eq, Module.finrank_eq_card_basis b]`. Establish `hr : Module.finrank F (plusAlg σ J (γ : Matrix n n E)) = Fintype.card n` using `by omega`. Conclude with `⟨(Module.finBasisOfFinrankEq F _ hr).reindex (Fintype.equivFin n).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem plusEtale : PlusEtale := by
   intro F E _ _ _ _ n _ _ σ J γ hreg hA hbij

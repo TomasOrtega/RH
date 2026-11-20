@@ -34,7 +34,7 @@ theorem cochainOf_cochainsULiftIntEquiv (n : ℕ) (f : (cochainsComplex A).X n) 
   rfl
 
 /- English proof (translation)
-Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[cochainOf_cochainsULiftIntEquiv, cochainOf_d, cochainOf_d, cochainOf_cochainsULiftIntEquiv]`. Use `inhomogeneousCochains_d_uliftIntToIntRep A i (i + 1) (cochainOf A f)` as an intermediate fact. Rewrite `this` using `[groupCohomology.inhomogeneousCochains.d_def, groupCohomology.inhomogeneousCochains.d_def]`. Conclude with `this.symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cochainsULiftIntEquiv_d (i : ℕ) (f : (cochainsComplex A).X i) :
     cochainsULiftIntEquiv A (i + 1) ((cochainsComplex A).d i (i + 1) f) =
@@ -53,7 +53,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   (A : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep A]
 
 /- English proof (translation)
-Break down `eq_or_ne (i + 1) j with rfl | h` into its components or cases. Conclude with `cochainsULiftIntEquiv_d A i f`. Establish `h' : ¬ (ComplexShape.up ℕ).Rel i j` using `h`. Rewrite using `[HomologicalComplex.shape _ _ _ h', HomologicalComplex.shape _ _ _ h']`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cochainsULiftIntEquiv_d' (i j : ℕ) (f : (cochainsComplex A).X i) :
     cochainsULiftIntEquiv A j ((cochainsComplex A).d i j f) =
@@ -65,7 +65,7 @@ theorem cochainsULiftIntEquiv_d' (i j : ℕ) (f : (cochainsComplex A).X i) :
     rfl
 
 /- English proof (translation)
-Rewrite using `[← cochainsULiftIntEquiv_d', AddEquiv.map_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cochainsULiftIntEquiv_d_eq_zero_iff (i j : ℕ) (f : (cochainsComplex A).X i) :
     (cochainsComplex (uliftIntToIntRep A)).d i j (cochainsULiftIntEquiv A i f) = 0 ↔
@@ -73,7 +73,7 @@ theorem cochainsULiftIntEquiv_d_eq_zero_iff (i j : ℕ) (f : (cochainsComplex A)
   rw [← cochainsULiftIntEquiv_d', AddEquiv.map_eq_zero_iff]
 
 /- English proof (translation)
-Rewrite using `[← (cochainsULiftIntEquiv A j).injective.eq_iff, cochainsULiftIntEquiv_d', AddEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cochainsULiftIntEquiv_eq_d_iff (i j : ℕ) (f : (cochainsComplex A).X j)
     (z : (cochainsComplex (uliftIntToIntRep A)).X i) :
@@ -94,9 +94,9 @@ noncomputable def kerULiftIntEquiv (n : ℕ) :
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Conclude with `⟨(cochainsULiftIntEquiv A _).symm z, Subtype.ext ((cochainsULiftIntEquiv_eq_d_iff A _ n x.1 z).1 (congrArg Subtype.val hz))⟩`. Introduce and unpack `⟨z, hz⟩`. Use `⟨cochainsULiftIntEquiv A _ z, Subtype.ext ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(cochainsULiftIntEquiv_eq_d_iff A _ n x.1 (cochainsULiftIntEquiv A _ z)).2 (congrArg Subtype.val hz)`.
+A detailed English derivation is pending.
 -/
 theorem kerULiftIntEquiv_mem_range_iff (n : ℕ) (x : LinearMap.ker ((cochainsComplex A).sc n).g.hom) :
     (∃ z, ((cochainsComplex (uliftIntToIntRep A)).sc n).moduleCatToCycles z = kerULiftIntEquiv A n x) ↔
@@ -136,13 +136,13 @@ noncomputable def cohomologyULiftIntAddEquiv (n : ℕ) :
       ((cochainsComplex (uliftIntToIntRep A)).sc n).moduleCatHomologyIso.toLinearEquiv.toAddEquiv.symm)
 
 /- English proof (translation)
-Use `set S₁ := (cochainsComplex A).sc n`. Use `set S₂ := (cochainsComplex (uliftIntToIntRep A)).sc n`. Establish `h₁ : S₁.moduleCatHomologyIso.hom (cohomologyπ A n z) = S₁.moduleCatLeftHomologyData.π (S₁.moduleCatCyclesIso.hom z)` using `ShortComplex.π_moduleCatCyclesIso_hom_apply S₁ z`. Establish `h₂ : S₂.moduleCatHomologyIso.hom (cohomologyπ (uliftIntToIntRep A) n z') = S₂.moduleCatLeftHomologyData.π (S₂.moduleCatCyclesIso.hom z')` using `ShortComplex.π_moduleCatCyclesIso_hom_apply S₂ z'`. Establish `hk : kerULiftIntEquiv A n (S₁.moduleCatCyclesIso.hom z) = S₂.moduleCatCyclesIso.hom z'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `e₁` using `ShortComplex.moduleCatCyclesIso_hom_i_apply S₁ z`. Establish `e₂` using `ShortComplex.moduleCatCyclesIso_hom_i_apply S₂ z'`. Express the relevant statement in the definitionally equal form `cochainsULiftIntEquiv A n (S₁.moduleCatCyclesIso.hom z).1 = (S₂.moduleCatCyclesIso.hom z').1`. Apply `cochainOf_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `cochainOf A (S₁.moduleCatCyclesIso.hom z).1 = cochainOf (uliftIntToIntRep A) (S₂.moduleCatCyclesIso.hom z').1`. Rewrite using `[show (S₁.moduleCatCyclesIso.hom z).1 = S₁.iCycles z from e₁, show (S₂.moduleCatCyclesIso.hom z').1 = S₂.iCycles z' from e₂]`. Conclude with `h.symm`. Apply `S₂.moduleCatHomologyIso.toLinearEquiv.toAddEquiv.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `S₂.moduleCatHomologyIso.hom (S₂.moduleCatHomologyIso.inv (homologyDataULiftIntEquiv A n (S₁.moduleCatHomologyIso.hom (cohomologyπ A n z)))) = _`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ConcreteCategory.comp_apply, Iso.inv_hom_id, ConcreteCategory.id_apply, h₁]`. Express the relevant statement in the definitionally equal form `S₂.moduleCatLeftHomologyData.π (kerULiftIntEquiv A n (S₁.moduleCatCyclesIso.hom z)) = _`. Rewrite using `[hk]`. Conclude with `h₂.symm`.
+A detailed English derivation is pending.
 -/
 theorem cohomologyULiftIntAddEquiv_cohomologyπ {n : ℕ} (z : cocycles A n)
     (z' : cocycles (uliftIntToIntRep A) n)
@@ -189,7 +189,7 @@ noncomputable def cocyclesULiftInt {n : ℕ} (z : cocycles A n) : cocycles (ulif
 
 @[simp]
 /- English proof (translation)
-The claim follows from `congrArg (cochainOf (uliftIntToIntRep A)) ((cochainsComplex (uliftIntToIntRep A)).i_cyclesMk _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem cochainOf_cocycleι_cocyclesULiftInt {n : ℕ} (z : cocycles A n) :
     cochainOf (uliftIntToIntRep A) (cocycleι (uliftIntToIntRep A) n (cocyclesULiftInt A z)) =
@@ -197,7 +197,7 @@ theorem cochainOf_cocycleι_cocyclesULiftInt {n : ℕ} (z : cocycles A n) :
   congrArg (cochainOf (uliftIntToIntRep A)) ((cochainsComplex (uliftIntToIntRep A)).i_cyclesMk _ _ _ _)
 
 /- English proof (translation)
-The claim follows from `cohomologyULiftIntAddEquiv_cohomologyπ A z _ (cochainOf_cocycleι_cocyclesULiftInt A z)`.
+A detailed English derivation is pending.
 -/
 theorem cohomologyULiftIntAddEquiv_cohomologyπ' {n : ℕ} (z : cocycles A n) :
     cohomologyULiftIntAddEquiv A n (cohomologyπ A n z) =
@@ -205,9 +205,9 @@ theorem cohomologyULiftIntAddEquiv_cohomologyπ' {n : ℕ} (z : cocycles A n) :
   cohomologyULiftIntAddEquiv_cohomologyπ A z _ (cochainOf_cocycleι_cocyclesULiftInt A z)
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `cohomologyπ_surjective A n x`. Rewrite using `[cohomologyπ_cohomologyMapAlong_apply, cohomologyULiftIntAddEquiv_cohomologyπ' A z, cohomologyπ_cohomologyMapAlong_apply]`. Use `cohomologyULiftIntAddEquiv_cohomologyπ B _ _ ?_` and prove the remaining obligations. Rewrite using `[cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesMapAlong]`. Use function extensionality and compare the values at `v`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[cochainOf_cocycleι_cocyclesULiftInt]`. Conclude with `hf _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyULiftIntAddEquiv_cohomologyMapAlong {H : Type} [Group H] [TopologicalSpace H]
     [IsTopologicalGroup H] {B : Rep.{0} (ULift.{0} ℤ) H} [IsDiscreteRep B] (φ : H →* G)

@@ -6,15 +6,15 @@ namespace PI.Witt
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K V`. Break down `isEmpty_or_nonempty (Fin (Module.finrank K V)) with hE | hNE` into its components or cases. Use `⟨0, fun z => ?_⟩` and prove the remaining obligations. Establish `hz : z = 0` using `by rw [← b.sum_repr z]; simp`. Simplify using `[hz]`.
+Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hli : LinearIndependent K (fun i => B (b i))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Establish `h1 : B (∑ j, star (g j) • b j) = 0`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smulₛₗ, starRingEnd_apply, star_star]`. Conclude with `hg`. Establish `h2 : ∑ j, star (g j) • b j = 0` using `hnd _ (fun y => by rw [h1, LinearMap.zero_apply])`. Establish `h3` using `(Fintype.linearIndependent_iff.mp b.linearIndependent) _ h2 i`. Conclude with `star_eq_zero.mp h3`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Fintype.card (Fin (Module.finrank K V)) = Module.finrank K (V →ₗ[K] K)`. Rewrite using `[Fintype.card_fin]`. Conclude with `(Subspace.dual_finrank_eq).symm`. Set `b'` to `basisOfLinearIndependentOfCardEqFinrank hli hcard`. Use `⟨∑ i, star (b'.repr φ i) • b i, fun z => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← b'.sum_repr φ]`. Rewrite using `[map_sum, LinearMap.sum_apply, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, LinearMap.smul_apply, LinearMap.smul_apply, starRingEnd_apply, star_star, coe_basisOfLinearIndependentOfCardEqFinrank]`.
+A detailed English derivation is pending.
 -/
 theorem riesz [FiniteDimensional K V] (B : V →ₗ⋆[K] V →ₗ[K] K) (hB : ∀ x y, star (B x y) = B y x)
     (hnd : ∀ x, (∀ y, B x y = 0) → x = 0) (φ : V →ₗ[K] K) : ∃ v, ∀ z, B v z = φ z := by

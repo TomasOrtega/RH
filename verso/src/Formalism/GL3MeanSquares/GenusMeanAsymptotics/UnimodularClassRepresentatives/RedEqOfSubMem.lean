@@ -21,7 +21,7 @@ def red (b : Basis κ K V) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k :
     Submodule.mkQ _
 
 /- English proof (translation)
-Establish `e : (quotLocF h𝔭 (spanO b) k).symm (Submodule.Quotient.mk w) = Submodule.Quotient.mk ⟨(w : V), hw⟩`. Rewrite using `[LinearEquiv.symm_apply_eq, quotLocF_mk h𝔭 (spanO b) k ⟨(w : V), hw⟩ w.2]`. Use `show qE b _ ((quotLocF h𝔭 (spanO b) k).symm (Submodule.Quotient.mk w)) = _`. Rewrite using `[e, qE_mk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_of_mem (b : Basis κ K V) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ)
     (w : ↥(locF 𝔭 (spanO b))) (hw : (w : V) ∈ spanO b) :
@@ -33,9 +33,9 @@ theorem red_of_mem (b : Basis κ K V) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMa
   rw [e, qE_mk]
 
 /- English proof (translation)
-Rewrite using `[map_smul]`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Establish `: algebraMap (𝓞 K) (𝓞 K ⧸ extP K 𝔭 ^ k) (ι c) = 1` using `by show Ideal.Quotient.mk _ (ι c) = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk (extP K 𝔭 ^ k)), Ideal.Quotient.eq, ← map_one ι, ← map_sub]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ι_mem_pow hc`. Rewrite using `[this, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_smul_one (b : Basis κ K V) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) {c : 𝓞 F}
     (hc : c - 1 ∈ 𝔭 ^ k) (w : ↥(locF 𝔭 (spanO b))) : red b h𝔭 k (ι c • w) = red b h𝔭 k w := by
@@ -49,7 +49,7 @@ theorem red_smul_one (b : Basis κ K V) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.Is
   rw [this, one_mul]
 
 /- English proof (translation)
-Establish `e : (Submodule.Quotient.mk w : ↥(locF 𝔭 (spanO b)) ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥(locF 𝔭 (spanO b)))) = Submodule.Quotient.mk w'`. Rewrite using `[Submodule.Quotient.eq, Submodule.mem_smul_top_iff]`. Conclude with `hww`. Use `show qE b _ ((quotLocF h𝔭 (spanO b) k).symm (Submodule.Quotient.mk w)) = qE b _ ((quotLocF h𝔭 (spanO b) k).symm (Submodule.Quotient.mk w'))`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_eq_of_sub_mem (b : Basis κ K V) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ)
     (w w' : ↥(locF 𝔭 (spanO b)))
@@ -67,9 +67,9 @@ def bM (b : Basis κ K V) (𝔭 : Ideal (𝓞 F)) [𝔭.IsPrime] (j : κ) : ↥(
   ⟨b j, le_locF 𝔭 _ (Submodule.subset_span (Set.mem_range_self j))⟩
 
 /- English proof (translation)
-Establish `e : (quotLocF h𝔭 (spanO b) k).symm (Submodule.Quotient.mk (bM b 𝔭 j)) = Submodule.Quotient.mk (bO b j)`. Rewrite using `[LinearEquiv.symm_apply_eq, quotLocF_mk h𝔭 (spanO b) k (bO b j) (by rw [bO_apply]; exact (bM b 𝔭 j).2)]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(bO_apply b j).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show qE b _ ((quotLocF h𝔭 (spanO b) k).symm (Submodule.Quotient.mk (bM b 𝔭 j))) = _`. Rewrite using `[e, qE_bO]`.
+A detailed English derivation is pending.
 -/
 theorem red_bM (b : Basis κ K V) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) [𝔭.IsPrime] (k : ℕ) (j : κ) :
     red b h𝔭 k (bM b 𝔭 j) = Pi.single j 1 := by
@@ -86,11 +86,11 @@ theorem red_bM (b : Basis κ K V) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaxima
 variable [Fact (IsFixF K F)]
 
 /- English proof (translation)
-Establish `hF : IsFixF K F` using `Fact.out`. Take `⟨c, hc, hcw⟩` from `exists_approx h𝔭 (spanO b) k w.2`. Take `⟨c', hc', hcw'⟩` from `exists_approx h𝔭 (spanO b) k w'.2`. Rewrite using `[← red_smul_one b h𝔭 k hc w, ← red_smul_one b h𝔭 k hc' w', red_of_mem b h𝔭 k (ι c • w) hcw, red_of_mem b h𝔭 k (ι c' • w') hcw', ← mk_form]`. Establish `e1` using `form_eq h b hH ⟨_, hcw⟩ ⟨_, hcw'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : h (ι c • (w : V)) (ι c' • (w' : V)) = algebraMap (𝓞 K) K (ι (c * c') * z)`. Rewrite using `[form_smul hF, hz, map_mul (algebraMap (𝓞 K) K)]`. Establish `e3` using `FaithfulSMul.algebraMap_injective (𝓞 K) K (e1.symm.trans e2)`. Establish `e4 : Ideal.Quotient.mk (extP K 𝔭 ^ k) (ι (c * c')) = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk (extP K 𝔭 ^ k)), Ideal.Quotient.eq, ← map_one ι, ← map_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `ι_mem_pow` to reduce the goal to its premises. Establish `: c * c' - 1 = (c - 1) * c' + (c' - 1)` using `by ring`. Rewrite using `[this]`. Conclude with `add_mem (Ideal.mul_mem_right _ _ hc) hc'`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem red_form (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ K V) {H : Matrix κ κ (𝓞 K)}
     (hH : ∀ i j, algebraMap (𝓞 K) K (H i j) = h (b i) (b j)) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
@@ -117,7 +117,7 @@ theorem red_form (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ K V) {H : Matr
 
 omit [Fact (IsFixF K F)] in
 /- English proof (translation)
-Establish `h2 : Formalism.HermitianLatticesTheory.gmap g M = M` using `hg.2`. Rewrite using `[← h2]`. Conclude with `Submodule.mem_map.mpr ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem {h : V →ₗ⋆[K] V →ₗ[K] K} {M : Submodule (𝓞 K) V} {g : V ≃ₗ[K] V}
     (hg : g ∈ autSub h M) {x : V} (hx : x ∈ M) : g x ∈ M := by
@@ -136,11 +136,11 @@ def gMat {h : V →ₗ⋆[K] V →ₗ[K] K} (b : Basis κ K V) {𝔭 : Ideal (�
 
 omit [Fact (IsFixF K F)] in
 /- English proof (translation)
-Establish `key : (red b h𝔭 k ∘ₗ gM hg) ∘ₗ Submodule.inclusion (le_locF 𝔭 (spanO b)) = (((gMat b h𝔭 k hg).mulVecLin.restrictScalars (𝓞 K)) ∘ₗ red b h𝔭 k) ∘ₗ Submodule.inclusion (le_locF 𝔭 (spanO b))`. Apply `(bO b).ext` to reduce the goal to its premises. Introduce `j`. Establish `e : Submodule.inclusion (le_locF 𝔭 (spanO b)) (bO b j) = bM b 𝔭 j`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `bO_apply b j`. Simplify using `only [LinearMap.comp_apply, e, LinearMap.restrictScalars_apply, mulVecLin_apply]`. Rewrite using `[red_bM, mulVec_single_one]`. Both sides reduce to the same expression. Take `⟨c, hc, hcw⟩` from `exists_approx h𝔭 (spanO b) k w.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `LinearMap.congr_fun key ⟨_, hcw⟩`. Establish `e : Submodule.inclusion (le_locF 𝔭 (spanO b)) ⟨_, hcw⟩ = ι c • w` using `rfl`. Simplify using `only [LinearMap.comp_apply, e, LinearMap.restrictScalars_apply, mulVecLin_apply] at h1`. Rewrite `h1` using `[map_smul, red_smul_one b h𝔭 k hc, red_smul_one b h𝔭 k hc]`. Conclude with `h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_gM {h : V →ₗ⋆[K] V →ₗ[K] K} (b : Basis κ K V) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     [𝔭.IsPrime] (k : ℕ) {g : V ≃ₗ[K] V} (hg : g ∈ autSub h (locF 𝔭 (spanO b)))
@@ -164,15 +164,13 @@ theorem red_gM {h : V →ₗ⋆[K] V →ₗ[K] K} (b : Basis κ K V) {𝔭 : Ide
   exact h1
 
 /- English proof (translation)
-Use `h𝔭.isPrime` as an intermediate fact. Establish `hg' : g⁻¹ ∈ autSub h (locF 𝔭 (spanO b))` using `inv_mem hg`. Use `⟨gMat b h𝔭 k hg, gMat b h𝔭 k hg', ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[← form_single (_ᴴ * _ * _) i j, ← form_mulVec, ← red_bM b h𝔭 k i, ← red_bM b h𝔭 k j, ← red_gM, ← red_gM, Matrix.map_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply `red_form h b hH h𝔭 k` to reduce the goal to its premises. Use `show h (g (b i)) (g (b j)) = _`. Rewrite using `[hg.1 (b i) (b j), hH]`. Use extensionality with `i j`. Establish `h1 : (gMat b h𝔭 k hg * gMat b h𝔭 k hg') *ᵥ Pi.single j 1 = Pi.single j 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mulVec_mulVec, ← red_bM b h𝔭 k j, ← red_gM, ← red_gM]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show g (g⁻¹ (b j)) = b j`. Conclude with `g.apply_symm_apply (b j)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrFun h1 i`. Rewrite `h2` using `[mulVec_single_one]`. Rewrite using `[Matrix.one_apply, ← Pi.single_apply]`. Conclude with `h2`. Introduce `w w' hww`.
-
-Rewrite using `[← red_gM]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hww`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_matrix (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ K V) {H : Matrix κ κ (𝓞 K)}
     (hH : ∀ i j, algebraMap (𝓞 K) K (H i j) = h (b i) (b j)) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)

@@ -8,13 +8,13 @@ namespace GlobalTheory.SemilocalConj
 open GlobalTheory.ClassParam (krylov krylov_map exists_cyclic_field)
 
 /- English proof (translation)
-Establish `hloc : ∀ m : MaximalSpectrum A, ∃ v : Fin r → A ⧸ m.asIdeal, (krylov (g.map (Ideal.Quotient.mk m.asIdeal)) v).det ≠ 0`. Introduce `m`. Use `m.isMaximal` as an intermediate fact. Use `letI := Ideal.Quotient.field m.asIdeal`. Conclude with `exists_cyclic_field _ (by rw [Matrix.charpoly_map]; exact hs.map)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `choose w hw using hloc`. Establish `hsurj : ∀ i : Fin r, ∃ a : A, ∀ m : MaximalSpectrum A, Ideal.Quotient.mk m.asIdeal a = w m i`. Introduce `i`. Take `⟨a, ha⟩` from `Ideal.pi_quotient_surjective (I := fun m : MaximalSpectrum A => m.asIdeal) (fun m m' h => MaximalSpectrum.isCoprime_of_ne h) (fun m => w m i)`. Conclude with `⟨a, ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `choose v hv using hsurj`. Use `⟨v, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Take `⟨m, hm, hmem⟩` from `exists_max_ideal_of_mem_nonunits hn`. Apply `hw ⟨m, hm⟩` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: w ⟨m, hm⟩ = Ideal.Quotient.mk m ∘ v` using `funext fun i => (hv i ⟨m, hm⟩).symm`. Rewrite using `[this, ← krylov_map]`. Rewrite `hmem` using `[← Ideal.Quotient.eq_zero_iff_mem, RingHom.map_det]`. Conclude with `hmem`.
+A detailed English derivation is pending.
 -/
 theorem exists_isUnit_det_krylov {A : Type} [CommRing A] [Finite (MaximalSpectrum A)] {r : ℕ}
     (g : Matrix (Fin r) (Fin r) A) (hs : g.charpoly.Separable) :
@@ -44,11 +44,11 @@ theorem exists_isUnit_det_krylov {A : Type} [CommRing A] [Finite (MaximalSpectru
   exact hmem
 
 /- English proof (translation)
-Establish `hs' : M.charpoly.Separable` using `hχ ▸ hs`. Take `⟨w, hw⟩` from `exists_isUnit_det_krylov M₀ hs`. Take `⟨v, hv⟩` from `exists_isUnit_det_krylov M hs'`. Take `⟨a, ha⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 hw`. Take `⟨b, hb⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `GlobalTheory.Orb.mul_krylov_eq M₀ w`. Establish `h2` using `GlobalTheory.Orb.mul_krylov_eq M v`. Rewrite `h1` using `[← ha]`. Rewrite `h2` using `[← hb, hχ]`. Establish `h3 : ((a⁻¹ : (Matrix (Fin n) (Fin n) A)ˣ) : Matrix (Fin n) (Fin n) A) * M₀ = GlobalTheory.Orb.companionMat n M₀.charpoly * ((a⁻¹ : (Matrix (Fin n) (Fin n) A)ˣ) : Matrix (Fin n) (Fin n) A)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨b * a⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← mul_assoc, h2, mul_assoc, h3, mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_units_conj_of_charpoly_eq (A : Type) [CommRing A] [Finite (MaximalSpectrum A)] (n : ℕ)
     (M₀ M : Matrix (Fin n) (Fin n) A) (hs : M₀.charpoly.Separable) (hχ : M.charpoly = M₀.charpoly) :
@@ -72,7 +72,7 @@ theorem exists_units_conj_of_charpoly_eq (A : Type) [CommRing A] [Finite (Maxima
   rw [Units.val_mul, ← mul_assoc, h2, mul_assoc, h3, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `exists_units_conj_of_charpoly_eq`.
+A detailed English derivation is pending.
 -/
 example : ∀ (A : Type) [CommRing A] [Finite (MaximalSpectrum A)] (n : ℕ) (M₀ M : Matrix (Fin n) (Fin n) A),
     M₀.charpoly.Separable → M.charpoly = M₀.charpoly →

@@ -10,11 +10,11 @@ namespace GlobalTheory.CompanionTheory.GamDomProof
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) = ∑ b : Fin n, if b = a then (1 : ℝ) else 0` using `by simp`. Establish `h2 : (n : ℝ) = ∑ _b : Fin n, (1 : ℝ)` using `by simp`. Simplify using `only [card_filter, Nat.cast_sum, Nat.cast_ite, Nat.cast_one, Nat.cast_zero]`. Rewrite using `[h2]`. Use `nth_rewrite 5 [h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← sum_add_distrib]`. Use `sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Apply the tactic sequence `by_cases e : ε b = ε a <;> simp [h, h.not_gt, h.ne', e]`. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases e : ε b = ε a <;> simp [h, h.not_gt, h.ne, e]`.
+A detailed English derivation is pending.
 -/
 theorem card_four (ε : Fin n → Bool) (a : Fin n) :
     ((univ.filter fun b => a < b ∧ ε b = ε a).card : ℝ) + (univ.filter fun b => b < a ∧ ε b = ε a).card
@@ -32,13 +32,13 @@ theorem card_four (ε : Fin n → Bool) (a : Fin n) :
   · by_cases e : ε b = ε a <;> simp [h, h.not_gt, h.ne, e]
 
 /- English proof (translation)
-Use `split_ifs with h`. Use `card_bij (fun i _ => i.1.2) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨⟨x, y⟩, hx, hy⟩ hi`. Simplify using `only [A1, mem_filter, mem_univ, true_and] at hi hx hy ⊢`. Take `⟨h1, rfl⟩` from `hi`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨h1, by simp [hx, hy]⟩`. Introduce and unpack `⟨⟨x, y⟩, hx, hy⟩ hi ⟨⟨x', y'⟩, hx', hy'⟩ hi' e`. Simplify using `only [A1, mem_filter, mem_univ, true_and] at hi hi' e`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hi.2, hi'.2, e]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Simplify using `only [mem_filter, mem_univ, true_and] at hb`. Use `⟨⟨(a, b), h, by simpa [h] using hb.2⟩, ?_, rfl⟩` and prove the remaining obligations. Simplify using `[A1, hb.1]`. Rewrite using `[card_eq_zero, filter_eq_empty_iff]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨x, y⟩, hx, hy⟩ _ e`. Simplify using `only at e hx`. Conclude with `h (e ▸ hx)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_fst (ε : Fin n → Bool) (a : Fin n) :
     ((A1 ε).filter fun i => i.1.1 = a).card =
@@ -63,13 +63,13 @@ theorem card_fst (ε : Fin n → Bool) (a : Fin n) :
     exact h (e ▸ hx)
 
 /- English proof (translation)
-Use `split_ifs with h`. Rewrite using `[card_eq_zero, filter_eq_empty_iff]`. Introduce and unpack `⟨⟨x, y⟩, hx, hy⟩ _ e`. Simplify using `only at e hy`. Rewrite `hy` using `[e, h]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd hy (by simp)`. Establish `h' : ε a = false` using `by simpa using h`. Use `card_bij (fun i _ => i.1.1) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨⟨x, y⟩, hx, hy⟩ hi`. Simplify using `only [A1, mem_filter, mem_univ, true_and] at hi hx hy ⊢`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨h1, rfl⟩` from `hi`. Conclude with `⟨h1, by simp [hx, hy]⟩`. Introduce and unpack `⟨⟨x, y⟩, hx, hy⟩ hi ⟨⟨x', y'⟩, hx', hy'⟩ hi' e`. Simplify using `only [A1, mem_filter, mem_univ, true_and] at hi hi' e`. Apply `Subtype.ext` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hi.2, hi'.2, e]`. Introduce `b hb`. Simplify using `only [mem_filter, mem_univ, true_and] at hb`. Use `⟨⟨(b, a), by simpa [h'] using hb.2, h'⟩, ?_, rfl⟩` and prove the remaining obligations. Simplify using `[A1, hb.1]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_snd (ε : Fin n → Bool) (a : Fin n) :
     ((A1 ε).filter fun i => i.1.2 = a).card =
@@ -96,9 +96,9 @@ theorem card_snd (ε : Fin n → Bool) (a : Fin n) :
       simp [A1, hb.1]
 
 /- English proof (translation)
-Simplify using `only [nb, card_filter, ← sum_add_distrib]`. Use `sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy a b with h' | h' | h'` into its components or cases. Apply the tactic sequence `cases e : ε b <;> simp [h, h', h'.not_gt]`. Simplify using `[← h', h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `cases e : ε b <;> simp [h, h', h'.not_gt]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem card_other (ε : Fin n → Bool) (a : Fin n) (h : ε a = true) :
     (univ.filter fun b => a < b ∧ ε b ≠ ε a).card + (univ.filter fun b => b < a ∧ ε b ≠ ε a).card
@@ -111,9 +111,9 @@ theorem card_other (ε : Fin n → Bool) (a : Fin n) (h : ε a = true) :
   · cases e : ε b <;> simp [h, h', h'.not_gt]
 
 /- English proof (translation)
-Establish `h4` using `card_four ε a`. Simplify using `only [gam, PI.UpqRep.lowK, PI.UpqRep.rhoN, PI.UpqRep.rhoC, wtA, Pi.add_apply, Pi.sub_apply, card_fst, card_snd]`. Use `split_ifs with h`. Rewrite using `[← card_other ε a h]`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gam_eq (ε : Fin n → Bool) (lam : Fin n → ℝ) (a : Fin n) :
     gam ε lam a = lam a - ((n : ℝ) - 1) / 2 + (univ.filter fun b => b < a ∧ ε b = ε a).card
@@ -129,11 +129,11 @@ theorem gam_eq (ε : Fin n → Bool) (lam : Fin n → ℝ) (a : Fin n) :
     linarith
 
 /- English proof (translation)
-Establish `h1 : (univ.filter fun b => b < d ∧ ε b = ε d).card ≤ (univ.filter fun b => b < c ∧ ε b = ε c).card + (Ico c d).card`. Use `le_trans (card_le_card ?_) (card_union_le _ _)` and prove the remaining obligations. Introduce `b hb`. Simplify using `only [mem_filter, mem_univ, true_and, mem_union, mem_Ico] at hb ⊢`. Break down `lt_or_ge b c with h | h` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl ⟨h, hb.2.trans e.symm⟩`. Conclude with `Or.inr ⟨h, hb.1⟩`. Establish `h2 : (Ico c d).card ≤ (Ioc (m d) (m c)).card`. Use `card_le_card_of_injOn m ?_ hm.injective.injOn` and prove the remaining obligations. Introduce `b hb`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [coe_Ico, coe_Ioc, Set.mem_Ico, Set.mem_Ioc] at hb ⊢`. Conclude with `⟨hm hb.2, hm.antitone hb.1⟩`. Rewrite `h2` using `[Int.card_Ioc]`. Establish `h3` using `hm hcd`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pos_le (ε : Fin n → Bool) (m : Fin n → ℤ) (hm : StrictAnti m) (c d : Fin n) (hcd : c < d)
     (e : ε c = ε d) :
@@ -157,13 +157,11 @@ theorem pos_le (ε : Fin n → Bool) (m : Fin n → ℤ) (hm : StrictAnti m) (c 
   omega
 
 /- English proof (translation)
-Introduce `n ε lam ⟨hanti, hint⟩`. Use `choose m hm using hint`. Establish `hm' : StrictAnti m`. Introduce `a b hab`. Use `hanti hab` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : (m b : ℝ) < m a` using `by rw [← hm, ← hm]; linarith`. Conclude with `h` after adjusting the coercions. Use `⟨fun a => m a + (univ.filter fun b => b < a ∧ ε b = ε a).card + (if ε a = true then (nb ε false : ℤ) else 0), fun a => ?_, fun c d hcd e => ?_⟩` and prove the remaining obligations. Rewrite using `[gam_eq, hm]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `pos_le ε m hm' c d hcd e` as an intermediate fact. Establish `h2 : (if ε d = true then (nb ε false : ℤ) else 0) = (if ε c = true then (nb ε false : ℤ) else 0)`. Rewrite using `[e]`. Simplify using `only [h2]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gamDom : CompanionTheory.D.DSIC.GamDom := by
   intro n ε lam ⟨hanti, hint⟩

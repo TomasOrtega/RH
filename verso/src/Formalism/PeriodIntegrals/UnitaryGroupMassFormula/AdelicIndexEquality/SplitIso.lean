@@ -11,26 +11,26 @@ variable {F E K : Type} [Field F] [Field E] [Algebra F E] [Field K] [Algebra F K
 def sigT (σ : E →ₐ[F] E) : K ⊗[F] E →ₐ[F] K ⊗[F] E := Algebra.TensorProduct.map (AlgHom.id F K) σ
 
 /- English proof (translation)
-Simplify using `[sigT, Algebra.TensorProduct.algebraMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigT_algebraMap (σ : E →ₐ[F] E) (x : K) :
     sigT σ (algebraMap K (K ⊗[F] E) x) = algebraMap K (K ⊗[F] E) x := by
   simp [sigT, Algebra.TensorProduct.algebraMap_apply]
 
 /- English proof (translation)
-Simplify using `[sigT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigT_tmul_one (σ : E →ₐ[F] E) (a : E) : sigT (K := K) σ ((1 : K) ⊗ₜ[F] a) = (1 : K) ⊗ₜ[F] σ a := by
   simp [sigT]
 
 /- English proof (translation)
-Establish `: ∃ a : E, a ∉ (algebraMap F E).range`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Establish `hr : LinearMap.range (Algebra.linearMap F E) = ⊤`. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a _`. Take `⟨f, rfl⟩` from `hall a`. Conclude with `⟨f, rfl⟩`. Use `(Algebra.linearMap F E).finrank_range_le` as an intermediate fact. Rewrite `this` using `[hr, finrank_top, h2, Module.finrank_self]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨a, ha⟩` from `this`. Use `⟨a - σ a, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Conclude with `ha (hfix a (by linear_combination -h0))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_sub, hσσ]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_alpha (σ : E →ₐ[F] E) (hσσ : ∀ a, σ (σ a) = a)
     (hfix : ∀ a, σ a = a → a ∈ (algebraMap F E).range) (h2 : Module.finrank F E = 2) :
@@ -58,65 +58,57 @@ variable (σ : E →ₐ[F] E) (hσσ : ∀ a, σ (σ a) = a)
 
 include hσσ hfix h2 h2K in
 /- English proof (translation)
-Establish `h2F : (2 : F) ≠ 0`. Introduce `h`. Apply `h2K` to reduce the goal to its premises. Use `congrArg (algebraMap F K) h` as an intermediate fact. Rewrite `this` using `[map_ofNat, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨α, hα0, hσα⟩` from `exists_alpha σ hσσ hfix h2`. Establish `hli : LinearIndependent F ![(1 : E), α]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h'` using `congrArg σ hst`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_smul, map_one, hσα, map_zero, smul_neg] at h'`. Establish `ht : (2 * t) • α = 0`. Rewrite using `[mul_smul, two_smul]`. Take the linear combination `hst - h'`. Establish `ht0 : t = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Break down `smul_eq_zero.1 ht with h | h` into its components or cases. Conclude with `(mul_eq_zero.1 h).resolve_left h2F`. Conclude with `absurd h hα0`. Substitute `ht0` using the available equality. Use `⟨?_, rfl⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify using `using hst`. Set `bE : Module.Basis (Fin 2) F E` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp [h2])`. Establish `hbE0 : bE 0 = 1` using `by simp [bE]`. Establish `hbE1 : bE 1 = α` using `by simp [bE]`. Set `bR : Module.Basis (Fin 2) K (K ⊗[F] E)` to `Algebra.TensorProduct.basis K bE`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set A : K ⊗[F] E := (1 : K) ⊗ₜ[F] α with hAdef`. Establish `hbR0 : bR 0 = 1`. Simplify using `[bR, Algebra.TensorProduct.basis_apply, hbE0, Algebra.TensorProduct.one_def]`. Establish `hbR1 : bR 1 = A`. Simplify using `[bR, Algebra.TensorProduct.basis_apply, hbE1, hAdef]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdec : ∀ r : K ⊗[F] E, ∃ x y : K, r = algebraMap K (K ⊗[F] E) x + algebraMap K (K ⊗[F] E) y * A`. Introduce `r`. Use `⟨bR.repr r 0, bR.repr r 1, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← bR.sum_repr r]`. Rewrite using `[Fin.sum_univ_two, hbR0, hbR1, Algebra.smul_def, Algebra.smul_def, mul_one]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b0, hb0⟩` from `hfix (α * α) (by rw [map_mul, hσα]; ring)`. Establish `hb00 : b0 ≠ 0`. Introduce and unpack `rfl`. Rewrite `hb0` using `[map_zero]`. Conclude with `hα0 (mul_self_eq_zero.1 hb0.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `set bK : K := algebraMap F K b0 with hbK`. Establish `hbK0 : bK ≠ 0`. Rewrite using `[hbK]`. Conclude with `(map_ne_zero _).2 hb00`. Establish `hA : A * A = algebraMap K (K ⊗[F] E) bK`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hAdef, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← hb0, Algebra.TensorProduct.algebraMap_apply, hbK, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Use `congr 1`. Rewrite using `[smul_eq_mul, mul_one, Algebra.algebraMap_eq_smul_one]`. Establish `hnt : (1 : K ⊗[F] E) ≠ 0`. Rewrite using `[← hbR0]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `bR.ne_zero 0`. Establish `hsq : ∃ c : K, c * c = bK`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Apply `hnf` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Use `⟨⟨0, 1, hnt.symm⟩, mul_comm, ?_⟩` and prove the remaining obligations. Introduce `r hr`. Take `⟨x, y, rfl⟩` from `hdec r`. Use `set N : K := x * x - bK * y * y with hN`. Establish `hN0 : N ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `h0`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Establish `hx : x = 0` using `by simpa [hN] using h0`. Substitute `hx` using the available equality.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hr (by simp)`. Apply `hno (x / y)` to reduce the goal to its premises. Clear the denominators using the available nonvanishing facts. Take the linear combination `h0`. Use `⟨algebraMap K (K ⊗[F] E) N⁻¹ * (algebraMap K (K ⊗[F] E) x - algebraMap K (K ⊗[F] E) y * A), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hNN : algebraMap K (K ⊗[F] E) N⁻¹ * (algebraMap K (K ⊗[F] E) x * algebraMap K (K ⊗[F] E) x - algebraMap K (K ⊗[F] E) bK * algebraMap K (K ⊗[F] E) y * algebraMap K (K ⊗[F] E) y) = 1`. Rewrite using `[← map_mul, ← map_mul, ← map_mul, ← map_sub, ← map_mul, ← hN, inv_mul_cancel₀ hN0, map_one]`. Take the linear combination `(-(algebraMap K (K ⊗[F] E) N⁻¹ * algebraMap K (K ⊗[F] E) y * algebraMap K (K ⊗[F] E) y)) * hA + hNN`. Take `⟨c, hc⟩` from `hsq`. Establish `hc0 : c ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Introduce and unpack `rfl; exact hbK0 (by simpa using hc.symm)`. Use `set ac := algebraMap K (K ⊗[F] E) c`. Use `set aci := algebraMap K (K ⊗[F] E) c⁻¹`. Use `set a2i := algebraMap K (K ⊗[F] E) (2⁻¹ : K)`. Establish `hci : aci * ac = 1` using `by rw [← map_mul, inv_mul_cancel₀ hc0, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h2i : a2i * 2 = 1`. Establish `: a2i * algebraMap K (K ⊗[F] E) 2 = 1` using `by rw [← map_mul, inv_mul_cancel₀ h2K, map_one]`. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `hcc : ac * ac = algebraMap K (K ⊗[F] E) bK` using `by rw [← map_mul, hc]`. Take `⟨e, he⟩ : ∃ e : K ⊗[F] E, e = a2i * (1 + aci * A)` from `⟨_, rfl⟩`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hee : e * e = e`. Rewrite using `[he]`. Take the linear combination `(a2i ^ 2 * aci ^ 2) * hA - (a2i ^ 2 * aci ^ 2) * hcc + (a2i ^ 2 * (aci * ac + 1)) * hci + ((1 + aci * A) * a2i) * h2i`. Establish `hsA : sigT σ A = -A`. Rewrite using `[hAdef, sigT_tmul_one, hσα, TensorProduct.tmul_neg]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hse : sigT σ e = 1 - e`. Rewrite using `[he, map_mul, map_add, map_one, map_mul, hsA]`. Simplify using `only [a2i, aci, sigT_algebraMap]`. Take the linear combination `h2i`. Set `ψ : K × K →+* K ⊗[F] E` to `{ toFun := fun p => algebraMap K (K ⊗[F] E) p.1 * e + algebraMap K (K ⊗[F] E) p.2 * (1 - e) map_one' := by simp only [Prod.fst_one, Prod.snd_one, map_one]; ring map_mul' := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p q`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, map_mul]`. Take the linear combination `(-(algebraMap K (K ⊗[F] E) p.1 - algebraMap K (K ⊗[F] E) p.2) * (algebraMap K (K ⊗[F] E) q.1 - algebraMap K (K ⊗[F] E) q.2)) * hee`. Use the proof step `map_zero' := by simp`. Use the proof step `map_add' := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p q`. Simplify using `only [Prod.fst_add, Prod.snd_add, map_add]`. Use `ring }`. Establish `hψ : ∀ p, ψ p = algebraMap K (K ⊗[F] E) p.1 * e + algebraMap K (K ⊗[F] E) p.2 * (1 - e)` using `fun p => rfl`. Establish `he0 : e ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `h0`. Use `hse` as an intermediate fact. Rewrite `this` using `[h0, map_zero, sub_zero]`. Conclude with `hnt this.symm`. Establish `he1 : 1 - e ≠ 0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h1 : e = 1` using `by linear_combination -h0`. Use `hse` as an intermediate fact. Rewrite `this` using `[h1, map_one, sub_self]`. Conclude with `hnt this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `p hp`. Rewrite `hp` using `[hψ]`. Establish `h1 : algebraMap K (K ⊗[F] E) p.1 * e = 0`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (· * e) hp` as an intermediate fact. Simplify using `only [zero_mul] at this`. Take the linear combination `this - (algebraMap K (K ⊗[F] E) p.1 - algebraMap K (K ⊗[F] E) p.2) * hee`. Establish `h2' : algebraMap K (K ⊗[F] E) p.2 * (1 - e) = 0`. Take the linear combination `hp - h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h1`, `h2'` using `[← Algebra.smul_def]`. Establish `e1` using `(smul_eq_zero.1 h1).resolve_right he0`. Establish `e2` using `(smul_eq_zero.1 h2').resolve_right he1`. Conclude with `Prod.ext e1 e2`. Establish `hsurj : Function.Surjective ψ`.
-
-Introduce `r`. Take `⟨x, y, rfl⟩` from `hdec r`. Use `⟨(x + y * c, x - y * c), ?_⟩` and prove the remaining obligations. Rewrite using `[hψ, he]`. Simplify using `only [map_add, map_sub, map_mul]`.
-
-Take the linear combination `(algebraMap K (K ⊗[F] E) y * (ac - A) + 2 * algebraMap K (K ⊗[F] E) y * A) * h2i + (2 * algebraMap K (K ⊗[F] E) y * a2i * A) * hci`. Set `Ψ : K × K ≃+* K ⊗[F] E` to `RingEquiv.ofBijective ψ ⟨hinj, hsurj⟩`. Use `⟨Ψ.symm, ?_⟩` and prove the remaining obligations. Introduce `r`. Take `⟨p, rfl⟩` from `hsurj r`.
-
-Establish `: sigT σ (ψ p) = ψ p.swap`. Rewrite using `[hψ, hψ, map_add, map_mul, map_mul, sigT_algebraMap, sigT_algebraMap, map_sub, map_one, hse]`. Simplify using `only [Prod.fst_swap, Prod.snd_swap]`. Expand and normalize the polynomial expressions, which then agree. Establish `hΨ : ∀ q, Ψ.symm (ψ q) = q` using `fun q => Ψ.symm_apply_apply q`.
-
-Rewrite using `[this, hΨ, hΨ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_split (hnf : ¬ IsField (K ⊗[F] E)) :
     ∃ π : K ⊗[F] E ≃+* K × K, ∀ r, π (sigT σ r) = (π r).swap := by

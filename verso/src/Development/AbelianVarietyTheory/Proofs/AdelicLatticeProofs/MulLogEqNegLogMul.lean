@@ -6,11 +6,11 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun h i) j`. Rewrite `hij` using `[mul_diagonal, diagonal_mul]`. Rewrite using `[neg_apply, mul_diagonal, diagonal_mul]`. Distinguish the cases in `hy : y i j = 0`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hy]`. Establish `h1 : ((Real.exp (d' i) : ℝ) : ℂ) * (Real.exp (d j) : ℝ) = 1`. Apply `mul_left_cancel₀ hy` to reduce the goal to its premises. Take the linear combination `hij`. Establish `h2 : Real.exp (d' i + d j) = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[Real.exp_add]`. Conclude with `h1` after adjusting the coercions. Establish `h3 : d' i + d j = 0` using `by simpa using h2`. Establish `h4 : (d' i : ℂ) + (d j : ℂ) = 0` using `by exact_mod_cast h3`. Take the linear combination `(y i j) * h4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mul_diagonal_eq_neg_of_exp {ι : Type} [Fintype ι] [DecidableEq ι] (y : Matrix ι ι ℂ) (d d' : ι → ℝ)
     (h : diagonal (fun i => (Real.exp (d' i) : ℂ)) * y * diagonal (fun i => (Real.exp (d i) : ℂ)) = y) :
@@ -32,13 +32,13 @@ theorem mul_diagonal_eq_neg_of_exp {ι : Type} [Fintype ι] [DecidableEq ι] (y 
     linear_combination (y i j) * h4
 
 /- English proof (translation)
-Introduce `ι _ _ x x' H H' ⟨U, d, hU, hH, hA⟩ ⟨V, d', hV, hH', hA'⟩ hx`. Establish `hx' : x * x' = 1` using `mul_eq_one_comm.mp hx`. Establish `hU' : Uᴴ * U = 1` using `mul_eq_one_comm.mp hU`. Establish `hV' : Vᴴ * V = 1` using `mul_eq_one_comm.mp hV`. Establish `key : (x'ᴴ * x') * x * (xᴴ * x) = x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite `key` using `[hA, hA']`. Establish `hy` using `mul_diagonal_eq_neg_of_exp (Vᴴ * x * U) d d' (by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hV', hU', Matrix.one_mul, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Vᴴ * (V * diagonal (fun i => (Real.exp (d' i) : ℂ)) * Vᴴ * x * (U * diagonal (fun i => (Real.exp (d i) : ℂ)) * Uᴴ)) * U := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Vᴴ * x * U := by rw [key])`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hH]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = -(H' * x * (U * Uᴴ)) := by`. Rewrite using `[hy, hH']`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul]`. Use `_ = -(H' * x) := by rw [hU, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_log_eq_neg_log_mul : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (x x' H H' : Matrix ι ι ℂ), IsLog H (xᴴ * x) → IsLog H' (x'ᴴ * x') → x' * x = 1 → x * H = -(H' * x) := by
   intro ι _ _ x x' H H' ⟨U, d, hU, hH, hA⟩ ⟨V, d', hV, hH', hA'⟩ hx

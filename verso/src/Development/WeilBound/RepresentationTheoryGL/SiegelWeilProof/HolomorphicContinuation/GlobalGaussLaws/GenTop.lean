@@ -29,15 +29,13 @@ end PositivityTheory.Rg.Sw.Glob.GenTopH
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-Introduce `_ hP hKi hKf D n`. Use `show Subgroup.closure (genSet D n) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `g _`. Take `⟨p, hp, k, hk, rfl⟩` from `GlobalTheory.StdUnn.Iwasawa.exists_mul D n g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.mul_mem _ (hP D n p hp) ?_` and prove the remaining obligations. Rewrite using `[← ofInf_projInf_mul_ofFin_projFin D.sp.cm.sig (Jst D n) k]`. Establish `hk'` using `mem_levelAll.1 hk`. Use `Subgroup.mul_mem _ (hKi D n _ ?_ ?_) (hKf D n _ ?_ ?_)` and prove the remaining obligations. Use `mem_levelAll.2 ⟨fun v => ?_, fun w => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[proj_ofInf]`. Conclude with `one_mem _`. Rewrite using `[projArch_ofInf, projInfArch_projInf]`. Conclude with `hk'.2 w`. Rewrite using `[GenTopH.mat_projFin, projFin_ofInf]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `mem_levelAll.2 ⟨fun v => ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[proj_ofFin, projFinLoc_projFin]`. Conclude with `hk'.1 v`. Rewrite using `[projArch_ofFin]`.
-
-Conclude with `one_mem _`. Introduce `τ`. Establish `e : Formalism.IndefR.Eqv.psiT D τ = (Formalism.IndefR.Eqv.thetaC D τ).comp (infPart D)` using `rfl`. Rewrite using `[e, RingHom.coe_comp, ← Matrix.map_map, GenTopH.mat_projInf, projInf_ofFin]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genA_of : UnitD → PIn → KInInf → KInFin → GenA := by
   intro _ hP hKi hKf D n

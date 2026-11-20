@@ -28,11 +28,11 @@ namespace GlobalTheory.Mem.R3.LiftForms
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 h7`. Use `StepW.trans (StepW.and (StepW.of_all fun _ _ _ _ _ _ _ hp => hp) (StepW.and (GlobalTheory.T.goodForms_lift_baseLevel_extension_span h1 h2 h3 h4 h5 h6 h7) (GlobalTheory.T.supLattice_extendedData_eq_coordinatewiseImage h1 h2 h3 h4 h5 h6 h7))) (StepW.of_all ?_)` and prove the remaining obligations. Introduce and unpack `K B' f' T' w' - - ⟨-, H1, H2⟩ B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV z' hF' e j j' hj φ hφ`. Establish `hW` using `H1 B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV z' hF' e j j' hj φ hφ`. Establish `hK` using `H2 B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV z' hF' e j j' hj φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (w'.st Z').toD7.R.m = (w.st Z).toD7.R.m` using `congrArg (fun P : Pre => P.R.m) hE.1`. Establish `hn : z.R.nW j = z'.R.nW j'` using `GlobalTheory.Mem.R3.LiftForms.nat_eq_of_heq hm e.nW j j' hj`. Establish `key` using `span_rel_inf φ hn _ _ _ _ hK hW`. Use `Eq.trans ?_ (key.trans ?_)` and prove the remaining obligations. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [Arith.FormsL.Mj, Arith.FormsL.Mall, RealDat.WL, Arith.FormsL.Wgood, Submodule.mem_inf, Submodule.restrictScalars_mem, and_assoc]`. Use `congr 1`. Use extensionality with `x'`. Simplify using `only [Set.mem_setOf_eq, Arith.FormsL.Mj, Arith.FormsL.Mall, RealDat.WL, Arith.FormsL.Wgood, Submodule.mem_inf, Submodule.restrictScalars_mem, and_assoc]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lift_Mj_base : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

@@ -10,9 +10,9 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
   Formalism.MainNotions.G.GAtP.algOK
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_rescale]`. Use `show vp ^ n.degree * MvPowerSeries.coeff n f = _`. Use `congr 1`. Rewrite using `[Finsupp.prod, Finset.prod_pow_eq_pow_sum, Finsupp.degree]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem atPi_eq_rescale {σ R : Type} [CommRing R] (vp : R) (f : MvPowerSeries σ R) :
     atPi vp f = MvPowerSeries.rescale (fun _ => vp) f := by
@@ -26,9 +26,9 @@ theorem atPi_eq_rescale {σ R : Type} [CommRing R] (vp : R) (f : MvPowerSeries �
 variable {p : ℕ} [hp : Fact p.Prime] (X : Sys p)
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_C_mul]`. Use `show vp ^ n.degree * MvPowerSeries.coeff n _ = _`. Simplify using `only [map_sum, MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem atPi_sum_C_mul_X_eq_C_mul {σ R ι : Type} [CommRing R] (vp : R) (t : Finset ι) (a : ι → R)
     (g : ι → σ) :
@@ -46,14 +46,14 @@ private theorem atPi_sum_C_mul_X_eq_C_mul {σ R ι : Type} [CommRing R] (vp : R)
   · simp
 
 /- English proof (translation)
-Apply the tactic sequence `rcases x with ⟨v, r, a, b⟩ | ⟨v, r, a, b⟩ <;> simp only [Sys.coordZA] <;> exact atPi_sum_C_mul_X_eq_C_mul _ _ _ _`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem atPi_coordZA (K' : Type) [Field K'] [Algebra (K0 p) K'] (vp : K') (j : ℕ) (x : X.EA j ⊕ X.EA j) :
     atPi vp (X.coordZA K' j x) = MvPowerSeries.C vp * X.coordZA K' j x := by
   rcases x with ⟨v, r, a, b⟩ | ⟨v, r, a, b⟩ <;> simp only [Sys.coordZA] <;> exact atPi_sum_C_mul_X_eq_C_mul _ _ _ _
 
 /- English proof (translation)
-Apply the tactic sequence `rcases x with ⟨v, r, a, b⟩ | ⟨v, r, a, b⟩ <;>`. Simplify using `only [Sys.coordZA, map_sum, map_mul, MvPowerSeries.map_C, MvPowerSeries.map_X, ← IsScalarTower.algebraMap_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem map_coordZA (K1 K' : Type) [Field K1] [Algebra (K0 p) K1] [Field K'] [Algebra (K0 p) K'] [Algebra K1 K']
     [IsScalarTower (K0 p) K1 K'] (j : ℕ) (x : X.EA j ⊕ X.EA j) :
@@ -63,9 +63,9 @@ theorem map_coordZA (K1 K' : Type) [Field K1] [Algebra (K0 p) K1] [Field K'] [Al
       ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Establish `hA1 : MvPowerSeries.HasSubst (X.coordZA K1 j)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (coordZA_const X K1 j)`. Establish `hA' : MvPowerSeries.HasSubst (X.coordZA K' j)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (coordZA_const X K' j)`. Rewrite using `[Sys.ThZA, MvPowerSeries.map_subst hA1]`. Simplify using `only [map_coordZA X K1 K']`. Rewrite using `[atPi_eq_rescale, MvPowerSeries.rescale_eq_subst, MvPowerSeries.subst_comp_subst_apply hA' (MvPowerSeries.HasSubst.smul_X _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun a => MvPowerSeries.subst a (MvPowerSeries.map (algebraMap K1 K') U)) (funext fun s => ?_)` and prove the remaining obligations. Rewrite using `[← MvPowerSeries.rescale_eq_subst, ← atPi_eq_rescale, atPi_coordZA]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem atPi_map_ThZA (K1 K' : Type) [Field K1] [Algebra (K0 p) K1] [Field K'] [Algebra (K0 p) K'] [Algebra K1 K']
     [IsScalarTower (K0 p) K1 K'] (vp : K') (j : ℕ) (U : MvPowerSeries (X.EA j ⊕ X.EA j) K1) :
@@ -83,9 +83,9 @@ theorem atPi_map_ThZA (K1 K' : Type) [Field K1] [Algebra (K0 p) K1] [Field K'] [
   rw [← MvPowerSeries.rescale_eq_subst, ← atPi_eq_rescale, atPi_coordZA]
 
 /- English proof (translation)
-Introduce `j K1 _ _ R1 U hU K' _ _ _ _ R' vp hvp hRp hR1`. Rewrite using `[atPi_map_ThZA X K1 K' vp j U]`. Use `genInt p K' R' vp hvp hRp _ (inParam_map p K' K1 R1 R' hR1 U hU) (X.coordZA K' j) (coordZA_const X K' j) ?_` and prove the remaining obligations. Introduce `i`. Apply the tactic sequence `rcases i with ⟨v, r, a, b⟩ | ⟨v, r, a, b⟩ <;> simp only [Sys.coordZA] <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `IntR_sum _ _ (fun s _ => IntR_mul (IntR_C (hRp (W_mem_Rp (p := p) (K' := K') vp _))) (IntR_X _))`.
+A detailed English derivation is pending.
 -/
 theorem restSIntA : RestSIntA X := by
   intro j K1 _ _ R1 U hU K' _ _ _ _ R' vp hvp hRp hR1

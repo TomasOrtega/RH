@@ -10,21 +10,19 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace DiscreteGroups.sglob.DzType
 
 /- English proof (translation)
-Introduce `hLFE g _ m ψ₀ hψ τ hτ γ hγ l hl hl0 W hW s hs`. Establish `: NeZero g` using `⟨(Fact.out : g.Prime).ne_zero⟩`. Establish `h1 : ∀ u ∈ unipB (ZMod g) (Fin m), ∀ x, W (u * x) = (((ψ₀ (superDiag u))⁻¹ : Circle) : ℂ) * W x` using `hW.1`. Establish `h2 : ∀ b ∈ DiscreteGroups.sglob.DzFp.lowB (ZMod g) m, ∀ x, W (x * b) = W x` using `fun b hb => hW.2.1 b (DiscreteGroups.sglob.DzFp.mem_lowB.1 hb)`. Take `⟨v, hv0, hv⟩` from `DiscreteGroups.sglob.DzFp.exists_eigen hl hl0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hR` using `DiscreteGroups.sglob.DzFp.sum_cell hψ W h1 h2 (fun x => l (τ.ρ (corner x) v)) (fun u hu x => by show l (τ.ρ (corner (u * x)) v) = _ * l (τ.ρ (corner x) v)`. Rewrite using `[DiscreteGroups.sglob.DzRed.corner_mul, map_mul, Module.End.mul_apply, hl _ (DiscreteGroups.sglob.DzRed.corner_mem hu), DiscreteGroups.sglob.DzRed.superDiag_corner])`. Establish `hL` using `DiscreteGroups.sglob.DzFp.sum_cell hψ W h1 h2 (fun h => l (τ.ρ (tilde (corner (tilde h))) v)) (fun u hu x => by show l (τ.ρ (tilde (corner (tilde (u * x)))) v) = _ * l (τ.ρ (tilde (corner (tilde x))) v)`. Rewrite using `[DiscreteGroups.sglob.DzRed.tilde_mul_left u x, DiscreteGroups.sglob.DzRed.corner_mul (longElt m (ZMod g) * GlobalTheory.CuspRep.invT m (ZMod g) u * (longElt m (ZMod g))⁻¹) (tilde x), DiscreteGroups.sglob.DzRed.tilde_mul_left (corner (longElt m (ZMod g) * GlobalTheory.CuspRep.inv …`. Establish `hre : ∑ᶠ x, l (τ.ρ (tilde (corner x)) v) * W (tilde x) = ∑ᶠ h, l (τ.ρ (tilde (corner (tilde h))) v) * W h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `finsum_comp_equiv (Function.Involutive.toPerm _ (DiscreteGroups.sglob.DzFp.tilde_tilde (R := ZMod g) (n := m))) (f := fun h => l (τ.ρ (tilde (corner (tilde h))) v) * W h)` as an intermediate fact. Rewrite using `[← this]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Use `show _ = l (τ.ρ (tilde (corner (tilde (tilde x)))) v) * W (tilde x)`. Rewrite using `[DiscreteGroups.sglob.DzFp.tilde_tilde]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs'` using `hs v`. Rewrite `hs'` using `[hre, hL, hR, DiscreteGroups.sglob.DzFp.sum_lower_corner hψ hl hv]`. Use `set c := longElt (m + 1) (ZMod g) * corner (longElt m (ZMod g)) with hcdef`. Use `set X := ∑ᶠ b : DiscreteGroups.sglob.DzFp.lowB (ZMod g) m, τ.ρ (corner (b : GL (Fin m) (ZMod g))) v with hXdef`. Establish `hLsum : ∑ᶠ b : DiscreteGroups.sglob.DzFp.lowB (ZMod g) m, l (τ.ρ (tilde (corner (tilde (b : GL (Fin m) (ZMod g))))) v) = l (τ.ρ c X)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hXdef, DiscreteGroups.sglob.DzFp.map_finsum_lower' (τ.ρ c), DiscreteGroups.sglob.DzFp.map_finsum_lower l]`. Use `finsum_congr fun b => ?_` and prove the remaining obligations. Rewrite using `[DiscreteGroups.sglob.DzFp.tilde_corner, DiscreteGroups.sglob.DzFp.tilde_tilde, ← hcdef, map_mul, Module.End.mul_apply]`. Rewrite `hs'` using `[hLsum]`. Establish `hfe` using `hLFE g m ψ₀ hψ τ hτ γ hγ l hl X fun b hb => DiscreteGroups.sglob.DzFp.corner_fixed τ.ρ v b (DiscreteGroups.sglob.DzFp.mem_lowB.2 hb)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlX : l X = l v`. Rewrite using `[hXdef, DiscreteGroups.sglob.DzFp.map_finsum_lower l]`. Conclude with `DiscreteGroups.sglob.DzFp.sum_lower_corner hψ hl hv`. Rewrite `hfe` using `[hlX]`. Establish `hK : (Nat.card (unipB (ZMod g) (Fin m)) : ℂ) * W 1 ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.2 Nat.card_pos.ne') hW.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hcX : l (τ.ρ c X) = s * l v`. Apply `mul_left_cancel₀ hK` to reduce the goal to its premises. Rewrite using `[hs']`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hfe` using `[hcX]`.
-
-Apply `mul_right_cancel₀ hv0` to reduce the goal to its premises. Rewrite using `[← hfe]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lFinPair : LFinPair := by
   intro hLFE g _ m ψ₀ hψ τ hτ γ hγ l hl hl0 W hW s hs

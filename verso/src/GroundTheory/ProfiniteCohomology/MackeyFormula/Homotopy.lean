@@ -38,7 +38,7 @@ noncomputable def mackeyCochainsMap (x : G) :
         (mackeyRep (V : Subgroup G) ι.toMonoidHom N x))
 
 /- English proof (translation)
-Rewrite using `[mackeyCochainsMap, HomologicalComplex.homologyMap_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem homologyMap_mackeyCochainsMap (x : G) (n : ℕ) :
     HomologicalComplex.homologyMap (mackeyCochainsMap V ι N x) n = mackeyCohomologyMap V ι N x n := by
@@ -46,9 +46,9 @@ theorem homologyMap_mackeyCochainsMap (x : G) (n : ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[mackeyCochainsMap, ← cochainsMapAlong_id_eq_cochainsMap, shapiroCochains]`. Rewrite using `[← cochainsMapAlong_comp, ← cochainsMapAlong_comp, ← cochainsMapAlong_comp]`. Use `Eq.trans ?_ (cochainsMapAlong_comp _ _ _ _ _ _)` and prove the remaining obligations. Use `cochainsMapAlong_congr _ _ _ _ ?_ (fun f => ?_)` and prove the remaining obligations. Use extensionality with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `x⁻¹⁻¹ * ι.toMonoidHom (h : H) * x⁻¹ = x * ι.toMonoidHom (h : H) * x⁻¹`. Rewrite using `[inv_inv]`. Express the relevant statement in the definitionally equal form `f.1 (x * ι.toMonoidHom 1 * x⁻¹) = f.1 1`. Rewrite using `[map_one, mul_one, mul_inv_cancel]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem innerConj_comp_mackeyCochainsMap (x : G) :
     cochainsMapAlong (innerConjHom x⁻¹) (continuous_innerConjHom x⁻¹)

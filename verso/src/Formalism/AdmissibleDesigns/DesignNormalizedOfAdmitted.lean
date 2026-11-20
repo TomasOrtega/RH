@@ -15,9 +15,9 @@ section Gen2
 variable {K : Type} [CommRing K] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Rewrite using `[blockPoly_eq, blockPoly_eq]`. Establish `hm : ∀ M N : Matrix n n K, (M * N).map (Polynomial.C (R` using `K)) = M.map (Polynomial.C (R := K)) * N.map (Polynomial.C (R := K)) := fun M N => Matrix.map_mul`. Establish `h1' : P.map (Polynomial.C (R` using `K)) * Q.map (Polynomial.C (R := K)) = 1 := by`. Rewrite using `[← hm, h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `set P' := P.map (Polynomial.C (R := K))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Q' := Q.map (Polynomial.C (R := K))`. Establish `e1 : (Polynomial.X : Polynomial K) • (P' * e.map Polynomial.C * Q') - P' * a.map Polynomial.C * Q' + 1 - P' * e.map Polynomial.C * Q' = P' * ((Polynomial.X : Polynomial K) • e.map Polynomial.C - a.map Polynomial.C + 1 - e.map Polynomial.C) * Q'`. Rewrite using `[Matrix.mul_sub, Matrix.mul_add, Matrix.mul_sub, Matrix.sub_mul, Matrix.add_mul, Matrix.sub_mul, Matrix.mul_one, h1', Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[hm, hm, hm, hm, e1, Matrix.det_mul, Matrix.det_mul, mul_comm (Matrix.det P'), mul_assoc, ← Matrix.det_mul, h1', Matrix.det_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockPoly_conj (P Q e a : Matrix n n K) (h1 : P * Q = 1) :
     blockPoly (P * e * Q) (P * a * Q) = blockPoly e a := by
@@ -38,7 +38,7 @@ theorem blockPoly_conj (P Q e a : Matrix n n K) (h1 : P * Q = 1) :
     ← Matrix.det_mul, h1', Matrix.det_one, mul_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.rank_mul_eq_left_of_isUnit_det _ _ (Matrix.isUnit_det_of_left_inverse h1), Matrix.rank_mul_eq_right_of_isUnit_det _ _ (Matrix.isUnit_det_of_right_inverse h1)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rank_conj {F : Type} [Field F] (P Q M : Matrix n n F) (h1 : P * Q = 1) (_h2 : Q * P = 1) :
     (P * M * Q).rank = M.rank := by
@@ -58,7 +58,7 @@ def cInt (P Q : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)) (A : MatN D.nd i) 
   if h : ∃ M : MatN D.nd i, M.map (toK D.nd i) = P * A.map (toK D.nd i) * Q then h.choose else 0
 
 /- English proof (translation)
-Unfold `cInt`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cInt_spec {P Q : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)} {A : MatN D.nd i}
     (h : ∃ M : MatN D.nd i, M.map (toK D.nd i) = P * A.map (toK D.nd i) * Q) :
@@ -72,21 +72,21 @@ def phiC (P Q : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)) (a : D.nd.X i → 
   Function.update a π (cInt i P Q (a π))
 
 /- English proof (translation)
-The claim follows from `Function.update_of_ne hx _ _`.
+A detailed English derivation is pending.
 -/
 theorem phiC_ne (P Q : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)) (a : D.nd.X i → MatN D.nd i)
     {x : D.nd.X i} (hx : x ≠ π) : phiC i π P Q a x = a x :=
   Function.update_of_ne hx _ _
 
 /- English proof (translation)
-The claim follows from `Function.update_self _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem phiC_self (P Q : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)) (a : D.nd.X i → MatN D.nd i) :
     phiC i π P Q a π = cInt i P Q (a π) :=
   Function.update_self _ _ _
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.smul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_smul_toK (c : D.nd.O i) (A : MatN D.nd i) :
     (c • A).map (toK D.nd i) = toK D.nd i c • A.map (toK D.nd i) := by
@@ -94,15 +94,13 @@ theorem map_smul_toK (c : D.nd.O i) (A : MatN D.nd i) :
   simp [Matrix.smul_apply]
 
 /- English proof (translation)
-Take `⟨m, f, g, hf, rfl⟩` from `ha`. Establish `hπ : ((∑ k, fun x => f k x • rO D.nd i (rN i r ρ π) x (g k)) π).map (toK D.nd i) = P * ((∑ k, fun x => f k x • rO D.nd i r x (g k)) π).map (toK D.nd i) * Q`. Simplify using `only [Finset.sum_apply]`. Express the relevant statement in the definitionally equal form `(toK D.nd i).mapMatrix (∑ k, f k π • rO D.nd i (rN i r ρ π) π (g k)) = P * (toK D.nd i).mapMatrix (∑ k, f k π • rO D.nd i r π (g k)) * Q`. Rewrite using `[map_sum, map_sum, Finset.mul_sum, Finset.sum_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, map_smul_toK, map_smul_toK, hconj, Matrix.mul_smul, Matrix.smul_mul]`. Establish `heq : phiC i π P Q (∑ k, fun x => f k x • rO D.nd i r x (g k)) = ∑ k, fun x => f k x • rO D.nd i (rN i r ρ π) x (g k)`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x = π`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hx` using the available equality. Rewrite using `[phiC_self]`. Apply `Matrix.map_injective (toK_inj i)` to reduce the goal to its premises. Use `show (cInt i P Q _).map (toK D.nd i) = _`. Rewrite using `[cInt_spec i ⟨_, hπ⟩]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hπ.symm`. Rewrite using `[phiC_ne i π P Q _ hx]`. Simplify using `only [Finset.sum_apply, rO_rN_ne i r ρ π hx]`. Use `⟨⟨m, f, g, hf, heq⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[heq]`.
-
-Conclude with `hπ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inR_phiC {P Q : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)}
     (hconj : ∀ g, (rO D.nd i (rN i r ρ π) π g).map (toK D.nd i) = P * (rO D.nd i r π g).map (toK D.nd i) * Q)
@@ -136,9 +134,9 @@ theorem inR_phiC {P Q : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)}
   exact hπ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x = π`. Substitute `hx` using the available equality. Apply `Matrix.map_injective (toK_inj i)` to reduce the goal to its premises. Use `show (phiC i x P Q a x * phiC i x P Q b x).map (toK D.nd i) = (phiC i x P Q c x).map (toK D.nd i)`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul, ha, hb, hc, ← congrFun hab x, Pi.mul_apply, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Q P, hQP, Matrix.one_mul]`. Rewrite using `[Pi.mul_apply, phiC_ne i π P Q _ hx, phiC_ne i π P Q _ hx, phiC_ne i π P Q _ hx, ← Pi.mul_apply, hab]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiC_rel {P Q : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)} (hQP : Q * P = 1)
     {a b c : D.nd.X i → MatN D.nd i} (hab : a * b = c)
@@ -157,11 +155,11 @@ theorem phiC_rel {P Q : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)} (hQP : Q *
   · rw [Pi.mul_apply, phiC_ne i π P Q _ hx, phiC_ne i π P Q _ hx, phiC_ne i π P Q _ hx, ← Pi.mul_apply, hab]
 
 /- English proof (translation)
-Establish `h0 : ∃ M : MatN D.nd i, M.map (toK D.nd i) = P * ((0 : D.nd.X i → MatN D.nd i) π).map (toK D.nd i) * Q` using `⟨0, by simp⟩`. Establish `h1 : (phiC i π P Q 0 π).map (toK D.nd i) = P * ((0 : D.nd.X i → MatN D.nd i) π).map (toK D.nd i) * Q`. Rewrite using `[phiC_self]`. Conclude with `cInt_spec i h0`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x = π`. Substitute `hx` using the available equality. Apply `Matrix.map_injective (toK_inj i)` to reduce the goal to its premises. Use `show (phiC i x P Q 0 x).map (toK D.nd i) = (0 : MatN D.nd i).map (toK D.nd i)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Simplify using the standard rewrite rules. Rewrite using `[phiC_ne i π P Q _ hx]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiC_zero {P Q : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)} :
     (phiC i π P Q 0 π).map (toK D.nd i) = P * ((0 : D.nd.X i → MatN D.nd i) π).map (toK D.nd i) * Q ∧
@@ -191,59 +189,53 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
 open Classical
 
 /- English proof (translation)
-Take `⟨hbd, hχ, hρ⟩` from `normAt_rN i r ρ π`. Establish `hG0` using `hG`. Take `⟨⟨heB, he1, heBB, he11, heB1, he1B, hrkB, hrk1⟩, hdec, hact, -, hg0, hε, ⟨hX0m, heX, hXe, hX0π⟩, ⟨hT, -, -, -, hcard⟩, hroots, ⟨hπ, -⟩, -⟩` from `hG0`. Take `⟨P, Q, hPQ, hQP, hc⟩` from `conjK_self i r ρ π ⟨S.e, hdec⟩`. Establish `hA' : ∀ g, (rO D.nd i (rN i r ρ π) π g).map (toK D.nd i) = P * (rO D.nd i r π g).map (toK D.nd i) * Q` using `fun g => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `hc g`. Use `beta_reduce at h`. Rewrite using `[h, Matrix.mul_assoc, hPQ, Matrix.mul_one]`. Take `⟨heB', hmB⟩` from `inR_phiC i r ρ π hA' heB`. Take `⟨he1', hm1⟩` from `inR_phiC i r ρ π hA' he1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hX0m', hmX⟩` from `inR_phiC i r ρ π hA' hX0m`. Establish `z` using `phiC_zero i π (P := P) (Q := Q)`. Establish `heBB'` using `phiC_rel i π hQP heBB hmB hmB hmB`. Establish `he11'` using `phiC_rel i π hQP he11 hm1 hm1 hm1`. Establish `heB1' : phiC i π P Q S.eB * phiC i π P Q S.e1 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← z.2]`. Conclude with `phiC_rel i π hQP heB1 hmB hm1 z.1`. Establish `he1B' : phiC i π P Q S.e1 * phiC i π P Q S.eB = 0`. Rewrite using `[← z.2]`. Conclude with `phiC_rel i π hQP he1B hm1 hmB z.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heX'` using `phiC_rel i π hQP heX hmB hmX hmX`. Establish `hXe'` using `phiC_rel i π hQP hXe hmX hmB hmX`. Establish `hrk : ∀ (a : D.nd.X i → MatN D.nd i), (phiC i π P Q a π).map (toK D.nd i) = P * (a π).map (toK D.nd i) * Q → ∀ x, ((phiC i π P Q a x).map (toK D.nd i)).rank = ((a x).map (toK D.nd i)).rank`. Introduce `a ha x`. Distinguish the cases in `hx : x = π`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `hx` using the available equality. Rewrite using `[ha, rank_conj P Q _ hPQ hQP]`. Rewrite using `[phiC_ne i π P Q a hx]`. Establish `hrkB' : ∀ x, ((phiC i π P Q S.eB x).map (toK D.nd i)).rank = D.R.t` using `fun x => (hrk _ hmB x).trans (hrkB x)`. Establish `hrk1' : ∀ x, ((phiC i π P Q S.e1 x).map (toK D.nd i)).rank = 1` using `fun x => (hrk _ hm1 x).trans (hrk1 x)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e' : (Fin D.R.nV → KK D.nd i) ≃ₗ[KK D.nd i] ((Fin D.R.r → KK D.nd i) × (Fin D.R.t → KK D.nd i))` to `(matEquiv Q P hQP hPQ).trans S.e`. Establish `he' : ∀ u, e' u = S.e (Q.mulVec u)` using `fun u => rfl`. Establish `hΦ : ∀ γ u, e' ((mapM (toK D.nd i) (rO D.nd i (rN i r ρ π) π) γ).mulVec u) = Dg D.nd ρ π γ (e' u)`. Introduce `γ u`. Rewrite using `[he', he']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show S.e (Q.mulVec (((rO D.nd i (rN i r ρ π) π γ).map (toK D.nd i)).mulVec u)) = _`. Rewrite using `[hA', Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hQP, Matrix.one_mul, ← Matrix.mulVec_mulVec]`. Conclude with `hdec γ (Q.mulVec u)`. Establish `hΨ : ∀ γ u, eG D.R.r D.R.t (KK D.nd i) ((mapM (toK D.nd i) (rO D.nd i (rN i r ρ π) π) γ).mulVec u) = Dg D.nd ρ π γ (eG D.R.r D.R.t (KK D.nd i) u)` using `fun γ u => e_of_bd D.nd (rO D.nd i (rN i r ρ π) π γ) (hbd γ) (rhoO D.nd i ρ π γ) (hρ γ) _ (hχ γ) u`. Establish `haB : InR' D.nd r S (fun x' => S.eB (S.p x'))` using `Inst.inR'_of_inR D.nd (r := r) hT heB`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ∀ u, S.e (((S.eB π).map (toK D.nd i)).mulVec u) = (((S.ψρ (fun x' => S.eB (S.p x'))).map (toK D.nd i)).mulVec (S.e u).1, fun c => toK D.nd i (S.ψχ c (fun x' => S.eB (S.p x'))) * (S.e u).2 c)`. Introduce `u`. Establish `h` using `hact _ haB u`. Use `beta_reduce at h`. Rewrite `h` using `[hπ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hconjv : ∀ (a : D.nd.X i → MatN D.nd i), (phiC i π P Q a π).map (toK D.nd i) = P * (a π).map (toK D.nd i) * Q → ∀ u, e' (((phiC i π P Q a π).map (toK D.nd i)).mulVec u) = S.e (((a π).map (toK D.nd i)).mulVec (Q.mulVec u))`. Introduce `a ha u`. Rewrite using `[he', ha, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hQP, Matrix.one_mul, ← Matrix.mulVec_mulVec]`. Establish `h3' : ∀ u, e' (((phiC i π P Q S.eB π).map (toK D.nd i)).mulVec u) = (((S.ψρ (fun x' => S.eB (S.p x'))).map (toK D.nd i)).mulVec (e' u).1, fun c => toK D.nd i (S.ψχ c (fun x' => S.eB (S.p x'))) * (e' u).2 c)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u`. Rewrite using `[hconjv _ hmB u, h3, he']`. Establish `hE : ∀ u, eG D.R.r D.R.t (KK D.nd i) (((phiC i π P Q S.eB π).map (toK D.nd i)).mulVec u) = (((S.ψρ (fun x' => S.eB (S.p x'))).map (toK D.nd i)).mulVec (eG D.R.r D.R.t (KK D.nd i) u).1, (eG D.R.r D.R.t (KK D.nd i) u).2)`. Take `⟨Hm, hH⟩` from `act_inR D.nd (rN i r ρ π) ρ π heB'`. Establish `h` using `transfer e' (eG D.R.r D.R.t (KK D.nd i)) (fun u => ((phiC i π P Q S.eB π).map (toK D.nd i)).mulVec u) (fun z => (((S.ψρ (fun x' => S.eB (S.p x'))).map (toK D.nd i)).mulVec z.1, fun c => toK D.nd i (S.ψχ c (fun x' => S.eB (S.p x'))) * z.2 c)) Hm (hH e' hΦ) (hH _ hΨ) h3'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `u`. Use `(h u).trans (Prod.ext rfl (funext fun c => ?_))` and prove the remaining obligations. Use `show toK D.nd i (S.ψχ c (fun x' => S.eB (S.p x'))) * _ = _`. Rewrite using `[Inst.psiChi_eB D.nd hG c, map_one, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `heBπ : phiC i π P Q S.eB π = Matrix.diagonal fun a => if blk D.R a = 0 then (0 : D.nd.O i) else 1`. Establish `hD` using `eq_diag_of (r := D.R.r) (t := D.R.t) ((phiC i π P Q S.eB π).map (toK D.nd i)) _ hE (hrkB' π)`. Apply `Matrix.map_injective (IsFractionRing.injective (D.nd.O i) (KK D.nd i))` to reduce the goal to its premises. Use `show (phiC i π P Q S.eB π).map (toK D.nd i) = (Matrix.diagonal fun a => if blk D.R a = 0 then (0 : D.nd.O i) else 1).map (toK D.nd i)`. Rewrite using `[hD, Matrix.diagonal_map (map_zero _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h0 : blkG D.R.r D.R.t a = 0 <;> simp [h0]`. Establish `hX0π' : ∀ u, e' (((phiC i π P Q S.X0 π).map (toK D.nd i)).mulVec u) = ((0 : Fin D.R.r → KK D.nd i), fun c : Fin D.R.t => toK D.nd i ((chiU D.nd i ((c : ℕ) + 1) S.g0 : (D.nd.O i)ˣ) : D.nd.O i) * (e' u).2 c)`. Introduce `u`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hconjv _ hmX u, hX0π, he']`. Establish `hX0std : ∀ u, eG D.R.r D.R.t (KK D.nd i) (((phiC i π P Q S.X0 π).map (toK D.nd i)).mulVec u) = ((0 : Fin D.R.r → KK D.nd i), fun c : Fin D.R.t => toK D.nd i ((chiU D.nd i ((c : ℕ) + 1) S.g0 : (D.nd.O i)ˣ) : D.nd.O i) * (eG D.R.r D.R.t (KK D.nd i) u).2 c)`. Take `⟨Hm, hH⟩` from `act_inR D.nd (rN i r ρ π) ρ π hX0m'`. Conclude with `transfer e' (eG D.R.r D.R.t (KK D.nd i)) (fun u => ((phiC i π P Q S.X0 π).map (toK D.nd i)).mulVec u) (fun z => ((0 : Fin D.R.r → KK D.nd i), fun c : Fin D.R.t => toK D.nd i ((chiU D.nd i ((c : ℕ) + 1) S.g0 : (D.nd.O i)ˣ) : D.nd.O i) * z.2 c)) Hm (hH e' hΦ) (hH _ hΨ) hX0π'`. Establish `hX0eq : phiC i π P Q S.X0 π = Matrix.diagonal fun a => if blk D.R a = 0 then 0 else rO D.nd i (rN i r ρ π) π S.g0 a a`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Matrix.map_injective (IsFractionRing.injective (D.nd.O i) (KK D.nd i))` to reduce the goal to its premises. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `u`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `(eG D.R.r D.R.t (KK D.nd i)).injective` to reduce the goal to its premises. Use `(hX0std u).trans (Eq.symm ((e_of_diag D.nd (fun a => rO D.nd i (rN i r ρ π) π S.g0 a a) u).trans (Prod.ext rfl (funext fun c => ?_))))` and prove the remaining obligations. Use `show toK D.nd i (rO D.nd i (rN i r ρ π) π S.g0 (Fin.natAdd D.R.r c) (Fin.natAdd D.R.r c)) * _ = _`. Rewrite using `[hχ]`. Establish `he1π : ∀ a b, (blk D.R a ≠ 0 ∨ blk D.R b ≠ 0) → phiC i π P Q S.e1 π a b = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b hab`. Break down `hab with ha | hb` into its components or cases. Establish `h' : (phiC i π P Q S.eB π * phiC i π P Q S.e1 π) a b = 0` using `congrFun (congrFun (congrFun heB1' π) a) b`. Rewrite `h'` using `[heBπ]`. Simplify `h'` using `[Matrix.diagonal_mul, ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h' : (phiC i π P Q S.e1 π * phiC i π P Q S.eB π) a b = 0` using `congrFun (congrFun (congrFun he1B' π) a) b`. Rewrite `h'` using `[heBπ]`. Simplify `h'` using `[Matrix.mul_diagonal, hb]`. Set `s' : D.nd.X i → MatN D.nd i` to `phiC i π P Q S.X0 - phiC i π P Q S.eB * repX D.nd (rN i r ρ π) S.g0 * phiC i π P Q S.eB`. Establish `hI : IdemHyp (D.nd.O i) (D.nd.T i) (repX D.nd (rN i r ρ π)) π (blk D.R) (phiC i π P Q S.eB) (phiC i π P Q S.e1)` using `⟨tSpan_of_inR D.nd (rN i r ρ π) heB', tSpan_of_inR D.nd (rN i r ρ π) he1', heBB', he11', heB1', he1B', hrkB', hrk1', heBπ, he1π⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hX0t` using `tSpan_of_inR D.nd (rN i r ρ π) hX0m'`. Establish `hs : s' ∈ tSpan (D.nd.T i) (repX D.nd (rN i r ρ π))`. Establish `h1` using `smul_mem_tSpan (D.nd.T i) (repX D.nd (rN i r ρ π)) (f := -1) (neg_mem (D.nd.T i).one_mem) (mul_mem_tSpan (D.nd.T i) (repX D.nd (rN i r ρ π)) (mul_mem_tSpan (D.nd.T i) (repX D.nd (rN i r ρ π)) (tSpan_of_inR D.nd (rN i r ρ π) heB') (repX_mem D.nd (rN i r ρ π) S.g0)) (tSpan_of_inR D …`. Establish `h2` using `add_mem_tSpan (D.nd.T i) (repX D.nd (rN i r ρ π)) hX0t h1`. Establish `e : s' = phiC i π P Q S.X0 + fun x => algebraMap (D.nd.O i) (D.nd.O i) ((-1 : D.nd.X i → D.nd.O i) x) • (phiC i π P Q S.eB * repX D.nd (rN i r ρ π) S.g0 * phiC i π P Q S.eB) x`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `[s', sub_eq_add_neg]`. Rewrite using `[e]`. Conclude with `h2`. Establish `hes : phiC i π P Q S.eB * s' = s'` using `by show phiC i π P Q S.eB * (phiC i π P Q S.X0 - phiC i π P Q S.eB * repX D.nd (rN i r ρ π) S.g0 * phiC i π P Q S.eB) = _`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[mul_sub, heX', ← mul_assoc, ← mul_assoc, heBB']`. Establish `hse : s' * phiC i π P Q S.eB = s'` using `by show (phiC i π P Q S.X0 - phiC i π P Q S.eB * repX D.nd (rN i r ρ π) S.g0 * phiC i π P Q S.eB) * phiC i π P Q S.eB = _`. Rewrite using `[sub_mul, hXe', mul_assoc (phiC i π P Q S.eB * repX D.nd (rN i r ρ π) S.g0), heBB']`. Establish `hsπ : s' π = 0` using `by show phiC i π P Q S.X0 π - phiC i π P Q S.eB π * rO D.nd i (rN i r ρ π) π S.g0 * phiC i π P Q S.eB π = 0`. Rewrite using `[hX0eq, heBπ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `sub_eq_zero.mpr (diag_conj (r := D.R.r) (t := D.R.t) (rO D.nd i (rN i r ρ π) π S.g0) (hbd S.g0)).symm`. Use `⟨S.g0, hg0, hε, phiC i π P Q S.eB, phiC i π P Q S.e1, s', hI, hs, hes, hse, hsπ, fun x => ?_⟩` and prove the remaining obligations. Establish `hx : phiC i π P Q S.eB x * repX D.nd (rN i r ρ π) S.g0 x * phiC i π P Q S.eB x + s' x = phiC i π P Q S.X0 x` using `by show phiC i π P Q S.eB x * repX D.nd (rN i r ρ π) S.g0 x * phiC i π P Q S.eB x + (phiC i π P Q S.X0 x - phiC i π P Q S.eB x * repX D.nd (rN i r ρ π) S.g0 x * phiC i π P Q S.eB x) = phiC i π P Q S.X0 x`. Normalize the expressions using the abelian group laws. Rewrite using `[hx]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hbp : blockPoly ((phiC i π P Q S.eB x).map (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)))) ((phiC i π P Q S.X0 x).map (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)))) = blockPoly ((S.eB x).map (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)))) ((S.X0 x).map (algebraMap (D.nd …`. Distinguish the cases in `hxπ : x = π`. Substitute `hxπ erw [hmB, hmX]` using the available equality. Conclude with `blockPoly_conj P Q _ _ hPQ`. Rewrite using `[phiC_ne i π P Q _ hxπ, phiC_ne i π P Q _ hxπ]`.
-
-Rewrite using `[hbp]`. Establish `hne : 0 < Nat.card {x' // S.p x' = x}`. Rewrite using `[hcard x]`. Conclude with `Nat.factorial_pos _`. Take `⟨⟨x', hx'⟩⟩` from `(Nat.card_pos_iff.mp hne).1`.
-
-Substitute `hx'` using the available equality. Use `⟨fun c => toK D.nd i (S.rr (1 + (c : ℕ)) x'), fun a b hab => rr_inj D.nd r ρ π hG x' (IsFractionRing.injective (D.nd.O i) (KK D.nd i) hab), ?_⟩` and prove the remaining obligations. Rewrite using `[← blockPoly_map, blockPoly_eq, ← hroots x', prod_Icc_fin D.nd D.R.t, Polynomial.map_prod]`. Use `Finset.prod_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`.
-
-Apply the tactic sequence `try rfl`.
+A detailed English derivation is pending.
 -/
 theorem design_normalized (S : IdempotentChoiceData D.nd i) (hG : GoodCongruenceObjects D.nd r ρ π S) : InertiaElementIdempotentChoice D.nd (rN i r ρ π) π := by
   obtain ⟨hbd, hχ, hρ⟩ := normAt_rN i r ρ π
@@ -430,14 +422,14 @@ theorem design_normalized (S : IdempotentChoiceData D.nd i) (hG : GoodCongruence
   try rfl
 
 /- English proof (translation)
-Take `⟨S, hG⟩` from `hA hZ`. Conclude with `design_normalized i r ρ π S hG`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem design_normalized_of_admitted (hA : LargeLevelLemmas.adm51 i r ρ π) (hZ : π ∈ D.nd.Z i) : InertiaElementIdempotentChoice D.nd (rN i r ρ π) π := by
   obtain ⟨S, hG⟩ := hA hZ
   exact design_normalized i r ρ π S hG
 
 /- English proof (translation)
-Take `⟨a51, -, -, -, g1, -, g3, -, -, -, -, -, -, -, -, -, dcm, -⟩` from `hA`. Conclude with `⟨normAt_rN i r ρ π, admG1_rN i r ρ π dcm g1, g3.2.2, design_normalized_of_admitted i r ρ π a51 hZ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inputs_normalized (hA : LargeLevelLemmas.admitted i r ρ π) (hZ : π ∈ D.nd.Z i) :
     NormAt D.nd (rN i r ρ π) ρ π ∧

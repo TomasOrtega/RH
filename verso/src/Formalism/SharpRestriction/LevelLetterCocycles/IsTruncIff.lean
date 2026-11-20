@@ -31,7 +31,7 @@ def IsTrZ (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) (j M X �
     t = ∑ y ∈ Finset.range (max M X + 1), s y • ((W.φD T) ^ j) (c y)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, r, s, hc, hr, rfl⟩`. Conclude with `⟨_, ⟨c, r, s, hc, hr, rfl⟩, rfl⟩`. Introduce and unpack `⟨t, ⟨c, r, s, hc, hr, rfl⟩, rfl⟩`. Conclude with `⟨c, r, s, hc, hr, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isTrunc_iff (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) (j M X σ : ℕ)
     (w z : W.DD T) :

@@ -25,7 +25,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 section Unif
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Conclude with `⟨MulEquiv.ofBijective (pushHom h T) ⟨fun _ _ e => eq_of_comp_eq h.1 (congrArg (fun z => z.left) e), fun p => ⟨Over.homMk (h.1.lift p.left T.hom (Over.w p)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩⟩, fun _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_pointEquiv {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') {s : T.left ⟶ S} (hs : s = T.hom ≫ f) :
@@ -36,7 +36,7 @@ theorem exists_pointEquiv {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpOb
       Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩⟩, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `U s` and use `⟨(h U s).1.preimage hf.continuous, (h U s).2.comp hf.differentiableOn fun _ hv => hv⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isHolTo_precomp {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup W] [NormedSpace ℂ W]
     {X : Scheme.{0}} {y : W → (Sp ℂ ⟶ X)} (h : IsHolTo Set.univ y) {f : V → W} (hf : Differentiable ℂ f) :
@@ -44,7 +44,7 @@ theorem isHolTo_precomp {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] 
   ⟨(h U s).1.preimage hf.continuous, (h U s).2.comp hf.differentiableOn fun _ hv => hv⟩
 
 /- English proof (translation)
-Introduce `U s`. Rewrite using `[show (fun b => valAt' (y b ≫ φ) U s) = fun b => valAt' (y b) (φ ⁻¹ᵁ U) ((φ.app U).hom s) from`. Use function extensionality and compare the values at `fun b => (valAt'_comp _ φ U s).symm]`. Conclude with `h (φ ⁻¹ᵁ U) _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem isHolTo_postcomp {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X Y : Scheme.{0}} {B : Set V}
     {y : V → (Sp ℂ ⟶ X)} (h : IsHolTo B y) (φ : X ⟶ Y) : IsHolTo B (fun b => y b ≫ φ) := by
@@ -54,7 +54,7 @@ theorem isHolTo_postcomp {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {
   exact h (φ ⁻¹ᵁ U) _
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Conclude with `⟨c⁻¹ * x 0, funext fun i => by rw [mul_inv_cancel_left₀ hc, Subsingleton.elim i 0]⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_const {g : ℕ} (hg : g = 1) {c : ℂ} (hc : c ≠ 0) (x : Fin g → ℂ) : ∃ z, x = fun _ => c * z := by
   subst hg
@@ -66,7 +66,7 @@ variable {k : Type} [Field k] {κ : k →+* ℂ} {A : Over (Sp k)} [GrpObj A] {P
 include hψ
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `exists_pointEquiv hψ (𝟙_ _) (s := spMap κ) (Category.id_comp _).symm`. Conclude with `⟨fun z => p (u.ex fun _ => c * z), fun z => hp _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_param (c : ℂ) :
     ∃ e : ℂ → (Over.mk (spMap κ) ⟶ A), ∀ z, (e z).left = (u.ex fun _ => c * z).left ≫ ψ := by
@@ -74,13 +74,13 @@ theorem exists_param (c : ℂ) :
   exact ⟨fun z => p (u.ex fun _ => c * z), fun z => hp _⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `exists_pointEquiv hψ (𝟙_ _) (s := spMap κ) (Category.id_comp _).symm`. Take `⟨_, _, _, -, h₁, h₂, -⟩` from `hu`. Establish `hp' : ∀ z, (p.symm (e z)).left ≫ ψ = (e z).left` using `fun z => by rw [← hp, p.apply_symm_apply]`. Take `⟨F, hF, -⟩` from `existsUnique_linear_lift_of_isHolTo PC.A PC.isAb PC.L PC.g 1 u h₁ h₂ (fun z => p.symm (e (z 0))) (fun z w => by rw [← map_mul, ← he.1]; rfl) (FibreUnif.isHolTo_of_isPullback hψ.1 (fun z => Over.w (p.symm (e (z 0)))) (by`. Simplify using `only [hp']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `isHolTo_precomp he.2.2.2 (f := fun z : Fin 1 → ℂ => z 0) (by fun_prop)))`. Establish `hc : ∀ z, (e z).left = (u.ex fun _ => F (fun _ => 1) ⟨0, by omega⟩ * z).left ≫ ψ` using `fun z => by`. Establish `e₁ : (fun _ => F (fun _ => 1) ⟨0, by omega⟩ * z) = F fun _ => z`. Use function extensionality and compare the values at `i`. Rewrite using `[show (fun _ => z : Fin 1 → ℂ) = z • fun _ => 1 from funext fun _ => by simp, map_smul, show i = ⟨0, by omega⟩ from Fin.ext (by omega), Pi.smul_apply, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, hF, hp']`. Use `⟨_, fun h0 => ?_, hc⟩` and prove the remaining obligations. Establish `h1 : ∀ z, e z = 1` using `fun z => by`. Establish `: e z = e 0` using `Over.OverMorphism.ext (by simp only [hc, h0, zero_mul])`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(he.2.2.1 0).2 ⟨0, 0, by simp⟩`. Use `not_countable_complex ((Set.countable_range fun x : ℤ × ℤ => (x.1 : ℂ) + x.2 * omegaC H).mono fun z _ => ?_)` and prove the remaining obligations. Take `⟨m, n, h⟩` from `(he.2.2.1 z).1 (h1 z)`. Conclude with `⟨(m, n), h.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_scalar (hg : PC.g = 1) (hu : IsThetaUnif u) {e : ℂ → (Over.mk (spMap κ) ⟶ A)}
     (he : IsCMUnif H κ A e) : ∃ c : ℂ, c ≠ 0 ∧ ∀ z, (e z).left = (u.ex fun _ => c * z).left ≫ ψ := by
@@ -112,15 +112,15 @@ end Unif
 section Quadratic
 
 /- English proof (translation)
-Take `⟨Hm, -, hpos, hE⟩` from `hP.2.2.2.2`. Establish `key : ∀ a ∈ lat hP ρ, ∃ r : ℝ, 0 ≤ r ∧ (D.EF (H.w0 • a) a : ℝ) = ρ.im * r` using `fun a ha => by`. Establish `h1` using `hE (H.w0 • a) a`. Establish `h2` using `hE a a`. Rewrite `h2` using `[D.alt, Int.cast_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : 0 ≤ (hermForm Hm (P a) (P a)).re`. Distinguish the cases in `hz : P a = 0`. Simplify using `[hz, hermForm]`. Conclude with `(hpos _ hz).le`. Establish `h3 : hermForm Hm (P (H.w0 • a)) (P a) = ((1 + ρ) / 2) * hermForm Hm (P a) (P a)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[period_w0_smul hP ha, hermForm, hermForm, smul_dotProduct, smul_eq_mul]`. Rewrite `h1` using `[h3, Complex.mul_im, h2]`. Conclude with `⟨(hermForm Hm (P a) (P a)).re / 2, by positivity, by rw [← h1]; simp; ring⟩`. Break down `le_total 0 ρ.im with h | h` into its components or cases. Use `⟨1, fun a ha => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, e⟩` from `key a ha`. Establish `: (0 : ℝ) ≤ D.EF (H.w0 • a) a` using `e ▸ mul_nonneg h hr`. Rewrite using `[_root_.one_mul, Int.natAbs_of_nonneg (by exact_mod_cast this)]`. Use `⟨-1, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, e⟩` from `key a ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (D.EF (H.w0 • a) a : ℝ) ≤ 0` using `e ▸ mul_nonpos_of_nonpos_of_nonneg h hr`. Rewrite using `[neg_one_mul, Int.ofNat_natAbs_of_nonpos (by exact_mod_cast this)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sign {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)}
     (hP : IsPeriod D ty P) (ρ : ℂ) :
@@ -156,7 +156,7 @@ variable {D : Datum H} {R : Type} [CommRing R] {t : SAB H (Sp R)} {B B' : Over (
   {M : LB B.left} {M' : LB B'.left} {L : Submodule (𝓞 E) D.La} {ρ : R} {S S' : Set L} {φ : L → (B ⟶ t.G)}
 
 /- English proof (translation)
-Use `D.fin` as an intermediate fact. Establish `: IsNoetherian (𝓞 E) D.La` using `isNoetherian_of_isNoetherianRing_of_finite _ _`. Establish `: Module.Finite ℤ L` using `Module.Finite.trans (𝓞 E) L`. Take `⟨T, h₁, h₂⟩` from `(AddSubgroup.fg_iff _).1 (Module.Finite.iff_addGroup_fg.1 this).out`. Conclude with `⟨T, h₂, h₁⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_generators (L : Submodule (𝓞 E) D.La) : ∃ T : Set L, T.Finite ∧ AddSubgroup.closure T = ⊤ := by
   have := D.fin
@@ -170,15 +170,15 @@ end Transport
 section Multiplication
 
 /- English proof (translation)
-Establish `h0 : H.rt ≠ 0` using `fun h => by`. Establish `e` using `H.rt_sq`. Rewrite `e` using `[h, zero_pow two_ne_zero, zero_eq_neg, Nat.cast_eq_zero]`. Conclude with `H.d_prime.pos.ne' e`. Establish `h1 : H.bar H.rt = -H.rt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `e : τ (H.bar H.rt : 𝓞 E) = starRingEnd ℂ (τ (H.rt : E))`. Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Establish `e' : starRingEnd ℂ H.rt0 = -H.rt0`. Establish `hs : H.rt0 ^ 2 = (Complex.I * Real.sqrt H.d) ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H.sqrt_neg_disc_sq, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (by positivity)]`. Simplify using the standard rewrite rules. Apply the tactic sequence `rcases sq_eq_sq_iff_eq_or_eq_neg.1 hs with h | h <;> rw [h] <;> simp`. Use `RingOfIntegers.coe_injective (τ.injective ?_)` and prove the remaining obligations. Use `e.trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_neg, map_neg]`. Express the relevant statement in the definitionally equal form `_ = -τ (H.rt : E)`. Apply the tactic sequence `rcases map_rt H τ with h | h <;> rw [h] <;> simp [e']`. Apply `mul_left_cancel₀ (two_ne_zero : (2 : 𝓞 E) ≠ 0)` to reduce the goal to its premises. Use `congrArg H.bar H.two_weight_eq_one_add_root` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_mul, map_add, map_one, h1, map_ofNat]`. Take the linear combination `this + H.two_weight_eq_one_add_root`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cmHost_bar_halfIntegerGenerator (H : Host E) : H.bar H.w0 = 1 - H.w0 := by
   have h0 : H.rt ≠ 0 := fun h => by

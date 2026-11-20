@@ -14,7 +14,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open PositivityTheory.ThKEst
 
 /- English proof (translation)
-Introduce `e` and use `h (by simp only [chrW, locChar, MonoidHom.comp_apply, MonoidHom.div_apply] at e ⊢ rw [map_div, div_eq_one] at e ⊢ exact e.symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chrW_inv_ne {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {v : Pl F} {χ χ' : Chr F E}
     {t : E →ₐ[F] Fv F v} {x} (h : chrW (χ / χ') t x ≠ 1) : chrW (χ' / χ) t x ≠ 1 := fun e => h (by
@@ -23,11 +23,11 @@ theorem chrW_inv_ne {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   exact e.symm)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT f hf hr μ D hμ hD`. Take `⟨p, p', -⟩` from `hP F E σ B a a' G X om om' hT`. Establish `ha' : 2 ≤ a'` using `by have := hT.geo.aBig; omega`. Establish `ha : 2 ≤ a` using `by have := hT.geo.lt; omega`. Establish `g : ∀ v ∉ insert B.v₁ X.T, SplitsFully E v → X.Good v ∧ v ≠ B.v₁` using `fun v hv hs => ⟨⟨fun h => hv (Finset.mem_insert_of_mem h), hs⟩, fun h => hv (h ▸ Finset.mem_insert_self _ _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun Ψ hΨ => ?_, fun Ψ hΨ => ?_⟩` and prove the remaining obligations. Take `⟨c, i⟩` from `h3 F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p μ D hμ hD f hr Ψ hΨ`. Use `hC F E σ B a G.V _ _ hT.base hT.geo.hV ha (insert B.v₁ X.T) _ c i fun v hv hs u hu x => ?_` and prove the remaining obligations. Take `⟨⟨t⟩, ht⟩` from `hN F E σ B a a' G X om om' hT v (g v hv hs).1`. Conclude with `h2 F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p _ _ _ _ _ _ _ _ p' rfl rfl v t (chrW_inv_ne (ht t)) μ D hμ hD f (h1 F E σ B a a' G X om om' hT f hf hr v (g v hv hs).1 (g v hv hs).2).2 Ψ hΨ u hu x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, i⟩` from `h3 F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p' μ D hμ hD f hr Ψ hΨ`. Use `hC F E σ B a' G.V' _ _ hT.base hT.geo.hV' ha' (insert B.v₁ X.T) _ c i fun v hv hs u hu x => ?_` and prove the remaining obligations. Take `⟨⟨t⟩, ht⟩` from `hN F E σ B a a' G X om om' hT v (g v hv hs).1`. Conclude with `h2 F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p' _ _ _ _ _ _ _ _ p (add_comm _ _) rfl v t (ht t) μ D hμ hD f (h1 F E σ B a a' G X om om' hT f hf hr v (g v hv hs).1 (g v hv hs).2).1 Ψ hΨ u hu x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sigThConst_of (hP : TriplePair) (hN : GoodNe) (hC : ConstOfGood) (h1 : LocDecomp) (h2 : PairLoc) (h3 : ThAut) :
     SigThConst := by
@@ -51,13 +51,11 @@ theorem sigThConst_of (hP : TriplePair) (hN : GoodNe) (hC : ConstOfGood) (h1 : L
       (h1 F E σ B a a' G X om om' hT f hf hr v (g v hv hs).1 (g v hv hs).2).1 Ψ hΨ u hu x
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT f hf hc`. Take `⟨p, p', w⟩` from `hP F E σ B a a' G X om om' hT`. Establish `hr` using `h1 F E σ B a a' G X om om' hT f hf hc`. Establish `hk` using `h2 F E σ B a a' G X om om' hT f hf hr`. Establish `hn` using `(hN F E σ B a a' G X om om' hT _ hT.chars.good).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hT.geo.aBig`. Establish `e2` using `hT.geo.lt`. Establish `e3` using `hT.geo.eBig`. Use `⟨fun hp Φ hΦ => ?_, fun hq Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `s` using `hS F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p Φ hΦ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨c1, c2⟩` from `(hW F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p (Or.inl w)).1 Φ s`. Conclude with `h4 F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p f hr Φ s c1 c2 fun μ D hμ hD => h3 F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p (by omega) hp (by omega) (by omega) (fun t e => chrW_inv_ne (hn t) (by rw [e]; rfl)) μ D hμ hD f hr (hk μ D hμ hD).1 Φ s`. Establish `s` using `hS F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p' Φ hΦ.1`. Take `⟨m, f₀, φ, hφ, rfl⟩` from `(hF F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p').1 Φ hΦ.2`. Take `⟨c1, c2, -⟩` from `dom_sum hB p' (dom_of_domSoU hD p') f₀ φ hφ fun i => (hφ i).1`.
-
-Conclude with `h4 F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p' f hr _ s c1 c2 fun μ D hμ hD => h3 F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p' hq (by omega) (by omega) (by omega) (fun t e => hn t (by rw [Chars.ν, e]; rfl)) μ D hμ hD f hr (hk μ D hμ hD).2 _ s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem orthIso_of (hB : ThetaBasic) (hP : TriplePair) (hW : WeilConv) (hD : DomSoU) (hF : SoFin) (hS : PolSch) (hN : GoodNe)
     (h1 : SigRapid) (h2 : SigThConst) (h3 : ThZero) (h4 : ThPerp) : OrthIso := by

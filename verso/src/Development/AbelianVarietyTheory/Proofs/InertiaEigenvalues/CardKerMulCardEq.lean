@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardDualZmodModu
 namespace GlobalTheory.ZModDual
 
 /- English proof (translation)
-Use `set K' := LinearMap.ker b.flip`. Establish `: Finite (B ⧸ K')` using `Finite.of_surjective K'.mkQ K'.mkQ_surjective`. Establish `: Finite (Module.Dual (ZMod n) B)` using `Finite.of_injective (fun f : Module.Dual (ZMod n) B => (f : B → ZMod n)) DFunLike.coe_injective`. Establish `hle : LinearMap.range b ≤ K'.dualAnnihilator`. Introduce and unpack `_ ⟨a, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_dualAnnihilator]`. Introduce `y hy`. Use `LinearMap.congr_fun (LinearMap.mem_ker.1 hy) a` as an intermediate fact. Simplify using `using this`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_quot_ker_le (n : ℕ) [NeZero n] (A B : Type) [AddCommGroup A] [Module (ZMod n) A]
     [AddCommGroup B] [Module (ZMod n) B] [Finite B]
@@ -31,9 +31,9 @@ theorem card_quot_ker_le (n : ℕ) [NeZero n] (A B : Type) [AddCommGroup A] [Mod
     _ = Nat.card (B ⧸ K') := card_dual_eq n (B ⧸ K')
 
 /- English proof (translation)
-Establish `h1` using `card_quot_ker_le n A B b`. Establish `h2` using `card_quot_ker_le n B A b.flip`. Rewrite `h2` using `[LinearMap.flip_flip]`. Establish `heq : Nat.card (A ⧸ LinearMap.ker b) = Nat.card (B ⧸ LinearMap.ker b.flip)` using `le_antisymm h1 h2`. Establish `eA` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker b)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eB` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker b.flip)`. Rewrite using `[eA, eB, heq]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem card_ker_mul_card_eq (n : ℕ) [NeZero n] (A B : Type) [AddCommGroup A]
     [Module (ZMod n) A] [Finite A] [AddCommGroup B] [Module (ZMod n) B] [Finite B]

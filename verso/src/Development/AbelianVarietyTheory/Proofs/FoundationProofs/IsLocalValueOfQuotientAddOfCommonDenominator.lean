@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.IoEx
 
 /- English proof (translation)
-Use `⟨⟨fun r => φ.coeff ((r : ℚ) / (M : ℚ)), ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Establish `h` using `φ.isPWO_support`. Rewrite `h`, the goal using `[Set.IsPWO, Set.partiallyWellOrderedOn_iff_exists_lt]`. Introduce `f hf`. Take `⟨m, n, hmn, hle⟩` from `h (fun i => (f i : ℚ) / (M : ℚ)) hf`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨m, n, hmn, ?_⟩` and prove the remaining obligations. Establish `hM' : (0 : ℚ) < M` using `by exact_mod_cast hM`. Conclude with `(div_le_div_iff_of_pos_right hM').1 hle` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_restrict {R : Type} [CommRing R] {M : ℕ} (hM : 0 < M) (φ : HahnSeries ℚ R) :
     ∃ C : HahnSeries ℤ R, ∀ r : ℤ, C.coeff r = φ.coeff ((r : ℚ) / (M : ℚ)) := by
@@ -32,15 +32,13 @@ theorem exists_restrict {R : Type} [CommRing R] {M : ℕ} (hM : 0 < M) (φ : Hah
   exact_mod_cast (div_le_div_iff_of_pos_right hM').1 hle
 
 /- English proof (translation)
-Establish `hM' : (0 : ℚ) < M` using `by exact_mod_cast hM`. Set `f : ℤ →+ ℚ` to `⟨⟨fun r => (r : ℚ) / (M : ℚ), by simp⟩, fun a b => by push_cast; ring⟩`. Establish `hf : ∀ a b : ℤ, f a ≤ f b ↔ a ≤ b` using `fun a b => (div_le_div_iff_of_pos_right hM').trans Int.cast_le`. Establish `hi : Function.Injective f` using `fun a b h => le_antisymm ((hf a b).1 h.le) ((hf b a).1 h.ge)`. Set `e : HahnSeries ℤ R' →+* HahnSeries ℚ R'` to `HahnSeries.embDomainRingHom f hi hf`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `he : ∀ (B : HahnSeries ℤ R') (r : ℤ), (e B).coeff ((r : ℚ) / (M : ℚ)) = B.coeff r` using `fun B r => HahnSeries.embDomain_coeff (f := ⟨⟨f, hi⟩, hf _ _⟩) (a := r)`. Establish `key : ∀ (φ : HahnSeries ℚ R) (C : HahnSeries ℤ R'), (∀ r : ℚ, φ.coeff r ≠ 0 → (r * (M : ℚ)).den = 1) → (∀ r : ℤ, C.coeff r = j (φ.coeff ((r : ℚ) / (M : ℚ)))) → φ.map j = e C`. Introduce `φ C hφ hC`. Use extensionality with `q`. Distinguish the cases in `hq : q ∈ Set.range f`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Take `⟨r, rfl⟩` from `hq`. Conclude with `(hC r).symm.trans (he C r).symm`. Establish `h0 : φ.coeff q = 0`. Assume the negation of the conclusion as `h`. Use `hq ⟨(q * (M : ℚ)).num, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (((q * (M : ℚ)).num : ℤ) : ℚ) / (M : ℚ) = q`. Rewrite using `[(Rat.den_eq_one_iff _).1 (hφ q h), mul_div_cancel_right₀ _ hM'.ne']`. Establish `h1 : (e C).coeff q = 0` using `HahnSeries.embDomain_notin_range (f := ⟨⟨f, hi⟩, hf _ _⟩) hq`. Rewrite using `[h1, HahnSeries.map_coeff, h0, map_zero]`. Establish `hm : (φ * χ).map j = φ.map j * χ.map j` using `HahnSeries.map_mul (j : R →ₙ+* R')`.
-
-Rewrite using `[← he (C * D) r, map_mul, ← key φ C hφ hC, ← key χ D hχ hD, ← hm, HahnSeries.map_coeff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrict_mul {R R' : Type} [CommRing R] [CommRing R'] (j : R →+* R') {M : ℕ} (hM : 0 < M)
     (φ χ : HahnSeries ℚ R) (C D : HahnSeries ℤ R')
@@ -76,31 +74,25 @@ theorem restrict_mul {R R' : Type} [CommRing R] [CommRing R'] (j : R →+* R') {
 open scoped NNReal in
 
 /- English proof (translation)
-Take `⟨v, hv, -, h0, h1⟩` from `exists_valuation_isInt p Ω hc`. Use `letI : Algebra ℤ_[p] Ω := ((algebraMap (O0 p) Ω).comp (algebraMap ℤ_[p] (O0 p))).toAlgebra`. Use `haveI : IsScalarTower ℤ_[p] (O0 p) Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hzp : ∀ z, zp Ω z = algebraMap ℤ_[p] Ω z` using `fun z => by`. Establish `h : (HahnSeries.single 0 z : Lau p) = algebraMap ℤ_[p] (Lau p) z`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HahnSeries.algebraMap_apply' ]`. Simplify using the standard rewrite rules. Rewrite using `[zp, h]`. Both sides reduce to the same expression. Establish `halg : ∀ x : Ω, IsAlgZp p x ↔ IsAlgebraic ℤ_[p] x` using `fun x => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `IsAlgZp IsAlgebraic`. Simplify using `only [Polynomial.aeval_map_algebraMap]`. Establish `hle : ∀ z, v (algebraMap ℤ_[p] Ω z) ≤ 1` using `fun z => (hv _).2 (isIntegral_algebraMap (x := algebraMap ℤ_[p] (O0 p) z))`. Establish `hinj : Function.Injective (algebraMap ℤ_[p] Ω)`. Rewrite using `[injective_iff_map_eq_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Assume the negation of the conclusion as `hz0`. Take `⟨n, hn⟩` from `OkBasis.val_int v _ hle hz0`. Rewrite `hn` using `[hz, map_zero]`. Conclude with `(pow_pos h0 n).ne hn`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra ℚ_[p] Ω := (IsFractionRing.lift (K := ℚ_[p]) hinj).toAlgebra`. Use `haveI : IsScalarTower ℤ_[p] ℚ_[p] Ω := IsScalarTower.of_algebraMap_eq fun z => (IsFractionRing.lift_algebraMap hinj z).symm`. Establish `halg' : ∀ x : Ω, IsAlgZp p x ↔ IsAlgebraic ℚ_[p] x` using `fun x => (halg x).trans (IsFractionRing.isAlgebraic_iff ℤ_[p] ℚ_[p] Ω)`. Set `L` to `IntermediateField.adjoin ℚ_[p] (j '' (S : Set K))`. Use `haveI : Finite (j '' (S : Set K)) := (S.finite_toSet.image j).to_subtype`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℚ_[p] L := IntermediateField.finiteDimensional_adjoin (by`. Introduce and unpack `_ ⟨t, -, rfl⟩`. Conclude with `((halg' _).1 (hj t)).isIntegral)`. Establish `hL : ∀ x : L, IsAlgZp p (x : Ω)` using `fun x => (halg' _).2 (IntermediateField.isAlgebraic_iff.1 (Algebra.IsAlgebraic.isAlgebraic x))`. Establish `hf : ∀ z, ((OkBasis.fromInt p L z : L) : Ω) = zp Ω z` using `fun z => (IsScalarTower.algebraMap_apply ℤ_[p] ℚ_[p] Ω z).symm.trans (hzp z).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hmem : ∀ x ∈ IntermediateField.adjoin ℚ (S : Set K), j x ∈ L`. Introduce `x hx`. Proceed by induction on `hx using IntermediateField.adjoin_induction with`. Consider the case `mem x hx => exact IntermediateField.subset_adjoin _ _ ⟨x, hx, rfl⟩`. Consider the case `algebraMap q => rw [eq_ratCast, map_ratCast]`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `SubfieldClass.ratCast_mem L q`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `inv x _ hx => rw [map_inv₀]`. Conclude with `inv_mem hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`. Set `w : Valuation L ℝ≥0` to `v.comap (algebraMap L Ω)`. Establish `hw : ∀ x : L, w x = v (x : Ω)` using `fun x => rfl`. Establish `hwp : w (p : L) = v (p : Ω)` using `by rw [hw]; simp`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Take `⟨E, F, π, κ, hE, hπ, hκ, -, hsp⟩` from `OkBasis.exists_basis (p := p) w (fun z => by rw [hw, hf, hzp]; exact hle z) (hwp ▸ h0) (hwp ▸ h1)`. Establish `hπ1 : w π ≤ 1`. Assume the negation of the conclusion as `h`. Conclude with `absurd (hπ ▸ one_le_pow₀ (not_le.1 h).le) (not_le.2 (hwp ▸ h1))`. Use `choose lam hlam using fun r => hsp ⟨j (C.coeff r), hmem _ (hC r).2⟩ ((hv _).2 (hC r).1)`.
-
-Set `a : Fin F × Fin E → Lau p` to `fun i => ⟨fun r => if C.coeff r = 0 then 0 else lam r i.1 i.2, C.isPWO_support.mono fun r hr h => hr (if_pos h)⟩`. Use `⟨_, _, EvRing.ev_of_fintype ψ _ _ _ (fun i : Fin F × Fin E => ((κ i.1 * π ^ (i.2 : ℕ) : L) : Ω)) a (fun i => ⟨(hv _).1 ?_, hL _⟩) (fun r => ?_) rfl rfl⟩` and prove the remaining obligations. Rewrite using `[← hw, map_mul, map_pow]`. Conclude with `mul_le_one' (hκ _) (pow_le_one' hπ1 _)`. Distinguish the cases in `h : C.coeff r = 0`.
-
-Simplify using `[a, h, hzp]`. Use `congrArg (fun x : L => (x : Ω)) (hlam r)` as an intermediate fact. Move the coercions through the operations in `at this`. Simplify using `only [a, if_neg h, Fintype.sum_prod_type]`. Use `push_cast`.
-
-Simplify `this` using `only [hf]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_ev {p : ℕ} [hp : Fact p.Prime] {K : Type} [Field K] [Algebra ℚ K] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
     (hc : IsClo p Ω) (ψ : O0 p →+* Ω) (j : K →+* Ω) (hj : ∀ z, IsAlgZp p (j z)) (S : Finset K) (C : HahnSeries ℤ K)
@@ -183,12 +175,12 @@ def Supp (p n : ℕ) (φ : HahnSeries ℚ Ω) : Prop := ∀ r : ℚ, φ.coeff r 
 variable {j : Ω →+* Ωl} {n : ℕ} {ψ : O0 p →+* Ωl} {T : GlobalTheory.K5.Tower p Ωl}
 
 /- English proof (translation)
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem castM (p n : ℕ) : ((p ^ n : ℕ) : ℚ) = (p : ℚ) ^ n := by push_cast; ring
 
 /- English proof (translation)
-Take `⟨x', hx⟩` from `hx`. Take `⟨y', hy⟩` from `hy`. Conclude with `(GlobalTheory.EvUniq.ev_unique p Ωl hclo T n ψ hreb _ x x' y y' hx hy).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem val_uniq (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) {φ : HahnSeries ℚ Ω} {x y : Ωl}
     (hx : IsVal j n ψ φ x) (hy : IsVal j n ψ φ y) : x = y := by
@@ -197,17 +189,17 @@ theorem val_uniq (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) {φ : HahnSeries ℚ
   exact (GlobalTheory.EvUniq.ev_unique p Ωl hclo T n ψ hreb _ x x' y y' hx hy).1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 0, finZeroElim, finZeroElim, fun t => t.elim0, fun r => by simp, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem val_zero : IsVal j n ψ (0 : HahnSeries ℚ Ω) 0 :=
   ⟨0, 0, finZeroElim, finZeroElim, fun t => t.elim0, fun r => by simp, by simp, by simp⟩
 
 /- English proof (translation)
-Use `⟨0, 1, fun _ => 1, fun _ => 1, fun _ => ⟨isIntegral_one, ?_⟩, fun r => ?_, by simp, ?_⟩` and prove the remaining obligations. Use `⟨Polynomial.X - 1, Polynomial.X_sub_C_ne_zero 1, by simp⟩` and prove the remaining obligations. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, one_mul, HahnSeries.coeff_one, zp]`. Distinguish the cases in `hr : r = 0`. Substitute `hr` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[HahnSeries.single_zero_one]`. Establish `: (r : ℚ) / (p : ℚ) ^ n ≠ 0` using `div_ne_zero (by exact_mod_cast hr) (pow_ne_zero _ (by exact_mod_cast (Fact.out : p.Prime).ne_zero))`. Simplify using `[hr, this]`. Establish `: thL (1 : Lau p) = 0`. Use extensionality with `r`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [thL, HahnSeries.coeff_one, HahnSeries.coeff_zero]`. Apply the tactic sequence `split_ifs with h <;> simp [h]`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem val_one : IsVal j n ψ (1 : HahnSeries ℚ Ω) 1 := by
   refine ⟨0, 1, fun _ => 1, fun _ => 1, fun _ => ⟨isIntegral_one, ?_⟩, fun r => ?_, by simp, ?_⟩
@@ -225,9 +217,9 @@ theorem val_one : IsVal j n ψ (1 : HahnSeries ℚ Ω) 1 := by
     simp [this]
 
 /- English proof (translation)
-Take `⟨x', hx⟩` from `hx`. Take `⟨y', hy⟩` from `hy`. Establish `R` using `GlobalTheory.Glue.EvRing.ev_ring p Ωl hclo T n ψ hreb`. Take `⟨C, hC⟩` from `(R.2 _ _ _ hx).2.2.1`. Take `⟨D, hD⟩` from `(R.2 _ _ _ hy).2.2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h` using `(R.1 C D x x' y y' (hC ▸ hx) (hD ▸ hy)).2.1`. Use `⟨x' + y', ?_⟩` and prove the remaining obligations. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r`. Simplify using `only [HahnSeries.coeff_add, hC, hD, map_add]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem val_add (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) {φ χ : HahnSeries ℚ Ω} {x y : Ωl}
     (hx : IsVal j n ψ φ x) (hy : IsVal j n ψ χ y) : IsVal j n ψ (φ + χ) (x + y) := by
@@ -243,11 +235,11 @@ theorem val_add (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) {φ χ : HahnSeries �
   simp only [HahnSeries.coeff_add, hC, hD, map_add]
 
 /- English proof (translation)
-Take `⟨x', hx⟩` from `hx`. Take `⟨y', hy⟩` from `hy`. Establish `R` using `GlobalTheory.Glue.EvRing.ev_ring p Ωl hclo T n ψ hreb`. Take `⟨C, hC⟩` from `(R.2 _ _ _ hx).2.2.1`. Take `⟨D, hD⟩` from `(R.2 _ _ _ hy).2.2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h` using `(R.1 C D x x' y y' (hC ▸ hx) (hD ▸ hy)).1`. Use `⟨x' * y + x * y', ?_⟩` and prove the remaining obligations. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r`. Establish `hp : 0 < p ^ n` using `pow_pos (Fact.out : p.Prime).pos n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `key` using `restrict_mul j hp φ χ C D hφ hχ (fun r => by rw [hC, castM]) (fun r => by rw [hD, castM]) r`. Rewrite using `[key, castM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_mul (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) {φ χ : HahnSeries ℚ Ω} {x y : Ωl}
     (hφ : Supp p n φ) (hχ : Supp p n χ)
@@ -267,22 +259,22 @@ theorem val_mul (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) {φ χ : HahnSeries �
   rw [key, castM]
 
 /- English proof (translation)
-Rewrite using `[HahnSeries.algebraMap_apply']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem algMapC (l : Ω) : algebraMap Ω (HahnSeries ℚ Ω) l = HahnSeries.C l := by
   rw [HahnSeries.algebraMap_apply']; simp
 
 /- English proof (translation)
-Rewrite using `[algMapC, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_algebraMap_mul (l : Ω) (φ : HahnSeries ℚ Ω) (r : ℚ) :
     (algebraMap Ω (HahnSeries ℚ Ω) l * φ).coeff r = l * φ.coeff r := by
   rw [algMapC, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨x', hx⟩` from `hx`. Establish `R` using `GlobalTheory.Glue.EvRing.ev_ring p Ωl hclo T n ψ hreb`. Establish `h` using `(R.2 _ _ _ hx).2.2.2.2.1 (j l) hi ha`. Use `⟨j l * x', ?_⟩` and prove the remaining obligations. Use `h using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `r`. Rewrite using `[coeff_algebraMap_mul, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_smul (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) {φ : HahnSeries ℚ Ω} {x : Ωl} (l : Ω)
     (hi : IsInt p (j l)) (ha : IsAlgZp p (j l))
@@ -296,9 +288,9 @@ theorem val_smul (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) {φ : HahnSeries ℚ
   rw [coeff_algebraMap_mul, map_mul]
 
 /- English proof (translation)
-Take `⟨x', hx⟩` from `hx`. Establish `R` using `GlobalTheory.Glue.EvRing.ev_ring p Ωl hclo T n ψ hreb`. Establish `h` using `(R.2 _ _ _ hx).2.2.2.2.2 g hq`. Use `⟨g x', ?_⟩` and prove the remaining obligations. Use `h using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `r`. Rewrite using `[hφ, hgs]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_gal (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) {φ φ' : HahnSeries ℚ Ω} {x : Ωl}
     (g : Gal p Ωl) (s : Ω → Ω) (hq : g (T.qq n) = T.qq n) (hgs : ∀ z, g (j z) = j (s z))
@@ -313,11 +305,11 @@ theorem val_gal (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) {φ φ' : HahnSeries 
   rw [hφ, hgs]
 
 /- English proof (translation)
-Take `⟨x', hx⟩` from `hx`. Take `⟨-, r0, h0, hinv⟩` from `hP`. Establish `hd` using `hs r0 h0`. Establish `hpn : ((p ^ n : ℕ) : ℚ) ≠ 0` using `by exact_mod_cast (pow_pos (Fact.out : p.Prime).pos n).ne'`. Establish `hm : (((r0 * ((p ^ n : ℕ) : ℚ)).num : ℤ) : ℚ) / (p : ℚ) ^ n = r0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← castM, (Rat.den_eq_one_iff _).1 hd, mul_div_cancel_right₀ _ hpn]`. Use `(GlobalTheory.T.evalSeries_cong_iff_coeff_and_isUnit p Ωl hclo T n ψ hreb 0 _ x x' hx).2 ⟨(r0 * ((p ^ n : ℕ) : ℚ)).num, ?_, ?_⟩ |>.1` and prove the remaining obligations. Simplify using `only [hm]`. Conclude with `(map_ne_zero j).2 h0`. Simplify using `only [hm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv₀]`. Conclude with `(hint _).1 hinv`.
+A detailed English derivation is pending.
 -/
 theorem val_ne (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) {A : ValuationSubring Ω}
     (hint : ∀ z, z ∈ A ↔ IsInt p (j z)) {φ : HahnSeries ℚ Ω} {x : Ωl}
@@ -342,19 +334,19 @@ def RS (A : ValuationSubring Ω) (S : Finset Ω) : Subring Ω :=
   A.toSubring ⊓ (IntermediateField.adjoin ℚ (S : Set Ω)).toSubalgebra.toSubring
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_RS {A : ValuationSubring Ω} {S : Finset Ω} {z : Ω} :
     z ∈ RS A S ↔ z ∈ A ∧ z ∈ IntermediateField.adjoin ℚ (S : Set Ω) := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ hz` and use `⟨hz.1, IntermediateField.adjoin.mono ℚ _ _ (by exact_mod_cast h) hz.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem RS_mono {A : ValuationSubring Ω} {S S' : Finset Ω} (h : S ⊆ S') : RS A S ≤ RS A S' :=
   fun _ hz => ⟨hz.1, IntermediateField.adjoin.mono ℚ _ _ (by exact_mod_cast h) hz.2⟩
 
 /- English proof (translation)
-Rewrite using `[HahnSeries.coeff_mul]`. Conclude with `R.sum_mem fun i _ => R.mul_mem (h1 _) (h2 _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mul_mem (R : Subring Ω) {φ χ : HahnSeries ℚ Ω} (h1 : ∀ r, φ.coeff r ∈ R)
     (h2 : ∀ r, χ.coeff r ∈ R) (r : ℚ) : (φ * χ).coeff r ∈ R := by
@@ -362,7 +354,7 @@ theorem coeff_mul_mem (R : Subring Ω) {φ χ : HahnSeries ℚ Ω} (h1 : ∀ r, 
   exact R.sum_mem fun i _ => R.mul_mem (h1 _) (h2 _)
 
 /- English proof (translation)
-Rewrite using `[HahnSeries.coeff_one]`. Use `split_ifs`. Use `exacts [R.one_mem, R.zero_mem]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_one_mem (R : Subring Ω) (r : ℚ) : (1 : HahnSeries ℚ Ω).coeff r ∈ R := by
   rw [HahnSeries.coeff_one]
@@ -370,14 +362,14 @@ theorem coeff_one_mem (R : Subring Ω) (r : ℚ) : (1 : HahnSeries ℚ Ω).coeff
   exacts [R.one_mem, R.zero_mem]
 
 /- English proof (translation)
-Rewrite using `[KT, RingHom.mem_eqLocusField]`. Conclude with `(X.sl _).commutes l`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alg_mem_KT (X : GlobalTheory.KZ.Tower Ω ε) (L : ℕ) (l : Ω) : algebraMap Ω X.K l ∈ KT X L := by
   rw [KT, RingHom.mem_eqLocusField]
   exact (X.sl _).commutes l
 
 /- English proof (translation)
-Apply `(X.exp : X.K →+* HahnSeries ℚ Ω).injective` to reduce the goal to its premises. Use extensionality with `r`. Use `show (X.exp (X.gal s _)).coeff r = (X.exp _).coeff r`. Rewrite using `[X.gal_exp, AlgHom.commutes, AlgHom.commutes, algMapC, algMapC, HahnSeries.C_apply, HahnSeries.C_apply, HahnSeries.coeff_single, HahnSeries.coeff_single]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem gal_alg (X : GlobalTheory.KZ.Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (κ : Ω) :
     X.gal s (algebraMap Ω X.K κ) = algebraMap Ω X.K (s κ) := by
@@ -389,7 +381,7 @@ theorem gal_alg (X : GlobalTheory.KZ.Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (κ : 
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.mem_translationInvariantSubfield_iff_exponents ε X (p ^ n) (pow_pos (Fact.out : p.Prime).pos n) a`.
+A detailed English derivation is pending.
 -/
 theorem mem_KT_iff' [IsAlgClosure ℚ Ω] (X : GlobalTheory.KZ.Tower Ω ε) (p n : ℕ) [Fact p.Prime] (a : X.K) :
     a ∈ KT X (p ^ n) ↔ Supp p n (X.exp a) :=
@@ -408,15 +400,15 @@ variable [IsAlgClosure ℚ Ω] {X : GlobalTheory.KZ.Tower Ω ε} {A : ValuationS
   {Ωl : Type} [Field Ωl] [Algebra (O0 p) Ωl] {j : Ω →+* Ωl} {n : ℕ} {ψ : O0 p →+* Ωl} {T : GlobalTheory.K5.Tower p Ωl}
 
 /- English proof (translation)
-The claim follows from `(mem_KT_iff' X p n a).1 ha`.
+A detailed English derivation is pending.
 -/
 theorem supp_exp {a : X.K} (ha : a ∈ KT X (p ^ n)) : Supp p n (X.exp a) := (mem_KT_iff' X p n a).1 ha
 
 omit [IsAlgClosure ℚ Ω] in
 /- English proof (translation)
-Take `⟨C, hC⟩` from `exists_restrict (pow_pos (Fact.out : p.Prime).pos n) φ`. Take `⟨x, x', h⟩` from `exists_ev hclo ψ j halg S C (fun r => ⟨by rw [hC r]; exact (hint _).1 (hc _).1, by rw [hC r]; exact (hc _).2⟩)`. Establish `e : (fun r : ℤ => j (C.coeff r)) = fun r : ℤ => j (φ.coeff ((r : ℚ) / (p : ℚ) ^ n))`. Use function extensionality and compare the values at `r`. Rewrite using `[hC, castM]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[e]`. Conclude with `⟨x, x', h⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem val_exists (hclo : IsClo p Ωl) (hint : ∀ z, z ∈ A ↔ IsInt p (j z)) (halg : ∀ z, IsAlgZp p (j z))
     {φ : HahnSeries ℚ Ω} {S : Finset Ω} (hc : ∀ r, φ.coeff r ∈ RS A S) : ∃ x, IsVal j n ψ φ x := by
@@ -429,13 +421,13 @@ theorem val_exists (hclo : IsClo p Ωl) (hint : ∀ z, z ∈ A ↔ IsInt p (j z)
   exact ⟨x, x', h⟩
 
 /- English proof (translation)
-Take `⟨hκ, haK, hbK, hrel, -⟩` from `hG`. Take `⟨hκ', haK', hbK', hrel', -⟩` from `hG'`. Establish `hκl : κ * (κ' / κ) = κ'` using `by field_simp`. Establish `hK : a * b' = algebraMap Ω X.K (κ' / κ) * (a' * b)`. Establish `h1 : algebraMap Ω X.K κ * (a * b') = algebraMap Ω X.K κ * (algebraMap Ω X.K (κ' / κ) * (a' * b))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc (algebraMap Ω X.K κ) (algebraMap Ω X.K (κ' / κ)), ← map_mul, hκl]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_left_cancel₀ ((map_ne_zero _).2 hκ) h1`. Establish `v1 : IsVal j n ψ (X.exp (a * b')) (xa * xb')`. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `val_mul hclo hreb (supp_exp haK) (supp_exp hbK') ha hb'`. Establish `v2 : IsVal j n ψ (X.exp (algebraMap Ω X.K (κ' / κ) * (a' * b))) (j (κ' / κ) * (xa' * xb))`. Rewrite using `[map_mul, AlgHom.commutes, map_mul]`. Conclude with `val_smul hclo hreb _ ((hint _).1 hl) (halg _) (val_mul hclo hreb (supp_exp haK') (supp_exp hbK) ha' hb)`. Rewrite `v1` using `[hK]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e` using `val_uniq hclo hreb v1 v2`. Rewrite using `[← hκl, map_mul]`. Take the linear combination `(j κ) * e`.
+A detailed English derivation is pending.
 -/
 theorem cross (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) (hint : ∀ z, z ∈ A ↔ IsInt p (j z))
     (halg : ∀ z, IsAlgZp p (j z)) {y a b a' b' : X.K} {κ κ' : Ω} {S S' : Finset Ω} {xa xb xa' xb' : Ωl}
@@ -467,9 +459,9 @@ theorem cross (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) (hint : ∀ z, z ∈ A 
   linear_combination (j κ) * e
 
 /- English proof (translation)
-Take `⟨a, b, κ, S, xa, xb, hG, ha, hb, hxb, rfl⟩` from `hv`. Take `⟨a', b', κ', S', xa', xb', hG', ha', hb', hxb', rfl⟩` from `hw`. Rewrite using `[div_eq_div_iff hxb hxb']`. Break down `A.mem_or_inv_mem (κ' / κ) with h | h` into its components or cases. Conclude with `cross hclo hreb hint halg hG hG' h ha hb ha' hb'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[inv_div]`. Conclude with `(cross hclo hreb hint halg hG' hG h ha' hb' ha hb).symm`.
+A detailed English derivation is pending.
 -/
 theorem isQ_uniq (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) (hint : ∀ z, z ∈ A ↔ IsInt p (j z))
     (halg : ∀ z, IsAlgZp p (j z)) {y : X.K} {v w : Ωl}
@@ -483,11 +475,11 @@ theorem isQ_uniq (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) (hint : ∀ z, z ∈
     exact (cross hclo hreb hint halg hG' hG h ha' hb' ha hb).symm
 
 /- English proof (translation)
-Take `⟨a1, b1, κ1, S1, xa1, xb1, ⟨hκ1, ha1K, hb1K, hr1, hc1⟩, ha1, hb1, hxb1, rfl⟩` from `h1`. Take `⟨a2, b2, κ2, S2, xa2, xb2, ⟨hκ2, ha2K, hb2K, hr2, hc2⟩, ha2, hb2, hxb2, rfl⟩` from `h2`. Use `⟨a1 * a2, b1 * b2, κ1 * κ2, S1 ∪ S2, xa1 * xa2, xb1 * xb2, ⟨mul_ne_zero hκ1 hκ2, mul_mem ha1K ha2K, mul_mem hb1K hb2K, ?_, fun r => ⟨?_, ?_⟩⟩, ?_, ?_, mul_ne_zero hxb1 hxb2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Take the linear combination `(y2 * b2) * hr1 + (algebraMap Ω X.K κ1 * a1) * hr2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[map_mul]`. Conclude with `coeff_mul_mem _ (fun r => RS_mono Finset.subset_union_left (hc1 r).1) (fun r => RS_mono Finset.subset_union_right (hc2 r).1) r`. Rewrite using `[map_mul]`. Conclude with `coeff_mul_mem _ (fun r => RS_mono Finset.subset_union_left (hc1 r).2) (fun r => RS_mono Finset.subset_union_right (hc2 r).2) r`. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `val_mul hclo hreb (supp_exp ha1K) (supp_exp ha2K) ha1 ha2`. Rewrite using `[map_mul]`. Conclude with `val_mul hclo hreb (supp_exp hb1K) (supp_exp hb2K) hb1 hb2`. Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem isQ_mul (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) {y1 y2 : X.K} {v1 v2 : Ωl}
     (h1 : IsQ X A j n ψ y1 v1) (h2 : IsQ X A j n ψ y2 v2) : IsQ X A j n ψ (y1 * y2) (v1 * v2) := by
@@ -511,15 +503,13 @@ theorem isQ_mul (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) {y1 y2 : X.K} {v1 v2 
     field_simp
 
 /- English proof (translation)
-Take `⟨hκ1, ha1K, hb1K, hr1, hc1⟩` from `hG1`. Take `⟨hκ2, ha2K, hb2K, hr2, hc2⟩` from `hG2`. Establish `hκl : κ1 * (κ2 / κ1) = κ2` using `by field_simp`. Establish `hκl' : algebraMap Ω X.K κ1 * algebraMap Ω X.K (κ2 / κ1) = algebraMap Ω X.K κ2`. Rewrite using `[← map_mul, hκl]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `s1 : S1 ⊆ S1 ∪ S2 ∪ {κ2 / κ1}` using `Finset.subset_union_left.trans Finset.subset_union_left`. Establish `s2 : S2 ⊆ S1 ∪ S2 ∪ {κ2 / κ1}` using `Finset.subset_union_right.trans Finset.subset_union_left`. Establish `hlR : κ2 / κ1 ∈ RS A (S1 ∪ S2 ∪ {κ2 / κ1})` using `⟨hl, IntermediateField.subset_adjoin ℚ _ (by simp)⟩`. Use `⟨a1 * b2 + algebraMap Ω X.K (κ2 / κ1) * (a2 * b1), b1 * b2, κ1, S1 ∪ S2 ∪ {κ2 / κ1}, xa1 * xb2 + j (κ2 / κ1) * (xa2 * xb1), xb1 * xb2, ⟨hκ1, ?_, mul_mem hb1K hb2K, ?_, fun r => ⟨?_, ?_⟩⟩, ?_, ?_, mul_ne_zero hxb1 hxb2, ?_⟩` and prove the remaining obligations. Conclude with `add_mem (mul_mem ha1K hb2K) (mul_mem (alg_mem_KT X _ _) (mul_mem ha2K hb1K))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `b2 * hr1 + b1 * hr2 - (a2 * b1) * hκl'`. Rewrite using `[map_add, map_mul, map_mul, AlgHom.commutes, map_mul, HahnSeries.coeff_add, coeff_algebraMap_mul]`. Conclude with `add_mem (coeff_mul_mem _ (fun r => RS_mono s1 (hc1 r).1) (fun r => RS_mono s2 (hc2 r).2) r) (mul_mem hlR (coeff_mul_mem _ (fun r => RS_mono s2 (hc2 r).1) (fun r => RS_mono s1 (hc1 r).2) r))`. Rewrite using `[map_mul]`. Conclude with `coeff_mul_mem _ (fun r => RS_mono s1 (hc1 r).2) (fun r => RS_mono s2 (hc2 r).2) r`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_add, map_mul, map_mul, AlgHom.commutes, map_mul]`. Conclude with `val_add hclo hreb (val_mul hclo hreb (supp_exp ha1K) (supp_exp hb2K) ha1 hb2) (val_smul hclo hreb _ ((hint _).1 hl) (halg _) (val_mul hclo hreb (supp_exp ha2K) (supp_exp hb1K) ha2 hb1))`. Rewrite using `[map_mul]`. Conclude with `val_mul hclo hreb (supp_exp hb1K) (supp_exp hb2K) hb1 hb2`. Establish `e : j κ2 = j κ1 * j (κ2 / κ1)` using `by rw [← map_mul, hκl]`.
-
-Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem isLocalValueOfQuotient_add_of_common_denominator (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) (hint : ∀ z, z ∈ A ↔ IsInt p (j z))
     (halg : ∀ z, IsAlgZp p (j z)) {y1 y2 a1 b1 a2 b2 : X.K} {κ1 κ2 : Ω} {S1 S2 : Finset Ω}
@@ -558,9 +548,9 @@ theorem isLocalValueOfQuotient_add_of_common_denominator (hclo : IsClo p Ωl) (h
     field_simp
 
 /- English proof (translation)
-Take `⟨a1, b1, κ1, S1, xa1, xb1, hG1, ha1, hb1, hxb1, rfl⟩` from `h1`. Take `⟨a2, b2, κ2, S2, xa2, xb2, hG2, ha2, hb2, hxb2, rfl⟩` from `h2`. Break down `A.mem_or_inv_mem (κ2 / κ1) with h | h` into its components or cases. Conclude with `isLocalValueOfQuotient_add_of_common_denominator hclo hreb hint halg hG1 hG2 ha1 hb1 ha2 hb2 hxb1 hxb2 h`. Rewrite `h` using `[inv_div]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[add_comm y1 y2, add_comm (j κ1 * xa1 / xb1)]`. Conclude with `isLocalValueOfQuotient_add_of_common_denominator hclo hreb hint halg hG2 hG1 ha2 hb2 ha1 hb1 hxb2 hxb1 h`.
+A detailed English derivation is pending.
 -/
 theorem isQ_add (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) (hint : ∀ z, z ∈ A ↔ IsInt p (j z))
     (halg : ∀ z, IsAlgZp p (j z)) {y1 y2 : X.K} {v1 v2 : Ωl}
@@ -574,7 +564,7 @@ theorem isQ_add (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) (hint : ∀ z, z ∈ 
     exact isLocalValueOfQuotient_add_of_common_denominator hclo hreb hint halg hG2 hG1 ha2 hb2 ha1 hb1 hxb2 hxb1 h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 1, 1, ∅, 0, 1, ⟨one_ne_zero, zero_mem _, one_mem _, by simp, fun r => ⟨by rw [map_zero, HahnSeries.coeff_zero]; exact zero_mem _, by rw [map_one]; exact coeff_one_mem _ r⟩⟩, by rw [map_zero]; exact val_zero, by rw [map_one]; exact val_one, one_ne_zero, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isQ_zero : IsQ X A j n ψ 0 0 :=
   ⟨0, 1, 1, ∅, 0, 1, ⟨one_ne_zero, zero_mem _, one_mem _, by simp,
@@ -583,7 +573,7 @@ theorem isQ_zero : IsQ X A j n ψ 0 0 :=
     by rw [map_zero]; exact val_zero, by rw [map_one]; exact val_one, one_ne_zero, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, 1, 1, ∅, 1, 1, ⟨one_ne_zero, one_mem _, one_mem _, by simp, fun r => ⟨by rw [map_one]; exact coeff_one_mem _ r, by rw [map_one]; exact coeff_one_mem _ r⟩⟩, by rw [map_one]; exact val_one, by rw [map_one]; exact val_one, one_ne_zero, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isQ_one : IsQ X A j n ψ 1 1 :=
   ⟨1, 1, 1, ∅, 1, 1, ⟨one_ne_zero, one_mem _, one_mem _, by simp,
@@ -591,13 +581,11 @@ theorem isQ_one : IsQ X A j n ψ 1 1 :=
     by rw [map_one]; exact val_one, by rw [map_one]; exact val_one, one_ne_zero, by simp⟩
 
 /- English proof (translation)
-Distinguish the cases in `h0 : y = 0`. Conclude with `⟨0, h0 ▸ isQ_zero⟩`. Take `⟨a, b, κ, S, hκ, hrel, hPa, hPb, hinv, hS⟩` from `GlobalTheory.T.exists_primitive_expansion_quotient_level_one ε X hX p A hpA y h0`. Establish `hbK : b ∈ KT X (p ^ n)`. Rewrite using `[KT, RingHom.mem_eqLocusField]`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hinv _`. Establish `haK : a ∈ KT X (p ^ n)`. Establish `e : a = algebraMap Ω X.K κ⁻¹ * (y * b)`. Rewrite using `[hrel, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hκ, map_one, one_mul]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_mem (alg_mem_KT X _ _) (mul_mem hy hbK)`. Establish `hca : ∀ r, (X.exp a).coeff r ∈ RS A S` using `fun r => ⟨hPa.1 r, (hS r).1⟩`. Establish `hcb : ∀ r, (X.exp b).coeff r ∈ RS A S` using `fun r => ⟨hPb.1 r, (hS r).2⟩`. Take `⟨xa, hxa⟩` from `val_exists (n := n) (ψ := ψ) hclo hint halg hca`. Take `⟨xb, hxb⟩` from `val_exists (n := n) (ψ := ψ) hclo hint halg hcb`.
-
-Conclude with `⟨_, a, b, κ, S, xa, xb, ⟨hκ, haK, hbK, hrel, fun r => ⟨hca r, hcb r⟩⟩, hxa, hxb, val_ne hclo hreb hint hPb (supp_exp hbK) hxb, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isQ_exists (hX : ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero))
     (hpA : ((p : ℕ) : Ω) ∈ A.nonunits) (hclo : IsClo p Ωl) (hreb : IsReb T n ψ)
@@ -622,15 +610,15 @@ theorem isQ_exists (hX : ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.
     val_ne hclo hreb hint hPb (supp_exp hbK) hxb, rfl⟩
 
 /- English proof (translation)
-Take `⟨a, b, κ, S, xa, xb, ⟨hκ, haK, hbK, hrel, hc⟩, ha, hb, hxb, rfl⟩` from `h`. Establish `hA : ∀ z ∈ A, s z ∈ A` using `fun z hz => (hint _).2 (by rw [← hgs]; exact GlobalTheory.K5.Basic.isInt_gal g ((hint z).1 hz))`. Establish `hS : ∀ z ∈ IntermediateField.adjoin ℚ (S : Set Ω), s z ∈ IntermediateField.adjoin ℚ ((S.image s : Finset Ω) : Set Ω)`. Introduce `z hz`. Establish `e` using `IntermediateField.adjoin_map ℚ (S : Set Ω) (s : Ω →ₐ[ℚ] Ω)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Finset.coe_image]`. Conclude with `e.le ⟨z, hz, rfl⟩`. Establish `hR : ∀ z ∈ RS A S, s z ∈ RS A (S.image s)` using `fun z hz => ⟨hA z hz.1, hS z hz.2⟩`. Establish `hKT : ∀ c ∈ KT X (p ^ n), X.gal s c ∈ KT X (p ^ n)`. Introduce `c hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hc`, the goal using `[mem_KT_iff']`. Introduce `r hr`. Apply `hc r` to reduce the goal to its premises. Introduce `h0`. Apply `hr` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[X.gal_exp, h0, map_zero]`. Use `⟨X.gal s a, X.gal s b, s κ, S.image s, g xa, g xb, ⟨(map_ne_zero s).2 hκ, hKT a haK, hKT b hbK, ?_, fun r => ⟨?_, ?_⟩⟩, val_gal hclo hreb g s hq hgs (X.gal_exp s a) ha, val_gal hclo hreb g s hq hgs (X.gal_exp s b) hb, (map_ne_zero g).2 hxb, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, hrel, map_mul, gal_alg]`. Rewrite using `[X.gal_exp]`. Conclude with `hR _ (hc r).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[X.gal_exp]`. Conclude with `hR _ (hc r).2`. Rewrite using `[map_div₀, map_mul, hgs]`.
+A detailed English derivation is pending.
 -/
 theorem isQ_gal (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) (hint : ∀ z, z ∈ A ↔ IsInt p (j z))
     (g : Gal p Ωl) (s : Ω ≃ₐ[ℚ] Ω) (hq : g (T.qq n) = T.qq n) (hgs : ∀ x, g (j x) = j (s x))
@@ -666,11 +654,11 @@ theorem isQ_gal (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) (hint : ∀ z, z ∈ 
 end Glob
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X hX p _ _ A hpA Ωl _ _ hclo T j hcusp n ψ hreb`. Establish `hint` using `hcusp.int`. Establish `halg` using `hcusp.alg`. Use `choose io hio using fun y : KT X (p ^ n) => isQ_exists hX hpA hclo hreb hint halg (y : X.K) y.2`. Use `⟨{ toFun := io map_one' := isQ_uniq hclo hreb hint halg (hio 1) isQ_one map_mul' := fun y1 y2 => isQ_uniq hclo hreb hint halg (hio (y1 * y2)) (isQ_mul hclo hreb (hio y1) (hio y2)) map_zero' := isQ_uniq hclo hreb hint halg (hio 0) isQ_zero map_add' := fun y1 y2 => isQ_uniq hclo hr …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y S hy`. Take `⟨x, hx⟩` from `val_exists (n := n) (ψ := ψ) hclo hint halg (S := S) (fun r => mem_RS.2 (hy r))`. Establish `hQ : IsQ X A j n ψ (y : X.K) x` using `⟨y, 1, 1, S, x, 1, ⟨one_ne_zero, y.2, one_mem _, by simp, fun r => ⟨mem_RS.2 (hy r), by rw [map_one]; exact coeff_one_mem _ r⟩⟩, hx, by rw [map_one]; exact val_one, one_ne_zero, by simp⟩`. Rewrite `hx` using `[← isQ_uniq hclo hreb hint halg (hio y) hQ]`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g s hq hgs y y' hy'`. Establish `h1` using `isQ_gal hclo hreb hint g s hq hgs (hio y)`. Rewrite `h1` using `[← hy']`. Conclude with `isQ_uniq hclo hreb hint halg h1 (hio y')`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isIo : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : GlobalTheory.KZ.Tower Ω ε), (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) →
   ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (A : ValuationSubring Ω), ((p : ℕ) : Ω) ∈ A.nonunits → ∀ (Ωl : Type) [Field Ωl] [Algebra (O0 p) Ωl], IsClo p Ωl → ∀ (T : GlobalTheory.K5.Tower p Ωl) (j : Ω →+* Ωl), IsCusp ε A T j → ∀ (n : ℕ) (ψ : O0 p →+* Ωl), IsReb T n ψ → ∃ io : KT X (p ^ n) →+* Ωl, IsIo X A T j n ψ io := by

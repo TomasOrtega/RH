@@ -13,7 +13,7 @@ section
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hfl` using `fun r (hr : 0 < r) => GlobalTheory.TateLimit.finite_level D e hP hc r hr`. Establish `hcok` using `GlobalTheory.TateLimit.ptCokerAt D e hF hT (fun r hr => (hfl r hr).1) (fun r hr => (hfl r hr).2.1) (hfl 1 one_pos).2.2`. Establish `hsha` using `GlobalTheory.TateLimit.ptShaAt D e hF hT (fun r hr => (hfl r hr).1) (fun r hr => (hfl r hr).2.1) (hfl 1 one_pos).2.2`. Establish `h` using `vFormula F Ω l D e hc hcok hsha (GlobalTheory.TateLimit.local_tate_duality_h2_limit hF hT D e)`. Rewrite `h` using `[length_H0_global_eq_nu]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem vFormula_of_classicalTheorems (hP : GlobalTheory.Published.PoitouTateDuality) (hF : LocalFinitenessK) (hT : LocalTateDualityK)
     (hc : PTCase F l) (D : LData F Ω l) (e : ℤ) :
@@ -27,13 +27,13 @@ theorem vFormula_of_classicalTheorems (hP : GlobalTheory.Published.PoitouTateDua
   rwa [length_H0_global_eq_nu] at h
 
 /- English proof (translation)
-The claim follows from `Or.inr (NumberField.nrRealPlaces_eq_zero_iff.2 inferInstance)`.
+Prove the second alternative.
 -/
 theorem ptCase_of_isTotallyComplex (F : Type) [Field F] [NumberField F] [IsTotallyComplex F] (l : ℕ) : PTCase F l :=
   Or.inr (NumberField.nrRealPlaces_eq_zero_iff.2 inferInstance)
 
 /- English proof (translation)
-Rewrite using `[← vFormula_of_classicalTheorems hP hF hT hc]`. Conclude with `le_self_add`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VLen_le_shaLen_add (hP : GlobalTheory.Published.PoitouTateDuality) (hF : LocalFinitenessK) (hT : LocalTateDualityK)
     (hc : PTCase F l) (D : LData F Ω l) (e : ℤ) : VLen D e ≤ shaLen D e + sumLocalH0TwistLength D e := by

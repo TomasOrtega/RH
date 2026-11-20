@@ -18,17 +18,15 @@ section Normed
 variable {L : Type*} [NontriviallyNormedField L]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `set e := g.natDegree`. Establish `hsum : aeval x g = x ^ e + ∑ i ∈ Finset.range e, algebraMap L C (g.coeff i) * x ^ i`. Rewrite using `[aeval_eq_sum_range, Finset.sum_range_succ, hg.coeff_natDegree, one_smul, add_comm]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [Algebra.smul_def]`. Both sides reduce to the same expression. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `h` using `[norm_zero]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ‖∑ i ∈ Finset.range e, algebraMap L C (g.coeff i) * x ^ i‖ < ‖x ^ e‖`. Break down `(Finset.range e).eq_empty_or_nonempty with he | he` into its components or cases. Rewrite using `[he, Finset.sum_empty, norm_zero, norm_pow]`. Conclude with `pow_pos (norm_pos_iff.2 hx0) _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, hi, hle⟩` from `IsUltrametricDist.exists_norm_finsetSum_le_of_nonempty he (fun i ↦ algebraMap L C (g.coeff i) * x ^ i)`. Use `hle.trans_lt ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_algebraMap', norm_pow, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hc i`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `_ < ‖x‖ ^ e := by`. Rewrite using `[one_mul]`. Conclude with `pow_lt_pow_right₀ h (Finset.mem_range.1 hi)`. Establish `h2 : x ^ e = -∑ i ∈ Finset.range e, algebraMap L C (g.coeff i) * x ^ i`. Rewrite `hx` using `[hsum]`.
-
-Conclude with `eq_neg_of_add_eq_zero_left hx`. Rewrite `h1` using `[h2, norm_neg]`. Conclude with `lt_irrefl _ h1`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_aeval_eq_zero {C : Type*} [NormedField C] [IsUltrametricDist C]
     [NormedAlgebra L C] {g : L[X]} (hg : g.Monic) (hc : ∀ i, ‖g.coeff i‖ ≤ 1) {x : C}
@@ -67,39 +65,33 @@ theorem norm_le_one_of_aeval_eq_zero {C : Type*} [NormedField C] [IsUltrametricD
 variable [CompleteSpace L] [IsUltrametricDist L]
 
 /- English proof (translation)
-Set `C` to `AlgebraicClosure L`. Set `: NontriviallyNormedField C` to `spectralNorm.nontriviallyNormedField L C`. Set `: NormedAlgebra L C` to `spectralNorm.normedAlgebra L C`. Establish `: IsUltrametricDist C` using `IsUltrametricDist.of_normedAlgebra L`. Use `set R : Finset C := (f.map (algebraMap L C)).roots.toFinset with hR`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D : Finset ℝ := ((R ×ˢ R).filter (fun p ↦ p.1 ≠ p.2)).image (fun p ↦ ‖p.1 - p.2‖) with hD`. Use `set r : ℝ := if h : D.Nonempty then D.min' h else 1 with hr_def`. Establish `hDpos : ∀ d ∈ D, 0 < d`. Introduce `d hd`. Take `⟨⟨a, b⟩, hab, rfl⟩` from `Finset.mem_image.1 hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `norm_pos_iff.2 (sub_ne_zero.2 (Finset.mem_filter.1 hab).2)`. Establish `hr : 0 < r`. Rewrite using `[hr_def]`. Use `split_ifs with h`. Conclude with `hDpos _ (D.min'_mem h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `one_pos`. Establish `hrle : ∀ a ∈ R, ∀ b ∈ R, a ≠ b → r ≤ ‖a - b‖`. Introduce `a ha b hb hab`. Establish `hmem : ‖a - b‖ ∈ D` using `Finset.mem_image.2 ⟨(a, b), Finset.mem_filter.2 ⟨Finset.mem_product.2 ⟨ha, hb⟩, hab⟩, rfl⟩`. Rewrite using `[hr_def, dif_pos ⟨_, hmem⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `D.min'_le _ hmem`. Use `⟨r ^ f.natDegree, pow_pos hr _, ?_⟩` and prove the remaining obligations. Introduce `g hgm hdeg hgc hclose β hβ`. Establish `hβint : IsIntegral L β` using `⟨g, hgm, by rwa [← aeval_def]⟩`. Establish `: FiniteDimensional L L⟮β⟯` using `adjoin.finiteDimensional hβint`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ψ : L⟮β⟯ →ₐ[L] C` to `IsAlgClosed.lift`. Use `set β' : C := ψ (AdjoinSimple.gen L β) with hβ'_def`. Establish `hgen : aeval (AdjoinSimple.gen L β) g = 0`. Apply `(algebraMap L⟮β⟯ Ω').injective` to reduce the goal to its premises. Rewrite using `[← aeval_algebraMap_apply, IntermediateField.algebraMap_apply, AdjoinSimple.coe_gen, hβ, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hβ' : aeval β' g = 0`. Rewrite using `[hβ'_def, aeval_algHom_apply, hgen, map_zero]`. Establish `hnorm : ‖β'‖ ≤ 1` using `norm_le_one_of_aeval_eq_zero hgm hgc hβ'`. Establish `hsmall : ‖aeval β' f‖ < r ^ f.natDegree`. Establish `hfg : aeval β' f = aeval β' (f - g)` using `by rw [map_sub, hβ', sub_zero]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg' : (f - g).natDegree < f.natDegree + 1` using `Nat.lt_succ_of_le ((natDegree_sub_le f g).trans (by rw [hdeg, max_self]))`. Rewrite using `[hfg, aeval_eq_sum_range' hdeg']`. Take `⟨i, -, hle⟩` from `IsUltrametricDist.exists_norm_finsetSum_le_of_nonempty ⟨0, Finset.mem_range.2 (Nat.succ_pos _)⟩ (fun i ↦ (f - g).coeff i • β' ^ i)`. Use `hle.trans_lt ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, norm_mul, norm_algebraMap', norm_pow, coeff_sub, norm_sub_rev]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `pow_le_one₀ (norm_nonneg _) hnorm`. Use `_ < r ^ f.natDegree := by rw [mul_one]; exact hclose i`. Establish `hsplit : (f.map (algebraMap L C)).Splits` using `IsAlgClosed.splits _`. Establish `hnodup : (f.map (algebraMap L C)).roots.Nodup` using `nodup_roots (hsep.map)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : R.card = f.natDegree`. Rewrite using `[hR, Multiset.toFinset_card_of_nodup hnodup, ← hsplit.natDegree_eq_card_roots, natDegree_map]`. Establish `heval : aeval β' f = ∏ a ∈ R, (β' - a)`. Rewrite using `[aeval_def, eval₂_eq_eval_map, hsplit.eval_eq_prod_roots_of_monic (hm.map _), hR, Finset.prod_eq_multiset_prod, Multiset.toFinset_val, hnodup.dedup]`. Choose the witnesses or unpack the hypotheses as in `⟨a, haR, ha⟩ : ∃ a ∈ R, ‖β' - a‖ < r := by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `: r ^ f.natDegree ≤ ‖aeval β' f‖`. Rewrite using `[heval, norm_prod, ← hcard, ← Finset.prod_const]`. Conclude with `Finset.prod_le_prod (fun _ _ ↦ hr.le) hcon`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd hsmall (not_lt.2 this)`. Establish `hfC : f.map (algebraMap L C) ≠ 0` using `(hm.map _).ne_zero`. Establish `haroot : aeval a f = 0`. Use `(mem_roots hfC).1 (Multiset.mem_toFinset.1 haR)` as an intermediate fact. Rewrite `this` using `[IsRoot, eval_map_algebraMap]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hmin : minpoly L a = f` using `(minpoly.eq_of_irreducible_of_monic hirr haroot hm).symm`. Establish `hkr : a ∈ L⟮β'⟯`. Use `IsKrasner.krasner (by rw [hmin]; exact hsep) (by rw [hmin]; exact IsAlgClosed.splits _) (Algebra.IsIntegral.isIntegral β') (fun x' hx' hne ↦ ?_)` and prove the remaining obligations. Establish `hx'root : aeval x' f = 0`. Rewrite using `[← hmin, isConjRoot_def.1 hx']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `minpoly.aeval L x'`. Establish `hx'R : x' ∈ R`. Rewrite using `[hR, Multiset.mem_toFinset, mem_roots hfC, IsRoot, eval_map_algebraMap]`. Conclude with `hx'root`. Rewrite using `[norm_sub_rev]`.
-
-Conclude with `ha.trans_le (hrle a haR x' hx'R hne)`. Establish `hrange : L⟮β'⟯ ≤ ψ.fieldRange` using `adjoin_simple_le_iff.2 (AlgHom.mem_fieldRange.2 ⟨_, rfl⟩)`. Take `⟨y, hy⟩` from `AlgHom.mem_fieldRange.1 (hrange hkr)`. Establish `hy0 : aeval y f = 0`. Establish `h' : ψ (aeval y f) = 0` using `by rw [← aeval_algHom_apply, hy, haroot]`.
-
-Simplify using `using h'`. Establish `hα : aeval (y : Ω') f = 0`. Use `aeval_algebraMap_apply Ω' y f` as an intermediate fact. Rewrite `this` using `[hy0, map_zero]`. Conclude with `this`.
-
-Use `⟨(y : Ω'), hα, ?_⟩` and prove the remaining obligations. Establish `hαint : IsIntegral L (y : Ω')` using `⟨f, hm, by rwa [← aeval_def]⟩`. Use `eq_of_le_of_finrank_le (adjoin_simple_le_iff.2 y.2) ?_` and prove the remaining obligations. Rewrite using `[adjoin.finrank hβint, adjoin.finrank hαint, ← minpoly.eq_of_irreducible_of_monic hirr hα hm, ← hdeg]`. Conclude with `natDegree_le_natDegree (minpoly.degree_le_of_ne_zero L β hgm.ne_zero hβ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adjoin_eq_of_norm_coeff_sub_lt (f : L[X]) (hm : f.Monic) (hirr : Irreducible f)
     (hsep : f.Separable) (Ω' : Type*) [Field Ω'] [Algebra L Ω'] :
@@ -215,7 +207,7 @@ variable {R : Type*} [CommRing R]
 def monicOfCoeffs {n : ℕ} (c : Fin n → R) : R[X] := X ^ n + ∑ i : Fin n, C (c i) * X ^ (i : ℕ)
 
 /- English proof (translation)
-Rewrite using `[finsetSum_coeff]`. Simplify using `only [coeff_C_mul_X_pow]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨k, h⟩ (fun j _ hj ↦ if_neg fun hk ↦ hj (Fin.ext hk.symm)) (fun h' ↦ absurd (Finset.mem_univ _) h'), if_pos rfl]`. Conclude with `Finset.sum_eq_zero fun j _ ↦ if_neg fun (hk : k = (j : ℕ)) ↦ h (hk ▸ j.2)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_sum_fin_C_mul_X_pow {n : ℕ} (c : Fin n → R) (k : ℕ) :
     (∑ i : Fin n, C (c i) * X ^ (i : ℕ)).coeff k = if h : k < n then c ⟨k, h⟩ else 0 := by
@@ -228,13 +220,13 @@ theorem coeff_sum_fin_C_mul_X_pow {n : ℕ} (c : Fin n → R) (k : ℕ) :
   · exact Finset.sum_eq_zero fun j _ ↦ if_neg fun (hk : k = (j : ℕ)) ↦ h (hk ▸ j.2)
 
 /- English proof (translation)
-The claim follows from `monic_X_pow_add (degree_sum_fin_lt c)`.
+A detailed English derivation is pending.
 -/
 theorem monic_monicOfCoeffs {n : ℕ} (c : Fin n → R) : (monicOfCoeffs c).Monic :=
   monic_X_pow_add (degree_sum_fin_lt c)
 
 /- English proof (translation)
-Rewrite using `[monicOfCoeffs, natDegree_add_eq_left_of_degree_lt (by rw [degree_X_pow]; exact degree_sum_fin_lt c), natDegree_X_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natDegree_monicOfCoeffs [Nontrivial R] {n : ℕ} (c : Fin n → R) :
     (monicOfCoeffs c).natDegree = n := by
@@ -242,7 +234,7 @@ theorem natDegree_monicOfCoeffs [Nontrivial R] {n : ℕ} (c : Fin n → R) :
     natDegree_X_pow]
 
 /- English proof (translation)
-Use `conv_lhs => rw [hg.as_sum, hn]`. Rewrite using `[monicOfCoeffs, Fin.sum_univ_eq_sum_range (fun i ↦ C (g.coeff i) * X ^ i) n]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_monicOfCoeffs {g : R[X]} (hg : g.Monic) {n : ℕ} (hn : g.natDegree = n) :
     g = monicOfCoeffs (fun i : Fin n ↦ g.coeff i) := by
@@ -250,7 +242,7 @@ theorem eq_monicOfCoeffs {g : R[X]} (hg : g.Monic) {n : ℕ} (hn : g.natDegree =
   rw [monicOfCoeffs, Fin.sum_univ_eq_sum_range (fun i ↦ C (g.coeff i) * X ^ i) n]
 
 /- English proof (translation)
-Rewrite using `[monicOfCoeffs, monicOfCoeffs, add_sub_add_left_eq_sub, ← Finset.sum_sub_distrib]`. Simplify using `only [C_sub, sub_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem monicOfCoeffs_sub_monicOfCoeffs {n : ℕ} (c d : Fin n → R) :
     monicOfCoeffs c - monicOfCoeffs d = ∑ i : Fin n, C (c i - d i) * X ^ (i : ℕ) := by

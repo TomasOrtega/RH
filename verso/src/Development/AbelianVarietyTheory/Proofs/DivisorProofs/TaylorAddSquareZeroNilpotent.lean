@@ -15,13 +15,13 @@ variable {I R D : Type*} [Fintype I] [DecidableEq I] [CommRing R] [CommRing D] [
 omit [DecidableEq I] in
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p j hp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Establish `h1 : (∑ i, MvPolynomial.aeval t (MvPolynomial.pderiv i p) * n i) * n j = 0`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [mul_assoc, hn, mul_zero]`. Establish `h2 : ∑ i, MvPolynomial.aeval t (MvPolynomial.pderiv i (p * MvPolynomial.X j)) * n i = (∑ i, MvPolynomial.aeval t (MvPolynomial.pderiv i p) * n i) * t j + MvPolynomial.aeval t p * n j`. Establish `h3 : ∀ i, MvPolynomial.aeval t (MvPolynomial.pderiv i (p * MvPolynomial.X j)) * n i = MvPolynomial.aeval t (MvPolynomial.pderiv i p) * n i * t j + if j = i then MvPolynomial.aeval t p * n i else 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[MvPolynomial.pderiv_mul, map_add, map_mul, map_mul, MvPolynomial.aeval_X, MvPolynomial.pderiv_X, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp <;> ring`. Simplify using `only [h3, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_mul]`. Rewrite using `[map_mul, map_mul, hp, h2, MvPolynomial.aeval_X, MvPolynomial.aeval_X]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h1`.
+A detailed English derivation is pending.
 -/
 theorem mvAeval_add_of_mul_eq_zero (t n : I → D) (hn : ∀ i j, n i * n j = 0)
     (P : MvPolynomial I R) :
@@ -51,9 +51,9 @@ theorem mvAeval_add_of_mul_eq_zero (t n : I → D) (hn : ∀ i j, n i * n j = 0)
     linear_combination h1
 
 /- English proof (translation)
-Establish `h : MvPowerSeries.truncTotal (N + 1) F = ∑ k ∈ Finset.range (N + 1), ∑ m ∈ Finset.finsuppAntidiag (Finset.univ : Finset I) k, MvPolynomial.monomial m (MvPowerSeries.coeff m F)`. Use extensionality with `d`. Rewrite using `[MvPowerSeries.coeff_truncTotal_eq_ite]`. Simplify using `only [MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial, Finset.sum_ite_eq', Finset.mem_finsuppAntidiag, Finset.subset_univ, and_true, Finset.sum_ite_eq, Finset.mem_range, Finsupp.degree_eq_sum]`. Rewrite using `[h, map_sum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_monomial, Finsupp.prod_fintype _ _ (by simp), Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_truncTotal_succ (N : ℕ) (t : I → D) (F : MvPowerSeries I R) :
     MvPolynomial.aeval t (MvPowerSeries.truncTotal (N + 1) F) =
@@ -76,7 +76,7 @@ theorem aeval_truncTotal_succ (N : ℕ) (t : I → D) (F : MvPowerSeries I R) :
 omit [Fintype I] [DecidableEq I] in
 
 /- English proof (translation)
-Rewrite using `[Submodule.pow_eq_span_pow_set, Submodule.span_eq_bot]`. Introduce `x hx`. Take `⟨f, rfl⟩` from `Set.mem_pow.1 hx`. Rewrite using `[List.prod_ofFn]`. Conclude with `h _ fun a => (f a).2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_pow_eq_bot_of_prod {J : Ideal D} {k : ℕ}
     (h : ∀ s : Fin k → D, (∀ a, s a ∈ J) → ∏ a, s a = 0) : J ^ k = ⊥ := by
@@ -89,11 +89,11 @@ theorem ideal_pow_eq_bot_of_prod {J : Ideal D} {k : ℕ}
 omit [DecidableEq I] in
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← sub_mul, ← map_sub, MvPolynomial.aeval_def, MvPolynomial.eval₂_eq', Finset.sum_mul]`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations. Establish `hdeg : N ≤ m.degree`. Assume the negation of the conclusion as `hlt`. Use `MvPolynomial.mem_support_iff.1 hm ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPolynomial.coeff_sub, MvPolynomial.coeff_pderiv, MvPowerSeries.coeff_truncTotal _ (by rw [map_add, Finsupp.degree_single]; omega), MvPowerSeries.coeff_truncTotal _ (by omega), MvPowerSeries.coeff_pderiv, sub_self]`. Establish `h1 : ∏ j, t j ^ m j ∈ J ^ N`. Use `Ideal.pow_le_pow_right hdeg ?_` and prove the remaining obligations. Rewrite using `[Finsupp.degree_eq_sum, ← Finset.prod_pow_eq_pow_sum]`. Conclude with `Ideal.prod_mem_prod fun j _ => Ideal.pow_mem_pow (ht j) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (∏ j, t j ^ m j) * x = 0`. Rewrite using `[← Ideal.mem_bot, ← hJ, pow_succ]`. Conclude with `Ideal.mul_mem_mul h1 hx`. Rewrite using `[mul_assoc, h2, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_pderiv_truncTotal_mul {J : Ideal D} {N : ℕ} (hJ : J ^ (N + 1) = ⊥) {t : I → D}
     (ht : ∀ i, t i ∈ J) {x : D} (hx : x ∈ J) (F : MvPowerSeries I R) (i : I) :
@@ -121,9 +121,9 @@ theorem aeval_pderiv_truncTotal_mul {J : Ideal D} {N : ℕ} (hJ : J ^ (N + 1) = 
 end Alg
 
 /- English proof (translation)
-Introduce `I _ _ D _ _ N t n hs hn f hf`. Establish `key : ∀ (u : I → D) (g : (I → ℂ) → ℂ), AnalyticAt ℂ g 0 → GlobalTheory.PeriodFamily.taylor N u g = MvPolynomial.aeval u (MvPowerSeries.truncTotal (N + 1) (GlobalTheory.taylor g))` using `fun u g hg => by`. Rewrite using `[aeval_truncTotal_succ, taylor_eq_sum_coeff_taylor N u g hg]`. Rewrite using `[key _ _ hf, key _ _ hf, mvAeval_add_of_mul_eq_zero t n hn]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[key _ _ (GlobalTheory.analyticAt_fderiv_apply hf _), GlobalTheory.taylor_fderiv hf]`. Conclude with `aeval_pderiv_truncTotal_mul (ideal_pow_eq_bot_of_prod hs) (fun j => Ideal.subset_span (Or.inl ⟨j, rfl⟩)) (Ideal.subset_span (Or.inr ⟨i, rfl⟩)) _ i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem taylor_add_of_mul_eq_zero : ∀ {I : Type} [Fintype I] [DecidableEq I] {D : Type} [CommRing D] [Algebra ℂ D] (N : ℕ) (t : I → D) (n : I → D), (∀ s : Fin (N + 1) → D, (∀ a, s a ∈ Ideal.span (Set.range t ∪ Set.range n)) → ∏ a, s a = 0) → (∀ i j, n i * n j = 0) → ∀ f : (I → ℂ) → ℂ, AnalyticAt ℂ f 0 → GlobalTheory.PeriodFamily.taylor N (fun i ↦ t i + n i) f = GlobalTheory.PeriodFamily.taylor N t f + ∑ i, GlobalTheory.PeriodFamily.taylor N t (fun z ↦ fderiv ℂ f z (Pi.single i 1)) * n i := by
   intro I _ _ D _ _ N t n hs hn f hf

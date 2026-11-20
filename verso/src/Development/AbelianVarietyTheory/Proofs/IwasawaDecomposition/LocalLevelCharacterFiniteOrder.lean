@@ -8,11 +8,11 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.ChEx
 
 /- English proof (translation)
-Use `set L : Subgroup ↥(GLint E n P) := lam.ker.map H.subtype with hL`. Establish `hfin : Finite (↥(GLint E n P) ⧸ L)` using `tfFinite_of_princ P N hN L fun g hg => ⟨⟨g, (hH g hg).choose⟩, (hH g hg).choose_spec, rfl⟩`. Establish `hLi : L.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Establish `hLH : L ≤ H` using `Subgroup.map_subtype_le _`. Establish `hrel` using `Subgroup.relIndex_mul_index hLH`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : L.subgroupOf H = lam.ker` using `Subgroup.comap_map_eq_self_of_injective H.subtype_injective _`. Establish `hki : lam.ker.index ≠ 0`. Introduce `h0`. Apply `hLi` to reduce the goal to its premises. Rewrite using `[← hrel, Subgroup.relIndex, hsub, h0, zero_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨lam.ker.index, Nat.pos_of_ne_zero hki, fun x => ?_⟩` and prove the remaining obligations. Use `Subgroup.pow_index_mem lam.ker x` as an intermediate fact. Rewrite `this` using `[MonoidHom.mem_ker, map_pow]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamExp_of_princ {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n : ℕ}
     (P : HeightOneSpectrum (𝓞 E)) (N : ℕ) (hN : 0 < N) (H : Subgroup ↥(GLint E n P)) (lam : ↥H →* Kˣ)
@@ -35,7 +35,7 @@ theorem lamExp_of_princ {E K : Type} [Field E] [NumberField E] [StarRing E] [Fie
   exact this
 
 /- English proof (translation)
-Take `⟨N, hN, hH⟩` from `hΘ P`. Take `⟨m, hm, hx⟩` from `lamExp_of_princ P.1 N hN (Θ P).H (Θ P).lam hH`. Conclude with `⟨m, hm, fun k => hx _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem qbLoc_chr_exp {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] [Field K] (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} [NeZero n] {Q : Finset (Pl E)} (Θ : LevQFam E K n Q) (hQ : ∀ P : Q, conjPrime₂ P.1 ≠ P.1) (hΘ : ThetaOpen Θ) (P : Q) : ∃ m : ℕ, 0 < m ∧ ∀ k, (qbLoc hc Θ hQ hΘ).chr P k ^ m = 1 := by
   obtain ⟨N, hN, hH⟩ := hΘ P

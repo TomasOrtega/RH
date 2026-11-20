@@ -11,7 +11,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace PositivityTheory.Rg.BcB.F.Tail
 
 /- English proof (translation)
-Introduce `E _ _ _ n D w K K' hle h`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 h`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 fun k hk => GlobalTheory.LGrp.mem_fixed.1 hv k (hle hk), hv0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sphMono : SphMono := by
   intro E _ _ _ n D w K K' hle h
@@ -20,7 +20,7 @@ theorem sphMono : SphMono := by
     ⟨v, GlobalTheory.LGrp.mem_fixed.2 fun k hk => GlobalTheory.LGrp.mem_fixed.1 hv k (hle hk), hv0⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ n D w B hB`. Take `⟨b, hb, -⟩` from `hB`. Conclude with `GlobalTheory.Rigid.isSpherical_locProd D.h w (D.σ · w) fun i => (hb i).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem satSph : SatSph := by
   intro E _ _ _ n D w B hB

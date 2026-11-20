@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `a k h`. Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot => exact bot_le`. Consider the case `coe a`. Proceed by induction on `a using ENat.recTopCoe with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `top`. It suffices to derive a contradiction. Establish `h1 : ((⊤ : ℕ∞) + 1 : ℕ∞) ≤ ((k + 1 : ℕ) : ℕ∞)`. Rewrite using `[← WithBot.coe_le_coe]`. Conclude with `h`.
+Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[top_add, top_le_iff]`. Conclude with `ENat.coe_ne_top _ h1`. Consider the case `coe n`. Establish `h1 : ((n : ℕ∞) + 1 : ℕ∞) ≤ ((k + 1 : ℕ) : ℕ∞)`. Rewrite using `[← WithBot.coe_le_coe]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Establish `h2 : n + 1 ≤ k + 1` using `by exact_mod_cast h1`. Establish `h3 : (n : ℕ∞) ≤ (k : ℕ∞)` using `by exact_mod_cast (Nat.le_of_succ_le_succ h2)`. Conclude with `WithBot.coe_le_coe.mpr h3`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qn14.le_of_add_one_le_succ :
     ∀ {a : WithBot ℕ∞} {k : ℕ},

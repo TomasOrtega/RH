@@ -16,7 +16,7 @@ def blockEmb (f N : ℕ) (σ : Fin f) : RootRing 1 N →ₐ[ℚ] RootRing f N :=
   rename (fun p : Fin 1 × Fin N => (σ, p.2))
 
 /- English proof (translation)
-Simplify using `only [blockPermute, blockEmb, rename_rename]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem blockPermute_blockEmb (f N : ℕ) (w : Fin f → Equiv.Perm (Fin N)) (σ : Fin f)
     (P : RootRing 1 N) :
@@ -29,9 +29,9 @@ def HasDD (f N : ℕ) (H P : RootRing f N) : Prop :=
   antisymmetrize f N H = blockVandermonde f N * P
 
 /- English proof (translation)
-Unfold `vandermondeOf`. Use `Finset.prod_ne_zero_iff.mpr fun i _ => Finset.prod_ne_zero_iff.mpr fun j hj => ?_` and prove the remaining obligations. Establish `hij : i ≠ j` using `(ne_of_lt (Finset.mem_Ioi.mp hj))`. Use `sub_ne_zero.mpr fun h => hij ?_` and prove the remaining obligations. Use `X_injective (R := ℚ) h` as an intermediate fact.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vandermondeOf_X_ne_zero (f N : ℕ) (τ : Fin f) :
     vandermondeOf (fun i : Fin N => (X (τ, i) : RootRing f N)) ≠ 0 := by
@@ -43,13 +43,13 @@ theorem vandermondeOf_X_ne_zero (f N : ℕ) (τ : Fin f) :
   simpa using this
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun τ _ => vandermondeOf_X_ne_zero f N τ`.
+A detailed English derivation is pending.
 -/
 theorem blockVandermonde_ne_zero (f N : ℕ) : blockVandermonde f N ≠ 0 :=
   Finset.prod_ne_zero_iff.mpr fun τ _ => vandermondeOf_X_ne_zero f N τ
 
 /- English proof (translation)
-Establish `hV : algebraMap (RootRing f N) (FractionRing (RootRing f N)) (blockVandermonde f N) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).mpr (blockVandermonde_ne_zero f N)`. Rewrite using `[dividedDifference, h, map_mul, mul_div_cancel_left₀ _ hV]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dividedDifference_eq_of_hasDD {f N : ℕ} {H P : RootRing f N} (h : HasDD f N H P) :
     dividedDifference f N H = algebraMap (RootRing f N) (FractionRing (RootRing f N)) P := by
@@ -58,7 +58,7 @@ theorem dividedDifference_eq_of_hasDD {f N : ℕ} {H P : RootRing f N} (h : HasD
   rw [dividedDifference, h, map_mul, mul_div_cancel_left₀ _ hV]
 
 /- English proof (translation)
-Establish `hV : algebraMap (RootRing f N) (FractionRing (RootRing f N)) (blockVandermonde f N) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).mpr (blockVandermonde_ne_zero f N)`. Rewrite `h` using `[dividedDifference, div_eq_iff hV, ← map_mul]`. Conclude with `IsFractionRing.injective _ _ (by rw [h, mul_comm])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDD_of_dividedDifference_eq {f N : ℕ} {H P : RootRing f N}
     (h : dividedDifference f N H = algebraMap (RootRing f N) (FractionRing (RootRing f N)) P) :
@@ -69,21 +69,21 @@ theorem hasDD_of_dividedDifference_eq {f N : ℕ} {H P : RootRing f N}
   exact IsFractionRing.injective _ _ (by rw [h, mul_comm])
 
 /- English proof (translation)
-Simplify using `[antisymmetrize, map_add, smul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem antisymmetrize_add (f N : ℕ) (H H' : RootRing f N) :
     antisymmetrize f N (H + H') = antisymmetrize f N H + antisymmetrize f N H' := by
   simp [antisymmetrize, map_add, smul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[antisymmetrize, map_smul, Finset.smul_sum, smul_comm b]`.
+Simplify using the standard rewrite rules.
 -/
 theorem antisymmetrize_smul (f N : ℕ) (b : ℚ) (H : RootRing f N) :
     antisymmetrize f N (b • H) = b • antisymmetrize f N H := by
   simp [antisymmetrize, map_smul, Finset.smul_sum, smul_comm b]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [antisymmetrize]`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, antisymmetrize_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem antisymmetrize_sum {ι : Type*} (s : Finset ι) (f N : ℕ) (H : ι → RootRing f N) :
     antisymmetrize f N (∑ i ∈ s, H i) = ∑ i ∈ s, antisymmetrize f N (H i) := by
@@ -93,21 +93,21 @@ theorem antisymmetrize_sum {ι : Type*} (s : Finset ι) (f N : ℕ) (H : ι → 
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, antisymmetrize_add, ih]
 
 /- English proof (translation)
-Rewrite using `[HasDD, antisymmetrize_add, h, h', mul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hasDD_add {f N : ℕ} {H H' P P' : RootRing f N} (h : HasDD f N H P) (h' : HasDD f N H' P') :
     HasDD f N (H + H') (P + P') := by
   rw [HasDD, antisymmetrize_add, h, h', mul_add]
 
 /- English proof (translation)
-Rewrite using `[HasDD, antisymmetrize_smul, h, mul_smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hasDD_smul {f N : ℕ} {H P : RootRing f N} (b : ℚ) (h : HasDD f N H P) :
     HasDD f N (b • H) (b • P) := by
   rw [HasDD, antisymmetrize_smul, h, mul_smul_comm]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [HasDD, antisymmetrize]`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `hasDD_add (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDD_sum {ι : Type*} (s : Finset ι) {f N : ℕ} {H P : ι → RootRing f N}
     (h : ∀ i ∈ s, HasDD f N (H i) (P i)) : HasDD f N (∑ i ∈ s, H i) (∑ i ∈ s, P i) := by
@@ -120,7 +120,7 @@ theorem hasDD_sum {ι : Type*} (s : Finset ι) {f N : ℕ} {H P : ι → RootRin
       (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Simplify using `[blockVandermonde, vandermondeOf, blockEmb, map_prod, map_sub, rename_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockEmb_blockVandermonde (f N : ℕ) (σ : Fin f) :
     blockEmb f N σ (blockVandermonde 1 N) =
@@ -128,7 +128,7 @@ theorem blockEmb_blockVandermonde (f N : ℕ) (σ : Fin f) :
   simp [blockVandermonde, vandermondeOf, blockEmb, map_prod, map_sub, rename_X]
 
 /- English proof (translation)
-Simplify using `only [blockEmb_blockVandermonde]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem blockVandermonde_eq_prod (f N : ℕ) :
     blockVandermonde f N = ∏ σ : Fin f, blockEmb f N σ (blockVandermonde 1 N) := by
@@ -136,7 +136,7 @@ theorem blockVandermonde_eq_prod (f N : ℕ) :
   rfl
 
 /- English proof (translation)
-Unfold `antisymmetrize`. Rewrite using `[← (Equiv.funUnique (Fin 1) (Equiv.Perm (Fin N))).symm.sum_comp]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[blockSign, Equiv.funUnique]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem antisymmetrize_one_eq (N : ℕ) (P : RootRing 1 N) :
     antisymmetrize 1 N P = ∑ v : Equiv.Perm (Fin N),
@@ -148,7 +148,7 @@ theorem antisymmetrize_one_eq (N : ℕ) (P : RootRing 1 N) :
   rfl
 
 /- English proof (translation)
-Repeatedly rewrite using `[antisymmetrize_one_eq, map_sum, Finset.prod_univ_sum, antisymmetrize, map_prod, blockPermute_blockEmb, map_smul]`. Use `Finset.sum_congr (by simp) fun w _ => ?_` and prove the remaining obligations. Simplify using `only [blockSign, smul_eq_C_mul, Finset.prod_mul_distrib, map_prod]`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem antisymmetrize_prod (f N : ℕ) (P : Fin f → RootRing 1 N) :
     antisymmetrize f N (∏ σ, blockEmb f N σ (P σ)) =
@@ -159,7 +159,7 @@ theorem antisymmetrize_prod (f N : ℕ) (P : Fin f → RootRing 1 N) :
   simp only [blockSign, smul_eq_C_mul, Finset.prod_mul_distrib, map_prod]
 
 /- English proof (translation)
-Rewrite using `[HasDD, antisymmetrize_prod, blockVandermonde_eq_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[h σ, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasDD_prod (f N : ℕ) (P Q : Fin f → RootRing 1 N) (h : ∀ σ, HasDD 1 N (P σ) (Q σ)) :
     HasDD f N (∏ σ, blockEmb f N σ (P σ)) (∏ σ, blockEmb f N σ (Q σ)) := by
@@ -168,21 +168,21 @@ theorem hasDD_prod (f N : ℕ) (P Q : Fin f → RootRing 1 N) (h : ∀ σ, HasDD
   rw [h σ, map_mul]
 
 /- English proof (translation)
-Apply the tactic sequence `cases c <;> simp [yRoot, yIndex, blockEmb]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem yRoot_eq_blockEmb (f r a : ℕ) (c : SmallBlock) (σ : Fin f) (i : Fin r) :
     yRoot f r a c σ i = blockEmb f (r + a) σ (yRoot 1 r a c 0 i) := by
   cases c <;> simp [yRoot, yIndex, blockEmb]
 
 /- English proof (translation)
-Apply the tactic sequence `cases c <;> simp [zRoot, zIndex, blockEmb]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zRoot_eq_blockEmb (f r a : ℕ) (c : SmallBlock) (σ : Fin f) (i : Fin a) :
     zRoot f r a c σ i = blockEmb f (r + a) σ (zRoot 1 r a c 0 i) := by
   cases c <;> simp [zRoot, zIndex, blockEmb]
 
 /- English proof (translation)
-Simplify using `[vandermondeOf, map_prod, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vandermondeOf_map {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {m : ℕ}
     (v : Fin m → R) : φ (vandermondeOf v) = vandermondeOf (fun i => φ (v i)) := by
@@ -192,9 +192,9 @@ def fib1 (r a : ℕ) (c : SmallBlock) : RootRing 1 (r + a) :=
   vandermondeOf (yRoot 1 r a c 0) * vandermondeOf (zRoot 1 r a c 0)
 
 /- English proof (translation)
-Use `Finset.prod_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `h` using `vandermondeOf_map (blockEmb f (r + a) σ).toRingHom (yRoot 1 r a c 0)`. Establish `h'` using `vandermondeOf_map (blockEmb f (r + a) σ).toRingHom (zRoot 1 r a c 0)`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at h h'`. Rewrite using `[fib1, map_mul, h, h']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← yRoot_eq_blockEmb, ← zRoot_eq_blockEmb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fibreClass_eq_prod (f r a : ℕ) (c : SmallBlock) :
     fibreClass f r a c = ∏ σ : Fin f, blockEmb f (r + a) σ (fib1 r a c) := by
@@ -209,7 +209,7 @@ def yEval (r a : ℕ) (c : SmallBlock) : MvPolynomial (Fin r) ℚ →ₐ[ℚ] Ro
   aeval (yRoot 1 r a c 0)
 
 /- English proof (translation)
-Simplify using `only [yEval, psum, map_sum, map_pow, aeval_X, smallPowerSum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[yRoot_eq_blockEmb f r a c σ i]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockEmb_yEval_psum (f r a : ℕ) (c : SmallBlock) (σ : Fin f) (k : ℕ) :
     blockEmb f (r + a) σ (yEval r a c (psum (Fin r) ℚ k)) = smallPowerSum f r a c k σ := by
@@ -218,7 +218,7 @@ theorem blockEmb_yEval_psum (f r a : ℕ) (c : SmallBlock) (σ : Fin f) (k : ℕ
   rw [yRoot_eq_blockEmb f r a c σ i]
 
 /- English proof (translation)
-Simplify using `only [yEval, psum, map_sum, pow_one, aeval_X, smallBlockMu]`. Use `Finset.sum_congr rfl fun σ _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[yRoot_eq_blockEmb f r a c σ i]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem smallBlockMu_eq_sum (f r a : ℕ) (c : SmallBlock) :
     smallBlockMu f r a c = ∑ σ : Fin f, blockEmb f (r + a) σ (yEval r a c (psum (Fin r) ℚ 1)) := by
@@ -227,23 +227,23 @@ theorem smallBlockMu_eq_sum (f r a : ℕ) (c : SmallBlock) :
   rw [yRoot_eq_blockEmb f r a c σ i]
 
 /- English proof (translation)
-Simplify using `[completeSymmetric, hsymm_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem completeSymmetric_zero (σ : Type*) [Fintype σ] [DecidableEq σ] :
     completeSymmetric σ 0 = 1 := by
   simp [completeSymmetric, hsymm_zero]
 
 /- English proof (translation)
-Simplify using `[completeSymmetric, not_le.mpr hd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem completeSymmetric_neg (σ : Type*) [Fintype σ] [DecidableEq σ] {d : ℤ} (hd : d < 0) :
     completeSymmetric σ d = 0 := by
   simp [completeSymmetric, not_le.mpr hd]
 
 /- English proof (translation)
-Unfold `schur`. Rewrite using `[Matrix.det_of_isUpperTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Simplify using `[completeSymmetric_zero]`. Introduce `i j hij`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.of_apply, Pi.zero_apply, Nat.cast_zero, zero_sub]`. Apply `completeSymmetric_neg` to reduce the goal to its premises. Establish `: (j : ℕ) < i` using `hij`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem schur_zero (σ : Type*) [Fintype σ] [DecidableEq σ] (m : ℕ) :
     schur σ (0 : Fin m → ℕ) = 1 := by
@@ -258,11 +258,11 @@ theorem schur_zero (σ : Type*) [Fintype σ] [DecidableEq σ] (m : ℕ) :
     omega
 
 /- English proof (translation)
-Unfold `completeSymmetric`. Use `split_ifs with h1 h2 h2`. Substitute `h2` using the available equality. Simplify using `[hsymm_zero]`. Establish `hpos : 0 < d.toNat` using `by omega`.
+Replace the relevant objects with their definitions. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩ : ∃ n, d.toNat = n + 1` from `⟨d.toNat - 1, by omega⟩`. Rewrite using `[hn]`. Simplify using `only [hsymm, map_sum]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_multiset_prod, Multiset.map_map]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Multiset.prod_eq_zero` to reduce the goal to its premises. Take `⟨x, hx⟩ : ∃ x, x ∈ s.1` from `Multiset.card_pos_iff_exists_mem.mp (by rw [s.2]; omega)`. Conclude with `Multiset.mem_map.mpr ⟨x, hx, by simp⟩`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_completeSymmetric (σ : Type*) [Fintype σ] [DecidableEq σ] (d : ℤ) :
     constantCoeff (completeSymmetric σ d) = if d = 0 then 1 else 0 := by
@@ -283,15 +283,13 @@ theorem constantCoeff_completeSymmetric (σ : Type*) [Fintype σ] [DecidableEq �
   · simp
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[schur_zero, map_one]`. Establish `hm : 0 < m`. Break down `Nat.eq_zero_or_pos m with hm | hm` into its components or cases.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Substitute `hm` using the available equality. Conclude with `absurd (funext fun i => i.elim0) h`. Conclude with `hm`. Establish `h0 : 0 < ν ⟨0, hm⟩`. Assume the negation of the conclusion as `h0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h (funext fun i => ?_)` and prove the remaining obligations. Use `hν (show (⟨0, hm⟩ : Fin m) ≤ i from Nat.zero_le _)` as an intermediate fact. Simplify using `only [Pi.zero_apply]`. Use linear arithmetic over natural numbers and integers. Unfold `schur`.
+Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RingHom.map_det]`. Apply `Matrix.det_eq_zero_of_row_eq_zero ⟨0, hm⟩` to reduce the goal to its premises. Introduce `j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, constantCoeff_completeSymmetric]`. Rewrite using `[if_neg]`.
-
-Simplify using `only [Nat.cast_zero, sub_zero]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem constantCoeff_schur (σ : Type*) [Fintype σ] [DecidableEq σ] {m : ℕ} (ν : Fin m → ℕ)
     (hν : Antitone ν) : constantCoeff (schur σ ν) = if ν = 0 then 1 else 0 := by
@@ -318,9 +316,9 @@ theorem constantCoeff_schur (σ : Type*) [Fintype σ] [DecidableEq σ] {m : ℕ}
     omega
 
 /- English proof (translation)
-Establish `: (constantCoeff.comp (aeval g).toRingHom : MvPolynomial ι ℚ →+* ℚ) = constantCoeff`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[constantCoeff_C]`. Introduce `i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hg i]`. Conclude with `congrArg (fun φ : MvPolynomial ι ℚ →+* ℚ => φ p) this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_aeval_of_zero {ι κ : Type*} (g : ι → MvPolynomial κ ℚ)
     (hg : ∀ i, constantCoeff (g i) = 0) (p : MvPolynomial ι ℚ) :
@@ -338,11 +336,11 @@ def pushOut (r a : ℕ) (c : SmallBlock) (κ : ℚ) (lam : Fin r → ℕ) : Root
   if ∀ i, a ≤ lam i then C κ * xSign r a c (schur (Fin (r + a)) (fun i => lam i - a)) else 0
 
 /- English proof (translation)
-Unfold `pushOut`. Use `split_ifs with h1 h2 h2`. Substitute `h2` using the available equality. Establish `: (fun i : Fin r => rectangle r a i - a) = 0` using `funext fun i => by simp [rectangle]`. Rewrite using `[map_mul, constantCoeff_C, xSign, constantCoeff_aeval_of_zero _ (fun i => by simp), this, schur_zero, map_one, mul_one]`.
+Replace the relevant objects with their definitions. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, constantCoeff_C, xSign, constantCoeff_aeval_of_zero _ (fun i => by simp), constantCoeff_schur _ _ (fun i j hij => Nat.sub_le_sub_right (hl hij) a), if_neg, mul_zero]`. Introduce `h0`. Conclude with `h2 (funext fun i => by`. Use `congrFun h0 i` as an intermediate fact. Simplify using `only [Pi.zero_apply] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h1 i` as an intermediate fact. Simplify using `[rectangle]`. Use the proof step `omega)`. Conclude with `absurd (fun i => by rw [h2]; simp [rectangle]) h1`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_pushOut (r a : ℕ) (c : SmallBlock) (κ : ℚ) (lam : Fin r → ℕ)
     (hl : Antitone lam) :
@@ -365,7 +363,7 @@ theorem constantCoeff_pushOut (r a : ℕ) (c : SmallBlock) (κ : ℚ) (lam : Fin
   · simp
 
 /- English proof (translation)
-Take `⟨κ, hκ, h⟩` from `hB r a c`. Use `⟨κ, hκ, fun lam hl => hasDD_of_dividedDifference_eq ?_⟩` and prove the remaining obligations. Use `h lam hl` as an intermediate fact. Rewrite using `[yEval, fib1, ← mul_assoc, this, pushOut, xSign]`. Apply the tactic sequence `split_ifs <;> simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hasDD_schur (hB : LemmaB.Statement) (r a : ℕ) (c : SmallBlock) :
     ∃ κ : ℚ, (κ = (r.factorial : ℚ) * a.factorial ∨ κ = -((r.factorial : ℚ) * a.factorial)) ∧
@@ -378,7 +376,7 @@ theorem hasDD_schur (hB : LemmaB.Statement) (r a : ℕ) (c : SmallBlock) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[map_sum, Finset.sum_mul]`. Use `hasDD_sum s fun lam hlam => ?_` and prove the remaining obligations. Use `hasDD_smul (b lam) (hκ lam (hs lam hlam))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul, yEval, aeval_C, Algebra.smul_def, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasDD_schur_sum (r a : ℕ) (c : SmallBlock) (κ : ℚ)
     (hκ : ∀ lam : Fin r → ℕ, Antitone lam →
@@ -393,7 +391,7 @@ theorem hasDD_schur_sum (r a : ℕ) (c : SmallBlock) (κ : ℚ)
   rw [map_mul, yEval, aeval_C, Algebra.smul_def, mul_assoc]
 
 /- English proof (translation)
-Introduce `i j hij`. Conclude with `(Finset.mem_filter.mp h).2 i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem antitone_of_mem_partitionsOf {m n : ℕ} {lam : Fin m → ℕ} (h : lam ∈ partitionsOf m n) :
     Antitone lam := by
@@ -401,7 +399,7 @@ theorem antitone_of_mem_partitionsOf {m n : ℕ} {lam : Fin m → ℕ} (h : lam 
   exact (Finset.mem_filter.mp h).2 i j hij
 
 /- English proof (translation)
-Use `(Finset.mem_filter.mp h).1` as an intermediate fact. Rewrite `this` using `[Finset.Nat.mem_antidiagonalTuple]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_of_mem_partitionsOf {m n : ℕ} {lam : Fin m → ℕ} (h : lam ∈ partitionsOf m n) :
     ∑ i, lam i = n := by
@@ -410,9 +408,9 @@ theorem sum_of_mem_partitionsOf {m n : ℕ} {lam : Fin m → ℕ} (h : lam ∈ p
   exact this
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Establish `: ∀ lam ∈ s, constantCoeff (b lam • pushOut r a c κ lam) = if lam = rectangle r a then b lam * κ else 0`. Introduce `lam hlam`. Rewrite using `[smul_eq_C_mul, map_mul, constantCoeff_C, constantCoeff_pushOut r a c κ lam (hs lam hlam)]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Finset.sum_congr rfl this, Finset.sum_ite_eq']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_pushOut_sum (r a : ℕ) (c : SmallBlock) (κ : ℚ) (s : Finset (Fin r → ℕ))
     (hs : ∀ lam ∈ s, Antitone lam) (b : (Fin r → ℕ) → ℚ) :
@@ -427,7 +425,7 @@ theorem constantCoeff_pushOut_sum (r a : ℕ) (c : SmallBlock) (κ : ℚ) (s : F
   rw [Finset.sum_congr rfl this, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Rewrite using `[smallBlockMu_eq_sum, Finset.sum_pow_eq_sum_piAntidiag, fibreClass_eq_prod, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`. Simplify using `only [map_mul, map_pow, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem expand_blocks (f r a : ℕ) (c : SmallBlock) (g : Fin f → MvPolynomial (Fin r) ℚ) (e : ℕ) :
     (∏ σ, blockEmb f (r + a) σ (yEval r a c (g σ))) * smallBlockMu f r a c ^ e *
@@ -450,9 +448,9 @@ def blockCoeff {r : ℕ} (q m : ℕ) (lam : Fin r → ℕ) : ℚ :=
   else symmetricGroupCharacter lam (q :: List.replicate m 1)
 
 /- English proof (translation)
-Use extensionality with `lam`. Simplify using `only [partitionsOf, Finset.mem_filter, Finset.Nat.mem_antidiagonalTuple, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, -⟩`. Use function extensionality and compare the values at `i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Finset.sum_eq_zero_iff.mp h i (Finset.mem_univ i)` as an intermediate fact. Simplify using `using this`. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem partitionsOf_zero (r : ℕ) : partitionsOf r 0 = {0} := by
   ext lam
@@ -467,11 +465,11 @@ theorem partitionsOf_zero (r : ℕ) : partitionsOf r 0 = {0} := by
     simp
 
 /- English proof (translation)
-Unfold `extraFactor blockCoeff`. Distinguish the cases in `hq : q = 0`. Substitute `hq` using the available equality. Simplify using `only [if_true, one_mul, zero_add]`. Distinguish the cases in `hm : m = 0`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hm` using the available equality. Simplify using `[partitionsOf_zero, schur_zero]`. Take `⟨m', rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`. Use `hF r 1 m' le_rfl` as an intermediate fact. Rewrite using `[pow_succ', this, add_comm 1 m']`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun lam _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg hm, List.replicate_succ]`. Simplify using `only [if_neg hq]`. Conclude with `hF r q m (Nat.one_le_iff_ne_zero.mpr hq)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extraFactor_expand (hF : FrobeniusCharacterFormula.Statement) (r q m : ℕ) :
     extraFactor r q * psum (Fin r) ℚ 1 ^ m =
@@ -495,7 +493,7 @@ def blockOut (r a : ℕ) (c : SmallBlock) (κ : ℚ) (q m : ℕ) : RootRing 1 (r
   ∑ lam ∈ partitionsOf r (q + m), blockCoeff q m lam • pushOut r a c κ lam
 
 /- English proof (translation)
-Rewrite using `[extraFactor_expand hF]`. Conclude with `hasDD_schur_sum r a c κ hκ _ (fun lam h => antitone_of_mem_partitionsOf h) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDD_block (hF : FrobeniusCharacterFormula.Statement) (r a : ℕ) (c : SmallBlock) (κ : ℚ)
     (hκ : ∀ lam : Fin r → ℕ, Antitone lam →
@@ -507,9 +505,9 @@ theorem hasDD_block (hF : FrobeniusCharacterFormula.Statement) (r a : ℕ) (c : 
   exact hasDD_schur_sum r a c κ hκ _ (fun lam h => antitone_of_mem_partitionsOf h) _
 
 /- English proof (translation)
-Simplify using `only [partitionsOf, Finset.mem_filter, Finset.Nat.mem_antidiagonalTuple, rectangle, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, -⟩`. Conclude with `h.symm`. Introduce and unpack `rfl`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨rfl, fun _ _ _ => le_rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem rectangle_mem_partitionsOf (r a t : ℕ) :
     rectangle r a ∈ partitionsOf r t ↔ t = r * a := by
@@ -520,7 +518,7 @@ theorem rectangle_mem_partitionsOf (r a t : ℕ) :
   · rintro rfl; exact ⟨rfl, fun _ _ _ => le_rfl⟩
 
 /- English proof (translation)
-Rewrite using `[blockOut, constantCoeff_pushOut_sum r a c κ _ (fun lam h => antitone_of_mem_partitionsOf h)]`. Distinguish the cases in `h : q + m = r * a`. Rewrite using `[if_pos ((rectangle_mem_partitionsOf r a (q + m)).mpr h), if_pos h]`. Rewrite using `[if_neg (fun h' => h ((rectangle_mem_partitionsOf r a (q + m)).mp h')), if_neg h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_blockOut (r a : ℕ) (c : SmallBlock) (κ : ℚ) (q m : ℕ) :
     constantCoeff (blockOut r a c κ q m) =
@@ -531,9 +529,9 @@ theorem constantCoeff_blockOut (r a : ℕ) (c : SmallBlock) (κ : ℚ) (q m : �
   · rw [if_neg (fun h' => h ((rectangle_mem_partitionsOf r a (q + m)).mp h')), if_neg h]
 
 /- English proof (translation)
-Use `Finset.sum_eq_zero fun lam hlam => ?_` and prove the remaining obligations. Establish `hs` using `sum_of_mem_partitionsOf hlam`. Rewrite using `[pushOut, if_neg, smul_zero]`. Introduce `hall`. Establish `: ∑ i : Fin r, a ≤ ∑ i, lam i` using `Finset.sum_le_sum fun i _ => hall i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem blockOut_eq_zero_of_lt (r a : ℕ) (c : SmallBlock) (κ : ℚ) (q m : ℕ)
     (h : q + m < r * a) : blockOut r a c κ q m = 0 := by

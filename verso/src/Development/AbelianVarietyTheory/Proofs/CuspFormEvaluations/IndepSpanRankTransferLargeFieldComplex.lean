@@ -10,11 +10,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.ReadingTransfer
 
 /- English proof (translation)
-Use `choose f hf using fun m => (Submodule.mem_span_range_iff_exists_fun K).1 (hp m)`. Use `⟨fun k => ∑ m ∈ p.support, MvPolynomial.monomial m (f m k), ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Establish `hcf : ∀ k, (∑ m' ∈ p.support, MvPolynomial.monomial m' (f m' k)).coeff m = if m ∈ p.support then f m k else 0`. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `[MvPolynomial.coeff_monomial]`. Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [mul_comm _ (MvPolynomial.C _), MvPolynomial.coeff_C_mul, MvPolynomial.coeff_map, hcf]`. Distinguish the cases in `hm : m ∈ p.support`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hf m]`. Simplify using `only [hm, ↓reduceIte, Algebra.smul_def, Algebra.commutes]`. Simplify using `only [hm, ↓reduceIte, map_zero, mul_zero, Finset.sum_const_zero]`. Simplify using `using hm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_coeffs {K A s μ : Type} [Field K] [CommRing A] [Algebra K A] [Fintype μ] (w : μ → A)
     (p : MvPolynomial s A) (hp : ∀ m, p.coeff m ∈ Submodule.span K (Set.range w)) :
@@ -37,9 +37,9 @@ theorem exists_coeffs {K A s μ : Type} [Field K] [CommRing A] [Algebra K A] [Fi
     simpa using hm
 
 /- English proof (translation)
-Establish `hcomp : (algebraMap F M).comp κ = e.comp (algebraMap K A)`. Use extensionality with `a`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, he, map_one]`. Take `rfl : τ' = fun i => algebraMap F M (τ i)` from `funext hτ`. Simplify using `only [map_sum, map_mul, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_C, MvPolynomial.eval₂_map, Fintype.linearCombination_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [Algebra.smul_def, MvPolynomial.eval₂_comp_left, hcomp] <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_comb {K A s μ F M : Type} [Field K] [CommRing A] [Algebra K A] [Fintype μ] [Field F] [CommRing M]
     [Algebra F M] (κ : K →+* F) (e : A →+* M) (he : ∀ (a : K) (x : A), e (a • x) = κ a • e x) (τ : s → F)
@@ -57,9 +57,9 @@ theorem eval_comb {K A s μ F M : Type} [Field K] [CommRing A] [Algebra K A] [Fi
   rw [Algebra.smul_def, MvPolynomial.eval₂_comp_left, hcomp] <;> rfl
 
 /- English proof (translation)
-Establish `hspan : Submodule.span F (Set.range fun i => L (v i)) = (Submodule.span F (Set.range v)).map L`. Apply the tactic sequence `rw [Submodule.map_span, ← Set.range_comp] <;> rfl`. Use `⟨L.linearIndependent_iff (LinearMap.ker_eq_bot.mpr hL), fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hspan]`. Conclude with `⟨fun ⟨y, hy, hxy⟩ => hL hxy ▸ hy, fun hx => Submodule.mem_map_of_mem hx⟩`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hspan]`. Conclude with `(Submodule.equivMapOfInjective L hL _).finrank_eq.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inj_transfer {F V W ι : Type} [Field F] [AddCommGroup V] [Module F V] [AddCommGroup W] [Module F W]
     (L : V →ₗ[F] W) (hL : Function.Injective L) (v : ι → V) :
@@ -81,7 +81,7 @@ noncomputable def kap (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (N :
   (algebraMap (X.Kl la) (Kp X la N)).comp (algebraMap B.KO (X.Kl la))
 
 /- English proof (translation)
-Rewrite using `[Formalism.MainNotions.Gaps.EtaleWeightGaps.emb_smul]`. Conclude with `(algebraMap_smul (Kp X la N) (algebraMap B.KO (X.Kl la) a) (emb X la N F)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_smul' (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) (a : B.KO) (F : X.Forms) :
     emb X la N (a • F) = kap X la N a • emb X la N F := by
@@ -89,9 +89,9 @@ theorem emb_smul' (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ
   exact (algebraMap_smul (Kp X la N) (algebraMap B.KO (X.Kl la) a) (emb X la N F)).symm
 
 /- English proof (translation)
-Establish `hs` using `hw.linearIndepOn_id`. Set `b3` to `Algebra.TensorProduct.basis (Kp X la N) (Algebra.TensorProduct.basis (X.Kl la) (Module.Basis.extend hs))`. Set `idx : μ → hs.extend (Set.subset_univ _)` to `fun k => ⟨w k, hs.subset_extend _ (Set.mem_range_self k)⟩`. Establish `hidx : Function.Injective idx` using `fun k l h => hw.injective (congrArg Subtype.val h)`. Establish `e : (fun k => emb X la N (w k)) = ⇑b3 ∘ idx`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[Formalism.MainNotions.Gaps.EtaleWeightGaps.emb_apply]`. Apply the tactic sequence `simp only [b3, idx, Function.comp_apply, Algebra.TensorProduct.basis_apply, Module.Basis.extend_apply_self] <;> rfl`. Rewrite using `[e]`. Conclude with `b3.linearIndependent.comp idx hidx`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_indep (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) {μ : Type} (w : μ → X.Forms)
     (hw : LinearIndependent B.KO w) : LinearIndependent (Kp X la N) fun k => emb X la N (w k) := by
@@ -108,13 +108,13 @@ theorem emb_indep (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ
   exact b3.linearIndependent.comp idx hidx
 
 /- English proof (translation)
-Establish `key : ∀ Q : MvPolynomial (Idx D j N) (X.Ol la), MvPolynomial.aeval (fun p : Idx D j N => algebraMap (Op X la N) (Kp X la N) (Tv X la N p)) Q = algebraMap (Op X la N) (Kp X la N) (algebraMap (Formalism.MainNotions.Gaps.EtaleWeightGaps.Pol X la N) (Op X la N) Q)`. Introduce `Q`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`. Apply the tactic sequence `rw [MvPolynomial.aeval_C, ← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply (X.Ol la) (Formalism.MainNotions.Gaps.EtaleWeightGaps.Pol X la N) (Op X la N)] <;> rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `add Q₁ Q₂ h₁ h₂ => simp only [map_add, h₁, h₂]`. Consider the case `mul_X Q p h => simp only [map_mul, h, MvPolynomial.aeval_X] <;> rfl`. Establish `hinj : Function.Injective fun Q : Formalism.MainNotions.Gaps.EtaleWeightGaps.Pol X la N => algebraMap (Op X la N) (Kp X la N) (algebraMap (Formalism.MainNotions.Gaps.EtaleWeightGaps.Pol X la N) (Op X la N) Q)` using `(IsFractionRing.injective (Op X la N) (Kp X la N)).comp (IsLocalization.injective (M := (Formalism.MainNotions.Gaps.EtaleWeightGaps.gI X la N).primeCompl) (S := Op X la N) (Formalism.MainNotions.Gaps.EtaleWeightGaps.gI X la N).primeCompl_le_nonZeroDivisors)`. Establish `hOl : AlgebraicIndependent (X.Ol la) (fun p : Idx D j N => algebraMap (Op X la N) (Kp X la N) (Tv X la N p))` using `algebraicIndependent_iff_injective_aeval.2 fun Q₁ Q₂ h => hinj (by simpa only [key] using h)`. Use `haveI : Algebra.IsAlgebraic (X.Ol la) (X.Kl la) := IsLocalization.isAlgebraic (S := X.Kl la) (M := nonZeroDivisors (X.Ol la))`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKl` using `algebraicIndependent_iff_injective_aeval.1 (hOl.extendScalars (X.Kl la))`. Establish `hmap : Function.Injective (MvPolynomial.map (σ` using `Idx D j N) (algebraMap B.KO (X.Kl la))) := MvPolynomial.map_injective _ (algebraMap B.KO (X.Kl la)).injective`. Establish `e : ⇑(MvPolynomial.eval₂Hom (kap X la N) (fun p : Idx D j N => algebraMap (Op X la N) (Kp X la N) (Tv X la N p))) = ⇑(MvPolynomial.aeval (R` using `X.Kl la) fun p : Idx D j N => algebraMap (Op X la N) (Kp X la N) (Tv X la N p)) ∘ MvPolynomial.map (algebraMap B.KO (X.Kl la)) := by`. Use function extensionality and compare the values at `Q`. Apply the tactic sequence `simp only [Function.comp_apply, MvPolynomial.coe_eval₂Hom, MvPolynomial.aeval_def, MvPolynomial.eval₂_map] <;> rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hKl.comp hmap`.
+A detailed English derivation is pending.
 -/
 theorem eval_injective (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) :
     Function.Injective (MvPolynomial.eval₂Hom (kap X la N)
@@ -161,21 +161,19 @@ namespace GlobalTheory
 open ReadingTransfer
 
 /- English proof (translation)
-Introduce `D B P j X R la N t hgen u ι _ p hp`. Set `b` to `Module.finBasis B.KO (B.Cusp j u)`. Set `v : Fin (Module.finrank B.KO (B.Cusp j u)) → X.Forms` to `fun k => X.inc u (b k)`. Establish `hv : LinearIndependent B.KO v` using `b.linearIndependent.map' (X.inc u) (LinearMap.ker_eq_bot.mpr (X.inc_inj u))`. Establish `hspan : LinearMap.range (X.inc u) = Submodule.span B.KO (Set.range v)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [LinearMap.range_eq_map, ← b.span_eq, Submodule.map_span, ← Set.range_comp] <;> rfl`. Establish `hcoef : ∀ q : MvPolynomial (Idx D j N) X.Forms, OfWt X u q → ∀ m, q.coeff m ∈ Submodule.span B.KO (Set.range v)` using `fun q hq m => hspan ▸ hq m`. Set `φ : MvPolynomial (Idx D j N) B.KO →+* Kp X la N` to `MvPolynomial.eval₂Hom (kap X la N) (fun p => algebraMap (Op X la N) (Kp X la N) (Tv X la N p))`. Set `ψ : MvPolynomial (Idx D j N) B.KO →+* ℂ` to `MvPolynomial.eval₂Hom R.σ t`. Establish `hφ : Function.Injective φ` using `eval_injective X la N`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : Function.Injective ψ` using `(injective_iff_map_eq_zero ψ).2 fun Q hQ => by`. Assume the negation of the conclusion as `h`. Conclude with `hgen Q h hQ`. Set `LK` to `Fintype.linearCombination (Kp X la N) (fun k => emb X la N (v k))`. Set `LC` to `Fintype.linearCombination ℂ (fun k => R.ev (v k))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hLK : Function.Injective LK` using `linearIndependent_iff_injective_fintypeLinearCombination.1 (emb_indep X la N v hv)`. Establish `hLC : Function.Injective LC` using `linearIndependent_iff_injective_fintypeLinearCombination.1 (R.indep u _ b b.linearIndependent)`. Establish `hK : ∀ (q : MvPolynomial (Idx D j N) X.Forms) (c : Fin (Module.finrank B.KO (B.Cusp j u)) → MvPolynomial (Idx D j N) B.KO), q = ∑ k, MvPolynomial.map (algebraMap B.KO X.Forms) (c k) * MvPolynomial.C (v k) → toRp X la N q = LK fun k => φ (c k)`. Introduce and unpack `q c rfl`. Conclude with `eval_comb (kap X la N) (emb X la N) (emb_smul' X la N) (fun p => algebraMap (Op X la N) (Kp X la N) (Tv X la N p)) (fun p => algebraMap (Op X la N) (Rp X la N) (Tv X la N p)) (fun p => IsScalarTower.algebraMap_apply (Op X la N) (Kp X la N) (Rp X la N) _) v c`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hC : ∀ (q : MvPolynomial (Idx D j N) X.Forms) (c : Fin (Module.finrank B.KO (B.Cusp j u)) → MvPolynomial (Idx D j N) B.KO), q = ∑ k, MvPolynomial.map (algebraMap B.KO X.Forms) (c k) * MvPolynomial.C (v k) → R.toFn t q = LC fun k => ψ (c k)`. Introduce and unpack `q c rfl`. Conclude with `eval_comb R.σ R.ev R.ev_smul t (fun p _ => t p) (fun p => rfl) v c`. Use `choose c hc using fun i => exists_coeffs v (p i) (hcoef _ (hp i))`. Establish `eK : (fun i => toRp X la N (p i)) = fun i => LK fun k => φ (c i k)` using `funext fun i => hK _ _ (hc i)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `eC : (fun i => R.toFn t (p i)) = fun i => LC fun k => ψ (c i k)` using `funext fun i => hC _ _ (hc i)`. Take `⟨iK, mK, rK⟩` from `inj_transfer LK hLK fun i k => φ (c i k)`. Take `⟨iC, mC, rC⟩` from `inj_transfer LC hLC fun i k => ψ (c i k)`. Take `⟨iA, mA, rA⟩` from `rank_indep_mem_embedding_invariant _ _ _ φ ψ hφ hψ ι _ c`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eK, eC, iK, iC]`. Conclude with `iA`. Introduce `q hq`. Take `⟨d, hd⟩` from `exists_coeffs v q (hcoef _ hq)`. Rewrite using `[eK, eC, hK _ _ hd, hC _ _ hd, mK, mC]`.
-
-Conclude with `mA d`. Rewrite using `[eK, eC, rK, rC]`. Conclude with `rA`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reading_transfer :
     ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (R : Rdg X) (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) (t : Idx D j N → ℂ), R.Generic t → ∀ (u : WeightFamilies.Wt D j) (ι : Type) [Fintype ι] (p : ι → MvPolynomial (Idx D j N) X.Forms), (∀ i, OfWt X u (p i)) → (LinearIndependent (Kp X la N) (fun i => toRp X la N (p i)) ↔ LinearIndependent ℂ (fun i => R.toFn t (p i))) ∧ (∀ q, OfWt X u q → (toRp X la N q ∈ Submodule.span (Kp X la N) (Set.range fun i => toRp X la N (p i)) ↔ R.toFn t q ∈ Submodule.span ℂ (Set.range fun i => R.toFn t (p i)))) ∧ Module.finrank (Kp X la N) (Submodule.span (Kp X la N) (Set.range fun i => toRp X la N (p i))) = Module.finrank ℂ (Submodule.span ℂ (Set.range fun i => R.toFn t (p i))) := by

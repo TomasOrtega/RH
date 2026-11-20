@@ -17,7 +17,7 @@ local notation "cF" => ReciprocityTheory.ChartRestriction.G.Geo.Tor.constFn
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) (Scheme.Hom.appLE_map q (U := ⊤) (V := U) (fun _ _ => trivial) (homOfLE h).op)`.
+A detailed English derivation is pending.
 -/
 theorem res_cst {X : Scheme.{0}} (q : X ⟶ Sp R) {U V : X.Opens} (h : V ≤ U) (a : R) :
     (X.presheaf.map (homOfLE h).op).hom (cF q U a) = cF q V a :=
@@ -25,7 +25,7 @@ theorem res_cst {X : Scheme.{0}} (q : X ⟶ Sp R) {U V : X.Opens} (h : V ≤ U) 
     (Scheme.Hom.appLE_map q (U := ⊤) (V := U) (fun _ _ => trivial) (homOfLE h).op)
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Conclude with `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) (Scheme.Hom.appLE_comp_appLE f q ⊤ U V (fun _ _ => trivial) h)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem appLE_cst {X Y : Scheme.{0}} (q : X ⟶ Sp R) (q' : Y ⟶ Sp R) (f : Y ⟶ X) (hf : f ≫ q = q')
     (U : X.Opens) (V : Y.Opens) (h : V ≤ f ⁻¹ᵁ U) (a : R) :
@@ -35,7 +35,7 @@ theorem appLE_cst {X Y : Scheme.{0}} (q : X ⟶ Sp R) (q' : Y ⟶ Sp R) (f : Y �
     (Scheme.Hom.appLE_comp_appLE f q ⊤ U V (fun _ _ => trivial) h)
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.app_eq_appLE, appLE_cst q q' f hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem app_cst {X Y : Scheme.{0}} (q : X ⟶ Sp R) (q' : Y ⟶ Sp R) (f : Y ⟶ X) (hf : f ≫ q = q')
     (U : X.Opens) (a : R) : (f.app U).hom (cF q U a) = cF q' (f ⁻¹ᵁ U) a := by
@@ -47,9 +47,7 @@ def cMul {X : Scheme.{0}} (q : X ⟶ Sp R) {L : LB X} (a : R) (s : LB.Sec L) : L
     rw [map_mul, map_mul, res_cst, res_cst, s.compat, mul_left_comm]
 
 /- English proof (translation)
-Unfold `Out.nonzeroLocus`. Use `iSup_congr fun k => ?_` and prove the remaining obligations. Establish `hu : IsUnit (cF q (L.U k) a)` using `(ha.map _).map _`. Use `show X.basicOpen (cF q _ a * s.f k) = _`. Rewrite using `[Scheme.basicOpen_mul, X.basicOpen_of_isUnit hu]`.
-
-Conclude with `inf_eq_right.2 (X.basicOpen_le _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_cMul {X : Scheme.{0}} (q : X ⟶ Sp R) {L : LB X} {a : R}
     (ha : IsUnit a) (s : LB.Sec L) : Out.nonzeroLocus (cMul q a s) = Out.nonzeroLocus s := by
@@ -61,11 +59,11 @@ theorem nonzeroLocus_cMul {X : Scheme.{0}} (q : X ⟶ Sp R) {L : LB X} {a : R}
   exact inf_eq_right.2 (X.basicOpen_le _)
 
 /- English proof (translation)
-Unfold `valR`. Use `split_ifs with h`. Rewrite using `[map_mul, map_mul, appLE_cst q (spMap φ) x hx U ⊤ h]`. Use `congr 1`. Establish `h3 : (spMap φ).appLE ⊤ ⊤ (fun _ _ => trivial) = (spMap φ).appTop` using `(Scheme.Hom.app_eq_appLE (spMap φ) (U := ⊤)).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ)`. Establish `h2` using `congrArg (fun g => g.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) h1`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom (((spMap φ).appLE ⊤ ⊤ (fun _ _ => trivial)).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) = φ a`. Rewrite using `[h3]`. Use `h2.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valR_cMul {A : Type} [CommRing A] {X : Scheme.{0}} (q : X ⟶ Sp R) (φ : R →+* A) (x : Sp A ⟶ X)
     (hx : x ≫ q = spMap φ) (U : X.Opens) (a : R) (f : Γ(X, U)) :
@@ -90,7 +88,7 @@ section Twist
 variable {A : Over (Sp R)} [GrpObj A] (L : LB A.left)
 
 /- English proof (translation)
-Introduce `j`. Establish `e` using `h j`. Simplify using `only [cMul]`. Use `erw [RingHom.map_mul, res_cst, e, RingHom.map_mul, app_cst _ _ ψ.left (Over.w ψ), RingHom.map_mul, res_cst]`. Conclude with `mul_left_comm _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twist_cMul {T : Over (Sp R)} (ψ : T ⊗ A ⟶ T ⊗ A) (m : T ⊗ A ⟶ A) (hm : ψ ≫ snd T A = m) (a b : ℤ)
     (α : LB.Gen (LB.LinComb L (K := Fin 2) ![(snd T A).left, m.left] ![a, -b]))
@@ -112,7 +110,7 @@ namespace GlobalTheory.MBLow.ScaleJet
 local notation "cF" => ReciprocityTheory.ChartRestriction.G.Geo.Tor.constFn
 
 /- English proof (translation)
-Introduce `i hi`. Establish `e` using `h i hi`. Simplify using `only [cMul]`. Use `erw [e, RingHom.map_mul, appLE_cst P.A.hom (T ⊗ P.A).hom (snd T P.A).left (Over.w (snd T P.A))]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polAVSectionInverseImage_mulConstant {R : Type} [CommRing R] (P : PolAV (Sp R)) (T : Over (Sp R)) (s : P.L.Sec)
     (t : LB.Sec (LPow P.A P.L ((1 : ℕ) : ℤ) T)) (c : R) (h : IsPolAVSectionInverseImage P T s t) :
@@ -123,15 +121,15 @@ theorem polAVSectionInverseImage_mulConstant {R : Type} [CommRing R] (P : PolAV 
   erw [e, RingHom.map_mul, appLE_cst P.A.hom (T ⊗ P.A).hom (snd T P.A).left (Over.w (snd T P.A))]
 
 /- English proof (translation)
-Introduce `κ hκ C _ _ x a ha`. Establish `hne : ∀ s : Sp C, ∃ y : x.P.A.left, x.P.A.hom y = s ∧ y ∈ Out.nonzeroLocus (cMul x.P.A.hom a x.th)`. Introduce `s`. Rewrite using `[nonzeroLocus_cMul _ ha.isUnit]`. Conclude with `x.th_ne s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hl : ∀ i, IsLieComb ((1 : Matrix (Fin x.P.g) (Fin x.P.g) C) i) x.v (x.v i)`. Introduce `i`. Establish `: (1 : Matrix (Fin x.P.g) (Fin x.P.g) C) i = Pi.single i 1`. Use extensionality with `k`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `x.P.isAb.comm` as an intermediate fact. Conclude with `(LieComb.lieComb_algebra _ _ _ x.v x.basis.1).2.2.2.1 i`. Use `⟨cMul x.P.A.hom a x.th, hne, ?_, ?_⟩` and prove the remaining obligations. Establish `e` using `hκ C x.P x.g_pos x.rig x.rig_gen x.th x.th_ne x.v x.basis (cMul x.P.A.hom a x.th) hne x.v x.basis a 1 (fun i => rfl) hl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Simplify `e` using `[Matrix.det_one]`. Introduce and unpack `g hg m I pt ϑ J ⟨th, hon, U, t, i₀, c, hU, hi₀, hv⟩`. Use `⟨cMul (Over.mk (𝟙 (Sp C)) ⊗ x.P.A).hom a th, polAVSectionInverseImage_mulConstant x.P _ x.th th a hon, U, fun i => cMul (Over.mk (𝟙 (Sp C)) ⊗ x.P.A).hom a (t i), i₀, c, fun i => ⟨(hU i).1, ?_⟩, hi₀, fun i j => ?_⟩` and prove the remaining obligations. Take `⟨α, s₁, h1, h2, h3, h4⟩` from `(hU i).2`. Conclude with `⟨α, cMul _ a s₁, h1, h2, twist_cMul _ _ _ _ _ _ _ _ _ _ h3, twist_cMul _ _ _ _ _ _ _ _ _ _ h4⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : epsLift (x.v (j.cast hg.symm)) ≫ (Over.mk (𝟙 (Sp C)) ⊗ x.P.A).hom = spMap (algebraMap C (DualNumber C))` using `Over.w _`. Establish `e` using `valR_cMul _ _ _ hx _ a ((t i).f fun _ => i₀)`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[hv i j]`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl] <;> ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem scale_key : ∀ κ : Rule, Homog (fun _ => 1) κ → ∀ (C : Type) [Field C] [CharZero C] (x : KeyIn C) (a : C), a ≠ 0 →
     ∃ (th' : x.P.L.Sec) (h' : _), a ^ 8 * (κ C ⟨x.P, x.g_pos, x.rig, x.rig_gen, th', h', x.v, x.basis⟩ : C) = κ C x ∧

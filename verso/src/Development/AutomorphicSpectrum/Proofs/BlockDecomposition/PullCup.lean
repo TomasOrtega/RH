@@ -10,7 +10,7 @@ open CrystallineSemistableComparison.CH
 universe w u v u' v'
 
 /- English proof (translation)
-The claim follows from `CrystallineSemistableComparison.P.cup_pull (mulP A) (mulP A') m.G m.τ m.τ m.τ m.nat m.nat m.nat hm h x y`.
+A detailed English derivation is pending.
 -/
 theorem pull_cup {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C']
     (A : C ⥤ CommAlgCat.{w} R) (A' : C' ⥤ CommAlgCat.{w} R) (m : Mor (modF A) (modF A') (RingHom.id R))
@@ -20,7 +20,7 @@ theorem pull_cup {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Typ
   CrystallineSemistableComparison.P.cup_pull (mulP A) (mulP A') m.G m.τ m.τ m.τ m.nat m.nat m.nat hm h x y
 
 /- English proof (translation)
-The claim follows from `pull_cup (OcA F κ k n) (AcrEl (F.pt κ) n) (βMor F κ k n) (fun _ _ _ => rfl) h x y`.
+A detailed English derivation is pending.
 -/
 theorem beta_cup {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] (F : Fn O) (κ : O →+* OC l) (k : Bool) (n : ℕ) {i j m : ℕ}
     (h : i + j = m) (x : Hc F κ k n i) (y : Hc F κ k n j) :

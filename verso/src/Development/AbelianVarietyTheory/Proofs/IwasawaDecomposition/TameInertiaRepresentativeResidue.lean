@@ -11,9 +11,9 @@ namespace GlobalTheory.TameRes
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
 
 /- English proof (translation)
-Use `(A.valuation_le_one_iff _).2 ?_` and prove the remaining obligations. Establish `hi : IsIntegral ℤ (algebraMap E Ω (c : E))` using `c.isIntegral_coe.map (algebraMap E Ω).toIntAlgHom`. Establish `h1 : IsIntegral A (algebraMap E Ω (c : E))` using `hi.tower_top`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := A) (K := Ω)).mp h1`. Rewrite using `[← hy]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `y.2`.
+A detailed English derivation is pending.
 -/
 theorem val_int_le_one (A : ValuationSubring Ω) (c : 𝓞 E) : A.valuation (algebraMap E Ω (c : E)) ≤ 1 := by
   refine (A.valuation_le_one_iff _).2 ?_
@@ -24,11 +24,11 @@ theorem val_int_le_one (A : ValuationSubring Ω) (c : 𝓞 E) : A.valuation (alg
   exact y.2
 
 /- English proof (translation)
-Take `⟨I, hI⟩ : P.asIdeal ∣ Ideal.span {b}` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hb)`. Establish `h1 : ¬ I ≤ P.asIdeal` using `fun h => hb' (by`. Rewrite using `[← Ideal.span_singleton_le_iff_mem, hI, pow_two]`. Conclude with `Ideal.mul_mono_right h)`. Take `⟨s, hs, hs'⟩` from `Set.not_subset.1 h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `Ideal.mem_span_singleton.1 (hI ▸ Ideal.mul_mem_mul ha hs)`. Establish `h2 : A.valuation (algebraMap E Ω s) = 1` using `le_antisymm (val_int_le_one A s) (not_lt.1 fun h => hs' ((hA s).1 h))`. Establish `h3` using `congrArg (fun c : 𝓞 E => A.valuation (algebraMap E Ω c)) ht`. Establish `hint` using `val_int_le_one (E := E) A t`. Simplify using `only [map_mul, RingOfIntegers.coe_eq_algebraMap] at h3 h2 hint ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[h2, mul_one]`. Rewrite using `[h3]`. Conclude with `mul_le_of_le_one_right' hint`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_le_of_unif {A : ValuationSubring Ω} {P : HeightOneSpectrum (𝓞 E)} (hA : IsPlaceOver (F := E) A P)
     {a b : 𝓞 E} (ha : a ∈ P.asIdeal) (hb : b ∈ P.asIdeal) (hb' : b ∉ P.asIdeal ^ 2) :
@@ -49,7 +49,7 @@ theorem val_le_of_unif {A : ValuationSubring Ω} {P : HeightOneSpectrum (𝓞 E)
   exact mul_le_of_le_one_right' hint
 
 /- English proof (translation)
-Unfold `redThrough`. Rewrite using `[dif_pos hz, dif_pos hw]`. Use `congr 1`. Apply `Ideal.Quotient.eq.2` to reduce the goal to its premises. Conclude with `(A.valuation_lt_one_iff (⟨z, hz⟩ - ⟨w, hw⟩)).2 h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem redThrough_eq_of_val_sub {A : ValuationSubring Ω} {l : ℕ} [Fact l.Prime]
     (κ : IsLocalRing.ResidueField A ≃+* Formalism.CyclotomicNorms.Fbar l) {z w : Ω} (hz : z ∈ A) (hw : w ∈ A)
@@ -65,13 +65,11 @@ end GlobalTheory.TameRes
 namespace GlobalTheory.TameRes
 
 /- English proof (translation)
-Establish `hgp : g.Prime` using `Fact.out`. Use `haveI := P.isMaximal`. Use `letI : Field (𝓞 E ⧸ P.asIdeal) := Ideal.Quotient.field _`. Use `haveI : CharP (𝓞 E ⧸ P.asIdeal) g := by`. Rewrite using `[CharP.charP_iff_prime_eq_zero hgp, ← map_natCast (Ideal.Quotient.mk P.asIdeal)]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hgP`. Establish `hcard : Nat.card (𝓞 E ⧸ P.asIdeal) = g` using `hN`. Use `haveI : Finite (𝓞 E ⧸ P.asIdeal) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hgp.ne_zero)`. Set `f : ZMod g →+* 𝓞 E ⧸ P.asIdeal` to `ZMod.castHom (dvd_refl g) _`. Establish `hsurj : Function.Surjective f` using `(Function.Injective.bijective_of_nat_card_le f.injective (by rw [hcard, Nat.card_zmod])).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx⟩` from `hsurj (Ideal.Quotient.mk P.asIdeal u)`. Use `⟨x.val, ZMod.val_lt x, ?_⟩` and prove the remaining obligations. Apply `Ideal.Quotient.eq.1` to reduce the goal to its premises. Rewrite using `[← hx, map_natCast]`. Use `conv_lhs => rw [← ZMod.natCast_zmod_val x]`.
-
-Conclude with `map_natCast f x.val`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_sub_mem {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (g : ℕ) [Fact g.Prime]
     (hN : normV P = g) (hgP : ((g : ℕ) : 𝓞 E) ∈ P.asIdeal) (u : 𝓞 E) :
@@ -99,37 +97,35 @@ end GlobalTheory.TameRes
 open GlobalTheory.TameRes in
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A P g _ hAP hN hgP hgP2 κ σ ζ hσ hζ hT huniq u hu`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Establish `hgp : g.Prime` using `Fact.out`. Establish `hg2 : 2 ≤ g` using `hgp.two_le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgΩ : ((g : ℕ) : Ω) ≠ 0` using `Nat.cast_ne_zero.mpr hgp.ne_zero`. Establish `hg4 : 4 ≤ g ^ 2` using `by nlinarith`. Establish `hσ1 : σ ≠ 1`. Introduce and unpack `rfl`. Establish `hpos : 0 < g ^ 2 - 1` using `by omega`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq ((g : ℕ) : Ω) hpos`. Establish `hy0 : y ≠ 0` using `by rintro rfl; rw [zero_pow hpos.ne'] at hy; exact hgΩ hy.symm`. Establish `h2` using `hT 2 (by norm_num) y hy`. Rewrite `h2` using `[AlgEquiv.one_apply, div_self hy0, redThrough_one]`. Establish `ho` using `(hζ 2 (by norm_num)).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `ho` using `[← h2, orderOf_one]`. Use linear arithmetic over natural numbers and integers. Take `⟨A', hA'P, hσA', ϖ, π, hϖ, hϖ2, hπ, hv⟩` from `hu`. Establish `hAA : A' = A` using `huniq A' hA'P hσA' hσ1`. Rewrite `hv` using `[hAA]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hπ` using `[hN]`. Simplify using `only [zpow_one] at hv`. Establish `hg1 : 0 < g - 1` using `by omega`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq ((g : ℕ) : Ω) hg1`. Establish `hy0 : y ≠ 0` using `by rintro rfl; rw [zero_pow hg1.ne'] at hy; exact hgΩ hy.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTy : redThrough A κ (σ y / y) = ζ 1` using `hT 1 one_pos y (by rw [pow_one]; exact hy)`. Establish `hϖ0 : algebraMap E Ω (ϖ : E) ≠ 0`. Rewrite using `[ne_eq, map_eq_zero, RingOfIntegers.coe_eq_zero_iff]`. Introduce and unpack `rfl`. Conclude with `hϖ2 (zero_mem _)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ0 : π ≠ 0` using `by rintro rfl; rw [zero_pow hg1.ne'] at hπ; exact hϖ0 hπ.symm`. Establish `hϖg : A.valuation (algebraMap E Ω (ϖ : E)) = A.valuation ((g : ℕ) : Ω)`. Establish `e : ((g : ℕ) : Ω) = algebraMap E Ω (((g : ℕ) : 𝓞 E) : E)` using `by simp`. Rewrite using `[e]`. Conclude with `le_antisymm (val_le_of_unif hAP hϖ hgP hgP2) (val_le_of_unif hAP hgP hϖ hϖ2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hπy : A.valuation π = A.valuation y`. Establish `h1 : A.valuation π ^ (g - 1) = A.valuation y ^ (g - 1)`. Rewrite using `[← map_pow, ← map_pow, hπ, hy, hϖg]`. Conclude with `(pow_left_inj hg1.ne').mp h1`. Establish `hvy0 : A.valuation y ≠ 0` using `by simpa using hy0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw1 : A.valuation (π / y) = 1` using `by rw [map_div₀, hπy, div_self hvy0]`. Establish `hwσ : A.valuation (σ (π / y) - π / y) < 1` using `hσ.2 _ hw1.le`. Establish `hσy0 : σ y ≠ 0` using `fun h => hy0 (σ.injective (by rw [h, map_zero]))`. Establish `key : σ π / π - σ y / y = (σ y / y) * ((σ (π / y) - π / y) / (π / y))`. Rewrite using `[map_div₀]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Clear the denominators using the available nonvanishing facts. Establish `hq : A.valuation (σ y / y) ≤ 1` using `(A.valuation_le_one_iff _).2 (tameQuot_mem A σ hg1 hgΩ hy)`. Establish `h1 : A.valuation (σ π / π - σ y / y) < 1`. Rewrite using `[key, map_mul, map_div₀ A.valuation (σ (π / y) - π / y), hw1, div_one]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨a, -, hua⟩` from `exists_nat_sub_mem P g hN hgP u`. Establish `hua' : A.valuation (algebraMap E Ω (u : E) - (a : Ω)) < 1`. Use `(hAP (u - (a : 𝓞 E))).2 hua` as an intermediate fact. Simplify using `using this`. Establish `h3 : A.valuation (σ y / y - (a : Ω)) < 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : σ y / y - (a : Ω) = -(σ π / π - σ y / y) + (σ π / π - algebraMap E Ω (u : E)) + (algebraMap E Ω (u : E) - (a : Ω))` using `by ring`. Rewrite using `[e]`. Use `Valuation.map_add_lt _ (Valuation.map_add_lt _ ?_ hv) hua'` and prove the remaining obligations. Rewrite using `[Valuation.map_neg]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `haA : (a : Ω) ∈ A` using `by exact_mod_cast (natCast_mem A a)`. Establish `hred : redThrough A κ (σ y / y) = (a : Formalism.CyclotomicNorms.Fbar g)`. Rewrite using `[redThrough_eq_of_val_sub κ (tameQuot_mem A σ hg1 hgΩ hy) haA h3]`. Unfold `redThrough`. Rewrite using `[dif_pos haA]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (⟨(a : Ω), haA⟩ : A) = (a : A)` using `Subtype.ext (by simp)`. Rewrite using `[this, map_natCast, map_natCast]`. Establish `hz : ζ 1 = (a : Formalism.CyclotomicNorms.Fbar g)` using `by rw [← hTy, hred]`. Use `⟨a, ?_, hua, by rw [map_natCast, hz]⟩` and prove the remaining obligations. Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hgp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hd`. Establish `h0 : (a : Formalism.CyclotomicNorms.Fbar g) = 0` using `(CharP.cast_eq_zero_iff (Formalism.CyclotomicNorms.Fbar g) g a).2 hd`. Establish `ho` using `(hζ 1 one_pos).1`. Rewrite `ho` using `[hz, h0, pow_one]`. Establish `hz0 : orderOf (0 : Formalism.CyclotomicNorms.Fbar g) = 0`.
-
-Rewrite using `[orderOf_eq_zero_iff']`. Introduce `n hn`. Rewrite using `[zero_pow (Nat.pos_iff_ne_zero.mp hn)]`. Conclude with `zero_ne_one`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.tameRep_residue : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (P : HeightOneSpectrum (𝓞 E)) (g : ℕ) [Fact g.Prime], IsPlaceOver (F := E) A P → normV P = g → ((g : ℕ) : 𝓞 E) ∈ P.asIdeal → ((g : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2 → ∀ (κ : IsLocalRing.ResidueField A ≃+* Formalism.CyclotomicNorms.Fbar g) (σ : G E Ω) (ζ : ℕ → Formalism.CyclotomicNorms.Fbar g), σ ∈ Ine (F := E) A → IsGenSys ζ → TameCoupled A κ σ ζ → (∀ A' : ValuationSubring Ω, IsPlaceOver (F := E) A' P → σ ∈ Ine (F := E) A' → σ ≠ 1 → A' = A) → ∀ u : 𝓞 E, NX.TameRep P 1 σ u → ∃ a : ℕ, a.Coprime g ∧ u - (a : 𝓞 E) ∈ P.asIdeal ∧ algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) (a : ZMod g) = ζ 1 := by
   intro E Ω _ _ _ _ _ A P g _ hAP hN hgP hgP2 κ σ ζ hσ hζ hT huniq u hu

@@ -14,14 +14,14 @@ open GlobalTheory.Cartier
 variable {S S' : Scheme.{0}}
 
 /- English proof (translation)
-Simplify using `only [gs_eq f y U h, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_pow' (f : S' ⟶ S) (y : S') (U : S.Opens) (h : f y ∈ U) (a : Γ(S, U)) (n : ℕ) :
     gs f y U (a ^ n) = gs f y U a ^ n := by
   simp only [gs_eq f y U h, map_pow]
 
 /- English proof (translation)
-Establish `hm : g x ∈ Dv.U i ⊓ Dv.U i'` using `⟨hi, hi'⟩`. Rewrite using `[← gs_res g x inf_le_left hm (Dv.f i)]`. Use `erw [Dv.trans_spec i i']`. Rewrite using `[gs_mul g x _ hm, gs_unit g x _ hm]`. Use `erw [gs_res g x inf_le_right hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_germ (g : S' ⟶ S) (Dv : GlobalTheory.EffCartierData S) (x : S') (i i' : Dv.ι)
     (hi : g x ∈ Dv.U i) (hi' : g x ∈ Dv.U i') :
@@ -33,11 +33,11 @@ theorem dv_germ (g : S' ⟶ S) (Dv : GlobalTheory.EffCartierData S) (x : S') (i 
   erw [gs_res g x inf_le_right hm]
 
 /- English proof (translation)
-Establish `hm : x ∈ V ⊓ (M.pull g).U j ⊓ (M.pull g).U j'` using `⟨hx, hx'.2⟩`. Establish `E` using `congrArg (S'.presheaf.germ _ x hm).hom (he j j')`. Rewrite `E` using `[map_mul, germ_resG, germ_resG, germ_resG]`. Use `E.trans (congrArg (· * _) ?_)` and prove the remaining obligations. Rewrite using `[pull_g, val_res]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(germ_resG _ x _ _).trans ?_` and prove the remaining obligations. Establish `hg : g x ∈ M.U (j ⟨⟩) ⊓ M.U (j' ⟨⟩)`. Establish `h1` using `(pull_U M g j).le hx.2`. Establish `h2` using `(pull_U M g j').le hx'.2`. Conclude with `⟨h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite using `[gm_val g x _ hg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem e_germ (g : S' ⟶ S) (M : LB S) (V : S'.Opens) (e : ∀ i, Γ(S', V ⊓ (M.pull g).U i))
     (he : e ∈ secOn (M.pull g) V) (x : S') (j j' : PUnit → M.ι)
@@ -58,11 +58,11 @@ theorem e_germ (g : S' ⟶ S) (M : LB S) (V : S'.Opens) (e : ∀ i, Γ(S', V ⊓
   rfl
 
 /- English proof (translation)
-Establish `hm : g x ∈ (lbPow (GlobalTheory.CechPic.tens (lbPow M k) (GlobalTheory.CechPic.dual Dv.lb)) N).U p ⊓ (lbPow (GlobalTheory.CechPic.tens (lbPow M k) (GlobalTheory.CechPic.dual Dv.lb)) N).U p'` using `⟨hp, hp'⟩`. Rewrite using `[← gs_res g x inf_le_left hm (σ.f p)]`. Use `erw [σ.compat p p']`. Rewrite using `[gs_mul g x _ hm, gs_unit g x _ hm]`. Use `erw [gs_res g x inf_le_right hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 2`. Establish `hq` using `(lbPow_U (GlobalTheory.CechPic.tens (lbPow M k) (GlobalTheory.CechPic.dual Dv.lb)) N p).le hp`. Establish `hq'` using `(lbPow_U (GlobalTheory.CechPic.tens (lbPow M k) (GlobalTheory.CechPic.dual Dv.lb)) N p').le hp'`. Establish `hT : g x ∈ (GlobalTheory.CechPic.tens (lbPow M k) (GlobalTheory.CechPic.dual Dv.lb)).U (p ⟨⟩) ⊓ (GlobalTheory.CechPic.tens (lbPow M k) (GlobalTheory.CechPic.dual Dv.lb)).U (p' ⟨⟩)` using `⟨hq, hq'⟩`. Rewrite using `[lbPow_g (GlobalTheory.CechPic.tens (lbPow M k) (GlobalTheory.CechPic.dual Dv.lb)) N p p', map_pow, gm_res g x _ hm, GlobalTheory.CechPic.gm_tens _ _ g x _ _ hq hq']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : g x ∈ (lbPow M k).U (p ⟨⟩).1 ⊓ (lbPow M k).U (p' ⟨⟩).1` using `⟨hq.1, hq'.1⟩`. Establish `hJ : g x ∈ M.U ((p ⟨⟩).1 ⟨⟩) ⊓ M.U ((p' ⟨⟩).1 ⟨⟩)` using `⟨(lbPow_U M k _).le hq.1, (lbPow_U M k _).le hq'.1⟩`. Rewrite using `[lbPow_g M k (p ⟨⟩).1 (p' ⟨⟩).1, map_pow, gm_res g x _ hj]`. Use `congr 2`. Conclude with `map_inv _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sig_germ (g : S' ⟶ S) (M : LB S) (Dv : GlobalTheory.EffCartierData S) (k N : ℕ)
     (σ : (lbPow (GlobalTheory.CechPic.tens (lbPow M k) (GlobalTheory.CechPic.dual Dv.lb)) N).Sec) (x : S')
@@ -92,14 +92,14 @@ theorem sig_germ (g : S' ⟶ S) (M : LB S) (Dv : GlobalTheory.EffCartierData S) 
   exact map_inv _ _
 
 /- English proof (translation)
-Rewrite using `[mul_pow, inv_pow, inv_mul_cancel_right, ← pow_mul, ← mul_pow, mul_inv, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem units_alg {G : Type*} [CommGroup G] (μ τ ε : G) (k N : ℕ) :
     (μ ^ k * τ⁻¹) ^ N * τ ^ N * ((μ * ε)⁻¹) ^ (k * N) = (ε⁻¹) ^ (k * N) := by
   rw [mul_pow, inv_pow, inv_mul_cancel_right, ← pow_mul, ← mul_pow, mul_inv, mul_inv_cancel_left]
 
 /- English proof (translation)
-Establish `h` using `congrArg Units.val (units_alg μ τ ε k N)`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val] at h`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val]`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ring_alg {R : Type*} [CommRing R] (A B : R) (μ τ ε : Rˣ) (k N : ℕ) :
     (((μ ^ k * τ⁻¹) ^ N : Rˣ) : R) * A * ((τ : R) * B) ^ N * (((μ * ε)⁻¹ : Rˣ) : R) ^ (k * N) =
@@ -111,7 +111,7 @@ theorem ring_alg {R : Type*} [CommRing R] (A B : R) (μ τ ε : Rˣ) (k N : ℕ)
   ring
 
 /- English proof (translation)
-Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' W V (fun c => homOfLE (hW c)) (fun x hx => Opens.mem_iSup.2 (hc x hx)) t (fun c c' => ext_germ fun x hx => by`. Establish `e1` using `germ_resG (inf_le_left : W c ⊓ W c' ≤ W c) x hx (t c)`. Establish `e2` using `germ_resG (inf_le_right : W c ⊓ W c' ≤ W c') x hx (t c')`. Conclude with `e1.trans ((ht c c' x hx.1 hx.2).trans e2.symm))`. Conclude with `⟨s, hs⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem glue_germ (X : Scheme.{0}) (V : X.Opens) {κ : Type} (W : κ → X.Opens) (hW : ∀ c, W c ≤ V)
     (hc : ∀ x ∈ V, ∃ c, x ∈ W c) (t : ∀ c, Γ(X, W c))
@@ -126,31 +126,29 @@ theorem glue_germ (X : Scheme.{0}) (V : X.Opens) {κ : Type} (W : κ → X.Opens
   exact ⟨s, hs⟩
 
 /- English proof (translation)
-Introduce `S S' g M Dv k N σ V e hM he hu`. Establish `hLU : ∀ p : (lbPow (GlobalTheory.CechPic.tens (lbPow M k) (GlobalTheory.CechPic.dual Dv.lb)) N).ι, (lbPow (GlobalTheory.CechPic.tens (lbPow M k) (GlobalTheory.CechPic.dual Dv.lb)) N).U p = M.U ((p ⟨⟩).1 ⟨⟩) ⊓ Dv.U (p ⟨⟩).2` using `fun p => (lbPow_U _ N p).trans (congrArg (· ⊓ Dv.U (p ⟨⟩).2) (lbPow_U M k (p ⟨⟩).1))`. Set `W : (lbPow (GlobalTheory.CechPic.tens (lbPow M k) (GlobalTheory.CechPic.dual Dv.lb)) N).ι → S'.Opens` to `fun p => V ⊓ g ⁻¹ᵁ (lbPow (GlobalTheory.CechPic.tens (lbPow M k) (GlobalTheory.CechPic.dual Dv.lb)) N).U p`. Establish `hW : ∀ p, W p ≤ V` using `fun p => inf_le_left`. Establish `le1 : ∀ p, W p ≤ V ⊓ (M.pull g).U (p ⟨⟩).1` using `fun p x hx => ⟨hx.1, (pull_U M g _).ge ((hLU p).le hx.2).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `le2 : ∀ p, W p ≤ g ⁻¹ᵁ Dv.U (p ⟨⟩).2` using `fun p x hx => ((hLU p).le hx.2).2`. Establish `le3 : ∀ p, W p ≤ g ⁻¹ᵁ (lbPow (GlobalTheory.CechPic.tens (lbPow M k) (GlobalTheory.CechPic.dual Dv.lb)) N).U p` using `fun p => inf_le_right`. Set `einv : ∀ j, Γ(S', V ⊓ (M.pull g).U j)` to `fun j => (((hu j).unit⁻¹ : Γ(S', V ⊓ (M.pull g).U j)ˣ) : Γ(S', _))`. Set `tp : ∀ p, Γ(S', W p)` to `fun p => resG S' (le3 p) ((g.app _).hom (σ.f p)) * resG S' (le2 p) ((g.app (Dv.U (p ⟨⟩).2)).hom (Dv.f (p ⟨⟩).2)) ^ N * resG S' (le1 p) (einv (p ⟨⟩).1) ^ (k * N)`. Set `εu : ∀ j (x : S') (hx : x ∈ V ⊓ (M.pull g).U j), (S'.presheaf.stalk x)ˣ` to `fun j x hx => Units.map (S'.presheaf.germ _ x hx).hom.toMonoidHom (hu j).unit`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hεu : ∀ j x hx, ((εu j x hx : (S'.presheaf.stalk x)ˣ) : S'.presheaf.stalk x) = (S'.presheaf.germ _ x hx).hom (e j)` using `fun j x hx => by`. Express the relevant statement in the definitionally equal form `(S'.presheaf.germ _ x hx).hom ((hu j).unit : Γ(S', _)) = _`. Rewrite using `[IsUnit.unit_spec]`. Establish `hεinv : ∀ j x hx, (S'.presheaf.germ _ x hx).hom (einv j) = (((εu j x hx)⁻¹ : (S'.presheaf.stalk x)ˣ) : S'.presheaf.stalk x)` using `fun j x hx => by`. Rewrite using `[← map_inv]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hgerm : ∀ p x (hx : x ∈ W p), (S'.presheaf.germ (W p) x hx).hom (tp p) = gs g x _ (σ.f p) * gs g x (Dv.U (p ⟨⟩).2) (Dv.f (p ⟨⟩).2) ^ N * (((εu _ x (le1 p hx))⁻¹ : (S'.presheaf.stalk x)ˣ) : S'.presheaf.stalk x) ^ (k * N)`. Introduce `p x hx`. Simplify using `only [tp, map_mul, map_pow]`. Rewrite using `[germ_resG, germ_resG, germ_resG, gs_eq g x _ hx.2, gs_eq g x _ (le2 p hx)]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Establish `hε : ∀ (j j' : (M.pull g).ι) (x : S') (hx : x ∈ V ⊓ (M.pull g).U j) (hx' : x ∈ V ⊓ (M.pull g).U j'), εu j x hx = gm g x (M.U (j ⟨⟩) ⊓ M.U (j' ⟨⟩)) (M.g (j ⟨⟩) (j' ⟨⟩)) * εu j' x hx'` using `fun j j' x hx hx' => Units.ext (by`. Rewrite using `[Units.val_mul, hεu, hεu]`. Conclude with `e_germ g M V e he x j j' hx hx')`. Establish `hcompat : ∀ p p' x (hx : x ∈ W p) (hx' : x ∈ W p'), (S'.presheaf.germ (W p) x hx).hom (tp p) = (S'.presheaf.germ (W p') x hx').hom (tp p')`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p p' x hx hx'`. Rewrite using `[hgerm, hgerm, sig_germ g M Dv k N σ x p p' hx.2 hx'.2, dv_germ g Dv x _ _ (le2 p hx) (le2 p' hx'), hε _ _ x (le1 p hx) (le1 p' hx')]`. Conclude with `ring_alg _ _ _ _ _ k N`. Take `⟨t, ht⟩` from `glue_germ S' V W hW (fun x hx => by`. Take `⟨J, hJ⟩` from `exists_chart hM (g x)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, hc⟩` from `Dv.exists_mem (g x)`. Conclude with `⟨fun _ => ((fun _ => J), c), hx, (hLU _).ge ⟨hJ, hc⟩⟩) tp hcompat`. Establish `germT : ∀ p x (hx : x ∈ W p), (S'.presheaf.germ V x (hW p hx)).hom t = (S'.presheaf.germ (W p) x hx).hom (tp p)` using `fun p x hx => (germ_resG (hW p) x hx t).symm.trans (congrArg _ (ht p))`. Establish `h1 : ∀ (A : S'.affineOpens) (hA : A.1 ≤ V), resG S' hA t ∈ ((Dv.idealSheaf ^ N).comap g).ideal A`. Introduce `A hA`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← GlobalTheory.EffCartierData.idealSheaf_nsmul, GlobalTheory.EffCartierData.comap_idealSheaf]`. Use `(GlobalTheory.EffCartierData.mem_locIdeal_iff _ _ _ _).2 fun c x hxA hc => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_chart hM (g x)`. Establish `hxp : x ∈ W (fun _ => ((fun _ => J), c))` using `⟨hA hxA, (hLU _).ge ⟨hJ, hc⟩⟩`. Rewrite using `[germ_resG, germT _ x hxp, hgerm _ x hxp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Dvd.dvd.mul_right (Dvd.dvd.mul_left (dvd_of_eq ?_) _) _` and prove the remaining obligations. Rewrite using `[← gs_pow' g x (Dv.U c) hc (Dv.f c) N, gs_eq g x (Dv.U c) hc]`. Both sides reduce to the same expression. Use `⟨t, h1, fun A hA hAσ => le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce `a ha`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[A.2.mem_ideal_iff]`. Introduce `x hx`. Rewrite using `[Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Rewrite `ha` using `[← GlobalTheory.EffCartierData.idealSheaf_nsmul, GlobalTheory.EffCartierData.comap_idealSheaf]`. Use `replace ha := (GlobalTheory.EffCartierData.mem_locIdeal_iff _ _ _ _).1 ha`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨J, hJ⟩` from `exists_chart hM (g x)`. Take `⟨c, hc⟩` from `Dv.exists_mem (g x)`. Establish `hxp : x ∈ W (fun _ => ((fun _ => J), c))` using `⟨hA hx, (hLU _).ge ⟨hJ, hc⟩⟩`. Use `Dvd.dvd.trans ?_ (ha c x hx hc)` and prove the remaining obligations. Establish `hσu : IsUnit (gs g x _ (σ.f (fun _ => ((fun _ => J), c))))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : g x ∈ S.basicOpen (σ.f (fun _ => ((fun _ => J), c)))` using `(mem_nonzeroLocus_iff σ _ hxp.2).1 (hAσ hx)`. Rewrite `h0` using `[S.mem_basicOpen _ _ hxp.2]`. Rewrite using `[gs_eq g x _ hxp.2]`. Conclude with `(congrArg IsUnit (GlobalTheory.EffCartierData.germ_app g _ x hxp.2)).mpr (h0.map _)`. Express the relevant statement in the definitionally equal form `(S'.presheaf.germ A.1 x hx).hom (resG S' hA t) ∣ _`.
-
-Rewrite using `[germ_resG, germT _ x hxp, hgerm _ x hxp, IsUnit.mul_right_dvd ((Units.isUnit _).pow _), hσu.mul_left_dvd, ← gs_pow' g x (Dv.U c) hc (Dv.f c) N, gs_eq g x (Dv.U c) hc]`. Both sides reduce to the same expression. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `h1 A hA`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_generator_of_sec : ∀ {S S' : Scheme.{0}} (g : S' ⟶ S) (M : LB S) (Dv : GlobalTheory.EffCartierData S) (k N : ℕ)
     (σ : (lbPow (GlobalTheory.CechPic.tens (lbPow M k) (GlobalTheory.CechPic.dual Dv.lb)) N).Sec) (V : S'.Opens)

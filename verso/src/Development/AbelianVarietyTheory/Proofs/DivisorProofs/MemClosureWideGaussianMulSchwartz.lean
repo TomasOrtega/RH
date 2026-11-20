@@ -13,17 +13,17 @@ variable {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 def cutErr (c : ℝ) (y : E) : ℂ := GroundTheory.Global.gaussianSchwartz E (c • y) - 1
 
 /- English proof (translation)
-The claim follows from `(((GroundTheory.Global.gaussianSchwartz E).smooth ⊤).comp (contDiff_const_smul c)).sub contDiff_const`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_cutErr (c : ℝ) : ContDiff ℝ ∞ (cutErr (E := E) c) :=
   (((GroundTheory.Global.gaussianSchwartz E).smooth ⊤).comp (contDiff_const_smul c)).sub contDiff_const
 
 /- English proof (translation)
-Unfold `cutErr`. Rewrite using `[GroundTheory.Global.gaussianSchwartz_apply]`. Establish `hx : ‖c • y‖ ^ 2 = c ^ 2 * ‖y‖ ^ 2` using `by rw [norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]`. Rewrite using `[hx]`. Use `set a := Real.pi * c ^ 2 * ‖y‖ ^ 2 with ha_def`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : 0 ≤ a` using `by positivity`. Establish `h1 : Real.exp (-Real.pi * (c ^ 2 * ‖y‖ ^ 2)) = Real.exp (-a)`. Use `congr 1`. Rewrite using `[ha_def]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `he : Real.exp (-a) ≤ 1` using `Real.exp_le_one_iff.2 (neg_nonpos.2 ha)`. Rewrite using `[h1, show ((Real.exp (-a) : ℝ) : ℂ) - 1 = ((Real.exp (-a) - 1 : ℝ) : ℂ) by push_cast; ring, Complex.norm_real, Real.norm_eq_abs, abs_of_nonpos (by linarith)]`. Combine the linear relations using `[Real.add_one_le_exp (-a)]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_cutErr_le (c : ℝ) (y : E) : ‖cutErr c y‖ ≤ Real.pi * c ^ 2 * ‖y‖ ^ 2 := by
   unfold cutErr
@@ -40,7 +40,7 @@ theorem norm_cutErr_le (c : ℝ) (y : E) : ‖cutErr c y‖ ≤ Real.pi * c ^ 2 
   linarith [Real.add_one_le_exp (-a)]
 
 /- English proof (translation)
-The claim follows from `|c| ^ j * SchwartzMap.seminorm ℝ 0 j (GroundTheory.Global.gaussianSchwartz E) := by set g := GroundTheory.Global.gaussianSchwartz E with hg set L : E →L[ℝ] E := c • ContinuousLinearMap.id ℝ E with hL have hgL : ContDiff ℝ ∞ ((g : E → ℂ) ∘ L) := (g.smooth ⊤).comp L.contDiff have h …`.
+A detailed English derivation is pending.
 -/
 theorem norm_iteratedFDeriv_cutErr_le (c : ℝ) {j : ℕ} (hj : j ≠ 0) (y : E) :
     ‖iteratedFDeriv ℝ j (cutErr c) y‖ ≤
@@ -64,7 +64,7 @@ theorem norm_iteratedFDeriv_cutErr_le (c : ℝ) {j : ℕ} (hj : j ≠ 0) (y : E)
     (pow_nonneg (abs_nonneg c) j)
 
 /- English proof (translation)
-The claim follows from `|c| * (Real.pi + SchwartzMap.seminorm ℝ 0 j (GroundTheory.Global.gaussianSchwartz E)) * (1 + ‖y‖) ^ 2 := by have hS : 0 ≤ SchwartzMap.seminorm ℝ 0 j (GroundTheory.Global.gaussianSchwartz E) := apply_nonneg _ _ have hy : 0 ≤ ‖y‖ := norm_nonneg y have hc0 : 0 ≤ |c| := abs_nonneg c …`.
+A detailed English derivation is pending.
 -/
 theorem norm_iteratedFDeriv_cutErr_le' (c : ℝ) (hc : |c| ≤ 1) (j : ℕ) (y : E) :
     ‖iteratedFDeriv ℝ j (cutErr c) y‖ ≤
@@ -91,17 +91,15 @@ theorem norm_iteratedFDeriv_cutErr_le' (c : ℝ) (hc : |c| ≤ 1) (j : ℕ) (y :
       _ ≤ _ := by gcongr
 
 /- English proof (translation)
-Use `set S : ℕ → ℝ := fun i => SchwartzMap.seminorm ℝ 0 i (GroundTheory.Global.gaussianSchwartz E) with hS`. Use `set P := (Finset.Iic (k + 2, n)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) h with hP_def`. Establish `hP : 0 ≤ P` using `apply_nonneg _ _`. Establish `hS0 : ∀ i, 0 ≤ S i` using `fun i => apply_nonneg _ _`. Establish `hpi` using `Real.pi_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * (Real.pi + S i) * (2 ^ (k + 2) * P), Finset.sum_nonneg fun i _ => by have := hS0 i; positivity, fun c hc y => ?_⟩` and prove the remaining obligations. Establish `hy : 0 ≤ ‖y‖` using `norm_nonneg y`. Establish `hL` using `norm_iteratedFDeriv_mul_le (contDiff_cutErr (E := E) c) (h.smooth ⊤) y (n := n) (by exact_mod_cast le_top)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * ((|c| * (Real.pi + S i)) * ((1 + ‖y‖) ^ 2 * (‖y‖ ^ k * ‖iteratedFDeriv ℝ (n - i) h y‖))) := by`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `norm_iteratedFDeriv_cutErr_le' c hc i y` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : 0 ≤ ‖y‖ ^ k * ‖iteratedFDeriv ℝ (n - i) h y‖` using `by positivity`. Establish `e : |c| * (Real.pi + S i) * ((1 + ‖y‖) ^ 2 * (‖y‖ ^ k * ‖iteratedFDeriv ℝ (n - i) h y‖)) = (|c| * (Real.pi + S i) * (1 + ‖y‖) ^ 2) * (‖y‖ ^ k * ‖iteratedFDeriv ℝ (n - i) h y‖)` using `by ring`. Rewrite using `[e]`. Use `gcongr`. Use `_ ≤ ∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * ((|c| * (Real.pi + S i)) * (2 ^ (k + 2) * P)) := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `hS0i` using `hS0 i`. Establish `hX : (1 + ‖y‖) ^ 2 * (‖y‖ ^ k * ‖iteratedFDeriv ℝ (n - i) h y‖) ≤ 2 ^ (k + 2) * P`. Combine the equalities or inequalities in the displayed calculation. Use `gcongr`.
-
-Use `_ = |c| * ∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * (Real.pi + S i) * (2 ^ (k + 2) * P) := by`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cut_bound (h : 𝓢(E, ℂ)) (k n : ℕ) : ∃ K : ℝ, 0 ≤ K ∧ ∀ c : ℝ, |c| ≤ 1 → ∀ y : E,
     ‖y‖ ^ k * ‖iteratedFDeriv ℝ n (fun y => cutErr c y * h y) y‖ ≤ |c| * K := by
@@ -162,17 +160,15 @@ end GlobalTheory.GaussCutoff
 open GlobalTheory.GaussCutoff in
 
 /- English proof (translation)
-Rewrite using `[mem_closure_iff_nhds]`. Introduce `U hU`. Take `⟨s, r, hr, hsub⟩` from `((schwartz_withSeminorms ℝ E ℂ).mem_nhds_iff h U).1 hU`. Use `choose K hK0 hK using fun m : ℕ × ℕ => cut_bound h m.1 m.2`. Use `set M := ∑ m ∈ s, K m with hM`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : 0 ≤ M` using `Finset.sum_nonneg fun m _ => hK0 m`. Use `set c := min 1 (r / (2 * (M + 1))) with hc_def`. Establish `hcpos : 0 < c` using `lt_min one_pos (by positivity)`. Establish `hc1 : |c| ≤ 1` using `by rw [abs_of_pos hcpos]; exact min_le_left _ _`. Establish `hcr : c * (M + 1) ≤ r / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `min_le_right 1 (r / (2 * (M + 1)))` as an intermediate fact. Rewrite `this` using `[← hc_def]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨h + cutMap h c hc1, hsub ?_, Real.pi * c ^ 2, by positivity, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[Seminorm.mem_ball, add_sub_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Seminorm.finset_sup_apply_lt hr fun m hm => ?_` and prove the remaining obligations. Establish `h1 : SchwartzMap.seminorm ℝ m.1 m.2 (cutMap h c hc1) ≤ |c| * K m` using `SchwartzMap.seminorm_le_bound ℝ m.1 m.2 _ (mul_nonneg (abs_nonneg c) (hK0 m)) (hK m c hc1)`. Establish `h2 : K m ≤ M` using `Finset.single_le_sum (fun m _ => hK0 m) hm`. Use `show SchwartzMap.seminorm ℝ m.1 m.2 (cutMap h c hc1) < r`. Rewrite `h1` using `[abs_of_pos hcpos]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[add_apply, cutMap_apply, cutErr, GroundTheory.Global.gaussianSchwartz_apply, Complex.ofReal_exp]`. Establish `e : -Real.pi * ‖c • y‖ ^ 2 = -(Real.pi * c ^ 2 * ‖y‖ ^ 2)`. Rewrite using `[norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GaussCutoff.mem_closure_gauss_mul (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] (h : SchwartzMap E ℂ) :

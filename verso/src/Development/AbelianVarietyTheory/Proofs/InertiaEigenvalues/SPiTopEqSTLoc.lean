@@ -16,9 +16,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.IndefiniteRowSideFullH
 namespace GlobalTheory.ConjLatticeSelmer
 
 /- English proof (translation)
-Substitute `h hM` using the available equality. Consider the cases of `Subsingleton.elim i₁ i₂`. Take `⟨σ, hσ⟩` from `GlobalTheory.EmbUnitBallConj.exists_conj l₁ Ω B₀.j B.j fun x => (h₀ x).symm.trans (h₁ x)`. Establish `he : ∀ g : ↥Gw, ((B.e g : ↥(GK B.Kw)) : GQ l₁) = σ * ((B₀.e g : ↥(GK B₀.Kw)) : GQ l₁) * σ⁻¹`. Introduce `g`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.padicAlgCl_algEquiv_eq_of_eq_on_isAlgClosed l₁ Ω B.j _ _ fun x => ?_` and prove the remaining obligations. Rewrite using `[B.e_comm, ← hσ, ← hσ, ← B₀.e_comm]`. Simplify using the standard rewrite rules. Establish `hz` using `DFunLike.congr_fun (padicInt_hom_ext (natCast_mem_maximalIdeal O) (f.comp (algebraMap ℤ_[l₁] O₀)) (algebraMap ℤ_[l₁] O))`. Conclude with `le_antisymm (GlobalTheory.BlochKatoBaseChangeLe.extCond_le_bkG l₁ (L l₁) E Ω Gw O₀ O B₀ B σ he f hf hz k M₀) (GlobalTheory.BlochKatoBaseChange.bkG_le_extCond l₁ (L l₁) E Ω Gw O₀ O B₀ B σ he f hf hz k M₀)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem extCond_eq_bkG (L : LocTheory) {l₁ l₂ : ℕ} [i₁ : Fact l₁.Prime] [i₂ : Fact l₂.Prime] (h : l₁ = l₂)
     {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] [IsAlgClosed Ω] (A : ValuationSubring Ω)
@@ -45,15 +45,15 @@ theorem extCond_eq_bkG (L : LocTheory) {l₁ l₂ : ℕ} [i₁ : Fact l₁.Prime
 variable (D : D7)
 
 /- English proof (translation)
-Establish `hl` using `D.ntw.twOf_l a`. Establish `hS : setS D.ntw (D.ntw.twOf a) = ↑(D.nd.S a)`. Rewrite using `[← TwistedTriples.badS_eq D a]`. Unfold `setS TwistedTriples.badS`. Rewrite using `[hl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `selT Br.selG`. Use `congr 1`. Use function extensionality and compare the values at `v`. Unfold `Formalism.GaloisCohomology.bkCond`. Rewrite using `[hS]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hv : v ∈ placesOver D.host.E (D.nd.l a)`. Establish `hv' : v ∈ placesOver D.host.E (D.ntw.l (D.ntw.twOf a))` using `by rw [hl]; exact hv`. Use `(if_pos hv').trans (Eq.trans ?_ (if_pos hv).symm)` and prove the remaining obligations. Unfold `condL Br.LlG`. Rewrite using `[dif_pos hv, dif_pos hv']`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `IsAlgClosure.isAlgClosed D.host.E (K := D.nd.Om)` as an intermediate fact. Use `extCond_eq_bkG D.loc hl (D.nd.plOm.1 v) (D.ntwbr _ v hv') (D.nbr a v hv) (D.ntwbr_ind _ v hv') (D.nbr_ind a v hv) (D.ntw.twist₂ a) (twO_inj D.ntw a) ((latT D.ntw _ s).comp (decS D.nd v)) ((latTpsi D.ntw _ s (D.ntw.twist₂ a) ψ).comp (decS D.nd v)) ?_` and prove the remaining obligations. Use extensionality with `g i j`. Simplify using `[latTpsi, twistM, mapM, hψ v hv g.1 g.2]`. Establish `hv' : v ∉ placesOver D.host.E (D.ntw.l (D.ntw.twOf a))` using `by rw [hl]; exact hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(if_neg hv').trans (if_neg hv).symm`.
+A detailed English derivation is pending.
 -/
 theorem selT_eq_selG (a : D.nd.Loc) (s : D.ntw.Sig (D.ntw.twOf a)) (ψ : Formalism.MainNotions.N.GE D.nd →* (D.nd.O a)ˣ)
     (hψ : ∀ v ∈ placesOver D.host.E (D.nd.l a), ∀ g ∈ Dec (F := D.host.E) (D.nd.plOm.1 v), ψ g = 1) :
@@ -85,7 +85,7 @@ theorem selT_eq_selG (a : D.nd.Loc) (s : D.ntw.Sig (D.ntw.twOf a)) (ψ : Formali
     exact (if_neg hv').trans (if_neg hv).symm
 
 /- English proof (translation)
-Unfold `nlen lenUnit`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nlen_congr {O : Type} [CommRing O] (l : ℕ) (M N : Type) [AddCommGroup M] [Module O M]
     [AddCommGroup N] [Module O N] (h : Module.length O M = Module.length O N) :
@@ -94,7 +94,7 @@ theorem nlen_congr {O : Type} [CommRing O] (l : ℕ) (M N : Type) [AddCommGroup 
   rw [h]
 
 /- English proof (translation)
-Unfold `sPiTop sTLoc sT`. Rewrite using `[selT_eq_selG D a s _ fun v hv => D.ntw.psiL_l a v hv _ (D.nd.plOm.2 v), D.ntw.twOf_l]`. Conclude with `nlen_congr _ _ _ (GlobalTheory.T.selG_length_eq_of_conj _ _ D.nd.plOm (D.nd.l a) (D.nd.O a) (D.loc (D.nd.l a)) (D.nbr a) (↑(D.nd.S a) ∪ ↑(D.nd.Q a)) _ _ _ U hU).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sPiTop_eq_sTLoc (a : D.nd.Loc) (π : D.nd.X a)
     (ρ : D.nd.X a → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.r) (D.nd.O a))) (s : D.ntw.Sig (D.ntw.twOf a))

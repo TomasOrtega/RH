@@ -19,7 +19,7 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
 variable {η κ χS χT : (AEF F E)ˣ →* Circle} {ε : AEF F E} {of oi : GAF σ JS × GAF σ JT →* Module.End ℂ (WOF F E nS nT → ℂ)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h2.1, fun e he a => by rw [MonoidHom.mul_apply, hκ.base a, mul_one]; exact h2.2 e he a⟩`.
+Supply the required witnesses or components.
 -/
 theorem resEta_mul (h2 : ResEtaF η 1) (hκ : IsKap σ lam κ) : ResEtaF (η * κ) 1 :=
   ⟨h2.1, fun e he a => by rw [MonoidHom.mul_apply, hκ.base a, mul_one]; exact h2.2 e he a⟩
@@ -40,7 +40,7 @@ structure PartsK (C : Ctx σ B JS JT ξ₀ θ ι) (hc : HeisClosedF σ JS JT ξ�
         oi p f = GlobalTheory.RealWeil.dP s (mMF σ JS JT θ p) • f
 
 /- English proof (translation)
-Take `⟨r, p, e⟩` from `P.prod _ _ (mul_ne_zero hN hx) h (cutRat _ (half_add C.good P.half) (Units.mk0 _ hN * Units.mk0 _ hx)) (by rw [cutRat_val, add_comm, Units.val_mul, Units.val_mk0, Units.val_mk0])`. Use `⟨r, p, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, map_mul lam, ← Finset.prod_mul_distrib]`. Simplify using `only [map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem PartsK.prod' {C : Ctx σ B JS JT ξ₀ θ ι} (P : PartsK C hc lam Om η χS χT ε of oi) {N x : E} (hN : N ≠ 0) (hx : x ≠ 0)
     {c n : ℕ} (h : ((c * n : ℕ) : ℚ) = |Algebra.norm ℚ (N * x)|) : ∃ r : ℝ, 0 < r ∧
@@ -53,7 +53,7 @@ theorem PartsK.prod' {C : Ctx σ B JS JT ξ₀ θ ι} (P : PartsK C hc lam Om η
   simp only [map_mul]
 
 /- English proof (translation)
-Establish `e1` using `congrFun (H f f.2) x`. Rewrite `e1` using `[P.vac s hs.sq hs.pos (g, h) hcm f f.2 f2, map_smul, P.hof, hO.vac _ f f1, normOp, Submodule.coe_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, substF_apply] at e1`. Rewrite using `[← one_mul (f.1 _), ← inv_mul_cancel₀ hc0, mul_assoc, ← e1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem PartsK.kappa {C : Ctx σ B JS JT ξ₀ θ ι} (P : PartsK C hc lam Om η χS χT ε of oi)
     (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om) (hs : CartF σ JS JT ξ₀ B θ s) {g : GAF σ JS} {h : GAF σ JT}

@@ -18,14 +18,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 omit [IsCMField E] in
 /- English proof (translation)
-The claim follows from `IsFractionRing.lift_algebraMap (intEmb_injective s) a`.
+A detailed English derivation is pending.
 -/
 theorem embOf_coe (s : 𝓞 E →+* ℂ) (a : 𝓞 E) : embOf s (algebraMap (𝓞 E) E a) = s a :=
   IsFractionRing.lift_algebraMap (intEmb_injective s) a
 
 omit [IsCMField E] in
 /- English proof (translation)
-Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E))` to reduce the goal to its premises. Use extensionality with `a`. Simplify using `[embOf_coe]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem embOf_of_comp (φ : E →+* ℂ) : embOf (φ.comp (algebraMap (𝓞 E) E)) = φ := by
   apply IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E))
@@ -34,7 +34,7 @@ theorem embOf_of_comp (φ : E →+* ℂ) : embOf (φ.comp (algebraMap (𝓞 E) E
 
 omit [IsCMField E] in
 /- English proof (translation)
-Introduce `s s' h`. Use extensionality with `a`. Rewrite using `[← embOf_coe s a, ← embOf_coe s' a, h]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem embOf_injective : Function.Injective (embOf : (𝓞 E →+* ℂ) → (E →+* ℂ)) := by
   intro s s' h
@@ -42,15 +42,13 @@ theorem embOf_injective : Function.Injective (embOf : (𝓞 E →+* ℂ) → (E 
   rw [← embOf_coe s a, ← embOf_coe s' a, h]
 
 /- English proof (translation)
-Use `set K := maximalRealSubfield E`. Use `set t := IsCMField.complexConj E`. Use `set y := conj K E x with hy`. Establish `hyy : conj K E y = x` using `conj_conj x`. Establish `fix : ∀ a : E, conj K E a = a → t a = a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a ha`. Take `⟨b, rfl⟩` from `conj_eq_self_iff.1 ha`. Conclude with `(IsCMField.complexConj_eq_self_iff E _).2 b.2`. Establish `ha : t (x + y) = x + y` using `fix _ (by rw [map_add, hyy, ← hy, add_comm])`. Establish `hb : t (x * y) = x * y` using `fix _ (by rw [map_mul, hyy, ← hy, mul_comm])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz : (t x - x) * (t x - y) = 0`. Establish `h0 : x * x - (x + y) * x + x * y = 0` using `by ring`. Establish `h1` using `congrArg t h0`. Rewrite `h1` using `[map_add, map_sub, map_mul, map_mul, ha, hb, map_zero]`. Take the linear combination `h1`.
+Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 hz with h | h` into its components or cases. Establish `hx : t x = x` using `sub_eq_zero.1 h`. Establish `: x ∈ K` using `(IsCMField.complexConj_eq_self_iff E x).1 hx`. Establish `h2 : y = x` using `conj_eq_self_iff.2 ⟨⟨x, this⟩, rfl⟩`. Rewrite using `[h2, hx]`.
-
-Conclude with `(sub_eq_zero.1 h).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_eq_complexConj (x : E) : conj (maximalRealSubfield E) E x = IsCMField.complexConj E x := by
   set K := maximalRealSubfield E
@@ -76,7 +74,7 @@ theorem conj_eq_complexConj (x : E) : conj (maximalRealSubfield E) E x = IsCMFie
   · exact (sub_eq_zero.1 h).symm
 
 /- English proof (translation)
-Rewrite using `[conjHom_apply, conj_eq_complexConj]`. Conclude with `IsCMField.complexEmbedding_complexConj E _ x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embOf_conj (s : 𝓞 E →+* ℂ) (x : E) :
     embOf s (conjHom (maximalRealSubfield E) E x) = starRingEnd ℂ (embOf s x) := by
@@ -84,19 +82,19 @@ theorem embOf_conj (s : 𝓞 E →+* ℂ) (x : E) :
   exact IsCMField.complexEmbedding_complexConj E _ x
 
 /- English proof (translation)
-Establish `hres : ∀ s : 𝓞 E →+* ℂ, (embOf s).comp (algebraMap (𝓞 E) E) = s`. Introduce `s`. Use extensionality with `a`. Simplify using `[embOf_coe]`. Establish `hconj : ∀ s : 𝓞 E →+* ℂ, (starRingEnd ℂ).comp (embOf s) = embOf ((starRingEnd ℂ).comp s)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `s`. Rewrite using `[← embOf_of_comp ((starRingEnd ℂ).comp (embOf s))]`. Use `congr 1`. Rewrite using `[RingHom.comp_assoc, hres]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨τ, b⟩ ⟨τ', b'⟩ e`. Apply the tactic sequence `cases b <;> cases b' <;> simp only [Bool.false_eq_true, if_true, if_false, hconj] at e`. Rewrite using `[h.1 (embOf_injective e)]`. Conclude with `absurd ⟨τ, embOf_injective e⟩ ((h.2 (σ τ')).1 ⟨τ', rfl⟩)`. Conclude with `absurd ⟨τ', (embOf_injective e).symm⟩ ((h.2 (σ τ)).1 ⟨τ, rfl⟩)`.
+Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `embOf_injective e`. Establish `: σ τ = σ τ'`. Use extensionality with `a`. Use `congrArg (fun f : 𝓞 E →+* ℂ => starRingEnd ℂ (f a)) e2` as an intermediate fact. Simplify using `using this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h.1 this]`. Introduce `φ`. Distinguish the cases in `hs : ∃ τ, σ τ = φ.comp (algebraMap (𝓞 E) E)`. Take `⟨τ, hτ⟩` from `hs`. Conclude with `⟨(τ, false), by simp [hτ, embOf_of_comp]⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `: ∃ τ, σ τ = (starRingEnd ℂ).comp (φ.comp (algebraMap (𝓞 E) E))`. Assume the negation of the conclusion as `hn`. Conclude with `hs ((h.2 _).2 hn)`. Take `⟨τ, hτ⟩` from `this`. Use `⟨(τ, true), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e : (starRingEnd ℂ).comp ((starRingEnd ℂ).comp (φ.comp (algebraMap (𝓞 E) E))) = φ.comp (algebraMap (𝓞 E) E)`. Use extensionality with `a`. Simplify using the standard rewrite rules. Simplify using `only [if_true, hconj, hτ, e, embOf_of_comp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem emb_bij {Ψ : Type} {σ : Ψ → (𝓞 E →+* ℂ)} (h : IsCMFam σ) :
     Function.Bijective (fun p : Ψ × Bool =>
@@ -135,9 +133,9 @@ theorem emb_bij {Ψ : Type} {σ : Ψ → (𝓞 E →+* ℂ)} (h : IsCMFam σ) :
       simp only [if_true, hconj, hτ, e, embOf_of_comp]
 
 /- English proof (translation)
-Establish `h1` using `trace_eq_sum_embeddings ℂ (K := ℚ) (L := E) (x := x)`. Rewrite `h1` using `[← (RingHom.equivRatAlgHom (R := E) (S := ℂ)).sum_comp, ← (Equiv.ofBijective _ (emb_bij h)).sum_comp, Fintype.sum_prod_type]`. Establish `h2` using `congrArg Complex.re h1`. Rewrite `h2` using `[eq_ratCast, Complex.ratCast_re, Complex.re_sum]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool]`. Simplify using `[two_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_eq {Ψ : Type} [Fintype Ψ] {σ : Ψ → (𝓞 E →+* ℂ)} (h : IsCMFam σ) (x : E) :
     ((Algebra.trace ℚ E x : ℚ) : ℝ) = ∑ τ, 2 * (embOf (σ τ) x).re := by
@@ -160,11 +158,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype
   [AddCommGroup Λ] [Module (𝓞 E) Λ] {F : UnivFam E Ψ j j' n g Λ} (C : LatEmb F)
 
 /- English proof (translation)
-Establish `hu : u = ∑ a, u a • Pi.basisFun E (Fin (j + j')) a` using `((Pi.basisFun E _).sum_repr u).symm`. Establish `hw : w = ∑ b, w b • Pi.basisFun E (Fin (j + j')) b` using `((Pi.basisFun E _).sum_repr w).symm`. Establish `hB : C.h.toSesq u w = ∑ a, ∑ b, conjHom (maximalRealSubfield E) E (u a) * (w b * gram C.h.toSesq (Pi.basisFun E (Fin (j + j'))) a b)` using `by conv_lhs => rw [hu, hw]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, GroundTheory.Automorphic.gram]`. Simplify using `only [Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hB]`. Simplify using `only [dotProduct, mulVec, map_sum, map_mul, embOf_conj, Finset.mul_sum, Pi.star_apply, RCLike.star_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hg : C.gr τ a b = embOf (F.σ τ) (gram C.h.toSesq (Pi.basisFun E (Fin (j + j'))) a b)` using `rfl`. Rewrite using `[hg]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gr_apply (τ : Ψ) (u w : Fin (j + j') → E) :
     star (fun i => embOf (F.σ τ) (u i)) ⬝ᵥ (C.gr τ *ᵥ fun i => embOf (F.σ τ) (w i)) =
@@ -194,15 +192,13 @@ def vecHom : Λ →+ (Ψ → Fin (j + j') → ℂ) where
   map_add' x y := by ext τ i; simp [LatEmb.vec]
 
 /- English proof (translation)
-Use extensionality with `τ i`. Conclude with `(C.bas_eq k τ i).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem vec_lam (k : Fin (2 * g)) : C.vec (C.lam k) = C.bas k := by
   ext τ i; exact (C.bas_eq k τ i).symm
 
 /- English proof (translation)
-Establish `: ((C.perExt R).toAddMonoidHom.comp (vecHom C)).toIntLinearMap = R.P.toIntLinearMap`. Use `C.lam.ext fun k => ?_` and prove the remaining obligations. Use `show C.perExt R (C.vec (C.lam k)) = R.P (C.lam k)`. Rewrite using `[vec_lam]`. Simplify using `[LatEmb.perExt]`.
-
-Conclude with `congrArg (fun f : Λ →ₗ[ℤ] (Fin g → ℂ) => f x) this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perExt_vec (R : RiemLat E g Λ) (x : Λ) : C.perExt R (C.vec x) = R.P x := by
   have : ((C.perExt R).toAddMonoidHom.comp (vecHom C)).toIntLinearMap = R.P.toIntLinearMap := by
@@ -213,7 +209,7 @@ theorem perExt_vec (R : RiemLat E g Λ) (x : Λ) : C.perExt R (C.vec x) = R.P x 
   exact congrArg (fun f : Λ →ₗ[ℤ] (Fin g → ℂ) => f x) this
 
 /- English proof (translation)
-Establish `h1 : ((F.form x y : ℤ) : ℝ) = (((F.form x y : ℤ) : ℚ) : ℝ)` using `by push_cast; rfl`. Rewrite using `[h1, C.form_eq, trace_eq F.cm]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← gr_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Fm_vec (x y : Λ) : C.Fm (C.vec x) (C.vec y) = (F.form x y : ℝ) := by
   have h1 : ((F.form x y : ℤ) : ℝ) = (((F.form x y : ℤ) : ℚ) : ℝ) := by push_cast; rfl
@@ -258,7 +254,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype
   {A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ}
 
 /- English proof (translation)
-Establish `h : HB C R = FmB C`. Use `C.bas.ext fun k => C.bas.ext fun l => ?_` and prove the remaining obligations. Use `show (C.perExt R (C.bas k) ⬝ᵥ R.Hm *ᵥ star (C.perExt R (C.bas l))).im = C.Fm (C.bas k) (C.bas l)`. Rewrite using `[← vec_lam, ← vec_lam, perExt_vec, perExt_vec, R.im, Fm_vec, hR]`. Conclude with `LinearMap.congr_fun₂ h y y'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_ext (hR : R.form = F.form) (y y' : Ψ → Fin (j + j') → ℂ) :
     (C.perExt R y ⬝ᵥ R.Hm *ᵥ star (C.perExt R y')).im = C.Fm y y' := by
@@ -269,7 +265,7 @@ theorem form_ext (hR : R.form = F.form) (y y' : Ψ → Fin (j + j') → ℂ) :
   exact LinearMap.congr_fun₂ h y y'
 
 /- English proof (translation)
-Simplify using `[sgI, fromBlocks_multiply, fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sgI_mul_self : sgI j j' * sgI j j' = 1 := by
   simp [sgI, fromBlocks_multiply, fromBlocks_one]
@@ -277,14 +273,14 @@ theorem sgI_mul_self : sgI j j' * sgI j j' = 1 := by
 variable {C R}
 
 /- English proof (translation)
-Unfold `LatEmb.cinv`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (A τ)ᴴ, h.unit, sgI_mul_self]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cinv_mul (h : C.IsAdapted R A) (τ : Ψ) : C.cinv (A τ) τ * A τ = 1 := by
   unfold LatEmb.cinv
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (A τ)ᴴ, h.unit, sgI_mul_self]
 
 /- English proof (translation)
-The claim follows from `(Matrix.mul_eq_one_comm_of_equiv finSumFinEquiv).1 (cinv_mul h τ)`.
+A detailed English derivation is pending.
 -/
 theorem mul_cinv (h : C.IsAdapted R A) (τ : Ψ) : A τ * C.cinv (A τ) τ = 1 :=
   (Matrix.mul_eq_one_comm_of_equiv finSumFinEquiv).1 (cinv_mul h τ)
@@ -294,19 +290,17 @@ def tw (v : Sg j j' → ℂ) : Sg j j' → ℂ :=
 
 open Classical in
 /- English proof (translation)
-Use `set l : (Fin (j + j') → ℂ) →+ (Fin g → ℂ) := (C.perExt R).toAddMonoidHom.comp (AddMonoidHom.single (fun _ : Ψ => Fin (j + j') → ℂ) τ) with hl`. Establish `hl' : ∀ w, C.perExt R (Pi.single τ w) = l w` using `fun _ => rfl`. Use `set p := A τ *ᵥ Sum.elim (v ∘ Sum.inl) (0 : Fin j' → ℂ) with hp`. Use `set q := A τ *ᵥ Sum.elim (0 : Fin j → ℂ) (v ∘ Sum.inr) with hq`. Establish `h1 : l p = Complex.I • l (Complex.I • p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h.ker τ (v ∘ Sum.inl)` as an intermediate fact. Unfold `LatEmb.pPart at this`. Rewrite `this` using `[smul_eq_zero]`. Break down `this with h0 | h0` into its components or cases. Evaluate the numerical expressions using `at h0`.
+Separate the alternatives or extract the components of the hypothesis. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `sub_eq_zero.1 h0`. Establish `h2 : l q = -(Complex.I • l (Complex.I • q))`. Use `h.kerBar τ (v ∘ Sum.inr)` as an intermediate fact. Unfold `LatEmb.pBar at this`. Rewrite `this` using `[smul_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Evaluate the numerical expressions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `this with h0 | h0` into its components or cases. Evaluate the numerical expressions using `at h0`. Conclude with `eq_neg_of_add_eq_zero_left h0`. Establish `hII : ∀ u : Fin g → ℂ, Complex.I • Complex.I • u = -u`. Introduce `u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[smul_smul, Complex.I_mul_I, neg_one_smul]`. Establish `hv : A τ *ᵥ v = p + q`. Rewrite using `[hp, hq, ← mulVec_add]`. Use `congr 1`. Apply the tactic sequence `ext (i | i) <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : A τ *ᵥ tw v = -(Complex.I • p) + Complex.I • q`. Rewrite using `[hp, hq, ← mulVec_smul, ← mulVec_smul, ← mulVec_neg, ← mulVec_add]`. Use `congr 1`. Apply the tactic sequence `ext (i | i) <;> simp [tw]`. Rewrite using `[hl', hl', hv, hw, map_add, map_add, map_neg, smul_add]`.
-
-Establish `e1 : Complex.I • l p = -l (Complex.I • p)` using `by rw [h1, hII]`. Establish `e2 : Complex.I • l q = l (Complex.I • q)`. Rewrite using `[h2, smul_neg, hII, neg_neg]`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perExt_single_tw (h : C.IsAdapted R A) (τ : Ψ) (v : Sg j j' → ℂ) :
     C.perExt R (Pi.single τ (A τ *ᵥ tw v)) = Complex.I • C.perExt R (Pi.single τ (A τ *ᵥ v)) := by
@@ -346,9 +340,9 @@ theorem perExt_single_tw (h : C.IsAdapted R A) (τ : Ψ) (v : Sg j j' → ℂ) :
   rw [e1, e2]
 
 /- English proof (translation)
-Establish `hs : ∀ u : Ψ → Fin (j + j') → ℂ, u = ∑ τ, Pi.single τ (u τ)` using `fun u => (Finset.univ_sum_single u).symm`. Use `conv_lhs => rw [hs (fun τ => A τ *ᵥ tw (C.cinv (A τ) τ *ᵥ y τ))]`. Use `conv_rhs => rw [hs y]`. Rewrite using `[map_sum, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[perExt_single_tw h]`. Establish `: A τ *ᵥ (C.cinv (A τ) τ *ᵥ y τ) = y τ`. Rewrite using `[mulVec_mulVec, mul_cinv h, one_mulVec]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perExt_tw (h : C.IsAdapted R A) (y : Ψ → Fin (j + j') → ℂ) :
     C.perExt R (fun τ => A τ *ᵥ tw (C.cinv (A τ) τ *ᵥ y τ)) = Complex.I • C.perExt R y := by
@@ -364,17 +358,17 @@ theorem perExt_tw (h : C.IsAdapted R A) (y : Ψ → Fin (j + j') → ℂ) :
   rw [this]
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) <;> simp [sgI, tw, fromBlocks_mulVec, mulVec_neg, neg_mulVec]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgI_mulVec_tw (v : Sg j j' → ℂ) : sgI j j' *ᵥ tw v = -Complex.I • v := by
   ext (i | i) <;> simp [sgI, tw, fromBlocks_mulVec, mulVec_neg, neg_mulVec]
 
 /- English proof (translation)
-Establish `key : star (A τ *ᵥ v) ⬝ᵥ (C.gr τ *ᵥ (A τ *ᵥ tw v)) = star v ⬝ᵥ (((A τ)ᴴ * C.gr τ * A τ) *ᵥ tw v)`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]`. Establish `hu : ((C.eps τ : ℝ) : ℂ) • ((A τ)ᴴ * C.gr τ * A τ) = sgI j j'`. Rewrite using `[← h.unit τ, LatEmb.sgr]`. Simplify using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hX : ((C.eps τ : ℝ) : ℂ) * (star v ⬝ᵥ (((A τ)ᴴ * C.gr τ * A τ) *ᵥ tw v)) = -Complex.I * (star v ⬝ᵥ v)`. Rewrite using `[← smul_eq_mul, ← dotProduct_smul, ← smul_mulVec, hu, sgI_mulVec_tw, dotProduct_smul, smul_eq_mul]`. Establish `hz : embOf (F.σ τ) C.xi * (star (A τ *ᵥ v) ⬝ᵥ (C.gr τ *ᵥ (A τ *ᵥ tw v))) = ((C.c : ℝ) : ℂ) * (star v ⬝ᵥ v)`. Rewrite using `[key, C.xi_eq τ]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `: Complex.I * ((C.c : ℂ) * ((C.eps τ : ℝ) : ℂ)) * (star v ⬝ᵥ (((A τ)ᴴ * C.gr τ * A τ) *ᵥ tw v)) = Complex.I * (C.c : ℂ) * (((C.eps τ : ℝ) : ℂ) * (star v ⬝ᵥ (((A τ)ᴴ * C.gr τ * A τ) *ᵥ tw v)))` using `by ring`. Rewrite using `[this, hX]`. Take the linear combination `(-(C.c : ℂ) * (star v ⬝ᵥ v)) * Complex.I_mul_I`. Rewrite using `[hz, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem term_eq (h : C.IsAdapted R A) (τ : Ψ) (v : Sg j j' → ℂ) :
     2 * (embOf (F.σ τ) C.xi * (star (A τ *ᵥ v) ⬝ᵥ (C.gr τ *ᵥ (A τ *ᵥ tw v)))).re =
@@ -399,9 +393,9 @@ theorem term_eq (h : C.IsAdapted R A) (τ : Ψ) (v : Sg j j' → ℂ) :
   ring
 
 /- English proof (translation)
-Establish `hz : C.perExt R (C.vec x) = R.P x` using `perExt_vec C R x`. Establish `h1 : R.normSq x = ((Complex.I • R.P x) ⬝ᵥ R.Hm *ᵥ star (R.P x)).im`. Rewrite using `[smul_dotProduct, smul_eq_mul]`. Simplify using `[RiemLat.normSq, RiemLat.ip]`. Rewrite using `[h1, ← hz, ← perExt_tw h, form_ext C R hR, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `LatEmb.Fm`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hy : C.vec x τ = A τ *ᵥ (C.cinv (A τ) τ *ᵥ C.vec x τ)`. Rewrite using `[mulVec_mulVec, mul_cinv h, one_mulVec]`. Rewrite using `[← term_eq h τ, ← hy]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem normSq_eq_adapted (hR : R.form = F.form) (h : C.IsAdapted R A) (x : Λ) :
     R.normSq x = 2 * C.c * ∑ τ, (star (C.cinv (A τ) τ *ᵥ C.vec x τ) ⬝ᵥ (C.cinv (A τ) τ *ᵥ C.vec x τ)).re := by
@@ -421,7 +415,7 @@ end Adapted
 end GlobalTheory.CompanionTheory.Ar.Cusp.Dict.AdaptedLen
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F C R A hR h x`. Conclude with `GlobalTheory.CompanionTheory.Ar.Cusp.Dict.AdaptedLen.normSq_eq_adapted hR h x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Cusp.Dict.AdaptedLen.normSq_adapted : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F) (R : RiemLat E g Λ) (A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ), R.form = F.form → C.IsAdapted R A → ∀ x, R.normSq x = 2 * C.c * ∑ τ, (star (C.cinv (A τ) τ *ᵥ C.vec x τ) ⬝ᵥ (C.cinv (A τ) τ *ᵥ C.vec x τ)).re := by
   intro E _ _ _ Ψ _ j j' n g Λ _ _ F C R A hR h x

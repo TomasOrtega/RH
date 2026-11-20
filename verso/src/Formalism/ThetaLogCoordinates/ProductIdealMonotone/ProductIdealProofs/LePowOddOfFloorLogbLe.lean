@@ -9,7 +9,7 @@ namespace Formalism.InvariantFactorPaths.G0
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `gam`. Establish `h1 : 0 < p ^ 2 - 1` using `by nlinarith`. Establish `h2 : 0 < 24 * p` using `by linarith`. Rewrite using `[div_le_div_iff₀ h1 h2]`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem gam_le {p : ℝ} (hp : 5 ≤ p) : gam p ≤ 25 / (24 * p) := by
   unfold gam

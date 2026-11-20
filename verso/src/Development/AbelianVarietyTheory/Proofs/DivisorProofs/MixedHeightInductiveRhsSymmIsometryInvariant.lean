@@ -15,15 +15,15 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier G
 namespace GlobalTheory.MixHt
 
 /- English proof (translation)
-Introduce `_ k _ Y _ _ q hq e hY T hT M r hr`. Establish `hd : ∀ z : Y, ((M.div hr).mult z : ℝ) ≠ 0 → HasDim z e` using `fun z hz => ((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k Y q hq e hY).1 z).1 (CartierDiv.coheight_eq_one_of_mult_ne_zero fun h => hz (by rw [h]; simp))`. Use `⟨fun L L' h => ?_, fun L τ => ?_, fun L M' h => ?_⟩` and prove the remaining obligations. Unfold `recVal`. Rewrite using `[(GlobalTheory.T.mixedArchLogNormIntegral_isometry_symm_congr k Y q e L M r hr).1 L' h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `finsum_congr fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : ((M.div hr).mult z : ℝ) = 0`. Simplify using `[hz]`. Rewrite using `[hT.iso e L L' z le_rfl (hd z hz) h]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `recVal`. Rewrite using `[(GlobalTheory.T.mixedArchLogNormIntegral_isometry_symm_congr k Y q e L M r hr).2.1 τ]`. Use `congr 1`. Use `finsum_congr fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : ((M.div hr).mult z : ℝ) = 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hz]`. Rewrite using `[hT.symm e L τ z le_rfl (hd z hz)]`. Take `⟨r', hr', hdiv, hlog⟩` from `h.exists_isRatSec hr`. Use `⟨r', hr', ?_⟩` and prove the remaining obligations. Unfold `recVal`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[(GlobalTheory.T.mixedArchLogNormIntegral_isometry_symm_congr k Y q e L M r hr).2.2 M' r' hr' hdiv hlog, hdiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem recVal_iso_symm : ArchInteg → ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y]
     (q : Y ⟶ Sp k), IsAmb q → ∀ e : ℕ, topologicalKrullDim Y = (e + 1 : ℕ) → ∀ T, IsMix q e T →

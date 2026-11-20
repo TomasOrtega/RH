@@ -25,9 +25,9 @@ def Frame.res (e : Frame L W) (h : W' ≤ W) : Frame L W' where
     exact e.rel x i j ⟨h hi.1, hi.2⟩ ⟨h hj.1, hj.2⟩
 
 /- English proof (translation)
-Establish `hz' : W.ι z ∈ W.ι ''ᵁ A` using `⟨z, hz, rfl⟩`. Establish `e` using `gs_pull (𝟙 _) W.ι z (W.ι ''ᵁ A) hz' ((W.ι.appIso A).inv.hom a)`. Rewrite `e` using `[Category.id_comp]`. Rewrite using `[← e]`. Establish `e2 : (W.ι.app (W.ι ''ᵁ A)).hom ((W.ι.appIso A).inv.hom a) = resG W.toScheme (W.ι.preimage_image_eq A).le a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun f => f.hom a) (Scheme.Hom.appIso_inv_app W.ι A)` as an intermediate fact. Conclude with `this`. Rewrite using `[e2]`. Conclude with `gs_res (𝟙 _) z _ (by simpa using hz) a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_appIso_inv (W : X.Opens) (A : W.toScheme.Opens) (z : W.toScheme) (hz : z ∈ A) (a : Γ(W.toScheme, A)) :
     gs W.ι z (W.ι ''ᵁ A) ((W.ι.appIso A).inv.hom a) = gs (𝟙 _) z A a := by
@@ -43,7 +43,7 @@ theorem gs_appIso_inv (W : X.Opens) (A : W.toScheme.Opens) (z : W.toScheme) (hz 
   exact gs_res (𝟙 _) z _ (by simpa using hz) a
 
 /- English proof (translation)
-Rewrite using `[← gs_unit r z U h, ← gs_unit (𝟙 X) (r z) U h]`. Conclude with `gs_stalkMap r z U h a.val`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_stalk {Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a : Γ(X, U)ˣ) :
     (gm r z U a).val = (r.stalkMap z).hom (gm (𝟙 X) (r z) U a).val := by
@@ -56,7 +56,7 @@ def genUnit (W : X.Opens) (t : (L.pull W.ι).Gen) (i : L.ι) : Γ(X, W ⊓ L.U i
     (Units.map (W.ι.appIso ((L.pull W.ι).U fun _ => i)).inv.hom (t.s fun _ => i))
 
 /- English proof (translation)
-Establish `hA : z ∈ (L.pull W.ι).U fun _ => i` using `mem_pull.2 hz`. Establish `h1 : W.ι z ∈ W ⊓ L.U i` using `⟨z.2, hz⟩`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← gs_unit W.ι z _ h1, ← gs_unit (𝟙 _) z _ hA]`. Conclude with `(gs_res W.ι z _ h1 _).trans (gs_appIso_inv W _ z hA _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_genUnit (W : X.Opens) (t : (L.pull W.ι).Gen) (i : L.ι) (z : W.toScheme) (hz : W.ι z ∈ L.U i) :
     gm W.ι z _ (genUnit W t i) = gm (𝟙 _) z _ (t.s fun _ => i) := by
@@ -85,11 +85,11 @@ def Frame.ofGen (W : X.Opens) (t : (L.pull W.ι).Gen) (ht : t.IsGen) : Frame L W
     exact congrArg Units.val e1
 
 /- English proof (translation)
-Establish `h1 : ∀ i, T ⊓ L.U i ≤ W ⊓ L.U i` using `fun i => inf_le_inf_right _ hT`. Establish `h2 : ∀ i, T ⊓ L.U i ≤ W' ⊓ L.U i` using `fun i => inf_le_inf_right _ hT'`. Take `⟨u, hu⟩` from `glue_unit T (fun i => T ⊓ L.U i) (fun _ => inf_le_left) (fun x hx => by`. Take `⟨i, hi⟩` from `exists_chart hL x`. Conclude with `Opens.mem_iSup.2 ⟨i, hx, hi⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `(fun i => Semi.res (h2 i) (e'.e i) * (Semi.res (h1 i) (e.e i))⁻¹)`. Use the proof step `(fun i j x hx => by`. Establish `a` using `e.rel x i j (h1 i hx.1) (h1 j hx.2)`. Establish `b` using `e'.rel x i j (h2 i hx.1) (h2 j hx.2)`. Rewrite using `[map_mul, map_mul, map_inv, map_inv, gm_res _ x _ hx.1, gm_res _ x _ hx.1, gm_res _ x _ hx.2, gm_res _ x _ hx.2, a, b, mul_inv, mul_mul_mul_comm, mul_inv_cancel, one_mul])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨u, fun x i hx hi => ?_⟩` and prove the remaining obligations. Establish `hm : x ∈ T ⊓ L.U i` using `⟨hx, hi⟩`. Use `congrArg (gm (𝟙 X) x _) (hu i)` as an intermediate fact. Rewrite `this` using `[gm_res _ x _ hm, map_mul, map_inv, gm_res _ x _ hm, gm_res _ x _ hm]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_div (hL : L.IsLB) (e : Frame L W) (e' : Frame L W') (T : X.Opens) (hT : T ≤ W) (hT' : T ≤ W') :
     ∃ u : Γ(X, T)ˣ, ∀ (x : X) (i : L.ι), x ∈ T → (hi : x ∈ L.U i) →
@@ -115,7 +115,7 @@ def Frame.div (hL : L.IsLB) (e : Frame L W) (e' : Frame L W') (T : X.Opens) (hT 
   (exists_div hL e e' T hT hT').choose
 
 /- English proof (translation)
-The claim follows from `(exists_div hL e e' T hT hT').choose_spec x i hx hi`.
+A detailed English derivation is pending.
 -/
 theorem Frame.gm_div (hL : L.IsLB) (e : Frame L W) (e' : Frame L W') {T : X.Opens} (hT : T ≤ W) (hT' : T ≤ W')
     {x : X} (i : L.ι) (hx : x ∈ T) (hi : x ∈ L.U i) :
@@ -123,7 +123,7 @@ theorem Frame.gm_div (hL : L.IsLB) (e : Frame L W) (e' : Frame L W') {T : X.Open
   (exists_div hL e e' T hT hT').choose_spec x i hx hi
 
 /- English proof (translation)
-The claim follows from `unit_ext fun x hx => by obtain ⟨i, hi⟩ := exists_chart hL x rw [gm_res _ x _ hx, e.gm_div hL e' hT hT' i (h hx) hi, e.gm_div hL e' _ _ i hx hi]`.
+A detailed English derivation is pending.
 -/
 theorem Frame.res_div (hL : L.IsLB) (e : Frame L W) (e' : Frame L W') {T T' : X.Opens} (hT : T ≤ W) (hT' : T ≤ W')
     (h : T' ≤ T) : Semi.res h (e.div hL e' T hT hT') = e.div hL e' T' (h.trans hT) (h.trans hT') :=
@@ -132,7 +132,7 @@ theorem Frame.res_div (hL : L.IsLB) (e : Frame L W) (e' : Frame L W') {T T' : X.
     rw [gm_res _ x _ hx, e.gm_div hL e' hT hT' i (h hx) hi, e.gm_div hL e' _ _ i hx hi]
 
 /- English proof (translation)
-The claim follows from `unit_ext fun x hx => by obtain ⟨i, hi⟩ := exists_chart hL x rw [e.gm_div hL e hT hT' i hx hi, mul_inv_cancel, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem Frame.div_self (hL : L.IsLB) (e : Frame L W) {T : X.Opens} (hT : T ≤ W) (hT' : T ≤ W) :
     e.div hL e T hT hT' = 1 :=
@@ -141,7 +141,7 @@ theorem Frame.div_self (hL : L.IsLB) (e : Frame L W) {T : X.Opens} (hT : T ≤ W
     rw [e.gm_div hL e hT hT' i hx hi, mul_inv_cancel, map_one]
 
 /- English proof (translation)
-The claim follows from `unit_ext fun x hx => by obtain ⟨i, hi⟩ := exists_chart hL x rw [map_mul, e.gm_div hL e' h h' i hx hi, e'.gm_div hL e'' h' h'' i hx hi, e.gm_div hL e'' h h'' i hx hi] simp only [← div_eq_mul_inv] rw [mul_comm] exact div_mul_div_cancel _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem Frame.div_mul_div (hL : L.IsLB) {W'' : X.Opens} (e : Frame L W) (e' : Frame L W') (e'' : Frame L W'')
     {T : X.Opens} (h : T ≤ W) (h' : T ≤ W') (h'' : T ≤ W'') :
@@ -154,15 +154,15 @@ theorem Frame.div_mul_div (hL : L.IsLB) {W'' : X.Opens} (e : Frame L W) (e' : Fr
     exact div_mul_div_cancel _ _ _
 
 /- English proof (translation)
-Establish `hc : ∀ i, W ⊓ L.U i ≤ powChart L fun _ => i` using `fun i x hx => mem_powChart.2 hx.2`. Set `a : ∀ i, Γ(X, W ⊓ L.U i)` to `fun i => resG X (hc i) (powFn s fun _ => i) * (((e.e i)⁻¹ ^ n : Γ(X, W ⊓ L.U i)ˣ) : Γ(X, W ⊓ L.U i))`. Establish `ga : ∀ (x : X) (i : L.ι) (hx : x ∈ W ⊓ L.U i), gs (𝟙 X) x _ (a i) = gs (𝟙 X) x _ (powFn s fun _ => i) * (((gm (𝟙 X) x _ (e.e i))⁻¹ ^ n : (X.presheaf.stalk x)ˣ) : X.presheaf.stalk x)`. Introduce `x i hx`. Rewrite using `[gs_mul _ x _ hx, gs_res _ x _ hx, gs_unit _ x _ hx, map_pow, map_inv]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `inv1 : ∀ (x : X) (u : (X.presheaf.stalk x)ˣ), (u.val) ^ n * ((u⁻¹ ^ n : (X.presheaf.stalk x)ˣ) : X.presheaf.stalk x) = 1`. Introduce `x u`. Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_mul, ← mul_pow, mul_inv_cancel, one_pow, Units.val_one]`. Establish `hh : ∀ i j, resG X (inf_le_left : (W ⊓ L.U i) ⊓ (W ⊓ L.U j) ≤ W ⊓ L.U i) (a i) = resG X (inf_le_right : (W ⊓ L.U i) ⊓ (W ⊓ L.U j) ≤ W ⊓ L.U j) (a j)` using `fun i j => fn_ext fun x hx => by`. Establish `h1` using `inv1 x (gm (𝟙 X) x _ (L.g i j))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[gs_res _ x _ hx, gs_res _ x _ hx, ga x i hx.1, ga x j hx.2, gs_powFn_compat s (𝟙 X) x (fun _ => i) (fun _ => j) (mem_powChart.2 hx.1.2) (mem_powChart.2 hx.2.2), e.rel x i j hx.1 hx.2, mul_inv, mul_pow, Units.val_mul]`. Take the linear combination `(gs (𝟙 X) x _ (powFn s fun _ => j) * (((gm (𝟙 X) x _ (e.e j))⁻¹ ^ n : (X.presheaf.stalk x)ˣ) : X.presheaf.stalk x)) * h1`. Take `⟨b, hb, -⟩` from `X.sheaf.existsUnique_gluing' (fun i => W ⊓ L.U i) W (fun i => homOfLE inf_le_left) (fun x hx => by`. Take `⟨i, hi⟩` from `exists_chart hL x`. Conclude with `Opens.mem_iSup.2 ⟨i, hx, hi⟩) a hh`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b, fun x i hxW hi => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ W ⊓ L.U i` using `⟨hxW, hi⟩`. Establish `e1 : gs (𝟙 X) x _ (a i) = gs (𝟙 X) x W b`. Rewrite using `[← hb i]`. Conclude with `gs_res _ x inf_le_left hx b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `inv1 x (gm (𝟙 X) x _ (e.e i))`. Rewrite using `[← e1, ga x i hx]`. Take the linear combination `(gs (𝟙 X) x _ (powFn s fun _ => i)) * h1`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_fn (hL : L.IsLB) (e : Frame L W) {n : ℕ} (s : (lbPow L n).Sec) :
     ∃ a : Γ(X, W), ∀ (x : X) (i : L.ι), x ∈ W → (hi : x ∈ L.U i) →
@@ -200,7 +200,7 @@ theorem exists_fn (hL : L.IsLB) (e : Frame L W) {n : ℕ} (s : (lbPow L n).Sec) 
 def Frame.fn (hL : L.IsLB) (e : Frame L W) {n : ℕ} (s : (lbPow L n).Sec) : Γ(X, W) := (exists_fn hL e s).choose
 
 /- English proof (translation)
-The claim follows from `(exists_fn hL e s).choose_spec x i hx hi`.
+A detailed English derivation is pending.
 -/
 theorem Frame.gs_fn (hL : L.IsLB) (e : Frame L W) {n : ℕ} (s : (lbPow L n).Sec) {x : X} (i : L.ι) (hx : x ∈ W)
     (hi : x ∈ L.U i) : gs (𝟙 X) x W (e.fn hL s) * (gm (𝟙 X) x _ (e.e i)).val ^ n =
@@ -208,7 +208,7 @@ theorem Frame.gs_fn (hL : L.IsLB) (e : Frame L W) {n : ℕ} (s : (lbPow L n).Sec
   (exists_fn hL e s).choose_spec x i hx hi
 
 /- English proof (translation)
-The claim follows from `fn_ext fun x hx => by obtain ⟨i, hi⟩ := exists_chart hL x have a := e.gs_fn hL s i (hT hx) hi have b := e'.gs_fn hL s i (hT' hx) hi rw [gs_res _ x _ hx, gs_mul _ x _ hx, gs_res _ x _ hx, gs_unit _ x _ hx, map_pow, e.gm_div hL e' hT hT' i hx hi] have u : (((gm (𝟙 X) x _ (e'.e i) * …`.
+A detailed English derivation is pending.
 -/
 theorem Frame.res_fn (hL : L.IsLB) (e : Frame L W) (e' : Frame L W') {n : ℕ} (s : (lbPow L n).Sec) {T : X.Opens}
     (hT : T ≤ W) (hT' : T ≤ W') :
@@ -225,7 +225,7 @@ theorem Frame.res_fn (hL : L.IsLB) (e : Frame L W) (e' : Frame L W') {n : ℕ} (
   linear_combination a - b - gs (𝟙 X) x W' (e'.fn hL s) * u
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `exists_chart hL x`. Use `(isUnit_gs_iff (𝟙 X) x W hx _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[mem_nonzeroLocus_iff_powFn s (J := fun _ => i) (mem_powChart.2 hi), ← e.gs_fn hL s i hx hi, ← Units.val_pow_eq_pow_val, Units.isUnit_mul_units]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Frame.mem_basicOpen_fn (hL : L.IsLB) (e : Frame L W) {n : ℕ} (s : (lbPow L n).Sec) {x : X} (hx : x ∈ W) :
     x ∈ X.basicOpen (e.fn hL s) ↔ x ∈ nonzeroLocus s := by
@@ -251,7 +251,7 @@ def normLB (hL : L.IsLB) : LB Y where
 variable {q N}
 
 /- English proof (translation)
-The claim follows from `Units.ext ((hN _ _ h _).trans (congrArg (N T) (congrArg Units.val (Frame.res_div hL c.2 c'.2 _ _ _))))`.
+A detailed English derivation is pending.
 -/
 theorem normLB_res_g (hN : NormRes q N) (hL : L.IsLB) (c c' : (normLB q N hL).ι) {T : Y.Opens}
     (h : T ≤ c.1 ⊓ c'.1) :
@@ -260,7 +260,7 @@ theorem normLB_res_g (hN : NormRes q N) (hL : L.IsLB) (c c' : (normLB q N hL).ι
   Units.ext ((hN _ _ h _).trans (congrArg (N T) (congrArg Units.val (Frame.res_div hL c.2 c'.2 _ _ _))))
 
 /- English proof (translation)
-The claim follows from `top_le_iff.1 fun y _ => Opens.mem_iSup.2 (hc y) g_self c := (normLB_res_g hN hL c c _).trans (by rw [Frame.div_self, map_one]) cocycle c₁ c₂ c₃ := (congrArg₂ (· * ·) (normLB_res_g hN hL c₁ c₂ _) (normLB_res_g hN hL c₂ c₃ _)).trans (((map_mul _ _ _).symm.trans (congrArg _ (Frame.d …`.
+A detailed English derivation is pending.
 -/
 theorem isLB_normLB (hN : NormRes q N) (hL : L.IsLB) (hc : ∀ y : Y, ∃ c : (normLB q N hL).ι, y ∈ c.1) :
     (normLB q N hL).IsLB where
@@ -271,9 +271,9 @@ theorem isLB_normLB (hN : NormRes q N) (hL : L.IsLB) (hc : ∀ y : Y, ∃ c : (n
       (normLB_res_g hN hL c₁ c₃ _).symm)
 
 /- English proof (translation)
-Establish `hm : y ∈ c.1 ⊓ c'.1` using `⟨hy, hy'⟩`. Establish `e` using `Frame.res_fn hL c.2 c'.2 s (T := q ⁻¹ᵁ (c.1 ⊓ c'.1)) (q.preimage_mono inf_le_left) (q.preimage_mono inf_le_right)`. Establish `e1` using `hN c.1 (c.1 ⊓ c'.1) inf_le_left (c.2.fn hL s)`. Establish `e2` using `hN c'.1 (c.1 ⊓ c'.1) inf_le_right (c'.2.fn hL s)`. Set `gu : Γ(Y, c.1 ⊓ c'.1)ˣ` to `(normLB q N hL).g c c'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e3 : resG Y (inf_le_left : c.1 ⊓ c'.1 ≤ c.1) (N c.1 (c.2.fn hL s)) = (gu ^ n).val * resG Y (inf_le_right : c.1 ⊓ c'.1 ≤ c'.1) (N c'.1 (c'.2.fn hL s))`. Use `e1.trans (Eq.trans (congrArg _ e) ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `congrArg₂ (· * ·) (congrArg Units.val (map_pow (Units.map (N (c.1 ⊓ c'.1))) _ n)) e2.symm`. Rewrite using `[← gs_res _ y (inf_le_left : c.1 ⊓ c'.1 ≤ c.1) hm, e3, gs_mul _ y _ hm, gs_res _ y inf_le_right hm, gs_unit _ y _ hm, map_pow, Units.val_pow_eq_pow_val]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_norm_compat (hN : NormRes q N) (hL : L.IsLB) {n : ℕ} (s : (lbPow L n).Sec) (c c' : (normLB q N hL).ι)
     {y : Y} (hy : y ∈ c.1) (hy' : y ∈ c'.1) :
@@ -302,9 +302,9 @@ def normSec (hN : NormRes q N) (hL : L.IsLB) {n : ℕ} (s : (lbPow L n).Sec) : (
       exact gs_norm_compat hN hL s _ _ (mem_powChart.1 hJ) (mem_powChart.1 hJ')
 
 /- English proof (translation)
-Take `⟨c, hy⟩` from `hc y`. Establish `hJ : y ∈ powChart (normLB q N hL) fun _ => c` using `mem_powChart.2 hy`. Rewrite using `[mem_nonzeroLocus_iff_powFn _ hJ]`. Establish `e : gs (𝟙 Y) y _ (powFn (normSec hN hL s) fun _ => c) = gs (𝟙 Y) y c.1 (N c.1 (c.2.fn hL s))` using `gs_res _ y _ hJ _`. Rewrite using `[e, isUnit_gs_iff (𝟙 Y) y c.1 hy, show (𝟙 Y) y = y from rfl, hB c.1 _ y hy]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun x => imp_congr_right fun hx => ?_` and prove the remaining obligations. Conclude with `c.2.mem_basicOpen_fn hL s (show q x ∈ c.1 from hx ▸ hy)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_normSec (hN : NormRes q N)
     (hB : ∀ (V : Y.Opens) (a : Γ(X, q ⁻¹ᵁ V)) (y : Y), y ∈ V →
@@ -323,7 +323,7 @@ theorem mem_nonzeroLocus_normSec (hN : NormRes q N)
 end Norm
 
 /- English proof (translation)
-Set `V : Y.Opens` to `⟨(q '' (W : Set X)ᶜ)ᶜ, (hq _ W.isOpen.isClosed_compl).isOpen_compl⟩`. Establish `hle : q ⁻¹ᵁ V ≤ W` using `fun x hx => by_contra fun h => hx ⟨x, h, rfl⟩`. Conclude with `⟨⟨V, e.res hle⟩, fun ⟨x, hx, h⟩ => hx (hW x h)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_chart_of_gen {q : X ⟶ Y} (hq : IsClosedMap q) {y : Y} {W : X.Opens} (hW : ∀ x : X, q x = y → x ∈ W)
     (e : Frame L W) : ∃ c : Σ V : Y.Opens, Frame L (q ⁻¹ᵁ V), y ∈ c.1 := by
@@ -341,9 +341,9 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `X Y q hq N hN hB L hL hgen`. Establish `hcl : IsClosedMap q` using `q.isClosedMap`. Establish `hc : ∀ y : Y, ∃ c : (normLB q N hL).ι, y ∈ c.1` using `fun y => by`. Take `⟨W, hW, t, ht⟩` from `hgen y`. Conclude with `exists_chart_of_gen hcl hW (Frame.ofGen W t ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨normLB q N hL, isLB_normLB hN hL hc, fun n s => ⟨normSec hN hL s, mem_nonzeroLocus_normSec hN hB hL hc s⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.NormLB.exists_normLB : ∀ {X Y : Scheme.{0}} (q : X ⟶ Y), IsFinite q → ∀ (N : ∀ V : Y.Opens, Γ(X, q ⁻¹ᵁ V) →* Γ(Y, V)), (∀ (V W : Y.Opens) (h : W ≤ V) (a : Γ(X, q ⁻¹ᵁ V)), (Y.presheaf.map (homOfLE h).op).hom (N V a) = N W ((X.presheaf.map (homOfLE (show q ⁻¹ᵁ W ≤ q ⁻¹ᵁ V from fun _ hx => h hx)).op).hom a)) → (∀ (V : Y.Opens) (a : Γ(X, q ⁻¹ᵁ V)) (y : Y), y ∈ V → (y ∈ Y.basicOpen (N V a) ↔ ∀ x : X, q x = y → x ∈ X.basicOpen a)) → ∀ L : LB X, L.IsLB → (∀ y : Y, ∃ W : X.Opens, (∀ x : X, q x = y → x ∈ W) ∧ ∃ t : (L.pull W.ι).Gen, t.IsGen) → ∃ L' : LB Y, L'.IsLB ∧ ∀ (n : ℕ) (s : (lbPow L n).Sec), ∃ σ : (lbPow L' n).Sec, ∀ y : Y, y ∈ nonzeroLocus σ ↔ ∀ x : X, q x = y → x ∈ nonzeroLocus s := by
   intro X Y q hq N hN hB L hL hgen

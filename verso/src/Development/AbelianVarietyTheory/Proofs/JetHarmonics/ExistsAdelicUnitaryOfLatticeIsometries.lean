@@ -17,27 +17,23 @@ open GlobalTheory.RecDict
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D V H Dw io hio hEF s hν`. Take `⟨hinj, hrange⟩` from `hio`. Set `c : D.host.E ≃ₐ[D.host.F] D.host.E` to `AlgEquiv.ofAlgHom D.sp.cm.sig D.sp.cm.sig (AlgHom.ext fun x => star_star x) (AlgHom.ext fun x => star_star x)`. Take `⟨hfg, hsp, hlat⟩` from `comp_latG D V`. Rewrite `hfg`, `hsp`, `hlat` using `[← hrange]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hξ : D.host.xi0 ≠ 0`. Establish `h1 : (Ideal.absNorm D.host.ccK : D.host.E) ≠ 0`. Conclude with `(Ideal.absNorm_eq_zero_iff.not.2 D.host.ccK_ne_bot)` after adjusting the coercions. Establish `h2 : D.host.sqrtMinusD ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `D.host.sqrtMinusD_sq` as an intermediate fact. Rewrite `this` using `[h]`. Establish `hd : (D.host.d : D.host.E) ≠ 0`. Use `D.host.qd_big.2` as an intermediate fact. Conclude with `(by omega : D.host.d ≠ 0)` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `hd` to reduce the goal to its premises. Take the linear combination `this`. Conclude with `div_ne_zero (by norm_num) (mul_ne_zero h1 h2)`. Establish `hA : ∀ x y, ((Dw.EF x y : ℤ) : ℚ) = Algebra.trace ℚ D.host.E (D.host.xi0 * ∑ a, ∑ b, io x a * (-V.gram.transpose) a b * c (io y b))`. Introduce `x y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hEF, ← trace_herm_gmW V rfl, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Take `⟨gf, hg1, hg2, hg3⟩` from `comp_adelic_of_tower D.host.F D.host.E V.rank c (-V.gram.transpose) D.host.xi0 hξ Dw.La Dw.La (fun x y => Dw.EF x y) (fun x y => Dw.EF x y) io hinj (LinearMap.range io) (LinearEquiv.ofInjective io hinj) hfg hsp hfg hsp hA hA s.f (fun n m hn hm a => by`. Take `⟨e, he⟩` from `s.tower n m hn hm a`. Conclude with `⟨e, by rw [← he, add_sub_cancel]⟩)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use the proof step `(fun n hn => by`. Take `⟨g, hg⟩` from `s.inv n hn`. Use `⟨fun a => ⟨?_, ?_⟩, fun a' => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨e, he⟩`. Take `⟨b, hb⟩` from `(hg a).1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g e - b, by rw [smul_sub, ← hb, he, map_nsmul, sub_sub_cancel]⟩`. Introduce and unpack `⟨e, he⟩`. Conclude with `⟨s.f n e, by rw [he, map_nsmul]⟩`. Take `⟨b, hb⟩` from `(hg a').2`. Conclude with `⟨g a', -b, by rw [smul_neg, ← hb, neg_sub, add_sub_cancel]⟩)`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `(fun n hn a a' => by`. Use `s.mult n hn a a'` as an intermediate fact. Rewrite using `[hν, one_mul] at this)` and apply the resulting hypothesis. Take `⟨u, -, hug⟩` from `(GlobalTheory.T.adelicUnitary_exists_with_prescribed_parts D V).1 gf (comp_mem_HR _ _ _ c _ (fun _ => rfl) _ gf hg3)`. Establish `h1 : (latGHat V 1 : Set (Fin V.rank → AdLat.RA D.host.F D.host.E)) = AdLat.hat D.host.F (LinearMap.range io : Set (Fin V.rank → D.host.E))`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hlat 1).2, map_one, Units.val_one]`. Use extensionality with `z`. Simplify using the standard rewrite rules. Use `⟨u, SetLike.coe_injective ?_, fun N hN a => ?_⟩` and prove the remaining obligations. Rewrite using `[(hlat u).2, hug, hg1, h1]`.
-
-Take `⟨w, hw, hgw⟩` from `hg2 N hN a`. Use `⟨w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← SetLike.mem_coe, h1]`. Conclude with `hw`. Rewrite using `[hug]`.
-
-Conclude with `hgw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adelic_of_isometry : ∀ (D : D7) (V : HSp D) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)), LatEmb V io → FormPlus V io → ∀ s : Sim Dw, (∀ n, s.ν n = 1) → ∃ κ : GA D V, latGHat V κ = latGHat V 1 ∧ ∀ N : ℕ, 0 < N → ∀ a, ∃ w ∈ latGHat V 1, (finHom V κ).1.mulVec (finVec V (io a)) = finVec V (io (s.f N a)) + N • w := by
   intro D V H Dw io hio hEF s hν

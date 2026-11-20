@@ -25,21 +25,21 @@ def finSingleOne (w : HeightOneSpectrum (𝓞 K)) : FiniteAdeleRing (𝓞 K) K :
     exact hu (by rw [Pi.single_eq_of_ne h]; exact zero_mem _)⟩
 
 /- English proof (translation)
-Conclude with `Pi.single_eq_same (M := fun u : HeightOneSpectrum (𝓞 K) ↦ u.adicCompletion K) w 1`.
+A detailed English derivation is pending.
 -/
 theorem finSingleOne_self (w : HeightOneSpectrum (𝓞 K)) : finSingleOne w w = 1 := by
   classical
   exact Pi.single_eq_same (M := fun u : HeightOneSpectrum (𝓞 K) ↦ u.adicCompletion K) w 1
 
 /- English proof (translation)
-Conclude with `Pi.single_eq_of_ne (M := fun u : HeightOneSpectrum (𝓞 K) ↦ u.adicCompletion K) h 1`.
+A detailed English derivation is pending.
 -/
 theorem finSingleOne_of_ne {w u : HeightOneSpectrum (𝓞 K)} (h : u ≠ w) : finSingleOne w u = 0 := by
   classical
   exact Pi.single_eq_of_ne (M := fun u : HeightOneSpectrum (𝓞 K) ↦ u.adicCompletion K) h 1
 
 /- English proof (translation)
-Establish `h1 : x * (x - 1) = 0` using `by rw [mul_sub, h, mul_one, sub_self]`. Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `Or.inl h2`. Conclude with `Or.inr (sub_eq_zero.1 h2)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem eq_zero_or_one_of_mul_self {L : Type*} [Field L] {x : L} (h : x * x = x) : x = 0 ∨ x = 1 := by
   have h1 : x * (x - 1) = 0 := by rw [mul_sub, h, mul_one, sub_self]
@@ -55,26 +55,26 @@ def idemAt (P : HeightOneSpectrum (𝓞 E)) : 𝔸[E] := (0, finSingleOne P)
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem idemAt_fst (P : HeightOneSpectrum (𝓞 E)) : (idemAt P).1 = 0 := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `finSingleOne_self P`.
+A detailed English derivation is pending.
 -/
 theorem idemAt_snd_self (P : HeightOneSpectrum (𝓞 E)) : (idemAt P).2 P = 1 := finSingleOne_self P
 
 /- English proof (translation)
-The claim follows from `finSingleOne_of_ne h`.
+A detailed English derivation is pending.
 -/
 theorem idemAt_snd_of_ne {P w : HeightOneSpectrum (𝓞 E)} (h : w ≠ P) : (idemAt P).2 w = 0 :=
   finSingleOne_of_ne h
 
 /- English proof (translation)
-Use `Prod.ext (by change (idemAt P).1 * (idemAt P).1 = (idemAt P).1; rw [idemAt_fst, mul_zero]) (FiniteAdeleRing.ext (K := E) fun w ↦ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(idemAt P).2 w * (idemAt P).2 w = (idemAt P).2 w`. Distinguish the cases in `h : w = P`. Substitute `h` using the available equality. Rewrite using `[idemAt_snd_self, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[idemAt_snd_of_ne h, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idemAt_mul_self (P : HeightOneSpectrum (𝓞 E)) : idemAt P * idemAt P = idemAt P := by
   refine Prod.ext (by change (idemAt P).1 * (idemAt P).1 = (idemAt P).1; rw [idemAt_fst, mul_zero])
@@ -107,7 +107,7 @@ theorem adele_snd_add (a b : 𝔸[E]) (w : HeightOneSpectrum (𝓞 E)) : (a + b)
 def placeIdem (v : HeightOneSpectrum (𝓞 F)) : AF F := pairA F 0 (finSingleOne v)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨finSingleOne v, rfl, finSingleOne_self v, fun _ h ↦ finSingleOne_of_ne h⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPlaceIdem_placeIdem (v : HeightOneSpectrum (𝓞 F)) : IsPlaceIdem F v (placeIdem v) :=
   ⟨finSingleOne v, rfl, finSingleOne_self v, fun _ h ↦ finSingleOne_of_ne h⟩
@@ -120,7 +120,7 @@ theorem adeleMap_snd_apply (a : AF F) (w : HeightOneSpectrum (𝓞 E)) :
   rfl
 
 /- English proof (translation)
-Take `⟨α, rfl, -, -⟩` from `h`. Conclude with `map_zero (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := F) (L := E))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem adeleMap_fst_of_isPlaceIdem {v : HeightOneSpectrum (𝓞 F)} {ε : AF F} (h : IsPlaceIdem F v ε) :
     (adeleMap F E ε).1 = 0 := by
@@ -129,9 +129,9 @@ theorem adeleMap_fst_of_isPlaceIdem {v : HeightOneSpectrum (𝓞 F)} {ε : AF F}
 
 open Classical in
 /- English proof (translation)
-Take `⟨α, rfl, h1, h0⟩` from `h`. Rewrite using `[adeleMap_snd_apply]`. Use `split_ifs with hw`. Establish `: (pairA F 0 α).2 (below F w) = 1` using `by rw [hw]; exact h1`. Rewrite using `[this, map_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (pairA F 0 α).2 (below F w) = 0` using `h0 _ hw`. Rewrite using `[this, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adeleMap_snd_of_isPlaceIdem {v : HeightOneSpectrum (𝓞 F)} {ε : AF F} (h : IsPlaceIdem F v ε)
     (w : HeightOneSpectrum (𝓞 E)) :
@@ -145,9 +145,9 @@ theorem adeleMap_snd_of_isPlaceIdem {v : HeightOneSpectrum (𝓞 F)} {ε : AF F}
     rw [this, map_zero]
 
 /- English proof (translation)
-Take `⟨α, rfl, h1, h0⟩` from `h`. Use `Prod.ext (by change (0 : Ainf F) * 0 = 0; rw [mul_zero]) (FiniteAdeleRing.ext (K := F) fun u ↦ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `α u * α u = α u`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `h1' : α u = 1` using `h1`. Rewrite using `[h1', mul_one]`. Establish `h0' : α u = 0` using `h0 u hu`. Rewrite using `[h0', mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPlaceIdem_mul_self {v : HeightOneSpectrum (𝓞 F)} {ε : AF F} (h : IsPlaceIdem F v ε) :
     ε * ε = ε := by
@@ -162,7 +162,7 @@ theorem isPlaceIdem_mul_self {v : HeightOneSpectrum (𝓞 F)} {ε : AF F} (h : I
     rw [h0', mul_zero]
 
 /- English proof (translation)
-Rewrite using `[mem_intAE_iff, ← adeleEquiv_snd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finPart_mem_intAE_iff (z : AE F E) :
     finPart F E z ∈ intAE F E ↔ ∀ w, (adeleEquiv F E z).2 w ∈ w.adicCompletionIntegers E := by
@@ -170,7 +170,7 @@ theorem finPart_mem_intAE_iff (z : AE F E) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[finPart_mem_intAE_iff, map_mul, adeleEquiv_incA]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finPart_mul_incA_mem_iff (e : AE F E) (x : E) :
     finPart F E (e * incA F E x) ∈ intAE F E ↔
@@ -179,9 +179,9 @@ theorem finPart_mul_incA_mem_iff (e : AE F E) (x : E) :
   rfl
 
 /- English proof (translation)
-Establish `hc : algebraMap E (w.adicCompletion E) ((x : E)⁻¹) = (((x : E)⁻¹ : E) : w.adicCompletion E)` using `rfl`. Rewrite using `[hc, coe_mem_adicCompletionIntegers_iff, map_inv₀]`. Establish `hx0 : w.valuation E (x : E) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `hx` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_le_one₀ (zero_lt_iff.2 hx0), ← HeightOneSpectrum.valuation_eq_one_iff_notMem (K := E)]`. Conclude with `⟨fun h ↦ le_antisymm (w.valuation_le_one x) h, fun h ↦ h.ge⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inv_mem_adicCompletionIntegers_iff (w : HeightOneSpectrum (𝓞 E)) {x : 𝓞 E} (hx : x ≠ 0) :
     algebraMap E (w.adicCompletion E) ((x : E)⁻¹) ∈ w.adicCompletionIntegers E ↔ x ∉ w.asIdeal := by
@@ -194,11 +194,11 @@ theorem inv_mem_adicCompletionIntegers_iff (w : HeightOneSpectrum (𝓞 E)) {x :
   exact ⟨fun h ↦ le_antisymm (w.valuation_le_one x) h, fun h ↦ h.ge⟩
 
 /- English proof (translation)
-Rewrite using `[finPart_mul_incA_mem_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h push_neg at h`. Take `⟨w, hw⟩` from `h`. Break down `h01 w with h0 | h1` into its components or cases.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hw` using `[h0, zero_mul]`. Conclude with `absurd (zero_mem _) hw`. Rewrite `hw` using `[h1, one_mul, inv_mem_adicCompletionIntegers_iff w hx, not_not]`. Conclude with `⟨w, h1, hw⟩`. Introduce and unpack `⟨w, h1, hxw⟩ hall`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `hall w` as an intermediate fact. Rewrite `this` using `[h1, one_mul, inv_mem_adicCompletionIntegers_iff w hx]`. Conclude with `this hxw`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_iff_exists {e : AE F E} (h01 : ∀ w, (adeleEquiv F E e).2 w = 0 ∨ (adeleEquiv F E e).2 w = 1)
     {x : 𝓞 E} (hx : x ≠ 0) :
@@ -220,7 +220,7 @@ theorem char_iff_exists {e : AE F E} (h01 : ∀ w, (adeleEquiv F E e).2 w = 0 �
     exact this hxw
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h (HeightOneSpectrum.ext (w.isMaximal.eq_of_le P.isPrime.ne_top hc))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_mem_not_mem {P w : HeightOneSpectrum (𝓞 E)} (h : w ≠ P) :
     ∃ x : 𝓞 E, x ∈ w.asIdeal ∧ x ∉ P.asIdeal := by
@@ -229,17 +229,15 @@ theorem exists_mem_not_mem {P w : HeightOneSpectrum (𝓞 E)} (h : w ≠ P) :
   exact h (HeightOneSpectrum.ext (w.isMaximal.eq_of_le P.isPrime.ne_top hc))
 
 /- English proof (translation)
-Use `set a := adeleEquiv F E e with ha`. Establish `ha2 : a * a = a` using `by rw [ha, ← map_mul, he]`. Establish `haε : a * adeleMap F E ε = a` using `by rw [ha, ← adeleEquiv_algebraMap, ← map_mul, hee]`. Establish `hfst : a.1 = 0`. Establish `h` using `congrArg Prod.fst haε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `a.1 * (adeleMap F E ε).1 = a.1 at h`. Rewrite `h` using `[adeleMap_fst_of_isPlaceIdem hε, mul_zero]`. Conclude with `h.symm`. Establish `h01 : ∀ w, a.2 w = 0 ∨ a.2 w = 1` using `fun w ↦ by`. Establish `h` using `congrArg (fun b : 𝔸[E] ↦ b.2 w) ha2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `eq_zero_or_one_of_mul_self h`. Establish `hchar : ∀ x : 𝓞 E, x ≠ 0 → (x ∈ P.asIdeal ↔ ∃ w, a.2 w = 1 ∧ x ∈ w.asIdeal)` using `fun x hx ↦ (hP x hx).trans (char_iff_exists h01 hx)`. Establish `hsupp : ∀ w, a.2 w = 1 → w = P`. Introduce `w hw`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hxw, hxP⟩` from `exists_mem_not_mem hne`. Establish `hx0 : x ≠ 0` using `fun h0 ↦ hxP (h0 ▸ zero_mem _)`. Conclude with `hxP ((hchar x hx0).2 ⟨w, hw, hxw⟩)`. Establish `hP1 : a.2 P = 1`. Take `⟨x, hxP, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨w, hw, -⟩` from `(hchar x hx0).1 hxP`. Rewrite using `[← hsupp w hw]` and apply the resulting hypothesis. Use `Prod.ext hfst (FiniteAdeleRing.ext (K := E) fun w ↦ ?_)` and prove the remaining obligations. Distinguish the cases in `hw : w = P`. Substitute `hw` using the available equality.
-
-Rewrite using `[hP1, idemAt_snd_self]`. Rewrite using `[idemAt_snd_of_ne hw]`. Break down `h01 w with h0 | h1` into its components or cases. Conclude with `h0`. Conclude with `absurd (hsupp w h1) hw`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem adeleEquiv_eq_idemAt {e : AE F E} {P : HeightOneSpectrum (𝓞 E)} (he : e * e = e)
     {v : HeightOneSpectrum (𝓞 F)} {ε : AF F} (hε : IsPlaceIdem F v ε)
@@ -278,9 +276,9 @@ theorem adeleEquiv_eq_idemAt {e : AE F E} {P : HeightOneSpectrum (𝓞 E)} (he :
     · exact absurd (hsupp w h1) hw
 
 /- English proof (translation)
-Break down `h with ⟨⟨⟨he2, hes, v, ε, hε, hsum⟩, hchar⟩, -⟩ | ⟨-, ⟨v, ε, hε, rfl⟩, hchar⟩` into its components or cases. Use `adeleEquiv_eq_idemAt he2 hε ?_ hchar` and prove the remaining obligations. Rewrite using `[← hsum, mul_add, he2, hes, add_zero]`. Use `adeleEquiv_eq_idemAt ?_ hε ?_ hchar` and prove the remaining obligations. Rewrite using `[← map_mul, isPlaceIdem_mul_self hε]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, isPlaceIdem_mul_self hε]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adeleEquiv_eq_idemAt_of_isPrimeIdem {σ : E →ₐ[F] E} {P : HeightOneSpectrum (𝓞 E)}
     {e f : AE F E} (h : IsPrimeIdem σ P e f) : adeleEquiv F E e = idemAt P := by
@@ -292,11 +290,11 @@ theorem adeleEquiv_eq_idemAt_of_isPrimeIdem {σ : E →ₐ[F] E} {P : HeightOneS
     · rw [← map_mul, isPlaceIdem_mul_self hε]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h01 : ∀ w, (adeleEquiv F E e).2 w = 0 ∨ (adeleEquiv F E e).2 w = 1` using `fun w ↦ by`. Rewrite using `[h]`. Distinguish the cases in `hw : w = P`. Substitute `hw` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `Or.inr (idemAt_snd_self w)`. Conclude with `Or.inl (idemAt_snd_of_ne hw)`. Rewrite using `[char_iff_exists h01 hx, h]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun hxP ↦ ⟨P, idemAt_snd_self P, hxP⟩`.
+Prove the second alternative. Prove the first alternative. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨w, hw, hxw⟩`. Distinguish the cases in `hwP : w = P`. Conclude with `hwP ▸ hxw`. Rewrite `hw` using `[idemAt_snd_of_ne hwP]`. Conclude with `absurd hw zero_ne_one`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_of_adeleEquiv_eq_idemAt {e : AE F E} {P : HeightOneSpectrum (𝓞 E)}
     (h : adeleEquiv F E e = idemAt P) :
@@ -331,7 +329,7 @@ Both sides reduce to the same expression.
 theorem cA_tmul (a : AF F) (x : E) : cA σ (a ⊗ₜ x) = a ⊗ₜ σ x := rfl
 
 /- English proof (translation)
-Rewrite using `[algebraMap_AE_eq, cA_tmul, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_algebraMap (a : AF F) :
     cA σ (algebraMap (AF F) (AE F E) a) = algebraMap (AF F) (AE F E) a := by
@@ -343,7 +341,7 @@ Both sides reduce to the same expression.
 theorem cA_incA (x : E) : cA σ (incA F E x) = incA F E (σ x) := rfl
 
 /- English proof (translation)
-Take `⟨τ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsCMExt.sigma_sigma (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ := (inferInstance : Nonempty (E →+* ℂ))
@@ -351,7 +349,7 @@ theorem IsCMExt.sigma_sigma (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   rw [h.2.2.2, h.2.2.2, star_star]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a x => rw [cA_tmul, cA_tmul, IsCMExt.sigma_sigma h]`. Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_cA (h : IsCMExt F E σ) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -360,9 +358,9 @@ theorem cA_cA (h : IsCMExt F E σ) (z : AE F E) : cA σ (cA σ z) = z := by
   | add y z hy hz => rw [map_add, map_add, hy, hz]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨w⟩` from `(inferInstance : Nonempty (NumberField.InfinitePlace E))`. Establish `hreal : w.IsReal`. Rewrite using `[← NumberField.InfinitePlace.mk_embedding w, NumberField.InfinitePlace.isReal_mk_iff, NumberField.ComplexEmbedding.isReal_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`. Express the relevant statement in the definitionally equal form `star (w.embedding x) = w.embedding x`. Rewrite using `[← h.2.2.2, hc]`. Conclude with `NumberField.InfinitePlace.not_isReal_iff_isComplex.2 (h.2.1.isComplex w) hreal`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsCMExt.exists_ne (h : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
   by_contra hc
@@ -378,15 +376,15 @@ theorem IsCMExt.exists_ne (h : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
   exact NumberField.InfinitePlace.not_isReal_iff_isComplex.2 (h.2.1.isComplex w) hreal
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `IsCMExt.exists_ne h`. Use `⟨y - σ y, sub_ne_zero.2 (Ne.symm hy), by rw [map_sub, IsCMExt.sigma_sigma h, neg_sub], ?_⟩` and prove the remaining obligations. Use `set θ := y - σ y with hθ`. Establish `hθ0 : θ ≠ 0` using `sub_ne_zero.2 (Ne.symm hy)`. Establish `hσθ : σ θ = -θ` using `by rw [hθ, map_sub, IsCMExt.sigma_sigma h, neg_sub]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent F ![(1 : E), θ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `h2` using `congrArg σ hst`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_add, map_mul, AlgHom.commutes, AlgHom.commutes, hσθ, map_zero]`. Establish `hs2 : algebraMap F E (2 * s) = 0`. Rewrite using `[map_mul, map_ofNat]`. Take the linear combination `hst + h2`. Establish `hs : s = 0` using `(mul_eq_zero.1 ((map_eq_zero_iff _ (algebraMap F E).injective).1 hs2)).resolve_left two_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hs, ?_⟩` and prove the remaining obligations. Rewrite `hst` using `[hs, map_zero, zero_add]`. Conclude with `(map_eq_zero_iff _ (algebraMap F E).injective).1 ((mul_eq_zero.1 hst).resolve_right hθ0)`. Establish `hcard : Fintype.card (Fin 2) = Module.finrank F E` using `by rw [Fintype.card_fin, h.2.2.1]`. Use `set B := basisOfLinearIndependentOfCardEqFinrank hli hcard`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x`. Use `⟨B.repr x 0, B.repr x 1, ?_⟩` and prove the remaining obligations. Establish `hx` using `B.sum_repr x`. Rewrite `hx` using `[Fin.sum_univ_two, coe_basisOfLinearIndependentOfCardEqFinrank]`. Simplify using `using hx.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsCMExt.exists_decomp (h : IsCMExt F E σ) :
     ∃ θ : E, θ ≠ 0 ∧ σ θ = -θ ∧ ∀ x : E, ∃ s t : F, x = s • (1 : E) + t • θ := by
@@ -418,17 +416,17 @@ theorem IsCMExt.exists_decomp (h : IsCMExt F E σ) :
   simpa using hx.symm
 
 /- English proof (translation)
-Take `⟨θ, -, hσθ, hdec⟩` from `IsCMExt.exists_decomp h`. Establish `hrep : ∀ z : AE F E, ∃ a b : AF F, z = algebraMap (AF F) (AE F E) a + algebraMap (AF F) (AE F E) b * incA F E θ`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul c x`. Take `⟨s, t, rfl⟩` from `hdec x`. Use `⟨s • c, t • c, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_add, ← TensorProduct.smul_tmul, ← TensorProduct.smul_tmul, algebraMap_AE_eq, algebraMap_AE_eq]`. Express the relevant statement in the definitionally equal form `_ = _ + ((t • c) ⊗ₜ[F] (1 : E)) * ((1 : AF F) ⊗ₜ[F] θ)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Consider the case `add y z hy hz`. Take `⟨a, b, rfl⟩` from `hy`. Take `⟨a', b', rfl⟩` from `hz`. Conclude with `⟨a + a', b + b', by rw [map_add, map_add]; ring⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, b, rfl⟩` from `hrep z`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use `set X := algebraMap (AF F) (AE F E) b * incA F E θ with hX`. Establish `hcX : cA σ X = -X`. Rewrite using `[hX, map_mul, cA_algebraMap, cA_incA, hσθ, map_neg, mul_neg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[map_add, cA_algebraMap, hcX]`. Establish `h2 : (2 : F) • X = 0`. Rewrite using `[two_smul]`. Take the linear combination `-hz`. Establish `hX0 : X = 0` using `(smul_eq_zero.1 h2).resolve_left two_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX0, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_algebraMap_of_cA_eq (h : IsCMExt F E σ) {z : AE F E} (hz : cA σ z = z) :
     ∃ a : AF F, z = algebraMap (AF F) (AE F E) a := by
@@ -464,48 +462,44 @@ theorem exists_eq_algebraMap_of_cA_eq (h : IsCMExt F E σ) {z : AE F E} (hz : cA
 end Conj
 
 /- English proof (translation)
-The claim follows from `(adeleEquiv F E).injective`.
+A detailed English derivation is pending.
 -/
 theorem adeleEquiv_injective : Function.Injective (adeleEquiv F E) := (adeleEquiv F E).injective
 
 /- English proof (translation)
-Use `set e := (adeleEquiv F E).symm (idemAt P) with he`. Establish `heP : adeleEquiv F E e = idemAt P` using `by rw [he, AlgEquiv.apply_symm_apply]`. Use `set v := below F P with hv`. Use `set ε := placeIdem v with hεdef`. Establish `hε : IsPlaceIdem F v ε` using `isPlaceIdem_placeIdem v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hchar` using `char_of_adeleEquiv_eq_idemAt heP`. Establish `he2 : e * e = e` using `adeleEquiv_injective (by rw [map_mul, heP, idemAt_mul_self])`. Establish `hPε : idemAt P * adeleMap F E ε = idemAt P`. Use `Prod.ext (by change (idemAt P).1 * (adeleMap F E ε).1 = (idemAt P).1; rw [idemAt_fst, zero_mul]) (FiniteAdeleRing.ext (K := E) fun w ↦ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(idemAt P).2 w * (adeleMap F E ε).2 w = (idemAt P).2 w`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w = P`. Substitute `hw` using the available equality. Rewrite using `[adeleMap_snd_of_isPlaceIdem hε, if_pos hv.symm, mul_one]`. Rewrite using `[idemAt_snd_of_ne hw, zero_mul]`. Establish `heε : e * algebraMap (AF F) (AE F E) ε = e` using `adeleEquiv_injective (by rw [map_mul, adeleEquiv_algebraMap, heP, hPε])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hB : ∃ Q : HeightOneSpectrum (𝓞 E), Q ≠ P ∧ below F Q = v`. Take `⟨Q, hQP, hQv⟩` from `hB`. Use `set g := cA σ e with hg`. Establish `hgε : g * algebraMap (AF F) (AE F E) ε = g`. Rewrite using `[hg, ← cA_algebraMap (σ := σ), ← map_mul, heε]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hgfst : (adeleEquiv F E g).1 = 0`. Establish `h` using `congrArg (fun b : 𝔸[E] ↦ b.1) (congrArg (adeleEquiv F E) hgε)`. Simplify using `only [map_mul, adeleEquiv_algebraMap] at h`. Express the relevant statement in the definitionally equal form `(adeleEquiv F E g).1 * (adeleMap F E ε).1 = _ at h`. Rewrite `h` using `[adeleMap_fst_of_isPlaceIdem hε, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h.symm`. Establish `hgsnd : ∀ w, below F w ≠ v → (adeleEquiv F E g).2 w = 0`. Introduce `w hw`. Establish `h` using `congrArg (fun b : 𝔸[E] ↦ b.2 w) (congrArg (adeleEquiv F E) hgε)`. Simplify using `only [map_mul, adeleEquiv_algebraMap] at h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(adeleEquiv F E g).2 w * (adeleMap F E ε).2 w = _ at h`. Rewrite `h` using `[adeleMap_snd_of_isPlaceIdem hε, if_neg hw, mul_zero]`. Conclude with `h.symm`. Establish `hprod : e * g = 0`. Take `⟨b, hb⟩` from `exists_eq_algebraMap_of_cA_eq hσ (z := e * g) (by rw [map_mul, hg, cA_cA hσ, mul_comm])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `himg : adeleEquiv F E (e * g) = adeleMap F E b` using `by rw [hb, adeleEquiv_algebraMap]`. Establish `hbv : b.2 v = 0`. Establish `h` using `congrArg (fun c : 𝔸[E] ↦ c.2 Q) himg`. Rewrite `h` using `[map_mul, adele_snd_mul, heP, idemAt_snd_of_ne hQP, zero_mul, adeleMap_snd_apply]`. Establish `h' : b.2 (below F Q) = 0` using `(map_eq_zero_iff _ (completionMap _ _).injective).1 h.symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h'` using `[hQv]`. Then use the resulting hypothesis. Use `(map_eq_zero_iff _ adeleEquiv_injective).1 ?_` and prove the remaining obligations. Use `Prod.ext ?_ (FiniteAdeleRing.ext (K := E) fun w ↦ ?_)` and prove the remaining obligations. Rewrite using `[map_mul, adele_fst_mul, heP, idemAt_fst, zero_mul]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(adeleEquiv F E (e * g)).2 w = 0`. Distinguish the cases in `hw : w = P`. Substitute `hw` using the available equality. Rewrite using `[himg, adeleMap_snd_apply]`. Establish `: b.2 (below F w) = 0` using `hbv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, map_zero]`. Rewrite using `[map_mul, adele_snd_mul, heP, idemAt_snd_of_ne hw, zero_mul]`. Establish `hsum : e + g = algebraMap (AF F) (AE F E) ε`. Take `⟨a, ha⟩` from `exists_eq_algebraMap_of_cA_eq hσ (z := e + g) (by rw [map_add, hg, cA_cA hσ, add_comm])`. Establish `himg : adeleEquiv F E (e + g) = adeleMap F E a` using `by rw [ha, adeleEquiv_algebraMap]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hgP : (adeleEquiv F E g).2 P = 0`. Establish `h` using `congrArg (fun c : 𝔸[E] ↦ c.2 P) (congrArg (adeleEquiv F E) hprod)`. Rewrite `h` using `[map_mul, adele_snd_mul, heP, idemAt_snd_self, one_mul, map_zero]`. Conclude with `h`. Establish `hav : a.2 v = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h` using `congrArg (fun c : 𝔸[E] ↦ c.2 P) himg`. Rewrite `h` using `[map_add, adele_snd_add, heP, idemAt_snd_self, hgP, add_zero, adeleMap_snd_apply]`. Establish `h' : completionMap (below F P) P (a.2 (below F P)) = completionMap (below F P) P 1`. Rewrite using `[← h, map_one]`. Conclude with `(completionMap _ _).injective h'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha]`. Use `congr 1`. Apply `adeleMap_injective (K := F) (L := E)` to reduce the goal to its premises. Use `Prod.ext ?_ (FiniteAdeleRing.ext (K := E) fun w ↦ ?_)` and prove the remaining obligations. Rewrite using `[← himg, adeleMap_fst_of_isPlaceIdem hε]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, adele_fst_add, heP, hgfst, idemAt_fst, add_zero]`. Express the relevant statement in the definitionally equal form `(adeleMap F E a).2 w = (adeleMap F E ε).2 w`. Rewrite using `[adeleMap_snd_of_isPlaceIdem hε]`. Use `split_ifs with hw`. Rewrite using `[adeleMap_snd_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: a.2 (below F w) = 1` using `by rw [hw]; exact hav`. Rewrite using `[this, map_one]`. Rewrite using `[← himg]`. Rewrite using `[map_add, adele_snd_add]`. Establish `hwP : w ≠ P` using `fun h ↦ hw (h ▸ hv.symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[heP, idemAt_snd_of_ne hwP, hgsnd w hw, add_zero]`. Conclude with `⟨e + g, Or.inl ⟨⟨⟨he2, hprod, v, ε, hε, hsum⟩, hchar⟩, rfl⟩⟩`. Use `push_neg at hB`. Use `⟨e, Or.inr ⟨rfl, ⟨v, ε, hε, ?_⟩, hchar⟩⟩` and prove the remaining obligations. Apply `adeleEquiv_injective` to reduce the goal to its premises.
-
-Rewrite using `[heP, adeleEquiv_algebraMap]`. Use `Prod.ext (by rw [idemAt_fst, adeleMap_fst_of_isPlaceIdem hε]) (FiniteAdeleRing.ext (K := E) fun w ↦ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(idemAt P).2 w = (adeleMap F E ε).2 w`. Rewrite using `[adeleMap_snd_of_isPlaceIdem hε]`. Distinguish the cases in `hw : w = P`.
-
-Substitute `hw` using the available equality. Rewrite using `[idemAt_snd_self, if_pos hv.symm]`. Rewrite using `[idemAt_snd_of_ne hw, if_neg (hB w hw)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPrimeIdem {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) (P : HeightOneSpectrum (𝓞 E)) :
     ∃ f, IsPrimeIdem σ P ((adeleEquiv F E).symm (idemAt P)) f := by

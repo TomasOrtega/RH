@@ -24,7 +24,7 @@ theorem res_apply (π : Representation ℂ G V) (K : Subgroup G) (l : fixed (con
     (v : fixed π K) : res π K l v = (l.1 : Module.Dual ℂ V) v.1 := rfl
 
 /- English proof (translation)
-Establish `h1` using `mem_fixed.1 l.2 h⁻¹ (inv_mem hh)`. Use `conv_rhs => rw [← h1]`. Rewrite using `[contra_apply, inv_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariant_of_fixed {π : Representation ℂ G V} {K : Subgroup G} (l : fixed (contra π) K)
     (h : G) (hh : h ∈ K) (w : V) : (l.1 : Module.Dual ℂ V) (π h w) = (l.1 : Module.Dual ℂ V) w := by
@@ -33,9 +33,9 @@ theorem invariant_of_fixed {π : Representation ℂ G V} {K : Subgroup G} (l : f
   rw [contra_apply, inv_inv]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `l l' h`. Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `IndDual.dual_ext hπ hK (invariant_of_fixed l) (invariant_of_fixed l') fun w hw => LinearMap.congr_fun h ⟨w, hw⟩`. Introduce `m`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨l₀, hl₀⟩` from `LinearMap.exists_extend m`. Take `⟨l, h1, h2⟩` from `DualAverage.exists_invariant_form G V π hπ K hK l₀`. Establish `h3 : ∀ g ∈ K, π.dual g l = l` using `fun g hg => LinearMap.ext fun w => h1 g⁻¹ (inv_mem hg) w`. Use `⟨⟨⟨l, mem_smoothPart_of_nhds (Filter.mem_of_superset (ho.mem_nhds (one_mem K)) h3)⟩, mem_fixed.2 fun g hg => Subtype.ext (h3 g hg)⟩, LinearMap.ext fun w => ?_⟩` and prove the remaining obligations. Conclude with `(h2 _ (mem_fixed.1 w.2)).trans (LinearMap.congr_fun hl₀ w)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem res_bijective [T2Space G] {π : Representation ℂ G V} (hπ : IsSmooth π) {K : Subgroup G}
     (ho : IsOpen (K : Set G)) (hK : IsCompact (K : Set G)) : Function.Bijective (res π K) := by
@@ -53,7 +53,7 @@ theorem res_bijective [T2Space G] {π : Representation ℂ G V} (hπ : IsSmooth 
     exact (h2 _ (mem_fixed.1 w.2)).trans (LinearMap.congr_fun hl₀ w)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isSmooth_contra π, fun K ho hK => haveI := hπ.2 K ho hK FiniteDimensional.of_injective (res π K) (res_bijective hπ.1 ho hK).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAdmissible_contra [T2Space G] {π : Representation ℂ G V} (hπ : IsAdmissible π) :
     IsAdmissible (contra π) :=
@@ -62,9 +62,9 @@ theorem isAdmissible_contra [T2Space G] {π : Representation ℂ G V} (hπ : IsA
     FiniteDimensional.of_injective (res π K) (res_bijective hπ.1 ho hK).1⟩
 
 /- English proof (translation)
-Establish `h1` using `(isSmooth_contra π).map_smoothOp (μ := μ) hf hc (Module.Dual.eval ℂ V v ∘ₗ (smoothPart π.dual).subtype) l`. Establish `h2` using `hπ.map_smoothOp (μ := μ) (f := fun g => f g⁻¹) (hf.comp_continuous continuous_inv) (hc.comp_homeomorph (Homeomorph.inv G)) (l : Module.Dual ℂ V) v`. Use `h1.trans (Eq.trans ?_ h2.symm)` and prove the remaining obligations. Rewrite using `[← integral_inv_eq_self]`. Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show f g⁻¹ • (l : Module.Dual ℂ V) (π g⁻¹⁻¹ v) = f g⁻¹ • (l : Module.Dual ℂ V) (π g v)`. Rewrite using `[inv_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothOp_contra [MeasurableSpace G] [BorelSpace G] (μ : Measure G)
     [IsFiniteMeasureOnCompacts μ] [μ.IsInvInvariant] {π : Representation ℂ G V} (hπ : IsSmooth π)
@@ -82,11 +82,11 @@ theorem smoothOp_contra [MeasurableSpace G] [BorelSpace G] (μ : Measure G)
   rw [inv_inv]
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ μ _ _ hG V _ _ π hπ`. Use `⟨isAdmissible_contra hπ, fun f hf hc => ?_⟩` and prove the remaining obligations. Establish `hf' : IsLocallyConstant fun g => f g⁻¹` using `hf.comp_continuous continuous_inv`. Establish `hc' : HasCompactSupport fun g => f g⁻¹` using `hc.comp_homeomorph (Homeomorph.inv G)`. Take `⟨K, ho, hK, hle⟩` from `hG _ (Filter.inter_mem ((isOpen_leftStabilizer hf hc).mem_nhds (one_mem _)) ((isOpen_leftStabilizer hf' hc').mem_nhds (one_mem _)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hπ.2 K ho hK` as an intermediate fact. Use `(isAdmissible_contra hπ).2 K ho hK` as an intermediate fact. Establish `m1` using `(isSmooth_contra π).smoothOp_mem_fixed (μ := μ) hf hc (K := K) fun k hk => (hle hk).1`. Establish `m2` using `hπ.1.smoothOp_mem_fixed (μ := μ) hf' hc' (K := K) fun k hk => (hle hk).2`. Set `e` to `LinearEquiv.ofBijective _ (res_bijective hπ.1 ho hK)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[smoothTrace, smoothTrace, finRankTrace_eq _ _ m1, finRankTrace_eq _ _ m2, ← LinearMap.trace_transpose' (M := fixed π K), ← LinearMap.trace_conj' _ e.symm]`. Use `congr 1`. Use `LinearMap.ext fun l => e.injective ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.apply_symm_apply, LinearEquiv.symm_symm]`. Conclude with `LinearMap.ext fun v => smoothOp_contra μ hπ.1 hf hc l.1 v.1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contra_admissible_trace : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] [μ.IsInvInvariant], (∀ U ∈ nhds (1 : G), ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ U) → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V), IsAdmissible π → IsAdmissible (contra π) ∧ ∀ f : G → ℂ, IsLocallyConstant f → HasCompactSupport f → smoothTrace (contra π) μ f = smoothTrace π μ (fun g => f g⁻¹) := by
   intro G _ _ _ _ _ _ μ _ _ hG V _ _ π hπ

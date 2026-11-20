@@ -5,15 +5,13 @@ universe u_1
 namespace Bl.general_b_fact_second_variant
 
 /- English proof (translation)
-Introduce `k _ τ hτ θ hθ`. Establish `hb : ∀ x : k, τ ((x - τ x) / (θ - τ θ)) = (x - τ x) / (θ - τ θ)`. Introduce `x`. Rewrite using `[map_div₀, map_sub, map_sub, hτ, hτ, ← neg_sub x (τ x), ← neg_sub θ (τ θ), neg_div_neg_eq]`. Establish `ha : ∀ x : k, τ (x - (x - τ x) / (θ - τ θ) * θ) = x - (x - τ x) / (θ - τ θ) * θ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Establish `e : (x - τ x) / (θ - τ θ) * (θ - τ θ) = x - τ x` using `div_mul_cancel₀ _ hθ`. Rewrite using `[map_sub, map_mul, hb x]`. Take the linear combination `e`. Set `e : k ≃ {x : k // τ x = x} × {x : k // τ x = x}` to `{ toFun := fun x => (⟨x - (x - τ x) / (θ - τ θ) * θ, ha x⟩, ⟨(x - τ x) / (θ - τ θ), hb x⟩) invFun := fun p => p.1.1 + p.2.1 * θ left_inv := fun x => by show x - (x - τ x) / (θ - τ θ) * θ + (x - τ x) / (θ - τ θ) * θ = x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression.
 
-Expand and normalize the polynomial expressions, which then agree. Use `right_inv := by`. Introduce and unpack `⟨⟨a, ha'⟩, ⟨b, hb'⟩⟩`. Establish `h1 : (a + b * θ - τ (a + b * θ)) / (θ - τ θ) = b`. Rewrite using `[map_add, map_mul, ha', hb', div_eq_iff hθ]`.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `Prod.ext (Subtype.ext ?_) (Subtype.ext ?_)` and prove the remaining obligations. Use `show a + b * θ - (a + b * θ - τ (a + b * θ)) / (θ - τ θ) * θ = a`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `show (a + b * θ - τ (a + b * θ)) / (θ - τ θ) = b`. Conclude with `h1 }`. Rewrite using `[Nat.card_congr e, Nat.card_prod, sq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {k : Type u_1} [inst : Field.{u_1} k] (τ : RingHom.{u_1, u_1} k k),

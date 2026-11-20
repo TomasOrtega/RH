@@ -27,9 +27,9 @@ open GlobalTheory.LevelCover
 namespace GlobalTheory.LevCover
 
 /- English proof (translation)
-Establish `hsim` using `SimAlg.sim_group E H D hpq`. Take `⟨hfree, hfin⟩` from `datum_free D`. Use `exists_levStr_rep o l₂ b₂ hd hζ (fun g n k hn hk => hsim.1 g n k hn hk) (fun N f ν => exists_sim_lift E H D N f ν) (fun l' N ν => SimMult.exists_sim_trivial_of_mult SimAlg.sim_group exists_sim_lift E H D l' N ν) ?_ ?_` and prove the remaining obligations. Introduce `n hn`. Establish `hu : IsUnit ((n : ℕ) : Γ(S, ⊤))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using (b.unit n hn).map (fnOn s)`. Take `⟨Z, et, hZ⟩` from `exists_finiteEtale_latticeTorsionHom S o.t.G n D.La (ObjDim.isAbelianScheme o) hu`. Conclude with `⟨Z, et, hZ⟩`. Introduce `N _ T x y c hN hx hy hc`. Conclude with `PairingLocus.exists_clopen_of_isLocallyNoetherian hL S (GlobalTheory.Obj.toPolAV o) N T x y c hN hx hy hc`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem levStrRep_lemma (hL : Out.Laws) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {D : Datum H} {l : Level H} {B : Type} [Field B] {b : Base l B} {S : Scheme.{0}} [IsLocallyNoetherian S]
@@ -55,7 +55,7 @@ private theorem levStrRep_lemma (hL : Out.Laws) {E : Type} [Field E] [NumberFiel
     exact PairingLocus.exists_clopen_of_isLocallyNoetherian hL S (GlobalTheory.Obj.toPolAV o) N T x y c hN hx hy hc
 
 /- English proof (translation)
-The claim follows from `weilIs_grpPullback_of_comm S S' t.G t'.G f m.φ t.PP.L t'.PP.L t.PP.isLB t'.PP.isLB m.cart (sabMap_lbIso m) T' k x y x₀ y₀ c h₁ h₂`.
+A detailed English derivation is pending.
 -/
 private theorem weilIs_iff_of_sabMap {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}}
     {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SABMap t' t f) (T' : Over S') (k : ℤ) (x y : T' ⟶ t'.G)
@@ -65,7 +65,7 @@ private theorem weilIs_iff_of_sabMap {E : Type} [Field E] [NumberField E] [IsCMF
     T' k x y x₀ y₀ c h₁ h₂
 
 /- English proof (translation)
-The claim follows from `LiePull.lieMult_pull (𝓞 E) S S' t.G t'.G f m.φ t.act t'.act m.cart m.act k x τ n`.
+A detailed English derivation is pending.
 -/
 private theorem lieMult_iff_of_sabMap {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}}
     {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SABMap t' t f) (k : Type) [Field k] (x : Sp k ⟶ S')
@@ -73,17 +73,17 @@ private theorem lieMult_iff_of_sabMap {E : Type} [Field E] [NumberField E] [IsCM
   LiePull.lieMult_pull (𝓞 E) S S' t.G t'.G f m.φ t.act t'.act m.cart m.act k x τ n
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l l₂ B _ b b₂ S s o hS hpq hd hρ hζ`. Use `hS` as an intermediate fact. Take `⟨V, χ, θ, hVf, hVe, hVs, hlev, hext, hex⟩` from `levStrRep_lemma hL o hpq l₂ b₂ hd hζ`. Take `⟨o₁, ⟨n₁⟩⟩` from `obj_pull E H D l B B b b (RingHom.id B) S V.left s (V.hom ≫ s) V.hom rfl rfl (by rw [spMap_id', Category.comp_id]) o`. Take `⟨o₂, m, hm, hχ, hθ⟩` from `obj_of_levStr o hρ V o₁.t n₁.toSABMap (weilIs_iff_of_sabMap n₁.toSABMap) (fun k _ x τ n => lieMult_iff_of_sabMap n₁.toSABMap k x τ n) o₁.ample o₁.ktriv hlev`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨V.left, V.hom, o₂, m, hVf, hVe, hVs, hm, ?_⟩` and prove the remaining obligations. Introduce `T f o' m' hc`. Take `⟨χ', θ', hlev', hχ', hθ'⟩` from `levStr_of_obj o (Over.mk f) o' m' (weilIs_iff_of_sabMap m') hc.1 hc.2`. Take `⟨g, hgχ, hgθ⟩` from `hex (Over.mk f) χ' θ' hlev'`. Establish `hg : g.left ≫ V.hom = f` using `by simpa using Over.w g`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `sab_cancel m m' g.left hg`. Establish `key : ∀ a, ((o'.eta a).left ≫ m'.φ = g.left ≫ (o₂.eta a).left ≫ m.φ) ∧ ((o'.etaA a).left ≫ m'.φ = g.left ≫ (o₂.etaA a).left ≫ m.φ)` using `fun a => by`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← hχ' a, ← hgχ a, Over.comp_left, hχ a]`. Rewrite using `[← hθ' a, ← hgθ a, Over.comp_left, hθ a]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hη : ∀ a, (o'.eta a).left ≫ u.φ = g.left ≫ (o₂.eta a).left` using `fun a => sec_cancel u m (o'.eta a) (o₂.eta a) (by rw [hu]; exact (key a).1)`. Establish `hηA : ∀ a, (o'.etaA a).left ≫ u.φ = g.left ≫ (o₂.etaA a).left` using `fun a => sec_cancel u m (o'.etaA a) (o₂.etaA a) (by rw [hu]; exact (key a).2)`. Use `⟨g.left, ⟨hg, ⟨u, hη, hηA⟩, hu⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `h' ⟨hh', ⟨u', hu₁, hu₂⟩, hu'⟩`. Establish `hu'' : u'.cm.F ≫ m.φ = m'.φ` using `hu'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hgg : (Over.homMk h' hh' : Over.mk f ⟶ V) = g`. Apply `hext` to reduce the goal to its premises. Introduce `a ext1`. Simplify using `only [Over.comp_left, hχ a, Over.homMk_left]`. Rewrite using `[← (key a).1, ← Category.assoc, ← hu₁ a, Category.assoc, hu'']`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ext1`. Simplify using `only [Over.comp_left, hθ a, Over.homMk_left]`. Rewrite using `[← (key a).2, ← Category.assoc, ← hu₂ a, Category.assoc, hu'']`. Rewrite using `[← hgg]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem levelCover_noetherian (hL : Out.Laws) : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l l₂ : Level H) (B : Type) [Field B] (b : Base l B) (b₂ : Base l₂ B) (S : Scheme.{0}) (s : S ⟶ Sp B) (o : Obj D l b s), IsLocallyNoetherian S → 1 ≤ D.p + D.q → l.Dvd l₂ → b.ρ = b₂.ρ → b.ζ = b₂.ζ ^ (l₂.A / l.A) → ∃ (S₂ : Scheme.{0}) (π : S₂ ⟶ S) (o₂ : Obj D l₂ b₂ (π ≫ s)) (m : SABMap o₂.t o.t π), IsFinite π ∧ Etale π ∧ Surjective π ∧ ((∀ a, (o₂.eta a ^ (l₂.M / l.M)).left ≫ m.φ = π ≫ (o.eta a).left) ∧ (∀ a, (o₂.etaA a ^ (l₂.A / l.A)).left ≫ m.φ = π ≫ (o.etaA a).left)) ∧ ∀ (T : Scheme.{0}) (f : T ⟶ S) (o' : Obj D l₂ b₂ (f ≫ s)) (m' : SABMap o'.t o.t f), (∀ a, (o'.eta a ^ (l₂.M / l.M)).left ≫ m'.φ = f ≫ (o.eta a).left) ∧ (∀ a, (o'.etaA a ^ (l₂.A / l.A)).left ≫ m'.φ = f ≫ (o.etaA a).left) → ∃! h : T ⟶ S₂, h ≫ π = f ∧ ∃ u : ObjMap o' o₂ h, u.toSABMap.φ ≫ m.φ = m'.φ := by
   intro E _ _ _ H D l l₂ B _ b b₂ S s o hS hpq hd hρ hζ
@@ -130,21 +130,21 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l l₂ : Level H}
 
 /- English proof (translation)
-Establish `hsm0 : Smooth Xo.s`. Use `Xo.smooth` as an intermediate fact. Conclude with `SmoothOfRelativeDimension.smooth D.dim Xo.s`. Establish `hsm0₂ : Smooth Xo₂.s`. Use `Xo₂.smooth` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `SmoothOfRelativeDimension.smooth D.dim Xo₂.s`. Establish `hsmX : Smooth (pullback.snd Xo.s (spMap j))` using `inferInstance`. Establish `hsmX₂ : Smooth (pullback.snd Xo₂.s (spMap j₂))` using `inferInstance`. Take `⟨rX, -, nX⟩` from `isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field F _ _ hsmX`. Take `⟨rX₂, -, -⟩` from `isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field F _ _ hsmX₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨o, ⟨no⟩⟩` from `obj_pull E H D l (KA l) F (baseKA l) b j Xo.X (pullback Xo.s (spMap j)) Xo.s (pullback.snd _ _) (pullback.fst _ _) e₁ e₂ pullback.condition Xo.univ`. Take `⟨o₂, ⟨no₂⟩⟩` from `obj_pull E H D l₂ (KA l₂) F (baseKA l₂) b₂ j₂ Xo₂.X (pullback Xo₂.s (spMap j₂)) Xo₂.s (rF ≫ pullback.snd _ _) (pullback.fst _ _) e₃ e₄ (by rw [h₂]; exact pullback.condition) Xo₂.univ`. Establish `hno1 : ∀ a, (o.eta a).left ≫ no.toSABMap.φ = pullback.fst _ _ ≫ (Xo.univ.eta a).left` using `no.2`. Establish `hno2 : ∀ a, (o.etaA a).left ≫ no.toSABMap.φ = pullback.fst _ _ ≫ (Xo.univ.etaA a).left` using `no.3`. Establish `hno₂1 : ∀ a, (o₂.eta a).left ≫ no₂.toSABMap.φ = pullback.fst _ _ ≫ (Xo₂.univ.eta a).left` using `no₂.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hno₂2 : ∀ a, (o₂.etaA a).left ≫ no₂.toSABMap.φ = pullback.fst _ _ ≫ (Xo₂.univ.etaA a).left` using `no₂.3`. Establish `hRX : Represents o` using `represents_pullback ObjMaps.id_comp_cancel Xo j (fun S s o' hS => moduli_rep_of_base ObjMaps.id_comp_cancel E H D l Xo F b j S s o' hS e₁ e₂) rfl o no`. Establish `hRX₂ : Represents o₂` using `represents_pullback ObjMaps.id_comp_cancel Xo₂ j₂ (fun S s o' hS => moduli_rep_of_base ObjMaps.id_comp_cancel E H D l₂ Xo₂ F b₂ j₂ S s o' hS e₃ e₄) h₂ o₂ no₂`. Take `⟨Y, π, oc, mc, hπf, hπe, hπs, hmc, huniv⟩` from `levelCover_noetherian hL E H D l l₂ F b b₂ _ (pullback.snd Xo.s (spMap j)) o nX hpq hd hρ hζ`. Establish `hsmπ : Smooth π` using `inferInstance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsmY : Smooth (π ≫ pullback.snd Xo.s (spMap j))` using `inferInstance`. Take `⟨rY, -, -⟩` from `isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field F _ _ hsmY`. Take `⟨o₁, ⟨n₁⟩⟩` from `obj_pull E H D l F F b b (RingHom.id F) _ Y (pullback.snd _ _) (π ≫ pullback.snd _ _) π`. Use `rfl rfl (by rw [spMap_id', Category.comp_id]) o`. Take `⟨mcomp, hmcomp⟩` from `sab_comp no₂.toSABMap m h₁.symm`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m₂, hm₂'⟩` from `sab_cancel no.toSABMap mcomp rF rfl`. Establish `hm₂c : (∀ a, (o₂.eta a ^ (l₂.M / l.M)).left ≫ m₂.φ = rF ≫ (o.eta a).left) ∧ (∀ a, (o₂.etaA a ^ (l₂.A / l.A)).left ≫ m₂.φ = rF ≫ (o.etaA a).left)`. Prove the components needed by the constructor for the conclusion. Introduce `a`. Apply `sec_cancel m₂ no.toSABMap` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hm₂', hmcomp, ← Category.assoc, sec_pow _ _ _ (hno₂1 a), Category.assoc, hm₁ a, ← Category.assoc, ← h₁, Category.assoc, hno1 a]`. Introduce `a`. Apply `sec_cancel m₂ no.toSABMap` to reduce the goal to its premises. Rewrite using `[hm₂', hmcomp, ← Category.assoc, sec_pow _ _ _ (hno₂2 a), Category.assoc, hm₂ a, ← Category.assoc, ← h₁, Category.assoc, hno2 a]`. Take `⟨h, hiso, hπ⟩` from `iso_cover ObjMaps.id_comp_cancel (l₂.M / l.M) (l₂.A / l.A) o o₂ oc o₁ n₁ m₂ mc hm₂c hmc hRX hRX₂ rX₂ rY (obj_rigid_closed hL E H D l F F b b _ Y (pullback.snd _ _) (π ≫ pullback.snd _ _) o o₁ π (Or.inl rY)) huniv`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← hπ]`. Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`.
+A detailed English derivation is pending.
 -/
 theorem levelMap_over_field_noetherian (hL : Out.Laws)
     (Xo : Moduli D l) (Xo₂ : Moduli D l₂) (hpq : 1 ≤ D.p + D.q) (hd : l.Dvd l₂) (r : Xo₂.X ⟶ Xo.X)
@@ -211,9 +211,9 @@ theorem levelMap_over_field_noetherian (hL : Out.Laws)
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l l₂ Xo Xo₂ hpq hd r jK m hr c c₂ hc rF h₁ h₂`. Take `⟨-, -, hm₁, hm₂⟩` from `hr`. Take `⟨F, fin, conj, zm, le⟩` from `c`. Take `⟨F₂, fin₂, conj₂, zm₂, le₂⟩` from `c₂`. Simplify using `only at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Substitute `hc` using the available equality. Rewrite `h₂` using `[spMap_inclusion_self, Category.comp_id]`. Conclude with `levelMap_over_field_noetherian hL Xo Xo₂ hpq hd r m hm₁ hm₂ F (baseOf l F le) (baseOf l₂ F le₂) (IntermediateField.inclusion le).toRingHom (IntermediateField.inclusion le₂).toRingHom rfl rfl rfl rfl (baseOf_rho l l₂ F le le₂) (baseOf_zeta l l₂ F le le₂ hd.2.2) rF h₁ h₂`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelMap_finite_etale_surjective_of_laws (hL : Out.Laws) : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l l₂ : Level H) (Xo : Moduli D l) (Xo₂ : Moduli D l₂), 1 ≤ D.p + D.q → l.Dvd l₂ → ∀ (r : Xo₂.X ⟶ Xo.X) (jK : KA l →+* KA l₂) (m : SABMap Xo₂.univ.t Xo.univ.t r), (∀ x, ((jK x : KA l₂) : ℂ) = ((x : KA l) : ℂ)) ∧ r ≫ Xo.s = Xo₂.s ≫ spMap jK ∧ (∀ a, (Xo₂.univ.eta a ^ (l₂.M / l.M)).left ≫ m.φ = r ≫ (Xo.univ.eta a).left) ∧ (∀ a, (Xo₂.univ.etaA a ^ (l₂.A / l.A)).left ≫ m.φ = r ≫ (Xo.univ.etaA a).left) → ∀ (c : Coeff l) (c₂ : Coeff l₂) (hc : c.F = c₂.F) (rF : Xo₂.XF c₂ ⟶ Xo.XF c), rF ≫ pullback.fst _ _ = pullback.fst _ _ ≫ r → rF ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap (IntermediateField.inclusion hc.le).toRingHom → IsFinite rF ∧ Etale rF ∧ Surjective rF := by
   intro E _ _ _ H D l l₂ Xo Xo₂ hpq hd r jK m hr c c₂ hc rF h₁ h₂

@@ -6,7 +6,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 namespace GlobalTheory.IntegralElementNorm
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l)]`. Conclude with `(PadicAlgCl.norm_extends (p := l) _).trans_le (PadicInt.norm_le_one a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_algebraMap_le_one {l : ℕ} [Fact l.Prime] (a : ℤ_[l]) :
     ‖algebraMap ℤ_[l] (PadicAlgCl l) a‖ ≤ 1 := by
@@ -14,15 +14,15 @@ theorem norm_algebraMap_le_one {l : ℕ} [Fact l.Prime] (a : ℤ_[l]) :
   exact (PadicAlgCl.norm_extends (p := l) _).trans_le (PadicInt.norm_le_one a)
 
 /- English proof (translation)
-Take `⟨f, hmon, hf⟩` from `hx`. Assume the negation of the conclusion as `hbig`. Use `push Not at hbig`. Establish `hn : f.natDegree ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Polynomial.eq_one_of_monic_natDegree_zero hmon h0] at hf`. Establish `key : x ^ f.natDegree = -∑ i ∈ Finset.range f.natDegree, algebraMap ℤ_[l] (PadicAlgCl l) (f.coeff i) * x ^ i`. Rewrite `hf` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, Polynomial.Monic.coeff_natDegree hmon, map_one, one_mul]`. Take the linear combination `hf`. Establish `hsum : ‖∑ i ∈ Finset.range f.natDegree, algebraMap ℤ_[l] (PadicAlgCl l) (f.coeff i) * x ^ i‖ ≤ ‖x‖ ^ (f.natDegree - 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `i hi`. Establish `hi' : i ≤ f.natDegree - 1`. Use `Finset.mem_range.1 hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul]`. Conclude with `pow_le_pow_right₀ hbig.le hi'`. Establish `hnorm : ‖x‖ ^ f.natDegree ≤ ‖x‖ ^ (f.natDegree - 1)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← norm_pow, key, norm_neg]`. Conclude with `hsum`. Establish `hlt : ‖x‖ ^ (f.natDegree - 1) < ‖x‖ ^ f.natDegree` using `pow_lt_pow_right₀ hbig (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral {l : ℕ} [Fact l.Prime] {x : PadicAlgCl l} (hx : IsIntegral ℤ_[l] x) :
     ‖x‖ ≤ 1 := by
@@ -58,7 +58,7 @@ theorem norm_le_one_of_isIntegral {l : ℕ} [Fact l.Prime] {x : PadicAlgCl l} (h
   linarith
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ_[l] c.O` using `c.fin`. Establish `hint : IsIntegral ℤ_[l] (⟨x, hx⟩ : c.O)` using `Algebra.IsIntegral.isIntegral _`. Conclude with `norm_le_one_of_isIntegral (hint.map c.O.val)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_mem {l : ℕ} [Fact (Nat.Prime l)] (c : UpperTheory.V.HV.Coef l) {x : Formalism.ConjugateSelfDual.Qbar l}
     (hx : x ∈ UpperTheory.V.HV.Coef.O c) : ‖x‖ ≤ (1 : ℝ) := by

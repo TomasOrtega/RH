@@ -21,14 +21,14 @@ theorem loc_val (w : Pl E) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) (i j : 
     (Matrix.GeneralLinearGroup.map (pLoc E w) g).1 i j = pLoc E w (g.1 i j) := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem loc_inv_val (w : Pl E) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) (i j : Fin n) :
     ((Matrix.GeneralLinearGroup.map (pLoc E w) g)⁻¹).1 i j = pLoc E w ((g⁻¹).1 i j) := by
   rw [← map_inv]; rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun i j => Subtype.ext (funext fun w => congrArg (fun x : GLw n w => x.1 i j) (H w)))`.
+A detailed English derivation is pending.
 -/
 theorem gl_ext {g h : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)}
     (H : ∀ w : Pl E, Matrix.GeneralLinearGroup.map (pLoc E w) g = Matrix.GeneralLinearGroup.map (pLoc E w) h) :
@@ -37,21 +37,21 @@ theorem gl_ext {g h : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)}
     congrArg (fun x : GLw n w => x.1 i j) (H w)))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AdelicU.mem_GLint_iff`.
+A detailed English derivation is pending.
 -/
 theorem mem_KGL_iff {w : Pl E} {x : GLw n w} : x ∈ GlobalTheory.LFun.KGL w n ↔
     (∀ i j, x.1 i j ∈ w.adicCompletionIntegers E) ∧ ∀ i j, (x⁻¹).1 i j ∈ w.adicCompletionIntegers E :=
   GlobalTheory.AdelicU.mem_GLint_iff
 
 /- English proof (translation)
-Simplify using `only [Kglob, Subgroup.mem_iInf, Subgroup.mem_comap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Kglob {g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)} :
     g ∈ Kglob E n ↔ ∀ w : Pl E, Matrix.GeneralLinearGroup.map (pLoc E w) g ∈ GlobalTheory.LFun.KGL w n := by
   simp only [Kglob, Subgroup.mem_iInf, Subgroup.mem_comap]
 
 /- English proof (translation)
-Use extensionality with `g`. Express the relevant statement in the definitionally equal form `g ∈ Kglob E n ↔ PIW.ClassFinD.MatInt g.val ∧ PIW.ClassFinD.MatInt (g⁻¹).val`. Rewrite using `[mem_Kglob]`. Simplify using `only [mem_KGL_iff, loc_val, loc_inv_val]`. Conclude with `⟨fun h => ⟨fun i j w => (h w).1 i j, fun i j w => (h w).2 i j⟩, fun h w => ⟨fun i j => h.1 i j w, fun i j => h.2 i j w⟩⟩`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem coe_Kglob : (Kglob E n : Set (GL (Fin n) (FiniteAdeleRing (𝓞 E) E))) =
     (PIW.ClassFinD.KGL E n : Set (GL (Fin n) (FiniteAdeleRing (𝓞 E) E))) := by
@@ -63,15 +63,15 @@ theorem coe_Kglob : (Kglob E n : Set (GL (Fin n) (FiniteAdeleRing (𝓞 E) E))) 
     fun h w => ⟨fun i j => h.1 i j w, fun i j => h.2 i j w⟩⟩
 
 /- English proof (translation)
-Rewrite using `[coe_Kglob]`. Conclude with `GlobalTheory.isCompact_KGL E n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_Kglob : IsCompact (Kglob E n : Set (GL (Fin n) (FiniteAdeleRing (𝓞 E) E))) := by
   rw [coe_Kglob]; exact GlobalTheory.isCompact_KGL E n
 
 /- English proof (translation)
-Establish `hO : IsOpen ((PIW.ClassFinD.Ohat E : Subring (FiniteAdeleRing (𝓞 E) E)) : Set (FiniteAdeleRing (𝓞 E) E))` using `RestrictedProduct.isOpen_forall_mem (fun v => Valued.isOpen_valuationSubring _)`. Establish `hM : IsOpen {M : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E) | PIW.ClassFinD.MatInt M}`. Establish `e : {M : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E) | PIW.ClassFinD.MatInt M} = ⋂ i, ⋂ j, (fun M : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E) => M i j) ⁻¹' ((PIW.ClassFinD.Ohat E : Subring (FiniteAdeleRing (𝓞 E) E)) : Set (FiniteAdeleRing (𝓞 E) E))`. Use extensionality with `M`. Simplify using `[PIW.ClassFinD.MatInt]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hO.preimage ((continuous_apply j).comp (continuous_apply i))`. Rewrite using `[coe_Kglob]`. Conclude with `(hM.preimage Units.continuous_val).inter (hM.preimage Units.continuous_coe_inv)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_Kglob : IsOpen (Kglob E n : Set (GL (Fin n) (FiniteAdeleRing (𝓞 E) E))) := by
   have hO : IsOpen ((PIW.ClassFinD.Ohat E : Subring (FiniteAdeleRing (𝓞 E) E)) : Set (FiniteAdeleRing (𝓞 E) E)) :=
@@ -88,9 +88,9 @@ theorem isOpen_Kglob : IsOpen (Kglob E n : Set (GL (Fin n) (FiniteAdeleRing (�
   exact (hM.preimage Units.continuous_val).inter (hM.preimage Units.continuous_coe_inv)
 
 /- English proof (translation)
-Rewrite using `[orb, Finset.mem_insert, Finset.mem_singleton, GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj E) (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj_ne_one E) u w]`. Use `or_congr Iff.rfl ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `GlobalTheory.SplitPts.conjPl_self_conjSrc u`. Establish `e` using `eq_conjSrc h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `w = conjSrc (IsCMField.complexConj E).toRingEquiv u`. Rewrite using `[e]`. Conclude with `(GlobalTheory.SplitPts.conjSrc_conjSrc_cm w).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_orb_iff (u w : Pl E) :
     w ∈ orb E u ↔ w.under (𝓞 (maximalRealSubfield E)) = u.under (𝓞 (maximalRealSubfield E)) := by
@@ -104,7 +104,7 @@ theorem mem_orb_iff (u w : Pl E) :
     exact (GlobalTheory.SplitPts.conjSrc_conjSrc_cm w).symm
 
 /- English proof (translation)
-Take `⟨u, ⟨huS, hu⟩, huniq⟩` from `hS w`. Conclude with `⟨u, ⟨huS, (mem_orb_iff u w).2 hu.symm⟩, fun u' h => huniq u' ⟨h.1, ((mem_orb_iff u' w).1 h.2).symm⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_orb {S : Set (Pl E)} (hS : IsSection S) (w : Pl E) : ∃! u, u ∈ S ∧ w ∈ orb E u := by
   obtain ⟨u, ⟨huS, hu⟩, huniq⟩ := hS w
@@ -120,9 +120,9 @@ open GlobalTheory.EulerTw
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[loc_val]`. Establish `he : pLoc E w (idem E T) = if w ∈ T then 1 else 0` using `rfl`. Express the relevant statement in the definitionally equal form `pLoc E w ((idem E T • g.1 + (1 - idem E T) • (1 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E))) i j) = _`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, map_add, map_mul, map_mul, map_sub, map_one, he]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Rewrite using `[one_mul, sub_self, zero_mul, add_zero, loc_val]`. Apply the tactic sequence `rw [zero_mul, zero_add, sub_zero, one_mul, Units.val_one, Matrix.one_apply, Matrix.one_apply] split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem loc_prjG (T : Finset (Pl E)) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) (w : Pl E) :
     Matrix.GeneralLinearGroup.map (pLoc E w) (prjG E n T g) =
@@ -139,14 +139,14 @@ theorem loc_prjG (T : Finset (Pl E)) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E
     split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `gl_ext fun w => by rw [loc_prjG, loc_prjG]; split_ifs with h <;> simp [loc_prjG, h]`.
+A detailed English derivation is pending.
 -/
 theorem prjG_prjG (T : Finset (Pl E)) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) :
     prjG E n T (prjG E n T g) = prjG E n T g :=
   gl_ext fun w => by rw [loc_prjG, loc_prjG]; split_ifs with h <;> simp [loc_prjG, h]
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `hy`. Rewrite using `[loc_prjG, if_neg hw]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem loc_eq_one_of_mem_Gam {u w : Pl E} {y : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)} (hy : y ∈ Gam E n u)
     (hw : w ∉ orb E u) : Matrix.GeneralLinearGroup.map (pLoc E w) y = 1 := by
@@ -160,9 +160,9 @@ theorem pfU_val (u : Pl E) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) :
     (pfU E n u g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) = prjG E n (orb E u) g := rfl
 
 /- English proof (translation)
-Rewrite using `[show KU E n u = (Kglob E n).subgroupOf (Gam E n u) from rfl, Subgroup.mem_subgroupOf, pfU_val, mem_Kglob]`. Use `⟨fun h w hw => ?_, fun h w => ?_⟩` and prove the remaining obligations. Use `h w` as an intermediate fact. Rewrite `this` using `[loc_prjG, if_pos hw]`. Then use the resulting hypothesis. Rewrite using `[loc_prjG] split_ifs with hw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h w hw`. Conclude with `one_mem _`.
+A detailed English derivation is pending.
 -/
 theorem mem_KU_pfU {u : Pl E} {g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)} :
     pfU E n u g ∈ KU E n u ↔ ∀ w ∈ orb E u, Matrix.GeneralLinearGroup.map (pLoc E w) g ∈ GlobalTheory.LFun.KGL w n := by
@@ -176,7 +176,7 @@ theorem mem_KU_pfU {u : Pl E} {g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)} :
     · exact one_mem _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Continuous fun M : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E) => idem E T • M + (1 - idem E T) • (1 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E))`. Conclude with `(continuous_const_smul _).add continuous_const`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem continuous_prjM (T : Finset (Pl E)) : Continuous (prjM E n T) := by
   change Continuous fun M : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E) =>
@@ -184,14 +184,14 @@ theorem continuous_prjM (T : Finset (Pl E)) : Continuous (prjM E n T) := by
   exact (continuous_const_smul _).add continuous_const
 
 /- English proof (translation)
-The claim follows from `Units.continuous_iff.2 ⟨(continuous_prjM T).comp Units.continuous_val, (continuous_prjM T).comp Units.continuous_coe_inv⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_prjG (T : Finset (Pl E)) : Continuous (prjG E n T) :=
   Units.continuous_iff.2 ⟨(continuous_prjM T).comp Units.continuous_val,
     (continuous_prjM T).comp Units.continuous_coe_inv⟩
 
 /- English proof (translation)
-The claim follows from `continuous_induced_rng.2 (continuous_prjG (orb E u))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pfU (u : Pl E) : Continuous (pfU E n u) :=
   continuous_induced_rng.2 (continuous_prjG (orb E u))
@@ -201,33 +201,27 @@ end GlobalTheory.EulerTwRestr
 open GlobalTheory.EulerTw GlobalTheory.EulerTwRestr in
 
 /- English proof (translation)
-Introduce `E _ _ _ n S hS`. Establish `hu` using `existsUnique_orb hS`. Use `choose σ hσS hσw using fun w => (hu w).exists`. Establish `hσu : ∀ (w u : Pl E), u ∈ S → w ∈ orb E u → u = σ w` using `fun w u h1 h2 => (hu w).unique ⟨h1, h2⟩ ⟨hσS w, hσw w⟩`. Establish `hlev : ∀ x, (∀ u : S, pfU E n u.1 x ∈ KU E n u.1) ↔ x ∈ Kglob E n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[mem_Kglob]`. Conclude with `⟨fun h w => mem_KU_pfU.1 (h ⟨σ w, hσS w⟩) w (hσw w), fun h u => mem_KU_pfU.2 fun w _ => h w⟩`. Use `⟨fun w => w.elim, fun u => continuous_pfU _, fun u => ?_, fun u => ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isOpen_Kglob.preimage continuous_subtype_val`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : (KU E n u.1 : Set (Gam E n u.1)) = pfU E n u.1 '' (Kglob E n : Set _)`. Use extensionality with `y`. Use `⟨fun hy => ⟨y.1, hy, Subtype.ext ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `y.2`. Rewrite using `[pfU_val, ← hg, prjG_prjG]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `mem_KU_pfU.2 fun w _ => mem_Kglob.1 hg w`. Rewrite using `[e]`. Conclude with `isCompact_Kglob.image (continuous_pfU _)`. Introduce `x y _ hf`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `gl_ext fun w => ?_` and prove the remaining obligations. Establish `h` using `congrArg (fun z : Gam E n (σ w) => Matrix.GeneralLinearGroup.map (pLoc E w) z.1) (hf ⟨σ w, hσS w⟩)`. Simplify using `only [pfU_val, loc_prjG, if_pos (hσw w)] at h`. Conclude with `h`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∀ᶠ w in cofinite, ∀ i j, pLoc E w (x.1 i j) ∈ (w : Pl E).adicCompletionIntegers E` using `eventually_all.2 fun i => eventually_all.2 fun j => (x.1 i j).2`. Establish `h2 : ∀ᶠ w in cofinite, ∀ i j, pLoc E w ((x⁻¹).1 i j) ∈ (w : Pl E).adicCompletionIntegers E` using `eventually_all.2 fun i => eventually_all.2 fun j => ((x⁻¹).1 i j).2`. Establish `hx : ∀ᶠ w in cofinite, Matrix.GeneralLinearGroup.map (pLoc E w) x ∈ GlobalTheory.LFun.KGL w n` using `by filter_upwards [h1, h2] with w h1 h2`. Conclude with `mem_KGL_iff.2 ⟨fun i j => by rw [loc_val]; exact h1 i j, fun i j => by rw [loc_inv_val]; exact h2 i j⟩`. Establish `hB` using `eventually_cofinite.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use `eventually_cofinite.2 (((hB.preimage Subtype.val_injective.injOn).union (hB.preimage ((conjSrc_injective (IsCMField.complexConj E).toRingEquiv).comp Subtype.val_injective).injOn)).subset ?_)` and prove the remaining obligations. Introduce `u hu`. Simplify using `only [Set.mem_setOf_eq, mem_KU_pfU, not_forall] at hu`. Take `⟨w, hw, hwx⟩` from `hu`. Break down `(by simpa [orb] using hw : w = u.1 ∨ w = cPl E u.1) with rfl | rfl` into its components or cases.
+Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Or.inl hwx`. Conclude with `Or.inr hwx`. Introduce `a y hy`. Establish `hc : ∀ᶠ w in cofinite, Matrix.GeneralLinearGroup.map (pLoc E w) (y ⟨σ w, hσS w⟩).1 ∈ GlobalTheory.LFun.KGL w n`. Establish `hB` using `eventually_cofinite.1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `eventually_cofinite.2 ((hB.biUnion fun u _ => (orb E u.1).finite_toSet).subset ?_)` and prove the remaining obligations. Introduce `w hw`. Conclude with `Set.mem_iUnion₂.2 ⟨⟨σ w, hσS w⟩, fun h => hw (mem_Kglob.1 (Subgroup.mem_subgroupOf.1 h) w), hσw w⟩`. Set `M : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E)` to `Matrix.of fun i j => ⟨fun w => (Matrix.GeneralLinearGroup.map (pLoc E w) (y ⟨σ w, hσS w⟩).1).1 i j, hc.mono fun w h => (mem_KGL_iff.1 h).1 i j⟩`. Set `M' : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E)` to `Matrix.of fun i j => ⟨fun w => ((Matrix.GeneralLinearGroup.map (pLoc E w) (y ⟨σ w, hσS w⟩).1)⁻¹).1 i j, hc.mono fun w h => (mem_KGL_iff.1 h).2 i j⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hloc : ∀ P Q : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E), (∀ w : Pl E, P.map (pLoc E w) = Q.map (pLoc E w)) → P = Q` using `fun P Q h => Matrix.ext fun i j => Subtype.ext (funext fun w => congrFun (congrFun (h w) i) j)`. Establish `hMM' : M * M' = 1` using `hloc _ _ fun w => by`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `(Matrix.GeneralLinearGroup.map (pLoc E w) (y ⟨σ w, hσS w⟩).1).mul_inv`. Establish `hM'M : M' * M = 1` using `hloc _ _ fun w => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `(Matrix.GeneralLinearGroup.map (pLoc E w) (y ⟨σ w, hσS w⟩).1).inv_mul`. Set `x : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)` to `⟨M, M', hMM', hM'M⟩`. Establish `hx : ∀ w, Matrix.GeneralLinearGroup.map (pLoc E w) x = Matrix.GeneralLinearGroup.map (pLoc E w) (y ⟨σ w, hσS w⟩).1` using `fun w => Units.ext (Matrix.ext fun i j => rfl)`. Use `⟨x, fun w => w.elim, fun u => Subtype.ext (gl_ext fun w => ?_)⟩` and prove the remaining obligations.
-
-Rewrite using `[pfU_val, loc_prjG]`. Use `split_ifs with hw`. Establish `e : (⟨σ w, hσS w⟩ : S) = u` using `Subtype.ext (hσu w u.1 u.2 hw).symm`. Rewrite using `[hx w, e]`. Conclude with `(loc_eq_one_of_mem_Gam (y u).2 hw).symm`.
-
-Establish `e : {x | ∀ u : S, pfU E n u.1 x ∈ KU E n u.1} = (Kglob E n : Set _)` using `Set.ext hlev`. Rewrite using `[e]`. Conclude with `isOpen_Kglob`. Introduce `C _`. Establish `e : {x | (∀ w, GlobalTheory.RestrMeas.noArch (GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) w x ∈ C w) ∧ ∀ u : S, pfU E n u.1 x ∈ KU E n u.1} = (Kglob E n : Set _)` using `Set.ext fun x => ⟨fun h => (hlev x).1 h.2, fun h => ⟨fun w => w.elim, (hlev x).2 h⟩⟩`.
-
-Rewrite using `[e]`. Conclude with `isCompact_Kglob`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EulerTwRestr.main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (S : Set (Pl E)),
     IsSection S → GlobalTheory.RestrMeas.IsRestrGroup (GlobalTheory.RestrMeas.noArch (GL (Fin n) (FiniteAdeleRing (𝓞 E) E)))

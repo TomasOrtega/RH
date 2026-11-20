@@ -25,21 +25,21 @@ variable {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ φ' : K → (Y
 def castGen (h : φ = φ') (t : LB.Gen (LB.LinComb L φ ε)) : LB.Gen (LB.LinComb L φ' ε) := h ▸ t
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `ht`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem castGen_isGen (h : φ = φ') {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen) :
     (castGen h t).IsGen := by
   subst h; exact ht
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castGen_castGen (h : φ = φ') (h' : φ' = φ) (t : LB.Gen (LB.LinComb L φ ε)) :
     castGen h' (castGen h t) = t := by
   subst h; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem corr_castGen {K' : Type} [Fintype K'] {ψ : K' → (Y ⟶ X)} {δ : K' → ℤ} (h : φ = φ')
     (t : LB.Gen (LB.LinComb L φ ε)) (u : LB.Gen (LB.LinComb L ψ δ)) :
@@ -47,7 +47,7 @@ theorem corr_castGen {K' : Type} [Fintype K'] {ψ : K' → (Y ⟶ X)} {δ : K' �
   subst h; rfl
 
 /- English proof (translation)
-Substitute `h h₁ h₂` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem corr_mul_castGen {K' : Type} [Fintype K'] {ψ : K' → (Y ⟶ X)} {δ : K' → ℤ}
     {φ₁ φ₁' φ₂ φ₂' : K → (Y ⟶ X)} (h : φ = φ') (h₁ : φ₁ = φ₁') (h₂ : φ₂ = φ₂')
@@ -64,7 +64,7 @@ variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R)
 variable (F : Type) [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Establish `: padd D.P.A b (cPt D _ χ) = padd D.P.A (DegPre.cF D F χ) b` using `mul_comm b (cPt D _ χ)`. Unfold `oφ DegPre.gtφ`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem oφ_eq (b : TF (R := R) F ⟶ D.P.A) (χ : D.X) : oφ D b χ = DegPre.gtφ D F b χ := by
   have : padd D.P.A b (cPt D _ χ) = padd D.P.A (DegPre.cF D F χ) b := mul_comm b (cPt D _ χ)
@@ -72,9 +72,9 @@ theorem oφ_eq (b : TF (R := R) F ⟶ D.P.A) (χ : D.X) : oφ D b χ = DegPre.gt
   rw [this]; rfl
 
 /- English proof (translation)
-Use `revert s'`. Rewrite using `[add_zero (0 : D.X)]`. Introduce `s' hs m`. Take `rfl` from `eq_of_heq hs`. Use `corr_of_val D.P.isLB fun y J hJ => Eq.trans ?_ (val_one _).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`. Establish `e` using `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_cubAt hJ _ _ _))).symm.trans ((val_corr hJ m _).trans (val_mul hJ _ _ _))`. Establish `z : DegPre.cF D F 0 = 1` using `cPoint_zero _`. Rewrite `e` using `[z, C.face]`. Conclude with `(mul_left_cancel e).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corr_one_of_mult (b : TF (R := R) F ⟶ D.P.A)
     (s : LB.Gen (LB.LinComb D.P.L (DegPre.gtφ D F b 0) DegPre.gtε))
@@ -123,37 +123,37 @@ def ptEquiv : GtPt D F ≃ GtPtF D F where
 variable {D F}
 
 /- English proof (translation)
-The claim follows from `and_congr Iff.rfl (forall_congr' fun _ => corr_castGen _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem isZero_iff (g : GtPt D F) : (ptEquiv D F g).IsZero ↔ g.IsZero :=
   and_congr Iff.rfl (forall_congr' fun _ => corr_castGen _ _ _)
 
 /- English proof (translation)
-The claim follows from `and_congr Iff.rfl (forall_congr' fun _ => corr_mul_castGen _ _ _ _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem isAdd_iff (g g' h : GtPt D F) :
     (ptEquiv D F g).IsAdd (ptEquiv D F g') (ptEquiv D F h) ↔ g.IsAdd g' h :=
   and_congr Iff.rfl (forall_congr' fun _ => corr_mul_castGen _ _ _ _ _ _ _)
 
 /- English proof (translation)
-The claim follows from `and_congr Iff.rfl (forall_congr' fun _ => corr_castGen _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem isIota_iff (y : D.X) (g : GtPt D F) :
     GtPtF.IsIota y (ptEquiv D F g) ↔ GtPt.IsIo y g :=
   and_congr Iff.rfl (forall_congr' fun _ => corr_castGen _ _ _)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨gs, h0, hs, hl⟩`. Establish `key : ∀ (i : ℕ) (hi : i < k + 1), g.IsNsmul i ((ptEquiv D F).symm (gs ⟨i, hi⟩))`. Introduce `i`. Proceed by induction on `i with`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `hi`. Conclude with `.zero _ ((isZero_iff _).1 (by rw [Equiv.apply_symm_apply]; exact h0))`. Consider the case `succ i ih`. Introduce `hi`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `.succ i _ _ (ih (by omega)) ((isAdd_iff _ _ _).1 ?_)` and prove the remaining obligations. Rewrite using `[Equiv.apply_symm_apply, Equiv.apply_symm_apply]`. Conclude with `hs ⟨i, by omega⟩`. Use `key k (Nat.lt_succ_self k)` as an intermediate fact. Rewrite `this` using `[show gs ⟨k, Nat.lt_succ_self k⟩ = ptEquiv D F h from hl, Equiv.symm_apply_apply]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `H`. Proceed by induction on `H with`. Consider the case `zero h hz => exact ⟨fun _ => ptEquiv D F h, (isZero_iff h).2 hz, fun i => i.elim0, rfl⟩`. Consider the case `succ k h h' _ ha ih`. Take `⟨gs, h0, hs, hl⟩` from `ih`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Fin.snoc (α := fun _ => GtPtF D F) gs (ptEquiv D F h'), ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Fin.castSucc_zero, Fin.snoc_castSucc]`. Conclude with `h0`. Rewrite using `[Fin.snoc_castSucc]`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.succ_last, Fin.snoc_last, hl]`. Conclude with `(isAdd_iff _ _ _).2 ha`. Rewrite using `[Fin.succ_castSucc, Fin.snoc_castSucc]`. Conclude with `hs j`. Rewrite using `[Fin.snoc_last]`.
+A detailed English derivation is pending.
 -/
 theorem isNsmul_iff (k : ℕ) (g h : GtPt D F) :
     GtPtF.IsNsmul k (ptEquiv D F g) (ptEquiv D F h) ↔ g.IsNsmul k h := by
@@ -188,9 +188,9 @@ theorem isNsmul_iff (k : ℕ) (g h : GtPt D F) :
 variable (D F)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, h₁, h₂⟩`. Take `⟨w, rfl⟩` from `(ptEquiv D F).surjective h`. Conclude with `⟨w, (isNsmul_iff _ _ _).1 h₁, (isIota_iff _ _).1 h₂⟩`. Introduce and unpack `⟨h, h₁, h₂⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨ptEquiv D F h, (isNsmul_iff _ _ _).2 h₁, (isIota_iff _ _).2 h₂⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_nsmul_iff (k : ℕ) (y : D.X) (g : GtPt D F) :
     (∃ h : GtPtF D F, GtPtF.IsNsmul k (ptEquiv D F g) h ∧ GtPtF.IsIota y h) ↔
@@ -203,7 +203,7 @@ theorem exists_nsmul_iff (k : ℕ) (y : D.X) (g : GtPt D F) :
     exact ⟨ptEquiv D F h, (isNsmul_iff _ _ _).2 h₁, (isIota_iff _ _).2 h₂⟩
 
 /- English proof (translation)
-Take `⟨y, g, h⟩` from `q`. Take `⟨y', g', h'⟩` from `q'`. Take `rfl : y = y'` from `h₁`. Take `rfl : g = g'` from `h₂`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem qkPt_ext {k : ℕ} {q q' : QkPt D F k} (h₁ : q.y = q'.y) (h₂ : q.g = q'.g) : q = q' := by
   obtain ⟨y, g, h⟩ := q
@@ -226,9 +226,9 @@ def pairEquiv (k : ℕ) : QPair D F k ≃ QkPt D F k :=
 variable {D F}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, h, hi, ha⟩`. Take `⟨w, rfl⟩` from `(ptEquiv D F).surjective h`. Conclude with `⟨z, w, (isIota_iff _ _).1 hi, hz, (isAdd_iff _ _ _).1 ha⟩`. Introduce and unpack `⟨z, w, hi, hz, ha⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨z, hz, ptEquiv D F w, (isIota_iff _ _).2 hi, (isAdd_iff _ _ _).2 ha⟩`.
+Supply the required witnesses or components.
 -/
 theorem rel_iff {k : ℕ} (p p' : QPair D F k) :
     QkPt.Equiv D F (pairEquiv D F k p) (pairEquiv D F k p') ↔ QRel D F k p p' := by
@@ -245,9 +245,9 @@ def qkEquiv (k : ℕ) : Qk D F k ≃ Quot (QkPt.Equiv D F (k := k)) :=
   Quot.congr (pairEquiv D F k) fun p p' => (rel_iff p p').symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hm, ht⟩`. Use `⟨⟨β, hm, ξ.symm, fun χ => ?_⟩, rfl, rfl⟩` and prove the remaining obligations. Use `LBIso.symm (ht (ξ.symm χ))` as an intermediate fact. Rewrite `this` using `[AddEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `⟨⟨e, hm, chi, ht⟩, rfl, rfl⟩`. Use `⟨hm, fun χ => ?_⟩` and prove the remaining obligations. Use `LBIso.symm (ht (ξ χ))` as an intermediate fact. Rewrite `this` using `[AddEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isDatumIso_iff (E : SplitExt (Spec (CommRingCat.of F))) (β : E.B ≅ baseF D F)
     (ξ : E.X ≃+ D.X) :

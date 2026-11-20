@@ -22,24 +22,24 @@ def Low (V : VF C) (D : ℕ) (w : ℝ) (g : MvPowerSeries τ C) : Prop :=
   ∀ μ : τ →₀ ℕ, μ.degree ≤ D → V.Ge w (coeff μ g)
 
 /- English proof (translation)
-Introduce `μ hμ` and use `(h μ hμ).mono hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Low.mono {D : ℕ} {w w' : ℝ} {g : MvPowerSeries τ C} (h : Low V D w g) (hw : w' ≤ w) :
     Low V D w' g := fun μ hμ => (h μ hμ).mono hw
 
 /- English proof (translation)
-Introduce `μ _` and use `h μ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem low_of_int {g : MvPowerSeries τ C} (h : IntS V g) (D : ℕ) : Low V D 0 g := fun μ _ => h μ
 
 /- English proof (translation)
-Introduce `μ _` and use `by simpa using VF.Ge.zero (V := V) w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem low_zero (D : ℕ) (w : ℝ) : Low V D w (0 : MvPowerSeries τ C) := fun μ _ => by
   simpa using VF.Ge.zero (V := V) w
 
 /- English proof (translation)
-Introduce `μ _` and use `by classical rw [coeff_one] split_ifs exacts [VF.Ge.one, VF.Ge.zero 0]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem low_one (D : ℕ) : Low V D 0 (1 : MvPowerSeries τ C) := fun μ _ => by
   classical
@@ -48,14 +48,14 @@ theorem low_one (D : ℕ) : Low V D 0 (1 : MvPowerSeries τ C) := fun μ _ => by
   exacts [VF.Ge.one, VF.Ge.zero 0]
 
 /- English proof (translation)
-Introduce `μ hμ` and use `by rw [map_add]; exact (hg μ hμ).add (hh μ hμ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Low.add {D : ℕ} {w : ℝ} {g h : MvPowerSeries τ C} (hg : Low V D w g) (hh : Low V D w h) :
     Low V D w (g + h) := fun μ hμ => by
   rw [map_add]; exact (hg μ hμ).add (hh μ hμ)
 
 /- English proof (translation)
-Introduce `μ hμ` and use `by classical rw [coeff_mul] refine VF.Ge.sum fun p hp => ?_ have e : p.1.degree + p.2.degree = μ.degree := by rw [← map_add, Finset.HasAntidiagonal.mem_antidiagonal.mp hp] exact (hg _ (by omega)).mul (hh _ (by omega))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Low.mul {D : ℕ} {w w' : ℝ} {g h : MvPowerSeries τ C} (hg : Low V D w g) (hh : Low V D w' h) :
     Low V D (w + w') (g * h) := fun μ hμ => by
@@ -70,13 +70,13 @@ def Cong (V : VF C) (D : ℕ) (w : ℝ) (g h : MvPowerSeries τ C) : Prop :=
   Low V D 0 g ∧ Low V D 0 h ∧ Low V D w (g - h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨low_one D, low_one D, by simpa using low_zero D w⟩`.
+Supply the required witnesses or components.
 -/
 theorem cong_one (D : ℕ) (w : ℝ) : Cong V D w (1 : MvPowerSeries τ C) 1 :=
   ⟨low_one D, low_one D, by simpa using low_zero D w⟩
 
 /- English proof (translation)
-Use `⟨by simpa using h1.1.mul h2.1, by simpa using h1.2.1.mul h2.2.1, ?_⟩` and prove the remaining obligations. Establish `e : g * g' - h * h' = (g - h) * g' + h * (g' - h')` using `by ring`. Rewrite using `[e]`. Conclude with `Low.add (by simpa using h1.2.2.mul h2.1) (by simpa using h1.2.1.mul h2.2.2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Cong.mul {D : ℕ} {w : ℝ} {g h g' h' : MvPowerSeries τ C} (h1 : Cong V D w g h)
     (h2 : Cong V D w g' h') : Cong V D w (g * g') (h * h') := by
@@ -86,7 +86,7 @@ theorem Cong.mul {D : ℕ} {w : ℝ} {g h g' h' : MvPowerSeries τ C} (h1 : Cong
   exact Low.add (by simpa using h1.2.2.mul h2.1) (by simpa using h1.2.1.mul h2.2.2)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using cong_one D w`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `ih.mul h1`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Cong.pow {D : ℕ} {w : ℝ} {g h : MvPowerSeries τ C} (h1 : Cong V D w g h) (n : ℕ) :
     Cong V D w (g ^ n) (h ^ n) := by
@@ -95,9 +95,9 @@ theorem Cong.pow {D : ℕ} {w : ℝ} {g h : MvPowerSeries τ C} (h1 : Cong V D w
   | succ n ih => rw [pow_succ, pow_succ]; exact ih.mul h1
 
 /- English proof (translation)
-Unfold `Finsupp.prod`. Proceed by induction on `e.support using Finset.induction_on with`. Consider the case `empty => simpa using cong_one D w`. Consider the case `insert s S hs ih`. Rewrite using `[Finset.prod_insert hs, Finset.prod_insert hs]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((h s).pow _).mul ih`.
+A detailed English derivation is pending.
 -/
 theorem cong_prod {D : ℕ} {w : ℝ} {a b : σ → MvPowerSeries τ C} (h : ∀ s, Cong V D w (a s) (b s))
     (e : σ →₀ ℕ) : Cong V D w (e.prod fun s n => a s ^ n) (e.prod fun s n => b s ^ n) := by
@@ -110,9 +110,9 @@ theorem cong_prod {D : ℕ} {w : ℝ} {a b : σ → MvPowerSeries τ C} (h : ∀
     exact ((h s).pow _).mul ih
 
 /- English proof (translation)
-Apply `coeff_of_lt_order` to reduce the goal to its premises. Establish `key : ∀ S : Finset σ, ((∑ s ∈ S, e s : ℕ) : ℕ∞) ≤ (∏ s ∈ S, a s ^ e s).order`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert s S hs ih`. Rewrite using `[Finset.prod_insert hs, Finset.sum_insert hs, Nat.cast_add]`. Conclude with `le_trans (add_le_add (le_order_pow_of_constantCoeff_eq_zero _ (ha s)) ih) le_order_mul`. Use `lt_of_lt_of_le ?_ (key e.support)` and prove the remaining obligations. Conclude with `h` after adjusting the coercions.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coeff_prod_high {a : σ → MvPowerSeries τ C} (ha : ∀ s, constantCoeff (a s) = 0)
     (e : σ →₀ ℕ) (μ : τ →₀ ℕ) (h : μ.degree < e.degree) :
@@ -130,9 +130,9 @@ theorem coeff_prod_high {a : σ → MvPowerSeries τ C} (ha : ∀ s, constantCoe
   exact_mod_cast h
 
 /- English proof (translation)
-Introduce `μ hμ`. Establish `hs` using `hasSubst_of_constantCoeff_zero ha`. Establish `hs'` using `hasSubst_of_constantCoeff_zero hb`. Rewrite using `[map_sub, coeff_subst hs, coeff_subst hs', ← finsum_sub_distrib (coeff_subst_finite hs f μ) (coeff_subst_finite hs' f μ)]`. Use `finsum_induction (fun x => V.Ge (c + w) x) (VF.Ge.zero _) (fun _ _ => VF.Ge.add) fun e => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `he : e.degree ≤ D`. Rewrite using `[← smul_sub, ← map_sub, smul_eq_mul]`. Conclude with `(hf e he).mul ((cong_prod h e).2.2 μ hμ)`. Rewrite using `[coeff_prod_high ha e μ (by omega), coeff_prod_high hb e μ (by omega)]`. Simplify using `using VF.Ge.zero (V := V) (c + w)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem low_subst_sub [Finite σ] {D : ℕ} {w c : ℝ} {a b : σ → MvPowerSeries τ C}
     (ha : ∀ s, constantCoeff (a s) = 0) (hb : ∀ s, constantCoeff (b s) = 0)
@@ -151,7 +151,7 @@ theorem low_subst_sub [Finite σ] {D : ℕ} {w c : ℝ} {a b : σ → MvPowerSer
     simpa using VF.Ge.zero (V := V) (c + w)
 
 /- English proof (translation)
-Unfold `VF.Ge`. Proceed by induction on `V.v x using WithTop.recTopCoe with`. Consider the case `top => exact ⟨0, le_top⟩`. Consider the case `coe t => exact ⟨t, le_rfl⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem exists_ge (V : VF C) (x : C) : ∃ c : ℝ, V.Ge c x := by
   unfold VF.Ge
@@ -160,7 +160,7 @@ theorem exists_ge (V : VF C) (x : C) : ∃ c : ℝ, V.Ge c x := by
   | coe t => exact ⟨t, le_rfl⟩
 
 /- English proof (translation)
-Establish `hfin : {μ : τ →₀ ℕ | μ.degree ≤ D}.Finite` using `Finsupp.finite_of_degree_le D`. Use `haveI := hfin.to_subtype`. Use `choose c hc using fun p : ι × {μ : τ →₀ ℕ | μ.degree ≤ D} => exists_ge V (coeff p.2.1 (f p.1))`. Take `⟨m, hm⟩` from `(Set.finite_range c).bddBelow`. Conclude with `⟨m, fun i μ hμ => (hc (i, ⟨μ, hμ⟩)).mono (hm ⟨_, rfl⟩)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_low (V : VF C) [Finite τ] {ι : Type} [Finite ι] (D : ℕ) (f : ι → MvPowerSeries τ C) :
     ∃ c : ℝ, ∀ i, Low V D c (f i) := by
@@ -171,9 +171,9 @@ theorem exists_low (V : VF C) [Finite τ] {ι : Type} [Finite ι] (D : ℕ) (f :
   exact ⟨m, fun i μ hμ => (hc (i, ⟨μ, hμ⟩)).mono (hm ⟨_, rfl⟩)⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using h`. Consider the case `succ n ih`. Introduce `μ hμ`. Use `(ih μ hμ).l_mul` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[pow_succ', mul_smul, map_nsmul, nsmul_eq_mul]`. Use `this.mono (le_of_eq ?_)` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Low.l_pow {D : ℕ} {w : ℝ} {g : MvPowerSeries τ C} (h : Low V D w g) (n : ℕ) :
     Low V D (n + w) (V.l ^ n • g) := by
@@ -194,20 +194,20 @@ variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [S
   (Y : FBChart C V O dd)
 
 /- English proof (translation)
-Use `Y.lg_lin i 0 (by simp)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lg_const (i : Fin dd) : constantCoeff (Y.lg i) = 0 := by
   have := Y.lg_lin i 0 (by simp)
   simpa using this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `hab` using `const_two (Y.B.A.const a) (Y.B.A.const b)`. Establish `h` using `congrArg (ev (n := 1) ![Y.B.A.act a, Y.B.A.act b]) (Y.lg_add i)`. Establish `hF : ∀ j, constantCoeff (addOf Y.B.G.F (pt C (n` using `2) dd 0) (pt C dd 1) j) = 0 := fun j => by`. Rewrite using `[addOf, constantCoeff_ev (const_two (const_pt 0) (const_pt 1)), Y.B.G.const]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : (fun j => ev (n` using `1) ![Y.B.A.act a, Y.B.A.act b] (pt C dd (0 : Fin 2) j)) = Y.B.A.act a :=`. Use function extensionality and compare the values at `fun j => ev_pt hab 0 j`. Establish `e1 : (fun j => ev (n` using `1) ![Y.B.A.act a, Y.B.A.act b] (pt C dd (1 : Fin 2) j)) = Y.B.A.act b :=`. Use function extensionality and compare the values at `fun j => ev_pt hab 1 j`. Establish `e2 : (fun j => ev (n` using `1) ![Y.B.A.act a, Y.B.A.act b] (addOf Y.B.G.F (pt C (n := 2) dd 0) (pt C dd 1) j)) = Y.B.A.act (a + b) := by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[addOf, ev_ev_two (const_pt 0) (const_pt 1) hab, e0, e1, Y.B.A.add_act]`. Both sides reduce to the same expression. Establish `hadd : ∀ f g : PS C 2 dd, ev (n` using `1) ![Y.B.A.act a, Y.B.A.act b] (f + g) = ev (n := 1) ![Y.B.A.act a, Y.B.A.act b] f + ev (n := 1) ![Y.B.A.act a, Y.B.A.act b] g := fun f g => subst_add (hasSubst_pts hab) f g`. Rewrite `h` using `[hadd, ev_ev_one hF hab, ev_ev_one (const_pt 0) hab, ev_ev_one (const_pt 1) hab, e0, e1, e2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem log_act_add (a b : O) :
     comp1 Y.lg (Y.B.A.act (a + b)) = comp1 Y.lg (Y.B.A.act a) + comp1 Y.lg (Y.B.A.act b) := by
@@ -235,13 +235,13 @@ noncomputable def logAct : O →+ Pt C 1 dd :=
   AddMonoidHom.mk' (fun a => comp1 Y.lg (Y.B.A.act a)) (log_act_add Y)
 
 /- English proof (translation)
-The claim follows from `const_comp1 (lg_const Y) (Y.B.A.const a) i`.
+A detailed English derivation is pending.
 -/
 theorem logAct_const (a : O) (i : Fin dd) : constantCoeff (logAct Y a i) = 0 :=
   const_comp1 (lg_const Y) (Y.B.A.const a) i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `ha` using `const_one (Y.B.A.const a)`. Establish `h` using `congrArg (ev (n := 1) ![Y.B.A.act a]) (congrFun Y.ex_lg i)`. Rewrite `h` using `[comp1, ev_ev_one (lg_const Y) ha, ev_pt ha]`. Conclude with `h.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_eq (a : O) : Y.B.A.act a = comp1 Y.ex (logAct Y a) := by
   funext i
@@ -252,7 +252,7 @@ theorem act_eq (a : O) : Y.B.A.act a = comp1 Y.ex (logAct Y a) := by
 
 omit [CharZero C] in
 /- English proof (translation)
-The claim follows from `low_subst_sub (a := fun p : Fin m × Fin dd => x p.1 p.2) (b := fun p : Fin m × Fin dd => y p.1 p.2) (fun s => hx s.1 s.2) (fun s => hy s.1 s.2) (fun s => h s.1 s.2) hf`.
+A detailed English derivation is pending.
 -/
 theorem low_ev_sub {D m n : ℕ} {w c : ℝ} {x y : Fin m → Pt C n dd} {f : PS C m dd}
     (hx : ∀ j i, constantCoeff (x j i) = 0) (hy : ∀ j i, constantCoeff (y j i) = 0)
@@ -263,7 +263,7 @@ theorem low_ev_sub {D m n : ℕ} {w c : ℝ} {x y : Fin m → Pt C n dd} {f : PS
 
 omit [CharZero C] in
 /- English proof (translation)
-Use `low_ev_sub (const_one hx) (const_one hy) (fun j s => ?_) (hφ i)` and prove the remaining obligations. Use `fin_cases j`. Conclude with `h s`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem low_comp1_sub {D : ℕ} {w c : ℝ} {x y φ : Pt C 1 dd}
     (hx : ∀ i, constantCoeff (x i) = 0) (hy : ∀ i, constantCoeff (y i) = 0)
@@ -275,14 +275,14 @@ theorem low_comp1_sub {D : ℕ} {w c : ℝ} {x y φ : Pt C 1 dd}
 
 omit [CharZero C] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨low_of_int hg D, low_of_int hh D, fun μ _ => by rw [map_sub]; exact (hg μ).sub (hh μ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem cong_zero_of_int {D : ℕ} {τ : Type} {g h : MvPowerSeries τ C} (hg : IntS V g) (hh : IntS V h) :
     Cong V D 0 g h :=
   ⟨low_of_int hg D, low_of_int hh D, fun μ _ => by rw [map_sub]; exact (hg μ).sub (hh μ)⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_low V D Y.lg`. Use `⟨c, fun y i => ?_⟩` and prove the remaining obligations. Establish `h` using `low_comp1_sub (Y.B.A.const y) (Y.B.A.const 0) (fun j => cong_zero_of_int (D := D) (Y.intAct y j) (Y.intAct 0 j)) hc i`. Express the relevant statement in the definitionally equal form `Low V D (c + 0) (logAct Y y i - logAct Y 0 i) at h`. Simplify using `using h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_low_logAct (D : ℕ) : ∃ c : ℝ, ∀ y i, Low V D c (logAct Y y i) := by
   obtain ⟨c, hc⟩ := exists_low V D Y.lg
@@ -293,11 +293,11 @@ theorem exists_low_logAct (D : ℕ) : ∃ c : ℝ, ∀ y i, Low V D c (logAct Y 
   simpa using h
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_low_logAct Y D`. Take `⟨c', hc'⟩` from `exists_low V D Y.ex`. Take `⟨n0, hn0⟩` from `exists_nat_ge (max (-c) (N - c - c'))`. Use `⟨n0, fun n hn y i => ?_⟩` and prove the remaining obligations. Establish `hn' : (n0 : ℝ) ≤ n` using `by exact_mod_cast hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `le_max_left (-c) (N - c - c')`. Establish `h2` using `le_max_right (-c) (N - c - c')`. Establish `hL : ∀ j, Low V D (n + c) (logAct Y ((V.l : O) ^ n * y) j)` using `fun j => by`. Rewrite using `[← Nat.cast_pow, ← nsmul_eq_mul, map_nsmul]`. Conclude with `(hc y j).l_pow n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[act_eq, act_eq Y 0]`. Use `(low_comp1_sub (w := n + c) (logAct_const Y _) (logAct_const Y _) (fun j => ?_) hc' i).mono (by linarith)` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `⟨(hL j).mono (by linarith), low_zero _ _, by simpa using hL j⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem act_small (D N : ℕ) : ∃ n0 : ℕ, ∀ n ≥ n0, ∀ (y : O) i,
     Low V D N (Y.B.A.act ((V.l : O) ^ n * y) i - Y.B.A.act 0 i) := by
@@ -318,13 +318,13 @@ theorem act_small (D N : ℕ) : ∃ n0 : ℕ, ∀ n ≥ n0, ∀ (y : O) i,
   exact ⟨(hL j).mono (by linarith), low_zero _ _, by simpa using hL j⟩
 
 /- English proof (translation)
-Introduce `N i μ`. Take `⟨n0, hn0⟩` from `act_small Y μ.degree N`. Use `⟨n0, fun n hn => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `ha n`. Establish `e1 : Y.B.A.act (a (n + 1)) = addOf Y.B.G.F (Y.B.A.act (a n)) (Y.B.A.act ((V.l : O) ^ n * y))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Y.B.A.add_act (a n) ((V.l : O) ^ n * y)` as an intermediate fact. Rewrite `this` using `[← hy, add_sub_cancel, hy]`. Then use the resulting hypothesis. Establish `e0 : Y.B.A.act (a n) = addOf Y.B.G.F (Y.B.A.act (a n)) (Y.B.A.act 0)`. Use `Y.B.A.add_act (a n) 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h : Low V μ.degree (0 + N) (addOf Y.B.G.F (Y.B.A.act (a n)) (Y.B.A.act ((V.l : O) ^ n * y)) i - addOf Y.B.G.F (Y.B.A.act (a n)) (Y.B.A.act 0) i)`. Use `low_ev_sub (const_two (Y.B.A.const _) (Y.B.A.const _)) (const_two (Y.B.A.const _) (Y.B.A.const _)) (fun j s => ?_) (low_of_int (Y.intF i) _)` and prove the remaining obligations. Use `fin_cases j`. Conclude with `⟨low_of_int (Y.intAct _ s) _, low_of_int (Y.intAct _ s) _, by simpa using low_zero _ _⟩`. Conclude with `⟨low_of_int (Y.intAct _ s) _, low_of_int (Y.intAct _ s) _, hn0 n hn y s⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← e1, ← e0, zero_add]`. Rewrite using `[← map_sub]`. Conclude with `h μ le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actCv (a : ℕ → O) (ha : ∀ n, ∃ y, a (n + 1) - a n = (V.l : O) ^ n * y) : ActCv Y a := by
   intro N i μ
@@ -351,7 +351,7 @@ theorem actCv (a : ℕ → O) (ha : ∀ n, ∃ y, a (n + 1) - a n = (V.l : O) ^ 
 end Log
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y a ha`. Use `⟨actCv Y a ha, actCv Y _ fun n => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `ha n`. Conclude with `⟨star y, by rw [← star_sub, hy, star_mul', star_pow, star_natCast]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ)
     (Y : FBChart C V O dd) (a : ℕ → O), (∀ n, ∃ y, a (n + 1) - a n = (V.l : O) ^ n * y) →

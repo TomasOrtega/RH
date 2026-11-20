@@ -7,16 +7,16 @@ namespace UpperTheory.V.Z.Tf.L4
 variable {E : Type} [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]
 
 /- English proof (translation)
-The claim follows from `(h d).2 le_rfl y hy`.
+A detailed English derivation is pending.
 -/
 private theorem hc_triv {ψ : AddChar E Circle} {d : Eˣ} (h : HasConductor ψ d) {y : E}
     (hy : valuation E y ≤ valuation E (d : E)) : ψ y = 1 :=
   (h d).2 le_rfl y hy
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `t`. Establish `hd : valuation E (d : E) ≠ 0` using `by simp`. Establish `hm : {z : E | valuation E (z - t) < valuation E (d : E)} ∈ nhds t` using `IsValuativeTopology.mem_nhds_iff'.2 ⟨Units.mk0 _ hd, fun z hz => hz⟩`. Use `filter_upwards [hm] with z hz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ψ (z - t) = 1` using `hc_triv h (le_of_lt hz)`. Establish `h2 : ψ z = ψ (z - t) * ψ t` using `by rw [← AddChar.map_add_eq_mul, sub_add_cancel]`. Rewrite using `[h2, h1, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hc_lc {ψ : AddChar E Circle} {d : Eˣ} (h : HasConductor ψ d) :
     IsLocallyConstant (fun t : E => (ψ t : ℂ)) := by
@@ -31,7 +31,7 @@ private theorem hc_lc {ψ : AddChar E Circle} {d : Eˣ} (h : HasConductor ψ d) 
   rw [h2, h1, one_mul]
 
 /- English proof (translation)
-Unfold `GlobalTheory.Whittaker.superDiag`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(Units.continuous_val).matrix_elem i j`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem hc_cont {n : ℕ} : Continuous (fun x : GL (Fin n) E => GlobalTheory.Whittaker.superDiag x) := by
   unfold GlobalTheory.Whittaker.superDiag
@@ -39,9 +39,9 @@ private theorem hc_cont {n : ℕ} : Continuous (fun x : GL (Fin n) E => GlobalTh
   exact (Units.continuous_val).matrix_elem i j
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Matrix.sub_apply, Matrix.sub_apply]`. Use `(mul_le_mul' (hx i k) (hy k j)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← map_mul, ← Units.val_mul, ← zpow_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 3`. Rewrite using `[hij]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem hc_cross {n : ℕ} {ϖ : Eˣ} {a c : ℤ} {x y : GL (Fin n) E} (hx : x ∈ howeSet n ϖ a c)
     (hy : y ∈ howeSet n ϖ a c) {i j : Fin n} (hij : j.val = i.val + 1) :
@@ -60,13 +60,13 @@ private theorem hc_cross {n : ℕ} {ϖ : Eˣ} {a c : ℤ} {x y : GL (Fin n) E} (
 end UpperTheory.V.Z.Tf.L4
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n ϖ _ a c _ ψ hψ`. Use `⟨(UpperTheory.V.Z.Tf.L4.hc_lc hψ).comp_continuous UpperTheory.V.Z.Tf.L4.hc_cont, fun x hx y hy => ?_⟩` and prove the remaining obligations. Use `set M := ((x : Matrix (Fin n) (Fin n) E) - 1) * ((y : Matrix (Fin n) (Fin n) E) - 1) with hM`. Use `set r : E := ∑ i : Fin n, ∑ j : Fin n with j.val = i.val + 1, M i j with hr`. Establish `hr1 : ψ r = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `UpperTheory.V.Z.Tf.L4.hc_triv hψ ?_` and prove the remaining obligations. Use `Valuation.map_sum_le _ fun i _ => Valuation.map_sum_le _ fun j hj => ?_` and prove the remaining obligations. Conclude with `UpperTheory.V.Z.Tf.L4.hc_cross hx hy (Finset.mem_filter.1 hj).2`. Establish `hs : GlobalTheory.Whittaker.superDiag (x * y) = GlobalTheory.Whittaker.superDiag x + GlobalTheory.Whittaker.superDiag y + r`. Simplify using `only [GlobalTheory.Whittaker.superDiag, hr, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hij : i ≠ j`. Use `(Finset.mem_filter.1 hj).2` as an intermediate fact. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((x * y : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = (x : Matrix (Fin n) (Fin n) E) + (y : Matrix (Fin n) (Fin n) E) + M - 1`. Rewrite using `[hM, Units.val_mul]`. Use `noncomm_ring`. Rewrite using `[e, Matrix.sub_apply, Matrix.one_apply_ne hij, sub_zero, Matrix.add_apply, Matrix.add_apply]`. Rewrite using `[hs, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, hr1, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.L4.howeChar :
     ∀ (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] (n : ℕ) (ϖ : Eˣ), valuation E (ϖ : E) = uniformizer E → ∀ a c : ℤ, 1 ≤ a →

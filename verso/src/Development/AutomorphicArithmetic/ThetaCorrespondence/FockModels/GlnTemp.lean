@@ -20,15 +20,15 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace UpperTheory.Lit.Cas
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ N hN V _ _ π hs hi`. Prove the components needed by the constructor for the conclusion. Introduce `ht`. Establish `hO : Zc.LOrderFree k` using `orderfree hC hM k`. Establish `hSo : Zc.LSocleGL k` using `GlobalTheory.T.langlands_socle_of_order_free hA (GlobalTheory.T.local_langlands_of_irreducible_admissible hA) hO`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : Zc.LSegExists k` using `fun Δ => GlobalTheory.TL.exists_segment_representation hA Δ`. Take `⟨𝔪, h𝔪⟩` from `hE k (IrrGL.of π hs hi)`. Establish `h𝔪' : IsL 𝔪 π` using `h𝔪.of_equiv (IrrGL.equivOf π hs hi).symm`. Take `⟨h, x, hd, hx, hu⟩` from `GlobalTheory.T.tempered_langlands_factors_square_integrable k hSo (Zl.JC.casselmanNecTemp_holds k) hL 𝔪 N π hN hs hi ht h𝔪'`. Take `⟨Δ, hΔo, hΔ⟩` from `hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsq : ∀ a, IsSqIntCoeff (x a).rep` using `fun a => centred hS hA k (Δ a) (x a) (hΔ a) (hu a)`. Establish `e` using `cosocleUnit hBZ k h N x hd V π (fun a => GlobalTheory.T.square_integrable_unitarizable k (x a) (hsq a)) (hO 𝔪 h N x hd ⟨Δ, hΔo, hΔ⟩ π h𝔪')`. Use `⟨h, x, hd, fun a => ⟨?_, hsq a⟩, e⟩` and prove the remaining obligations. Establish `h1` using `(hΔ a).deg_eq`. Establish `h2` using `Nat.mul_pos (Δ a).len_pos (Δ a).d_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Segment.deg] at h1`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨h, δ, hd, hδ, e⟩`. Take `⟨hu, hw⟩` from `prodExp hG hBZ hA k (Zl.JC.casselmanNecSq_holds k) h N δ hd hδ V π hi e`. Establish `H` using `casselmanSuffTemp hA hF k N π hN hs hi hu hw`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `ε hε`. Conclude with `H ε hε`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem temperedProduct (hG : GlobalTheory.Published.GeometricLemma) (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness)
     (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hF : GlobalTheory.Published.StandardFunctorsFiniteLength)

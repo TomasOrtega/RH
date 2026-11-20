@@ -16,11 +16,9 @@ variable {E : Type} [Field E] [NumberField E] {K : Type} [Field K] [NumberField 
 open Classical in
 
 /- English proof (translation)
-Set `ρ : 𝓞 E →+* Module.End K K` to `(Algebra.lmul K K).toRingHom.comp (τ.comp (algebraMap (𝓞 E) E))`. Establish `hρ : ∀ (a : 𝓞 E) (z : K), ρ a z = τ (a : E) * z` using `fun a z => rfl`. Establish `hmem : (1 : K) ∈ HT.eigSp ρ τ` using `HT.LatBasic.mem_eigSp.2 fun a => by`. Rewrite using `[hρ, smul_eq_mul]`. Establish `hP : HT.eigProj ρ σ 1 = ∑ k, σ (HT.dualInt E k) * τ ((RingOfIntegers.basis E k : 𝓞 E) : E)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[HT.eigProj, LinearMap.sum_apply, hρ]`. Rewrite using `[← hP]`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `HT.LatBasic.eigProj_of_mem hmem`.
-
-Conclude with `HT.LatBasic.eigProj_of_ne (Ne.symm h) hmem`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sum_dual_mul (σ τ : E →+* K) :
     ∑ k, σ (HT.dualInt E k) * τ ((RingOfIntegers.basis E k : 𝓞 E) : E) = if τ = σ then 1 else 0 := by
@@ -39,7 +37,7 @@ theorem sum_dual_mul (σ τ : E →+* K) :
   · exact HT.LatBasic.eigProj_of_ne (Ne.symm h) hmem
 
 /- English proof (translation)
-Rewrite using `[← Embeddings.card E ℂ]`. Use `Fintype.card_of_bijective (f := fun t : E →+* K => ι.comp t) ⟨fun a b hab => ?_, h⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `ι.injective (DFunLike.congr_fun hab x)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem card_embeddings [Fintype (E →+* K)] (ι : K →+* ℂ)
     (h : ∀ σ : E →+* ℂ, ∃ t : E →+* K, ι.comp t = σ) :
@@ -64,11 +62,11 @@ def pair [Fintype (E →+* K)] (y : E) : ((E →+* K) → K) →ₗ[𝓞 K] K wh
   map_smul' c v := by simp [Finset.smul_sum, mul_smul_comm]
 
 /- English proof (translation)
-Establish `hle : (intLat E K).map (pair y) ≤ LinearMap.range (Algebra.linearMap (𝓞 K) K)`. Rewrite using `[intLat, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨b, rfl⟩, rfl⟩`. Establish `h1` using `(FractionalIdeal.mem_dual (one_ne_zero (α := FractionalIdeal (𝓞 E)⁰ E))).1 hy (b : E) ((FractionalIdeal.mem_one_iff _).2 ⟨b, rfl⟩)`. Take `⟨n, hn⟩` from `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨(n : 𝓞 K), ?_⟩` and prove the remaining obligations. Establish `h2 : pair (K` using `K) y (fun σ : E →+* K => σ (b : E)) = ∑ σ : E →+* K, σ (y * b) := by`. Simplify using `[pair]`. Rewrite using `[h2, HT.projSum_sum_embeddings_eq_trace K E hc]`. Establish `h3 : Algebra.trace ℚ E (y * b) = (n : ℚ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Algebra.traceForm_apply, ← hn]`. Simplify using the standard rewrite rules. Rewrite using `[h3]`. Simplify using the standard rewrite rules. Conclude with `hle (Submodule.mem_map_of_mem hv)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pair_mem [Fintype (E →+* K)] (hc : Fintype.card (E →+* K) = Module.finrank ℚ E) {y : E}
     (hy : y ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E)) {v : (E →+* K) → K}
@@ -90,17 +88,15 @@ theorem pair_mem [Fintype (E →+* K)] (hc : Fintype.card (E →+* K) = Module.f
   exact hle (Submodule.mem_map_of_mem hv)
 
 /- English proof (translation)
-Establish `h0 : ∀ y ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E), s y * w ∈ LinearMap.range (Algebra.linearMap (𝓞 K) K)`. Introduce `y hy`. Use `pair_mem hc hy hw` as an intermediate fact. Establish `e : pair y (Pi.single s w : (E →+* K) → K) = s y * w`. Simplify using `[pair, Pi.single_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `h1 : (1 : E) ∈ ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E) * FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E)`. Rewrite using `[HT.different_mul_dual_one]`. Conclude with `FractionalIdeal.one_mem_one _`. Establish `h2 : s 1 * w ∈ diffIm s`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `FractionalIdeal.mul_induction_on (C := fun z => s z * w ∈ diffIm s) h1 ?_ ?_` and prove the remaining obligations. Introduce `x hx y hy`. Take `⟨x, hx0, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hx`. Take `⟨a, ha⟩` from `h0 y hy`. Establish `e : s ((algebraMap (𝓞 E) E x) * y) * w = a • s (x : E)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : algebraMap (𝓞 K) K a = s y * w` using `ha`. Rewrite using `[Algebra.smul_def, ha', map_mul]`. Express the relevant statement in the definitionally equal form `s (x : E) * s y * w = _`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `s ((algebraMap (𝓞 E) E x) * y) * w ∈ diffIm s`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ a (Submodule.subset_span ⟨x, hx0, rfl⟩)`. Introduce `x y hx hy`. Rewrite using `[map_add, add_mul]`. Conclude with `add_mem hx hy`.
-
-Simplify using `using h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_diffIm_of_single_mem [Fintype (E →+* K)] [DecidableEq (E →+* K)]
     (hc : Fintype.card (E →+* K) = Module.finrank ℚ E) (s : E →+* K) {w : K}
@@ -144,14 +140,14 @@ def tmap (φ : Fin N → E) : ((E →+* K) → Fin N → K) →ₗ[𝓞 K] ((E �
     simp [Finset.smul_sum, mul_smul_comm]
 
 /- English proof (translation)
-Simplify using `[tmap, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tmap_gen (φ : Fin N → E) (u : Fin N → E) (σ : E →+* K) :
     tmap φ (fun (τ : E →+* K) a => τ (u a)) σ = σ (∑ n, u n * φ n) := by
   simp [tmap, mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = s`. Substitute `h` using the available equality. Simplify using `[tmap]`. Simplify using `[tmap, Pi.single_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tmap_single [DecidableEq (E →+* K)] (φ : Fin N → E) (s : E →+* K) (w : Fin N → K) :
     tmap φ (Pi.single s w : (E →+* K) → Fin N → K) = Pi.single s (∑ n, s (φ n) * w n) := by
@@ -162,7 +158,7 @@ theorem tmap_single [DecidableEq (E →+* K)] (φ : Fin N → E) (s : E →+* K)
   · simp [tmap, Pi.single_apply, h]
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.Bl.general_b_fact_third_alt.goal1 <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_smul_mem (I : Submodule (𝓞 E) (Fin N → E)) {v : Fin N → E}
     (hv : v ∈ Submodule.span E (I : Set (Fin N → E))) :
@@ -170,9 +166,9 @@ theorem exists_smul_mem (I : Submodule (𝓞 E) (Fin N → E)) {v : Fin N → E}
   by apply _root_.Bl.general_b_fact_third_alt.goal1 <;> assumption
 
 /- English proof (translation)
-Establish `ha : algebraMap (𝓞 E) E (a : 𝓞 E) ≠ 0`. Simplify using `using nonZeroDivisors.ne_zero a.2`. Rewrite using `[Module.End.isUnit_iff]`. Use `⟨fun u v h => ?_, fun u => ⟨(algebraMap (𝓞 E) E (a : 𝓞 E))⁻¹ • u, ?_⟩⟩` and prove the remaining obligations. Rewrite `h` using `[Module.algebraMap_end_apply, Module.algebraMap_end_apply, ← algebraMap_smul E (a : 𝓞 E) u, ← algebraMap_smul E (a : 𝓞 E) v]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `smul_right_injective M ha h`. Rewrite using `[Module.algebraMap_end_apply, ← algebraMap_smul E (a : 𝓞 E), smul_smul, mul_inv_cancel₀ ha, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_end {M : Type} [AddCommGroup M] [Module E M] [Module (𝓞 E) M]
     [IsScalarTower (𝓞 E) E M] (a : (𝓞 E)⁰) :
@@ -188,13 +184,11 @@ theorem isUnit_end {M : Type} [AddCommGroup M] [Module E M] [Module (𝓞 E) M]
       mul_inv_cancel₀ ha, one_smul]
 
 /- English proof (translation)
-Set `W : Submodule E (Fin N → E)` to `Submodule.span E (I : Set (Fin N → E))`. Set `incl : I →ₗ[𝓞 E] W` to `{ toFun := fun y => ⟨y, Submodule.subset_span y.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Use `haveI : IsLocalizedModule (𝓞 E)⁰ incl := { map_units := fun a => isUnit_end a surj := fun v => by`. Take `⟨d, hd, hv⟩` from `exists_smul_mem I v.2`. Conclude with `⟨(⟨d • (v : Fin N → E), hv⟩, ⟨d, mem_nonZeroDivisors_of_ne_zero hd⟩), rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Use `exists_of_eq := fun {x y} h => ⟨1, by rw [one_smul, one_smul]; exact Subtype.ext (congrArg (fun z : W => (z : Fin N → E)) h)⟩ }`. Set `g : I →ₗ[𝓞 E] E` to `(Algebra.linearMap (𝓞 E) E) ∘ₗ f`. Set `G : W →ₗ[𝓞 E] E` to `IsLocalizedModule.lift (𝓞 E)⁰ incl g (fun a => isUnit_end a)`. Establish `hG : ∀ y : I, G (incl y) = g y` using `fun y => LinearMap.congr_fun (IsLocalizedModule.lift_comp (𝓞 E)⁰ incl g (fun a => isUnit_end a)) y`. Set `GE : W →ₗ[E] E` to `LinearMap.extendScalarsOfIsLocalization (𝓞 E)⁰ E G`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨F, hF⟩` from `LinearMap.exists_extend GE`. Use `⟨fun n => F (fun j => if n = j then 1 else 0), fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : F (y : Fin N → E) = ((f y : 𝓞 E) : E)`. Use `LinearMap.congr_fun hF (incl y)` as an intermediate fact. Conclude with `this.trans (hG y)`.
-
-Rewrite using `[← h1, LinearMap.pi_apply_eq_sum_univ F (y : Fin N → E)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_extend (I : Submodule (𝓞 E) (Fin N → E)) (f : I →ₗ[𝓞 E] 𝓞 E) :
     ∃ φ : Fin N → E, ∀ y : I, ∑ n, (y : Fin N → E) n * φ n = ((f y : 𝓞 E) : E) := by
@@ -224,17 +218,13 @@ theorem exists_extend (I : Submodule (𝓞 E) (Fin N → E)) (f : I →ₗ[𝓞 
   rfl
 
 /- English proof (translation)
-Use `haveI : Module.Finite (𝓞 E) I := Module.Finite.iff_fg.2 hI`. Establish `htors : Submodule.torsion (𝓞 E) I = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `y ⟨a, ha⟩`. Establish `ha' : (a : 𝓞 E) • (y : I) = 0` using `ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (a : 𝓞 E) • ((y : I) : Fin N → E) = 0` using `congrArg Subtype.val ha'`. Establish `h2 : algebraMap (𝓞 E) E (a : 𝓞 E) • ((y : I) : Fin N → E) = 0`. Rewrite using `[algebraMap_smul]`. Conclude with `h1`. Break down `smul_eq_zero.1 h2 with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd ((map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective _ _)).1 h) (nonZeroDivisors.ne_zero a.2)`. Conclude with `(Submodule.mem_bot _).2 (Subtype.ext h)`. Use `haveI : Module.Flat (𝓞 E) I := IsDedekindDomain.flat_iff_torsion_eq_bot.2 htors`. Use `haveI := Module.finitePresentation_of_finite (𝓞 E) I`. Use `haveI : Module.Projective (𝓞 E) I := Module.Flat.projective_of_finitePresentation`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨m, p, hp⟩` from `Module.Finite.exists_fin' (𝓞 E) I`. Take `⟨h, hh⟩` from `Module.projective_lifting_property p LinearMap.id hp`. Use `⟨m, fun i => p (Pi.single i 1), fun i => LinearMap.proj i ∘ₗ h, fun y => ?_⟩` and prove the remaining obligations. Establish `e : p (h y) = y` using `LinearMap.congr_fun hh y`. Use `conv_rhs => rw [← e, LinearMap.pi_apply_eq_sum_univ p (h y)]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e2 : (fun j => if i = j then (1 : 𝓞 E) else 0) = Pi.single i 1`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply, eq_comm]`. Rewrite using `[e2]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_dual_system (I : Submodule (𝓞 E) (Fin N → E)) (hI : I.FG) :
     ∃ (m : ℕ) (x : Fin m → I) (f : Fin m → I →ₗ[𝓞 E] 𝓞 E), ∀ y : I, ∑ i, f i y • x i = y := by
@@ -266,11 +256,11 @@ theorem exists_dual_system (I : Submodule (𝓞 E) (Fin N → E)) (hI : I.FG) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `hd using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨e, he, rfl⟩` from `hz`. Use `Submodule.subset_span ⟨(e : E) • x, ⟨e, he, x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [add_smul]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_assoc]`. Conclude with `Submodule.smul_mem _ c ha`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_diffLat {s : E →+* K} {I : Submodule (𝓞 E) (Fin N → E)} {d : K} (hd : d ∈ diffIm s)
     {x : Fin N → E} (hx : x ∈ I) : d • (fun a => s (x a)) ∈ diffLat s I := by
@@ -287,21 +277,19 @@ theorem smul_mem_diffLat {s : E →+* K} {I : Submodule (𝓞 E) (Fin N → E)} 
     exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Introduce `w hw`. Establish `hw' : (Pi.single s w : (E →+* K) → Fin N → K) ∈ baseChangeLat K I` using `hw`. Take `⟨m, x, f, hxf⟩` from `exists_dual_system I hI`. Use `choose φ hφ using fun i => exists_extend I (f i)`. Establish `hT : ∀ i, ∀ v ∈ baseChangeLat K I, tmap (φ i) v ∈ intLat E K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i v hv`. Establish `hle : (baseChangeLat K I).map (tmap (φ i)) ≤ intLat E K`. Rewrite using `[baseChangeLat, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨u, hu, rfl⟩, rfl⟩`. Use `Submodule.subset_span ⟨f i ⟨u, hu⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `σ`. Rewrite using `[tmap_gen, hφ i ⟨u, hu⟩]`. Conclude with `hle (Submodule.mem_map_of_mem hv)`. Establish `hrec : ∀ v ∈ baseChangeLat K I, v s = ∑ i, (tmap (φ i) v s) • (fun a => s ((x i : Fin N → E) a))`. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨u, hu, rfl⟩` from `hv`. Use function extensionality and compare the values at `a`. Establish `e` using `congrArg (fun z : I => s ((z : Fin N → E) a)) (hxf ⟨u, hu⟩)`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_sum, Finset.sum_apply, map_sum] at e`. Simplify using `only [tmap_gen, hφ _ ⟨u, hu⟩ , Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← e]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← map_mul, Submodule.coe_smul, Pi.smul_apply, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Simplify using `only [map_add, Pi.add_apply, add_smul, Finset.sum_add_distrib, ← ha, ← hb]`. Consider the case `smul c a _ ha`. Simplify using `only [map_smul, Pi.smul_apply, smul_assoc, ← Finset.smul_sum, ← ha]`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsum` using `hrec _ hw'`. Simplify using `only [tmap_single, Pi.single_eq_same] at hsum`. Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun i _ => smul_mem_diffLat ?_ (x i).2` and prove the remaining obligations. Use `mem_diffIm_of_single_mem hc s ?_` and prove the remaining obligations.
-
-Rewrite using `[← tmap_single]`. Conclude with `hT i _ hw'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigenLat_le [Fintype (E →+* K)] (hc : Fintype.card (E →+* K) = Module.finrank ℚ E)
     (I : Submodule (𝓞 E) (Fin N → E)) (hI : I.FG) (s : E →+* K) :
@@ -347,17 +335,15 @@ theorem eigenLat_le [Fintype (E →+* K)] (hc : Fintype.card (E →+* K) = Modul
   exact hT i _ hw'
 
 /- English proof (translation)
-Rewrite using `[diffLat, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨x, hx, y, hy, rfl⟩, rfl⟩`. Use `choose z hz using HT.exists_different_mul_dualInt E x hx`. Express the relevant statement in the definitionally equal form `(Pi.single s _ : (E →+* K) → Fin N → K) ∈ baseChangeLat K I`. Establish `e : (Pi.single s (fun i => s (((x : E) • y) i)) : (E →+* K) → Fin N → K) = ∑ k, RingOfIntegers.mapRingHom s (z k) • (fun (σ : E →+* K) a => σ (((RingOfIntegers.basis E k : 𝓞 E) • y) a))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `σ a`. Establish `h1 : ∀ k, ((RingOfIntegers.mapRingHom s (z k) : 𝓞 K) : K) = s (x : E) * s (HT.dualInt E k)` using `fun k => by`. Rewrite using `[← map_mul, ← hz k]`. Both sides reduce to the same expression. Establish `h2` using `sum_dual_mul s σ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∑ k, (RingOfIntegers.mapRingHom s (z k)) • (σ ((RingOfIntegers.basis E k : 𝓞 E) • y a)) = s (x : E) * σ (y a) * ∑ k, s (HT.dualInt E k) * σ ((RingOfIntegers.basis E k : 𝓞 E) : E)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `((RingOfIntegers.mapRingHom s (z k) : 𝓞 K) : K) * _ = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Algebra.smul_def, map_mul]`. Express the relevant statement in the definitionally equal form `_ * (σ ((RingOfIntegers.basis E k : 𝓞 E) : E) * _) = _`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Finset.sum_apply, Pi.smul_apply]`. Rewrite using `[h3, h2]`.
+Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : σ = s`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Rewrite using `[e]`.
-
-Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, I.smul_mem _ hy, rfl⟩)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diffLat_le [Fintype (E →+* K)] (I : Submodule (𝓞 E) (Fin N → E)) (s : E →+* K) :
     diffLat s I ≤ eigenLat I s := by
@@ -396,9 +382,7 @@ theorem diffLat_le [Fintype (E →+* K)] (I : Submodule (𝓞 E) (Fin N → E)) 
     (Submodule.subset_span ⟨_, I.smul_mem _ hy, rfl⟩)
 
 /- English proof (translation)
-Introduce `E _ _ K _ _ ι hι N I hI s`. Use `haveI : Finite (E →+* K) := Finite.of_injective (fun t : E →+* K => ι.comp t) (fun a b hab => by`. Use extensionality with `x`. Conclude with `ι.injective (DFunLike.congr_fun hab x))`. Use `letI := Fintype.ofFinite (E →+* K)`.
-
-Conclude with `le_antisymm (eigenLat_le (card_embeddings ι hι) I hI s) (diffLat_le I s)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem eigenLat_eq_diffLat : EigenLatDifferent.Statement := by
   intro E _ _ K _ _ ι hι N I hI s

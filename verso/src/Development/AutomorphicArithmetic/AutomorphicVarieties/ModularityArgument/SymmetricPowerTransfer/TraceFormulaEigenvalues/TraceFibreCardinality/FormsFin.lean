@@ -1,11 +1,11 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.TraceFormulaEigenvalues.FormsFin
 
 /- English proof (translation)
-Introduce `Γ G V _ _ _ _ _ B hB`. Take `⟨S, hS⟩` from `hB.cls`. Set `L : B.Forms →ₗ[ℂ] (S → V)` to `(LinearMap.funLeft ℂ V (fun s : S => (s : G))).comp B.Forms.subtype`. Use `Module.Finite.of_injective L ?_` and prove the remaining obligations. Introduce `φ ψ h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Take `⟨γ, s, hs, u, hu, rfl⟩` from `hS g`. Establish `hsv : φ.1 s = ψ.1 s` using `congrFun h ⟨s, hs⟩`. Establish `e1 : φ.1 (B.ι γ * s * u) = (B.ω ⟨u, hu⟩ : ℂ) • φ.1 (B.ι γ * s)` using `φ.2.2 _ ⟨u, hu⟩`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ψ.1 (B.ι γ * s * u) = (B.ω ⟨u, hu⟩ : ℂ) • ψ.1 (B.ι γ * s)` using `ψ.2.2 _ ⟨u, hu⟩`. Establish `f1 : φ.1 (B.ι γ * s) = B.W γ (φ.1 s)` using `φ.2.1 γ s`. Establish `f2 : ψ.1 (B.ι γ * s) = B.W γ (ψ.1 s)` using `ψ.2.1 γ s`. Rewrite using `[e1, e2, f1, f2, hsv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Z.Sym.Tf.formsFin :
     UpperTheory.V.Z.Sym.Tf.FormsFin := by

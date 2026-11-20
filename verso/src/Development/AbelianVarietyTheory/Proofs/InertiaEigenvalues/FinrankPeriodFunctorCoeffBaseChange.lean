@@ -20,15 +20,15 @@ def Rel (π : ι → M' →ₗ[L] M) (S : Submodule L M) (S' : Submodule L' M') 
   ∀ x, x ∈ S' ↔ ∀ k, π k x ∈ S
 
 /- English proof (translation)
-Set `π : ι → M' →ₗ[L] M` to `fun k => (TensorProduct.lid L M).toLinearMap ∘ₗ LinearMap.rTensor M (u.coord k) ∘ₗ (h.equiv.symm.toLinearMap.restrictScalars L)`. Establish `hπ : ∀ k (s : L') (m : M), π k (s • J m) = u.repr s k • m`. Introduce `k s m`. Establish `: h.equiv.symm (s • J m) = s ⊗ₜ[L] m`. Rewrite using `[LinearEquiv.symm_apply_eq, h.equiv_tmul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [π, LinearMap.comp_apply, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, this]`. Simplify using the standard rewrite rules. Use `⟨π, fun x => ?_, fun k l m => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `h.equiv.surjective x`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul s m`. Rewrite using `[h.equiv_tmul]`. Simplify using `only [hπ, map_smul]`. Use `conv_rhs => rw [← u.sum_repr s, Finset.sum_smul]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_assoc, smul_comm]`. Consider the case `add a b ha hb`. Simplify using `only [map_add, smul_add, Finset.sum_add_distrib, ha, hb]`. Rewrite using `[hπ, u.repr_self, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hk : k = l`. Simplify using `[hk]`. Simplify using `[hk, Ne.symm hk]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isCoord [IsScalarTower L L' M'] (u : Basis ι L L') (J : M →ₗ[L] M')
     (h : IsBaseChange L' J) : ∃ π : ι → M' →ₗ[L] M, IsCoord u J π := by
@@ -62,14 +62,14 @@ variable {u : ι → L'} {J : M →ₗ[L] M'} {π : ι → M' →ₗ[L] M}
   {JN : N →ₗ[L] N'} {πN : ι → N' →ₗ[L] N}
 
 /- English proof (translation)
-Simplify using `[map_sum, h.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem IsCoord.sum (h : IsCoord u J π) (m : ι → M) (k : ι) :
     π k (∑ l, u l • J (m l)) = m k := by
   simp [map_sum, h.2]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← hN.1 x]`. Simplify using `only [map_sum f', map_smul, hf]`. Conclude with `h.sum _ k`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsCoord.comm (h : IsCoord u J π) (hN : IsCoord u JN πN) (f : N →ₗ[L] M)
     (f' : N' →ₗ[L'] M') (hf : ∀ y, f' (JN y) = J (f y)) (k : ι) (x : N') :
@@ -79,7 +79,7 @@ theorem IsCoord.comm (h : IsCoord u J π) (hN : IsCoord u JN πN) (f : N →ₗ[
   exact h.sum _ k
 
 /- English proof (translation)
-Introduce `x`. Simplify using `only [LinearMap.mem_ker, ← h.comm hN f f' hf]`. Use `⟨fun hx k => by simp [hx], fun hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← h.1 (f' x)]`. Simplify using `[hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsCoord.rel_ker (h : IsCoord u J π) (hN : IsCoord u JN πN) (f : N →ₗ[L] M)
     (f' : N' →ₗ[L'] M') (hf : ∀ y, f' (JN y) = J (f y)) :
@@ -91,9 +91,9 @@ theorem IsCoord.rel_ker (h : IsCoord u J π) (hN : IsCoord u JN πN) (f : N →�
   simp [hx]
 
 /- English proof (translation)
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ k`. Conclude with `⟨_, (h.comm hN f f' hf k y).symm⟩`. Introduce `hx choose y hy using hx`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨∑ k, u k • JN (y k), ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, map_smul, hf, hy]`. Conclude with `h.1 x`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsCoord.rel_range (h : IsCoord u J π) (hN : IsCoord u JN πN) (f : N →ₗ[L] M)
     (f' : N' →ₗ[L'] M') (hf : ∀ y, f' (JN y) = J (f y)) :
@@ -110,7 +110,7 @@ theorem IsCoord.rel_range (h : IsCoord u J π) (hN : IsCoord u JN πN) (f : N �
 
 omit [Algebra L L'] [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Introduce `x`. Simplify using `only [Submodule.mem_inf, h x, h' x, forall_and]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem Rel.inf {S T : Submodule L M} {S' T' : Submodule L' M'} (h : Rel π S S')
     (h' : Rel π T T') : Rel π (S ⊓ T) (S' ⊓ T') := by
@@ -119,7 +119,7 @@ theorem Rel.inf {S T : Submodule L M} {S' T' : Submodule L' M'} (h : Rel π S S'
 
 omit [Algebra L L'] [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Introduce `x`. Simplify using `only [Submodule.mem_iInf, fun i => h i x]`. Conclude with `forall_comm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Rel.iInf {κ : Type} {S : κ → Submodule L M} {S' : κ → Submodule L' M'}
     (h : ∀ i, Rel π (S i) (S' i)) : Rel π (⨅ i, S i) (⨅ i, S' i) := by
@@ -128,11 +128,11 @@ theorem Rel.iInf {κ : Type} {S : κ → Submodule L M} {S' : κ → Submodule L
   exact forall_comm
 
 /- English proof (translation)
-Set `F : S' →ₗ[L] (ι → S)` to `LinearMap.pi fun k => LinearMap.codRestrict S (π k ∘ₗ (S'.subtype.restrictScalars L)) (fun x => (hS x.1).1 x.2 k)`. Establish `hF : ∀ x k, (F x k : M) = π k x` using `fun _ _ => rfl`. Use `⟨LinearEquiv.ofBijective F ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← h.1 x, ← h.1 y]`. Simplify using `only [← hF, hxy]`. Introduce `m`. Use `⟨⟨∑ l, u l • J (m l), (hS _).2 fun k => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h.sum (fun l => (m l : M))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(m k).2`. Use function extensionality and compare the values at `k`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hF]`. Conclude with `h.sum (fun l => (m l : M)) k`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsCoord.nonempty_equiv [IsScalarTower L L' M'] (h : IsCoord u J π) {S : Submodule L M}
     {S' : Submodule L' M'} (hS : Rel π S S') : Nonempty (S' ≃ₗ[L] (ι → S)) := by
@@ -154,9 +154,9 @@ theorem IsCoord.nonempty_equiv [IsScalarTower L L' M'] (h : IsCoord u J π) {S :
       exact h.sum (fun l => (m l : M)) k
 
 /- English proof (translation)
-Take `⟨e⟩` from `h.nonempty_equiv hS`. Use `haveI : Module.Finite L L' := Module.Finite.of_basis u`. Establish `h1 : finrank L L' * finrank L' S' = finrank L S'` using `Module.finrank_mul_finrank L L' S'`. Establish `h2 : finrank L (ι → S) = Fintype.card ι * finrank L S`. Simplify using `[Module.finrank, rank_fun_eq_lift_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e.finrank_eq, h2, ← Module.finrank_eq_card_basis u]`. Conclude with `Nat.eq_of_mul_eq_mul_left Module.finrank_pos h1`.
+A detailed English derivation is pending.
 -/
 theorem IsCoord.finrank_eq [IsScalarTower L L' M'] {u : Basis ι L L'} (h : IsCoord u J π)
     {S : Submodule L M} {S' : Submodule L' M'} (hS : Rel π S S') :
@@ -170,9 +170,9 @@ theorem IsCoord.finrank_eq [IsScalarTower L L' M'] {u : Basis ι L L'} (h : IsCo
   exact Nat.eq_of_mul_eq_mul_left Module.finrank_pos h1
 
 /- English proof (translation)
-Take `⟨e⟩` from `h.nonempty_equiv hS`. Use `haveI : Module.Finite L L' := Module.Finite.of_basis u`. Take `⟨k⟩` from `u.index_nonempty`. Prove the components needed by the constructor for the conclusion. Introduce `_ haveI : Module.Finite L S' := Module.Finite.trans L' S' haveI : Module.Finite L (ι → S) := Module.Finite.equiv e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Module.Finite.of_surjective (LinearMap.proj k : (ι → S) →ₗ[L] S) (LinearMap.proj_surjective k)`. Introduce `_ haveI : Module.Finite L S' := Module.Finite.equiv e.symm`. Conclude with `Module.Finite.of_restrictScalars_finite L L' S'`.
+A detailed English derivation is pending.
 -/
 theorem IsCoord.finite_iff [IsScalarTower L L' M'] {u : Basis ι L L'} (h : IsCoord u J π)
     {S : Submodule L M} {S' : Submodule L' M'} (hS : Rel π S S') :
@@ -191,13 +191,13 @@ theorem IsCoord.finite_iff [IsScalarTower L L' M'] {u : Basis ι L L'} (h : IsCo
     exact Module.Finite.of_restrictScalars_finite L L' S'
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m c`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [AlgebraTensorModule.map_tmul, LinearMap.id_apply, TensorProduct.smul_tmul']`. Rewrite using `[← TensorProduct.sum_tmul, h.1]`. Consider the case `add a b ha hb => simp only [map_add, smul_add, Finset.sum_add_distrib, ha, hb]`. Introduce `k l x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul m c`. Simplify using `only [AlgebraTensorModule.map_tmul, LinearMap.id_apply, TensorProduct.smul_tmul', h.2]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `add a b ha hb`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Simplify using `only [map_add, smul_add, ha, hb]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IsCoord.tensor {Q : Type} [Field Q] [Algebra Q L] [Algebra Q L'] [Module Q M] [Module Q M']
     [IsScalarTower Q L M] [IsScalarTower Q L M'] [IsScalarTower Q L' M']
@@ -223,7 +223,7 @@ theorem IsCoord.tensor {Q : Type} [Field Q] [Algebra Q L] [Algebra Q L'] [Module
       split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m c => simp [hf]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_comm {Q : Type} [Field Q] [Algebra Q L] [Algebra Q L'] [Module Q M] [Module Q M']
     [IsScalarTower Q L M] [IsScalarTower Q L M'] [IsScalarTower Q L' M']
@@ -240,17 +240,17 @@ theorem map_comm {Q : Type} [Field Q] [Algebra Q L] [Algebra Q L'] [Module Q M] 
 end General
 
 /- English proof (translation)
-Introduce `G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL LL' _ _ _ _ _ _ _ V V' _ _ _ _ _ _ _ _ _ _ ρ ρ' j hj hρ`. Use `haveI : IsScalarTower Qp LL V' := IsScalarTower.of_algebraMap_smul fun r x => by`. Rewrite using `[← algebraMap_smul LL' (algebraMap Qp LL r) x, ← IsScalarTower.algebraMap_apply, algebraMap_smul]`. Set `u` to `Module.finBasis LL LL'`. Take `⟨π, h⟩` from `exists_isCoord u j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB` using `h.tensor (Q := Qp) B`. Establish `hR` using `h.tensor (Q := Qp) BdR`. Establish `r0 : Rel π (H0V ρ) (H0V ρ')` using `Rel.iInf fun g => h.rel_ker h _ _ fun y => by simp [hρ]`. Establish `rc : Rel _ (Dcris PD ρ) (Dcris PD ρ')` using `Rel.iInf fun g => hB.rel_ker hB _ _ fun y => by`. Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, map_sub, actVB]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_comm (ρ g) (ρ' g) (fun m => (hρ g m).symm)]`. Establish `rd : Rel _ (DdR PD ρ) (DdR PD ρ')` using `Rel.iInf fun g => hR.rel_ker hR _ _ fun y => by`. Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, map_sub, actVdR]`. Rewrite using `[map_comm (ρ g) (ρ' g) (fun m => (hρ g m).symm)]`. Establish `rf : ∀ a : ℤ, Rel (fun k => AlgebraTensorModule.map (π k) (LinearMap.id : BdR →ₗ[Qp] BdR)) (FilV PD (LL` using `LL) (V := V) a) (FilV PD (LL := LL') (V := V') a) := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Establish `hF` using `h.tensor (Q := Qp) ↥((PD.Fil a).restrictScalars Qp)`. Use `hR.rel_range hF (AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) ((PD.Fil a).restrictScalars Qp).subtype) (AlgebraTensorModule.map (LinearMap.id : V' →ₗ[LL'] V') ((PD.Fil a).restrictScalars Qp).subtype) fun y => ?_` and prove the remaining obligations. Conclude with `map_comm (J := j) LinearMap.id LinearMap.id (fun _ => rfl) ((PD.Fil a).restrictScalars Qp).subtype y`. Establish `re : ∀ τ : K →ₐ[Qp] LL, Rel _ (DdRE PD ρ τ) (DdRE PD ρ' ((IsScalarTower.toAlgHom Qp LL LL').comp τ))` using `fun τ => rd.inf (Rel.iInf fun c => hR.rel_ker hR _ _ fun y => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, map_sub, mulVdR, map_smul, AlgHom.comp_apply, IsScalarTower.toAlgHom_apply, algebraMap_smul]`. Rewrite using `[map_comm (L' := LL') (J := j) LinearMap.id LinearMap.id (fun _ => rfl)])`. Establish `rl : ∀ τ : K₀ →ₐ[Qp] LL, Rel _ (DcrisL PD ρ τ) (DcrisL PD ρ' ((IsScalarTower.toAlgHom Qp LL LL').comp τ))` using `fun τ => rc.inf (Rel.iInf fun c => hB.rel_ker hB _ _ fun y => by`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, map_sub, mulVB, map_smul, AlgHom.comp_apply, IsScalarTower.toAlgHom_apply, algebraMap_smul]`. Rewrite using `[map_comm (L' := LL') (J := j) LinearMap.id LinearMap.id (fun _ => rfl)])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, h.finrank_eq r0, ⟨hB.finrank_eq rc, hB.finite_iff rc⟩, ⟨hR.finrank_eq rd, hR.finite_iff rd⟩, fun a => hR.finrank_eq (rd.inf (rf a)), fun τ => hB.finrank_eq (rl τ), fun τ => ⟨hR.finrank_eq (re τ), fun a => hR.finrank_eq ((re τ).inf (rf a))⟩⟩` and prove the remaining obligations. Use `h.finrank_eq (S := ⊤) (S' := ⊤) (fun x => by simp)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finrank_baseChange : ∀ {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] (PD : PeriodData G Qp K₀ K B BdR) (LL LL' : Type) [Field LL] [Field LL'] [Algebra Qp LL] [Algebra Qp LL'] [Algebra LL LL'] [IsScalarTower Qp LL LL'] [FiniteDimensional LL LL'] (V V' : Type) [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] [AddCommGroup V'] [Module LL' V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL' V'] [IsScalarTower LL LL' V'] (ρ : Representation LL G V) (ρ' : Representation LL' G V') (j : V →ₗ[LL] V'), IsBaseChange LL' j → (∀ g x, j (ρ g x) = ρ' g (j x)) → finrank LL' V' = finrank LL V ∧ finrank LL' ↥(H0V ρ') = finrank LL ↥(H0V ρ) ∧ (finrank LL' ↥(Dcris PD ρ') = finrank LL ↥(Dcris PD ρ) ∧ (Module.Finite LL' ↥(Dcris PD ρ') ↔ Module.Finite LL ↥(Dcris PD ρ))) ∧ (finrank LL' ↥(DdR PD ρ') = finrank LL ↥(DdR PD ρ) ∧ (Module.Finite LL' ↥(DdR PD ρ') ↔ Module.Finite LL ↥(DdR PD ρ))) ∧ (∀ a : ℤ, finrank LL' ↥(DdR PD ρ' ⊓ FilV PD (LL := LL') (V := V') a) = finrank LL ↥(DdR PD ρ ⊓ FilV PD (LL := LL) (V := V) a)) ∧ (∀ τ : K₀ →ₐ[Qp] LL, finrank LL' ↥(DcrisL PD ρ' ((IsScalarTower.toAlgHom Qp LL LL').comp τ)) = finrank LL ↥(DcrisL PD ρ τ)) ∧ ∀ τ : K →ₐ[Qp] LL, finrank LL' ↥(DdRE PD ρ' ((IsScalarTower.toAlgHom Qp LL LL').comp τ)) = finrank LL ↥(DdRE PD ρ τ) ∧ ∀ a : ℤ, finrank LL' ↥(FildR PD ρ' ((IsScalarTower.toAlgHom Qp LL LL').comp τ) a) = finrank LL ↥(FildR PD ρ τ a) := by
   intro G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL LL' _ _ _ _ _ _ _ V V' _ _ _ _ _ _ _ _ _ _ ρ ρ' j hj hρ

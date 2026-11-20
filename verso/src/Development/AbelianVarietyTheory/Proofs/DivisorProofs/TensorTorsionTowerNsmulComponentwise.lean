@@ -22,15 +22,15 @@ variable {F : Type} [Field F] {N N' : NumD F} {r : ℕ} {W : Matrix (Fin r) (Fin
   {e : N'.X → Fin r → N.X} {wv : N'.A → F}
 
 /- English proof (translation)
-The claim follows from `(AddMonoidHom.mk' (fun χ => e χ i) fun a b => h.2.2.1 a b i).map_nsmul k χ`.
+A detailed English derivation is pending.
 -/
 theorem comp_nsmul (h : TensFacts W φ e wv) (k : ℕ) (χ : N'.X) (i : Fin r) : e (k • χ) i = k • e χ i :=
   (AddMonoidHom.mk' (fun χ => e χ i) fun a b => h.2.2.1 a b i).map_nsmul k χ
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Establish `h0` using `GlobalTheory.T.tensorTorusValueCorrespondence_period F N N' W φ e wv h 0`. Establish `e0 : ∀ j, e 0 j = 0` using `fun j => by simpa using comp_nsmul h 0 0 j`. Simplify using `only [e0, NumD.io_zero] at h0`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[pow_zero, pow_zero]`. Conclude with `h0`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W φ e wv h _ _ _ _ ih hv`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_pow (h : TensFacts W φ e wv) {v' : N'.Gt} {vs : Fin r → N.Gt} (hv : GtRelV W φ e wv v' vs) (k : ℕ) :
     GtRelV W φ e wv (v' ^ k) (vs ^ k) := by
@@ -46,9 +46,9 @@ theorem rel_pow (h : TensFacts W φ e wv) {v' : N'.Gt} {vs : Fin r → N.Gt} (hv
     exact GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W φ e wv h _ _ _ _ ih hv
 
 /- English proof (translation)
-Use `choose z hz1 hz2 using hz`. Take `⟨z', rfl⟩` from `h.2.2.2.1.2 z`. Use `⟨z', h.2.2.2.1.1 (funext fun i => ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[h.2.2.1, comp_nsmul h, ht.1, hp.1, hz1]`. Use `GlobalTheory.T.tensorTorusValueCorrespondence_unique_point F N N' W φ e wv h _ _ _ ht.2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W φ e wv h _ _ _ _ (rel_pow h hp.2 m) (GlobalTheory.T.tensorTorusValueCorrespondence_period F N N' W φ e wv h z')` as an intermediate fact. Establish `e1 : (fun j => (ts j).1.2) = (fun j => (ps j).1.2) ^ m * fun j => N.io (e z' j)` using `funext hz2`. Rewrite using `[e1]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tower_val (h : TensFacts W φ e wv) {n m : ℕ} {p' : N'.QT (n * m)} {ps : Fin r → N.QT (n * m)} {t' : N'.QT n}
     {ts : Fin r → N.QT n} (hp : QRelV W φ e wv p' ps) (ht : QRelV W φ e wv t' ts)
@@ -67,13 +67,13 @@ theorem tower_val (h : TensFacts W φ e wv) {n m : ℕ} {p' : N'.QT (n * m)} {ps
 end Values
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D D' r W T F _ _ _ N N' ν ν' n m _ _ p' ps t' ts ⟨a', as, ha', has, ha⟩ ⟨b', bs, hb', hbs, hb⟩ H`. Establish `hF` using `GlobalTheory.T.tensorData_values_facts R hR D D' W T F N N' ν ν'`. Establish `B` using `(GtValues.points_correspond R D.toPre D.psi_even D.tau_bimult F N ν).2.2.2.2 n`. Establish `B'` using `(GtValues.points_correspond R D'.toPre D'.psi_even D'.tau_bimult F N' ν').2.2.2.2 n`. Take `⟨z', hz1, hz2⟩` from `tower_val hF ha hb fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hy, hn, he⟩` from `H i`. Take `⟨c, hc⟩` from `(B.1 q).exists`. Take `⟨z, h1, h2⟩` from `(B.2.2 q (ts i) c (bs i) hc (hbs i)).1 he`. Use `⟨z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, ν.eX.injective (hc.1.trans (hy.trans (has i).1.symm))]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, (GtValues.isNsmul_val ν m (has i).2 hc.2).1 hn]`. Set `c' : N'.QT n` to `⟨(a'.1.1, a'.1.2 ^ m), by`. Rewrite using `[NumD.mem_QT, ← pow_mul, mul_comm m n]`. Conclude with `a'.2⟩`. Take `⟨q', hq'⟩` from `B'.2.1 c'`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨q', hq'.1.symm.trans ha'.1, (GtValues.isNsmul_val ν' m ha'.2 hq'.2).2 rfl, (B'.2.2 q' t' c' b' hq' hb').2 ⟨z', hz1, hz2⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem tower : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D.toPre F N) (ν' : NumOf D'.toPre F N') (n m : ℕ), 0 < n → 0 < m → ∀ (p' : QkPt D'.toPre F (n * m)) (ps : Fin r → QkPt D.toPre F (n * m)) (t' : QkPt D'.toPre F n) (ts : Fin r → QkPt D.toPre F n), PtRel T ν ν' p' ps → PtRel T ν ν' t' ts → (∀ i, ∃ q : QkPt D.toPre F n, q.y = (ps i).y ∧ GtPtF.IsNsmul m (ps i).g q.g ∧ QkPt.Equiv D.toPre F q (ts i)) → ∃ q' : QkPt D'.toPre F n, q'.y = p'.y ∧ GtPtF.IsNsmul m p'.g q'.g ∧ QkPt.Equiv D'.toPre F q' t' := by
   intro R _ _ _ hR D D' r W T F _ _ _ N N' ν ν' n m _ _ p' ps t' ts ⟨a', as, ha', has, ha⟩ ⟨b', bs, hb', hbs, hb⟩ H

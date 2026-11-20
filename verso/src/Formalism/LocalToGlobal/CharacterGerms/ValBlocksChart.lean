@@ -18,7 +18,7 @@ variable {C : Type} [Field C] {V : VF C} {d : ℕ} [NeZero d]
   {X : ∀ o, RowData C V d (I o) (J o)} {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `valBlocks_G hV jetProd F Z ga hM (blkAdm X F Z ga hdich hj hga)`.
+A detailed English derivation is pending.
 -/
 theorem valBlocks_fin {FFimg : Set (∀ o, MvPolynomial (Fin n × WV (I o)) C)} {ν : ℝ} (hV : ValO X n FFimg ν)
     (F : ∀ o, Flag (X o)) (Z : Finset Orb) (ga : Orb → Fin 2 → ZMod d → ℕ → ℕ) (hM : BlockMembership X n F FFimg Z ga)
@@ -35,7 +35,7 @@ variable {C : Type} [Field C] {V : VF C}
   {X : ∀ o, RowData C V 2 (I o) (J o)} {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `valBlocksC_G hV jetProd F nW hn gaC hM (blkAdmC X F gaC hA hj hga)`.
+A detailed English derivation is pending.
 -/
 theorem valBlocksC_fin {FFimg : Set (∀ o, MvPolynomial (Fin n × WV (I o)) C)} {ν : ℝ} (hV : ValO X n FFimg ν)
     (F : ∀ o, Flag (X o)) (nW : ℕ) (hn : nW ≤ 2 * n + 1) (gaC : Orb → ZMod 2 → ℕ → ℕ) (hM : BlockMembershipSelfConjugate X n F FFimg gaC)
@@ -55,7 +55,7 @@ variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [S
   (F : ∀ o, Flag (rd Y p H o)) (Z : Finset Orb) (ga : Orb → Fin 2 → ZMod d → ℕ → ℕ)
 
 /- English proof (translation)
-The claim follows from `valBlocks_fin (valO_of Y p H Ls n ν (lower_of_nuPlE Y Ls n ν hν) hs hv) F Z ga hM hdich hj hga`.
+A detailed English derivation is pending.
 -/
 theorem valBlocks_chart (ν : ℝ) (hν : (ν : EReal) ≤ Y.nuPlE Ls n) (hs : PairsSep Y p) (hv : ValEqPSt Y p H Ls n)
     (hM : BlockMembershipChart Y p H Ls n F Z ga)

@@ -8,9 +8,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Establish `hx0 : 0 < x` using `by linarith`. Establish `hm0 : 0 < m` using `by linarith`. Establish `hd0 : 0 < d` using `lt_of_lt_of_le (by positivity) hd`. Establish `hd' : 1 / d ≤ x`. Rewrite using `[div_le_iff₀ hd0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hd` using `[div_le_iff₀ hx0]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem factor_products_le_rpow_three_hundred_seventy_seven (x c W Dy k f m d : ℝ) (hx : 1 ≤ x) (hc0 : 0 ≤ c) (hc : c ^ 4 ≤ x)
     (hW0 : 0 ≤ W) (hW : W ^ 4 ≤ x ^ 330) (hD0 : 0 ≤ Dy) (hD : Dy ≤ x ^ 12)
@@ -36,25 +36,23 @@ theorem factor_products_le_rpow_three_hundred_seventy_seven (x c W Dy k f m d : 
       _ ≤ x ^ 377 := pow_le_pow_right₀ hx (by norm_num)
 
 /- English proof (translation)
-Introduce `eps he he' C hC`. Take `⟨x1, hx1⟩` from `GlobalTheory.T.explicitRanks_basic_bounds_large_scale eps he he'`. Establish `hCp : C.T.Cp = 1` using `hC.2.2.2.2.2.2.2.1`. Establish `heP : C.T.eP = 12` using `hC.2.2.2.2.2.2.2.2.1`. Establish `hCP : 1000 ≤ C.T.CP` using `hC.2.2.2.2.2.2.2.2.2.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨0, fun cD _ => ⟨0, fun ch _ => ⟨max x1 (C.T.CP ^ 4), ?_⟩⟩⟩` and prove the remaining obligations. Introduce `D L hLe hx V`. Simplify using `only [max_le_iff] at hx`. Take `⟨hxa, hxP⟩` from `hx`. Take `⟨-, -, hr, hkr, -, -, hL1, -, hZ, hD, hkf, -⟩` from `hx1 L.sc D.R hLe hxa V.ranks`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hxx` using `L.sc.one_lt_alt`. Establish `hn : (0 : ℝ) < D.R.n`. Establish `: 0 < D.R.n` using `by unfold Ranks.n; positivity`. Conclude with `this` after adjusting the coercions. Establish `hd : L.sc.x ^ (-L.sc.eps) ≤ L.de2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[L.typeDensity_eq_card_div, le_div_iff₀ hn]`. Conclude with `V.host.2.2.1`. Establish `hT : L.sc.x ^ (377 : ℝ) ≤ ((TOv L.sc : ℕ) : ℝ)` using `Nat.le_ceil _`. Establish `hm : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`. Establish `hZ0 : 0 ≤ zBase L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `zBase`. Establish `: (0:ℝ) ≤ L.sc.L` using `by linarith`. Check the signs of the components of the expression. Establish `hZ' : zBase L ≤ L.sc.x ^ ((687 : ℝ) / 100)` using `hZ`. Use `set x := L.sc.x with hxdef`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1' : 1 ≤ x` using `hxx.le`. Establish `hx0 : 0 < x` using `by linarith`. Establish `cast : ∀ n : ℕ, x ^ ((n : ℕ) : ℝ) = x ^ n` using `fun n => Real.rpow_natCast x n`. Establish `hPe : zBase L ^ C.T.eP = zBase L ^ (12 : ℕ)`. Rewrite using `[heP]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `first | rfl | exact_mod_cast Real.rpow_natCast _ 12`. Establish `hd' : 1 / x ≤ L.de2`. Use `le_trans ?_ hd` and prove the remaining obligations. Rewrite using `[one_div, ← Real.rpow_neg_one]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hx1' (by rw [hLe]; linarith)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : (zBase L ^ (12 : ℕ)) ^ 4 ≤ x ^ 330`. Combine the equalities or inequalities in the displayed calculation. Establish `hk : (D.R.k : ℝ) ≤ x ^ 5`. Establish `: (D.R.k : ℝ) ≤ D.R.r` using `by exact_mod_cast hkr`. Conclude with `this.trans (by exact_mod_cast hr)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Establish `hT' : x ^ 377 ≤ ((TOv L.sc : ℕ) : ℝ)` using `by exact_mod_cast hT`. Take `⟨a, b⟩` from `factor_products_le_rpow_three_hundred_seventy_seven x C.T.CP (zBase L ^ (12 : ℕ)) ((D.R.f * D.R.r.choose 2 : ℕ) : ℝ) D.R.k D.R.f D.R.m L.de2 hx1' (by linarith) hxP (by positivity) hW (Nat.cast_nonneg _) (by exact_mod_cast hD) (Nat.cast_nonneg _) hk (Nat.cast_nonneg _) (by linarit …`. Use `⟨?_, b.trans hT'⟩` and prove the remaining obligations. Rewrite using `[hPe, hCp]`. Use `first`.
-
-Consider the case `(rw [Real.rpow_one]; exact a.trans hT')`. Consider the case `(rw [pow_one]; exact a.trans hT')`.
+A detailed English derivation is pending.
 -/
 theorem szRow_TO_lower : SzRow (fun C D L => ((C.T.CP * zBase L ^ C.T.eP) ^ 4 * ((D.R.f * D.R.r.choose 2 : ℕ) : ℝ) ^ 3 * D.R.k * D.R.f * L.sc.x ^ C.T.Cp / ((D.R.m : ℝ) * L.de2) ≤ ((TOv L.sc : ℕ) : ℝ)) ∧ (((D.R.f * D.R.r.choose 2 : ℕ) : ℝ) * D.R.k / D.R.m ≤ ((TOv L.sc : ℕ) : ℝ))) := by
   intro eps he he' C hC

@@ -90,7 +90,7 @@ def Statement : Prop :=
 variable {E}
 
 /- English proof (translation)
-Establish `h1 : (0 : ℝ) < X.Ψ.card` using `by exact_mod_cast hf`. Establish `h2 : (0 : ℝ) < r` using `by exact_mod_cast hr`. Establish `: 0 < (X.Ψ.card : ℝ) * (r : ℝ) ^ 2` using `by positivity`. Unfold `bExp`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem four_lt_bExp (X : Data E r) (hf : 0 < X.Ψ.card) (hr : 0 < r) :
     4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < bExp X := by
@@ -100,14 +100,14 @@ theorem four_lt_bExp (X : Data E r) (hf : 0 < X.Ψ.card) (hr : 0 < r) :
   unfold bExp; nlinarith
 
 /- English proof (translation)
-Use `Xa.frame_theta_weight_pos.ne'` as an intermediate fact. Unfold `tFac`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem factor_mul_firstMinimum {X : Data E r} (Xa : ArchInM X) : tFac Xa * Xa.a1 = Xa.c1 + Xa.a1 := by
   have := Xa.frame_theta_weight_pos.ne'
   unfold tFac; field_simp; ring
 
 /- English proof (translation)
-Establish `h1` using `Xa.frame_theta_weight_pos`. Establish `h2` using `Xa.frame_theta_const_pos`. Use `⟨by unfold tFac; positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `Xa.rr_le`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tFac_range {X : Data E r} (Xa : ArchInM X) : 0 ≤ tFac Xa ∧ tFac Xa * Xa.rr ≤ 2 * Xa.T := by
   have h1 := Xa.frame_theta_weight_pos
@@ -116,7 +116,7 @@ theorem tFac_range {X : Data E r} (Xa : ArchInM X) : 0 ≤ tFac Xa ∧ tFac Xa *
   rw [mul_comm]; exact Xa.rr_le
 
 /- English proof (translation)
-Take `⟨P, hP, hv⟩` from `h r X Xa Fl hd hm hq (fun j' => if j' = j then 1 else 0)`. Use `⟨P, hP, fun j' => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [hv]; by_cases e : j' = j <;> simp [e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem peak_of_interpGt (h : InterpGtStatement E) (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa)
     (hd : PropDisc X) (hm : ModeBound X)

@@ -7,11 +7,11 @@ namespace Formalism.LatticeBaseChangeAlt
 open Module
 
 /- English proof (translation)
-Establish `hs : LinearIndepOn K id (Set.range v)` using `by first`. Consider the case `exact hv.linearIndepOn_id_range`. Consider the case `exact (linearIndepOn_id_range_iff hv.injective).mpr hv`. Set `B` to `Basis.extend hs`. Establish `hsub : Set.range v ⊆ hs.extend (Set.subset_univ _)` using `hs.subset_extend (Set.subset_univ _)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : ι → hs.extend (Set.subset_univ _)` to `fun i => ⟨v i, hsub (Set.mem_range_self i)⟩`. Establish `hg : Function.Injective g` using `fun a c h => hv.injective (congrArg Subtype.val h)`. Establish `hB' : (fun i => j (v i)) = (hj.basis B) ∘ g`. Use function extensionality and compare the values at `i`. Use `first`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately.
 
-Consider the case `simp [B, g, IsBaseChange.basis_apply, Basis.coe_extend]`. Consider the case `simp [B, g, Basis.coe_extend]`. Rewrite using `[hB']`. Conclude with `(hj.basis B).linearIndependent.comp g hg`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_isBaseChange_alt {K K' V V₁ ι : Type} [Field K] [Field K'] [Algebra K K']
     [AddCommGroup V] [Module K V] [AddCommGroup V₁] [Module K' V₁] [Module K V₁]
@@ -35,9 +35,9 @@ theorem linearIndependent_of_isBaseChange_alt {K K' V V₁ ι : Type} [Field K] 
   exact (hj.basis B).linearIndependent.comp g hg
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h1 : j x ∈ Submodule.span K (j '' s)`. Rewrite using `[← Submodule.map_span]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_map_of_mem hx`. Conclude with `Submodule.span_le_restrictScalars K K' _ h1`. Use `first`. Consider the case `exact Submodule.span_mono (Set.image_mono Submodule.subset_span)`. Consider the case `exact Submodule.span_mono (Set.image_subset _ Submodule.subset_span)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_image_span_alt {K K' V V₁ : Type} [Field K] [Field K'] [Algebra K K']
     [AddCommGroup V] [Module K V] [AddCommGroup V₁] [Module K' V₁] [Module K V₁]
@@ -55,11 +55,11 @@ theorem span_image_span_alt {K K' V V₁ : Type} [Field K] [Field K'] [Algebra K
     | exact Submodule.span_mono (Set.image_subset _ Submodule.subset_span)
 
 /- English proof (translation)
-Introduce `O O' K K' V V₁ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ j hj V'`. Set `b` to `Module.finBasis K V'`. Set `w : Fin (finrank K V') → V` to `V'.subtype ∘ b`. Establish `hw : LinearIndependent K w` using `b.linearIndependent.map' V'.subtype V'.ker_subtype`. Establish `hspan : Submodule.span K (Set.range w) = V'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.range_comp, ← Submodule.map_span, b.span_eq, Submodule.map_subtype_top]`. Establish `h1 : Submodule.span K' (j '' (V' : Set V)) = Submodule.span K' (Set.range (fun i => j (w i)))`. Establish `h2` using `span_image_span_alt (K' := K') j (Set.range w)`. Rewrite `h2` using `[hspan]`. Rewrite using `[h2, ← Set.range_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1, finrank_span_eq_card (linearIndependent_of_isBaseChange_alt j hj w hw), Fintype.card_fin]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_span_image_alt : FinrankSpanImage := by
   intro O O' K K' V V₁ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ j hj V'
@@ -77,21 +77,17 @@ theorem finrank_span_image_alt : FinrankSpanImage := by
   rw [h1, finrank_span_eq_card (linearIndependent_of_isBaseChange_alt j hj w hw), Fintype.card_fin]
 
 /- English proof (translation)
-Introduce `O O' K K' V V₁ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ j hj M hM`. Unfold `Formalism.LatticeIndexTer.IsLat at hM ⊢`. Establish `hsm : ∀ (o : O) (x : V), j (o • x) = (algebraMap O O' o) • j x`. Introduce `o x`. Rewrite using `[← algebraMap_smul K o x, map_smul, ← algebraMap_smul K' (algebraMap O K o) (j x), ← algebraMap_smul K' (algebraMap O O' o) (j x), ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨S, hS⟩, hM2⟩` from `hM`. Set `P : Submodule O' V₁` to `Submodule.span O' (j '' (S : Set V))`. Set `Q : Submodule O V` to `{ carrier := {x | j x ∈ P} add_mem' := fun {a b} ha hb => by show j (a + b) ∈ P`. Rewrite using `[map_add]`. Conclude with `P.add_mem ha hb`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `zero_mem' := by show j 0 ∈ P`. Rewrite using `[map_zero]`. Conclude with `P.zero_mem`. Use the proof step `smul_mem' := fun c x hx => by show j (c • x) ∈ P`. Rewrite using `[hsm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.smul_mem _ hx }`. Establish `hQ : Submodule.span O (S : Set V) ≤ Q` using `Submodule.span_le.mpr (fun x hx => Submodule.subset_span ⟨x, hx, rfl⟩)`. Establish `hNP : Submodule.span O' (j '' (M : Set V)) = P`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨m, hm, rfl⟩`. Rewrite `hm` using `[← hS]`. Conclude with `hQ hm`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x, by rw [← hS]; exact Submodule.subset_span hx, rfl⟩`. Use `⟨⟨S.image j, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image, hNP]`. Rewrite using `[Submodule.span_span_of_tower, ← span_image_span_alt (K' := K') j (M : Set V), hM2]`. Rewrite using `[eq_top_iff, ← (hj.basis (Module.finBasis K V)).span_eq, Submodule.span_le]`.
-
-Introduce and unpack `_ ⟨i, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨Module.finBasis K V i, Submodule.mem_top, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `simp [IsBaseChange.basis_apply]`.
-
-Consider the case `simp`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isLattice_span_image_alt : IsLatticeSpanImage := by
   intro O O' K K' V V₁ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ j hj M hM

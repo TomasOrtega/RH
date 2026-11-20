@@ -7,11 +7,11 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 namespace GlobalTheory.SplitCompletion
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_zero f ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, (Valued.hasBasis_nhds_zero A _).tendsto_iff (Valued.hasBasis_nhds_zero B _)]`. Introduce `γ _`. Take `⟨a, ha⟩` from `hs (MonoidWithZeroHom.ValueGroup₀.embedding γ.1)`. Establish `ha0 : (Valued.v : Valuation A Γ).restrict a ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[ha]`. Use `⟨Units.mk0 _ ha0, trivial, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, Units.val_mk0, Valuation.restrict_lt_iff] at hx`. Simplify using `only [Set.mem_setOf_eq, Valuation.restrict_lt_iff_lt_embedding]`. Rewrite using `[hf, ← ha]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_valued_eq {A B Γ : Type*} [Ring A] [Ring B] [LinearOrderedCommGroupWithZero Γ]
     [Valued A Γ] [Valued B Γ] (hs : Function.Surjective (Valued.v : A → Γ)) (f : A →+* B)
@@ -31,9 +31,9 @@ theorem continuous_of_valued_eq {A B Γ : Type*} [Ring A] [Ring B] [LinearOrdere
 open scoped WithZeroTopology in
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ContinuousValuationExtension.exists_continuous_extension`. Consider the case `exact _root_.GlobalTheory.ContinuousValuationExtension.exists_continuous_extension`. Consider the case `(apply _root_.GlobalTheory.ContinuousValuationExtension.exists_continuous_extension <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ContinuousValuationExtension.exists_continuous_extension <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ContinuousValuationExtension.exists_continuous_extension <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ContinuousValuationExtension.exists_continuous_extension ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_extension {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L]
     (w : HeightOneSpectrum (𝓞 K)) (u : HeightOneSpectrum (𝓞 L)) (f : K →+* u.adicCompletion L)
@@ -49,9 +49,9 @@ theorem exists_extension {K L : Type} [Field K] [NumberField K] [Field L] [Numbe
   | (intros; exact _root_.GlobalTheory.ContinuousValuationExtension.exists_continuous_extension ..)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v τ`. Take `⟨φ, hφc, hφ, hφv⟩` from `exists_extension (GlobalTheory.AdelicU.splitPrime τ) v (τ : E →+* Fv F v) (GlobalTheory.AdelicU.valued_apply_eq_valuation τ)`. Take `⟨ψ, hψc, hψ, -⟩` from `exists_extension v (GlobalTheory.AdelicU.splitPrime τ) ((algebraMap E _).comp (algebraMap F E)) fun a => (ReciprocityTheory.Aut.adic_valued_algebraMap _ _).trans ((GlobalTheory.AdelicU.valued_apply_eq_valuation τ _).symm.trans (GlobalTheory.AdelicU.valued_apply_algebraMap τ a))`. Establish `hid : φ ∘ ψ = id` using `(HeightOneSpectrum.denseRange_algebraMap F v).equalizer (hφc.comp hψc) continuous_id (funext fun a => ((congrArg φ (hψ a)).trans (hφ _)).trans (τ.commutes a))`. Set `e` to `RingEquiv.ofBijective φ ⟨φ.injective, fun y => ⟨ψ y, congrFun hid y⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨e, hφ, hφv, hφc, continuous_of_valued_eq (v.valuedAdicCompletion_surjective F) e.symm.toRingHom fun y => ?_⟩` and prove the remaining obligations. Conclude with `(hφv _).symm.trans (congrArg _ (e.apply_symm_apply y))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_ringEquiv_splitPrime : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v),

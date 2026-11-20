@@ -12,7 +12,7 @@ namespace GlobalTheory.LocSepTie
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
 /- English proof (translation)
-Establish `hu0` using `A.lpZero_unr w`. Establish `hc` using `A.unr_char _ _ hd hu0 hu`. Establish `hcard` using `A.frobEig_card _ hc`. Rewrite `hcard` using `[A.lpDim_char _ _ hd, A.lpDim_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem lpChar_zero_unr (w : PlE H) (χ : A.LP w) (hd : A.lpDim χ = 1) (hu : A.unr χ) :
     A.lpChar (A.lpZero w) χ = A.lpZero w := by
@@ -25,9 +25,9 @@ theorem lpChar_zero_unr (w : PlE H) (χ : A.LP w) (hd : A.lpDim χ = 1) (hu : A.
     _ = A.lpZero w := (A.unr_eq_lpUnr _ hu0).symm
 
 /- English proof (translation)
-Establish `hχ` using `A.locG_dim χ w`. Establish `hsum : ∀ a b : A.LP w, A.lpChar (A.lpSum a b) (A.locG χ w) = A.lpSum (A.lpChar a (A.locG χ w)) (A.lpChar b (A.locG χ w))` using `fun a b => (hC w a b _ _ 0 hχ hχ).1`. Establish `htw : ∀ (a : A.LP w) (s : ℝ), A.lpChar (A.lpTw a s) (A.locG χ w) = A.lpTw (A.lpChar a (A.locG χ w)) s` using `fun a s => (hC w a a _ _ s hχ hχ).2.1`. Unfold `spehLoc`. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify by unfolding definitions.
 
-Generalize the expression as in `(List.range p.d >>= fun a : ℕ => (pure (a : ℝ) : List ℝ)) = l`. Proceed by induction on `l with`. Consider the case `nil => exact hz.symm`. Consider the case `cons k l ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, ih, hsum, htw, A.locG_tw]`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem spehLoc_twist_of_laws (hC : GlobalTheory.RowTie.CharLaws N A) (p : Part A.CG) (χ : A.CG 1) (w : PlE H)
     (hz : A.lpChar (A.lpZero w) (A.locG χ w) = A.lpZero w) :
@@ -46,9 +46,9 @@ theorem spehLoc_twist_of_laws (hC : GlobalTheory.RowTie.CharLaws N A) (p : Part 
     rw [List.foldr_cons, List.foldr_cons, ih, hsum, htw, A.locG_tw]
 
 /- English proof (translation)
-Establish `hχ` using `A.locG_dim χ w`. Proceed by induction on `S with`. Consider the case `nil => exact hz.symm`. Consider the case `cons p S ih`. Express the relevant statement in the definitionally equal form `A.lpSum (spehLoc N A ⟨p.a, A.tw p.π χ, p.d⟩ w) (isoLoc N A (twistIso N A S χ) w) = A.lpChar (A.lpSum (spehLoc N A p w) (isoLoc N A S w)) (A.locG χ w)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ih, spehLoc_twist_of_laws N A hC p χ w hz, (hC w _ _ _ _ 0 hχ hχ).1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isoLoc_twist_of_laws (hC : GlobalTheory.RowTie.CharLaws N A) (S : List (Part A.CG)) (χ : A.CG 1) (w : PlE H)
     (hz : A.lpChar (A.lpZero w) (A.locG χ w) = A.lpZero w) :
@@ -62,9 +62,9 @@ theorem isoLoc_twist_of_laws (hC : GlobalTheory.RowTie.CharLaws N A) (S : List (
     rw [ih, spehLoc_twist_of_laws N A hC p χ w hz, (hC w _ _ _ _ 0 hχ hχ).1]
 
 /- English proof (translation)
-Proceed by induction on `S with`. Consider the case `nil`. Express the relevant statement in the definitionally equal form `A.lpSum (spehLoc N A q w) (A.lpZero w) = A.lpSum (A.lpZero w) (spehLoc N A q w)`. Conclude with `A.lpSum_comm _ _`. Consider the case `cons p S ih`.
+Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `A.lpSum (spehLoc N A p w) (isoLoc N A (S ++ [q]) w) = A.lpSum (A.lpSum (spehLoc N A p w) (isoLoc N A S w)) (spehLoc N A q w)`. Rewrite using `[ih, A.lpSum_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoLoc_append_one (S : List (Part A.CG)) (q : Part A.CG) (w : PlE H) :
     isoLoc N A (S ++ [q]) w = A.lpSum (isoLoc N A S w) (spehLoc N A q w) := by
@@ -78,7 +78,7 @@ theorem isoLoc_append_one (S : List (Part A.CG)) (q : Part A.CG) (w : PlE H) :
     rw [ih, A.lpSum_assoc]
 
 /- English proof (translation)
-Unfold `heckePol`. Conclude with `GlobalTheory.PtLocalEig.coeff_monic_poly_sum R.nV k hk1 hk2 (fun k' => (-1 : N.O i) ^ k' * ((normV w : ℕ) : N.O i) ^ (k' * (k' - 1) / 2) * ((N.hT i w k' : N.X i → N.O i) x))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem heckePol_coeff (i : N.Loc) (x : N.X i) (w : PlE H) (k : ℕ) (hk1 : 1 ≤ k) (hk2 : k ≤ R.nV) :
     (heckePol N i x w).coeff (R.nV - k) =
@@ -88,23 +88,23 @@ theorem heckePol_coeff (i : N.Loc) (x : N.X i) (w : PlE H) (k : ℕ) (hk1 : 1 �
     (fun k' => (-1 : N.O i) ^ k' * ((normV w : ℕ) : N.O i) ^ (k' * (k' - 1) / 2) * ((N.hT i w k' : N.X i → N.O i) x))
 
 /- English proof (translation)
-Introduce `D M HT hC hW hmu`. Unfold `KillingConditions.LocalisationUniqueness`. Introduce `i i' _ hj hw σ _ hA hA'`. Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ⟩` from `HT.sameO i i' hj hw`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨Sig, hSig, x, hx⟩` from `hA`. Take `⟨Sig', hSig', x', hx'⟩` from `hA'`. Take `⟨v, k, hv, hv', hk1, hk2, hunit⟩` from `HT.sep i i' φ hφ hj hw hne x x'`. Take `⟨p, hp1, hp2⟩` from `hx v hv`. Take `⟨p', hp1', hp2'⟩` from `hx' v hv'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hinj' : Function.Injective (iotaO D.nd D.naut i')`. Unfold `iotaO`. Simplify using `only [RingHom.coe_comp]`. Conclude with `(D.naut.iotaQC i').injective.comp ((D.naut.iotaQ i').injective.comp (IsFractionRing.injective (D.nd.O i') (FractionRing (D.nd.O i'))))`. Establish `hmuP : muPart D.nd D.naut i = muPart D.nd D.naut i'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `muPart`. Rewrite using `[hmu i i' hj hw]`. Establish `hz` using `lpChar_zero_unr D.nd D.naut v (D.naut.locG D.naut.etaTinv v) (D.naut.locG_dim _ v) (D.naut.etaTinv_def v).1`. Establish `hpar : isoLoc D.nd D.naut (twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv) v = isoLoc D.nd D.naut (twistIso D.nd D.naut (Sig' ++ [muPart D.nd D.naut i']) D.naut.etaTinv) v`. Rewrite using `[isoLoc_twist_of_laws D.nd D.naut hC _ _ v hz, isoLoc_twist_of_laws D.nd D.naut hC _ _ v hz, isoLoc_append_one, isoLoc_append_one, hSig.2.2 v hv.1, hSig'.2.2 v hv'.1, hW i i' σ v hv.1, hmuP]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpp : p.map (φ : D.nd.O i →+* D.nd.O i') = p'`. Apply `Polynomial.map_injective (iotaO D.nd D.naut i') hinj'` to reduce the goal to its premises. Rewrite using `[Polynomial.map_map, hp1', ← hpar, ← hp1]`. Use `congr 1`. Conclude with `RingHom.ext fun z => (hφ z).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set n := D.R.nV - k`. Establish `e1 : IsLocalRing.residue (D.nd.O i) (p.coeff n) = IsLocalRing.residue (D.nd.O i) ((heckePol D.nd i x v).coeff n)`. Use `congrArg (fun P => Polynomial.coeff P n) hp2` as an intermediate fact. Simplify `this` using `only [Polynomial.coeff_map]`. Establish `e2 : IsLocalRing.residue (D.nd.O i') (p'.coeff n) = IsLocalRing.residue (D.nd.O i') ((heckePol D.nd i' x' v).coeff n)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (fun P => Polynomial.coeff P n) hp2'` as an intermediate fact. Simplify `this` using `only [Polynomial.coeff_map]`. Establish `e3` using `GlobalTheory.PtLocalEig.residue_map_equiv φ e1`. Establish `hcp : φ (p.coeff n) = p'.coeff n`. Rewrite using `[← hpp, Polynomial.coeff_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hφc : φ ((-1 : D.nd.O i) ^ k * ((normV v : ℕ) : D.nd.O i) ^ (k * (k - 1) / 2) * ((D.nd.hT i v k : D.nd.X i → D.nd.O i) x)) = (-1 : D.nd.O i') ^ k * ((normV v : ℕ) : D.nd.O i') ^ (k * (k - 1) / 2) * φ ((D.nd.hT i v k : D.nd.X i → D.nd.O i) x)`. Simplify using `only [map_mul, map_pow, map_neg, map_one, map_natCast]`. Rewrite `e3` using `[hcp, e2, heckePol_coeff D.nd i x v k hk1 hk2, heckePol_coeff D.nd i' x' v k hk1 hk2, hφc]`. Establish `hq` using `GlobalTheory.PtLocalEig.normV_unit D i' v hv'.2.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : IsUnit ((-1 : D.nd.O i') ^ k * ((normV v : ℕ) : D.nd.O i') ^ (k * (k - 1) / 2))` using `((isUnit_one.neg).pow k).mul (hq.pow _)`. Establish `hdiff : IsLocalRing.residue (D.nd.O i') ((-1 : D.nd.O i') ^ k * ((normV v : ℕ) : D.nd.O i') ^ (k * (k - 1) / 2) * (φ ((D.nd.hT i v k : D.nd.X i → D.nd.O i) x) - (D.nd.hT i' v k : D.nd.X i' → D.nd.O i') x')) = 0`. Rewrite using `[mul_sub, map_sub, e3, sub_self]`. Rewrite `hdiff` using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hdiff (hc.mul hunit)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (M : Formalism.L2.MtFam D), Formalism.L2.HeckeTied D M → GlobalTheory.RowTie.CharLaws D.nd D.naut →
     (∀ (i i' : D.nd.Loc) (σ : D.what₂.FT) (v : PlE D.host), IsSplitPl D.host v →

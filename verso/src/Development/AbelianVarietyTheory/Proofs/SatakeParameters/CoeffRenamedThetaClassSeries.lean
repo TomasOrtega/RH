@@ -7,9 +7,9 @@ noncomputable section
 namespace GlobalTheory.TwV.DelB
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Establish `h1 : reV (D` using `D) rfl rfl G = G := by funext z; rfl`. Establish `h2 : (fun k : GL3Theta.Idx D a b => (k.1, Fin.cast (rfl : b = b).symm k.2.1, Fin.cast (rfl : a = a).symm k.2.2)) = id`. Use function extensionality and compare the values at `k`. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Rewrite using `[h1, h2, Finsupp.mapDomain_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem taylor_reV {D : D7} {a b N N' : ℕ} (ha : a = N) (hb : b = N') (G : TaylorLogMetric.VC D N N' → ℂ)
     (α : GL3Theta.Idx D N N' →₀ ℕ) :
@@ -22,11 +22,11 @@ theorem taylor_reV {D : D7} {a b N N' : ℕ} (ha : a = N) (hb : b = N') (G : Tay
   rw [h1, h2, Finsupp.mapDomain_id]
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex t u μ p _ X pos cls K _ ι j hN La La' s α`. Establish `hr : (X.Pj j).m + 1 = D.R.N j ∧ (X.Pj (j + 1)).m + 1 = D.R.N (j + 1)` using `⟨(Formalism.L2.G.Pend.rank_eq X j).trans hN.1.symm, (Formalism.L2.G.Pend.rank_eq X (j + 1)).trans hN.2.symm⟩`. Establish `hres : ∀ {ι' κ' : Type} (f : κ' → ι') (Th : MvPowerSeries ι' K) (n : κ' →₀ ℕ), MvPowerSeries.coeff n (resV f Th) = MvPowerSeries.coeff (n.mapDomain f) Th` using `fun _ _ _ => rfl`. Establish `hcomp : (Formalism.L2.G.Pend.kapOf X pos j ∘ eIdx X D pos j hN) = fun k => (k.1, Fin.cast hr.2.symm k.2.1, Fin.cast hr.1.symm k.2.2)`. Use function extensionality and compare the values at `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp, Formalism.L2.G.Pend.kapOf, eIdx, Sigma.eta, Equiv.apply_symm_apply]`. Apply the tactic sequence `ext <;> rfl`. Rewrite using `[hres, ← Finsupp.mapDomain_comp, MvPowerSeries.coeff_smul, MvPowerSeries.coeff_map, hcomp]`. Use `congr 2`. Use `show TaylorLogMetric.taylor D (thCl t u μ cls j La La') _ = _`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[thCl, dif_pos hr]`. Conclude with `taylor_reV hr.1 hr.2 _ α`.
+A detailed English derivation is pending.
 -/
 theorem coeff_resV_thCl : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Dx cX} (t : KerEntTied ex) (u : D.what₂.Word) (μ : D.what₂.Tup) (p : ℕ) [Fact p.Prime] (X : Sys p) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (cls : ∀ j, X.Lv.comp j → (X.Pj j).Tup → (D.chTw u μ).cls j) {K : Type} [Field K] (ι : ℂ →+* K) (j : ℕ) (hN : RankTie X D j) (La : X.Lt j) (La' : X.Lt (j + 1)) (s : K) (α : GL3Theta.Idx D (D.R.N j) (D.R.N (j + 1)) →₀ ℕ), MvPowerSeries.coeff (α.mapDomain (eIdx X D pos j hN)) (resV (kapOf X pos j) (s • MvPowerSeries.map ι (tay (thCl t u μ cls j La La')))) = s * ι (TaylorLogMetric.taylor D ((t.rd u μ).Th t.seam t.amb j (cls j La.1 La.2) (cls (j + 1) La'.1 La'.2)) α) := by
   intro D L hT Gi Gl Kc Dx cX ex t u μ p _ X pos cls K _ ι j hN La La' s α

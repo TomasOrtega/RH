@@ -23,7 +23,7 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.SchwartzTranslation
 
 /- English proof (translation)
-Introduce `{F} _ _ {_} _ c Φ hΦ` and use `GlobalTheory.SchwartzTranslate.schA_translate F c hΦ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem schA_add_const : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (c : κ → AF F),
     ∀ Φ ∈ GlobalTheory.WeilM.schA F κ, (fun y => Φ (y + c)) ∈ GlobalTheory.WeilM.schA F κ :=

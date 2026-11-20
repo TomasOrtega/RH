@@ -15,7 +15,7 @@ open scoped nonZeroDivisors ComplexConjugate
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_analytic_sub_one_div_one_sub_unit_mul_exp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsAnalyticSubOneDivOneSubUnitMulExp.lean&line=21#L21)
 -/

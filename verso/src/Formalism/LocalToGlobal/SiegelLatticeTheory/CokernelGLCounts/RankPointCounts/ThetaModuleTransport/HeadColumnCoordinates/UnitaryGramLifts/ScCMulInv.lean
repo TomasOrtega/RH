@@ -13,7 +13,7 @@ variable {E : Type} [CommRing E] (O : Subring E) (cj : E →+* E) {r : ℕ}
 def toOm {ι : Type} (X : Matrix ι ι E) (h : ∀ i j, X i j ∈ O) : Matrix ι ι O := Matrix.of fun i j => ⟨X i j, h i j⟩
 
 /- English proof (translation)
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Apply the tactic sequence `simp [scC, liftE, dlast, Matrix.fromBlocks, Matrix.one_apply, Matrix.diagonal_apply] <;>`. Apply the tactic sequence `split_ifs <;> simp_all [O.one_mem, O.zero_mem]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scC_mem (α β : E) (hα : α ∈ O) (hβ : β ∈ O) (i j : Ix r) : scC r α β i j ∈ O := by
   rcases i with i | i <;> rcases j with j | j <;>
@@ -21,11 +21,11 @@ theorem scC_mem (α β : E) (hα : α ∈ O) (hβ : β ∈ O) (i j : Ix r) : scC
     split_ifs <;> simp_all [O.one_mem, O.zero_mem]
 
 /- English proof (translation)
-Unfold `scC`. Rewrite using `[Matrix.fromBlocks_multiply]`. Establish `hL : liftE (R` using `E) r * dlast r α' = α' • liftE r := by`. Use extensionality with `a b`. Simplify using `only [liftE, dlast, Matrix.mul_diagonal, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs with h1 h2 <;> simp_all`. Establish `hD : dlast r α * dlast r α' = 1`. Rewrite using `[dlast, dlast, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `split_ifs <;> simp [h1]`. Simplify using `only [Matrix.smul_mul, hL, hD, h2, smul_smul, Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul, Matrix.mul_one, add_zero, zero_add, smul_zero]`. Rewrite using `[← Matrix.fromBlocks_one, ← add_smul]`. Use `congr 1`. Simplify using `[mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem scC_mul_inv (α β α' β' : E) (h1 : α * α' = 1) (h2 : β' = -(β * α')) :
     scC r α β * scC r α' β' = 1 := by
@@ -47,7 +47,7 @@ theorem scC_mul_inv (α β α' β' : E) (h1 : α * α' = 1) (h2 : β' = -(β * �
   simp [mul_comm]
 
 /- English proof (translation)
-Rewrite using `[scC, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul, dlast, Matrix.det_diagonal]`. Rewrite using `[Finset.prod_eq_single (Fin.last r)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/

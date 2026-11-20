@@ -26,7 +26,7 @@ def pivotRatio (F : Type) [Field F] (Ψ : Type) (n : ℕ) (q : PivotIdx Ψ n) : 
   pivotMinor (genMatFr F Ψ n q.1) q.2.1 q.2.2.1 / leadMinor (genMatFr F Ψ n q.1) q.2.1
 
 /- English proof (translation)
-Rewrite using `[PlueckerData.ofΩ, ← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply Ω (MvPolynomial (Ψ × Fin D.N × Fin D.N) Ω) (GenFrac Ω Ψ D.N)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem PlueckerData.ofΩ_eq {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {K : Type}
     [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [Algebra ℚ Ω] {E : Ψ → Type}

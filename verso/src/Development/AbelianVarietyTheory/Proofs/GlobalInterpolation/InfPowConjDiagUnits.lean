@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 namespace GlobalTheory.HeckeGal
 
 /- English proof (translation)
-Establish `h : ((infDiag k : Ideles E) : AdeleRing (𝓞 E) E).1 = ((diagUnits E k : Ideles E) : AdeleRing (𝓞 E) E).1`. Rewrite using `[infDiag_eq]`. Both sides reduce to the same expression. Simplify using `only [infPow, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem infPow_infDiag {E : Type} [Field E] [NumberField E] (n : (E →+* ℂ) → ℤ) (k : Eˣ) :
     infPow n (infDiag k) = infPow n (diagUnits E k) := by

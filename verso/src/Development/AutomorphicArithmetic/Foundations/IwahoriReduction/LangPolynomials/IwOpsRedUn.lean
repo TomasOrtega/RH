@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolyno
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.Col UpperTheory.Kd.C7
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [un, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, ZMod.coe_unitOfCoprime, map_natCast]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem iwOps_red_un {l : ℕ} [Fact l.Prime] (b : ℕ) (hb : ¬ l ∣ b) (r : ℕ) :
     red l r (un b hb (r + 1)) = un b hb r := by
@@ -10,9 +10,9 @@ private theorem iwOps_red_un {l : ℕ} [Fact l.Prime] (b : ℕ) (hb : ¬ l ∣ b
   simp only [un, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, ZMod.coe_unitOfCoprime, map_natCast]
 
 /- English proof (translation)
-Use `⟨fun r s hs x => h.int r s hs _, fun r s hs t ht x => ?_, fun r s hs x => ?_⟩` and prove the remaining obligations. Simplify using `only [UpperTheory.Kd.C7.tr]`. Rewrite using `[h.coc r s hs t ht, mul_right_comm]`. Simplify using `only [UpperTheory.Kd.C7.tr]`. Rewrite using `[h.nrm r s hs]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Use `Finset.sum_equiv (Equiv.mulRight (un b hb (r + 1))) (fun y => ?_) (fun y _ => rfl)` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Equiv.coe_mulRight]`. Rewrite using `[map_mul, iwOps_red_un, mul_left_inj]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem iwOps_tr {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     {A : ValuationSubring Ω} {Z : Sy Ω l} (h : IwI c A Z) (b : ℕ) (hb : ¬ l ∣ b) : IwI c A (tr b hb Z) := by
@@ -27,9 +27,9 @@ private theorem iwOps_tr {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact
     rw [map_mul, iwOps_red_un, mul_left_inj]
 
 /- English proof (translation)
-Introduce `l _ _ Ω _ _ _ A _ c Z h b hb`. Establish `h'` using `iwOps_tr h b hb`. Use `⟨h', fun r s hs x => ?_, fun r s hs t ht x => ?_, fun r s hs x => ?_⟩` and prove the remaining obligations. Conclude with `c.O.sub_mem (h.int r s hs x) (c.O.mul_mem (natCast_mem c.O b) (h'.int r s hs x))`. Simplify using `only [sharp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.coc r s hs t ht, h'.coc r s hs t ht]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [sharp]`. Rewrite using `[h.nrm r s hs, h'.nrm r s hs, Finset.sum_sub_distrib, Finset.mul_sum]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.C7.pIwOps :
     UpperTheory.Kd.C7.SIwOps := by

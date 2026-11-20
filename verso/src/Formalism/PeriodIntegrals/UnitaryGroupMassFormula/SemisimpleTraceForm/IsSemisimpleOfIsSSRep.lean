@@ -27,14 +27,14 @@ def stabAlg (W : Submodule k (Fin a → k)) : Subalgebra k (Matrix (Fin a) (Fin 
     exact W.smul_mem c hv
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_stabAlg_iff (W : Submodule k (Fin a → k))
     (x : Matrix (Fin a) (Fin a) k) : x ∈ stabAlg W ↔ ∀ v ∈ W, x *ᵥ v ∈ W :=
   Iff.rfl
 
 /- English proof (translation)
-Unfold `imAlg`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `(mem_stabAlg_iff W _).mpr (fun v hv => h g v hv)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem imAlg_le_stabAlg {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin a) k) (W : Submodule k (Fin a → k))
     (h : IsInv ρ W) : imAlg ρ ≤ stabAlg W := by
@@ -65,7 +65,7 @@ def liftSub (A : Subalgebra k (Matrix (Fin a) (Fin a) k)) (W : Submodule k (Fin 
     exact h x.2 v hv
 
 /- English proof (translation)
-Use extensionality with `v`. Conclude with `Iff.rfl`.
+By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem restrict_liftSub (A : Subalgebra k (Matrix (Fin a) (Fin a) k)) (W : Submodule k (Fin a → k))
     (h : A ≤ stabAlg W) : (liftSub A W h).restrictScalars k = W := by
@@ -73,7 +73,7 @@ theorem restrict_liftSub (A : Subalgebra k (Matrix (Fin a) (Fin a) k)) (W : Subm
   exact Iff.rfl
 
 /- English proof (translation)
-Introduce `g v hv`. Establish `hg : (ρ g : Matrix (Fin a) (Fin a) k) ∈ imAlg ρ` using `Algebra.subset_adjoin ⟨g, rfl⟩`. Establish `hmem : (⟨_, hg⟩ : imAlg ρ) • v ∈ N` using `N.smul_mem _ hv`. Rewrite `hmem` using `[smul_sub_def]`. Conclude with `hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInv_restrict {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin a) k)
     (N : Submodule (imAlg ρ) (Fin a → k)) : IsInv ρ (N.restrictScalars k) := by
@@ -85,7 +85,7 @@ theorem isInv_restrict {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin a) k)
   exact hmem
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_liftSub_iff (A : Subalgebra k (Matrix (Fin a) (Fin a) k))
     (W : Submodule k (Fin a → k)) (h : A ≤ stabAlg W) (v : Fin a → k) :
@@ -93,11 +93,11 @@ private theorem mem_liftSub_iff (A : Subalgebra k (Matrix (Fin a) (Fin a) k))
   Iff.rfl
 
 /- English proof (translation)
-Take `⟨W', hW', hc⟩` from `hρ (N.restrictScalars k) (isInv_restrict ρ N)`. Establish `hle : imAlg ρ ≤ stabAlg W'` using `imAlg_le_stabAlg ρ W' hW'`. Use `⟨liftSub (imAlg ρ) W' hle, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hxN hxW'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Submodule.disjoint_def.mp hc.disjoint) x hxN ((mem_liftSub_iff _ W' hle x).mp hxW')`. Rewrite using `[codisjoint_iff, Submodule.eq_top_iff']`. Introduce `x`. Establish `hx : x ∈ N.restrictScalars k ⊔ W'`. Rewrite using `[codisjoint_iff.mp hc.codisjoint]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_top`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp hx`. Conclude with `Submodule.mem_sup.mpr ⟨y, hy, z, (mem_liftSub_iff _ W' hle z).mpr hz, hyz⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_isCompl_of_isSSRep {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin a) k)
     (hρ : PI.SSAscent.IsSSRep ρ) (N : Submodule (imAlg ρ) (Fin a → k)) :
@@ -118,7 +118,7 @@ private theorem exists_isCompl_of_isSSRep {Γ : Type} [Group Γ] (ρ : Γ →* G
     exact Submodule.mem_sup.mpr ⟨y, hy, z, (mem_liftSub_iff _ W' hle z).mpr hz, hyz⟩
 
 /- English proof (translation)
-Establish `key : ∀ N : Submodule (imAlg ρ) (Fin a → k), ∃ N', IsCompl N N'` using `exists_isCompl_of_isSSRep ρ hρ`. Use `haveI : ComplementedLattice (Submodule (imAlg ρ) (Fin a → k)) := ⟨key⟩`. Conclude with `⟨⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isSemisimple_of_isSSRep {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin a) k) (hρ : IsSSRep ρ) :
     IsSemisimpleModule (imAlg ρ) (Fin a → k) := by
@@ -128,11 +128,11 @@ theorem isSemisimple_of_isSSRep {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin a) 
   exact ⟨⟩
 
 /- English proof (translation)
-Introduce `W hW`. Establish `hle : imAlg ρ ≤ stabAlg W` using `imAlg_le_stabAlg ρ W hW`. Take `⟨N', hc⟩` from `exists_isCompl (liftSub (imAlg ρ) W hle)`. Use `⟨N'.restrictScalars k, isInv_restrict ρ N', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hxW hxN'`. Conclude with `(Submodule.disjoint_def.mp hc.disjoint) x ((mem_liftSub_iff _ W hle x).mpr hxW) hxN'`. Rewrite using `[codisjoint_iff, Submodule.eq_top_iff']`. Introduce `x`. Establish `hx : x ∈ liftSub (imAlg ρ) W hle ⊔ N'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[codisjoint_iff.mp hc.codisjoint]`. Conclude with `Submodule.mem_top`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp hx`. Conclude with `Submodule.mem_sup.mpr ⟨y, (mem_liftSub_iff _ W hle y).mp hy, z, hz, hyz⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSSRep_of_isSemisimple {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin a) k)
     (h : IsSemisimpleModule (imAlg ρ) (Fin a → k)) : IsSSRep ρ := by

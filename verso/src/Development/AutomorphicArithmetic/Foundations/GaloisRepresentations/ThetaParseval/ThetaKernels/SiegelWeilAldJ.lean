@@ -15,15 +15,13 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.Ald
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d n h Y b ε e1 e2`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: IsTopologicalGroup (G2 σ Y)` using `Subgroup.instIsTopologicalGroupSubtypeMem _`. Set `j : G2 σ Y →* d.G` to `(_root_.PositivityTheory.SiegelWeilFormula.Ald.jHom_k d h b).codRestrict _ (_root_.PositivityTheory.SiegelWeilFormula.Ald.jHom_mem_k d h b ε e1 e2)`. Establish `hfr : ∀ g, inFrame d.b (j g) = blk h (inFrame b g) 1` using `fun g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[inFrame_eq]`. Use `show incM F (d.b⁻¹).1 * (_root_.PositivityTheory.SiegelWeilFormula.Ald.jHom_k d h b g).1 * incM F d.b.1 = _`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Ald.jHom_val_k]`. Simplify using `only [← Matrix.mul_assoc, incM_inv_mul, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, incM_inv_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨j, ?_, fun g => by rw [hfr]; exact blk_sub h _ _, fun g => by rw [hfr]; exact blk_out h _⟩` and prove the remaining obligations. Establish `h1 : Continuous fun g : G2 σ Y => g.1.1` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hv : Continuous fun g : G2 σ Y => (_root_.PositivityTheory.SiegelWeilFormula.Ald.jHom_k d h b g).1`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Ald.jHom_val_k, inFrame_eq]`. Conclude with `(continuous_const.matrix_mul ((((continuous_const.matrix_mul h1).matrix_mul continuous_const).matrix_fromBlocks continuous_const continuous_const continuous_const).matrix_submatrix _ _)).matrix_mul continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : Continuous (_root_.PositivityTheory.SiegelWeilFormula.Ald.jHom_k d h (Y` using `Y) b) := by`. Use `Units.continuous_iff.2 ⟨hv, ?_⟩` and prove the remaining obligations. Establish `e : (fun g : G2 σ Y => ((_root_.PositivityTheory.SiegelWeilFormula.Ald.jHom_k d h b g)⁻¹ : GL _ _).1) = fun g : G2 σ Y => (_root_.PositivityTheory.SiegelWeilFormula.Ald.jHom_k d h b g⁻¹).1`. Use function extensionality and compare the values at `fun g => by rw [map_inv]`. Rewrite using `[e]`.
-
-Conclude with `hv.comp continuous_inv`. Conclude with `hc.subtype_mk _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jEx_k : _root_.PositivityTheory.SiegelWeilFormula.Ald.JEx_k := by
   intro F E _ _ _ _ _ σ d n h Y b ε e1 e2

@@ -2,11 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 
 open CategoryTheory in
 /- English proof (translation)
-Introduce `hSum hRet`. Unfold `UpperTheory.V.Af.BA.BddOver`. Introduce `G _ S hS hB`. Unfold `UpperTheory.V.Af.CohB.Bdd at hB ⊢`. Take `⟨c, hc⟩` from `hB`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Use `⟨c, fun A => ?_⟩` and prove the remaining obligations. Take `⟨π, ι, hπι⟩` from `hRet G S hS A`. Establish `hq : ∀ q, Module.rank ℂ ↑(groupCohomology A q) ≤ Module.rank ℂ ↑(groupCohomology (Rep.res S.subtype A) q)`. Introduce `q`. Establish `h1` using `hSum G Unit A (fun _ => Rep.coind S.subtype (Rep.res S.subtype A)) (fun _ => π) (fun _ => ι) (by rw [Fintype.sum_unique]; exact hπι) q`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[Fintype.sum_unique, ((groupCohomology.coindIso (Rep.res S.subtype A) q).toLinearEquiv).rank_eq]`. Conclude with `h1`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.adelic_rep_bounded_over_of_sum_bound_coind_retract :
     UpperTheory.V.Af.CohB.SumBound → UpperTheory.V.Af.BA.CoindRetract → UpperTheory.V.Af.BA.BddOver := by

@@ -11,9 +11,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε 
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
 
 /- English proof (translation)
-Take `⟨w, -, hw⟩` from `Submodule.mem_map.mp (Submodule.mem_comap.mp hx)`. Establish `hsm : IsSmoothVecU ε (rreg ε) ((x : Hlam ε Ψ v₀) : L2 ε)`. Establish `hw' : (w : L2 ε) = (x : L2 ε)` using `hw`. Rewrite using `[← hw']`. Conclude with `(mem_smD_iff ε (rreg ε) _).mp w.2`.
-
-Conclude with `(isSmoothVecU_restrict (rreg_isURepOn ε) (Hlam ε Ψ v₀) (rreg_mem_Hlam hgap hP hv₀) x).mpr hsm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigLam_kfin_smooth (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (x : Hlam ε Ψ v₀) (hx : x ∈ kfinLam ε Ψ v₀) :
     IsSmoothVecU ε (sigLam ε Ψ v₀) x := by

@@ -50,242 +50,242 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Spher
 namespace UpperTheory.Gal.W2
 
 /- English proof (translation)
-The claim follows from `tanDeriv_of`.
+A detailed English derivation is pending.
 -/
 theorem TanDeriv_holds : TanDeriv := tanDeriv_of
 
 /- English proof (translation)
-The claim follows from `flatAffine_of`.
+A detailed English derivation is pending.
 -/
 theorem FlatAffine_holds : FlatAffine := flatAffine_of
 
 /- English proof (translation)
-The claim follows from `conjCharpoly_of`.
+A detailed English derivation is pending.
 -/
 theorem ConjCharpoly_holds : ConjCharpoly := conjCharpoly_of
 
 /- English proof (translation)
-The claim follows from `tanChart_of TanDeriv_holds FlatAffine_holds ConjCharpoly_holds`.
+A detailed English derivation is pending.
 -/
 theorem TanChart_holds : TanChart := tanChart_of TanDeriv_holds FlatAffine_holds ConjCharpoly_holds
 
 /- English proof (translation)
-The claim follows from `tanExists_of`.
+A detailed English derivation is pending.
 -/
 theorem TanExists_holds : TanExists := tanExists_of
 
 /- English proof (translation)
-The claim follows from `flatComp_of`.
+A detailed English derivation is pending.
 -/
 theorem FlatComp_holds : FlatComp := flatComp_of
 
 /- English proof (translation)
-The claim follows from `flatPre_of`.
+A detailed English derivation is pending.
 -/
 theorem FlatPre_holds : FlatPre := flatPre_of
 
 /- English proof (translation)
-The claim follows from `pbFlat_of FlatAffine_holds`.
+A detailed English derivation is pending.
 -/
 theorem PbFlat_holds : PbFlat := pbFlat_of FlatAffine_holds
 
 /- English proof (translation)
-The claim follows from `expImm0_of`.
+A detailed English derivation is pending.
 -/
 theorem ExpImm0_holds : ExpImm0 := expImm0_of
 
 /- English proof (translation)
-The claim follows from `expImm_of FlatComp_holds FlatPre_holds PbFlat_holds ExpImm0_holds`.
+A detailed English derivation is pending.
 -/
 theorem ExpImm_holds : ExpImm := expImm_of FlatComp_holds FlatPre_holds PbFlat_holds ExpImm0_holds
 
 /- English proof (translation)
-The claim follows from `holPi_of`.
+A detailed English derivation is pending.
 -/
 theorem HolPi_holds : HolPi := holPi_of
 
 /- English proof (translation)
-The claim follows from `perNear_of`.
+A detailed English derivation is pending.
 -/
 theorem PerNear_holds : PerNear := perNear_of
 
 /- English proof (translation)
-The claim follows from `perCoordLoc_of`.
+A detailed English derivation is pending.
 -/
 theorem PerCoordLoc_holds : PerCoordLoc := perCoordLoc_of
 
 /- English proof (translation)
-The claim follows from `perLin_of`.
+A detailed English derivation is pending.
 -/
 theorem PerLin_holds : PerLin := perLin_of
 
 /- English proof (translation)
-The claim follows from `adExists_of`.
+A detailed English derivation is pending.
 -/
 theorem AdExists_holds : AdExists := adExists_of
 
 /- English proof (translation)
-The claim follows from `baseImm_of PerNear_holds PerCoordLoc_holds`.
+A detailed English derivation is pending.
 -/
 theorem BaseImm_holds : BaseImm := baseImm_of PerNear_holds PerCoordLoc_holds
 
 /- English proof (translation)
-The claim follows from `ptFibre_of`.
+A detailed English derivation is pending.
 -/
 theorem PtFibre_holds : PtFibre := ptFibre_of
 
 /- English proof (translation)
-The claim follows from `ptHol_of HolPi_holds PtFibre_holds`.
+A detailed English derivation is pending.
 -/
 theorem PtHol_holds : PtHol := ptHol_of HolPi_holds PtFibre_holds
 
 /- English proof (translation)
-The claim follows from `ptImm_of FlatComp_holds FlatPre_holds PtFibre_holds ExpImm_holds`.
+A detailed English derivation is pending.
 -/
 theorem PtImm_holds : PtImm := ptImm_of FlatComp_holds FlatPre_holds PtFibre_holds ExpImm_holds
 
 /- English proof (translation)
-The claim follows from `triCharpoly_of`.
+A detailed English derivation is pending.
 -/
 theorem TriCharpoly_holds : TriCharpoly := triCharpoly_of
 
 /- English proof (translation)
-The claim follows from `detOfCharpoly_of`.
+A detailed English derivation is pending.
 -/
 theorem DetOfCharpoly_holds : DetOfCharpoly := detOfCharpoly_of
 
 /- English proof (translation)
-The claim follows from `corrChart_of AdExists_holds PerLin_holds PtFibre_holds`.
+A detailed English derivation is pending.
 -/
 theorem CorrChart_holds : CorrChart := corrChart_of AdExists_holds PerLin_holds PtFibre_holds
 
 /- English proof (translation)
-The claim follows from `locTan_of TanChart_holds PerNear_holds BaseImm_holds PtHol_holds PtImm_holds PtFibre_holds CorrChart_holds TriCharpoly_holds`.
+A detailed English derivation is pending.
 -/
 theorem LocTan_holds : LocTan := locTan_of TanChart_holds PerNear_holds BaseImm_holds PtHol_holds PtImm_holds PtFibre_holds CorrChart_holds TriCharpoly_holds
 
 /- English proof (translation)
-The claim follows from `detReal_of`.
+A detailed English derivation is pending.
 -/
 theorem DetReal_holds : DetReal := detReal_of
 
 /- English proof (translation)
-The claim follows from `torusCount_of DetReal_holds`.
+A detailed English derivation is pending.
 -/
 theorem TorusCount_holds : TorusCount := torusCount_of DetReal_holds
 
 /- English proof (translation)
-The claim follows from `piLattice_of`.
+A detailed English derivation is pending.
 -/
 theorem PiLattice_holds : PiLattice := piLattice_of
 
 /- English proof (translation)
-The claim follows from `locSum_of LocTan_holds TorusCount_holds PiLattice_holds PtFibre_holds CorrChart_holds DetOfCharpoly_holds`.
+A detailed English derivation is pending.
 -/
 theorem LocSum_holds : LocSum := locSum_of LocTan_holds TorusCount_holds PiLattice_holds PtFibre_holds CorrChart_holds DetOfCharpoly_holds
 
 /- English proof (translation)
-The claim follows from `simDiag_of`.
+A detailed English derivation is pending.
 -/
 theorem SimDiag_holds : SimDiag := simDiag_of
 
 /- English proof (translation)
-The claim follows from `extendEmb_of`.
+A detailed English derivation is pending.
 -/
 theorem ExtendEmb_holds : ExtendEmb := extendEmb_of
 
 /- English proof (translation)
-The claim follows from `killsMat_of`.
+A detailed English derivation is pending.
 -/
 theorem KillsMat_holds : KillsMat := killsMat_of
 
 /- English proof (translation)
-The claim follows from `hSep_of`.
+A detailed English derivation is pending.
 -/
 theorem HSep_holds : HSep := hSep_of
 
 /- English proof (translation)
-The claim follows from `diagExists_of SimDiag_holds ExtendEmb_holds KillsMat_holds HSep_holds`.
+A detailed English derivation is pending.
 -/
 theorem DiagExists_holds : DiagExists := diagExists_of SimDiag_holds ExtendEmb_holds KillsMat_holds HSep_holds
 
 /- English proof (translation)
-The claim follows from `typeCount_of`.
+A detailed English derivation is pending.
 -/
 theorem TypeCount_holds : TypeCount := typeCount_of
 
 /- English proof (translation)
-The claim follows from `traceLat_of`.
+A detailed English derivation is pending.
 -/
 theorem TraceLat_holds : TraceLat := traceLat_of
 
 /- English proof (translation)
-The claim follows from `traceDual_of`.
+A detailed English derivation is pending.
 -/
 theorem TraceDual_holds : TraceDual := traceDual_of
 
 /- English proof (translation)
-The claim follows from `newtonPoly_of`.
+A detailed English derivation is pending.
 -/
 theorem NewtonPoly_holds : NewtonPoly := newtonPoly_of
 
 /- English proof (translation)
-The claim follows from `powSumRat_of TraceLat_holds TraceDual_holds`.
+A detailed English derivation is pending.
 -/
 theorem PowSumRat_holds : PowSumRat := powSumRat_of TraceLat_holds TraceDual_holds
 
 /- English proof (translation)
-The claim follows from `rootsFull_of TypeCount_holds PowSumRat_holds NewtonPoly_holds KillsMat_holds`.
+A detailed English derivation is pending.
 -/
 theorem RootsFull_holds : RootsFull := rootsFull_of TypeCount_holds PowSumRat_holds NewtonPoly_holds KillsMat_holds
 
 /- English proof (translation)
-The claim follows from `markDiag_of TypeCount_holds`.
+A detailed English derivation is pending.
 -/
 theorem MarkDiag_holds : MarkDiag := markDiag_of TypeCount_holds
 
 /- English proof (translation)
-The claim follows from `tspDiag_of`.
+A detailed English derivation is pending.
 -/
 theorem TspDiag_holds : TspDiag := tspDiag_of
 
 /- English proof (translation)
-The claim follows from `ballChar_of TypeCount_holds TspDiag_holds`.
+A detailed English derivation is pending.
 -/
 theorem BallChar_holds : BallChar := ballChar_of TypeCount_holds TspDiag_holds
 
 /- English proof (translation)
-The claim follows from `cspDim_of SimDiag_holds ExtendEmb_holds TypeCount_holds MarkDiag_holds BallChar_holds`.
+A detailed English derivation is pending.
 -/
 theorem CspDim_holds : CspDim := cspDim_of SimDiag_holds ExtendEmb_holds TypeCount_holds MarkDiag_holds BallChar_holds
 
 /- English proof (translation)
-The claim follows from `fibDet_of`.
+A detailed English derivation is pending.
 -/
 theorem FibDet_holds : FibDet := fibDet_of
 
 /- English proof (translation)
-The claim follows from `fibW_of`.
+A detailed English derivation is pending.
 -/
 theorem FibW_holds : FibW := fibW_of
 
 /- English proof (translation)
-The claim follows from `evIntegral_of`.
+A detailed English derivation is pending.
 -/
 theorem EvIntegral_holds : EvIntegral := evIntegral_of
 
 /- English proof (translation)
-The claim follows from `eigTop_of AdExists_holds DiagExists_holds TypeCount_holds RootsFull_holds MarkDiag_holds BallChar_holds FibDet_holds FibW_holds EvIntegral_holds`.
+A detailed English derivation is pending.
 -/
 theorem EigTop_holds : EigTop := eigTop_of AdExists_holds DiagExists_holds TypeCount_holds RootsFull_holds MarkDiag_holds BallChar_holds FibDet_holds FibW_holds EvIntegral_holds
 
 /- English proof (translation)
-The claim follows from `rootSumW_of`.
+A detailed English derivation is pending.
 -/
 theorem RootSumW_holds : RootSumW := rootSumW_of
 
 /- English proof (translation)
-The claim follows from `rootSumWOff_of`.
+A detailed English derivation is pending.
 -/
 theorem RootSumWOff_holds : RootSumWOff := rootSumWOff_of
 

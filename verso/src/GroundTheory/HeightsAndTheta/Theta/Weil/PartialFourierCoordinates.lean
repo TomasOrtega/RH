@@ -25,7 +25,7 @@ private def sliceInl : (κ → mixedSpace K) →L[ℝ] ((ι ⊕ κ) → mixedSpa
       (fun j ↦ ContinuousLinearMap.proj j) s
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Apply the tactic sequence `cases s <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sliceInl_apply (u : κ → mixedSpace K) :
     (sliceInl (ι := ι) u : (ι ⊕ κ) → mixedSpace K) = Sum.elim (0 : ι → mixedSpace K) u := by
@@ -33,9 +33,9 @@ private theorem sliceInl_apply (u : κ → mixedSpace K) :
   cases s <;> rfl
 
 /- English proof (translation)
-Establish `h : (fun u : κ → mixedSpace K ↦ (Sum.elim c u : (ι ⊕ κ) → mixedSpace K)) = fun u ↦ sliceInl (ι` using `ι) u + Sum.elim c 0 := by`. Use function extensionality and compare the values at `u s`. Rewrite using `[sliceInl_apply]`. Apply the tactic sequence `cases s <;> simp`. Rewrite using `[h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(sliceInl (K := K) (ι := ι) (κ := κ)).hasTemperateGrowth.add (Function.HasTemperateGrowth.const _)`.
+A detailed English derivation is pending.
 -/
 private theorem sumElim_hasTemperateGrowth (c : ι → mixedSpace K) :
     (fun u : κ → mixedSpace K ↦ (Sum.elim c u : (ι ⊕ κ) → mixedSpace K)).HasTemperateGrowth := by
@@ -49,7 +49,7 @@ private theorem sumElim_hasTemperateGrowth (c : ι → mixedSpace K) :
     (Function.HasTemperateGrowth.const _)
 
 /- English proof (translation)
-Use `⟨1, 1, fun u ↦ ?_⟩` and prove the remaining obligations. Establish `hle : ‖u‖ ≤ ‖(Sum.elim c u : (ι ⊕ κ) → mixedSpace K)‖` using `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).mpr fun j ↦ by`. Simplify using `using norm_le_pi_norm (Sum.elim c u : (ι ⊕ κ) → mixedSpace K) (Sum.inr j)`. Rewrite using `[pow_one, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem sumElim_upper (c : ι → mixedSpace K) :
     ∃ (k : ℕ) (C : ℝ), ∀ u : κ → mixedSpace K,
@@ -72,11 +72,11 @@ theorem schwartzMapSliceSumElim_apply (c : ι → mixedSpace K) (φ : 𝓢((ι �
     (u : κ → mixedSpace K) : schwartzMapSliceSumElim c φ u = φ (Sum.elim c u) := rfl
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[mem_finiteSchwartzBruhatPi]`. Take `⟨hl, hc⟩` from `hg`. Establish `hcont : Continuous fun v : κ → 𝔸ᶠ[K] ↦ (Sum.elim c v : (ι ⊕ κ) → 𝔸ᶠ[K])` using `continuous_pi fun s ↦ by`. Consider the cases of `s with`. Consider the case `inl i => exact continuous_const`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inr j => exact continuous_apply j`. Use `⟨hl.comp_continuous hcont, ?_⟩` and prove the remaining obligations. Establish `hπ : Continuous fun w : (ι ⊕ κ) → 𝔸ᶠ[K] ↦ w ∘ Sum.inr` using `continuous_pi fun j ↦ continuous_apply (Sum.inr j)`. Use `HasCompactSupport.intro (hc.image hπ) fun v hv ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hv ⟨Sum.elim c v, subset_tsupport _ h, Sum.elim_comp_inr c v⟩`.
+A detailed English derivation is pending.
 -/
 theorem finiteSchwartzBruhatPi_sumElim_mem {g : ((ι ⊕ κ) → 𝔸ᶠ[K]) → ℂ} (hg : g ∈ finiteSchwartzBruhatPi K)
     (c : ι → 𝔸ᶠ[K]) : (fun v : κ → 𝔸ᶠ[K] ↦ g (Sum.elim c v)) ∈ finiteSchwartzBruhatPi K := by
@@ -95,7 +95,7 @@ theorem finiteSchwartzBruhatPi_sumElim_mem {g : ((ι ⊕ κ) → 𝔸ᶠ[K]) →
   exact hv ⟨Sum.elim c v, subset_tsupport _ h, Sum.elim_comp_inr c v⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Apply the tactic sequence `cases s <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem infPartPi_sumElim (a : ι → 𝔸[K]) (x : κ → 𝔸[K]) :
     infPartPi (Sum.elim a x : (ι ⊕ κ) → 𝔸[K]) = Sum.elim (infPartPi a) (infPartPi x) := by
@@ -103,7 +103,7 @@ theorem infPartPi_sumElim (a : ι → 𝔸[K]) (x : κ → 𝔸[K]) :
   cases s <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Apply the tactic sequence `cases s <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem finPartPi_sumElim (a : ι → 𝔸[K]) (x : κ → 𝔸[K]) :
     finPartPi (Sum.elim a x : (ι ⊕ κ) → 𝔸[K]) = Sum.elim (finPartPi a) (finPartPi x) := by
@@ -111,11 +111,11 @@ theorem finPartPi_sumElim (a : ι → 𝔸[K]) (x : κ → 𝔸[K]) :
   cases s <;> rfl
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Establish `h : (fun x : κ → 𝔸[K] ↦ schwartzBruhatTensorPi φ g (Sum.elim a x)) = schwartzBruhatTensorPi (schwartzMapSliceSumElim (infPartPi a) φ) (fun v ↦ g (Sum.elim (finPartPi a) v))`. Use function extensionality and compare the values at `x`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [schwartzBruhatTensorPi, schwartzMapSliceSumElim_apply, infPartPi_sumElim, finPartPi_sumElim]`. Rewrite using `[h]`. Conclude with `schwartzBruhatTensorPi_mem _ (finiteSchwartzBruhatPi_sumElim_mem hg _)`. Consider the case `zero => exact zero_mem _`. Consider the case `add F G _ _ hF hG => exact add_mem hF hG`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c F _ hF => exact Submodule.smul_mem _ c hF`.
+A detailed English derivation is pending.
 -/
 theorem schwartzBruhatPi_sumElim_mem {F : ((ι ⊕ κ) → 𝔸[K]) → ℂ}
     (hF : F ∈ schwartzBruhatPi K (ι ⊕ κ)) (a : ι → 𝔸[K]) :
@@ -145,7 +145,7 @@ variable {K W P₁ P₂ Q₁ Q₂ : Type*} [Field K] [AddCommGroup W] [Module K 
   {ω : LinearMap.BilinForm K W}
 
 /- English proof (translation)
-Establish `hw : F.incP₂ p = 0` using `hω.1 _ fun w' ↦ by`. Rewrite using `[F.form, FourPieces.incP₂_apply, LinearEquiv.apply_symm_apply]`. Simplify using `[h]`. Establish `h2` using `congrArg (fun w ↦ (F.e w).1.2) hw`. Simplify `h2` using `[FourPieces.incP₂_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem FourPieces.a₂_eq_zero_left (hω : ω.Nondegenerate) (F : FourPieces ω P₁ P₂ Q₁ Q₂) {p : P₂}
     (h : ∀ q, F.a₂ p q = 0) : p = 0 := by
@@ -156,7 +156,7 @@ theorem FourPieces.a₂_eq_zero_left (hω : ω.Nondegenerate) (F : FourPieces ω
   simpa [FourPieces.incP₂_apply] using h2
 
 /- English proof (translation)
-Establish `hw : F.incQ₂ q = 0` using `hω.2 _ fun w' ↦ by`. Rewrite using `[F.form, FourPieces.incQ₂_apply, LinearEquiv.apply_symm_apply]`. Simplify using `[h]`. Establish `h2` using `congrArg (fun w ↦ (F.e w).2.2) hw`. Simplify `h2` using `[FourPieces.incQ₂_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem FourPieces.a₂_eq_zero_right (hω : ω.Nondegenerate) (F : FourPieces ω P₁ P₂ Q₁ Q₂) {q : Q₂}
     (h : ∀ p, F.a₂ p q = 0) : q = 0 := by
@@ -169,9 +169,9 @@ theorem FourPieces.a₂_eq_zero_right (hω : ω.Nondegenerate) (F : FourPieces �
 variable [FiniteDimensional K P₂] [FiniteDimensional K Q₂]
 
 /- English proof (translation)
-Establish `h1 : Function.Injective F.a₂` using `(injective_iff_map_eq_zero _).mpr fun p hp ↦ FourPieces.a₂_eq_zero_left hω F fun q ↦ by rw [hp]; rfl`. Establish `h2 : Function.Injective F.a₂.flip` using `(injective_iff_map_eq_zero _).mpr fun q hq ↦ FourPieces.a₂_eq_zero_right hω F fun p ↦ by`. Use `LinearMap.congr_fun hq p` as an intermediate fact. Simplify using `using this`. Establish `i1` using `LinearMap.finrank_le_finrank_of_injective h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `i2` using `LinearMap.finrank_le_finrank_of_injective h2`. Rewrite `i1`, `i2` using `[Subspace.dual_finrank_eq]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem FourPieces.finrank_P₂_eq_finrank_Q₂ (hω : ω.Nondegenerate) (F : FourPieces ω P₁ P₂ Q₁ Q₂) :
     finrank K P₂ = finrank K Q₂ := by
@@ -207,7 +207,7 @@ def FourPieces.a₂PairedBasis (hω : ω.Nondegenerate) (F : FourPieces ω P₁ 
   (Module.finBasis K P₂).dualBasis.map (FourPieces.a₂DualEquiv hω F hξ).symm
 
 /- English proof (translation)
-Establish `h : FourPieces.a₂DualEquiv hω F hξ (FourPieces.a₂PairedBasis hω F hξ j) = (Module.finBasis K P₂).dualBasis j`. Rewrite using `[FourPieces.a₂PairedBasis, Basis.map_apply, LinearEquiv.apply_symm_apply]`. Establish `h2` using `LinearMap.congr_fun h (Module.finBasis K P₂ i)`. Rewrite `h2` using `[FourPieces.a₂DualEquiv_apply, Basis.dualBasis_apply_self]`. Rewrite using `[← h2, ← mul_assoc, inv_mul_cancel₀ hξ, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem FourPieces.a₂_a₂PairedBasis (hω : ω.Nondegenerate) (F : FourPieces ω P₁ P₂ Q₁ Q₂) {ξ : K}
     (hξ : ξ ≠ 0) (i j : Fin (finrank K P₂)) :
@@ -228,9 +228,9 @@ variable {K W P₁ P₂ Q₁ Q₂ : Type*} [Field K] [NumberField K] [AddCommGro
   {ω : LinearMap.BilinForm K W}
 
 /- English proof (translation)
-Establish `hij : ∀ i j, ω.baseChange 𝔸[K] (F.incP₂.baseChange 𝔸[K] ((1 : 𝔸[K]) ⊗ₜ Module.finBasis K P₂ i)) (F.incQ₂.baseChange 𝔸[K] ((1 : 𝔸[K]) ⊗ₜ FourPieces.a₂PairedBasis hω F hξ j)) = algebraMap K 𝔸[K] ξ⁻¹ * (if i = j then 1 else 0)`. Introduce `i j`. Establish `h` using `F.adelicPairing₂_tmul 1 1 (Module.finBasis K P₂ i) (FourPieces.a₂PairedBasis hω F hξ j)`. Rewrite `h` using `[FourPieces.adelicPairing₂]`. Rewrite using `[h, FourPieces.a₂_a₂PairedBasis, mul_one, map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[adelicCoord_symm_apply, adelicCoord_symm_apply]`. Simplify using `only [FourPieces.adelicPairing₂, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, hij, mul_ite, mul_zero, mul_one, Finset.mem_univ, if_true, Finset.sum_ite_eq']`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ by ring`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FourPieces.adelicPairing₂_adelicCoord_symm [FiniteDimensional K P₂] [FiniteDimensional K Q₂]
     (hω : ω.Nondegenerate) (F : FourPieces ω P₁ P₂ Q₁ Q₂) {ξ : K} (hξ : ξ ≠ 0)
@@ -254,7 +254,7 @@ theorem FourPieces.adelicPairing₂_adelicCoord_symm [FiniteDimensional K P₂] 
   exact Finset.sum_congr rfl fun i _ ↦ by ring
 
 /- English proof (translation)
-Apply `(adelicProdEquiv K P₁ P₂).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, adelicCoord_symm_apply, adelicCoord_symm_apply, adelicCoord_symm_apply, map_sum, Fintype.sum_sum_type]`. Apply the tactic sequence `ext <;> simp [Basis.prod_apply, Prod.fst_sum, Prod.snd_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adelicCoord_prod_symm_sumElim [FiniteDimensional K P₁] [FiniteDimensional K P₂] {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
     [DecidableEq κ] (b₁ : Basis ι K P₁) (b₂ : Basis κ K P₂) (a : ι → 𝔸[K]) (x : κ → 𝔸[K]) :
@@ -266,9 +266,9 @@ theorem adelicCoord_prod_symm_sumElim [FiniteDimensional K P₁] [FiniteDimensio
   ext <;> simp [Basis.prod_apply, Prod.fst_sum, Prod.snd_sum]
 
 /- English proof (translation)
-Rewrite `hφ` using `[mem_schwartzBruhatPoints_iff ((Module.finBasis K P₁).prod (Module.finBasis K P₂))]`. Rewrite using `[mem_schwartzBruhatPoints_iff (Module.finBasis K P₂)]`. Establish `h` using `schwartzBruhatPi_sumElim_mem hφ (adelicCoord (Module.finBasis K P₁) p₁)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, adelicCoord_prod_symm_sumElim, LinearEquiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem schwartzBruhatPoints_prodSlice_mem [FiniteDimensional K P₁] [FiniteDimensional K P₂]
     {φ : AdelicPoints K (P₁ × P₂) → ℂ} (hφ : φ ∈ schwartzBruhatPoints K (P₁ × P₂))
@@ -282,15 +282,13 @@ theorem schwartzBruhatPoints_prodSlice_mem [FiniteDimensional K P₁] [FiniteDim
   simp only [Function.comp_apply, adelicCoord_prod_symm_sumElim, LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `set b := Module.finBasis K P₂`. Use `set c := FourPieces.a₂PairedBasis hω F hξ`. Use `set G := f ∘ (adelicCoord b).symm with hGdef`. Establish `hG : G ∈ schwartzBruhatPi K (Fin (finrank K P₂))` using `(mem_schwartzBruhatPoints_iff b).mp hf`. Take `⟨x₀, rfl⟩ : ∃ x₀, (adelicCoord b).symm x₀ = p₂` from `⟨adelicCoord b p₂, LinearEquiv.symm_apply_apply _ _⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hchar : ∀ x y, (ψ (F.adelicPairing₂ ((adelicCoord b).symm x) ((adelicCoord c).symm y)) : ℂ) = adelicChar K (∑ i, x i * y i)`. Introduce `x y`. Rewrite using `[hψ, FourPieces.adelicPairing₂_adelicCoord_symm, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hξ, map_one, one_mul]`. Establish `hchar' : ∀ y, (ψ (-F.adelicPairing₂ ((adelicCoord b).symm x₀) ((adelicCoord c).symm y)) : ℂ) = adelicChar K (∑ i, y i * (-x₀) i)`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[hψ, FourPieces.adelicPairing₂_adelicCoord_symm, mul_neg, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hξ, map_one, one_mul, ← Finset.sum_neg_distrib]`. Use `congr 2`. Conclude with `Finset.sum_congr rfl fun i _ ↦ by rw [Pi.neg_apply]; ring`. Establish `hinner : ∀ y, ∫ p, f p * (ψ (F.adelicPairing₂ p ((adelicCoord c).symm y)) : ℂ) ∂adelicPointsMeasure K P₂ = adelicFourierPi K G y`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[adelicPointsMeasure_eq_map b, (measurableEmbedding_adelicCoord_symm b).integral_map]`. Simplify using `only [hchar]`. Both sides reduce to the same expression. Rewrite using `[adelicPointsMeasure_eq_map c, (measurableEmbedding_adelicCoord_symm c).integral_map]`. Simplify using `only [hinner, hchar']`.
-
-Establish `h` using `congrFun (adelicFourierPi_adelicFourierPi hG) (-x₀)`. Simplify using `only [neg_neg] at h`. Conclude with `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem FourPieces.adelicFourierInversion_P₂ [FiniteDimensional K P₂] [FiniteDimensional K Q₂]
     (hω : ω.Nondegenerate) (F : FourPieces ω P₁ P₂ Q₁ Q₂) {ψ : AddChar 𝔸[K] Circle} {ξ : K}

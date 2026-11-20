@@ -41,7 +41,7 @@ def pt : Fin (N + 1) → Shrink.{w} (coneField (pp.comap (oneBlock (S := k) (N :
   fun i => coneHom pp (X ⟨(), i⟩)
 
 /- English proof (translation)
-Use `show (Shrink.algEquiv k (coneField (pp.comap (oneBlock (S := k) (N := N)).toRingHom))).symm (algebraMap _ (coneField (pp.comap (oneBlock (S := k) (N := N)).toRingHom)) (Ideal.Quotient.mk (pp.comap (oneBlock (S := k) (N := N)).toRingHom) f)) = 0 ↔ _`. Rewrite using `[map_eq_zero_iff _ (AlgEquiv.injective _), IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coneHom_eq_zero_iff (f : OneRing k N) :
     coneHom.{u, w} pp f = 0 ↔ oneBlock (S := k) (N := N) f ∈ pp := by
@@ -52,9 +52,9 @@ theorem coneHom_eq_zero_iff (f : OneRing k N) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply]`. Use `congrFun (congrArg DFunLike.coe (MvPolynomial.algHom_ext fun v => ?_)) f` and prove the remaining obligations. Break down `v with ⟨⟨⟩, i⟩` into its components or cases. Rewrite using `[AlgHom.comp_apply]`. Use `show aeval (pt.{u, w} pp) (rename (fun v : Σ _ : Unit, Fin (N + 1) => v.2) (X ⟨(), i⟩)) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rename_X, aeval_X]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem aeval_pt_oneBlock (f : OneRing k N) :
     aeval (pt.{u, w} pp) (oneBlock (S := k) (N := N) f) = coneHom pp f := by
@@ -67,7 +67,7 @@ theorem aeval_pt_oneBlock (f : OneRing k N) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[oneBlock, rename_rename]`. Conclude with `(congrArg (fun g => rename g f) (HilbertPositive.blockEquiv N).self_comp_symm).trans (rename_id_apply f)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneBlock_surjective (f : Poly k N) :
     oneBlock (S := k) (N := N) (rename (HilbertPositive.blockEquiv N).symm f) = f := by
@@ -75,15 +75,15 @@ theorem oneBlock_surjective (f : Poly k N) :
   exact (congrArg (fun g => rename g f) (HilbertPositive.blockEquiv N).self_comp_symm).trans (rename_id_apply f)
 
 /- English proof (translation)
-Rewrite using `[← oneBlock_surjective f, aeval_pt_oneBlock, coneHom_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_pt_eq_zero_iff (f : Poly k N) : aeval (pt.{u, w} pp) f = 0 ↔ f ∈ pp := by
   rw [← oneBlock_surjective f, aeval_pt_oneBlock, coneHom_eq_zero_iff]
 
 /- English proof (translation)
-Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Rewrite using `[← sum_homogeneousComponent f]`. Use `Ideal.sum_mem _ fun d _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(aeval_pt_eq_zero_iff pp _).1 ((mem_primeOf_of_isHomogeneous _ (homogeneousComponent_isHomogeneous d f)).1 (homogeneousComponent_mem_primeOf _ hf d))`. Introduce `hf`. Rewrite using `[← sum_homogeneousComponent f]`. Conclude with `Ideal.sum_mem _ fun d _ => (mem_primeOf_of_isHomogeneous _ (homogeneousComponent_isHomogeneous d f)).2 ((aeval_pt_eq_zero_iff pp _).2 (hh f hf d))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeOf_pt (hh : ∀ p ∈ pp, ∀ d : ℕ, homogeneousComponent d p ∈ pp) :
     primeOf (S := k) (pt.{u, w} pp) = pp := by
@@ -100,9 +100,9 @@ theorem primeOf_pt (hh : ∀ p ∈ pp, ∀ d : ℕ, homogeneousComponent d p ∈
       (homogeneousComponent_isHomogeneous d f)).2 ((aeval_pt_eq_zero_iff pp _).2 (hh f hf d))
 
 /- English proof (translation)
-Establish `h1 : f.IsHomogeneous (b ())`. Introduce `d hd`. Use `congrFun (hf hd) ()` as an intermediate fact. Rewrite `this` using `[HilbertPositive.weight_blockWeight_one]`. Use `show Finsupp.weight (fun _ => 1) d = b ()`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finsupp.degree_eq_weight_one]`. Conclude with `this`. Conclude with `h1.rename_isHomogeneous`.
+A detailed English derivation is pending.
 -/
 theorem isHomogeneous_oneBlock {f : OneRing k N} {b : Unit → ℕ} (hf : NumbersDVR.IsMultiHomog f b) :
     (oneBlock (S := k) (N := N) f).IsHomogeneous (b ()) := by
@@ -116,17 +116,17 @@ theorem isHomogeneous_oneBlock {f : OneRing k N} {b : Unit → ℕ} (hf : Number
   exact h1.rename_isHomogeneous
 
 /- English proof (translation)
-Use `set P := pp.comap (oneBlock (S := k) (N := N)).toRingHom`. Establish `hΦ : ∀ f : OneRing k N, (Shrink.algEquiv k (coneField P)).symm (algebraMap (OneRing k N ⧸ P) (coneField P) (Ideal.Quotient.mk P f)) = aeval (pt.{u, w} pp) (oneBlock (S` using `k) (N := N) f) := fun f => by`. Rewrite using `[aeval_pt_oneBlock]`. Both sides reduce to the same expression. Take `⟨i, hi⟩` from `hrel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyi : pt.{u, w} pp i ≠ 0`. Rewrite using `[← aeval_X (R := k) (pt.{u, w} pp) i, Ne, aeval_pt_eq_zero_iff]`. Conclude with `hi`. Establish `hmap : (FieldNumbers.homFracDegZero P).map (Shrink.algEquiv k (coneField P)).symm.toAlgHom = funField (k` using `k) (pt.{u, w} pp) := by`. Rewrite using `[FieldNumbers.homFracDegZero, IntermediateField.adjoin_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `le_antisymm (IntermediateField.adjoin_le_iff.mpr ?_) (IntermediateField.adjoin_le_iff.mpr ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨b, f, g, hf, hg, hgP, rfl⟩, rfl⟩`. Establish `hF` using `isHomogeneous_oneBlock hf`. Establish `hG` using `isHomogeneous_oneBlock hg`. Establish `hchart : ∀ (F : Poly k N), F.IsHomogeneous (b ()) → aeval (pt.{u, w} pp) F / pt.{u, w} pp i ^ b () ∈ funField (k` using `k) (pt.{u, w} pp) := fun F hF' => VeryAmpleDim.mem_funField_of_mem_chartRing hyi ⟨F, X i ^ b (), b (), pow_mem (X_mem_monos (Finset.mem_singleton_self i)) _, hF', isHomogeneous_X_pow _ _, by rw [map_pow, aeval_X]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `IntermediateField.div_mem _ (hchart _ hF) (hchart _ hG) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[div_div_div_cancel_right₀ (pow_ne_zero (b ()) hyi), ← hΦ, ← hΦ, map_div₀]`. Both sides reduce to the same expression. Introduce and unpack `_ ⟨j, l, hj, rfl⟩`. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hjP : (X (⟨(), j⟩ : Σ _ : Unit, Fin (N + 1)) : OneRing k N) ∉ P`. Express the relevant statement in the definitionally equal form `oneBlock (S := k) (N := N) (X (⟨(), j⟩ : Σ _ : Unit, Fin (N + 1))) ∉ pp`. Rewrite using `[← aeval_pt_eq_zero_iff, aeval_pt_oneBlock]`. Conclude with `hj`. Use `⟨_, ⟨NumbersDVR.blockWeight (fun _ : Unit => Fin (N + 1)) ⟨(), l⟩, X ⟨(), l⟩, X ⟨(), j⟩, isWeightedHomogeneous_X k _ _, isWeightedHomogeneous_X k _ _, hjP, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Simplify using `only [AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, map_div₀, hΦ, aeval_pt_oneBlock]`. Both sides reduce to the same expression. Unfold `FieldNumbers.resDeg`. Rewrite using `[dif_pos (inferInstance : P.IsPrime), ← hmap]`. Conclude with `((FieldNumbers.homFracDegZero P).equivMap _).toLinearEquiv.finrank_eq.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_funField_pt (hrel : ∃ i, (X i : Poly k N) ∉ pp) :
     Module.finrank k (funField (k := k) (pt.{u, w} pp)) =
@@ -170,11 +170,11 @@ theorem finrank_funField_pt (hrel : ∃ i, (X i : Poly k N) ∉ pp) :
 end InterNumPointDeg
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x pp h`. Use `haveI : Small.{w} k := small_of_injective (algebraMap k Ω).injective`. Use `haveI := h.isPrime`. Establish `hpt` using `InterNumPointDeg.primeOf_pt.{u, w} pp h.homog`. Establish `hsub : IsSubvar (InterNumPointDeg.pt.{u, w} pp) pp 0` using `⟨h.isPrime, h.homog, hpt.le, h.relevant, h.dim⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxy : ∀ i, InterNumPointDeg.pt.{u, w} pp i ≠ 0 → x i ≠ 0`. Introduce `i hi hx`. Apply `hi` to reduce the goal to its premises. Rewrite using `[← aeval_X (R := k) (InterNumPointDeg.pt.{u, w} pp) i, InterNumPointDeg.aeval_pt_eq_zero_iff]`. Conclude with `h.le ((mem_primeOf_of_isHomogeneous x (isHomogeneous_X k i)).2 (by rw [aeval_X, hx]))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hIR k Ω N x _ (InterNumPointDeg.pt.{u, w} pp) hxy (hpt.symm ▸ h.le) pp 0 hsub Fin.elim0 Fin.elim0 Fin.elim0 (fun i => i.elim0)`. Establish `h2` using `InterNumPoint.proof HilbertPoint.proof k _ N (InterNumPointDeg.pt.{u, w} pp) (hpt.symm ▸ hsub) ![]`. Rewrite `h2` using `[hpt]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem InterNumPointDeg.proof (hIR : InterNumRestrict.Statement.{u, w}) : InterNumPointDeg.Statement.{u, w} := by
   intro k _ Ω _ _ N x pp h

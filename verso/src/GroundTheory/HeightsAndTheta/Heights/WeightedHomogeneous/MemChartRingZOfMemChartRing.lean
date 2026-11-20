@@ -22,9 +22,9 @@ namespace SmallSectionsEquivalence
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
 /- English proof (translation)
-Use `conv_lhs => rw [F.as_sum]`. Use `conv_rhs => rw [F.as_sum]`. Rewrite using `[eval₂_sum, eval₂_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm ↦ ?_` and prove the remaining obligations. Establish `hdeg : ∑ j ∈ m.support, m j = τ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `hF (mem_support_iff.mp hm)`. Simplify `h` using `[Finsupp.weight_apply, Finsupp.sum]`. Rewrite using `[eval₂_monomial, eval₂_monomial, Finsupp.prod, Finsupp.prod]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eval₂_mul_const {σ Ω : Type*} [CommRing Ω] {F : MvPolynomial σ ℤ} {τ : ℕ}
     (hF : F.IsHomogeneous τ) (x : σ → Ω) (r : Ω) :
@@ -41,7 +41,7 @@ theorem eval₂_mul_const {σ Ω : Type*} [CommRing Ω] {F : MvPolynomial σ ℤ
   ring
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a => simp only [eq_intCast, map_intCast]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p j hp => simp only [map_mul, hp, aeval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_aeval_int {σ A B : Type*} [CommRing A] [CommRing B] {instA : Algebra ℤ A} [Algebra ℤ B]
     {Fφ : Type*} [FunLike Fφ A B] [RingHomClass Fφ A B] (φ : Fφ) (x : σ → A) (F : MvPolynomial σ ℤ) :
@@ -52,14 +52,14 @@ theorem map_aeval_int {σ A B : Type*} [CommRing A] [CommRing B] {instA : Algebr
   | mul_X p j hp => simp only [map_mul, hp, aeval_X]
 
 /- English proof (translation)
-Rewrite using `[aeval_def, RingHom.ext_int (algebraMap ℤ A) (Int.castRingHom A)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_eq_eval₂_cast {σ A : Type*} [CommRing A] {_ : Algebra ℤ A} (x : σ → A)
     (F : MvPolynomial σ ℤ) : aeval x F = eval₂ (Int.castRingHom A) x F := by
   rw [aeval_def, RingHom.ext_int (algebraMap ℤ A) (Int.castRingHom A)]
 
 /- English proof (translation)
-Rewrite using `[aeval_eq_eval₂_cast, aeval_eq_eval₂_cast, eval₂_mul_const hF]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_mul_const {σ Ω : Type*} [CommRing Ω] {_ : Algebra ℤ Ω} {F : MvPolynomial σ ℤ} {τ : ℕ}
     (hF : F.IsHomogeneous τ) (x : σ → Ω) (r : Ω) :
@@ -67,9 +67,9 @@ theorem aeval_mul_const {σ Ω : Type*} [CommRing Ω] {_ : Algebra ℤ Ω} {F : 
   rw [aeval_eq_eval₂_cast, aeval_eq_eval₂_cast, eval₂_mul_const hF]
 
 /- English proof (translation)
-Rewrite using `[F.as_sum, map_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun m hm ↦ ?_` and prove the remaining obligations. Establish `hdeg : ∑ j ∈ m.support, m j = τ`. Establish `h` using `hF (mem_support_iff.mp hm)`. Simplify `h` using `[Finsupp.weight_apply, Finsupp.sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[aeval_monomial, Finsupp.prod, algebraMap_eq]`. Establish `h` using `(isWeightedHomogeneous_C (coordDeg n) (coeff m F)).mul (IsWeightedHomogeneous.prod m.support (fun j ↦ g j ^ m j) (fun j ↦ m j • δ) fun j _ ↦ (hg j).pow (m j))`. Rewrite `h` using `[zero_add, ← Finset.sum_smul, hdeg]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isWeightedHomogeneous_aeval {σ : Type*} {F : MvPolynomial σ ℤ} {τ : ℕ}
     (hF : F.IsHomogeneous τ) {g : σ → MvPolynomial (Coord n) ℤ} {δ : ι → ℕ}
@@ -87,13 +87,13 @@ theorem isWeightedHomogeneous_aeval {σ : Type*} {F : MvPolynomial σ ℤ} {τ :
   rwa [zero_add, ← Finset.sum_smul, hdeg] at h
 
 /- English proof (translation)
-Introduce `c hc`. Establish `hpow : ∏ k, y ⟨k, c k⟩ ^ (-((τ : ℤ) * a k)) = (∏ k, y ⟨k, c k⟩ ^ (-a k)) ^ τ`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hpow, ← eval₂_mul_const hF]`. Establish `key : ∀ G : MvPolynomial σ ℤ, eval₂ (Int.castRingHom Ω) (fun j ↦ x j * ∏ k, y ⟨k, c k⟩ ^ (-a k)) G ∈ chartRingZ y c` using `fun G ↦ by`. Proceed by induction on `G using MvPolynomial.induction_on with`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `C r`. Rewrite using `[eval₂_C, eq_intCast]`. Conclude with `intCast_mem _ r`. Consider the case `add p q hp hq`. Rewrite using `[eval₂_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `add_mem hp hq`. Consider the case `mul_X p j hp`. Rewrite using `[eval₂_mul, eval₂_X]`. Conclude with `mul_mem hp (hx c hc j)`. Conclude with `key F`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mem_chartLat {σ : Type*} {Ω : Type} [Field Ω] (y : Coord n → Ω) (a : ι → ℤ)
     (x : σ → Ω)
@@ -125,16 +125,16 @@ theorem aeval_mem_chartLat {σ : Type*} {Ω : Type} [Field Ω] (y : Coord n → 
   exact key F
 
 /- English proof (translation)
-Rewrite using `[← funFieldEquiv_mkF, map_eq_zero_iff _ (funFieldEquiv P).injective, P.mkF_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_eq_zero_iff (P : ArithVariety n) (f : MvPolynomial (Coord n) ℤ) :
     val P f = 0 ↔ f ∈ P.ideal := by
   rw [← funFieldEquiv_mkF, map_eq_zero_iff _ (funFieldEquiv P).injective, P.mkF_eq_zero_iff]
 
 /- English proof (translation)
-Establish `hF : (∏ j, (X j : MvPolynomial (Fin (D.m + 1)) ℤ) ^ μ j).IsHomogeneous τ`. Rewrite using `[← hμ]`. Conclude with `IsHomogeneous.prod _ _ _ fun j _ ↦ isHomogeneous_X_pow j (μ j)`. Establish `h` using `aeval_mem_chartLat (genPt P) D.deg D.x ?_ hF`. Simplify `h` using `[eval₂_prod, eval₂_pow, eval₂_X]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc j`. Establish `hlive : IsLive P c` using `fun k hk ↦ hc k ((val_eq_zero_iff P _).mpr hk)`. Establish `h1` using `D.chart c hlive j`. Simplify `h1` using `[chartPow, chartRing]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem monomial_mem_chartLat {P : ArithVariety n} (D : AddBlockData P) (τ : ℕ)
     (μ : Fin (D.m + 1) → ℕ) (hμ : ∑ j, μ j = τ) :
@@ -150,9 +150,9 @@ theorem monomial_mem_chartLat {P : ArithVariety n} (D : AddBlockData P) (τ : �
   simpa [chartPow, chartRing] using h1
 
 /- English proof (translation)
-Proceed by induction on `hu using Subring.closure_induction with`. Consider the case `mem u hu`. Take `⟨v, rfl⟩` from `hu`. Conclude with `(@Algebra.subset_adjoin ℤ P.FunField _ _ (Ring.toIntAlgebra _) _) ⟨v, rfl⟩`. Consider the case `zero => exact zero_mem _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `one => exact one_mem _`. Consider the case `add u w _ _ hu hw => exact add_mem hu hw`. Consider the case `neg u _ hu => exact neg_mem hu`. Consider the case `mul u w _ _ hu hw => exact mul_mem hu hw`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_chartRingZ_of_mem_chartRing (P : ArithVariety n) (c : (k : ι) → Fin (n k + 1))
     {u : P.FunField} (hu : u ∈ P.chartRing c) : u ∈ chartRingZ P.genericPt c := by
@@ -167,20 +167,20 @@ theorem mem_chartRingZ_of_mem_chartRing (P : ArithVariety n) (c : (k : ι) → F
   | mul u w _ _ hu hw => exact mul_mem hu hw
 
 /- English proof (translation)
-Rewrite using `[aeval_eq_eval₂_cast, P.eval₂_genericPt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_genericPt (P : ArithVariety n) {_ : Algebra ℤ P.FunField} (f : MvPolynomial (Coord n) ℤ) :
     aeval P.genericPt f = P.mkF f := by
   rw [aeval_eq_eval₂_cast, P.eval₂_genericPt]
 
 /- English proof (translation)
-Establish `hmem : aeval D.elt F ∈ chartLat (ι` using `blockIdx n) P.genericPt D.deg τ := by`. Rewrite using `[aeval_eq_eval₂_cast]`. Use `aeval_mem_chartLat P.genericPt D.deg D.elt ?_ hF` and prove the remaining obligations. Introduce `c hc j`. Establish `hlive : P.IsLive c` using `fun k hk ↦ hc k ((P.mkF_eq_zero_iff _).mpr hk)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : D.elt j * ∏ k, P.genericPt ⟨k, c k⟩ ^ (-D.deg k) = D.elt j / P.chartPow c D.deg`. Rewrite using `[div_eq_mul_inv, ArithVariety.chartPow, ← Finset.prod_inv_distrib]`. Simplify using `only [zpow_neg]`. Both sides reduce to the same expression. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_chartRingZ_of_mem_chartRing P c (D.chart_mem c hlive j)`. Take `⟨t, ht⟩` from `(ChartLatSection.proof ι n P.FunField P.genericPt P D.deg τ _ P.mCoordIdeal_genericPt.symm).mp hmem`. Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `hden` using `SectionSmall.mkF_den_ne_zero t`. Establish `h` using `(ht t.num t.den t.numDeg t.denDeg t.num_isHomogeneous t.den_isHomogeneous (fun k ↦ by linarith [t.deg_eq k])).mpr (by rw [IntegralSection.toFun, div_mul_cancel₀ _ hden])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[aeval_genericPt, aeval_genericPt]`. Rewrite using `[IntegralSection.toFun, h, mul_div_cancel_right₀ _ hden]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section (P : ArithVariety n) (D : Heights.AddBlockData P) (τ : ℕ)
     (F : MvPolynomial (Fin (D.size + 1)) ℤ) (hF : F.IsHomogeneous τ) :
@@ -207,7 +207,7 @@ theorem exists_section (P : ArithVariety n) (D : Heights.AddBlockData P) (τ : �
   rw [IntegralSection.toFun, h, mul_div_cancel_right₀ _ hden]
 
 /- English proof (translation)
-Rewrite using `[map_aeval_int, map_pow]`. Repeatedly rewrite using `[h.value c hc]`. Rewrite using `[show (fun j ↦ P.mkF (chartMonomial c d) * D.elt j) = fun j ↦ D.elt j * P.mkF (chartMonomial c d) from funext fun j ↦ mul_comm _ _, aeval_mul_const hF]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem mkF_aeval_forms {P : ArithVariety n} {D : Heights.AddBlockData P} {d : ι → ℕ}
     {g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ}
@@ -221,7 +221,7 @@ theorem mkF_aeval_forms {P : ArithVariety n} {D : Heights.AddBlockData P} {d : �
     aeval_mul_const hF]
 
 /- English proof (translation)
-Rewrite using `[← P.mkF_eq_zero_iff, map_sub, map_mul, map_mul, mkF_aeval_forms h hc hF, hpq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chart_mem {P : ArithVariety n} {D : Heights.AddBlockData P} {d : ι → ℕ}
     {g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ}
@@ -233,11 +233,11 @@ theorem chart_mem {P : ArithVariety n} {D : Heights.AddBlockData P} {d : ι → 
   ring
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨c, hcz⟩` from `SectionSmall.exists_chart hz`. Establish `hc : P.IsLive c` using `SectionSmall.live_of_ne hz hcz`. Establish `hm : evalCone z (chartMonomial c d ^ τ) ≠ 0`. Rewrite using `[← chartMonomial_nsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `SectionSmall.evalCone_chartMonomial_ne_zero hcz _`. Establish `h0` using `hz.2 _ (chart_mem h hF hpq c hc)`. Establish `he : evalCone z (chartMonomial c d ^ τ) * evalCone z p = evalCone z (aeval (g c) F) * evalCone z q`. Simplify using `only [evalCone, eval₂_sub, eval₂_mul] at h0 ⊢`. Conclude with `sub_eq_zero.mp h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : ‖evalCone z (chartMonomial c d ^ τ)‖ * ‖evalCone z p‖ ≤ ‖evalCone z (chartMonomial c d ^ τ)‖ * (‖evalCone z q‖ * N.metric z ^ τ)`. Rewrite using `[← norm_mul, he, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_left hle (norm_pos_iff.mpr hm)`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem bound_of_chart {P : ArithVariety n} {D : Heights.AddBlockData P} {d : ι → ℕ}
     {g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ}
@@ -272,17 +272,15 @@ end SmallSectionsEquivalence
 open SmallSectionsEquivalence
 
 /- English proof (translation)
-Introduce `ι _ _ n P D`. Use `⟨fun τ F hF ↦ exists_section P D τ F hF, ?_⟩` and prove the remaining obligations. Introduce `N hN d g h r Gs δ hGs τ F hF p q hpq`. Use `⟨chart_mem h hF hpq, fun hsmall ↦ bound_of_chart h hF N ?_ hpq⟩` and prove the remaining obligations. Introduce `c hc z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgj : ∀ j, IsWeightedHomogeneous (coordDeg n) (g c j) (fun k ↦ ((d k : ℤ) + D.deg k).toNat)` using `fun j ↦ by`. Take `⟨δ', hδ', hd'⟩` from `h.homog c j`. Use `hδ' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Use `hd' k` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hsmall' : ∀ w ∈ conePoints (ofObjects D).ext ℂ, ‖eval₂ (Int.castRingHom ℂ) (newPart w) F‖ ≤ hPlus (ChartForms.ofFormSystem h) (GenSystem.ofIsHomogGenerators hGs) N w ^ τ`. Introduce `w hw`. Conclude with `hsmall w (by rw [AddBlockEq.extPoints_eq]; exact hw)`. Establish `hval : val P (aeval (g c) F) = aeval (ofObjects D).x F * val P (chartMonomial c d ^ τ)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg (funFieldEquiv P) (mkF_aeval_forms h hc hF)`. Rewrite `e` using `[funFieldEquiv_mkF, map_mul, funFieldEquiv_mkF, map_aeval_int]`. Conclude with `e`. Establish `hdeg : ∀ k, (((τ • fun k ↦ ((d k : ℤ) + D.deg k).toNat) k : ℕ) : ℤ) = ((τ • d) k : ℕ) + τ * (ofObjects D).deg k` using `fun k ↦ by`. Use `h.nonneg k` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, Nat.cast_mul]`. Rewrite using `[Int.toNat_of_nonneg this]`. Express the relevant statement in the definitionally equal form `(τ : ℤ) * (d k + D.deg k) = τ * d k + τ * D.deg k`. Expand and normalize the polynomial expressions, which then agree. Establish `hB'` using `(hB ι n P (ofObjects D) (ChartForms.ofFormSystem h) (GenSystem.ofIsHomogGenerators hGs) N hN τ).2 F hF hsmall' (aeval (g c) F) (chartMonomial c d ^ τ) _ _ (isWeightedHomogeneous_aeval hF hgj) ((isWeightedHomogeneous_chartMonomial c d).pow τ) hdeg hval`.
-
-Conclude with `hB'.2 z hz`.
+Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem SmallSections.smallSections_of_alt (hB : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.SmallSections.Statement) :
     GroundTheory.Heights₂.Heights.SmallSections.Statement := by
@@ -321,11 +319,11 @@ theorem SmallSections.smallSections_of_alt (hB : GroundTheory.Heights₂.Heights
   exact hB'.2 z hz
 
 /- English proof (translation)
-Introduce `ι _ _ n P D G Γ N hN τ`. Use `⟨fun μ hμ ↦ monomial_mem_chartLat D τ μ hμ, ?_⟩` and prove the remaining obligations. Introduce `F hF hsmall g h dg dh hg hh hd hval`. Establish `hx : (fun j ↦ funFieldEquiv P ((toObjects D).elt j)) = D.x`. Use function extensionality and compare the values at `fun j ↦ RingEquiv.apply_symm_apply _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hmk : P.mkF g = aeval (toObjects D).elt F * P.mkF h`. Apply `(funFieldEquiv P).injective` to reduce the goal to its premises. Establish `e1` using `map_aeval_int (instA := inferInstance) (funFieldEquiv P) (toObjects D).elt F`. Rewrite using `[map_mul, funFieldEquiv_mkF, funFieldEquiv_mkF, e1, hx]`. Conclude with `hval`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `(hA ι n P (toObjects D)).2 N hN G.d G.g G.isFormSystem Γ.r Γ.f Γ.δ Γ.isHomogGenerators τ F hF g h hmk`. Use `⟨fun c hc ↦ h1 c hc, h2 fun w hw ↦ hsmall w ?_⟩` and prove the remaining obligations. Rewrite using `[← AddBlockEq.addBlockEquiv_symm_conePoints]`. Conclude with `hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SmallSections.mpr_of_first (hA : GroundTheory.Heights₂.Heights.SmallSections.Statement) :
     GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.SmallSections.Statement := by
@@ -346,7 +344,7 @@ theorem SmallSections.mpr_of_first (hA : GroundTheory.Heights₂.Heights.SmallSe
   exact hw
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨SmallSections.mpr_of_first, SmallSections.smallSections_of_alt⟩`.
+Supply the required witnesses or components.
 -/
 theorem SmallSections.equiv :
     GroundTheory.Heights₂.Heights.SmallSections.Statement ↔ GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.SmallSections.Statement :=

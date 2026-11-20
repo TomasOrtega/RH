@@ -4,15 +4,15 @@ namespace DedekindLocalUniformizer
 end DedekindLocalUniformizer
 
 /- English proof (translation)
-Introduce `R _ _ P hmax hbot`. Use `haveI : P.IsPrime := hmax.isPrime`. Establish `hlt : P ^ (1 + 1) < P ^ 1` using `Ideal.pow_succ_lt_pow hbot 1`. Rewrite `hlt` using `[pow_one]`. Take `⟨π, hπP, hπ2⟩` from `SetLike.exists_of_lt hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Conclude with `hπ2 (Ideal.zero_mem _)`. Use `⟨π, hπ0, hπP, ?_⟩` and prove the remaining obligations. Establish `hle : Ideal.span {π} ≤ P` using `(Ideal.span_singleton_le_iff_mem P).2 hπP`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨J, hJ⟩` from `(Ideal.dvd_iff_le).2 hle`. Establish `hJP : ¬ J ≤ P`. Introduce `h`. Apply `hπ2` to reduce the goal to its premises. Establish `: Ideal.span {π} ≤ P ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hJ, pow_two]`. Conclude with `Ideal.mul_mono_right h`. Conclude with `this (Ideal.mem_span_singleton_self π)`. Take `⟨s, hsJ, hsP⟩` from `Set.not_subset.1 hJP`. Use `⟨s, hsP, fun y hy => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hmem : s * y ∈ Ideal.span {π}`. Rewrite using `[hJ, mul_comm s y]`. Conclude with `Ideal.mul_mem_mul hy hsJ`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hmem`. Conclude with `⟨c, by rw [← hc, mul_comm]⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yde5.main :
     ∀ {R : Type} [inst : CommRing R] [IsDedekindDomain R] (P : Ideal R),

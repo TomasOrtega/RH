@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (S T : HSp D)
 
 /- English proof (translation)
-Establish `hinv : HMul.hMul (mt V g⁻¹) (mt V g) = (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D))`. Rewrite using `[← Formalism.IndefR.Eqv.mt_mul, inv_mul_cancel, Formalism.IndefR.Eqv.mt_one]`. Establish `hd : (mt V g⁻¹ : Matrix (Fin V.rank) (Fin V.rank) (AE D)) - 1 = -(HMul.hMul (mt V g⁻¹) ((mt V g : Matrix (Fin V.rank) (Fin V.rank) (AE D)) - 1))`. Rewrite using `[Matrix.mul_sub, hinv, Matrix.mul_one, neg_sub]`. Introduce `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hd, Matrix.neg_apply, mul_neg, Matrix.mul_apply, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, hg k j]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem suppAt_inv_fp {e : AE D} {V : HSp D} {g : GA D V} (hg : SuppAt e V g) : SuppAt e V g⁻¹ := by
   have hinv : HMul.hMul (mt V g⁻¹) (mt V g) = (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) := by
@@ -32,9 +32,9 @@ theorem suppAt_inv_fp {e : AE D} {V : HSp D} {g : GA D V} (hg : SuppAt e V g) : 
   rw [mul_left_comm, hg k j]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[zero_smul, zero_smul]`. Unfold `actO`. Rewrite using `[Matrix.mul_zero, Matrix.zero_mul]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih => rw [succ_nsmul, succ_nsmul, Formalism.IndefR.Eqv.actO_add, ih]`.
+Treat this case separately.
 -/
 theorem actO_nsmul (g : GA D S) (h : GA D T) (k : ℕ) (t : WO S T) : actO S T g h (k • t) = k • actO S T g h t := by
   induction k with
@@ -45,9 +45,9 @@ theorem actO_nsmul (g : GA D S) (h : GA D T) (k : ℕ) (t : WO S T) : actO S T g
   | succ n ih => rw [succ_nsmul, succ_nsmul, Formalism.IndefR.Eqv.actO_add, ih]
 
 /- English proof (translation)
-Introduce `i j`. Unfold `actO`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← ht l k]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem isHalf_actO_fp {e : AE D} (g : GA D S) (h : GA D T) {t : WO S T} (ht : IsHalf e t) :
     IsHalf e (actO S T g h t) := by
@@ -59,13 +59,13 @@ theorem isHalf_actO_fp {e : AE D} (g : GA D S) (h : GA D T) {t : WO S T} (ht : I
   ring
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.smul_apply, nsmul_eq_mul, mul_left_comm, hv i j]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_nsmul_fp {e : AE D} {v : WO S T} (hv : IsHalf e v) (m : ℕ) : IsHalf e (m • v) := fun i j => by
   rw [Matrix.smul_apply, nsmul_eq_mul, mul_left_comm, hv i j]
 
 /- English proof (translation)
-Use `⟨fun h' => ?_, isHalf_actO_fp S T g h⟩` and prove the remaining obligations. Use `isHalf_actO_fp S T g⁻¹ h⁻¹ h'` as an intermediate fact. Rewrite `this` using `[Formalism.IndefR.Eqv.actO_actO_inv]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isHalf_actO_iff {e : AE D} (g : GA D S) (h : GA D T) (t : WO S T) :
     IsHalf e (actO S T g h t) ↔ IsHalf e t := by
@@ -75,11 +75,11 @@ theorem isHalf_actO_iff {e : AE D} (g : GA D S) (h : GA D T) (t : WO S T) :
 
 open Classical in
 /- English proof (translation)
-Unfold `halfInd`. Establish `h1 : s + u ∈ Λ ↔ s ∈ Λ` using `⟨fun h => by simpa using Λ.sub_mem h hu, fun h => Λ.add_mem h hu⟩`. Establish `h2 : IsHalf e (s + u) ↔ IsHalf e s`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h i j` as an intermediate fact. Rewrite `this` using `[Matrix.add_apply, mul_add, hue i j]`. Conclude with `add_right_cancel this`. Introduce `h i j`. Rewrite using `[Matrix.add_apply, mul_add, h i j, hue i j]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem halfInd_add {e : AE D} {Λ : AddSubgroup (WO S T)} {u : WO S T} (hu : u ∈ Λ) (hue : IsHalf e u)
     (s : WO S T) : halfInd e Λ (s + u) = halfInd e Λ s := by
@@ -96,9 +96,9 @@ theorem halfInd_add {e : AE D} {Λ : AddSubgroup (WO S T)} {u : WO S T} (hu : u 
   simp only [h1, h2]
 
 /- English proof (translation)
-Take `⟨hs, k, hk, hi, hl⟩` from `hΦ`. Use `⟨fun t ht => (isHalf_actO_iff S T g h t).1 (hs _ ht), k * k₁ * k₂, by positivity, fun u hu hue t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Use `show Φ (actO S T g h (t + (k * k₁ * k₂) • u)) = Φ (actO S T g h t)`. Rewrite using `[Formalism.IndefR.Eqv.actO_add, actO_nsmul, show (k * k₁ * k₂) • actO S T g h u = k • (k₂ • (k₁ • actO S T g h u)) by rw [smul_smul, smul_smul]; ring_nf]`. Conclude with `hi _ (Λ.nsmul_mem (h₁ u hu) k₂) (isHalf_nsmul_fp S T (isHalf_nsmul_fp S T (isHalf_actO_fp S T g h hue) k₁) k₂) _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hl _ ht`. Establish `h2` using `h₂ _ h1`. Rewrite `h2` using `[actO_nsmul, Formalism.IndefR.Eqv.actO_actO_inv, smul_smul]`. Rewrite using `[show k * k₁ * k₂ = k₁ * (k₂ * k) by ring, ← smul_smul]`. Conclude with `Λ.nsmul_mem h2 k₁`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sb_comp {e : AE D} {Λ : AddSubgroup (WO S T)} (g : GA D S) (h : GA D T)
     {k₁ : ℕ} (hk₁ : 0 < k₁) (h₁ : ∀ t ∈ Λ, k₁ • actO S T g h t ∈ Λ)

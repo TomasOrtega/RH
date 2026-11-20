@@ -9,17 +9,15 @@ open Module Submodule
 variable {E W : Type} [Field E] [AddCommGroup W] [Module E W]
 
 /- English proof (translation)
-Use `set S := span E (Set.range (cbFam N l y)) with hSdef`. Establish `hS : ∀ x ∈ S, N x ∈ S`. Introduce `x hx`. Establish `: S ≤ S.comap N`. Rewrite using `[hSdef, span_le]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Use `show N (cbFam N l y p) ∈ S`. Simplify using `only [cbFam]`. Rewrite using `[cb_pow_succ]`. Distinguish the cases in `h : (p.2 : ℕ) + 1 < l p.1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `subset_span ⟨⟨p.1, ⟨p.2 + 1, h⟩⟩, rfl⟩`. Rewrite using `[cb_pow_zero_of_le N (hy0 p.1) (by omega)]; exact S.zero_mem`. Conclude with `this hx`. Establish `htop : S ⊔ LinearMap.range N = ⊤`. Rewrite using `[eq_top_iff, ← B0.span_eq, span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨⟨a, ⟨i, hi⟩⟩, rfl⟩`. Break down `Nat.eq_zero_or_pos i with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `hy a`. Apply `Submodule.mem_sup_right` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[cb_isChain_apply N hB0 a (hl a) i hi]`. Use `⟨(N ^ (i - 1)) (B0 ⟨a, ⟨0, hl a⟩⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[cb_pow_succ, show i - 1 + 1 = i by omega]`. Establish `hST : S = ⊤` using `cb_eq_top N hN S hS htop`. Establish `hli : LinearIndependent E (cbFam N l y)` using `linearIndependent_of_top_le_span_of_card_eq_finrank (by rw [← hSdef, hST]) (by rw [Module.finrank_eq_card_basis B0])`.
-
-Use `⟨Basis.mk hli (by rw [← hSdef, hST]), ?_, fun p => by simp⟩` and prove the remaining obligations. Conclude with `cb_isChain_of_fam N l y hy0 _ (fun p => by simp)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cb_exists_chain_of_gen (N : W →ₗ[E] W) (hN : IsNilpotent N) {ι : Type} [Fintype ι] {l : ι → ℕ}
     (B0 : Module.Basis (Σ a, Fin (l a)) E W) (hB0 : IsChain N l B0) (hl : ∀ a, 0 < l a) (y : ι → W)
@@ -56,23 +54,19 @@ theorem cb_exists_chain_of_gen (N : W →ₗ[E] W) (hN : IsNilpotent N) {ι : Ty
   exact cb_isChain_of_fam N l y hy0 _ (fun p => by simp)
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ i, ∃ hi : i < L, c ⟨i, hi⟩ ≠ 0`. Take `⟨s, ⟨hsL, hcs⟩, hmin⟩ : ∃ s, (∃ hi : s < L, c ⟨s, hi⟩ ≠ 0) ∧ ∀ i < s, ∀ hi : i < L, c ⟨i, hi⟩ = 0` from `⟨Nat.find h, Nat.find_spec h, fun i hi hiL => by`. Assume the negation of the conclusion as `hne`. Conclude with `Nat.find_min h hi ⟨hiL, hne⟩⟩`. Use `set y : W := ∑ i : Fin L, if s ≤ (i : ℕ) then c i • (N ^ ((i : ℕ) - s)) u else 0 with hydef`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set z : W := ∑ i : Fin L, if s < (i : ℕ) then c i • (N ^ ((i : ℕ) - s - 1)) u else 0 with hzdef`. Use `⟨s, hsL.le, y, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hydef, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, cb_pow_pow, cb_pow_zero_of_le N hu (by omega), smul_zero]`. Conclude with `map_zero _`. Rewrite using `[hydef, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_smul, cb_pow_pow, show s + ((i : ℕ) - s) = i by omega]`. Rewrite using `[map_zero, hmin i (by omega) i.2, zero_smul]`. Establish `hyz : y = c ⟨s, hsL⟩ • u + N z`. Establish `hc : c ⟨s, hsL⟩ • u = ∑ i : Fin L, if i = ⟨s, hsL⟩ then c i • u else 0`. Rewrite using `[Finset.sum_ite_eq']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hc, hydef, hzdef, map_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy (i : ℕ) s with h1 | h1 | h1` into its components or cases. Establish `hne : i ≠ ⟨s, hsL⟩` using `fun he => by rw [he] at h1; exact lt_irrefl _ h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg (by omega), if_neg hne, if_neg (by omega), map_zero, add_zero]`. Establish `he : i = ⟨s, hsL⟩` using `Fin.ext h1`. Rewrite using `[if_pos (by omega), if_pos he, if_neg (by omega), map_zero, add_zero, h1, Nat.sub_self, pow_zero, Module.End.one_apply]`. Establish `hne : i ≠ ⟨s, hsL⟩` using `fun he => by rw [he] at h1; exact lt_irrefl _ h1`. Rewrite using `[if_pos (by omega), if_neg hne, if_pos h1, zero_add, map_smul, cb_pow_succ, show (i : ℕ) - s - 1 + 1 = (i : ℕ) - s by omega]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hu_eq : u = (c ⟨s, hsL⟩)⁻¹ • y - N ((c ⟨s, hsL⟩)⁻¹ • z)`. Rewrite using `[hyz, smul_add, smul_smul, inv_mul_cancel₀ hcs, one_smul, map_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[hu_eq]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self y))) (Submodule.mem_sup_right (LinearMap.mem_range_self N _))`.
-
-Use `push Not at h`. Use `⟨L, le_rfl, u, hu, ?_, Submodule.mem_sup_left (Submodule.mem_span_singleton_self u)⟩` and prove the remaining obligations. Rewrite using `[hu]`. Use `symm`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[show c i = 0 from h i i.2, zero_smul]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cb_single (N : W →ₗ[E] W) (L : ℕ) (u : W) (hu : (N ^ L) u = 0) (c : Fin L → E) :
     ∃ s ≤ L, ∃ y : W, (N ^ L) y = 0 ∧ (N ^ s) y = ∑ i, c i • (N ^ (i : ℕ)) u ∧
@@ -123,11 +117,9 @@ theorem cb_single (N : W →ₗ[E] W) (L : ℕ) (u : W) (hu : (N ^ L) u = 0) (c 
     rw [show c i = 0 from h i i.2, zero_smul]
 
 /- English proof (translation)
-Establish `H : ∀ a, ∃ s ≤ l a, ∃ y : W, (N ^ l a) y = 0 ∧ (N ^ s) y = ∑ i : Fin (l a), B0.repr v ⟨a, i⟩ • (N ^ (i : ℕ)) (B0 ⟨a, ⟨0, hl a⟩⟩) ∧ B0 ⟨a, ⟨0, hl a⟩⟩ ∈ span E {y} ⊔ LinearMap.range N` using `fun a => cb_single N (l a) _ (cb_isChain_len N hB0 a (hl a)) _`. Use `choose s hs y hy0 hys hyu using H`. Use `⟨y, s, hy0, fun a => ?_, hs, ?_⟩` and prove the remaining obligations. Establish `hle : span E {y a} ≤ span E (Set.range (cbFam N l y))`. Rewrite using `[span_le, Set.singleton_subset_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `subset_span ⟨⟨a, ⟨0, hl a⟩⟩, by simp [cbFam]⟩`. Conclude with `sup_le_sup_right hle _ (hyu a)`. Use `conv_lhs => rw [← B0.sum_repr v]`. Rewrite using `[Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hys]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[cb_isChain_apply' N hB0 a (hl a) i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cb_init (N : W →ₗ[E] W) {ι : Type} [Fintype ι] {l : ι → ℕ}
     (B0 : Module.Basis (Σ a, Fin (l a)) E W) (hB0 : IsChain N l B0) (hl : ∀ a, 0 < l a) (v : W) :

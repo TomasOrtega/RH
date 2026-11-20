@@ -9,7 +9,7 @@ open GlobalTheory.PRep PositivityTheory.SphericalProduct
 namespace GlobalTheory.CompanionTheory.Casselman
 
 /- English proof (translation)
-Introduce `G _ _ _ D t ht`. Conclude with `GlobalTheory.CompanionTheory.CosetReps.exists_fin_coset_reps G D.J (D.J ⊓ D.J.map (MulAut.conj (t : G)).toMonoidHom) (D.J ⊓ D.N) D.isCompact_J (GlobalTheory.CompanionTheory.TopGroup.inter_conj_isOpen G D.J D.isOpen_J (t : G)) inf_le_left inf_le_left (exists_mem_inf_conj_of_isDom …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_fin_coset_reps_of_isDom : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (D : PositivityTheory.SphericalProduct.CassData G), ∀ t : D.T, D.IsDom t → ∃ r : ℕ, 0 < r ∧ ∃ x : Fin r → G,

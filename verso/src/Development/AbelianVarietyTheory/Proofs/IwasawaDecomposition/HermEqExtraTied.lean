@@ -13,9 +13,9 @@ namespace GlobalTheory.Mem.Col2.TC.ExtraTie
 open Formalism.L2.Herm
 
 /- English proof (translation)
-Substitute `hX` using the available equality. Take `⟨piG, piG_K, piG_norm, piT, piT_K, piT_norm, piT_cong, vPl, vPl_inj, norm_mem_place_ideal⟩` from `e`. Establish `e1 : piG = (X.levelZeroCompatibility D.u₀).piG` using `h1`. Establish `e2 : piT = fun u => (X.atT u).piU` using `funext h2`. Establish `e3 : vPl = fun u v => (X.base.vT u v).1` using `funext fun u => funext (h3 u)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `e1 e2 e3` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem errX_eq {D : D7} (X : FullTiedS D) (H : ColsHermS D) (hX : X.cols = H) (e : ErrX D)
     (h1 : e.piG = (H.levelZeroCompatibility D.u₀).piG) (h2 : ∀ u, e.piT u = (H.atT u).piU)

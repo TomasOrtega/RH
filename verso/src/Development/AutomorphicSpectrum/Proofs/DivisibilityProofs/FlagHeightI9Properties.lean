@@ -9,7 +9,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-Simplify using `[PB.gap, PB.gapX, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flag_gap_eq_sub {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (lam : Wt Ψ N) (τ : Ψ) (a : Fin N)
     (h : (a : ℕ) + 1 < N) :
@@ -17,22 +17,20 @@ theorem flag_gap_eq_sub {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (lam
   simp [PB.gap, PB.gapX, h]
 
 /- English proof (translation)
-Simplify using `[dimFl, GroundTheory.Heights₂.Heights.antisymDegree, Nat.choose_two_right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flag_dim_eq_antisymmetric_degree (Ψ : Type) [Fintype Ψ] (N : ℕ) :
     dimFl Ψ N = GroundTheory.Heights₂.Heights.antisymDegree Ψ N := by
   simp [dimFl, GroundTheory.Heights₂.Heights.antisymDegree, Nat.choose_two_right]
 
 /- English proof (translation)
-Introduce `hFH hIn II hII Ψ _ _ N _ hN`. Establish `hA : IsArithVar (GroundTheory.Heights₂.Heights.LowerBoundFree.PFl Ψ N) (dimFl Ψ N + 1)`. Rewrite using `[flag_dim_eq_antisymmetric_degree]`. Conclude with `(GlobalTheory.T.flag_variety_boundary_dimension_drop Ψ N hN).1`. Establish `hev : ∀ lam : Wt Ψ N, hhFl Ψ N II (linRoot lam ^ (dimFl Ψ N + 1)) = eval (fun x => lam x.1 x.2) (PB.hFlPoly Ψ N II)` using `fun lam => GlobalTheory.T.flag_height_polynomial_eval II hII Ψ N lam hN hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hgap, hdom⟩` from `hFH hIn II hII Ψ N hN`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `lam - ⟨τ, a, b, hab, heq⟩`. Establish `h : (a : ℕ) + 1 < N` using `hab ▸ b.2`. Establish `hb : b = ⟨(a : ℕ) + 1, h⟩` using `Fin.ext hab`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hev]`. Use `hgap _ (τ, a) h ?_` and prove the remaining obligations. Rewrite using `[flag_gap_eq_sub lam τ a h, ← hb, heq, sub_self]`. Introduce `lam hlam`. Rewrite using `[hev]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hdom _ fun p hp => ?_` and prove the remaining obligations. Take `⟨τ, a⟩` from `p`. Rewrite using `[flag_gap_eq_sub lam τ a hp, sub_nonneg]`. Conclude with `hlam τ a ⟨(a : ℕ) + 1, hp⟩ (Fin.le_def.2 (Nat.le_succ _))`. Introduce `τ Q hQ`.
-
-Conclude with `GlobalTheory.T.flag_height_power_sum_one_zero II hII Ψ N τ Q hN hA hQ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem flag_height_I9 : PB.FlagHeight → PB.Inputs → ∀ II : IntersectionSystem, IsFullIntersectionSystem II →
     ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) [Nonempty Ψ], 2 ≤ N →

@@ -32,7 +32,7 @@ def KSRel (i : M.K.bundle.ι) (k : X.F.J) {K : Type} [Field K] (z : Sp K ⟶ M.X
       (∏ ix, t ix ^ exOf Dw (FlagTan.kap Dw) 0 ix).val * evalPt z O hz (M.K.jacobian i hO g)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h K _ z i k ho hi _ P Q t v zv O hO g hz hzv hk hQ ht hv hl => h K P Q t v z zv i k O hO g hz hzv hk ho hi hQ ht hv hl, fun h K _ _ P Q t v z zv i k O hO g hz hzv hk ho hi hQ ht hv hl => h K z i k ho hi P Q t v zv O hO g hz hzv hk hQ ht hv hl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isKS_iff_ksRel (ω : H0 M.str (LB.div M.K.bundle ((L₀ X Z (FlagTan.kap Dw)).pull M.σ)) M.off) :
     IsKS M ω ↔ ∀ (K : Type) [Field K] (z : Sp K ⟶ M.X) (i : M.K.bundle.ι) (k : X.F.J) (ho : ⊤ ≤ z ⁻¹ᵁ M.off)

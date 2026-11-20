@@ -24,7 +24,7 @@ def SplitSatPre : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
 def RThetaN : Prop := StrSat → ThetaOfAsc
 
 /- English proof (translation)
-Take `⟨a, d, P, ha, hd, hu, hn, he⟩` from `h1 E n D hr i`. Establish `e` using `he P (Setoid.refl (α := CuspSub E a) P)`. Conclude with `⟨a, d, P, hu, hn, h2 E n D hr ht i a d P ha hd hu hn e, e⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem csdAsc_of (h1 : Strings) (h2 : CuspCsd) {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (D : Pre E n)
     (hr : D.Reg) (ht : D.ThetaStable) (i : Fin D.c) : PositivityTheory.Rg.BcN.CsdAsc (D.V i) := by

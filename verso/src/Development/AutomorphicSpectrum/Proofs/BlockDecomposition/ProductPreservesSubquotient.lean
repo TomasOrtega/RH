@@ -8,7 +8,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.GenMulti
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ParIndSubquot.parInd_isSubquotient k _ _ _ (GlobalTheory.SmGL.stdBlocks N hM) _ _ _ _ (GlobalTheory.SmGL.isSmooth_piTensor hs) (GlobalTheory.piTensor_isSubquotient_of_forall _ _ X Y ρ ρ' hq)`.
+A detailed English derivation is pending.
 -/
 theorem multiProd_isSubquotient_of_forall (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {d : ℕ} (N : Fin d → ℕ) (M : ℕ) (hM : ∑ i, N i = M)

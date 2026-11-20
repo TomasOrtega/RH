@@ -22,7 +22,7 @@ section Ring
 variable {B : Type} [CommRing B] (a b : Ideal B)
 
 /- English proof (translation)
-Establish `: m - 1 = -((z - 1) * m)` using `by linear_combination hzm`. Rewrite using `[this]`. Conclude with `neg_mem (a.mul_mem_right _ hz)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_sub_mem {z m : B} (hzm : z * m = 1) (hz : z - 1 ∈ a) : m - 1 ∈ a := by
   have : m - 1 = -((z - 1) * m) := by linear_combination hzm
@@ -30,7 +30,7 @@ theorem inv_sub_mem {z m : B} (hzm : z * m = 1) (hz : z - 1 ∈ a) : m - 1 ∈ a
   exact neg_mem (a.mul_mem_right _ hz)
 
 /- English proof (translation)
-Establish `hm` using `inv_sub_mem a hzm hz`. Establish `e : x * y * m - 1 - ((y - 1) - (z - 1) + (x - 1)) = (x - 1) * (y - 1) + (-((z - 1) * (m - 1))) + (x - 1) * (m - 1) + (y - 1) * (m - 1) + (x - 1) * ((y - 1) * (m - 1))`. Take the linear combination `hzm`. Rewrite using `[e]`. Conclude with `add_mem (add_mem (add_mem (add_mem (hab _ _ hx hy) (neg_mem (hab _ _ hz hm))) (hab _ _ hx hm)) (hab _ _ hy hm)) (b.mul_mem_left _ (hab _ _ hy hm))`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log3 (hab : ∀ x y, x ∈ a → y ∈ a → x * y ∈ b) {x y z m : B} (hzm : z * m = 1) (hx : x - 1 ∈ a)
     (hy : y - 1 ∈ a) (hz : z - 1 ∈ a) : x * y * m - 1 - ((y - 1) - (z - 1) + (x - 1)) ∈ b := by
@@ -44,13 +44,13 @@ theorem log3 (hab : ∀ x y, x ∈ a → y ∈ a → x * y ∈ b) {x y z m : B} 
     (b.mul_mem_left _ (hab _ _ hy hm))
 
 /- English proof (translation)
-Establish `hy : t * m - 1 ∈ a`. Establish `: t * m - 1 = ((W - 1) - (W' - 1)) * Wi`. Rewrite using `[hW]`. Take the linear combination `(1 - t * m) * hWi`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a.mul_mem_right _ (sub_mem h1 h2)`. Establish `hD : u - e ∈ a`. Establish `: u - e = ti * ((t * u - 1) - (t * m - 1) - (t * m) * (c * e - 1))`. Take the linear combination `(e - u) * hti + (e * t * ti) * hcm`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `a.mul_mem_left _ (sub_mem (sub_mem h3 hy) (a.mul_mem_left _ h4))` and prove the remaining obligations. Use `⟨hD, ?_⟩` and prove the remaining obligations. Establish `e1 : (W - 1) - (W' - 1) - ((t * u - 1) - (c * e - 1)) - g * (u - e) = (W' - 1) * (t * m - 1) + (-((t * m - 1) * (c * e - 1))) + (-((g + t) * (u - e)))`. Rewrite using `[hW]`. Take the linear combination `(t * e) * hcm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `add_mem (add_mem (hab _ _ h2 hy) (neg_mem (hab _ _ hy h4))) (neg_mem (hab _ _ h5 hD))`.
+A detailed English derivation is pending.
 -/
 theorem form_key (hab : ∀ x y, x ∈ a → y ∈ a → x * y ∈ b) {W W' Wi t ti c m u e g : B}
     (hW : W = W' * (t * m)) (hWi : W' * Wi = 1) (hti : t * ti = 1) (hcm : c * m = 1)
@@ -91,18 +91,16 @@ def dl (W : ∀ {c c' : E}, (c ⟶ c') → (H.obj c')ˣ)
 def c0 (x : ∀ c, H.obj c) (hx : ∀ c, x c ∈ a.S c) : CH.Cn (sq a b) 0 := fun s => sqMk a b (x _) (hx _)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem map_id_sq {T : E} (ρ : T ⟶ T) (h : ρ = 𝟙 T) (x : sqM a b T) : ((sq a b).map ρ).hom x = x := by
   subst h
   simp
 
 /- English proof (translation)
-Establish `e2 : ((2 : Fin 3) : ℕ) = 2` using `rfl`. Establish `e1 : ((1 : Fin 3) : ℕ) = 1` using `rfl`. Establish `e0 : ((0 : Fin 3) : ℕ) = 0` using `rfl`. Rewrite using `[e0, e1, e2, pow_zero, pow_one, show (-1 : ℤ) ^ 2 = 1 by norm_num, one_smul, one_smul, neg_one_smul]`. Establish `: sqMk a b p hp + -sqMk a b q hq + sqMk a b r hr = sqMk a b ((p - q) + r) (add_mem (sub_mem hp hq) hr)` using `Subtype.ext (show Ideal.Quotient.mk (b.S T) p + -Ideal.Quotient.mk (b.S T) q + Ideal.Quotient.mk (b.S T) r = Ideal.Quotient.mk (b.S T) ((p - q) + r) by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_add, map_sub]`. Use the proof step `ring)`. Rewrite using `[this]`. Conclude with `((sq_eq a b _ _).2 (by`. Use `neg_mem h` as an intermediate fact.
-
-Rewrite using `[neg_sub] at this))` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sum3 {T : E} {p q r t : H.obj T} (hp : p ∈ a.S T) (hq : q ∈ a.S T) (hr : r ∈ a.S T) (ht : t ∈ a.S T)
     (h : t - ((p - q) + r) ∈ b.S T) :
@@ -124,13 +122,11 @@ def rU (W : ∀ {c c' : E}, (c ⟶ c') → (H.obj c')ˣ) (s : ComposableArrows E
   mu (s.map' 1 2) (W (s.map' 0 1)) * W (s.map' 1 2) * (W (s.map' 0 2))⁻¹
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑ i : Fin 3, (-1 : ℤ) ^ (i : ℕ) • ((sq a b).map (toLast i s)).hom (dl a b W hW (face i s)) = _`. Rewrite using `[Fin.sum_univ_three]`. Establish `t0` using `map_id_sq a b (T := s.obj (Fin.last 2)) (toLast 0 s) (s.map_id _) (dl a b W hW (face 0 s))`. Establish `t1` using `map_id_sq a b (T := s.obj (Fin.last 2)) (toLast 1 s) (s.map_id _) (dl a b W hW (face 1 s))`. Use `erw [t0, t1]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : (H.map (s.map' 1 2)).hom ((W (s.map' 0 1) : H.obj _) - 1) ∈ a.S _` using `a.map_mem (s.map' 1 2) (hW (s.map' 0 1))`. Establish `t2 : ((sq a b).map (toLast 2 s)).hom (dl a b W hW (face 2 s)) = sqMk a b _ hx` using `rfl`. Use `erw [t2]`. Use `sum3 a b (hW (s.map' 1 2)) (hW (s.map' 0 2)) hx hr ?_` and prove the remaining obligations. Establish `e : (H.map (s.map' 1 2)).hom ((W (s.map' 0 1) : H.obj _) - 1) = Units.val (mu (s.map' 1 2) (W (s.map' 0 1))) - 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_sub, map_one]`. Both sides reduce to the same expression. Establish `hx' : Units.val (mu (s.map' 1 2) (W (s.map' 0 1))) - 1 ∈ a.S (s.obj (Fin.last 2))` using `e ▸ hx`. Establish `key` using `log3 (a.S (s.obj (Fin.last 2))) (b.S _) (hab _) (Units.mul_inv (W (s.map' 0 2))) hx' (hW (s.map' 1 2)) (hW (s.map' 0 2))`. Rewrite using `[e]`.
-
-Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_dl (hab : ∀ T x y, x ∈ a.S T → y ∈ a.S T → x * y ∈ b.S T) (W : ∀ {c c' : E}, (c ⟶ c') → (H.obj c')ˣ)
     (hW : ∀ {c c' : E} (φ : c ⟶ c'), ((W φ : (H.obj c')ˣ) : H.obj c') - 1 ∈ a.S c') (s : ComposableArrows E 2)
@@ -156,9 +152,9 @@ theorem d_dl (hab : ∀ T x y, x ∈ a.S T → y ∈ a.S T → x * y ∈ b.S T) 
 def mv (s : ComposableArrows E 1) (y : H.obj (s.obj 0)) : H.obj (s.obj (Fin.last 1)) := (H.map (s.map' 0 1)).hom y
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • ((sq a b).map (toLast i s)).hom (c0 a b x hx (face i s)) = _`. Rewrite using `[Fin.sum_univ_two]`. Establish `t0` using `map_id_sq a b (T := s.obj (Fin.last 1)) (toLast 0 s) (s.map_id _) (c0 a b x hx (face 0 s))`. Use `erw [t0]`. Establish `e1 : ((1 : Fin 2) : ℕ) = 1` using `rfl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : ((0 : Fin 2) : ℕ) = 0` using `rfl`. Rewrite using `[e0, e1, pow_zero, pow_one, one_smul, neg_one_smul]`. Conclude with `Subtype.ext (show Ideal.Quotient.mk _ _ + -Ideal.Quotient.mk _ _ = Ideal.Quotient.mk _ _ by`. Rewrite using `[map_sub, sub_eq_add_neg]`. Use the proof step `rfl)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_comp1_pt_zero_eq_zero (x : ∀ c, H.obj c) (hx : ∀ c, x c ∈ a.S c) (s : ComposableArrows E 1)
     (hm : x (s.obj (Fin.last 1)) - mv s (x (s.obj 0)) ∈ a.S _) :
@@ -174,9 +170,9 @@ theorem pderiv_comp1_pt_zero_eq_zero (x : ∀ c, H.obj c) (hx : ∀ c, x c ∈ a
     rw [map_sub, sub_eq_add_neg]; rfl)
 
 /- English proof (translation)
-Establish `hf : CH.d (sq a b) 1 (x - CH.d (sq a b) 0 j) = 0`. Rewrite using `[map_sub, hx, CH.d_d, sub_zero]`. Use `⟨x - CH.d (sq a b) 0 j, hf, ?_, h⟩` and prove the remaining obligations. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x - (x - CH.d (sq a b) 0 j) ∈ LinearMap.range (CH.d (sq a b) 0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `⟨j, by abel⟩`.
+Supply the required witnesses or components.
 -/
 theorem rep_of (x : CH.Cn (sq a b) 1) (hx : CH.d (sq a b) 1 x = 0) (j : CH.Cn (sq a b) 0)
     (z : ∀ s : ComposableArrows E 1, H.obj (s.obj (Fin.last 1)))
@@ -190,7 +186,7 @@ theorem rep_of (x : CH.Cn (sq a b) 1) (hx : CH.d (sq a b) 1 x = 0) (j : CH.Cn (s
   exact ⟨j, by abel⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `(Submodule.Quotient.eq _).1 h`. Conclude with `⟨c, hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cls_eq_d {F : E ⥤ ModuleCat.{0} R} {x y : CH.Cn F 2} (hx : CH.d F 2 x = 0) (hy : CH.d F 2 y = 0)
     (h : (CH.cx F).cls x hx = (CH.cx F).cls y hy) : ∃ c : CH.Cn F 1, CH.d F 1 c = x - y := by
@@ -206,7 +202,7 @@ universe v u
 variable {R : Type} [CommRing R] {E : Type u} [Category.{v} E] {H : E ⥤ CommAlgCat.{0} R} (a b : IdF H)
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(H.map (f ≫ g)).hom _ = (H.map g).hom ((H.map f).hom _)`. Rewrite using `[H.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mu_comp {c₀ c₁ c₂ : E} (f : c₀ ⟶ c₁) (g : c₁ ⟶ c₂) (x : (H.obj c₀)ˣ) : mu (f ≫ g) x = mu g (mu f x) := by
   ext
@@ -218,7 +214,7 @@ def tw (w : ∀ {c c' : E}, (c ⟶ c') → (H.obj c')ˣ) (t : ∀ c, (H.obj c)ˣ
   w φ * (t c' * (mu φ (t c))⁻¹)
 
 /- English proof (translation)
-Simplify using `only [mul_inv, inv_inv]`. Establish `: x * (p * r⁻¹) * (y * (q * p⁻¹)) * (z⁻¹ * (q⁻¹ * r)) = x * y * z⁻¹ * (p * p⁻¹) * (q * q⁻¹) * (r * r⁻¹)`. Simplify using `only [mul_assoc, mul_left_comm, mul_comm]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tw_units {G : Type} [CommGroup G] (x y z p q r : G) :
     (x * (p * r⁻¹)) * (y * (q * p⁻¹)) * (z * (q * r⁻¹))⁻¹ = x * y * z⁻¹ := by
@@ -229,9 +225,9 @@ theorem tw_units {G : Type} [CommGroup G] (x y z p q r : G) :
   simp
 
 /- English proof (translation)
-Establish `key : ∀ {c₀ c₁ c₂ : E} (f : c₀ ⟶ c₁) (g : c₁ ⟶ c₂) (h : c₀ ⟶ c₂), h = f ≫ g → mu g (tw w t f) * tw w t g * (tw w t h)⁻¹ = mu g (w f) * w g * (w h)⁻¹`. Introduce `c₀ c₁ c₂ f g h e`. Substitute `e` using the available equality. Unfold `tw`. Rewrite using `[map_mul, map_mul, map_inv, mu_comp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `tw_units _ _ _ _ _ _`. Conclude with `key (s.map' 0 1) (s.map' 1 2) (s.map' 0 2) (s.map'_comp 0 1 2)`.
+A detailed English derivation is pending.
 -/
 theorem rU_tw (w : ∀ {c c' : E}, (c ⟶ c') → (H.obj c')ˣ) (t : ∀ c, (H.obj c)ˣ) (s : ComposableArrows E 2) :
     rU (fun φ => tw w t φ) s = rU w s := by
@@ -249,13 +245,13 @@ def wt (W : ∀ {c c' : E}, (c ⟶ c') → (H.obj c')ˣ) (s : ComposableArrows E
 def mt (s : ComposableArrows E 1) (x : (H.obj (s.obj 0))ˣ) : (H.obj (s.obj (Fin.last 1)))ˣ := mu (s.map' 0 1) x
 
 /- English proof (translation)
-Use `rep_of a b _ hx (c0 a b (fun c => (τ c : H.obj c) * u c - 1) h1) _ fun s => ?_` and prove the remaining obligations. Establish `hc : Units.val (mt s (τ (s.obj 0))) * mv s (u (s.obj 0)) - 1 ∈ a.S (s.obj (Fin.last 1))`. Use `a.map_mem (s.map' 0 1) (h1 (s.obj 0))` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_one]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ((τ (s.obj (Fin.last 1)) : H.obj _) * u (s.obj (Fin.last 1)) - 1) - mv s ((τ (s.obj 0) : H.obj _) * u (s.obj 0) - 1) ∈ a.S (s.obj (Fin.last 1))` using `sub_mem (h1 _) (a.map_mem (s.map' 0 1) (h1 (s.obj 0)))`. Establish `hWt : Units.val (wt W s) = Units.val (wt W' s) * (Units.val (τ (s.obj (Fin.last 1))) * ((mt s (τ (s.obj 0)))⁻¹ : (H.obj (s.obj (Fin.last 1)))ˣ).1)` using `congrArg Units.val (hτ (s.map' 0 1))`. Establish `e` using `form_key (a.S (s.obj (Fin.last 1))) (b.S _) (hab _) (W := Units.val (wt W s)) (W' := Units.val (wt W' s)) (Wi := ((wt W' s)⁻¹ : (H.obj (s.obj (Fin.last 1)))ˣ).1) (t := (τ (s.obj (Fin.last 1)) : H.obj _)) (ti := ((τ (s.obj (Fin.last 1)))⁻¹ : (H.obj _)ˣ).1) (c := Units.val (mt s (τ …`. Establish `e2 : mv s ((τ (s.obj 0) : H.obj _) * u (s.obj 0) - 1) = Units.val (mt s (τ (s.obj 0))) * mv s (u (s.obj 0)) - 1`. Unfold `mv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_mul, map_one]`. Both sides reduce to the same expression. Establish `e3` using `pderiv_comp1_pt_zero_eq_zero a b (fun c => (τ c : H.obj c) * u c - 1) h1 s hm`. Establish `e4 : (dl a b W hW - dl a b W' hW' - CH.d (sq a b) 0 (c0 a b (fun c => (τ c : H.obj c) * u c - 1) h1)) s = dl a b W hW s - dl a b W' hW' s - CH.d (sq a b) 0 (c0 a b (fun c => (τ c : H.obj c) * u c - 1) h1) s` using `rfl`. Rewrite using `[e4, e3]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (b.S (s.obj (Fin.last 1))) (Units.val (wt W s) - 1) - Ideal.Quotient.mk _ (Units.val (wt W' s) - 1) - Ideal.Quotient.mk _ (((τ (s.obj (Fin.last 1)) : H.obj _) * u (s.obj (Fin.last 1)) - 1) - mv s ((τ (s.obj 0) : H.obj _) * u (s.obj 0) - 1)) = _`. Rewrite using `[← map_sub, ← map_sub, Ideal.Quotient.eq, e2]`. Conclude with `e.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_rep (hab : ∀ T x y, x ∈ a.S T → y ∈ a.S T → x * y ∈ b.S T) (W W' : ∀ {c c' : E}, (c ⟶ c') → (H.obj c')ˣ)
     (hW : ∀ {c c' : E} (φ : c ⟶ c'), ((W φ : (H.obj c')ˣ) : H.obj c') - 1 ∈ a.S c')

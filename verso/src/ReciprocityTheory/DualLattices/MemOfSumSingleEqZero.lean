@@ -11,7 +11,7 @@ section
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[Algebra.smul_def, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton_self]`. Simplify using `[Pi.single_eq_of_ne hk]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma single_smul_self {m : ℕ} (c : Fin m → R) (i : Fin m) :
     c i • (Pi.single i (1 : R ⧸ Ideal.span {c i}) : (i : Fin m) → R ⧸ Ideal.span {c i}) = 0 := by
@@ -22,7 +22,7 @@ lemma single_smul_self {m : ℕ} (c : Fin m → R) (i : Fin m) :
   · simp [Pi.single_eq_of_ne hk]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single k (fun j _ hj => by simp [Pi.single_eq_of_ne' hj]) (by simp)]`. Simplify using `[Algebra.smul_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma eq_sum_single {m : ℕ} (c : Fin m → R) (x : (i : Fin m) → R ⧸ Ideal.span {c i}) :
     x = ∑ i, (Quotient.out (x i) : R) • (Pi.single i (1 : R ⧸ Ideal.span {c i}) :
@@ -32,7 +32,7 @@ lemma eq_sum_single {m : ℕ} (c : Fin m → R) (x : (i : Fin m) → R ⧸ Ideal
   simp [Algebra.smul_def]
 
 /- English proof (translation)
-Introduce `i`. Establish `h1` using `congrFun h i`. Rewrite `h1` using `[Finset.sum_apply, Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_eq_of_ne' hj]) (by simp)]`. Simplify using `[Algebra.smul_def] at h1`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma mem_of_sum_single_eq_zero {m : ℕ} (c : Fin m → R) (r : Fin m → R)
     (h : ∑ k, r k • (Pi.single k (1 : R ⧸ Ideal.span {c k}) :
@@ -46,57 +46,53 @@ lemma mem_of_sum_single_eq_zero {m : ℕ} (c : Fin m → R) (r : Fin m → R)
 end
 
 /- English proof (translation)
-Take `⟨m, α, ⟨eA⟩, hαa⟩` from `ha`. Take `⟨m', δ, ⟨eD⟩, hδc⟩` from `hc`. Use `set gA : Fin m → A := fun i => eA.symm (Pi.single i 1) with hgA`. Use `set gD : Fin m' → D := fun j => eD.symm (Pi.single j 1) with hgD`. Establish `hgA0 : ∀ i, α i • gA i = 0` using `fun i => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hgA]`. Rewrite using `[← map_smul, single_smul_self, map_zero]`. Establish `hgD0 : ∀ j, δ j • gD j = 0` using `fun j => by`. Simplify using `only [hgD]`. Rewrite using `[← map_smul, single_smul_self, map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `reprA : ∀ y : A, y = ∑ i, (Quotient.out (eA y i) : R) • gA i` using `fun y => by conv_lhs => rw [← eA.symm_apply_apply y, eq_sum_single α (eA y)]`. Simplify using `only [hgA, map_sum, map_smul]`. Establish `reprD : ∀ y : D, y = ∑ j, (Quotient.out (eD y j) : R) • gD j` using `fun y => by conv_lhs => rw [← eD.symm_apply_apply y, eq_sum_single δ (eD y)]`. Simplify using `only [hgD, map_sum, map_smul]`. Establish `memA : ∀ r : Fin m → R, ∑ i, r i • gA i = 0 → ∀ i, r i ∈ Ideal.span {α i}`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `r hr i`. Establish `h1 : eA (∑ i, r i • gA i) = 0` using `by rw [hr, map_zero]`. Simplify using `only [hgA, map_sum, map_smul, LinearEquiv.apply_symm_apply] at h1`. Establish `h3` using `congrFun h1 i`. Rewrite `h3` using `[Finset.sum_apply, Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_eq_of_ne' hj]) (by simp)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h3` using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Establish `memD : ∀ r : Fin m' → R, ∑ j, r j • gD j = 0 → ∀ j, r j ∈ Ideal.span {δ j}`. Introduce `r hr i`. Establish `h1 : eD (∑ j, r j • gD j) = 0` using `by rw [hr, map_zero]`. Simplify using `only [hgD, map_sum, map_smul, LinearEquiv.apply_symm_apply] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrFun h1 i`. Rewrite `h3` using `[Finset.sum_apply, Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_eq_of_ne' hj]) (by simp)]`. Simplify `h3` using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hπι : ∀ y : A, π (ι y) = 0` using `fun y => by`. Establish `h1 : ι y ∈ LinearMap.range ι` using `⟨y, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hex]`. Conclude with `h1`. Use `choose b hb using fun j => hπ (gD j)`. Establish `hdb : ∀ j, ∃ y : A, ι y = δ j • b j` using `fun j => by`. Establish `h1 : δ j • b j ∈ LinearMap.ker π` using `by rw [LinearMap.mem_ker, map_smul, hb, hgD0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hex]`. Conclude with `h1`. Use `choose aj haj using hdb`. Use `set x : Fin m' → Fin m → R := fun j i => (Quotient.out (eA (aj j) i) : R) with hxdef`. Establish `hx : ∀ j, aj j = ∑ i, x j i • gA i` using `fun j => reprA (aj j)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set gen : Fin m ⊕ Fin m' → B := Sum.elim (fun i => ι (gA i)) b with hgen`. Set `Φ : (Fin m ⊕ Fin m' → R) →ₗ[R] B` to `{ toFun := fun p => ∑ k, p k • gen k map_add' := fun p q => by simp [add_smul, Finset.sum_add_distrib] map_smul' := fun c p => by simp [Finset.smul_sum, smul_smul] }`. Establish `hΦ : ∀ p, Φ p = ∑ i, p (Sum.inl i) • ι (gA i) + ∑ j, p (Sum.inr j) • b j` using `fun p => by show ∑ k, p k • gen k = _`. Rewrite using `[Fintype.sum_sum_type]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `X : Matrix (Fin m ⊕ Fin m') (Fin m ⊕ Fin m') R` to `Matrix.fromBlocks (Matrix.diagonal α) (Matrix.of fun i j => -x j i) 0 (Matrix.diagonal δ)`. Establish `hdet : X.det = (∏ i, α i) * ∏ j, δ j`. Simplify using `[X, Matrix.det_fromBlocks_zero₂₁, Matrix.det_diagonal]`. Establish `hXl : ∀ w i, X.mulVec w (Sum.inl i) = α i * w (Sum.inl i) - ∑ j, x j i * w (Sum.inr j)`. Introduce `w i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[X, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Matrix.diagonal_apply, Finset.sum_neg_distrib, sub_eq_add_neg]`. Establish `hXr : ∀ w j, X.mulVec w (Sum.inr j) = δ j * w (Sum.inr j)`. Introduce `w j`. Simplify using `[X, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Matrix.diagonal_apply]`. Establish `hιx : ∀ j, ι (aj j) = ∑ i, x j i • ι (gA i)` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hx j, map_sum]`. Simplify using `only [map_smul]`. Establish `hΦX : ∀ w, Φ (X.mulVec w) = 0`. Introduce `w`. Rewrite using `[hΦ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hXl, hXr, sub_smul, Finset.sum_sub_distrib]`. Establish `e1 : ∀ i, (α i * w (Sum.inl i)) • ι (gA i) = 0`. Introduce `i`. Rewrite using `[mul_comm, mul_smul, ← map_smul, hgA0, map_zero, smul_zero]`. Establish `e2 : ∀ j, (δ j * w (Sum.inr j)) • b j = w (Sum.inr j) • ι (aj j)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j`. Rewrite using `[mul_comm, mul_smul, haj]`. Establish `e3 : ∑ i, (∑ j, x j i * w (Sum.inr j)) • ι (gA i) = ∑ j, w (Sum.inr j) • ι (aj j)`. Simplify using `only [hιx, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Simplify using `only [e1, e2, Finset.sum_const_zero, zero_sub, e3, neg_add_cancel]`. Establish `hker : LinearMap.ker Φ = LinearMap.range X.mulVecLin`. Use extensionality with `p`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hp`. Rewrite `hp` using `[LinearMap.mem_ker, hΦ]`. Establish `hπs : ∑ j, p (Sum.inr j) • gD j = 0`. Establish `h1` using `congrArg π hp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify `h1` using `[map_add, map_sum, map_smul, hb, hπι]`. Use `choose t ht using fun j => Ideal.mem_span_singleton'.1 (memD _ hπs j)`. Establish `hsb : ∑ j, p (Sum.inr j) • b j = ι (∑ i, (∑ j, t j * x j i) • gA i)`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e4 : ∀ j, p (Sum.inr j) • b j = t j • ι (aj j)`. Introduce `j`. Rewrite using `[← ht j, mul_smul, haj]`. Simplify using `only [e4, hιx, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hι0 : ι (∑ i, (p (Sum.inl i) + ∑ j, t j * x j i) • gA i) = 0`. Rewrite using `[← hp, hsb]`. Simplify using `only [add_smul, Finset.sum_add_distrib, map_add, map_sum, map_smul]`. Establish `hA0 : ∑ i, (p (Sum.inl i) + ∑ j, t j * x j i) • gA i = 0` using `hι (hι0.trans (map_zero ι).symm)`. Use `choose q hq using fun i => Ideal.mem_span_singleton'.1 (memA _ hA0 i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately.
 
-Use `⟨Sum.elim q t, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Consider the cases of `k with`. Consider the case `inl i => show X.mulVec (Sum.elim q t) (Sum.inl i) = p (Sum.inl i)`. Rewrite using `[hXl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Establish `hqi` using `hq i`. Rewrite using `[show ∑ j, x j i * t j = ∑ j, t j * x j i from Finset.sum_congr rfl fun j _ => mul_comm _ _]`. Take the linear combination `hqi`. Consider the case `inr j => show X.mulVec (Sum.elim q t) (Sum.inr j) = p (Sum.inr j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hXr]`. Simplify using `only [Sum.elim_inr]`. Rewrite using `[mul_comm]`. Conclude with `ht j`. Introduce and unpack `⟨w, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hΦX w`. Establish `hsurj : Function.Surjective Φ`. Introduce `y`. Use `set s : Fin m' → R := fun j => (Quotient.out (eD (π y) j) : R) with hs`. Establish `hys : y - ∑ j, s j • b j ∈ LinearMap.range ι`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hex, LinearMap.mem_ker, map_sub, map_sum]`. Simplify using `only [map_smul, hb]`. Rewrite using `[← reprD (π y), sub_self]`. Take `⟨zA, hzA⟩` from `hys`. Use `⟨Sum.elim (fun i => (Quotient.out (eA zA i) : R)) s, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hΦ]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Establish `e5 : ∑ i, (Quotient.out (eA zA i) : R) • ι (gA i) = ι zA` using `by conv_rhs => rw [reprA zA]`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`.
-
-Rewrite using `[e5, hzA, sub_add_cancel]`. Set `e1 : ((Fin m ⊕ Fin m' → R) ⧸ LinearMap.range X.mulVecLin) ≃ₗ[R] B` to `(Submodule.quotEquivOfEq _ _ hker.symm).trans (Φ.quotKerEquivOfSurjective hsurj)`. Take `⟨k, cc, ⟨e2⟩, hcc⟩` from `hS2 (Fin m ⊕ Fin m') X`. Use `⟨k, cc, ⟨e1.symm.trans e2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hcc, hdet, map_mul, map_mul, map_prod, map_prod, map_prod, map_prod, hαa, hδc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasLen_ext {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R]
     [Algebra R C]

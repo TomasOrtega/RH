@@ -4,37 +4,31 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Glo
 namespace GlobalTheory.PsType
 
 /- English proof (translation)
-Introduce `G V _ _ _ _ _ π hπ H θ hD w`. Set `Hs : Subgroup G` to `{ carrier := H mul_mem' := fun {a b} ha hb => hD.mul a ha b hb one_mem' := hD.one inv_mem' := fun {a} ha => hD.inv a ha }`. Establish `hθinv : ∀ a ∈ H, θ a⁻¹ * θ a = 1` using `fun a ha => by`. Rewrite using `[← hD.val_mul _ (hD.inv a ha) _ ha, inv_mul_cancel, hD.val_one]`. Establish `hθ0 : ∀ a ∈ H, θ a ≠ 0` using `fun a ha h0 => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hθinv a ha` as an intermediate fact. Rewrite `this` using `[h0, mul_zero]`. Conclude with `zero_ne_one this`. Establish `hπmul : ∀ a b : G, π (a * b) w = π a (π b w)` using `fun a b => by rw [map_mul]; rfl`. Set `T : Subgroup Hs` to `{ carrier := {j | π j w = θ j • w} one_mem' := by simp [hD.val_one] mul_mem' := fun {a b} ha hb => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, Subgroup.coe_mul] at ha hb ⊢`. Rewrite using `[hπmul, hb, map_smul, ha, smul_smul, hD.val_mul _ a.2 _ b.2, mul_comm]`. Use the proof step `inv_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_setOf_eq, InvMemClass.coe_inv] at ha ⊢`. Establish `h1 : w = θ a • π (a : G)⁻¹ w`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← map_smul, ← ha, ← hπmul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression. Establish `h2 : θ (a : G)⁻¹ = (θ a)⁻¹` using `eq_inv_of_mul_eq_one_left (hθinv a a.2)`. Rewrite using `[h2]`. Use `conv_rhs => rw [h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[smul_smul, inv_mul_cancel₀ (hθ0 a a.2), one_smul] }`. Use `haveI : CompactSpace Hs := isCompact_iff_compactSpace.mp hD.compact`. Establish `hopen : IsOpen (T : Set Hs)`. Apply `Subgroup.isOpen_of_mem_nhds T (g := 1)` to reduce the goal to its premises. Rewrite using `[nhds_subtype_eq_comap, Filter.mem_comap]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨U, hU, hUθ⟩` from `hD.near`. Use `⟨U ∩ {g | π g w = w}, Filter.inter_mem hU ((hπ w).mem_nhds (by simp)), ?_⟩` and prove the remaining obligations. Introduce and unpack `j ⟨hjU, hjw⟩`. Use `show π j w = θ j • w`. Rewrite using `[hjw, hUθ _ hjU j.2, one_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Finite (Hs ⧸ T) := Subgroup.quotient_finite_of_isOpen T hopen`. Use `haveI : Fintype (Hs ⧸ T) := Fintype.ofFinite _`. Set `f : Hs → V` to `fun j => (θ j)⁻¹ • π j w`. Establish `hf : ∀ a b : Hs, (a : Hs ⧸ T) = b → f a = f b`. Introduce `a b hab`.
+Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hab` using `[QuotientGroup.eq]`. Establish `hb : b = a * (a⁻¹ * b)` using `by group`. Generalize the expression as in `a⁻¹ * b = s at hab hb`. Substitute `hb` using the available equality. Establish `hs : π s w = θ s • w` using `hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `only [f, Subgroup.coe_mul]`. Rewrite using `[hπmul, hs, map_smul, smul_smul, hD.val_mul _ a.2 _ s.2, mul_inv, mul_assoc, inv_mul_cancel₀ (hθ0 s s.2), mul_one]`. Establish `hact : ∀ h a : Hs, π h (f a) = θ h • f (h * a)`. Introduce `h a`. Simplify using `only [f, Subgroup.coe_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_smul, hπmul, smul_smul, hD.val_mul _ h.2 _ a.2, mul_inv, ← mul_assoc, mul_inv_cancel₀ (hθ0 h h.2), one_mul]`. Set `rep : Hs ⧸ T → Hs` to `fun q => if q = ((1 : Hs) : Hs ⧸ T) then 1 else q.out`. Establish `hrep : ∀ q, ((rep q : Hs) : Hs ⧸ T) = q`. Introduce `q`. Simplify using `only [rep]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hq`. Conclude with `hq.symm`. Conclude with `QuotientGroup.out_eq' q`. Establish `hsum : ∀ h : Hs, π h (∑ q, f (rep q)) = θ h • ∑ q, f (rep q)`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sum, Finset.smul_sum]`. Repeatedly rewrite using `[hact]`. Establish `: ∀ q, f (h * rep q) = f (rep (h • q))` using `fun q => by`. Apply `hf` to reduce the goal to its premises. Rewrite using `[hrep (h • q)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← hrep q]`. Rewrite using `[MulAction.Quotient.smul_mk, smul_eq_mul]`. Repeatedly rewrite using `[this]`. Conclude with `Equiv.sum_comp (MulAction.toPerm h) (fun q => θ h • f (rep q))`. Use `⟨Finset.univ.image (fun q => ((rep q : Hs) : G)), ?_, ?_, ?_⟩` and prove the remaining obligations.
-
-Use `Finset.mem_image.mpr ⟨((1 : Hs) : Hs ⧸ T), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Simplify using `[rep]`. Introduce `j hj`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.mp hj`. Conclude with `(rep q).2`.
-
-Establish `hinj : Set.InjOn (fun q => ((rep q : Hs) : G)) (Finset.univ : Finset (Hs ⧸ T))`. Introduce `q₁ _ q₂ _ h`. Rewrite using `[← hrep q₁, ← hrep q₂, Subtype.ext h]`. Rewrite using `[Finset.sum_image hinj]`. Introduce `h hh`.
-
-Conclude with `hsum ⟨h, hh⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem avg_eig : ∀ (G V : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ G V), IsSmooth π → ∀ (H : Set G) (θ : G → ℂ), Datum H θ → ∀ w : V,

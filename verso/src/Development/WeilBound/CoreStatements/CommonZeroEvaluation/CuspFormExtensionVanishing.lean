@@ -14,11 +14,11 @@ namespace ModelDimension
 open GlobalTheory.FlatLine GlobalTheory.CompHS in
 
 /- English proof (translation)
-Distinguish the cases in `ht : Tested y`. Use `swap`. Unfold `evR evalAt`. Rewrite using `[dif_neg ht, dif_neg ht]`. Establish `key : ∀ a : Rul Xo c, evR Xo c (idem Z * a) y = evR Xo c a y` using `fun a => by`.
+Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : evR Xo c (idem Z * a) y = evR Xo c (idem Z) y * evR Xo c a y` using `evalAt_mul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (idem Z) a y`. Rewrite using `[e, evR_idem hy ht, one_mul]`. Establish `hm` using `idem_mul_mem Z (f - g).2`. Establish `h0 : sec₀ X Z e ⟨_, hm.1⟩ = 0`. Rewrite using `[sec₀_mul X Z (zero_add e) ⟨idem Z, idem_mem_secZ Z⟩ (f - g) ⟨_, hm.1⟩ rfl, map_sub (sec₀ X Z e), h, sub_self, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : idem Z * (f.1 - g.1) = 0` using `congrArg Subtype.val (eq_zero_of_sec₀ X Z (f := ⟨_, hm.1⟩) hm.2 h0)`. Rewrite `h1` using `[mul_sub, sub_eq_zero]`. Rewrite using `[← key f.1, h1, key]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_eq_of_sec₀_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l}
@@ -42,9 +42,9 @@ theorem evR_eq_of_sec₀_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {
   rw [← key f.1, h1, key]
 
 /- English proof (translation)
-Introduce `D T j Y e o hG hf Z TF u f hfv`. Establish `hfs` using `GlobalTheory.CompanionTheory.Ar.OntoDef.extVanZ_le_secZ TF.X _ hfv`. Take `⟨s, hs, hsf⟩` from `GlobalTheory.CompanionTheory.Ar.OntoDef.exists_vanBd_of_mem_extVanZ (X := TF.X) (la := u) (f := ⟨f, hfs⟩) hfv Z`. Take `⟨g, hg⟩` from `GlobalTheory.HSApp.vanBd_le_space D T j Y e o hG hf Z TF u hs`. Use `⟨g.1, g.2, fun σ _ w hw => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, y⟩` from `w`. Take `⟨hd, hl⟩` from `hw`. Establish `h` using `evR_eq_of_sec₀_eq TF.X Z ⟨f, hfs⟩ ⟨g.1, GlobalTheory.CompHS.cusp_le_secZ Z Y.U u g.2⟩ (hsf.symm.trans hg.symm) _ hl`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, dif_pos hd]`. Conclude with `congrArg _ h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cusp_form_extension_vanishing : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : GlobalTheory.CompHS.TorFlag Y.d.Xo₂ Y.d.c₂) (u : GlobalTheory.AllWt.Weight (T.Q.Dw j)), ∀ f ∈ GlobalTheory.CompanionTheory.Ar.OntoDef.extVanZ TF.X (exOf (T.Q.Dw j) u 0), ∃ g ∈ cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0), ∀ σ : Y.d.c₂.F →+* ℂ, GoodEmb Y.d.c₂ σ → ∀ w ∈ framesOn (Y.U σ) Z, rdU (Y.U σ) f w.1 w.2 = rdU (Y.U σ) g w.1 w.2 := by
   intro D T j Y e o hG hf Z TF u f hfv

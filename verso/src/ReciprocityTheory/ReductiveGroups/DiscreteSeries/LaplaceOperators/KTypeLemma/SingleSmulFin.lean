@@ -11,27 +11,27 @@ section GeneratorMatrix
 variable {n : ℕ} {M : Type*} [AddCommGroup M] [Module ℂ M]
 
 /- English proof (translation)
-Conclude with `le_sInf fun T hT => hT.1`.
+A detailed English derivation is pending.
 -/
 private lemma le_genSub_self (E : Fin n → Fin n → Module.End ℂ M) (S : Submodule ℂ M) : S ≤ genSub E S := by
   exact le_sInf fun T hT => hT.1
 
 /- English proof (translation)
-Conclude with `Submodule.mem_sInf.2 fun T hT => hT.2 a b v (Submodule.mem_sInf.1 hv T hT)`.
+A detailed English derivation is pending.
 -/
 private lemma genSub_stable (E : Fin n → Fin n → Module.End ℂ M) (S : Submodule ℂ M) (a b : Fin n) {v : M}
     (hv : v ∈ genSub E S) : E a b v ∈ genSub E S := by
   exact Submodule.mem_sInf.2 fun T hT => hT.2 a b v (Submodule.mem_sInf.1 hv T hT)
 
 /- English proof (translation)
-Conclude with `sInf_le ⟨hST, hT⟩`.
+A detailed English derivation is pending.
 -/
 private lemma genSub_le_of (E : Fin n → Fin n → Module.End ℂ M) (S T : Submodule ℂ M) (hST : S ≤ T)
     (hT : ∀ a b, ∀ v ∈ T, E a b v ∈ T) : genSub E S ≤ T := by
   exact sInf_le ⟨hST, hT⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma single_smul_fin (c : Fin n) (r : ℂ) (x : M) :
     (Pi.single c (r • x) : Fin n → M) = r • Pi.single c x := by
@@ -42,11 +42,11 @@ private lemma single_smul_fin (c : Fin n) (r : ℂ) (x : M) :
   · simp [h]
 
 /- English proof (translation)
-Set `G` to `genSub T (Submodule.pi Set.univ fun _ => V)`. Set `S : Submodule ℂ M` to `{ carrier := {m | ∀ x, (Pi.single x m : Fin n → M) ∈ G} add_mem' := fun {m m'} hm hm' x => by rw [Pi.single_add]; exact G.add_mem (hm x) (hm' x) zero_mem' := fun x => by rw [Pi.single_zero]; exact G.zero_mem smul_mem' := fun r m hm x => by rw [single_smul_fin]; exact G.smul_mem r …`. Establish `hVS : V ≤ S` using `fun v hv x => le_genSub_self T _ (Submodule.mem_pi.2 fun j _ => by`. Distinguish the cases in `h : j = x`. Substitute `h` using the available equality.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using hv`. Simplify using `[h])`. Establish `hSS : ∀ a b, ∀ m ∈ S, E a b m ∈ S`. Introduce `a b m hm x`. Establish `h2 : Submodule.span ℂ (Set.range fun y : Fin n => (Pi.single y m : Fin n → M)) ≤ G` using `Submodule.span_le.2 (by rintro _ ⟨y, rfl⟩; exact hm y)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3` using `G.add_mem (h2 (hT a b x m)) (genSub_stable T _ a b (hm x))`. Simplify using `using h3`. Establish `hle` using `genSub_le_of E V S hVS hSS`. Rewrite using `[← Finset.univ_sum_single f]`. Conclude with `G.sum_mem fun c _ => hle (hf c) c`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma gen_generic (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M)
     (T : Fin n → Fin n → Module.End ℂ (Fin n → M))
@@ -77,7 +77,7 @@ private lemma gen_generic (E : Fin n → Fin n → Module.End ℂ M) (V : Submod
   exact G.sum_mem fun c _ => hle (hf c) c
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c'`. Simplify using `only [tensV, LinearMap.pi_apply, LinearMap.add_apply, LinearMap.comp_apply, prj, LinearMap.proj_apply, Pi.add_apply]`. Apply the tactic sequence `by_cases h2 : c' = a <;> by_cases h1 : c' = c <;> by_cases h3 : b = c <;>`. Simplify using `[Pi.single_apply, ite_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together.
 -/
 private lemma tensV_single (E : Fin n → Fin n → Module.End ℂ M) (a b c : Fin n) (m : M) :
     tensV E a b (Pi.single c m) = Pi.single c (E a b m) + (if b = c then Pi.single a m else 0) := by
@@ -88,7 +88,7 @@ private lemma tensV_single (E : Fin n → Fin n → Module.End ℂ M) (a b c : F
     simp_all [Pi.single_apply, ite_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c'`. Simplify using `only [tensVd, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.comp_apply, prj, LinearMap.proj_apply, Pi.sub_apply]`. Apply the tactic sequence `by_cases h2 : c' = b <;> by_cases h1 : c' = c <;> by_cases h3 : a = c <;>`. Simplify using `[Pi.single_apply, ite_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together.
 -/
 private lemma tensVd_single (E : Fin n → Fin n → Module.End ℂ M) (a b c : Fin n) (m : M) :
     tensVd E a b (Pi.single c m) = Pi.single c (E a b m) - (if a = c then Pi.single b m else 0) := by
@@ -101,9 +101,9 @@ private lemma tensVd_single (E : Fin n → Fin n → Module.End ℂ M) (a b c : 
 end GeneratorMatrix
 
 /- English proof (translation)
-Introduce `ε M _ _ E V _ _`. Use `⟨fun f hf => gen_generic E V (tensV E) (fun a b c m => ?_) f hf, fun f hf => gen_generic E V (tensVd E) (fun a b c m => ?_) f hf⟩` and prove the remaining obligations. Rewrite using `[tensV_single, sub_add_cancel_left] split_ifs`. Conclude with `neg_mem (Submodule.subset_span ⟨a, rfl⟩)`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tensVd_single, sub_sub_cancel] split_ifs`. Conclude with `Submodule.subset_span ⟨b, rfl⟩`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem gen_statement (n : ℕ) : GenStatement n := by
   intro ε M _ _ E V _ _

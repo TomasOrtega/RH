@@ -418,7 +418,7 @@ structure HeckeU (D : D7) (N : ℕ) where
   unr : ∀ u, IntU D u → (∀ q : ℕ, q.Prime → ¬ InertQ D q → ZeroAt D q ((u : AE D) - 1)) → f u = 1
 
 /- English proof (translation)
-Establish `h` using `χ.norm t`. Rewrite `h` using `[ht, ← sq, map_pow]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HeckeU.sq_AF {D : D7} {N : ℕ} (χ : HeckeU D N) (t : (AE D)ˣ) (ht : sgU D t = t) : χ.f t ^ 2 = 1 := by
   have h := χ.norm t
@@ -744,7 +744,7 @@ def natTie (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D) : Prop 
     ThetaVectorUpToUnits D (tor0 D cc δ) t0 L L' (e N N' L L')
 
 /- English proof (translation)
-Take `⟨hN, hN', hL, hL'⟩` from `h`. Conclude with `⟨hL, hL', hN.mul_right _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem admissible_self_dual_even {D : D7} {N N' : ℕ} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (h : admitted D N N' L L') :
@@ -753,9 +753,9 @@ theorem admissible_self_dual_even {D : D7} {N N' : ℕ} {L : Submodule (𝓞 D.h
   exact ⟨hL, hL', hN.mul_right _⟩
 
 /- English proof (translation)
-Introduce `N N' L₁ L₁' L₂ L₂' h1 h2 M _ hM hc1 hc2 ρ`. Take `⟨hL₁, hL₁', hE⟩` from `admissible_self_dual_even h1`. Take `⟨hL₂, hL₂', -⟩` from `admissible_self_dual_even h2`. Take `⟨⟨t0, ht0⟩, hconj⟩` from `h0 cc δ hc`. Take `⟨t0', ht0'⟩` from `hconj M ρ hM.2.1 hM.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(hn cc δ hc t0 ht0 N N' L₁ L₁' hL₁ hL₁' hE _ (ht t0 ht0 N N' L₁ L₁' h1) M ρ hM hc1 t0' ht0').1, (hn cc δ hc t0 ht0 N N' L₂ L₂' hL₂ hL₂' hE _ (ht t0 ht0 N N' L₂ L₂' h2) M ρ hM hc2 t0' ht0').1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem normConj_indep (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D) (hc : Crv D cc δ)
     (h0 : t0Ex D) (hn : useNorm D) (ht : natTie D cc δ e) :
@@ -775,7 +775,7 @@ theorem normConj_indep (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : Fam
     (hn cc δ hc t0 ht0 N N' L₂ L₂' hL₂ hL₂' hE _ (ht t0 ht0 N N' L₂ L₂' h2) M ρ hM hc2 t0' ht0').1]
 
 /- English proof (translation)
-Introduce `N N' L L' hA`. Take `⟨hL, hL', hE⟩` from `admissible_self_dual_even hA`. Take `⟨⟨t0, ht0⟩, -⟩` from `h0 cc δ hc`. Conclude with `(ha cc δ hc t0 ht0 N N' L L' hL hL' hE _ (ht t0 ht0 N N' L L' hA)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nat_alg (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D) (hc : Crv D cc δ)
     (h0 : t0Ex D) (ha : useAlg D) (ht : natTie D cc δ e) :

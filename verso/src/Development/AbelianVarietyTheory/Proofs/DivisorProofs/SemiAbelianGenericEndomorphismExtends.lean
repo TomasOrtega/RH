@@ -11,9 +11,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hR G _ _ hG f hf`. Take `⟨⟨hN, -, hIC, -⟩, -⟩` from `hR`. Use `haveI := hN`. Use `haveI := hIC`. Use `haveI := hf`.
-
-Take `⟨g, ⟨hg, hg'⟩, -⟩` from `GlobalTheory.Published.SemiAbelianHomExtension.fractionField GlobalTheory.semiAbelianHomExtension_holds R (FractionRing R) G G hG hG f`. Conclude with `⟨g, hg, hg'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem genericEnd_extends : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ f : (Over.pullback (jK R)).obj G ⟶ (Over.pullback (jK R)).obj G, IsMonHom f → ∃ g : G ⟶ G, IsMonHom g ∧ (Over.pullback (jK R)).map g = f := by
   intro R _ _ _ hR G _ _ hG f hf

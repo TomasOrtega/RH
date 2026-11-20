@@ -5,17 +5,15 @@ open scoped nonZeroDivisors
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hself : ∀ y ∈ L, Q y y = 0`. Introduce `y hy`. Establish `h` using `halt y hy y hy`. Establish `h2 : (2 : F) * Q y y = 0` using `by linear_combination h`. Break down `mul_eq_zero.mp h2 with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h two_ne_zero`. Conclude with `h`. Establish `hadd2 : ∀ y ∈ L, ∀ y₁ ∈ L, ∀ y₂ ∈ L, Q y (y₁ + y₂) = Q y y₁ + Q y y₂`. Introduce `y hy y₁ hy₁ y₂ hy₂`. Establish `e1` using `halt y hy _ (hadd _ hy₁ _ hy₂)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hQadd _ hy₁ _ hy₂ _ hy`. Establish `e3` using `halt y hy y₁ hy₁`. Establish `e4` using `halt y hy y₂ hy₂`. Take the linear combination `e1 - e2 - e3 - e4`. Establish `hsmul2 : ∀ y ∈ L, ∀ (a : 𝓞 F), ∀ y' ∈ L, Q y ((a : F) • y') = (a : F) * Q y y'`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy a y' hy'`. Establish `e1` using `halt y hy _ (hsm a y' hy')`. Establish `e2` using `hQsmul a y' hy' y hy`. Establish `e3` using `halt y hy y' hy'`. Take the linear combination `e1 - e2 - (a : F) * e3`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `hsm r₀ x hx`. Establish `hv` using `hsm r₁ x' hx'`. Establish `hp` using `hsm s₀ x hx`. Establish `hq` using `hsm s₁ x' hx'`. Rewrite using `[hQadd _ hu _ hv _ (hadd _ hp _ hq), hadd2 _ hu _ hp _ hq, hadd2 _ hv _ hp _ hq, hQsmul r₀ x hx _ hp, hQsmul r₀ x hx _ hq, hQsmul r₁ x' hx' _ hp, hQsmul r₁ x' hx' _ hq, hsmul2 x hx s₀ x hx, hsmul2 x hx s₁ x' hx', hsmul2 x' hx' s₀ x hx, hsmul2 x' hx' s₁ x' hx', hself x hx, hself x …`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem alternating_pairing_expand {F V : Type} [Field F] [NumberField F] [AddCommGroup V]
     [Module F V] (L : Set V)
@@ -58,7 +56,7 @@ theorem alternating_pairing_expand {F V : Type} [Field F] [NumberField F] [AddCo
   ring
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `h`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, hn, Algebra.smul_def, ← RingOfIntegers.coe_eq_algebraMap]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_int_of_isInteger_smul {F : Type} [Field F] [NumberField F] (d : 𝓞 F) (y : F)
     (h : IsLocalization.IsInteger (𝓞 F) (d • y)) : ∃ n : 𝓞 F, (n : F) = (d : F) * y := by
@@ -67,37 +65,33 @@ theorem exists_int_of_isInteger_smul {F : Type} [Field F] [NumberField F] (d : �
   rw [RingOfIntegers.coe_eq_algebraMap, hn, Algebra.smul_def, ← RingOfIntegers.coe_eq_algebraMap]
 
 /- English proof (translation)
-Introduce `F V _ _ _ _ hfin L hadd hsm P halt hPadd hPsmul x x' hx hx' hne`. Establish `hP0 : ∀ y ∈ L, P 0 y = 0`. Introduce `y hy`. Simplify using `using hPsmul 0 x hx y hy`. Establish `hP0' : ∀ y ∈ L, P y 0 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `h0 : (0 : V) ∈ L` using `by simpa using hsm 0 x hx`. Rewrite using `[halt y hy 0 h0, hP0 y hy, neg_zero]`. Establish `hdne : ∀ d : (𝓞 F)⁰, ((d : 𝓞 F) : F) ≠ 0`. Introduce `d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `nonZeroDivisors.coe_ne_zero d` after adjusting the coercions. Establish `hli : LinearIndependent F ![x, x']`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (𝓞 F)⁰ ![s, t]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n₀, hn₀⟩` from `exists_int_of_isInteger_smul (d : 𝓞 F) s (hd 0)`. Take `⟨n₁, hn₁⟩` from `exists_int_of_isInteger_smul (d : 𝓞 F) t (hd 1)`. Establish `hrel : (n₀ : F) • x + (n₁ : F) • x' = 0`. Rewrite using `[hn₀, hn₁, ← smul_smul, ← smul_smul, ← smul_add, hst, smul_zero]`. Establish `e₀` using `alternating_pairing_expand L hadd hsm P halt hPadd hPsmul hx hx' n₀ n₁ 0 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `alternating_pairing_expand L hadd hsm P halt hPadd hPsmul hx hx' 1 0 n₀ n₁`. Rewrite `e₀` using `[hrel, hP0 _ (hadd _ (hsm 0 x hx) _ (hsm 1 x' hx'))]`. Rewrite `e₁` using `[hrel, hP0' _ (hadd _ (hsm 1 x hx) _ (hsm 0 x' hx'))]`. Move the coercions through the operations in `at e₀ e₁`. Simplify using `only [mul_one, mul_zero, sub_zero, one_mul, zero_mul] at e₀ e₁`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : (n₀ : F) = 0`. Break down `mul_eq_zero.mp e₀.symm with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hne`. Establish `h1 : (n₁ : F) = 0`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `mul_eq_zero.mp e₁.symm with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hne`. Rewrite `h0` using `[hn₀]`. Rewrite `h1` using `[hn₁]`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨(mul_eq_zero.mp h0).resolve_left (hdne d), (mul_eq_zero.mp h1).resolve_left (hdne d)⟩`. Establish `hcard : Fintype.card (Fin 2) = Module.finrank F V` using `by simp [hfin]`. Take `⟨b, hb⟩ : ∃ b : Module.Basis (Fin 2) F V, ⇑b = ![x, x']` from `⟨_, coe_basisOfLinearIndependentOfCardEqFinrank hli hcard⟩`. Establish `hb0 : b 0 = x` using `by rw [hb]; rfl`. Establish `hb1 : b 1 = x'` using `by rw [hb]; rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `B : LinearMap.BilinForm F V` to `LinearMap.mk₂ F (fun z w => P x x' * (b.repr z 0 * b.repr w 1 - b.repr z 1 * b.repr w 0)) (by intros; simp; ring) (by intros; simp; ring) (by intros; simp; ring) (by intros; simp; ring)`. Establish `hB : ∀ z w, B z w = P x x' * (b.repr z 0 * b.repr w 1 - b.repr z 1 * b.repr w 0)` using `fun _ _ => rfl`. Establish `hBxx' : B x x' = P x x'`. Rewrite using `[hB, ← hb0, ← hb1, b.repr_self, b.repr_self]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨B, fun z => by rw [hB]; ring, ?_⟩` and prove the remaining obligations. Introduce `z hz w hw`. Establish `hsum : ∀ v : V, v = b.repr v 0 • x + b.repr v 1 • x'`. Introduce `v`. Use `conv_lhs => rw [← b.sum_repr v]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Fin.sum_univ_two, hb0, hb1]`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (𝓞 F)⁰ ![b.repr z 0, b.repr z 1, b.repr w 0, b.repr w 1]`. Take `⟨r₀, hr₀⟩` from `exists_int_of_isInteger_smul (d : 𝓞 F) (b.repr z 0) (hd 0)`. Take `⟨r₁, hr₁⟩` from `exists_int_of_isInteger_smul (d : 𝓞 F) (b.repr z 1) (hd 1)`. Take `⟨s₀, hs₀⟩` from `exists_int_of_isInteger_smul (d : 𝓞 F) (b.repr w 0) (hd 2)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Take `⟨s₁, hs₁⟩` from `exists_int_of_isInteger_smul (d : 𝓞 F) (b.repr w 1) (hd 3)`. Use `set e : 𝓞 F := (d : 𝓞 F) with he`. Establish `hez : (e : F) • z = (r₀ : F) • x + (r₁ : F) • x'`. Combine the equalities or inequalities in the displayed calculation. Establish `hew : (e : F) • w = (s₀ : F) • x + (s₁ : F) • x'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hPe : P ((e : F) • z) ((e : F) • w) = (e : F) * ((e : F) * P z w)`. Establish `a1` using `hPsmul e z hz _ (hsm e w hw)`. Establish `a2` using `halt z hz _ (hsm e w hw)`. Establish `a3` using `hPsmul e w hw z hz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a4` using `halt w hw z hz`. Take the linear combination `a1 + (e : F) * a2 - (e : F) * a3 - (e : F) * (e : F) * a4`. Establish `hBe : B ((e : F) • z) ((e : F) • w) = (e : F) * ((e : F) * B z w)`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul]`. Establish `eP` using `alternating_pairing_expand L hadd hsm P halt hPadd hPsmul hx hx' r₀ r₁ s₀ s₁`.
-
-Establish `eB` using `alternating_pairing_expand L hadd hsm (fun u v => B u v) (fun u _ v _ => by simp only [hB]; ring) (fun u₁ _ u₂ _ v _ => by rw [map_add, LinearMap.add_apply]) (fun a u _ v _ => by rw [map_smul, LinearMap.smul_apply, smul_eq_mul]) hx hx' r₀ r₁ s₀ s₁`. Rewrite `eP` using `[← hez, ← hew, hPe]`. Rewrite `eB` using `[← hez, ← hew, hBe, hBxx']`. Establish `hee : (e : F) * (e : F) ≠ 0` using `mul_ne_zero (hdne d) (hdne d)`. Apply `mul_left_cancel₀ hee` to reduce the goal to its premises.
-
-Take the linear combination `eP - eB`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_alternating_bilinForm_eq_pairing : ∀ {F V : Type} [Field F] [NumberField F]
     [AddCommGroup V] [Module F V], Module.finrank F V = 2 → ∀ (L : Set V),

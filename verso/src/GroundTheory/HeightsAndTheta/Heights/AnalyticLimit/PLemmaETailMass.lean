@@ -11,17 +11,15 @@ open Filter Topology
 open ReciprocityTheory.AnForm.M (FinHolAtlas LocPot IsPotential IsSection IsPsh)
 
 /- English proof (translation)
-Introduce `X _ _ _ D A Om L s hL hs hd hle C₁ hC₁`. Take `⟨K, hK0, hK⟩` from `hB D A Om L s hL hs hd hle`. Use `⟨(C₁ + 2) ^ D * K, fun u hu R₀ hR₀ => ?_⟩` and prove the remaining obligations. Establish `htr : ∀ R, Real.exp 1 ≤ R → ∀ i, ∃ v : X → ℝ, A.Smooth v ∧ IsPsh A (potForm Om.pot v) ∧ (∀ x, -(C₁ * Real.log R + 2) ≤ v x ∧ v x ≤ 0) ∧ ∃ c : ℝ, ∀ x ∈ secOpen s, rSec L s x < R → v x = u i x + c` using `fun R hR i => hT A Om (secOpen s) (rSec L s) C₁ (u i) (isOpen_secOpen hL hs) hd (fun x _ => exp_one_le_rSec hle x) hC₁ (hu i).smooth (hu i).nonneg (hu i).nonpos (hu i).le_u (hu i).smooth_or_pole R hR`. Set `ut : ℝ → Fin D → X → ℝ` to `fun R i => if h : Real.exp 1 ≤ R then Classical.choose (htr R h i) else fun _ => 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hut : ∀ R (h : Real.exp 1 ≤ R) i, ut R i = Classical.choose (htr R h i)` using `fun R h i => by`. Simplify using `only [ut, dif_pos h]`. Take `⟨hint, hle₁⟩` from `hC D A Om (secOpen s) (rSec L s) u ut (isOpen_secOpen hL hs) (continuousOn_rSec hL hs) (fun i => (hu i).smooth) (fun i => (hu i).nonneg) (fun R hR i => by`. Rewrite using `[hut R hR i]`. Take `⟨h1, h2, -, h4⟩` from `Classical.choose_spec (htr R hR i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1, h2, h4⟩) R₀ hR₀`. Use `⟨hint, hle₁.trans ?_⟩` and prove the remaining obligations. Establish `hlog : 1 ≤ Real.log R₀`. Rewrite using `[← Real.log_exp 1]`. Conclude with `Real.log_le_log (Real.exp_pos 1) hR₀`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hM : 1 ≤ C₁ * Real.log R₀ + 2` using `by nlinarith`. Establish `hb` using `hK (C₁ * Real.log R₀ + 2) hM (ut R₀) (fun i => by rw [hut R₀ hR₀ i]; exact (Classical.choose_spec (htr R₀ hR₀ i)).1) (fun i => by rw [hut R₀ hR₀ i]; exact (Classical.choose_spec (htr R₀ hR₀ i)).2.1) (fun i x => by rw [hut R₀ hR₀ i]; exact (Classical.choose_spec (htr R₀ hR₀ i)).2. …`. Use `hb.trans ?_` and prove the remaining obligations. Establish `hR₀pos : 0 < R₀` using `lt_of_lt_of_le (Real.exp_pos 1) hR₀`. Establish `hMle : C₁ * Real.log R₀ + 2 ≤ (C₁ + 2) * Real.log R₀` using `by nlinarith`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : (C₁ * Real.log R₀ + 2) ^ D ≤ (C₁ + 2) ^ D * Real.log R₀ ^ D`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (by linarith) hMle D`. Establish `hnum : (C₁ * Real.log R₀ + 2) ^ D * K ≤ (C₁ + 2) ^ D * K * Real.log R₀ ^ D`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `div_le_div_of_nonneg_right hnum hR₀pos.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem LemmaETailMass.proof (hT : LemmaETrunc.Statement) (hC : LemmaETruncMass.Statement)
     (hB : LemmaETruncTail.Statement) : LemmaETailMass.Statement := by

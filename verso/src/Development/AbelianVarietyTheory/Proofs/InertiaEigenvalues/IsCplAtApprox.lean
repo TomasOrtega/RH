@@ -5,17 +5,17 @@ open IsLocalRing GlobalTheory.Pat
 namespace GlobalTheory.Pat
 
 /- English proof (translation)
-Establish `e : maximalIdeal S ^ k = (q ^ k).map φ` using `by rw [h.max_eq, Ideal.map_pow]`. Rewrite `ht` using `[e, Ideal.map]`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨x, hx, rfl⟩` from `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `c`. Take `⟨a, b, hb, hab⟩` from `h.res c`. Use `⟨a * x, b, hb, ?_⟩` and prove the remaining obligations. Establish `: φ b * (c * φ x) - φ (a * x) = φ x * (φ b * c - φ a)` using `by rw [map_mul]; ring`. Rewrite using `[this, pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_mul (e ▸ Ideal.mem_map_of_mem φ hx) hab`. Consider the case `zero`. Introduce `c`. Conclude with `⟨0, 1, (Ideal.ne_top_iff_one q).1 hq.ne_top, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Take `⟨a, b, hb, hab⟩` from `hx c`. Take `⟨a', b', hb', hab'⟩` from `hy c`. Use `⟨b' * a + b * a', b * b', fun hh => (hq.mem_or_mem hh).elim hb hb', ?_⟩` and prove the remaining obligations. Establish `: φ (b * b') * (c * (x + y)) - φ (b' * a + b * a') = φ b' * (φ b * (c * x) - φ a) + φ b * (φ b' * (c * y) - φ a')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hab) (Ideal.mul_mem_left _ _ hab')`. Consider the case `smul r x _ hx`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `c`. Take `⟨a, b, hb, hab⟩` from `hx (c * r)`. Conclude with `⟨a, b, hb, by simpa [mul_assoc] using hab⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsCplAt.approx_step {R S : Type} [CommRing R] [CommRing S] [IsLocalRing S] {q : Ideal R}
     [hq : q.IsPrime] {φ : R →+* S} (h : IsCplAt q φ) (k : ℕ) (t : S) (ht : t ∈ maximalIdeal S ^ k) :
@@ -50,11 +50,11 @@ theorem IsCplAt.approx_step {R S : Type} [CommRing R] [CommRing S] [IsLocalRing 
     exact ⟨a, b, hb, by simpa [mul_assoc] using hab⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, 1, (Ideal.ne_top_iff_one q).1 hq.ne_top, by simp⟩`. Consider the case `succ k ih`. Take `⟨a, b, hb, hab⟩` from `ih`. Take `⟨a', b', hb', hab'⟩` from `h.approx_step k _ hab 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨b' * a + a', b * b', fun hh => (hq.mem_or_mem hh).elim hb hb', ?_⟩` and prove the remaining obligations. Establish `: φ (b * b') * s - φ (b' * a + a') = φ b' * (1 * (φ b * s - φ a)) - φ a'`. Simplify using `only [map_mul, map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hab'`.
+A detailed English derivation is pending.
 -/
 theorem IsCplAt.approx_surj {R S : Type} [CommRing R] [CommRing S] [IsLocalRing S] {q : Ideal R}
     [hq : q.IsPrime] {φ : R →+* S} (h : IsCplAt q φ) (k : ℕ) (s : S) :
@@ -71,17 +71,15 @@ theorem IsCplAt.approx_surj {R S : Type} [CommRing R] [CommRing S] [IsLocalRing 
     exact hab'
 
 /- English proof (translation)
-Set `L` to `Localization.AtPrime q`. Establish `hu : ∀ y : q.primeCompl, IsUnit (φ y)`. Introduce `y`. Assume the negation of the conclusion as `hy`. Establish `: (y : R) ∈ (maximalIdeal S).comap φ` using `(mem_maximalIdeal _).2 hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `this` using `[h.comap_eq]`. Conclude with `y.2 this`. Use `letI : Algebra R S := φ.toAlgebra`. Set `ψ : L →+* S` to `IsLocalization.lift (M := q.primeCompl) hu`. Use `letI : Algebra L S := ψ.toAlgebra`.
+Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hψ : ∀ r, ψ (algebraMap R L r) = φ r` using `fun r => IsLocalization.lift_eq hu r`. Use `haveI : IsScalarTower R L S := IsScalarTower.of_algebraMap_eq fun r => (hψ r).symm`. Establish `hfl : Module.Flat R S` using `h.flat`. Use `haveI : Module.Flat L S := (Module.flat_iff_of_isLocalization L q.primeCompl S).2 hfl`. Establish `hcomp : (algebraMap L S).comp (algebraMap R L) = φ` using `RingHom.ext hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsLocalHom (algebraMap L S) := by`. Apply `((local_hom_TFAE (algebraMap L S)).out 0 2).2` to reduce the goal to its premises. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map, hcomp, h.max_eq]`. Use `haveI : Module.FaithfullyFlat L S := Module.FaithfullyFlat.of_flat_of_isLocalHom`. Establish `key` using `Ideal.comap_map_eq_self_of_faithfullyFlat (B := S) ((q ^ k).map (algebraMap R L))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `key` using `[Ideal.map_map, hcomp, Ideal.map_pow φ, ← h.max_eq]`. Establish `ha' : algebraMap R L a ∈ (q ^ k).map (algebraMap R L)`. Rewrite using `[← key, Ideal.mem_comap]`. Conclude with `(hψ a).symm ▸ ha`. Take `⟨m, hm, hma⟩` from `(IsLocalization.algebraMap_mem_map_algebraMap_iff q.primeCompl L _ a).1 ha'`.
-
-Conclude with `⟨m, hm, hma⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsCplAt.approx_inj {R S : Type} [CommRing R] [CommRing S] [IsLocalRing S] {q : Ideal R}
     [hq : q.IsPrime] {φ : R →+* S} (h : IsCplAt q φ) (k : ℕ) (a : R)
@@ -114,7 +112,7 @@ theorem IsCplAt.approx_inj {R S : Type} [CommRing R] [CommRing S] [IsLocalRing S
   exact ⟨m, hm, hma⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ h k` and use `⟨h.approx_surj k, h.approx_inj k⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isCplAt_approx : ∀ (R S : Type) [CommRing R] [CommRing S] [IsLocalRing S] (q : Ideal R)
     [q.IsPrime] (φ : R →+* S), IsCplAt q φ → ∀ k : ℕ,

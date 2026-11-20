@@ -16,31 +16,27 @@ open Classical
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs hpl hk X Dc Φ hΦ q`. Establish `hk1 : 1 ≤ P.k` using `by omega`. Establish `hz` using `hpl.2.1`. Establish `hz'` using `hpl.2.2.1`. Establish `hT : 0 < Tz P.k P.r Bs.z` using `by rw [hpl.2.2.2.1]; exact hpl.1.T_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT' : 0 < Tz P.k P.r Bs.z'` using `by rw [hpl.2.2.2.2.1]; exact hpl.1.T'_pos`. Establish `hsec` using `Bs.sec`. Take `⟨hOpen, hIsDom, hMu, hFF⟩` from `hΦ`. Establish `hdom : ∀ x ∈ Q.DomR P.k P.r Bs.z Bs.z', x.2 ∈ Dc x.1`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h, hh, h', hh', hg⟩` from `Formalism.FourierDecayAlt.P.NFRadRedA.decomp hk1 hz hz' hT hT' hsec hx.2.1 hx.2.2`. Use `set ζ := Q.zetaL P.k P.r Bs.z Bs.z' (Fin.last P.r) x.2 with hζ`. Establish `hζT : P.TT < Complex.normSq ζ`. Establish `h1` using `hx.2.2`. Unfold `Q.GGl at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show P.T * P.T' < _`. Rewrite using `[← hpl.2.2.2.1, ← hpl.2.2.2.2.1]`. Combine the linear equalities and inequalities to obtain the conclusion. Set `q' : MA.Qp P.r P.TT` to `⟨(x.1, ζ), hx.1, hζT⟩`. Establish `hmu : NF.muZ P.k P.r Bs.μsec ζ ∈ Dc x.1` using `hMu q'`.
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmuG : NF.muZ P.k P.r Bs.μsec ζ ∈ Q.Glev P.k P.r (Fin.last P.r)` using `Formalism.FourierDecayAlt.P.CutMP.Gauge.VLem.muZ_glev hpl q'`. Establish `hS : ∀ {w : Fin (2 * P.r + P.k + 1) → ℂ} {s : Q.Mx P.k P.r}, s ∈ UWset P.k P.r w → s ∈ Q.Slev P.k P.r w (Fin.last P.r)`. Introduce `w s hs`. Conclude with `⟨s, hs, 1, Formalism.FourierDecayAlt.P.Qx6.one_nlev _, by simp⟩`. Rewrite using `[hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(hIsDom x.1 hx.1).2 _ ⟨hmuG, hmu⟩ h (hS hh) h' (hS hh')`. Set `Φt : Q.Fn P.k P.r (Wq →L[ℂ] Wp)` to `fun c g => if (c, g) ∈ Q.DomR P.k P.r Bs.z Bs.z' then Φ c g else 0`. Establish `hΦt_mem : Φt ∈ Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'`. Use `⟨fun x hx => ?_, fun x₀ hx₀ => ?_, fun x hx h hh h' hh' => ?_⟩` and prove the remaining obligations. Use `show (if (x.1, x.2) ∈ Q.DomR P.k P.r Bs.z Bs.z' then Φ x.1 x.2 else 0) = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_neg hx]`. Take `⟨U, F, hU, hx₀U, hF, hΦF⟩` from `hFF.1 x₀ ⟨hx₀.1, hdom x₀ hx₀⟩ hx₀.2.1`. Establish `hO : IsOpen {x : (Fin P.r → ℂ) × Q.Mx P.k P.r | x.1 ∈ OmX P.r ∧ 0 < Q.GGl P.k P.r Bs.z Bs.z' x.2}`. Establish `h1 : IsOpen {x : (Fin P.r → ℂ) × Q.Mx P.k P.r | x.1 ∈ OmX P.r}`. Establish `: IsOpen (OmX P.r)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : OmX P.r = ⋂ l, {x : Fin P.r → ℂ | x l ≠ 0}` using `by ext x; simp [OmX]`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun l => isOpen_ne_fun (continuous_apply l) continuous_const`. Conclude with `this.preimage continuous_fst`. Establish `h2 : IsOpen {x : (Fin P.r → ℂ) × Q.Mx P.k P.r | 0 < Q.GGl P.k P.r Bs.z Bs.z' x.2}` using `isOpen_lt continuous_const ((Formalism.FourierDecayAlt.P.Qx5.GGl_continuous P.k P.r Bs.z Bs.z').comp continuous_snd)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1.inter h2`. Use `⟨U ∩ {x | x.1 ∈ OmX P.r ∧ 0 < Q.GGl P.k P.r Bs.z Bs.z' x.2}, F, hU.inter hO, ⟨hx₀U, hx₀.1, hx₀.2.2⟩, hF.mono Set.inter_subset_left, fun x hx hxG => ?_⟩` and prove the remaining obligations. Establish `hxD : x ∈ Q.DomR P.k P.r Bs.z Bs.z'` using `⟨hx.2.1, hxG, hx.2.2⟩`. Use `show (if (x.1, x.2) ∈ Q.DomR P.k P.r Bs.z Bs.z' then Φ x.1 x.2 else 0) = F x`. Rewrite using `[if_pos hxD]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hΦF x hx.1 hxG`. Establish `hxD'` using `Formalism.FourierDecayAlt.P.Qx5.DomR_inv hh hh' hx show (if (x.1, h * x.2 * h') ∈ Q.DomR P.k P.r Bs.z Bs.z' then Φ x.1 (h * x.2 * h') else 0) = (Bs.π h).comp ((if (x.1, x.2) ∈ Q.DomR P.k P.r Bs.z Bs.z' then Φ x.1 x.2 else 0).comp (Bs.π' h'))`. Rewrite using `[if_pos hxD', if_pos hx]`. Conclude with `(hFF.2 x.1 hx.1).2.2.2 x.2 ⟨hx.2.1, hdom x hx⟩ h hh h' hh'`. Use `⟨⟨Φt, hΦt_mem⟩, {ζ' | Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq ζ'}, ?_, fun ζ' hζ' => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(isOpen_lt continuous_const Complex.continuous_normSq).mem_nhds ?_ show Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq q.1.2` and prove the remaining obligations. Rewrite using `[hpl.2.2.2.1, hpl.2.2.2.2.1]`. Conclude with `q.2.2`. Establish `hqD : (q.1.1, NF.muZ P.k P.r Bs.μsec ζ') ∈ Q.DomR P.k P.r Bs.z Bs.z'` using `Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hz hz' hsec (q := (q.1.1, ζ')) ⟨q.2.1, hζ'⟩`. Establish `hval : Φt q.1.1 (NF.muZ P.k P.r Bs.μsec ζ') = Φ q.1.1 (NF.muZ P.k P.r Bs.μsec ζ')` using `by show (if (q.1.1, NF.muZ P.k P.r Bs.μsec ζ') ∈ Q.DomR P.k P.r Bs.z Bs.z' then _ else 0) = _`.
-
-Rewrite using `[if_pos hqD]`. Use `⟨hval, fun Y a b => ?_⟩` and prove the remaining obligations. Rewrite using `[X.t_apply Y a b ⟨Φt, hΦt_mem⟩ (q.1.1, NF.muZ P.k P.r Bs.μsec ζ') hqD]`. Use `show Q.tL P.k P.r Bs.z Bs.z' (Fin.last P.r) Y a b (Φt q.1.1) (NF.muZ P.k P.r Bs.μsec ζ') = Q.tL P.k P.r Bs.z Bs.z' (Fin.last P.r) Y a b (Φ q.1.1) (NF.muZ P.k P.r Bs.μsec ζ')`. Establish `hDo : IsOpen {g : Q.Mx P.k P.r | 0 < Q.GGl P.k P.r Bs.z Bs.z' g}` using `isOpen_lt continuous_const (Formalism.FourierDecayAlt.P.Qx5.GGl_continuous P.k P.r Bs.z Bs.z')`.
-
-Use `(Formalism.FourierDecayAlt.P.Qx2.ll_tL (i := Fin.last P.r) hDo Bs.z Bs.z' Y a b).1 (Φt q.1.1) (Φ q.1.1) (fun x hx => ?_) _ ⟨hqD.2.1, hqD.2.2⟩` and prove the remaining obligations. Use `show (if (q.1.1, x) ∈ Q.DomR P.k P.r Bs.z Bs.z' then Φ q.1.1 x else 0) = Φ q.1.1 x`. Rewrite using `[if_pos ⟨q.2.1, hx.1, hx.2⟩]`.
+A detailed English derivation is pending.
 -/
 theorem family_locality_holds : FamLocal := by
   intro Wp Wq _ _ _ _ _ _ P Bs hpl hk X Dc Φ hΦ q

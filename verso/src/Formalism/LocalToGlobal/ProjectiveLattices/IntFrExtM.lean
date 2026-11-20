@@ -18,11 +18,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 section ValCrit
 
 /- English proof (translation)
-Take `⟨N, i, hi, hif⟩` from `hf`. Use `haveI : IsClosedImmersion i := hi`. Use `haveI : IsProper (PSpace.str R N) := isProper_str R N`. Establish `hU : UniversallyClosed (i ≫ PSpace.str R N)` using `inferInstance`. Rewrite `hU` using `[hif]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (ValuativeCriterion.Existence ⊓ @QuasiCompact) f`. Rewrite using `[← UniversallyClosed.eq_valuativeCriterion]`. Conclude with `hU`. Establish `hE : ValuativeCriterion.Existence f` using `h2.1`. Use `haveI : ValuationRing V := by first`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Consider the case `exact inferInstance`. Consider the case `exact ValuationRing.of_isDiscreteValuationRing V`. Set `S : ValuativeCommSq f` to `⟨V, K, y, spMap b, ⟨hy⟩⟩`. Take `⟨l⟩` from `(hE S).exists_lift`. Conclude with `⟨l.l, l.fac_right, l.fac_left⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem valCrit_proj {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Sp R) (hf : IsProjOver f)
     (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K]
@@ -72,9 +72,7 @@ section Proofs
 variable {D : Datum H} {l : Level H}
 
 /- English proof (translation)
-Use `⟨fun l' => if h : l' = l then cast (congrArg (Moduli D) h.symm) X0 else (hN l').some, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `(beta_reduce`. Rewrite using `[dif_pos rfl]`. Use the proof step `rfl)`.
-
-Consider the case `simp`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_family {D : Datum H} {l : Level H} (X0 : Moduli D l) (hN : ∀ l' : Level H, Nonempty (Moduli D l')) :
     ∃ XoF : ∀ l' : Level H, Moduli D l', XoF l = X0 := by

@@ -15,19 +15,17 @@ def GrpInt (S : B.RealPlaceData k r Wp Wq) (ν' : Fin (2 * r + k + 1) → ℂ) (
   ∀ hB ∈ UWset k r S.z', hB *ᵥ ν' = ν' → (S.π (m₀ * hB * m₀⁻¹)).comp (V.comp (S.π' hB⁻¹)) = V
 
 /- English proof (translation)
-Take `⟨hmU, -, hiU, -, um, -, -⟩` from `vecw_base_parts S hbase`. Establish `key : ∀ t : ℝ, (S.π (NormedSpace.exp ((t : ℂ) • (m₀ * X * m₀⁻¹)))).comp V = V.comp (S.π' (NormedSpace.exp ((t : ℂ) • X)))`. Introduce `t`. Establish `hhB` using `QrD.exp_uw hX t`. Establish `hBν` using `Qx8.exp_fix hXν t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set hB := NormedSpace.exp ((t : ℂ) • X) with hhBdef`. Establish `hconj : NormedSpace.exp ((t : ℂ) • (m₀ * X * m₀⁻¹)) = m₀ * hB * m₀⁻¹`. Establish `h` using `LeftDerivativeCurves.exp_swap hiU X t`. Rewrite `h` using `[Matrix.nonsing_inv_nonsing_inv _ um]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ um, Matrix.one_mul]`. Use `_ = m₀ * hB * m₀⁻¹ := by rw [h, Matrix.mul_assoc]`. Establish `h` using `hV hB hhB hBν`. Establish `hinv` using `WeylGroupFacts.uw_inv hhB`. Establish `uB` using `WeylGroupFacts.isUnit_of_uh hhB.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hconj]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ContinuousLinearMap.comp_assoc, ContinuousLinearMap.comp_assoc, ← S.π'_rep.2 _ hinv _ hhB, Matrix.nonsing_inv_mul _ uB, S.π'_rep.1]`. Both sides reduce to the same expression. Use `_ = V.comp (S.π' hB) := by rw [h]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hd1` using `QrD.dOp_hasDeriv S.π'_rep S.π'_cont hX`. Establish `hd2` using `QrD.dOp_hasDeriv S.π_rep S.π_cont hY`. Set `L1 : (Wq →L[ℂ] Wq) →L[ℂ] (Wq →L[ℂ] Wp)` to `ContinuousLinearMap.compL ℂ Wq Wq Wp V`. Set `L2 : (Wp →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)` to `(ContinuousLinearMap.compL ℂ Wq Wp Wp).flip V`. Establish `h1` using `(L1.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2` using `(L2.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd2`. Establish `hfun : ((L2.restrictScalars ℝ) ∘ fun t : ℝ => S.π (NormedSpace.exp ((t : ℂ) • (m₀ * X * m₀⁻¹)))) = ((L1.restrictScalars ℝ) ∘ fun t : ℝ => S.π' (NormedSpace.exp ((t : ℂ) • X)))`. Use function extensionality and compare the values at `t`. Conclude with `key t`. Rewrite `h2` using `[hfun]`.
-
-Conclude with `h2.unique h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_dOp_intertwine (S : B.RealPlaceData k r Wp Wq) {ν' : Fin (2 * r + k + 1) → ℂ} {m₀ : B.Mat k r}
     (hbase : D.IsBaseFrame S ν' m₀) (V : Wq →L[ℂ] Wp) (hV : GrpInt S ν' m₀ V) {X : B.Mat k r}
@@ -71,11 +69,11 @@ theorem gen_dOp_intertwine (S : B.RealPlaceData k r Wp Wq) {ν' : Fin (2 * r + k
   exact h2.unique h1
 
 /- English proof (translation)
-Take `⟨hmU, -, -, -, um, -, -⟩` from `vecw_base_parts S hbase`. Establish `hBz : Q.IsFrameOf k r [S.z] (fun a => m₀ *ᵥ Bs' a)` using `vecw_frame_sub (fun v hv => by simp at hv; simp [hv]) (vecw_frame_fwd S hbase hB)`. Establish `hBz' : Q.IsFrameOf k r [S.z'] Bs'` using `vecw_frame_sub (fun v hv => by simp at hv; simp [hv]) hB`. Establish `hBν : Q.IsFrameOf k r [ν'] Bs'` using `vecw_frame_sub (fun v hv => by simp at hv; simp [hv]) hB`. Take `⟨e1, e2, e3⟩` from `vecw_conj_eq hmU um Bs' a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `lY` using `QrD.frame_lie hBz a b`. Establish `lX` using `QrD.frame_lie hBz' a b`. Establish `lν` using `QrD.frame_lie hBν a b`. Rewrite `lY` using `[e1, e2, e3]`. Unfold `QrD.ecOp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[e1, e2, e3, ContinuousLinearMap.add_comp, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_add, ContinuousLinearMap.comp_smul, gen_dOp_intertwine S hbase V hV lX.1 lν.1.2 lY.1, gen_dOp_intertwine S hbase V hV lX.2 lν.2.2 lY.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gen_ecOp_intertwine (S : B.RealPlaceData k r Wp Wq) {ν' : Fin (2 * r + k + 1) → ℂ} {m₀ : B.Mat k r}
     (hbase : D.IsBaseFrame S ν' m₀) (V : Wq →L[ℂ] Wp) (hV : GrpInt S ν' m₀ V) {m : ℕ}
@@ -98,9 +96,9 @@ theorem gen_ecOp_intertwine (S : B.RealPlaceData k r Wp Wq) {ν' : Fin (2 * r + 
     gen_dOp_intertwine S hbase V hV lX.2 lν.2.2 lY.2]
 
 /- English proof (translation)
-Establish `hBz : Q.IsFrameOf k r [S.z] (fun a => m₀ *ᵥ Bs' a)` using `vecw_frame_sub (fun v hv => by simp at hv; simp [hv]) (vecw_frame_fwd S hbase hB)`. Establish `hBz' : Q.IsFrameOf k r [S.z'] Bs'` using `vecw_frame_sub (fun v hv => by simp at hv; simp [hv]) hB`. Unfold `Q.capRep`. Use `vecw_qmF V.toLinearMap _ _ (fun i j y => ?_) id id w v` and prove the remaining obligations. Establish `lY` using `QrD.frame_lie hBz i j`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `lX` using `QrD.frame_lie hBz' i j`. Simplify using `only [ContinuousLinearMap.coe_coe]`. Rewrite using `[QrD.ecRep_eq S.π_rep S.π_cont lY.1 lY.2, QrD.ecRep_eq S.π'_rep S.π'_cont lX.1 lX.2]`. Establish `h` using `congrArg (fun L : Wq →L[ℂ] Wp => L y) (gen_ecOp_intertwine S hbase V hV hB i j)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gen_capRep_intertwine (S : B.RealPlaceData k r Wp Wq) {ν' : Fin (2 * r + k + 1) → ℂ} {m₀ : B.Mat k r}
     (hbase : D.IsBaseFrame S ν' m₀) (V : Wq →L[ℂ] Wp) (hV : GrpInt S ν' m₀ V) {m : ℕ}
@@ -123,15 +121,15 @@ end gen
 open Finset
 
 /- English proof (translation)
-Take `⟨hOK, hz, hz', -, -, hty, hty'⟩` from `hPl`. Take `⟨hmU, hmW, -, -, -, hzeq, -⟩` from `vecw_base_parts S hbase`. Take `⟨hν, hνz, hνν, -, -⟩` from `id hbase`. Establish `he : inWb P.k P.r (m₀ *ᵥ ν')` using `hmW ν' hν`. Establish `hee : herm (Hpk P.k P.r) (m₀ *ᵥ ν') (m₀ *ᵥ ν') = 1` using `by rw [Dx2.DF.herm_m0_mulVec_invariant m₀ hmU]; exact hνν`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hez : herm (Hpk P.k P.r) (m₀ *ᵥ ν') S.z = 0`. Rewrite using `[hzeq, Qx8.herm_smul_right', Dx2.DF.herm_m0_mulVec_invariant m₀ hmU, hνz, mul_zero]`. Take `⟨Bs₀', hB₀'⟩` from `vecw_frame_exists P.k P.r hOK.k_pos S.z' ν' hz' S.T'_pos hν hνz hνν`. Establish `hB₀` using `vecw_frame_fwd S hbase hB₀'`. Take `⟨S', hInt', -, heig⟩` from `branching_proof Wq (parametersUPrimeForU P) (parameters_u_prime_for_u_ok hOK) rfl S.z' ν' S.π' hz' S.T'_pos hty' hν hνz hνν`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `heig' : ∀ (σ : M.Ty (parametersUPrimeForU P)) (w : ℂ), ∀ v ∈ S' σ, Q.capRep P.k P.r S.π' Bs₀' w v = M.xC (parametersUPrimeForU P) σ (w - ((P.k : ℂ) - 2) / 2) • v` using `fun σ w v hv => heig Bs₀' hB₀' σ w v hv`. Use `ContinuousLinearMap.ext fun f => ?_` and prove the remaining obligations. Rewrite using `[_root_.sum_apply]`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Establish `hf : f ∈ ⨆ σ, S' σ` using `by rw [hInt'.submodule_iSup_eq_top]; exact Submodule.mem_top`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Submodule.iSup_induction S' (motive := fun f => ∑ ρ, TP.E ρ (V f) = V f) hf ?_ ?_ ?_` and prove the remaining obligations. Introduce `σ v hv`. Use `vecw_good_of_eig hOK hz S.T_pos hty he hez hee TP hB₀ σ _ fun w => ?_` and prove the remaining obligations. Rewrite using `[gen_capRep_intertwine S hbase V hV hB₀' w v, heig' σ w v hv, map_smul]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `a b ha hb`. Simplify using `only [map_add, Finset.sum_add_distrib, ha, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem types_of_grpInt {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par)

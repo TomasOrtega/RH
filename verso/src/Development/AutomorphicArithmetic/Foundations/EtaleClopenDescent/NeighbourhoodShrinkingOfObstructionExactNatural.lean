@@ -14,14 +14,14 @@ private def mY (p : Y ⟶ B) (u : T ⟶ B) (u' : T' ⟶ B) (f : T ⟶ T') (h : f
   pullback.map p u p u' (𝟙 Y) f (𝟙 B) (by simp) (by simp [h])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 private lemma mY_snd (p : Y ⟶ B) (u : T ⟶ B) (u' : T' ⟶ B) (f : T ⟶ T') (h : f ≫ u' = u) :
     mY p u u' f h ≫ pullback.snd p u' = pullback.snd p u ≫ f :=
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Unfold `mY pullback.map`. Use `erw [pullback.lift_fst]`. Conclude with `Category.comp_id _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma mY_fst (p : Y ⟶ B) (u : T ⟶ B) (u' : T' ⟶ B) (f : T ⟶ T') (h : f ≫ u' = u) :
     mY p u u' f h ≫ pullback.fst p u' = pullback.fst p u := by
@@ -30,7 +30,7 @@ private lemma mY_fst (p : Y ⟶ B) (u : T ⟶ B) (u' : T' ⟶ B) (f : T ⟶ T') 
   exact Category.comp_id _
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, mY_fst, mY_fst, mY_fst]`. Rewrite using `[Category.assoc, mY_snd, reassoc_of% mY_snd, mY_snd, e]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private lemma mY_comp (p : Y ⟶ B) (u : T ⟶ B) (u' : T' ⟶ B) (u'' : T'' ⟶ B) (f : T ⟶ T') (g : T' ⟶ T'')
     (k : T ⟶ T'') (h : f ≫ u' = u) (h' : g ≫ u'' = u') (hk : k ≫ u'' = u) (e : f ≫ g = k) :
@@ -40,7 +40,7 @@ private lemma mY_comp (p : Y ⟶ B) (u : T ⟶ B) (u' : T' ⟶ B) (u'' : T'' ⟶
   · rw [Category.assoc, mY_snd, reassoc_of% mY_snd, mY_snd, e]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[mY_fst, Category.id_comp]`. Rewrite using `[mY_snd, Category.comp_id, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private lemma mY_id (p : Y ⟶ B) (u : T ⟶ B) (h : 𝟙 T ≫ u = u) : mY p u u (𝟙 T) h = 𝟙 _ := by
   apply pullback.hom_ext
@@ -53,21 +53,21 @@ private def mW (p : Y ⟶ B) (ι : W ⟶ B) (u : T ⟶ B) (u' : T' ⟶ B) (f : T
     (by rw [Category.comp_id, reassoc_of% (mY_snd p u u' f h), h]) (by simp)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 private lemma mW_fst (p : Y ⟶ B) (ι : W ⟶ B) (u : T ⟶ B) (u' : T' ⟶ B) (f : T ⟶ T') (h : f ≫ u' = u) :
     mW p ι u u' f h ≫ pullback.fst _ ι = pullback.fst _ ι ≫ mY p u u' f h :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `(pullback.lift_snd _ _ _).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 private lemma mW_snd (p : Y ⟶ B) (ι : W ⟶ B) (u : T ⟶ B) (u' : T' ⟶ B) (f : T ⟶ T') (h : f ≫ u' = u) :
     mW p ι u u' f h ≫ pullback.snd _ ι = pullback.snd _ ι :=
   (pullback.lift_snd _ _ _).trans (Category.comp_id _)
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, mW_fst, reassoc_of% mW_fst]`. Rewrite using `[mY_comp p u u' u'' f g k h h' hk e]`. Simplify using `only [Category.assoc, mW_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma mW_comp (p : Y ⟶ B) (ι : W ⟶ B) (u : T ⟶ B) (u' : T' ⟶ B) (u'' : T'' ⟶ B) (f : T ⟶ T')
     (g : T' ⟶ T'') (k : T ⟶ T'') (h : f ≫ u' = u) (h' : g ≫ u'' = u') (hk : k ≫ u'' = u) (e : f ≫ g = k) :
@@ -78,7 +78,7 @@ private lemma mW_comp (p : Y ⟶ B) (ι : W ⟶ B) (u : T ⟶ B) (u' : T' ⟶ B)
   · simp only [Category.assoc, mW_snd]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[mW_fst, mY_id, Category.id_comp, Category.comp_id]`. Rewrite using `[mW_snd, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private lemma mW_id (p : Y ⟶ B) (ι : W ⟶ B) (u : T ⟶ B) (h : 𝟙 T ≫ u = u) : mW p ι u u (𝟙 T) h = 𝟙 _ := by
   apply pullback.hom_ext
@@ -86,13 +86,13 @@ private lemma mW_id (p : Y ⟶ B) (ι : W ⟶ B) (u : T ⟶ B) (h : 𝟙 T ≫ u
   · rw [mW_snd, Category.id_comp]
 
 /- English proof (translation)
-Simplify using `using a.w`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma a_w {U U' : B.Etale} (a : U' ⟶ U) : a.left ≫ U.hom = U'.hom := by
   simpa using a.w
 
 /- English proof (translation)
-Establish `hY : ∀ {V V' : B.Etale} (c : V' ⟶ V), resY p c = mY p _ _ c.left (a_w c)` using `fun _ => rfl`. Rewrite using `[hY (b ≫ a), hY b, hY a]`. Conclude with `(mY_comp p _ _ _ _ _ _ _ _ _ rfl).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma resY_comp (p : Y ⟶ B) {U U' U'' : B.Etale} (b : U'' ⟶ U') (a : U' ⟶ U) :
     resY p (b ≫ a) = resY p b ≫ resY p a := by
@@ -101,7 +101,7 @@ private lemma resY_comp (p : Y ⟶ B) {U U' U'' : B.Etale} (b : U'' ⟶ U') (a :
   exact (mY_comp p _ _ _ _ _ _ _ _ _ rfl).symm
 
 /- English proof (translation)
-Establish `hW : ∀ {V V' : B.Etale} (c : V' ⟶ V), resYW p ι c = mW p ι _ _ c.left (a_w c)` using `fun _ => rfl`. Rewrite using `[hW (b ≫ a), hW b, hW a]`. Conclude with `(mW_comp p ι _ _ _ _ _ _ _ _ _ rfl).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma resYW_comp (p : Y ⟶ B) (ι : W ⟶ B) {U U' U'' : B.Etale} (b : U'' ⟶ U') (a : U' ⟶ U) :
     resYW p ι (b ≫ a) = resYW p ι b ≫ resYW p ι a := by
@@ -110,7 +110,7 @@ private lemma resYW_comp (p : Y ⟶ B) (ι : W ⟶ B) {U U' U'' : B.Etale} (b : 
   exact (mW_comp p ι _ _ _ _ _ _ _ _ _ rfl).symm
 
 /- English proof (translation)
-Establish `hY : resY p a = mY p _ _ a.left (a_w a)` using `rfl`. Establish `hT : ∀ {V : B.Etale} (s : S ⟶ V.left), tY p V s = mY p _ _ s rfl` using `fun _ => rfl`. Establish `h1 : (t ≫ a.left) ≫ U.hom = t ≫ U'.hom` using `by rw [Category.assoc, a_w]`. Rewrite using `[hY, hT, hT, mY_comp p _ _ _ t a.left (t ≫ a.left) _ _ h1 rfl, mY_comp p _ _ _ (𝟙 S) (t ≫ a.left) (t ≫ a.left) _ _ rfl (Category.id_comp _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma tY_res (p : Y ⟶ B) {U U' : B.Etale} (a : U' ⟶ U) (t : S ⟶ U'.left)
     (h : 𝟙 S ≫ t ≫ U'.hom = (t ≫ a.left) ≫ U.hom) :
@@ -122,7 +122,7 @@ private lemma tY_res (p : Y ⟶ B) {U U' : B.Etale} (a : U' ⟶ U) (t : S ⟶ U'
     mY_comp p _ _ _ (𝟙 S) (t ≫ a.left) (t ≫ a.left) _ _ rfl (Category.id_comp _)]
 
 /- English proof (translation)
-Establish `hW : resYW p ι a = mW p ι _ _ a.left (a_w a)` using `rfl`. Establish `hT : ∀ {V : B.Etale} (s : S ⟶ V.left), tW p ι V s = mW p ι _ _ s rfl` using `fun _ => rfl`. Establish `h1 : (t ≫ a.left) ≫ U.hom = t ≫ U'.hom` using `by rw [Category.assoc, a_w]`. Rewrite using `[hW, hT, hT, mW_comp p ι _ _ _ t a.left (t ≫ a.left) _ _ h1 rfl, mW_comp p ι _ _ _ (𝟙 S) (t ≫ a.left) (t ≫ a.left) _ _ rfl (Category.id_comp _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma tW_res (p : Y ⟶ B) (ι : W ⟶ B) {U U' : B.Etale} (a : U' ⟶ U) (t : S ⟶ U'.left)
     (h : 𝟙 S ≫ t ≫ U'.hom = (t ≫ a.left) ≫ U.hom) :
@@ -134,7 +134,7 @@ private lemma tW_res (p : Y ⟶ B) (ι : W ⟶ B) {U U' : B.Etale} (a : U' ⟶ U
     mW_comp p ι _ _ _ (𝟙 S) (t ≫ a.left) (t ≫ a.left) _ _ rfl (Category.id_comp _)]
 
 /- English proof (translation)
-Rewrite using `[← pull_comp, ← sch.map_comp, h, sch.map_id, pull_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma pull_left (q : ℕ) (i n : ℤ) {X Z : Scheme.{0}} (f : X ⟶ Z) (g : Z ⟶ X) (h : f ≫ g = 𝟙 X)
     (y : Ht q (sch.obj X) n i) :
@@ -142,34 +142,32 @@ private lemma pull_left (q : ℕ) (i n : ℤ) {X Z : Scheme.{0}} (f : X ⟶ Z) (
   rw [← pull_comp, ← sch.map_comp, h, sch.map_id, pull_id]
 
 /- English proof (translation)
-Rewrite using `[← pull_left q i n g f h y, hy, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma pull_zero (q : ℕ) (i n : ℤ) {X Z : Scheme.{0}} (f : X ⟶ Z) (g : Z ⟶ X) (h : g ≫ f = 𝟙 Z)
     (y : Ht q (sch.obj Z) n i) (hy : pull (ZMod q) (sch.map f) (tw q i) n y = 0) : y = 0 := by
   rw [← pull_left q i n g f h y, hy, map_zero]
 
 /- English proof (translation)
-Establish `hu : 𝟙 _ ≫ S.t ≫ U'.hom = (S.t ≫ a.left) ≫ U.hom`. Rewrite using `[Category.id_comp, Category.assoc, a_w]`. Establish `hu' : 𝟙 _ ≫ (S.t ≫ a.left) ≫ U.hom = S.t ≫ U'.hom`. Rewrite using `[Category.id_comp, Category.assoc, a_w]`. Establish `eY1 : mY p _ _ (𝟙 _) hu ≫ mY p _ _ (𝟙 _) hu' = 𝟙 _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mY_comp p _ _ _ _ _ (𝟙 _) _ _ (Category.id_comp _) (Category.id_comp _), mY_id]`. Establish `eY2 : mY p _ _ (𝟙 _) hu' ≫ mY p _ _ (𝟙 _) hu = 𝟙 _`. Rewrite using `[mY_comp p _ _ _ _ _ (𝟙 _) _ _ (Category.id_comp _) (Category.id_comp _), mY_id]`. Establish `eW1 : mW p ι _ _ (𝟙 _) hu ≫ mW p ι _ _ (𝟙 _) hu' = 𝟙 _`. Rewrite using `[mW_comp p ι _ _ _ _ _ (𝟙 _) _ _ (Category.id_comp _) (Category.id_comp _), mW_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eW2 : mW p ι _ _ (𝟙 _) hu' ≫ mW p ι _ _ (𝟙 _) hu = 𝟙 _`. Rewrite using `[mW_comp p ι _ _ _ _ _ (𝟙 _) _ _ (Category.id_comp _) (Category.id_comp _), mW_id]`. Establish `pc : ∀ {X1 X2 X3 : Scheme.{0}} (f : X1 ⟶ X2) (g : X2 ⟶ X3) (n : ℤ) (y : Ht q (sch.obj X3) n i), pull (ZMod q) (sch.map (f ≫ g)) (tw q i) n y = pull (ZMod q) (sch.map f) (tw q i) n (pull (ZMod q) (sch.map g) (tw q i) n y)`. Introduce `X1 X2 X3 f g n y`. Rewrite using `[CategoryTheory.Functor.map_comp, pull_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `letI := S.cat`. Use `letI := S.ring`. Use `haveI := S.filt`. Use `⟨Sys.mk S.J S.V (fun j => S.a j ≫ a) ?_ S.tr S.tr_id S.tr_comp ?_ S.A S.sh (S.t ≫ a.left) (fun j => mY p _ _ (𝟙 _) hu ≫ S.gY j) (fun j => mW p ι _ _ (𝟙 _) hu ≫ S.gW j) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_⟩` and prove the remaining obligations. Introduce `j`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `S.mem j`. Conclude with `⟨v, congrArg (fun z => a.left z) hv⟩`. Introduce `j k f`. Rewrite using `[← Category.assoc, S.tr_a]`. Introduce `j show pullback.fst _ ι ≫ mY p _ _ (𝟙 _) hu ≫ S.gY j = (mW p ι _ _ (𝟙 _) hu ≫ S.gW j) ≫ _`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← reassoc_of% (mW_fst p ι _ _ (𝟙 _) hu)]`. Conclude with `(congrArg (fun z => mW p ι _ _ (𝟙 _) hu ≫ z) (S.sq j)).trans (Category.assoc _ _ _).symm`. Introduce `j`. Rewrite using `[resY_comp]`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[reassoc_of% (S.gY_a j)]`. Conclude with `tY_res p a S.t hu`. Introduce `j`. Rewrite using `[resYW_comp]`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[reassoc_of% (S.gW_a j)]`. Conclude with `tW_res p ι a S.t hu`. Introduce `j k f`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[S.gY_tr]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j k f`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[S.gW_tr]`. Introduce `j y hy`. Apply `S.injY j y` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pull_zero q i m (mY p _ _ (𝟙 _) hu) (mY p _ _ (𝟙 _) hu') eY2 _ (by rw [← pc]; exact hy)`. Introduce `y`. Take `⟨j, y', hy'⟩` from `S.surY (pull (ZMod q) (sch.map (mY p _ _ (𝟙 _) hu')) (tw q i) (m - 1) y)`. Use `⟨j, y', ?_⟩` and prove the remaining obligations. Rewrite using `[pc, hy', pull_left q i (m - 1) _ _ eY1 y]`.
-
-Introduce `j w hw`. Apply `S.injW j w` to reduce the goal to its premises. Conclude with `pull_zero q i (m - 1) (mW p ι _ _ (𝟙 _) hu) (mW p ι _ _ (𝟙 _) hu') eW2 _ (by rw [← pc]; exact hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private lemma shrink (q : ℕ) (i : ℤ) (p : Y ⟶ B) (ι : W ⟶ B) (U U' : B.Etale) (a : U' ⟶ U) (m : ℤ)
     (u' : U'.left) (S : Sys q i p ι U' m u') : Nonempty (Sys q i p ι U m (a.left u')) := by
@@ -236,7 +234,7 @@ private lemma shrink (q : ℕ) (i : ℤ) (p : Y ⟶ B) (ι : W ⟶ B) (U U' : B.
 end UpperTheory.Cb.MorphismProjectionLaws
 
 /- English proof (translation)
-Introduce `_ _ q _ i B W Y p ι U U' a m u' S`. Conclude with `UpperTheory.Cb.MorphismProjectionLaws.shrink q i p ι U U' a m u' S`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.neighbourhoodShrinking_of_obstructionExact_natural :
     LateralTheory.E.NeighbourhoodKilling.ObsExact → LateralTheory.E.NeighbourhoodKilling.ObsNat → LateralTheory.E.GeoProof.Shrink := by

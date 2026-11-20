@@ -14,35 +14,33 @@ section lattice
 variable {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R] [Algebra R C]
 
 /- English proof (translation)
-Take `⟨m, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 hL`. Set `e : ι ≃ Fin (Fintype.card ι)` to `Fintype.equivFin ι`. Set `A : Matrix (Fin (Fintype.card ι)) (Fin m) R` to `Matrix.of fun i k => g k (e.symm i)`. Take `⟨P, Q, a, hP, hQ, hD⟩` from `ReciprocityTheory.PGsh.Up.Smith.smith_mat hv _ m A`. Establish `hPv : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul _ hP`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQv : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hQ`. Establish `hAQ : A * Q = P⁻¹ * (P * A * Q)`. Simplify using `only [← Matrix.mul_assoc, hPv, Matrix.one_mul]`. Establish `hA : A = P⁻¹ * (P * A * Q) * Q⁻¹`. Rewrite using `[← hAQ, Matrix.mul_assoc, hQv, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `Λ : Matrix ι ι R` to `Matrix.of fun j i => P⁻¹ (e i) (e j)`. Set `ε : ι → R` to `fun j => if (e j : ℕ) < m then a (e j) else 0`. Establish `hΛ : Λ = ((P⁻¹).submatrix e e)ᵀ`. Use extensionality with `j i`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `hdet : IsUnit Λ.det`. Rewrite using `[hΛ, Matrix.det_transpose, Matrix.det_submatrix_equiv_self]`. Conclude with `(Matrix.isUnit_nonsing_inv_det_iff).2 hP`. Use `⟨Λ, ε, hdet, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[← hg, Submodule.span_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨l, rfl⟩`. Establish `hgl : g l = ∑ k : Fin m, ∑ j : Fin (Fintype.card ι), (Q⁻¹ k l * (P * A * Q) j k) • Λ (e.symm j)`. Use extensionality with `i`. Establish `h1 : A (e i) l = (P⁻¹ * (P * A * Q) * Q⁻¹) (e i) l` using `by rw [← hA]`. Establish `h2 : A (e i) l = g l i` using `by simp [A]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2, h1, Matrix.mul_apply]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.mul_apply (M := P⁻¹)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Λ, Matrix.of_apply, Equiv.apply_symm_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[SetLike.mem_coe, hgl]`. Use `Submodule.sum_mem _ fun k _ => Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hD j k]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hkj : (k : ℕ) = (j : ℕ)`. Establish `hj : ((e (e.symm j)) : ℕ) < m`. Rewrite using `[Equiv.apply_symm_apply, ← hkj]`. Conclude with `k.2`. Establish `hε : ε (e.symm j) = a j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ε, if_pos hj, Equiv.apply_symm_apply]`. Rewrite using `[if_pos hkj, mul_smul, ← hε]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨e.symm j, rfl⟩)`. Rewrite using `[if_neg hkj, mul_zero, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `show ε j • Λ j ∈ L`. Distinguish the cases in `hj : (e j : ℕ) < m`. Establish `hsum : ε j • Λ j = ∑ l : Fin m, Q l ⟨e j, hj⟩ • g l`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i`. Establish `h1 : (A * Q) (e i) ⟨e j, hj⟩ = (P⁻¹ * (P * A * Q)) (e i) ⟨e j, hj⟩` using `by rw [← hAQ]`. Establish `h2 : (A * Q) (e i) ⟨e j, hj⟩ = ∑ l, Q l ⟨e j, hj⟩ * g l i`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[A, mul_comm]`. Establish `h3 : (P⁻¹ * (P * A * Q)) (e i) ⟨e j, hj⟩ = a (e j) * P⁻¹ (e i) (e j)`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (e j)]`. Rewrite using `[hD]`. Simplify using `[mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Rewrite using `[hD, if_neg, mul_zero]`. Introduce `h`. Conclude with `hb (Fin.ext h.symm)`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← h2, h1, h3]`. Simplify using `only [ε, if_pos hj, Λ, Matrix.of_apply]`. Rewrite using `[hsum, ← hg]`.
-
-Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`. Establish `: ε j = 0` using `if_neg hj`. Rewrite using `[this, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem exists_smith_basis (hv : v.Integers R) {ι : Type} [Fintype ι] [DecidableEq ι]
     (L : Submodule R (ι → R)) (hL : L.FG) :
@@ -130,7 +128,7 @@ noncomputable def rowEquiv {ι : Type} [Fintype ι] [DecidableEq ι] (Λ : Matri
       simp [Matrix.vecMulLinear_apply, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ h])
 
 /- English proof (translation)
-Use `show x ᵥ* Λ = _`. Rewrite using `[Matrix.vecMul_eq_sum]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowEquiv_apply {ι : Type} [Fintype ι] [DecidableEq ι] (Λ : Matrix ι ι R)
     (h : IsUnit Λ.det) (x : ι → R) : rowEquiv Λ h x = ∑ j, x j • Λ j := by
@@ -138,15 +136,15 @@ theorem rowEquiv_apply {ι : Type} [Fintype ι] [DecidableEq ι] (Λ : Matrix ι
   rw [Matrix.vecMul_eq_sum]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Submodule.mem_comap]`. Use `show rowEquiv Λ h x ∈ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rowEquiv_apply]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 (hx j (Set.mem_univ j))`. Rewrite using `[← hr, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `⟨Pi.single j (ε j), ?_, ?_⟩` and prove the remaining obligations. Introduce `k _`. Distinguish the cases in `hk : k = j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `hk` using the available equality. Simplify using `using Ideal.mem_span_singleton_self (ε k)`. Simplify using `[Pi.single_eq_of_ne hk]`. Use `show rowEquiv Λ h _ = _`. Rewrite using `[rowEquiv_apply, Finset.sum_eq_single j]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Introduce `hj`. Conclude with `absurd (Finset.mem_univ _) hj`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem map_rowEquiv {ι : Type} [Fintype ι] [DecidableEq ι] (Λ : Matrix ι ι R)
     (h : IsUnit Λ.det) (ε : ι → R) :
@@ -178,11 +176,11 @@ theorem map_rowEquiv {ι : Type} [Fintype ι] [DecidableEq ι] (Λ : Matrix ι �
       · intro hj; exact absurd (Finset.mem_univ _) hj
 
 /- English proof (translation)
-Rewrite `hc` using `[← map_rowEquiv Λ h ε]`. Take `⟨x, hx, hxe⟩` from `hc`. Establish `hx' : x = Pi.single j c`. Apply `(rowEquiv Λ h).injective` to reduce the goal to its premises. Establish `: rowEquiv Λ h x = c • Λ j` using `hxe`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[this, rowEquiv_apply, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Introduce `hj`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) hj`. Use `hx j (Set.mem_univ j)` as an intermediate fact. Rewrite `this` using `[hx', Pi.single_eq_same]`. Conclude with `Ideal.mem_span_singleton.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_smul_row_mem {ι : Type} [Fintype ι] [DecidableEq ι] (Λ : Matrix ι ι R)
     (h : IsUnit Λ.det) (ε : ι → R) (c : R) (j : ι)
@@ -201,9 +199,9 @@ theorem dvd_of_smul_row_mem {ι : Type} [Fintype ι] [DecidableEq ι] (Λ : Matr
   exact Ideal.mem_span_singleton.1 this
 
 /- English proof (translation)
-Set `e : ι ≃ Fin (Fintype.card ι)` to `Fintype.equivFin ι`. Set `T : Submodule R (ι → R)` to `Submodule.pi Set.univ fun j => (Ideal.span {ε j} : Submodule R R)`. Establish `E1 : ((ι → R) ⧸ T) ≃ₗ[R] ((ι → R) ⧸ Submodule.span R (Set.range fun j => ε j • Λ j))` using `Submodule.Quotient.equiv T _ (rowEquiv Λ h) (map_rowEquiv Λ h ε)`. Establish `E2 : ((ι → R) ⧸ T) ≃ₗ[R] ((j : ι) → R ⧸ Ideal.span {ε j})` using `Submodule.quotientPi fun j => (Ideal.span {ε j} : Submodule R R)`. Establish `E3` using `LinearEquiv.piCongrLeft R (fun j : ι => R ⧸ Ideal.span {ε j}) e.symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Fintype.card ι, fun i => ε (e.symm i), ⟨((E.trans E1.symm).trans E2).trans E3.symm⟩, ?_⟩` and prove the remaining obligations. Conclude with `Equiv.prod_comp e.symm fun j => v (algebraMap R C (ε j))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasLen_quot_rows {ι : Type} [Fintype ι] [DecidableEq ι] (Λ : Matrix ι ι R)
     (h : IsUnit Λ.det) (ε : ι → R) {M : Type} [AddCommGroup M] [Module R M]
@@ -222,25 +220,23 @@ theorem hasLen_quot_rows {ι : Type} [Fintype ι] [DecidableEq ι] (Λ : Matrix 
 end lattice
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp ι _ _ AA`. Establish `hp1 : p - 1 ≠ 0`. Use `(Fact.out : p.Prime).two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨-, -, cp, hcp, -, -⟩` from `cpaf p C v R hv hp (ι → ZMod p) AA 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `hcoord : ∀ i, (Pi.single i cp : ι → R) ∈ afLat p AA.carrier`. Introduce `i`. Take `⟨g, hg, c, hc, -, h⟩` from `cpaf p C v R hv hp (ι → ZMod p) AA (Pi.evalAddMonoidHom _ i)`. Establish `hvc : v (algebraMap R C cp) = v (algebraMap R C c)` using `(pow_left_inj₀ zero_le zero_le hp1).1 (hcp.trans hc.symm)`. Take `⟨u, hu⟩ : c ∣ cp` from `hv.dvd_of_le hvc.le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmem : (Pi.single i c : ι → R) ∈ afLat p AA.carrier`. Use `⟨g, (Submodule.mem_inf.1 hg).1, fun x => ?_⟩` and prove the remaining obligations. Establish `hs : ∑ k, (Pi.single i c : ι → R) k * ((x k).val : R) = c * ((x i).val : R)`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ _) hi`. Rewrite using `[hs, map_mul, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(h x).1`. Establish `: (Pi.single i cp : ι → R) = u • (Pi.single i c : ι → R)`. Use extensionality with `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hu, mul_comm]`. Simplify using `[Pi.single_eq_of_ne hk]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hmem`. Establish `hscale : ∀ l : ι → R, cp • l ∈ afLat p AA.carrier`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `l`. Establish `: cp • l = ∑ i, l i • (Pi.single i cp : ι → R)`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply, mul_comm]`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hcoord i)`. Take `⟨Λ, ε, hdet, hL⟩` from `exists_smith_basis hv _ (hfg p C v R hv hp ι AA)`. Use `⟨Λ, ε, hdet, hL, fun j => ?_, ?_⟩` and prove the remaining obligations. Establish `hd : ε j ∣ cp` using `dvd_of_smul_row_mem Λ hdet ε cp j (hL ▸ hscale (Λ j))`. Take `⟨t, ht⟩` from `hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hle : v (algebraMap R C cp) ≤ v (algebraMap R C (ε j))`. Rewrite using `[ht, map_mul, map_mul]`. Conclude with `mul_le_of_le_one_right' (hv.map_le_one t)`. Rewrite using `[← hcp]`. Conclude with `pow_le_pow_left₀ zero_le hle _`.
-
-Take `⟨E⟩` from `hquot p C v R hv hp ι AA`. Conclude with `hasLen_quot_rows Λ hdet ε (E.trans (Submodule.quotEquivOfEq _ _ hL))`.
+A detailed English derivation is pending.
 -/
 theorem smith_of (hfg : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (AA : HopfOrder (C := C) R (ι → ZMod p)), (afLat p AA.carrier).FG)
     (hquot : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (AA : HopfOrder (C := C) R (ι → ZMod p)), Nonempty (AFQuot p AA.carrier ≃ₗ[R] ((ι → R) ⧸ afLat p AA.carrier))) :

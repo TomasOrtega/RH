@@ -9,7 +9,7 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ 
   [IsScalarTower ℝ ℂ E] {ι : Type} [DecidableEq ι] {μ : ι → ℕ}
 
 /- English proof (translation)
-Use extensionality with `⟨i, a⟩ ⟨j, b⟩`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `only [mdel_apply, blockDiagonal'_apply_eq]`. Simplify using `[mdel_apply, blockDiagonal'_apply_ne _ _ _ h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mdel_blockDiagonal' (A : ∀ τ, E → Matrix (Fin (μ τ)) (Fin (μ τ)) ℂ) (z ξ : E) :
     mdel (fun x => blockDiagonal' fun τ => A τ x) z ξ =
@@ -21,7 +21,7 @@ theorem mdel_blockDiagonal' (A : ∀ τ, E → Matrix (Fin (μ τ)) (Fin (μ τ)
   · simp [mdel_apply, blockDiagonal'_apply_ne _ _ _ h]
 
 /- English proof (translation)
-Use extensionality with `⟨i, a⟩ ⟨j, b⟩`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `only [mdbar_apply, blockDiagonal'_apply_eq]`. Simplify using `[mdbar_apply, blockDiagonal'_apply_ne _ _ _ h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mdbar_blockDiagonal' (A : ∀ τ, E → Matrix (Fin (μ τ)) (Fin (μ τ)) ℂ) (z ξ : E) :
     mdbar (fun x => blockDiagonal' fun τ => A τ x) z ξ =
@@ -35,7 +35,7 @@ theorem mdbar_blockDiagonal' (A : ∀ τ, E → Matrix (Fin (μ τ)) (Fin (μ τ
 variable [Fintype ι]
 
 /- English proof (translation)
-Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[← blockDiagonal'_mul, ← blockDiagonal'_one]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `mul_nonsing_inv _ (hu τ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem inv_blockDiagonal'_of_isUnit (M : ∀ τ, Matrix (Fin (μ τ)) (Fin (μ τ)) ℂ)
     (hu : ∀ τ, IsUnit (M τ).det) :
@@ -47,7 +47,7 @@ theorem inv_blockDiagonal'_of_isUnit (M : ∀ τ, Matrix (Fin (μ τ)) (Fin (μ 
   exact mul_nonsing_inv _ (hu τ)
 
 /- English proof (translation)
-Simplify using `only [conn]`. Rewrite using `[mdel_blockDiagonal', blockDiagonal'_transpose, blockDiagonal'_transpose, inv_blockDiagonal'_of_isUnit _ fun τ => by rw [det_transpose]; exact hu τ, ← blockDiagonal'_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conn_blockDiagonal' (H : ∀ τ, E → Matrix (Fin (μ τ)) (Fin (μ τ)) ℂ) {z : E}
     (hu : ∀ τ, IsUnit (H τ z).det) (ξ : E) :
@@ -59,7 +59,7 @@ theorem conn_blockDiagonal' (H : ∀ τ, E → Matrix (Fin (μ τ)) (Fin (μ τ)
     ← blockDiagonal'_mul]
 
 /- English proof (translation)
-Establish `he : (fun x => conn (fun x => blockDiagonal' fun τ => H τ x) x ξ) =ᶠ[𝓝 z] fun x => blockDiagonal' fun τ => conn (H τ) x ξ` using `by filter_upwards [eventually_all.2 fun τ => (h τ).eventually_isUnit (hu τ)] with x hx`. Conclude with `conn_blockDiagonal' H hx ξ`. Rewrite using `[curv, mdbar_congr he, mdbar_blockDiagonal' (fun τ x => conn (H τ) x ξ), ← blockDiagonal'_neg]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem curv_blockDiagonal' {H : ∀ τ, E → Matrix (Fin (μ τ)) (Fin (μ τ)) ℂ} {z : E}
     (h : ∀ τ, MContDiffAt 2 (H τ) z) (hu : ∀ τ, IsUnit (H τ z).det) (ξ η : E) :
@@ -74,9 +74,9 @@ theorem curv_blockDiagonal' {H : ∀ τ, E → Matrix (Fin (μ τ)) (Fin (μ τ)
   rfl
 
 /- English proof (translation)
-Simplify using `only [chTwo, curv_blockDiagonal' h hu]`. Rewrite using `[← Finset.mul_sum, Fintype.sum_sigma]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single i]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [blockDiagonal'_apply_eq]`. Introduce `j _ hj`. Simplify using `[wedge, blockDiagonal'_apply_ne _ _ _ hj]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem chTwo_blockDiagonal' {H : ∀ τ, E → Matrix (Fin (μ τ)) (Fin (μ τ)) ℂ} {z : E}
     (h : ∀ τ, MContDiffAt 2 (H τ) z) (hu : ∀ τ, IsUnit (H τ z).det) (ξ₁ η₁ ξ₂ η₂ : E) :

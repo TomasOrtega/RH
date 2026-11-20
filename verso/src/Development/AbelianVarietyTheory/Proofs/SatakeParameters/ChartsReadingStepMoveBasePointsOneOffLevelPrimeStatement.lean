@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwU.AtTrue.readsMove_holds | exact GlobalTheory.TwU.AtTrue.readsMove_holds | (intros; apply GlobalTheory.TwU.AtTrue.readsMove_holds <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.chartsReadingStep_moveBasePoints_one_offLevelPrime : GlobalTheory.TwU.AtTrue.ReadsMove := by
   first | exact @GlobalTheory.TwU.AtTrue.readsMove_holds | exact GlobalTheory.TwU.AtTrue.readsMove_holds | (intros; apply GlobalTheory.TwU.AtTrue.readsMove_holds <;> assumption)

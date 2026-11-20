@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁`. Take `⟨c, hc, pr, h1, h2, h3⟩` from `X₁.sharp`. Use `choose act hact using fun a : Matrix (Fin 8) (Fin 8) ℤ => (h2 X₁.ρ.P.A fun u => (List.ofFn fun v => pr v ^ a u v).prod).exists`. Conclude with `⟨act, c, hc, pr, h1, h2, h3, hact⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Poinc.Sep.exists_isAct : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i), ∃ act, IsAct X₁ act := by
   intro g n F W Z i X₁

@@ -26,17 +26,17 @@ open TrivSqZeroExt (inl inr)
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨φ', hφ'⟩` from `Spec.map_surjective (R := CommRingCat.of R) (S := CommRingCat.of S) (g ≫ G.hom)`. Set `φ : R →+* S` to `φ'.hom`. Establish `hφ : g ≫ G.hom = spMap φ` using `hφ'.symm`. Use `letI : Algebra R S := φ.toAlgebra`. Set `z : ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀` to `R) S ⟶ G := Over.homMk g hφ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `s : Fin n → S` to `fun b => valR g W (c b)`. Take `⟨u, hb, hu⟩` from `GlobalTheory.HeatMod.TorField.exists_isLieBasis v`. Set `e : Fin n → DualNumber S` to `fun b => inr (s b)`. Establish `he : ∀ i j, e i * e j = 0` using `fun _ _ => TrivSqZeroExt.inr_mul_inr _ _ _`. Take `⟨a₁, a₂⟩` from `GlobalTheory.ZH.CrdCalc.valR_spMap (GlobalTheory.SqZero.inlS R S).toRingHom g W hg`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b₁, b₂⟩` from `GlobalTheory.HeatMod.TorField.valR_prod hu hb.1 hd e he (ReciprocityTheory.ChartRestriction.G.Chart.spMap (GlobalTheory.SqZero.inlS R S) ≫ z) W a₁ Finset.univ`. Establish `a₃ : ∀ x, valR (A` using `DualNumber S) (ReciprocityTheory.ChartRestriction.G.Chart.spMap (GlobalTheory.SqZero.inlS R S) ≫ z).left W x = inl (valR g W x) := a₂`. Establish `key : ∀ f, ∑ i, s i * valR g W (dd i W f) = 0` using `fun f => by`. Use `congrArg (valR g W) (hc f)` as an intermediate fact. Simplify `this` using `[GlobalTheory.Points.valR_eq g W hg, map_sum, map_mul, s]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hP : GlobalTheory.SqZero.lieExp u e (fun i => he i i) * (ReciprocityTheory.ChartRestriction.G.Chart.spMap (GlobalTheory.SqZero.inlS R S) ≫ z) = ReciprocityTheory.ChartRestriction.G.Chart.spMap (GlobalTheory.SqZero.inlS R S) ≫ z`. Use `Over.OverMorphism.ext (GlobalTheory.Points.ext_of_valR hW b₁ a₁ fun f => ?_)` and prove the remaining obligations. Use `(b₂ f).trans ?_` and prove the remaining obligations. Rewrite using `[add_eq_left]`. Simplify using `only [a₃, e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `ext`. Simplify using `[TrivSqZeroExt.fst_sum]`. Simplify `key f` using `[TrivSqZeroExt.snd_sum]`. Establish `h1 : GlobalTheory.SqZero.lieExp u e (fun i => he i i) = 1` using `mul_eq_right.1 hP`. Establish `h0 : GlobalTheory.SqZero.lieExp u (fun _ => (0 : DualNumber S)) (fun _ => mul_zero _) = 1` using `GlobalTheory.SqZero.lieExp_eq_one hb.1 _ (fun _ => rfl) _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ` using `GlobalTheory.SqZero.ker_fst_sq (R := R) (S := S) S`. Establish `hz` using `((GlobalTheory.SqZero.expBij (DualNumber S) hb) _ hJ).1 e (fun _ => 0) (fun i => by simp [RingHom.mem_ker, e]) (fun _ => zero_mem _) (fun i => he i i) (fun _ => mul_zero _) (h1.trans h0.symm)`. Use `congrArg TrivSqZeroExt.snd (congrFun hz a)` as an intermediate fact. Simplify `this` using `[e, s]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem valR_coef_eq_zero [Smooth G.hom] (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) G)) {dd : Fin n → Fld G.left}
     (hd : ∀ a, IsInv G (v a) (dd a)) {W : G.left.Opens} (hW : IsAffineOpen W) (c : Fin n → Γ(G.left, W))
@@ -80,9 +80,9 @@ theorem valR_coef_eq_zero [Smooth G.hom] (v : Module.Basis (Fin n) R (TanM (𝟙
   simpa [e, s] using this
 
 /- English proof (translation)
-Introduce `R _ G _ _ hs n v dd hd W c hc a`. Use `haveI := hs`. Use `GlobalTheory.KS.eq_of_rsT_eq (J := {W' : G.left.affineOpens // W'.1 ≤ W}) (fun W' => W'.1.1) (fun W' => W'.2) ?_ (c a) 0 fun W' => ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨W', hW', hxW, hWU⟩` from `exists_isAffineOpen_mem_and_subset hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨⟨W', hW'⟩, hWU⟩, hxW⟩`. Rewrite using `[GlobalTheory.KS.rsT_zero]`. Conclude with `GlobalTheory.Heat.Adjust.eq_zero_of_valR_points _ _ fun S _ g hg => valR_coef_eq_zero v hd W'.1.2 (fun b => rsT (c b) W'.1.1) (hc W'.1.1 W'.2) S g hg a`.
+A detailed English derivation is pending.
 -/
 theorem coef_eq_zero : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], Smooth G.hom → ∀ (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) G)) (dd : Fin n → Fld G.left), (∀ a, IsInv G (v a) (dd a)) → ∀ (W : G.left.Opens) (c : Fin n → Γ(G.left, W)), (∀ O, O ≤ W → ∀ f, ∑ a, rsT (c a) O * dd a O f = 0) → ∀ a, c a = 0 := by
   intro R _ G _ _ hs n v dd hd W c hc a

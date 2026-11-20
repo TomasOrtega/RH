@@ -9,7 +9,7 @@ open scoped ComplexConjugate Real
 namespace GlobalTheory.Phase
 
 /- English proof (translation)
-Establish `h` using `QuotientAddGroup.eq.mp (QuotientAddGroup.out_eq' (x : G ⧸ N)).symm`. Rewrite `h` using `[neg_add_eq_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem quotient_out_sub_mem' {G : Type} [AddCommGroup G] (N : AddSubgroup G) (x : G) :
     (x : G ⧸ N).out - x ∈ N := by
@@ -19,33 +19,29 @@ private theorem quotient_out_sub_mem' {G : Type} [AddCommGroup G] (N : AddSubgro
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `hc0 : c = 0`. Apply the tactic sequence `have h0 : ∀ x, φ x = 0 := fun x => by rw [hφ x]; split_ifs <;> simp [hc0]`. Simplify using `only [h0, finsum_zero]`. Conclude with `ph_zero`. Establish `hfper : ∀ s ∈ S, ∀ t ∈ S, t ∈ P → f (s + t) = f s`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs t htS htP`. Establish `h1` using `hφ (a + (s + t))`. Establish `h2` using `hφ (a + s)`. Rewrite `h1` using `[add_sub_cancel_left, if_pos (S.add_mem hs htS)]`. Rewrite `h2` using `[add_sub_cancel_left, if_pos hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : φ (a + (s + t)) = φ (a + s)` using `by rw [← add_assoc]; exact hper _ t htP`. Conclude with `mul_left_cancel₀ hc0 (h1.symm.trans (h3.trans h2))`. Set `ψ : S →+ A ⧸ P` to `(QuotientAddGroup.mk' P).comp S.subtype`. Establish `hker : ∀ u : S, u ∈ ψ.ker ↔ (u : A) ∈ P` using `fun u => by`. Simplify using `[ψ, AddMonoidHom.mem_ker, QuotientAddGroup.eq_zero_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ι' : S ⧸ ψ.ker →+ A ⧸ P` to `QuotientAddGroup.kerLift ψ`. Establish `hι : Function.Injective ι'` using `QuotientAddGroup.kerLift_injective ψ`. Set `j : S ⧸ ψ.ker → A ⧸ P` to `fun m => (a : A ⧸ P) + ι' m`. Establish `hj : Function.Injective j` using `fun m m' h => hι (add_left_cancel h)`. Establish `hjmk : ∀ u : S, j (u : S ⧸ ψ.ker) = ((a + u : A) : A ⧸ P)` using `fun u => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[j, ι', ψ]`. Set `fb : S ⧸ ψ.ker → ℂ` to `fun m => f (m.out : A)`. Establish `hfb : ∀ u : S, fb (u : S ⧸ ψ.ker) = f u`. Introduce `u`. Establish `hk` using `(hker _).mp (quotient_out_sub_mem' ψ.ker u)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (((u : S ⧸ ψ.ker).out : S) : A) = u + (((u : S ⧸ ψ.ker).out - u : S) : A)` using `by simp`. Use `show f (((u : S ⧸ ψ.ker).out : S) : A) = f u`. Rewrite using `[e]`. Conclude with `hfper _ u.2 _ ((u : S ⧸ ψ.ker).out - u).2 hk`. Establish `hval : ∀ m, φ (j m).out = c * fb m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m`. Take `⟨u, rfl⟩` from `QuotientAddGroup.mk_surjective m`. Rewrite using `[hjmk, hfb]`. Establish `hk` using `quotient_out_sub_mem' P (a + (u : A))`. Establish `e : ((a + (u : A) : A) : A ⧸ P).out = (a + u) + (((a + (u : A) : A) : A ⧸ P).out - (a + u))` using `by abel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, hper _ _ hk, hφ, add_sub_cancel_left, if_pos u.2]`. Establish `hfbne : ∀ m, fb m ≠ 0` using `fun m h => by`. Establish `h1` using `(hf.1 _ (m.out).2).norm_eq_one`. Simplify using `[fb] at h`. Rewrite `h1` using `[h, norm_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one h1`. Establish `hrange : Set.range j ⊆ Function.support (fun q : A ⧸ P => φ q.out)`. Introduce and unpack `_ ⟨m, rfl⟩`. Rewrite using `[Function.mem_support, hval]`. Conclude with `mul_ne_zero hc0 (hfbne m)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Finite (S ⧸ ψ.ker)`. Use `hfin.to_subtype` as an intermediate fact. Conclude with `Finite.of_injective (fun m => (⟨j m, hrange ⟨m, rfl⟩⟩ : Function.support (fun q : A ⧸ P => φ q.out))) (fun m m' h => hj (congrArg Subtype.val h))`. Use `haveI := Fintype.ofFinite (S ⧸ ψ.ker)`. Establish `hsupp : Function.support (fun q : A ⧸ P => φ q.out) ⊆ Set.range j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `q hq`. Rewrite `hq` using `[Function.mem_support, hφ]`. Use `split_ifs at hq with hmem`. Use `⟨((⟨q.out - a, hmem⟩ : S) : S ⧸ ψ.ker), ?_⟩` and prove the remaining obligations. Rewrite using `[hjmk]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Conclude with `absurd rfl hq`. Establish `hsum : ∑ᶠ q : A ⧸ P, φ q.out = c * ∑ m : S ⧸ ψ.ker, fb m`. Rewrite using `[← finsum_mem_univ, finsum_mem_inter_support_eq' _ Set.univ (Set.range j) (fun q hq => ⟨fun _ => hsupp hq, fun _ => Set.mem_univ q⟩), finsum_mem_range hj, finsum_eq_sum_of_fintype, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => hval m`.
-
-Rewrite using `[hsum]`. Use `Ph.mul hc (GlobalTheory.T.isZeroOrPosMulRootOfUnity_finite_gaussSum (S ⧸ ψ.ker) fb ⟨fun x _ => hf.1 _ (x.out).2, fun x _ y _ z _ => ?_⟩)` and prove the remaining obligations. Take `⟨u, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Take `⟨v, rfl⟩` from `QuotientAddGroup.mk_surjective y`. Take `⟨w, rfl⟩` from `QuotientAddGroup.mk_surjective z`.
-
-Establish `h0 : fb 0 = f 0` using `by simpa using hfb 0`. Establish `e2 : ∀ x y : S, ((x : S ⧸ ψ.ker) + y) = ((x + y : S) : S ⧸ ψ.ker)` using `fun x y => rfl`. Rewrite using `[e2 u v, e2 (u + v) w, e2 v w, e2 u w, h0]`. Simplify using `only [hfb]`. Simplify using `using hf.2 _ u.2 _ v.2 _ w.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ph_finsum_quotient {A : Type} [AddCommGroup A] (P S : AddSubgroup A) (φ f : A → ℂ) (c : ℂ) (a : A)
     (hper : ∀ x, ∀ y ∈ P, φ (x + y) = φ x)
@@ -132,9 +128,9 @@ theorem ph_finsum_quotient {A : Type} [AddCommGroup A] (P S : AddSubgroup A) (φ
   simpa using hf.2 _ u.2 _ v.2 _ w.2
 
 /- English proof (translation)
-Introduce `κ ι _ _ _ φ hφ`. Take `⟨hsb, c, a, S, f, hc, hf, hφx⟩` from `hφ`. Establish `hR` using `hsb.choose_spec`. Unfold `haar`. Rewrite using `[dif_pos hsb]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `haarAt`. Use `Ph.mul ?_ (ph_finsum_quotient (perSub ℚ κ ι hsb.choose) S φ f c a (GlobalTheory.SW.HaarLevel.periodic hR.2) (GlobalTheory.SW.HaarLevel.finite_support hR.1 hR.2) hc hf hφx)` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.complex_phase_calculus_rootOfUnity.2.2.1 (((hsb.choose : ℝ) ^ (Module.finrank ℚ ℚ * (Fintype.card κ * Fintype.card ι)))⁻¹)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/

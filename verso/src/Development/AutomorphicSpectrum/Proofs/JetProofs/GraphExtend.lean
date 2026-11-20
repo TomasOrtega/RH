@@ -10,9 +10,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory.CompanionTheory.AlgRepEndIrreducible.HwMap
 
 /- English proof (translation)
-Proceed by induction on `l generalizing y with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Establish `ha` using `hl a (by simp)`. Establish `ih'` using `ih (fun x hx => hl x (by simp [hx])) (D a.2 a.1 y)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply, List.reverse_cons, List.map_append, List.prod_append, List.map_nil, List.prod_nil, mul_one, Prod.fst_swap, Prod.snd_swap]`. Rewrite using `[h _ _ ha, ih']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem word_adj {n : ℕ} {ε : Fin n → Bool} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     {D : Fin n → Fin n → Module.End ℂ V} (h : KAdj ε D) (l : List (Fin n × Fin n))
@@ -30,17 +30,17 @@ theorem word_adj {n : ℕ} {ε : Fin n → Bool} {V : Type} [NormedAddCommGroup 
     rw [h _ _ ha, ih']
 
 /- English proof (translation)
-Set `A : G →ₗ[ℂ] V` to `(LinearMap.fst ℂ V V').comp G.subtype`. Establish `hA : Function.Injective A`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `g hg`. Establish `h1 : g.1.1 = 0` using `hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (Prod.ext h1 (hG _ g.2 h1))`. Set `U : Submodule ℂ V` to `LinearMap.range A`. Set `e : G ≃ₗ[ℂ] U` to `LinearEquiv.ofInjective A hA`. Set `T : V →ₗ[ℂ] V'` to `((LinearMap.snd ℂ V V').comp G.subtype).comp (e.symm.toLinearMap.comp (U.orthogonalProjectionOnto : V →ₗ[ℂ] U))`. Establish `key : ∀ g ∈ G, ∀ z ∈ Uᗮ, T (g.1 + z) = g.2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg z hz`. Establish `h1 : U.orthogonalProjectionOnto (g.1 + z) = e ⟨g, hg⟩`. Rewrite using `[map_add, Submodule.orthogonalProjectionOnto_eq_zero_iff.2 hz, add_zero]`. Conclude with `Submodule.orthogonalProjectionOnto_mem_subspace_eq_self (e ⟨g, hg⟩)`. Use `show ((e.symm (U.orthogonalProjectionOnto (g.1 + z)) : G) : V × V').2 = g.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1, e.symm_apply_apply]`. Use `⟨T, fun g hg => by simpa using key g hg 0 (zero_mem _), ?_⟩` and prove the remaining obligations. Introduce `a b hab w`. Take `⟨u, hu, z, hz, rfl⟩` from `U.exists_add_mem_mem_orthogonal w`. Take `⟨g, rfl⟩` from `hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hz' : D a b z ∈ Uᗮ`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce and unpack `_ ⟨g', rfl⟩`. Rewrite using `[← h b a hab.symm]`. Conclude with `(Submodule.mem_orthogonal _ _).1 hz _ ⟨⟨_, hst b a hab.symm _ g'.2⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `key _ (hst a b hab _ g.2) _ hz'`. Establish `h2` using `key _ g.2 _ hz`. Establish `h3 : A g = g.1.1` using `rfl`. Rewrite using `[h3, h2, map_add]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem graph_extend {n : ℕ} {ε : Fin n → Bool} {V V' : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [AddCommGroup V'] [Module ℂ V']
@@ -81,25 +81,23 @@ theorem graph_extend {n : ℕ} {ε : Fin n → Bool} {V V' : Type} [NormedAddCom
   exact h1
 
 /- English proof (translation)
-Introduce `n ε V V' _ _ _ _ _ D D' μ v v' hR hR' hA hA' hv hv' hv0`. Establish `vev` using `GlobalTheory.CompanionTheory.AlgRepEndIrreducible.Vev.vev_eq n ε V V' D D' μ v v' hR hR' hA hA' hv hv'`. Set `S : Set (V × V')` to `{g | ∃ l : List (Fin n × Fin n), (∀ x ∈ l, ε x.1 = ε x.2) ∧ g = ((l.map fun x => D x.1 x.2).prod v, (l.map fun x => D' x.1 x.2).prod v')}`. Establish `hin : ∀ g ∈ Submodule.span ℂ S, ∀ g' ∈ Submodule.span ℂ S, ⟪g.1, g'.1⟫_ℂ * ⟪v', v'⟫_ℂ = ⟪g.2, g'.2⟫_ℂ * ⟪v, v⟫_ℂ`. Introduce `g hg g' hg'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp only [Prod.fst_add, Prod.snd_add, inner_add_left, add_mul, hx, hy]`. Consider the case `smul c x _ hx => simp only [Prod.smul_fst, Prod.smul_snd, inner_smul_left, mul_assoc, hx]`. Consider the case `mem x hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hg' using Submodule.span_induction with`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Simplify using `only [Prod.fst_add, Prod.snd_add, inner_add_right, add_mul, hx, hy]`. Consider the case `smul c x _ hx => simp only [Prod.smul_fst, Prod.smul_snd, inner_smul_right, mul_assoc, hx]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mem y hy`. Take `⟨l, hl, rfl⟩` from `hx`. Take `⟨l', hl', rfl⟩` from `hy`. Use `vev ((l.map Prod.swap).reverse ++ l') (by` as an intermediate fact. Introduce `x hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `List.mem_append.1 hx with hx | hx` into its components or cases. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 (List.mem_reverse.1 hx)`. Conclude with `(hl y hy).symm`. Conclude with `hl' x hx)`. Simplify using `only [List.map_append, List.prod_append, Module.End.mul_apply] at this`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[word_adj hA l hl, word_adj hA' l hl, this]`. Take `⟨T, hT, hK⟩` from `graph_extend (D' := D') hA (Submodule.span ℂ S) (by`. Introduce `g hg h0`. Use `hin g hg g hg` as an intermediate fact.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `this` using `[h0, inner_zero_left, zero_mul]`. Break down `mul_eq_zero.1 this.symm with h | h` into its components or cases. Conclude with `inner_self_eq_zero.1 h`. Conclude with `absurd (inner_self_eq_zero.1 h) hv0) (by`. Introduce `a b hab g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `zero`. Simplify using `only [Prod.fst_zero, Prod.snd_zero, map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => simpa using Submodule.add_mem _ hx hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `smul c x _ hx => simpa using Submodule.smul_mem _ c hx`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨(a, b) :: l, ?_, by simp⟩` and prove the remaining obligations. Introduce `x hx`.
-
-Break down `List.mem_cons.1 hx with rfl | hx` into its components or cases. Conclude with `hab`. Conclude with `hl x hx)`. Conclude with `⟨T, hT (v, v') (Submodule.subset_span ⟨[], by simp, by simp⟩), hK⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hwmap : ∀ (n : ℕ) (ε : Fin n → Bool) (V V' : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] (D : Fin n → Fin n → Module.End ℂ V) (D' : Fin n → Fin n → Module.End ℂ V') (μ : Fin n → ℝ) (v : V) (v' : V'), KRel ε D → KRel ε D' → KAdj ε D → KAdj ε D' → Formalism.REAL.KHighest ε D μ v → Formalism.REAL.KHighest ε D' μ v' → v ≠ 0 → ∃ T : V →ₗ[ℂ] V', T v = v' ∧ KMap ε D D' T := by
   intro n ε V V' _ _ _ _ _ D D' μ v v' hR hR' hA hA' hv hv' hv0

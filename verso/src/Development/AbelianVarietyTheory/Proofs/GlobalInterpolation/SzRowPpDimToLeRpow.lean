@@ -8,15 +8,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Introduce `eps h0 h1 C hC`. Take `⟨xr, hxr⟩` from `GlobalTheory.T.explicitRanks_basic_bounds_large_scale eps h0 h1`. Use `⟨0, fun cD _ => ⟨0, fun ch _ => ⟨max xr (max C.T.CP 2), fun D L he hx hV => ?_⟩⟩⟩` and prove the remaining obligations. Establish `hx1 : xr ≤ L.sc.x` using `le_trans (le_max_left _ _) hx`. Establish `hx2 : C.T.CP ≤ L.sc.x` using `le_trans ((le_max_left _ _).trans (le_max_right _ _)) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx3 : (2 : ℝ) ≤ L.sc.x` using `le_trans ((le_max_right _ _).trans (le_max_right _ _)) hx`. Establish `hone : (1 : ℝ) ≤ L.sc.x` using `by linarith`. Establish `hpos : (0 : ℝ) < L.sc.x` using `by linarith`. Take `⟨-, -, -, -, -, -, -, hZ0, hZ, hD, -⟩` from `hxr L.sc D.R he hx1 hV.ranks`. Establish `hCt : L.Ct = 401` using `hV.Ct_eq.trans hC.1.2.2.2.2.2.2.2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `heP : C.T.eP = 12` using `hC.2.2.2.2.2.2.2.2.1`. Use `beta_reduce`. Rewrite using `[hCt, heP]`. Use `⟨?_, hD.trans (Real.rpow_le_rpow_of_exponent_le hone (by norm_num)), ?_⟩` and prove the remaining obligations. Establish `hz0 : 0 ≤ zBase L` using `le_trans (Real.rpow_nonneg hpos.le _) hZ0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : zBase L ^ (12 : ℝ) ≤ L.sc.x ^ ((687 : ℝ) / 100 * 12)`. Rewrite using `[Real.rpow_mul hpos.le]`. Conclude with `Real.rpow_le_rpow hz0 hZ (by norm_num)`. Combine the equalities or inequalities in the displayed calculation. Establish `h377 : (1 : ℝ) ≤ L.sc.x ^ (377 : ℝ)` using `Real.one_le_rpow hone (by norm_num)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hc : ((TOv L.sc : ℕ) : ℝ) < L.sc.x ^ (377 : ℝ) + 1` using `Nat.ceil_lt_add_one (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem szRow_pp_dim_to_le_rpow :
     SzRow (fun C D L => ((C.T.CP * zBase L ^ C.T.eP) ≤ L.sc.x ^ L.Ct) ∧

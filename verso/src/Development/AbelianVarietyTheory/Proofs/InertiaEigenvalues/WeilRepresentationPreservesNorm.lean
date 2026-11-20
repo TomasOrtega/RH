@@ -18,11 +18,11 @@ namespace GlobalTheory.WeilUnitNorm
 open MeasureTheory
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hW μ 𝓕 hC p f hf h1`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Establish `key` using `hW.om_unit μ 𝓕 hC.1 hC.2.1 p f hf`. Establish `hf'` using `hW.om_pres p f hf`. Establish `m1 : AEStronglyMeasurable (fun w => ‖om p f w‖ ^ 2) (μ.restrict 𝓕)` using `(hf'.cont.norm.pow 2).aestronglyMeasurable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m2 : AEStronglyMeasurable (fun w => ‖f w‖ ^ 2) (μ.restrict 𝓕)` using `(hf.cont.norm.pow 2).aestronglyMeasurable`. Establish `e : nrm2 μ 𝓕 (om p f) = nrm2 μ 𝓕 f`. Unfold `nrm2`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun _ => by positivity) m1, integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun _ => by positivity) m2]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`. Conclude with `key`. Rewrite using `[e, h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_norm_one_of_unit_norm : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ (μ : MeasureTheory.Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ (p : GA D S × GA D T) (f : WO S T → ℂ), IsThetaFunO ψ S T f → nrm2 μ 𝓕 f = 1 → nrm2 μ 𝓕 (om p f) = 1 := by
   intro D ψ S T χS χT om hW μ 𝓕 hC p f hf h1

@@ -19,7 +19,7 @@ open Filter Topology
 namespace GlobalTheory.LatChoiceSplit
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `e • u = u ↔ _`. Rewrite using `[← Matrix.ext_iff]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_half_iff {D : D7} {S T : HSp D} (e : AE D) (u : WO S T) : u ∈ half S T e ↔ IsHalf e u := by
   change e • u = u ↔ _
@@ -27,9 +27,7 @@ theorem mem_half_iff {D : D7} {S T : HSp D} (e : AE D) (u : WO S T) : u ∈ half
   rfl
 
 /- English proof (translation)
-Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `letI : (Valued.v (R := k)).RankOne :=`. Use the proof step `{ hom' := IsRankLeOne.nonempty.some.emb (R := k).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`. Use `open scoped Valued in`.
-
-Conclude with `NormedField.nhdsNE_neBot (0 : k)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem nhdsNE_neBot (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     (𝓝[≠] (0 : k)).NeBot := by
@@ -43,7 +41,7 @@ theorem nhdsNE_neBot (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] 
   exact NormedField.nhdsNE_neBot (0 : k)
 
 /- English proof (translation)
-Establish `: {x : Matrix Y Y' k | ∀ i j, x i j ∈ 𝒪[k]} = Set.univ.pi fun _ => Set.univ.pi fun _ => (𝒪[k] : Set k)`. Use extensionality with `x`. Conclude with `⟨fun h i _ j _ => h i j, fun h i j => h i (Set.mem_univ _) j (Set.mem_univ _)⟩`. Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_int_mat (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (Y Y' : Type) [Fintype Y] [Fintype Y'] : IsCompact {x : Matrix Y Y' k | ∀ i j, x i j ∈ 𝒪[k]} := by
@@ -54,9 +52,9 @@ theorem isCompact_int_mat (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
   exact isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k 1
 
 /- English proof (translation)
-Establish `hev : ∀ᶠ c in 𝓝 (0 : k), ∀ x ∈ {x : Matrix Y Y' k | ∀ i j, x i j ∈ 𝒪[k]}, c • x ∈ A`. Use `(isCompact_int_mat k Y Y').eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun z : k × Matrix Y Y' k => z.1 • z.2` using `continuous_fst.smul continuous_snd`. Establish `: (fun z : k × Matrix Y Y' k => z.1 • z.2) (0, y) ∈ A` using `by simpa using h0`. Conclude with `hc.continuousAt.preimage_mem_nhds (hA.mem_nhds this)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := nhdsNE_neBot k`. Take `⟨c, hc1, hc2⟩` from `((hev.filter_mono (nhdsWithin_le_nhds (s := {(0 : k)}ᶜ))).and (self_mem_nhdsWithin (s := {(0 : k)}ᶜ))).exists`. Conclude with `⟨c, hc2, fun x hx => hc1 x hx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smul_int_mem (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (Y Y' : Type) [Fintype Y] [Fintype Y'] (A : Set (Matrix Y Y' k)) (hA : IsOpen A) (h0 : (0 : Matrix Y Y' k) ∈ A) :
@@ -71,20 +69,20 @@ theorem exists_smul_int_mem (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
   exact ⟨c, hc2, fun x hx => hc1 x hx⟩
 
 /- English proof (translation)
-The claim follows from `Nat.cast_smul_eq_nsmul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem natCast_smul {D : D7} {S T : HSp D} (N : ℕ) (x : WO S T) : (N : AE D) • x = N • x :=
   Nat.cast_smul_eq_nsmul _ _ _
 
 /- English proof (translation)
-Rewrite using `[← natCast_smul, GlobalTheory.PlaceModel.symplO_smul, map_natCast, natCast_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_nsmul_swap {D : D7} (S T : HSp D) (N : ℕ) (x y : WO S T) :
     symplO S T (N • x) y = symplO S T x (N • y) := by
   rw [← natCast_smul, GlobalTheory.PlaceModel.symplO_smul, map_natCast, natCast_smul]
 
 /- English proof (translation)
-Use `AddChar.map_add_eq_mul ψ z (-z)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, one_mul]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_neg_eq_one {F : Type} [AddGroup F] (ψ : AddChar F ℂ) (z : F) (h : ψ z = 1) : ψ (-z) = 1 := by
   have := AddChar.map_add_eq_mul ψ z (-z)
@@ -92,7 +90,7 @@ theorem psi_neg_eq_one {F : Type} [AddGroup F] (ψ : AddChar F ℂ) (z : F) (h :
   exact this.symm
 
 /- English proof (translation)
-Rewrite using `[smul_comm]`. Conclude with `GlobalTheory.PlaceModel.inv_smul_nsmul S T hN t`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_inv_smul {D : D7} {S T : HSp D} {N : ℕ} (hN : 0 < N) (t : WO S T) :
     N • ((incA D (N : D.host.E)⁻¹) • t) = t := by
@@ -100,7 +98,7 @@ theorem nsmul_inv_smul {D : D7} {S T : HSp D} {N : ℕ} (hN : 0 < N) (t : WO S T
   exact GlobalTheory.PlaceModel.inv_smul_nsmul S T hN t
 
 /- English proof (translation)
-Introduce `i j`. Use `show e * (N • u i j) = N • u i j`. Rewrite using `[nsmul_eq_mul, mul_left_comm, h i j]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHalf_nsmul {D : D7} {m n : ℕ} {e : AE D} {u : Mx D m n} (h : IsHalf e u) (N : ℕ) : IsHalf e (N • u) := by
   intro i j
@@ -108,7 +106,7 @@ theorem isHalf_nsmul {D : D7} {m n : ℕ} {e : AE D} {u : Mx D m n} (h : IsHalf 
   rw [nsmul_eq_mul, mul_left_comm, h i j]
 
 /- English proof (translation)
-Introduce `i j`. Use `show e * (w * (e * a i j)) = w * (e * a i j)`. Rewrite using `[mul_left_comm, ← mul_assoc e e, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHalf_smul_idem {D : D7} {m n : ℕ} {e : AE D} (he : e * e = e) (w : AE D) (a : Mx D m n) :
     IsHalf e (w • (e • a)) := by
@@ -119,37 +117,35 @@ theorem isHalf_smul_idem {D : D7} {m n : ℕ} {e : AE D} (he : e * e = e) (w : A
 open GlobalTheory.LocMod.Witness in
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p Y Y' _ _ _ _ S T FS FT ψ hψ U hU`. Establish `hS` using `GlobalTheory.PlaceModel.isSelfDualC_latFrame S`. Establish `hT` using `GlobalTheory.PlaceModel.isSelfDualC_latFrame T`. Use `set Λ₀ := latO S T (GlobalTheory.PlaceModel.latFrame S : Set _) (GlobalTheory.PlaceModel.latFrame T : Set _) (fun _ => True) with hΛ₀`. Take `⟨N, hN, hNU⟩` from `(GlobalTheory.LatLevel.level_of_generators D S T _ _ hS hT (GlobalTheory.LatFinGen.latO_finitely_generated D S T _ _ hS hT)).1 U hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he : p.e * p.e = p.e` using `p.split.1`. Establish `hinfe : infPart D p.e = 0` using `GlobalTheory.PlaceCoord.infPart_split p.split`. Establish `hinfe' : infPart D (cA D p.e) = 0` using `GlobalTheory.PlaceDatum.infPart_cA hinfe`. Establish `hdual` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hψ hS hT).1`. Establish `hNk : (N : k) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `h1 : (N : AE D) * incA D ((N : D.host.E)⁻¹) = 1`. Rewrite using `[← map_natCast (incA D), ← map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hN.ne'), map_one]`. Establish `h2` using `congrArg p.π h1`. Rewrite `h2` using `[map_mul, map_natCast, h0, zero_mul, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_ne_one h2`. Take `⟨c, hc0, hc⟩` from `exists_smul_int_mem k Y Y' (((Λ₀.comap (upH p FS FT) : AddSubgroup _) : Set (Matrix Y Y' k)) ∩ ((U.comap (upH p FS FT) : AddSubgroup _) : Set _)) ((lat_open p FS FT hS hT).inter (hU.preimage (up_cont p FS FT))) ⟨zero_mem (Λ₀.comap (upH p FS FT)), zero_mem (U.comap (upH p FS FT))⟩`. Set `L' : AddSubgroup (WO S T)` to `half S T p.e ⊓ Λ₀.comap (nsmulAddMonoidHom N)`. Set `K : AddSubgroup (WO S T)` to `(Λ₀ ⊓ half S T (cA D p.e)).map (nsmulAddMonoidHom N)`. Establish `hL' : ∀ t, t ∈ L' ↔ IsHalf p.e t ∧ N • t ∈ Λ₀` using `fun t => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[AddSubgroup.mem_inf, mem_half_iff]`. Both sides reduce to the same expression. Establish `hK : ∀ y, y ∈ K ↔ ∃ b, (b ∈ Λ₀ ∧ IsHalf (cA D p.e) b) ∧ N • b = y` using `fun y => by`. Simplify using `only [K, AddSubgroup.mem_map, AddSubgroup.mem_inf, mem_half_iff, nsmulAddMonoidHom_apply]`. Use `⟨c, hc0, L', K, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨h1, h2⟩` from `hc x hx`. Conclude with `⟨(hL' _).2 ⟨up_half p FS FT _, nsmul_mem (show p.up FS FT (c • x) ∈ Λ₀ from h1) N⟩, h2⟩`. Conclude with `fun t ht => ((hL' t).1 ht).1`. Introduce `y hy`.
+Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨b, ⟨hb1, hb2⟩, rfl⟩` from `(hK y).1 hy`. Conclude with `⟨isHalf_nsmul hb2 N, hNU b hb1⟩`. Establish `hAc` using `lat_compact p FS FT hS hT`. Establish `hB : IsCompact ((fun m => (N : k)⁻¹ • m) '' ((Λ₀.comap (upH p FS FT) : AddSubgroup _) : Set (Matrix Y Y' k)))` using `hAc.image (continuous_const_smul _)`. Establish `hint : IsOpen {x : Matrix Y Y' k | ∀ i j, x i j ∈ 𝒪[k]}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: {x : Matrix Y Y' k | ∀ i j, x i j ∈ 𝒪[k]} = ⋂ i, ⋂ j, (fun x : Matrix Y Y' k => x i j) ⁻¹' (𝒪[k] : Set k)`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (Valuation.isOpen_integer (v := valuation k)).preimage ((continuous_apply j).comp (continuous_apply i))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hVo : IsOpen ((fun m : Matrix Y Y' k => c⁻¹ • m) ⁻¹' {x : Matrix Y Y' k | ∀ i j, x i j ∈ 𝒪[k]})` using `hint.preimage (continuous_const_smul _)`. Take `⟨G, hG⟩` from `compact_covered_by_add_left_translates hB (V := (fun m : Matrix Y Y' k => c⁻¹ • m) ⁻¹' {x : Matrix Y Y' k | ∀ i j, x i j ∈ 𝒪[k]}) ⟨0, by rw [hVo.interior_eq]; intro i j; simp⟩`. Use `⟨G.image (fun g => p.up FS FT (-g)), fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `(hL' t).1 ht`. Establish `hm : N • p.down FS FT t ∈ ((Λ₀.comap (upH p FS FT) : AddSubgroup _) : Set (Matrix Y Y' k))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `upH p FS FT (N • p.down FS FT t) ∈ Λ₀`. Rewrite using `[map_nsmul]`. Express the relevant statement in the definitionally equal form `N • p.up FS FT (p.down FS FT t) ∈ Λ₀`. Rewrite using `[up_down p FS FT h1]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hmB : p.down FS FT t ∈ (fun m => (N : k)⁻¹ • m) '' ((Λ₀.comap (upH p FS FT) : AddSubgroup _) : Set (Matrix Y Y' k))` using `⟨_, hm, by simp only; rw [← Nat.cast_smul_eq_nsmul k, smul_smul, inv_mul_cancel₀ hNk, one_smul]⟩`. Establish `hG'` using `hG hmB`. Rewrite `hG'` using `[Set.mem_iUnion₂]`. Take `⟨g, hg, hgV⟩` from `hG'`. Use `⟨p.up FS FT (-g), Finset.mem_image_of_mem _ hg, c⁻¹ • (g + p.down FS FT t), hgV, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_smul, mul_inv_cancel₀ hc0, one_smul]`. Establish `h3` using `up_add p FS FT (-g) (g + p.down FS FT t)`. Rewrite `h3` using `[neg_add_cancel_left, up_down p FS FT h1]`. Conclude with `sub_eq_of_eq_add' h3`. Introduce `x hx y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `(hL' x).1 hx`. Take `⟨b, ⟨hb1, -⟩, rfl⟩` from `(hK y).1 hy`. Rewrite using `[← symplO_nsmul_swap]`. Establish `hhalf : IsHalf p.e (N • x)` using `isHalf_nsmul h1 N`. Conclude with `(hdual (N • x) (GlobalTheory.PlaceDatum.infPart_of_half hinfe hhalf)).1 h2 b hb1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy hyL`. Take `⟨y', hy'h, rfl⟩` from `GlobalTheory.PlaceModel.half_div S T (cA D p.e) N hN y ((mem_half_iff _ _).2 hy)`. Establish `hy'h'` using `(mem_half_iff _ _).1 hy'h`. Use `(hK _).2 ⟨y', ⟨?_, hy'h'⟩, rfl⟩` and prove the remaining obligations. Use `(hdual y' (GlobalTheory.PlaceDatum.infPart_of_half hinfe' hy'h')).2 fun a ha => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.PlaceModel.symplO_skew]`. Use `psi_neg_eq_one ψ _ ?_` and prove the remaining obligations. Establish `hea : p.e • a ∈ Λ₀` using `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ p.e (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, he])) a ha`. Establish `hNx : N • (incA D ((N : D.host.E)⁻¹) • (p.e • a)) = p.e • a` using `nsmul_inv_smul hN _`. Establish `hx : incA D ((N : D.host.E)⁻¹) • (p.e • a) ∈ L'`.
-
-Conclude with `(hL' _).2 ⟨isHalf_smul_idem he _ a, by rw [hNx]; exact hea⟩`. Establish `h4` using `hyL _ hx`. Rewrite `h4` using `[← symplO_nsmul_swap, hNx, GlobalTheory.PlaceModel.symplO_smul]`. Establish `hcy : cA D p.e • y' = y'` using `hy'h`. Rewrite `h4` using `[hcy]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_split_lattices : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : GlobalTheory.LocMod.Place D k) (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (S T : Formalism.BasicNotions.TH.HSp D) (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.LocMod.Frame k T.rank Y) (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) ℂ), Formalism.L2.Theta.IsStdChar D ψ (-1) → ∀ (U : AddSubgroup (Formalism.IndefR.Datum.WO S T)), IsOpen (U : Set (Formalism.IndefR.Datum.WO S T)) → ∃ c : k, c ≠ 0 ∧ ∃ L' K : AddSubgroup (Formalism.IndefR.Datum.WO S T), (∀ x : Matrix Y Y' k, (∀ i j, x i j ∈ 𝒪[k]) → p.up FS FT (c • x) ∈ L' ∧ p.up FS FT (c • x) ∈ U) ∧ (∀ t ∈ L', Formalism.IndefR.Datum.IsHalf p.e t) ∧ (∀ y ∈ K, Formalism.IndefR.Datum.IsHalf (Formalism.L2.Theta.cA D p.e) y ∧ y ∈ U) ∧ (∃ R : Finset (Formalism.IndefR.Datum.WO S T), ∀ t ∈ L', ∃ r ∈ R, ∃ x : Matrix Y Y' k, (∀ i j, x i j ∈ 𝒪[k]) ∧ t - r = p.up FS FT (c • x)) ∧ (∀ x ∈ L', ∀ y ∈ K, ψ (Formalism.IndefR.Datum.symplO S T x y) = 1) ∧ (∀ y, Formalism.IndefR.Datum.IsHalf (Formalism.L2.Theta.cA D p.e) y → (∀ x ∈ L', ψ (Formalism.IndefR.Datum.symplO S T x y) = 1) → y ∈ K) := by
   intro D k _ _ _ _ p Y Y' _ _ _ _ S T FS FT ψ hψ U hU

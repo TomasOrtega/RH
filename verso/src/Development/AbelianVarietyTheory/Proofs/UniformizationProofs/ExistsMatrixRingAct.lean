@@ -24,7 +24,7 @@ attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.prod_insert hi, comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem _root_.GlobalTheory.MatrixAction.comp_finsetProd {G : Over S} [GrpObj G] [IsCommMonObj G] {T T' : Over S}
     (a : T' ⟶ T) {κ : Type} (s : Finset κ) (x : κ → (T ⟶ G)) :
@@ -35,7 +35,7 @@ theorem _root_.GlobalTheory.MatrixAction.comp_finsetProd {G : Over S} [GrpObj G]
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.prod_insert hi, comp_mul, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [MonObj.one_comp]`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.prod_insert hi, MonObj.mul_comp, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem finsetProd_comp {G H : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj H] [IsCommMonObj H]
     (f : G ⟶ H) [IsMonHom f] {T : Over S}
@@ -51,7 +51,7 @@ attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `h1 (𝟙_ (Over S))` as an intermediate fact. Simplify `this` using `[Hom.one_def]`. Use `hm (G ⊗ G) (fst G G) (snd G G)` as an intermediate fact. Simplify `this` using `[Hom.mul_def]`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem _root_.GlobalTheory.MatrixAction.isMonHom_of_points {G H : Over S} [GrpObj G] [GrpObj H] (f : G ⟶ H)
     (h1 : ∀ T : Over S, (1 : T ⟶ G) ≫ f = 1)
@@ -66,12 +66,12 @@ section
 variable {G : Over S} [GrpObj G] {O : Type} [Ring O] (ρ : RingAct G O)
 
 /- English proof (translation)
-The claim follows from `ρ.map_add a b`.
+A detailed English derivation is pending.
 -/
 theorem act_add (a b : O) : ρ.act (a + b) = ρ.act a * ρ.act b := ρ.map_add a b
 
 /- English proof (translation)
-Establish `h` using `act_add ρ 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left.mp h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_zero : ρ.act 0 = 1 := by
   have h := act_add ρ 0 0
@@ -79,7 +79,7 @@ theorem act_zero : ρ.act 0 = 1 := by
   exact (mul_eq_left.mp h.symm)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [act_zero]`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, act_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem act_sum [IsCommMonObj G] {κ : Type} (s : Finset κ) (x : κ → O) :
     ρ.act (∑ k ∈ s, x k) = ∏ k ∈ s, ρ.act (x k) := by
@@ -91,19 +91,19 @@ theorem act_sum [IsCommMonObj G] {κ : Type} (s : Finset κ) (x : κ → O) :
 end
 
 /- English proof (translation)
-Introduce `S G G' _ _ _ _ j p O _ ιG`. Establish `hext : ∀ {T : Over S} {a b : T ⟶ G'}, (∀ i, a ≫ p.pr i = b ≫ p.pr i) → a = b` using `fun h => p.lim.hom_ext fun i => h i.as`. Establish `hp` using `p.hom`. Establish `hι` using `ιG.hom`. Set `A : Matrix (Fin j) (Fin j) O → (G' ⟶ G')` to `fun m => p.lim.lift (Fan.mk G' fun i => ∏ l, p.pr l ≫ ιG.act (m i l))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hA : ∀ m i, A m ≫ p.pr i = ∏ l, p.pr l ≫ ιG.act (m i l)` using `fun m i => p.lim.fac (Fan.mk G' fun i => ∏ l, p.pr l ≫ ιG.act (m i l)) ⟨i⟩`. Use `⟨⟨A, fun m => ?_, ?_, fun a b => ?_, fun a b => ?_⟩, hA⟩` and prove the remaining obligations. Use `isMonHom_of_points _ (fun T => hext fun i => ?_) (fun T x y => hext fun i => ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, hA, comp_finsetProd, MonObj.one_comp (p.pr i)]`. Use `Finset.prod_eq_one fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Category.assoc, MonObj.one_comp, MonObj.one_comp]`. Rewrite using `[MonObj.mul_comp _ _ (p.pr i), Category.assoc, Category.assoc, Category.assoc, hA, comp_finsetProd, comp_finsetProd, comp_finsetProd, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, MonObj.mul_comp, MonObj.mul_comp, Category.assoc, Category.assoc]`. Use `hext fun i => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hA, Category.id_comp, Finset.prod_eq_single i]`. Rewrite using `[Matrix.one_apply_eq, ιG.map_one, Category.comp_id]`. Introduce `l _ hl`. Rewrite using `[Matrix.one_apply_ne hl.symm, act_zero, MonObj.comp_one]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ i) h`. Use `hext fun i => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hA, hA, comp_finsetProd]`. Establish `e1 : ∀ k, A b ≫ p.pr k ≫ ιG.act (a i k) = ∏ l, p.pr l ≫ ιG.act (a i k * b k l)` using `fun k => by`. Rewrite using `[← Category.assoc, hA, finsetProd_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[ιG.map_mul, Category.assoc]`. Rewrite using `[Finset.prod_congr rfl fun k _ => e1 k, Finset.prod_comm]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, act_sum, comp_finsetProd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hext fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (A a * A b) ≫ p.pr i`. Rewrite using `[MonObj.mul_comp, hA, hA, hA, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, act_add, MonObj.comp_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_matrix_ringAct : ∀ (S : Scheme.{0}) (G G' : Over S) [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G'] (j : ℕ) (p : IsPowGrp G' G j) (O : Type) [Ring O] (ιG : RingAct G O), ∃ ι' : RingAct G' (Matrix (Fin j) (Fin j) O), (∀ (m : (Matrix (Fin j) (Fin j) O)) (i : Fin j), ι'.act m ≫ p.pr i = ∏ l, p.pr l ≫ ιG.act (m i l)) := by
   intro S G G' _ _ _ _ j p O _ ιG

@@ -8,9 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ClassRestObj
 
 /- English proof (translation)
-Introduce `D W hW hsig`. Take `⟨⟨θ, hθ⟩, A, hA⟩` from `GlobalTheory.DecompCompare.exists_data D W hW hsig`. Establish `hK : KSub D W W.rank 0 θ A = StabFin.SFin D.sp.cm.sig W.gram (L0c D W)` using `SetLike.coe_injective (StabFin.KSub_eq D W hW hsig θ hθ A hA)`. Take `⟨-, n, g, hcov, hdisj, -, hsum⟩` from `GlobalTheory.DefiniteDecompObj.doubleCosets_mass D W hW hsig θ hθ A hA`. Rewrite `hcov`, `hdisj`, `hsum` using `[hK]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨n, g, hcov, hdisj, hsum⟩`.
+Supply the required witnesses or components.
 -/
 theorem defClassRest : ∀ D : D7, DefClassRest D := by
   intro D W hW hsig

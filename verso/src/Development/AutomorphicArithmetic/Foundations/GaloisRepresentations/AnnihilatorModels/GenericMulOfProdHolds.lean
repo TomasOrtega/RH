@@ -49,11 +49,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 namespace UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-The claim follows from `ordCount_of (ordDecomp_of countIn_of countOut_of) telescope_of`.
+A detailed English derivation is pending.
 -/
 theorem ordCount_holds : OrdCount := ordCount_of (ordDecomp_of countIn_of countOut_of) telescope_of
 /- English proof (translation)
-The claim follows from `ptOrd_of ordCount_holds`.
+A detailed English derivation is pending.
 -/
 theorem ptIdOfOrd_holds : PtIdOfOrd := ptOrd_of ordCount_holds
 

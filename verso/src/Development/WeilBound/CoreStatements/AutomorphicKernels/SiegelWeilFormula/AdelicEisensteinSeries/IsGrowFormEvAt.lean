@@ -24,7 +24,7 @@ def evAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (LinearMap.proj x).comp (modFun σ Y).subtype
 
 /- English proof (translation)
-Introduce `N`. Use `⟨(ht2 x : ℝ) ^ N, fun f hf => ?_⟩` and prove the remaining obligations. Simplify `hf x` using `[evAt]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isGrowForm_evAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n : ℕ} {Y : Spc F E n} (x : G2 σ Y) : IsGrowForm (evAt x) := by
@@ -33,21 +33,19 @@ theorem isGrowForm_evAt {F E : Type} [Field F] [NumberField F] [Field E] [Number
   simpa [evAt] using hf x
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n Y hB hn χ hχ c hc b K a hb hK ha s₁ f hf`. Take `⟨t₀, v, hv, hvh⟩` from `eisHalf_w hB hb hK ha χ s₁ f hf`. Take `⟨A, H, t₁, hA, hAne, hHh, hHs⟩` from `siegelMult_w hB hn χ hχ c hc hb hK ha s₁ f hf`. Establish `hHv : ∀ s' : ℂ, max t₀ t₁ < s'.re → ∀ x, (H s').1 x = A s' * (v s').1 x`. Introduce `s' hs' x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hHs s' (lt_of_le_of_lt (le_max_right _ _) hs') x`. Establish `h2` using `(hv s' (lt_of_le_of_lt (le_max_left _ _) hs') x).mul_left (A s')`. Conclude with `h1.unique h2`. Set `Ehat : ℂ → G2 σ Y → ℂ` to `fun s' x => if max t₀ t₁ < s'.re then (v s').1 x else (H s').1 x / A s'`. Use `⟨Ehat, ⟨max t₀ t₁, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s' hs' x`. Simplify using `only [Ehat, if_pos hs']`. Conclude with `hv s' (lt_of_le_of_lt (le_max_left _ _) hs') x`. Introduce `x`. Establish `hd : DifferentiableOn ℂ (fun s' => evAt x (v s')) {s' : ℂ | t₀ < s'.re}` using `hvh (evAt x) (isGrowForm_evAt x)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd' : DifferentiableOn ℂ (fun s' => (v s').1 x) {s' : ℂ | max t₀ t₁ < s'.re}` using `(hd.mono fun s' (hs' : max t₀ t₁ < s'.re) => (show t₀ < s'.re from lt_of_le_of_lt (le_max_left _ _) hs'))`. Use `hd'.congr fun s' hs' => ?_` and prove the remaining obligations. Simplify using `only [Ehat, if_pos (show max t₀ t₁ < s'.re from hs')]`. Introduce `s₀`. Take `⟨k, U, u, hUo, hs₀U, hud, hUA⟩` from `GlobalTheory.CompanionTheory.Entire.local_factorisation A hA hAne s₀`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨k, U, fun s' => (u s')⁻¹ • H s', hUo.mem_nhds hs₀U, ?_, ?_⟩` and prove the remaining obligations. Introduce `s' hs' hne x`. Take `⟨hu, hAs⟩` from `hUA s' hs'`. Establish `hpow : (s' - s₀) ^ k ≠ 0` using `pow_ne_zero _ (sub_ne_zero.mpr hne)`. Use `show (u s')⁻¹ * (H s').1 x = (s' - s₀) ^ k * Ehat s' x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hre : max t₀ t₁ < s'.re`. Simplify using `only [Ehat, if_pos hre]`. Rewrite using `[hHv s' hre x, hAs]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [Ehat, if_neg hre]`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hAs]`. Clear the denominators using the available nonvanishing facts. Introduce `μ hμ`. Establish `h1 : DifferentiableOn ℂ (fun s' => (u s')⁻¹) U` using `hud.inv fun s' hs' => (hUA s' hs').1`. Establish `h2 : DifferentiableOn ℂ (fun s' => μ (H s')) U` using `(hHh μ hμ).differentiableOn`.
-
-Use `(h1.mul h2).congr fun s' _ => ?_` and prove the remaining obligations. Simplify using `[map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eisBLW : EisBLW := by
   intro F E _ _ _ _ _ σ B n Y hB hn χ hχ c hc b K a hb hK ha s₁ f hf

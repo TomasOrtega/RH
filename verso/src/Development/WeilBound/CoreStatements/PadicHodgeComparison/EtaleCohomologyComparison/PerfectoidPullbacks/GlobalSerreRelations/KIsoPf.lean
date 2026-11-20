@@ -13,7 +13,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace CrystallineSemistableComparison.Pb
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.hodge_filtration_via_truncation locGr_h locVan_h polyTf_h globSerreSt_h globVanSt_h gr_aff_pf`.
+A detailed English derivation is pending.
 -/
 theorem k_iso_pf : KH.KIso :=
   GlobalTheory.T.hodge_filtration_via_truncation locGr_h locVan_h polyTf_h globSerreSt_h globVanSt_h gr_aff_pf

@@ -17,7 +17,7 @@ variable {k r : ℕ} {E E' : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [
   [NormedSpace ℂ E']
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.P.B4.op`. Establish `hd : DifferentiableAt ℝ (fun t : ℝ => G (Formalism.FourierDecayAlt.P.B4.cv b X t g)) 0` using `Formalism.FourierDecayAlt.P.B4.ckOn_diff 0 b hG hX hg`. Conclude with `((Φ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd.hasDerivAt).deriv`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem op_clm (Φ : E →L[ℂ] E') (b : Bool) {X : Mat k r} (hX : inLie k r X) {G : Mat k r → E}
     (hG : CkOn ((1 : ℕ) : ℕ∞) (GV k r) G) {g : Mat k r} (hg : g ∈ GV k r) :
@@ -28,7 +28,7 @@ theorem op_clm (Φ : E →L[ℂ] E') (b : Bool) {X : Mat k r} (hX : inLie k r X)
   exact ((Φ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd.hasDerivAt).deriv
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hg, hf', heq⟩` from `hG g₀ hg₀`. Use `⟨U, fun h => Φ (f' h), hU, hg, ?_, fun g hgU hgV => by show Φ (G g) = Φ (f' g); rw [heq g hgU hgV]⟩` and prove the remaining obligations. Conclude with `(Φ.restrictScalars ℝ).contDiff.comp_contDiffOn hf'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ckOn_clm {m : ℕ∞} (Φ : E →L[ℂ] E') {G : Mat k r → E} (hG : CkOn m (GV k r) G) :
     CkOn m (GV k r) (fun h => Φ (G h)) := by
@@ -38,11 +38,11 @@ theorem ckOn_clm {m : ℕ∞} (Φ : E →L[ℂ] E') {G : Mat k r → E} (hG : Ck
   exact (Φ.restrictScalars ℝ).contDiff.comp_contDiffOn hf'
 
 /- English proof (translation)
-Proceed by induction on `w generalizing G with`. Consider the case `nil`. Introduce `g _`. Both sides reduce to the same expression. Consider the case `cons x w ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `g hg`. Establish `hx : inLie k r x.2` using `hw x List.mem_cons_self`. Establish `hw' : Formalism.FourierDecayAlt.P.B4.AllLie w` using `fun y hy => hw y (List.mem_cons_of_mem _ hy)`. Establish `hGw : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) G` using `Formalism.FourierDecayAlt.P.B4.ckOn_mono (by simp) hG`. Establish `hG1 : CkOn ((1 : ℕ) : ℕ∞) (GV k r) (Formalism.FourierDecayAlt.P.B4.W w G)` using `Formalism.FourierDecayAlt.P.B4.smooth_on_of_word_derivatives w hw' 1 (by simpa [Nat.add_comm] using hG)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.B4.W_cons, Formalism.FourierDecayAlt.P.B4.W_cons, Formalism.FourierDecayAlt.P.B4.op_congr x.1 hx (fun h hh => ih hw' hGw h hh) g hg]`. Conclude with `op_clm Φ x.1 hx hG1 hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem W_clm (Φ : E →L[ℂ] E') (w : List (Bool × Mat k r)) (hw : Formalism.FourierDecayAlt.P.B4.AllLie w) {G : Mat k r → E}
     (hG : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) G) :
@@ -63,9 +63,9 @@ theorem W_clm (Φ : E →L[ℂ] E') (w : List (Bool × Mat k r)) (hw : Formalism
     exact op_clm Φ x.1 hx hG1 hg
 
 /- English proof (translation)
-Take `⟨hk, hb⟩` from `hG`. Use `⟨ckOn_clm Φ hk, fun u v hu hv hl g hg => ?_⟩` and prove the remaining obligations. Establish `hw : Formalism.FourierDecayAlt.P.B4.AllLie (Formalism.FourierDecayAlt.P.B4.lr u v)` using `Formalism.FourierDecayAlt.P.SliceLastLevel.allLie_lr' (fun X hX => (hu X hX).1) (fun X hX => (hv X hX).1)`. Establish `hlen : (Formalism.FourierDecayAlt.P.B4.lr u v).length = u.length + v.length` using `by simp [Formalism.FourierDecayAlt.P.B4.lr]`. Establish `hGk : CkOn (((Formalism.FourierDecayAlt.P.B4.lr u v).length : ℕ) : ℕ∞) (GV k r) G` using `Formalism.FourierDecayAlt.P.B4.ckOn_mono (by omega) hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.B4.dLR_eq, W_clm Φ _ hw hGk g hg, ← Formalism.FourierDecayAlt.P.B4.dLR_eq]`. Establish `h1` using `hb u v hu hv hl g hg`. Establish `hgN : 0 ≤ gN g ^ A` using `Real.rpow_nonneg (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_pos hg).le _`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem ccle_clm {A c : ℝ} {m : ℕ} (Φ : E →L[ℂ] E') {G : Mat k r → E} (hG : CCle A m G c) :
     CCle A m (fun h => Φ (G h)) (‖Φ‖ * c) := by
@@ -92,7 +92,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-The claim follows from `| [] => rfl | X :: v => by show Formalism.REAL.RdV X (B.Rw v 0) = 0 rw [rw_zero_fnE v] funext g simp [Formalism.REAL.RdV]`.
+A detailed English derivation is pending.
 -/
 theorem rw_zero_fnE {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] :
     ∀ v : List (B.Mat k r), B.Rw v (0 : B.Mat k r → E) = 0
@@ -104,7 +104,7 @@ theorem rw_zero_fnE {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] :
     simp [Formalism.REAL.RdV]
 
 /- English proof (translation)
-The claim follows from `| [] => rw_zero_fnE v | X :: u => by show B.LdV X (B.dLR u v 0) = 0 rw [dLR_zero_fnE v u] funext g simp [B.LdV]`.
+A detailed English derivation is pending.
 -/
 theorem dLR_zero_fnE {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (v : List (B.Mat k r)) :
     ∀ u : List (B.Mat k r), B.dLR u v (0 : B.Mat k r → E) = 0
@@ -116,7 +116,7 @@ theorem dLR_zero_fnE {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (v :
     simp [B.LdV]
 
 /- English proof (translation)
-Use `⟨0, fun g₀ _ => ⟨Set.univ, 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun g _ _ => rfl⟩, fun u v _ _ _ g _ => ?_⟩` and prove the remaining obligations. Rewrite using `[dLR_zero_fnE v u]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inCC_zero_fnE (A : ℝ) (m : ℕ) : B.InCC A m (0 : B.Mat k r → (Wq →L[ℂ] Wp)) := by
   refine ⟨0, fun g₀ _ => ⟨Set.univ, 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun g _ _ => rfl⟩,
@@ -125,7 +125,7 @@ theorem inCC_zero_fnE (A : ℝ) (m : ℕ) : B.InCC A m (0 : B.Mat k r → (Wq �
   simp
 
 /- English proof (translation)
-The claim follows from `| 0, F, _ => by have e : (fun g => ∑ i : Fin 0, F i g) = (0 : Mat k r → (Wq →L[ℂ] Wp)) := by funext g; simp rw [e]; exact inCC_zero_fnE A m | n + 1, F, h => by have e : (fun g => ∑ i : Fin (n + 1), F i g) = fun g => F 0 g + ∑ i : Fin n, F i.succ g := by funext g; exact Fin.sum_un …`.
+A detailed English derivation is pending.
 -/
 theorem inCC_finsum {A : ℝ} {m : ℕ} : ∀ {n : ℕ} (F : Fin n → Mat k r → (Wq →L[ℂ] Wp)),
     (∀ i, InCC A m (F i)) → InCC A m (fun g => ∑ i, F i g)
@@ -143,13 +143,13 @@ theorem inCC_finsum {A : ℝ} {m : ℕ} : ∀ {n : ℕ} (F : Fin n → Mat k r �
 end sum
 
 /- English proof (translation)
-Introduce `P Wp Wq Wq' _ _ _ _ _ _ _ _ _ u u' q f A A₀ d p₀ hf hA m`. Take `⟨n, c, L, hc, hAe⟩` from `hA`. Use `set Gp : B.Mat P.k P.r → ℂ := fun g => ((Gf P.k P.r q.T.base.z q.T.base.z' g ^ p₀ : ℝ) : ℂ) with hGp`. Establish `e : fpmSh q f A p₀ = fun g => ∑ i, (Gp g * c i g) • (f g).comp (L i)`. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Simplify using `[fpmSh, hAe g, map_sum, map_smul, Finset.smul_sum, smul_smul, hGp]`. Rewrite using `[e]`. Use `inCC_finsum _ fun i => ?_` and prove the remaining obligations. Use `set Φ : (Wq →L[ℂ] Wp) →L[ℂ] (Wq' →L[ℂ] Wp) := (ContinuousLinearMap.compL ℂ Wq' Wq Wp).flip (L i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ : ∀ x, Φ x = x.comp (L i)` using `fun x => rfl`. Establish `hgood : Formalism.FourierDecayAlt.P.JCx2.pdGood Wp Wq' ((2 * P.r + 2) * p₀ + d) (fun g => Gp g * c i g)` using `Formalism.FourierDecayAlt.P.JCx2.pd_good_mul le_rfl (Formalism.FourierDecayAlt.P.CutBP.pd_good_Gpow q.T.base.z q.T.base.z' p₀) (Formalism.FourierDecayAlt.P.CutBP.pd_good_of_poly (hc i))`. Take `⟨K, -, hK⟩` from `hgood.2 (A₀ - (((2 * P.r + 2) * p₀ : ℕ) : ℝ) - d) m`. Take `⟨b, hb⟩` from `hf m`. Establish `hb'` using `ccle_clm Φ hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA' : A₀ - (((2 * P.r + 2) * p₀ : ℕ) : ℝ) - d + (((2 * P.r + 2) * p₀ + d : ℕ) : ℝ) = A₀` using `by push_cast; ring`. Rewrite `hb'` using `[← hA']`. Conclude with `⟨K * (‖Φ‖ * b), hK _ _ hb'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem shifted_decay : FpmShDecay := by
   intro P Wp Wq Wq' _ _ _ _ _ _ _ _ _ u u' q f A A₀ d p₀ hf hA m

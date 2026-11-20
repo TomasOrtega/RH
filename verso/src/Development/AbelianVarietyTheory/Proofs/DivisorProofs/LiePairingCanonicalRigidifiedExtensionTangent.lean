@@ -20,7 +20,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Introduce `p _ R _ N hN A _ hA G t ψ hψ β hβ hF x v hx`. Take `⟨w, hw1, hw2⟩` from `isCan_form R A p G t β hβ`. Establish `hw : ψ ⟨_, hF⟩ = w` using `PDivGroup.rigOfOmega_injective_of_pow p R N hN G (isCan_unique R A p G t _ hA _ _ (hψ _) hw2)`. Rewrite using `[hw]`. Conclude with `lie_cotVal_eq_tanVal R A p G t ⟨N, hN⟩ β w hw1 x v hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_psi_cl_eq_tanVal : ∀ (p : ℕ) [Fact p.Prime]  (R : Type) [CommRing R] (N : ℕ), (p : R) ^ N = 0 → ∀ (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ (G : PDivGroup p R) (t : G.TorsionTower A) (ψ : PrimitiveSubmodule A →ₗ[R] G.omega), (∀ c : PrimitiveSubmodule A, IsCan t c.1 (G.rigOfOmega (ψ c))) → ∀ (β : Form (A.hom ≫ 𝟙 _)) (hβ : Form.cl _ β ∈ primDR A) (hF : (⟨_, hβ⟩ : primDR A) ∈ PrimitiveSubmodule A) (x : G.Lie) (v : epsR R ⟶ A), t.LieCorr x v → x (ψ ⟨_, hF⟩) = tanVal v β := by
   intro p _ R _ N hN A _ hA G t ψ hψ β hβ hF x v hx

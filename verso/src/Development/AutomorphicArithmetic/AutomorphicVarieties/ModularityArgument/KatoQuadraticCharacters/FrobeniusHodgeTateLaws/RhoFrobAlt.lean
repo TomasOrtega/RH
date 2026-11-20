@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UntwistedReprese
 open UpperTheory.V.Z.Kato.Joint
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ ι e S A W g χ hN _ hatt ρ hρ`. Establish `h : ∀ s, (ρ s : Matrix (Fin 2) (Fin 2) (Formalism.ConjugateSelfDual.Qbar l)) = _` using `fun s => (hρ s).trans (GlobalTheory.RhoAdm.untw_val' e W χ s).symm`. Use `⟨?_, fun V hV => GlobalTheory.RhoAdm.untw_irr e W χ hN.irr V fun s v hv => ?_⟩` and prove the remaining obligations. Take `⟨S0, hS0⟩` from `GlobalTheory.RhoAdm.frob_trace_det ι e W g χ hatt`. Use `⟨S0, fun q hq hqS s hs => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h s]`. Conclude with `hS0 q hq hqS s hs`. Rewrite using `[← h s]`. Conclude with `hV s v hv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Joint.rhoFrob :
     UpperTheory.V.Z.Kato.Joint.RhoFrob := by

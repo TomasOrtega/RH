@@ -13,9 +13,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.CupAbove
 
 /- English proof (translation)
-Establish `e : ∀ z z', cupProductH1H1 π π' μ b hb hbe hc (Submodule.Quotient.mk z) (Submodule.Quotient.mk z') = Submodule.mkQ _ (cupCocycleZ1Z1 π π' μ b hb hbe hc z z')` using `fun _ _ => rfl`. Establish `h1 : Submodule.map₂ (cupProductH1H1 π π' μ b hb hbe hc) (Submodule.span R S) (Submodule.span R S') ≤ W.map (Submodule.mkQ _)`. Rewrite using `[Submodule.map₂_span_span, Submodule.span_le]`. Introduce and unpack `_ ⟨s, hs, s', hs', rfl⟩`. Take `⟨z, z', rfl, rfl, hz⟩` from `h s hs s' hs'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, hz, (e z z').symm⟩`. Establish `h2` using `h1 (Submodule.apply_mem_map₂ _ hx hy)`. Rewrite `h2` using `[e, ← Submodule.mem_comap, Submodule.comap_map_mkQ, sup_eq_right.2 hW]`. Conclude with `h2`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cup_mem_of_span {R Γ M M' P : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ]
     [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul R M]
@@ -54,9 +54,9 @@ def addCob {K Γ A : Type} [CommRing K] [Group Γ] [TopologicalSpace Γ] [Topolo
   smul_mem' := fun k z hz lam => hz (lam.comp (AddMonoidHom.mulLeft k))
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec 1 u)`. Establish `h1 : φ u = (u.appr 1 : ℕ)`. Use `congrArg φ hc` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, map_natCast, hl, map_sub, map_natCast, pow_one, mul_zero]`. Conclude with `sub_eq_zero.1 this.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : PadicInt.toZModPow 1 u = (u.appr 1 : ℕ)` using `rfl`. Rewrite using `[h1, h2, ← nsmul_eq_mul, map_nsmul, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_padic_mul {l : ℕ} [Fact l.Prime] {K : Type} [CommRing K] (φ : ℤ_[l] →+* K) (hl : (l : K) = 0)
     (lam : K →+ ZMod (l ^ 1)) (u : ℤ_[l]) (k : K) : lam (φ u * k) = PadicInt.toZModPow 1 u * lam k := by
@@ -73,7 +73,7 @@ section Galois
 variable {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω}
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, separated_dvr_second_cohomology_mem]`. Use `exists_congr fun a => and_congr_right fun _ => ⟨fun e g h => (congrFun e (g, h)).symm, fun e => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨g, h⟩`. Conclude with `(e g h).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mk_eq_zero_iff (w : Z2 (muLoc F l 1 A)) : (Submodule.Quotient.mk w : H2 (muLoc F l 1 A)) = 0 ↔
     ∃ a : Dec (F := F) A → ZMod (l ^ 1), Continuous a ∧ ∀ g h : Dec (F := F) A, w.1 (g, h) =
@@ -89,7 +89,7 @@ variable {K : Type} [CommRing K] [TopologicalSpace K] [DiscreteTopology K] (φ :
 include hl hμ
 
 /- English proof (translation)
-Use `⟨⟨fun p => lam (z.1 p), continuous_of_discreteTopology.comp z.2.1, fun g h k => ?_⟩, fun _ _ => rfl⟩` and prove the remaining obligations. Establish `e` using `congrArg lam (z.2.2 g h k)`. Rewrite `e` using `[map_sub, map_add, map_sub, hμ, map_padic_mul φ hl, map_zero]`. Conclude with `e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_push (z : Z2 μ) (lam : K →+ ZMod (l ^ 1)) : ∃ w : Z2 (muLoc F l 1 A), ∀ g h, w.1 (g, h) = lam (z.1 (g, h)) := by
   refine ⟨⟨fun p => lam (z.1 p), continuous_of_discreteTopology.comp z.2.1, fun g h k => ?_⟩, fun _ _ => rfl⟩
@@ -98,7 +98,7 @@ theorem exists_push (z : Z2 μ) (lam : K →+ ZMod (l ^ 1)) : ∃ w : Z2 (muLoc 
   exact e
 
 /- English proof (translation)
-Introduce and unpack `z ⟨c, hc, e⟩ lam`. Use `⟨fun g => lam (c g), continuous_of_discreteTopology.comp hc, fun g h => ?_⟩` and prove the remaining obligations. Establish `e' : z.1 (g, h) = μ g (c h) - c (g * h) + c g` using `(congrFun e (g, h)).symm`. Rewrite using `[e', map_add, map_sub, hμ, map_padic_mul φ hl]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coboundaries_le_cyclotomic_additive : (B2 μ).comap (Z2 μ).subtype ≤
     addCob μ (fun g => PadicInt.toZModPow 1 ((cycZ F Ω l g : ℤ_[l]ˣ) : ℤ_[l])) := by
@@ -110,9 +110,9 @@ theorem coboundaries_le_cyclotomic_additive : (B2 μ).comap (Z2 μ).subtype ≤
 end Galois
 
 /- English proof (translation)
-Establish `: IsGalois F Ω` using `{}`. Establish `: CompactSpace (Dec (F` using `F) A) := isCompact_iff_compactSpace.1 (isClosed_Dec A).isCompact`. Establish `: IsTopologicalRing ↥Bw.LL.1` using `inferInstanceAs (IsTopologicalRing ↥Bw.LL.1.toSubfield.toSubring)`. Establish `hr : Set.range Bw.toLL = Set.range (algebraMap ↥(Loc.OL Bw.LL) ↥Bw.LL.1)` using `Bw.eO.surjective.range_comp (algebraMap ↥(Loc.OL Bw.LL) ↥Bw.LL.1)`. Take `⟨n, a, ha, e⟩` from `GlobalTheory.T.exists_zmod_pow_coboundary_of_rational_coboundary' (Dec (F := F) A) l (fun g => ((cycZ F Ω l g : ℤ_[l]ˣ) : ℤ_[l])) O ↥Bw.LL.1 Bw.toLL (GlobalTheory.BlochKatoIntegralScalars.toLL_injective Bw) (hr ▸ GlobalTheory.LocalIntegers.isOpen_integers l Bw.LL) (Nat.cast_ne_ze …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `GlobalTheory.BlochKatoIntegralScalars.exists_pow_mul_mem_OL Bw.LL (fun (_ : Unit) (_ : Fin 1) => x) continuous_const`. Conclude with `⟨n, hr ▸ ⟨⟨_, hn () 0⟩, rfl⟩⟩) β z f hf hz`. Use `GlobalTheory.T.mu_cocycle_coboundary_lift hT F Ω l A v hA n w a ha fun g h => ?_` and prove the remaining obligations. Rewrite using `[hw]`. Conclude with `e g h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_eq_zero_of_rational (hT : LocalTateDuality) {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} (hA : IsPlaceOver A v)
@@ -143,7 +143,7 @@ section Matrices
 variable {Γ O K : Type} [Group Γ] [CommRing O] [CommRing K] [Algebra O K] {r : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[repOn, matAct, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem repOn_one_apply (ρ : Γ →* GL (Fin r) O) (g : Γ) (m : Fin r → K) :
     repOn ρ (1 : Γ →* Kˣ) K g m = (((ρ g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O).map (algebraMap O K)).mulVec m := by
@@ -151,9 +151,9 @@ theorem repOn_one_apply (ρ : Γ →* GL (Fin r) O) (g : Γ) (m : Fin r → K) :
   simp [repOn, matAct, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Establish `e : (T.map (algebraMap O K)).transpose * T'.map (algebraMap O K) = algebraMap O K u • 1`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, h, Matrix.mul_smul, ← Matrix.transpose_mul, Matrix.nonsing_inv_mul _ hT, Matrix.transpose_one]`. Use extensionality with `a b`. Apply the tactic sequence `by_cases hab : a = b <;> simp [hab]`. Rewrite using `[← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_mulVec, Matrix.one_mulVec, dotProduct_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_equivariant (T T' : Matrix (Fin r) (Fin r) O) (hT : IsUnit T.det) (u : O) (h : T' = u • T⁻¹.transpose)
     (x y : Fin r → K) :
@@ -167,7 +167,7 @@ theorem dot_equivariant (T T' : Matrix (Fin r) (Fin r) O) (hT : IsUnit T.det) (u
   rw [Matrix.smul_mulVec, Matrix.one_mulVec, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum, Matrix.map_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem dot_generators (T : Matrix (Fin r) (Fin r) O) (y y' : Fin r → O) (b b' : K) :
     (fun a => algebraMap O K (y a) • b) ⬝ᵥ (T.map (algebraMap O K)).mulVec (fun a => algebraMap O K (y' a) • b') =
@@ -178,21 +178,19 @@ theorem dot_generators (T : Matrix (Fin r) (Fin r) O) (y y' : Fin r → O) (b b'
 end Matrices
 
 /- English proof (translation)
-Introduce `hT D N X bkP i s _ K _ _ _ _ hK ρ hρ v hv x y hx hy lam w hw`. Set `φ : ℤ_[X.l i] →+* K` to `(algebraMap (X.O0 i) K).comp (algebraMap ℤ_[X.l i] (X.O0 i))`. Establish `hl : ((X.l i : ℕ) : K) = 0`. Rewrite using `[← map_natCast (algebraMap (X.O0 i) K)]`. Conclude with `hK _ (GlobalTheory.PrimeToInertia.l_mem i)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `μ : Representation K (DecV N v) K` to `charRep (((Units.map (algebraMap (X.O0 i) K).toMonoidHom).comp (eps0 X i)).comp (DecV N v).subtype)`. Establish `hμ : ∀ (g : DecV N v) k, μ g k = φ ((cycZ D.host.E N.Om (X.l i) g : ℤ_[X.l i]ˣ) : ℤ_[X.l i]) * k` using `fun _ _ => rfl`. Establish `hbe : ∀ (g : DecV N v) (m m' : Fin D.R.r → K), dotProductBilin K K (((red i K (Tgl i s)).comp (DecV N v).subtype) g m) (((red i K ρ).comp (DecV N v).subtype) g m') = μ g (dotProductBilin K K m m')`. Introduce `g m m'`. Express the relevant statement in the definitionally equal form `red i K (Tgl i s) g m ⬝ᵥ red i K ρ g m' = algebraMap (X.O0 i) K ((eps0 X i g : (X.O0 i)ˣ) : X.O0 i) * (m ⬝ᵥ m')`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[repOn_one_apply, repOn_one_apply]`. Use `dot_equivariant _ _ (Matrix.isUnits_det_units _) _ ?_ m m'` and prove the remaining obligations. Rewrite using `[hρ, Tgl_coe]`. Both sides reduce to the same expression. Establish `hc : ContAction ((red i K ρ).comp (DecV N v).subtype)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocalHom (algebraMap (X.O0 i) K)` using `⟨fun a ha => by`. Assume the negation of the conclusion as `hn`. Conclude with `ha.ne_zero (hK a hn)⟩`. Establish `h1 : ContAction (red i K ρ)`. Use `GlobalTheory.PrimeToInertia.contAction_repOn (X.twistBaseCoefficientRing_isAdic i) ρ ?_ 1 (by rw [MonoidHom.ker_one, Subgroup.coe_top]; exact isOpen_univ) fun b => ⟨1, fun c hc => ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Repeatedly rewrite using `[show ∀ g, _ from hρ]`. Conclude with `GlobalTheory.PrimeToInertia.continuous_Tdual i s`. Rewrite `hc` using `[pow_one, IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot]`. Rewrite using `[hc, zero_smul]`. Conclude with `h1.comp (f := fun p : DecV N v × (Fin D.R.r → K) => ((p.1 : GE N), p.2)) (by fun_prop)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx`, `hy` using `[bkOn, dif_pos hv]`. Establish `key` using `cup_mem_of_span _ _ μ (dotProductBilin K K) continuous_of_discreteTopology hbe hc _ (coboundaries_le_cyclotomic_additive φ hl μ hμ) _ _ (by`. Introduce and unpack `_ ⟨z, c, t, b, h1, h2, h3, rfl⟩ _ ⟨z', c', t', b', h1', h2', h3', rfl⟩`. Use `⟨z, z', rfl, rfl, fun lam => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, e⟩` from `GlobalTheory.T.cup_coboundary_alt D N X bkP i s ‹_› ρ hρ v hv c c' t t' h1 h1' h2 h2'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `exists_push φ hl μ hμ (cupCocycleZ1Z1 _ _ μ (dotProductBilin K K) continuous_of_discreteTopology hbe hc z z') lam`. Repeatedly rewrite using `[← hw]`. Use `(mk_eq_zero_iff w).1 (mk_eq_zero_of_rational hT (N.plOm.2 v) (bkP.br i v hv) ((lam.comp (AddMonoidHom.mulLeft (b * b'))).comp (algebraMap (X.O0 i) K).toAddMonoidHom) _ f hf e w fun g h => ?_)` and prove the remaining obligations. Rewrite using `[hw]`. Express the relevant statement in the definitionally equal form `lam (z.1 g ⬝ᵥ red i K ρ g (z'.1 h)) = lam (b * b' * algebraMap (X.O0 i) K _)`.
-
-Rewrite using `[repOn_one_apply, show z.1 g = _ from funext (h3 g), show z'.1 h = _ from funext (h3' h), dot_generators])`. Use `x y hx hy`. Take `⟨a, ha, e⟩` from `key lam`. Conclude with `(mk_eq_zero_iff w).2 ⟨a, ha, fun g h => (hw g h).trans (e g h)⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cup_eq_zero_above : LocalTateDuality → ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), GalHyp bkP i s → ∀ (K : Type) [Field K] [Algebra (X.O0 i) K] [TopologicalSpace K] [DiscreteTopology K], IsRes i K → ∀ ρ, IsDual i s ρ → ∀ v ∈ placesOver D.host.E (X.l i), ∀ (x : Z1 ((red i K (Tgl i s)).comp (DecV N v).subtype)) (y : Z1 ((red i K ρ).comp (DecV N v).subtype)), Submodule.Quotient.mk x ∈ bkOn bkP i (Tgl i s) (1 : GE N →* Kˣ) K v → Submodule.Quotient.mk y ∈ bkOn bkP i ρ (1 : GE N →* Kˣ) K v → ∀ (lam : K →+ ZMod (X.l i ^ 1)) (w : Z2 (muLoc D.host.E (X.l i) 1 (N.plOm.1 v))), (∀ g h : ↥(DecV N v), w.1 (g, h) = lam (x.1 g ⬝ᵥ red i K ρ g (y.1 h))) → (Submodule.Quotient.mk w : H2 (muLoc D.host.E (X.l i) 1 (N.plOm.1 v))) = 0 := by
   intro hT D N X bkP i s _ K _ _ _ _ hK ρ hρ v hv x y hx hy lam w hw

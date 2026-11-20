@@ -9,7 +9,7 @@ namespace Formalism.L2.SG.Pf.NcS.IntWittAlg
 open Matrix Formalism.UG
 
 /- English proof (translation)
-Establish `h1 : s b * s b' = 1` using `by rw [← map_mul, h, map_one]`. Rewrite `h1` using `[hb]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem s_inv_eq_of_s_eq_of_mul_eq_one {S : Type} [CommRing S] (s : S →+* S) (b b' : S) (hb : s b = b)
     (h : b * b' = 1) : s b' = b' := by
@@ -20,7 +20,7 @@ private theorem s_inv_eq_of_s_eq_of_mul_eq_one {S : Type} [CommRing S] (s : S �
     _ = b' := by rw [h1, mul_one]
 
 /- English proof (translation)
-Establish `hzv : hform s J z v = s (hform s J v z)` using `(hform_conj s J hs hJ v z).symm`. Simplify using `only [hform_add_left, hform_add_right, hform_smul_left, hform_smul_right]`. Rewrite using `[hzv, hvv]`. Simplify using `only [map_mul, map_sub, map_one, hs, hb']`. Take the linear combination `(b' * hform s J v w * s (hform s J v z)) * hlam + (b' * hform s J v w * s (hform s J v z) * (lam - 1) * (s lam - 1)) * hbb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem hform_transvection_preserves {S : Type} [CommRing S] (s : S →+* S) (hs : ∀ z, s (s z) = z) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) S) (hJ : IsHerm s J) (v : Fin n → S) (b b' lam : S)
@@ -36,41 +36,37 @@ private theorem hform_transvection_preserves {S : Type} [CommRing S] (s : S →+
     (b' * hform s J v w * s (hform s J v z) * (lam - 1) * (s lam - 1)) * hbb
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.Pf.NcS.IntWittPf.AlgWitt`. Introduce `S _ s O hs hsO n J J' hJ hJJ' hJO hJ'O a β β' hβO hβ'O hββ' hH x y hxO hyO hxx hyy`. Establish `key : ∀ k : ℕ, k ≤ a → ∃ M : Matrix (Fin n) (Fin n) S, (∀ z w, hform s J (M *ᵥ z) (M *ᵥ w) = hform s J z w) ∧ (∀ i j, M i j ∈ O) ∧ ∀ i : Fin a, i.val < k → M *ᵥ y i = x i`. Introduce `k`. Proceed by induction on `k with`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `_`. Use `⟨1, fun z w => by rw [Matrix.one_mulVec, Matrix.one_mulVec], fun i j => Formalism.L2.SG.Pf.NcS.IntWittAlg.one_mem' O i j, fun i hi => absurd hi (Nat.not_lt_zero _)⟩` and prove the remaining obligations. Consider the case `succ k ih`. Introduce `hk`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨M, hMp, hMO, hMy⟩` from `ih (Nat.le_of_succ_le hk)`. Take `⟨i0, hi0⟩ : ∃ i0 : Fin a, i0.val = k` from `⟨⟨k, hk⟩, rfl⟩`. Take `⟨yy, hyy_def⟩ : ∃ yy : Fin n → S, yy = M *ᵥ y i0` from `⟨_, rfl⟩`. Establish `hyyO : ∀ l, yy l ∈ O` using `fun l => by`. Rewrite using `[hyy_def]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mulVec_mem O M hMO (y i0) (hyO i0) l`. Establish `htO : hform s J (x i0) yy ∈ O` using `hform_mem O s hsO J hJO (x i0) yy (hxO i0) hyyO`. Take `⟨lam, hlamO, hlam, c', hc'O, hc'⟩` from `hH i0 (hform s J (x i0) yy) htO`. Establish `hxx0 : hform s J (x i0) (x i0) = β i0` using `by rw [hxx, if_pos rfl]`. Establish `hyy0 : hform s J yy yy = β i0` using `by rw [hyy_def, hMp, hyy, if_pos rfl]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβr : s (β i0) = β i0`. Establish `h` using `hform_conj s J hs hJ (x i0) (x i0)`. Rewrite `h` using `[hxx0]`. Then use the resulting hypothesis. Establish `hβ'r : s (β' i0) = β' i0` using `s_inv_eq_of_s_eq_of_mul_eq_one s (β i0) (β' i0) hβr (hββ' i0)`. Take `⟨u, hu_def⟩ : ∃ u : Fin n → S, u = yy - lam • x i0` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `huO : ∀ l, u l ∈ O` using `fun l => by`. Rewrite using `[hu_def, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `O.sub_mem (hyyO l) (O.mul_mem hlamO (hxO i0 l))`. Establish `huy : hform s J u yy = β i0 - s lam * hform s J (x i0) yy`. Rewrite using `[hu_def, hform_sub_left, hform_smul_left, hyy0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `huu : hform s J u u = (β i0 - s lam * hform s J (x i0) yy) + s (β i0 - s lam * hform s J (x i0) yy)`. Rewrite using `[hu_def]`. Simplify using `only [hform_sub_left, hform_sub_right, hform_smul_left, hform_smul_right]`. Rewrite using `[hyy0, hxx0, ← hform_conj s J hs hJ (x i0) yy]`. Simplify using `only [map_sub, map_mul, hs, hβr]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(β i0) * hlam`. Establish `hcc : c' * (β i0 - s lam * hform s J (x i0) yy) = 1` using `by rw [mul_comm]; exact hc'`. Take `⟨T, hT⟩ : ∃ T : Matrix (Fin n) (Fin n) S, T = rT s J u c' 1` from `⟨_, rfl⟩`. Establish `hT_mul : ∀ z, T *ᵥ z = z - (c' * hform s J u z) • u` using `fun z => by`. Rewrite using `[hT, rT_mulVec, map_one, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hT_pres : ∀ z w, hform s J (T *ᵥ z) (T *ᵥ w) = hform s J z w` using `fun z w => by`. Rewrite using `[hT]`. Conclude with `rT_preserves s J hs hJ u _ c' 1 (by rw [map_one, one_mul]) huu hcc z w`. Establish `hT_O : ∀ i j, T i j ∈ O` using `fun i j => by`. Rewrite using `[hT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `rT_mem O s hsO J hJO u huO c' 1 hc'O O.one_mem i j`. Establish `hT_yy : T *ᵥ yy = lam • x i0`. Rewrite using `[hT_mul, huy, hcc, one_smul, hu_def, sub_sub_cancel]`. Take `⟨D, hD⟩ : ∃ D : Matrix (Fin n) (Fin n) S, D = 1 + (s lam - 1) • pM s J {i0} x β'` from `⟨_, rfl⟩`. Establish `hD_mul : ∀ z, D *ᵥ z = z + ((s lam - 1) * (β' i0 * hform s J (x i0) z)) • x i0` using `fun z => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hD, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, pM_mulVec, Finset.sum_singleton, smul_smul]`. Establish `hD_pres : ∀ z w, hform s J (D *ᵥ z) (D *ᵥ w) = hform s J z w` using `fun z w => by`. Rewrite using `[hD_mul, hD_mul]`. Conclude with `hform_transvection_preserves s hs J hJ (x i0) (β i0) (β' i0) lam hxx0 (hββ' i0) hβ'r hlam z w`. Establish `hD_O : ∀ i j, D i j ∈ O` using `fun i j => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hD, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `O.add_mem (Formalism.L2.SG.Pf.NcS.IntWittAlg.one_mem' O i j) (O.mul_mem (O.sub_mem (hsO lam hlamO) O.one_mem) (pM_mem O s hsO J hJO {i0} x hxO β' hβ'O i j))`. Establish `hD_x : D *ᵥ (lam • x i0) = x i0`. Rewrite using `[hD_mul, hform_smul_right, hxx0]`. Use function extensionality and compare the values at `l`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `(x i0 l) * hlam + (x i0 l * (lam * s lam - lam)) * hββ' i0`. Establish `hfix : ∀ i : Fin a, i.val < k → D *ᵥ (T *ᵥ x i) = x i`. Introduce `i hi`. Establish `hne : i0 ≠ i` using `fun h => by subst h; omega`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : hform s J u (x i) = 0`. Rewrite using `[hu_def, hform_sub_left, hform_smul_left, hxx i0 i, if_neg hne, ← hMy i hi, hyy_def, hMp, hyy i0 i, if_neg hne]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hT_mul, h0, mul_zero, zero_smul, sub_zero, hD_mul, hxx i0 i, if_neg hne, mul_zero, mul_zero, zero_smul, add_zero]`. Use `⟨D * T * M, fun z w => ?_, fun i j => ?_, fun i hi => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hD_pres, hT_pres, hMp]`. Conclude with `Formalism.L2.SG.Pf.NcS.IntWittAlg.mul_mem' O (D * T) M (fun i j => Formalism.L2.SG.Pf.NcS.IntWittAlg.mul_mem' O D T hD_O hT_O i j) hMO i j`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hi with hlt | heq` into its components or cases. Rewrite using `[hMy i hlt]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `hfix i hlt`. Establish `hi' : i = i0` using `Fin.ext (by omega)`. Rewrite using `[hi', ← hyy_def, hT_yy, hD_x]`. Take `⟨M, hMp, hMO, hMy⟩` from `key a le_rfl`. Establish `hU : cT s M * J * M = J` using `unitary_of s J M hMp`.
-
-Establish `hNM : (J' * cT s M * J) * M = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hMN : M * (J' * cT s M * J) = 1` using `mul_eq_one_comm.mp hNM`. Use `⟨⟨M, J' * cT s M * J, hMN, hNM⟩, ?_, fun i j => hMO i j, fun i j => ?_, fun i => hMy i i.isLt⟩` and prove the remaining obligations. Use `show cT s M * J * M = J`.
-
-Conclude with `hU`. Use `show (J' * cT s M * J) i j ∈ O`. Conclude with `Formalism.L2.SG.Pf.NcS.IntWittAlg.mul_mem' O (J' * cT s M) J (fun i j => Formalism.L2.SG.Pf.NcS.IntWittAlg.mul_mem' O J' (cT s M) hJ'O (fun i j => cT_mem O s hsO M hMO i j) i j) hJO i j`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem algWitt : Formalism.L2.SG.Pf.NcS.IntWittPf.AlgWitt := by
   unfold Formalism.L2.SG.Pf.NcS.IntWittPf.AlgWitt

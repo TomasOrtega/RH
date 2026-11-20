@@ -9,9 +9,9 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℂ V` using `Module.Finite.of_basis b`. Establish `h1` using `span_range_eq_top_of_isIrreducible G V ρ h`. Establish `h2 : Set.range ((LinearMap.toMatrixAlgEquiv b : Module.End ℂ V →* Matrix ι ι ℂ).comp ρ) = (LinearMap.toMatrix b b).toLinearMap '' Set.range ρ`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h2, ← Submodule.map_span, h1, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `(LinearMap.toMatrix b b).surjective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_range_toMatrix_eq_top_of_isIrreducible {ι : Type} [Fintype ι] [DecidableEq ι]
     {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
@@ -27,9 +27,9 @@ theorem span_range_toMatrix_eq_top_of_isIrreducible {ι : Type} [Fintype ι] [De
   exact (LinearMap.toMatrix b b).surjective
 
 /- English proof (translation)
-Introduce `G _ V _ _ ρ W _ _ ρ' _ _ h h'`. Set `b` to `Module.finBasis ℂ V`. Set `b'` to `Module.finBasis ℂ W`. Establish `key` using `GlobalTheory.T.isCompletelyReducible_kronecker_of_span_eq_top _ _ G _ _ (span_range_toMatrix_eq_top_of_isIrreducible ρ b h) (span_range_toMatrix_eq_top_of_isIrreducible ρ' b' h')`. Rewrite using `[← ss_range_toMatrix_iff_isSemisimpleRepresentation _ G _ _ (b.tensorProduct b')]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `key using 3 with g` and compare the differences between its conclusion and the goal. Rewrite using `[Representation.tprod_apply, TensorProduct.toMatrix_map]`. Both sides reduce to the same expression.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isSemisimpleRepresentation_tprod_of_isIrreducible :
     ∀ (G : Type) [Group G] (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (W : Type) [AddCommGroup W] [Module ℂ W] (ρ' : Representation ℂ G W) [FiniteDimensional ℂ V] [FiniteDimensional ℂ W], ρ.IsIrreducible → ρ'.IsIrreducible → (ρ.tprod ρ').IsSemisimpleRepresentation := by

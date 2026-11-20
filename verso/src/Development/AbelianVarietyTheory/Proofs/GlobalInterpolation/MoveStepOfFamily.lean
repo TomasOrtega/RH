@@ -11,33 +11,31 @@ namespace GlobalTheory.ThetaMove
 open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker Formalism.MainNotions Formalism.L2.Th1.H GlobalTheory.IndefiniteRowSideFullHecke.IndexExponentDegree
 
 /- English proof (translation)
-Establish `ea : Even (R.N i)` using `even_N R i`. Establish `eb : Even b` using `hb ▸ even_N R (i + 1)`. Establish `hA` using `GlobalTheory.ThetaMove.SeamMoves.moves_ambOf X D s cc δ B χ cD (R.N i) b hX hs hcc hχ hEq hLat (hTh _ _ ea eb) ea eb`. Establish `bad` using `GlobalTheory.ThetaMove.BadPrimes.bad_primes X Pr sel S mu u hX hPr hsel hT hg`. Establish `hU : (ambOf s B χ cD).AAUnit (Sall sel mu u)` using `fun P hP => GlobalTheory.PeriodIdealUnit.locP_AA_eq_one X D s cc δ B χ cD P (bad P hP).2.1 (bad P hP).2.2.1 (hcop P hP)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A := ambOf s B χ cD with hAdef`. Use `set Sa := Sall sel mu u with hSa`. Establish `hq : 0 < ∏ P : rowSG Pr sel mu, Formalism.L2.Col.qOf P.1` using `Finset.prod_pos fun P _ => Nat.pos_of_ne_zero fun h => P.1.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hTpos : 0 < Pr.T u` using `(hPr.T_prime u).pos`. Establish `hcA : 0 < cAof sel mu cst` using `pow_pos hq _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcB : 0 < cBof sel mu cst u` using `Nat.mul_pos hTpos (pow_pos hq _)`. Establish `hoff : ∀ Q : HeightOneSpectrum (𝓞 X.E), Q ∉ Sa → conjPrime₂ Q ∉ Sa → ((Pr.T u : ℕ) : 𝓞 X.E) ∉ Q.asIdeal`. Introduce `Q h h' hQ`. Rewrite `hQ` using `[← hPr.piT_norm u]`. Break down `Q.isPrime.mem_or_mem hQ with h1 | h1` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `h (Finset.mem_union_left _ ((mem_divs (hPr.piT_ne_zero u) Q).2 h1))`. Conclude with `h' (Finset.mem_union_left _ ((mem_divs (hPr.piT_ne_zero u) _).2 ((mem_conjP Q _).2 h1)))`. Establish `hord : ∀ {n : ℕ} {M M' : Submodule (𝓞 X.E) (Sp X.E n)} {P : HeightOneSpectrum (𝓞 X.E)}, localization₂ P.asIdeal M = localization₂ P.asIdeal M' → ordDet P M = ordDet P M'` using `fun h => by`. Unfold `ordDet frameAt`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `ex : HeightOneSpectrum (𝓞 X.E) → ℤ` to `fun P => ((b / 2 : ℕ) : ℤ) * idxExp P N₁ N₂ - ((R.N i / 2 : ℕ) : ℤ) * idxExp P N₁' N₂'`. Establish `hTR : (0 : ℝ) < (Pr.T u : ℝ)` using `by exact_mod_cast hTpos`. Establish `hρ2 : (∏ P ∈ Pr.vT u, (Pr.T u : ℝ) ^ ex P) ^ 2 = ∏ P ∈ Sa, ((Ideal.absNorm P.asIdeal : ℕ) : ℝ) ^ (volExp P N₂ N₂' - volExp P N₁ N₁')`. Rewrite using `[← Finset.prod_pow, ← Finset.prod_subset (s₁ := Pr.vT u) (s₂ := Sa) Finset.subset_union_left]`. Use `Finset.prod_congr rfl fun P hP => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hPr.vT_norm u P hP, ← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Take `⟨a', ha'⟩` from `ea`. Take `⟨b', hb'⟩` from `eb`. Establish `e1 : R.N i / 2 = a'` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : b / 2 = b'` using `by omega`. Establish `e3 : (R.N i : ℤ) = 2 * a'` using `by omega`. Establish `e4 : (b : ℤ) = 2 * b'` using `by omega`. Simplify using `only [ex, volExp, idxExp, e1, e2, e3, e4]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `P hP hP'`. Establish `h1 : ((Pr.T u : ℕ) : 𝓞 X.E) ∉ P.asIdeal` using `fun h => hP' ((bad P hP).2.2.2.1 h)`. Rewrite using `[volExp, volExp, hord (ag P h1), hord (ag' P h1), sub_self, zpow_zero]`. Establish `box : ∀ {N : Submodule (𝓞 X.E) (Sp X.E (R.N i))} {N' : Submodule (𝓞 X.E) (Sp X.E b)}, InBox Sa (cAof sel mu cst) (cBof sel mu cst u) N N' Ξ → InBox Sa (cAof sel mu cst) (cBof sel mu cst u) N N' fun x => A.σ₀ (Ξ x)` using `fun h => ⟨fun x hx => h.1 x fun h0 => hx (by simp [h0]), fun x y hy => by simp only [h.2 x y hy]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcore` using `core hA (fun P hP => (bad P hP).1) hU h₁ h₂ h₁' h₂' (fun Q h h' => ag Q (hoff Q h h')) (fun Q h h' => ag' Q (hoff Q h h')) hcA hcB (box b₁) (box b₂) (Finset.prod_pos fun P _ => zpow_pos hTR _) hρ2`. Establish `f₁` using `GlobalTheory.finite_divLat_quot_mulLat_homAt X.E _ _ Sa N₁ N₁' _ _ h₁.1 h₁'.1 hcA hcB`. Establish `f₂` using `GlobalTheory.finite_divLat_quot_mulLat_homAt X.E _ _ Sa N₂ N₂' _ _ h₂.1 h₂'.1 hcA hcB`. Use `@Fintype.ofFinite _ f₁` as an intermediate fact. Use `@Fintype.ofFinite _ f₂` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hj` using `GlobalTheory.jetOp_identity_of_entire X (R.N i) b A.σ₀ A.cD (W.lamTrue u i) lam' (nuLast W u i) _ _ _ _ _ _ (A.chiF _ _ N₁ N₁')⁻¹ (A.chiF _ _ N₂ N₂')⁻¹ (∏ P ∈ Pr.vT u, (Pr.T u : X.K) ^ ex P) (fun q => analytic_thInd (S := Sa) hA h₁ h₁' (cBof sel mu cst u) (Function.surjInv (Submo …`. Establish `h1` using `hcore z`. Unfold `latSum at h1`. Rewrite `h1` using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`. Use `h1.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use the proof step `simp)`. Establish `hmU` using `mUof_conj W Ch sel mu u s.σ₀ hX hPr hCh hsel hT hg i hi`. Establish `m₁` using `GlobalTheory.MuOffMove.muOff_move X Pr sel S mu u _ _ N₁ N₂ hX hPr hsel hT hg hmU h₁ h₂ ag`. Establish `m₂` using `GlobalTheory.MuOffMove.muOff_move X Pr sel S mu u _ _ N₁' N₂' hX hPr hsel hT hg hmU h₁' h₂' ag'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `stepT`. Rewrite using `[kerOf_eq, kerOf_eq]`. Use `(congrArg _ hj).trans ?_` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hsc : moveScal Ch mu u i N₁ N₂ N₁' N₂' = (∏ P ∈ Pr.vT u, ((mUof Ch mu i P ^ (-idxExp P N₁ N₂) : X.Kˣ) : X.K)) * (∏ P ∈ Pr.vT u, ((mUof Ch mu i P ^ (-idxExp P N₁' N₂') : X.Kˣ) : X.K))⁻¹ * ∏ P ∈ Pr.vT u, (Pr.T u : X.K) ^ ex P`. Rewrite using `[← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Rewrite using `[locScal, ← Units.val_inv_eq_inv_val, ← Units.val_mul, ← zpow_neg, ← zpow_add]`. Use `congr 3`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsc, muInvDet, muInvDet, muInvDet, muInvDet, m₁, m₂]`. Simplify using `only [mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem moveLaw_at (X : Fields) (Pr : Primes X) (R : Ranks) (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ) (mu : Tup X.F X.E X.K S)
@@ -152,7 +150,7 @@ theorem moveLaw_at (X : Fields) (Pr : Primes X) (R : Ranks) (W : Wts X Pr.Word R
 open GlobalTheory.KerT in
 
 /- English proof (translation)
-Introduce `Z H s cc δ B χ cD sel S mu cst u i hi h hEq hLat hTh hJ N₁ N₂ N₁' N₂' fr fr' Ξ h₁ h₂ h₁' h₂' ag ag' b₁ b₂`. Take `⟨hs, hσ, hcc, -, hχ, -⟩` from `h.ana`. Conclude with `moveLaw_at Z.X Z.Pr Z.R Z.W Z.Ch sel S mu cst u H s cc δ B χ cD h.ok.fields h.ok.primes (hσ ▸ h.ok.hecke) h.isSel h.T_mem h.g_mem hs hcc hχ h.cop hEq hLat hTh i hi _ rfl _ N₁ N₂ N₁' N₂' fr fr' Ξ h₁ h₂ h₁' h₂' ag ag' b₁ b₂ (hJ _ _ h₁ h₁') (hJ _ _ h₂ h₂')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem moveStep_of_family : ∀ (Z : Dat) (H : D7) (s : Seam H Z.X) (cc : Ideal (𝓞 H.host.K)) (δ : ℂ) (B : Base H cc δ)
     (χ : TaylorLogMetric.IdE H → ℂ) (cD : H.what₂.Tau → ℂ) (sel : HeightOneSpectrum (𝓞 Z.X.F) → HeightOneSpectrum (𝓞 Z.X.E)) (S : Set ℕ)

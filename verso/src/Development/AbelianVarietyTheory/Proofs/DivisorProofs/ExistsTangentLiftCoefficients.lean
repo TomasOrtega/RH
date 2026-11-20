@@ -16,13 +16,13 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.FlatModel.LiftComb
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l' Xo' c' W Y K _ yy g e he cf`. Establish `hε : ∀ c : K, spMap (epsMul c) ≫ spMap (algebraMap K (DualNumber K)) = spMap (algebraMap K (DualNumber K))`. Introduce `c`. Unfold `spMap`. Rewrite using `[← Spec.map_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `a`. Simplify using `[epsMul]`. Simplify using `[epsMul]`. Set `u : Fin g → (tEpsG (yy ≫ Y.j) ⟶ Y.t.G)` to `fun i => Over.homMk (spMap (epsMul (cf i)) ≫ e i) (by`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [tEpsG, Over.mk_hom, Category.assoc]`. Rewrite using `[(he i).1]`. Simplify using `only [← Category.assoc]`. Rewrite using `[hε])`. Establish `hv : ((List.ofFn u).prod).left ≫ Y.t.G.hom = spMap (algebraMap K (DualNumber K)) ≫ yy ≫ Y.j` using `Over.w ((List.ofFn u).prod)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `Y.m.cart.1`. Use `⟨hc.lift ((List.ofFn u).prod).left (spMap (algebraMap K (DualNumber K)) ≫ yy) (by rw [Category.assoc]; exact hv), u, fun i => rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[hc.lift_fst]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_comb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l' : Level H) (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype) (K : Type) [CommRing K] (yy : Sp K ⟶ Xo'.XF c') (g : ℕ) (e : Fin g → (Sp (DualNumber K) ⟶ Y.t.G.left)), (∀ i, IsTanAtG Y.t (yy ≫ Y.j) (e i)) → ∀ (cf : Fin g → K), ∃ w : Sp (DualNumber K) ⟶ Y.oF.t.G.left, IsCombAtG Y.t (yy ≫ Y.j) e cf (w ≫ Y.m.φ) := by
   intro E _ _ _ H Dw l' Xo' c' W Y K _ yy g e he cf

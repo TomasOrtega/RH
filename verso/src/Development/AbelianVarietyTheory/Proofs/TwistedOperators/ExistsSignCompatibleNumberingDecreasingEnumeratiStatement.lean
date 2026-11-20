@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ArchRec
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchRec.EnumBlocks.exists_isOrd | exact GlobalTheory.ArchRec.EnumBlocks.exists_isOrd | (intros; apply GlobalTheory.ArchRec.EnumBlocks.exists_isOrd <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_signCompatible_numbering_decreasing_enumeration : ∀ (n p q : ℕ) (l₁ l₂ : List ℚ) (c : ℚ) (br cj : Bool) (ε : Fin n → Bool) (lamM : Fin n → ℝ), l₁.length = p → l₂.length = q → IsParam (ofBlocks l₁ l₂ : Ix p q → ℚ) → IsEnum (parOf br cj l₁ l₂ c) lamM ε → ∃ e : Ix p q ≃ Fin n, IsOrd ε lamM (ofBlocks l₁ l₂) c (sg br cj) e := by
   first | exact @GlobalTheory.ArchRec.EnumBlocks.exists_isOrd | exact GlobalTheory.ArchRec.EnumBlocks.exists_isOrd | (intros; apply GlobalTheory.ArchRec.EnumBlocks.exists_isOrd <;> assumption)

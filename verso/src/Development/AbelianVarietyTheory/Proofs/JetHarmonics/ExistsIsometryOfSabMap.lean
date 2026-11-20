@@ -24,17 +24,17 @@ structure IsMatch (X X' : Data E r) (a : GL (Fin r) E) : Prop where
   lat : ∀ v, v ∈ X.Λ ↔ (a : Matrix (Fin r) (Fin r) E) *ᵥ v ∈ X'.Λ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, h.1, h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isMatch_of_isUStab (X : Data E r) {a : GL (Fin r) E} (h : IsUStab X.Gm X.Λ a) : IsMatch X X a :=
   ⟨rfl, rfl, rfl, h.1, h.2⟩
 
 /- English proof (translation)
-Establish `key : ∀ i j, ∑ p, ∑ q, τ (a p i) * τ (G' p q) * conj (τ (a q j)) = τ ε * τ (G i j)` using `fun i j => by`. Use `congrArg τ (h (Pi.single i 1) (Pi.single j 1))` as an intermediate fact. Simplify using `only [herm, cc, Matrix.mulVec_single_one, Matrix.col_apply, map_sum, map_mul, IsCMField.complexEmbedding_complexConj] at this`. Rewrite using `[this]`. Simplify using `[Pi.single_apply, apply_ite, ite_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : hermC τ G' (a.map τ *ᵥ u) (a.map τ *ᵥ v) = ∑ j, ∑ i, u i * (∑ p, ∑ q, τ (a p i) * τ (G' p q) * conj (τ (a q j))) * conj (v j)`. Simplify using `only [hermC, Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_congr rfl fun p _ => Finset.sum_comm, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun p _ => Finset.sum_comm, Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => by ring` and prove the remaining obligations. Rewrite using `[e, Finset.sum_comm]`. Simplify using `only [key, hermC, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermC_of_herm {G G' a : Matrix (Fin r) (Fin r) E} {ε : E}
     (h : ∀ u v, herm G' (a *ᵥ u) (a *ᵥ v) = ε * herm G u v) (τ : E →+* ℂ) (u v : Fin r → ℂ) :
@@ -60,12 +60,12 @@ theorem hermC_of_herm {G G' a : Matrix (Fin r) (Fin r) E} {ε : E}
 variable {X X' : Data E r} {a : GL (Fin r) E}
 
 /- English proof (translation)
-Rewrite using `[h.psi]`. Conclude with `τ.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsMatch.mem (h : IsMatch X X' a) (τ : X'.Ψ) : τ.1 ∈ X.Ψ := by rw [h.psi]; exact τ.2
 
 /- English proof (translation)
-Rewrite using `[hermC_of_herm (ε := 1) (fun u v => by rw [h.iso, one_mul]), map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsMatch.hermC_eq (h : IsMatch X X' a) (τ : E →+* ℂ) (u v : Fin r → ℂ) :
     hermC τ X'.Gm ((a : Matrix (Fin r) (Fin r) E).map τ *ᵥ u) ((a : Matrix (Fin r) (Fin r) E).map τ *ᵥ v) =
@@ -73,7 +73,7 @@ theorem IsMatch.hermC_eq (h : IsMatch X X' a) (τ : E →+* ℂ) (u v : Fin r �
   rw [hermC_of_herm (ε := 1) (fun u v => by rw [h.iso, one_mul]), map_one, one_mul]
 
 /- English proof (translation)
-Unfold `dmin`. Use `congr 1`. Use extensionality with `p q`. Conclude with `h.hermC_eq τ.1 (col (mat x ⟨τ.1, h.mem τ⟩) p) (col (mat x ⟨τ.1, h.mem τ⟩) q)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem IsMatch.dmin_eq (h : IsMatch X X' a) (x : Frame X.Ψ r) (τ : X'.Ψ) (i : Fin (r + 1)) :
     dmin X'.Gm (lact a (castFr h.psi x)) τ i = dmin X.Gm x ⟨τ.1, h.mem τ⟩ i := by
@@ -83,7 +83,7 @@ theorem IsMatch.dmin_eq (h : IsMatch X X' a) (x : Frame X.Ψ r) (τ : X'.Ψ) (i 
   exact h.hermC_eq τ.1 (col (mat x ⟨τ.1, h.mem τ⟩) p) (col (mat x ⟨τ.1, h.mem τ⟩) q)
 
 /- English proof (translation)
-Introduce `τ` and use `by refine ⟨?_, fun i => by rw [h.dmin_eq, ← h.p0]; exact (hx _).2 i⟩ have e : mat (lact a (castFr h.psi x)) τ = (a : Matrix (Fin r) (Fin r) E).map τ.1 * mat x ⟨τ.1, h.mem τ⟩ := rfl rw [e, Matrix.det_mul] refine mul_ne_zero ?_ (hx _).1 rw [← RingHom.mapMatrix_apply, ← RingHom.map_ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsMatch.mem_dom (h : IsMatch X X' a) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     lact a (castFr h.psi x) ∈ X'.dom := fun τ => by
@@ -107,11 +107,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {g : �
   {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {ty : Fin g → (E →+* ℂ)}
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `GlobalTheory.CMSpreadCompare.exists_pointEquiv ν.cart (Over.mk (F.u i P)) (s := F.u j P') hu.symm`. Establish `hr : ReadsPeriods Xo.univ.t unitOn (F.Di i) ty P (fun z => β (F.ex i P z))`. Use `⟨fun z => by rw [β.map_eq_one_iff, F.ex_ker i P hP], fun a z => ?_, fun k a b c hk hc => ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hβ, F.ex_lin i P hP, Over.comp_left, Over.comp_left, hβ, Category.assoc, Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (ν.act a)`. Take `⟨w, hw, -⟩` from `ν.lin`. Establish `h₁` using `(weilIs_grpPullback_of_comm _ _ Xo.univ.t.G Xo.univ.t.G ρ ν.φ _ _ Xo.univ.t.PP.isLB Xo.univ.t.PP.isLB ν.cart ⟨w, hw⟩ _ k _ _ (pushPt ν.cart.1.w _) (pushPt ν.cart.1.w _) _ rfl rfl).1 (F.ex_weil i P hP k a b c hk hc)`. Conclude with `weilIs_congr hu (hβ _).symm (hβ _).symm h₁`. Take `⟨gam, h, hEF, hh, hx⟩` from `exists_isometry_of_hol hP hP' (e := fun z => β (F.ex i P z)) (e' := F.ex j P') (fun z w => by rw [F.ex_add i P hP, map_mul]) (β.surjective.comp (F.ex_onto i P hP)) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [hβ]`. Conclude with `GlobalTheory.CMSpreadCompare.isHolTo_postcomp (GlobalTheory.ClassUniq.isHolTo_ex F i P hP) _)`. Use the proof step `⟨F.ex_add j P' hP', F.ex_onto j P' hP', GlobalTheory.ClassUniq.isHolTo_ex F j P' hP', (F.ex_diff j P' hP').1, (F.ex_diff j P' hP').2⟩ hr ⟨F.ex_ker j P' hP', F.ex_lin j P' hP', F.ex_weil j P' hP'⟩`. Conclude with `⟨gam, h, hEF, hh, fun z => by rw [hx, hβ]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isometry_of_sabMap (F : FamilyUnif Xo σ ty) {ρ : Xo.X ⟶ Xo.X} (ν : SABMap Xo.univ.t Xo.univ.t ρ)
     {i j : Fin F.n} {P : (F.Di i).La →+ (Fin g → ℂ)} {P' : (F.Di j).La →+ (Fin g → ℂ)}

@@ -31,17 +31,17 @@ private theorem prodHom_apply {R S : Type} [CommRing R] [Fintype S] [DecidableEq
     (k : ∀ u, H u) (i a : ∀ u, Fin (m u)) : prodHom c k i a = ∏ u, c u (k u) (i u) (a u) := rfl
 
 /- English proof (translation)
-Use `symm`. Use `Finset.sum_of_injOn (fun b => Function.update i u b) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `b _ b' _ h`. Conclude with `Function.update_injective i u h`. Introduce `b _`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `a _ ha`. Establish `: ∃ v, v ≠ u ∧ i v ≠ a v`. Assume the negation of the conclusion as `hc`. Apply `ha` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a u, by simp, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v = u`. Substitute `hv` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.update_of_ne hv]`. Assume the negation of the conclusion as `h2`. Conclude with `hc ⟨v, hv, h2⟩`. Take `⟨v, hv, hne⟩` from `this`. Rewrite using `[prodHom_apply, Finset.prod_eq_zero (Finset.mem_univ v), zero_smul]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.mulSingle_eq_of_ne hv, map_one, Matrix.one_apply_ne hne]`. Introduce `b _`. Rewrite using `[prodHom_apply, Finset.prod_eq_single u]`. Simplify using the standard rewrite rules. Introduce `v _ hv`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Pi.mulSingle_eq_of_ne hv, map_one, Function.update_of_ne hv, Matrix.one_apply_eq]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem sum_single {S : Type} [Fintype S] [DecidableEq S] {H : S → Type}
     [∀ u, Group (H u)] {m : S → ℕ} (c : ∀ u, H u →* Matrix (Fin (m u)) (Fin (m u)) ℂ)
@@ -75,21 +75,19 @@ private theorem sum_single {S : Type} [Fintype S] [DecidableEq S] {H : S → Typ
     · simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h u k i`. Rewrite using `[← h (Pi.mulSingle u k) i, sum_single c (fun a => ρ (Pi.mulSingle u k) (F a))]`. Introduce `h`. Set `A : (∀ u, H u) → ((∀ u, Fin (m u)) → M) → ((∀ u, Fin (m u)) → M)` to `fun k F i => ∑ a, prodHom c k i a • ρ k (F a)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hmul : ∀ k k' F, A (k * k') F = A k (A k' F)`. Introduce `k k' F`. Use function extensionality and compare the values at `i`. Simplify using `only [A, map_mul, Matrix.mul_apply, Module.End.mul_apply, map_sum, map_smul, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hone : ∀ F, A 1 F = F`. Introduce `F`. Use function extensionality and compare the values at `i`. Simplify using `[A, Matrix.one_apply]`. Set `W : Subgroup (∀ u, H u)` to `{ carrier := {k | A k F = F} mul_mem' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k k' hk hk'`. Express the relevant statement in the definitionally equal form `A (k * k') F = F`. Express the relevant statement in the definitionally equal form `A k F = F at hk`. Express the relevant statement in the definitionally equal form `A k' F = F at hk'`. Rewrite using `[hmul, hk', hk]`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `one_mem' := hone F`. Use the proof step `inv_mem' := by`. Introduce `k hk`. Express the relevant statement in the definitionally equal form `A k⁻¹ F = F`. Express the relevant statement in the definitionally equal form `A k F = F at hk`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `conv_lhs => rw [← hk]`. Rewrite using `[← hmul, inv_mul_cancel, hone] }`. Introduce `k i`. Establish `hk : k ∈ W`. Use `Subgroup.pi_mem_of_mulSingle_mem k fun u => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `A _ F = F`. Use function extensionality and compare the values at `i`. Simplify using `only [A]`. Rewrite using `[sum_single c (fun a => ρ (Pi.mulSingle u (k u)) (F a))]`. Conclude with `h u (k u) i`.
-
-Conclude with `congrFun hk i`.
+A detailed English derivation is pending.
 -/
 private theorem inv_iff {S : Type} [Fintype S] [DecidableEq S] {H : S → Type}
     [∀ u, Group (H u)] {m : S → ℕ} (c : ∀ u, H u →* Matrix (Fin (m u)) (Fin (m u)) ℂ)
@@ -139,33 +137,31 @@ private theorem inv_iff {S : Type} [Fintype S] [DecidableEq S] {H : S → Type}
     exact congrFun hk i
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, hF, h⟩ u`. Take `⟨i0, hi0⟩` from `Function.ne_iff.1 hF`. Take `⟨p, hp, hp0⟩` from `(UpperTheory.isotypic_separates_and_embeds_into_invariant_subspace (G u) M _ (σ u) (hσ u)).1 (F i0) hi0`. Use `⟨fun a => p (F (Function.update i0 u a)), ?_, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Apply `hp0` to reduce the goal to its premises. Simplify using `using congrFun h0 (i0 u)`. Introduce `k b`. Establish `h1` using `congrArg p (h u k (Function.update i0 u b))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Function.update_self, Function.update_idem, map_sum, map_smul] at h1`. Use `beta_reduce`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← hp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `hy choose y hy0 hy using hy`. It suffices to establish `hT : ∀ T : Finset S, ∃ F : (∀ u, Fin (m u)) → M, F ≠ 0 ∧ ∀ u ∈ T, ∀ (k : K u) i, ∑ b, c u k (i u) b • ρ (Pi.mulSingle u (k : G u)) (F (Function.update i u b)) = F i by`. Take `⟨F, hF, h⟩` from `hT Finset.univ`. Conclude with `⟨F, hF, fun u => h u (Finset.mem_univ u)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose b0 hb0 using fun u => Function.ne_iff.1 (hy0 u)`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Take `⟨x, hx⟩` from `exists_ne (0 : M)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨fun _ => x, fun h => hx (congrFun h b0), by simp⟩`. Consider the case `insert u T hu ih`. Set `Y : Submodule ℂ ((∀ u, Fin (m u)) → M)` to `{ carrier := {F | ∀ u ∈ T, ∀ (k : K u) i, ∑ b, c u k (i u) b • ρ (Pi.mulSingle u (k : G u)) (F (Function.update i u b)) = F i} add_mem' := by`. Introduce `F F' hF hF' v hv k i`. Simplify using `only [Pi.add_apply, map_add, smul_add, Finset.sum_add_distrib]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hF v hv k i, hF' v hv k i]`. Use the proof step `zero_mem' := by intro v hv k i; simp`. Use the proof step `smul_mem' := by`. Introduce `r F hF v hv k i`. Simplify using `only [Pi.smul_apply, map_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hF v hv k i, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => smul_comm _ _ _ }`. Establish `hY : Y ≠ ⊥`. Take `⟨F, hF, h⟩` from `ih`. Conclude with `(Submodule.ne_bot_iff Y).2 ⟨F, h, hF⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, hsY, hsρ⟩` from `(UpperTheory.isotypic_separates_and_embeds_into_invariant_subspace (G u) M _ (σ u) (hσ u)).2 _ Y hY (by`. Introduce `g F hF v hv k i`. Establish `hne : v ≠ u` using `fun h => hu (h ▸ hv)`. Express the relevant statement in the definitionally equal form `∑ b, c v k (i v) b • ρ (Pi.mulSingle v (k : G v)) (ρ (Pi.mulSingle u g) (F (Function.update i v b))) = ρ (Pi.mulSingle u g) (F i)`. Rewrite using `[← hF v hv k i, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, (Pi.mulSingle_commute (Ne.symm hne) g (k : G v)).eq])`. Establish `h0 : s (y u (b0 u)) ≠ 0` using `fun h => hb0 u (hs (by rw [h]; simp))`. Take `⟨i0, hi0⟩` from `Function.ne_iff.1 h0`. Use `⟨fun i => s (y u (i u)) (Function.update i u (i0 u)), ?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Introduce `h`. Apply `hi0` to reduce the goal to its premises. Simplify using `using congrFun h (Function.update i0 u (b0 u))`. Introduce `v hv k i`. Break down `Finset.mem_insert.1 hv with rfl | hv` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [Function.update_self, Function.update_idem]`. Rewrite using `[← hy v k (i v), map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, hsρ]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : v ≠ u` using `fun h => hu (h ▸ hv)`. Establish `h1` using `hsY (y u (i u)) v hv k (Function.update i u (i0 u))`. Simplify using `only [Function.update_of_ne hne] at h1`. Use `beta_reduce`. Rewrite using `[← h1]`.
-
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne hne.symm, Function.update_comm hne]`.
+A detailed English derivation is pending.
 -/
 private theorem main {S : Type} [Fintype S] [DecidableEq S] {G : S → Type} [∀ u, Group (G u)]
     [∀ u, TopologicalSpace (G u)] [∀ u, IsTopologicalGroup (G u)] (K : ∀ u, Subgroup (G u)) {m : S → ℕ}
@@ -252,27 +248,27 @@ end UpperTheory.V.ProductGroupInvariantVectors
 
 open UpperTheory.V.ProductGroupInvariantVectors in
 /- English proof (translation)
-Introduce `O _ j S _ _ G _ _ _ K m τ`. Set `e` to `Fintype.equivFin (∀ u, Fin (m u))`. Set `r : Subgroup.pi Set.univ K →* (∀ u, K u)` to `{ toFun := fun k u => ⟨k.1 u, k.2 u trivial⟩ map_one' := rfl map_mul' := fun _ _ => rfl }`. Set `t : ∀ u, K u →* Matrix (Fin (m u)) (Fin (m u)) O` to `fun u => (Units.coeHom _).comp (τ u)`. Set `c : ∀ u, K u →* Matrix (Fin (m u)) (Fin (m u)) ℂ` to `fun u => (j.mapMatrix.toMonoidHom).comp (t u)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Q : Subgroup.pi Set.univ K →* Matrix (Fin _) (Fin _) O` to `((Matrix.reindexAlgEquiv O O e).toMulEquiv.toMonoidHom).comp ((prodHom t).comp r)`. Establish `hQ : ∀ k i a, Q k i a = ∏ u, t u (r k u) (e.symm i u) (e.symm a u)` using `fun _ _ _ => rfl`. Use `⟨_, Q.toHomUnits, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Apply `Units.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `Q k = 1`. Rewrite using `[← map_one Q]`. Use extensionality with `i a`. Rewrite using `[hQ, hQ]`. Use `Finset.prod_congr rfl fun u _ => ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: t u (r k u) = t u (r 1 u)`. Rewrite using `[map_one, Pi.one_apply, map_one]`. Conclude with `congrArg Units.val (hk u)`. Rewrite using `[this]`. Introduce `M _ _ _ ρ σ hσ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `ι : (∀ u, K u) →* (∀ u, G u)` to `{ toFun := fun k u => k u map_one' := rfl map_mul' := fun _ _ => rfl }`. Establish `hι : ∀ u (k : K u), ι (Pi.mulSingle u k) = Pi.mulSingle u (k : G u)`. Introduce `u k`. Use function extensionality and compare the values at `v`. Express the relevant statement in the definitionally equal form `((Pi.mulSingle u k : ∀ u, K u) v : G v) = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hv : v = u`. Substitute `hv` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.mulSingle_eq_of_ne hv]`. Establish `hj : ∀ k i a, j (Q.toHomUnits k i a) = prodHom c (r k) (e.symm i) (e.symm a)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k i a`. Express the relevant statement in the definitionally equal form `j (Q k i a) = _`. Rewrite using `[hQ, map_prod]`. Both sides reduce to the same expression. Use `Iff.trans ?_ (main K (fun u k i a => c u k i a) ρ σ hσ)` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key` using `fun F => inv_iff c (ρ.comp ι) F`. Simplify using `only [MonoidHom.comp_apply, hι] at key`. Simplify using `only [← key, hj]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, hF, h⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => F (e i), fun h0 => hF ?_, fun k i => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `using congrFun h0 (e.symm i)`. Establish `h1` using `h ⟨ι k, fun u _ => (k u).2⟩ (e i) beta_reduce`. Rewrite using `[← h1, ← e.sum_comp]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.symm_apply_apply]`. Both sides reduce to the same expression. Introduce and unpack `⟨F, hF, h⟩`. Use `⟨fun i => F (e.symm i), fun h0 => hF ?_, fun k i => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using congrFun h0 (e i)`. Use `beta_reduce`. Rewrite using `[← h (r k) (e.symm i), ← e.symm.sum_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.piFamilyProdHom_bijective_characterization :
     ∀ (O : Type) [CommRing O] (j : O →+* ℂ) (S : Type) [Fintype S] [DecidableEq S] (G : S → Type) [∀ u, Group (G u)] [∀ u, TopologicalSpace (G u)] [∀ u, IsTopologicalGroup (G u)] (K : ∀ u, Subgroup (G u)) (m : S → ℕ) (τ : ∀ u, K u →* GL (Fin (m u)) O), ∃ (m' : ℕ) (τ' : Subgroup.pi Set.univ K →* GL (Fin m') O), (∀ k : Subgroup.pi Set.univ K, (∀ u, τ u ⟨k.1 u, k.2 u trivial⟩ = 1) → τ' k = 1) ∧ ∀ (M : Type) [AddCommGroup M] [Module ℂ M] [Nontrivial M] (ρ : Representation ℂ (∀ u, G u) M) (σ : ∀ u, SmIrr (G u)), (∀ u, IsoSum (ρ.comp (MonoidHom.mulSingle G u)) ⊤ (σ u)) → ((∃ F : Fin m' → M, F ≠ 0 ∧ ∀ (k : Subgroup.pi Set.univ K) i, ∑ a, j (τ' k i a) • ρ k (F a) = F i) ↔ ∀ u, ∃ y : Fin (m u) → (σ u).V, y ≠ 0 ∧ ∀ (k : K u) i, ∑ a, j (τ u k i a) • (σ u).ρ k (y a) = y i) := by

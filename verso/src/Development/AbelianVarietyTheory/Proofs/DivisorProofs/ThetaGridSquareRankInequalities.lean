@@ -18,15 +18,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.Div.SquareRanks
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL i j`. Establish `r : ∀ a b, a ≤ D.R.m → b ≤ D.R.m → (G.V (.grid a b)).rank = rankV D a b` using `fun a b ha hb => (node_isV G hL (X := .grid a b) ⟨ha, hb⟩).rank`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Establish `e1 : (spW G i j).rank = rankV D (i + 1) (j + 1)` using `r _ _ (by omega) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (spW₁ G i j).rank = rankV D i j` using `r _ _ (by omega) (by omega)`. Establish `e3 : rankV D (i + 1) (j + 1) = rankV D i j + D.R.t + sLen D` using `by simp only [rankV]; ring`. Rewrite using `[e1, e2, e3]`. Establish `h0 : D.R.r ≤ rankV D i j` using `by unfold rankV; omega`. Establish `ht` using `D.R.t_odd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `D.R.k_even`. Establish `hm` using `D.R.m_even`. Establish `h3` using `D.R.three_m_lt_t`. Establish `h4` using `D.R.m_add_three_le_k`. Establish `h5` using `D.R.two_le_m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hs : sLen D = D.R.r + 6` using `rfl`. Take `⟨t', ht'⟩` from `ht`. Take `⟨k', hk'⟩` from `hk`. Take `⟨m', hm'⟩` from `hm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨by omega, ?_, by omega, by omega⟩` and prove the remaining obligations. Rewrite using `[Nat.even_iff]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem square_ranks : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (i j : Fin D.R.m),
     (spW₁ G i j).rank < (spW G i j).rank ∧ Even ((spW G i j).rank + (spW₁ G i j).rank) ∧

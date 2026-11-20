@@ -25,14 +25,14 @@ def Van (W : ObjectProperty C) (j : ℕ) : Prop :=
 variable {F}
 
 /- English proof (translation)
-The claim follows from `hW (s.map (homOfLE (Fin.zero_le _))) h`.
+A detailed English derivation is pending.
 -/
 theorem face_start {W : ObjectProperty C} (hW : Cosieve W) {n : ℕ} (i : Fin (n + 2))
     (s : ComposableArrows C (n + 1)) (h : W (s.obj 0)) : W ((face i s).obj 0) :=
   hW (s.map (homOfLE (Fin.zero_le _))) h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (F.map (toLast i s)).hom (x (face i s)) = ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (F.map (toLast i s)).hom (y (face i s))`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [h i]`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem d_congr {n : ℕ} (x y : CrystallineSemistableComparison.CH.Cn F n) (s : ComposableArrows C (n + 1))
     (h : ∀ i, x (face i s) = y (face i s)) : CrystallineSemistableComparison.CH.d F n x s = CrystallineSemistableComparison.CH.d F n y s := by
@@ -50,7 +50,7 @@ def extZ {W : ObjectProperty C} (hW : Cosieve W) {n : ℕ} (y : CrystallineSemis
   fun s => if h : W (s.obj 0) then y (liftCh hW s h) else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `h : W ((t ⋙ W.ι).obj 0)` using `(t.obj 0).property`. Express the relevant statement in the definitionally equal form `extZ hW y (t ⋙ W.ι) = y t`. Unfold `extZ`. Rewrite using `[dif_pos h]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -64,13 +64,11 @@ theorem pull_extZ {W : ObjectProperty C} (hW : Cosieve W) {n : ℕ} (y : Crystal
   rfl
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hz : CrystallineSemistableComparison.CH.d (W.ι ⋙ F) j ((CrystallineSemistableComparison.CH.Mor.restrict F W.ι).pullC j x) = 0`. Rewrite using `[CrystallineSemistableComparison.CH.Mor.d_pullC]`. Use function extensionality and compare the values at `t`. Conclude with `hx (t ⋙ W.ι) (t.obj 0).property`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hB` using `((CrystallineSemistableComparison.P.cls_surj (CrystallineSemistableComparison.CH.cx (W.ι ⋙ F)) j).2.1 _ hz).1 (Subsingleton.elim _ _)`. Consider the cases of `j with`. Consider the case `zero`. Introduce `s h`. Establish `e : (CrystallineSemistableComparison.CH.Mor.restrict F W.ι).pullC 0 x = 0` using `hB`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Conclude with `congrFun e (liftCh hW s h)`. Consider the case `succ j`. Take `⟨y, hy⟩` from `hB`. Use `⟨extZ hW y, fun s h => ?_⟩` and prove the remaining obligations. Establish `e : (CrystallineSemistableComparison.CH.Mor.restrict F W.ι).pullC (j + 1) x = (CrystallineSemistableComparison.CH.Mor.restrict F W.ι).pullC (j + 1) (CrystallineSemistableComparison.CH.d F j (extZ hW y))`.
-
-Rewrite using `[← CrystallineSemistableComparison.CH.Mor.d_pullC, pull_extZ]`. Conclude with `hy.symm`. Conclude with `congrFun e (liftCh hW s h)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem van_of_subsingleton {W : ObjectProperty C} (hW : Cosieve W) (j : ℕ)
     (hs : Subsingleton (HU F W j)) : Van F W j := by
@@ -95,21 +93,19 @@ theorem van_of_subsingleton {W : ObjectProperty C} (hW : Cosieve W) (j : ℕ)
     exact congrFun e (liftCh hW s h)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `ca` using `h1 x fun s h => hx s (Or.inl h)`. Establish `cb` using `h2 x fun s h => hx s (Or.inr h)`. Consider the cases of `j with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Introduce and unpack `s (h | h)`. Conclude with `ca s h`. Conclude with `cb s h`. Consider the case `succ n`. Take `⟨a, ha⟩` from `ca`.
+Assume the hypotheses and unpack their components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `cb`. Establish `hz : ∀ s : ComposableArrows C (n + 1), (U (s.obj 0) ∧ V (s.obj 0)) → CrystallineSemistableComparison.CH.d F n (a - b) s = 0`. Introduce `s hs`. Rewrite using `[map_sub, Pi.sub_apply, ← ha s hs.1, ← hb s hs.2, sub_self]`. Establish `hc` using `h3 n rfl (a - b) hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Choose the witnesses or unpack the hypotheses as in `⟨a', ha', hab⟩ : ∃ a' : CrystallineSemistableComparison.CH.Cn F n, (∀ s : ComposableArrows C (n + 1), U (s.obj 0) → x s = CrystallineSemistableComparison.CH.d F n a' s) ∧ ∀ s : ComposableArrows C n, U (s.obj 0) → V (s.obj 0) → a' s = b s := by`. Consider the cases of `n with`. Consider the case `zero => exact ⟨a, ha, fun s h h' => sub_eq_zero.1 (hc s ⟨h, h'⟩)⟩`. Consider the case `succ m`. Take `⟨c, hc⟩` from `hc`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a - CrystallineSemistableComparison.CH.d F m c, fun s h => ?_, fun s h h' => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, CrystallineSemistableComparison.CH.d_d, sub_zero]`. Conclude with `ha s h`. Establish `e` using `hc s ⟨h, h'⟩`. Rewrite `e`, the goal using `[Pi.sub_apply]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e]`. Normalize the expressions using the abelian group laws. Use `⟨fun s => if U (s.obj 0) then a' s else b s, fun s hs => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hu : U (s.obj 0)`. Rewrite using `[ha' s hu]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `d_congr _ _ s fun i => (if_pos (face_start hU i s hu)).symm`. Establish `hv : V (s.obj 0)` using `hs.resolve_left hu`. Rewrite using `[hb s hv]`. Use `d_congr _ _ s fun i => ?_` and prove the remaining obligations. Distinguish the cases in `hui : U ((face i s).obj 0)`.
-
-Conclude with `(hab _ hui (face_start hV i s hv)).symm.trans (if_pos hui).symm`. Conclude with `(if_neg hui).symm`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem van_sup {U V : ObjectProperty C} (hU : Cosieve U) (hV : Cosieve V) {j : ℕ}
     (h1 : Van F U j) (h2 : Van F V j) (h3 : ∀ i, j = i + 1 → Van F (fun T => U T ∧ V T) i) :
@@ -157,14 +153,14 @@ theorem van_sup {U V : ObjectProperty C} (hU : Cosieve U) (hV : Cosieve V) {j : 
       · exact (if_neg hui).symm
 
 /- English proof (translation)
-Take `rfl : W = W'` from `funext fun T => propext (h T)`. Conclude with `hv`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem van_congr {W W' : ObjectProperty C} (h : ∀ T, W T ↔ W' T) {j : ℕ} (hv : Van F W j) : Van F W' j := by
   obtain rfl : W = W' := funext fun T => propext (h T)
   exact hv
 
 /- English proof (translation)
-Introduce `x _`. Consider the cases of `j with`. Consider the case `zero => exact fun s hs => (h _ hs).elim`. Consider the case `succ j => exact ⟨0, fun s hs => (h _ hs).elim⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem van_empty {W : ObjectProperty C} (h : ∀ T, ¬ W T) (j : ℕ) : Van F W j := by
   intro x _
@@ -176,14 +172,14 @@ def Wc {ι : Type} (U : ι → ObjectProperty C) (A S : Finset ι) : ObjectPrope
   fun T => (∃ α ∈ A, U α T) ∧ capS U S T
 
 /- English proof (translation)
-Introduce `_ _ f h α hα` and use `hU α f (h α hα)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cosieve_capS {ι : Type} {U : ι → ObjectProperty C} (hU : ∀ α, Cosieve (U α)) (S : Finset ι) :
     Cosieve (capS U S) :=
   fun _ _ f h α hα => hU α f (h α hα)
 
 /- English proof (translation)
-Introduce and unpack `T T' f ⟨⟨α, hα, hT⟩, hS⟩`. Conclude with `⟨⟨α, hα, hU α f hT⟩, cosieve_capS hU S f hS⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem cosieve_Wc {ι : Type} {U : ι → ObjectProperty C} (hU : ∀ α, Cosieve (U α)) (A S : Finset ι) :
     Cosieve (Wc U A S) := by
@@ -191,13 +187,13 @@ theorem cosieve_Wc {ι : Type} {U : ι → ObjectProperty C} (hU : ∀ α, Cosie
   exact ⟨⟨α, hα, hU α f hT⟩, cosieve_capS hU S f hS⟩
 
 /- English proof (translation)
-Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty`. Introduce `S j _`. Conclude with `van_empty (fun T hT => by simpa using hT.1) j`. Consider the case `insert a A ha ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S j hj`. Rewrite `hj` using `[Finset.card_insert_of_notMem ha]`. Take `⟨d1, d2, d3⟩` from `hD _ _ hj`. Establish `key` using `van_sup (cosieve_Wc hU A S) (cosieve_capS hU (insert a S)) (ih S j d1) (hcap _ (Finset.insert_nonempty _ _) j d2) fun i hi => van_congr (fun T => ⟨fun h => ⟨⟨h.1, fun α hα => h.2 α (Finset.mem_insert_of_mem hα)⟩, h.2⟩, fun h => ⟨h.1.1, h.2⟩⟩) (ih (insert a S) i (d3 i hi))`. Use `van_congr (fun T => ⟨?_, ?_⟩) key` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(⟨⟨α, hα, hT⟩, hS⟩ | h)`. Conclude with `⟨⟨α, Finset.mem_insert_of_mem hα, hT⟩, hS⟩`. Conclude with `⟨⟨a, Finset.mem_insert_self _ _, h a (Finset.mem_insert_self _ _)⟩, fun α hα => h α (Finset.mem_insert_of_mem hα)⟩`. Introduce and unpack `⟨⟨α, hα, hT⟩, hS⟩`. Break down `Finset.mem_insert.1 hα with rfl | h` into its components or cases.
+Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inr fun β hβ => ?_` and prove the remaining obligations. Break down `Finset.mem_insert.1 hβ with rfl | h'` into its components or cases. Conclude with `hT`. Conclude with `hS β h'`. Conclude with `Or.inl ⟨⟨α, h, hT⟩, hS⟩`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem van_Wc {ι : Type} [DecidableEq ι] {U : ι → ObjectProperty C} (hU : ∀ α, Cosieve (U α))
     (D : ℕ → ℕ → Prop) (E : ℕ → Prop) (hD : ∀ n j, D (n + 1) j → D n j ∧ E j ∧ ∀ i, j = i + 1 → D n i)
@@ -229,9 +225,9 @@ theorem van_Wc {ι : Type} [DecidableEq ι] {U : ι → ObjectProperty C} (hU : 
       · exact Or.inl ⟨⟨α, h, hT⟩, hS⟩
 
 /- English proof (translation)
-Use `subsingleton_of_forall_eq 0 fun x => ?_` and prove the remaining obligations. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj _ j).1 x`. Use `((CrystallineSemistableComparison.P.cls_surj _ j).2.1 a ha).2 ?_` and prove the remaining obligations. Establish `hc` using `h a fun s _ => congrFun ha s`. Consider the cases of `j with`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => exact funext fun s => hc s (hW _)`. Consider the case `succ j`. Take `⟨y, hy⟩` from `hc`. Conclude with `⟨y, funext fun s => (hy s (hW _)).symm⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem subsingleton_of_van {W : ObjectProperty C} (hW : ∀ T, W T) {j : ℕ} (h : Van F W j) :
     Subsingleton (CrystallineSemistableComparison.CH.H F j) := by
@@ -246,11 +242,11 @@ theorem subsingleton_of_van {W : ObjectProperty C} (hW : ∀ T, W T) {j : ℕ} (
     exact ⟨y, funext fun s => (hy s (hW _)).symm⟩
 
 /- English proof (translation)
-Introduce `R _ C _ F ι _ U hU hc s`. Establish `key : ∀ (D : ℕ → ℕ → Prop) (E : ℕ → Prop), (∀ n j, D (n + 1) j → D n j ∧ E j ∧ ∀ i, j = i + 1 → D n i) → (∀ S : Finset ι, S.Nonempty → ∀ j, E j → Subsingleton (HU F (capS U S) j)) → ∀ j, D (Fintype.card ι) j → Subsingleton (CrystallineSemistableComparison.CH.H F j)`. Introduce `D E hD h j hj`. Use `subsingleton_of_van (W := Wc U Finset.univ ∅) (fun T => ?_) (van_Wc hU D E hD (fun S hS j hE => van_of_subsingleton (cosieve_capS hU S) j (h S hS j hE)) Finset.univ ∅ j (by simpa using hj))` and prove the remaining obligations. Take `⟨α, hα⟩` from `hc T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨α, Finset.mem_univ _, hα⟩, fun β hβ => by simp at hβ⟩`. Use `⟨fun h j hj => key (fun _ j => j < s) (fun j => j < s) ?_ (fun S hS j hE => h S hS j hE) j hj, fun h j => key (fun _ _ => True) (fun _ => True) ?_ (fun S hS j _ => h S hS j) j trivial, fun h j hj => key (fun n j => s + n ≤ j) (fun j => j > s) ?_ (fun S hS j hE => h S hS j hE) j h …` and prove the remaining obligations. Introduce `n j hj`. Conclude with `⟨hj, hj, fun i hi => by omega⟩`. Introduce `n j _`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨trivial, trivial, fun _ _ => trivial⟩`. Introduce `n j hj`. Conclude with `⟨by omega, by omega, fun i hi => by omega⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem vanishing_of_cover : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R) {ι : Type} [Fintype ι]
     (U : ι → ObjectProperty C) (hU : ∀ α, Cosieve (U α)) (hc : ∀ T, ∃ α, U α T) (s : ℕ),

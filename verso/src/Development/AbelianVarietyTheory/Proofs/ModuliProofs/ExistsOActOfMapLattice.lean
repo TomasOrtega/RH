@@ -12,7 +12,7 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[Hom.mul_def]`. Conclude with `IsMonHom.one_hom _`. Use `mul_hom := by`. Rewrite using `[Hom.mul_def]`. Conclude with `IsMonHom.mul_hom _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isMonHom_mul_of_isCommMonObj {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
     (f g : G ⟶ G) [IsMonHom f] [IsMonHom g] : IsMonHom (f * g) where
@@ -24,13 +24,13 @@ private theorem isMonHom_mul_of_isCommMonObj {S : Scheme.{0}} {G : Over S} [GrpO
     exact IsMonHom.mul_hom _
 
 /- English proof (translation)
-Introduce `hL hL2 hGen hTh O _ P u r hr`. Establish `key : ∀ a, ∃! f : P.A ⟶ P.A, IsMonHom f ∧ ∀ z, u.ex (r a z) = u.ex z ≫ f` using `fun a => existsUnique_isMonHom_of_map_lattice hL hL2 hGen hTh P P P.L P.L u u (r a) (hr a)`. Use `choose act hact huniq using key`. Establish `eq_of : ∀ a (h : P.A ⟶ P.A), IsMonHom h → (∀ z, u.ex (r a z) = u.ex z ≫ h) → h = act a` using `fun a h h1 h2 => huniq a h ⟨h1, h2⟩`. Establish `hom : ∀ a, IsMonHom (act a)` using `fun a => (hact a).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨act, hom, ?_, ?_, ?_⟩, fun a z => (hact a).2 z⟩` and prove the remaining obligations. Use `(eq_of 1 (𝟙 _) inferInstance ?_).symm` and prove the remaining obligations. Introduce `z`. Simplify using the standard rewrite rules. Introduce `a b`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(eq_of (a * b) (act a ≫ act b) inferInstance ?_).symm` and prove the remaining obligations. Introduce `z`. Rewrite using `[mul_comm a b, map_mul, Module.End.mul_apply, (hact b).2, (hact a).2, Category.assoc]`. Introduce `a b`. Use `hom a` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hom b` as an intermediate fact. Use `(eq_of (a + b) (act a * act b) (isMonHom_mul_of_isCommMonObj _ _) ?_).symm` and prove the remaining obligations. Introduce `z`. Rewrite using `[map_add, LinearMap.add_apply, u.2, (hact a).2, (hact b).2, MonObj.comp_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_oAct_of_map_lattice :
     Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (O : Type) [CommRing O] (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (r : O →+* Module.End ℂ (Fin P.g → ℂ)), (∀ a, ∀ z ∈ u.Λ, r a z ∈ u.Λ) → ∃ act : OAct O P.A, ∀ a z, u.ex (r a z) = u.ex z ≫ act.act a := by

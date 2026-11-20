@@ -12,13 +12,13 @@ variable {E V : Type} [Field E] [NumberField E] [AddCommGroup V] [Module E V] [M
   [IsScalarTower (𝓞 E) E V] {M : ℕ}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_locS_iff' (S : Submonoid (𝓞 E)) (X : Submodule (𝓞 E) V) (x : V) :
     x ∈ locS S X ↔ ∃ s ∈ S, s • x ∈ X := Iff.rfl
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨s, hs, hx⟩` from `hx`. Conclude with `(mem_locS_iff' S Y x).2 ⟨s, hs, h hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem locS_mono (S : Submonoid (𝓞 E)) {X Y : Submodule (𝓞 E) V} (h : X ≤ Y) : locS S X ≤ locS S Y := by
   intro x hx
@@ -26,12 +26,12 @@ theorem locS_mono (S : Submonoid (𝓞 E)) {X Y : Submodule (𝓞 E) V} (h : X �
   exact (mem_locS_iff' S Y x).2 ⟨s, hs, h hx⟩
 
 /- English proof (translation)
-Introduce `x hx` and use `(mem_locS_iff' S X x).2 ⟨1, S.one_mem, by simpa using hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_locS (S : Submonoid (𝓞 E)) (X : Submodule (𝓞 E) V) : X ≤ locS S X := fun x hx => (mem_locS_iff' S X x).2 ⟨1, S.one_mem, by simpa using hx⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨s, hs, t, ht, hx⟩` from `hx`. Conclude with `(mem_locS_iff' S X x).2 ⟨t * s, S.mul_mem ht hs, by rwa [mul_smul]⟩`. Conclude with `le_locS S _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem locS_locS (S : Submonoid (𝓞 E)) (X : Submodule (𝓞 E) V) : locS S (locS S X) = locS S X := by
   apply le_antisymm
@@ -41,23 +41,23 @@ theorem locS_locS (S : Submonoid (𝓞 E)) (X : Submodule (𝓞 E) V) : locS S (
   · exact le_locS S _
 
 /- English proof (translation)
-The claim follows from `le_antisymm ((locS_mono S h1).trans (locS_locS S Y).le) ((locS_mono S h2).trans (locS_locS S X).le)`.
+A detailed English derivation is pending.
 -/
 theorem locS_eq_of (S : Submonoid (𝓞 E)) {X Y : Submodule (𝓞 E) V} (h1 : X ≤ locS S Y) (h2 : Y ≤ locS S X) :
     locS S X = locS S Y := le_antisymm ((locS_mono S h1).trans (locS_locS S Y).le) ((locS_mono S h2).trans (locS_locS S X).le)
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul E s w, map_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem osmul_comm (u : V ≃ₗ[E] V) (s : 𝓞 E) (w : V) : u (s • w) = s • u w := by
   rw [← algebraMap_smul E s w, map_smul, algebraMap_smul]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, mem_locS_iff']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨s, hs, hy⟩, rfl⟩`. Conclude with `⟨s, hs, s • y, hy, osmul_comm u s y⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨s, hs, z, hz, hzx⟩`. Use `⟨u.symm x, ⟨s, hs, ?_⟩, by simp⟩` and prove the remaining obligations. Establish `hsz : s • u.symm x = z`. Apply `u.injective` to reduce the goal to its premises. Rewrite using `[osmul_comm, LinearEquiv.apply_symm_apply, hzx]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsz]`. Conclude with `hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmap_locS (u : V ≃ₗ[E] V) (S : Submonoid (𝓞 E)) (X : Submodule (𝓞 E) V) :
     gmap u (locS S X) = locS S (gmap u X) := by
@@ -76,9 +76,9 @@ theorem gmap_locS (u : V ≃ₗ[E] V) (S : Submonoid (𝓞 E)) (X : Submodule (�
     exact hz
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨w y, ⟨y, hy, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, ⟨z, hz, rfl⟩, rfl⟩`. Conclude with `⟨z, hz, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem gmap_comp (u w : V ≃ₗ[E] V) (X : Submodule (𝓞 E) V) : gmap (u * w) X = gmap u (gmap w X) := by
   ext x
@@ -90,11 +90,11 @@ theorem gmap_comp (u w : V ≃ₗ[E] V) (X : Submodule (𝓞 E) V) : gmap (u * w
     exact ⟨z, hz, rfl⟩
 
 /- English proof (translation)
-Introduce `y hy`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe] at hy`. Take `⟨v, hv, rfl⟩` from `hy`. Establish `hx : (b.repr v : Fin M → E) ∈ crdOf b L0` using `by show ∑ i, b.repr v i • b i ∈ L0`. Rewrite using `[b.sum_repr]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv`. Take `⟨s, hs, hK⟩` from `h _ hx`. Use `(mem_locS_iff' S L0 _).2 ⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `e : linOf b K v = ∑ j, ((K : Matrix (Fin M) (Fin M) E).mulVec (b.repr v)) j • b j`. Simplify using `only [linOf, LinearEquiv.ofLinear_apply, Matrix.toLin_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hK' : ∑ i, ((algebraMap (𝓞 E) E s) • ((K : Matrix (Fin M) (Fin M) E).mulVec (b.repr v))) i • b i ∈ L0` using `hK`. Rewrite using `[e, ← algebraMap_smul E s, Finset.smul_sum]`. Use `hK' using 1` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmap_le_locS (b : Module.Basis (Fin M) E V) (L0 : Submodule (𝓞 E) V) (S : Submonoid (𝓞 E))
     (K : GL (Fin M) E)
@@ -118,7 +118,7 @@ theorem gmap_le_locS (b : Module.Basis (Fin M) E V) (L0 : Submodule (𝓞 E) V) 
   rw [Pi.smul_apply, smul_eq_mul, mul_smul]
 
 /- English proof (translation)
-Use `show ∑ j, (∑ i ∈ t, z i) j • b j ∈ L0`. Simplify using `only [Finset.sum_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `L0.sum_mem fun i hi => hz i hi`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_mem_crdOf (b : Module.Basis (Fin M) E V) (L0 : Submodule (𝓞 E) V) {ι : Type}
     (t : Finset ι) (z : ι → Fin M → E) (hz : ∀ i ∈ t, z i ∈ crdOf b L0) :
@@ -129,9 +129,9 @@ private theorem sum_mem_crdOf (b : Module.Basis (Fin M) E V) (L0 : Submodule (�
   exact L0.sum_mem fun i hi => hz i hi
 
 /- English proof (translation)
-Use `show ∑ j, ((algebraMap (𝓞 E) E s) • x) j • b j ∈ L0`. Establish `h` using `L0.smul_mem s (show ∑ j, x j • b j ∈ L0 from hx)`. Rewrite `h` using `[Finset.smul_sum]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_smul, algebraMap_smul]`.
+A detailed English derivation is pending.
 -/
 private theorem algebraMap_smul_mem_crdOf (b : Module.Basis (Fin M) E V) (L0 : Submodule (𝓞 E) V) (s : 𝓞 E)
     {x : Fin M → E} (hx : x ∈ crdOf b L0) : (algebraMap (𝓞 E) E s) • x ∈ crdOf b L0 := by
@@ -143,7 +143,7 @@ private theorem algebraMap_smul_mem_crdOf (b : Module.Basis (Fin M) E V) (L0 : S
   rw [Pi.smul_apply, smul_eq_mul, mul_smul, algebraMap_smul]
 
 /- English proof (translation)
-Use `show ∑ j, (x + y) j • b j ∈ L0`. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Conclude with `L0.add_mem hx hy`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem add_mem_crdOf (b : Module.Basis (Fin M) E V) (L0 : Submodule (𝓞 E) V)
     {x y : Fin M → E} (hx : x ∈ crdOf b L0) (hy : y ∈ crdOf b L0) : x + y ∈ crdOf b L0 := by
@@ -152,15 +152,15 @@ private theorem add_mem_crdOf (b : Module.Basis (Fin M) E V) (L0 : Submodule (�
   exact L0.add_mem hx hy
 
 /- English proof (translation)
-Establish `key : ∀ i0, (algebraMap (𝓞 E) E s) * (Y.mulVec x) i0 = (algebraMap (𝓞 E) E s) * x i0 + ∑ j, ((k : F) • (e i0 j * ((u : F) • x j)))`. Introduce `i0`. Establish `hsplit : ∀ j, (algebraMap (𝓞 E) E s) * Y i0 j = ((u * k : ℕ) : E) * e i0 j + (algebraMap (𝓞 E) E s) * (1 : Matrix (Fin M) (Fin M) E) i0 j`. Introduce `j`. Establish `hj` using `hY i0 j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hj` using `[Matrix.sub_apply, mul_sub]`. Take the linear combination `hj`. Use `show (algebraMap (𝓞 E) E s) * ∑ j, Y i0 j * x j = _`. Simplify using `only [Finset.mul_sum, ← mul_assoc, hsplit, add_mul, Finset.sum_add_distrib, Matrix.one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Algebra.smul_def, map_natCast]`. Rewrite using `[add_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hvec : (algebraMap (𝓞 E) E s) • Y.mulVec x = (algebraMap (𝓞 E) E s) • x + ∑ i, ∑ j, Pi.single i ((k : F) • (e i j * ((u : F) • x j)))`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i0`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[key i0]`. Use `congr 1`. Simplify using `only [Finset.sum_apply, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[hvec]`. Conclude with `add_mem_crdOf b L0 (algebraMap_smul_mem_crdOf b L0 s hx) (sum_mem_crdOf b L0 _ _ fun i _ => sum_mem_crdOf b L0 _ _ fun j _ => hk i _ ((he i j).mul (hu x hx j)))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glob_stab {F : Type} [Field F] [Algebra F E] (b : Module.Basis (Fin M) E V) (L0 : Submodule (𝓞 E) V)
     {u k : ℕ} (hu : ∀ x ∈ crdOf b L0, ∀ i, IsIntegral ℤ ((u : F) • x i))

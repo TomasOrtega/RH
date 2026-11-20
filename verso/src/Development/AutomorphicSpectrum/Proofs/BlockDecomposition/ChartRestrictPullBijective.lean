@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.ConeZarCap
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Unfold `InU`. Rewrite using `[← le_inf_iff]`. Conclude with `Iff.rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem inU_inf {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ} {X : Scheme.{0}}
     {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} (V W : X.Opens) (T : Thick (nlFun γ p X q κ)) :
@@ -20,11 +20,9 @@ theorem inU_inf {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {�
   exact Iff.rfl
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx` using `[HomogeneousIdeal.mem_iff, HomogeneousIdeal.mem_irrelevant_iff, GradedRing.proj_apply]`. Establish `h0 : MvPolynomial.coeff 0 x = 0` using `by erw [MvPolynomial.decomposition.decompose'_apply, MvPolynomial.homogeneousComponent_zero] at hx`. Conclude with `MvPolynomial.C_eq_zero.1 hx`. Rewrite using `[← Set.image_univ, MvPolynomial.mem_ideal_span_X_image]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Assume the negation of the conclusion as `hne`. Establish `hm0 : m = 0` using `Finsupp.ext fun i => by`. Assume the negation of the conclusion as `hi`. Conclude with `hne ⟨i, Set.mem_univ i, hi⟩`.
-
-Substitute `hm0` using the available equality. Conclude with `(MvPolynomial.mem_support_iff.1 hm) h0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem irrelevant_le_span (K : Type) [Field K] (N : ℕ) :
     (HomogeneousIdeal.irrelevant (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) K)).toIdeal ≤
@@ -44,7 +42,7 @@ theorem irrelevant_le_span (K : Type) [Field K] (N : ℕ) :
   exact (MvPolynomial.mem_support_iff.1 hm) h0
 
 /- English proof (translation)
-Establish `h` using `AlgebraicGeometry.Proj.iSup_basicOpen_eq_top (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) K) (fun j => MvPolynomial.X j) (irrelevant_le_span K N)`. Simplify using `only [wch]`. Rewrite using `[← Scheme.Hom.preimage_iSup, h, Scheme.Hom.preimage_top]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem iSup_wch {K : Type} [Field K] {X : Scheme.{0}} (N : ℕ) (i : X ⟶ PSpace K N) : (⨆ j, wch i j) = ⊤ := by
   have h := AlgebraicGeometry.Proj.iSup_basicOpen_eq_top (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) K)
@@ -53,9 +51,9 @@ theorem iSup_wch {K : Type} [Field K] {X : Scheme.{0}} (N : ℕ) (i : X ⟶ PSpa
   rw [← Scheme.Hom.preimage_iSup, h, Scheme.Hom.preimage_top]
 
 /- English proof (translation)
-Unfold `resU CrystallineSemistableComparison.Pb.SMor.sq`. Use `congr 1`. Use function extensionality and compare the values at `T`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `x`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem resU_eq {b : Base} {L : b.Fun} {Q Q' : ObjectProperty (Thick L)} (h : Q' ≤ Q) (r r' : ℤ) :
     resU (sq (thFil L r) (thFil L r')) h = (incl h).sq (incl_fil h r) (incl_fil h r') := by
@@ -68,11 +66,11 @@ theorem resU_eq {b : Base} {L : b.Fun} {Q Q' : ObjectProperty (Thick L)} (h : Q'
   rfl
 
 /- English proof (translation)
-Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Conclude with `le_iSup_of_le (fun _ => 0) (by simp)`. Introduce `a S ha ih`. Rewrite using `[Finset.iInf_insert]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iSup_inf_eq]`. Repeatedly rewrite using `[inf_iSup_eq]`. Use `_ ≤ ⨆ c : Fin m → Fin (N + 1), ⨅ k ∈ insert a S, (u k ⊓ w (c k)) := by`. Use `iSup_le fun j => iSup_le fun c => le_iSup_of_le (Function.update c a j) ?_` and prove the remaining obligations. Rewrite using `[Finset.iInf_insert]`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `inf_le_inf (by simp) (le_iInf₂ fun k hk => (iInf₂_le k hk).trans ?_)` and prove the remaining obligations. Establish `hka : k ≠ a` using `fun h => ha (h ▸ hk)`. Simplify using `[hka]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isHecke_div_and_resEtaPow_div {X : Scheme.{0}} {m N : ℕ} (u : Fin m → X.Opens) (w : Fin (N + 1) → X.Opens)
     (hw : (⨆ j, w j) = ⊤) (S : Finset (Fin m)) :
@@ -95,19 +93,17 @@ private theorem isHecke_div_and_resEtaPow_div {X : Scheme.{0}} {m N : ℕ} (u : 
           simp [hka]
 
 /- English proof (translation)
-Introduce `K _ X q N m i y s S hS r r' j`. Establish `e : capS (wK q i y s) S = KS q s (Set.range fun c : Fin m → Fin (N + 1) => ⨅ k ∈ S, (uy i y k ⊓ wch i (c k)))`. Use function extensionality and compare the values at `T`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hT`. Take `⟨k0, hk0⟩` from `hS`. Use `⟨(hT k0 hk0).1, ?_⟩` and prove the remaining obligations. Establish `hc : ∀ k, ∃ c : Fin (N + 1), k ∈ S → InU (uy i y k ⊓ wch i c) T`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hk : k ∈ S`. Take `⟨_, V, ⟨c, rfl⟩, hV⟩` from `hT k hk`. Conclude with `⟨c, fun _ => hV⟩`. Conclude with `⟨0, fun h => absurd h hk⟩`. Use `choose c hc using hc`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨_, ⟨c, rfl⟩, (GlobalTheory.CompanionTheory.Thick.inU_iInf_finset (fun k => uy i y k ⊓ wch i (c k)) S _).2 hc⟩`. Introduce and unpack `⟨hT, V, ⟨c, rfl⟩, hV⟩ k hk`. Conclude with `⟨hT, _, ⟨c k, rfl⟩, (GlobalTheory.CompanionTheory.Thick.inU_iInf_finset (fun k => uy i y k ⊓ wch i (c k)) S _).1 hV k hk⟩`. Rewrite using `[e]`. Establish `hle : KS q s (Set.range fun c : Fin m → Fin (N + 1) => ⨅ k ∈ S, (uy i y k ⊓ wch i (c k))) ≤ KS q s {⨅ k ∈ S, uy i y k}`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `T ⟨hT, V, ⟨c, rfl⟩, hV⟩`. Use `⟨hT, _, Set.mem_singleton _, (GlobalTheory.CompanionTheory.Thick.inU_iInf_finset (uy i y) S _).2 fun k hk => ?_⟩` and prove the remaining obligations. Conclude with `((inU_inf _ _ _).1 ((GlobalTheory.CompanionTheory.Thick.inU_iInf_finset (fun k => uy i y k ⊓ wch i (c k)) S _).1 hV k hk)).1`. Establish `hc : ∀ W ∈ ({⨅ k ∈ S, uy i y k} : Set X.Opens), W ≤ sSup (Set.range fun c : Fin m → Fin (N + 1) => ⨅ k ∈ S, (uy i y k ⊓ wch i (c k)))`. Introduce `W hW`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `hW` using `[Set.mem_singleton_iff]`. Substitute `hW` using the available equality. Rewrite using `[sSup_range]`. Conclude with `isHecke_div_and_resEtaPow_div (uy i y) (wch i) (iSup_wch N i) S`. Use `⟨hle, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[resU_eq]`. Conclude with `(GlobalTheory.CompanionTheory.NlZar.zariski_descent (CrystallineSemistableComparison.Pb.TF 1 s) (Or.inl ⟨rfl, 1, s, rfl⟩) _ _ hle hc j).1 r r'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) {N m : ℕ}
     (i : X ⟶ PSpace K N) (y : Fin m → MvPolynomial (Fin (N + 1)) K) (s : ℕ) (S : Finset (Fin m)) (hS : S.Nonempty)

@@ -23,7 +23,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Use `⟨pullback.lift w.x (spMap (algebraMap c.F S)) ?_, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩` and prove the remaining obligations. Rewrite using `[w.x_over, spMap_comp_ring]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ChartCover.exists_lift {S : Type} [CommRing S] [Algebra c.F S] (w : FrPt Xo c S) :
     ∃ xF : Sp S ⟶ Xo.XF c, xF ≫ pullback.fst _ _ = w.x ∧ xF ≫ pullback.snd _ _ = spMap (algebraMap c.F S) := by
@@ -32,9 +32,9 @@ theorem ChartCover.exists_lift {S : Type} [CommRing S] [Algebra c.F S] (w : FrPt
   rfl
 
 /- English proof (translation)
-Take `⟨g, hg, hT⟩` from `openChart_factor_near_prime E H Dw l Xo c R j y₀ hj S xF h2 p hp`. Use `⟨g, hg, fun T _ _ lam hl => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `hT T lam hl`. Take `⟨z, hz⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algebraMap hS E H Dw l Xo c S T lam w`. Establish `hx : z.x = spMap ψ.toRingHom ≫ y₀.x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hz.1, ← h1, ← hj.2.1, ← Category.assoc, hψ, Category.assoc]`. Take `⟨a, ⟨_, ha⟩, _⟩` from `GlobalTheory.T.universalFrame_classifies_framedPoints hS E H Dw l Xo c R A y₀ π X s u hu T z ψ hx`. Conclude with `⟨z, a, hz, ha⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ChartCover.near (hS : Out.SecBaseChangeSt) {R A : Type} [CommRing R] [Algebra c.F R] [CommRing A]
     [Algebra c.F A] {j : Sp R ⟶ Xo.XF c} {y₀ : FrPt Xo c R} {π : R →ₐ[c.F] A}
@@ -54,13 +54,13 @@ theorem ChartCover.near (hS : Out.SecBaseChangeSt) {R A : Type} [CommRing R] [Al
   exact ⟨z, a, hz, ha⟩
 
 /- English proof (translation)
-Take `⟨g, hg, hT⟩` from `ChartCover.near hS hj hu w xF h1 h2 (⟨m, hm⟩ : PrimeSpectrum S) hp`. Take `⟨z, a, hz, ha⟩` from `hT (Localization.AtPrime m) (locM c.F m) (IsLocalization.map_units (Localization.AtPrime m) (⟨g, hg⟩ : m.primeCompl))`. Use `⟨a, ⟨z, hz, ha⟩, ?_⟩` and prove the remaining obligations. Introduce `p φ y hy`. Take `⟨yF, k1, k2⟩` from `ChartCover.exists_lift y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e : spMap φ.toRingHom ≫ yF = xF`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, k1, h1, hy.1]`. Rewrite using `[Category.assoc, k2, h2, spMap_comp_ring]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `φ.comp_algebraMap`. Establish `hq : yF (spMap φ.toRingHom (⟨m, hm⟩ : PrimeSpectrum S)) ∈ Set.range j`. Rewrite `hp` using `[← e]`. Conclude with `hp`. Take `⟨g', hg', hT'⟩` from `ChartCover.near hS hj hu y yF k1 k2 _ hq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p', lam, hl, hlam⟩` from `GlobalTheory.testRing_localizationAway c.F p g'`. Take `⟨z', a', hz', ha'⟩` from `hT' p'.R lam hl`. Conclude with `⟨g', hg', p', lam, z', a', hlam, hz', ha'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ChartCover.cls_loc (hS : Out.SecBaseChangeSt) {R : Type} [CommRing R] [Algebra c.F R] {A : TRing c.F}
     {j : Sp R ⟶ Xo.XF c} {y₀ : FrPt Xo c R} {π : R →ₐ[c.F] A.R}
@@ -95,9 +95,9 @@ theorem ChartCover.cls_loc (hS : Out.SecBaseChangeSt) {R : Type} [CommRing R] [A
 end
 
 /- English proof (translation)
-Introduce `hS E _ _ _ H Dw l Xo c S _ _ w w' hw m hm`. Take `⟨xF, h1, h2⟩` from `ChartCover.exists_lift w`. Take `⟨p, j, y₀, hj, hp⟩` from `GlobalTheory.T.exists_openChart_framedPoint_testRing hS E H Dw l Xo c (xF (⟨m, hm.isPrime⟩ : PrimeSpectrum S))`. Take `⟨A, π, X, s, u, hu⟩` from `GlobalTheory.T.exists_universalFrame_testRing hS E H Dw l Xo c p y₀`. Take `⟨cw, hc, hl⟩` from `ChartCover.cls_loc hS hj hu w xF h1 h2 m hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨cw', hc', hl'⟩` from `ChartCover.cls_loc hS hj hu w' xF (h1.trans hw.symm) h2 m hp`. Conclude with `⟨A, u, cw, cw', GlobalTheory.T.universalFrame_classifies_unique_openChart hS E H Dw l Xo c p.R A.R j y₀ π X s u hj hu, GlobalTheory.T.exists_borelPairs_universalFrame_openChart hS E H Dw l Xo c p A j y₀ π X s u hj hu, hc, hl, hc', hl'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem chartCoverF_of_secBaseChange : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ChartCoverF Xo c := by
   intro hS E _ _ _ H Dw l Xo c S _ _ w w' hw m hm

@@ -8,9 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinPl
 
 /- English proof (translation)
-Introduce `hf`. Take `⟨v, hv, ⟨τ⟩⟩` from `GlobalTheory.Orb.exists_split_place_notMem (GlobalTheory.AdelicU.isCMExt_host D) hf.toFinset`. Establish `he` using `GlobalTheory.AdelicU.Supp.splitAt_splitIdemAd (D := D) τ`. Establish `hε` using `GlobalTheory.AdelicU.Supp.isPlaceIdem_placeIdem D v`. Establish `hs` using `he.2.2.trans (GlobalTheory.AdelicU.Supp.pl_eq D v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hv (hf.mem_toFinset.2 ⟨_, _, ⟨he.1, he.2.1, v, _, hε, hs⟩, hε, hs⟩)`.
+A detailed English derivation is pending.
 -/
 theorem infinite_splitIdem_places (D : D7) :
     {v : Pl D | ∃ (e : AE D) (ε : AF D.host.F), IsSplitIdem D e ∧ IsPlaceIdem D v ε ∧

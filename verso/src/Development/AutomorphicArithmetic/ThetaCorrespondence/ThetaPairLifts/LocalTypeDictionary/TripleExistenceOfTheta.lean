@@ -14,15 +14,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 namespace GlobalTheory.SqTop
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Introduce `hH hP hK hM hL`. Take `⟨CF1, H1⟩` from `_root_.GlobalTheory.T.bottom_theta_norm_eq_prod_local_factors hH hP hK hM hL`. Take `⟨CF2, H2⟩` from `_root_.GlobalTheory.T.first_occurrence_theta_lift_ne_zero hP hK hM hL`. Use `⟨max CF1 CF2, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C1, x1, G1⟩` from `H1 ε CF (le_trans (le_max_left _ _) hCF)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C2, x2, G2⟩` from `H2 ε CF (le_trans (le_max_right _ _) hCF)`. Use `⟨max C1 C2, max x1 x2, fun C hC D large₂ he hx hR T Lc μ₀ hμ G W _ i j => ?_⟩` and prove the remaining obligations. Take `⟨A, A', WW, X, hX⟩` from `GlobalTheory.RowTest.exists_bottomTri hμ G W i j`. Take `⟨Pi, p, p', J, hs, ⟨P', hP'⟩, hJ, hI, hI'⟩` from `G1 C (le_trans (le_max_left _ _) hC) D large₂ he (le_trans (le_max_left _ _) hx) hR T Lc μ₀ hμ G W i j A A' WW X hX`. Establish `hN` using `G2 C (le_trans (le_max_right _ _) hC) D large₂ he (le_trans (le_max_right _ _) hx) hR T Lc μ₀ hμ G W i j A A' WW X hX`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose lam hlam using hI`. Establish `hinj : ∀ t, Function.Injective (J t)` using `fun t => by`. Use `(hJ t).resolve_left fun h0 => ?_` and prove the remaining obligations. Take `⟨Q, h, hQ⟩` from `(hN t).2`. Conclude with `hQ (by rw [hI' t Q, h0]; rfl)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hlam0 : ∀ t, lam t ≠ 0` using `fun t h0 => by`. Take `⟨Q, h, hQ⟩` from `(hN t).1`. Conclude with `hQ (by rw [hlam t Q, h0, zero_smul]; rfl)`. Establish `hF : GlobalTheory.ConstRatio.Factor X W.ψ W.θ lam` using `⟨hlam0, Pi, p, p', J, hs, hinj, fun t P h => (hX.integrable t).1 P h, hlam, fun t Q _ => hI' t Q, P', hP', fun t h => (hX.integrable t).2 P' h⟩`. Use `haveI : Nonempty T := ⟨μ₀⟩`.
-
-Conclude with `⟨A, A', WW, X, lam, hX, hF.isConst⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem triEx_holds_alt : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree →
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → LNe → TriEx := by
@@ -58,7 +56,7 @@ section
 open GlobalTheory.SqTop
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SqTop.triEx_holds_alt | exact _root_.GlobalTheory.SqTop.triEx_holds_alt | (intros; apply _root_.GlobalTheory.SqTop.triEx_holds_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.triEx_of_howe_duality_real : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → LNe → TriEx := by
   first | exact @_root_.GlobalTheory.SqTop.triEx_holds_alt | exact _root_.GlobalTheory.SqTop.triEx_holds_alt | (intros; apply _root_.GlobalTheory.SqTop.triEx_holds_alt <;> assumption)

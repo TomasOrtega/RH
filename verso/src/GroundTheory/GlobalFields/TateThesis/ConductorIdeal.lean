@@ -15,9 +15,9 @@ variable {R : Type*} [CommRing R] [IsDedekindDomain R]
 omit [IsDedekindDomain R] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hk`. Establish `hle : v.asIdeal ^ k ≤ v.asIdeal` using `Ideal.pow_le_self hk`. Rewrite `hle` using `[h, Ideal.one_eq_top, top_le_iff]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `v.isPrime.ne_top hle`. Introduce and unpack `rfl`. Conclude with `pow_zero _`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem asIdeal_pow_eq_one_iff (v : HeightOneSpectrum R) {k : ℕ} : v.asIdeal ^ k = 1 ↔ k = 0 := by
   constructor
@@ -31,7 +31,7 @@ theorem asIdeal_pow_eq_one_iff (v : HeightOneSpectrum R) {k : ℕ} : v.asIdeal ^
 
 omit [IsDedekindDomain R] in
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [mem_mulSupport, mem_support, ne_eq, asIdeal_pow_eq_one_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mulSupport_asIdeal_pow (a : HeightOneSpectrum R → ℕ) :
     mulSupport (fun v : HeightOneSpectrum R ↦ v.asIdeal ^ a v) = support a := by
@@ -39,7 +39,7 @@ theorem mulSupport_asIdeal_pow (a : HeightOneSpectrum R → ℕ) :
   simp only [mem_mulSupport, mem_support, ne_eq, asIdeal_pow_eq_one_iff]
 
 /- English proof (translation)
-The claim follows from `finprod_induction (fun I : Ideal R ↦ I ≠ ⊥) one_ne_zero (fun _ _ hx hy ↦ mul_ne_zero hx hy) fun v ↦ pow_ne_zero _ v.ne_bot`.
+A detailed English derivation is pending.
 -/
 theorem finprod_asIdeal_pow_ne_bot (a : HeightOneSpectrum R → ℕ) :
     (∏ᶠ v : HeightOneSpectrum R, v.asIdeal ^ a v) ≠ ⊥ :=
@@ -47,15 +47,13 @@ theorem finprod_asIdeal_pow_ne_bot (a : HeightOneSpectrum R → ℕ) :
     fun v ↦ pow_ne_zero _ v.ne_bot
 
 /- English proof (translation)
-Establish `hfa : HasFiniteMulSupport fun v : HeightOneSpectrum R ↦ v.asIdeal ^ a v`. Rewrite using `[HasFiniteMulSupport, mulSupport_asIdeal_pow]`. Conclude with `ha`. Prove the components needed by the constructor for the conclusion. Introduce `h v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : v.asIdeal ^ a v ∣ I` using `(finprod_mem_dvd v hfa).trans h`. Establish `h2` using `HeightOneSpectrum.multiplicity_le_of_ideal_ge v (Ideal.le_of_dvd h1) hI`. Rewrite `h2` using `[multiplicity_pow_self_of_prime (HeightOneSpectrum.prime v)]`. Then use the resulting hypothesis. Introduce `h`. Establish `hm : HasFiniteMulSupport fun v : HeightOneSpectrum R ↦ v.asIdeal ^ multiplicity v.asIdeal I`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `Ideal.hasFiniteMulSupport hI` using `only [HeightOneSpectrum.maxPowDividing_eq_pow_multiplicity hI]`. Establish `hmb : HasFiniteMulSupport fun v : HeightOneSpectrum R ↦ v.asIdeal ^ (multiplicity v.asIdeal I - a v)`. Rewrite `hm`, the goal using `[HasFiniteMulSupport, mulSupport_asIdeal_pow]`. Use `hm.subset fun v hv ↦ ?_` and prove the remaining obligations. Simplify using `only [mem_support, ne_eq] at hv ⊢`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hsplit : (fun v : HeightOneSpectrum R ↦ v.asIdeal ^ multiplicity v.asIdeal I) = fun v ↦ v.asIdeal ^ a v * v.asIdeal ^ (multiplicity v.asIdeal I - a v)`. Use function extensionality and compare the values at `fun v ↦ by rw [← pow_add, Nat.add_sub_cancel' (h v)]`. Use `conv_rhs => rw [← Ideal.finprod_heightOneSpectrum_pow_multiplicity hI]`. Rewrite using `[hsplit, finprod_mul_distrib hfa hmb]`.
-
-Conclude with `dvd_mul_right _ _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finprod_asIdeal_pow_dvd_iff {a : HeightOneSpectrum R → ℕ} (ha : (support a).Finite)
     {I : Ideal R} (hI : I ≠ ⊥) :
@@ -88,11 +86,11 @@ theorem finprod_asIdeal_pow_dvd_iff {a : HeightOneSpectrum R → ℕ} (ha : (sup
     exact dvd_mul_right _ _
 
 /- English proof (translation)
-Establish `hfa : HasFiniteMulSupport fun v : HeightOneSpectrum R ↦ v.asIdeal ^ a v`. Rewrite using `[HasFiniteMulSupport, mulSupport_asIdeal_pow]`. Conclude with `ha`. Prove the components needed by the constructor for the conclusion. Introduce `h classical`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[finprod_eq_prod_of_mulSupport_subset _ (s := ha.toFinset) (by rw [mulSupport_asIdeal_pow, ha.coe_toFinset])]`. Take `⟨w, hw, hvw⟩` from `((HeightOneSpectrum.prime v).dvd_finsetProd_iff _).1 h`. Establish `hvw'` using `(HeightOneSpectrum.prime v).dvd_of_dvd_pow hvw`. Establish `heq : v = w` using `HeightOneSpectrum.ext (associated_iff_eq.1 ((HeightOneSpectrum.prime v).associated_of_dvd (HeightOneSpectrum.prime w) hvw'))`. Substitute `heq` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[Set.Finite.mem_toFinset, mem_support]`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `(dvd_pow_self _ (by omega)).trans (finprod_mem_dvd v hfa)`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem asIdeal_dvd_finprod_iff {a : HeightOneSpectrum R → ℕ} (ha : (support a).Finite)
     (v : HeightOneSpectrum R) :
@@ -126,7 +124,7 @@ def conductor (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H) : Ideal (𝓞 K) :=
 
 omit [TopologicalSpace H] in
 /- English proof (translation)
-The claim follows from `finprod_asIdeal_pow_ne_bot _`.
+A detailed English derivation is pending.
 -/
 theorem conductor_ne_bot (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H) : conductor χ ≠ ⊥ :=
   finprod_asIdeal_pow_ne_bot _
@@ -135,7 +133,7 @@ def idealLevel (𝔪 : Ideal (𝓞 K)) : Subgroup (FiniteAdeleRing (𝓞 K) K)ˣ
   finiteLevel fun v ↦ multiplicity v.asIdeal 𝔪
 
 /- English proof (translation)
-Rewrite using `[idealLevel, finiteLevel_le_ker_iff hH χ hχ, conductor, finprod_asIdeal_pow_dvd_iff (finite_support_conductorExponentAt hH χ hχ) h𝔪]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idealLevel_le_ker_iff (hH : NoSmallSubgroups H) (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H)
     (hχ : Continuous χ) {𝔪 : Ideal (𝓞 K)} (h𝔪 : 𝔪 ≠ ⊥) :
@@ -144,7 +142,7 @@ theorem idealLevel_le_ker_iff (hH : NoSmallSubgroups H) (χ : (FiniteAdeleRing (
     finprod_asIdeal_pow_dvd_iff (finite_support_conductorExponentAt hH χ hχ) h𝔪]
 
 /- English proof (translation)
-The claim follows from `asIdeal_dvd_finprod_iff (finite_support_conductorExponentAt hH χ hχ) v`.
+A detailed English derivation is pending.
 -/
 theorem dvd_conductor_iff (hH : NoSmallSubgroups H) (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H)
     (hχ : Continuous χ) (v : HeightOneSpectrum (𝓞 K)) :
@@ -152,7 +150,7 @@ theorem dvd_conductor_iff (hH : NoSmallSubgroups H) (χ : (FiniteAdeleRing (𝓞
   asIdeal_dvd_finprod_iff (finite_support_conductorExponentAt hH χ hχ) v
 
 /- English proof (translation)
-Rewrite using `[dvd_conductor_iff hH χ hχ, ← conductorExponentAt_eq_zero_iff hH χ hχ, Nat.one_le_iff_ne_zero, not_not]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem not_dvd_conductor_iff (hH : NoSmallSubgroups H) (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H)
     (hχ : Continuous χ) (v : HeightOneSpectrum (𝓞 K)) :
@@ -166,7 +164,7 @@ def ofFinite : (FiniteAdeleRing (𝓞 K) K)ˣ →* IdeleGroup K :=
   (ContinuousMulEquiv.symm (prodEquiv K)).toMulEquiv.toMonoidHom.comp (MonoidHom.inr _ _)
 
 /- English proof (translation)
-Establish `: Continuous fun x : (FiniteAdeleRing (𝓞 K) K)ˣ ↦ ContinuousMulEquiv.symm (prodEquiv K) ((1 : (InfiniteAdeleRing K)ˣ), x)` using `(ContinuousMulEquiv.symm (prodEquiv K)).continuous.comp (continuous_const.prodMk continuous_id)`. Conclude with `this`. Use the proof step `@[simp]`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_ofFinite : Continuous (ofFinite (K := K)) := by
   have : Continuous fun x : (FiniteAdeleRing (𝓞 K) K)ˣ ↦
@@ -176,7 +174,7 @@ theorem continuous_ofFinite : Continuous (ofFinite (K := K)) := by
 
 @[simp]
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((prodEquiv K) ((ContinuousMulEquiv.symm (prodEquiv K)) (1, x))).2 = x`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Use the proof step `@[simp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toFinite_ofFinite (x : (FiniteAdeleRing (𝓞 K) K)ˣ) : toFinite K (ofFinite x) = x := by
   change ((prodEquiv K) ((ContinuousMulEquiv.symm (prodEquiv K)) (1, x))).2 = x
@@ -184,14 +182,14 @@ theorem toFinite_ofFinite (x : (FiniteAdeleRing (𝓞 K) K)ˣ) : toFinite K (ofF
 
 @[simp]
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((prodEquiv K) ((ContinuousMulEquiv.symm (prodEquiv K)) (1, x))).1 = 1`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toInfinite_ofFinite (x : (FiniteAdeleRing (𝓞 K) K)ˣ) : toInfinite K (ofFinite x) = 1 := by
   change ((prodEquiv K) ((ContinuousMulEquiv.symm (prodEquiv K)) (1, x))).1 = 1
   rw [ContinuousMulEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[mem_standardOpenSubgroup, mem_finiteLevel]`. Use `forall_congr' fun v ↦ ?_` and prove the remaining obligations. Rewrite using `[Pi.zero_apply, unitsLevel_zero, Submonoid.mem_units_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_standardOpenSubgroup_iff_toFinite_mem (x : IdeleGroup K) :
     x ∈ standardOpenSubgroup K ↔ toFinite K x ∈ finiteLevel 0 := by
@@ -201,7 +199,7 @@ theorem mem_standardOpenSubgroup_iff_toFinite_mem (x : IdeleGroup K) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Subgroup.map_le_iff_le_comap, MonoidHom.comap_ker]`. Conclude with `idealLevel_le_ker_iff hH _ (hχ.comp continuous_ofFinite) h𝔪`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_idealLevel_le_ker_iff (hH : NoSmallSubgroups H) (χ : IdeleGroup K →* H)
     (hχ : Continuous χ) {𝔪 : Ideal (𝓞 K)} (h𝔪 : 𝔪 ≠ ⊥) :

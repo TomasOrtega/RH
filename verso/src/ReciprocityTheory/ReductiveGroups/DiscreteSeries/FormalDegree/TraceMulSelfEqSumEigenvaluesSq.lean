@@ -12,7 +12,7 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `pmat`. Use `split_ifs with h h'`. Conclude with `Or.inr h.2`. Conclude with `Or.inr (Ne.symm h'.2)`. Conclude with `Or.inl rfl`.
+Replace the relevant objects with their definitions. Prove the second alternative. Prove the second alternative. Prove the first alternative. A detailed English derivation is pending.
 -/
 lemma pmat_entry_cases {ε : Fin n → Bool} (z : PCoord ε → ℂ) (a b : Fin n) :
     pmat z a b = 0 ∨ ε a ≠ ε b := by
@@ -23,24 +23,24 @@ lemma pmat_entry_cases {ε : Fin n → Bool} (z : PCoord ε → ℂ) (a b : Fin 
   · exact Or.inl rfl
 
 /- English proof (translation)
-Apply the tactic sequence `cases x <;> cases y <;> simp at h ⊢`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma jsgn_ne {x y : Bool} (h : x ≠ y) :
     ((if y then 1 else -1 : ℂ)) = -(if x then 1 else -1) := by
   cases x <;> cases y <;> simp at h ⊢
 
 /- English proof (translation)
-Apply the tactic sequence `cases x <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma jsgn_ne_zero (x : Bool) : ((if x then 1 else -1 : ℂ)) ≠ 0 := by
   cases x <;> simp
 
 /- English proof (translation)
-Establish `h2 : pmat z * Jm ε = -(Jm ε * pmat z)`. Use extensionality with `a b`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.neg_apply]`. Break down `pmat_entry_cases z a b with h | h` into its components or cases. Rewrite using `[h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[jsgn_ne h]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, h2⟩` and prove the remaining obligations. Unfold `inG`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[(pmat_isHermitian z).eq, h2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pmat_inP {ε : Fin n → Bool} (z : PCoord ε → ℂ) : inP ε (pmat z) := by
   have h2 : pmat z * Jm ε = -(Jm ε * pmat z) := by
@@ -57,21 +57,19 @@ theorem pmat_inP {ε : Fin n → Bool} (z : PCoord ε → ℂ) : inP ε (pmat z)
   simp
 
 /- English proof (translation)
-Take `⟨hG, hJ⟩` from `hX`. Unfold `inG at hG`. Establish `hent : ∀ a b, X a b * (if ε b then 1 else -1) = -((if ε a then 1 else -1) * X a b)`. Introduce `a b`. Establish `h` using `congrFun (congrFun hJ a) b`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h` using `[Jm, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Establish `hzero : ∀ a b, ε a = ε b → X a b = 0`. Introduce `a b hab`. Establish `h` using `hent a b`. Rewrite `h` using `[hab]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `cases hb : ε b <;> simp [hb] at h <;> first`. Consider the case `exact h`. Consider the case `linear_combination h / 2`. Consider the case `linear_combination (-1 / 2 : ℂ) * h`. Establish `hJJ : Jm ε * Jm ε = 1`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `cases ε a <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hH : Xᴴ = X`. Establish `h1 : Xᴴ * Jm ε = X * Jm ε`. Rewrite using `[hJ]`. Conclude with `eq_neg_of_add_eq_zero_left hG`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Unfold `pmat`. Use `split_ifs with h h'`. Both sides reduce to the same expression. Establish `h3` using `congrFun (congrFun hH a) b`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h3` using `[Matrix.conjTranspose_apply]`. Conclude with `h3`. Apply `(hzero a b ?_).symm` to reduce the goal to its premises. Break down `lt_trichotomy a b with hab | hab | hab` into its components or cases. Assume the negation of the conclusion as `hne`.
-
-Conclude with `h' ⟨hab, Ne.symm hne⟩`. Rewrite using `[hab]`. Assume the negation of the conclusion as `hne`. Conclude with `h ⟨hab, hne⟩`.
+Separate the alternatives or extract the components of the hypothesis. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem pmat_coords {ε : Fin n → Bool} (X : Matrix (Fin n) (Fin n) ℂ) (hX : inP ε X) :
     pmat (fun ab : PCoord ε => X ab.1.1 ab.1.2) = X := by
@@ -122,9 +120,9 @@ def pmatHalfSq {ε : Fin n → Bool} (z : PCoord ε → ℂ) (ab : Fin n × Fin 
   if h : ab.2 < ab.1 ∧ ε ab.1 ≠ ε ab.2 then ‖z ⟨ab, h⟩‖ ^ 2 else 0
 
 /- English proof (translation)
-Unfold `pmat pmatHalfSq`. Simplify using `only`. Distinguish the cases in `h1 : b < a ∧ ε a ≠ ε b`. Establish `h2 : ¬ (a < b ∧ ε b ≠ ε a)` using `fun h => lt_asymm h1.1 h.1`. Simplify using `only [dif_pos h1, dif_neg h2, add_zero]`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : a < b ∧ ε b ≠ ε a`. Simplify using `only [dif_neg h1, dif_pos h2, norm_star, zero_add]`. Simplify using `only [dif_neg h1, dif_neg h2, norm_zero, add_zero]`. Evaluate the numerical expressions.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 lemma norm_pmat_sq {ε : Fin n → Bool} (z : PCoord ε → ℂ) (a b : Fin n) :
     ‖pmat z a b‖ ^ 2 = pmatHalfSq z (a, b) + pmatHalfSq z (b, a) := by
@@ -139,11 +137,11 @@ lemma norm_pmat_sq {ε : Fin n → Bool} (z : PCoord ε → ℂ) (a b : Fin n) :
       norm_num
 
 /- English proof (translation)
-Establish `e1 : ∑ ab : Fin n × Fin n, pmatHalfSq z ab = ∑ ab ∈ univ.filter (fun ab : Fin n × Fin n => ab.2 < ab.1 ∧ ε ab.1 ≠ ε ab.2), pmatHalfSq z ab`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun ab _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Unfold `pmatHalfSq`. Rewrite using `[dif_neg h]`. Rewrite using `[e1, Finset.sum_subtype (p := fun ab : Fin n × Fin n => ab.2 < ab.1 ∧ ε ab.1 ≠ ε ab.2) _ (fun ab => by simp) (pmatHalfSq z)]`. Use `Finset.sum_congr rfl fun ab _ => ?_` and prove the remaining obligations. Unfold `pmatHalfSq`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos ab.2]`.
+A detailed English derivation is pending.
 -/
 lemma sum_pmatHalfSq {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
     ∑ ab : Fin n × Fin n, pmatHalfSq z ab = ∑ ab : PCoord ε, ‖z ab‖ ^ 2 := by
@@ -163,9 +161,9 @@ lemma sum_pmatHalfSq {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
   rw [dif_pos ab.2]
 
 /- English proof (translation)
-Unfold `S7.hs`. Establish `e : ∀ i j, ‖pmat z i j‖ ^ 2 = pmatHalfSq z (i, j) + pmatHalfSq z (j, i)` using `norm_pmat_sq z`. Simplify using `only [e, Finset.sum_add_distrib]`. Establish `hprod : ∑ i, ∑ j, pmatHalfSq z (i, j) = ∑ ab : Fin n × Fin n, pmatHalfSq z ab` using `(Fintype.sum_prod_type' (fun i j => pmatHalfSq z (i, j))).symm`. Establish `hswap : ∑ i, ∑ j, pmatHalfSq z (j, i) = ∑ i, ∑ j, pmatHalfSq z (i, j)` using `Finset.sum_comm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hswap, hprod, sum_pmatHalfSq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hs_pmat {ε : Fin n → Bool} (z : PCoord ε → ℂ) : hs (pmat z) = 2 * ∑ ab, ‖z ab‖ ^ 2 := by
   unfold S7.hs
@@ -178,15 +176,15 @@ theorem hs_pmat {ε : Fin n → Bool} (z : PCoord ε → ℂ) : hs (pmat z) = 2 
   ring
 
 /- English proof (translation)
-Simplify using `[pmat]`.
+Simplify using the standard rewrite rules.
 -/
 lemma pmat_diag_zero {ε : Fin n → Bool} (z : PCoord ε → ℂ) (a : Fin n) : pmat z a a = 0 := by
   simp [pmat]
 
 /- English proof (translation)
-Establish `h` using `(pmat_isHermitian z).trace_eq_sum_eigenvalues`. Establish `htr : (pmat z).trace = 0` using `by simp [Matrix.trace, pmat_diag_zero]`. Rewrite `h` using `[htr]`. Unfold `pev`. Establish `h2 : (((∑ i, (pmat_isHermitian z).eigenvalues i : ℝ)) : ℂ) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[Complex.ofReal_sum]`. Conclude with `h.symm`. Establish `h3` using `Complex.ofReal_eq_zero.mp h2`. Use `h3 using 2` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_pev {ε : Fin n → Bool} (z : PCoord ε → ℂ) : ∑ a, pev z a = 0 := by
   have h := (pmat_isHermitian z).trace_eq_sum_eigenvalues
@@ -200,11 +198,9 @@ theorem sum_pev {ε : Fin n → Bool} (z : PCoord ε → ℂ) : ∑ a, pev z a =
   convert h3 using 2
 
 /- English proof (translation)
-Use `set U : Matrix (Fin n) (Fin n) ℂ := (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU`. Use `set D : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal (RCLike.ofReal ∘ hA.eigenvalues) with hD`. Establish `hUU : star U * U = 1` using `Unitary.coe_star_mul_self hA.eigenvectorUnitary`. Establish `hA' : A = U * D * star U` using `hA.spectral_theorem`. Establish `hsq : A * A = U * (D * D) * star U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hA']`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = U * (D * D) * star U := by rw [hUU, mul_one]; simp only [mul_assoc]`. Rewrite using `[hsq, Matrix.trace_mul_comm, ← mul_assoc, hUU, one_mul, hD, Matrix.diagonal_mul_diagonal, Matrix.trace_diagonal]`.
-
-Simplify using `[sq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma trace_mul_self_eq_sum_eigenvalues_sq {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) :
     (A * A).trace = ∑ i, ((hA.eigenvalues i : ℂ)) ^ 2 := by
@@ -222,11 +218,11 @@ lemma trace_mul_self_eq_sum_eigenvalues_sq {A : Matrix (Fin n) (Fin n) ℂ} (hA 
   simp [sq]
 
 /- English proof (translation)
-Unfold `S7.hs`. Rewrite using `[Matrix.trace]`. Simplify using `only [Matrix.diag, Matrix.mul_apply]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hji : A j i = star (A i j)`. Establish `h` using `congrFun (congrFun hA.eq j) i`. Rewrite `h` using `[Matrix.conjTranspose_apply]`. Conclude with `h.symm`. Rewrite using `[hji, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma trace_mul_self_eq_hs {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) :
     (A * A).trace = ((hs A : ℝ) : ℂ) := by
@@ -244,7 +240,7 @@ lemma trace_mul_self_eq_hs {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian)
   ring
 
 /- English proof (translation)
-Establish `h1` using `trace_mul_self_eq_sum_eigenvalues_sq (pmat_isHermitian z)`. Rewrite `h1` using `[trace_mul_self_eq_hs (pmat_isHermitian z)]`. Unfold `pev`. Conclude with `h1.symm` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sum_pev_sq {ε : Fin n → Bool} (z : PCoord ε → ℂ) : ∑ a, pev z a ^ 2 = hs (pmat z) := by
   have h1 := trace_mul_self_eq_sum_eigenvalues_sq (pmat_isHermitian z)
@@ -253,21 +249,21 @@ theorem sum_pev_sq {ε : Fin n → Bool} (z : PCoord ε → ℂ) : ∑ a, pev z 
   exact_mod_cast h1.symm
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_subtype, pOf, qOf, ← Finset.card_product]`. Use `Finset.card_nbij' (fun ab => if ε ab.1 then ab else (ab.2, ab.1)) (fun xy => (max xy.1 xy.2, min xy.1 xy.2)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ h`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at h`. Take `⟨hba, hne⟩` from `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp_all`. Introduce and unpack `⟨x, y⟩ h`. Simplify using `only [Finset.coe_product, Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_prod, Set.mem_setOf_eq] at h`. Take `⟨hx, hy⟩` from `h`. Establish `hxy : x ≠ y`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `e`. Rewrite `hx` using `[e, hy]`. Conclude with `Bool.false_ne_true hx`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq]`. Break down `lt_or_gt_of_ne hxy with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[max_eq_right h.le, min_eq_left h.le]`. Conclude with `⟨h, by rw [hx, hy]; decide⟩`. Rewrite using `[max_eq_left h.le, min_eq_right h.le]`. Conclude with `⟨h, by rw [hx, hy]; decide⟩`. Introduce and unpack `⟨a, b⟩ h`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at h`. Take `⟨hba, hne⟩` from `h`. Consider the cases of `ha : ε a`. Simplify using `only [ha, Bool.false_eq_true, if_false]`. Rewrite using `[max_eq_right hba.le, min_eq_left hba.le]`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ha, if_true]`. Rewrite using `[max_eq_left hba.le, min_eq_right hba.le]`. Introduce and unpack `⟨x, y⟩ h`. Simplify using `only [Finset.coe_product, Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_prod, Set.mem_setOf_eq] at h`. Take `⟨hx, hy⟩` from `h`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxy : x ≠ y`. Introduce `e`. Rewrite `hx` using `[e, hy]`. Conclude with `Bool.false_ne_true hx`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_or_gt_of_ne hxy with h | h` into its components or cases. Rewrite using `[max_eq_right h.le, min_eq_left h.le]`. Simplify using `[hy]`. Rewrite using `[max_eq_left h.le, min_eq_right h.le]`. Simplify using `[hx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_PCoord (ε : Fin n → Bool) : Fintype.card (PCoord ε) = pOf ε * qOf ε := by
   classical

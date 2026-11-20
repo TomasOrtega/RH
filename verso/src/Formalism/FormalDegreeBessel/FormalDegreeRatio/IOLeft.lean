@@ -9,7 +9,7 @@ namespace Formalism.QuantumDeterminants
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [RdV, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma ioLeft_rdV_left {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (X h : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (Fin n) ℂ → E) :
@@ -18,7 +18,7 @@ lemma ioLeft_rdV_left {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace �
   simp only [RdV, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [EabV, EcV, ioLeft_rdV_left]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma ioLeft_eabV_left {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (ε : Fin n → Bool) (a b : Fin n) (h : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (Fin n) ℂ → E) :
@@ -27,7 +27,7 @@ lemma ioLeft_eabV_left {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace 
   simp only [EabV, EcV, ioLeft_rdV_left]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [EabH, ioLeft_rdV_left]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma ioLeft_eabH_left {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (H : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) (h : Matrix (Fin n) (Fin n) ℂ)
@@ -37,9 +37,9 @@ lemma ioLeft_eabH_left {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace 
   simp only [EabH, ioLeft_rdV_left]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons T L ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih (fun T' hT' => hL T' (List.mem_cons.2 (Or.inr hT')))]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hL T (List.mem_cons.2 (Or.inl rfl)) _`.
+A detailed English derivation is pending.
 -/
 lemma ioLeft_foldr_left {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (h : Matrix (Fin n) (Fin n) ℂ)
@@ -55,9 +55,9 @@ lemma ioLeft_foldr_left {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace
     exact hL T (List.mem_cons.2 (Or.inl rfl)) _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [qminorOp, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[ioLeft_foldr_left h _ ?_ f]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Introduce `T hT f'`. Simplify using `only [List.mem_ofFn, Set.mem_range] at hT`. Take `⟨k, rfl⟩` from `hT`. Use function extensionality and compare the values at `g`. Simplify using `only [Top, hE]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private lemma qminorOp_comm_left_mul_of_Eop_comm_left_mul {n t : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (Eop : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E) → (Matrix (Fin n) (Fin n) ℂ → E))
@@ -78,28 +78,28 @@ private lemma qminorOp_comm_left_mul_of_Eop_comm_left_mul {n t : ℕ} {E : Type}
   simp only [Top, hE]
 
 /- English proof (translation)
-Introduce `n t ε E _ _ f a b u h`. Conclude with `qminorOp_comm_left_mul_of_Eop_comm_left_mul (EabV ε) h (fun a b f => ioLeft_eabV_left ε a b h f) a b u f`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem quantum_minor_left_holds : QMinorLeft := by
   intro n t ε E _ _ f a b u h
   exact qminorOp_comm_left_mul_of_Eop_comm_left_mul (EabV ε) h (fun a b f => ioLeft_eabV_left ε a b h f) a b u f
 
 /- English proof (translation)
-Introduce `n ε E _ _ f u h`. Conclude with `quantum_minor_left_holds n n ε E f id id u h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem capelli_left_holds : CapLeft := by
   intro n ε E _ _ f u h
   exact quantum_minor_left_holds n n ε E f id id u h
 
 /- English proof (translation)
-Introduce `n E _ _ H f u h`. Conclude with `qminorOp_comm_left_mul_of_Eop_comm_left_mul (EabH H) h (fun a b f => ioLeft_eabH_left H a b h f) id id u f`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem capelli_left_conjugated : CapLeftH := by
   intro n E _ _ H f u h
   exact qminorOp_comm_left_mul_of_Eop_comm_left_mul (EabH H) h (fun a b f => ioLeft_eabH_left H a b h f) id id u f
 
 /- English proof (translation)
-Simplify using `only [Finset.sum_mul, Finset.mul_sum, smul_mul_smul_comm, smul_sub, Finset.sum_sub_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by congr 1; ring`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma commutator_sum_smul_eq_sum_sum_smul_commutator {A : Type*} [Ring A] [Algebra ℂ A] {ι κ : Type*} [Fintype ι]
     [Fintype κ] (r : ι → ℂ) (x : ι → A) (s : κ → ℂ) (y : κ → A) :
@@ -111,11 +111,11 @@ private lemma commutator_sum_smul_eq_sum_sum_smul_commutator {A : Type*} [Ring A
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by congr 1; ring
 
 /- English proof (translation)
-Rewrite using `[commutator_sum_smul_eq_sum_sum_smul_commutator]`. Simplify using `only [hE, smul_sub, Finset.sum_sub_distrib, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul, Finset.sum_mul]`. Use `congr 1`. Use `first`. Consider the case `(refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `congr 1 <;> ring)`. Consider the case `(rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `congr 1 <;> ring)`. Use `first`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `(refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_`. Apply the tactic sequence `congr 1 <;> ring)`. Consider the case `(rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `congr 1 <;> ring)`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private lemma commutator_right_transform_of_commutation_relation {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A)
     (M Q : Matrix (Fin n) (Fin n) ℂ)
@@ -141,11 +141,11 @@ private lemma commutator_right_transform_of_commutation_relation {A : Type*} [Ri
        congr 1 <;> ring)
 
 /- English proof (translation)
-Rewrite using `[commutator_sum_smul_eq_sum_sum_smul_commutator]`. Simplify using `only [hF, smul_sub, Finset.sum_sub_distrib, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul, Finset.sum_mul]`. Use `congr 1`. Use `first`. Consider the case `(refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `congr 1 <;> ring)`. Consider the case `(rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `congr 1 <;> ring)`. Use `first`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `(refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_`. Apply the tactic sequence `congr 1 <;> ring)`. Consider the case `(rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `congr 1 <;> ring)`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private lemma commutator_left_transform_of_commutation_relation {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (F : Fin n → Fin n → A)
     (M P : Matrix (Fin n) (Fin n) ℂ)
@@ -171,11 +171,11 @@ private lemma commutator_left_transform_of_commutation_relation {A : Type*} [Rin
        congr 1 <;> ring)
 
 /- English proof (translation)
-Introduce `A _ _ n E P Q hE hQP`. Establish `h1 : ∀ a b c d, E a b * E c d - E c d * E a b = (1 : Matrix (Fin n) (Fin n) ℂ) b c • E a d - (1 : Matrix (Fin n) (Fin n) ℂ) d a • E c b`. Introduce `a b c d`. Rewrite using `[hE a b c d]`. Simplify using `only [Matrix.one_apply, ite_smul, one_smul, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3` using `commutator_left_transform_of_commutation_relation (fun a b => ∑ j, Q b j • E a j) (Q * 1) P (commutator_right_transform_of_commutation_relation E 1 Q h1)`. Use `beta_reduce at h3`. Establish `e : ∀ a b, (∑ c, ∑ d, (P c a * Q b d) • E c d) = ∑ i, P i a • ∑ j, Q b j • E i j`. Introduce `a b`. Simplify using `only [Finset.smul_sum, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b c d`. Simplify using `only [e]`. Rewrite using `[h3 a b c d, Matrix.mul_one, hQP]`. Simplify using `only [Matrix.one_apply, ite_smul, one_smul, zero_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gl_relation_adjoint_holds : GlRelAd := by
   intro A _ _ n E P Q hE hQP

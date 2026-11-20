@@ -70,7 +70,7 @@ def srcAt (o : LamObj c nΨ n') (p : Σ τ : E →+* ℂ, Fin (blockSize H nΨ n
   else .inr (o.τ'.symm ⟨p.1, h⟩, p.2.cast (if_neg h))
 
 /- English proof (translation)
-Unfold `srcAt`. Apply the tactic sequence `split_ifs with h <;> exact ⟨by simp [FinalTheorems.chr], rfl⟩`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem srcAt_spec (o : LamObj c nΨ n') (p : Σ τ : E →+* ℂ, Fin (blockSize H nΨ n' τ)) :
     (srcAt o p).chr = p.1 ∧ (srcAt o p).copy = (p.2 : ℕ) := by
@@ -78,13 +78,13 @@ theorem srcAt_spec (o : LamObj c nΨ n') (p : Σ τ : E →+* ℂ, Fin (blockSiz
   split_ifs with h <;> exact ⟨by simp [FinalTheorems.chr], rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, i⟩ ⟨τ', i'⟩ h`. Establish `h1` using `srcAt_spec o ⟨τ, i⟩`. Establish `h2` using `srcAt_spec o ⟨τ', i'⟩`. Rewrite `h1` using `[h]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `rfl : τ = τ'` from `h1.1.symm.trans h2.1`. Take `rfl : i = i'` from `Fin.ext (h1.2.symm.trans h2.2)`. Both sides reduce to the same expression. Introduce and unpack `(⟨a, j⟩ | ⟨a, j⟩)`. Establish `h` using `(o.τΨ a).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨⟨(o.τΨ a).1, j.cast (if_pos h).symm⟩, ?_⟩` and prove the remaining obligations. Unfold `srcAt`. Rewrite using `[dif_pos h]`. Simplify using `only [Subtype.coe_eta, Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `h` using `(o.τ' a).2`. Use `⟨⟨(o.τ' a).1, j.cast (if_neg h).symm⟩, ?_⟩` and prove the remaining obligations. Unfold `srcAt`. Rewrite using `[dif_neg h]`. Simplify using `only [Subtype.coe_eta, Equiv.symm_apply_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -112,7 +112,7 @@ theorem srcAt_bijective (o : LamObj c nΨ n') : Function.Bijective (srcAt o) := 
       rfl
 
 /- English proof (translation)
-Set `b` to `Equiv.ofBijective _ (srcAt_bijective o)`. Set `d : FinalTheorems o ≃ Fin o.xB.P.g` to `Fintype.equivFinOfCardEq (by simp [h₁, h₂, h₃, mul_add])`. Use `⟨⟨blockSize H nΨ n', b.trans d, d.symm, U, fun k => (d.symm k).line⟩, rfl, rfl, d.symm.bijective, fun τ i => ?_, fun _ => rfl⟩` and prove the remaining obligations. Use `srcAt_spec o ⟨τ, i⟩` as an intermediate fact. Simplify `this` using `[b]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_isEvident (o : LamObj c nΨ n') {f : ℕ} (h₁ : o.xΨ.P.g = f) (h₂ : o.x'.P.g = f)
     (h₃ : o.xB.P.g = f * (nΨ + n')) (U : Matrix (Fin o.xB.P.g) (Fin o.xB.P.g) o.K₁) :

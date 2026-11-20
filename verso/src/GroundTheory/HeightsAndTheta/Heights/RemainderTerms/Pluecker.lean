@@ -20,7 +20,7 @@ def subsetCols {p : ℕ} (S : {s : Finset κ // s.card = p}) (i : Fin p) : κ :=
   ((S.1.equivFinOfCardEq S.2).symm i : κ)
 
 /- English proof (translation)
-Introduce `i j h`. Conclude with `(S.1.equivFinOfCardEq S.2).symm.injective (Subtype.ext h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem subsetCols_injective {p : ℕ} (S : {s : Finset κ // s.card = p}) :
     Function.Injective (subsetCols S) := by
@@ -28,23 +28,23 @@ theorem subsetCols_injective {p : ℕ} (S : {s : Finset κ // s.card = p}) :
   exact (S.1.equivFinOfCardEq S.2).symm.injective (Subtype.ext h)
 
 /- English proof (translation)
-The claim follows from `((S.1.equivFinOfCardEq S.2).symm i).2`.
+A detailed English derivation is pending.
 -/
 theorem subsetCols_mem {p : ℕ} (S : {s : Finset κ // s.card = p}) (i : Fin p) :
     subsetCols S i ∈ S.1 :=
   ((S.1.equivFinOfCardEq S.2).symm i).2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨S.1.equivFinOfCardEq S.2 ⟨k, hk⟩, by simp [subsetCols]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_subsetCols_eq {p : ℕ} (S : {s : Finset κ // s.card = p}) {k : κ}
     (hk : k ∈ S.1) : ∃ i, subsetCols S i = k :=
   ⟨S.1.equivFinOfCardEq S.2 ⟨k, hk⟩, by simp [subsetCols]⟩
 
 /- English proof (translation)
-Simplify using `only [det_apply', mul_apply, Finset.prod_univ_sum, Finset.mul_sum, Fintype.piFinset_univ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun φ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [submatrix_apply, id, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_mul_expand [Fintype κ] {p : ℕ} (A : Matrix (Fin p) κ R) (B : Matrix κ (Fin p) R) :
     (A * B).det = ∑ φ : Fin p → κ, (A.submatrix id φ).det * ∏ i, B (φ i) i := by
@@ -57,7 +57,7 @@ theorem det_mul_expand [Fintype κ] {p : ℕ} (A : Matrix (Fin p) κ R) (B : Mat
   ring
 
 /- English proof (translation)
-Simplify using `only [Function.Injective, not_forall] at h`. Take `⟨i, j, hij, hne⟩` from `h`. Conclude with `det_zero_of_column_eq hne (fun k => by simp [hij])`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem det_submatrix_eq_zero_of_not_injective {p : ℕ} (A : Matrix (Fin p) κ R)
     (φ : Fin p → κ) (h : ¬ Function.Injective φ) : (A.submatrix id φ).det = 0 := by
@@ -66,27 +66,25 @@ theorem det_submatrix_eq_zero_of_not_injective {p : ℕ} (A : Matrix (Fin p) κ 
   exact det_zero_of_column_eq hne (fun k => by simp [hij])
 
 /- English proof (translation)
-Rewrite using `[det_mul_expand]`. Rewrite using `[← Finset.sum_filter_of_ne (p := Function.Injective) (fun φ _ h => by`. Assume the negation of the conclusion as `hφ`. Conclude with `h (by rw [det_submatrix_eq_zero_of_not_injective A φ hφ, zero_mul]))]`. Establish `hpairs : ∑ S : {s : Finset κ // s.card = p}, (A.submatrix id (subsetCols S)).det * (B.submatrix (subsetCols S) id).det = ∑ x : {s : Finset κ // s.card = p} × Equiv.Perm (Fin p), (A.submatrix id (subsetCols x.1 ∘ x.2)).det * ∏ i, B (subsetCols x.1 (x.2 i)) i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[det_apply' (B.submatrix _ _), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun π _ => ?_` and prove the remaining obligations. Establish `: A.submatrix id (subsetCols S ∘ π) = (A.submatrix id (subsetCols S)).submatrix id π` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, det_permute']`. Simplify using `only [submatrix_apply, id]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hpairs]`. Use `symm`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_bij (fun x _ => subsetCols x.1 ∘ x.2) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x _`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `(subsetCols_injective x.1).comp x.2.injective`. Introduce and unpack `⟨S, π⟩ _ ⟨T, π'⟩ _ hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only at hxy`. Establish `hST : S = T`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `k`. Prove the components needed by the constructor for the conclusion.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hk`. Take `⟨i, rfl⟩` from `exists_subsetCols_eq S hk`. Use `congrFun hxy (π.symm i)` as an intermediate fact. Simplify using `only [Function.comp_apply, Equiv.apply_symm_apply] at this`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `subsetCols_mem T _`. Introduce `hk`. Take `⟨i, rfl⟩` from `exists_subsetCols_eq T hk`. Use `congrFun hxy (π'.symm i)` as an intermediate fact. Simplify using `only [Function.comp_apply, Equiv.apply_symm_apply] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `subsetCols_mem S _`. Substitute `hST` using the available equality. Establish `: π = π'`. Use extensionality with `i`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `congrArg Fin.val (subsetCols_injective S (congrFun hxy i))`. Rewrite using `[this]`. Introduce `φ hφ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hφ`. Set `S : {s : Finset κ // s.card = p}` to `⟨Finset.univ.image φ, by rw [Finset.card_image_of_injective _ hφ]; simp⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `g : Fin p → Fin p` to `fun i => S.1.equivFinOfCardEq S.2 ⟨φ i, Finset.mem_image_of_mem φ (Finset.mem_univ i)⟩`. Establish `hg : Function.Injective g`. Introduce `i j h`. Use `(S.1.equivFinOfCardEq S.2).injective h` as an intermediate fact. Conclude with `hφ (congrArg Subtype.val this)`.
-
-Use `⟨(S, Equiv.ofBijective g (Finite.injective_iff_bijective.mp hg)), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[subsetCols, g, S]`. Introduce `x _`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cauchyBinet [Fintype κ] [DecidableEq κ] {p : ℕ} (A : Matrix (Fin p) κ R) (B : Matrix κ (Fin p) R) :
     (A * B).det = ∑ S : {s : Finset κ // s.card = p},
@@ -159,11 +157,11 @@ end Elem
 open Elem in
 
 /- English proof (translation)
-Introduce `p q Z`. Use `set A := Matrix.fromCols (1 : Matrix (Fin p) (Fin p) ℂ) Z with hAdef`. Establish `hA : 1 + Z * Z.conjTranspose = A * A.conjTranspose`. Rewrite using `[hAdef, conjTranspose_fromCols_eq_fromRows_conjTranspose, fromCols_mul_fromRows]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA, cauchyBinet, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Establish `hB : A.conjTranspose.submatrix (subsetCols S) id = (A.submatrix id (subsetCols S)).conjTranspose`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB, det_conjTranspose, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem PlueckerCauchyBinet.intersectionNumber_baseChange : PlueckerCauchyBinet.Statement := by
   intro p q Z
@@ -181,25 +179,23 @@ theorem PlueckerCauchyBinet.intersectionNumber_baseChange : PlueckerCauchyBinet.
   rfl
 
 /- English proof (translation)
-Introduce `p q Z hZ`. Use `set H := 1 + Z * Z.conjTranspose with hHdef`. Establish `hpsd : H.PosSemidef` using `Matrix.PosSemidef.one.add (posSemidef_self_mul_conjTranspose Z)`. Establish `hH : H.IsHermitian` using `hpsd.isHermitian`. Use `set ev := hH.eigenvalues`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ i, 0 ≤ ev i` using `hpsd.eigenvalues_nonneg`. Establish `hdet : H.det = ((∏ i, ev i : ℝ) : ℂ)`. Rewrite using `[hH.det_eq_prod_eigenvalues]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htrH : H.trace = ((p * (1 + q) : ℝ) : ℂ)`. Establish `hZZ : (Z * Z.conjTranspose).trace = ((p * q : ℕ) : ℂ)`. Simplify using `only [trace, Matrix.diag, mul_apply, conjTranspose_apply]`. Establish `: ∀ i j, Z i j * (starRingEnd ℂ) (Z i j) = 1`. Introduce `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hZ i j]`. Simplify using the standard rewrite rules. Simplify using `[this]`. Rewrite using `[hHdef, trace_add, trace_one, hZZ]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∑ i, ev i = p * (1 + q)`. Establish `h1` using `hH.trace_eq_sum_eigenvalues`. Rewrite `h1` using `[htrH]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((∑ i, ev i : ℝ) : ℂ) = ((p * (1 + q) : ℝ) : ℂ)`. Rewrite using `[h1]`. Use `push_cast`. Both sides reduce to the same expression. Conclude with `this` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hdet, Complex.ofReal_re]`. Use `push_cast`. Break down `Nat.eq_zero_or_pos p with hp | hp` into its components or cases. Substitute `hp` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp' : (0 : ℝ) < p` using `by exact_mod_cast hp`. Establish `hamgm` using `Real.geom_mean_le_arith_mean_weighted (s := Finset.univ) (fun _ : Fin p => 1 / (p : ℝ)) ev (fun i _ => by positivity) (by rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]; field_simp) (fun i _ => hev i)`. Establish `hrhs : ∑ i, 1 / (p : ℝ) * ev i = 1 + q`. Rewrite using `[← Finset.mul_sum, hsum]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hamgm` using `[hrhs]`. Establish `hprod : ∏ i, ev i = (∏ i, ev i ^ (1 / (p : ℝ))) ^ p`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (hev i), one_div_mul_cancel hp'.ne', Real.rpow_one]`.
-
-Rewrite using `[hprod]`. Conclude with `pow_le_pow_left₀ (Finset.prod_nonneg fun i _ => Real.rpow_nonneg (hev i) _) hamgm p`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PlueckerHadamard.intersectionNumber_baseChange : PlueckerHadamard.Statement := by
   intro p q Z hZ

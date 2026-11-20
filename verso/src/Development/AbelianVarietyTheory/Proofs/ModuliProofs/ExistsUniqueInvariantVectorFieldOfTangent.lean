@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.KS.InvField
 
 /- English proof (translation)
-Rewrite using `[pbT_of_le g h₁, pbT_of_le f h₂, pbT_of_le (f ≫ g) (h₂.trans (f.preimage_mono h₁))]`. Conclude with `congrArg (fun φ => φ.hom s) (Scheme.Hom.appLE_comp_appLE f g O₀ O₁ O₂ h₁ h₂)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pbT_pbT {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) {O₀ : X.Opens} {O₁ : Y.Opens} {O₂ : Z.Opens}
     (h₁ : O₁ ≤ g ⁻¹ᵁ O₀) (h₂ : O₂ ≤ f ⁻¹ᵁ O₁) (s : Γ(X, O₀)) :
@@ -23,23 +23,23 @@ theorem pbT_pbT {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) {O₀ : X.Opens
   exact congrArg (fun φ => φ.hom s) (Scheme.Hom.appLE_comp_appLE f g O₀ O₁ O₂ h₁ h₂)
 
 /- English proof (translation)
-Rewrite using `[pbT_of_le (𝟙 Y) (O := O) (O₀ := O) le_rfl]`. Conclude with `(congrArg (fun φ => φ.hom s) (Scheme.Hom.appLE_eq_app (𝟙 Y) (U := O))).trans rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pbT_id {Y : Scheme.{0}} {O : Y.Opens} (s : Γ(Y, O)) : pbT (𝟙 Y) s O = s := by
   rw [pbT_of_le (𝟙 Y) (O := O) (O₀ := O) le_rfl]
   exact (congrArg (fun φ => φ.hom s) (Scheme.Hom.appLE_eq_app (𝟙 Y) (U := O))).trans rfl
 
 /- English proof (translation)
-Rewrite using `[pbT_of_le f le_rfl, Scheme.Hom.appLE_eq_app]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pbT_eq_app {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O : Y.Opens} (s : Γ(Y, O)) :
     pbT f s (f ⁻¹ᵁ O) = (f.app O).hom s := by
   rw [pbT_of_le f le_rfl, Scheme.Hom.appLE_eq_app]
 
 /- English proof (translation)
-Establish `h : (spMap φ).appLE ⊤ ⊤ (fun _ _ => trivial) = (spMap φ).appTop`. Rewrite using `[Scheme.Hom.appTop, ← Scheme.Hom.appLE_eq_app]`. Both sides reduce to the same expression. Establish `h2` using `congrArg (fun ψ => ψ.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))`. Establish `h3` using `congrArg (fun ψ => ψ.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) (Scheme.Hom.appLE_comp_appLE q (spMap φ) ⊤ ⊤ O (fun _ _ => trivial) (fun _ _ => trivial))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[h]`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h2 h3`. Unfold `constFn`. Rewrite using `[← h3, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem constFn_spMap {R S : Type} [CommRing R] [CommRing S] {Y : Scheme.{0}} (q : Y ⟶ Sp S) (φ : R →+* S)
     (O : Y.Opens) (a : R) : constFn (q ≫ spMap φ) O a = constFn q O (φ a) := by
@@ -54,35 +54,33 @@ theorem constFn_spMap {R S : Type} [CommRing R] [CommRing S] {Y : Scheme.{0}} (q
   rw [← h3, h2]
 
 /- English proof (translation)
-Simplify using `[constFn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constFn_mul {R : Type} [CommRing R] {Y : Scheme.{0}} (q : Y ⟶ Sp R)
     (O : Y.Opens) (a b : R) : constFn q O (a * b) = constFn q O a * constFn q O b := by
   simp [constFn]
 
 /- English proof (translation)
-Simplify using `[constFn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constFn_zero {R : Type} [CommRing R] {Y : Scheme.{0}} (q : Y ⟶ Sp R)
     (O : Y.Opens) : constFn q O 0 = 0 := by
   simp [constFn]
 
 /- English proof (translation)
-Take `⟨hO, -, hex⟩` from `GlobalTheory.T.const_thickening_field_structure K Y Y' q π ρ j hp hρ hπ`. Establish `hTW : ∀ W : Y.Opens, ρ ⁻¹ᵁ W ≤ T ⁻¹ᵁ W` using `fun W => by`. Use `hO (T ⁻¹ᵁ W)` as an intermediate fact. Rewrite `this` using `[← Scheme.Hom.comp_preimage j T, hT, Scheme.Hom.id_preimage]`. Conclude with `this.le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hjW : ∀ W : Y.Opens, W ≤ j ⁻¹ᵁ (ρ ⁻¹ᵁ W)` using `fun W => by`. Rewrite using `[← Scheme.Hom.comp_preimage, hρ, Scheme.Hom.id_preimage]`. Establish `uniq : ∀ (W : Y.Opens) (a b b' : Γ(Y, W)), pbT ρ a (ρ ⁻¹ᵁ W) + constFn π _ DualNumber.eps * pbT ρ b (ρ ⁻¹ᵁ W) = pbT ρ a (ρ ⁻¹ᵁ W) + constFn π _ DualNumber.eps * pbT ρ b' (ρ ⁻¹ᵁ W) → b = b'`. Introduce `W a b b' h`. Simplify using `only [pbT_eq_app] at h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(hex W _).unique (y₁ := (a, b)) (y₂ := (a, b')) rfl h` as an intermediate fact. Conclude with `congrArg Prod.snd this`. Establish `hee : ∀ O, constFn π O DualNumber.eps * constFn π O DualNumber.eps = 0` using `fun O => by`. Rewrite using `[← constFn_mul, DualNumber.eps_mul_eps, constFn_zero]`. Use `⟨?_, fun dd hd => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose ab hab using fun W (f : Γ(Y, W)) => (hex W (pbT T f (ρ ⁻¹ᵁ W))).exists`. Use `⟨fun W f => (ab W f).2, (hP _).2 fun W f => ?_⟩` and prove the remaining obligations. Establish `h` using `hab W f`. Rewrite `h` using `[← pbT_eq_app, ← pbT_eq_app]`. Establish `h'` using `congrArg (fun s => pbT j s W) h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [pbT_add, pbT_mul] at h'`. Rewrite `h'` using `[pbT_pbT j T (hTW W) (hjW W), pbT_pbT j ρ le_rfl (hjW W), hT, hρ, pbT_id, pbT_id, pbT_constFn π j (hjW W), hπ, constFn_spMap]`. Establish `e : (TrivSqZeroExt.fstHom K K K).toRingHom DualNumber.eps = 0` using `by simp`. Rewrite `h'` using `[e, constFn_zero, zero_mul, add_zero]`. Rewrite using `[h, ← h']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hd'` using `(hP _).1 hd`. Use `⟨fun W f f' => uniq W (f + f') _ _ ?_, fun W f f' => uniq W (f * f') _ _ ?_, fun W W' f h => uniq W' (rsT f W') _ _ ?_, fun W a => uniq W (constFn q W a) _ _ ?_, fun dd' hd₁ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hd', pbT_add, hd', hd', pbT_add, pbT_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hd', pbT_mul, hd', hd', pbT_add, pbT_mul, pbT_mul, pbT_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(pbT ρ (dd W f) (ρ ⁻¹ᵁ W) * pbT ρ (dd W f') (ρ ⁻¹ᵁ W)) * hee (ρ ⁻¹ᵁ W)`. Establish `h1 : ρ ⁻¹ᵁ W' ≤ ρ ⁻¹ᵁ W` using `ρ.preimage_mono h`. Rewrite using `[← hd', pbT_rsT T h (hTW W'), pbT_rsT ρ h le_rfl, pbT_rsT ρ h le_rfl, ← rsT_pbT T (hTW W) h1, hd', rsT_add, rsT_mul, rsT_pbT ρ le_rfl h1, rsT_pbT ρ le_rfl h1, rsT_constFn π h1]`. Rewrite using `[← hd', pbT_constFn q T (hTW W), pbT_constFn q ρ le_rfl, hq, pbT_zero, mul_zero, add_zero]`. Use function extensionality and compare the values at `W f`.
-
-Conclude with `uniq W f _ _ (((hP _).1 hd₁ W f).symm.trans (hd' W f))`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem aux {K : Type} [Field K] {Y Y' : Scheme.{0}} (q : Y ⟶ Sp K) (π : Y' ⟶ Sp (DualNumber K)) (ρ T : Y' ⟶ Y)
     (j : Y ⟶ Y') (hp : IsPullback ρ π q (spMap (algebraMap K (DualNumber K)))) (hρ : j ≫ ρ = 𝟙 Y)
@@ -133,13 +131,13 @@ theorem aux {K : Type} [Field K] {Y Y' : Scheme.{0}} (q : Y ⟶ Sp K) (π : Y' �
       exact uniq W f _ _ (((hP _).1 hd₁ W f).symm.trans (hd' W f))
 
 /- English proof (translation)
-Introduce `K _ A₀ _ v hv`. Set `s : 𝟙_ (Over (Sp K)) ⟶ epsR K` to `Over.homMk (spMap (TrivSqZeroExt.fstHom K K K).toRingHom) (by`. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hs : s ≫ v = η[A₀]` using `Over.OverMorphism.ext hv`. Set `j : A₀ ⟶ epsR K ⊗ A₀` to `lift (toUnit A₀ ≫ s) (𝟙 A₀)`. Establish `hT : j ≫ ((fst (epsR K) A₀ ≫ v) * snd (epsR K) A₀) = 𝟙 A₀`. Rewrite using `[MonObj.comp_mul, lift_fst_assoc, lift_snd, Category.assoc, hs, ← Hom.one_def, _root_.one_mul]`. Use `aux A₀.hom (fst (epsR K) A₀).left (snd (epsR K) A₀).left ((fst (epsR K) A₀ ≫ v) * snd (epsR K) A₀).left j.left ?_ ?_ ?_ ?_ ?_ (IsInvDer v) (fun _ => Iff.rfl)` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(IsPullback.of_hasPullback (epsR K).hom A₀.hom).flip`. Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression. Rewrite using `[← Over.comp_left, lift_fst, Over.comp_left, Over.toUnit_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, hT]`. Both sides reduce to the same expression. Rewrite using `[Over.w, Over.w]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Field K] (A₀ : Over (Sp K)) [GrpObj A₀] (v : epsR K ⟶ A₀), IsTangent v → (∃ dd, IsInvDer v dd) ∧ ∀ dd, IsInvDer v dd → (∀ W f f', dd W (f + f') = dd W f + dd W f') ∧ (∀ W f f', dd W (f * f') = f * dd W f' + f' * dd W f) ∧ (∀ W W' (f : Γ(A₀.left, W)), W' ≤ W → dd W' (rsT f W') = rsT (dd W f) W') ∧ (∀ W a, dd W (constFn A₀.hom W a) = 0) ∧ ∀ dd', IsInvDer v dd' → dd' = dd := by
   intro K _ A₀ _ v hv

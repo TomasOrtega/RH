@@ -33,7 +33,7 @@ abbrev incO (W : Submodule K V) : W →ₗ[𝓞 K] V := W.subtype.restrictScalar
 abbrev latW (W : Submodule K V) (T : Submodule (𝓞 K) V) : Submodule (𝓞 K) W := T.comap (incO W)
 
 /- English proof (translation)
-Rewrite using `[Submodule.map_comap_eq, inf_eq_right]`. Introduce `x hx`. Conclude with `⟨⟨x, hT.2 ▸ Submodule.subset_span hx⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem map_latW {W : Submodule K V} {T : Submodule (𝓞 K) V} (hT : IsLatIn W T) :
     (latW W T).map (incO W) = T := by
@@ -42,14 +42,14 @@ theorem map_latW {W : Submodule K V} {T : Submodule (𝓞 K) V} (hT : IsLatIn W 
   exact ⟨⟨x, hT.2 ▸ Submodule.subset_span hx⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem incO_injective (W : Submodule K V) : Function.Injective (incO W) := Subtype.val_injective
 
 /- English proof (translation)
-Use `⟨Submodule.fg_of_fg_map_injective _ (incO_injective W) (by rw [map_latW hT]; exact hT.1), ?_⟩` and prove the remaining obligations. Apply `Submodule.map_injective_of_injective (f := W.subtype) Subtype.val_injective` to reduce the goal to its premises. Establish `himg : (Subtype.val '' ((latW W T : Submodule (𝓞 K) W) : Set W)) = (T : Set V)`. Establish `e` using `congrArg (fun S : Submodule (𝓞 K) V => (S : Set V)) (map_latW hT)`. Simplify `e` using `[Submodule.map_coe]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, Submodule.coe_subtype, himg, hT.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isLattice_latW {W : Submodule K V} {T : Submodule (𝓞 K) V} (hT : IsLatIn W T) :
     Submodule.IsLattice K (latW W T) := by
@@ -61,9 +61,9 @@ theorem isLattice_latW {W : Submodule K V} {T : Submodule (𝓞 K) V} (hT : IsLa
   rw [Submodule.map_span, Submodule.map_top, Submodule.range_subtype, Submodule.coe_subtype, himg, hT.2]
 
 /- English proof (translation)
-Establish `hs : algebraMap (𝓞 F) (𝓞 K) t ≠ 0` using `fun h0 => ht (NumberField.RingOfIntegers.algebraMap.injective F K (h0.trans (map_zero _).symm))`. Establish `hsK : algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) t) ≠ 0`. Rewrite using `[← NumberField.RingOfIntegers.coe_eq_algebraMap]`. Conclude with `hs` after adjusting the coercions. Rewrite `h` using `[← algebraMap_smul K (algebraMap (𝓞 F) (𝓞 K) t) x]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `W.smul_mem (algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) t))⁻¹ h`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hsK, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private lemma mem_of_algebraMap_smul_mem (W : Submodule K V) {t : 𝓞 F} (ht : t ≠ 0) {x : V}
     (h : algebraMap (𝓞 F) (𝓞 K) t • x ∈ W) : x ∈ W := by
@@ -77,11 +77,11 @@ private lemma mem_of_algebraMap_smul_mem (W : Submodule K V) {t : 𝓞 F} (ht : 
   rwa [smul_smul, inv_mul_cancel₀ hsK, one_smul] at h2
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Submodule.mem_map, Formalism.HermitianLattices.Ext.L3.LocalSpans.mem_locF]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨t, ht, hy⟩, rfl⟩`. Conclude with `⟨t, ht, _, hy, by simp⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨t, ht, z, hz, hzx⟩`. Establish `ht0 : t ≠ 0` using `fun h0 => ht (h0 ▸ 𝔭.zero_mem)`. Establish `hxW : x ∈ W`. Apply `mem_of_algebraMap_smul_mem W ht0` to reduce the goal to its premises. Rewrite using `[← hzx]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `z.2`. Use `⟨⟨x, hxW⟩, ⟨t, ht, ?_⟩, rfl⟩` and prove the remaining obligations. Use `hz using 1` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext hzx.symm`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 private lemma map_incO_locF (W : Submodule K V) (𝔭 : Ideal (𝓞 F)) [𝔭.IsPrime]
     (A : Submodule (𝓞 K) W) : (locF 𝔭 A).map (incO W) = locF 𝔭 (A.map (incO W)) := by
@@ -101,20 +101,20 @@ private lemma map_incO_locF (W : Submodule K V) (𝔭 : Ideal (𝓞 F)) [𝔭.Is
     exact Subtype.ext hzx.symm
 
 /- English proof (translation)
-Rewrite using `[map_incO_locF, map_latW hT]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locF_latW {W : Submodule K V} {T : Submodule (𝓞 K) V} (hT : IsLatIn W T) (𝔭 : Ideal (𝓞 F))
     [𝔭.IsPrime] : (locF 𝔭 (latW W T)).map (incO W) = locF 𝔭 T := by
   rw [map_incO_locF, map_latW hT]
 
 /- English proof (translation)
-Take `⟨hbW, hloc, horth, hdiag, hne⟩` from `hb`. Use `⟨fun i => Submodule.mem_top, ?_, ?_, ?_, fun i => hne _⟩` and prove the remaining obligations. Apply `Submodule.map_injective_of_injective (incO_injective W)` to reduce the goal to its premises. Establish `himg : ⇑(incO W) '' Set.range (fun i : Fin (finrank K (⊤ : Submodule K W)) => (⟨b (finCongr (finrank_top K W) i), hbW _⟩ : W)) = Set.range b`. Use extensionality with `v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_image, Set.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨i, rfl⟩, rfl⟩`. Conclude with `⟨_, rfl⟩`. Introduce and unpack `⟨i, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, ⟨(finCongr (finrank_top K W)).symm i, rfl⟩, by simp⟩`. Rewrite using `[map_incO_locF, locF_latW hT, Submodule.map_span, himg, hloc]`. Introduce `i j hij`. Simplify using `only [resF_apply]`. Conclude with `horth _ _ ((finCongr (finrank_top K W)).injective.ne hij)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Simplify using `only [resF_apply]`. Conclude with `hdiag _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isJordanIn_res {h : V →ₗ⋆[K] V →ₗ[K] K} {W : Submodule K V} {T : Submodule (𝓞 K) V}
     (hT : IsLatIn W T) {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {b : Fin (finrank K W) → V} {a : Fin (finrank K W) → 𝓞 F}

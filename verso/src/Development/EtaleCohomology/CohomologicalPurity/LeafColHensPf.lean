@@ -6,39 +6,37 @@ open CategoryTheory Limits Polynomial
 namespace LateralTheory.CohomologicalPurity.Hz
 
 /- English proof (translation)
-Rewrite using `[eval_map, eval₂_at_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evalMapHom {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (p : R[X]) (x : R) :
     (p.map f).eval (f x) = f (p.eval x) := by
   rw [eval_map, eval₂_at_apply]
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (c.w e)`.
+A detailed English derivation is pending.
 -/
 theorem Diag.leg_comp_map {A : Type} [CommRing A] {I : Ideal A} (Δ : Diag A I) (c : Cocone Δ.D) {j k : Δ.J}
     (e : j ⟶ k) : (Δ.leg c k).comp (Δ.D.map e).hom = Δ.leg c j :=
   congrArg CommRingCat.Hom.hom (c.w e)
 
 /- English proof (translation)
-Introduce `A _ I Δ c hc η hη`. Establish `st` using `hS A I Δ c hc η hη`. Establish `push : ∀ j (S : Type) [CommRing S] (φ : Δ.D.obj j →+* S), Good φ (I.map (Δ.s j)) → ∃ π : S →+* c.pt, π.comp φ = Δ.leg c j`. Introduce `j S _ φ hφ`. Take `⟨k, e, ρ, hρ⟩` from `Δ.exh j S φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(Δ.leg c k).comp ρ, by rw [RingHom.comp_assoc, hρ, Δ.leg_comp_map]⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Rewrite using `[Ideal.mem_jacobson_bot]`. Introduce `y`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzy : z * y ∈ I.map η` using `Ideal.mul_mem_right y _ hz`. Take `⟨j, hj⟩` from `st.1 {z * y}`. Take `⟨x, hx⟩` from `hj (z * y) (Finset.mem_singleton_self _)`. Establish `hx' : x ∈ I.map (Δ.s j)` using `st.2 j x (by rw [hx]; exact hzy)`. Take `⟨S, _, φ, hφ, hu⟩` from `hI (Δ.D.obj j) (I.map (Δ.s j)) x hx'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨π, hπ⟩` from `push j S φ hφ`. Establish `h` using `hu.map π`. Rewrite `h` using `[← RingHom.comp_apply, hπ, map_add, map_one, hx, add_comm]`. Conclude with `h`. Introduce `f hf a₀ ha₀ hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu'⟩` from `Ideal.Quotient.mk_surjective (↑hu.unit⁻¹ : c.pt ⧸ I.map η)`. Establish `hdu : f.derivative.eval a₀ * u - 1 ∈ I.map η`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, hu', map_one, IsUnit.mul_val_inv, sub_self]`. Set `T : Finset c.pt` to `insert a₀ (insert u (f.support.image f.coeff))`. Take `⟨j, hj⟩` from `st.1 T`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hj a₀ (Finset.mem_insert_self _ _)`. Take `⟨v, hv⟩` from `hj u (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))`. Establish `hco : ∀ n, f.coeff n ∈ Set.range (Δ.leg c j)`. Introduce `n`. Distinguish the cases in `hn : n ∈ f.support`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `hj _ (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ hn)))`. Conclude with `⟨0, by rw [map_zero, notMem_support_iff.1 hn]⟩`. Take `⟨g, hg, -, hgm⟩` from `lifts_and_natDegree_eq_and_monic ((lifts_iff_coeff_lifts f).2 hco) hf`. Establish `h1 : g.eval a ∈ I.map (Δ.s j)` using `st.2 j _ (by rw [← evalMapHom, hg, ha]; exact ha₀)`. Establish `h2 : g.derivative.eval a * v - 1 ∈ I.map (Δ.s j)` using `st.2 j _ (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_mul, map_one, ← evalMapHom, ← derivative_map, hg, ha, hv]`. Conclude with `hdu)`. Establish `h3 : IsUnit (Ideal.Quotient.mk (I.map (Δ.s j)) (g.derivative.eval a))` using `IsUnit.of_mul_eq_one (Ideal.Quotient.mk _ v) (by rw [← map_mul, ← map_one (Ideal.Quotient.mk (I.map (Δ.s j)))]; exact Ideal.Quotient.eq.2 h2)`. Take `⟨S, _, φ, b, hφ, hb, hba⟩` from `hR (Δ.D.obj j) (I.map (Δ.s j)) g a hgm h1 h3`. Take `⟨π, hπ⟩` from `push j S φ hφ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨π b, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hb.map (f := π)`. Rewrite `h` using `[Polynomial.map_map, hπ, hg]`. Then use the resulting hypothesis. Establish `h` using `Ideal.mem_map_of_mem π hba`. Rewrite `h` using `[Ideal.map_map, Ideal.map_map, hπ, hη, map_sub, ← RingHom.comp_apply, hπ, ha]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafColHens_of (hS : LeafStage) (hI : LeafInv) (hR : LeafRoot) : LeafColHens := by
   classical

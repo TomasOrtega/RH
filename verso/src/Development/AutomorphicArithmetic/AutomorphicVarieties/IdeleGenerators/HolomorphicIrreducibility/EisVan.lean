@@ -8,9 +8,9 @@ namespace UpperTheory.V.Sd
 private def cSet {N : ℕ} (b : Fin 2 → ZMod N) : Set (Fin 2 → ℤ) := {v | (↑) ∘ v = b}
 
 /- English proof (translation)
-Use `RingHom.map_vecMul (m := Fin 2) (n := Fin 2) (Int.castRingHom (ZMod N)) γ v` as an intermediate fact. Simplify using `only [eq_intCast, Int.coe_castRingHom] at this`. Establish `hv' : (fun x : ℤ => (x : ZMod N)) ∘ v = b` using `hv`. Express the relevant statement in the definitionally equal form `(Int.cast : ℤ → ZMod N) ∘ (v ᵥ* (γ : Matrix (Fin 2) (Fin 2) ℤ)) = b ᵥ* _`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Function.comp_apply, this i, hv']`. Simplify using `[SpecialLinearGroup.map_apply_coe, RingHom.mapMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma vecMul_mem_cSet {N : ℕ} {b : Fin 2 → ZMod N} {v : Fin 2 → ℤ} (hv : v ∈ cSet b)
     (γ : SL(2, ℤ)) : v ᵥ* γ ∈ cSet (b ᵥ* γ) := by
@@ -47,7 +47,7 @@ private noncomputable def cSer {N : ℕ} (b : Fin 2 → ZMod N) (k : ℤ) (z : �
   ∑' x : cSet b, eisSummand k x z
 
 /- English proof (translation)
-Use `ext1 z`. Repeatedly rewrite using `[SL_slash_apply, _root_.zpow_neg, mul_inv_eq_iff_eq_mul₀ (zpow_ne_zero _ <| denom_ne_zero _ z), cSer, eisSummand_SL2_apply, tsum_mul_left, mul_comm (_ ^ k)]`. Use `congr 1`. Conclude with `(cEquiv b γ).tsum_eq (eisSummand k · z)`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private lemma cSer_slash {N : ℕ} (b : Fin 2 → ZMod N) (k : ℤ) (γ : SL(2, ℤ)) :
     cSer b k ∣[k] γ = cSer (b ᵥ* γ) k := by
@@ -66,9 +66,9 @@ private noncomputable def cSIF {N : ℕ} (b : Fin 2 → ZMod N) (k : ℤ) :
     simp [SpecialLinearGroup.mapGL, ← SL_slash, cSer_slash, CongruenceSubgroup.Gamma_mem'.mp hA]
 
 /- English proof (translation)
-Establish `hz` using `z.im_pos`. Establish `him : z.im ≤ ‖(v 0 : ℂ) * (z : ℂ) + v 1‖`. Establish `h1 : ((v 0 : ℂ) * (z : ℂ) + v 1).im = (v 0 : ℝ) * z.im` using `by simp`. Establish `h2 : (1 : ℝ) ≤ |(v 0 : ℝ)|` using `by exact_mod_cast Int.one_le_abs hv`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [eisSummand, norm_zpow]`. Rewrite using `[_root_.zpow_neg, zpow_natCast]`. Conclude with `inv_anti₀ (pow_pos hz k) (pow_le_pow_left₀ hz.le him k)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma summand_le {k : ℕ} (v : Fin 2 → ℤ) (hv : v 0 ≠ 0) (z : ℍ) :
     ‖eisSummand k v z‖ ≤ (z.im ^ k)⁻¹ := by
@@ -84,25 +84,25 @@ private lemma summand_le {k : ℕ} (v : Fin 2 → ℤ) (hv : v 0 ≠ 0) (z : ℍ
   exact inv_anti₀ (pow_pos hz k) (pow_le_pow_left₀ hz.le him k)
 
 /- English proof (translation)
-Establish `hN : (0 : ℝ) < N` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)`. Establish `hkr : (2 : ℝ) < k` using `by exact_mod_cast (show 2 < k by omega)`. Establish `hv0 : ∀ v : cSet b, v.1 0 ≠ 0`. Introduce `v h`. Apply `hb` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2` using `congrFun v.2 0`. Simplify using `only [Function.comp_apply, h, Int.cast_zero] at h2`. Conclude with `h2.symm`. Establish `hper : ∀ (n : ℤ) (z : ℍ), cSer b k ((N : ℝ) * (n : ℝ) +ᵥ z) = cSer b k z` using `fun n z => SlashInvariantForm.vAdd_width_periodic N k n (cSIF b k) z`. Use `set F : Filter ℍ := atImInfty ⊓ 𝓟 (verticalStrip N 1) with hF`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C : ℝ := r ⟨⟨N, 1⟩, one_pos⟩ with hC`. Establish `hsum : Summable (fun v : cSet b => C ^ (-(k : ℝ)) * ‖v.1‖ ^ (-(k : ℝ)))` using `((summable_one_div_norm_rpow hkr).subtype (cSet b)).mul_left _`. Establish `hT : Tendsto (fun z => cSer b k z) F (𝓝 0)`. Establish `h0 : (0 : ℂ) = ∑' v : cSet b, (0 : ℂ)` using `by simp`. Rewrite using `[h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `tendsto_tsum_of_dominated_convergence hsum` to reduce the goal to its premises. Introduce `v`. Establish `him : Tendsto (fun z : ℍ => z.im) F atTop` using `tendsto_comap.mono_left inf_le_left`. Establish `hdec : Tendsto (fun z : ℍ => (z.im ^ k)⁻¹) F (𝓝 0)` using `tendsto_inv_atTop_zero.comp ((tendsto_pow_atTop (by omega)).comp him)`. Conclude with `squeeze_zero_norm' (Eventually.of_forall (fun z => summand_le v.1 (hv0 v) z)) hdec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hF, eventually_inf_principal]`. Apply `Eventually.of_forall` to reduce the goal to its premises. Introduce `z hz v`. Establish `h1` using `summand_bound_of_mem_verticalStrip (k := (k : ℝ)) (by positivity) v.1 one_pos hz`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[eisSummand, norm_zpow, ← Real.rpow_intCast]`. Use `push_cast`. Both sides reduce to the same expression. Use `_ ≤ _ := h1`. Establish `hn : Tendsto (fun z => ‖cSer b k z‖) F (𝓝 0)` using `by simpa using hT.norm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[isZeroAtImInfty_iff]`. Introduce `ε hε`. Establish `hev : ∀ᶠ z in F, ‖cSer b k z‖ ≤ ε` using `hn.eventually (Iic_mem_nhds hε)`. Rewrite `hev` using `[hF, eventually_inf_principal]`. Take `⟨A, hA⟩` from `(atImInfty_mem _).mp hev`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨max A 1, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hfl1` using `Int.floor_le (z.re / N)`. Establish `hfl2` using `Int.lt_floor_add_one (z.re / N)`. Establish `e1 : (N : ℝ) * ⌊z.re / N⌋ ≤ z.re`. Use `mul_le_mul_of_nonneg_left hfl1 hN.le` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_div_cancel₀ _ hN.ne']`. Then use the resulting hypothesis. Establish `e2 : z.re < (N : ℝ) * ⌊z.re / N⌋ + N`. Use `mul_lt_mul_of_pos_left hfl2 hN` as an intermediate fact. Rewrite `this` using `[mul_div_cancel₀ _ hN.ne', mul_add, mul_one]`. Then use the resulting hypothesis. Establish `hmem : ((N : ℝ) * ((-⌊z.re / N⌋ : ℤ) : ℝ) +ᵥ z) ∈ verticalStrip N 1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[mem_verticalStrip_iff, vadd_re, vadd_im, abs_le]`. Use `push_cast`. Use `⟨⟨by nlinarith, by nlinarith⟩, by linarith [le_max_right A 1]⟩` and prove the remaining obligations. Establish `hz'` using `hA ((N : ℝ) * ((-⌊z.re / N⌋ : ℤ) : ℝ) +ᵥ z) (by rw [vadd_im]; linarith [le_max_left A 1]) hmem`. Rewrite `hz'` using `[hper]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private lemma cSer_zero {N : ℕ} [NeZero N] (b : Fin 2 → ZMod N) (hb : b 0 ≠ 0) {k : ℕ}
     (hk : 3 ≤ k) : IsZeroAtImInfty (cSer b k) := by
@@ -163,15 +163,13 @@ private lemma cSer_zero {N : ℕ} [NeZero N] (b : Fin 2 → ZMod N) (hb : b 0 �
   rwa [hper] at hz'
 
 /- English proof (translation)
-Set `e : {v : ℤ × ℤ // ((v.1 : ZMod N) = 0 ∧ (v.2 : ZMod N) = a)} ≃ cSet (![0, a] : Fin 2 → ZMod N)` to `{ toFun := fun v => ⟨![v.1.1, v.1.2], by show (Int.cast : ℤ → ZMod N) ∘ ![v.1.1, v.1.2] = ![0, a]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using `using v.2.1`. Simplify using `using v.2.2⟩`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `invFun := fun w => ⟨(w.1 0, w.1 1), by`. Establish `h` using `w.2`. Express the relevant statement in the definitionally equal form `(Int.cast : ℤ → ZMod N) ∘ w.1 = ![0, a] at h`. Conclude with `⟨by simpa using congrFun h 0, by simpa using congrFun h 1⟩⟩`. Use `left_inv := fun v => by`.
+Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use `right_inv := fun w => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `fin_cases i <;> simp }`. Use function extensionality and compare the values at `z`. Simplify using `only [eisFun, cSer, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Rewrite using `[← e.tsum_eq]`.
-
-Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private lemma eisFun_eq (N k : ℕ) (a : ZMod N) :
     eisFun N k a = ((N : ℂ) ^ k / lipC k) • cSer ![0, a] k := by
@@ -202,11 +200,11 @@ private lemma eisFun_eq (N k : ℕ) (a : ZMod N) :
 end UpperTheory.V.Sd
 
 /- English proof (translation)
-Introduce `N k _ hk a ha hN γ hγ`. Rewrite using `[UpperTheory.V.Sd.eisFun_eq, ModularForm.SL_smul_slash, UpperTheory.V.Sd.cSer_slash]`. Apply `Filter.ZeroAtFilter.smul` to reduce the goal to its premises. Apply `UpperTheory.V.Sd.cSer_zero _ _ hk` to reduce the goal to its premises. Establish `hc : ((γ 1 0 : ℤ) : ZMod N) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[Ne, ZMod.intCast_zmod_eq_zero_iff_dvd]`. Conclude with `hγ`. Establish `e : (![0, a] ᵥ* ((γ : SL(2, ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N))) 0 = a * ((γ 1 0 : ℤ) : ZMod N)`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two, SpecialLinearGroup.map_apply_coe, RingHom.mapMatrix_apply]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `hc ((ha.mul_right_eq_zero).mp h)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.eisVan :
     UpperTheory.V.Sd.EisVan := by

@@ -42,7 +42,7 @@ theorem pairMap_apply (π : Representation ℂ G V) {π' : Representation ℂ G 
     ((pairMap π hπ' B hB b : smoothPart π.dual) : Module.Dual ℂ V) a = B a b := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun a => LinearMap.ext fun b => by have := congrArg (fun l : smoothPart π.dual => (l : Module.Dual ℂ V) a) (h b) simpa [pairMap_apply] using this`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pairMap (π : Representation ℂ G V) {π' : Representation ℂ G W} (hπ' : IsSmooth π')
     (B : V →ₗ[ℂ] W →ₗ[ℂ] ℂ) (hB : ∀ g a b, B (π g a) (π' g b) = B a b)
@@ -52,19 +52,17 @@ theorem eq_zero_of_pairMap (π : Representation ℂ G V) {π' : Representation �
     simpa [pairMap_apply] using this
 
 /- English proof (translation)
-Use `set f := pairMap π hπ' B hB with hf`. Prove the components needed by the constructor for the conclusion. Set `S : Subrepresentation π'` to `{ toSubmodule := LinearMap.ker f.toLinearMap apply_mem_toSubmodule := fun g v hv => by`. Simplify using `only [LinearMap.mem_ker] at hv ⊢`. Use `LinearMap.congr_fun (f.isIntertwining' g) v` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[this, hv, map_zero] }`. Break down `hirr'.eq_bot_or_eq_top S with hS | hS` into its components or cases. Introduce `x y hxy`. Establish `: x - y ∈ S.toSubmodule` using `by show f.toLinearMap (x - y) = 0`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.2 hxy`. Rewrite `this` using `[hS]`. Conclude with `sub_eq_zero.1 ((Submodule.mem_bot ℂ).1 this)`. It suffices to derive a contradiction.
+Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `hB0 (eq_zero_of_pairMap π hπ' B hB fun b => ?_)` and prove the remaining obligations. Establish `: b ∈ S.toSubmodule` using `by rw [hS]; exact Submodule.mem_top`. Conclude with `this`. Set `R : Subrepresentation (contra π)` to `{ toSubmodule := LinearMap.range f.toLinearMap apply_mem_toSubmodule := fun g v hv => by`. Take `⟨w, rfl⟩` from `hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨π' g w, ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun (f.isIntertwining' g) w` as an intermediate fact. Simplify `this }` using `only [LinearMap.comp_apply]`. Break down `hirr.eq_bot_or_eq_top R with hR | hR` into its components or cases. It suffices to derive a contradiction.
+It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hB0 (eq_zero_of_pairMap π hπ' B hB fun b => ?_)` and prove the remaining obligations. Establish `: f b ∈ R.toSubmodule` using `⟨b, rfl⟩`. Rewrite `this` using `[hR]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Introduce `l`.
-
-Establish `: l ∈ R.toSubmodule` using `by rw [hR]; exact Submodule.mem_top`. Take `⟨b, hb⟩` from `this`. Conclude with `⟨b, hb⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pairMap_bijective (π : Representation ℂ G V) {π' : Representation ℂ G W} (hπ' : IsSmooth π')
     (B : V →ₗ[ℂ] W →ₗ[ℂ] ℂ) (hB : ∀ g a b, B (π g a) (π' g b) = B a b) (hB0 : B ≠ 0)

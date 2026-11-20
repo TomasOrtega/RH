@@ -23,7 +23,7 @@ namespace GlobalTheory.KeyFam
 open GlobalTheory.ZM.SiegPull
 
 /- English proof (translation)
-Take `⟨φ, -, w, hg, -, hp, hw, -⟩` from `H`. Conclude with `⟨φ, hp, hg, w, hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem polPB_of_keyPB_alg {R R' : Type} [CommRing R] [CommRing R'] {x' : KeyIn R'} {x : KeyIn R} {f : R →+* R'}
     (H : KeyPB x' x f) : ∃ φ, PolPB x'.P x.P (spMap f) φ := by
@@ -31,7 +31,7 @@ theorem polPB_of_keyPB_alg {R R' : Type} [CommRing R] [CommRing R'] {x' : KeyIn 
   exact ⟨φ, hp, hg, w, hw⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Conclude with `⟨f t, fun e x hx => ht (e.comp f) x (keyPB_trans _ _ _ _ _ _ _ _ H hx)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Known.of_keyPB {K K' : Type} [Field K] [Field K'] {y' : KeyIn K'} {y : KeyIn K} {f : K →+* K'}
     (H : KeyPB y' y f) (h : Known K y) : Known K' y' := by
@@ -39,15 +39,13 @@ theorem Known.of_keyPB {K K' : Type} [Field K] [Field K'] {y' : KeyIn K'} {y : K
   exact ⟨f t, fun e x hx => ht (e.comp f) x (keyPB_trans _ _ _ _ _ _ _ _ H hx)⟩
 
 /- English proof (translation)
-Use `Q.isAb.comm` as an intermediate fact. Take `⟨b, hb⟩` from `UnifPoint.exists_pointEquiv H.1`. Set `e : Over.mk (spMap β) ⟶ 𝟙_ (Over (Sp K))` to `Over.homMk (spMap β) (Category.comp_id _)`. Set `r : (𝟙_ (Over (Sp K)) ⟶ Q.A) →* (Over.mk (spMap β) ⟶ Q.A)` to `MonoidHom.mk' (fun x => e ≫ x) fun x y => MonObj.comp_mul _ _ _`. Establish `hρ : ∀ x, (b.symm (r x)).left ≫ ψ = spMap β ≫ x.left` using `fun x => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← hb, b.apply_symm_apply]`. Both sides reduce to the same expression. Use `⟨b.symm.toMonoidHom.comp r, b.symm.injective.comp fun x y hxy => ?_, hρ, fun n x y u hx hy hw => ?_⟩` and prove the remaining obligations. Establish `: Epi e.left` using `TorsionSeparable.epi_specMap β`. Establish `: Epi e` using `Over.epi_of_epi_left _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(cancel_epi e).1 hxy`. Take `⟨c, hc, -⟩` from `(hL.weil _ Q n _).1 x y hx hy`. Establish `h₁` using `CommPairing.weilIs_pull hL.globalFns Q.isAb Q.isLB e hc`. Establish `h₂` using `(weilIs_grpPullback_of_comm _ _ Q.A Q'.A _ ψ Q.L Q'.L Q.isLB Q'.isLB H.1 H.2.2 _ n _ _ (pushPt H.1.1.w _) (pushPt H.1.1.w _) _ rfl rfl).1 hw`. Establish `h₃ : Out.WeilIs Q.A Q.L n (e ≫ x) (e ≫ y) (unitOn (Units.map β.toMonoidHom u))` using `UnifPoint.weilIs_congr (Category.id_comp _) (hρ x) (hρ y) h₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₄` using `CommutatorPairing.weilIs_unique hL.globalFns Q.isAb Q.isLB h₁ h₃`. Take `⟨v, rfl⟩ : ∃ v : Kˣ, unitOn v = c` from `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom.toMonoidHom c, Units.ext (CommRingCat.inv_hom_apply (Scheme.ΓSpecIso (CommRingCat.of K)) c.val)⟩`. Establish `e' : Units.map e.left.appTop.hom.toMonoidHom (unitOn v) = unitOn (Units.map β.toMonoidHom v)` using `Units.ext (congrArg (fun q => q.hom v.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β))).symm`. Establish `h₅` using `congrArg Units.val (TorsionGenerators.unitOn_injective (e'.symm.trans h₄))`. Take `rfl : v = u` from `Units.ext (β.injective h₅)`.
-
-Conclude with `hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_secHom_field (hL : Out.Laws) {K k : Type} [Field K] [Field k] {β : K →+* k} {Q : Out.PolAV (Sp K)}
     {Q' : Out.PolAV (Sp k)} {ψ : Q'.A.left ⟶ Q.A.left} (H : PolPB Q' Q (spMap β) ψ) :
@@ -84,11 +82,11 @@ theorem exists_secHom_field (hL : Out.Laws) {K k : Type} [Field K] [Field k] {β
     exact hc
 
 /- English proof (translation)
-Take `⟨φ, φ₂, gp, sq, iP, hlev⟩` from `H`. Establish `hinv : IsMonHom e.symm.hom` using `inferInstanceAs (IsMonHom e.inv)`. Establish `hΛ : (abelian₂ P.A P.L).IsLB` using `DVR.linComb_isLB _ P.isLB _ _`. Use `⟨e.inv.left ≫ φ, ⟨((isGrpPullback_of_iso e.symm).comp gp).congr (Category.id_comp _) rfl, hg, (e.inv ⊗ₘ e.inv).left ≫ φ₂, isSquare_comp (isSquare_tensor e.inv) sq, ?_⟩, fun a => ?_⟩` and prove the remaining obligations. Establish `k₁` using `lbIso_pull_comp hP (e.inv ⊗ₘ e.inv).left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `k₂` using `lbIso_pull_comp iP (e.inv ⊗ₘ e.inv).left`. Establish `k₃ : (e.inv ⊗ₘ e.inv).left ≫ (lift (fst c'.A c'.A ≫ e.hom) (snd c'.A c'.A ≫ e.hom)).left = 𝟙 _`. Rewrite using `[← Over.comp_left, ← Over.id_left]`. Use `congr 1`. Apply the tactic sequence `ext1 <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `k₁` using `[k₃]`. Conclude with `LBIso.trans hΛ (pull_isLB c'.isLB _) (pull_isLB c.isLB _) (LBIso.trans (pull_isLB c'.isLB _) (pull_isLB hΛ _) hΛ k₁ (GlobalTheory.lbIso_pull_id hΛ)).symm k₂`. Rewrite using `[← hlev, ← Category.assoc, ← Over.comp_left, Category.assoc, e.hom_inv_id, Category.comp_id]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqOf_of_iso_of_siegPB {h k : ℕ} {o o' : Type} [CommRing o] [CommRing o'] {ζ : o} {ζ' : o'} {S S' : Scheme.{0}}
     {s : S ⟶ Sp o} {s' : S' ⟶ Sp o'} {c : SiegPre h k ζ s} {c' : SiegPre h k ζ' s'} {f : S' ⟶ S}
@@ -112,11 +110,11 @@ theorem sqOf_of_iso_of_siegPB {h k : ℕ} {o o' : Type} [CommRing o] [CommRing o
   · rw [← hlev, ← Category.assoc, ← Over.comp_left, Category.assoc, e.hom_inv_id, Category.comp_id]
 
 /- English proof (translation)
-Take `⟨-, -, -, u, hΛ, hw, hl⟩` from `H`. Establish `h0 : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`. Use `⟨fun a b => by rw [hl, hl, hl, per_add, smul_add, u.ex_add], fun a => ?_, fun z hz a b => ?_⟩` and prove the remaining obligations. Establish `hp : ∀ (z) (m : ℕ), u.ex (m • z) = u.ex z ^ m` using `fun z m => by`. Proceed by induction on `m with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => rw [zero_smul, pow_zero]`. Conclude with `(u.ker 0).2 (zero_mem _)`. Consider the case `succ m ih => rw [succ_nsmul, u.ex_add, ih, pow_succ]`. Rewrite using `[hl, ← hp, ← Nat.cast_smul_eq_nsmul ℂ, smul_inv_smul₀ h0]`. Conclude with `(u.ker _).2 ((hΛ _).2 ⟨a, rfl⟩)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hl, hl]`. Use `hw k a b _ hk ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, hz, ← Complex.exp_int_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem PerLev.level {P : Out.PolAV (Sp ℂ)} {g k : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ}
     {lev : (Fin g ⊕ Fin g → ℤ) → (𝟙_ (Over (Sp ℂ)) ⟶ P.A)} (H : PerLev P τ k lev) (hk : 0 < k) :
@@ -139,23 +137,21 @@ theorem PerLev.level {P : Out.PolAV (Sp ℂ)} {g k : ℕ} {τ : Matrix (Fin g) (
     ring
 
 /- English proof (translation)
-Introduce `hL hT h k K _ ζ σ F hh hk _ hζ hK`. Establish `hk0 : 0 < k` using `by omega`. Take `⟨y₀, hg₀, hy₀⟩` from `GlobalTheory.T.exists_thetaKeyDatum_known_value_rat hL hT h hh`. Set `k₀ : IntermediateField ℚ ℂ` to `σ.toRatAlgHom.fieldRange`. Establish `: FiniteDimensional ℚ k₀` using `Module.Finite.of_surjective σ.toRatAlgHom.rangeRestrict.toLinearMap σ.toRatAlgHom.rangeRestrict_surjective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨y₁, H₁⟩` from `exists_keyPB_ring y₀ (algebraMap ℚ k₀)`. Take `⟨k₁, fin₁, le₁, tors⟩` from `exists_numberField_torsion_points hL k₀ y₁.P k hk0`. Establish `: NumberField k₁` using `⟨⟩`. Take `⟨y, H⟩` from `exists_keyPB_ring y₁ (IntermediateField.inclusion le₁).toRingHom`. Take `⟨x, Hx⟩` from `exists_keyPB_ring y (algebraMap k₁ ℂ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ₀, p₀⟩` from `polPB_of_keyPB_alg H₁`. Take `⟨φ₁, p₁⟩` from `polPB_of_keyPB_alg H`. Take `⟨ψ, pψ⟩` from `polPB_of_keyPB_alg Hx`. Establish `hg : y.P.g = h` using `p₁.2.1.trans (p₀.2.1.trans hg₀)`. Take `⟨τ, lev, hlev⟩` from `exists_perLev hT x.P h k (pψ.2.1.trans hg)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ladd, ltors, lweil⟩` from `hlev.level hk0`. Take `⟨ρ, ρinj, hρ, ρw⟩` from `exists_secHom_field hL pψ`. Establish `es : spMap (algebraMap k₁ ℂ) ≫ spMap (IntermediateField.inclusion le₁).toRingHom = spMap (algebraMap k₀ ℂ)` using `(spMap_comp _ _).symm`. Take `⟨b, hb⟩` from `UnifPoint.exists_pointEquiv ((pψ.1.comp p₁.1).congr es rfl)`. Take `⟨b₁, hb₁⟩` from `UnifPoint.exists_pointEquiv p₁.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `desc : ∀ a, ∃ t, ρ t = lev a` using `fun a => by`. Take `⟨x₂, hx₂, -⟩` from `tors k₁ le₁ le_rfl (b (lev a)) (by rw [← map_pow, ltors, map_one])`. Use `⟨b₁.symm x₂, b.injective (Over.OverMorphism.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[← hx₂, hb, ← Category.assoc, hρ, Category.assoc, ← hb₁, b₁.apply_symm_apply]`. Use `choose t ht using desc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `j : K →+* k₁` to `σ.codRestrict k₁.toSubfield fun a => le₁ ⟨a, rfl⟩`. Establish `hj : (algebraMap k₁ ℂ).comp j = σ` using `rfl`. Establish `hprim : IsPrimitiveRoot (σ ζ) k`. Rewrite using `[hζ, neg_div, Complex.exp_neg]`. Conclude with `(Complex.isPrimitiveRoot_exp k hk0.ne').inv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hprim₁ : IsPrimitiveRoot (j ζ) k` using `IsPrimitiveRoot.of_map_of_injective (f := algebraMap k₁ ℂ) hprim (algebraMap k₁ ℂ).injective`. Set `ze : k₁ˣ` to `Units.mk0 (j ζ) (hprim₁.ne_zero hk0.ne')`. Establish `ttors : ∀ a, t a ^ k = 1` using `fun a => ρinj (by rw [map_pow, ht, ltors, map_one])`. Take `⟨c, e, he, pr, iP, hc⟩` from `exists_siegPre_of_polAV hL Moduli.cube_of_isLB K k₁ j h k ζ ze y.P t hg (Nat.cast_ne_zero.2 hk0.ne') rfl (IsPrimitiveRoot.coe_units_iff.1 hprim₁) (fun a a' => ρinj (by rw [map_mul, ht, ht, ht, ladd])) ttors fun a a' => ρw k _ _ _ (ttors a) (ttors a') (by`. Rewrite using `[ht, ht, map_zpow]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `lweil _ hζ a a')`. Take `⟨q, hq, pb⟩` from `F.rep _ _ c inferInstance (fun z => subset_closure (by show ((spMap j) z).asIdeal = ⊥`. Conclude with `congrArg PrimeSpectrum.asIdeal (Subsingleton.elim (α := PrimeSpectrum K) _ ⊥))) pr`. Take `⟨φ, sq, hφ⟩` from `sqOf_of_iso_of_siegPB pb hg e iP`. Use `⟨k₁, inferInstance, inferInstance, j, algebraMap k₁ ℂ, y, q, φ, τ, hj, hq, (hy₀.of_keyPB H₁).of_keyPB H, sq, x.P, lev, ψ ≫ φ, hlev, (sqOf_calculus h k K ζ _ _ _ _ F.univ q).1 _ _ _ _ _ sq pψ, fun a => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← ht, ← Category.assoc, hρ, Category.assoc, Category.assoc, ← hφ, hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_known_point : Out.Laws → ThetaUnifAV → ∀ (h k : ℕ) (K : Type) [Field K] (ζ : K) (σ : K →+* ℂ) (F : SFam h k ζ), 1 ≤ h → 3 ≤ k → Odd k → σ ζ = Complex.exp (-(2 * Real.pi * Complex.I) / k) → NumberField K → ∃ (K₁ : Type) (_ : Field K₁) (_ : NumberField K₁) (j : K →+* K₁) (σ₁ : K₁ →+* ℂ) (y : KeyIn K₁) (q : Sp K₁ ⟶ F.X) (φ : y.P.A.left ⟶ F.univ.A.left) (τ : Matrix (Fin h) (Fin h) ℂ), σ₁.comp j = σ ∧ q ≫ F.s = spMap j ∧ Known K₁ y ∧ SqOf y.P F.univ q φ ∧ PtAt F.univ (spMap σ₁ ≫ q) τ := by
   intro hL hT h k K _ ζ σ F hh hk _ hζ hK

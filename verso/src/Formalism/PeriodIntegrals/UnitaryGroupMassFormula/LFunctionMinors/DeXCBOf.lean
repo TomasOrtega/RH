@@ -11,15 +11,13 @@ namespace PI.WwMainW
 open PI.WwMain PI.WwMain.KM
 
 /- English proof (translation)
-Unfold `chi minorXZ`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, map_sum, map_mul, Finset.sum_mul]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `first`. Consider the case `(rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring)`. Consider the case `exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Consider the case `(rw [Finset.sum_comm]; ring)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = _ := hCB _ _ _ _ _`. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Use `(mul_comm _ _).trans ?_` and prove the remaining obligations. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[RingHom.map_det]`. Use `congr 1`. Apply the tactic sequence `try (refine Matrix.ext fun i j => ?_; simp [Matrix.submatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply])`. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
-
-Apply the tactic sequence `try (refine Matrix.ext fun i k => ?_; simp [Matrix.submatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply, map_sum, MvPolynomial.eval₂Hom_X'])`.
+A detailed English derivation is pending.
 -/
 theorem block (hCB : CBSorted) {Lt : Type} (l : ℕ) [Fact l.Prime] (N0 N1 : ℕ)
     (z : Lt × Fin N0 × Fin N1 → ℂ_[l]) (y' : Lt → Fin N1 → ℕ → ℂ_[l]) (s : Lt) (p : ℕ) :
@@ -58,9 +56,9 @@ theorem block (hCB : CBSorted) {Lt : Type} (l : ℕ) [Fact l.Prime] (N0 N1 : ℕ
             map_sum, MvPolynomial.eval₂Hom_X'])
 
 /- English proof (translation)
-Unfold `DeXCB`. Introduce `Lt _ _ l _ N0 N1 nu z y'`. Unfold `DeX minY Gxz`. Simplify using `only [block hCB l N0 N1 z y', map_prod, ← Finset.prod_mul_distrib]`. Simplify using `only [Finset.prod_univ_sum, Fintype.piFinset_univ]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `first`. Consider the case `rfl`. Consider the case `(congr 1)`. Consider the case `exact Finset.sum_congr (Subsingleton.elim _ _) fun _ _ => rfl`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem deXCB_of (hCB : CBSorted) : DeXCB := by
   unfold DeXCB

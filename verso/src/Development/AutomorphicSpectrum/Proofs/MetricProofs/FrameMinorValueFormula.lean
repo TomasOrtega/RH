@@ -17,7 +17,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
 include M in
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.block_diagonal_minor_vanishing ℂ N j p.2 M.j_le).2.1 A I hA hI).resolve_right (Finset.nonempty_iff_ne_empty.1 (stepCols_nonempty M.j_le p.2))`.
+A detailed English derivation is pending.
 -/
 theorem off_step {p : Ψ × Fin N} {A : Matrix (Fin N) (Fin N) ℂ} (hA : IsBlockDiag j A) (I : Finset (Fin N))
     (hI : ¬ IsStepRows N j p.2 I) : minorIJ A I (stepCols N j p.2) = 0 :=
@@ -25,19 +25,19 @@ theorem off_step {p : Ψ × Fin N} {A : Matrix (Fin N) (Fin N) ℂ} (hA : IsBloc
     (Finset.nonempty_iff_ne_empty.1 (stepCols_nonempty M.j_le p.2))
 
 /- English proof (translation)
-Set `val` to `regVal hzb`. Set `uA : (Σ k, ι k) → Finset (Fin N) → regRing M.x zb` to `fun q I => ⟨F.u q I, exists_isValueAt hzb (hG.2.1 q I).1⟩`. Set `vA : Finset (Fin N) → (Σ k, ι k) → regRing M.x zb` to `fun I q => ⟨F.u' I q, exists_isValueAt hzb (hG.2.1 q I).2⟩`. Establish `rel : ∀ I', IsStepRows N j p.2 I' → ∑ m : ι k, val (vA I₀ ⟨k, m⟩) * val (uA ⟨k, m⟩ I') = if I₀ = I' then 1 else 0` using `fun I' hI' => by`. Establish `e : ∑ m : ι k, vA I₀ ⟨k, m⟩ * uA ⟨k, m⟩ I' = if I₀ = I' then 1 else 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `hF.2.2.1 p k hp I₀ I' hI₀ hI'` as an intermediate fact. Apply the tactic sequence `split_ifs at this ⊢ <;> simpa [uA, vA] using this`. Establish `e'` using `congrArg val e`. Rewrite `e'` using `[map_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_mul] at e'`. Rewrite using `[e']`. Apply the tactic sequence `split_ifs <;> simp`. Establish `key : ∀ I, (∑ m : ι k, val (vA I₀ ⟨k, m⟩) * val (uA ⟨k, m⟩ I)) * minorIJ A I (stepCols N j p.2) = if I = I₀ then minorIJ A I₀ (stepCols N j p.2) else 0` using `fun I => by`. Distinguish the cases in `hI : IsStepRows N j p.2 I`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[rel I hI]`. Distinguish the cases in `e : I = I₀`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[e, Ne.symm e]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e : I ≠ I₀` using `fun e => hI (e ▸ hI₀)`. Rewrite using `[off_step M hA I hI, if_neg e, mul_zero]`. Establish `read : ∑ m : ι k, val (vA I₀ ⟨k, m⟩) * ∑ I, valAt M.x (F.u ⟨k, m⟩ I) zb * minorIJ A I (stepCols N j p.2) = minorIJ A I₀ (stepCols N j p.2)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun I _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Both sides reduce to the same expression. Use `_ = _ := by simp only [key]; simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← read, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[hz m, mul_left_comm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pluck_eq {F : FrameData ι Ψ N M.Ω M.blk} (hF : M.IsFrame F) {zb : (Σ k, baseIdx ι M.blk k) → ℂ}
     (hzb : zb ∈ mcPts (mCoordIdeal M.x)) (hG : M.GoodAt F (mCoordIdeal zb)) {p : Ψ × Fin N} {k : K}
@@ -87,9 +87,9 @@ theorem pluck_eq {F : FrameData ι Ψ N M.Ω M.blk} (hF : M.IsFrame F) {zb : (Σ
 end Read
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M F zb p k A g z α J hF hzb hG hp hA hz`. Unfold `twMinor`. Rewrite using `[(GlobalTheory.T.block_diagonal_minor_vanishing ℂ N j p.2 M.j_le).1 g A J (stepCols N j p.2), Finset.mul_sum, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Use `split_ifs with hI`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pluck_eq M hF hzb hG hp hA hz I hI]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[off_step M hA I hI]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (zb : (Σ k, baseIdx ι M.blk k) → ℂ) (p : Ψ × Fin N) (k : K) (A g : Matrix (Fin N) (Fin N) ℂ) (z : (Σ k, ι k) → ℂ) (α : ℂ) (J : Finset (Fin N)), M.IsFrame F → zb ∈ mcPts (mCoordIdeal M.x) → M.GoodAt F (mCoordIdeal zb) → M.blk p = some k → IsBlockDiag j A → (∀ m : ι k, z ⟨k, m⟩ = α * ∑ I, valAt M.x (F.u ⟨k, m⟩ I) zb * minorIJ A I (stepCols N j p.2)) → twMinor M F zb p.2 k g z J = α * minorIJ (g * A) J (stepCols N j p.2) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M F zb p k A g z α J hF hzb hG hp hA hz

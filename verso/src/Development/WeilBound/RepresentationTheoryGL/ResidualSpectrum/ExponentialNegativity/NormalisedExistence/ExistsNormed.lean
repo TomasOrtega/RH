@@ -15,19 +15,19 @@ namespace PositivityTheory.Rg.Rs.JDict
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CuspBoundSiegel.diagUnits_posIdele N (Real.exp_pos t)).trans (by rw [Real.log_exp])`.
+A detailed English derivation is pending.
 -/
 theorem tor_const (N : ℕ) (t : ℝ) : An.tor E (fun _ : Fin N => t) = splitCentre E N t :=
   (GlobalTheory.CuspBoundSiegel.diagUnits_posIdele N (Real.exp_pos t)).trans (by rw [Real.log_exp])
 
 /- English proof (translation)
-Establish `e : An.aR E N r t = diagUnits N (fun i : Fin N => infId E (expU fun _ : InfinitePlace E => (((if (i : ℕ) < r then t else 0 : ℝ)) : ℂ)))` using `by show diagUnits N (fun i : Fin N => posIdele (K := E) (Real.exp (if (i : ℕ) < r then t else 0)) (Real.exp_pos _)) = _`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.CuspBoundSiegel.posIdele_exp _`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[coe_diagUnits, Matrix.diagonal_apply]`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin N) (Fin N) (Ad E)) i j - sInf E ((1 : Matrix (Fin N) (Fin N) (Cinf E)) i j) + sInf E ((aInf E N r t : Matrix (Fin N) (Fin N) (Cinf E)) i j) = _`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl, Matrix.one_apply_eq, Matrix.one_apply_eq]`. Express the relevant statement in the definitionally equal form `_ = 1 - sInf E 1 + sInf E (fun _ => Complex.exp _)`. Use `congr 2`. Use function extensionality and compare the values at `w`. Rewrite using `[show (aInf E N r t : Matrix (Fin N) (Fin N) (Cinf E)) = Matrix.diagonal (fun (k : Fin N) (_ : InfinitePlace E) => Complex.exp (if (k : ℕ) < r then (t : ℂ) else 0)) from rfl, Matrix.diagonal_apply_eq]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[if_neg hij, Matrix.one_apply_ne hij, Matrix.one_apply_ne hij]`. Rewrite using `[show (aInf E N r t : Matrix (Fin N) (Fin N) (Cinf E)) = Matrix.diagonal (fun (k : Fin N) (_ : InfinitePlace E) => Complex.exp (if (k : ℕ) < r then (t : ℂ) else 0)) from rfl, Matrix.diagonal_apply_ne _ hij, map_zero, sub_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aT_eq (N r : ℕ) (t : ℝ) : aT E N r t = An.aR E N r t := by
   have e : An.aR E N r t = diagUnits N (fun i : Fin N =>
@@ -55,7 +55,7 @@ theorem aT_eq (N r : ℕ) (t : ℝ) : aT E N r t = An.aR E N r t := by
       Complex.exp (if (k : ℕ) < r then (t : ℂ) else 0)) from rfl, Matrix.diagonal_apply_ne _ hij, map_zero, sub_zero, add_zero]
 
 /- English proof (translation)
-Unfold `latticeGL An.lat`. Rewrite using `[tor_const]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lat_eq (N : ℕ) : latticeGL E N = An.lat E N := by
   unfold latticeGL An.lat
@@ -68,14 +68,14 @@ variable (E) (N r : ℕ)
 omit [IsTotallyComplex E]
 
 /- English proof (translation)
-Use `GlobalTheory.AdelicUnitaryTop.secondCountable_adele E` as an intermediate fact. Conclude with `BorelSpace.measurable_eq`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pi_eq_borel : (MeasurableSpace.pi : MeasurableSpace (BlockIx N r → Ad E)) = borel _ := by
   have := GlobalTheory.AdelicUnitaryTop.secondCountable_adele E
   exact BorelSpace.measurable_eq
 
 /- English proof (translation)
-Take `⟨C, hC, hDC⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := E) (n := N) (r := r)`. Establish `htop : unipMeasure E N r (unipFundamentalDomain E N r) ≠ ⊤` using `((measure_mono hDC).trans_lt hC.measure_lt_top).ne`. Establish `h0 : unipMeasure E N r (unipFundamentalDomain E N r) ≠ 0` using `isAddFundamentalDomain_unipFundamentalDomain.measure_ne_zero (NeZero.ne _)`. Conclude with `ENNReal.toReal_pos h0 htop`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vol_pos : 0 < (unipMeasure E N r).real (unipFundamentalDomain E N r) := by
   obtain ⟨C, hC, hDC⟩ := exists_isCompact_superset_unipFundamentalDomain (K := E) (n := N) (r := r)
@@ -86,11 +86,11 @@ theorem vol_pos : 0 < (unipMeasure E N r).real (unipFundamentalDomain E N r) := 
   exact ENNReal.toReal_pos h0 htop
 
 /- English proof (translation)
-Establish `h : m = MeasurableSpace.pi` using `hb.measurable_eq.trans (pi_eq_borel E N r).symm`. Substitute `h` using the available equality. Establish `e : μ = Measure.addHaarScalarFactor μ (unipMeasure E N r) • unipMeasure E N r` using `Measure.isAddLeftInvariant_eq_smul μ (unipMeasure E N r)`. Establish `hc : 0 < Measure.addHaarScalarFactor μ (unipMeasure E N r)` using `Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure μ (unipMeasure E N r)`. Use `⟨Measure.addHaarScalarFactor μ (unipMeasure E N r), by exact_mod_cast hc, fun φ hφ g => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hac : unipMeasure E N r ≪ μ`. Rewrite using `[e]`. Conclude with `Measure.absolutelyContinuous_smul (by exact_mod_cast hc.ne')`. Establish `h𝓕ν : IsAddFundamentalDomain (unipLattice E N r) 𝓕 (unipMeasure E N r)` using `h𝓕.mono hac`. Rewrite using `[constantTerm_eq_setIntegral hφ h𝓕ν g]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [e]`. Rewrite using `[Measure.restrict_smul, integral_smul_nnreal_measure]`. Simplify using `only [GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip]`. Rewrite using `[NNReal.smul_def, Complex.real_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ct_eq_smul [m : MeasurableSpace (BlockIx N r → Ad E)] [hb : BorelSpace (BlockIx N r → Ad E)]
     (μ : Measure (BlockIx N r → Ad E)) (𝓕 : Set (BlockIx N r → Ad E)) (hμ : μ.IsAddHaarMeasure)
@@ -115,9 +115,9 @@ theorem ct_eq_smul [m : MeasurableSpace (BlockIx N r → Ad E)] [hb : BorelSpace
   rw [NNReal.smul_def, Complex.real_smul]
 
 /- English proof (translation)
-Establish `h : m = MeasurableSpace.pi` using `hb.measurable_eq.trans (pi_eq_borel E N r).symm`. Substitute `h` using the available equality. Establish `hpos` using `vol_pos E N r`. Use `set a := unipMeasure E N r (unipFundamentalDomain E N r) with ha`. Establish `h0 : a ≠ 0` using `fun h => by simp [Measure.real, ← ha, h] at hpos`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htop : a ≠ ⊤` using `fun h => by simp [Measure.real, ← ha, h] at hpos`. Use `⟨a⁻¹ • unipMeasure E N r, Measure.IsAddHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 htop) (ENNReal.inv_ne_top.2 h0), isAddFundamentalDomain_unipFundamentalDomain.mono Measure.smul_absolutelyContinuous, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.restrict_smul, integral_smul_measure, ENNReal.toReal_inv, Complex.real_smul, Complex.ofReal_inv]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_normed [m : MeasurableSpace (BlockIx N r → Ad E)] [hb : BorelSpace (BlockIx N r → Ad E)] :
     ∃ μ : Measure (BlockIx N r → Ad E), μ.IsAddHaarMeasure ∧
@@ -144,15 +144,15 @@ namespace PositivityTheory.Rg.Rs
 
 open JDict in
 /- English proof (translation)
-Introduce `E _ _ _ N`. Use `⟨fun r t => aT_eq N r t, fun t => (tor_const N t).symm, lat_eq N, ?_⟩` and prove the remaining obligations. Introduce `φ hφ r _ _`. Establish `hL` using `GlobalTheory.CompanionTheory.LeftInv.isLeftInvariant_of_isAutForm E N φ hφ`. Use `letI : MeasurableSpace (BlockIx N r → Ad E) := borel _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `: BorelSpace (BlockIx N r → Ad E)` using `⟨rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨μ, hμ, hD, hint⟩` from `exists_normed E N r`. Use `⟨μ, unipFundamentalDomain E N r, hμ, hD, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show An.ctn r φ.1 g = ∫ x in unipFundamentalDomain E N r, φ.1 (unip x * g) ∂μ`. Rewrite using `[hint]`. Simplify using `only [An.ctn, constantTerm, GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip]`. Introduce and unpack `F ⟨μ, 𝓕, hμ, h𝓕, rfl⟩`. Take `⟨c, hc, hct⟩` from `ct_eq_smul E N r μ 𝓕 hμ h𝓕`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv` using `vol_pos E N r`. Use `⟨(c : ℂ) * (((unipMeasure E N r).real (unipFundamentalDomain E N r) : ℝ) : ℂ), ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (by exact_mod_cast hc.ne') (by exact_mod_cast hv.ne')`. Use function extensionality and compare the values at `g show ∫ x in 𝓕, φ.1 (unip x * g) ∂μ = _`. Rewrite using `[hct φ.1 hL g]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [An.ctn]`. Establish `: (((unipMeasure E N r).real (unipFundamentalDomain E N r) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hv.ne'`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem dict_holds : Dict := by
   intro E _ _ _ N

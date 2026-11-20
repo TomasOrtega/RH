@@ -7,19 +7,19 @@ noncomputable def UpperTheory.Reformulated.B.Yzd2.Phi :
         if (↑i : ℕ) + (↑j : ℕ) + (1 : ℕ) = n then (-1 : R) ^ (↑i : ℕ) else (0 : R)
 
 /- English proof (translation)
-Introduce `a R _`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, UpperTheory.Reformulated.B.Yzd2.Phi, Matrix.of_apply, Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hi` using `i.isLt`. Set `k : Fin a` to `⟨a - 1 - (i : ℕ), by omega⟩`. Establish `hk : (k : ℕ) = a - 1 - (i : ℕ)` using `rfl`. Rewrite using `[Finset.sum_eq_single k]`. Establish `h1 : (i : ℕ) + (k : ℕ) + 1 = a` using `by omega`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos h1, if_pos rfl, ← mul_pow]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Establish `h1 : ¬ ((i : ℕ) + (b : ℕ) + 1 = a)`. Introduce `h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hb` to reduce the goal to its premises. Use `ext`. Use linear arithmetic over natural numbers and integers. Simplify using `[h1]`. Introduce `hk'`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ k) hk'`. Rewrite using `[if_neg h]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k _`. Distinguish the cases in `h1 : (i : ℕ) + (k : ℕ) + 1 = a`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h2 : ¬ ((j : ℕ) + (k : ℕ) + 1 = a)`. Introduce `h2`. Apply `h` to reduce the goal to its premises. Use `ext`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Simplify using `[h2]`. Simplify using `[h1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yzd2.phi_mul_transpose :
     ∀ (a : ℕ) {R : Type} [inst : CommRing R],

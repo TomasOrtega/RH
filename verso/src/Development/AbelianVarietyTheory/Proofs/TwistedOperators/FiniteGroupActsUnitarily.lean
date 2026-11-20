@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FiniteGroupUnitary
 
 /- English proof (translation)
-Introduce `g x y`. Set `e : H →ₗᵢ[ℂ] H` to `⟨ρ g, h g⟩`. Conclude with `e.inner_map_map x y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isUnitaryRep_of_norm {G H : Type} [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (ρ : Representation ℂ G H) (h : ∀ g x, ‖ρ g x‖ = ‖x‖) : IsUnitaryRep ρ := by
@@ -29,9 +29,9 @@ section ClassSum
 variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K) (σ : K →+* ℂ)
 
 /- English proof (translation)
-Establish `hexp : S.pair x y = ∑ i, ∑ j, star (S.bV.repr x i) * S.gramV i j * S.bV.repr y j` using `by conv_lhs => rw [← S.bV.sum_repr x, ← S.bV.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, CSD.gramV, Matrix.of_apply, starRingEnd_apply, RingHom.id_apply, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hexp]`. Simplify using `only [pairAt, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hc : ∀ τ : K →+* ℂ, τ (star (S.bV.repr x i)) = starRingEnd ℂ (τ (S.bV.repr x i))` using `hx i`. Rewrite using `[hc σ]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairAt_eq_of_rat (x y : S.V) (hx : ∀ i, S.bV.repr x i ∈ cmMax K) : pairAt S σ x y = σ (S.pair x y) := by
 
@@ -50,7 +50,7 @@ theorem pairAt_eq_of_rat (x y : S.V) (hx : ∀ i, S.bV.repr x i ∈ cmMax K) : p
   rw [hc σ]
 
 /- English proof (translation)
-Simplify using `only [csumAt, CSD.csum, map_sum, map_mul, map_inv₀, map_natCast]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[pairAt_eq_of_rat S σ (f c) (f' c) (fun i => hf c i)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem csumAt_eq_of_rat (f f' : S.Cl → S.V) (hf : S.IsRat f) : csumAt S σ f f' = σ (S.csum f f') := by
   simp only [csumAt, CSD.csum, map_sum, map_mul, map_inv₀, map_natCast]
@@ -58,34 +58,34 @@ theorem csumAt_eq_of_rat (f f' : S.Cl → S.V) (hf : S.IsRat f) : csumAt S σ f 
   rw [pairAt_eq_of_rat S σ (f c) (f' c) (fun i => hf c i)]
 
 /- English proof (translation)
-Simplify using `only [csumAt, pairAt, Pi.add_apply, map_add, Finsupp.add_apply, add_mul, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem csumAt_add_left (f g f' : S.Cl → S.V) : csumAt S σ (f + g) f' = csumAt S σ f f' + csumAt S σ g f' := by
   simp only [csumAt, pairAt, Pi.add_apply, map_add, Finsupp.add_apply, add_mul, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `using csumAt_smul S σ a 1 f f'`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem csumAt_smul_left (a : K) (f f' : S.Cl → S.V) :
     csumAt S σ (a • f) f' = starRingEnd ℂ (σ a) * csumAt S σ f f' := by
   simpa using csumAt_smul S σ a 1 f f'
 
 /- English proof (translation)
-Simplify using `only [csumAt, pairAt, Pi.add_apply, map_add, Finsupp.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem csumAt_add_right (f g g' : S.Cl → S.V) :
     csumAt S σ f (g + g') = csumAt S σ f g + csumAt S σ f g' := by
   simp only [csumAt, pairAt, Pi.add_apply, map_add, Finsupp.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `using csumAt_smul S σ 1 b f f'`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem csumAt_smul_right' (b : K) (f f' : S.Cl → S.V) :
     csumAt S σ f (b • f') = σ b * csumAt S σ f f' := by
   simpa using csumAt_smul S σ 1 b f f'
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `[csumAt, pairAt]`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, csumAt_add_left, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem csumAt_sum_left {ι : Type} (s : Finset ι) (F : ι → S.Cl → S.V) (f' : S.Cl → S.V) :
     csumAt S σ (∑ i ∈ s, F i) f' = ∑ i ∈ s, csumAt S σ (F i) f' := by
@@ -96,7 +96,7 @@ private theorem csumAt_sum_left {ι : Type} (s : Finset ι) (F : ι → S.Cl →
     rw [Finset.sum_insert ha, Finset.sum_insert ha, csumAt_add_left, ih]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `[csumAt, pairAt]`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, csumAt_add_right, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem csumAt_sum_right {ι : Type} (s : Finset ι) (f : S.Cl → S.V) (F : ι → S.Cl → S.V) :
     csumAt S σ f (∑ i ∈ s, F i) = ∑ i ∈ s, csumAt S σ f (F i) := by
@@ -107,9 +107,9 @@ private theorem csumAt_sum_right {ι : Type} (s : Finset ι) (f : S.Cl → S.V) 
     rw [Finset.sum_insert ha, Finset.sum_insert ha, csumAt_add_right, ih]
 
 /- English proof (translation)
-Take `⟨b, hbr⟩` from `hb`. Establish `key : ∀ i j, csumAt S σ (U (b i) : S.Cl → S.V) (U (b j) : S.Cl → S.V) = csumAt S σ (b i : S.Cl → S.V) (b j : S.Cl → S.V)`. Introduce `i j`. Rewrite using `[csumAt_eq_of_rat S σ _ _ (hU _ (hbr i)), csumAt_eq_of_rat S σ _ _ (hbr i), hc]`. Rewrite using `[← b.sum_repr f, ← b.sum_repr f']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul, csumAt_sum_left, csumAt_sum_right, csumAt_smul_left, csumAt_smul_right', key]`.
+Simplify using the standard rewrite rules.
 -/
 theorem csumAt_map (hb : S.HasRatBasis) (U : Module.End K S.Forms)
     (hU : ∀ f : S.Forms, S.IsRat (f : S.Cl → S.V) → S.IsRat (U f : S.Cl → S.V))
@@ -135,13 +135,13 @@ variable {G Γ W K : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerPro
   [NumberField K] [StarRing K] {ι : Γ →* G} {S : CSD K} {σ₀ : K →+* ℂ} {ρ : Γ →* Module.End ℂ W}
 
 /- English proof (translation)
-Establish `hκ : ∀ k, (κ : G)⁻¹ * k * κ ∈ l.J ↔ k ∈ l.J`. Introduce `k`. Prove the components needed by the constructor for the conclusion. Introduce `hk`. Establish `h2` using `hn (κ : G)⁻¹ (l.Q.inv_mem κ.2) _ hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : ((κ : G)⁻¹)⁻¹ * ((κ : G)⁻¹ * k * κ) * (κ : G)⁻¹ = k` using `by group`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Introduce `hk`. Conclude with `hn κ κ.2 k hk`. Establish `hχ : ∀ k : l.J, ‖(l.χ k : ℂ)‖ = 1` using `fun k => by rw [← l.ch_J k]; exact hch _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy'` using `GlobalTheory.ClassSumTranslate.isReps_mul ι hκ hy`. Rewrite using `[← GlobalTheory.ClassSumTranslate.adInnerIndep ι ρ l.J l.χ hρ hχ I I (fun i => y i * κ) y hy' hy F hF F' hF']`. Establish `hn1 : ‖(((l.ch κ)⁻¹ : ℂˣ) : ℂ)‖ = 1`. Rewrite using `[Units.val_inv_eq_inv_val, norm_inv, hch κ, inv_one]`. Establish `hc : starRingEnd ℂ (((l.ch κ)⁻¹ : ℂˣ) : ℂ) * (((l.ch κ)⁻¹ : ℂˣ) : ℂ) = 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RCLike.conj_mul, hn1]`. Simplify using the standard rewrite rules. Unfold `adInner g0Act`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.ClassSumTranslate.stab_mul ι hκ (y i), inner_smul_left, inner_smul_right, ← mul_assoc (starRingEnd ℂ _), hc, one_mul]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adInner_g0Act (l : LevDatG G) (hρ : ∀ γ x x', inner ℂ (ρ γ x) (ρ γ x') = inner ℂ x x')
     (hn : ∀ q ∈ l.Q, ∀ k ∈ l.J, q⁻¹ * k * q ∈ l.J) (hch : ∀ q, ‖(l.ch q : ℂ)‖ = 1)
@@ -173,19 +173,19 @@ theorem adInner_g0Act (l : LevDatG G) (hρ : ∀ γ x x', inner ℂ (ρ γ x) (�
     one_mul]
 
 /- English proof (translation)
-Establish `hchn : ∀ q, ‖(l.ch q : ℂ)‖ = 1`. Introduce `q`. Take `⟨n, hn, hq⟩` from `hch q`. Establish `h1 : (l.ch q : ℂ) ^ n = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, hq, Units.val_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ‖(l.ch q : ℂ)‖ ^ n = 1` using `by rw [← norm_pow, h1, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h2`. Establish `hχ : ∀ k, ∃ n : ℕ, 0 < n ∧ l.χ k ^ n = 1`. Introduce `k`. Take `⟨n, hn, hk⟩` from `hch ⟨k, l.J_le k.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n, hn, by rw [← l.ch_J k]; exact hk⟩`. Establish `hb : S.HasRatBasis`. Use `(GlobalTheory.classPres_dcOp_rat ι S σ₀ ρ l.J l.χ P {1} 1 hσ hχ hrat ?_).1` and prove the remaining obligations. Introduce `f`. Use function extensionality and compare the values at `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[dcOp]`. Introduce `σ g f f'`. Take `⟨κ, hκ⟩` from `T.red_surj g`. Use `csumAt_map S σ hb (act g) ?_ ?_ f f'` and prove the remaining obligations. Introduce `f hf c i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.PresRat.mem_cmComplex_iff σ₀ hσ, ← GlobalTheory.PresBasic.repr_coef P, ← GlobalTheory.PresBasic.ext_y P, T.act_eq g κ hκ f]`. Establish `hd` using `P.dec_spec (P.y c * (κ : G))`. Unfold `g0Act`. Rewrite using `[hd, GlobalTheory.PresBasic.ext_dec P, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Use `mul_mem ?_ (GlobalTheory.PresRat.act_mem P hσ hχ hrat _ _ _ (fun j => hf _ j) i)` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, hq⟩` from `hch κ`. Use `GlobalTheory.PresRat.mem_cmComplex_of_pow hn ?_` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, inv_pow, hq, inv_one, Units.val_one]`. Introduce `f f'`. Apply `σ₀.injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e1` using `GlobalTheory.PresBasic.isom P (act g f) (act g f')`. Establish `e2` using `GlobalTheory.PresBasic.isom P f f'`. Rewrite using `[← e1, ← e2, T.act_eq g κ hκ f, T.act_eq g κ hκ f']`. Conclude with `adInner_g0Act l hρ hn hchn P.reps κ (GlobalTheory.PresBasic.extMem P f) (GlobalTheory.PresBasic.extMem P f')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnitaryAtAll_of_tie (l : LevDatG G) (P : ClassPres ι S σ₀ ρ l.J l.χ) {G₀ : Type} [Group G₀]
     (act : Representation K G₀ S.Forms) (T : ActTie ι P l.Q l.ch act)
@@ -240,7 +240,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Take `⟨n, hn, hx⟩` from `isOfFinOrder_iff_pow_eq_one.1 (GlobalTheory.HeckeRational.levFn_isOfFinOrder β (Formalism.IndefR.Lev.flagL L) (Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D) q.1.1))`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Establish `e : (levEnv V β L).ch q = Formalism.L2.DIV.levFn β (Formalism.IndefR.Lev.flagL L) (Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D) q.1.1)` using `rfl`. Rewrite using `[e, hx]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem levEnv_ch_pow (V : TH.HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank)
     (q : (levEnv V β L).Q) : ∃ n : ℕ, 0 < n ∧ (levEnv V β L).ch q ^ n = 1 := by
@@ -253,7 +253,7 @@ theorem levEnv_ch_pow (V : TH.HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : For
   rw [e, hx]
 
 /- English proof (translation)
-Take `⟨gramR, c0R, c0L, hT⟩` from `h`. Use `⟨fun t => ?_, fun i t => ?_⟩` and prove the remaining obligations. Conclude with `isUnitaryAtAll_of_tie (levEnv D.sp.X' R.βX (R.datXt t)) (R.B.R t).pres (A.leftGroupActionRight t) (R.B.R t).act_tie D.starLL_cx (fun γ x x' => hX.2.1 _ x x') (GlobalTheory.ClassSumTranslate.levEnv_normal _ _ _) (levEnv_ch_pow _ _ _) (fun γ j => GlobalTheory.HeckeRational.action_r …`. Conclude with `isUnitaryAtAll_of_tie (levEnv (Vc D i) (R.βV i) (R.datVt i t)) (R.B.L i t).pres (A.leftGroupActionLift i t) (R.B.L i t).act_tie D.starLL_cx (fun γ x x' => (hV i).2.1 _ x x') (GlobalTheory.ClassSumTranslate.levEnv_normal _ _ _) (levEnv_ch_pow _ _ _) (fun γ j => GlobalTheory.HeckeR …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem definiteUnitary (R : RealDat D A Ks) (h : R.fam_tie) (hX : R.models_cX) (hV : R.models_cV) : DefiniteUnitary A := by
   obtain ⟨gramR, c0R, c0L, hT⟩ := h

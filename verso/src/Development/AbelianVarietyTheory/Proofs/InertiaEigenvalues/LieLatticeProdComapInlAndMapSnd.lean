@@ -7,9 +7,9 @@ open GlobalTheory.UnitLemma Polynomial
 namespace GlobalTheory.UnitLemma.LinPair
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ClearDenominatorsIntegral.main`. Consider the case `exact _root_.GlobalTheory.ClearDenominatorsIntegral.main`. Consider the case `(apply _root_.GlobalTheory.ClearDenominatorsIntegral.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ClearDenominatorsIntegral.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ClearDenominatorsIntegral.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ClearDenominatorsIntegral.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_of_mem_span (K : UQ) {V : Type} [AddCommGroup V] [Module K.E V] [Module K.O V]
     [IsScalarTower K.O K.E V] (M : Submodule K.O V) {x : V} (hx : x ∈ Submodule.span K.E (M : Set V)) :
@@ -26,21 +26,19 @@ end GlobalTheory.UnitLemma.LinPair
 
 open GlobalTheory.UnitLemma.LinPair in
 /- English proof (translation)
-Introduce `K B₁ B₂ M hM`. Take `⟨⟨hfg, hspan⟩, hg, hσ⟩` from `hM`. Establish `hg' : ∀ y ∈ M, ((B₁.g * y.1, B₂.g * y.2) : B₁.A × B₂.A) ∈ M` using `fun y hy => hg y hy`. Establish `hσ' : ∀ y ∈ M, ((B₁.σ y.1, B₂.σ y.2) : B₁.A × B₂.A) ∈ M` using `fun y hy => hσ y hy`. Use `replace hspan : Submodule.span K.E (M : Set (B₁.A × B₂.A)) = ⊤ := hspan`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨⟨?_, ?_⟩, ?_, ?_⟩, ⟨⟨hfg.map _, ?_⟩, ?_, ?_⟩⟩` and prove the remaining obligations. Apply `Submodule.fg_of_fg_map_injective (LinearMap.inl K.O B₁.A B₂.A) LinearMap.inl_injective` to reduce the goal to its premises. Conclude with `isNoetherian_submodule.1 (isNoetherian_of_fg_of_noetherian M hfg) _ (Submodule.map_comap_le _ _)`. Rewrite using `[eq_top_iff]`. Introduce `a _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : ((a, 0) : B₁.A × B₂.A) ∈ Submodule.span K.E (M : Set (B₁.A × B₂.A))`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`. Take `⟨d, hd, hdm⟩` from `exists_smul_mem_of_mem_span K M hx`. Establish `hda : d • a ∈ M.comap (LinearMap.inl K.O B₁.A B₂.A)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_comap]`. Simplify using `using hdm`. Establish `hdE : algebraMap K.O K.E d ≠ 0`. Rewrite using `[Ne, ← map_zero (algebraMap K.O K.E)]`. Conclude with `fun h => hd (IsFractionRing.injective K.O K.E h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: a = (algebraMap K.O K.E d)⁻¹ • (d • a)`. Rewrite using `[← algebraMap_smul (A := K.E) d a, smul_smul, inv_mul_cancel₀ hdE, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hda)`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hg' _ hy` as an intermediate fact. Simplify `this` using `[Submodule.mem_comap]`. Introduce `y hy`. Use `hσ' _ hy` as an intermediate fact. Simplify `this` using `[Submodule.mem_comap]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.map_coe]`. Establish `: ⇑(LinearMap.snd K.O B₁.A B₂.A) = ⇑(LinearMap.snd K.E B₁.A B₂.A)` using `rfl`. Rewrite using `[this, ← Submodule.map_span, hspan, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `LinearMap.snd_surjective`. Introduce and unpack `_ ⟨m, hm, rfl⟩`.
-
-Conclude with `⟨_, hg' m hm, rfl⟩`. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `⟨_, hσ' m hm, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UnitLemma.InvAlg.lin_fst_snd : ∀ (K : UQ) (B₁ B₂ : InvAlg K) (M : Submodule K.O (B₁.A × B₂.A)),
     M ∈ (B₁.prod B₂).Lin →

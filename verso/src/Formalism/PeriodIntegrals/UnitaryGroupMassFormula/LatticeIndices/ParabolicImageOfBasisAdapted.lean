@@ -51,11 +51,11 @@ def StAdaptQ (u : D.what₂.Word) (p : TypX X) : Prop :=
       LatBasis X p θ (reindex₂ X p Q)
 
 /- English proof (translation)
-Take `⟨θ, hθ, Q, l, hl, h1, h2, hL⟩` from `h`. Establish `hG` using `hC X p θ hθ Q hL`. Set `K : Subgroup (HAp X p)` to `{ carrier := KvX X p mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [KvX, Formalism.L2.SG.TypedSets.Kv, Set.mem_setOf_eq] at ha hb ⊢`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Subgroup.mul_mem _ ha hb`. Use the proof step `one_mem' := by`. Simplify using `only [KvX, Formalism.L2.SG.TypedSets.Kv, Set.mem_setOf_eq]`. Conclude with `Subgroup.one_mem _`. Use the proof step `inv_mem' := by`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `a ha`. Simplify using `only [KvX, Formalism.L2.SG.TypedSets.Kv, Set.mem_setOf_eq] at ha ⊢`. Conclude with `Subgroup.inv_mem _ ha }`. Take `⟨ψ, hψs, hψ1, hψ2⟩` from `hG K rfl`. Conclude with `⟨θ, hθ, idxEquiv X, Q, l, hl, h1, h2, K, rfl, ψ, hψs, hψ1, hψ2⟩`.
+A detailed English derivation is pending.
 -/
 theorem stAdaptB_of (hC : LatCoreX) (u : D.what₂.Word) (p : TypX X) (h : StAdaptQ X u p) : StAdaptB X u p := by
   obtain ⟨θ, hθ, Q, l, hl, h1, h2, hL⟩ := h
@@ -77,7 +77,7 @@ theorem stAdaptB_of (hC : LatCoreX) (u : D.what₂.Word) (p : TypX X) (h : StAda
   exact ⟨θ, hθ, idxEquiv X, Q, l, hl, h1, h2, K, rfl, ψ, hψs, hψ1, hψ2⟩
 
 /- English proof (translation)
-The claim follows from `parabolic_image_of_adapted X u p (stAdaptB_of X hC u p h)`.
+A detailed English derivation is pending.
 -/
 theorem parabolic_image_of_basis_adapted (hC : LatCoreX) (u : D.what₂.Word) (p : TypX X) (h : StAdaptQ X u p) :
     ParabolicReductionImage X u p :=

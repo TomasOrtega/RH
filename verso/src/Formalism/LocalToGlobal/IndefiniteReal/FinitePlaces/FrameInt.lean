@@ -16,21 +16,21 @@ variable {D : D7}
 variable (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D))
 
 /- English proof (translation)
-Unfold `frMapO`. Rewrite using `[Matrix.map_add (toEAf D) (fun a b => (toEAf D).map_add a b), Matrix.mul_add, Matrix.add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem frMapO_add (x y : WO S T) : frMapO S T βS βT (x + y) = frMapO S T βS βT x + frMapO S T βS βT y := by
   unfold frMapO
   rw [Matrix.map_add (toEAf D) (fun a b => (toEAf D).map_add a b), Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-Unfold `frMapO`. Rewrite using `[Matrix.map_zero (toEAf D) (toEAf D).map_zero, Matrix.mul_zero, Matrix.zero_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem frMapO_zero : frMapO S T βS βT 0 = 0 := by
   unfold frMapO
   rw [Matrix.map_zero (toEAf D) (toEAf D).map_zero, Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_smul, zero_smul, frMapO_zero]`. Consider the case `succ n ih => rw [succ_nsmul, succ_nsmul, frMapO_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem frMapO_nsmul (k : ℕ) (x : WO S T) : frMapO S T βS βT (k • x) = k • frMapO S T βS βT x := by
   induction k with

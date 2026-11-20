@@ -14,7 +14,7 @@ open NumberField MeasureTheory Topology in
 open scoped ComplexOrder ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_mul, show Bᴴ * Nᴴ * (N * B) = Bᴴ * (Nᴴ * N) * B by simp only [Matrix.mul_assoc], Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `h : star B.det * (Nᴴ * N).det * B.det = (Complex.normSq B.det : ℂ) * (Nᴴ * N).det`. Rewrite using `[Complex.normSq_eq_conj_mul_self, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, Complex.re_ofReal_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 private lemma det_gram_mul_right_re {n ι : Type*} [Fintype n] [DecidableEq n] [Fintype ι]
     [DecidableEq ι] (N : Matrix n ι ℂ) (B : Matrix ι ι ℂ) :
@@ -32,55 +32,47 @@ open scoped ComplexOrder ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Introduce `r X x ι _ _ w hw hwΛ A hA`. Use `set w' : ι → Fin r → E := fun a => ∑ b, ((A b a : 𝓞 E) : E) • w b with hw'`. Establish `hsmul : ∀ (c : 𝓞 E) (v : Fin r → E), c • v = (c : E) • v` using `fun c v => rfl`. Establish `hmat : ∀ τ : X.Ψ, (Matrix.of fun k a => τ.1 (w' a k)) = (Matrix.of fun k a => τ.1 (w a k)) * A.map (fun c => τ.1 (c : E))`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `k a`. Simplify using `[Matrix.mul_apply, w', Finset.sum_apply, Algebra.smul_def, mul_comm]`. Establish `hnum : ∀ τ : X.Ψ, ((((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ)⁻¹ * Matrix.of fun k a => τ.1 (w' a k))ᴴ * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ)⁻¹ * Matrix.of fun k a => τ.1 (w' a k))).det.re) = ‖τ.1 (A.det : E)‖ ^ 2 * (((_root_.ReciprocityTheory. …`. Introduce `τ`. Rewrite using `[hmat τ, ← Matrix.mul_assoc (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ)⁻¹, det_gram_mul_right_re]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `hd : (A.map fun c => τ.1 (c : E)).det = τ.1 (A.det : E)`. Use `RingHom.map_det (τ.1.comp (algebraMap (𝓞 E) E)) A` as an intermediate fact. Conclude with `this.symm`. Rewrite using `[hd, Complex.normSq_eq_norm_sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hspanE : Submodule.span E (Set.range w') = Submodule.span E (Set.range w)`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Use `set B : Matrix ι ι E := A.map fun t => (t : E) with hB`. Establish `hBdet : IsUnit B.det`. Establish `h` using `RingHom.map_det (algebraMap (𝓞 E) E) A`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ((A.det : 𝓞 E) : E) ≠ 0` using `by exact_mod_cast hA`. Use `isUnit_iff_ne_zero.mpr ?_` and prove the remaining obligations. Establish `hB' : B.det = ((A.det : 𝓞 E) : E)` using `h.symm`. Rewrite using `[hB']`. Conclude with `h0`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hrec : ∑ a, B⁻¹ a c • w' a = w c`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [w', Finset.smul_sum, smul_smul, hB, Matrix.map_apply, mul_comm]`. Use `_ = ∑ b, (B * B⁻¹) b c • w b := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_smul]`. Use `_ = w c := by`. Rewrite using `[Matrix.mul_nonsing_inv B hBdet]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Matrix.one_apply]`. Rewrite using `[← hrec]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Establish `hle1 : (Submodule.span (𝓞 E) (Set.range w')).toAddSubgroup ≤ (Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup`. Rewrite using `[Submodule.toAddSubgroup_le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← hsmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hle2 : (Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup ≤ X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup`. Introduce `v hv`. Establish `hv' : v ∈ Submodule.span (𝓞 E) (Set.range w)` using `hv`. Use `AddSubgroup.mem_inf.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.mpr ?_ hv'` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `hwΛ a`. Use `show v ∈ Submodule.span E (Set.range w)`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).mp hv'`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`. Establish `hidx : (((Submodule.span (𝓞 E) (Set.range w')).toAddSubgroup.relIndex (Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup : ℕ) : ℚ) = |Algebra.norm ℚ ((A.det : 𝓞 E) : E)|`. Set `ψ : (ι → 𝓞 E) →+ (Fin r → E)` to `{ toFun := fun c => ∑ b, ((c b : 𝓞 E) : E) • w b map_zero' := by simp map_add' := by`. Introduce `c d`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[add_smul, Finset.sum_add_distrib] }`. Establish `hψ : ∀ c, ψ c = ∑ b, ((c b : 𝓞 E) : E) • w b` using `fun c => rfl`. Establish `hψinj : Function.Injective ψ`. Introduce `c d hcd`. Establish `h0 : ∑ b, (((c b : 𝓞 E) : E) - ((d b : 𝓞 E) : E)) • w b = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← hψ, ← hψ]`. Conclude with `sub_eq_zero.mpr hcd`. Use function extensionality and compare the values at `b`. Use `Fintype.linearIndependent_iff.mp hw _ h0 b` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `RingOfIntegers.coe_injective (sub_eq_zero.mp this)`. Establish `hψmem : ∀ c, ψ c ∈ (Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup`. Introduce `c`. Use `show ψ c ∈ Submodule.span (𝓞 E) (Set.range w)`. Rewrite using `[hψ]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← hsmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`. Set `φ : (ι → 𝓞 E) →+ (Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup` to `ψ.codRestrict _ hψmem`. Establish `hφsurj : Function.Surjective φ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨v, hv⟩`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).mp hv`. Use `⟨c, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show ψ c = _`. Rewrite using `[hψ]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `Finset.sum_congr rfl fun b _ => (hsmul (c b) (w b)).symm`. Establish `hlin : ∀ v : ι → 𝓞 E, ∑ a, v a • w' a = ψ (A.mulVec v)`. Introduce `v`. Rewrite using `[hψ]`. Combine the equalities or inequalities in the displayed calculation.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [w', hsmul, Finset.smul_sum, smul_smul, mul_comm]`. Use `_ = ∑ b, ((A.mulVec v b : 𝓞 E) : E) • w b := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Use `push_cast`. Rewrite using `[Finset.sum_smul]`. Establish `hcomap : ((Submodule.span (𝓞 E) (Set.range w')).toAddSubgroup.addSubgroupOf (Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup).comap φ = (LinearMap.range A.mulVecLin).toAddSubgroup`. Use extensionality with `c`.
-
-Rewrite using `[AddSubgroup.mem_comap, AddSubgroup.mem_addSubgroupOf]`. Use `show ψ c ∈ Submodule.span (𝓞 E) (Set.range w') ↔ c ∈ LinearMap.range A.mulVecLin`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩`.
-
-Conclude with `⟨v, hψinj (by rw [Matrix.mulVecLin_apply, ← hlin]; exact hv)⟩`. Introduce and unpack `⟨v, rfl⟩`. Conclude with `⟨v, hlin v⟩`. Rewrite using `[AddSubgroup.relIndex, ← AddSubgroup.index_comap_of_surjective _ hφsurj, hcomap]`. Conclude with `_root_.GlobalTheory.index_range_mulVecLin_eq_abs_norm_det ι A hA`.
-
-Establish `hidxR : (((Submodule.span (𝓞 E) (Set.range w')).toAddSubgroup.relIndex (Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup : ℕ) : ℝ) = ((|Algebra.norm ℚ ((A.det : 𝓞 E) : E)| : ℚ) : ℝ)`. Conclude with `hidx` after adjusting the coercions. Establish `hN : ((|Algebra.norm ℚ ((A.det : 𝓞 E) : E)| : ℚ) : ℝ) ≠ 0`. Establish `h0 : ((A.det : 𝓞 E) : E) ≠ 0`. Conclude with `hA` after adjusting the coercions.
-
-Use `(Algebra.norm_ne_zero_iff (R := ℚ)).mpr h0` as an intermediate fact. Check the signs of the components of the expression. Rewrite using `[Finset.prod_congr rfl (fun τ _ => hnum τ), Finset.prod_mul_distrib, ← _root_.GlobalTheory.abs_norm_eq_prod_cmType_sq r X, hspanE, ← AddSubgroup.relIndex_mul_relIndex _ _ _ hle1 hle2, Nat.cast_mul, hidxR, mul_div_mul_left _ _ hN]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ValMul.value_mul_eq : ((∀ (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r) (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → ∀ A : Matrix ι ι (𝓞 E), A.det ≠ 0 → ((∏ τ : X.Ψ, ((((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 ((fun a => ∑ b, ((A b a : 𝓞 E) : E) • w b) a k)))ᴴ * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 ((fun a => ∑ b, ((A b a : 𝓞 E) : E) • w b) a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range (fun a => ∑ b, ((A b a : 𝓞 E) : E) • w b))).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range (fun a => ∑ b, ((A b a : 𝓞 E) : E) • w b))).toAddSubgroup)) : ℝ)) = ((∏ τ : X.Ψ, ((((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ)))) := by
   intro r X x ι _ _ w hw hwΛ A hA

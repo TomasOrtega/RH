@@ -22,25 +22,25 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open ValuativeRel in
 /- English proof (translation)
-The claim follows from `haveI : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _ isEquiv _ _`.
+A detailed English derivation is pending.
 -/
 theorem val_equiv (v : Pl F) : (valuation (Fv F v)).IsEquiv (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))) :=
   haveI : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _
   isEquiv _ _
 
 /- English proof (translation)
-Simplify using `using congrArg NNReal.toReal (GlobalTheory.norm_uniformiser_eq_inv_absNorm F v _ (GlobalTheory.ChrWUnif.valued_unifAt v))`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_unif (v : Pl F) : ‖(unifAt v : Fv F v)‖ = (Ideal.absNorm v.asIdeal : ℝ)⁻¹ := by
   simpa using congrArg NNReal.toReal (GlobalTheory.norm_uniformiser_eq_inv_absNorm F v _ (GlobalTheory.ChrWUnif.valued_unifAt v))
 
 open ValuativeRel in
 /- English proof (translation)
-Establish `he` using `val_equiv v`. Establish `hu : valuation (Fv F v) (unifAt v : Fv F v) = uniformizer _` using `(GlobalTheory.SplitFlip.exists_isUnif (k := Fv F v)).choose_spec`. Establish `hO : ∀ y, y ∈ (v.adicCompletionIntegers F).toSubring ↔ valuation (Fv F v) y ≤ 1` using `fun y => he.le_one_iff_le_one.symm`. Use `⟨Subring.ext hO, Units.ne_zero _, fun x => ?_, (GlobalTheory.LFun.SatBoundGL.resCard_completion v).symm, fun x hx => ?_, norm_unif v⟩` and prove the remaining obligations. Rewrite using `[← le_uniformizer_iff, ← hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun h => ⟨x / unifAt v, (hO _).2 ?_, (mul_div_cancel₀ _ (Units.ne_zero _)).symm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀]`. Conclude with `div_le_one_of_le₀ h zero_le'`. Introduce and unpack `⟨o, ho, rfl⟩`. Rewrite using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `mul_le_of_le_one_right' ((hO _).1 ho)`. Express the relevant statement in the definitionally equal form `‖x‖ = 1`. Rewrite using `[FinitePlace.norm_def, he.eq_one_iff_eq_one.1 hx]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lf (v : Pl F) : GlobalTheory.CompanionTheory.QL.LF (v.adicCompletionIntegers F).toSubring (unifAt v : Fv F v)
     (NormedField.toAbsoluteValue (Fv F v)) (Ideal.absNorm v.asIdeal) := by
@@ -69,7 +69,7 @@ theorem chS_apply (χ : Chr F E) (τ : E →ₐ[F] Fv F v) (s : ℂ) (a : (Fv F 
     chS χ τ s a = chrW χ τ a * ((‖a.1‖ : ℝ) : ℂ) ^ s := rfl
 
 /- English proof (translation)
-Establish `: chrW χ τ u = 1` using `h _ ((SplitTie.valued_complMap τ _ _).trans ((val_equiv v).eq_one_iff_eq_one.1 (((GlobalTheory.CompanionTheory.QL.NormalisedValue.main (lf v)).2.2.2.2.2.2 _).1 hu)))`. Express the relevant statement in the definitionally equal form `_ * ((‖u.1‖ : ℝ) : ℂ) ^ s = 1`. Rewrite using `[this, show ‖u.1‖ = 1 from hu]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chS_unit {χ : Chr F E} {τ : E →ₐ[F] Fv F v} (h : UnrAt χ (splitPrime τ)) (s : ℂ) (u : (Fv F v)ˣ)
     (hu : NormedField.toAbsoluteValue (Fv F v) u = 1) : chS χ τ s u = 1 := by
@@ -79,27 +79,27 @@ theorem chS_unit {χ : Chr F E} {τ : E →ₐ[F] Fv F v} (h : UnrAt χ (splitPr
   rw [this, show ‖u.1‖ = 1 from hu]; simp
 
 /- English proof (translation)
-Rewrite using `[norm_unif, Complex.ofReal_inv, Complex.ofReal_natCast, npow, Complex.cpow_neg, Complex.inv_cpow _ _ (by rw [Complex.natCast_arg]; exact Real.pi_ne_zero.symm)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_unif_cpow (s : ℂ) : ((‖(unifAt v : Fv F v)‖ : ℝ) : ℂ) ^ s = npow v (-s) := by
   rw [norm_unif, Complex.ofReal_inv, Complex.ofReal_natCast, npow, Complex.cpow_neg,
     Complex.inv_cpow _ _ (by rw [Complex.natCast_arg]; exact Real.pi_ne_zero.symm)]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.ChrWUnif.chrW_unifAt F E χ v τ h, ← norm_unif_cpow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chS_unif {χ : Chr F E} {τ : E →ₐ[F] Fv F v} (h : UnrAt χ (splitPrime τ)) (s : ℂ) :
     chS χ τ s (unifAt v) = val χ (splitPrime τ) * npow v (-s) := by
   rw [← GlobalTheory.ChrWUnif.chrW_unifAt F E χ v τ h, ← norm_unif_cpow]; rfl
 
 /- English proof (translation)
-Rewrite using `[neg_sub', sub_neg_eq_add, LFun.npow_add, npow, npow, Complex.cpow_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem npow_nat (s : ℂ) (i : ℕ) : npow v (-s) * (Ideal.absNorm v.asIdeal : ℂ) ^ i = npow v (-(s - i)) := by
   rw [neg_sub', sub_neg_eq_add, LFun.npow_add, npow, npow, Complex.cpow_natCast]
 
 /- English proof (translation)
-Rewrite using `[← Complex.norm_natCast, ← norm_pow, ← norm_mul, npow_nat, norm_npow]`. Conclude with `Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast one_lt_absNorm v) (by simpa using h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem npow_lt {s : ℂ} {i : ℕ} (h : i < s.re) : ‖npow v (-s)‖ * (Ideal.absNorm v.asIdeal : ℝ) ^ i < 1 := by
   rw [← Complex.norm_natCast, ← norm_pow, ← norm_mul, npow_nat, norm_npow]
@@ -123,9 +123,9 @@ Both sides reduce to the same expression.
 theorem bd_inv (x y : GL (Fin n) k) : ((bd x y)⁻¹).1 = fromBlocks (x⁻¹).1 0 0 (y⁻¹).1 := rfl
 
 /- English proof (translation)
-Rewrite using `[show ((bd x x)⁻¹).1 * N * (bd x x).1 - 1 = ((bd x x)⁻¹).1 * (N - 1) * (bd x x).1 by`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Units.inv_mul]]`. Generalize the expression as in `N - 1 = N`. Rewrite using `[← Matrix.fromBlocks_toBlocks N]`. Apply the tactic sequence `rcases hi with rfl | rfl <;> rcases hj with rfl | rfl <;>`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [bd_val, bd_inv, Matrix.fromBlocks_multiply, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bd_sub (x : GL (Fin n) k) (N : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) k) {i j : Fin n → Fin n ⊕ Fin n}
     (hi : i ∈ ({.inl, .inr} : Set _)) (hj : j ∈ ({.inl, .inr} : Set _)) :
@@ -140,7 +140,7 @@ theorem bd_sub (x : GL (Fin n) k) (N : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n
 end Alg
 
 /- English proof (translation)
-Establish `: ε = (invT a)⁻¹ * J * a'` using `Units.ext h.symm`. Rewrite using `[← dual_val, ← Units.val_mul, ← Units.val_mul, this]`. Use `congr 1`. Simplify using `only [dual, MonoidHom.comp_apply, map_mul invT, map_inv invT, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dual_conj {β : Type} [Fintype β] [DecidableEq β] {J a a' ε : GL β (Fv F v)} (h : a.1ᵀ * J.1 * a'.1 = ε.1) (x : GL β (Fv F v)) :
     (a'⁻¹).1 * (dual J (a * x * a⁻¹)).1 * a'.1 = (ε⁻¹).1 * (x⁻¹).1ᵀ * ε.1 := by
@@ -166,67 +166,57 @@ set_option hygiene false in
 local notation "𝟙" => (1 : Matrix (Fin n) (Fin n) (Fv F v))
 
 /- English proof (translation)
-Introduce and unpack `F E _ _ _ _ _ σ B n Y r s hB hY χ - hr K e hK he v ⟨τ⟩ hu μ hμ hμ1 z f hz hf`. Establish `hσ` using `hB.cm`. Take `⟨J, b, b', h1, h2, hb, hb', hg⟩` from `frames τ hσ hY`. Establish `g1 : (dbl (incM F Y.J)).map (piW τ) = (bd J (-J)).1`. Simplify using `[dbl, bd_val, Matrix.fromBlocks_map, Matrix.map_neg, h1]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `g2 : (dbl (incM F Y.J)).map (piW (τ.comp σ)) = (bd J (-J)).1ᵀ`. Simplify using `[dbl, bd_val, Matrix.fromBlocks_map, Matrix.map_neg, h2, Matrix.fromBlocks_transpose]`. Establish `gg : (bd b b).1ᵀ * (bd J (-J)).1 * (bd b' b').1 = (bd 1 (-1 : GL (Fin n) (Fv F v))).1`. Simplify using `[bd_val, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, hg]`. Set `Λ : GL (Fin n) (Fv F v) →* UA σ Y.J` to `liftS hσ τ h1 h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `Λ₂ : GL (Fin n ⊕ Fin n) (Fv F v) →* G2 σ Y` to `liftS hσ τ g1 g2`. Establish `a1 : ∀ x, (mat (Λ x)).map (piW τ) = x.1` using `fun x => up_fst hσ τ x.1 (dual J x).1`. Establish `a2 : ∀ x, (mat (Λ x)).map (piW (τ.comp σ)) = (dual J x).1` using `fun x => up_snd hσ τ x.1 (dual J x).1`. Establish `a3 : ∀ x, (mat (Λ x)).map (aw E v) = 1` using `fun x => up_aw hσ τ x.1 (dual J x).1`. Establish `l1 : ∀ x, (mat2 (Λ₂ x)).map (piW τ) = x.1` using `fun x => up_fst hσ τ x.1 (dual (bd J (-J)) x).1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l2 : ∀ x, (mat2 (Λ₂ x)).map (piW (τ.comp σ)) = (dual (bd J (-J)) x).1` using `fun x => up_snd hσ τ x.1 (dual (bd J (-J)) x).1`. Establish `l3 : ∀ x, (mat2 (Λ₂ x)).map (aw E v) = 1` using `fun x => up_aw hσ τ x.1 (dual (bd J (-J)) x).1`. Establish `l4 : ∀ x, At (evFin F v) (mat2 (Λ₂ x) - 1)` using `fun x => up_at hσ τ x.1 (dual (bd J (-J)) x).1`. Establish `one : ∀ {ι R : Type} [DecidableEq ι] [CommRing R] (φ : AE F E →+* R), (1 : Matrix ι ι _).map φ = 1` using `fun φ => Matrix.map_one _ (map_zero _) (map_one _)`. Establish `zero : ∀ {R : Type} [CommRing R] (φ : AE F E →+* R), (0 : Matrix (Fin n) (Fin n) _).map φ = 0` using `fun φ => Matrix.map_zero _ (map_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `emb : ∀ x, e (Λ x, 1) = Λ₂ (bd x 1)` using `fun x => Subtype.ext (Units.ext ((he _ _).trans (extS hσ τ ?_ ?_ ?_)))`. Use `rotate_left`. Use `Eq.trans ?_ (l1 _).symm` and prove the remaining obligations. Rewrite using `[Matrix.fromBlocks_map, zero, a1, show (mat 1).map (piW τ) = 1 from one _]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (l2 _).symm` and prove the remaining obligations. Rewrite using `[Matrix.fromBlocks_map, zero, a2, show (mat 1).map (piW (τ.comp σ)) = 1 from one _, dual_val, dual_val, bd_inv, bd_inv, bd_val]`. Simplify using `only [Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.transpose_zero, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, inv_one, Units.val_one, Matrix.transpose_one, Matrix.mul_one, Units.inv_mul]`. Use `Eq.trans ?_ (l3 _).symm` and prove the remaining obligations. Rewrite using `[Matrix.fromBlocks_map, zero, a3, show (mat 1).map (aw E v) = 1 from one _, Matrix.fromBlocks_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `o : ∀ {ι : Type} [DecidableEq ι] (i j : ι), (1 : Matrix ι ι (Fv F v)) i j ∈ v.adicCompletionIntegers F` using `fun i j => by`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`. Establish `key : ∀ x : GL (Fin n ⊕ Fin n) (Fv F v), (∀ i j, x.1 i j ∈ v.adicCompletionIntegers F) → (∀ i j, (x⁻¹).1 i j ∈ v.adicCompletionIntegers F) → At (evFin F v) (mat2 (Λ₂ (bd b b * x * (bd b b)⁻¹)) - 1) ∧ ∀ i j : Fin n → Fin n ⊕ Fin n, i ∈ ({.inl, .inr} : Set _) → j ∈ ({.inl, .inr} : …` using `fun x hx hx' => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨l4 _, fun i j hi hj => (stab_iff hσ τ hb hb' _).2 ⟨fun l m => ?_, fun l m => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Matrix.submatrix_map, Matrix.map_sub _ (map_sub _), one, bd_sub _ _ hi hj, l1, ← Units.val_mul, ← Units.val_mul, show (bd b b)⁻¹ * (bd b b * x * (bd b b)⁻¹) * bd b b = x by group]`. Conclude with `sub_mem (hx _ _) (o _ _)`. Rewrite using `[← Matrix.submatrix_map, Matrix.map_sub _ (map_sub _), one, bd_sub _ _ hi hj, l2, dual_conj gg]`. Use `sub_mem (sum_mem fun c _ => mul_mem (sum_mem fun d _ => mul_mem ?_ (hx' _ _)) ?_) (o _ _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 
-Generalize the expression as in `i l = a`. Apply the tactic sequence `rcases a with a | a <;> rcases d with d | d`. Use `exacts [o a d, zero_mem _, zero_mem _, neg_mem (o a d)]`. Generalize the expression as in `j m = a`. Apply the tactic sequence `rcases a with a | a <;> rcases c with c | c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `exacts [o c a, zero_mem _, zero_mem _, neg_mem (o c a)]`. Establish `u1` using `hu _ (splitPrime_under τ)`. Establish `u2` using `hu _ (splitPrime_under (τ.comp σ))`. Establish `hφ : ∀ y : GL (Fin n) (Fv F v), ∃ t, IsGcd (v.adicCompletionIntegers F).toSubring y t ∧ f (e (Λ (b * y * b⁻¹), 1)) = chS χ (τ.comp σ) (z + n / 2) (GeneralLinearGroup.det y⁻¹) * (chS χ τ (z + n / 2) * chS χ (τ.comp σ) (z + n / 2)) (GeneralLinearGroup.det t)` using `fun y => by`. Take `⟨t, κ, k1, k2, ht, hκ⟩` from `exists_frame (lf v) y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Set `p` to `bd b b * (bd y 1 * κ⁻¹) * (bd b b)⁻¹`. Establish `hp : p.1 * fromRows 𝟙 𝟙 = fromRows 𝟙 𝟙 * (b * t * b⁻¹).1`. Establish `: ((bd b b)⁻¹).1 * fromRows 𝟙 𝟙 = fromRows 𝟙 𝟙 * (b⁻¹).1`. Simplify using `only [bd_inv, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul, Matrix.mul_one, Matrix.one_mul, Matrix.zero_mul, add_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [p, Units.val_mul, Matrix.mul_assoc, this]`. Rewrite using `[← Matrix.mul_assoc (κ⁻¹).1, hκ]`. Simplify using `only [bd_val, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul, Matrix.one_mul, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_assoc, Units.mul_inv_cancel_left, Units.val_one]`. Take `⟨t', hp', dt⟩` from `exists_dual J (J₂ := bd J (-J)) rfl hp`. Set `T` to `upG hσ τ (b * t * b⁻¹, t')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `dg : ∀ {R : Type} [CommRing R] (φ : AE F E →+* R), (diagCols (Fin n) : Matrix _ _ (AE F E)).map φ = fromRows (1 : Matrix (Fin n) (Fin n) R) (1 : Matrix (Fin n) (Fin n) R)` using `fun φ => by rw [diagCols, Matrix.fromRows_map, one]`. Establish `par : mat2 (Λ₂ p) * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) = (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) * T.1` using `extS hσ τ (by rw [Matrix.map_mul, Matrix.map_mul, dg, l1, upG_val, up_fst, hp]) (by rw [Matrix.map_mul, Matrix.map_mul, dg, l2, upG_val, up_snd, dual_val, hp']) (by rw [Matrix.map_mul, Matrix.map_mul, l3, upG_val, up_aw, Matrix.one_mul, Matrix.mul_one])`. Establish `at1 : At (evFin F v) ((GeneralLinearGroup.det T).1 - 1)`. Rewrite using `[show (GeneralLinearGroup.det T).1 = _ from det_liftM v _]`. Express the relevant statement in the definitionally equal form `At _ (1 + GlobalTheory.EmbChart.tensAt E v _ - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[add_sub_cancel_left]`. Conclude with `at_tensAt v _`. Establish `d1 : piW τ (GeneralLinearGroup.det T).1 = (GeneralLinearGroup.det (b * t * b⁻¹)).1` using `(RingHom.map_det _ _).trans (congrArg Matrix.det (up_fst hσ τ (b * t * b⁻¹).1 t'.1))`. Establish `d2 : piW (τ.comp σ) (GeneralLinearGroup.det T).1 = (GeneralLinearGroup.det t').1` using `(RingHom.map_det _ _).trans (congrArg Matrix.det (up_snd hσ τ (b * t * b⁻¹).1 t'.1))`. Establish `e1 : bd (b * y * b⁻¹) 1 = p * (bd b b * κ * (bd b b)⁻¹)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[show p * (bd b b * κ * (bd b b)⁻¹) = bd b b * bd y 1 * (bd b b)⁻¹ by simp only [p]; group]`. Conclude with `Units.ext (by simp only [Units.val_mul, bd_val, bd_inv, Matrix.fromBlocks_multiply, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Units.val_one, Matrix.mul_one, Units.mul_inv])`. Establish `dκ : chS χ (τ.comp σ) (z + n / 2) (GeneralLinearGroup.det κ) = 1`. Establish `int : ∀ x : GL (Fin n ⊕ Fin n) (Fv F v), (∀ i j, x.1 i j ∈ (v.adicCompletionIntegers F).toSubring) → ‖(GeneralLinearGroup.det x).1‖ ≤ 1` using `fun x hx => ((GlobalTheory.CompanionTheory.QL.NormalisedValue.main (lf v)).2.2.1 _).2 (by`. Rewrite using `[GeneralLinearGroup.val_det_apply, Matrix.det_apply']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `sum_mem fun _ _ => mul_mem (intCast_mem _ _) (prod_mem fun _ _ => hx _ _))`. Use `chS_unit u2 _ _ (le_antisymm (int κ k1) ?_)` and prove the remaining obligations. Use `int _ k2` as an intermediate fact. Rewrite `this` using `[map_inv, Units.val_inv_eq_inv_val, norm_inv]`. Conclude with `(inv_le_one₀ (norm_pos_iff.2 (Units.ne_zero _))).1 this`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `dp : GeneralLinearGroup.det t' = GeneralLinearGroup.det t * (GeneralLinearGroup.det y⁻¹ * GeneralLinearGroup.det κ)`. Establish `: GeneralLinearGroup.det (bd y 1) = GeneralLinearGroup.det y` using `Units.ext (by`. Simplify using `[bd_val, Matrix.det_fromBlocks_zero₂₁])`. Rewrite using `[dt]`. Simplify using `only [p, map_mul, map_inv, this, mul_inv_cancel_comm, mul_inv, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Establish `hk : Λ₂ (bd b b * κ * (bd b b)⁻¹) ∈ K` using `Inert.mem_K hK (by`. Introduce and unpack `x (rfl | rfl)`. Conclude with `key κ k1 k2`. Rewrite using `[← map_inv, show (bd b b * κ * (bd b b)⁻¹)⁻¹ = bd b b * κ⁻¹ * (bd b b)⁻¹ by group]`. Conclude with `key _ k2 k1)`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `dt' : GeneralLinearGroup.det (b * t * b⁻¹) = GeneralLinearGroup.det t`. Rewrite using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`. Rewrite using `[emb, e1, map_mul, hf _ T par (l4 _) _ hk (l4 _), chi_at hσ τ χ at1 d1 d2, abs_at hσ τ at1, d1, d2, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (norm_nonneg _) (norm_nonneg _), mul_mul_mul_comm]`. Express the relevant statement in the definitionally equal form `chS χ τ _ _ * chS χ (τ.comp σ) _ _ = _`. Rewrite using `[dt', dp, map_mul, map_mul, dκ, MonoidHom.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Use `haveI : BorelSpace (UA σ Y.J) := ⟨rfl⟩`. Set `dn : UA σ Y.J →* GL (Fin n) (Fv F v)` to `(GeneralLinearGroup.map (piW τ)).comp (Subgroup.subtype _)`. Set `φ : locGrp σ Y v ≃ₜ* GL (Fin n) (Fv F v)` to `{ toFun := fun g => b⁻¹ * dn g.1 * b invFun := fun x => ⟨Λ (b * x * b⁻¹), Subgroup.subset_closure (up_at _ _ _ _)⟩ left_inv := fun g => Subtype.ext ((congrArg Λ (show b * (b⁻¹ * dn g.1 * b) * b⁻¹ = dn g.1 by group)).trans (lift_down hσ τ h1 h2 (((USub σ Y v).closure_eq).le g.2))) …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `b⁻¹ * dn (Λ (b * x * b⁻¹)) * b = x`. Rewrite using `[show dn (Λ (b * x * b⁻¹)) = b * x * b⁻¹ from Units.ext (a1 _)]`. Use `group`. Use the proof step `map_mul' := fun _ _ => by simp only [Subgroup.coe_mul, map_mul]; group`. Use `continuous_toFun := (continuous_const.mul (((Units.continuous_map (continuous_id.matrix_map (continuous_piW τ))).comp continuous_subtype_val).comp continuous_subtype_val)).mul continuous_const`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `continuous_invFun := ((continuous_liftS hσ τ h1 h2).comp (by fun_prop)).subtype_mk _ }`. Set `m` to `φ.toHomeomorph.toMeasurableEquiv`. Use `haveI : (μ.map m).IsHaarMeasure := φ.isHaarMeasure_map μ`. Establish `hat : ∀ z ∈ latW Y v, At (evFin F v) z` using `fun z hz => ((mem_latW z).1 hz).1`. Establish `st : ∀ g : UA σ Y.J, (∀ z ∈ latHat Y, At (evFin F v) z → mat g *ᵥ z ∈ latHat Y) ↔ b⁻¹ * dn g * b ∈ GlobalTheory.CompanionTheory.QL.GLint (v.adicCompletionIntegers F).toSubring n` using `fun g => by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `dual_conj (ε := 1) hg (b⁻¹ * dn g * b)` as an intermediate fact. Rewrite `this` using `[show b * (b⁻¹ * dn g * b) * b⁻¹ = dn g by group, inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[Inert.stab_latW hat, stab_iff hσ τ hb hb', show (mat g).map (piW (τ.comp σ)) = _ from snd_eq τ h1 g]`. Conclude with `and_congr Iff.rfl ((Iff.of_eq (congrArg (fun M : Matrix _ _ _ => ∀ i j, M i j ∈ v.adicCompletionIntegers F) this)).trans forall_swap)`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `bb : ∀ t : E →ₐ[F] Fv F v, UnrAt χ (splitPrime t) → ∀ i < n, ‖chS χ t (z + n / 2) (unifAt v)‖ * (Ideal.absNorm v.asIdeal : ℝ) ^ i < 1` using `fun t ht i hi => by`. Rewrite using `[chS_unif ht, norm_mul, norm_val, one_mul]`. Establish `: (i : ℝ) < n` using `by exact_mod_cast hi`. Conclude with `npow_lt (by simp; linarith)`. Establish `hC : (chS χ τ (z + n / 2) * chS χ (τ.comp σ) (z + n / 2)) (unifAt v) = npow v (-(2 * z + n))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.mul_apply, chS_apply, chS_apply, mul_mul_mul_comm, chrW_mul hσ τ hr, norm_unif_cpow, ← LFun.npow_add, one_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take `⟨i1, i2⟩` from `doubling (lf v) (chS_unit u1 _) (chS_unit u2 _) (bb _ u1) (bb _ u2) (fun i hi => by`. Establish `: (i : ℝ) < n` using `by exact_mod_cast hi`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC]; exact npow_lt (by simp; linarith)) (μ.map m) (by`. Rewrite using `[m.map_apply, ← hμ1]`. Use `congr 1`. Use extensionality with `g`. Use `Iff.trans ?_ (show (_ ∧ _) ↔ IntAt v g.1 by simp only [IntAt, imp_and, forall_and]; rfl)` and prove the remaining obligations.
-
-Rewrite using `[st, st, map_inv, show b⁻¹ * (dn g.1)⁻¹ * b = (b⁻¹ * dn g.1 * b)⁻¹ by group, inv_mem_iff, and_self]`. Use the proof step `rfl) hφ`. Establish `e2 : ∀ u : locGrp σ Y v, f (e (Λ (b * m u * b⁻¹), 1)) = f (e (u.1, 1))` using `fun u => congrArg (fun x : locGrp σ Y v => f (e (x.1, 1))) (φ.left_inv u)`. Rewrite `i1` using `[integrable_map_equiv, Function.comp_def]`. Rewrite `i2` using `[integral_map_equiv]`.
-
-Simplify using `only [e2] at i1 i2`. Use `⟨i1, ?_⟩` and prove the remaining obligations. Rewrite `i2` using `[hC, ← Finset.prod_range_reflect, ← Finset.prod_mul_distrib]`. Rewrite using `[locD, if_pos ⟨τ⟩]`. Use `i2 using 2` and compare the differences between its conclusion and the goal.
-
-Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Use `Finset.mem_range.1 hi` as an intermediate fact. Rewrite using `[npow_nat, one_pow, one_mul, npow, Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Use `congr 3`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Lv, show Formalism.L2.Host.aboveF (L := E) F v = {splitPrime τ, splitPrime (τ.comp σ)} by`. Use extensionality with `u`. Simplify using `[mem_aboveF, above_iff hσ τ], Finset.prod_pair (splitPrime_comp_ne hσ τ).symm, locL, locL, charFam_of_unrAt u1,`. Use `charFam_of_unrAt u2, eulerFac_singleton, eulerFac_singleton, chS_unif u1, chS_unif u2, mul_assoc, mul_assoc, npow_nat]`.
-
-Simplify using `only [npow, SplitChart.absNorm_splitPrime]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locUnrSplit : LocUnrSplit := by
   rintro F E _ _ _ _ _ σ B n Y r s hB hY χ - hr K e hK he v ⟨τ⟩ hu μ hμ hμ1 z f hz hf

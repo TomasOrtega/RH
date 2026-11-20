@@ -17,7 +17,7 @@ namespace GlobalTheory.PicGlue
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
 /- English proof (translation)
-Establish `h1` using `h Y 1 1 t`. Rewrite `h1` using `[_root_.mul_one]`. Conclude with `left_eq_add.1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AddCls.pull_lift_one_eq_zero {T : Over S} {c : Pic (A ⊗ T).left} (h : AddCls A c) {Y : Over S} (t : Y ⟶ T) :
     CechPic.pull (lift (1 : Y ⟶ A) t).left c = 0 := by
@@ -26,11 +26,11 @@ theorem AddCls.pull_lift_one_eq_zero {T : Over S} {c : Pic (A ⊗ T).left} (h : 
   exact left_eq_add.1 h1
 
 /- English proof (translation)
-Set `Y : Over S` to `Over.mk (t ≫ (A ⊗ Z).hom)`. Set `t' : Y ⟶ A ⊗ Z` to `Over.homMk t rfl`. Establish `hs : s ≫ T.hom = t ≫ (A ⊗ Z).hom`. Rewrite using `[← Over.w (A ◁ z), ← Category.assoc, hts, Category.assoc, Over.w]`. Set `s' : Y ⟶ T` to `Over.homMk s hs`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h1 : t' ≫ A ◁ z = s' ≫ lift (1 : T ⟶ A) (𝟙 T)` using `Over.OverMorphism.ext hts`. Establish `h2 : t' ≫ fst A Z = 1`. Establish `h3` using `congrArg (· ≫ fst A T) h1`. Simplify `h3` using `only [Category.assoc, whiskerLeft_fst, lift_fst, MonObj.comp_one]`. Establish `h4 : t' = lift (1 : Y ⟶ A) (t' ≫ snd A Z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← h2, lift_comp_fst_snd]`. Establish `h5` using `h.pull_lift_one_eq_zero (t' ≫ snd A Z)`. Rewrite `h5` using `[← h4]`. Conclude with `h5`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AddCls.pull_eq_zero_of_unit {T Z : Over S} (z : Z ⟶ T) {c : Pic (A ⊗ Z).left} (h : AddCls A c)
     {T' : Scheme.{0}} (t : T' ⟶ (A ⊗ Z).left) (s : T' ⟶ T.left)
@@ -51,15 +51,15 @@ theorem AddCls.pull_eq_zero_of_unit {T Z : Over S} (z : Z ⟶ T) {c : Pic (A ⊗
   exact h5
 
 /- English proof (translation)
-Set `Y : Over S` to `Over.mk (a ≫ (A ⊗ Z).hom)`. Set `a' : Y ⟶ A ⊗ Z` to `Over.homMk a rfl`. Establish `hb : b ≫ (A ⊗ Z').hom = a ≫ (A ⊗ Z).hom`. Rewrite using `[← Over.w (A ◁ z), ← Over.w (A ◁ z'), ← Category.assoc, ← hab, Category.assoc]`. Set `b' : Y ⟶ A ⊗ Z'` to `Over.homMk b hb`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h1 : a' ≫ A ◁ z = b' ≫ A ◁ z'` using `Over.OverMorphism.ext hab`. Establish `h2 : a' ≫ fst A Z = b' ≫ fst A Z'`. Establish `h3` using `congrArg (· ≫ fst A T) h1`. Simplify `h3` using `only [Category.assoc, whiskerLeft_fst]`. Establish `h3 : (a' ≫ snd A Z) ≫ z = (b' ≫ snd A Z') ≫ z'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (· ≫ snd A T) h1`. Simplify `h3` using `only [Category.assoc, whiskerLeft_snd]`. Establish `h4` using `congrArg Subtype.val (h Y _ _ h3)`. Rewrite `h4` using `[addF_map_val, addF_map_val]`. Establish `ha' : a' = lift (a' ≫ fst A Z) (𝟙 Y) ≫ A ◁ (a' ≫ snd A Z)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lift_whiskerLeft, Category.id_comp, lift_comp_fst_snd]`. Establish `hb' : b' = lift (a' ≫ fst A Z) (𝟙 Y) ≫ A ◁ (b' ≫ snd A Z')`. Rewrite using `[lift_whiskerLeft, Category.id_comp, h2, lift_comp_fst_snd]`. Establish `h5` using `congrArg (CechPic.pull (lift (a' ≫ fst A Z) (𝟙 Y)).left) h4`. Rewrite `h5` using `[← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, ← ha', ← hb']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h5`.
+A detailed English derivation is pending.
 -/
 theorem pull_eq_of_compat {T Z Z' : Over S} (z : Z ⟶ T) (z' : Z' ⟶ T) (y : (addF A).obj (op Z))
     (y' : (addF A).obj (op Z'))
@@ -89,9 +89,9 @@ theorem pull_eq_of_compat {T Z Z' : Over S} (z : Z ⟶ T) (z' : Z' ⟶ T) (y : (
   exact h5
 
 /- English proof (translation)
-Introduce `S A _ hA T J Z z y hz hcov hc`. Establish `he : (lift (1 : T ⟶ A) (𝟙 T)).left ≫ (snd A T).left = 𝟙 T.left`. Rewrite using `[← Over.comp_left, lift_snd, Over.id_left]`. Take `⟨c₀, h0, hc₀⟩` from `GlobalTheory.T.exists_glue_rigidified_line_bundle_classes (A ⊗ T).left T.left (snd A T).left (lift (1 : T ⟶ A) (𝟙 T)).left he (GlobalTheory.T.isPreimageSectionsBijective_abelianScheme_snd S A T hA) J (fun i ↦ (A ⊗ Z i).left) (fun i ↦ (A ◁ z i).left) (fun i ↦ haveI := hz i; (z i). …`. Use `⟨⟨c₀, GlobalTheory.T.additive_picClass_of_locally_additive S A T hA c₀ h0 fun p ↦ ?_⟩, fun i ↦ Subtype.ext (hc₀ i)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, hi⟩` from `hcov p`. Use `⟨Z i, z i, hz i, hi, ?_⟩` and prove the remaining obligations. Rewrite using `[hc₀ i]`. Conclude with `(y i).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addF_glue : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → (∀ (T : Over S) (J : Type) (Z : J → Over S) (z : ∀ i, Z i ⟶ T) (y : ∀ i, (addF A).obj (op (Z i))), (∀ i, IsOpenImmersion (z i).left) → (∀ p : T.left, ∃ i, p ∈ Set.range (z i).left) → (∀ (i k : J) (Y : Over S) (a : Y ⟶ Z i) (b : Y ⟶ Z k), a ≫ z i = b ≫ z k → (addF A).map a.op (y i) = (addF A).map b.op (y k)) → ∃ y₀ : (addF A).obj (op T), ∀ i, (addF A).map (z i).op y₀ = y i) := by
   intro S A _ hA T J Z z y hz hcov hc

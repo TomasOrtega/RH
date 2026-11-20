@@ -24,7 +24,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
   [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3} {X0 : BaseLevelRowSide D}
 
 /- English proof (translation)
-Rewrite using `[← H]`. Conclude with `h i σ k P α Rr hd hg y hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigAd_of {Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0} {Sb eig} (h : EigAd Y Sb eig)
     (v : ∀ i : Fin D.R.m, D.what₂.Mj ((i : ℕ) + 1) → (R.HW i (sg0 D A3.A)).H) (H : ∀ i y, Y.mj.eW i y = v i y)
@@ -57,14 +57,14 @@ def mtAd (Y : RdTw x N) (H : ∀ μ h i y, (x.r.Y.IL.jMt μ h i y).1 = jMtB Y μ
 def eWB (Y : RdTw x N) (i y) : type_of% (x.r.Y.mj.eW i y) := (by with_unfolding_all exact ((Y.mj.eW ((i)) ((y))) : _))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(by with_unfolding_all exact (h.split :)), (by with_unfolding_all exact (h.offS :)), (by with_unfolding_all exact (h.odd :)), (by with_unfolding_all exact (h.le :)), (by with_unfolding_all exact (h.elt :)), (by with_unfolding_all exact (h.reps :))⟩`.
+Supply the required witnesses or components.
 -/
 theorem hkDat {Sb i k Q α Rr} (h : HkDat (datTw x N).R Sb i k Q α Rr) :
     HkDat x.m.z.R ((Sb)) ((i)) k ((Q)) ((α)) ((Rr)) :=
   ⟨(by with_unfolding_all exact (h.split :)), (by with_unfolding_all exact (h.offS :)), (by with_unfolding_all exact (h.odd :)), (by with_unfolding_all exact (h.le :)), (by with_unfolding_all exact (h.elt :)), (by with_unfolding_all exact (h.reps :))⟩
 
 /- English proof (translation)
-Introduce `i σ k Q α Rr hd hg y hy` and use `(by with_unfolding_all exact ((eigAd_of h (((eWB Y))) ((H)) ((i)) ((σ)) k ((Q)) ((α)) ((Rr)) (((hkDat hd))) ((hg)) ((y)) ((hy))) : _))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eigAd (Y : RdTw x N) (H : ∀ i y, x.r.Y.mj.eW i y = eWB Y i y) {Sb eig} (h : EigAd x.r.Y Sb eig) :
     EigAd Y ((Sb)) ((eig)) := fun i σ k Q α Rr hd hg y hy =>
@@ -99,9 +99,9 @@ def inMt (Y : RdTw x N) (H : ∀ μ h i y, (x.r.Y.IL.jMt μ h i y).1 = jMtB Y μ
   mt := (by with_unfolding_all exact ((mtIn N n.mt) :))
 
 /- English proof (translation)
-Introduce `hL K B f T w P x l N m hm hc hh r hp e H1 H2`. Consider the cases of `m`. Simplify using `only at hm`. Substitute `hm` using the available equality. Establish `G1 : ∀ μ h i y, (x.r.Y.IL.jMt μ h i y).1 = jMtB (N` using `N) ((by with_unfolding_all exact (r.Y :))) μ h i y := fun μ h i y => eq_of_heq ((by with_unfolding_all exact ((HEq.symm (H1 ((μ)) ((h)) ((i)) ((y)))) : _)))`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `G2 : ∀ i y, x.r.Y.mj.eW i y = eWB (N` using `N) ((by with_unfolding_all exact (r.Y :))) i y := fun i y => eq_of_heq ((by with_unfolding_all exact ((HEq.symm (H2 ((i)) ((y)))) : _)))`. Use `Exists.intro (li l _ hc hh r hp e ((by with_unfolding_all exact ((inMt (N := N) ((r.Y)) ((G1)) l.mt) : _))) ((by with_unfolding_all exact ((inRat (N := N) ((r.Y)) ((G2)) l.rat) : _)))) ?_` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact ((And.intro (HEq.refl (N.row l.a.A.row)) (And.intro (HEq.refl l.Pq) (And.intro (HEq.refl (N.rat l.rat.S)) (And.intro (HEq.refl l.rat.In.Sb) (And.intro (HEq.refl l.rat.In.hL) (And.intro (HEq.refl l.rat.In.eig) (HEq.refl l.rat.In.θ))))))) :))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem li_copy : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} (x : St P) (l : LI hL x) (N : TwNew (Dof x)) (m : Moved (oTw x N)) (hm : m.z = datTw x N) (hc : m.Copy) (hh : m.Coh) (r : ReadPk m (sideTw x N)) (hp : r.Pin), HEq (repOf r.Y) (repOf x.r.Y) → (∀ μ h i y, HEq (r.Y.IL.jMt μ h i y).1 (x.r.Y.IL.jMt μ h i y).1) → (∀ i y, HEq (r.Y.mj.eW i y) (x.r.Y.mj.eW i y)) → ∃ l' : LI hL (stTw x N m hc hh r hp), HEq l'.a.A.row (N.row l.a.A.row) ∧ HEq l'.Pq l.Pq ∧ HEq l'.rat.S (N.rat l.rat.S) ∧ HEq l'.rat.In.Sb l.rat.In.Sb ∧ HEq l'.rat.In.hL l.rat.In.hL ∧ HEq l'.rat.In.eig l.rat.In.eig ∧ HEq l'.rat.In.θ l.rat.In.θ := by
   intro hL K B f T w P x l N m hm hc hh r hp e H1 H2

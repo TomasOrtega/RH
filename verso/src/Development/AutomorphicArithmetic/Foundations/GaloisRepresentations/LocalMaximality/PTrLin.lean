@@ -5,13 +5,13 @@ open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `V _ _ ι _ φ v hv`. Establish `hfin : FiniteDimensional ℂ V`. Use `Module.Finite.of_surjective (Fintype.linearCombination ℂ v) ?_` and prove the remaining obligations. Introduce `y`. Conclude with `⟨fun k => φ k y, by rw [Fintype.linearCombination_apply]; exact (hv y).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Use `⟨hfin, fun u => ?_⟩` and prove the remaining obligations. Establish `hu : u = ∑ k, dualTensorHom ℂ V V (φ k ⊗ₜ u (v k))`. Use extensionality with `y`. Rewrite using `[LinearMap.sum_apply]`. Simplify using `only [dualTensorHom_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [hv y]`. Rewrite using `[map_sum]`. Simplify using `[map_smul]`. Use `conv_lhs => rw [hu]`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.trace_eq_contract_apply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.trLin_of :
     TrLin := by

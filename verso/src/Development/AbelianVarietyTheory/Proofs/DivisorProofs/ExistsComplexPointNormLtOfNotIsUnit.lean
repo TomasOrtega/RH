@@ -10,11 +10,7 @@ namespace GlobalTheory
 namespace SmallPoint
 
 /- English proof (translation)
-Use `haveI := RingHom.ker_isPrime φ`. Take `⟨Q, -, hQ, hQP⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := B) (RingHom.ker φ) ⊥ h`. Use `haveI : Q.LiesOver (RingHom.ker φ) := ⟨hQP.symm⟩`. Use `letI : Algebra (R ⧸ RingHom.ker φ) Ω := (RingHom.kerLift φ).toAlgebra`. Use `haveI : FaithfulSMul (R ⧸ RingHom.ker φ) Ω := (faithfulSMul_iff_algebraMap_injective _ _).mpr (RingHom.kerLift_injective φ)`.
-
-Use `haveI : Module.IsTorsionFree (R ⧸ RingHom.ker φ) Ω := FaithfulSMul.to_isTorsionFree _ _`. Use `haveI : Module.IsTorsionFree (R ⧸ RingHom.ker φ) (B ⧸ Q) := FaithfulSMul.to_isTorsionFree _ _`. Use `haveI : Algebra.IsIntegral (R ⧸ RingHom.ker φ) (B ⧸ Q) := Algebra.IsIntegral.tower_top (R := R)`. Use `haveI : Algebra.IsAlgebraic (R ⧸ RingHom.ker φ) (B ⧸ Q) := Algebra.IsIntegral.isAlgebraic`. Set `σ : (B ⧸ Q) →ₐ[R ⧸ RingHom.ker φ] Ω` to `IsAlgClosed.lift`.
-
-Use `⟨σ.toRingHom.comp (Ideal.Quotient.mk Q), RingHom.ext fun r => ?_⟩` and prove the remaining obligations. Conclude with `(σ.commutes (Ideal.Quotient.mk _ r)).trans (RingHom.kerLift_mk φ r)`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_extend_of_ker_le {R B Ω : Type*} [CommRing R] [CommRing B]
     [Algebra R B] [Algebra.IsIntegral R B] [Field Ω] [IsAlgClosed Ω]
@@ -37,9 +33,9 @@ theorem exists_extend_of_ker_le {R B Ω : Type*} [CommRing R] [CommRing B]
   exact (σ.commutes (Ideal.Quotient.mk _ r)).trans (RingHom.kerLift_mk φ r)
 
 /- English proof (translation)
-Use `letI : Algebra R[X] B := (aeval u : R[X] →ₐ[R] B).toRingHom.toAlgebra`. Use `haveI : IsScalarTower R R[X] B := IsScalarTower.of_algebraMap_eq fun x => ((aeval u : R[X] →ₐ[R] B).commutes x).symm`. Use `haveI : Algebra.IsIntegral R[X] B := Algebra.IsIntegral.tower_top (R := R)`. Take `⟨φ, hφ⟩` from `exists_extend_of_ker_le (B := B) (eval₂RingHom ψ t) (fun f hf => by`. Take `⟨g, rfl⟩` from `minpoly.isIntegrallyClosed_dvd (Algebra.IsIntegral.isIntegral (R := R) u) (p := f) hf`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker, map_mul, coe_eval₂RingHom, ht, zero_mul])`. Establish `h : ∀ f : R[X], φ (aeval u f) = f.eval₂ ψ t` using `fun f => DFunLike.congr_fun hφ f`. Use `⟨φ, RingHom.ext fun r => ?_, ?_⟩` and prove the remaining obligations. Simplify using `using h (C r)`. Simplify using `using h X`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_extend_apply_eq {R B Ω : Type*} [CommRing R] [IsDomain R] [IsIntegrallyClosed R]
     [CommRing B] [IsDomain B] [Algebra R B] [Algebra.IsIntegral R B] [FaithfulSMul R B]
@@ -60,9 +56,9 @@ theorem exists_extend_apply_eq {R B Ω : Type*} [CommRing R] [IsDomain R] [IsInt
   · simpa using h X
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.RootNormLowerBound.exists_root_norm_lt`. Consider the case `exact _root_.GlobalTheory.RootNormLowerBound.exists_root_norm_lt`. Consider the case `(apply _root_.GlobalTheory.RootNormLowerBound.exists_root_norm_lt <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.RootNormLowerBound.exists_root_norm_lt <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.RootNormLowerBound.exists_root_norm_lt <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RootNormLowerBound.exists_root_norm_lt ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_root_norm_lt {F : ℂ[X]} (hF : F.Monic) {ε : ℝ} (hε : 0 < ε)
     (h : ‖F.coeff 0‖ < ε ^ F.natDegree) : ∃ t, F.IsRoot t ∧ ‖t‖ < ε := by
@@ -75,13 +71,13 @@ theorem exists_root_norm_lt {F : ℂ[X]} (hF : F.Monic) {ε : ℝ} (hε : 0 < ε
   | (intros; exact _root_.GlobalTheory.RootNormLowerBound.exists_root_norm_lt ..)
 
 /- English proof (translation)
-Take `⟨G, hG, hGb⟩` from `hb`. Establish `h1 : ∀ i : ℕ, ∀ᶠ s in 𝓝 (0 : ℂ), ‖(Ψ (G.coeff i)).eval s‖ < ‖(Ψ (G.coeff i)).eval 0‖ + 1` using `fun i => ((Ψ (G.coeff i)).continuous.norm.tendsto 0).eventually (gt_mem_nhds (lt_add_one _))`. Use `⟨∑ i ∈ Finset.range G.natDegree, (‖(Ψ (G.coeff i)).eval 0‖ + 1) + 1, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(Finset.range G.natDegree).eventually_all.2 fun i _ => h1 i] with s hs φ hφ`. Establish `hm : (G.map ((evalRingHom s).comp Ψ)).Monic` using `hG.map _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : (G.map ((evalRingHom s).comp Ψ)).IsRoot (φ b)`. Rewrite using `[IsRoot, eval_map, ← hφ, ← hom_eval₂, hGb, map_zero]`. Establish `h2` using `hr.norm_lt_cauchyBound hm.ne_zero`. Rewrite `h2` using `[cauchyBound, hm.leadingCoeff, nnnorm_one, div_one, hG.natDegree_map]`. Establish `h3 : ((Finset.range G.natDegree).sup (fun i => ‖(G.map ((evalRingHom s).comp Ψ)).coeff i‖₊) : NNReal) ≤ ∑ i ∈ Finset.range G.natDegree, (‖(Ψ (G.coeff i)).eval 0‖₊ + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sup_le fun i hi => ?_` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (f := fun i => ‖(Ψ (G.coeff i)).eval 0‖₊ + 1) (fun _ _ => zero_le) hi)` and prove the remaining obligations. Rewrite using `[coeff_map]`. Conclude with `(hs i hi).le` after adjusting the coercions. Establish `h4` using `h2.le.trans (add_le_add_left h3 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h5` using `NNReal.coe_le_coe.2 h4`. Move the coercions through the operations in `at h5`. Conclude with `h5`.
+A detailed English derivation is pending.
 -/
 theorem exists_eventually_norm_le {R B : Type*} [CommRing R] [CommRing B] [Algebra R B]
     (Ψ : R →+* ℂ[X]) {b : B} (hb : IsIntegral R b) :
@@ -112,15 +108,13 @@ theorem exists_eventually_norm_le {R B : Type*} [CommRing R] [CommRing B] [Algeb
   exact h5
 
 /- English proof (translation)
-Use `choose M hM using fun i => exists_eventually_norm_le Ψ (Algebra.IsIntegral.isIntegral (R := R) (w i))`. Use `⟨∑ i, |M i|, fun ε hε => ?_⟩` and prove the remaining obligations. Establish `hint` using `Algebra.IsIntegral.isIntegral (R := R) u`. Establish `hF` using `minpoly.monic hint`. Establish `h0 : (Ψ ((minpoly R u).coeff 0)).eval 0 = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg p (minpoly.aeval R u)`. Rewrite `h` using `[aeval_def, hom_eval₂, hu, eval₂_at_zero, hp, map_zero]`. Conclude with `h`. Establish `h1 : ∀ᶠ s in 𝓝 (0 : ℂ), ‖(Ψ ((minpoly R u).coeff 0)).eval s‖ < ε ^ (minpoly R u).natDegree` using `((Ψ _).continuous.norm.tendsto 0).eventually (gt_mem_nhds (by`. Simplify using `only [h0, norm_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use the proof step `positivity))`. Establish `h2 : ∀ᶠ s in 𝓝[≠] (0 : ℂ), ¬ (Ψ r).IsRoot s` using `nhdsNE_le_cofinite _ (eventually_cofinite.2 (by`. Simplify using `using (Ψ r).finite_setOf_isRoot hr))`. Take `⟨s, hs2, hs1, hs3⟩` from `(h2.and ((h1.and (eventually_all.2 hM)).filter_mono nhdsWithin_le_nhds)).exists`. Take `⟨t, ht, htε⟩` from `exists_root_norm_lt (hF.map ((evalRingHom s).comp Ψ)) hε (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[coeff_map, hF.natDegree_map]`. Conclude with `hs1)`. Take `⟨φ, hφ, hφu⟩` from `exists_extend_apply_eq ((evalRingHom s).comp Ψ) u t (by`. Rewrite using `[IsRoot, eval_map] at ht)` and apply the resulting hypothesis. Use `⟨s, φ, hφ, hs2, hφu ▸ htε, fun i => (hs3 i φ hφ).trans ((le_abs_self _).trans ?_)⟩` and prove the remaining obligations.
-
-Conclude with `Finset.single_le_sum (f := fun i => |M i|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_small_of_curve {R B : Type*} [CommRing R] [IsDomain R] [IsIntegrallyClosed R]
     [CommRing B] [IsDomain B] [Algebra R B] [Algebra.IsIntegral R B] [FaithfulSMul R B]
@@ -159,21 +153,19 @@ theorem exists_small_of_curve {R B : Type*} [CommRing R] [IsDomain R] [IsIntegra
 end SmallPoint
 
 /- English proof (translation)
-Introduce `K B _ _ _ _ _ σ n w u q hu hq`. Take `⟨d, g, hinj, hint⟩` from `exists_integral_inj_algHom_of_fg K B`. Use `letI := g.toRingHom.toAlgebra`. Use `haveI : Algebra.IsIntegral (MvPolynomial (Fin d) K) B := ⟨hint⟩`. Use `haveI : FaithfulSMul (MvPolynomial (Fin d) K) B := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : Nontrivial (B ⧸ Ideal.span {u}) := Ideal.Quotient.nontrivial_iff.2 (by rwa [Ne, Ideal.span_singleton_eq_top])`. Take `⟨p₀, hp₀⟩` from `exists_ringHom_extend_of_finiteType K (B ⧸ Ideal.span {u}) ℂ σ`. Set `p : B →+* ℂ` to `p₀.comp (Ideal.Quotient.mk _)`. Establish `hpu : p u = 0`. Express the relevant statement in the definitionally equal form `p₀ (Ideal.Quotient.mk _ u) = 0`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self u), map_zero]`. Take `⟨r, hr, c, hc⟩` from `(Algebra.IsIntegral.isIntegral (R := MvPolynomial (Fin d) K) q).isAlgebraic.exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero hq)`. Take `⟨z, hz⟩ : ∃ z : Fin d → ℂ, MvPolynomial.eval z (MvPolynomial.map σ r) ≠ 0` from `by by_contra! h`. Conclude with `hr (MvPolynomial.map_injective σ σ.injective (MvPolynomial.funext (by simpa using h)))`. Set `Ψ : MvPolynomial (Fin d) K →+* ℂ[X]` to `MvPolynomial.eval₂Hom (C.comp σ) fun j => C (p (g (MvPolynomial.X j))) + X * C (z j - p (g (MvPolynomial.X j)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΨ0 : p.comp (algebraMap (MvPolynomial (Fin d) K) B) = (evalRingHom 0).comp Ψ`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun j => ?_)` and prove the remaining obligations. Establish `: p (g (MvPolynomial.C a)) = σ a`. Rewrite using `[MvPolynomial.algHom_C]`. Conclude with `hp₀ a`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Conclude with `this.trans (by simp [Ψ])`. Simplify using `[Ψ]`. Both sides reduce to the same expression. Establish `hΨ1 : (evalRingHom 1).comp Ψ = (MvPolynomial.eval z).comp (MvPolynomial.map σ)`. Apply the tactic sequence `refine MvPolynomial.ringHom_ext (fun a => ?_) (fun j => ?_) <;> simp [Ψ]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hΨr : Ψ r ≠ 0` using `fun h => hz (by`. Use `DFunLike.congr_fun hΨ1 r` as an intermediate fact. Simplify `this.symm)` using `[h]`. Take `⟨M, hM⟩` from `SmallPoint.exists_small_of_curve Ψ p hΨ0 w hpu hΨr`. Use `⟨M, fun ε hε => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨s, φ, hφ, h1, h2, h3⟩` from `hM ε hε`. Use `⟨φ, RingHom.ext fun a => ?_, fun h => h1 ?_, h2, h3⟩` and prove the remaining obligations. Use `DFunLike.congr_fun hφ (MvPolynomial.C a)` as an intermediate fact. Rewrite using `[RingHom.comp_apply, ← MvPolynomial.algHom_C g]`. Conclude with `this.trans (by simp [Ψ])`.
-
-Use `DFunLike.congr_fun hφ r` as an intermediate fact. Rewrite `this` using `[RingHom.comp_apply, hc, map_mul, h, zero_mul]`. Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_complex_point_norm_lt_of_not_isUnit :
     ∀ (K B : Type) [Field K] [CommRing B] [IsDomain B] [Algebra K B] [Algebra.FiniteType K B]

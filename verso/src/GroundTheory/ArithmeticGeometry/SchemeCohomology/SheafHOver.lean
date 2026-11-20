@@ -59,7 +59,7 @@ noncomputable def overConstHomAddEquiv (G : Sheaf (J.over U) AddCommGrpCat.{v}) 
 
 omit [HasSheafify J AddCommGrpCat.{v}] in
 /- English proof (translation)
-Simplify using `only [overConstHomAddEquiv, AddEquiv.trans_apply, Adjunction.homAddEquiv_apply, Adjunction.homEquiv_naturality_right]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma overConstHomAddEquiv_naturality {G G' : Sheaf (J.over U) AddCommGrpCat.{v}}
     (a : (constantSheaf (J.over U) AddCommGrpCat.{v}).obj (AddCommGrpCat.of (ULift.{v} ℤ)) ⟶ G)
@@ -97,7 +97,7 @@ lemma overCohomologyMap_apply (F : Sheaf J AddCommGrpCat.{v}) (n : ℕ)
       (x.mapExactFunctor (J.overPullback AddCommGrpCat.{v} U)) (zero_add n) := rfl
 
 /- English proof (translation)
-Rewrite using `[overCohomologyMap_apply, overCohomologyMap_apply, Ext.mapExactFunctor_comp, Ext.mapExactFunctor_mk₀, Ext.comp_assoc_of_third_deg_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma overCohomologyMap_comp_mk₀ {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) (n : ℕ)
     (x : Ext (freeSheaf J U) F n) :
@@ -108,7 +108,7 @@ lemma overCohomologyMap_comp_mk₀ {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ 
     Ext.mapExactFunctor_mk₀, Ext.comp_assoc_of_third_deg_zero]
 
 /- English proof (translation)
-Rewrite using `[overCohomologyMap_apply, overCohomologyMap_apply, Ext.mapExactFunctor_comp, Ext.mapExactFunctor_extClass]`. Conclude with `(Ext.comp_assoc _ _ _ (zero_add n) rfl (by omega)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma overCohomologyMap_comp_extClass {S : ShortComplex (Sheaf J AddCommGrpCat.{v})}
     (hS : S.ShortExact) (n : ℕ) (x : Ext (freeSheaf J U) S.X₃ n) :
@@ -120,15 +120,13 @@ lemma overCohomologyMap_comp_extClass {S : ShortComplex (Sheaf J AddCommGrpCat.{
   exact (Ext.comp_assoc _ _ _ (zero_add n) rfl (by omega)).symm
 
 /- English proof (translation)
-Set `Θ : (freeSheaf J U ⟶ F) → _` to `fun g => overUnitMap J U ≫ (J.overPullback AddCommGrpCat.{v} U).map g`. Establish `key : ∀ g, overConstHomAddEquiv J U (F.over U) (Θ g) = freeSheafHomAddEquiv U F g`. Introduce `g`. Simplify using `only [Θ]`. Rewrite using `[overConstHomAddEquiv_naturality, overUnitMap]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (((J.overPullback AddCommGrpCat.{v} U).map g).hom.app (op (Over.mk (𝟙 U)))) (AddEquiv.apply_symm_apply _ _)).trans ?_` and prove the remaining obligations. Use `freeSheafHomAddEquiv_naturality U (𝟙 (freeSheaf J U)) g` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Conclude with `this.symm`. Establish `hΘ : Function.Bijective Θ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Θ = (overConstHomAddEquiv J U (F.over U)).symm ∘ freeSheafHomAddEquiv U F`. Use function extensionality and compare the values at `fun g => ((AddEquiv.symm_apply_eq _).2 (key g).symm).symm`. Rewrite using `[this]`. Conclude with `(AddEquiv.bijective _).comp (AddEquiv.bijective _)`. Establish `: ⇑(overCohomologyMap J U F 0) = Ext.addEquiv₀.symm ∘ Θ ∘ Ext.addEquiv₀`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `x`. Take `⟨g, rfl⟩` from `Ext.addEquiv₀.symm.surjective x`. Simplify using `only [Function.comp_apply, AddEquiv.apply_symm_apply, Θ]`. Rewrite using `[Ext.addEquiv₀_symm_apply, Ext.addEquiv₀_symm_apply, overCohomologyMap_apply, Ext.mapExactFunctor_mk₀, Ext.mk₀_comp_mk₀]`. Rewrite using `[this]`.
-
-Conclude with `(AddEquiv.bijective _).comp (hΘ.comp (AddEquiv.bijective _))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma overCohomologyMap_zero_bijective (F : Sheaf J AddCommGrpCat.{v}) :
     Function.Bijective (overCohomologyMap J U F 0) := by
@@ -159,11 +157,11 @@ lemma overCohomologyMap_zero_bijective (F : Sheaf J AddCommGrpCat.{v}) :
 attribute [local instance] Ext.subsingleton_of_injective in
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact overCohomologyMap_zero_bijective J U`. Consider the case `succ n hn`. Introduce `F`. Set `I : InjectivePresentation F` to `Classical.arbitrary _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `S` to `ShortComplex.mk _ _ (cokernel.condition I.f)`. Establish `: Injective S.X₂` using `I.injective`. Establish `hS : S.ShortExact` using `{ exact := ShortComplex.exact_cokernel I.f }`. Establish `hS'` using `hS.map_of_exact (J.overPullback AddCommGrpCat.{v} U)`. Establish `: Injective (S.map (J.overPullback AddCommGrpCat.{v} U)).X₂` using `(J.overPullback AddCommGrpCat.{v} U).injective_obj_of_injective I.injective`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `AddMonoidHom.bijective_of_surjective_of_bijective_of_right_exact _ _ _ _ (overCohomologyMap J U S.X₂ n) (overCohomologyMap J U S.X₃ n) (overCohomologyMap J U S.X₁ (n + 1)) (by ext x; exact (overCohomologyMap_comp_mk₀ J U S.g n x).symm) (by ext x; exact (overCohomologyMap_comp_ext …`.
+A detailed English derivation is pending.
 -/
 theorem overCohomologyMap_bijective [EnoughInjectives (Sheaf J AddCommGrpCat.{v})] (n : ℕ) :
     ∀ F : Sheaf J AddCommGrpCat.{v}, Function.Bijective (overCohomologyMap J U F n) := by

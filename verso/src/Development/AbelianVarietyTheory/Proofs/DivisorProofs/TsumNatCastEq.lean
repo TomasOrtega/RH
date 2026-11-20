@@ -14,13 +14,13 @@ namespace GlobalTheory.PairFourier
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization
 
 /- English proof (translation)
-Establish `hfin : (Function.support n).Finite`. Establish `ht` using `h.tendsto_cofinite_zero`. Establish `hev : ∀ᶠ i in Filter.cofinite, ‖(n i : ℂ)‖ < 1`. Use `ht.norm` as an intermediate fact. Simplify using `only [norm_zero] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this.eventually (gt_mem_nhds (by norm_num))`. Use `(Filter.eventually_cofinite.1 hev).subset ?_` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [Function.mem_support] at hi`. Simplify using `only [Set.mem_setOf_eq, not_lt]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (1 : ℝ) ≤ n i` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 hi`. Simplify `this` using `[Complex.norm_natCast]`. Use `⟨∑ i ∈ hfin.toFinset, n i, ?_⟩` and prove the remaining obligations. Rewrite using `[tsum_eq_sum (s := hfin.toFinset)]`. Use `push_cast`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `i hi`. Simplify using `only [Set.Finite.mem_toFinset, Function.mem_support, not_not] at hi`. Simplify using `[hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tsum_natCast_eq {ι : Type} (n : ι → ℕ) (h : Summable (fun i ↦ (n i : ℂ))) :
     ∃ m : ℕ, ∑' i, (n i : ℂ) = m := by
@@ -46,13 +46,13 @@ theorem tsum_natCast_eq {ι : Type} (n : ι → ℕ) (h : Summable (fun i ↦ (n
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `set J : FractionalIdeal (𝓞 F)⁰ F := FractionalIdeal.spanSingleton (𝓞 F)⁰ ν * ((𝔞⁻¹ : Frac F) : FractionalIdeal (𝓞 F)⁰ F) with hJdef`. Establish `hle : J ≤ 1`. Establish `h1 : FractionalIdeal.spanSingleton (𝓞 F)⁰ ν ≤ (𝔞 : FractionalIdeal (𝓞 F)⁰ F)` using `FractionalIdeal.spanSingleton_le_iff_mem.2 hν`. Combine the equalities or inequalities in the displayed calculation. Take `⟨I, hI⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.1 hle`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hJa : J * (𝔞 : FractionalIdeal (𝓞 F)⁰ F) = FractionalIdeal.spanSingleton (𝓞 F)⁰ ν`. Rewrite using `[hJdef, mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, mul_one]`. Establish `hn` using `congrArg FractionalIdeal.absNorm hJa`. Rewrite `hn` using `[map_mul, FractionalIdeal.absNorm_span_singleton, ← hI, FractionalIdeal.coeIdeal_absNorm]`. Establish `h0 : (FractionalIdeal.absNorm (𝔞 : FractionalIdeal (𝓞 F)⁰ F) : ℚ) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, FractionalIdeal.absNorm_eq_zero_iff]`. Conclude with `Units.ne_zero 𝔞`. Use `⟨Ideal.absNorm I, ?_⟩` and prove the remaining obligations. Unfold `nrm`. Rewrite using `[div_eq_iff (by exact_mod_cast h0)]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun q : ℚ ↦ (q : ℝ)) hn` as an intermediate fact. Simplify using `only [Rat.cast_mul, Rat.cast_natCast, Rat.cast_abs] at this`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_div_eq_nat (𝔞 : Frac F) {ν : F} (hν : ν ∈ (𝔞 : FractionalIdeal (𝓞 F)⁰ F)) :
     ∃ m : ℕ, |((Algebra.norm ℚ ν : ℚ) : ℝ)| / nrm 𝔞 = m := by
@@ -91,7 +91,7 @@ def pairCoef (𝔞 𝔟 : Frac F) (k : ℕ) (c : Quotient (qRel 𝔞 𝔟)) : �
   (norm_div_eq_nat 𝔞 c.out.2.1).choose ^ (k - 1)
 
 /- English proof (translation)
-Unfold `qClass qTerm pairCoef pairPt`. Establish `hs` using `(norm_div_eq_nat 𝔞 c.out.2.1).choose_spec`. Generalize the expression as in `(norm_div_eq_nat 𝔞 c.out.2.1).choose = m at hs ⊢`. Rewrite using `[hs]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/
@@ -105,9 +105,9 @@ theorem qClass_eq (𝔞 𝔟 : Frac F) (k : ℕ) (z : Emb F → ℂ) (c : Quotie
   rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `h' : c.out.1.1 * c.out.1.2 = 0` using `congrArg Subtype.val h`. Take `⟨φ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Establish `hr : NumberField.ComplexEmbedding.IsReal φ` using `IsTotallyReal.complexEmbedding_isReal φ`. Use `c.out.2.2.2 hr.embedding` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h', map_zero]`. Conclude with `lt_irrefl _ this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairPt_ne_zero (𝔞 𝔟 : Frac F) (c : Quotient (qRel 𝔞 𝔟)) : pairPt 𝔞 𝔟 c ≠ 0 := by
   intro h
@@ -119,25 +119,23 @@ theorem pairPt_ne_zero (𝔞 𝔟 : Frac F) (c : Quotient (qRel 𝔞 𝔟)) : pa
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔞 𝔟 k _ G hG`. Take `⟨Z, hZ, hE⟩` from `hG`. Use `set C : ℂ := (2 : ℂ)⁻¹ ^ Module.finrank ℚ F * Z (1 - (k : ℂ)) with hC`. Use `set a' : GlobalTheory.RealMult.FracId.elt (𝔞 * 𝔟) → ℂ := fun ξ ↦ ∑' c : pairPt 𝔞 𝔟 ⁻¹' {ξ}, (pairCoef 𝔞 𝔟 k c : ℂ) with ha'`. Establish `hfib : ∀ (z : Emb F → ℂ) (ξ : GlobalTheory.RealMult.FracId.elt (𝔞 * 𝔟)) (c : pairPt 𝔞 𝔟 ⁻¹' {ξ}), qClass 𝔞 𝔟 k z c = (pairCoef 𝔞 𝔟 k c : ℂ) * GlobalTheory.RealMult.qPower (ξ : F) z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `z ξ ⟨c, hc⟩`. Rewrite `hc` using `[Set.mem_preimage, Set.mem_singleton_iff]`. Rewrite using `[qClass_eq, hc]`. Use `⟨Z, fun ξ ↦ a' ξ + if ξ = 0 then C else 0, hZ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hs, heq⟩` from `hE z hz`. Establish `h1` using `hs.hasSum.tsum_fiberwise (pairPt 𝔞 𝔟)`. Establish `h2 : (fun ξ ↦ ∑' c : pairPt 𝔞 𝔟 ⁻¹' {ξ}, qClass 𝔞 𝔟 k z c) = fun ξ ↦ a' ξ * GlobalTheory.RealMult.qPower (ξ : F) z`. Use function extensionality and compare the values at `ξ`. Rewrite using `[ha', ← tsum_mul_right]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `tsum_congr (hfib z ξ)`. Rewrite `h1` using `[h2]`. Establish `h3 : HasSum (fun ξ : GlobalTheory.RealMult.FracId.elt (𝔞 * 𝔟) ↦ (if ξ = 0 then C else 0) * GlobalTheory.RealMult.qPower (ξ : F) z) C`. Use `hasSum_ite_eq (0 : GlobalTheory.RealMult.FracId.elt (𝔞 * 𝔟)) C using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `ξ`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[GlobalTheory.RealMult.qPower]`. Simplify using the standard rewrite rules. Establish `hv : (cK F k : ℂ) * G z / (omegaFactor 𝔞 : ℂ) ^ k = (∑' c, qClass 𝔞 𝔟 k z c) + C` using `by rw [heq]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show HasSum (fun ξ : GlobalTheory.RealMult.FracId.elt (𝔞 * 𝔟) ↦ (a' ξ + if ξ = 0 then C else 0) * GlobalTheory.RealMult.qPower (ξ : F) z) ((cK F k : ℂ) * G z / (omegaFactor 𝔞 : ℂ) ^ k)`. Rewrite using `[hv]`. Simplify using `only [add_mul]`. Conclude with `h1.add h3`. Use `show a' 0 + (if (0 : GlobalTheory.RealMult.FracId.elt (𝔞 * 𝔟)) = 0 then C else 0) = C`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_pos rfl]`. Establish `: IsEmpty (pairPt 𝔞 𝔟 ⁻¹' {0})` using `⟨fun ⟨c, hc⟩ ↦ pairPt_ne_zero 𝔞 𝔟 c (Set.mem_singleton_iff.1 (Set.mem_preimage.1 hc))⟩`. Rewrite using `[ha']`. Simplify using `only [tsum_empty, zero_add]`. Introduce `ξ hξ set z₀ : Emb F → ℂ := fun _ ↦ Complex.I`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hz₀ : z₀ ∈ upperHalf F` using `fun _ ↦ by simp [z₀]`. Establish `hq : GlobalTheory.RealMult.qPower (ξ : F) z₀ ≠ 0` using `Complex.exp_ne_zero _`. Establish `hsum : Summable (fun c : pairPt 𝔞 𝔟 ⁻¹' {ξ} ↦ (pairCoef 𝔞 𝔟 k c : ℂ))`. Use `((hE z₀ hz₀).1.subtype (pairPt 𝔞 𝔟 ⁻¹' {ξ})).mul_right (GlobalTheory.RealMult.qPower (ξ : F) z₀)⁻¹` as an intermediate fact. Use `this.congr fun c ↦ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[hfib z₀ ξ c, mul_assoc, mul_inv_cancel₀ hq, mul_one]`. Take `⟨m, hm⟩` from `tsum_natCast_eq _ hsum`. Use `⟨m, ?_⟩` and prove the remaining obligations. Use `show a' ξ + (if ξ = 0 then C else 0) = _`.
-
-Rewrite using `[if_neg hξ, add_zero, ha']`. Simplify using `only [hm]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem eisFourier : EisFourier := by
   classical

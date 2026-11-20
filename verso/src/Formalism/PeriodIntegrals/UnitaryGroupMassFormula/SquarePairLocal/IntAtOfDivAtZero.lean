@@ -22,7 +22,7 @@ namespace StModel
 variable {Q : Ideal (𝓞 E)} (M : StModel E Q)
 
 /- English proof (translation)
-Introduce `h`. Apply `M.ϖ_irr.ne_zero` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem ϖ_ne : M.ϖ ≠ 0 := by
   intro h
@@ -31,11 +31,11 @@ theorem ϖ_ne : M.ϖ ≠ 0 := by
   simp [h]
 
 /- English proof (translation)
-Introduce `hxQ`. Take `⟨u, hu⟩` from `hx`. Take `⟨y, z, hyz⟩` from `M.dense (↑u⁻¹) 1`. Establish `hdz : ∃ z' : M.R, M.j (1 - x * y) = M.j M.ϖ ^ 1 * z'`. Use `⟨M.j x * z, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : M.j y = ↑u⁻¹ - M.j M.ϖ ^ 1 * z` using `by rw [← hyz]; ring`. Rewrite using `[map_sub, map_one, map_mul, h1, ← hu, mul_sub, Units.mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨s, hs, w, hw⟩` from `M.detect (1 - x * y) 1 hdz`. Apply `hs` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsw : s = s * x * y + M.ϖ ^ 1 * w` using `by linear_combination hw`. Rewrite using `[hsw]`. Use `Q.add_mem (Q.mul_mem_right _ (Q.mul_mem_left _ hxQ)) (Q.mul_mem_right _ ?_)` and prove the remaining obligations. Rewrite using `[pow_one]`. Conclude with `M.ϖ_Q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem notMem_of_unit {x : 𝓞 E} (hx : IsUnit (M.j x)) : x ∉ Q := by
   intro hxQ
@@ -54,19 +54,19 @@ theorem notMem_of_unit {x : 𝓞 E} (hx : IsUnit (M.j x)) : x ∉ Q := by
   rw [pow_one]; exact M.ϖ_Q
 
 /- English proof (translation)
-Establish `hϖ0 : M.ϖ ≠ 0` using `M.ϖ_ne`. Establish `hQ0 : Q ≠ ⊥` using `fun h => hϖ0 ((Submodule.eq_bot_iff Q).mp h _ M.ϖ_Q)`. Take `⟨⟨D, hD⟩, hint⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 E)) Finset.univ x`. Establish `hint' : ∀ i, ∃ a : 𝓞 E, algebraMap (𝓞 E) E a = D • x i` using `fun i => hint i (Finset.mem_univ i)`. Use `choose a ha using hint'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD0 : D ≠ 0` using `nonZeroDivisors.ne_zero hD`. Take `⟨k, t, ht, r, hr⟩ : ∃ k : ℕ, ∃ t : 𝓞 E, t ∉ Q ∧ ∃ r : 𝓞 E, t * M.ϖ ^ k = D * r` from `by haveI : IsDiscreteValuationRing (Localization.AtPrime Q) := by first`. Consider the case `exact IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 E) hQ0 _`. Consider the case `infer_instance`. Establish `hinj : Function.Injective (algebraMap (𝓞 E) (Localization.AtPrime Q))` using `IsLocalization.injective _ (Ideal.primeCompl_le_nonZeroDivisors Q)`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∀ c : 𝓞 E, c ≠ 0 → algebraMap (𝓞 E) (Localization.AtPrime Q) c ≠ 0` using `fun c hc h0 => hc (hinj (by rw [h0, map_zero]))`. Establish `hϖm : algebraMap (𝓞 E) (Localization.AtPrime Q) M.ϖ ∈ IsLocalRing.maximalIdeal (Localization.AtPrime Q)` using `by first`. Consider the case `exact (IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime Q) Q M.ϖ).mpr M.ϖ_Q`. Consider the case `(rw [← Localization.AtPrime.map_eq_maximalIdeal]; exact Ideal.mem_map_of_mem _ M.ϖ_Q)`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible (Localization.AtPrime Q)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (hne D hD0) hπ`. Take `⟨m, u', hu'⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (hne M.ϖ hϖ0) hπ`. Establish `hm : m ≠ 0`. Introduce and unpack `rfl`. Apply `(IsLocalRing.mem_maximalIdeal _).mp hϖm` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu', pow_zero, mul_one]`. Conclude with `u'.isUnit`. Establish `hdvd : algebraMap (𝓞 E) (Localization.AtPrime Q) D ∣ algebraMap (𝓞 E) (Localization.AtPrime Q) M.ϖ ^ n`. Rewrite using `[hu, hu', mul_pow, ← pow_mul]`. Conclude with `mul_dvd_mul u.isUnit.dvd (pow_dvd_pow π (Nat.le_mul_of_pos_left n (Nat.pos_of_ne_zero hm)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `hdvd`. Take `⟨⟨r, t, htQ⟩, hrt⟩` from `IsLocalization.surj Q.primeCompl y`. Establish `hrt' : y * algebraMap (𝓞 E) (Localization.AtPrime Q) t = algebraMap (𝓞 E) (Localization.AtPrime Q) r` using `hrt`. Use `⟨n, t, htQ, r, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_pow, mul_comm (algebraMap (𝓞 E) (Localization.AtPrime Q) t), hy, mul_assoc, hrt']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨k, t, ht, fun i => r * a i, fun i => ?_⟩` and prove the remaining obligations. Establish `hr'` using `congrArg (algebraMap (𝓞 E) E) hr`. Rewrite `hr'` using `[map_mul, map_pow, map_mul]`. Rewrite using `[map_mul, ha i, Algebra.smul_def, hr']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_clear [hQ : Q.IsPrime] {ι : Type} [Fintype ι] (x : ι → E) :
     ∃ k : ℕ, ∃ t : 𝓞 E, t ∉ Q ∧ ∃ w : ι → 𝓞 E,
@@ -115,7 +115,7 @@ theorem exists_clear [hQ : Q.IsPrime] {ι : Type} [Fintype ι] (x : ι → E) :
   ring
 
 /- English proof (translation)
-Apply `M.detect` to reduce the goal to its premises. Use `⟨Y a b, ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun h a) b` as an intermediate fact. Simplify `this` using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.smul_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem detect_mat {N : ℕ} (A : Matrix (Fin N) (Fin N) (𝓞 E)) (m : ℕ)
     (Y : Matrix (Fin N) (Fin N) M.R) (h : M.j.mapMatrix A = (M.j M.ϖ ^ m) • Y) (a b : Fin N) :
@@ -128,7 +128,7 @@ theorem detect_mat {N : ℕ} (A : Matrix (Fin N) (Fin N) (𝓞 E)) (m : ℕ)
 end StModel
 
 /- English proof (translation)
-Take `⟨s, hs, w, hw⟩` from `h a b`. Use `⟨s, hs, w, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (algebraMap (𝓞 E) E) hw`. Rewrite `h2` using `[map_mul, map_mul]`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divAt_of_map {Q : Ideal (𝓞 E)} {N : ℕ} (A : Matrix (Fin N) (Fin N) (𝓞 E)) (c : 𝓞 E)
     (h : ∀ a b, ∃ s : 𝓞 E, s ∉ Q ∧ ∃ w : 𝓞 E, s * A a b = c * w) (a b : Fin N) :
@@ -140,13 +140,13 @@ theorem divAt_of_map {Q : Ideal (𝓞 E)} {N : ℕ} (A : Matrix (Fin N) (Fin N) 
   exact h2
 
 /- English proof (translation)
-Take `⟨s, hs, w, hw⟩` from `h a b`. Use `⟨s * d, fun hm => (hQ.mem_or_mem hm).elim hs hd, w, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (algebraMap (𝓞 E) E) hw`. Simplify using `only [map_mul, map_pow, hGX, pow_add] at h2`. Establish `hϖE : algebraMap (𝓞 E) E ϖ ≠ 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hϖ` to reduce the goal to its premises. Use `first`. Consider the case `exact (map_eq_zero_iff _ (NoZeroSMulDivisors.algebraMap_injective (𝓞 E) E)).mp h0`. Consider the case `exact (map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 E) E)).mp h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact_mod_cast h0`. Establish `hp : algebraMap (𝓞 E) E ϖ ^ (2 * k) ≠ 0` using `pow_ne_zero _ hϖE`. Establish `h3 : algebraMap (𝓞 E) E ϖ ^ (2 * k) * (algebraMap (𝓞 E) E s * algebraMap (𝓞 E) E d * X a b) = algebraMap (𝓞 E) E ϖ ^ (2 * k) * (algebraMap (𝓞 E) E ϖ ^ m * algebraMap (𝓞 E) E w)`. Take the linear combination `h2`. Establish `h4` using `mul_left_cancel₀ hp h3`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show algebraMap (𝓞 E) E (s * d) * X a b = algebraMap (𝓞 E) E (ϖ ^ m) * algebraMap (𝓞 E) E w`. Rewrite using `[map_mul, map_pow]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem divAt_conj {Q : Ideal (𝓞 E)} [hQ : Q.IsPrime] {N : ℕ} (ϖ d : 𝓞 E) (hϖ : ϖ ≠ 0)
     (hd : d ∉ Q) (k m : ℕ) (G : Matrix (Fin N) (Fin N) (𝓞 E)) (X : Matrix (Fin N) (Fin N) E)
@@ -176,7 +176,7 @@ theorem divAt_conj {Q : Ideal (𝓞 E)} [hQ : Q.IsPrime] {N : ℕ} (ϖ d : 𝓞 
   exact h4
 
 /- English proof (translation)
-Take `⟨s, hs, w, hw⟩` from `h`. Conclude with `⟨s, hs, w, by simpa using hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem intAt_of_divAt_zero {Q : Ideal (𝓞 E)} (ϖ : 𝓞 E) {x : E} (h : DivAt Q (ϖ ^ 0) x) :
     IntAt Q x := by

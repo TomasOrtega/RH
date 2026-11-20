@@ -14,11 +14,11 @@ namespace GlobalTheory.HasseFld
 open GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField
 
 /- English proof (translation)
-Set `U : (k ⊗[maximalRealSubfield E] plus Q)ˣ` to `Units.map (Algebra.TensorProduct.includeRight : plus Q →ₐ[maximalRealSubfield E] k ⊗[maximalRealSubfield E] plus Q).toMonoidHom (Units.mk0 x hx)`. Establish `hU : (U : k ⊗[maximalRealSubfield E] plus Q) = 1 ⊗ₜ x` using `rfl`. Establish `hi : inclPlus Q k (1 ⊗ₜ x) = 1 ⊗ₜ (x : Fld Q)` using `by simp [inclPlus]`. Establish `hzu : IsUnit z`. Establish `: IsUnit (z * involBase Q k z)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hz, ← hi, ← hU]`. Conclude with `U.isUnit.map _`. Conclude with `isUnit_of_mul_isUnit_left this`. Establish `hmem : U ∈ norms Q k` using `⟨hzu.unit, Units.ext (by`. Express the relevant statement in the definitionally equal form `z * involBase Q k z = inclPlus Q k (U : _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, hU, hi])⟩`. Rewrite using `[← hU]`. Conclude with `(GlobalTheory.TraceClasses.mem_norms_iff Q h0 hθ k hd U).1 hmem`.
+A detailed English derivation is pending.
 -/
 theorem isValue_of_local {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (Q : SelfRecip E r) {θ : E} (h0 : θ ≠ 0) (hθ : IsCMField.complexConj E θ = -θ) {d : plus Q}
@@ -43,17 +43,15 @@ theorem isValue_of_local {E : Type} [Field E] [NumberField E] [IsCMField E] {r :
   exact (GlobalTheory.TraceClasses.mem_norms_iff Q h0 hθ k hd U).1 hmem
 
 /- English proof (translation)
-Introduce `E _ _ _ r Q x hxx hf hi`. Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, by simp [hx]⟩`. Choose the witnesses or unpack the hypotheses as in `⟨θ, h0, hθ⟩ : ∃ θ : E, θ ≠ 0 ∧ IsCMField.complexConj E θ = -θ := by`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : E, IsCMField.complexConj E w ≠ w := by`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `IsCMField.complexConj_ne_one E (AlgEquiv.ext h)`. Conclude with `⟨w - IsCMField.complexConj E w, sub_ne_zero.mpr hw.symm, by simp⟩`. Set `x' : plus Q` to `⟨x, hxx⟩`.
+Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hx' : x' ≠ 0` using `fun h => hx (congrArg Subtype.val h)`. Set `d : plus Q` to `⟨algebraMap E _ θ * algebraMap E _ θ, by show invol Q _ = (AlgHom.id _ _) _`. Rewrite using `[map_mul, GlobalTheory.TraceClasses.invol_theta Q hθ]`. Use the proof step `simp⟩`. Establish `hd : (d : Fld Q) = algebraMap E _ θ * algebraMap E _ θ` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, e0, e1⟩` from `GlobalTheory.TraceClasses.exists_basis_theta Q h0 hθ`. Use `GlobalTheory.TraceClasses.isQuadraticExtension Q h0 hθ` as an intermediate fact. Establish `e2 : e 1 * e 1 = algebraMap _ _ d` using `by rw [e1]; exact hd.symm`. Take `⟨a, b, hab⟩` from `GlobalTheory.TraceClasses.form_of_local (F := maximalRealSubfield E) e e0 e2 (Units.mk0 x' hx') (fun v => by`. Take `⟨z, hz⟩` from `hf v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `isValue_of_local Q h0 hθ hd _ x' hx' z hz)`. Use the proof step `(fun v => by`. Take `⟨z, hz⟩` from `hi v`. Conclude with `isValue_of_local Q h0 hθ hd _ x' hx' z hz)`. Use `⟨a + b * algebraMap E _ θ, ?_⟩` and prove the remaining obligations.
-
-Establish `hx2 : x = (a : Fld Q) ^ 2 - d * b ^ 2`. Use `congrArg Subtype.val hab` as an intermediate fact. Simplify using `using this`. Rewrite using `[map_add, map_mul, GlobalTheory.TraceClasses.invol_coe, GlobalTheory.TraceClasses.invol_coe, GlobalTheory.TraceClasses.invol_theta Q hθ, hx2, hd]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasse_norm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (Q : SelfRecip E r) (x : Fld Q), invol Q x = x →

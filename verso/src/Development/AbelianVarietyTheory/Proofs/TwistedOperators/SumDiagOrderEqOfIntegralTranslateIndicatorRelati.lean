@@ -16,12 +16,12 @@ namespace GlobalTheory.SphTheta.IntTranslate
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {m : ℕ}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_int {α β : Type} {A : Matrix α β L} : A ∈ intMat L α β ↔ ∀ i j, A i j ∈ intL L := Iff.rfl
 
 /- English proof (translation)
-Rewrite `hA`, `hB`, the goal using `[mem_int]`. Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hA i k) (hB k j)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_mul {A B : Matrix (Fin m) (Fin m) L} (hA : A ∈ intMat L (Fin m) (Fin m))
     (hB : B ∈ intMat L (Fin m) (Fin m)) : A * B ∈ intMat L (Fin m) (Fin m) := by
@@ -31,9 +31,7 @@ theorem int_mul {A B : Matrix (Fin m) (Fin m) L} (hA : A ∈ intMat L (Fin m) (F
   exact Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hA i k) (hB k j)
 
 /- English proof (translation)
-Rewrite using `[mem_int]`. Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`.
-
-Conclude with `Subring.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_int : (1 : Matrix (Fin m) (Fin m) L) ∈ intMat L (Fin m) (Fin m) := by
   rw [mem_int]
@@ -44,7 +42,7 @@ theorem one_int : (1 : Matrix (Fin m) (Fin m) L) ∈ intMat L (Fin m) (Fin m) :=
   · exact Subring.zero_mem _
 
 /- English proof (translation)
-Simplify using `only [mem_int, Matrix.transpose_apply]`. Conclude with `⟨fun h i j => h j i, fun h i j => h j i⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem int_transpose {A : Matrix (Fin m) (Fin m) L} :
     Aᵀ ∈ intMat L (Fin m) (Fin m) ↔ A ∈ intMat L (Fin m) (Fin m) := by
@@ -55,9 +53,9 @@ def IsIntUnit (g : GL (Fin m) L) : Prop :=
   g.1 ∈ intMat L (Fin m) (Fin m) ∧ (g⁻¹).1 ∈ intMat L (Fin m) (Fin m)
 
 /- English proof (translation)
-Unfold `IsIntUnit at hg`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e : X = (g⁻¹).1 * (g.1 * X)` using `by rw [← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `int_mul hg.2 h`. Introduce `h`. Conclude with `int_mul hg.1 h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem IsIntUnit.left {g : GL (Fin m) L} (hg : IsIntUnit g) (X : Matrix (Fin m) (Fin m) L) :
     g.1 * X ∈ intMat L (Fin m) (Fin m) ↔ X ∈ intMat L (Fin m) (Fin m) := by
@@ -71,9 +69,9 @@ theorem IsIntUnit.left {g : GL (Fin m) L} (hg : IsIntUnit g) (X : Matrix (Fin m)
     exact int_mul hg.1 h
 
 /- English proof (translation)
-Unfold `IsIntUnit at hg`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e : X = (X * g.1) * (g⁻¹).1` using `by rw [mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `int_mul h hg.2`. Introduce `h`. Conclude with `int_mul h hg.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem IsIntUnit.right {g : GL (Fin m) L} (hg : IsIntUnit g) (X : Matrix (Fin m) (Fin m) L) :
     X * g.1 ∈ intMat L (Fin m) (Fin m) ↔ X ∈ intMat L (Fin m) (Fin m) := by
@@ -87,7 +85,7 @@ theorem IsIntUnit.right {g : GL (Fin m) L} (hg : IsIntUnit g) (X : Matrix (Fin m
     exact int_mul h hg.1
 
 /- English proof (translation)
-Unfold `IsIntUnit`. Conclude with `⟨mem_int.2 fun i j => P.cartan_entries_of_mem (intL L) g h i j, mem_int.2 fun i j => P.cartan_entries_of_mem (intL L) g⁻¹ (inv_mem h) i j⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem isIntUnit_of_mem {g : GL (Fin m) L} (h : g ∈ GLint (Fin m) (intL L)) : IsIntUnit g := by
   unfold IsIntUnit
@@ -95,7 +93,7 @@ theorem isIntUnit_of_mem {g : GL (Fin m) L} (h : g ∈ GLint (Fin m) (intL L)) :
     mem_int.2 fun i j => P.cartan_entries_of_mem (intL L) g⁻¹ (inv_mem h) i j⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, antiJ]`. Rewrite using `[Nat.add_comm j.val i.val]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem antiJ_transpose : (antiJ L m)ᵀ = antiJ L m := by
   ext i j
@@ -103,9 +101,9 @@ theorem antiJ_transpose : (antiJ L m)ᵀ = antiJ L m := by
   rw [Nat.add_comm j.val i.val]
 
 /- English proof (translation)
-Establish `hJ : antiJ L m ∈ intMat L (Fin m) (Fin m)`. Rewrite using `[mem_int]`. Introduce `i j`. Simplify using `only [antiJ]`. Use `split_ifs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove both required implications or components.
 
-Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`. Conclude with `And.intro hJ hJ`.
+A detailed English derivation is pending.
 -/
 theorem isIntUnit_antiG : IsIntUnit (antiG L m) := by
   have hJ : antiJ L m ∈ intMat L (Fin m) (Fin m) := by
@@ -122,22 +120,22 @@ def glT (g : GL (Fin m) L) : GL (Fin m) L :=
     by rw [← Matrix.transpose_mul, g.mul_inv, Matrix.transpose_one]⟩
 
 /- English proof (translation)
-Unfold `IsIntUnit at hg ⊢`. Conclude with `⟨int_transpose.2 hg.1, int_transpose.2 hg.2⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem IsIntUnit.glT {g : GL (Fin m) L} (hg : IsIntUnit g) : IsIntUnit (glT g) := by
   unfold IsIntUnit at hg ⊢
   exact ⟨int_transpose.2 hg.1, int_transpose.2 hg.2⟩
 
 /- English proof (translation)
-Simplify using `only [ordL, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ordL_congr {x y : L} (h : Valued.v x = Valued.v y) : ordL x = ordL y := by
   simp only [ordL, h]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single r]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hA (show id k < id r from h), zero_mul]`. Rewrite using `[hB (show id r < id k from h), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ r) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem diag_mul {A B : Matrix (Fin m) (Fin m) L} (hA : A.BlockTriangular id) (hB : B.BlockTriangular id)
     (r : Fin m) : (A * B) r r = A r r * B r r := by
@@ -150,16 +148,16 @@ theorem diag_mul {A B : Matrix (Fin m) (Fin m) L} (hA : A.BlockTriangular id) (h
     exact absurd (Finset.mem_univ r) h
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 private lemma valued_v_le_one_of_mem_intL {x : L} (h : x ∈ intL L) : Valued.v x ≤ 1 := h
 
 /- English proof (translation)
-Establish `hAi : (A⁻¹).1.BlockTriangular id`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hA`. Establish `h1 : (A⁻¹).1 r r * A.1 r r = 1`. Rewrite using `[← diag_mul hAi hA r, Units.inv_mul, Matrix.one_apply_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Valued.v ((A⁻¹).1 r r * B.1 r r) ≤ 1`. Rewrite using `[← diag_mul hAi hB r]`. Conclude with `valued_v_le_one_of_mem_intL ((mem_int.1 h) r r)`. Establish `h3 : Valued.v ((A⁻¹).1 r r) * Valued.v (A.1 r r) = 1`. Rewrite using `[← map_mul, h1, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, mul_comm (Valued.v ((A⁻¹).1 r r)) (Valued.v (B.1 r r)), mul_assoc, h3, mul_one]`. Use `_ ≤ 1 * Valued.v (A.1 r r) := by gcongr`. Use `_ = Valued.v (A.1 r r) := one_mul _`.
+A detailed English derivation is pending.
 -/
 theorem v_diag_le {A B : GL (Fin m) L} (hA : A.1.BlockTriangular id) (hB : B.1.BlockTriangular id)
     (h : (A⁻¹).1 * B.1 ∈ intMat L (Fin m) (Fin m)) (r : Fin m) : Valued.v (B.1 r r) ≤ Valued.v (A.1 r r) := by
@@ -179,7 +177,7 @@ theorem v_diag_le {A B : GL (Fin m) L} (hA : A.1.BlockTriangular id) (hB : B.1.B
     _ = Valued.v (A.1 r r) := one_mul _
 
 /- English proof (translation)
-Apply `ordL_congr` to reduce the goal to its premises. Conclude with `le_antisymm (v_diag_le hB hA h2 r) (v_diag_le hA hB h1 r)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem ordL_diag_eq {A B : GL (Fin m) L} (hA : A.1.BlockTriangular id) (hB : B.1.BlockTriangular id)
     (h1 : (A⁻¹).1 * B.1 ∈ intMat L (Fin m) (Fin m)) (h2 : (B⁻¹).1 * A.1 ∈ intMat L (Fin m) (Fin m)) (r : Fin m) :
@@ -194,17 +192,15 @@ namespace GlobalTheory.SphTheta.IntTranslate
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {m : ℕ}
 
 /- English proof (translation)
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `h`. Simplify using `at h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `@insert a s ha ih`. Introduce `_`. Break down `s.eq_empty_or_nonempty with hs | hs` into its components or cases. Substitute `hs` using the available equality. Use `⟨a, by simp, fun l hl _ => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `at hl`. Substitute `hl` using the available equality. Conclude with `hR _`. Take `⟨k, hk, hmin⟩` from `ih hs`. Distinguish the cases in `hak : R a k ∧ ¬ R k a`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, Finset.mem_insert_self a s, fun l hl hla => ?_⟩` and prove the remaining obligations. Rewrite `hl` using `[Finset.mem_insert]`. Break down `hl with rfl | hl` into its components or cases. Conclude with `hR _`. Conclude with `ht _ _ _ hak.1 (hmin l hl (ht _ _ _ hla hak.1))`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨k, Finset.mem_insert_of_mem hk, fun l hl hlk => ?_⟩` and prove the remaining obligations. Rewrite `hl` using `[Finset.mem_insert]`. Break down `hl with rfl | hl` into its components or cases. Assume the negation of the conclusion as `hc`. Conclude with `hak ⟨hlk, hc⟩`.
-
-Conclude with `hmin l hl hlk`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_min_of_preorder {κ : Type} (R : κ → κ → Prop) (hR : ∀ x, R x x)
     (ht : ∀ x y z, R x y → R y z → R x z) :
@@ -237,11 +233,9 @@ theorem exists_min_of_preorder {κ : Type} (R : κ → κ → Prop) (hR : ∀ x,
         · exact hmin l hl hlk
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e : t * A.1 = (t * B.1) * ((B⁻¹).1 * A.1)`. Rewrite using `[mul_assoc, ← mul_assoc B.1, Units.mul_inv, one_mul]`. Rewrite using `[e]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `int_mul h h2`. Introduce `h`. Establish `e : t * B.1 = (t * A.1) * ((A⁻¹).1 * B.1)`. Rewrite using `[mul_assoc, ← mul_assoc A.1, Units.mul_inv, one_mul]`. Rewrite using `[e]`.
-
-Conclude with `int_mul h h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff_of_mutual {A B : GL (Fin m) L} (h1 : (A⁻¹).1 * B.1 ∈ intMat L (Fin m) (Fin m))
     (h2 : (B⁻¹).1 * A.1 ∈ intMat L (Fin m) (Fin m)) (t : Matrix (Fin m) (Fin m) L) :
@@ -259,19 +253,19 @@ theorem mem_iff_of_mutual {A B : GL (Fin m) L} (h1 : (A⁻¹).1 * B.1 ∈ intMat
     exact int_mul h h1
 
 /- English proof (translation)
-Introduce `s`. Proceed by induction on `s using Finset.strongInduction with`. Consider the case `H s ih`. Introduce `H`. Break down `s.eq_empty_or_nonempty with hs | hs` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `hs` using the available equality. Simplify using the standard rewrite rules. Take `⟨k, hk, hmax⟩` from `exists_min_of_preorder (fun x y => ((W y)⁻¹).1 * (W x).1 ∈ intMat L (Fin m) (Fin m)) (fun x => by simp only [Units.inv_mul]; exact one_int) (fun x y z hxy hyz => by`. Use `int_mul hyz hxy` as an intermediate fact. Rewrite using `[mul_assoc, ← mul_assoc (W y).1, Units.mul_inv, one_mul] at this)` and apply the resulting hypothesis.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `s hs`. Establish `hsum : ∑ l ∈ s.filter (fun l => ((W k)⁻¹).1 * (W l).1 ∈ intMat L (Fin m) (Fin m)), a l = 0`. Use `H (W k)⁻¹` as an intermediate fact. Simplify using `only [mul_ite, mul_one, mul_zero] at this`. Rewrite `this` using `[← Finset.sum_filter]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hsub : ∀ t : GL (Fin m) L, ∑ l ∈ s.filter (fun l => ¬ (((W k)⁻¹).1 * (W l).1 ∈ intMat L (Fin m) (Fin m))), a l * (if t.1 * (W l).1 ∈ intMat L (Fin m) (Fin m) then 1 else 0) = 0`. Introduce `t`. Establish `e : ∀ l ∈ s.filter (fun l => ((W k)⁻¹).1 * (W l).1 ∈ intMat L (Fin m) (Fin m)), a l * (if t.1 * (W l).1 ∈ intMat L (Fin m) (Fin m) then 1 else 0) = a l * (if t.1 * (W k).1 ∈ intMat L (Fin m) (Fin m) then 1 else 0)`. Introduce `l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hl` using `[Finset.mem_filter]`. Rewrite using `[mem_iff_of_mutual hl.2 (hmax l hl.1 hl.2)]`. Establish `h0 : ∑ l ∈ s.filter (fun l => ((W k)⁻¹).1 * (W l).1 ∈ intMat L (Fin m) (Fin m)), a l * (if t.1 * (W l).1 ∈ intMat L (Fin m) (Fin m) then 1 else 0) = 0`. Rewrite using `[Finset.sum_congr rfl e, ← Finset.sum_mul, hsum, zero_mul]`. Use `H t` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[← Finset.sum_filter_add_sum_filter_not s (fun l => ((W k)⁻¹).1 * (W l).1 ∈ intMat L (Fin m) (Fin m)), h0, zero_add]`. Conclude with `this`. Establish `hrest` using `ih _ (Finset.filter_ssubset.2 ⟨k, hk, by`. Simplify using `only [not_not, Units.inv_mul]`. Conclude with `one_int⟩) hsub`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ l ∈ s.filter (fun l => ((W k)⁻¹).1 * (W l).1 ∈ intMat L (Fin m) (Fin m)), a l * g l = a l * g k`. Introduce `l hl`. Rewrite `hl` using `[Finset.mem_filter]`. Rewrite using `[hg k l hl.2 (hmax l hl.1 hl.2)]`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not s (fun l => ((W k)⁻¹).1 * (W l).1 ∈ intMat L (Fin m) (Fin m)), hrest, add_zero, Finset.sum_congr rfl e, ← Finset.sum_mul, hsum, zero_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_mul_eq_zero_of_indicator {κ : Type} (a : κ → ℂ) (W : κ → GL (Fin m) L) (g : κ → ℂ)
     (hg : ∀ k l, ((W k)⁻¹).1 * (W l).1 ∈ intMat L (Fin m) (Fin m) →
@@ -350,28 +344,28 @@ def rightSum {κ : Type} [Fintype κ] (c' : κ → ℂ) (V : κ → GL (Fin m) L
   ∑ j, c' j * (if (V j).1 * t.1 ∈ intMat L (Fin m) (Fin m) then 1 else 0)
 
 /- English proof (translation)
-Simplify using `only [leftSum, Units.val_mul, mul_assoc, hg.left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem leftSum_mul {ι : Type} [Fintype ι] (c : ι → ℂ) (U : ι → GL (Fin m) L) {g : GL (Fin m) L}
     (hg : IsIntUnit g) (t : GL (Fin m) L) : leftSum c U (g * t) = leftSum c U t := by
   simp only [leftSum, Units.val_mul, mul_assoc, hg.left]
 
 /- English proof (translation)
-Simplify using `only [rightSum, Units.val_mul, ← mul_assoc, hg.right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rightSum_mul {κ : Type} [Fintype κ] (c' : κ → ℂ) (V : κ → GL (Fin m) L) {g : GL (Fin m) L}
     (hg : IsIntUnit g) (t : GL (Fin m) L) : rightSum c' V (t * g) = rightSum c' V t := by
   simp only [rightSum, Units.val_mul, ← mul_assoc, hg.right]
 
 /- English proof (translation)
-Use `ext1`. Simplify using `only [glT_val, Units.val_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma glT_mul (x y : GL (Fin m) L) : glT (x * y) = glT y * glT x := by
   ext1
   simp only [glT_val, Units.val_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Rewrite using `[← int_transpose, ← (isIntUnit_antiG (L := L) (m := m)).left (X.1 * (antiG L m * glT t).1)]`. Simplify using `only [Units.val_mul, glT_val, antiG_val, Matrix.transpose_mul, Matrix.transpose_transpose, antiJ_transpose, mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma mul_antiG_glT_mem_intMat_iff (t X : GL (Fin m) L) :
     t.1 * (antiG L m * glT X * antiG L m).1 ∈ intMat L (Fin m) (Fin m) ↔
@@ -381,15 +375,13 @@ private lemma mul_antiG_glT_mem_intMat_iff (t X : GL (Fin m) L) :
     antiJ_transpose, mul_assoc]
 
 /- English proof (translation)
-Establish `hR : ∀ x g : GL (Fin m) L, IsIntUnit g → leftSum c U (x * g) = leftSum c U x` using `fun x g hg => by rw [H, H, rightSum_mul c' V hg]`. Establish `hT : leftSum c U (glT t) = leftSum c U t`. Take `⟨a, -, k₁, hk₁, k₂, hk₂, e⟩` from `GlobalTheory.LFun.UnitaryDiv.exists_cartan hU t`. Take `⟨D, hD⟩ : ∃ D : GL (Fin m) L, D = k₁⁻¹ * t * k₂⁻¹` from `⟨_, rfl⟩`. Establish `htD : t = k₁ * D * k₂`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hD]`. Use `group`. Establish `hDv : D.1 = Matrix.diagonal (fun i => ϖ ^ a i)`. Rewrite using `[hD, Units.val_mul, Units.val_mul, e]`. Simplify using `only [← mul_assoc, Units.inv_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, Units.mul_inv, mul_one]`. Establish `hDT : glT D = D` using `by ext1`. Rewrite using `[glT_val, hDv, Matrix.diagonal_transpose]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[htD, glT_mul, glT_mul, hDT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = leftSum c U (D * glT k₁) := leftSum_mul c U (IsIntUnit.glT (isIntUnit_of_mem hk₂)) _`. Use `_ = leftSum c U D := hR _ _ (IsIntUnit.glT (isIntUnit_of_mem hk₁))`. Use `_ = leftSum c U (D * k₂) := (hR _ _ (isIntUnit_of_mem hk₂)).symm`. Use `_ = leftSum c U (k₁ * (D * k₂)) := (leftSum_mul c U (isIntUnit_of_mem hk₁) _).symm`. Use `_ = leftSum c U t := by rw [htD, mul_assoc]`.
-
-Establish `hsw : leftSum c' (fun j => antiG L m * glT (V j) * antiG L m) t = rightSum c' V (antiG L m * glT t)` using `by dsimp only [leftSum, rightSum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_antiG_glT_mem_intMat_iff]`. Rewrite using `[hsw, ← H, leftSum_mul c U isIntUnit_antiG, hT]`.
+Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leftSum_eq_swap {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) {ι κ : Type} [Fintype ι] [Fintype κ]
     (c : ι → ℂ) (c' : κ → ℂ) (U : ι → GL (Fin m) L) (V : κ → GL (Fin m) L)
@@ -425,23 +417,21 @@ theorem leftSum_eq_swap {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ 
   rw [hsw, ← H, leftSum_mul c U isIntUnit_antiG, hT]
 
 /- English proof (translation)
-Establish `hl : ∀ (N : Matrix (Fin m) (Fin m) L) (r s : Fin m), (antiJ L m * N) r s = N r.rev s`. Introduce `N r s`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single r.rev]`. Establish `h1 : r.val + r.rev.val + 1 = m`. Rewrite using `[Fin.val_rev]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `r.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [antiJ]`. Rewrite using `[if_pos h1, one_mul]`. Introduce `b _ hb`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ¬ (r.val + b.val + 1 = m)`. Introduce `h`. Apply `hb` to reduce the goal to its premises. Use `ext`. Rewrite using `[Fin.val_rev]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [antiJ]`. Rewrite using `[if_neg h2, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hr : ∀ (N : Matrix (Fin m) (Fin m) L) (r s : Fin m), (N * antiJ L m) r s = N r s.rev`. Introduce `N r s`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single s.rev]`. Establish `h1 : s.rev.val + s.val + 1 = m`. Rewrite using `[Fin.val_rev]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `s.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [antiJ]`. Rewrite using `[if_pos h1, mul_one]`. Introduce `b _ hb`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ¬ (b.val + s.val + 1 = m)`. Introduce `h`. Apply `hb` to reduce the goal to its premises. Use `ext`. Rewrite using `[Fin.val_rev]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [antiJ]`. Rewrite using `[if_neg h2, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
-
-Rewrite using `[hr, hl]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma antiJ_mul_mul_antiJ_apply (M : Matrix (Fin m) (Fin m) L) (r s : Fin m) :
     (antiJ L m * M * antiJ L m) r s = M r.rev s.rev := by
@@ -494,15 +484,13 @@ namespace GlobalTheory.SphTheta
 open IntTranslate in
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q hU m ι κ _ _ c c' U V hUt hVt H f`. Establish `hsw : ∀ t : GL (Fin m) L, leftSum c U t = leftSum c' (fun j => antiG L m * glT (V j) * antiG L m) t` using `fun t => leftSum_eq_swap hU c c' U V H t`. Establish `htri : ∀ k, (Sum.elim U (fun j => antiG L m * glT (V j) * antiG L m) k).1.BlockTriangular id`. Introduce and unpack `(i | j)`. Conclude with `hUt i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r s hrs`. Simplify using `only [Sum.elim_inr, Units.val_mul, glT_val, antiG_val]`. Rewrite using `[GlobalTheory.SphTheta.IntTranslate.antiJ_mul_mul_antiJ_apply, Matrix.transpose_apply]`. Conclude with `hVt j (show id r.rev < id s.rev from Fin.rev_lt_rev.2 hrs)`. Establish `hd : ∀ j r, (antiG L m * glT (V j) * antiG L m).1 r r = (V j).1 r.rev r.rev`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `j r`. Simplify using `only [Units.val_mul, glT_val, antiG_val]`. Rewrite using `[GlobalTheory.SphTheta.IntTranslate.antiJ_mul_mul_antiJ_apply, Matrix.transpose_apply]`. Establish `hz : ∀ t : GL (Fin m) L, ∑ k ∈ Finset.univ, Sum.elim c (fun j => -c' j) k * (if t.1 * (Sum.elim U (fun j => antiG L m * glT (V j) * antiG L m) k).1 ∈ intMat L (Fin m) (Fin m) then 1 else 0) = 0`. Introduce `t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib, ← sub_eq_add_neg]`. Conclude with `sub_eq_zero.2 (hsw t)`. Establish `key` using `sum_mul_eq_zero_of_indicator (Sum.elim c (fun j => -c' j)) (Sum.elim U (fun j => antiG L m * glT (V j) * antiG L m)) (fun k => f (fun r => ordL ((Sum.elim U (fun j => antiG L m * glT (V j) * antiG L m) k).1 r r))) (fun k l h1 h2 => congrArg f (funext fun r => ordL_diag_eq (htri k …`. Rewrite `key` using `[Fintype.sum_sum_type]`.
-
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib, hd, ← sub_eq_add_neg] at key`. Conclude with `sub_eq_zero.1 key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_ordL_diag_eq_of_indicator : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L)
     (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q → ∀ (m : ℕ) (ι κ : Type) [Fintype ι] [Fintype κ] (c : ι → ℂ)

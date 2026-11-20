@@ -13,7 +13,7 @@ section Ring
 variable {R : Type} [CommRing R] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[transpose_mul]`. Conclude with `submatrix_mul_equiv Aᵀ Bᵀ Fin.rev Fin.revPerm Fin.rev`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem revT_mul (A B : Matrix (Fin n) (Fin n) R) :
     Aᵀ.submatrix Fin.rev Fin.rev * Bᵀ.submatrix Fin.rev Fin.rev = (B * A)ᵀ.submatrix Fin.rev Fin.rev := by
@@ -21,7 +21,7 @@ theorem revT_mul (A B : Matrix (Fin n) (Fin n) R) :
   exact submatrix_mul_equiv Aᵀ Bᵀ Fin.rev Fin.revPerm Fin.rev
 
 /- English proof (translation)
-Rewrite using `[transpose_one]`. Conclude with `submatrix_one_equiv Fin.revPerm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem revT_one : (1 : Matrix (Fin n) (Fin n) R)ᵀ.submatrix Fin.rev Fin.rev = 1 := by
   rw [transpose_one]
@@ -40,23 +40,23 @@ theorem invRevT_apply (g : GL (Fin n) R) (i j : Fin n) :
     (invRevT g).val i j = (g⁻¹).val j.rev i.rev := rfl
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[invRevT_apply, ← map_inv, invRevT_apply, inv_inv, Fin.rev_rev, Fin.rev_rev]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem invRevT_invRevT (g : GL (Fin n) R) : invRevT (invRevT g) = g := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   rw [invRevT_apply, ← map_inv, invRevT_apply, inv_inv, Fin.rev_rev, Fin.rev_rev]
 
 /- English proof (translation)
-The claim follows from `(mem_borel R).2 fun _ _ h => (mem_borel R).1 (inv_mem hb) _ _ (Fin.rev_lt_rev.2 h)`.
+A detailed English derivation is pending.
 -/
 theorem invRevT_mem_borel {b : GL (Fin n) R} (hb : b ∈ GlobalTheory.SmGL.borel R (Fin n)) :
     invRevT b ∈ GlobalTheory.SmGL.borel R (Fin n) :=
   (mem_borel R).2 fun _ _ h => (mem_borel R).1 (inv_mem hb) _ _ (Fin.rev_lt_rev.2 h)
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun (Units.inv_mul b) i) i`. Rewrite `h` using `[mul_apply, one_apply_eq, Finset.sum_eq_single i]`. Conclude with `h`. Introduce `j _ hj`. Break down `lt_or_gt_of_ne hj with h' | h'` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(mem_borel R).1 (inv_mem hb) _ _ h', zero_mul]`. Rewrite using `[(mem_borel R).1 hb _ _ h', mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_diag_mul {b : GL (Fin n) R} (hb : b ∈ GlobalTheory.SmGL.borel R (Fin n)) (i : Fin n) :
     (b⁻¹).val i i * b.val i i = 1 := by
@@ -74,7 +74,7 @@ end Ring
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GlobalTheory.SplitFlip.mem_KO_iff g).1 hg`. Use `(GlobalTheory.SplitFlip.mem_KO_iff _).2 ⟨fun i j => h2 _ _, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv, invRevT_apply, inv_inv]`. Conclude with `h1 _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invRevT_mem_KO {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) : invRevT g ∈ KO k (Fin n) := by
   obtain ⟨h1, h2⟩ := (GlobalTheory.SplitFlip.mem_KO_iff g).1 hg
@@ -83,7 +83,7 @@ theorem invRevT_mem_KO {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) : invRevT g 
   exact h1 _ _
 
 /- English proof (translation)
-Establish `h` using `ord_mul k x⁻¹ x`. Rewrite `h` using `[inv_mul_cancel, ord_eq_zero (by simp)]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ord_inv_eq_neg (x : kˣ) : ord k x⁻¹ = -ord k x := by
   have h := ord_mul k x⁻¹ x
@@ -103,14 +103,14 @@ theorem cosetMap_mk (g : GL (Fin n) k) :
     cosetMap (g : GL (Fin n) k ⧸ KO k (Fin n)) = (invRevT g : GL (Fin n) k) := rfl
 
 /- English proof (translation)
-Proceed by induction on `c using QuotientGroup.induction_on with`. Consider the case `H g => rw [cosetMap_mk, cosetMap_mk, invRevT_invRevT]`.
+Proceed by induction. Treat this case separately.
 -/
 theorem cosetMap_cosetMap (c : GL (Fin n) k ⧸ KO k (Fin n)) : cosetMap (cosetMap c) = c := by
   induction c using QuotientGroup.induction_on with
   | H g => rw [cosetMap_mk, cosetMap_mk, invRevT_invRevT]
 
 /- English proof (translation)
-Proceed by induction on `c using QuotientGroup.induction_on with`. Consider the case `H g`. Rewrite using `[MulAction.Quotient.smul_mk, cosetMap_mk, cosetMap_mk, MulAction.Quotient.smul_mk, smul_eq_mul, smul_eq_mul, map_mul]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem cosetMap_smul (x : GL (Fin n) k) (c : GL (Fin n) k ⧸ KO k (Fin n)) :
     cosetMap (x • c) = invRevT x • cosetMap c := by
@@ -120,13 +120,13 @@ theorem cosetMap_smul (x : GL (Fin n) k) (c : GL (Fin n) k ⧸ KO k (Fin n)) :
       smul_eq_mul, map_mul]
 
 /- English proof (translation)
-Use `⟨fun g => φ (invRevT g), ⟨fun g x hx => ?_, fun b hb t ht => ?_⟩, fun S hK => ?_⟩` and prove the remaining obligations. Use `show φ (invRevT (g * x)) = φ (invRevT g)`. Rewrite using `[map_mul, h.1 _ _ (invRevT_mem_KO hx)]`. Use `show φ (invRevT b) = _`. Rewrite using `[h.2 _ (invRevT_mem_borel hb) (fun i => (t i.rev)⁻¹) fun i => ?_]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Fintype.prod_equiv Fin.revPerm _ _ fun i => ?_` and prove the remaining obligations. Simplify using `only [Fin.revPerm_apply, Fin.rev_rev, ord_inv_eq_neg, _root_.zpow_neg, _root_.inv_zpow]`. Rewrite using `[invRevT_apply, Units.val_inv_eq_inv_val, ← ht]`. Conclude with `eq_inv_of_mul_eq_one_left (inv_diag_mul hb _)`. Establish `hinj : Function.Injective (cosetMap (k` using `k) (n := n)) := Function.LeftInverse.injective cosetMap_cosetMap`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hS (S.image cosetMap) fun x hx c hc => by`. Take `⟨d, hd, rfl⟩` from `Finset.mem_image.1 hc`. Use `Finset.mem_image.2 ⟨invRevT x • d, hK _ (invRevT_mem_KO hx) _ hd, ?_⟩` and prove the remaining obligations. Rewrite using `[cosetMap_smul, invRevT_invRevT]`. Rewrite `h1` using `[Finset.card_image_of_injective _ hinj, Finset.sum_image fun _ _ _ _ e => hinj e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `le_of_eq_of_le (congrArg _ (Finset.sum_congr rfl fun c _ => ?_)) h1` and prove the remaining obligations. Take `⟨x, hx⟩` from `QuotientGroup.mk_out_eq_mul (KO k (Fin n)) (invRevT c.out)`. Rewrite `hx` using `[← cosetMap_mk, QuotientGroup.out_eq']`. Use `show φ (invRevT c.out) = _`. Rewrite using `[hx, h.1 _ _ x.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isBorelSph_rev_inv (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (γ : Fin n → ℂ) (φ : GL (Fin n) k → ℂ)

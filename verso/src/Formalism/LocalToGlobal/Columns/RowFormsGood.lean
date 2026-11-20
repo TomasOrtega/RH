@@ -16,7 +16,7 @@ section CM
 variable {X : Fields}
 
 /- English proof (translation)
-Introduce `σ`. Rewrite using `[← hX.emb_star]`. Conclude with `hX.conjE (σ.comp (X.emb τ)) x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rf_emb_mem_cmMax (hX : X.Ok) (τ : X.Tau) (x : X.E) : X.emb τ x ∈ cmMax X.K := by
   intro σ
@@ -24,7 +24,7 @@ theorem rf_emb_mem_cmMax (hX : X.Ok) (τ : X.Tau) (x : X.E) : X.emb τ x ∈ cmM
   exact hX.conjE (σ.comp (X.emb τ)) x
 
 /- English proof (translation)
-Introduce `σ`. Establish `h1 : star c = c⁻¹` using `eq_inv_of_mul_eq_one_left (star_mul_root hX.conjK hm hc)`. Rewrite using `[h1, map_inv₀]`. Establish `h2 : (σ c) ^ m = 1` using `by rw [← map_pow, hc, map_one]`. Conclude with `Complex.inv_eq_conj (Complex.norm_eq_one_of_pow_eq_one h2 hm.ne')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rf_root_mem_cmMax (hX : X.Ok) {c : X.K} {m : ℕ} (hm : 0 < m) (hc : c ^ m = 1) : c ∈ cmMax X.K := by
   intro σ
@@ -52,7 +52,7 @@ structure CoefPk.DualP {D : Type} (C : CoefPk X n D) : Prop where
   dual : ∀ d, Formalism.HermitianLatticesTheory.dual C.pair (C.Nab d) = C.Del d
 
 /- English proof (translation)
-The claim follows from `hC.pair_rat act_rat g i j := by show C.bV.repr (((Λ.chr g.2 : X.Kˣ) : X.K) • C.rho g.1 (C.bV j)) i ∈ cmMax X.K rw [map_smul, Finsupp.smul_apply, smul_eq_mul] obtain ⟨m, hm, hc⟩ := LevFam.chr_root Λ g.2 exact mul_mem (rf_root_mem_cmMax hX hm hc) (hC.act_rat g.1 i j) pos := hC.pos`.
+A detailed English derivation is pending.
 -/
 theorem formGSD_rat (hX : X.Ok) (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ : LevFam X.E X.K n SG) (hC : C.RatP) :
     (formGSD C Λ).Rat where
@@ -65,7 +65,7 @@ theorem formGSD_rat (hX : X.Ok) (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ : Lev
   pos := hC.pos
 
 /- English proof (translation)
-The claim follows from `formGSD_ok C Λ hX hE symm := hC.symm nondeg := hC.nondeg nab_lat := hC.nab_lat del_le := hC.del_le s_pos := Nat.one_pos dual_le d y hy := by rw [Nat.cast_one, one_smul] have : y ∈ Formalism.HermitianLatticesTheory.dual C.pair (C.Nab d) := hy rw [hC.dual d] at this exact this del_ …`.
+A detailed English derivation is pending.
 -/
 theorem formGSD_good (hX : X.Ok) (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ : LevFam X.E X.K n SG) (hE : C.Eqv)
     (hC : C.DualP) : (formGSD C Λ).Good 1 where
@@ -93,21 +93,21 @@ section Brackets
 variable {X : Fields} {n : ℕ} (lam : X.Tau → DomWeight n) {D : Type} (L : D → Submodule (𝓞 X.E) (Sp X.E n))
 
 /- English proof (translation)
-Unfold `gramK`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rf_gramK_one (τ : X.Tau) : gramK X.emb (1 : Matrix (Fin n) (Fin n) X.E) τ = 1 := by
   unfold gramK
   rw [Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Unfold `gramKd`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), inv_one, Matrix.transpose_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rf_gramKd_one (τ : X.Tau) : gramKd X.emb (1 : Matrix (Fin n) (Fin n) X.E) τ = 1 := by
   unfold gramKd
   rw [Matrix.map_one _ (map_zero _) (map_one _), inv_one, Matrix.transpose_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rf_one_entry_mem (K0 : Subfield X.K) (a b : Fin n) : (1 : Matrix (Fin n) (Fin n) X.K) a b ∈ K0 := by
   rw [Matrix.one_apply]
@@ -116,14 +116,14 @@ theorem rf_one_entry_mem (K0 : Subfield X.K) (a b : Fin n) : (1 : Matrix (Fin n)
   · exact zero_mem _
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Matrix.PosDef.one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rf_one_map_posDef (φ : X.K →+* ℂ) : ((1 : Matrix (Fin n) (Fin n) X.K).map φ).PosDef := by
   rw [Matrix.map_one _ (map_zero _) (map_one _)]
   exact Matrix.PosDef.one
 
 /- English proof (translation)
-The claim follows from `pairRat X.K X.Tau n lam (cmMax X.K) _ (fun τ a b => by rw [rf_gramK_one]; exact rf_one_entry_mem _ a b) i j act_rat γ i j := actRat X.K X.Tau n lam (cmMax X.K) _ (fun τ a b => by rw [embGL_coe] exact rf_emb_mem_cmMax hX τ _) i j pos v := pairPos X.K X.Tau n lam _ v.embedding fun …`.
+A detailed English derivation is pending.
 -/
 theorem squarePk_ratP (hX : X.Ok) : (squarePk X lam L).RatP where
   pair_rat i j := pairRat X.K X.Tau n lam (cmMax X.K) _ (fun τ a b => by rw [rf_gramK_one]; exact rf_one_entry_mem _ a b) i j
@@ -133,7 +133,7 @@ theorem squarePk_ratP (hX : X.Ok) : (squarePk X lam L).RatP where
   pos v := pairPos X.K X.Tau n lam _ v.embedding fun τ => by rw [rf_gramK_one]; exact rf_one_map_posDef _
 
 /- English proof (translation)
-The claim follows from `pairRat X.K X.Tau n lam (cmMax X.K) _ (fun τ a b => by rw [rf_gramKd_one]; exact rf_one_entry_mem _ a b) i j act_rat γ i j := actRat X.K X.Tau n lam (cmMax X.K) _ (fun τ a b => by show ((invTrK (embGL X.emb (ufGL X.E n γ)) τ : GL (Fin n) X.K) : Matrix (Fin n) (Fin n) X.K) a b ∈ c …`.
+A detailed English derivation is pending.
 -/
 theorem roundPk_ratP (hX : X.Ok) : (roundPk X lam L).RatP where
   pair_rat i j := pairRat X.K X.Tau n lam (cmMax X.K) _ (fun τ a b => by rw [rf_gramKd_one]; exact rf_one_entry_mem _ a b) i j
@@ -144,9 +144,9 @@ theorem roundPk_ratP (hX : X.Ok) : (roundPk X lam L).RatP where
   pos v := pairPos X.K X.Tau n lam _ v.embedding fun τ => by rw [rf_gramKd_one]; exact rf_one_map_posDef _
 
 /- English proof (translation)
-Unfold `Formalism.UG.hform`. Rewrite using `[hStd_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[Matrix.one_apply_eq, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `j _ hj`. Rewrite using `[Matrix.one_apply_ne hj.symm, mul_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rf_hform_one (x y : Sp X.E n) : Formalism.UG.hform (starRingEnd X.E) (1 : Matrix (Fin n) (Fin n) X.E) x y = hStd X.E n x y := by
   unfold Formalism.UG.hform
@@ -161,9 +161,9 @@ theorem rf_hform_one (x y : Sp X.E n) : Formalism.UG.hform (starRingEnd X.E) (1 
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Establish `h` using `tauLatDual X.E X.K X.Tau n X.emb (starRingEnd X.E) τ (fun x => (hX.emb_star τ x).symm) 1 N N (by rw [Matrix.det_one]; exact isUnit_one) hl (fun y => by`. Establish `hu' : dual (hStd X.E n) N = N` using `hu`. Use `conv_lhs => rw [← hu', mem_dual]`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations. Rewrite using `[rf_hform_one, Submodule.mem_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `rfl)`. Rewrite `h` using `[rf_gramK_one]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem rf_hdualFr_tauLat (hX : X.Ok) {N : Submodule (𝓞 X.E) (Sp X.E n)} (hl : Submodule.IsLattice X.E N)
     (hu : IsUnimodular (hStd X.E n) N) (τ : X.Tau) :
@@ -179,7 +179,7 @@ theorem rf_hdualFr_tauLat (hX : X.Ok) {N : Submodule (𝓞 X.E) (Sp X.E n)} (hl 
   exact h
 
 /- English proof (translation)
-The claim follows from `pairSymm X.K X.Tau n lam _ fun τ => by rw [rf_gramK_one, Matrix.conjTranspose_one] nondeg := pairNondeg X.K X.Tau n lam _ fun τ => by rw [rf_gramK_one, Matrix.det_one]; exact isUnit_one nab_lat d := (nabDelLattice X.K X.Tau n lam _ fun τ => tauLatLattice X.E X.K X.Tau n X.emb τ _ …`.
+A detailed English derivation is pending.
 -/
 theorem squarePk_dualP (hX : X.Ok) (hl : ∀ d, Submodule.IsLattice X.E (L d))
     (hu : ∀ d, IsUnimodular (hStd X.E n) (L d)) : (squarePk X lam L).DualP where
@@ -200,7 +200,7 @@ theorem squarePk_dualP (hX : X.Ok) (hl : ∀ d, Submodule.IsLattice X.E (L d))
     rw [rf_gramK_one, rf_hdualFr_tauLat hX (hl d) (hu d)]
 
 /- English proof (translation)
-The claim follows from `pairSymm X.K X.Tau n lam _ fun τ => by rw [rf_gramKd_one, Matrix.conjTranspose_one] nondeg := pairNondeg X.K X.Tau n lam _ fun τ => by rw [rf_gramKd_one, Matrix.det_one]; exact isUnit_one nab_lat d := (nabDelLattice X.K X.Tau n lam _ fun τ => (dualFrLattice X.K n 1 _ (by rw [Matr …`.
+A detailed English derivation is pending.
 -/
 theorem roundPk_dualP (hX : X.Ok) (hl : ∀ d, Submodule.IsLattice X.E (L d))
     (hu : ∀ d, IsUnimodular (hStd X.E n) (L d)) : (roundPk X lam L).DualP where
@@ -235,119 +235,119 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
 
 /- English proof (translation)
-The claim follows from `squarePk_ratP _ _ hX`.
+A detailed English derivation is pending.
 -/
 theorem rowVal_ratP (hX : X.Ok) (SG : Finset (HeightOneSpectrum (𝓞 X.E))) : (rowVal W SG).RatP :=
   squarePk_ratP _ _ hX
 
 /- English proof (translation)
-The claim follows from `roundPk_ratP _ _ hX`.
+A detailed English derivation is pending.
 -/
 theorem mtVal_ratP (hX : X.Ok) (j : ℕ) (SG : Finset (HeightOneSpectrum (𝓞 X.E))) : (mtVal W j SG).RatP :=
   roundPk_ratP _ _ hX
 
 /- English proof (translation)
-The claim follows from `squarePk_dualP _ _ hX (fun d => d.2.lat) fun d => d.2.uni`.
+A detailed English derivation is pending.
 -/
 theorem rowVal_dualP (hX : X.Ok) (SG : Finset (HeightOneSpectrum (𝓞 X.E))) : (rowVal W SG).DualP :=
   squarePk_dualP _ _ hX (fun d => d.2.lat) fun d => d.2.uni
 
 /- English proof (translation)
-The claim follows from `roundPk_dualP _ _ hX (fun d => d.2.lat) fun d => d.2.uni`.
+A detailed English derivation is pending.
 -/
 theorem mtVal_dualP (hX : X.Ok) (j : ℕ) (SG : Finset (HeightOneSpectrum (𝓞 X.E))) : (mtVal W j SG).DualP :=
   roundPk_dualP _ _ hX (fun d => d.2.lat) fun d => d.2.uni
 
 /- English proof (translation)
-The claim follows from `formGSD_good hX _ _ (rowVal_eqv W hX _) (rowVal_dualP W hX _)`.
+A detailed English derivation is pending.
 -/
 theorem mtilde_good (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) : (mtildeGSD W Ch sel mu P).Good 1 :=
   formGSD_good hX _ _ (rowVal_eqv W hX _) (rowVal_dualP W hX _)
 
 /- English proof (translation)
-The claim follows from `formGSD_good hX _ _ (rowVal_eqv W hX _) (rowVal_dualP W hX _)`.
+A detailed English derivation is pending.
 -/
 theorem mtildeK_good (hX : X.Ok) : (mtildeKGSD W Ch sel mu).Good 1 :=
   formGSD_good hX _ _ (rowVal_eqv W hX _) (rowVal_dualP W hX _)
 
 /- English proof (translation)
-The claim follows from `formGSD_good hX _ _ (mtVal_eqv W hX j _) (mtVal_dualP W hX j _)`.
+A detailed English derivation is pending.
 -/
 theorem mt_good (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (j : ℕ) : (mtGSD W Ch sel mu P j).Good 1 :=
   formGSD_good hX _ _ (mtVal_eqv W hX j _) (mtVal_dualP W hX j _)
 
 /- English proof (translation)
-The claim follows from `formGSD_good hX _ _ (mtVal_eqv W hX j _) (mtVal_dualP W hX j _)`.
+A detailed English derivation is pending.
 -/
 theorem mtK_good (hX : X.Ok) (j : ℕ) : (mtKGSD W Ch sel mu j).Good 1 :=
   formGSD_good hX _ _ (mtVal_eqv W hX j _) (mtVal_dualP W hX j _)
 
 /- English proof (translation)
-The claim follows from `formGSD_rat hX _ _ (rowVal_ratP W hX _)`.
+A detailed English derivation is pending.
 -/
 theorem mtilde_rat (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) : (mtildeGSD W Ch sel mu P).Rat :=
   formGSD_rat hX _ _ (rowVal_ratP W hX _)
 
 /- English proof (translation)
-The claim follows from `formGSD_rat hX _ _ (rowVal_ratP W hX _)`.
+A detailed English derivation is pending.
 -/
 theorem mtildeK_rat (hX : X.Ok) : (mtildeKGSD W Ch sel mu).Rat := formGSD_rat hX _ _ (rowVal_ratP W hX _)
 
 /- English proof (translation)
-The claim follows from `formGSD_rat hX _ _ (mtVal_ratP W hX j _)`.
+A detailed English derivation is pending.
 -/
 theorem mt_rat (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (j : ℕ) : (mtGSD W Ch sel mu P j).Rat :=
   formGSD_rat hX _ _ (mtVal_ratP W hX j _)
 
 /- English proof (translation)
-The claim follows from `formGSD_rat hX _ _ (mtVal_ratP W hX j _)`.
+A detailed English derivation is pending.
 -/
 theorem mtK_rat (hX : X.Ok) (j : ℕ) : (mtKGSD W Ch sel mu j).Rat := formGSD_rat hX _ _ (mtVal_ratP W hX j _)
 
 /- English proof (translation)
-The claim follows from `(mtildeGSD W Ch sel mu P).toCSDOf_good (mtilde_good W Ch sel mu hX P) _`.
+A detailed English derivation is pending.
 -/
 theorem MtildeCSD_good (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (h : (mtildeGSD W Ch sel mu P).Ok) :
     (MtildeCSD W Ch sel mu P h).Good 1 := (mtildeGSD W Ch sel mu P).toCSDOf_good (mtilde_good W Ch sel mu hX P) _
 
 /- English proof (translation)
-The claim follows from `(mtildeKGSD W Ch sel mu).toCSDOf_good (mtildeK_good W Ch sel mu hX) _`.
+A detailed English derivation is pending.
 -/
 theorem MtildeKCSD_good (hX : X.Ok) (h : (mtildeKGSD W Ch sel mu).Ok) : (MtildeKCSD W Ch sel mu h).Good 1 :=
   (mtildeKGSD W Ch sel mu).toCSDOf_good (mtildeK_good W Ch sel mu hX) _
 
 /- English proof (translation)
-The claim follows from `(mtGSD W Ch sel mu P j).toCSDOf_good (mt_good W Ch sel mu hX P j) _`.
+A detailed English derivation is pending.
 -/
 theorem MtCSD_good (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (j : ℕ) (h : (mtGSD W Ch sel mu P j).Ok) :
     (MtCSD W Ch sel mu P j h).Good 1 := (mtGSD W Ch sel mu P j).toCSDOf_good (mt_good W Ch sel mu hX P j) _
 
 /- English proof (translation)
-The claim follows from `(mtKGSD W Ch sel mu j).toCSDOf_good (mtK_good W Ch sel mu hX j) _`.
+A detailed English derivation is pending.
 -/
 theorem MtKCSD_good (hX : X.Ok) (j : ℕ) (h : (mtKGSD W Ch sel mu j).Ok) : (MtKCSD W Ch sel mu j h).Good 1 :=
   (mtKGSD W Ch sel mu j).toCSDOf_good (mtK_good W Ch sel mu hX j) _
 
 /- English proof (translation)
-The claim follows from `(mtildeGSD W Ch sel mu P).toCSDOf_rat h (mtilde_rat W Ch sel mu hX P) _`.
+A detailed English derivation is pending.
 -/
 theorem MtildeCSD_rat (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (h : (mtildeGSD W Ch sel mu P).Ok) :
     (MtildeCSD W Ch sel mu P h).Rat := (mtildeGSD W Ch sel mu P).toCSDOf_rat h (mtilde_rat W Ch sel mu hX P) _
 
 /- English proof (translation)
-The claim follows from `(mtildeKGSD W Ch sel mu).toCSDOf_rat h (mtildeK_rat W Ch sel mu hX) _`.
+A detailed English derivation is pending.
 -/
 theorem MtildeKCSD_rat (hX : X.Ok) (h : (mtildeKGSD W Ch sel mu).Ok) : (MtildeKCSD W Ch sel mu h).Rat :=
   (mtildeKGSD W Ch sel mu).toCSDOf_rat h (mtildeK_rat W Ch sel mu hX) _
 
 /- English proof (translation)
-The claim follows from `(mtGSD W Ch sel mu P j).toCSDOf_rat h (mt_rat W Ch sel mu hX P j) _`.
+A detailed English derivation is pending.
 -/
 theorem MtCSD_rat (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (j : ℕ) (h : (mtGSD W Ch sel mu P j).Ok) :
     (MtCSD W Ch sel mu P j h).Rat := (mtGSD W Ch sel mu P j).toCSDOf_rat h (mt_rat W Ch sel mu hX P j) _
 
 /- English proof (translation)
-The claim follows from `(mtKGSD W Ch sel mu j).toCSDOf_rat h (mtK_rat W Ch sel mu hX j) _`.
+A detailed English derivation is pending.
 -/
 theorem MtKCSD_rat (hX : X.Ok) (j : ℕ) (h : (mtKGSD W Ch sel mu j).Ok) : (MtKCSD W Ch sel mu j h).Rat :=
   (mtKGSD W Ch sel mu j).toCSDOf_rat h (mtK_rat W Ch sel mu hX j) _

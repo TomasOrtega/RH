@@ -23,9 +23,9 @@ open GlobalTheory.CompanionTheory.SwUnf GlobalTheory.CompanionTheory.HermPoisson
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Establish `key` using `GlobalTheory.CompanionTheory.CgMod.integral_cg D n lam hl a (fun c => F (pull a c))`. Establish `e : ∀ c : hermA D n, pull a (cg a c) = c` using `fun c => Subtype.ext (by show (a⁻¹).1 * (a.1 * c.1 * adj a.1) * adj (a⁻¹).1 = c.1`. Establish `h1 : (a⁻¹).1 * a.1 = 1` using `by simp`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [e] at key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem integral_pull (D : D7) (n : ℕ) (lam : Measure (hermA D n)) (hl : lam.IsAddHaarMeasure)
     (a : GL (Fin n) (AE D)) (F : hermA D n → ℂ) :
@@ -44,45 +44,37 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν Φ hS hR lam 𝓖 nb hCD w hw β hβ a k hk φ hφ`. Take `⟨hpl, hne⟩` from `GlobalTheory.CompanionTheory.MM.isPlaces_of_hasRealPar D ψ θ l hS.hψ hS.hθ hS.hl`. Take `⟨ε, fr, hfr, hfr1⟩` from `GlobalTheory.CompanionTheory.CartFrames.exists_frames D V θ s hS.hθ hS.hs`. Take `⟨hfock, hsch⟩` from `mono_mem D n V θ l s φ hS.hθ hpl.ne hS.hs hφ`. Take `⟨lamG, hlamG⟩` from `GlobalTheory.CompanionTheory.LocHaar.exists_addHaar_tens D n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨𝓕, hμ⟩` from `hS.hμ`. Take `⟨e, c, g, d, bs, gv, hpure, hφe⟩` from `hφ`. Take `⟨P, hP⟩` from `GlobalTheory.CompanionTheory.PfSWUS.MonoSplit.main D n V l s fr e c hne hfr1`. Establish `hcm` using `GlobalTheory.DefiniteQuotient.cmExt D`. Establish `hJ` using `GlobalTheory.DefiniteQuotient.gram_hermND V`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∀ x y, D.sp.cm.sig (β.1 y x) = β.1 x y` using `fun x y => by`. Use `congrFun (congrFun β.2 x) y` as an intermediate fact. Simplify `this` using `[Matrix.transpose_apply, Matrix.map_apply]`. Take `⟨hnb, hlam⟩` from `hCD`. Use `haveI : lam.IsAddHaarMeasure := hlam.1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d, bs, θ, l, ε, fr, gAt θ a, P, lamG, latAt a.1, latAt (adj (a⁻¹).1), fun X => φ (HMul.hMul (tupOf X) a.1), fun Y => g fun i j => ∑ k, Y k i * finPart D (a.1 k j), fun v Y => gv v (fun j i => ∑ k, Y k i * PositivityTheory.SiegelWeilFormula.Gen.matV v a.1 k j), μ.map tupInv, lam. …` and prove the remaining obligations. Use `{ cm := hcm, herm := hJ, lt := hR.1, hT := hT, det := hβ, chr := hS.hψ, places := hpl, frames := hfr, haar := hlamG, co := fun v => ⟨GlobalTheory.CompanionTheory.MM.latAt_isCO D n a v, ?_⟩, std := ?_, pure := GlobalTheory.CompanionTheory.PureTwist.isPureFin_twist D n V.rank d bs …` and prove the remaining obligations. Conclude with `GlobalTheory.CompanionTheory.MM.latAt_isCO D n (astar a) v`. Use `filter_upwards [GlobalTheory.CompanionTheory.MM.LatStd.latAt_eq_latO D n a d bs, GlobalTheory.CompanionTheory.MM.LatStd.latAt_eq_latO D n (astar a) d bs] with v h1 h2`. Conclude with `⟨h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X`. Establish `hcomp : ∀ τ, compAt θ τ (HMul.hMul (tupOf X) a.1 : Mx D V.rank n) = Matrix.of (fun i j => θ τ (HeckeCharacterZeroLocus.SiegelWeilU.projInf X j i)) * (gAt θ a τ).1`. Introduce `τ`. Use extensionality with `i j`. Simplify using `only [compAt, Matrix.map_apply, Matrix.mul_apply, map_sum, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Establish `hfin : (fun i j => finPart D ((HMul.hMul (tupOf X) a.1 : Mx D V.rank n) i j)) = fun i j => ∑ k, HeckeCharacterZeroLocus.SiegelWeilU.projFin X k i * finPart D (a.1 k j)`. Use function extensionality and compare the values at `i j`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show φ (HMul.hMul (tupOf X) a.1) = PositivityTheory.SiegelWeilFormula.Gen.phiInf θ l fr (gAt θ a) P (HeckeCharacterZeroLocus.SiegelWeilU.projInf X) * (g fun i j => ∑ k, HeckeCharacterZeroLocus.SiegelWeilU.projFin X k i * finPart D (a.1 k j))`. Rewrite using `[hφe]`. Simplify using `only []`. Rewrite using `[hP, hfin]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `PositivityTheory.SiegelWeilFormula.Gen.phiInf PositivityTheory.SiegelWeilFormula.Gen.crd`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hcomp τ, Matrix.mul_assoc]`. Introduce `z hz`. Take `⟨i1, -, i3, -, -, -⟩` from `lattice_Mx D n n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsTopologicalAddGroup (Mx D n n) := i1`. Use `haveI : SecondCountableTopology (Mx D n n) := i3`. Use `haveI : BorelSpace (Mx D n n) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (hermA D n) := Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `haveI : BorelSpace (hermA D n) := Subtype.borelSpace _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsTopologicalAddGroup (Matrix (Fin n) (Fin n) (AE D)) := i1`. Use `haveI : BorelSpace (HermR (AF D.host.F) D.sp.cm.sig n) := ⟨rfl⟩`. Use `set r := absA D (Matrix.GeneralLinearGroup.det a) with hr`. Establish `hr0 : r ≠ 0` using `((Group.isUnit (Matrix.GeneralLinearGroup.det a)).map (absA D)).ne_zero`. Establish `hS' : Std D n V ψ χ θ μ ω H l s ν (⟨φ, hsch⟩ : schwartzA θ V.rank n)` using `{ hS with hΦ := hfock }`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF0 : Integrable (fun b : hermA D n => sect ω H (⟨φ, hsch⟩ : schwartzA θ V.rank n) z (w * nb b * 1)) lam` using `(PositivityTheory.PfSWUS.HUnfold.unfold D n V ψ χ θ μ ω H l s ν _ hS' hR nb lam 𝓖 ⟨hnb, hlam⟩ w hw β hβ z hz 1).1`. Establish `hF : Integrable (fun b : hermA D n => npow (H (w * nb b)) (z - s0 V n) * Jt ψ V μ φ b) lam` using `hF0.congr (Filter.Eventually.of_forall fun b => sect_w D n V ψ χ θ μ ω H hS.hω nb hnb w hw ⟨φ, hsch⟩ z b)`. Establish `hFp` using `integrable_pull D n lam hlam.1 a _ hF`. Establish `hch : Continuous fun b : hermA D n => ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D n n)))`. Establish `h` using `continuous_chi hS.hψ (-(β.1.map (incA D)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.congr fun b => chi_neg_left ψ _ b`. Establish `hcn : ∀ b : hermA D n, ‖ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D n n)))‖ = 1` using `fun b => hS.hψ.2.1 _`. Establish `hrm : npow r (V.rank : ℂ) ≠ 0`. Unfold `npow`. Rewrite using `[Ne, Complex.cpow_eq_zero_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `fun h => hr0 (by exact_mod_cast h.1)`. Establish `hR1 : Integrable (fun b : hermA D n => npow (H (w * nb (pull a b))) (z - s0 V n) * Jt ψ V μ (fun x : Mx D V.rank n => φ (HMul.hMul x a.1)) b * ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D n n)))) lam`. Establish `h1 : Integrable (fun b : hermA D n => (npow r (V.rank : ℂ))⁻¹ * (npow (H (w * nb (pull a b))) (z - s0 V n) * Jt ψ V μ φ (pull a b))) lam` using `hFp.const_mul _`. Establish `h2 : Integrable (fun b : hermA D n => npow (H (w * nb (pull a b))) (z - s0 V n) * Jt ψ V μ (fun x : Mx D V.rank n => φ (HMul.hMul x a.1)) b) lam`. Use `h1.congr (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show (npow r (V.rank : ℂ))⁻¹ * (npow (H (w * nb (pull a b))) (z - s0 V n) * Jt ψ V μ φ (pull a b)) = _`. Rewrite using `[jt_pull D n V ψ μ 𝓕 hμ φ a b, ← hr, mul_left_comm (npow (H (w * nb (pull a b))) (z - s0 V n)), inv_mul_cancel_left₀ hrm]`. Use `h2.mono (h2.aestronglyMeasurable.mul hch.aestronglyMeasurable) (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, hcn, mul_one]`. Establish `hwhI : ∀ b : hermA D n, PositivityTheory.SiegelWeilFormula.Gen.whI (HeckeCharacterZeroLocus.SiegelWeilU.AF D.host.F) D.sp.cm.sig (HSpace.gram V) ψ (μ.map tupInv) (fun X => φ (HMul.hMul (tupOf X) a.1)) (PositivityTheory.SiegelWeilFormula.Gen.nuA θ (gAt θ a) lamG (latAt a.1) (latAt …`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Unfold `PositivityTheory.SiegelWeilFormula.Gen.whI`. Establish `e1` using `GlobalTheory.T.local_haar_lattice_unipotent_integral D n θ hS.hθ H hS.hH nb hnb w hw a lamG hlamG b`. Establish `e2` using `jtR_hermTo V ψ μ (fun x : Mx D V.rank n => φ (HMul.hMul x a.1)) b`. Establish `e3 : (z - ((V.rank : ℂ) - n) / 2) = z - s0 V n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `s0`. Expand and normalize the polynomial expressions, which then agree. Use `show ((PositivityTheory.SiegelWeilFormula.Gen.nuA θ (gAt θ a) lamG (latAt a.1) (latAt (adj (a⁻¹).1)) b.1 : ℝ) : ℂ) ^ (-(z - ((V.rank : ℂ) - n) / 2)) * _ * _ = _`. Rewrite using `[e1, e3, npow_inv, e2]`. Both sides reduce to the same expression.
-
-Set `Mh : hermA D n ≃ₜ HermR (AF D.host.F) D.sp.cm.sig n` to `{ toEquiv := ⟨hermTo, hermFrom, hermFrom_hermTo, hermTo_hermFrom⟩ continuous_toFun := continuous_hermTo continuous_invFun := continuous_hermFrom }`. Establish `hemb : MeasurableEmbedding (hermTo (D` using `D) (r := n)) := Mh.measurableEmbedding`. Prove the components needed by the constructor for the conclusion. Conclude with `hemb.integrable_map_iff.2 (hR1.congr (Filter.Eventually.of_forall fun b => (hwhI b).symm))`. Use `Eq.trans ?_ (congrArg (fun t => npow r ((V.rank : ℂ) - n) * t) (integral_map_of (hermTo (D := D) (r := n)) hermFrom hermFrom_hermTo hermTo_hermFrom hermTo_add continuous_hermTo continuous_hermFrom lam _)).symm beta_reduce` and prove the remaining obligations.
-
-Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall fun b => hwhI b)]`. Use `show ∫ b, npow (H (w * nb b * k)) (z - s0 V n) * Jt ψ V μ φ b * ψ (-halfTr (Matrix.trace (HMul.hMul (adj a.1 * β.1.map (incA D) * a.1) b.1 : Mx D n n))) ∂lam = _`. Rewrite using `[integral_pull D n lam hlam.1 a]`. Establish `hcong : ∀ b : hermA D n, npow (H (w * nb (pull a b) * k)) (z - s0 V n) * Jt ψ V μ φ (pull a b) * ψ (-halfTr (Matrix.trace (HMul.hMul (adj a.1 * β.1.map (incA D) * a.1) (pull a b).1 : Mx D n n))) = npow r (V.rank : ℂ) * (npow (H (w * nb (pull a b))) (z - s0 V n) * Jt ψ V μ (fun x …`. Introduce `b`.
-
-Rewrite using `[GlobalTheory.CompanionTheory.PfSWUS.height_mul_K hS.hH _ hk, jt_pull D n V ψ μ 𝓕 hμ φ a b, trace_pull, ← hr]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hcong), integral_const_mul, ← mul_assoc]`. Use `congr 1`. Rewrite using `[sub_eq_add_neg, npow_add_of r hr0, mul_comm]`.
-
-Introduce `μH 𝓕H hμH hF`. Conclude with `congrArg (fun t => npow (absA D (Matrix.GeneralLinearGroup.det a)) ((V.rank : ℂ) - n) * t) (ifrB_eq_meanC D n V ν hS.hν _ μH 𝓕H hμH hF β hβ)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem matchMono : PositivityTheory.PfSWUS.MatchMono := by
   intro D n V ψ χ θ μ ω H l s ν Φ hS hR lam 𝓖 nb hCD w hw β hβ a k hk φ hφ

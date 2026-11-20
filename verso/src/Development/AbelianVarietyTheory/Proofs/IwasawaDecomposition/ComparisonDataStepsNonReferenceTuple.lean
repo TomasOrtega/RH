@@ -23,7 +23,7 @@ open Formalism.MainNotions.G Formalism.L2.G Formalism.MainNotions.G.CmpJ Formali
 namespace GlobalTheory.Mem.Top.KerTwLv
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(w.D Z).what₂.places.resChar_prime v⟩ Formalism.MainNotions.G.CmpJ.FillTie t.Gt u v hg (Fl u v hg) := by intro K B f T w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg intro x s b hb have h1 := hw u v hg x s (b + 1) (by simp [SizeData₂.lifts]; omega) apply (Rat.ca …`.
+Supply the required witnesses or components.
 -/
 theorem fill_of : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T), K.Over B.toPre → Forced K B T → Pinned K B f T w →
     ∀ (Z : w.Lt) (t : ColumnDataSplitPrimes K w Z) (Wt : Set B.places.Pl) (nch : NChoice (w.D Z)) (n : NchT w Z Wt nch) (Y : DivX (w.D Z)),
@@ -51,7 +51,7 @@ theorem fill_of : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : C
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(w.D Z).what₂.places.resChar_prime v⟩ ∀ (hμ : (w.D Z).what₂.muAt v ≠ (w.D Z).what₂.mu0), ∀ (tt : Formalism.L2.Forms.SymmetricTwistedColumnsAtPrimes n.tp t.C (w.tw Z)), TC.StdTw w.I w.l Z w.l0 tt → ∀ j (hj : j + 1 ≤ (w.D Z).R.m) (β : tt.ch.Ch u ((w.D Z).what₂.muAt v) (j + 1)), Fi …`.
+Supply the required witnesses or components.
 -/
 theorem fin_of : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T), K.Over B.toPre → Forced K B T → Pinned K B f T w →
     ∀ (Z : w.Lt) (t : ColumnDataSplitPrimes K w Z) (Wt : Set B.places.Pl) (nch : NChoice (w.D Z)) (n : NchT w Z Wt nch) (Y : DivX (w.D Z)),
@@ -78,7 +78,7 @@ theorem fin_of : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : Co
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(w.D Z).what₂.places.resChar_prime v⟩ (w.D Z).what₂.muAt v ≠ (w.D Z).what₂.mu0 → ∃ (Lv : G.Levels (Fl u v hg)) (I : Formalism.MainNotions.G.CmpJ.CmpJIn (w.tw Z) u ((w.D Z).what₂.muAt v) v hg Lv), Formalism.MainNotions.G.CmpJ.CmpJHyp t.cmp I ∧ (∀ j hj, (I.at' j hj).C = (w.D Z).ch …`.
+Supply the required witnesses or components.
 -/
 theorem cmpJ_data_ne : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T), K.Over B.toPre → Forced K B T → Pinned K B f T w →
     ∀ (Z : w.Lt) (t : ColumnDataSplitPrimes K w Z) (Wt : Set B.places.Pl) (nch : NChoice (w.D Z)) (_ : NchT w Z Wt nch) (Y : DivX (w.D Z)),

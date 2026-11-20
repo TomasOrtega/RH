@@ -3,7 +3,7 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PIsolatedPointsC
 set_option maxSynthPendingDepth 1
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.IsolatedPointsCount.proof GroundTheory.Heights₂.Heights.AutoClose.IsolatedPointsCountPrime`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.IsolatedPointsCount : GroundTheory.Heights₂.Heights.IsolatedPointsCount.Statement :=
   @GroundTheory.Heights₂.Heights.IsolatedPointsCount.proof GroundTheory.Heights₂.Heights.AutoClose.IsolatedPointsCountPrime

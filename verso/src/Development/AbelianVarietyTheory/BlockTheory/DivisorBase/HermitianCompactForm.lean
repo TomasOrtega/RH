@@ -26,7 +26,7 @@ def IsEigBasisAt (act : OAct O G) (x : Sp R ⟶ S) (χ : O →+* R) {n : ℕ} (v
   (∀ i, IsEigAt act x χ (v i)) ∧ ∀ w, IsEigAt act x χ w → ∃! c : Fin n → R, IsCombAt x c v w
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example {k : Type} [Field k] (act : OAct O G) (x : Sp k ⟶ S) (χ : O →+* k) (n : ℕ) :
     (∃ v : Fin n → (epsAt x ⟶ G), IsEigBasisAt act x χ v) ↔ LieMult act x χ n := Iff.rfl
@@ -72,7 +72,7 @@ def IsMultiple (t : SAB H S) (π : X ⟶ S) (s : X ⟶ Sp F) (V : Set X) (χ : �
     σ' R x v w = j a * σ R x v w
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ => by simp, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 example (t : SAB H S) (π : X ⟶ S) (s : X ⟶ Sp F) (V : Set X) (χ : 𝓞 E →+* F) (p q : ℕ) :
     IsSection t π s V χ (p := p) (q := q) (fun _ _ _ _ _ => 0) :=

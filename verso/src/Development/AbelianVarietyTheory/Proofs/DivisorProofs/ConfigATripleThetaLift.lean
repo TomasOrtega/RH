@@ -22,31 +22,31 @@ section Skip
 variable (b a' : ℕ)
 
 /- English proof (translation)
-Apply the tactic sequence `have := j.2; unfold skip; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem skip_lt (j : Fin (b + a')) : skip 0 (b + 1) j < b + 2 + a' := by
   have := j.2; unfold skip; split_ifs <;> omega
 
 /- English proof (translation)
-Apply the tactic sequence `unfold skip; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem skip_ne_zero (j : ℕ) : skip 0 (b + 1) j ≠ 0 := by unfold skip; split_ifs <;> omega
 
 /- English proof (translation)
-Apply the tactic sequence `unfold skip; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem skip_ne_last (j : ℕ) : skip 0 (b + 1) j ≠ b + 1 := by unfold skip; split_ifs <;> omega
 
 /- English proof (translation)
-Apply the tactic sequence `unfold skip at h; split_ifs at h <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem skip_inj {j j' : ℕ} (h : skip 0 (b + 1) j = skip 0 (b + 1) j') : j = j' := by
   unfold skip at h; split_ifs at h <;> omega
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos i.1 with h | h` into its components or cases. Conclude with `Or.inl h`. Distinguish the cases in `h' : i.1 = b + 1`. Conclude with `Or.inr (Or.inl h')`. Use `right`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Consider separately whether the proposition holds or fails. Prove the second alternative. Establish an intermediate fact.
 
-Use `right`. Establish `hi` using `i.2`. Distinguish the cases in `h'' : i.1 ≤ b`. Apply the tactic sequence `refine ⟨⟨i.1 - 1, by omega⟩, ?_⟩; simp only [skip]; split_ifs <;> omega`. Apply the tactic sequence `refine ⟨⟨i.1 - 2, by omega⟩, ?_⟩; simp only [skip]; split_ifs <;> omega`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem trichotomy (i : Fin (b + 2 + a')) :
     i.1 = 0 ∨ i.1 = b + 1 ∨ ∃ k : Fin (b + a'), i.1 = skip 0 (b + 1) k := by
@@ -63,9 +63,9 @@ theorem trichotomy (i : Fin (b + 2 + a')) :
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single ⟨skip 0 (b + 1) j, skip_lt b a' j⟩]`. Simplify using `[insP]`. Introduce `i _ hi`. Simplify using `only [insP, Matrix.of_apply]`. Rewrite using `[if_neg (fun h => hi (Fin.ext h)), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_insP_apply {m : Type} [Fintype m] (X : Matrix m (Fin (b + 2 + a')) K) (r : m) (j : Fin (b + a')) :
     (X * insP K b a') r j = X r ⟨skip 0 (b + 1) j, skip_lt b a' j⟩ := by
@@ -77,9 +77,9 @@ theorem mul_insP_apply {m : Type} [Fintype m] (X : Matrix m (Fin (b + 2 + a')) K
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single k]`. Simplify using `[insP]`. Introduce `j _ hj`. Simplify using `only [insP, Matrix.of_apply]`. Rewrite using `[if_neg (fun h => hj (Fin.ext (skip_inj b h).symm)), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem insertionMatrix_mul_apply_skip {m : Type} (Y : Matrix (Fin (b + a')) m K) (k : Fin (b + a')) (l : m) :
     (insP K b a' * Y) ⟨skip 0 (b + 1) k, skip_lt b a' k⟩ l = Y k l := by
@@ -91,7 +91,7 @@ theorem insertionMatrix_mul_apply_skip {m : Type} (Y : Matrix (Fin (b + a')) m K
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Simplify using `[insP, hi k]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem insertionMatrix_mul_apply_eq_zero {m : Type} (Y : Matrix (Fin (b + a')) m K) (i : Fin (b + 2 + a')) (l : m)
     (hi : ∀ k : Fin (b + a'), i.1 ≠ skip 0 (b + 1) k) : (insP K b a' * Y) i l = 0 := by
@@ -100,7 +100,7 @@ theorem insertionMatrix_mul_apply_eq_zero {m : Type} (Y : Matrix (Fin (b + a')) 
   simp [insP, hi k]
 
 /- English proof (translation)
-Use extensionality with `r j`. Rewrite using `[mul_insP_apply]`. Conclude with `h _ j rfl r`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_insP_eq {c : Matrix (Fin (b + 2 + a')) (Fin (b + 2 + a')) K} {N : Matrix (Fin (b + 2 + a')) (Fin (b + a')) K}
     (h : ∀ (i : Fin (b + 2 + a')) (j : Fin (b + a')), i.1 = skip 0 (b + 1) j → ∀ r, c r i = N r j) :
@@ -114,7 +114,7 @@ section Forms
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem form_swap {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = -J i j) (p q : Fin n → E) : form σ J p q = -σ (form σ J q p) := by
@@ -123,7 +123,7 @@ theorem form_swap {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, Matrix.vecMul, dotProduct, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem mul_vecMulVec_mul {K : Type} [CommRing K] {m n l o : Type} [Fintype n] [Fintype l]
     (A : Matrix m n K) (p : n → K) (q : l → K) (B : Matrix l o K) :
@@ -144,7 +144,7 @@ section Glob
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h1 : incM F (1 : Matrix (Fin p) (Fin p) E) = 1` using `by simp [incM]`. Establish `h2 : (incM F ι).map (piW τ) = ι.map τ`. Use extensionality with `i j`. Simplify using `[incM, GlobalTheory.LatFill.piW_inclR]`. Rewrite using `[h1, Matrix.one_mul, Matrix.map_mul, Matrix.transpose_map, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_emb {v : Pl F} (τ : E →ₐ[F] Fv F v) {p m m₁ : ℕ} (z : Matrix (Fin p) (Fin m₁) (AE F E))
     (ι : Matrix (Fin m) (Fin m₁) E) :
@@ -155,7 +155,7 @@ theorem map_emb {v : Pl F} (τ : E →ₐ[F] Fv F v) {p m m₁ : ℕ} (z : Matri
   rw [h1, Matrix.one_mul, Matrix.map_mul, Matrix.transpose_map, h2]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, incV, GlobalTheory.LatFill.piW_inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_line {v : Pl F} (τ : E →ₐ[F] Fv F v) {p m : ℕ} (y : Fin p → AE F E) (x : Fin m → E) :
     (Matrix.vecMulVec y (incV F x)).map (piW τ) = Matrix.vecMulVec (fun i => piW τ (y i)) (fun j => τ (x j)) := by
@@ -168,7 +168,7 @@ section Field
 variable {F E K : Type} [Field F] [Field E] [Algebra F E] [Field K] [Algebra F K]
 
 /- English proof (translation)
-Simplify using `[form, Matrix.mul_apply, dotProduct, Matrix.mulVec, map_sum, map_mul, Pi.single_apply, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem row_form (σ : E →ₐ[F] E) (t : E →ₐ[F] K) {n m : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E)
     (ι : Matrix (Fin n) (Fin m) E) (j : Fin m) :
@@ -176,7 +176,7 @@ theorem row_form (σ : E →ₐ[F] E) (t : E →ₐ[F] K) {n m : ℕ} (J : Matri
   simp [form, Matrix.mul_apply, dotProduct, Matrix.mulVec, map_sum, map_mul, Pi.single_apply, Finset.mul_sum]
 
 /- English proof (translation)
-Simplify using `[form, dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul, mul_comm, mul_left_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem col_form (σ : E →ₐ[F] E) (t : E →ₐ[F] K) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x z : Fin n → E) :
     ∑ r, (J.map t *ᵥ fun s => t (σ (x s))) r * t (z r) = t (form σ J z x) := by
@@ -189,49 +189,45 @@ end GlobalTheory.EvZeroCoords
 namespace GlobalTheory.EvZeroCoords
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' om₁ om₁' hT hT₁ v`. Establish `hσ : ∀ x, σ (σ x) = x` using `cm_conj_conj hT.base.cm`. Establish `hA` using `hC.hH'`. Establish `hbas` using `hA.bas v`. Establish `hskew : ∀ i j, σ (G.W.J j i) = -G.W.J i j` using `hT.geo.hW.skew`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t := B.τ v with ht`. Use `set c := G.W.bas v with hc`. Use `set c₁ := G₁.W.bas v with hc₁`. Establish `hcP : c.1 * insP (Fv F v) b a' = H'.ι.map t * c₁.1` using `mul_insP_eq b a' fun i j hij r => (hbas i).2.2 j hij r`. Establish `horthX : ∀ u, form σ G.W.J H'.x (H'.ι *ᵥ u) = 0` using `fun u => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[form_swap hσ hskew, (hA.orth u).1, map_zero, neg_zero]`. Establish `horthY : ∀ u, form σ G.W.J H'.y (H'.ι *ᵥ u) = 0` using `fun u => by`. Rewrite using `[form_swap hσ hskew, (hA.orth u).2, map_zero, neg_zero]`. Use `⟨fun z => ⟨?_, ?_⟩, fun s r => ?_⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.FlipMatch.coX]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_emb, hC.eV]`. Establish `key : (c⁻¹).1 * H'.ι.map t = insP (Fv F v) b a' * (c₁⁻¹).1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc _ (H'.ι.map t * c₁.1), Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Use `_ = insP (Fv F v) b a' * (c₁⁻¹).1 := by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hcP, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Establish `keyT` using `congrArg Matrix.transpose key`. Simplify using `only [Matrix.transpose_mul] at keyT`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[keyT]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.FlipMatch.coY]`. Rewrite using `[map_emb, hC.eV]`. Establish `hgram : (H'.ι.map t)ᵀ * (G.W.J.map t * H'.ι.map (t.comp σ)) = G₁.W.J.map t`. Rewrite using `[← hA.gram, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `key2 : (c.1)ᵀ * (G.W.J.map t * H'.ι.map (t.comp σ)) = insP (Fv F v) b a' * ((c₁.1)ᵀ * G₁.W.J.map t)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Break down `trichotomy b a' i with h0 | h1 | ⟨k, hk⟩` into its components or cases. Rewrite using `[insertionMatrix_mul_apply_eq_zero b a' _ i j (fun k => h0 ▸ (skip_ne_zero b k).symm), Matrix.mul_apply]`. Simplify using `only [Matrix.transpose_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun r _ => by rw [(hbas i).1 h0 r], row_form, horthX, map_zero]`. Rewrite using `[insertionMatrix_mul_apply_eq_zero b a' _ i j (fun k => h1 ▸ (skip_ne_last b k).symm), Matrix.mul_apply]`. Simplify using `only [Matrix.transpose_apply]`. Rewrite using `[Finset.sum_congr rfl fun r _ => by rw [(hbas i).2.1 h1 r], row_form, horthY, map_zero]`. Take `rfl : i = ⟨skip 0 (b + 1) k, skip_lt b a' k⟩` from `Fin.ext hk`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[insertionMatrix_mul_apply_skip]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Simplify using `only [Matrix.transpose_apply]`. Conclude with `Finset.sum_congr rfl fun r _ => by rw [(hbas _).2.2 k rfl r]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ((c₁.1)ᵀ * G₁.W.J.map t) k j := by`. Rewrite using `[Matrix.transpose_mul, Matrix.mul_assoc, hgram]`. Establish `key2T` using `congrArg Matrix.transpose key2`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc] at key2T`. Simplify using `only [Matrix.mul_assoc, Matrix.neg_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key2T]`. Establish `hdet : (G.V'.J.map t).det ≠ 0`. Establish `h0` using `GlobalTheory.HoweNonsplitKer.det_ne_of_sig B G.V'.J hT.geo.hV'.sig`. Establish `e` using `AlgHom.map_det t G.V'.J`. Rewrite `e` using `[AlgHom.mapMatrix_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Conclude with `(map_ne_zero t).2 h0`. Use `set wv : Fin a' → Fv F v := (G.V'.J.map t)⁻¹ *ᵥ (((G.V'.bas v)⁻¹).1ᵀ *ᵥ r) with hwv`. Take `⟨u, hu, hu0, hu1⟩` from `GlobalTheory.SplitComps.exists_mat_comps hT.base.cm (v : Pl F) t (Matrix.of fun i (_ : Fin 1) => ((G.V'.bas v).1 *ᵥ s) i) (Matrix.of fun i (_ : Fin 1) => wv i)`. Establish `hy0 : (fun i => piW t (u i 0)) = (G.V'.bas v).1 *ᵥ s` using `funext fun i => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun (congrFun hu0 i) 0` as an intermediate fact. Simplify using `using this`. Establish `hy1 : (fun i => piW (t.comp σ) (u i 0)) = wv` using `funext fun i => by`. Use `congrFun (congrFun hu1 i) 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i => u i 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrFun (congrFun (hu a ha) i) 0` as an intermediate fact. Simplify using `only [Matrix.smul_apply, Matrix.zero_apply] at this ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.vecMulVec_apply, ← smul_mul_assoc, this, zero_mul]`. Simplify using `only [GlobalTheory.FlipMatch.coX]`. Rewrite using `[map_line, hy0, mul_vecMulVec_mul, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, Matrix.vecMul_transpose]`. Establish `hq : (fun j => t (H'.x j)) = c.1 *ᵥ Pi.single 0 1` using `funext fun r => by`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, (hbas 0).1 (by simp) r]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hq, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Simplify using `only [GlobalTheory.FlipMatch.coY]`. Rewrite using `[map_line, hy1, Matrix.mul_assoc _ _ c.1, mul_vecMulVec_mul]`. Establish `hv : (fun j => t (σ (H'.x j))) ᵥ* ((G.W.J.map t)ᵀ * c.1) = -Pi.single ⟨b + 1, by omega⟩ 1`. Rewrite using `[← Matrix.vecMul_vecMul, Matrix.vecMul_transpose]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.vecMul, dotProduct, Pi.neg_apply]`. Break down `trichotomy b a' i with h0 | h1 | ⟨k, hk⟩` into its components or cases. Rewrite using `[Finset.sum_congr rfl fun r _ => by rw [(hbas i).1 h0 r], col_form, hA.xx, map_zero]`. Rewrite using `[Pi.single_apply, if_neg (fun h => by rw [h] at h0; simp at h0), neg_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl fun r _ => by rw [(hbas i).2.1 h1 r], col_form, form_swap hσ hskew, hA.xy, map_one, map_neg, map_one]`. Rewrite using `[Pi.single_apply, if_pos (Fin.ext h1)]`. Rewrite using `[Pi.single_apply, if_neg (fun h => by rw [h] at hk; exact skip_ne_last b k hk.symm), neg_zero]`. Rewrite using `[Finset.sum_congr rfl fun r _ => by rw [(hbas i).2.2 k hk r]]`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Simplify using `only [← mul_assoc]`. Rewrite using `[← Finset.sum_mul]`. Establish `hz : (fun r => H'.ι r l) = H'.ι *ᵥ Pi.single l 1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `r`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `h3` using `col_form σ t G.W.J H'.x (fun r => H'.ι r l)`. Rewrite `h3` using `[hz, (hA.orth _).1, map_zero]`. Simplify using `only [Matrix.map_apply]`.
-
-Rewrite using `[h3, zero_mul]`. Establish `hr : ((G.V'.bas v).1ᵀ * G.V'.J.map t) *ᵥ wv = r`. Rewrite using `[hwv, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc (G.V'.bas v).1ᵀ, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hdet), Matrix.mul_one, ← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one, Matrix.one_mulVec]`. Rewrite using `[show (fun j => (t.comp σ) (H'.x j)) = fun j => t (σ (H'.x j)) from rfl, hv, hr]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
-
-Simplify using `[Matrix.vecMulVec_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coords_evZero : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)

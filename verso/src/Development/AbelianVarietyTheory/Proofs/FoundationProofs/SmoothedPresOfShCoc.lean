@@ -20,7 +20,7 @@ namespace GlobalTheory.LambdaValuationPowers.Smooth
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `e : a - b - (a' - b') = (a - a') + -(b - b')` using `by ring`. Rewrite using `[Cg, e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h (by rw [norm_neg]; exact h'))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem cg_sub_sub {m : ℕ} {a b a' b' : Qbar l} (h : Cg m a a') (h' : Cg m b b') : Cg m (a - b) (a' - b') := by
   have e : a - b - (a' - b') = (a - a') + -(b - b') := by ring
@@ -28,9 +28,9 @@ theorem cg_sub_sub {m : ℕ} {a b a' b' : Qbar l} (h : Cg m a a') (h' : Cg m b b
   refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le h (by rw [norm_neg]; exact h'))
 
 /- English proof (translation)
-Establish `hlp : l.Prime` using `Fact.out`. Assume the negation of the conclusion as `h`. Establish `h1 : ‖((d : ℤ) : ℤ_[l])‖ < 1`. Rewrite using `[← PadicInt.mem_nonunits]`. Simplify using `using h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h1` using `[PadicInt.norm_int_lt_one_iff_dvd]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hlp).1 hd.symm (Int.natCast_dvd_natCast.mp h1)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_natCast_padic {d : ℕ} (hd : Nat.Coprime d l) : IsUnit (d : ℤ_[l]) := by
   have hlp : l.Prime := Fact.out
@@ -41,47 +41,41 @@ theorem isUnit_natCast_padic {d : ℕ} (hd : Nat.Coprime d l) : IsUnit (d : ℤ_
   exact (Nat.Prime.coprime_iff_not_dvd hlp).1 hd.symm (Int.natCast_dvd_natCast.mp h1)
 
 /- English proof (translation)
-Establish `hlp : l.Prime` using `Fact.out`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : ∀ i, HasEnoughRootsOfUnity Ω (l ^ i) := fun i => haveI : NeZero ((l ^ i : ℕ) : Ω) := ⟨Nat.cast_ne_zero.2 (pow_pos hlp.pos i).ne'⟩ inferInstance`. Establish `hpos : 0 < l ^ m` using `pow_pos hlp.pos _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : NeZero (l ^ m) := ⟨hpos.ne'⟩`. Establish `hz` using `hL m`. Use `set z := Z m with hzdef`. Use `set uu := ZMod.unitOfCoprime d₀ (Nat.Coprime.pow_right m hd₀) with huu`. Establish `hl : A.valuation (l : Ω) < 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v, hv, hlv⟩` from `hA`. Use `(hv (l : 𝓞 ℚ)).2 hlv` as an intermediate fact. Simplify using `using this`. Set `H : Subgroup (G ℚ Ω)` to `Ine (F := ℚ) A ⊓ (cycMod ℚ Ω l m).ker`. Establish `hH : ∀ s, s ∈ H ↔ s ∈ Ine (F` using `ℚ) A ∧ cycMod ℚ Ω l m s = 1 := fun s => Iff.rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ s, cycMod ℚ Ω l m s = 1 → s ζ = ζ` using `fun s hs => GlobalTheory.Col.fix_of_cycMod le_rfl hs hζ.pow_eq_one`. Establish `hu₀` using `isUnit_natCast_padic (l := l) hd₀`. Take `⟨ρ, hρ, hρc⟩` from `GlobalTheory.CycInertia.exists_mem_Ine_toZModPow Ω l A hl hu₀.unit m`. Rewrite `hρc` using `[hu₀.unit_spec, map_natCast]`. Establish `hρD : ρ ∈ Dec (F` using `ℚ) A := Ine_le_Dec A hρ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hρi : ρ⁻¹ ∈ Ine (F` using `ℚ) A := inv_mem hρ`. Establish `hρζ : ρ ζ = ζ ^ d₀`. Establish `hspec : ρ ζ = ζ ^ (PadicInt.toZModPow m ((cycZ ℚ Ω l ρ : ℤ_[l]ˣ) : ℤ_[l])).val` using `cyclotomicCharacter.spec (L := Ω) l (MulSemiringAction.toRingAut (G ℚ Ω) Ω ρ) ζ hζ.pow_eq_one`. Rewrite using `[hspec, hρc, ZMod.val_natCast, hζ.eq_orderOf, pow_mod_orderOf]`. Establish `hcρ : (cycMod ℚ Ω l m ρ⁻¹)⁻¹ = uu`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_inv, inv_inv]`. Conclude with `Units.ext (by rw [huu, ZMod.coe_unitOfCoprime]; exact hρc)`. Establish `z11 : z 1 1 = 0` using `GlobalTheory.KZ.UnitPres.layer_one hz`. Establish `key : ∀ s ∈ H, z s uu = z (ρ⁻¹ * s * ρ) 1`. Introduce `s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hsI, hsc⟩` from `(hH s).1 hs`. Establish `hsD` using `Ine_le_Dec A hsI`. Establish `e1` using `hz.2 ρ⁻¹ (inv_mem hρD) (s * ρ) (mul_mem hsD hρD) 1`. Establish `e2` using `hz.2 s hsD ρ hρD uu`. Establish `e3` using `hz.2 ρ⁻¹ (inv_mem hρD) ρ hρD 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `e1`, `e3` using `[hcρ]`. Rewrite `e3` using `[inv_mul_cancel, z11, hI _ hρi, Units.val_one, one_mul, one_mul]`. Rewrite `e1` using `[hI _ hρi, Units.val_one, one_mul, one_mul]`. Rewrite `e2` using `[hI _ hsI, Units.val_one, one_mul, hsc, inv_one, mul_one]`. Rewrite using `[mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-e1 - e2 + e3`. Establish `hHρ : ∀ s ∈ H, ρ⁻¹ * s * ρ ∈ H` using `fun s hs => by`. Take `⟨hsI, hsc⟩` from `(hH s).1 hs`. Use `(hH _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `conj_mem_Ine (inv_mem hρD) hsI` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Rewrite using `[map_mul, map_mul, hsc, mul_one, map_inv, inv_mul_cancel]`. Take `⟨ι, hι, o, crd, ho, hadd, hzero, hcrd, -⟩` from `GlobalTheory.CoefCoord.coord_mod_pow l c m`. Take `⟨U, hU, hUz⟩` from `GlobalTheory.KZ.UnitPres.exists_open (fun s => z s 1) (hc m) z11 m`. Establish `hex : ∀ i, ∃ u : Ω, u ≠ 0 ∧ (∀ s ∈ H, s u = u) ∧ ∀ s ∈ H, GlobalTheory.Col.KumVal (l` using `l) m ζ u s (crd (z s 1) i) := fun i => GlobalTheory.KumFix.exists_kumVal l Ω m H (GlobalTheory.isClosed_Ine_inf_ker_cycMod l Ω A _) ζ hζ (fun s hs => hfix s hs.2) (fun s => crd (z s 1) i) (fun s hs t ht => by show crd (z (s * t) 1) i = crd (z s 1) i + crd (z t 1) i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.KZ.UnitPres.layer_add hz (Ine_le_Dec A hs.1) (Ine_le_Dec A ht.1) hs.2, hI s hs.1, Units.val_one, one_mul, hadd _ (hz.1 _ _) _ (hz.1 _ _), Pi.add_apply])`. Use `U hU (fun s _ hs => by show crd (z s 1) i = 0`. Rewrite using `[hzero _ (hz.1 _ _) (hUz s hs), Pi.zero_apply])`. Use `choose u hu0 hufix huk using hex`. Establish `hw0 : ∀ i, u i * (ρ (u i))⁻¹ ≠ 0` using `fun i => mul_ne_zero (hu0 i) (inv_ne_zero ((map_ne_zero ρ).2 (hu0 i)))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvw : ∀ i, A.valuation (u i * (ρ (u i))⁻¹) = 1` using `fun i => by`. Rewrite using `[map_mul, map_inv₀, GlobalTheory.TameLabels.valuation_apply_of_mem_Dec hρD, mul_inv_cancel₀]`. Conclude with `(Valuation.ne_zero_iff _).2 (hu0 i)`. Establish `hwfix : ∀ i, ∀ s ∈ H, s (u i * (ρ (u i))⁻¹) = u i * (ρ (u i))⁻¹` using `fun i s hs => by`. Establish `e : s (ρ (u i)) = ρ ((ρ⁻¹ * s * ρ) (u i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← AlgEquiv.mul_apply, ← AlgEquiv.mul_apply]`. Use `congr 1`. Use `group`. Rewrite using `[map_mul, map_inv₀, hufix i s hs, e, hufix i _ (hHρ s hs)]`. Establish `hP : ∀ i, ∃ P : Polynomial Ω, (∀ x ∈ P.coeffs, x ∈ A ∧ ∀ s ∈ Ine (F` using `ℚ) A, s x = x) ∧ P.eval ζ = u i * (ρ (u i))⁻¹ := fun i => GlobalTheory.CycIne.exists_poly_of_fixed l Ω A hA m ζ hζ _ ((A.valuation_le_one_iff _).1 (hvw i).le) (fun s h1 h2 => hwfix i s ((hH s).2 ⟨h1, h2⟩))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `choose P hPc hPe using hP`. Establish `hζ0 : ζ ≠ 0` using `hζ.ne_zero hpos.ne'`. Establish `hkw : ∀ s ∈ H, ∀ i, GlobalTheory.Col.KumVal (l` using `l) m ζ (u i * (ρ (u i))⁻¹) s ((((crd (z s 1) i).val : ℤ) - (d₀ : ℤ) * ((crd (z (ρ⁻¹ * s * ρ) 1) i).val : ℤ) : ℤ) : ZMod (l ^ m)) := by`. Introduce `s hs i`. Take `⟨v, hv, hsv⟩` from `huk i s hs`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v', hv', hsv'⟩` from `huk i _ (hHρ s hs)`. Use `GlobalTheory.KZ.UnitPres.kumVal_int hζ.pow_eq_one (v := v * (ρ v')⁻¹) ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_pow, inv_pow, ← map_pow, hv', hv]`. Establish `e : s (ρ v') = ρ ((ρ⁻¹ * s * ρ) v')`. Rewrite using `[← AlgEquiv.mul_apply, ← AlgEquiv.mul_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `group`. Rewrite using `[map_mul, map_inv₀, hsv, e, hsv', map_mul, map_pow, hρζ, zpow_sub₀ hζ0, zpow_mul]`. Simplify using `only [zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ι, hι, P, o, hζ, hPc, fun i => (ho i).1, fun i => by rw [hPe]; exact hw0 i, ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.Col.KumPres A m m (ζ ^ l ^ 0) _ _ _`. Rewrite using `[pow_zero, pow_one]`. Use `⟨hζ, le_rfl, fun i => ?_, fun i => (ho i).2, fun s hs hc' _ => ?_⟩` and prove the remaining obligations. Simplify using `only [hPe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨(A.valuation_le_one_iff _).1 (hvw i).le, hw0 i, (A.valuation_le_one_iff _).1 ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, hvw i, inv_one]`. Establish `hsH : s ∈ H` using `(hH s).2 ⟨hs, hc'⟩`. Use `⟨fun i => ((((crd (z s 1) i).val : ℤ) - (d₀ : ℤ) * ((crd (z (ρ⁻¹ * s * ρ) 1) i).val : ℤ) : ℤ) : ZMod (l ^ m)), fun i => by simp only [hPe]; exact hkw s hsH i, ?_⟩` and prove the remaining obligations. Use `show Cg m (z s 1 - (d₀ : Qbar l) * z s (1 * uu)) _`.
-
-Rewrite using `[one_mul, key s hsH]`. Establish `h2` using `hcrd _ (hz.1 s 1)`. Establish `h3` using `hcrd _ (hz.1 (ρ⁻¹ * s * ρ) 1)`. Establish `h4` using `cg_sub_sub h2 (GlobalTheory.KumUnit.cg_mul_left (o := (d₀ : Qbar l)) (IsUltrametricDist.norm_natCast_le_one (Qbar l) d₀) h3)`. Use `GlobalTheory.KumUnit.cg_trans h4 (GlobalTheory.KumUnit.cg_symm (GlobalTheory.KumUnit.cg_trans (GlobalTheory.KumUnit.cg_sum _ fun i _ => GlobalTheory.KumUnit.cg_mul_left (ho i).2 (GlobalTheory.KZ.UnitPres.cg_intCast _ _)) ?_))` and prove the remaining obligations.
-
-Establish `e : (∑ i, o i * ((((crd (z s 1) i).val : ℤ) - (d₀ : ℤ) * ((crd (z (ρ⁻¹ * s * ρ) 1) i).val : ℤ) : ℤ) : Qbar l)) = (∑ i, o i * ((crd (z s 1) i).val : Qbar l)) - (d₀ : Qbar l) * ∑ i, o i * ((crd (z (ρ⁻¹ * s * ρ) 1) i).val : Qbar l)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e, Cg, sub_self, norm_zero]`. Conclude with `norm_nonneg _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothed_pres [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω) (hA : OverL l A) (c : Coef l)
     (ν : G ℚ Ω → (Qbar l)ˣ) (Z : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l)
@@ -213,13 +207,13 @@ theorem smoothed_pres [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω) (hA : Over
     exact norm_nonneg _
 
 /- English proof (translation)
-Establish `hnz : ∀ s ∈ Dec (F` using `ℚ) A, (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)) 1 1 ≠ 0 := by`. Introduce `s hs h`. Use `(ρ s).det_ne_zero` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two, hD s hs, h]`. Simplify using `at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `ν : G ℚ Ω → (Qbar l)ˣ` to `fun s => if h : (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)) 1 1 ≠ 0 then Units.mk0 _ h else 1`. Establish `hν : ∀ s ∈ Dec (F` using `ℚ) A, (ν s : Qbar l) = (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)) 1 1 := by`. Introduce `s hs`. Simplify using `only [ν, dif_pos (hnz s hs), Units.val_mk0]`. Use `smoothed_pres A hA c ν (fun r s y => Y r s y 1) (fun r => ⟨hO r, fun s hs u _ x => ?_⟩) (fun r => GlobalTheory.LambdaValuationPowers.AllRoots.continuous_of_cg _ fun n => ?_) (fun s hs => ?_) d₀ hd₀ m ζ hζ` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun (hY r s u x) 1 show Y r (s * u) x 1 = Y r s x 1 + (ν s : Qbar l) * Y r u (x * (cycMod ℚ Ω l r s)⁻¹) 1` as an intermediate fact. Rewrite using `[this, hν s hs]`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two, hD s hs]`. Take `⟨E0, hE⟩` from `hc r n`. Conclude with `⟨E0, fun s s' h => hE s s' 1 h⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Units.ext (by rw [hν s (Ine_le_Dec A hs), hI s hs, Units.val_one])`.
+A detailed English derivation is pending.
 -/
 theorem smoothed_pres_of_shCoc [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω) (hA : OverL l A) (c : Coef l)
     (ρ : G ℚ Ω →* GL (Fin 2) (Qbar l))
@@ -255,11 +249,9 @@ theorem smoothed_pres_of_shCoc [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω) (
   · exact Units.ext (by rw [hν s (Ine_le_Dec A hs), hI s hs, Units.val_one])
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ ι e S A W g hN hS ε X pr N _ cw c d gm ψ₀ cf α _ _ _ hAdm _ j _ c₀ Y hZ hY hc hO d₀ hd₀ _`. Use `⟨0, 0, fun m _ ζ hζ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hcw : ∃ x, cw x ≠ 0`. Take `⟨x, hx⟩` from `hcw`. Take `⟨ρ, hρ, -, hD, hI, -⟩` from `GlobalTheory.RhoAdm.rho_ordinary_shape l Ω ι e S A W g ψ₀ hN hS (hAdm.1 x hx).2.2.2.2.2.2.2.2.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfun : rhoK W e ψ₀ = fun s => (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l))` using `funext fun s => (hρ s).symm`. Conclude with `smoothed_pres_of_shCoc A hN.atL cf ρ hD hI Y (fun r => hfun ▸ hY r) hc hO d₀ hd₀ m ζ hζ`. Use `GlobalTheory.LambdaValuationPowers.AllRoots.pres_of_vanish A cf _ m ζ hζ fun s _ _ => ?_` and prove the remaining obligations. Take `⟨Yx, -, hs⟩` from `hZ`. Use `push_neg at hcw`.
-
-Simplify using `[hs, hcw]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pres_smoothed : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (e : ℕ) (S : Finset Pl)
     (A : ValuationSubring Ω) (W : R2 Ω l) (g : Newform (2 * e + 1)), Nf e S A W → SrcUr ι e A W g →

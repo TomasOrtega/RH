@@ -25,14 +25,14 @@ def nA (s : R) : M4 R := !![1, 0, 0, 0; s, 1, 0, 0; 0, 0, 1, 0; 0, 0, -s, 1]
 def flg (x s : R) : M4 R := tn (low x) 1 * nA s
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [tn]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tn_one : tn (1 : M2 R) 1 = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [tn]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [tn, Matrix.mul_apply, Fin.sum_univ_succ] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tn_mul (g g' t t' : M2 R) : tn (g * g') (t * t') = tn g t * tn g' t' := by
   ext i j

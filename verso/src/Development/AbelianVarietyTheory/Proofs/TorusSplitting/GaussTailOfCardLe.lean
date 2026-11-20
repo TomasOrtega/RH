@@ -7,25 +7,23 @@ open ReciprocityTheory.ChartRestriction.G.I2
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `ι h g R0 hR0 hg hh hcard`. Take `⟨t, ht_def⟩ : ∃ t : ℝ, t = R0 ^ 2 / 16` from `⟨_, rfl⟩`. Establish `ht : 0 < t` using `by rw [ht_def]; positivity`. Establish `ht' : 2 * (g : ℝ) + 1 ≤ t` using `by rw [ht_def]; linarith`. Establish `key` using `GlobalTheory.summable_exp_neg_of_card_le (fun i => h i ^ 2 / 16) (t := t) (C := 9 ^ g) (fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hh i`. Establish `h2 : R0 ^ 2 ≤ h i ^ 2` using `by nlinarith`. Rewrite using `[ht_def]`. Use the proof step `linarith)`. Use the proof step `(fun s u htu hs => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu0 : 0 < u` using `lt_of_lt_of_le ht htu`. Take `⟨R, hR⟩ : ∃ R : ℝ, R = 4 * Real.sqrt u` from `⟨_, rfl⟩`. Establish `hsq : Real.sqrt u ^ 2 = u` using `Real.sq_sqrt hu0.le`. Establish `hR2 : R ^ 2 = 16 * u` using `by rw [hR, mul_pow, hsq]; norm_num`. Establish `hRnn : 0 ≤ R` using `by rw [hR]; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hle : ∀ x : ℝ, 0 ≤ x → x ^ 2 ≤ 16 * u → x ≤ R` using `fun x hx hx2 => by`. Use the polynomial consequences of the given equalities and inequalities. Establish `hR0R : R0 ≤ R` using `hle R0 hR0.le (by rw [ht_def] at htu; linarith)`. Establish `hsS : ∀ i ∈ s, h i ≤ R` using `fun i hi => by`. Establish `h3` using `hs i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hle (h i) (hR0.le.trans (hh i)) (by linarith)`. Use `(hcard R hR0R s hsS).trans ?_` and prove the remaining obligations. Establish `hpow : (3 * R / R0) ^ (2 * g) = 9 ^ g * (u / t) ^ g`. Rewrite using `[pow_mul, ← mul_pow]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[div_pow, mul_pow, hR2, ht_def]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hpow]`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hx : u / t ≤ Real.exp (u / t - 1)`. Use `Real.add_one_le_exp (u / t - 1)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hy : u - t = t * (u / t - 1)` using `by field_simp`. Establish `hy0 : 0 ≤ u / t - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_le]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[hy]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right ht' hy0])`. Establish `e : ∀ i, -(h i) ^ 2 / 16 = -(h i ^ 2 / 16)` using `fun i => by ring`. Simplify using `only [e]`. Use `⟨key.1, key.2.trans_eq ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[ht_def, neg_div]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussTail_of_card_le : Ext.GaussianTailBound := by
   intro ι h g R0 hR0 hg hh hcard

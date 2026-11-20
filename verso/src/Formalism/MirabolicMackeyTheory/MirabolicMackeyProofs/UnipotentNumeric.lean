@@ -5,7 +5,7 @@ import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ValBasic
 namespace Formalism.EigenvalueLevelCeiling
 
 /- English proof (translation)
-Unfold `DepthCases`. Introduce `e ec F`. Use `⟨fun a h1 h2 => by linarith, fun h1 h2 h3 => by linarith, fun s T β h1 h2 h3 h4 => by linarith, fun s T h1 h2 h3 => by linarith, fun T nn nnc g2 h1 h2 h3 => by linarith⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem depth_cases : DepthCases := by
   unfold DepthCases
@@ -15,9 +15,9 @@ theorem depth_cases : DepthCases := by
     fun T nn nnc g2 h1 h2 h3 => by linarith⟩
 
 /- English proof (translation)
-Unfold `UnipNum`. Introduce `f r d dK δq hf hr hd hq`. Establish `hr0 : 0 ≤ r - 1` using `by linarith`. Establish `hA : 0 ≤ f * r * (r - 1) / 2` using `div_nonneg (mul_nonneg (mul_nonneg hf (by linarith)) hr0) (by norm_num)`. Establish `h1 : f * r * (r - 1) / 2 * (d + dK / δq) ≤ f * r * (r - 1) / 2 * (4 * d)` using `mul_le_mul_of_nonneg_left (by linarith) hA`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 0 ≤ f * r * d` using `mul_nonneg (mul_nonneg hf (by linarith)) hd`. Establish `h3 : f * r * (r - 1) / 2 * (4 * d) = 2 * f * r ^ 2 * d - 2 * (f * r * d)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem unipotent_numeric : UnipNum := by
   unfold UnipNum
@@ -32,7 +32,7 @@ theorem unipotent_numeric : UnipNum := by
   linarith
 
 /- English proof (translation)
-Unfold `BudgetNum`. Introduce `dK δq D B hδ hD hB hq`. Rewrite using `[div_le_iff₀ (mul_pos hδ hD)]`. Establish `h1 : dK ≤ 3 * D * δq` using `(div_le_iff₀ hδ).mp hq`. Establish `h2 : dK * B ≤ 3 * D * δq * B` using `mul_le_mul_of_nonneg_right h1 hB`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -45,11 +45,11 @@ theorem budget_numeric : BudgetNum := by
   linarith
 
 /- English proof (translation)
-Unfold `ShareNum`. Introduce `dK d0 d U δq ep y del hU hδ hdK hd0 hep hey hy hdel hdel' h1 h2 h3`. Rewrite using `[div_le_iff₀ hδ]`. Establish `k1 : 7 / 8 * dK ≤ U * d0`. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0:ℝ) ≤ 1 / 8 - ep) hdK]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `k2 : 7 / 8 * U ≤ δq`. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0:ℝ) ≤ 1 / 8 - y) hU.le]`. Establish `k3 : 3 / 4 * d0 ≤ d`. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0:ℝ) ≤ 1 / 4 - del) hd0]`. Establish `hd : 0 ≤ d` using `by linarith`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `k4 : d * (7 / 8 * U) ≤ d * δq` using `mul_le_mul_of_nonneg_left k2 hd`. Establish `k5 : 3 / 4 * d0 * U ≤ d * U` using `mul_le_mul_of_nonneg_right k3 hU.le`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem share_numeric : ShareNum := by
   unfold ShareNum
@@ -67,7 +67,7 @@ theorem share_numeric : ShareNum := by
   nlinarith
 
 /- English proof (translation)
-Unfold `LevelPair`. Introduce `en enc T vs vsc nn nnc frn Dp Dm F h1 h2 hT hf hvs hvsc hn hF`. Substitute `hvs hvsc hF` using the available equality. Use `⟨by linarith, by linarith, by linarith, by linarith⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem level_pair : LevelPair := by
   unfold LevelPair
@@ -76,11 +76,11 @@ theorem level_pair : LevelPair := by
   refine ⟨by linarith, by linarith, by linarith, by linarith⟩
 
 /- English proof (translation)
-Unfold `NormaliserPair`. Introduce `K _ _ _ w π hπ Dp Dm`. Establish `hV` using `Formalism.DivisionValues.valuation_basic_properties K w`. Establish `hsπ : star π ≠ 0` using `star_ne_zero.mpr hπ`. Establish `hpow : ∀ x : K, x ≠ 0 → ∀ n : ℕ, Formalism.DivisionValues.vw w (x ^ n) = (n : ℤ) * Formalism.DivisionValues.vw w x`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx n`. Proceed by induction on `n with`. Consider the case `zero => simp [hV.2.2.2.2.1]`. Consider the case `succ n ih`. Rewrite using `[pow_succ, hV.1 _ _ (pow_ne_zero _ hx) hx, ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hV.2.1, star_mul, star_pow, star_pow, star_star, hV.1 (star π ^ Dp) (π ^ Dm) (pow_ne_zero _ hsπ) (pow_ne_zero _ hπ), hV.1 (star π ^ Dm) (π ^ Dp) (pow_ne_zero _ hsπ) (pow_ne_zero _ hπ), hV.1 π (star π) hπ hsπ, hpow _ hsπ Dp, hpow _ hπ Dm, hpow _ hsπ Dm, hpow _ hπ Dp]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem normaliser_pair : NormaliserPair := by
   unfold NormaliserPair
@@ -102,9 +102,9 @@ theorem normaliser_pair : NormaliserPair := by
   ring
 
 /- English proof (translation)
-Unfold `UnitChange`. Introduce `ρ x y d r k δ ε hρ hδ`. Establish `hρ' : ρ ≠ 0` using `hρ.ne'`. Establish `hδ' : δ ≠ 0` using `hδ.ne'`. Use `first`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(field_simp; ring)`. Consider the case `field_simp`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unit_change' : UnitChange := by
   unfold UnitChange

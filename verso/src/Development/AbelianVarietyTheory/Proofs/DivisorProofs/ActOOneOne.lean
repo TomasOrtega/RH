@@ -28,21 +28,21 @@ def bot (w : WO S (GlobalTheory.Doubling.dblSp T)) : WO S T := w.submatrix (finS
 def join (u v : WO S T) : WO S (GlobalTheory.Doubling.dblSp T) := (Matrix.fromRows u v).submatrix finSumFinEquiv.symm id
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [top, join, Matrix.submatrix_apply, Function.comp_apply, Equiv.symm_apply_apply, Matrix.fromRows_apply_inl, id]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem top_join (u v : WO S T) : top (join u v) = u := by
   ext i j
   simp only [top, join, Matrix.submatrix_apply, Function.comp_apply, Equiv.symm_apply_apply, Matrix.fromRows_apply_inl, id]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [bot, join, Matrix.submatrix_apply, Function.comp_apply, Equiv.symm_apply_apply, Matrix.fromRows_apply_inr, id]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem bot_join (u v : WO S T) : bot (join u v) = v := by
   ext i j
   simp only [bot, join, Matrix.submatrix_apply, Function.comp_apply, Equiv.symm_apply_apply, Matrix.fromRows_apply_inr, id]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `obtain ⟨k | k, rfl⟩ := finSumFinEquiv.surjective i <;>`. Simplify using `only [top, bot, join, Matrix.submatrix_apply, Function.comp_apply, Equiv.symm_apply_apply, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, id]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem join_top_bot (w : WO S (GlobalTheory.Doubling.dblSp T)) : join (top w) (bot w) = w := by
   ext i j
@@ -62,9 +62,9 @@ Both sides reduce to the same expression.
 def box (f₁ f₂ : WO S T → ℂ) : WO S (GlobalTheory.Doubling.dblSp T) → ℂ := fun w => f₁ (top w) * star (f₂ (bot w))
 
 /- English proof (translation)
-Simplify using `only [hO, GlobalTheory.Doubling.gram_hdbl, GlobalTheory.Doubling.dblGram, GlobalTheory.Doubling.blkMat]`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, map_zero, map_neg, mul_zero, zer …`. Simplify using `only [neg_mul, mul_neg, Finset.sum_neg_distrib, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hO_dbl (x y : WO S (GlobalTheory.Doubling.dblSp T)) :
     hO S (GlobalTheory.Doubling.dblSp T) x y = hO S T (top x) (top y) - hO S T (bot x) (bot y) := by
@@ -81,14 +81,14 @@ theorem hO_dbl (x y : WO S (GlobalTheory.Doubling.dblSp T)) :
   simp only [neg_mul, mul_neg, Finset.sum_neg_distrib, sub_eq_add_neg]
 
 /- English proof (translation)
-Simplify using `only [symplO, hO_dbl, mul_sub, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplO_dbl (x y : WO S (GlobalTheory.Doubling.dblSp T)) :
     symplO S (GlobalTheory.Doubling.dblSp T) x y = symplO S T (top x) (top y) - symplO S T (bot x) (bot y) := by
   simp only [symplO, hO_dbl, mul_sub, map_sub]
 
 /- English proof (translation)
-Simplify using `only [symplOH, symplO_dbl, mul_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplOH_dbl (x y : WO S (GlobalTheory.Doubling.dblSp T)) :
     symplOH S (GlobalTheory.Doubling.dblSp T) x y = symplOH S T (top x) (top y) - symplOH S T (bot x) (bot y) := by
@@ -99,7 +99,7 @@ def IsTopDiag (h : GA D T) (hd : GA D (GlobalTheory.Doubling.dblSp T)) : Prop :=
     Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks (Formalism.L2.Theta.mt T h) 0 0 1)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [top, actO, IsTopDiag] at hh ⊢`. Rewrite using `[hh]`. Simplify using `only [Matrix.submatrix_apply, Function.comp_apply, id, Matrix.mul_apply, Matrix.reindex_apply, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, add_ze …`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem top_actO {h : GA D T} {hd : GA D (GlobalTheory.Doubling.dblSp T)} (hh : IsTopDiag h hd) (g : GA D S)
     (w : WO S (GlobalTheory.Doubling.dblSp T)) : top (actO S (GlobalTheory.Doubling.dblSp T) g hd w) = actO S T g h (top w) := by
@@ -111,7 +111,7 @@ theorem top_actO {h : GA D T} {hd : GA D (GlobalTheory.Doubling.dblSp T)} (hh : 
     Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, add_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [bot, actO, IsTopDiag] at hh ⊢`. Rewrite using `[hh]`. Simplify using `only [Matrix.submatrix_apply, Function.comp_apply, id, Matrix.mul_apply, Matrix.reindex_apply, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, zero_a …`. Rewrite using `[show Formalism.L2.Theta.mt T 1 = 1 from rfl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bot_actO {h : GA D T} {hd : GA D (GlobalTheory.Doubling.dblSp T)} (hh : IsTopDiag h hd) (g : GA D S)
     (w : WO S (GlobalTheory.Doubling.dblSp T)) : bot (actO S (GlobalTheory.Doubling.dblSp T) g hd w) = actO S T g 1 (bot w) := by
@@ -124,14 +124,14 @@ theorem bot_actO {h : GA D T} {hd : GA D (GlobalTheory.Doubling.dblSp T)} (hh : 
   rw [show Formalism.L2.Theta.mt T 1 = 1 from rfl]
 
 /- English proof (translation)
-Simplify using `only [actO, inv_one, show Formalism.L2.Theta.mt T 1 = 1 from rfl, show Formalism.L2.Theta.mt S 1 = 1 from rfl, Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actO_one_one (w : WO S T) : actO S T 1 1 w = w := by
   simp only [actO, inv_one, show Formalism.L2.Theta.mt T 1 = 1 from rfl, show Formalism.L2.Theta.mt S 1 = 1 from rfl,
     Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `h1 : ψ (-b) * ψ b = 1` using `by rw [← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]`. Establish `h2` using `GlobalTheory.ThetaSchur.mul_star_psi hψ b`. Take the linear combination `(-ψ (-b)) * h2 + star (ψ b) * h1`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem psi_neg {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (b : AF D.host.F) : ψ (-b) = star (ψ b) := by
   have h1 : ψ (-b) * ψ b = 1 := by rw [← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]
@@ -139,7 +139,7 @@ theorem psi_neg {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (b 
   linear_combination (-ψ (-b)) * h2 + star (ψ b) * h1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [heisO, box, symplOH_dbl, top_add, bot_add, sub_eq_add_neg, AddChar.map_add_eq_mul, psi_neg hψ, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisO_box {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (w : WO S (GlobalTheory.Doubling.dblSp T))
     (f₁ f₂ : WO S T → ℂ) :

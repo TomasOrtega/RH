@@ -9,7 +9,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {V : Type} [NormedAddCommGroup V] [Inne
   {E : Fin n → Fin n → Module.End ℂ V}
 
 /- English proof (translation)
-Simplify using `only [casimirK, LinearMap.sum_apply, Module.End.mul_apply, sum_inner, inner_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Establish `hab : ε b = ε a` using `(Finset.mem_filter.1 hb).2`. Rewrite using `[hU a b (E b a x) y, hU b a x (E b a y)]`. Simplify using `[adjSign, hab]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem casK_symm (hU : IsInfUnitary ε E) (x y : V) :
     ⟪casimirK ε E x, y⟫_ℂ = ⟪x, casimirK ε E y⟫_ℂ := by
@@ -20,9 +20,9 @@ theorem casK_symm (hU : IsInfUnitary ε E) (x y : V) :
   simp [adjSign, hab]
 
 /- English proof (translation)
-Simplify using `only [ReciprocityTheory.ChartRestriction.DS.casimirK, LinearMap.sum_apply, Module.End.mul_apply, inner_sum, Complex.re_sum]`. Use `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b hb => ?_` and prove the remaining obligations. Establish `hb' : ε b = ε a` using `(Finset.mem_filter.1 hb).2`. Establish `h` using `hU b a x (E b a x)`. Simplify using `only [ReciprocityTheory.ChartRestriction.DS.adjSign, hb', if_true, one_mul] at h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h]`. Simplify using `using (inner_self_nonneg (𝕜 := ℂ) (x := E b a x))`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem re_inner_casK_nonneg (hU : IsInfUnitary ε E) (x : V) : 0 ≤ (⟪x, casimirK ε E x⟫_ℂ).re := by
   simp only [ReciprocityTheory.ChartRestriction.DS.casimirK, LinearMap.sum_apply, Module.End.mul_apply,
@@ -35,9 +35,9 @@ theorem re_inner_casK_nonneg (hU : IsInfUnitary ε E) (x : V) : 0 ≤ (⟪x, cas
   simpa using (inner_self_nonneg (𝕜 := ℂ) (x := E b a x))
 
 /- English proof (translation)
-Establish `h2` using `re_inner_casK_nonneg hU v`. Rewrite `h2` using `[show casimirK ε E v = (μ : ℂ) • v from h, inner_smul_right, inner_self_eq_norm_sq_to_K]`. Establish `h3 : 0 ≤ μ * ‖v‖ ^ 2` using `by simpa [← Complex.ofReal_pow] using h2`. Establish `hn : 0 < ‖v‖ ^ 2` using `pow_pos (norm_pos_iff.2 hv) 2`. Assume the negation of the conclusion as `hμ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hμ`. Use polynomial arithmetic with `[mul_neg_of_neg_of_pos hμ hn]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem eig_nonneg (hU : IsInfUnitary ε E) {μ : ℝ} {v : V} (hv : v ≠ 0) (h : Eig ε E μ v) : 0 ≤ μ := by
   have h2 := re_inner_casK_nonneg hU v
@@ -54,21 +54,19 @@ namespace PositivityTheory.CW
 
 open CasimirNonnegativeSymmetric in
 /- English proof (translation)
-Introduce `k ε V _ _ E _ hU hM m`. Use `set a := 1 + casimirK ε E with ha_def`. Establish `ha : ∀ x y : V, ⟪a x, y⟫_ℂ = ⟪x, a y⟫_ℂ`. Introduce `x y`. Simplify using `only [ha_def, LinearMap.add_apply, Module.End.one_apply, inner_add_left, inner_add_right, casK_symm hU]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsymm : ∀ j : ℕ, ∀ x y : V, ⟪(a ^ j) x, y⟫_ℂ = ⟪x, (a ^ j) y⟫_ℂ`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro x y`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ j ih`. Introduce `x y`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, hsymm m⟩` and prove the remaining obligations. Establish `hrange : LinearMap.range (a ^ m) = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff, ← hM.span, Submodule.span_le]`. Introduce and unpack `v ⟨μ, hv⟩`. Use `show v ∈ LinearMap.range (a ^ m)`. Distinguish the cases in `h0 : v = 0`. Rewrite using `[h0]`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Establish `hμ : 0 ≤ μ` using `eig_nonneg hU h0 hv`. Establish `h1 : a v = (1 + (μ : ℂ)) • v`. Simplify using `[ha_def, add_smul, show casimirK ε E v = (μ : ℂ) • v from hv]`. Establish `hav : ∀ j : ℕ, (a ^ j) v = ((1 + (μ : ℂ)) ^ j) • v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ, Module.End.mul_apply, h1, map_smul, ih, smul_smul, ← pow_succ']`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne1 : (1 + (μ : ℂ)) ≠ 0`. Rewrite using `[← Complex.ofReal_one, ← Complex.ofReal_add]`. Conclude with `(by linarith : (0 : ℝ) < 1 + μ).ne'` after adjusting the coercions. Establish `hne : (1 + (μ : ℂ)) ^ m ≠ 0` using `pow_ne_zero _ hne1`. Use `LinearMap.mem_range.2 ⟨((1 + (μ : ℂ)) ^ m)⁻¹ • v, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_smul, hav, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Conclude with `LinearMap.range_eq_top.1 hrange`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e3a : CasimirPowerSurjectiveSymmetric := by
   intro k ε V _ _ E _ hU hM m

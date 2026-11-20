@@ -7,15 +7,15 @@ open GlobalTheory.EtC GlobalTheory.GalV GlobalTheory.HodgeCoh
 universe u
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Subsingleton (PrimeSpectrum Ω))`.
+A detailed English derivation is pending.
 -/
 private theorem sp_sub (Ω : Type) [Field Ω] : Subsingleton (UpperTheory.Gal.G3.sp Ω) :=
   inferInstanceAs (Subsingleton (PrimeSpectrum Ω))
 
 /- English proof (translation)
-Use `haveI := sp_sub Ω`. Set `pt : UpperTheory.Gal.G3.sp Ω` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum Ω)`. Take `⟨c, v, hv⟩` from `(sigmaOpenCover (fun _ : I => Y)).exists_eq (y pt)`. Establish `hι : (sigmaOpenCover (fun _ : I => Y)).f c = Sigma.ι (fun _ : I => Y) c` using `rfl`. Rewrite `hv` using `[hι]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, IsOpenImmersion.lift (Sigma.ι (fun _ : I => Y) c) y ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `⟨v, hv.trans (by rw [Subsingleton.elim w pt])⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem pt_factor {Ω : Type} [Field Ω] {I : Type} [Finite I] {Y : Scheme.{0}}
     (y : UpperTheory.Gal.G3.sp Ω ⟶ ∐ (fun _ : I => Y)) : ∃ (c : I) (y₀ : UpperTheory.Gal.G3.sp Ω ⟶ Y), y₀ ≫ Sigma.ι (fun _ : I => Y) c = y := by
@@ -29,7 +29,7 @@ private theorem pt_factor {Ω : Type} [Field Ω] {I : Type} [Finite I] {Y : Sche
   exact ⟨v, hv.trans (by rw [Subsingleton.elim w pt])⟩
 
 /- English proof (translation)
-Set `pt : UpperTheory.Gal.G3.sp Ω` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum Ω)`. Establish `e : Sigma.ι (fun _ : I => Y) c (y pt) = Sigma.ι (fun _ : I => Y) d (z pt)`. Use `congrArg (fun f : UpperTheory.Gal.G3.sp Ω ⟶ ∐ (fun _ : I => Y) => f pt) h` as an intermediate fact. Simplify using `using this`. Conclude with `congrArg Sigma.fst ((sigmaι_eq_iff (fun _ : I => Y) c d _ _).mp e)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem pt_index {Ω : Type} [Field Ω] {I : Type} [Finite I] {Y : Scheme.{0}} {c d : I}
     (y z : UpperTheory.Gal.G3.sp Ω ⟶ Y) (h : y ≫ Sigma.ι (fun _ : I => Y) c = z ≫ Sigma.ι (fun _ : I => Y) d) : c = d := by
@@ -40,21 +40,21 @@ private theorem pt_index {Ω : Type} [Field Ω] {I : Type} [Finite I] {Y : Schem
   exact congrArg Sigma.fst ((sigmaι_eq_iff (fun _ : I => Y) c d _ _).mp e)
 
 /- English proof (translation)
-Introduce `hS hP hSg hF hT B G _ X F _ T m i j a hmi hn I A _ _ e he r hr hu ht tr htr x`. Establish `hij : X.K i ≤ X.K j` using `fun u hu' => by simpa using a.2 u hu'`. Establish `b : X.admitted m j 1` using `X.isAdmissibleIntegralBasisChange_one (hmi.trans hij)`. Establish `ar : ∀ y, X.admitted m i (r y)` using `fun y => ⟨X.K_le j _ (hr y), fun u hu' => hmi (hn _ (hr y) u hu')⟩`. Take `⟨hfin, het, -⟩` from `hSg (X.tr i j 1 a.1 a.2) _ I (hF X i j a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsp` using `hT X m i j a b hmi hn A r ar hr hu`. Set `σ : I × A → (X.Z m ⟶ ∐ fun _ : I => X.Z i)` to `fun z => X.tr m i (r z.2) (ar z.2).1 (ar z.2).2 ≫ Sigma.ι (fun _ : I => X.Z i) z.1`. Establish `hσs : ∀ z, σ z ≫ (Sigma.desc fun _ : I => X.tr i j 1 a.1 a.2) = X.tr m j 1 b.1 b.2`. Introduce `z`. Simplify using `only [σ, Category.assoc, Sigma.ι_desc]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hsp.choose z.2`. Establish `split : Splits (Sigma.desc fun _ : I => X.tr i j 1 a.1 a.2) (X.tr m j 1 b.1 b.2) σ`. Use `hS _ _ (I × A) σ hσs ?_` and prove the remaining obligations. Introduce `Ω _ _ w y hy`. Take `⟨c, y₀, rfl⟩` from `pt_factor y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy₀ : y₀ ≫ X.tr i j 1 a.1 a.2 = w ≫ X.tr m j 1 b.1 b.2`. Rewrite using `[← hy, Category.assoc, Sigma.ι_desc]`. Take `⟨d, hd, hd'⟩` from `hP _ _ A _ hsp Ω w y₀ hy₀`. Use `⟨(c, d), ?_, ?_⟩` and prove the remaining obligations. Use `show w ≫ X.tr m i (r d) (ar d).1 (ar d).2 ≫ Sigma.ι (fun _ : I => X.Z i) c = _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← Category.assoc, hd]`. Introduce and unpack `⟨c', d'⟩ h`. Establish `h' : (w ≫ X.tr m i (r d') (ar d').1 (ar d').2) ≫ Sigma.ι (fun _ : I => X.Z i) c' = y₀ ≫ Sigma.ι (fun _ : I => X.Z i) c`. Rewrite using `[Category.assoc]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : c' = c` from `pt_index _ _ h'`. Establish `hm` using `(cancel_mono (Sigma.ι (fun _ : I => X.Z i) c')).mp h'`. Rewrite using `[hd' d' hm]`. Establish `hq : ∀ z, σ z ≫ (Sigma.desc fun _ : I => X.tr i j 1 a.1 a.2) ≫ X.q j = X.q m`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hσs, X.tr_q]`. Establish `key` using `htr (X.Z m) (X.q m) (X.tr m j 1 b.1 b.2) (X.tr_q ..) (I × A) σ hq split (T.pull _ ht x)`. Rewrite using `[X.pl_eq T b, key, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `ad : X.admitted m j (e c * r y)` using `(ar y).mul (he c)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : σ (c, y) ≫ (Sigma.desc fun c : I => X.tr i j (e c) (he c).1 (he c).2) = X.tr m j (e c * r y) ad.1 ad.2`. Simplify using `only [σ, Category.assoc, Sigma.ι_desc]`. Conclude with `X.tr_mul m i j _ _ _ _ _ _ _ _`. Rewrite using `[X.pl_eq T ad, ← T.pull_comp _ _ (hq (c, y)) ht (by rw [e1, X.tr_q])]`. Simplify using `only [e1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pTwMem :
     SplitsPts → PtsOfSplits → SigmaFEt → TwFEt → TwSplit → TwMem.{u} := by

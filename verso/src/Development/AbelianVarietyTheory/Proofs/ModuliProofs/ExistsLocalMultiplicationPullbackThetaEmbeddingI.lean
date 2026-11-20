@@ -13,9 +13,9 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ZM.EmbedLocal
 
 /- English proof (translation)
-Establish `h1 : IsPullback (snd T A).left (fst T A).left A.hom T.hom` using `(IsPullback.of_hasPullback T.hom A.hom).flip`. Establish `h2 : IsPullback (snd T' A).left (fst T' A).left A.hom T'.hom` using `(IsPullback.of_hasPullback T'.hom A.hom).flip`. Use `IsPullback.of_right ?_ ?_ h1` and prove the remaining obligations. Rewrite using `[← Over.comp_left, whiskerRight_snd, Over.w h]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, ← Over.comp_left, whiskerRight_fst]`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_whisker {S : Scheme.{0}} (A : Over S) {T T' : Over S} (h : T' ⟶ T) :
     IsPullback (h ▷ A).left (fst T' A).left (fst T A).left h.left := by
@@ -26,13 +26,11 @@ theorem isPullback_whisker {S : Scheme.{0}} (A : Over S) {T T' : Over S} (h : T'
   · rw [← Over.comp_left, ← Over.comp_left, whiskerRight_fst]
 
 /- English proof (translation)
-Introduce `l1 l2 o _ g N' J b S s t m R _ x v hm h2 hth p`. Establish `hodd : Odd N'` using `hth.1`. Establish `hdvd : m ∣ N'` using `(dvd_pow_self m two_ne_zero).trans hm`. Use `haveI : NeZero (N' ^ 2) := ⟨pow_ne_zero 2 hodd.pos.ne'⟩`. Take `⟨R', _, φ, σ, hφ, hp, hE⟩` from `hex l1 l2 o g N' J b S s t m R x hodd hdvd p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨R', inferInstance, φ, σ, hφ, hp, hE, ?_⟩` and prove the remaining obligations. Use `hfib R' (Ix g (N' ^ 2)) _ _ _ σ (LB.isLB_linComb t.isLB _ _) ?_ ?_` and prove the remaining obligations. Use `haveI := t.ab.proper`. Conclude with `inferInstanceAs (IsProper (pullback.fst (spMap φ ≫ x) t.A.hom))`. Introduce `K _ _ y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `h : Over.mk (spMap y ≫ spMap φ ≫ x) ⟶ Over.mk (spMap φ ≫ x)` to `Over.homMk (spMap y) rfl`. Take `⟨σ', hE', hc⟩` from `hpb l2 o g N' J b S s t m _ _ h σ (inferInstanceAs (IsAffine (Spec _))) (inferInstanceAs (IsAffine (Spec _))) hE`. Establish `hs` using `hspan l1 l2 o g N' J b S s t m K _ σ' hodd hdvd h2 hE'`. Establish `h4 : (4 : ℤ) ≤ (m : ℤ) ^ 2`. Establish `: (2 : ℤ) ≤ m` using `by exact_mod_cast h2`.
-
-Use the polynomial consequences of the given equalities and inequalities. Conclude with `⟨_, (h ▷ t.A).left, _, _, σ', _, isPullback_whisker t.A h, hva l1 l2 S t.pol K _ _ _ σ' h4 hs, hc⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem of_parts
     (hex : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (S : Scheme.{0}) (s : S ⟶ Sp o) (t : TObj g (N' ^ 2) J b s) (m : ℕ) (R : Type) [CommRing R] (x : Sp R ⟶ S), Odd N' → m ∣ N' → ∀ p : Sp R, ∃ (R' : Type) (_ : CommRing R') (φ : R →+* R') (σ : _), IsOpenImmersion (spMap φ) ∧ p ∈ Set.range (spMap φ) ∧ t.Emb m (Over.mk (spMap φ ≫ x)) σ)

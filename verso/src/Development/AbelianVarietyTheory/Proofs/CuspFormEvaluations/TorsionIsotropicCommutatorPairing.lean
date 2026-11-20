@@ -21,7 +21,7 @@ section Tate
 variable {k : Type} [Field k] {Q : Type} [CommGroup Q] {act : 𝓞 E → Q → Q} {e : ℕ → Q → Q → kˣ → Prop}
 
 /- English proof (translation)
-Establish `h0 : I.ev m 0 = 1` using `(I.ker m hm 0).2 ⟨0, (smul_zero _).symm⟩`. Set `f : Multiplicative Dw.La →* Q` to `{ toFun := fun x => I.ev m x.toAdd, map_one' := h0, map_mul' := fun x y => I.add m _ _ }`. Conclude with `map_prod f (fun j => Multiplicative.ofAdd (a j)) Finset.univ`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem ev_sum (I : TateIso Dw k Q act e) (m : ℕ) (hm : 0 < m) {n : ℕ} (a : Fin n → Dw.La) :
     I.ev m (∑ j, a j) = ∏ j, I.ev m (a j) := by
@@ -31,11 +31,11 @@ theorem ev_sum (I : TateIso Dw k Q act e) (m : ℕ) (hm : 0 < m) {n : ℕ} (a : 
   exact map_prod f (fun j => Multiplicative.ofAdd (a j)) Finset.univ
 
 /- English proof (translation)
-Establish `cop : l.Mb ^ j ⊔ (l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) ^ j = ⊤` using `Ideal.sup_pow_eq_top' (Ideal.pow_sup_eq_top l.coprime)`. Take `⟨p, hp, q, hq, hpq⟩` from `Submodule.mem_sup.1 (cop.ge (Submodule.mem_top : (1 : 𝓞 E) ∈ ⊤))`. Rewrite `hq` using `[← Ideal.map_pow, Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 E →+* 𝓞 E) H.bar.surjective]`. Take `⟨r, hr, rfl⟩` from `hq`. Take `⟨a', ha'⟩` from `ha r hr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b', hb'⟩` from `hb p hp`. Establish `e₁ : Dw.EF a b = Dw.EF a (p • b) + Dw.EF (r • a) b`. Rewrite using `[Dw.adj, ← map_add, ← add_smul]`. Establish `: p + H.bar r = 1` using `hpq`. Rewrite using `[this, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, ha', hb', map_nsmul, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul, nsmul_eq_mul]`. Conclude with `dvd_add (dvd_mul_right _ _) (dvd_mul_right _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_EF_of_killed (m j : ℕ) (a b : Dw.La) (ha : ∀ c ∈ l.Mb ^ j, Dw.ModN m (c • a))
     (hb : ∀ c ∈ l.Mb ^ j, Dw.ModN m (c • b)) : (m : ℤ) ∣ Dw.EF a b := by
@@ -61,11 +61,11 @@ noncomputable def bc {K : Type} [CommRing K] (χ : B →+* K) : ptO Xo (spMap χ
   Over.homMk (spMap χ) rfl
 
 /- English proof (translation)
-Set `i₀` to `(Scheme.ΓSpecIso (CommRingCat.of B)).hom`. Establish `hi : Function.Injective i₀.hom` using `(ConcreteCategory.bijective_of_isIso i₀).1`. Establish `hU : IsUnit ((N ^ 2 : ℕ) : B)`. Use `((baseKA l).unit (N ^ 2) (pow_pos hN 2)).map (Spec.preimage (x0 ≫ Xo.s)).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `key` using `(T.universal_weilPairing_pullback_exists_unique hL E H Dw l Xo N hN).2.2 B (i₀.hom u.val) (N ^ 2) hU (by rw [← map_pow, ← Units.val_pow_eq_pow_val, hu, Units.val_one, map_one]) (fun K _ _ χ => by`. Establish `nat` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom χ)`. Establish `e` using `congrArg (fun φ => φ.hom u.val) nat`. Establish `h1 : (spMap χ).appTop.hom u.val = 1` using `congrArg Units.val (h K χ)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e]`. Conclude with `(congrArg _ h1).trans (map_one _))`. Conclude with `Units.ext (hi (key.trans (map_one _).symm))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_eq_one (hL : Laws) (N : ℕ) (hN : 0 < N) (u : Γ((ptO Xo x0).left, ⊤)ˣ) (hu : u ^ (N ^ 2) = 1)
     (h : ∀ (K : Type) [Field K] [IsAlgClosed K] (χ : B →+* K),
@@ -86,9 +86,9 @@ theorem unit_eq_one (hL : Laws) (N : ℕ) (hN : 0 < N) (u : Γ((ptO Xo x0).left,
   exact Units.ext (hi (key.trans (map_one _).symm))
 
 /- English proof (translation)
-Take `⟨-, I, -⟩` from `Xo.univ.geom K (spMap χ ≫ x0) (Spec.preimage ((spMap χ ≫ x0) ≫ Xo.s)).hom (Spec.map_preimage _).symm`. Use `⟨I, fun x y e hx hy he a b ha hb => ?_⟩` and prove the remaining obligations. Take `⟨W₁, W₂, -⟩` from `T.universal_weilPairing_pullback_exists_unique hL E H Dw l Xo N hN`. Establish `h₁` using `W₁ _ _ (bc Xo x0 χ) x y e hx hy he`. Establish `h₂` using `I.isom (N ^ 2) (pow_pos hN 2) a b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h₂` using `[ha, hb, Nat.cast_pow]`. Take `⟨e₀, -, -, hu⟩` from `W₂ _ (bc Xo x0 χ ≫ x) (bc Xo x0 χ ≫ y) (by rw [← MonObj.comp_pow, hx, MonObj.comp_one]) (by rw [← MonObj.comp_pow, hy, MonObj.comp_one])`. Conclude with `(hu _ h₁).trans (hu _ h₂).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_tate (hL : Laws) (N : ℕ) (hN : 0 < N) (K : Type) [Field K] [IsAlgClosed K] (χ : B →+* K) :
     ∃ I : TateIso Dw K (ptO Xo (spMap χ ≫ x0) ⟶ Xo.univ.t.G) (fun a g => g ≫ Xo.univ.t.act.act a)
@@ -109,25 +109,25 @@ theorem exists_tate (hL : Laws) (N : ℕ) (hN : 0 < N) (K : Type) [Field K] [IsA
   exact (hu _ h₁).trans (hu _ h₂).symm
 
 /- English proof (translation)
-The claim follows from `(map_prod (Units.map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom.toMonoidHom) c Finset.univ).symm`.
+A detailed English derivation is pending.
 -/
 theorem unitOn_prod {K : Type} [CommRing K] {n : ℕ} (c : Fin n → Kˣ) : ∏ b, unitOn (c b) = unitOn (∏ b, c b) :=
   (map_prod (Units.map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom.toMonoidHom) c Finset.univ).symm
 
 /- English proof (translation)
-The claim follows from `(map_prod (zpowersHom U z) (fun b => Multiplicative.ofAdd (c b)) Finset.univ).symm`.
+A detailed English derivation is pending.
 -/
 theorem prod_zpow_eq {U : Type} [CommGroup U] (z : U) {n : ℕ} (c : Fin n → ℤ) : ∏ b, z ^ c b = z ^ ∑ b, c b :=
   (map_prod (zpowersHom U z) (fun b => Multiplicative.ofAdd (c b)) Finset.univ).symm
 
 /- English proof (translation)
-The claim follows from `map_one (Units.map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom.toMonoidHom)`.
+A detailed English derivation is pending.
 -/
 theorem unitOn_one {K : Type} [CommRing K] : unitOn (1 : Kˣ) = 1 :=
   map_one (Units.map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom.toMonoidHom)
 
 /- English proof (translation)
-Rewrite using `[List.prod_ofFn]`. Set `f : (T ⟶ G) →* (T' ⟶ G)` to `{ toFun := fun g => h ≫ g, map_one' := MonObj.comp_one _, map_mul' := fun a b => MonObj.comp_mul _ _ _ }`. Conclude with `map_prod f x Finset.univ`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem comp_prod {S : Scheme.{0}} {G T T' : Over S} [GrpObj G] [IsCommMonObj G] (h : T' ⟶ T) {n : ℕ}
     (x : Fin n → (T ⟶ G)) : h ≫ (List.ofFn x).prod = ∏ j, h ≫ x j := by
@@ -141,19 +141,19 @@ end ThetaIsotropy
 open ThetaIsotropy in
 
 /- English proof (translation)
-Introduce `hL E _ _ _ H Dw l Xo B _ x0 n Λ N hΛ hN hle`. Establish `hN2 : 0 < N ^ 2` using `pow_pos hN 2`. Take `⟨-, W₂, -⟩` from `T.universal_weilPairing_pullback_exists_unique hL E H Dw l Xo N hN`. Establish `tors : ∀ {K : Type} [CommRing K] (χ : B →+* K) {x : ptO Xo x0 ⟶ Xo.univ.t.G}, x ^ (N ^ 2) = 1 → (bc Xo x0 χ ≫ x) ^ (N ^ 2) = 1` using `fun χ x hx => by rw [← MonObj.comp_pow, hx, MonObj.comp_one]`. Use `⟨fun a a' e ha ha' he => ?_, fun x y j hx hy kx ky => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `unit_eq_one Xo x0 hL N hN _ ?_ fun K _ _ χ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_eq_one fun b _ => ?_` and prove the remaining obligations. Take `⟨e₀, -, h₀, hu⟩` from `W₂ _ (a b) (a' b) (ha.1 b) (ha'.1 b)`. Rewrite using `[hu _ (he b), h₀]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨I, hI⟩` from `exists_tate Xo x0 hL N hN K χ choose v hv using fun b => (I.onto _ hN2 _).1 (tors χ (ha.1 b)) choose v' hv' using fun b => (I.onto _ hN2 _).1 (tors χ (ha'.1 b))`. Establish `lat : ∀ {a : Fin n → (ptO Xo x0 ⟶ Xo.univ.t.G)} {v : Fin n → Dw.La}, InZh Xo Λ N a → (∀ b, I.ev (N ^ 2) (v b) = bc Xo x0 χ ≫ a b) → ∀ (mu : Matrix (Fin n) (Fin n) E), (∀ v ∈ Λ.La, mu.mulVec v ∈ stdLat E n) → ∀ cm : Fin n → Fin n → 𝓞 E, (∀ i j, (cm i j : E) = (N : E) * mu i j) → ∀ …` using `fun {a v} ha hv mu hmu cm hcm i => by`. Use `(I.ker _ hN2 _).1 ?_` and prove the remaining obligations. Establish `h₁` using `congrArg (bc Xo x0 χ ≫ ·) (ha.2 mu hmu cm hcm i)`. Simplify using `only [MonObj.comp_one] at h₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h₁` using `[comp_prod]`. Rewrite using `[ev_sum I _ hN2, ← h₁]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[I.lin, hv, Category.assoc]`. Establish `hd` using `T.sq_dvd_sum_alternating_forms_of_killed_lattice E H Dw n Λ N hΛ hN hle v v' (lat ha hv) (lat ha' hv')`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_prod, Finset.prod_congr rfl fun b _ => hI _ _ _ (ha.1 b) (ha'.1 b) (he b) _ _ (hv b) (hv' b)]`. Use `(unitOn_prod _).trans ?_` and prove the remaining obligations. Rewrite using `[prod_zpow_eq, ((I.ζ_prim _ hN2).zpow_eq_one_iff_dvd _).2 (by rwa [Nat.cast_pow]), unitOn_one]`. Take `⟨e, he, h₀, -⟩` from `W₂ _ x y hx hy`. It suffices to establish `e = 1 by rwa [this] at he`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion.
 
-Use `unit_eq_one Xo x0 hL N hN _ h₀ fun K _ _ χ => ?_` and prove the remaining obligations. Take `⟨I, hI⟩` from `exists_tate Xo x0 hL N hN K χ`. Take `⟨v, hv⟩` from `(I.onto _ hN2 _).1 (tors χ hx)`. Take `⟨v', hv'⟩` from `(I.onto _ hN2 _).1 (tors χ hy)`. Establish `lat : ∀ {x : ptO Xo x0 ⟶ Xo.univ.t.G} {v : Dw.La}, KilledBy Xo (l.Mb ^ j) x → I.ev (N ^ 2) v = bc Xo x0 χ ≫ x → ∀ c ∈ l.Mb ^ j, Dw.ModN (N ^ 2) (c • v)` using `fun {x v} kx hv c hc => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(I.ker _ hN2 _).1 ?_` and prove the remaining obligations. Rewrite using `[I.lin, hv, Category.assoc, kx c hc, MonObj.comp_one]`. Establish `hd` using `dvd_EF_of_killed (N ^ 2) j v v' (lat kx hv) (lat ky hv')`. Rewrite using `[hI _ _ _ hx hy he _ _ hv hv', ((I.ζ_prim _ hN2).zpow_eq_one_iff_dvd _).2 hd]`. Conclude with `unitOn_one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zh_isotropic_and_half_isotropic : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (B : Type) [CommRing B] (x0 : Sp B ⟶ Xo.X) (n : ℕ) (Λ : GenLat E n) (N : ℕ), Λ.Unimod → 0 < N → Ideal.span {(N : 𝓞 E)} • stdLat E n ≤ Λ.La → (∀ (a a' : Fin n → (ptO Xo x0 ⟶ Xo.univ.t.G)) (e : Fin n → Γ((ptO Xo x0).left, ⊤)ˣ), InZh Xo Λ N a → InZh Xo Λ N a' → (∀ b, WeilIs Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (a b) (a' b) (e b)) → ∏ b, e b = 1) ∧ ∀ (x y : ptO Xo x0 ⟶ Xo.univ.t.G) (j : ℕ), x ^ (N ^ 2) = 1 → y ^ (N ^ 2) = 1 → KilledBy Xo (l.Mb ^ j) x → KilledBy Xo (l.Mb ^ j) y → WeilIs Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) x y 1 := by
   intro hL E _ _ _ H Dw l Xo B _ x0 n Λ N hΛ hN hle

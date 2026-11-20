@@ -17,9 +17,9 @@ def nilM {r : ℕ} (x : BlockIx a r → R) : Matrix (Fin a) (Fin a) R :=
   Matrix.of fun i j => if h : i.val < r ∧ r ≤ j.val then x ⟨(i, j), h⟩ else 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : l.val < r`. Simplify using `[nilM, not_le.2 h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[nilM, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nilM_mul_self {r : ℕ} (x : BlockIx a r → R) : nilM x * nilM x = 0 := by
   ext i j
@@ -30,9 +30,9 @@ theorem nilM_mul_self {r : ℕ} (x : BlockIx a r → R) : nilM x * nilM x = 0 :=
   · simp [nilM, h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : l.val < r`. Simplify using `[nilM, not_le.2 h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[nilM, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nilM_mul {r : ℕ} (x y : BlockIx a r → R) : nilM x * nilM y = 0 := by
   ext i j
@@ -62,7 +62,7 @@ def twRep {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module ℂ V]
     rw [mul_comm (χ h : ℂ)]
 
 /- English proof (translation)
-The claim follows from `UpperTheory.Reformulated.B.IsOpenStabilizer.isOpen_stab_of_mem_nhds ρ v h`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_stab_of_mem_nhds {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : G →* Module.End ℂ V) (v : V)

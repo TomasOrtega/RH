@@ -4,19 +4,17 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.FiniteAlgebraUnit
 
 /- English proof (translation)
-Introduce `k _ _ R _ _ _ U hU`. Use `haveI : IsArtinianRing R := IsArtinianRing.of_finite k R`. Use `haveI : Infinite k := IsAlgClosed.instInfinite`. Establish `hpt : ∀ m : Ideal R, m.IsMaximal → ∃ x : R →ₐ[k] k, ∀ r ∈ m, x r = 0`. Introduce `m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `letI : Field (R ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Module.Finite k (R ⧸ m) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ k m).toLinearMap (Ideal.Quotient.mkₐ_surjective k m)`. Set `e : k ≃ₐ[k] (R ⧸ m)` to `AlgEquiv.ofBijective (Algebra.ofId k (R ⧸ m)) IsAlgClosed.algebraMap_bijective_of_isIntegral`. Use `⟨(e.symm : (R ⧸ m) →ₐ[k] k).comp (Ideal.Quotient.mkₐ k m), fun r hr => ?_⟩` and prove the remaining obligations. Establish `h0 : Ideal.Quotient.mkₐ k m r = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr hr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `e.symm (Ideal.Quotient.mkₐ k m r) = 0`. Rewrite using `[h0, map_zero]`. Set `f : Ideal R → Submodule k U` to `fun m => (m.restrictScalars k).comap U.subtype`. Establish `hfin : (f '' {m : Ideal R | m.IsMaximal}).Finite` using `(IsArtinianRing.setOfPred_isMaximal_finite R).image f`. Set `s : Finset (Submodule k U)` to `hfin.toFinset`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `htop : (⊤ : Submodule k U) ∉ s`. Introduce `h`. Take `⟨m, hm, hfm⟩` from `(Set.Finite.mem_toFinset hfin).mp h`. Take `⟨x, hx⟩` from `hpt m hm`. Take `⟨t, htU, ht⟩` from `hU x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: (⟨t, htU⟩ : U) ∈ f m` using `by rw [hfm]; trivial`. Conclude with `ht (hx t this)`. Establish `hne` using `Subspace.biUnion_ne_univ_of_top_notMem (k := k) (s := s) htop`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : U, w ∉ ⋃ p ∈ s, (p : Set U) := by`. Assume the negation of the conclusion as `hcon`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at hcon`. Conclude with `hne (Set.eq_univ_of_forall hcon)`. Use `⟨w, w.2, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnu`. Take `⟨m, hm, hwm⟩` from `exists_max_ideal_of_mem_nonunits (show (w : R) ∈ nonunits R from hnu)`.
-
-Apply `hw` to reduce the goal to its premises. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨f m, (Set.Finite.mem_toFinset hfin).mpr ⟨m, hm, rfl⟩, hwm⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isUnit_mem_of_forall_point :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (R : Type) [CommRing R] [Algebra k R] [Module.Finite k R]

@@ -12,11 +12,11 @@ open scoped TensorProduct
 namespace GlobalTheory.Decompl.Sat
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact fun e _ _ => ⟨e, by simp⟩`. Consider the case `succ k ih`. Introduce `e r h`. Take `⟨e₁, rfl⟩` from `hd e ((p : R) ^ k * r) (by rw [h]; ring)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : f e₁ = (p : R) ^ k * r`. Rewrite using `[← sub_eq_zero]`. Apply `htf` to reduce the goal to its premises. Rewrite `h` using `[map_mul, map_natCast]`. Take the linear combination `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨e₂, rfl⟩` from `ih e₁ r h1`. Conclude with `⟨e₂, by ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pow_dvd_of_map {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) (p : ℕ)
     (htf : ∀ x : R, (p : R) * x = 0 → x = 0)
@@ -36,15 +36,15 @@ theorem pow_dvd_of_map {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) (p
     exact ⟨e₂, by ring⟩
 
 /- English proof (translation)
-Use `⟨fun x e h => ?_, fun x h => ?_⟩` and prove the remaining obligations. Take `⟨e', rfl⟩` from `hd e x h.symm`. Use `⟨e', ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Apply `htf` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h` using `[map_mul, map_natCast]`. Take the linear combination `h`. Use `choose e r her using h`. Establish `key : ∀ (n : ℕ) (a b : A), a ≡ b [SMOD (Ideal.span {(p : A)}) ^ n • (⊤ : Submodule A A)] ↔ (p : A) ^ n ∣ a - b`. Introduce `n a b`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨L, hL⟩` from `hA.prec (f := e) (by`. Introduce `m n hmn`. Rewrite using `[key]`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hmn`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `pow_dvd_of_map f p htf hd m _ ((p : R) ^ k * r (m + k) - r m) ?_` and prove the remaining obligations. Rewrite using `[map_sub]`. Take the linear combination `her (m + k) - her m)`. Use `⟨L, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hsep _ fun k => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `(key _ _ _).1 (hL k)`. Establish `h1` using `congrArg f hc`. Rewrite `h1` using `[map_sub, map_mul, map_pow, map_natCast]`. Conclude with `⟨r k + f c, by linear_combination her k + h1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sat_closed {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) (p : ℕ)
     (hA : IsPrecomplete (Ideal.span {(p : A)}) A)
@@ -82,7 +82,7 @@ theorem sat_closed {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) (p : �
     exact ⟨r k + f c, by linear_combination her k + h1⟩
 
 /- English proof (translation)
-Introduce `l _ P AI K s LL h W E`. Establish `hc : IsAdicComplete (Ideal.span {(l : W.EE)}) W.EE`. Use `W.EE_complete` as an intermediate fact. Rewrite `this` using `[P.PD_p K]`. Then use the resulting hypothesis. Conclude with `sat_closed (E.tie.ioE : W.EE →+* RW LL) l hc.toIsPrecomplete (LAdic.ladic_RW l LL).1 (LAdic.ladic_RW l LL).2.1 (GlobalTheory.T.etaleComparison_piAdic_filtration_mod_ell l P AI K s LL h W E).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ioE_saturated_closed : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) (W : Wach P K LL) (E : EtSit P AI K s LL h W), (∀ (x : RW LL) (e : W.EE), (l : RW LL) * x = E.tie.ioE e → ∃ e', x = E.tie.ioE e') ∧ ∀ x : RW LL, (∀ k : ℕ, ∃ e r, x - E.tie.ioE e = (l : RW LL) ^ k * r) → ∃ e, x = E.tie.ioE e := by
   intro l _ P AI K s LL h W E

@@ -26,11 +26,9 @@ section Values
 variable {X Y Y' Z : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
 
 /- English proof (translation)
-Introduce `j j' c₁ c₂ c₃`. Use `Units.ext (hinj _ (fn_ext fun z hz => ?_))` and prove the remaining obligations. Establish `hz' : ρ z ∈ LB.wchart L φ j ⊓ LB.wchart L φ' j'` using `hz`. Take `⟨J, hJ, e⟩` from `exists_good L hL z (fun k => ρ ≫ Sum.elim φ φ' k) (Sum.elim j j') (by`. Apply the tactic sequence `rintro (a | a) (b | b) e <;> replace e := hρ _ _ e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `exacts [c₁ a b e, c₃ a b e, (c₃ b a e.symm).symm, c₂ a b e]) (by`. Introduce and unpack `(a | a)`. Use `exacts [Set.mem_iInter.1 hz'.1 a, Set.mem_iInter.1 hz'.2 a])`. Use `h z J hJ` as an intermediate fact. Rewrite `this` using `[val_of t _ z J j (fun k => e (.inl k)), val_of t' _ z J j' (fun k => e (.inr k))]`.
-
-Rewrite using `[gs_pull (𝟙 Z) ρ z _ hz', gs_pull (𝟙 Z) ρ z _ hz', Category.id_comp, gs_unit ρ z _ hz', gs_unit ρ z _ hz']`. Conclude with `congrArg Units.val ((gm_res ρ z _ hz' _).trans (this.trans (gm_res ρ z _ hz' _).symm))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corr_of_val_pull (hL : L.IsLB) (ρ : Z ⟶ Y) (hinj : ∀ U, Function.Injective (ρ.app U).hom)
     (hρ : ∀ a b : Y ⟶ X, ρ ≫ a = ρ ≫ b → a = b)
@@ -68,28 +66,28 @@ def cubVal {Z : Scheme.{0}} (r : Z ⟶ (G3 D.P.A).left) (z : Z) (J : (Z ⟶ D.P.
   val (L := D.P.L) (φ := thφ D.P.A (x3 D.P.A)) (ε := thε) D.cub.t r z J
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, comp_toUnit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cF_eq (χ : D.X) : DegPre.cF D F χ = ρ ≫ DegPre.cT D T χ := by
   rw [← Category.assoc, comp_toUnit]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, comp_toUnit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zeroF_eq : DegPre.zeroF D F = ρ ≫ DegPre.zeroT D T := by
   rw [← Category.assoc, comp_toUnit]
 
 /- English proof (translation)
-Simplify using `only [padd]`. Rewrite using `[← Category.assoc, comp_lift]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem padd_comp (x y : T ⟶ D.P.A) : padd D.P.A (ρ ≫ x) (ρ ≫ y) = ρ ≫ padd D.P.A x y := by
   simp only [padd]
   rw [← Category.assoc, comp_lift]
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Use `fin_cases k`. Express the relevant statement in the definitionally equal form `(padd D.P.A (DegPre.cF D F χ) (ρ ≫ b)).left = (ρ ≫ padd D.P.A (DegPre.cT D T χ) b).left`. Rewrite using `[cF_eq D ρ, padd_comp]`. Express the relevant statement in the definitionally equal form `(DegPre.cF D F χ).left = (ρ ≫ DegPre.cT D T χ).left`.
+Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cF_eq D ρ]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(DegPre.zeroF D F).left = (ρ ≫ DegPre.zeroT D T).left`. Rewrite using `[zeroF_eq D ρ]`.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gtφ_eq (b : T ⟶ D.P.A) {b' : TF (R := R) F ⟶ D.P.A} (hb : b' = ρ ≫ b) (χ : D.X) (k : Fin 4) :
     DegPre.gtφ D F b' χ k = ρ.left ≫ DegPre.gtφT D T b χ k := by

@@ -29,7 +29,7 @@ Both sides reduce to the same expression.
 theorem evI_eq (a : AF F) : evI F a = evH F a := rfl
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h1 : fstH F u = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Rewrite using `[smul_eq_mul]`. Conclude with `Prod.ext (show fstH F (u * a) = 0 by rw [map_mul, h1, zero_mul]) (show sndH F (u * a) = 0 by rw [map_mul, ha, mul_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_of_snd {a : AF F} (ha : sndH F a = 0) : At (evI F) a := by
   intro u hu
@@ -39,19 +39,19 @@ theorem at_of_snd {a : AF F} (ha : sndH F a = 0) : At (evI F) a := by
     (show sndH F (u * a) = 0 by rw [map_mul, ha, mul_zero])
 
 /- English proof (translation)
-Rewrite using `[InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evH_algebraMap (x : F) : evH F (algebraMap F (AF F) x) = mixedEmbedding F x := by
   rw [InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]; rfl
 
 /- English proof (translation)
-The claim follows from `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply s`.
+A detailed English derivation is pending.
 -/
 theorem evH_arch (s : mixedEmbedding.mixedSpace F) : evH F (arch F s) = s :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply s
 
 /- English proof (translation)
-Simplify using `only [dotProduct, map_sum, map_mul]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [show sndH F (arch F (s i)) = 0 from rfl, mul_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem snd_dot {κ : Type} [Fintype κ] (ξ : κ → F) (s : κ → mixedEmbedding.mixedSpace F) :
     sndH F ((fun i => algebraMap F (AF F) (ξ i)) ⬝ᵥ (fun i => arch F (s i))) = 0 := by
@@ -59,14 +59,14 @@ theorem snd_dot {κ : Type} [Fintype κ] (ξ : κ → F) (s : κ → mixedEmbedd
   exact Finset.sum_eq_zero fun i _ => by rw [show sndH F (arch F (s i)) = 0 from rfl, mul_zero]
 
 /- English proof (translation)
-Simplify using `only [dotProduct, map_sum, map_mul, evH_algebraMap, evH_arch]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evH_dot {κ : Type} [Fintype κ] (ξ : κ → F) (s : κ → mixedEmbedding.mixedSpace F) :
     evH F ((fun i => algebraMap F (AF F) (ξ i)) ⬝ᵥ (fun i => arch F (s i))) = ∑ i, mixedEmbedding F (ξ i) * s i := by
   simp only [dotProduct, map_sum, map_mul, evH_algebraMap, evH_arch]
 
 /- English proof (translation)
-Rewrite using `[show (1 : mixedEmbedding.mixedSpace F) = algebraMap ℝ _ 1 from (map_one _).symm, Algebra.trace_algebraMap, mixedEmbedding.finrank]`. Simplify using `[Module.finrank_pos.ne']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_one_ne : Algebra.trace ℝ (mixedEmbedding.mixedSpace F) 1 ≠ 0 := by
   rw [show (1 : mixedEmbedding.mixedSpace F) = algebraMap ℝ _ 1 from (map_one _).symm, Algebra.trace_algebraMap,
@@ -82,9 +82,9 @@ Both sides reduce to the same expression.
 theorem trA_apply (z : F) : trA F z = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (mixedEmbedding F z) := rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hz : ∀ z : F, trA F (d * z) = 0`. Introduce `z`. Rewrite using `[← b.sum_repr z, Finset.mul_sum, map_sum]`. Conclude with `Finset.sum_eq_zero fun k _ => by rw [mul_smul_comm, map_rat_smul, hd, smul_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hz d⁻¹`. Rewrite `h1` using `[mul_inv_cancel₀ hne, trA_apply, map_one]`. Conclude with `trace_one_ne F h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_trA {ι : Type} [Fintype ι] (b : Module.Basis ι ℚ F) (d : F) (hd : ∀ k, trA F (d * b k) = 0) :
     d = 0 := by
@@ -98,7 +98,7 @@ theorem eq_zero_of_trA {ι : Type} [Fintype ι] (b : Module.Basis ι ℚ F) (d :
   exact trace_one_ne F h1
 
 /- English proof (translation)
-Rewrite using `[← e.sum_comp, Fintype.sum_prod_type, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, LinearMap.map_smul, smul_eq_mul, ← map_mul, Equiv.symm_apply_apply, trA_apply, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_sum {κ ι : Type} [Fintype κ] [Fintype ι] {N : ℕ} (e : κ × ι ≃ Fin N) (b : ι → F) (ξ : κ → F)
     (t : Fin N → ℝ) :
@@ -111,25 +111,23 @@ theorem trace_sum {κ ι : Type} [Fintype κ] [Fintype ι] {N : ℕ} (e : κ × 
   rw [mul_smul_comm, LinearMap.map_smul, smul_eq_mul, ← map_mul, Equiv.symm_apply_apply, trA_apply, mul_comm]
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ h hh hθ`. Use function extensionality and compare the values at `x`. Set `b` to `Module.finBasis ℚ F`. Set `e` to `Fintype.equivFin (κ × Fin (Module.finrank ℚ F))`. Set `lam : (κ → F) → Fin (Fintype.card (κ × Fin (Module.finrank ℚ F))) → ℝ` to `fun ξ j => -trA F (ξ (e.symm j).1 * b (e.symm j).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `c : (κ → F) → ℂ` to `fun ξ => h ((fun i => algebraMap F (AF F) (ξ i)) + x)`. Establish `hc : Summable c`. Establish `hs` using `summable_of_mem_schA F (GlobalTheory.SchwartzTranslate.schA_translate F x hh)`. Conclude with `hs`. Establish `hinj : Function.Injective lam`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ξ ξ' hl`. Use function extensionality and compare the values at `i`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_trA F b _ fun k => ?_` and prove the remaining obligations. Use `congrFun hl (e (i, k))` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [lam, Equiv.symm_apply_apply, neg_inj] at this`. Rewrite using `[sub_mul, map_sub, this, sub_self]`. Establish `hsum : ∀ t : Fin (Fintype.card (κ × Fin (Module.finrank ℚ F))) → ℝ, ∑' ξ, c ξ * Complex.exp (2 * Real.pi * Complex.I * ∑ j, (lam ξ j : ℂ) * (t j : ℂ)) = 0`. Introduce `t`. Set `s : κ → mixedEmbedding.mixedSpace F` to `fun i => ∑ k, t (e (i, k)) • mixedEmbedding F (b k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `y : κ → AF F` to `fun i => arch F (s i)`. Establish `hψ0 : ψ (⅟(2 : AF F) * (x ⬝ᵥ y)) ≠ 0`. Establish `h2` using `AddChar.map_add_eq_mul ψ (⅟(2 : AF F) * (x ⬝ᵥ y)) (-(⅟(2 : AF F) * (x ⬝ᵥ y)))`. Rewrite `h2` using `[add_neg_cancel, AddChar.map_zero_eq_one]`. Conclude with `left_ne_zero_of_mul_eq_one h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ ξ : κ → F, schr ψ (x, y) h (fun i => algebraMap F (AF F) (ξ i)) = ψ (⅟(2 : AF F) * (x ⬝ᵥ y)) * (c ξ * Complex.exp (2 * Real.pi * Complex.I * ∑ j, (lam ξ j : ℂ) * (t j : ℂ)))`. Introduce `ξ`. Simplify using `only [schr]`. Rewrite using `[AddChar.map_add_eq_mul, hψ.2.2 _ (at_of_snd F (snd_dot F ξ s)), evI_eq, evH_dot, trace_sum F e b ξ t]`. Establish `harg : -(2 * Real.pi * Complex.I) * ((∑ j, trA F (ξ (e.symm j).1 * b (e.symm j).2) * t j : ℝ) : ℂ) = 2 * Real.pi * Complex.I * ∑ j, (lam ξ j : ℂ) * (t j : ℂ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [lam, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_neg, neg_mul, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[harg]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : thetaSum F (schr ψ (x, y) h) = ψ (⅟(2 : AF F) * (x ⬝ᵥ y)) * ∑' ξ, c ξ * Complex.exp (2 * Real.pi * Complex.I * ∑ j, (lam ξ j : ℂ) * (t j : ℂ))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `thetaSum`. Rewrite using `[← tsum_mul_left]`. Conclude with `tsum_congr key`. Establish `h0` using `hθ x y`. Rewrite `h0` using `[h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(mul_eq_zero.1 h0).resolve_left hψ0`. Use `GlobalTheory.ExpSumUniq.coeff_eq_zero _ _ lam c hinj hc hsum 0` as an intermediate fact. Establish `e0 : (fun i : κ => algebraMap F (AF F) ((0 : κ → F) i)) + x = x` using `by funext i; simp`. Simplify using `only [c] at this`. Rewrite `this` using `[e0]`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ]
     (h : (κ → AF F) → ℂ), h ∈ schA F κ → (∀ x y : κ → AF F, thetaSum F (schr ψ (x, y) h) = 0) → h = 0 := by

@@ -8,21 +8,19 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ V _ _ _ _ ρ d bV hL hfin hrk Φ hΦ`. Use `haveI := PD.finK`. Set `D : Submodule K (Fin d → BdR)` to `{ carrier := {y | ∀ g : G, (Matrix.of fun i j => algebraMap Qp BdR (bV.repr (ρ g (bV j)) i)).mulVec (fun i => PD.actdR g (y i)) = y} add_mem' := by`. Introduce `a b ha hb g`. Establish `: (fun i => PD.actdR g ((a + b) i)) = (fun i => PD.actdR g (a i)) + (fun i => PD.actdR g (b i))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.mulVec_add, ha g, hb g]`. Use the proof step `zero_mem' := by`. Introduce `g`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: (fun i => PD.actdR g ((0 : Fin d → BdR) i)) = 0`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.mulVec_zero]`. Use the proof step `smul_mem' := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `c a ha g`. Establish `: (fun i => PD.actdR g ((c • a) i)) = c • (fun i => PD.actdR g (a i))`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.mulVec_smul, ha g] }`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hmem : ∀ z, z ∈ DdR PD ρ ↔ Φ z ∈ D`. Introduce `z`. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[← hΦ g z]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Φ.injective.eq_iff.symm`. Set `e : ↥(DdR PD ρ) ≃ₗ[Qp] ↥D` to `{ toFun := fun z => ⟨Φ z.1, (hmem _).1 z.2⟩ invFun := fun y => ⟨Φ.symm y.1, (hmem _).2 (by simpa using y.2)⟩ map_add' := fun a b => Subtype.ext (by simp) map_smul' := fun c a => Subtype.ext (by simp) left_inv := fun z => Subtype.ext (by simp) right_inv := fun y => Subtype.ext (by …`. Use `haveI : Module.Finite Qp ↥(DdR PD ρ) := Module.Finite.trans LL _`. Use `haveI : Module.Finite Qp ↥D := Module.Finite.equiv e`. Use `⟨D, fun y => Iff.rfl, Module.Finite.of_restrictScalars_finite Qp K _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Module.finrank_mul_finrank Qp K ↥D`. Establish `h2` using `Module.finrank_mul_finrank Qp LL ↥(DdR PD ρ)`. Establish `h3` using `Module.finrank_mul_finrank Qp LL V`. Establish `h4 : Module.finrank Qp V = d` using `by simpa using Module.finrank_eq_card_basis bV`. Establish `h5` using `e.finrank_eq`.
-
-Establish `hpos : 0 < Module.finrank Qp K` using `Module.finrank_pos`. Apply `Nat.eq_of_mul_eq_mul_left hpos` to reduce the goal to its premises. Rewrite using `[h1, ← h5, ← h2, hrk, ← h4, ← h3]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem deRham_invariants_coord_finrank :
     ∀ {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] (PD : PeriodData G Qp K₀ K B BdR) {LL : Type} [Field LL] [Algebra Qp LL] {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] (ρ : Representation LL G V) {d : ℕ} (bV : Module.Basis (Fin d) Qp V), FiniteDimensional Qp LL → Module.Finite LL ↥(DdR PD ρ) → Module.finrank LL ↥(DdR PD ρ) = Module.finrank Qp K * Module.finrank LL V → ∀ Φ : V ⊗[Qp] BdR ≃ₗ[Qp] (Fin d → BdR), (∀ (g : G) (z : V ⊗[Qp] BdR), Φ (actVdR PD ρ g z) = (Matrix.of fun i j => algebraMap Qp BdR (bV.repr (ρ g (bV j)) i)).mulVec (fun i => PD.actdR g (Φ z i))) → ∃ D : Submodule K (Fin d → BdR), (∀ y, y ∈ D ↔ ∀ g : G, (Matrix.of fun i j => algebraMap Qp BdR (bV.repr (ρ g (bV j)) i)).mulVec (fun i => PD.actdR g (y i)) = y) ∧ Module.Finite K ↥D ∧ Module.finrank K ↥D = d := by

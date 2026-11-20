@@ -27,15 +27,15 @@ namespace GlobalTheory.EtaVal
 open GlobalTheory.ArcQ GlobalTheory.Frames GlobalTheory.Reg.ChartInhab GlobalTheory.Reg.LiftUnique in
 
 /- English proof (translation)
-Take `⟨t, m1, m2, θ, w1, w2, σ, s1, θ2, a1, a2, a3, a4, a5, a6⟩` from `I`. Take `⟨hx, -, pm, hs, hf, ha⟩` from `hm`. Choose the witnesses or unpack the hypotheses as in `⟨t', ⟨n⟩⟩ : ∃ t' : SAB H (Sp (FractionRing V')), Nonempty (SABMap t' t (spMap ψ.toRingHom)) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap ψ.toRingHom) t`. Conclude with `⟨_, ⟨m⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hι : ψ.toRingHom.comp (algebraMap V (FractionRing V)) = (algebraMap V' (FractionRing V')).comp φ` using `RingHom.ext hψ`. Establish `hio : spMap (algebraMap V' (FractionRing V')) ≫ spMap φ = spMap ψ.toRingHom ≫ spMap (algebraMap V (FractionRing V))`. Rewrite using `[← FrBC.spMap_comp', ← FrBC.spMap_comp', hι]`. Take `⟨w0, r0⟩` from `exists_rigIso n`. Take `⟨m1', e₁, -⟩` from `exists_comp_rig m1 n y'.x hx a1 r0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m2', e₂, -⟩` from `exists_comp_rig m2 n _ hio a2 r0`. Establish `T₀` using `(FrUniq.tie_iff m1 m2 θ y.s).1 ⟨w1, w2, σ, s1, θ2, a1, a2, a3, a4, a5, a6⟩`. Establish `T₁` using `FrUniq.tie_pull m1 m2 θ y.s n m1' m2' hx hio e₁ e₂ y'.s pm hs hf (fun Z r z j hz => by`. Establish `hle` using `FramedBaseChange.chart_le pm hs (fun _ => j)`. Rewrite using `[← ha _ hle, gs_appLE pm _ _ hle r z hz]) T₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w1', w2', σ', s1', θ2', r1, r2, i1, i2, p2, hg⟩` from `(FrUniq.tie_iff m1' m2' θ y'.s).2 T₁`. Take `⟨m', e₃⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m m2'`. Take `⟨w, θ', rw', iw⟩` from `pull_sec G G' m θ`. Establish `pw : PullSec m.φ θ (thfPull G.PP.L m.φ θ)` using `fun _ _ => rfl`. Take `⟨w', r', i'⟩` from `FrBC.exists_isoMaps_cancel m m' m2' rfl e₃ rw' r2 iw pw i2 p2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨t', m1', m', θ', w1', w', σ', s1', _, r1, r', i1, i', fun _ _ => rfl, hg⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem intSec_baseChange {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {V V' : Type} [CommRing V] [IsDomain V] [CommRing V'] [IsDomain V']
@@ -69,7 +69,7 @@ theorem intSec_baseChange {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   exact ⟨⟨t', m1', m', θ', w1', w', σ', s1', _, r1, r', i1, i', fun _ _ => rfl, hg⟩⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c`. Use `⟨fun T io y => ?_, fun V V' _ _ _ _ _ _ φ ψ y y' G G' m I hψ hm => intSec_baseChange φ ψ y y' G G' m I hψ hm⟩` and prove the remaining obligations. Take `⟨G, t', m1, m2, -, θ, -, w1, w2, σ, s1, θ2, a1, a2, a3, a4, a5, a6⟩` from `y.2.2`. Conclude with `⟨G, ⟨⟨t', m1, m2, θ, w1, w2, σ, s1, θ2, a1, a2, a3, a4, a5, a6⟩⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem intSec_exists_and_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), (∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), letI := io.toAlgebra; ∃ G : SAB H (Sp T.V), Nonempty (IntSec Xo T.V y.1.x y.1.s G)) ∧ ∀ (V V' : Type) [CommRing V] [IsDomain V] [CommRing V'] [IsDomain V'] [Algebra c.F (FractionRing V)] [Algebra c.F (FractionRing V')] (φ : V →+* V') (ψ : FractionRing V →ₐ[c.F] FractionRing V') (y : FrPt Xo c (FractionRing V)) (y' : FrPt Xo c (FractionRing V')) (G : SAB H (Sp V)) (G' : SAB H (Sp V')) (_ : SABMap G' G (spMap φ)) (_ : IntSec Xo V y.x y.s G), (∀ a, ψ (algebraMap V _ a) = algebraMap V' _ (φ a)) → FrMap ψ y y' → Nonempty (IntSec Xo V' y'.x y'.s G') := by
   intro E _ _ _ H Dw l Xo c

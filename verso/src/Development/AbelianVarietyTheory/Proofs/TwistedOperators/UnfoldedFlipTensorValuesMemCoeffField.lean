@@ -14,13 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.RowTest
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch large₂ F CF b hS hIs hSc hF t Φ hSum β hβ w X Y`. Distinguish the cases in `h0 : (ch.S.term t Φ β w).datum X Y = 0`. Conclude with `⟨0, by rw [h0, map_zero]⟩`. Establish `hlc` using `GlobalTheory.T.flatIntegrand_flippedTensor_locallyConstant_compactSupport ch large₂ F CF b hS hIs hSc hF t Φ hSum β hβ w X Y`. Establish `hT` using `GlobalTheory.T.oppositePathLocalTotalTensor_mem_coefficientField ch large₂ F CF b hS hIs hSc hF t Φ hSum w.1 w.2`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM` using `GlobalTheory.T.movedTensorFactor_mem_coeffField ch large₂ F CF b hS hIs hSc hF t Φ hSum β hβ w _ hT`. Use `show flatTensor one_le_sLen (psiAt ch.W w.1) (unitVol w.1) _ X Y ∈ _`. Use `GlobalTheory.T.integral_unfolding_variables_mem_fieldRange (unitVol w.1) (isUnitVol_unitVol w.1) D.what₂.embLL _ hlc.1 hlc.2 fun e => ?_` and prove the remaining obligations. Simplify using `only [flatIntegrand]`. Distinguish the cases in `hm : moved (locGrid ch.G t w) (keepAt ch.G w) ((repsAt ch.G t w).elt (β w)) (Tflip ch.W ch.S.B t Φ w) (fill one_le_sLen X Y e) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, zero_mul]`. Conclude with `⟨0, map_zero _⟩`. Take `⟨a, ha⟩` from `hM (fill one_le_sLen X Y e)`. Take `⟨c, hc⟩` from `hF.phases t Φ β hβ w X Y e h0 hm`. Use `⟨a * c⁻¹, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv₀, ha, hc, AddChar.map_neg_eq_inv, Circle.coe_inv]`.
+A detailed English derivation is pending.
 -/
 theorem term_datum_mem_range : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) (large₂ : SizeData₂ D) (F : Face D A) (CF b : ℝ), HidaSetting large₂ R F → ch.Is → ch.AtScale CF b → ch.FieldOK → ∀ (t : T) (Φ : ch.G.Datum), ch.S.SumOK t Φ → ∀ β ∈ ch.S.supp t Φ, ∀ (w : locPl ch.G t) X Y, (ch.S.term t Φ β w).datum X Y ∈ Set.range D.what₂.embLL := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R ch large₂ F CF b hS hIs hSc hF t Φ hSum β hβ w X Y

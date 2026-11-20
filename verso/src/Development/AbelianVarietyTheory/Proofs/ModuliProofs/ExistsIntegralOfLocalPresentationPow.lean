@@ -6,11 +6,9 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set m := IsLocalRing.maximalIdeal O`. Use `set J := m.map (algebraMap O H)`. Use `letI : Field (O ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Module.Finite (O ⧸ m) (H ⧸ J) := Module.Finite.of_restrictScalars_finite O _ _`. Use `haveI : IsArtinianRing (H ⧸ J) := IsArtinianRing.of_finite (O ⧸ m) _`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N, y, hy⟩` from `IsArtinian.exists_pow_succ_smul_dvd (R := H ⧸ J) (M := H ⧸ J) (Ideal.Quotient.mk J u) 1`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `⟨N, y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `only [smul_eq_mul, mul_one, Nat.succ_eq_add_one, pow_succ] at hy`.
-
-Simplify using `only [map_mul, map_pow, map_sub, map_one]`. Take the linear combination `-hy`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_one_sub_mem_map_maximalIdeal (O H : Type) [CommRing O] [IsLocalRing O]
     [CommRing H] [Algebra O H] [Module.Finite O H] (u : H) :
@@ -30,13 +28,13 @@ theorem exists_pow_mul_one_sub_mem_map_maximalIdeal (O H : Type) [CommRing O] [I
   linear_combination -hy
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `Module.Finite.fg_top (R := O) (M := H)`. Establish `h1 : ∀ b : H, ∃ s : M, (s : H) * ((b - algebraMap O H (ε b)) * u) = 0` using `fun b => (IsLocalization.map_eq_zero_iff M T _).1 (hu _ (by simp))`. Use `choose s hs using h1`. Use `⟨∏ b ∈ G, s b, fun h hh => ?_⟩` and prove the remaining obligations. Establish `key : ∀ h : H, (h - algebraMap O H (ε h)) * (((∏ b ∈ G, s b : M) : H) * u) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hmem : h ∈ Submodule.span O (G : Set H)` using `by rw [hG]; trivial`. Proceed by induction on `hmem using Submodule.span_induction with`. Consider the case `mem b hb`. Rewrite using `[← Finset.mul_prod_erase G s hb, Submonoid.coe_mul]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `((∏ x ∈ G.erase b, s x : M) : H) * hs b`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Rewrite using `[map_add, map_add]`. Take the linear combination `ha + hb`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately.
 
-Consider the case `smul c a _ ha`. Rewrite using `[map_smul, smul_eq_mul, map_mul, Algebra.smul_def]`. Take the linear combination `algebraMap O H c * ha`. Simplify `key h` using `[hh]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_mul_kills_ker_of_localization (O H : Type) [CommRing O] [CommRing H] [Algebra O H]
     [Module.Finite O H] (ε : H →ₐ[O] O) (M : Submonoid H) (T : Type) [CommRing T] [Algebra H T]
@@ -65,45 +63,39 @@ theorem exists_mul_kills_ker_of_localization (O H : Type) [CommRing O] [CommRing
   simpa [hh] using key h
 
 /- English proof (translation)
-Introduce `O H _ _ _ _ _ ε g n T _ _ _ _ _ εT hε S _ _ π x a ρ hπ hker hkerT ha hρx hρm`. Use `set m := IsLocalRing.maximalIdeal O with hm`. Use `set p : Ideal H := m.comap ε with hp`. Establish `hmT : (m.map (algebraMap O H)).map (algebraMap H T) = m.map (algebraMap O T)`. Rewrite using `[Ideal.map_map, ← IsScalarTower.algebraMap_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmS : (m.map (algebraMap O S)).map (π : S →+* T) = m.map (algebraMap O T)`. Rewrite using `[Ideal.map_map, AlgHom.comp_algebraMap]`. Use `set A : Matrix (Fin g) (Fin g) (MvPowerSeries (Fin g) (IsLocalRing.ResidueField O)) := ρ.mapMatrix a with hA`. Establish `hred : ∀ z : S, π z ∈ m.map (algebraMap O T) → ρ z ∈ Ideal.span (Set.range (A.mulVec MvPowerSeries.X))`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hz` using `[← hmS]`. Establish `hz' : z ∈ m.map (algebraMap O S) ⊔ RingHom.ker π`. Use `Ideal.comap_map_of_surjective (π : S →+* T) hπ (m.map (algebraMap O S))` as an intermediate fact. Establish `h2 : z ∈ ((m.map (algebraMap O S)).map (π : S →+* T)).comap (π : S →+* T)` using `hz`. Rewrite `h2` using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Establish `hle : m.map (algebraMap O S) ⊔ RingHom.ker π ≤ (Ideal.span (Set.range (A.mulVec MvPowerSeries.X))).comap ρ`. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Ideal.mem_comap, hρm c hc, zero_mem]`. Rewrite using `[hker, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `Ideal.subset_span ⟨i, ?_⟩` and prove the remaining obligations. Simplify using `[hA, Matrix.mulVec, dotProduct, hρx]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hle hz'`. Establish `hx0 : ∀ i, εT (π (x i)) = 0` using `fun i => by`. Establish `: π (x i) ∈ RingHom.ker εT` using `by rw [hkerT]; exact Ideal.subset_span ⟨i, rfl⟩`. Conclude with `this`. Establish `hnil : ∀ i, ∃ N : ℕ, π (x i) ^ N ∈ m.map (algebraMap O T)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `i`. Take `⟨⟨u, t⟩, hut⟩` from `IsLocalization.surj p.primeCompl (π (x i))`. Establish `hu : ε u = 0`. Use `congrArg εT hut` as an intermediate fact. Rewrite `this` using `[map_mul, hx0, zero_mul, hε]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this.symm`. Take `⟨N, y, hy⟩` from `exists_pow_mul_one_sub_mem_map_maximalIdeal O H u`. Establish `hy'` using `Ideal.mem_map_of_mem (algebraMap H T) hy`. Rewrite `hy'` using `[hmT, map_mul, map_pow]`. Establish `hunit : IsUnit (algebraMap H T (1 - y * u))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `IsLocalization.map_units T (⟨1 - y * u, ?_⟩ : p.primeCompl)` and prove the remaining obligations. Introduce `hc`. Establish `hc' : ε (1 - y * u) ∈ m` using `hc`. Rewrite `hc'` using `[map_sub, map_mul, hu, mul_zero, sub_zero, map_one]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 hc')`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy'` using `[Ideal.mul_unit_mem_iff_mem _ hunit]`. Simplify using `only at hut`. Rewrite `hy'` using `[← hut, mul_pow, Ideal.mul_unit_mem_iff_mem _ ((IsLocalization.map_units T t).pow N)]`. Conclude with `⟨N, hy'⟩`. Use `choose N hN using hnil`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdet : π a.det ∉ m.map (algebraMap O T)`. Introduce `hc`. Use `det_notMem_span_mulVec_X _ g (Finset.univ.sup N) A (fun i => ?_) ?_` and prove the remaining obligations. Rewrite using `[← hρx, ← map_pow]`. Apply `hred` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[map_pow]`. Conclude with `Ideal.pow_mem_of_pow_mem _ (hN i) (Finset.le_sup (Finset.mem_univ i))`. Rewrite using `[hA, ← RingHom.map_det]`. Conclude with `hred _ hc`. Establish `hkill : ∀ w : T, εT w = 0 → w * π a.det = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Establish `hw' : w ∈ RingHom.ker εT` using `hw`. Rewrite `hw'` using `[hkerT]`. Establish `hle : Ideal.span (Set.range fun i => π (x i)) ≤ LinearMap.ker (LinearMap.mulRight T (π a.det))`. Rewrite using `[Ideal.span_le]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Express the relevant statement in the definitionally equal form `π (x i) * π a.det = 0`. Rewrite using `[← map_mul]`. Express the relevant statement in the definitionally equal form `x i * a.det ∈ RingHom.ker π`. Establish `h1 : x i * a.det = (a.adjugate.mulVec (a.mulVec x)) i`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`. Simplify using `[mul_comm]`. Rewrite using `[h1, hker]`. Express the relevant statement in the definitionally equal form `∑ j, a.adjugate i j * a.mulVec x j ∈ _`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (Ideal.subset_span (Set.mem_range_self j))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `hle hw'`. Establish `hval : εT (π a.det) = (n : O) ^ g`. Establish `h1 : εT (π a.det) = ((εT.comp π).mapMatrix a).det`. Rewrite using `[← AlgHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (εT.comp π).mapMatrix a = Matrix.diagonal fun _ => (n : O)`. Use extensionality with `i j`. Simplify using `[Matrix.diagonal_apply, ha]`. Rewrite using `[h1, h2, Matrix.det_diagonal]`. Simplify using the standard rewrite rules.
-
-Take `⟨⟨u, t⟩, hut⟩` from `IsLocalization.surj p.primeCompl (π a.det)`. Simplify using `only at hut`. Take `⟨s, hs⟩` from `exists_mul_kills_ker_of_localization O H ε p.primeCompl T u (fun h hh => by`. Rewrite using `[map_mul, ← hut, ← mul_assoc, hkill _ (by rw [hε, hh]), zero_mul])`. Use `⟨s * u, hs, ?_, fun hc => hdet ?_⟩` and prove the remaining obligations.
-
-Use `congrArg εT hut` as an intermediate fact. Rewrite `this` using `[map_mul, hval, hε, hε]`. Rewrite using `[map_mul, ← this]`. Conclude with `Dvd.dvd.mul_left (dvd_mul_right _ _) _`. Establish `hc'` using `Ideal.mem_map_of_mem (algebraMap H T) hc`.
-
-Rewrite `hc'` using `[hmT, map_mul, Ideal.unit_mul_mem_iff_mem _ (IsLocalization.map_units T s), ← hut, Ideal.mul_unit_mem_iff_mem _ (IsLocalization.map_units T t)]`. Conclude with `hc'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_of_local_presentation :
     ∀ (O H : Type) [CommRing O] [IsLocalRing O] [CommRing H] [Algebra O H] [Module.Finite O H] (ε : H →ₐ[O] O) (g n : ℕ) (T : Type) [CommRing T] [Algebra H T] [Algebra O T] [IsScalarTower O H T] [IsLocalization.AtPrime T ((IsLocalRing.maximalIdeal O).comap ε)] (εT : T →ₐ[O] O), (∀ h, εT (algebraMap H T h) = ε h) → ∀ (S : Type) [CommRing S] [Algebra O S] (π : S →ₐ[O] T) (x : Fin g → S) (a : Matrix (Fin g) (Fin g) S) (ρ : S →+* MvPowerSeries (Fin g) (IsLocalRing.ResidueField O)), Function.Surjective π → RingHom.ker π = Ideal.span (Set.range (a.mulVec x)) → RingHom.ker εT = Ideal.span (Set.range fun i => π (x i)) → (∀ i j, εT (π (a i j)) = if i = j then (n : O) else 0) → (∀ i, ρ (x i) = MvPowerSeries.X i) → (∀ c ∈ IsLocalRing.maximalIdeal O, ρ (algebraMap O S c) = 0) → ∃ l : H, (∀ h, ε h = 0 → h * l = 0) ∧ (n : O) ^ g ∣ ε l ∧ l ∉ (IsLocalRing.maximalIdeal O).map (algebraMap O H) := by

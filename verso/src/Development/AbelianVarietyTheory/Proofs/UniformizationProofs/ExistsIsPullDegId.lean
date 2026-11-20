@@ -14,9 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ArcData
 
 /- English proof (translation)
-Establish `sK : Subsingleton (Sp K)` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Distinguish the cases in `hz : ρ z ∈ U`. Take `rfl : U = ⊤` from `top_le_iff.1 fun y _ => by rw [Subsingleton.elim y (ρ z)]; exact hz`. Establish `e` using `congrArg Units.val (h hz)`. Rewrite `e` using `[gm_val ρ z ⊤ hz, gm_val ρ z ⊤ hz]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hK : IsField Γ(Sp K, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toMulEquiv.isField (Field.toIsField K)`. Use `letI := hK.toField`. Conclude with `Units.ext (RingHom.injective (((Sp F).presheaf.germ (ρ ⁻¹ᵁ ⊤) z hz).hom.comp (ρ.app ⊤).hom) e)`. Conclude with `unit_ext fun y hy => absurd (by rw [Subsingleton.elim (ρ z) y]; exact hy) hz`.
+Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem unit_ext_field {K F : Type} [Field K] [Field F] (ρ : Sp F ⟶ Sp K) (z : Sp F) {U : (Sp K).Opens}
     {a b : Γ(Sp K, U)ˣ} (h : ρ z ∈ U → gm ρ z U a = gm ρ z U b) : a = b := by
@@ -35,15 +35,15 @@ theorem unit_ext_field {K F : Type} [Field K] [Field F] (ρ : Sp F ⟶ Sp K) (z 
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Take `⟨b, -, vb⟩` from `exists_gen D.P.isLB (K' := PUnit) (φ' := fun _ => D'.xK x ≫ Φ) (ε' := fun _ => -1) (fun U _ h => Finset.prod_congr rfl fun _ _ => congrArg (fun q => h q ^ (-1 : ℤ)) hx.symm) (D.psi y) (D.psi_gen y)`. Use `⟨b, fun jN jL => ?_, vb⟩` and prove the remaining obligations. Establish `z : Sp F` using `(default : PrimeSpectrum F)`. Use `unit_ext_field (K := FractionRing R) ρ z fun hz => ?_` and prove the remaining obligations. Establish `mN : Φ (D'.xK x (ρ z)) ∈ D.P.L.U (jN PUnit.unit)` using `mem_pull.1 hz.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `mL : D'.xK x (ρ z) ∈ D'.P.L.U jL` using `hz.2`. Establish `hp : (ρ ≫ D'.xK x) ≫ Φ = ρ ≫ D.xK y` using `by rw [Category.assoc, hx]`. Establish `mN' : (ρ ≫ D.xK y) z ∈ D.P.L.U (jN PUnit.unit)` using `by rw [← hp]; exact mN`. Take `⟨J, hJ, eJ⟩` from `exists_good D.P.L D.P.isLB z (K := PUnit) (fun _ => ρ ≫ D.xK y) jN (fun _ _ _ => rfl) (fun _ => mN')`. Take `⟨j₀, hj₀⟩` from `exists_chart hM₀ (φ (Φ (D'.xK x (ρ z))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hj₀' : φ ((ρ ≫ D.xK y) z) ∈ M₀.U j₀` using `by rw [← hp]; exact hj₀`. Establish `e` using `((genRel_iff w _ t₀ s z).1 h).2 jN (fun _ => j₀) (fun _ => hj₀') (fun _ => mN')`. Establish `e'` using `((genRel_iff w' _ t₀ s z).1 h').2 (fun _ => jL) (fun _ => j₀) (fun _ => hj₀) (fun _ => mL)`. Establish `E` using `Units.ext (e.trans e'.symm)`. Rewrite `E` using `[Fintype.prod_unique, Fintype.prod_unique, T _ (ρ ≫ D'.xK x) z j₀ (jN PUnit.unit) jL hj₀ mN mL, hp, mul_zpow, _root_.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `E'` using `mul_left_cancel E`. Establish `a₁` using `gm_pullGen D.P.L (fun _ : PUnit => D.xK y) _ (D.psi y) ρ (𝟙 _) z jN (Set.mem_iInter.2 fun _ => mN')`. Establish `a₂` using `gm_pullGen D'.P.L (fun _ : PUnit => D'.xK x) _ (D'.psi x) ρ (𝟙 _) z (fun _ => jL) (Set.mem_iInter.2 fun _ => mL)`. Rewrite `a₁`, `a₂` using `[Category.id_comp]`. Establish `v` using `vb _ ρ z J hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `v` using `[val_of b ρ z J jN (fun k => by rw [hx]; exact eJ k), val_of (D.psi y) ρ z J jN eJ]`. Use `(gm_res _ z _ hz _).trans (v.trans (a₁.symm.trans (E'.trans (Eq.symm ((map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ ((gm_res _ z _ hz _).trans a₂.symm)))))))` and prove the remaining obligations. Conclude with `(map_zpow _ _ _).trans (congrArg (· ^ (-1 : ℤ)) (gm_pull ρ _ z _ hz _))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mapsAt_of_genRel {D D' : DegPre R} {B₀ : Scheme.{0}} {M₀ : LB B₀} (hM₀ : M₀.IsLB) {φ : D.P.A.left ⟶ B₀}
     {Φ : D'.P.A.left ⟶ D.P.A.left} {w : LB.Iso D.P.L (M₀.pull φ)} {wD : LB.Iso D'.P.L (D.P.L.pull Φ)}
@@ -84,21 +84,17 @@ theorem mapsAt_of_genRel {D D' : DegPre R} {B₀ : Scheme.{0}} {M₀ : LB B₀} 
   exact (map_zpow _ _ _).trans (congrArg (· ^ (-1 : ℤ)) (gm_pull ρ _ z _ hz _))
 
 /- English proof (translation)
-Establish `hs` using `specOf_id R`. Establish `hsf : specOf (RingHom.id R) ≫ f = f` using `by rw [hs, Category.id_comp]`. Take `⟨e, me, he⟩` from `grpPullback_iso p' (((isGrpPullback_pullback D.P.A (specOf (RingHom.id R))).comp p).congr hsf rfl)`. Rewrite `he` using `[← Category.assoc]`. Substitute `he` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Establish `gp : IsGrpPullback D'.P.A D.P.A (specOf (RingHom.id R)) (e.hom.left ≫ pullback.fst D.P.A.hom (specOf (RingHom.id R)))` using `((isGrpPullback_of_iso e).comp (isGrpPullback_pullback D.P.A (specOf (RingHom.id R)))).congr (Category.id_comp _) rfl`. Establish `hE : eSec D'.P.A ≫ e.hom.left ≫ pullback.fst D.P.A.hom (specOf (RingHom.id R)) = specOf (RingHom.id R) ≫ eSec D.P.A` using `(cubeMapOf gp).e_comm`. Take `⟨wD, T⟩` from `exists_cancel hM₀ w w' g g' D.P.isLB D'.P.isLB`. Establish `hc' : ∀ x, (D'.c x).left ≫ e.hom.left ≫ pullback.fst D.P.A.hom (specOf (RingHom.id R)) = (D.c (xe x)).left` using `fun x => by`. Apply `p.1.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc]`. Conclude with `hc x`. Rewrite using `[Category.assoc, gp.1.w, ← Category.assoc, Over.w, Over.w, hs]`. Conclude with `Category.comp_id _`. Take `⟨gW, hgW⟩ : ∃ gW : (TK R).left ⟶ (TW Wo).left, gW ≫ Wo.ι = jK R` from `⟨IsOpenImmersion.lift Wo.ι (jK R) (by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `hy : jK R y = genericPoint (Spec (CommRingCat.of R))`. Rewrite using `[genericPoint_eq_bot_of_affine]`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Ideal.comap (algebraMap R (FractionRing R)) (PrimeSpectrum.asIdeal y) = ⊥`. Rewrite using `[@Ideal.eq_bot_of_prime _ _ (PrimeSpectrum.asIdeal y) (PrimeSpectrum.isPrime y)]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective R (FractionRing R))`. Use `show jK R y ∈ Wo`. Rewrite using `[hy]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hWo), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨lam, l₁, l₂⟩ : ∃ lam : (TK R).left ⟶ (jK R ⁻¹ᵁ Wo).toScheme, lam ≫ (jK R ⁻¹ᵁ Wo).ι = 𝟙 _ ∧ lam ≫ (jK R ∣_ Wo) = gW` from `⟨(isPullback_morphismRestrict (jK R) Wo).lift _ _ (hgW.trans (Category.id_comp _).symm), (isPullback_morphismRestrict (jK R) Wo).lift_snd _ _ _, (isPullback_morphismRestrict (jK R) Wo).lift_fst _ _ _⟩`. Use `⟨⟨e, me, wD, (isGen_iff _).2 (T.pgen_cancel hM₀ g g'), hE, ?_, xe, fun x => (hc' x).trans (by rw [hs, Category.id_comp]), Wo, ψW, gW, hgW.trans (by rw [hs, Category.comp_id]), fun x => ?_⟩, rfl, fun _ => rfl, w', HEq.rfl, T⟩` and prove the remaining obligations. Use `(maps_iff wD _ (fun _ => eSec D.P.A) _ D'.rig D.rig (specOf (RingHom.id R)) _ (rigPull_le (G' := D'.P.A) (G := D.P.A) _ (specOf (RingHom.id R)) hE D.P.L) (fun _ => rfl)).2 ?_` and prove the remaining obligations. Conclude with `T.pmaps_cancel hM₀ (fun _ => hE) r (by rw [hsf]; exact r')`.
-
-Take `⟨pt₀, t₀, s, h, h'⟩` from `hψ x`. Take `⟨b, hb, vb⟩` from `mapsAt_of_genRel hM₀ T ρ x (xe x) ((Category.assoc _ _ _).trans (congrArg (jK R ≫ ·) (hc' x))) t₀ s h h'`. Use `⟨b, hb, corr_of_val D.P.isLB fun y J hJ => (vb _ _ y J hJ).trans ?_⟩` and prove the remaining obligations. Establish `v` using `(val_pull hJ _ _ _).symm.trans ((val_corr hJ (ψW.psi_eq (xe x)) lam).trans (val_pull hJ _ _ _))`. Rewrite `v` using `[l₁, l₂]`.
-
-Conclude with `v.symm.trans ((val_pull hJ _ _ _).trans (by rw [Category.id_comp])).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPullDeg_id (D D' : DegPre R) {S₀ : Scheme.{0}} {A₀ : Over S₀} [GrpObj A₀] {M₀ : LB A₀.left}
     (hM₀ : M₀.IsLB) (rig₀ : LB.Gen (M₀.pull (eSec A₀))) {f : Sp R ⟶ S₀} {φ : D.P.A.left ⟶ A₀.left}
@@ -169,13 +165,13 @@ end GlobalTheory.ArcData
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h5 E _ _ _ H D l c₀ c k _ bF a O O' _ _ β β' Y Y' χ χ' W W'`. Take `⟨s1, s2, s3, -, s5, s6⟩` from `W.spec`. Take `⟨t1, t2, t3, -, t5, t6⟩` from `W'.spec`. Take `⟨Wo, hWo, ⟨ψW⟩⟩` from `h5.psiOnExists _ _ (admissibleBase_powerSeries k) W'.P.D`. Set `F` to `AlgebraicClosure (FractionRing (PowerSeries k))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `κ : k →+* F` to `((algebraMap (FractionRing (PowerSeries k)) F).comp (algebraMap (PowerSeries k) _)).comp (PowerSeries.C (R := k))`. Use `letI : Algebra (FractionRing k) F := (IsFractionRing.lift (K := FractionRing k) (g := κ) κ.injective).toAlgebra`. Establish `ha : ∀ x, algebraMap (FractionRing k) F (algebraMap k _ x) = algebraMap (FractionRing (PowerSeries k)) F (algebraMap (PowerSeries k) _ (PowerSeries.C (R` using `k) x)) := fun x => IsFractionRing.lift_algebraMap (K := FractionRing k) (g := κ) κ.injective x`. Establish `k₁` using `(s6 F _ ha rfl).1`. Establish `k₂` using `(t6 F _ ha rfl).1`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `xe : W.P.D.toPre.X ≃+ W'.P.D.toPre.X` to `W.e.symm.toAddEquiv.trans W'.e.toAddEquiv`. Establish `hxe : ∀ y, xe (W.e y) = W'.e y` using `fun y => congrArg W'.e (W.e.symm_apply_apply y)`. Take `⟨hD, h₁, h₂, h₃⟩` from `ArcData.exists_isPullDeg_id W'.P.D.toPre W.P.D.toPre a.D₀.P.isLB a.D₀.rig t1 s1 W'.w W.w ((isGen_iff _).1 t2) ((isGen_iff _).1 s2) ((maps_iff W'.w _ (fun _ => eSec a.D₀.P.A) _ W'.P.D.toPre.rig a.D₀.rig _ _ (rigPull_le W'.φ _ W'.he a.D₀.P.L) (fun _ => rfl)).1 t3) ((maps_iff W.w _ …`. Take `⟨y, rfl⟩` from `W.e.surjective x`. Rewrite using `[hxe]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(s5 y).trans (t5 y).symm) Wo hWo ψW (F := F) (jFK (R := PowerSeries k) F) (fun x => by`. Take `⟨y, rfl⟩` from `W.e.surjective x`. Rewrite using `[hxe]`. Conclude with `⟨_, _, _, k₂ y, k₁ y⟩)`. Conclude with `⟨hD, h₁, fun x => (h₂ _).trans (hxe x), h₃⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem arcWit_data_iso : Laws5 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (k : Type) [Field k] (bF : c.F →+* k) (a : ArcIn D l (RingHom.id c.F) k bF) (O O' : Type) [CommRing O] [CommRing O'] (β : O →+* c.F) (β' : O' →+* c.F) (Y : Model Xo c β) (Y' : Model Xo c β') (χ : Sp (PowerSeries k) ⟶ Y.X) (χ' : Sp (PowerSeries k) ⟶ Y'.X) (W : ArcWit Y (a.restrict β) (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := k)) PowerSeries.X χ) (W' : ArcWit Y' (a.restrict β') (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := k)) PowerSeries.X χ'), ∃ (hD : IsPullDeg (RingHom.id (PowerSeries k)) W'.P.D.toPre W.P.D.toPre), ((hD.e.hom.left ≫ pullback.fst W'.P.D.toPre.P.A.hom (specOf (RingHom.id (PowerSeries k)))) ≫ W'.φ = W.φ ∧ (∀ x, hD.xe (W.e x) = W'.e x) ∧ ∃ w₁ : LB.Iso W.P.D.toPre.P.L (a.D₀.P.L.pull ((hD.e.hom.left ≫ pullback.fst W'.P.D.toPre.P.A.hom (specOf (RingHom.id (PowerSeries k)))) ≫ W'.φ)), HEq w₁ W.w ∧ Tri W'.w hD.w w₁) := by
   intro h5 E _ _ _ H D l c₀ c k _ bF a O O' _ _ β β' Y Y' χ χ' W W'

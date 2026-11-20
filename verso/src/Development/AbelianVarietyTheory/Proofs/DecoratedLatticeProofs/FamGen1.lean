@@ -8,17 +8,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.One
 
 /- English proof (translation)
-Introduce `hE D X Y u hT`. Take `⟨hrefl0, hsym, htr⟩` from `hE D X Y u u hT`. Establish `hnz : ∀ t : TauC Y u u, t ∈ (Y.tO u u).genSet → t ∈ (Y.tO u u).nzSet` using `fun t ht => ht.1`. Establish `hG : ∀ t : TauC Y u u, t ∈ (Y.tO u u).genSet → t.G ≠ 0`. Introduce `t ht h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (Y.tO u u).G t ≠ 0` using `ht.1`. Apply `h1` to reduce the goal to its premises. Use `show Gt t = 0`. Simplify using `[Gt, h0]`. Establish `hrefl : ∀ t : TauC Y u u, t ∈ (Y.tO u u).genSet → t ∈ cls1 Y u t` using `fun t ht => ⟨ht, rfl, hrefl0 t (hnz t ht)⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrow : ∀ t t' : TauC Y u u, t' ∈ cls1 Y u t → (Y.tO u u).rowOf t' = (Y.tO u u).rowOf t` using `fun t t' h => h.2.1`. Establish `hsub : ∀ t ∈ (Y.tO u u).genSet, ∀ t' ∈ (Y.tO u u).genSet, (Y.tO u u).rowOf t = (Y.tO u u).rowOf t' → (Y.tO u u).s0 t t' = 1 → cls1 Y u t' ⊆ cls1 Y u t`. Introduce `t ht t' ht' hr hs x hx`. Take `⟨hxg, hxr, hxs⟩` from `hx`. Conclude with `⟨hxg, hxr.trans hr.symm, htr t (hnz t ht) t' (hnz t' ht') x (hnz x hxg) hr hxr.symm hs hxs⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `t`. Simplify using `[setQ, Formalism.FourierDecayAlt.PB.Terms.genSet]`. Introduce `t ht t' ht' hn`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `he`. Establish `: t' ∈ cls1 Y u t` using `he ▸ hrefl t' ht'`. Conclude with `(hrow t t' this).symm`. Introduce `hr`. Establish `hs` using `GlobalTheory.Core.OneCoset.corankOne_of_same_flagDoubleCoset D X Y u u t t' (hG t ht) hr hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs'` using `hsym t (hnz t ht) t' (hnz t' ht') hr hs`. Conclude with `Set.Subset.antisymm (hsub t' ht' t ht hr.symm hs') (hsub t ht t' ht' hr hs)`. Introduce `t ht t' ht' he`. Establish `: t' ∈ cls1 Y u t` using `he ▸ hrefl t' ht'`. Conclude with `(hrow t t' this).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem famGen1 : CorankOneIsEquivalenceOnRow → FamGen1 := by
   intro hE D X Y u hT
@@ -57,7 +57,7 @@ theorem famGen1 : CorankOneIsEquivalenceOnRow → FamGen1 := by
     exact (hrow t t' this).symm
 
 /- English proof (translation)
-The claim follows from `famGen1`.
+A detailed English derivation is pending.
 -/
 example : CorankOneIsEquivalenceOnRow → FamGen1 := famGen1
 

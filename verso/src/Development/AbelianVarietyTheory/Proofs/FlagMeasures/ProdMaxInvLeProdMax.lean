@@ -7,9 +7,9 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.Amp
 
 /- English proof (translation)
-Establish `key : ∀ v, max 1 (x v) = x v * max 1 (x v)⁻¹`. Introduce `v`. Break down `le_total 1 (x v) with h | h` into its components or cases. Rewrite using `[max_eq_right h, max_eq_left (inv_le_one_of_one_le₀ h), mul_one]`. Rewrite using `[max_eq_left h, max_eq_right ((one_le_inv₀ (hx v)).2 h), mul_inv_cancel₀ (hx v).ne']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : 0 ≤ ∏ v, max 1 (x v)⁻¹` using `Finset.prod_nonneg fun v _ => le_trans zero_le_one (le_max_left _ _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun v _ => (key v).symm`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_max_inv_le_prod_max {ι : Type} [Fintype ι] (x : ι → ℝ) (hx : ∀ v, 0 < x v) (h1 : 1 ≤ ∏ v, x v) :
     ∏ v, max 1 (x v)⁻¹ ≤ ∏ v, max 1 (x v) := by
@@ -27,9 +27,9 @@ theorem prod_max_inv_le_prod_max {ι : Type} [Fintype ι] (x : ι → ℝ) (hx :
       exact Finset.prod_congr rfl fun v _ => (key v).symm
 
 /- English proof (translation)
-Establish `hge : ∀ l, (1 : ℝ) ≤ max 1 (x l)` using `fun l => le_max_left _ _`. Establish `hone : ∀ s : Finset (Fin n), (1 : ℝ) ≤ ∏ l ∈ s, max 1 (x l)`. Introduce `s`. Combine the equalities or inequalities in the displayed calculation. Use `(Finset.fold_max_le _).2 ⟨hone _, fun l _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ l)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem fold_max_le_prod_max {n : ℕ} (x : Fin n → ℝ) :
     Finset.univ.fold max 1 x ≤ ∏ l, max 1 (x l) := by
@@ -45,17 +45,13 @@ theorem fold_max_le_prod_max {n : ℕ} (x : Fin n → ℝ) :
       mul_le_mul_of_nonneg_left (hone _) (le_trans zero_le_one (hge l))
 
 /- English proof (translation)
-Establish `hP0 : 0 < P` using `lt_of_lt_of_le one_pos hP`. Establish `hsg1 : ∀ v, 1 ≤ sg v` using `fun v => by`. Rewrite using `[hsg v]`. Conclude with `(Finset.le_fold_max _).2 (Or.inl le_rfl)`. Establish `hPsg : ∀ v, 1 ≤ P * sg v` using `fun v => one_le_mul_of_one_le_of_one_le hP (hsg1 v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcol : ∀ l, ∏ v, max 1 (Dm v l)⁻¹ ≤ ∏ v, P * sg v`. Introduce `l`. Break down `hD l with h0 | ⟨hpos, hprod⟩` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_le_prod (fun _ _ => le_trans zero_le_one (le_max_left _ _)) (fun v _ => ?_)` and prove the remaining obligations. Establish `h1 : Dm v l / P ≤ sg v`. Rewrite using `[hsg v]`. Conclude with `(Finset.le_fold_max _).2 (Or.inr ⟨l, Finset.mem_univ _, le_rfl⟩)`. Use `max_le (hPsg v) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun v _ => ?_) (fun v _ => ?_)` and prove the remaining obligations. Rewrite using `[hDe v]`. Conclude with `le_trans zero_le_one ((Finset.le_fold_max _).2 (Or.inl le_rfl))`.
-
-Rewrite using `[hDe v]`. Conclude with `fold_max_le_prod_max (fun l => (Dm v l)⁻¹)`. Use `_ = ∏ l, ∏ v, max 1 (Dm v l)⁻¹ := Finset.prod_comm`. Use `_ ≤ ∏ _l : Fin n, ∏ v, P * sg v := Finset.prod_le_prod (fun l _ => Finset.prod_nonneg fun v _ => le_trans zero_le_one (le_max_left _ _)) (fun l _ => hcol l)`. Use `_ = ∏ v, (P * sg v) ^ n := by`.
-
-Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.prod_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_fold_inv_le {ι : Type} [Fintype ι] {n : ℕ} (P : ℝ) (hP : 1 ≤ P) (Dm : ι → Fin n → ℝ) (De sg : ι → ℝ)
     (hD : ∀ l, (∀ v, Dm v l = 0) ∨ ((∀ v, 0 < Dm v l) ∧ 1 ≤ ∏ v, Dm v l))
@@ -93,15 +89,15 @@ theorem prod_fold_inv_le {ι : Type} [Fintype ι] {n : ℕ} (P : ℝ) (hP : 1 �
         rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.prod_pow]
 
 /- English proof (translation)
-Establish `hr' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hB8 : (8 : ℝ) ≤ 8 * r * H` using `by nlinarith`. Establish `hB1 : (1 : ℝ) ≤ 8 * r * H` using `by linarith`. Establish `hH0 : (0 : ℝ) ≤ 2 * H` using `by linarith`. Establish `e1 : (16 : ℝ) ≤ (8 * r * H) ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (4 * r + 4 : ℝ) ≤ (8 * r * H) ^ 1` using `by rw [pow_one]; nlinarith`. Establish `e3 : (4 * r : ℝ) ≤ 8 * r * H` using `by nlinarith`. Establish `e4 : 2 * H ≤ 8 * r * H` using `by nlinarith`. Establish `hexp : 2 + 1 + 4 * r ^ 2 + (16 * r ^ 3 + 4 * r) + 2 * r * ((r + 1) * (8 * r ^ 2 + 2)) ≤ 80 * r ^ 4`. Establish `p1 : r ^ 1 ≤ r ^ 4` using `Nat.pow_le_pow_right (by omega) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p2 : r ^ 2 ≤ r ^ 4` using `Nat.pow_le_pow_right (by omega) (by norm_num)`. Establish `p3 : r ^ 3 ≤ r ^ 4` using `Nat.pow_le_pow_right (by omega) (by norm_num)`. Establish `p0 : 1 ≤ r ^ 4` using `Nat.one_le_pow _ _ (by omega)`. Rewrite `p1` using `[pow_one]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `a1` using `mul_le_mul e1 e2 (by positivity) (by positivity)`. Establish `a2` using `mul_le_mul a1 (pow_le_pow_left₀ (by positivity) e3 (4 * r ^ 2)) (by positivity) (by positivity)`. Establish `a3` using `mul_le_mul a2 (pow_le_pow_left₀ hH0 e4 (16 * r ^ 3 + 4 * r)) (pow_nonneg hH0 _) (by positivity)`. Conclude with `mul_le_mul a3 (pow_le_pow_left₀ (pow_nonneg hH0 _) (pow_le_pow_left₀ hH0 e4 _) _) (pow_nonneg (pow_nonneg hH0 _) _) (by positivity)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (8 * r * H) ^ (2 + 1 + 4 * r ^ 2 + (16 * r ^ 3 + 4 * r) + 2 * r * ((r + 1) * (8 * r ^ 2 + 2))) := by`. Rewrite using `[← pow_mul]`. Simplify using `only [← pow_add]`. Use `_ ≤ (8 * r * H) ^ (80 * r ^ 4) := pow_le_pow_right₀ hB1 hexp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem const_loss_le (r : ℕ) (hr : 1 ≤ r) (H : ℝ) (hH : 1 ≤ H) :
     16 * (4 * r + 4 : ℝ) * (4 * r : ℝ) ^ (4 * r ^ 2) * (2 * H) ^ (16 * r ^ 3 + 4 * r) *
@@ -135,11 +131,11 @@ theorem const_loss_le (r : ℕ) (hr : 1 ≤ r) (H : ℝ) (hH : 1 ≤ H) :
     _ ≤ (8 * r * H) ^ (80 * r ^ 4) := pow_le_pow_right₀ hB1 hexp
 
 /- English proof (translation)
-Establish `hs0 : 0 < s` using `by linarith`. Establish `hr' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hr0 : (0 : ℝ) < r` using `by linarith`. Establish `hk' : 40 * (r : ℝ) ^ 4 ≤ k` using `by exact_mod_cast hk`. Establish `hk0 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add hs0]`. Apply `Real.rpow_le_rpow_of_exponent_le hs` to reduce the goal to its premises. Use `push_cast`. Establish `hsplit : ((C₁ : ℝ) * k * r - 16 * r ^ 3 - 4 * r - 1) / r = C₁ * k - 16 * r ^ 2 - 4 - 1 / r`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hinv : 1 / (r : ℝ) ≤ 1` using `by rw [div_le_one hr0]; exact hr'`. Establish `hCk : (C' + 2) * k ≤ C₁ * k` using `mul_le_mul_of_nonneg_right hC hk0`. Establish `q1 : (r : ℝ) ≤ r ^ 2` using `by nlinarith`. Establish `q2 : (r : ℝ) ^ 2 ≤ r ^ 3` using `by nlinarith`. Establish `q3 : (r : ℝ) ^ 3 ≤ r ^ 4` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/

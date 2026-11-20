@@ -18,7 +18,7 @@ def fixingIncl : E.1.fixingSubgroup →* K.1.fixingSubgroup :=
   Subgroup.inclusion (IntermediateField.fixingSubgroup_le (Fact.out : K ≤ E))
 
 /- English proof (translation)
-The claim follows from `continuous_subgroup_inclusion _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_fixingIncl : Continuous (fixingIncl K E) :=
   continuous_subgroup_inclusion _
@@ -73,15 +73,15 @@ theorem fieldConjHom_apply (σ : Gal(Ωw/Ev)) (x : Ωv) : fieldConjHom Kv L e hL
 variable [Algebra.IsIntegral Ev Ωw]
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`. Introduce `s hs`. Take `⟨M, hM, hMs⟩` from `(krullTopology_mem_nhds_one_iff L Ωv s).1 hs`. Rewrite using `[Filter.mem_map, krullTopology_mem_nhds_one_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `: Module.Free L M` using `Module.Free.of_divisionRing L M`. Set `b` to `Module.finBasis L M`. Set `T : Set Ωw` to `Set.range fun i => e.symm (b i : Ωv)`. Use `⟨IntermediateField.adjoin Ev T, ?_, ?_⟩` and prove the remaining obligations. Use `IntermediateField.finiteDimensional_adjoin fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Algebra.IsIntegral.isIntegral x`. Introduce `σ hσ`. Apply `hMs` to reduce the goal to its premises. Rewrite `hσ`, the goal using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hT : ∀ i, fieldConjHom Kv L e hL σ (b i : Ωv) = b i` using `fun i => by`. Rewrite using `[fieldConjHom_apply, hσ _ (IntermediateField.subset_adjoin Ev T ⟨i, rfl⟩), RingEquiv.apply_symm_apply]`. Establish `hx' : x = ∑ i, (b.repr ⟨x, hx⟩ i) • (b i : Ωv)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => map_smul M.val _ _`. Rewrite using `[hx', map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hT]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_fieldConjHom : Continuous (fieldConjHom Kv L e hL) := by
   refine continuous_of_continuousAt_one _ ?_
@@ -135,13 +135,13 @@ variable {K E : FiniteSubfield} [Fact (K ≤ E)]
 include hι in
 
 /- English proof (translation)
-Establish `h : unitsResField K E n ≫ unitsLocalRes Ew ιE n = unitsLocalRes Kv ιK n ≫ unitsScalarsRes Kv Ωv L n ≫ cohomologyMapAlong (fieldConjHom Kv L e hL) (continuous_fieldConjHom Kv L e hL) (fieldConjUnitsMor Kv L e hL) n`. Rewrite using `[unitsResField, unitsLocalRes, unitsLocalRes, unitsScalarsRes, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]`. Use `cohomologyMapAlong_congr _ _ _ _ (MonoidHom.ext fun σ => ?_) (fun a => ?_) n` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgEquiv.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y`. Apply `ιK.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ιK ((globalDecomp Ew ιE σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) y) = ιK ((globalDecomp Kv ιK (AlgEquiv.restrictScalarsHom Kv (fieldConjHom Kv L e hL σ)) : ℚ̄ ≃ₐ[ℚ] ℚ̄) y)`. Rewrite using `[globalDecomp_apply, ← hι, ← hι, globalDecomp_apply]`. Express the relevant statement in the definitionally equal form `e (σ (ιE y)) = e (σ (e.symm (e (ιE y))))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[RingEquiv.symm_apply_apply]`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ιE ((Additive.toMul (a : Additive ℚ̄ˣ) : ℚ̄ˣ) : ℚ̄) = e.symm (ιK ((Additive.toMul (a : Additive ℚ̄ˣ) : ℚ̄ˣ) : ℚ̄))`. Rewrite using `[← hι, RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (fun φ => φ.hom x) h)`.
+A detailed English derivation is pending.
 -/
 theorem unitsLocalRes_unitsResField (n : ℕ) (x : cohomology (unitsLimitRep K) n) :
     (unitsLocalRes Ew ιE n).hom ((unitsResField K E n).hom x) =
@@ -172,7 +172,7 @@ theorem unitsLocalRes_unitsResField (n : ℕ) (x : cohomology (unitsLimitRep K) 
 include hL hι in
 
 /- English proof (translation)
-Rewrite using `[unitsLocalRes_unitsResField Kv Ew L e hL ιK ιE hι, hx, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unitsLocalRes_unitsResField_eq_zero (n : ℕ) (x : cohomology (unitsLimitRep K) n)
     (hx : (unitsScalarsRes Kv Ωv L n).hom ((unitsLocalRes Kv ιK n).hom x) = 0) :

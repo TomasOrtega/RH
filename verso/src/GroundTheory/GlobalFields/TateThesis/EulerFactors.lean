@@ -23,9 +23,9 @@ def gammaFactor (s : ℂ) : ℂ := ∏ w, χ.infiniteGamma w s
 
 omit [NumberField K] in
 /- English proof (translation)
-Rewrite using `[prod_eq_prod_mul_prod]`. Establish `h1 : ∀ w : {w : InfinitePlace K // IsReal w}, infiniteConst w.1 = 1` using `fun w ↦ by`. Rewrite using `[infiniteConst, if_pos w.2]`. Establish `h2 : ∀ w : {w : InfinitePlace K // IsComplex w}, infiniteConst w.1 = π` using `fun w ↦ by`. Rewrite using `[infiniteConst, if_neg (not_isReal_iff_isComplex.2 w.2)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h1, h2, Finset.prod_const_one, one_mul, Finset.prod_const, Finset.card_univ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prod_infiniteConst [NumberField K] :
     ∏ w : InfinitePlace K, infiniteConst w = (π : ℂ) ^ nrComplexPlaces K := by
@@ -39,23 +39,23 @@ theorem prod_infiniteConst [NumberField K] :
 def testFunction : 𝔸[K] → ℂ := schwartzBruhatTensor χ.infiniteSchwartz χ.finiteTestFun
 
 /- English proof (translation)
-The claim follows from `pow_ne_zero _ (ofReal_ne_zero.2 Real.pi_ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem pi_pow_nrComplexPlaces_ne_zero : (π : ℂ) ^ nrComplexPlaces K ≠ 0 :=
   pow_ne_zero _ (ofReal_ne_zero.2 Real.pi_ne_zero)
 
 /- English proof (translation)
-The claim follows from `schwartzBruhatTensor_mem _ χ.finiteTestFun_mem`.
+A detailed English derivation is pending.
 -/
 theorem testFunction_mem : χ.testFunction ∈ schwartzBruhat K :=
   schwartzBruhatTensor_mem _ χ.finiteTestFun_mem
 
 /- English proof (translation)
-Establish `hchi : (χ.toIdele x : ℂ) = (χ.toIdele (ofFinite (toFinite K x)) : ℂ) * (χ.toIdele (ofInfinite (toInfinite K x)) : ℂ)`. Rewrite using `[← Circle.coe_mul, ← map_mul, ofFinite_mul_ofInfinite]`. Establish `hmod : ((ideleModule K x : ℝ) : ℂ) ^ s = ((∏ w, ‖((toInfinite K x : (InfiniteAdeleRing K)ˣ) : InfiniteAdeleRing K) w‖ ^ w.mult : ℝ) : ℂ) ^ s * ((finiteModule (ofFinite (toFinite K x)) : ℝ) : ℂ) ^ s`. Rewrite using `[ideleModule_apply, ofReal_mul, mul_cpow_ofReal_nonneg (infiniteModule_pos x).le (finiteModule_pos x).le]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hchi, hmod]`. Express the relevant statement in the definitionally equal form `χ.infiniteSchwartz (homeomorphMixedSpace K (x : 𝔸[K]).1) * χ.finiteTestFun (x : 𝔸[K]).2 * _ * _ = _`. Establish `e1 : (x : 𝔸[K]).1 = ((toInfinite K x : (InfiniteAdeleRing K)ˣ) : InfiniteAdeleRing K)`. Both sides reduce to the same expression. Establish `e2 : (x : 𝔸[K]).2 = ((toFinite K x : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zetaIntegrand_testFunction (s : ℂ) (x : IdeleGroup K) :
     χ.testFunction x * (χ.toIdele x : ℂ) * ((ideleModule K x : ℝ) : ℂ) ^ s =
@@ -85,17 +85,17 @@ theorem zetaIntegrand_testFunction (s : ℂ) (x : IdeleGroup K) :
   ring
 
 /- English proof (translation)
-Establish `hs0 : 0 < s.re` using `by linarith`. Use `set A : (InfiniteAdeleRing K)ˣ → ℂ := fun a ↦ χ.infiniteSchwartz (homeomorphMixedSpace K a) * (χ.toIdele (ofInfinite a) : ℂ) * ((∏ w, ‖(a : InfiniteAdeleRing K) w‖ ^ w.mult : ℝ) : ℂ) ^ s with hA`. Use `set B : (FiniteAdeleRing (𝓞 K) K)ˣ → ℂ := fun b ↦ χ.finiteTestFun b * (χ.toIdele (ofFinite b) : ℂ) * ((finiteModule (ofFinite b) : ℝ) : ℂ) ^ s with hB`. Establish `hF : ∀ x : IdeleGroup K, χ.testFunction x * (χ.toIdele x : ℂ) * ((ideleModule K x : ℝ) : ℂ) ^ s = A (toInfinite K x) * B (toFinite K x)` using `χ.zetaIntegrand_testFunction s`. Establish `hBinv : ∀ b, ∀ w ∈ finiteIntegralUnits K, B (b * w) = B b` using `fun b w hw ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hB, χ.finiteTestFun_mul_toIdele_mul_cpow, ordFinsupp_ofFinite_mul b hw]`. Establish `hinv : ∀ x : IdeleGroup K, ∀ w ∈ finiteIntegralUnits K, χ.testFunction (x * (prodEquiv K).symm (1, w) : IdeleGroup K) * (χ.toIdele (x * (prodEquiv K).symm (1, w)) : ℂ) * ((ideleModule K (x * (prodEquiv K).symm (1, w)) : ℝ) : ℂ) ^ s = χ.testFunction x * (χ.toIdele x : ℂ) * ((idele …`. Introduce `x w hw`. Rewrite using `[hF, hF, map_mul, map_mul]`. Establish `h1 : toInfinite K ((prodEquiv K).symm (1, w)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((prodEquiv K) ((prodEquiv K).symm (1, w))).1 = 1`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Establish `h2 : toFinite K ((prodEquiv K).symm (1, w)) = w`. Express the relevant statement in the definitionally equal form `((prodEquiv K) ((prodEquiv K).symm (1, w))).2 = w`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, mul_one, hBinv _ w hw]`. Establish `h` using `hasSum_integral_ideleMeasure_of_invariant_finiteIntegralUnits (integrable_globalZetaIntegrand χ.testFunction_mem χ hs) hinv`. Establish `hc : ∀ c : (FiniteAdeleRing (𝓞 K) K)ˣ ⧸ finiteIntegralUnits K, ∫ a, χ.testFunction ((prodEquiv K).symm (a, c.out) : IdeleGroup K) * (χ.toIdele ((prodEquiv K).symm (a, c.out)) : ℂ) * ((ideleModule K ((prodEquiv K).symm (a, c.out)) : ℝ) : ℂ) ^ s ∂infiniteIdeleMeasure K = (∏ w, infi …`. Introduce `c`. Establish `hsymm : ∀ a, toInfinite K ((prodEquiv K).symm (a, c.out)) = a ∧ toFinite K ((prodEquiv K).symm (a, c.out)) = c.out` using `fun a ↦ by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition.
 
-Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `((prodEquiv K) ((prodEquiv K).symm (a, c.out))).1 = a`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `((prodEquiv K) ((prodEquiv K).symm (a, c.out))).2 = c.out`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hF, (hsymm _).1, (hsymm _).2]`. Rewrite using `[integral_mul_const, ← χ.integral_infiniteSchwartz hs0]`. Simplify using `only [hc] at h`. Establish `h2` using `(χ.hasSum_finiteTestFun hs).mul_left (∏ w, infiniteConst w * χ.infiniteGamma w s)`. Rewrite using `[globalZeta, h.unique h2, Finset.prod_mul_distrib, prod_infiniteConst, gammaFactor]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem globalZeta_testFunction {s : ℂ} (hs : 1 < s.re) :
     globalZeta χ.testFunction χ s = (π : ℂ) ^ nrComplexPlaces K * χ.gammaFactor s * χ.LFunction s := by

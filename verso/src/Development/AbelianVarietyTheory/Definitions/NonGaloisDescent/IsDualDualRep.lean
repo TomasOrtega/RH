@@ -94,14 +94,14 @@ def FirstPlace : Prop :=
         Subsingleton (H2 ((repOn ρ κ B).comp (DecV N v).subtype))
 
 /- English proof (translation)
-Establish `hd : X.l i ∣ 2 * X.l i ^ M` using `Dvd.dvd.mul_left (dvd_pow_self _ (by omega)) 2`. Rewrite using `[← Nat.mod_mod_of_dvd _ hd, hn, Nat.mod_eq_of_lt (Fact.out : (X.l i).Prime).one_lt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mod_l_eq_one {M n : ℕ} (hM : 1 ≤ M) (hn : n % (2 * X.l i ^ M) = 1) : n % X.l i = 1 := by
   have hd : X.l i ∣ 2 * X.l i ^ M := Dvd.dvd.mul_left (dvd_pow_self _ (by omega)) 2
   rw [← Nat.mod_mod_of_dvd _ hd, hn, Nat.mod_eq_of_lt (Fact.out : (X.l i).Prime).one_lt]
 
 /- English proof (translation)
-Introduce `M R P d φ φ' hM hP Λ _ _ _ _ κ hκ hκ' B _ _ _ _ hB ρ hρ a v hv`. Take `⟨hA, ⟨z, L, hz, hL, hS⟩, -⟩` from `hP`. Use `h (P (.inl a)) z L hz hL (fun w hw => ?_) (hS.1 a) Λ κ hκ hκ' B hB ρ hρ v hv` and prove the remaining obligations. Take `⟨-, -, -, h0, -, hn⟩` from `hA.1 _ w hw`. Conclude with `⟨h0, mod_l_eq_one i hM hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem FirstPlace.firstHalf (h : FirstPlace i s) : FirstHalf i s := by
   intro M R P d φ φ' hM hP Λ _ _ _ _ κ hκ hκ' B _ _ _ _ hB ρ hρ a v hv
@@ -152,37 +152,37 @@ def ChooseH : Prop :=
         ∀ s ∈ T, Corank bkP i s φ φ' (if nu X i = 0 then 0 else 1)
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.ext fun x => (h x).trans (h' x).symm`.
+A detailed English derivation is pending.
 -/
 theorem IsCj.unique {g g' g'' : GE N} (h : IsCj X g g') (h' : IsCj X g g'') : g' = g'' :=
   AlgEquiv.ext fun x => (h x).trans (h' x).symm
 
 /- English proof (translation)
-Introduce `x` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isCj_one : IsCj X (1 : GE N) 1 := fun x => by simp
 
 /- English proof (translation)
-Introduce `x` and use `by rw [AlgEquiv.mul_apply, AlgEquiv.mul_apply, hh x, hg] simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsCj.mul {g g' h h' : GE N} (hg : IsCj X g g') (hh : IsCj X h h') : IsCj X (g * h) (g' * h') := fun x => by
   rw [AlgEquiv.mul_apply, AlgEquiv.mul_apply, hh x, hg]
   simp
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun g => Units.ext ((h g).trans (h' g).symm)`.
+A detailed English derivation is pending.
 -/
 theorem IsDual.unique {ρ ρ' : GE N →* GL (Fin D.R.r) (X.O0 i)} (h : IsDual i s ρ) (h' : IsDual i s ρ') : ρ = ρ' :=
   MonoidHom.ext fun g => Units.ext ((h g).trans (h' g).symm)
 
 /- English proof (translation)
-Introduce `x hx` and use `(IsLocalRing.residue_eq_zero_iff x).2 hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : IsRes i (IsLocalRing.ResidueField (X.O0 i)) := fun x hx =>
   (IsLocalRing.residue_eq_zero_iff x).2 hx
 
 /- English proof (translation)
-Simplify using `[form]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_swap {K : Type} [Field K] [Algebra (X.O0 i) K] [TopologicalSpace K] [DiscreteTopology K]
     {ρ ρ' : GE N →* GL (Fin D.R.r) (X.O0 i)} (x : Z1 (red i K ρ)) (y : Z1 (red i K ρ')) (g h g' h' : GE N) :
@@ -200,7 +200,7 @@ def dualRep : GE N →* GL (Fin D.R.r) (X.O0 i) :=
         rw [smul_mul_smul_comm] }
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem isDual_dualRep : IsDual i s (dualRep i s) := fun _ => rfl
 

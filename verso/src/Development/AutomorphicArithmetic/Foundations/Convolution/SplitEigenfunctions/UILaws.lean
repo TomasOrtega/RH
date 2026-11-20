@@ -7,21 +7,19 @@ open UpperTheory.V.Af.Smo (Eig EigAt)
 open UpperTheory.ConvolutionTheory.RankTwoDescent
 
 /- English proof (translation)
-Introduce `E _ _ β hc hinv`. Establish `hf : Continuous fun z : IdeleGroup.normOneSubgroup E => β (z : IdeleGroup E)` using `hc.comp continuous_subtype_val`. Establish `hcl` using `isCompact_closure_normOneFundamentalDomain E`. Establish `hinv' : ∀ (k : Eˣ) (u : IdeleGroup.normOneSubgroup E), β ((u * diagonalToNormOne E k : IdeleGroup.normOneSubgroup E) : IdeleGroup E) = β (u : IdeleGroup E)`. Introduce `k u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hinv k (u : IdeleGroup E)`. Rewrite `h` using `[mul_comm]`. Conclude with `h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hf.continuousOn.integrableOn_compact hcl).mono_set subset_closure`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨B, hB⟩` from `hcl.exists_bound_of_continuousOn hf.continuousOn`. Use `⟨B, fun t ht => ?_⟩` and prove the remaining obligations. Establish `hm : t ∈ IdeleGroup.normOneSubgroup E`. Use `MonoidHom.mem_ker.2 (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `ht`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨k, hk, -⟩` from `existsUnique_mul_mem_normOneFundamentalDomain E ⟨t, hm⟩`. Establish `h` using `hB _ (subset_closure hk)`. Rewrite `h` using `[hinv' k ⟨t, hm⟩]`. Then use the resulting hypothesis. Introduce `d hd`. Establish `hm : d ∈ IdeleGroup.normOneSubgroup E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `MonoidHom.mem_ker.2 (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `hd`. Use `set b : IdeleGroup.normOneSubgroup E := ⟨d, hm⟩ with hb`. Use `set g : IdeleGroup.normOneSubgroup E → ℂ := fun z => β (z : IdeleGroup E) with hg`. Establish `hD` using `isFundamentalDomain_normOneFundamentalDomain E (normOneMeasure E)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hD'` using `hD.smul_of_comm b`. Establish `hI : ∀ (γ : (diagonalNormOne E).op) (x : IdeleGroup.normOneSubgroup E), g (γ • x) = g x`. Introduce and unpack `⟨γ, hγ⟩ x`. Take `⟨k, hk⟩` from `Subgroup.mem_op.1 hγ`. Establish `e : γ.unop = diagonalToNormOne E k` using `Subtype.ext hk.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `g (x * γ.unop) = g x`. Rewrite using `[e]`. Conclude with `hinv' k x`. Establish `h1` using `hD.setIntegral_eq hD' hI`. Establish `h2` using `(measurePreserving_mul_left (normOneMeasure E) b).setIntegral_image_emb (MeasurableEquiv.mulLeft b).measurableEmbedding g (normOneFundamentalDomain E)`.
-
-Unfold `UI`. Express the relevant statement in the definitionally equal form `∫ z in normOneFundamentalDomain E, g (z * b) ∂normOneMeasure E = ∫ z in normOneFundamentalDomain E, g z ∂normOneMeasure E`. Rewrite using `[h1]`. Repeatedly rewrite using `[mul_comm _ b]`. Conclude with `h2.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.uiLaws :
     UILaws := by

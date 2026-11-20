@@ -28,21 +28,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn.Exp.TupLe.CoefPf
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Csz p j hr hm B hB hBo c hc hS u hu O' hO' h hh v hv`. Establish `hL : Links2 p` using `GlobalTheory.T.second_link_of_weight_rows _ _ _ _ _ _ _ _ _ _ p hr hm.1`. Establish `hC : GlobalTheory.Hk3.Core (R2 p) (F2 p)` using `⟨hL.1.lev, hL.1.grp, hL.1.fam, hL.1.models, hL.1.chain, hL.1.thP⟩`. Take `⟨gramR, c0R, c0L, hft, u', hu', hF⟩` from `hS`. Establish `huu : u' = u` using `funext fun τ => Subtype.ext ((hu' τ).trans (hu τ).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `huu` using the available equality. Take `⟨F, hF0, rfl⟩` from `GlobalTheory.T.coefLattice_indep_coefMap_proof D _ _ _ p.P.A3.A _ (R2 p) (F2 p) hC j c0L ⟨gramR, c0R, hft⟩ h v hv`. Establish `hio : IoExt (R2 p)` using `hr.ioExt`. Establish `hv0 : IsChosenExtremalVector (R2 p) j (sg0 D p.P.A3.A) (p.v₀ j _)` using `(hL.2.2.2.2.2.2.1 j).2.lift.v0`. Establish `hval : ∀ w, (R2 p).ioP j (PiTensorProduct.tprod ℂ u') w ∈ harm (Wc D j).rank B.w B.F.BS`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcV : ((R2 p).cV j).Is` using `hC.models.cV j`. Take `⟨u'', w₀, hu'', -, hw⟩` from `IsChosenExtremalVector.io _ hv0 hio`. Establish `huu : u'' = u'` using `funext fun ρ => Subtype.ext ((hu'' ρ).trans (hu ρ).symm)`. Rewrite `hw` using `[huu]`. Establish `hT` using `GlobalTheory.SeriesTie.Scale.io_act hC.lev hC.thP hB hBo.ψ hBo.θ hBo.sT hBo.BS hBo.BT hBo.mu0 hBo.eta (PiTensorProduct.tprod ℂ u')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hΔ0` using `GlobalTheory.AdTh.IoExtPf.Delta_ne (D := D) j`. Break down `hcV.2.2.2.2 ((harm (Wc D j).rank B.w B.F.BS).comap ((R2 p).ioP j (PiTensorProduct.tprod ℂ u'))) (fun g => by` into its components or cases. Take `⟨a, ha, k, hk, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D _).1 g`. Rewrite using `[map_mul, hcV.1 k hk, mul_one]`. Introduce and unpack `_ ⟨w, hw', rfl⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.mem_comap, hT a ha]`. Conclude with `fockGL_mem_harm _ _ _ hw') with h0 | h0`. Establish `h1 : w₀ ∈ (harm (Wc D j).rank B.w B.F.BS).comap ((R2 p).ioP j (PiTensorProduct.tprod ℂ u'))`. Rewrite using `[Submodule.mem_comap, hw, ← hBo.delta]`. Conclude with `delta_mem_harm _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h0, Submodule.mem_bot]`. Rewrite `hw` using `[h1, map_zero]`. Conclude with `absurd hw.symm hΔ0`. Conclude with `fun w => (h0 ▸ Submodule.mem_top : w ∈ (harm (Wc D j).rank B.w B.F.BS).comap ((R2 p).ioP j (PiTensorProduct.tprod ℂ u')))`. Establish `hL0 : (B.F.ΛS : Set (Fin (Vc D j).rank → D.host.E)) = L0c D (Vc D j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hBo.ΛS]`. Conclude with `GlobalTheory.OneMapRef.FactsLat.selfDual_frame_level_one_lattice_eq_standard (hL.1.lev.βV j)`. Use `⟨c⁻¹ • (R2 p).ioP j (PiTensorProduct.tprod ℂ u') (c0L j F), ?_, (smul_inv_smul₀ hc _).symm⟩` and prove the remaining obligations. Use `(mem_harmLat _ _ _).2 ⟨Submodule.smul_mem _ _ (hval _), ?_⟩` and prove the remaining obligations. Establish `hF' : harmFn (Wc D j).rank B.w B.F.BS ((R2 p).ioP j (PiTensorProduct.tprod ℂ u') (c0L j F)) = c • coefFn D.what₂.embLL (FWT.lamV D j) (F : Pol D.what₂.LL D.what₂.Tau (Vc D j).rank)` using `hF F`.
-
-Rewrite using `[map_smul, hF', inv_smul_smul₀ hc, hBo.lam, GlobalTheory.LatAtHLat.latAt_eq_hLat D _ _ B hL0]`. Conclude with `Submodule.subset_span ⟨F, hF0, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefSt : CoefSt := by
   intro D L hT Gi Gl Kc Y cX ex Csz p j hr hm B hB hBo c hc hS u hu O' hO' h hh v hv

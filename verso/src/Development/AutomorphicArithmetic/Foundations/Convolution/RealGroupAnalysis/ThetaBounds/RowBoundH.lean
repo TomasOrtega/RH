@@ -14,17 +14,15 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W π f hf φ hφ h x`. Take `⟨y, hy, φ₁, hφ₁, m, e⟩` from `redH F E D W h φ hφ`. Take `⟨c, hc, hred⟩` from `UpperTheory.ConvolutionTheory.R2.red F`. Take `⟨B₁, hB₁⟩` from `rowMaj F E D W φ₁ hφ₁ y hy c hc`. Establish `hC : IsCompact ((fun k : G1 F => gl k * ((gl m)⁻¹ * x)) '' KK F)` using `(iwa F).1.image (M.continuous_gl.mul continuous_const)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨B₂, hB₂⟩` from `(UpperTheory.ConvolutionTheory.R2.decay F π f hf).2 _ hC c hc 1`. Establish `hinv` using `(thMeas F E D W (W.L (infGL E 2 y) φ₁)).2.2.2.1`. Use `⟨B₂ * B₁, fun g => ?_⟩` and prove the remaining obligations. Establish `e1 : W.Om g (W.L h φ) = W.Om (g * m) (W.L (infGL E 2 y) φ₁)`. Simplify using `using e g 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨γ, b, a, k, hk, ek, ha⟩` from `hred (g * m)`. Establish `e2 : ThRow 0 0 (W.Om g (W.L h φ)).1 = ThRow 0 0 (W.Om (nU b * mD a * k) (W.L (infGL E 2 y) φ₁)).1`. Rewrite using `[e1, ← ek]`. Conclude with `(hinv γ (g * m)).symm`. Establish `e3 : f.1 (gl g * x) = f.1 (gl (nU b * mD a) * (gl k * ((gl m)⁻¹ * x)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : gl (nU b * mD a) * (gl k * ((gl m)⁻¹ * x)) = ratGL F 2 (Matrix.SpecialLinearGroup.toGL γ) * (gl g * x)`. Establish `e5 : ratGL F 2 (Matrix.SpecialLinearGroup.toGL γ) = gl (ratS F γ)` using `Units.ext rfl`. Rewrite using `[← mul_assoc, ← gl_mul, ← mul_assoc, ← ek, gl_mul, gl_mul, e5]`. Use `group`. Rewrite using `[e4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((π.cusp _ hf).1.left _ _).symm`. Rewrite using `[norm_mul, e2, e3]`. Establish `hp` using `M.ab_pos a`. Establish `h1` using `hB₁ b a k hk ha`. Establish `h2` using `hB₂ b a _ ⟨k, hk, rfl⟩ ha`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.rowBoundH :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (π : TR.CuspSub F 2), RowBoundH W π := by

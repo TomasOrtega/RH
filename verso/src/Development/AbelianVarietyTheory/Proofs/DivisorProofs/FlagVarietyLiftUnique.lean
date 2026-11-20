@@ -29,7 +29,7 @@ def low (b : Module.Basis (Fin N) A M) (g : GL (Fin N) A) (l : ℕ) : Submodule 
     rw [map_smul, Finsupp.coe_smul, mulVec_smul, Pi.smul_apply, hv i hi, smul_zero]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ i : Fin N, l ≤ i → ((g⁻¹).1 *ᵥ b.repr _) i = 0) ↔ _`. Rewrite using `[b.repr_sum_self]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_mem_low (b : Module.Basis (Fin N) A M) (g : GL (Fin N) A) (l : ℕ) (a : Fin N → A) :
     ∑ i, a i • b i ∈ low b g l ↔ ∀ i : Fin N, l ≤ i → ((g⁻¹).1 *ᵥ a) i = 0 := by
@@ -37,15 +37,15 @@ theorem sum_mem_low (b : Module.Basis (Fin N) A M) (g : GL (Fin N) A) (l : ℕ) 
   rw [b.repr_sum_self]
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.2 ?_) fun v hv => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Use `(sum_mem_low b g l _).2 fun i hi => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((g⁻¹).1 * g.1) i j = 0`. Rewrite using `[Units.inv_mul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_apply_ne fun e => by subst e; omega`. Establish `e : v = ∑ j, ((g⁻¹).1 *ᵥ b.repr v) j • ∑ i, g.1 i j • b i`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => rw [← b.sum_repr v]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Establish `: (g.1 *ᵥ ((g⁻¹).1 *ᵥ b.repr v)) i = b.repr v i`. Rewrite using `[mulVec_mulVec, Units.mul_inv, one_mulVec]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `(g⁻¹).1 *ᵥ b.repr v = u at this ⊢`. Rewrite using `[← this]`. Simplify using `only [mulVec, dotProduct, mul_comm]`. Rewrite using `[e]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hj : (j : ℕ) < l`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, hj, rfl⟩)`. Rewrite using `[hv j (not_lt.1 hj), zero_smul]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem span_eq_low (b : Module.Basis (Fin N) A M) (g : GL (Fin N) A) (l : ℕ) :
     Submodule.span A {v | ∃ j : Fin N, (j : ℕ) < l ∧ v = ∑ i, g.1 i j • b i} = low b g l := by
@@ -75,7 +75,7 @@ theorem span_eq_low (b : Module.Basis (Fin N) A M) (g : GL (Fin N) A) (l : ℕ) 
       exact zero_mem _
 
 /- English proof (translation)
-Rewrite using `[← span_eq_low b h, Submodule.span_le]`. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `(sum_mem_low b g l _).2 fun i hi => H i j (show (j : ℕ) < i by omega)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem low_le_low (b : Module.Basis (Fin N) A M) {g h : GL (Fin N) A}
     (H : ∀ i j : Fin N, j < i → (g⁻¹ * h).1 i j = 0) (l : ℕ) : low b h l ≤ low b g l := by
@@ -84,7 +84,7 @@ theorem low_le_low (b : Module.Basis (Fin N) A M) {g h : GL (Fin N) A}
   exact (sum_mem_low b g l _).2 fun i hi => H i j (show (j : ℕ) < i by omega)
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Simplify using `only [mulVec, dotProduct, GeneralLinearGroup.map_apply, map_sum, map_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inv_mulVec_map (ψ : A →+* B) (g : GL (Fin N) A) (a : Fin N → A) (i : Fin N) :
     (((GeneralLinearGroup.map ψ g)⁻¹).1 *ᵥ fun k => ψ (a k)) i = ψ (((g⁻¹).1 *ᵥ a) i) := by
@@ -96,13 +96,13 @@ end Lin
 variable {ι : Type} [Fintype ι] {N : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, _, h₁, h₂⟩ => h₁.trans_le h₂, fun h => ⟨(τ, i.castSucc), rfl, h, le_rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem below_iff (τ : ι) (i j : Fin N) : Below (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd τ i j ↔ j < i :=
   ⟨fun ⟨_, _, h₁, h₂⟩ => h₁.trans_le h₂, fun h => ⟨(τ, i.castSucc), rfl, h, le_rfl⟩⟩
 
 /- English proof (translation)
-Use `le_antisymm ((iInf₂_le g hg).trans (span_eq_low _ _ _).le) (le_iInf₂ fun h hh => ?_)` and prove the remaining obligations. Use `(low_le_low _ (fun i j hij => ?_) l).trans (span_eq_low _ _ _).ge` and prove the remaining obligations. Conclude with `(flagPt_eq_iff_below _ _ _ _ _ _ h g).1 (hh.trans hg.symm) τ i j ((below_iff τ i j).2 hij)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stalkStep_eq (τ : ι) (l : ℕ) (y : Fl ι N) (g : ι → GL (Fin N) ((Fl ι N).presheaf.stalk y))
     (hg : flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g = (Fl ι N).fromSpecStalk y) :
@@ -112,11 +112,11 @@ theorem stalkStep_eq (τ : ι) (l : ℕ) (y : Fl ι N) (g : ι → GL (Fin N) ((
   exact (flagPt_eq_iff_below _ _ _ _ _ _ h g).1 (hh.trans hg.symm) τ i j ((below_iff τ i j).2 hij)
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `exists_mem_range_cell ι _ N Prod.fst Prod.snd y`. Use `isOpenImmersion_cell ι _ N (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w` as an intermediate fact. Establish `hU` using `isAffineOpen_opensRange (cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w)`. Establish `hr : Set.range hU.fromSpec ⊆ Set.range (cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w)` using `hU.range_fromSpec.le`. Establish `e` using `IsOpenImmersion.lift_fac _ _ hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ψ` to `(Spec.preimage (IsOpenImmersion.lift _ _ hr)).hom`. Establish `e' : flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd (fun τ => GeneralLinearGroup.map ψ (cellGL Prod.fst Prod.snd w τ)) = hU.fromSpec`. Rewrite using `[← spMap_flagPt]`. Conclude with `(congrArg (· ≫ cell _ _ w) (Spec.map_preimage _)).trans e`. Use `⟨_, hw, fun τ => GeneralLinearGroup.map ψ (cellGL Prod.fst Prod.snd w τ), fun z hz => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← spMap_flagPt, e', ← hU.fromSpecStalk_eq_fromSpecStalk hz]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_local (y : Fl ι N) : ∃ (U : (Fl ι N).Opens) (_ : y ∈ U) (c : ι → GL (Fin N) Γ(Fl ι N, U)),
     ∀ (z : Fl ι N) (hz : z ∈ U), flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd
@@ -137,9 +137,9 @@ theorem exists_local (y : Fl ι N) : ∃ (U : (Fl ι N).Opens) (_ : y ∈ U) (c 
   rfl
 
 /- English proof (translation)
-Apply `((Scheme.Modules.pullbackPushforwardAdjunction f).homEquiv _ _).injective` to reduce the goal to its premises. Rewrite using `[Adjunction.homEquiv_unit, Adjunction.homEquiv_unit]`. Use `Scheme.Modules.hom_ext _ _ fun V => ?_` and prove the remaining obligations. Use extensionality with `s`. Use `H V s` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `this` using `[QCoh.pullbackSections_apply]`. Use `erw [Twist.resM_self] at this`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pullbackSections {X Y : Scheme.{0}} (f : X ⟶ Y) {G : Y.Modules} {E : X.Modules}
     (α : (Scheme.Modules.pullback f).obj G ⟶ E)
@@ -154,7 +154,7 @@ theorem eq_zero_of_pullbackSections {X Y : Scheme.{0}} (f : X ⟶ Y) {G : Y.Modu
   exact this
 
 /- English proof (translation)
-Use `eq_zero_of_pullbackSections f (α ≫ cokernel.π S.incl) fun V s => S.cokernel_π_app_eq_zero_iff.2 (H V s)` as an intermediate fact. Use `S.cokernel_π_app_eq_zero_iff.1 ((QCoh.app_app α _ W t).trans ?_)` and prove the remaining obligations. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem app_mem_of_pullbackSections {X Y : Scheme.{0}} (f : X ⟶ Y) {G : Y.Modules} {E : X.Modules}
     (α : (Scheme.Modules.pullback f).obj G ⟶ E) (S : VB.Sub E)
@@ -173,7 +173,7 @@ def stdT (g : T ⟶ Sp ℤ) (N : ℕ) (i : Fin N) :
   pullbackSections g _ (le_refl (g ⁻¹ᵁ ⊤)) (VB.freeFrame (Sp ℤ) (Fin N) i)
 
 /- English proof (translation)
-The claim follows from `(VB.isFrame_freeFrame (Sp ℤ) (Fin N)).pullback g`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_stdT (g : T ⟶ Sp ℤ) (N : ℕ) : VB.IsFrame (stdT g N) :=
   (VB.isFrame_freeFrame (Sp ℤ) (Fin N)).pullback g
@@ -184,7 +184,7 @@ abbrev pullIncl {g : T ⟶ Sp ℤ} {g' : T ⟶ Fl ι N} (w : g' ≫ flStr ι N =
     (Scheme.Modules.pullbackComp g' (flStr ι N)).hom.app _ ≫ (Scheme.Modules.pullbackCongr w).hom.app _
 
 /- English proof (translation)
-Rewrite using `[app_resM]`. Use `congr 1`. Use `VB.IsFrame.iso_hom_app (isFrame_stdT (flStr ι N) N) (VB.isFrame_freeFrame _ (Fin N)) i` as an intermediate fact. Rewrite using `[← this]`. Conclude with `congr(($((freeIso ι N).hom_inv_id)).app ⊤ (stdT (flStr ι N) N i))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem freeIso_inv_app (V : (Fl ι N).Opens) (i : Fin N) :
     (freeIso ι N).inv.app V (resM _ le_top (VB.freeFrame (Fl ι N) (Fin N) i)) =
@@ -198,11 +198,11 @@ theorem freeIso_inv_app (V : (Fl ι N).Opens) (i : Fin N) :
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Establish `H (t : Γ(E, ⊤)) : ((Scheme.Modules.pullbackComp b π).hom.app E ≫ (Scheme.Modules.pullbackCongr w).hom.app E).app _ (pullbackSections b _ (le_refl (b ⁻¹ᵁ V)) (pullbackSections π E (le_top : V ≤ π ⁻¹ᵁ ⊤) t)) = pullbackSections g E (le_top : b ⁻¹ᵁ V ≤ g ⁻¹ᵁ ⊤) t`. Substitute `w` using the available equality. Rewrite using `[← Vert.DivPull.pullbackComp_inv_app b π E (U := ⊤) (V := V) (T := b ⁻¹ᵁ V) le_top le_rfl le_top t, QCoh.app_app, Iso.inv_hom_id_app_assoc]`. Both sides reduce to the same expression. Rewrite using `[← QCoh.app_app, QCoh.pullback_map_app_pullbackSections, hs]`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `(Scheme.Modules.pullbackComp b π).hom.app E ≫ (Scheme.Modules.pullbackCongr w).hom.app E = α at H ⊢`. Simplify using `only [← H]`. Establish `e₁ : ∀ e' : Fin N → Γ((Scheme.Modules.pullback π).obj E, V), pullbackSections b _ (le_refl (b ⁻¹ᵁ V)) (∑ i, c i • e' i) = ∑ i, b.app V (c i) • pullbackSections b _ (le_refl (b ⁻¹ᵁ V)) (e' i)` using `fun e' => by`. Use `letI := QCoh.appLEModule b ((Scheme.Modules.pullback b).obj ((Scheme.Modules.pullback π).obj E)) (le_refl (b ⁻¹ᵁ V))`. Rewrite using `[map_sum]`.
+Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[QCoh.pullbackSections_smul, Scheme.Hom.appLE_eq_app]`. Rewrite using `[e₁, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Scheme.Modules.Hom.app_smul _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_congr_app {Y B : Scheme.{0}} {b : T ⟶ Y} {π : Y ⟶ B} {g : T ⟶ B} (w : b ≫ π = g) (E : B.Modules)
     {G : Y.Modules} (φ : G ⟶ (Scheme.Modules.pullback π).obj E) (e : Fin N → Γ(E, ⊤)) (V : Y.Opens) (s : Γ(G, V))
@@ -234,9 +234,9 @@ theorem comp_congr_app {Y B : Scheme.{0}} {b : T ⟶ Y} {π : Y ⟶ B} {g : T �
   exact Finset.sum_congr rfl fun i _ => Scheme.Modules.Hom.app_smul _ _ _
 
 /- English proof (translation)
-Use `(comp_congr_app w _ (incl ι N a l) (VB.freeFrame (Sp ℤ) (Fin N)) V s c ?_).trans (Finset.sum_congr rfl fun i _ => congrArg _ (QCoh.res_pullbackSections g _ _ _ _).symm)` and prove the remaining obligations. Use `(congrArg ((freeIso ι N).inv.app V) hs).trans ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.app_smul, freeIso_inv_app]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (QCoh.res_pullbackSections _ _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem pullIncl_app {g : T ⟶ Sp ℤ} {g' : T ⟶ Fl ι N} (w : g' ≫ flStr ι N = g) (a : ι) (l : Fin (N + 1))
     (V : (Fl ι N).Opens) (s : Γ(F ι N a l, V)) (c : Fin N → Γ(Fl ι N, V))
@@ -252,7 +252,7 @@ theorem pullIncl_app {g : T ⟶ Sp ℤ} {g' : T ⟶ Fl ι N} (w : g' ≫ flStr �
   exact congrArg _ (QCoh.res_pullbackSections _ _ _ _ _)
 
 /- English proof (translation)
-Simplify using `only [map_sum, QCoh.germ_smul, Twist.germ_resM]`. Conclude with `Finset.sum_congr rfl fun i _ => congrArg _ (he.stalkBasis_apply x trivial i).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem germ_sum {X : Scheme.{0}} {E : X.Modules} {e : Fin N → Γ(E, ⊤)} (he : VB.IsFrame e) {V : X.Opens} (x : X)
     (hx : x ∈ V) (c : Fin N → Γ(X, V)) :
@@ -262,11 +262,11 @@ theorem germ_sum {X : Scheme.{0}} {E : X.Modules} {e : Fin N → Γ(E, ⊤)} (he
   exact Finset.sum_congr rfl fun i _ => congrArg _ (he.stalkBasis_apply x trivial i).symm
 
 /- English proof (translation)
-Use `app_mem_of_pullbackSections g' (pullIncl w a l) (VB.Sub.ofStalks fun t => low ((isFrame_stdT g N).stalkBasis t trivial) (GeneralLinearGroup.map (g'.stalkMap t).hom (H (g' t) a)) l) (fun V s t ht => ?_) W s t ht` and prove the remaining obligations. Take `⟨c, hc⟩` from `(VB.isFrame_freeFrame (Fl ι N) (Fin N) V le_top).2 ((sub ι N a l).incl.app V s)`. Rewrite `hc` using `[Fintype.linearCombination_apply]`. Establish `hm` using `(sub ι N a l).incl_app_mem s (g' t) ht`. Rewrite `hm` using `[stalkStep_eq a l _ _ (hH _), ← hc, germ_sum (VB.isFrame_freeFrame (Fl ι N) (Fin N)) (g' t) ht c]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pullIncl_app w a l V s c hc.symm, germ_sum (isFrame_stdT g N), sum_mem_low]`. Introduce `i hi`. Use `inv_mulVec_map (g'.stalkMap t).hom (H (g' t) a) (fun k => (Fl ι N).presheaf.germ V (g' t) ht (c k)) i` as an intermediate fact. Rewrite `this` using `[(sum_mem_low _ _ _ _).1 hm i hi, map_zero]`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `k`. Conclude with `(Scheme.Hom.germ_stalkMap_apply g' V t ht (c k)).symm`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem germ_pullIncl_mem {g : T ⟶ Sp ℤ} {g' : T ⟶ Fl ι N} (w : g' ≫ flStr ι N = g) (a : ι) (l : Fin (N + 1))
     (H : ∀ y : Fl ι N, ι → GL (Fin N) ((Fl ι N).presheaf.stalk y))
@@ -292,15 +292,15 @@ theorem germ_pullIncl_mem {g : T ⟶ Sp ℤ} {g' : T ⟶ Fl ι N} (w : g' ≫ fl
   exact (Scheme.Hom.germ_stalkMap_apply g' V t ht (c k)).symm
 
 /- English proof (translation)
-Introduce and unpack `ι _ N T g fl' g₁ g₂ ⟨w₁, h₁⟩ ⟨w₂, h₂⟩`. Establish `hl (X : Scheme.{0}) (x : X) : IsLocalRing (X.presheaf.stalk x)` using `inferInstance`. Use `choose H hH using fun y : Fl ι N => @exists_eq_flagPt_of_isLocalRing ι _ _ _ N Prod.fst Prod.snd ((Fl ι N).presheaf.stalk y) _ (hl _ y) ((Fl ι N).fromSpecStalk y)`. Use `hom_ext_of_fromSpecStalk fun t => ?_` and prove the remaining obligations. Take `⟨U, hU, c, hc⟩` from `exists_local (g₁ t)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.SpecMap_stalkMap_fromSpecStalk, ← Scheme.SpecMap_stalkMap_fromSpecStalk, ← hc _ hU, hH (g₂ t)]`. Use `((spMap_flagPt _ _ (g₁.stalkMap t).hom _).trans (Eq.symm ?_)).trans (spMap_flagPt _ _ (g₂.stalkMap t).hom _).symm` and prove the remaining obligations. Use `(flagPt_eq_iff_below _ _ _ _ _ _ _ _).2 fun a i j hij => ?_` and prove the remaining obligations. Rewrite `hij` using `[below_iff]`. Establish `hm : ∑ k, (c a).1 k j • resM _ le_top (VB.freeFrame (Fl ι N) (Fin N) k) ∈ (sub ι N a i.castSucc).sec U`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Rewrite using `[stalkStep_eq a _ z _ (hc z hz), germ_sum (VB.isFrame_freeFrame (Fl ι N) (Fin N)), ← span_eq_low]`. Conclude with `Submodule.subset_span ⟨j, hij, rfl⟩`. Take `⟨e₁, he₁⟩` from `h₁ a i.castSucc`. Take `⟨e₂, he₂⟩` from `h₂ a i.castSucc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (e₁.hom ≫ e₂.inv) ≫ pullIncl w₂ a i.castSucc = pullIncl w₁ a i.castSucc`. Rewrite using `[pullIncl, pullIncl, ← he₁, ← he₂, Category.assoc, e₂.inv_hom_id_assoc]`. Establish `k` using `germ_pullIncl_mem w₂ a i.castSucc H (fun y => (hH y).symm) (g₁ ⁻¹ᵁ U) ((e₁.hom ≫ e₂.inv).app _ (pullbackSections g₁ _ (le_refl (g₁ ⁻¹ᵁ U)) ((sub ι N a i.castSucc).mkSec _ hm))) t hU`. Rewrite `k` using `[QCoh.app_app, e, pullIncl_app w₁ a i.castSucc U ((sub ι N a i.castSucc).mkSec _ hm) (fun k => (c a).1 k j) rfl]`. Use `erw [germ_sum (isFrame_stdT g N) (V := g₁ ⁻¹ᵁ U) t hU fun k => g₁.app U ((c a).1 k j)] at k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `k` using `[sum_mem_low]`. Use `Eq.trans ?_ (k i le_rfl)` and prove the remaining obligations. Rewrite using `[Units.val_mul, mul_apply, mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl fun m _ => congrArg _ (Scheme.Hom.germ_stalkMap_apply g₁ U t hU _)`.
+A detailed English derivation is pending.
 -/
 theorem lifts_unique : ∀ (ι : Type) [Fintype ι] (N : ℕ) (T : Scheme.{0}) (g : T ⟶ Sp ℤ)
     (fl' : ι → Vert.Flag ((Scheme.Modules.pullback g).obj (freeModule (Sp ℤ) (Fin N))) N) (g₁ g₂ : T ⟶ Fl ι N),

@@ -15,17 +15,17 @@ def cond (A B : Submodule (𝓞 L) W) : Ideal (𝓞 L) where
     rw [smul_eq_mul, mul_smul]; exact B.smul_mem c (hu x hx)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_cond {A B : Submodule (𝓞 L) W} {u : 𝓞 L} :
     u ∈ cond A B ↔ ∀ x ∈ A, u • x ∈ B := Iff.rfl
 
 /- English proof (translation)
-Establish `hQ : Finite (A.toAddSubgroup ⧸ B.toAddSubgroup.addSubgroupOf A.toAddSubgroup)` using `Nat.finite_of_card_ne_zero hfin`. Use `Fintype.ofFinite (A.toAddSubgroup ⧸ B.toAddSubgroup.addSubgroupOf A.toAddSubgroup)` as an intermediate fact. Use `⟨Finset.univ.image (fun q : A.toAddSubgroup ⧸ B.toAddSubgroup.addSubgroupOf A.toAddSubgroup => ((Quotient.out q : A.toAddSubgroup) : W)), ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.mp hr`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(Quotient.out q).2`. Introduce `x hx`. Set `q : A.toAddSubgroup ⧸ B.toAddSubgroup.addSubgroupOf A.toAddSubgroup` to `QuotientAddGroup.mk ⟨x, hx⟩`. Use `⟨((Quotient.out q : A.toAddSubgroup) : W), Finset.mem_image.mpr ⟨q, Finset.mem_univ _, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hq : (QuotientAddGroup.mk (Quotient.out q) : A.toAddSubgroup ⧸ B.toAddSubgroup.addSubgroupOf A.toAddSubgroup) = q` using `Quotient.out_eq q`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `QuotientAddGroup.eq.mp hq`. Rewrite `h` using `[AddSubgroup.mem_addSubgroupOf]`. Establish `h' : -((Quotient.out q : A.toAddSubgroup) : W) + x ∈ B` using `h`. Rewrite `h'` using `[neg_add_eq_sub]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_reps {A B : Submodule (𝓞 L) W}
     (hfin : B.toAddSubgroup.relIndex A.toAddSubgroup ≠ 0) :
@@ -53,9 +53,9 @@ theorem exists_reps {A B : Submodule (𝓞 L) W}
     rwa [neg_add_eq_sub] at h'
 
 /- English proof (translation)
-Introduce `hbot`. Establish `hmem : ((B.toAddSubgroup.relIndex A.toAddSubgroup : ℕ) : 𝓞 L) ∈ cond A B`. Use `mem_cond.mpr fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `AddSubgroup.nsmul_relIndex_mem B.toAddSubgroup hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[hbot, Ideal.mem_bot]`. Conclude with `hfin (Nat.cast_eq_zero.mp hmem)`.
+A detailed English derivation is pending.
 -/
 theorem cond_ne_bot {A B : Submodule (𝓞 L) W}
     (hfin : B.toAddSubgroup.relIndex A.toAddSubgroup ≠ 0) : cond A B ≠ ⊥ := by
@@ -69,13 +69,11 @@ theorem cond_ne_bot {A B : Submodule (𝓞 L) W}
   exact hfin (Nat.cast_eq_zero.mp hmem)
 
 /- English proof (translation)
-Take `⟨S, hSA, hS⟩` from `exists_reps hfin`. Establish `hex : ∀ r ∈ S, ∃ t : 𝓞 L, t ∉ w.maximalIdeal.asIdeal ∧ t • r ∈ B`. Introduce `r hr`. Establish `hr' : r ∈ locAt w B` using `by rw [← hloc]; exact le_locAt w A (hSA r hr)`. Conclude with `mem_locAt.mp hr'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose! t ht using hex`. Use `w.maximalIdeal.isPrime` as an intermediate fact. Use `⟨∏ r ∈ S, t r, mem_cond.mpr fun x hx => ?_, ?_⟩` and prove the remaining obligations. Take `⟨r, hr, hxr⟩` from `hS x hx`. Establish `hrB : (∏ r ∈ S, t r) • r ∈ B`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.mul_prod_erase S t hr, mul_comm, mul_smul]`. Conclude with `B.smul_mem _ (ht r hr).2`. Establish `hx' : x = r + (x - r)` using `by abel`. Rewrite using `[hx', smul_add]`. Conclude with `B.add_mem hrB (B.smul_mem _ hxr)`.
-
-Rewrite using `[Ideal.IsPrime.prod_mem_iff]`. Introduce and unpack `⟨r, hr, hmem⟩`. Conclude with `(ht r hr).1 hmem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_mem_cond_notMem {A B : Submodule (𝓞 L) W} (w : FinitePlace L)
     (hloc : locAt w A = locAt w B)
@@ -102,13 +100,11 @@ theorem exists_mem_cond_notMem {A B : Submodule (𝓞 L) W} (w : FinitePlace L)
     exact (ht r hr).1 hmem
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨P, hPmax, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hPbot : P ≠ ⊥`. Introduce `hP`. Apply `cond_ne_bot hfin` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[eq_bot_iff, ← hP]`. Conclude with `le_sup_left.trans hle`. Take `⟨Q, hQ⟩ : ∃ Q : HeightOneSpectrum (𝓞 L), Q.asIdeal = P` from `⟨⟨P, hPmax.isPrime, hPbot⟩, rfl⟩`. Distinguish the cases in `hw : FinitePlace.mk Q = v`. Apply `ht` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hw, FinitePlace.maximalIdeal_mk, hQ]`. Conclude with `hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self t))`. Take `⟨s, hs, hsP⟩` from `exists_mem_cond_notMem (FinitePlace.mk Q) (hloc _ hw) hfin`. Apply `hsP` to reduce the goal to its premises. Rewrite using `[FinitePlace.maximalIdeal_mk, hQ]`.
-
-Conclude with `hle (Ideal.mem_sup_left hs)`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cond_sup_span_eq_top {A B : Submodule (𝓞 L) W} (v : FinitePlace L)
     (hfin : B.toAddSubgroup.relIndex A.toAddSubgroup ≠ 0)
@@ -133,9 +129,9 @@ theorem cond_sup_span_eq_top {A B : Submodule (𝓞 L) W} (v : FinitePlace L)
     exact hle (Ideal.mem_sup_left hs)
 
 /- English proof (translation)
-Establish `h1 : (1 : 𝓞 L) ∈ cond A B ⊔ Ideal.span {t}`. Rewrite using `[cond_sup_span_eq_top v hfin hloc ht]`. Conclude with `Submodule.mem_top`. Take `⟨u, hu, z, hz, huz⟩` from `Submodule.mem_sup.mp h1`. Take `⟨s, rfl⟩` from `Ideal.mem_span_singleton'.mp hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨s, u, hu, by rw [add_comm]; exact huz⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_bezout {A B : Submodule (𝓞 L) W} (v : FinitePlace L)
     (hfin : B.toAddSubgroup.relIndex A.toAddSubgroup ≠ 0)
@@ -149,17 +145,17 @@ theorem exists_bezout {A B : Submodule (𝓞 L) W} (v : FinitePlace L)
   exact ⟨s, u, hu, by rw [add_comm]; exact huz⟩
 
 /- English proof (translation)
-Establish `hle : A.toAddSubgroup ≤ (locAt v A).toAddSubgroup` using `fun x hx => le_locAt v A hx`. Establish `hback : ∀ x ∈ A, x ∈ locAt v B → x ∈ B`. Introduce `x hxA hx`. Take `⟨t, ht, htx⟩` from `mem_locAt.mp hx`. Take `⟨s, u, hu, hsu⟩` from `exists_bezout v hfin hloc ht`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx' : x = s • (t • x) + u • x` using `by rw [smul_smul, ← add_smul, hsu, one_smul]`. Rewrite using `[hx']`. Conclude with `B.add_mem (B.smul_mem s htx) (mem_cond.mp hu x hxA)`. Set `f` to `(QuotientAddGroup.mk' ((locAt v B).toAddSubgroup.addSubgroupOf (locAt v A).toAddSubgroup)).comp (AddSubgroup.inclusion hle)`. Establish `hsurj : Function.Surjective f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Take `⟨⟨y, hy⟩, rfl⟩` from `QuotientAddGroup.mk'_surjective _ q`. Take `⟨t, ht, hty⟩` from `mem_locAt.mp hy`. Take `⟨s, u, hu, hsu⟩` from `exists_bezout v hfin hloc ht`. Use `⟨⟨s • (t • y), A.smul_mem s hty⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, AddMonoidHom.comp_apply, QuotientAddGroup.mk'_apply]`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Use `show -(s • (t • y)) + y ∈ locAt v B`. Establish `hu' : u = 1 - s * t` using `by rw [← hsu]; ring`. Establish `hyeq : -(s • (t • y)) + y = u • y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu', sub_smul, one_smul, smul_smul, neg_add_eq_sub]`. Rewrite using `[hyeq]`. Conclude with `mem_locAt.mpr ⟨t, ht, by rw [smul_comm]; exact mem_cond.mp hu _ hty⟩`. Establish `hker : f.ker = B.toAddSubgroup.addSubgroupOf A.toAddSubgroup`. Use extensionality with `⟨x, hx⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Simplify using `only [f, AddMonoidHom.mem_ker, AddMonoidHom.comp_apply, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_inclusion, Submodule.mem_toAddSubgroup]`. Conclude with `⟨fun h => hback x hx h, fun h => le_locAt v B h⟩`. Unfold `AddSubgroup.relIndex`. Rewrite using `[← hker, AddSubgroup.index_eq_card, AddSubgroup.index_eq_card]`. Conclude with `(Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective f hsurj).toEquiv).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_locAt (L : Type) [Field L] [NumberField L] (W : Type) [AddCommGroup W]
     [Module (𝓞 L) W] (v : FinitePlace L) (A B : Submodule (𝓞 L) W) (hBA : B ≤ A)

@@ -9,7 +9,7 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundl
 namespace GlobalTheory.CompanionTheory.Ar.Num.BiratJoin
 
 /- English proof (translation)
-Unfold `psum`. Apply `IsHomogeneous.sum` to reduce the goal to its premises. Introduce `i _`. Simplify using `using (isHomogeneous_X ℤ i).pow n`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem psum_homogeneous_int (σ : Type) [Fintype σ] (n : ℕ) :
     (psum σ ℤ n).IsHomogeneous n := by
@@ -19,13 +19,11 @@ theorem psum_homogeneous_int (σ : Type) [Fintype σ] (n : ℕ) :
   simpa using (isHomogeneous_X ℤ i).pow n
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x d hx Sg r s p hp φ VL VO _ _ _ _ Lie W Om OmHT hsame K' _ _ ι' _ z hxz hfn Lie' W' Om' OmHT' hpull hck`. Unfold `CkRelations`. Introduce `k hk1 hk2 q L Q hQ`. Take `⟨h, hA, hB⟩` from `hck k hk1 hk2 q (fun j => pullDeg (L j)) Q hQ`. Establish `hc : k - 1 ≤ d` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQ' : Q.IsHomogeneous (d - (k - 1))`. Establish `e : d - (k - 1) = d + 1 - k` using `by omega`. Rewrite using `[e]`. Conclude with `hQ`. Establish `TL` using `fun τ => GlobalTheory.T.same_generic_base_extension O Ω K ι x d hx (r τ) (VL τ) (Lie τ) (W τ) (hsame τ).1 K' ι' z hxz hfn (Lie' τ) (W' τ) (hpull τ).1 (hpull τ).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `TO` using `fun τ => GlobalTheory.T.same_generic_base_extension O Ω K ι x d hx (s τ) (VO τ) (Om τ) (OmHT τ) (hsame τ).2 K' ι' z hxz hfn (Om' τ) (OmHT' τ) (hpull τ).2.2.1 (hpull τ).2.2.2`. Establish `hroot : ∀ τ, rootNum O (joinCoord x z) d (r τ) (Lie' τ) (MvPolynomial.psum (Fin (r τ)) ℤ (k - 1)) (fun j => pullDeg (L j)) Q (p : O) = rootNum O x d (r τ) (Lie τ) (MvPolynomial.psum (Fin (r τ)) ℤ (k - 1)) L Q (p : O)` using `fun τ => (TL τ).2 (k - 1) _ (MvPolynomial.psum_isSymmetric _ _ _) (psum_homogeneous_int _ _) hc q L Q hQ' _ hp`. Use `⟨h, fun τ => ?_, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[← (TL τ).1 k hk1 hk2 q L Q hQ, ← (TO τ).1 k hk1 hk2 q L Q hQ, ← hroot τ]`. Conclude with `hA τ`.
-
-Rewrite using `[← hroot (φ τ)]`. Conclude with `hB τ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ckRelations_descend : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (d : ℕ), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d → ∀ {Sg : Type} {r s : Sg → ℕ} (p : ℕ), (p : O) ≠ 0 → ∀ (φ : Equiv.Perm Sg) {VL VO : Sg → Type} [∀ τ, AddCommGroup (VL τ)] [∀ τ, Module Ω (VL τ)] [∀ τ, AddCommGroup (VO τ)] [∀ τ, Module Ω (VO τ)] (Lie W : ∀ τ, ChartBundle O (mseg x) (r τ) (VL τ)) (Om OmHT : ∀ τ, ChartBundle O (mseg x) (s τ) (VO τ)), (∀ τ, SameGeneric O x (Lie τ) (W τ) ∧ SameGeneric O x (Om τ) (OmHT τ)) → ∀ (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O (joinCoord x z)) d → fnField O (joinCoord x z) = fnField O x → ∀ (Lie' W' : ∀ τ, ChartBundle O (mseg (joinCoord x z)) (r τ) (VL τ)) (Om' OmHT' : ∀ τ, ChartBundle O (mseg (joinCoord x z)) (s τ) (VO τ)), (∀ τ, IsPull O x z (Lie τ) (Lie' τ) ∧ IsPull O x z (W τ) (W' τ) ∧ IsPull O x z (Om τ) (Om' τ) ∧ IsPull O x z (OmHT τ) (OmHT' τ)) → CkRelations O (joinCoord x z) d p φ Lie' W' Om' OmHT' → CkRelations O x d p φ Lie W Om OmHT := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x d hx Sg r s p hp φ VL VO _ _ _ _ Lie W Om OmHT hsame K' _ _ ι' _ z hxz hfn

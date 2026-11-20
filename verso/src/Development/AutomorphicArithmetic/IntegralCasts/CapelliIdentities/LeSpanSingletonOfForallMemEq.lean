@@ -1,21 +1,19 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R _ π ξ hc J h x hx`. Use `choose! a z hz he using h`. Establish `hsm : ∀ (n : ℕ) (u v : R), u ≡ v [SMOD ((Ideal.span {π}) ^ n • ⊤ : Submodule R R)] ↔ π ^ n ∣ u - v`. Introduce `n u v`. Rewrite using `[SModEq.sub_mem, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, Ideal.mem_span_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzs : ∀ n : ℕ, z^[n] x ∈ J`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact hx`. Consider the case `succ n ih => rw [Function.iterate_succ_apply']`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Conclude with `hz _ ih`. Set `f : ℕ → R` to `fun n => ∑ i ∈ Finset.range n, a (z^[i] x) * π ^ i`. Establish `hf : ∀ n, f (n + 1) = f n + a (z^[n] x) * π ^ n` using `fun n => Finset.sum_range_succ _ _`. Establish `key : ∀ n, x = f n * ξ + z^[n] x * π ^ n`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `n with`. Consider the case `zero => simp [f]`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', hf]`. Establish `h1` using `he _ (hzs n)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `ih + π ^ n * h1`. Establish `hcau : ∀ {m n : ℕ}, m ≤ n → f m ≡ f n [SMOD ((Ideal.span {π}) ^ m • ⊤ : Submodule R R)]`. Introduce `m n hmn`. Rewrite using `[hsm]`. Proceed by induction on `n, hmn using Nat.le_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `base => simp`. Consider the case `succ n hmn ih`. Rewrite using `[hf, ← sub_sub]`. Conclude with `dvd_sub ih (Dvd.dvd.mul_left (pow_dvd_pow π hmn) _)`. Take `⟨L, hL⟩` from `IsPrecomplete.prec hc.toIsPrecomplete hcau`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : x - L * ξ = 0`. Apply `IsHausdorff.haus hc.toIsHausdorff` to reduce the goal to its premises. Introduce `n`. Rewrite using `[hsm]`. Take `⟨c, hc'⟩` from `(hsm _ _ _).1 (hL n)`.
-
-Conclude with `⟨c * ξ + z^[n] x, by linear_combination key n + ξ * hc'⟩`. Conclude with `Ideal.mem_span_singleton'.2 ⟨L, (sub_eq_zero.1 h0).symm⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yhc2.le_span_singleton_of_forall_mem_eq.{u_1} :
     ∀ {R : Type u_1} [inst : CommRing R] {π ξ : R} [IsAdicComplete (Ideal.span {π}) R] {J : Ideal R},

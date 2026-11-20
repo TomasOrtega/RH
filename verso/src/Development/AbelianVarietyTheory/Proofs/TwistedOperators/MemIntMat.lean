@@ -39,7 +39,7 @@ def intMat (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (m n 
   neg_mem' hX i j := neg_mem (hX i j)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intMat {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {m n : ℕ}
     {X : Matrix (Fin m) (Fin n) L} : X ∈ intMat L m n ↔ ∀ i j, X i j ∈ Formalism.UG.intL L := Iff.rfl

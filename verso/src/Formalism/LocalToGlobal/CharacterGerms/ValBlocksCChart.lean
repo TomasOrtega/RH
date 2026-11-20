@@ -24,7 +24,7 @@ def imgFamS {N : ℕ} (pl : Fin N × Fin 2 ↪ Fin n) : Set (∀ o, MvPolynomial
   {Po | ∃ P ∈ Ls.FF n, IsImgS (fun o => Y.rawSelf (p o)) pl (Ls.cp n) (Ls.uv n) P (∏ o, toAll o (Po o))}
 
 /- English proof (translation)
-Introduce and unpack `Po ⟨P, hP, hQ⟩ kind hk S t ht gr hg`. Establish `key` using `val_self (hs := hs) (hv := hv) (N := N) (pl := pl) (P := P) (hP := hP) (Po := Po) (hQ := hQ) (kind := kind) (hk := hk) (S := S) (t := t) (ht := ht) (gr := gr) (hg := hg)`. Conclude with `WithBot.coe_le_coe.1 (hν.trans key)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valO_self (ν : ℝ) (hν : (ν : EReal) ≤ Y.nuPlE Ls n) (hs : SelfSep Y p) (hv : ValEqSelfSt Y p H Ls n)
     {N : ℕ} (pl : Fin N × Fin 2 ↪ Fin n) : ValO (fun o => rdS Y p H o) N (imgFamS Y p Ls n pl) ν := by
@@ -41,7 +41,7 @@ variable (Y : FBChart C V O dd) (p : ∀ o, SelfData Y 2 (I0 o)) (H : ∀ o, (Y.
   (Ls : LetSys C dd) (n : ℕ)
 
 /- English proof (translation)
-The claim follows from `valBlocksC_G (hV := valO_self (hν := hν) (hs := hs) (hv := hv) (pl := pl)) (hJ := jetProd) (F := F) (nW := nW) (hn := hn) (gaC := gaC) (hM := hM) (hA := blkAdmC (F := F) (gaC := gaC) (hA := hA) (hj := hj) (hga := hga))`.
+A detailed English derivation is pending.
 -/
 theorem valBlocksC_chart (ν : ℝ) (hν : (ν : EReal) ≤ Y.nuPlE Ls n) (hs : SelfSep Y p) (hv : ValEqSelfSt Y p H Ls n)
     {N : ℕ} (pl : Fin N × Fin 2 ↪ Fin n) (F : ∀ o, Flag (rdS Y p H o)) (nW : ℕ) (hn : nW ≤ 2 * N + 1)

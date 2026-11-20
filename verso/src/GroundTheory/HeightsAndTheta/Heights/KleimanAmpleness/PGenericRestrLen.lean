@@ -19,13 +19,13 @@ variable {S : Type u} [CommRing S] {F : Type u} [Field F] [Algebra S F] [IsFract
   {Ω : Type w} [Field Ω] [Algebra S Ω] [Algebra F Ω] [IsScalarTower S F Ω]
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun z _ => ∃ t ∈ nonZeroDivisors S, t • z ∈ P) (fun z hz => ⟨1, one_mem _, by rwa [one_smul]⟩) ⟨1, one_mem _, by rw [smul_zero]; exact P.zero_mem⟩ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `a b _ _ ⟨t, ht, ha⟩ ⟨t', ht', hb⟩`. Use `⟨t * t', mul_mem ht ht', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `P.add_mem ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `P.smul_mem t' ha`. Rewrite using `[mul_smul]`. Conclude with `P.smul_mem t hb`. Introduce and unpack `c z _ ⟨t, ht, hz⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨a, s⟩, hc⟩` from `IsLocalization.surj (nonZeroDivisors S) c`. Use `⟨s * t, mul_mem s.2 ht, ?_⟩` and prove the remaining obligations. Establish `key : ((s : S) * t) • (c • z) = a • (t • z)`. Simplify using `only [Algebra.smul_def, IsScalarTower.algebraMap_apply S F Ω, map_mul] at hc ⊢`. Rewrite using `[← hc, map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `P.smul_mem a hz`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_of_mem_span (P : Submodule S Ω) {z : Ω}
     (hz : z ∈ Submodule.span F (P : Set Ω)) : ∃ t ∈ nonZeroDivisors S, t • z ∈ P := by
@@ -62,11 +62,11 @@ def spanQuotMap (A B : Submodule S Ω) :
     (fun _a ha => LinearMap.mem_ker.mpr ((Submodule.Quotient.mk_eq_zero _).mpr (Submodule.subset_span ha)))
 
 /- English proof (translation)
-Rewrite using `[← (Algebra.lsmul S (A := F) S _).commutes]`. Conclude with `(IsLocalization.map_units F s).map _`. Use `surj y := by`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨t, ht, hz⟩` from `exists_smul_mem_of_mem_span A z.2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(Submodule.Quotient.mk ⟨t • (z : Ω), hz⟩, ⟨t, ht⟩), rfl⟩`. Use `exists_of_eq {a₁ a₂} h := by`. Take `⟨a₁, rfl⟩` from `Submodule.Quotient.mk_surjective _ a₁`. Take `⟨a₂, rfl⟩` from `Submodule.Quotient.mk_surjective _ a₂`. Establish `hB : (a₁ : Ω) - a₂ ∈ Submodule.span F (B : Set Ω)` using `(Submodule.Quotient.eq ((Submodule.span F (B : Set Ω)).comap (Submodule.span F (A : Set Ω)).subtype)).mp h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht, htB⟩` from `exists_smul_mem_of_mem_span B hB`. Use `⟨⟨t, ht⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submonoid.smul_def, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`. Express the relevant statement in the definitionally equal form `t • (a₁ : Ω) - t • (a₂ : Ω) ∈ B`. Rewrite using `[← smul_sub]` and apply the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isLocalizedModule_spanQuotMap (A B : Submodule S Ω) :
     IsLocalizedModule (nonZeroDivisors S) (spanQuotMap F A B) where
@@ -89,7 +89,7 @@ theorem isLocalizedModule_spanQuotMap (A B : Submodule S Ω) :
     rwa [← smul_sub]
 
 /- English proof (translation)
-Use `isLocalizedModule_spanQuotMap (F := F) A B` as an intermediate fact. Rewrite using `[Module.length_eq_rank, Cardinal.toNat_toENat]`. Express the relevant statement in the definitionally equal form `Module.finrank F _ = _`. Rewrite using `[IsLocalization.finrank_eq F (nonZeroDivisors S) le_rfl]`. Conclude with `IsLocalizedModule.finrank_eq (p := nonZeroDivisors S) (f := spanQuotMap F A B) (hp := le_rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_spanQuot_toNat (A B : Submodule S Ω) :
     (Module.length F (Submodule.span F (A : Set Ω) ⧸
@@ -108,13 +108,11 @@ section Ideal
 variable {S : Type u} [CommRing S] {F : Type u} [Field F] [Algebra S F] {N : ℕ}
 
 /- English proof (translation)
-Use `set T := Submodule.span F (MvPolynomial.map (algebraMap S F) '' (qq : Set (Poly S N)))`. Establish `hX : ∀ (i : Fin (N + 1)) (g : Poly F N), g ∈ T → X i * g ∈ T` using `fun i g hg => by`. Use `Submodule.span_induction (p := fun g _ => X i * g ∈ T) ?_ (by rw [mul_zero]; exact T.zero_mem) (fun a b _ _ ha hb => by rw [mul_add]; exact T.add_mem ha hb) (fun c g _ hg => by rw [mul_smul_comm]; exact T.smul_mem c hg) hg` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `Submodule.subset_span ⟨X i * p, qq.mul_mem_left _ hp, by rw [map_mul, map_X]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction.
 
-Establish `hmul : ∀ (c g : Poly F N), g ∈ T → c * g ∈ T` using `fun c => by`. Proceed by induction on `c using MvPolynomial.induction_on with`. Consider the case `C a => intro g hg`. Rewrite using `[← smul_eq_C_mul]`. Conclude with `T.smul_mem a hg`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add p q hp hq => intro g hg`. Rewrite using `[add_mul]`. Conclude with `T.add_mem (hp g hg) (hq g hg)`. Consider the case `mul_X p i hp => intro g hg`. Rewrite using `[mul_assoc]`.
-
-Conclude with `hp _ (hX i g hg)`. Use `Submodule.span_induction (p := fun g _ => g ∈ T) (fun g hg => Submodule.subset_span hg) T.zero_mem (fun a b _ _ ha hb => T.add_mem ha hb) (fun c g _ hg => hmul c g hg) hf` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_span_of_mem_map (qq : Ideal (Poly S N)) {f : Poly F N}
     (hf : f ∈ qq.map (MvPolynomial.map (algebraMap S F))) :
@@ -138,17 +136,17 @@ theorem mem_span_of_mem_map (qq : Ideal (Poly S N)) {f : Poly F N}
 variable [IsFractionRing S F] {Ω : Type w} [Field Ω] [Algebra S Ω] [Algebra F Ω] [IsScalarTower S F Ω]
 
 /- English proof (translation)
-Use `SubSystem.ext_sub fun I => le_antisymm ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `idealMod _ I ≤ Submodule.span (chartRing F x I) (idealMod qq I : Set Ω)`. Unfold `idealMod`. Rewrite using `[span_extend_span]`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨f, s, e, hf, hs, hfe, hse, rfl⟩`. Take `⟨s', hs', rfl⟩` from `exists_monos_map (S := S) hs`. Establish `hinj : Function.Injective (algebraMap S F)` using `IsFractionRing.injective S F`. Establish `hse' : s'.IsHomogeneous e` using `fun d hd => hse (by`. Rewrite using `[coeff_map]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => hd (hinj (h.trans (map_zero _).symm)))`. Rewrite using `[SetLike.mem_coe, ← homogeneousComponent_eq_self hfe, aeval_map_algebraMap]`. Use `Submodule.span_induction (p := fun g _ => aeval x (homogeneousComponent e g) / aeval x s' ∈ Submodule.span (chartRing F x I) {a | ∃ (f s : Poly S N) (e : ℕ), f ∈ qq ∧ s ∈ monos I.1 ∧ f.IsHomogeneous e ∧ s.IsHomogeneous e ∧ a = aeval x f / aeval x s}) ?_ ?_ ?_ ?_ (mem_span_of_mem_ …` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Rewrite using `[homogeneousComponent_map_eq, aeval_map_algebraMap]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨_, s', e, hq p hp e, hs', homogeneousComponent_isHomogeneous e p, hse', rfl⟩`. Rewrite using `[map_zero, map_zero, zero_div]`. Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`. Rewrite using `[map_add, map_add, add_div]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ ha hb`. Introduce `c g _ hg`. Rewrite using `[map_smul, map_smul, smul_div_assoc]`. Conclude with `Submodule.smul_of_tower_mem _ c hg`. Express the relevant statement in the definitionally equal form `Submodule.span (chartRing F x I) (idealMod qq I : Set Ω) ≤ idealMod _ I`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Unfold `idealMod`. Rewrite using `[span_extend_span]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, e, hf, hs, hfe, hse, rfl⟩`. Conclude with `⟨map (algebraMap S F) f, map (algebraMap S F) s, e, Ideal.mem_map_of_mem _ hf, map_mem_monos hs, hfe.map _, hse.map _, by rw [aeval_map_algebraMap, aeval_map_algebraMap]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem idealSys_map_eq_extend (x : Fin (N + 1) → Ω) (qq : Ideal (Poly S N))
     (hq : ∀ p ∈ qq, ∀ d : ℕ, homogeneousComponent d p ∈ qq) :
@@ -188,7 +186,7 @@ theorem idealSys_map_eq_extend (x : Fin (N + 1) → Ω) (qq : Ideal (Poly S N))
 end Ideal
 
 /- English proof (translation)
-Introduce `S _ _ F _ _ _ Ω _ _ _ _ N x Q qq hq`. Unfold `restrLen`. Rewrite using `[idealSys_map_eq_extend x qq hq, ← SubSystem.extend_twist, ← span_secs_eq_secs_extend, ← span_secs_eq_secs_extend, length_spanQuot_toNat]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem GenericRestrLen.proof : GenericRestrLen.Statement.{u, w} := by
   intro S _ _ F _ _ _ Ω _ _ _ _ N x Q qq hq

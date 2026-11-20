@@ -5,20 +5,18 @@ open NumberField IsDedekindDomain Matrix Polynomial GlobalTheory.CuspRep GlobalT
 open scoped Classical
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qh67.imag_of_sq hd h`.
+A detailed English derivation is pending.
 -/
 private theorem imag_of_sq {c : ℂ} {d : ℕ} (hd : 0 < d) (h : c ^ 2 = -(d : ℂ)) :
     (starRingEnd ℂ) c = -c ∧ c ≠ 0 :=
   _root_.UpperTheory.Reformulated.B.Qh67.imag_of_sq hd h
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun φ => InfinitePlace.mk φ) f]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hfib : Finset.univ.filter (fun φ : E →+* ℂ => InfinitePlace.mk φ = v) = {v.embedding, ComplexEmbedding.conjugate v.embedding}`. Use extensionality with `φ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Use `left`. Conclude with `h.symm`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `right`. Rewrite using `[h]`. Conclude with `(ComplexEmbedding.involutive_conjugate E φ).symm`. Introduce and unpack `(rfl | rfl)`. Conclude with `InfinitePlace.mk_embedding v`.
-
-Rewrite using `[InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`. Rewrite using `[hfib, Finset.sum_pair (hc _).symm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_emb {E : Type} [Field E] [NumberField E]
     (hc : ∀ φ : E →+* ℂ, ComplexEmbedding.conjugate φ ≠ φ) (f : (E →+* ℂ) → ℤ) :
@@ -40,33 +38,31 @@ private theorem sum_emb {E : Type} [Field E] [NumberField E]
   rw [hfib, Finset.sum_pair (hc _).symm]
 
 /- English proof (translation)
-Introduce `E _ _ _ n d x hd hx W m hm τ`. Establish `hsq : ∀ φ : E →+* ℂ, (φ x) ^ 2 = -(d : ℂ)` using `fun φ => by`. Rewrite using `[← map_pow, hx]`. Simplify using the standard rewrite rules. Establish `hτ0 : τ x ≠ 0` using `(imag_of_sq hd (hsq τ)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcj : ∀ φ : E →+* ℂ, ComplexEmbedding.conjugate φ x = -φ x` using `fun φ => by`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Conclude with `(imag_of_sq hd (hsq φ)).1`. Establish `hne : ∀ φ : E →+* ℂ, ComplexEmbedding.conjugate φ ≠ φ` using `fun φ h => by`. Establish `h1` using `hcj φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h]`. Establish `h2 : φ x ≠ 0` using `(imag_of_sq hd (hsq φ)).2`. Conclude with `h2 (self_eq_neg.1 h1)`. Establish `hpm : ∀ φ : E →+* ℂ, φ x = τ x ∨ φ x = -τ x` using `fun φ => sq_eq_sq_iff_eq_or_eq_neg.1 ((hsq φ).trans (hsq τ).symm)`. Establish `hnn : τ x ≠ -τ x` using `fun h => hτ0 (self_eq_neg.1 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hl0 : ∀ v : InfinitePlace E, ∑ j, lamOf W m v.embedding j = n * m v` using `fun v => by`. Simplify using `[lamOf, InfinitePlace.mk_embedding]`. Establish `hl1 : ∀ v : InfinitePlace E, ((∑ j, lamOf W m (ComplexEmbedding.conjugate v.embedding) j : ℕ) : ℤ) = ∑ i, (W v).w i + n * m v` using `fun v => by`. Establish `hv : InfinitePlace.mk (ComplexEmbedding.conjugate v.embedding) = v`. Rewrite using `[InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h1 : ∀ j, lamOf W m (ComplexEmbedding.conjugate v.embedding) j = ((W v).w j + m v).toNat` using `fun j => by`. Unfold `lamOf`. Rewrite using `[hv, if_neg (hne _)]`. Simplify using `only [h1]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl fun i _ => Int.toNat_of_nonneg (hm v i), Finset.sum_add_distrib]`. Simplify using the standard rewrite rules. Use `set F : (E →+* ℂ) → ℤ := fun φ => (((if φ x = -τ x then 1 else 0) * ∑ j, lamOf W m φ j : ℕ) : ℤ) with hF`. Establish `hFv : ∀ v : InfinitePlace E, F v.embedding + F (ComplexEmbedding.conjugate v.embedding) = n * m v + if v.embedding x = -τ x then 0 else ∑ i, (W v).w i` using `fun v => by`. Simplify using `only [hF, hcj]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hpm v.embedding with h | h` into its components or cases. Establish `h1 : v.embedding x ≠ -τ x` using `by rw [h]; exact hnn`. Establish `h2 : -v.embedding x = -τ x` using `by rw [h]`. Rewrite using `[if_neg h1, if_pos h2, if_neg h1, zero_mul, one_mul, hl1]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : -v.embedding x ≠ -τ x` using `by rw [h, neg_neg]; exact hnn`. Rewrite using `[if_pos h, if_neg h2, if_pos h, zero_mul, one_mul, hl0]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hF1 : ∑ φ, F φ = mOf x W (∑ v, ((∑ i, (W v).w i) + n * m v)) τ`. Rewrite using `[sum_emb hne, Finset.sum_congr rfl fun v _ => hFv v]`. Unfold `mOf`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> ring`. Establish `hmem : ComplexEmbedding.conjugate τ ∈ Finset.univ.erase τ` using `Finset.mem_erase.2 ⟨hne τ, Finset.mem_univ _⟩`. Establish `hF2 : ∑ φ, F φ = F τ + (F (ComplexEmbedding.conjugate τ) + ∑ φ ∈ (Finset.univ.erase τ).erase (ComplexEmbedding.conjugate τ), F φ)`. Rewrite using `[Finset.add_sum_erase _ F hmem, Finset.add_sum_erase _ F (Finset.mem_univ τ)]`. Establish `hFτ : F τ = 0` using `by simp only [hF]; rw [if_neg hnn]; simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hFc : F (ComplexEmbedding.conjugate τ) = n * m (InfinitePlace.mk τ) + if τ = (InfinitePlace.mk τ).embedding then ∑ i, (W (InfinitePlace.mk τ)).w i else 0`. Simplify using `only [hF]`. Rewrite using `[if_pos (hcj τ), one_mul]`. Use `split_ifs with h`. Use `conv_lhs => rw [h]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl1]`. Expand and normalize the polynomial expressions, which then agree. Establish `h' : ComplexEmbedding.conjugate τ = (InfinitePlace.mk τ).embedding`. Break down `InfinitePlace.embedding_mk_eq τ with h1 | h1` into its components or cases. Conclude with `absurd h1.symm h`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Conclude with `h1.symm`. Rewrite using `[h', hl0]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hF1, hF2, hFτ, hFc, zero_add]`.
-
-Simplify using `only [hF]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pExpSum_of :
     UpperTheory.Gal.CertificateRingHomMap.ExpSum := by

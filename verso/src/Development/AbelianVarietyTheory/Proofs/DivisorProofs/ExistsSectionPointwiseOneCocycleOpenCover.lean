@@ -25,7 +25,7 @@ def liftU {D E : Type} [CommRing D] [Algebra R D] [CommRing E] [Algebra R E] (t 
     simpa using h.pow m)
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `[liftU]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem liftU_comp {D E : Type} [CommRing D] [Algebra R D] [CommRing E] [Algebra R E] (t : D)
     (ψ : D →ₐ[R] E) (h : IsUnit (ψ t)) :
@@ -34,9 +34,9 @@ theorem liftU_comp {D E : Type} [CommRing D] [Algebra R D] [CommRing E] [Algebra
   simp [liftU]
 
 /- English proof (translation)
-Apply `IsLocalization.algHom_ext (Submonoid.powers t)` to reduce the goal to its premises. Use extensionality with `r`. Establish `h1` using `DFunLike.congr_fun (liftU_comp t ψ h) r`. Establish `h2` using `DFunLike.congr_fun (liftU_comp t (θ.comp ψ) (h.map θ)) r`. Simplify using `only [AlgHom.comp_apply] at h1 h2 ⊢`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(congrArg θ h1).trans h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem comp_liftU {D E E' : Type} [CommRing D] [Algebra R D] [CommRing E] [Algebra R E] [CommRing E']
     [Algebra R E'] (t : D) (ψ : D →ₐ[R] E) (h : IsUnit (ψ t)) (θ : E →ₐ[R] E') :
@@ -55,15 +55,15 @@ end
 open GlobalTheory.PtExt.CocSec in
 
 /- English proof (translation)
-Introduce `R _ X K W hW u hu D _ _ x`. Take `⟨n, s, hs, hsm⟩` from `GlobalTheory.T.exists_basicOpen_cover_algebraPoint_liesInCover R X K W hW D x`. Set `k : Fin n → ∀ (E : Type) [CommRing E] [Algebra R E], (D →ₐ[R] E) → E` to `fun a E _ _ ψ ↦ if h : IsUnit (ψ (s a)) then u _ E (liftU (s a) ψ h) (spOver (IsScalarTower.toAlgHom R D (Localization.Away (s a))) ≫ x) else 0`. Establish `hk : ∀ (a : Fin n) (E : Type) [CommRing E] [Algebra R E] (E' : Type) [CommRing E'] [Algebra R E'] (ψ : D →ₐ[R] E) (θ : E →ₐ[R] E'), IsUnit (ψ (s a)) → k a E' (θ.comp ψ) - θ (k a E ψ) = u E E' θ (spOver ψ ≫ x)`. Introduce `a E _ _ E' _ _ ψ θ h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : IsUnit ((θ.comp ψ) (s a))` using `h.map θ`. Simplify using `only [k, dif_pos h, dif_pos h']`. Rewrite using `[← comp_liftU (s a) ψ h θ, hu _ _ _ (liftU (s a) ψ h) θ _ (hsm a), ← Category.assoc, spOver_comp, liftU_comp]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨e, he1, he2⟩` from `GlobalTheory.T.cech_first_cohomology_away_natural R D n s hs (fun a b E _ _ ψ ↦ k a E ψ - k b E ψ) (fun a b E _ _ E' _ _ ψ θ ha hb ↦ by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hk a E E' ψ θ ha`. Establish `h2` using `hk b E E' ψ θ hb`. Simplify using `only [map_sub]`. Take the linear combination `h1 - h2)`. Use the proof step `(fun a b c E _ _ ψ _ _ _ ↦ by ring)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ⟩` from `GlobalTheory.T.pointwiseCocycle_local_sections_glue_basicOpen_cover R X K W u hu D x n s hs (fun a E _ _ ψ ↦ k a E ψ + e a E ψ) (fun a E _ _ E' _ _ ψ θ ha ↦ by`. Establish `h1` using `hk a E E' ψ θ ha`. Establish `h2` using `he1 a E E' ψ θ ha`. Simplify using `only [map_add]`. Take the linear combination `h1 + h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use the proof step `(fun a b E _ _ ψ ha hb ↦ by`. Establish `h` using `he2 a b E ψ ha hb`. Take the linear combination `h)`. Conclude with `⟨σ, hσ⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PtExt.CocSec.exists_section : ∀ (R : Type) [CommRing R] (X : Over (Sp R)) (K : Type) (W : K → X.left.Opens), ⨆ i, W i = ⊤ → ∀ u : Fn1 X, IsCoc W u → ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt X D), ∃ σ : ∀ (E : Type) [CommRing E] [Algebra R E], (D →ₐ[R] E) → E, ∀ (E : Type) [CommRing E] [Algebra R E] (E' : Type) [CommRing E'] [Algebra R E'] (ψ : D →ₐ[R] E) (θ : E →ₐ[R] E'), Sm W (spOver ψ ≫ x) → σ E' (θ.comp ψ) - θ (σ E ψ) = u E E' θ (spOver ψ ≫ x) := by
   intro R _ X K W hW u hu D _ _ x

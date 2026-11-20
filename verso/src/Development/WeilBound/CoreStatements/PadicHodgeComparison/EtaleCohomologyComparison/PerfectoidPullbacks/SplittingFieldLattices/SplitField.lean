@@ -22,45 +22,45 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace CrystallineSemistableComparison.Pb
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.CompanionTheory.GrSplitField.nonempty_grSplit`.
+A detailed English derivation is pending.
 -/
 theorem split_field : ∀ {K B : Type} [Field K] [CommRing B] [Algebra K B] {I : Ideal B} (γ : DividedPowers I) (m : ℕ),
     pdP γ m = ⊥ → Nonempty (GrSplit K γ m) := @GlobalTheory.CompanionTheory.GrSplitField.nonempty_grSplit
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.CompanionTheory.LecShift.leC_shift`.
+A detailed English derivation is pending.
 -/
 theorem leC_shift : ∀ {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {I : Ideal A} (γ : DividedPowers I) {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) (l s : ℕ) (𝒱 : Set X.Opens) (i : ℕ) (a : A), a ∈ pdP γ i → ∀ r : ℤ,
     (smO γ q l s 𝒱).LeC a (sFil _ (r - i)) (sFil _ r) := @GlobalTheory.CompanionTheory.LecShift.leC_shift
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.CompanionTheory.BcLoc.bc_single`.
+A detailed English derivation is pending.
 -/
 theorem bc_loc : KH.LocBc → KH.PolyTf → BcOn True := @GlobalTheory.CompanionTheory.BcLoc.bc_single
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.CompanionTheory.GlobBc.main`.
+A detailed English derivation is pending.
 -/
 theorem bc_glob : KH.GlobBcSt → BcOn True → BcOn False := @GlobalTheory.CompanionTheory.GlobBc.main
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.CompanionTheory.FinOverO.finO`.
+A detailed English derivation is pending.
 -/
 theorem fin_o : KH.LocGr → KH.PolyTf → KH.GlobSerreSt → KH.GrCechFin → FinO := @GlobalTheory.CompanionTheory.FinOverO.finO
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.CompanionTheory.LatticeFinite.afgA_of_bcOn_finO`.
+A detailed English derivation is pending.
 -/
 theorem afg_a : BcOn False → FinO → AfgA := @GlobalTheory.CompanionTheory.LatticeFinite.afgA_of_bcOn_finO
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.CompanionTheory.LiftLat.liftA_of_afgA`.
+A detailed English derivation is pending.
 -/
 theorem lift_a : AfgA → LiftA := @GlobalTheory.CompanionTheory.LiftLat.liftA_of_afgA
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.CompanionTheory.BasisBase.basisB_of_bcOn`.
+A detailed English derivation is pending.
 -/
 theorem basis_b : BcOn False → KH.KIso → BasisB := @GlobalTheory.CompanionTheory.BasisBase.basisB_of_bcOn
 

@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ConjCharUnique
 
 /- English proof (translation)
-Use `MonoidHom.ext fun x => mul_inv_eq_one.1 (GlobalTheory.HeckeFinTrivial.eq_one_of_trivial_on_finite D (μ' * μ''⁻¹) ⟨h1.1.mul g1.1.inv, fun k => mul_inv_eq_one.2 ((h1.2 k).trans (g1.2 k).symm)⟩ (fun y hy => mul_inv_eq_one.2 ?_) x)` and prove the remaining obligations. Take `⟨a, ha, ha'⟩` from `h y hy`. Take `⟨b, hb, hb'⟩` from `g y hy`. Take `rfl : a = b` from `D.what₂.embLL.injective (ha.symm.trans hb)`. Conclude with `Subtype.ext (ha'.trans hb'.symm)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_of_conj_on_finite {D : D7} {σ : D.what₂.LL →+* ℂ} {μ μ' μ'' : (AE D)ˣ →* Circle}
     (h1 : IsHeckeChar D μ') (g1 : IsHeckeChar D μ'')
@@ -30,7 +30,7 @@ theorem eq_of_conj_on_finite {D : D7} {σ : D.what₂.LL →+* ℂ} {μ μ' μ''
   exact Subtype.ext (ha'.trans hb'.symm)
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F _ i σ`. Use `⟨fun μ' μ'' h g => eq_of_conj_on_finite (σ := σ) (μ := R.mu0 ((i : ℕ) + 1)) h.1 g.1 (fun x hx => (h.2.2.2.1 x hx).elim fun y hy => ⟨_, hy⟩) (fun x hx => (g.2.2.2.1 x hx).elim fun y hy => ⟨_, hy⟩), fun η' η'' h g => GlobalTheory.UnramCharUnique.isEtaConj_unique D σ R.eta η' η'' h …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem conjChar_unique : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m), ∀ (σ : D.what₂.LL →+* ℂ), (∀ μ' μ'', ChiAt R i σ μ' → ChiAt R i σ μ'' → μ' = μ'') ∧ ∀ η' η'', IsEtaConj σ R.eta η' → IsEtaConj σ R.eta η'' → η' = η'' := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F _ i σ

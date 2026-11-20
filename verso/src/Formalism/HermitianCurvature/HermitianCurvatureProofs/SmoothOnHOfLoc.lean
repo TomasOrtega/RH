@@ -22,13 +22,13 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Simplify using `[D.ptSize]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ptSize_app (h : C.LPt) (s : ℕ) (t : ℂ) : D.ptSize (h ++ [(s, t)]) = D.ptSize h + s := by
   simp [D.ptSize]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', hfe⟩` from `hf g₀ hg₀`. Conclude with `⟨U, f', hU, hgU, hf', fun g hg hgG => hfe g hg hgG⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem smoothOnH_of_loc {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {f : B.Mat k r → E}
     (hf : ∀ x ∈ B.GV k r, Formalism.FourierDecayAlt.P.CapelliWordSumExpansion.Loc ⊤ f x) : SmoothOnH (Hpk k r) f := by
@@ -37,37 +37,35 @@ theorem smoothOnH_of_loc {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {
   exact ⟨U, f', hU, hgU, hf', fun g hg hgG => hfe g hg hgG⟩
 
 /- English proof (translation)
-Use `set σ : B.Mat k r := (Matrix.of x.1 : B.Mat k r)⁻¹ * (Matrix.of x.2 : B.Mat k r)⁻¹ with hσ`. Use `set Gσ : B.Mat k r → (Wq →L[ℂ] Wp) := fun g => G (σ * g) with hGσdef`. Establish `hGσ : KB.CptCoef Bs Gσ` using `cpt_left Bs hG hx`. Establish `hp` using `inSS_pL Bs hx`. Establish `hσS : σ ∈ Sset k r Bs.z` using `⟨(Matrix.of x.1 : B.Mat k r)⁻¹, Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hx.1, (Matrix.of x.2 : B.Mat k r)⁻¹, Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_inv hx.2, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1S : (1 : B.Mat k r) ∈ Sset k r Bs.z` using `⟨1, Formalism.FourierDecayAlt.P.BigCellZetaMinors.one_uw _, 1, Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_one, (Matrix.mul_one 1).symm⟩`. Establish `h1S' : (1 : B.Mat k r) ∈ Sset k r Bs.z'` using `⟨1, Formalism.FourierDecayAlt.P.BigCellZetaMinors.one_uw _, 1, Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_one, (Matrix.mul_one 1).symm⟩`. Establish `hdσ : ∀ (g : B.Mat k r) (l : Fin (r + 2)), Dmin k r Bs.z Bs.z' (σ * g) l = Dmin k r Bs.z Bs.z' g l`. Introduce `g l`. Use `Formalism.FourierDecayAlt.P.BigCellZetaMinors.dmin_sgs Bs hp g l` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[sgs_pL]`. Then use the resulting hypothesis. Establish `hsz : D.ptSize h + s = r + 1` using `by rw [← ptSize_app h s t]; exact hq.2`. Establish `ht : t ≠ 0` using `(hq.1 (s, t) (by simp)).2`. Use `set i0 := D.ptSize h with hi0`. Use `set hh := D.ptMatN h i0 with hhh`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hZ : ∀ a b : Fin (r + 1), Zhat k r Bs.z Bs.z' γ a b = C3.Zb i0 s hh t a.val b.val`. Introduce `a b`. Rewrite using `[hZγ]`. Conclude with `ptMatN_zb h s t (r + 1) hsz.symm a b`. Establish `hDlast : Dmin k r Bs.z Bs.z' γ (Fin.last (r + 1)) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Establish `hTT : 0 ≤ Tz k r Bs.z * Tz k r Bs.z'` using `mul_nonneg Bs.T_pos.le Bs.T'_pos.le`. Establish `: Gf k r Bs.z Bs.z' γ ≤ 0`. Unfold `Gf`. Rewrite using `[h0, map_zero]`.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use polynomial arithmetic with `[Complex.normSq_nonneg (Dmin k r Bs.z Bs.z' γ ⟨r, by omega⟩)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdet : hh.det ≠ 0`. Introduce `h0`. Apply `hDlast` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[dmin_zb Bs.z Bs.z' γ i0 s hh t hZ]`. Use `(Formalism.FourierDecayAlt.P.SignAntidiagonal.derivative_leading_zb i0 s hh t).2` as an intermediate fact. Rewrite using `[show ((Fin.last (r + 1) : Fin (r + 2)) : ℕ) = i0 + s by simp; omega, this, h0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hT' : herm (Hpk k r) Bs.z' Bs.z' ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Use `Bs.T'_pos` as an intermediate fact. Unfold `Tz at this`. Rewrite `this` using `[h0]`. Simplify using `at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n0, hn0, yb, hyb, hzy, hnf1, hnf2⟩` from `nf_top Bs.z Bs.z' Bs.z'_mem hT' γ hγ i0 s hs hsz hh hdet t ht hZ`. Establish `hn0N : n0 ∈ Formalism.QuantumDeterminants.Nset k r` using `stabilizer_mem_unipotent hn0`. Establish `hn0S : n0 ∈ Sset k r Bs.z'` using `⟨1, Formalism.FourierDecayAlt.P.BigCellZetaMinors.one_uw _, n0, hn0N, (Matrix.one_mul n0).symm⟩`. Establish `hx₁G : γ * n0 ∈ B.GV k r` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hγ hn0N.1`. Establish `hZ₁ : ∀ a b : Fin (r + 1), Zhat k r Bs.z Bs.z' (γ * n0) a b = C3.Zb i0 s hh t a.val b.val`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `a b`. Rewrite using `[corner_matrix_right_translate Bs.z Bs.z' γ n0 hn0]`. Conclude with `hZ a b`. Establish `hD₁ : ∀ l : Fin (r + 2), Dmin k r Bs.z Bs.z' (γ * n0) l = Dmin k r Bs.z Bs.z' γ l`. Introduce `l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `Dmin`. Rewrite using `[corner_matrix_right_translate Bs.z Bs.z' γ n0 hn0]`. Use `set K : B.Mat k r → (Wq →L[ℂ] Wp) := PBG.Kr Bs Gσ with hKdef`. Establish `hKloc` using `loc_kr Bs hGσ`. Establish `hKn0 : ∀ g, K (g * n0) = K g`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Rewrite using `[hKdef, PBG.kr_rightEq Bs Gσ g n0 hn0N, character_stabilizer_eq_one Bs.z'_mem cStd hn0, one_smul]`. Establish `hKσ : ∀ g, K g = PBG.Kr Bs G (σ * g)` using `fun g => kr_left Bs G σ g`. Establish `hR : ∀ g ∈ Q.Glev k r 0 ∩ Set.univ, ∀ p q, C3.InNp k r p q → Q.EH k r p q K g = C3.dpsiP k r Bs.z' p q • K g` using `fun g _ p q hpq => PBG.kr_rule Bs Gσ g p q hpq`. Take `⟨c, hc, hcy⟩` from `top_poly isOpen_univ Bs.z Bs.z' yb i0 s hs hsz hh t hdet ht (γ * n0) ⟨(Formalism.FourierDecayAlt.P.CapelliUnderIntegral.glev0 _).2 hx₁G, Set.mem_univ _⟩ Bs.z'_mem hyb hzy hnf1 hnf2 hZ₁ K (smoothLev_of_loc hKloc) hR`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hc, hKn0, hKσ]`. Rewrite using `[← hcy y, hD₁] set u : ℂ := (y : ℂ) + ((2 * r + k : ℕ) : ℂ) / 2 with hu`. Establish `hX1` using `(Formalism.FourierDecayAlt.P.operators_commute_translations' (Wq →L[ℂ] Wp) k r Bs.z Bs.z' r le_rfl u 0 K Bs.z_mem Bs.z'_mem (smoothOnH_of_loc hKloc) 1 h1S n0 hn0S γ hγ).1`. Establish `e1 : (fun g => K (1 * g * n0)) = K`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[Matrix.one_mul, hKn0]`. Rewrite `hX1` using `[e1, Matrix.one_mul]`. Rewrite using `[← hX1]`. Establish `hleft : ∀ g ∈ B.GV k r, PBN.aaTop Bs y G (σ * g) = PBN.aaTop Bs y Gσ g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg`. Unfold `PBN.aaTop`. Rewrite using `[hdσ]`. Establish `hX0` using `(Formalism.FourierDecayAlt.P.operators_commute_translations' (Wq →L[ℂ] Wp) k r Bs.z Bs.z' r le_rfl u 0 G Bs.z_mem Bs.z'_mem (smoothOnH_of_ckOn hG.1) σ hσS 1 h1S' g hg).1`. Establish `e2 : (fun x => G (σ * x * 1)) = Gσ` using `by funext x; rw [Matrix.mul_one]`.
-
-Rewrite `hX0` using `[e2, Matrix.mul_one]`. Rewrite using `[hX0]`. Establish `hKA'` using `hKA k r Wp Wq Bs Gσ hGσ u γ hγ`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pt_poly (hKA : KrAA) (Bs : B.RealPlaceData k r Wp Wq) {G : B.Mat k r → (Wq →L[ℂ] Wp)} (hG : KB.CptCoef Bs G)
     (h : C.LPt) (s : ℕ) (t : ℂ) (hs : 2 ≤ s) (hq : D.IsLocPt (h ++ [(s, t)]) (r + 1)) {γ : B.Mat k r}

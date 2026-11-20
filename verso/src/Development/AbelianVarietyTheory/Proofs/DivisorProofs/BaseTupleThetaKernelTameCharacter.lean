@@ -17,29 +17,27 @@ namespace GlobalTheory.OnBaseKer
 open Classical in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC i v hv hmu ω φ hK`. Take `⟨χ, ξR, hchr, hres, hweil, hvec⟩` from `hK`. Establish `hD` using `GlobalTheory.BigOn.isDelta_delAt_ownAt R.C v`. Take `⟨ψ, Qw, hψ, hxi⟩` from `hmu v hv`. Establish `hL` using `hC.lev`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : ∀ (P : HeightOneSpectrum (𝓞 D.host.E)) (n : ℕ), ((n : 𝓞 D.host.E) ∈ P.asIdeal ↔ Formalism.EigenvalueLevelCeiling.plc P ∣ n)` using `fun P n => by`. Unfold `Formalism.EigenvalueLevelCeiling.plc`. Rewrite using `[← ringChar.spec, ← map_natCast (Ideal.Quotient.mk P.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Establish `hstar : ∀ (n : ℕ) (c : 𝓞 D.host.E), (c : D.host.E) = star ((n : 𝓞 D.host.E) : D.host.E) → c = n`. Introduce `n c h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `h.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `⟨χ, ξR, ⟨hchr, hD.fin, hD.triv, hD.tame, ?_, ?_, ?_, hres, hweil, hvec⟩⟩` and prove the remaining obligations. Introduce `PP hP`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP'` using `(Finset.mem_filter.1 hP).1`. Conclude with `⟨(hL.Q_pl _ PP hP').1, fun PP' hP'' => (hL.Q_pl _ PP hP').2 PP' (Finset.mem_filter.1 hP'').1⟩`. Introduce `PP hP`. Conclude with `(hL.Q_off _ PP (Finset.mem_filter.1 hP).1).1`. Introduce `PP`.
+Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hnu`. Establish `hover : ((ownAt D v : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Assume the negation of the conclusion as `h`. Conclude with `hnu (hD.unr PP h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hram : ¬ (R.xiH (R.mu v)).UnrAt PP`. Rewrite using `[hxi]`. Introduce `hu`. Take `⟨a, ha⟩` from `hψ.ord`. Establish `h15 : 15 ∣ Formalism.EigenvalueLevelCeiling.plc v ^ a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hD.ine PP hover _).1 fun x hx => ?_` and prove the remaining obligations. Establish `h1` using `hu x hx`. Rewrite `h1` using `[Formalism.L2.Host.HChar.loc_mul]`. Establish `h2 : ψ.loc PP x ^ (Formalism.EigenvalueLevelCeiling.plc v ^ a) = 1`. Establish `h3` using `congrArg (fun χ' : Formalism.L2.Host.HChar D.host.E => χ'.loc PP x) ha`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h3`. Rewrite using `[eq_inv_of_mul_eq_one_left h1, inv_pow, h2, inv_one]`. Establish `hl` using `Formalism.EigenvalueLevelCeiling.plc_prime v`. Establish `h3 : 3 = Formalism.EigenvalueLevelCeiling.plc v` using `(Nat.prime_dvd_prime_iff_eq Nat.prime_three hl).1 (Nat.prime_three.dvd_of_dvd_pow (dvd_trans (by norm_num) h15))`. Establish `h5 : 5 = Formalism.EigenvalueLevelCeiling.plc v` using `(Nat.prime_dvd_prime_iff_eq Nat.prime_five hl).1 (Nat.prime_five.dvd_of_dvd_pow (dvd_trans (by norm_num) h15))`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use linear arithmetic over natural numbers and integers. Break down `(hL.Q_ram _ PP).1 hram with h | ⟨PP', h, hc⟩` into its components or cases. Conclude with `Or.inl (Finset.mem_filter.2 ⟨h, hover⟩)`. Use `Or.inr ⟨PP', Finset.mem_filter.2 ⟨h, ?_⟩, hc⟩` and prove the remaining obligations. Take `⟨c', hc', he⟩` from `hc _ ((hmem PP' _).2 dvd_rfl)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hc'` using `[hstar _ _ he, hmem]`. Establish `heq` using `(Nat.prime_dvd_prime_iff_eq (Formalism.EigenvalueLevelCeiling.plc_prime PP) (Formalism.EigenvalueLevelCeiling.plc_prime PP')).1 hc'`. Rewrite `hover`, the goal using `[hmem]`. Conclude with `heq ▸ hover`. Introduce `h hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hover : ((ownAt D v : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Break down `h with h | ⟨PP', h, hc⟩` into its components or cases. Conclude with `(Finset.mem_filter.1 h).2`. Take `⟨c', hc', he⟩` from `hc _ (Finset.mem_filter.1 h).2`. Rewrite `hc'` using `[hstar _ _ he]`. Then use the resulting hypothesis.
-
-Establish `h1` using `(hD.ine PP hover 1).1 fun x hx => by rw [pow_one]; exact hu x hx`. Evaluate the numerical expressions using `at h1`.
+Establish an intermediate fact. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem kerDat_of_isBaseKernel : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m), ∀ (v : HeightOneSpectrum (𝓞 D.what₂.LL)), v ∈ R.twPl → R.tup_mu_on → ∀ ω φ, IsBaseKernel R i v (ownAt D v) ω φ → ∃ χ ξR, KerDat R i (R.C.delAt (Formalism.EigenvalueLevelCeiling.plc v)) χ ξR (placesOver R (R.mu v) (ownAt D v)) ω φ := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC i v hv hmu ω φ hK

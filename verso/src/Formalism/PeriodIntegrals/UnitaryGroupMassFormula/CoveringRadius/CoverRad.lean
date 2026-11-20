@@ -9,9 +9,9 @@ noncomputable section
 namespace PI.Tr2
 
 /- English proof (translation)
-Introduce `V _ _ _ M hd hspan κ hκ hdual x`. Use `haveI := hd`. Use `haveI : IsZLattice ℝ M := ⟨hspan⟩`. Take `⟨l, hl, hle⟩` from `transference_covering V M κ hκ (fun y hy0 hy => hdual y hy hy0) x`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[le_div_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem coverDiv : PI.TransferenceCoverDiv := by
   intro V _ _ _ M hd hspan κ hκ hdual x

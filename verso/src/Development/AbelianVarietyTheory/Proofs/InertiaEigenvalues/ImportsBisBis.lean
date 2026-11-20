@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.PowerMembershipInertiaEigenvalues
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro y hy`. Simplify using `using hy`. Consider the case `succ n ih`. Introduce `y hy`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ, Module.End.mul_apply]`. Conclude with `ih _ (hT y hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mem {k U : Type} [Field k] [AddCommGroup U] [Module k U] (T : Module.End k U)
     (Q : Submodule k U) (hT : ∀ y ∈ Q, (T : U → U) y ∈ Q) (n : ℕ) :
@@ -18,9 +18,9 @@ theorem pow_mem {k U : Type} [Field k] [AddCommGroup U] [Module k U] (T : Module
     exact ih _ (hT y hy)
 
 /- English proof (translation)
-Introduce `k U _ _ _ T Q hT p`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Introduce `y hy`. Simplify using `only [map_add, LinearMap.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Q.add_mem (hp y hy) (hq y hy)`. Consider the case `monomial n a`. Introduce `y hy`. Rewrite using `[Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply]`. Conclude with `Q.smul_mem a (pow_mem T Q hT n y hy)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {k U : Type} [inst : Field k] [inst_1 : AddCommGroup U] [inst_2 : Module k U] (T : Module.End k U) (Q : Submodule k U), (∀ y ∈ Q, (T : U → U) y ∈ Q) → ∀ (p : Polynomial k), ∀ y ∈ Q, ((Polynomial.aeval T : Polynomial k → Module.End k U) p : U → U) y ∈ Q := by
   intro k U _ _ _ T Q hT p

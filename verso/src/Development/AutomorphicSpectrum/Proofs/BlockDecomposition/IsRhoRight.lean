@@ -10,7 +10,7 @@ open IsDedekindDomain NumberField
 namespace GlobalTheory.CompanionTheory.MuC
 
 /- English proof (translation)
-Use `⟨hf.1.comp (continuous_mul_const x), ?_⟩` and prove the remaining obligations. Introduce `q hq a ha g`. Use `hf.2 q hq a ha (g * x)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isRho_right {D : D7} {p : ℕ} {f : G D p → ℂ} (hf : IsRho f) (x : G D p) :
     IsRho (fun g => f (g * x)) := by

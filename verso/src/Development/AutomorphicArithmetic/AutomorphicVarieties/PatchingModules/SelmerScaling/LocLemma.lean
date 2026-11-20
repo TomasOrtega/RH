@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.TriDiag
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qk9.tri_diag A B hA hB i`.
+A detailed English derivation is pending.
 -/
 private theorem tri_diag {R : Type} [CommRing R] {n : ℕ} (A B : Matrix (Fin n) (Fin n) R)
     (hA : A.BlockTriangular id) (hB : B.BlockTriangular id) (i : Fin n) :
@@ -15,25 +15,23 @@ private theorem tri_diag {R : Type} [CommRing R] {n : ℕ} (A B : Matrix (Fin n)
   _root_.UpperTheory.Reformulated.B.Qk9.tri_diag A B hA hB i
 
 /- English proof (translation)
-Set `V : Matrix (Fin n) (Fin n) R` to `Matrix.of fun i j => f j i j`. Establish `hV : V.BlockTriangular id` using `fun i j h => ht j h`. Establish `hVd : ∀ i, V i i = 1` using `hd`. Establish `hdet : V.det = 1` using `by rw [Matrix.det_of_upperTriangular hV]; simp [hVd]`. Establish `hu : IsUnit V.det` using `by rw [hdet]; exact isUnit_one`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := Matrix.invertibleOfIsUnitDet V hu`. Establish `hVi : V⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hV`. Establish `hl : V⁻¹ * V = 1` using `Matrix.nonsing_inv_mul V hu`. Establish `hr : V * V⁻¹ = 1` using `Matrix.mul_nonsing_inv V hu`. Establish `e1 : ∀ a, f a * V = V * single a a 1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Use extensionality with `i j`. Establish `: (f a * V) i j = (f a * f j) i j` using `by simp only [Matrix.mul_apply]; rfl`. Rewrite using `[this]`. Distinguish the cases in `h : j = a`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[(hf.idem j).eq, Matrix.mul_single_apply_same, mul_one]`. Both sides reduce to the same expression. Rewrite using `[hf.ortho (Ne.symm h), Matrix.mul_single_apply_of_ne _ _ _ _ _ h]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : ∀ a, V⁻¹ * f a = single a a 1 * V⁻¹`. Introduce `a`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_assoc, hr, mul_one]`. Use `_ = _ := by rw [e1, ← mul_assoc, hl, one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : ∀ a b, (V⁻¹ * M * V) a b = (V⁻¹ * (f a * M * f b) * V) a b`. Introduce `a b`. Establish `: V⁻¹ * (f a * M * f b) * V = single a a 1 * (V⁻¹ * M * V) * single b b 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hT : (V⁻¹ * M * V).BlockTriangular id`. Introduce `a b h`. Rewrite using `[e3, h0 a b h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hM : M = V * (V⁻¹ * M * V) * V⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hMt : M.BlockTriangular id`. Rewrite using `[hM]`. Conclude with `(hV.mul hT).mul hVi`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hMt, fun i => ?_⟩` and prove the remaining obligations. Establish `h2 : M * V = V * (V⁻¹ * M * V)`. Rewrite using `[← mul_assoc, ← mul_assoc, hr, one_mul]`. Establish `h3` using `congrFun (congrFun h2 i) i`. Rewrite `h3` using `[tri_diag _ _ hMt hV, tri_diag _ _ hV hT, hVd, mul_one, one_mul, e3, h1, mul_smul_comm, smul_mul_assoc, mul_assoc, e1, ← mul_assoc, hl]`.
-
-Simplify using `using h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem tri_of_idem {R : Type} [CommRing R] {n : ℕ} (f : Fin n → Matrix (Fin n) (Fin n) R)
     (hf : OrthogonalIdempotents f) (ht : ∀ i, (f i).BlockTriangular id) (hd : ∀ i, f i i i = 1)
@@ -86,13 +84,13 @@ private theorem tri_of_idem {R : Type} [CommRing R] {n : ℕ} (f : Fin n → Mat
   simpa using h3
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset (Fin n), (Polynomial.aeval Q (∏ j ∈ s, (Polynomial.X - Polynomial.C (a j)))).BlockTriangular id ∧ (Polynomial.aeval Q (∏ j ∈ s, (Polynomial.X - Polynomial.C (a j)))) i i = ∏ j ∈ s, (a i - a j)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [Matrix.blockTriangular_one]`. Consider the case `insert k s hk ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hb : (Q - algebraMap R (Matrix (Fin n) (Fin n) R) (a k)).BlockTriangular id`. Use `hQ.sub ?_` and prove the remaining obligations. Rewrite using `[Matrix.algebraMap_eq_diagonal]`. Conclude with `Matrix.blockTriangular_diagonal _`. Rewrite using `[Finset.prod_insert hk, Finset.prod_insert hk, map_mul, map_sub, Polynomial.aeval_X, Polynomial.aeval_C]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hb.mul ih.1, ?_⟩` and prove the remaining obligations. Rewrite using `[tri_diag _ _ hb ih.1, ih.2, Matrix.sub_apply, hd, Matrix.algebraMap_matrix_apply]`. Simplify using the standard rewrite rules. Take `⟨k1, k2⟩` from `key (Finset.univ.erase i)`. Unfold `lag`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x y h => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, k1 h, smul_zero]`. Rewrite using `[Matrix.smul_apply, k2, smul_eq_mul]`. Conclude with `Ring.inverse_mul_cancel _ (IsUnit.prod_iff.2 fun j hj => hu i j (Finset.ne_of_mem_erase hj).symm)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lag_tri {R : Type} [CommRing R] {n : ℕ} (a : Fin n → R) (Q : Matrix (Fin n) (Fin n) R)
     (hQ : Q.BlockTriangular id) (hd : ∀ i, Q i i = a i) (hu : ∀ i j, i ≠ j → IsUnit (a i - a j))
@@ -122,11 +120,11 @@ private theorem lag_tri {R : Type} [CommRing R] {n : ℕ} (a : Fin n → R) (Q :
       (IsUnit.prod_iff.2 fun j hj => hu i j (Finset.ne_of_mem_erase hj).symm)
 
 /- English proof (translation)
-Establish `h1 : IsNilpotent (u - algebraMap F R (e u))` using `he _ (by simp)`. Establish `h2 : IsNilpotent ((⟨u, hu⟩ : S) - algebraMap F S (e u))`. Take `⟨k, hk⟩` from `h1`. Conclude with `⟨k, Subtype.ext (by simpa using hk)⟩`. Establish `h3 : IsUnit (⟨u, hu⟩ : S)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `h2.isUnit_add_right_of_commute ((IsUnit.mk0 _ h).map (algebraMap F S)) (Commute.all _ _)` as an intermediate fact. Simplify using `using this`. Take `⟨v, hv⟩` from `h3.exists_right_inv`. Establish `hv' : u * (v : R) = 1` using `congrArg Subtype.val hv`. Establish `hU : IsUnit u` using `IsUnit.of_mul_eq_one _ hv'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hU, ?_⟩` and prove the remaining obligations. Establish `: Ring.inverse u = v`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Conclude with `v.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unit_sub {F R : Type} [Field F] [CommRing R] [Algebra F R] (e : R →ₐ[F] F)
     (he : ∀ a, e a = 0 → IsNilpotent a) (S : Subalgebra F R) (u : R) (hu : u ∈ S) (h : e u ≠ 0) :
@@ -148,11 +146,11 @@ private theorem unit_sub {F R : Type} [Field F] [CommRing R] [Algebra F R] (e : 
   rw [this]; exact v.2
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, (Polynomial.aeval P (∏ j ∈ s, (Polynomial.X - Polynomial.C (a j)))) ∈ E`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using E.one_mem`. Consider the case `insert k s hk ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert hk, map_mul, map_sub, Polynomial.aeval_X, Polynomial.aeval_C]`. Conclude with `E.mul_mem (E.sub_mem hP (ha k)) ih`. Establish `h` using `unit_sub e he (E.comap (IsScalarTower.toAlgHom F R A)) (∏ j ∈ Finset.univ.erase i, (a i - a j)) (Subalgebra.prod_mem _ fun j _ => Subalgebra.sub_mem _ (ha i) (ha j)) (by`. Rewrite using `[map_prod]`. Use `Finset.prod_ne_zero_iff.2 fun j hj => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, sub_ne_zero]`. Conclude with `hne i j (Finset.ne_of_mem_erase hj).symm)`. Unfold `lag`. Rewrite using `[Algebra.smul_def]`. Conclude with `E.mul_mem h.2 (key _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lag_mem {F R A ι : Type} [Field F] [CommRing R] [Algebra F R] [Ring A] [Algebra R A]
     [Algebra F A] [IsScalarTower F R A] [Fintype ι] [DecidableEq ι] (e : R →ₐ[F] F)
@@ -179,19 +177,19 @@ private theorem lag_mem {F R A ι : Type} [Field F] [CommRing R] [Algebra F R] [
   exact E.mul_mem h.2 (key _)
 
 /- English proof (translation)
-Establish `h0 : π Y = 0`. Establish `: ∑ i, π (f' i * f i) = ∑ i, π (f i)` using `Finset.sum_congr rfl fun i _ => by rw [map_mul, hπ, ← map_mul, (hf.idem i).eq]`. Rewrite using `[hY, map_sub, map_sum, this, ← map_sum, hf.complete, sub_self]`. Establish `hYY : Y * Y = 0` using `hsq _ _ h0 h0`. Establish `hU : 1 - Y = ∑ i, f' i * f i` using `by rw [hY, sub_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ a, (1 - Y) * f a = f' a * (1 - Y)`. Introduce `a`. Rewrite using `[hU, Finset.sum_mul, Finset.mul_sum, Finset.sum_eq_single a, Finset.sum_eq_single a, mul_assoc, (hf.idem a).eq, ← mul_assoc, (hf'.idem a).eq]`. Introduce `b _ hb`. Rewrite using `[← mul_assoc, hf'.ortho hb.symm, zero_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[mul_assoc, hf.ortho hb, mul_zero]`. Simplify using the standard rewrite rules. Establish `hl : (1 + Y) * (1 - Y) = 1`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[add_mul, mul_sub, mul_sub, hYY]`. Simplify using the standard rewrite rules. Establish `hr : (1 - Y) * (1 + Y) = 1`. Rewrite using `[sub_mul, mul_add, mul_add, hYY]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ a, (1 + Y) * f' a * (1 - Y) = f a`. Introduce `a`. Rewrite using `[mul_assoc, ← h1, ← mul_assoc, hl, one_mul]`. Use `⟨h0, h2, fun r₀ r₁ hr' a b => ?_⟩` and prove the remaining obligations. Establish `hd : π (r₁ - r₀) = 0` using `by rw [map_sub, hr', sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : r₁ * Y = r₀ * Y` using `by rw [← sub_eq_zero, ← sub_mul]; exact hsq _ _ hd h0`. Establish `e2 : Y * r₁ = Y * r₀` using `by rw [← sub_eq_zero, ← mul_sub]; exact hsq _ _ h0 hd`. Establish `e3 : Y * r₁ * Y = 0` using `hsq _ _ (by rw [map_mul, h0, zero_mul]) h0`. Establish `e4 : r₁ - (r₀ * Y - Y * r₀) = (1 + Y) * r₁ * (1 - Y)`. Rewrite using `[add_mul, add_mul, mul_sub, mul_sub, e3, one_mul, mul_one, mul_one, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e4, ← h2 a, ← h2 b]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = _ := by rw [hr]; simp only [mul_assoc, one_mul, mul_one]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem move_idem {A B ι : Type} [Ring A] [Ring B] [Fintype ι] (π : A →+* B)
     (hsq : ∀ x y, π x = 0 → π y = 0 → x * y = 0) (f f' : ι → A)
@@ -237,17 +235,17 @@ private theorem move_idem {A B ι : Type} [Ring A] [Ring B] [Fintype ι] (π : A
     _ = _ := by rw [hr]; simp only [mul_assoc, one_mul, mul_one]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun i => ((e : R →* F).comp (ψ i) : H →* F))`. Introduce `i j h`. Assume the negation of the conclusion as `hij`. Take `⟨g, hg⟩` from `hψ i j hij`. Conclude with `hg (DFunLike.congr_fun h g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent F (fun i => (((e : R →* F).comp (ψ i) : H →* F) : H → F))` using `(linearIndependent_monoidHom H F).comp _ hinj`. Establish `hspan` using `span_flip_eq_top_iff_linearIndependent.2 hli`. Establish `key : ∀ t : Fin n → F, ∃ z, G z ∧ ∀ i, e (MonoidAlgebra.lift R R H (ψ i) z) = t i`. Introduce `t`. Establish `ht : t ∈ Submodule.span F (Set.range (flip (fun i => (((e : R →* F).comp (ψ i) : H →* F) : H → F))))` using `by rw [hspan]; trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Conclude with `⟨MonoidAlgebra.of R H g, g1 g, fun i => by rw [MonoidAlgebra.lift_of]; rfl⟩`. Consider the case `zero => exact ⟨0, g0, fun i => by simp⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a, h1, ha⟩` from `hx`. Take `⟨b, h2, hb⟩` from `hy`. Conclude with `⟨a + b, ga _ _ h1 h2, fun i => by rw [map_add, map_add, ha, hb]; rfl⟩`. Consider the case `smul c x _ hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, h1, ha⟩` from `hx`. Conclude with `⟨algebraMap F R c • a, gs _ _ h1, fun i => by`. Rewrite using `[map_smul, smul_eq_mul, map_mul, ha, AlgHom.commutes]`. Use the proof step `rfl⟩`. Take `⟨z, hG, hz⟩` from `key (fun i => Infinite.natEmbedding F i)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨z, hG, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[hz, hz]`. Conclude with `fun h => hij (Fin.ext ((Infinite.natEmbedding F).injective h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem sep_good {F R H : Type} [Field F] [Infinite F] [CommRing R] [Algebra F R] [Monoid H]
     {n : ℕ} (e : R →ₐ[F] F) (ψ : Fin n → H →* R)
@@ -298,53 +296,45 @@ private def cj {R : Type} [CommRing R] {n : ℕ} (w wi : Matrix (Fin n) (Fin n) 
   commutes' c := by rw [mul_assoc, Algebra.commutes, ← mul_assoc, h2, one_mul]
 
 /- English proof (translation)
-Introduce `F R H _ _ _ _ _ n e I E ρ₀ ρ₁ ψ₀ ψ₁ w wi he hI hw1 hw2 htri hρ hψ hsep hord hρE hψE`. Establish `hII : ∀ a ∈ I, ∀ b ∈ I, a * b = 0` using `fun a ha b hb => by`. Use `Ideal.mul_mem_mul ha hb` as an intermediate fact. Rewrite `this` using `[hI, Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `heI : ∀ a ∈ I, e a = 0` using `fun a ha => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `congrArg e (hII a ha a ha)` as an intermediate fact. Rewrite `this` using `[map_mul, map_zero]`. Conclude with `mul_self_eq_zero.1 this`. Set `π` to `(Ideal.Quotient.mk I).mapMatrix (m := Fin n)`. Establish `hπ : ∀ X, π X = 0 ↔ ∀ i j, X i j ∈ I` using `fun X => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.ext_iff]`. Simplify using `[π, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hsq : ∀ x y, π x = 0 → π y = 0 → x * y = 0` using `fun x y hx hy => by`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_eq_zero fun k _ => hII _ ((hπ x).1 hx _ _) _ ((hπ y).1 hy _ _)`. Establish `hρπ : ∀ g, π (ρ₁ g) = π (ρ₀ g)` using `fun g => by`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `(hπ _).2 (hρ g)`. Set `c` to `cj w wi hw1 hw2`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hc : ∀ X, c X = wi * X * w` using `fun _ => rfl`. Establish `hcinj : ∀ X, c X = 0 → X = 0` using `fun X hX => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← mul_assoc, hw1, one_mul, mul_assoc, hw1, mul_one]`. Use `_ = 0 := by rw [← hc, hX]; simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htri1 : ∀ g, (c (ρ₀ g)).BlockTriangular id` using `fun g i j h => (htri g).1 i j h`. Establish `htri2 : ∀ g i, c (ρ₀ g) i i = ψ₀ i g` using `fun g => (htri g).2`. Establish `hord0 : ∀ g : Fin n → H, (List.ofFn fun i => ρ₀ (g i) - algebraMap R (Matrix (Fin n) (Fin n) R) (ψ₀ i (g i))).prod = 0`. Introduce `g`. Apply `hcinj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_list_prod, List.map_ofFn]`. Use `tri_prod_zero _ (fun k i j h => ?_) (fun k => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp, map_sub, AlgHom.commutes, Matrix.sub_apply]`. Rewrite using `[htri1 _ h, Matrix.algebraMap_matrix_apply, if_neg h.ne', sub_zero]`. Simplify using `only [Function.comp, map_sub, AlgHom.commutes, Matrix.sub_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[htri2, Matrix.algebraMap_matrix_apply, if_pos rfl]`. Simplify using the standard rewrite rules. Use `set L₀ := MonoidAlgebra.lift R (Matrix (Fin n) (Fin n) R) H ρ₀ with hL₀`. Use `set L₁ := MonoidAlgebra.lift R (Matrix (Fin n) (Fin n) R) H ρ₁ with hL₁`. Set `χ₀` to `fun i => MonoidAlgebra.lift R R H (ψ₀ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `χ₁` to `fun i => MonoidAlgebra.lift R R H (ψ₁ i)`. Establish `hL0 : ∀ g, L₀ (MonoidAlgebra.of R H g) = ρ₀ g` using `fun g => MonoidAlgebra.lift_of _ _`. Establish `hL1 : ∀ g, L₁ (MonoidAlgebra.of R H g) = ρ₁ g` using `fun g => MonoidAlgebra.lift_of _ _`. Establish `hχ0 : ∀ i g, χ₀ i (MonoidAlgebra.of R H g) = ψ₀ i g` using `fun i g => MonoidAlgebra.lift_of _ _`. Establish `hχ1 : ∀ i g, χ₁ i (MonoidAlgebra.of R H g) = ψ₁ i g` using `fun i g => MonoidAlgebra.lift_of _ _`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Take `⟨z, ⟨⟨z1, z2, z3, z4⟩, ⟨z5, z6⟩, z7, z8⟩, hz⟩` from `sep_good e ψ₀ hsep (fun z => (L₀ z ∈ E ∧ L₁ z ∈ E ∧ (∀ i, algebraMap R (Matrix (Fin n) (Fin n) R) (χ₀ i z) ∈ E) ∧ ∀ i, algebraMap R (Matrix (Fin n) (Fin n) R) (χ₁ i z) ∈ E) ∧ ((∀ i j, L₁ z i j - L₀ z i j ∈ I) ∧ ∀ i, χ₁ i z - χ₀ i z ∈ I) ∧ (c (L₀ z)).BlockTriangular id ∧ ∀ i, c (L …`. Simplify using `only [hL0, hL1, hχ0, hχ1]`. Conclude with `⟨⟨(hρE g).1, (hρE g).2, fun i => (hψE i g).1, fun i => (hψE i g).2⟩, ⟨hρ g, fun i => hψ i g⟩, htri1 g, htri2 g⟩)`. Use the proof step `(by simp [Matrix.blockTriangular_zero])`. Use the proof step `(by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x y ⟨⟨x1, x2, x3, x4⟩, ⟨x5, x6⟩, x7, x8⟩ ⟨⟨y1, y2, y3, y4⟩, ⟨y5, y6⟩, y7, y8⟩`. Simplify using `only [map_add, Matrix.add_apply, add_sub_add_comm]`. Conclude with `⟨⟨E.add_mem x1 y1, E.add_mem x2 y2, fun i => E.add_mem (x3 i) (y3 i), fun i => E.add_mem (x4 i) (y4 i)⟩, ⟨fun i j => I.add_mem (x5 i j) (y5 i j), fun i => I.add_mem (x6 i) (y6 i)⟩, x7.add y7, fun i => by rw [x8, y8]⟩)`. Use the proof step `(by`. Introduce and unpack `a x ⟨⟨x1, x2, x3, x4⟩, ⟨x5, x6⟩, x7, x8⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∀ X ∈ E, algebraMap F R a • X ∈ E` using `fun X hX => by`. Rewrite using `[algebraMap_smul]`. Conclude with `E.smul_mem hX a`. Establish `hs' : ∀ r : R, algebraMap R (Matrix (Fin n) (Fin n) R) r ∈ E → algebraMap R (Matrix (Fin n) (Fin n) R) (algebraMap F R a • r) ∈ E` using `fun r hr => by`. Rewrite using `[smul_eq_mul, map_mul, ← Algebra.smul_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hs _ hr`. Simplify using `only [map_smul, Matrix.smul_apply, ← smul_sub]`. Conclude with `⟨⟨hs _ x1, hs _ x2, fun i => hs' _ (x3 i), fun i => hs' _ (x4 i)⟩, ⟨fun i j => I.smul_mem _ (x5 i j), fun i => I.smul_mem _ (x6 i)⟩, fun i j h => by rw [Matrix.smul_apply, x7 h, smul_zero], fun i => by rw [x8]⟩)`. Establish `hz0 : ∀ i j, i ≠ j → e (χ₀ i z) ≠ e (χ₀ j z)` using `hz`. Establish `he1 : ∀ i, e (χ₁ i z) = e (χ₀ i z)` using `fun i => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `heI _ (z6 i)`. Establish `hz1 : ∀ i j, i ≠ j → e (χ₁ i z) ≠ e (χ₁ j z)` using `fun i j h => by`. Rewrite using `[he1, he1]`. Conclude with `hz0 i j h`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hu0 : ∀ i j, i ≠ j → IsUnit (χ₀ i z - χ₀ j z)` using `fun i j h => (unit_sub e he ⊤ _ trivial (by rw [map_sub, sub_ne_zero]; exact hz0 i j h)).1`. Establish `hu1 : ∀ i j, i ≠ j → IsUnit (χ₁ i z - χ₁ j z)` using `fun i j h => (unit_sub e he ⊤ _ trivial (by rw [map_sub, sub_ne_zero]; exact hz1 i j h)).1`. Take `⟨c0, -, -⟩` from `lag_triangular L₀ χ₀ z (ord_ext ρ₀ ψ₀ hord0) hu0`. Take `⟨c1, t1, d1⟩` from `lag_triangular L₁ χ₁ z (ord_ext ρ₁ ψ₁ hord) hu1`. Establish `m0` using `lag_mem e he E (fun i => χ₀ i z) (L₀ z) z1 z3 hz0`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `m1` using `lag_mem e he E (fun i => χ₁ i z) (L₁ z) z2 z4 hz1`. Establish `hcomm : ∀ r, π (algebraMap R _ r) = algebraMap (R ⧸ I) (Matrix (Fin n) (Fin n) (R ⧸ I)) (Ideal.Quotient.mk I r)` using `fun r => by`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [π, Matrix.algebraMap_matrix_apply, h]`. Establish `hπf : ∀ i, π (lag (fun i => χ₁ i z) (L₁ z) i) = π (lag (fun i => χ₀ i z) (L₀ z) i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[lag_map _ π _ _ hcomm hu1, lag_map _ π _ _ hcomm hu0]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `Ideal.Quotient.eq.2 (z6 j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `(hπ _).2 z5`. Establish `hcf : ∀ i, (c (lag (fun i => χ₀ i z) (L₀ z) i)).BlockTriangular id ∧ c (lag (fun i => χ₀ i z) (L₀ z) i) i i = 1`. Introduce `i`. Use `lag_map (RingHom.id R) c.toRingHom (fun i => χ₀ i z) (L₀ z) c.commutes hu0 i` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `lag_tri (fun i => χ₀ i z) (c (L₀ z)) z7 z8 hu0 i`. Conclude with `(show c (lag (fun i => χ₀ i z) (L₀ z) i) = lag (fun i => χ₀ i z) (c (L₀ z)) i from this) ▸ h2`. Use `set f := lag (fun i => χ₀ i z) (L₀ z)`. Use `set f' := lag (fun i => χ₁ i z) (L₁ z)`. Take `⟨Y, hY⟩ : ∃ Y, Y = 1 - ∑ i, f' i * f i` from `⟨_, rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k0, k1, k2⟩` from `move_idem π hsq f f' c0 c1 hπf Y hY`. Use `⟨Y, ?_, (hπ Y).1 k0, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hY]`. Conclude with `E.sub_mem E.one_mem (E.sum_mem fun i _ => E.mul_mem (m1 i) (m0 i))`. Take `⟨p1, p2⟩` from `tri_of_idem (fun i => c (f i)) (c0.toOrthogonalIdempotents.map c.toRingHom) (fun i => (hcf i).1) (fun i => (hcf i).2) (c (ρ₁ g - (ρ₀ g * Y - Y * ρ₀ g))) (fun i => ψ₁ i g) (fun a b h => by`.
-
-Use `t1 (MonoidAlgebra.of R H g) a b h` as an intermediate fact. Rewrite `this` using `[hL1]`. Rewrite using `[← map_mul, ← map_mul, k2 _ _ (hρπ g), this]`. Use the proof step `simp)`. Use the proof step `(fun a => by`.
-
-Use `d1 (MonoidAlgebra.of R H g) a` as an intermediate fact. Rewrite `this` using `[hL1, hχ1]`. Rewrite using `[← map_mul, ← map_mul, k2 _ _ (hρπ g), this, mul_smul_comm, smul_mul_assoc, k1, map_smul])`. Establish `hinv : ρ₀ g * ρ₀ g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `hβ : wi * ((ρ₁ g * ρ₀ g⁻¹ - 1) - (ρ₀ g * Y * ρ₀ g⁻¹ - Y)) * w = (c (ρ₁ g - (ρ₀ g * Y - Y * ρ₀ g)) - c (ρ₀ g)) * c (ρ₀ g⁻¹)`.
-
-Rewrite using `[← hc, ← map_sub, ← map_mul, sub_mul, sub_mul, sub_mul, mul_assoc Y, hinv, mul_one]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[hβ]`. Establish `hb` using `p1.sub (htri1 g)`.
-
-Use `⟨fun i j h => (hb.mul (htri1 g⁻¹)) h, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[tri_diag _ _ hb (htri1 _), Matrix.sub_apply, p2, htri2, htri2, mul_assoc, ← map_mul, inv_mul_cancel, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.locLemma :
     ∀ (F R H : Type) [Field F] [Infinite F] [CommRing R] [Algebra F R] [Group H] (n : ℕ) (e : R →ₐ[F] F) (I : Ideal R) (E : Subalgebra F (Matrix (Fin n) (Fin n) R)) (ρ₀ ρ₁ : H →* Matrix (Fin n) (Fin n) R) (ψ₀ ψ₁ : Fin n → H →* R) (w wi : Matrix (Fin n) (Fin n) R), (∀ a, e a = 0 → IsNilpotent a) → I * I = ⊥ → w * wi = 1 → wi * w = 1 → (∀ g, (∀ i j, j < i → (wi * ρ₀ g * w) i j = 0) ∧ ∀ i, (wi * ρ₀ g * w) i i = ψ₀ i g) → (∀ g i j, ρ₁ g i j - ρ₀ g i j ∈ I) → (∀ i g, ψ₁ i g - ψ₀ i g ∈ I) → (∀ i j, i ≠ j → ∃ g, e (ψ₀ i g) ≠ e (ψ₀ j g)) → (∀ g : Fin n → H, (List.ofFn fun i => ρ₁ (g i) - algebraMap R (Matrix (Fin n) (Fin n) R) (ψ₁ i (g i))).prod = 0) → (∀ g, ρ₀ g ∈ E ∧ ρ₁ g ∈ E) → (∀ i g, algebraMap R (Matrix (Fin n) (Fin n) R) (ψ₀ i g) ∈ E ∧ algebraMap R (Matrix (Fin n) (Fin n) R) (ψ₁ i g) ∈ E) → ∃ Y ∈ E, (∀ i j, Y i j ∈ I) ∧ ∀ g, (∀ i j, j < i → (wi * ((ρ₁ g * ρ₀ g⁻¹ - 1) - (ρ₀ g * Y * ρ₀ g⁻¹ - Y)) * w) i j = 0) ∧ ∀ i, (wi * ((ρ₁ g * ρ₀ g⁻¹ - 1) - (ρ₀ g * Y * ρ₀ g⁻¹ - Y)) * w) i i * ψ₀ i g = ψ₁ i g - ψ₀ i g := by

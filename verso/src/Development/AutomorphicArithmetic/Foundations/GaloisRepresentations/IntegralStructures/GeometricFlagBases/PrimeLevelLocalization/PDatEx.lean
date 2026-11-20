@@ -11,12 +11,12 @@ open UpperTheory.Gal.W2.Seed UpperTheory.Gal.G1
 namespace UpperTheory.Gal.Int.Geo.Pl
 
 /- English proof (translation)
-The claim follows from `datEx_of exists_auxiliary_prime ArithK_holds SetupEx_holds ScOf_holds PerfCof_holds`.
+A detailed English derivation is pending.
 -/
 theorem datEx_holds : DatEx := datEx_of exists_auxiliary_prime ArithK_holds SetupEx_holds ScOf_holds PerfCof_holds
 
 /- English proof (translation)
-The claim follows from `pSides pCjMem (pBarAdj pDiscInt) (pKeyK pDiscInt) RootAt_holds`.
+A detailed English derivation is pending.
 -/
 theorem sides_holds : Sides := pSides pCjMem (pBarAdj pDiscInt) (pKeyK pDiscInt) RootAt_holds
 

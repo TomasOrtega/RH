@@ -20,35 +20,31 @@ variable {K V : Type*} [TopologicalSpace K] [T2Space K] [CompactSpace K] [Second
   [FiniteDimensional ℂ V] [CompleteSpace V]
 
 /- English proof (translation)
-Establish `hφC : Continuous fun k => ((φ k : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp hφ`. Establish `hInt : Integrable (fun k => ((φ k : ℝ) : ℂ) • P k) m` using `(integrableOn_univ).mp ((hφC.smul hPc).continuousOn.integrableOn_compact isCompact_univ)`. Use `set A : V →L[ℂ] V := (d : ℂ) • ∫ k, ((φ k : ℝ) : ℂ) • P k ∂m with hA`. Establish `hkey : ∀ y x : V, ⟪y, A x⟫_ℂ = (d : ℂ) * ∫ k, ((φ k : ℝ) : ℂ) * (⟪u k, x⟫_ℂ * ⟪y, u k⟫_ℂ) ∂m`. Introduce `y x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hIx : Integrable (fun k => (((φ k : ℝ) : ℂ) • P k) x) m` using `(ContinuousLinearMap.apply ℂ V x).integrable_comp hInt`. Rewrite using `[hA, _root_.smul_apply, inner_smul_right, ContinuousLinearMap.integral_apply hInt, ← integral_inner hIx]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [_root_.smul_apply, inner_smul_right, hP]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQ : ∀ v : V, ⟪v, A v⟫_ℂ = ((d * ∫ k, φ k * ‖⟪v, u k⟫_ℂ‖ ^ 2 ∂m : ℝ) : ℂ)`. Introduce `v`. Rewrite using `[hkey]`. Establish `: ∀ k, ((φ k : ℝ) : ℂ) * (⟪u k, v⟫_ℂ * ⟪v, u k⟫_ℂ) = ((φ k * ‖⟪v, u k⟫_ℂ‖ ^ 2 : ℝ) : ℂ)`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← inner_conj_symm (u k) v, Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[this]`. Rewrite using `[integral_complex_ofReal]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hQ' : ∀ v : V, ⟪A v, v⟫_ℂ = ((d * ∫ k, φ k * ‖⟪v, u k⟫_ℂ‖ ^ 2 ∂m : ℝ) : ℂ)`. Introduce `v`. Rewrite using `[← inner_conj_symm, hQ, Complex.conj_ofReal]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set b := stdOrthonormalBasis ℂ V with hb`. Establish `hsum : ∀ v : V, ∑ i, ⟪v, b i⟫_ℂ * ⟪A (b i), v⟫_ℂ = ⟪A v, v⟫_ℂ`. Introduce `v`. Repeatedly rewrite using `[← ContinuousLinearMap.adjoint_inner_right]`. Rewrite using `[b.sum_inner_mul_inner]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hterm : ∀ i, ((‖A (b i)‖ ^ 2 : ℝ) : ℂ) = (d : ℂ) * ∫ k, ((φ k : ℝ) : ℂ) * (⟪u k, b i⟫_ℂ * ⟪A (b i), u k⟫_ℂ) ∂m`. Introduce `i`. Rewrite using `[← hkey, inner_self_eq_norm_sq_to_K]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hintg : ∀ i ∈ (Finset.univ : Finset _), Integrable (fun k => ((φ k : ℝ) : ℂ) * (⟪u k, b i⟫_ℂ * ⟪A (b i), u k⟫_ℂ)) m`. Introduce `i _`. Establish `hc : Continuous fun k => ((φ k : ℝ) : ℂ) * (⟪u k, b i⟫_ℂ * ⟪A (b i), u k⟫_ℂ)` using `hφC.mul ((hu.inner continuous_const).mul (continuous_const.inner hu))`. Conclude with `(integrableOn_univ).mp (hc.continuousOn.integrableOn_compact isCompact_univ)`. Establish `hC : ((hsOp A : ℝ) : ℂ) = ((d * ∫ k, φ k * (d * ∫ k', φ k' * ‖⟪u k, u k'⟫_ℂ‖ ^ 2 ∂m) ∂m : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hsOp, hb]`. Use `push_cast`. Both sides reduce to the same expression. Use `_ = ∑ i, (d : ℂ) * ∫ k, ((φ k : ℝ) : ℂ) * (⟪u k, b i⟫_ℂ * ⟪A (b i), u k⟫_ℂ) ∂m := sum_congr rfl fun i _ => hterm i`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `_ = (d : ℂ) * ∫ k, ∑ i, ((φ k : ℝ) : ℂ) * (⟪u k, b i⟫_ℂ * ⟪A (b i), u k⟫_ℂ) ∂m := by`. Rewrite using `[← mul_sum, integral_finset_sum _ hintg]`. Use `_ = (d : ℂ) * ∫ k, ((φ k * (d * ∫ k', φ k' * ‖⟪u k, u k'⟫_ℂ‖ ^ 2 ∂m) : ℝ) : ℂ) ∂m := by`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `only []`. Rewrite using `[← mul_sum, hsum, hQ']`. Use `push_cast`. Both sides reduce to the same expression. Use `_ = ((d * ∫ k, φ k * (d * ∫ k', φ k' * ‖⟪u k, u k'⟫_ℂ‖ ^ 2 ∂m) ∂m : ℝ) : ℂ) := by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_complex_ofReal]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hR : hsOp A = d * ∫ k, φ k * (d * ∫ k', φ k' * ‖⟪u k, u k'⟫_ℂ‖ ^ 2 ∂m) ∂m`. Conclude with `hC` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hF : Continuous fun p : K × K => φ p.1 * φ p.2 * ‖⟪u p.1, u p.2⟫_ℂ‖ ^ 2` using `((hφ.comp continuous_fst).mul (hφ.comp continuous_snd)).mul (((hu.comp continuous_fst).inner (hu.comp continuous_snd)).norm.pow 2)`. Establish `hFi : Integrable (fun p : K × K => φ p.1 * φ p.2 * ‖⟪u p.1, u p.2⟫_ℂ‖ ^ 2) (m.prod m)` using `(integrableOn_univ).mp (hF.continuousOn.integrableOn_compact isCompact_univ)`. Rewrite using `[hR, integral_prod _ hFi]`. Establish `e1 : ∀ k, ∫ k', φ k * φ k' * ‖⟪u k, u k'⟫_ℂ‖ ^ 2 ∂m = φ k * ∫ k', φ k' * ‖⟪u k, u k'⟫_ℂ‖ ^ 2 ∂m`. Introduce `k`.
-
-Rewrite using `[← integral_const_mul]`. Simplify using `only [mul_assoc]`. Establish `e2 : ∀ k, φ k * (d * ∫ k', φ k' * ‖⟪u k, u k'⟫_ℂ‖ ^ 2 ∂m) = d * (φ k * ∫ k', φ k' * ‖⟪u k, u k'⟫_ℂ‖ ^ 2 ∂m)` using `fun k => by ring`. Repeatedly rewrite using `[e1, e2]`. Rewrite using `[integral_const_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hsOp_integral_rank_one (m : Measure K) [IsFiniteMeasure m] {u : K → V} (hu : Continuous u)
     {φ : K → ℝ} (hφ : Continuous φ) {P : K → V →L[ℂ] V} (hPc : Continuous P)
@@ -140,7 +136,7 @@ end General
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Rewrite using `[toMK_inv]`. Use `hx.conjTranspose_mul_mul_same ?_` and prove the remaining obligations. Introduce `a b hab`. Establish `h` using `congrArg (fun y => (toMK k)ᴴ.mulVec y) hab`. Simplify `h` using `only [Matrix.mulVec_mulVec, (toMK_facts k).1, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma posDef_conj (k : KG ε) {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef) :
     (toMK k⁻¹ * x * toMK k).PosDef := by
@@ -151,7 +147,7 @@ private lemma posDef_conj (k : KG ε) {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.P
   simpa only [Matrix.mulVec_mulVec, (toMK_facts k).1, Matrix.one_mulVec] using h
 
 /- English proof (translation)
-Establish `hm : Continuous (fun k : KG ε => toMK k)` using `(continuous_toM ε).comp continuous_subtype_val`. Establish `hz : Continuous (fun k : KG ε => toMK k⁻¹ * x * toMK k)` using `((hm.comp continuous_inv).mul continuous_const).mul hm`. Use `Complex.continuous_re.comp ?_` and prove the remaining obligations. Conclude with `(phiM_differentiableOn μ).continuousOn.comp_continuous hz (fun k => posSet_subset_omega (posDef_conj k hx))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma cont_phiK (μ : Fin n → ℤ) {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef) :
     Continuous (phiK μ x : KG ε → ℝ) := by
@@ -164,7 +160,7 @@ private lemma cont_phiK (μ : Fin n → ℤ) {x : Matrix (Fin n) (Fin n) ℂ} (h
     (fun k => posSet_subset_omega (posDef_conj k hx))
 
 /- English proof (translation)
-Rewrite using `[cK, CompactHaarProbability.op_mul, KType_op_inv_eq_adjoint, ContinuousLinearMap.mul_apply, ContinuousLinearMap.adjoint_inner_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma cK_mul {Λ : Fin n → ℝ} (T : KType ε Λ) (a b : KG ε) :
     cK T (a⁻¹ * b) = ‖⟪T.op a T.w, T.op b T.w⟫_ℂ‖ := by
@@ -172,13 +168,13 @@ private lemma cK_mul {Λ : Fin n → ℝ} (T : KType ε Λ) (a b : KG ε) :
     ContinuousLinearMap.adjoint_inner_right]
 
 /- English proof (translation)
-Introduce `n ε Λ T μ x hx`. Establish `hφc : Continuous (phiK μ x : KG ε → ℝ)` using `cont_phiK μ hx`. Establish `hφeq : ∀ k : KG ε, PhiM μ (toMK k⁻¹ * x * toMK k) = ((phiK μ x k : ℝ) : ℂ)` using `fun k => Complex.ext (by simp [phiK]) (by simp [(phiM_posDef μ (posDef_conj k hx)).2])`. Establish `hps : psM T μ x = ((Module.finrank ℂ T.V : ℝ) : ℂ) • ∫ k, ((phiK μ x k : ℝ) : ℂ) • (T.op k * projW T * T.op k⁻¹) ∂(dk ε)`. Unfold `psM dk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Repeatedly rewrite using `[hφeq]`. Rewrite using `[integral_smul_measure, ENNReal.toReal_inv, ← Complex.coe_smul, smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hu : Continuous fun k : KG ε => T.op k T.w` using `(KType_continuous_op T).clm_apply continuous_const`. Establish `hPc : Continuous fun k : KG ε => T.op k * projW T * T.op k⁻¹` using `((KType_continuous_op T).mul continuous_const).mul ((KType_continuous_op T).comp continuous_inv)`. Rewrite using `[hps, hsOp_integral_rank_one (dk ε) hu hφc hPc (conj_projection_apply T)]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hI, cK_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hsPs : HsPs := by
   intro n ε Λ T μ x hx

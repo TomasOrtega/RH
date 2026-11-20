@@ -13,23 +13,21 @@ open GlobalTheory.KZ GlobalTheory.K4
 namespace UpperTheory.V.Z.Kato.Sym
 
 /- English proof (translation)
-Unfold `PRed`. Introduce `Ω _ _ _ ε X k m c d M hk hm hc hd hc6 hd6 hLv t' t w' w hsec' hsec hsym' hsym`. Take `⟨hM, hcM, hdM⟩` from `hLv`. Establish `hkm : 0 < k * m` using `Nat.mul_pos hk hm`. Take `⟨hAslR, hAgal, -⟩` from `admB Ω ε X`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hgrM, hokM, -⟩` from `rowB Ω M hM`. Take `⟨hred, hredmv⟩` from `redB Ω ε X k m hk hm`. Establish `hinvM : ∀ (s : Gal(Ω/ℚ)) (x : Row M), gr M s (gr M s⁻¹ x) = x`. Introduce `s x`. Rewrite using `[← (hgrM s s⁻¹ x).1, mul_inv_cancel, (hgrM 1 1 x).2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `sgc` using `sgB Ω ε X c M hc hc6 hM hcM`. Establish `sgd` using `sgB Ω ε X d M hd hd6 hM hdM`. Take `⟨a, hcob, ha⟩` from `cmp Ω ε X m M hm hM (sg X c M) (sg X d M) (fun x y => Pt.red k m (t' (sg X c M x) (sg X d M y))) (fun x y => t (sg X c M x) (sg X d M y)) w' w (fun x y h => by`. Take `⟨hx0, hy0, -⟩` from `hokM x y h`. Conclude with `⟨hred _ _ _ (hsec' _ _ (sgc x hx0).1 (sgd y hy0).1).1, (hsec _ _ (sgc x hx0).1 (sgd y hy0).1).1⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `(fun s x y h => by`. Establish `h1 : Ok (gr M s⁻¹ x) (gr M s⁻¹ y)` using `(hokM x y h).2.2.1 s⁻¹`. Take `⟨hx1, hy1, -⟩` from `hokM _ _ h1`. Take `⟨hx0, hy0, -⟩` from `hokM x y h`. Establish `ex : X.gal s (sg X c M (gr M s⁻¹ x)) = sg X c M x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(sgc _ hx1).2.2.1 s, hinvM]`. Establish `ey : X.gal s (sg X d M (gr M s⁻¹ y)) = sg X d M y`. Rewrite using `[(sgd _ hy1).2.2.1 s, hinvM]`. Use `⟨ex, ey, ?_, (hsym s x y h).2⟩` and prove the remaining obligations. Use `hredmv (X.gal s) s (hAgal s) _ _ _ _ (hsec' _ _ (sgc _ hx1).1 (sgd _ hy1).1).1 ?_ _ (hsym' s x y h).2` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ex, ey]`. Conclude with `(hsec' _ _ (sgc x hx0).1 (sgd y hy0).1).1)`. Use `⟨a, fun x y h => ⟨(ha x y h).1, fun γ => ?_⟩, hcob⟩` and prove the remaining obligations. Take `⟨hx0, hy0, -⟩` from `hokM x y h`. Establish `h1 : Ok (rt x γ) (rt y γ)` using `(hokM x y h).2.2.2 γ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hx1, hy1, -⟩` from `hokM _ _ h1`. Establish `hT : Mv X m (slR X (ofSL γ)) 1 (t (sg X c M x) (sg X d M y)) (t (sg X c M (rt x γ)) (sg X d M (rt y γ))) 1`. Establish `e` using `(hsec _ _ (sgc x hx0).1 (sgd y hy0).1).2 γ`. Rewrite `e` using `[(sgc x hx0).2.1 γ, (sgd y hy0).2.1 γ]`. Then use the resulting hypothesis. Establish `hR : Mv X m (slR X (ofSL γ)) 1 (Pt.red k m (t' (sg X c M x) (sg X d M y))) (Pt.red k m (t' (sg X c M (rt x γ)) (sg X d M (rt y γ)))) 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `(hsec' _ _ (sgc x hx0).1 (sgd y hy0).1).2 γ`. Rewrite `e` using `[(sgc x hx0).2.1 γ, (sgd y hy0).2.1 γ]`. Use `hredmv _ 1 (hAslR _) _ _ _ _ (hsec' _ _ (sgc x hx0).1 (sgd y hy0).1).1 ?_ _ e` and prove the remaining obligations. Establish `e1 : slR X (ofSL γ) (sg X c M x) = sg X c M (rt x γ)` using `(sgc x hx0).2.1 γ`. Establish `e2 : slR X (ofSL γ) (sg X d M y) = sg X d M (rt y γ)` using `(sgd y hy0).2.1 γ`.
-
-Rewrite using `[e1, e2]`. Conclude with `(hsec' _ _ (sgc _ hx1).1 (sgd _ hy1).1).1`. Conclude with `(ha x y h).2 (slR X (ofSL γ)) (rt x γ) (rt y γ) (hAslR _) h1 ((sgc x hx0).2.1 γ) ((sgd y hy0).2.1 γ) hR hT`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pRed : PRed := by
   unfold PRed

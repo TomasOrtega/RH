@@ -59,29 +59,29 @@ end GlobalTheory.RealRatAct
 namespace GlobalTheory.RealRatAct
 open Formalism.L2.Theta
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX`. Use `⟨galFld D.host.E, galFld_fin _, fun t γ hγ r hr hγr x k => ?_⟩` and prove the remaining obligations. Establish `h` using `hX.is`. Establish `hθ : IsInfFam W.θ` using `h.isVac.2.inf`. Establish `hWd` using `h.weil t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgS : ∀ τ, gramAt D (GlobalTheory.Grid.neg A) τ = -1` using `fun τ => by`. Rewrite using `[gramAt, GlobalTheory.Grid.neg_gram, hX.std.1]`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.neg_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hgT : ∀ τ, gramAt D WW τ = 1` using `fun τ => by`. Rewrite using `[gramAt, hX.stdW.1]`. Simplify using the standard rewrite rules. Establish `hf` using `(GlobalTheory.ConstRatio.theta_f h t).1`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (h.idem t)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ ρ, IsFockVacAt (heisO W.ψ (GlobalTheory.Grid.neg A) WW) W.θ ρ (cplxO (-1) 1) (X.f t)` using `fun ρ => by`. Use `GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt h.isVac.1.1.1 hθ ho.infPart_eq ho.conj.infPart_eq (h.fst t) h.isVac.2.theta hf (h.isVac.2.fock ρ)` as an intermediate fact. Simplify `this` using `[(hX.std.2.2 ρ).1, (hX.stdW.2.2 ρ).1]`. Take `⟨c, hc, Q, hQ, hact⟩` from `act_fin hWd hθ hgS hgT hf hv (fun z hz => conj_mem_galFld hz) Finset.univ r hr (fun ρ hρ => absurd (Finset.mem_univ ρ) hρ) (compAt_mem W.θ hθ hγ hγr) _ (monomial_mem _ k)`. Establish `hPT : ∀ P, pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) P = PT W.ψ W.θ (GlobalTheory.Grid.neg A) WW (X.f t) P` using `fun P => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : (fun τ => -X.rA.s τ) = fun _ => (-1 : Matrix (Fin A.rank) (Fin A.rank) ℂ)`. Use function extensionality and compare the values at `fun τ => by rw [(hX.std.2.2 τ).1]`. Establish `e2 : X.rW.s = fun _ => 1` using `funext fun τ => (hX.stdW.2.2 τ).1`. Establish `e3 : X.rA.B = fun _ => 1` using `funext fun τ => (hX.std.2.2 τ).2`. Establish `e4 : X.rW.B = fun _ => 1` using `funext fun τ => (hX.stdW.2.2 τ).2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, e3, e4]`. Establish `e1r : (X.ω t) (1, r) = ((X.ω t).toSgn true) (1, r)` using `by show _ = (X.ω t) ((GlobalTheory.Grid.ofSgn true A).toMonoidHom 1, r)`. Rewrite using `[map_one]`. Establish `hQs : Q = ∑ k' ∈ Q.support, Q.coeff k' • MvPolynomial.monomial k' (1 : ℂ)`. Establish `h1` using `MvPolynomial.as_sum Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∑ v ∈ Q.support, MvPolynomial.monomial v (MvPolynomial.coeff v Q) = ∑ k' ∈ Q.support, Q.coeff k' • MvPolynomial.monomial k' (1 : ℂ)` using `Finset.sum_congr rfl fun k' _ => by rw [MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Conclude with `h1.trans h2`. Establish `hker : ∀ g, X.ker W.ψ W.θ t (MvPolynomial.monomial k 1) (x * r) g = ∑ k' ∈ Q.support, (c * Q.coeff k') * X.ker W.ψ W.θ t (MvPolynomial.monomial k' 1) x g`. Introduce `g`. Unfold `Tri.ker thetaKO`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `e : (X.ω t) (g, x * r) = (X.ω t) (g, x) * (X.ω t) (1, r)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one]`. Simplify using `only [hPT]`. Rewrite using `[e, Module.End.mul_apply, e1r, hact]`. Use `conv_lhs => rw [hQs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum, Finset.smul_sum, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Establish `hint` using `(hX.integrable t).1`. Set `cc : (FVar D WW.rank A.rank →₀ ℕ) →₀ ℂ` to `Finsupp.onFinset Q.support (fun k' => c * Q.coeff k') fun k' hk' => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Conclude with `hk' (by rw [MvPolynomial.notMem_support_iff.1 hn, mul_zero])`. Establish `hcc : ∀ k', cc k' = c * Q.coeff k'` using `fun k' => Finsupp.onFinset_apply`. Establish `hsub : cc.support ⊆ Q.support` using `Finsupp.support_onFinset_subset`. Use `⟨cc, fun k' => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[hcc]`. Conclude with `(galFld D.host.E).mul_mem hc (coeff_mem hQ k')`. Unfold `Tri.I`. Repeatedly rewrite using `[hker]`. Rewrite using `[integral_finsetSum _ fun k' _ => (hint _ x).const_mul _]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_subset hsub fun k' _ hk' => by`. Rewrite using `[← hcc, Finsupp.notMem_support_iff.1 hk']`. Use the proof step `simp]`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, hcc]`.
+A detailed English derivation is pending.
 -/
 theorem rationalAction_real_translate : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
@@ -175,7 +175,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RealRatAct.rationalAction_real_translate | exact _root_.GlobalTheory.RealRatAct.rationalAction_real_translate | (intros; apply _root_.GlobalTheory.RealRatAct.rationalAction_real_translate <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.realTranslate_preserves_rationalAction : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

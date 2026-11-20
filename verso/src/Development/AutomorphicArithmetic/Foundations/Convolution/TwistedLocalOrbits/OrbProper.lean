@@ -8,9 +8,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory ValuativeRel GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets PositivityTheory.Rg.Tf.Loc UpperTheory.ConvolutionTheory.Loc
 
 /- English proof (translation)
-Establish `hn : ∀ x : GL (Fin n) E, UpperTheory.ConvolutionTheory.D.nm σ (Module.finrank k E) x = normGL σ x` using `fun x => by`. Unfold `UpperTheory.ConvolutionTheory.D.nm normGL twNorm`. Use `congr 2`. Use function extensionality and compare the values at `i`. Rewrite using `[← sigmaGL_pow]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨x, hx⟩` from `UpperTheory.ConvolutionTheory.D.nmInj k E σ _ (UpperTheory.ConvolutionTheory.D.galField k E σ hσ) n δ δ' (by rw [hn]; exact h) (by rw [hn, hn]; exact e)`. Conclude with `⟨x, hx⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem inj {k E : Type} [Field k] [Field E] [Algebra k E] [FiniteDimensional k E] [IsGalois k E] (σ : E ≃ₐ[k] E)
     (hσ : ∀ τ : E ≃ₐ[k] E, τ ∈ Subgroup.zpowers σ) {n : ℕ} (δ δ' : GL (Fin n) E) (h : IsTwRegSemisimple σ δ)
@@ -26,23 +26,19 @@ private theorem inj {k E : Type} [Field k] [Field E] [Algebra k E] [FiniteDimens
   exact ⟨x, hx⟩
 
 /- English proof (translation)
-Establish `hm : ∀ a b y, twConj θ (a * b) y = twConj θ b (twConj θ a y)` using `fun a b y => by`. Simplify using `only [twConj, map_mul]`. Use `group`. Establish `h1 : ∀ y, twConj θ 1 y = y` using `fun y => by simp [twConj]`. Set `X` to `{δ' // δ' ∈ {δ' | TwConjugate θ δ δ'}}`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : MulAction G X := { smul := fun g y => ⟨twConj θ g⁻¹ y.1, by`. Take `⟨a, ha⟩` from `y.2`. Conclude with `⟨a * g⁻¹, by rw [hm, ← ha]⟩⟩`. Use `one_smul := fun y => Subtype.ext (by change twConj θ 1⁻¹ y.1 = y.1; rw [inv_one, h1])`. Use `mul_smul := fun a b y => Subtype.ext (by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `twConj θ (a * b)⁻¹ y.1 = twConj θ a⁻¹ (twConj θ b⁻¹ y.1)`. Rewrite using `[mul_inv_rev, hm]) }`. Establish `hs : ∀ (g : G) (y : X), (g • y).1 = twConj θ g⁻¹ y.1` using `fun _ _ => rfl`. Use `haveI : ContinuousSMul G X := ⟨Continuous.subtype_mk (by`. Simplify using `only [twConj]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `((continuous_fst.inv.inv).mul (continuous_subtype_val.comp continuous_snd)).mul (hθ.comp continuous_fst.inv)) _⟩`. Set `x₀ : X` to `⟨δ, 1, (h1 δ).symm⟩`. Establish `hx : ∀ y : X, ∃ g : G, g • x₀ = y` using `fun y => by`. Take `⟨a, ha⟩` from `y.2`. Conclude with `⟨a⁻¹, Subtype.ext (by rw [hs, inv_inv]; exact ha.symm)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : MulAction.IsPretransitive G X := ⟨fun y z => by`. Take `⟨a, rfl⟩` from `hx y`. Take `⟨b, rfl⟩` from `hx z`. Conclude with `⟨b * a⁻¹, by rw [smul_smul, inv_mul_cancel_right]⟩⟩`. Use `haveI : LocallyCompactSpace X := hc.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ho` using `isOpenMap_smul_of_sigmaCompact (G := G) x₀`. Establish `hK : IsCompact (Subtype.val ⁻¹' C : Set X)` using `hc.isClosedEmbedding_subtypeVal.isCompact_preimage hC`. Use `choose N hN hN' using fun g : G => exists_compact_mem_nhds g`. Take `⟨s, hs'⟩` from `hK.elim_finite_subcover (fun g : G => (fun a : G => a • x₀) '' interior (N g)) (fun g => ho _ isOpen_interior) fun y _ => by`. Take `⟨g, rfl⟩` from `hx y`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Set.mem_iUnion.2 ⟨g, g, mem_interior_iff_mem_nhds.2 (hN' g), rfl⟩`. Use `⟨(⋃ g ∈ s, N g)⁻¹, (s.isCompact_biUnion fun g _ => hN g).inv, fun x hxC => ?_⟩` and prove the remaining obligations. Use `hs' (show (x⁻¹ • x₀ : X) ∈ Subtype.val ⁻¹' C by` as an intermediate fact. Rewrite using `[Set.mem_preimage, hs, inv_inv]`. Conclude with `hxC)`.
-
-Simplify using `only [Set.mem_iUnion] at this`. Take `⟨g, hg, a, ha, e⟩` from `this`. Establish `e' : twConj θ a⁻¹ δ = twConj θ x δ`. Use `congrArg Subtype.val e` as an intermediate fact. Simplify `this` using `only [hs, inv_inv]`.
-
-Use `⟨x * a, ?_, a⁻¹, ?_, by group⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `twConj θ (x * a) δ = δ`. Rewrite using `[hm, ← e', ← hm, inv_mul_cancel, h1]`. Rewrite using `[Set.mem_inv, inv_inv]`. Conclude with `Set.mem_biUnion hg (interior_subset ha)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem openOrbit {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] (θ : Monoid.End G) (hθ : Continuous θ) (δ : G) (hc : IsClosed {δ' | TwConjugate θ δ δ'})
@@ -95,7 +91,7 @@ private theorem openOrbit {G : Type} [Group G] [TopologicalSpace G] [IsTopologic
     exact Set.mem_biUnion hg (interior_subset ha)
 
 /- English proof (translation)
-Establish `h : (fun M : Matrix (Fin n) (Fin n) K => M.charpoly.coeff i) = fun M => MvPolynomial.eval (fun ij : Fin n × Fin n => M ij.1 ij.2) ((Matrix.charpoly.univ K (Fin n)).coeff i)`. Use function extensionality and compare the values at `M`. Conclude with `(Matrix.charpoly.univ_coeff_eval₂Hom (Fin n) (RingHom.id K) (fun ij : Fin n × Fin n => M ij.1 ij.2) i).symm`. Rewrite using `[h]`. Conclude with `(MvPolynomial.continuous_eval _).comp (continuous_pi fun ij => (continuous_apply ij.2).comp (continuous_apply ij.1))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem contCoeff {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] (n i : ℕ) :
     Continuous fun M : Matrix (Fin n) (Fin n) K => M.charpoly.coeff i := by
@@ -107,15 +103,15 @@ private theorem contCoeff {K : Type} [CommRing K] [TopologicalSpace K] [IsTopolo
   exact (MvPolynomial.continuous_eval _).comp (continuous_pi fun ij => (continuous_apply ij.2).comp (continuous_apply ij.1))
 
 /- English proof (translation)
-Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ _ σ hσ n δ hδ C hC`. Take `⟨i1, i2, i3, -⟩` from `UpperTheory.V.Z.Tf.Orb.gLTop E n`. Establish `hc` using `((UpperTheory.V.Z.Tf.Orb.extCont k E).2.2 n).2`. Establish `hl : (sigmaGL σ : Monoid.End (GL (Fin n) E)) ^ Module.finrank k E = 1`. Rewrite using `[← sigmaGL_pow, ← IsGalois.card_aut_eq_finrank, pow_card_eq_one', sigmaGL_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hN : ∀ m, Continuous (twNorm (sigmaGL σ : Monoid.End (GL (Fin n) E)) m)` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => exact continuous_const.congr fun x => (twNorm_zero _ x).symm`. Consider the case `succ m ih`. Use `(ih.mul (hc (σ ^ m))).congr fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[twNorm_succ, sigmaGL_pow]`. Both sides reduce to the same expression. Use `openOrbit _ (hc σ) δ ?_ C hC` and prove the remaining obligations. Establish `e : {δ' | TwConjugate (sigmaGL σ) δ δ'} = ⋂ i, {δ' : GL (Fin n) E | (normGL σ δ' : Matrix (Fin n) (Fin n) E).charpoly.coeff i = (normGL σ δ : Matrix (Fin n) (Fin n) E).charpoly.coeff i}`. Use extensionality with `δ'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq]`. Use `⟨?_, fun h => inj σ hσ δ δ' hδ (Polynomial.ext h)⟩` and prove the remaining obligations. Introduce and unpack `⟨g, rfl⟩ i`. Rewrite using `[normGL, twNorm_twConj_of_pow_eq_one _ hl, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj']`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `isClosed_iInter fun i => isClosed_eq ((contCoeff n i).comp (Units.continuous_val.comp (hN _))) continuous_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Loc.orbProper :
     ∀ (k E : Type) [Field k] [CharZero k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]

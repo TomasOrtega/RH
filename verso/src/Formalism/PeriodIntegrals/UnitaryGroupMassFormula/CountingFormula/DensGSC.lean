@@ -8,15 +8,15 @@ namespace PI.UnitaryGroupMassFormula.CntFormula
 open Formalism.MainNotions.S ValuativeRel
 
 /- English proof (translation)
-Establish `: S.IsLattice F` using `⟨hfg, hsp⟩`. Establish `hr : Module.finrank 𝒪[F] S = n`. Simplify using `using Submodule.IsLattice.finrank_of_pi F S`. Set `b0 : Module.Basis (Fin n) 𝒪[F] S` to `Module.finBasisOfFinrankEq 𝒪[F] S hr`. Set `b` to `b0.extendOfIsLattice F`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hb : ∀ k, b k = (b0 k : Fin n → F)` using `fun k => by simp [b]`. Use `⟨b, fun k => by rw [hb]; exact (b0 k).2, fun v => ⟨fun hv k => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `key : v = b.equivFun.symm (fun k => ((b0.repr ⟨v, hv⟩ k : 𝒪[F]) : F))`. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Establish `h1 : ∑ i, ((b0.repr ⟨v, hv⟩ i • b0 i : S) : Fin n → F) = v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Submodule.coe_sum, b0.sum_repr]`. Use `conv_lhs => rw [← h1]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hb, Submodule.coe_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h2` using `congrArg b.equivFun key`. Rewrite `h2` using `[LinearEquiv.apply_symm_apply, Module.Basis.equivFun_apply]`. Rewrite using `[h2]`. Conclude with `(b0.repr ⟨v, hv⟩ k).2`. Rewrite using `[← b.sum_repr v]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Use `S.smul_mem (⟨b.repr v k, h k⟩ : 𝒪[F]) (show b k ∈ S by rw [hb]; exact (b0 k).2)` as an intermediate fact. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem latBasis_exists (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (n : ℕ) (S : Submodule 𝒪[F] (Fin n → F))
@@ -66,7 +66,7 @@ def tau (e : E ≃ₐ[F] F × F) {n : ℕ} (β : Module.Basis (Fin n) E V) (p : 
   ∑ k, e.symm (p.1 k, p.2 k) • β k
 
 /- English proof (translation)
-Unfold `sig tau`. Use `first`. Consider the case `simp only [Basis.repr_sum_self, AlgEquiv.apply_symm_apply]`. Consider the case `simp [map_sum, Finsupp.single_apply]`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sig_tau (e : E ≃ₐ[F] F × F) {n : ℕ} (β : Module.Basis (Fin n) E V) (p : (Fin n → F) × (Fin n → F)) :
     sig e β (tau e β p) = p := by
@@ -76,7 +76,7 @@ theorem sig_tau (e : E ≃ₐ[F] F × F) {n : ℕ} (β : Module.Basis (Fin n) E 
   | simp [map_sum, Finsupp.single_apply]
 
 /- English proof (translation)
-Unfold `sig tau`. Simplify using `only [Prod.mk.eta, AlgEquiv.symm_apply_apply]`. Conclude with `β.sum_repr x`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tau_sig (e : E ≃ₐ[F] F × F) {n : ℕ} (β : Module.Basis (Fin n) E V) (x : V) :
     tau e β (sig e β x) = x := by
@@ -85,21 +85,21 @@ theorem tau_sig (e : E ≃ₐ[F] F × F) {n : ℕ} (β : Module.Basis (Fin n) E 
   exact β.sum_repr x
 
 /- English proof (translation)
-Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> funext k <;> simp [sig, map_add]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sig_add (e : E ≃ₐ[F] F × F) {n : ℕ} (β : Module.Basis (Fin n) E V) (x y : V) :
     sig e β (x + y) = sig e β x + sig e β y := by
   refine Prod.ext ?_ ?_ <;> funext k <;> simp [sig, map_add]
 
 /- English proof (translation)
-Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> funext k <;> simp [sig, map_mul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sig_smul (e : E ≃ₐ[F] F × F) {n : ℕ} (β : Module.Basis (Fin n) E V) (a : E) (x : V) :
     sig e β (a • x) = ((e a).1 • (sig e β x).1, (e a).2 • (sig e β x).2) := by
   refine Prod.ext ?_ ?_ <;> funext k <;> simp [sig, map_mul]
 
 /- English proof (translation)
-Unfold `tau`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[← add_smul, ← map_add]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tau_add (e : E ≃ₐ[F] F × F) {n : ℕ} (β : Module.Basis (Fin n) E V) (p q : (Fin n → F) × (Fin n → F)) :
     tau e β (p + q) = tau e β p + tau e β q := by
@@ -110,9 +110,9 @@ theorem tau_add (e : E ≃ₐ[F] F × F) {n : ℕ} (β : Module.Basis (Fin n) E 
   rfl
 
 /- English proof (translation)
-Unfold `tau`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : (((e a).1 • p.1) k, ((e a).2 • p.2) k) = e a * (p.1 k, p.2 k)` using `Prod.ext (by simp) (by simp)`. Rewrite using `[h1, map_mul, AlgEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tau_smul (e : E ≃ₐ[F] F × F) {n : ℕ} (β : Module.Basis (Fin n) E V) (a : E)
     (p : (Fin n → F) × (Fin n → F)) :
@@ -127,7 +127,7 @@ theorem tau_smul (e : E ≃ₐ[F] F × F) {n : ℕ} (β : Module.Basis (Fin n) E
   rw [h1, map_mul, AlgEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> funext k <;> simp [sig]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sig_zero (e : E ≃ₐ[F] F × F) {n : ℕ} (β : Module.Basis (Fin n) E V) : sig e β 0 = 0 := by
   refine Prod.ext ?_ ?_ <;> funext k <;> simp [sig]

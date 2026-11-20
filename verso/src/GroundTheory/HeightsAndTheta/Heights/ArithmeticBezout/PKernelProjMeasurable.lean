@@ -17,7 +17,7 @@ def shifted (A : E →L[ℂ] F) (ε : ℝ) : E →L[ℂ] E :=
   (ContinuousLinearMap.adjoint A) ∘L A + (ε : ℂ) • (1 : E →L[ℂ] E)
 
 /- English proof (translation)
-Simplify using `only [shifted, add_apply, comp_apply, smul_apply, one_apply, inner_add_right, inner_smul_right, adjoint_inner_right, inner_self_eq_norm_sq_to_K, map_add]`. Simplify using `[← Complex.ofReal_pow]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem re_inner_shifted (A : E →L[ℂ] F) (ε : ℝ) (u : E) :
     RCLike.re (inner ℂ u (shifted A ε u)) = ‖A u‖ ^ 2 + ε * ‖u‖ ^ 2 := by
@@ -26,23 +26,23 @@ theorem re_inner_shifted (A : E →L[ℂ] F) (ε : ℝ) (u : E) :
   simp [← Complex.ofReal_pow]
 
 /- English proof (translation)
-Simplify using `[shifted, inner_add_right, inner_smul_right, adjoint_inner_right, hz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_shifted_of_apply_eq_zero (A : E →L[ℂ] F) (ε : ℝ) (u : E) {z : E} (hz : A z = 0) :
     inner ℂ z (shifted A ε u) = (ε : ℂ) * inner ℂ z u := by
   simp [shifted, inner_add_right, inner_smul_right, adjoint_inner_right, hz]
 
 /- English proof (translation)
-Simplify using `[shifted, hz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem shifted_apply_of_apply_eq_zero (A : E →L[ℂ] F) (ε : ℝ) {z : E} (hz : A z = 0) :
     shifted A ε z = (ε : ℂ) • z := by
   simp [shifted, hz]
 
 /- English proof (translation)
-Establish `h1` using `re_inner_shifted A ε u`. Establish `h2` using `re_inner_le_norm (𝕜 := ℂ) u (shifted A ε u)`. Break down `eq_or_lt_of_le (norm_nonneg u) with h | h` into its components or cases. Rewrite using `[← h, mul_zero]`. Conclude with `norm_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (ε * ‖u‖) * ‖u‖ ≤ ‖shifted A ε u‖ * ‖u‖`. Use polynomial arithmetic with `[sq_nonneg ‖A u‖]`. Conclude with `le_of_mul_le_mul_right h3 h`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem mul_norm_le_norm_shifted (A : E →L[ℂ] F) {ε : ℝ} (hε : 0 < ε) (u : E) :
     ε * ‖u‖ ≤ ‖shifted A ε u‖ := by
@@ -55,9 +55,9 @@ theorem mul_norm_le_norm_shifted (A : E →L[ℂ] F) {ε : ℝ} (hε : 0 < ε) (
     exact le_of_mul_le_mul_right h3 h
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (shifted A ε : E →ₗ[ℂ] E)`. Introduce `a b hab`. Establish `h` using `mul_norm_le_norm_shifted A hε (a - b)`. Establish `hab' : shifted A ε a = shifted A ε b` using `hab`. Rewrite `h` using `[map_sub, hab', sub_self, norm_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : ‖a - b‖ = 0` using `le_antisymm (by nlinarith [norm_nonneg (a - b)]) (norm_nonneg _)`. Conclude with `sub_eq_zero.1 (norm_eq_zero.1 h0)`. Use `⟨(LinearEquiv.ofInjectiveEndo _ hinj).toContinuousLinearEquiv.toUnit, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isUnit_shifted (A : E →L[ℂ] F) {ε : ℝ} (hε : 0 < ε) : IsUnit (shifted A ε) := by
   have hinj : Function.Injective (shifted A ε : E →ₗ[ℂ] E) := by
@@ -72,17 +72,15 @@ theorem isUnit_shifted (A : E →L[ℂ] F) {ε : ℝ} (hε : 0 < ε) : IsUnit (s
   rfl
 
 /- English proof (translation)
-Use `set K := LinearMap.ker (A : E →ₗ[ℂ] F)`. Establish `hinj : Function.Injective ((A : E →ₗ[ℂ] F).comp Kᗮ.subtype)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `u hu`. Establish `h1 : (u : E) ∈ K` using `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (u : E) ∈ K ⊓ Kᗮ` using `⟨h1, u.2⟩`. Rewrite `h2` using `[K.inf_orthogonal_eq_bot, Submodule.mem_bot]`. Conclude with `Subtype.ext h2`. Take `⟨c, -, hc⟩` from `((A : E →ₗ[ℂ] F).comp Kᗮ.subtype).injective_iff_antilipschitz.1 hinj`. Use `⟨(c : ℝ) ^ 2, sq_nonneg _, fun ε hε u hu => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : ‖u‖ ≤ c * ‖A u‖`. Simplify using `using hc.le_mul_norm (map_zero _) ⟨u, hu⟩`. Establish `h2` using `re_inner_shifted A ε u`. Establish `h3` using `re_inner_le_norm (𝕜 := ℂ) u (shifted A ε u)`. Establish `hc0 : (0 : ℝ) ≤ c` using `c.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `eq_or_lt_of_le (norm_nonneg u) with h | h` into its components or cases. Rewrite using `[← h]`. Check the signs of the components of the expression. Establish `hAu : ‖u‖ ^ 2 ≤ (c : ℝ) ^ 2 * ‖A u‖ ^ 2`. Use `mul_le_mul h1 h1 (norm_nonneg _) (by positivity)` as an intermediate fact.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : (c : ℝ) ^ 2 * ‖A u‖ ^ 2 ≤ (c : ℝ) ^ 2 * (‖u‖ * ‖shifted A ε u‖)`. Apply `mul_le_mul_of_nonneg_left _ (sq_nonneg _)` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_nonneg hε (sq_nonneg ‖u‖)]`. Establish `h5 : ‖u‖ * ‖u‖ ≤ ((c : ℝ) ^ 2 * ‖shifted A ε u‖) * ‖u‖` using `by nlinarith`.
-
-Conclude with `le_of_mul_le_mul_right h5 h`.
+Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_norm_le_norm_shifted (A : E →L[ℂ] F) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ ε : ℝ, 0 ≤ ε → ∀ u ∈ (LinearMap.ker (A : E →ₗ[ℂ] F))ᗮ, ‖u‖ ≤ C * ‖shifted A ε u‖ := by
@@ -116,15 +114,13 @@ def resolvent (A : E →L[ℂ] F) (ε : ℝ) : E →L[ℂ] E :=
   (ε : ℂ) • Ring.inverse (shifted A ε)
 
 /- English proof (translation)
-Take `⟨C, hC, hCb⟩` from `exists_norm_le_norm_shifted A`. Use `⟨2 * C, fun ε hε => ?_⟩` and prove the remaining obligations. Use `set K := LinearMap.ker (A : E →ₗ[ℂ] F)`. Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun v => ?_` and prove the remaining obligations. Use `set u := (resolvent A ε - K.starProjection) v with hu_def`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : shifted A ε (Ring.inverse (shifted A ε) v) = v`. Use `Ring.mul_inverse_cancel _ (isUnit_shifted A hε)` as an intermediate fact. Conclude with `congrArg (fun T : E →L[ℂ] E => T v) this`. Establish `hPv : A (K.starProjection v) = 0` using `K.starProjection_apply_mem v`. Establish `hTu : shifted A ε u = (ε : ℂ) • (v - K.starProjection v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu_def, resolvent, sub_apply, smul_apply, map_sub, map_smul, hinv, shifted_apply_of_apply_eq_zero A ε hPv, smul_sub]`. Establish `hu : u ∈ Kᗮ`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `z hz`. Establish `h1` using `inner_shifted_of_apply_eq_zero A ε u hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hTu, inner_smul_right, (Submodule.mem_orthogonal _ _).1 (K.sub_starProjection_mem_orthogonal v) z hz, mul_zero]`. Establish `hε' : (ε : ℂ) ≠ 0` using `by exact_mod_cast hε.ne'`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left hε'`. Establish `hvP : ‖v - K.starProjection v‖ ≤ 2 * ‖v‖` using `(norm_sub_le _ _).trans (by linarith [K.norm_starProjection_apply_le v])`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hTu, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hε]`. Use `_ ≤ C * (ε * (2 * ‖v‖)) := by gcongr`. Use `_ = 2 * C * ε * ‖v‖ := by ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm_resolvent_sub_le (A : E →L[ℂ] F) :
     ∃ C : ℝ, ∀ ε : ℝ, 0 < ε →
@@ -158,7 +154,7 @@ theorem exists_norm_resolvent_sub_le (A : E →L[ℂ] F) :
     _ = 2 * C * ε * ‖v‖ := by ring
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `exists_norm_resolvent_sub_le A`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun j => hC _ (by positivity)) ?_` and prove the remaining obligations. Simplify using `using (tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)).const_mul C`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tendsto_resolvent (A : E →L[ℂ] F) :
     Tendsto (fun j : ℕ => resolvent A (1 / ((j : ℝ) + 1))) atTop
@@ -169,11 +165,9 @@ theorem tendsto_resolvent (A : E →L[ℂ] F) :
   simpa using (tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)).const_mul C
 
 /- English proof (translation)
-Establish `hadj : Continuous fun x => ContinuousLinearMap.adjoint (A x)` using `ContinuousLinearMap.adjoint.continuous.comp hA`. Establish `hT : Continuous fun x => shifted (A x) ε`. Simplify using `only [shifted]`. Conclude with `(hadj.clm_comp hA).add continuous_const`. Establish `hI : Continuous fun x => Ring.inverse (shifted (A x) ε)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Establish `h` using `NormedRing.inverse_continuousAt (isUnit_shifted (A x) hε).unit`. Rewrite `h` using `[IsUnit.unit_spec]`. Conclude with `ContinuousAt.comp (g := Ring.inverse) (f := fun x => shifted (A x) ε) h hT.continuousAt`. Use `show Continuous fun x => (ε : ℂ) • Ring.inverse (shifted (A x) ε)`.
-
-Conclude with `hI.const_smul (ε : ℂ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_resolvent {X : Type*} [TopologicalSpace X] {A : X → E →L[ℂ] F} (hA : Continuous A) {ε : ℝ} (hε : 0 < ε) :
     Continuous fun x => resolvent (A x) ε := by
@@ -193,11 +187,9 @@ theorem continuous_resolvent {X : Type*} [TopologicalSpace X] {A : X → E →L[
 end KernelProjMeasurable
 
 /- English proof (translation)
-Introduce `X _ _ _ n k L hL`. Set `A : X → EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin k)` to `fun x => LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin (L x))`. Establish `hA : Continuous A`. Rewrite using `[continuous_clm_apply]`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `Continuous fun x => (WithLp.toLp 2 (Matrix.mulVec (L x) (WithLp.ofLp v)) : EuclideanSpace ℂ (Fin k))`. Conclude with `(PiLp.continuous_toLp 2 _).comp (hL.matrix_mulVec continuous_const)`. Use `measurable_of_tendsto_metrizable (f := fun j x => KernelProjMeasurable.resolvent (A x) (1 / ((j : ℝ) + 1))) (fun j => (KernelProjMeasurable.continuous_resolvent hA (by positivity)).measurable) ?_` and prove the remaining obligations. Rewrite using `[tendsto_pi_nhds]`. Introduce `x`.
-
-Conclude with `KernelProjMeasurable.tendsto_resolvent (A x)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem KernelProjMeasurable.proof : KernelProjMeasurable.Statement := by
   intro X _ _ _ n k L hL

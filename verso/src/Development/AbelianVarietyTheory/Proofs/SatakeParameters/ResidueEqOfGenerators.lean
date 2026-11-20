@@ -8,11 +8,11 @@ import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverAct
 namespace GlobalTheory.ClassResidueGenerators
 
 /- English proof (translation)
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem a ha => exact h a ha`. Consider the case `algebraMap r`. Establish `e : (⟨algebraMap O A r, Subalgebra.algebraMap_mem _ r⟩ : ↥(Algebra.adjoin O S)) = algebraMap O _ r` using `rfl`. Rewrite using `[e, ψ.commutes, ψ'.commutes]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b ha hb iha ihb`. Establish `e : (⟨a + b, add_mem ha hb⟩ : ↥(Algebra.adjoin O S)) = ⟨a, ha⟩ + ⟨b, hb⟩` using `rfl`. Rewrite using `[e, map_add, map_add, map_add, map_add, iha, ihb]`. Consider the case `mul a b ha hb iha ihb`. Establish `e : (⟨a * b, mul_mem ha hb⟩ : ↥(Algebra.adjoin O S)) = ⟨a, ha⟩ * ⟨b, hb⟩` using `rfl`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[e, map_mul, map_mul, map_mul, map_mul, iha, ihb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem residue_eq_of_generators {O A : Type} [CommRing O] [IsLocalRing O] [Ring A] [Algebra O A]
     (S : Set A) (ψ ψ' : ↥(Algebra.adjoin O S) →ₐ[O] O)
@@ -35,7 +35,7 @@ theorem residue_eq_of_generators {O A : Type} [CommRing O] [IsLocalRing O] [Ring
     rw [e, map_mul, map_mul, map_mul, map_mul, iha, ihb]
 
 /- English proof (translation)
-Introduce `O K V _ _ _ _ _ _ _ _ S ψ ψ' h`. Unfold `Formalism.L2.NCov.cls`. Use `congr 1`. Use extensionality with `⟨x, hx⟩`. Conclude with `residue_eq_of_generators S ψ ψ' h x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cls_eq_of_generators : ∀ {O K V : Type} [inst : CommRing O] [inst_1 : Field K] [inst_2 : Algebra O K] [inst_3 : AddCommGroup V] [inst_4 : Module K V] [inst_5 : Module O V] [inst_6 : IsScalarTower O K V] [inst_7 : IsLocalRing O] (S : Set (Module.End K V)) (ψ ψ' : ↥(Algebra.adjoin O S) →ₐ[O] O), (∀ (a : Module.End K V) (h : a ∈ S), (IsLocalRing.residue O : O → IsLocalRing.ResidueField O) ((ψ : ↥(Algebra.adjoin O S) → O) (⟨a, Algebra.subset_adjoin h⟩ : ↥(Algebra.adjoin O S))) = (IsLocalRing.residue O : O → IsLocalRing.ResidueField O) ((ψ' : ↥(Algebra.adjoin O S) → O) (⟨a, Algebra.subset_adjoin h⟩ : ↥(Algebra.adjoin O S)))) → Formalism.L2.NCov.cls ψ = Formalism.L2.NCov.cls ψ' := by
   intro O K V _ _ _ _ _ _ _ _ S ψ ψ' h

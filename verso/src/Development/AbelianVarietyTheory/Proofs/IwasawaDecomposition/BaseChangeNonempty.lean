@@ -6,7 +6,7 @@ open Formalism.BasicNotions GlobalTheory.Mem GlobalTheory.MemN NumberField IsDed
 namespace GlobalTheory.MemN
 
 /- English proof (translation)
-Introduce `R H what₂ nd A hL`. Conclude with `⟨{ AU := fun _ => Empty multAU := fun _ x => x.elim sphAU := fun _ x => x.elim locAU := fun _ x => x.elim satAU := fun _ x => x.elim satAU_card := fun _ x => x.elim Wt := fun _ => Empty infW := fun _ x => x.elim infW_card := fun _ x => x.elim wtAU := fun _ x => x.elim infW_alg := …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem nonempty_nbc_of_isEmpty_loc :
     ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (nd : NData R H what₂) (A : NAut nd),

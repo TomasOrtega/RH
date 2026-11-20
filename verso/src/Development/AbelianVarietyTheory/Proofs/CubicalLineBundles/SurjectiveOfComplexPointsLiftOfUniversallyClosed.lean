@@ -19,7 +19,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {K : Type u} [Field K] [IsAlgClosed K] in
 
 /- English proof (translation)
-Establish `: JacobsonSpace X` using `LocallyOfFiniteType.jacobsonSpace p`. Take `⟨y, hyZ, hy⟩` from `nonempty_inter_closedPoints hne hZ`. Establish `hy : IsClosed {y}` using `hy`. Conclude with `⟨pointOfClosedPoint p y hy, pointOfClosedPoint_comp p y hy, fun a => by rw [pointOfClosedPoint_apply]; exact hyZ⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.ComplexPoints.exists_point_mem {X : Scheme.{u}}
     (p : X ⟶ Spec (.of K)) [LocallyOfFiniteType p]
@@ -32,7 +32,7 @@ theorem _root_.GlobalTheory.ComplexPoints.exists_point_mem {X : Scheme.{u}}
     fun a => by rw [pointOfClosedPoint_apply]; exact hyZ⟩
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hne`. Take `⟨w, hw⟩` from `(pullback.fst p t).surjective z`. Take `⟨y, hy, hyZ⟩` from `exists_point_mem (pullback.snd p t) (hZ.preimage (pullback.fst p t).continuous) ⟨w, show pullback.fst p t w ∈ Z from hw ▸ hz⟩`. Use `⟨y ≫ pullback.fst p t, ?_, fun a => hyZ a⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, reassoc_of% hy]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_geomPoint_mem {X S : Scheme.{u}} (p : X ⟶ S) [LocallyOfFiniteType p]
     (t : Spec (.of K) ⟶ S) [Surjective t]
@@ -46,7 +46,7 @@ theorem exists_geomPoint_mem {X S : Scheme.{u}} (p : X ⟶ S) [LocallyOfFiniteTy
   rw [Category.assoc, pullback.condition, reassoc_of% hy]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x => ⟨IsLocalRing.closedPoint L, Subsingleton.elim (α := PrimeSpectrum k) _ _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem surjective_specMap_field {k L : Type u} [Field k] [Field L] (σ : k →+* L) :
     Surjective (Spec.map (CommRingCat.ofHom σ)) :=
@@ -57,9 +57,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {K : Type u} [Field K] [IsAlgClosed K] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h (show a ∈ (⊤ : (Spec (.of L)).Opens) from trivial)`. Introduce `h b _`. Rewrite using `[Subsingleton.elim b a]`.
-
-Conclude with `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ComplexPoints.top_le_preimage_iff {L : Type u} [Field L] {X : Scheme.{u}}
     (x : Spec (.of L) ⟶ X) (U : X.Opens) (a : ↥(Spec (.of L))) : ⊤ ≤ x ⁻¹ᵁ U ↔ x a ∈ U := by
@@ -71,7 +69,7 @@ theorem _root_.GlobalTheory.ComplexPoints.top_le_preimage_iff {L : Type u} [Fiel
     exact h
 
 /- English proof (translation)
-Introduce `z hzU`. Assume the negation of the conclusion as `hzV`. Take `⟨x, hx, hxZ⟩` from `exists_geomPoint_mem p t (Z := (U : Set X) ∩ (V : Set X)ᶜ) (U.isOpen.isLocallyClosed.inter V.isOpen.isClosed_compl.isLocallyClosed) ⟨z, hzU, hzV⟩`. Set `a : ↥(Spec (.of K))` to `IsLocalRing.closedPoint K`. Conclude with `(hxZ a).2 ((top_le_preimage_iff x V a).1 (h x hx ((top_le_preimage_iff x U a).2 (hxZ a).1)))`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem opens_le_of_geomPoints {X S : Scheme.{u}} (p : X ⟶ S) [LocallyOfFiniteType p]
     (t : Spec (.of K) ⟶ S) [Surjective t] (U V : X.Opens)
@@ -84,7 +82,7 @@ theorem opens_le_of_geomPoints {X S : Scheme.{u}} (p : X ⟶ S) [LocallyOfFinite
   exact (hxZ a).2 ((top_le_preimage_iff x V a).1 (h x hx ((top_le_preimage_iff x U a).2 (hxZ a).1)))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨x, hx, hxZ⟩` from `exists_geomPoint_mem p t hZ.isOpen_compl.isLocallyClosed (Set.nonempty_compl.mpr hne)`. Take `⟨a, ha⟩` from `h x hx`. Conclude with `hxZ a ha`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem closed_eq_univ_of_geomPoints {X S : Scheme.{u}} (p : X ⟶ S) [LocallyOfFiniteType p]
     (t : Spec (.of K) ⟶ S) [Surjective t] {Z : Set X} (hZ : IsClosed Z)
@@ -100,13 +98,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {K : Type u} [Field K] [IsAlgClosed K] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hns`. Establish `hne : (Set.range ψ)ᶜ.Nonempty`. Rewrite using `[Set.nonempty_compl]`. Introduce `hr`.
+Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hns (Set.range_eq_univ.mp hr)`. Establish `hP : (pullback.fst p t ⁻¹' (Set.range ψ)ᶜ).Nonempty`. Take `⟨a, ha⟩` from `hne`. Take `⟨z, hz⟩` from `(pullback.fst p t).surjective a`. Conclude with `⟨z, by simpa [hz] using ha⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy1, hy2⟩` from `_root_.GlobalTheory.ComplexPoints.exists_point_mem (pullback.snd p t) (hψ.isOpen_compl.preimage (pullback.fst p t).continuous).isLocallyClosed hP`. Take `⟨w, hw⟩` from `h (y ≫ pullback.fst p t) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hy1, Category.id_comp])`. Take `⟨a⟩` from `(inferInstance : Nonempty (Spec (.of K)))`. Apply `hy2 a` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Conclude with `⟨w a, by rw [← Scheme.Hom.comp_apply, hw, Scheme.Hom.comp_apply]⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ComplexPoints.surjective_of_geomPoints_lift {A B S : Scheme.{u}} (p : A ⟶ S)
     [LocallyOfFiniteType p]
@@ -136,9 +134,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {K : Type u} [Field K] [IsAlgClosed K] in
 
 /- English proof (translation)
-Establish `: JacobsonSpace X` using `LocallyOfFiniteType.jacobsonSpace p`. Use `ext_of_fromSpecResidueField_eq f g q (closedPoints X) (dense_iff_closure_eq.mpr closure_closedPoints) ?_ hfg` and prove the remaining obligations. Introduce `y hy`. Establish `e` using `h (pointOfClosedPoint p y hy) (pointOfClosedPoint_comp p y hy)`. Unfold `pointOfClosedPoint at e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Category.assoc] at e`. Conclude with `(cancel_epi _).mp e`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ComplexPoints.hom_ext_of_points {X Y S : Scheme.{u}} (p : X ⟶ Spec (.of K))
     [LocallyOfFiniteType p]
@@ -162,13 +160,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {X Y : Scheme.{0}} in
 
 /- English proof (translation)
-Establish `e : x ⁻¹ᵁ X.basicOpen f = (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ).basicOpen (x.appLE U ⊤ h f)`. Rewrite using `[Scheme.basicOpen_appLE, top_inf_eq]`. Rewrite using `[e]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hs h0`. Establish `hz : x.appLE U ⊤ h f = 0`. Use `congrArg (Scheme.ΓSpecIso (.of ℂ)).inv.hom h0` as an intermediate fact. Simplify using `using this`. Rewrite `hs` using `[hz, Scheme.basicOpen_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a⟩` from `(inferInstance : Nonempty (Spec (.of ℂ)))`. Conclude with `(hs (show a ∈ (⊤ : (Spec (.of ℂ)).Opens) from trivial)).elim`. Introduce `hne`. Establish `hu : IsUnit (x.appLE U ⊤ h f)`. Use `(isUnit_iff_ne_zero.mpr hne).map (Scheme.ΓSpecIso (.of ℂ)).inv.hom` as an intermediate fact.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Rewrite using `[Scheme.basicOpen_of_isUnit _ hu]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ComplexPoints.top_le_preimage_basicOpen_iff (x : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
@@ -192,7 +190,7 @@ theorem _root_.GlobalTheory.ComplexPoints.top_le_preimage_basicOpen_iff (x : _ro
     rw [Scheme.basicOpen_of_isUnit _ hu]
 
 /- English proof (translation)
-Establish `hU : U ≤ X.basicOpen f` using `opens_le_of_geomPoints p (𝟙 _) U _ fun x hx hxU => (top_le_preimage_basicOpen_iff x U hxU f).2 (h x hxU hx)`. Conclude with `X.toRingedSpace.isUnit_of_isUnit_germ U f fun y hy => (X.mem_basicOpen f y hy).1 (hU hy)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_of_valAt_ne_zero (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] (U : X.Opens) (f : Γ(X, U))
     (h : ∀ (x : Sp ℂ ⟶ X) (hx : ⊤ ≤ x ⁻¹ᵁ U), x ≫ p = 𝟙 _ → valAt x U hx f ≠ 0) : IsUnit f := by
@@ -201,7 +199,7 @@ theorem isUnit_of_valAt_ne_zero (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] (U : 
   exact X.toRingedSpace.isUnit_of_isUnit_germ U f fun y hy => (X.mem_basicOpen f y hy).1 (hU hy)
 
 /- English proof (translation)
-Use `eq_zero_of_basicOpen_eq_bot f (le_bot_iff.1 (opens_le_of_geomPoints p (𝟙 _) _ _ ?_))` and prove the remaining obligations. Introduce `x hx hxf`. Establish `hxU : ⊤ ≤ x ⁻¹ᵁ U` using `fun a ha => X.basicOpen_le f (hxf ha)`. Conclude with `absurd (h x hxU hx) ((top_le_preimage_basicOpen_iff x U hxU f).1 hxf)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_valAt_eq_zero (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] [IsReduced X] (U : X.Opens)
     (f : Γ(X, U))
@@ -212,7 +210,7 @@ theorem eq_zero_of_valAt_eq_zero (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] [IsR
   exact absurd (h x hxU hx) ((top_le_preimage_basicOpen_iff x U hxU f).1 hxf)
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_valAt_eq_zero p U _ fun x hx hp => ?_` and prove the remaining obligations. Use `h x hx hp` as an intermediate fact. Unfold `valAt at this ⊢`. Rewrite using `[map_sub, map_sub, this, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_valAt_eq (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] [IsReduced X] (U : X.Opens)
     (f g : Γ(X, U))
@@ -228,9 +226,9 @@ set_option autoImplicit false in
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj in
 variable {X Y : Scheme.{0}} in
 /- English proof (translation)
-Introduce `y hyU`. Assume the negation of the conclusion as `hyV`. Take `⟨x, hx1, hx2⟩` from `_root_.GlobalTheory.ComplexPoints.exists_point_mem (K := ℂ) p (Z := (U : Set X) ∩ (V : Set X)ᶜ) (U.isOpen.isLocallyClosed.inter V.isOpen.isClosed_compl.isLocallyClosed) ⟨y, hyU, hyV⟩`. Take `⟨a⟩` from `(inferInstance : Nonempty (Spec (.of ℂ)))`. Establish `hU : ⊤ ≤ x ⁻¹ᵁ U` using `(_root_.GlobalTheory.ComplexPoints.top_le_preimage_iff x U a).mpr (hx2 a).1`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(hx2 a).2 ((_root_.GlobalTheory.ComplexPoints.top_le_preimage_iff x V a).mp (h x hx1 hU))`.
+A detailed English derivation is pending.
 -/
 private theorem opens_le_of_forall_complex_section (p : X ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ) [LocallyOfFiniteType p]
     (U V : X.Opens)
@@ -249,11 +247,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {X Y : Scheme.{0}} in
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_basicOpen_eq_bot` to reduce the goal to its premises. Use `eq_bot_iff.mpr (opens_le_of_forall_complex_section p _ ⊥ fun x hx hb => ?_)` and prove the remaining obligations. Establish `hU : ⊤ ≤ x ⁻¹ᵁ U` using `hb.trans fun b hb' => X.basicOpen_le (f - g) hb'`. Establish `hne` using `(_root_.GlobalTheory.ComplexPoints.top_le_preimage_basicOpen_iff x U hU (f - g)).mp hb`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `h x hx hU`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' at he`. Rewrite `he` using `[dif_pos hU, dif_pos hU]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt at hne he`. Rewrite `hne` using `[map_sub, map_sub, he, sub_self]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hne rfl).elim`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ComplexPoints.eq_of_valAt'_eq (p : X ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ) [LocallyOfFiniteType p]
     [IsReduced X] (U : X.Opens)
@@ -277,9 +275,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {X Y : Scheme.{0}} in
 
 /- English proof (translation)
-Establish `hle : U ≤ X.basicOpen f` using `opens_le_of_forall_complex_section p U _ fun x hx hU => by`. Use `h x hx hU` as an intermediate fact. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' at this`. Rewrite `this` using `[dif_pos hU]`. Conclude with `(_root_.GlobalTheory.ComplexPoints.top_le_preimage_basicOpen_iff x U hU f).mpr this`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu` using `(X.toRingedSpace.isUnit_res_basicOpen f).map (X.presheaf.map (homOfLE hle).op).hom`. Establish `hid : (homOfLE (X.basicOpen_le f)).op ≫ (homOfLE hle).op = 𝟙 (Opposite.op U)` using `Subsingleton.elim _ _`. Use `hu using 1` and compare the differences between its conclusion and the goal. Use `erw [← CommRingCat.comp_apply, ← Functor.map_comp, hid, CategoryTheory.Functor.map_id, CommRingCat.id_apply]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ComplexPoints.isUnit_of_valAt'_ne_zero (p : X ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ) [LocallyOfFiniteType p]
     (U : X.Opens) (f : Γ(X, U))
@@ -298,7 +296,7 @@ theorem _root_.GlobalTheory.ComplexPoints.isUnit_of_valAt'_ne_zero (p : X ⟶ _r
     CommRingCat.id_apply]
 
 /- English proof (translation)
-The claim follows from `hom_ext_of_points p q (hf.trans hg.symm) h`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext_of_complexPoints (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] [IsReduced X]
     (q : Y ⟶ Sp ℂ) [IsSeparated q] {f g : X ⟶ Y} (hf : f ≫ q = p) (hg : g ≫ q = p)
@@ -310,7 +308,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {X Y : Scheme.{0}} in
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `_root_.GlobalTheory.ComplexPoints.hom_ext_of_points (K := ℂ) A.hom B.hom (by rw [Over.w f, Over.w g]) fun x hx => ?_` and prove the remaining obligations. Use `h (Over.homMk x (by simpa using hx))` as an intermediate fact. Simplify using `using congrArg (fun k => k.left) this`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem _root_.GlobalTheory.ComplexPoints.over_hom_ext_of_complexPoints {A B : Over (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ)} [LocallyOfFiniteType A.hom]
     [IsReduced A.left] [IsSeparated B.hom] {f g : A ⟶ B}
@@ -326,14 +324,14 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {X Y : Scheme.{0}} in
 
 /- English proof (translation)
-The claim follows from `opens_le_of_forall_complex_section p U V h`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ComplexPoints.opens_le_of_complexPoints (p : X ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ) [LocallyOfFiniteType p] (U V : X.Opens)
     (h : ∀ x : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ X, x ≫ p = 𝟙 _ → ⊤ ≤ x ⁻¹ᵁ U → ⊤ ≤ x ⁻¹ᵁ V) : U ≤ V :=
   opens_le_of_forall_complex_section p U V h
 
 /- English proof (translation)
-The claim follows from `top_le_iff.1 (opens_le_of_complexPoints p ⊤ U fun x hx _ => h x hx)`.
+A detailed English derivation is pending.
 -/
 theorem opens_eq_top_of_complexPoints (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] (U : X.Opens)
     (h : ∀ x : Sp ℂ ⟶ X, x ≫ p = 𝟙 _ → ⊤ ≤ x ⁻¹ᵁ U) : U = ⊤ :=
@@ -344,7 +342,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {X Y : Scheme.{0}} in
 
 /- English proof (translation)
-Use `eq_top_iff.mpr (opens_le_of_forall_complex_section p ⊤ _ fun x hx _ => ?_)` and prove the remaining obligations. Take `⟨i, hi⟩` from `h x hx`. Take `⟨a⟩` from `(inferInstance : Nonempty (Spec (.of ℂ)))`. Rewrite `hi`, the goal using `[_root_.GlobalTheory.ComplexPoints.top_le_preimage_iff x _ a]`. Conclude with `(le_iSup U i) hi`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ComplexPoints.iSup_eq_top_of_complexPoints (p : X ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ) [LocallyOfFiniteType p]
     {I : Type*} (U : I → X.Opens) (h : ∀ x : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ X, x ≫ p = 𝟙 _ → ∃ i, ⊤ ≤ x ⁻¹ᵁ U i) :
@@ -356,7 +354,7 @@ theorem _root_.GlobalTheory.ComplexPoints.iSup_eq_top_of_complexPoints (p : X �
   exact (le_iSup U i) hi
 
 /- English proof (translation)
-The claim follows from `haveI : Surjective (spMap σ) := surjective_specMap_field σ surjective_of_geomPoints_lift a (spMap σ) ψ hψ h`.
+A detailed English derivation is pending.
 -/
 theorem surjective_of_complexPoints_lift {k : Type} [Field k] (σ : k →+* ℂ) {A B : Scheme.{0}}
     (a : A ⟶ Sp k) [LocallyOfFiniteType a] (ψ : B ⟶ A) (hψ : IsClosed (Set.range ψ))
@@ -365,7 +363,7 @@ theorem surjective_of_complexPoints_lift {k : Type} [Field k] (σ : k →+* ℂ)
   surjective_of_geomPoints_lift a (spMap σ) ψ hψ h
 
 /- English proof (translation)
-Substitute `hw` using the available equality. Establish `: UniversallyClosed ψ` using `UniversallyClosed.of_comp_of_isSeparated ψ a`. Conclude with `surjective_of_complexPoints_lift σ a ψ ψ.isClosedMap.isClosed_range h`.
+Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem surjective_of_complexPoints_lift_of_universallyClosed {k : Type} [Field k] (σ : k →+* ℂ)
     {A B : Scheme.{0}} (a : A ⟶ Sp k) [LocallyOfFiniteType a] [IsSeparated a] (b : B ⟶ Sp k)
@@ -380,7 +378,7 @@ end GlobalTheory.ComplexPoints
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `_ p _ _ U f` and use `⟨ComplexPoints.eq_zero_of_valAt_eq_zero p U f, ComplexPoints.isUnit_of_valAt_ne_zero p U f⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem eq_zero_and_isUnit_of_valAt :
     ∀ (X : Scheme.{0}) (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] [IsReduced X] (U : X.Opens)

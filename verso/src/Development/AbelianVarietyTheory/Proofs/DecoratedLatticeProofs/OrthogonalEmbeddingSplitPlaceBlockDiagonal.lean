@@ -8,9 +8,9 @@ open GlobalTheory.RootEx (embX)
 namespace GlobalTheory.FinPl
 
 /- English proof (translation)
-Rewrite using `[OrthDec.mt_emb]`. Establish `h1 : Formalism.L2.Theta.mt L (1 : GA D L) = 1` using `by simp [Formalism.L2.Theta.mt]`. Rewrite using `[h1]`. Establish `hs` using `congrArg (fun M : Mx D S.rank S.rank => M.map f) o.sum_eq_one`. Simplify using `only [Matrix.map_add _ (map_add f), Matrix.map_mul, Matrix.map_one _ (map_zero f) (map_one f)] at hs ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[ha, Matrix.mul_one, Matrix.mul_one, hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_map_eq_one {D : D7} {S A L : HSp D} (o : OrthDec S A L) {R : Type} [CommRing R] (f : AE D →+* R)
     {a : GA D A} (ha : (Formalism.L2.Theta.mt A a).map f = 1) : (Formalism.L2.Theta.mt S (o.emb (a, 1))).map f = 1 := by
@@ -22,9 +22,9 @@ theorem emb_map_eq_one {D : D7} {S A L : HSp D} (o : OrthDec S A L) {R : Type} [
   rw [ha, Matrix.mul_one, Matrix.mul_one, hs]
 
 /- English proof (translation)
-Simplify using `only [grpAt, congGrp, MonoidHom.mem_ker, MonoidHom.comp_apply] at ha ⊢`. Establish `ha' : (Formalism.L2.Theta.mt A a).map (Ideal.Quotient.mk (idAt D P)) = 1`. Use `congrArg Units.val ha` as an intermediate fact. Simplify `this` using `[Matrix.GeneralLinearGroup.map, Formalism.L2.Theta.mt]`. Establish `key` using `emb_map_eq_one o (Ideal.Quotient.mk (idAt D P)) ha'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify `key` using `[Matrix.GeneralLinearGroup.map, Formalism.L2.Theta.mt]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem emb_mem_grpAt {D : D7} {S A L : HSp D} (o : OrthDec S A L) (P : Pl D → Prop) {a : GA D A}
     (ha : a ∈ grpAt A P) : o.emb (a, 1) ∈ grpAt S P := by
@@ -41,17 +41,17 @@ end GlobalTheory.FinPl
 open GlobalTheory.FinPl in
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p n _ _ σ B β β₀ hsum g`. Take `⟨hgrp, -⟩` from `GlobalTheory.T.splitPlaceHermitianFrame_properties D k p B.V₀ (n ⊕ Fin 1) β₀`. Take `⟨hgrpA, -⟩` from `GlobalTheory.T.splitPlaceHermitianFrame_properties D k p B.A n β`. Establish `hmem : B.o.emb (β.gl g, 1) ∈ grpAt B.V₀ (· = p.v)` using `emb_mem_grpAt B.o _ ((hgrpA _).2 ⟨g, rfl⟩)`. Take `⟨h, hh⟩` from `(hgrp _).1 hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hh]`. Use `congr 1`. Use `set M := (Formalism.L2.Theta.mt B.V₀ (B.o.emb (β.gl g, 1))).map p.pr with hMdef`. Establish `hM : M = β₀.b * h.val * β₀.b'` using `by rw [hMdef, hh, β₀.gl_mat]`. Establish `hY : (replicateCol (Fin 1) fun i => p.pr (ratV (vecB B.o B.ζ) i)) = B.o.jB.map p.pr * replicateCol (Fin 1) fun j => p.pr (ratV B.ζ j)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, ratV, vecB, Matrix.mulVec, dotProduct, OrthDec.jB, rat, map_sum, map_mul]`. Establish `hA : M * B.o.jA.map p.pr = B.o.jA.map p.pr * (β.b * g.val * β.b')`. Rewrite using `[hMdef, ← Matrix.map_mul, OrthDec.emb_jA, Matrix.map_mul, β.gl_mat]`. Establish `hB : M * B.o.jB.map p.pr = B.o.jB.map p.pr`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Formalism.L2.Theta.mt B.L (1 : GA D B.L) = 1` using `by simp [Formalism.L2.Theta.mt]`. Rewrite using `[hMdef, ← Matrix.map_mul, OrthDec.emb_jB, h1, Matrix.mul_one]`. Establish `hemb : ((embX 1 g : GL (n ⊕ Fin 1) k) : Matrix (n ⊕ Fin 1) (n ⊕ Fin 1) k) = fromBlocks g.val 0 0 1` using `rfl`. Establish `key : M * β₀.b = β₀.b * (embX 1 g).val`. Rewrite using `[hsum, hemb, Matrix.mul_fromCols, Matrix.fromCols_mul_fromBlocks, hY]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, hA, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc, β.b'b, Matrix.mul_one, Matrix.mul_zero, add_zero, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc, hB, Matrix.mul_zero, zero_add, Matrix.mul_one]`. Apply `Units.ext` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc, β₀.b'b, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, β₀.b'b, Matrix.one_mul]`. Use `_ = β₀.b' * (M * β₀.b) := by rw [← hM, Matrix.mul_assoc]`. Use `_ = β₀.b' * (β₀.b * (embX 1 g).val) := by rw [key]`. Use `_ = (embX 1 g).val := by rw [← Matrix.mul_assoc, β₀.b'b, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinPl.emb_gl_sumFrame : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (n : Type) [Fintype n] [DecidableEq n] (σ : ℕ) (B : BesLev D σ) (β : Frame p B.A n) (β₀ : Frame p B.V₀ (n ⊕ Fin 1)), IsSumFrame B.o B.ζ β β₀ → ∀ g : GL n k, B.o.emb (β.gl g, 1) = β₀.gl (embX 1 g) := by
   intro D k _ _ _ _ p n _ _ σ B β β₀ hsum g

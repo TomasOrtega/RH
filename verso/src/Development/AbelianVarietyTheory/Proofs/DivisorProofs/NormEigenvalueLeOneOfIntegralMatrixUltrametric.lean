@@ -3,13 +3,11 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : ∃ j, c j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hc (funext h)`. Take `⟨k, -, hk⟩` from `Finset.exists_max_image Finset.univ (fun j => ‖c j‖) ⟨j₀, Finset.mem_univ _⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < ‖c k‖` using `lt_of_lt_of_le (norm_pos_iff.2 hj₀) (hk j₀ (Finset.mem_univ _))`. Establish `hrow : (M.map emb).mulVec c k = μ * c k`. Rewrite using `[hM]`. Simplify using the standard rewrite rules. Establish `hsum : ‖(M.map emb).mulVec c k‖ ≤ ‖c k‖`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hsum` using `[hrow, norm_mul]`.
-
-Establish `: ‖μ‖ * ‖c k‖ ≤ 1 * ‖c k‖` using `by rwa [one_mul]`. Conclude with `le_of_mul_le_mul_right this hpos`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_eigenvalue_le_one_of_integral_matrix (O K : Type) [CommRing O] [NormedField K]
     [IsUltrametricDist K] (emb : O →+* K) (hemb : ∀ c, ‖emb c‖ ≤ 1) (n : ℕ)
@@ -36,7 +34,7 @@ theorem norm_eigenvalue_le_one_of_integral_matrix (O K : Type) [CommRing O] [Nor
   exact le_of_mul_le_mul_right this hpos
 
 /- English proof (translation)
-Introduce `O K _ _ _ emb hemb n M μ c hc hM` and use `norm_eigenvalue_le_one_of_integral_matrix O K emb hemb n M μ c hc hM`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eigenvalue_integral_matrix_norm_le_one :
     ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] (emb : O →+* K),

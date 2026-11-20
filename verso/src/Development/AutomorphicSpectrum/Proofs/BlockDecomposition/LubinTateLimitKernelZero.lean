@@ -8,21 +8,19 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.LTPer
 
 /- English proof (translation)
-Introduce `B _ S F ϖ C _ _ ϖ' hϖ θ hker hS hlt q hq Q hQ t ht`. Establish `hy : ∀ n, θ (ltIter ϖ q n Q) = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa [ltIter] using hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih`. Establish `hs : ltIter ϖ q (n + 1) Q = ϖ * ltIter ϖ q n Q + (ltIter ϖ q n Q) ^ q`. Simplify using `only [ltIter, Function.iterate_succ_apply']`. Rewrite using `[hs, map_add, map_mul, map_pow, ih]`. Simplify using `[show q ≠ 0 by omega]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hne : θ ϖ ≠ 0`. Introduce `h0`. Establish `h1 : θ ϖ * θ ϖ' = 1` using `by rw [← map_mul, hϖ, map_one]`. Rewrite `h1` using `[h0, zero_mul]`. Conclude with `zero_ne_one h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hapos : 0 < ‖θ ϖ‖` using `norm_pos_iff.mpr hne`. Take `⟨c, hc⟩` from `ht 1`. Establish `hbound : ∀ m : ℕ, ‖θ ϖ‖ ^ c * ‖θ t‖ ≤ ‖θ ϖ‖ ^ m`. Introduce `m`. Take `⟨N, hN⟩` from `hc m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hsS, hs⟩` from `hN N le_rfl`. Establish `h0` using `(hker _).mpr hs`. Simplify using `only [map_sub, map_mul, map_pow, hy, mul_zero, zero_sub] at h0`. Establish `h1 : θ ϖ ^ c * θ t = -(θ ϖ ^ m * θ s)` using `by linear_combination -h0`. Establish `h2 : ‖θ ϖ‖ ^ c * ‖θ t‖ = ‖θ ϖ‖ ^ m * ‖θ s‖`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg norm h1` as an intermediate fact. Simplify `this` using `[norm_mul, norm_pow, norm_neg]`. Rewrite using `[h2]`. Conclude with `mul_le_of_le_one_right (pow_nonneg hapos.le m) (hS s hsS)`. Establish `hlim : Filter.Tendsto (fun m : ℕ => ‖θ ϖ‖ ^ m) Filter.atTop (nhds 0)` using `tendsto_pow_atTop_nhds_zero_of_lt_one hapos.le hlt`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ‖θ ϖ‖ ^ c * ‖θ t‖ ≤ 0` using `ge_of_tendsto' hlim hbound`. Establish `hz : ‖θ t‖ ≤ 0`. Assume the negation of the conclusion as `hcon`. Establish `: 0 < ‖θ ϖ‖ ^ c * ‖θ t‖` using `mul_pos (pow_pos hapos c) (not_le.mp hcon)`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `norm_le_zero_iff.mp hz`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem theta_period_eq_zero_of_theta_eq_zero :
     ∀ {B : Type} [CommRing B] {S : Subring B} {F : ℕ → Ideal B} {ϖ : B} {C : Type} [NormedField C], PerEnv S F ϖ → ∀ (ϖ' : B), ϖ * ϖ' = 1 →

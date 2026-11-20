@@ -25,21 +25,19 @@ namespace GlobalTheory.ConjPlaceLat
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p w hw S L 𝔪 hm z hz`. Take `⟨m, hm𝔪, hmw⟩` from `hm`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hmw (Ideal.zero_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hmE : (m : D.host.E) ≠ 0` using `by exact_mod_cast hm0`. Establish `hc` using `GlobalTheory.SplitHeckeAdj.idem_conj S hw`. Establish `hu : finPart D (cA D p.e * incA D ((m : D.host.E)⁻¹)) ∈ intAE D`. Assume the negation of the conclusion as `h`. Conclude with `hmw ((hc.2 m hm0).2 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ y ∈ latV S L (· = p.v), (fun i => incA D (m : D.host.E) * y i) ∈ latV S (𝔪 • L) (· = p.v)`. Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hαi, hα, a, ha, x, hx, rfl⟩` from `hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `ha` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality. Use `AddSubgroup.subset_closure ⟨α, hαi, hα, 1, rfl, m • x, Submodule.smul_mem_smul hm𝔪 hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show (1 : AF D.host.F) ⊗ₜ[D.host.F] (m : D.host.E) * (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 * x i)) = _`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, one_mul, one_mul, Pi.smul_apply, Algebra.smul_def]`. Consider the case `zero`. Use `zero_mem (latV S (𝔪 • L) (· = p.v)) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the case `add y y' _ _ h h'`. Use `add_mem h h' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[mul_add]`. Consider the case `neg y _ h`.
+Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `neg_mem h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `key : (fun i => cA D p.e * z i) = fun i => cA D p.e * incA D ((m : D.host.E)⁻¹) * (incA D (m : D.host.E) * z i)`. Use function extensionality and compare the values at `i`.
-
-Rewrite using `[mul_assoc, ← mul_assoc (incA D _), ← map_mul, inv_mul_cancel₀ hmE, map_one, one_mul]`. Rewrite using `[key]`. Conclude with `GlobalTheory.FinPl.LatIndHalf.mul_mem_latV hu (h1 z hz)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_mul_mem_latV_smul : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   (p : GlobalTheory.FinPl.SplitPt D k) (w : HeightOneSpectrum (𝓞 D.host.E)), Formalism.L2.NTheta.IsIdemAt p.e w →

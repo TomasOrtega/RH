@@ -5,19 +5,15 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hdet : G.det * F.det = μ ^ h`. Rewrite using `[← Matrix.det_mul, hGF, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Establish `hF : F.det ≠ 0`. Introduce `h0`. Rewrite `hdet` using `[h0, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_ne_zero h hμ hdet.symm`. Establish `hFG : F * G = μ • (1 : Matrix (Fin h) (Fin h) A)`. Establish `h1 : (F * G - μ • (1 : Matrix (Fin h) (Fin h) A)) * F = 0`. Rewrite using `[sub_mul, Matrix.mul_assoc, hGF, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul, sub_self]`. Establish `h2 : F.det • (F * G - μ • (1 : Matrix (Fin h) (Fin h) A)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (· * F.adjugate) h1` as an intermediate fact. Simplify using `only [Matrix.zero_mul] at this`. Rewrite `this` using `[Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one]`. Conclude with `this`. Break down `smul_eq_zero.mp h2 with h3 | h3` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd h3 hF`. Conclude with `sub_eq_zero.mp h3`. Establish `hXG : X * G = G * Y`. Establish `e : μ • (X * G) = μ • (G * Y)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hGF, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul]`. Use `_ = G * (Y * (F * G)) := by`. Rewrite using `[Matrix.mul_assoc G F X, hFX, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_assoc (G * Y)]`. Use `_ = μ • (G * Y) := by`. Rewrite using `[hFG, Matrix.mul_smul, Matrix.mul_one, Matrix.mul_smul]`.
-
-Conclude with `smul_right_injective _ hμ e`. Use `⟨hFG, hXG, ?_⟩` and prove the remaining obligations. Establish `e : μ * Y.trace = μ * X.trace`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.trace_mul_comm F (G * Y), Matrix.mul_assoc]`.
-
-Use `_ = ((G * F) * X).trace := by rw [← hFX, Matrix.mul_assoc]`. Use `_ = (μ • X).trace := by rw [hGF, Matrix.smul_mul, Matrix.one_mul]`. Use `_ = μ * X.trace := by rw [Matrix.trace_smul, smul_eq_mul]`. Conclude with `mul_left_cancel₀ hμ e`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_eq_of_intertwined_by_quasi_inverse (A : Type) [CommRing A] [IsDomain A] (h : ℕ) (μ : A)
     (F G X Y : Matrix (Fin h) (Fin h) A) (hμ : μ ≠ 0)

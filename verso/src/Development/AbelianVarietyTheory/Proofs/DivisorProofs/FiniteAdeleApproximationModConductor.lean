@@ -7,13 +7,13 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal
 namespace GlobalTheory.CMVal.ApproxHatO
 
 /- English proof (translation)
-Introduce `E _ _ _ c hc y z`. Use `set N : ℕ := Ideal.absNorm c with hNdef`. Establish `hN : N ≠ 0` using `by rwa [hNdef, Ne, Ideal.absNorm_eq_zero_iff]`. Establish `hNc : (N : OF E) ∈ c` using `Ideal.absNorm_mem c`. Establish `hNE : (N : E) ≠ 0` using `Nat.cast_ne_zero.mpr hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set u : Af E := algebraMap E (Af E) (N : E)⁻¹ with hu`. Use `set U : Set (Af E) := {a | ∀ v, (u * a * ((y⁻¹ : (Af E)ˣ) : Af E)) v ∈ v.adicCompletionIntegers E} with hU`. Establish `hO : IsOpen {a : Af E | ∀ v, a v ∈ v.adicCompletionIntegers E}` using `RestrictedProduct.isOpen_forall_mem (A := fun v : HeightOneSpectrum (𝓞 E) => (v.adicCompletionIntegers E : Set (v.adicCompletion E))) fun _ => Valued.isOpen_valuationSubring _`. Establish `hV : IsOpen {x' : Af E | z - x' ∈ U}` using `hO.preimage (((continuous_const.mul (continuous_const.sub continuous_id)).mul continuous_const))`. Establish `hz : z ∈ {x' : Af E | z - x' ∈ U}` using `by show ∀ v, (u * (z - z) * ((y⁻¹ : (Af E)ˣ) : Af E)) v ∈ v.adicCompletionIntegers E`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `v`. Rewrite using `[sub_self, mul_zero, zero_mul]`. Conclude with `zero_mem _`. Take `⟨x, hx⟩` from `GlobalTheory.AdeleCharTwist.denseRange_fin.exists_mem_open hV ⟨z, hz⟩`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `key` using `GlobalTheory.CMVal.PicFin.mul_mem_hatO hNc (y := u * (z - algebraMap E (Af E) x) * ((y⁻¹ : (Af E)ˣ) : Af E)) hx`. Establish `e : algebraMap E (Af E) (algebraMap (OF E) E (N : OF E)) * u = 1`. Rewrite using `[map_natCast, hu, ← map_mul, mul_inv_cancel₀ hNE, map_one]`. Rewrite `key` using `[← mul_assoc, ← mul_assoc, e, one_mul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_sub_mul_mem_hatO : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)), c ≠ ⊥ →
     ∀ (y : (Af E)ˣ) (z : Af E), ∃ x : E, (z - algebraMap E (Af E) x) * ((y⁻¹ : (Af E)ˣ) : Af E) ∈ hatO c := by

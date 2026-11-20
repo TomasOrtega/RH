@@ -26,7 +26,7 @@ open Formalism.FourierDecayAlt.P.PartialDerivativeAlgebra
 variable {k r : ℕ}
 
 /- English proof (translation)
-Take `⟨q, hq, hP⟩` from `h`. Use `⟨MvPolynomial.C c * q, ?_, fun g => by simp [hP g]⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem ri_mul_left {a : ℕ} {P : Q.Mx k r → ℂ} (c : ℂ) (h : U.IsPolyDeg a P) :
     U.IsPolyDeg a (fun g => c * P g) := by
@@ -37,7 +37,7 @@ theorem ri_mul_left {a : ℕ} {P : Q.Mx k r → ℂ} (c : ℂ) (h : U.IsPolyDeg 
     _ ≤ a := by simp [hq]
 
 /- English proof (translation)
-Take `⟨q, hq, hP⟩` from `h`. Use `⟨q * MvPolynomial.C c, ?_, fun g => by simp [hP g]⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem ri_mul_right {a : ℕ} {P : Q.Mx k r → ℂ} (h : U.IsPolyDeg a P) (c : ℂ) :
     U.IsPolyDeg a (fun g => P g * c) := by
@@ -48,9 +48,9 @@ theorem ri_mul_right {a : ℕ} {P : Q.Mx k r → ℂ} (h : U.IsPolyDeg a P) (c :
     _ ≤ a := by simp [hq]
 
 /- English proof (translation)
-Establish `hdeg : ∀ (a : ℂ) (i : (Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) ⊕ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1))), (MvPolynomial.C a * MvPolynomial.X i : MvPolynomial _ ℂ).totalDegree ≤ 1` using `fun a i => (MvPolynomial.totalDegree_mul _ _).trans (by simp)`. Use `⟨∑ c, ∑ b, ∑ a, MvPolynomial.C (Hpk k r p a * Hpk k r b c * v c) * MvPolynomial.X (Sum.inr (b, a)), ?_, fun g => ?_⟩` and prove the remaining obligations. Conclude with `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun c _ => (MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun b _ => (MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun a _ => hdeg _ _)))`. Simplify using `only [ginvH, Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.conjTranspose_apply, map_sum, MvPolynomial.eval_mul, MvPolynomial.eval_C, MvPolynomial.eval_X, Sum.elim_inr, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem ri_ginv (v : Fin (2 * r + k + 1) → ℂ) (p : Fin (2 * r + k + 1)) :
     U.IsPolyDeg 1 (fun g => (ginvH k r g *ᵥ v) p) := by
@@ -68,9 +68,9 @@ theorem ri_ginv (v : Fin (2 * r + k + 1) → ℂ) (p : Fin (2 * r + k + 1)) :
     ring
 
 /- English proof (translation)
-Distinguish the cases in `h1 : (q : ℕ) < r`. Simplify using `only [colR, dif_pos h1]`. Conclude with `ri_ginv _ p`. Distinguish the cases in `h2 : (q : ℕ) = r`. Simplify using `only [colR, dif_neg h1, dif_pos h2]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ri_ginv z p`. Use `⟨MvPolynomial.C (colR k r z 0 J q p), by simp, fun g => ?_⟩` and prove the remaining obligations. Simplify using `[colR, h1, h2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ri_colR (z : Fin (2 * r + k + 1) → ℂ) (J : Fin (r + k) → Fin (2 * r + k + 1)) (q p : Fin (2 * r + k + 1)) :
     U.IsPolyDeg 1 (fun g => colR k r z g J q p) := by
@@ -84,13 +84,11 @@ theorem ri_colR (z : Fin (2 * r + k + 1) → ℂ) (J : Fin (r + k) → Fin (2 * 
       simp [colR, h1, h2]
 
 /- English proof (translation)
-Use `choose Pq hPdeg hPev using fun q p => ri_colR (k := k) (r := r) z J q p`. Use `⟨(Matrix.of fun p q => Pq q p).det, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_apply']`. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun σ _ => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : (((Equiv.Perm.sign σ : ℤ) : MvPolynomial ((Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) ⊕ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1))) ℂ)).totalDegree = 0`. Establish `hc : ((Equiv.Perm.sign σ : ℤ) : MvPolynomial ((Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) ⊕ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1))) ℂ) = MvPolynomial.C ((Equiv.Perm.sign σ : ℤ) : ℂ)` using `by simp`. Rewrite using `[hc]`. Conclude with `MvPolynomial.totalDegree_C _`. Rewrite using `[h0, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `(MvPolynomial.totalDegree_finset_prod _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `show (Matrix.of fun p q => colR k r z g J q p).det = _`. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
-
-Use extensionality with `p q`. Simplify using `[RingHom.mapMatrix_apply, hPev]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ri_beJ (z : Fin (2 * r + k + 1) → ℂ) (J : Fin (r + k) → Fin (2 * r + k + 1)) :
     U.IsPolyDeg (2 * r + k + 1) (fun g => beJ k r z g J) := by
@@ -125,7 +123,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-The claim follows from `| [], _ => by simp [B.opOrder] | Tm :: Θ, h => by have h1 := (h Tm (List.mem_cons_self ..)).1 have h2 := ri_order_le Θ fun T' hT' => h T' (List.mem_cons_of_mem _ hT') unfold B.opOrder at h2 ⊢ simp only [List.map_cons, List.foldr_cons] exact max_le h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem ri_order_le {t κ : ℕ} : ∀ Θ : B.DiffOp k r Wp Wq, PolyOp t κ Θ → B.opOrder Θ ≤ t
   | [], _ => by simp [B.opOrder]
@@ -141,7 +139,7 @@ def riCat (Θs : Fin (k + 1) → B.DiffOp k r Wp Wq) : List (Fin (k + 1)) → B.
   | i :: l => Θs i ++ riCat Θs l
 
 /- English proof (translation)
-The claim follows from `| [] => fun T hT => absurd hT List.not_mem_nil | i :: l => QMinOp.polyOp_append (h i) (riCat_poly h l)`.
+A detailed English derivation is pending.
 -/
 theorem riCat_poly {Θs : Fin (k + 1) → B.DiffOp k r Wp Wq} {t κ : ℕ} (h : ∀ i, PolyOp t κ (Θs i)) :
     ∀ l, PolyOp t κ (riCat Θs l)
@@ -149,7 +147,7 @@ theorem riCat_poly {Θs : Fin (k + 1) → B.DiffOp k r Wp Wq} {t κ : ℕ} (h : 
   | i :: l => QMinOp.polyOp_append (h i) (riCat_poly h l)
 
 /- English proof (translation)
-The claim follows from `| [] => by simp [riCat, B.opApply] | i :: l => by rw [riCat, QMinOp.opApply_append, riCat_apply Θs F g l, List.map_cons, List.sum_cons]`.
+A detailed English derivation is pending.
 -/
 theorem riCat_apply (Θs : Fin (k + 1) → B.DiffOp k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (g : B.Mat k r) :
     ∀ l, B.opApply (riCat Θs l) F g = (l.map fun i => B.opApply (Θs i) F g).sum
@@ -157,9 +155,9 @@ theorem riCat_apply (Θs : Fin (k + 1) → B.DiffOp k r Wp Wq) (F : B.Mat k r �
   | i :: l => by rw [riCat, QMinOp.opApply_append, riCat_apply Θs F g l, List.map_cons, List.sum_cons]
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro x`. Simplify using the standard rewrite rules. Consider the case `cons y L ih => intro x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [List.foldr_cons]`. Rewrite using `[ih x, max_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem foldr_max_eq_max_foldr_max_zero : ∀ (L : List ℕ) (x : ℕ), L.foldr max x = max (L.foldr max 0) x := by
   intro L
@@ -168,9 +166,9 @@ private theorem foldr_max_eq_max_foldr_max_zero : ∀ (L : List ℕ) (x : ℕ), 
   | cons y L ih => intro x; simp only [List.foldr_cons]; rw [ih x, max_assoc]
 
 /- English proof (translation)
-Establish `hle : B.opOrder (riCat Θs l) ≤ t` using `ri_order_le _ (riCat_poly h l)`. Establish `h1` using `ho i`. Simplify using `only [B.opOrder] at h1 hle`. Simplify using `only [riCat, B.opOrder, List.map_append, List.foldr_append]`. Rewrite using `[foldr_max_eq_max_foldr_max_zero, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `max_eq_left hle`.
+A detailed English derivation is pending.
 -/
 theorem riCat_order {Θs : Fin (k + 1) → B.DiffOp k r Wp Wq} {t κ : ℕ} (h : ∀ i, PolyOp t κ (Θs i))
     (ho : ∀ i, B.opOrder (Θs i) = t) (i : Fin (k + 1)) (l : List (Fin (k + 1))) :
@@ -183,11 +181,11 @@ theorem riCat_order {Θs : Fin (k + 1) → B.DiffOp k r Wp Wq} {t κ : ℕ} (h :
   exact max_eq_left hle
 
 /- English proof (translation)
-Establish `h : ∀ i : Fin (k + 1), ∃ Θ : B.DiffOp k r Wp Wq, PolyOp (r + k) (2 * r + k + 1) Θ ∧ B.opOrder Θ = r + k ∧ ∀ (UU : Set (B.Mat k r)) (F : B.Mat k r → (Wq →L[ℂ] Wp)), B.CkOn ((r + k : ℕ) : ℕ∞) UU F → ∀ g ∈ UU, g ∈ B.GV k r → B.opApply Θ F g = ∑ J ∈ jSetR k r, (fun (J : Fin (r + k) → …` using `fun i => QMinOp.qminOpRep (jSetR k r) (rowsR k r i) (fun J => J) _ (fun J _ => ri_mul_left _ (ri_mul_left _ (ri_beJ z J))) _`. Use `choose Θs hP hO hR using h`. Use `⟨riCat Θs (List.finRange (k + 1)), riCat_poly hP _, ?_, ?_⟩` and prove the remaining obligations. Establish `e : List.finRange (k + 1) = (0 : Fin (k + 1)) :: (List.finRange k).map Fin.succ` using `List.finRange_succ`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `riCat_order hP hO _ _`. Introduce `UU F hF g hgU hg`. Rewrite using `[riCat_apply, ← Fin.sum_univ_def]`. Simplify using `only [rhatOp, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hR i UU F hF g hgU hg]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ri_real (z z' : Fin (2 * r + k + 1) → ℂ) (Y ε : ℂ) :
     ∃ Θ : B.DiffOp k r Wp Wq, PolyOp (r + k) (2 * r + k + 1) Θ ∧ B.opOrder Θ = r + k ∧
@@ -217,15 +215,15 @@ theorem ri_real (z z' : Fin (2 * r + k + 1) → ℂ) (Y ε : ℂ) :
 end ops
 
 /- English proof (translation)
-Introduce `ε Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v y`. Take `⟨Θ, hP, hO, hR⟩` from `ri_real (Wp := Wp (S.pl v)) (Wq := Wq (S.pl v)) (T v).base.z (T v).base.z' (y : ℂ) ε`. Establish `hn : 0 < 2 * S.G.r + S.G.k + 1` using `by omega`. Use `⟨Θ, QMinOp.polyOp_mono hP (by omega) (Nat.le_mul_of_pos_left _ (by omega)), ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp F hF g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hF` using `[hO]`. Establish `hgG : g ∈ B.GV S.G.k S.G.r` using `hg.1`. Establish `hsg : B.sgs p g ∈ B.GV S.G.k S.G.r` using `Formalism.FourierDecayAlt.P.B6.conj_product_mem_unitary_group (T v).base hp hgG`. Rewrite using `[hR _ _ (Formalism.FourierDecayAlt.P.B5.ckOn_rho (T v).base hp hF) g hgG hgG]`. Establish `e2 : B.rho (T v).base p (B.opApply Θ F) g = B.rho (T v).base p (fun x => ε • rhatOp S.G.k S.G.r (T v).base.z (T v).base.z' (y : ℂ) F x) g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [B.rho]`. Rewrite using `[hR _ _ hF _ hsg hsg]`. Rewrite using `[e2, hI S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) (T v).base (y : ℂ) p hp F hF g hg]`. Simplify using `only [B.rho, ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp]`. Introduce `U F hU hF g hg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgG : g ∈ B.GV S.G.k S.G.r` using `by simpa [Q.Glev] using hg.1`. Use `hR (Q.Glev S.G.k S.G.r 0 ∩ U) F ?_ g hg hgG` and prove the remaining obligations. Introduce `g₀ hg₀`. Take `⟨U', F', hU', hg₀U, hc, he⟩` from `hF g₀ hg₀`. Use `⟨U', F', hU', hg₀U, hc.of_le (by exact_mod_cast le_top), fun x hx hxG => he x hx ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hxG` using `[Q.Glev]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem jDRRealInvP_of_inv (hI : JDRInvFn) : JDRRealInvP := by
   intro ε Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v y

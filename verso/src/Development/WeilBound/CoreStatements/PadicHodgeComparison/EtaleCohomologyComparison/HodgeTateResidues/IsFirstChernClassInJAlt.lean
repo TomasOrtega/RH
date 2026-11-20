@@ -33,13 +33,13 @@ def idS (Φ : PDF R C) : SMor Φ Φ (RingHom.id R) where
 end Gen
 
 /- English proof (translation)
-Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hr, rfl⟩`. Establish `key : ∀ l : List (ℕ × B'), (∀ q ∈ l, q.2 ∈ J.map f) → ∃ l' : List (ℕ × B), (∀ q ∈ l', q.2 ∈ J) ∧ l'.map Prod.fst = l.map Prod.fst ∧ f (l'.map fun q => δ.dpow q.1 q.2).prod = (l.map fun q => δ'.dpow q.1 q.2).prod`. Introduce `l`. Proceed by induction on `l with`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `nil => exact fun _ => ⟨[], by simp, rfl, by simp⟩`. Consider the case `cons q l ih`. Introduce `hl`. Take `⟨l', h1, h2, h3⟩` from `ih fun q hq => hl q (List.mem_cons_of_mem _ hq)`. Take `⟨y, hy, e⟩` from `(Ideal.mem_map_iff_of_surjective _ hf).1 (hl q List.mem_cons_self)`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(q.1, y) :: l', ?_, by simp [h2], ?_⟩` and prove the remaining obligations. Introduce `q' hq'`. Break down `List.mem_cons.1 hq' with rfl | hq'` into its components or cases. Use `exacts [hy, h1 q' hq']`. Simplify using `only [List.map_cons, List.prod_cons, map_mul, h3]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, h.2 y hy]`. Take `⟨l', h1, h2, h3⟩` from `key l hl`. Rewrite using `[← h3]`. Conclude with `Ideal.mem_map_of_mem f (Ideal.subset_span ⟨l', h1, h2 ▸ hr, rfl⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dividedPowerFiltration_red {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {B' : Type} [CommRing B'] (f : B →+* B')
     (hf : Function.Surjective f) (δ' : DividedPowers (J.map f)) (h : IsDPMorphism δ δ' f) (r : ℕ) : pdP δ' r ≤ (pdP δ r).map f := by
@@ -68,7 +68,7 @@ section Base
 variable {b : Base} {L : b.Fun} (Q : ObjectProperty (Thick L))
 
 /- English proof (translation)
-Rewrite using `[map_pow]`. Conclude with `T.pdPow_anti h (dividedPowerFiltration_pow_mul T.δ (T.i_mem ht) rfl hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fil_mul_le {t : b.R} (ht : t ∈ b.I) {k r r' : ℕ} (h : r' ≤ r + k) (T : Thick L) {x : T.B} (hx : x ∈ T.pdPow r) :
     T.i (t ^ k) * x ∈ T.pdPow r' := by
@@ -76,7 +76,7 @@ theorem fil_mul_le {t : b.R} (ht : t ∈ b.I) {k r r' : ℕ} (h : r' ≤ r + k) 
   exact T.pdPow_anti h (dividedPowerFiltration_pow_mul T.δ (T.i_mem ht) rfl hx)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun T _ _ => (grOk L h).aa T.obj, fun T _ _ => (grOk L h).ab T.obj, fun T _ _ => (grOk L h).ba T.obj⟩`.
+Supply the required witnesses or components.
 -/
 theorem grOkQ {a a' c : ℕ} (h : a + a' = c) :
     MulOk (sFil Q a) (sFil Q ((a : ℤ) + 1)) (sFil Q a') (sFil Q ((a' : ℤ) + 1)) (sFil Q c) (sFil Q ((c : ℤ) + 1)) :=
@@ -140,7 +140,7 @@ variable {O : Type} [CommRing O] {A : Type} [CommRing A] [Algebra O A] {I : Idea
   {Λ : Type} [CommRing Λ] (c : Λ →+* R) (lam : Λ →+* A) (hc : ∀ a, d.ρ (c a) = Ideal.Quotient.mk _ (lam a))
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 (dividedPowerFiltration_red T.obj.δ _ Ideal.Quotient.mk_surjective _ (redδ_dp T.obj T.property.1 n) r hx)`. Conclude with `Ideal.mem_map_of_mem (Ideal.Quotient.mk _) (Ideal.mem_sup_left hy)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem red_mem (r : ℕ) (T : (TS γ q l s 𝒱).FullSubcategory) (x : T.obj.B ⧸ lnT T.obj l n) (hx : x ∈ pdP (redδ T.obj T.property.1 n) r) :
     Ideal.Quotient.factor (ln_le q s 𝒱 (some ((r : ℤ) + 1)) T) x ∈
@@ -270,7 +270,7 @@ variable {Y : CB l K} {m : ℕ} (L : Lv Y m) (M : Model l K)
 abbrev tB : L.B := L.ι (L.lam Y.t)
 
 /- English proof (translation)
-The claim follows from `L.ι_dp.1 (Ideal.mem_map_of_mem _ L.t_mem)`.
+A detailed English derivation is pending.
 -/
 theorem tB_mem : L.tB ∈ L.IB := L.ι_dp.1 (Ideal.mem_map_of_mem _ L.t_mem)
 
@@ -293,7 +293,7 @@ def nmB : NMor L.γ M.p (κA (OK l K) L.I) L.γB M.q (κA K L.IB) L.ι where
     exact Ideal.Quotient.eq.2 h1
 
 /- English proof (translation)
-Use `⟨⟨h.1.1, fun r x hx => ?_⟩, ⊤, rfl, le_rfl⟩` and prove the remaining obligations. Establish `hu : IsUnit (l : T.B)`. Use `((isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) : IsUnit (l : K)).map (algebraMap K L.B)).map T.i` as an intermediate fact. Rewrite `this` using `[map_natCast, map_natCast]`. Then use the resulting hypothesis. Conclude with `(Ideal.unit_mul_mem_iff_mem _ hu).1 hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem nmB_mem (T : Thick (nlFun L.γB 0 M.gen M.q (κA K L.IB))) (h : L.QB M T) : L.QA M (((L.nmB M).mor 0).obj T) := by
   refine ⟨⟨h.1.1, fun r x hx => ?_⟩, ⊤, rfl, le_rfl⟩
@@ -349,7 +349,7 @@ def nmW : NMor L.γB N.q (κA K L.IB) L'.γB M.q (κA K L'.IB) h.sB where
     exact Ideal.Quotient.eq.2 h1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨le_bot_iff.1 (le_trans (T.pdPow_anti h.le) hT.1.1.le), hT.1.2⟩, ⊤, rfl, le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem nmW_mem (T : Thick (nlFun L'.γB 0 M.gen M.q (κA K L'.IB))) (hT : L'.QB M T) : L.QB N (((h.nmW u hu).mor 0).obj T) :=
   ⟨⟨le_bot_iff.1 (le_trans (T.pdPow_anti h.le) hT.1.1.le), hT.1.2⟩, ⊤, rfl, le_rfl⟩

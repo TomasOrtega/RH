@@ -102,11 +102,9 @@ def CoversExist : Prop :=
 open Classical in
 
 /- English proof (translation)
-Use `⟨fun P hP => by simp at hP, ⟨fun 𝔞 h => ?_, fun a ha _ => ?_, fun 𝔟 hb _ => ?_⟩, ?_, ?_, by simp⟩` and prove the remaining obligations. Simplify using `[modulus] at h`. Apply `MonoidWithZeroHom.one_apply_of_ne_zero` to reduce the goal to its premises. Simplify using `using ha`. Apply `MonoidWithZeroHom.one_apply_of_ne_zero` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Conclude with `hb ((Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)).1 h)`. Use `symm`. Rewrite using `[Ideal.eq_top_iff_one]`. Conclude with `Ideal.subset_span ⟨trivial, one_mem _⟩`.
-
-Simplify using `[conjI, primeUnder, Ideal.map_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example (H : Host E) (K : Type) [Field K] :
     IsPlaceSet H ∅ ∧ IsTwist H ∅ (1 : Ideal (𝓞 E) →*₀ K) ∧ IsHalf H (primeUnder (∅ : Finset (Ideal (𝓞 E)))) ⊤ := by

@@ -10,7 +10,7 @@ open GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HermitianCur
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DbarExt.dbarAnti_extForm_eq_zero | exact GlobalTheory.DbarExt.dbarAnti_extForm_eq_zero | (intros; apply GlobalTheory.DbarExt.dbarAnti_extForm_eq_zero <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.dbar_extension_form_zero : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedSpace ℝ V] [IsScalarTower ℝ ℂ V] {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l] {U : Set V} {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V} (h : IsHermFrame U H) (hs : ∀ x ∈ U, IsUnit (subGram (H x)).det) (hz : z ∈ U) (η₁ η₂ : V), dbarAnti (extForm H) z η₁ η₂ = 0 := by
   first | exact @GlobalTheory.DbarExt.dbarAnti_extForm_eq_zero | exact GlobalTheory.DbarExt.dbarAnti_extForm_eq_zero | (intros; apply GlobalTheory.DbarExt.dbarAnti_extForm_eq_zero <;> assumption)

@@ -5,7 +5,7 @@ namespace GlobalTheory.TraceRealEmbeddingSum
 open NumberField
 
 /- English proof (translation)
-Apply the tactic sequence `rcases InfinitePlace.embedding_mk_eq φ with h | h <;>`. Simplify using `[h, ComplexEmbedding.conjugate_coe_eq]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem re_embedding_mk {F : Type} [Field F] (φ : F →+* ℂ) (x : F) :
     ((InfinitePlace.mk φ).embedding x).re = (φ x).re := by
@@ -13,11 +13,11 @@ theorem re_embedding_mk {F : Type} [Field F] (φ : F →+* ℂ) (x : F) :
     simp [h, ComplexEmbedding.conjugate_coe_eq]
 
 /- English proof (translation)
-Establish `htr : ((Algebra.trace ℚ F x : ℚ) : ℂ) = ∑ σ : F →ₐ[ℚ] ℂ, σ x`. Rewrite using `[← trace_eq_sum_embeddings ℂ (K := ℚ) (L := F), eq_ratCast]`. Establish `hre : ((Algebra.trace ℚ F x : ℚ) : ℝ) = ∑ φ : F →+* ℂ, (φ x).re`. Establish `h` using `congrArg Complex.re htr`. Rewrite `h` using `[Complex.ratCast_re, Complex.re_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h, ← (RingHom.equivRatAlgHom F ℂ).sum_comp]`. Both sides reduce to the same expression. Rewrite using `[hre, ← Finset.univ.sum_fiberwise (fun φ : F →+* ℂ => InfinitePlace.mk φ)]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hfib : ∀ φ ∈ Finset.univ.filter (fun φ : F →+* ℂ => InfinitePlace.mk φ = w), (φ x).re = (w.embedding x).re`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `φ hφ`. Rewrite using `[(Finset.mem_filter.mp hφ).2.symm, re_embedding_mk]`. Rewrite using `[Finset.sum_congr rfl hfib, Finset.sum_const, InfinitePlace.card_filter_mk_eq, nsmul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_eq_sum_mult_mul_re {F : Type} [Field F] [NumberField F] (x : F) :
     ((Algebra.trace ℚ F x : ℚ) : ℝ) =

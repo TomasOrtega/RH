@@ -19,21 +19,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ShFam.Pad.HTBound
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, sp_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sp_comp_assoc {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C)
     {Y : Scheme.{0}} (v : Sp A ⟶ Y) : spMap g ≫ spMap f ≫ v = spMap (g.comp f) ≫ v := by
   rw [← Category.assoc, sp_comp]
 
 /- English proof (translation)
-Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dual_alg {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     (dualMap f).comp (algebraMap A (DualNumber A)) = (algebraMap B (DualNumber B)).comp f := by
@@ -41,21 +41,21 @@ theorem dual_alg {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
   ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun z => (TrivSqZeroExt.map (a • (LinearMap.id : A →ₗ[A] A))).commutes z`.
+A detailed English derivation is pending.
 -/
 theorem eps_alg {A : Type} [CommRing A] (a : A) :
     (epsMul a).comp (algebraMap A (DualNumber A)) = algebraMap A (DualNumber A) :=
   RingHom.ext fun z => (TrivSqZeroExt.map (a • (LinearMap.id : A →ₗ[A] A))).commutes z
 
 /- English proof (translation)
-Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsMul, _root_.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eps_eps {A : Type} [CommRing A] (a b : A) : (epsMul a).comp (epsMul b) = epsMul (a * b) := by
   refine RingHom.ext fun z => ?_
   ext <;> simp [epsMul, _root_.mul_assoc]
 
 /- English proof (translation)
-Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsMul, dualMap, _root_.mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eps_dual {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (a : A) :
     (epsMul (f a)).comp (dualMap f) = (dualMap f).comp (epsMul a) := by
@@ -63,7 +63,7 @@ theorem eps_dual {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (a : A) 
   ext <;> simp [epsMul, dualMap, _root_.mul_comm]
 
 /- English proof (translation)
-Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsMul]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eps_one {A : Type} [CommRing A] : epsMul (1 : A) = RingHom.id _ := by
   refine RingHom.ext fun z => ?_
@@ -74,11 +74,11 @@ section Divide
 variable {O : Type} [CommRing O] [IsDomain O]
 
 /- English proof (translation)
-Use `GlobalTheory.TangentCrit.hom_ext_of_ker_inf (CommRingCat.ofHom (epsMul q)) (CommRingCat.ofHom (epsMul q)) ?_ ?_ h h` and prove the remaining obligations. Introduce `z`. Establish `e : (epsMul q).comp (epsMul 0) = epsMul 0` using `by rw [eps_eps, mul_zero]`. Use `⟨z, PrimeSpectrum.ext (Ideal.ext fun d => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `epsMul q d ∈ z.asIdeal ↔ d ∈ z.asIdeal`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hn : epsMul q d - d ∈ z.asIdeal` using `z.isPrime.mem_of_pow_mem 2 (by`. Apply the tactic sequence `have : (epsMul q d - d) ^ 2 = 0 := by ext <;> simp [pow_two, epsMul]`. Rewrite using `[this]`. Conclude with `zero_mem _)`. Conclude with `⟨fun h => by simpa using sub_mem h hn, fun h => by simpa using add_mem hn h⟩`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d h₁ _`. Establish `h₃ : d.fst = 0` using `by simpa [epsMul] using congrArg TrivSqZeroExt.fst h₁`. Establish `h₄ : q * d.snd = 0` using `by simpa [epsMul] using congrArg TrivSqZeroExt.snd h₁`. Conclude with `TrivSqZeroExt.ext h₃ ((mul_eq_zero.1 h₄).resolve_left hq)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eps_cancel {q : O} (hq : q ≠ 0) {Y : Scheme.{0}} {v w : Sp (DualNumber O) ⟶ Y}
     (h : spMap (epsMul q) ≫ v = spMap (epsMul q) ≫ w) : v = w := by
@@ -97,15 +97,13 @@ theorem eps_cancel {q : O} (hq : q ≠ 0) {Y : Scheme.{0}} {v w : Sp (DualNumber
     exact TrivSqZeroExt.ext h₃ ((mul_eq_zero.1 h₄).resolve_left hq)
 
 /- English proof (translation)
-Use `haveI : IsLocalRing (DualNumber O) := IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun d => by`. Simplify `IsLocalRing.isUnit_or_isUnit_one_sub_self d.fst` using `[TrivSqZeroExt.isUnit_iff_isUnit_fst]`. Use `haveI : IsLocalRing (CommRingCat.of (DualNumber O)) := ‹_›`. Take `⟨R, ψ, κ, hk, rfl⟩ : ∃ (R : CommRingCat.{0}) (ψ : R →+* DualNumber O) (κ : Sp R ⟶ Y), Mono κ ∧ v = spMap ψ ≫ κ` from `⟨_, (Scheme.stalkClosedPointTo v).hom, Y.fromSpecStalk _, inferInstance, (Scheme.Spec_stalkClosedPointTo_fromSpecStalk v).symm⟩`. Simplify using `only [← Category.assoc, sp_comp] at h`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono κ).1 h))`. Establish `h2 : ∀ r, q ∣ a * (ψ r).snd` using `fun r => by`. Use `congrArg TrivSqZeroExt.snd (RingHom.congr_fun h1 r)` as an intermediate fact. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem]`. Simplify `this` using `[dualMap, epsMul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose b hb using h2`. Establish `hinj : Function.Injective (epsMul q)` using `(injective_iff_map_eq_zero _).2 fun d h₁ => by`. Establish `h₃ : d.fst = 0` using `by simpa [epsMul] using congrArg TrivSqZeroExt.fst h₁`. Establish `h₄ : q * d.snd = 0` using `by simpa [epsMul] using congrArg TrivSqZeroExt.snd h₁`. Conclude with `TrivSqZeroExt.ext h₃ ((mul_eq_zero.1 h₄).resolve_left hq)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Set `f : R → DualNumber O` to `fun r => TrivSqZeroExt.inl (ψ r).fst + TrivSqZeroExt.inr (b r)`. Establish `hf : ∀ r, epsMul q (f r) = epsMul a (ψ r)` using `fun r => by`. Apply the tactic sequence `ext <;> simp [f, epsMul, hb, _root_.mul_comm q]`. Set `ψ' : R →+* DualNumber O` to `{ toFun := f map_one' := hinj (by rw [hf]; simp) map_mul' := fun r s => hinj (by rw [map_mul, hf, hf, hf]; simp) map_zero' := hinj (by rw [hf]; simp) map_add' := fun r s => hinj (by rw [hf, map_add (epsMul q), hf, hf]; simp) }`. Use `⟨spMap ψ' ≫ κ, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[sp_comp_assoc, sp_comp_assoc]`. Use `congr 2`. Conclude with `RingHom.ext hf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_div [IsLocalRing O] {q : O} (hq : q ≠ 0) (a : O) {Y : Scheme.{0}} (v : Sp (DualNumber O) ⟶ Y)
     (h : spMap (dualMap (Ideal.Quotient.mk (Ideal.span {q}))) ≫ spMap (epsMul a) ≫ v =
@@ -150,14 +148,14 @@ section Points
 variable {X : Scheme.{0}} {O : Type} [CommRing O] (x : Sp O ⟶ X) {G : Over X} [GrpObj G]
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (sp_comp _ _)`.
+A detailed English derivation is pending.
 -/
 theorem homAt_comp {A B C : Type} [CommRing A] [Algebra O A] [CommRing B] [Algebra O B] [CommRing C] [Algebra O C]
     (φ : A →ₐ[O] B) (ψ : B →ₐ[O] C) : homAt x ψ ≫ homAt x φ = homAt x (ψ.comp φ) :=
   Over.OverMorphism.ext (sp_comp _ _)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (Spec.map_id _)`.
+A detailed English derivation is pending.
 -/
 theorem homAt_id (A : Type) [CommRing A] [Algebra O A] : homAt x (AlgHom.id O A) = 𝟙 _ :=
   Over.OverMorphism.ext (Spec.map_id _)
@@ -174,7 +172,7 @@ abbrev scale (a : R) : overAt x (DualNumber R) ⟶ overAt x (DualNumber R) :=
   homAt x ((TrivSqZeroExt.map (a • (LinearMap.id : R →ₗ[R] R))).restrictScalars O)
 
 /- English proof (translation)
-Rewrite using `[← homAt_id, scale]`. Use `congr 1`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scale_one : scale x (1 : R) = 𝟙 _ := by
   rw [← homAt_id, scale]
@@ -183,9 +181,9 @@ theorem scale_one : scale x (1 : R) = 𝟙 _ := by
   ext <;> simp
 
 /- English proof (translation)
-Rewrite using `[lin, lin, homAt_comp, scale]`. Use `congr 1`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Establish `: l' (l x.snd) = l' (l 1) * x.snd`. Rewrite using `[_root_.mul_comm, ← smul_eq_mul, ← map_smul, ← map_smul, smul_eq_mul, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp [this]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lin_lin (l : R →ₗ[R] R × R) (l' : R × R →ₗ[R] R) : lin x l' ≫ lin x l = scale x (l' (l 1)) := by
   rw [lin, lin, homAt_comp, scale]
@@ -198,9 +196,9 @@ theorem lin_lin (l : R →ₗ[R] R × R) (l' : R × R →ₗ[R] R) : lin x l' �
 variable {x} {y : overAt x (DualNumber R) ⟶ G}
 
 /- English proof (translation)
-Establish `: scale x (0 : R) = homAt x (TrivSqZeroExt.inlAlgHom O R R) ≫ homAt x (TrivSqZeroExt.fstHom O R R)`. Rewrite using `[homAt_comp, scale]`. Use `congr 1`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this, Category.assoc, hy, comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_zero_comp (hy : homAt x (TrivSqZeroExt.fstHom O R R) ≫ y = 1) : scale x (0 : R) ≫ y = 1 := by
   have : scale x (0 : R) = homAt x (TrivSqZeroExt.inlAlgHom O R R) ≫ homAt x (TrivSqZeroExt.fstHom O R R) := by
@@ -211,19 +209,19 @@ theorem scale_zero_comp (hy : homAt x (TrivSqZeroExt.fstHom O R R) ≫ y = 1) : 
   rw [this, Category.assoc, hy, comp_one]
 
 /- English proof (translation)
-Set `i₁` to `LinearMap.inl R R R`. Set `i₂` to `LinearMap.inr R R R`. Establish `key : lin x (i₁ + i₂) ≫ y = (lin x i₁ ≫ y) * (lin x i₂ ≫ y)` using `by ext1`. Use `GlobalTheory.TangentCrit.hom_ext_of_ker_inf (CommRingCat.ofHom (TrivSqZeroExt.map (LinearMap.fst R R R)).toRingHom) (CommRingCat.ofHom (TrivSqZeroExt.map (LinearMap.snd R R R)).toRingHom) ?_ ?_ ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `refine (PrimeSpectrum.isHomeomorph_comap (TrivSqZeroExt.map (LinearMap.fst R R R)).toRingHom (fun x => ⟨1, one_pos, TrivSqZeroExt.map i₁ x, by ext <;> simp [i₁]⟩) fun d hd => ?_).surjective`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h : d.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst hd`. Apply the tactic sequence `exact ⟨2, by ext1 <;> simp [pow_two, h]⟩`. Introduce `d h₁ h₂`. Establish `h₃ : d.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst h₁`. Establish `h₄ : d.snd.1 = 0` using `by simpa using congrArg TrivSqZeroExt.snd h₁`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₅ : d.snd.2 = 0` using `by simpa using congrArg TrivSqZeroExt.snd h₂`. Conclude with `TrivSqZeroExt.ext h₃ (Prod.ext h₄ h₅)`. Use `congrArg Over.Hom.left (?_ : lin x (LinearMap.fst R R R) ≫ _ = lin x (LinearMap.fst R R R) ≫ _)` and prove the remaining obligations. Rewrite using `[comp_mul]`. Simplify using `only [← Category.assoc, lin_lin]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e₁ : LinearMap.fst R R R ((i₁ + i₂) 1) = 1` using `by simp [i₁, i₂]`. Establish `e₂ : LinearMap.fst R R R (i₁ 1) = 1` using `rfl`. Establish `e₃ : LinearMap.fst R R R (i₂ 1) = 0` using `rfl`. Rewrite using `[e₁, e₂, e₃, scale_zero_comp hy, _root_.mul_one]`. Use `congrArg Over.Hom.left (?_ : lin x (LinearMap.snd R R R) ≫ _ = lin x (LinearMap.snd R R R) ≫ _)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comp_mul]`. Simplify using `only [← Category.assoc, lin_lin]`. Establish `e₁ : LinearMap.snd R R R ((i₁ + i₂) 1) = 1` using `by simp [i₁, i₂]`. Establish `e₂ : LinearMap.snd R R R (i₁ 1) = 0` using `rfl`. Establish `e₃ : LinearMap.snd R R R (i₂ 1) = 1` using `rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, e₂, e₃, scale_zero_comp hy, _root_.one_mul]`. Set `l` to `a • LinearMap.fst R R R + b • LinearMap.snd R R R`. Use `congrArg (lin x l ≫ ·) key` as an intermediate fact. Simplify using `only [comp_mul, ← Category.assoc, lin_lin] at this`. Establish `e₁ : l ((i₁ + i₂) 1) = a + b` using `by simp [l, i₁, i₂]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : l (i₁ 1) = a` using `by simp [l, i₁]`. Establish `e₃ : l (i₂ 1) = b` using `by simp [l, i₂]`. Rewrite `this` using `[e₁, e₂, e₃]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem scale_add_comp (hy : homAt x (TrivSqZeroExt.fstHom O R R) ≫ y = 1) (a b : R) :
     scale x (a + b) ≫ y = (scale x a ≫ y) * (scale x b ≫ y) := by
@@ -269,7 +267,7 @@ theorem scale_add_comp (hy : homAt x (TrivSqZeroExt.fstHom O R R) ≫ y = 1) (a 
   rwa [e₁, e₂, e₃] at this
 
 /- English proof (translation)
-Establish `: ∀ n : ℕ, y ^ n = scale x (n : R) ≫ y` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, Nat.cast_zero, scale_zero_comp hy]`. Consider the case `succ n ih => rw [pow_succ, Nat.cast_succ, scale_add_comp hy, ih, scale_one, Category.id_comp]`. Rewrite using `[this, hN, scale_zero_comp hy]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_eq_one (hy : homAt x (TrivSqZeroExt.fstHom O R R) ≫ y = 1) {N : ℕ} (hN : (N : R) = 0) : y ^ N = 1 := by
   have : ∀ n : ℕ, y ^ n = scale x (n : R) ≫ y := fun n => by
@@ -295,13 +293,13 @@ variable (h : Rep q u) {B B' : Type} [CommRing B] [Algebra O B] [CommRing B'] [A
 include h
 
 /- English proof (translation)
-Rewrite using `[← MonObj.comp_pow, h.1, comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Rep.pow (φ : A →ₐ[O] B) : (homAt x φ ≫ u) ^ q = 1 := by
   rw [← MonObj.comp_pow, h.1, comp_one]
 
 /- English proof (translation)
-The claim follows from `(h.2 B _ (h.pow ψ)).unique e rfl`.
+A detailed English derivation is pending.
 -/
 theorem Rep.ext [Module.Finite O B] {φ ψ : A →ₐ[O] B} (e : homAt x φ ≫ u = homAt x ψ ≫ u) : φ = ψ :=
   (h.2 B _ (h.pow ψ)).unique e rfl
@@ -309,7 +307,7 @@ theorem Rep.ext [Module.Finite O B] {φ ψ : A →ₐ[O] B} (e : homAt x φ ≫ 
 def Rep.counit : A →ₐ[O] O := (h.2 O 1 (one_pow _)).exists.choose
 
 /- English proof (translation)
-Rewrite using `[← homAt_comp, Category.assoc]`. Conclude with `(congrArg (_ ≫ ·) (h.2 O 1 (one_pow _)).exists.choose_spec).trans (comp_one _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rep.pt_counit (χ : O →ₐ[O] B) : homAt x (χ.comp h.counit) ≫ u = 1 := by
   rw [← homAt_comp, Category.assoc]
@@ -318,7 +316,7 @@ theorem Rep.pt_counit (χ : O →ₐ[O] B) : homAt x (χ.comp h.counit) ≫ u = 
 variable [IsCommMonObj G] [Module.Finite O A]
 
 /- English proof (translation)
-The claim follows from `(h.2 (A ⊗[O] A) _ (by rw [mul_pow, h.pow, h.pow, _root_.one_mul])).exists`.
+A detailed English derivation is pending.
 -/
 theorem Rep.exists_comul : ∃ φ : A →ₐ[O] A ⊗[O] A,
     homAt x φ ≫ u = (homAt x includeLeft ≫ u) * (homAt x includeRight ≫ u) :=
@@ -327,7 +325,7 @@ theorem Rep.exists_comul : ∃ φ : A →ₐ[O] A ⊗[O] A,
 def Rep.comul : A →ₐ[O] A ⊗[O] A := h.exists_comul.choose
 
 /- English proof (translation)
-Rewrite using `[← homAt_comp, ← homAt_comp, ← homAt_comp, Category.assoc, Category.assoc, Category.assoc, ← comp_mul]`. Rewrite using `[Rep.comul, h.exists_comul.choose_spec]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Rep.pt_comul (χ : A ⊗[O] A →ₐ[O] B) : homAt x (χ.comp h.comul) ≫ u =
     (homAt x (χ.comp includeLeft) ≫ u) * (homAt x (χ.comp includeRight) ≫ u) := by
@@ -351,7 +349,7 @@ theorem Rep.pt_comul (χ : A ⊗[O] A →ₐ[O] B) : homAt x (χ.comp h.comul) �
       ext; simp))
 
 /- English proof (translation)
-Use `letI := h.bialgebra`. Establish `: (Algebra.TensorProduct.comm O A A : A ⊗[O] A →ₐ[O] A ⊗[O] A).comp h.comul = (AlgHom.id O _).comp h.comul` using `h.ext (by rw [h.pt_comul, h.pt_comul, _root_.mul_comm]; congr 2)`. Conclude with `⟨LinearMap.ext fun a => AlgHom.congr_fun this a⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Rep.isCocomm : letI := h.bialgebra; Coalgebra.IsCocomm O A := by
   letI := h.bialgebra
@@ -360,7 +358,7 @@ theorem Rep.isCocomm : letI := h.bialgebra; Coalgebra.IsCocomm O A := by
   exact ⟨LinearMap.ext fun a => AlgHom.congr_fun this a⟩
 
 /- English proof (translation)
-Use `letI := h.bialgebra`. Establish `h1 : χ = (lift φ ψ fun _ _ => .all _ _).comp h.comul` using `h.ext (by rw [e, h.pt_comul, lift_comp_includeLeft, lift_comp_includeRight'])`. Establish `h2 : h.comul u₀ = u₀ ⊗ₜ u₀` using `hu.comul_eq_tmul_self`. Rewrite using `[h1, AlgHom.comp_apply, h2, lift_tmul]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Rep.map_mul {u₀ : A} (hu : letI := h.bialgebra; IsGroupLikeElem O u₀) {φ ψ χ : A →ₐ[O] B} [Module.Finite O B]
     (e : homAt x χ ≫ u = (homAt x φ ≫ u) * (homAt x ψ ≫ u)) : χ u₀ = φ u₀ * ψ u₀ := by
@@ -371,7 +369,7 @@ theorem Rep.map_mul {u₀ : A} (hu : letI := h.bialgebra; IsGroupLikeElem O u₀
   rw [h1, AlgHom.comp_apply, h2, lift_tmul]
 
 /- English proof (translation)
-Use `letI := h.bialgebra`. Establish `h1 : χ = (Algebra.ofId O B).comp h.counit` using `h.ext (by rw [e, h.pt_counit])`. Establish `h2 : h.counit u₀ = 1` using `hu.counit_eq_one`. Rewrite using `[h1, AlgHom.comp_apply, h2, _root_.map_one]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Rep.map_one {u₀ : A} (hu : letI := h.bialgebra; IsGroupLikeElem O u₀) {χ : A →ₐ[O] B} [Module.Finite O B]
     (e : homAt x χ ≫ u = 1) : χ u₀ = 1 := by
@@ -389,15 +387,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   [Module.Finite O A] {u : overAt x A ⟶ t.G}
 
 /- English proof (translation)
-Establish `hunit : ∀ (B : Type) [CommRing B] [Algebra O B] [Module.Finite O B] (φ : A →ₐ[O] B), IsUnit (φ u₀)`. Introduce `B _ _ _ φ`. Take `⟨ψ, hψ, -⟩` from `h.2 B (homAt x φ ≫ u)⁻¹ (by rw [inv_pow, h.pow, inv_one])`. Establish `h1` using `h.pt_counit (Algebra.ofId O B)`. Conclude with `.of_mul_eq_one _ ((h.map_mul hu (h1.trans (by rw [hψ, mul_inv_cancel]))).symm.trans (h.map_one hu h1))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `χ : ∀ (B : Type) [CommRing B] [Algebra O B] [Module.Finite O B], (overAt x B ⟶ t.G) → Bˣ` to `fun B _ _ _ g => if hg : g ^ q = 1 then (hunit B (h.2 B g hg).exists.choose).unit else 1`. Establish `hχ : ∀ (B : Type) [CommRing B] [Algebra O B] [Module.Finite O B] (φ : A →ₐ[O] B), (χ B (homAt x φ ≫ u) : B) = φ u₀` using `fun B _ _ _ φ => by`. Simplify using `only [χ, dif_pos (h.pow φ), IsUnit.unit_spec]`. Rewrite using `[h.ext (h.2 B _ (h.pow φ)).exists.choose_spec]`. Use `⟨⟨χ, fun B _ _ _ g g' hg hg' => ?_, fun B B' _ _ _ _ _ _ φ g g' hg e => ?_⟩, hχ⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ξ, hξ, -⟩` from `h.2 B (g * g') (by rw [mul_pow, hg, hg', _root_.one_mul])`. Take `⟨φ, rfl, -⟩` from `h.2 B g hg`. Take `⟨ψ, rfl, -⟩` from `h.2 B g' hg'`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[← hξ, Units.val_mul, hχ, hχ, hχ, h.map_mul hu hξ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, rfl, -⟩` from `h.2 B g hg`. Establish `: g' = homAt x (φ.comp ψ) ≫ u`. Rewrite using `[← homAt_comp, Category.assoc]`. Conclude with `Over.OverMorphism.ext e`. Rewrite using `[this, hχ, hχ]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Rep.exists_char (h : Rep q u) {u₀ : A} (hu : letI := h.bialgebra; IsGroupLikeElem O u₀) :
     ∃ c : TorsChar t x q, ∀ (B : Type) [CommRing B] [Algebra O B] [Module.Finite O B] (φ : A →ₐ[O] B),
@@ -430,37 +426,33 @@ theorem Rep.exists_char (h : Rep q u) {u₀ : A} (hu : letI := h.bialgebra; IsGr
 end Char
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t p _ C _ _ _ _ _ hp xO _ v hv a ha`. Take `⟨x, hx, m, vO, htan, hv, hd⟩` from `hv`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `ha1 : ‖a‖ ≤ 1` using `ha.trans (Real.rpow_le_one_of_one_le_of_nonpos hp1.le (neg_nonpos.2 (div_nonneg zero_le_one (sub_nonneg.2 hp1.le))))`. Take `⟨a, rfl⟩ : ∃ b : intO C, (intO C).subtype b = a` from `⟨⟨a, ha1⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : PreValuationRing (intO C) := ⟨fun r s => by`. Break down `le_total ‖(r : C)‖ ‖(s : C)‖ with h | h` into its components or cases. Distinguish the cases in `hs : (s : C) = 0`. Conclude with `⟨0, .inl (Subtype.ext (by simp [hs]))⟩`. Conclude with `⟨⟨r / s, by`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `‖(r : C) / s‖ ≤ 1`. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ h (norm_nonneg _)⟩, .inr (Subtype.ext (mul_div_cancel₀ _ hs))⟩`. Distinguish the cases in `hr : (r : C) = 0`. Conclude with `⟨0, .inr (Subtype.ext (by simp [hr]))⟩`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `⟨⟨s / r, by`. Express the relevant statement in the definitionally equal form `‖(s : C) / r‖ ≤ 1`. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ h (norm_nonneg _)⟩, .inl (Subtype.ext (mul_div_cancel₀ _ hr))⟩⟩`. Use `haveI : ValuationRing (intO C) := {}`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : IsFractionRing (intO C) C := IsFractionRing.of_field _ _ fun z => by`. Break down `le_total ‖z‖ 1 with h | h` into its components or cases. Conclude with `⟨⟨z, h⟩, 1, by simp; rfl⟩`. Conclude with `⟨1, ⟨z⁻¹, by`. Express the relevant statement in the definitionally equal form `‖z⁻¹‖ ≤ 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[norm_inv]; exact inv_le_one_of_one_le₀ h⟩, by rw [map_one, one_div]; exact (inv_inv z).symm⟩`. Use `haveI := GlobalTheory.henselianLocalRing_of_valuationRing_of_isAlgClosed (intO C) C`. Establish `hpC : (p : C) ^ m ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Establish `hq : (p : intO C) ^ m ≠ 0` using `fun h0 => hpC (by simpa using congrArg (intO C).subtype h0)`. Take `⟨A, _, _, u, _, _, h⟩` from `GlobalTheory.T.torsion_representable_finite_free X t.G t.semi (intO C) x (p ^ m) (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `replace h : Rep (p ^ m) u := h`. Set `I : Ideal (intO C)` to `Ideal.span {(p : intO C) ^ m}`. Establish `h0 : ((p : intO C ⧸ I)) ^ m = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk I), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Set `g : overAt x (DualNumber (intO C ⧸ I)) ⟶ t.G` to `Over.homMk (spMap (dualMap (Ideal.Quotient.mk I)) ≫ vO) (by`. Rewrite using `[Category.assoc, htan.1, sp_comp_assoc, dual_alg]`. Use the proof step `rfl)`. Establish `hg1 : homAt x (TrivSqZeroExt.fstHom (intO C) (intO C ⧸ I) (intO C ⧸ I)) ≫ g = 1`. Rewrite using `[← comp_one (Over.homMk (spMap (Ideal.Quotient.mk I)) rfl : overAt x (intO C ⧸ I) ⟶ Over.mk x)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ ≫ vO = spMap _ ≫ (1 : Over.mk x ⟶ t.G).left`. Rewrite using `[← htan.2, sp_comp_assoc, sp_comp_assoc]`. Use `congr 2`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[dualMap]`. Take `⟨φ, hφ, -⟩` from `h.2 _ g (pow_eq_one hg1 (by rw [Nat.cast_pow, h0]))`. Establish `hfst : ∀ z, (φ z).fst = Ideal.Quotient.mk I (h.counit z)` using `fun z => AlgHom.congr_fun (h.ext (φ := (TrivSqZeroExt.fstHom (intO C) _ _).comp φ) (ψ := (Algebra.ofId (intO C) (intO C ⧸ I)).comp h.counit) (by rw [h.pt_counit, ← homAt_comp, Category.assoc, hφ, hg1])) z`. Take `⟨D, hD⟩` from `Module.projective_lifting_property (Ideal.Quotient.mkₐ (intO C) I).toLinearMap (((TrivSqZeroExt.sndHom (intO C ⧸ I) (intO C ⧸ I)).restrictScalars (intO C)) ∘ₗ φ.toLinearMap) Ideal.Quotient.mk_surjective`. Use `replace hD : ∀ z, Ideal.Quotient.mk I (D z) = (φ z).snd := LinearMap.congr_fun hD`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hdvd : ∀ z : intO C, (p : intO C) ^ m ∣ z ↔ Ideal.Quotient.mk I z = 0` using `fun z => by`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Use `letI := h.bialgebra`. Use `haveI := h.isCocomm`. Establish `key` using `GlobalTheory.T.derivation_divisible_of_cocomm C p hp A _ hq D (fun r s => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ ∣ D (r * s) - h.counit r * D s - h.counit s * D r`. Rewrite using `[hdvd, map_sub, map_sub, map_mul (Ideal.Quotient.mk I), map_mul (Ideal.Quotient.mk I), hD, hD, hD, ← hfst, ← hfst, map_mul φ, DualNumber.snd_mul]`. Use the proof step `ring)`. Use the proof step `(fun u₀ hu => by`. Take `⟨c, hc⟩` from `h.exists_char hu`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hd m c g rfl` as an intermediate fact. Rewrite `this` using `[← hφ, hc, h0, Ideal.span_singleton_eq_bot.2 rfl, Ideal.mem_bot]`. Rewrite using `[hdvd, hD, this]) a ha`. Establish `hs : scale x (Ideal.Quotient.mk I a) ≫ g = scale x (Ideal.Quotient.mk I 0) ≫ g`. Rewrite using `[← hφ, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 2`. Use `AlgHom.ext fun z => ?_` and prove the remaining obligations. Use `(hdvd _).1 (key z)` as an intermediate fact. Rewrite `this` using `[map_mul, hD]`. Apply the tactic sequence `ext <;> simp [this]`.
-
-Take `⟨w, hw⟩` from `exists_div hq a vO (by`. Establish `e : spMap (epsMul (Ideal.Quotient.mk I a)) ≫ spMap (dualMap (Ideal.Quotient.mk I)) ≫ vO = spMap (epsMul (Ideal.Quotient.mk I 0)) ≫ spMap (dualMap (Ideal.Quotient.mk I)) ≫ vO` using `congrArg Over.Hom.left hs`. Simplify `e)` using `only [sp_comp_assoc, eps_dual]`. Use `⟨x, hx, w, ⟨eps_cancel hq ?_, ?_⟩, eps_cancel hpC ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hw, Category.assoc, htan.1, sp_comp_assoc, sp_comp_assoc, eps_alg, eps_alg]`.
-
-Establish `e : ∀ b : intO C, (TrivSqZeroExt.fstHom (intO C) (intO C) (intO C)).toRingHom.comp (epsMul b) = (TrivSqZeroExt.fstHom (intO C) (intO C) (intO C)).toRingHom` using `fun b => RingHom.ext fun z => by simp [epsMul]`. Rewrite using `[← htan.2, ← e ((p : intO C) ^ m), ← sp_comp_assoc, hw, sp_comp_assoc, e, e]`. Establish `e : (p : C) ^ m = (intO C).subtype ((p : intO C) ^ m)` using `by simp`. Rewrite using `[sp_comp_assoc (epsMul _) (epsMul _) v, eps_eps, _root_.mul_comm, ← eps_eps, ← sp_comp_assoc (epsMul _) (epsMul _) v, ← hv, e, sp_comp_assoc, sp_comp_assoc, eps_dual, eps_dual, ← sp_comp_assoc, ← sp_comp_assoc, hw]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem htBound : HTBoundSt := by
   intro E _ _ _ H X t p _ C _ _ _ _ _ hp xO _ v hv a ha

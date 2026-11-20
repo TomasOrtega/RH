@@ -9,13 +9,13 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ δ θ σ hq S SE hSE`. Establish `h1 : SE.card = ∑ v ∈ S, (SE.filter (fun w => w.under (𝓞 F) = v)).card` using `Finset.card_eq_sum_card_fiberwise (fun w hw => (hSE w).1 hw)`. Establish `h2 : tFin F δ S = ∑ v ∈ S, if ¬ IsSquare (algebraMap F (v.adicCompletion F) δ) then 1 else 0`. Rewrite using `[← Finset.card_filter, tFin, ← Set.ncard_coe_finset]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `v`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2, ← Finset.sum_add_distrib, mul_comm, ← smul_eq_mul, ← Finset.sum_const]`. Use `Finset.sum_le_sum (fun v hv => ?_)` and prove the remaining obligations. Distinguish the cases in `hs : IsSquare (algebraMap F (v.adicCompletion F) δ)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨w, w', hne, hw, hw'⟩` from `GlobalTheory.T.exists_two_places_over_of_isSquare_local F E δ θ σ hq v hs`. Establish `: 1 < (SE.filter (fun w => w.under (𝓞 F) = v)).card` using `Finset.one_lt_card.2 ⟨w, Finset.mem_filter.2 ⟨(hSE w).2 (hw ▸ hv), hw⟩, w', Finset.mem_filter.2 ⟨(hSE w').2 (hw' ▸ hv), hw'⟩, hne⟩`. Use linear arithmetic over natural numbers and integers. Take `⟨w, hw⟩` from `(places_over F E).2.1 v`. Establish `: 0 < (SE.filter (fun w => w.under (𝓞 F) = v)).card` using `Finset.card_pos.2 ⟨w, Finset.mem_filter.2 ⟨(hSE w).2 (hw ▸ hv), hw⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[if_pos hs]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_mul_card_le_card_over : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (δ : F) (θ : E) (σ : E ≃ₐ[F] E), IsQuad δ θ σ → ∀ (S : Finset (HeightOneSpectrum (𝓞 F))) (SE : Finset (HeightOneSpectrum (𝓞 E))), (∀ w : HeightOneSpectrum (𝓞 E), w ∈ SE ↔ w.under (𝓞 F) ∈ S) → 2 * S.card ≤ SE.card + tFin F δ S := by
   intro F E _ _ _ _ _ δ θ σ hq S SE hSE

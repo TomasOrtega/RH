@@ -15,7 +15,7 @@ def traceMat {r δ : ℕ} (D N : ℕ) (g : Fin r → Fin δ → MvPolynomial (Fi
     (g j (finProdFinEquiv.symm p).1)
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.eval_map]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem eval_map_int {σ : Type*} (w : σ → ℂ) (p : MvPolynomial σ ℤ) :
     eval w (map (Int.castRingHom ℂ) p) = aeval w p := by
@@ -23,15 +23,15 @@ theorem eval_map_int {σ : Type*} (w : σ → ℂ) (p : MvPolynomial σ ℤ) :
   congr 1
 
 /- English proof (translation)
-Apply the tactic sequence `have hentry : ∀ i, traceMat D N g (finProdFinEquiv (l, i)) j = coeff (Finsupp.equivFunOnFinite.symm (adtEnum D N i)) (g j l) := by`. Introduce `i`. Simplify using `only [traceMat, Matrix.of_apply, Equiv.symm_apply_apply]`. Simplify using `only [hentry]`. Establish `hR : ∑ i, ((coeff (Finsupp.equivFunOnFinite.symm (adtEnum D N i)) (g j l) : ℤ) : S) * ∏ t, y t ^ adtEnum D N i t = ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) N, ((coeff (Finsupp.equivFunOnFinite.symm a) (g j l) : ℤ) : S) * ∏ t, y t ^ a t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_coe_sort (Finset.Nat.antidiagonalTuple (D + 1) N)]`. Conclude with `(Finset.Nat.antidiagonalTuple (D + 1) N).equivFin.symm.sum_comp (fun a : (Finset.Nat.antidiagonalTuple (D + 1) N) => ((coeff (Finsupp.equivFunOnFinite.symm (a : Fin (D + 1) → ℕ)) (g j l) : ℤ) : S) * ∏ t, y t ^ (a : Fin (D + 1) → ℕ) t)`. Rewrite using `[hR, MvPolynomial.aeval_def, MvPolynomial.eval₂_eq']`. Set `e : (Fin (D + 1) → ℕ) ↪ (Fin (D + 1) →₀ ℕ)` to `⟨Finsupp.equivFunOnFinite.symm, Finsupp.equivFunOnFinite.symm.injective⟩`. Establish `hmap : ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) N, ((coeff (Finsupp.equivFunOnFinite.symm a) (g j l) : ℤ) : S) * ∏ t, y t ^ a t = ∑ d ∈ (Finset.Nat.antidiagonalTuple (D + 1) N).map e, algebraMap ℤ S (coeff d (g j l)) * ∏ t, y t ^ d t`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_map]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[e]`. Rewrite using `[hmap]`. Use `Finset.sum_subset (fun d hd => ?_) (fun d _ hd => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_map]`. Use `⟨⇑d, ?_, by simp [e]⟩` and prove the remaining obligations. Establish `h1` using `hg (MvPolynomial.mem_support_iff.mp hd)`. Rewrite using `[Finset.Nat.mem_antidiagonalTuple]`. Simplify `h1` using `[Finsupp.weight_apply, Finsupp.sum_fintype]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.notMem_support_iff.mp hd, map_zero, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem aeval_eq_sum_traceMat {S : Type*} [CommRing S] {r δ N : ℕ}
     (g : Fin r → Fin δ → MvPolynomial (Fin (D + 1)) ℤ) (j : Fin r) (l : Fin δ)
@@ -72,33 +72,29 @@ theorem aeval_eq_sum_traceMat {S : Type*} [CommRing S] {r δ N : ℕ}
   · rw [MvPolynomial.notMem_support_iff.mp hd, map_zero, zero_mul]
 
 /- English proof (translation)
-Use `choose F hFh hFb using hb.1`. Establish `hs : ∀ j, aeval x (b j) = aeval x (F j)` using `fun j => by`. Rewrite using `[hFb j, ← algebraMap_int_eq, aeval_map_algebraMap]`. Establish `hmemN : ∀ j l, aeval x (b j) * aeval x (H l) ∈ sec ℤ x (n + k)` using `fun j l => by`. Rewrite using `[hs j, ← map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_map.mpr ⟨F j * H l, (mem_homogeneousSubmodule _ _).mpr ((hFh j).mul (hH l)), rfl⟩`. Establish `hsn : ∀ j, aeval x (b j) ∈ sec ℤ x n` using `fun j => hb.2.2 ▸ Submodule.subset_span ⟨j, rfl⟩`. Establish `key : ∀ u : Fin r → ℤ, traceMat D (n + k) g *ᵥ u = 0 → u = 0`. Introduce `u hu`. Use `set s := ∑ j, u j • aeval x (b j) with hs_def`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsmem : s ∈ sec ℤ x n` using `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hsn j)`. Establish `h0 : ∀ l, secTrace x e (n + k) (s * aeval x (H l)) = 0`. Introduce `l`. Establish `h1 : s * aeval x (H l) = ((∑ j, u j • (⟨_, hmemN j l⟩ : sec ℤ x (n + k)) : sec ℤ x (n + k)) : Ω)`. Rewrite using `[hs_def, Finset.sum_mul, Submodule.coe_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, smul_mul_assoc]`. Rewrite using `[h1]`. Use `show secTraceHom x e hfr (n + k) (∑ j, u j • (⟨_, hmemN j l⟩ : sec ℤ x (n + k))) = 0`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_zsmul]`. Establish `h3 : ∀ j, secTraceHom x e hfr (n + k) ⟨_, hmemN j l⟩ = aeval (x ∘ e) (g j l)` using `fun j => (hgv j l).symm`. Simplify using `only [h3, aeval_eq_sum_traceMat g _ l (hgh _ l), Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Move the embeddings inside the algebraic operations.
 
-Establish `hu'` using `congrFun hu (finProdFinEquiv (l, i))`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at hu'`. Combine the equalities or inequalities in the displayed calculation. Use `push_cast`. Rewrite using `[Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [hu']; simp`. Establish `hs0` using `eq_zero_of_secTrace_mul_eq_zero x e hfr (fun l => aeval x (H l)) (fun l => Submodule.mem_map.mpr ⟨H l, (mem_homogeneousSubmodule _ _).mpr (hH l), rfl⟩) hli n hsmem h0`.
+Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.mp hb.2.1 u hs0 j`. Introduce `v w hvw`. Establish `hd : (traceMat D (n + k) g).map (Int.cast : ℤ → ℚ) *ᵥ (v - w) = 0`. Rewrite using `[Matrix.mulVec_sub, hvw, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨⟨c, hc⟩, hcu⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors ℤ) (v - w)`. Use `choose u hu using hcu`. Establish `hu2 : ∀ i, ((u i : ℤ) : ℚ) = (c : ℚ) * (v - w) i` using `fun i => by`. Use `hu i` as an intermediate fact. Simplify using `only [zsmul_eq_mul, algebraMap_int_eq, eq_intCast] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hMu : traceMat D (n + k) g *ᵥ u = 0`. Use function extensionality and compare the values at `p`. Establish `h1` using `RingHom.map_mulVec (Int.castRingHom ℚ) (traceMat D (n + k) g) u p`. Establish `h2 : (Int.castRingHom ℚ) ∘ u = (c : ℚ) • (v - w)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[hu2 i]`. Rewrite `h1` using `[h2, Matrix.mulVec_smul]`. Simplify using `only [Int.coe_castRingHom] at h1`. Rewrite `h1` using `[hd, smul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Pi.zero_apply] at h1 ⊢`. Conclude with `h1` after adjusting the coercions. Establish `hu0` using `key u hMu`. Establish `hc0 : c ≠ 0` using `mem_nonZeroDivisors_iff_ne_zero.mp hc`. Use function extensionality and compare the values at `i`.
-
-Use `hu2 i` as an intermediate fact. Rewrite `this` using `[hu0]`. Simplify using `only [Pi.zero_apply, Int.cast_zero] at this`. Establish `h3 : (v - w) i = 0`. Break down `mul_eq_zero.mp this.symm with h | h` into its components or cases.
-
-Conclude with `absurd (by exact_mod_cast h) hc0`. Conclude with `h`. Simplify `h3` using `[sub_eq_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem traceMat_injective {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsRatProjFrame x e)
     {n k r : ℕ} {b : Fin r → MvPolynomial (Ix κ) ℚ} (hb : IsSecBasis x n b)
@@ -184,14 +180,14 @@ theorem traceMat_injective {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr :
   simpa [sub_eq_zero] using h3
 
 /- English proof (translation)
-Rewrite using `[show Int.castRingHom ℚ = algebraMap ℤ ℚ from RingHom.ext_int _ _, MvPolynomial.aeval_map_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_map_intQ (x : Ix κ → Ω) (f : MvPolynomial (Ix κ) ℤ) :
     aeval x (map (Int.castRingHom ℚ) f) = aeval x f := by
   rw [show Int.castRingHom ℚ = algebraMap ℤ ℚ from RingHom.ext_int _ _, MvPolynomial.aeval_map_algebraMap]
 
 /- English proof (translation)
-Unfold `secFun`. Rewrite using `[MvPolynomial.map_map, show (algebraMap ℚ ℂ).comp (Int.castRingHom ℚ) = Int.castRingHom ℂ from RingHom.ext_int _ _]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem secFun_map_intQ (f : MvPolynomial (Ix κ) ℤ) (z : Ix κ → ℂ) :
     secFun (map (Int.castRingHom ℚ) f) z = eval z (map (Int.castRingHom ℂ) f) := by
@@ -201,9 +197,9 @@ theorem secFun_map_intQ (f : MvPolynomial (Ix κ) ℤ) (z : Ix κ → ℂ) :
 
 open Matrix in
 /- English proof (translation)
-Use `Matrix.PosSemidef.of_dotProduct_mulVec_nonneg (hP.sub hQ) fun c => ?_` and prove the remaining obligations. Establish `hreal` using `(hP.sub hQ).im_star_dotProduct_mulVec_self c`. Establish `hsplit : star c ⬝ᵥ (P - Q) *ᵥ c = star c ⬝ᵥ P *ᵥ c - star c ⬝ᵥ Q *ᵥ c`. Simplify using `[Matrix.sub_mulVec]`. Rewrite using `[Complex.nonneg_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, hreal.symm⟩` and prove the remaining obligations. Rewrite using `[hsplit, Complex.sub_re]`. Combine the linear relations using `[h c]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem psd_sub_of_quad_le {r : ℕ} {P Q : Matrix (Fin r) (Fin r) ℂ} (hP : P.IsHermitian)
     (hQ : Q.IsHermitian) (h : ∀ c : Fin r → ℂ, (star c ⬝ᵥ Q *ᵥ c).re ≤ (star c ⬝ᵥ P *ᵥ c).re) :
@@ -219,7 +215,7 @@ theorem psd_sub_of_quad_le {r : ℕ} {P Q : Matrix (Fin r) (Fin r) ℂ} (hP : P.
 
 open Matrix in
 /- English proof (translation)
-Unfold `Matrix.IsHermitian`. Rewrite using `[Matrix.conjTranspose_smul, hG.eq]`. Use `congr 1`. Simplify using `[← Complex.ofReal_pow, Complex.conj_ofReal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem isHermitian_sq_smul {r : ℕ} {G : Matrix (Fin r) (Fin r) ℂ} (hG : G.IsHermitian) (A : ℝ) :
     (((A : ℂ) ^ 2) • G).IsHermitian := by
@@ -230,7 +226,7 @@ theorem isHermitian_sq_smul {r : ℕ} {G : Matrix (Fin r) (Fin r) ℂ} (hG : G.I
 
 open Matrix in
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quad_conj {r s : ℕ} (M : Matrix (Fin s) (Fin r) ℂ) (G : Matrix (Fin s) (Fin s) ℂ)
     (c : Fin r → ℂ) :
@@ -239,9 +235,9 @@ theorem quad_conj {r s : ℕ} (M : Matrix (Fin s) (Fin r) ℂ) (G : Matrix (Fin 
 
 open Matrix in
 /- English proof (translation)
-Simplify using `only [monoDiag, Matrix.mulVec_diagonal]`. Use `first`. Consider the case `simp only [dotProduct, Pi.star_apply, Matrix.mulVec_diagonal]`. Consider the case `simp only [Matrix.dotProduct, Pi.star_apply, Matrix.mulVec_diagonal]`. Rewrite using `[Complex.re_sum, ← finProdFinEquiv.sum_comp, Fintype.sum_prod_type]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `try simp only [Equiv.symm_apply_apply]`. Rewrite using `[mul_left_comm, Complex.re_ofReal_mul]`. Use `congr 1`. Rewrite using `[Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quad_monoDiag (D N δ : ℕ) (v : Fin (δ * (Finset.Nat.antidiagonalTuple (D + 1) N).card) → ℂ) :
     (star v ⬝ᵥ monoDiag D N δ *ᵥ v).re =
@@ -258,19 +254,17 @@ theorem quad_monoDiag (D N δ : ℕ) (v : Fin (δ * (Finset.Nat.antidiagonalTupl
   rw [Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `reidx : ∀ {X : Type} [AddCommMonoid X] (F : (Fin (D + 1) → ℕ) → X), ∑ i, F (adtEnum D N i) = ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) N, F a`. Introduce `X _ F`. Rewrite using `[← Finset.sum_coe_sort (Finset.Nat.antidiagonalTuple (D + 1) N)]`. Conclude with `(Finset.Nat.antidiagonalTuple (D + 1) N).equivFin.symm.sum_comp (fun a : (Finset.Nat.antidiagonalTuple (D + 1) N) => F (a : Fin (D + 1) → ℕ))`. Set `C : (Fin (D + 1) → ℕ) → ℂ` to `fun a => ∑ j, ((coeff (Finsupp.equivFunOnFinite.symm a) (g j l) : ℤ) : ℂ) * c j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hentry' : ∀ i, ((traceMat D N g).map (Int.cast : ℤ → ℂ) *ᵥ c) (finProdFinEquiv (l, i)) = C (adtEnum D N i)`. Introduce `i`. Use `first`. Consider the case `simp only [Matrix.mulVec, dotProduct, Matrix.map_apply, traceMat, Matrix.of_apply, Equiv.symm_apply_apply, C]`. Consider the case `simp only [Matrix.mulVec, Matrix.dotProduct, Matrix.map_apply, traceMat, Matrix.of_apply, Equiv.symm_apply_apply, C]`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hj : ∀ (j : Fin r) (w : Fin (D + 1) → ℂ), eval w (map (Int.castRingHom ℂ) (g j l)) = ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) N, ((coeff (Finsupp.equivFunOnFinite.symm a) (g j l) : ℤ) : ℂ) * monoC a w`. Introduce `j w`. Rewrite using `[eval_map_int, aeval_eq_sum_traceMat g j l (hg j l) w, ← reidx (fun a => ((coeff (Finsupp.equivFunOnFinite.symm a) (g j l) : ℤ) : ℂ) * monoC a w)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [traceMat, Matrix.of_apply, Equiv.symm_apply_apply, monoC]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hint : ∀ w, ∑ j, c j * eval w (map (Int.castRingHom ℂ) (g j l)) = ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) N, C a * monoC a w`. Introduce `w`. Simplify using `only [hj, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [C, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← reidx (fun a => monoNormSq a * ‖C a‖ ^ 2)]`.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hentry' i]`. Use `_ = ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) N, ‖C a‖ ^ 2 * monoNormSq a := Finset.sum_congr rfl fun a _ => mul_comm _ _`. Use `_ = ∫ z, ‖∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) N, C a * monoC a z‖ ^ 2 ∂(sphProb (D + 1)) := (integral_form_sq D N C).symm`. Use `_ = ∫ w, ‖∑ j, c j * eval w (map (Int.castRingHom ℂ) (g j l))‖ ^ 2 ∂(sphProb (D + 1)) := by`.
-
-Simplify using `only [hint]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_monoNormSq_traceMat {r δ N : ℕ} (g : Fin r → Fin δ → MvPolynomial (Fin (D + 1)) ℤ)
     (hg : ∀ j l, (g j l).IsHomogeneous N) (c : Fin r → ℂ) (l : Fin δ) :

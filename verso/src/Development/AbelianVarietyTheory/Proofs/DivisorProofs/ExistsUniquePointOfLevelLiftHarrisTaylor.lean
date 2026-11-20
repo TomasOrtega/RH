@@ -9,11 +9,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel.HT.OfLift
 
 /- English proof (translation)
-Establish `sq : IsSquare (h₁.φ ≫ h₂.φ) (h₁.φ₂ ≫ h₂.φ₂)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Category.assoc, h₂.sq.1, ← Category.assoc, h₁.sq.1, Category.assoc]`. Rewrite using `[Category.assoc, h₂.sq.2, ← Category.assoc, h₁.sq.2, Category.assoc]`. Establish `act : ∀ c, (o₁.act.act c).left ≫ (h₁.φ ≫ h₂.φ) = (h₁.φ ≫ h₂.φ) ≫ (o₃.act.act c).left`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c`. Rewrite using `[← Category.assoc, h₁.act, Category.assoc, h₂.act, Category.assoc]`. Establish `eta : ∀ y, (o₁.eta y).left ≫ (h₁.φ ≫ h₂.φ) = (f ≫ g) ≫ (o₃.eta y).left`. Introduce `y`. Rewrite using `[← Category.assoc, h₁.eta, Category.assoc, h₂.eta, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `H : LBIso (o₂.P.pull h₁.φ₂) ((o₃.P.pull h₂.φ₂).pull h₁.φ₂)` using `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull o₂.P h₁.φ₂ h₁.φ₂ rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull (o₃.P.pull h₂.φ₂) h₁.φ₂ h₁.φ₂ rfl) h₂.pol`. Establish `H' : LBIso (o₂.P.pull h₁.φ₂) (o₃.P.pull (h₁.φ₂ ≫ h₂.φ₂))` using `LBIso.chartPull (chartPullId _) (chartPullIn o₃.P (fun _ : PUnit => h₂.φ₂) (fun _ => 1) h₁.φ₂) H`. Establish `pol : LBIso o₁.P (o₃.P.pull (h₁.φ₂ ≫ h₂.φ₂))` using `LBIso.trans o₁.isLB (pull_isLB o₂.isLB _) (pull_isLB o₃.isLB _) h₁.pol H'`. Conclude with `⟨⟨h₁.φ ≫ h₂.φ, h₁.φ₂ ≫ h₂.φ₂, h₁.cart.comp h₂.cart, sq, act, pol, eta⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_objMap_comp {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {S₁ S₂ S₃ : Scheme.{0}} {s₁ : S₁ ⟶ Sp R} {s₂ : S₂ ⟶ Sp R} {s₃ : S₃ ⟶ Sp R} {o₁ : Obj b N s₁}
@@ -44,11 +44,11 @@ def ObjMap.forget {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R]
   ⟨m.φ, m.φ₂, m.cart, m.sq, m.act, m.pol, fun y => m.eta _⟩
 
 /- English proof (translation)
-Introduce `p _ D R _ b N N' hN hd hc M M' π hπ om T lv hlv`. Take `⟨o'', mm, hmm⟩` from `GlobalTheory.T.exists_harrisTaylorObject_of_levelLift p D R b N N' hd hc M.X M.s M.univ T lv hlv`. Take `⟨g, ⟨hg, ⟨m''⟩⟩, -⟩` from `M'.rep T.left (T.hom ≫ M.s) o''`. Take `⟨c, hcφ⟩` from `exists_objMap_comp (ObjMap.forget m'' N hd hc) om`. Establish `hNp : N.Coprime p` using `Nat.Coprime.coprime_dvd_left hd hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgπ : g ≫ π = T.hom`. Take `⟨f, -, hu⟩` from `M.rep T.left (T.hom ≫ M.s) (o''.forget N hd hc)`. Establish `e1` using `hu (g ≫ π) ⟨by rw [Category.assoc, hπ, hg], ⟨c⟩⟩`. Establish `e2` using `hu T.hom ⟨rfl, ⟨mm⟩⟩`. Conclude with `e1.trans e2.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : c.φ = mm.φ` using `GlobalTheory.T.harrisTaylor_pullback_abelian_map_unique_of_base_eq p D R b N hN hNp M.X T.left M.s (T.hom ≫ M.s) M.univ (o''.forget N hd hc) _ _ c mm hgπ`. Use `⟨g, hgπ, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hmm a, ← hφ, hcφ]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ om.φ) (m''.eta a)).trans (Category.assoc _ _ _))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofLift : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N N' : ℕ), 3 ≤ N → ∀ (hd : N ∣ N') (hc : N'.Coprime p) (M : Model b N) (M' : Model b N') (π : M'.X ⟶ M.X), π ≫ M.s = M'.s → ∀ (om : ObjMap (M'.univ.forget N hd hc) M.univ π) (T : Over M.X) (lv : D.La → (T ⟶ M.univ.A)), IsLift M.univ N' T lv → ∃ g : T.left ⟶ M'.X, g ≫ π = T.hom ∧ ∀ a, (lv a).left = g ≫ (M'.univ.eta a).left ≫ om.φ := by
   intro p _ D R _ b N N' hN hd hc M M' π hπ om T lv hlv

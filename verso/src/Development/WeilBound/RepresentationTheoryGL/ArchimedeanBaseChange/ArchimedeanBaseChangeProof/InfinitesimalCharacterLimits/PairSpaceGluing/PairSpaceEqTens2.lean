@@ -98,7 +98,7 @@ def trShape {E : Type} [Field E] [NumberField E] [IsCMField E] : {N : ℕ} → T
   | _, .node t₁ t₂ => .node (trShape t₁) (trShape t₂)
 
 /- English proof (translation)
-The claim follows from `Nat.one_pos`.
+A detailed English derivation is pending.
 -/
 theorem shape_pos_one : (Shape.leaf 1).Pos := Nat.one_pos
 

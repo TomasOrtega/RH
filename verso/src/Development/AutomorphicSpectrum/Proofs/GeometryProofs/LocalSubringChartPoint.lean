@@ -16,9 +16,9 @@ abbrev chartRing {κ : Type} (x : κ → Ω) (c : κ) : Subalgebra ℤ Ω :=
   Algebra.adjoin ℤ (Set.range fun j => x j / x c)
 
 /- English proof (translation)
-Take `⟨pp, hpp⟩` from `p`. Simplify using `only at hzc`. Substitute `hzc` using the available equality. Use `⟨⟨s, rfl⟩, ?_⟩` and prove the remaining obligations. Take `⟨h', s', e1, e2⟩` from `hv ⟨genMap ξ ⟨centre z, h⟩ s, ⟨s, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e3 : s' = s` using `hg.inj ⟨centre z, h⟩ e1`. Substitute `e3` using the available equality. Conclude with `e2`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem stalk_value (hg : IsCptGen ξ) {R : Type} [CommRing R] [IsLocalRing R] (p : Cpt ξ) (φ : regAt ξ p →+* R)
     (z : Spec (CommRingCat.of R) ⟶ X) (hzc : centre z = p.1) (hv : ∀ a : regAt ξ p, ValAt ξ z (a : Ω) (φ a))
@@ -37,9 +37,9 @@ theorem stalk_value (hg : IsCptGen ξ) {R : Type} [CommRing R] [IsLocalRing R] (
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Establish `e : A.subtype.comp (Scheme.stalkClosedPointTo z).hom = θ.comp (genMap ξ ⟨centre z, h⟩)` using `RingHom.ext hs`. Establish `e1` using `LieTangent.spec_centre z`. Establish `e2` using `LieTangent.spec_genMap ξ ⟨centre z, h⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Category.assoc, ← Category.assoc, LieTangent.spec_comp, LieTangent.spec_comp, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Spec.map (CommRingCat.ofHom θ) ≫ ξ := by`. Conclude with `congrArg (_ ≫ ·) e2`.
+A detailed English derivation is pending.
 -/
 theorem spec_square {F : Type} [Field F] (θ : Ω →+* F) {A : Subring F} [IsLocalRing A]
     (z : Spec (CommRingCat.of A) ⟶ X) (h : genPt ξ ⤳ centre z)
@@ -60,29 +60,25 @@ theorem spec_square {F : Type} [Field F] (θ : Ω →+* F) {A : Subring F} [IsLo
         exact congrArg (_ ≫ ·) e2
 
 /- English proof (translation)
-Introduce `X Ω _ ξ κ x c hT hc F _ θ A _ hA`. Establish `hC : ∀ s ∈ chartRing x c, θ s ∈ A`. Introduce `s hs`. Proceed by induction on `hs using Algebra.adjoin_induction with`. Consider the case `mem a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨j, rfl⟩` from `ha`. Conclude with `hA j`. Consider the case `algebraMap r`. Establish `: θ (algebraMap ℤ Ω r) = (r : F)` using `by simp`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `intCast_mem A r`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_mem ha hb`.
+Treat this case separately. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `θC : chartRing x c →+* A` to `(θ.comp (chartRing x c).val.toRingHom).codRestrict A (fun s => hC s s.2)`. Take `⟨p, ⟨hpc, hpu⟩, -⟩` from `GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ ℤ κ x hT c hc (Ideal.comap θC (IsLocalRing.maximalIdeal A)) inferInstance`. Establish `hunit : ∀ s (hs : s ∈ chartRing x c), unitAt ξ p s ↔ IsUnit (⟨θ s, hC s hs⟩ : A)`. Introduce `s hs`. Rewrite using `[← hpu ⟨s, hs⟩, Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Establish `hreg : ∀ a ∈ regAt ξ p, θ a ∈ A`. Introduce `a ha`. Take `⟨s, hs, hsu, hsa⟩` from `(regAt_iff_exists_chart_fraction X Ω ξ ℤ κ x hT c p hpc a).1 ha`. Take `⟨u, hu⟩` from `(hunit s hs).1 hsu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (((u⁻¹ : Aˣ) : A) : F) * θ s = 1`. Establish `h2` using `congrArg Subtype.val (Units.inv_mul u)`. Rewrite `h2` using `[hu]`. Conclude with `h2`. Establish `h3 : θ a = (((u⁻¹ : Aˣ) : A) : F) * θ (s * a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, ← mul_assoc, h1, one_mul]`. Rewrite using `[h3]`. Conclude with `mul_mem ((u⁻¹ : Aˣ) : A).2 (hC _ hsa)`. Set `φ : regAt ξ p →+* A` to `(θ.comp (regAt ξ p).subtype).codRestrict A (fun a => hreg a a.2)`. Establish `hloc : IsLocalHom φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hsu, hsa⟩` from `(regAt_iff_exists_chart_fraction X Ω ξ ℤ κ x hT c p hpc a).1 a.2`. Establish `hua : IsUnit (⟨θ (s * a), hC _ hsa⟩ : A)`. Establish `h1 : (⟨θ (s * a), hC _ hsa⟩ : A) = ⟨θ s, hC s hs⟩ * φ a` using `Subtype.ext (map_mul θ s a)`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hunit s hs).1 hsu).mul ha`. Take `⟨h0, -, hi⟩` from `(hunit _ hsa).2 hua`. Establish `hs0 : s ≠ 0` using `left_ne_zero_of_mul h0`. Establish `ha0 : (a : Ω) ≠ 0` using `right_ne_zero_of_mul h0`. Establish `hinv : (a : Ω)⁻¹ ∈ regAt ξ p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (a : Ω)⁻¹ = s * (s * a)⁻¹` using `by field_simp`. Rewrite using `[h1]`. Conclude with `mul_mem hsu.2.1 hi`. Conclude with `IsUnit.of_mul_eq_one ⟨_, hinv⟩ (Subtype.ext (mul_inv_cancel₀ ha0))`. Take `⟨z, ⟨hzc, hzv⟩, -⟩` from `GlobalTheory.T.existsUnique_centre_local_hom X Ω ξ hT.gen p A φ hloc`.
-
-Establish `h : genPt ξ ⤳ centre z` using `by rw [hzc]; exact p.2`. Establish `hp : (⟨centre z, h⟩ : Cpt ξ) = p` using `Subtype.ext hzc`. Establish `hs : ∀ s : X.presheaf.stalk (centre z), (((Scheme.stalkClosedPointTo z).hom s : A) : F) = θ (genMap ξ ⟨centre z, h⟩ s)`. Introduce `s`. Take `⟨hm, e⟩` from `stalk_value hT.gen p φ z hzc hzv h s`.
-
-Rewrite using `[e]`. Both sides reduce to the same expression. Conclude with `⟨z, h, by rw [hp]; exact hpc, hs, spec_square θ z h hs⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem point_of_local_subring : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (κ : Type) (x : κ → Ω) (c : κ), CoordTie ℤ ξ x → x c ≠ 0 → ∀ (F : Type) [Field F] (θ : Ω →+* F) (A : Subring F) [IsLocalRing A], (∀ j, θ (x j / x c) ∈ A) → ∃ (z : Spec (CommRingCat.of A) ⟶ X) (h : genPt ξ ⤳ centre z), InChart ξ x c ⟨centre z, h⟩ ∧ (∀ s : X.presheaf.stalk (centre z), (((Scheme.stalkClosedPointTo z).hom s : A) : F) = θ (genMap ξ ⟨centre z, h⟩ s)) ∧ Spec.map (CommRingCat.ofHom A.subtype) ≫ z = Spec.map (CommRingCat.ofHom θ) ≫ ξ := by
   intro X Ω _ ξ κ x c hT hc F _ θ A _ hA

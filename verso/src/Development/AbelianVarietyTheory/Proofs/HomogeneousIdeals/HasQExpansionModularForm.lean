@@ -17,11 +17,11 @@ namespace HasQExpansion
 variable {h : ℝ} {f g : ℍ → ℂ} {φ ψ : PowerSeries ℂ}
 
 /- English proof (translation)
-Use `le_of_forall_lt_imp_le_of_dense fun r hr ↦ ?_` and prove the remaining obligations. Break down `eq_or_ne r 0 with rfl | hr'` into its components or cases. Simplify using the standard rewrite rules. Use `lift r to NNReal using hr.ne_top`. Apply `FormalMultilinearSeries.le_radius_of_summable` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hq : ‖((r : ℝ) : ℂ)‖ < 1` using `by simpa using hr`. Establish `hq1 : ((r : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hr'`. Establish `h1` using `Periodic.im_invQParam_pos_of_norm_lt_one hh hq hq1`. Use `(hf ⟨_, h1⟩).summable.norm` as an intermediate fact. Simplify using `only [Periodic.qParam_right_inv hh.ne' hq1] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[norm_mul]`.
+A detailed English derivation is pending.
 -/
 lemma one_le_radius (hh : 0 < h) (hf : HasQExpansion h f φ) :
     1 ≤ (FormalMultilinearSeries.ofScalars ℂ (fun m ↦ coeff m φ)).radius := by
@@ -38,9 +38,9 @@ lemma one_le_radius (hh : 0 < h) (hf : HasQExpansion h f φ) :
     simpa [norm_mul] using this
 
 /- English proof (translation)
-Use `set p := FormalMultilinearSeries.ofScalars ℂ (fun m ↦ coeff m φ) with hp`. Establish `h1 : 1 ≤ p.radius` using `hf.one_le_radius hh`. Establish `h2 : HasFPowerSeriesOnBall p.sum p 0 1` using `(p.hasFPowerSeriesOnBall (zero_lt_one.trans_le h1)).mono zero_lt_one h1`. Use `⟨p.sum, ?_, ?_, fun τ ↦ ?_⟩` and prove the remaining obligations. Use `h2.analyticOnNhd` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[← ENNReal.coe_one, Metric.eball_coe]`. Then use the resulting hypothesis. Rewrite using `[← h2.coeff_zero (fun _ ↦ 0)]`. Simplify using `[hp, FormalMultilinearSeries.ofScalars_apply_eq']`. Rewrite using `[FormalMultilinearSeries.sum, ← (hf τ).tsum_eq]`. Simplify using `[hp, FormalMultilinearSeries.ofScalars_apply_eq', mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma exists_analytic (hh : 0 < h) (hf : HasQExpansion h f φ) :
     ∃ F : ℂ → ℂ, AnalyticOnNhd ℂ F (Metric.ball 0 1) ∧ F 0 = coeff 0 φ ∧
@@ -58,7 +58,7 @@ lemma exists_analytic (hh : 0 < h) (hf : HasQExpansion h f φ) :
     simp [hp, FormalMultilinearSeries.ofScalars_apply_eq', mul_comm]
 
 /- English proof (translation)
-Take `⟨F, hF, h0, hfF⟩` from `hf.exists_analytic hh`. Rewrite using `[show f = F ∘ fun τ : ℍ ↦ 𝕢 h τ from funext hfF, ← h0]`. Conclude with `(hF 0 (by simp)).continuousAt.tendsto.comp (qParam_tendsto_atImInfty hh)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma tendsto (hh : 0 < h) (hf : HasQExpansion h f φ) :
     Tendsto f atImInfty (𝓝 (coeff 0 φ)) := by
@@ -67,15 +67,15 @@ lemma tendsto (hh : 0 < h) (hf : HasQExpansion h f φ) :
   exact (hF 0 (by simp)).continuousAt.tendsto.comp (qParam_tendsto_atImInfty hh)
 
 /- English proof (translation)
-The claim follows from `(hf.tendsto hh).isBigO_one ℝ`.
+A detailed English derivation is pending.
 -/
 lemma isBoundedAtImInfty (hh : 0 < h) (hf : HasQExpansion h f φ) : IsBoundedAtImInfty f :=
   (hf.tendsto hh).isBigO_one ℝ
 
 /- English proof (translation)
-Take `⟨F, hF, -, hfF⟩` from `hf.exists_analytic hh`. Rewrite using `[UpperHalfPlane.mdifferentiable_iff]`. Establish `: DifferentiableOn ℂ (fun z ↦ F (𝕢 h z)) {z : ℂ | 0 < z.im}`. Introduce `z hz`. Establish `h1 : DifferentiableAt ℂ F (𝕢 h z)` using `(hF _ (by simpa using Periodic.norm_qParam_lt_one hh hz)).differentiableAt`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(h1.comp z (Periodic.differentiable_qParam z)).differentiableWithinAt`. Use `this.congr fun z hz ↦ ?_` and prove the remaining obligations. Simplify using `[ofComplex_apply_of_im_pos hz, hfF]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma mdifferentiable (hh : 0 < h) (hf : HasQExpansion h f φ) : MDiff f := by
   obtain ⟨F, hF, -, hfF⟩ := hf.exists_analytic hh
@@ -89,27 +89,27 @@ lemma mdifferentiable (hh : 0 < h) (hf : HasQExpansion h f φ) : MDiff f := by
   simp [ofComplex_apply_of_im_pos hz, hfF]
 
 /- English proof (translation)
-The claim follows from `fun τ ↦ hfg τ ▸ hf τ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma congr (hf : HasQExpansion h f φ) (hfg : ∀ τ, g τ = f τ) : HasQExpansion h g φ :=
   fun τ ↦ hfg τ ▸ hf τ
 
 /- English proof (translation)
-The claim follows from `fun τ ↦ by simpa [add_mul] using (hf τ).add (hg τ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma add (hf : HasQExpansion h f φ) (hg : HasQExpansion h g ψ) :
     HasQExpansion h (fun τ ↦ f τ + g τ) (φ + ψ) := fun τ ↦ by
   simpa [add_mul] using (hf τ).add (hg τ)
 
 /- English proof (translation)
-The claim follows from `fun τ ↦ by simpa [sub_mul] using (hf τ).sub (hg τ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma sub (hf : HasQExpansion h f φ) (hg : HasQExpansion h g ψ) :
     HasQExpansion h (fun τ ↦ f τ - g τ) (φ - ψ) := fun τ ↦ by
   simpa [sub_mul] using (hf τ).sub (hg τ)
 
 /- English proof (translation)
-The claim follows from `fun τ ↦ by have h1 := (hf τ).summable.norm have h2 := (hg τ).summable.norm have h3 := (summable_norm_sum_mul_antidiagonal_of_summable_norm h1 h2).of_norm.hasSum rw [← tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm h1 h2, (hf τ).tsum_eq, (hg τ).tsum_eq] at h3 convert! h3 …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma mul (hf : HasQExpansion h f φ) (hg : HasQExpansion h g ψ) :
     HasQExpansion h (fun τ ↦ f τ * g τ) (φ * ψ) := fun τ ↦ by
@@ -125,7 +125,7 @@ lemma mul (hf : HasQExpansion h f φ) (hg : HasQExpansion h g ψ) :
   ring
 
 /- English proof (translation)
-The claim follows from `fun τ ↦ by have := hasSum_single (f := fun m ↦ coeff m (C c) * 𝕢 h τ ^ m) 0 (fun m hm ↦ by simp [coeff_C, hm]) simpa using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma const (h : ℝ) (c : ℂ) : HasQExpansion h (fun _ ↦ c) (C c) := fun τ ↦ by
   have := hasSum_single (f := fun m ↦ coeff m (C c) * 𝕢 h τ ^ m) 0
@@ -133,7 +133,7 @@ lemma const (h : ℝ) (c : ℂ) : HasQExpansion h (fun _ ↦ c) (C c) := fun τ 
   simpa using this
 
 /- English proof (translation)
-The claim follows from `fun τ ↦ by have := hasSum_single (f := fun m ↦ coeff m (X : PowerSeries ℂ) * 𝕢 h τ ^ m) 1 (fun m hm ↦ by simp [coeff_X, hm]) simpa using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma qParam (h : ℝ) : HasQExpansion h (fun τ ↦ 𝕢 h τ) X := fun τ ↦ by
   have := hasSum_single (f := fun m ↦ coeff m (X : PowerSeries ℂ) * 𝕢 h τ ^ m) 1
@@ -141,7 +141,7 @@ lemma qParam (h : ℝ) : HasQExpansion h (fun τ ↦ 𝕢 h τ) X := fun τ ↦ 
   simpa using this
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using const h 1`. Consider the case `succ n ih => simpa [pow_succ] using ih.mul hf`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma pow (hf : HasQExpansion h f φ) (n : ℕ) : HasQExpansion h (fun τ ↦ f τ ^ n) (φ ^ n) := by
   induction n with
@@ -149,7 +149,7 @@ lemma pow (hf : HasQExpansion h f φ) (n : ℕ) : HasQExpansion h (fun τ ↦ f 
   | succ n ih => simpa [pow_succ] using ih.mul hf
 
 /- English proof (translation)
-The claim follows from `fun τ ↦ by have h1 := (hasSum_nat_add_iff' 1).mpr (hf τ) have hq : 𝕢 h τ ≠ 0 := Periodic.qParam_ne_zero _ have h2 := h1.mul_left (𝕢 h τ)⁻¹ simp only [coeff_succ_X_mul, Finset.range_one, Finset.sum_singleton, coeff_zero_X_mul, zero_mul, sub_zero, inv_mul_cancel_left₀ hq] at h2 con …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma of_qParam_mul (hf : HasQExpansion h (fun τ ↦ 𝕢 h τ * f τ) (X * φ)) :
     HasQExpansion h f φ := fun τ ↦ by
@@ -163,9 +163,9 @@ lemma of_qParam_mul (hf : HasQExpansion h (fun τ ↦ 𝕢 h τ * f τ) (X * φ)
   ring
 
 /- English proof (translation)
-Use extensionality with `m`. Proceed by induction on `m generalizing φ with`. Consider the case `zero => exact (tendsto_nhds_unique tendsto_const_nhds (hf.tendsto hh)).symm`. Consider the case `succ m ih`. Establish `h0 : coeff 0 φ = 0` using `(tendsto_nhds_unique tendsto_const_nhds (hf.tendsto hh)).symm`.
+By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Take `⟨ψ, rfl⟩ : X ∣ φ` from `X_dvd_iff.mpr (by simpa using h0)`. Use `ih (φ := ψ) (of_qParam_mul (by simpa using hf))` as an intermediate fact. Simplify `this` using `[coeff_succ_X_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma eq_zero (hh : 0 < h) (hf : HasQExpansion h (fun _ ↦ 0) φ) : φ = 0 := by
   ext m
@@ -178,13 +178,13 @@ lemma eq_zero (hh : 0 < h) (hf : HasQExpansion h (fun _ ↦ 0) φ) : φ = 0 := b
     simpa [coeff_succ_X_mul] using this
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.mp (eq_zero hh (by simpa using hf.sub hg))`.
+A detailed English derivation is pending.
 -/
 lemma unique (hh : 0 < h) (hf : HasQExpansion h f φ) (hg : HasQExpansion h f ψ) : φ = ψ :=
   sub_eq_zero.mp (eq_zero hh (by simpa using hf.sub hg))
 
 /- English proof (translation)
-The claim follows from `fun τ ↦ by have hinj : Injective (fun m : ℕ ↦ e * m) := mul_right_injective₀ he rw [← hinj.hasSum_iff] · convert hf τ using 2 with m simp [Nat.mul_div_cancel_left _ (Nat.pos_of_ne_zero he), pow_mul] · intro k hk have : ¬ e ∣ k := fun ⟨m, hm⟩ ↦ hk ⟨m, hm.symm⟩ simp [this]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma of_hasSum_pow {c : ℕ → ℂ} {e : ℕ} (he : e ≠ 0)
     (hf : ∀ τ : ℍ, HasSum (fun m ↦ c m * (𝕢 h τ ^ e) ^ m) (f τ)) :
@@ -198,7 +198,7 @@ lemma of_hasSum_pow {c : ℕ → ℂ} {e : ℕ} (he : e ≠ 0)
     simp [this]
 
 /- English proof (translation)
-The claim follows from `fun τ ↦ by simpa using UpperHalfPlane.hasSum_qExpansion hh hper hhol hbdd τ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma of_periodic (hh : 0 < h) (hper : Periodic (f ∘ ofComplex) h) (hhol : MDiff f)
     (hbdd : IsBoundedAtImInfty f) : HasQExpansion h f (qExpansion h f) := fun τ ↦ by
@@ -207,7 +207,7 @@ lemma of_periodic (hh : 0 < h) (hper : Periodic (f ∘ ofComplex) h) (hhol : MDi
 end HasQExpansion
 
 /- English proof (translation)
-The claim follows from `fun τ ↦ ModularForm.hasSum_qExpansion f one_pos one_mem_strictPeriods_SL τ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma hasQExpansion_modularForm {k : ℤ} (f : ModularForm 𝒮ℒ k) :
     HasQExpansion 1 f (qExpansion 1 f) := fun τ ↦

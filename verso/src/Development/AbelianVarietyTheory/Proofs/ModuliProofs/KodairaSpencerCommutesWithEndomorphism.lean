@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.KS.Endo
 
 /- English proof (translation)
-Unfold `valAt'`. Distinguish the cases in `h : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U`. Establish `h' : ⊤ ≤ x ⁻¹ᵁ φ ⁻¹ᵁ U` using `h`. Rewrite using `[dif_pos h, dif_pos h']`. Unfold `valAt`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression. Establish `h' : ¬ ⊤ ≤ x ⁻¹ᵁ φ ⁻¹ᵁ U` using `h`. Rewrite using `[dif_neg h, dif_neg h']`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem valAt'_comp_lemma {Y Z : Scheme.{0}} (x : Sp ℂ ⟶ Y) (φ : Y ⟶ Z) (U : Z.Opens) (a : Γ(Z, U)) :
     valAt' (x ≫ φ) U a = valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom a) := by
@@ -36,9 +36,9 @@ private theorem valAt'_comp_lemma {Y Z : Scheme.{0}} (x : Sp ℂ ⟶ Y) (φ : Y 
     rw [dif_neg h, dif_neg h']
 
 /- English proof (translation)
-Rewrite using `[map_add]`. Conclude with `h.add (f ⁻¹ᵁ W) hW _ _`. Use `mul W hW a b := by`. Rewrite using `[map_mul, valAt'_comp_lemma y f W a, valAt'_comp_lemma y f W b]`. Conclude with `h.mul (f ⁻¹ᵁ W) hW _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `res W W' hle hW a := by`. Establish `hle' : f ⁻¹ᵁ W' ≤ f ⁻¹ᵁ W` using `fun x hx => hle hx`. Establish `nat : (f.app W').hom (resG Y hle a) = resG X hle' ((f.app W).hom a)` using `congrArg (fun φ : Γ(Y, W) ⟶ Γ(X, f ⁻¹ᵁ W') => φ.hom a) (f.naturality (homOfLE hle).op)`. Rewrite using `[nat]`. Conclude with `h.res (f ⁻¹ᵁ W) (f ⁻¹ᵁ W') hle' hW _`.
+A detailed English derivation is pending.
 -/
 theorem ptDer_push {X Y : Scheme.{0}} (y : Sp ℂ ⟶ X) (f : X ⟶ Y) (δ : ∀ W : X.Opens, Γ(X, W) → ℂ) (h : PtDer y δ) :
     PtDer (y ≫ f) (fun W a => δ (f ⁻¹ᵁ W) ((f.app W).hom a)) where
@@ -56,9 +56,9 @@ theorem ptDer_push {X Y : Scheme.{0}} (y : Sp ℂ ⟶ X) (f : X ⟶ Y) (δ : ∀
     exact h.res (f ⁻¹ᵁ W) (f ⁻¹ᵁ W') hle' hW _
 
 /- English proof (translation)
-Rewrite using `[h.add W hW, h'.add W hW]`. Expand and normalize the polynomial expressions, which then agree. Use `mul W hW a b := by`. Rewrite using `[h.mul W hW, h'.mul W hW]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `res W W' hle hW a := by`. Rewrite using `[h.res W W' hle hW, h'.res W W' hle hW]`.
+A detailed English derivation is pending.
 -/
 theorem ptDer_sub {X : Scheme.{0}} (y : Sp ℂ ⟶ X) (δ δ' : ∀ W : X.Opens, Γ(X, W) → ℂ) (h : PtDer y δ) (h' : PtDer y δ') :
     PtDer y (fun W a => δ W a - δ' W a) where
@@ -72,9 +72,9 @@ theorem ptDer_sub {X : Scheme.{0}} (y : Sp ℂ ⟶ X) (δ δ' : ∀ W : X.Opens,
     rw [h.res W W' hle hW, h'.res W W' hle hW]
 
 /- English proof (translation)
-Establish `aux : ∀ q : X ⟶ Sp R, q = p → ∀ e e', q.appLE ⊤ (f ⁻¹ᵁ ⊤) e = p.appLE ⊤ (f ⁻¹ᵁ ⊤) e'`. Introduce and unpack `q rfl e e'`. Both sides reduce to the same expression. Establish `key : ∀ e, p.appLE ⊤ ⊤ e ≫ f.app ⊤ = p.appLE ⊤ ⊤ e ≫ X.presheaf.map (homOfLE (le_top : f ⁻¹ᵁ ⊤ ≤ ⊤)).op`. Introduce `e`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Scheme.Hom.appLE_map, Scheme.Hom.app_eq_appLE f, Scheme.Hom.appLE_comp_appLE]`. Conclude with `aux _ hf _ _`. Unfold `constFn`. Conclude with `congrArg (fun φ : Γ(Sp R, ⊤) ⟶ Γ(X, f ⁻¹ᵁ ⊤) => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) (key _)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem app_top_constFn {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) (f : X ⟶ X) (hf : f ≫ p = p) (r : R) :
     (f.app ⊤).hom (constFn p ⊤ r) = resG X (le_top : f ⁻¹ᵁ ⊤ ≤ ⊤) (constFn p ⊤ r) := by
@@ -93,15 +93,15 @@ theorem app_top_constFn {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R
 variable {g : ℕ} {A₀ : Over (Sp ℂ)} [GrpObj A₀] {L₀ : LB A₀.left} (u : HolUnif A₀ L₀ g) {X : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[u.ex_add, (u.ker l).2 hl, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_add_lattice (z l : Fin g → ℂ) (hl : l ∈ u.Λ) : u.ex (z + l) = u.ex z := by
   rw [u.ex_add, (u.ker l).2 hl, _root_.mul_one]
 
 /- English proof (translation)
-Establish `hU` using `u.hol (m ⁻¹ᵁ W) ((m.app W).hom a)`. Establish `hz' : z ∈ {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ (m ⁻¹ᵁ W)}` using `hz`. Establish `heq : fn u m W a = fun z => valAt' (u.ex z).left (m ⁻¹ᵁ W) ((m.app W).hom a)`. Use function extensionality and compare the values at `w`. Conclude with `valAt'_comp_lemma (u.ex w).left m W a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Conclude with `hU.2.differentiableAt (hU.1.mem_nhds hz')`.
+A detailed English derivation is pending.
 -/
 theorem fn_differentiableAt (m : A₀.left ⟶ X) (W : X.Opens) (a : Γ(X, W)) (z : Fin g → ℂ) (hz : z ∈ dom u m W) :
     DifferentiableAt ℂ (fn u m W a) z := by
@@ -114,7 +114,7 @@ theorem fn_differentiableAt (m : A₀.left ⟶ X) (W : X.Opens) (a : Γ(X, W)) (
   exact hU.2.differentiableAt (hU.1.mem_nhds hz')
 
 /- English proof (translation)
-Establish `hper : (fun w => fn u m W a (w + l)) = fn u m W a`. Use function extensionality and compare the values at `w`. Unfold `fn`. Rewrite using `[ex_add_lattice u w l hl]`. Rewrite using `[← fderiv_comp_add_right, hper]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fderiv_fn_add_lattice (m : A₀.left ⟶ X) (W : X.Opens) (a : Γ(X, W)) (z l : Fin g → ℂ) (hl : l ∈ u.Λ) :
     fderiv ℂ (fn u m W a) (z + l) = fderiv ℂ (fn u m W a) z := by
@@ -125,49 +125,41 @@ theorem fderiv_fn_add_lattice (m : A₀.left ⟶ X) (W : X.Opens) (a : Γ(X, W))
   rw [← fderiv_comp_add_right, hper]
 
 /- English proof (translation)
-Introduce `P₀ u Hm χ hU R instR x₀ X p m hp hpb D Θ s hKS f f₀ F hfp hf₀ hF`. Establish `hFdiff : Differentiable ℂ F`. Use `(LinearMap.toContinuousLinearMap F).differentiable` as an intermediate fact. Rewrite `this` using `[LinearMap.coe_toContinuousLinearMap']`. Then use the resulting hypothesis. Establish `hpt : ∀ z, (u.ex z).left ≫ m ≫ f = (u.ex (F z)).left ≫ m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `z`. Rewrite using `[hF z, Over.comp_left, Category.assoc, hf₀]`. Establish `hex0 : u.ex 0 = 1` using `(u.ker 0).2 (zero_mem _)`. Establish `hone : (1 : 𝟙_ (Over (Sp ℂ)) ⟶ P₀.A) ≫ f₀ = 1`. Establish `h0` using `hF 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[map_zero, hex0]`. Conclude with `h0.symm`. Establish `hFl : ∀ l ∈ u.Λ, F l ∈ u.Λ`. Introduce `l hl`. Rewrite using `[← u.ker, hF, (u.ker l).2 hl, hone]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hexF : ∀ z, ∀ l ∈ u.Λ, u.ex (F (z + l)) = u.ex (F z)`. Introduce `z l hl`. Rewrite using `[map_add]`. Conclude with `ex_add_lattice u _ _ (hFl l hl)`. Establish `hdom : ∀ W z, z ∈ dom u m (f ⁻¹ᵁ W) ↔ F z ∈ dom u m W`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `W z`. Use `show ⊤ ≤ ((u.ex z).left ≫ m) ⁻¹ᵁ (f ⁻¹ᵁ W) ↔ ⊤ ≤ ((u.ex (F z)).left ≫ m) ⁻¹ᵁ W`. Rewrite using `[← hpt z]`. Both sides reduce to the same expression. Establish `hfn : ∀ W a z, fn u m (f ⁻¹ᵁ W) ((f.app W).hom a) z = fn u m W a (F z)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `W a z`. Use `show valAt' ((u.ex z).left ≫ m) (f ⁻¹ᵁ W) ((f.app W).hom a) = valAt' ((u.ex (F z)).left ≫ m) W a`. Rewrite using `[← hpt z, ← Category.assoc, valAt'_comp_lemma ((u.ex z).left ≫ m) f W a]`. Establish `hfd : ∀ W a z, F z ∈ dom u m W → fderiv ℂ (fn u m (f ⁻¹ᵁ W) ((f.app W).hom a)) z = (fderiv ℂ (fn u m W a) (F z)).comp (LinearMap.toContinuousLinearMap F)`. Introduce `W a z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `e : fn u m (f ⁻¹ᵁ W) ((f.app W).hom a) = fn u m W a ∘ (LinearMap.toContinuousLinearMap F)`. Use function extensionality and compare the values at `w`. Conclude with `hfn W a w`. Rewrite using `[e]`. Conclude with `((fn_differentiableAt u m W a (F z) hz).hasFDerivAt.comp z (LinearMap.toContinuousLinearMap F).hasFDerivAt).fderiv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `d : (Fin P₀.g → ℂ) → ∀ W : X.Opens, Γ(X, W) → ℂ` to `fun z W a => s (F z) W a - s z (f ⁻¹ᵁ W) ((f.app W).hom a)`. Establish `hd : ∀ z, PtDer ((u.ex (F z)).left ≫ m) (d z) ∧ ∀ r, d z ⊤ (constFn p ⊤ r) = 0`. Introduce `z`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `ptDer_push _ f (s z) (hKS.der z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[Category.assoc, hpt z]`. Conclude with `ptDer_sub _ _ _ (hKS.der (F z)) h1`. Introduce `r`. Establish `htop : ⊤ ≤ ((u.ex z).left ≫ m) ⁻¹ᵁ (f ⁻¹ᵁ ⊤)` using `fun x _ => trivial`. Use `show s (F z) ⊤ (constFn p ⊤ r) - s z (f ⁻¹ᵁ ⊤) ((f.app ⊤).hom (constFn p ⊤ r)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[app_top_constFn p f hfp r, (hKS.der z).res ⊤ (f ⁻¹ᵁ ⊤) le_top htop, hKS.base, hKS.base, sub_self]`. Establish `hdhol : ∀ W a, DifferentiableOn ℂ (fun z => d z W a) {z ∈ Set.univ | F z ∈ dom u m W}`. Introduce `W a`. Establish `h1 : DifferentiableOn ℂ (fun z => s (F z) W a) {z ∈ Set.univ | F z ∈ dom u m W}` using `(hKS.hol W a).comp hFdiff.differentiableOn (fun z hz => hz.2)`. Establish `h2 : DifferentiableOn ℂ (fun z => s z (f ⁻¹ᵁ W) ((f.app W).hom a)) {z ∈ Set.univ | F z ∈ dom u m W}` using `(hKS.hol (f ⁻¹ᵁ W) ((f.app W).hom a)).mono (fun z hz => (hdom W z).2 hz.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1.sub h2`. Take `⟨w, hwd, hw⟩` from `GlobalTheory.T.exists_differentiableOn_verticalVectorField P₀ u Hm χ hU R x₀ X p m hp hpb P₀.g Set.univ F d isOpen_univ hFdiff (fun z _ => hd z) hdhol`. Establish `hper : ∀ z, ∀ l ∈ u.Λ, w (z + l) = w z + (Θ.mulVec (star (F l)) - F (Θ.mulVec (star l)))`. Introduce `z l hl`. Establish `hFl'` using `hFl l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpt' : PtDer ((u.ex (F z)).left ≫ m) (d (z + l)) ∧ ∀ r, d (z + l) ⊤ (constFn p ⊤ r) = 0`. Rewrite using `[← hexF z l hl]`. Conclude with `hd (z + l)`. Take `⟨w0, -, huniq⟩` from `GlobalTheory.T.existsUnique_uniformising_vector_vertical_tangent P₀ u Hm χ hU R x₀ X p m hp hpb (F z) (d (z + l)) hpt'.1 hpt'.2`. Use `(huniq _ ?_).trans (huniq _ ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `W a hz`. Establish `hz' : F (z + l) ∈ dom u m W` using `by show ⊤ ≤ ((u.ex (F (z + l))).left ≫ m) ⁻¹ᵁ W`. Rewrite using `[hexF z l hl]`. Conclude with `hz`. Rewrite using `[hw (z + l) (Set.mem_univ _) W a hz', map_add, fderiv_fn_add_lattice u m W a (F z) (F l) hFl']`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `W a hz`. Establish `hzf : z ∈ dom u m (f ⁻¹ᵁ W)` using `(hdom W z).2 hz`. Establish `e1` using `hKS.per ⟨F l, hFl'⟩ W a (F z) hz`. Establish `e2` using `hKS.per ⟨l, hl⟩ (f ⁻¹ᵁ W) ((f.app W).hom a) z hzf`. Establish `hd0` using `hw z (Set.mem_univ _) W a hz`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `show s (F (z + l)) W a - s (z + l) (f ⁻¹ᵁ W) ((f.app W).hom a) = _`. Rewrite using `[map_add, e1, e2, hfd W a z hz]`. Use `show _ = fderiv ℂ (fn u m W a) (F z) (w z + (Θ.mulVec (star (F l)) - F (Θ.mulVec (star l))))`. Rewrite using `[ContinuousLinearMap.comp_apply, LinearMap.coe_toContinuousLinearMap', map_add, map_sub, ← hd0]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc_add : ∀ v v' : Fin P₀.g → ℂ, Θ.mulVec (star (F (v + v'))) - F (Θ.mulVec (star (v + v'))) = (Θ.mulVec (star (F v)) - F (Θ.mulVec (star v))) + (Θ.mulVec (star (F v')) - F (Θ.mulVec (star v')))`. Introduce `v v'`. Rewrite using `[map_add, star_add, star_add, Matrix.mulVec_add, Matrix.mulVec_add, map_add]`. Normalize the expressions using the abelian group laws. Establish `hc_smul : ∀ (a : ℂ) (v : Fin P₀.g → ℂ), Θ.mulVec (star (F (a • v))) - F (Θ.mulVec (star (a • v))) = star a • (Θ.mulVec (star (F v)) - F (Θ.mulVec (star v)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a v`. Rewrite using `[map_smul, star_smul, star_smul, Matrix.mulVec_smul, Matrix.mulVec_smul, map_smul, smul_sub]`. Set `cA : (Fin P₀.g → ℂ) →+ (Fin P₀.g → ℂ)` to `AddMonoidHom.mk' (fun v => Θ.mulVec (star (F v)) - F (Θ.mulVec (star v))) hc_add`. Establish `hexp : ∀ v : Fin P₀.g → ℂ, Θ.mulVec (star (F v)) - F (Θ.mulVec (star v)) = ∑ j, star (v j) • cA (fun k => if j = k then 1 else 0)`. Introduce `v`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : cA v = ∑ j, cA (v j • fun k => if j = k then 1 else 0)` using `by conv_lhs => rw [pi_eq_sum_univ v]`. Conclude with `map_sum cA _ _`. Use `h1.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Conclude with `hc_smul (v j) _`. Establish `hwdiff : Differentiable ℂ w` using `differentiableOn_univ.1 hwd`.
-
-Establish `hzero : ∀ i j, cA (fun k => if j = k then 1 else 0) i = 0`. Introduce `i j`. Establish `hperi : ∀ (l : u.Λ) (z : Fin P₀.g → ℂ), w (z + l) i = w z i + (fun j => cA (fun k => if j = k then 1 else 0) i) ⬝ᵥ star (l : Fin P₀.g → ℂ)`. Introduce `l z`. Rewrite using `[hper z l l.2, Pi.add_apply, hexp (l : Fin P₀.g → ℂ)]`.
-
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, dotProduct, Pi.star_apply]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hI` using `GlobalTheory.T.entire_antilinear_lattice_periods_const P₀.g u.Λ u.discrete u.full (fun z => w z i) _ (differentiable_pi.1 hwdiff i) hperi`. Conclude with `congrFun hI.1 j`.
-
-Introduce `z`. Establish `hz` using `hexp z`. Establish `hz0 : Θ.mulVec (star (F z)) - F (Θ.mulVec (star z)) = 0`. Rewrite using `[hz]`. Use function extensionality and compare the values at `i`.
-
-Simplify using `[hzero]`. Conclude with `(sub_eq_zero.1 hz0).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comm_of_endo : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ (R : Type) [CommRing R] (x₀ : R →+* ℂ) (X : Scheme.{0}) (p : X ⟶ Sp R) (m : P₀.A.left ⟶ X), Smooth p → IsPullback m P₀.A.hom p (spMap x₀) → ∀ D Θ s, KSRel u p m D Θ s → ∀ (f : X ⟶ X) (f₀ : P₀.A ⟶ P₀.A) (F : (Fin P₀.g → ℂ) →ₗ[ℂ] (Fin P₀.g → ℂ)), f ≫ p = p → f₀.left ≫ m = m ≫ f → (∀ z, u.ex (F z) = u.ex z ≫ f₀) → Comm Θ F := by
   intro P₀ u Hm χ hU R instR x₀ X p m hp hpb D Θ s hKS f f₀ F hfp hf₀ hF

@@ -7,35 +7,31 @@ open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym
 
 open Polynomial GlobalTheory.KZ.JInt in
 /- English proof (translation)
-Take `⟨M, hM, hfix⟩` from `Tw.level f`. Use `haveI : NeZero M := ⟨hM.ne'⟩`. Take `⟨φ, hφ, hφd⟩` from `hf`. Set `orb : SL(2, ℤ) → Tw.K` to `fun γ => Tw.sl (ofSL γ) f`. Establish `hfac : ∀ γ γ' : SL(2, ℤ), Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) γ' = Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) γ → orb γ' = orb γ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ γ' h`. Establish `hk : γ' * γ⁻¹ ∈ CongruenceSubgroup.Gamma M`. Rewrite using `[CongruenceSubgroup.Gamma, MonoidHom.mem_ker, map_mul, map_inv, h, mul_inv_cancel]`. Establish `he : γ' = (γ' * γ⁻¹) * γ` using `by group`. Use `show Tw.sl (ofSL γ') f = Tw.sl (ofSL γ) f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `conv_lhs => rw [he]`. Rewrite using `[map_mul, Tw.sl_mul, hfix _ hk]`. Establish `hfin : (Set.range orb).Finite`. Set `g' : SL(2, ZMod M) → Tw.K` to `fun x => if h : ∃ γ, Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) γ = x then orb h.choose else 0`. Use `(Set.finite_range g').subset ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨γ, rfl⟩`. Use `⟨Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) γ, ?_⟩` and prove the remaining obligations. Establish `h : ∃ γ', Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) γ' = Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) γ` using `⟨γ, rfl⟩`. Simplify using `only [g', dif_pos h]`. Conclude with `hfac γ h.choose h.choose_spec`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set S := hfin.toFinset with hSdef`. Establish `hmemS : ∀ s, s ∈ S ↔ ∃ γ, orb γ = s`. Introduce `s`. Rewrite using `[hSdef, Set.Finite.mem_toFinset, Set.mem_range]`. Use `set P : Polynomial Tw.K := ∏ s ∈ S, (X - C s) with hPdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hPmon : P.Monic` using `monic_prod_of_monic _ _ (fun s _ => monic_X_sub_C s)`. Establish `hroot : P.eval f = 0`. Rewrite using `[hPdef, eval_prod]`. Use `Finset.prod_eq_zero ((hmemS f).2 ⟨1, ?_⟩) ?_` and prove the remaining obligations. Use `show Tw.sl (ofSL 1) f = f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_one, Tw.sl_one]`. Simplify using the standard rewrite rules. Establish `hinv : ∀ δ : SL(2, ℤ), ∀ n, Tw.sl (ofSL δ) (P.coeff n) = P.coeff n`. Introduce `δ n`. Establish `hσS : S.image (Tw.sl (ofSL δ)) = S`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `t ht`. Rewrite `ht` using `[Finset.mem_image]`. Take `⟨s, hs, rfl⟩` from `ht`. Take `⟨γ, rfl⟩` from `(hmemS s).1 hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(hmemS _).2 ⟨γ * δ, ?_⟩` and prove the remaining obligations. Use `show Tw.sl (ofSL (γ * δ)) f = Tw.sl (ofSL δ) (Tw.sl (ofSL γ) f)`. Rewrite using `[map_mul, Tw.sl_mul]`. Rewrite using `[Finset.card_image_of_injective _ (Tw.sl (ofSL δ)).injective]`. Establish `hmap : P.map ((Tw.sl (ofSL δ)).toRingEquiv : Tw.K →+* Tw.K) = P`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hPdef, Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, map_X, map_C]`. Use `conv_rhs => rw [← hσS]`. Rewrite using `[Finset.prod_image (fun x _ y _ h => (Tw.sl (ofSL δ)).injective h)]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrArg (fun p => p.coeff n) hmap`. Simplify using `only [Polynomial.coeff_map] at h2`. Conclude with `h2`. Establish `hS : ∀ s ∈ S, s ∈ holR Tw`. Introduce `s hs`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γ, rfl⟩` from `(hmemS s).1 hs`. Conclude with `⟨fun z => φ (mob (ofSL γ) z), hφ.comp (mob_diff _) (fun z hz => mob_im _ hz), Tw.an_sl _ _ _ hφd⟩`. Establish `hhol : ∀ n, P.coeff n ∈ holR Tw`. Establish `hl : P ∈ lifts (holR Tw).subtype`. Rewrite using `[hPdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Use `Subsemiring.prod_mem _ (fun s hs => ?_)` and prove the remaining obligations. Conclude with `⟨X - C ⟨s, hS s hs⟩, by simp⟩`. Introduce `n`. Take `⟨c, hc⟩` from `(lifts_iff_coeff_lifts P).1 hl n`. Rewrite using `[← hc]`.
-
-Conclude with `c.2`. Establish `hadj : ∀ n, P.coeff n ∈ Algebra.adjoin Ω {Tw.jK}` using `fun n => GlobalTheory.T.slTwo_invariant_holomorphic_mem_adjoin_jInvariant ε Tw ε.injective (by obtain ⟨ψ, h1, h2⟩ := Tw.j_hol; exact ⟨ψ, h2, h1⟩) _ (fun γ => hinv γ n) (hhol n)`. Establish `hl2 : P ∈ lifts (algebraMap (Algebra.adjoin Ω {Tw.jK}) Tw.K)`. Rewrite using `[lifts_iff_coeff_lifts]`. Introduce `n`.
-
-Conclude with `⟨⟨_, hadj n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_degree_eq_and_monic hl2 hPmon`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[← eval_map, hq, hroot]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hol_int {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (Tw : Tower Ω ε) (f : Tw.K)
     (hf : ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ Tw.an f = (φ : Mero)) : IsIntegral (Algebra.adjoin Ω {Tw.jK}) f := by
@@ -122,9 +118,9 @@ private theorem hol_int {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
   rw [← eval_map, hq, hroot]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X f hf W hW`. Apply `vs_mem_of_isIntegral` to reduce the goal to its premises. Take `⟨q, hqm, hq⟩` from `hol_int ε X f hf`. Set `ι : Algebra.adjoin Ω {X.jK} →+* W` to `{ toFun := fun a => ⟨a.1, X.adjoin_le_of_overY W hW a.1 a.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Use `⟨q.map ι, hqm.map ι, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.eval₂_map]`. Conclude with `hq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Sym.KU.hol :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (f : X.K), (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an f = (φ : Mero)) → ∀ W, X.OverY W → f ∈ W := by

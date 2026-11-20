@@ -19,11 +19,11 @@ section Gen
 variable {n : ℕ} {A G : Type} [CommRing A] [Group G]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(W.GDet.repAlg ρ (Polynomial A) _).det = _`. Unfold `Matrix.charpoly`. Use `congr 1`. Establish `h : W.GDet.repAlg ρ (Polynomial A) (MonoidAlgebra.mapRingHom G Polynomial.C y) = (Polynomial.C : A →+* Polynomial A).mapMatrix (MonoidAlgebra.lift A _ G ρ y)`. Proceed by induction on `y using MonoidAlgebra.induction_linear with`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r => ext i j : 2`. Simplify using `[W.GDet.repAlg]`. Rewrite using `[map_sub, h]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j : 2`. Apply the tactic sequence `by_cases h : i = j <;> simp [W.GDet.repAlg, Matrix.charmatrix_apply, h, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem px_chi (ρ : G →* Matrix (Fin n) (Fin n) A) (y : MonoidAlgebra A G) :
     (W.GDet.ofRep ρ).chi y = (MonoidAlgebra.lift A _ G ρ y).charpoly := by
@@ -41,7 +41,7 @@ private theorem px_chi (ρ : G →* Matrix (Fin n) (Fin n) A) (y : MonoidAlgebra
   by_cases h : i = j <;> simp [W.GDet.repAlg, Matrix.charmatrix_apply, h, Matrix.one_apply]
 
 /- English proof (translation)
-Use `haveI : Nonempty (Fin n) := ⟨⟨0, Nat.pos_of_ne_zero hn⟩⟩`. Rewrite using `[W.GDet.tr, W.GDet.lam, px_chi, Matrix.trace_eq_neg_charpoly_coeff, Fintype.card_fin]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem px_tr (hn : n ≠ 0) (ρ : G →* Matrix (Fin n) (Fin n) A) (y : MonoidAlgebra A G) :
     (W.GDet.ofRep ρ).tr y = (MonoidAlgebra.lift A _ G ρ y).trace := by
@@ -50,9 +50,9 @@ private theorem px_tr (hn : n ≠ 0) (ρ : G →* Matrix (Fin n) (Fin n) A) (y :
   simp
 
 /- English proof (translation)
-Introduce `i N`. Establish `h1 : IsLocallyConstant fun g => (ρ g).map (Ideal.Quotient.mk (I ^ N))`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `fun p : Fin n × Fin n => (h p.1 p.2 N).eventually_eq x` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Filter.eventually_all.2 this).mono fun y hy => Matrix.ext fun a b => hy (a, b)`. Establish `h2` using `h1.comp fun M : Matrix (Fin n) (Fin n) (A ⧸ I ^ N) => (-1) ^ i * M.charpoly.coeff (n - i)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `only [W.GDet.lam, px_chi, Matrix.charpoly_map, Function.comp_apply, MonoidAlgebra.lift_single, one_smul, Polynomial.coeff_map, map_mul, map_pow, map_neg, map_one]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem px_isCont [TopologicalSpace G] (I : Ideal A) (ρ : G →* Matrix (Fin n) (Fin n) A)
     (h : ∀ i j, AdicCont I fun g => ρ g i j) : (W.GDet.ofRep ρ).IsCont I := by
@@ -69,7 +69,7 @@ private theorem px_isCont [TopologicalSpace G] (I : Ideal A) (ρ : G →* Matrix
     Polynomial.coeff_map, map_mul, map_pow, map_neg, map_one]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => by simp | m + 1, c, a => by simp only [List.ofFn_succ, List.prod_cons] rw [px_prod, smul_mul_smul_comm]`.
+A detailed English derivation is pending.
 -/
 private theorem px_prod {M : Type} [Ring M] [Algebra A M] : ∀ {m : ℕ} (c : Fin m → A) (a : Fin m → M),
     (List.ofFn fun i => c i • a i).prod = (List.ofFn c).prod • (List.ofFn a).prod
@@ -79,9 +79,9 @@ private theorem px_prod {M : Type} [Ring M] [Algebra A M] : ∀ {m : ℕ} (c : F
     rw [px_prod, smul_mul_smul_comm]
 
 /- English proof (translation)
-Establish `h1 : (ψ g : A) - 1 ∈ ⨅ N : ℕ, maximalIdeal A ^ N` using `Ideal.mem_iInf.2 fun N => by`. Establish `h2` using `(h N).isClopen_fiber (Ideal.Quotient.mk _ 1)`. Use `Ideal.Quotient.eq.1 (closure_minimal (fun s hs => ?_) h2.isClosed hg)` and prove the remaining obligations. Establish `h3 : ψ s = 1` using `Abelianization.commutator_subset_ker ψ hs`. Simplify using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[Ideal.iInf_pow_eq_bot_of_isLocalRing _ (maximalIdeal.isMaximal A).ne_top, Ideal.mem_bot, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem px_comm [TopologicalSpace G] [IsTopologicalGroup G] [IsLocalRing A] [IsNoetherianRing A] (ψ : G →* Aˣ)
     (h : AdicCont (maximalIdeal A) fun g => (ψ g : A)) {g : G} (hg : g ∈ (commutator G).topologicalClosure) :
@@ -94,7 +94,7 @@ private theorem px_comm [TopologicalSpace G] [IsTopologicalGroup G] [IsLocalRing
   rwa [Ideal.iInf_pow_eq_bot_of_isLocalRing _ (maximalIdeal.isMaximal A).ne_top, Ideal.mem_bot, sub_eq_zero] at h1
 
 /- English proof (translation)
-Introduce `N` and use `by have hle : maximalIdeal R ^ N ≤ (maximalIdeal R' ^ N).comap f := le_trans (Ideal.pow_right_mono (fun y hy => map_nonunit f y hy) N) (Ideal.le_comap_pow _ N) exact (h N).comp (Ideal.quotientMap _ f hle)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem px_cont {Γ R R' : Type} [TopologicalSpace Γ] [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R']
     (f : R →+* R') [IsLocalHom f] {a : Γ → R} (h : AdicCont (maximalIdeal R) a) :
@@ -104,7 +104,7 @@ private theorem px_cont {Γ R R' : Type} [TopologicalSpace Γ] [CommRing R] [IsL
   exact (h N).comp (Ideal.quotientMap _ f hle)
 
 /- English proof (translation)
-Introduce `N` and use `by convert (ha N).mul (hb N) using 1 funext g exact map_mul (Ideal.Quotient.mk _) _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem px_mul {Γ : Type} [TopologicalSpace Γ] {I : Ideal A} {a b : Γ → A} (ha : AdicCont I a)
     (hb : AdicCont I b) : AdicCont I fun g => a g * b g := fun N => by
@@ -113,13 +113,13 @@ private theorem px_mul {Γ : Type} [TopologicalSpace Γ] {I : Ideal A} {a b : Γ
   exact map_mul (Ideal.Quotient.mk _) _ _
 
 /- English proof (translation)
-Set `φ : MvPolynomial (Fin 2) A →ₐ[A] Polynomial A` to `MvPolynomial.aeval ![Polynomial.X, -Polynomial.C c]`. Establish `h1 : φ (∑ a : Fin 2, (MvPolynomial.X a : MvPolynomial (Fin 2) A) • (![1, M] a).map (MvPolynomial.C : A →+* MvPolynomial (Fin 2) A)).det = (c • M).charpoly`. Rewrite using `[AlgHom.map_det]`. Unfold `Matrix.charpoly`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j : 2`. Apply the tactic sequence `by_cases h : i = j <;> simp [φ, Fin.sum_univ_two, Matrix.charmatrix_apply, h, Matrix.one_apply, sub_eq_add_neg]`. Generalize the expression as in `(∑ a : Fin 2, (MvPolynomial.X a : MvPolynomial (Fin 2) A) • (![1, M] a).map (MvPolynomial.C : A →+* MvPolynomial (Fin 2) A)).det = P at h h1`. Establish `h2 : φ P ∈ Polynomial.liftsRing (B.val : B →+* A)`. Rewrite using `[P.as_sum, map_sum]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `sum_mem fun α _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_monomial]`. Use `mul_mem ⟨Polynomial.C ⟨_, h α⟩, by simp⟩ (prod_mem fun a _ => pow_mem ?_ _)` and prove the remaining obligations. Use `fin_cases a`. Conclude with `⟨Polynomial.X, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨-Polynomial.C ⟨c, hc⟩, by simp⟩`. Take `⟨q, hq⟩` from `h2`. Rewrite using `[← h1, ← hq]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem px_coef {O : Type} [CommRing O] [Algebra O A] (B : Subalgebra O A) (M : Matrix (Fin n) (Fin n) A)
     (c : A) (hc : c ∈ B)
@@ -155,11 +155,11 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algeb
   {A : Type} [CommRing A] [Algebra O A]
 
 /- English proof (translation)
-Establish `h0 : G.star O A n (MonoidAlgebra.single g 1) = MonoidAlgebra.single (G.conj g)⁻¹ ((G.eps O A g ^ (1 - (n : ℤ)) : Aˣ) : A)`. Simplify using `only [W.GFrame.star, W.GFrame.starOp, MonoidAlgebra.lift_single, one_smul]`. Both sides reduce to the same expression. Establish `h1 : ρ.r (K.π (G.conj g)⁻¹) = Jmat A n * (ρ.r (K.π g))ᵀ * Jmat A n`. Rewrite using `[← ρ.pol, map_inv K.π, K.π_conj, Frame.star, map_inv F.conj]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : K.κA A g * K.κA A (G.conj g) = G.eps O A g ^ (1 - (n : ℤ))`. Use `congrArg (Units.map (algebraMap O A : O →* A)) (K.κ_conj g)` as an intermediate fact. Rewrite `this` using `[map_mul, map_zpow]`. Conclude with `this`. Rewrite using `[h0, MonoidAlgebra.lift_single, ← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ • (((K.κA A (G.conj g)⁻¹ : Aˣ) : A) • ρ.r (K.π (G.conj g)⁻¹)) = Jmat A n * (((K.κA A g : Aˣ) : A) • ρ.r (K.π g))ᵀ * Jmat A n`. Rewrite using `[h1, smul_smul, ← Units.val_mul, map_inv, mul_inv_cancel_right, Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem px_star (ρ : NRep F n A) (g : G.G₀) :
     MonoidAlgebra.lift A _ G.G₀ (K.tw ρ) (G.star O A n (MonoidAlgebra.single g 1)) =
@@ -181,9 +181,9 @@ private theorem px_star (ρ : NRep F n A) (g : G.G₀) :
     Matrix.smul_mul]
 
 /- English proof (translation)
-Establish `h` using `ρ.ord (K.e v) fun i => K.lam v (g i)`. Establish `h1` using `px_prod (fun i => ((K.κA A (G.φ v (g i)) : Aˣ) : A)) fun i => ρ.r (F.loc0 (K.e v) (K.lam v (g i))) - (ρ.ψ (K.e v) i (K.lam v (g i)) : A) • (1 : Matrix (Fin n) (Fin n) A)`. Rewrite `h` using `[ordProd]`. Rewrite `h1` using `[h, smul_zero]`. Rewrite using `[W.GFrame.oEl, map_list_prod, List.map_ofFn, ← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, map_sub, MonoidAlgebra.lift_single, one_smul, map_one, smul_sub, smul_smul, K.lam_loc]`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem px_ord (ρ : NRep F n A) (v : G.Vl) (g : Fin n → G.Gv v) :
     MonoidAlgebra.lift A _ G.G₀ (K.tw ρ) (G.oEl v (K.twψ ρ v) g) = 0 := by
@@ -202,11 +202,11 @@ private theorem px_ord (ρ : NRep F n A) (v : G.Vl) (g : Fin n → G.Gv v) :
 variable [IsCO O A]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h0 : ((K.tw ρ g).map (res O A)) i j = residue O (K.κ g) * res O A (ρ.r (K.π g) i j)`. Express the relevant statement in the definitionally equal form `res O A (algebraMap O A (K.κ g) * ρ.r (K.π g) i j) = _`. Rewrite using `[map_mul, AlgHom.commutes]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h0]`. Express the relevant statement in the definitionally equal form `_ = diagonal (fun i => ((r.chib i g : (ResidueField O)ˣ) : ResidueField O)) i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[diagonal_apply_eq, K.chib, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· * _) (h.2.1.1 (K.π g) i)`. Rewrite using `[diagonal_apply_ne _ hij]`. Conclude with `(congrArg (_ * ·) (h.2.2 (K.π g) i j hij)).trans (mul_zero _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem px_red {ρ : NRep F n A} (h : IsLift O ρ) (g : G.G₀) :
     (K.tw ρ g).map (res O A) = W.diagRep r.chib g := by
@@ -225,17 +225,15 @@ private theorem px_red {ρ : NRep F n A} (h : IsLift O ρ) (g : G.G₀) :
     exact (congrArg (_ * ·) (h.2.2 (K.π g) i j hij)).trans (mul_zero _)
 
 /- English proof (translation)
-Take `⟨m, hm, h1, h2⟩` from `K.tame u g hg.1`. Establish `hχ : ∀ i, r.chib i g = 1` using `fun i => (Subgroup.mem_iInf.1 hg.2) i`. Establish `h3 : (K.tw ρ g).map (res O A) = 1`. Rewrite using `[px_red K h]`. Use `show diagonal (fun i => ((r.chib i g : (ResidueField O)ˣ) : ResidueField O)) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hχ]`. Establish `h4 : (K.tw ρ g).map (residue A) = 1`. Use extensionality with `i j`. Establish `h5 : res O A (K.tw ρ g i j - (1 : Matrix (Fin n) (Fin n) A) i j) = 0`. Rewrite using `[map_sub, sub_eq_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrFun (congrFun h3 i) j).trans ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Rewrite `h5` using `[res_eq_zero_iff, ← residue_eq_zero_iff, map_sub, sub_eq_zero]`. Use `h5.trans ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Pr.T.unipTorsion (A := A) (K.tw ρ g) (K.tw ρ g).charpoly n m (Matrix.charpoly_monic _) (Matrix.aeval_self_charpoly _) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← Matrix.charpoly_map, h4, Matrix.charpoly_one, Fintype.card_fin]`. Assume the negation of the conclusion as `hn`. Establish `h5` using `(res_eq_zero_iff O A _).2 hn`. Rewrite `h5` using `[map_natCast, CharP.cast_eq_zero_iff _ l]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm h5`. Rewrite using `[← map_pow] show ((K.κA _ (g ^ m) : Aˣ) : A) • ρ.r (K.π (g ^ m)) = 1`. Establish `: K.κA A (g ^ m) = 1` using `by show Units.map _ (K.κ (g ^ m)) = 1`. Rewrite using `[map_pow, h2, map_one]`. Rewrite using `[this, map_pow K.π, h1, map_one]`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem px_ine [CharP (ResidueField O) l] {ρ : NRep F n A} (h : IsLift O ρ) (u : G.St) (g : G.G₀)
     (hg : g ∈ r.Ip u) : K.tw ρ g = 1 := by
@@ -270,9 +268,9 @@ private theorem px_ine [CharP (ResidueField O) l] {ρ : NRep F n A} (h : IsLift 
     simp
 
 /- English proof (translation)
-Establish `hc : AdicCont (maximalIdeal A) fun g => ((K.twψ ρ v i g : Aˣ) : A)` using `px_mul (fun N => (h.1.2 (K.e v) i N).comp_continuous (K.lam v).continuous) fun N => (px_cont (algebraMap O A) K.κ_cont N).comp_continuous (G.φ_cont v)`. Use `⟨hc, fun g => ?_, fun g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `res O A ((ρ.ψ (K.e v) i (K.lam v g) : A) * algebraMap O A (K.κ (G.φ v g))) = _`. Rewrite using `[map_mul, AlgHom.commutes, K.psib, K.chib, ← K.lam_loc]`. Conclude with `congrArg (· * _) (h.2.1.2 (K.e v) i (K.lam v g))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[px_comm _ hc (K.mu v g.2), r.th_comm v i g (K.mu v g.2), Units.val_one, map_one]`.
+A detailed English derivation is pending.
 -/
 private theorem px_psi {ρ : NRep F n A} (h : IsLift O ρ) (v : G.Vl) (i : Fin n) : r.IsPsi v i (K.twψ ρ v i) := by
   have hc : AdicCont (maximalIdeal A) fun g => ((K.twψ ρ v i g : Aˣ) : A) :=
@@ -304,27 +302,23 @@ private noncomputable def px_pair [CharP (ResidueField O) l] (hn : n ≠ 0) {ρ 
 end Tw
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ F n T`. Use `haveI : IsNoetherianRing O := PrincipalIdealRing.isNoetherianRing`. Establish `hn : n ≠ 0` using `by have := T.n23; omega`. Take `⟨f, hf, -⟩` from `T.B.univ T.S.R (px_pair T.K hn T.S.lift)`. Use `replace hf : T.B.u.Maps (f : T.B.B →+* T.S.R) (W.GDet.ofRep (T.K.tw T.S.ρ)) (T.K.twψ T.S.ρ) := hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlam : ∀ i g, f (T.B.u.D.lam i (MonoidAlgebra.single g 1)) = (W.GDet.ofRep (T.K.tw T.S.ρ)).lam i (MonoidAlgebra.single g 1)` using `fun i g => by`. Use `((CA.d_gmap T.B.u.D).2.2.1 (f : T.B.B →+* T.S.R) (MonoidAlgebra.single g 1)).2 i` as an intermediate fact. Rewrite `this` using `[MonoidAlgebra.mapRingHom_single, map_one, hf.1]`. Conclude with `this.symm`. Establish `hψ : ∀ v i g, f (T.B.u.ψ v i g) = (T.S.ρ.ψ (T.K.e v) i (T.K.lam v g) : T.S.R) * algebraMap O T.S.R (T.K.κ (T.G.φ v g))` using `fun v i g => congrArg Units.val (DFunLike.congr_fun (hf.2 v i) g)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : ∀ x, f x ∈ T.S.B` using `fun x N => by`. Take `⟨y, hy, hxy⟩` from `CA.exists_adjoin_coeff_character_sub_mem_maximalIdeal_pow T.r T.B N x`. Establish `h1 : f y ∈ T.S.B`. Use `(Algebra.adjoin_le (S := T.S.B.comap f) ?_) hy` and prove the remaining obligations. Introduce and unpack `a (⟨i, g, -, -, rfl⟩ | ⟨v, i, g, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `show f _ ∈ T.S.B`. Rewrite using `[hlam, W.GDet.lam, px_chi, MonoidAlgebra.lift_single, one_smul]`. Use `mul_mem (pow_mem (neg_mem (one_mem _)) _) ?_` and prove the remaining obligations. Use `px_coef T.S.B (T.S.ρ.r (T.K.π g)) _ (T.S.B.algebraMap_mem (T.K.κ g : O)) (fun α => ?_) _` and prove the remaining obligations. Establish `h2` using `det_mem T.ok T.n23 T.S 2 ![1, T.K.π g] α`.
+Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∀ a : Fin 2, T.S.ρ.r (![1, T.K.π g] a) = ![1, T.S.ρ.r (T.K.π g)] a` using `fun a => by fin_cases a`. Conclude with `map_one T.S.ρ.r`. Both sides reduce to the same expression. Simplify using `only [h3] at h2`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show f _ ∈ T.S.B`. Rewrite using `[hψ]`. Conclude with `mul_mem (T.S.ψ_mem _ _ _) (T.S.B.algebraMap_mem _)`. Take `⟨z, hz, hyz⟩` from `h1 N`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : maximalIdeal T.B.B ^ N ≤ (maximalIdeal T.S.R ^ N).comap (f : T.B.B →+* T.S.R)`. Use `le_trans (Ideal.pow_right_mono (fun y hy => ?_) N) (Ideal.le_comap_pow _ N)` and prove the remaining obligations. Use `show f y ∈ maximalIdeal T.S.R`. Rewrite using `[← res_eq_zero_iff O, res_map, res_eq_zero_iff]`. Conclude with `hy`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : f (x - y) ∈ maximalIdeal T.S.R ^ N` using `hle hxy`. Rewrite `h3` using `[map_sub]`. Simplify using `using add_mem h3 hyz`. Establish `hun : ∀ (u : Oˣ) (x : T.S.R), x * algebraMap O T.S.R u ∈ f.range → x ∈ f.range` using `fun u x hx => by`. Use `mul_mem hx (f.range.algebraMap_mem ((u⁻¹ : Oˣ) : O))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[mul_assoc, ← map_mul, Units.mul_inv, map_one, mul_one]`. Then use the resulting hypothesis. Establish `hle : T.S.B ≤ f.range`. Use `B_gen T.ok T.n23 T.S T.B.B f (fun g => ?_) fun v i g => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `T.K.π_surj g`. Use `hun (T.K.κ g) _ ⟨T.B.u.D.lam 1 (MonoidAlgebra.single g 1), (hlam 1 g).trans ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← W.GDet.tr, px_tr hn, MonoidAlgebra.lift_single, one_smul, mul_comm]`. Conclude with `trace_smul _ _`. Take `⟨v, rfl⟩` from `T.K.e.surjective v`. Take `⟨g, rfl⟩` from `(T.K.lam v).surjective g`. Conclude with `hun _ _ ⟨_, hψ v i g⟩`.
-
-Use `⟨f.codRestrict T.S.B hmem, hf, fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hle y.2`. Conclude with `⟨x, Subtype.ext hx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.phiEx :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [UpperTheory.V.Fr.IsCoef l O] [Algebra ℤ_[l] O] (F : UpperTheory.V.Fr.Frame l (IsLocalRing.ResidueField O)) (n : ℕ) (T : UpperTheory.V.Pr.Setup F n), T.PhiEx := by

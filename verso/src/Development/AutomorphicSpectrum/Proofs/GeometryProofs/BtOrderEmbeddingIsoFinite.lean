@@ -17,9 +17,7 @@ open GlobalTheory.CompanionTheory.Ar.BT.SubOrder
 variable {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T]
 
 /- English proof (translation)
-Use `hfin` as an intermediate fact. Establish `hi : IsIso (⊤ : Γ.G.left.Opens).ι` using `(Scheme.topIso Γ.G.left).isIso_hom`. Use `infer_instance`. Use `one _ := trivial`. Use `mul _ _ _ _ _ _ := trivial`.
-
-Use `inv _ _ _ _ := trivial`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFinOpenSub_top (Γ : QFGroup R T) (hfin : IsFinite Γ.G.hom) : Γ.IsFinOpenSub ⊤ where
   finite := by
@@ -34,9 +32,9 @@ noncomputable def secMap {X : Scheme.{0}} {A : Type} [CommRing A] (j : X ⟶ Spe
   ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ j.appTop).hom
 
 /- English proof (translation)
-Establish `e0 : j.appLE ⊤ ⊤ (by simp) = j.appTop` using `Scheme.Hom.appLE_eq_app _`. Establish `h2 : ⊤ ≤ ((Γ.pt t).left ≫ j) ⁻¹ᵁ (⊤ : (Spec (CommRingCat.of A)).Opens)` using `by simp`. Establish `h3 : ⊤ ≤ (Spec.map (CommRingCat.ofHom ((algebraMap R (FractionRing R)).comp ((Pi.evalRingHom (fun _ : T => R) t).comp A.val.toRingHom)))) ⁻¹ᵁ (⊤ : (Spec (CommRingCat.of A)).Opens)` using `by simp`. Establish `e1` using `valHom_appLE (Γ.pt t).left j (V := ⊤) (W := ⊤) (by simp) h h2 ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a)`. Rewrite `e1` using `[e0, valHom_congr (hj.pt t) _ h2 h3, valHom_spec_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e1`.
+A detailed English derivation is pending.
 -/
 theorem val_secMap (Γ : QFGroup R T) {A : Subalgebra R (T → R)} {j : Γ.G.left ⟶ Spec (CommRingCat.of A)}
     (hj : Γ.IsEmb A j) (t : T) (h : ⊤ ≤ (Γ.pt t).left ⁻¹ᵁ (⊤ : Γ.G.left.Opens)) (a : A) :
@@ -52,9 +50,9 @@ theorem val_secMap (Γ : QFGroup R T) {A : Subalgebra R (T → R)} {j : Γ.G.lef
   exact e1
 
 /- English proof (translation)
-Establish `h1 : IsIso ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ j.appTop)` using `(ConcreteCategory.isIso_iff_bijective _).2 hb`. Establish `h2 : IsIso j.appTop` using `IsIso.of_isIso_comp_left (Scheme.ΓSpecIso (CommRingCat.of A)).inv j.appTop`. Establish `e` using `Scheme.isoSpec_hom_naturality j`. Establish `h3 : IsIso (j ≫ (Spec (CommRingCat.of A)).isoSpec.hom)`. Rewrite using `[← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Conclude with `IsIso.of_isIso_comp_right j (Spec (CommRingCat.of A)).isoSpec.hom`.
+A detailed English derivation is pending.
 -/
 theorem isIso_of_secMap_bijective {X : Scheme.{0}} [IsAffine X] {A : Type} [CommRing A]
     (j : X ⟶ Spec (CommRingCat.of A)) (hb : Function.Bijective (secMap j)) : IsIso j := by
@@ -73,23 +71,23 @@ namespace GlobalTheory.CompanionTheory.Ar.BT.FiniteIso
 open GlobalTheory.CompanionTheory.Ar.BT.SubOrder
 
 /- English proof (translation)
-Introduce `R _ _ _ T _ _ Γ j hj hfin`. Establish `hF` using `isFinOpenSub_top Γ hfin`. Establish `hU` using `isAffineOpen_of_fin Γ hF`. Establish `: IsAffine Γ.G.left`. Use `hfin` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isAffine_of_isAffineHom Γ.G.hom`. Take `⟨H, A', hH, hopf, hA'⟩` from `GlobalTheory.T.finite_open_hopf_order R T Γ ⊤ hF`. Establish `htop : ∀ t, ⊤ ≤ (Γ.pt t).left ⁻¹ᵁ (⊤ : Γ.G.left.Opens)` using `fun t => by simp`. Establish `hHt : ∀ t, t ∈ H` using `fun t => (hH t).2 (htop t)`. Establish `inj : Function.Injective (algebraMap R (FractionRing R))` using `IsFractionRing.injective R _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : Algebra R Γ(Γ.G.left, ⊤) := (secRho Γ hU).toAlgebra`. Establish `hρ : hU.fromSpec ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom (algebraMap R Γ(Γ.G.left, ⊤)))` using `fromSpec_hom Γ hU`. Establish `hfinite` using `sec_finite hρ hF`. Establish `hval : ∀ (s : Γ(Γ.G.left, ⊤)) (t : T), ∃ r : R, algebraMap R (FractionRing R) r = valAt (Γ.pt t).left ⊤ (htop t) s`. Introduce `s t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : IsIntegral R s` using `Algebra.IsIntegral.isIntegral s`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 (h1.map (valAlg hρ t (htop t)))`. Apply `isIso_of_secMap_bijective` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a ha`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `t`. Apply `inj` to reduce the goal to its premises. Establish `e` using `val_secMap Γ hj t (htop t) a`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `e` using `[ha, ← valHom_apply, map_zero]`. Simplify using `using e.symm`. Introduce `s choose f hf using hval s`. Set `f' : H → R` to `fun h => f h`. Establish `hf' : f' ∈ A'` using `(hA' f').2 ⟨s, fun t h => (hf t).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hind : f' ∈ indOrder (MonoidHom.id H) A'`. Rewrite using `[GlobalTheory.T.hopf_order_induction_id R H A' hopf]`. Conclude with `hf'`. Establish `hmem : f ∈ Γ.btOrder ⊤`. Apply `Algebra.subset_adjoin` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `t g _`. Take `⟨s', hs'⟩` from `(hA' _).1 (hind ⟨t, hHt t⟩)`. Conclude with `⟨⊤, trivial, s', fun u h => hs' ⟨u, hHt u⟩ h⟩`. Use `⟨⟨f, hmem⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `GlobalTheory.T.section_eq_zero_of_values R T Γ ⊤` to reduce the goal to its premises. Introduce `t h`. Rewrite using `[← valHom_apply, map_sub, valHom_apply, valHom_apply, val_secMap Γ hj, hf, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem isIso_of_finite : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (j : Γ.G.left ⟶ Spec (CommRingCat.of (Γ.btOrder ⊤))), Γ.IsEmb (Γ.btOrder ⊤) j → IsFinite Γ.G.hom → IsIso j := by
   intro R _ _ _ T _ _ Γ j hj hfin

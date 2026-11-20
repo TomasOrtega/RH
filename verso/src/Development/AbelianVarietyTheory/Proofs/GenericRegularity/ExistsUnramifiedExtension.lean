@@ -6,27 +6,25 @@ open TensorProduct
 namespace GlobalTheory.DVRBaseChange
 
 /- English proof (translation)
-Establish `hnu : ∀ x : W, ¬ IsUnit x ↔ π ∣ x` using `fun x => by`. Rewrite using `[← Ideal.mem_span_singleton, ← hm, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Set `J : Ideal W` to `⨅ n : ℕ, Ideal.span {π ^ n}`. Establish `hJ : ∀ x, x ∈ J ↔ ∀ n : ℕ, π ^ n ∣ x` using `fun x => by`. Simplify using `only [J, Ideal.mem_iInf, Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hpow : ∀ n : ℕ, π ^ n ∉ J`. Introduce `n hn`. Take `⟨y, hy⟩` from `(hJ _).1 hn (n + 1)`. Establish `hu : IsUnit (1 - π * y)` using `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ ((hnu _).2 (dvd_mul_right _ _))`. Use `hπ ⟨n, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: π ^ n * (1 - π * y) = 0` using `by linear_combination hy`. Conclude with `(hu.mul_left_eq_zero).1 this`. Establish `hfac : ∀ x, x ∉ J → ∃ (n : ℕ) (u : W), IsUnit u ∧ x = π ^ n * u`. Introduce `x hx`. Establish `hex : ∃ n : ℕ, ¬ π ^ (n + 1) ∣ x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hx ((hJ x).2 fun n => (pow_dvd_pow π (Nat.le_succ n)).trans (hc n))`. Establish `h1 : π ^ (Nat.find hex) ∣ x`. Break down `h : Nat.find hex with _ | m` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hc`. Conclude with `Nat.find_min hex (m := m) (by omega) hc`. Take `⟨u, hu⟩` from `h1`. Use `⟨_, u, ?_, hu⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hc`. Take `⟨v, rfl⟩` from `(hnu u).1 hc`. Conclude with `Nat.find_spec hex ⟨v, hu.trans (by ring)⟩`. Establish `hprime : J.IsPrime`. Use `⟨fun h => hpow 0 (h ▸ Submodule.mem_top), fun {x y} hxy => ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Take `⟨n, u, hu, rfl⟩` from `hfac x hc.1`. Take `⟨m, v, hv, rfl⟩` from `hfac y hc.2`. Use `hpow (n + m) ?_` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← J.mul_unit_mem_iff_mem (hu.mul hv)]`. Use `hxy using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hdom : IsDomain (W ⧸ J)` using `Ideal.Quotient.isDomain J`. Establish `hloc : IsLocalRing (W ⧸ J)` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hirr : Irreducible (Ideal.Quotient.mk J π)`. Use `IsDiscreteValuationRing.irreducible_of_span_eq_maximalIdeal _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `using hpow 1`. Rewrite using `[← IsLocalRing.map_maximalIdeal_of_surjective (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective, hm, Ideal.map_span, Set.image_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨W ⧸ J, inferInstance, hdom, IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨_, hirr, ?_⟩, Ideal.Quotient.mk J, hirr⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨n, u, hu, rfl⟩` from `hfac x (fun h => hx (Ideal.Quotient.eq_zero_iff_mem.2 h))`. Use `⟨n, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_mul, map_pow]`. Conclude with `associated_mul_unit_right _ _ (hu.map _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_dvr_quotient (W : Type) [CommRing W] [IsLocalRing W] (π : W)
     (hm : IsLocalRing.maximalIdeal W = Ideal.span {π}) (hπ : ¬ IsNilpotent π) :
@@ -92,13 +90,13 @@ theorem exists_dvr_quotient (W : Type) [CommRing W] [IsLocalRing W] (π : W)
   exact associated_mul_unit_right _ _ (hu.map _)
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `Ideal.nonempty_minimalPrimes hne`. Establish `hpp : p.IsPrime` using `hp.1.1`. Set `W` to `Localization.AtPrime p`. Establish `hm : IsLocalRing.maximalIdeal W = Ideal.span {algebraMap S W π}`. Establish `h1` using `IsLocalization.AtPrime.radical_map_of_mem_minimalPrimes W p _ hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← IsLocalization.map_radical p.primeCompl, hrad.radical, Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_span, Set.image_singleton]`. Conclude with `h1.symm`. Establish `hn : ¬ IsNilpotent (algebraMap S W π)`. Introduce and unpack `⟨n, hn⟩`. Rewrite `hn` using `[← map_pow, IsLocalization.map_eq_zero_iff p.primeCompl]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨s, hs⟩, h⟩` from `hn`. Establish `key : ∀ (n : ℕ) (s : S), s * π ^ n = 0 → s = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro s h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h`. Consider the case `succ n ih => intro s h; exact ih s (hreg _ (by linear_combination h))`. Conclude with `hs (by rw [key n s h]; exact p.zero_mem)`. Take `⟨V, i1, i2, i3, q, hq⟩` from `exists_dvr_quotient W _ hm hn`. Conclude with `⟨V, i1, i2, i3, q.comp (algebraMap S W), hq⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dvr_of_isRadical (S : Type) [CommRing S] (π : S)
     (hrad : (Ideal.span {π}).IsRadical) (hne : Ideal.span {π} ≠ ⊤)
@@ -127,25 +125,23 @@ theorem exists_dvr_of_isRadical (S : Type) [CommRing S] (π : S)
   exact ⟨V, i1, i2, i3, q.comp (algebraMap S W), hq⟩
 
 /- English proof (translation)
-Introduce `K F T _ _ _ _ _ _ _ _`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T`. Set `m` to `IsLocalRing.maximalIdeal T`. Establish `hm : m = Ideal.span {ϖ}` using `hϖ.maximalIdeal_eq`. Use `letI : Field (T ⧸ m) := Ideal.Quotient.field m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Set `g : T ⊗[K] F →ₐ[K] (T ⧸ m) ⊗[K] F` to `Algebra.TensorProduct.map (Ideal.Quotient.mkₐ K m) (AlgHom.id K F)`. Establish `hker : RingHom.ker g = Ideal.span {ϖ ⊗ₜ[K] (1 : F)}`. Rewrite using `[Algebra.TensorProduct.rTensor_ker _ (Ideal.Quotient.mkₐ_surjective K m)]`. Establish `: RingHom.ker (Ideal.Quotient.mkₐ K m) = Ideal.span {ϖ}`. Rewrite using `[← hm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mk_ker`. Rewrite using `[this, Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression. Establish `hred : IsReduced ((T ⧸ m) ⊗[K] F)` using `GlobalTheory.ReducedAlg.isReduced_field_tensor _ _`. Establish `hrad : (Ideal.span {ϖ ⊗ₜ[K] (1 : F)}).IsRadical`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hker]`. Conclude with `Ideal.isRadical_bot.comap _`. Establish `hne : Ideal.span {ϖ ⊗ₜ[K] (1 : F)} ≠ ⊤`. Rewrite using `[← hker]`. Conclude with `RingHom.ker_ne_top _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hreg : ∀ s : T ⊗[K] F, (ϖ ⊗ₜ[K] (1 : F)) * s = 0 → s = 0`. Introduce `s hs`. Establish `hinj : Function.Injective ((LinearMap.mulLeft K ϖ).rTensor F)` using `Module.Flat.rTensor_preserves_injective_linearMap _ (fun a b h => mul_left_cancel₀ hϖ.ne_zero h)`. Establish `key : ∀ s : T ⊗[K] F, (LinearMap.mulLeft K ϖ).rTensor F s = (ϖ ⊗ₜ[K] (1 : F)) * s`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => rw [map_add, hx, hy, mul_add]`. Conclude with `hinj (by rw [key, hs, map_zero])`.
+Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨V, i1, i2, i3, q, hq⟩` from `exists_dvr_of_isRadical _ _ hrad hne hreg`. Set `i : T →+* V` to `q.comp Algebra.TensorProduct.includeLeftRingHom`. Establish `hi : Irreducible (i ϖ)` using `hq`. Use `⟨V, i1, i2, i3, i, q.comp (Algebra.TensorProduct.includeRight (R := K) (A := T)).toRingHom, ?_, ?_, ⟨?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Assume the negation of the conclusion as `h0`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hϖ`. Rewrite `hx` using `[map_mul, map_pow]`. Conclude with `mul_ne_zero (u.isUnit.map i).ne_zero (pow_ne_zero n hi.ne_zero) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `ϖ' h'`. Conclude with `((IsDiscreteValuationRing.associated_of_irreducible T hϖ h').map i).irreducible hi`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Establish `: x ∈ m` using `h0`.
-
-Rewrite `this` using `[hm, Ideal.mem_span_singleton]`. Conclude with `hi.not_isUnit (isUnit_of_dvd_unit (map_dvd i this) hx)`. Introduce `a`. Express the relevant statement in the definitionally equal form `q (algebraMap K T a ⊗ₜ[K] (1 : F)) = q ((1 : T) ⊗ₜ[K] algebraMap K F a)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unramified_extension :
     ∀ (K F T : Type) [Field K] [CharZero K] [Field F] [Algebra K F] [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Algebra K T], ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V) (i : T →+* V) (χ : F →+* V), Function.Injective i ∧ (∀ ϖ : T, Irreducible ϖ → Irreducible (i ϖ)) ∧ IsLocalHom i ∧ ∀ a : K, i (algebraMap K T a) = χ (algebraMap K F a) := by

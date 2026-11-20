@@ -32,9 +32,9 @@ variable {D : D7} {G : DV.Geo D.what₂.LL} {Lev : Type} (F : ShimFam D G Lev)
 def Uw (j : ℕ) : ShimU D G F.jC F.ng (datW D F.κg j) := F.U (datW D F.κg j)
 
 /- English proof (translation)
-Unfold `datW Dat.Defin Dat.N jcl`. Simplify using `only`. Establish `hm : 1 ≤ D.R.m` using `le_trans (by norm_num) D.R.two_le_m`. Use `letI := D.host.cmStar`. Rewrite using `[min_self, max_eq_right hm, D.sp.W_rank D.R.m hm le_rfl]`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Formalism.BasicNotions.Ranks.sigW, Formalism.BasicNotions.Ranks.r]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Uw_defin : (datW D F.κg D.R.m).Defin := by
   unfold datW Dat.Defin Dat.N jcl

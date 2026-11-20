@@ -12,7 +12,7 @@ namespace GlobalTheory.PlaneHermTransfer
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `φ.injective (by rw [h.2.2.2, h.2.2.2, star_star])`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sig_sig [NumberField F] [NumberField E] {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) :
     σ (σ x) = x := by
@@ -20,28 +20,28 @@ theorem sig_sig [NumberField F] [NumberField E] {σ : E →ₐ[F] E} (h : IsCMEx
   exact φ.injective (by rw [h.2.2.2, h.2.2.2, star_star])
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_smul, Fintype.card_fin, AlgHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_smul_map (σ : E →ₐ[F] E) {m : ℕ} (c : E) (M : Matrix (Fin m) (Fin m) E) :
     (c • M.map σ).det = c ^ m * σ M.det := by
   rw [Matrix.det_smul, Fintype.card_fin, AlgHom.map_det]; rfl
 
 /- English proof (translation)
-Simplify using `[form, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_add_left (σ : E →ₐ[F] E) {m : ℕ} (J : Matrix (Fin m) (Fin m) E) (u v w : Fin m → E) :
     form σ J (u + v) w = form σ J u w + form σ J v w := by
   simp [form, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `[form, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_smul_left (σ : E →ₐ[F] E) {m : ℕ} (J : Matrix (Fin m) (Fin m) E) (a : E)
     (u w : Fin m → E) : form σ J (a • u) w = a * form σ J u w := by
   simp [form, smul_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_swap (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {m : ℕ} (J : Matrix (Fin m) (Fin m) E)
     (hJ : ∀ i j, σ (J j i) = -J i j) (v w : Fin m → E) :
@@ -52,7 +52,7 @@ theorem form_swap (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {m : ℕ} (J
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Establish `: (fun i => σ ((ι *ᵥ u') i)) = ι.map σ *ᵥ (fun i => σ (u' i))`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum]`. Simplify using `only [form]`. Rewrite using `[this, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec u, Matrix.vecMul_transpose]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_mulVec (σ : E →ₐ[F] E) {m k : ℕ} (J : Matrix (Fin m) (Fin m) E)
     (ι : Matrix (Fin m) (Fin k) E) (u u' : Fin k → E) :
@@ -64,9 +64,9 @@ theorem form_mulVec (σ : E →ₐ[F] E) {m k : ℕ} (J : Matrix (Fin m) (Fin m)
     Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Establish `: (fun i => σ ((Pi.single k (1 : E) : Fin m → E) i)) = Pi.single k 1`. Use extensionality with `i`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Simplify using `only [form]`. Rewrite using `[this, Matrix.dotProduct_mulVec]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_single (σ : E →ₐ[F] E) {m : ℕ} (J : Matrix (Fin m) (Fin m) E) (c : Fin m → E)
     (k : Fin m) : form σ J c (Pi.single k 1) = (c ᵥ* J) k := by
@@ -79,30 +79,30 @@ theorem form_single (σ : E →ₐ[F] E) {m : ℕ} (J : Matrix (Fin m) (Fin m) E
   simp
 
 /- English proof (translation)
-Rewrite using `[form_single]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_single_single (σ : E →ₐ[F] E) {m : ℕ} (J : Matrix (Fin m) (Fin m) E)
     (j k : Fin m) : form σ J (Pi.single j 1) (Pi.single k 1) = J j k := by
   rw [form_single]; simp
 
 /- English proof (translation)
-Establish `hyx : form σ J y x = -1` using `by rw [form_swap σ hσ J hJ, hxy, map_one]`. Establish `key : ∀ (u : Fin m → E) (a b : E), (∀ w, form σ J (ι *ᵥ u + a • x + b • y) w = 0) → u = 0 ∧ a = 0 ∧ b = 0`. Introduce `u a b h`. Establish `h1` using `h x`. Establish `h2` using `h y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [form_add_left, form_smul_left, hxx, hyy, hxy, hyx, (hu u).1, (hu u).2] at h1 h2`. Establish `hb : b = 0` using `by simpa using h1`. Establish `ha : a = 0` using `by simpa using h2`. Use `⟨?_, ha, hb⟩` and prove the remaining obligations. Substitute `ha hb` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Assume the negation of the conclusion as `hne`. Apply `hd` to reduce the goal to its premises. Rewrite using `[← Matrix.exists_vecMul_eq_zero_iff]`. Use `⟨u, hne, ?_⟩` and prove the remaining obligations. Use extensionality with `k`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `h3` using `h (ι *ᵥ Pi.single k 1)`. Simplify using `only [zero_smul, add_zero] at h3`. Rewrite `h3` using `[form_mulVec, form_single]`. Simplify using `using h3`. Set `L : ((Fin m → E) × E × E) →ₗ[E] (Fin (m + 2) → E)` to `(Matrix.mulVecLin ι).coprod ((LinearMap.toSpanSingleton E _ x).coprod (LinearMap.toSpanSingleton E _ y))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `hL : ∀ p, L p = ι *ᵥ p.1 + p.2.1 • x + p.2.2 • y`. Introduce `p`. Simplify using `[L, add_assoc]`. Establish `hinj : Function.Injective L`. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨u, a, b⟩ hp`. Rewrite `hp` using `[hL]`. Take `⟨h1, h2, h3⟩` from `key u a b (fun w => by simp only at hp; rw [hp]; simp [form])`. Simplify using `[h1, h2, h3]`. Establish `hsurj : Function.Surjective L`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.injective_iff_surjective_of_finrank_eq_finrank]` and apply the resulting hypothesis. Simplify using the standard rewrite rules. Introduce `h0`. Take `⟨v, hv, hvJ⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Take `⟨⟨u, a, b⟩, rfl⟩` from `hsurj v`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hv`, `hvJ` using `[hL]`. Take `⟨h1, h2, h3⟩` from `key u a b (fun w => by`. Simplify using `only [form] at hvJ ⊢`. Rewrite using `[Matrix.dotProduct_mulVec, hvJ]`. Use the proof step `simp)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hv` to reduce the goal to its premises. Simplify using `[h1, h2, h3]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_ne_zero (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {m : ℕ}
     (J : Matrix (Fin (m + 2)) (Fin (m + 2)) E) (hJ : ∀ i j, σ (J j i) = -J i j)
@@ -155,21 +155,19 @@ theorem det_ne_zero (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {m : ℕ}
   simp [h1, h2, h3]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n n₁ W W₁ H hJ hn hxx hyy hxy hu hG hpos c₀ hc hH`. Substitute `hn` using the available equality. Establish `hσ` using `sig_sig hCM`. Establish `hd₁ : W₁.J.det ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hH.2` to reduce the goal to its premises. Rewrite using `[det_smul_map, h0, map_zero, mul_zero]`. Establish `hskew : ∀ i j, σ (W₁.J j i) = -W₁.J i j`. Introduce `i j`. Establish `e1` using `form_single_single σ W₁.J j i`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2` using `form_single_single σ W₁.J i j`. Rewrite `e1`, `e2` using `[← hG, ← form_mulVec]`. Rewrite `e1`, `e2` using `[hG]`. Rewrite using `[← e1, ← e2, form_swap σ hσ W.J hJ (H.ι *ᵥ Pi.single i 1), neg_neg]`. Establish `hne : W₁.J ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hd₁` to reduce the goal to its premises. Use `haveI : Nonempty (Fin n₁) := ⟨⟨0, hpos⟩⟩`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨j, i, hji⟩ : ∃ j i, W₁.J j i ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hne (by ext j i; simpa using hcon j i)`. Establish `hc₀ : σ c₀ = -c₀`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hH.1 i j`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, hσ] at h1`. Rewrite `h1` using `[hskew j i]`. Apply `mul_right_cancel₀ hji` to reduce the goal to its premises. Rewrite using `[h1]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdJ : W.J.det ≠ 0` using `det_ne_zero σ hσ W.J hJ H.x H.y H.ι hxx hyy hxy hu (by rw [hG]; exact hd₁)`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, hσ, hc₀]`. Rewrite using `[hJ j i]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[det_smul_map]`. Conclude with `mul_ne_zero (pow_ne_zero _ hc) ((map_ne_zero σ).2 hdJ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHermND_of_plane : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →

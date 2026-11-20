@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `b : Module.Basis (Fin 2) D.host.F D.host.E` using `Module.finBasisOfFinrankEq _ _ D.sp.cm.deg2`. Use `Algebra.norm_algebraMap_of_basis (Algebra.TensorProduct.basis (AF D.host.F) b) (a : AF D.host.F)` as an intermediate fact. Simplify `this` using `[idF]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_idF (a : (AF D.host.F)ˣ) :
     Units.map (Algebra.norm (AF D.host.F) : AE D →* AF D.host.F) (idF D a) = a ^ 2 := by
@@ -22,7 +22,7 @@ theorem norm_idF (a : (AF D.host.F)ˣ) :
   simpa [idF] using this
 
 /- English proof (translation)
-Establish `h1` using `h.2.2.1 (idF D a)`. Rewrite `h1` using `[norm_idF, map_pow]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eta_sq {η : (AF D.host.F)ˣ →* Circle} (h : IsEta D η) (a : (AF D.host.F)ˣ) : η a ^ 2 = 1 := by
   have h1 := h.2.2.1 (idF D a)
@@ -30,7 +30,7 @@ theorem eta_sq {η : (AF D.host.F)ˣ →* Circle} (h : IsEta D η) (a : (AF D.ho
   exact h1
 
 /- English proof (translation)
-Establish `h2` using `eta_sq h a`. Rewrite using `[← Nat.mod_add_div n 2, ← Nat.mod_add_div m 2, pow_add, pow_add, pow_mul, pow_mul, h2, one_pow, one_pow, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_pow_parity {η : (AF D.host.F)ˣ →* Circle} (h : IsEta D η) (a : (AF D.host.F)ˣ) {n m : ℕ}
     (e : n % 2 = m % 2) : η a ^ n = η a ^ m := by
@@ -40,7 +40,7 @@ theorem eta_pow_parity {η : (AF D.host.F)ˣ →* Circle} (h : IsEta D η) (a : 
 variable {χ χ' : (AE D)ˣ →* Circle} {n m : ℕ}
 
 /- English proof (translation)
-Use `⟨h.1, fun η hη b => ?_⟩` and prove the remaining obligations. Rewrite using `[h.2 η hη b]`. Conclude with `eta_pow_parity hη b e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resEta_parity (h : ResEta D χ n) (e : n % 2 = m % 2) : ResEta D χ m := by
   refine ⟨h.1, fun η hη b => ?_⟩
@@ -48,14 +48,14 @@ theorem resEta_parity (h : ResEta D χ n) (e : n % 2 = m % 2) : ResEta D χ m :=
   exact eta_pow_parity hη b e
 
 /- English proof (translation)
-Use `⟨h.1, fun η hη b => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, h.2 η hη b, h'.2 η hη b, pow_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem resEta_mul (h : ResEta D χ n) (h' : ResEta D χ' m) : ResEta D (χ * χ') (n + m) := by
   refine ⟨h.1, fun η hη b => ?_⟩
   rw [MonoidHom.mul_apply, h.2 η hη b, h'.2 η hη b, pow_add]
 
 /- English proof (translation)
-Use `⟨h.1, fun η hη b => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.inv_apply, h.2 η hη b, ← inv_pow]`. Use `congr 1`. Establish `h2` using `eta_sq hη b`. Conclude with `inv_eq_of_mul_eq_one_right (by rw [← sq]; exact h2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem resEta_inv (h : ResEta D χ n) : ResEta D χ⁻¹ n := by
   refine ⟨h.1, fun η hη b => ?_⟩
@@ -65,9 +65,9 @@ theorem resEta_inv (h : ResEta D χ n) : ResEta D χ⁻¹ n := by
   exact inv_eq_of_mul_eq_one_right (by rw [← sq]; exact h2)
 
 /- English proof (translation)
-Take `⟨η, hη⟩` from `h0.1`. Apply `hη.2.2.2` to reduce the goal to its premises. Use `MonoidHom.ext fun a => ?_` and prove the remaining obligations. Establish `e0` using `h0.2 η hη a`. Establish `e1` using `h1.2 η hη a`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e0` using `[pow_zero]`. Rewrite `e1` using `[pow_one]`. Rewrite using `[MonoidHom.one_apply, ← e1, e0]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem resEta_not_both (h0 : ResEta D χ 0) (h1 : ResEta D χ 1) : False := by
   obtain ⟨η, hη⟩ := h0.1
@@ -82,16 +82,14 @@ theorem resEta_not_both (h0 : ResEta D χ 0) (h1 : ResEta D χ 1) : False := by
 variable {X : ThetaX D}
 
 /- English proof (translation)
-The claim follows from `resEta_parity (T.chrOf_res μ s h1 h2) (by rw [Nat.even_iff.1 hn])`.
+A detailed English derivation is pending.
 -/
 theorem col_ok (T : ThetaTied D X) (μ : D.what₂.Tup) (s : ℕ) (h1 : 1 ≤ s) (h2 : s ≤ D.R.m) (n : ℕ) (hn : Even n) :
     ResEta D (T.eChr (X.chrOf μ s)) n :=
   resEta_parity (T.chrOf_res μ s h1 h2) (by rw [Nat.even_iff.1 hn])
 
 /- English proof (translation)
-Unfold `ThetaX.carY`. Use `split_ifs with hi`. Establish `hn' : n % 2 = 1`. Break down `Nat.even_or_odd n with h | h` into its components or cases. Conclude with `absurd hi (Nat.not_even_iff_odd.2 (hn.1 h))`.
-
-Conclude with `Nat.odd_iff.1 h`. Rewrite using `[map_mul, map_inv]`. Conclude with `resEta_parity (resEta_mul (T.chrOf_res μ s h1 h2) (resEta_inv T.etaT_res)) (by rw [hn'])`. Conclude with `col_ok T μ s h1 h2 n (hn.2 (Nat.not_even_iff_odd.1 hi))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem carY_ok (T : ThetaTied D X) (μ : D.what₂.Tup) (s : ℕ) (h1 : 1 ≤ s) (h2 : s ≤ D.R.m) (i n : ℕ)
     (hn : Even n ↔ Odd i) : ResEta D (T.eChr (X.carY μ s i)) n := by
@@ -106,19 +104,19 @@ theorem carY_ok (T : ThetaTied D X) (μ : D.what₂.Tup) (s : ℕ) (h1 : 1 ≤ s
   · exact col_ok T μ s h1 h2 n (hn.2 (Nat.not_even_iff_odd.1 hi))
 
 /- English proof (translation)
-The claim follows from `D.sp.X_rank j hj`.
+A detailed English derivation is pending.
 -/
 theorem rank_X (X : ThetaX D) (j : ℕ) (hj : j ≤ D.R.m) : (D.sp.X j).rank = D.R.k + j * (D.R.t + 1) := D.sp.X_rank j hj
 
 /- English proof (translation)
-The claim follows from `D.sp.Y_rank i hi`.
+A detailed English derivation is pending.
 -/
 theorem rank_Y (X : ThetaX D) (i : ℕ) (hi : i ≤ D.R.m) : (D.sp.Y i).rank = D.R.r + i * D.R.t := D.sp.Y_rank i hi
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Use `⟨a + b - 1, ?_⟩` and prove the remaining obligations. Use `show D.R.k + D.R.m - 1 = 2 * (a + b - 1) + 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem r_odd (D : D7) : Odd D.R.r := by
   obtain ⟨a, ha⟩ := D.R.k_even
@@ -129,7 +127,7 @@ theorem r_odd (D : D7) : Odd D.R.r := by
   omega
 
 /- English proof (translation)
-Apply `col_ok T μ s h1 h2` to reduce the goal to its premises. Rewrite using `[rank_X X j hj]`. Conclude with `D.R.k_even.add (D.R.t_odd.add_one.mul_left j)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem col_lift_ok (T : ThetaTied D X) (μ : D.what₂.Tup) (s : ℕ) (h1 : 1 ≤ s) (h2 : s ≤ D.R.m) (j : ℕ) (hj : j ≤ D.R.m) :
     ResEta D (T.eChr (X.chrOf μ s)) (D.sp.X j).rank := by
@@ -138,11 +136,9 @@ theorem col_lift_ok (T : ThetaTied D X) (μ : D.what₂.Tup) (s : ℕ) (h1 : 1 �
   exact D.R.k_even.add (D.R.t_odd.add_one.mul_left j)
 
 /- English proof (translation)
-Apply `carY_ok T μ s h1 h2` to reduce the goal to its premises. Rewrite using `[rank_Y X i hi]`. Establish `hr` using `r_odd D`. Establish `ht` using `D.R.t_odd`. Prove the components needed by the constructor for the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `he`. Assume the negation of the conclusion as `hi'`. Rewrite `hi'` using `[Nat.not_odd_iff_even]`. Conclude with `(Nat.not_even_iff_odd.2 (hr.add_even (hi'.mul_right _))) he`. Introduce `ho`.
-
-Conclude with `hr.add_odd (ho.mul ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem row_lift_ok (T : ThetaTied D X) (μ : D.what₂.Tup) (s : ℕ) (h1 : 1 ≤ s) (h2 : s ≤ D.R.m) (i : ℕ) (hi : i ≤ D.R.m) :
     ResEta D (T.eChr (X.carY μ s i)) (D.sp.Y i).rank := by
@@ -159,7 +155,7 @@ theorem row_lift_ok (T : ThetaTied D X) (μ : D.what₂.Tup) (s : ℕ) (h1 : 1 �
     exact hr.add_odd (ho.mul ht)
 
 /- English proof (translation)
-Rewrite using `[rank_X X j hj.le, rank_X X (j + 1) hj, Nat.succ_mul]`. Generalize the expression as in `j * (D.R.t + 1) = q`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_X_ne (X : ThetaX D) (j : ℕ) (hj : j < D.R.m) : (D.sp.X j).rank ≠ (D.sp.X (j + 1)).rank := by
   rw [rank_X X j hj.le, rank_X X (j + 1) hj, Nat.succ_mul]
@@ -167,7 +163,7 @@ theorem rank_X_ne (X : ThetaX D) (j : ℕ) (hj : j < D.R.m) : (D.sp.X j).rank �
   omega
 
 /- English proof (translation)
-Rewrite using `[rank_Y X (j + 1) hj, rank_Y X j hj.le, Nat.succ_mul]`. Establish `ht` using `D.R.t_odd.pos`. Generalize the expression as in `j * D.R.t = q`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_Y_ne (X : ThetaX D) (j : ℕ) (hj : j < D.R.m) : (D.sp.Y (j + 1)).rank ≠ (D.sp.Y j).rank := by
   rw [rank_Y X (j + 1) hj, rank_Y X j hj.le, Nat.succ_mul]

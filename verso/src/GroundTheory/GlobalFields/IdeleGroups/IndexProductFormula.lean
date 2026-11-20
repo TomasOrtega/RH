@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `h` using `(FinitePlace.norm_eq_one_iff_notMem (K := K) (v := v) (n : 𝓞 K)).2 hv`. Rewrite `h` using `[map_natCast, map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem norm_natCast_adicCompletion_eq_one {v : HeightOneSpectrum (𝓞 K)} {n : ℕ}
     (hv : (n : 𝓞 K) ∉ v.asIdeal) : ‖(n : v.adicCompletion K)‖ = 1 := by
@@ -15,9 +15,9 @@ theorem norm_natCast_adicCompletion_eq_one {v : HeightOneSpectrum (𝓞 K)} {n :
   rwa [map_natCast, map_natCast] at h
 
 /- English proof (translation)
-Establish `hn' : (n : K) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `h` using `FinitePlace.prod_eq_inv_abs_norm hn'`. Simplify using `only [← finprod_comp_equiv FinitePlace.equivHeightOneSpectrum.symm, FinitePlace.equivHeightOneSpectrum_symm_apply, map_natCast] at h`. Rewrite using `[h, ← map_natCast (algebraMap ℚ K) n, Algebra.norm_algebraMap]`. Establish `hpos : (0 : ℝ) < (n : ℝ) ^ Module.finrank ℚ K` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[abs_of_pos hpos, inv_mul_cancel₀ hpos.ne']`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem finprod_norm_natCast_adicCompletion_mul {n : ℕ} (hn : n ≠ 0) :
     (∏ᶠ v : HeightOneSpectrum (𝓞 K), ‖(n : v.adicCompletion K)‖) *
@@ -32,7 +32,7 @@ theorem finprod_norm_natCast_adicCompletion_mul {n : ℕ} (hn : n ≠ 0) :
   rw [abs_of_pos hpos, inv_mul_cancel₀ hpos.ne']
 
 /- English proof (translation)
-Rewrite using `[← finprod_eq_prod_of_mulSupport_subset]`. Conclude with `finprod_norm_natCast_adicCompletion_mul hn`. Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (norm_natCast_adicCompletion_eq_one fun h' ↦ h (hS v h'))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem prod_norm_natCast_adicCompletion_mul {n : ℕ} (hn : n ≠ 0)
     (S : Finset (HeightOneSpectrum (𝓞 K))) (hS : ∀ v, (n : 𝓞 K) ∈ v.asIdeal → v ∈ S) :
@@ -44,9 +44,9 @@ theorem prod_norm_natCast_adicCompletion_mul {n : ℕ} (hn : n ≠ 0)
     exact hv (norm_natCast_adicCompletion_eq_one fun h' ↦ h (hS v h'))
 
 /- English proof (translation)
-Establish `h` using `InfinitePlace.prod_eq_abs_norm (n : K)`. Establish `hw : ∀ w : InfinitePlace K, ‖(n : w.Completion)‖ = w (n : K)` using `fun w ↦ by`. Rewrite using `[← map_natCast (algebraMap K w.Completion) n]`. Conclude with `InfinitePlace.Completion.norm_coe (K := K) (v := w) _`. Repeatedly rewrite using `[hw, h, ← map_natCast (algebraMap ℚ K) n, Algebra.norm_algebraMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Conclude with `abs_of_nonneg (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem prod_norm_natCast_infinitePlaceCompletion_pow_mult (n : ℕ) :
     ∏ w : InfinitePlace K, ‖(n : w.Completion)‖ ^ w.mult = (n : ℝ) ^ Module.finrank ℚ K := by
@@ -59,7 +59,7 @@ theorem prod_norm_natCast_infinitePlaceCompletion_pow_mult (n : ℕ) :
   exact abs_of_nonneg (by positivity)
 
 /- English proof (translation)
-Rewrite using `[prod_norm_natCast_infinitePlaceCompletion_pow_mult]`. Conclude with `prod_norm_natCast_adicCompletion_mul hn S hS`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_norm_natCast_mul_prod_infinitePlace {n : ℕ} (hn : n ≠ 0)
     (S : Finset (HeightOneSpectrum (𝓞 K))) (hS : ∀ v, (n : 𝓞 K) ∈ v.asIdeal → v ∈ S) :

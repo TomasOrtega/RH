@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.FlatPush
 
 /- English proof (translation)
-Establish `hf : (ξ.appLE U ⊤ hle ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom) = X.presheaf.germ U _ hx ≫ Scheme.stalkClosedPointTo ξ`. Rewrite using `[Scheme.germ_stalkClosedPointTo]`. Both sides reduce to the same expression. Rewrite using `[hf, CommRingCat.hom_comp]`. Use `RingHom.Flat.comp ?_ hfl` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI : Algebra Γ(X, U) (X.presheaf.stalk (ξ (closedPoint R))) := X.presheaf.algebra_section_stalk ⟨_, hx⟩`. Use `haveI := U.2.isLocalization_stalk ⟨_, hx⟩`. Establish `: Module.Flat Γ(X, U) (X.presheaf.stalk (ξ (closedPoint R)))` using `IsLocalization.flat _ (U.2.primeIdealOf ⟨_, hx⟩).asIdeal.primeCompl`. Conclude with `this`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flat_sections_to_chart {X : Scheme.{0}} {R : Type} [CommRing R] [IsLocalRing R] (ξ : Sp R ⟶ X) (U : X.affineOpens)
     (hle : ⊤ ≤ ξ ⁻¹ᵁ (U : X.Opens)) (hx : ξ (closedPoint R) ∈ (U : X.Opens)) (hfl : (Scheme.stalkClosedPointTo ξ).hom.Flat) :
@@ -35,15 +35,15 @@ theorem flat_sections_to_chart {X : Scheme.{0}} {R : Type} [CommRing R] [IsLocal
   exact this
 
 /- English proof (translation)
-Use `letI := (ρ.appLE U W hW).hom.toAlgebra`. Use `letI := (ξ.appLE U ⊤ hle ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom).hom.toAlgebra`. Take `⟨κ, hκ, hL, hR⟩` from `GlobalTheory.T.exists_specTensor_to_pullback_sections_compat ρ ξ U hle W hW`. Take `⟨s0, hs0⟩ : ∃ s0, (pullback.fst ξ ρ).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom h) = s0` from `⟨_, rfl⟩`. Rewrite `hh` using `[hs0]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : ∀ t, ((Spec (CommRingCat.of (Γ(Y', W) ⊗[Γ(X, U)] R))).presheaf.germ ⊤ t trivial).hom (κ.appTop.hom s0) ∈ FinalTheorems.stalkId (I.comap (κ ≫ pullback.snd ξ ρ)) t`. Introduce `t`. Establish `e` using `Scheme.Hom.germ_stalkMap_apply κ ⊤ t trivial s0`. Rewrite using `[Scheme.IdealSheafData.comap_comp]`. Use `GlobalTheory.VanStalk.map_le_stalkId_comap κ _ t ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (κ.stalkMap t).hom (((pullback ξ ρ).presheaf.germ ⊤ (κ t) trivial).hom s0) ∈ _` using `Ideal.mem_map_of_mem _ (hh (κ t))`. Rewrite `this` using `[e]`. Conclude with `this`. Establish `h4` using `GlobalTheory.T.mem_ideal_map_of_germs_affineScheme (κ ≫ pullback.snd ξ ρ) I W hκ _ hs`. Establish `h5` using `Ideal.mem_map_of_mem (Scheme.ΓSpecIso (CommRingCat.of (Γ(Y', W) ⊗[Γ(X, U)] R))).hom.hom h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h5` using `[Ideal.map_map]`. Establish `e1 : (Scheme.ΓSpecIso _).hom.hom (κ.appTop.hom s0) = (1 : Γ(Y', W)) ⊗ₜ[Γ(X, U)] h`. Rewrite using `[← hR h, ← hs0]`. Establish `e2 : (Scheme.ΓSpecIso (CommRingCat.of (Γ(Y', W) ⊗[Γ(X, U)] R))).hom.hom.comp ((κ ≫ pullback.snd ξ ρ).appLE W ⊤ hκ).hom = Algebra.TensorProduct.includeLeftRingHom`. Use extensionality with `c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hL c`. Rewrite `h5` using `[e1, e2]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem tmul_mem_of_germ {X Y' : Scheme.{0}} (ρ : Y' ⟶ X) (I : Y'.IdealSheafData) {R : Type} [CommRing R]
     (ξ : Sp R ⟶ X) (U : X.affineOpens) (hle : ⊤ ≤ ξ ⁻¹ᵁ (U : X.Opens)) (W : Y'.affineOpens)
@@ -82,15 +82,13 @@ theorem tmul_mem_of_germ {X Y' : Scheme.{0}} (ρ : Y' ⟶ X) (I : Y'.IdealSheafD
   rwa [e1, e2] at h5
 
 /- English proof (translation)
-Introduce `X Y' ρ _ _ I R _ _ ξ hfl h hh`. Take `⟨U₀, hU, hx, -⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (show ξ (closedPoint R) ∈ (⊤ : X.Opens) from trivial)`. Set `U : X.affineOpens` to `⟨U₀, hU⟩`. Establish `hle : ⊤ ≤ ξ ⁻¹ᵁ (U : X.Opens)` using `(Scheme.preimage_eq_top_of_closedPoint_mem ξ hx).ge`. Rewrite using `[TraitOrder.idlAlong_eq_map (I.map ρ) ξ U hle]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : IsCompact ((ρ ⁻¹ᵁ (U : X.Opens) : Y'.Opens) : Set Y')` using `QuasiCompact.isCompact_preimage (f := ρ) _ U.1.isOpen U.2.isCompact`. Take `⟨Us, hUs, hfin, heq⟩` from `Y'.isBasis_affineOpens.exists_finite_of_isCompact hc`. Set `ι` to `↥Us`. Use `haveI : Finite ι := hfin.to_subtype`. Set `W : ι → Y'.affineOpens` to `fun i => ⟨i.1, hUs i.2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hW : ∀ i, (W i : Y'.Opens) ≤ ρ ⁻¹ᵁ (U : X.Opens)` using `fun i => heq ▸ le_sSup i.2`. Establish `hcov : ρ ⁻¹ᵁ (U : X.Opens) ≤ ⨆ i, (W i : Y'.Opens)`. Rewrite using `[heq, sSup_le_iff]`. Introduce `V hV`. Conclude with `le_iSup (fun i : ι => (W i : Y'.Opens)) ⟨V, hV⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `letI : Algebra Γ(X, U) R := (ξ.appLE U ⊤ hle ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom).hom.toAlgebra`. Use `haveI : Module.Flat Γ(X, U) R := GlobalTheory.FlatPush.flat_sections_to_chart ξ U hle hx hfl`. Set `K : ι → Ideal Γ(X, U)` to `fun i => (I.ideal (W i)).comap (ρ.appLE U (W i) (hW i)).hom`. Establish `h1 : ⨅ i, K i ≤ (I.map ρ).ideal U` using `fun b hb => GlobalTheory.T.mem_idealSheaf_map_of_affineCover_preimage ρ I U W hW hcov b fun i => (Ideal.mem_iInf.1 hb i)`. Establish `h2 : h ∈ ⨅ i, (K i).map (algebraMap Γ(X, U) R)`.
-
-Use `Ideal.mem_iInf.2 fun i => ?_` and prove the remaining obligations. Use `letI : Algebra Γ(X, U) Γ(Y', W i) := (ρ.appLE U (W i) (hW i)).hom.toAlgebra`. Conclude with `GlobalTheory.T.mem_map_comap_of_one_tmul_mem_map (I.ideal (W i)) h (tmul_mem_of_germ ρ I ξ U hle (W i) (hW i) h hh)`. Conclude with `Ideal.map_mono h1 (GlobalTheory.T.iInf_map_le_map_iInf_of_flat K h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem mem_idlAlong_map_of_flat : ∀ {X Y' : Scheme.{0}} (ρ : Y' ⟶ X) [QuasiCompact ρ] [QuasiSeparated ρ]
     (I : Y'.IdealSheafData) {R : Type} [CommRing R] [IsLocalRing R] (ξ : Sp R ⟶ X),

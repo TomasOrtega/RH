@@ -28,7 +28,7 @@ variable (F) in
 def idem (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) : AF F := pairA F 0 (singleFin v 1)
 
 /- English proof (translation)
-The claim follows from `Prod.ext h1 (af_ext fun u => h2 u)`.
+A detailed English derivation is pending.
 -/
 theorem af_ext' {a b : AF F} (h1 : fstA F a = fstA F b) (h2 : ∀ u : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, evFin F u a = evFin F u b) : a = b :=
   Prod.ext h1 (af_ext fun u => h2 u)
@@ -39,7 +39,7 @@ Both sides reduce to the same expression.
 theorem fst_idem (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) : fstA F (idem F v) = 0 := rfl
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `evalV_singleFin_self u 1`. Conclude with `evalV_singleFin_ne h 1`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem evFin_idem (v u : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) : evFin F u (idem F v) = if u = v then 1 else 0 := by
   split_ifs with h
@@ -47,7 +47,7 @@ theorem evFin_idem (v u : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
   · exact evalV_singleFin_ne h 1
 
 /- English proof (translation)
-The claim follows from `af_ext' (by simp [map_mul, fst_idem]) fun u => by rw [map_mul, evFin_idem]; split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem idem_mul_self (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) : idem F v * idem F v = idem F v :=
   af_ext' (by simp [map_mul, fst_idem]) fun u => by rw [map_mul, evFin_idem]; split_ifs <;> simp
@@ -57,39 +57,39 @@ variable (F) in
 def idemS (S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)) : AF F := ∑ v ∈ S, idem F v
 
 /- English proof (translation)
-Simplify using `[idemS, map_sum, fst_idem]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fst_idemS (S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)) : fstA F (idemS F S) = 0 := by
   simp [idemS, map_sum, fst_idem]
 
 /- English proof (translation)
-Simplify using `[idemS, map_sum, evFin_idem, Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evFin_idemS (S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)) (u : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) : evFin F u (idemS F S) = if u ∈ S then 1 else 0 := by
   simp [idemS, map_sum, evFin_idem, Finset.sum_ite_eq]
 
 /- English proof (translation)
-The claim follows from `af_ext' (by simp [map_mul, fst_idemS]) fun u => by rw [map_mul, evFin_idemS]; split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem idemS_mul_self (S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)) : idemS F S * idemS F S = idemS F S :=
   af_ext' (by simp [map_mul, fst_idemS]) fun u => by rw [map_mul, evFin_idemS]; split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `af_ext' (by simp [map_mul, fst_idemS, fst_idem]) fun u => by rw [map_mul, evFin_idemS, evFin_idem]; split_ifs with h1 h2 <;> simp_all`.
+A detailed English derivation is pending.
 -/
 theorem idem_mul_idemS_of_mem {w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} {S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)} (h : w ∈ S) : idem F w * idemS F S = idem F w :=
   af_ext' (by simp [map_mul, fst_idemS, fst_idem]) fun u => by
     rw [map_mul, evFin_idemS, evFin_idem]; split_ifs with h1 h2 <;> simp_all
 
 /- English proof (translation)
-The claim follows from `af_ext' (by simp [map_mul, fst_idemS, fst_idem]) fun u => by rw [map_mul, evFin_idemS, evFin_idem, map_zero]; split_ifs with h1 h2 <;> simp_all`.
+A detailed English derivation is pending.
 -/
 theorem idem_mul_idemS_of_notMem {w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} {S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)} (h : w ∉ S) : idem F w * idemS F S = 0 :=
   af_ext' (by simp [map_mul, fst_idemS, fst_idem]) fun u => by
     rw [map_mul, evFin_idemS, evFin_idem, map_zero]; split_ifs with h1 h2 <;> simp_all
 
 /- English proof (translation)
-The claim follows from `af_ext' (by simp [map_mul, fst_idem]) fun u => by rw [map_mul, evFin_idem, map_zero]; split_ifs with hu · subst hu; simpa using h · simp`.
+A detailed English derivation is pending.
 -/
 theorem mul_idem_of_evFin {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} {a : AF F} (h : evFin F v a = 0) : a * idem F v = 0 :=
   af_ext' (by simp [map_mul, fst_idem]) fun u => by
@@ -98,7 +98,7 @@ theorem mul_idem_of_evFin {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTenso
     · simp
 
 /- English proof (translation)
-Use `h (1 - idem F w) (by simp [evFin_idem])` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, sub_mul, one_mul, sub_eq_zero]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_mul_of_at {w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} {a : AF F} (h : At (evFin F w) a) : idem F w * a = a := by
   have := h (1 - idem F w) (by simp [evFin_idem])
@@ -116,7 +116,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def phi (e : AF F) (M : Matrix (Fin n) (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E) := (1 - e) • 1 + e • M
 
 /- English proof (translation)
-Establish `h1 : (1 - e) * (1 - e) = 1 - e` using `by rw [sub_mul, one_mul, mul_sub, mul_one, he, sub_self, sub_zero]`. Establish `h2 : (1 - e) * e = 0` using `by rw [sub_mul, one_mul, he, sub_self]`. Establish `h3 : e * (1 - e) = 0` using `by rw [mul_sub, mul_one, he, sub_self]`. Simplify using `only [phi, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.one_mul, Matrix.mul_one, h1, h2, h3, he, zero_smul, add_zero, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem phi_mul {e : AF F} (he : e * e = e) (M N : Matrix (Fin n) (Fin n) (AE F E)) :
     phi e (M * N) = phi e M * phi e N := by
@@ -127,9 +127,9 @@ theorem phi_mul {e : AF F} (he : e * e = e) (M N : Matrix (Fin n) (Fin n) (AE F 
     h1, h2, h3, he, zero_smul, add_zero, zero_add]
 
 /- English proof (translation)
-Establish `hfe : f * e = 0` using `by rw [mul_comm, hef]`. Establish `h1 : (1 - f) * (1 - e) = 1 - (e + f)`. Rewrite using `[sub_mul, one_mul, mul_sub, mul_one, hfe, sub_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (1 - f) * e = e` using `by rw [sub_mul, one_mul, hfe, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h3 : f * (1 - e) = f` using `by rw [mul_sub, mul_one, hfe, sub_zero]`. Simplify using `only [phi, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.one_mul, Matrix.mul_one, h1, h2, h3, hfe, zero_smul, add_zero, add_smul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem phi_mul_orth {e f : AF F} (hef : e * f = 0) (M : Matrix (Fin n) (Fin n) (AE F E)) :
     phi e M * phi f M = phi (e + f) M := by
@@ -143,34 +143,34 @@ theorem phi_mul_orth {e f : AF F} (hef : e * f = 0) (M : Matrix (Fin n) (Fin n) 
   abel
 
 /- English proof (translation)
-Simplify using `[phi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phi_one (M : Matrix (Fin n) (Fin n) (AE F E)) : phi (1 : AF F) M = M := by simp [phi]
 
 /- English proof (translation)
-Simplify using `[phi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phi_zero (M : Matrix (Fin n) (Fin n) (AE F E)) : phi (0 : AF F) M = 1 := by simp [phi]
 
 /- English proof (translation)
-Simplify using `only [phi, sub_smul, one_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem phi_sub_one (e : AF F) (M : Matrix (Fin n) (Fin n) (AE F E)) : phi e M - 1 = e • (M - 1) := by
   simp only [phi, sub_smul, one_smul, smul_sub]; abel
 
 /- English proof (translation)
-Simplify using `only [phi, smul_add, smul_smul, sub_sub_cancel, h, zero_smul, zero_add, mul_sub, mul_one, sub_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smul_phi_compl {a e : AF F} (h : a * e = 0) (M : Matrix (Fin n) (Fin n) (AE F E)) :
     a • phi (1 - e) M = a • M := by
   simp only [phi, smul_add, smul_smul, sub_sub_cancel, h, zero_smul, zero_add, mul_sub, mul_one, sub_zero]
 
 /- English proof (translation)
-Establish `h1 : (1 - e) * (1 - e) = 1 - e` using `by rw [sub_mul, one_mul, mul_sub, mul_one, he, sub_self, sub_zero]`. Establish `h2 : (1 - e) * e = 0` using `by rw [sub_mul, one_mul, he, sub_self]`. Establish `h3 : e * (1 - e) = 0` using `by rw [mul_sub, mul_one, he, sub_self]`. Establish `hm : (phi e M).map (cA σ) = (1 - e) • 1 + e • M.map (cA σ)`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [phi, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, map_add, map_smul, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `ht : (phi e M)ᵀ = (1 - e) • 1 + e • Mᵀ` using `by simp [phi, Matrix.transpose_add, Matrix.transpose_smul]`. Rewrite using `[hm, ht]`. Simplify using `only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.one_mul, Matrix.mul_one, h1, h2, h3, he, zero_smul, add_zero, zero_add, ← Matrix.mul_assoc, hM]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← add_smul, sub_add_cancel, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_unitary {σ : E →ₐ[F] E} {e : AF F} (he : e * e = e) {J M : Matrix (Fin n) (Fin n) (AE F E)}
     (hM : Mᵀ * J * M.map (cA σ) = J) : (phi e M)ᵀ * J * (phi e M).map (cA σ) = J := by
@@ -202,17 +202,17 @@ Both sides reduce to the same expression.
 theorem mat_one : mat (1 : UA σ J) = 1 := rfl
 
 /- English proof (translation)
-The claim follows from `Units.mul_inv g.1`.
+A detailed English derivation is pending.
 -/
 theorem mat_mul_inv (g : UA σ J) : mat g * mat g⁻¹ = 1 := Units.mul_inv g.1
 
 /- English proof (translation)
-The claim follows from `Units.inv_mul g.1`.
+A detailed English derivation is pending.
 -/
 theorem mat_inv_mul (g : UA σ J) : mat g⁻¹ * mat g = 1 := Units.inv_mul g.1
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext e)`.
+A detailed English derivation is pending.
 -/
 theorem ua_ext {g h : UA σ J} (e : mat g = mat h) : g = h := Subtype.ext (Units.ext e)
 
@@ -242,13 +242,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-The claim follows from `Finset.sum_insert h`.
+A detailed English derivation is pending.
 -/
 theorem idemS_insert {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} {S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)} (h : v ∉ S) :
     idemS F (insert v S) = idem F v + idemS F S := Finset.sum_insert h
 
 /- English proof (translation)
-The claim follows from `| [], _ => by simp [idemS, phi_zero, mat_one] | v :: t, hl => by rw [List.nodup_cons] at hl have hv : v ∉ t.toFinset := by simpa using hl.1 rw [List.map_cons, List.prod_cons, mat_mul, mat_prod_loc g t hl.2, mat_loc, List.toFinset_cons, idemS_insert hv, phi_mul_orth (idem_mul_idem …`.
+A detailed English derivation is pending.
 -/
 theorem mat_prod_loc (g : UA σ J) : ∀ l : List (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F), l.Nodup →
     mat (l.map fun v => loc (idem F v) (idem_mul_self v) g).prod = phi (idemS F l.toFinset) (mat g)
@@ -260,25 +260,23 @@ theorem mat_prod_loc (g : UA σ J) : ∀ l : List (GlobalTheory.IndefiniteRowSid
       idemS_insert hv, phi_mul_orth (idem_mul_idemS_of_notMem hv)]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G hG h hinf T₀`. Take `⟨S₁, hS₁⟩` from `GlobalTheory.T.exists_finset_integral_adele_mulVec_mem_lattice_closure F E _ (mat h) G.W.L hG.hW.lat`. Take `⟨S₂, hS₂⟩` from `GlobalTheory.T.exists_finset_integral_adele_mulVec_mem_lattice_closure F E _ (mat h⁻¹) G.W.L hG.hW.lat`. Use `set S := T₀ ∪ S₁ ∪ S₂ with hSdef`. Establish `heS : idemS F S * idemS F S = idemS F S` using `idemS_mul_self S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heS' : (1 - idemS F S) * (1 - idemS F S) = 1 - idemS F S`. Rewrite using `[sub_mul, one_mul, mul_sub, mul_one, heS, sub_self, sub_zero]`. Establish `horth : idemS F S * (1 - idemS F S) = 0` using `by rw [mul_sub, mul_one, heS, sub_self]`. Use `set k := loc (1 - idemS F S) heS' h with hk`. Establish `hl : ((S.toList.map fun v => (v, loc (idem F v) (idem_mul_self v) h)).map Prod.snd) = S.toList.map fun v => loc (idem F v) (idem_mul_self v) h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[List.map_map]`. Both sides reduce to the same expression. Establish `hnot : ∀ w ∉ S, ∀ u : AF F, At (evFin F w) u → u * idemS F S = 0`. Introduce `w hw u hu`. Rewrite using `[← idem_mul_of_at hu, mul_comm (idem F w), mul_assoc, idem_mul_idemS_of_notMem hw, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgood : ∀ w ∉ S, ∀ (X : ℕ) (Xs : Spc F E X), ∀ γ, γ * (mat k)ᵀ ∈ latAtV Xs G.W w ↔ γ ∈ latAtV Xs G.W w`. Introduce `w hw X Xs γ`. Establish `hw1 : w ∉ S₁` using `fun h' => hw (by simp [hSdef, h'])`. Establish `hw2 : w ∉ S₂` using `fun h' => hw (by simp [hSdef, h'])`. Use `GlobalTheory.T.tensorLattice_mul_transpose_stable_iff F E X (a + a') Xs G.W w (mat k) (mat k⁻¹) (mat_inv_mul k) ?_ ?_ γ` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `u hu hint y hy`. Rewrite using `[← Matrix.smul_mulVec, mat_loc, smul_phi_compl (hnot w hw u hu), Matrix.smul_mulVec]`. Conclude with `hS₁ w hw1 u hu hint y hy`. Introduce `u hu hint y hy`. Rewrite using `[← Matrix.smul_mulVec, mat_loc_inv, smul_phi_compl (hnot w hw u hu), Matrix.smul_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hS₂ w hw2 u hu hint y hy`. Use `⟨S, S.toList.map fun v => (v, loc (idem F v) (idem_mul_self v) h), k, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Simplify using `[hSdef, hx]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv, rfl⟩` from `List.mem_map.1 hx`. Use `⟨Finset.mem_toList.1 hv, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Use `show u • (mat (loc (idem F v) (idem_mul_self v) h) - 1) = 0`. Rewrite using `[mat_loc, phi_sub_one, smul_smul, mul_idem_of_evFin hu, zero_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ua_ext` to reduce the goal to its premises. Rewrite using `[mat_mul, hl, mat_prod_loc h _ S.nodup_toList, Finset.toList_toFinset, hk, mat_loc, phi_mul_orth horth, add_sub_cancel, phi_one]`. Introduce `u hu`. Rewrite using `[hk, mat_loc, phi_sub_one, smul_comm, hinf u hu, smul_zero]`. Introduce `w hw u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hu'` using `idem_mul_of_at hu`. Establish `: u * (1 - idemS F S) = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hk, mat_loc, phi_sub_one, smul_smul, this, zero_smul]`. Conclude with `fun w hw => hgood w hw a G.V`.
-
-Conclude with `fun w hw => hgood w hw a' G.V'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_prod_local_mul_latStab : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a'), G.IsGood B →

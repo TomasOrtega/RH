@@ -7,7 +7,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `Q hQ Bd Lk`. Establish `h : Row0 Q (EvC fun D _ => Formalism.MainNotions.WeightDegreeSizes.PeriodClassSumWeyl D)` using `validForConstructedPointClasses_eventuallyWorkingClass (EvP.of_all fun _ K _ β hq => GlobalTheory.T.property_at_constructedPoints_of_trueColumnsView (fun D _ => Formalism.MainNotions.WeightDegreeSizes.PeriodClassSumWeyl D) (fun _ _ _ w Z _ _ hv _ _ => GlobalTheory.T.periodClassSu …`. Conclude with `h.row Lk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Fc.PeriodEntriesOverColumns.row_aPer0_of_overCols :
     ∀ (Q : V4.Slot), OverCols Q → ∀ (Bd : BdT) (Lk : LkT Bd), PeriodEntriesOverColumns.PeriodAtZeroAtBundlePoints Q Lk := by

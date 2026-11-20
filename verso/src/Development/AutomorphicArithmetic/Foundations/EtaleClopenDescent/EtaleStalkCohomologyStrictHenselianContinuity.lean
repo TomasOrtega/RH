@@ -17,7 +17,7 @@ private abbrev bd {Z E : Spc} (f : Z ⟶ E) (F : Shv R) (n : ℤ) : H R Z F n �
   HK.pre R (mappingCone.fst ((chains R).map f)) F n (n + 1) (add_comm 1 n)
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `b.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `only [zcomp, Cocycle.ofHom_coe, Cocycle.mk_coe]`. Rewrite using `[← Cochain.comp_assoc_of_first_is_zero_cochain, rmap, LateralTheory.E.GlueRelPfNat.map_fst, Cochain.comp_assoc_of_second_is_zero_cochain]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem bd_nat {U E U' E' : Spc} (f : U ⟶ E) (f' : U' ⟶ E') (u : U' ⟶ U) (e : E' ⟶ E)
     (comm : f' ≫ e = u ≫ f) (F : Shv R) (n : ℤ) (b : H R U F n) :
@@ -29,42 +29,40 @@ private theorem bd_nat {U E U' E' : Spc} (f : U ⟶ E) (f' : U' ⟶ E') (u : U' 
     Cochain.comp_assoc_of_second_is_zero_cochain]
 
 /- English proof (translation)
-The claim follows from `(coneSeq_exact R ((chains R).map f) (res R F) n).2.1.apply_apply_eq_zero a`.
+A detailed English derivation is pending.
 -/
 private theorem bd_pull {U E : Spc} (f : U ⟶ E) (F : Shv R) (n : ℤ) (a : H R E F n) :
     bd R f F n (pull R f F n a) = 0 :=
   (coneSeq_exact R ((chains R).map f) (res R F) n).2.1.apply_apply_eq_zero a
 
 /- English proof (translation)
-The claim follows from `((coneSeq_exact R ((chains R).map f) (res R F) n).2.1 b).1 h`.
+A detailed English derivation is pending.
 -/
 private theorem exists_pull {U E : Spc} (f : U ⟶ E) (F : Shv R) (n : ℤ) (b : H R U F n)
     (h : bd R f F n b = 0) : ∃ a : H R E F n, pull R f F n a = b :=
   ((coneSeq_exact R ((chains R).map f) (res R F) n).2.1 b).1 h
 
 /- English proof (translation)
-The claim follows from `((coneSeq_exact R ((chains R).map f) (res R F) n).2.2 y).1 h`.
+A detailed English derivation is pending.
 -/
 private theorem exists_bd {U E : Spc} (f : U ⟶ E) (F : Shv R) (n : ℤ) (y : Hrel R f F (n + 1))
     (h : fgt R f F (n + 1) y = 0) : ∃ b : H R U F n, bd R f F n b = y :=
   ((coneSeq_exact R ((chains R).map f) (res R F) n).2.2 y).1 h
 
 /- English proof (translation)
-Establish `cmp1 : ∀ {j j' : J} (g : j ⟶ j') (y : Hrel R (f j) F (n + 1)), rpull R (f j') fi (tz j') (te j') (sqt j') F (n + 1) (rpull R (f j) (f j') (zM g) (eM g) (sq g) F (n + 1) y) = rpull R (f j) fi (tz j) (te j) (sqt j) F (n + 1) y`. Introduce `j j' g y`. Establish `c3 : fi ≫ (te j' ≫ eM g) = (tz j' ≫ zM g) ≫ f j`. Rewrite using `[ce, cz, sqt]`. Rewrite using `[← rpull_comp R (f j) (f j') fi (zM g) (eM g) (tz j') (te j') (sq g) (sqt j') c3]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (congrArg _ rfl) y |>.trans (by`. Rewrite using `[rpull_congr R (f j) fi (cz g) (ce g) c3 (sqt j)])`. Establish `cmp2 : ∀ {j j' j'' : J} (g : j ⟶ j') (g' : j' ⟶ j'') (y : Hrel R (f j) F (n + 1)), rpull R (f j') (f j'') (zM g') (eM g') (sq g') F (n + 1) (rpull R (f j) (f j') (zM g) (eM g) (sq g) F (n + 1) y) = rpull R (f j) (f j'') (zM (g ≫ g')) (eM (g ≫ g')) (sq (g ≫ g')) F (n + 1) y`. Introduce `j j' j'' g g' y`. Establish `c3 : f j'' ≫ (eM g' ≫ eM g) = (zM g' ≫ zM g) ≫ f j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← fe, ← fz, sq]`. Rewrite using `[← rpull_comp R (f j) (f j') (f j'') (zM g) (eM g) (zM g') (eM g') (sq g) (sq g') c3]`. Rewrite using `[rpull_congr R (f j) (f j'') (fz g g').symm (fe g g').symm c3 (sq (g ≫ g'))]`. Establish `h1 : pull R (te j) F (n + 1) (fgt R (f j) F (n + 1) c) = 0`. Rewrite using `[← relNat R F (f j) fi (tz j) (te j) (sqt j) (n + 1) c, hc, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j1, g1, h2⟩` from `CEi (n + 1) j _ h1`. Use `set c1 := rpull R (f j) (f j1) (zM g1) (eM g1) (sq g1) F (n + 1) c with hc1`. Establish `h3 : fgt R (f j1) F (n + 1) c1 = 0`. Rewrite using `[hc1, relNat R F (f j) (f j1) (zM g1) (eM g1) (sq g1) (n + 1) c, h2]`. Take `⟨b, hb⟩` from `exists_bd R (f j1) F n c1 h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : bd R fi F n (pull R (tz j1) F n b) = 0`. Rewrite using `[← bd_nat R (f j1) fi (tz j1) (te j1) (sqt j1) F n b, hb, hc1, cmp1, hc]`. Take `⟨ai, hai⟩` from `exists_pull R fi F n _ h4`. Take `⟨j2, a2, ha2⟩` from `CEs n ai`. Set `j3` to `IsFiltered.max j1 j2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g3 : j1 ⟶ j3` to `IsFiltered.leftToMax j1 j2`. Set `g3' : j2 ⟶ j3` to `IsFiltered.rightToMax j1 j2`. Use `set a3 := pull R (eM g3') F n a2 with ha3`. Use `set d := pull R (zM g3) F n b - pull R (f j3) F n a3 with hd`. Establish `h5 : pull R (tz j3) F n d = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, map_sub, ← pull_comp, ← pull_comp, cz, ← sqt, pull_comp, ha3, ← pull_comp R (te j3), ce, ha2, hai, sub_self]`. Take `⟨j4, g4, h6⟩` from `CZi n j3 d h5`. Use `⟨j4, g1 ≫ g3 ≫ g4, ?_⟩` and prove the remaining obligations. Rewrite using `[← cmp2 g1 (g3 ≫ g4), ← hc1, ← hb, bd_nat, fz, pull_comp]`. Establish `h7 : pull R (zM g4) F n (pull R (zM g3) F n b) = pull R (zM g4) F n (pull R (f j3) F n a3)`.
-
-Rewrite `h6` using `[hd, map_sub, sub_eq_zero]`. Conclude with `h6`. Rewrite using `[h7, ← pull_comp, ← sq g4, pull_comp, bd_pull]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem relCont {J : Type} [SmallCategory J] [IsFiltered J] (F : Shv R) {Ei Zi : Spc} (fi : Zi ⟶ Ei)
     (E Z : J → Spc) (f : ∀ j, Z j ⟶ E j)
@@ -136,9 +134,9 @@ end DiagramChase₂
 section Transport
 
 /- English proof (translation)
-Establish `h0 : pl q i (Spec.map (c.ι.app j)) n (pl q i (ex j).inv n y) = 0`. Rewrite using `[← pl_comp, ← htl, Category.assoc, Iso.hom_inv_id, Category.comp_id, hy]`. Take `⟨j', g, h1⟩` from `(hB q D c hc n i).2 j (pl q i (ex j).inv n y) (hu j) h0`. Use `⟨j', g, ?_⟩` and prove the remaining obligations. Establish `h2 : pl q i (Spec.map (D.map g)) n (pl q i (ex j).inv n y) = 0` using `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[← pl_comp, ← htr, Category.assoc, Category.assoc, Iso.hom_inv_id, Category.comp_id, pl_comp]`. Establish `h3` using `congrArg (pl q i (ex j').hom n) h2`. Rewrite `h3` using `[← pl_comp, Iso.hom_inv_id, map_zero]`. Simplify `h3` using `[pl, pull_id]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem injT (hB : B1) (q : ℕ) (i : ℤ) {J : Type} [SmallCategory J] [IsFiltered J] (D : J ⥤ CommRingCat.{0})
     (c : Cocone D) (hc : IsColimit c) (X : J → Scheme.{0}) (ex : ∀ j, X j ≅ Spec (D.obj j))
@@ -158,7 +156,7 @@ private theorem injT (hB : B1) (q : ℕ) (i : ℤ) {J : Type} [SmallCategory J] 
   simpa [pl, pull_id] using h3
 
 /- English proof (translation)
-Take `⟨j, y, h⟩` from `(hB q D c hc n i).1 x hu`. Use `⟨j, pl q i (ex j).hom n y, ?_⟩` and prove the remaining obligations. Rewrite using `[← pl_comp, htl]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem surjT (hB : B1) (q : ℕ) (i : ℤ) {J : Type} [SmallCategory J] [IsFiltered J] (D : J ⥤ CommRingCat.{0})
     (c : Cocone D) (hc : IsColimit c) (X : J → Scheme.{0}) (ex : ∀ j, X j ≅ Spec (D.obj j))
@@ -171,7 +169,7 @@ private theorem surjT (hB : B1) (q : ℕ) (i : ℤ) {J : Type} [SmallCategory J]
   exact h
 
 /- English proof (translation)
-Establish `g` using `Spec.preimage f`. Simplify using `using hq.map g.hom`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem unit_of {k : Type} [Field k] {q : ℕ} (hq : IsUnit (q : k)) (A : CommRingCat.{0})
     (f : Spec A ⟶ Sp k) : IsUnit (q : A) := by
@@ -179,9 +177,9 @@ private theorem unit_of {k : Type} [Field k] {q : ℕ} (hq : IsUnit (q : k)) (A 
   simpa using hq.map g.hom
 
 /- English proof (translation)
-Establish `h` using `S.tr_spec (g ≫ g')`. Rewrite `h` using `[Functor.map_comp, Spec.map_comp, ← S.tr_spec g, ← S.tr_spec g']`. Establish `h2 : (S.e j'').inv ≫ (S.tr (g ≫ g')).left ≫ (S.e j).hom = (S.e j'').inv ≫ ((S.tr g').left ≫ (S.tr g).left) ≫ (S.e j).hom`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[cancel_epi, cancel_mono]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tr_comp_left {B : Scheme.{0}} {U : B.Etale} {x : U.left} (S : SHSys U x) {j j' j'' : S.J}
     (g : j ⟶ j') (g' : j' ⟶ j'') : (S.tr (g ≫ g')).left = (S.tr g').left ≫ (S.tr g).left := by
@@ -196,29 +194,25 @@ private theorem tr_comp_left {B : Scheme.{0}} {U : B.Etale} {x : U.left} (S : SH
 end Transport
 
 /- English proof (translation)
-Introduce `hy q _ k _ hq i B W s ι _ U m c x S h0`. Take `⟨n, rfl⟩ : ∃ n, m = n + 1` from `⟨m - 1, by ring⟩`. Establish `hB : B1` using `hy.2.2.2.2.2.2.2.2.2.2.1`. Set `tl : ∀ j, Spec S.c.pt ⟶ (S.V j).left` to `fun j => Spec.map (S.c.ι.app j) ≫ (S.e j).inv`. Establish `htl : ∀ j, tl j ≫ (S.a j).left = S.t` using `fun j => by simp [tl, S.ht j]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `htv : ∀ j, tl j ≫ (S.V j).hom = S.t ≫ U.hom` using `fun j => by`. Establish `hw : (S.a j).left ≫ U.hom = (S.V j).hom` using `by simpa using (S.a j).w`. Rewrite using `[← hw, ← Category.assoc, htl]`. Set `zl : ∀ j, pullback (S.t ≫ U.hom) ι ⟶ pullback (S.V j).hom ι` to `fun j => pullback.map _ _ _ _ (tl j) (𝟙 W) (𝟙 B) (by simp [htv j]) (by simp)`. Establish `hz1 : ∀ j, zl j ≫ pullback.fst _ _ = pullback.fst _ _ ≫ Spec.map (S.c.ι.app j) ≫ (S.e j).inv` using `fun j => pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hz2 : ∀ j, zl j ≫ pullback.snd _ _ = pullback.snd _ _` using `fun j => (pullback.lift_snd _ _ _).trans (Category.comp_id _)`. Take `⟨D', c', hc', ez, ei, hD1, hD2⟩` from `UpperTheory.exists_closedFiber_colimit_presentation ι U x S zl hz1 hz2`. Establish `huD : ∀ j, IsUnit (q : S.D.obj j)` using `fun j => unit_of hq _ ((S.e j).inv ≫ (S.V j).hom ≫ s)`. Establish `huD' : ∀ j, IsUnit (q : D'.obj j)` using `fun j => unit_of hq _ ((ez j).inv ≫ pullback.snd _ _ ≫ ι ≫ s)`. Establish `huc : IsUnit (q : S.c.pt)` using `unit_of hq _ (S.t ≫ U.hom ≫ s)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c3 : ∀ {j j' : S.J} (g : j ⟶ j'), prB ι (S.V j') ≫ (S.tr g).left = resBW ι (S.tr g) ≫ prB ι (S.V j)` using `fun g => (pullback.lift_fst _ _ _).symm`. Establish `c4 : ∀ j, pullback.fst (S.t ≫ U.hom) ι ≫ tl j = zl j ≫ prB ι (S.V j)` using `fun j => (pullback.lift_fst _ _ _).symm`. Establish `ct : ∀ {j j' : S.J} (g : j ⟶ j'), tl j' ≫ (S.tr g).left = tl j` using `fun {j j'} g => by`. Establish `h1 : Spec.map (S.c.ι.app j) = Spec.map (S.c.ι.app j') ≫ Spec.map (S.D.map g)`. Rewrite using `[← Spec.map_comp, S.c.w g]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [tl]`. Rewrite using `[h1, ← S.tr_spec g]`. Simplify using the standard rewrite rules. Take `⟨j0⟩ : Nonempty S.J` from `IsFiltered.nonempty`. Establish `key` using `relCont (ZMod q) (tw q i) (sch.map (pullback.fst (S.t ≫ U.hom) ι)) (fun j => sch.obj (S.V j).left) (fun j => sch.obj (pullback (S.V j).hom ι)) (fun j => sch.map (prB ι (S.V j))) (fun g => sch.map (S.tr g).left) (fun g => sch.map (resBW ι (S.tr g))) (fun g => by rw [← Functor.map_ …`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Functor.map_comp]`. Use `congr 1`. Apply the tactic sequence `apply pullback.hom_ext <;> simp only [resBW, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, tr_comp_left S g g'])`. Use the proof step `(fun j => sch.map (tl j)) (fun j => sch.map (zl j))`. Use the proof step `(fun j => by rw [← Functor.map_comp, ← Functor.map_comp, c4 j])`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use the proof step `(fun g => by rw [← Functor.map_comp, ct g])`. Use the proof step `(fun {j j'} g => by`. Rewrite using `[← Functor.map_comp]`. Use `congr 1`. Apply the tactic sequence `apply pullback.hom_ext <;> simp only [zl, resBW, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, ct g])`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun n j y h => injT hB q i S.D S.c S.hc (fun j => (S.V j).left) S.e (fun g => (S.tr g).left) (fun g => S.tr_spec g) tl (fun j => by simp [tl]) huD n j y h)`. Use the proof step `(fun n x => surjT hB q i S.D S.c S.hc (fun j => (S.V j).left) S.e tl (fun j => by simp [tl]) huc n x)`. Use the proof step `(fun n j y h => by`. Use `injT hB q i D' c' hc' (fun j => pullback (S.V j).hom ι) ez (fun g => resBW ι (S.tr g)) hD1 (fun j => ei.inv ≫ zl j) (fun j => by simpa using hD2 j) huD' n j y ?_` and prove the remaining obligations. Rewrite using `[pl_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(congrArg _ h).trans (map_zero _))`. Use `n j0 (rB q i ι (S.a j0) (n + 1) c) ?_`. Take `⟨j', g, h⟩` from `key`. Use `⟨j', ?_⟩` and prove the remaining obligations. Rewrite using `[← S.tr_a g, rB_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `h`. Establish `cu : sch.map (zl j0) ≫ sch.map (resBW ι (S.a j0)) = sch.map (pullback.map (S.t ≫ U.hom) ι U.hom ι S.t (𝟙 W) (𝟙 B) (by simp) (by simp))`. Rewrite using `[← Functor.map_comp]`. Use `congr 1`. Apply the tactic sequence `apply pullback.hom_ext <;> simp only [zl, resBW, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, htl j0]`.
-
-Establish `ce0 : sch.map (tl j0) ≫ sch.map (S.a j0).left = sch.map S.t`. Rewrite using `[← Functor.map_comp, htl]`. Establish `c3' : sch.map (pullback.fst (S.t ≫ U.hom) ι) ≫ (sch.map (tl j0) ≫ sch.map (S.a j0).left) = (sch.map (zl j0) ≫ sch.map (resBW ι (S.a j0))) ≫ sch.map (prB ι U)`. Rewrite using `[cu, ce0, ← Functor.map_comp, ← Functor.map_comp]`. Use `congr 1`.
-
-Conclude with `(pullback.lift_fst _ _ _).symm`. Use `(rpull_comp (ZMod q) (sch.map (prB ι U)) (sch.map (prB ι (S.V j0))) (sch.map (pullback.fst _ ι)) (sch.map (resBW ι (S.a j0))) (sch.map (S.a j0).left) (sch.map (zl j0)) (sch.map (tl j0)) _ _ c3' (tw q i) (n + 1) c).symm.trans ?_` and prove the remaining obligations. Conclude with `(DFunLike.congr_fun (rpull_congr (ZMod q) _ _ cu ce0 c3' _ (tw q i) (n + 1)) c).trans h0`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : LateralTheory.E.LeafVanBStalkPf.LeafSHCont := by
   intro hy q _ k _ hq i B W s ι _ U m c x S h0
@@ -301,7 +295,7 @@ theorem main : LateralTheory.E.LeafVanBStalkPf.LeafSHCont := by
 end UpperTheory.Cb.etale_stalk_cohomology_strictHenselian_continuity.SlopeTestRemainingChoices
 
 /- English proof (translation)
-The claim follows from `UpperTheory.Cb.etale_stalk_cohomology_strictHenselian_continuity.SlopeTestRemainingChoices.main`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.etale_stalk_cohomology_strictHenselian_continuity :
     LateralTheory.E.LeafVanBStalkPf.LeafSHCont :=

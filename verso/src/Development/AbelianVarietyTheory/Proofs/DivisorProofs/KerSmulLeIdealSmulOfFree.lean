@@ -5,13 +5,13 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Λ _ t ht M _ _ hfree m hm`. Set `b` to `Module.Free.chooseBasis Λ M`. Establish `hc : ∀ i, ∃ d, b.repr m i = t * d`. Introduce `i`. Establish `h0 : t * b.repr m i = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun x => b.repr x i) hm` as an intermediate fact. Simplify using `using this`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.mp (ht _ h0)`. Conclude with `⟨d, by rw [← hd, mul_comm]⟩`. Use `choose d hd using hc`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hm' : m = t • ∑ i ∈ (b.repr m).support, d i • b i`. Establish `e` using `b.linearCombination_repr m`. Rewrite `e` using `[Finsupp.linearCombination_apply, Finsupp.sum]`. Rewrite using `[Finset.smul_sum]`. Use `conv_lhs => rw [← e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hd i, mul_smul]`. Rewrite using `[hm']`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self t) Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_smul_le_ideal_smul_of_free : ∀ (Λ : Type) [CommRing Λ] (t : Λ), (∀ x : Λ, t * x = 0 → x ∈ Ideal.span {t}) → ∀ (M : Type 1) [AddCommGroup M] [Module Λ M], Module.Free Λ M → ∀ m : M, t • m = 0 → m ∈ Ideal.span {t} • (⊤ : Submodule Λ M) := by
   intro Λ _ t ht M _ _ hfree m hm

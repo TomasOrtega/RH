@@ -10,7 +10,7 @@ open scoped nonZeroDivisors
 namespace KLinesProjLattice
 
 /- English proof (translation)
-Unfold `coordProj`. Rewrite using `[LinearMap.coe_comp]`. Conclude with `(LinearMap.funLeft_surjective_of_injective K K Sum.inr Sum.inr_injective).comp B.equivFun.surjective`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordProj_surjective {K : Type*} [Field K] {n m k : ℕ}
     (B : Module.Basis (Fin m ⊕ Fin k) K (Fin n → K)) : Function.Surjective (coordProj B) := by
@@ -20,9 +20,9 @@ theorem coordProj_surjective {K : Type*} [Field K] {n m k : ℕ}
     B.equivFun.surjective
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [coordProj, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, LinearMap.funLeft_apply, Module.Basis.equivFun_self]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordProj_basis_inr {K : Type*} [Field K] {n m k : ℕ}
     (B : Module.Basis (Fin m ⊕ Fin k) K (Fin n → K)) (j : Fin k) :
@@ -39,13 +39,13 @@ end KLinesProjLattice
 open KLinesProjLattice in
 
 /- English proof (translation)
-Introduce `K _ _ n m k a B τ ha hB hτ`. Take `⟨hfg, hspan⟩` from `h1 K n a ha`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hfg.map ((coordProj B).restrictScalars (𝓞 K))).restrictScalars`. Rewrite using `[Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, hspan, Submodule.map_top, LinearMap.range_eq_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `coordProj_surjective B`. Introduce `v hv`. Establish `hv' : ∀ j, v j ∈ (a (τ j) : Submodule (𝓞 K) K)` using `fun j => (Submodule.mem_pi (I := Set.univ)).1 hv j (Set.mem_univ j)`. Use `⟨∑ j, v j • (Pi.single (τ j) 1 : Fin n → K), ?_, ?_⟩` and prove the remaining obligations. Use `(Submodule.mem_pi (I := Set.univ)).2 fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_apply]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : τ j = x`. Substitute `h` using the available equality. Simplify using `using hv' j`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne' h]`. Simplify using `only [LinearMap.restrictScalars_apply, map_sum, map_smul, ← hB, coordProj_basis_inr]`. Use extensionality with `i`. Simplify using `[Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LinesProjLattice.proof (h1 : LinesIdealLatticeFG.Statement) : LinesProjLattice.Statement := by
   intro K _ _ n m k a B τ ha hB hτ

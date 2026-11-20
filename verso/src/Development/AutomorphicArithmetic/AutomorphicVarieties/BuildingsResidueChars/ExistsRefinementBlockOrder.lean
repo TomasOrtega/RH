@@ -9,11 +9,11 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JordanHolderMult
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL ValuativeRel
 
 /- English proof (translation)
-Set `S : Finset β` to `Finset.univ.image κ`. Set `o : Fin S.card ≃o S` to `S.orderIsoOfFin rfl`. Establish `hS : ∀ p, κ p ∈ S` using `fun p => Finset.mem_image_of_mem κ (Finset.mem_univ p)`. Set `g : Fin N → Fin S.card` to `fun p => o.symm ⟨κ p, hS p⟩`. Use `⟨S.card, fun a => Fintype.card {p // g p = a}, (Equiv.sigmaCongrRight (fun a => (Fintype.equivFin {p // g p = a}).symm)).trans (Equiv.sigmaFiberEquiv g), ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p q`. Establish `hb : ∀ x, blk ((Equiv.sigmaCongrRight (fun a => (Fintype.equivFin {p // g p = a}).symm)).trans (Equiv.sigmaFiberEquiv g)) x = g x`. Introduce `x`. Both sides reduce to the same expression. Rewrite using `[hb, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `show o.symm ⟨κ p, hS p⟩ < o.symm ⟨κ q, hS q⟩ ↔ κ p < κ q`. Rewrite using `[OrderIso.lt_iff_lt]`. Conclude with `Subtype.mk_lt_mk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_equiv_sigma_blk_lt_iff_lt {N : ℕ} {β : Type} [LinearOrder β] (κ : Fin N → β) :
     ∃ (t : ℕ) (c : Fin t → ℕ) (f : (Σ a, Fin (c a)) ≃ Fin N), ∀ p q, blk f p < blk f q ↔ κ p < κ q := by
@@ -36,27 +36,23 @@ private theorem exists_equiv_sigma_blk_lt_iff_lt {N : ℕ} {β : Type} [LinearOr
   exact Subtype.mk_lt_mk
 
 /- English proof (translation)
-Introduce `N r s d e j d' e'`. Choose the witnesses or unpack the hypotheses as in `⟨K, hK⟩ : ∃ K : (Σ a, Fin (d a)) → Lex (ℕ × ℕ), ∀ x y, K x < K y ↔ (x.1 < y.1 ∨ ∃ p' q', x = ⟨j, p'⟩ ∧ y = ⟨j, q'⟩ ∧ blk e' p' < blk e' q') := by`. Use `⟨fun x => toLex ((x.1 : ℕ), if h : x.1 = j then ((blk e' (h ▸ x.2) : Fin s) : ℕ) else 0), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, u⟩ ⟨b, w⟩`. Use `show toLex ((a : ℕ), if h : a = j then ((blk e' (h ▸ u) : Fin s) : ℕ) else 0) < toLex ((b : ℕ), if h : b = j then ((blk e' (h ▸ w) : Fin s) : ℕ) else 0) ↔ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Prod.Lex.toLex_lt_toLex]`. Apply the tactic sequence `by_cases ha : a = j <;> by_cases hb : b = j`. Substitute `ha` using the available equality. Substitute `hb` using the available equality. Rewrite using `[dif_pos rfl, dif_pos rfl]`.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | ⟨-, h⟩)`. Conclude with `absurd h (lt_irrefl _)`. Conclude with `Or.inr ⟨u, w, rfl, rfl, Fin.lt_iff_val_lt_val.mpr h⟩`. Introduce and unpack `(h | ⟨p', q', h1, h2, h3⟩)`.
+Assume the hypotheses and unpack their components. Prove the second alternative. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h (lt_irrefl _)`. Use `Or.inr ⟨rfl, ?_⟩` and prove the remaining obligations. Rewrite `h1`, `h2` using `[Sigma.mk.inj_iff]`. Rewrite using `[eq_of_heq h1.2, eq_of_heq h2.2]`. Conclude with `Fin.lt_iff_val_lt_val.mp h3`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Substitute `ha` using the available equality. Rewrite using `[dif_pos rfl, dif_neg hb]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | ⟨-, h⟩)`. Conclude with `Or.inl (Fin.lt_iff_val_lt_val.mpr h)`.
+Prove the first alternative. Assume the hypotheses and unpack their components. Prove the first alternative. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd h (Nat.not_lt_zero _)`. Introduce and unpack `(h | ⟨p', q', -, h2, -⟩)`. Conclude with `Or.inl (Fin.lt_iff_val_lt_val.mp h)`. Conclude with `absurd (congrArg Sigma.fst h2) hb`. Substitute `hb` using the available equality.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Prove the first alternative. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Rewrite using `[dif_neg ha, dif_pos rfl]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | ⟨h, -⟩)`. Conclude with `Or.inl (Fin.lt_iff_val_lt_val.mpr h)`. Conclude with `absurd (Fin.ext h) ha`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Prove the first alternative. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(h | ⟨p', q', h1, -, -⟩)`. Conclude with `Or.inl (Fin.lt_iff_val_lt_val.mp h)`. Conclude with `absurd (congrArg Sigma.fst h1) ha`. Rewrite using `[dif_neg ha, dif_neg hb]`. Prove the components needed by the constructor for the conclusion.
+Prove the first alternative. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `(h | ⟨-, h⟩)`. Conclude with `Or.inl (Fin.lt_iff_val_lt_val.mpr h)`. Conclude with `absurd h (lt_irrefl 0)`. Introduce and unpack `(h | ⟨p', q', h1, -, -⟩)`. Conclude with `Or.inl (Fin.lt_iff_val_lt_val.mp h)`.
-
-Conclude with `absurd (congrArg Sigma.fst h1) ha`. Take `⟨t, c, f, hf⟩` from `exists_equiv_sigma_blk_lt_iff_lt (fun p : Fin N => K (e.symm p))`. Use `⟨t, c, f, fun p q => ?_⟩` and prove the remaining obligations. Rewrite using `[hf, hK]`. Simplify using `only [Equiv.symm_apply_eq]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_refinement_block_order :
     ∀ (N : ℕ) (r s : ℕ) (d : Fin r → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin N) (j : Fin r) (d' : Fin s → ℕ) (e' : (Σ b, Fin (d' b)) ≃ Fin (d j)),

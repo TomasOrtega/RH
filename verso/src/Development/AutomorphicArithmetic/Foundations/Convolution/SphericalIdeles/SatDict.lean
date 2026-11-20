@@ -17,9 +17,9 @@ open UpperTheory.ConvolutionTheory.C GlobalTheory.PRep GlobalTheory.CuspRep Glob
 namespace UpperTheory.ConvolutionTheory.Sph
 
 /- English proof (translation)
-Use `⟨fun hB => ?_, fun h => GlobalTheory.HeightCounting.Blocks.hasSatGL_locRep hτ h⟩` and prove the remaining obligations. Establish `hB' : GlobalTheory.LFun.HasSatGL v (π.locRep v) B` using `hB`. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 hB'.1`. Take `⟨y, hy0, hy⟩` from `LocSph.exists_fixed_of_mem_iSup ((finRep K n).comp (locGL K n v)) τ.ρ τ.irred (fun f : LocSph.Maps π v τ => f.1) (fun f => f.2.2) (GlobalTheory.LFun.KGL v n : Set _) x.1 (fun e => hx0 (Subtype.ext e)) (fun k hk => congrArg Subtype.val (GlobalTheory.LGrp.mem_fixed.1 hx k hk)) (by …`. Take `⟨B', hB''⟩` from `GlobalTheory.SatInd.exists_hasSatGL_of_isIrreducible τ.smooth τ.irred ((Submodule.ne_bot_iff _).2 ⟨y, GlobalTheory.LGrp.mem_fixed.2 hy, hy0⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(GlobalTheory.HeightCounting.Blocks.hasSatGL_locRep hτ hB'').unique hB' ▸ hB''`.
+A detailed English derivation is pending.
 -/
 private theorem hasSat_iff {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {n : ℕ} (π : CuspSub K n)
     (v : HeightOneSpectrum (𝓞 K)) (τ : SmIrr (GL (Fin n) (v.adicCompletion K))) (hτ : π.IsLocComp v τ)
@@ -36,7 +36,7 @@ private theorem hasSat_iff {K : Type} [Field K] [NumberField K] [IsTotallyComple
   exact (GlobalTheory.HeightCounting.Blocks.hasSatGL_locRep hτ hB'').unique hB' ▸ hB''
 
 /- English proof (translation)
-Establish `hK` using `GlobalTheory.SmGL.SphCompletion.KO_completion (F := K) v n`. Unfold `GlobalTheory.SmGL.IsSpherical GlobalTheory.SmGL.IsSphericalFor`. Rewrite using `[hK]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isSpherical_iff {K : Type} [Field K] [NumberField K] {n : ℕ} (v : HeightOneSpectrum (𝓞 K))
     (τ : SmIrr (GL (Fin n) (v.adicCompletion K))) :
@@ -49,11 +49,11 @@ end UpperTheory.ConvolutionTheory.Sph
 
 open UpperTheory.ConvolutionTheory.Sph in
 /- English proof (translation)
-Use `⟨1, Or.inl rfl, ?_⟩` and prove the remaining obligations. Introduce `K _ _ _ n π v τ hτ`. Establish `hτ' : π.IsLocComp v τ` using `hτ`. Use `⟨?_, fun hs => ?_, fun α hs hα => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨B, hB⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(isSpherical_iff v τ).2 ((hasSat_iff π v τ hτ' B).1 hB).1`. Use `GlobalTheory.SatakeExists.exists_isSubquotient_prinSeries ((GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness _).1 (Fin n) τ.V τ.ρ τ.smooth τ.irred) τ.irred ?_` and prove the remaining obligations. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 hs`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨x, fun h => hx ⟨h.1, iwahori_le_KO _ _ h.2⟩, hx0⟩`. Establish `h` using `GlobalTheory.LFun.SatBridge.hasSatGL_of_hasSatake K v n τ.V τ.ρ α ⟨τ.irred, hs, hα⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (Finset.univ.val.map fun i => α i ^ (1 : ℤ)) = Finset.univ.val.map α` using `by simp`. Rewrite using `[e]`. Conclude with `(hasSat_iff π v τ hτ' _).2 h`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Sph.satDict :
     UpperTheory.ConvolutionTheory.Sph.SatDict := by

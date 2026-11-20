@@ -14,7 +14,7 @@ section Germs
 variable {X Y Y' Z : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[← gs_pull r ψ z V hV b]`. Establish `h1 : r z ∈ ψ ⁻¹ᵁ V` using `hV`. Simplify using `only [gs, dif_pos hV, dif_pos h1]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply r (ψ ⁻¹ᵁ V) z h1 _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gs_comp_stalk (r : Z ⟶ Y) (ψ : Y ⟶ X) (z : Z) (V : X.Opens) (hV : ψ (r z) ∈ V) (b : Γ(X, V)) :
     gs (r ≫ ψ) z V b = (r.stalkMap z).hom (gs ψ (r z) V b) := by
@@ -24,9 +24,9 @@ theorem gs_comp_stalk (r : Z ⟶ Y) (ψ : Y ⟶ X) (z : Z) (V : X.Opens) (hV : �
   exact (Scheme.Hom.germ_stalkMap_apply r (ψ ⁻¹ᵁ V) z h1 _).symm
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← gs_unit r z U hU a, ← gs_unit (r ≫ ψ) z V (by simpa using hV) b]`. Establish `e1` using `gs_comp_stalk r (𝟙 Y) z U (by simpa using hU) a.val`. Establish `e2` using `gs_comp_stalk r ψ z V hV b.val`. Rewrite `e1` using `[Category.comp_id]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e1, e2, gs_unit (𝟙 Y) (r z) U (by simpa using hU) a, gs_unit ψ (r z) V hV b, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gm_of_id (r : Z ⟶ Y) (ψ : Y ⟶ X) (z : Z) {U : Y.Opens} {V : X.Opens} (hU : r z ∈ U)
     (hV : ψ (r z) ∈ V) (a : Γ(Y, U)ˣ) (b : Γ(X, V)ˣ) (h : gm (𝟙 Y) (r z) U a = gm ψ (r z) V b) :
@@ -39,7 +39,7 @@ theorem gm_of_id (r : Z ⟶ Y) (ψ : Y ⟶ X) (z : Z) {U : Y.Opens} {V : X.Opens
   rw [e1, e2, gs_unit (𝟙 Y) (r z) U (by simpa using hU) a, gs_unit ψ (r z) V hV b, h]
 
 /- English proof (translation)
-Establish `e1` using `gs_comp_stalk r (𝟙 Y) z U (by simpa using hU) a`. Establish `e2` using `gs_comp_stalk r ψ z V hV b`. Rewrite `e1` using `[Category.comp_id]`. Rewrite using `[e1, e2, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_of_id (r : Z ⟶ Y) (ψ : Y ⟶ X) (z : Z) {U : Y.Opens} {V : X.Opens} (hU : r z ∈ U)
     (hV : ψ (r z) ∈ V) (a : Γ(Y, U)) (b : Γ(X, V)) (h : gs (𝟙 Y) (r z) U a = gs ψ (r z) V b) :
@@ -84,9 +84,9 @@ def PullOf.pull {L : LB X} {ψ : Y ⟶ X} {A : LB Y} (pA : PullOf L ψ A) (F : Y
       ⟨(pA.mem _ _).1 m1, (pA.mem _ _).1 m2⟩ _ _ (pA.g (F y) _ _ m1 m2)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Introduce `y hy`. Establish `h1` using `(pA'.mem i y).1 hy`. Use `show h y ∈ A.U (pA.d (pA'.c i))`. Rewrite using `[pA.mem, pA.cd]`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1`.
+A detailed English derivation is pending.
 -/
 theorem PullOf.cp_le {L : LB X} {ψ : Y ⟶ X} {ψ' : Y' ⟶ X} {A : LB Y} {A' : LB Y'} (pA : PullOf L ψ A)
     (pA' : PullOf L ψ' A') (h : Y' ⟶ Y) (e : h ≫ ψ = ψ') (i : A'.ι) :
@@ -116,9 +116,9 @@ def PullOf.cp {L : LB X} {ψ : Y ⟶ X} {ψ' : Y' ⟶ X} {A : LB Y} {A' : LB Y'}
       (V := L.U (pA'.c i) ⊓ L.U (pA'.c j)) h ψ y ⟨hi', hj'⟩ ⟨hi2, hj2⟩ _ _ hg).symm
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hy' : ∀ k, (φ' k).base y ∈ (L.U (j k) : Set X)` using `Set.mem_iInter.1 hy`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Establish `h2` using `hy' k`. Rewrite `h2` using `[← e k]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cpSame_le {K : Type} [Fintype K] (L : LB X) (φ : K → (Y ⟶ X)) (φ' : K → (Y' ⟶ X)) (h : Y' ⟶ Y)
     (e : ∀ k, h ≫ φ k = φ' k) (j : K → L.ι) : LB.wchart L φ' j ≤ h ⁻¹ᵁ LB.wchart L φ j := by
@@ -150,7 +150,7 @@ def secCP {A' : LB Y'} {A : LB Y} {h : Y' ⟶ Y} (a : ChartPull A' A h) (s : LB.
     exact gs_compat s h y (a.le i hy.1) (a.le j hy.2)
 
 /- English proof (translation)
-The claim follows from `(gs_res r z (a.le i) hz _).trans (gs_pull r h z _ (a.le i hz) _)`.
+A detailed English derivation is pending.
 -/
 theorem gs_secCP {A' : LB Y'} {A : LB Y} {h : Y' ⟶ Y} (a : ChartPull A' A h) (s : LB.Sec A) (r : Z ⟶ Y') (z : Z)
     (i : A'.ι) (hz : r z ∈ A'.U i) :

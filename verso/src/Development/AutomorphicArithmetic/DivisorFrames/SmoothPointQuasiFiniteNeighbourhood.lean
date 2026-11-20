@@ -8,13 +8,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TorusPart
 
 /- English proof (translation)
-Take `⟨n, g, hgC, hg⟩` from `RingHom.IsStandardSmooth.exists_etale_mvPolynomial hφ`. Use `choose r hr using fun i : Fin n => hs (ψ.hom (g (MvPolynomial.X i)))`. Set `g' : CommRingCat.of (MvPolynomial (Fin n) R) ⟶ S` to `CommRingCat.ofHom g`. Set `e : CommRingCat.of (MvPolynomial (Fin n) R) ⟶ R` to `CommRingCat.ofHom (MvPolynomial.eval r)`. Establish `hφC (a : R) : g (MvPolynomial.C a) = φ.hom a` using `congr($hgC a)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : g' ≫ ψ = e ≫ (φ ≫ ψ)` using `by ext1`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun i => ?_)` and prove the remaining obligations. Simplify using `[g', e, hφC]`. Simplify `(hr i).symm` using `[g', e]`. Use `⟨pushout e g', pushout.inr _ _, pushout.desc (φ ≫ ψ) ψ hw.symm, pushout.inr_desc _ _ _, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : φ ≫ pushout.inr e g' = pushout.inl e g'`. Establish `h2 : φ = CommRingCat.ofHom (MvPolynomial.C (σ` using `Fin n)) ≫ g' := by`. Use extensionality with `a`. Simplify using `[g', hφC]`. Establish `h3 : CommRingCat.ofHom (MvPolynomial.C (σ` using `Fin n)) ≫ e = 𝟙 R := by ext1; ext a; exact MvPolynomial.eval_C a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, Category.assoc, ← pushout.condition, ← Category.assoc, h3, Category.id_comp]`. Rewrite using `[h1]`. Conclude with `RingHom.Etale.isStableUnderBaseChange.pushout_inl RingHom.Etale.respectsIso e g' hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ring_qsec {R S K : CommRingCat.{0}} (φ : R ⟶ S) (hφ : φ.hom.IsStandardSmooth) (ψ : S ⟶ K)
     (hs : Function.Surjective (φ ≫ ψ).hom) :
@@ -41,21 +41,19 @@ private theorem ring_qsec {R S K : CommRingCat.{0}} (φ : R ⟶ S) (hφ : φ.hom
   exact RingHom.Etale.isStableUnderBaseChange.pushout_inl RingHom.Etale.respectsIso e g' hg
 
 /- English proof (translation)
-Introduce `k _ _ C _ hC G hG p hp g`. Establish `: Smooth (strHom k C)` using `have := hC.1`. Use the proof step `SmoothOfRelativeDimension.smooth 1 _`. Establish `: IsLocallyNoetherian C` using `LocallyOfFiniteType.isLocallyNoetherian (strHom k C)`. Set `g₁ : Spec (.of k) ⟶ G.left` to `g.left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg₁ : g₁ ≫ G.hom = p` using `Over.w g`. Take `⟨U, hU, V, hV, hx, e, hφ⟩` from `Smooth.exists_isStandardSmooth G.hom (g₁ (IsLocalRing.closedPoint k))`. Establish `hr : Set.range g₁ ⊆ Set.range hV.fromSpec`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[hV.range_fromSpec, Subsingleton.elim y (IsLocalRing.closedPoint k)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hx`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (IsOpenImmersion.lift hV.fromSpec g₁ hr)`. Establish `hψ' : Spec.map ψ ≫ hV.fromSpec = g₁` using `by rw [hψ, IsOpenImmersion.lift_fac]`. Establish `hφ' : Spec.map (G.hom.appLE U V e) ≫ hU.fromSpec = hV.fromSpec ≫ G.hom` using `IsAffineOpen.SpecMap_appLE_fromSpec G.hom hU hV e`. Take `⟨a, ha⟩` from `Spec.map_surjective (R := .of k) (hU.fromSpec ≫ strHom k C)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hs : a ≫ G.hom.appLE U V e ≫ ψ = 𝟙 _`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, Spec.map_comp, ha, Category.assoc, reassoc_of% hφ', reassoc_of% hψ', reassoc_of% hg₁, Spec.map_id]`. Conclude with `hp`. Take `⟨T, π, ψ₀, hπ, hE⟩` from `ring_qsec _ hφ ψ (fun y => ⟨a.hom y, congr(($hs).hom y)⟩)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hEt : Etale (Spec.map (G.hom.appLE U V e ≫ π))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Etale)]` and apply the resulting hypothesis. Establish `hZ : (Spec.map π ≫ hV.fromSpec) ≫ G.hom = Spec.map (G.hom.appLE U V e ≫ π) ≫ hU.fromSpec`. Rewrite using `[Spec.map_comp, Category.assoc, Category.assoc, hφ']`. Establish `hg₀ : Spec.map ψ₀ ≫ Spec.map π ≫ hV.fromSpec = g₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Spec.map_comp_assoc, hπ, hψ']`. Use `⟨Over.mk (Spec.map (G.hom.appLE U V e ≫ π) ≫ hU.fromSpec), Over.homMk (Spec.map π ≫ hV.fromSpec) hZ, Over.homMk (Spec.map ψ₀) ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Spec.map ψ₀ ≫ Spec.map (G.hom.appLE U V e ≫ π) ≫ hU.fromSpec = p`. Rewrite using `[← hZ, ← Category.assoc, hg₀, hg₁]`. Establish `: Etale (Spec.map (G.hom.appLE U V e ≫ π) ≫ hU.fromSpec)` using `inferInstance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: QuasiSeparatedSpace C` using `inferInstance`. Establish `: LocallyQuasiFinite (Spec.map (G.hom.appLE U V e ≫ π))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyQuasiFinite)]`. Use `algebraize [(G.hom.appLE U V e ≫ π).hom]`. Conclude with `inferInstanceAs (Algebra.QuasiFinite _ _)`.
-
-Apply the tactic sequence `refine ⟨?_, ?_, quasiCompact_of_compactSpace (X := Spec T) _, ?_⟩ <;> simp only [Over.mk_hom] <;> infer_instance`. Use `ext1`. Conclude with `hg₀`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.smooth_point_quasi_finite_neighbourhood :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)], IsCurve k C →

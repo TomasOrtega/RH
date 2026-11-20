@@ -18,7 +18,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {H H' : Type} [NormedAddCommGroup H] [I
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {τ : Matrix (Fin n) (Fin n) ℂ → (H' →L[ℂ] H')}
 
 /- English proof (translation)
-Establish `ha' : aᴴ * Jm ε * a = Jm ε` using `ha`. Establish `hb' : bᴴ * Jm ε * b = Jm ε` using `hb`. Use `show (a * b)ᴴ * Jm ε * (a * b) = Jm ε`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mul_mem_UJset {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ UJset ε) (hb : b ∈ UJset ε) :
     a * b ∈ UJset ε := by
@@ -30,29 +30,23 @@ theorem mul_mem_UJset {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ UJset ε) (
     _ = Jm ε := by rw [ha', hb']
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `he`. Take `⟨hc, hn, ⟨⟨h1, hmul⟩, hiso, hcont⟩, hirr, hsq⟩` from `h`. Establish `hσ : ∀ g ∈ UJset ε, ∀ v, σ g v = T.symm (τ g (T v))`. Introduce `g hg v`. Rewrite using `[← hT g hg v, LinearIsometryEquiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `one_mem : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ UJset ε` using `by show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Jm ε * 1 = Jm ε`. Simplify using the standard rewrite rules. Use `⟨?_, ?_, ⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `haveI := hc`. Conclude with `T.toIsometryEquiv.completeSpace`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hn`. Conclude with `T.toLinearEquiv.toEquiv.nontrivial`. Use extensionality with `v`. Rewrite using `[hσ 1 one_mem v, h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb`. Use extensionality with `v`. Rewrite using `[hσ _ (mul_mem_UJset ha hb), hmul a ha b hb, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, hσ a ha, hσ b hb, LinearIsometryEquiv.apply_symm_apply]`. Introduce `g hg v`. Rewrite using `[hσ g hg v, LinearIsometryEquiv.norm_map, hiso g hg, LinearIsometryEquiv.norm_map]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `v`. Establish `hc' : ContinuousOn (fun g => T.symm (τ g (T v))) (UJset ε)` using `T.symm.continuous.comp_continuousOn (hcont (T v))`. Conclude with `hc'.congr (fun g hg => hσ g hg v)`. Introduce `S hS hst`. Set `S' : Submodule ℂ H'` to `S.comap (T.symm.toLinearEquiv : H' →ₗ[ℂ] H)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `mem' : ∀ w, w ∈ S' ↔ T.symm w ∈ S` using `fun w => Iff.rfl`. Establish `hcl : IsClosed (S' : Set H')` using `hS.preimage T.symm.continuous`. Establish `hst' : ∀ g ∈ UJset ε, ∀ w ∈ S', τ g w ∈ S'`. Introduce `g hg w hw`. Rewrite `hw`, the goal using `[mem']`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[symm_inter T hT g hg w]`. Conclude with `hst g hg _ hw`. Break down `hirr S' hcl hst' with h0 | h0` into its components or cases. Use `left`. Rewrite using `[Submodule.eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v hv`. Establish `hTv : T v ∈ S'`. Rewrite using `[mem', LinearIsometryEquiv.symm_apply_apply]`. Conclude with `hv`. Rewrite `hTv` using `[h0, Submodule.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(LinearIsometryEquiv.map_eq_zero_iff T).mp hTv`. Use `right`. Rewrite using `[Submodule.eq_top_iff']`. Introduce `v`. Establish `hTv : T v ∈ S'`.
-
-Rewrite using `[h0]`. Conclude with `Submodule.mem_top`. Rewrite `hTv` using `[mem', LinearIsometryEquiv.symm_apply_apply]`. Conclude with `hTv`. Introduce `v w`.
-
-Establish `heq : coefOn (ε` using `ε) σ v w = coefOn (ε := ε) τ (T v) (T w) := by`. Use function extensionality and compare the values at `g`. Establish `hg : umat g ∈ UJset ε` using `g.2`. Simplify using `only [coefOn]`. Rewrite using `[← hT _ hg v, LinearIsometryEquiv.inner_map_map]`.
-
-Rewrite using `[heq]`. Conclude with `hsq (T v) (T w)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSqIntIrr_of_uEquiv (he : UEquiv ε σ τ) (h : IsSqIntIrr ε τ) : IsSqIntIrr ε σ := by
   obtain ⟨T, hT⟩ := he
@@ -120,9 +114,7 @@ theorem isSqIntIrr_of_uEquiv (he : UEquiv ε σ τ) (h : IsSqIntIrr ε τ) : IsS
     exact hsq (T v) (T w)
 
 /- English proof (translation)
-Take `⟨c1, c2, c3, c4, c5⟩` from `isSqIntIrr_of_uEquiv he ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2.1⟩`. Take `⟨T, hT⟩` from `he`. Use `⟨c1, c2, c3, c4, c5, ?_, ?_⟩` and prove the remaining obligations. Conclude with `exists_ktype_of_uEquiv (uEquiv_symm ⟨T, hT⟩) h.2.2.2.2.2.1`. Introduce `μ S hS`.
-
-Conclude with `h.2.2.2.2.2.2 μ _ (ktype_transfer T hT hS)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isDS_of_uEquiv {lam : Fin n → ℝ} (he : UEquiv ε σ τ) (h : IsDS ε lam τ) : IsDS ε lam σ := by
   obtain ⟨c1, c2, c3, c4, c5⟩ :=
@@ -134,9 +126,9 @@ theorem isDS_of_uEquiv {lam : Fin n → ℝ} (he : UEquiv ε σ τ) (h : IsDS ε
     exact h.2.2.2.2.2.2 μ _ (ktype_transfer T hT hS)
 
 /- English proof (translation)
-Take `⟨S, hfin, hvS, hst⟩` from `hv`. Use `⟨S.map (T.toLinearEquiv : H →ₗ[ℂ] H'), ?_, Submodule.mem_map_of_mem hvS, ?_⟩` and prove the remaining obligations. Use `haveI := hfin infer_instance`. Introduce `g hg w hw`. Take `⟨u, hu, hwu⟩` from `Submodule.mem_map.mp hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw' : w = T u` using `hwu.symm`. Substitute `hw'` using the available equality. Rewrite using `[← h g (Kset_sub hg) u]`. Conclude with `Submodule.mem_map_of_mem (hst g hg u hu)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isKFin_transfer (T : H ≃ₗᵢ[ℂ] H') (h : ∀ g ∈ UJset ε, ∀ v, T (σ g v) = τ g (T v)) {v : H}
     (hv : IsKFin ε σ v) : IsKFin ε τ (T v) := by
@@ -152,9 +144,9 @@ theorem isKFin_transfer (T : H ≃ₗᵢ[ℂ] H') (h : ∀ g ∈ UJset ε, ∀ v
     exact Submodule.mem_map_of_mem (hst g hg u hu)
 
 /- English proof (translation)
-Take `⟨hsm, heig⟩` from `hf`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hsm g₀ hg₀`. Conclude with `⟨U, F, hU, hgU, hF, fun g hgU' hg => (h g hg).trans (hfF g hgU' hg)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `m g hg`. Establish `hgel : gelf ε m f g = gelf ε m f' g`. Simplify using `only [gelf]`. Conclude with `Finset.sum_congr rfl (fun a _ => Eword_congr ε h _ g hg)`. Rewrite using `[hgel, heig m g hg, h g hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isZEigen_congr {χ : Fin n → ℂ} {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (h : ∀ g, inUJ ε g → f g = f' g) (hf : IsZEigen ε χ f') : IsZEigen ε χ f := by
@@ -171,9 +163,9 @@ theorem isZEigen_congr {χ : Fin n → ℂ} {f f' : Matrix (Fin n) (Fin n) ℂ �
     rw [hgel, heig m g hg, h g hg]
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `he`. Introduce `v w hv hw`. Establish `hz` using `h (T v) (T w) (isKFin_transfer T hT hv) (isKFin_transfer T hT hw)`. Use `isZEigen_congr (fun g hg => ?_) hz` and prove the remaining obligations. Use `show ⟪w, σ g v⟫_ℂ = ⟪T w, τ g (T v)⟫_ℂ`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hT g hg v, LinearIsometryEquiv.inner_map_map]`.
+A detailed English derivation is pending.
 -/
 theorem hasInfChar_of_uEquiv {χ : Fin n → ℂ} (he : UEquiv ε σ τ) (h : HasInfChar ε χ τ) :
     HasInfChar ε χ σ := by
@@ -185,7 +177,7 @@ theorem hasInfChar_of_uEquiv {χ : Fin n → ℂ} (he : UEquiv ε σ τ) (h : Ha
   rw [← hT g hg v, LinearIsometryEquiv.inner_map_map]
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ hσ`. Take `⟨G, i1, i2, π, hπ, hcl⟩` from `h n`. Take `⟨s, mu, hmu, hs, he⟩` from `hcl ε H σ hσ`. Conclude with `⟨s, mu, hmu, hs, isDS_of_uEquiv he (isDS_of_isHCDS hmu (hπ (ε ∘ s) mu hmu))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dsExhaust_of_dsClass (h : DSClass) : DSExhaust := by
   intro n ε H _ _ σ hσ
@@ -194,7 +186,7 @@ theorem dsExhaust_of_dsClass (h : DSClass) : DSExhaust := by
   exact ⟨s, mu, hmu, hs, isDS_of_uEquiv he (isDS_of_isHCDS hmu (hπ (ε ∘ s) mu hmu))⟩
 
 /- English proof (translation)
-Introduce `n ε lam H _ _ σ hl hσ`. Take `⟨G, i1, i2, π, hπ, huniq⟩` from `exists_model h ε hl`. Conclude with `hasInfChar_of_uEquiv (huniq H σ hσ) hπ.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dsInfChar_of_dsClass (h : DSClass) : DSInfChar := by
   intro n ε lam H _ _ σ hl hσ
@@ -202,19 +194,17 @@ theorem dsInfChar_of_dsClass (h : DSClass) : DSInfChar := by
   exact hasInfChar_of_uEquiv (huniq H σ hσ) hπ.2.1
 
 /- English proof (translation)
-Introduce `n ε lam hl H _ _ _ σ hσ`. Take `⟨S0, hS0⟩` from `hσ.2.2.2.2.2.1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hset : {S : Submodule ℂ H | IsKTypeOf ε σ (lowK ε lam) S} = {S0}`. Use extensionality with `S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hS`. Conclude with `lowKMultOne_of_dsClass h n ε lam H σ hl hσ S S0 hS hS0`. Introduce and unpack `rfl`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hS0`. Establish `hsub : lowKSub ε lam σ = S0` using `by show sSup {S : Submodule ℂ H | IsKTypeOf ε σ (lowK ε lam) S} = S0`. Rewrite using `[hset, sSup_singleton]`. Rewrite using `[hsub]`. Conclude with `hS0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `μ S hS hne`. Take `⟨c, hc, hμ⟩` from `kTypesAbove_of_dsClass h n ε lam H σ hl hσ μ S hS`. Establish `hQ0 : (∑ a, ∑ b, (c a b : ℝ) • root a b) ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hμ, h0, add_zero]`. Establish `hx : Antitone (lam + Formalism.QuantumDeterminants.rhoStd n)` using `(strictAnti_add_rho hl.1).antitone`. Establish `hcone` using `nsq_add_cone hx hc`. Establish `hpos : 0 < nsq (∑ a, ∑ b, (c a b : ℝ) • root a b)`. Break down `(nsq_nonneg (∑ a, ∑ b, (c a b : ℝ) • root a b)).lt_or_eq with hp | hp` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hp`. Conclude with `absurd (eq_zero_of_nsq hp.symm.le) hQ0`. Establish `e1 : vNormSq ε (lowK ε lam) = nsq (lam + Formalism.QuantumDeterminants.rhoStd n)` using `by show nsq (lowK ε lam + (2 : ℝ) • rhoC ε) = _`. Rewrite using `[lowK_add]`. Establish `e2 : vNormSq ε μ = nsq (lam + Formalism.QuantumDeterminants.rhoStd n + ∑ a, ∑ b, (c a b : ℝ) • root a b)` using `by show nsq (μ + (2 : ℝ) • rhoC ε) = _`.
-
-Rewrite using `[hμ, add_right_comm (lowK ε lam) _ ((2 : ℝ) • rhoC ε), lowK_add]`. Rewrite using `[e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem strictLow_of_dsClass (h : DSClass) : StrictLow := by
   intro n ε lam hl H _ _ _ σ hσ
@@ -257,7 +247,7 @@ theorem strictLow_of_dsClass (h : DSClass) : StrictLow := by
     linarith
 
 /- English proof (translation)
-Introduce `h`. Conclude with `⟨dsExists_of_dsClass h, dsExhaust_of_dsClass h, dsUnique_of_dsClass h, dsInfChar_of_dsClass h, lowKMultOne_of_dsClass h, kTypesAbove_of_dsClass h, strictLow_of_dsClass h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem consequences_of_dsClass :
     DSClass → DSExists ∧ DSExhaust ∧ DSUnique ∧ DSInfChar ∧ LowKMultOne ∧ KTypesAbove ∧ StrictLow := by

@@ -17,21 +17,21 @@ open Classical in
 def wideInd (C : ClassGroup (𝓞 F)) : Ideal (𝓞 F) → ℚ := fun I => if cls I = C then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[cls, dif_pos]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cls_of_ne_bot {I : Ideal (𝓞 F)} (h : I ≠ ⊥) :
     cls I = ClassGroup.mk0 ⟨I, mem_nonZeroDivisors_of_ne_zero h⟩ := by
   rw [cls, dif_pos]
 
 /- English proof (translation)
-Rewrite using `[cls_of_ne_bot hI, cls_of_ne_bot hJ, cls_of_ne_bot (mul_ne_zero hI hJ), ← map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cls_mul {I J : Ideal (𝓞 F)} (hI : I ≠ ⊥) (hJ : J ≠ ⊥) : cls (I * J) = cls I * cls J := by
   rw [cls_of_ne_bot hI, cls_of_ne_bot hJ, cls_of_ne_bot (mul_ne_zero hI hJ), ← map_mul]
   rfl
 
 /- English proof (translation)
-Establish `h : Ideal.span {a} ≠ ⊥` using `by simpa using ha`. Rewrite using `[cls_of_ne_bot h, ClassGroup.mk0_eq_one_iff]`. Conclude with `⟨⟨a, rfl⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem cls_span {a : 𝓞 F} (ha : a ≠ 0) : cls (Ideal.span {a}) = 1 := by
   have h : Ideal.span {a} ≠ ⊥ := by simpa using ha
@@ -39,13 +39,13 @@ theorem cls_span {a : 𝓞 F} (ha : a ≠ 0) : cls (Ideal.span {a}) = 1 := by
   exact ⟨⟨a, rfl⟩⟩
 
 /- English proof (translation)
-Rewrite using `[cls_mul (by simpa using ha) hI, cls_span ha, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cls_span_mul {a : 𝓞 F} (ha : a ≠ 0) {I : Ideal (𝓞 F)} (hI : I ≠ ⊥) : cls (Ideal.span {a} * I) = cls I := by
   rw [cls_mul (by simpa using ha) hI, cls_span ha, one_mul]
 
 /- English proof (translation)
-Introduce `I J hI hJ e`. Take `⟨a, b, ha, hb, -, -, -, e⟩` from `e`. Establish `: cls I = cls J` using `by rw [← cls_span_mul ha hI.1, e, cls_span_mul hb hJ.1]`. Unfold `wideInd`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isRayFun_wideInd (𝔣 : Ideal (𝓞 F)) (C : ClassGroup (𝓞 F)) : IsRayFun 𝔣 (wideInd C) := by
   intro I J hI hJ e
@@ -55,7 +55,7 @@ theorem isRayFun_wideInd (𝔣 : Ideal (𝓞 F)) (C : ClassGroup (𝓞 F)) : IsR
   rw [this]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Distinguish the cases in `hI : I = ⊥`. Simplify using `[GlobalTheory.RayZeta.translate, hI]`. Simplify using `only [GlobalTheory.RayZeta.translate, wideInd]`. Rewrite using `[cls_span_mul ha hI]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem translate_wideInd {a : 𝓞 F} (ha : a ≠ 0) (C : ClassGroup (𝓞 F)) :
     GlobalTheory.RayZeta.translate (Ideal.span {a}) (wideInd C) = wideInd C := by

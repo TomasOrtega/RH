@@ -17,21 +17,21 @@ def tr (k : KG ε) (v : kfin ε σ) : kfin ε σ :=
   ⟨σ (toMK k⁻¹) v, isKFin_translate (mem_kfin.1 v.2) (toMK_mem_K _)⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (map_add (σ (toMK k⁻¹)) (v : H) v')`.
+A detailed English derivation is pending.
 -/
 theorem tr_add (k : KG ε) (v v' : kfin ε σ) : tr k (v + v') = tr k v + tr k v' :=
   Subtype.ext (map_add (σ (toMK k⁻¹)) (v : H) v')
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (map_smul (σ (toMK k⁻¹)) c (v : H))`.
+A detailed English derivation is pending.
 -/
 theorem tr_smul (k : KG ε) (c : ℂ) (v : kfin ε σ) : tr k (c • v) = c • tr k v :=
   Subtype.ext (map_smul (σ (toMK k⁻¹)) c (v : H))
 
 /- English proof (translation)
-Take `⟨S, hSf, hvS, hSK⟩` from `mem_kfin.1 v.2`. Use `haveI := hSf`. Establish `hSk : ∀ x ∈ S, x ∈ kfin ε σ` using `fun x hx => mem_kfin.2 ⟨S, hSf, hx, hSK⟩`. Set `ι : S →ₗ[ℂ] kfin ε σ` to `{ toFun := fun x => ⟨x, hSk x x.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hc : Continuous (l ∘ₗ ι)` using `LinearMap.continuous_of_finiteDimensional _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ k : KG ε, σ (toMK k⁻¹) v ∈ S` using `fun k => hSK _ (toMK_mem_K _) _ hvS`. Establish `h1 : Continuous fun k : KG ε => σ (toMK k⁻¹) (v : H)` using `(hU.2.2 v).comp_continuous ((continuous_toMK ε).comp continuous_inv) fun k => K_le_UJ (toMK_mem_K _)`. Establish `h2 : Continuous fun k : KG ε => (⟨σ (toMK k⁻¹) v, hmem k⟩ : S)` using `h1.subtype_mk _`. Conclude with `(hc.comp h2).congr fun k => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_tr (hU : IsURepOn (UJset ε) σ) (l : kfin ε σ →ₗ[ℂ] ℂ) (v : kfin ε σ) :
     Continuous fun k : KG ε => l (tr k v) := by
@@ -52,7 +52,7 @@ theorem continuous_tr (hU : IsURepOn (UJset ε) σ) (l : kfin ε σ →ₗ[ℂ] 
 def fm (l : kfin ε σ →ₗ[ℂ] ℂ) (v y : kfin ε σ) : ℂ := ∫ k, conj (l (tr k v)) * l (tr k y) ∂(muK ε)
 
 /- English proof (translation)
-Use `haveI : CompactSpace (KG ε) := instCompactKG n ε`. Establish `hc : Continuous fun k : KG ε => conj (l (tr k v)) * l (tr k y)` using `((continuous_tr hU l v).star).mul (continuous_tr hU l y)`. Conclude with `hc.integrable_of_hasCompactSupport (isClosed_tsupport _).isCompact`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_fm (hU : IsURepOn (UJset ε) σ) (l : kfin ε σ →ₗ[ℂ] ℂ) (v y : kfin ε σ) :
     Integrable (fun k : KG ε => conj (l (tr k v)) * l (tr k y)) (muK ε) := by
@@ -96,25 +96,23 @@ end BilinearFormCasimir
 
 open BilinearFormCasimir in
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hU hI Q hQ v₀ hv₀`. Establish `hv0 : v₀ ≠ 0` using `fun h => hv₀ (by rw [h, map_zero])`. Set `f0 : (ℂ ∙ v₀) →ₗ[ℂ] ℂ` to `(LinearPMap.mkSpanSingleton v₀ ((Q v₀ : ℝ) : ℂ) hv0).toFun`. Establish `hf0 : ∀ x : (ℂ ∙ v₀), ‖f0 x‖ ≤ Q x`. Introduce and unpack `⟨x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Establish `e : f0 ⟨c • v₀, hx⟩ = c • ((Q v₀ : ℝ) : ℂ)` using `LinearPMap.mkSpanSingleton'_apply v₀ ((Q v₀ : ℝ) : ℂ) _ c hx`. Rewrite using `[e, smul_eq_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg (apply_nonneg Q v₀)]`. Conclude with `(map_smul_eq_mul Q c v₀).symm.le`. Take `⟨l, hl, hlQ⟩` from `Module.Dual.exists_extension_of_le_seminorm (ℂ ∙ v₀) f0 hf0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlv : l v₀ = ((Q v₀ : ℝ) : ℂ)`. Establish `h1 : v₀ ∈ (ℂ ∙ v₀)` using `Submodule.mem_span_singleton_self v₀`. Establish `h1' : (1 : ℂ) • v₀ ∈ (ℂ ∙ v₀)` using `by rw [one_smul]; exact h1`. Rewrite using `[hl ⟨v₀, h1⟩]`. Establish `e : f0 ⟨(1 : ℂ) • v₀, h1'⟩ = (1 : ℂ) • ((Q v₀ : ℝ) : ℂ)` using `LinearPMap.mkSpanSingleton'_apply v₀ ((Q v₀ : ℝ) : ℂ) _ 1 h1'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : (⟨v₀, h1⟩ : (ℂ ∙ v₀)) = ⟨(1 : ℂ) • v₀, h1'⟩` using `Subtype.ext (one_smul ℂ v₀).symm`. Rewrite using `[e', e, one_smul]`. Establish `hQtr : ∀ (k : KG ε) (v : kfin ε σ), Q (tr k v) = Q v` using `fun k v => hQ _ (toMK_mem_K _) v _ rfl`. Use `⟨bf hU l, fun k hk v y v' y' hv' hy' => ?_, fun v y => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k0, rfl⟩ : ∃ k0 : KG ε, toMK k0 = k` from `by rw [← range_toMK ε] at hk; exact hk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htr : ∀ (k : KG ε) (w w' : kfin ε σ), (w' : H) = σ (toMK k0) w → tr k w' = tr (k0⁻¹ * k) w`. Introduce `k w w' hw`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show σ (toMK k⁻¹) (w' : H) = σ (toMK (k0⁻¹ * k)⁻¹) w`. Rewrite using `[hw, ← sigma_mul hU (K_le_UJ (toMK_mem_K _)) (K_le_UJ (toMK_mem_K _))]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[bf_apply, bf_apply, fm, fm]`. Simplify using `only [htr _ _ _ hv', htr _ _ _ hy']`. Conclude with `integral_mul_left_eq_self (fun k => conj (l (tr k v)) * l (tr k y)) k0⁻¹`. Rewrite using `[bf_apply, fm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `norm_integral_le_of_norm_le_const (μ := muK ε) (f := fun k => conj (l (tr k v)) * l (tr k y)) (C := Q v * Q y) (Filter.Eventually.of_forall fun k => by`. Rewrite using `[norm_mul, RCLike.norm_conj, ← hQtr k v, ← hQtr k y]`. Conclude with `mul_le_mul (hlQ _) (hlQ _) (norm_nonneg _) (apply_nonneg _ _))`. Simplify `h` using `[measure_univ]`. Rewrite using `[bf_apply, fm] haveI : CompactSpace (KG ε) := instCompactKG n ε`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : ∀ k : KG ε, conj (l (tr k v₀)) * l (tr k v₀) = ((‖l (tr k v₀)‖ ^ 2 : ℝ) : ℂ)` using `fun k => by`. Rewrite using `[mul_comm, Complex.mul_conj']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[integral_complex_ofReal]`. Establish `hpos : 0 < ∫ k, ‖l (tr k v₀)‖ ^ 2 ∂(muK ε)`. Use `Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) ((continuous_tr hU l v₀).norm.pow 2) (isClosed_tsupport _).isCompact (fun k => by positivity) ?_` and prove the remaining obligations. Establish `h1 : tr (1 : KG ε) v₀ = v₀` using `Subtype.ext (by show σ (toMK (1 : KG ε)⁻¹) (v₀ : H) = v₀`. Rewrite using `[inv_one]`.
-
-Conclude with `sigma_one hU _)`. Rewrite using `[h1, hlv, Complex.norm_real, Real.norm_of_nonneg (apply_nonneg Q v₀)]`. Conclude with `pow_ne_zero 2 hv₀`. Conclude with `hpos.ne'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e2b : E2b := by
   intro n ε H _ _ _ σ hU hI Q hQ v₀ hv₀

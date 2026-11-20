@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Bl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `Submodule.smul_induction_on hx (fun a ha y _ i => ?_) (fun a b ha hb i => ?_)` and prove the remaining obligations. Conclude with `J.mul_mem_right _ ha`. Conclude with `J.add_mem (ha i) (hb i)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hx`. Rewrite using `[pi_eq_sum_univ x]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top`.
+A detailed English derivation is pending.
 -/
 private theorem mem_smul_top_pi {R : Type} [CommRing R] (J : Ideal R) {r : ℕ} (x : Fin r → R) :
     x ∈ J • (⊤ : Submodule R (Fin r → R)) ↔ ∀ i, x i ∈ J := by
@@ -19,11 +19,11 @@ private theorem mem_smul_top_pi {R : Type} [CommRing R] (J : Ideal R) {r : ℕ} 
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top
 
 /- English proof (translation)
-Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `key : ∀ i, ∃ L : R, ∀ n, f n i ≡ L [SMOD (I ^ n • ⊤ : Submodule R R)]` using `fun i => IsPrecomplete.prec' (I := I) (fun n => f n i) fun {m n} hmn => by`. Establish `h` using `hf hmn`. Rewrite `h` using `[SModEq.sub_mem, mem_smul_top_pi]`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h i`. Use `choose L hL using key`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, mem_smul_top_pi]`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `hL i n`. Rewrite `h` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem isPrecomplete_pi {R : Type} [CommRing R] (I : Ideal R) [IsPrecomplete I R] (r : ℕ) :
     IsPrecomplete I (Fin r → R) := by
@@ -42,9 +42,9 @@ private theorem isPrecomplete_pi {R : Type} [CommRing R] (I : Ideal R) [IsPrecom
   rwa [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at h
 
 /- English proof (translation)
-Take `⟨r, π, hπ⟩` from `Module.Finite.exists_fin' R M`. Use `haveI := isPrecomplete_pi I r`. Rewrite using `[← AdicCompletion.of_surjective_iff]`. Introduce `y`. Take `⟨z, rfl⟩` from `AdicCompletion.map_surjective I hπ y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, rfl⟩` from `AdicCompletion.of_surjective I (Fin r → R) z`. Conclude with `⟨π w, (AdicCompletion.map_of I π w).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem isPrecomplete_finite {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [Module.Finite R M] (I : Ideal R) [IsPrecomplete I R] : IsPrecomplete I M := by
@@ -57,11 +57,11 @@ private theorem isPrecomplete_finite {R M : Type} [CommRing R] [AddCommGroup M] 
   exact ⟨π w, (AdicCompletion.map_of I π w).symm⟩
 
 /- English proof (translation)
-Use `choose f hf using fun n => (lev A T n).mkQ_surjective (x n)`. Establish `h1 : ∀ n, f n - f (n + 1) ∈ lev A T n` using `fun n => by`. Rewrite using `[← Submodule.Quotient.eq]`. Use `hx n` as an intermediate fact. Rewrite `this` using `[← hf (n + 1), redn_mk, ← hf n]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.symm`. Establish `h2 : ∀ m n, m ≤ n → f m - f n ∈ lev A T m` using `fun m n hmn => by`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hmn ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3 : lev A T n ≤ lev A T m` using `Submodule.smul_mono_left (Ideal.pow_le_pow_right hmn)`. Simplify using `using (lev A T m).add_mem ih (h3 (h1 n))`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := maximalIdeal A) f fun {m n} hmn => SModEq.sub_mem.2 (h2 m n hmn)`. Conclude with `⟨L, fun n => Eq.trans (SModEq.def.1 (hL n).symm) (hf n)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem lift_seq {A : Type} [CommRing A] [IsLocalRing A] {T : Type} [AddCommGroup T] [Module A T]
     [IsPrecomplete (maximalIdeal A) T] (x : ∀ n, T ⧸ lev A T n) (hx : ∀ n, redn A T n (x (n + 1)) = x n) :
@@ -82,9 +82,9 @@ private theorem lift_seq {A : Type} [CommRing A] [IsLocalRing A] {T : Type} [Add
   exact ⟨L, fun n => Eq.trans (SModEq.def.1 (hL n).symm) (hf n)⟩
 
 /- English proof (translation)
-Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Use `IsHausdorff.haus' (I := maximalIdeal A) _ fun n => ?_` and prove the remaining obligations. Take `⟨p, hp, e⟩` from `hx n`. Establish `e' : p - x ∈ lev A T n` using `(Submodule.Quotient.eq _).1 e`. Establish `h1 : P.mkQ (p - x) ∈ (lev A T n).map P.mkQ` using `Submodule.mem_map_of_mem e'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Submodule.map_smul'', map_sub, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero P).2 hp, zero_sub, neg_mem_iff]`. Rewrite using `[SModEq.zero]`. Conclude with `Submodule.smul_mono le_rfl le_top h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_of_lev {A : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A] {T : Type} [AddCommGroup T]
     [Module A T] [Module.Finite A T] (P : Submodule A T) (x : T)
@@ -100,7 +100,7 @@ private theorem mem_of_lev {A : Type} [CommRing A] [IsLocalRing A] [IsNoetherian
   exact Submodule.smul_mono le_rfl le_top h1
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← Submodule.mem_bot A]`. Use `mem_of_lev ⊥ _ fun n => ?_` and prove the remaining obligations. Rewrite using `[map_sub, hx n, sub_self]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_of_lev {A : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A] {T : Type} [AddCommGroup T]
     [Module A T] [Module.Finite A T] (x y : T)
@@ -111,15 +111,13 @@ private theorem eq_of_lev {A : Type} [CommRing A] [IsLocalRing A] [IsNoetherianR
   exact zero_mem _
 
 /- English proof (translation)
-Introduce `A _ _ _ T _ _ _ _ Γ _ _ ρ c N H P hA z y hZ hz hy hP`. Use `haveI : IsPrecomplete (maximalIdeal A) T := isPrecomplete_finite _`. Use `choose z' hz' using fun g => lift_seq (fun n => z n g) fun n => hz n g`. Take `⟨y', hy'⟩` from `lift_seq y hy`. Use `⟨z', y', ⟨fun n => ?_, fun g h => ?_, ?_, fun g hg => ?_, fun h hh => ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hz']`. Conclude with `(hZ n).lc`. Use `eq_of_lev (A := A) _ _ fun n => ?_` and prove the remaining obligations. Rewrite using `[map_add, ← modRep_mk, hz', hz', hz']`. Conclude with `(hZ n).coc g h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `eq_of_lev (A := A) _ _ fun n => ?_` and prove the remaining obligations. Rewrite using `[hz', map_zero]`. Conclude with `(hZ n).cz`. Use `eq_of_lev (A := A) _ _ fun n => ?_` and prove the remaining obligations. Rewrite using `[hz', map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(hZ n).kill g hg`. Use `mem_of_lev P _ fun n => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, ← modRep_mk, hz', hy']`. Conclude with `(hZ n).loc h hh`. Introduce and unpack `rfl`.
-
-Take `⟨g, hg⟩` from `hP`. Apply `hg` to reduce the goal to its premises. Rewrite using `[← hz' g 1, Pi.zero_apply, map_zero]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Bl.limit :
     ∀ (A : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] (T : Type) [AddCommGroup T] [Module A T] [Module.Finite A T] [Module.Free A T] (Γ : Type) [Group Γ] [TopologicalSpace Γ] (ρ : Representation A Γ T) (c : Γ) (N : Set Γ) (H : Subgroup Γ) (P : Submodule A T), IsAdicComplete (maximalIdeal A) A → ∀ (z : ∀ n, Γ → T ⧸ lev A T n) (y : ∀ n, T ⧸ lev A T n), (∀ n, IsZn ρ c N H P n (z n) (y n)) → (∀ n g, redn A T n (z (n + 1) g) = z n g) → (∀ n, redn A T n (y (n + 1)) = y n) → Prim (z 1) →

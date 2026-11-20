@@ -10,11 +10,11 @@ import Formalism.LocalRingCardinality.DataSpaces
 attribute [local instance] Submodule.module._proof_1 Formalism.MainNotions.S.lf._proof_1 Formalism.MainNotions.S.starE
 
 /- English proof (translation)
-Introduce `D T F0 M h m`. Simplify using `only [Nat.cast_smul_eq_nsmul]`. Use `Submodule.span_induction (p := fun x _ => ∃ k : ℕ, k ≠ 0 ∧ k • x ∈ M) (fun x hx => ⟨1, one_ne_zero, by simpa using hx⟩) ⟨1, one_ne_zero, by simp⟩ ?_ ?_ (h ▸ Submodule.mem_top : m ∈ Submodule.span D.host.E (M : Set _))` and prove the remaining obligations. Introduce and unpack `x y - - ⟨a, ha, hx⟩ ⟨b, hb, hy⟩`. Conclude with `⟨a * b, mul_ne_zero ha hb, by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[smul_add, mul_nsmul' y, mul_nsmul x]`. Conclude with `M.add_mem (nsmul_mem hx b) (nsmul_mem hy a)⟩`. Introduce and unpack `c x - ⟨a, ha, hx⟩`. Take `⟨b, s, hb, hs⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ D.host.E).2 (Algebra.IsAlgebraic.isAlgebraic c)).exists_nsmul_eq (NumberField.RingOfIntegers D.host.E)`. Conclude with `⟨b * a, mul_ne_zero hb ha, by`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul, smul_comm a c, ← smul_assoc, hs, algebraMap_smul]`. Conclude with `M.smul_mem s hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.IntegralHeckeForms.M_nat_smul :
     ∀ (D : Formalism.BasicNotions.D7) {T : D.host.E}

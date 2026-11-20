@@ -10,21 +10,19 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FiniteO
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DigitExpansionLattice
 
 /- English proof (translation)
-Introduce `l _ c _ R _ _ _ y`. Take `⟨hint, hO, hm⟩` from `UpperTheory.integral_dvr_norm l c.O`. Establish `hO' : ∀ a : c.O, ‖algebraMap c.O (Formalism.ConjugateSelfDual.Qbar l) a‖ ≤ 1` using `hO`. Establish `hres : ∀ x : R, ∃ a : c.O, x - algebraMap c.O R a ∈ IsLocalRing.maximalIdeal R` using `UpperTheory.V.Alg.IsCO.res_surj`. Take `⟨hb1, hb2⟩` from `UpperTheory.residue_hom_norm (O := c.O) (Ω := Formalism.ConjugateSelfDual.Qbar l) hres hO' hint y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, hb1, hb2⟩` and prove the remaining obligations. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible c.O`. Establish `hJ : ∀ x : R, ∃ P : Polynomial c.O, P.Monic ∧ Polynomial.aeval x P ∈ RingHom.ker y` using `fun x => by`. Take `⟨P, hP, h0⟩` from `hint (y x) (hb1 x)`. Use `⟨P, hP, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.mem_ker]`. Establish `h1 : Polynomial.aeval (y x) P = 0` using `h0`. Rewrite `h1` using `[Polynomial.aeval_algHom_apply]`. Conclude with `h1`. Establish `hfin` using `UpperTheory.monic_ideal_completion hres (RingHom.ker y) hJ ϖ hϖ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : ‖algebraMap c.O (Formalism.ConjugateSelfDual.Qbar l) ϖ‖ < 1` using `hm ϖ hϖ.not_isUnit`. Use `letI := Fintype.ofFinite (R ⧸ (RingHom.ker y ⊔ Ideal.span {algebraMap c.O R ϖ}))`. Establish `key` using `UpperTheory.digit_expansion_lattice hO' ϖ hϖ hlt (Subalgebra.toSubmodule y.range) (fun s hs => by`. Take `⟨r, rfl⟩` from `hs`. Conclude with `hb1 r)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `(Finset.univ.image fun q : R ⧸ (RingHom.ker y ⊔ Ideal.span {algebraMap c.O R ϖ}) => y (Quotient.out q))`. Use the proof step `(fun e he => by`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 he`. Conclude with `⟨_, rfl⟩)`. Use the proof step `(fun s hs => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `hs`. Establish `hq : r - Quotient.out (Ideal.Quotient.mk (RingHom.ker y ⊔ Ideal.span {algebraMap c.O R ϖ}) r) ∈ RingHom.ker y ⊔ Ideal.span {algebraMap c.O R ϖ}`. Rewrite using `[← Ideal.Quotient.eq]`. Simplify using `[Ideal.Quotient.mk_out]`. Take `⟨j, hj, t, ht, hjt⟩` from `Submodule.mem_sup.1 hq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 ht`. Use `⟨_, Finset.mem_image.2 ⟨Ideal.Quotient.mk _ r, Finset.mem_univ _, rfl⟩, y a, ⟨a, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg y hjt`. Rewrite `h2` using `[map_add, RingHom.mem_ker.1 hj, map_sub, map_mul, AlgHom.commutes]`. Rewrite using `[Algebra.smul_def, mul_comm]`.
-
-Take the linear combination `-h2)`. Conclude with `key`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.CoPoint.coPt :
     ∀ (l : ℕ) [inst : Fact (Nat.Prime l)] (c : UpperTheory.V.HV.Coef l) [UpperTheory.V.Fr.IsCoef l ↥c.O] (R : Type)

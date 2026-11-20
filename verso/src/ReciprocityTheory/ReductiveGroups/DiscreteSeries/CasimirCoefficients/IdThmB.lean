@@ -14,13 +14,13 @@ variable {n : ℕ}
 namespace IdB
 
 /- English proof (translation)
-Establish `hvi : ∀ i, ‖v i‖ ≤ ‖v‖` using `fun i => norm_le_pi_norm v i`. Establish `hH : ∀ i j, ‖H i j‖ ≤ ‖H‖` using `fun i j => norm_entry_le_entrywise_sup_norm H`. Establish `key : ∀ i, ‖star (v i) * ∑ j, H i j * v j‖ ≤ ∑ _j : Fin n, ‖v‖ * ‖H‖ * ‖v‖`. Introduce `i`. Rewrite using `[norm_mul, norm_star]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(mul_le_mul_of_nonneg_left (norm_sum_le _ _) (norm_nonneg _)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Establish `h1` using `mul_le_mul (hH i j) (hvi j) (norm_nonneg _) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e : star v ⬝ᵥ (H *ᵥ v) = ∑ i, star (v i) * ∑ j, H i j * v j`. Simplify using `only [dotProduct, mulVec, Pi.star_apply]`. Rewrite using `[e]`. Use `(norm_sum_le _ _).trans ((Finset.sum_le_sum fun i _ => key i).trans (le_of_eq ?_))` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma quad_norm_le (H : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) :
     ‖star v ⬝ᵥ (H *ᵥ v)‖ ≤ (n : ℝ) * n * (‖v‖ * ‖H‖ * ‖v‖) := by
@@ -45,9 +45,9 @@ lemma quad_norm_le (H : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul, ← mul_assoc]`. Establish `: (t : ℂ) * star (t : ℂ) = ((t ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma quad_scale (x : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) (t : ℝ) :
     (star ((t : ℂ) • v) ⬝ᵥ (x *ᵥ ((t : ℂ) • v))).re = t ^ 2 * (star v ⬝ᵥ (x *ᵥ v)).re := by
@@ -58,19 +58,19 @@ lemma quad_scale (x : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) (t : ℝ) 
   rw [this, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Establish `hq : Continuous fun v : Fin n → ℂ => (star v ⬝ᵥ (x *ᵥ v)).re` using `Complex.continuous_re.comp (continuous_id.star.dotProduct (continuous_const.matrix_mulVec continuous_id))`. Establish `hpos : ∀ v : Fin n → ℂ, v ≠ 0 → 0 < (star v ⬝ᵥ (x *ᵥ v)).re` using `fun v hv => by`. Establish `h` using `(Complex.lt_def.mp (hx.dotProduct_mulVec_pos hv)).1`. Simplify using `using h`. Establish `hnorm : ∀ v : Fin n → ℂ, v ≠ 0 → ‖((‖v‖⁻¹ : ℝ) : ℂ) • v‖ = 1` using `fun v hv => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity), inv_mul_cancel₀ (norm_ne_zero_iff.mpr hv)]`. Establish `hback : ∀ v : Fin n → ℂ, v ≠ 0 → ((‖v‖ : ℝ) : ℂ) • (((‖v‖⁻¹ : ℝ) : ℂ) • v) = v` using `fun v hv => by`. Rewrite using `[smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ (norm_ne_zero_iff.mpr hv), Complex.ofReal_one, one_smul]`. Distinguish the cases in `hS : ∃ u : Fin n → ℂ, ‖u‖ = 1`. Take `⟨u, hu⟩` from `hS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hne : (Metric.sphere (0 : Fin n → ℂ) 1).Nonempty` using `⟨u, by simpa using hu⟩`. Take `⟨u0, hu0, hmin⟩` from `(isCompact_sphere (0 : Fin n → ℂ) 1).exists_isMinOn hne hq.continuousOn`. Establish `hu0n : ‖u0‖ = 1` using `by simpa using hu0`. Establish `hu00 : u0 ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hu0n` using `[h, norm_zero]`. Conclude with `zero_ne_one hu0n`. Use `⟨_, hpos u0 hu00, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v = 0`. Substitute `hv` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `set u := ((‖v‖⁻¹ : ℝ) : ℂ) • v`. Establish `hum : u ∈ Metric.sphere (0 : Fin n → ℂ) 1`. Rewrite using `[mem_sphere_zero_iff_norm]`. Conclude with `hnorm v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hmin hum`. Rewrite using `[← hback v hv, quad_scale]`. Establish `: ‖((‖v‖ : ℝ) : ℂ) • u‖ = ‖v‖` using `by rw [hback v hv]`. Rewrite using `[this, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left h1 (by positivity)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `⟨1, one_pos, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v = 0`. Substitute `hv` using the available equality. Simplify using the standard rewrite rules. Conclude with `absurd ⟨_, hnorm v hv⟩ hS`.
+A detailed English derivation is pending.
 -/
 lemma quad_lower {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef) :
     ∃ c > 0, ∀ v : Fin n → ℂ, c * ‖v‖ ^ 2 ≤ (star v ⬝ᵥ (x *ᵥ v)).re := by
@@ -114,15 +114,15 @@ lemma quad_lower {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef) :
     · exact absurd ⟨_, hnorm v hv⟩ hS
 
 /- English proof (translation)
-Take `⟨c, hc, hq⟩` from `quad_lower hx`. Use `⟨c / ((n : ℝ) * n + 1), by positivity, fun H hH hHn => ?_⟩` and prove the remaining obligations. Rewrite using `[posDef_iff_dotProduct_mulVec]`. Use `⟨hx.isHermitian.add hH, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.lt_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `him` using `(hx.isHermitian.add hH).im_star_dotProduct_mulVec_self v`. Establish `e : star v ⬝ᵥ ((x + H) *ᵥ v) = star v ⬝ᵥ (x *ᵥ v) + star v ⬝ᵥ (H *ᵥ v)`. Rewrite using `[add_mulVec, dotProduct_add]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, Complex.add_re, Complex.zero_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hq v`. Establish `h2` using `quad_norm_le H v`. Establish `h3 : -‖star v ⬝ᵥ (H *ᵥ v)‖ ≤ (star v ⬝ᵥ (H *ᵥ v)).re`. Use `Complex.abs_re_le_norm (star v ⬝ᵥ (H *ᵥ v))` as an intermediate fact. Combine the linear relations using `[neg_abs_le (star v ⬝ᵥ (H *ᵥ v)).re]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hv2 : 0 < ‖v‖ ^ 2` using `by have := norm_pos_iff.mpr hv; positivity`. Establish `hN : (0 : ℝ) ≤ (n : ℝ) * n` using `by positivity`. Establish `hHpos : 0 ≤ ‖H‖` using `norm_nonneg _`. Establish `hδ : ((n : ℝ) * n + 1) * ‖H‖ < c`. Rewrite `hHn` using `[lt_div_iff₀ (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : 0 < (c - (n : ℝ) * n * ‖H‖) * ‖v‖ ^ 2` using `mul_pos (by nlinarith) hv2`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[Complex.zero_im]`. Simplify using `using him.symm`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem posDef_nhd {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef) :
     ∃ δ > 0, ∀ H : Matrix (Fin n) (Fin n) ℂ, H.IsHermitian → ‖H‖ < δ → (x + H).PosDef := by
@@ -153,13 +153,11 @@ theorem posDef_nhd {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef) :
     simpa using him.symm
 
 /- English proof (translation)
-Establish `hDO : DifferentiableOn ℂ g (Metric.ball 0 2)` using `fun s hs => (hg s (by simpa using hs)).differentiableWithinAt`. Establish `han` using `hDO.analyticOnNhd Metric.isOpen_ball`. Establish `ht : Filter.Tendsto (fun t : ℝ => (t : ℂ)) (nhdsWithin 0 {0}ᶜ) (nhdsWithin 0 {0}ᶜ)`. Use `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ?_ ?_` and prove the remaining obligations. Simplify using `using (Complex.continuous_ofReal.tendsto 0).mono_left nhdsWithin_le_nhds`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `eventually_nhdsWithin_of_forall fun t ht => by simpa using ht`. Establish `hev : ∀ᶠ t : ℝ in nhdsWithin (0 : ℝ) {0}ᶜ, g (t : ℂ) = 0`. Establish `h2 : ∀ᶠ t in nhds (0 : ℝ), |t| < 2` using `by filter_upwards [Metric.ball_mem_nhds (0 : ℝ) two_pos] with t ht`. Simplify `ht` using `[Real.dist_eq]`. Conclude with `(Filter.Eventually.filter_mono nhdsWithin_le_nhds h2).mono fun t h => hr t h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfreq : ∃ᶠ s in nhdsWithin (0 : ℂ) {0}ᶜ, g s = 0` using `ht.frequently hev.frequently`. Establish `hz` using `han.eqOn_zero_of_preconnected_of_frequently_eq_zero (convex_ball (0 : ℂ) 2).isPreconnected (Metric.mem_ball_self two_pos) hfreq`. Establish `hI : Complex.I ∈ Metric.ball (0 : ℂ) 2`. Rewrite using `[Metric.mem_ball, dist_zero_right, Complex.norm_I]`. Evaluate the numerical expressions.
-
-Simplify using `using hz hI`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem line_zero {F : Type*} [NormedAddCommGroup F] [NormedSpace ℂ F] [CompleteSpace F] (g : ℂ → F)
     (hg : ∀ s : ℂ, ‖s‖ < 2 → DifferentiableAt ℂ g s) (hr : ∀ t : ℝ, |t| < 2 → g t = 0) :

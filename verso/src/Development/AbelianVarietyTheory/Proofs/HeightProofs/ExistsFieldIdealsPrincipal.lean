@@ -18,7 +18,7 @@ def clMap {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDomain B] (ψ :
   ClassGroup.extendedHom A B
 
 /- English proof (translation)
-Use `letI := ψ.toAlgebra`. Use `haveI : FaithfulSMul A B := (faithfulSMul_iff_algebraMap_injective A B).mpr hψ`. Express the relevant statement in the definitionally equal form `ClassGroup.extendedHom A B (ClassGroup.mk0 I) = 1 ↔ _`. Rewrite using `[ClassGroup.extendedHom_mk0]`. Conclude with `ClassGroup.mk0_eq_one_iff (ClassGroup.extendedIdeal A B I).2`.
+Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clMap_mk0_eq_one_iff {A B : Type} [CommRing A] [IsDedekindDomain A] [CommRing B]
     [IsDedekindDomain B] (ψ : A →+* B) (hψ : Function.Injective ψ) (I : (Ideal A)⁰) :
@@ -30,7 +30,7 @@ theorem clMap_mk0_eq_one_iff {A B : Type} [CommRing A] [IsDedekindDomain A] [Com
   exact ClassGroup.mk0_eq_one_iff (ClassGroup.extendedIdeal A B I).2
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [IsLocalization.coeSubmodule_top]`. Consider the case `succ k ih => rw [pow_succ, pow_succ, IsLocalization.coeSubmodule_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem coeSubmodule_pow {R K : Type} [CommRing R] [CommRing K] [Algebra R K] (I : Ideal R) (k : ℕ) :
     IsLocalization.coeSubmodule K (I ^ k) = IsLocalization.coeSubmodule K I ^ k := by
@@ -50,7 +50,7 @@ theorem coe_intMap (F : IntermediateField ℚ ℂ) (h : ∀ x, φ x ∈ F) (a : 
     ((intMap φ F h a : F) : ℂ) = φ (a : E) := rfl
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h1 : φ (a : E) = φ (b : E)` using `by rw [← coe_intMap φ F h, ← coe_intMap φ F h, hab]`. Conclude with `RingOfIntegers.ext (φ.injective h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem intMap_injective (F : IntermediateField ℚ ℂ) (h : ∀ x, φ x ∈ F) :
     Function.Injective (intMap φ F h) := by
@@ -62,14 +62,14 @@ def intIncl {F K : IntermediateField ℚ ℂ} (hFK : F ≤ K) : 𝓞 F →+* �
   RingOfIntegers.mapRingHom (IntermediateField.inclusion hFK).toRingHom
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_intMap {F K : IntermediateField ℚ ℂ} (hFK : F ≤ K) (h : ∀ x, φ x ∈ F) (I : Ideal (𝓞 E)) :
     I.map (intMap φ K fun x => hFK (h x)) = (I.map (intMap φ F h)).map (intIncl hFK) := by
   rw [Ideal.map_map]; rfl
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hI`. Rewrite using `[map_intMap φ hFK h, hy]`. Conclude with `⟨intIncl hFK y, by simp [Ideal.map_span]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isPrincipal_mono {F K : IntermediateField ℚ ℂ} (hFK : F ≤ K) (h : ∀ x, φ x ∈ F) (I : Ideal (𝓞 E))
     (hI : (I.map (intMap φ F h)).IsPrincipal) : (I.map (intMap φ K fun x => hFK (h x))).IsPrincipal := by
@@ -78,7 +78,7 @@ theorem isPrincipal_mono {F K : IntermediateField ℚ ℂ} (hFK : F ≤ K) (h : 
   exact ⟨intIncl hFK y, by simp [Ideal.map_span]⟩
 
 /- English proof (translation)
-Take `⟨i, h1, h2⟩` from `h`. Conclude with `⟨i, h1.trans ha, h2.trans hb⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sz_mono' {F : IntermediateField ℚ ℂ} {a b a' b' : ℝ} (h : Sz F a b) (ha : a ≤ a') (hb : b ≤ b') :
     Sz F a' b' := by
@@ -86,17 +86,15 @@ theorem sz_mono' {F : IntermediateField ℚ ℂ} {a b a' b' : ℝ} (h : Sz F a b
   exact ⟨i, h1.trans ha, h2.trans hb⟩
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hp`. Establish `hy' : (I ^ k).map (intMap φ F h) = Ideal.span {y}` using `hy`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy'` using `[Ideal.span_singleton_zero, Ideal.map_eq_bot_iff_of_injective (intMap_injective φ F h)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_ne_zero k hI hy'`. Establish `hyF : (y : F) ≠ 0` using `fun h0 => hy0 (RingOfIntegers.ext h0)`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq ((y : F) : ℂ) hk`. Establish `hS` using `GlobalTheory.T.field_size_adjoin_kth_root F a b k (y : F) (IsLocalization.coeSubmodule F (I.map (intMap φ F h))) z hF hk hyF (by rw [← coeSubmodule_pow, ← Ideal.map_pow, hy', IsLocalization.coeSubmodule_span_singleton]) hz`. Establish `hzK : z ∈ F ⊔ ℚ⟮z⟯` using `(le_sup_right : ℚ⟮z⟯ ≤ F ⊔ ℚ⟮z⟯) (IntermediateField.mem_adjoin_simple_self ℚ z)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFK : F ≤ F ⊔ ℚ⟮z⟯` using `le_sup_left`. Generalize the expression as in `F ⊔ ℚ⟮z⟯ = K at hS hzK hFK`. Use `⟨K, hFK, hS, ?_⟩` and prove the remaining obligations. Use `haveI := finiteDimensional_of_sz hS`. Use `haveI : NumberField K := NumberField.mk`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← IsFractionRing.coeSubmodule_isPrincipal (𝓞 K) K]`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow hk.ne']`. Conclude with `hyF (by exact_mod_cast hz.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨⟨z, hzK⟩, GlobalTheory.submodule_eq_span_of_pow_eq_span_pow K _ ⟨z, hzK⟩ k hk (fun h0 => hz0 (congrArg Subtype.val h0)) ?_ ?_⟩` and prove the remaining obligations. Conclude with `(IsLocalization.coeSubmodule_fg K (RingOfIntegers.coe_injective) _).mpr (IsNoetherian.noetherian _)`. Rewrite using `[← coeSubmodule_pow, ← Ideal.map_pow, map_intMap φ hFK h, hy', Ideal.map_span, Set.image_singleton, IsLocalization.coeSubmodule_span_singleton]`. Use `congr 2`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Conclude with `hz.symm`.
+A detailed English derivation is pending.
 -/
 theorem step (F : IntermediateField ℚ ℂ) (a b : ℝ) (hF : Sz F a b) (h : ∀ x, φ x ∈ F) (k : ℕ) (hk : 0 < k)
     (I : Ideal (𝓞 E)) (hI : I ≠ ⊥) (hp : ((I ^ k).map (intMap φ F h)).IsPrincipal) :
@@ -133,21 +131,17 @@ theorem step (F : IntermediateField ℚ ℂ) (a b : ℝ) (hF : Sz F a b) (h : �
     exact hz.symm
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `F _ a b h hF hn`. Distinguish the cases in `hall : ∀ I : (Ideal (𝓞 E))⁰, (I.1.map (intMap φ F h)).IsPrincipal`. Use `Real.log_natCast_nonneg n` as an intermediate fact.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `⟨F, le_rfl, sz_mono' hF (by linarith) (by linarith), hall⟩`. Use `push Not at hall`. Take `⟨I, hI⟩` from `hall`. Use `set f := clMap (intMap φ F h) (intMap_injective φ F h) with hf`. Establish `hne : f (ClassGroup.mk0 I) ≠ 1` using `fun h1 => hI ((clMap_mk0_eq_one_iff _ _ I).mp h1)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set k := orderOf (f (ClassGroup.mk0 I)) with hk`. Establish `hk0 : 0 < k` using `orderOf_pos _`. Establish `hk1 : k ≠ 1` using `fun h1 => hne (orderOf_eq_one_iff.mp h1)`. Establish `hpow : f (ClassGroup.mk0 (I ^ k)) = 1` using `by rw [map_pow, map_pow, pow_orderOf_eq_one]`. Take `⟨K, hFK, hK, hIK⟩` from `step φ F a b hF h k hk0 I.1 (nonZeroDivisors.coe_ne_zero I) ((clMap_mk0_eq_one_iff _ _ (I ^ k)).mp hpow)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI := finiteDimensional_of_sz hK`. Use `haveI : NumberField K := NumberField.mk`. Use `set g := clMap (intMap φ K fun x => hFK (h x)) (intMap_injective φ K _) with hg`. Establish `hle : f.ker ≤ g.ker`. Introduce `c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨J, rfl⟩` from `ClassGroup.mk0_surjective c`. Conclude with `(clMap_mk0_eq_one_iff _ _ J).mpr (isPrincipal_mono φ hFK h _ ((clMap_mk0_eq_one_iff _ _ J).mp hc))`. Establish `hmem : ClassGroup.mk0 I ∈ g.ker` using `(clMap_mk0_eq_one_iff _ _ I).mpr hIK`. Establish `hmul` using `Subgroup.relIndex_mul_index hle`. Rewrite `hmul` using `[Subgroup.relIndex_ker, hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Establish `hkr : k ≤ Nat.card (g.ker.map f)` using `Nat.le_of_dvd Nat.card_pos (Subgroup.orderOf_dvd_natCard _ (Subgroup.mem_map_of_mem f hmem))`. Establish `hm0 : 0 < g.ker.index` using `Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite`. Establish `hkm : k * g.ker.index ≤ n` using `hmul ▸ Nat.mul_le_mul_right _ hkr`. Establish `hlt : g.ker.index < n`. Establish `: 2 ≤ k` using `by omega`.
-
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨L, hKL, hL, hall⟩` from `ih _ hlt K _ _ _ hK rfl`. Establish `hlog : Real.log k + Real.log g.ker.index ≤ Real.log n`. Rewrite using `[← Real.log_mul (by positivity) (by positivity)]`. Conclude with `Real.log_le_log (by positivity) (by exact_mod_cast hkm)`.
-
-Conclude with `⟨L, hFK.trans hKL, sz_mono' hL (by linarith) (by linarith), hall⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem induct (n : ℕ) : ∀ (F : IntermediateField ℚ ℂ) [NumberField F] (a b : ℝ) (h : ∀ x, φ x ∈ F), Sz F a b →
     (clMap (intMap φ F h) (intMap_injective φ F h)).ker.index = n →
@@ -199,17 +193,15 @@ namespace GlobalTheory.FieldSize
 open Capit in
 
 /- English proof (translation)
-Introduce `E _ _ φ F a b hF h`. Use `haveI := finiteDimensional_of_sz hF`. Use `haveI : NumberField F := NumberField.mk`. Take `⟨L, hFL, hL, hall⟩` from `induct φ _ F a b h hF rfl`. Use `set m := (clMap (intMap φ F h) (intMap_injective φ F h)).ker.index with hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite`. Establish `hmh : m ≤ classNumber E`. Rewrite using `[classNumber, ← Nat.card_eq_fintype_card]`. Conclude with `Nat.le_of_dvd Nat.card_pos (Subgroup.index_dvd_card _)`. Establish `hlog : Real.log m ≤ Real.log (classNumber E)` using `Real.log_le_log (by positivity) (by exact_mod_cast hmh)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `⟨L, hFL, sz_mono' hL (by linarith) (by linarith), fun K _ hLK 𝔞 => ?_⟩` and prove the remaining obligations. Establish `hK : ∀ x, φ x ∈ K` using `fun x => hLK (hFL (h x))`. Establish `hp : (𝔞.map (intMap φ K hK)).IsPrincipal`. Distinguish the cases in `h0 : 𝔞 = ⊥`. Rewrite using `[h0, Ideal.map_bot]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `infer_instance`. Conclude with `isPrincipal_mono φ hLK _ _ (hall ⟨𝔞, mem_nonZeroDivisors_iff_ne_zero.mpr h0⟩)`. Take `⟨y, hy⟩` from `hp`. Use `⟨(y : K), ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (IsLocalization.coeSubmodule K) hy`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `h1` using `[Ideal.submodule_span_eq, IsLocalization.coeSubmodule_span_singleton, Ideal.map, IsLocalization.coeSubmodule_span]`. Use `h1.symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨_, ⟨a, ha, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, rfl⟩`. Introduce and unpack `⟨a, ha, hx⟩`. Conclude with `⟨_, ⟨a, ha, rfl⟩, Subtype.ext hx.symm⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sz_capitulation : ∀ (E : Type) [Field E] [NumberField E] (φ : E →+* ℂ) (F : IntermediateField ℚ ℂ) (a b : ℝ), Sz F a b → (∀ x, φ x ∈ F) → ∃ F' : IntermediateField ℚ ℂ, F ≤ F' ∧ Sz F' (a + Real.log (classNumber E)) (b + Real.log (classNumber E)) ∧ ∀ (K : IntermediateField ℚ ℂ) [FiniteDimensional ℚ K], F' ≤ K → ∀ 𝔞 : Ideal (𝓞 E), ∃ β : K, Submodule.span (𝓞 K) {β} = Submodule.span (𝓞 K) {x : K | ∃ a ∈ 𝔞, (x : ℂ) = φ (a : E)} := by
   intro E _ _ φ F a b hF h

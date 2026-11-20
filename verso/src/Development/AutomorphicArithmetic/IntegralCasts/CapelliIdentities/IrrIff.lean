@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `G W _ _ _ ρ`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : IsSimpleOrder (Subrepresentation ρ)` using `h`. Use `⟨?_, fun N hN => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : (⊥ : Submodule ℂ W) ≠ ⊤` using `fun e => (bot_ne_top (α := Subrepresentation ρ)) (Subrepresentation.toSubmodule_injective e)`. Conclude with `(Submodule.nontrivial_iff ℂ).mp ⟨⊥, ⊤, hne⟩`. Break down `h'.eq_bot_or_eq_top ⟨N, fun g v hv => hN g v hv⟩ with e | e` into its components or cases. Conclude with `Or.inl (congrArg Subrepresentation.toSubmodule e)`. Conclude with `Or.inr (congrArg Subrepresentation.toSubmodule e)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hW, h⟩`. Establish `hne : (⊥ : Subrepresentation ρ) ≠ ⊤` using `fun e => (bot_ne_top (α := Submodule ℂ W)) (congrArg Subrepresentation.toSubmodule e)`. Establish `h' : IsSimpleOrder (Subrepresentation ρ)` using `{ exists_pair_ne := ⟨⊥, ⊤, hne⟩ eq_bot_or_eq_top := fun σ => (h σ.toSubmodule fun g v hv => σ.apply_mem_toSubmodule g hv).imp (fun e => Subrepresentation.toSubmodule_injective e) (fun e => Subrepresentation.toSubmodule_injective e) }`. Conclude with `h'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Ra6.irr_iff :
     ∀ {G W : Type} [inst : Group G] [inst_1 : AddCommGroup W]

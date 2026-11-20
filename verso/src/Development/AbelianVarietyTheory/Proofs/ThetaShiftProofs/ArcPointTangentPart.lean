@@ -19,7 +19,7 @@ def IsMul (G : Over B) [GrpObj G] (a b c : Z ⟶ G.left) : Prop :=
   ∃ (s : Z ⟶ B) (x y : Over.mk s ⟶ G), x.left = a ∧ y.left = b ∧ (x * y).left = c
 
 /- English proof (translation)
-Take `⟨s', x', y', hx', hy', hc⟩` from `h`. Take `rfl : s = s'` from `((Over.w x).symm.trans (congrArg (· ≫ G.hom) (hx.trans hx'.symm))).trans (Over.w x')`. Rewrite using `[(Over.OverMorphism.ext (hx.trans hx'.symm) : x = x'), (Over.OverMorphism.ext (hy.trans hy'.symm) : y = y'), hc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsMul.left_eq {a b c : Z ⟶ G.left} (h : IsMul G a b c) {s : Z ⟶ B} (x y : Over.mk s ⟶ G)
     (hx : x.left = a) (hy : y.left = b) : (x * y).left = c := by
@@ -28,7 +28,7 @@ theorem IsMul.left_eq {a b c : Z ⟶ G.left} (h : IsMul G a b c) {s : Z ⟶ B} (
   rw [(Over.OverMorphism.ext (hx.trans hx'.symm) : x = x'), (Over.OverMorphism.ext (hy.trans hy'.symm) : y = y'), hc]
 
 /- English proof (translation)
-Take `⟨s, x, y, rfl, rfl, rfl⟩` from `h`. Set `D : Over.mk (k ≫ s) ⟶ Over.mk s` to `Over.homMk k rfl`. Conclude with `⟨k ≫ s, D ≫ x, D ≫ y, rfl, rfl, congrArg (·.left) (MonObj.comp_mul D x y).symm⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem IsMul.pre {a b c : Z ⟶ G.left} (h : IsMul G a b c) (k : Z' ⟶ Z) : IsMul G (k ≫ a) (k ≫ b) (k ≫ c) := by
   obtain ⟨s, x, y, rfl, rfl, rfl⟩ := h
@@ -36,7 +36,7 @@ theorem IsMul.pre {a b c : Z ⟶ G.left} (h : IsMul G a b c) (k : Z' ⟶ Z) : Is
   exact ⟨k ≫ s, D ≫ x, D ≫ y, rfl, rfl, congrArg (·.left) (MonObj.comp_mul D x y).symm⟩
 
 /- English proof (translation)
-Take `⟨s, x, y, rfl, rfl, rfl⟩` from `h`. Conclude with `⟨s ≫ f, pushPt hφ.1.w x, pushPt hφ.1.w y, rfl, rfl, hφ.2 _ x y _ _ rfl rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsMul.push (hφ : IsGrpPullback G' G f φ) {a b c : Z ⟶ G'.left} (h : IsMul G' a b c) :
     IsMul G (a ≫ φ) (b ≫ φ) (c ≫ φ) := by
@@ -44,7 +44,7 @@ theorem IsMul.push (hφ : IsGrpPullback G' G f φ) {a b c : Z ⟶ G'.left} (h : 
   exact ⟨s ≫ f, pushPt hφ.1.w x, pushPt hφ.1.w y, rfl, rfl, hφ.2 _ x y _ _ rfl rfl⟩
 
 /- English proof (translation)
-Set `x : Over.mk (a ≫ G'.hom) ⟶ G'` to `Over.homMk a rfl`. Set `y : Over.mk (a ≫ G'.hom) ⟶ G'` to `Over.homMk b hb`. Use `⟨_, x, y, rfl, rfl, hφ.1.hom_ext ?_ ((Over.w (x * y)).trans hc.symm)⟩` and prove the remaining obligations. Conclude with `(hφ.2 _ x y (pushPt hφ.1.w x) (pushPt hφ.1.w y) rfl rfl).symm.trans (h.left_eq _ _ rfl rfl)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsMul.pull (hφ : IsGrpPullback G' G f φ) {a b c : Z ⟶ G'.left} (hb : b ≫ G'.hom = a ≫ G'.hom)
     (hc : c ≫ G'.hom = a ≫ G'.hom) (h : IsMul G (a ≫ φ) (b ≫ φ) (c ≫ φ)) : IsMul G' a b c := by
@@ -60,7 +60,7 @@ section Eps
 variable {S : Type} [CommRing S]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => by simp [TrivSqZeroExt.algebraMap_eq_inl]`.
+A detailed English derivation is pending.
 -/
 theorem fst_alg : (TrivSqZeroExt.fstHom S S S).toRingHom.comp (algebraMap S (DualNumber S)) = RingHom.id S :=
   RingHom.ext fun x => by simp [TrivSqZeroExt.algebraMap_eq_inl]
@@ -81,9 +81,9 @@ open GlobalTheory.TorusModel
 variable {A : Type} [CommRing A] [IsDomain A] {D₀ : Out.DegPre A}
 
 /- English proof (translation)
-Take `⟨hb, hv⟩` from `(GlobalTheory.TorusModel.isAdd_iff _ _ _).1 h`. Establish `hb1 : g.b = 1`. Conclude with `(mul_eq_left.1 hb.symm)`. Use `⟨hb1, fun χ => corr_of_val D₀.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `hv χ y J hJ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `C : IsCub (DVR.th D₀ (T` using `T) y J) := isCub_cubV D₀.cub hJ`. Rewrite `e` using `[hb1, C.face₃, _root_.mul_one]`. Conclude with `(mul_eq_left.1 e.symm).trans (val_one _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isZero_of_isAdd {T : Over (Spec (CommRingCat.of A))} {g : Out.GtPt D₀ T} (h : g.IsAdd g g) : g.IsZero := by
   obtain ⟨hb, hv⟩ := (GlobalTheory.TorusModel.isAdd_iff _ _ _).1 h

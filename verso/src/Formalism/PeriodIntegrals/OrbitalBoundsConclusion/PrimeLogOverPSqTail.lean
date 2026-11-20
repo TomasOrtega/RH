@@ -3,7 +3,7 @@ import Formalism.PeriodIntegrals.PrimeSums
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PrimeLogarithmTail.SumLogDivSqLeDiv
 
 /- English proof (translation)
-Introduce `X hX Q hQ` and use `PI.TailWork.sum_log_div_sq_le_div X hX Q hQ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem prime_log_over_sq_tail : PI.PrimeLogOverPSqTail :=
   fun X hX Q hQ => PI.TailWork.sum_log_div_sq_le_div X hX Q hQ

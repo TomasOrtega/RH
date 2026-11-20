@@ -4,15 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Use `haveI : (RingHom.ker σ).IsPrime := RingHom.ker_isPrime σ`. Unfold `locLen`. Use `set S := (RingHom.ker σ).primeCompl`. Establish `hs : Function.Surjective (LocalizedModule.map S φ)` using `LocalizedModule.map_surjective S φ hφ`. Establish `hk : LinearMap.ker (LocalizedModule.map S ψ) ≤ LinearMap.ker (LocalizedModule.map S φ)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `y hy`. Proceed by induction on `y using LocalizedModule.induction_on with`. Consider the case `h x s`. Rewrite `hy`, the goal using `[LinearMap.mem_ker, LocalizedModule.map_mk]`. Rewrite `hy`, the goal using `[← LocalizedModule.zero_mk 1, LocalizedModule.mk_eq]`.
+Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hy`. Establish `h1 : ψ ((u : B) • x) = 0` using `by simpa [Submonoid.smul_def] using hu`. Take `⟨t, ht, h2⟩` from `h _ h1`. Use `⟨⟨t, ht⟩ * u, ?_⟩` and prove the remaining obligations. Simplify `h2` using `[Submonoid.smul_def, mul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs2 : Function.Surjective ((LinearMap.ker (LocalizedModule.map S ψ)).liftQ (LocalizedModule.map S φ) hk)`. Introduce `y`. Take `⟨x, rfl⟩` from `hs y`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`. Use `(Module.length_le_of_surjective _ hs2).trans ?_` and prove the remaining obligations.
-
-Conclude with `Module.length_le_of_injective ((LinearMap.ker (LocalizedModule.map S ψ)).liftQ (LocalizedModule.map S ψ) le_rfl) (LinearMap.ker_eq_bot.1 (Submodule.ker_liftQ_eq_bot _ _ _ le_rfl))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem localized_length_le_of_surjective {O B K : Type} [CommRing O] [CommRing B] [Algebra O B] [Field K] [Algebra O K]
     (σ : B →ₐ[O] K) {L M N : Type} [AddCommGroup L] [Module B L] [AddCommGroup M] [Module B M]
@@ -48,15 +46,15 @@ variable {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (𝒜 : ℤ → Su
 private def u4w (μ : Fin 3 →₀ ℕ) : ℤ := 2 * ((μ 1 : ℤ) - μ 0 - μ 2)
 
 /- English proof (translation)
-The claim follows from `Submodule.mul_le.2 fun _ ha _ hb => (mem_oz 𝒜).2 (SetLike.GradedMul.mul_mem ((mem_oz 𝒜).1 ha) ((mem_oz 𝒜).1 hb))`.
+A detailed English derivation is pending.
 -/
 private theorem weight_submodule_mul_le (i j : ℤ) : oz 𝒜 i * oz 𝒜 j ≤ oz 𝒜 (i + j) :=
   Submodule.mul_le.2 fun _ ha _ hb => (mem_oz 𝒜).2 (SetLike.GradedMul.mul_mem ((mem_oz 𝒜).1 ha) ((mem_oz 𝒜).1 hb))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, Submodule.one_le]`. Simplify using `using (SetLike.GradedOne.one_mem : (1 : A) ∈ 𝒜 0)`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Rewrite using `[pow_succ]`. Use `(mul_le_mul' ih h).trans ((weight_submodule_mul_le 𝒜 _ _).trans (le_of_eq ?_))` and prove the remaining obligations. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem weight_submodule_pow_le {P : Submodule (𝒜 0) A} {i : ℤ} (h : P ≤ oz 𝒜 i) (n : ℕ) : P ^ n ≤ oz 𝒜 (n * i) := by
   induction n with
@@ -69,9 +67,9 @@ private theorem weight_submodule_pow_le {P : Submodule (𝒜 0) A} {i : ℤ} (h 
     congr 1; push_cast; ring
 
 /- English proof (translation)
-Establish `h2 : mN 𝒜 F 2 ≤ oz 𝒜 (-2)` using `by show Submodule.span (𝒜 0) {F ^ 2} ⊔ oz 𝒜 (-2) * oz 𝒜 (-2) * oz 𝒜 2 ≤ _`. Use `sup_le ((Submodule.span_singleton_le_iff_mem _ _).2 (sq_mem_neg 𝒜 hF)) ?_` and prove the remaining obligations. Conclude with `(mul_le_mul' (weight_submodule_mul_le 𝒜 _ _) le_rfl).trans (weight_submodule_mul_le 𝒜 _ _)`. Establish `h0 : mN 𝒜 F 0 ≤ oz 𝒜 (-2)` using `le_rfl`. Establish `h1 : mN 𝒜 F 1 ≤ oz 𝒜 2` using `le_rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lat, Fin.prod_univ_three]`. Use `(mul_le_mul' ((mul_le_mul' (weight_submodule_pow_le 𝒜 h0 _) (weight_submodule_pow_le 𝒜 h1 _)).trans (weight_submodule_mul_le 𝒜 _ _)) (weight_submodule_pow_le 𝒜 h2 _)).trans ((weight_submodule_mul_le 𝒜 _ _).trans (le_of_eq ?_))` and prove the remaining obligations. Use `congr 1`. Unfold `u4w`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem lattice_le_weight_submodule {F : A} (hF : F ∈ 𝒜 (-1)) (μ : Fin 3 →₀ ℕ) : lat (mN 𝒜 F) μ ≤ oz 𝒜 (u4w μ) := by
   have h2 : mN 𝒜 F 2 ≤ oz 𝒜 (-2) := by
@@ -86,17 +84,15 @@ private theorem lattice_le_weight_submodule {F : A} (hF : F ∈ 𝒜 (-1)) (μ :
   congr 1; unfold u4w; ring
 
 /- English proof (translation)
-Establish `hl : oz 𝒜 (-2) ^ (μ 0 + 2 * μ 2) * oz 𝒜 2 ^ (μ 1 + μ 2) ≤ lat (mN 𝒜 F) μ`. Establish `h2 : oz 𝒜 (-2) * oz 𝒜 (-2) * oz 𝒜 2 ≤ mN 𝒜 F 2` using `le_sup_right`. Rewrite using `[lat, Fin.prod_univ_three]`. Use `le_trans (le_of_eq ?_) (mul_le_mul' le_rfl (pow_le_pow_left' h2 (μ 2)))` and prove the remaining obligations. Use `show _ = oz 𝒜 (-2) ^ μ 0 * oz 𝒜 2 ^ μ 1 * _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hfg : ∀ n : ℕ, (f * g) ^ n ∈ oz 𝒜 (-2) ^ n * oz 𝒜 2 ^ n` using `fun n => by`. Rewrite using `[mul_pow]`. Conclude with `Submodule.mul_mem_mul (Submodule.pow_mem_pow (oz 𝒜 (-2)) hf n) (Submodule.pow_mem_pow (oz 𝒜 2) hg n)`. Break down `le_total (μ 0 + 2 * μ 2) (μ 1 + μ 2) with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `Nat.exists_eq_add_of_le h`. Use `⟨μ 0 + 2 * μ 2, hl ?_⟩` and prove the remaining obligations. Establish `ha' : a ∈ oz 𝒜 2 ^ c`. Rewrite using `[← (hp c).2, mem_oz]`. Establish `: u4w μ = 2 * c` using `by unfold u4w; omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite `ha` using `[this]`. Then use the resulting hypothesis. Rewrite using `[hc, pow_add (oz 𝒜 2) _ c, ← mul_assoc]`. Conclude with `Submodule.mul_mem_mul (hfg _) ha'`. Take `⟨c, hc⟩` from `Nat.exists_eq_add_of_le h`. Use `⟨μ 1 + μ 2, hl ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha' : a ∈ oz 𝒜 (-2) ^ c`. Rewrite using `[← (hp c).1, mem_oz]`. Establish `: u4w μ = -(2 * c)` using `by unfold u4w; omega`. Rewrite `ha` using `[this]`. Then use the resulting hypothesis. Rewrite using `[hc, pow_add (oz 𝒜 (-2)) _ c, mul_right_comm]`.
-
-Conclude with `Submodule.mul_mem_mul (hfg _) ha'`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem power_mul_mem_lattice (hp : ∀ n : ℕ, oz 𝒜 (-(2 * n)) = oz 𝒜 (-2) ^ n ∧ oz 𝒜 (2 * n) = oz 𝒜 2 ^ n)
     (F : A) {f g : A} (hf : f ∈ 𝒜 (-2)) (hg : g ∈ 𝒜 2) (μ : Fin 3 →₀ ℕ) {a : A} (ha : a ∈ 𝒜 (u4w μ)) :
@@ -143,9 +139,9 @@ private def u4K (F : A) (b : 𝒜 0) (J : Ideal (rees (mN 𝒜 F))) (μ : Fin 3 
     ring
 
 /- English proof (translation)
-Take `⟨ν', rfl⟩` from `exists_add_of_le hν`. Establish `hw : u4w (ν + ν') = u4w ν' + u4w ν`. Simplify using `only [u4w, Finsupp.add_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hw, DirectSum.coe_decompose_mul_add_of_right_mem 𝒜 hy]`. Take `⟨n, hn⟩` from `power_mul_mem_lattice 𝒜 hp F hf hg ν' (DirectSum.decompose 𝒜 c (u4w ν')).2`. Use `⟨n, mono _ ν' _ hn * q, J.mul_mem_left _ hq, ?_⟩` and prove the remaining obligations. Use `show MvPolynomial.monomial ν' _ * q.1 = _`. Rewrite using `[e, MvPolynomial.monomial_mul, add_comm, hb, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem generated_component_mem (hp : ∀ n : ℕ, oz 𝒜 (-(2 * n)) = oz 𝒜 (-2) ^ n ∧ oz 𝒜 (2 * n) = oz 𝒜 2 ^ n)
     (F : A) {f g : A} (hf : f ∈ 𝒜 (-2)) (hg : g ∈ 𝒜 2) (b : 𝒜 0) (hb : (b : A) = f * g)
@@ -164,33 +160,27 @@ private theorem generated_component_mem (hp : ∀ n : ℕ, oz 𝒜 (-(2 * n)) = 
 end
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ K _ _ _ _ A _ _ 𝒜 _ _ x hW r s r' s' m Q J hJ hZ σ hσ d hd`. Establish `hp` using `oz_two_mul_eq_pow O A 𝒜 x hW`. Choose the witnesses or unpack the hypotheses as in `⟨b, ⟨f, hf, g, hg, hb⟩, hbσ⟩ : ∃ b : 𝒜 0, (∃ f ∈ 𝒜 (-2), ∃ g ∈ 𝒜 2, (b : A) = f * g) ∧ σ b ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hσ (Ideal.span_le.2 fun b ⟨f, hf, g, hg, hb⟩ => hcon b ⟨f, hf, g, hg, hb⟩)`. Take `⟨μ, rfl⟩ : ∃ μ : Fin 3 →₀ ℕ, toDeg μ = d` from `⟨Finsupp.equivFunOnFinite.symm fun i => (d i).toNat, funext fun i => by`. Establish `: (1 : ℤ) ≤ d i` using `hd i`. Simplify using `only [toDeg, Finsupp.equivFunOnFinite_symm_apply_apply]`. Use the proof step `omega⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hμ : ∀ i, Finsupp.single i 1 ≤ μ` using `fun i => by`. Establish `: (1 : ℤ) ≤ (μ i : ℤ)` using `hd i`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hsec : ∀ (i : Fin 3) (y : A) (hy : y ∈ mN 𝒜 (Q.F (Fin.last r)) i), (e i, sec _ i y hy) ∈ ts Q → ∀ c : A, (DirectSum.decompose 𝒜 (c * y) (u4w μ) : A) ∈ u4K 𝒜 _ b J μ` using `fun i y hy hm => generated_component_mem 𝒜 hp _ hf hg b hb J μ _ (hμ i) (lattice_le_weight_submodule 𝒜 (Q.hF (Fin.last r)) _ (by rw [lat_single]; exact hy)) _ (hJ (Ideal.subset_span ⟨_, hm⟩)) rfl`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hI : ∀ y ∈ ideal2 Q, ∀ c : A, (DirectSum.decompose 𝒜 (c * y) (u4w μ) : A) ∈ u4K 𝒜 _ b J μ`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Break down `hy with (((⟨i, rfl⟩ | ⟨i, rfl⟩) | ⟨i, rfl⟩) | ⟨i, rfl⟩) | ⟨i, rfl⟩` into its components or cases.
+Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Conclude with `hsec 2 _ (Submodule.mem_sup_left (Submodule.mem_span_singleton_self _)) (List.mem_append_right _ (List.mem_append_right _ (List.mem_singleton_self _)))`. Consider the case `cast i`. Conclude with `hsec 0 _ (sq_mem_neg 𝒜 (Q.hF _)) (List.mem_append_left _ (List.mem_ofFn.2 ⟨i, rfl⟩))`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hsec 0 _ (Q.hG i) (List.mem_append_right _ (List.mem_append_left _ (List.mem_append_left _ (List.mem_append_left _ (List.mem_ofFn.2 ⟨i, rfl⟩)))))`. Conclude with `hsec 1 _ (sq_mem_pos 𝒜 (Q.hE i)) (List.mem_append_right _ (List.mem_append_left _ (List.mem_append_left _ (List.mem_append_right _ (List.mem_ofFn.2 ⟨i, rfl⟩)))))`. Conclude with `hsec 1 _ (Q.hE' i) (List.mem_append_right _ (List.mem_append_left _ (List.mem_append_right _ (List.mem_ofFn.2 ⟨i, rfl⟩))))`. Conclude with `generated_component_mem 𝒜 hp _ hf hg b hb J μ 0 bot_le (Q.hZ i).1 _ (hZ i) rfl`. Consider the case `zero => intro c`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify using the standard rewrite rules. Consider the case `add y z _ _ h1 h2`. Introduce `c`. Rewrite using `[mul_add, DirectSum.decompose_add, DirectSum.add_apply, Submodule.coe_add]`. Conclude with `add_mem (h1 c) (h2 c)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Consider the case `smul a y _ h1`. Introduce `c`. Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `h1 _`. Set `φ0 : lat (mN 𝒜 (Q.F (Fin.last r))) μ →ₗ[𝒜 0] mR Q` to `{ toFun := fun h => mono _ μ h.1 h.2 map_add' := fun h h' => Subtype.ext (map_add (MvPolynomial.monomial μ) h.1 h'.1) map_smul' := fun c h => Subtype.ext (MvPolynomial.smul_monomial c).symm }`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `φ : lat (mN 𝒜 (Q.F (Fin.last r))) μ →ₗ[𝒜 0] (mQ Q J).gr (toDeg μ)` to `LinearMap.codRestrict _ ((J.mkQ.restrictScalars (𝒜 0)) ∘ₗ φ0) fun h => ⟨φ0 h, mono_mem _ μ h.1 h.2, rfl⟩`. Set `ψ : lat (mN 𝒜 (Q.F (Fin.last r))) μ →ₗ[𝒜 0] aPiece 𝒜 (ideal2 Q) (u4w μ)` to `LinearMap.codRestrict _ ((Ideal.Quotient.mkₐ (𝒜 0) (ideal2 Q)).toLinearMap ∘ₗ Submodule.subtype _) fun h => ⟨h.1, lattice_le_weight_submodule 𝒜 (Q.hF (Fin.last r)) μ h.2, rfl⟩`. Use `localized_length_le_of_surjective σ φ ψ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨_, p, hp', rfl⟩`. Use `⟨⟨MvPolynomial.coeff μ p.1, p.2 μ⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show J.mkQ (mono _ μ _ (p.2 μ)) = J.mkQ p`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `ν`. Use `show MvPolynomial.coeff ν (MvPolynomial.monomial μ _) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.coeff_monomial]`. Use `split_ifs with h`. Rewrite using `[h]`. Conclude with `(hp' ν fun h' => h (toDeg_injective h').symm).symm`. Introduce `h h0`.
-
-Establish `h1 : h.1 ∈ ideal2 Q` using `Ideal.Quotient.eq_zero_iff_mem.1 (congrArg Subtype.val h0)`. Establish `h2` using `hI _ h1 1`. Rewrite `h2` using `[one_mul, DirectSum.decompose_of_mem_same 𝒜 (lattice_le_weight_submodule 𝒜 (Q.hF (Fin.last r)) μ h.2)]`. Take `⟨n, p, hpJ, e⟩` from `h2`. Use `⟨b ^ n, by rw [map_pow]; exact pow_ne_zero _ hbσ, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← map_smul]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show J.mkQ (φ0 (b ^ n • h)) = 0`. Establish `: φ0 (b ^ n • h) = p`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Rewrite using `[e]`. Use `show MvPolynomial.monomial μ (((b ^ n : 𝒜 0) : A) * h.1) = _`. Rewrite using `[SetLike.GradeZero.coe_pow]`. Rewrite using `[this]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 hpJ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.locLen_mQ_gr_le_locLen_aPiece :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

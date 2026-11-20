@@ -16,7 +16,7 @@ namespace MainStatements.WeightKernel.PArchZero
 variable {D : D7} {V : HSp D}
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.SplitTorusZero.fd_of_quot h𝓕 (fun _ hg x => GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel_mul _ f hg x) (hR D V μ f hf hc γ hγ)).1`.
+A detailed English derivation is pending.
 -/
 theorem integrableOn_class (hR : MainStatements.RegularCuspidalTrace.RegClassInt) (μ : Measure (GA D V)) [μ.IsHaarMeasure]
     {f : GA D V → ℂ} (hf : f ∈ CcGA V) (hc : MainStatements.RegularCuspidalTrace.IsCuspFn f) (γ : GF V) (hγ : IsRegSS γ.1.1)
@@ -25,17 +25,15 @@ theorem integrableOn_class (hR : MainStatements.RegularCuspidalTrace.RegClassInt
   (GlobalTheory.SplitTorusZero.fd_of_quot h𝓕 (fun _ hg x => GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel_mul _ f hg x) (hR D V μ f hf hc γ hγ)).1
 
 /- English proof (translation)
-Establish `hmem : ∀ δ : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ratClass Γ γ, (δ : G) ∈ Γ` using `fun ⟨δ, k, hk, h⟩ => h ▸ mul_mem (mul_mem (inv_mem hk) hγ) hk`. Set `j : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ratClass Γ γ → Γ` to `fun δ => ⟨δ, hmem δ⟩`. Establish `hj : Function.Injective j` using `fun a b h => Subtype.ext (congrArg (fun z : Γ => (z : G)) h)`. Use `haveI : Countable Γ := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `haveI : Countable (GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ratClass Γ γ) := hj.countable`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `c : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ratClass Γ γ → G → ℂ` to `fun δ x => R (x⁻¹ * δ * x)`. Set `q : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ratClass Γ γ → G → H` to `fun δ x => π (x⁻¹ * δ * x)`. Establish `hk : ∀ ψ : H → ℂ, ker c q ψ = GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel Γ γ fun g => R g * ψ (π g)` using `fun ψ => rfl`. Establish `hK : IsKer ι (μ.restrict 𝓕) c q`. Use `⟨fun δ => (hRc.comp (by fun_prop)).measurable, fun δ => (hπ.comp (by fun_prop)).measurable, fun x C hC => ?_, fun ψ hψ => hint ψ hψ⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨χ, hχ, h1⟩` from `hB H n ι hι C hC`. Use `((finite_support_kernel (Γ := Γ) (hcs χ hχ) x x).preimage hj.injOn).subset fun δ hδ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `R (x⁻¹ * δ * x) * χ (π (x⁻¹ * δ * x)) ≠ 0`. Rewrite using `[h1 _ hδ.2, mul_one]`. Conclude with `hδ.1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `hV H n ι hι (π γ) B hw ν dt G _ (μ.restrict 𝓕) c q hK (fun δ x => ?_) (fun ψ _ k => ?_) φ hφ h0` and prove the remaining obligations. Take `⟨δ, g, hg, rfl⟩` from `δ`. Conclude with `⟨π (g * x), by simp only [q, map_mul, map_inv]; group⟩`. Establish `e1 : ∀ x, ker c q (fun y => ψ (k * y * k⁻¹)) x = ker c q ψ (x * e k⁻¹)` using `fun x => by`. Use `tsum_congr fun δ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e2 : (x * e k⁻¹)⁻¹ * δ * (x * e k⁻¹) = e k * (x⁻¹ * δ * x) * e k⁻¹`. Simplify using `only [map_inv]`. Use `group`. Simplify using `only [c, q]`. Rewrite using `[e2, hRe, map_mul π _ (e k⁻¹), map_mul π (e k), he, he]`.
-
-Simplify using `only [e1]`. Conclude with `hFD G Γ μ 𝓕 h𝓕 (ker c q ψ) (fun g hg x => GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel_mul γ (fun g => R g * ψ (π g)) hg x) _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem abstract_zero (hB : BumpOn) (hV : Vanish) (hFD : FDRight)
     {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [T2Space G]
@@ -91,7 +89,7 @@ def rest (fa : ∀ w, GArch σ J w → ℂ) (ff : ∀ v, GLoc σ J v → ℂ) (w
 
 open Classical in
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Rewrite using `[tensor, rest, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ w), Function.update_self, Finset.prod_congr rfl fun u hu => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hu)]]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tensor_update (fa : ∀ w, GArch σ J w → ℂ) (ff : ∀ v, GLoc σ J v → ℂ) (w : InfinitePlace F)
     (φ : GArch σ J w → ℂ) :
@@ -102,7 +100,7 @@ theorem tensor_update (fa : ∀ w, GArch σ J w → ℂ) (ff : ∀ v, GLoc σ J 
   ring
 
 /- English proof (translation)
-Unfold `rest`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun u hu => by`. Simplify using `only [map_mul, projArch_embArch_ne σ J (Finset.ne_of_mem_erase hu), one_mul, mul_one]`. Simplify using `only [map_mul, proj_embArch, one_mul, mul_one]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rest_conj (fa : ∀ w, GArch σ J w → ℂ) (ff : ∀ v, GLoc σ J v → ℂ) (w : InfinitePlace F) (k : GArch σ J w)
     (g : GAd σ J) : rest fa ff w (embArch σ J w k * g * embArch σ J w k⁻¹) = rest fa ff w g := by
@@ -114,9 +112,9 @@ theorem rest_conj (fa : ∀ w, GArch σ J w → ℂ) (ff : ∀ v, GLoc σ J v �
   · simp only [map_mul, proj_embArch, one_mul, mul_one]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun g : GAd σ J => tensorFin σ J ff (projFin σ J g)` using `hff.tensorFin_mem.1.continuous.comp (continuous_projFin σ J)`. Establish `h2 : (fun g : GAd σ J => tensorFin σ J ff (projFin σ J g)) = fun g => ∏ᶠ v, ff v (proj σ J v g)`. Use function extensionality and compare the values at `g`. Simplify using `[tensorFin]`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(continuous_finset_prod _ fun u _ => (continuous_of_mem_ccSmooth (continuous_archCoord σ J u) (hfa u)).comp (continuous_projArch σ J u)).mul h1`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rest {L : Submodule (𝓞 E) (Fin n → E)} [Submodule.IsLattice E L] {fa : ∀ w, GArch σ J w → ℂ}
     {ff : ∀ v, GLoc σ J v → ℂ} (hfa : ∀ w, fa w ∈ CcArch σ J w) (hff : IsFinFamily σ J L ff) (w : InfinitePlace F) :
@@ -132,7 +130,7 @@ theorem continuous_rest {L : Submodule (𝓞 E) (Fin n → E)} [Submodule.IsLatt
 
 open Classical in
 /- English proof (translation)
-Introduce `u` and use `by by_cases h : u = w · subst h; rwa [Function.update_self] · rw [Function.update_of_ne h]; exact hfa u`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem update_mem {fa : ∀ w, GArch σ J w → ℂ} (hfa : ∀ w, fa w ∈ CcArch σ J w) (w : InfinitePlace F)
     {φ : GArch σ J w → ℂ} (hφ : φ ∈ CcArch σ J w) : ∀ u, Function.update fa w φ u ∈ CcArch σ J u := fun u => by
@@ -145,11 +143,11 @@ end Gen
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hcm` using `isCMExt_host D`. Take `⟨ρ, rfl⟩` from `(placeOf_bijective D).2 w`. Set `τ` to `embOverOf D ρ`. Establish `hcc` using `ccArch_eq (J := V.gram) hcm τ`. Establish `hreg` using `isRegSS_projArch_ratEmb (σ := D.sp.cm.sig) (J := V.gram) hγ (placeOf D ρ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨B, hw⟩` from `hW _ _ _ _ (hG D V _ τ) _ ((isRegSS_archMat_iff hcm τ).2 hreg) (isProperOrbit_GArch hcm (GlobalTheory.Orb.isHermND_gram V) hreg)`. Use `haveI := hU D V _ μw inferInstance`. Establish `hm : ∀ φ ∈ CcMat (archMat D.sp.cm.sig V.gram τ), ∀ u, Function.update fa (placeOf D ρ) φ u ∈ CcArch D.sp.cm.sig V.gram u` using `fun φ hφ => update_mem hfa _ (hcc ▸ hφ)`. Establish `e0` using `tensor_update fa ff (placeOf D ρ) (fa (placeOf D ρ))`. Rewrite `e0` using `[Function.update_eq_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0]`. Conclude with `abstract_zero hB hV hFD (G := GA D V) (GQ V) μ h𝓕 (GlobalTheory.SplitTorusZero.rat_mem_GQ γ) (archMat D.sp.cm.sig V.gram τ) (hG D V _ τ).2.1 (projArch D.sp.cm.sig V.gram (placeOf D ρ)) (continuous_projArch _ _ _) (embArch D.sp.cm.sig V.gram (placeOf D ρ)) (projArch_embArch_self _ …`.
+A detailed English derivation is pending.
 -/
 theorem integral_class_eq_zero (hB : BumpOn) (hW : Weight) (hV : Vanish) (hFD : FDRight) (hG : ArchGroup)
     (hU : ArchUnimod) (hR : MainStatements.RegularCuspidalTrace.RegClassInt) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
@@ -191,9 +189,9 @@ end MainStatements.WeightKernel.PArchZero
 set_option maxHeartbeats 1000000 in
 open MainStatements.WeightKernel.PArchZero in
 /- English proof (translation)
-Introduce `hB hW hV hFD hG hU hR`. Unfold `ArchZero`. Introduce `D V μ _ _ fa ff hfa hff hcusp γ hγ w μw _ ds _ _ horb`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ZeroClause`. Introduce `𝓕 h𝓕`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf : tensor D.sp.cm.sig V.gram fa ff ∈ CcGA V` using `tensor_mem_ccAd hfa hff`. Establish `h1` using `fun x => GlobalTheory.SplitTorusZero.summable_class (continuous_of_mem_ccAd hf).2 (GlobalTheory.SplitTorusZero.rat_mem_GQ γ) x`. Establish `h2` using `integrableOn_class hR μ hf (hcusp fa hfa) γ hγ h𝓕`. Establish `h3` using `integral_class_eq_zero hB hW hV hFD hG hU hR μ fa ff hfa hff hcusp γ hγ w μw ds horb h𝓕`. Conclude with `⟨h1, h2, h3⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem MainStatements.WeightKernel.archZero : BumpOn → Weight → Vanish → FDRight → ArchGroup → ArchUnimod → MainStatements.RegularCuspidalTrace.RegClassInt →
     ArchZero := by

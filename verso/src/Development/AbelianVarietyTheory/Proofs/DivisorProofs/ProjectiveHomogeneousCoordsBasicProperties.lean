@@ -13,11 +13,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UMin.CrdBasic
 
 /- English proof (translation)
-Use `⟨fun o R R' _ _ _ n x v i h => ?_, fun o R _ _ n x v a ha h => ?_, fun o K _ _ n x => ⟨?_, fun v h => ?_⟩⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique _ _ _ _ _ _ _ (ProjSpace.O1_isLB o n) h).1 R' i`. Conclude with `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique _ _ _ _ _ _ _ (ProjSpace.O1_isLB o n) h).2.1 ha.unit`. Conclude with `GlobalTheory.ZM.FieldPoint.exists_secCoord o n K x`. Take `⟨c, hc⟩` from `RepUniq.exists_spMap (x ≫ PSpace.str o n)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Take `⟨hv, -⟩` from `GlobalTheory.ZM.ProjExt.eq_pt_of_secCoord c x hc v h`. Assume the negation of the conclusion as `h0`. Use `push_neg at h0`. Establish `: Ideal.span (Set.range v) = ⊥`. Rewrite using `[Ideal.span_eq_bot]`.
-
-Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `h0 j`. Rewrite `hv` using `[this]`. Conclude with `bot_ne_top hv`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pCrd_basic : (∀ (o R R' : Type) [CommRing o] [CommRing R] [CommRing R'] (n : ℕ) (x : Sp R ⟶ PSpace o n) (v : Fin (n + 1) → R) (i : R →+* R'), PCrd x v → PCrd (spMap i ≫ x) (fun j => i (v j))) ∧ (∀ (o R : Type) [CommRing o] [CommRing R] (n : ℕ) (x : Sp R ⟶ PSpace o n) (v : Fin (n + 1) → R) (a : R), IsUnit a → PCrd x v → PCrd x (fun j => a * v j)) ∧ ∀ (o K : Type) [CommRing o] [Field K] (n : ℕ) (x : Sp K ⟶ PSpace o n), (∃ v, PCrd x v) ∧ ∀ v, PCrd x v → ∃ j, v j ≠ 0 := by
   refine ⟨fun o R R' _ _ _ n x v i h => ?_, fun o R _ _ n x v a ha h => ?_, fun o K _ _ n x => ⟨?_, fun v h => ?_⟩⟩

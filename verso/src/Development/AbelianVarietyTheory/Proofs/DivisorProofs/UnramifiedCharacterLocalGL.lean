@@ -21,11 +21,11 @@ namespace GlobalTheory.LinBarChar
 open Matrix
 
 /- English proof (translation)
-Establish `cl : Continuous fun x : κ ⊕ κ' → k => x ∘ Sum.inl` using `continuous_pi fun i => continuous_apply _`. Establish `cr : Continuous fun x : κ ⊕ κ' → k => x ∘ Sum.inr` using `continuous_pi fun i => continuous_apply _`. Use `⟨(h₁.1.comp_continuous cl).mul (h₂.1.comp_continuous cr), ?_⟩` and prove the remaining obligations. Set `e` to `(Homeomorph.sumArrowHomeomorphProdArrow (X := k) (ι := κ) (ι' := κ'))`. Use `HasCompactSupport.intro ((h₁.2.prod h₂.2).image e.symm.continuous) fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx' : e x ∉ tsupport φ₁ ×ˢ tsupport φ₂` using `fun h => hx ⟨e x, h, e.symm_apply_apply x⟩`. Rewrite `hx'` using `[Homeomorph.sumArrowHomeomorphProdArrow_apply, Set.mem_prod, not_and_or]`. Simplify using `only [boxFun]`. Break down `hx' with h | h` into its components or cases. Rewrite using `[image_eq_zero_of_notMem_tsupport h, zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[image_eq_zero_of_notMem_tsupport h, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem boxFun_mem_SB {k : Type} [CommRing k] [TopologicalSpace k] [T2Space k] {κ κ' : Type}
     {φ₁ : (κ → k) → ℂ} {φ₂ : (κ' → k) → ℂ} (h₁ : φ₁ ∈ SB (κ → k)) (h₂ : φ₂ ∈ SB (κ' → k)) :
@@ -43,7 +43,7 @@ theorem boxFun_mem_SB {k : Type} [CommRing k] [TopologicalSpace k] [T2Space k] {
   · rw [image_eq_zero_of_notMem_tsupport h, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.fromBlocks_one, sub_eq_add_neg, Matrix.fromBlocks_neg, Matrix.fromBlocks_add]`. Simplify using `[sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fromBlocks_diag_sub_one {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n R) :
     Matrix.fromBlocks A 0 0 A - 1 = Matrix.fromBlocks (A - 1) 0 0 (A - 1) := by
@@ -51,7 +51,7 @@ theorem fromBlocks_diag_sub_one {R : Type} [CommRing R] {n : Type} [Fintype n] [
   simp [sub_eq_add_neg]
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) j <;> simp [diagCols, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fromBlocks_diag_mul_diagCols {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n R) :
     Matrix.fromBlocks A 0 0 A * (diagCols n : Matrix (n ⊕ n) n R) = (diagCols n : Matrix (n ⊕ n) n R) * A := by
@@ -59,31 +59,27 @@ theorem fromBlocks_diag_mul_diagCols {R : Type} [CommRing R] {n : Type} [Fintype
     Matrix.fromRows_apply_inr, Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT v hv hχ t K hK S hS ν α ι hι hint m hm r hr`. Take `⟨-, ⟨d', hd', hBw⟩, -⟩` from `hT.weil'`. Take `⟨-, dd, omd, hdd, ⟨-, hspl, hsieg⟩, hres⟩` from `hBw`. Use `haveI : Nonempty (Fin a') := ⟨⟨0, by have := hT.geo.aBig; omega⟩⟩`. Take `⟨g₀, hg₀⟩` from `Matrix.GeneralLinearGroup.det_surjective (n := Fin a') (R := Fv F v) (unifAt v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set k := K g₀ with hk`. Establish `hkU : (mat k)ᵀ * incM F G.V'.J * (mat k).map (cA σ) = incM F G.V'.J` using `k.2`. Use `set mi : Matrix (Fin a') (Fin a') (AE F E) := ((k : GL (Fin a') (AE F E))⁻¹).1`. Establish `h1 : mat k * mi = 1` using `Units.mul_inv (k : GL (Fin a') (AE F E))`. Establish `h2 : mi * mat k = 1` using `Units.inv_mul (k : GL (Fin a') (AE F E))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `P₀ : GL (Fin a' ⊕ Fin a') (AE F E)` to `⟨Matrix.fromBlocks (mat k) 0 0 (mat k), Matrix.fromBlocks mi 0 0 mi, by rw [Matrix.fromBlocks_multiply, h1]; simp [Matrix.fromBlocks_one], by rw [Matrix.fromBlocks_multiply, h2]; simp [Matrix.fromBlocks_one]⟩`. Establish `hP₀ : P₀ ∈ UG (cA σ) (dbl (incM F G.V'.J))` using `by show (Matrix.fromBlocks (mat k) 0 0 (mat k))ᵀ * dbl (incM F G.V'.J) * (Matrix.fromBlocks (mat k) 0 0 (mat k)).map (cA σ) = _`. Establish `hn : (mat k)ᵀ * (-incM F G.V'.J) * (mat k).map (cA σ) = -incM F G.V'.J`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, hkU]`. Rewrite using `[dbl, Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `only [Matrix.transpose_zero, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.map_zero _ (map_zero (cA σ))]`. Rewrite using `[hkU, hn]`. Set `p : UG (cA σ) (dbl (incM F G.V'.J))` to `⟨P₀, hP₀⟩`. Establish `hpm : ((p : GL (Fin a' ⊕ Fin a') (AE F E)) : Matrix (Fin a' ⊕ Fin a') (Fin a' ⊕ Fin a') (AE F E)) = Matrix.fromBlocks (mat k) 0 0 (mat k)` using `rfl`. Establish `hAt : At (evFin F v) (((p : GL (Fin a' ⊕ Fin a') (AE F E)) : Matrix (Fin a' ⊕ Fin a') (Fin a' ⊕ Fin a') (AE F E)) - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `u hu`. Establish `hk1 : u • (mat k - 1) = 0` using `(hK g₀).1 u hu`. Rewrite using `[hpm, fromBlocks_diag_sub_one, Matrix.fromBlocks_smul]`. Simplify using `[hk1]`. Establish `hpt : ((p : GL (Fin a' ⊕ Fin a') (AE F E)) : Matrix (Fin a' ⊕ Fin a') (Fin a' ⊕ Fin a') (AE F E)) * (diagCols (Fin a') : Matrix (Fin a' ⊕ Fin a') (Fin a') (AE F E)) = (diagCols (Fin a') : Matrix (Fin a' ⊕ Fin a') (Fin a') (AE F E)) * (((k : UA σ G.V'.J) : GL (Fin a') (AE F E)) : …`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hpm]`. Conclude with `fromBlocks_diag_mul_diagCols _`. Take `⟨l, hl, hinv, r₀, hr₀, c₀, hc₀, μ, hμ, hlφ, φ₀, hφ₀, hI⟩` from `GlobalTheory.T.exists_admitted_diagonal_integral_linearForm F E σ a a' G B.ψ d' dd hdd v`. Establish `hbox` using `boxFun_mem_SB hφ₀ hφ₀`. Take `⟨φ'', hφ'', hact⟩` from `GlobalTheory.T.doubledUnitaryElement_acts_localOperatorAtPlace F E σ B a a' G hT.base dd omd hspl v p hAt _ hbox`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `GlobalTheory.T.triple_local_gl_embedding_integral hP F E σ B a a' G X om om' hT v hv t K hK S hS ν α ι hι hint d' hd' dd hdd omd hspl (fun g gd hgd φ₁ h₁ φ₂ h₂ => hres g gd hgd φ₁ h₁ φ₂ h₂) g₀ p hpm φ₀ hφ₀ φ₀ hφ₀ φ'' hφ'' hact μ hμ`. Establish `hs` using `hsieg l hl hinv p _ hpt _ (hr₀ _ hbox).2`. Rewrite `hs` using `[hact r₀ (hr₀ _ hbox), hlφ _ hφ'', hlφ _ hbox, h4]`. Establish `hbd : (∫ x, boxFun φ₀ φ₀ (Sum.elim x x) ∂μ) = ∫ x, φ₀ x * φ₀ x ∂μ` using `rfl`. Rewrite `hs` using `[hbd]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set I := ∫ x, φ₀ x * φ₀ x ∂μ`. Use `set val := ((X.α / X.β) (Matrix.GeneralLinearGroup.det ((k : UA σ G.V'.J) : GL (Fin a') (AE F E))) : ℂ) * ((((adeleClass F).modu (Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det ((k : UA σ G.V'.J) : GL (Fin a') (AE F E)))) : ℝ) ^ ((Fintype.card (Fi …`. Use `set u : ℂ := (ν (GlobalTheory.SplitFlip.gdet g₀) : ℂ) with hu`. Establish `hratio : u / starRingEnd ℂ u = val`. Establish `: c₀ * I * (u / starRingEnd ℂ u) = c₀ * I * val` using `by linear_combination hs`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ (mul_ne_zero hc₀ hI) this`. Establish `h6` using `GlobalTheory.T.triple_local_gl_embedding_equivariant F E σ B a a' G X om om' hT v hv t K hK g₀`. Establish `hgd : GlobalTheory.SplitFlip.gdet g₀ = unifAt v` using `hg₀`. Rewrite `hu`, `h6` using `[hgd]`. Establish `hu0 : u ≠ 0` using `by rw [hu]; exact Units.ne_zero _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr' : u ^ m = (r : ℂ)` using `by rw [hu]; exact hr`. Establish `hrc : starRingEnd ℂ u ^ m = (r : ℂ)` using `by rw [← map_pow, hr', Complex.conj_ofReal]`. Establish `hr0 : (r : ℂ) ≠ 0` using `by rw [← hr']; exact pow_ne_zero _ hu0`. Establish `hone : val ^ m = 1`. Rewrite using `[← hratio, div_pow, hr', hrc, div_self hr0]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set z := chrW X.ν t (unifAt v) with hz`. Break down `h6 with h | h` into its components or cases. Establish `e1 : ((z ^ (2 * m) : ℂˣ) : ℂ) = 1`. Rewrite using `[Units.val_pow_eq_pow_val, pow_mul, ← h, hone]`. Apply `hχ t (((2 * m : ℕ) : ℤ)) (by omega)` to reduce the goal to its premises.
-
-Rewrite using `[zpow_natCast]`. Conclude with `Units.ext e1`. Establish `e1 : (((z⁻¹) ^ (2 * m) : ℂˣ) : ℂ) = 1`. Rewrite using `[Units.val_pow_eq_pow_val, pow_mul, ← h, hone]`. Apply `hχ t (-((2 * m : ℕ) : ℤ)) (by omega)` to reduce the goal to its premises.
-
-Rewrite using `[_root_.zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `Units.ext e1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unif_pow_ne_real : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

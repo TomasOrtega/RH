@@ -111,7 +111,7 @@ def BesselPeriodNeZero : Prop :=
           period k r z c σ π μS (σ g x) (σ y x) ≠ 0
 
 /- English proof (translation)
-Use `congrFun hj i` as an intermediate fact. Simplify `this` using `[Formalism.QuantumDeterminants.bvec, Matrix.mulVec_single_one, Pi.single_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem col_of_fix {h : Mat k r} {j : Fin (2 * r + k + 1)}
     (hj : h *ᵥ Formalism.QuantumDeterminants.bvec j = Formalism.QuantumDeterminants.bvec j) (i : Fin (2 * r + k + 1)) :
@@ -120,11 +120,11 @@ theorem col_of_fix {h : Mat k r} {j : Fin (2 * r + k + 1)}
   simpa [Formalism.QuantumDeterminants.bvec, Matrix.mulVec_single_one, Pi.single_apply] using this
 
 /- English proof (translation)
-Apply `col_of_fix` to reduce the goal to its premises. Distinguish the cases in `h1 : j.val < r`. Use `(hh.2.1 ⟨j.val, h1⟩).1` as an intermediate fact. Simplify `this` using `[Formalism.QuantumDeterminants.eI]`. Establish `h2 : 2 * r + k - j.val < r` using `by omega`.
+Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(hh.2.1 ⟨_, h2⟩).2` as an intermediate fact. Establish `e : Formalism.QuantumDeterminants.esI k r ⟨_, h2⟩ = j`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [Formalism.QuantumDeterminants.esI]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem col_out {z : Fin (2 * r + k + 1) → ℂ} {h : Mat k r} (hh : h ∈ UWset k r z)
     {j : Fin (2 * r + k + 1)} (hj : ¬ (r ≤ j.val ∧ j.val ≤ r + k)) (i : Fin (2 * r + k + 1)) :
@@ -140,7 +140,7 @@ theorem col_out {z : Fin (2 * r + k + 1) → ℂ} {h : Mat k r} (hh : h ∈ UWse
     rwa [e] at this
 
 /- English proof (translation)
-Unfold `Hpk`. Use `l.isLt` as an intermediate fact. Simplify using `only [Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_row {i i' : Fin (2 * r + k + 1)} (hi : ¬ (r ≤ i.val ∧ i.val ≤ r + k))
     (e : i.val + i'.val = 2 * r + k) (l : Fin (2 * r + k + 1)) :
@@ -151,11 +151,11 @@ theorem Hpk_row {i i' : Fin (2 * r + k + 1)} (hi : ¬ (r ≤ i.val ∧ i.val ≤
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Establish `hlt` using `i.isLt`. Set `i' : Fin (2 * r + k + 1)` to `⟨2 * r + k - i.val, by omega⟩`. Establish `e : i.val + i'.val = 2 * r + k` using `by simp only [i']; omega`. Establish `hi' : ¬ (r ≤ i'.val ∧ i'.val ≤ r + k)` using `by omega`. Establish `hU : hᴴ * Hpk k r * h = Hpk k r` using `hh.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrFun (congrFun hU i') j`. Establish `hrow : ∀ m, (hᴴ * Hpk k r) i' m = Hpk k r i' m`. Introduce `m`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, col_out hh hi']`. Apply the tactic sequence `rw [Finset.sum_eq_single i'] <;> simp +contextual`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `h1` using `[Matrix.mul_apply]`. Simplify using `only [hrow, Hpk_row hi e] at h1`. Simplify `h1` using `[eq_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem row_out {z : Fin (2 * r + k + 1) → ℂ} {h : Mat k r} (hh : h ∈ UWset k r z)
     {i : Fin (2 * r + k + 1)} (hi : ¬ (r ≤ i.val ∧ i.val ≤ r + k)) (j : Fin (2 * r + k + 1)) :
@@ -175,13 +175,13 @@ theorem row_out {z : Fin (2 * r + k + 1) → ℂ} {h : Mat k r} (hh : h ∈ UWse
   simpa [eq_comm] using h1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Unfold `leviW`. Use `split_ifs with h1 h2`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j]`. Rewrite using `[hn.2.2 j j h1.2.1 h1.2.2 h1.2.1]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `l _ hl`. Distinguish the cases in `hr : r ≤ l.val`. Rewrite using `[hn.2.2 l j h1.2.1 h1.2.2 hr]`. Simplify using `[hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[col_out hh (j := l) (by omega) i, if_neg, zero_mul]`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Substitute `h2` using the available equality.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[col_out hh (j := i) (by tauto) i]; simp`. Distinguish the cases in `hj : r ≤ j.val ∧ j.val ≤ r + k`. Rewrite using `[row_out hh (i := i) (by tauto) j, if_neg h2]`. Rewrite using `[col_out hh hj i, if_neg h2]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviW_mul {z : Fin (2 * r + k + 1) → ℂ} {h n : Mat k r} (hh : h ∈ UWset k r z)
     (hn : n ∈ Nset k r) : leviW k r (h * n) = h := by
@@ -204,7 +204,7 @@ theorem leviW_mul {z : Fin (2 * r + k + 1) → ℂ} {h n : Mat k r} (hh : h ∈ 
     · rw [col_out hh hj i, if_neg h2]
 
 /- English proof (translation)
-Establish `hU : hᴴ * Hpk k r * h = Hpk k r` using `hh`. Use `congrArg Matrix.det hU` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_right (this ▸ hH)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_mem {h : Mat k r} (hh : h ∈ UH (Hpk k r)) (hH : IsUnit (Hpk k r).det) :
     IsUnit h.det := by
@@ -214,7 +214,7 @@ theorem isUnit_det_of_mem {h : Mat k r} (hh : h ∈ UH (Hpk k r)) (hH : IsUnit (
   exact isUnit_of_mul_isUnit_right (this ▸ hH)
 
 /- English proof (translation)
-Simplify using `only [twist, twistInv, leviW_mul hh hn, Matrix.nonsing_inv_mul_cancel_left h n hd, and_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twist_mul {Wp : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     {z : Fin (2 * r + k + 1) → ℂ} (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) {h n : Mat k r}
@@ -224,20 +224,20 @@ theorem twist_mul {Wp : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp
   simp only [twist, twistInv, leviW_mul hh hn, Matrix.nonsing_inv_mul_cancel_left h n hd, and_self]
 
 /- English proof (translation)
-Apply `Continuous.measurable` to reduce the goal to its premises. Conclude with `continuous_const.matrix_mul continuous_id`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem measurable_lmulM (a : Mat k r) : Measurable (lmulM a : Mt k r → Mt k r) := by
   apply Continuous.measurable
   exact continuous_const.matrix_mul continuous_id
 
 /- English proof (translation)
-Use `⟨?_, ?_, fun C _ _ => measure_lt_top _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.add_apply, Measure.dirac_apply, Measure.dirac_apply, Set.indicator_of_notMem, Set.indicator_of_notMem, add_zero]`. Conclude with `fun h => h (Or.inr rfl)`. Conclude with `fun h => h (Or.inl rfl)`. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Measure.map_add _ _ (measurable_lmulM a), Measure.map_dirac' (measurable_lmulM a), Measure.map_dirac' (measurable_lmulM a)]`. Establish `e1 : lmulM a (Matrix.of.symm (1 : Mat k r) : Mt k r) = Matrix.of.symm a` using `mul_one a`. Establish `e2 : lmulM a (Matrix.of.symm (-1 : Mat k r) : Mt k r) = Matrix.of.symm (-a)` using `mul_neg_one a`. Rewrite using `[e1, e2]`. Break down `ha with rfl | rfl` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Both sides reduce to the same expression. Rewrite using `[neg_neg]`. Conclude with `add_comm _ _`. Introduce `h`. Use `congrArg (fun m : Measure (Mt k r) => m Set.univ) h` as an intermediate fact.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at this`.
+A detailed English derivation is pending.
 -/
 example : IsHaarOn ({1, -1} : Set (Mat k r))
     (Measure.dirac (Matrix.of.symm (1 : Mat k r) : Mt k r) + Measure.dirac (Matrix.of.symm (-1 : Mat k r) : Mt k r)) := by
@@ -261,7 +261,7 @@ example : IsHaarOn ({1, -1} : Set (Mat k r))
     simp at this
 
 /- English proof (translation)
-Use `⟨hμ.1, fun f _ => ?_⟩` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[lintegral_dirac]`. Conclude with `congrArg f (one_mul (Matrix.of g)).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (G : Set (Mat k r)) (μ : Measure (Mt k r)) (hμ : IsHaarOn G μ) :
     IsQuotRep G μ (Measure.dirac (Matrix.of.symm (1 : Mat k r) : Mt k r)) μ := by

@@ -17,11 +17,11 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, rfl, hy⟩` from `GlobalTheory.Grid.mem_princGL.1 (GlobalTheory.Grid.princGL_mono β h hx)`. Use `mem_princAt.2 ⟨⟨y, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[redFn_frGL]`. Apply `Units.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `i j`. Establish `h0 : resS F PP ((y.1 - 1) i j) = 0`. Unfold `resS`. Rewrite using `[RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.2 (hy i j), map_zero]`. Rewrite `h0` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h0.trans ?_` and prove the remaining obligations. Simplify using `only [Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem princGL_le_princAt (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) {I : Ideal (𝓞 E)} {PP : Pl E} (h : I ≤ PP.asIdeal) :
     GlobalTheory.Grid.princGL β I ≤ princAt β PP := by
@@ -40,7 +40,7 @@ theorem princGL_le_princAt (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) {
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.ColMeas.princ_eq_congLev hc J hfr I]`. Introduce and unpack `x ⟨h1, h2⟩`. Use `⟨⟨h1, ?_⟩, Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => princGL_le_princAt β (h PP hP) h2⟩` and prove the remaining obligations. Take `⟨y, e, -⟩` from `GlobalTheory.Grid.mem_princGL.1 h2`. Conclude with `⟨y, e⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem congLev_le_Kg [StarRing E] (hc : CMData F E) (J : Matrix (Fin n) (Fin n) E) {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}
     {Λ : Submodule (𝓞 E) (Fin n → E)} (hfr : IsFrame β Λ) {I : Ideal (𝓞 E)} {T : Finset (Pl E)}
@@ -56,7 +56,7 @@ end General
 variable {D : D7} {T : Type}
 
 /- English proof (translation)
-Establish `h1` using `P.pb_over k`. Establish `h2 : PP.under (𝓞 D.host.K) = P.pb k` using `h`. Rewrite `h1` using `[← h2]`. Establish `h3 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ PP.asIdeal` using `h1`. Rewrite `h3` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem g_mem {P : Formalism.L2.Host.PiBar D.host} {k : Fin 2} {PP : Pl D.host.E} (h : P.Div k PP) :
     ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := by
@@ -67,9 +67,9 @@ theorem g_mem {P : Formalism.L2.Host.PiBar D.host} {k : Fin 2} {PP : Pl D.host.E
   rwa [map_natCast] at h3
 
 /- English proof (translation)
-Introduce and unpack `k ⟨hk1, hk2⟩`. Take `⟨c, hfr, -⟩` from `hL.βY 0 (by have := D.R.two_le_m; omega)`. Use `⟨hk1, Kg_le_lev (T := L.Pg) (D := L.dat0 L.triv) subset_rfl (Finset.empty_subset _) (congLev_le_Kg _ _ hfr (fun PP hP => ?_) hk2)⟩` and prove the remaining obligations. Take `⟨l, hl⟩` from `(hL.Pg PP).1 hP`. Establish `hg` using `g_mem hl`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Ideal.span_singleton_le_iff_mem, Nat.cast_mul]`. Use `fin_cases l`. Conclude with `Ideal.mul_mem_right _ _ hg`. Conclude with `Ideal.mul_mem_left _ _ hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levRow_sub {L : LevCh D T} {μ0 : T} (hL : L.Is μ0) :
     (levRow L : Set (GA D (Yc D 0))) ⊆ levS _ (L.βY 0) (L.dat0 L.triv) := by
@@ -85,9 +85,9 @@ theorem levRow_sub {L : LevCh D T} {μ0 : T} (hL : L.Is μ0) :
   · exact Ideal.mul_mem_left _ _ hg
 
 /- English proof (translation)
-Establish `h : levFn (L.βY 0) (L.dat0 L.triv) (Lev.finE (Yc D 0) k) = 1`. Establish `h1 : ext1 (L.dat0 L.triv).P.H (L.dat0 L.triv).P.chi (rTup (L.βY 0) (L.dat0 L.triv) (Lev.finE (Yc D 0) k)) = 1` using `Lev.subgroupCharExtension_one_apply _ _`. Unfold `levFn`. Rewrite using `[h1]`. Simplify using `[LevCh.dat0, Lev.datY]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `Lev.levChi`. Rewrite using `[h, Units.val_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem principalRowLevelCharacter_trivial (L : LevCh D T) (k : GA D (Yc D 0)) : Lev.levChi _ (L.βY 0) (L.dat0 L.triv) k = 1 := by
   have h : levFn (L.βY 0) (L.dat0 L.triv) (Lev.finE (Yc D 0) k) = 1 := by
@@ -102,9 +102,9 @@ theorem principalRowLevelCharacter_trivial (L : LevCh D T) (k : GA D (Yc D 0)) :
 end GlobalTheory.SepRows.Good
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R hL t ht`. Rewrite using `[mem_multT, LinearEquiv.symm_apply_apply]`. Use `Submodule.span_mono (fun U hU => ?_) (goodPart_le _ _ _ _ _ ht)` and prove the remaining obligations. Conclude with `⟨hU.aut, hU.cusp, fun v k hk g => by`. Rewrite using `[hU.lev v k (Good.levRow_sub hL hk) g, Good.principalRowLevelCharacter_trivial]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl, hU.equiv, hU.cont⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SepRows.goodRows : GoodRows := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R hL t ht

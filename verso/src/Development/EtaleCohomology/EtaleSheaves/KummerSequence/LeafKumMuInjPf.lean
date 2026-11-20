@@ -10,9 +10,9 @@ def ShfSep : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) (U : Scheme.{0}) (y
   (Loc U fun V g => Sec.res g y = 0) → y = 0
 
 /- English proof (translation)
-Introduce `R _ F U y h`. Take `⟨S, hS, hP⟩` from `h`. Set `e₁ : ModuleCat.of (ULift.{1} R) (ULift.{1} R) ⟶ F.obj.obj (op U)` to `ModuleCat.ofHom (LinearMap.toSpanSingleton _ _ y)`. Use `Presheaf.IsSheaf.hom_ext F.property ⟨S, hS⟩ e₁ 0 (fun I => by` as an intermediate fact. Use `ext`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[e₁]`. Conclude with `hP _ _ I.hf)`. Establish `h1` using `congrArg (fun f => f.hom 1) this`. Simplify `h1` using `[e₁]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem shfSep : ShfSep := by
   intro R _ F U y h
@@ -43,15 +43,13 @@ def KerGen : Prop := ∀ (q : ℕ) [NeZero q] (κ : (restr (Int.castRingHom (ZMo
     Sec.map κ (U := V) (c • twGen 1 ζ) = 0 → (c • twGen 1 ζ : Sec (tw q 1) V) = 0
 
 /- English proof (translation)
-Introduce `q _ κ hg V ζ c h`. Take `⟨u, hu, hc⟩` from `hA q _ ζ`. Set `t : Sec ((restr (Int.castRingHom (ZMod q))).obj (tw q 1)) V` to `twGen 1 ζ`. Establish `h2 : (κ.hom.app (op V)).hom (c • t) = 0` using `h`. Rewrite `h2` using `[map_nsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hgt : (κ.hom.app (op V)).hom t = _` using `hg V ζ u hu`. Rewrite `h2` using `[hgt]`. Establish `h3 : (ofRings.sec unitsF V ⟨Additive.ofMul (u ^ c)⟩ : Sec Gm V) = 0`. Establish `e : (ofRings.sec unitsF V ⟨Additive.ofMul (u ^ c)⟩ : Sec Gm V) = c • ofRings.sec unitsF V ⟨Additive.ofMul u⟩`. Unfold `ofRings.sec`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `have ex : (⟨Additive.ofMul (u ^ c)⟩ : ↑((Scheme.Γ ⋙ unitsF).obj (op V))) = c • (⟨Additive.ofMul u⟩ : ↑((Scheme.Γ ⋙ unitsF).obj (op V))) := by first | rfl | (apply ULift.ext; simp [ofMul_pow]) | (apply ULift.ext; rfl)`. Use `erw [ex]`. Conclude with `map_nsmul _ _ _`. Rewrite using `[e]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `hc c (hG V _ h3) with ⟨k, rfl⟩ | hs` into its components or cases. Rewrite using `[mul_comm, mul_nsmul]`. Establish `: ∀ x : Sec (tw q 1) V, q • x = 0` using `fun x => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]`. Establish `: ((q : ℕ) : ULift.{1} (ZMod q)) = 0` using `ULift.ext _ _ (by simp)`.
-
-Rewrite using `[this, zero_smul]`. Conclude with `this _`. Conclude with `hE _ _ V hs _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerGen_of (hG : GmSep) (hA : CycPow) (hE : EmptySec) : KerGen := by
   intro q _ κ hg V ζ c h
@@ -81,13 +79,13 @@ theorem kerGen_of (hG : GmSep) (hA : CycPow) (hE : EmptySec) : KerGen := by
   · exact hE _ _ V hs _
 
 /- English proof (translation)
-Establish `hS` using `shfSep`. Establish `hK` using `kerGen_of hG hA hE`. Introduce `q _ B _ _ κ hg U _`. Use `(injective_iff_map_eq_zero (κ.hom.app (op U)).hom).2 fun y hy => ?_` and prove the remaining obligations. Apply `hS _ ((restr (Int.castRingHom (ZMod q))).obj (tw q 1)) U y` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨S, hSc, hP⟩` from `hL q U y`. Use `⟨S, hSc, fun V g hg' => ?_⟩` and prove the remaining obligations. Break down `hP V g hg' with h | ⟨ζ, c, h⟩` into its components or cases. Conclude with `h`. Establish `hn : Sec.map κ (U` using `V) (Sec.res g y) = 0 := by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun f => f.hom y) (κ.hom.naturality g.op)` as an intermediate fact. Simplify using `only [ModuleCat.hom_comp, LinearMap.coe_comp, Function.comp_apply] at this`. Express the relevant statement in the definitionally equal form `(κ.hom.app (op V)).hom (((restr (Int.castRingHom (ZMod q))).obj (tw q 1)).obj.map g.op |>.hom y) = 0`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `(Gm.obj.map g.op).hom ((κ.hom.app (op U)).hom y) = 0`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, map_zero]`. Express the relevant statement in the definitionally equal form `Sec.res (F := tw q 1) g y = 0`. Express the relevant statement in the definitionally equal form `Sec.map κ (U := V) (Sec.res (F := tw q 1) g y) = 0 at hn`. Rewrite `hn`, the goal using `[h]`. Conclude with `hK q κ hg V ζ c hn`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafKumMuInj_of (hL : TwLocGen) (hG : GmSep) (hA : CycPow) (hE : EmptySec) :
     LateralTheory.E.H2CurveOrder.LeafKumMuUnitsPf.LeafKumMuInj := by

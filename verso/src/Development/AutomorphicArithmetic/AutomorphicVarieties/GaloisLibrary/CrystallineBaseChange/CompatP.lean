@@ -23,7 +23,7 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `P` and use `UpperTheory.V.Lev.compatPSOf P P.ss`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.compatP :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Lev.CompatPS := fun P => UpperTheory.V.Lev.compatPSOf P P.ss

@@ -6,15 +6,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 namespace GlobalTheory.CompanionTheory.Lbc
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N J h d hd`. Use `⟨⟨fun n hn => ?_, fun n hn => ?_, fun x hx => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `using hn`. Simplify using `using hn`. Simplify using `using hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `t t' ⟨h1, h2, h3⟩ ⟨h1', h2', h3'⟩`. Use `⟨fun n hn => ?_, fun n hn => ?_, fun x hx => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `key` using `h1 _ (h1' n hn)`. Rewrite using `[map_mul]`. Use `key using 1` and compare the differences between its conclusion and the goal.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `group`. Establish `key` using `h2' _ (h2 n hn)`. Rewrite using `[map_mul]`. Use `key using 1` and compare the differences between its conclusion and the goal. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `key` using `(h3 _ (h3' x hx).1).1`. Use `key using 1` and compare the differences between its conclusion and the goal. Use `group`. Establish `key` using `(h3' _ (h3 x hx).2).2`. Use `key using 1` and compare the differences between its conclusion and the goal.
-
-Use `group`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem isDominant_one_and_mul :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]

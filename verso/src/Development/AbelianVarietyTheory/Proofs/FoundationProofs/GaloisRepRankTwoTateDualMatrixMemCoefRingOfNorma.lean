@@ -5,15 +5,15 @@ open scoped Matrix
 namespace GlobalTheory.Ord2
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ e S A W hW c hc s i j`. Establish `hdet : (mat W s).det ∈ c.O`. Set `M : Matrix (Fin 2) (Fin 2) c.O` to `Matrix.of fun i j => ⟨mat W s i j, hc s i j⟩`. Establish `hM : M.map c.O.val = mat W s` using `by ext i j; rfl`. Establish `h` using `RingHom.map_det (SubringClass.subtype c.O) M`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← hM]`. Establish `e1 : (M.map c.O.val) = M.map (SubringClass.subtype c.O)` using `rfl`. Rewrite using `[e1, ← h]`. Conclude with `(M.det).2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : (((dt W s)⁻¹ : (Qbar l)ˣ) : Qbar l) = (mat W s).det`. Establish `h2 : dt W s ^ 2 = 1`. Use `congrArg (fun f => f s) hW.det2` as an intermediate fact. Simplify using `using this`. Establish `: (dt W s)⁻¹ = dt W s`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_eq_iff_mul_eq_one, ← pow_two, h2]`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hcyc : ((cycBar ℚ Ω l s : (Qbar l)ˣ) : Qbar l) ∈ c.O` using `by show ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom) ((cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l]) ∈ c.O`. Conclude with `c.O.algebraMap_mem _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hval : mat (dual1 W) s i j = ((cycBar ℚ Ω l s : (Qbar l)ˣ) : Qbar l) * (((dt W s)⁻¹ : (Qbar l)ˣ) : Qbar l) * mat W s i j`. Simplify using `only [mat, dual1, tw_val, Matrix.smul_apply, smul_eq_mul, MonoidHom.mul_apply, Units.val_mul, MonoidHom.inv_apply]`. Rewrite using `[hval, hinv]`. Conclude with `c.O.mul_mem (c.O.mul_mem hcyc hdet) (hc s i j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galoisRepRankTwoTateDual_matrix_mem_coefRing_of_normalForm : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l), Nf e S A W → ∀ c : Coef l, (∀ s i j, mat W s i j ∈ c.O) → ∀ s i j, mat (dual1 W) s i j ∈ c.O := by
   intro l _ Ω _ _ _ e S A W hW c hc s i j

@@ -10,19 +10,17 @@ noncomputable def poly (Q : ℕ) (c : ℕ → ℂ) (x : Σ N : ℕ, DirichletCha
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 /- English proof (translation)
-Establish `hl2 : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Establish `hp' : (2 : ℝ) ≤ p` using `by exact_mod_cast hp`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `key : ((p : ℝ) ^ a) ^ ε = Real.exp (a * ε * Real.log p)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hp0.le, Real.rpow_def_of_pos hp0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Establish `hlogp : Real.log 2 ≤ Real.log p` using `Real.log_le_log two_pos hp'`. Prove the components needed by the constructor for the conclusion. Rewrite using `[key]`. Establish `h1 : 1 + a * ε * Real.log 2 ≤ Real.exp (a * ε * Real.log p)`.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Real.add_one_le_exp (a * ε * Real.log p)` as an intermediate fact. Establish `: a * ε * Real.log 2 ≤ a * ε * Real.log p` using `mul_le_mul_of_nonneg_left hlogp (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set M := max 1 (1 / (ε * Real.log 2))`. Establish `hM1 : 1 ≤ M` using `le_max_left _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM2 : 1 / (ε * Real.log 2) ≤ M` using `le_max_right _ _`. Establish `hMa : (a : ℝ) ≤ M * (a * ε * Real.log 2)`. Establish `hpos : 0 < ε * Real.log 2` using `by positivity`. Establish `h0 : (0 : ℝ) ≤ a * ε * Real.log 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Introduce `hbig`. Establish `h2 : (2 : ℝ) ≤ (p : ℝ) ^ ε`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_mul (by norm_num), one_div, inv_mul_cancel₀ hε.ne', Real.rpow_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ ≤ (p : ℝ) ^ ε := Real.rpow_le_rpow (by positivity) hbig hε.le`. Establish `: ((p : ℝ) ^ a) ^ ε = ((p : ℝ) ^ ε) ^ a`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul hp0.le, ← Real.rpow_mul hp0.le, mul_comm]`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `Nat.lt_two_pow_self (n := a)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Use `_ ≤ ((p : ℝ) ^ ε) ^ a := pow_le_pow_left₀ (by norm_num) h2 a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem succ_le_mul_pow_rpow_of_two_le (ε : ℝ) (hε : 0 < ε) (p a : ℕ) (hp : 2 ≤ p) :
     ((a : ℝ) + 1) ≤ max 1 (1 / (ε * Real.log 2)) * ((p : ℝ) ^ a) ^ ε ∧
@@ -64,21 +62,15 @@ private theorem succ_le_mul_pow_rpow_of_two_le (ε : ℝ) (hε : 0 < ε) (p a : 
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 /- English proof (translation)
-Use `set M := max 1 (1 / (ε * Real.log 2)) with hM`. Use `set B := ⌈(2 : ℝ) ^ (1 / ε)⌉₊`. Use `⟨M ^ B, by positivity, fun n hn => ?_⟩` and prove the remaining obligations. Establish `hn' : (n : ℝ) = ∏ p ∈ n.primeFactors, ((p : ℝ) ^ n.factorization p)`. Conclude with `(Nat.prod_primeFactors_pow_factorization hn)` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_divisors hn]`. Use `push_cast`. Rewrite using `[hn', ← Real.finset_prod_rpow _ _ (fun p _ => by positivity)]`. Use `set f : ℕ → ℝ := fun p => if (p : ℝ) < (2 : ℝ) ^ (1 / ε) then M else 1`. Establish `hf : ∏ p ∈ n.primeFactors, f p ≤ M ^ B`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hM1 : 1 ≤ M` using `le_max_left _ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_filter]`. Use `_ = M ^ (n.primeFactors.filter (fun p : ℕ => (p : ℝ) < (2 : ℝ) ^ (1 / ε))).card := Finset.prod_const _`. Use `_ ≤ M ^ B := by`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply `pow_le_pow_right₀ hM1` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `p hp`. Simplify using `only [Finset.mem_filter] at hp`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_range]`. Use `lt_of_lt_of_le hp.2 (Nat.le_ceil _)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Use `_ = B := Finset.card_range B`. Combine the equalities or inequalities in the displayed calculation.
-
-Apply `Finset.prod_le_prod (fun p _ => by positivity)` to reduce the goal to its premises. Introduce `p hp`. Establish `h2` using `(Nat.prime_of_mem_primeFactors hp).two_le`. Take `⟨hA, hB⟩` from `succ_le_mul_pow_rpow_of_two_le ε hε p (n.factorization p) h2`. Simplify using `only [f]`.
-
-Use `split_ifs with h`. Conclude with `hA`. Rewrite using `[one_mul]`. Conclude with `hB (not_lt.mp h)`. Use `_ = (∏ p ∈ n.primeFactors, f p) * ∏ p ∈ n.primeFactors, ((p : ℝ) ^ n.factorization p) ^ ε := Finset.prod_mul_distrib`.
-
-Use `_ ≤ M ^ B * ∏ p ∈ n.primeFactors, ((p : ℝ) ^ n.factorization p) ^ ε := mul_le_mul_of_nonneg_right hf (Finset.prod_nonneg (fun p _ => by positivity))`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_card_divisors_le_mul_rpow (ε : ℝ) (hε : 0 < ε) :
     ∃ K : ℝ, 0 < K ∧ ∀ n : ℕ, n ≠ 0 → (n.divisors.card : ℝ) ≤ K * (n : ℝ) ^ ε := by
@@ -123,15 +115,13 @@ private theorem exists_card_divisors_le_mul_rpow (ε : ℝ) (hε : 0 < ε) :
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 /- English proof (translation)
-Rewrite using `[intervalIntegral.integral_of_le hTT]`. Establish `hwin : ∀ a ∈ S, ∫ t in (a - r)..(a + r), h t = ∫ t in Set.Ioc (a - r) (a + r), h t` using `fun a _ => intervalIntegral.integral_of_le (by linarith)`. Rewrite using `[Finset.sum_congr rfl hwin]`. Rewrite using `[← MeasureTheory.integral_biUnion_finset S (fun a _ => measurableSet_Ioc)]`. Apply `MeasureTheory.setIntegral_mono_set` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hc.integrableOn_Ioc`. Conclude with `Filter.Eventually.of_forall (fun t => hpos t)`. Use `Filter.Eventually.of_forall (fun t ht => ?_)` and prove the remaining obligations. Establish `ht' : t ∈ ⋃ a ∈ S, Set.Ioc (a - r) (a + r)` using `ht`. Rewrite `ht'` using `[Set.mem_iUnion₂]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha, hta⟩` from `ht'`. Use `show t ∈ Set.Ioc (-T) T`. Conclude with `⟨by linarith [(hin a ha).1, hta.1], by linarith [(hin a ha).2, hta.2]⟩`. Introduce `a ha b hb hab`. Rewrite using `[Function.onFun, Set.disjoint_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `t hta htb`. Use `hsep a ha b hb hab` as an intermediate fact. Apply the tactic sequence `rcases abs_cases (a - b) with ⟨e, _⟩ | ⟨e, _⟩ <;> rw [e] at this <;>`. Combine the linear relations using `[hta.1, hta.2, htb.1, htb.2]`. Introduce `a _`.
-
-Conclude with `hc.integrableOn_Ioc`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem sum_integral_separated_windows_le (h : ℝ → ℝ) (hc : Continuous h) (hpos : ∀ t, 0 ≤ h t)
     (S : Finset ℝ) (r T : ℝ) (hr : 0 < r)
@@ -163,11 +153,11 @@ private theorem sum_integral_separated_windows_le (h : ℝ → ℝ) (hc : Contin
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 /- English proof (translation)
-Establish `hx0 : 0 < x` using `by linarith`. Establish `hb : (1 + (-(1 / x))) ^ θ ≤ 1 + θ * (-(1 / x))` using `rpow_one_add_le_one_add_mul_self (by rw [neg_le_neg_iff, div_le_one hx0]; exact hx) h0.le h1`. Establish `hsplit : (x - 1) ^ θ = x ^ θ * (1 + (-(1 / x))) ^ θ`. Rewrite using `[← Real.mul_rpow hx0.le (by rw [← sub_eq_add_neg, sub_nonneg, div_le_one hx0]; exact hx)]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hpow : x ^ (θ - 1) = x ^ θ / x` using `by rw [Real.rpow_sub hx0, Real.rpow_one]`. Rewrite using `[hsplit, hpow]`. Establish `hxθ : 0 ≤ x ^ θ` using `by positivity`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left hb hxθ` as an intermediate fact. Establish `e : x ^ θ * (1 + θ * -(1 / x)) = x ^ θ - θ * (x ^ θ / x)` using `by field_simp; ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem mul_rpow_sub_one_le_rpow_sub_rpow (θ : ℝ) (h0 : 0 < θ) (h1 : θ ≤ 1) (x : ℝ) (hx : 1 ≤ x) :
     θ * x ^ (θ - 1) ≤ x ^ θ - (x - 1) ^ θ := by
@@ -186,11 +176,11 @@ private theorem mul_rpow_sub_one_le_rpow_sub_rpow (θ : ℝ) (h0 : 0 < θ) (h1 :
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 /- English proof (translation)
-Rewrite using `[le_div_iff₀ h0, Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `k _`. Use `mul_rpow_sub_one_le_rpow_sub_rpow θ h0 h1 ((k : ℝ) + 1) (by linarith [k.cast_nonneg (α := ℝ)])` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite `this` using `[add_sub_cancel_right]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (N : ℝ) ^ θ := by`. Rewrite using `[Finset.sum_range_sub (fun k : ℕ => ((k : ℝ)) ^ θ) N]`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Real.zero_rpow h0.ne']`.
+A detailed English derivation is pending.
 -/
 private theorem sum_range_succ_rpow_sub_one_le (θ : ℝ) (h0 : 0 < θ) (h1 : θ ≤ 1) (N : ℕ) :
     ∑ k ∈ Finset.range N, ((k : ℝ) + 1) ^ (θ - 1) ≤ (N : ℝ) ^ θ / θ := by
@@ -209,27 +199,27 @@ private theorem sum_range_succ_rpow_sub_one_le (θ : ℝ) (h0 : 0 < θ) (h1 : θ
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 /- English proof (translation)
-Establish `hθ : ∑ n ∈ Finset.Icc 1 (Q ^ 6), ((n : ℝ)) ^ ((1 : ℝ) / 80 - 1) ≤ 80 * (Q : ℝ) ^ ((1 : ℝ) / 8)`. Establish `h` using `sum_range_succ_rpow_sub_one_le (1 / 80) (by norm_num) (by norm_num) (Q ^ 6)`. Establish `hre : ∑ n ∈ Finset.Icc 1 (Q ^ 6), ((n : ℝ)) ^ ((1 : ℝ) / 80 - 1) = ∑ k ∈ Finset.range (Q ^ 6), ((k : ℝ) + 1) ^ ((1 : ℝ) / 80 - 1)`. Rewrite using `[← Finset.Ico_add_one_right_eq_Icc, Finset.sum_Ico_eq_sum_range]`. Simplify using `only [Nat.add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[hre]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Use `h.trans ?_` and prove the remaining obligations. Establish `hQ0 : (0 : ℝ) ≤ Q` using `by positivity`. Establish `hQ1 : (1 : ℝ) ≤ Q` using `by exact_mod_cast (by omega : 1 ≤ Q)`. Rewrite using `[div_eq_mul_inv, mul_comm]`. Establish `: ((Q ^ 6 : ℕ) : ℝ) ^ ((1 : ℝ) / 80) = (Q : ℝ) ^ ((6 : ℝ) / 80)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hQ0]`. Evaluate the numerical expressions. Rewrite using `[this]`. Evaluate the numerical expressions.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Conclude with `Real.rpow_le_rpow_of_exponent_le hQ1 (by norm_num)`. Use `le_trans ?_ ((mul_le_mul_of_nonneg_left hθ (by positivity : (0 : ℝ) ≤ 3 * K ^ 2)).trans_eq (by ring))` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `n hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn1 : 1 ≤ n` using `(Finset.mem_Icc.mp hn).1`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn1`. Use `split_ifs with hI`. Establish `hnQ : Q ^ 3 < n` using `(Finset.mem_Ioc.mp hI).1`. Establish `hweight : (Q : ℝ) ^ 2 * ((Q : ℝ) + 1) + n ≤ 3 * n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `: ((Q ^ 3 : ℕ) : ℝ) < n` using `by exact_mod_cast hnQ`. Move the coercions through the operations in `at this`. Establish `hQ1 : (1 : ℝ) ≤ Q` using `by exact_mod_cast (by omega : 1 ≤ Q)`. Use polynomial arithmetic with `[pow_le_pow_right₀ hQ1 (show 2 ≤ 3 by norm_num)]`. Establish `hcoef : ‖((∑ d ∈ n.divisors.filter (fun d => d ≤ Q ^ 3), (ArithmeticFunction.moebius d : ℤ) : ℤ) : ℂ)‖ ≤ K * (n : ℝ) ^ ((1 : ℝ) / 400)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_trans ?_ (hdiv n (by omega))` and prove the remaining obligations. Establish `hz : |∑ d ∈ n.divisors.filter (fun d => d ≤ Q ^ 3), (ArithmeticFunction.moebius d : ℤ)| ≤ (n.divisors.filter (fun d => d ≤ Q ^ 3)).card`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_card_nsmul _ _ 1 (fun d _ => ArithmeticFunction.abs_moebius_le_one)).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz'` using `hz.trans (by exact_mod_cast Finset.card_filter_le _ _ : ((n.divisors.filter (fun d => d ≤ Q ^ 3)).card : ℤ) ≤ n.divisors.card)`. Rewrite using `[Complex.norm_intCast, ← Int.cast_abs]`. Conclude with `hz'` after adjusting the coercions. Establish `hpow : ‖(n : ℂ) ^ (-(σ : ℂ))‖ = (n : ℝ) ^ (-σ)`. Rewrite using `[← Complex.ofReal_natCast, ← Complex.ofReal_neg, ← Complex.ofReal_cpow hn0.le, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, hpow, mul_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (1 : ℝ) / 200 + 1 - 2 * σ = (1 / 400) * 2 + 1 + (-σ) * 2 by ring, Real.rpow_add hn0, Real.rpow_add hn0, Real.rpow_one, Real.rpow_mul hn0.le, Real.rpow_mul hn0.le, Real.rpow_two, Real.rpow_two]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ 3 * K ^ 2 * ((n : ℝ) ^ ((1 : ℝ) / 80 - 1)) := by`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Check the signs of the components of the expression.
 
-Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Conclude with `Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hn1) (by linarith)`. Simplify using `only [norm_zero]`. Evaluate the numerical expressions. Check the signs of the components of the expression.
+A detailed English derivation is pending.
 -/
 private theorem sum_weighted_moebius_coeff_sq_le (K : ℝ) (hK : 0 < K)
     (hdiv : ∀ n : ℕ, n ≠ 0 → (n.divisors.card : ℝ) ≤ K * (n : ℝ) ^ ((1 : ℝ) / 400))
@@ -303,79 +293,67 @@ private theorem sum_weighted_moebius_coeff_sq_le (K : ℝ) (hK : 0 < K)
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 
 /- English proof (translation)
-Take `⟨C₁, hC₁, hmv⟩` from `_root_.GlobalTheory.norm_sq_le_integral_square`. Take `⟨C₂, hC₂, hls⟩` from `_root_.GlobalTheory.HybridLargeSieve.hybrid_large_sieve`. Take `⟨K, hK, hdiv⟩` from `exists_card_divisors_le_mul_rpow (1 / 400) (by norm_num)`. Use `⟨4 * (C₁ / (1 / 800) ^ 2) * ((1 / 200) * (C₂ * (3 * K ^ 2 * 80))), by positivity, ?_⟩` and prove the remaining obligations. Introduce `Q hQ T hT hsep`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set r : ℝ := 1 / 800 with hr`. Use `set c : ℕ → ℂ := fun n => ((∑ d ∈ n.divisors.filter (fun d => d ≤ Q ^ 3), (moebius d : ℤ) : ℤ) : ℂ) with hc`. Use `set F : (Σ N : ℕ, DirichletCharacter ℂ (N + 1)) → ℂ → ℂ := fun x s => _root_.GlobalTheory.SpacedDetected.poly Q c x s with hF`. Establish `hFdiff : ∀ x, Differentiable ℂ (F x)`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [hF, _root_.GlobalTheory.SpacedDetected.poly]`. Introduce `s`. Apply `DifferentiableAt.fun_sum` to reduce the goal to its premises. Introduce `n hn`. Establish `hn0 : (n : ℂ) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Finset.mem_Ioc.mp hn).1` as an intermediate fact. Conclude with `(show n ≠ 0 by omega)` after adjusting the coercions. Conclude with `(differentiableAt_id.neg.const_cpow (Or.inl hn0)).const_mul _`. Use `set Tm : ℝ := Q + 1 with hTm`. Use `set σ₀ : ℝ := 1 - 1 / 400 - r with hσ₀`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set σ₁ : ℝ := 1 + r with hσ₁`. Use `set G : (Σ N : ℕ, DirichletCharacter ℂ (N + 1)) → ℝ → ℝ := fun x σ => ∫ t in (-Tm)..Tm, ‖F x (σ + t * I)‖ ^ 2 with hG`. Establish `hGcont : ∀ x, Continuous (G x)`. Introduce `x`. Apply `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `(hFdiff x).continuous` as an intermediate fact. Use `fun_prop`. Establish `hQ1 : (1 : ℝ) ≤ Q` using `by exact_mod_cast (by omega : 1 ≤ Q)`. Establish `hpt : ∀ p ∈ T, (1 / 4 : ℝ) ≤ C₁ / r ^ 2 * ∫ σ in σ₀..σ₁, ∫ t in (p.2.2.im - r)..(p.2.2.im + r), ‖F ⟨p.1, p.2.1⟩ (σ + t * I)‖ ^ 2`. Introduce `p hp`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨-, -, hre1, hre2, -, hbig⟩` from `hT p hp`. Establish `hval : F ⟨p.1, p.2.1⟩ p.2.2 = ∑ n ∈ Finset.Ioc (Q ^ 3) (Q ^ 6), ((∑ d ∈ n.divisors.filter (fun d => d ≤ Q ^ 3), (moebius d : ℤ) : ℤ) : ℂ) * p.2.1 (n : ZMod (p.1 + 1)) * (n : ℂ) ^ (-p.2.2)` using `rfl`. Establish `h14 : (1 / 4 : ℝ) ≤ ‖F ⟨p.1, p.2.1⟩ p.2.2‖ ^ 2`. Rewrite using `[hval]`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `h14.trans ((hmv _ p.2.2 r (hFdiff _) (by rw [hr]; norm_num)).trans ?_)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Establish `hcont : Continuous (fun σ : ℝ => ∫ t in (p.2.2.im - r)..(p.2.2.im + r), ‖F ⟨p.1, p.2.1⟩ (σ + t * I)‖ ^ 2)`. Apply `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'` to reduce the goal to its premises. Use `(hFdiff ⟨p.1, p.2.1⟩).continuous` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fun_prop`. Apply `intervalIntegral.integral_mono_interval` to reduce the goal to its premises. Rewrite using `[hσ₀]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hσ₁]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `Filter.Eventually.of_forall (fun σ => ?_)` and prove the remaining obligations. Conclude with `intervalIntegral.integral_nonneg (by rw [hr]; linarith) (fun t _ => by positivity)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hcont.intervalIntegrable _ _`. Use `set P := T.image (fun p => (⟨p.1, p.2.1⟩ : Σ N : ℕ, DirichletCharacter ℂ (N + 1))) with hP`. Establish `hgroup : ∑ p ∈ T, ∫ σ in σ₀..σ₁, ∫ t in (p.2.2.im - r)..(p.2.2.im + r), ‖F ⟨p.1, p.2.1⟩ (σ + t * I)‖ ^ 2 ≤ ∑ x ∈ P, ∫ σ in σ₀..σ₁, G x σ`. Establish `hW : ∀ (x : Σ N : ℕ, DirichletCharacter ℂ (N + 1)) (a : ℝ), Continuous (fun σ : ℝ => ∫ t in (a - r)..(a + r), ‖F x (σ + t * I)‖ ^ 2)`. Introduce `x a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'` to reduce the goal to its premises. Use `(hFdiff x).continuous` as an intermediate fact. Use `fun_prop`. Establish `hle : σ₀ ≤ σ₁` using `by rw [hσ₀, hσ₁, hr]; norm_num`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := T) (t := P) (g := fun p => (⟨p.1, p.2.1⟩ : Σ N : ℕ, DirichletCharacter ℂ (N + 1))) (fun p hp => Finset.mem_image_of_mem _ hp)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `x _`. Rewrite using `[← intervalIntegral.integral_finset_sum (fun p _ => (hW _ _).intervalIntegrable _ _)]`. Apply `intervalIntegral.integral_mono_on hle` to reduce the goal to its premises. Conclude with `(continuous_finset_sum _ (fun p _ => hW _ _)).intervalIntegrable _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `(hGcont x).intervalIntegrable _ _`. Introduce `σ _`. Use `set fib := T.filter (fun p => (⟨p.1, p.2.1⟩ : Σ N : ℕ, DirichletCharacter ℂ (N + 1)) = x) with hfib`. Establish `hrw : ∀ p ∈ fib, (∫ t in (p.2.2.im - r)..(p.2.2.im + r), ‖F ⟨p.1, p.2.1⟩ (σ + t * I)‖ ^ 2) = ∫ t in (p.2.2.im - r)..(p.2.2.im + r), ‖F x (σ + t * I)‖ ^ 2`. Introduce `p hp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hp` using `[hfib, Finset.mem_filter]`. Rewrite using `[hp.2]`. Rewrite using `[Finset.sum_congr rfl hrw]`. Establish `hinj : Set.InjOn (fun p : (Σ N : ℕ, DirichletCharacter ℂ (N + 1) × ℂ) => p.2.2.im) fib`. Introduce `p hp p' hp' him`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hp`, `hp'` using `[Finset.mem_coe, hfib, Finset.mem_filter]`. Take `⟨N, χ, ρ⟩` from `p`. Take `⟨N', χ', ρ'⟩` from `p'`. Establish `hkey : (⟨N, χ⟩ : Σ N : ℕ, DirichletCharacter ℂ (N + 1)) = ⟨N', χ'⟩` using `hp.2.trans hp'.2.symm`. Take `⟨rfl, h⟩` from `Sigma.mk.inj_iff.mp hkey`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Consider the cases of `h`. Assume the negation of the conclusion as `hne`. Establish `hρ : ρ ≠ ρ'` using `fun e => hne (by rw [e])`. Use `hsep N χ ρ ρ' hp.1 hp'.1 hρ` as an intermediate fact. Simplify using `only at him`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[him, sub_self, abs_zero]`. Evaluate the numerical expressions using `at this`. Rewrite using `[← Finset.sum_image (f := fun a => ∫ t in (a - r)..(a + r), ‖F x (σ + t * I)‖ ^ 2) hinj]`. Apply `sum_integral_separated_windows_le (fun t => ‖F x (σ + t * I)‖ ^ 2) (by have := (hFdiff x).continuous; fun_prop) (fun t => by positivity) _ r Tm (by rw [hr]; norm_num)` to reduce the goal to its premises. Introduce `a ha b hb hab`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha`, `hb` using `[Finset.mem_image]`. Take `⟨p, hp, rfl⟩` from `ha`. Take `⟨p', hp', rfl⟩` from `hb`. Rewrite `hp`, `hp'` using `[hfib, Finset.mem_filter]`. Take `⟨N, χ, ρ⟩` from `p`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N', χ', ρ'⟩` from `p'`. Establish `hkey : (⟨N, χ⟩ : Σ N : ℕ, DirichletCharacter ℂ (N + 1)) = ⟨N', χ'⟩` using `hp.2.trans hp'.2.symm`. Take `⟨rfl, h⟩` from `Sigma.mk.inj_iff.mp hkey`. Consider the cases of `h`. Establish `hρ : ρ ≠ ρ'` using `fun e => hab (by rw [e])`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hsep N χ ρ ρ' hp.1 hp'.1 hρ` as an intermediate fact. Simplify using `only`. Rewrite using `[hr]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a ha`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ha` using `[Finset.mem_image]`. Take `⟨p, hp, rfl⟩` from `ha`. Rewrite `hp` using `[hfib, Finset.mem_filter]`. Establish `hb` using `(hT p hp.1).2.2.2.2.1`. Rewrite `hb` using `[abs_le]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hTm, hr]`. Apply the tactic sequence `constructor <;> linarith [hb.1, hb.2]`. Rewrite using `[hTm]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsieve : ∀ σ ∈ Set.Icc σ₀ σ₁, ∑ x ∈ P, G x σ ≤ C₂ * (3 * K ^ 2 * 80) * (Q : ℝ) ^ ((1 : ℝ) / 8)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `σ hσ`. Use `set a : ℕ → ℂ := fun n => if n ∈ Finset.Ioc (Q ^ 3) (Q ^ 6) then ((∑ d ∈ n.divisors.filter (fun d => d ≤ Q ^ 3), (moebius d : ℤ) : ℤ) : ℂ) * (n : ℂ) ^ (-(σ : ℂ)) else 0 with ha`. Establish `hsub : Finset.Ioc (Q ^ 3) (Q ^ 6) ⊆ Finset.Icc 1 (Q ^ 6)`. Introduce `n hn`. Rewrite `hn` using `[Finset.mem_Ioc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.mem_Icc]`. Conclude with `⟨by have := Nat.zero_le (Q ^ 3); omega, hn.2⟩`. Establish `hrepr : ∀ (x : Σ N : ℕ, DirichletCharacter ℂ (N + 1)) (t : ℝ), F x (σ + t * I) = ∑ n ∈ Finset.Icc 1 (Q ^ 6), a n * x.2 (n : ZMod (x.1 + 1)) * (n : ℂ) ^ (-(t * I))`. Introduce `x t`. Rewrite using `[← Finset.sum_subset hsub (fun n _ hn => by rw [ha]; simp [hn])]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hF, _root_.GlobalTheory.SpacedDetected.poly, hc]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n hn`. Establish `hn0 : (n : ℂ) ≠ 0`. Use `(Finset.mem_Ioc.mp hn).1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(show n ≠ 0 by omega)` after adjusting the coercions. Rewrite using `[ha]`. Simplify using `only [if_pos hn]`. Rewrite using `[neg_add, Complex.cpow_add _ _ hn0]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set H : (Σ N : ℕ, DirichletCharacter ℂ (N + 1)) → ℝ := fun x => ∫ t in (-Tm)..Tm, ‖∑ n ∈ Finset.Icc 1 (Q ^ 6), a n * x.2 (n : ZMod (x.1 + 1)) * (n : ℂ) ^ (-(t * I))‖ ^ 2 with hH`. Establish `hGH : ∀ x, G x σ = H x`. Introduce `x`. Simplify using `only [hG, hH, hrepr]`. Establish `hTm1 : (1 : ℝ) ≤ Tm` using `by rw [hTm]; linarith`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hHnn : ∀ x, 0 ≤ H x` using `fun x => intervalIntegral.integral_nonneg (by linarith) (fun t _ => by positivity)`. Simplify using `only [hGH]`. Establish `hPsub : P ⊆ (Finset.range Q).sigma (fun q => Finset.univ.filter (fun χ : DirichletCharacter ℂ (q + 1) => χ.IsPrimitive))`. Introduce `x hx`. Rewrite `hx` using `[hP, Finset.mem_image]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Take `⟨p, hp, rfl⟩` from `hx`. Take `⟨h1, h2, -⟩` from `hT p hp`. Rewrite using `[Finset.mem_sigma, Finset.mem_range, Finset.mem_filter]`. Conclude with `⟨by show p.1 < Q; omega, Finset.mem_univ _, h2⟩`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.sum_sigma]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `q _`. Rewrite using `[finsum_mem_eq_toFinset_sum, Set.toFinset_setOf]`. Use `_ ≤ C₂ * ∑ n ∈ Finset.Icc 1 (Q ^ 6), ((Q : ℝ) ^ 2 * Tm + n) * ‖a n‖ ^ 2 := hls Q (Q ^ 6) a Tm (by omega) hTm1`.
-
-Use `_ ≤ C₂ * (3 * K ^ 2 * 80 * (Q : ℝ) ^ ((1 : ℝ) / 8)) := by`. Use `mul_le_mul_of_nonneg_left ?_ hC₂.le` and prove the remaining obligations. Establish `hσ' : 1 - 3 / 800 ≤ σ`. Use `hσ.1` as an intermediate fact. Rewrite `this` using `[hσ₀, hr]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `sum_weighted_moebius_coeff_sq_le K hK hdiv Q hQ σ hσ'`. Use `_ = C₂ * (3 * K ^ 2 * 80) * (Q : ℝ) ^ ((1 : ℝ) / 8) := by ring`. Establish `hint : ∑ x ∈ P, ∫ σ in σ₀..σ₁, G x σ ≤ (1 / 200) * (C₂ * (3 * K ^ 2 * 80) * (Q : ℝ) ^ ((1 : ℝ) / 8))`. Rewrite using `[← intervalIntegral.integral_finset_sum (fun x _ => (hGcont x).intervalIntegrable _ _)]`.
-
-Establish `hle : σ₀ ≤ σ₁` using `by rw [hσ₀, hσ₁, hr]; norm_num`. Combine the equalities or inequalities in the displayed calculation. Apply `intervalIntegral.integral_mono_on hle` to reduce the goal to its premises. Conclude with `(continuous_finset_sum _ (fun x _ => hGcont x)).intervalIntegrable _ _`. Conclude with `intervalIntegrable_const`.
-
-Conclude with `hsieve`. Use `_ = (1 / 200) * (C₂ * (3 * K ^ 2 * 80) * (Q : ℝ) ^ ((1 : ℝ) / 8)) := by`. Rewrite using `[intervalIntegral.integral_const, smul_eq_mul, hσ₀, hσ₁, hr]`. Evaluate the numerical expressions. Establish `hsum : (T.card : ℝ) * (1 / 4) ≤ C₁ / r ^ 2 * ∑ p ∈ T, ∫ σ in σ₀..σ₁, ∫ t in (p.2.2.im - r)..(p.2.2.im + r), ‖F ⟨p.1, p.2.1⟩ (σ + t * I)‖ ^ 2`.
-
-Rewrite using `[Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Establish `hCr : 0 ≤ C₁ / r ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left ?_ (by norm_num)` and prove the remaining obligations.
-
-Conclude with `hsum.trans (mul_le_mul_of_nonneg_left (hgroup.trans hint) hCr)`. Use `_ = _ := by rw [hr]; ring`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SpacedDetected.card_spaced_detected_le : ∃ C : ℝ, 0 < C ∧ ∀ Q : ℕ, 2 ≤ Q → ∀ T : Finset (Σ N : ℕ, DirichletCharacter ℂ (N + 1) × ℂ), (∀ p ∈ T, p.1 + 1 ≤ Q ∧ p.2.1.IsPrimitive ∧ 1 - 1 / 400 ≤ p.2.2.re ∧ p.2.2.re ≤ 1 ∧ |p.2.2.im| ≤ Q ∧ (1 / 2 : ℝ) ≤ ‖∑ n ∈ Finset.Ioc (Q ^ 3) (Q ^ 6), ((∑ d ∈ n.divisors.filter (fun d => d ≤ Q ^ 3), (moebius d : ℤ) : ℤ) : ℂ) * p.2.1 (n : ZMod (p.1 + 1)) * (n : ℂ) ^ (-p.2.2)‖) → (∀ (N : ℕ) (χ : DirichletCharacter ℂ (N + 1)) (ρ ρ' : ℂ), (⟨N, χ, ρ⟩ : (Σ N : ℕ, DirichletCharacter ℂ (N + 1) × ℂ)) ∈ T → (⟨N, χ, ρ'⟩ : (Σ N : ℕ, DirichletCharacter ℂ (N + 1) × ℂ)) ∈ T → ρ ≠ ρ' → 1 ≤ |ρ.im - ρ'.im|) → (T.card : ℝ) ≤ C * (Q : ℝ) ^ ((1 : ℝ) / 8) := by
   classical

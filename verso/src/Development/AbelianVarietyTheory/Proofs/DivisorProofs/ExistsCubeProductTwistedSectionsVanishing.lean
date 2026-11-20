@@ -15,7 +15,7 @@ open GlobalTheory.Mum GlobalTheory.TwFam
 namespace GlobalTheory.TwFam
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_five, _root_.mul_comm (toUnit D.P.A ≫ D.c β)]`. Simplify using `only [← zpow_neg_one]`. Conclude with `congrArg₂ (· * ·) (congrArg₂ (· * ·) (congrArg₂ (· * ·) (congrArg₂ (· * ·) rfl (zpow_one _)) rfl) (zpow_one _)) rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_tφ_eq {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (a : D.P.A ⟶ D.P.A) (n j : ℤ) (β : D.X)
     {U : Type} [CommGroup U] (h : (D.P.A.left ⟶ D.P.A.left) → U) :
@@ -28,11 +28,9 @@ theorem prod_tφ_eq {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (a : D.P
     (zpow_one _)) rfl
 
 /- English proof (translation)
-Establish `hadd : toUnit D.P.A ≫ D.c (β + β') = (toUnit D.P.A ≫ D.c β) * (toUnit D.P.A ≫ D.c β')`. Rewrite using `[D.c_add]`. Conclude with `MonObj.comp_mul _ _ _`. Establish `hu` using `DVR.pullGen_isGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t D.cub.isGen (lift (toUnit _ ≫ D.c β) (lift (toUnit _ ≫ D.c β') (𝟙 D.P.A)) : D.P.A ⟶ G3 D.P.A).left`. Take `⟨p, hp⟩` from `exists_sec D.P.isLB (φ' := tφ D a (β + β')) (ε' := tε (n + n') (j + j')) (fun U _ h => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) ((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) (prod_tφ_eq D a n j β h) (prod_tφ_eq D a n' j' β' h))) (prod_cub (toUnit D.P.A ≫ D.c β) (toUnit D.P.A ≫ D.c β') (𝟙 D.P.A) h))).trans ?_` and prove the remaining obligations. Rewrite using `[prod_tφ_eq, hadd]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`. Use the proof step `module)`.
-
-Use the proof step `(H1.SectionArithmetic.mulSec (H1.SectionArithmetic.mulSec f g) (genSec _ hu))`. Use `⟨p, fun Z x z J hJ => (hp Z x z J hJ).trans ((H1.SectionArithmetic.sval_mulSec _ _ _ z hJ).trans (congrArg₂ (· * ·) (H1.SectionArithmetic.sval_mulSec _ _ _ z hJ) ((sval_genSec _ hu _ z hJ).trans (congrArg Units.val (val_pull hJ _ _ _)))))⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isProdT {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (a : D.P.A ⟶ D.P.A) (n j n' j' : ℤ)
     (β β' : D.X) (f : SecT D a n j β) (g : SecT D a n' j' β') :
@@ -54,9 +52,9 @@ theorem exists_isProdT {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (a : 
     (H1.SectionArithmetic.sval_mulSec _ _ _ z hJ) ((sval_genSec _ hu _ z hJ).trans (congrArg Units.val (val_pull hJ _ _ _)))))⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D a n j n' j' n'' j'' hn hj β β' f g`. Substitute `hn hj` using the available equality. Take `⟨p, hp⟩` from `exists_isProdT D.toPre a n j n' j' β β' f g`. Use `⟨p, hp, fun e he Z x z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hp Z _ z J hJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Break down `he with he | he` into its components or cases. Rewrite using `[he Z x z J hJ, zero_mul, zero_mul]`. Rewrite using `[he Z x z J hJ, mul_zero, zero_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_prodT_van : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)), ∀ (a : D.toPre.P.A ⟶ D.toPre.P.A), ∀ (n j n' j' n'' j'' : ℤ), n'' = n + n' → j'' = j + j' → ∀ (β β' : D.toPre.X) (f : SecT D.toPre a n j β) (g : SecT D.toPre a n' j' β'), ∃ p : SecT D.toPre a n'' j'' (β + β'), IsProdT f g p ∧ ∀ e, (Van (maximalIdeal R) f e ∨ Van (maximalIdeal R) g e) → Van (maximalIdeal R) p e := by
   intro R _ _ _ _ D a n j n' j' n'' j'' hn hj β β' f g

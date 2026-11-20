@@ -19,13 +19,13 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory.QCoh
 
 /- English proof (translation)
-Establish `key : ∀ {a b : X}, a < b → topologicalKrullDim (closure ({a} : Set X)) + 1 ≤ topologicalKrullDim (closure ({b} : Set X))`. Introduce `a b hab`. Use `topologicalKrullDim_add_one_le isClosed_closure isClosed_closure fun x hx => ⟨b, subset_closure rfl, fun hb => ?_, ?_⟩` and prove the remaining obligations. Conclude with `hab.not_ge (specializes_iff_mem_closure.2 hb)`. Establish `h1 : b ⤳ a` using `hab.le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : a ⤳ x` using `specializes_iff_mem_closure.2 hx`. Conclude with `h1.trans h2`. Establish `hle : ∀ b : X, topologicalKrullDim (closure ({b} : Set X)) ≤ topologicalKrullDim X` using `fun b => Topology.IsInducing.subtypeVal.topologicalKrullDim_le`. Use `le_antisymm ((Order.coheight_le_coe_iff (n := 1)).2 fun y hy => ?_) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hy0 : ¬ IsMax y` using `fun h => hc (by rw [Order.coheight_eq_zero.2 h]; exact zero_lt_one)`. Take `⟨b, hyb⟩` from `not_isMax_iff.1 hy0`. Establish `h` using `((add_le_add (hd ▸ key hy : (n : WithBot ℕ∞) + 1 ≤ _) (le_refl (1 : WithBot ℕ∞))).trans (key hyb)).trans ((hle b).trans hX)`. Normalize the coercions in `at h`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[ENat.one_le_iff_ne_zero]`. Conclude with `fun h => hw (Order.coheight_eq_zero.1 h)`.
+A detailed English derivation is pending.
 -/
 theorem coheight_eq_one_of_dim_closure {X : Scheme.{0}} {n : ℕ}
     (hX : topologicalKrullDim X ≤ (n + 1 : ℕ)) {w : X} (hw : ¬ IsMax w)
@@ -55,9 +55,9 @@ theorem coheight_eq_one_of_dim_closure {X : Scheme.{0}} {n : ℕ}
 open scoped Pointwise
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `exists_chart hM w`. Take `⟨q⟩` from `CutDegree.nonempty_stalk_cut_equiv (structureModule X) hM s i hi`. Use `set g := X.presheaf.germ _ w hi (s.f i)`. Establish `e1 : Module.length (X.presheaf.stalk w) (X.presheaf.stalk w ⧸ Ideal.span {g}) = Module.length (X.presheaf.stalk w) (QuotSMulTop g (X.presheaf.stalk w))`. Use `(Submodule.quotEquivOfEq (Ideal.span {g}) (g • (⊤ : Submodule (X.presheaf.stalk w) (X.presheaf.stalk w))) ?_).length_eq` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.ideal_span_singleton_smul, Ideal.smul_eq_mul, Ideal.mul_top]`. Rewrite using `[mult_divOfSec hw hi, ← q.length_eq, (QuotSMulTop.congr g (structureModuleStalkEquiv w)).length_eq, ← e1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mult_divOfSec_eq_length_cut {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     {M : LB X} (hM : M.IsLB) (s : M.Sec) (hs : genericPoint X ∈ nonzeroLocus s) {w : X}
@@ -76,9 +76,9 @@ theorem mult_divOfSec_eq_length_cut {X : Scheme.{0}} [IsIntegral X] [IsLocallyNo
     (QuotSMulTop.congr g (structureModuleStalkEquiv w)).length_eq, ← e1]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `exists_chart hM w`. Establish `: Ring.KrullDimLE 1 (X.presheaf.stalk w)` using `krullDimLE_of_coheight_le hw.le`. Establish `e` using `algebraMap_germ hi (s.f i)`. Establish `hg0 : X.presheaf.germ _ w hi (s.f i) ≠ 0` using `fun h0 => fnOf_sec_ne_zero hs (gen_mem hi) (e.symm.trans ((congrArg _ h0).trans (map_zero _)))`. Establish `htop` using `Ring.ord_ne_top (mem_nonZeroDivisors_of_ne_zero hg0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ¬ IsUnit (X.presheaf.germ _ w hi (s.f i))` using `fun h => hws ((mem_nonzeroLocus_iff s i hi).2 ((Scheme.mem_basicOpen _ _ _ _).2 h))`. Rewrite using `[mult_divOfSec hw hi, Nat.cast_ne_zero, Ne, ENat.toNat_eq_zero, not_or]`. Use `⟨fun h0 => hu ?_, htop⟩` and prove the remaining obligations. Rewrite `h0` using `[Module.length_eq_zero_iff, Ideal.Quotient.subsingleton_iff, Ideal.span_singleton_eq_top]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mult_divOfSec_ne_zero {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     {M : LB X} (hM : M.IsLB) (s : M.Sec) (hs : genericPoint X ∈ nonzeroLocus s) {w : X}
@@ -97,15 +97,15 @@ theorem mult_divOfSec_ne_zero {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetheri
   exact h0
 
 /- English proof (translation)
-Introduce `κ _ X _ _ _ hproj n hX M hM P hP s hs`. Establish `hf` using `algebraMap_eq_strHom κ X`. Use `isNoetherian_of_isProjOver hproj` as an intermediate fact. Establish `: IsProper (strHom κ X)` using `(isProper_and_exists_isAmpleLB_of_isProjOver hproj).1`. Take `⟨H, hH⟩` from `exists_isAmpleLB_of_isProjOver hproj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmono` using `(mono_cutHom_structureModule_iff hM s).2 hs`. Establish `hfin : FiniteCohTwists κ (structureModule X)` using `hH.finiteCohTwists hf _`. Rewrite using `[interNum_cons_eq_interNum_cut hM s hP hfin]`. Establish `hsupp : suppDim (cut (structureModule X) hM s) ≤ (Fintype.card (Fin n) : ℕ)`. Rewrite using `[Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `suppDim_cut_le _ hM s (by rwa [QCoh.suppDim_structureModule])`. Establish `hfs` using `(divOfSec hM s hs).finite_support_mult`. Establish `hS : ∀ w ∈ support (cut (structureModule X) hM s), topologicalKrullDim (closure ({w} : Set X)) = (Fintype.card (Fin n) : ℕ) → w ∈ hfs.toFinset`. Introduce `w hw hd`. Rewrite `hd` using `[Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[support_cut, QCoh.support_structureModule]`. Establish `hmax : ¬ IsMax w` using `fun h => hw.2 ((h (genericPoint_specializes w) : w ⤳ genericPoint X).mem_open (nonzeroLocus s).isOpen hs)`. Establish `hc` using `coheight_eq_one_of_dim_closure hX hmax hd`. Simplify using `using mult_divOfSec_ne_zero hM s hs hc hw.2`. Rewrite using `[T.intersectionNumber_sheaf_eq_sum_length_mul_cycle κ X hproj (Fin n) P hP _ hsupp hfs.toFinset hS, finsum_eq_sum_of_support_subset _ (s := hfs.toFinset) ?_]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `hw' : (divOfSec hM s hs).mult w ≠ 0` using `by simpa using hw`. Rewrite using `[mult_divOfSec_eq_length_cut hM s hs (CartierDiv.coheight_eq_one_of_mult_ne_zero hw')]`. Introduce `w hw`. Simplify using `using Function.support_mul_subset_left _ _ hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem interNum_cons_eq_finsum_mult : ∀ (κ : Type) [Field κ] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [Algebra κ Γ(X, ⊤)], IsProjOver (strHom κ X) → ∀ (n : ℕ), topologicalKrullDim X ≤ (n + 1 : ℕ) → ∀ (M : LB X) (hM : M.IsLB) (P : Fin n → LB X), (∀ i, (P i).IsLB) → ∀ (s : M.Sec) (hs : genericPoint X ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s), interNum κ (structureModule X) (Fin.cons M P : Fin (n + 1) → LB X) = ∑ᶠ w, (divOfSec hM s hs).mult w * interNumRed κ (⟨closure {w}, isClosed_closure⟩ : Closeds _) P := by
   intro κ _ X _ _ _ hproj n hX M hM P hP s hs

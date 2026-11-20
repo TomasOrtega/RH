@@ -7,11 +7,11 @@ open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfD
 namespace GlobalTheory.LamTie.CMType
 
 /- English proof (translation)
-Unfold `IsCMType`. Introduce `σ`. Establish `hmk : ∀ j, InfinitePlace.mk (φ j) = InfinitePlace.mk σ ↔ (σ = ComplexEmbedding.conjugate (φ j) ∨ σ = ComplexEmbedding.conjugate (ComplexEmbedding.conjugate (φ j)))`. Introduce `j`. Establish `cc : ComplexEmbedding.conjugate (ComplexEmbedding.conjugate (φ j)) = φ j` using `star_star (φ j)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[InfinitePlace.mk_eq_iff, cc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(e | e)`. Conclude with `Or.inr e.symm`. Conclude with `Or.inl e.symm`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Prove the second alternative. Prove the first alternative.
 
-Introduce and unpack `(e | e)`. Conclude with `Or.inr e.symm`. Conclude with `Or.inl e.symm`. Take `⟨i, hi⟩` from `h.2 (InfinitePlace.mk σ)`. Conclude with `⟨i, (hmk i).1 hi, fun j hj => h.1 (((hmk j).2 hj).trans hi.symm)⟩`.
+Assume the hypotheses and unpack their components. Prove the second alternative. Prove the first alternative. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isCMType_conj {E : Type} [Field E] {I : Type} (φ : I → E →+* ℂ)
     (h : Function.Bijective fun i => InfinitePlace.mk (φ i)) :
@@ -35,7 +35,7 @@ theorem isCMType_conj {E : Type} [Field E] {I : Type} (φ : I → E →+* ℂ)
   exact ⟨i, (hmk i).1 hi, fun j hj => h.1 (((hmk j).2 hj).trans hi.symm)⟩
 
 /- English proof (translation)
-Introduce `R H`. Take `⟨_, -, ⟨-, -, -, -, hbij⟩, -, hsq, -⟩` from `GlobalTheory.Mem.HostCM.host_cm_embedding_properties R H`. Use `⟨isCMType_conj (embPsi H) hbij, fun g g' => ?_⟩` and prove the remaining obligations. Use `show ComplexEmbedding.conjugate (embPsi H g) H.sqrtMinusD = ComplexEmbedding.conjugate (embPsi H g') H.sqrtMinusD`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ComplexEmbedding.conjugate_coe_eq, hsq g, hsq g']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_cmType : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R),
     IsCMType (phi H) ∧ ∀ g g', phi H g H.sqrtMinusD = phi H g' H.sqrtMinusD := by

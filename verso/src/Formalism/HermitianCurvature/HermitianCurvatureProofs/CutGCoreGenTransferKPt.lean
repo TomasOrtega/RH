@@ -21,9 +21,9 @@ def reflB (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) : Q.Mx k r :=
   1 - (2 : ℂ) • ∑ a, vecMulVec (Bs a) (star (Bs a)) * Hpk k r
 
 /- English proof (translation)
-Unfold `reflB`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, Matrix.sum_mulVec]`. Use `congr 2`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.vecMulVec_mulVec, op_smul_eq_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments.
 -/
 theorem reflB_mulVec (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (x : Fin (2 * r + k + 1) → ℂ) :
     reflB (k := k) (r := r) Bs *ᵥ x = x - (2 : ℂ) • ∑ a, herm (Hpk k r) x (Bs a) • Bs a := by
@@ -41,22 +41,22 @@ section frame
 variable {k r : ℕ} {m : ℕ}
 
 /- English proof (translation)
-The claim follows from `(Formalism.QuantumDeterminants.hpkFacts k r).1`.
+A detailed English derivation is pending.
 -/
 theorem hpk_herm' : (Hpk k r)ᴴ = Hpk k r := (Formalism.QuantumDeterminants.hpkFacts k r).1
 
 /- English proof (translation)
-The claim follows from `(Formalism.FourierDecayAlt.P.SettingConstruction.herm_symm (Hpk k r) hpk_herm' x y).symm`.
+A detailed English derivation is pending.
 -/
 theorem herm_conj (x y : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) y x = star (herm (Hpk k r) x y) :=
   (Formalism.FourierDecayAlt.P.SettingConstruction.herm_symm (Hpk k r) hpk_herm' x y).symm
 
 /- English proof (translation)
-Establish `hsum : ∀ (s : Finset (Fin m)), herm (Hpk k r) (∑ a ∈ s, herm (Hpk k r) x (Bs a) • Bs a) (Bs c) = ∑ a ∈ s, herm (Hpk k r) x (Bs a) * herm (Hpk k r) (Bs a) (Bs c)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [herm]`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Formalism.FourierDecayAlt.P.SettingConstruction.herm_add_left, Formalism.FourierDecayAlt.P.SettingConstruction.herm_smul_left, ih]`. Rewrite using `[hsum, Finset.sum_eq_single c]`. Rewrite using `[hon, if_pos rfl, mul_one]`. Introduce `b _ hb`. Rewrite using `[hon, if_neg hb, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ c) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem herm_proj {Bs : Fin m → Fin (2 * r + k + 1) → ℂ}
     (hon : ∀ a b, herm (Hpk k r) (Bs a) (Bs b) = if a = b then 1 else 0) (x : Fin (2 * r + k + 1) → ℂ) (c : Fin m) :
@@ -75,25 +75,23 @@ theorem herm_proj {Bs : Fin m → Fin (2 * r + k + 1) → ℂ}
   · intro h; exact absurd (Finset.mem_univ c) h
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.SettingConstruction.unitary_of_form (Hpk k r) _ fun x y => ?_` and prove the remaining obligations. Rewrite using `[reflB_mulVec, reflB_mulVec]`. Use `set Px := ∑ a, herm (Hpk k r) x (Bs a) • Bs a`. Use `set Py := ∑ a, herm (Hpk k r) y (Bs a) • Bs a`. Establish `hPxy : herm (Hpk k r) Px y = herm (Hpk k r) Px Py`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ∀ (s : Finset (Fin m)), herm (Hpk k r) (∑ a ∈ s, herm (Hpk k r) x (Bs a) • Bs a) y = ∑ a ∈ s, herm (Hpk k r) x (Bs a) * herm (Hpk k r) (Bs a) y`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [herm]`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Formalism.FourierDecayAlt.P.SettingConstruction.herm_add_left, Formalism.FourierDecayAlt.P.SettingConstruction.herm_smul_left, ih]`. Establish `e2 : ∀ (s : Finset (Fin m)), herm (Hpk k r) (∑ a ∈ s, herm (Hpk k r) x (Bs a) • Bs a) Py = ∑ a ∈ s, herm (Hpk k r) x (Bs a) * herm (Hpk k r) (Bs a) Py`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [herm]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Formalism.FourierDecayAlt.P.SettingConstruction.herm_add_left, Formalism.FourierDecayAlt.P.SettingConstruction.herm_smul_left, ih]`. Rewrite using `[e1, e2]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[herm_conj y (Bs a), herm_conj Py (Bs a)]`. Conclude with `congrArg star (herm_proj hon y a).symm`. Establish `hxPy : herm (Hpk k r) x Py = herm (Hpk k r) Px Py`. Establish `h1 : herm (Hpk k r) x Py = star (herm (Hpk k r) Py x)` using `herm_conj Py x`. Establish `h2 : herm (Hpk k r) Px Py = star (herm (Hpk k r) Py Px)` using `herm_conj Py Px`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `e1 : ∀ (s : Finset (Fin m)), herm (Hpk k r) (∑ a ∈ s, herm (Hpk k r) y (Bs a) • Bs a) x = ∑ a ∈ s, herm (Hpk k r) y (Bs a) * herm (Hpk k r) (Bs a) x`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [herm]`. Consider the case `insert a s ha ih`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Formalism.FourierDecayAlt.P.SettingConstruction.herm_add_left, Formalism.FourierDecayAlt.P.SettingConstruction.herm_smul_left, ih]`. Establish `e2 : ∀ (s : Finset (Fin m)), herm (Hpk k r) (∑ a ∈ s, herm (Hpk k r) y (Bs a) • Bs a) Px = ∑ a ∈ s, herm (Hpk k r) y (Bs a) * herm (Hpk k r) (Bs a) Px`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [herm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Formalism.FourierDecayAlt.P.SettingConstruction.herm_add_left, Formalism.FourierDecayAlt.P.SettingConstruction.herm_smul_left, ih]`. Rewrite using `[h1, h2, e1, e2]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[herm_conj x (Bs a), herm_conj Px (Bs a)]`. Conclude with `congrArg star (herm_proj hon x a).symm`. Simplify using `only [Formalism.FourierDecayAlt.P.SettingConstruction.herm_sub_left, Formalism.FourierDecayAlt.P.SettingConstruction.herm_sub_right, Formalism.FourierDecayAlt.P.SettingConstruction.herm_smul_left, Formalism.FourierDecayAlt.P.SettingConstruction.herm_smul_right]`. Rewrite using `[hPxy, hxPy]`.
-
-Establish `h2 : star (2 : ℂ) = 2` using `by simp`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem reflB_unitary {Bs : Fin m → Fin (2 * r + k + 1) → ℂ}
     (hon : ∀ a b, herm (Hpk k r) (Bs a) (Bs b) = if a = b then 1 else 0) :
@@ -166,7 +164,7 @@ section frame2
 variable {k r : ℕ} {m : ℕ}
 
 /- English proof (translation)
-Rewrite using `[reflB_mulVec]`. Simplify using `[hx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem reflB_fix {Bs : Fin m → Fin (2 * r + k + 1) → ℂ} {x : Fin (2 * r + k + 1) → ℂ}
     (hx : ∀ a, herm (Hpk k r) x (Bs a) = 0) : reflB (k := k) (r := r) Bs *ᵥ x = x := by
@@ -174,9 +172,9 @@ theorem reflB_fix {Bs : Fin m → Fin (2 * r + k + 1) → ℂ} {x : Fin (2 * r +
   simp [hx]
 
 /- English proof (translation)
-Use `Matrix.ext_of_mulVec_single fun i => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.one_mulVec]`. Use `set x : Fin (2 * r + k + 1) → ℂ := Pi.single i 1`. Rewrite using `[reflB_mulVec Bs x, reflB_mulVec Bs]`. Establish `hP : ∀ c, herm (Hpk k r) (x - (2 : ℂ) • ∑ a, herm (Hpk k r) x (Bs a) • Bs a) (Bs c) = -herm (Hpk k r) x (Bs c)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Rewrite using `[Formalism.FourierDecayAlt.P.SettingConstruction.herm_sub_left, Formalism.FourierDecayAlt.P.SettingConstruction.herm_smul_left, herm_proj hon x c]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hP, neg_smul, Finset.sum_neg_distrib, smul_neg]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem reflB_sq {Bs : Fin m → Fin (2 * r + k + 1) → ℂ}
     (hon : ∀ a b, herm (Hpk k r) (Bs a) (Bs b) = if a = b then 1 else 0) :
@@ -194,9 +192,9 @@ theorem reflB_sq {Bs : Fin m → Fin (2 * r + k + 1) → ℂ}
   abel
 
 /- English proof (translation)
-Establish `hout : ∀ i : Fin (2 * r + k + 1), ¬ Formalism.FourierDecayAlt.P.TwoByOneBlock.mid k r i → reflB (k` using `k) (r := r) Bs *ᵥ bvec i = bvec i := fun i hi => reflB_fix fun a => Formalism.FourierDecayAlt.P.NFRadRedLocSec.herm_out (hB a) hi`. Use `⟨reflB_unitary hon, fun a => ⟨hout _ ?_, hout _ ?_⟩, reflB_fix fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.FourierDecayAlt.P.TwoByOneBlock.mid, eI]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Formalism.FourierDecayAlt.P.TwoByOneBlock.mid, esI]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[herm_conj (Bs a) w, hw a, star_zero]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem reflB_mem_UWset {Bs : Fin m → Fin (2 * r + k + 1) → ℂ} {w : Fin (2 * r + k + 1) → ℂ}
     (hB : ∀ a, inWb k r (Bs a)) (hon : ∀ a b, herm (Hpk k r) (Bs a) (Bs b) = if a = b then 1 else 0)
@@ -215,35 +213,29 @@ section const
 variable {k r : ℕ} {m : ℕ}
 
 /- English proof (translation)
-Take `⟨hBw, hon, horth⟩` from `hB`. Use `set g₀ := NF.muZ k r μsec ζ₀ with hg₀def`. Use `set g := NF.muZ k r μsec ζ with hgdef`. Establish `hg₀ : g₀ ∈ Glev k r (Fin.last r)` using `Formalism.FourierDecayAlt.P.NFRadRedA.uwb_glev (Formalism.FourierDecayAlt.P.NFRadRedA.muZ_uwb hsec.1 hζ₀)`. Establish `hg : g ∈ Glev k r (Fin.last r)` using `Formalism.FourierDecayAlt.P.NFRadRedA.uwb_glev (Formalism.FourierDecayAlt.P.NFRadRedA.muZ_uwb hsec.1 hζ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy₀ : ∀ a, herm (Hpk k r) (Bs a) (g₀⁻¹ *ᵥ z) = 0` using `fun a => horth a _ (by simp)`. Establish `hz'0 : ∀ a, herm (Hpk k r) (Bs a) z' = 0` using `fun a => horth a _ (by simp)`. Use `set R := reflB (k := k) (r := r) Bs with hRdef`. Establish `hR : R ∈ UWset k r z'` using `reflB_mem_UWset hBw hon hz'0`. Establish `hRR : R * R = 1` using `reflB_sq hon`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hRx₀ : R *ᵥ (g₀⁻¹ *ᵥ z) = g₀⁻¹ *ᵥ z` using `reflB_fix fun a => by rw [herm_conj (Bs a) (g₀⁻¹ *ᵥ z), hy₀ a, star_zero]`. Take `⟨hu₀1, hu₀2⟩` from `Formalism.FourierDecayAlt.Q.LieAlgebraWeightVectors.glev_unit hg₀`. Take `⟨hu1, hu2⟩` from `Formalism.FourierDecayAlt.Q.LieAlgebraWeightVectors.glev_unit hg`. Establish `hdetH : IsUnit (Hpk k r).det`. Use `congrArg Matrix.det (Formalism.QuantumDeterminants.hpkFacts k r).2.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `isUnit_iff_exists_inv.2 ⟨_, this⟩`. Establish `hG` using `Formalism.QuantumDeterminants.uHGroup _ (Hpk k r) hdetH`. Use `set h₀ := g₀ * R * g₀⁻¹ with hh₀def`. Establish `hg₀inv : g₀⁻¹ ∈ UH (Hpk k r)` using `(hG.2.2 g₀ hg₀.1).2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hfix₀ : ∀ a : Fin r, g₀ *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ g₀ *ᵥ bvec (esI k r a) = bvec (esI k r a)` using `fun a => hg₀.2 a (by rw [Fin.val_last]; exact a.isLt)`. Establish `hinvfix : ∀ v : Fin (2 * r + k + 1) → ℂ, g₀ *ᵥ v = v → g₀⁻¹ *ᵥ v = v`. Introduce `v hv`. Combine the equalities or inequalities in the displayed calculation. Establish `hh₀ : h₀ ∈ UWset k r z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hG.2.1 _ (hG.2.1 _ hg₀.1 _ hR.1) _ hg₀inv, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hh₀def, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hinvfix _ (hfix₀ a).1, (hR.2.1 a).1, (hfix₀ a).1]`. Rewrite using `[hh₀def, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hinvfix _ (hfix₀ a).2, (hR.2.1 a).2, (hfix₀ a).2]`. Rewrite using `[hh₀def, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hRx₀, Matrix.mulVec_mulVec, hu₀2, Matrix.one_mulVec]`. Establish `hst₀ : (h₀, R) ∈ NF.Stab k r z z' μsec ζ₀`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hh₀, hR, ?_⟩` and prove the remaining obligations. Use `show g₀ * R * g₀⁻¹ * g₀ * R = g₀`. Rewrite using `[Matrix.mul_assoc (g₀ * R), hu₀1, Matrix.mul_one, Matrix.mul_assoc, hRR, Matrix.mul_one]`. Establish `hst : (h₀, R) ∈ NF.Stab k r z z' μsec ζ`. Rewrite using `[← hsec.2 ζ₀ ζ hζ₀ hζ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hst₀`. Establish `hrel : h₀ * g * R = g` using `hst.2.2`. Establish `hh₀sq : h₀ * h₀ = 1`. Rewrite using `[hh₀def]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hu₀1, Matrix.mul_one, hRR, Matrix.mul_one, hu₀2]`. Use `set x := g⁻¹ *ᵥ z with hxdef`. Establish `hgx : g *ᵥ x = z` using `by rw [hxdef, Matrix.mulVec_mulVec, hu2, Matrix.one_mulVec]`. Establish `hRx : R *ᵥ x = x`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : h₀ *ᵥ (g *ᵥ (R *ᵥ x)) = z`. Rewrite using `[Matrix.mulVec_mulVec (R *ᵥ x) h₀ g, Matrix.mulVec_mulVec x (h₀ * g) R, hrel, hgx]`. Establish `e2 : g *ᵥ (R *ᵥ x) = z`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_mulVec (g *ᵥ (R *ᵥ x)) h₀ h₀, hh₀sq, Matrix.one_mulVec]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `_ = h₀ *ᵥ z := by rw [e1]`. Use `_ = z := hh₀.2.2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_mulVec (R *ᵥ x) g⁻¹ g, hu1, Matrix.one_mulVec]`. Use `_ = x := by rw [e2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hPx : ∑ a, herm (Hpk k r) x (Bs a) • Bs a = 0`. Use `hRx` as an intermediate fact. Rewrite `this` using `[reflB_mulVec, sub_eq_self, smul_eq_zero]`. Conclude with `this.resolve_left two_ne_zero`. Establish `hxB : ∀ a, herm (Hpk k r) (Bs a) x = 0`.
-
-Introduce `a`. Establish `h1` using `herm_proj hon x a`. Rewrite `h1` using `[hPx]`. Establish `h0 : herm (Hpk k r) (0 : Fin (2 * r + k + 1) → ℂ) (Bs a) = 0` using `by simp [herm]`. Rewrite `h1` using `[h0]`.
-
-Rewrite using `[herm_conj x (Bs a), ← h1, star_zero]`. Use `⟨hBw, hon, fun a v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [List.mem_cons, List.mem_singleton, List.not_mem_nil, or_false] at hv`. Break down `hv with rfl | rfl` into its components or cases. Conclude with `hxB a`.
-
-Conclude with `hz'0 a`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem frame_const {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
     (hsec : CSec k r z z' μsec) {ζ₀ : ℂ} (hζ₀ : Tz k r z * Tz k r z' < Complex.normSq ζ₀)
@@ -351,55 +343,49 @@ namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P5.Kfp Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.KPt
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs X d hH`. Take `⟨hPl, hk, hsec, hL, hS, hR, hQ⟩` from `hH`. Take `⟨hP, hz, hz', hTz, hTz', hπ, hπ'⟩` from `hPl`. Establish `hT : 0 < Tz P.k P.r Bs.z` using `by rw [hTz]; exact hP.T_pos`. Establish `hT' : 0 < Tz P.k P.r Bs.z'` using `by rw [hTz']; exact hP.T'_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTT : P.TT = Tz P.k P.r Bs.z * Tz P.k P.r Bs.z'` using `by rw [hTz, hTz']; rfl`. Use `set ζ₀ : ℂ := ((Real.sqrt (Tz P.k P.r Bs.z * Tz P.k P.r Bs.z') + 1 : ℝ) : ℂ) with hζ₀def`. Establish `hζ₀ : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq ζ₀`. Rewrite using `[hζ₀def, Complex.normSq_ofReal]`. Establish `h0 : 0 ≤ Tz P.k P.r Bs.z * Tz P.k P.r Bs.z'` using `(mul_pos hT hT').le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `Real.sq_sqrt h0`. Use polynomial arithmetic with `[Real.sqrt_nonneg (Tz P.k P.r Bs.z * Tz P.k P.r Bs.z')]`. Use `set g₀ := NF.muZ P.k P.r Bs.μsec ζ₀`. Establish `hg₀ : g₀ ∈ Glev P.k P.r (Fin.last P.r)` using `Formalism.FourierDecayAlt.P.NFRadRedA.uwb_glev (Formalism.FourierDecayAlt.P.NFRadRedA.muZ_uwb hsec.1 hζ₀)`. Establish `hGG₀ : GGl P.k P.r Bs.z Bs.z' g₀ ≠ 0`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `(Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hz hz' hsec.1 (q := ((fun _ => 1 : Fin P.r → ℂ), ζ₀)) ⟨fun _ => one_ne_zero, hζ₀⟩).2.2` as an intermediate fact. Conclude with `this.ne'`. Take `⟨Bs₀, -, -, hB1, -, -, -, -, -, -, -, -⟩` from `Formalism.FourierDecayAlt.Q.LieAlgebraWeightVectors.geom_package hz hz' hT hT' hg₀ hGG₀`. Establish `hBz' : IsFrameOf P.k P.r [Bs.z'] Bs₀` using `Formalism.FourierDecayAlt.Q.LieAlgebraWeightVectors.frame_sub hB1 (by simp)`. Establish `hπ'r` using `hπ'.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hπ'c` using `hπ'.2.2.1`. Establish `hu` using `hπ'.2.2.2.1`. Take `⟨Y₀, hY₀⟩` from `sep_real hP`. Use `set w0 : ℝ := Y₀ + ((P.k : ℝ) - 2) / 2 with hw0`. Use `set C : Module.End ℂ Wq := qdet (Formalism.FourierDecayAlt.Qr.EB Bs.π' Bs₀) (w0 : ℂ) with hCdef`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hC : C.IsSymmetric` using `qdet_symm hπ'r hπ'c hu hBz' w0`. Use `set n := Module.finrank ℂ Wq with hn`. Use `set b := hC.eigenvectorBasis hn.symm with hbdef`. Use `set lam : Fin n → ℝ := hC.eigenvalues hn.symm with hlamdef`. Establish `hCb : ∀ i, C (b i) = (lam i : ℂ) • b i` using `fun i => hC.apply_eigenvectorBasis hn.symm i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ρ₀ : M.Ty P` to `Classical.arbitrary _`. Set `typeOf : ℂ → M.Ty P` to `fun μ => if h : ∃ ρ, M.xC P ρ (Y₀ : ℂ) = μ then h.choose else ρ₀`. Establish `htype : ∀ ρ, typeOf (M.xC P ρ (Y₀ : ℂ)) = ρ`. Introduce `ρ`. Establish `h : ∃ ρ', M.xC P ρ' (Y₀ : ℂ) = M.xC P ρ (Y₀ : ℂ)` using `⟨ρ, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [typeOf, dif_pos h]`. Conclude with `hY₀ h.choose_spec`. Set `QQ : M.Ty P → (Wq →L[ℂ] Wq)` to `fun ρ => ∑ i ∈ Finset.univ.filter (fun i => typeOf (lam i) = ρ), rk1 (b i)`. Establish `hQapply : ∀ ρ v, QQ ρ v = ∑ i ∈ Finset.univ.filter (fun i => typeOf (lam i) = ρ), ⟪b i, v⟫_ℂ • b i`. Introduce `ρ v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [QQ, ContinuousLinearMap.sum_apply, rankOneInnerOperator_apply]`. Establish `hon : ∀ i j, ⟪b i, b j⟫_ℂ = if i = j then 1 else 0` using `fun i j => by`. Rewrite using `[orthonormal_iff_ite.mp b.orthonormal i j]`. Establish `hcoef : ∀ (s : Finset (Fin n)) (v : Wq) (j : Fin n), ⟪b j, ∑ i ∈ s, ⟪b i, v⟫_ℂ • b i⟫_ℂ = if j ∈ s then ⟪b j, v⟫_ℂ else 0`. Introduce `s v j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_sum]`. Simplify using `only [inner_smul_right, hon, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq]`. Use `⟨QQ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ρ σ`. Use extensionality with `v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ContinuousLinearMap.comp_apply, hQapply, hQapply]`. Simplify using `only [hcoef, Finset.mem_filter, Finset.mem_univ, true_and]`. Use `split_ifs with hρσ`. Substitute `hρσ` using the available equality. Rewrite using `[hQapply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_filter]`. Rewrite using `[if_pos hi.2]`. Simplify using `only [ContinuousLinearMap.zero_apply]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hi` using `[Finset.mem_filter]`. Rewrite using `[if_neg (fun h => hρσ (hi.2.symm.trans h)), zero_smul]`. Use extensionality with `v`. Rewrite using `[ContinuousLinearMap.sum_apply, ContinuousLinearMap.one_apply]`. Simplify using `only [hQapply]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_fiberwise (Finset.univ) (fun i => typeOf (lam i)) (fun i => ⟪b i, v⟫_ℂ • b i)]`. Conclude with `b.sum_repr' v`. Introduce `ρ v w`. Rewrite using `[hQapply, hQapply, sum_inner, inner_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[inner_smul_left, inner_smul_right, inner_conj_symm]`. Expand and normalize the polynomial expressions, which then agree. Introduce `f Φ q`. Establish `hq : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq q.1.2` using `by rw [← hTT]; exact q.2.2`. Use `set g := NF.muZ P.k P.r Bs.μsec q.1.2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : (q.1.1, g) ∈ DomR P.k P.r Bs.z Bs.z'` using `Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hz hz' hsec.1 (q := q.1) ⟨q.2.1, hq⟩`. Establish `hBg : IsFrameOf P.k P.r [g⁻¹ *ᵥ Bs.z, Bs.z'] Bs₀` using `frame_const hsec hζ₀ hB1 hq`. Set `N : Finset ℂ` to `Finset.univ.image (fun ρ => M.xC P ρ (Y₀ : ℂ)) ∪ Finset.univ.image (fun i => ((lam i : ℝ) : ℂ))`. Set `rv : ℂ → ℂ` to `fun μ => f (typeOf μ)`. Use `set p := Lagrange.interpolate N id rv with hpdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hpN : ∀ μ ∈ N, p.eval μ = f (typeOf μ)`. Introduce `μ hμ`. Establish `h` using `Lagrange.eval_interpolate_at_node rv (Set.injOn_id _) hμ`. Simplify `h` using `only [id]`. Establish `hpx : ∀ ρ, p.eval (M.xC P ρ (Y₀ : ℂ)) = f ρ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `ρ`. Rewrite using `[hpN _ (Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ ρ))), htype]`. Establish `hpl : ∀ i, p.eval ((lam i : ℝ) : ℂ) = f (typeOf (lam i))` using `fun i => hpN _ (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))`. Establish `hκ : d.κ f = Polynomial.aeval (d.x (Y₀ : ℂ)) p` using `kappa_aeval d (Y₀ : ℂ) p f hpx`. Establish `hx1 : fstAlg _ (d.x (Y₀ : ℂ)) = X.fn 5 * X.t (Y₀ : ℂ) 1 1`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h : d.x (Y₀ : ℂ) = d.L.GGi * X.QQ (Y₀ : ℂ) 1 1`. Rewrite using `[hQ]`. Simplify using `only [NFData.QQ, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_fin_one, Matrix.empty_val', Matrix.cons_val_zero]`. Rewrite using `[← mul_assoc, d.L.GGi_GG, one_mul]`. Rewrite using `[h, hL.2.2.2.2.2.2.2.2.2.2.2.1]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hfst : (d.κ f).1 = Polynomial.aeval (X.fn 5 * X.t (Y₀ : ℂ) 1 1) p`. Rewrite using `[← hx1, Polynomial.aeval_algHom_apply, hκ]`. Both sides reduce to the same expression. Establish `hact : ∀ (Ψ : RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (v : Wq), (((X.fn 5 * X.t (Y₀ : ℂ) 1 1) Ψ : RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Fn P.k P.r (Wq →L[ℂ] Wp)) q.1.1 g v = (Ψ : Fn P.k P.r (Wq →L[ℂ] Wp)) q.1.1 g (C v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `Ψ v`. Rewrite using `[diagonal_transfer_action X hz hz' hπ'r hπ'c hx Bs₀ hBg (Y₀ : ℂ) Ψ v]`. Use `congr 2`. Rewrite using `[hCdef, hw0]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Establish `haev : ∀ v : Wq, Polynomial.aeval C p v = ∑ ρ, f ρ • QQ ρ v`. Introduce `v`. Use `conv_lhs => rw [← b.sum_repr' v]`. Rewrite using `[map_sum]`.
-
-Establish `hb : ∀ i, Polynomial.aeval C p (⟪b i, v⟫_ℂ • b i) = (f (typeOf (lam i)) * ⟪b i, v⟫_ℂ) • b i`. Introduce `i`. Establish `hev : Module.End.HasEigenvector C ((lam i : ℝ) : ℂ) (b i)` using `hC.hasEigenvector_eigenvectorBasis hn.symm i`. Rewrite using `[map_smul, Module.End.aeval_apply_of_hasEigenvector hev, hpl, smul_smul, mul_comm]`. Simplify using `only [hb, hQapply, Finset.smul_sum, smul_smul]`.
-
-Rewrite using `[← Finset.sum_fiberwise (Finset.univ) (fun i => typeOf (lam i)) (fun i => (f (typeOf (lam i)) * ⟪b i, v⟫_ℂ) • b i)]`. Use `Finset.sum_congr rfl fun ρ _ => Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_filter]`. Rewrite using `[hi.2]`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations.
-
-Rewrite using `[hfst, ContinuousLinearMap.comp_apply, aeval_act _ C hact p Φ v, haev v]`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gauge_kappa_pointwise_holds : GTKPt := by
   intro Wp Wq _ _ _ _ _ _ P Bs X d hH

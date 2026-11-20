@@ -6,7 +6,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH Groun
 namespace PositivityTheory.HtPt.Siua
 
 /- English proof (translation)
-The claim follows from `siu_kodaira_of PositivityTheory.HtPt.Siub.siu_segre`.
+A detailed English derivation is pending.
 -/
 theorem siu_kodaira : VeryAmpleNefPlusAmple.Statement → SectionCount.Statement →
     GroundTheory.Heights₂.Heights.HilbertSamuel.KodairaGeneric.Statement :=

@@ -31,7 +31,7 @@ open GlobalTheory.FlagTan (dimFlag)
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
 
 /- English proof (translation)
-The claim follows from `|(ofGaps a g : Fin N → ℤ) i| ≤ ∑ k ∈ Finset.range a, |g k| + ∑ k ∈ Finset.range (i : ℕ), |g k| := by unfold ofGaps exact (abs_sub _ _).trans (add_le_add (Finset.abs_sum_le_sum_abs _ _) (Finset.abs_sum_le_sum_abs _ _))`.
+A detailed English derivation is pending.
 -/
 theorem abs_ofGaps_le {N : ℕ} (a : ℕ) (g : ℕ → ℤ) (i : Fin N) :
     |(ofGaps a g : Fin N → ℤ) i| ≤ ∑ k ∈ Finset.range a, |g k| + ∑ k ∈ Finset.range (i : ℕ), |g k| := by
@@ -39,7 +39,7 @@ theorem abs_ofGaps_le {N : ℕ} (a : ℕ) (g : ℕ → ℤ) (i : Fin N) :
   exact (abs_sub _ _).trans (add_le_add (Finset.abs_sum_le_sum_abs _ _) (Finset.abs_sum_le_sum_abs _ _))
 
 /- English proof (translation)
-Use `i.2` as an intermediate fact. Simplify using `only [FlagTan.kap]`. Apply the tactic sequence `split_ifs with h <;> rw [abs_le] <;> constructor <;> push_cast <;> omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_kap_le (τ : Psi H) (i : Fin (Dw.p + Dw.q)) : |FlagTan.kap Dw τ i| ≤ ((Dw.p + Dw.q : ℕ) : ℤ) := by
   have := i.2
@@ -47,7 +47,7 @@ theorem abs_kap_le (τ : Psi H) (i : Fin (Dw.p + Dw.q)) : |FlagTan.kap Dw τ i| 
   split_ifs with h <;> rw [abs_le] <;> constructor <;> push_cast <;> omega
 
 /- English proof (translation)
-Simplify using `only [hodgeWt, CompHt.barWt]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_hodgeWt_le (τ : Psi H) (i : Fin (Dw.p + Dw.q)) : |hodgeWt Dw τ i| ≤ 1 := by
   simp only [hodgeWt, CompHt.barWt]
@@ -56,12 +56,12 @@ theorem abs_hodgeWt_le (τ : Psi H) (i : Fin (Dw.p + Dw.q)) : |hodgeWt Dw τ i| 
 variable (P : WtPar Dw)
 
 /- English proof (translation)
-Unfold `WtPar.T₁`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem T₁_pos : 0 < P.T₁ := by unfold WtPar.T₁; positivity
 
 /- English proof (translation)
-The claim follows from `|P.rem τ i| ≤ 2 * ((Dw.p + Dw.q : ℕ) : ℤ) * P.T₁ := by have hT := T₁_pos P have hg : ∀ k, |gap ((P.uMinus - FlagTan.kap Dw) τ) k - P.T₁ * (gap ((P.uMinus - FlagTan.kap Dw) τ) k / P.T₁)| ≤ P.T₁ := by intro k rw [← Int.emod_def, abs_of_nonneg (Int.emod_nonneg _ hT.ne')] exact (Int. …`.
+A detailed English derivation is pending.
 -/
 theorem abs_rem_le (ha : P.a ≤ Dw.p + Dw.q) (τ : Psi H) (i : Fin (Dw.p + Dw.q)) :
     |P.rem τ i| ≤ 2 * ((Dw.p + Dw.q : ℕ) : ℤ) * P.T₁ := by
@@ -82,14 +82,14 @@ theorem abs_rem_le (ha : P.a ≤ Dw.p + Dw.q) (τ : Psi H) (i : Fin (Dw.p + Dw.q
   exact (h.trans (add_le_add h1 h2)).trans h3
 
 /- English proof (translation)
-The claim follows from `floorGaps_add_remGaps P.T₁ _ ⟨P.a, ha⟩ i`.
+A detailed English derivation is pending.
 -/
 theorem T₁_mul_u₁_add_rem (ha : P.a < Dw.p + Dw.q) (τ : Psi H) (i : Fin (Dw.p + Dw.q)) :
     P.T₁ * P.u₁ τ i + P.rem τ i = (P.uMinus - FlagTan.kap Dw) τ i - (P.uMinus - FlagTan.kap Dw) τ ⟨P.a, ha⟩ :=
   floorGaps_add_remGaps P.T₁ _ ⟨P.a, ha⟩ i
 
 /- English proof (translation)
-Simplify using `only [WtPar.wt, WtPar.uc, WtPar.u₂, Pi.add_apply, Pi.smul_apply, nsmul_eq_mul, Pi.mul_apply, Pi.natCast_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wt_apply (j : ℕ) (τ : Psi H) (i : Fin (Dw.p + Dw.q)) :
     P.wt j τ i = FlagTan.kap Dw τ i + P.rem τ i + ((dimFlag Dw : ℤ) + j + 1) * P.u₁ τ i := by
@@ -104,7 +104,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable (P : WtPar Dw)
 
 /- English proof (translation)
-The claim follows from `|P.wt j τ i| ≤ |la τ i| + |w τ| + |la τ ⟨P.a, ha⟩ - w τ| + 2 * |P.c₀| + 3 * ((Dw.p + Dw.q : ℕ) : ℤ) + 4 * ((Dw.p + Dw.q : ℕ) : ℤ) * P.T₁ := by have e1 := wt_apply P j τ i have e2 := T₁_mul_u₁_add_rem P ha τ i have hr := abs_rem_le P ha.le τ i have hk := abs_kap_le τ i have hka := …`.
+A detailed English derivation is pending.
 -/
 theorem abs_wt_le (ha : P.a < Dw.p + Dw.q) {j : ℕ} (hj : j ≤ P.T) (la : AllWt.Weight Dw) (w : Psi H → ℤ)
     (hu : P.u = la - GlobalTheory.FlatLine.parWt Dw w) (τ : Psi H) (i : Fin (Dw.p + Dw.q)) :
@@ -158,13 +158,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable (P : WtPar Dw)
 
 /- English proof (translation)
-Use `set K : ℝ := 2 * |(P.c₀ : ℝ)| + 3 * ((Dw.p + Dw.q : ℕ) : ℝ) + 4 * ((Dw.p + Dw.q : ℕ) : ℝ) * (P.T₁ : ℝ) with hK`. Establish `hτ : ∀ τ, ∑ i, |(P.wt j τ i : ℝ)| ≤ (((Dw.p + Dw.q : ℕ) : ℝ) + 1) * ∑ i, |(la τ i : ℝ)| + ((Dw.p + Dw.q : ℕ) : ℝ) * K`. Introduce `τ`. Establish `e : ∀ i, |(P.wt j τ i : ℝ)| ≤ |(la τ i : ℝ)| + |(la τ ⟨P.a, ha⟩ : ℝ)| + K` using `fun i => by`. Establish `h` using `abs_wt_le P ha hj la w hu τ i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hw τ, sub_self, abs_zero, add_zero]`. Establish `h' : ((|P.wt j τ i| : ℤ) : ℝ) ≤ ((|la τ i| + |la τ ⟨P.a, ha⟩| + 2 * |P.c₀| + 3 * ((Dw.p + Dw.q : ℕ) : ℤ) + 4 * ((Dw.p + Dw.q : ℕ) : ℤ) * P.T₁ : ℤ) : ℝ)` using `by exact_mod_cast h`. Rewrite using `[hK]`. Move the coercions through the operations in `at h' ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hs` using `Finset.sum_le_sum fun i (_ : i ∈ Finset.univ) => e i`. Rewrite `hs` using `[Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_const, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, nsmul_eq_mul]`. Establish `hl : |(la τ ⟨P.a, ha⟩ : ℝ)| ≤ ∑ i, |(la τ i : ℝ)|` using `Finset.single_le_sum (f := fun i => |(la τ i : ℝ)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ _)`. Establish `hN : (0 : ℝ) ≤ ((Dw.p + Dw.q : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Move the coercions through the operations in `at hs hl ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_abs_wt_le (ha : P.a < Dw.p + Dw.q) {j : ℕ} (hj : j ≤ P.T) (la : AllWt.Weight Dw) (w : Psi H → ℤ)
     (hu : P.u = la - GlobalTheory.FlatLine.parWt Dw w) (hw : ∀ τ, w τ = la τ ⟨P.a, ha⟩) :
@@ -200,45 +200,45 @@ end GlobalTheory.CovTop.WtRun
 namespace GlobalTheory.CovTop.WtRun
 
 /- English proof (translation)
-Establish `hf1 : 1 ≤ f` using `by linarith`. Establish `hr1 : 1 ≤ r` using `by linarith`. Establish `hL1 : 1 ≤ Lr` using `by linarith`. Establish `hf0 : 0 ≤ f` using `by linarith`. Establish `hr0 : 0 ≤ r` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL0 : 0 ≤ Lr` using `by linarith`. Establish `hfL : 80 ≤ f * Lr` using `by nlinarith`. Establish `hfL1 : 1 ≤ f * Lr` using `by linarith`. Establish `hrZ : r ≤ f * r * Lr`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hZ2 : 160 ≤ f * r * Lr`. Establish `: 2 * (f * Lr) ≤ r * (f * Lr)` using `mul_le_mul_of_nonneg_right hr (by linarith)`. Establish `e : r * (f * Lr) = f * r * Lr` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set Z := f * r * Lr with hZ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hZ1 : 1 ≤ Z` using `by linarith`. Establish `hZ0 : 0 ≤ Z` using `by linarith`. Establish `hZ4 : 22 * Z ^ 4 ≤ Z ^ 12`. Establish `h8 : (22 : ℝ) ≤ Z ^ 8`. Establish `: (160 : ℝ) ^ 8 ≤ Z ^ 8` using `pow_le_pow_left₀ (by norm_num) hZ2 8`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (22 : ℝ) ≤ 160 ^ 8` using `by norm_num`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : Z ^ 12 = Z ^ 4 * Z ^ 8` using `by ring`. Rewrite using `[e]`. Use `mul_le_mul_of_nonneg_left h8 (pow_nonneg hZ0 4)` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfr4 : f ^ 2 * r ^ 4 ≤ Z ^ 4`. Establish `h1 : f ^ 2 ≤ f ^ 4 * Lr ^ 4`. Establish `a : f ^ 2 ≤ f ^ 4` using `pow_le_pow_right₀ hf1 (by norm_num)`. Establish `b' : f ^ 4 ≤ f ^ 4 * Lr ^ 4` using `le_mul_of_one_le_right (by positivity) (one_le_pow₀ hL1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `hPP1 : 1 ≤ PP` using `le_trans (one_le_pow₀ hZ1) hPP`. Establish `hPPT : PP ≤ T` using `le_trans (le_self_pow₀ hPP1 (by norm_num)) hT`. Establish `hT1 : 1 ≤ T` using `hPP1.trans hPPT`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT0 : 0 ≤ T` using `by linarith`. Establish `hc0T : c0 ≤ T` using `by linarith`. Establish `hDdT : Dd ≤ T`. Establish `h1 : f * r ^ 2 ≤ Z ^ 2`. Establish `hfl : 1 ≤ f * Lr ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 ≤ Lr ^ 2` using `one_le_pow₀ hL1`. Combine the equalities or inequalities in the displayed calculation. Establish `: f ≤ f ^ 2 * Lr ^ 2`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `: Z ^ 2 ≤ Z ^ 12` using `pow_le_pow_right₀ hZ1 (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrT : r ≤ T`. Establish `: Z ≤ Z ^ 12` using `le_self_pow₀ hZ1 (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hK : 2 * |c0| + 3 * r + 4 * r * (T + Dd + 1) ≤ 17 * r * T`. Rewrite using `[abs_of_nonneg hc0]`. Establish `q1 : r * Dd ≤ r * T` using `mul_le_mul_of_nonneg_left hDdT hr0`. Establish `q2 : r * 1 ≤ r * T` using `mul_le_mul_of_nonneg_left hT1 hr0`. Establish `q3 : 1 * T ≤ r * T` using `mul_le_mul_of_nonneg_right hr1 hT0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : 4 * r * (T + Dd + 1) = 4 * (r * T) + 4 * (r * Dd) + 4 * (r * 1)` using `by ring`. Establish `e2 : 17 * r * T = 17 * (r * T)` using `by ring`. Rewrite using `[e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hTk : T * Lr ≤ kp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPP0 : 0 < PP` using `by linarith`. Establish `h1 : PP * (T * Dd ^ 2 * Lr) ≤ PP * kp`. Establish `e : PP * (T * Dd ^ 2 * Lr) = PP * T * Dd ^ 2 * Lr` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : T * Dd ^ 2 * Lr ≤ kp` using `le_of_mul_le_mul_left h1 hPP0`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : T * Lr ≤ T * Dd ^ 2 * Lr`. Establish `: 1 ≤ Dd ^ 2` using `one_le_pow₀ hDd1`. Use `mul_le_mul_of_nonneg_left this (mul_nonneg hT0 hL0)` as an intermediate fact. Establish `e : T * Lr * Dd ^ 2 = T * Dd ^ 2 * Lr` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkp : 0 ≤ kp` using `le_trans (mul_nonneg hT0 hL0) hTk`. Establish `hA : (r + 1) * kp ≤ Z ^ 2 / 2 * kp`. Apply `mul_le_mul_of_nonneg_right _ hkp` to reduce the goal to its premises. Establish `: 160 * Z ≤ Z * Z` using `mul_le_mul_of_nonneg_right hZ2 hZ0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Z ^ 2 = Z * Z` using `sq Z`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : f * (r * (2 * |c0| + 3 * r + 4 * r * (T + Dd + 1))) ≤ Z ^ 2 / 2 * kp`. Establish `h1 : f * (r * (2 * |c0| + 3 * r + 4 * r * (T + Dd + 1))) ≤ f * (r * (17 * r * T))` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hK hr0) hf0`. Establish `h2 : f * (r * (17 * r * T)) ≤ Z ^ 2 / 2 * kp`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Z ^ 2 / 2 * kp = f * (r * (r * (f * Lr * Lr * kp / 2)))` using `by rw [hZ]; ring`. Rewrite using `[e]`. Apply `mul_le_mul_of_nonneg_left _ hf0` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_left _ hr0` to reduce the goal to its premises. Establish `: 17 * T ≤ f * Lr * Lr * kp / 2`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfl : 800 ≤ f * Lr * Lr`. Use `mul_le_mul hfL hL (by norm_num) (by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk10 : 10 * T ≤ kp`. Use `mul_le_mul_of_nonneg_left hL hT0` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : 800 * kp ≤ f * Lr * Lr * kp` using `mul_le_mul_of_nonneg_right hfl hkp`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Conclude with `h1.trans h2`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: Z ^ 2 / 2 * kp + Z ^ 2 / 2 * kp = Z ^ 2 * kp` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem numbers {f r Lr PP T Dd c0 kp b : ℝ} (hf : 8 ≤ f) (hr : 2 ≤ r) (hL : 10 ≤ Lr) (hPP : (f * r * Lr) ^ 12 ≤ PP)
     (hT : PP ^ 2 ≤ T) (hDd1 : 1 ≤ Dd) (hDd : Dd ≤ f * r ^ 2) (hc0 : 0 ≤ c0) (hc0' : c0 ≤ 22 * f ^ 2 * r ^ 4)
@@ -358,33 +358,31 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 
 /- English proof (translation)
-Use `set P : WtPar (dat p i) := ⟨uW p i, cZero D ((i : ℕ) + 1), D.R.k - 2, lenT p i PP⟩ with hP`. Take `⟨-, -, hN⟩` from `hW.sig`. Establish `h2m` using `D.R.two_le_m`. Establish `hmk` using `D.R.m_add_three_le_k`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : P.a < (dat p i).p + (dat p i).q` using `by show D.R.k - 2 < _`. Rewrite using `[hN, hr]`. Use linear arithmetic over natural numbers and integers. Establish `hw : ∀ τ, anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ = laOf (dat p i) (wtA (p.κ i)) (p.κ i).n τ ⟨P.a, ha⟩`. Introduce `τ`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : D.R.k - 1 - 1 < (dat p i).p + (dat p i).q` using `by rw [hN, hr]; omega`. Rewrite using `[anchor, dif_pos h1]`. Conclude with `congrArg _ (Fin.ext (by show D.R.k - 1 - 1 = D.R.k - 2; omega))`. Establish `hs` using `sum_abs_wt_le P ha hj (laOf (dat p i) (wtA (p.κ i)) (p.κ i).n) _ rfl hw`. Use `hs.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : ∑ τ, ∑ k, |(laOf (dat p i) (wtA (p.κ i)) (p.κ i).n τ k : ℝ)| = kap p i` using `rfl`. Establish `eN : (((dat p i).p + (dat p i).q : ℕ) : ℝ) = D.R.r` using `by exact_mod_cast hN`. Establish `eC : (Fintype.card (Psi p.T.Q.H) : ℝ) = D.R.f`. Rewrite using `[← Nat.card_eq_fintype_card, hW.card]`. Establish `eT : (P.T₁ : ℝ) = (lenT p i PP : ℝ) + (CompHt.dimFlag (dat p i) : ℝ) + 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [WtPar.T₁, hP, ← GlobalTheory.CompHS.dimFlag_eq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `ec : (P.c₀ : ℝ) = (cZero D ((i : ℕ) + 1) : ℝ)` using `rfl`. Rewrite using `[hk, eN, eC, eT, ec]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, hc0, hc0'⟩` from `cZero_spec D ((i : ℕ) + 1)`. Establish `hc0R : (0 : ℝ) ≤ (cZero D ((i : ℕ) + 1) : ℝ)` using `by exact_mod_cast hc0`. Establish `hc0R' : (cZero D ((i : ℕ) + 1) : ℝ) ≤ 22 * (D.R.f : ℝ) ^ 2 * (D.R.r : ℝ) ^ 4` using `by exact_mod_cast hc0'`. Establish `hb1` using `hS.1`. Establish `hbk` using `hS.2.2.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf8 : (8 : ℝ) ≤ D.R.f` using `by exact_mod_cast hH.f8`. Establish `hr2 : (2 : ℝ) ≤ D.R.r`. Establish `: 2 ≤ D.R.r` using `by rw [hr]; omega`. Conclude with `this` after adjusting the coercions. Establish `hL` using `hH.big.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPP` using `hH.ppLow`. Establish `hrows` using `hW.what₂.2`. Establish `hdim` using `hW.dim`. Establish `hDd1 : (1 : ℝ) ≤ (CompHt.dimFlag (dat p i) : ℝ)`. Rewrite using `[hdim]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 1 ≤ D.R.f` using `by have := hH.f8; omega`. Establish `h2 : 1 ≤ D.R.r.choose 2`. Establish `: 2 ≤ D.R.r` using `by rw [hr]; omega`. Conclude with `Nat.one_le_iff_ne_zero.2 (Nat.choose_pos this).ne'`. Conclude with `Nat.one_le_iff_ne_zero.2 (Nat.mul_pos h1 h2).ne'` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hDd : (CompHt.dimFlag (dat p i) : ℝ) ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2`. Rewrite using `[hdim]`. Establish `: D.R.r.choose 2 ≤ D.R.r ^ 2`. Rewrite using `[Nat.choose_two_right]`. Conclude with `(Nat.div_le_self _ _).trans (by rw [sq]; exact Nat.mul_le_mul_left _ (Nat.sub_le _ _))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `Nat.mul_le_mul_left _ this` after adjusting the coercions. Establish `hPP1 : 1 ≤ PP`. Establish `: (1 : ℝ) ≤ zBase L`. Unfold `zBase`. Use `mul_le_mul (mul_le_mul hf8 hr2 (by norm_num) (by linarith)) (by linarith : (1 : ℝ) ≤ L.sc.L) (by norm_num) (by positivity)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_trans (one_le_pow₀ this) hPP`. Establish `hTle : PP ^ 2 ≤ (lenT p i PP : ℝ)`. Use `le_trans ?_ (Nat.le_ceil _)` and prove the remaining obligations. Establish `hm0 : (0 : ℝ) < D.R.m` using `by exact_mod_cast (by omega : 0 < D.R.m)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hkm : (D.R.m : ℝ) ≤ D.R.k` using `by exact_mod_cast (by omega : D.R.m ≤ D.R.k)`. Rewrite using `[le_div_iff₀ hm0]`. Establish `h1 : (1 : ℝ) ≤ (CompHt.dimFlag (dat p i) : ℝ) ^ 2` using `one_le_pow₀ hDd1`. Establish `h2 : PP ^ 2 * 1 ≤ PP ^ 2 * (CompHt.dimFlag (dat p i) : ℝ) ^ 2` using `mul_le_mul_of_nonneg_left h1 (by positivity)`. Establish `h3` using `mul_le_mul h2 hkm hm0.le (by positivity)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use `numbers (f := D.R.f) (r := D.R.r) (Lr := L.sc.L) (PP := PP) (T := lenT p i PP) (Dd := CompHt.dimFlag (dat p i)) (c0 := cZero D ((i : ℕ) + 1)) (kp := kap p i) (b := L.sc.b) hf8 hr2 hL (by unfold zBase at hPP; exact hPP) hTle hDd1 hDd hc0R hc0R' hbk hrows` as an intermediate fact. Unfold `zBase`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem sum_abs_wt_le_point {PP C A M : ℝ} (hS : SizeAt p i PP C) (hH : HostNum D L PP A M) (hW : WtNum p i PP) {j : ℕ}
     (hj : j ≤ lenT p i PP) :
@@ -468,9 +466,9 @@ end GlobalTheory.CovTop.WtRun
 namespace GlobalTheory.CovTop.WtRun
 
 /- English proof (translation)
-Introduce `hS`. Establish `hL : Lifts fun Fm x _ ι p i PP C => SizeAt p i PP C ∧ (∃ A, HostNum (Fm.D x ι) (Fm.L x ι) PP A 0) ∧ WtNum p i PP`. Use `(Formalism.MainNotions.Closed.and hS (Formalism.MainNotions.Closed.and (GlobalTheory.CovTop.Sizes.hostN 0) GlobalTheory.CovTop.WtShape.wtN)).imp fun Fm CH _ hh => ?_` and prove the remaining obligations. Take `⟨⟨C, hC, a, ha⟩, ⟨C', -, b, hb⟩, ⟨C'', -, c, hc⟩⟩` from `hh`. Conclude with `⟨C, hC, max a (max b c), fun x hx hle ι p hp i => ⟨ha x hx ((le_max_left _ _).trans hle) ι p hp i, ⟨C', hb x hx (((le_max_left _ _).trans (le_max_right _ _)).trans hle) ι p hp i⟩, hc x hx (((le_max_right _ _).trans (le_max_right _ _)).trans hle) ι p hp i⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `CovSz.covers_of_lifts hL fun Fm x hx ι p i C _ h _ Y _ => by`. Take `⟨h1, ⟨A, h2⟩, h3⟩` from `h`. Conclude with `fun j hj => sum_abs_wt_le_point p i h1 h2 h3 hj`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem wt_size : Size → Covers fun Fm x _ ι p i Y PP _ => ∀ j ≤ lenT p i PP, ∑ τ, ∑ k, |((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt j τ k : ℝ)| ≤ zBase (Fm.L x ι) ^ 2 * kap p i := by
   intro hS

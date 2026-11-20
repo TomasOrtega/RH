@@ -26,7 +26,7 @@ open scoped Classical
 namespace GlobalTheory.ThetaLineDer
 
 /- English proof (translation)
-Simplify using `only [slope_def_module, sub_zero, SchwartzMap.smul_apply, SchwartzMap.sub_apply, smul_mul_assoc, sub_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem schwartz_diffQuotient_eval_mul_eq_slope {κ : Type} [Fintype κ] {F : Type} [Field F] [NumberField F] (s : ℝ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ)
     (y : κ → mixedEmbedding.mixedSpace F) (R : ℂ) (t : ℝ) :
@@ -34,9 +34,9 @@ theorem schwartz_diffQuotient_eval_mul_eq_slope {κ : Type} [Fintype κ] {F : Ty
   simp only [slope_def_module, sub_zero, SchwartzMap.smul_apply, SchwartzMap.sub_apply, smul_mul_assoc, sub_mul]
 
 /- English proof (translation)
-Establish `hsum : M.co.rho ψ u (∑ i, Φ i) = ∑ i, M.co.rho ψ u (Φ i)`. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Finset.sum_apply, Finset.mul_sum]`. Establish `hmem : ∀ i, M.co.rho ψ u (Φ i) ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d)` using `fun i => GlobalTheory.HeisSchA.rho_mem_schA M ψ hψ u (Φ i) (hΦ i)`. Rewrite using `[hsum]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `map_sum (GlobalTheory.WeilM.thetaLin F (Fin n × Fin d)) (fun i => (⟨M.co.rho ψ u (Φ i), hmem i⟩ : GlobalTheory.WeilM.schA F (Fin n × Fin d))) Finset.univ`. Simplify `key` using `only [GlobalTheory.WeilM.thetaLin_apply, Submodule.coe_sum]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rho_sum {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)
@@ -54,7 +54,7 @@ theorem rho_sum {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
   simpa only [GlobalTheory.WeilM.thetaLin_apply, Submodule.coe_sum] using key
 
 /- English proof (translation)
-Rewrite using `[hasDerivAt_iff_tendsto_slope]`. Establish `hcont : Continuous fun h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ => h (fun j => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (x j))` using `((BoundedContinuousFunction.evalCLM ℂ (fun j => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (x j))).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ)).continuous`. Establish `hlim` using `((hcont.tendsto g).comp hs).mul_const (r x)`. Use `hlim.congr' (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Conclude with `schwartz_diffQuotient_eval_mul_eq_slope s _ (r x) t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem hasDerivAt_tens {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (s : ℝ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ) (g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ)
@@ -70,19 +70,17 @@ private theorem hasDerivAt_tens {F : Type} [Field F] [NumberField F] {κ : Type}
   exact schwartz_diffQuotient_eval_mul_eq_slope s _ (r x) t
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ n d Y Wd M ψ χX χW om hCM hψ hM hW γ hγ m f f₁ φ hφ hD u`. Establish `hstd : ∀ i, ∀ᶠ v in Filter.cofinite, φ i v = Set.indicator {x : Fin n × Fin d → Fv F v | ∀ j, x j ∈ v.adicCompletionIntegers F} 1` using `fun i => ((hφ i).2.and hM.std).mono fun v hv => hv.1.trans hv.2`. Establish `hR : ∀ i (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d)), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (⇑h) (fun x => ∏ᶠ v, φ i v fun j => GlobalTheory.AdelicU. …` using `fun i h => GlobalTheory.ThK.EvUniqInf.rest_pure h (φ i) (hφ i).1 (hstd i)`. Establish `hmem : ∀ i (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d)), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure h (φ i) ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d)` using `fun i h => (hR i h).2`. Use `choose c g hc hg using fun i => GlobalTheory.T.weil_model_good_line_action hP M ψ χX χW om hCM hψ hM hW γ hγ (f i) (φ i) (hφ i).1 (hφ i).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpure : ∀ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (g i) (φ i) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f₁ i) (φ i)`. Introduce `i`. Use function extensionality and compare the values at `x`. Establish `h1` using `hD i _ (hR i (f i)) x`. Establish `h2` using `hasDerivAt_tens (c i) (g i) (hg i) (fun x => ∏ᶠ v, φ i v fun j => GlobalTheory.AdelicU.evFin F v (x j)) x`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (fun t : ℝ => om (1, γ (Multiplicative.ofAdd t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (⇑(f i)) (fun x => ∏ᶠ v, φ i v fun j => GlobalTheory.AdelicU.evFin F v (x j))) x) = fun t => Globa …`. Use function extensionality and compare the values at `t`. Conclude with `congrFun (hc i t) x`. Rewrite `h1` using `[h3]`. Conclude with `h2.unique h1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `choose Λ hΛ using fun i => GlobalTheory.ThetaHeisCLM.exists_clm_thetaSum_rho_pure M ψ hψ hM u (φ i) (hφ i).1 (hφ i).2`. Establish `hL : ∀ t : ℝ, GlobalTheory.WeilM.thetaSum F (M.co.rho ψ u (om (1, γ (Multiplicative.ofAdd t)) (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)))) = ∑ i, Λ i (c i t)`. Introduce `t`. Rewrite using `[map_sum, Finset.sum_congr rfl (fun i _ => hc i t), rho_sum M ψ hψ u (fun i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c i t) (φ i)) (fun i => hmem i _)]`. Conclude with `Finset.sum_congr rfl fun i _ => hΛ i _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT : GlobalTheory.WeilM.thetaSum F (M.co.rho ψ u (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f₁ i) (φ i))) = ∑ i, Λ i (g i)`. Rewrite using `[rho_sum M ψ hψ u (fun i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f₁ i) (φ i)) (fun i => hmem i _)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hpure i, hΛ]`. Establish `hi : ∀ i, HasDerivAt (fun t : ℝ => Λ i (c i t)) (Λ i (g i)) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[hasDerivAt_iff_tendsto_slope]`. Use `(((Λ i).continuous.tendsto (g i)).comp (hg i)).congr' (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, slope_def_module, sub_zero, map_sub, ContinuousLinearMap.map_smul_of_tower]`. Rewrite using `[hT]`.
-
-Conclude with `(HasDerivAt.fun_sum (u := Finset.univ) fun i _ => hi i).congr_of_eventuallyEq (Filter.Eventually.of_forall hL)`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_thetaSum_line : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)

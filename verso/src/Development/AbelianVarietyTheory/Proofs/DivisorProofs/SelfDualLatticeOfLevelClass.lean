@@ -14,13 +14,11 @@ open Formalism.BasicNotions.TH Formalism.IndefR.Datum
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v, hv, h0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Establish `hx : ∀ y, V.hT y (∑ j, v j • V.frame j) = 0`. Introduce `y`. Rewrite using `[← V.frame.sum_repr y]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, RingHom.id_apply, smul_eq_mul]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Use `congrFun h0 i` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct, HSpace.gram, Pi.zero_apply] at this`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Use `_ = 0 := by rw [this, mul_zero]`. Use `V.nondeg.2 _ hx` as an intermediate fact.
-
-Conclude with `hv (funext (Fintype.linearIndependent_iff.1 V.frame.linearIndependent v this))`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gram_det_ne {D : D7} (V : HSp D) : V.gram.det ≠ 0 := by
   intro h
@@ -41,9 +39,9 @@ theorem gram_det_ne {D : D7} (V : HSp D) : V.gram.det ≠ 0 := by
   exact hv (funext (Fintype.linearIndependent_iff.1 V.frame.linearIndependent v this))
 
 /- English proof (translation)
-Use `letI : IsCMField D.host.E := D.host.isCMField_hostE`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.herm`. Rewrite using `[Finset.sum_comm]`. Use `symm`. Use `Fintype.sum_equiv (finCongr h) _ _ fun i => ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fintype.sum_equiv (finCongr h) _ _ fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply, Matrix.submatrix_apply, finCongr_apply, Fin.cast_cast, Fin.cast_eq_self]`. Rewrite using `[show star (y (Fin.cast h i)) = ReciprocityTheory.ChartRestriction.G.FD.cc (y (Fin.cast h i)) from rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_eq {D : D7} (V : HSp D) {r : ℕ} (h : V.rank = r) (x y : Fin r → D.host.E) :
     letI : IsCMField D.host.E := D.host.isCMField_hostE
@@ -68,21 +66,21 @@ open Formalism.BasicNotions.TH Formalism.IndefR.Datum
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `letI : IsCMField D.host.E := D.host.isCMField_hostE`. Take `⟨hlat, hsd⟩` from `hΛ`. Set `eO : (Fin r → D.host.E) ≃ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)` to `LinearEquiv.funCongrLeft (𝓞 D.host.E) D.host.E (finCongr h)`. Set `eE : (Fin r → D.host.E) ≃ₗ[D.host.E] (Fin V.rank → D.host.E)` to `LinearEquiv.funCongrLeft D.host.E D.host.E (finCongr h)`. Establish `hc : Λ.comap (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast h)) = Λ.map (eO.symm : _ →ₗ[𝓞 D.host.E] _)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Submodule.comap_equiv_eq_map_symm]`. Both sides reduce to the same expression. Establish `hset : ((Λ.comap (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast h)) : Submodule _ _) : Set (Fin r → D.host.E)) = (eE.symm : (Fin V.rank → D.host.E) → (Fin r → D.host.E)) '' (Λ : Set (Fin V.rank → D.host.E))`. Rewrite using `[LinearEquiv.image_symm_eq_preimage]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨fun a b => ?_, ?_, ?_, ?_, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply, Matrix.submatrix_apply, HSpace.gram]`. Conclude with `V.herm.eq _ _`. Rewrite using `[Matrix.det_transpose]`. Use `Matrix.det_submatrix_equiv_self (finCongr h.symm) V.gram` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (Fin.cast h.symm : Fin r → Fin V.rank) = finCongr h.symm from rfl, this]`. Conclude with `gram_det_ne V`. Rewrite using `[hc]`. Conclude with `hlat.fg.map _`. Rewrite using `[hset, show (⇑eE.symm : (Fin V.rank → D.host.E) → (Fin r → D.host.E)) = ⇑(eE.symm : (Fin V.rank → D.host.E) →ₗ[D.host.E] (Fin r → D.host.E)) from rfl, Submodule.span_image, hlat.span_eq_top, Submodule.map_top, LinearEquiv.range]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.mem_comap, hsd]`. Prove the components needed by the constructor for the conclusion. Introduce `H x' hx'`. Establish `hy : LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast h.symm) x' ∈ Λ.comap (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast h))`. Rewrite using `[Submodule.mem_comap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `hx' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `only [LinearMap.funLeft_apply, Function.comp_apply, Fin.cast_cast, Fin.cast_eq_self]`. Establish `hb` using `H _ hy`. Rewrite `hb` using `[herm_eq V h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e : (∑ i, ∑ j, star ((LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast h.symm) x') (Fin.cast h i)) * V.gram i j * x (Fin.cast h j)) = ∑ i, ∑ j, star (x' i) * V.gram i j * (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast h) x) j`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.funLeft_apply, Function.comp_apply, Fin.cast_cast, Fin.cast_eq_self]`. Rewrite `hb` using `[e]`. Conclude with `⟨⟨_, hb⟩, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `H y hy`. Take `⟨b, hb⟩` from `H _ hy`. Establish `hb' : (b : D.host.E) = ∑ i, ∑ j, star (y (Fin.cast h i)) * V.gram i j * x (Fin.cast h j)` using `hb`. Rewrite using `[herm_eq V h, ← hb']`. Conclude with `b.isIntegral_coe`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDualLat_of {D : D7} (V : HSp D) {r : ℕ} (h : V.rank = r)
     (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (hΛ : IsSelfDualC V Λ) :
@@ -139,7 +137,7 @@ end GlobalTheory.MassLinkSD
 namespace GlobalTheory.MassLinkSD
 
 /- English proof (translation)
-Introduce `D Tu Cl t0 hC i`. Conclude with `selfDualLat_of (Wc D i) (rank_Wc i) (Cl.ΛW i) (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hC.βW i))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem base_selfDualLat : ∀ (D : D7) (Tu : Type) (Cl : LevCh D Tu) (t0 : Tu), Cl.Is t0 → ∀ (i : Fin D.R.m), letI : IsCMField D.host.E := D.host.isCMField_hostE; GlobalTheory.UCls.SelfDualLat (GlobalTheory.MassLink.gm D i) (GlobalTheory.MassLink.lat Cl i) := by
   intro D Tu Cl t0 hC i

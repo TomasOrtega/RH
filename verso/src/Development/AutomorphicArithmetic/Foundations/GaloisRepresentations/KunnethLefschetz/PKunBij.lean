@@ -7,9 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 namespace UpperTheory.Gal.KunnethLefschetz
 
 /- English proof (translation)
-Introduce `hIn l _ k _ _ hl hR d X p hp n`. Take `⟨hprop, hsm⟩` from `hp`. Use `haveI := hprop`. Use `haveI := hsm`. Use `haveI : Smooth p := SmoothOfRelativeDimension.smooth d p`.
-
-Apply `kun_bijective_of_kunIso l p p n (fun a m r h => hR.isCup _ a m r h)` to reduce the goal to its premises. Conclude with `hIn.kun hIn.a2 hIn.a6nat hIn.a6ring hIn.a7 hIn.a8 hIn.a9 hIn.a10 hIn.a11 hIn.b1 hIn.b2 hIn.b3 hIn.e2 hIn.e3 hIn.e4 l k (Ne.isUnit hl) p p n 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem kunBij_holds : KunBij := by
   intro hIn l _ k _ _ hl hR d X p hp n

@@ -14,19 +14,17 @@ namespace PositivityTheory.SiegelWeilFormula.ThetaDictR.PureB
 open PositivityTheory.SiegelWeilFormula PositivityTheory.SiegelWeilFormula.KWhit
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Use `set c : ℂ := ((‖(d.B.emb w).1 η‖ ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) with hcdef`. Establish `hm : Nonempty (Fin d.m)` using `⟨⟨0, d.ok.hm⟩⟩`. Establish `hc : c ≠ 0`. Introduce `h0`. Establish `h1` using `frc w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← hcdef, h0, zero_smul]`. Establish `h2 : ((fr w)⁻¹).1 * (fr w).1 = 1` using `Units.inv_mul (fr w)`. Rewrite `h2` using `[h1, Matrix.mul_zero]`. Conclude with `zero_ne_one h2`. Establish `hfr : ((fr w)⁻¹).1 = c⁻¹ • (((R.fr w)⁻¹).1).map star`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Units.inv_eq_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[frc w, ← hcdef, Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hc, one_smul, ← map_star_mul, Units.inv_mul]`. Conclude with `Matrix.map_one _ (star_zero _) (star_one _)`. Establish `hN : ((d.cw w u.1)ᵀ).map star * ((d.cw w (u⁻¹ : GL (Fin d.n) (AE F E)).1)ᵀ).map star = 1`. Rewrite using `[← map_star_mul, ← Matrix.transpose_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `: d.cw w (u⁻¹ : GL (Fin d.n) (AE F E)).1 * d.cw w u.1 = 1`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw`. Rewrite using `[← Matrix.map_mul (f := piInf (d.B.emb w)), Units.inv_mul]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[this, Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.map_one _ (star_zero _) (star_one _)`. Establish `hg : (g w).1 = c • ((d.cw w (u⁻¹ : GL (Fin d.n) (AE F E)).1)ᵀ).map star`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hN, Matrix.mul_one]`. Use `_ = c • ((d.cw w (u⁻¹ : GL (Fin d.n) (AE F E)).1)ᵀ).map star := by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Matrix.mul_assoc, gc w, ← hcdef, Matrix.smul_mul, Matrix.one_mul]`. Establish `hX : Matrix.of (fun a j => θ w (HeckeCharacterZeroLocus.SiegelWeilU.projInf X j a)) = (d.cw w (toMx X)).map star`. Use extensionality with `a j`. Simplify using `only [Matrix.of_apply, HeckeCharacterZeroLocus.SiegelWeilU.projInf, th, _root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, Matrix.map_apply, toMx]`. Establish `hZ : d.cw w (toMx X * ((u⁻¹ : GL (Fin d.n) (AE F E)).1)ᵀ) = d.cw w (toMx X) * (d.cw w (u⁻¹ : GL (Fin d.n) (AE F E)).1)ᵀ`.
-
-Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw`. Rewrite using `[Matrix.map_mul (f := piInf (d.B.emb w)), Matrix.transpose_map]`. Unfold `Gen.crd _root_.PositivityTheory.SiegelWeilFormula.RD_k.loc`. Rewrite using `[hfr, hX, hg, hZ, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul, smul_smul, mul_inv_cancel₀ hc, one_smul, map_star_mul, map_star_mul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_eq_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (u : GL (Fin d.n) (AE F E)) (η : E)
     (θ : InfinitePlace F → (HeckeCharacterZeroLocus.SiegelWeilU.Ainf F ⊗[F] E →+* ℂ))

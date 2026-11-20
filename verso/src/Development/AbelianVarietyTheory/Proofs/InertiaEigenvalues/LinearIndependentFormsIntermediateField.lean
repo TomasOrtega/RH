@@ -5,9 +5,9 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : LinearIndependent L (fun a => (1 : L) ⊗ₜ[L0] v a)` using `Module.Flat.linearIndependent_one_tmul hv`. Establish `h2` using `h1.map' (TensorProduct.piScalarRight L0 L L (Fin n)).toLinearMap (LinearEquiv.ker _)`. Establish `he : (fun a b => algebraMap L0 L (v a b)) = (TensorProduct.piScalarRight L0 L L (Fin n)).toLinearMap ∘ fun a => (1 : L) ⊗ₜ[L0] v a`. Use function extensionality and compare the values at `a b`. Simplify using `[TensorProduct.piScalarRight_apply, Algebra.smul_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[he]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rows_algebraMap_linearIndependent {L0 L : Type} [Field L0] [Field L] [Algebra L0 L]
     {m n : ℕ} (v : Fin m → Fin n → L0) (hv : LinearIndependent L0 v) :
@@ -23,17 +23,17 @@ theorem rows_algebraMap_linearIndependent {L0 L : Type} [Field L0] [Field L] [Al
   exact h2
 
 /- English proof (translation)
-Introduce `Ks L0 L WL _ _ _ _ _ _ _ _ _ _ _ WK n bs hmem hspan hL ι hι m x hx`. Substitute `hspan` using the available equality. Establish `hK : LinearIndependent Ks bs` using `hL.restrict_scalars' Ks`. Set `bK` to `Module.Basis.span hK`. Set `B0` to `Algebra.TensorProduct.basis L0 bK`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `M : Fin m → Fin n → L0` to `fun a => B0.equivFun (x a)`. Establish `hMli : LinearIndependent L0 M` using `hx.map' B0.equivFun.toLinearMap B0.equivFun.ker`. Establish `hML` using `rows_algebraMap_linearIndependent (L := L) M hMli`. Establish `hιs : ∀ (c : L0) (y : L0 ⊗[Ks] (Submodule.span Ks (Set.range bs))), ι (c • y) = algebraMap L0 L c • ι y`. Introduce `c y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul d f => rw [TensorProduct.smul_tmul', hι, hι, smul_eq_mul, map_mul, mul_smul]`. Consider the case `add y z hy hz => rw [smul_add, map_add, map_add, hy, hz, smul_add]`. Establish `hx_eq : ∀ a, ι (x a) = ∑ b, algebraMap L0 L (M a b) • bs b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `a`. Use `conv_lhs => rw [← B0.sum_equivFun (x a)]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hιs, Algebra.TensorProduct.basis_apply, hι]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[bK, Module.Basis.span_apply, M]`. Rewrite `hL`, `hML`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Apply `hML g` to reduce the goal to its premises. Use function extensionality and compare the values at `b`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses repeatedly using the stated equalities.
 
-Rewrite `hg` using `[hx_eq, Finset.smul_sum, smul_smul]`. Rewrite `hg` using `[Finset.sum_comm]`. Rewrite `hg` using `[← Finset.sum_smul]`. Use `hL _ hg b` as an intermediate fact. Simplify `this` using `[Finset.sum_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ksForm_tensor_linearIndependent : ∀ (Ks L0 L WL : Type) [Field Ks] [Field L0] [Field L] [Algebra Ks L0] [Algebra L0 L] [Algebra Ks L]
     [IsScalarTower Ks L0 L] [AddCommGroup WL] [Module L WL] [Module Ks WL] [IsScalarTower Ks L WL]

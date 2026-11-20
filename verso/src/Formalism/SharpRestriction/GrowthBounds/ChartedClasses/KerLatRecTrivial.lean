@@ -15,7 +15,7 @@ section SlopeTestRemainingChoices
 variable {p : ℕ} [Fact p.Prime] {X : Sys p} {D : D7}
 
 /- English proof (translation)
-Rewrite `hWa` using `[hk, hWb, hf]`. Conclude with `(Submodule.map_injective_of_injective (f := ((fd.frM j Lb v).mulVecLin).restrictScalars (X.G.P.W v)) hM hWa).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latAt_eq_of_kerN (fd : FData X D) (j : ℕ) (La Lb : X.Lt j) (v : X.Pl) (ρ : D.host.E →+* X.G.P.Qq v)
     (hk : fd.kerN j La = fd.kerN j Lb) (hf : fd.frM j La v = fd.frM j Lb v)
@@ -55,7 +55,7 @@ def KerLatRec : Prop :=
 variable {Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad t cls}
 
 /- English proof (translation)
-Establish `h1` using `H j hj La`. Establish `h2` using `H j hj Lb`. Rewrite `h1` using `[hc, h2]`. Conclude with `(Submodule.map_injective_of_injective (f := (reE (E := D.host.E) (rankAt Ch std vp unif eO eO_spec dG dG_spec om I L0 j hj La)).toLinearMap.restrictScalars (𝓞 D.host.E)) (reE (E := D.host.E) (rankAt Ch std vp unif eO eO_spec dG dG_spec om I L0 j hj La)).injective h1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerLatRec_const (H : KerLatRec Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad t cls) (j : ℕ) (hj : j ≤ D.R.m)
     (La Lb : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt j) (hc : cls j La.1 La.2 = cls j Lb.1 Lb.2) :
@@ -68,7 +68,7 @@ theorem kerLatRec_const (H : KerLatRec Ch std vp unif eO eO_spec dG dG_spec om I
     (reE (E := D.host.E) (rankAt Ch std vp unif eO eO_spec dG dG_spec om I L0 j hj La)).injective h1).symm
 
 /- English proof (translation)
-The claim follows from `kerLatRec_const H j hj (c, (Lv.lev j c).smul γ Lt) (c, Lt) ((KA.cls_iff j hj c c Lt _ hL ((Formalism.MainNotions.G.Inhab.isLatTup_smul_iff _ _ γ Lt).2 hL)).2 ⟨rfl, γ, rfl⟩).symm`.
+A detailed English derivation is pending.
 -/
 theorem kerLatRec_orbit (KA : TwTie.KerAtMu D ex.cmp ex.tw u μ w h Ch)
     (H : KerLatRec Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad t KA.cls) (j : ℕ) (hj : j ≤ D.R.m)
@@ -81,7 +81,7 @@ theorem kerLatRec_orbit (KA : TwTie.KerAtMu D ex.cmp ex.tw u μ w h Ch)
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Distinguish the cases in `hi : i + 1 ≤ D.R.m`. Simplify using `only [fdAtL, fdAt, fdOfCharts, cpAt, chAt, dif_pos hi]`. Both sides reduce to the same expression. Simplify using `only [fdAtL, fdAt, fdOfCharts, cpAt, chAt, dif_neg hi]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem frM_comp (i : ℕ) (c : Lv.comp (i + 1)) (Lt Lt' : (Fl.Pj (i + 1)).Tup) (v : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Pl) :
     (fdAtL Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad).frM (i + 1) (c, Lt) v = (fdAtL Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad).frM (i + 1) (c, Lt') v := by
@@ -94,7 +94,7 @@ theorem frM_comp (i : ℕ) (c : Lv.comp (i + 1)) (Lt Lt' : (Fl.Pj (i + 1)).Tup) 
 set_option maxHeartbeats 3200000 in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Conclude with `latAt_eq_of_kerN (fdAtL Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad) (i + 1) (c, (Lv.lev (i + 1) c).smul γ Lt) (c, Lt) v (ρ v) (kerLatRec_orbit KA H (i + 1) hi c Lt hL γ) (frM_comp i c _ Lt v) (hW (c, (Lv.lev (i + 1) c).smul γ Lt) ((Formalism.MainNotions.G.Inhab.isLatTup_s …`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem kerLatRec_trivial (KA : TwTie.KerAtMu D ex.cmp ex.tw u μ w h Ch)
     (H : KerLatRec Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad t KA.cls) (i : ℕ) (hi : i + 1 ≤ D.R.m)

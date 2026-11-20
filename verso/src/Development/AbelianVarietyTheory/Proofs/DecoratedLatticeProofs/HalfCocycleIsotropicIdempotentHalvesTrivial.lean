@@ -19,7 +19,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HalfCocycle
 
 /- English proof (translation)
-Establish `h2 : ((2 : D.host.E))⁻¹ = algebraMap D.host.F D.host.E (1 / 2)`. Rewrite using `[map_div₀, map_one, map_ofNat, one_div]`. Rewrite using `[h2, ← IsScalarTower.algebraMap_apply D.host.F (AF D.host.F) (AE D)]`. Use `show (inclR (AF D.host.F)) (algebraMap D.host.F D.host.E (1/2)) = _`. Simplify using `[inclR, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_one_eq_one_tmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem half_eq (D : D7) :
     incA D ((2 : D.host.E)⁻¹) = algebraMap (AF D.host.F) (AE D) (algebraMap D.host.F (AF D.host.F) (1 / 2)) := by
@@ -30,7 +30,7 @@ theorem half_eq (D : D7) :
   simp [inclR, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_one_eq_one_tmul]
 
 /- English proof (translation)
-Unfold `symplO`. Rewrite using `[GlobalTheory.SplitScalar.hO_smul_left, half_eq, mul_left_comm (incA D D.host.xi0), ← Algebra.smul_def (algebraMap D.host.F (AF D.host.F) (1 / 2)) (incA D D.host.xi0 * hO S T x y), LinearMap.map_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem half_mul_symplO {D : D7} (S T : HSp D) (x y : WO S T) :
     algebraMap D.host.F (AF D.host.F) (1 / 2) * symplO S T x y = symplO S T (incA D ((2 : D.host.E)⁻¹) • x) y := by
@@ -40,13 +40,13 @@ theorem half_mul_symplO {D : D7} (S T : HSp D) (x y : WO S T) :
     LinearMap.map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, _⟩` from `hI`. Rewrite using `[Finset.mul_sum, map_sum]`. Use `AddSubgroup.sum_mem _ fun PP hPP => ?_` and prove the remaining obligations. Establish `hn : (2 : 𝓞 D.host.E) ∉ PP.asIdeal`. Introduce `hm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h2 PP hPP` to reduce the goal to its premises. Establish `h2Q : 2 ∣ D.host.QS` using `(dvd_pow_self 2 (Nat.succ_ne_zero _)).trans D.host.tower_dvd`. Take `⟨k, hk⟩` from `h2Q`. Rewrite using `[hk]`. Use `push_cast`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ hm))`. Establish `hiff` using `(hes PP hPP).2 (2 : 𝓞 D.host.E) two_ne_zero`. Apply the tactic sequence `have hc : ((2 : 𝓞 D.host.E) : D.host.E) = 2 := by first | rfl | simp | exact map_ofNat _ 2 | norm_cast`. Rewrite `hiff` using `[hc]`. Rewrite using `[mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc'`. Conclude with `hn (hiff.mpr hc')`.
+A detailed English derivation is pending.
 -/
 theorem half_idem_int {D : D7} {e : AE D} {SS : Finset (Formalism.L2.DIV.Pl D.host.E)} (hI : IsIdemSum e SS)
     (h2 : ∀ Q ∈ SS, ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal) :
@@ -74,9 +74,9 @@ end GlobalTheory.HalfCocycle
 open GlobalTheory.HalfCocycle in
 
 /- English proof (translation)
-Introduce `D ψ θ S T δ sc hP e SS hI h2 N N' hN hN' u hu v hv`. Establish `hee` using `GlobalTheory.PlaceVec.idemSum_mul_self hI`. Establish `key : symplO S T (e • u) (cA D e • v) = symplO S T (e • u) v`. Rewrite using `[← GlobalTheory.SplitScalar.symplO_smul, smul_smul, hee]`. Rewrite using `[symplOH, key, half_mul_symplO, smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.LatVac.char_sympl_eq_one hP.std hN hN' (GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ _ (half_idem_int hI h2) u hu) hv`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HalfCocycle.char_symplOH_idem_conj : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (e : AE D) (SS : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e SS → (∀ Q ∈ SS, ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal) → ∀ (N : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S N → IsSelfDualC T N' → ∀ u ∈ (latO S T (N : Set (Fin S.rank → D.host.E)) (N' : Set (Fin T.rank → D.host.E)) fun _ => True), ∀ v ∈ (latO S T (N : Set (Fin S.rank → D.host.E)) (N' : Set (Fin T.rank → D.host.E)) fun _ => True), ψ (symplOH S T (e • u) (cA D e • v)) = 1 := by
   intro D ψ θ S T δ sc hP e SS hI h2 N N' hN hN' u hu v hv

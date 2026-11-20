@@ -5,11 +5,11 @@ open IsLocalRing TensorProduct Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S _ I M _ _ _ N h`. Use `choose f hf using h`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := S) (M := M)`. Use `⟨s.sup f, fun a ha y => ?_⟩` and prove the remaining obligations. Establish `key : _root_.Submodule.span S (s : Set M) ≤ N.comap (a • LinearMap.id)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.Submodule.span_le]`. Introduce `x hx`. Use `show (a • LinearMap.id : M →ₗ[S] M) x ∈ N`. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply]`. Conclude with `hf x a (Ideal.pow_le_pow_right (Finset.le_sup (f := f) hx) ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hy : y ∈ _root_.Submodule.span S (s : Set M)` using `by rw [hs]; trivial`. Use `key hy` as an intermediate fact. Rewrite `this` using `[_root_.Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem Submodule.exists_pow_smul_mem_of_forall_exists :
     ∀ (S : Type) [CommRing S] (I : Ideal S) (M : Type) [AddCommGroup M] [Module S M]

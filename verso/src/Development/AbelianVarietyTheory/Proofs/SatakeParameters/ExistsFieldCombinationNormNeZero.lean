@@ -6,13 +6,13 @@ namespace GlobalTheory
 open MvPolynomial in
 
 /- English proof (translation)
-Take `⟨x₀, hx₀⟩` from `hx`. Set `b` to `Module.Free.chooseBasis B A`. Set `M : Matrix (Module.Free.ChooseBasisIndex B A) (Module.Free.ChooseBasisIndex B A) (MvPolynomial (Fin d) B)` to `Matrix.of fun j l => ∑ i, X i * C (Algebra.leftMulMatrix b (y i) j l)`. Establish `heval : ∀ x : Fin d → B, eval x M.det = Algebra.norm B (∑ i, x i • y i)`. Introduce `x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Algebra.norm_eq_matrix_det b, RingHom.map_det]`. Use `congr 1`. Use extensionality with `j l`. Simplify using `[M, map_sum, Matrix.sum_apply, mul_comm]`. Assume the negation of the conclusion as `hcon`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hcon`. Establish `hinf : ∀ _ : Fin d, (Set.range (algebraMap k B)).Infinite` using `fun _ => Set.infinite_range_of_injective (algebraMap k B).injective`. Establish `hQ : M.det = 0`. Use `funext_set (fun _ => Set.range (algebraMap k B)) hinf fun x hx => ?_` and prove the remaining obligations. Use `choose a ha using fun i => hx i (Set.mem_univ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[heval, map_zero, ← hcon a]`. Simplify using `[ha]`. Conclude with `hx₀ (by rw [← heval, hQ, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem exists_field_combination_norm_ne_zero {k B A : Type} [Field k] [Infinite k] [CommRing B]
     [IsDomain B] [Algebra k B] [CommRing A] [Algebra B A] [Module.Free B A] [Module.Finite B A]

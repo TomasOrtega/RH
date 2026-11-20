@@ -15,21 +15,17 @@ variable {p : ℕ} [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf]
   (Kc : Type) [Field Kc] [Algebra (K0 p) Kc] [Algebra X.G.Kf Kc] [CharZero Kc]
 
 /- English proof (translation)
-Establish `cz : CharZero X.G.Kf` using `(algebraMap X.G.Kf Kc).charZero`. Take `⟨g', h', hg', hh', hmF⟩` from `hE p X j L' L'' i0 h2 h4`. Take `⟨φ0⟩` from `exists_frm X j La (c', L') h1 h2`. Set `φ : Frm X j La (c', L'')` to `⟨φ0.g, g', φ0.hg, hg'⟩`. Use `⟨φ, fun f gg hf G hG => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `set ft := linSub (bc Kc φ) f with hft`. Use `set S1 : X.G.Kf := ((∏ v : X.Pl, (p : X.G.Kf) ^ (Nprime (X.G.P.lam0 v) (X.w v) (j + 1) (i0 v))) * ((∏ v : X.Pl, (p : X.G.Kf) ^ (X.vm v (j + 1) * len X v j La.2)) * (∏ v : X.Pl, (p : X.G.Kf) ^ (X.vm v (j + 1) * len X v (j + 1) L''))⁻¹)) with hS1`. Use `set s' : X.G.Kf := sX X (j + 1) (fun v => h' v) with hs'`. Establish `hs'0 : s' ≠ 0` using `Finset.prod_ne_zero_iff.2 fun b _ => zpow_ne_zero _ (mF_det_ne X (j + 1) b (h' b.1))`. Establish `hs'e : s' = ∏ b : BX X, (mF X (j + 1) b (g' b.1) * DgX X X.G.Kf j i0 b.1).det ^ (-(eJ X (j + 1) b.1 b.2))` using `Finset.prod_congr rfl fun b _ => by rw [hmF b]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy1` using `tgt_bidet (O := X.G.O) (Kc := Kc) (emX X (j + 1)) (hInj p X (j + 1)).1 (nuT X j) (nuT_antitone X hS j) (fun b => mF X (j + 1) b (h' b.1)) (fun b => mF X (j + 1) b ((h' b.1)⁻¹ : GL _ _)) (fun b => mF_inv_mul X (j + 1) b (h' b.1)) (MG p Oc hval gg) (fun o a ha => geX_mul (hO o) ha) …`. Rewrite using `[← algebraMap_smul Kc (S1 * s'⁻¹)]`. Conclude with `Submodule.smul_mem _ _ (xSpan X Kc hS hBrS hInj hSp j La.2 φ0.g φ0.hg ft G hG))`. Use the proof step `(fun I => by`. Use `xPair X Kc hS hBrS hInj hMid hU Oc hval hO j La (c', L'') φ i0 h3 f gg hf G hG I` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite `this` using `[← hS1, ← hs'e]`. Simplify using `only [hmF]`. Conclude with `this)`. Establish `htr : ∀ z ∈ AddSubgroup.closure {z | ∃ a ∈ MG p Oc hval gg, ∃ F : BX X → MvPolynomial (Fin (NJ X (j + 1)) × Fin (NJ X (j + 1))) X.G.Kf, (∀ b, F b ∈ deltaL X.G.O X.G.Kf (NJ X (j + 1)) (nuT X j b) (mF X (j + 1) b (h' b.1))) ∧ z = a • map (algebraMap X.G.Kf Kc) (∏ b, rename (emX X ( …`. Introduce `z hz`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, F, hF, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a, ha, s' • ∏ b, rename (emX X (j + 1) b) (F b), ?_, ?_⟩` and prove the remaining obligations. Use `hBrT p X (hinjX X) (j + 1) L' (fun v => h' v) (fun v => (Matrix.isUnit_iff_isUnit_det _).1 (h' v).isUnit) hh' F ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Introduce `b`. Rewrite using `[(hS p X j b).2.1]`. Conclude with `hF b`. Rewrite using `[smul_comm, smul_eq_C_mul (a := s'), map_mul, map_C, ← smul_eq_C_mul, algebraMap_smul]`. Consider the case `zero => rw [smul_zero]`.
-
-Conclude with `AddSubgroup.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `AddSubgroup.add_mem _ hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `AddSubgroup.neg_mem _ hx`.
-
-Use `htr _ hy1` as an intermediate fact. Rewrite `this` using `[smul_smul, mul_comm s', mul_assoc, inv_mul_cancel₀ hs'0, mul_one, hS1, mul_smul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissible_general_lattice_tuple (hS : XShape) (hBrS : XBrS) (hBrT : XBrT) (hInj : XInj) (hSp : XSpanN) (hMid : XMid) (hU : XUnit) (hE : XEdge)
     (Oc : Subring Kc) (hval : ∀ x : Kc, x ∈ Oc ∨ x⁻¹ ∈ Oc)

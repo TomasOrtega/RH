@@ -4,11 +4,9 @@ open scoped InnerProductSpace BigOperators
 namespace GlobalTheory.ParahoricTranslate
 
 /- English proof (translation)
-Rewrite using `[← IsLocalRing.notMem_maximalIdeal]`. Introduce `h`. Use `set f := Ideal.Quotient.mk (IsLocalRing.maximalIdeal O)`. Establish `h0 : f (1 + ϖ • Z).det = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr h`. Establish `hf : f ϖ = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr ((IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr hϖ))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : f.mapMatrix (1 + ϖ • Z) = 1`. Rewrite using `[map_add, map_one]`. Use extensionality with `i j`. Simplify using `[hf]`. Rewrite `h0` using `[RingHom.map_det, h1, Matrix.det_one]`.
-
-Conclude with `one_ne_zero h0`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_one_add_nonunit_smul {O : Type} [CommRing O] [IsLocalRing O] {r : ℕ} (ϖ : O)
     (hϖ : ¬ IsUnit ϖ) (Z : Matrix (Fin r) (Fin r) O) :
@@ -27,7 +25,7 @@ theorem isUnit_det_one_add_nonunit_smul {O : Type} [CommRing O] [IsLocalRing O] 
   exact one_ne_zero h0
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toRows₁, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toRows_left_mul_matrix_eq {K : Type} [CommRing K] {r t : ℕ}
     (x : Matrix (Fin r ⊕ Fin t) (Fin r) K) (g : Matrix (Fin r) (Fin r) K) :
@@ -35,25 +33,19 @@ theorem toRows_left_mul_matrix_eq {K : Type} [CommRing K] {r t : ℕ}
   ext i j; simp [Matrix.toRows₁, Matrix.mul_apply]
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ _ r t ϖ hirr x g g' z z' hx hx' y w hy`. Use `set φ := algebraMap O K`. Use `set e := Matrix.fromRows (1 : Matrix (Fin r) (Fin r) O) (0 : Matrix (Fin t) (Fin r) O)`. Use `set Z := Matrix.toRows₁ z`. Use `set Z' := Matrix.toRows₁ z'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set P : Matrix (Fin r) (Fin r) O := 1 + ϖ • Z`. Use `set P' : Matrix (Fin r) (Fin r) O := 1 + ϖ • Z'`. Use `set A := Matrix.toRows₁ x`. Establish `hP : IsUnit P.det` using `isUnit_det_one_add_nonunit_smul ϖ hirr.not_isUnit Z`. Establish `hA : A * (g : Matrix (Fin r) (Fin r) K) = φ.mapMatrix P`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg Matrix.toRows₁ hx` as an intermediate fact. Rewrite `this` using `[toRows_left_mul_matrix_eq]`. Rewrite using `[this, RingHom.mapMatrix_apply]`. Use `show (Matrix.toRows₁ (e + ϖ • z)).map φ = (1 + ϖ • Z).map φ`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA' : A * (g' : Matrix (Fin r) (Fin r) K) = φ.mapMatrix P'`. Use `congrArg Matrix.toRows₁ hx'` as an intermediate fact. Rewrite `this` using `[toRows_left_mul_matrix_eq]`. Rewrite using `[this, RingHom.mapMatrix_apply]`. Use `show (Matrix.toRows₁ (e + ϖ • z')).map φ = (1 + ϖ • Z').map φ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hPK : IsUnit (φ.mapMatrix P).det`. Rewrite using `[← RingHom.map_det]`. Conclude with `hP.map φ`. Establish `hAu : IsUnit A.det`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hPK` using `[← hA, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_left hPK`. Use `set c : Matrix (Fin r) (Fin r) O := P⁻¹ * P'`. Establish `hgc : (g' : Matrix (Fin r) (Fin r) K) = (g : Matrix (Fin r) (Fin r) K) * φ.mapMatrix c`. Establish `h2 : A * (g' : Matrix (Fin r) (Fin r) K) = A * ((g : Matrix (Fin r) (Fin r) K) * φ.mapMatrix c)`.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hA', ← Matrix.mul_assoc, hA, map_mul, ← Matrix.mul_assoc, ← map_mul, Matrix.mul_nonsing_inv _ hP, map_one, Matrix.one_mul]`. Establish `h3` using `congrArg (fun M => A⁻¹ * M) h2`. Simplify `h3` using `only [Matrix.nonsing_inv_mul_cancel_left _ _ hAu]`. Use `⟨Matrix.fromRows (P⁻¹ * (Z' - Z)) (0 : Matrix (Fin t) (Fin r) O) + w * c, ?_⟩` and prove the remaining obligations. Establish `hc : c = 1 + ϖ • (P⁻¹ * (Z' - Z))`.
-
-Establish `: P' = P + ϖ • (Z' - Z)`. Simplify using `only [P, P', smul_sub]`. Normalize the expressions using the abelian group laws. Simplify using `only [c, this, Matrix.mul_add, Matrix.mul_smul, Matrix.nonsing_inv_mul _ hP]`. Establish `key : (e + ϖ • w) * c = e + ϖ • (Matrix.fromRows (P⁻¹ * (Z' - Z)) (0 : Matrix (Fin t) (Fin r) O) + w * c)`.
-
-Rewrite using `[Matrix.add_mul, Matrix.smul_mul]`. Establish `he : e * c = Matrix.fromRows c (0 : Matrix (Fin t) (Fin r) O)`. Simplify using `[e, Matrix.fromRows_mul]`. Rewrite using `[he]`. Use `nth_rewrite 1 [hc]`.
-
-Apply the tactic sequence `ext (i | i) j <;> simp [e, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, smul_add, add_assoc]`. Rewrite using `[hgc, ← Matrix.mul_assoc, hy, RingHom.mapMatrix_apply, ← Matrix.map_mul, key]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem translate_lattice_coset_subset : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Finite (IsLocalRing.ResidueField O)] [Field K] [Algebra O K] [IsFractionRing O K] (r t : ℕ) (ϖ : O), Irreducible ϖ → ∀ (x : Matrix (Fin r ⊕ Fin t) (Fin r) K) (g g' : GL (Fin r) K) (z z' : Matrix (Fin r ⊕ Fin t) (Fin r) O), x * (g : Matrix (Fin r) (Fin r) K) = ((Matrix.fromRows (1 : Matrix (Fin r) (Fin r) O) (0 : Matrix (Fin t) (Fin r) O)) + ϖ • z).map (algebraMap O K) → x * (g' : Matrix (Fin r) (Fin r) K) = ((Matrix.fromRows (1 : Matrix (Fin r) (Fin r) O) (0 : Matrix (Fin t) (Fin r) O)) + ϖ • z').map (algebraMap O K) → ∀ (y : Matrix (Fin r ⊕ Fin t) (Fin r) K) (w : Matrix (Fin r ⊕ Fin t) (Fin r) O), y * (g : Matrix (Fin r) (Fin r) K) = ((Matrix.fromRows (1 : Matrix (Fin r) (Fin r) O) (0 : Matrix (Fin t) (Fin r) O)) + ϖ • w).map (algebraMap O K) → ∃ w' : Matrix (Fin r ⊕ Fin t) (Fin r) O, y * (g' : Matrix (Fin r) (Fin r) K) = ((Matrix.fromRows (1 : Matrix (Fin r) (Fin r) O) (0 : Matrix (Fin t) (Fin r) O)) + ϖ • w').map (algebraMap O K) := by
   intro O K _ _ _ _ _ _ _ r t ϖ hirr x g g' z z' hx hx' y w hy

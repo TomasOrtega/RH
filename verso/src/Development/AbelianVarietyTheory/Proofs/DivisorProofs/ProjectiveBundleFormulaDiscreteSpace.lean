@@ -12,20 +12,18 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `U' ⟨f⟩`. Simplify using `using hU.map f.appTop.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inv_sch (q : ℕ) (U : Scheme.{0}) (hU : IsUnit (q : Γ(U, ⊤))) : Inv q (sch.obj U) := by
   intro U' ⟨f⟩
   simpa using hU.map f.appTop.hom
 
 /- English proof (translation)
-Introduce `q _ N F V hF n i`. Take `⟨J, ψ, hJ, hinj, he⟩` from `GlobalTheory.T.exists_injective_cochainModel_trivialProjectiveBundle q N i`. Establish `key` using `GlobalTheory.T.injectiveComplexMap_quasiIso_of_unit_schemes q (fun j : Fin N => res (ZMod q) (tw q (i - (j : ℕ)))) J (fun j => 2 * ((j : ℕ) : ℤ)) ψ 0 (fun j => inferInstanceAs ((injectiveResolution (tw q (i - (j : ℕ)))).cochainComplex.IsStrictlyGE 0)) hJ (fun j m => inferInstance …`. Introduce `U hU m`. Take `⟨e, he'⟩` from `he (yoneda.obj U) (inv_sch q U hU) m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hs` using `GlobalTheory.T.etaleCohomology_projectiveBundle_formula q U (trivV N (sch.obj U)) (inv_sch q U hU) m i`. Establish `hcomp : (fun a : ∀ j : Fin N, Ht q (sch.obj U) (m - 2 * (j : ℕ)) (i - (j : ℕ)) => ∑ j : Fin N, ((cup q (pull _ (pullback.fst (trivV N (sch.obj U)) (PGL.pr N)) _ _ (a j)) (cpow q (c1 q (pullback.snd (trivV N (sch.obj U)) (PGL.pr N) ≫ PGL.line N)) j)).cast (by ring) (by ring) : Ht …`. Use function extensionality and compare the values at `fun a => (he' a).symm`. Rewrite `hs` using `[hcomp]`. Conclude with `(Function.Bijective.of_comp_iff' e.bijective _).1 hs)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `F hF n`. Take `⟨e, he'⟩` from `he F hF n`. Rewrite using `[GlobalTheory.T.discrete_glBundle_eq_trivialGLBundle N F V]`. Establish `hcomp : pbfMap q (trivV N (disc.obj F)) n i = e ∘ (fun a => ∑ j, cpost _ (ψ j) (n - 2 * (j : ℕ)) n (by omega) (a j))`. Use function extensionality and compare the values at `fun a => (he' a).symm`.
-
-Rewrite using `[hcomp]`. Conclude with `e.bijective.comp key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pbf_disc : ∀ (q : ℕ) [NeZero q] (N : ℕ) (F : PSh) (V : disc.obj F ⟶ ofCat (glCat N)),
     Inv q (disc.obj F) → PBF q V := by

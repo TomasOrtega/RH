@@ -11,9 +11,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Conj.SplitDisc
 open Module
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero g).2 fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `hne` using `Ideal.comap_ne_bot_of_integral_mem (R := ℤ) (I := RingHom.ker g) h (RingHom.mem_ker.2 hx) (Algebra.IsIntegral.isIntegral x)`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `n hn`. Establish `h0 : g (algebraMap ℤ (𝓞 E) n) = 0` using `RingHom.mem_ker.1 (Ideal.mem_comap.1 hn)`. Establish `h1 : (n : L) = 0` using `by simpa using h0`. Simplify using `using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem injective_of_charZero (E : Type) [Field E] [NumberField E] {L : Type} [Field L] [CharZero L]
     (g : 𝓞 E →+* L) : Function.Injective g := by
@@ -29,17 +29,17 @@ theorem injective_of_charZero (E : Type) [Field E] [NumberField E] {L : Type} [F
   simpa using h1
 
 /- English proof (translation)
-Set `F` to `FractionRing R`. Set `Ω` to `AlgebraicClosure F`. Set `i₀ : R →+* Ω` to `(algebraMap F Ω).comp (algebraMap R F)`. Establish `hi₀ : Function.Injective i₀` using `(algebraMap F Ω).injective.comp (IsFractionRing.injective R F)`. Establish `: CharZero Ω` using `charZero_of_injective_ringHom hi₀`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ρ : S → (𝓞 E →+* Ω)` to `fun s => i₀.comp (σ s)`. Establish `hρ : ∀ s, Function.Injective (ρ s)` using `fun s => injective_of_charZero E (ρ s)`. Set `τ : S → (E →ₐ[ℚ] Ω)` to `fun s => (IsFractionRing.lift (hρ s)).toRatAlgHom`. Establish `hτ : ∀ s (a : 𝓞 E), τ s (algebraMap (𝓞 E) E a) = i₀ (σ s a)` using `fun s a => by`. Express the relevant statement in the definitionally equal form `IsFractionRing.lift (hρ s) (algebraMap (𝓞 E) E a) = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[IsFractionRing.lift_algebraMap]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective τ`. Introduce `s t hst`. Apply `hσ` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `a`. Apply `hi₀` to reduce the goal to its premises. Rewrite using `[← hτ, ← hτ, hst]`. Establish `hbij : Function.Bijective τ` using `(Fintype.bijective_iff_injective_and_card _).2 ⟨hinj, by rw [AlgHom.card, hc]⟩`. Set `e' : Free.ChooseBasisIndex ℤ (𝓞 E) ≃ (E →ₐ[ℚ] Ω)` to `e.trans (Equiv.ofBijective τ hbij)`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `key` using `Algebra.discr_eq_det_embeddingsMatrixReindex_pow_two ℚ Ω (integralBasis E) e'`. Rewrite `key` using `[← coe_discr]`. Establish `hm : Algebra.embeddingsMatrixReindex ℚ Ω (integralBasis E) e' = (Matrix.of fun i j => σ (e j) (RingOfIntegers.basis E i)).map i₀`. Use extensionality with `i j`. Simplify using `only [Algebra.embeddingsMatrixReindex, Algebra.embeddingsMatrix, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply, Matrix.map_apply, integralBasis_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `hτ _ _`. Rewrite `key` using `[hm, ← RingHom.mapMatrix_apply, ← RingHom.map_det, ← map_pow]`. Apply `hi₀` to reduce the goal to its premises. Rewrite using `[← key]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_sq_eq_discr (E : Type) [Field E] [NumberField E] (R S : Type) [CommRing R] [IsDomain R] [CharZero R]
     [Fintype S] [DecidableEq S] (σ : S → (𝓞 E →+* R)) (hσ : Function.Injective σ)
@@ -81,11 +81,9 @@ theorem det_sq_eq_discr (E : Type) [Field E] [NumberField E] (R S : Type) [CommR
   simp
 
 /- English proof (translation)
-Unfold `IsSplit`. Set `B` to `Algebra.TensorProduct.basis k b`. Set `B'` to `(Pi.basisFun k S).reindex e.symm`. Set `f` to `(Algebra.TensorProduct.lift (Algebra.ofId k (S → k)) (AlgHom.pi fun s => (χ s).toIntAlgHom) (fun _ _ => Commute.all _ _))`. Establish `hm : LinearMap.toMatrix B B' f.toLinearMap = (Matrix.of fun i j => χ (e j) (b i)).transpose`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[LinearMap.toMatrix_apply, B, B', f]`. Establish `hu : IsUnit (LinearMap.toMatrix B B' f.toLinearMap).det`. Rewrite using `[hm, Matrix.det_transpose]`. Conclude with `isUnit_iff_ne_zero.2 h`.
-
-Conclude with `(LinearEquiv.ofIsUnitDet hu).bijective`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSplit_of_det {O k S ι : Type} [CommRing O] [Field k] [Fintype S] [DecidableEq S] [Fintype ι] [DecidableEq ι]
     (χ : S → (O →+* k)) (b : Basis ι ℤ O) (e : ι ≃ S)
@@ -104,15 +102,13 @@ theorem isSplit_of_det {O k S ι : Type} [CommRing O] [Field k] [Fintype S] [Dec
   exact (LinearEquiv.ofIsUnitDet hu).bijective
 
 /- English proof (translation)
-Establish `hchar : CharP K p` using `charP_of_injective_algebraMap (algebraMap (ZMod p) K).injective p`. Establish `hmem : ∀ s a, (π.comp (σ s)) a ∈ algebraicClosure (ZMod p) K` using `fun s a => by`. Establish `h1 : IsIntegral ℤ ((π.comp (σ s)) a)` using `(Algebra.IsIntegral.isIntegral (R := ℤ) a).map (π.comp (σ s)).toIntAlgHom`. Conclude with `mem_algebraicClosure_iff'.2 (h1.tower_top)`. Set `χ : S → (𝓞 E →+* algebraicClosure (ZMod p) K)` to `fun s => (π.comp (σ s)).codRestrict (algebraicClosure (ZMod p) K) (hmem s)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨χ, ?_, fun s a => rfl⟩` and prove the remaining obligations. Establish `hcard : Fintype.card (Free.ChooseBasisIndex ℤ (𝓞 E)) = Fintype.card S`. Rewrite using `[hc, finrank_eq_card_basis (integralBasis E)]`. Set `e : Free.ChooseBasisIndex ℤ (𝓞 E) ≃ S` to `Fintype.equivOfCardEq hcard`. Use `isSplit_of_det χ (RingOfIntegers.basis E) e fun h0 => hp ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsq` using `congrArg π (det_sq_eq_discr E R S σ hσ hc e)`. Establish `hmap : (algebraMap (algebraicClosure (ZMod p) K) K).mapMatrix (Matrix.of fun i j => χ (e j) (RingOfIntegers.basis E i)) = π.mapMatrix (Matrix.of fun i j => σ (e j) (RingOfIntegers.basis E i))`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hdet : π (Matrix.of fun i j => σ (e j) (RingOfIntegers.basis E i)).det = 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det, ← hmap, ← RingHom.map_det]`. Simplify using `[h0]`. Rewrite `hsq` using `[map_pow, hdet]`. Establish `hz : ((NumberField.discr E : ℤ) : K) = 0`. Simplify using `using hsq.symm`.
-
-Conclude with `(CharP.intCast_eq_zero_iff K p _).1 hz`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_isSplit (E : Type) [Field E] [NumberField E] (R K S : Type) [CommRing R] [IsDomain R] [CharZero R]
     [Field K] [Fintype S] (p : ℕ) [Fact p.Prime] [Algebra (ZMod p) K] (σ : S → (𝓞 E →+* R)) (π : R →+* K)

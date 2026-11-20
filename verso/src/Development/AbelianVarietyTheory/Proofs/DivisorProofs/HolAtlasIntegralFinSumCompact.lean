@@ -15,7 +15,7 @@ namespace GlobalTheory.CxForm.IntegralSum
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 
 /- English proof (translation)
-Unfold `HolAtlas.loc`. Use `split_ifs`. Conclude with `Finset.sum_apply _ _ _`. Conclude with `Finset.sum_const_zero.symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem loc_finset_sum {κ : Type} (s : Finset κ) (α : κ → A.Fld) (i : A.ι) (v : ReciprocityTheory.L2DbarEstimates.V n) :
     A.loc (∑ j ∈ s, α j) i v = ∑ j ∈ s, A.loc (α j) i v := by
@@ -25,7 +25,7 @@ theorem loc_finset_sum {κ : Type} (s : Finset κ) (α : κ → A.Fld) (i : A.ι
   · exact Finset.sum_const_zero.symm
 
 /- English proof (translation)
-Use `⟨fun i S => ?_, fun x x' e => ?_⟩` and prove the remaining obligations. Simplify using `only [loc_finset_sum, map_sum, Finsupp.finsetSum_apply]`. Conclude with `ContDiffOn.sum fun j hj => (h j hj).smooth i S`. Rewrite using `[Finset.sum_apply, Finset.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun j hj => (h j hj).compat x x' e`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isForm_finset_sum {κ : Type} (s : Finset κ) (α : κ → A.Fld) (h : ∀ j ∈ s, A.IsForm (α j)) :
     A.IsForm (∑ j ∈ s, α j) := by
@@ -36,9 +36,9 @@ theorem isForm_finset_sum {κ : Type} (s : Finset κ) (α : κ → A.Fld) (h : �
     exact Finset.sum_congr rfl fun j hj => (h j hj).compat x x' e
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h0` using `isForm_finset_sum A ∅ α h`. Use `GlobalTheory.T.integral_sub_of_isForm' A _ _ h0 h0` as an intermediate fact. Rewrite `this` using `[sub_self, sub_self]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Consider the case `insert a s ha ih`. Use `GlobalTheory.T.integral_sub_of_isForm' A _ _ (isForm_finset_sum A _ α h) (h a (Finset.mem_insert_self a s))` as an intermediate fact. Rewrite `this` using `[Finset.sum_insert ha, add_sub_cancel_left, ih fun j hj => h j (Finset.mem_insert_of_mem hj)]`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -63,9 +63,9 @@ open Set Matrix MeasureTheory in
 open scoped ComplexOrder in
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : _root_.GlobalTheory.CxForm.HolAtlas M n) in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `i S`. Unfold `_root_.GlobalTheory.CxForm.HolAtlas.loc`. Use `(contDiffOn_const (c := (0 : ℂ))).congr ?_` and prove the remaining obligations. Introduce `v _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs`. Use `erw [Pi.zero_apply, map_zero, Finsupp.zero_apply]`. Introduce `x x' _`. Conclude with `(map_zero _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem isForm_zero' : A.IsForm 0 := by
   constructor
@@ -84,7 +84,7 @@ open scoped ComplexOrder in
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : _root_.GlobalTheory.CxForm.HolAtlas M n) in
 variable [CompactSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] in
 /- English proof (translation)
-Establish `h` using `A.integral_sub_of_isForm 0 0 (isForm_zero' A) (isForm_zero' A)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem integral_zero_fld : A.integral 0 = 0 := by
   have h := A.integral_sub_of_isForm 0 0 (isForm_zero' A) (isForm_zero' A)
@@ -95,11 +95,11 @@ open Set Matrix MeasureTheory in
 open scoped ComplexOrder in
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : _root_.GlobalTheory.CxForm.HolAtlas M n) in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `i S`. Establish `h1` using `ha.smooth i S`. Establish `h2` using `hb.smooth i S`. Unfold `_root_.GlobalTheory.CxForm.HolAtlas.loc`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `_root_.GlobalTheory.CxForm.HolAtlas.loc at h1 h2`. Use `(h1.add h2).congr ?_` and prove the remaining obligations. Introduce `v hv`. Simplify using `only [dif_pos hv]`. Use `erw [Pi.add_apply, map_add, Finsupp.add_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x x' hx`. Simplify using `[ha.compat x x' hx, hb.compat x x' hx]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isForm_add' {α β : A.Fld}
     (ha : A.IsForm α) (hb : A.IsForm β) :
@@ -122,11 +122,11 @@ open Set Matrix MeasureTheory in
 open scoped ComplexOrder in
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : _root_.GlobalTheory.CxForm.HolAtlas M n) in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `i S`. Establish `h1` using `ha.smooth i S`. Establish `h2` using `hb.smooth i S`. Unfold `_root_.GlobalTheory.CxForm.HolAtlas.loc`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `_root_.GlobalTheory.CxForm.HolAtlas.loc at h1 h2`. Use `(h1.sub h2).congr ?_` and prove the remaining obligations. Introduce `v hv`. Simplify using `only [dif_pos hv]`. Use `erw [Pi.sub_apply, map_sub, Finsupp.sub_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x x' hx`. Simplify using `[ha.compat x x' hx, hb.compat x x' hx]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isForm_sub' {α β : A.Fld}
     (ha : A.IsForm α) (hb : A.IsForm β) :
@@ -150,9 +150,9 @@ open scoped ComplexOrder in
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : _root_.GlobalTheory.CxForm.HolAtlas M n) in
 variable [CompactSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] in
 /- English proof (translation)
-Establish `hnb : A.IsForm (0 - β)` using `isForm_sub' A (isForm_zero' A) hb`. Establish `h` using `A.integral_sub_of_isForm α (0 - β) ha hnb`. Establish `h0` using `A.integral_sub_of_isForm 0 β (isForm_zero' A) hb`. Rewrite `h0` using `[integral_zero_fld A]`. Rewrite `h` using `[show α - (0 - β) = α + β by abel]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h, h0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem integral_add_of_isForm {α β : A.Fld}
     (ha : A.IsForm α) (hb : A.IsForm β) :
@@ -173,9 +173,9 @@ open scoped ComplexOrder in
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : _root_.GlobalTheory.CxForm.HolAtlas M n) in
 variable [CompactSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] in
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ⟨isForm_zero' A, integral_zero_fld A⟩`. Consider the case `insert a s ha ih`. Establish `hs` using `ih (fun j hj => hα j (Finset.mem_insert_of_mem hj))`. Establish `hA` using `hα a (Finset.mem_insert_self a s)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Use `⟨isForm_add' A hA hs.1, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_add_of_isForm A hA hs.1, hs.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isForm_and_integral_finset_sum {ι : Type} (s : Finset ι)
     (α : ι → A.Fld) (hα : ∀ j ∈ s, A.IsForm (α j)) :
@@ -194,7 +194,7 @@ private theorem isForm_and_integral_finset_sum {ι : Type} (s : Finset ι)
 set_option autoImplicit false in
 
 /- English proof (translation)
-Introduce `M _ _ _ _ _ _ n A N α hα`. Conclude with `(isForm_and_integral_finset_sum A Finset.univ α (fun j _ => hα j)).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CxForm.IntegralSum.integral_sum : ∀ {M : Type} [TopologicalSpace M] [CompactSpace M]
     [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] {n : ℕ}

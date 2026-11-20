@@ -9,21 +9,17 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 namespace UpperTheory.Gal.Wt
 
 /- English proof (translation)
-Introduce `hEv hSum E _ _ _ a τ W K ν d B hB`. Take `⟨S₀, hS₀, hBS₀⟩` from `hB.fin`. Set `S` to `S₀ ⊓ autU E a`. Use `haveI : FiniteDimensional ℂ S := Submodule.finiteDimensional_of_le inf_le_left`. Establish `hBS : ∀ y₁ y₂ v, B y₁ y₂ v ∈ S` using `fun y₁ y₂ v => ⟨hBS₀ y₁ y₂ v, hB.aut y₁ y₂ v⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, hind, hle⟩` from `hSum E a S inferInstance fun φ hφ => hφ.2`. Establish `hex : ∀ U : Submodule ℂ (UA E a → ℂ), ∃ p : (UA E a → ℂ) →ₗ[ℂ] (UA E a → ℂ), U ∈ t → (∀ φ, p φ ∈ U) ∧ (∀ φ ∈ U, p φ = φ) ∧ ∀ V ∈ t, V ≠ U → ∀ φ ∈ V, p φ = 0` using `fun U => by`. Distinguish the cases in `hU : U ∈ t`. Take `⟨C, hC, hc⟩` from `(hind (Finset.mem_coe.2 hU)).symm.exists_isCompl`. Use `⟨U.subtype ∘ₗ Submodule.linearProjOfIsCompl U C hc.symm, fun _ => ⟨fun φ => Subtype.property _, fun φ hφ => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hc.symm ⟨φ, hφ⟩), fun V hV hne φ hφ => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : Submodule.linearProjOfIsCompl U C hc.symm φ = 0` using `Submodule.linearProjOfIsCompl_apply_right' hc.symm (hC (le_sSup (show V ∈ (t : Set (Submodule ℂ (UA E a → ℂ))) \ {U} from ⟨hV, hne⟩) hφ))`. Simplify using `[h0]`. Conclude with `⟨0, fun h => absurd h hU⟩`. Use `choose p hp using hex`. Establish `key : ∀ φ ∈ S, ∑ U ∈ t, p U φ = φ ∧ ∀ U ∈ t, ∀ x, p U (RU E a x φ) = RU E a x (p U φ)`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Set `P : Submodule ℂ (UA E a → ℂ)` to `{ carrier := {φ | ∑ U ∈ t, p U φ = φ ∧ ∀ U ∈ t, ∀ x, p U (RU E a x φ) = RU E a x (p U φ)} add_mem' := fun h1 h2 => ⟨by simp only [map_add, Finset.sum_add_distrib, h1.1, h2.1], fun U hU x => by`. Simplify using `only [map_add, h1.2 U hU x, h2.2 U hU x]⟩`. Use the proof step `zero_mem' := ⟨by simp, fun U _ x => by simp⟩`. Use the proof step `smul_mem' := fun c φ h => ⟨by simp only [map_smul, ← Finset.smul_sum, h.1], fun U hU x => by`. Simplify using `only [map_smul, h.2 U hU x]⟩ }`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `fun φ hφ => (sSup_le (a := P) fun V hV ψ hψ => ⟨?_, fun U hU x => ?_⟩) (hle hφ)` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single_of_mem V hV fun U hU hne => (hp U hU).2.2 V hV hne.symm ψ hψ]`. Conclude with `(hp V hV).2.1 ψ hψ`. Establish `hx` using `(ht V hV).stable x ψ hψ`. Distinguish the cases in `h : V = U`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `h` using the available equality. Rewrite using `[(hp V hV).2.1 _ hx, (hp V hV).2.1 _ hψ]`. Rewrite using `[(hp U hU).2.2 V hV h _ hx, (hp U hU).2.2 V hV h _ hψ, map_zero]`. Establish `hexp : ∀ (T : Submodule ℂ (Circle → ℂ)) (Φ : Circle → UA E a → ℂ), (∀ z, Φ z ∈ S) → (∀ g, (fun z => Φ z g) ∈ T) → ∀ U g, (fun z => p U (Φ z) g) ∈ T` using `fun T Φ h1 h2 U g => hEv S (UA E a) Circle (fun g => LinearMap.proj g ∘ₗ S.subtype) (fun m hm => Subtype.ext (funext hm)) T (fun z => ⟨Φ z, h1 z⟩) h2 (LinearMap.proj g ∘ₗ p U ∘ₗ S.subtype)`. Use `⟨t, fun U y₁ y₂ => p U ∘ₗ B y₁ y₂, fun U hU => ⟨ht U hU, ⟨fun y₁ y₂ v => (ht U hU).aut _ ((hp U hU).1 _), fun k hk y₁ y₂ v => ?_, fun x y₁ y₂ v => ?_, fun b hb y₁ y₂ v => ?_, fun k x hx y₁ y₂ v g => ?_, fun k x hx y₂ v g => ?_, ⟨S.map (p U), inferInstance, fun y₁ y₂ v => ⟨_, hBS …` and prove the remaining obligations.
-
-Use `show RU E a k (p U (B y₁ y₂ v)) = p U (B y₁ y₂ v)`. Rewrite using `[← (key _ (hBS y₁ y₂ v)).2 U hU, hB.fix k hk]`. Use `show RU E a x (p U (B y₁ y₂ v)) = p U (B _ _ _)`. Rewrite using `[← (key _ (hBS y₁ y₂ v)).2 U hU, hB.inf x]`. Use `show p U (B _ y₂ v) = chi ν b • p U (B y₁ y₂ v)`.
-
-Rewrite using `[hB.up b hb, map_smul]`. Conclude with `hexp _ _ (fun z => hBS _ _ _) (fun g => hB.le k x hx y₁ y₂ v g) U g`. Conclude with `hexp _ _ (fun z => hBS _ _ _) (fun g => hB.ge k x hx y₂ v g) U g`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem famProj_of : EvLem → SumRep → FamProj := by
   intro hEv hSum E _ _ _ a τ W K ν d B hB

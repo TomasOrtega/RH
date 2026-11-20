@@ -14,9 +14,9 @@ namespace PositivityTheory.Lit1.PTN
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `(GroundTheory.Global.ringOfIntegersToInteger_mem_maximalIdeal_iff v _).2 h`. Rewrite `h1` using `[map_natCast]`. Apply `GroundTheory.LocalField.natCast_card_pow_sub_one_ne_zero (K := v.adicCompletion F) hn` to reduce the goal to its premises. Rewrite using `[← map_natCast (IsLocalRing.residue 𝒪[v.adicCompletion F])]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsLocalRing.residue_eq_zero_iff _).2 h1`.
+A detailed English derivation is pending.
 -/
 theorem natCast_card_pow_sub_one_notMem (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) {n : ℕ} (hn : n ≠ 0) :
@@ -29,7 +29,7 @@ theorem natCast_card_pow_sub_one_notMem (F : Type) [Field F] [NumberField F]
   exact (IsLocalRing.residue_eq_zero_iff _).2 h1
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_le]`. Establish `: A.valuation x ^ m = 1` using `by rw [← Valuation.map_pow, hx, Valuation.map_one]`. Conclude with `(one_lt_pow₀ h hm).ne' this`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valuation_le_one_of_pow_eq_one {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m : ℕ}
     (hm : m ≠ 0) {x : Ω} (hx : x ^ m = 1) : A.valuation x ≤ 1 := by
@@ -40,23 +40,21 @@ theorem valuation_le_one_of_pow_eq_one {Ω : Type} [Field Ω] (A : ValuationSubr
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hm0 : (Nat.card 𝓀[v.adicCompletion Kf.1] ^ (N : ℕ) - 1) ≠ 0`. Use `GroundTheory.LocalField.one_lt_card_residueField_pow (K := v.adicCompletion Kf.1) N.ne_zero` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `haveI : NeZero (Nat.card 𝓀[v.adicCompletion Kf.1] ^ (N : ℕ) - 1) := ⟨hm0⟩`. Take `⟨ξ, hξ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (AlgebraicClosure ℚ) (Nat.card 𝓀[v.adicCompletion Kf.1] ^ (N : ℕ) - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hιξ : IsPrimitiveRoot (ι ξ) (Nat.card 𝓀[v.adicCompletion Kf.1] ^ (N : ℕ) - 1)` using `hξ.map_of_injective ι.toRingHom.injective`. Establish `hmA : ¬ A.valuation (((Nat.card 𝓀[v.adicCompletion Kf.1] ^ (N : ℕ) - 1) : ℕ) : AlgebraicClosure ℚ) < 1`. Introduce `h`. Apply `natCast_card_pow_sub_one_notMem Kf.1 v N.ne_zero` to reduce the goal to its premises. Use `(hA _).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h`. Set `χ : Dec (F` to `Kf.1) A → ZMod (N : ℕ) := fun g => urChar (v.adicCompletion Kf.1) (AlgebraicClosure (v.adicCompletion Kf.1)) N (ev.symm g)`. Establish `hχ : ∀ g, χ g = unramifiedCoord (v.adicCompletion Kf.1) (ev.symm g) N` using `fun g => rfl`. Establish `hχev : ∀ σ, χ (ev σ) = urChar (v.adicCompletion Kf.1) (AlgebraicClosure (v.adicCompletion Kf.1)) N σ` using `fun σ => by show urChar _ _ N (ev.symm (ev σ)) = _`. Rewrite using `[MulEquiv.symm_apply_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `clear_value χ`. Establish `key : ∀ (g : Dec (F` using `Kf.1) A) (a : ℕ), (a : ZMod (N : ℕ)) = χ g ↔ (g : G Kf.1 (AlgebraicClosure ℚ)) ξ = ξ ^ Nat.card 𝓀[v.adicCompletion Kf.1] ^ a := by`. Introduce `g a`. Rewrite using `[hχ, natCast_eq_unramifiedCoord_iff hιξ (ev.symm g) a, ← hev (ev.symm g) ξ, MulEquiv.apply_symm_apply, ← map_pow]`. Conclude with `ι.toRingHom.injective.eq_iff`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨χ, fun g h => ?_, fun g hg => ?_, fun g hg => ?_, ?_, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[hχ, hχ, hχ, map_mul, unramifiedCoord_mul]`. Establish `hgx` using `hg.2 ξ (valuation_le_one_of_pow_eq_one A hm0 hξ.pow_eq_one)`. Establish `e : (g : G Kf.1 (AlgebraicClosure ℚ)) ξ = ξ` using `eq_of_pow_eq_one A hmA (by rw [← map_pow, hξ.pow_eq_one, map_one]) hξ.pow_eq_one hgx`. Use `(key g 0).2 (by rw [pow_zero, pow_one]; exact e)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← this, Nat.cast_zero]`. Establish `hgx` using `hg.2 ξ (valuation_le_one_of_pow_eq_one A hm0 hξ.pow_eq_one)`. Establish `hN : normV v = Nat.card 𝓀[v.adicCompletion Kf.1]` using `(natCard_residueField_integer v).symm`. Rewrite `hgx` using `[hN]`. Establish `e : (g : G Kf.1 (AlgebraicClosure ℚ)) ξ = ξ ^ Nat.card 𝓀[v.adicCompletion Kf.1]` using `eq_of_pow_eq_one A hmA (by rw [← map_pow, hξ.pow_eq_one, map_one]) (by rw [← pow_mul, mul_comm, pow_mul, hξ.pow_eq_one, one_pow]) hgx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(key g 1).2 (by rw [pow_one]; exact e)` as an intermediate fact. Rewrite using `[← this, Nat.cast_one]`. Use `continuous_def.2 fun s _ => ?_` and prove the remaining obligations. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Subtype.val ⁻¹' {τ : G Kf.1 (AlgebraicClosure ℚ) | τ ξ = (g : G Kf.1 (AlgebraicClosure ℚ)) ξ}, fun g' hg' => ?_, continuous_subtype_val.isOpen_preimage _ (isOpen_setOf_apply (F := Kf.1) ξ (fun y => y = (g : G Kf.1 (AlgebraicClosure ℚ)) ξ)), rfl⟩` and prove the remaining obligations. Establish `h1` using `(key g (χ g).val).1 (ZMod.natCast_zmod_val _)`. Establish `h2 : (((χ g).val : ℕ) : ZMod (N : ℕ)) = χ g'` using `(key g' (χ g).val).2 (by`. Rewrite using `[show (g' : G Kf.1 (AlgebraicClosure ℚ)) ξ = (g : G Kf.1 (AlgebraicClosure ℚ)) ξ from hg', h1])`. Rewrite `h2` using `[ZMod.natCast_zmod_val]`.
-
-Use `show χ g' ∈ s`. Rewrite using `[← h2]`. Conclude with `hg`. Conclude with `hχev σ`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chi' (Kf : FiniteSubfield) [NumberField Kf.1] [IsAlgClosure Kf.1 (AlgebraicClosure ℚ)]
     (v : HeightOneSpectrum (𝓞 Kf.1)) (A : ValuationSubring (AlgebraicClosure ℚ)) (hA : IsPlaceOver A v)

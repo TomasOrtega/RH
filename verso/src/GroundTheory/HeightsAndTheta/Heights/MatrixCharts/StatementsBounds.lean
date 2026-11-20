@@ -78,7 +78,7 @@ def ChartImagDeriv.Statement : Prop :=
         A * Real.exp (D.radius p.1 / 2)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp, PosSemidef.zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem InvEntryBound.hypotheses_met :
     (1 : Matrix (Fin 2) (Fin 2) ℝ) - (1 : ℝ) • (1 : Matrix (Fin 2) (Fin 2) ℝ) = 0 ∧
@@ -86,7 +86,7 @@ theorem InvEntryBound.hypotheses_met :
   ⟨by simp, PosSemidef.zero⟩
 
 /- English proof (translation)
-Use `⟨by simpa using PosSemidef.zero, fun j l => ⟨differentiableAt_const _, ?_⟩⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem InvEntryDeriv.hypotheses_met :
     ((fun _ : ℝ => (1 : Matrix (Fin 2) (Fin 2) ℝ)) 0 - (1 : ℝ) • (1 : Matrix (Fin 2) (Fin 2) ℝ)).PosSemidef ∧
@@ -96,7 +96,7 @@ theorem InvEntryDeriv.hypotheses_met :
   simp
 
 /- English proof (translation)
-Introduce `j l`. Use `⟨differentiableAt_const _, ?_, by simp⟩` and prove the remaining obligations. Apply the tactic sequence `by_cases h : j = l <;> simp [Matrix.one_apply, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem MatrixDetDeriv.hypotheses_met :
     ∀ j l : Fin 2, DifferentiableAt ℝ (fun q : ℝ => (fun _ : ℝ => (1 : Matrix (Fin 2) (Fin 2) ℂ)) q j l) 0 ∧
@@ -115,7 +115,7 @@ theorem LogDetGramDeriv.hypotheses_met :
   simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isOpen_univ, analyticOnNhd_id, isCompact_closedBall _ _, Set.subset_univ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem AnalyticDerivBound.hypotheses_met :
     IsOpen (Set.univ : Set ℂ) ∧ AnalyticOnNhd ℂ (fun x : ℂ => x) Set.univ ∧

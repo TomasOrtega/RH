@@ -10,27 +10,27 @@ open GlobalTheory.PlaceInt
 namespace GlobalTheory.PlaceInt
 
 /- English proof (translation)
-Introduce `A R _ _ _ _ _ _ _ G hG`. Set `b : Module.Basis G A R` to `(Module.finBasis A R).reindex (Fintype.equivOfCardEq (by simp [hG]))`. Set `M : Matrix G G R` to `Matrix.of fun g i => g.1 (b i)`. Establish `hdet : M.det ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv, hvM⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h`. Establish `hli : LinearIndependent R (fun g : G => ((g.1 : R →* R) : R → R))`. Use `(linearIndependent_monoidHom R R).comp (fun g : G => (g.1 : R →* R)) ?_` and prove the remaining obligations. Introduce `g g' hgg`. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Conclude with `DFunLike.congr_fun hgg x`. Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `Fintype.linearIndependent_iff.1 hli v ?_ g` and prove the remaining obligations.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hz : (∑ g : G, v g • g.1.toLinearMap) = 0`. Apply `b.ext` to reduce the goal to its premises. Introduce `i`. Use `congrFun hvM i` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct, M]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Use `LinearMap.congr_fun hz x` as an intermediate fact. Simplify using `using this`. Establish `key : ∀ x : R, Matrix.diagonal (fun g : G => g.1 x) * M = M * (Algebra.leftMulMatrix b x).map (algebraMap A R)`. Introduce `x`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `g j`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_apply]`. Simplify using `only [M, Matrix.of_apply, Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul]`. Rewrite using `[← map_mul]`. Use `conv_lhs => rw [← b.sum_repr (x * b j)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def, mul_comm]`. Establish `key2 : ∀ x : R, M.adjugate * (Matrix.diagonal (fun g : G => g.1 x) * M) = M.det • (Algebra.leftMulMatrix b x).map (algebraMap A R)`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key, ← Matrix.mul_assoc, Matrix.adjugate_mul, Matrix.smul_mul, Matrix.one_mul]`. Use `⟨fun x hx => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨i⟩ : Nonempty G` from `b.index_nonempty`. Establish `h1 : Matrix.diagonal (fun g : G => g.1 x) = x • (1 : Matrix G G R)`. Rewrite using `[Matrix.smul_one_eq_diagonal]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `g`. Conclude with `hx g.1 g.2`. Establish `h2` using `key2 x`. Rewrite `h2` using `[h1, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.adjugate_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrFun (congrFun h2 i) i`. Simplify using `only [Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, _root_.mul_one, Matrix.map_apply] at h3`. Rewrite `h3` using `[mul_comm]`. Conclude with `⟨_, (mul_left_cancel₀ hdet h3).symm⟩`. Establish `h2` using `congrArg Matrix.trace (key2 x)`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one, Matrix.trace_smul, Matrix.trace_smul, smul_eq_mul, smul_eq_mul, Matrix.trace_diagonal]`. Establish `h3` using `mul_left_cancel₀ hdet h2`. Rewrite using `[Algebra.trace_eq_matrix_trace b, ← Finset.sum_coe_sort G (fun g => g x), h3]`. Simplify using `[Matrix.trace]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem invariants_and_trace_of_card_eq_finrank :
     ∀ (A R : Type) [CommRing A] [IsDomain A] [CommRing R] [IsDomain R] [Algebra A R] [Module.Free A R] [Module.Finite A R] (G : Finset (R →ₐ[A] R)), G.card = Module.finrank A R → (∀ x : R, (∀ g ∈ G, g x = x) → x ∈ (algebraMap A R).range) ∧ ∀ x : R, algebraMap A R (Algebra.trace A R x) = ∑ g ∈ G, g x := by

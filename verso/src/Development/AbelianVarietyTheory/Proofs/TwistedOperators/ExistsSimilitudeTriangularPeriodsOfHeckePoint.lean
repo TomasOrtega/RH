@@ -22,7 +22,7 @@ open GlobalTheory.HkFam (admitted)
 namespace GlobalTheory.HeckeEx
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 3`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`. Apply the tactic sequence `ext <;> simp [epsMul] <;> ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem spMap_epsMul_comp (a b : ℂ) {Y : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ Y) :
     spMap (epsMul a) ≫ spMap (epsMul b) ≫ v = spMap (epsMul (b * a)) ≫ v := by
@@ -33,13 +33,11 @@ theorem spMap_epsMul_comp (a b : ℂ) {Y : Scheme.{0}} (v : Sp (DualNumber ℂ) 
   ext <;> simp [epsMul] <;> ring
 
 /- English proof (translation)
-Substitute `hy hy''` using the available equality. Take `⟨gam, h, h1, h2, h3, h4⟩` from `GlobalTheory.T.heckeIsogeny_lifts_to_lattice_map_scaling_forms _ H Dw l Xo σ' g ty F i j P P' p C ψ ψp hP hP' hp hC hI`. Use `⟨gam, h, h1, h2, h3, fun w v hvs hd => ?_⟩` and prove the remaining obligations. Establish `hfst : ∀ z, fibPt Xo.univ.t.G (F.ex i P z) ≫ pullback.fst _ _ = (F.ex i P z).left` using `fun z => pullback.lift_fst _ _ _`. Establish `d0 : IsDerivAt0 (fun z => fibPt Xo.univ.t.G (F.ex i P z)) w v`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `FibreDeriv.isDerivAt0_of_isPullback (IsPullback.of_hasPullback Xo.univ.t.G.hom (F.u i P)) (fun z => pullback.lift_snd _ _ _) ?_ hvs ?_` and prove the remaining obligations. Use `ExpChain.isHolTo_ex F i P hP using 2 with z` and compare the differences between its conclusion and the goal. Conclude with `hfst z`. Use `hd using 2 with z` and compare the differences between its conclusion and the goal. Conclude with `hfst z`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1` using `FibreDeriv.isDerivAt0_comp d0 (ψ ≫ pullback.fst _ _)`. Establish `e1 : ∀ z, fibPt Xo.univ.t.G (F.ex i P z) ≫ ψ ≫ pullback.fst _ _ = (F.ex j P' (h z)).left` using `fun z => by`. Rewrite using `[← Category.assoc, hI.2.2.1, h4]`. Conclude with `pullback.lift_fst _ _ _`. Simplify using `only [e1] at d1`.
-
-Conclude with `(ExpChain.isDerivAt0_comp_linear _ (ExpChain.isHolTo_ex F j P' hP') h.toLinearMap w _).1 d1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_lift_deriv {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {σ' : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (F : FamilyUnif Xo σ' ty)
@@ -78,29 +76,25 @@ theorem exists_lift_deriv {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U _ hU P p i k k' x x' C z t hA hK hH hB`. Take `⟨-, -, -, -, -, g, e, F, ik, φ, hEF, hpt⟩` from `hU`. Take `⟨Pm, hP, per, hPx, hv, -⟩` from `hpt k x`. Take `⟨Pm', hP', per', hPx', hv', -⟩` from `hpt k' x'`. Take `⟨ψ, ψp, hI, hL, -⟩` from `hH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hpp : p.Prime` using `hA.2.2.1`. Establish `hC : ∀ a ∈ C, a ^ p ^ 2 = 1` using `fun a ha => GlobalTheory.HkPts.pow_eq_one hA.2.2.2.1 hK ha`. Take `⟨gam, h, hiso, hh, honto, hder⟩` from `exists_lift_deriv F (ik k) (ik k') Pm Pm' per per' hpp hPx (hB.1.trans hPx') C ψ ψp hC hI`. Use `choose cf hcf1 hcf2 hcf3 using hB.2.1`. Establish `hp0 : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hpp.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcol : ∀ τ m, h.toLinearMap (Pi.single (e.symm ⟨τ, m⟩) 1) = (∑ j, ((p : ℂ) * Formalism.L2.PjFree.toC (cf τ m j)) • (Pi.single (e.symm ⟨τ, j⟩) 1 : Fin g → ℂ))`. Introduce `τ m`. Take `⟨wv, hw1, hw2, hw3⟩` from `hL τ m`. Establish `d2` using `hder (Pi.single (e.symm ⟨τ, m⟩) 1) wv hw2 (by have q := hv τ m; rw [← hw1] at q; exact q)`. Establish `d1` using `(DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ g _ F _ Pm' per' _ ((U.un k' x').u τ) _ (hv' τ) (cf τ m) (z.u τ m)).1 (hPx' ▸ hcf3 τ m)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d3` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows.isDerivAt0_smul d1 (p : ℂ)`. Establish `e1 : spMap (epsMul (1 : ℂ)) = 𝟙 _`. Establish `e0 : epsMul (1 : ℂ) = RingHom.id _`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext <;> simp [epsMul]`. Rewrite using `[e0]`. Apply the tactic sequence `first | rfl | exact Spec.map_id _ | simp [spMap] | (rw [CommRingCat.ofHom_id]; exact Spec.map_id _)`. Establish `e3 : spMap (epsMul (p : ℂ)) ≫ z.u τ m = wv ≫ ψ ≫ pullback.fst _ _`. Rewrite using `[hw3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(spMap_epsMul_comp (p : ℂ) ((p : ℂ)⁻¹) _).trans ?_` and prove the remaining obligations. Rewrite using `[inv_mul_cancel₀ hp0, e1]`. Conclude with `Category.id_comp _`. Rewrite `d3` using `[e3]`. Establish `tn` using `isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ F _ Pm' per'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `show h (Pi.single (e.symm ⟨τ, m⟩) 1) = _`. Rewrite using `[(tn.2.2 _ (tn.1 _ _ d2)).unique d2 d3, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `(smul_smul (p : ℂ) (Formalism.L2.PjFree.toC (cf τ m j)) (Pi.single (e.symm ⟨τ, j⟩) 1 : Fin g → ℂ))`. Use `⟨(φ k').toLinearMap ∘ₗ gam ∘ₗ (φ k).symm.toLinearMap, fun τ i j => if hij : i < Dw.mult τ ∧ j < Dw.mult τ then Formalism.L2.PjFree.toC (cf τ ⟨j, hij.2⟩ ⟨i, hij.1⟩) else 0, fun u v => ?_, fun w => ?_, fun τ i j hji => ?_, fun τ m hm v => ?_, fun τ i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take `⟨u, rfl⟩` from `(φ k).surjective u`. Take `⟨v, rfl⟩` from `(φ k).surjective v`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Rewrite using `[← hEF, ← hEF, hiso]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨a, ha⟩` from `honto ((φ k').symm w)`. Use `⟨φ k a, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Rewrite using `[ha, map_nsmul, LinearEquiv.apply_symm_apply]`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `beta_reduce split_ifs with hij`. Conclude with `hcf2 τ _ _ hji`. Both sides reduce to the same expression. Take `⟨v, rfl⟩` from `(φ k).surjective v`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`.
-
-Establish `a1` using `hP' (gam v) (e.symm ⟨τ, ⟨m, hm⟩⟩)`. Rewrite `a1` using `[Equiv.apply_symm_apply]`. Rewrite using `[← a1, hh, Finset.sum_range, Finset.mul_sum]`. Use `(GlobalTheory.LevelCusp.apply_of_cols e h.toLinearMap (fun τ i j => (p : ℂ) * Formalism.L2.PjFree.toC (cf τ i j)) hcol (Pm v) τ ⟨m, hm⟩).trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[hP, Equiv.apply_symm_apply, dif_pos ⟨hm, j.2⟩, _root_.mul_assoc]`.
-
-Use `beta_reduce`. Rewrite using `[dif_pos ⟨i.2, i.2⟩]`. Conclude with `congrArg _ (hcf1 τ i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_similitude_tri_of_hkPt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (P : Ideal (𝓞 E)) (p i : ℕ) (k k' : U.Comp) (x : (U.X k).dom) (x' : (U.X k').dom) (C : Subgroup (Over.mk (U.un k x).x ⟶ Xo.univ.t.G)) (z : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ), admitted l P p → Xo.univ.t.HeckeKer (Over.mk (U.un k x).x) Dw P p i C → HkPtC p (U.un k x) C z → FrBor t (U.un k' x') z → ∃ (gam : (U.X k).Λ →ₗ[𝓞 E] (U.X k').Λ) (A : (E →+* ℂ) → ℕ → ℕ → ℂ), (∀ u v : (U.X k).Λ, Algebra.trace ℚ E (-(U.X k').ξ0 * herm (U.X k').Gm (gam u : Fin r → E) (gam v : Fin r → E)) = (p : ℚ) ^ 2 * Algebra.trace ℚ E (-(U.X k).ξ0 * herm (U.X k).Gm (u : Fin r → E) (v : Fin r → E))) ∧ (∀ w : (U.X k').Λ, ∃ v, gam v = (p ^ 2) • w) ∧ (∀ τ i j, j < i → A τ i j = 0) ∧ (∀ τ, ∀ m < Dw.mult τ, ∀ v : (U.X k).Λ, Formalism.L2.PjFree.perFr (U.X k') x'.1 (gam v : Fin r → E) (Formalism.L2.PjFree.relab c σ τ) m = p * ∑ j ∈ Finset.range (Dw.mult τ), A τ m j * Formalism.L2.PjFree.perFr (U.X k) x.1 (v : Fin r → E) (Formalism.L2.PjFree.relab c σ τ) j) ∧ ∀ τ (m : Fin (Dw.mult τ)), A τ m m = Formalism.L2.PjFree.toC (t (some ⟨τ, m⟩) : CAt σ) := by
   classical

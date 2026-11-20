@@ -5,13 +5,11 @@ open Finset
 namespace PI.QnCovHatW
 
 /- English proof (translation)
-Establish `hex : ∃ i, i ∉ Set.range c`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hs : Function.Surjective c` using `fun y => h y`. Use `Fintype.card_le_of_surjective c hs` as an intermediate fact.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Take `⟨i, hi⟩` from `hex`. Establish `hne : ∀ x, c x ≠ i` using `fun x hx => hi ⟨x, hx⟩`. Use `choose f hf using fun x => Fin.exists_succAbove_eq (hne x)`. Establish `finj : Function.Injective f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x y hxy`. Apply `hc` to reduce the goal to its premises. Rewrite using `[← hf x, ← hf y, hxy]`. Use `⟨i, Equiv.ofBijective f (Finite.injective_iff_bijective.mp finj), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
-
-Simplify using `[hf]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inj_decomp {m : ℕ} (c : Fin m → Fin (m + 1)) (hc : Function.Injective c) :
     ∃ i : Fin (m + 1), ∃ σ : Equiv.Perm (Fin m), c = i.succAbove ∘ σ := by
@@ -34,9 +32,9 @@ theorem inj_decomp {m : ℕ} (c : Fin m → Fin (m + 1)) (hc : Function.Injectiv
   simp [hf]
 
 /- English proof (translation)
-Establish `hi : i = i'`. Assume the negation of the conclusion as `hne`. Take `⟨z, hz⟩` from `Fin.exists_succAbove_eq hne`. Establish `hh` using `congrFun h (σ'.symm z)`. Simplify using `only [Function.comp_apply, Equiv.apply_symm_apply] at hh`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hh` using `[hz]`. Conclude with `Fin.succAbove_ne _ _ hh`. Substitute `hi` using the available equality. Conclude with `⟨rfl, Equiv.ext fun x => Fin.succAbove_right_injective (congrFun h x)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem decomp_unique {m : ℕ} {i i' : Fin (m + 1)} {σ σ' : Equiv.Perm (Fin m)}
     (h : i.succAbove ∘ σ = i'.succAbove ∘ σ') : i = i' ∧ σ = σ' := by
@@ -51,13 +49,13 @@ theorem decomp_unique {m : ℕ} {i i' : Fin (m + 1)} {σ σ' : Equiv.Perm (Fin m
   exact ⟨rfl, Equiv.ext fun x => Fin.succAbove_right_injective (congrFun h x)⟩
 
 /- English proof (translation)
-Establish `h1 : ∑ p : Fin (m + 1) × Equiv.Perm (Fin m), w (p.1.succAbove ∘ p.2) • g (p.1.succAbove ∘ p.2) = ∑ c, w c • g c`. Apply `Finset.sum_of_injOn (fun p : Fin (m + 1) × Equiv.Perm (Fin m) => p.1.succAbove ∘ p.2)` to reduce the goal to its premises. Introduce `p _ q _ hpq`. Take `⟨h1, h2⟩` from `decomp_unique hpq`. Conclude with `Prod.ext h1 h2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p _`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Establish `hni : ¬ Function.Injective c`. Introduce `hinj`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, σ, rfl⟩` from `inj_decomp c hinj`. Conclude with `hc ⟨(i, σ), by simp, rfl⟩`. Simplify using `[hzero c hni]`. Introduce `p _`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h1, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[hskew i.succAbove σ, smul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alt_sum {M : Type*} [AddCommGroup M] [Module ℂ M] {m : ℕ}
     (g : (Fin m → Fin (m + 1)) → M)

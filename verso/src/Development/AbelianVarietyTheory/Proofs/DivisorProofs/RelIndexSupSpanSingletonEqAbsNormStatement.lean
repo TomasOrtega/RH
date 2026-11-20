@@ -6,7 +6,7 @@ open NumberField MvPolynomial ReciprocityTheory.MultiplicativeHeights Reciprocit
 open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HermTools GlobalTheory.HilbertSamuel GlobalTheory.HSChoice GlobalTheory.HSShort
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.relIndex_sup_span_singleton_eq_absNorm` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRelIndexSupSpanSingletonEqAbsNorm.lean&line=8#L8)
 -/

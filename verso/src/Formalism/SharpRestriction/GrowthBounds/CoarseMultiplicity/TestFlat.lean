@@ -22,21 +22,21 @@ variable {p n' : ℕ} [Fact p.Prime] {W Qq O Kf : Type} [CommRing W] [IsDomain W
 variable (thK : ↥(Pol Kf (ι := TT × Bool) (m + 1) (hhDegs TT aT bT)) ≃ₗ[Kf] ↥(VHH (m := m) Kf TT aT bT))
 
 /- English proof (translation)
-Establish `hs1 : ∀ M : Submodule O (VHH (m` using `m) Kf TT aT bT), scale (1 : Kf) M = M := by`. Introduce `M`. Use extensionality with `x`. Simplify using `[scale, Submodule.mem_map]`. Establish `hs1' : ∀ M : Submodule O (Module.Dual Kf (VHH (m` using `m) Kf TT aT bT)), scale (1 : Kf) M = M := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `M`. Use extensionality with `x`. Simplify using `[scale, Submodule.mem_map]`. Simplify using `only [CCe, CCe', Submodule.mem_inf, Submodule.mem_iInf] at hv ⊢`. Take `⟨⟨hv1, hv2⟩, hv3⟩` from `hv`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `edgeBasis hS m 1 e he`. Establish `hpQ : ((p : ℕ) : Qq) ≠ 0` using `by haveI := hS.frac_alt`. Introduce `h0`. Apply `hS.p_unif.ne_zero` to reduce the goal to its premises. Apply `IsFractionRing.injective W Qq` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_natCast, h0, map_zero]`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hℓu : IsUnit (g * Matrix.diagonal fun c : Fin (m + 1) => if c.val < 1 then ((p : Qq))⁻¹ else 1).det`. Rewrite using `[Matrix.det_mul, Matrix.det_diagonal]`. Use `hg.1.mul (isUnit_iff_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun c _ => ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Conclude with `inv_ne_zero hpQ`. Conclude with `one_ne_zero`. Establish `htgt` using `hg.2.2`. Establish `hsrc : e.dual.src = colSpan W ((g * Matrix.diagonal fun c : Fin (m + 1) => if c.val < 1 then ((p : Qq))⁻¹ else 1)⁻¹).transpose` using `by show latDual e.tgt = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[htgt, latDual_colSpan _ hℓu]`. Rewrite `hv1` using `[hsrc]`. Establish `h1` using `FD_HL thK hS hm hthK κ hMD _ hℓu _ v hv1`. Rewrite `h1` using `[← htgt]`. Then use the resulting hypothesis. Establish `h1` using `FD_edge thK hS hm hthK κ hMD 1 e g hg 1 v (by rw [hs1]; exact hv2)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[hs1']`. Then use the resulting hypothesis. Introduce `e'' he''`. Establish `hd` using `dual_edge hS m 1 e'' he''.1`. Establish `hsrc : e''.dual.src = e.dual.src` using `by show latDual e''.tgt = latDual e.tgt`. Rewrite using `[he''.2.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hne : e''.dual ≠ e.dual` using `fun heq => he''.2.2 (by rw [← hd.2, heq, (dual_edge hS m 1 e he).2])`. Establish `hv3'` using `hv3 e''.dual ⟨hd.1, hsrc, hne⟩`. Take `⟨b, hb⟩` from `edgeBasis hS m 1 e'' he''.1`. Conclude with `FD_edge thK hS hm hthK κ hMD 1 e'' b hb _ v hv3'`.
+A detailed English derivation is pending.
 -/
 theorem Xi_CC (hS : HidaSetting p n' W Qq O Kf ι σ jO w) (hm : 1 ≤ m)
     (hthK : ∀ P, ((thK P : ↥(VHH (m := m) Kf TT aT bT)) : MvPolynomial ((TT × Bool) × (Fin (m + 1) × Fin (m + 1))) Kf) =
@@ -91,22 +91,22 @@ theorem Xi_CC (hS : HidaSetting p n' W Qq O Kf ι σ jO w) (hm : 1 ≤ m)
     exact FD_edge thK hS hm hthK κ hMD 1 e'' b hb _ v hv3'
 
 /- English proof (translation)
-Simplify using `[zTen, zK, map_div₀, map_pow, map_natCast, map_prod, Nat.cast_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kapR_zTen (hS : HidaSetting p n' W Qq O Kf ι σ jO w) :
     kapR hS (zTen (KK O) p m TT aT bT) = zK Kf p (kapZ p m TT aT bT) TT aT bT := by
   simp [zTen, zK, map_div₀, map_pow, map_natCast, map_prod, Nat.cast_prod]
 
 /- English proof (translation)
-Use `letI : Algebra (WF p n') O := algOfIdent jO φ`. Introduce `hy`. Establish `hw` using `w_ne hS`. Use `set c := algebraMap O Kf w with hc`. Establish `hF0` using `(pol_iff hS _ _ _).1 F.2`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF0'` using `(pol_iff hS _ _ _).1 F'.2`. Set `P : ↥(Pol Kf (ι` to `TT × Bool) (m + 1) (hhDegs TT aT bT)) := ⟨Lin (fun x : TT × Bool => Aa x.2 (la_tw ι σ x.1.val.val b)⁻¹) (map (kapR hS) F.1), Lin_Pol _ _ hF0⟩`. Set `Q : ↥(Pol Kf (ι` to `TT × Bool) (m + 1) (hhDegs TT aT bT)) := ⟨Lin (fun x : TT × Bool => Aa x.2 (la_tw ι σ x.1.val.val ((b⁻¹).transpose * dE (m + 1) 1 ((p : ℕ) : Qq)))⁻¹) (map (kapR hS) F'.1), Lin_Pol _ _ hF0'⟩`. Establish `hP : Θ F = thK P` using `Subtype.ext (by rw [hΘ, hthK]; rfl)`. Establish `hQ : Θ' F' = thK Q` using `Subtype.ext (by rw [hΘ', hthK]; rfl)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `congrArg (kapR hS) hy`. Rewrite `hk` using `[map_mul, kapR_alg, kapR_zTen, fock_eq_fockR, ← fockR_map, lift_one hS φ hφ m TT aT bT b hb F.1 F.2, lift_one hS φ hφ m TT aT bT _ hb' F'.1 F'.2, tsact_smul_left, tsact_smul_right]`. Establish `hdual : ∀ x : TT × Bool, Aa x.2 (la_tw ι σ x.1.val.val ((b⁻¹).transpose * dE (m + 1) 1 ((p : ℕ) : Qq)) * lb_D (m + 1) 1 c) * (Aa x.2 (la_tw ι σ x.1.val.val b * lb_D (m + 1) 1 c)).transpose = 1`. Introduce `x`. Rewrite using `[hc, dualM hS x.1.val.val 1 b hb]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Aa_dual' x.2 _ (by rw [Matrix.det_mul]; exact (la_tw_det _ _ _ _ hb).mul (lb_D_det _ _ _ hw))`. Rewrite `hk` using `[fockR_Lin_dual _ _ hdual]`. Unfold `beHH`. Rewrite using `[hP, hQ, map_smul, XiH_apply, smul_eq_mul, ← hk]`. Establish `hpA : (p : Kf) ^ AHH TT aT bT = c ^ Avec (vecH TT) (hhDegs TT aT bT) * c ^ Avec (vecH TT) (hhDegs TT aT bT)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← Avec_eq (m := m), zpow_natCast, p_eq hS]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hpA]`. Use `show _ = _ * (_ * (_ * fockR P.1 Q.1))`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pairing (hS : HidaSetting p n' W Qq O Kf ι σ jO w) (φ : WF p n' ≃+* W) (hφ : IsWittIdent σ φ)
     (hthK : ∀ P, ((thK P : ↥(VHH (m := m) Kf TT aT bT)) : MvPolynomial ((TT × Bool) × (Fin (m + 1) × Fin (m + 1))) Kf) =
@@ -170,9 +170,9 @@ open Formalism.MainNotions.G Formalism.GradedWeylDivisibility TF
 open Formalism.L2.G.Model (dE dual_edgeBasis pQ_ne edgeBasis dual_edge Th0)
 
 /- English proof (translation)
-Introduce `p n' _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS φ hφ m TT aT bT hm e he`. Use `letI : Algebra (WF p n') O := algOfIdent jO φ`. Take `⟨b, hb⟩` from `edgeBasis hS m 1 e he`. Establish `hb'` using `dual_edgeBasis p 1 (pQ_ne hS) e b hb`. Take `⟨Θ, hΘ1, hΘ2⟩` from `flatTheta hS φ hφ m TT aT bT hm b hb.1`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Θ', hΘ1', hΘ2'⟩` from `flatTheta hS φ hφ m TT aT bT hm _ hb'.1`. Take `⟨thK, hthK⟩` from `exists_thK Kf hm (vecH TT) (hhDegs TT aT bT)`. Establish `hpO : (p : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 (settingCZ p n' W Qq O Kf ι σ jO w hS).2`. Establish `hMD : MultDiv O p (kapZ p m TT aT bT) (k` using `m + 1) (hhDegs TT aT bT) := multDiv_kapFl O p hpO (k := m + 1) (hhDegs TT aT bT)`. Use `⟨b, _, Θ, Θ', 1, 1, XiH thK (zK Kf p (kapZ p m TT aT bT) TT aT bT), ⟨hΘ1, hb.2.1, isGLW_one _, by rw [mul_matQ_one]; exact hb⟩, ⟨(dual_edge hS m 1 e he).1, hΘ1', hb'.2.1, isGLW_one _, by rw [mul_matQ_one]; exact hb'⟩, fun t c v hv => Xi_CC thK hS hm hthK _ hMD e he t c v hv, fun …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem testFlatAt : TestFlatAt := by
   intro p n' _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS φ hφ m TT aT bT hm e he

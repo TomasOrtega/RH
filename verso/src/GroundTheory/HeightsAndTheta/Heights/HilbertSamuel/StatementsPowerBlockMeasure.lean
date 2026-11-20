@@ -39,15 +39,15 @@ def oldIdx (p : Ix (Fin 2)) : Σ k, addIdx (GlobalTheory (Fin 2)) 2 k := ⟨some
 def diagPt (w : Ix (Fin 2) → ℂ) : (Σ k, addIdx (GlobalTheory (Fin 2)) 2 k) → ℂ := fun p => w (diagIdx p)
 
 /- English proof (translation)
-Apply the tactic sequence `rcases p with ⟨_ | _, i⟩ <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem addBlock_apply (p : Σ k, addIdx (GlobalTheory (Fin 2)) 2 k) : addBlock y projectiveLineCoordinates p = y (diagIdx p) := by
   rcases p with ⟨_ | _, i⟩ <;> rfl
 
 /- English proof (translation)
-Establish `key : (mConeMap (ι` using `GlobalTheory (Fin 2)) y).comp (rename diagIdx) = ((rename (fun _ : Option Unit => ())).restrictScalars ℤ).comp (mConeMap (addBlock y projectiveLineCoordinates)) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[mConeMap, addBlock_apply]`. Establish `h` using `congrArg (fun φ => φ f) key`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.comp_apply] at h`. Use `show mConeMap y (rename diagIdx f) = 0`. Rewrite using `[h]`. Establish `: mConeMap (addBlock y projectiveLineCoordinates) f = 0` using `hf`. Rewrite using `[this, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_diag_mem {f : MRing (addIdx (GlobalTheory (Fin 2)) 2)} (hf : f ∈ mCoordIdeal (addBlock y projectiveLineCoordinates)) :
     rename diagIdx f ∈ mCoordIdeal (ι := GlobalTheory (Fin 2)) y := by
@@ -64,9 +64,9 @@ theorem rename_diag_mem {f : MRing (addIdx (GlobalTheory (Fin 2)) 2)} (hf : f �
   rw [this, map_zero]
 
 /- English proof (translation)
-Establish `key : (mConeMap (addBlock y projectiveLineCoordinates)).comp (rename oldIdx) = ((rename (some : Unit → Option Unit)).restrictScalars ℤ).comp (mConeMap (ι` using `GlobalTheory (Fin 2)) y) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[mConeMap, oldIdx, addBlock]`. Establish `h` using `congrArg (fun φ => φ f) key`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.comp_apply] at h`. Use `show mConeMap (addBlock y projectiveLineCoordinates) (rename oldIdx f) = 0`. Rewrite using `[h]`. Establish `: mConeMap (ι` using `GlobalTheory (Fin 2)) y f = 0 := hf`. Rewrite using `[this, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_old_mem {f : MRing (GlobalTheory (Fin 2))} (hf : f ∈ mCoordIdeal (ι := GlobalTheory (Fin 2)) y) :
     rename oldIdx f ∈ mCoordIdeal (addBlock y projectiveLineCoordinates) := by
@@ -83,7 +83,7 @@ theorem rename_old_mem {f : MRing (GlobalTheory (Fin 2))} (hf : f ∈ mCoordIdea
   rw [this, map_zero]
 
 /- English proof (translation)
-Rewrite using `[map_rename, eval_rename]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_diagPt (w : Ix (Fin 2) → ℂ) (f : MRing (addIdx (GlobalTheory (Fin 2)) 2)) :
     eval (diagPt w) (map (Int.castRingHom ℂ) f) = eval w (map (Int.castRingHom ℂ) (rename diagIdx f)) := by
@@ -91,7 +91,7 @@ theorem eval_diagPt (w : Ix (Fin 2) → ℂ) (f : MRing (addIdx (GlobalTheory (F
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_rename, eval_rename]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_oldPart (z : (Σ k, addIdx (GlobalTheory (Fin 2)) 2 k) → ℂ) (f : MRing (GlobalTheory (Fin 2))) :
     eval (basePart₂ z) (map (Int.castRingHom ℂ) f) = eval z (map (Int.castRingHom ℂ) (rename oldIdx f)) := by
@@ -99,9 +99,9 @@ theorem eval_oldPart (z : (Σ k, addIdx (GlobalTheory (Fin 2)) 2 k) → ℂ) (f 
   rfl
 
 /- English proof (translation)
-Take `⟨hnz, hvan⟩` from `hw`. Take `⟨i, hi⟩` from `hnz ()`. Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Break down `k with _ | _` into its components or cases. Conclude with `⟨i, hi⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨i, hi⟩`. Rewrite using `[eval_diagPt]`. Conclude with `hvan _ (rename_diag_mem hf)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagPt_mem {w : Ix (Fin 2) → ℂ} (hw : w ∈ mcPts (mCoordIdeal (ι := GlobalTheory (Fin 2)) y)) :
     diagPt w ∈ mcPts (mCoordIdeal (addBlock y projectiveLineCoordinates)) := by
@@ -115,7 +115,7 @@ theorem diagPt_mem {w : Ix (Fin 2) → ℂ} (hw : w ∈ mcPts (mCoordIdeal (ι :
     exact hvan _ (rename_diag_mem hf)
 
 /- English proof (translation)
-Take `⟨hnz, hvan⟩` from `hz`. Use `⟨fun _ => hnz (some ()), fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[eval_oldPart]`. Conclude with `hvan _ (rename_old_mem hf)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oldPart_mem {z : (Σ k, addIdx (GlobalTheory (Fin 2)) 2 k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal (addBlock y projectiveLineCoordinates))) :
     basePart₂ z ∈ mcPts (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) := by
@@ -125,17 +125,15 @@ theorem oldPart_mem {z : (Σ k, addIdx (GlobalTheory (Fin 2)) 2 k) → ℂ} (hz 
   exact hvan _ (rename_old_mem hf)
 
 /- English proof (translation)
-Take `⟨hnz, hvan⟩` from `hz`. Establish `hF` using `hvan _ minor_mem`. Simplify using `only [map_sub, map_mul, map_X, eval_X] at hF`. Establish `ha : z ⟨some (), (0 : Fin 2)⟩ ≠ 0 ∨ z ⟨some (), (1 : Fin 2)⟩ ≠ 0`. Take `⟨i, hi⟩` from `hnz (some ())`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `Fin 2 at i`. Use `fin_cases i`. Conclude with `Or.inl hi`. Conclude with `Or.inr hi`. Choose the witnesses or unpack the hypotheses as in `⟨lam, h0, h1⟩ : ∃ lam : ℂ, z ⟨none, (0 : Fin 2)⟩ = lam * z ⟨some (), (0 : Fin 2)⟩ ∧ z ⟨none, (1 : Fin 2)⟩ = lam * z ⟨some (), (1 : Fin 2)⟩ := by`.
+Express the relevant assertion in an equivalent form by its definition. Prove the first alternative. Prove the second alternative. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `ha with ha | ha` into its components or cases. Use `⟨z ⟨none, (0 : Fin 2)⟩ / z ⟨some (), (0 : Fin 2)⟩, by field_simp, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `hF`. Use `⟨z ⟨none, (1 : Fin 2)⟩ / z ⟨some (), (1 : Fin 2)⟩, ?_, by field_simp⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `-hF`. Use `⟨lam, ?_, fun j => ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Take `⟨i, hi⟩` from `hnz none`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Fin 2 at i`. Use `fin_cases i`. Conclude with `hi (by simpa using h0)`. Conclude with `hi (by simpa using h1)`. Use `fin_cases j`.
-
-Conclude with `h0`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem graph_pt {z : (Σ k, addIdx (GlobalTheory (Fin 2)) 2 k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal (addBlock y projectiveLineCoordinates))) :
     ∃ lam : ℂ, lam ≠ 0 ∧ ∀ j : Fin 2, z ⟨none, j⟩ = lam * z ⟨some (), j⟩ := by
@@ -171,9 +169,9 @@ theorem graph_pt {z : (Σ k, addIdx (GlobalTheory (Fin 2)) 2 k) → ℂ} (hz : z
 abbrev JD : Ideal (MRing (addIdx (GlobalTheory (Fin 2)) 2)) := Ideal.span {X ⟨some (), (0 : Fin 2)⟩}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Use `h2 _ (Ideal.subset_span rfl)` as an intermediate fact. Simplify using `using this`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hf`. Simplify using `[h2]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem mem_JD_iff (z : (Σ k, addIdx (GlobalTheory (Fin 2)) 2 k) → ℂ) :
     z ∈ mcPts JD ↔ (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) ∧ z ⟨some (), (0 : Fin 2)⟩ = 0 := by
@@ -188,7 +186,7 @@ theorem mem_JD_iff (z : (Σ k, addIdx (GlobalTheory (Fin 2)) 2 k) → ℂ) :
     simp [h2]
 
 /- English proof (translation)
-Use `⟨{(X ⟨some (), (0 : Fin 2)⟩ : MRing (addIdx (GlobalTheory (Fin 2)) 2))}, fun f hf => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Set.mem_singleton_iff.mp hf]`. Conclude with `⟨_, isMultiHomog_X _⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem JD_homog : IsMultiHomogIdeal JD := by
   refine ⟨{(X ⟨some (), (0 : Fin 2)⟩ : MRing (addIdx (GlobalTheory (Fin 2)) 2))}, fun f hf => ?_, rfl⟩
@@ -198,7 +196,7 @@ theorem JD_homog : IsMultiHomogIdeal JD := by
 def liftD (x x' : projectiveLineMultiHomogResolution.X) : (Σ k, addIdx (GlobalTheory (Fin 2)) 2 k) → ℂ := diagPt (projectiveLineMultiHomogResolution.lift x x')
 
 /- English proof (translation)
-The claim follows from `diagPt_mem (projectiveLineMultiHomogResolution.mem x x' hx')`.
+A detailed English derivation is pending.
 -/
 theorem liftD_mem (x x' : projectiveLineMultiHomogResolution.X) (hx' : x' ∈ projectiveLineMultiHomogResolution.U x) :
     liftD x x' ∈ mcPts (mCoordIdeal (addBlock y projectiveLineCoordinates)) :=

@@ -15,7 +15,7 @@ namespace GlobalTheory.DualCon.BaseChange
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} [GrpObj A] {A' : Over S'} [GrpObj A'] {φ : A'.left ⟶ A.left}
 
 /- English proof (translation)
-Use `left_ext (hφ.1.hom_ext (by simpa only [Category.assoc] using h₁) ?_) h₂` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, Over.w (fst A' _), ← Over.w (snd A' (Over.mk s)), ← Category.assoc, h₂, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext' (hφ : IsGrpPullback A' A f φ) {X Z : Scheme.{0}} {s : X ⟶ S'} {u v : Z ⟶ (A' ⊗ Over.mk s).left}
     (h₁ : u ≫ (fst A' (Over.mk s)).left ≫ φ = v ≫ (fst A' (Over.mk s)).left ≫ φ)
@@ -25,7 +25,7 @@ theorem ext' (hφ : IsGrpPullback A' A f φ) {X Z : Scheme.{0}} {s : X ⟶ S'} {
     Category.assoc]
 
 /- English proof (translation)
-Rewrite using `[← hs, ← Category.assoc]`. Conclude with `congrArg (· ≫ f) (Over.w (snd A' (Over.mk s)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toBase_w {X : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S} (hs : s ≫ f = s₀) :
     (snd A' (Over.mk s)).left ≫ s₀ = (A' ⊗ Over.mk s).hom ≫ f := by
@@ -39,7 +39,7 @@ def toBase (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ S'} {s₀
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `lift_left_fst _ _ @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem toBase_fst (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S} (hs : s ≫ f = s₀) :
     toBase hφ hs ≫ (fst A (Over.mk s₀)).left = (fst A' (Over.mk s)).left ≫ φ :=
@@ -47,14 +47,14 @@ theorem toBase_fst (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ S
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `lift_left_snd _ _`.
+A detailed English derivation is pending.
 -/
 theorem toBase_snd (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S} (hs : s ≫ f = s₀) :
     toBase hφ hs ≫ (snd A (Over.mk s₀)).left = (snd A' (Over.mk s)).left :=
   lift_left_snd _ _
 
 /- English proof (translation)
-Rewrite using `[Over.w (fst A _), Category.assoc, hs]`. Conclude with `(Over.w (snd A (Over.mk s₀))).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofBase_w {X : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S} (hs : s ≫ f = s₀) :
     (fst A (Over.mk s₀)).left ≫ A.hom = ((snd A (Over.mk s₀)).left ≫ s) ≫ f := by
@@ -68,7 +68,7 @@ def ofBase (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ S'} {s₀
 
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[← Category.assoc]`. Conclude with `(congrArg (· ≫ φ) (lift_left_fst _ _)).trans (liftPt_left _ _ _ _)`. Use the proof step `@[reassoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofBase_fst (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S} (hs : s ≫ f = s₀) :
     ofBase hφ hs ≫ (fst A' (Over.mk s)).left ≫ φ = (fst A (Over.mk s₀)).left := by
@@ -77,14 +77,14 @@ theorem ofBase_fst (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ S
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `lift_left_snd _ _`.
+A detailed English derivation is pending.
 -/
 theorem ofBase_snd (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S} (hs : s ≫ f = s₀) :
     ofBase hφ hs ≫ (snd A' (Over.mk s)).left = (snd A (Over.mk s₀)).left :=
   lift_left_snd _ _
 
 /- English proof (translation)
-Apply `left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, toBase_fst, ofBase_fst, Category.id_comp]`. Rewrite using `[Category.assoc, toBase_snd, ofBase_snd, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofBase_toBase (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S}
     (hs : s ≫ f = s₀) : ofBase hφ hs ≫ toBase hφ hs = 𝟙 _ := by
@@ -93,7 +93,7 @@ theorem ofBase_toBase (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X �
   · rw [Category.assoc, toBase_snd, ofBase_snd, Category.id_comp]
 
 /- English proof (translation)
-Apply `ext' hφ` to reduce the goal to its premises. Rewrite using `[Category.assoc, ofBase_fst, toBase_fst, Category.id_comp]`. Rewrite using `[Category.assoc, ofBase_snd, toBase_snd, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem toBase_ofBase (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S}
     (hs : s ≫ f = s₀) : toBase hφ hs ≫ ofBase hφ hs = 𝟙 _ := by
@@ -108,7 +108,7 @@ namespace GlobalTheory.DualCon.BaseChange
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} [GrpObj A] {A' : Over S'} [GrpObj A'] {φ : A'.left ⟶ A.left}
 
 /- English proof (translation)
-Apply `ext' hφ` to reduce the goal to its premises. Rewrite using `[Category.assoc, ofBase_fst, lift_left_fst, lift_left_fst_assoc, liftPt_left]`. Rewrite using `[Category.assoc, ofBase_snd, lift_left_snd, lift_left_snd]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lift_ofBase (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S} (hs : s ≫ f = s₀)
     {Y : Over S} (a₀ : Y ⟶ A) (t₀ : Y ⟶ Over.mk s₀) :
@@ -121,7 +121,7 @@ theorem lift_ofBase (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ 
     rfl
 
 /- English proof (translation)
-Apply `left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, toBase_fst, lift_left_fst_assoc, lift_left_fst]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, toBase_snd, lift_left_snd, lift_left_snd]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lift_toBase (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S} (hs : s ≫ f = s₀)
     {Y : Over S'} (a : Y ⟶ A') (t : Y ⟶ Over.mk s) :
@@ -135,9 +135,9 @@ theorem lift_toBase (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ 
     rfl
 
 /- English proof (translation)
-Establish `hM₀ : (M.pull (ofBase hφ hs)).IsLB` using `pull_isLB hM.isLB _`. Use `⟨hM₀, (isAdditive_iff hM₀).2 fun Y a₀ a₀' t₀ ↦ ?_⟩` and prove the remaining obligations. Establish `ev₀ : ∀ (a : Y ⟶ A), evc hM₀ a t₀ = evc hM.isLB (liftPt hφ (t₀.left ≫ s) a.left (by rw [Over.w a, Category.assoc, hs]; exact (Over.w t₀).symm)) (Over.homMk t₀.left rfl : Over.mk (t₀.left ≫ s) ⟶ Over.mk s)` using `fun a ↦ by`. Rewrite using `[evc, evc, cls_pull hM.isLB, ← pull_comp, lift_ofBase]`. Establish `hs' : (t₀.left ≫ s) ≫ f = Y.hom` using `by rw [Category.assoc, hs]; exact Over.w t₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmul : liftPt hφ (t₀.left ≫ s) (a₀ * a₀').left (by rw [Over.w (a₀ * a₀'), Category.assoc, hs]; exact (Over.w t₀).symm) = liftPt hφ _ a₀.left (by rw [Over.w a₀, Category.assoc, hs]; exact (Over.w t₀).symm) * liftPt hφ _ a₀'.left (by rw [Over.w a₀', Category.assoc, hs]; exact (Over …` using `pt_ext hφ (by`. Rewrite using `[liftPt_left]`. Conclude with `(mul_left_comp hφ hs' (x₀ := a₀) (y₀ := a₀') (liftPt_left _ _ _ _) (liftPt_left _ _ _ _)).symm)`. Rewrite using `[ev₀, ev₀, ev₀, hmul]`. Conclude with `(isAdditive_iff hM.isLB).1 hM.add _ _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fam_ofBase (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S} (hs : s ≫ f = s₀)
     {M : LB (A' ⊗ Over.mk s).left} (hM : Fam A' M) : Fam A (M.pull (ofBase hφ hs)) := by
@@ -159,9 +159,9 @@ theorem fam_ofBase (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ S
   exact (isAdditive_iff hM.isLB).1 hM.add _ _ _ _
 
 /- English proof (translation)
-Establish `hN' : (N.pull (toBase hφ hs)).IsLB` using `pull_isLB hN.isLB _`. Use `⟨hN', (isAdditive_iff hN').2 fun Y a a' t ↦ ?_⟩` and prove the remaining obligations. Establish `ev₀ : ∀ (c : Y ⟶ A'), evc hN' c t = evc hN.isLB (pushP hφ (s` using `Y.hom) rfl c) (Over.homMk t.left (by show t.left ≫ s₀ = Y.hom ≫ f; rw [← hs, ← Category.assoc]; exact congrArg (· ≫ f) (Over.w t)) : Over.mk (Y.hom ≫ f) ⟶ Over.mk s₀) := fun c ↦ by rw [evc, evc, cls_pull hN.isLB, ← pull_comp, lift_toBase]`. Establish `hmul : pushP hφ (s` using `Y.hom) rfl (a * a') = pushP hφ (s := Y.hom) rfl a * pushP hφ (s := Y.hom) rfl a' := Over.OverMorphism.ext (mul_left_comp hφ rfl rfl rfl)`. Rewrite using `[ev₀, ev₀, ev₀, hmul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isAdditive_iff hN.isLB).1 hN.add _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fam_toBase (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S} (hs : s ≫ f = s₀)
     {N : LB (A ⊗ Over.mk s₀).left} (hN : Fam A N) : Fam A' (N.pull (toBase hφ hs)) := by
@@ -176,7 +176,7 @@ theorem fam_toBase (hφ : IsGrpPullback A' A f φ) {X : Scheme.{0}} {s : X ⟶ S
   exact (isAdditive_iff hN.isLB).1 hN.add _ _ _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨congrArg _, fun e ↦ by have k := congrArg (CechPic.pull v) e rwa [← pull_comp, ← pull_comp, h, pull_id, pull_id] at k⟩`.
+Supply the required witnesses or components.
 -/
 theorem pull_inj_iff {X Y : Scheme.{0}} (u : Y ⟶ X) (v : X ⟶ Y) (h : v ≫ u = 𝟙 X) (c d : Pic X) :
     c = d ↔ CechPic.pull u c = CechPic.pull u d :=
@@ -185,7 +185,7 @@ theorem pull_inj_iff {X Y : Scheme.{0}} (u : Y ⟶ X) (v : X ⟶ Y) (h : v ≫ u
     rwa [← pull_comp, ← pull_comp, h, pull_id, pull_id] at k⟩
 
 /- English proof (translation)
-Apply `ext' hφ` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, ofBase_fst, lift_left_fst, toBase_fst, lift_left_fst_assoc]`. Rewrite using `[Category.assoc, Category.assoc, ofBase_snd, lift_left_snd, Over.comp_left, toBase_snd_assoc, lift_left_snd, Over.comp_left, hx]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem toBase_lift_ofBase (hφ : IsGrpPullback A' A f φ) {X Z : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S}
     (hs : s ≫ f = s₀) {sZ : Z ⟶ S'} {sZ₀ : Z ⟶ S} (hsZ : sZ ≫ f = sZ₀) (x : Over.mk s₀ ⟶ Over.mk sZ₀)
@@ -198,7 +198,7 @@ theorem toBase_lift_ofBase (hφ : IsGrpPullback A' A f φ) {X Z : Scheme.{0}} {s
       lift_left_snd, Over.comp_left, hx]
 
 /- English proof (translation)
-Apply `left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, toBase_fst, lift_left_fst_assoc, ofBase_fst, lift_left_fst]`. Rewrite using `[Category.assoc, Category.assoc, toBase_snd, lift_left_snd, Over.comp_left, ofBase_snd_assoc, lift_left_snd, Over.comp_left, hx]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofBase_lift_toBase (hφ : IsGrpPullback A' A f φ) {X Z : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S}
     (hs : s ≫ f = s₀) {sZ : Z ⟶ S'} {sZ₀ : Z ⟶ S} (hsZ : sZ ≫ f = sZ₀) (x : Over.mk s₀ ⟶ Over.mk sZ₀)
@@ -217,7 +217,7 @@ namespace GlobalTheory.DualCon.BaseChange
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} [GrpObj A] {A' : Over S'} [GrpObj A'] {φ : A'.left ⟶ A.left}
 
 /- English proof (translation)
-The claim follows from `fam_ofBase hφ rfl h.fam univ T₁ t N hN := by have hs : (t.left ≫ T.hom) ≫ f = T₁.hom := by rw [Category.assoc]; exact Over.w t obtain ⟨x', ⟨hxb, hxN⟩, hu⟩ := h.univ (Over.mk (t.left ≫ T.hom)) (Over.homMk t.left rfl) (N.pull (toBase hφ hs)) (fam_toBase hφ hs hN) have key : ∀ (x : …`.
+A detailed English derivation is pending.
 -/
 theorem rep_down (hφ : IsGrpPullback A' A f φ) {T B' : Over S'} (b' : B' ⟶ T) {P' : LB (A' ⊗ B').left}
     (h : Rep A' b' P') :
@@ -252,7 +252,7 @@ theorem rep_down (hφ : IsGrpPullback A' A f φ) {T B' : Over S'} (b' : B' ⟶ T
     exact Over.OverMorphism.ext (congrArg (fun z ↦ z.left) e)
 
 /- English proof (translation)
-The claim follows from `fam_toBase hφ _ h.fam univ T₁ t' N' hN' := by have hsB : (b.left ≫ T.hom) ≫ f = B.hom := by rw [Category.assoc]; exact Over.w b let t : Over.mk (T₁.hom ≫ f) ⟶ Over.mk (T.hom ≫ f) := Over.homMk t'.left (by show t'.left ≫ T.hom ≫ f = T₁.hom ≫ f; rw [← Category.assoc, Over.w t']) ob …`.
+A detailed English derivation is pending.
 -/
 theorem rep_up (hφ : IsGrpPullback A' A f φ) {T : Over S'} {B : Over S} (b : B ⟶ Over.mk (T.hom ≫ f))
     {P : LB (A ⊗ B).left} (h : Rep A b P) :
@@ -290,9 +290,9 @@ end GlobalTheory.DualCon.BaseChange
 namespace GlobalTheory.DualCon
 
 /- English proof (translation)
-Introduce `S S' f A _ A' _ φ hφ g T`. Use `⟨⟨?_, ?_⟩, ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨B', b', P', hR, hG⟩`. Conclude with `⟨_, _, _, BaseChange.rep_down hφ b' hR, hG⟩`. Introduce and unpack `⟨B, b, P, hR, hG⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, _, _, BaseChange.rep_up hφ b hR, hG⟩`. Introduce and unpack `⟨B', b', P', hR, hG, hF⟩`. Conclude with `⟨_, _, _, BaseChange.rep_down hφ b' hR, hG, hF⟩`. Introduce and unpack `⟨B, b, P, hR, hG, hF⟩`. Conclude with `⟨_, _, _, BaseChange.rep_up hφ b hR, hG, hF⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem hasRep_baseChange_iff : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (A : Over S) [GrpObj A] (A' : Over S') [GrpObj A']
     (φ : A'.left ⟶ A.left), IsGrpPullback A' A f φ → ∀ (g : ℕ) (T : Over S'),

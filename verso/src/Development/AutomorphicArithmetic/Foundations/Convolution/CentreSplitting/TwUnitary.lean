@@ -8,9 +8,9 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ θ`. Take `⟨U, hU, hint, -⟩` from `UpperTheory.ConvolutionTheory.C.twistUnitary K n μ θ`. Establish `h : ∀ v, θ.U v = U v` using `fun v => by rw [← hU]; rfl`. Use `⟨fun v => ?_, fun w => ?_, fun g v => ?_⟩` and prove the remaining obligations. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `U.norm_map v`. Take `⟨v, hv⟩` from `U.surjective w`. Conclude with `⟨v, (h v).trans hv⟩`. Rewrite using `[h, h]`. Conclude with `hint g v`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.twUnitary :
     UpperTheory.ConvolutionTheory.Dp.TwUnitary := by

@@ -6,9 +6,9 @@ namespace GlobalTheory.CompanionTheory.HeckeEnd
 open PositivityTheory.Rg.BcB.F.Tail.PExp
 
 /- English proof (translation)
-Introduce `G V _ _ _ ρ K f hf v`. Unfold `PositivityTheory.Rg.BcB.F.Tail.PExp.hkE PositivityTheory.Rg.BcB.F.Tail.PExp.hkS`. Rewrite using `[finsum_eq_sum_of_support_subset (s := hf.toFinset), finsum_eq_sum_of_support_subset (s := hf.toFinset), LinearMap.sum_apply]`. Both sides reduce to the same expression. Use `all_goals`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q hq`. Simplify using `only [Set.Finite.coe_toFinset, Set.mem_setOf_eq]`. Introduce `h`. Rewrite `hq` using `[Function.mem_support]`. Conclude with `hq (by simp [h])`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hkE_fin : HkEFin := by
   intro G V _ _ _ ρ K f hf v

@@ -14,9 +14,9 @@ open Formalism.L2.SG.LocVol Formalism.L2.SG.Pf.Carrier.EnergyConst Formalism.L2.
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨k, hk | hk | hk⟩ : ∃ k, r = 3 * k ∨ r = 3 * k + 1 ∨ r = 3 * k + 2` from `⟨r / 3, by omega⟩`. Substitute `hk` using the available equality. Conclude with `⟨(3 * k + 1) * (24 * k ^ 2 + 10 * k + 1), by ring⟩`. Substitute `hk` using the available equality. Conclude with `⟨(3 * k + 2) * (24 * k ^ 2 + 26 * k + 7), by ring⟩`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components. Substitute using the available equality. Supply the required witnesses or components.
 
-Substitute `hk` using the available equality. Conclude with `⟨(k + 1) * (8 * (3 * k + 2) ^ 2 + 10 * (3 * k + 2) + 3), by ring⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem three_dvd (r : ℕ) : 3 ∣ (r + 1) * (8 * r ^ 2 + 10 * r + 3) := by
   obtain ⟨k, hk | hk | hk⟩ : ∃ k, r = 3 * k ∨ r = 3 * k + 1 ∨ r = 3 * k + 2 := ⟨r / 3, by omega⟩
@@ -28,7 +28,7 @@ theorem three_dvd (r : ℕ) : 3 ∣ (r + 1) * (8 * r ^ 2 + 10 * r + 3) := by
     exact ⟨(k + 1) * (8 * (3 * k + 2) ^ 2 + 10 * (3 * k + 2) + 3), by ring⟩
 
 /- English proof (translation)
-Unfold `e1`. Rewrite using `[Nat.cast_div (three_dvd D.R.rS) (by norm_num)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dimension_exponent_real (D : D7) : ((e1 D : ℕ) : ℝ) =
     ((D.R.rS : ℝ) + 1) * (8 * (D.R.rS : ℝ) ^ 2 + 10 * D.R.rS + 3) / 3 := by
@@ -38,13 +38,13 @@ theorem dimension_exponent_real (D : D7) : ((e1 D : ℕ) : ℝ) =
   ring
 
 /- English proof (translation)
-Introduce `D X u u' ψ hψ hs v hv`. Establish `h` using `Formalism.L2.SG.Pf.NcVal.volOrdV_holds X u u' ψ hψ hs v hv`. Rewrite `h` using `[Formalism.L2.SG.Pf.NcVal.absV_dV]`. Establish `hn0 : ((Ideal.absNorm (v.maxPowDividing (differentIdeal ℤ (𝓞 X.B.I.F))) : ℕ) : ℝ) ≠ 0`. Establish `hI : v.maxPowDividing (differentIdeal ℤ (𝓞 X.B.I.F)) ≠ ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `HeightOneSpectrum.maxPowDividing`. Conclude with `pow_ne_zero _ v.ne_bot`. Conclude with `(mt Ideal.absNorm_eq_zero_iff.1 hI)` after adjusting the coercions. Establish `hc : ((Ideal.absNorm (v.maxPowDividing (differentIdeal ℤ (𝓞 X.B.I.F))) : ℕ) : ℝ)⁻¹ ^ (-(((D.R.rS : ℝ) + 1) * (8 * (D.R.rS : ℝ) ^ 2 + 10 * D.R.rS + 3) / 3)) = dN X v ^ e1 D`. Rewrite using `[← dimension_exponent_real D, Real.inv_rpow (Nat.cast_nonneg _), Real.rpow_neg (Nat.cast_nonneg _), inv_inv, Real.rpow_natCast]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h` using `[hc]`. Establish `hpos : (0 : ℝ) < dN X v` using `lt_of_le_of_ne (Nat.cast_nonneg _) (Ne.symm hn0)`. Establish `hZ : ZZX X u u' ψ v ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[h0, div_zero]`. Establish `: (0 : ℝ) < dN X v ^ e1 D` using `pow_pos hpos _`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h` using `[div_eq_iff hZ]`. Conclude with `h`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem msOrd_holds : MSOrd := by
   intro D X u u' ψ hψ hs v hv

@@ -9,31 +9,27 @@ open Complex DirichletCharacter
 namespace GlobalTheory.LogDerOneProof
 
 /- English proof (translation)
-Take `⟨C, hC, H⟩` from `GlobalTheory.LWide.logDeriv_LFunction_strip`. Use `⟨2 * C, fun q _ χ hq hp => ?_⟩` and prove the remaining obligations. Establish `hne : χ ≠ 1`. Introduce `h`. Establish `h1 : χ.conductor = q` using `hp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[h, DirichletCharacter.conductor_one]`. Use linear arithmetic over natural numbers and integers. Establish `hL : LFunction χ 1 ≠ 0` using `LFunction_ne_zero_of_one_le_re χ (Or.inl hne) (by simp)`. Take `⟨hfin, hcount, hmain⟩` from `H q χ hne 1 (by norm_num) (by norm_num) hL`. Simplify using `only [Complex.one_im, abs_zero, zero_add, Complex.ofReal_zero, zero_mul, add_zero] at hfin hcount hmain`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `set D : Set ℂ := {w : ℂ | ‖w - 2‖ ≤ 7 / 2 ∧ LFunction χ w = 0} with hD`. Use `set Z : Set ℂ := GlobalTheory.Mem.An.zerosIn χ 0 1 with hZ`. Establish `hsub : Z ⊆ D`. Introduce and unpack `w ⟨h0, h1, h2, h3⟩`. Use `⟨?_, h3⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4` using `Complex.norm_le_abs_re_add_abs_im (w - 2)`. Simplify using `only [Complex.sub_re, Complex.sub_im, Complex.re_ofNat, Complex.im_ofNat, sub_zero] at h4 h2`. Establish `h5 : |w.re - 2| ≤ 2` using `abs_le.2 ⟨by linarith, by linarith⟩`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hZfin : Z.Finite` using `hfin.subset hsub`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub' : hZfin.toFinset ⊆ hfin.toFinset`. Introduce `w hw`. Simplify using `only [Set.Finite.mem_toFinset] at hw ⊢`. Conclude with `hsub hw`. Rewrite `hcount`, `hmain` using `[finsum_mem_eq_finite_toFinset_sum _ hfin]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : GlobalTheory.Mem.An.zsum χ 0 1 (fun ρ => 1 / (1 - ρ)) = ∑ w ∈ hZfin.toFinset, (analyticOrderNatAt (LFunction χ) w : ℂ) / (1 - w)`. Unfold `GlobalTheory.Mem.An.zsum`. Rewrite using `[← hZ, finsum_mem_eq_finite_toFinset_sum _ hZfin]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.Mem.An.zmult]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hz]`. Rewrite `hmain` using `[← Finset.sum_sdiff hsub']`. Establish `hrest : ‖∑ w ∈ hfin.toFinset \ hZfin.toFinset, (analyticOrderNatAt (LFunction χ) w : ℂ) / (1 - w)‖ ≤ ∑ w ∈ hfin.toFinset, (analyticOrderNatAt (LFunction χ) w : ℝ)`. Use `(norm_sum_le _ _).trans (le_trans (Finset.sum_le_sum fun w hw => ?_) (Finset.sum_le_sum_of_subset_of_nonneg Finset.sdiff_subset fun _ _ _ => Nat.cast_nonneg _))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_sdiff, Set.Finite.mem_toFinset] at hw`. Take `⟨⟨_, hw0⟩, hwn⟩` from `hw`. Establish `hre : w.re < 1`. Assume the negation of the conclusion as `h`. Conclude with `LFunction_ne_zero_of_one_le_re χ (Or.inl hne) (not_lt.1 h) hw0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1 : 1 ≤ ‖1 - w‖`. Distinguish the cases in `h0 : 0 < w.re`. Establish `him : 1 < |w.im|`. Assume the negation of the conclusion as `h`. Conclude with `hwn ⟨h0, hre, by simpa using not_lt.1 h, hw0⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4` using `Complex.abs_im_le_norm (1 - w)`. Simplify using `only [Complex.sub_im, Complex.one_im, zero_sub, abs_neg] at h4`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4` using `Complex.re_le_norm (1 - w)`. Simplify using `only [Complex.sub_re, Complex.one_re] at h4`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear relations using `[not_lt.1 h0]`. Rewrite using `[norm_div, Complex.norm_natCast]`. Conclude with `div_le_self (Nat.cast_nonneg _) h1`. Establish `hq' : (1 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hlog : Real.log (q * 2) ≤ Real.log (3 * q)` using `Real.log_le_log (by linarith) (by linarith)`.
-
-Establish `hl2 : C * Real.log (q * 2) ≤ C * Real.log (3 * q)` using `mul_le_mul_of_nonneg_left hlog hC.le`. Use `set A := deriv (LFunction χ) 1 / LFunction χ 1`. Use `set R := ∑ w ∈ hfin.toFinset \ hZfin.toFinset, (analyticOrderNatAt (LFunction χ) w : ℂ) / (1 - w)`. Use `set S := ∑ w ∈ hZfin.toFinset, (analyticOrderNatAt (LFunction χ) w : ℂ) / (1 - w)`. Establish `e : A - S = (A - (R + S)) + R` using `by ring`.
-
-Rewrite using `[e]`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem logDerOne_holds : GlobalTheory.Mem.An.LogDerOne := by
   classical

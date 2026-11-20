@@ -20,14 +20,14 @@ variable {A B X Y C : Type*} [AddCommGroup A] [AddCommGroup B] [AddCommGroup X] 
 omit [AddCommGroup A] in
 
 /- English proof (translation)
-Introduce `b` and use `by rw [← hfg b, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, AddEquiv.map_eq_zero_iff]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exact_comp_addEquiv {f : A → B} {g : B →+ X} (hfg : Function.Exact f g) (e : X ≃+ Y) :
     Function.Exact f (e.toAddMonoidHom.comp g) := fun b => by
   rw [← hfg b, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, AddEquiv.map_eq_zero_iff]
 
 /- English proof (translation)
-Introduce `y` and use `by rw [Function.comp_apply, hgc] constructor · rintro ⟨b, hb⟩ exact ⟨b, by simp [hb]⟩ · rintro ⟨b, rfl⟩ exact ⟨b, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exact_addEquiv_comp_comp_symm {g : B →+ X} {c : X → C} (hgc : Function.Exact g c)
     (e : X ≃+ Y) : Function.Exact (e.toAddMonoidHom.comp g) (c ∘ e.symm) := fun y => by
@@ -41,7 +41,7 @@ theorem exact_addEquiv_comp_comp_symm {g : B →+ X} {c : X → C} (hgc : Functi
 omit [AddCommGroup C] in
 
 /- English proof (translation)
-Introduce `x` and use `by rw [hcβ x] constructor · rintro ⟨z, rfl⟩ exact ⟨e z, by simp⟩ · rintro ⟨y, rfl⟩ exact ⟨_, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exact_comp_symm_addEquiv {c : X → C} {β : C → A} (hcβ : Function.Exact c β) (e : X ≃+ Y) :
     Function.Exact (c ∘ e.symm) β := fun x => by
@@ -53,9 +53,9 @@ theorem exact_comp_symm_addEquiv {c : X → C} {β : C → A} (hcβ : Function.E
     exact ⟨_, rfl⟩
 
 /- English proof (translation)
-Use `⟨fun x₁ x₂ hx => hβ.1 (AddMonoidHom.ext fun y => zmodToQZ_injective ?_), fun χ => ?_⟩` and prove the remaining obligations. Conclude with `DFunLike.congr_fun hx y`. Establish `hχ : ∀ y, n • χ y = 0` using `fun y => by rw [← map_nsmul, hY, map_zero]`. Take `⟨x, hx⟩` from `hβ.2 (zmodOfQZ χ hχ)`. Use `⟨x, AddMonoidHom.ext fun y => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `zmodToQZ n (β x y) = χ y`. Rewrite using `[hx, zmodToQZ_zmodOfQZ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_compHom_zmodToQZ {n : ℕ} [NeZero n] (β : X →+ Y →+ ZMod n)
     (hY : ∀ y : Y, n • y = 0) (hβ : Function.Bijective β) :
@@ -69,9 +69,9 @@ theorem bijective_compHom_zmodToQZ {n : ℕ} [NeZero n] (β : X →+ Y →+ ZMod
     rw [hx, zmodToQZ_zmodOfQZ]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective β.flip`. Use `(injective_iff_map_eq_zero _).2 fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨χ, hχ⟩` from `QZ.exists_apply_ne_zero hne`. Take `⟨x, rfl⟩` from `hβ.2 χ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hχ (DFunLike.congr_fun hy x)`. Use `hinj.bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[QZ.card_hom, ← QZ.card_hom (G := Y)]`. Conclude with `(Nat.card_congr (Equiv.ofBijective _ hβ)).le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_flip_of_bijective_qz [Finite X] [Finite Y] (β : X →+ Y →+ QZ)
     (hβ : Function.Bijective β) : Function.Bijective β.flip := by
@@ -128,17 +128,17 @@ variable {φ D t inv} (P : PoitouTateHypotheses φ D t inv)
 include P in
 
 /- English proof (translation)
-Take `⟨U₀, H⟩` from `P.compactDuality`. Establish `hD` using `H.nonempty_addEquiv`. Establish `hnD` using `nsmul_eq_zero_of_nonempty_addEquiv hD`. Establish `: Finite D` using `finite_of_nonempty_addEquiv hD`. Establish `: Finite (dualRep D M)` using `finite_dualRep`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (dualRep D (dualRep D M))` using `finite_dualRep`. Establish `: IsDiscreteRep (dualRep D M)` using `isDiscreteRep_dualRep D M`. Establish `: IsDiscreteRep (dualRep D (dualRep D M))` using `isDiscreteRep_dualRep D (dualRep D M)`. Establish `hMD : ∀ f : dualRep D M, n • f = 0` using `nsmul_dualRep_eq_zero hnD`. Establish `hMDD : ∀ f : dualRep D (dualRep D M), n • f = 0` using `nsmul_dualRep_eq_zero hnD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ` using `H.bijective_compactDualityMap (dualRep D M) hMD (r := s) (s := r) (by omega)`. Use `P.finite_compactCohomology (dualRep D (dualRep D M)) hMDD r` as an intermediate fact. Establish `hflip` using `bijective_of_bijective_flip (nsmul_compactCohomologyRes_eq_zero φ hMDD r) (bilinAddHom (compactCupRes φ (dualEvalPairing D (dualRep D M)) h)) t hφ`. Use `set e := Rep.isoOfBijective (toDualDual D M) (bijective_toDualDual hD hM)`. Establish `hg` using `bijective_compactCohomologyResMap_of_comp_eq_id φ e.hom e.inv e.hom_inv_id e.inv_hom_id r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμ : (toDualDual D M ⊗ₘ 𝟙 (dualRep D M)) ≫ dualEvalPairing D (dualRep D M) = (𝟙 M ⊗ₘ 𝟙 (dualRep D M)) ≫ evalPairing D M`. Use `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun z => ?_))` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a f => rfl`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add z z' hz hz' => simp only [map_add, hz, hz']`. Set `β : compactCohomologyRes φ M r →+ (cohomology (dualRep D M) s →+ ZMod n)` to `(AddMonoidHom.compHom t).comp (bilinAddHom (compactCupRes φ (evalPairing D M) h))`. Establish `hβ : Function.Bijective β`. Use `hflip.comp hg using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `AddMonoidHom.ext fun y => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t (compactCupRes φ (evalPairing D M) h x y) = t (compactCupRes φ (dualEvalPairing D (dualRep D M)) h ((compactCohomologyResMap φ (toDualDual D M) r).hom x) y)`. Rewrite using `[compactCupRes_compactCohomologyResMap φ _ (evalPairing D M) _ (𝟙 _) hμ, cohomologyMap_id]`. Both sides reduce to the same expression. Conclude with `bijective_compHom_zmodToQZ β (nsmul_cohomology_eq_zero _ hMD s) hβ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bijective_ptCompactDualMap (hM : ∀ m : M, n • m = 0) {r s : ℕ} (h : r + s = 3) :
     Function.Bijective (ptCompactDualMap φ D M t h) := by
@@ -181,9 +181,9 @@ theorem bijective_ptCompactDualMap (hM : ∀ m : M, n • m = 0) {r s : ℕ} (h 
 include P in
 
 /- English proof (translation)
-Take `⟨U₀, H⟩` from `P.compactDuality`. Establish `hnD` using `nsmul_eq_zero_of_nonempty_addEquiv H.nonempty_addEquiv`. Establish `: Finite D` using `finite_of_nonempty_addEquiv H.nonempty_addEquiv`. Establish `: Finite (dualRep D M)` using `finite_dualRep`. Establish `hb` using `P.bijective_ptCompactDualMap M hM (show 0 + 3 = 3 from rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Subsingleton (cohomology (dualRep D M) 3)` using `P.subsingleton_three (dualRep D M) (nsmul_dualRep_eq_zero hnD)`. Use `⟨fun a b => hb.1 (AddMonoidHom.ext fun y => ?_)⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim y 0, map_zero, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem subsingleton_compactCohomologyRes_zero (hM : ∀ m : M, n • m = 0) :
     Subsingleton (compactCohomologyRes φ M 0) := by
@@ -201,7 +201,7 @@ omit [NeZero n] in
 include P in
 
 /- English proof (translation)
-Use `AddMonoidHom.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[ptCompactDualMap_apply, compactCupRes_ptLocalToCompact φ D M h h', P.localToCompact_two, ptLocalDualMap_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ptCompactDualMap_ptLocalToCompact {r s : ℕ} (h : r + s = 2) (h' : r + 1 + s = 3)
     (ξ : ∀ v, cohomology (Rep.res (φ v).toMonoidHom M) r) :
@@ -214,9 +214,7 @@ theorem ptCompactDualMap_ptLocalToCompact {r s : ℕ} (h : r + s = 2) (h' : r + 
 include P in
 
 /- English proof (translation)
-Use `set e := AddEquiv.ofBijective _ (P.bijective_ptCompactDualMap M hM h')`. Establish `hlam : ptLocalDualMap φ D M inv h = e.toAddMonoidHom.comp (ptLocalToCompact φ M r).hom.toAddMonoidHom` using `AddMonoidHom.ext fun ξ => (P.ptCompactDualMap_ptLocalToCompact M h h' ξ).symm`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlam]`. Conclude with `exact_comp_addEquiv (ptExact_local φ M r) e`.
-
-Rewrite using `[hlam]`. Conclude with `exact_addEquiv_comp_comp_symm (g := (ptLocalToCompact φ M r).hom.toAddMonoidHom) (ptExact_compact φ M r) e`. Conclude with `exact_comp_symm_addEquiv (ptExact_global φ M (r + 1)) e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exact_stage (hM : ∀ m : M, n • m = 0) {r s : ℕ} (h : r + s = 2) (h' : r + 1 + s = 3) :
     Function.Exact (ptGlobalToLocal φ M r).hom (ptLocalDualMap φ D M inv h) ∧
@@ -238,7 +236,7 @@ theorem exact_stage (hM : ∀ m : M, n • m = 0) {r s : ℕ} (h : r + s = 2) (h
 include P in
 
 /- English proof (translation)
-Use `P.subsingleton_compactCohomologyRes_zero M hM` as an intermediate fact. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `(ptExact_global φ M 0 x).1 hx`. Rewrite using `[Subsingleton.elim z 0]`. Conclude with `map_zero _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_ptGlobalToLocal_zero (hM : ∀ m : M, n • m = 0) :
     Function.Injective (ptGlobalToLocal φ M 0).hom := by
@@ -251,9 +249,9 @@ theorem injective_ptGlobalToLocal_zero (hM : ∀ m : M, n • m = 0) :
 include P in
 
 /- English proof (translation)
-Introduce `χ`. Use `set e := AddEquiv.ofBijective _ (P.bijective_ptCompactDualMap M hM (show 2 + 1 + 0 = 3 from rfl))`. Use `P.subsingleton_three M hM` as an intermediate fact. Take `⟨ξ, hξ⟩` from `(ptExact_compact φ M 2 (e.symm χ)).1 (Subsingleton.elim _ _)`. Use `⟨ξ, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← P.ptCompactDualMap_ptLocalToCompact M _ (show 2 + 1 + 0 = 3 from rfl), hξ]`. Conclude with `e.apply_symm_apply χ`.
+A detailed English derivation is pending.
 -/
 theorem surjective_ptLocalDualMap_two (hM : ∀ m : M, n • m = 0) :
     Function.Surjective (ptLocalDualMap φ D M inv (show 2 + 0 = 2 from rfl)) := by
@@ -268,7 +266,7 @@ theorem surjective_ptLocalDualMap_two (hM : ∀ m : M, n • m = 0) :
 include P in
 
 /- English proof (translation)
-Take `⟨a0, b0, c0⟩` from `P.exact_stage M hM (show 0 + 2 = 2 from rfl) (show 0 + 1 + 2 = 3 from rfl)`. Take `⟨a1, b1, c1⟩` from `P.exact_stage M hM (show 1 + 1 = 2 from rfl) (show 1 + 1 + 1 = 3 from rfl)`. Take `⟨a2, -, -⟩` from `P.exact_stage M hM (show 2 + 0 = 2 from rfl) (show 2 + 1 + 0 = 3 from rfl)`. Conclude with `⟨P.injective_ptGlobalToLocal_zero M hM, a0, b0, c0, a1, b1, c1, a2, P.surjective_ptLocalDualMap_two M hM⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nineTerm (hM : ∀ m : M, n • m = 0) :
     Function.Injective (ptGlobalToLocal φ M 0).hom ∧
@@ -293,17 +291,17 @@ theorem nineTerm (hM : ∀ m : M, n • m = 0) :
 include P in
 
 /- English proof (translation)
-Take `⟨U₀, H⟩` from `P.compactDuality`. Establish `hnD` using `nsmul_eq_zero_of_nonempty_addEquiv H.nonempty_addEquiv`. Establish `hMD : ∀ f : dualRep D M, n • f = 0` using `nsmul_dualRep_eq_zero hnD`. Establish `: Finite D` using `finite_of_nonempty_addEquiv H.nonempty_addEquiv`. Establish `: Finite (dualRep D M)` using `finite_dualRep`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ` using `P.bijective_ptCompactDualMap M hM (show 1 + 2 = 3 from rfl)`. Use `⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun χ => ?_⟩` and prove the remaining obligations. Use `set f := ptCompactDualMap φ D M t (show 1 + 2 = 3 from rfl) (ptShaLift φ M x)`. Establish `hker : (ptGlobalToLocal φ (dualRep D M) 2).hom.toAddMonoidHom.ker ≤ f.ker` using `fun y hy => AddMonoidHom.mem_ker.2 (DFunLike.congr_fun hx ⟨y, hy⟩)`. Take `⟨g, hg⟩` from `QZ.exists_comp_eq_of_ker_le (ptGlobalToLocal φ (dualRep D M) 2).hom.toAddMonoidHom f hker`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hloc : ∀ v, ∃ ξv, ptLocalPairing φ D M inv v (show 0 + 2 = 2 from rfl) ξv = g.comp (AddMonoidHom.single (fun w => cohomology (Rep.res (φ w).toMonoidHom (dualRep D M)) 2) v)` using `fun v => P.surjective_localPairing M hM v _`. Use `choose ξ hξ using hloc`. Establish `hf : ptLocalDualMap φ D M inv (show 0 + 2 = 2 from rfl) ξ = f`. Use `AddMonoidHom.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[ptLocalDualMap_apply, ← hg, AddMonoidHom.comp_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hξ, AddMonoidHom.comp_apply, AddMonoidHom.single_apply]`. Rewrite using `[← map_sum, Finset.univ_sum_single]`. Both sides reduce to the same expression. Rewrite `hf` using `[← P.ptCompactDualMap_ptLocalToCompact M _ (show 0 + 1 + 2 = 3 from rfl)]`. Establish `hx' : (ptLocalToCompact φ M 0).hom ξ = ptShaLift φ M x` using `hψ.1 hf`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← ptCompactToGlobal_ptShaLift φ M x, ← hx']`. Conclude with `(ptExact_compact φ M 0 _).2 ⟨ξ, rfl⟩`. Take `⟨f, hf⟩` from `QZ.exists_comp_eq_of_injective (ptSha φ (dualRep D M) 2).subtype Subtype.val_injective χ`. Take `⟨x, hx⟩` from `hψ.2 f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨⟨_, ptCompactToGlobal_mem_ptSha φ M x⟩, AddMonoidHom.ext fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[ptShaPairing_apply, hx, ← hf]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem bijective_ptShaPairing (hM : ∀ m : M, n • m = 0) :
     Function.Bijective (ptShaPairing φ D M t) := by
@@ -346,9 +344,9 @@ theorem bijective_ptShaPairing (hM : ∀ m : M, n • m = 0) :
 include P in
 
 /- English proof (translation)
-Take `⟨U₀, H⟩` from `P.compactDuality`. Establish `hnD` using `nsmul_eq_zero_of_nonempty_addEquiv H.nonempty_addEquiv`. Establish `: Finite D` using `finite_of_nonempty_addEquiv H.nonempty_addEquiv`. Establish `: Finite (dualRep D M)` using `finite_dualRep`. Use `P.finite_cohomology M hM 1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `P.finite_cohomology (dualRep D M) (nsmul_dualRep_eq_zero hnD) 2` as an intermediate fact. Establish `h1 : Finite (ptSha φ M 1)` using `Finite.of_injective _ Subtype.val_injective`. Establish `h2 : Finite (ptSha φ (dualRep D M) 2)` using `Finite.of_injective _ Subtype.val_injective`. Establish `hb` using `P.bijective_ptShaPairing M hM`. Conclude with `⟨h1, h2, hb, bijective_flip_of_bijective_qz _ hb⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem sha (hM : ∀ m : M, n • m = 0) :
     Finite (ptSha φ M 1) ∧ Finite (ptSha φ (dualRep D M) 2) ∧

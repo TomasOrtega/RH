@@ -4,16 +4,16 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Locally
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker ψ h`.
+A detailed English derivation is pending.
 -/
 private theorem sd_locConst {Γ A : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group A] (ψ : Γ →* A)
     (h : IsOpen (ψ.ker : Set Γ)) : IsLocallyConstant ψ :=
   _root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker ψ h
 
 /- English proof (translation)
-Introduce `Ω _ _ _ S C _ κ ho hI`. Establish `hN : NS Ω S ≤ κ.ker`. Use `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal ?_) (Subgroup.isClosed_of_isOpen _ ho)` and prove the remaining obligations. Introduce `s hs`. Simplify using `only [Set.mem_iUnion] at hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨v, hv, A, hA, hs⟩` from `hs`. Conclude with `hI v hv A hA hs`. Use `⟨QuotientGroup.lift (NS Ω S) κ hN, MonoidHom.ext fun _ => rfl, fun T => ?_⟩` and prove the remaining obligations. Rewrite using `[← (QuotientGroup.isQuotientMap_mk (NS Ω S)).isOpen_preimage]`. Conclude with `sd_locConst κ ho T`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.st_desc :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (S : Set (HeightOneSpectrum (𝓞 ℚ))) (C : Type) [Group C] (κ : G ℚ Ω →* C), IsOpen (κ.ker : Set (G ℚ Ω)) → (∀ v ∉ S, ∀ A : ValuationSubring Ω, IsPlaceOver A v → Ine (F := ℚ) A ≤ κ.ker) → ∃ κS : GS Ω S →* C, κS.comp (toGS Ω S) = κ ∧ IsLocallyConstant κS := by

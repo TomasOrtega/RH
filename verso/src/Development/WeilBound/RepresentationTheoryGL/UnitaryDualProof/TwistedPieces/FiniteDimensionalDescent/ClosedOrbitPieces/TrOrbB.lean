@@ -9,9 +9,9 @@ namespace PositivityTheory.RgUd.TP.Desc.Piece.TrOrb
 variable {k : Type*} [Field k] [TopologicalSpace k] [IsTopologicalRing k] [T2Space k] {N : ℕ}
 
 /- English proof (translation)
-Use `set u := Q * P + (1 - Q) * (1 - P)`. Establish `h1 : u * P = Q * P`. Simplify using `only [u, add_mul, mul_assoc, sub_mul, one_mul, hP, sub_self, mul_zero, add_zero]`. Establish `h2 : Q * u = Q * P`. Simplify using `only [u, mul_add, ← mul_assoc, mul_sub, mul_one, hQ, sub_self, zero_mul, add_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (u * P).rank = (Q * u).rank` using `by rw [h1, h2]`. Rewrite `this` using `[rank_mul_eq_right_of_isUnit_det u P hu, rank_mul_eq_left_of_isUnit_det u Q hu]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem rank_eq_of_idem {R : Type*} [Field R] {P Q : Matrix (Fin N) (Fin N) R} (hP : P * P = P) (hQ : Q * Q = Q)
     (hu : IsUnit (Q * P + (1 - Q) * (1 - P)).det) : P.rank = Q.rank := by
@@ -24,11 +24,11 @@ theorem rank_eq_of_idem {R : Type*} [Field R] {P Q : Matrix (Fin N) (Fin N) R} (
   rwa [rank_mul_eq_right_of_isUnit_det u P hu, rank_mul_eq_left_of_isUnit_det u Q hu] at this
 
 /- English proof (translation)
-Rewrite using `[← isOpen_compl_iff, isOpen_iff_forall_mem_open]`. Introduce `Q hQ`. Distinguish the cases in `hi : Q * Q = Q`. Establish `hr : Q.rank ≠ n` using `fun h => hQ ⟨hi, h⟩`. Use `⟨{P | (Q * P + (1 - Q) * (1 - P)).det ≠ 0}, fun P hP hP' => hr ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hP'.2]`. Conclude with `(rank_eq_of_idem hP'.1 hi (isUnit_iff_ne_zero.2 hP)).symm`. Conclude with `isOpen_ne_fun (((continuous_const.mul continuous_id).add (continuous_const.mul (continuous_const.sub continuous_id))).matrix_det) continuous_const`. Use `show (Q * Q + (1 - Q) * (1 - Q)).det ≠ 0`. Establish `: Q * Q + (1 - Q) * (1 - Q) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sub_mul, mul_sub, one_mul, mul_one, hi]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, det_one]`. Conclude with `one_ne_zero`. Conclude with `⟨{P | P * P ≠ P}, fun P hP hP' => hP hP'.1, isOpen_ne_fun (continuous_id.mul continuous_id) continuous_id, hi⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isClosed_idem_rank (n : ℕ) : IsClosed {P : Matrix (Fin N) (Fin N) k | P * P = P ∧ P.rank = n} := by
   rw [← isOpen_compl_iff, isOpen_iff_forall_mem_open]
@@ -48,33 +48,31 @@ theorem isClosed_idem_rank (n : ℕ) : IsClosed {P : Matrix (Fin N) (Fin N) k | 
       hi⟩
 
 /- English proof (translation)
-Set `L : (Fin r → k) → A` to `fun c => ∑ i, c i • b i`. Set `Φ : (Fin r → Matrix (Fin N) (Fin N) k) → (Fin r → k) → Matrix (Fin N) (Fin N) k` to `fun w c => ∑ i, c i • w i`. Establish `hL : ∀ a, ∃ c, L c = a` using `fun a => (Submodule.mem_span_range_iff_exists_fun k).1 (hb ▸ Submodule.mem_top)`. Use `choose s hs using hL`. Establish `Lsub : ∀ c c', L (c - c') = L c - L c'` using `fun c c' => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [L, Pi.sub_apply, sub_smul, Finset.sum_sub_distrib]`. Establish `Φsub : ∀ w c c', Φ w (c - c') = Φ w c - Φ w c'` using `fun w c c' => by`. Simplify using `only [Φ, Pi.sub_apply, sub_smul, Finset.sum_sub_distrib]`. Establish `Φadd : ∀ w c c', Φ w (c + c') = Φ w c + Φ w c'` using `fun w c c' => by`. Simplify using `only [Φ, Pi.add_apply, add_smul, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `Φsmul : ∀ w (t : k) c, Φ w (t • c) = t • Φ w c` using `fun w t c => by`. Simplify using `only [Φ, Pi.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]`. Establish `Lsingle : ∀ i, L (Pi.single i 1) = b i` using `fun i => by`. Simplify using `[L, Pi.single_apply]`. Establish `Φsingle : ∀ w i, Φ w (Pi.single i 1) = w i` using `fun w i => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Φ, Pi.single_apply]`. Establish `hΦc : ∀ c : Fin r → k, Continuous fun w : Fin r → Matrix (Fin N) (Fin N) k => Φ w c` using `fun c => continuous_finset_sum _ fun i _ => (continuous_apply i).const_smul (c i)`. Set `S : Set (Fin r → Matrix (Fin N) (Fin N) k)` to `(⋂ c, ⋂ (_ : L c = 0), {w | Φ w c = 0}) ∩ ((⋂ a, ⋂ a', {w | Φ w (s (a * a')) = Φ w (s a) * Φ w (s a')}) ∩ ({w | Φ w (s 1) = 1} ∩ ⋂ e, ⋂ (_ : IsIdempotentElem e), (fun w => Φ w (s e)) ⁻¹' {P | P * P = P ∧ P.rank = (ρ₀ e).rank}))`. Establish `hS : IsClosed S`. Use `IsClosed.inter ?_ (IsClosed.inter ?_ (IsClosed.inter ?_ ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `isClosed_iInter fun c => isClosed_iInter fun _ => isClosed_eq (hΦc c) continuous_const`. Conclude with `isClosed_iInter fun a => isClosed_iInter fun a' => isClosed_eq (hΦc _) ((hΦc _).mul (hΦc _))`. Conclude with `isClosed_eq (hΦc _) continuous_const`. Conclude with `isClosed_iInter fun e => isClosed_iInter fun _ => (isClosed_idem_rank (ρ₀ e).rank).preimage (hΦc (s e))`. Use `hS using 1` and compare the differences between its conclusion and the goal.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use extensionality with `w`. Simplify using `only [S, Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Establish `hΦ : ∀ c, Φ w c = g.val * ρ₀ (L c) * g⁻¹.val` using `fun c => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Φ, L, hg, map_sum, map_smul, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc]`. Establish `hgi : g⁻¹.val * g.val = 1` using `Units.inv_mul g`. Use `⟨fun c hc => by rw [hΦ, hc, map_zero, mul_zero, zero_mul], fun a a' => ?_, ?_, fun e he => ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ, hΦ, hΦ, hs, hs, hs, map_mul]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc g⁻¹.val g.val, hgi, one_mul]`. Rewrite using `[hΦ, hs, map_one, mul_one, Units.mul_inv]`. Rewrite using `[hΦ, hs]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `congrArg ρ₀ he.eq` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `this` using `[map_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc g⁻¹.val g.val, hgi, one_mul, ← mul_assoc (ρ₀ e), this]`. Rewrite using `[rank_mul_eq_left_of_isUnit_det _ _ (isUnits_det_units g⁻¹), rank_mul_eq_right_of_isUnit_det _ _ (isUnits_det_units g)]`. Introduce and unpack `⟨h0, hmul, h1, hrk⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hwd : ∀ c c', L c = L c' → Φ w c = Φ w c'` using `fun c c' h => by`. Use `h0 (c - c') (by rw [Lsub, h, sub_self])` as an intermediate fact. Rewrite `this` using `[Φsub, sub_eq_zero]`. Then use the resulting hypothesis. Set `ρl : A →ₗ[k] Matrix (Fin N) (Fin N) k` to `{ toFun := fun a => Φ w (s a) map_add' := fun a a' => by`. Rewrite using `[← Φadd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hwd` to reduce the goal to its premises. Rewrite using `[hs]`. Simplify using `only [L, Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Rewrite using `[show (∑ i, s a i • b i) = L (s a) from rfl, show (∑ i, s a' i • b i) = L (s a') from rfl, hs, hs]`. Use the proof step `map_smul' := fun t a => by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[RingHom.id_apply, ← Φsmul]`. Apply `hwd` to reduce the goal to its premises. Rewrite using `[hs]`. Simplify using `only [L, Pi.smul_apply, smul_eq_mul, mul_smul, ← Finset.smul_sum]`. Rewrite using `[show (∑ i, s a i • b i) = L (s a) from rfl, hs] }`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Set `ρ : A →ₐ[k] Matrix (Fin N) (Fin N) k` to `AlgHom.ofLinearMap ρl h1 hmul`. Establish `hρ : ∀ a, ρ a = Φ w (s a)` using `fun _ => rfl`. Take `⟨g, hg⟩` from `orbHom_gen k N A hA ρ₀ ρ fun e he => by rw [hρ, (hrk e he).2]`. Use `⟨g, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hg, hρ, ← Φsingle w i]`.
-
-Apply `hwd` to reduce the goal to its premises. Rewrite using `[hs, Lsingle]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbClosed_gen (N r : ℕ) (A : Type) [CommRing A] [Algebra k A] [FiniteDimensional k A] (hA : IsReduced A)
     (b : Fin r → A) (hb : Submodule.span k (Set.range b) = ⊤) (ρ₀ : A →ₐ[k] Matrix (Fin N) (Fin N) k) :

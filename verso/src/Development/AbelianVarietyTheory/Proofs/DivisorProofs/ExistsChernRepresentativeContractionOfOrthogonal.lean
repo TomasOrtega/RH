@@ -26,7 +26,7 @@ namespace GlobalTheory.PtExt.ChernRep
 variable {R : Type} [CommRing R] {A B : Over (Sp R)} [GrpObj A] [GrpObj B]
 
 /- English proof (translation)
-Unfold `IsContr at h h' ⊢`. Introduce `D _ _ D' _ _ φ x s i s' i' a b τ hs hi hs' hi' ha hb hτ`. Simplify using `only [Fn1.add, Pi.add_apply, h D D' φ x s i s' i' a b τ hs hi hs' hi' ha hb hτ, h' D D' φ x s i s' i' a b τ hs hi hs' hi' ha hb hτ, ← TrivSqZeroExt.snd_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 -/
 theorem isContr_add {z z' : C2 (O (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _))} {v : epsR R ⟶ B} {κ κ' : Fn1 A}
     (h : IsContr z v κ) (h' : IsContr z' v κ') : IsContr (z + z') v (κ.add κ') := by
@@ -38,9 +38,9 @@ theorem isContr_add {z z' : C2 (O (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _))} {v : epsR
   abel
 
 /- English proof (translation)
-Unfold `IsContr at h ⊢`. Introduce `D _ _ D' _ _ φ x s i s' i' a b τ hs hi hs' hi' ha hb hτ`. Simplify using `only [Finset.sum_apply]`. Rewrite using `[Finset.sum_congr rfl fun k _ ↦ h k D D' φ x s i s' i' a b τ hs hi hs' hi' ha hb hτ]`. Simplify using `only [← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ g : Fin n → TrivSqZeroExt D' D', ∑ k, (g k).snd = (∑ k, g k).snd` using `fun g ↦ (map_sum (TrivSqZeroExt.sndHom D' D') g Finset.univ).symm`. Conclude with `key fun k ↦ z k _ _ _ s τ - z k _ _ _ a s' - z k _ _ _ i τ + z k _ _ _ b i'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isContr_sum {n : ℕ} {z : Fin n → C2 (O (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _))} {v : epsR R ⟶ B}
     {κ : Fin n → Fn1 A} (h : ∀ k, IsContr (z k) v (κ k)) :
@@ -55,7 +55,7 @@ theorem isContr_sum {n : ℕ} {z : Fin n → C2 (O (dp0 R) ((A ⊗ B).hom ≫ �
   exact key fun k ↦ z k _ _ _ s τ - z k _ _ _ a s' - z k _ _ _ i τ + z k _ _ _ b i'
 
 /- English proof (translation)
-Take `⟨s, i, s', i', a, b, τ, hs, hi, hs', hi', ha, hb, hτ⟩` from `(GlobalTheory.PtExt.ContrMor.exists_contr R A B v hv).1 D D' φ x`. Rewrite using `[h D D' φ x s i s' i' a b τ hs hi hs' hi' ha hb hτ, h' D D' φ x s i s' i' a b τ hs hi hs' hi' ha hb hτ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isContr_eq {z : C2 (O (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _))} {v : epsR R ⟶ B} (hv : IsTangent v)
     {κ κ' : Fn1 A} (h : IsContr z v κ) (h' : IsContr z v κ') (D : Type) [CommRing D] [Algebra R D]
@@ -66,9 +66,9 @@ theorem isContr_eq {z : C2 (O (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _))} {v : epsR R �
   rw [h D D' φ x s i s' i' a b τ hs hi hs' hi' ha hb hτ, h' D D' φ x s i s' i' a b τ hs hi hs' hi' ha hb hτ]
 
 /- English proof (translation)
-Establish `h0 : ∑ k, Φ (a k - a₁ k) (b k - b₁ k) = 0`. Use `congrArg (TensorProduct.lift Φ) h` as an intermediate fact. Simplify `this` using `only [map_sum, TensorProduct.lift.tmul, map_zero]`. Rewrite using `[← Finset.sum_add_distrib, ← sub_eq_zero, ← Finset.sum_sub_distrib, ← h0]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sub, LinearMap.sub_apply]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem sum_split {M N P : Type*} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     [AddCommGroup P] [Module R P] (Φ : M →ₗ[R] N →ₗ[R] P) {n : ℕ} (a a₁ : Fin n → M) (b b₁ : Fin n → N)
@@ -83,7 +83,7 @@ theorem sum_split {M N P : Type*} [AddCommGroup M] [Module R M] [AddCommGroup N]
   abel
 
 /- English proof (translation)
-Simplify using `only [fv, ev, Submodule.coe_sub, Submodule.coe_sum, Submodule.coe_smul, Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, Algebra.smul_def]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem fv_sub_sum {X : Over (Sp R)} {n : ℕ} (f : Z1 (O (dp0 R) (X.hom ≫ 𝟙 _))) (t : Fin n → R)
     (u : Fin n → Z1 (O (dp0 R) (X.hom ≫ 𝟙 _))) (D : Type) [CommRing D] [Algebra R D] (D' : Type)
@@ -94,7 +94,7 @@ theorem fv_sub_sum {X : Over (Sp R)} {n : ℕ} (f : Z1 (O (dp0 R) (X.hom ≫ �
   rfl
 
 /- English proof (translation)
-Simplify using `only [fv, ev, Submodule.coe_smul, Pi.smul_apply, Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fv_smul {X : Over (Sp R)} (t : R) (u : Z1 (O (dp0 R) (X.hom ≫ 𝟙 _))) (D : Type) [CommRing D]
     [Algebra R D] (D' : Type) [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') (x : Pt X D) :
@@ -133,7 +133,7 @@ theorem cupPrim_apply (a : primDR A) (b : primDR B) : cupPrim A B a b =
     cup _ (pullOver (dp0 R) (𝟙 _) (fst A B) a.1) (pullOver (dp0 R) (𝟙 _) (snd A B) b.1) := rfl
 
 /- English proof (translation)
-Rewrite using `[mk_cupPr, cupPrim_apply, ha, hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mk_cupPr_prim {a : Z1 (O (dp0 R) (A.hom ≫ 𝟙 _))} {b : Z1 (O (dp0 R) (B.hom ≫ 𝟙 _))} {x : primDR A}
     {y : primDR B} (ha : CatCoh.H1.mk _ a = x.1) (hb : CatCoh.H1.mk _ b = y.1) :
@@ -151,7 +151,7 @@ def rep : Z2 (O (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _)) :=
 omit [GrpObj A] [GrpObj B] in
 
 /- English proof (translation)
-Rewrite using `[rep, Submodule.coe_add, Submodule.coe_sum, Submodule.coe_sum]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_val : (rep m₁ m₂ α β a' b').1 =
     ∑ k, (cupPr m₁ m₂ (α k).1 (b' k)).1 + ∑ k, (cupPr m₁ m₂ (a' k) (β k).1).1 := by
@@ -160,7 +160,7 @@ theorem rep_val : (rep m₁ m₂ α β a' b').1 =
 omit [GrpObj A] [GrpObj B] in
 
 /- English proof (translation)
-The claim follows from `((CatCoh.H2.mk _).map_add _ _).trans (congrArg₂ (· + ·) (map_sum _ _ _) (map_sum _ _ _))`.
+A detailed English derivation is pending.
 -/
 theorem mk_rep : CatCoh.H2.mk _ (rep m₁ m₂ α β a' b') =
     ∑ k, CatCoh.H2.mk _ (cupPr m₁ m₂ (α k).1 (b' k)) + ∑ k, CatCoh.H2.mk _ (cupPr m₁ m₂ (a' k) (β k).1) :=
@@ -169,9 +169,9 @@ theorem mk_rep : CatCoh.H2.mk _ (rep m₁ m₂ α β a' b') =
 omit [GrpObj A] [GrpObj B] in
 
 /- English proof (translation)
-Establish `h1 : ∀ k, (cupPr m₁ m₂ (α k).1 (b' k)).1 T T' T'' p q = 0` using `fun k ↦ by`. Rewrite using `[cupPr, cupZ_apply, show (m₁.coef.pullbackOneCocycle (α k).1).1 T T' p = 0 from (α k).2 (m₁.functor.map p) hT hT', map_zero, zero_mul]`. Establish `h2 : ∀ k, (cupPr m₁ m₂ (a' k) (β k).1).1 T T' T'' p q = 0` using `fun k ↦ by`. Rewrite using `[cupPr, cupZ_apply, show (m₂.coef.pullbackOneCocycle (β k).1).1 T' T'' q = 0 from (β k).2 (m₂.functor.map q) hT' hT'', mul_zero]`. Rewrite using `[rep_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, Finset.sum_apply, h1, h2, Finset.sum_const_zero, add_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rep_triv (T T' T'' : Thick (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _)) (p : T ⟶ T') (q : T' ⟶ T'') (hT : T.J = ⊥)
     (hT' : T'.J = ⊥) (hT'' : T''.J = ⊥) : (rep m₁ m₂ α β a' b').1 T T' T'' p q = 0 := by
@@ -185,15 +185,15 @@ theorem rep_triv (T T' T'' : Thick (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _)) (p : T �
   simp only [Pi.add_apply, Finset.sum_apply, h1, h2, Finset.sum_const_zero, add_zero]
 
 /- English proof (translation)
-Take `⟨-, hex⟩` from `GlobalTheory.PtExt.ContrMor.exists_contr R A B v hv`. Use `choose κX hκX using fun k ↦ hex (cupPr m₁ m₂ (α k).1 (b' k)).1`. Use `choose κY hκY using fun k ↦ hex (cupPr m₁ m₂ (a' k) (β k).1).1`. Rewrite `hκ` using `[rep_val]`. Establish `hsC` using `isContr_add (isContr_sum hκX) (isContr_sum hκY)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX0` using `fun k ↦ GlobalTheory.PtExt.contr_cup_form_eq_zero R A B m₁ m₂ v hv (α k) (b' k) (κX k) (hκX k)`. Establish `hYc` using `fun k ↦ GlobalTheory.PtExt.cohom_contr_cupA R A B m₁ m₂ v hv (a' k) (β k) (κY k) (hκY k)`. Unfold `Cohom at hYc`. Use `choose cY hcY using hYc`. Take `⟨k₀, hk₀⟩` from `(GlobalTheory.PtExt.mem_hodgeFiltration_iff_pointwiseCoboundary R A _).1 hcl`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨fun D _ _ x ↦ k₀ D x + ∑ k, cY k D x, ?_⟩` and prove the remaining obligations. Introduce `D _ _ D' _ _ φ x _`. Establish `e1` using `isContr_eq hv hκ hsC D D' φ x`. Establish `e2` using `hk₀ D D' φ x (sm_whole x)`. Establish `e3 : ∀ k, κY k D D' φ x = cY k D' (spOver φ ≫ x) - φ (cY k D x) - algebraMap R D' (tanVal v (β k)) * fv (a' k) D D' φ x` using `fun k ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h3` using `hcY k D D' φ x (sm_whole x)`. Simplify using `only [Fn1.add, Fn1.neg, fv_smul, map_neg] at h3`. Take the linear combination `h3`. Rewrite `e2` using `[fv_sub_sum]`. Simplify using `only [Fn1.add, Fn1.neg, hX0, Finset.sum_const_zero, zero_add] at e1 ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[e1, map_add, map_sum]`. Simplify using `only [e3, Finset.sum_sub_distrib]`. Take the linear combination `e2`.
+A detailed English derivation is pending.
 -/
 theorem rep_contr {v : epsR R ⟶ B} (hv : IsTangent v) (f : Z1 (O (dp0 R) (A.hom ≫ 𝟙 _)))
     (hcl : CatCoh.H1.mk _ (f - ∑ k, tanVal v (β k) • a' k) ∈ F1 (A.hom ≫ 𝟙 _)) (κ : Fn1 A)
@@ -226,7 +226,7 @@ theorem rep_contr {v : epsR R ⟶ B} (hv : IsTangent v) (f : Z1 (O (dp0 R) (A.ho
 end Rep
 
 /- English proof (translation)
-Establish `e` using `sum_split ((LinearMap.mul R R).compl₁₂ x y) a a₁ b b₁ h`. Simplify using `only [LinearMap.compl₁₂_apply, LinearMap.mul_apply'] at e`. Simplify using `only [map_sub, hx, sub_zero, zero_mul, Finset.sum_const_zero, zero_add] at e`. Rewrite using `[map_sub, map_sum, hc, e]`. Simplify using `only [map_smul, map_sub, hx, sub_zero, smul_eq_mul, mul_comm, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem apply_sub_sum {M N : Type*} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N] {n : ℕ}
     (a a₁ : Fin n → M) (b b₁ : Fin n → N) (h : ∑ k, (a k - a₁ k) ⊗ₜ[R] (b k - b₁ k) = 0) (x : M →ₗ[R] R)
@@ -239,7 +239,7 @@ theorem apply_sub_sum {M N : Type*} [AddCommGroup M] [Module R M] [AddCommGroup 
   simp only [map_smul, map_sub, hx, sub_zero, smul_eq_mul, mul_comm, sub_self]
 
 /- English proof (translation)
-Rewrite using `[map_sub, map_sum, hf, Submodule.coe_sub, Submodule.coe_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_smul, ha k, Submodule.coe_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mk_sub_sum {n : ℕ} {f : Z1 (O (dp0 R) (A.hom ≫ 𝟙 _))} {c : primDR A} (hf : CatCoh.H1.mk _ f = c.1)
     {a' : Fin n → Z1 (O (dp0 R) (A.hom ≫ 𝟙 _))} {a : Fin n → primDR A} (ha : ∀ k, CatCoh.H1.mk _ (a' k) = (a k).1)
@@ -254,19 +254,15 @@ end GlobalTheory.PtExt.ChernRep
 open GlobalTheory.PtExt.ChernRep in
 
 /- English proof (translation)
-Introduce `hHDR R _ A B _ _ g hA hB hgA hgB P hP pf hpf horth h' v hv c hc f hf`. Take `⟨hFree, hHodge, -⟩` from `GlobalTheory.abelianDeRham_free_hodge_baseChange hHDR`. Take `⟨-, hprA, -⟩` from `GlobalTheory.Published.AbelianDeRham.Free.prim hFree hA hgA`. Take `⟨-, hprB, -⟩` from `GlobalTheory.Published.AbelianDeRham.Free.prim hFree hB hgB`. Take `⟨-, hCA, -⟩` from `hHodge R A g hA hgA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hCB, -⟩` from `hHodge R B g hB hgB`. Take `⟨n, a, b, hch, hab⟩` from `hpf`. Establish `L` using `GlobalTheory.tensor_mem_of_dualAnnihilator R (primDR A) (primDR B) (PrimitiveSubmodule A) (PrimitiveSubmodule B) hCA hCB`. Take `⟨a₁, b₁, ha₁, hb₁, hsum⟩` from `L.2 n a b fun x hx y hy ↦ (hab x y).symm.trans (horth x hx y hy)`. Establish `eα : ∀ k, ∃ α : Form (A.hom ≫ 𝟙 _), Form.cl _ α = (a₁ k).1` using `fun k ↦ by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `ha₁ k`. Rewrite `h` using `[PrimitiveSubmodule, Submodule.mem_comap, hodgeFiltration_eq_range]`. Conclude with `h`. Use `choose α hα using eα`. Establish `eβ : ∀ k, ∃ β : Form (B.hom ≫ 𝟙 _), Form.cl _ β = (b₁ k).1` using `fun k ↦ by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hb₁ k`. Rewrite `h` using `[PrimitiveSubmodule, Submodule.mem_comap, hodgeFiltration_eq_range]`. Conclude with `h`. Use `choose β hβ using eβ`. Use `choose b' hb' using fun k ↦ CatCoh.H1.mk_surjective (O (dp0 R) (B.hom ≫ 𝟙 _)) (b k).1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose a' ha' using fun k ↦ CatCoh.H1.mk_surjective (O (dp0 R) (A.hom ≫ 𝟙 _)) (a k - a₁ k).1`. Establish `m₁ : IsMor (dp0 R) (A.hom ≫ 𝟙 _) (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _) (RingHom.id R) (fst A B).left` using `IsMor.of_over _ (by rw [← Category.assoc, Over.w])`. Establish `m₂ : IsMor (dp0 R) (B.hom ≫ 𝟙 _) (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _) (RingHom.id R) (snd A B).left` using `IsMor.of_over _ (by rw [← Category.assoc, Over.w])`. Use `⟨rep m₁ m₂ α β a' b', ?_, rep_triv m₁ m₂ α β a' b', rep_contr m₁ m₂ α β a' b' hv.1 f ?_⟩` and prove the remaining obligations. Establish `hz : CatCoh.H2.mk _ (rep m₁ m₂ α β a' b') = ∑ k, cupPrim A B (a k) (b k)` using `((mk_rep m₁ m₂ α β a' b').trans (congrArg₂ (· + ·) (Finset.sum_congr rfl fun k _ ↦ mk_cupPr_prim m₁ m₂ (hα k) (hb' k)) (Finset.sum_congr rfl fun k _ ↦ mk_cupPr_prim m₁ m₂ (ha' k) (hβ k)))).trans (sum_split (cupPrim A B) a a₁ b b₁ hsum).symm`.
-
-Conclude with `hz ▸ hch`. Establish `ht : (fun k ↦ tanVal v (β k)) = fun k ↦ h' (b₁ k)` using `funext fun k ↦ by`. Establish `hm : Form.cl _ (β k) ∈ primDR B` using `(hβ k).symm ▸ (b₁ k).2`. Conclude with `(hv.2 (β k) hm).symm.trans (congrArg h' (Subtype.ext (hβ k)))`. Establish `hd : c - ∑ k, h' (b₁ k) • (a k - a₁ k) ∈ PrimitiveSubmodule A` using `L.1 _ fun x hx ↦ apply_sub_sum a a₁ b b₁ hsum x h' (fun k ↦ (Submodule.mem_dualAnnihilator _).1 hx _ (ha₁ k)) c ((hc x hx).symm.trans (hab x h'))`.
-
-Rewrite using `[mk_sub_sum hf ha' fun k ↦ tanVal v (β k)]`. Simplify using `only [fun k ↦ congrFun ht k]`. Conclude with `hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PtExt.exists_chernRep_contr_of_orth : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (g : ℕ), IsAbelianScheme A → IsAbelianScheme B → SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g B.hom → ∀ P : LB (A ⊗ B).left, P.IsLB → ∀ φ : HdR A →ₗ[R] HdR B →ₗ[R] R, AbDual.IsCorrForm (dp0 R) (𝟙 _) A B P φ → (∀ x ∈ Fil A, ∀ y ∈ Fil B, φ x y = 0) → ∀ (h' : HdR B) (v : epsR R ⟶ B), IsLieImage h' v → ∀ c : primDR A, (∀ h ∈ Fil A, φ h h' = h c) → ∀ f : Z1 (O (dp0 R) (A.hom ≫ 𝟙 _)), CatCoh.H1.mk _ f = c.1 → ∃ w : Z2 (O (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _)), IsChern (dp0 R) _ P (CatCoh.H2.mk _ w) ∧ (∀ (T T' T'' : Thick (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _)) (a : T ⟶ T') (b : T' ⟶ T''), T.J = ⊥ → T'.J = ⊥ → T''.J = ⊥ → w.1 T T' T'' a b = 0) ∧ ∀ κ : Fn1 A, IsContr w.1 v κ → Cohom (whole A) κ (fv f).neg := by
   intro hHDR R _ A B _ _ g hA hB hgA hgB P hP pf hpf horth h' v hv c hc f hf

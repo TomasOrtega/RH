@@ -22,7 +22,7 @@ theorem eab_cpart2_eq (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.REAL.cpart2 ε Z = S7.cpart2 ε Z := rfl
 
 /- English proof (translation)
-Unfold `S7.cpart1 S7.cpart2`. Rewrite using `[smul_smul, show Complex.I * (1 / (2 * Complex.I)) = (1 / 2 : ℂ) by field_simp]`. Rewrite using `[← smul_add]`. Rewrite using `[show Z - Jm ε * Zᴴ * Jm ε + (Z + Jm ε * Zᴴ * Jm ε) = (2 : ℂ) • Z by rw [two_smul]; abel]`. Rewrite using `[smul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Evaluate the numerical expressions.
 -/

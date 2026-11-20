@@ -31,29 +31,25 @@ variable {G G' W W' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G
     [IsTopologicalGroup G'] [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
 
 /- English proof (translation)
-Establish `hex` using `GlobalTheory.T.quotient_map_intertwines_restriction H H' ι σ σ' q hι hH' hq hcl hemb hcomp`. Use `choose T hT using hex`. Establish `hext : ∀ F F' : cIndSpace H' σ', (∀ x, F.1.1.1 x = F'.1.1.1 x) → F = F'` using `fun F F' h => Subtype.ext (Subtype.ext (Subtype.ext (funext h)))`. Set `Tl : cIndSpace H σ →ₗ[ℂ] cIndSpace H' σ'` to `{ toFun := T map_add' := fun a b => hext _ _ fun x => by`. Rewrite using `[hT]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = (T a).1.1.1 x + (T b).1.1.1 x`. Rewrite using `[hT, hT, ← map_add]`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun c a => hext _ _ fun x => by`. Rewrite using `[hT]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `show _ = c • (T a).1.1.1 x`. Rewrite using `[hT, ← map_smul]`. Use `rfl }`. Establish `hTl : ∀ f x, (Tl f).1.1.1 x = q (f.1.1.1 (ι x))` using `hT`. Establish `hkill : twKer (cInd H σ) U θ ≤ LinearMap.ker Tl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, e, rfl⟩`. Use `show Tl _ = 0`. Use `hext _ _ fun x => ?_` and prove the remaining obligations. Rewrite using `[hTl]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hv, hθ⟩` from `hstab x u`. Establish `hvH : ι x * (u : G) * (ι x)⁻¹ ∈ H` using `hUH hv`. Establish `e1 : (cInd H σ (u : G) e - (θ u : ℂ) • e).1.1.1 (ι x) = σ ⟨_, hvH⟩ (e.1.1.1 (ι x)) - (θ ⟨_, hv⟩ : ℂ) • e.1.1.1 (ι x)`. Rewrite using `[hθ]`. Use `show e.1.1.1 (ι x * (u : G)) - (θ u : ℂ) • e.1.1.1 (ι x) = _`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `e2` using `e.1.1.2 ⟨_, hvH⟩ (ι x)`. Establish `e3 : e.1.1.1 (ι x * (u : G)) = e.1.1.1 (ι x * (u : G) * (ι x)⁻¹ * ι x)`. Use `congr 1`. Use `group`. Rewrite using `[e3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `congrArg (· - _) e2`. Rewrite using `[e1]`. Use `show _ = (0 : W')`. Conclude with `(hker _).2 (Submodule.subset_span ⟨⟨_, hv⟩, _, rfl⟩)`. Set `Tq` to `(twKer (cInd H σ) U θ).liftQ Tl hkill`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective Tq`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `h0 : Tl f = 0` using `hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `(Submodule.Quotient.mk_eq_zero _).2 (GlobalTheory.T.jacquet_kernel_span_twisted_character H U hUH hUn θ ι hstab σ q hσ hker hD hbase f fun x => ?_)` and prove the remaining obligations. Rewrite using `[← hTl, h0]`. Both sides reduce to the same expression. Establish `hsurj : Function.Surjective Tq`. Introduce `F`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨f, hf⟩` from `GlobalTheory.T.quotient_map_induced_surjective_intertwiner H H' ι σ σ' q hι hσ hqs hH' hq hemb hbase F`. Use `⟨Submodule.Quotient.mk f, ?_⟩` and prove the remaining obligations. Use `show Tl f = F`. Conclude with `hext _ _ fun x => by rw [hTl, hf]`. Use `⟨Representation.Equiv.mk (LinearEquiv.ofBijective Tq ⟨hinj, hsurj⟩) fun y => ?_⟩` and prove the remaining obligations.
-
-Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Use `hext _ _ fun x => ?_` and prove the remaining obligations. Establish `e1 : (twAct (cInd H σ) U θ ι hstab y) (Submodule.Quotient.mk f) = Submodule.Quotient.mk (cInd H σ (ι y) f)` using `rfl`. Use `show (Tq (twAct (cInd H σ) U θ ι hstab y (Submodule.Quotient.mk f))).1.1.1 x = (Tq (Submodule.Quotient.mk f)).1.1.1 (x * y)`.
-
-Rewrite using `[e1]`. Use `show (Tl _).1.1.1 x = (Tl f).1.1.1 (x * y)`. Rewrite using `[hTl, hTl, map_mul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem coinv_cInd (H U : Subgroup G) (hUH : U ≤ H) (hUn : U.Normal) (θ : U →* ℂˣ) (ι : G' →* G)
     (hι : Continuous ι) (hstab : ∀ (m : G') (n : U), ∃ h : ι m * (n : G) * (ι m)⁻¹ ∈ U, θ ⟨_, h⟩ = θ n)
@@ -143,39 +139,37 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Establish `hsm : IsSmooth ((extTensor a b).comp (gpProj k m (j + 1)))`. Introduce `w`. Conclude with `(isSmooth_extTensor ha hb w).preimage (GlobalTheory.T.continuous_parabolic_proj k m (j + 1))`. Establish `hUH : MirUin k (m + (j + 1)) ≤ MirabolicParabolic k m (j + 1)` using `GlobalTheory.T.mirabolic_unipotent_le_parabolic k m (j + 1)`. Set `q : V ⊗[ℂ] W →ₗ[ℂ] V ⊗[ℂ] (TwJacquet b (MirUin k (j + 1)) (mirChar k ψ j))` to `LinearMap.lTensor V (twKer b (MirUin k (j + 1)) (mirChar k ψ j)).mkQ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hqs : Function.Surjective q` using `LinearMap.lTensor_surjective _ (Submodule.mkQ_surjective _)`. Establish `hq : ∀ (h : MirabolicParabolic k m j) (hh : embedding₂ k (m + j) h ∈ MirabolicParabolic k m (j + 1)) (w : V ⊗[ℂ] W), q (((extTensor a b).comp (gpProj k m (j + 1))) ⟨embedding₂ k (m + j) h, hh⟩ w) = ((extTensor a (phiMinus k ψ b)).comp (gpProj k m j)) h (q w)`. Introduce `h hh w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v w`. Establish `e` using `GlobalTheory.T.parabolic_proj_embedding_compat k m j h hh`. Use `show q (extTensor a b (gpProj k m (j + 1) ⟨_, hh⟩) (v ⊗ₜ w)) = extTensor a (phiMinus k ψ b) (gpProj k m j h) (q (v ⊗ₜ w))`. Rewrite using `[e]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [q, LinearMap.lTensor_tmul, extTensor_tmul]`. Both sides reduce to the same expression. Establish `hker : ∀ w, q w = 0 ↔ w ∈ Submodule.span ℂ {y | ∃ (u : MirUin k (m + (j + 1))) (v : V ⊗[ℂ] W), y = ((extTensor a b).comp (gpProj k m (j + 1))) ⟨u, hUH u.2⟩ v - (mirChar k ψ (m + j) u : ℂ) • v}`. Introduce `w`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hw`. Establish `hex` using `lTensor_exact V (LinearMap.exact_subtype_mkQ (twKer b (MirUin k (j + 1)) (mirChar k ψ j))) (Submodule.mkQ_surjective _)`. Take `⟨t, rfl⟩` from `(hex w).1 hw`. Use `clear hw`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `tmul v x`.
+Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Take `⟨x, hx⟩` from `x`. Simplify using `only [LinearMap.lTensor_tmul, Submodule.subtype_apply]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[TensorProduct.tmul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[TensorProduct.tmul_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `mem x hx`. Take `⟨n, w', rfl⟩` from `hx`. Take `⟨u, hh, e⟩` from `GlobalTheory.T.exists_unipotent_lift_parabolic_proj k m j n`. Take `⟨-, hv, hθ⟩` from `GlobalTheory.T.parabolic_proj_unipotent_character_compat k ψ m j u hh`. Use `Submodule.subset_span ⟨u, v ⊗ₜ w', ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `e2 : (⟨_, hv⟩ : MirUin k (j + 1)) = n` using `Subtype.ext (congrArg Prod.snd e)`. Rewrite `hθ` using `[e2]`. Use `show _ = extTensor a b (gpProj k m (j + 1) ⟨u, hh⟩) (v ⊗ₜ w') - _`. Rewrite using `[e, hθ, extTensor_tmul, TensorProduct.tmul_sub, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Simplify using the standard rewrite rules.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [map_smul, hx, smul_zero]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `mem x hx`. Take `⟨u, y, rfl⟩` from `hx`. Take `⟨e1, hv, hθ⟩` from `GlobalTheory.T.parabolic_proj_unipotent_character_compat k ψ m j u (hUH u.2)`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Consider the case `add x y hx hy`. Use `congrArg₂ (· + ·) hx hy` as an intermediate fact. Simplify using `only [add_zero, ← map_add] at this`. Rewrite using `[← this]`. Use `congr 1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_add, smul_add]`. Normalize the expressions using the abelian group laws. Consider the case `tmul v w => show q (extTensor a b (gpProj k m (j + 1) ⟨u, hUH u.2⟩) (v ⊗ₜ w) - _) = 0`. Rewrite using `[extTensor_tmul, e1, ← hθ, map_one, Module.End.one_apply, map_sub, map_smul]`. Simplify using `only [q, LinearMap.lTensor_tmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← TensorProduct.tmul_smul, ← TensorProduct.tmul_sub, ← map_smul, ← map_sub]`. Establish `: (twKer b (MirUin k (j + 1)) (mirChar k ψ j)).mkQ (b (gpProj k m (j + 1) ⟨u, hUH u.2⟩).2 w - (mirChar k ψ j ⟨_, hv⟩ : ℂ) • w) = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.subset_span ⟨⟨_, hv⟩, w, rfl⟩`. Rewrite using `[this, TensorProduct.tmul_zero]`.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `coinv_cInd (MirabolicParabolic k m (j + 1)) (MirUin k (m + (j + 1))) hUH (GlobalTheory.T.mirabolic_unipotent_normal k _) (mirChar k ψ (m + j)) (embedding₂ k (m + j)) (GlobalTheory.T.continuous_mirabolic_embedding k _) (levi_stab ψ (m + j)) (MirabolicParabolic k m j) (GlobalTheory …` and prove the remaining obligations. Introduce `g`. Break down `GlobalTheory.T.mirabolic_double_coset_dichotomy k ψ hψ1 m j g with h | ⟨u, hx, h1, h2⟩` into its components or cases. Conclude with `Or.inl h`. Use `Or.inr ⟨u, hx, fun w => ?_, h2⟩` and prove the remaining obligations.
-
-Simplify using `[h1]`. Take `⟨K, hKo, hKc, -⟩` from `GlobalTheory.CompanionTheory.BZMirOnto.exists_compactOpen k (m + j) Set.univ Filter.univ_mem`. Conclude with `⟨K, hKo.mem_nhds (one_mem K), hKc⟩`.
+A detailed English derivation is pending.
 -/
 theorem phiMinus_prodGP (ψ : AddChar k Circle) (hψ1 : ψ ≠ 1) {m j : ℕ}
     (a : Representation ℂ (GL (Fin m) k) V) (b : Representation ℂ (Mir k (j + 1)) W)
@@ -308,14 +302,14 @@ def extEquiv {G₁ G₂ M V V' W W' : Type} [Group G₁] [Group G₂] [Group M] 
     exact congrArg₂ _ h1 h2
 
 /- English proof (translation)
-The claim follows from `(isOpen_ker_dpow k (n + 1) s).preimage continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_ker_dpowM (n : ℕ) (s : ℝ) :
     IsOpen (((dpowM (k := k) n s).ker : Subgroup (Mir k n)) : Set (Mir k n)) :=
   (isOpen_ker_dpow k (n + 1) s).preimage continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.compactInduction_congr_equiv (MirabolicParabolic k m j) _ _ (extEquiv e f (gpProj k m j))`.
+A detailed English derivation is pending.
 -/
 theorem prodGP_congr {m j : ℕ} {V V' W W' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
     [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
@@ -325,9 +319,9 @@ theorem prodGP_congr {m j : ℕ} {V V' W W' : Type} [AddCommGroup V] [Module ℂ
   GlobalTheory.T.compactInduction_congr_equiv (MirabolicParabolic k m j) _ _ (extEquiv e f (gpProj k m j))
 
 /- English proof (translation)
-Use `MonoidHom.ext fun h => LinearMap.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v w => show (dpowM (m + j) r (h : Mir k (m + j)) : ℂ) • extTensor a c (gpProj k m j h) (v ⊗ₜ w) = extTensor (twist a (dpow m r)) (twist c (dpowM j r)) (gpProj k m j h) (v ⊗ₜ w)`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[extTensor_tmul, extTensor_tmul, twist_apply, twist_apply, GlobalTheory.T.modulus_parabolic_proj_factor k m j r h, Units.val_mul, TensorProduct.smul_tmul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_rep {m j : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (a : Representation ℂ (GL (Fin m) k) V) (c : Representation ℂ (Mir k j) W) (r : ℝ) :
@@ -344,16 +338,16 @@ theorem tw_rep {m j : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddComm
       TensorProduct.smul_tmul_smul]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨Representation.Equiv.refl _⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem cInd_of_eq {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup W] [Module ℂ W]
     (H : Subgroup G) {σ σ' : Representation ℂ H W} (h : σ = σ') : Nonempty ((cInd H σ).Equiv (cInd H σ')) := by
   subst h; exact ⟨Representation.Equiv.refl _⟩
 
 /- English proof (translation)
-Establish `A2` using `GlobalTheory.T.compactInduction_twist_equiv (MirabolicParabolic k m j) ((extTensor a c).comp (gpProj k m j)) (dpowM (m + j) r) (isOpen_ker_dpowM _ _)`. Establish `B` using `cInd_of_eq (MirabolicParabolic k m j) (tw_rep a c r)`. Take `⟨A2⟩` from `A2`. Take `⟨B⟩` from `B`. Establish `C` using `A2.trans B`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `prodGP`. Conclude with `⟨C⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem twist_prodGP {m j : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (a : Representation ℂ (GL (Fin m) k) V) (c : Representation ℂ (Mir k j) W) (r : ℝ) :
@@ -370,13 +364,13 @@ def eqvOfEq {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ ρ' : Rep
     ρ.Equiv ρ' := h ▸ Representation.Equiv.refl ρ
 
 /- English proof (translation)
-Establish `ha : IsSmooth (twist ρ (dpow (k` using `k) m s₀)) := isSmooth_twist hρ (isOpen_ker_dpow k m s₀)`. Establish `hb : IsSmooth (twist τ (dpowM (k` using `k) (j + 1) t)) := isSmooth_twist hτ (isOpen_ker_dpowM _ _)`. Establish `E0` using `phiMinus_prodGP ψ hψ1 (twist ρ (dpow (k := k) m s₀)) (twist τ (dpowM (k := k) (j + 1) t)) ha hb`. Establish `A2` using `twist_prodGP (twist ρ (dpow (k := k) m s₀)) (phiMinus k ψ (twist τ (dpowM (k := k) (j + 1) t))) r`. Take `⟨E0⟩` from `E0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A2⟩` from `A2`. Establish `A4 : twist (twist ρ (dpow (k` using `k) m s₀)) (dpow m r) = twist ρ (dpow m s₁) := by`. Rewrite using `[twist_twist, ← dpow_add, hs]`. Establish `E3` using `GlobalTheory.T.derivative_functor_twist_equiv k ψ j W τ t`. Take `⟨E3⟩` from `E3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `A5 : (twist (twist (phiMinus k ψ τ) (dpowM j t)) (dpowM j r)) = twist (twist (phiMinus k ψ τ) (dpowM j r)) (dpowM j t)`. Rewrite using `[twist_twist, twist_twist, mul_comm]`. Establish `E5` using `(twistEquiv E3 (dpowM j r)).trans (eqvOfEq A5)`. Establish `E7` using `prodGP_congr (eqvOfEq A4) E5`. Take `⟨E7⟩` from `E7`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(twistEquiv E0 _).trans (A2.trans E7)⟩`.
+Supply the required witnesses or components.
 -/
 theorem main_twisted (ψ : AddChar k Circle) (hψ1 : ψ ≠ 1) {m j : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (GL (Fin m) k) V)
@@ -405,9 +399,9 @@ theorem main_twisted (ψ : AddChar k Circle) (hψ1 : ψ ≠ 1) {m j : ℕ} {V W 
 end Final
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ _ hψ1 m j ρ τ hρ hτ`. Establish `X` using `main_twisted ψ hψ1 ρ.ρ τ.ρ hρ hτ (((j + 1 + 1 : ℕ) : ℝ) / 2) (((j + 1 : ℕ) : ℝ) / 2) (-((m : ℕ) : ℝ) / 2) (-1 / 2) (by push_cast; ring)`. Unfold `MIso`. Establish `e : ∀ h : m + (j + 1) = m + j + 1, mcast h (prodGPn ρ τ) = prodGPn ρ τ` using `fun _ => rfl`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `phiN prodGPn mtw MRep.phiM GRep.tw`. Conclude with `X`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem phiGP : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], PhiGP k := by
   intro k _ _ _ _ ψ _ hψ1 m j ρ τ hρ hτ

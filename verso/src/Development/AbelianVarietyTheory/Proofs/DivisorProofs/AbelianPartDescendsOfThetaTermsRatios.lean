@@ -12,13 +12,13 @@ open GlobalTheory GlobalTheory.USep
 namespace GlobalTheory.USep
 
 /- English proof (translation)
-Introduce `g n hn hodd`. Take `⟨j₁, h₁⟩` from `GlobalTheory.T.polarisedAbelianPart_model_over_subfield g n hn hodd`. Take `⟨j₂, h₂⟩` from `GlobalTheory.T.torsionPoints_defined_over_subfield_abelianModel g n hn hodd`. Use `⟨max j₁ j₂, ?_⟩` and prove the remaining obligations. Introduce `j hj V₁ _ _ _ hCN hunit D hg X C _ e u mo hmo hT K _ _ ev k₀ hk₀ hr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨B₀, iG₀, iC₀, M₀, B', iG', π₁, π₀, w, hA, hM, hp1, hp0, hw⟩` from `h₁ j (le_trans (le_max_left _ _) hj) V₁ hCN hunit D hg X C e u mo hmo hT K ev k₀ hk₀ hr`. Establish `hP` using `h₂ j (le_trans (le_max_right _ _) hj) V₁ hCN hunit D hg X C e u mo hmo hT K ev k₀ hk₀ hr B₀ M₀ B' π₁ π₀ w hA hM hp1 hp0 hw`. Establish `hsq : ∀ a : D.X, (spMap ev ≫ (D.c a).left) ≫ D.P.A.hom = 𝟙 (Sp K) ≫ spMap ev`. Introduce `a`. Rewrite using `[Category.assoc, Over.w (D.c a)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Set `c' : D.X → (Sp K ⟶ B'.left)` to `fun a => hp1.1.lift (spMap ev ≫ (D.c a).left) (𝟙 _) (hsq a)`. Establish `hc1 : ∀ a, c' a ≫ B'.hom = 𝟙 _` using `fun a => hp1.1.lift_snd _ _ _`. Establish `hc2 : ∀ a, c' a ≫ π₁ = spMap ev ≫ (D.c a).left` using `fun a => hp1.1.lift_fst _ _ _`. Use `choose c₀ hc₀ using fun a => hP a (c' a) (hc1 a) (hc2 a)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨B₀, iG₀, iC₀, M₀, c₀, B', iG', π₁, π₀, w, c', hA, hM, hp1, hp0, hw, fun a => ⟨hc1 a, hc2 a, (hc₀ a).symm⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem descAt_of_thetaTerms : ∀ (g n : ℕ), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j, j₀ ≤ j → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) → ∀ (D : DegPre V₁), D.P.g = g → ∀ (X C : Type) [AddCommGroup X] (e : X ≃+ D.X) (u : X → C → V₁) (mo : X → V₁), (∀ mu, mo mu ≠ 0 ∧ ∃ c, IsUnit (u mu c)) → GlobalTheory.Poinc.Sep.IsThetaTerms D ((n ^ j) ^ 2) e (fun mu c => u mu c * mo mu) → ∀ (K : Type) [Field K] [IsAlgClosed K] (ev : V₁ →+* K) (k₀ : Subfield K), IsAlgClosed k₀ → (∀ mu c c', IsUnit (u mu c') → ∃ r ∈ k₀, ev (u mu c) = r * ev (u mu c')) → DescAt D ev k₀ := by
   intro g n hn hodd

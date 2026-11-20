@@ -49,7 +49,7 @@ theorem thW_apply (ψ : AddChar (AF D.host.F) ℂ) (z : w.adicCompletion D.host.
     thW ψ hw h k z = ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * secW hw h (k * z))) := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[uPt, Matrix.mul_add, Matrix.add_mul, smul_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem uPt_add (x y : Matrix (Fin T.rank) (Fin S.rank) (w.adicCompletion D.host.E)) :
     uPt hw h k aS aT (x + y) = uPt hw h k aS aT x + uPt hw h k aS aT y := by
@@ -57,16 +57,16 @@ theorem uPt_add (x y : Matrix (Fin T.rank) (Fin S.rank) (w.adicCompletion D.host
   simp [uPt, Matrix.mul_add, Matrix.add_mul, smul_add]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[uPt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem uPt_zero : uPt hw h k aS aT (0 : Matrix (Fin T.rank) (Fin S.rank) _) = 0 := by
   ext i j
   simp [uPt]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a x`. Rewrite using `[GlobalTheory.EmbChart.tensAt_tmul, GlobalTheory.EmbChart.atPlace_apply]`. Use `show (fstA D.host.F) (pairA D.host.F 0 (GlobalTheory.AdelicU.singleFin v a)) ⊗ₜ[D.host.F] x = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (fstA D.host.F) (pairA D.host.F 0 (GlobalTheory.AdelicU.singleFin v a)) = 0 from rfl, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [LinearMap.map_add, RingHom.map_add, hx, hy, add_zero]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem infPart_tensAt (y : Fv D.host.F v ⊗[D.host.F] D.host.E) :
     infPart D (GlobalTheory.EmbChart.tensAt D.host.E v y) = 0 := by
@@ -79,13 +79,13 @@ theorem infPart_tensAt (y : Fv D.host.F v ⊗[D.host.F] D.host.E) :
   | add x y hx hy => rw [LinearMap.map_add, RingHom.map_add, hx, hy, add_zero]
 
 /- English proof (translation)
-The claim follows from `infPart_tensAt _`.
+A detailed English derivation is pending.
 -/
 theorem infPart_secW (z : w.adicCompletion D.host.E) : infPart D (secW hw h z) = 0 :=
   infPart_tensAt _
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `infPart_secW _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_infPart_uPt (x : Matrix (Fin T.rank) (Fin S.rank) (w.adicCompletion D.host.E)) :
     (uPt hw h k aS aT x).map (infPart D) = 0 := by
@@ -99,7 +99,7 @@ open Formalism.UG GlobalTheory.Hk3 GlobalTheory.FinWeil
 variable {L : Type} [Field L]
 
 /- English proof (translation)
-Simplify using `only [antiJ]`. Rewrite using `[show j.val + i.val = i.val + j.val from add_comm _ _]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem antiJ_herm (σ : L →+* L) (n : ℕ) (i j : Fin n) : σ (antiJ L n i j) = antiJ L n j i := by
   simp only [antiJ]
@@ -109,11 +109,9 @@ theorem antiJ_herm (σ : L →+* L) (n : ℕ) (i j : Fin n) : σ (antiJ L n i j)
 variable [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Set `A : Matrix (Fin n) (Fin n) (intL L)` to `fun i j => if i.val + j.val + 1 = n then 1 else 0`. Establish `hA : A.map (intL L).subtype = antiJ L n`. Use extensionality with `i j`. Use `show ((if i.val + j.val + 1 = n then 1 else 0 : intL L) : L) = antiJ L n i j`. Simplify using `only [antiJ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hinj : Function.Injective fun M : Matrix (Fin n) (Fin n) (intL L) => M.map (intL L).subtype` using `fun M N e => Matrix.ext fun i j => Subtype.ext (congrFun (congrFun e i) j)`. Establish `hAA : A * A = 1` using `hinj (by show (A * A).map (intL L).subtype = (1 : Matrix (Fin n) (Fin n) (intL L)).map (intL L).subtype`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _), hA]`. Conclude with `P.fIwasawa_antiJ_mul_antiJ)`.
-
-Conclude with `⟨⟨A, A, hAA, hAA⟩, Units.ext hA⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem antiG_mem (n : ℕ) : GlobalTheory.SphTheta.antiG L n ∈ GLint (Fin n) (intL L) := by
   let A : Matrix (Fin n) (Fin n) (intL L) := fun i j => if i.val + j.val + 1 = n then 1 else 0
@@ -141,7 +139,7 @@ def spanT : Submodule ℂ (WO S T → ℂ) := Submodule.span ℂ (Set.range fun 
 variable {ψ u f}
 
 /- English proof (translation)
-Establish `key : spanT ψ u f ≤ (spanT ψ u f).comap g` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hg x)`. Conclude with `key hm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_spanT_of {g : Module.End ℂ (WO S T → ℂ)} (hg : ∀ x, g (heisO ψ S T (u x) f) ∈ spanT ψ u f) {m : WO S T → ℂ}
     (hm : m ∈ spanT ψ u f) : g m ∈ spanT ψ u f := by
@@ -151,7 +149,7 @@ theorem mem_spanT_of {g : Module.End ℂ (WO S T → ℂ)} (hg : ∀ x, g (heisO
   exact key hm
 
 /- English proof (translation)
-The claim follows from `mem_spanT_of (g := GlobalTheory.SplitScalar.heisL ψ S T (u x)) (fun y => by show heisO ψ S T (u x) (heisO ψ S T (u y) f) ∈ spanT ψ u f rw [GlobalTheory.SplitScalar.heisO_heisO, ← hu] exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨x + y, rfl⟩)) hm`.
+A detailed English derivation is pending.
 -/
 theorem heis_mem_spanT [Add X] (hu : ∀ x y, u (x + y) = u x + u y) (x : X) {m : WO S T → ℂ} (hm : m ∈ spanT ψ u f) :
     heisO ψ S T (u x) m ∈ spanT ψ u f :=
@@ -161,7 +159,7 @@ theorem heis_mem_spanT [Add X] (hu : ∀ x y, u (x + y) = u x + u y) (x : X) {m 
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨x + y, rfl⟩)) hm
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨0, by show heisO ψ S T (u 0) f = f rw [hu, GlobalTheory.SplitScalar.heisO_zero]⟩`.
+A detailed English derivation is pending.
 -/
 theorem self_mem_spanT [Zero X] (hu : u 0 = 0) : f ∈ spanT ψ u f :=
   Submodule.subset_span ⟨0, by
@@ -192,9 +190,9 @@ def omT {G : Type} [Monoid G] (π : G →* Module.End ℂ (WO S T → ℂ))
     rw [map_mul, Module.End.mul_apply])
 
 /- English proof (translation)
-Establish `e : (Set.range fun x => rhoT ψ u f hu x ⟨f, hf⟩) = ((↑) : spanT ψ u f → WO S T → ℂ) ⁻¹' Set.range fun x => heisO ψ S T (u x) f`. Use extensionality with `m`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨x, Subtype.ext hx⟩`. Rewrite using `[e]`. Conclude with `Submodule.span_span_coe_preimage`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_rhoT_eq_top [Add X] (hu : ∀ x y, u (x + y) = u x + u y) (hf : f ∈ spanT ψ u f) :
     Submodule.span ℂ (Set.range fun x => rhoT ψ u f hu x ⟨f, hf⟩) = ⊤ := by

@@ -11,14 +11,14 @@ namespace PI.UnitaryGroupMassFormula.PhSchurConv.Main
 open PI.PhSchurConv
 
 /- English proof (translation)
-Conclude with `inner_conj_symm b a`.
+A detailed English derivation is pending.
 -/
 theorem star_inner {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (a b : H) :
     star ⟪a, b⟫_ℂ = ⟪b, a⟫_ℂ := by
   exact inner_conj_symm b a
 
 /- English proof (translation)
-Rewrite using `[hU.2.1 a b]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_mul_apply {G : Type} [Group G] [TopologicalSpace G]
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -27,7 +27,7 @@ theorem map_mul_apply {G : Type} [Group G] [TopologicalSpace G]
   rfl
 
 /- English proof (translation)
-Set `L : H →ₗᵢ[ℂ] H` to `⟨(σ g).toLinearMap, hU.2.2.1 g⟩`. Conclude with `L.inner_map_map a b`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem inner_map {G : Type} [Group G] [TopologicalSpace G]
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -36,7 +36,7 @@ theorem inner_map {G : Type} [Group G] [TopologicalSpace G]
   exact L.inner_map_map a b
 
 /- English proof (translation)
-Rewrite using `[star_inner, ← inner_map hU g w (σ g⁻¹ w), ← map_mul_apply hU, mul_inv_cancel, hU.1, ContinuousLinearMap.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_inv {G : Type} [Group G] [TopologicalSpace G]
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -46,7 +46,7 @@ theorem coef_inv {G : Type} [Group G] [TopologicalSpace G]
     ContinuousLinearMap.one_apply]
 
 /- English proof (translation)
-Establish `h1 : σ g (σ x w) = σ (g * x) w` using `(map_mul_apply hU g x w).symm`. Rewrite using `[h1]`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul_apply hU, ← map_mul_apply hU, inv_mul_cancel, hU.1, ContinuousLinearMap.one_apply, mul_inv_rev]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_conv {G : Type} [Group G] [TopologicalSpace G]
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]

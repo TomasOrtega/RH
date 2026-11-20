@@ -18,19 +18,17 @@ namespace GlobalTheory.CompanionTheory.WcVol
 open GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep (eq_one_or_eq_conj conj map_conj_eq continuous_conj modulus_algebraMap modulus_conj)
 
 /- English proof (translation)
-Establish `hq : (1 : ℝ) < (residueCard E : ℝ)` using `by exact_mod_cast one_lt_residueCard (K := E)`. Establish `hq0 : (0 : ℝ) < (residueCard E : ℝ)` using `by linarith`. Take `⟨m, hm1, hm2⟩` from `exists_mem_Ico_zpow hR hq`. Establish `hsub : {w : E | (modulus w : ℝ) ≤ R} ⊆ (valBall E (-m) : Set E)`. Introduce `w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hw0 : w = 0`. Rewrite using `[hw0]`. Conclude with `zero_mem _`. Use `SetLike.mem_coe.2 ((mem_valBall_iff_le_ord hw0).2 ?_)` and prove the remaining obligations. Establish `h1 : (modulus w : ℝ) = (residueCard E : ℝ) ^ (-ord w)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[modulus_of_ne_zero hw0]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h2 : (residueCard E : ℝ) ^ (-ord w) < (residueCard E : ℝ) ^ (m + 1)`. Rewrite using `[← h1]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `lt_of_le_of_lt hw hm2`. Establish `h3` using `(zpow_lt_zpow_iff_right₀ hq).1 h2`. Use linear arithmetic over natural numbers and integers. Establish `hc : μ (valBall E 0 : Set E) ≠ ⊤` using `(isCompact_valBall 0).measure_lt_top.ne`. Use `(measure_mono hsub).trans ?_` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[measure_valBall μ (-m), neg_neg]`. Establish `e1 : (((residueCard E : NNReal) ^ m : NNReal) : ENNReal) = ENNReal.ofReal ((residueCard E : ℝ) ^ m)`. Rewrite using `[← ENNReal.ofReal_coe_nnreal]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Use `conv_lhs => rw [← ENNReal.ofReal_toReal hc]`. Rewrite using `[← ENNReal.ofReal_mul (zpow_nonneg hq0.le _)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
-
-Conclude with `mul_le_mul_of_nonneg_left hm1 ENNReal.toReal_nonneg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_modulus_le (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E]
     [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E]
@@ -65,23 +63,19 @@ theorem measure_modulus_le (E : Type) [Field E] [ValuativeRel E] [TopologicalSpa
   exact mul_le_mul_of_nonneg_left hm1 ENNReal.toReal_nonneg
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ σ hσ μ _`. Establish `hconj : σ = conj F E` using `(eq_one_or_eq_conj σ).resolve_left hσ`. Substitute `hconj` using the available equality. Use `⟨(μ (valBall E 0 : Set E)).toReal, ENNReal.toReal_nonneg, fun κ hκ ξ R hR => ?_⟩` and prove the remaining obligations. Establish `ha : algebraMap F E κ ≠ 0` using `(map_ne_zero _).2 hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hκ0 : modulus κ ≠ 0`. Rewrite using `[modulus_of_ne_zero hκ]`. Conclude with `zpow_ne_zero _ residueCard_nnreal_ne_zero`. Use `set a := algebraMap F E κ with ha_def`. Use `set T : Set E := {w : E | (modulus w : ℝ) ≤ R} with hT_def`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : MeasurableSet T` using `measurableSet_le (measurable_coe_nnreal_real.comp measurable_modulus) measurable_const`. Use `set Y : Set E := (fun v => v + -ξ) ⁻¹' T with hY_def`. Establish `hY : MeasurableSet Y` using `hT.preimage (continuous_id.add continuous_const).measurable`. Use `set Z : Set E := (fun v => a * v) ⁻¹' Y with hZ_def`. Establish `hZ : MeasurableSet Z` using `hY.preimage (continuous_const.mul continuous_id).measurable`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : {u : E | (modulus (a * conj F E u - ξ) : ℝ) ≤ R} = (conj F E) ⁻¹' Z`. Use extensionality with `u`. Simplify using `[hZ_def, hY_def, hT_def, sub_eq_add_neg]`. Establish `e1 : μ ((conj F E) ⁻¹' Z) = μ Z`. Establish `h` using `Measure.map_apply (μ := μ) (continuous_conj (K := F) (E := E)).measurable hZ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[map_conj_eq]`. Conclude with `h.symm`. Establish `e2 : μ Z = ((modulus a)⁻¹ : NNReal) * μ Y`. Establish `h` using `Measure.map_apply (μ := μ) (measurable_const_mul a) hY`. Rewrite `h` using `[map_mul_left_eq_smul μ ha]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Conclude with `h.symm`. Establish `e3 : μ Y = μ T` using `measure_preimage_add_right μ (-ξ) T`. Rewrite using `[hS, e1, e2, e3, modulus_algebraMap (K := F)]`. Establish `hb` using `measure_modulus_le E μ R hR`. Establish `hm : (0 : ℝ) < (modulus κ : ℝ) ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `: (0 : ℝ) < (modulus κ : ℝ)` using `by exact_mod_cast pos_iff_ne_zero.2 hκ0`. Check the signs of the components of the expression. Establish `e4 : ((((modulus κ) ^ 2)⁻¹ : NNReal) : ENNReal) = ENNReal.ofReal (((modulus κ : ℝ) ^ 2)⁻¹)`. Rewrite using `[← ENNReal.ofReal_coe_nnreal]`. Use `push_cast`.
-
-Both sides reduce to the same expression. Rewrite using `[e4]`. Use `(mul_le_mul_right hb _).trans ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (inv_nonneg.2 hm.le)]`. Use `ENNReal.ofReal_le_ofReal (le_of_eq ?_)` and prove the remaining obligations.
-
-Rewrite using `[div_eq_mul_inv, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volume_bound : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (σ : E ≃ₐ[F] E), σ ≠ AlgEquiv.refl → ∀ (μ : Measure E) [μ.IsAddHaarMeasure], ∃ C : ℝ, 0 ≤ C ∧ ∀ κ : F, κ ≠ 0 → ∀ (ξ : E) (R : ℝ), 0 < R → μ {u : E | (modulus (algebraMap F E κ * σ u - ξ) : ℝ) ≤ R} ≤ ENNReal.ofReal (C * R / (modulus κ : ℝ) ^ 2) := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ σ hσ μ _

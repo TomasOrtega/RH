@@ -7,19 +7,17 @@ open scoped TensorProduct
 namespace GlobalTheory.FlatFibreRegular
 
 /- English proof (translation)
-Set `P : Finset A → Prop` to `fun S => (↑S ⊆ (I : Set A)) ∧ ∀ x ∈ I, ∃ s ∉ 𝔭, s * x ∈ Ideal.span (S : Set A)`. Establish `hex : ∃ n, ∃ S : Finset A, S.card = n ∧ P S`. Take `⟨S, hS⟩` from `hI`. Use `⟨S.card, S, rfl, fun a ha => ?_, fun x hx => ⟨1, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hS]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.subset_span ha`. Conclude with `fun h => (Ideal.IsPrime.ne_top' (I := 𝔭)) ((Ideal.eq_top_iff_one _).2 h)`. Rewrite using `[one_mul, hS]`. Conclude with `hx`. Take `⟨S, hcard, hSI, hSgen⟩` from `Nat.find_spec hex`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨S, hSI, hSgen, fun c hc k => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hk`. Establish `hlt : (S.erase k).card < Nat.find hex`. Rewrite using `[← hcard]`. Conclude with `Finset.card_erase_lt_of_mem k.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Apply `Nat.find_min hex hlt` to reduce the goal to its premises. Use `⟨S.erase k, rfl, fun x hx => hSI (Finset.mem_of_mem_erase hx), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hsx⟩` from `hSgen x hx`. Use `⟨c k * s, fun h => ((Ideal.IsPrime.mem_or_mem inferInstance h).elim hk hs), ?_⟩` and prove the remaining obligations. Establish `key : Ideal.span (S : Set A) ≤ Submodule.comap (LinearMap.mulLeft A (c k)) (Ideal.span ((S.erase k : Finset A) : Set A))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_le]`. Introduce `a ha`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.mulLeft_apply]`. Distinguish the cases in `hak : a = k`. Rewrite using `[hak]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Finset.add_sum_erase Finset.univ (fun i : S => c i * (i : A)) (Finset.mem_univ k)`. Rewrite `h1` using `[hc]`. Rewrite using `[eq_neg_of_add_eq_zero_left h1]`. Use `neg_mem (Ideal.sum_mem _ fun i hi => Ideal.mul_mem_left _ _ (Ideal.subset_span ?_))` and prove the remaining obligations. Establish `hik : i ≠ k` using `Finset.ne_of_mem_erase hi`.
-
-Conclude with `Finset.mem_erase.2 ⟨fun h => hik (Subtype.ext h), i.2⟩`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span (Finset.mem_erase.2 ⟨hak, ha⟩))`. Use `key hsx` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_minimal_generators {A : Type} [CommRing A] (𝔭 : Ideal A) [𝔭.IsPrime] (I : Ideal A)
     (hI : I.FG) :
@@ -61,29 +59,27 @@ theorem exists_minimal_generators {A : Type} [CommRing A] (𝔭 : Ideal A) [𝔭
   simpa [mul_assoc] using this
 
 /- English proof (translation)
-Take `⟨S, hSI, hSgen, hrel⟩` from `exists_minimal_generators 𝔭 I hI`. Use `set J := 𝔭.map (algebraMap A L) with hJdef`. Set `v : S → L` to `fun i => algebraMap A L i`. Establish `hspan : I.map (algebraMap A L) ≤ Ideal.span (Set.range v)`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `hSgen x hx`. Establish `h1 : algebraMap A L (s * x) ∈ Ideal.span (Set.range v)`. Establish `: Ideal.map (algebraMap A L) (Ideal.span (S : Set A)) ≤ Ideal.span (Set.range v)`. Rewrite using `[Ideal.map_span]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Ideal.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `⟨⟨a, ha⟩, rfl⟩`. Conclude with `this (Ideal.mem_map_of_mem _ hsx)`. Rewrite `h1` using `[map_mul]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `(hu s hs).exists_left_inv`. Use `Ideal.mul_mem_left _ t h1` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ht, one_mul]`. Then use the resulting hypothesis. Establish `hvI : ∀ i, v i ∈ I.map (algebraMap A L)` using `fun i => Ideal.mem_map_of_mem _ (hSI i.2)`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun L).1 (hspan hy)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgy' : g * y ∈ J • Ideal.span (Set.range v)`. Establish `h1 : (I * 𝔭).map (algebraMap A L) ≤ J • Ideal.span (Set.range v)`. Rewrite using `[Ideal.smul_eq_mul, Ideal.map_mul, mul_comm]`. Conclude with `Ideal.mul_mono_right hspan`. Conclude with `h1 hgy`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hwJ, hw⟩` from `(Submodule.mem_ideal_smul_span_iff_exists_sum J v _).1 hgy'`. Rewrite `hw` using `[Finsupp.sum_fintype _ _ (by simp)]`. Establish `hrel0 : ∑ i : S, (i : A) • (g * c i - w i) = 0`. Establish `e1 : ∑ i : S, (i : A) • (g * c i) = g * y`. Rewrite using `[← hc, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul, v]`. Simplify using `only [Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∑ i : S, (i : A) • w i = g * y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hw]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul, v]`. Simplify using `only [Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [smul_sub, Finset.sum_sub_distrib, e1, e2, sub_self]`. Take `⟨k, a, z, hx, hf⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero (R := A) (M := L) (f := fun i : S => (i : A)) (x := fun i => g * c i - w i) hrel0`. Establish `ha : ∀ i j, a i j ∈ 𝔭` using `fun i j => hrel (fun i => a i j) (by rw [← hf j]; exact Finset.sum_congr rfl fun i _ => mul_comm _ _) i`. Establish `hcJ : ∀ i, c i ∈ J`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Apply `hg` to reduce the goal to its premises. Establish `h1 : g * c i - w i ∈ J`. Establish `hxi` using `hx i`. Simplify using `only at hxi`. Rewrite using `[hxi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.sum_mem _ fun j _ => by`. Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (ha i j))`. Simplify using `using Ideal.add_mem _ h1 (hwJ i)`. Rewrite using `[← hc, Ideal.map_mul]`.
-
-Conclude with `Ideal.sum_mem _ fun i _ => by`. Rewrite using `[smul_eq_mul, mul_comm (c i)]`. Conclude with `Ideal.mul_mem_mul (hvI i) (hcJ i)`.
+A detailed English derivation is pending.
 -/
 theorem mem_map_mul_of_mul_mem {A L : Type} [CommRing A] [CommRing L] [Algebra A L] [Module.Flat A L]
     (𝔭 : Ideal A) [𝔭.IsPrime] (hu : ∀ s ∉ 𝔭, IsUnit (algebraMap A L s))
@@ -147,11 +143,9 @@ theorem mem_map_mul_of_mul_mem {A L : Type} [CommRing A] [CommRing L] [Algebra A
     rw [smul_eq_mul, mul_comm (c i)]; exact Ideal.mul_mem_mul (hvI i) (hcJ i)
 
 /- English proof (translation)
-Establish `hn : ∀ n : ℕ, y ∈ (𝔭 ^ n).map (algebraMap A L)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, Ideal.one_eq_top, Ideal.map_top]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Conclude with `mem_map_mul_of_mul_mem 𝔭 hu g hg (𝔭 ^ n) (IsNoetherian.noetherian _) y ih (by rw [hgy]; exact zero_mem _)`. Rewrite using `[← Ideal.mem_bot, ← Ideal.iInf_pow_eq_bot_of_isLocalRing _ hJ, Ideal.mem_iInf]`. Introduce `n`.
-
-Rewrite using `[← Ideal.map_pow]`. Conclude with `hn n`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mul_eq_zero {A L : Type} [CommRing A] [IsNoetherianRing A] [CommRing L]
     [IsLocalRing L] [IsNoetherianRing L] [Algebra A L] [Module.Flat A L]
@@ -173,7 +167,7 @@ theorem eq_zero_of_mul_eq_zero {A L : Type} [CommRing A] [IsNoetherianRing A] [C
   exact hn n
 
 /- English proof (translation)
-Use `haveI : _root_.IsReduced ((A ⧸ 𝔭) ⊗[A] B) := GlobalTheory.isReduced_algebra_of_smooth_of_isReduced (A ⧸ 𝔭) _`. Set `e` to `(Algebra.TensorProduct.quotIdealMapEquivTensorQuot B 𝔭).toRingEquiv.trans (Algebra.TensorProduct.comm A B (A ⧸ 𝔭)).toRingEquiv`. Use `haveI : _root_.IsReduced (B ⧸ 𝔭.map (algebraMap A B)) := isReduced_of_injective e.toRingHom e.injective`. Conclude with `(Ideal.isRadical_iff_quotient_reduced _).2 this`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isRadical_map_of_smooth {A B : Type} [CommRing A] [CommRing B] [Algebra A B]
     [Algebra.Smooth A B] (𝔭 : Ideal A) [𝔭.IsPrime] : (𝔭.map (algebraMap A B)).IsRadical := by
@@ -186,23 +180,19 @@ theorem isRadical_map_of_smooth {A B : Type} [CommRing A] [CommRing B] [Algebra 
   exact (Ideal.isRadical_iff_quotient_reduced _).2 this
 
 /- English proof (translation)
-Use `set L := Localization.AtPrime u`. Use `set J := I₀.map (algebraMap B L) with hJdef`. Establish `hJrad : J.IsRadical`. Introduce and unpack `x ⟨n, hn⟩`. Take `⟨⟨b, s⟩, hx⟩` from `IsLocalization.mk'_surjective u.primeCompl x`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality.
 
-Simplify using `only at hx`. Substitute `hx` using the available equality. Establish `h1 : algebraMap B L (b ^ n) ∈ J`. Use `Ideal.mul_mem_right (algebraMap B L ((s ^ n : u.primeCompl) : B)) J hn` as an intermediate fact. Rewrite `this` using `[← IsLocalization.mk'_pow, IsLocalization.mk'_spec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht, htb⟩` from `(IsLocalization.algebraMap_mem_map_algebraMap_iff u.primeCompl L _ _).1 h1`. Establish `h2 : t * b ∈ I₀` using `hrad ⟨n + 1, by`. Rewrite using `[show (t * b) ^ (n + 1) = (t ^ n * b) * (t * b ^ n) by ring]`. Conclude with `Ideal.mul_mem_left _ _ htb⟩`. Establish `h3 : algebraMap B L b ∈ J`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h4` using `Ideal.mem_map_of_mem (algebraMap B L) h2`. Rewrite `h4` using `[map_mul]`. Take `⟨t', ht'⟩` from `(IsLocalization.map_units L (⟨t, ht⟩ : u.primeCompl)).exists_left_inv`. Use `Ideal.mul_mem_left _ t' h4` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ht', one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[IsLocalization.mk'_eq_mul_mk'_one]`. Conclude with `Ideal.mul_mem_right _ _ h3`. Assume the negation of the conclusion as `hyJ`. Rewrite `hyJ` using `[← hJrad.radical, ← Ideal.sInf_minimalPrimes, Ideal.mem_sInf]`. Use `push_neg at hyJ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨P, hP, hyP⟩` from `hyJ`. Use `haveI : P.IsPrime := hP.1.1`. Establish `hgP : algebraMap B L g ∈ P` using `((Ideal.IsPrime.mem_or_mem inferInstance (hP.1.2 hy)).resolve_right hyP)`. Use `set Q := P.comap (algebraMap B L)`. Establish `hQu : Q ≤ u`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Assume the negation of the conclusion as `hxu`. Conclude with `(Ideal.IsPrime.ne_top inferInstance : P ≠ ⊤) (Ideal.eq_top_of_isUnit_mem _ hx (IsLocalization.map_units L (⟨x, hxu⟩ : u.primeCompl)))`. Establish `hQmin : Q ∈ I₀.minimalPrimes`. Use `⟨⟨inferInstance, Ideal.map_le_iff_le_comap.1 hP.1.2⟩, fun Q' hQ' hle => ?_⟩` and prove the remaining obligations.
-
-Use `haveI : Q'.IsPrime := hQ'.1`. Establish `hd : Disjoint (u.primeCompl : Set B) (Q' : Set B)` using `Set.disjoint_left.2 fun x hxM hxI => hxM (hQu (hle hxI))`. Use `haveI := IsLocalization.isPrime_of_isPrime_disjoint u.primeCompl L Q' hQ'.1 hd`. Establish `hc` using `IsLocalization.comap_map_of_isPrime_disjoint u.primeCompl L hQ'.1 hd`. Establish `hPP : P ≤ Q'.map (algebraMap B L)` using `hP.2 ⟨inferInstance, Ideal.map_mono hQ'.2⟩ (Ideal.map_le_iff_le_comap.2 hle)`.
-
-Introduce `x hx`. Rewrite using `[← hc]`. Conclude with `hPP hx`. Conclude with `hg Q hQmin hQu hgP`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_mul_mem {B : Type} [CommRing B] (u : Ideal B) [u.IsPrime] (I₀ : Ideal B)
     (hrad : I₀.IsRadical) (g : B) (hg : ∀ Q ∈ I₀.minimalPrimes, Q ≤ u → g ∉ Q)
@@ -258,15 +248,13 @@ theorem mem_of_mul_mem {B : Type} [CommRing B] (u : Ideal B) [u.IsPrime] (I₀ :
   exact hg Q hQmin hQu hgP
 
 /- English proof (translation)
-Introduce `A B _ _ _ _ _ b g u hgb hg`. Use `set 𝔭 := u.asIdeal.comap (algebraMap A B)`. Use `set L := Localization.AtPrime u.asIdeal`. Use `haveI : IsNoetherianRing B := Algebra.FiniteType.isNoetherianRing A B`. Use `haveI : Module.Flat A L := Module.Flat.trans A B L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmapeq : 𝔭.map (algebraMap A L) = (𝔭.map (algebraMap A B)).map (algebraMap B L)`. Rewrite using `[Ideal.map_map, ← IsScalarTower.algebraMap_eq]`. Establish `hu : ∀ s ∉ 𝔭, IsUnit (algebraMap A L s)`. Introduce `s hs`. Rewrite using `[IsScalarTower.algebraMap_apply A B L]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsLocalization.map_units L (⟨algebraMap A B s, hs⟩ : u.asIdeal.primeCompl)`. Establish `hJ : 𝔭.map (algebraMap A L) ≠ ⊤`. Rewrite using `[hmapeq]`. Use `ne_top_of_le_ne_top (IsLocalRing.maximalIdeal.isMaximal L).ne_top ?_` and prove the remaining obligations. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.map_mono (Ideal.map_le_iff_le_comap.2 le_rfl)`. Establish `hg' : ∀ y : L, algebraMap B L g * y ∈ 𝔭.map (algebraMap A L) → y ∈ 𝔭.map (algebraMap A L)`. Introduce `y hy`. Rewrite `hy`, the goal using `[hmapeq]`. Conclude with `mem_of_mul_mem u.asIdeal _ (isRadical_map_of_smooth 𝔭) g hg y hy`.
-
-Apply `eq_zero_of_mul_eq_zero 𝔭 hu hJ (algebraMap B L g) hg'` to reduce the goal to its premises. Rewrite using `[← map_mul, hgb, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem localization_eq_zero_of_mul_eq_zero : ∀ (A B : Type) [CommRing A] [IsNoetherianRing A] [CommRing B] [Algebra A B] [Algebra.Smooth A B]
     (b g : B) (u : PrimeSpectrum B), g * b = 0 →

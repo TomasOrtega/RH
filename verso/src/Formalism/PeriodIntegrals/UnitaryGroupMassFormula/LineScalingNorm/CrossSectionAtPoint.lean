@@ -12,84 +12,74 @@ open Formalism.FourierDecayAlt.P.CutMP.Gauge.GC Formalism.FourierDecayAlt.P.CutM
 noncomputable section
 
 /- English proof (translation)
-Simplify using `only [ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_ite_smul {ι V : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup V] [Module ℂ V] (σ : ι) (Q : ι → V) :
     (∑ ρ, (if ρ = σ then (1 : ℂ) else 0) • Q ρ) = Q σ := by
   simp only [ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs hk hcs X d hA l hl Pr hPr π ζ hζ X0 hX0`. Take `⟨hpl, hL, hS, hRel, hQQ⟩` from `hA`. Establish `hH : GTHyp P Bs X d` using `⟨hpl, hk, hcs, hL, hS, hRel, hQQ⟩`. Take `⟨e, he, hkF⟩` from `gauge_kappa_holds Wp Wq P Bs X d hH`. Take `⟨Qs, hQ⟩` from `gauge_kappa_pointwise_holds Wp Wq P Bs X d hH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, t, hst, hSL⟩` from `gTSSLocal_of_radT radial_torus_local_holds Wp Wq P Bs X d hH e he hkF`. Establish `hadj` using `second_shift_adjoint_pointwise Wp Wq P Bs X d hH e he hkF s t hst hSL l hl`. Establish `hTz` using `tz_TT P Bs hpl`. Establish `hRB` using `radBase_of P Bs hpl`. Establish `hζT : P.TT < Complex.normSq ζ` using `hζ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsec : ∀ ρ, ((NF.QR P.k P.r Bs.z Bs.z').indicator fun q : (Fin P.r → ℂ) × ℂ => e ρ q.2) ∈ NF.RadSec P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π'`. Introduce `ρ`. Use `⟨((he.1 ρ).comp contDiff_snd.contDiffOn fun q hq => ?_).congr fun q hq => ?_, fun q hq => ?_, fun q hq => ?_⟩` and prove the remaining obligations. Use `show P.TT < Complex.normSq q.2`. Rewrite using `[← hTz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hq.2`. Simplify using `[Set.indicator_of_mem hq]`. Rewrite using `[Set.indicator_of_mem hq]`. Conclude with `(he.2 q.2 (by rw [← hTz]; exact hq.2)).1 ρ`. Simplify using `[Set.indicator_of_notMem hq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose Ψ0 hΨ0 hΨr using fun ρ => Formalism.FourierDecayAlt.P.radical_reduction_surjective Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB _ (hsec ρ)`. Set `Ψ : M.Ty P → Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'` to `fun ρ => ⟨Ψ0 ρ, hΨ0 ρ⟩`. Establish `hq : ((c1 P.r, ζ) : (Fin P.r → ℂ) × ℂ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `⟨constant_one_mem_nonvanishing P.r, by rw [hTz]; exact hζ⟩`. Establish `hΨ : ∀ ρ, (Ψ ρ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (c1 P.r) (NF.muZ P.k P.r Bs.μsec ζ) = e ρ ζ`. Introduce `ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `congrFun (hΨr ρ) (c1 P.r, ζ)`. Simplify using `only [NF.radR, Set.indicator_of_mem hq] at h`. Conclude with `h`. Establish `hval : ∀ Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π', (Z : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (c1 P.r) (NF.muZ P.k P.r Bs.μsec ζ) ∈ NF.Fib P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' ζ`. Introduce `Z`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hmem` using `(Formalism.FourierDecayAlt.P.radical_reduction_mem Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB _ Z.2).2.1 (c1 P.r, ζ) hq`. Simplify `hmem` using `only [NF.radR, Set.indicator_of_mem hq]`. Establish `hexp` using `(he.2 ζ hζT).2.2`. Establish `hδ : ∀ ρ σ, inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec (e σ ζ)) = if ρ = σ then (1 : ℂ) else 0` using `(he.2 ζ hζT).2.1`. Set `q : MA.Qp P.r P.TT` to `⟨(c1 P.r, ζ), fun _ => one_ne_zero, hζT⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set w : ℂ := ((wR P.k P.TT ζ : ℝ) : ℂ) with hwdef`. Establish `hw : w ≠ 0` using `wRc_ne P hζ`. Establish `hraw : ∀ (Z : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (ρ : M.Ty P), rawR P Bs.μsec e Z ρ q = w * inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec (Z (c1 P.r) (NF.muZ P.k P.r Bs.μsec ζ)))` using `fun Z ρ => rfl`. Establish `hrawΨ : ∀ σ ρ, rawR P Bs.μsec e (Ψ σ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ q = w * (if ρ = σ then (1 : ℂ) else 0)`. Introduce `σ ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hraw, hΨ σ, hδ]`. Establish `hmulapply : ∀ (A C : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')) (Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'), (A * C).1 Z = A.1 (C.1 Z)` using `fun A C Z => rfl`. Establish `hκpt : ∀ (f : M.Ty P → ℂ) (Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'), (((d.κ f).1 Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (c1 P.r) (NF.muZ P.k P.r Bs.μsec ζ) = ((Z : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (c1 P.r) (NF.muZ P.k P.r Bs.μsec ζ)).comp (∑ ρ, f ρ …` using `fun f Z => hQ.2.2.2 f Z q`. Establish `hK0 : ∀ σ, e σ ζ ∈ Line P Bs Pr σ ζ`. Introduce `σ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(lineQ P Bs X d hH Qs hQ Pr hPr ζ hζ σ (e σ ζ) ((he.2 ζ hζT).1 σ)).2 ?_` and prove the remaining obligations. Establish `h1` using `hκpt (fun ρ => if ρ = σ then (1 : ℂ) else 0) (Ψ σ)`. Rewrite `h1` using `[sum_ite_smul, hΨ σ]`. Rewrite using `[← h1, hexp _ (hval _)]`. Establish `hc : ∀ ρ, inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec ((((d.κ (fun ρ => if ρ = σ then (1 : ℂ) else 0)).1 (Ψ σ) : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (c1 P.r) (NF.muZ P.k P.r Bs.μsec ζ))) = if ρ = σ then (1 : ℂ) else 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `ρ`. Establish `h2` using `SSAdjH.kap_pt P Bs hpl hk e he d hkF (fun ρ => if ρ = σ then (1 : ℂ) else 0) (Ψ σ) ρ q`. Rewrite `h2` using `[hraw, hrawΨ]`. Distinguish the cases in `hρ : ρ = σ`. Rewrite `h2`, the goal using `[if_pos hρ]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_left_cancel₀ hw` to reduce the goal to its premises. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2`, the goal using `[if_neg hρ]`. Apply `mul_left_cancel₀ hw` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hc, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `set a : M.Ty P → ℂ := fun σ => inner ℂ (B.hsVec (e σ ζ)) (B.hsVec X0) with hadef`. Set `Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'` to `∑ σ, a σ • Ψ σ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsumv : ∀ (G : M.Ty P → Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (c : Fin P.r → ℂ) (g : Q.Mx P.k P.r), ((∑ ρ, G ρ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c g = ∑ ρ, (G ρ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c g`. Introduce `G c g`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply, Finset.sum_apply]`. Establish `hΦv : (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (c1 P.r) (NF.muZ P.k P.r Bs.μsec ζ) = X0`. Rewrite using `[hsumv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conv_rhs => rw [hexp X0 hX0.1]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, Pi.smul_apply, Pi.smul_apply, hΨ σ]`. Establish `hrawΦ : ∀ ρ, rawR P Bs.μsec e (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ q = w * a ρ`. Introduce `ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hraw, hΦv]`. Establish `hXQ : X0.comp (Qs π) = X0` using `(lineQ P Bs X d hH Qs hQ Pr hPr ζ hζ π X0 hX0.1).1 hX0`. Establish `hK1 : ∀ σ, σ ≠ π → a σ = 0`. Introduce `σ hσ`. Establish `h1` using `hκpt (fun ρ => if ρ = π then (1 : ℂ) else 0) Φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[sum_ite_smul, hΦv, hXQ]`. Establish `h2` using `SSAdjH.kap_pt P Bs hpl hk e he d hkF (fun ρ => if ρ = π then (1 : ℂ) else 0) Φ σ q`. Rewrite `h2` using `[hraw, h1, hrawΦ, if_neg hσ, zero_mul]`. Conclude with `(mul_eq_zero.1 h2).resolve_left hw`. Establish `hSSΨ : ∀ σ, rawR P Bs.μsec e ((((d.SS l).1 (Ψ π) : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')) : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) σ q = s l σ π ζ * w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Introduce `σ`. Rewrite using `[(SSAdjH.ss_pt P Bs hpl hk e he d s t hst hSL hl (Ψ π) σ q).1]`. Simplify using `only [hrawΨ, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Both sides reduce to the same expression. Establish `hK2 : ∀ ρ', ¬ M.Up P l π ρ' → s l ρ' π ζ = 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `ρ' hn`. Establish `hcond : ∀ ρ ρ'', M.Up P l ρ ρ'' → (fun x => if M.Up P l π x then (1 : ℂ) else 0) ρ'' = (fun x => if x = π then (1 : ℂ) else 0) ρ`. Introduce `ρ ρ'' hU`. Simplify using `only`. Distinguish the cases in `hρ : ρ = π`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hρ` using the available equality. Rewrite using `[if_pos hU, if_pos rfl]`. Establish `hn2 : ¬ M.Up P l π ρ''` using `fun h2 => hρ (up_relation_source_unique hU h2)`. Rewrite using `[if_neg hn2, if_neg hρ]`. Establish `heq` using `hRel.2.2.2.1 l _ _ hcond`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz` using `congrArg (fun A : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') => A.1 (Ψ π)) heq`. Simplify using `only [hmulapply] at hz`. Establish `h3` using `congrArg (fun Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π' => rawR P Bs.μsec e (Z : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ' q) hz`. Apply the tactic sequence `try dsimp only at h3`. Rewrite `h3` using `[SSAdjH.kap_pt P Bs hpl hk e he d hkF, hSSΨ, (SSAdjH.ss_pt P Bs hpl hk e he d s t hst hSL hl _ ρ' q).1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Apply the tactic sequence `try dsimp only at h3`. Rewrite `h3` using `[if_neg hn, zero_mul]`. Rewrite using `[Finset.sum_eq_single π (fun b _ hb => by`. Rewrite using `[SSAdjH.kap_pt P Bs hpl hk e he d hkF, hrawΨ]`. Apply the tactic sequence `try dsimp only`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[if_neg hb]`. Use the proof step `ring)`. Use the proof step `(fun h => absurd (Finset.mem_univ π) h)] at h3`. Rewrite `h3` using `[SSAdjH.kap_pt P Bs hpl hk e he d hkF, hrawΨ]`. Apply the tactic sequence `try dsimp only at h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h4 : s l ρ' π ζ * w = 0`. Establish `h5 : (0 : ℂ) = s l ρ' π ζ * ((if π = π then (1 : ℂ) else 0) * (w * if π = π then (1 : ℂ) else 0))` using `h3`. Rewrite `h5` using `[if_pos rfl]`. Take the linear combination `-h5`. Conclude with `(mul_eq_zero.1 h4).resolve_right hw`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hK3 : ∑ σ, star (s l σ π ζ) * s l σ π ζ = ((M.Nrm P l π : ℝ) : ℂ)`. Establish `heq` using `hRel.2.2.2.2.2 l hl`. Establish `hz` using `congrArg (fun A : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') => A.1 (Ψ π)) heq`. Simplify using `only [hmulapply] at hz`. Establish `h3` using `congrArg (fun Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π' => rawR P Bs.μsec e (Z : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) π q) hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `try dsimp only at h3`. Rewrite `h3` using `[(SSAdjH.ss_pt P Bs hpl hk e he d s t hst hSL hl _ π q).2, SSAdjH.kap_pt P Bs hpl hk e he d hkF, hrawΨ]`. Apply the tactic sequence `try dsimp only at h3`. Rewrite `h3` using `[if_pos rfl]`. Establish `h4 : ∀ σ, t l π σ q.1.2 * rawR P Bs.μsec e ((((d.SS l).1 (Ψ π) : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')) : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) σ q = (star (s l σ π ζ) * s l σ π ζ) * w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ`. Rewrite using `[hSSΨ σ, show t l π σ q.1.2 = star (s l σ π ζ) from hadj π σ ζ hζ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[Finset.sum_congr rfl (fun σ _ => h4 σ), ← Finset.sum_mul]`. Apply `mul_right_cancel₀ hw` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree. Establish `hY : ∀ ρ', rawR P Bs.μsec e ((((d.SS l).1 Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')) : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ' q = s l ρ' π ζ * (w * a π)`. Introduce `ρ'`. Rewrite using `[(SSAdjH.ss_pt P Bs hpl hk e he d s t hst hSL hl Φ ρ' q).1, Finset.sum_eq_single π (fun b _ hb => by rw [hrawΦ, hK1 b hb]; ring) (fun h => absurd (Finset.mem_univ π) h), hrawΦ]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set Y := (((d.SS l).1 Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (c1 P.r) (NF.muZ P.k P.r Bs.μsec ζ) with hYdef`. Use `⟨Φ, hΦv, ?_, fun ρ hUp => ?_⟩` and prove the remaining obligations. Establish `hp1` using `SSAdjH.hs_pair P Bs hpl hk e he ((d.SS l).1 Φ) ((d.SS l).1 Φ) q`. Simplify using `only [hY] at hp1`. Establish `hp2` using `SSAdjH.hs_pair P Bs hpl hk e he Φ Φ q`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hrawΦ] at hp2`. Rewrite `hp2` using `[Finset.sum_eq_single π (fun b _ hb => by rw [hK1 b hb]; simp) (fun h => absurd (Finset.mem_univ π) h)]`. Establish `hp2' : ((wR P.k P.TT ζ ^ 2 : ℝ) : ℂ) * inner ℂ (B.hsVec X0) (B.hsVec X0) = star (w * a π) * (w * a π)`. Rewrite using `[← hΦv]`. Conclude with `hp2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hp1' : ((wR P.k P.TT ζ ^ 2 : ℝ) : ℂ) * inner ℂ (B.hsVec Y) (B.hsVec Y) = ∑ σ, star (s l σ π ζ * (w * a π)) * (s l σ π ζ * (w * a π))` using `hp1`. Establish `hsum1 : ∑ σ, star (s l σ π ζ * (w * a π)) * (s l σ π ζ * (w * a π)) = (star (w * a π) * (w * a π)) * ((M.Nrm P l π : ℝ) : ℂ)`. Rewrite using `[← hK3, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul']`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hW2 : ((wR P.k P.TT ζ ^ 2 : ℝ) : ℂ) ≠ 0`. Use `SSTr.wR_pos P hζT` as an intermediate fact. Conclude with `(pow_pos this 2).ne'` after adjusting the coercions. Establish `key : inner ℂ (B.hsVec Y) (B.hsVec Y) = ((M.Nrm P l π : ℝ) : ℂ) * inner ℂ (B.hsVec X0) (B.hsVec X0)`.
-
-Apply `mul_left_cancel₀ hW2` to reduce the goal to its premises. Rewrite using `[hp1', hsum1, show ((wR P.k P.TT ζ ^ 2 : ℝ) : ℂ) * (((M.Nrm P l π : ℝ) : ℂ) * inner ℂ (B.hsVec X0) (B.hsVec X0)) = ((M.Nrm P l π : ℝ) : ℂ) * (((wR P.k P.TT ζ ^ 2 : ℝ) : ℂ) * inner ℂ (B.hsVec X0) (B.hsVec X0)) by ring, hp2']`. Expand and normalize the polynomial expressions, which then agree. Establish `k2` using `congrArg Complex.re key`. Rewrite `k2` using `[Complex.re_ofReal_mul]`.
-
-Use `show ‖B.hsVec Y‖ ^ 2 = M.Nrm P l π * ‖B.hsVec X0‖ ^ 2`. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), ← inner_self_eq_norm_sq (𝕜 := ℂ)]`. Conclude with `k2`. Establish `hc0 : ∀ ρ', ρ' ≠ ρ → inner ℂ (B.hsVec (e ρ' ζ)) (B.hsVec Y) = 0`. Introduce `ρ' hne`.
-
-Establish `hn : ¬ M.Up P l π ρ'` using `fun h2 => hne (up_tgt hUp h2).symm`. Establish `h` using `hY ρ'`. Rewrite `h` using `[hraw, hK2 ρ' hn, zero_mul]`. Conclude with `(mul_eq_zero.1 h).resolve_left hw`. Establish `hYe : Y = inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec Y) • e ρ ζ` using `by conv_lhs => rw [hexp Y (hval _)]`.
-
-Rewrite using `[Finset.sum_eq_single ρ (fun b _ hb => by rw [hc0 b hb, zero_smul]) (fun h => absurd (Finset.mem_univ ρ) h)]`. Use `show Y ∈ Line P Bs Pr ρ ζ`. Rewrite using `[hYe]`. Conclude with `line_smul P Bs Pr ρ ζ _ (hK0 ρ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cross_section_at_point : AtCSec := by
   intro Wp Wq _ _ _ _ _ _ P Bs hk hcs X d hA l hl Pr hPr π ζ hζ X0 hX0

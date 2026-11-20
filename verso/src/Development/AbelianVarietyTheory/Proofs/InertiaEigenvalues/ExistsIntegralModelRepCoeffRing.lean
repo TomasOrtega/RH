@@ -12,37 +12,29 @@ namespace GlobalTheory.IntegralModelOverCoeff
 open scoped Matrix
 
 /- English proof (translation)
-Use `set K := FractionRing O`. Use `choose f hf using hK`. Establish `hιi : Function.Injective (ι.mapMatrix : Matrix (Fin a) (Fin a) K →+* Matrix (Fin a) (Fin a) (Qbar l))`. Introduce `A B h`. Use extensionality with `s t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ι.injective (congrFun (congrFun h s) t)`. Establish `hM : ∀ g, ι.mapMatrix (Matrix.of (f g)) = ((ρ g : GL _ _) : Matrix (Fin a) (Fin a) (Qbar l))`. Introduce `g`. Use extensionality with `s t`. Conclude with `hf g s t`.
+By extensionality, compare the relevant components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ρ0 : Γ →* Matrix (Fin a) (Fin a) K` to `{ toFun := fun g => Matrix.of (f g) map_one' := hιi (by rw [hM, map_one, map_one, Units.val_one]) map_mul' := fun g h => hιi (by rw [map_mul, hM, hM, hM, map_mul, Units.val_mul]) }`. Set `ρK : Γ →* GL (Fin a) K` to `ρ0.toHomUnits`. Establish `hρK : ∀ g, ι.mapMatrix ((ρK g : GL _ _) : Matrix (Fin a) (Fin a) K) = ((ρ g : GL _ _) : Matrix (Fin a) (Fin a) (Qbar l))` using `fun g => hM g`. Set `Int : Set (Matrix (Fin a) (Fin a) (Qbar l))` to `{M | ∀ s t, ‖M s t‖ ≤ 1}`. Establish `hInt1 : (1 : Matrix (Fin a) (Fin a) (Qbar l)) ∈ Int`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Introduce `s t`. Distinguish the cases in `h : s = t`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hIntMul : ∀ A B, A ∈ Int → B ∈ Int → A * B ∈ Int`. Introduce `A B hA hB s t`. Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `mul_le_one₀ (hA s k) (norm_nonneg _) (hB k t)`. Establish `hIntOpen : IsOpen Int`. Establish `: Int = ⋂ s, ⋂ t, (fun M : Matrix (Fin a) (Fin a) (Qbar l) => M s t) ⁻¹' Metric.closedBall 0 1`. Use extensionality with `M`. Simplify using `[Int]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun s => isOpen_iInter_of_finite fun t => (IsUltrametricDist.isOpen_closedBall 0 one_ne_zero).preimage (continuous_id.matrix_elem s t)`. Set `U : Subgroup Γ` to `{ carrier := {g | ((ρ g : GL _ _) : Matrix _ _ _) ∈ Int ∧ ((ρ g⁻¹ : GL _ _) : Matrix _ _ _) ∈ Int} one_mem' := by simp [hInt1] mul_mem' := by`. Introduce and unpack `g h ⟨hg1, hg2⟩ ⟨hh1, hh2⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, Units.val_mul]`. Conclude with `hIntMul _ _ hg1 hh1`. Rewrite using `[mul_inv_rev, map_mul, Units.val_mul]`. Conclude with `hIntMul _ _ hh2 hg2`. Use the proof step `inv_mem' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `g ⟨h1, h2⟩`. Conclude with `⟨h2, by rwa [inv_inv]⟩ }`. Establish `hUopen : IsOpen (U : Set Γ)` using `(hIntOpen.preimage hc).inter (hIntOpen.preimage (hc.comp continuous_inv))`. Use `haveI : Finite (Γ ⧸ U) := Subgroup.quotient_finite_of_isOpen U hUopen`. Use `haveI : U.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hUint : ∀ h ∈ U, ∀ i j, ((ρK h : GL _ _) : Matrix (Fin a) (Fin a) K) i j ∈ (algebraMap O K).range`. Introduce `h hh i j`. Rewrite using `[GlobalTheory.Proof.SemisimpleRepresentationIntegralConjugate.mem_range_iff ι hι]`. Use `congrFun (congrFun (hρK h) i) j` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply, Matrix.map_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[this]`. Conclude with `hh.1 i j`. Take `⟨P, hP⟩` from `GlobalTheory.Proof.SemisimpleRepresentationIntegralConjugate.exists_conj_integral (O := O) a ρK U hUint`. Use `choose e he using hP`. Establish `hai : Function.Injective ((algebraMap O K).mapMatrix : Matrix (Fin a) (Fin a) O →+* Matrix (Fin a) (Fin a) K)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Introduce `A B h`. Use extensionality with `s t`. Conclude with `IsFractionRing.injective O K (congrFun (congrFun h s) t)`. Establish `hE : ∀ g, (algebraMap O K).mapMatrix (Matrix.of (e g)) = ((P * ρK g * P⁻¹ : GL (Fin a) K) : Matrix (Fin a) (Fin a) K)`. Introduce `g`.
-
-Use extensionality with `s t`. Conclude with `he g s t`. Set `r0 : Γ →* Matrix (Fin a) (Fin a) O` to `{ toFun := fun g => Matrix.of (e g) map_one' := hai (by rw [hE, map_one, map_one, mul_one, mul_inv_cancel, Units.val_one]) map_mul' := fun g h => hai (by`. Rewrite using `[map_mul, hE, hE, hE, ← Units.val_mul, map_mul]`. Use `congr 1`.
-
-Use the proof step `group) }`. Use `⟨r0.toHomUnits, (Units.map (ι.mapMatrix : Matrix (Fin a) (Fin a) K →+* _).toMonoidHom P)⁻¹, fun g => ?_⟩` and prove the remaining obligations. Use `ext1`. Rewrite using `[inv_inv]`. Use `show (ι.comp (algebraMap O K)).mapMatrix (Matrix.of (e g)) = _`.
-
-Establish `: (ι.comp (algebraMap O K)).mapMatrix (Matrix.of (e g)) = ι.mapMatrix ((algebraMap O K).mapMatrix (Matrix.of (e g)))`. Use extensionality with `s t`. Both sides reduce to the same expression. Rewrite using `[this, hE, Units.val_mul, Units.val_mul, map_mul, map_mul, hρK]`. Simplify using `only [Units.val_mul, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]`.
-
-Rewrite using `[Units.coe_map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_integral_conj {l : ℕ} [Fact l.Prime] {O Γ : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [Group Γ] [TopologicalSpace Γ]
@@ -147,7 +139,7 @@ namespace GlobalTheory.IntegralModelOverCoeff
 open Formalism.MainNotions.SumRepresentations
 
 /- English proof (translation)
-Introduce `R H what₂ N A i a ρ hc hK`. Conclude with `exists_integral_conj (A.iotaQ i) (A.iotaQ_alg i) a ρ hc hK`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_integral_model_rep : ∀ {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N) (i : N.Loc) (a : ℕ) (ρ : GE N →* GL (Fin a) (Qbar (N.l i))), SumRepresentations.At.ContQ N i ρ → (∀ g s t, ∃ x, A.iotaQ i x = ((ρ g : GL _ _) : Matrix (Fin a) (Fin a) (Qbar (N.l i))) s t) → ∃ (r : GE N →* GL (Fin a) (N.O i)) (Pm : GL (Fin a) (Qbar (N.l i))), ∀ g, mapRep (iotaOQ N A i) r g = Pm⁻¹ * ρ g * Pm := by
   intro R H what₂ N A i a ρ hc hK

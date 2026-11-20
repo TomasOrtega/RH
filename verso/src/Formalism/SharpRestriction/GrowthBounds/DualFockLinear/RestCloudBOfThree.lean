@@ -43,14 +43,14 @@ def OntoAt (e : Edge W Qq (m + 1)) : Prop :=
 variable {p n' ι σ w r}
 
 /- English proof (translation)
-Introduce `T hT` and use `h ⟨T, hT, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ts_sub {X : Fin n' → Fin (m + 1) → ℤ} {Ψ : Module.Dual Kf (Vsp Kf X) ≃ₗ[Kf] Vsp Kf X}
     {A : Submodule O (Module.Dual Kf (Vsp Kf X))} {B : Submodule O (Vsp Kf X)}
     (h : A.map (Ψ.toLinearMap.restrictScalars O) ≤ B) : ∀ T ∈ A, Ψ T ∈ B := fun T hT => h ⟨T, hT, rfl⟩
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨T, hT, hTe⟩` from `h (mem_scale.2 ⟨y, hy, rfl⟩)`. Establish `: Ψ T = (p : Kf) ^ κ • y` using `by rw [← zpow_natCast]; exact hTe`. Rewrite using `[← this, Ψ.symm_apply_apply]`. Conclude with `hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ts_sup {X : Fin n' → Fin (m + 1) → ℤ} {Ψ : Module.Dual Kf (Vsp Kf X) ≃ₗ[Kf] Vsp Kf X}
     {A : Submodule O (Module.Dual Kf (Vsp Kf X))} {B : Submodule O (Vsp Kf X)} {κ : ℕ}
@@ -63,7 +63,7 @@ theorem ts_sup {X : Fin n' → Fin (m + 1) → ℤ} {Ψ : Module.Dual Kf (Vsp Kf
   exact hT
 
 /- English proof (translation)
-Take `⟨Ψ0, Ψf, h0, hf, hop⟩` from `h`. Use `⟨kap1 p lam, kap1 p (flW (m := m) d), Ψ0, Ψf, hsize, ts_sub (hf.1 e.tgt he.2.1).1, fun e' he' _ => ts_sub (hf.2 e' he').1, ts_sup (hf.2 e he).2, ts_sup (h0.1 e.tgt he.2.1).2, fun e' he' _ => ts_sup (h0.2 e' he').2, ts_sub (h0.2 e he).1, hon, hop⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem pairAt_of_tsop (c0 : ℕ) (bK : ℝ) (e : Edge W Qq (m + 1)) (he : IsEdge p n' r e)
     (Θ : ↥((Pol (KK O) (ι := Fin n') (m + 1) d).restrictScalars O) ≃ₗ[O] ↥(Vsp Kf (flW (m := m) d)))
@@ -114,9 +114,9 @@ def RestTSOp (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : Prop :=
 def RestSize : Prop := ∃ CK C₁ : ℝ, 0 < CK ∧ 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → SizeStep C CK
 
 /- English proof (translation)
-Introduce `hA`. Take `⟨C₂, hC2, h2⟩` from `hop hA`. Take `⟨CK, C₃, hCK, hC3, h3⟩` from `hsz`. Use `⟨CK, max C₂ C₃, hCK, lt_of_lt_of_le hC2 (le_max_left _ _), ?_⟩` and prove the remaining obligations. Introduce `C hC p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ e he htgt hm g hhm hg hbasis Θ hΘ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hkr : orbitWindowCount r de h x + 2 * r ≤ (m + 1) - r` using `H.2.2.2.2.2.2.2.1`. Establish `hr2 : 2 ≤ r` using `H.2.1`. Establish `hdom : IsDominant lam0` using `H.2.2.2.2.1.2.1`. Conclude with `pairAt_of_tsop TT (dT TT lam0) _ _ c0 _ e he Θ (h3 C (le_trans (le_max_right _ _) hC) p n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar H) (hon p n' W Qq O Kf ι σ j w hSet.1 m r (dT TT lam0) _ _ (topW_lam TT lam0) (topW_dom TT (restW_dom (by omega) TT lam0 hdom)) e.dual (Fo …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem restPairTop_of (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (hop : RestTSOp D CLa Ck Crk Cdeg) (hsz : RestSize)
     (hon : OntoAll) : RestPairTop D CLa Ck Crk Cdeg := by
@@ -137,7 +137,7 @@ theorem restPairTop_of (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (
       φ hφ e he htgt hm g hhm hg hbasis Θ hΘ)
 
 /- English proof (translation)
-The claim follows from `restCloudB_of_pair D CLa Ck Crk Cdeg (restPairTop_of D CLa Ck Crk Cdeg hop hsz hon)`.
+A detailed English derivation is pending.
 -/
 theorem restCloudB_of_three (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (hop : RestTSOp D CLa Ck Crk Cdeg) (hsz : RestSize)
     (hon : OntoAll) : RestCloudB D CLa Ck Crk Cdeg :=

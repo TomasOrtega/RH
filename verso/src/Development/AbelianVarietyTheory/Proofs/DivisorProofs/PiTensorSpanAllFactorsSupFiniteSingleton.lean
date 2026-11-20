@@ -9,13 +9,13 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 namespace GlobalTheory.HoweR.TensSup
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Use `choose u hu c hc huc using fun w => Submodule.mem_sup.1 (hf w)`. Establish `hfe : f = u + c` using `funext fun w => (huc w).symm`. Rewrite using `[SetLike.mem_coe, hfe, MultilinearMap.map_add_univ]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `hs : s = Finset.univ`. Substitute `hs` using the available equality. Use `Submodule.mem_sup_left (Submodule.subset_span ⟨u, hu, ?_⟩)` and prove the remaining obligations. Use `congr 1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, w ∉ s := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs (Finset.eq_univ_of_forall h)`. Use `Submodule.mem_sup_right (Submodule.subset_span ⟨s.piecewise u c, ⟨w, ?_⟩, rfl⟩)` and prove the remaining obligations. Rewrite using `[Finset.piecewise_eq_of_notMem _ _ _ hw]`. Conclude with `hc w`.
+A detailed English derivation is pending.
 -/
 theorem tensAll_sup_le {T : Type} [Fintype T] [DecidableEq T] {V : T → Type} [∀ w, AddCommGroup (V w)]
     [∀ w, Module ℂ (V w)] (U C : ∀ w, Submodule ℂ (V w)) :
@@ -41,7 +41,7 @@ theorem tensAll_sup_le {T : Type} [Fintype T] [DecidableEq T] {V : T → Type} [
     exact hc w
 
 /- English proof (translation)
-Establish `: tensAll U ≤ LinearMap.range (PiTensorProduct.map fun w => (U w).subtype)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `⟨PiTensorProduct.tprod ℂ fun w => (⟨f w, hf w⟩ : U w), by rw [PiTensorProduct.map_tprod]; rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tensAll_fin {T : Type} [Fintype T] [DecidableEq T] {V : T → Type} [∀ w, AddCommGroup (V w)]
     [∀ w, Module ℂ (V w)] (U : ∀ w, Submodule ℂ (V w)) (hU : ∀ w, FiniteDimensional ℂ (U w)) :
@@ -53,9 +53,7 @@ theorem tensAll_fin {T : Type} [Fintype T] [DecidableEq T] {V : T → Type} [∀
   exact Submodule.finiteDimensional_of_le this
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Use `choose a ha using fun w => Submodule.mem_span_singleton.1 (hf w)`. Establish `hfe : f = fun w => a w • v w` using `funext fun w => (ha w).symm`. Rewrite using `[SetLike.mem_coe, hfe, MultilinearMap.map_smul_univ]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensAll_span_le {T : Type} [Fintype T] [DecidableEq T] {V : T → Type} [∀ w, AddCommGroup (V w)]
     [∀ w, Module ℂ (V w)] (v : ∀ w, V w) :
@@ -68,7 +66,7 @@ theorem tensAll_span_le {T : Type} [Fintype T] [DecidableEq T] {V : T → Type} 
   exact Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)
 
 /- English proof (translation)
-Introduce `T _ _ V _ _ U C`. Conclude with `⟨tensAll_sup_le U C, tensAll_fin U, tensAll_span_le⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (T : Type) [Fintype T] [DecidableEq T] (V : T → Type) [∀ w, AddCommGroup (V w)] [∀ w, Module ℂ (V w)],
     ∀ U C : ∀ w, Submodule ℂ (V w), tensAll (fun w => U w ⊔ C w) ≤ tensAll U ⊔ tensAny C ∧

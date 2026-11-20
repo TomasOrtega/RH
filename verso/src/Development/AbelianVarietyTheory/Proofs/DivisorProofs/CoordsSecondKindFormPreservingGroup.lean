@@ -12,11 +12,11 @@ section Banach
 variable {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `f f' x _ _`. Simplify using `using (hasStrictFDerivAt_const (1 : 𝔸) x)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ d ih`. Introduce `f f' x h1 hd`. Establish `hr` using `ih (fun i => f i.succ) (fun i => f' i.succ) x (fun i => h1 _) (fun i => hd _)`. Establish `hm` using `(hd 0).mul' hr`. Simplify using `only [List.ofFn_succ, List.prod_cons]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hm.congr_fderiv ?_` and prove the remaining obligations. Use `ext1 v`. Simplify using `[Fin.sum_univ_succ, h1, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasStrictFDerivAt_ofFn_prod {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] :
     ∀ (d : ℕ) (f : Fin d → E → 𝔸) (f' : Fin d → E →L[ℝ] 𝔸) (x : E), (∀ i, f i x = 1) →
@@ -37,11 +37,11 @@ theorem hasStrictFDerivAt_ofFn_prod {E : Type} [NormedAddCommGroup E] [NormedSpa
     simp [Fin.sum_univ_succ, h1, add_comm]
 
 /- English proof (translation)
-Set `_ : NormedAlgebra ℚ 𝔸` to `NormedAlgebra.restrictScalars ℚ ℝ 𝔸`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro Y _; exact ⟨1, h1, by simp⟩`. Consider the case `succ d ih`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `Y hY`. Take `⟨Q, hQ, hQe⟩` from `ih (fun i => Y i.succ) (fun i => hY _)`. Use `⟨Q * NormedSpace.exp (-Y 0), hm _ hQ _ (hY 0), ?_⟩` and prove the remaining obligations. Rewrite using `[List.ofFn_succ, List.prod_cons]`. Establish `e : NormedSpace.exp (-Y 0) * NormedSpace.exp (Y 0) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← NormedSpace.exp_add_of_commute (Commute.refl (Y 0)).neg_left, neg_add_cancel, NormedSpace.exp_zero]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = 1 := by rw [e, mul_one, hQe]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_left_inv_ofFn_prod {S : Set 𝔸} (h1 : (1 : 𝔸) ∈ S) (hm : ∀ a ∈ S, ∀ b ∈ S, a * b ∈ S) :
     ∀ (d : ℕ) (Y : Fin d → 𝔸), (∀ i, NormedSpace.exp (-Y i) ∈ S) →
@@ -70,29 +70,25 @@ section Banach2
 variable {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]
 
 /- English proof (translation)
-Set `_ : NormedAlgebra ℚ 𝔸` to `NormedAlgebra.restrictScalars ℚ ℝ 𝔸`. Take `⟨W, hW⟩` from `(lieSub S hc h1 hm).exists_isCompl`. Set `L` to `lieSub S hc h1 hm`. Set `d` to `Module.finrank ℝ L`. Set `bL` to `Module.finBasis ℝ L`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Z : Fin d → 𝔸` to `fun i => (bL i : 𝔸)`. Establish `hZ : ∀ i, ∀ t : ℝ, NormedSpace.exp (t • Z i) ∈ S` using `fun i t => (bL i).2 t`. Set `c : 𝔸 →L[ℝ] (Fin d → ℝ)` to `LinearMap.toContinuousLinearMap (bL.equivFun.toLinearMap ∘ₗ L.projectionOnto W hW)`. Set `p : 𝔸 →L[ℝ] 𝔸` to `LinearMap.toContinuousLinearMap (L.projection W hW)`. Establish `hpc : ∀ z, ∑ i, c z i • Z i = p z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `z`. Use `show ∑ i, (bL.equivFun (L.projectionOnto W hW z)) i • (bL i : 𝔸) = ((L.projectionOnto W hW z : L) : 𝔸)`. Use `conv_rhs => rw [← bL.sum_equivFun (L.projectionOnto W hW z)]`. Rewrite using `[Submodule.coe_sum]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqW : ∀ z, z - p z ∈ W` using `fun z => by`. Establish `h` using `Submodule.projection_add_projection_eq_self hW z`. Establish `e : z - p z = W.projection _ hW.symm z`. Rewrite using `[sub_eq_iff_eq_add']`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[e]`. Conclude with `Submodule.projection_apply_mem hW.symm z`. Set `P : 𝔸 → 𝔸` to `fun z => (List.ofFn fun i => NormedSpace.exp (c z i • Z i)).prod`. Set `Φ : 𝔸 → 𝔸` to `fun z => P z * NormedSpace.exp (z - p z)`. Establish `hexp : HasStrictFDerivAt NormedSpace.exp (1 : 𝔸 →L[ℝ] 𝔸) (0 : 𝔸)` using `hasStrictFDerivAt_exp_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : ∀ i, HasStrictFDerivAt (fun z => NormedSpace.exp (c z i • Z i)) ((1 : 𝔸 →L[ℝ] 𝔸).comp (((ContinuousLinearMap.proj i).comp c).smulRight (Z i))) 0` using `fun i => HasStrictFDerivAt.comp (0 : 𝔸) (g := NormedSpace.exp) (by rw [map_zero, Pi.zero_apply, zero_smul]; exact hexp) (((ContinuousLinearMap.proj i).comp c).smulRight (Z i)).hasStrictFDerivAt`. Establish `hP` using `hasStrictFDerivAt_ofFn_prod d (fun i z => NormedSpace.exp (c z i • Z i)) _ 0 (fun i => by simp) hf`. Establish `h2 : HasStrictFDerivAt (fun z => NormedSpace.exp (z - p z)) ((1 : 𝔸 →L[ℝ] 𝔸).comp (ContinuousLinearMap.id ℝ 𝔸 - p)) 0` using `HasStrictFDerivAt.comp (0 : 𝔸) (f := fun z => z - p z) (by rw [map_zero, sub_zero]; exact hexp) (ContinuousLinearMap.id ℝ 𝔸 - p).hasStrictFDerivAt`. Establish `hP0 : P 0 = 1` using `by simp [P]`. Establish `h4 : HasStrictFDerivAt Φ ((ContinuousLinearEquiv.refl ℝ 𝔸 : 𝔸 ≃L[ℝ] 𝔸) : 𝔸 →L[ℝ] 𝔸) 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(hP.mul' h2).congr_fderiv ?_` and prove the remaining obligations. Use `ext1 z`. Establish `e1 : (List.ofFn fun i => NormedSpace.exp ((0 : Fin d → ℝ) i • Z i)).prod = 1` using `by simp`. Simplify using `[e1, hpc]`. Establish `hΦ0 : Φ 0 = 1` using `by show P 0 * NormedSpace.exp (0 - p 0) = 1`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hP0, map_zero, sub_zero, NormedSpace.exp_zero, one_mul]`. Set `Ψ` to `h4.localInverse Φ _ 0`. Establish `hΨ : Tendsto Ψ (𝓝 1) (𝓝 0)`. Establish `h` using `h4.localInverse_tendsto`. Rewrite `h` using `[hΦ0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hR : ∀ᶠ X in 𝓝 (1 : 𝔸), Φ (Ψ X) = X`. Establish `h` using `h4.eventually_right_inverse`. Rewrite `h` using `[hΦ0]`. Conclude with `h`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp0 : Tendsto p (𝓝 0) (𝓝 0)` using `by simpa using p.continuous.tendsto 0`. Establish `hq0 : Tendsto (fun z => z - p z) (𝓝 0) (𝓝 (0 : 𝔸))`. Simplify using `using (tendsto_id (x := 𝓝 (0 : 𝔸))).sub hp0`. Use `⟨d, Z, fun X => c (Ψ X), fun i => (bL i).2, ?_, ?_⟩` and prove the remaining obligations. Establish `hc0 : Tendsto c (𝓝 0) (𝓝 0)` using `by simpa using c.continuous.tendsto 0`.
-
-Conclude with `hc0.comp hΨ`. Use `filter_upwards [hR, hΨ.eventually (hq0.eventually (eventually_eq_zero hc h1 hm hi hW.disjoint))] with X hX1 hX2 hXS`. Take `⟨Q, hQ, hQe⟩` from `exists_left_inv_ofFn_prod h1 hm d (fun i => c (Ψ X) i • Z i) (fun i => by rw [← neg_smul]; exact hZ i _)`. Establish `hE : NormedSpace.exp (Ψ X - p (Ψ X)) = Q * X` using `by conv_rhs => rw [← hX1] show _ = Q * ((List.ofFn fun i => NormedSpace.exp (c (Ψ X) i • Z i)).prod * NormedSpace.exp (Ψ X - p (Ψ X)))`. Rewrite using `[← mul_assoc, hQe, one_mul]`.
-
-Establish `hw` using `hX2 (hqW _) (by rw [hE]; exact hm _ hQ _ hXS)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hw, NormedSpace.exp_zero, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coords_second_kind [FiniteDimensional ℝ 𝔸] {S : Set 𝔸} (hc : IsClosed S)
     (h1 : (1 : 𝔸) ∈ S) (hm : ∀ a ∈ S, ∀ b ∈ S, a * b ∈ S)
@@ -175,13 +171,13 @@ theorem exists_coords_second_kind [FiniteDimensional ℝ 𝔸] {S : Set 𝔸} (h
 end Banach2
 
 /- English proof (translation)
-Set `_` to `Matrix.linftyOpNormedRing (n := Fin m) (α := ℂ)`. Set `_` to `Matrix.linftyOpNormedAlgebra (R := ℝ) (n := Fin m) (α := ℂ)`. Establish `_ : CompleteSpace (Matrix (Fin m) (Fin m) ℂ)` using `FiniteDimensional.complete ℝ _`. Establish `e : ∀ t : ℝ, NormedSpace.exp (t • Zᴴ) * A * NormedSpace.exp (t • Z) = A` using `fun t => by`. Establish `h` using `hZ t`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq] at h`. Rewrite `h` using `[← Matrix.exp_conjTranspose, conjTranspose_smul, star_trivial]`. Then use the resulting hypothesis. Establish `hd : HasDerivAt (fun t : ℝ => NormedSpace.exp (t • Zᴴ) * A * NormedSpace.exp (t • Z)) (Zᴴ * A + A * Z) 0`. Establish `h1` using `(hasDerivAt_exp_smul_const (𝕂 := ℝ) Zᴴ (0 : ℝ)).mul_const A`. Establish `h2` using `h1.mul (hasDerivAt_exp_smul_const (𝕂 := ℝ) Z (0 : ℝ))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul, mul_one] at h2`. Conclude with `h2`. Establish `hc : HasDerivAt (fun t : ℝ => NormedSpace.exp (t • Zᴴ) * A * NormedSpace.exp (t • Z)) 0 0`. Establish `h : (fun t : ℝ => NormedSpace.exp (t • Zᴴ) * A * NormedSpace.exp (t • Z)) = fun _ => A`. Use function extensionality and compare the values at `e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `hasDerivAt_const 0 A`. Conclude with `hd.unique hc`.
+A detailed English derivation is pending.
 -/
 theorem skew_of_exp_smul_mem {m : ℕ} (A Z : Matrix (Fin m) (Fin m) ℂ)
     (hZ : ∀ t : ℝ, NormedSpace.exp (t • Z) ∈ {X : Matrix (Fin m) (Fin m) ℂ | Xᴴ * A * X = A}) :
@@ -206,15 +202,15 @@ theorem skew_of_exp_smul_mem {m : ℕ} (A Z : Matrix (Fin m) (Fin m) ℂ)
   exact hd.unique hc
 
 /- English proof (translation)
-Introduce `m A`. Set `S` to `{X : Matrix (Fin m) (Fin m) ℂ | Xᴴ * A * X = A}`. Establish `hc : IsClosed S` using `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Establish `h1 : (1 : Matrix (Fin m) (Fin m) ℂ) ∈ S` using `by simp [S]`. Establish `hm : ∀ a ∈ S, ∀ b ∈ S, a * b ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a ha b hb`. Simplify using `only [S, Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hi : ∀ Z : Matrix (Fin m) (Fin m) ℂ, NormedSpace.exp Z ∈ S → NormedSpace.exp (-Z) ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce `Z hZ`. Simplify using `only [S, Set.mem_setOf_eq] at hZ ⊢`. Establish `hXY : NormedSpace.exp Z * NormedSpace.exp (-Z) = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.refl Z).neg_right, add_neg_cancel, NormedSpace.exp_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hZ]`. Use `_ = (NormedSpace.exp Z * NormedSpace.exp (-Z))ᴴ * A * (NormedSpace.exp Z * NormedSpace.exp (-Z)) := by`. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = A := by rw [hXY]; simp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_` to `Matrix.linftyOpNormedRing (n := Fin m) (α := ℂ)`. Set `_` to `Matrix.linftyOpNormedAlgebra (R := ℝ) (n := Fin m) (α := ℂ)`. Establish `_ : CompleteSpace (Matrix (Fin m) (Fin m) ℂ)` using `FiniteDimensional.complete ℝ _`. Take `⟨d, Z, s, hZ, hs, hev⟩` from `exists_coords_second_kind hc h1 hm hi`. Conclude with `⟨d, Z, s, fun i => skew_of_exp_smul_mem A (Z i) (hZ i), hs.mono_left nhdsWithin_le_nhds, eventually_nhdsWithin_iff.2 hev⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coords_second_kind_unitary : ∀ (m : ℕ) (A : Matrix (Fin m) (Fin m) ℂ), ∃ (d : ℕ)
     (Z : Fin d → Matrix (Fin m) (Fin m) ℂ) (s : Matrix (Fin m) (Fin m) ℂ → Fin d → ℝ),

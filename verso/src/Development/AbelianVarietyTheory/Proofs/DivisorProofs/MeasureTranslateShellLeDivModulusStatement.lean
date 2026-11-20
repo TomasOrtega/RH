@@ -6,7 +6,7 @@ open MeasureTheory Filter Topology GlobalTheory.ResLine
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ResLine.modulus_mul_measure_shell_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMeasureTranslateShellLeDivModulus.lean&line=10#L10)
 -/

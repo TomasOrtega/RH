@@ -13,7 +13,7 @@ open scoped CategoryTheory.Obj
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l}
 
 /- English proof (translation)
-Take `⟨a, ha, hu⟩` from `gen_baseChangeR hS hT Xo.univ (mA x) (θA x s0) (hθ_of x s0 hgen) ρ (mB ρ x) (w := idIso ((tA x).PP.L.pull (mB ρ x).φ)) (σB ρ x s0) (hσ_of ρ x s0) (secCP (cpU' ρ x) s'')`. Conclude with `⟨a, key_fwd ρ x s0 s'' a ha, fun a' ha' => hu a' (key_bwd ρ x s0 s'' a' ha')⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem genBC_frameR (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeAnySt) (hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt) {S K : Type} [CommRing S]
     [CommRing K] (x : Sp S ⟶ Xo.X) (ρ : S →+* K) (s0 : LB.Sec (PPx x))
@@ -24,24 +24,24 @@ theorem genBC_frameR (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChang
   exact ⟨a, key_fwd ρ x s0 s'' a ha, fun a' ha' => hu a' (key_bwd ρ x s0 s'' a' ha')⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ ψ y` and use `⟨secCP (cpS ψ.toRingHom y.x) y.s, fun _ _ => rfl, genBC_frameR hS hT y.x ψ.toRingHom y.s y.gen⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem bcGenR (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeAnySt) (hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt) (c : Coeff l) :
     BcGenRSt Xo c := fun _ _ _ _ ψ y =>
   ⟨secCP (cpS ψ.toRingHom y.x) y.s, fun _ _ => rfl, genBC_frameR hS hT y.x ψ.toRingHom y.s y.gen⟩
 
 /- English proof (translation)
-Set `x` to `spMap ψ.toRingHom ≫ y.x`. Establish `tn : ∀ τ i, IsTanAt x (spMap (dualMap ψ.toRingHom) ≫ y.u τ i)` using `fun τ i => tan_bc ψ.toRingHom (y.tan τ i)`. Use `eig_basis_of_full (fun τ i => spMap (dualMap ψ.toRingHom) ≫ y.u τ i) tn (fun τ i => eig_bc ψ τ (y.eig τ i)) (fun m => ?_) τ w hw he` and prove the remaining obligations. Establish `h` using `hS (Xo := Xo) x`. Use `choose u' hu' using fun i => push_surj h (tv (tvOf (tn (eB Dw i).1 (eB Dw i).2)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Xo.univ.t.semi.smooth` as an intermediate fact. Establish `: Smooth ((Over.pullback y.x).obj Xo.univ.t.G).hom` using `show Smooth (pullback.snd _ _) from inferInstance`. Establish `gp` using `Chart.isGrpPullback_factor y.x (spMap ψ.toRingHom) h`. Establish `bs : IsLieBasis u'` using `Chart.frameLieBCR _ (uS_basis y) ψ.toRingHom gp (fun a b v hv => push_inj h (by`. Use `smT_add x _ ((isTangent_iff h v).1 ((Chart.isTan_iff _).1 hv)) a b` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← push_scK h, ← push_scK h, ← push_scK h, ← map_mul]`. Conclude with `this)) (fun i => (isTangent_iff h _).2 (by rw [hu']; exact tv_mem _)) fun i => by`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, Category.assoc]`. Conclude with `(congrArg (fun q => q.left) (hu' i)).trans (congrArg (_ ≫ ·) (congrArg (fun q => q.left) (push_uS y i)).symm)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Category.assoc, pullback.lift_snd, ← Category.assoc, Over.w (u' i), Category.assoc]`. Use `Eq.trans ?_ (congrArg (_ ≫ ·) (Over.w (uS y i)).symm)` and prove the remaining obligations. Conclude with `(spMap_comp_spMap _ _).trans ((congrArg spMap (dualMap_comp_alg _).symm).trans (spMap_comp_spMap _ _).symm)`. Take `⟨p, hp⟩` from `push_surj h (tv m)`. Establish `key : ∀ a, IsLieComb a u' p ↔ m = ∑ k, a ((eB Dw).symm k) • tvOf (tn k.1 k.2)` using `fun a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[isLieComb_iff h, hp, ← (eB Dw).sum_comp]`. Simplify using `only [Equiv.symm_apply_apply, hu']`. Conclude with `⟨fun q => tanM_ext (q.trans (by rw [tv_sum]; rfl)), fun q => (congrArg tv q).trans (by rw [tv_sum]; rfl)⟩`. Take `⟨a, ha, hu⟩` from `bs.2 p ((isTangent_iff h p).2 (by rw [hp]; exact tv_mem m))`. Use `⟨fun k => a ((eB Dw).symm k), (key a).1 ha, fun b hb => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `hu (fun i => b (eB Dw i)) ((key _).2 (by simpa using hb))` as an intermediate fact. Use function extensionality and compare the values at `k`. Rewrite using `[← this]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem bcLieAll (c : Coeff l) {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (ψ : S →ₐ[c.F] T)
     (y : FrPt Xo c S) (τ : E →+* ℂ) (w : Sp (DualNumber T) ⟶ Xo.univ.t.G.left)
@@ -77,7 +77,7 @@ theorem bcLieAll (c : Coeff l) {S T : Type} [CommRing S] [Algebra c.F S] [CommRi
   funext k; rw [← this]; simp
 
 /- English proof (translation)
-Introduce `_ _ _ _ ψ y` and use `bcLieAll c ψ y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bcLieR (c : Coeff l) : BcLieRSt Xo c := fun _ _ _ _ ψ y => bcLieAll c ψ y
 

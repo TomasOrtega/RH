@@ -38,11 +38,11 @@ def IsBotFam (ε : ι → Fin n → Bool) (ϖ : (ι → Matrix (Fin n) (Fin n) �
   ∀ τ, IsBottom (ε τ) (fun g => ϖ (Pi.mulSingle τ g)) (μ τ) x
 
 /- English proof (translation)
-Take `⟨-, ⟨h1, hm⟩, hd, ha, -, -, hw, hl⟩` from `h`. Use `⟨⟨fun x hx => inner_self_eq_zero.1 hx, ?_, fun a ha b hb => ?_, ha, hd⟩, hl, fun θ => hw θ ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show (τ 1 : W →ₗ[ℂ] W) = 1`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `show (τ (a * b) : W →ₗ[ℂ] W) = _`. Rewrite using `[hm a ha b hb]`. Both sides reduce to the same expression. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `a`. Simplify using `[← Complex.exp_conj, ← Complex.exp_add]`. Simplify using `[Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHolRep_of_isTau {ε : Fin n → Bool} {abelian₂ : Fin n → ℝ} {W : Type} [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] {τ : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {w : W} (h : GlobalTheory.Dec.IsTau ε abelian₂ τ w) :

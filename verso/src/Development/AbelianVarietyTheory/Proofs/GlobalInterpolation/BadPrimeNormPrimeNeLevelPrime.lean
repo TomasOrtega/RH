@@ -24,9 +24,9 @@ variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberFi
 omit [StarRing E] in
 
 /- English proof (translation)
-Use `⟨fun x => valuation_le_one_of_mem_Zmu w hq (h.2.2 x), fun x z hz => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le' hB`. Rewrite using `[pow_succ', mul_smul]`. Use `h.2.1 x _ ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nsmul_mem hz _`.
+A detailed English derivation is pending.
 -/
 theorem awayAt_of_fnModAt {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E) (Sp E b)} {Φ : HomE E a b → K}
     (hq : (qOf P).Prime) (h : FnModAt P N N' Φ) (w : HeightOneSpectrum (𝓞 K)) {B : ℕ} (hB : 1 ≤ B) : AwayAt P w B N N' Φ := by
@@ -38,9 +38,9 @@ theorem awayAt_of_fnModAt {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (�
   exact nsmul_mem hz _
 
 /- English proof (translation)
-Establish `h1 : Ideal.span {(T : 𝓞 K)} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `h`. Establish `h2` using `Formalism.L2.Col.Primes.natCast_dvd_intCast (E := K) (c := T) (n := 1) (by simpa using h.dvd)`. Conclude with `hT.one_lt.ne' (Nat.dvd_one.1 (by exact_mod_cast h2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ h1`. Establish `h3 : (T : 𝓞 K) ∈ M` using `hle (Ideal.mem_span_singleton_self _)`. Use `⟨⟨M, hM.isPrime, fun h => ?_⟩, h3⟩` and prove the remaining obligations. Rewrite `h3` using `[h, Ideal.mem_bot]`. Conclude with `hT.ne_zero (by exact_mod_cast h3)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_place (K : Type) [Field K] [NumberField K] {T : ℕ} (hT : T.Prime) :
     ∃ w : HeightOneSpectrum (𝓞 K), (T : 𝓞 K) ∈ w.asIdeal := by
@@ -65,9 +65,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {G : ChGlob X R.m} {m2 : ℕ} {u : Pr.Word}
 
 /- English proof (translation)
-Establish `h` using `levelPrimes X Pr sel S mu hX hPr hsel P`. Use `⟨h.1.1, fun e => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Take `⟨k, hk⟩` from `exists_mem_vG hP`. Conclude with `hPr.T_ne_g u k (e.symm.trans (hPr.vG_norm k _ hk))`.
-
-Conclude with `h.2 hP (e ▸ hS)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem badPrimeNorm_prime_ne_levelPrime (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u ∈ S) (P : rowSG Pr sel mu) :
     (qOf P.1).Prime ∧ qOf P.1 ≠ Pr.T u := by
@@ -79,9 +77,9 @@ theorem badPrimeNorm_prime_ne_levelPrime (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel
   · exact h.2 hP (e ▸ hS)
 
 /- English proof (translation)
-Establish `h1` using `badPrimeNorm_prime_ne_levelPrime hX hPr hsel hS P`. Establish `h2 : ((Pr.T u : ℕ) : 𝓞 X.E) ∉ P.1.asIdeal` using `natCast_notMem_of_ne (hPr.T_prime u) h1.1 h1.2.symm P.1 (Ideal.absNorm_mem _)`. Use `h P.1 fun Q hQ => ?_` and prove the remaining obligations. Establish `h3` using `T_mem_of_piT_mem hPr u (GlobalTheory.ColPeriod.mem_divs hQ)`. Use `⟨fun e => h2 (e ▸ h3), fun e => h2 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, mem_conjP, map_natCast]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localization_eq (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u ∈ S) {n : ℕ}
     {N N' : Submodule (𝓞 X.E) (Sp X.E n)} (h : SameOff (Pr.vT u) N N') (P : rowSG Pr sel mu) :
@@ -96,9 +94,9 @@ theorem localization_eq (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.
   exact h3
 
 /- English proof (translation)
-Use function extensionality and compare the values at `P`. Unfold `frsF`. Use `split_ifs with hP`. Establish `e : q.1.1.deco.1.at P.1 = p.1.1.deco.1.at P.1` using `(localization_eq hX hPr hsel hS h.1 P).symm`. Unfold `Deco.liftFr`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [e, h.2.1]`. Rewrite using `[h.2.2.1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frsF_eq (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u ∈ S) {j : ℕ} {p q : PtAt R sel mu cst u j}
     (h : SameOffPt sel mu cst u p q) : frsF sel mu q.1.1 = frsF sel mu p.1.1 := by
@@ -111,25 +109,25 @@ theorem frsF_eq (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u ∈ 
   · rw [h.2.2.1]
 
 /- English proof (translation)
-Substitute `hj` using the available equality. Establish `hc` using `hL.cst_ok`. Establish `hm` using `hL.hm`. Establish `hq` using `badPrimeNorm_prime_ne_levelPrime hX hPr hsel hS P`. Establish `key : ∀ v : Sp X.E (R.N R.m), v ∈ stdAt X.E _ P.1 ↔ prXp X.E R v ∈ stdAt X.E (R.N R.m - 1) P.1 ∧ IntAt P.1 (atNL X.E (R.N R.m) (R.N R.m - 1) v)` using `fun v => by`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.LastSteps.atNL_last]`. Conclude with `TopStep.mem_stdAt_succ (N_m_succ R)`. Express the relevant statement in the definitionally equal form `AwayAt P.1 w cst.B _ _ fun x => TopStep.locTop Ch sel mu cst m2 P x ((frsF sel mu p P).symm (repY Y))`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Establish `hy : (qOf P.1 : X.E) • (frsF sel mu p P).symm (repY Y) ∈ stdAt X.E _ P.1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_smul, GlobalTheory.LastSteps.frsF_symm_mem sel mu p P hP]`. Conclude with `GlobalTheory.LastSteps.q_smul_repY sel mu cst hY P hP`. Use `awayAt_of_fnModAt hq.1 ?_ w hc.B_pos` and prove the remaining obligations. Use `(GlobalTheory.LastSteps.fnModAt_iff _ _ _).2 ((GlobalTheory.LastSteps.good_PhiTop Ch mu hm cst.sharp hP).mul (GlobalTheory.LastSteps.good_ftY sel mu cst hc P hP hy) (fun x => prXp X.E R ∘ₗ x ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1)))) (fun x => atNL X.E (R.N R.m) …` and prove the remaining obligations. Rewrite using `[LinearMap.add_comp, LinearMap.comp_add, LinearMap.smul_comp, LinearMap.comp_smul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.comp_add, LinearMap.comp_smul]`. Rewrite using `[← LinearMap.comp_assoc, GlobalTheory.LastSteps.comp_funLeft_mem (GlobalTheory.LastSteps.cOf_top hm)]`. Conclude with `⟨fun h => ⟨fun y hy => ((key _).1 (h y hy)).1, fun y hy => ((key _).1 (h y hy)).2⟩, fun h y hy => (key _).2 ⟨h.1 y hy, h.2 y hy⟩⟩`. Establish `hD` using `hL.depthQ P hP`. Establish `hqw : ((qOf P.1 : ℕ) : 𝓞 X.K) ∉ w.asIdeal` using `natCast_notMem_of_ne hq.1 (hPr.T_prime u) hq.2 w hw`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : ((qOf P.1 : X.E) ^ cst.M) • (frsF sel mu p P).symm (repY Y) ∈ stdAt X.E _ P.1`. Rewrite using `[← map_smul, ← TopTwist.frsF_mem' sel mu p P hP, LinearEquiv.apply_symm_apply]`. Conclude with `TopTwist.pow_smul_repY sel mu cst hY P hP`. Use `⟨fun x => ?_, fun x z hz => ?_⟩` and prove the remaining obligations. Unfold `TopStep.locTop PhiTop`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_neg hP, map_mul]`. Conclude with `mul_le_one' (TopTwist.valuation_PhiQ w _ _ _ _ _ _ _ _ _) (TopTwist.valuation_ftY sel mu cst hc P hP hD w hqw hy _)`. Establish `hz'` using `fun y hy => (key _).1 (hz P.1 (Finset.mem_singleton_self _) y hy)`. Establish `h1 : R.r ≤ R.N (m2 + 1) + cOf R (m2 + 1)`. Unfold `Ranks.r Ranks.N cOf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hm, mul_add (m2 + 1)]`. Use linear arithmetic over natural numbers and integers. Establish `h4 : R.N (m2 + 1) + cOf R (m2 + 1) ≤ R.N R.m - 1 + 0`. Unfold `Ranks.N cOf`. Rewrite using `[hm, show m2 + 2 = m2 + 1 + 1 from rfl, add_mul (m2 + 1)]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify by unfolding definitions.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le' hc.B_pos`. Unfold `TopStep.locTop PhiTop`. Simplify using `only`. Rewrite using `[if_neg hP]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Establish `e : prXp X.E R ∘ₗ (x + ((qOf P.1 : X.E) ^ cst.B) • z) ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1))) = prXp X.E R ∘ₗ x ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1))) + (qOf P.1 : X.E) • ((((qOf P.1 : X.E) ^ k) • (prXp X.E R ∘ₗ z)) ∘ₗ LinearMap.funLeft X. …`. Rewrite using `[hk, pow_succ', mul_smul]`. Simplify using `only [LinearMap.add_comp, LinearMap.comp_add, LinearMap.smul_comp, LinearMap.comp_smul, LinearMap.comp_assoc]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Use `TopTwist.PhiQ_add _ h1 (h1.trans h4) _ _ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LastSteps.comp_funLeft_mem (GlobalTheory.LastSteps.cOf_top hm), GlobalTheory.LastSteps.lamY_zero]`. Conclude with `fun y hy => TopStep.smul_mem_locP (TopStep.intAt_pow (TopStep.intAt_nat _) _) (hz' y hy).1`. Rewrite using `[LinearMap.comp_add, LinearMap.comp_smul]`. Conclude with `TopTwist.ftY_add sel mu cst hc P hP hD hy _ _ fun y hy => (hz' y hy).2`.
+A detailed English derivation is pending.
 -/
 theorem awayAt_locTop (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u ∈ S) (hL : L.Ok Ch sel mu cst G m2)
     (P : rowSG Pr sel mu) (w : HeightOneSpectrum (𝓞 X.K)) (hw : ((Pr.T u : ℕ) : 𝓞 X.K) ∈ w.asIdeal) {j : ℕ} (hj : j = R.m)
@@ -201,9 +199,9 @@ def MuqUnit (cst : LocCst X (rowSG Pr sel mu)) (R : Ranks) (u : Pr.Word) : Prop 
     ∀ j, j < R.m → w.valuation X.K (cst.muq (j + 1) P) = 1
 
 /- English proof (translation)
-Introduce `P w hP hw j hj`. Establish `hq` using `badPrimeNorm_prime_ne_levelPrime hX hPr hsel hS P`. Establish `hn` using `(levelPrimes X Pr sel S mu hX hPr hsel P).2 hP`. Establish `hg' : ∀ k, ((Pr.g k : ℕ) : 𝓞 X.E) ∉ P.1.asIdeal` using `fun k => natCast_notMem_of_ne (hPr.g_prime k) hq.1 (fun h => hn (h ▸ hg k)) P.1 (Ideal.absNorm_mem _)`. Establish `hT : ((Pr.T u : ℕ) : 𝓞 X.E) ∉ P.1.asIdeal` using `natCast_notMem_of_ne (hPr.T_prime u) hq.1 hq.2.symm P.1 (Ideal.absNorm_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : w.valuation X.K (Ch.muVal ⟨j, hj⟩ P.1 : X.K) = 1` using `heckeUnit X Pr R.m Ch σ₀ (e ⟨j, hj⟩) ⟨j, hj⟩ (m0 ⟨j, hj⟩) hX hPr (ht.mu0 _) (Pr.T u) w P.1 (hPr.T_prime u) hw hT (Formalism.L2.Host.unif P.1) _ (ht.muVal _ P.1 hg')`. Rewrite using `[hL.muqQ j hj P hP, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_mul, map_inv₀, map_inv₀, (twistUnit X.F X.E X.K S mu P.1 w).2, h1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem muqUnit_of_tied (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u ∈ S) (hg : ∀ k, Pr.g k ∈ S)
     (hL : L.Ok Ch sel mu cst G m2) {σ₀ : X.K →+* ℂ} {e : Fin R.m → X.Tau → ℚ} {m0 : Fin R.m → Formalism.L2.Host.HChar X.E}
@@ -223,15 +221,13 @@ theorem muqUnit_of_tied (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.
   simp
 
 /- English proof (translation)
-Establish `hm` using `hL.hm`. Establish `hq` using `badPrimeNorm_prime_ne_levelPrime hX hPr hsel hS (mu := mu)`. Establish `hlp` using `levelPrimes X Pr sel S mu hX hPr hsel`. Establish `heq` using `fun (P : rowSG Pr sel mu) (w : HeightOneSpectrum (𝓞 X.K)) (hw : ((Pr.T u : ℕ) : 𝓞 X.K) ∈ w.asIdeal) (hP : P.1 ∉ Pr.vGs) => EntQ.entryAtQ volumeAtQ X Pr R Ch sel S mu cst L G m2 hL P w hP (hlp P).1 (natCast_notMem_of_ne (hq P).1 (hPr.T_prime u) (hq P).2 w hw) (hU P w hP hw)`. Break down `lt_trichotomy (i + 2) R.m with h | h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨fun P _ _ => XiAt Ch sel mu cst i P (L.h i (b.get (by omega)) P) (L.h (i + 1) (b'.get (by omega)) P), fun p p' => ⟨fun x => ?_, fun P w hw => ?_⟩⟩` and prove the remaining obligations. Apply the tactic sequence `rw [xiAt_entry Ch sel mu cst L h (b.some_get (by omega)).symm (b'.some_get (by omega)).symm]`. Both sides reduce to the same expression. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Conclude with `awayAt_of_fnModAt (hq P).1 (entryAtG X Pr R Ch sel S mu cst L G m2 hL i (by omega) _ _ P hP (hlp P).1) w hL.cst_ok.B_pos`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `(heq P w hw hP).1 i (by omega) _ _`. Take `rfl : i = m2` from `by omega`. Use `⟨fun P _ y x => PsiAt Ch sel mu cst i P (L.h i (b.get (by omega)) P) x y, fun p p' => ⟨fun x => ?_, fun P w hw => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[xiAt_penultimate_eq_xiCpl1 Ch sel mu cst L h (b.some_get (by omega)).symm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Conclude with `awayAt_of_fnModAt (hq P).1 ((GlobalTheory.LastSteps.fnModAt_iff _ _ _).2 (GlobalTheory.LastSteps.good_PsiAt Ch sel mu cst hm P hP (hL.stabG i _ P hP) _)) w hL.cst_ok.B_pos`. Conclude with `(heq P w hw hP).2 _ _`. Take `rfl : i = m2 + 1` from `by omega`. Establish `h1 : m2 + 1 + 1 = R.m` using `by omega`.
-
-Use `⟨fun P y _ x => TopStep.locTop Ch sel mu cst m2 P (castSp X.E (congrArg R.N h1) ∘ₗ x) y, fun p p' => ⟨fun x => ?_, fun P w hw => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[xiAt_last Ch sel mu cst L h1]`. Both sides reduce to the same expression. Conclude with `awayAt_locTop hX hPr hsel hS hL P w hw h1 p.1.1 (p.mem_ybSet h1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_local (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u ∈ S) (hL : L.Ok Ch sel mu cst G m2)
     (hU : MuqUnit cst R u) {i : ℕ} (hi : i < R.m) (b : Idx sel mu L i) (b' : Idx sel mu L (i + 1)) :
@@ -275,19 +271,17 @@ theorem exists_local (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u
     · exact awayAt_locTop hX hPr hsel hS hL P w hw h1 p.1.1 (p.mem_ybSet h1)
 
 /- English proof (translation)
-Introduce `b b' p p'`. Take `⟨Φ, hΦ⟩` from `exists_local hX hPr hsel hS hL hU hi b b'`. Establish `hA` using `fun P w hw => awayAt_inFr (isFrames_frsF p.1.1 P) (isFrames_frsF p'.1.1 P) ((hΦ p p').2 P w hw)`. Use `⟨fun x => if x ∈ divLat (cAof sel mu cst) (homAt (rowSG Pr sel mu) p.1.1.deco.1.N p'.1.1.deco.1.N) then ∏ P, Φ P ((frsF sel mu p.1.1 P).symm (repY p.1.2)) ((frsF sel mu p'.1.1 P).symm (repY p'.1.2)) (inFr (frsF sel mu p.1.1 P) (frsF sel mu p'.1.1 P) x) else 0, ⟨fun x hx => ?_, fu …` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hx (if_neg h)`. Take `⟨w, hw⟩` from `exists_place X.K (hPr.T_prime u)`. Establish `hy' : y ∈ divLat (cAof sel mu cst) (homAt (rowSG Pr sel mu) p.1.1.deco.1.N p'.1.1.deco.1.N)`. Take `⟨z, hz, rfl⟩` from `hy`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ hz)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `if_congr (Submodule.add_mem_iff_left _ hy') (Finset.prod_congr rfl fun P _ => ?_) rfl` and prove the remaining obligations. Establish `hdv : qOf P.1 ^ cst.B ∣ cBof sel mu cst u` using `Dvd.dvd.mul_left (pow_dvd_pow_of_dvd (Finset.dvd_prod_of_mem _ (Finset.mem_univ P)) _) _`. Take `⟨z, hz, rfl⟩` from `exists_of_mem_mulLat hdv hy P.2`. Rewrite using `[Nat.cast_pow]`. Conclude with `(hA P w hw).2 x z hz`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only split_ifs`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_le_one' fun P _ => (hA P w hw).1 x`. Simplify using the standard rewrite rules. Unfold `kAt GlobalTheory.KerT.term GlobalTheory.KerT.ker kerOf latSum`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Rewrite using `[frsF_eq hX hPr hsel hS hq, frsF_eq hX hPr hsel hS hq']`. Use `finsum_congr fun z => ?_` and prove the remaining obligations. Generalize the expression as in `Function.surjInv _ z = x`. Take `⟨x, hx⟩` from `x`. Establish `hx' : x ∈ divLat (cAof sel mu cst) (homAt (rowSG Pr sel mu) p.1.1.deco.1.N p'.1.1.deco.1.N)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Introduce `P hP y hy`. Rewrite `hy` using `[localization_eq hX hPr hsel hS hq.1 ⟨P, hP⟩]`. Rewrite using `[localization_eq hX hPr hsel hS hq'.1 ⟨P, hP⟩]`. Conclude with `hx P (Finset.mem_union_right _ hP) y hy`. Simplify using `only`.
-
-Rewrite using `[if_pos hx', (hΦ q q').1, frsF_eq hX hPr hsel hS hq, frsF_eq hX hPr hsel hS hq', ← hq.2.2.2, ← hq'.2.2.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerIsTerm_of_muqUnit (W : Wts X Pr.Word R) (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u ∈ S)
     (hL : L.Ok Ch sel mu cst G m2) (hU : MuqUnit cst R u) {i : ℕ} (hi : i < R.m) (A : Formalism.L2.Ker.Amb X) :
@@ -333,7 +327,7 @@ theorem kerIsTerm_of_muqUnit (W : Wts X Pr.Word R) (hX : X.Ok) (hPr : Pr.Ok) (hs
 end Chain
 
 /- English proof (translation)
-Introduce and unpack `X Pr R W Ch sel S mu cst L G m2 u i hX hPr hsel hS hL hi - hg ⟨σ₀, e, m0, eta, ht⟩ A`. Conclude with `kerIsTerm_of_muqUnit W hX hPr hsel hS hL (muqUnit_of_tied hX hPr hsel hS hg hL ht) hi A`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem kerIsTerm : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ) (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m) (m2 : ℕ) (u : Pr.Word) (i : ℕ), X.Ok → Pr.Ok → IsSel X sel → Pr.T u ∈ S → L.Ok Ch sel mu cst G m2 → i < R.m → Ch.Ok → (∀ k, Pr.g k ∈ S) → (∃ (σ₀ : X.K →+* ℂ) (e : Fin R.m → X.Tau → ℚ) (m0 : Fin R.m → Formalism.L2.Host.HChar X.E) (eta : Formalism.L2.Host.HChar X.E), Ch.Tied σ₀ e m0 eta) → ∀ A : Formalism.L2.Ker.Amb X, KerIsTerm W Ch sel mu cst L A u i := by
   rintro X Pr R W Ch sel S mu cst L G m2 u i hX hPr hsel hS hL hi - hg ⟨σ₀, e, m0, eta, ht⟩ A

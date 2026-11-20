@@ -17,7 +17,7 @@ variable {K : Type*} [DecidableEq K] {ι : K → Type*} {F : Type*} [Field F]
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨s, hs, rfl⟩`. Use `mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `fun h => hs (hPW h)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem primeCompl_map_le_nonZeroDivisors (P W : Ideal (MRing ι F)) [P.IsPrime] [W.IsPrime]
     (hPW : P ≤ W) :
@@ -38,9 +38,9 @@ instance coneLocal.isLocalization (P W : Ideal (MRing ι F)) [P.IsPrime] [W.IsPr
   Localization.subalgebra.isLocalization_ofField _ _ _
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨b, f, g, -, -, -, hgW, rfl⟩` from `hx`. Conclude with `⟨Ideal.Quotient.mk P f, Ideal.Quotient.mk P g, ⟨g, hgW W rfl, rfl⟩, div_eq_mul_inv _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `algebraMap r`. Rewrite using `[IsScalarTower.algebraMap_apply F (MRing ι F ⧸ P)]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem degZeroLoc_le_coneLocal (P W : Ideal (MRing ι F)) [P.IsPrime] [W.IsPrime] (hPW : P ≤ W) :
     ∀ x ∈ degZeroLoc P {W}, x ∈ coneLocal P W hPW := by

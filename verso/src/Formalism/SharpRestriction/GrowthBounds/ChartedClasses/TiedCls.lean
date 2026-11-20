@@ -33,7 +33,7 @@ def ChFam.ch {E : Extra D L hT Gi Gl K Dx cX} (F : ChFam E) (μ : D.what₂.Tup)
   if hh : DV.Used D μ ∧ D.what₂.places.resChar w ∉ Dx.Qp μ then chainAt (F.H μ hh.1 u w hg hh.2) hT else ⟨fun _ => 0⟩
 
 /- English proof (translation)
-The claim follows from `dif_pos ⟨hU, hq⟩`.
+A detailed English derivation is pending.
 -/
 theorem ChFam.ch_eq {E : Extra D L hT Gi Gl K Dx cX} (F : ChFam E) (μ : D.what₂.Tup) (hU : DV.Used D μ) (u : D.what₂.Word)
     (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (hq : D.what₂.places.resChar w ∉ Dx.Qp μ) :
@@ -78,7 +78,7 @@ theorem ChFam.tied_cls {E : Extra D L hT Gi Gl K Dx cX} (F : ChFam E) (e0) (μ :
     ((F.tied e0).ker μ hU u w hg hq).cls = clsAt (F.X μ hU u w hg hq) (F.H μ hU u w hg hq) := rfl
 
 /- English proof (translation)
-The claim follows from `kaAt_cmp (F.X μ hU u w hg hq) (F.H μ hU u w hg hq) hT j hj x`.
+A detailed English derivation is pending.
 -/
 theorem ChFam.tied_cmp {E : Extra D L hT Gi Gl K Dx cX} (F : ChFam E) (e0) (μ : D.what₂.Tup) (hU : DV.Used D μ) (u : D.what₂.Word)
     (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (hq : D.what₂.places.resChar w ∉ Dx.Qp μ)

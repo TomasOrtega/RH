@@ -24,7 +24,7 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `[galOf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem galOf_tmul {A B : Type*} [CommRing A] [Algebra F A] [CommRing B] [Algebra E B]
     (e : E ⊗[F] A ≃ₐ[E] B) (σ : E ≃ₐ[F] E) (l : E) (a : A) :
@@ -32,7 +32,7 @@ private theorem galOf_tmul {A B : Type*} [CommRing A] [Algebra F A] [CommRing B]
   simp [galOf]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨w, hw⟩`. Take `rfl : below F w = v` from `(below_eq_iff w v).2 hw`. Conclude with `adeleTensorEquiv_tmul_snd l x w`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem tensor_atFin (v : HeightOneSpectrum (𝓞 F)) (l : E) (x : 𝔸[F]) :
     atFin v (adeleTensorEquiv F E (l ⊗ₜ x)) = tensorEquiv' E v (l ⊗ₜ x.2 v) := by
@@ -41,7 +41,7 @@ private theorem tensor_atFin (v : HeightOneSpectrum (𝓞 F)) (l : E) (x : 𝔸[
   exact adeleTensorEquiv_tmul_snd l x w
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `(adeleTensorEquiv F E).surjective a`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul l x => rw [galAd, galOf_tmul, tensor_atFin, tensor_atFin, galFin, galOf_tmul]`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem atFin_galAd (σ : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (a : 𝔸[E]) :
     atFin v (galAd σ a) = galFin σ v (atFin v a) := by
@@ -52,7 +52,7 @@ private theorem atFin_galAd (σ : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)
   | add s t hs ht => simp only [map_add, hs, ht]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨w, hw⟩`. Take `rfl : below F w = v` from `(below_eq_iff w v).2 hw`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private theorem atFin_adeleMap (v : HeightOneSpectrum (𝓞 F)) (a : 𝔸[F]) :
     atFin v (adeleMap F E a) = incFin E v (a.2 v) := by
@@ -61,7 +61,7 @@ private theorem atFin_adeleMap (v : HeightOneSpectrum (𝓞 F)) (a : 𝔸[F]) :
   rfl
 
 /- English proof (translation)
-Establish `h1 : (MulSemiringAction.toRingHom (E ≃ₐ[F] E) 𝔸[E] σ) = Formalism.L2.Host.CT.adMap σ.toRingEquiv` using `UpperTheory.ConvolutionTheory.K.adUnique E σ.toRingEquiv _ (continuous_const_smul σ) fun x => smul_algebraMap σ x`. Rewrite using `[UpperTheory.ConvolutionTheory.K.galAdEq, ← h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem galAd_eq_smul (σ : E ≃ₐ[F] E) (a : 𝔸[E]) : galAd σ a = σ • a := by
   have h1 : (MulSemiringAction.toRingHom (E ≃ₐ[F] E) 𝔸[E] σ) = Formalism.L2.Host.CT.adMap σ.toRingEquiv :=
@@ -70,7 +70,7 @@ private theorem galAd_eq_smul (σ : E ≃ₐ[F] E) (a : 𝔸[E]) : galAd σ a = 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Rewrite using `[pow_succ', mul_smul, ← galAd_eq_smul, atFin_galAd, ih, Function.iterate_succ_apply']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem atFin_pow_smul (σ : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (i : ℕ) (a : 𝔸[E]) :
     atFin v ((σ ^ i) • a) = (galFin σ v)^[i] (atFin v a) := by
@@ -80,9 +80,9 @@ private theorem atFin_pow_smul (σ : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞
     rw [pow_succ', mul_smul, ← galAd_eq_smul, atFin_galAd, ih, Function.iterate_succ_apply']
 
 /- English proof (translation)
-Establish `ho : orderOf σ = Module.finrank F E`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hσ, IsGalois.card_aut_eq_finrank]`. Establish `hinj : Function.Injective fun i : Fin (Module.finrank F E) => σ ^ (i : ℕ)` using `fun i j h => Fin.ext (pow_injOn_Iio_orderOf (by simpa [ho] using i.2) (by simpa [ho] using j.2) h)`. Establish `hbij : Function.Bijective fun i : Fin (Module.finrank F E) => σ ^ (i : ℕ)`. Use `(Fintype.bijective_iff_injective_and_card _).2 ⟨hinj, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.card_fin, ← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank]`. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun i => f (σ ^ i))]`. Conclude with `(Fintype.prod_bijective _ hbij _ _ fun _ => rfl).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prod_gal [IsGalois F E] {M : Type*} [CommMonoid M] (σ : E ≃ₐ[F] E) (hσ : ∀ τ, τ ∈ Subgroup.zpowers σ)
     (f : (E ≃ₐ[F] E) → M) : ∏ τ, f τ = ∏ i ∈ Finset.range (Module.finrank F E), f (σ ^ i) := by
@@ -97,7 +97,7 @@ private theorem prod_gal [IsGalois F E] {M : Type*} [CommMonoid M] (σ : E ≃�
   exact (Fintype.prod_bijective _ hbij _ _ fun _ => rfl).symm
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => rfl`. Consider the case `succ i ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih, hθ]`. Simplify using `[Matrix.GeneralLinearGroup.det, RingHom.map_det]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem det_iter {R : Type*} [CommRing R] (s : R →+* R) (n : ℕ) (θ : Monoid.End (GL (Fin n) R))
     (hθ : ∀ g, θ g = mapGL n s g) (i : ℕ) (δ : GL (Fin n) R) :
@@ -109,7 +109,7 @@ private theorem det_iter {R : Type*} [CommRing R] (s : R →+* R) (n : ℕ) (θ 
     simp [Matrix.GeneralLinearGroup.det, RingHom.map_det]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `zero => simp`. Consider the case `succ l ih`. Rewrite using `[twNorm_succ, map_mul, Units.val_mul, ih, Finset.prod_range_succ, Monoid.End.coe_pow, det_iter s n θ hθ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem det_twNorm {R : Type*} [CommRing R] (s : R →+* R) (n : ℕ) (θ : Monoid.End (GL (Fin n) R))
     (hθ : ∀ g, θ g = mapGL n s g) (l : ℕ) (δ : GL (Fin n) R) :
@@ -127,19 +127,17 @@ end UpperTheory.Gal.InertialTypesAlt.G.NL
 open UpperTheory.Gal.InertialTypesAlt.G.NL GroundTheory.Global.AdeleBaseChange PositivityTheory.Rg.Tf.Loc in
 open scoped NumberField.AdeleRing in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ hσ _ n _ v γ δ h η hη`. Use `set d : (CompletionsOver E v)ˣ := Matrix.GeneralLinearGroup.det δ with hd`. Set `du : ∀ u : PlacesOver E v, (u.1.adicCompletion E)ˣ` to `fun u => Units.map (Pi.evalRingHom (fun w : PlacesOver E v => w.1.adicCompletion E) u).toMonoidHom d`. Set `x : IdeleGroup E` to `∏ u : PlacesOver E v, IdeleGroup.finiteEmbedding u.1 (du u)`. Establish `hc : ∀ u : PlacesOver E v, ∃ c : (v.adicCompletion F)ˣ, ideleNorm F E (IdeleGroup.finiteEmbedding u.1 (du u)) = IdeleGroup.finiteEmbedding v c`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨w, hw⟩`. Take `rfl : below F w = v` from `(below_eq_iff w v).2 hw`. Conclude with `⟨_, ideleNorm_finiteEmbedding w _⟩`. Use `choose c hc using hc`. Establish `hx : ideleNorm F E x = IdeleGroup.finiteEmbedding v (∏ u, c u)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [x, map_prod, hc]`. Establish `hat : atFin v (x : 𝔸[E]) = (d : CompletionsOver E v)`. Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `(((IdeleGroup.finiteProj w.1 x : (w.1.adicCompletion E)ˣ)) : w.1.adicCompletion E) = _`. Establish `: IdeleGroup.finiteProj w.1 x = du w`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [x, map_prod]`. Rewrite using `[Finset.prod_eq_single w (fun b _ hb => IdeleGroup.finiteProj_finiteEmbedding_of_ne (fun e => hb (Subtype.ext e.symm)) _) (by simp), IdeleGroup.finiteProj_finiteEmbedding]`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hy : ∏ u, c u = Matrix.GeneralLinearGroup.det γ` using `by haveI := (GroundTheory.Global.nonempty_placesOver E v)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Apply `(incFin E v).injective` to reduce the goal to its premises. Establish `h1 : incFin E v ((∏ u, c u : (v.adicCompletion F)ˣ) : v.adicCompletion F) = atFin v (adeleMap F E ((ideleNorm F E x : IdeleGroup F) : 𝔸[F]))`. Rewrite using `[hx, atFin_adeleMap]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(congrArg Units.val (IdeleGroup.finiteProj_finiteEmbedding v _)).symm`. Rewrite using `[h1, coe_ideleNorm, adeleMap_norm, map_prod, prod_gal σ hσ]`. Simplify using `only [atFin_pow_smul, hat]`. Rewrite using `[hd, ← det_twNorm (galFin σ v) n _ (fun _ => rfl), h]`. Simplify using `[Matrix.GeneralLinearGroup.det, RingHom.map_det]`.
-
-Establish `h3` using `UpperTheory.Gal.InertialTypesAlt.G.normTriv F E η hη x`. Rewrite `h3` using `[hx, hy]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.G.normLoc :
     UpperTheory.Gal.InertialTypesAlt.G.NormLoc := by

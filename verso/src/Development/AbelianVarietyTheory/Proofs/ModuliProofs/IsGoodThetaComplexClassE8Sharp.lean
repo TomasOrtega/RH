@@ -19,7 +19,7 @@ open GlobalTheory.ZM
 namespace GlobalTheory.SharpGood
 
 /- English proof (translation)
-Take `⟨r, ⟨e⟩⟩` from `Finite.exists_equiv_fin {y : β // ∃ x, P x ∧ f x = y}`. Use `⟨r, fun i => (e.symm i).2.choose, fun i => (e.symm i).2.choose_spec.1, fun x hx => ?_⟩` and prove the remaining obligations. Use `⟨e ⟨f x, x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[(e.symm (e ⟨f x, x, hx, rfl⟩)).2.choose_spec.2, Equiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_representatives {α β : Type} [Finite β] (f : α → β) (P : α → Prop) :
     ∃ (r : ℕ) (s : Fin r → α), (∀ i, P (s i)) ∧ ∀ x, P x → ∃ i, f x = f (s i) := by
@@ -30,13 +30,13 @@ theorem exists_representatives {α β : Type} [Finite β] (f : α → β) (P : �
   rw [(e.symm (e ⟨f x, x, hx, rfl⟩)).2.choose_spec.2, Equiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `haveI : NeZero k := ⟨hk⟩`. Take `⟨r, s, hs, hm⟩` from `exists_representatives (fun (m : (ν → ℤ) →+ (ν → ℤ)) (p q : ν) => ((m (Pi.single p 1) q : ℤ) : ZMod k)) P`. Use `⟨r, s, hs, fun m hP => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hm m hP`. Use `⟨i, fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx : x = ∑ p, x p • (Pi.single p 1 : ν → ℤ)`. Use extensionality with `q`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `key : ∀ q, ((m x q : ℤ) : ZMod k) = ((s i x q : ℤ) : ZMod k)`. Introduce `q`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, map_sum, map_sum]`. Simplify using `only [map_zsmul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Int.cast_sum, Int.cast_mul]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[congrFun (congrFun hi p) q]`. Establish `key' : ∀ q, ∃ c : ℤ, m x q - s i x q = k * c` using `fun q => (ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).1 (key q).symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose y hy using key'`. Use `⟨y, funext fun q => ?_⟩` and prove the remaining obligations. Use `hy q` as an intermediate fact. Rewrite using `[Pi.add_apply, Pi.smul_apply, nsmul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_hom_representatives {ν : Type} [Fintype ν] (k : ℕ) (hk : k ≠ 0)
     (P : ((ν → ℤ) →+ (ν → ℤ)) → Prop) :
@@ -66,7 +66,7 @@ theorem exists_hom_representatives {ν : Type} [Fintype ν] (k : ℕ) (hk : k �
   linarith
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add₀ hq, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zpow_finset_sum {ν : Type} (q : ℂ) (hq : q ≠ 0) (s : Finset ν) (f : ν → ℤ) :
     q ^ (∑ i ∈ s, f i) = ∏ i ∈ s, q ^ f i := by
@@ -76,9 +76,9 @@ theorem zpow_finset_sum {ν : Type} (q : ℂ) (hq : q ≠ 0) (s : Finset ν) (f 
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add₀ hq, ih]
 
 /- English proof (translation)
-Establish `h1 : ∀ n : ℤ, Complex.exp (-(2 * Real.pi * Complex.I) * (n : ℂ) / k) = Complex.exp (-(2 * Real.pi * Complex.I) / k) ^ n`. Introduce `n`. Rewrite using `[← Complex.exp_int_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h1, zpow_finset_sum _ (Complex.exp_ne_zero _), zpow_finset_sum _ hζ]`. Use `Finset.prod_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_finset_sum _ (Complex.exp_ne_zero _), zpow_finset_sum _ hζ]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (G u v), mul_comm (G u v), zpow_mul, zpow_mul, ← h1, hpq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_sum_eq (k : ℕ) (ζ : ℂ) (hζ : ζ ≠ 0) (G p q : Fin 8 → Fin 8 → ℤ)
     (hpq : ∀ u v, Complex.exp (-(2 * Real.pi * Complex.I) * (p u v : ℂ) / k) = ζ ^ q u v) :
@@ -115,7 +115,7 @@ Both sides reduce to the same expression.
 theorem omegaBil_apply {h : ℕ} (x y : Fin h ⊕ Fin h → ℤ) : omegaBil h x y = omegaStd x y := rfl
 
 /- English proof (translation)
-Use `⟨∑ u, ∑ v, G u v • (omegaBil h).compl₁₂ (LinearMap.proj u) (LinearMap.proj v), fun x y => ?_⟩` and prove the remaining obligations. Simplify using `[LinearMap.sum_apply, omegaBil_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_tensor_form (h : ℕ) (G : Matrix (Fin 8) (Fin 8) ℤ) :
     ∃ EF : LinearMap.BilinForm ℤ (Fin 8 → (Fin h ⊕ Fin h → ℤ)),
@@ -124,11 +124,11 @@ theorem exists_tensor_form (h : ℕ) (G : Matrix (Fin 8) (Fin 8) ℤ) :
   simp [LinearMap.sum_apply, omegaBil_apply]
 
 /- English proof (translation)
-Establish `h1 : ∑ u, ∑ v, G u v * omegaStd (∑ s, A u s • x s) (y v) = ∑ s, ∑ v, (A.transpose * G) s v * omegaStd (x s) (y v)`. Simplify using `only [← omegaBil_apply, map_sum, LinearMap.sum_apply, map_zsmul, LinearMap.smul_apply, smul_eq_mul, Matrix.mul_apply, Matrix.transpose_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun u _ => by ring` and prove the remaining obligations. Establish `h2 : ∑ u, ∑ v, G u v * omegaStd (x u) (∑ s, A' v s • y s) = ∑ u, ∑ s, (G * A') u s * omegaStd (x u) (y s)`. Simplify using `only [← omegaBil_apply, map_sum, map_zsmul, smul_eq_mul, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun v _ => by ring` and prove the remaining obligations. Rewrite using `[h1, h2, hA]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_form_adjoint {h : ℕ} (G A A' : Matrix (Fin 8) (Fin 8) ℤ)
     (hA : A.transpose * G = G * A') (x y : Fin 8 → (Fin h ⊕ Fin h → ℤ)) :
@@ -153,7 +153,7 @@ theorem tensor_form_adjoint {h : ℕ} (G A A' : Matrix (Fin 8) (Fin 8) ℤ)
   rw [h1, h2, hA]
 
 /- English proof (translation)
-Use `bas.finrank_eq` as an intermediate fact. Rewrite `this` using `[Module.finrank_pi_fintype, Module.finrank_pi_fintype]`. Simplify using `at this`. Use `⟨Fintype.equivOfCardEq ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -167,11 +167,11 @@ theorem nonempty_index_equiv {h g : ℕ}
   simp; omega
 
 /- English proof (translation)
-Use `set z := bas.symm (fun u => ∑ v, A u v • bas (Pi.single i 1) v) with hz`. Establish `hx : z = ∑ p, z p • (Pi.single p 1 : Fin (2 * g) → ℤ)`. Use extensionality with `q`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `h1 : (fun u => ∑ v, A u v • bas (Pi.single i 1) v) = ∑ p, z p • bas (Pi.single p 1)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: bas z = (fun u => ∑ v, A u v • bas (Pi.single i 1) v)`. Rewrite using `[hz, LinearEquiv.apply_symm_apply]`. Rewrite using `[← this]`. Use `conv_lhs => rw [hx]`. Simplify using `only [map_sum, map_zsmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `u`. Establish `h2` using `congrArg m (congrFun h1 u)`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, map_sum, map_zsmul] at h2 ⊢`. Conclude with `h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem action_on_basis {h g : ℕ}
     (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] (Fin 8 → (Fin h ⊕ Fin h → ℤ))) (A : Matrix (Fin 8) (Fin 8) ℤ)
@@ -194,39 +194,35 @@ theorem action_on_basis {h g : ℕ}
   exact h2
 
 /- English proof (translation)
-Introduce `L₁ L₂ hgen hunif h g W J _ a w w' bas hE hbas hw hw' _`. Take `⟨σ⟩` from `nonempty_index_equiv bas`. Take `⟨EF, hEF⟩` from `exists_tensor_form h (W + W.transpose)`. Establish `hGs : (W + W.transpose).IsSymm`. Rewrite using `[Matrix.IsSymm, Matrix.transpose_add, Matrix.transpose_transpose, add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hbij, hdom, hinj, hκ⟩` from `GlobalTheory.TensorSiegel.tensor_siegel_lattices h g (W + W.transpose) σ EF hGs hE.1 hE.2 hEF`. Use `choose κ₀ hκ₀ using hκ`. Take `⟨κ, hκ⟩ : ∃ κ : ℕ, ∀ j, κ₀ (a j) ≤ κ` from `(Set.finite_range fun j => κ₀ (a j)).bddAbove.imp fun κ hκ j => hκ ⟨j, rfl⟩`. Take `⟨B, τ, hBo, hBc, hτd, hτ, hτs⟩` from `GlobalTheory.exists_siegel_coordinates h`. Establish `hQ : ∀ bb, ∃ (Q : (Fin 8 → (Fin h ⊕ Fin h → ℤ)) →+ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ), bb ∈ B → (∀ x u i, Q x (σ (u, i)) = (τ bb).mulVec (fun i' => (x u (.inl i') : ℂ)) i + (x u (.inr i) : ℂ)) ∧ (Function.Injective Q ∧ DiscreteTopology (Q).range ∧ Submodule.span ℝ (Set. …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `bb`. Distinguish the cases in `hb : bb ∈ B`. Take `⟨Q, Hm, hh⟩` from `hdom (τ bb) (hτ bb hb)`. Conclude with `⟨Q, Hm, fun _ => hh⟩`. Conclude with `⟨0, 0, fun hb' => absurd hb' hb⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose Q Hm hQ using hQ`. Establish `hsum : a w + a w' = 1`. Establish `hu : IsUnit (W + W.transpose)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, hE.2]`. Conclude with `isUnit_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[_root_.mul_add, hw, hw', _root_.mul_one]`. Establish `hadj : (a w).transpose * (W + W.transpose) = (W + W.transpose) * a w'`. Rewrite using `[hw']`. Use `conv_rhs => rw [← hw]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.transpose_mul, hGs.eq]`. Use `⟨fun j => Matrix.of fun i' i => bas.symm (fun u => ∑ v, a j u v • bas (Pi.single i 1) v) i', κ, fun n hn hodd => ?_⟩` and prove the remaining obligations. Take `⟨j₀, hj₀⟩` from `GlobalTheory.T.goodThetaClass_of_lattice_families L₁ L₂ hgen hunif g J (fun j => Matrix.of fun i' i => bas.symm (fun u => ∑ v, a j u v • bas (Pi.single i 1) v) i') κ n w w' hn hodd`. Use `⟨j₀, fun j hj N' hN o _ b em => ?_⟩` and prove the remaining obligations. Establish `hk : N' ^ 2 ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hN]`. Conclude with `pow_ne_zero _ (pow_ne_zero _ hn.ne_zero)`. Establish `hζ : em (b.ζ : o) ≠ 0` using `(b.ζ.isUnit.map em).ne_zero`. Take `⟨r, ms, hms, hrep⟩` from `exists_hom_representatives (ν := Fin h ⊕ Fin h) (N' ^ 2) hk (fun m => ∀ x y, Complex.exp (-(2 * Real.pi * Complex.I) * (omegaStd (m x) (m y) : ℂ) / ((N' ^ 2 : ℕ) : ℂ)) = em (b.ζ : o) ^ omegaStd x y)`. Use `hj₀ j hj N' hN o b em _ _ r (fun _ => Fin 8 → (Fin h ⊕ Fin h → ℤ)) (fun _ => EF) (fun p i u => ms p (bas (Pi.single i 1) u)) (fun _ j x u => ∑ v, a j u v • x v) (fun _ => B) (fun _ => Q) (fun _ => Hm) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `fun t t' ht hm => (GlobalTheory.T.sharpClass_prim_and_closed_under_tMap hgen o g _ J b em w w' h W a bas t ht).2 t' hm`. Conclude with `fun t ht => (GlobalTheory.T.sharpClass_prim_and_closed_under_tMap hgen o g _ J b em w w' h W a bas t ht).1 hE hw hw'`. Introduce `p`. Use `⟨hbij, hBo, hBc.isPreconnected, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `differentiableOn_pi.2 fun c => ?_` and prove the remaining obligations. Take `⟨⟨u, i⟩, rfl⟩` from `σ.surjective c`. Use `DifferentiableOn.congr (f := fun bb => ∑ i', τ bb i i' * (x u (.inl i') : ℂ) + (x u (.inr i) : ℂ)) ?_ ?_` and prove the remaining obligations. Use `Differentiable.differentiableOn ?_` and prove the remaining obligations. Conclude with `(Differentiable.fun_sum fun i' _ => (hτd i i').mul_const _).add_const _`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `bb hb`. Conclude with `(hQ bb hb).1 x u i`. Introduce `x`. Use function extensionality and compare the values at `u`. Establish `h1 : ∀ v, a w u v + a w' u v = (1 : Matrix (Fin 8) (Fin 8) ℤ) u v` using `fun v => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hsum]`. Both sides reduce to the same expression. Use `show ∑ v, a w u v • x v + ∑ v, a w' u v • x v = x u`. Rewrite using `[← Finset.sum_add_distrib]`. Simplify using `only [← add_smul, h1, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Rewrite using `[hEF, hEF]`. Conclude with `tensor_form_adjoint _ _ _ hadj x y`. Introduce `i₁ i₂`. Rewrite using `[hEF, ← hbas i₁ i₂]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `exp_sum_eq _ _ hζ _ _ _ fun u v => hms p _ _`. Introduce `j₁ i₁`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_zero, add_zero]`. Conclude with `action_on_basis bas (a j₁) (ms p) i₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `bb hb`. Conclude with `⟨(hQ bb hb).2, fun j₁ => hκ₀ (a j₁) κ (hκ j₁) (τ bb) (Q bb) (Hm bb) (hτ bb hb) (hQ bb hb).1 (hQ bb hb).2⟩`. Introduce `bb hb z' hz' he`. Establish `h1` using `hinj (τ bb) (τ z') (Q bb) (Q z') (hQ bb hb).1 (hQ z' hz').1 he`. Conclude with `(hτs (τ bb) (hτ bb hb).1 (hτ bb hb).2).unique ⟨hb, rfl⟩ ⟨hz', h1.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `bb hb t hu _`. Conclude with `GlobalTheory.T.eighthPower_theta_object_of_uniformisation L₁ L₂ hgen hunif o g _ J b em w w' h W a bas σ EF hE hbas hw hw' hEF t (τ bb) (ms p) (Q bb) (Hm bb) (hτ bb hb) (hms p) (hQ bb hb).1 (hQ bb hb).2 hu`. Introduce `t ht`. Take `⟨τ₀, m, Q₀, H₀, hτ₀, hm, hQ₀, hpol, hu⟩` from `GlobalTheory.T.exists_periods_eighthPower_evenUnimodularBundle L₁ L₂ hgen hunif o g _ J b em w w' h W a bas σ EF hE hbas hw hw' hEF t ht`. Take `⟨bb, ⟨hb, rfl⟩, -⟩` from `hτs τ₀ hτ₀.1 hτ₀.2`.
-
-Take `⟨p, hp⟩` from `hrep m hm`. Use `choose y hy using hp`. Use `⟨p, bb, hb, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.UnifTransport.transport_uniformisation o g _ J b em w w' t _ EF (fun i u => m (bas (Pi.single i 1) u)) (fun j x u => ∑ v, a j u v • x v) Q₀ H₀ _ EF (fun i u => ms p (bas (Pi.single i 1) u)) (fun j x u => ∑ v, a j u v • x v) (Q bb) (Hm bb) (AddEquiv.refl _) (LinearEqu …` and prove the remaining obligations. Introduce `x`.
-
-Use function extensionality and compare the values at `c`. Take `⟨⟨u, i⟩, rfl⟩` from `σ.surjective c`. Conclude with `((hQ bb hb).1 x u i).trans (hQ₀ x u i).symm`. Introduce `i`. Conclude with `⟨fun u => y (bas (Pi.single i 1) u), funext fun u => hy _⟩`.
+A detailed English derivation is pending.
 -/
 theorem goodClass_sharpClass : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (h g : ℕ) (W : Matrix (Fin 8) (Fin 8) ℤ) (J : Type) [Finite J] (a : J → Matrix (Fin 8) (Fin 8) ℤ) (w w' : J) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] (Fin 8 → (Fin h ⊕ Fin h → ℤ))), IsE8 W → IsSharpBasis W bas → (W + W.transpose) * a w = W → (W + W.transpose) * a w' = W.transpose → (∀ u v, ∃ j, a j = Matrix.single u v 1) → ∃ (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ : ℕ), ∀ n : ℕ, n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ N' : ℕ, N' = n ^ j → ∀ (o : Type) [CommRing o] (b : TBase o (N' ^ 2)) (em : o →+* ℂ), GoodClass em (SharpClass (b := b) W a bas em) Mat κ w w' (h * (h + 1) / 2) := by
   intro L₁ L₂ hgen hunif h g W J _ a w w' bas hE hbas hw hw' _

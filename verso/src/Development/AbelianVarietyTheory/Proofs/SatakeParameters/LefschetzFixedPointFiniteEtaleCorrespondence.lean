@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.OmegaPullOmeg
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.HodgeCoh GlobalTheory.CechDR KaehlerDifferential GlobalTheory.W1
 
 /- English proof (citation)
-Apply `UpperTheory.Cb.lefschetz_fixedPoint_finite_etale_correspondence` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FFoundations%2FEtaleClopenDescent%2FLefschetzFixedPointFiniteEtaleCorrespondence.lean&line=255#L255)
 -/

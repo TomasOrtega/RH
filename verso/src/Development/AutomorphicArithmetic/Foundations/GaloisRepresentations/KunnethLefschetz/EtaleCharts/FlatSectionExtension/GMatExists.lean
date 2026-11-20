@@ -16,14 +16,14 @@ variable {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingC
   {D : E.LineData Y} {d : ℕ}
 
 /- English proof (translation)
-Unfold `wI cP`. Conclude with `Sigma.ι_desc _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem wI_cP (B : Blow q i π D d) (α : B.ι) : wI B α ≫ cP B = (oW B α).ι := by
   unfold wI cP
   exact Sigma.ι_desc _ _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `h₁ : (c y).1 ∈ oW B α` using `(c y).2`. Establish `h₂ : i (c y).1 ∈ B.V α` using `h₁`. Rewrite using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`. Conclude with `h₂`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_V (B : Blow q i π D d) {U : Scheme.{0}} {p : U ⟶ W} {α : B.ι}
     (c : U ⟶ (oW B α : Scheme.{0})) (h : p = c ≫ (oW B α).ι) (y : U) : (p ≫ i) y ∈ B.V α := by
@@ -34,11 +34,11 @@ private theorem mem_V (B : Blow q i π D d) {U : Scheme.{0}} {p : U ⟶ W} {α :
   exact h₂
 
 /- English proof (translation)
-Take `⟨U₁, α, a₀, hx₁, ha⟩` from `sigmaLocal (fun α : B.ι => (oW B α : Scheme.{0})) a x`. Take `⟨U₂, β, b₀, hx₂, hb⟩` from `sigmaLocal (fun α : B.ι => (oW B α : Scheme.{0})) b x`. Establish `ha' : (U₁ ⊓ U₂).ι ≫ a = (V.homOfLE (inf_le_left : U₁ ⊓ U₂ ≤ U₁) ≫ a₀) ≫ wI B α`. Establish `ha₀ : U₁.ι ≫ a = a₀ ≫ wI B α` using `ha`. Rewrite using `[Category.assoc, ← ha₀, ← Category.assoc, Scheme.homOfLE_ι]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb' : (U₁ ⊓ U₂).ι ≫ b = (V.homOfLE (inf_le_right : U₁ ⊓ U₂ ≤ U₂) ≫ b₀) ≫ wI B β`. Establish `hb₀ : U₂.ι ≫ b = b₀ ≫ wI B β` using `hb`. Rewrite using `[Category.assoc, ← hb₀, ← Category.assoc, Scheme.homOfLE_ι]`. Establish `e₁ : (U₁ ⊓ U₂).ι ≫ a ≫ cP B = (V.homOfLE (inf_le_left : U₁ ⊓ U₂ ≤ U₁) ≫ a₀) ≫ (oW B α).ι`. Rewrite using `[← Category.assoc, ha', Category.assoc, wI_cP]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : (U₁ ⊓ U₂).ι ≫ a ≫ cP B = (V.homOfLE (inf_le_right : U₁ ⊓ U₂ ≤ U₂) ≫ b₀) ≫ (oW B β).ι`. Rewrite using `[h, ← Category.assoc, hb', Category.assoc, wI_cP]`. Take `⟨M, hM⟩` from `locMatExists B α β ((U₁ ⊓ U₂).ι ≫ a ≫ cP B) (fun y => ⟨mem_V B _ e₁ y, mem_V B _ e₂ y⟩)`. Conclude with `⟨U₁ ⊓ U₂, α, β, _, _, M, ⟨hx₁, hx₂⟩, ha', hb', hM⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_loc (B : Blow q i π D d) {V : Scheme.{0}} (a b : V ⟶ WP B)
     (h : a ≫ cP B = b ≫ cP B) (x : V) :
@@ -62,13 +62,13 @@ private theorem exists_loc (B : Blow q i π D d) {V : Scheme.{0}} (a b : V ⟶ W
   exact ⟨U₁ ⊓ U₂, α, β, _, _, M, ⟨hx₁, hx₂⟩, ha', hb', hM⟩
 
 /- English proof (translation)
-Distinguish the cases in `hS : Nonempty S`. Take `⟨s⟩` from `hS`. Establish `ea : (f ≫ a₁) ≫ wI B α = (f' ≫ a₁') ≫ wI B α'`. Rewrite using `[Category.assoc, Category.assoc, ← ha, ← ha', ← Category.assoc, ← Category.assoc, e]`. Establish `eb : (f ≫ b₁) ≫ wI B β = (f' ≫ b₁') ≫ wI B β'`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, Category.assoc, ← hb, ← hb', ← Category.assoc, ← Category.assoc, e]`. Take `rfl : α = α'` from `sigmaDisj (fun α : B.ι => (oW B α : Scheme.{0})) _ _ s ea`. Take `rfl : β = β'` from `sigmaDisj (fun α : B.ι => (oW B α : Scheme.{0})) _ _ s eb`. Establish `n₁` using `locMatNat B α β f _ M hM`. Establish `n₂` using `locMatNat B α β f' _ M' hM'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ep : f ≫ U.ι ≫ a ≫ cP B = f' ≫ U'.ι ≫ a ≫ cP B`. Rewrite using `[← Category.assoc, e, Category.assoc]`. Rewrite `n₁` using `[ep]`. Conclude with `locMatUnique B α β _ _ _ n₁ n₂`. Establish `: IsEmpty S` using `not_nonempty_iff.mp hS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `r c`. Conclude with `sectionExt _ _ (fun x => isEmptyElim x)`.
+A detailed English derivation is pending.
 -/
 private theorem compat (B : Blow q i π D d) {V S : Scheme.{0}} (a b : V ⟶ WP B) {U U' : V.Opens}
     (f : S ⟶ (U : Scheme.{0})) (f' : S ⟶ (U' : Scheme.{0})) (e : f ≫ U.ι = f' ≫ U'.ι)
@@ -100,11 +100,9 @@ private theorem compat (B : Blow q i π D d) {V S : Scheme.{0}} (a b : V ⟶ WP 
 end UpperTheory.Gal.KunnethLefschetz.G.PX
 
 /- English proof (translation)
-Introduce `K _ W Z Y q i π D d B V a b h`. Use `choose U α β a₁ b₁ M hx ha hb hM using exists_loc B a b h`. Establish `hg : ∀ r c, ∃ s₀ : Γ(V, ⊤), ∀ x, (U x).ι.appTop.hom s₀ = M x r c` using `fun r c => glueSection U hx (fun x => M x r c) (fun x y S f f' e => by`. Establish `h₁` using `compat B a b f f' e (a₁ x) (b₁ x) (a₁ y) (b₁ y) (ha x) (hb x) (ha y) (hb y) (M x) (M y) (hM x) (hM y)`. Conclude with `congrFun (congrFun h₁ r) c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose G hG using hg`. Use `⟨Matrix.of G, fun x => ⟨U x, α x, β x, a₁ x, b₁ x, hx x, ha x, hb x, ?_⟩⟩` and prove the remaining obligations. Establish `e : (Matrix.of G).map (U x).ι.appTop.hom = M x`. Use extensionality with `r c`. Conclude with `hG r c x`.
-
-Rewrite using `[e]`. Conclude with `hM x`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.G.PX.gMatExists :
     ∀ {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) {V : Scheme.{0}} (a b : V ⟶ WP B), a ≫ cP B = b ≫ cP B → ∃ M : Matrix (Fin d) (Fin d) Γ(V, ⊤), GMat B a b M := by

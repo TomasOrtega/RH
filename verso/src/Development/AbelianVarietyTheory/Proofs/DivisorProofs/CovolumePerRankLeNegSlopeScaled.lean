@@ -16,13 +16,13 @@ variable {R V W E F : Type} [Ring R] [AddCommGroup V] [Module R V] [AddCommGroup
   [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
 
 /- English proof (translation)
-Set `f : A.toAddSubgroup →+ E` to `ρ.comp A.toAddSubgroup.subtype`. Set `g : A.toAddSubgroup →+ F` to `(σ.comp T).comp A.toAddSubgroup.subtype`. Establish `h1 : ∀ y, y ∈ Formalism.HN.zl ρ A ↔ ∃ m, f m = y` using `fun y => ⟨fun ⟨m, hm, e⟩ => ⟨⟨m, hm⟩, e⟩, fun ⟨m, e⟩ => ⟨m.1, m.2, e⟩⟩`. Establish `h2 : ∀ y, y ∈ Formalism.HN.zl σ B ↔ ∃ m, g m = y` using `fun y => ⟨fun ⟨m, hm, e⟩ => by`. Take `⟨x, hx, rfl⟩` from `(hAB m).1 hm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨x, hx⟩, e⟩, fun ⟨m, e⟩ => ⟨T m.1, (hAB _).2 ⟨m.1, m.2, rfl⟩, e⟩⟩`. Establish `hn' : ∀ m, ‖f m‖ = ‖g m‖` using `fun m => (hn m.1 m.2).symm`. Use `haveI := hA.2`. Use `haveI := hB.2`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : Function.Injective f` using `fun x y h => Subtype.ext (hA.1 x.2 y.2 h)`. Establish `hg : Function.Injective g` using `fun x y h => hf (Formalism.HN.QuotientRealization.eq_of_norm_eq g f (fun m => (hn' m).symm) h)`. Establish `e1 : Formalism.HN.zl ρ A = LinearMap.range f.toIntLinearMap` using `Submodule.ext h1`. Establish `e2 : Formalism.HN.zl σ B = LinearMap.range g.toIntLinearMap` using `Submodule.ext h2`. Unfold `Formalism.HN.rk Formalism.F.rk`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[e1, e2, ← (LinearEquiv.ofInjective f.toIntLinearMap hf).finrank_eq, ← (LinearEquiv.ofInjective g.toIntLinearMap hg).finrank_eq]`. Unfold `Formalism.HN.deg Formalism.F.deg`. Rewrite using `[Formalism.HN.QuotientRealization.covol_eq_of_norm_eq f g _ _ h1 h2 hn']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rk_deg_transport (ρ : V →+ E) (σ : W →+ F) (T : V →+ W) {A : Submodule R V} {B : Submodule R W}
     (hA : Formalism.HN.IsLat ρ A) (hB : Formalism.HN.IsLat σ B)
@@ -54,7 +54,7 @@ theorem rk_deg_transport (ρ : V →+ E) (σ : W →+ F) (T : V →+ W) {A : Sub
 end Transport
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.cnorm`. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hs, mul_pow, ← Finset.mul_sum]`. Rewrite using `[Real.sqrt_mul (sq_nonneg s), Real.sqrt_sq hs]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cnorm_smul {ι : Type} [Fintype ι] (s : ℝ) (hs : 0 ≤ s) (u : ι → ℂ) :
     Formalism.HermitianLatticesTheory.cnorm ((s : ℂ) • u) = s * Formalism.HermitianLatticesTheory.cnorm u := by
@@ -68,31 +68,27 @@ end GlobalTheory.CovolCore
 namespace GlobalTheory.CovolCore
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ N hN L d hd b hb hLb X s hs0 hs1 hX hnorm hM`. Use `set φ := Fintype.linearCombination K b with hφ`. Use `set M := L.comap (φ.restrictScalars (𝓞 K)) with hMdef`. Establish `hφa : ∀ c : Fin d → K, φ c = ∑ k, c k • b k` using `fun c => Fintype.linearCombination_apply K b c`. Set `X' : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ` to `fun v => (s : ℂ) • X v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : (s : ℂ) ≠ 0` using `by exact_mod_cast hs0.ne'`. Establish `hX' : ∀ v, IsUnit (X' v).det` using `fun v => by show IsUnit ((s : ℂ) • X v).det`. Rewrite using `[Matrix.det_smul]`. Conclude with `((Ne.isUnit hs').pow _).mul (hX v)`. Establish `hfc : ∀ v c, Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K (Fin d)) X v c = (s : ℂ) • Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K (Fin d)) X' v c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `v c`. Establish `e : X' v = (Units.mk0 (s : ℂ) hs') • X v` using `rfl`. Simplify using `only [Formalism.HermitianLatticesTheory.fcoord]`. Rewrite using `[e, Matrix.inv_smul' (X v) (Units.mk0 (s : ℂ) hs') (hX v), Units.smul_def, Matrix.smul_mulVec, smul_smul, Units.val_inv_eq_inv_val, Units.val_mk0, mul_inv_cancel₀ hs', one_smul]`. Establish `hOC : GlobalTheory.MeasureLeaf.OneConstant X X' (fun _ => s ^ 2)` using `fun v => ⟨by positivity, fun x y => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Formalism.HermitianLatticesTheory.majAt, hfc, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul', Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`. Use the proof step `ring⟩`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hn' : ∀ v c, Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin d)) X' v c = N v.embedding (φ c)`. Introduce `v c`. Establish `h` using `hnorm v c`. Simplify using `only [Formalism.HermitianLatticesTheory.normAt, hfc, cnorm_smul s hs0.le] at h`. Rewrite using `[hφa]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_left_cancel₀ hs0.ne' h`. Establish `h1` using `GlobalTheory.MeasureLeaf.lcv_of_oneConstant hd X X' hX hX' (fun _ => s ^ 2) hOC M hM`. Establish `h2` using `Formalism.ExtensionFiltration.lcvMu K d hd X' hX' M hM`. Establish `hlog : 2 / (Module.finrank ℚ K : ℝ) * ∑ v : InfinitePlace K, Real.log (s ^ 2) ≤ 0`. Use `mul_nonpos_of_nonneg_of_nonpos (by positivity) (Finset.sum_nonpos fun v _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Real.log_nonpos (sq_nonneg _) (by nlinarith)`. Establish `hdR : (d : ℝ) ≠ 0` using `by exact_mod_cast hd.ne'`. Establish `hMfg : M.FG` using `hM.fg`. Establish `hML : ∀ y, y ∈ L ↔ ∃ x ∈ M, φ x = y` using `fun y => ⟨fun hy => by`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 (hLb y hy)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨c, ?_, by rw [hφa, hc]⟩` and prove the remaining obligations. Use `show φ c ∈ L`. Rewrite using `[hφa, hc]`. Conclude with `hy,`. Use `fun ⟨x, hx, e⟩ => e ▸ hx⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLM : L = M.map (φ.restrictScalars (𝓞 K))`. Use extensionality with `y`. Rewrite using `[hML y, Submodule.mem_map]`. Both sides reduce to the same expression. Establish `hLfg : L.FG` using `by rw [hLM]; exact hMfg.map _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨n, ⟨b0, X0⟩, hG⟩⟩` from `id hN`. Express the relevant statement in the definitionally equal form `GlobalTheory.AllWt.IsGram b0 X0 N at hG`. Rewrite using `[GlobalTheory.AllWt.slope_sq_eq hG hLfg]`. Establish `hlatM` using `(Formalism.HN.plLat K (Fin d → K) (Fin d) (Pi.basisFun K (Fin d)) X' hX' M hMfg).1`. Establish `hlatL` using `(Formalism.HN.plLat K V (Fin n) b0 X0 (fun v => (hG v).1) L hLfg).1`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnr : ∀ x ∈ M, ‖Formalism.HermitianLatticesTheory.realize b0 X0 (φ.toAddMonoidHom x)‖ = ‖Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin d)) X' x‖` using `fun x _ => by`. Rewrite using `[← sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _), GlobalTheory.AllWt.norm_realize_sq, GlobalTheory.AllWt.norm_realize_sq]`. Conclude with `Finset.sum_congr rfl fun v _ => by rw [(hG v).2, hn' v x]; rfl`. Take `⟨e1, e2⟩` from `rk_deg_transport (Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin d)) X') (Formalism.HermitianLatticesTheory.realize b0 X0) φ.toAddMonoidHom hlatM hlatL hML hnr`. Establish `key : Formalism.HN.muDef (Pi.basisFun K (Fin d)) X' M = Formalism.HN.muDef b0 X0 L`.
-
-Unfold `Formalism.HN.rk at e1`. Unfold `Formalism.HN.deg at e2`. Unfold `Formalism.HN.muDef Formalism.HN.slope Formalism.F.slope`. Rewrite using `[e1, e2]`. Establish `h3 : Formalism.DivisionValues.lcv X' M / (d : ℝ) = -Formalism.HN.muDef (Pi.basisFun K (Fin d)) X' M`.
-
-Rewrite using `[h2]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h1, h3, key]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lcv_div_le_neg_slope_sq : ∀ (K V : Type) [Field K] [NumberField K] [IsTotallyComplex K] [StarRing K]
     [AddCommGroup V] [Module K V]

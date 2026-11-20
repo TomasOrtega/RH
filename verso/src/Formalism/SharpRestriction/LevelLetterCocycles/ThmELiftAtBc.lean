@@ -17,7 +17,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n]
 
 /- English proof (translation)
-Introduce `τ τ' h`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `x`. Conclude with `ι.toRingHom.injective (congrArg (fun f : E →ₐ[Qp] LL' => f x) h)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem comp_inj {E : Type} [Field E] [Algebra Qp E] (ι : LL →ₐ[Qp] LL') :
     Function.Injective (fun τ : E →ₐ[Qp] LL => ι.comp τ) := by
@@ -27,7 +27,7 @@ theorem comp_inj {E : Type} [Field E] [Algebra Qp E] (ι : LL →ₐ[Qp] LL') :
   exact ι.toRingHom.injective (congrArg (fun f : E →ₐ[Qp] LL' => f x) h)
 
 /- English proof (translation)
-The claim follows from `(comp_inj ι).bijective_of_nat_card_le (hcard ▸ card_algHom_le_finrank Qp E LL')`.
+A detailed English derivation is pending.
 -/
 theorem comp_bij {E : Type} [Field E] [Algebra Qp E] [FiniteDimensional Qp E] (ι : LL →ₐ[Qp] LL')
     (hcard : Nat.card (E →ₐ[Qp] LL) = finrank Qp E) :
@@ -37,17 +37,15 @@ theorem comp_bij {E : Type} [Field E] [Algebra Qp E] [FiniteDimensional Qp E] (�
 variable [Fintype (K →ₐ[Qp] LL)] [Fintype (K →ₐ[Qp] LL')]
 
 /- English proof (translation)
-Introduce `hL h5 T₁ T₂ F hG hc₁ hc₂ hon j Gp S η h ty cuts arcLen Mb₁ hb₁ Mb₂ hb₂ hK hJ hg hS hC hT hb1 hb2 hW`. Take `⟨T₁', T₂', F', hc₁', hc₂', hon', hj, -, hlift, -⟩` from `hBC T₁ T₂ F hc₁ hc₂ hon`. Apply `hlift` to reduce the goal to its premises. Use `PD.finK` as an intermediate fact. Use `PD.finK₀` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨l1, l2, l3, l4, l5, l6⟩` from `hL`. Establish `hbK` using `comp_bij (E := K) ι (by rw [Nat.card_eq_fintype_card]; exact hG.1.2)`. Establish `hbK₀` using `comp_bij (E := K₀) ι (by`. Rewrite using `[← Nat.card_congr (Equiv.ofBijective emb l4), Nat.card_zmod, l3])`. Establish `hL' : Letters PD LL' v' (fun i => ι.comp (emb i))` using `⟨l1, hfin, l3, hbK₀.comp l4, fun i => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(ι.comp (emb (i + 1))).comp PD.σ = ι.comp (emb i)`. Rewrite using `[AlgHom.comp_assoc, l5], hv'⟩`. Establish `hG' : GoodCoeffs (K` using `K) (Qp := Qp) (LL := LL') (O := O') (V := T₁'.V) := by`. Use `⟨⟨hfin, ?_⟩, hc₁'.2.1, hO'⟩` and prove the remaining obligations. Rewrite using `[← hG.1.2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Fintype.card_of_bijective hbK).symm`. Establish `tr₁ : ∀ (i : ZMod n) (X : Set ℤ), JumpsAtE PD T₁ emb i X → JumpsAtE PD T₁' (fun i => ι.comp (emb i)) i X`. Introduce `i X hX τ' hτ' a ha`. Take `⟨τ, rfl⟩` from `hbK.2 τ'`. Conclude with `hX τ (comp_inj ι (by simpa [AlgHom.comp_assoc] using hτ')) a ((hj τ a).1.1 ha)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `tr₂ : ∀ (i : ZMod n) (X : Set ℤ), JumpsAtE PD T₂ emb i X → JumpsAtE PD T₂' (fun i => ι.comp (emb i)) i X`. Introduce `i X hX τ' hτ' a ha`. Take `⟨τ, rfl⟩` from `hbK.2 τ'`. Conclude with `hX τ (comp_inj ι (by simpa [AlgHom.comp_assoc] using hτ')) a ((hj τ a).2.1 ha)`. Use `H hL' h5 T₁' T₂' F' hG' hc₁' hc₂' hon' j Gp S η h ty cuts arcLen Mb₁ hb₁ Mb₂ hb₂ (fun i => tr₁ i _ (hK i)) ?_ hg hS hC hT (fun i => tr₁ i _ (hb1 i)) (fun i => tr₂ i _ (hb2 i)) hW` and prove the remaining obligations.
-
-Introduce `τ' a ha`. Take `⟨τ, rfl⟩` from `hbK.2 τ'`. Conclude with `hJ τ a ((hj τ a).1.1 ha)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem thmELiftAt_bc (ι : LL →ₐ[Qp] LL') (v' : AddValuation LL' (WithTop ℚ))
     (emb : ZMod n → (K₀ →ₐ[Qp] LL)) (hfin : FiniteDimensional Qp LL') (hv' : v' (PD.p : LL') = 1)

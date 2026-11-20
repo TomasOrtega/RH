@@ -9,11 +9,11 @@ set_option linter.overlappingInstances false
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp IsLocalRing UpperTheory.V UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Af UpperTheory.V.Pr UpperTheory.V.Alg UpperTheory.V.J
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ_[l] z` using `Algebra.IsIntegral.isIntegral z`. Establish `hm : (minpoly ℚ_[l] z).Monic` using `minpoly.monic hi`. Establish `h1 : spectralValue (minpoly ℚ_[l] z) ≤ 1`. Rewrite `hz` using `[← PadicAlgCl.spectralNorm_eq l z]`. Conclude with `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(spectralValue_le_one_iff hm).1 h1`. Establish `hl : minpoly ℚ_[l] z ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l])`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Conclude with `⟨⟨_, h2 n⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, -, hfm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl hm`. Use `⟨f, hfm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_map_algebraMap ℚ_[l], hf, minpoly.aeval]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem int_of_norm {l : ℕ} [Fact l.Prime] (z : Qbar l) (hz : ‖z‖ ≤ 1) :
     ∃ f : Polynomial ℤ_[l], f.Monic ∧ Polynomial.aeval z f = 0 := by
@@ -32,7 +32,7 @@ private theorem int_of_norm {l : ℕ} [Fact l.Prime] (z : Qbar l) (hz : ‖z‖ 
   rw [← Polynomial.aeval_map_algebraMap ℚ_[l], hf, minpoly.aeval]
 
 /- English proof (translation)
-Take `⟨f, hf, h0⟩` from `int_of_norm (ξ a) (h a)`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.hom_eval₂, ← h0, Polynomial.aeval_def]`. Use `congr 1`. Conclude with `RingHom.ext hφ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem int_pt {l : ℕ} [Fact l.Prime] {D : Type} [CommRing D] (ξ : D →+* Qbar l) (h : ∀ a, ‖ξ a‖ ≤ 1)
     (φ : ℤ_[l] →+* D) (hφ : ∀ t, ξ (φ t) = algebraMap ℤ_[l] (Qbar l) t) (a : D) :
@@ -58,9 +58,9 @@ private def nx {l : ℕ} [Fact l.Prime] {D : Type} [CommRing D] (ξ : D →+* Qb
     exact lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) (h c)) ha
 
 /- English proof (translation)
-Use `⟨fun e => ?_, fun {a b} hab => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖ξ 1‖ < 1` using `(Ideal.eq_top_iff_one _).1 e`. Simplify using `at h1`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_or]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ha : ‖ξ a‖ = 1` using `le_antisymm (h a) (not_lt.1 hn.1)`. Establish `hb : ‖ξ b‖ = 1` using `le_antisymm (h b) (not_lt.1 hn.2)`. Establish `h1 : ‖ξ (a * b)‖ < 1` using `hab`. Rewrite `h1` using `[map_mul, norm_mul, ha, hb, one_mul]`. Conclude with `lt_irrefl _ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nx_prime {l : ℕ} [Fact l.Prime] {D : Type} [CommRing D] (ξ : D →+* Qbar l) (h : ∀ a, ‖ξ a‖ ≤ 1) :
     (nx ξ h).IsPrime := by
@@ -76,24 +76,20 @@ private theorem nx_prime {l : ℕ} [Fact l.Prime] {D : Type} [CommRing D] (ξ : 
     exact lt_irrefl _ h1
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Qbar l)) l, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_l_lt {l : ℕ} [Fact l.Prime] : ‖(l : Qbar l)‖ < 1 := by
   rw [← map_natCast (algebraMap ℚ_[l] (Qbar l)) l, norm_algebraMap']
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Use `haveI hpr := nx_prime ξ h`. Use `haveI hnt : Nontrivial (D ⧸ nx ξ h) := Ideal.Quotient.nontrivial_iff.2 hpr.ne_top`. Use `haveI hdom : IsDomain (D ⧸ nx ξ h) := Ideal.Quotient.isDomain _`. Use `haveI hbp : (⊥ : Ideal (D ⧸ nx ξ h)).IsPrime := Ideal.bot_prime`. Set `f : ℤ_[l] →+* D ⧸ nx ξ h` to `(Ideal.Quotient.mk (nx ξ h)).comp φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf : f.IsIntegral` using `fun z => by`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨p, hp, h0⟩` from `int_pt ξ h φ hφ a`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Establish `e : p.eval₂ f (Ideal.Quotient.mk (nx ξ h) a) = Ideal.Quotient.mk (nx ξ h) (p.eval₂ φ a)` using `(Polynomial.hom_eval₂ p φ (Ideal.Quotient.mk (nx ξ h)) a).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e, Ideal.Quotient.eq_zero_iff_mem]`. Use `show ‖ξ _‖ < 1`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hk : (maximalIdeal ℤ_[l]) ≤ (⊥ : Ideal (D ⧸ nx ξ h)).comap f`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PadicInt.maximalIdeal_eq_span_p, Ideal.span_le, Set.singleton_subset_iff]`. Use `show f (l : ℤ_[l]) ∈ (⊥ : Ideal (D ⧸ nx ξ h))`. Rewrite using `[Ideal.mem_bot, map_natCast, ← map_natCast (Ideal.Quotient.mk (nx ξ h)), Ideal.Quotient.eq_zero_iff_mem]`. Use `show ‖ξ (l : D)‖ < 1`. Rewrite using `[map_natCast]`.
-
-Conclude with `norm_l_lt`. Establish `hm : ((⊥ : Ideal (D ⧸ nx ξ h)).comap f).IsMaximal`. Rewrite using `[← (maximalIdeal.isMaximal ℤ_[l]).eq_of_le (Ideal.comap_ne_top _ hbp.ne_top) hk]`. Conclude with `maximalIdeal.isMaximal _`. Use `haveI := Ideal.isMaximal_of_isIntegral_of_isMaximal_comap' f hf ⊥ hm`.
-
-Establish `h2` using `Ideal.comap_isMaximal_of_surjective (Ideal.Quotient.mk (nx ξ h)) (K := (⊥ : Ideal (D ⧸ nx ξ h))) Ideal.Quotient.mk_surjective`. Rewrite `h2` using `[← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem nx_max {l : ℕ} [Fact l.Prime] {D : Type} [CommRing D] (ξ : D →+* Qbar l) (h : ∀ a, ‖ξ a‖ ≤ 1)
     (φ : ℤ_[l] →+* D) (hφ : ∀ t, ξ (φ t) = algebraMap ℤ_[l] (Qbar l) t) : (nx ξ h).IsMaximal := by
@@ -128,11 +124,9 @@ private theorem nx_max {l : ℕ} [Fact l.Prime] {D : Type} [CommRing D] (ξ : D 
   rwa [← RingHom.ker_eq_comap_bot, Ideal.mk_ker] at h2
 
 /- English proof (translation)
-Use `haveI hcp : (q.comap (algebraMap B A)).IsPrime := Ideal.IsPrime.comap _`. Use `haveI hnt : Nontrivial (B ⧸ q.comap (algebraMap B A)) := Ideal.Quotient.nontrivial_iff.2 hcp.ne_top`. Use `haveI : Algebra.IsIntegral (B ⧸ q.comap (algebraMap B A)) (A ⧸ q) := ⟨fun z => by`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨p, hp, h0⟩` from `h a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨p.map ((Ideal.Quotient.mk _).comp ψ), hp.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `e` using `Polynomial.hom_eval₂ p ((algebraMap B A).comp ψ) (Ideal.Quotient.mk q) a`. Rewrite `e` using `[Ideal.Quotient.eq_zero_iff_mem.2 h0]`. Conclude with `e.symm⟩`.
-
-Use `haveI : Algebra.IsAlgebraic (B ⧸ q.comap (algebraMap B A)) (A ⧸ q) := Algebra.IsIntegral.isAlgebraic`. Conclude with `trdeg_eq_zero`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem td_zero {l : ℕ} [Fact l.Prime] {B A : Type} [CommRing B] [CommRing A] [Algebra B A] (q : Ideal A)
     [q.IsPrime] (ψ : ℤ_[l] →+* B)
@@ -152,9 +146,9 @@ private theorem td_zero {l : ℕ} [Fact l.Prime] {B A : Type} [CommRing B] [Comm
   exact trdeg_eq_zero
 
 /- English proof (translation)
-Use `letI := ι.toAlgebra`. Use `haveI : Module.Flat A R := hf`. Use `haveI : Algebra.HasGoingDown A R := Algebra.HasGoingDown.of_flat`. Use `haveI : (maximalIdeal R).LiesOver x := ⟨hl.symm⟩`. Take `⟨P, -, hp, hlo⟩` from `Ideal.exists_ideal_le_liesOver_of_le (p := q) (q := x) (maximalIdeal R) hq`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc : P.comap ι = q` using `hlo.over.symm`. Establish `hne : q.map ι ≤ P` using `Ideal.map_le_iff_le_comap.2 hc.ge`. Take `⟨Q, hQ, hQP⟩` from `Ideal.exists_minimalPrimes_le hne`. Conclude with `⟨Q, hQ.1.1, le_antisymm (hc ▸ Ideal.comap_mono hQP) (Ideal.map_le_iff_le_comap.1 hQ.1.2), hQ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem down {A R : Type} [CommRing A] [CommRing R] [IsLocalRing R] (ι : A →+* R) (hf : ι.Flat)
     (x q : Ideal A) [x.IsPrime] [q.IsPrime] (hq : q ≤ x) (hl : (maximalIdeal R).comap ι = x) :
@@ -170,11 +164,11 @@ private theorem down {A R : Type} [CommRing A] [CommRing R] [IsLocalRing R] (ι 
   exact ⟨Q, hQ.1.1, le_antisymm (hc ▸ Ideal.comap_mono hQP) (Ideal.map_le_iff_le_comap.1 hQ.1.2), hQ⟩
 
 /- English proof (translation)
-Establish `hp : ((maximalIdeal R).map (Ideal.Quotient.mk Q)).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact le_maximalIdeal (Ideal.IsPrime.ne_top inferInstance))`. Use `haveI hnt : Nontrivial (R ⧸ Q) := Ideal.Quotient.nontrivial_iff.2 (Ideal.IsPrime.ne_top inferInstance)`. Use `haveI hdom : IsDomain (R ⧸ Q) := Ideal.Quotient.isDomain _`. Establish `h0 : (0 : WithBot ℕ∞) < ringKrullDim (R ⧸ Q)`. Use `Order.krullDim_pos_iff.2 ⟨⟨⊥, Ideal.bot_prime⟩, ⟨_, hp⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(PrimeSpectrum.asIdeal_lt_asIdeal _ _).1 (bot_lt_iff_ne_bot.2 fun e => ?_)` and prove the remaining obligations. Establish `h1 : Ideal.Quotient.mk Q z ∈ (maximalIdeal R).map (Ideal.Quotient.mk Q)` using `Ideal.mem_map_of_mem _ hz`. Establish `e' : (maximalIdeal R).map (Ideal.Quotient.mk Q) = ⊥` using `e`. Rewrite `h1` using `[e', Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hn h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Generalize the expression as in `ringKrullDim (R ⧸ Q) = d at h0 ⊢`. Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => simp at h0`. Consider the case `coe d => exact_mod_cast Order.one_le_iff_pos (α := ℕ∞).2 (by exact_mod_cast h0)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem dim_ge {R : Type} [CommRing R] [IsLocalRing R] (Q : Ideal R) [Q.IsPrime] (z : R)
     (hz : z ∈ maximalIdeal R) (hn : z ∉ Q) : 1 ≤ ringKrullDim (R ⧸ Q) := by
@@ -196,7 +190,7 @@ private theorem dim_ge {R : Type} [CommRing R] [IsLocalRing R] (Q : Ideal R) [Q.
   | coe d => exact_mod_cast Order.one_le_iff_pos (α := ℕ∞).2 (by exact_mod_cast h0)
 
 /- English proof (translation)
-Establish `h1 : ringKrullDim O = 1` using `IsPrincipalIdealRing.ringKrullDim_eq_one O (IsDiscreteValuationRing.not_isField O)`. Rewrite using `[← h1]`. Use `Order.krullDim_le_of_strictMono (PrimeSpectrum.comap (algebraMap O Y)) fun a b hab => ?_` and prove the remaining obligations. Conclude with `(PrimeSpectrum.asIdeal_lt_asIdeal _ _).1 (Ideal.IsIntegral.comap_lt_comap ((PrimeSpectrum.asIdeal_lt_asIdeal _ _).2 hab))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem dim_fin {O Y : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing Y] [Algebra O Y]
     [Module.Finite O Y] : ringKrullDim Y ≤ 1 := by
@@ -208,9 +202,9 @@ private theorem dim_fin {O Y : Type} [CommRing O] [IsDomain O] [IsDiscreteValuat
     (Ideal.IsIntegral.comap_lt_comap ((PrimeSpectrum.asIdeal_lt_asIdeal _ _).2 hab))
 
 /- English proof (translation)
-Use `haveI : Module.Finite c.O y.range := (coPt l c R y).1`. Establish `hker : RingHom.ker (y.rangeRestrict : R →+* y.range) = RingHom.ker y`. Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, RingHom.mem_ker]`. Conclude with `Subtype.ext_iff`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : R ⧸ RingHom.ker y ≃+* y.range` using `(Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective (f := (y.rangeRestrict : R →+* y.range)) y.rangeRestrict_surjective)`. Rewrite using `[ringKrullDim_eq_of_ringEquiv e]`. Conclude with `dim_fin (O := c.O)`.
+A detailed English derivation is pending.
 -/
 private theorem dim_pt {l : ℕ} [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] (R : Type) [CommRing R] [Algebra c.O R]
     [IsCO c.O R] (y : R →ₐ[c.O] Qbar l) : ringKrullDim (R ⧸ RingHom.ker y) ≤ 1 := by
@@ -228,9 +222,7 @@ private noncomputable def zA {l : ℕ} [Fact l.Prime] (c : Coef l) (B : Type) [C
   (algebraMap c.O B).comp (algebraMap ℤ_[l] c.O)
 
 /- English proof (translation)
-Use `haveI hq : (RingHom.ker ξ).IsPrime := RingHom.ker_isPrime ξ`. Establish `hφ : ∀ t, (ξ : S.A →+* Qbar l) (((algebraMap S.B S.A).comp (zA c S.B)) t) = algebraMap ℤ_[l] (Qbar l) t` using `fun t => ((congrArg ξ (S.inc.commutes _)).trans (ξ.commutes _)).trans rfl`. Establish `h2 : ∀ a, ∃ f : Polynomial ℤ_[l], f.Monic ∧ f.eval₂ ((algebraMap S.B S.A).comp (zA c S.B)) a ∈ RingHom.ker ξ` using `fun a => by`. Take `⟨f, hf, h0⟩` from `int_pt (ξ : S.A →+* Qbar l) h _ hφ a`. Conclude with `⟨f, hf, RingHom.mem_ker.2 h0⟩`.
-
-Conclude with `td_zero (RingHom.ker ξ) (zA c S.B) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem td_pt {l : ℕ} [Fact l.Prime] (c : Coef l) {F : Fr.Frame l (ResidueField c.O)} {n : ℕ} (S : Fr.Space c.O F n)
     (ξ : S.A →ₐ[c.O] Qbar l) (h : ∀ a, ‖ξ a‖ ≤ 1) : S.td (RingHom.ker ξ) = 0 := by
@@ -243,16 +235,16 @@ private theorem td_pt {l : ℕ} [Fact l.Prime] (c : Coef l) {F : Fr.Frame l (Res
   exact td_zero (RingHom.ker ξ) (zA c S.B) h2
 
 /- English proof (translation)
-The claim follows from `nx_max _ h (zA c S.A) fun t => (ξ.commutes _).trans rfl`.
+A detailed English derivation is pending.
 -/
 private theorem max_pt {l : ℕ} [Fact l.Prime] (c : Coef l) {F : Fr.Frame l (ResidueField c.O)} {n : ℕ} (S : Fr.Space c.O F n)
     (ξ : S.A →ₐ[c.O] Qbar l) (h : ∀ a, ‖(ξ : S.A →+* Qbar l) a‖ ≤ 1) : (nx (ξ : S.A →+* Qbar l) h).IsMaximal :=
   nx_max _ h (zA c S.A) fun t => (ξ.commutes _).trans rfl
 
 /- English proof (translation)
-Establish `hup` using `(Fr.loc_dim hF hn S x L).1 Q hQ 0 (by rw [hc, td_pt c S ξ h]; simp)`. Establish `hpi : L.π Q = RingHom.ker (ξ.comp S.inc)` using `by show S.π (L.im Q) = _`. Rewrite using `[hc]`. Use extensionality with `b`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Take `⟨hco, -⟩` from `Fr.co_B hF hn S`. Use `haveI := hco`. Establish `hd` using `dim_pt c S.B (ξ.comp S.inc)`. Rewrite `hup` using `[hpi]`. Simplify `hd)` using `using hup.trans (by simpa`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem dim_up {l : ℕ} [Fact l.Prime] {c : Coef l} [Fr.IsCoef l c.O] {F : Fr.Frame l (ResidueField c.O)} {C₀ n : ℕ}
     (hF : F.Ok C₀) (hn : n = 2 ∨ n = 3) (S : Fr.Space c.O F n) (ξ : S.A →ₐ[c.O] Qbar l) (h : ∀ a, ‖ξ a‖ ≤ 1)
@@ -271,7 +263,7 @@ private theorem dim_up {l : ℕ} [Fact l.Prime] {c : Coef l} [Fr.IsCoef l c.O] {
   simpa using hup.trans (by simpa using hd)
 
 /- English proof (translation)
-Rewrite using `[← res_eq_zero_iff O R, map_natCast]`. Conclude with `CharP.cast_eq_zero _ l`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem l_mem {l : ℕ} {O R : Type} [CommRing O] [IsLocalRing O] [CharP (ResidueField O) l] [CommRing R] [Algebra O R]
     [IsCO O R] : ((l : ℕ) : R) ∈ maximalIdeal R := by
@@ -279,7 +271,7 @@ private theorem l_mem {l : ℕ} {O R : Type} [CommRing O] [IsLocalRing O] [CharP
   exact CharP.cast_eq_zero _ l
 
 /- English proof (translation)
-Introduce `h` and use `by have h1 := hc (l : A) (by rw [map_natCast]; exact h) rw [map_natCast] at h1 exact (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem l_not {l : ℕ} [Fact l.Prime] {A R : Type} [CommRing A] [CommRing R] (ι : A →+* R) (ξ : A →+* Qbar l)
     (Q : Ideal R) (hc : ∀ a, ι a ∈ Q → ξ a = 0) : ((l : ℕ) : R) ∉ Q := fun h => by
@@ -288,11 +280,11 @@ private theorem l_not {l : ℕ} [Fact l.Prime] {A R : Type} [CommRing A] [CommRi
   exact (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) h1
 
 /- English proof (translation)
-Introduce `l _ c _ F C₀ n hF hn S ξ hξ`. Use `haveI hxm := max_pt c S ξ hξ.1`. Establish `hB : S.mB ≤ S.π (nx (ξ : S.A →+* Qbar l) hξ.1)` using `fun b hb => hξ.2 b hb`. Take `⟨L⟩` from `Fr.loc_ex hF hn S _ hxm hB`. Establish `hfl` using `(Fr.loc_flat hF hn S _ L).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hq : (RingHom.ker ξ).IsPrime := RingHom.ker_isPrime ξ`. Establish `hqx : RingHom.ker ξ ≤ nx (ξ : S.A →+* Qbar l) hξ.1` using `fun a ha => by show ‖ξ a‖ < 1`. Rewrite using `[RingHom.mem_ker.1 ha, norm_zero]`. Conclude with `one_pos`. Take `⟨Q, hQ, hQc, hQm⟩` from `@down S.A L.R _ _ _ (L.ι : S.A →+* L.R) hfl _ _ hxm.isPrime hq hqx L.lies`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hQ`. Establish `hn'` using `l_not (l := l) (L.ι : S.A →+* L.R) (ξ : S.A →+* Qbar l) Q fun a ha => RingHom.mem_ker.1 (hQc.le ha)`. Establish `d1` using `dim_up hF hn S ξ hξ.1 L Q hQ hQc`. Establish `d2` using `dim_ge Q _ (l_mem (l := l) (O := L.O') (R := L.R)) hn'`. Conclude with `⟨_, L, Q, hQ, hQc, hQm, le_antisymm d1 d2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.J.locAt :
     ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] (F : Fr.Frame l (ResidueField c.O)) (C₀ n : ℕ), F.Ok C₀ → (n = 2 ∨ n = 3) →

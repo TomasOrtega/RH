@@ -23,9 +23,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.LogKSDiv.Spread
 
 /- English proof (translation)
-Use `letI := (X.presheaf.germ U (B.ι y) hy ≫ B.ι.stalkMap y).hom.toAlgebra`. Use `letI : Algebra Γ(X, U) (X.presheaf.stalk (B.ι y)) := TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨B.ι y, hy⟩`. Establish `hloc` using `hU.isLocalization_stalk ⟨B.ι y, hy⟩`. Establish `: IsIso (B.ι.stalkMap y)` using `inferInstance`. Set `e : X.presheaf.stalk (B.ι y) ≃+* B.toScheme.presheaf.stalk y` to `(asIso (B.ι.stalkMap y)).commRingCatIsoToRingEquiv`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `IsLocalization.isLocalization_of_algEquiv _ (AlgEquiv.ofRingEquiv (f := e) fun r => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem stalk_loc {X : Scheme.{0}} (B : X.Opens) (y : B.toScheme) {U : X.Opens} (hU : IsAffineOpen U)
     (hy : B.ι y ∈ U) :
@@ -41,7 +41,7 @@ theorem stalk_loc {X : Scheme.{0}} (B : X.Opens) (y : B.toScheme) {U : X.Opens} 
   exact IsLocalization.isLocalization_of_algEquiv _ (AlgEquiv.ofRingEquiv (f := e) fun r => rfl)
 
 /- English proof (translation)
-Use `show Spec.map (X.presheaf.germ U (B.ι y) hy ≫ B.ι.stalkMap y) ≫ _ = _`. Rewrite using `[Spec.map_comp, Category.assoc, ← IsAffineOpen.fromSpecStalk, hU.fromSpecStalk_eq_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_pt {X : Scheme.{0}} (B : X.Opens) (y : B.toScheme) {U : X.Opens} (hU : IsAffineOpen U)
     (hy : B.ι y ∈ U) :
@@ -60,7 +60,7 @@ theorem cst_apply {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Sp R) (U :
     cst f U a = constFn f U a := rfl
 
 /- English proof (translation)
-Use `show Spec.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ f.appLE ⊤ U (fun _ _ => trivial)) = _`. Rewrite using `[Spec.map_comp, ← Scheme.isoSpec_Spec_inv, ← IsAffineOpen.fromSpec_top]`. Conclude with `IsAffineOpen.SpecMap_appLE_fromSpec f (isAffineOpen_top _) hU _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_cst {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Sp R) {U : X.Opens} (hU : IsAffineOpen U) :
     spMap (cst f U) = hU.fromSpec ≫ f := by
@@ -69,19 +69,17 @@ theorem spMap_cst {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Sp R) {U :
   exact IsAffineOpen.SpecMap_appLE_fromSpec f (isAffineOpen_top _) hU _
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `IsLocalization.exist_integer_multiples P.primeCompl Finset.univ (fun p : Fin n × Fin n => B p.1 p.2)`. Use `choose B₀ hB₀ using fun j i => hs (j, i) (Finset.mem_univ _)`. Establish `eB : ∀ j, algebraMap R L ∘ B₀ j = algebraMap R L s • B j` using `fun j => funext fun i => by`. Simplify `hB₀ j i` using `[Algebra.smul_def]`. Establish `hdet : (Matrix.of fun i j => B₀ j i).det ∈ P.primeCompl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsLocalization.AtPrime.isUnit_to_map_iff L P, RingHom.map_det]`. Establish `: (algebraMap R L).mapMatrix (Matrix.of fun i j => B₀ j i) = algebraMap R L s • Matrix.of fun i j => B j i`. Use extensionality with `i j`. Conclude with `congrFun (eB j) i`. Rewrite using `[this, Matrix.det_smul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((IsLocalization.map_units L s).pow _).mul hB`. Establish `hq : ∀ (p : Fin n × Fin n), algebraMap R L ((Q p.1 *ᵥ B₀ p.1) p.2) = algebraMap R L (B₀ p.1 p.2)` using `fun p => by`. Establish `h1 : ∀ j, algebraMap R L ∘ (Q j *ᵥ B₀ j) = (Q j).map (algebraMap R L) *ᵥ (algebraMap R L ∘ B₀ j)` using `fun j =>`. Use function extensionality and compare the values at `fun i => by simp [Matrix.mulVec, dotProduct, map_sum]`. Establish `h2` using `congrFun (h1 p.1) p.2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[eB, Matrix.mulVec_smul, hQ]`. Conclude with `h2.trans (congrFun (eB p.1) p.2).symm`. Use `choose u hu using fun p => IsLocalization.exists_of_eq (M := P.primeCompl) (S := L) (hq p)`. Use `⟨s * (Matrix.of fun i j => B₀ j i).det * ∏ p, (u p : R), P.primeCompl.mul_mem (P.primeCompl.mul_mem s.2 hdet) (P.primeCompl.prod_mem fun p _ => (u p).2), s, B₀, eB, fun S _ ψ hψ => ?_⟩` and prove the remaining obligations. Rewrite `hψ` using `[map_mul, map_mul, IsUnit.mul_iff, IsUnit.mul_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Take `⟨⟨h1, h2⟩, h3⟩` from `hψ`. Use `⟨h1, ?_, fun j => funext fun i => ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[RingHom.map_det]`. Use `h2 using 2` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hp : IsUnit (ψ (u (j, i)))` using `isUnit_of_dvd_unit (map_dvd ψ (Finset.dvd_prod_of_mem (fun p => (u p : R)) (Finset.mem_univ (j, i)))) h3`. Use `congrArg ψ (hu (j, i))` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`. Establish `e` using `hp.mul_left_cancel this`.
-
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Function.comp_apply] at e ⊢`. Rewrite using `[← e, map_sum]`. Simplify using `[map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spread_exact {R L : Type} [CommRing R] [CommRing L] [Algebra R L] (P : Ideal R) [P.IsPrime]
     [IsLocalization.AtPrime L P] {n : ℕ} (B : Fin n → Fin n → L) (hB : IsUnit (Matrix.of fun i j => B j i).det)
@@ -127,9 +125,9 @@ theorem spread_exact {R L : Type} [CommRing R] [CommRing L] [Algebra R L] (P : I
     simp [map_mul]
 
 /- English proof (translation)
-Establish `hs : ∀ a : Fin n → S, ∑ j, a j • w j = (Matrix.of fun i j => w j i) *ᵥ a` using `fun a => by`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Use `⟨(Matrix.of fun i j => w j i)⁻¹ *ᵥ cc, ?_, fun a ha => ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Rewrite using `[hs, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ h, Matrix.one_mulVec]`. Rewrite using `[ha, hs, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ h, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem basis_of_det {S : Type} [CommRing S] {n : ℕ} (w : Fin n → Fin n → S)
     (h : IsUnit (Matrix.of fun i j => w j i).det) (cc : Fin n → S) : ∃! a : Fin n → S, cc = ∑ j, a j • w j := by
@@ -147,49 +145,45 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.LogKSDiv.Spread GlobalTheory.ShFam.EigSpread GlobalTheory.ShFam.EigLoc GlobalTheory.LieLocBasis in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF Z _ φ₀ f₀ hφ₀`. Set `ξ : X₀ TF.Y Z` to `genericPoint (X₀ TF.Y Z)`. Set `p : TF.Y.X` to `(barComp TF.Y Z).ι ξ`. Take `⟨U₁, hU₁, hp₁, x₁, hx₁, C, n, xc, hx⟩` from `exists_affine_chart TF.Y.t (𝟙 TF.Y.X) p`. Take `⟨h, hhB, hph⟩` from `hU₁.exists_basicOpen_le (V := barComp TF.Y Z) ⟨p, ξ.2⟩ hp₁`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `ρ₁ : Γ(TF.Y.X, U₁) →+* (X₀ TF.Y Z).functionField` to `(TF.Y.X.presheaf.germ U₁ p hp₁ ≫ (barComp TF.Y Z).ι.stalkMap ξ).hom`. Use `letI := ρ₁.toAlgebra`. Establish `hloc : IsLocalization.AtPrime (X₀ TF.Y Z).functionField (hU₁.primeIdealOf ⟨p, hp₁⟩).asIdeal` using `stalk_loc (barComp TF.Y Z) ξ hU₁ hp₁`. Establish `hK : spMap ρ₁ ≫ hU₁.fromSpec = GlobalTheory.LogKSDiv.genPt TF Z ≫ (barComp TF.Y Z).ι` using `germ_pt (barComp TF.Y Z) ξ hU₁ hp₁`. Set `φ₁` to `cst TF.Y.s U₁`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hφ₁ : spMap φ₁ = hU₁.fromSpec ≫ TF.Y.s` using `spMap_cst _ hU₁`. Establish `hρφ : ρ₁.comp φ₁ = φ₀` using `spMap_inj (by`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp, hφ₁, ← Category.assoc, hK, ← hφ₀, Category.assoc])`. Take `⟨xcK, hxK, hcK⟩` from `vec_bc_of_chart C hx ρ₁ (x' := GlobalTheory.LogKSDiv.genPt TF Z ≫ (barComp TF.Y Z).ι) (by rw [hx₁, Category.comp_id, hK])`. Take `⟨Pr, hPr⟩` from `exists_projectors c φ₁ hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose Bv hBv using fun τ i => vec_exists hxK _ (f₀.tan τ i)`. Establish `hBe : ∀ τ i, Bv τ i ∈ eig c φ₀ hxK τ` using `fun τ i => (vec_eig_iff hxK _ _).1 (by rw [← hBv]; exact f₀.eig τ i)`. Establish `hPK : ∀ τ i, (Pr τ).map ρ₁ *ᵥ Bv τ i = Bv τ i` using `fun τ i => (hPr ρ₁ hxK hcK τ (Bv τ i)).2 (by rw [hρφ]; exact hBe τ i)`. Use `letI : Algebra c.F (X₀ TF.Y Z).functionField := φ₀.toAlgebra`. Establish `hEig : ∀ z : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), ReciprocityTheory.ChartRestriction.G.PullbackSections.IsEigV (rho hxK) (embK c z.1) (Bv z.1 z.2)` using `fun z => (ReciprocityTheory.ChartRestriction.G.Chart.mem_eigLat_iff _ _ _ _).1 (hBe z.1 z.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hblk : ∀ τ w, ReciprocityTheory.ChartRestriction.G.PullbackSections.IsEigV (rho hxK) (embK c τ) w → ∃! a : Fin (Dw.mult τ) → (X₀ TF.Y Z).functionField, ∑ i, a i • Bv τ i = w` using `fun τ w hw => by`. Use `f₀.basis τ _ (vec_tan hxK w) ((vec_eig_iff hxK _ w).2 ((ReciprocityTheory.ChartRestriction.G.Chart.mem_eigLat_iff _ _ _ _).2 hw))` as an intermediate fact. Rewrite `this` using `[show f₀.v τ = fun i => vec TF.Y.t _ xcK (Bv τ i) from funext (hBv τ)]`. Simplify `this` using `only [comb_iff hxK, eq_comm]`. Establish `hglob` using `GlobalTheory.FlagEmb.EigSpread.global_basis (GlobalTheory.FlagEmb.EigSpread.splits c) (fun z => Bv z.1 z.2) hEig hblk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hli, hsp⟩` from `(GlobalTheory.FlagEmb.EigSpread.existsUnique_iff _).1 hglob`. Set `bK` to `Module.Basis.mk hli hsp.ge`. Establish `hcard : Fintype.card (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) = n`. Rewrite using `[← Module.finrank_eq_card_basis bK, Module.finrank_fin_fun]`. Set `e` to `Fintype.equivFinOfCardEq hcard`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdet : IsUnit (Matrix.of fun i j => Bv (e.symm j).1 (e.symm j).2 i).det`. Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.linearIndependent_cols_iff_isUnit]`. Use `show LinearIndependent _ ((fun z : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) => Bv z.1 z.2) ∘ e.symm)`. Conclude with `hli.comp _ e.symm.injective`. Take `⟨g, hg, s0, B₀, hB₀, hψB⟩` from `spread_exact (hU₁.primeIdealOf ⟨p, hp₁⟩).asIdeal (fun j => Bv (e.symm j).1 (e.symm j).2) hdet (fun j => Pr (e.symm j).1) (fun j => hPK _ _)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g'` to `h * g`. Establish `hU : IsAffineOpen (TF.Y.X.basicOpen g')` using `hU₁.basicOpen g'`. Establish `hU' : TF.Y.X.basicOpen g' ∈ TF.Y.X.affineOpens` using `hU`. Establish `hUB : TF.Y.X.basicOpen g' ≤ barComp TF.Y Z`. Rewrite using `[Scheme.basicOpen_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `inf_le_left.trans hhB`. Establish `hpU : p ∈ TF.Y.X.basicOpen g'`. Rewrite using `[Scheme.basicOpen_mul]`. Use `⟨hph, ?_⟩` and prove the remaining obligations. Use `letI : Algebra Γ(TF.Y.X, U₁) (TF.Y.X.presheaf.stalk p) := TopCat.Presheaf.algebra_section_stalk TF.Y.X.presheaf ⟨p, hp₁⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `hU₁.isLocalization_stalk ⟨p, hp₁⟩` as an intermediate fact. Use `show p ∈ TF.Y.X.basicOpen g`. Rewrite using `[Scheme.mem_basicOpen _ _ _ hp₁]`. Conclude with `IsLocalization.map_units (TF.Y.X.presheaf.stalk p) (⟨g, hg⟩ : (hU₁.primeIdealOf ⟨p, hp₁⟩).asIdeal.primeCompl)`. Set `ψ : Γ(TF.Y.X, U₁) →+* Γ(TF.Y.X, TF.Y.X.basicOpen g')` to `(TF.Y.X.presheaf.map (homOfLE (TF.Y.X.basicOpen_le g')).op).hom`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hψg' : IsUnit (ψ g')` using `TF.Y.X.toRingedSpace.isUnit_res_basicOpen g'`. Establish `hψg : IsUnit (ψ g)` using `isUnit_of_mul_isUnit_right (by rw [← map_mul]; exact hψg')`. Take `⟨hs0, hdet0, hQ0⟩` from `hψB _ ψ hψg`. Establish `hmap : spMap ψ ≫ hU₁.fromSpec = hU.fromSpec` using `hU₁.map_fromSpec hU _`. Take `⟨xcU, hxU, hcU⟩` from `vec_bc_of_chart C hx ψ (x' := LogKS.chart ⟨_, hU'⟩) (by rw [hx₁, Category.comp_id]; exact hmap.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ρ : Γ(TF.Y.X, TF.Y.X.basicOpen g') →+* (X₀ TF.Y Z).functionField` to `(TF.Y.X.presheaf.germ _ p hpU ≫ (barComp TF.Y Z).ι.stalkMap ξ).hom`. Establish `hρψ : ρ.comp ψ = ρ₁` using `by show ((TF.Y.X.presheaf.map (homOfLE (TF.Y.X.basicOpen_le g')).op ≫ TF.Y.X.presheaf.germ _ p hpU) ≫ (barComp TF.Y Z).ι.stalkMap ξ).hom = _`. Rewrite using `[TopCat.Presheaf.germ_res]`. Establish `hψφ : ψ.comp φ₁ = cst TF.Y.s (TF.Y.X.basicOpen g')` using `spMap_inj (by`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp, hφ₁, ← Category.assoc, hmap, spMap_cst _ hU])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Set `u` to `hs0.unit`. Set `cU : Fin n → Fin n → Γ(TF.Y.X, TF.Y.X.basicOpen g')` to `fun j => (↑u⁻¹ : Γ(TF.Y.X, TF.Y.X.basicOpen g')) • (ψ ∘ B₀ j)`. Establish `hdetU : IsUnit (Matrix.of fun i j => cU j i).det`. Establish `: (Matrix.of fun i j => cU j i) = (↑u⁻¹ : Γ(TF.Y.X, TF.Y.X.basicOpen g')) • Matrix.of fun i j => ψ (B₀ j i)`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[this, Matrix.det_smul]`. Conclude with `(u⁻¹.isUnit.pow _).mul hdet0`. Establish `hcUd : ∀ j, cU j = (↑u⁻¹ : Γ(TF.Y.X, TF.Y.X.basicOpen g')) • (ψ ∘ B₀ j)` using `fun j => rfl`. Use `clear_value cU`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨⟨_, hU'⟩, hUB, ρ, n, e, fun j => vec TF.Y.t _ xcU (cU j), germ_pt (barComp TF.Y Z) ξ hU hpU, fun j => vec_tan hxU _, fun w' hw' => ?_, fun τ i => ?_, fun a k => ?_⟩` and prove the remaining obligations. Take `⟨cc, rfl⟩` from `vec_exists hxU w' hw'`. Simplify using `only [comb_iff hxU]`. Conclude with `basis_of_det cU hdetU cc`. Establish `hBj` using `hB₀ (e ⟨τ, i⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hBj` using `[Equiv.symm_apply_apply]`. Establish `hρu : ρ (↑u⁻¹ : Γ(TF.Y.X, TF.Y.X.basicOpen g')) * ρ₁ s0 = 1`. Rewrite using `[← hρψ, RingHom.comp_apply, ← map_mul]`. Establish `: (↑u⁻¹ : Γ(TF.Y.X, TF.Y.X.basicOpen g')) * ψ s0 = 1`. Rewrite using `[← hs0.unit_spec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `Units.inv_mul u`. Rewrite using `[this, map_one]`. Establish `key : Bv τ i = ρ (↑u⁻¹ : Γ(TF.Y.X, TF.Y.X.basicOpen g')) • (ρ₁ ∘ B₀ (e ⟨τ, i⟩))`. Establish `h2 : ρ₁ ∘ B₀ (e ⟨τ, i⟩) = ρ₁ s0 • Bv τ i` using `hBj`. Rewrite using `[h2, smul_smul, hρu, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `show f₀.v τ i = spMap (dualMap ρ) ≫ vec TF.Y.t _ xcU (cU (e ⟨τ, i⟩))`. Rewrite using `[hcUd, hBv τ i, key, vec_smul hxK, hcK, vec_smul hxU, hcU, ← hρψ]`. Simplify using `only [← Category.assoc, ← ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp]`. Use `congr 2`. Use `RingHom.ext fun w => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `ext <;> simp [dualMap, epsMul]`. Establish `hfix : (Pr (e.symm k).1).map ψ *ᵥ cU k = cU k`. Rewrite using `[hcUd, Matrix.mulVec_smul, hQ0 k]`. Establish `hmem` using `(hPr ψ hxU hcU (e.symm k).1 (cU k)).1`. Rewrite `hmem` using `[hfix, hψφ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `heig : vec TF.Y.t (LogKS.chart ⟨_, hU'⟩) xcU (cU k) ≫ (TF.Y.t.act.act a).left = spMap (epsMul (cst TF.Y.s (TF.Y.X.basicOpen g') (embK c (e.symm k).1 a))) ≫ vec TF.Y.t (LogKS.chart ⟨_, hU'⟩) xcU (cU k)` using `(vec_eig_iff hxU (fun a => cst TF.Y.s (TF.Y.X.basicOpen g') (embK c (e.symm k).1 a)) (cU k)).2 hmem a`. Establish `hrow : (Matrix.diagonal fun j => constFn TF.Y.s (TF.Y.X.basicOpen g') (embK c (e.symm j).1 a)) k = Pi.single k (cst TF.Y.s (TF.Y.X.basicOpen g') (embK c (e.symm k).1 a))`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality.
-
-Simplify using `[cst_apply]`. Simplify using `[Matrix.diagonal_apply, Pi.single_apply, hjk, Ne.symm hjk]`. Establish `hc : IsCombAtG TF.Y.t (LogKS.chart ⟨_, hU'⟩) (fun j => vec TF.Y.t _ xcU (cU j)) (Pi.single k (cst TF.Y.s (TF.Y.X.basicOpen g') (embK c (e.symm k).1 a))) (vec TF.Y.t _ xcU (cst TF.Y.s (TF.Y.X.basicOpen g') (embK c (e.symm k).1 a) • cU k))`. Rewrite using `[comb_iff hxU, Finset.sum_eq_single k (fun j _ hj => by rw [Pi.single_eq_of_ne hj, zero_smul]) (fun hk => absurd (Finset.mem_univ k) hk), Pi.single_eq_same]`. Rewrite `hc` using `[vec_smul hxU, ← heig]`.
-
-Rewrite using `[hrow]`. Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LogKSDiv.spread_genFrame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) [IsIntegral (X₀ TF.Y Z)] (φ₀ : c.F →+* (X₀ TF.Y Z).functionField) (f₀ : GlobalTheory.ShFam.EigFrame TF.Y φ₀ (GlobalTheory.LogKSDiv.genPt TF Z ≫ (barComp TF.Y Z).ι)), GlobalTheory.LogKSDiv.genPt TF Z ≫ s₀ TF.Y Z = spMap φ₀ → ∃ (U : TF.Y.X.affineOpens) (_ : U.1 ≤ barComp TF.Y Z) (ρ : Γ(TF.Y.X, U.1) →+* (X₀ TF.Y Z).functionField) (n : ℕ) (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (v : Fin n → (Sp (DualNumber Γ(TF.Y.X, U.1)) ⟶ TF.Y.t.G.left)), spMap ρ ≫ LogKS.chart U = GlobalTheory.LogKSDiv.genPt TF Z ≫ (barComp TF.Y Z).ι ∧ (∀ i, IsTanAtG TF.Y.t (LogKS.chart U) (v i)) ∧ (∀ w', IsTanAtG TF.Y.t (LogKS.chart U) w' → ∃! cf : Fin n → Γ(TF.Y.X, U.1), IsCombAtG TF.Y.t (LogKS.chart U) v cf w') ∧ (∀ τ i, f₀.v τ i = spMap (dualMap ρ) ≫ v (e ⟨τ, i⟩)) ∧ ∀ (a : 𝓞 E) (k : Fin n), IsCombAtG TF.Y.t (LogKS.chart U) v ((Matrix.diagonal fun j => constFn TF.Y.s U.1 (embK c (e.symm j).1 a)) k) (v k ≫ (TF.Y.t.act.act a).left) := by
   intro E _ _ _ H Dw l Xo c TF Z _ φ₀ f₀ hφ₀

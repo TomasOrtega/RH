@@ -9,33 +9,31 @@ open MeasureTheory in
 open scoped ENNReal in
 
 /- English proof (translation)
-Introduce `G H _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ ν _ _ j hj K K' x S hK hK'o hK'c hK'K hS`. Take `⟨b₀, hb₀m, hb₀⟩` from `_root_.GlobalTheory.exists_measurable_lintegral_coset_eq_one G H ν j hj`. Establish `hSeq : S = ⋃ h : H, (fun g => j h * x * g) '' (K : Set G)`. Use extensionality with `g`. Rewrite using `[hS g]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_iUnion, Set.mem_image, SetLike.mem_coe]`. Apply the tactic sequence `constructor <;> rintro ⟨h, k, hk, e⟩ <;> exact ⟨h, k, hk, e.symm⟩`. Establish `hSopen : IsOpen S`. Rewrite using `[hSeq]`. Conclude with `isOpen_iUnion fun h => isOpenMap_mul_left (j h * x) _ hK`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hSm : MeasurableSet S` using `hSopen.measurableSet`. Use `set T : Set G := (fun g => x⁻¹ * g) ⁻¹' (K : Set G) with hT_def`. Establish `hTm : MeasurableSet T` using `measurable_const_mul x⁻¹ hK.measurableSet`. Establish `hc0 : ν K' ≠ 0` using `(hK'o.measure_pos ν ⟨1, K'.one_mem⟩).ne'`. Establish `hcT : ν K' ≠ ∞` using `hK'c.measure_lt_top.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hSinv : ∀ h g, j h * g ∈ S ↔ g ∈ S`. Introduce `h g`. Rewrite using `[hS, hS]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h', k, hk, e⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨h⁻¹ * h', k, hk, ?_⟩` and prove the remaining obligations. Establish `e' : g = (j h)⁻¹ * (j h' * x * k)` using `by rw [← e]; group`. Rewrite using `[e', map_mul, map_inv]`. Use `group`. Introduce and unpack `⟨h', k, hk, e⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨h * h', k, hk, by rw [e, map_mul]; group⟩`. Establish `hTS : ∀ g, g ∈ T → g ∈ S`. Introduce `g hg`. Rewrite using `[hS]`. Conclude with `⟨1, x⁻¹ * g, hg, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcoset : ∀ g ∈ S, ∫⁻ h, T.indicator (fun _ => (ν K')⁻¹) (j h * g) ∂ν = 1`. Introduce `g hg`. Take `⟨h0, k, hk, rfl⟩` from `(hS g).1 hg`. Establish `e : ∀ h, T.indicator (fun _ => (ν K')⁻¹) (j h * (j h0 * x * k)) = (K' : Set H).indicator (fun _ => (ν K')⁻¹) (h * h0)`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hiff : j h * (j h0 * x * k) ∈ T ↔ h * h0 ∈ (K' : Set H)` using `by show x⁻¹ * (j h * (j h0 * x * k)) ∈ K ↔ h * h0 ∈ K'`. Rewrite using `[hK'K, map_mul]`. Establish `e2 : x⁻¹ * (j h * (j h0 * x * k)) = x⁻¹ * (j h * j h0) * x * k` using `by group`. Rewrite using `[e2, Subgroup.mul_mem_cancel_right _ hk]`. Distinguish the cases in `hm : h * h0 ∈ (K' : Set H)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem (hiff.2 hm)]`. Rewrite using `[Set.indicator_of_notMem hm, Set.indicator_of_notMem (mt hiff.1 hm)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hzero : ∀ g, g ∉ S → ∫⁻ h, T.indicator (fun _ => (ν K')⁻¹) (j h * g) ∂ν = 0`. Introduce `g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : ∀ h, T.indicator (fun _ => (ν K')⁻¹) (j h * g) = 0` using `fun h => Set.indicator_of_notMem (fun hT => hg ((hSinv h g).1 (hTS _ hT))) _`. Simplify using `[e]`. Establish `hjg : ∀ g, Measurable fun h => j h * g` using `fun g => hj.continuous.measurable.mul_const g`. Use `⟨fun g => T.indicator (fun _ => (ν K')⁻¹) g + Sᶜ.indicator b₀ g, (measurable_const.indicator hTm).add (hb₀m.indicator hSm.compl), fun g => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[lintegral_add_left (show Measurable fun h => T.indicator (fun _ => (ν K')⁻¹) (j h * g) from (measurable_const.indicator hTm).comp (hjg g))]`. Distinguish the cases in `hg : g ∈ S`. Establish `e : ∀ h, Sᶜ.indicator b₀ (j h * g) = 0` using `fun h => Set.indicator_of_notMem (show j h * g ∉ Sᶜ from fun hc => hc ((hSinv h g).2 hg)) _`. Simplify using `only [e, lintegral_zero, add_zero]`. Conclude with `hcoset g hg`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : ∀ h, Sᶜ.indicator b₀ (j h * g) = b₀ (j h * g)` using `fun h => Set.indicator_of_mem (show j h * g ∈ Sᶜ from fun hs => hg ((hSinv h g).1 hs)) _`. Rewrite using `[hzero g hg, zero_add]`. Simplify using `only [e]`. Conclude with `hb₀ g`. Establish `e : ∀ g, S.indicator 1 g * (T.indicator (fun _ => (ν K')⁻¹) g + Sᶜ.indicator b₀ g) = T.indicator (fun _ => (ν K')⁻¹) g`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `g`. Distinguish the cases in `hg : g ∈ S`. Simplify using `[hg]`. Establish `hgT : g ∉ T` using `fun hT => hg (hTS g hT)`. Simplify using `[hg, hgT]`.
-
-Rewrite using `[lintegral_congr e, lintegral_indicator_const hTm, hT_def, measure_preimage_mul, ENNReal.div_eq_inv_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.StabUnfold.exists_cutoff_doubleCoset : ∀ (G H : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H] [T2Space H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] (μ : Measure G) [μ.IsHaarMeasure] (ν : Measure H) [ν.IsHaarMeasure] [ν.IsMulRightInvariant] (j : H →* G), Topology.IsClosedEmbedding j → ∀ (K : Subgroup G) (K' : Subgroup H) (x : G) (S : Set G), IsOpen (K : Set G) → IsOpen (K' : Set H) → IsCompact (K' : Set H) → (∀ h, h ∈ K' ↔ x⁻¹ * j h * x ∈ K) → (∀ g, g ∈ S ↔ ∃ h, ∃ k ∈ K, g = j h * x * k) → ∃ b : G → ENNReal, Measurable b ∧ (∀ g, ∫⁻ h, b (j h * g) ∂ν = 1) ∧ ∫⁻ g, S.indicator 1 g * b g ∂μ = μ K / ν K' := by
   intro G H _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ ν _ _ j hj K K' x S hK hK'o hK'c hK'K hS

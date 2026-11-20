@@ -12,9 +12,9 @@ section General
 variable {σ : Type*} [Fintype σ] [DecidableEq σ]
 
 /- English proof (translation)
-Establish `h : (fun t : ℂ => ∏ j, (z + t • (Pi.single i 1 : σ → ℂ)) j ^ α j) = fun t : ℂ => (z i + t) ^ α i * ∏ j ∈ Finset.univ.erase i, z j ^ α j`. Use function extensionality and compare the values at `t`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Simplify using `[Pi.single_eq_of_ne (Finset.ne_of_mem_erase hj)]`. Rewrite using `[h]`. Establish `h2` using `(((hasDerivAt_id (0 : ℂ)).const_add (z i)).fun_pow (α i)).mul_const (∏ j ∈ Finset.univ.erase i, z j ^ α j)`. Simplify using `using h2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasDerivAt_prod_pow_line (α : σ →₀ ℕ) (z : σ → ℂ) (i : σ) :
     HasDerivAt (fun t : ℂ => ∏ j, (z + t • (Pi.single i 1 : σ → ℂ)) j ^ α j)
@@ -33,27 +33,23 @@ theorem hasDerivAt_prod_pow_line (α : σ →₀ ℕ) (z : σ → ℂ) (i : σ) 
   simpa using h2
 
 /- English proof (translation)
-Take `⟨r, hr, hball⟩` from `Metric.eventually_nhds_iff_ball.1 h`. Use `set s : ℝ := r / 2 with hs`. Establish `hs0 : 0 < s` using `by positivity`. Establish `hsum : Summable fun α : σ →₀ ℕ => ‖c α‖ * ∏ j, s ^ α j`. Establish `h1` using `(hball (fun _ => (s : ℂ)) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff hr]`. Introduce `j`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg hs0.le]`. Use the proof step `linarith)).summable.norm`. Simplify `h1` using `[norm_prod, abs_of_pos hs0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [hf.eventually_analyticAt, Metric.ball_mem_nhds (0 : σ → ℂ) (half_pos hs0)] with z hz hzb`. Rewrite `hzb` using `[mem_ball_zero_iff]`. Establish `hn : ∀ t ∈ Metric.ball (0 : ℂ) (s / 2), ‖z + t • (Pi.single i 1 : σ → ℂ)‖ < s`. Introduce `t ht`. Rewrite `ht` using `[mem_ball_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `Complex.hasSum_deriv_of_summable_norm (U := Metric.ball (0 : ℂ) (s / 2)) (F := fun (α : σ →₀ ℕ) (t : ℂ) => c α * ∏ j, (z + t • (Pi.single i 1 : σ → ℂ)) j ^ α j) hsum (fun α => by`. Apply `Differentiable.differentiableOn` to reduce the goal to its premises. Simplify using `only [Pi.add_apply, Pi.smul_apply]`. Use the proof step `fun_prop) Metric.isOpen_ball (fun α t ht => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_prod]`. Use `mul_le_mul_of_nonneg_left (Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun j _ => ?_) (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) ((norm_le_pi_norm _ j).trans (hn t ht).le) _)`. Use the proof step `(Metric.mem_ball_self (half_pos hs0))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : (fun t : ℂ => ∑' α : σ →₀ ℕ, c α * ∏ j, (z + t • (Pi.single i 1 : σ → ℂ)) j ^ α j) =ᶠ[𝓝 0] fun t : ℂ => f (z + t • (Pi.single i 1 : σ → ℂ))` using `by filter_upwards [Metric.ball_mem_nhds (0 : ℂ) (half_pos hs0)] with t ht`. Conclude with `(hball _ (by rw [mem_ball_zero_iff]; linarith [hn t ht])).tsum_eq`. Rewrite `h1` using `[h2.deriv_eq]`. Establish `h3 : deriv (fun t : ℂ => f (z + t • (Pi.single i 1 : σ → ℂ))) 0 = fderiv ℂ f z (Pi.single i 1)` using `hz.differentiableAt.lineDeriv_eq_fderiv`. Rewrite `h1` using `[h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : HasSum (fun α : σ →₀ ℕ => c α * ((α i : ℂ) * z i ^ (α i - 1) * ∏ j ∈ Finset.univ.erase i, z j ^ α j)) (fderiv ℂ f z (Pi.single i 1))`. Use `(congrArg (HasSum · _) (funext fun α => ?_)).mp h1` and prove the remaining obligations. Conclude with `((hasDerivAt_prod_pow_line α z i).const_mul (c α)).deriv`. Establish `hinj : Function.Injective fun α : σ →₀ ℕ => α + Finsupp.single i 1` using `add_left_injective _`. Rewrite `h5` using `[← hinj.hasSum_iff]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `h5 using 2 with α` and compare the differences between its conclusion and the goal. Simplify using `only [Function.comp]`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]`. Establish `: ∏ j ∈ Finset.univ.erase i, z j ^ (α + Finsupp.single i 1 : σ →₀ ℕ) j = ∏ j ∈ Finset.univ.erase i, z j ^ α j` using `Finset.prod_congr rfl fun j hj => by`. Simplify using `[Finsupp.single_eq_of_ne (Finset.ne_of_mem_erase hj)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce `α hα`. Establish `: α i = 0`.
-
-Assume the negation of the conclusion as `h0`. Establish `hle : Finsupp.single i 1 ≤ α`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Take `⟨m', rfl⟩` from `exists_add_of_le hle`.
-
-Conclude with `hα ⟨m', add_comm _ _⟩`. Simplify using `[this]`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasSum_fderiv_series {f : (σ → ℂ) → ℂ} {c : (σ →₀ ℕ) → ℂ} (hf : AnalyticAt ℂ f 0)
     (h : ∀ᶠ z in 𝓝 (0 : σ → ℂ), HasSum (fun α : σ →₀ ℕ => c α * ∏ j, z j ^ α j) (f z)) (i : σ) :
@@ -126,17 +122,15 @@ theorem hasSum_fderiv_series {f : (σ → ℂ) → ℂ} {c : (σ →₀ ℕ) →
     simp [this]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro f c _ _ m hm`. Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Introduce `f c hf h m hm`.
+Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h0 : m = 0`. Substitute `h0` using the available equality. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, constantCoeff_taylor]`. Establish `h1` using `h.self_of_nhds`. Establish `h2 : HasSum (fun α : σ →₀ ℕ => c α * ∏ j, (0 : σ → ℂ) j ^ α j) (c 0 * ∏ j, (0 : σ → ℂ) j ^ (0 : σ →₀ ℕ) j)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hasSum_single 0 fun α hα => ?_` and prove the remaining obligations. Take `⟨i, hi⟩ : ∃ i, α i ≠ 0` from `by simpa using Finsupp.ne_iff.1 hα`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hi]), mul_zero]`. Simplify using `using h1.unique h2`. Take `⟨i, hi⟩ : ∃ i, m i ≠ 0` from `by simpa using Finsupp.ne_iff.1 h0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hle : Finsupp.single i 1 ≤ m`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Take `⟨m', rfl⟩` from `exists_add_of_le hle`. Establish `h1` using `ih (analyticAt_fderiv_apply hf (Pi.single i 1)) (hasSum_fderiv_series hf h i) m' (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hm` using `[map_add, Finsupp.degree_single]`. Use the proof step `omega)`. Rewrite `h1` using `[taylor_fderiv hf, MvPowerSeries.coeff_pderiv]`. Establish `h4 : ((m' i : ℂ) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero (m' i)`. Rewrite using `[add_comm]`.
-
-Conclude with `mul_right_cancel₀ h4 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_taylor_of_hasSum (n : ℕ) :
     ∀ {f : (σ → ℂ) → ℂ} {c : (σ →₀ ℕ) → ℂ}, AnalyticAt ℂ f 0 →
@@ -170,11 +164,11 @@ theorem coeff_taylor_of_hasSum (n : ℕ) :
 omit [DecidableEq σ] in
 
 /- English proof (translation)
-Establish `hd : Dense (Set.pi Set.univ fun _ : σ => ({0}ᶜ : Set ℂ))` using `dense_pi Set.univ fun _ _ => dense_compl_singleton 0`. Take `⟨w, hw, hw0⟩` from `hd.inter_open_nonempty _ (isOpen_ne_fun hf continuous_zero) (Function.ne_iff.1 h0)`. Establish `hs : Summable (fun α : σ →₀ ℕ => c α * ∏ j, w j ^ α j)`. Assume the negation of the conclusion as `hs`. Conclude with `hw (tsum_eq_zero_of_not_summable hs)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ z in 𝓝 (0 : σ → ℂ), ∀ j, ‖z j‖ < ‖w j‖`. Use `eventually_all.2 fun j => ?_` and prove the remaining obligations. Use `(continuous_apply j).norm.continuousAt.eventually_lt continuousAt_const ?_` and prove the remaining obligations. Simplify using `using hw0 j (Set.mem_univ j)`. Use `filter_upwards [hev] with z hz`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Summable.of_norm_bounded hs.norm fun α => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, norm_prod, norm_prod]`. Use `mul_le_mul_of_nonneg_left (Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun j _ => ?_) (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[norm_pow, norm_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hz j).le _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_summable_of_ne_zero {c : (σ →₀ ℕ) → ℂ}
     (hf : Continuous fun z : σ → ℂ => ∑' α : σ →₀ ℕ, c α * ∏ j, z j ^ α j)
@@ -205,7 +199,7 @@ open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalis
 open scoped BigOperators
 
 /- English proof (translation)
-Rewrite using `[coeff_taylorDir, dirPolyDeriv_monomial_one, Formalism.MainNotions.TaylorLogMetric.taylor, Finsupp.prod_fintype _ _ (by simp), Nat.cast_prod, div_eq_inv_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem taylor_eq_coeff (D : D7) {N N' : ℕ} (F : VC D N N' → ℂ) (α : Mono D N N') :
     Formalism.MainNotions.TaylorLogMetric.taylor D F α = MvPowerSeries.coeff α (taylorDir (coordV D) F) := by
@@ -214,13 +208,13 @@ theorem taylor_eq_coeff (D : D7) {N N' : ℕ} (F : VC D N N' → ℂ) (α : Mono
   rfl
 
 /- English proof (translation)
-Set `L : (D.what₂.Tau × Fin N' × Fin N → ℂ) →L[ℂ] VC D N N'` to `ContinuousLinearMap.pi fun τ => ContinuousLinearMap.pi fun a => ContinuousLinearMap.pi fun b => ContinuousLinearMap.proj (τ, a, b)`. Establish `hL : ∀ z τ a b, L z τ a b = z (τ, a, b)` using `fun _ _ _ _ => rfl`. Establish `hc : coordV D = fun k => L (Pi.single k 1)`. Use function extensionality and compare the values at `⟨k1, k2, k3⟩ τ a b`. Simplify using `[hL, coordV, Pi.single_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hm : ∀ (β : Mono D N N') z, mono D β (L z) = ∏ j, z j ^ β j` using `fun β z => by`. Rewrite using `[mono, Finsupp.prod_fintype _ _ (by simp)]`. Both sides reduce to the same expression. Establish `han : AnalyticAt ℂ (fun z : VC D N N' => ∑' α, c α * mono D α z) 0` using `SCV.analyticAt_iff_eventually_differentiableAt.2 (Eventually.of_forall hd)`. Rewrite using `[taylor_eq_coeff, hc, ← taylor_comp_clm L han]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `han' : AnalyticAt ℂ (fun z => ∑' α, c α * mono D α (L z)) 0` using `han.comp_of_eq (L.analyticAt 0) (map_zero L)`. Establish `hcont : Continuous (fun z => ∑' α, c α * mono D α (L z))` using `hd.continuous.comp L.continuous`. Establish `hne : (fun z => ∑' α, c α * mono D α (L z)) ≠ 0`. Introduce `h`. Use `h0 (funext fun w => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrFun h fun k => w k.1 k.2.1 k.2.2`. Simplify using `only [hm] at han' hcont hne ⊢`. Use `coeff_taylor_of_hasSum _ han' ?_ α (Nat.lt_succ_self _)` and prove the remaining obligations. Use `filter_upwards [eventually_summable_of_ne_zero hcont hne] with z hz`. Conclude with `hz.hasSum`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem taylor_tsum (D : D7) {N N' : ℕ} (c : Mono D N N' → ℂ)
     (hd : Differentiable ℂ fun z : VC D N N' => ∑' α, c α * mono D α z)
@@ -253,9 +247,9 @@ theorem taylor_tsum (D : D7) {N N' : ℕ} (c : Mono D N N' → ℂ)
   exact hz.hasSum
 
 /- English proof (translation)
-Establish `h : minorPol D T = MvPolynomial.map (Int.castRingHom ℂ) (∏ τ, ∏ j, (Matrix.of fun i i' : Fin N => (MvPolynomial.X (τ, (T τ j).1 i, i') : MvPolynomial (GL3Theta.Idx D N N') ℤ)).det)`. Simplify using `only [minorPol, map_prod, RingHom.map_det]`. Use `Finset.prod_congr rfl fun τ _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `i i' : 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Conclude with `⟨_, by rw [h, MvPolynomial.coeff_map]; rfl⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem coeff_minorPol_int (D : D7) {N N' : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup D N N' n)
     (α : Mono D N N') : ∃ k : ℤ, MvPolynomial.coeff α (minorPol D T) = k := by
@@ -270,11 +264,11 @@ theorem coeff_minorPol_int (D : D7) {N N' : ℕ} {n : D.what₂.Tau → ℕ} (T 
   exact ⟨_, by rw [h, MvPolynomial.coeff_map]; rfl⟩
 
 /- English proof (translation)
-Introduce `D N N' M ρ G hd h0`. Establish `h1 : ∀ α, Formalism.MainNotions.TaylorLogMetric.taylor D (fnConj D M ρ G) α = cj M ρ (Formalism.MainNotions.TaylorLogMetric.taylor D G α)` using `fun α => taylor_tsum D _ hd h0 α`. Use `⟨h1, fun hG n T => ?_⟩` and prove the remaining obligations. Use `choose k hk using coeff_minorPol_int D T`. Establish `hcj : ∀ x : M, cj M ρ x = ρ x` using `fun x => by simp [cj, TaylorLogMetric.liftM]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `x : M` to `∑ α ∈ (minorPol D T).support, (k α : M) * ((α.prod fun _ n => n.factorial : ℕ) : M) * ⟨_, hG α⟩`. Establish `hx : GL3Theta.applyAt0 D (minorPol D T) G = x`. Simplify using `[GL3Theta.applyAt0, x, hk, Finsupp.prod]`. Rewrite using `[hx, hcj]`. Use `⟨x.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [GL3Theta.applyAt0, x, hk, h1, map_sum, map_mul, map_intCast, map_natCast]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[← hcj]`. Simplify using `[Finsupp.prod]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem taylor_fnConj : ∀ (D : D7) (N N' : ℕ) (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (G : VC D N N' → ℂ), Differentiable ℂ (fnConj D M ρ G) → fnConj D M ρ G ≠ 0 → (∀ α, Formalism.MainNotions.TaylorLogMetric.taylor D (fnConj D M ρ G) α = cj M ρ (Formalism.MainNotions.TaylorLogMetric.taylor D G α)) ∧ (CoefIn D G M → ∀ (n : D.what₂.Tau → ℕ) (T : Tup D N N' n), GL3Theta.applyAt0 D (minorPol D T) G ∈ M ∧ cj M ρ (GL3Theta.applyAt0 D (minorPol D T) G) = GL3Theta.applyAt0 D (minorPol D T) (fnConj D M ρ G)) := by
   intro D N N' M ρ G hd h0

@@ -30,11 +30,11 @@ def UValThru (Xo : Moduli D l) (c : Coeff l) {S T : Scheme.{0}} (i : Xo.XF c ⟶
 variable {Xo : Moduli D l} {c : Coeff l}
 
 /- English proof (translation)
-Introduce `W _ _ _ _ ϖ _ χ y hy hA' _ _ _ _ _ _ _ _`. It suffices to derive a contradiction. Set `g : Sp (FractionRing W)` to `closedPoint (FractionRing W)`. Establish `hsp : (jK W) g ⤳ closedPoint W` using `IsLocalRing.specializes_closedPoint _`. Establish `hmem : χ ((jK W) g) ∈ A` using `(hsp.map χ.continuous).mem_open hA hA'`.
+Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrange : χ ((jK W) g) ∈ Set.range i` using `⟨y g, by`. Use `congrArg (fun f => f.base g) hy` as an intermediate fact. Simplify using `using this⟩`. Establish `: χ ((jK W) g) ∈ A ∩ Set.range i` using `⟨hmem, hrange⟩`. Rewrite `this` using `[hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem uValThru_top_of_disjoint {S : Scheme.{0}} {i : Xo.XF c ⟶ S} {A : Set S} (hA : IsOpen A)
     (hd : A ∩ Set.range i = ∅) (φ : InvFun (𝓞 E)) (d : ℕ) : UValThru Xo c i (𝟙 S) A φ ⊤ d := by
@@ -51,17 +51,17 @@ theorem uValThru_top_of_disjoint {S : Scheme.{0}} {i : Xo.XF c ⟶ S} {A : Set S
   exact this
 
 /- English proof (translation)
-Establish `hdvd : ∀ k, d k ∣ ∏ k, d k` using `fun k => Finset.dvd_prod_of_mem (s := Finset.univ) d (Finset.mem_univ k)`. Establish `htop : ∀ k x, x ∉ A k → FinalTheorems.stalkId (J k) x = ⊤` using `fun k x hx => GlobalTheory.Vanishing.stalkId_eq_top (J k) fun hs => hx (hsupp k x hs).1`. Use `⟨∏ k, d k, ∏ k, J k ^ ((∏ k, d k) / d k), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Nat.one_le_iff_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun k _ => by have := hd k; omega)`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, -⟩` from `huniq x`. Distinguish the cases in `hs : x ∈ (J k).support`. Conclude with `(hsupp k x hs).2`. It suffices to derive a contradiction. Use `(mem_support_iff_stalkId _ x).1 hx ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[stalkId_prodPow, ← Ideal.one_eq_top]`. Use `Finset.prod_eq_one fun k' _ => ?_` and prove the remaining obligations. Distinguish the cases in `e : k' = k`. Substitute `e` using the available equality. Rewrite using `[GlobalTheory.Vanishing.stalkId_eq_top (J k') hs, ← Ideal.one_eq_top, one_pow]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[htop k' x fun h => e ((huniq x).unique h hk), ← Ideal.one_eq_top, one_pow]`. Introduce `W _ _ _ hW ϖ hϖ χ y hy t tK h1 h2 P be hbe hmono`. Take `⟨k, hk, -⟩` from `huniq (χ (closedPoint W))`. Take `⟨a, ha, hJ⟩` from `hv k W hW ϖ hϖ χ y (by rw [Category.comp_id]; exact hy) hk t tK h1 h2 P be hbe hmono`. Use `⟨(∏ k, d k) / d k * a, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd0 : (d k : ℝ) ≠ 0` using `by have := hd k; positivity`. Rewrite using `[Nat.cast_mul, Nat.cast_div (hdvd k) hd0, ha]`. Clear the denominators using the available nonvanishing facts. Unfold `idlAlong at hJ ⊢`. Rewrite using `[stalkId_prodPow, Finset.prod_eq_single k, Ideal.map_pow, hJ, Ideal.span_singleton_pow, ← pow_mul, mul_comm]`.
+Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k' _ e`. Rewrite using `[htop k' _ fun h => e ((huniq _).unique h hk), ← Ideal.one_eq_top, one_pow]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_uValOn_of_pieces {S : Scheme.{0}} (i : Xo.XF c ⟶ S) (φ : InvFun (𝓞 E)) {ι : Type} [Fintype ι]
     (A : ι → Set S) (J : ι → S.IdealSheafData) (d : ι → ℕ) (huniq : ∀ x, ∃! k, x ∈ A k) (hd : ∀ k, 1 ≤ d k)

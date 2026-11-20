@@ -17,7 +17,7 @@ namespace UpperTheory.Ru.crystallineComparison
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.Int.Geo UpperTheory.Gal.Seam
 
 /- English proof (translation)
-Rewrite using `[OK_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mem_OK_iff {l : ℕ} [Fact l.Prime] (K : FinExt l) (x : ↥K.1) : x ∈ OK l K.1 ↔ x ∈ OL K := by
   rw [OK_eq]; rfl
@@ -31,7 +31,7 @@ private def okEquiv {l : ℕ} [Fact l.Prime] (K : FinExt l) : ↥(OL K) ≃+* �
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.AinfK.card_res K]`. Conclude with `(Nat.card_congr (IsLocalRing.ResidueField.mapEquiv (okEquiv K)).toEquiv).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_res_OK {l : ℕ} [Fact l.Prime] (K : FinExt l) [IsLocalRing ↥(OK l K.1)] :
     Nat.card (IsLocalRing.ResidueField ↥(OK l K.1)) = l ^ GlobalTheory.AinfK.fK K := by
@@ -39,7 +39,7 @@ private theorem card_res_OK {l : ℕ} [Fact l.Prime] (K : FinExt l) [IsLocalRing
   exact (Nat.card_congr (IsLocalRing.ResidueField.mapEquiv (okEquiv K)).toEquiv).symm
 
 /- English proof (translation)
-Establish `: Finite (IsLocalRing.ResidueField R)` using `Nat.finite_of_card_ne_zero (by rwa [hc])`. Use `letI := Fintype.ofFinite (IsLocalRing.ResidueField R)`. Establish `h` using `FiniteField.pow_card (IsLocalRing.residue R x)`. Rewrite `h` using `[← Nat.card_eq_fintype_card, hc]`. Rewrite using `[← Ideal.mem_span_singleton, ← ht.maximalIdeal_eq, ← IsLocalRing.residue_eq_zero_iff, map_sub, map_pow, h, sub_self]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dvd_pow_sub {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] {q : ℕ} (hq : q ≠ 0)
     (hc : Nat.card (IsLocalRing.ResidueField R) = q) {t : R} (ht : Irreducible t) (x : R) : t ∣ x ^ q - x := by
@@ -54,19 +54,17 @@ end UpperTheory.Ru.crystallineComparison
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.Int.Geo UpperTheory.Gal.Seam UpperTheory.Ru.crystallineComparison
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ L _ H θ w hl n ϑ hC A hA O _ _ _ Bw hB`. Take `⟨C, p, f, hp, hpw, hN, hO, ϖ, T, γ, m, hϖ, hid, hT⟩` from `hC`. Establish `epl : p = l`. Assume the negation of the conclusion as `hne`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp Fact.out).2 hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (1 : 𝓞 E) ∈ w.asIdeal`. Establish `h` using `congrArg (Int.cast : ℤ → 𝓞 E) hab`. Move the coercions through the operations in `at h`. Rewrite using `[← h]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hpw) (Ideal.mul_mem_left _ _ hl)`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Substitute `epl` using the available equality. Establish `hNv : normV w = p ^ f`. Rewrite using `[← hN, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : resDeg p w = f`. Rewrite using `[resDeg, hNv, Nat.log_pow hp.one_lt]`. Substitute `hf` using the available equality. Establish `hpos : 0 < resDeg p w` using `Nat.pos_of_ne_zero fun h0 => w.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 (by rw [hN, h0, pow_zero]))`. Use `haveI := Bw.Kw.2`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hD, hV, -⟩` from `CrystallineSemistableComparison.Pb.Kap.ok_dvr_pf (l := p) (K := Bw.Kw.1)`. Use `haveI := hD`. Use `haveI := hV`. Use `haveI : IsDiscreteValuationRing (Ow w) := (w.valuation E).valuationSubring_isDiscreteValuationRing`. Take `⟨φ, hφ, hφi⟩` from `UpperTheory.Gal.Seam.intMap E Ω p w A hA O Bw hB`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcard : Nat.card (IsLocalRing.ResidueField ↥(OK p Bw.Kw.1)) = p ^ resDeg p w`. Rewrite using `[card_res_OK, GlobalTheory.AinfK.fK_eq_resDeg Bw hA hB]`. Take `⟨C', u, hu, -, hOnto, -, hLies⟩` from `UpperTheory.Gal.Seam.bcCover E ↥Bw.Kw.1 (Ow w) ↥(OK p Bw.Kw.1) L (UpperTheory.Gal.Seam.kOf Bw) φ hφ H θ C`. Establish `hirr` using `hφi ϖ hϖ`. Take `⟨T', κ, hκ, hid'⟩` from `UpperTheory.Ru.crystallineComparison.ptIdBC p (p ^ resDeg p w) n (Ow w) ↥(OK p Bw.Kw.1) φ ϖ hϖ hirr (dvd_pow_sub (pow_ne_zero _ hp.ne_zero) hcard hirr) C.Y C'.Y C.p C'.p u hu T (fun j => (hT j).1) hid`.
-
-Use `⟨hD, hV, hpos, hNv, hcard, C', hOnto hO, φ ϖ, T', γ, m, hirr, hid', fun j => ⟨(hκ j).2.2, ?_, (hT j).2.2⟩⟩` and prove the remaining obligations. Conclude with `hLies (γ j) (T j).Z (T j).p (T j).r (m j) (hT j).1 (hT j).2.1 (T' j).Z (κ j) (T' j).p (T' j).r (hκ j).1 (hκ j).2.1.symm (hκ j).2.2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Ru.crystallineComparison.congBC :
     UpperTheory.Ru.crystallineComparison.CongBC := by

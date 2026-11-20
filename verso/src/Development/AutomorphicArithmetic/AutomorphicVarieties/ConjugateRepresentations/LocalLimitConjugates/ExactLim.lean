@@ -10,11 +10,11 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha U hU Ξ q β ω hβ dβ hω dω hl hex`. Take `⟨c, hc⟩` from `(perEx E a U Ξ q).1 β hβ dβ`. Take `⟨cn, hcn, ht⟩` from `perLim E a U Ξ q ω hω dω hl`. Use `(perKer E a ha U hU Ξ q β c hβ hc).1 (hCobLim _ _ _ _ (fun γ s => ⟨_, _, fun f => rfl⟩) q c cn (fun k => ?_) ht)` and prove the remaining obligations. Establish `h1` using `(perEx E a U Ξ q).2.2 β (ω k) c (cn k) 1 (-1) hc (hcn k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `(levLin E a U Ξ q).1 β (ω k) 1 (-1) hβ (hω k)`. Establish `e1 : (1 : ℂ) • β + (-1 : ℂ) • ω k = β - ω k`. Use extensionality with `X`. Simplify using `[sub_eq_add_neg]`. Establish `e2 : (1 : ℂ) • c + (-1 : ℂ) • cn k = c - cn k`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[one_smul, neg_smul, one_smul, sub_eq_add_neg]`. Rewrite `h1`, `h2` using `[e1]`. Rewrite `h1` using `[e2]`. Conclude with `(perKer E a ha U hU Ξ q _ _ h2 h1).2 (hex k)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.exactLim :
     UpperTheory.V.Cj.H.ExactLim := by

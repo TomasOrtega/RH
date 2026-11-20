@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.TrFin
 
 /- English proof (translation)
-Introduce `r _`. Establish `e : tens (evFin F v) (0 : (κ → Fv F v) → ℂ) r = 0` using `by funext x; simp [tens]`. Rewrite using `[e, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem acts_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : Pl F)
     (T : Module.End ℂ ((κ → AF F) → ℂ)) : Acts (evFin F v) T (0 : (κ → Fv F v) → ℂ) 0 := by
@@ -26,23 +26,21 @@ theorem acts_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] 
   rw [e, map_zero]
 
 /- English proof (translation)
-Establish `key : ∀ φ ∈ S, ∀ φ₁ ∈ S, A φ φ₁ → p φ = 0 → p φ₁ = 0` using `fun φ hφ φ₁ hφ₁ hA h0 => by`. Use `eqv φ hφ 0 S'.zero_mem φ₁ hφ₁ 0 S'.zero_mem hA z' (by rw [h0, map_zero])` as an intermediate fact. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis. Establish `uniq : ∀ φ ∈ S, ∀ ψ ∈ S, ∀ φ₁ ∈ S, ∀ ψ₁ ∈ S, A φ φ₁ → A ψ ψ₁ → p φ = p ψ → p φ₁ = p ψ₁`. Introduce `φ hφ ψ hψ φ₁ hφ₁ ψ₁ hψ₁ hA hB he`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `lin φ hφ ψ hψ φ₁ ψ₁ hA hB 1 (-1)`. Use `key _ (S.add_mem (S.smul_mem 1 hφ) (S.smul_mem (-1) hψ)) _ (S.add_mem (S.smul_mem 1 hφ₁) (S.smul_mem (-1) hψ₁)) h (by simp [he])` as an intermediate fact. Establish `e : p ((1 : ℂ) • φ₁ + (-1 : ℂ) • ψ₁) = p φ₁ - p ψ₁` using `by simp [sub_eq_add_neg]`. Rewrite `this` using `[e]`. Conclude with `sub_eq_zero.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `q` to `p.domRestrict S`. Establish `hq : Function.Surjective q`. Rewrite using `[← LinearMap.range_eq_top, LinearMap.range_domRestrict, onto]`. Set `c : S → M` to `fun φ => (ex φ.1 φ.2).choose`. Establish `hc : ∀ φ : S, c φ ∈ S ∧ A φ.1 (c φ)` using `fun φ => (ex φ.1 φ.2).choose_spec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `g : S →ₗ[ℂ] P` to `{ toFun := fun φ => p (c φ) map_add' := fun φ ψ => by`. Rewrite using `[← map_add]`. Establish `h` using `lin _ φ.2 _ ψ.2 _ _ (hc φ).2 (hc ψ).2 1 1`. Simplify using `only [one_smul] at h`. Conclude with `uniq _ (φ + ψ).2 _ (φ + ψ).2 _ (hc _).1 _ (S.add_mem (hc φ).1 (hc ψ).1) (hc _).2 h rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `map_smul' := fun a φ => by`. Rewrite using `[RingHom.id_apply, ← map_smul]`. Establish `h` using `lin _ φ.2 _ φ.2 _ _ (hc φ).2 (hc φ).2 a 0`. Simplify using `only [zero_smul, add_zero] at h`. Conclude with `uniq _ (a • φ).2 _ (a • φ).2 _ (hc _).1 _ (S.smul_mem a (hc φ).1) (hc _).2 h rfl }`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hker : LinearMap.ker q ≤ LinearMap.ker g` using `fun φ hφ => by`. Rewrite `hφ`, the goal using `[LinearMap.mem_ker]`. Conclude with `key _ φ.2 _ (hc φ).1 (hc φ).2 hφ`. Set `L : P →ₗ[ℂ] P` to `((LinearMap.ker q).liftQ g hker).comp (q.quotKerEquivOfSurjective hq).symm.toLinearMap`. Establish `hL : ∀ φ : S, L (p φ) = p (c φ)` using `fun φ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : (q.quotKerEquivOfSurjective hq).symm (q φ) = Submodule.Quotient.mk φ`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `show (LinearMap.ker q).liftQ g hker ((q.quotKerEquivOfSurjective hq).symm (q φ)) = _`. Rewrite using `[e, Submodule.liftQ_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Use `⟨L, fun φ hφ φ₁ hφ₁ hA => ?_, fun φ' hφ' φ₁' hφ₁' hA' => ?_⟩` and prove the remaining obligations. Rewrite using `[hL ⟨φ, hφ⟩]`. Conclude with `uniq φ hφ φ hφ _ (hc _).1 φ₁ hφ₁ (hc ⟨φ, hφ⟩).2 hA rfl`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ, he⟩ : ∃ φ ∈ S, p φ = p' φ' := by`.
-
-Establish `: p' φ' ∈ S.map p` using `by rw [onto]; trivial`. Take `⟨φ, hφ, he⟩` from `this`. Conclude with `⟨φ, hφ, he⟩`. Rewrite using `[← he, hL ⟨φ, hφ⟩]`. Conclude with `eqv φ hφ φ' hφ' _ (hc _).1 φ₁' hφ₁' (hc ⟨φ, hφ⟩).2 hA' he`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer {P M M' : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup M] [Module ℂ M] [AddCommGroup M']
     [Module ℂ M'] (S : Submodule ℂ M) (S' : Submodule ℂ M') (p : M →ₗ[ℂ] P) (p' : M' →ₗ[ℂ] P) (A : M → M → Prop)

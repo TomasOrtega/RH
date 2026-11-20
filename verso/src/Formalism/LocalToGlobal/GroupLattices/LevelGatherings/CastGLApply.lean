@@ -12,7 +12,7 @@ def castGL {a b : ℕ} (h : a = b) (R : Type) [CommRing R] : GL (Fin a) R ≃* G
   Units.mapEquiv (Matrix.reindexAlgEquiv ℕ R (finCongr h)).toMulEquiv
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [castGL, Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem castGL_apply {a b : ℕ} (h : a = b) (R : Type) [CommRing R] (g : GL (Fin a) R) (x y : Fin b) :
     (castGL h R g : Matrix (Fin b) (Fin b) R) x y = (g : Matrix (Fin a) (Fin a) R) (Fin.cast h.symm x) (Fin.cast h.symm y) := by
@@ -59,7 +59,7 @@ abbrev levC (hS : HidaSetting p n' W Qq O Kf ι σ j w) (nV r : ℕ) (lam0 : Fin
   χ := ψ.comp (gamToUp σE J Up y)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `castGL hk Qq ((castGL hk Qq).symm ((fr v)⁻¹ * bc (iw v) (gamMat σE J Up y γ) * (fr v)⁻¹⁻¹)) = _`. Rewrite using `[MulEquiv.apply_symm_apply, inv_inv]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem levC_act (hS : HidaSetting p n' W Qq O Kf ι σ j w) (nV r : ℕ) (lam0 : Fin nV → Fin n' → Fin (m + 1) → ℤ)
     (dom : ∀ v, IsDominant (lam0 v)) (hk : m + 1 = k) (iw : Fin nV → (E →+* Qq)) (fr : Fin nV → GL (Fin k) Qq) (ψ : Up →* Oˣ)

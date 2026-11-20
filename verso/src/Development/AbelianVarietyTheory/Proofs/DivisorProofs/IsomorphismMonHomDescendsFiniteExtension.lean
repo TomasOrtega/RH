@@ -17,9 +17,9 @@ open GlobalTheory.ArcPull GlobalTheory.ArcQ
 namespace GlobalTheory.IsoFinExt
 
 /- English proof (translation)
-Establish `hw : (pullback.fst (pullback.snd a b) j ≫ pullback.fst a b) ≫ a = (pullback.snd _ _ ≫ l) ≫ i`. Rewrite using `[Category.assoc, pullback.condition, pullback.condition_assoc, Category.assoc, hc]`. Use `⟨pullback.lift _ _ hw, pullback.lift_fst _ _ _, ?_⟩` and prove the remaining obligations. Use `IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback a i)` and prove the remaining obligations. Rewrite using `[pullback.lift_fst, hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsPullback.of_hasPullback (pullback.snd a b) j).paste_horiz (IsPullback.of_hasPullback a b)`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_compare {X S L S' T : Scheme.{0}} (a : X ⟶ S) (b : L ⟶ S) (i : S' ⟶ S) (j : T ⟶ L)
     (l : T ⟶ S') (hc : l ≫ i = j ≫ b) :
@@ -34,13 +34,11 @@ theorem isPullback_compare {X S L S' T : Scheme.{0}} (a : X ⟶ S) (b : L ⟶ S)
   exact (IsPullback.of_hasPullback (pullback.snd a b) j).paste_horiz (IsPullback.of_hasPullback a b)
 
 /- English proof (translation)
-Take `⟨q₁, e₁, H₁⟩` from `isPullback_compare a₁ b i j l hc`. Take `⟨q₂, e₂, H₂⟩` from `isPullback_compare a₂ b i j l hc`. Set `F : pullback (pullback.snd a₁ b) j ⟶ pullback (pullback.snd a₂ b) j` to `pullback.map _ _ _ _ f (𝟙 _) (𝟙 _) (by rw [Category.comp_id, hf]) (by simp)`. Establish `hF₁ : F ≫ pullback.fst _ _ = pullback.fst _ _ ≫ f` using `pullback.lift_fst _ _ _`. Establish `hF₂ : F ≫ pullback.snd _ _ = pullback.snd _ _` using `(pullback.lift_snd _ _ _).trans (Category.comp_id _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : q₁ ≫ f' = F ≫ q₂`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, e₂, ← Category.assoc F, hF₁, Category.assoc]`. Conclude with `(h _ _ q₁ _ e₁.symm pullback.condition H₁.w).symm`. Rewrite using `[Category.assoc, Category.assoc, hf', H₂.w, ← Category.assoc, hF₂, H₁.w]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `H : IsPullback q₁ F f' q₂`. Use `IsPullback.of_bot ?_ hw H₂` and prove the remaining obligations. Rewrite using `[hF₂, hf']`. Conclude with `H₁`. Establish `hq : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) q₂` using `⟨⟨MorphismProperty.of_isPullback H₂.flip ‹Surjective l›, MorphismProperty.of_isPullback H₂.flip ‹Flat l›⟩, MorphismProperty.of_isPullback H₂.flip ‹QuasiCompact l›⟩`.
-
-Establish `hF : IsIso F` using `inferInstance`. Conclude with `MorphismProperty.of_isPullback_of_descendsAlong (P := MorphismProperty.isomorphisms Scheme.{0}) H.flip hq hF`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_of_compare {X₁ X₂ S L S' T : Scheme.{0}} (a₁ : X₁ ⟶ S) (a₂ : X₂ ⟶ S) (b : L ⟶ S) (i : S' ⟶ S)
     (j : T ⟶ L) (l : T ⟶ S') [Surjective l] [Flat l] [QuasiCompact l] (hc : l ≫ i = j ≫ b)
@@ -74,11 +72,11 @@ theorem isIso_of_compare {X₁ X₂ S L S' T : Scheme.{0}} (a₁ : X₁ ⟶ S) (
     H.flip hq hF
 
 /- English proof (translation)
-Introduce `K L _ _ _ β A₁ A₂ _ _ h₁ h₂ f hf`. Take `⟨K', _, io, Ω, _, j, l, f', hfin, hc, hm, h⟩` from `GlobalTheory.T.exists_finiteExt_abelianVarietyHom_descent K L β A₁ A₂ h₁ h₂ f.hom hf`. Establish `hc' : spMap l ≫ spMap io = spMap j ≫ spMap β`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hc]`. Establish `: Flat (spMap l)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Flat.SpecMap_iff]`. Use `letI := l.toAlgebra`. Conclude with `(inferInstance : Module.Flat K' Ω)`. Establish `: Surjective (spMap l)` using `⟨fun x => ⟨Classical.arbitrary _, Subsingleton.elim _ _⟩⟩`. Establish `hl : IsIso f.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map f.hom))`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso f'.left` using `@isIso_of_compare _ _ _ _ _ _ A₁.hom A₂.hom (spMap β) (spMap io) (spMap j) (spMap l) _ _ _ hc' f.hom.left hl (Over.w f.hom) f'.left (Over.w f') h`. Establish `: IsIso ((Over.forget _).map f')` using `this`. Establish `: IsIso f'` using `isIso_of_reflects_iso f' (Over.forget _)`. Conclude with `⟨K', inferInstance, io, Ω, inferInstance, j, l, asIso f', hfin, hc, hm, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_iso : ∀ (K L : Type) [Field K] [CharZero K] [Field L] (β : K →+* L) (A₁ A₂ : Over (Sp K)) [GrpObj A₁] [GrpObj A₂], IsAbelianScheme A₁ → IsAbelianScheme A₂ → ∀ (f : (Over.pullback (spMap β)).obj A₁ ≅ (Over.pullback (spMap β)).obj A₂), IsMonHom f.hom → ∃ (K' : Type) (_ : Field K') (io : K →+* K') (Ω : Type) (_ : Field Ω) (j : L →+* Ω) (l : K' →+* Ω) (φ : (Over.pullback (spMap io)).obj A₁ ≅ (Over.pullback (spMap io)).obj A₂), io.Finite ∧ l.comp io = j.comp β ∧ IsMonHom φ.hom ∧ ∀ (Z : Scheme.{0}) (p : Z ⟶ pullback A₁.hom (spMap β)) (p' : Z ⟶ pullback A₁.hom (spMap io)) (t : Z ⟶ Sp Ω), p ≫ pullback.fst _ _ = p' ≫ pullback.fst _ _ → p ≫ pullback.snd _ _ = t ≫ spMap j → p' ≫ pullback.snd _ _ = t ≫ spMap l → p ≫ f.hom.left ≫ pullback.fst _ _ = p' ≫ φ.hom.left ≫ pullback.fst _ _ := by
   intro K L _ _ _ β A₁ A₂ _ _ h₁ h₂ f hf

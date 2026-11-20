@@ -6,9 +6,7 @@ open Matrix GlobalTheory.KZ GlobalTheory.KZ.BettiB
 namespace GlobalTheory.KZ.BettiB
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Use `haveI : Group.FG SL(2, ℤ) := by`. Rewrite using `[Group.fg_iff]`. Conclude with `⟨{ModularGroup.S, ModularGroup.T}, SpecialLinearGroup.SL2Z_generators, Set.toFinite _⟩`.
-
-Use `haveI : (Gam N l).FiniteIndex := by unfold Gam; infer_instance`. Conclude with `Subgroup.fg_of_index_ne_zero _`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gam_fg (N l : ℕ) [Fact l.Prime] (hN : 0 < N) : Group.FG (Gam N l) := by
   haveI : NeZero N := ⟨hN.ne'⟩
@@ -20,13 +18,13 @@ theorem gam_fg (N l : ℕ) [Fact l.Prime] (hN : 0 < N) : Group.FG (Gam N l) := b
   exact Subgroup.fg_of_index_ne_zero _
 
 /- English proof (translation)
-Introduce `N l w _ hN`. Take `⟨s, hs, hfin⟩` from `Group.fg_iff.1 (gam_fg N l hN)`. Set `t : Set (Gam N l)` to `insert 1 (s ∪ s⁻¹)`. Establish `ht : t.Finite` using `(hfin.union hfin.inv).insert 1`. Use `haveI : Finite t := ht.to_subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : Module.Finite ℤ_[l] (MvPolynomial.homogeneousSubmodule (Fin 2) ℤ_[l] w) := Module.Finite.iff_fg.2 (MvPolynomial.homogeneousSubmodule_fg _ _ _)`. Set `L : Z1 N l w →ₗ[ℤ_[l]] (t → MvPolynomial.homogeneousSubmodule (Fin 2) ℤ_[l] w)` to `{ toFun := fun c i => ⟨c.1 i.1, c.2.1 i.1⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Use `Module.Finite.of_injective L ((injective_iff_map_eq_zero L).2 fun c hc => ?_)` and prove the remaining obligations. Establish `h0 : ∀ γ ∈ t, c.1 γ = 0` using `fun γ hγ => congrArg Subtype.val (congrFun hc ⟨γ, hγ⟩)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `γ`. Establish `hγ : γ ∈ Submonoid.closure (s ∪ s⁻¹)`. Rewrite using `[← Subgroup.closure_toSubmonoid, hs]`. Discharge the goal by the elementary cases of `trivial`. Use `show c.1 γ = 0`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hγ using Submonoid.closure_induction with`. Consider the case `mem x hx => exact h0 x (Set.mem_insert_of_mem _ hx)`. Consider the case `one => exact h0 1 (Set.mem_insert _ _)`. Consider the case `mul x y _ _ hx hy => rw [c.2.2 x y, hx, hy, map_zero, add_zero]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem module_finite_z1_padicInt : ∀ (N l w : ℕ) [Fact l.Prime], 0 < N → Module.Finite ℤ_[l] (Z1 N l w) := by
   intro N l w _ hN

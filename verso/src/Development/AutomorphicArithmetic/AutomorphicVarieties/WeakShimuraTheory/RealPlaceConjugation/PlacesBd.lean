@@ -9,19 +9,17 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 open scoped Classical
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [plDvd, Set.mem_setOf_eq, Set.mem_iUnion, exists_prop]`. Prove the components needed by the constructor for the conclusion. Establish `key : ∀ M : ℕ, M ≠ 0 → ((M : 𝓞 F) ∈ v.asIdeal) → ∃ p ∈ M.primeFactors, (p : 𝓞 F) ∈ v.asIdeal`. Introduce `M`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `M using Nat.strong_induction_on with`. Consider the case `_ M ih`. Introduce `hM hv`. Distinguish the cases in `h1 : M = 1`. Substitute `h1` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite `hv` using `[Nat.cast_one]`. Conclude with `(v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 hv)).elim`. Take `⟨p, hp, m, rfl⟩` from `Nat.exists_prime_and_dvd h1`. Rewrite `hv` using `[Nat.cast_mul]`. Break down `v.isPrime.mem_or_mem hv with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨p, Nat.mem_primeFactors.2 ⟨hp, dvd_mul_right p m, hM⟩, h⟩`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hM`. Establish `hlt : m < p * m`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hp.two_le` as an intermediate fact. Use `Nat.pos_of_ne_zero hm0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Take `⟨q, hq, hqv⟩` from `ih m hlt hm0 h`. Establish `hq'` using `Nat.mem_primeFactors.1 hq`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨q, Nat.mem_primeFactors.2 ⟨hq'.1, hq'.2.1.mul_left p, hM⟩, hqv⟩`. Conclude with `key N hN`. Introduce and unpack `⟨p, hp, hpv⟩`. Take `⟨m, hm⟩` from `(Nat.mem_primeFactors.1 hp).2.1`. Rewrite using `[hm, Nat.cast_mul]`.
-
-Conclude with `Ideal.mul_mem_right _ _ hpv`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem plDvd_eq (F : Type) [Field F] (N : ℕ) (hN : N ≠ 0) :
     plDvd F N = ⋃ p ∈ N.primeFactors, plDvd F p := by
@@ -59,17 +57,15 @@ private theorem plDvd_eq (F : Type) [Field F] (N : ℕ) (hN : N ≠ 0) :
     exact Ideal.mul_mem_right _ _ hpv
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ U N hUn hUo hN`. Use `haveI := hUn`. Use `haveI : (cycU l U).Normal := by`. Unfold `cycU`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hUi : U.index ≠ 0` using `by haveI := Subgroup.quotient_finite_of_isOpen U hUo`. Conclude with `Subgroup.index_ne_zero_of_finite`. Establish `hUle : ∀ {X : Type} (s : Finset ℕ) (f : ℕ → Set X), (⋃ p ∈ s, f p).ncard ≤ ∑ p ∈ s, (f p).ncard`. Introduce `X s f`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Introduce `a s ha ih`. Rewrite using `[Finset.set_biUnion_insert, Finset.sum_insert ha]`. Conclude with `(Set.ncard_union_le _ _).trans (Nat.add_le_add_left ih _)`. Establish `hb : ∀ p : ℕ, ∃ n, p.Prime → OrbLe (cycU l U) p n`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `p`. Distinguish the cases in `hA : ∃ A₀ : ValuationSubring Ω, A₀.valuation (p : Ω) < 1`. Take `⟨A₀, hA₀⟩` from `hA`. Use `⟨(cycU l U ⊔ Dec A₀).index, fun hp => ?_⟩` and prove the remaining obligations. Establish `hK` using `index_cyclotomicKer_sup_decompositionGroup_ne_zero Ω l p A₀ hp hA₀`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs` using `supIndex (G ℚ Ω) (cycZ ℚ Ω l).ker U (Dec A₀) hUi hK`. Conclude with `orbIndex Ω p (cycU l U) A₀ hp hA₀ hs.1`. Conclude with `⟨0, fun _ => ⟨∅, by simp, by simp, fun A hA' => (hA ⟨A, hA'⟩).elim⟩⟩`. Use `choose nf hnf using hb`. Use `⟨∑ p ∈ N.primeFactors, nf p, fun F _ hF => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[plDvd_eq F N hN]`. Use `(hUle _ _).trans (Finset.sum_le_sum fun p hp => ?_)` and prove the remaining obligations. Establish `hpp` using `(Nat.mem_primeFactors.1 hp).1`. Conclude with `ncard_placesDividing_le_of_orbitBound Ω F (cycU l U) p (nf p) hpp.ne_zero hF (hnf p hpp)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.exists_uniform_bound_ncard_placesDividing :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (U : Subgroup (G ℚ Ω)) (N : ℕ), U.Normal → IsOpen (U : Set (G ℚ Ω)) → N ≠ 0 → ∃ g : ℕ, ∀ (F : IntermediateField ℚ Ω) [NumberField F], cycU l U ≤ F.fixingSubgroup → (plDvd F N).ncard ≤ g := by

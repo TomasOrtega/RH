@@ -6,7 +6,7 @@ open scoped SchwartzMap
 namespace GlobalTheory
 
 /- English proof (translation)
-Break down `le_total a 1 with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ a ^ N` using `pow_nonneg ha N`. Use polynomial arithmetic with `[pow_pos (two_pos : (0:ℝ) < 2) N]`. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -24,7 +24,7 @@ theorem one_add_pow_le_two_pow_mul (a : ℝ) (ha : 0 ≤ a) (N : ℕ) :
         linarith
 
 /- English proof (translation)
-Establish `h : ‖p‖ ≤ ‖x + p‖ + ‖x‖`. Use `norm_sub_le (x + p) x` as an intermediate fact. Simplify using `using this`. Use polynomial arithmetic with `[norm_nonneg (x + p), norm_nonneg x, mul_nonneg (norm_nonneg (x + p)) (norm_nonneg x)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_add_norm_le_mul_of_add {E : Type*} [NormedAddCommGroup E] (x p : E) :
     1 + ‖p‖ ≤ (1 + ‖x + p‖) * (1 + ‖x‖) := by
@@ -34,15 +34,15 @@ theorem one_add_norm_le_mul_of_add {E : Type*} [NormedAddCommGroup E] (x p : E) 
   nlinarith [norm_nonneg (x + p), norm_nonneg x, mul_nonneg (norm_nonneg (x + p)) (norm_nonneg x)]
 
 /- English proof (translation)
-Introduce `n g g' N`. Use `set A : ℝ := 2 ^ (N, 0).1 * (Finset.Iic (N, 0)).sup (fun m => SchwartzMap.seminorm ℂ m.1 m.2) g with hA`. Establish `hg : ∀ y, (1 + ‖y‖) ^ N * ‖g y‖ ≤ A` using `fun y => by`. Use `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (N, 0)) (k := N) (n := 0) le_rfl le_rfl g y` as an intermediate fact. Rewrite `this` using `[norm_iteratedFDeriv_zero]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `set h : EuclideanSpace ℝ (Fin n) → ℝ := fun x => (1 + ‖x‖) ^ N * ‖g' x‖ with hh`. Establish `hint : Integrable h`. Establish `i1` using `(g'.integrable_pow_mul volume 0).add (g'.integrable_pow_mul volume N)`. Use `(i1.const_mul (2 ^ N)).mono' ?_ (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Conclude with `((continuous_const.add continuous_norm).pow N |>.mul g'.continuous.norm).aestronglyMeasurable`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Real.norm_of_nonneg (by positivity)]`. Simplify using `only [hh, pow_zero, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨A * ∫ x, h x, fun w => ?_⟩` and prove the remaining obligations. Use `set c : ℝ := (1 + ‖pPart w‖) ^ N with hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc0 : 0 ≤ c` using `by positivity`. Establish `hpt : ∀ x, ‖rhoFun w ⇑g x * starRingEnd ℂ (g' x)‖ * c ≤ A * h x` using `fun x => by`. Establish `e : ‖rhoFun w ⇑g x * starRingEnd ℂ (g' x)‖ = ‖g (x + pPart w)‖ * ‖g' x‖`. Simplify using `[rhoFun, norm_phase]`. Rewrite using `[e, hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Establish `hp` using `pow_le_pow_left₀ (by positivity) (one_add_norm_le_mul_of_add x (pPart w)) N`. Rewrite `hp` using `[mul_pow]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem matrixCoeff_pPart_decay : ∀ (n : ℕ) (g g' : Sch (Fin n)) (N : ℕ), ∃ C : ℝ,
     ∀ w : Fin n ⊕ Fin n → ℝ,

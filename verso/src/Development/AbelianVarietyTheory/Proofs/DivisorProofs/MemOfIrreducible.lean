@@ -5,17 +5,15 @@ universe u_1 u_2
 namespace GlobalTheory.IrreducibleMembership
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial V with hV | hV` into its components or cases. Establish `hf1 : f = 1` using `LinearMap.ext fun v => Subsingleton.elim _ _`. Rewrite using `[hf1]`. Conclude with `S.one_mem`. Establish `hso : IsSimpleOrder (Submodule S V)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun N => ?_⟩` and prove the remaining obligations. Establish `hN` using `h (N.restrictScalars K) fun g hg v hv => by`. Establish `hmem : (⟨g, hg⟩ : S) • v ∈ N` using `N.smul_mem _ hv`. Conclude with `hmem`. Break down `hN with hN | hN` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `left`. Conclude with `(Submodule.restrictScalars_eq_bot_iff K S V).1 hN`. Use `right`. Conclude with `(Submodule.restrictScalars_eq_top_iff K S V).1 hN`. Establish `hsimp : IsSimpleModule S V` using `⟨⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hbij` using `IsSimpleModule.algebraMap_end_bijective_of_isAlgClosed (A := S) (V := V) K`. Set `F : Module.End (Module.End S V) V` to `{ toFun := f map_add' := f.map_add map_smul' := fun g v => by`. Take `⟨c, hc⟩` from `hbij.2 g`. Rewrite using `[← hc]`. Simplify using `}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `b` to `Module.finBasis K V`. Take `⟨r, hr⟩` from `jacobson_density F (Finset.univ.image b)`. Establish `hfr : f = (r : Module.End K V)`. Use `b.ext fun i => ?_` and prove the remaining obligations. Use `hr (b i) (Finset.mem_image_of_mem b (Finset.mem_univ i))` as an intermediate fact.
-
-Conclude with `this`. Rewrite using `[hfr]`. Conclude with `r.2`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_irreducible {K : Type u_1} {V : Type u_2} [Field K] [IsAlgClosed K]
     [AddCommGroup V] [Module K V] [FiniteDimensional K V] (S : Subalgebra K (Module.End K V))

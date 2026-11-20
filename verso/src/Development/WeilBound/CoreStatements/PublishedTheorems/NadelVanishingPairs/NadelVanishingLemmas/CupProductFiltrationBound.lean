@@ -8,13 +8,13 @@ open GlobalTheory GlobalTheory.DI
 namespace GlobalTheory.DI
 
 /- English proof (translation)
-Establish `hU : ({x ∈ u | x ≤ j}) ∪ ({x ∈ u | j ≤ x}) = u`. Use extensionality with `x`. Simplify using `only [Finset.mem_union, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro (⟨h, _⟩ | ⟨h, _⟩) <;> exact h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `hx`. Break down `le_total x j with h | h` into its components or cases. Conclude with `Or.inl ⟨hx, h⟩`. Conclude with `Or.inr ⟨hx, h⟩`. Establish `hI : ({x ∈ u | x ≤ j}) ∩ ({x ∈ u | j ≤ x}) = {j}`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_inter, Finset.mem_filter, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, h1⟩, ⟨_, h2⟩⟩`. Conclude with `le_antisymm h1 h2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `⟨⟨hj, le_refl _⟩, ⟨hj, le_refl _⟩⟩`. Establish `h` using `Finset.card_union_add_card_inter ({x ∈ u | x ≤ j}) ({x ∈ u | j ≤ x})`. Rewrite `h` using `[hU, hI, Finset.card_singleton]`. Use linear arithmetic over natural numbers and integers.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem card_filter_le_add_card_filter_ge {ι : Type} [LinearOrder ι] (u : Finset ι) (j : ι)
     (hj : j ∈ u) : ({x ∈ u | x ≤ j}).card + ({x ∈ u | j ≤ x}).card = u.card + 1 := by
@@ -40,33 +40,31 @@ private theorem card_filter_le_add_card_filter_ge {ι : Type} [LinearOrder ι] (
   omega
 
 /- English proof (translation)
-Introduce `ι _ E _ d N T Φ hdd hN hT hd hΦ0 hΦD hΦT hC a b hH`. Set `Ψ : (Finset ι → E) →+ (Finset ι → E)` to `AddMonoidHom.mk' (fun c => cup Φ c) (by`. Introduce `c c'`. Use function extensionality and compare the values at `u`. Simplify using `only [cup, Pi.add_apply, map_add, Finset.sum_add_distrib])`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hΨ : ∀ c, Ψ c = cup Φ c` using `fun c => rfl`. Set `γ : Finset ι → E → E` to `fun s x => if h : s.Nonempty then Φ x {s.max' h} else 0`. Use `cechZero_of_hypZero_filtered d N T Ψ γ hdd hN hT hd ?_ ?_ ?_ ?_ a b hH` and prove the remaining obligations. Introduce `m c hc`. Rewrite using `[hΨ, hΨ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Dtot_cup d Φ c hΦ0 hc.1 (fun s => hΦD _)`. Introduce `m c hc`. Rewrite using `[hΨ]`. Use `⟨?_, fun q u hq => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Simplify using `[cup]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [cup]`. Use `sum_mem fun j hj => ?_` and prove the remaining obligations. Establish `hsz` using `card_filter_le_add_card_filter_ge u j hj`. Establish `hLne : ({x ∈ u | x ≤ j}).Nonempty` using `⟨j, Finset.mem_filter.mpr ⟨hj, le_refl _⟩⟩`. Establish `hune : u.Nonempty` using `⟨j, hj⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hLm : ({x ∈ u | x ≤ j}).card ≤ m`. Establish `hx : c ({x ∈ u | x ≤ j}) ∈ N (m - ({x ∈ u | x ≤ j}).card) u` using `hN _ _ u hLne (Finset.filter_subset _ _) (hc.2.1 _ _ (by omega))`. Conclude with `(hΦT _ u _ _ hune (Finset.filter_subset _ _) hx).1 q (by omega)`. Rewrite using `[hc.2.2 _ (by omega), map_zero, Pi.zero_apply]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [cup]`. Use `Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations. Establish `hsz` using `card_filter_le_add_card_filter_ge u j hj`. Establish `hLne : ({x ∈ u | x ≤ j}).Nonempty` using `⟨j, Finset.mem_filter.mpr ⟨hj, le_refl _⟩⟩`. Establish `hune : u.Nonempty` using `⟨j, hj⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hLm : ({x ∈ u | x ≤ j}).card ≤ m`. Establish `hx : c ({x ∈ u | x ≤ j}) ∈ N (m - ({x ∈ u | x ≤ j}).card) u` using `hN _ _ u hLne (Finset.filter_subset _ _) (hc.2.1 _ _ (by omega))`. Conclude with `(hΦT _ u _ _ hune (Finset.filter_subset _ _) hx).2 (by omega)`. Rewrite using `[hc.2.2 _ (by omega), map_zero, Pi.zero_apply]`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hγs : γ s = fun x => Φ x {s.max' hs}`. Use function extensionality and compare the values at `x`. Simplify using `only [γ, dif_pos hs]`. Rewrite using `[hγs]`. Conclude with `hC s (s.max' hs) (s.max'_mem hs)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m c u hc hu hlow`. Rewrite using `[hΨ]`. Simplify using `only [cup]`. Rewrite using `[Finset.sum_eq_single_of_mem (u.max' hu) (u.max'_mem hu)]`. Establish `hL : ({x ∈ u | x ≤ u.max' hu}) = u`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`. Introduce `hx`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `⟨hx, u.le_max' x hx⟩`. Establish `hR : ({x ∈ u | u.max' hu ≤ x}) = {u.max' hu}`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨hx, hle⟩`. Conclude with `le_antisymm (u.le_max' x hx) hle`. Introduce and unpack `rfl`. Conclude with `⟨u.max'_mem hu, le_refl _⟩`. Rewrite using `[hL, hR]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [γ, dif_pos hu]`. Introduce `j hj hne`. Establish `hlt : ({x ∈ u | x ≤ j}).card < u.card`. Apply `Finset.card_lt_card` to reduce the goal to its premises. Use `⟨Finset.filter_subset _ _, fun hsub => ?_⟩` and prove the remaining obligations.
-
-Establish `hm` using `hsub (u.max'_mem hu)`. Simplify using `only [Finset.mem_filter] at hm`. Conclude with `hne (le_antisymm (u.le_max' j hj) hm.2)`. Rewrite using `[hlow _ hlt, map_zero, Pi.zero_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cechZero_of_hypZero_of_closed_map : ∀ {ι : Type} [LinearOrder ι] {E : Type} [AddCommGroup E] (d : E →+ E) (N T : ℕ → Finset ι → AddSubgroup E) (Φ : E →+ (Finset ι → E)), (∀ x, d (d x) = 0) → (∀ q s t, s.Nonempty → s ⊆ t → N q s ≤ N q t) → (∀ q s t, s.Nonempty → s ⊆ t → T q s ≤ T q t) → (∀ q s x, x ∈ T q s → d x ∈ T (q + 1) s) → (∀ x, Φ x ∅ = 0) → (∀ x, Dtot d (Φ x) = 0) → (∀ a u t x, u.Nonempty → t ⊆ u → x ∈ N a u → (∀ q, q + t.card = a + 1 → Φ x t ∈ T q u) ∧ (a + 1 < t.card → Φ x t = 0)) → (∀ s, ∀ j ∈ s, CartierAt d (fun x => Φ x {j}) (fun a => N a s) (fun a => T a s)) → ∀ a b, HypZero d T (a + b) → CechZero (N a) b := by
   intro ι _ E _ d N T Φ hdd hN hT hd hΦ0 hΦD hΦT hC a b hH

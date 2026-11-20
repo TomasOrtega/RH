@@ -17,7 +17,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.RowVal
 
 /- English proof (translation)
-Introduce and unpack `⟨_ | a, _ | b⟩ h1 h2`. Simplify using `at h1`. Simplify using `at h1`. Simplify using `at h2`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem givenLevel_inner {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t : T) (w : Pl D.host.E) :
     ∀ p : ℕ × ℕ, 1 ≤ p.1 → 1 ≤ p.2 → givenLevel G t w p = KO (Kw w) _ := by
@@ -28,15 +28,15 @@ theorem givenLevel_inner {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : 
   · rfl
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t Φ β hβ w hw0 i`. Establish `hL : R.toLevCh.Is A.μ0` using `s.core.lev`. Establish `hde` using `GlobalTheory.FlipIntegrand.pde_ne_q_of_setting s`. Establish `hc : ∀ P ∈ R.toLevCh.Q t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal` using `hch.guard t`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `isTensor_Tflip hL ch.W ch.S.B t Φ hde hc w.2`. Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hcond : HasConductor (psiAt ch.W w.1) 1` using `(((Good.locGrid_isGood hL ch.G ch.W t hde hc).1 w.1 w.2).square 0 hm 0 hm).cond`. Establish `hce : depthAt ch.G w.1 = cosExp ch.G w.1`. Establish `e : 1 ≤ cosExp ch.G w.1` using `by classical`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `cosExp`. Rewrite using `[if_pos hw0]`. Conclude with `ch.G.pl.depth_pos _ _`. Rewrite using `[depthAt, max_eq_left e]`. Rewrite `hT` using `[hce]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := (isUnitVol_unitVol w.1).1`. Establish `hJ : ∀ j, 0 < j → j < (locGrid ch.G t w.1).m → givenLevel ch.G t w.1 ((locGrid ch.G t w.1).m, j) = KO (Kw w.1) _` using `fun j hj hj' => givenLevel_inner ch.G t w.1 _ (by change 1 ≤ D.R.m; omega) hj`. Establish `key` using `OneCosetProof.oneCoset_of_isTensor (ν := unitVol w.1) one_le_sLen hcond hT hJ`. Establish `hk : keepAt ch.G w.1 = false` using `by classical`. Unfold `keepAt`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hw0]`. Establish `hβw` using `hβ w`. Rewrite `hβw` using `[hk]`. Conclude with `key (β w) hβw i`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneAt : Big fun ch => OneAt ch := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩

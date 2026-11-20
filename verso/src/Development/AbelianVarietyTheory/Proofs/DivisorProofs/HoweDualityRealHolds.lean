@@ -16,17 +16,17 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n d X W M ψ χX χW om hψ hX1 hX2 hW1 hW2 _ _ _ _ hWeil τ hcX hcW`. Take `⟨P, Q, R, S, A, C, Φ, c, c', hfr, hinj, hrange, hact1, hact2⟩` from `GlobalTheory.T.exists_frames_fockMap_polynomial_lie_actions F E σ hCM n d X W M ψ χX χW om hψ hX1 hX2 hW1 hW2 hWeil τ hcX hcW`. Take `⟨-, hA, hC⟩` from `hfr`. Establish `hstab : ∀ N, GlobalTheory.Published.ThetaSubInf M ψ τ om N → ∀ w, Stab (actAt (V` using `fun w => Formalism.BasicNotions.TH.Pol (P w) (Q w) (R w) (S w)) w (fockAct2 (P w) (Q w) (R w) (S w))) (N.comap Φ) := fun N hN => GlobalTheory.T.thetaLift_submodule_comap_stable_secondMember F E σ n d X W M ψ om τ P Q R S Φ c' N hCM hN C hC hact2`. Establish `hcoinv : ∀ N, GlobalTheory.Published.ThetaSubInf M ψ τ om N → tensAny (fun w => coinv (P w) (Q w) (R w) (S w) (-c w)) ≤ N.comap Φ` using `fun N hN => GlobalTheory.T.thetaLift_submodule_contains_firstMember_coinvariants F E σ n d X W M ψ om τ P Q R S Φ c N hCM hN hrange A hA hact1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨L, hL⟩, hsum⟩` from `GlobalTheory.T.howe_duality_characters_fock_tensor_product (InfinitePlace F) P Q R S (fun w => -c w)`. Establish `hmap : ∀ N, GlobalTheory.Published.ThetaSubInf M ψ τ om N → (N.comap Φ).map Φ = N`. Introduce `N hN`. Rewrite using `[Submodule.map_comap_eq, hrange]`. Conclude with `inf_eq_right.mpr hN.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨L, fun m N hmono hN => hL m (fun i => (N i).comap Φ) ?_ (fun k => ⟨hstab _ (hN k), hcoinv _ (hN k)⟩)⟩, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Use `lt_of_le_of_ne (Submodule.comap_mono (hmono hij).le) ?_` and prove the remaining obligations. Introduce `h`. Establish `h'` using `congrArg (Submodule.map Φ) h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[hmap _ (hN i), hmap _ (hN j)]`. Conclude with `(hmono hij).ne h'`. Introduce `N N' hN hN' hne hne' heq`. Use `hsum (N.comap Φ) (N'.comap Φ) (hstab _ hN) (hcoinv _ hN) ?_ (hstab _ hN') (hcoinv _ hN') ?_ ?_` and prove the remaining obligations. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[← hmap _ hN, h, Submodule.map_top, hrange]`. Introduce `h`. Apply `hne'` to reduce the goal to its premises. Rewrite using `[← hmap _ hN', h, Submodule.map_top, hrange]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Submodule.map_injective_of_injective hinj` to reduce the goal to its premises. Rewrite using `[Submodule.map_sup, hmap _ hN, hmap _ hN', heq, Submodule.map_top, hrange]`.
+A detailed English derivation is pending.
 -/
 theorem howeDualityReal_holds : GlobalTheory.Published.HoweDualityReal := by
   intro F E _ _ _ _ _ σ hCM n d X W M ψ χX χW om hψ hX1 hX2 hW1 hW2 _ _ _ _ hWeil τ hcX hcW

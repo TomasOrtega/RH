@@ -12,15 +12,15 @@ private def trE (G V : Type) (e : W ≃ₗ[K] W') : ((G → W) × (V → W)) ≃
   (LinearEquiv.piCongrRight fun _ => e).prodCongr (LinearEquiv.piCongrRight fun _ => e)
 
 /- English proof (translation)
-Establish `h1 : (trE G V e x).1 = e ∘ x.1` using `rfl`. Establish `h2 : (trE G V e x).2 = e ∘ x.2` using `rfl`. Simplify using `only [Z1C, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_setOf_eq]`. Rewrite using `[h1, h2]`. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `and_congr` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `hl`. Conclude with `IsLocallyConstant.desc _ _ hl e.injective`. Introduce `hl`.
+Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hl.comp e`. Apply `and_congr` to reduce the goal to its premises. Apply `forall_congr'` to reduce the goal to its premises. Introduce `s`. Apply `forall_congr'` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `t`. Rewrite using `[h, ← map_add]`. Conclude with `e.injective.eq_iff`. Apply `forall_congr'` to reduce the goal to its premises. Introduce `v`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `forall_congr'` to reduce the goal to its premises. Introduce `s`. Rewrite using `[h, ← map_sub, ← map_sub]`. Conclude with `hb v _`.
+A detailed English derivation is pending.
 -/
 private theorem trZ (e : W ≃ₗ[K] W') (ρ : Representation K G W) (ρ' : Representation K G W')
     (b : V → Submodule K W) (b' : V → Submodule K W') (h : ∀ g x, ρ' g (e x) = e (ρ g x))
@@ -53,13 +53,13 @@ private theorem trZ (e : W ≃ₗ[K] W') (ρ : Representation K G W) (ρ' : Repr
 
 omit [TopologicalSpace G] in
 /- English proof (translation)
-Establish `h1 : (trE G V e x).1 = e ∘ x.1` using `rfl`. Establish `h2 : (trE G V e x).2 = e ∘ x.2` using `rfl`. Simplify using `only [continuousCoboundaries1, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_setOf_eq]`. Rewrite using `[h1, h2]`. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, hX1, hX2⟩`. Use `⟨e.symm X, fun s => ?_, fun v => ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_sub, ← h, e.apply_symm_apply]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hX1 s`. Rewrite using `[← hb v, map_sub, e.apply_symm_apply]`. Conclude with `hX2 v`. Introduce and unpack `⟨X, hX1, hX2⟩`. Use `⟨e X, fun s => ?_, fun v => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX1 s, map_sub, h]`. Rewrite using `[← map_sub, hb v]`. Conclude with `hX2 v`.
+A detailed English derivation is pending.
 -/
 private theorem trB (e : W ≃ₗ[K] W') (ρ : Representation K G W) (ρ' : Representation K G W')
     (b : V → Submodule K W) (b' : V → Submodule K W') (h : ∀ g x, ρ' g (e x) = e (ρ g x))
@@ -85,9 +85,9 @@ private theorem trB (e : W ≃ₗ[K] W') (ρ : Representation K G W) (ρ' : Repr
       exact hX2 v
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(trZ loc e ρ ρ' b b' h hb x).mpr hx`. Introduce `hy`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(trE G V e).symm y, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(trZ loc e ρ ρ' b b' h hb _).mp (by simpa using hy)`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem trMap (e : W ≃ₗ[K] W') (ρ : Representation K G W) (ρ' : Representation K G W')
     (b : V → Submodule K W) (b' : V → Submodule K W') (h : ∀ g x, ρ' g (e x) = e (ρ g x))
@@ -103,9 +103,9 @@ private theorem trMap (e : W ≃ₗ[K] W') (ρ : Representation K G W) (ρ' : Re
     · simp
 
 /- English proof (translation)
-Set `E : Z1C loc ρ b ≃ₗ[K] Z1C loc ρ' b'` to `((trE G V e).submoduleMap (Z1C loc ρ b)).trans (LinearEquiv.ofEq _ _ (trMap loc e ρ ρ' b b' h hb))`. Establish `hE : ∀ z, (E z : (G → W') × (V → W')) = trE G V e z` using `fun z => rfl`. Use `symm`. Use `LinearEquiv.rank_eq (Submodule.Quotient.equiv _ _ E ?_)` and prove the remaining obligations. Use extensionality with `y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[Submodule.mem_map_equiv]`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply]`. Rewrite using `[← trB e ρ ρ' b b' h hb, ← hE, E.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem trH (e : W ≃ₗ[K] W') (ρ : Representation K G W) (ρ' : Representation K G W')
     (b : V → Submodule K W) (b' : V → Submodule K W') (h : ∀ g x, ρ' g (e x) = e (ρ g x))
@@ -124,19 +124,17 @@ private theorem trH (e : W ≃ₗ[K] W') (ρ : Representation K G W) (ρ' : Repr
 end
 
 /- English proof (translation)
-Introduce `k K G V _ _ f _ _ _ Gv _ _ loc χ b b' hbb`. Use `letI : Algebra k K := f.toAlgebra`. Set `ρ' : Representation K G (TensorProduct k K k)` to `{ toFun := fun g => ((chRep χ) g).baseChange K map_one' := by show ((chRep χ) 1).baseChange K = 1`. Rewrite using `[map_one]`. Conclude with `LinearMap.baseChange_one k k`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_mul' := fun g g' => by show ((chRep χ) (g * g')).baseChange K = ((chRep χ) g).baseChange K * ((chRep χ) g').baseChange K`. Rewrite using `[map_mul]`. Conclude with `LinearMap.baseChange_mul _ _ }`. Take `⟨hZ, hH⟩` from `n4 loc (chRep χ) b ρ' (fun g => rfl)`. Set `e` to `TensorProduct.AlgebraTensorModule.rid k K K`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hρ : ∀ g x, (chRep ((Units.map f.toMonoidHom).comp χ)) g (e x) = e (ρ' g x)`. Introduce `g x`. Use `show (((Units.map f.toMonoidHom).comp χ) g : K) • e x = e (((chRep χ) g).baseChange K x)`. Establish `hc : (chRep χ) g = ((χ g : kˣ) : k) • LinearMap.id` using `rfl`. Rewrite using `[hc, LinearMap.baseChange_smul, LinearMap.baseChange_id, LinearMap.smul_apply, LinearMap.id_apply, ← algebraMap_smul K ((χ g : kˣ) : k) x, map_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[RingHom.algebraMap_toAlgebra]`. Establish `hb : ∀ v x, e x ∈ b' v ↔ x ∈ (b v).baseChange K`. Introduce `v x`. Break down `hbb v with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Rewrite using `[h1, h2, Submodule.baseChange_bot, Submodule.mem_bot, Submodule.mem_bot, LinearEquiv.map_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, h2, Submodule.baseChange_top]`. Simplify using the standard rewrite rules. Establish `hM` using `trMap loc e ρ' (chRep ((Units.map f.toMonoidHom).comp χ)) (fun v => (b v).baseChange K) b' hρ hb`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hM, hZ, Submodule.map_span, ← Set.image_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Use function extensionality and compare the values at `y`. Use `Prod.ext (funext fun g => ?_) (funext fun v => ?_)` and prove the remaining obligations. Use `show e (1 ⊗ₜ[k] y.1 g) = f (y.1 g)`. Simplify using `[e, Algebra.smul_def, RingHom.algebraMap_toAlgebra]`.
-
-Use `show e (1 ⊗ₜ[k] y.2 v) = f (y.2 v)`. Simplify using `[e, Algebra.smul_def, RingHom.algebraMap_toAlgebra]`. Rewrite using `[trH loc e ρ' (chRep ((Units.map f.toMonoidHom).comp χ)) _ b' hρ hb, hH]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.n4ch :
     ∀ {k K G V : Type} [Field k] [Field K] (f : k →+* K) [Group G] [TopologicalSpace G] [CompactSpace G] {Gv : V → Type} [∀ v, Group (Gv v)] [Finite V] (loc : ∀ v, Gv v →* G) (χ : G →* kˣ) (b : V → Submodule k k) (b' : V → Submodule K K), (∀ v, (b v = ⊥ ∧ b' v = ⊥) ∨ (b v = ⊤ ∧ b' v = ⊤)) → Z1C loc (chRep ((Units.map f.toMonoidHom).comp χ)) b' = Submodule.span K ((fun y : (G → k) × (V → k) => (f ∘ y.1, f ∘ y.2)) '' (Z1C loc (chRep χ) b : Set ((G → k) × (V → k)))) ∧ Module.rank K (H1C loc (chRep ((Units.map f.toMonoidHom).comp χ)) b') = Module.rank k (H1C loc (chRep χ) b) := by

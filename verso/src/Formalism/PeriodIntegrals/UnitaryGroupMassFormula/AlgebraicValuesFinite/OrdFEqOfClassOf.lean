@@ -12,7 +12,7 @@ def piU (v : HeightOneSpectrum (𝓞 L)) : (v.adicCompletion L)ˣ :=
   Classical.choose (exists_isUniformiserAt L v)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (exists_isUniformiserAt L v)`.
+A detailed English derivation is pending.
 -/
 theorem piU_spec (v : HeightOneSpectrum (𝓞 L)) :
     IsUniformiserAt L v ((piU v : (v.adicCompletion L)ˣ) : v.adicCompletion L) :=
@@ -21,7 +21,7 @@ theorem piU_spec (v : HeightOneSpectrum (𝓞 L)) :
 def eU (v : HeightOneSpectrum (𝓞 L)) : Ideles L := localIdele L v (piU v)
 
 /- English proof (translation)
-Unfold `eU`. Rewrite using `[ordAt_localIdele L v w (piU v) (piU_spec v)]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem ordAt_eU (v w : HeightOneSpectrum (𝓞 L)) [Decidable (w = v)] :
     ordAt L w (eU v) = if w = v then 1 else 0 := by
@@ -31,9 +31,9 @@ theorem ordAt_eU (v w : HeightOneSpectrum (𝓞 L)) [Decidable (w = v)] :
   congr 1
 
 /- English proof (translation)
-Unfold `ordAt`. Establish `h : ((a ^ n : Ideles L) : AdeleRing (𝓞 L) L).2 w = ((a : AdeleRing (𝓞 L) L).2 w) ^ n`. Rewrite using `[Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression. Rewrite using `[h, map_pow, WithZero.log_pow]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ordAt_pow' (w : HeightOneSpectrum (𝓞 L)) (a : Ideles L) (n : ℕ) :
     ordAt L w (a ^ n) = n * ordAt L w a := by
@@ -46,7 +46,7 @@ theorem ordAt_pow' (w : HeightOneSpectrum (𝓞 L)) (a : Ideles L) (n : ℕ) :
   ring
 
 /- English proof (translation)
-Take `⟨k, u, hu, rfl⟩` from `(classOf_eq_one_iff L a).1 ha`. Use `⟨k, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[ordAt_mul, ordAt_diag, (ordAt_eq_zero_iff L w u).2 ((rayUnits_top_iff L u).1 hu w), add_zero]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ordF_eq_of_classOf (a : Ideles L) (ha : classOf L a = 1) :
     ∃ k : Lˣ, ∀ w : HeightOneSpectrum (𝓞 L), ordF w k = ordAt L w a := by
@@ -56,9 +56,9 @@ theorem ordF_eq_of_classOf (a : Ideles L) (ha : classOf L a = 1) :
   rfl
 
 /- English proof (translation)
-Use `⟨ClassGroup (𝓞 L), inferInstance, fun v => classOf L (eU v), fun v w hvw => ?_⟩` and prove the remaining obligations. Establish `h1 : classOf L (eU v * (eU w)⁻¹) = 1`. Establish `hvw' : classOf L (eU v) = classOf L (eU w)` using `hvw`. Rewrite using `[map_mul, map_inv, hvw', mul_inv_cancel]`. Take `⟨k, hk⟩` from `ordF_eq_of_classOf _ h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨k, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[hk, ordAt_mul, ordAt_inv, ordAt_eU, ordAt_eU]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem classSame : ClassSame L := by
   classical
@@ -72,9 +72,9 @@ theorem classSame : ClassSame L := by
   ring
 
 /- English proof (translation)
-Use `⟨Fintype.card (ClassGroup (𝓞 L)), Fintype.card_pos, fun v => ?_⟩` and prove the remaining obligations. Establish `h1 : classOf L (eU v ^ Fintype.card (ClassGroup (𝓞 L))) = 1`. Rewrite using `[map_pow, pow_card_eq_one]`. Take `⟨k, hk⟩` from `ordF_eq_of_classOf _ h1`. Use `⟨k, fun u => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hk, ordAt_pow', ordAt_eU]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem classPow : ClassPow L := by
   classical

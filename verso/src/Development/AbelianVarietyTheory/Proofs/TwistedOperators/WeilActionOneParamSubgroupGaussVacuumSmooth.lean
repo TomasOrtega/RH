@@ -27,13 +27,13 @@ open scoped Classical
 namespace GlobalTheory.GaussLine
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ a a' B G X om om' hT γ hγ T hTa f₀ hf₀`. Take `⟨h1, h0⟩` from `GlobalTheory.T.unitaryArchimedeanLine_operators_oneParameter B G X om om' hT γ hγ T hTa`. Establish `hU` using `GlobalTheory.T.one_parameter_operator_unique B G X om om' hT γ hγ T hTa Measure.addHaar inferInstance`. Take `⟨A, hAc, hAadd, hA0, hAint⟩` from `GlobalTheory.T.one_parameter_weil_operator_derivative B G X om om' hT γ hγ T hTa`. Establish `hC` using `GlobalTheory.T.continuous_archimedeanWeilOperator_line_triple B G X om om' hT γ hγ T hTa`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨J₀, hJ, hvac⟩` from `GlobalTheory.T.exists_complexStructure_gaussVacuum_fockEquations B G X om om' hT f₀ hf₀`. Use `haveI : BorelSpace (Fin a × Fin (a + a') → mixedEmbedding.mixedSpace F) := Pi.borelSpace`. Take `⟨hsm, n, qs, qs', cs, c, hd⟩` from `GlobalTheory.T.weilOneParam_moves_fockVacuum_smoothly (V := Fin a × Fin (a + a') → mixedEmbedding.mixedSpace F) Measure.addHaar (GlobalTheory.GaussLine.pairInf F (Fin a × Fin (a + a'))) (GlobalTheory.T.tracePairingArchimedeanVars_nondegenerate_right F _) T h1 h0 hU A hAc hAadd hA …`. Use `⟨hsm, ?_⟩` and prove the remaining obligations. Establish `hf₀P : f₀ ∈ G.M.Pol B.ψ B.emb` using `Submodule.mem_sInf.2 fun N hN => hN.1 f₀ hf₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul` using `GlobalTheory.T.thetaTriple_polynomialFock_stable_mul_trace_linear B G X om om' hT`. Use `choose m hmP hmE using hmul`. Use `⟨(∑ i, cs i • m (qs i) (m (qs' i) f₀ hf₀P) (hmP _ _ _)) + c • f₀, add_mem (sum_mem fun i _ => Submodule.smul_mem _ _ (hmP _ _ _)) (Submodule.smul_mem _ _ hf₀P), fun x => ?_⟩` and prove the remaining obligations. Use `hd x using 1` and compare the differences between its conclusion and the goal. Simplify using `only [SchwartzMap.add_apply, SchwartzMap.sum_apply, SchwartzMap.smul_apply, smul_eq_mul, hmE]`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem smooth_vacuum_line : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

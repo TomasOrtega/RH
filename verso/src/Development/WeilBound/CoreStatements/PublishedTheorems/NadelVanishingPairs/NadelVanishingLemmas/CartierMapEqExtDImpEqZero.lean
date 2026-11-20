@@ -9,13 +9,13 @@ open GlobalTheory GlobalTheory.LogDR
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ p _ _ n x γ hx hγ ζ ξ hζ`. Take `⟨hli, hsp⟩` from `GlobalTheory.T.logCoordinateWedge_linearIndependent_span_eq_top K n x hx`. Establish `hmem : ζ ∈ Submodule.span K (Set.range (logWedge x))` using `hsp ▸ Submodule.mem_top`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hmem`. Take `⟨-, Q, π, -, hQ, -, hπ, hQd, -⟩` from `GlobalTheory.T.cartier_projection_properties K p n x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hγs : γ (∑ I, c I • logWedge x I) = ∑ I, (c I ^ p) • logWedge x I`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun I _ => GlobalTheory.T.logFrobeniusLift_smul_logCoordinateWedge K p n x γ hγ (c I) I`. Establish `hfix : Q (γ (∑ I, c I • logWedge x I)) = γ (∑ I, c I • logWedge x I)`. Rewrite using `[hγs, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[hQ, hπ]`. Establish `h0 : ∑ I, (c I ^ p) • logWedge x I = 0`. Rewrite using `[← hγs, ← hfix, hζ, hQd]`. Establish `hc : ∀ I, c I ^ p = 0` using `fun I => (Fintype.linearIndependent_iff.1 hli) (fun I => c I ^ p) h0 I`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : ∀ I, c I = 0` using `fun I => (pow_eq_zero_iff (Fact.out : p.Prime).ne_zero).1 (hc I)`. Simplify using `[hc']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cartierMap_eq_extD_imp_eq_zero :
     ∀ (K : Type) [Field K] (p : ℕ) [Fact p.Prime] [CharP K p] (n : ℕ) (x : Fin n → Kˣ)

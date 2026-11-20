@@ -20,7 +20,7 @@ noncomputable def liftedRelation (j : σ) : MvPolynomial ι S :=
   Function.surjInv (MvPolynomial.map_surjective (algebraMap S R) hsurj) (P.relation j)
 
 /- English proof (translation)
-The claim follows from `Function.surjInv_eq (MvPolynomial.map_surjective (algebraMap S R) hsurj) (P.relation j)`.
+A detailed English derivation is pending.
 -/
 theorem map_liftedRelation (j : σ) :
     MvPolynomial.map (algebraMap S R) (liftedRelation hsurj P j) = P.relation j :=
@@ -30,9 +30,9 @@ abbrev LiftedQuotient : Type u :=
   MvPolynomial ι S ⧸ Ideal.span (Set.range (liftedRelation hsurj P))
 
 /- English proof (translation)
-Establish `hEq : (MvPolynomial.aeval (fun i : ι => Ideal.Quotient.mk (Ideal.span (Set.range (liftedRelation hsurj P))) (MvPolynomial.X i)) : MvPolynomial ι S →ₐ[S] LiftedQuotient hsurj P) = Ideal.Quotient.mkₐ S (Ideal.span (Set.range (liftedRelation hsurj P)))` using `MvPolynomial.algHom_ext (fun i => by simp)`. Establish `h : ∀ q : MvPolynomial ι S, (MvPolynomial.aeval (fun i : ι => Ideal.Quotient.mk (Ideal.span (Set.range (liftedRelation hsurj P))) (MvPolynomial.X i)) : MvPolynomial ι S →ₐ[S] LiftedQuotient hsurj P) q = Ideal.Quotient.mk (Ideal.span (Set.range (liftedRelation hsurj P))) q`. Introduce `q`. Rewrite using `[hEq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `x`. Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `⟨q, h q⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem aeval_mk_X_liftedQuotient_surjective :
     Function.Surjective
@@ -62,9 +62,9 @@ noncomputable def liftedGenerators : Algebra.Generators S (LiftedQuotient hsurj 
   aeval_val_σ' := Function.surjInv_eq (aeval_mk_X_liftedQuotient_surjective hsurj P)
 
 /- English proof (translation)
-Establish `hval : (liftedGenerators hsurj P).val = fun i : ι => Ideal.Quotient.mk (Ideal.span (Set.range (liftedRelation hsurj P))) (MvPolynomial.X i)` using `rfl`. Establish `h : (MvPolynomial.aeval (liftedGenerators hsurj P).val : MvPolynomial ι S →ₐ[S] LiftedQuotient hsurj P) = Ideal.Quotient.mkₐ S (Ideal.span (Set.range (liftedRelation hsurj P)))` using `MvPolynomial.algHom_ext fun i => by`. Simplify using `[hval]`. Establish `hq : ∀ q : MvPolynomial ι S, (MvPolynomial.aeval (liftedGenerators hsurj P).val) q = Ideal.Quotient.mk (Ideal.span (Set.range (liftedRelation hsurj P))) q` using `fun q => DFunLike.congr_fun h q`. Use `Ideal.ext fun q => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : q ∈ (liftedGenerators hsurj P).ker ↔ (MvPolynomial.aeval (liftedGenerators hsurj P).val) q = 0` using `Iff.rfl`. Rewrite using `[hmem, hq q, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem span_range_liftedRelation_eq_ker :
     Ideal.span (Set.range (liftedRelation hsurj P)) = (liftedGenerators hsurj P).ker := by
@@ -111,7 +111,7 @@ Both sides reduce to the same expression.
 abbrev LiftedAlgebra : Type u := Localization.Away (liftedPreSubmersivePresentation hsurj P).jacobian
 
 /- English proof (translation)
-Rewrite using `[Algebra.PreSubmersivePresentation.comp_jacobian_eq_jacobian_smul_jacobian, Algebra.smul_def]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit (S := LiftedAlgebra hsurj P) (liftedPreSubmersivePresentation hsurj P).jacobian).mul (Algebra.SubmersivePresentation.localizationAway (S := LiftedAlgebra hsurj P) (liftedPreSubmersivePresentation hsurj P).jacobian).jacobian_isUnit`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_jacobian_localizationAway_comp :
     IsUnit (Algebra.PreSubmersivePresentation.comp
@@ -139,13 +139,11 @@ noncomputable def mvPolynomialToBaseChange :
       (Ideal.Quotient.mk (Ideal.span (Set.range (liftedRelation hsurj P))) (MvPolynomial.X i)))
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on`. Use `next a =>`. Establish `hI : Ideal.Quotient.mk (Ideal.span (Set.range (liftedRelation hsurj P))) (MvPolynomial.C a) = algebraMap S (LiftedQuotient hsurj P) a`. Rewrite using `[← MvPolynomial.algebraMap_eq]`. Conclude with `(Ideal.Quotient.mkₐ S (Ideal.span (Set.range (liftedRelation hsurj P)))).commutes a`.
+Proceed by induction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : mvPolynomialToBaseChange hsurj P (MvPolynomial.map (algebraMap S R) (MvPolynomial.C a)) = algebraMap S (R ⊗[S] LiftedAlgebra hsurj P) a`. Rewrite using `[MvPolynomial.map_C]`. Simplify using `only [mvPolynomialToBaseChange, MvPolynomial.aeval_C]`. Rewrite using `[← IsScalarTower.algebraMap_apply S R (R ⊗[S] LiftedAlgebra hsurj P) a]`. Rewrite using `[hL, hI, ← IsScalarTower.algebraMap_apply S (LiftedQuotient hsurj P) (LiftedAlgebra hsurj P) a, Algebra.algebraMap_eq_smul_one a, Algebra.algebraMap_eq_smul_one a, Algebra.TensorProduct.one_def, TensorProduct.tmul_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `next p q hp hq =>`. Simplify using `[hp, hq, TensorProduct.tmul_add]`. Use `next p i hp =>`. Establish `hX : mvPolynomialToBaseChange hsurj P (MvPolynomial.X i) = (1 : R) ⊗ₜ[S] (algebraMap (LiftedQuotient hsurj P) (LiftedAlgebra hsurj P) (Ideal.Quotient.mk (Ideal.span (Set.range (liftedRelation hsurj P))) (MvPolynomial.X i)))`. Simplify using `[mvPolynomialToBaseChange]`.
-
-Simplify using `[hp, hX, Algebra.TensorProduct.tmul_mul_tmul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mvPolynomialToBaseChange_map (f : MvPolynomial ι S) :
     mvPolynomialToBaseChange hsurj P (MvPolynomial.map (algebraMap S R) f) =
@@ -176,7 +174,7 @@ private theorem mvPolynomialToBaseChange_map (f : MvPolynomial ι S) :
     simp [hp, hX, Algebra.TensorProduct.tmul_mul_tmul]
 
 /- English proof (translation)
-Establish `hz : Ideal.Quotient.mk (Ideal.span (Set.range (liftedRelation hsurj P))) (liftedRelation hsurj P j) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.subset_span (Set.mem_range_self j))`. Establish `h` using `mvPolynomialToBaseChange_map hsurj P (liftedRelation hsurj P j)`. Rewrite `h` using `[map_liftedRelation hsurj P j, hz]`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem mvPolynomialToBaseChange_relation_eq_zero (j : σ) :
     mvPolynomialToBaseChange hsurj P (P.relation j) = 0 := by
@@ -188,9 +186,9 @@ private theorem mvPolynomialToBaseChange_relation_eq_zero (j : σ) :
   simpa using h
 
 /- English proof (translation)
-Establish `hmem : q ∈ Ideal.span (Set.range P.relation)`. Rewrite using `[P.span_range_relation_eq_ker, Algebra.Generators.ker_eq_ker_aeval_val]`. Simplify `hq` using `only [RingHom.mem_ker, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Establish `hsub : Ideal.span (Set.range P.relation) ≤ RingHom.ker (mvPolynomialToBaseChange hsurj P : MvPolynomial ι R →+* R ⊗[S] LiftedAlgebra hsurj P)`. Rewrite using `[Ideal.span_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x ⟨j, rfl⟩`. Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, AlgHom.coe_toRingHom]`. Conclude with `mvPolynomialToBaseChange_relation_eq_zero hsurj P j`. Simplify `hsub hmem` using `only [RingHom.mem_ker, AlgHom.coe_toRingHom]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem mvPolynomialToBaseChange_eq_zero_of_aeval_eq_zero (q : MvPolynomial ι R)
     (hq : (MvPolynomial.aeval P.val : MvPolynomial ι R →ₐ[R] B) q = 0) :
@@ -207,7 +205,7 @@ private theorem mvPolynomialToBaseChange_eq_zero_of_aeval_eq_zero (q : MvPolynom
   simpa only [RingHom.mem_ker, AlgHom.coe_toRingHom] using hsub hmem
 
 /- English proof (translation)
-Establish `h1 : (MvPolynomial.aeval P.val : MvPolynomial ι R →ₐ[R] B) (P.σ' (1 : B) - 1) = 0`. Rewrite using `[map_sub, map_one, P.aeval_val_σ' 1, sub_self]`. Establish `h0` using `mvPolynomialToBaseChange_eq_zero_of_aeval_eq_zero hsurj P _ h1`. Rewrite `h0` using `[map_sub, map_one]`. Take the linear combination `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem mvPolynomialToBaseChange_section_one :
     mvPolynomialToBaseChange hsurj P (P.σ' 1) = 1 := by
@@ -218,7 +216,7 @@ private theorem mvPolynomialToBaseChange_section_one :
   linear_combination h0
 
 /- English proof (translation)
-Establish `hker : (MvPolynomial.aeval P.val : MvPolynomial ι R →ₐ[R] B) (P.σ' (x * y) - P.σ' x * P.σ' y) = 0`. Simplify using `[P.aeval_val_σ']`. Establish `h` using `mvPolynomialToBaseChange_eq_zero_of_aeval_eq_zero hsurj P _ hker`. Rewrite `h` using `[map_sub, map_mul]`. Take the linear combination `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem mvPolynomialToBaseChange_section_mul (x y : B) :
     mvPolynomialToBaseChange hsurj P (P.σ' (x * y)) =
@@ -231,7 +229,7 @@ private theorem mvPolynomialToBaseChange_section_mul (x y : B) :
   linear_combination h
 
 /- English proof (translation)
-Establish `h0 : (MvPolynomial.aeval P.val : MvPolynomial ι R →ₐ[R] B) (P.σ' (0 : B)) = 0` using `P.aeval_val_σ' 0`. Conclude with `mvPolynomialToBaseChange_eq_zero_of_aeval_eq_zero hsurj P _ h0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mvPolynomialToBaseChange_section_zero :
     mvPolynomialToBaseChange hsurj P (P.σ' 0) = 0 := by
@@ -240,7 +238,7 @@ private theorem mvPolynomialToBaseChange_section_zero :
   exact mvPolynomialToBaseChange_eq_zero_of_aeval_eq_zero hsurj P _ h0
 
 /- English proof (translation)
-Establish `h1 : (MvPolynomial.aeval P.val : MvPolynomial ι R →ₐ[R] B) (P.σ' (x + y) - (P.σ' x + P.σ' y)) = 0`. Rewrite using `[map_sub, map_add, P.aeval_val_σ' (x + y), P.aeval_val_σ' x, P.aeval_val_σ' y, sub_self]`. Establish `h0` using `mvPolynomialToBaseChange_eq_zero_of_aeval_eq_zero hsurj P _ h1`. Rewrite `h0` using `[map_sub, map_add]`. Take the linear combination `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem mvPolynomialToBaseChange_section_add (x y : B) :
     mvPolynomialToBaseChange hsurj P (P.σ' (x + y)) =
@@ -253,9 +251,9 @@ private theorem mvPolynomialToBaseChange_section_add (x y : B) :
   linear_combination h0
 
 /- English proof (translation)
-Establish `h1 : (MvPolynomial.aeval P.val : MvPolynomial ι R →ₐ[R] B) (P.σ' (algebraMap R B r) - MvPolynomial.C r) = 0`. Rewrite using `[map_sub, P.aeval_val_σ' (algebraMap R B r), MvPolynomial.aeval_C, sub_self]`. Establish `h0` using `mvPolynomialToBaseChange_eq_zero_of_aeval_eq_zero hsurj P _ h1`. Establish `hC : mvPolynomialToBaseChange hsurj P (MvPolynomial.C r) = algebraMap R (R ⊗[S] LiftedAlgebra hsurj P) r`. Establish `hcom` using `(mvPolynomialToBaseChange hsurj P).commutes r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hcom` using `[MvPolynomial.algebraMap_eq]`. Then use the resulting hypothesis. Rewrite `h0` using `[map_sub, hC]`. Take the linear combination `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem mvPolynomialToBaseChange_section_algebraMap (r : R) :
     mvPolynomialToBaseChange hsurj P (P.σ' (algebraMap R B r)) =
@@ -280,9 +278,9 @@ noncomputable def invBaseChangeHom : B →ₐ[R] R ⊗[S] LiftedAlgebra hsurj P 
   commutes' := mvPolynomialToBaseChange_section_algebraMap hsurj P
 
 /- English proof (translation)
-Establish `hker : (MvPolynomial.aeval P.val : MvPolynomial ι R →ₐ[R] B) (P.σ' ((MvPolynomial.aeval P.val : MvPolynomial ι R →ₐ[R] B) q) - q) = 0`. Rewrite using `[map_sub, P.aeval_val_σ', sub_self]`. Establish `h` using `mvPolynomialToBaseChange_eq_zero_of_aeval_eq_zero hsurj P _ hker`. Rewrite `h` using `[map_sub]`. Establish `hf : invBaseChangeHom hsurj P ((MvPolynomial.aeval P.val : MvPolynomial ι R →ₐ[R] B) q) = mvPolynomialToBaseChange hsurj P (P.σ' ((MvPolynomial.aeval P.val : MvPolynomial ι R →ₐ[R] B) q))` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hf]`. Take the linear combination `h`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem invBaseChangeHom_aeval (q : MvPolynomial ι R) :
     invBaseChangeHom hsurj P (MvPolynomial.aeval P.val q) = mvPolynomialToBaseChange hsurj P q := by
@@ -302,11 +300,11 @@ section
 variable [Algebra S B] [IsScalarTower S R B]
 
 /- English proof (translation)
-Establish `hsub : Ideal.span (Set.range (liftedRelation hsurj P)) ≤ RingHom.ker (MvPolynomial.aeval P.val : MvPolynomial ι S →ₐ[S] B).toRingHom`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `x ⟨j, rfl⟩`. Establish `hmem : P.relation j ∈ Ideal.span (Set.range P.relation)` using `Ideal.subset_span ⟨j, rfl⟩`. Rewrite `hmem` using `[P.span_range_relation_eq_ker, Algebra.Generators.ker_eq_ker_aeval_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : (MvPolynomial.aeval P.val : MvPolynomial ι R →ₐ[R] B) (P.relation j) = 0`. Simplify `hmem` using `only [RingHom.mem_ker, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Establish `h1 : (MvPolynomial.aeval P.val : MvPolynomial ι R →ₐ[R] B) (MvPolynomial.map (algebraMap S R) (liftedRelation hsurj P j)) = (MvPolynomial.aeval P.val : MvPolynomial ι S →ₐ[S] B) (liftedRelation hsurj P j)`. Rewrite using `[MvPolynomial.aeval_map_algebraMap]`. Rewrite `h1` using `[map_liftedRelation hsurj P j]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (MvPolynomial.aeval P.val : MvPolynomial ι S →ₐ[S] B) (liftedRelation hsurj P j) = 0`. Rewrite using `[← h1]`. Conclude with `h0`. Simplify `h2` using `only [SetLike.mem_coe, RingHom.mem_ker, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Simplify `hsub hq` using `only [RingHom.mem_ker, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem aeval_eq_zero_of_mem_span_liftedRelation (q : MvPolynomial ι S)
     (hq : q ∈ Ideal.span (Set.range (liftedRelation hsurj P))) :
@@ -347,17 +345,15 @@ Both sides reduce to the same expression.
       (MvPolynomial.aeval P.val : MvPolynomial ι S →ₐ[S] B) q := rfl
 
 /- English proof (translation)
-Set `_ : Fintype σ` to `Fintype.ofFinite σ`. Establish `hval : (liftedPreSubmersivePresentation hsurj P).val = fun i : ι => Ideal.Quotient.mk (Ideal.span (Set.range (liftedRelation hsurj P))) (MvPolynomial.X i)` using `rfl`. Establish `hmk : ∀ q : MvPolynomial ι S, (MvPolynomial.aeval (liftedPreSubmersivePresentation hsurj P).val) q = Ideal.Quotient.mk (Ideal.span (Set.range (liftedRelation hsurj P))) q`. Establish `h : (MvPolynomial.aeval (liftedPreSubmersivePresentation hsurj P).val : MvPolynomial ι S →ₐ[S] LiftedQuotient hsurj P) = Ideal.Quotient.mkₐ S (Ideal.span (Set.range (liftedRelation hsurj P)))` using `MvPolynomial.algHom_ext fun i => by simp [hval]`. Conclude with `fun q => DFunLike.congr_fun h q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hmat : ∀ a b : σ, MvPolynomial.map (algebraMap S R) ((liftedPreSubmersivePresentation hsurj P).jacobiMatrix a b) = P.jacobiMatrix a b`. Introduce `a b`. Rewrite using `[Algebra.PreSubmersivePresentation.jacobiMatrix_apply, Algebra.PreSubmersivePresentation.jacobiMatrix_apply, liftedPreSubmersivePresentation_map, liftedPreSubmersivePresentation_relation, ← MvPolynomial.pderiv_map, map_liftedRelation]`. Establish `h1 : (liftedPreSubmersivePresentation hsurj P).jacobiMatrix.map (MvPolynomial.map (algebraMap S R)) = P.jacobiMatrix`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.map_apply]`. Conclude with `hmat a b`. Establish `hdet : MvPolynomial.map (algebraMap S R) ((liftedPreSubmersivePresentation hsurj P).jacobiMatrix.det) = P.jacobiMatrix.det`. Combine the equalities or inequalities in the displayed calculation. Establish `hjS : (liftedPreSubmersivePresentation hsurj P).jacobian = Ideal.Quotient.mk (Ideal.span (Set.range (liftedRelation hsurj P))) ((liftedPreSubmersivePresentation hsurj P).jacobiMatrix.det)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.PreSubmersivePresentation.jacobian_eq_jacobiMatrix_det]`. Conclude with `hmk _`. Establish `hjR : P.jacobian = (MvPolynomial.aeval P.val : MvPolynomial ι R →ₐ[R] B) P.jacobiMatrix.det`. Rewrite using `[Algebra.PreSubmersivePresentation.jacobian_eq_jacobiMatrix_det, Algebra.Generators.algebraMap_apply]`. Establish `h2 : IsUnit (liftedQuotientHom hsurj P ((liftedPreSubmersivePresentation hsurj P).jacobian))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hkey : liftedQuotientHom hsurj P ((liftedPreSubmersivePresentation hsurj P).jacobian) = P.jacobian`. Rewrite using `[hjS, liftedQuotientHom_mk, hjR, ← hdet]`. Simplify using `only [MvPolynomial.aeval_def, MvPolynomial.eval₂_map]`. Rewrite using `[← IsScalarTower.algebraMap_eq S R B]`. Rewrite using `[hkey]`.
-
-Conclude with `P.jacobian_isUnit`. Simplify `h2` using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem isUnit_liftedQuotientHom_jacobian :
     IsUnit ((liftedQuotientHom hsurj P).toRingHom (liftedPreSubmersivePresentation hsurj P).jacobian) := by
@@ -411,7 +407,7 @@ private theorem isUnit_liftedQuotientHom_jacobian :
   simpa only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] using h2
 
 /- English proof (translation)
-Establish `h : ∀ x : LiftedQuotient hsurj P, ((IsLocalization.Away.lift (liftedPreSubmersivePresentation hsurj P).jacobian (isUnit_liftedQuotientHom_jacobian hsurj P) : LiftedAlgebra hsurj P →+* B)) (algebraMap (LiftedQuotient hsurj P) (LiftedAlgebra hsurj P) x) = (liftedQuotientHom hsurj P …`. Introduce `x`. Conclude with `IsLocalization.lift_eq ..`. Rewrite using `[IsScalarTower.algebraMap_apply S (LiftedQuotient hsurj P) (LiftedAlgebra hsurj P) s, h]`. Conclude with `(liftedQuotientHom hsurj P).commutes s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem awayLift_jacobian_algebraMap_eq (s : S) :
     ((IsLocalization.Away.lift (liftedPreSubmersivePresentation hsurj P).jacobian
@@ -433,7 +429,7 @@ noncomputable def liftedAlgebraHom : LiftedAlgebra hsurj P →ₐ[S] B :=
     commutes' := awayLift_jacobian_algebraMap_eq hsurj P }
 
 /- English proof (translation)
-Establish `h : liftedAlgebraHom hsurj P (algebraMap (LiftedQuotient hsurj P) (LiftedAlgebra hsurj P) x) = (IsLocalization.Away.lift (liftedPreSubmersivePresentation hsurj P).jacobian (isUnit_liftedQuotientHom_jacobian hsurj P) : LiftedAlgebra hsurj P →+* B) (algebraMap (LiftedQuotient hsurj …` using `rfl`. Rewrite using `[h]`. Simplify using `only [IsLocalization.Away.lift_eq, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem liftedAlgebraHom_algebraMap (x : LiftedQuotient hsurj P) :
     liftedAlgebraHom hsurj P (algebraMap (LiftedQuotient hsurj P) (LiftedAlgebra hsurj P) x) =
@@ -446,9 +442,9 @@ theorem liftedAlgebraHom_algebraMap (x : LiftedQuotient hsurj P) :
   simp only [IsLocalization.Away.lift_eq, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]
 
 /- English proof (translation)
-Introduce `b`. Take `⟨p, hp⟩` from `MvPolynomial.map_surjective (algebraMap S R) hsurj (P.σ' b)`. Establish `h1 : (MvPolynomial.aeval P.val : MvPolynomial ι R →ₐ[R] B) (MvPolynomial.map (algebraMap S R) p) = (MvPolynomial.aeval P.val : MvPolynomial ι S →ₐ[S] B) p`. Rewrite using `[MvPolynomial.aeval_map_algebraMap]`. Use `⟨algebraMap (LiftedQuotient hsurj P) (LiftedAlgebra hsurj P) (Ideal.Quotient.mk (Ideal.span (Set.range (liftedRelation hsurj P))) p), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[liftedAlgebraHom_algebraMap, liftedQuotientHom_mk, ← h1, hp]`. Conclude with `P.aeval_val_σ' b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftedAlgebraHom_surjective : Function.Surjective (liftedAlgebraHom hsurj P) := by
   intro b
@@ -467,7 +463,7 @@ noncomputable def baseChangeHom : (R ⊗[S] LiftedAlgebra hsurj P) →ₐ[R] B :
     (fun _ _ => Commute.all _ _)
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Establish `h1 : (MvPolynomial.aeval P.val : MvPolynomial ι R →ₐ[R] B) (MvPolynomial.map (algebraMap S R) p) = (MvPolynomial.aeval P.val : MvPolynomial ι S →ₐ[S] B) p`. Rewrite using `[MvPolynomial.aeval_map_algebraMap]`. Rewrite using `[liftedQuotientHom_mk, ← h1, invBaseChangeHom_aeval]`. Conclude with `mvPolynomialToBaseChange_map hsurj P p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem invBaseChangeHom_liftedQuotientHom (q : LiftedQuotient hsurj P) :
     invBaseChangeHom hsurj P (liftedQuotientHom hsurj P q) =
@@ -481,9 +477,9 @@ private theorem invBaseChangeHom_liftedQuotientHom (q : LiftedQuotient hsurj P) 
   exact mvPolynomialToBaseChange_map hsurj P p
 
 /- English proof (translation)
-Establish `key : (invBaseChangeHom hsurj P).toRingHom.comp (liftedAlgebraHom hsurj P).toRingHom = (Algebra.TensorProduct.includeRight : LiftedAlgebra hsurj P →ₐ[S] R ⊗[S] LiftedAlgebra hsurj P).toRingHom`. Use `IsLocalization.ringHom_ext (Submonoid.powers (liftedPreSubmersivePresentation hsurj P).jacobian) ?_` and prove the remaining obligations. Use `RingHom.ext fun q => ?_` and prove the remaining obligations. Establish `h` using `invBaseChangeHom_liftedQuotientHom hsurj P q`. Rewrite `h` using `[← liftedAlgebraHom_algebraMap hsurj P q]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Conclude with `DFunLike.congr_fun key x`.
+A detailed English derivation is pending.
 -/
 private theorem invBaseChangeHom_liftedAlgebraHom (x : LiftedAlgebra hsurj P) :
     invBaseChangeHom hsurj P (liftedAlgebraHom hsurj P x) = (1 : R) ⊗ₜ[S] x := by
@@ -499,13 +495,13 @@ private theorem invBaseChangeHom_liftedAlgebraHom (x : LiftedAlgebra hsurj P) :
   exact DFunLike.congr_fun key x
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `hleft : Function.LeftInverse (invBaseChangeHom hsurj P) (baseChangeHom hsurj P)`. Introduce `t`. Use `TensorProduct.induction_on t ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `r x`. Establish `h1 : baseChangeHom hsurj P (r ⊗ₜ[S] x) = algebraMap R B r * liftedAlgebraHom hsurj P x`. Simplify using `only [baseChangeHom, Algebra.TensorProduct.lift_tmul, Algebra.ofId_apply]`. Establish `h2 : invBaseChangeHom hsurj P (algebraMap R B r) = r ⊗ₜ[S] (1 : LiftedAlgebra hsurj P)` using `(invBaseChangeHom hsurj P).commutes r`. Rewrite using `[h1, map_mul, h2, invBaseChangeHom_liftedAlgebraHom, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b ha hb`. Rewrite using `[map_add, map_add, ha, hb]`. Conclude with `hleft.injective`. Introduce `b`. Take `⟨x, hx⟩` from `liftedAlgebraHom_surjective hsurj P b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(1 : R) ⊗ₜ[S] x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx]`. Simplify using `only [baseChangeHom, Algebra.TensorProduct.lift_tmul, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem baseChangeHom_bijective : Function.Bijective (baseChangeHom hsurj P) := by
   constructor
@@ -534,7 +530,7 @@ noncomputable def baseChangeEquiv : (R ⊗[S] LiftedAlgebra hsurj P) ≃ₐ[R] B
   AlgEquiv.ofBijective (baseChangeHom hsurj P) (baseChangeHom_bijective hsurj P)
 
 /- English proof (translation)
-Establish `h : baseChangeEquiv hsurj P (1 ⊗ₜ[S] b') = (Algebra.ofId R B) (1 : R) * liftedAlgebraHom hsurj P b'` using `rfl`. Rewrite using `[h, map_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem baseChangeEquiv_one_tmul (b' : LiftedAlgebra hsurj P) :
     baseChangeEquiv hsurj P (1 ⊗ₜ[S] b') = liftedAlgebraHom hsurj P b' := by

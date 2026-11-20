@@ -18,21 +18,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LowDat.GradedTate
 
 /- English proof (translation)
-Use `D'.proj` as an intermediate fact. Take `⟨s, hs⟩` from `Module.projective_lifting_property f LinearMap.id hf.1`. Establish `hs' : ∀ w, f (s w) = w` using `fun w => LinearMap.congr_fun hs w`. Establish `hiso' : ∀ n, 0 < n → ∀ a w', e n (b n a) (b n (s w')) (ζ n ^ D'.EF (f a) w')` using `fun n hn a w' => by`. Establish `h` using `hiso n hn a (s w')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[← hf.2.2, hs']`. Then use the resulting hypothesis. Establish `hiso'' : ∀ n, 0 < n → ∀ w w', e n (b n (s w)) (b n (s w')) (ζ n ^ D'.EF w w')` using `fun n hn w w' => by`. Establish `h` using `hiso' n hn (s w) w'`. Rewrite `h` using `[hs']`. Then use the resulting hypothesis. Establish `hadd' : ∀ n, 0 < n → ∀ w w', b n (s (w + w')) = b n (s w) * b n (s w')` using `fun n hn w w' => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[map_add, hadd n hn]`. Establish `hko` using `fun n (hn : 0 < n) => TorsIsometry.ker_and_onto E H D' K Q (e n) n (ζ n) (fun w => b n (s w)) hn (hcard n hn) (fun y c _ => hone n y c) (hζ n hn) (hadd' n hn) (fun w => hpow n hn _) (hiso'' n hn)`. Use `⟨{ ζ := ζ, ζ_prim := hζ, ζ_pow := hζ', ev := fun n w => if 0 < n then b n (s w) else 1 add := fun n w w' => ?_, lin := fun n c w => ?_, ker := fun n hn => ?_, onto := fun n hn => ?_ tower := fun n m hn hm w => ?_, isom := fun n hn w w' => ?_ }, fun _ => rfl, fun n hn a => ?_⟩` and prove the remaining obligations. Use `split_ifs with hn`. Conclude with `hadd' n hn w w'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(_root_.mul_one _).symm`. Use `split_ifs with hn`. Rewrite using `[map_smul, hlin n hn]`. Conclude with `(hact c).symm`. Simplify using `only [if_pos hn]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(hko n hn).1`. Simplify using `only [if_pos hn]`. Conclude with `(hko n hn).2`. Simplify using `only [if_pos hn, if_pos (Nat.mul_pos hn hm)]`. Conclude with `htow n m hn hm _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [if_pos hn]`. Conclude with `hiso'' n hn w w'`. Use `show _ = if 0 < n then b n (s (f a)) else 1`. Rewrite using `[if_pos hn]`. Take `⟨w, hw⟩` from `((hko n hn).2 _).1 (hpow n hn a)`.
-
-Take `⟨c, hc⟩` from `TorsIsometry.exists_eq_nsmul_of_dvd D'.EF D'.unimod n (f a - w) fun w' => by`. Establish `h₁` using `hiso' n hn a w'`. Rewrite `h₁` using `[← hw]`. Establish `h₂` using `huniq _ _ _ _ _ h₁ (hiso'' n hn w w')`. Rewrite using `[map_sub, LinearMap.sub_apply, ← (hζ n hn).zpow_eq_one_iff_dvd, zpow_sub, h₂, mul_inv_cancel]`.
-
-Establish `h₃ : b n (s (f a - w)) = 1` using `((hko n hn).1 _).2 ⟨c, hc⟩`. Establish `h₄` using `hadd' n hn (f a - w) w`. Rewrite `h₄` using `[sub_add_cancel, h₃, _root_.one_mul]`. Conclude with `hw.symm.trans h₄.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tateIso_of_perp {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw D' : Datum H)
     (Z : Submodule (𝓞 E) Dw.La) (f : perp Dw Z →ₗ[𝓞 E] D'.La) (hf : IsLower Dw D' Z f) (K : Type) [Field K]
@@ -98,9 +94,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F
 attribute [local instance] TorusExt.gtGroup
 
 /- English proof (translation)
-Take `⟨z, h₁, h₂⟩` from `(TorusExt.equiv_iff hB _ _).1 h`. Establish `hz : k • z = 0`. Rewrite `h₁` using `[hy]`. Conclude with `left_eq_add.1 h₁`. Establish `: z = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[← natCast_zsmul]`. Conclude with `(smul_eq_zero.1 hz).resolve_left (Int.natCast_ne_zero.2 hk.ne')`. Substitute `this` using the available equality. Rewrite `h₂` using `[map_zero, add_zero]`. Conclude with `TorusExt.qk_ext hy h₂.symm`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_equiv (hB : D.TauBimult) {k : ℕ} (hk : 0 < k) {p q : QkPt D F k} (h : QkPt.Equiv D F p q)
     (hy : p.y = q.y) : p = q := by
@@ -116,15 +112,15 @@ theorem eq_of_equiv (hB : D.TauBimult) {k : ℕ} (hk : 0 < k) {p q : QkPt D F k}
   exact TorusExt.qk_ext hy h₂.symm
 
 /- English proof (translation)
-Rewrite using `[← TorusExt.nsmul_b, TorusExt.qk_nsmul hB, hy, map_zero, TorusExt.zero_b]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem b_pow (hB : D.TauBimult) {k : ℕ} (p : QkPt D F k) (hy : p.y = 0) : p.g.b ^ k = 1 := by
   rw [← TorusExt.nsmul_b, TorusExt.qk_nsmul hB, hy, map_zero, TorusExt.zero_b]
 
 /- English proof (translation)
-Take `⟨z, h₁, h₂⟩` from `(TorusExt.equiv_iff hB _ _).1 hp`. Establish `h₃ : TorusExt.qkShift hB q (m • z) = r₀`. Use `eq_of_equiv hB hn (TorusExt.equiv_trans hB (TorusExt.equiv_symm hB (TorusExt.equiv_qkShift hB q _)) (TorusExt.equiv_trans hB hr hr')) ?_` and prove the remaining obligations. Use `show q.y + n • m • z = r₀.y`. Rewrite using `[hr₀, hq, smul_smul, ← h₁, hp₀]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h₃, ← TorusExt.nsmul_b, h₂, nsmul_add, ← (TorusExt.isNsmul_iff_eq _ _ _).1 hg, ← map_nsmul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem b_tower (hB : D.TauBimult) {n m : ℕ} (hn : 0 < n) {p p₀ : QkPt D F (n * m)} {q r r₀ : QkPt D F n}
     (hp : QkPt.Equiv D F p p₀) (hp₀ : p₀.y = 0) (hq : q.y = p.y) (hg : GtPtF.IsNsmul m p.g q.g)
@@ -143,25 +139,19 @@ end Pairs
 attribute [local instance] TorusExt.gtGroup in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw D' Z f hf R _ _ _ hR t P F _ _ _ hrk I hI`. Use `letI := H.starRing`. Establish `hB` using `P.D.tau_bimult`. Establish `hL` using `GlobalTheory.firstFiveLaws`. Establish `hG` using `hL.1.globalFns`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hR.2` as an intermediate fact. Use `hR.1.1` as an intermediate fact. Establish `: IsLocallyNoetherian (Spec (CommRingCat.of R))` using `inferInstance`. Use `choose q hq hy using hI`. Establish `huniq : ∀ (n : ℕ) (x y : TF (R` using `R) F ⟶ P.D.toPre.P.A) (c c' : Fˣ), Out.WeilIs P.D.toPre.P.A P.D.toPre.P.L n x y (unitOn c) → Out.WeilIs P.D.toPre.P.A P.D.toPre.P.L n x y (unitOn c') → c = c' := fun n x y c c' => weilIs_unique_fieldPoint _ _ _ P.D.toPre.P.isLB F _ n x y c c'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨I', h₁, h₂⟩` from `exists_tateIso_of_perp Dw D' Z f hf F (TF (R := R) F ⟶ P.D.toPre.P.A) (fun a g => g ≫ P.oD.onB.act a) (fun n g g' z => Out.WeilIs P.D.toPre.P.A P.D.toPre.P.L n g g' (unitOn z)) I.ζ I.ζ_prim I.ζ_pow (fun n a => if hn : 0 < n then (q n hn a).g.b else 1) (fun c => by`. Use `P.oD.onB.hom c` as an intermediate fact. Conclude with `MonObj.one_comp _)`. Use the proof step `(fun n hn => by`. Establish `: NeZero n` using `⟨hn.ne'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hrk]`. Conclude with `(hL.1.mulN _ P.D.toPre.P n hn).2.2.2.2 F _ (IsPrimitiveRoot.coe_units_iff.2 (I.ζ_prim n hn)).neZero'.ne)`. Use `huniq`. Use the proof step `(fun n y c h => by`. Establish `h₁` using `(hL.1.weil _ P.D.toPre.P n _).2.1 _ _ _ _ _ h h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h₁` using `[_root_.mul_one]`. Establish `e : unitOn (c * c) = unitOn c * unitOn c` using `map_mul _ _ _`. Conclude with `mul_eq_left.1 (huniq n 1 y _ _ (e ▸ h₁) h))`. Use the proof step `(fun n hn a a' => by`. Simplify using `only [dif_pos hn]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h` using `(TorusExt.qkAdd_iff hB _ _ _).1 ((TorusExt.qkAdd_iff_of_equiv hB (hq n hn a) (hq n hn a') (I.add n hn a a')).2 (hq n hn (a + a')))`. Rewrite using `[← eq_of_equiv hB hn h (by show (q n hn a).y + (q n hn a').y = _`. Rewrite using `[hy, hy, hy, add_zero])]`. Conclude with `TorusExt.add_b _ _)`. Use the proof step `(fun n hn c a => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dif_pos hn]`. Establish `h` using `(TorusExt.qkAct_iff hB hG P.oD _ _ _).1 ((TorusExt.qkAct_iff_of_equiv hB hG P.oD (hq n hn a) (I.lin n hn c a)).2 (hq n hn (c • a)))`. Rewrite using `[← eq_of_equiv hB hn h (by show c • (q n hn a).y = _`. Rewrite using `[hy, hy, smul_zero])]`. Conclude with `TorusExt.gtSmul_b hG P.oD _ _)`.
-
-Use the proof step `(fun n hn a => by`. Simplify using `only [dif_pos hn]`. Conclude with `b_pow hB _ (hy n hn a))`. Use the proof step `(fun n m hn hm a => by`. Simplify using `only [dif_pos hn, dif_pos (Nat.mul_pos hn hm)]`.
-
-Take `⟨r, r₁, r₂, r₃⟩` from `I.tower n m hn hm a`. Conclude with `b_tower hB hn (hq _ _ a) (hy _ _ a) r₁ r₂ r₃ (hq n hn a) (hy n hn a))`. Use the proof step `(fun n hn a a' => by`. Simplify using `only [dif_pos hn]`. Conclude with `(UT.WeilAbelianPart.weilQkIs_iff_weilIs_abelianPart hL R _ hR.1 P.D F n hn _ _ (hy n hn a) (hy n hn a') _).1 (PhiOperatorCompare.weilQkIs_of_equiv hB (hq n hn a) (hq n hn a') (I.isom n hn a a')))`.
-
-Use `⟨I', h₁, fun n hn a r hr hr₀ => ?_⟩` and prove the remaining obligations. Rewrite using `[← h₂ n hn a, dif_pos hn, eq_of_equiv hB hn (TorusExt.equiv_trans hB (TorusExt.equiv_symm hB hr) (hq n hn a)) (hr₀.trans (hy n hn a).symm)]`.
+A detailed English derivation is pending.
 -/
 theorem exists_gradedTateIso : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw D' : Datum H) (Z : Submodule (𝓞 E) Dw.La)
   (f : GlobalTheory.LowDat.perp Dw Z →ₗ[𝓞 E] D'.La), GlobalTheory.LowDat.IsLower Dw D' Z f →

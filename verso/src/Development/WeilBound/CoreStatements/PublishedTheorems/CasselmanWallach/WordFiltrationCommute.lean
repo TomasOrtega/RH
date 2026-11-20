@@ -11,7 +11,7 @@ namespace EigenSumRepresentation
 variable {n : ℕ} {ε : Fin n → Bool} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {ι : Type}
 
 /- English proof (translation)
-Establish `h` using `hb.inner_right_finsupp (b.repr y) i`. Rewrite `h` using `[b.linearCombination_repr]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma inner_basis {b : Module.Basis ι ℂ V} (hb : Orthonormal ℂ b) (i : ι) (y : V) :
     inner ℂ (b i) y = b.repr y i := by
@@ -19,7 +19,7 @@ lemma inner_basis {b : Module.Basis ι ℂ V} (hb : Orthonormal ℂ b) (i : ι) 
   rwa [b.linearCombination_repr] at h
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.linearCombination_repr y]`. Rewrite using `[Finsupp.linearCombination_apply]`. Conclude with `Finsupp.sum_of_support_subset _ hy _ (fun i _ => zero_smul ℂ (b i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma repr_sum {b : Module.Basis ι ℂ V} (T : Finset ι) (y : V) (hy : (b.repr y).support ⊆ T) :
     y = ∑ j ∈ T, b.repr y j • b j := by
@@ -28,7 +28,7 @@ lemma repr_sum {b : Module.Basis ι ℂ V} (T : Finset ι) (y : V) (hy : (b.repr
   exact Finsupp.sum_of_support_subset _ hy _ (fun i _ => zero_smul ℂ (b i))
 
 /- English proof (translation)
-Rewrite using `[sum_inner]`. Use `conv_rhs => rw [repr_sum (b := b) T y hy, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, inner_basis hb, map_smul, smul_eq_mul, starRingEnd_self_apply, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma inner_h {b : Module.Basis ι ℂ V} (hb : Orthonormal ℂ b) (f : V →ₗ[ℂ] ℂ) (T : Finset ι) (y : V)
     (hy : (b.repr y).support ⊆ T) :
@@ -39,13 +39,13 @@ lemma inner_h {b : Module.Basis ι ℂ V} (hb : Orthonormal ℂ b) (f : V →ₗ
   rw [inner_smul_left, inner_basis hb, map_smul, smul_eq_mul, starRingEnd_self_apply, mul_comm]
 
 /- English proof (translation)
-Establish `hyU : (b.repr y).support ⊆ (b.repr y).support ∪ S` using `Finset.subset_union_left`. Establish `hfc : fc b μ φ y = ∑ j ∈ (b.repr y).support ∪ S, b.repr y j • ((φ (μ j) : ℂ) • b j)` using `by conv_lhs => rw [repr_sum (b := b) _ y hyU]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, fc, Module.Basis.constr_basis]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ j, inner ℂ y (b.repr y j • ((φ (μ j) : ℂ) • b j)) = ((φ (μ j) * ‖b.repr y j‖ ^ 2 : ℝ) : ℂ)`. Introduce `j`. Rewrite using `[inner_smul_right, inner_smul_right, ← inner_conj_symm, inner_basis hb]`. Use `push_cast`. Rewrite using `[← Complex.mul_conj']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfc, inner_sum, Finset.sum_congr rfl (fun j _ => key j)]`. Use `symm`. Apply `Finset.sum_subset Finset.subset_union_right` to reduce the goal to its premises. Introduce `j _ hj`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hS j hj]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma inner_fc {b : Module.Basis ι ℂ V} (hb : Orthonormal ℂ b) (μ : ι → ℝ) (φ : ℝ → ℝ) (S : Finset ι)
     (hS : ∀ i, i ∉ S → φ (μ i) = 0) (y : V) :
@@ -71,7 +71,7 @@ lemma inner_fc {b : Module.Basis ι ℂ V} (hb : Orthonormal ℂ b) (μ : ι →
   simp
 
 /- English proof (translation)
-Simplify using `only [beta, map_sum, sum_inner, inner_sum]`. Rewrite using `[Finset.sum_comm]`. Use `sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma beta_sum {E : Fin n → Fin n → Module.End ℂ V} (A : Module.End ℂ V) {κ : Type} (s : Finset κ) (v : κ → V) :
     beta ε E A (∑ k ∈ s, v k) (∑ k ∈ s, v k) = ∑ l ∈ s, ∑ k ∈ s, beta ε E A (v k) (v l) := by
@@ -81,7 +81,7 @@ lemma beta_sum {E : Fin n → Fin n → Module.End ℂ V} (A : Module.End ℂ V)
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Unfold `Eig`. Rewrite using `[map_sum, smul_sum]`. Use `sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[map_smul, show casimirK ε E (b j) = _ from heig j, hs j hj, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma eig_sum {E : Fin n → Fin n → Module.End ℂ V} {b : Module.Basis ι ℂ V} {μ : ι → ℝ}
     (heig : ∀ i, Eig ε E (μ i) (b i)) (s : Finset ι) (c : ι → ℂ) (ν : ℝ) (hs : ∀ j ∈ s, μ j = ν) :
@@ -92,7 +92,7 @@ lemma eig_sum {E : Fin n → Fin n → Module.End ℂ V} {b : Module.Basis ι �
   rw [map_smul, show casimirK ε E (b j) = _ from heig j, hs j hj, smul_comm]
 
 /- English proof (translation)
-Simplify using `only [nc, Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢`. Conclude with `Ne.symm hp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma mem_nc_swap {p : Fin n × Fin n} (hp : p ∈ nc ε) : p.swap ∈ nc ε := by
   simp only [nc, Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
@@ -102,21 +102,19 @@ end EigenSumRepresentation
 
 open EigenSumRepresentation in
 /- English proof (translation)
-Introduce `_ _ h11c n ε V _ _ E hM ι b μ hB φ S hS`. Use `set T : Finset ι := S ∪ S.biUnion (fun i => (nc ε).biUnion (fun p => (b.repr (E p.1 p.2 (b i))).support)) with hT`. Use `⟨T, Finset.subset_union_left, fun f => ?_⟩` and prove the remaining obligations. Establish `hsupp : ∀ i ∈ S, ∀ p ∈ nc ε, (b.repr (E p.1 p.2 (b i))).support ⊆ T`. Introduce `i hi p hp j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.mem_union_right` to reduce the goal to its premises. Conclude with `Finset.mem_biUnion.2 ⟨i, hi, Finset.mem_biUnion.2 ⟨p, hp, hj⟩⟩`. Use `set H : V := ∑ j ∈ T, starRingEnd ℂ (f (b j)) • b j with hH`. Establish `hinner : ∀ y, (b.repr y).support ⊆ T → inner ℂ H y = f y` using `fun y hy => inner_h hB.on f T y hy`. Establish `hfib : ∑ ν ∈ image μ T, (∑ j ∈ T with μ j = ν, starRingEnd ℂ (f (b j)) • b j) = H` using `Finset.sum_fiberwise_of_maps_to (fun j hj => Finset.mem_image_of_mem μ hj) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `heig : ∀ ν, Eig ε E ν (∑ j ∈ T with μ j = ν, starRingEnd ℂ (f (b j)) • b j)` using `fun ν => eig_sum hB.eig _ (fun j => starRingEnd ℂ (f (b j))) ν (fun j hj => (Finset.mem_filter.1 hj).2)`. Establish `hdiag : ∑ ν ∈ image μ T, beta ε E (fc b μ φ) (∑ j ∈ T with μ j = ν, starRingEnd ℂ (f (b j)) • b j) (∑ j ∈ T with μ j = ν, starRingEnd ℂ (f (b j)) • b j) = beta ε E (fc b μ φ) H H`. Rewrite using `[← hfib, beta_sum (v := fun ν => ∑ j ∈ T with μ j = ν, starRingEnd ℂ (f (b j)) • b j)]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single_of_mem l hl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k _ hk`. Conclude with `h11c n ε V E hM ι b μ hB φ k l _ _ hk (heig k) (heig l)`. Rewrite using `[← Complex.re_sum, hdiag]`. Establish `hterm : ∀ p ∈ nc ε, ∀ i ∈ S, ‖b.repr (E p.1 p.2 H) i‖ = ‖f (E p.2 p.1 (b i))‖`. Introduce `p hp i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hsw : (p.2, p.1) ∈ nc ε` using `mem_nc_swap hp`. Establish `hsign : adjSign ε p.1 p.2 = -1`. Simplify using `only [nc, Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Simplify using `[adjSign, hp]`. Rewrite using `[← inner_basis hB.on, ← inner_conj_symm, hM.uni p.1 p.2 H (b i), hinner _ (hsupp i hi _ hsw), hsign]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Establish `hbeta : beta ε E (fc b μ φ) H H = ∑ p ∈ nc ε, ∑ i ∈ S, ((φ (μ i) * ‖f (E p.2 p.1 (b i))‖ ^ 2 : ℝ) : ℂ)`. Unfold `beta`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[inner_fc hB.on μ φ S hS]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[hterm p hp i hi]`. Rewrite using `[hbeta, Finset.sum_comm]`. Simplify using `only [Complex.re_sum, Complex.ofReal_re]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_nbij' Prod.swap Prod.swap (fun p hp => mem_nc_swap hp) (fun p hp => mem_nc_swap hp) (fun p _ => rfl) (fun p _ => rfl) (fun p _ => rfl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem basis_sum_of_orthogonality : A0 → FunctionalCalculusLaws → EigenspacesOrthogonalAlt → BasisSumAsFormValues := by
   intro _ _ h11c n ε V _ _ E hM ι b μ hB φ S hS

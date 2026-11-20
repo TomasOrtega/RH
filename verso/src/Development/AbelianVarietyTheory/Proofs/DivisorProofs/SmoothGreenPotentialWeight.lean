@@ -8,7 +8,7 @@ open scoped ENNReal Classical
 set_option autoImplicit false
 
 /- English proof (translation)
-Introduce `h₁ h₂ D O hO hf A T H h c R hR w a`. Establish `h2 : (2 : ℝ) ≤ R`. Use `Real.add_one_le_exp (2 : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `GlobalTheory.InterpChgSmooth.smooth_phR h₁ h₂ D O hO hf A T H h c w a R h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.InterpChgSmooth.smooth_phR_of_exp_two_le : Hypotheses2 → HypothesesH → OnObj fun _ O _ T _ _ =>
     ∀ c, ∀ R : ℝ, Real.exp 2 ≤ R → ∀ w : Wt O.Y, (T.M c).Smooth ((T.F c).phR R w) := by

@@ -35,7 +35,7 @@ Both sides reduce to the same expression.
     (dn p y).left = y.left ≫ pullback.fst G.hom p := rfl
 
 /- English proof (translation)
-Use `ext`. Establish `h : ((Over.pullback p).map f).left ≫ pullback.fst G'.hom p = pullback.fst G.hom p ≫ f.left` using `pullback.lift_fst _ _ _`. Express the relevant statement in the definitionally equal form `(y.left ≫ ((Over.pullback p).map f).left) ≫ pullback.fst G'.hom p = (y.left ≫ pullback.fst G.hom p) ≫ f.left`. Rewrite using `[Category.assoc, Category.assoc, h]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma dn_map {G G' : Over S} {T : Over S'} (y : T ⟶ (Over.pullback p).obj G) (f : G ⟶ G') :
     dn p (y ≫ (Over.pullback p).map f) = dn p y ≫ f := by
@@ -52,7 +52,7 @@ instance isComm_baseChange : IsCommMonObj ((Over.pullback p).obj G) :=
   Functor.isCommMonObj_obj
 
 /- English proof (translation)
-Rewrite using `[padd, padd, Functor.obj.μ_def, ← Category.assoc, dn_map]`. Use `congr 1`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[← dn_map, Category.assoc, Functor.Monoidal.μ_fst, lift_fst, lift_fst]`. Rewrite using `[← dn_map, Category.assoc, Functor.Monoidal.μ_snd, lift_snd, lift_snd]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma dn_padd {T : Over S'} (a b : T ⟶ (Over.pullback p).obj G) :
     dn p (padd _ a b) = padd G (dn p a) (dn p b) := by
@@ -63,7 +63,7 @@ lemma dn_padd {T : Over S'} (a b : T ⟶ (Over.pullback p).obj G) :
   · rw [← dn_map, Category.assoc, Functor.Monoidal.μ_snd, lift_snd, lift_snd]
 
 /- English proof (translation)
-Rewrite using `[pzero, pzero, Functor.obj.η_def, ← Category.assoc, dn_map]`. Use `congr 1`. Conclude with `toUnit_unique _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma dn_pzero (T : Over S') : dn p (pzero ((Over.pullback p).obj G) T) = pzero G _ := by
   rw [pzero, pzero, Functor.obj.η_def, ← Category.assoc, dn_map]
@@ -71,7 +71,7 @@ lemma dn_pzero (T : Over S') : dn p (pzero ((Over.pullback p).obj G) T) = pzero 
   exact toUnit_unique _ _
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact dn_pzero p T`. Consider the case `cons a l ih => simp only [List.foldr_cons]`. Rewrite using `[dn_padd, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma dn_foldr {T : Over S'} {n : ℕ} (x : Fin n → (T ⟶ (Over.pullback p).obj G))
     (l : List (Fin n)) :
@@ -88,7 +88,7 @@ def dn3 (f : H ⟶ (Over.pullback p).obj G) : Over.mk ((G3 H).hom ≫ p) ⟶ G3 
 
 omit [GrpObj G] [IsCommMonObj G] [GrpObj H] [IsCommMonObj H] in
 /- English proof (translation)
-Apply the tactic sequence `fin_cases k <;> simp [x3, dn3]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma downThree_comp_proj (f : H ⟶ (Over.pullback p).obj G) (k : Fin 3) :
     dn3 p f ≫ x3 G k = dn p (x3 H k ≫ f) := by
@@ -117,7 +117,7 @@ def bcMap (f : H ⟶ (Over.pullback p).obj G) [IsMonHom f] : CubeMap H G where
 
 omit [IsCommMonObj G] [IsCommMonObj H] in
 /- English proof (translation)
-Establish `h1 : (ι[H]).left ≫ (dn p f).left = (dn p (ι[H] ≫ f)).left` using `(Category.assoc _ _ _).symm`. Rewrite using `[h1, GrpObj.inv_hom, Functor.obj.ι_def, dn_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma inv_dn (f : H ⟶ (Over.pullback p).obj G) [IsMonHom f] :
     (ι[H]).left ≫ (dn p f).left = (dn p f).left ≫ (ι[G]).left := by
@@ -138,9 +138,9 @@ abbrev SymGen (L : LB G.left) :=
 variable {G} {S' : Scheme.{0}} {H : Over S'} [GrpObj H]
 
 /- English proof (translation)
-Introduce `y hy`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Establish `h1` using `Set.mem_iInter.1 (Set.mem_iInter.1 hy k) ⟨⟩`. Use `fin_cases k`. Express the relevant statement in the definitionally equal form `(F ≫ (ι[G]).left).base y ∈ (L.U (j 0 ⟨⟩) : Set _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hF]`. Conclude with `h1`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 lemma symPull_le (F : H.left ⟶ G.left) (hF : (ι[H]).left ≫ F = F ≫ (ι[G]).left) (L : LB G.left)
     (j : Fin 2 → PUnit → L.ι) :
@@ -166,7 +166,7 @@ section IsoPull
 variable {X X' Y Y' : Scheme.{0}} (L : LB X) (M : LB X')
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Introduce `y hy`. Conclude with `⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.1 k, Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.2 k⟩`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 lemma isoPull_le (h : Y' ⟶ Y) {a : Y ⟶ X} {b : Y ⟶ X'} {a' : Y' ⟶ X} {b' : Y' ⟶ X'}
     (ha : h ≫ a = a') (hb : h ≫ b = b') (j : (PUnit → M.ι) × (PUnit → L.ι)) :
@@ -228,14 +228,14 @@ def toB {e : ℕ} (j : CanonicalRigidImages.GtIso D I e G) : CubeMap (thickObj R
 
 omit [IsDomain R] in
 /- English proof (translation)
-The claim follows from `inv_dn (thick R I e) (𝟙 (thickObj R I e G))`.
+A detailed English derivation is pending.
 -/
 lemma toG_inv (I : Ideal R) (e : ℕ) :
     (ι[thickObj R I e G]).left ≫ (toG I e G).F = (toG I e G).F ≫ (ι[G]).left :=
   inv_dn (thick R I e) (𝟙 (thickObj R I e G))
 
 /- English proof (translation)
-The claim follows from `haveI := j.q_hom inv_dn (thick R I e) j.q`.
+A detailed English derivation is pending.
 -/
 lemma toB_inv {e : ℕ} (j : CanonicalRigidImages.GtIso D I e G) :
     (ι[thickObj R I e G]).left ≫ (toB j).F = (toB j).F ≫ (ι[D.P.A]).left :=
@@ -244,7 +244,7 @@ lemma toB_inv {e : ℕ} (j : CanonicalRigidImages.GtIso D I e G) :
 
 omit [IsDomain R] in
 /- English proof (translation)
-The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 lemma thickMap_fst (I : Ideal R) (e : ℕ) (Z : Over (Spec (CommRingCat.of R))) :
     thickMap R I e Z ≫ pullback.fst Z.hom (thick R I (e + 1)) =
@@ -253,14 +253,14 @@ lemma thickMap_fst (I : Ideal R) (e : ℕ) (Z : Over (Spec (CommRingCat.of R))) 
 
 omit [IsDomain R] in
 /- English proof (translation)
-Simplify using `[toG, bcMap, thickMap_fst]`.
+Simplify using the standard rewrite rules.
 -/
 lemma thickMap_toG (I : Ideal R) (e : ℕ) :
     thickMap R I e G ≫ (toG I (e + 1) G).F = (toG I e G).F := by
   simp [toG, bcMap, thickMap_fst]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `thickMap R I e G ≫ j'.q.left ≫ pullback.fst D.P.A.hom _ = j.q.left ≫ pullback.fst D.P.A.hom _`. Rewrite using `[← Category.assoc, h, Category.assoc, thickMap_fst]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma thickMap_toB {e : ℕ} (j : CanonicalRigidImages.GtIso D I e G) (j' : CanonicalRigidImages.GtIso D I (e + 1) G)
     (h : thickMap R I e G ≫ j'.q.left = j.q.left ≫ thickMap R I e D.P.A) :
@@ -312,7 +312,7 @@ example {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R}
     (j : CanonicalRigidImages.GtIso D I e G) : (toB j).F = (CanonicalRigidImages.down D I e j.q).left := rfl
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Take `⟨_, hd, _, hc⟩` from `h`. Establish `: (1 : R) = 0` using `hc.toIsHausdorff.haus 1 fun n => by simp [SModEq.zero, Ideal.top_pow]`. Conclude with `one_ne_zero this`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example {R : Type} [CommRing R] {I : Ideal R} (h : AdmBase R I) : I ≠ ⊤ := by
   rintro rfl

@@ -10,7 +10,7 @@ open ModularForm EisensteinSeries ModularFormClass UpperHalfPlane Formalism.L2.T
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Establish `e : f = ⇑g` using `funext fun τ => (hg τ).symm`. Substitute `e` using the available equality. Conclude with `ModularFormClass.holo g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem IsMF.mdiff {k : ℤ} {f : ℍ → ℂ} (h : IsMF k f) : MDiff f := by
   obtain ⟨g, hg⟩ := h
@@ -19,7 +19,7 @@ theorem IsMF.mdiff {k : ℤ} {f : ℍ → ℂ} (h : IsMF k f) : MDiff f := by
   exact ModularFormClass.holo g
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Establish `e : f = ⇑g` using `funext fun τ => (hg τ).symm`. Substitute `e` using the available equality. Conclude with `ModularFormClass.bdd_at_infty g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem IsMF.bdd {k : ℤ} {f : ℍ → ℂ} (h : IsMF k f) : IsBoundedAtImInfty f := by
   obtain ⟨g, hg⟩ := h
@@ -28,11 +28,11 @@ theorem IsMF.bdd {k : ℤ} {f : ℍ → ℂ} (h : IsMF k f) : IsBoundedAtImInfty
   exact ModularFormClass.bdd_at_infty g
 
 /- English proof (translation)
-Establish `h1 : (((a : ℂ) * (τ : ℂ) + b) / e).im = (a : ℝ) / e * τ.im`. Rewrite using `[Complex.div_natCast_im]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : 0 < (((a : ℂ) * (τ : ℂ) + b) / e).im`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Use `τ.im_pos` as an intermediate fact. Establish `ha' : (0 : ℝ) < a` using `by exact_mod_cast ha`. Establish `he' : (0 : ℝ) < e` using `by exact_mod_cast he`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Unfold `pt`. Rewrite using `[UpperHalfPlane.ofComplex_apply_of_im_pos hpos]`. Conclude with `h1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_im {a e : ℕ} (ha : 0 < a) (he : 0 < e) (b : ℕ) (τ : ℍ) :
     (pt a b e τ).im = (a : ℝ) / e * τ.im := by
@@ -51,11 +51,11 @@ theorem pt_im {a e : ℕ} (ha : 0 < a) (he : 0 < e) (b : ℕ) (τ : ℍ) :
   exact h1
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[UpperHalfPlane.mdifferentiable_iff]`. Establish `hmap : Set.MapsTo (fun z : ℂ => ((a : ℂ) * z + b) / e) {z | 0 < z.im} {z | 0 < z.im}`. Introduce `z hz`. Establish `h` using `pt_im ha he b ⟨z, hz⟩`. Establish `h2` using `congrArg Complex.im (pt_coe ha he b ⟨z, hz⟩)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(pt a b e ⟨z, hz⟩).im_pos`. Rewrite `h2` using `[UpperHalfPlane.coe_im]`. Rewrite `h3` using `[h2]`. Conclude with `h3`. Establish `hd : DifferentiableOn ℂ (fun z : ℂ => ((a : ℂ) * z + b) / e) {z | 0 < z.im}` using `by fun_prop`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hf.comp hd hmap).congr fun z hz => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, pt, ofComplex_apply_of_im_pos hz]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mdiff_comp_pt {a e : ℕ} (ha : 0 < a) (he : 0 < e) (b : ℕ) {f : ℍ → ℂ} (hf : MDiff f) :
     MDiff (fun τ => f (pt a b e τ)) := by
@@ -74,9 +74,9 @@ theorem mdiff_comp_pt {a e : ℕ} (ha : 0 < a) (he : 0 < e) (b : ℕ) {f : ℍ �
   simp only [Function.comp_apply, pt, ofComplex_apply_of_im_pos hz]
 
 /- English proof (translation)
-Rewrite using `[UpperHalfPlane.atImInfty, Filter.tendsto_comap_iff]`. Establish `h : (UpperHalfPlane.im ∘ pt a b e) = fun τ => (a : ℝ) / e * τ.im` using `funext fun τ => pt_im ha he b τ`. Rewrite using `[h]`. Establish `ha' : (0 : ℝ) < a` using `by exact_mod_cast ha`. Establish `he' : (0 : ℝ) < e` using `by exact_mod_cast he`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (0 : ℝ) < (a : ℝ) / e` using `by positivity`. Conclude with `Filter.Tendsto.const_mul_atTop hc Filter.tendsto_comap`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_pt {a e : ℕ} (ha : 0 < a) (he : 0 < e) (b : ℕ) :
     Filter.Tendsto (pt a b e) atImInfty atImInfty := by
@@ -89,14 +89,14 @@ theorem tendsto_pt {a e : ℕ} (ha : 0 < a) (he : 0 < e) (b : ℕ) :
   exact Filter.Tendsto.const_mul_atTop hc Filter.tendsto_comap
 
 /- English proof (translation)
-Conclude with `hf.comp_tendsto (tendsto_pt ha he b)`.
+A detailed English derivation is pending.
 -/
 theorem bdd_comp_pt {a e : ℕ} (ha : 0 < a) (he : 0 < e) (b : ℕ) {f : ℍ → ℂ}
     (hf : IsBoundedAtImInfty f) : IsBoundedAtImInfty (fun τ => f (pt a b e τ)) := by
   exact hf.comp_tendsto (tendsto_pt ha he b)
 
 /- English proof (translation)
-Establish `hA` using `isMF_AA.mdiff`. Establish `hD` using `isMF_DD.mdiff`. Conclude with `(hA.mul (mdiff_comp_pt ht.1 ht.2 t.2.1 hD)).sub ((mdiff_comp_pt ht.1 ht.2 t.2.1 hA).mul hD)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fac_mdiff {t : ℕ × ℕ × ℕ} (ht : 0 < t.1 ∧ 0 < t.2.2) : MDiff (fac t) := by
   have hA := isMF_AA.mdiff
@@ -104,7 +104,7 @@ theorem fac_mdiff {t : ℕ × ℕ × ℕ} (ht : 0 < t.1 ∧ 0 < t.2.2) : MDiff (
   exact (hA.mul (mdiff_comp_pt ht.1 ht.2 t.2.1 hD)).sub ((mdiff_comp_pt ht.1 ht.2 t.2.1 hA).mul hD)
 
 /- English proof (translation)
-Establish `hA` using `isMF_AA.bdd`. Establish `hD` using `isMF_DD.bdd`. Conclude with `(hA.mul (bdd_comp_pt ht.1 ht.2 t.2.1 hD)).sub ((bdd_comp_pt ht.1 ht.2 t.2.1 hA).mul hD)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fac_bdd {t : ℕ × ℕ × ℕ} (ht : 0 < t.1 ∧ 0 < t.2.2) : IsBoundedAtImInfty (fac t) := by
   have hA := isMF_AA.bdd
@@ -112,11 +112,11 @@ theorem fac_bdd {t : ℕ × ℕ × ℕ} (ht : 0 < t.1 ∧ 0 < t.2.2) : IsBounded
   exact (hA.mul (bdd_comp_pt ht.1 ht.2 t.2.1 hD)).sub ((bdd_comp_pt ht.1 ht.2 t.2.1 hA).mul hD)
 
 /- English proof (translation)
-Unfold `Gm`. Establish `key : ∀ s : Finset (ℕ × ℕ × ℕ), s ⊆ Tm m → MDiff (fun τ => ∏ t ∈ s, fac t τ)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_`. Simplify using `using (mdifferentiable_const : MDiff (fun _ : ℍ => (1 : ℂ)))`. Consider the case `insert t s ht ih`. Introduce `hs`. Simplify using `only [Finset.prod_insert ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(fac_mdiff (Tm_pos hm (hs (Finset.mem_insert_self t s)))).mul (ih (fun x hx => hs (Finset.mem_insert_of_mem hx)))`. Conclude with `key _ subset_rfl`.
+A detailed English derivation is pending.
 -/
 theorem Gm_mdiff {m : ℕ} (hm : 0 < m) : MDiff (Gm m) := by
   unfold Gm
@@ -134,11 +134,11 @@ theorem Gm_mdiff {m : ℕ} (hm : 0 < m) : MDiff (Gm m) := by
   exact key _ subset_rfl
 
 /- English proof (translation)
-Unfold `Gm`. Establish `key : ∀ s : Finset (ℕ × ℕ × ℕ), s ⊆ Tm m → IsBoundedAtImInfty (fun τ => ∏ t ∈ s, fac t τ)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_`. Simplify using `only [Finset.prod_empty]`. Conclude with `Filter.const_boundedAtFilter atImInfty (1 : ℂ)`. Consider the case `insert t s ht ih`. Introduce `hs`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.prod_insert ht]`. Conclude with `Filter.BoundedAtFilter.mul (fac_bdd (Tm_pos hm (hs (Finset.mem_insert_self t s)))) (ih (fun x hx => hs (Finset.mem_insert_of_mem hx)))`. Conclude with `key _ subset_rfl`.
+A detailed English derivation is pending.
 -/
 theorem Gm_bdd {m : ℕ} (hm : 0 < m) : IsBoundedAtImInfty (Gm m) := by
   unfold Gm
@@ -157,7 +157,7 @@ theorem Gm_bdd {m : ℕ} (hm : 0 < m) : IsBoundedAtImInfty (Gm m) := by
   exact key _ subset_rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Rewrite using `[SL_slash_apply, Gm_smul hm γ τ]`. Establish `hd : denom γ τ ≠ 0` using `denom_ne_zero _ τ`. Establish `: (24 * ((Tm m).card : ℤ)) = ((24 * (Tm m).card : ℕ) : ℤ)` using `by push_cast; ring`. Rewrite using `[this, zpow_neg, zpow_natCast]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -171,9 +171,9 @@ theorem Gm_slash {m : ℕ} (hm : 0 < m) (γ : SL(2, ℤ)) :
   field_simp
 
 /- English proof (translation)
-Use `⟨{ toFun := Gm m slash_action_eq' := ?_ holo' := Gm_mdiff hm bdd_at_cusps' := ?_ }, fun τ => rfl⟩` and prove the remaining obligations. Introduce `A hA`. Take `⟨A, rfl⟩` from `hA`. Conclude with `Gm_slash hm A`. Introduce `c hc`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[OnePoint.isBoundedAt_iff_forall_SL2Z hc]`. Introduce `γ _`. Rewrite using `[Gm_slash hm γ]`. Conclude with `Gm_bdd hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmForm {m : ℕ} (hm : 0 < m) : IsMF (24 * ((Tm m).card : ℤ)) (Gm m) := by
   refine ⟨{ toFun := Gm m

@@ -12,11 +12,11 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainN
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ y hy hK`. Establish `hl1 : (1 : ℝ) < (l : ℝ)` using `Formalism.MainNotions.N.PreambleDegrees.Loc.one_lt_l`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Establish `hn : ‖y‖ ^ 2 = (l : ℝ)⁻¹`. Rewrite using `[← norm_pow, hy, norm_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.MainNotions.N.PreambleDegrees.Loc.norm_l`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hn` using `[norm_zero]`. Establish `: (l : ℝ)⁻¹ ≠ 0` using `inv_ne_zero hl0.ne'`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this (by rw [← hn]; norm_num)`. Take `⟨k, hk⟩` from `Formalism.MainNotions.N.PreambleDegrees.Loc.norm_Kur_zpow hK hy0`. Rewrite `hn` using `[hk, ← zpow_natCast, ← zpow_mul, ← zpow_neg_one]`. Establish `h` using `zpow_right_injective₀ hl0 hl1.ne' hn`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sqrt_neg_l_not_mem_Kur : ∀ (l : ℕ) [Fact l.Prime] (y : Om l), y ^ 2 = -(l : Om l) → y ∉ MaximalUnramifiedExtension l := by
   intro l _ y hy hK

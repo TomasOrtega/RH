@@ -5,39 +5,35 @@ open scoped Matrix
 namespace UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `F K _ _ n τ ψ hψ`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨1, by simp, fun M => Subsingleton.elim _ _⟩`. Establish `i0 : Fin n` using `⟨0, hn⟩`. Use `haveI : Nonempty (Fin n) := ⟨i0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsc : ∀ {R : Type} [Field R] (i k : Fin n) (x : R), Matrix.single i k x = Matrix.scalar (Fin n) x * Matrix.single i k 1`. Introduce `R _ i k x`. Rewrite using `[Matrix.scalar_apply, ← Matrix.smul_eq_diagonal_mul, Matrix.smul_single, smul_eq_mul, mul_one]`. Establish `hsum1 : ∀ {R : Type} [Field R], (∑ k : Fin n, Matrix.single k k (1 : R)) = 1`. Introduce `R _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `r s`. Rewrite using `[Matrix.sum_apply, Finset.sum_eq_single r]`. Distinguish the cases in `h : r = s`. Substitute `h` using the available equality. Simplify using `[Matrix.single_apply]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.single_apply, Matrix.one_apply, h]`. Introduce `k _ hk`. Simplify using `[Matrix.single_apply, hk]`. Simplify using the standard rewrite rules. Establish `hEE : ∀ i j j' k, ψ (Matrix.single i j 1) * ψ (Matrix.single j' k 1) = if j = j' then ψ (Matrix.single i k 1) else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j j' k`. Rewrite using `[← map_mul]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_single_same, one_mul]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.single_mul_single_of_ne _ _ _ _ h _, map_zero]`. Establish `hP : ψ (Matrix.single i0 i0 1) ≠ 0`. Introduce `h0`. Establish `hk : ∀ k, ψ (Matrix.single k k 1) = 0`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ψ (Matrix.single k k 1) = ψ (Matrix.single k i0 1) * ψ (Matrix.single i0 i0 1) * ψ (Matrix.single i0 k 1)`. Rewrite using `[hEE k i0 i0 i0, if_pos rfl, hEE k i0 i0 k, if_pos rfl]`. Rewrite using `[e1, h0, mul_zero, zero_mul]`. Establish `h1 : ψ 1 = 0`. Rewrite using `[← hsum1 (R := F), map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.sum_eq_zero fun k _ => hk k`. Rewrite `h1` using `[map_one]`. Conclude with `one_ne_zero h1`. Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab⟩ : ∃ a b, ψ (Matrix.single i0 i0 1) a b ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_neg at h`. Conclude with `hP (Matrix.ext h)`. Establish `hL : ∀ i k, ψ (Matrix.single i k 1) * (∑ j, ψ (Matrix.single j i0 1) * Matrix.single b j 1) = ψ (Matrix.single i i0 1) * Matrix.single b k 1`. Introduce `i k`. Rewrite using `[Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `l1 : ∀ j, ψ (Matrix.single i k 1) * (ψ (Matrix.single j i0 1) * Matrix.single b j 1) = if k = j then ψ (Matrix.single i i0 1) * Matrix.single b k 1 else 0`. Introduce `j`. Rewrite using `[← mul_assoc, hEE]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[zero_mul]`. Simplify using `only [l1, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hR : ∀ i k, (∑ j, ψ (Matrix.single j i0 1) * Matrix.single b j 1) * Matrix.single i k 1 = ψ (Matrix.single i i0 1) * Matrix.single b k 1`. Introduce `i k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Establish `l2 : ∀ j, ψ (Matrix.single j i0 1) * Matrix.single b j 1 * Matrix.single i k 1 = if j = i then ψ (Matrix.single i i0 1) * Matrix.single b k 1 else 0`. Introduce `j`. Rewrite using `[mul_assoc]`. Use `split_ifs with h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_single_same, one_mul]`. Rewrite using `[Matrix.single_mul_single_of_ne _ _ _ _ h _, mul_zero]`. Simplify using `only [l2, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `⟨∑ j, ψ (Matrix.single j i0 1) * Matrix.single b j 1, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hTS : (∑ k, Matrix.single k a (ψ (Matrix.single i0 i0 1) a b)⁻¹ * ψ (Matrix.single i0 k 1)) * (∑ j, ψ (Matrix.single j i0 1) * Matrix.single b j 1) = 1`. Rewrite using `[Finset.sum_mul, ← hsum1 (R := K)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, hL, ← mul_assoc, Matrix.single_mul_mul_single, inv_mul_cancel₀ hab, one_mul]`. Establish `hd` using `congrArg Matrix.det hTS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hd` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `right_ne_zero_of_mul_eq_one hd`. Introduce `M`. Establish `hM : M = ∑ i, ∑ k, Matrix.scalar (Fin n) (M i k) * Matrix.single i k 1` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single M]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => hsc i k (M i k)`.
-
-Establish `hMt : M.map τ = ∑ i, ∑ k, Matrix.scalar (Fin n) (τ (M i k)) * Matrix.single i k 1` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single (M.map τ)]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => hsc i k _`. Rewrite using `[hMt]`. Use `conv_lhs => rw [hM]`. Rewrite using `[map_sum, Finset.sum_mul, Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hψ, mul_assoc, hL, ← hR, ← mul_assoc, ← mul_assoc, (Matrix.scalar_commute (τ (M i k)) (fun r' => Commute.all _ r') _).eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sN_of : SN := by
   intro F K _ _ n τ ψ hψ

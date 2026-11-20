@@ -9,17 +9,15 @@ namespace ReciprocityTheory.ChartRestriction.DS.TRGap
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Establish `hk' : kᴴ ∈ Kset ε` using `kset_conjTranspose hk`. Establish `hkk : kᴴ * k = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `(Matrix.mem_unitaryGroup_iff').1 hk.1`. Establish `hkk' : k * kᴴ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `(Matrix.mem_unitaryGroup_iff).1 hk.1`. Establish `hcomm : ∀ g : Fock n, ff ε kᴴ (cmFock j b g) = cmFock j b (ff ε kᴴ g)`. Introduce `g`. Rewrite using `[ff_cmFock_apply hk' j b g, Finset.sum_eq_single (j, b)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[adMat, IsPhys, hjb]`. Introduce `z _ hz`. Establish `: adMat ε kᴴ z (j, b) = 0`. Unfold `adMat`. Distinguish the cases in `h1 : IsPhys ε z`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h1, if_neg (show ¬IsPhys ε (j, b) from hjb)]`. Rewrite using `[if_neg h1, if_neg hz]`. Rewrite using `[this, star_zero, zero_smul]`. Simplify using the standard rewrite rules. Establish `h1 : ff ε kᴴ (ff ε k f) = f`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← AlgHom.comp_apply, ← ff_mul hk' hk, hkk, ff_one, AlgHom.id_apply]`. Establish `h2 : ∀ g : Fock n, ff ε k (ff ε kᴴ g) = g`. Introduce `g`. Rewrite using `[← AlgHom.comp_apply, ← ff_mul hk hk', hkk', ff_one, AlgHom.id_apply]`. Use `congrArg (ff ε k) (hcomm (ff ε k f))` as an intermediate fact.
-
-Rewrite `this` using `[h1, h2]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ff_cmFock_nonphys {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) {j b : Fin n}
     (hjb : ¬(ε j = true ∧ ε b = false)) (f : Fock n) : cmFock j b (ff ε k f) = ff ε k (cmFock j b f) := by
@@ -55,7 +53,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `v f`. Simplify using `only [LinearMap.comp_apply, wK, cmT, TensorProduct.map_tmul, LinearMap.id_apply, AlgHom.toLinearMap_apply, ff_cmFock_nonphys hk hjb]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem cmT_wK (hD : IsDerivedOn ε σ D E) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) {j b : Fin n}
     (hjb : ¬(ε j = true ∧ ε b = false)) :
@@ -66,7 +64,7 @@ theorem cmT_wK (hD : IsDerivedOn ε σ D E) {k : Matrix (Fin n) (Fin n) ℂ} (hk
     AlgHom.toLinearMap_apply, ff_cmFock_nonphys hk hjb]
 
 /- English proof (translation)
-Rewrite `hy`, the goal using `[mem_physicalSubspace_iff]`. Introduce `j b hjb`. Use `LinearMap.congr_fun (cmT_wK hD hk hjb) y` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[this, hy j b hjb, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem wK_physSub (hD : IsDerivedOn ε σ D E) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε)
     {y : TensorProduct ℂ D (Fock n)} (hy : y ∈ physicalSubspace ε) : wK hD hk y ∈ physicalSubspace ε := by
@@ -77,11 +75,9 @@ theorem wK_physSub (hD : IsDerivedOn ε σ D E) {k : Matrix (Fin n) (Fin n) ℂ}
   rw [this, hy j b hjb, map_zero]
 
 /- English proof (translation)
-Set `T : Submodule ℂ D` to `(genSub E V).comap (sigD hD hk)`. Establish `hVG : V ≤ genSub E V` using `fun v hv => Submodule.mem_sInf.2 fun T hT => hT.1 hv`. Establish `hT : genSub E V ≤ T`. Use `sInf_le ⟨fun x hx => ?_, fun a b x hx => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hweq⟩` from `hVK k hk x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: sigD hD hk x = w` using `Subtype.ext hweq.symm`. Use `show sigD hD hk x ∈ genSub E V`. Rewrite using `[this]`. Conclude with `hVG hw`. Use `show sigD hD hk (E a b x) ∈ genSub E V`.
-
-Rewrite using `[sigD_E hσ hD hk a b x, actM]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.sum_mem _ fun d _ => Submodule.smul_mem _ _ (generatedSub_stable E V c d hx)`. Conclude with `hT hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sigD_genSub (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {V : Submodule ℂ D}
     (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε)
@@ -103,9 +99,9 @@ theorem sigD_genSub (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) 
   exact hT hv
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `hy`. Set `sG : genSub E V →ₗ[ℂ] genSub E V` to `(sigD hD hk).restrict fun v hv => sigD_genSub hσ hD hVK hk hv`. Use `⟨TensorProduct.map sG (ff ε k).toLinearMap x, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply, ← TensorProduct.map_comp]`. Use `show _ = (TensorProduct.map (sigD hD hk) (ff ε k).toLinearMap ∘ₗ TensorProduct.map (genSub E V).subtype LinearMap.id) x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← TensorProduct.map_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem wK_tensFock_genSub (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {V : Submodule ℂ D}
     (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε)
@@ -120,9 +116,9 @@ theorem wK_tensFock_genSub (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε �
   rfl
 
 /- English proof (translation)
-Introduce and unpack `y ⟨⟨hyD, hyT⟩, hyP⟩`. Use `⟨⟨?_, wK_tensFock_genSub hσ hD hVK hk hyT⟩, wK_physSub hD hk hyP⟩` and prove the remaining obligations. Rewrite `hyD`, the goal using `[SetLike.mem_coe, LinearMap.mem_ker]`. Establish `h1` using `LinearMap.congr_fun (wK_dOp hσ hD hk) y`. Establish `h2` using `LinearMap.congr_fun (wK_dOp' hσ hD hk) y`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Module.End.mul_apply] at h1 h2`. Rewrite using `[LinearMap.add_apply, ← h1, ← h2, ← map_add, ← LinearMap.add_apply, hyD, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem wK_KK (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {V : Submodule ℂ D}
     (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v) (k : Matrix (Fin n) (Fin n) ℂ) (hk : k ∈ Kset ε) :
@@ -137,9 +133,9 @@ theorem wK_KK (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {V : S
   rw [LinearMap.add_apply, ← h1, ← h2, ← map_add, ← LinearMap.add_apply, hyD, map_zero]
 
 /- English proof (translation)
-Take `⟨z, _, _, _, _, hKK, hirr⟩` from `ker_D_eq_kLowSpan hσ hD hV hc hVK hint hanti hgap hthr hp hq`. Establish `hirr' : IsKIrrHW ε (diagE ε (eT E) cpT cmT) (gaW ε lam) (LinearMap.ker (dOp ε (eT E) cpT + dOp' ε (eT E) cmT) ⊓ tensFock (genSub E V) ⊓ physicalSubspace ε)`. Rewrite using `[hKK]`. Conclude with `hirr`. Establish `: FiniteDimensional ℂ (LinearMap.ker (dOp ε (eT E) cpT + dOp' ε (eT E) cmT) ⊓ tensFock (genSub E V) ⊓ physicalSubspace ε : Submodule ℂ (TensorProduct ℂ D (Fock n)))` using `hirr'.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨TSub _, inferInstance, inferInstance, inferInstance, tOp hD (wK_KK hσ hD hVK), tSub_nontrivial hirr', tOp_isURepOn hD _ hσ, tOp_isKTypeOf hD _ hσ hirr', fun k hk => tOp_trace hD _ hk⟩`.
+A detailed English derivation is pending.
 -/
 theorem kType_clause {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {lam : Fin n → ℝ} {h : ℝ}

@@ -4,13 +4,13 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 namespace Formalism.L2.SG.Pf.IndexCocycleOrbits
 
 /- English proof (translation)
-Establish `keyR : (aB : ℝ) * n = m * aC` using `by exact_mod_cast key`. Establish `hmR : (m : ℝ) ≠ 0` using `by exact_mod_cast hm`. Establish `hnR : (n : ℝ) ≠ 0` using `by exact_mod_cast hn`. Use `push_cast`. Distinguish the cases in `haC : (aC : ℝ) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Consider separately whether the proposition holds or fails.
 
-Establish `haB : (aB : ℝ) = 0`. Establish `h0 : (aB : ℝ) * n = 0` using `by rw [keyR, haC, mul_zero]`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hnR`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[haB, haC]`. Simplify using the standard rewrite rules. Establish `haB : (aB : ℝ) ≠ 0`. Introduce `h`. Establish `h0 : (m : ℝ) * aC = 0` using `by rw [← keyR, h, zero_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `mul_eq_zero.mp h0 with h' | h'` into its components or cases. Conclude with `hmR h'`. Conclude with `haC h'`. Rewrite using `[eq_comm, mul_div_assoc', div_eq_div_iff haC haB]`. Take the linear combination `(cA : ℝ) * keyR`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem index_ratio_identity (m n aB aC cA : ℕ) (hm : m ≠ 0) (hn : n ≠ 0) (key : aB * n = m * aC) :
     ((m * cA : ℕ) : ℝ) / (aB : ℝ) = (n : ℝ) * ((cA : ℝ) / (aC : ℝ)) := by
@@ -36,11 +36,11 @@ theorem index_ratio_identity (m n aB aC cA : ℕ) (hm : m ≠ 0) (hn : n ≠ 0) 
     linear_combination (cA : ℝ) * keyR
 
 /- English proof (translation)
-Introduce `G _ A B C hBC hn`. Establish `hBinf : B ⊓ C = B` using `inf_eq_left.mpr hBC`. Establish `e1 : B.relIndex (C ⊓ A) * C.relIndex A = B.relIndex A`. Establish `h` using `Subgroup.relIndex_inf_mul_relIndex B C A`. Rewrite `h` using `[hBinf]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e2 : A.relIndex (B ⊓ C) * B.relIndex C = (A ⊓ B).relIndex C` using `Subgroup.relIndex_inf_mul_relIndex A B C`. Rewrite `e2` using `[hBinf]`. Establish `e3 : B.relIndex (A ⊓ C) * A.relIndex C = (B ⊓ A).relIndex C` using `Subgroup.relIndex_inf_mul_relIndex B A C`. Rewrite `e3` using `[inf_comm B A, inf_comm A C]`. Establish `hm : B.relIndex (C ⊓ A) ≠ 0` using `fun h => hn (Subgroup.relIndex_eq_zero_of_le_right inf_le_left h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : A.relIndex B * B.relIndex C = B.relIndex (C ⊓ A) * A.relIndex C` using `by rw [e2, e3]`. Unfold `IdxRatio`. Rewrite using `[← e1]`. Conclude with `index_ratio_identity _ _ _ _ _ hm hn key`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idxCocycle : IdxCocycle := by
   intro G _ A B C hBC hn

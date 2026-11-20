@@ -21,11 +21,11 @@ noncomputable section
 namespace TwoBlockCycleExpand
 
 /- English proof (translation)
-Establish `hk : s.card ≤ D` using `by simpa using Finset.card_le_univ s`. Establish `h1 : Fintype.card {j : Fin D // j ∈ s} = Fintype.card {j : Fin D // (j : ℕ) < s.card}`. Rewrite using `[Fintype.card_coe]`. Use `(Fintype.card_fin _).symm.trans (Fintype.card_congr ?_)` and prove the remaining obligations. Conclude with `{ toFun := fun i => ⟨⟨i, lt_of_lt_of_le i.2 hk⟩, i.2⟩ invFun := fun j => ⟨j.1, j.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : Fintype.card {j : Fin D // ¬ j ∈ s} = Fintype.card {j : Fin D // ¬ (j : ℕ) < s.card}`. Rewrite using `[Fintype.card_subtype_compl, Fintype.card_subtype_compl, h1]`. Use `⟨Equiv.subtypeCongr (Fintype.equivOfCardEq h1) (Fintype.equivOfCardEq h2), fun j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j ∈ s`. Simplify using `only [Equiv.subtypeCongr, Equiv.trans_apply, Equiv.sumCompl_symm_apply_of_pos hj, Equiv.sumCongr_apply, Sum.map_inl, Equiv.sumCompl_apply_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `iff_of_true (Fintype.equivOfCardEq h1 ⟨j, hj⟩).2 hj`. Simplify using `only [Equiv.subtypeCongr, Equiv.trans_apply, Equiv.sumCompl_symm_apply_of_neg hj, Equiv.sumCongr_apply, Sum.map_inr, Equiv.sumCompl_apply_inr]`. Conclude with `iff_of_false (Fintype.equivOfCardEq h2 ⟨j, hj⟩).2 hj`.
+A detailed English derivation is pending.
 -/
 theorem exists_perm_mem_iff {D : ℕ} (s : Finset (Fin D)) :
     ∃ σ : Equiv.Perm (Fin D), ∀ j, ((σ j : ℕ) < s.card ↔ j ∈ s) := by
@@ -50,17 +50,17 @@ theorem exists_perm_mem_iff {D : ℕ} (s : Finset (Fin D)) :
     exact iff_of_false (Fintype.equivOfCardEq h2 ⟨j, hj⟩).2 hj
 
 /- English proof (translation)
-Establish `e : (fun _ : Fin D => ![a, b]) = (fun _ => a • (Pi.single 0 1 : Fin 2 → ℤ)) + (fun _ => b • (Pi.single 1 1 : Fin 2 → ℤ))`. Use function extensionality and compare the values at `j k`. Apply the tactic sequence `fin_cases k <;> simp`. Establish `key : ∀ t : Finset (Fin D), M (t.piecewise (fun _ => a • (Pi.single 0 1 : Fin 2 → ℤ)) (fun _ => b • (Pi.single 1 1 : Fin 2 → ℤ))) = a ^ t.card * b ^ (D - t.card) * M (twoBlockDegList D t.card)`. Introduce `t`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨σ, hσ⟩` from `exists_perm_mem_iff t`. Establish `hpw : t.piecewise (fun _ => a • (Pi.single 0 1 : Fin 2 → ℤ)) (fun _ => b • (Pi.single 1 1 : Fin 2 → ℤ)) = fun j => (if j ∈ t then a else b) • (twoBlockDegList D t.card ∘ σ) j`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j ∈ t`. Simplify using `[Finset.piecewise, hj, twoBlockDegList, (hσ j).mpr hj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `: ¬ (σ j : ℕ) < t.card` using `fun h => hj ((hσ j).mp h)`. Simplify using `[Finset.piecewise, hj, twoBlockDegList, this]`. Rewrite using `[hpw, M.map_smul_univ, hsym, Finset.prod_ite, Finset.prod_const, Finset.prod_const, smul_eq_mul]`. Use `congr 2`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Use `congr 1`. Rewrite using `[Finset.filter_not, Finset.card_sdiff_of_subset (Finset.filter_subset _ _)]`. Simplify using the standard rewrite rules. Rewrite using `[e, M.map_add_univ]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[key]`. Rewrite using `[← Finset.powerset_univ]`. Use `(Finset.sum_powerset_apply_card (fun i => a ^ i * b ^ (D - i) * M (twoBlockDegList D i)) (x := (Finset.univ : Finset (Fin D)))).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.card_univ, Fintype.card_fin]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem expand {D : ℕ} (M : MultilinearMap ℤ (fun _ : Fin D => Fin 2 → ℤ) ℤ)
     (hsym : ∀ (v : Fin D → Fin 2 → ℤ) (σ : Equiv.Perm (Fin D)), M (v ∘ σ) = M v) (a b : ℤ) :
@@ -101,7 +101,7 @@ theorem expand {D : ℕ} (M : MultilinearMap ℤ (fun _ : Fin D => Fin 2 → ℤ
   ring
 
 /- English proof (translation)
-Simplify using `only [geoNum, Fin.init_update_last, Function.update_self]`. Use `split_ifs`. Simplify using `[add_mul, Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem geoNum_update_last_add {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (W : Ideal (MRing ι))
     {n : ℕ} (v : Fin (n + 1) → K → ℤ) (x y : K → ℤ) :
@@ -113,7 +113,7 @@ theorem geoNum_update_last_add {K : Type} [Fintype K] {ι : K → Type} [∀ k, 
   · simp
 
 /- English proof (translation)
-Simplify using `only [geoNum, Fin.init_update_last, Function.update_self]`. Use `split_ifs`. Simplify using `[mul_assoc, Finset.mul_sum]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem geoNum_update_last_smul {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (W : Ideal (MRing ι))
     {n : ℕ} (v : Fin (n + 1) → K → ℤ) (c : ℤ) (x : K → ℤ) :
@@ -125,7 +125,7 @@ theorem geoNum_update_last_smul {K : Type} [Fintype K] {ι : K → Type} [∀ k,
   · simp
 
 /- English proof (translation)
-Rewrite using `[← hsym (Function.update v j z) (Equiv.swap j (Fin.last n)), Function.update_comp_equiv, Equiv.symm_swap, Equiv.swap_apply_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem geoNum_update_eq_last {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (W : Ideal (MRing ι))
     {n : ℕ} (hsym : ∀ (v : Fin (n + 1) → K → ℤ) (σ : Equiv.Perm (Fin (n + 1))), geoNum (n + 1) W (v ∘ σ) = geoNum (n + 1) W v)
@@ -162,11 +162,11 @@ def geoNumMulti {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 variable {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Establish `hPp : P.IsPrime` using `hP.2.1.1`. Establish `hWp : W.IsPrime` using `hW.1.1.1`. Establish `hsP : s ∉ P`. Introduce `hsP`. Establish `h1` using `hW.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[sup_eq_left.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hsP), Ideal.minimalPrimes_eq_subsingleton_self, Set.mem_singleton_iff]`. Conclude with `hv (h1 ▸ hP.2.2.1)`. Establish `hdim : ringKrullDim (MRing (FinTwoTypeFamily κ) ⧸ W) = ((D + Fintype.card (Fin 2) : ℕ) : WithBot ℕ∞)`. Establish `h` using `dim_quot_minimal_add_one P W s hsP hW.1`. Rewrite `h` using `[hP.2.2.2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_withBot_eq_of_add_one (h.trans ?_)` and prove the remaining obligations. Use `congr 1`. Establish `hMP : IsMultiProjPrime W` using `⟨hWp, isMultiHomogIdeal_of_mem_minimalPrimes hP.2.1.2.1 hs hW.1, hW.2⟩`. Establish `: Fact (charOf W).Prime` using `⟨charOf_prime hWp hv⟩`. Rewrite using `[← Bridge.intNum_map_eq_geoNum (charOf W) D W hMP (Inter.C_charOf_mem W) hdim, ← Bridge.intNum_map_eq_geoNum (charOf W) D W hMP (Inter.C_charOf_mem W) hdim, MixedNumberPolynomial.intNum_perm]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geoNum_comp_perm {P W : Ideal (MRing (FinTwoTypeFamily κ))} {D : ℕ} (hP : IsArithVar P (D + 1)) {s : MRing (FinTwoTypeFamily κ)}
     {α : Fin 2 → ℕ} (hs : IsMultiHomog s α) (hW : W ∈ divSupp P s) (hv : ¬ IsHorizontal W)
@@ -191,11 +191,11 @@ theorem geoNum_comp_perm {P W : Ideal (MRing (FinTwoTypeFamily κ))} {D : ℕ} (
     MixedNumberPolynomial.intNum_perm]
 
 /- English proof (translation)
-Establish `hfin` using `divSupp_finite P s`. Unfold `vertCycleNum`. Repeatedly rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun W hW => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hW` using `[Set.Finite.mem_toFinset]`. Use `split_ifs with hh`. Simplify using the standard rewrite rules. Establish `h` using `expand (geoNumMulti W D fun v σ => geoNum_comp_perm hP hs hW hh v σ) (fun v σ => geoNum_comp_perm hP hs hW hh v σ) (a : ℤ) (b : ℤ)`. Express the relevant statement in the definitionally equal form `geoNum D W _ = ∑ i ∈ Finset.range (D + 1), _ * geoNum D W _ at h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Use `push_cast`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem vertCycleNum_expand {P : Ideal (MRing (FinTwoTypeFamily κ))} {D : ℕ} (hP : IsArithVar P (D + 1)) {s : MRing (FinTwoTypeFamily κ)}
     {α : Fin 2 → ℕ} (hs : IsMultiHomog s α) (a b : ℕ) :
@@ -221,16 +221,16 @@ theorem vertCycleNum_expand {P : Ideal (MRing (FinTwoTypeFamily κ))} {D : ℕ} 
     ring
 
 /- English proof (translation)
-The claim follows from `isMultiHomog_X _`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomog_twoBlockDen (c : κ) :
     IsMultiHomog (twoBlockDen c) (fun k => ∑ i, (Finsupp.single (⟨0, c⟩ : Σ k, FinTwoTypeFamily κ k) 1) ⟨k, i⟩) :=
   isMultiHomog_X _
 
 /- English proof (translation)
-Introduce `m hm k`. Unfold `twoBlockNum at hm`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_sum]`. Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hm`. Rewrite `hj` using `[MvPolynomial.coeff_C_mul, MvPolynomial.coeff_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm' : Finsupp.single (⟨1, j.2⟩ : Σ k, FinTwoTypeFamily κ k) 1 = m`. Assume the negation of the conclusion as `h`. Simplify using `[h] at hj`. Substitute `hm'` using the available equality. Apply the tactic sequence `fin_cases k <;> simp [Finsupp.single_apply]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isMultiHomog_twoBlockNum (l : Ix κ → ℤ) :
     IsMultiHomog (twoBlockNum l) (fun k : Fin 2 => if k = 1 then 1 else 0) := by
@@ -251,13 +251,13 @@ end TwoBlockCycleExpand
 open TwoBlockCycleExpand in
 
 /- English proof (translation)
-Establish `hA` using `CoordArithOfFnField.proof`. Establish `hF` using `TwoBlockFnField.proof`. Introduce `D Ω _ _ κ _ x B c l hx _ hB _ _ a b`. Take `⟨hFp, -⟩` from `hF Ω κ x B hB`. Establish `hxA : IsArithVar (mCoordIdeal (ι` using `GlobalTheory κ) x) (D + 1) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← coordIdeal_eq_mCoordIdeal]`. Conclude with `hx`. Take `⟨i, hi⟩` from `hx.2.1.2.2 ()`. Establish `hx0 : x ≠ 0` using `fun h => hi ((X_mem_coordIdeal_iff x _).mpr (by rw [h]; rfl))`. Take `⟨B', -, hB'⟩` from `isInvMat_mul hB`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hBx0 : matAct B x ≠ 0` using `fun h => hx0 ((matAct_eq_zero_iff hB' x).mp h)`. Take `⟨⟨⟨⟩, i₀⟩, hi₀⟩` from `Function.ne_iff.mp hx0`. Take `⟨⟨⟨⟩, i₁⟩, hi₁⟩` from `Function.ne_iff.mp hBx0`. Establish `hpA : IsArithVar (twoBlockIdeal x (matAct B x)) (D + 1)` using `hA Unit (GlobalTheory κ) (Fin 2) (FinTwoTypeFamily κ) Ω x (pair x (matAct B x)) (D + 1) ⟨0⟩ (fun k => by fin_cases k`. Conclude with `⟨i₀, by simpa [pair] using hi₀⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨i₁, by simpa [pair] using hi₁⟩) hFp.symm hxA`. Unfold `twoBlockVert`. Rewrite using `[vertCycleNum_expand hpA (isMultiHomog_twoBlockNum l) a b, vertCycleNum_expand hpA (isMultiHomog_twoBlockDen c) a b, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem TwoBlockCycleExpand.proof : TwoBlockCycleExpand.Statement := by
   classical

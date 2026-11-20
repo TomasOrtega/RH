@@ -15,7 +15,7 @@ def HeckeCharEqOfSplit {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NDa
   ∀ χ χ' : A.CG 1, AgreeAtAlmostAllSplit A χ χ' → χ = χ'
 
 /- English proof (translation)
-Simplify using `only [AgreeAtAlmostAllSplit, Filter.eventually_cofinite, Classical.not_imp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem agreeAtAlmostAllSplit_iff {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂}
     (A : NAut N) (χ χ' : A.CG 1) :
@@ -24,14 +24,14 @@ theorem agreeAtAlmostAllSplit_iff {R : Ranks} {H : Host R} {what₂ : Rows.Data 
   simp only [AgreeAtAlmostAllSplit, Filter.eventually_cofinite, Classical.not_imp]
 
 /- English proof (translation)
-Simplify using `[AgreeAtAlmostAllSplit]`.
+Simplify using the standard rewrite rules.
 -/
 example {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂}
     (A : NAut N) (χ : A.CG 1) : AgreeAtAlmostAllSplit A χ χ := by
   simp [AgreeAtAlmostAllSplit]
 
 /- English proof (translation)
-The claim follows from `h χ χ' ((agreeAtAlmostAllSplit_iff A χ χ').2 (Filter.Eventually.of_forall hw))`.
+A detailed English derivation is pending.
 -/
 theorem HeckeCharEqOfSplit.of_forall {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂}
     {A : NAut N} (h : HeckeCharEqOfSplit N A) (χ χ' : A.CG 1)

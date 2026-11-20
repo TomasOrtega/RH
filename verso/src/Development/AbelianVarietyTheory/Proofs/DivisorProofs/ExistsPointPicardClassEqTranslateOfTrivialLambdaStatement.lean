@@ -18,7 +18,7 @@ open scoped CategoryTheory.Obj
 open GlobalTheory.CechPic (Pic cls lam)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PointTranslate.exists_point_cls_eq_lam` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPointPicardClassEqTranslateOfTrivialLambda.lean&line=23#L23)
 -/

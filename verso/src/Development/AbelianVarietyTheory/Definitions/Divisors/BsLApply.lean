@@ -51,7 +51,7 @@ def fibDens (G : Mat m ℂ) (y : Cell m → ℂ) : ℝ :=
 omit [Fintype ι] in
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [upU, GlobalTheory.FlagFibre.uni, Matrix.of_apply, Matrix.transpose_apply, eq_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem upU_eq {s : ℕ} (y : Low s → ℂ) : upU y = (GlobalTheory.FlagFibre.uni y)ᵀ := by
   ext a b
@@ -67,7 +67,7 @@ theorem bsL_apply {J : Type} (ε : Fin n ≃ Fin d ⊕ J) (w : V n) (a : Fin d) 
 omit [Fintype ι] in
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[bsL_apply, pt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bsL_pt {J : Type} (ε : Fin n ≃ Fin d ⊕ J) (v : V d) (y : J → ℂ) : bsL ε (pt ε v y) = v := by
   ext a
@@ -76,7 +76,7 @@ theorem bsL_pt {J : Type} (ε : Fin n ≃ Fin d ⊕ J) (v : V d) (y : J → ℂ)
 omit [Fintype ι] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[fb, pt]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fb_pt {J : Type} (ε : Fin n ≃ Fin d ⊕ J) (v : V d) (y : J → ℂ) : fb ε (pt ε v y) = y := by
   funext j

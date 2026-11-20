@@ -12,19 +12,17 @@ private noncomputable def cj (χ : HChar E) (T : Module.End ℂ (Sm E a)) : Modu
   (mulChi a χ).symm.toLinearMap ∘ₗ T ∘ₗ (mulChi a χ).toLinearMap
 
 /- English proof (translation)
-The claim follows from `(mulChi a χ).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 private theorem mul_cj (χ : HChar E) (T : Module.End ℂ (Sm E a)) (φ : Sm E a) :
     mulChi a χ (cj χ T φ) = T (mulChi a χ φ) := (mulChi a χ).apply_symm_apply _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `mulChi a χ (cj χ T φ) ∈ N`. Rewrite using `[mul_cj]`. Conclude with `hT.maps _ hφ`. Use `lie X φ hφ := by`. Apply `(mulChi a χ).injective` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hT.lie X _ hφ`. Establish `h2` using `hχ.2 X (cj χ T φ)`. Express the relevant statement in the definitionally equal form `lie E a X (T (mulChi a χ φ)) = T (lie E a X (mulChi a χ φ)) at h1`. Rewrite `h2` using `[mul_cj, h1, hχ.2, map_add, map_add, map_add, map_smul, map_smul, map_smul, mul_cj]`. Rewrite using `[mul_cj]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `(add_right_cancel h2).symm`. Use `rt g φ hφ := by`. Apply `(mulChi a χ).injective` to reduce the goal to its premises. Establish `h1` using `hT.rt g _ hφ`. Establish `h2` using `rt_mulChi χ g (cj χ T φ)`.
-
-Express the relevant statement in the definitionally equal form `rt E a g (T (mulChi a χ φ)) = T (rt E a g (mulChi a χ φ)) at h1`. Rewrite `h2` using `[mul_cj, h1, rt_mulChi, map_smul, map_smul, map_smul]`. Rewrite using `[mul_cj]`. Conclude with `(smul_right_injective _ (chiDet a χ g).ne_zero h2).symm`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isOp_cj {r : ℝ} {χ : HChar E} (hχ : IsTw (a := a) r χ) {N : Submodule ℂ (Sm E a)}
     {T : Module.End ℂ (Sm E a)} (hT : IsOp N T) : IsOp (N.comap (mulChi a χ).toLinearMap) (cj χ T) where
@@ -50,7 +48,7 @@ private theorem isOp_cj {r : ℝ} {χ : HChar E} (hχ : IsTw (a := a) r χ) {N :
     exact (smul_right_injective _ (chiDet a χ g).ne_zero h2).symm
 
 /- English proof (translation)
-Rewrite using `[shift_apply, shift_apply, zero_mul, zero_smul, add_zero, hχ.2, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, Complex.coe_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem shift_mul {r : ℝ} {χ : HChar E} (hχ : IsTw (a := a) r χ) (X : Lie E a) (φ : Sm E a) :
     shift (lie E a) 0 X (mulChi a χ φ) = mulChi a χ (shift (lie E a) r X φ) := by
@@ -58,7 +56,7 @@ private theorem shift_mul {r : ℝ} {χ : HChar E} (hχ : IsTw (a := a) r χ) (X
     Module.End.one_apply, Complex.coe_smul]
 
 /- English proof (translation)
-Simplify using `only [casA, cas, LinearMap.sub_apply, LinearMap.sum_apply, Module.End.mul_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_sum, map_smul, shift_mul hχ]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem casA_mul {r : ℝ} {χ : HChar E} (hχ : IsTw (a := a) r χ) (c : ℝ) {n : ℕ} (e : Fin n → Herm E a)
     (φ : Sm E a) : casA 0 c e (mulChi a χ φ) = mulChi a χ (casA r c e φ) := by
@@ -66,11 +64,11 @@ private theorem casA_mul {r : ℝ} {χ : HChar E} (hχ : IsTw (a := a) r χ) (c 
     Module.End.one_apply, map_sub, map_sum, map_smul, shift_mul hχ]
 
 /- English proof (translation)
-Introduce `C hC`. Establish `hc : Continuous fun g : GA E a => (((chiDet a χ g)⁻¹ : ℂˣ) : ℂ)` using `Units.continuous_val.comp (χ.2.1.comp Matrix.GeneralLinearGroup.continuous_det).inv`. Take `⟨B, hB⟩` from `hC.exists_bound_of_continuousOn hc.continuousOn`. Establish `h1` using `h C hC`. Rewrite `h1`, the goal using `[Metric.tendstoUniformlyOn_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `ε hε`. Establish `hp : 0 < |B| + 1` using `by positivity`. Use `filter_upwards [h1 (ε / (|B| + 1)) (by positivity)] with k hk g hg`. Establish `h2` using `hk g hg`. Rewrite `h2` using `[dist_eq_norm, mulChi_apply, mulChi_apply, ← sub_mul, lt_div_iff₀ hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : φ.1 g - (f k).1 g = (φ.1 g - (f k).1 g) * (chiDet a χ g : ℂˣ) * (((chiDet a χ g)⁻¹ : ℂˣ) : ℂ)` using `(Units.mul_inv_cancel_right _ _).symm`. Rewrite using `[dist_eq_norm, e, norm_mul]`. Use `lt_of_le_of_lt (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)) h2` and prove the remaining obligations. Conclude with `(hB g hg).trans ((le_abs_self B).trans (le_add_of_nonneg_right zero_le_one))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem locLim_mul (χ : HChar E) {f : ℕ → Sm E a} {φ : Sm E a}
     (h : LocLim (fun k => mulChi a χ (f k)) (mulChi a χ φ)) : LocLim f φ := by
@@ -94,11 +92,9 @@ private theorem locLim_mul (χ : HChar E) {f : ℕ → Sm E a} {φ : Sm E a}
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ a r χ hχ N n e c P Q S h`. Use `⟨cj χ P, fun k => cj χ (Q k), fun k => cj χ (S k), isOp_cj hχ h.opP, fun k => isOp_cj hχ (h.opQ k), fun k => isOp_cj hχ (h.opS k), fun k φ hφ => ?_, fun φ hφ => ?_, fun φ hφ => ?_⟩` and prove the remaining obligations. Apply `(mulChi a χ).injective` to reduce the goal to its premises. Rewrite using `[map_sub, ← casA_mul hχ, mul_cj, mul_cj]`. Conclude with `h.res k _ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(mulChi a χ).injective` to reduce the goal to its premises. Rewrite using `[map_zero, ← casA_mul hχ, mul_cj]`. Conclude with `h.ker _ hφ`. Apply `locLim_mul χ` to reduce the goal to its premises. Simplify using `only [mul_cj]`.
-
-Conclude with `h.lim _ hφ`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.twRes :
     UpperTheory.V.Cj.H.TwRes := by

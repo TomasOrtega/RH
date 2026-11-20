@@ -15,9 +15,9 @@ set_option autoImplicit false
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Establish `h1 : Function.Injective ((Algebra.linearMap K L).rTensor M)` using `Module.Flat.rTensor_preserves_injective_linearMap _ (algebraMap K L).injective`. Establish `h2 : (fun m : M ↦ (1 : L) ⊗ₜ[K] m) = ((Algebra.linearMap K L).rTensor M) ∘ (TensorProduct.lid K M).symm`. Use function extensionality and compare the values at `m`. Simplify using the standard rewrite rules. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.comp (TensorProduct.lid K M).symm.injective`.
+A detailed English derivation is pending.
 -/
 theorem one_tmul_injective_field (K L M : Type) [Field K] [Field L] [Algebra K L] [AddCommGroup M] [Module K M] :
     Function.Injective (fun m : M ↦ (1 : L) ⊗ₜ[K] m) := by
@@ -28,9 +28,9 @@ theorem one_tmul_injective_field (K L M : Type) [Field K] [Field L] [Algebra K L
   rw [h2]; exact h1.comp (TensorProduct.lid K M).symm.injective
 
 /- English proof (translation)
-Take `⟨⟨e1, he1⟩, ⟨e2, he2⟩⟩` from `GlobalTheory.T.structure_cohomology_flat_base_change K L X X' s s' φ h hs hq`. Use `⟨fun a b hab ↦ ?_, fun a b hab ↦ ?_⟩` and prove the remaining obligations. Apply `one_tmul_injective_field K L` to reduce the goal to its premises. Apply `e1.injective` to reduce the goal to its premises. Simplify using `only [he1, hab]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `one_tmul_injective_field K L` to reduce the goal to its premises. Apply `e2.injective` to reduce the goal to its premises. Simplify using `only [he2, hab]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem pullHO_injective_field (K L : Type) [Field K] [Field L] [Algebra K L] (X X' : Scheme.{0}) (s : X ⟶ Sp K)
     (s' : X' ⟶ Sp L) (φ : X' ⟶ X) (h : IsPullback φ s' s (spMap (algebraMap K L))) (hs : IsSeparated s)
@@ -46,13 +46,13 @@ theorem pullHO_injective_field (K L : Type) [Field K] [Field L] [Algebra K L] (X
     simp only [he2, hab]
 
 /- English proof (translation)
-Introduce `K L _ _ _ A _ B _ φ hφ hA`. Establish `hpA : IsProper A.hom` using `hA.proper`. Establish `hpAA : IsProper (A ⊗ A).hom` using `by rw [Over.tensorObj_hom]; infer_instance`. Take `⟨Φ, hΦ, hμ, hf, hs, ha1, ha2⟩` from `GlobalTheory.T.grpPullback_prod_self_isPullback K L (algebraMap K L) A B φ hφ`. Establish `injA` using `pullHO_injective_field K L A.left B.left A.hom B.hom φ hφ.1 inferInstance inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `injAA` using `pullHO_injective_field K L (A ⊗ A).left (B ⊗ B).left (A ⊗ A).hom (B ⊗ B).hom Φ hΦ inferInstance inferInstance`. Establish `N` using `pull_over_baseChange_comm K L (algebraMap K L)`. Use `⟨fun hB z hz ↦ ?_, fun hB y h1 h2 ↦ ?_⟩` and prove the remaining obligations. Apply `injA.2` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hB` to reduce the goal to its premises. Establish `e` using `congrArg (pullHO2 hΦ.w) hz`. Rewrite `e` using `[map_add]`. Rewrite using `[← (N A (A ⊗ A) B (B ⊗ B) μ[A] μ[B] φ Φ hφ.1.w hΦ.w hμ).2, ← (N A (A ⊗ A) B (B ⊗ B) (fst A A) (fst B B) φ Φ hφ.1.w hΦ.w hf).2, ← (N A (A ⊗ A) B (B ⊗ B) (snd A A) (snd B B) φ Φ hφ.1.w hΦ.w hs).2]`. Conclude with `e`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `injAA.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `hB` to reduce the goal to its premises. Rewrite using `[← (N (A ⊗ A) A (B ⊗ B) B _ _ Φ φ hΦ.w hφ.1.w ha1).1, h1, map_zero]`. Rewrite using `[← (N (A ⊗ A) A (B ⊗ B) B _ _ Φ φ hΦ.w hφ.1.w ha2).1, h2, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem noPrimO2_axesO1_descend : ∀ (K L : Type) [Field K] [Field L] [Algebra K L] (A : Over (Sp K)) [GrpObj A] (B : Over (Sp L)) [GrpObj B] (φ : B.left ⟶ A.left), IsGrpPullback B A (spMap (algebraMap K L)) φ → IsAbelianScheme A → (NoPrimitiveStructureSheafH2 B → NoPrimitiveStructureSheafH2 A) ∧ (AxesVanishingStructureSheafDegOne B → AxesVanishingStructureSheafDegOne A) := by
   intro K L _ _ _ A _ B _ φ hφ hA

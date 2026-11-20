@@ -16,11 +16,11 @@ section Alg
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.flipTwoThree.actAll`. Simplify using `only [Matrix.det_one, _root_.one_zpow, Finset.prod_const_one, one_smul]`. Establish `e : (fun v : ι × Fin n × Fin n => ∑ b, MvPolynomial.C ((1 : Matrix (Fin n) (Fin n) K) b v.2.1) * MvPolynomial.X (v.1, b, v.2.2)) = MvPolynomial.X`. Use function extensionality and compare the values at `v`. Rewrite using `[Finset.sum_eq_single v.2.1]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Matrix.one_apply_ne hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, MvPolynomial.aeval_X_left_apply]`.
+A detailed English derivation is pending.
 -/
 theorem actAll_one (lam : ι → DomWeight n) (p : MvPolynomial (ι × Fin n × Fin n) K) :
     Formalism.MainNotions.flipTwoThree.actAll lam (fun _ => (1 : Matrix (Fin n) (Fin n) K)) p = p := by
@@ -48,7 +48,7 @@ theorem actL_apply (lam : ι → DomWeight n) (g : ι → Matrix (Fin n) (Fin n)
     actL lam g p = Formalism.MainNotions.flipTwoThree.actAll lam g p := rfl
 
 /- English proof (translation)
-Rewrite using `[actAll_comp]`. Simplify using `only [← Units.val_mul, inv_mul_cancel, Units.val_one]`. Conclude with `actAll_one lam p`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actAll_inv_cancel (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) (p : MvPolynomial (ι × Fin n × Fin n) K) :
     Formalism.MainNotions.flipTwoThree.actAll lam (fun τ => (((g τ)⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))
@@ -58,7 +58,7 @@ theorem actAll_inv_cancel (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) (
   exact actAll_one lam p
 
 /- English proof (translation)
-Rewrite using `[actAll_comp]`. Simplify using `only [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Conclude with `actAll_one lam p`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actAll_cancel_inv (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) (p : MvPolynomial (ι × Fin n × Fin n) K) :
     Formalism.MainNotions.flipTwoThree.actAll lam (fun τ => ((g τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))
@@ -68,9 +68,9 @@ theorem actAll_cancel_inv (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) (
   exact actAll_one lam p
 
 /- English proof (translation)
-Rewrite `hp`, the goal using `[Formalism.L2.GlobalTheoryTheory.TraceIntegrality.translate_span_eq]`. Establish `h1` using `Formalism.L2.GlobalTheoryTheory.TraceIntegrality.rhoEquiv_symm_coe lam h⁻¹ ⟨p, hp⟩`. Establish `e : (fun τ => (((h⁻¹ τ : GL (Fin n) K)) : Matrix (Fin n) (Fin n) K)⁻¹) = fun τ => ((h τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Use function extensionality and compare the values at `τ`. Rewrite using `[Pi.inv_apply, Matrix.coe_units_inv, Matrix.nonsing_inv_nonsing_inv _ (Matrix.isUnits_det_units (h τ))]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[e]`. Rewrite using `[← h1]`. Conclude with `Submodule.coe_mem _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actAll_mem_TSpan [CharZero K] (lam : ι → DomWeight n) (h : ι → GL (Fin n) K)
     {p : MvPolynomial (ι × Fin n × Fin n) K} (hp : p ∈ Formalism.MainNotions.flipTwoThree.TSpan K lam) :
@@ -103,9 +103,9 @@ theorem coT_apply (g : (D.mem u).C.cls 0 → D.what₂.Tau → GL (Fin (D.R.N 0)
       (fun τ => ((g c τ : GL (Fin (D.R.N 0)) D.what₂.LL) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL)) (co0 T x c) := rfl
 
 /- English proof (translation)
-Introduce `x y h`. Apply `coefficient_map_injective T` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Establish `h1` using `congrArg (fun F => Formalism.MainNotions.flipTwoThree.actAll ((D.fm u).lam 0) (fun τ => (((g c τ)⁻¹ : GL (Fin (D.R.N 0)) D.what₂.LL) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL)) (F c)) h`. Simplify using `only [coT_apply, actAll_inv_cancel] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem coT_injective (g : (D.mem u).C.cls 0 → D.what₂.Tau → GL (Fin (D.R.N 0)) D.what₂.LL) :
     Function.Injective (coT T g) := by
@@ -118,9 +118,9 @@ theorem coT_injective (g : (D.mem u).C.cls 0 → D.what₂.Tau → GL (Fin (D.R.
   exact h1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩ c`. Rewrite using `[coT_apply]`. Conclude with `actAll_mem_TSpan _ _ (coefficient_map_mem_span T x c)`. Introduce `hF`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `coefficient_map_surjective T hst (fun c => Formalism.MainNotions.flipTwoThree.actAll ((D.fm u).lam 0) (fun τ => (((g c τ)⁻¹ : GL (Fin (D.R.N 0)) D.what₂.LL) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL)) (F c)) (fun c => actAll_mem_TSpan _ (fun τ => (g c τ)⁻¹) (hF c))`. Use `⟨x, funext fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[coT_apply, hx]`. Conclude with `actAll_cancel_inv _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coT_range (hst : ∀ c, Subsingleton ((D.mem u).C.stab 0 c))
     (g : (D.mem u).C.cls 0 → D.what₂.Tau → GL (Fin (D.R.N 0)) D.what₂.LL) (F : (D.mem u).C.cls 0 → Pol0 D) :

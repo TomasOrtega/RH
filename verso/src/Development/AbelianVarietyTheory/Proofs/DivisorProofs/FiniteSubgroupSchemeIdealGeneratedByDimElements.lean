@@ -16,9 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FinSubGen
 
 /- English proof (translation)
-Introduce `K _ A A' H _ j q hpb T y'`. Establish `h2` using `hpb.map (Over.forget (Sp K))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Use `⟨y ≫ (toUnit H).left, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Category.assoc, ← Over.comp_left, hpb.w]`. Introduce and unpack `⟨z, hz⟩`. Conclude with `⟨h2.lift y' z hz.symm, h2.lift_fst _ _ _⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem pullback_lift_iff : ∀ (K : Type) [Field K] (A A' H : Over (Sp K)) [GrpObj A'] (j : H ⟶ A) (q : A ⟶ A'), IsPullback j (toUnit H) q η[A'] → ∀ (T : Scheme.{0}) (y' : T ⟶ A.left), (∃ y : T ⟶ H.left, y ≫ j.left = y') ↔ ∃ z : T ⟶ Sp K, z ≫ (η[A']).left = y' ≫ q.left := by
   intro K _ A A' H _ j q hpb T y'
@@ -31,23 +31,21 @@ theorem pullback_lift_iff : ∀ (K : Type) [Field K] (A A' H : Over (Sp K)) [Grp
     exact ⟨h2.lift y' z hz.symm, h2.lift_fst _ _ _⟩
 
 /- English proof (translation)
-Introduce `K _ X f s hs x hx R' _ φ`. Take `⟨p, rfl⟩` from `hx`. Take `rfl : p = IsLocalRing.closedPoint (CommRingCat.of K)` from `Subsingleton.elim _ _`. Use `set r := Scheme.stalkClosedPointTo s`. Establish `hr : Spec.map r ≫ X.fromSpecStalk _ = s` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c : K →+* X.presheaf.stalk (s.base (IsLocalRing.closedPoint (CommRingCat.of K))) := (Spec.preimage (X.fromSpecStalk _ ≫ f)).hom with hcdef`. Establish `hc : Spec.map (CommRingCat.ofHom c) = X.fromSpecStalk _ ≫ f` using `by simp [c]`. Establish `hrc : ∀ t : K, r.hom (c t) = t`. Establish `h1 : Spec.map (CommRingCat.ofHom c ≫ r) = Spec.map (𝟙 (CommRingCat.of K))`. Rewrite using `[Spec.map_comp, hc, ← Category.assoc, hr, hs, Spec.map_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `Spec.map_injective h1`. Introduce `t`. Conclude with `congrArg (fun u : CommRingCat.of K ⟶ CommRingCat.of K => u.hom t) h2`. Establish `hm : ∀ a, a ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk (s.base (IsLocalRing.closedPoint (CommRingCat.of K)))) → r.hom a = 0`. Introduce `a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Assume the negation of the conclusion as `h`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp ha (isUnit_of_map_unit r.hom a (isUnit_iff_ne_zero.mpr h))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩ a ha`. Establish `hz2 : (z ≫ Spec.map r) ≫ X.fromSpecStalk _ = Spec.map (CommRingCat.ofHom φ) ≫ X.fromSpecStalk _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hr]`. Conclude with `hz`. Establish `hz'` using `(cancel_mono _).mp hz2`. Rewrite `hz'` using `[← Spec.map_preimage z, ← Spec.map_comp]`. Establish `h3` using `Spec.map_injective hz'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4 : φ a = (Spec.preimage z).hom (r.hom a)` using `(congrArg (fun u : _ ⟶ CommRingCat.of R' => u.hom a) h3).symm`. Rewrite using `[RingHom.mem_ker, h4, hm a ha, map_zero]`. Introduce `hφ`. Use `⟨Spec.map (CommRingCat.ofHom (φ.comp c)), ?_⟩` and prove the remaining obligations. Establish `e1 : Spec.map (CommRingCat.ofHom (φ.comp c)) ≫ Spec.map r ≫ X.fromSpecStalk _ = Spec.map (CommRingCat.ofHom φ) ≫ X.fromSpecStalk _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Use `congr 2`. Use extensionality with `a`. Use `show φ (c (r.hom a)) = φ a`. Establish `hmem : c (r.hom a) - a ∈ IsLocalRing.maximalIdeal _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Use `hu.map r.hom` as an intermediate fact. Rewrite `this` using `[map_sub, hrc, sub_self]`. Conclude with `not_isUnit_zero this`.
-
-Use `hφ hmem` as an intermediate fact. Rewrite `this` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `this`. Rewrite `e1` using `[hr]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem section_factor_iff : ∀ (K : Type) [Field K] (X : Scheme.{0}) (f : X ⟶ Sp K) (s : Sp K ⟶ X), s ≫ f = 𝟙 _ → ∀ x : X, x ∈ Set.range s.base → ∀ (R' : Type) [CommRing R'] (φ : X.presheaf.stalk x →+* R'), (∃ z : Sp R' ⟶ Sp K, z ≫ s = Spec.map (CommRingCat.ofHom φ) ≫ X.fromSpecStalk x) ↔ IsLocalRing.maximalIdeal (X.presheaf.stalk x) ≤ RingHom.ker φ := by
   intro K _ X f s hs x hx R' _ φ
@@ -97,15 +95,15 @@ theorem section_factor_iff : ∀ (K : Type) [Field K] (X : Scheme.{0}) (f : X �
     rwa [hr] at e1
 
 /- English proof (translation)
-Introduce `K _ X f _ g hg s hs x hx`. Establish `hci : IsClosedImmersion s` using `isClosedImmersion_of_comp_eq_id f s hs`. Establish `hcl : IsClosed ({x} : Set X)`. Establish `e : Set.range s.base = {x}`. Take `⟨p, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p', rfl⟩`. Rewrite using `[Subsingleton.elim p' p]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `rfl`. Conclude with `⟨p, rfl⟩`. Rewrite using `[← e]`. Conclude with `s.isClosedEmbedding.isClosed_range`. Use `set σ : K →+* X.presheaf.stalk x := (Spec.preimage (X.fromSpecStalk x ≫ f)).hom with hσdef`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hσ : X.fromSpecStalk x ≫ f = Spec.map (CommRingCat.ofHom σ)`. Simplify using `[σ]`. Use `haveI : IsLocalHom σ := ⟨fun a ha => isUnit_iff_ne_zero.mpr (by rintro rfl; simp at ha)⟩`. Take `⟨h1, -, h3, h4⟩` from `GlobalTheory.StabFlat.stalk_of_smooth_local K X f g hg x hcl σ hσ inferInstance`. Establish `hb : (IsLocalRing.maximalIdeal K).map σ = ⊥`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Rewrite using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.map_bot]`. Set `e : (X.presheaf.stalk x ⧸ (IsLocalRing.maximalIdeal K).map σ) ≃+* X.presheaf.stalk x` to `(Ideal.quotEquivOfEq hb).trans (RingEquiv.quotientBot _)`. Conclude with `⟨h1, IsRegularLocalRing.of_ringEquiv e, (ringKrullDim_eq_of_ringEquiv e).symm.trans h4⟩`.
+A detailed English derivation is pending.
 -/
 theorem stalk_regular_of_section : ∀ (K : Type) [Field K] (X : Scheme.{0}) (f : X ⟶ Sp K) [IsSeparated f] (g : ℕ), SmoothOfRelativeDimension g f → ∀ (s : Sp K ⟶ X), s ≫ f = 𝟙 _ → ∀ x : X, x ∈ Set.range s.base → IsNoetherianRing (X.presheaf.stalk x) ∧ IsRegularLocalRing (X.presheaf.stalk x) ∧ ringKrullDim (X.presheaf.stalk x) = g := by
   intro K _ X f _ g hg s hs x hx
@@ -134,21 +132,19 @@ theorem stalk_regular_of_section : ∀ (K : Type) [Field K] (X : Scheme.{0}) (f 
   exact ⟨h1, IsRegularLocalRing.of_ringEquiv e, (ringKrullDim_eq_of_ringEquiv e).symm.trans h4⟩
 
 /- English proof (translation)
-Introduce `K _ _ A _ g hA hg H _ j hj hci hfin x₀ hx₀ J hJ`. Establish `hmono : Mono j` using `Over.mono_of_mono_left j`. Take `⟨A', _, hA', q, hq, hqfin, hqflat, hqsurj, hpb⟩` from `GlobalTheory.T.exists_quotient_abelianVariety_finite_subgroupScheme K A hA H j hj hmono hfin`. Establish `hη : η[A] ≫ q = η[A']` using `IsMonHom.one_hom q`. Establish `hsA : (η[A]).left ≫ A.hom = 𝟙 _` using `Over.w η[A]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsA' : (η[A']).left ≫ A'.hom = 𝟙 _` using `Over.w η[A']`. Take `⟨p, hp⟩` from `hx₀`. Establish `hx' : q.left.base x₀ ∈ Set.range (η[A']).left.base` using `⟨p, by`. Rewrite using `[← hp, ← hη]`. Use the proof step `rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAs` using `hA.smooth`. Establish `hAp` using `hA.proper`. Establish `hA's` using `hA'.smooth`. Establish `hA'p` using `hA'.proper`. Establish `hA'c` using `hA'.geomConnected`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ConnectedSpace A'.left` using `GeometricallyConnected.geometrically_connectedSpace (f := A'.hom) (𝟙 _) (𝟙 _) A'.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)`. Take `⟨n, hn⟩` from `exists_dim_of_preconnected A'.hom (q.left.base x₀)`. Establish `Lreg : IsRegularLocalRing (A'.left.presheaf.stalk (q.left.base x₀))` using `(stalk_regular_of_section K A'.left A'.hom n hn _ hsA' _ hx').2.1`. Establish `Ldim` using `stalk_regular_of_section K A.left A.hom g hg _ hsA x₀ ⟨p, hp⟩`. Use `set σ := (q.left.stalkMap x₀).hom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ (R' : Type) [CommRing R'] (ψ : A.left.presheaf.stalk x₀ →+* R'), J ≤ RingHom.ker ψ ↔ (IsLocalRing.maximalIdeal (A'.left.presheaf.stalk (q.left.base x₀))).map σ ≤ RingHom.ker ψ`. Introduce `R' _ ψ`. Rewrite using `[← hJ, pullback_lift_iff K A A' H j q hpb, Ideal.map_le_iff_le_comap, RingHom.comap_ker, ← section_factor_iff K A'.left A'.hom _ hsA' _ hx' R' (ψ.comp σ)]`. Establish `e : Spec.map (CommRingCat.ofHom ψ) ≫ A.left.fromSpecStalk x₀ ≫ q.left = Spec.map (CommRingCat.ofHom (ψ.comp σ)) ≫ A'.left.fromSpecStalk (q.left.base x₀)`. Rewrite using `[← Scheme.SpecMap_stalkMap_fromSpecStalk, ← Category.assoc, ← Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [Category.assoc, e]`. Establish `Lgeo : J = (IsLocalRing.maximalIdeal (A'.left.presheaf.stalk (q.left.base x₀))).map σ`. Apply `le_antisymm` to reduce the goal to its premises. Simplify using `using (key _ (Ideal.Quotient.mk ((IsLocalRing.maximalIdeal (A'.left.presheaf.stalk (q.left.base x₀))).map σ))).2 (by simp)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `using (key _ (Ideal.Quotient.mk J)).1 (by simp)`. Take `⟨_, hart⟩` from `GlobalTheory.T.closed_subfunctor_stalk_ideal_criterion K A H j hj hci hfin x₀ ⟨p, hp⟩ J hJ`. Establish `hflat : σ.Flat` using `Flat.stalkMap q.left x₀`. Use `haveI := Ldim.1`. Rewrite `hart`, the goal using `[Lgeo]`.
-
-Conclude with `GlobalTheory.T.exists_span_maximalIdeal_map_of_flat_regular _ _ σ inferInstance hflat hart g Ldim.2.2`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_eq_span_fin : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (H : Over (Sp K)) [GrpObj H] (j : H ⟶ A), IsMonHom j → IsClosedImmersion j.left → IsFinite H.hom → ∀ x₀ : A.left, x₀ ∈ Set.range (η[A]).left.base → ∀ J : Ideal (A.left.presheaf.stalk x₀), (∀ (R' : Type) [CommRing R'] (ψ : A.left.presheaf.stalk x₀ →+* R'), (∃ y : Sp R' ⟶ H.left, y ≫ j.left = Spec.map (CommRingCat.ofHom ψ) ≫ A.left.fromSpecStalk x₀) ↔ J ≤ RingHom.ker ψ) → ∃ f : Fin g → A.left.presheaf.stalk x₀, Ideal.span (Set.range f) = J := by
   intro K _ _ A _ g hA hg H _ j hj hci hfin x₀ hx₀ J hJ

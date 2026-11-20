@@ -26,7 +26,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CovTop
 
 /- English proof (translation)
-Introduce `D T hT j hj Y e o _`. Conclude with `(GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ _ _ Y.d.Xo₂ Y.d.c₂ (Inhab.rank_pos T.toCore hT.pins j hj)).1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem good_comp_nonempty : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → Nonempty (Comp Y.d.Xo₂ Y.d.c₂) := by
   intro D T hT j hj Y e o _

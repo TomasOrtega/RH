@@ -5,7 +5,7 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open Matrix
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ', ← Matrix.mulVec_mulVec, pow_succ']`. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem unip_normSq_pow_le {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) (c : ℝ) (hc : 0 ≤ c)
     (hA : ∀ u, normSq (A *ᵥ u) ≤ c * normSq u) (n : ℕ) (u : Fin r → ℂ) :
@@ -19,7 +19,7 @@ theorem unip_normSq_pow_le {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) (c : ℝ) 
       _ = c * c ^ n * normSq u := by ring
 
 /- English proof (translation)
-Unfold `normSq`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unip_normSq_col {r : ℕ} (M : Matrix (Fin r) (Fin r) ℂ) (j : Fin r) :
     normSq (M *ᵥ Pi.single j 1) = ∑ i, ‖M i j‖ ^ 2 := by
@@ -29,9 +29,9 @@ theorem unip_normSq_col {r : ℕ} (M : Matrix (Fin r) (Fin r) ℂ) (j : Fin r) :
   rfl
 
 /- English proof (translation)
-Unfold `normSq`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unip_normSq_single {r : ℕ} (j : Fin r) : normSq (Pi.single j (1 : ℂ)) = 1 := by
   unfold normSq
@@ -43,7 +43,7 @@ theorem unip_normSq_single {r : ℕ} (j : Fin r) : normSq (Pi.single j (1 : ℂ)
     exact absurd (Finset.mem_univ j) h
 
 /- English proof (translation)
-Establish `h1` using `unip_normSq_pow_le A c hc hA n (Pi.single i 1)`. Rewrite `h1` using `[unip_normSq_col, unip_normSq_single, mul_one]`. Use `le_trans ?_ h1` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun k => ‖(A ^ n) k i‖ ^ 2) (fun k _ => by positivity) (Finset.mem_univ i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unip_diag_sq_le {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) (c : ℝ) (hc : 0 ≤ c)
     (hA : ∀ u, normSq (A *ᵥ u) ≤ c * normSq u) (n : ℕ) (i : Fin r) :
@@ -55,9 +55,9 @@ theorem unip_diag_sq_le {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) (c : ℝ) (hc
     (Finset.mem_univ i)
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun b _ => ?_` and prove the remaining obligations. Establish `h` using `hA (Pi.single b 1)`. Rewrite `h` using `[unip_normSq_single, mul_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `_ = r * c := by simp`.
+A detailed English derivation is pending.
 -/
 theorem unip_hs_le {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) (c : ℝ)
     (hA : ∀ u, normSq (A *ᵥ u) ≤ c * normSq u) :
@@ -72,9 +72,9 @@ theorem unip_hs_le {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) (c : ℝ)
     _ = r * c := by simp
 
 /- English proof (translation)
-Establish `key : ∀ a b, ‖(A - 1) a b‖ ^ 2 = ‖A a b‖ ^ 2 - (if a = b then 2 * (A a b).re - 1 else 0)`. Introduce `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `only [Matrix.sub_apply, Matrix.one_apply_eq, if_true, Complex.sq_norm, Complex.normSq_apply, Complex.sub_re, Complex.sub_im, Complex.one_re, Complex.one_im]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[Matrix.sub_apply, Matrix.one_apply_ne h, h]`. Repeatedly rewrite using `[key, Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Matrix.trace, Complex.re_sum]`. Simplify using `[Finset.sum_sub_distrib, Finset.mul_sum]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -95,11 +95,11 @@ theorem unip_hs_sub_one {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) :
   ring
 
 /- English proof (translation)
-Establish `hr' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hx0 : 0 < 2 / (3 * (r : ℝ))` using `by positivity`. Use `set x : ℝ := 2 / (3 * (r : ℝ)) with hx`. Establish `hxr : (r : ℝ) * x = 2 / 3` using `by rw [hx]; field_simp`. Establish `hx1 : x ≤ 2 / 3` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `Real.exp_bound (x := x) (by rw [abs_of_pos hx0]; linarith) (n := 4) (by norm_num)`. Rewrite `hb` using `[abs_of_pos hx0]`. Establish `hup` using `(abs_le.mp hb).2`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.factorial] at hup`. Evaluate the numerical expressions using `at hup`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hmain : Real.exp x - 1 < 3 / 2 * x`. Use polynomial arithmetic with `[pow_pos hx0 2, pow_pos hx0 3, pow_pos hx0 4, mul_le_mul_of_nonneg_left hx1 (le_of_lt (pow_pos hx0 3))]`. Establish `hr0 : (0 : ℝ) < r` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem unip_exp_bound (r : ℕ) (hr : 1 ≤ r) : (r : ℝ) * (Real.exp (2 / (3 * r)) - 1) < 1 := by
   have hr' : (1 : ℝ) ≤ r := by exact_mod_cast hr

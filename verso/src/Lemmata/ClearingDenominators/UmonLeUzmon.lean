@@ -60,11 +60,11 @@ universe u_1 u_2
 namespace Bl.ClearingDenominators
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.G.Umon`. Rewrite using `[Submonoid.closure_le]`. Introduce and unpack `_ ⟨⟨a, b⟩, rfl⟩`. Use `Submonoid.subset_closure ?_` and prove the remaining obligations. Simplify using `only [Formalism.MainNotions.G.UZgens, Set.mem_ofPred_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Use `Or.inr ⟨a, 1, ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.MainNotions.G.binomE]`. Use `Or.inl ⟨a, b, 1, h, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Formalism.MainNotions.G.divPowE]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma umon_le_uzmon {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     (E : Formalism.MainNotions.G.GLOps n K V) : Formalism.MainNotions.G.Umon E ≤ Formalism.MainNotions.G.UZmon E := by
@@ -81,15 +81,13 @@ private lemma umon_le_uzmon {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [
     simp [Formalism.MainNotions.G.divPowE]
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hS hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x z _ _ hx hz`. Take `⟨a, ha, hax⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Apply `D.add_mem` to reduce the goal to its premises. Rewrite using `[mul_comm a b, mul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `D.smul_mem b hax`. Rewrite using `[mul_smul]`. Conclude with `D.smul_mem a hbz`. Consider the case `smul c x _ hx`. Take `⟨o, ho, hox⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective O c`. Establish `hbK : algebraMap O K b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Use `⟨o * b, mul_ne_zero ho (nonZeroDivisors.ne_zero hb), ?_⟩` and prove the remaining obligations. Establish `hq : algebraMap O K b * (algebraMap O K a / algebraMap O K b) = algebraMap O K a`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[mul_smul, ← algebraMap_smul K b, smul_smul, hq, algebraMap_smul, smul_comm o a x]`. Conclude with `D.smul_mem a hox`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma clear_den {O K V : Type*} [CommRing O] [IsDomain O] [Field K] [Algebra O K]
     [IsFractionRing O K] [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V]
@@ -119,9 +117,9 @@ private lemma clear_den {O K V : Type*} [CommRing O] [IsDomain O] [Field K] [Alg
     exact D.smul_mem a hox
 
 /- English proof (translation)
-Introduce `n O _ _ _ V _ _ _ _ E lam v h y`. Establish `hy : y ∈ Submodule.span (Formalism.MainNotions.G.KK O) {x | ∃ u ∈ Formalism.MainNotions.G.Umon E, x = u v}`. Rewrite using `[h.2.2.2]`. Conclude with `Submodule.mem_top`. Use `clear_den _ {x | ∃ u ∈ Formalism.MainNotions.G.Umon E, x = u v} ?_ y hy` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x ⟨u, hu, rfl⟩`. Simplify using `only [Formalism.MainNotions.G.Delta, SetLike.mem_coe]`. Conclude with `Submodule.subset_span ⟨u, umon_le_uzmon E hu, rfl⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {n : Nat} {O : Type u_1} [inst : CommRing.{u_1} O]

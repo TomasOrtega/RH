@@ -17,21 +17,19 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.RunIn
 
 /- English proof (translation)
-Introduce `D B large₂ j w N Prw hL hn hrows hO hPrw hN`. Take `⟨hg, -, -, -, -, -, -, hX, -⟩` from `hrows`. Use `set m : ℕ := D.R.f * D.R.r * w.n with hm`. Establish `hN' : N ≤ (D.host.g 0 * D.host.g 1) ^ m * ((2 * Module.finrank ℚ B.KO) * (1 + WeightAlgebra.DF w) ^ m)`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hL0 : (0 : ℝ) ≤ large₂.sc.L` using `by linarith`. Establish `hPO : 0 ≤ PO D large₂` using `by unfold PO; positivity`. Establish `hd : Real.log ((2 * Module.finrank ℚ B.KO : ℕ) : ℝ) ≤ PO D large₂ + 1`. Break down `Nat.eq_zero_or_pos (Module.finrank ℚ B.KO) with h0 | hpos` into its components or cases. Simplify using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk : ((Module.finrank ℚ B.KO : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast hpos.ne'`. Use `push_cast`. Rewrite using `[Real.log_mul (by norm_num) hk]`. Establish `h2 : Real.log 2 ≤ 1`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.log_two_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[hO.1]`. Establish `hX' : Real.log ((1 + WeightAlgebra.DF w : ℕ) : ℝ) ≤ 2 * large₂.sc.L` using `by push_cast; exact hX`. Establish `key` using `log_le_of_le_pow_mul_pow (a := 9 * large₂.sc.L + 1) (c := 2 * large₂.sc.L) (P := PO D large₂ + 1) (by linarith) (by linarith) (by linarith) (hg 0) (hg 1) hd hX' hN'`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : 0 < D.R.f`. Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_le_f`. Establish `h3 : D.R.f = 2 * D.R.ord` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hr : 0 < D.R.r`. Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Establish `h3 : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hm1 : (1 : ℝ) ≤ (m : ℝ)`. Establish `: 1 ≤ m` using `Nat.one_le_iff_ne_zero.mpr (by positivity)`. Conclude with `this` after adjusting the coercions. Establish `hms : (m : ℝ) ≤ w.size - 1` using `frn_le_size_sub_one w`. Establish `hPrw0 : 0 ≤ Prw` using `by linarith`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem log_two_mul_count_le_mul_size : ∀ (D : D7) (B : WeightFamilies.Prov D) (large₂ : SizeData₂ D) (j : ℕ) (w : WeightFamilies.Wt D j) (N : ℕ) (Prw : ℝ), 2 ≤ large₂.sc.L → 0 < w.n → ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ w → OPO large₂ B → 38 * large₂.sc.L + PO D large₂ ≤ Prw → N ≤ 2 * ((D.host.g 0 * D.host.g 1) ^ (D.R.f * D.R.r * w.n) * (Module.finrank ℚ B.KO * (1 + WeightAlgebra.DF w) ^ (D.R.f * D.R.r * w.n))) → Real.log N ≤ Prw * (w.size - 1) := by
   intro D B large₂ j w N Prw hL hn hrows hO hPrw hN

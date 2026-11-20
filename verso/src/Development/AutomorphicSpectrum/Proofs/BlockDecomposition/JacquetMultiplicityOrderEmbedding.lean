@@ -37,9 +37,9 @@ Both sides reduce to the same expression.
 variable (k : Type) [Field k] (f : (Σ j, Fin (d j)) ≃ Fin N)
 
 /- English proof (translation)
-Rewrite using `[mem_parab_iff, mem_parab_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h a b i j hab`. Conclude with `h _ _ i j (ho hab)`. Introduce `h a b i j hab`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hz a (Nat.pos_iff_ne_zero.1 (Fin.pos i))`. Take `⟨b, rfl⟩` from `hz b (Nat.pos_iff_ne_zero.1 (Fin.pos j))`. Conclude with `h a b i j (ho.lt_iff_lt.1 hab)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_parab_dropPlacing (g : GL (Fin N) k) :
     g ∈ parab k f ↔ g ∈ parab k (dropPlacing d o ho hz f) := by
@@ -53,7 +53,7 @@ theorem mem_parab_dropPlacing (g : GL (Fin N) k) :
     exact h a b i j (ho.lt_iff_lt.1 hab)
 
 /- English proof (translation)
-Rewrite using `[mem_unipRad, mem_unipRad, ← mem_parab_dropPlacing d o ho hz k f g]`. Use `and_congr_right fun _ => ⟨fun h a i j => h (o a) i j, fun h a i j => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hz a (Nat.pos_iff_ne_zero.1 (Fin.pos i))`. Conclude with `h a i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_unipRad_dropPlacing (g : GL (Fin N) k) :
     g ∈ unipRad k f ↔ g ∈ unipRad k (dropPlacing d o ho hz f) := by
@@ -63,9 +63,9 @@ theorem mem_unipRad_dropPlacing (g : GL (Fin N) k) :
   exact h a i j
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun x y => ?_)` and prove the remaining obligations. Take `⟨⟨a, i⟩, rfl⟩` from `(dropPlacing d o ho hz f).surjective x`. Take `⟨⟨b, j⟩, rfl⟩` from `(dropPlacing d o ho hz f).surjective y`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[leviEmb_apply_same, dropPlacing_apply, dropPlacing_apply, leviEmb_apply_same]`. Both sides reduce to the same expression. Rewrite using `[leviEmb_apply_ne k _ _ hab, dropPlacing_apply, dropPlacing_apply, leviEmb_apply_ne k _ _ (ho.injective.ne hab)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviEmb_dropPlacing (g : Levi k fun j => Fin (d j)) :
     leviEmb k f g = leviEmb k (dropPlacing d o ho hz f) (dropHom d o g) := by
@@ -87,7 +87,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {r r' N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Conclude with `⟨⟨S.toSubmodule, fun g _ hv => S.apply_mem_toSubmodule (s g) hv⟩, ⟨f.toLinearMap, fun g => f.isIntertwining' (s g)⟩, hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSubquotient_pullback {G L W : Type} [Group G] [Group L] [AddCommGroup W] [Module ℂ W]
     {σ : Representation ℂ G W} {ρ : Representation ℂ G V} (s : L →* G) (h : IsSubquotient σ ρ) :
@@ -97,9 +97,9 @@ theorem isSubquotient_pullback {G L W : Type} [Group G] [Group L] [AddCommGroup 
     ⟨f.toLinearMap, fun g => f.isIntertwining' (s g)⟩, hf⟩
 
 /- English proof (translation)
-Establish `hs' : ∀ g, ((leviEmb k (dropPlacing d o ho hz f)).comp (dropHom d o)) g ∈ Subgroup.normalizer (unipRad k (dropPlacing d o ho hz f) : Set (GL (Fin N) k))` using `fun g => leviEmb_mem_normalizer k _ _`. Take `⟨φ⟩` from `Placing.jacquet_equiv π (N := unipRad k f) (N' := unipRad k (dropPlacing d o ho hz f)) (s := leviEmb k f) (s' := (leviEmb k (dropPlacing d o ho hz f)).comp (dropHom d o)) (leviEmb_mem_normalizer k f) hs' (deltaHalf k fun j => Fin (d j))⁻¹ 1 (fun u hu => by simpa using (mem_unipRa …`. Establish `e : twist (jacquet π (unipRad k (dropPlacing d o ho hz f)) ((leviEmb k (dropPlacing d o ho hz f)).comp (dropHom d o)) hs') (deltaHalf k fun j => Fin (d j))⁻¹ = ((jac (dropPlacing d o ho hz f) π).comp (dropHom d o) : Representation ℂ (Levi k fun j => Fin (d j)) _)`. Use `MonoidHom.ext fun g => LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[twist_apply, MonoidHom.comp_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = twist _ _ _ v`. Rewrite using `[twist_apply, MonoidHom.inv_apply, MonoidHom.inv_apply, GlobalTheory.CompanionTheory.FineProd.ProdDrop.deltaHalf_drop d o ho hz g]`. Both sides reduce to the same expression. Rewrite using `[← e]`. Conclude with `⟨φ⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem jac_dropPlacing_equiv (d : Fin r → ℕ) (o : Fin r' → Fin r) (ho : StrictMono o)
     (hz : ∀ j, d j ≠ 0 → j ∈ Set.range o) (f : (Σ j, Fin (d j)) ≃ Fin N)
@@ -131,9 +131,9 @@ theorem jac_dropPlacing_equiv (d : Fin r → ℕ) (o : Fin r' → Fin r) (ho : S
   exact ⟨φ⟩
 
 /- English proof (translation)
-Take `⟨φ⟩` from `GlobalTheory.CompanionTheory.FineProd.TensorLine.piTensor_drop_equiv y o ho hz`. Take `⟨ψ⟩` from `jac_dropPlacing_equiv (fun j => (y j).1) o ho hz f π`. Take `⟨χ⟩` from `(Placing.parInd_jac_placing k _ _ _ (stdBlocks (fun a => (y (o a)).1) hd) (dropPlacing (fun j => (y j).1) o ho hz f) V).2 π`. Establish `h1 : IsSubquotient (piTensor fun a => (y (o a)).rep) (jac (dropPlacing (fun j => (y j).1) o ho hz f) π)` using `(jhMult_ne_zero_iff.1 h).trans (.of_injective χ.toIntertwiningMap χ.toLinearEquiv.injective)`. Establish `h2` using `isSubquotient_pullback (dropHom (k := k) (fun j => (y j).1) o) h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `jhMult_ne_zero_iff.2 ((IsSubquotient.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective).trans (h2.trans (.of_injective ψ.symm.toIntertwiningMap ψ.symm.toLinearEquiv.injective)))`.
+A detailed English derivation is pending.
 -/
 theorem jhMult_jac_ne_zero_of_jm (y : Fin r → IrrGL k) (o : Fin r' → Fin r) (ho : StrictMono o)
     (hz : ∀ j, (y j).1 ≠ 0 → j ∈ Set.range o) (hd : ∑ a, (y (o a)).1 = N)
@@ -155,7 +155,7 @@ theorem jhMult_jac_ne_zero_of_jm (y : Fin r → IrrGL k) (o : Fin r' → Fin r) 
 end Local
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `Sigma.ext rfl (heq_of_eq (clOf_self x))`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sigma_clOf {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (x : IrrGL k) (d : ℕ) (h : d = x.1) : (⟨d, clOf x d⟩ : IrrGL k) = x := by
@@ -163,9 +163,9 @@ theorem sigma_clOf {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [I
   exact Sigma.ext rfl (heq_of_eq (clOf_self x))
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n p N V _ _ π _ zz σ c hc h0 hz f h`. Set `y : Fin n → IrrGL k` to `fun j => ⟨c j, clOf (zz j) (c j)⟩`. Establish `hy : (fun a => y (σ a)) = fun a => zz (σ a)` using `funext fun a => sigma_clOf _ _ (hc a)`. Establish `key : ∀ (x x' : Fin p → IrrGL k) (_ : x = x') (hx : ∑ a, (x a).1 = N) (hx' : ∑ a, (x' a).1 = N), jm x hx π = jm x' hx' π`. Introduce and unpack `x _ rfl _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Establish `hd : ∑ a, (y (σ a)).1 = N`. Rewrite using `[← hz]`. Conclude with `Finset.sum_congr rfl fun a _ => hc a`. Conclude with `jhMult_jac_ne_zero_of_jm y σ σ.strictMono (fun j hj => by_contra fun hn => hj (h0 j hn)) hd f π (by rwa [key _ _ hy hd hz])`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jhMult_row : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n p N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π → ∀ (zz : Fin n → IrrGL k) (σ : Fin p ↪o Fin n) (c : Fin n → ℕ), (∀ a, c (σ a) = (zz (σ a)).1) → (∀ j, j ∉ Set.range σ → c j = 0) → ∀ (hz : ∑ a, (zz (σ a)).1 = N) (f : (Σ j, Fin (c j)) ≃ Fin N), jm (fun a => zz (σ a)) hz π ≠ 0 → jhMult (piTensor fun j => (clOf (zz j) (c j)).rep.ρ) (jac f π) ≠ 0 := by
   intro k _ _ _ _ n p N V _ _ π _ zz σ c hc h0 hz f h

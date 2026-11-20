@@ -10,23 +10,21 @@ open ReciprocityTheory.Gal Cx
 universe u
 
 /- English proof (translation)
-Introduce `R _ G _ _ _ G' _ _ _ M M' P e₀ e₁ e₂ e₀' e₁' e₂' hL hL'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Take `⟨⟨c, hc⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hw : M'.coch.d 0 (P.hom.Z 0 ⟨c, hc⟩).1 = 0` using `(P.hom.Z 0 ⟨c, hc⟩).2`. Establish `hc' : M.coch.d 0 c = 0` using `hc`. Express the relevant statement in the definitionally equal form `(e₀' (M'.coch.cls 0 (P.hom.Z 0 ⟨c, hc⟩).1 hw) : M'.V) = P.u (e₀ (M.coch.cls 0 c hc'))`. Establish `h1` using `hL'.1 (P.hom.Z 0 ⟨c, hc⟩).1 hw`. Establish `h2` using `hL.1 c hc'`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Use `show P.u (c.1 fun i => P.φ (![] i)) = P.u (c.1 ![])`. Rewrite using `[show (fun i => P.φ (![] i)) = (![] : Fin 0 → G) from funext fun i => i.elim0]`. Introduce `x`. Take `⟨⟨c, hc⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hz, he⟩` from `hL.2.1 c hc`. Establish `hw : M'.coch.d 1 (P.hom.Z 1 ⟨c, hc⟩).1 = 0` using `(P.hom.Z 1 ⟨c, hc⟩).2`. Take `⟨hz', he'⟩` from `hL'.2.1 (P.hom.Z 1 ⟨c, hc⟩).1 hw`. Express the relevant statement in the definitionally equal form `e₁' (M'.coch.cls 1 (P.hom.Z 1 ⟨c, hc⟩).1 hw) = P.h1 (e₁ (M.coch.cls 1 c hc))`. Rewrite using `[he', he]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Pair.h1 pairH1DecompositionMap`. Rewrite using `[Submodule.mapQ_apply]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show P.u (c.1 fun i => P.φ (![g] i)) = P.u (c.1 ![P.φ g])`. Rewrite using `[show (fun i => P.φ (![g] i)) = ![P.φ g] from by funext i; fin_cases i; rfl]`. Introduce `x`. Take `⟨⟨c, hc⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨hz, he⟩` from `hL.2.2 c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw : M'.coch.d 2 (P.hom.Z 2 ⟨c, hc⟩).1 = 0` using `(P.hom.Z 2 ⟨c, hc⟩).2`. Take `⟨hz', he'⟩` from `hL'.2.2 (P.hom.Z 2 ⟨c, hc⟩).1 hw`. Express the relevant statement in the definitionally equal form `e₂' (M'.coch.cls 2 (P.hom.Z 2 ⟨c, hc⟩).1 hw) = P.h2 (e₂ (M.coch.cls 2 c hc))`. Rewrite using `[he', he]`. Unfold `Pair.h2 compatiblePairH2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Submodule.mapQ_apply]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show P.u (c.1 fun i => P.φ (![g.1, g.2] i)) = P.u (c.1 ![P.φ g.1, P.φ g.2])`.
-
-Rewrite using `[show (fun i => P.φ (![g.1, g.2] i)) = ![P.φ g.1, P.φ g.2] from by`. Apply the tactic sequence `funext i; fin_cases i <;> rfl]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lowNat_holds : LowNatStatement.{u} := by
   intro R _ G _ _ _ G' _ _ _ M M' P e₀ e₁ e₂ e₀' e₁' e₂' hL hL'

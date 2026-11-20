@@ -27,7 +27,7 @@ theorem polFn_apply (σ₀ : X.K →+* ℂ) (n : ℕ) (Q : Pol ℂ X.Tau n) (y :
     polFn σ₀ n Q y = eval (fun x : X.Tau × Fin n × Fin n => y.1 x.1 x.2.1 x.2.2) Q := rfl
 
 /- English proof (translation)
-The claim follows from `frPolyG_inj (frCo σ₀ n) fun f hf => ⟨⟨f, fun τ => (hf τ).isUnit⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem polFn_injective (σ₀ : X.K →+* ℂ) (n : ℕ) : Function.Injective (polFn (X := X) σ₀ n) :=
   frPolyG_inj (frCo σ₀ n) fun f hf => ⟨⟨f, fun τ => (hf τ).isUnit⟩, rfl⟩
@@ -35,7 +35,7 @@ theorem polFn_injective (σ₀ : X.K →+* ℂ) (n : ℕ) : Function.Injective (
 def polInv (σ₀ : X.K →+* ℂ) (n : ℕ) : (FrS X σ₀ n → ℂ) →ₗ[ℂ] Pol ℂ X.Tau n := frInvG (frCo σ₀ n)
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (frInvG_spec (polFn_injective σ₀ n)) Q`.
+A detailed English derivation is pending.
 -/
 theorem polInv_polFn (σ₀ : X.K →+* ℂ) (n : ℕ) (Q : Pol ℂ X.Tau n) : polInv σ₀ n (polFn σ₀ n Q) = Q :=
   LinearMap.congr_fun (frInvG_spec (polFn_injective σ₀ n)) Q
@@ -50,14 +50,14 @@ theorem unfTh_eq (σ₀ : X.K →+* ℂ) (cD : X.Tau → ℂ) {a b : ℕ} (Θ : 
     unfTh σ₀ cD Θ = polFn σ₀ b ∘ₗ jetMap (ι := X.Tau) (jetC cD Θ) (fun _ => 0) ∘ₗ polInv σ₀ a := rfl
 
 /- English proof (translation)
-Simplify using `only [unfTh_eq, LinearMap.comp_apply, polInv_polFn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unfTh_polFn (σ₀ : X.K →+* ℂ) (cD : X.Tau → ℂ) {a b : ℕ} (Θ : VCx X.Tau a b → ℂ) (Q : Pol ℂ X.Tau a) :
     unfTh σ₀ cD Θ (polFn σ₀ a Q) = polFn σ₀ b (jetMap (ι := X.Tau) (jetC cD Θ) (fun _ => 0) Q) := by
   simp only [unfTh_eq, LinearMap.comp_apply, polInv_polFn]
 
 /- English proof (translation)
-Rewrite using `[unfTh_polFn, polFn_apply, jetMap_eval]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unfTh_apply (σ₀ : X.K →+* ℂ) (cD : X.Tau → ℂ) {a b : ℕ} (Θ : VCx X.Tau a b → ℂ) (Q : Pol ℂ X.Tau a) (y' : FrS X σ₀ b) :
     unfTh σ₀ cD Θ (polFn σ₀ a Q) y' =
@@ -66,9 +66,7 @@ theorem unfTh_apply (σ₀ : X.K →+* ℂ) (cD : X.Tau → ℂ) {a b : ℕ} (Θ
   rw [unfTh_polFn, polFn_apply, jetMap_eval]
 
 /- English proof (translation)
-Establish `gen : ∀ (n : ℕ) (_ : n = 0) (v : Fin n → VCx ι a b), iteratedFDeriv ℂ n Θ 0 v = Θ 0`. Introduce and unpack `n rfl v`. Conclude with `iteratedFDeriv_zero_apply _`. Unfold `jetC derivAt0`. Rewrite using `[Finsupp.prod_zero_index, one_mul]`.
-
-Conclude with `gen _ (by simp) _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetC_zero {ι : Type} [Fintype ι] {a b : ℕ} (cD : ι → ℂ) (Θ : VCx ι a b → ℂ) : jetC cD Θ 0 = Θ 0 := by
   have gen : ∀ (n : ℕ) (_ : n = 0) (v : Fin n → VCx ι a b), iteratedFDeriv ℂ n Θ 0 v = Θ 0 := by
@@ -79,9 +77,9 @@ theorem jetC_zero {ι : Type} [Fintype ι] {a b : ℕ} (cD : ι → ℂ) (Θ : V
   exact gen _ (by simp) _
 
 /- English proof (translation)
-Establish `h : (fun _ : FrS X σ₀ a => (1 : ℂ)) = polFn σ₀ a 1`. Use function extensionality and compare the values at `y`. Rewrite using `[polFn_apply, map_one]`. Rewrite using `[h, unfTh_polFn, jetMap_one, jetC_zero]`. Use function extensionality and compare the values at `y'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[polFn_apply, eval_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unfTh_one (σ₀ : X.K →+* ℂ) (cD : X.Tau → ℂ) {a b : ℕ} (Θ : VCx X.Tau a b → ℂ) :
     unfTh σ₀ cD Θ (fun _ : FrS X σ₀ a => (1 : ℂ)) = fun _ => Θ 0 := by
@@ -99,7 +97,7 @@ section BaseChange
 variable {K L : Type} [Field K] [Field L] {ι : Type} [Fintype ι] {a b : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial m c => rw [jetLin_monomial, map_monomial, map_monomial, jetLin_monomial, map_mul]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, map_add, hp, hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_jetLin (σ : K →+* L) (J : (DVar ι a b →₀ ℕ) → K) (Q : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K) :
     MvPolynomial.map σ (jetLin J Q) = jetLin (fun m => σ (J m)) (MvPolynomial.map σ Q) := by
@@ -108,9 +106,9 @@ theorem map_jetLin (σ : K →+* L) (J : (DVar ι a b →₀ ℕ) → K) (Q : Mv
   | add p q hp hq => rw [map_add, map_add, map_add, map_add, hp, hq]
 
 /- English proof (translation)
-Establish `h : (MvPolynomial.map σ).comp (subD K ι a b).toRingHom = (subD L ι a b).toRingHom.comp (MvPolynomial.map σ)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[subD]`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, subD, aeval_X, map_X]`. Use `split_ifs with hv`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Conclude with `RingHom.congr_fun h P`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_subD (σ : K →+* L) (P : Pol K ι a) :
     MvPolynomial.map σ (subD K ι a b P) = subD L ι a b (MvPolynomial.map σ P) := by
@@ -127,7 +125,7 @@ theorem map_subD (σ : K →+* L) (P : Pol K ι a) :
   exact RingHom.congr_fun h P
 
 /- English proof (translation)
-Unfold `frDet`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `α s`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_frDet (σ : K →+* L) (τ : ι) : MvPolynomial.map σ (frDet K a τ) = frDet L a τ := by
   unfold frDet
@@ -137,7 +135,7 @@ theorem map_frDet (σ : K →+* L) (τ : ι) : MvPolynomial.map σ (frDet K a τ
   simp
 
 /- English proof (translation)
-Unfold `jetMap`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulRight_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[map_jetLin, map_subD, map_mul, map_prod]`. Simplify using `only [map_pow, map_frDet]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_jetMap (σ : K →+* L) (J : (DVar ι a b →₀ ℕ) → K) (n : ι → ℕ) (P : Pol K ι a) :
     MvPolynomial.map σ (jetMap J n P) = jetMap (fun m => σ (J m)) n (MvPolynomial.map σ P) := by
@@ -147,7 +145,7 @@ theorem map_jetMap (σ : K →+* L) (J : (DVar ι a b →₀ ℕ) → K) (n : ι
   simp only [map_pow, map_frDet]
 
 /- English proof (translation)
-Unfold `jetMap`. Rewrite using `[jetLin_smul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem jetMap_smul (c : K) (J : (DVar ι a b →₀ ℕ) → K) (n : ι → ℕ) (P : Pol K ι a) :
     jetMap (fun m => c * J m) n P = c • jetMap J n P := by
@@ -156,7 +154,7 @@ theorem jetMap_smul (c : K) (J : (DVar ι a b →₀ ℕ) → K) (n : ι → ℕ
   rfl
 
 /- English proof (translation)
-Unfold `jetMap`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulRight_apply, pow_zero, Finset.prod_const_one, mul_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem jetMap_shift (J : (DVar ι a b →₀ ℕ) → K) (n : ι → ℕ) (P : Pol K ι a) :
     jetMap J (fun _ => 0) (P * ∏ τ, frDet K a τ ^ n τ) = jetMap J n P := by
@@ -164,7 +162,7 @@ theorem jetMap_shift (J : (DVar ι a b →₀ ℕ) → K) (n : ι → ℕ) (P : 
   simp only [LinearMap.comp_apply, LinearMap.mulRight_apply, pow_zero, Finset.prod_const_one, mul_one]
 
 /- English proof (translation)
-Unfold `frDet`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `α s`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eval_frDet (y : ι → Matrix (Fin a) (Fin a) ℂ) (τ : ι) :
     eval (fun x : ι × Fin a × Fin a => y x.1 x.2.1 x.2.2) (frDet ℂ a τ) = (y τ).det := by
@@ -181,11 +179,9 @@ section Ev
 variable {X : Fields} {a b : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Rewrite using `[polFn_apply, map_mul, map_prod]`. Simplify using `only [map_pow, eval_frDet (fun τ => y.1 τ)]`. Use `show dePow σ₀ a s' y * evFr _ (shiftOf lam) σ₀ P.1 y = _`. Rewrite using `[evFr_apply, ← mul_assoc, eval_map, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Unfold `dePow`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `show (y.1 τ).det ^ s' τ * (y.1 τ).det ^ (lam τ).detShift = _`.
-
-Rewrite using `[← zpow_add₀ (y.2 τ).ne_zero, hn, zpow_natCast]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sharp_evV (σ₀ : X.K →+* ℂ) (lam : X.Tau → DomWeight a) (n : X.Tau → ℕ) (s' : X.Tau → ℤ)
     (hn : ∀ τ, s' τ + (lam τ).detShift = (n τ : ℤ)) (P : VV X.K lam) :
@@ -203,11 +199,11 @@ theorem sharp_evV (σ₀ : X.K →+* ℂ) (lam : X.Tau → DomWeight a) (n : X.T
   rw [← zpow_add₀ (y.2 τ).ne_zero, hn, zpow_natCast]
 
 /- English proof (translation)
-Rewrite using `[sharp_evV σ₀ lam n s' hn P, unfTh_polFn, jetMap_shift]`. Use function extensionality and compare the values at `y'`. Use `show evFr _ (shiftOf lam') σ₀ (jetOp lam lam' J n P).1 y' = c * ((dePow σ₀ b s y')⁻¹ * polFn σ₀ b _ y')`. Rewrite using `[evFr_apply, jetOp_coe lam lam' n hV, ← eval_map, map_jetMap, funext hJ, jetMap_smul, smul_eval, polFn_apply]`. Establish `hd : (∏ τ, (y'.1 τ).det ^ shiftOf lam' τ) = (dePow σ₀ b s y')⁻¹`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `dePow`. Rewrite using `[← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `show (y'.1 τ).det ^ (lam' τ).detShift = ((y'.1 τ).det ^ s τ)⁻¹`. Rewrite using `[hs, _root_.zpow_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hd]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem unfTh_ev (σ₀ : X.K →+* ℂ) (cD : X.Tau → ℂ) (Θ : VCx X.Tau a b → ℂ) (lam : X.Tau → DomWeight a) (lam' : X.Tau → DomWeight b)
     (n : X.Tau → ℕ) (s' s : X.Tau → ℤ) (hn : ∀ τ, s' τ + (lam τ).detShift = (n τ : ℤ)) (hs : ∀ τ, (lam' τ).detShift = -s τ)
@@ -228,7 +224,7 @@ theorem unfTh_ev (σ₀ : X.K →+* ℂ) (cD : X.Tau → ℂ) (Θ : VCx X.Tau a 
   ring
 
 /- English proof (translation)
-Substitute `hσ` using the available equality. Rewrite using `[kerOf_tab Am Sall SB cA cB hA hB sel mU mI lam lam' n N fr N' fr' hN hN' Ξ, LinearMap.smul_apply, LinearMap.map_smulₛₗ, unfTh_ev Am.σ₀ Am.cD (Am.thDat Sall cA cB N N' Ξ) lam lam' n s' s hn hs hV _ (Am.chiF a b N N')⁻¹ (tabK_spec Am Sall cA cB hA hB hsm hrat N N' hN hN' Ξ) P, smu …`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem unfTh_kerOf (Am : Amb X) (σ₀ : X.K →+* ℂ) (hσ : Am.σ₀ = σ₀) (Sall SB : Finset (HeightOneSpectrum (𝓞 X.E))) (cA cB : ℕ) (hA : 0 < cA) (hB : 0 < cB)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (mU : HeightOneSpectrum (𝓞 X.E) → X.Kˣ) (mI : SB → X.E → X.K)
@@ -274,7 +270,7 @@ def ChainArg.ofTheta {σ₀ : X.K →+* ℂ} {G : ChainGlob W σ₀} {u : Pr.Wor
   unf_ev := h
 
 /- English proof (translation)
-The claim follows from `unfTh_polFn σ₀ T.cD (T.Th i L L') Q`.
+A detailed English derivation is pending.
 -/
 theorem recChain_unf_pol (hX : X.Ok) (σ₀ : X.K →+* ℂ) (G : ChainGlob W σ₀) (u : Pr.Word) (kk : ∀ i, ClsKer (stepGSD W Λ u i) (stepGSD W Λ u (i + 1)))
     (T : ThetaDat W Λ u) (h : T.Comparison₂ G kk) (i : ℕ) (L : StCl W Λ u i) (L' : StCl W Λ u (i + 1)) (Q : Pol ℂ X.Tau (R.N i)) :
@@ -283,7 +279,7 @@ theorem recChain_unf_pol (hX : X.Ok) (σ₀ : X.K →+* ℂ) (G : ChainGlob W σ
   unfTh_polFn σ₀ T.cD (T.Th i L L') Q
 
 /- English proof (translation)
-The claim follows from `unfTh_one σ₀ T.cD (T.Th i L L')`.
+A detailed English derivation is pending.
 -/
 theorem recChain_unf_one (hX : X.Ok) (σ₀ : X.K →+* ℂ) (G : ChainGlob W σ₀) (u : Pr.Word) (kk : ∀ i, ClsKer (stepGSD W Λ u i) (stepGSD W Λ u (i + 1)))
     (T : ThetaDat W Λ u) (h : T.Comparison₂ G kk) (i : ℕ) (L : StCl W Λ u i) (L' : StCl W Λ u (i + 1)) :
@@ -297,7 +293,7 @@ section Wt
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(rec_sInt R (W.hc u τ) ⟨i, hi⟩).2`. Unfold `sSharpC`. Rewrite using `[RowPar.eAt_of _ hi]`. Simplify using `only at ha`. Rewrite using `[ha, Int.floor_intCast]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sSharpC_cast (u : Pr.Word) {i : ℕ} (hi : i < R.m) (τ : X.Tau) :
     ((sSharpC W u i τ : ℤ) : ℚ) = sExp' R ((W.hc u τ).e ⟨i, hi⟩) (i + 1) := by
@@ -308,7 +304,7 @@ theorem sSharpC_cast (u : Pr.Word) {i : ℕ} (hi : i < R.m) (τ : X.Tau) :
   rw [ha, Int.floor_intCast]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(rec_sInt R (W.hc u τ) ⟨i, hi⟩).1`. Unfold `sDivC`. Rewrite using `[RowPar.eAt_of _ hi]`. Simplify using `only at ha`. Rewrite using `[ha, Int.floor_intCast]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sDivC_cast (u : Pr.Word) {i : ℕ} (hi : i < R.m) (τ : X.Tau) :
     ((sDivC W u i τ : ℤ) : ℚ) = sExp R ((W.hc u τ).e ⟨i, hi⟩) (i + 1) := by
@@ -319,11 +315,11 @@ theorem sDivC_cast (u : Pr.Word) {i : ℕ} (hi : i < R.m) (τ : X.Tau) :
   rw [ha, Int.floor_intCast]
 
 /- English proof (translation)
-Establish `hN : 0 < R.N i` using `R.N_pos i`. Rewrite using `[nuLast_eq W u i hi τ]`. Establish `h1 : (W.nuW u (i + 1) τ).detShift = (W.nuW u (i + 1) τ).w (⟨R.N i - 1, by omega⟩ : Fin (R.N i))`. Unfold `DomWeight.detShift`. Conclude with `dif_pos hN`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h2 : (W.lamTrue u i τ).detShift = (W.lamTrue u i τ).w ⟨R.N i - 1, by omega⟩`. Unfold `DomWeight.detShift`. Conclude with `dif_pos hN`. Rewrite using `[h1, h2]`. Establish `h3` using `Wts.nuW_eq_true W u hi τ ⟨R.N i - 1, by omega⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[← sSharpC_cast W u hi τ]`. Establish `h4 : (W.nuW u (i + 1) τ).w (⟨R.N i - 1, by omega⟩ : Fin (R.N i)) = (W.lamTrue u i τ).w ⟨R.N i - 1, by omega⟩ + sSharpC W u i τ`. Conclude with `h3` after adjusting the coercions. Rewrite using `[h4, add_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sSharpC_add (u : Pr.Word) {i : ℕ} (hi : i < R.m) (τ : X.Tau) :
     sSharpC W u i τ + (W.lamTrue u i τ).detShift = (nuLast W u i τ : ℤ) := by
@@ -343,9 +339,9 @@ theorem sSharpC_add (u : Pr.Word) {i : ℕ} (hi : i < R.m) (τ : X.Tau) :
   rw [h4, add_comm]
 
 /- English proof (translation)
-Establish `hN : 0 < R.N (i + 1)` using `R.N_pos (i + 1)`. Establish `hlt : R.N i < R.N (i + 1)` using `by unfold Ranks.N; rw [Nat.succ_mul]; omega`. Establish `h2 : (W.lamTrue u (i + 1) τ).detShift = (W.lamTrue u (i + 1) τ).w ⟨R.N (i + 1) - 1, by omega⟩`. Unfold `DomWeight.detShift`. Conclude with `dif_pos hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Establish `h3` using `Wts.lamTrue_new W u hi τ ⟨R.N (i + 1) - 1, by omega⟩ (by simp only; omega)`. Rewrite `h3` using `[← sDivC_cast W u hi τ]`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamTrue_last (u : Pr.Word) {i : ℕ} (hi : i < R.m) (τ : X.Tau) :
     (W.lamTrue u (i + 1) τ).detShift = -sDivC W u i τ := by
@@ -363,7 +359,7 @@ variable (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOne
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
 /- English proof (translation)
-The claim follows from `unfTh_kerOf Am σ₀ hσ (Sall sel mu u) (rowSG Pr sel mu) (cAof sel mu cst) (cBof sel mu cst u) (cAof_pos sel mu cst) (cBof_pos sel mu cst u hT) sel (mUof Ch mu i) (muAt Ch sel mu cst i) (W.lamTrue u i) (W.lamTrue u (i + 1)) (nuLast W u i) (sSharpC W u i) (sDivC W u i) (sSharpC_add …`.
+A detailed English derivation is pending.
 -/
 theorem unfTh_stepC (Am : Amb X) (σ₀ : X.K →+* ℂ) (hσ : Am.σ₀ = σ₀) (u : Pr.Word) (hT : 0 < Pr.T u) {i : ℕ} (hi : i < R.m)
     (hV : JetInVVStep W u i (W.lamTrue u (i + 1))) (hsm : Am.ESmooth (R.N i) (R.N (i + 1)))
@@ -388,7 +384,7 @@ section Zero
 variable {X : Fields}
 
 /- English proof (translation)
-Unfold `jetC derivAt0`. Rewrite using `[iteratedFDeriv_fun_zero]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jetC_zero_fun {ι : Type} [Fintype ι] {a b : ℕ} (cD : ι → ℂ) (m : DVar ι a b →₀ ℕ) : jetC cD (fun _ : VCx ι a b => (0 : ℂ)) m = 0 := by
   unfold jetC derivAt0
@@ -396,9 +392,9 @@ theorem jetC_zero_fun {ι : Type} [Fintype ι] {a b : ℕ} (cD : ι → ℂ) (m 
   simp
 
 /- English proof (translation)
-Establish `h : jetLin (jetC cD (fun _ : VCx X.Tau a b => (0 : ℂ))) = 0`. Establish `h1 : jetC cD (fun _ : VCx X.Tau a b => (0 : ℂ)) = fun m => (0 : ℂ) * (0 : ℂ)`. Use function extensionality and compare the values at `m`. Rewrite using `[jetC_zero_fun, zero_mul]`. Rewrite using `[h1, jetLin_smul, zero_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[unfTh_eq]`. Unfold `jetMap`. Rewrite using `[h, LinearMap.zero_comp, LinearMap.zero_comp, LinearMap.comp_zero]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem unfTh_zero (σ₀ : X.K →+* ℂ) (cD : X.Tau → ℂ) {a b : ℕ} : unfTh σ₀ cD (fun _ : VCx X.Tau a b => (0 : ℂ)) = 0 := by
   have h : jetLin (jetC cD (fun _ : VCx X.Tau a b => (0 : ℂ))) = 0 := by
@@ -446,13 +442,11 @@ def ChiDetTie (σ₀ : X.K →+* ℂ) (Dc : DetChr X R.m) (hc : Formalism.BasicN
 variable {W Λ Ch sel mu cst}
 
 /- English proof (translation)
-Introduce `i hi c c'`. Establish `a` using `h1 i hi i (Or.inl rfl) c`. Establish `b` using `h1 i hi (i + 1) (Or.inr rfl) c'`. Establish `e` using `h2 i hi c c'`. Unfold `scalK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← a, ← b]`. Unfold `rhoK rhoK'`. Rewrite using `[dif_pos hc, dif_pos hc]`. Use `set A := Formalism.L2.DIV.detTw hc.sig (G.chr.muAt i) (repPt W Λ hc u i c)`. Use `set B := Formalism.L2.DIV.detTw hc.sig (G.chr.muAt i) (repPt W Λ hc u (i + 1) c')`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set C := (Formalism.L2.DIV.detTw hc.sig G.chr.chi (repPt W Λ hc u i c)) ^ (-((R.N (i + 1) / 2 : ℕ) : ℤ))`. Use `set D := (Formalism.L2.DIV.detTw hc.sig G.chr.chi (repPt W Λ hc u (i + 1) c')) ^ (((R.N i / 2 : ℕ) : ℤ))`. Establish `e' : σ₀ (C : X.K) * σ₀ (D : X.K) * Am.chiF (R.N i) (R.N (i + 1)) (repN W Λ u i c) (repN W Λ u (i + 1) c') = 1`. Rewrite using `[← map_mul, ← Units.val_mul]`. Conclude with `e`.
-
-Establish `hB : (((B⁻¹ : X.Kˣ) : X.K))⁻¹ = (B : X.K)`. Rewrite using `[Units.val_inv_eq_inv_val, inv_inv]`. Rewrite using `[hB, Units.val_mul, Units.val_mul, map_mul, map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rhoScal_of {σ₀ : X.K →+* ℂ} (G : ChainGlob W σ₀) (Am : Amb X) (u : Pr.Word) (hc : Formalism.BasicNotions.CMData X.F X.E)
     (h1 : MuDetTie W Λ Ch sel mu cst G.chr hc u) (h2 : ChiDetTie W Λ σ₀ G.chr hc Am u) : RhoScal W Λ Ch sel mu cst G Am u := by
@@ -524,7 +518,7 @@ structure XiHyp {σ₀ : X.K →+* ℂ} (G : ChainGlob W σ₀) : Prop where
 variable {W Λ Ch sel mu cst Am u Ξ}
 
 /- English proof (translation)
-Unfold `kerOf latSum`. Simplify using `only [h, zero_smul]`. Conclude with `finsum_zero`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kerOf_zero {E K : Type} [Field E] [NumberField E] [Field K] {a b : ℕ} {SB : Finset (HeightOneSpectrum (𝓞 E))}
     {V V' : Type} [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V'] (th : ThDist E K a b SB V V')
@@ -535,7 +529,7 @@ theorem kerOf_zero {E K : Type} [Field E] [NumberField E] [Field K] {a b : ℕ} 
   exact finsum_zero
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Unfold `Amb.thDat latSum`. Simplify using `only [h, map_zero, zero_mul]`. Conclude with `finsum_zero`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thDat_zero (A : Amb X) {a b : ℕ} (Sa : Finset (HeightOneSpectrum (𝓞 X.E))) (cA cB : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a))
     (N' : Submodule (𝓞 X.E) (Sp X.E b)) (Ξ₀ : HomE X.E a b → X.K) (h : ∀ x, Ξ₀ x = 0) : A.thDat Sa cA cB N N' Ξ₀ = fun _ => 0 := by
@@ -545,19 +539,17 @@ theorem thDat_zero (A : Amb X) {a b : ℕ} (Sa : Finset (HeightOneSpectrum (𝓞
   exact finsum_zero
 
 /- English proof (translation)
-Introduce `i c c' x`. Distinguish the cases in `hi : i < R.m`. Establish `hp` using `((stepGSD W Λ u i).outSec.rep c).2`. Establish `hp'` using `((stepGSD W Λ u (i + 1)).outSec.rep c').2`. Establish `h` using `unfTh_stepC W Ch sel mu cst Am σ₀ H.sig u H.T_pos hi (jet_in_weight_space_chain W u hi) (H.smooth i hi) (H.rat i hi) (repN W Λ u i c) (repFr W Λ sel mu u i c) (repN W Λ u (i + 1) c') (repFr W Λ sel mu u (i + 1) c') ⟨hp.lat, hp.uni⟩ ⟨hp'.lat, hp'.uni⟩ (Ξ i ((stepGSD W Λ u i).outSe …`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `H.rho i hi c c'`. Establish `hx` using `H.chi_ne i hi c c'`. Use `set r := σ₀ (rhoK W Λ G.chr u i c : X.K) * σ₀ (rhoK' W Λ G.chr u i c' : X.K) with hrdef`. Establish `h0 : r ≠ 0`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `rhoK_norm G u i c` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `rhoK'_norm G u i c'` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Establish `hs : σ₀ (scalK Ch sel mu cst i (repN W Λ u i c) (repFr W Λ sel mu u i c) (repN W Λ u (i + 1) c') (repFr W Λ sel mu u (i + 1) c')) * (Am.chiF (R.N i) (R.N (i + 1)) (repN W Λ u i c) (repN W Λ u (i + 1) c'))⁻¹ = r`. Rewrite using `[← hr, mul_assoc, mul_inv_cancel₀ hx, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `h` using `[hs]`. Use function extensionality and compare the values at `(y' : FrS X σ₀ (R.N (i + 1)))`. Establish `hy` using `congrFun h y'`. Use `Eq.trans ?_ (congrArg (fun z : ℂ => r⁻¹ * z) hy).symm` and prove the remaining obligations. Use `show _ = r⁻¹ * (r * _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, inv_mul_cancel₀ h0, one_mul]`. Both sides reduce to the same expression. Establish `hi' : R.m ≤ i` using `Nat.le_of_not_lt hi`. Establish `hk : (xiKK hE i).k ((stepGSD W Λ u i).outSec.rep c) ((stepGSD W Λ u (i + 1)).outSec.rep c') = 0` using `kerOf_zero _ _ _ _ _ _ _ _ _ (H.above i hi' _ _)`. Establish `ht : (xiTheta W Λ sel mu cst Am u Ξ).Th i c c' = fun _ => 0` using `thDat_zero Am _ _ _ _ _ _ (H.above i hi' _ _)`.
-
-Rewrite using `[hk, ht, unfTh_zero]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem xiTheta_tie {σ₀ : X.K →+* ℂ} (G : ChainGlob W σ₀) (hE : XiEquiv W Λ Ch sel mu cst Am u Ξ) (H : XiHyp W Λ Ch sel mu cst Am u Ξ G) :
     (xiTheta W Λ sel mu cst Am u Ξ).Comparison₂ G (xiKK hE) := by

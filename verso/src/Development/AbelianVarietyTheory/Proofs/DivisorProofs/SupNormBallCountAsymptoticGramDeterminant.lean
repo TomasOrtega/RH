@@ -11,11 +11,11 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Establish `hδ : 0 < t - Real.log C` using `sub_pos.2 ht`. Establish `hc1 : 0 < |c| + 1` using `by positivity`. Establish `h1` using `(isLittleO_pow_exp_pos_mul_atTop n hδ).bound (c := 1 / (|c| + 1)) (by positivity)`. Establish `h2` using `tendsto_natCast_atTop_atTop.eventually h1`. Use `filter_upwards [h2] with m hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCpos : 0 < C` using `by linarith`. Rewrite `hm` using `[Real.norm_of_nonneg (by positivity), Real.norm_of_nonneg (Real.exp_pos _).le]`. Establish `hexp : Real.exp (t * m) = Real.exp ((t - Real.log C) * m) * C ^ m`. Rewrite using `[← Real.rpow_natCast, Real.rpow_def_of_pos hCpos, ← Real.exp_add]`. Put the polynomial expressions in normal form.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hexp]`. Establish `hmn : (0 : ℝ) ≤ (m : ℝ) ^ n` using `by positivity`. Establish `hle : c * (m : ℝ) ^ n ≤ Real.exp ((t - Real.log C) * m)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_mul_of_nonneg_right hle (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eventually_poly_mul_pow_le_exp (c C t : ℝ) (n : ℕ) (hC : 1 ≤ C) (ht : Real.log C < t) :
     ∀ᶠ m : ℕ in atTop, c * (m : ℝ) ^ n * C ^ m ≤ Real.exp (t * m) := by
@@ -39,31 +39,27 @@ theorem eventually_poly_mul_pow_le_exp (c C t : ℝ) (n : ℕ) (hC : 1 ≤ C) (h
   exact mul_le_mul_of_nonneg_right hle (by positivity)
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX hS P hP ω r f hf hli g hg C hC hball t ht`. Use `haveI := hX.finite_emb`. Use `letI := Fintype.ofFinite (k →+* ℂ)`. Establish `hρ` using `fun σ => GlobalTheory.T.exists_chernTopPower_volumeDensity_ratio k X p D hX hS P.L hP σ (ω σ)`. Use `choose ρ hρr hρ0 _ using hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hbd : ∀ σ, ∃ b : ℝ, ∀ y, ρ σ y ≤ b` using `fun σ => by haveI := hX.compactSpace σ`. Take `⟨b, hb⟩` from `(isCompact_range (hρr σ).1).bddAbove`. Conclude with `⟨b, fun y => hb ⟨y, rfl⟩⟩`. Use `choose b hb using hbd`. Use `set B : ℝ := ∑ σ, |b σ| with hBdef`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0 : 0 ≤ B` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hρB : ∀ σ y, ρ σ y ≤ B` using `fun σ y => (hb σ y).trans ((le_abs_self _).trans (Finset.single_le_sum (f := fun σ => |b σ|) (fun _ _ => abs_nonneg _) (Finset.mem_univ σ)))`. Use `set K : ℝ := B / D.factorial + 1 with hKdef`. Establish `hK : 1 ≤ K`. Establish `: 0 ≤ B / D.factorial` using `by positivity`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set V : ℝ := max 1 (∑ᶠ σ, ((ω σ).meas Set.univ).toReal) with hVdef`. Establish `hV : 1 ≤ V` using `le_max_left _ _`. Establish `hmorse` using `GlobalTheory.T.holomorphicMorse_sections_mL_add_A_uniform k X p D hX hS P hP ω ρ hρr 1 one_pos`. Establish `hr : ∀ᶠ m : ℕ in atTop, (r m : ℝ) ≤ (g + 1) * (m : ℝ) ^ D` using `by filter_upwards [hg.eventually (gt_mem_nhds (lt_add_one g)), eventually_ge_atTop 1] with m hm h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (0 : ℝ) < (m : ℝ) ^ D` using `pow_pos (by exact_mod_cast h1) D`. Conclude with `((div_lt_iff₀ h0).1 hm).le`. Establish `hexp` using `eventually_poly_mul_pow_le_exp (2 * (g + 1) * K * V) C t (2 * D) hC ht`. Use `squeeze_zero_norm' (a := fun m : ℕ => 2 * ((r m : ℝ) / (m : ℝ) ^ D) * ((Real.log (2 * K * V) + D * Real.log m) / m)) ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hmorse, hr, hexp, eventually_ge_atTop 1] with m hm hrm hem h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm1 : (1 : ℝ) ≤ m` using `by exact_mod_cast h1`. Establish `hm0 : (0 : ℝ) < m` using `by linarith`. Establish `hmD : (0 : ℝ) < (m : ℝ) ^ D` using `pow_pos hm0 D`. Establish `hM : 1 ≤ K * (m : ℝ) ^ D` using `one_le_mul_of_one_le_of_one_le hK (one_le_pow₀ hm1)`. Establish `hcmb : ∀ (c : Fin (r m) → ℂ) σ y, cmb (vals P m 1 (f m)) c σ y ≤ K * (m : ℝ) ^ D * l2 (fun σ => (ω σ).meas) (vals P m 1 (f m)) c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce `c σ y`. Establish `h` using `hm (Fin (r m)) (f m) (hf m) c σ y`. Establish `hl2 : 0 ≤ l2 (fun σ => (ω σ).meas) (vals P m 1 (f m)) c` using `finsum_nonneg fun σ => integral_nonneg fun y => by unfold cmb; positivity`. Use `h.trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right ?_ hmD.le) hl2)` and prove the remaining obligations. Establish `: ρ σ y / D.factorial ≤ B / D.factorial` using `div_le_div_of_nonneg_right (hρB σ y) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hR : 2 * (r m : ℝ) * C ^ m * (K * (m : ℝ) ^ D * V) ≤ Real.exp (t * m)`. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ C ^ m * (K * (m : ℝ) ^ D * V)`. Establish `: 0 ≤ C` using `by linarith`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities. Use `_ = 2 * (g + 1) * K * V * (m : ℝ) ^ (2 * D) * C ^ m := by ring`. Use `_ ≤ _ := hem`. Establish `key` using `GlobalTheory.T.abs_log_card_ballIn_sub_gramVolume_le k X p D hX hS P ω (m : ℤ) 1 (r m) (f m) (hf m) (hli m) (K * (m : ℝ) ^ D) V (C ^ m) (Real.exp (t * m)) hM hV (le_max_right _ _) (by positivity) (Real.exp_pos _) hcmb (hball m h1) hR`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite `key` using `[Real.log_exp]`. Establish `hlog : Real.log (2 * (K * (m : ℝ) ^ D * V)) = Real.log (2 * K * V) + D * Real.log m`. Establish `e : 2 * (K * (m : ℝ) ^ D * V) = (2 * K * V) * (m : ℝ) ^ D` using `by ring`. Rewrite using `[e, Real.log_mul (by positivity) hmD.ne', Real.log_pow]`. Establish `hmD1 : (0 : ℝ) < (m : ℝ) ^ (D + 1)` using `pow_pos hm0 _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Real.norm_eq_abs, abs_div, abs_of_pos hmD1, div_le_iff₀ hmD1]`. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hlog, pow_succ]`. Clear the denominators using the available nonvanishing facts. Establish `h1 : Tendsto (fun m : ℕ => 2 * ((r m : ℝ) / (m : ℝ) ^ D)) atTop (𝓝 (2 * g))` using `hg.const_mul 2`.
-
-Establish `hl : Tendsto (fun x : ℝ => Real.log x / x) atTop (𝓝 0)`. Simplify using `using Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero`. Establish `h2 : Tendsto (fun m : ℕ => (Real.log (2 * K * V) + D * Real.log m) / m) atTop (𝓝 0)`. Use `((tendsto_one_div_atTop_nhds_zero_nat (𝕜 := ℝ)).const_mul (Real.log (2 * K * V))).add ((hl.comp tendsto_natCast_atTop_atTop).const_mul (D : ℝ))` as an intermediate fact. Simplify using `only [mul_zero, add_zero] at this`.
-
-Use `this.congr fun m => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `using h1.mul h2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem count_ball_asymp : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → GenSmooth p D → ∀ (P : Pair p), P.L.SemiPos D → ∀ (ω : ∀ σ, VolDens p σ D) (r : ℕ → ℕ) (f : ∀ m, Fin (r m) → X.functionField), (∀ (m : ℕ) i, f m i ∈ P.H m 1) → (∀ m, LinearIndependent ℤ (f m)) → ∀ g : ℝ, Tendsto (fun m : ℕ => (r m : ℝ) / (m : ℝ) ^ D) atTop (𝓝 g) → ∀ C : ℝ, 1 ≤ C → (∀ m : ℕ, 1 ≤ m → AddSubgroup.closure (Set.range (f m)) ≤ AddSubgroup.closure (ballIn P (AddSubgroup.closure (Set.range (f m))) m 1 (C ^ m))) → ∀ t : ℝ, Real.log C < t → Tendsto (fun m : ℕ => (Real.log ((ballIn P (AddSubgroup.closure (Set.range (f m))) m 1 (Real.exp (t * m))).ncard : ℝ) - (r m * (t * m) - Real.log (gram (fun σ => (ω σ).meas) (vals P m 1 (f m))).det.re / 2 + Real.log (volume {x : Fin (r m) → ℝ | ∑ i, x i ^ 2 ≤ 1}).toReal)) / (m : ℝ) ^ (D + 1)) atTop (𝓝 0) := by
   intro k _ X _ p D hX hS P hP ω r f hf hli g hg C hC hball t ht

@@ -8,11 +8,11 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Finset Comb
 
 /- English proof (translation)
-Unfold `pcnt`. Establish `hins : (univ.filter (fun s : Fin n => (s : ℕ) < (t : ℕ) + 1 ∧ w s = w t)) = insert t (univ.filter (fun s : Fin n => (s : ℕ) < t ∧ w s = w t))`. Use extensionality with `s`. Simplify using `only [mem_filter, mem_univ, true_and, mem_insert]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩`. Break down `Nat.lt_succ_iff_lt_or_eq.mp h1 with h | h` into its components or cases. Conclude with `Or.inr ⟨h, h2⟩`. Conclude with `Or.inl (Fin.ext h)`. Introduce and unpack `(h | ⟨h1, h2⟩)`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative. Assume the hypotheses and unpack their components.
 
-Substitute `h` using the available equality. Conclude with `⟨Nat.lt_succ_self _, rfl⟩`. Conclude with `⟨Nat.lt_succ_of_lt h1, h2⟩`. Rewrite using `[hins, card_insert_of_notMem]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Comb.pcnt_succ_self {m n : ℕ} (w : Fin n → Fin m) (t : Fin n) :
     pcnt w ((t : ℕ) + 1) (w t) = pcnt w t (w t) + 1 := by
@@ -33,9 +33,9 @@ theorem Comb.pcnt_succ_self {m n : ℕ} (w : Fin n → Fin m) (t : Fin n) :
   simp
 
 /- English proof (translation)
-Introduce `m n w hw s t hrow hcol`. Assume the negation of the conclusion as `hst`. Rewrite `hst` using `[not_le]`. Simplify using `only [cellOfWord] at hrow hcol`. Establish `h1 : pcnt w ((t : ℕ) + 1) (w t) = pcnt w t (w t) + 1` using `Comb.pcnt_succ_self w t`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : pcnt w ((t : ℕ) + 1) (w s) ≤ pcnt w s (w s)` using `pcnt_le_of_le w (Nat.succ_le_of_lt hst) (w s)`. Establish `h3 : pcnt w ((t : ℕ) + 1) (w t) ≤ pcnt w ((t : ℕ) + 1) (w s)` using `hw _ (by have := s.isLt; have : (t : ℕ) < s := hst; omega) (w s) (w t) hrow`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem CombCellOfWordMono.proof : CombCellOfWordMono.Statement := by
   intro m n w hw s t hrow hcol

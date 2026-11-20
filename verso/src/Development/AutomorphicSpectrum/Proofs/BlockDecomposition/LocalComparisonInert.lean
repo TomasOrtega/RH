@@ -35,7 +35,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 abbrev aw (w : Pl E) : Above (w.under (𝓞 (maximalRealSubfield E))) := ⟨w, rfl⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `hw ⟨u.1, fun e => h (Subtype.ext e), u.2⟩`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem eq_aw {w : Pl E} (hw : ¬ IsSplitAt w) (u : Above (w.under (𝓞 (maximalRealSubfield E)))) : u = aw w := by
   by_contra h
@@ -55,13 +55,13 @@ theorem evR_apply {w : Pl E} (hw : ¬ IsSplitAt w) (x : Av (w.under (𝓞 (maxim
     evR hw x = x (aw w) := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_apply (aw w)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_evR {w : Pl E} (hw : ¬ IsSplitAt w) : Continuous (evR hw) :=
   continuous_apply (aw w)
 
 /- English proof (translation)
-Use `letI := uniq hw`. Conclude with `(Homeomorph.piUnique fun u : Above (w.under (𝓞 (maximalRealSubfield E))) => u.1.adicCompletion E).symm.continuous`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem continuous_evR_symm {w : Pl E} (hw : ¬ IsSplitAt w) : Continuous (evR hw).symm := by
   letI := uniq hw
@@ -83,13 +83,11 @@ theorem evY_apply {w : Pl E} (hw : ¬ IsSplitAt w) (a b : ℕ) (y : Yv a b (w.un
     evY hw a b y = evw (aw w) y := rfl
 
 /- English proof (translation)
-Take `⟨-, -, -, h4, -⟩` from `GlobalTheory.ConjAtPlace.main E hU w`. Establish `hc'` using `(h4 hw).2.2.1`. Establish `h` using `hC E (w.under (𝓞 (maximalRealSubfield E)))`. Use `set X : Af E := sLoc E w (evR hw x) with hX`. Establish `hp : pLoc E w X = evR hw x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(Pi.single w (evR hw x) : ∀ u : Pl E, u.adicCompletion E) w = _`. Simplify using the standard rewrite rules. Establish `hx : projv _ X = x`. Use function extensionality and compare the values at `u`. Take `rfl` from `eq_aw hw u`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hp`. Establish `hs : cjv (w.under (𝓞 (maximalRealSubfield E))) = h.choose`. Rewrite using `[cjv, dif_pos h]`. Rewrite using `[← hx, hs, ← h.choose_spec.2 X]`. Rewrite using `[evR_apply, evR_apply]`.
-
-Conclude with `hc' X`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cjv_apply (hC : CjEx) (hU : Unr E) {w : Pl E} (hw : ¬ IsSplitAt w)
     (x : Av (w.under (𝓞 (maximalRealSubfield E)))) : evR hw (cjv _ x) = cj w (evR hw x) := by
@@ -111,7 +109,7 @@ theorem cjv_apply (hC : CjEx) (hU : Unr E) {w : Pl E} (hw : ¬ IsSplitAt w)
   exact hc' X
 
 /- English proof (translation)
-Establish `h : ∀ n (g : GL (Fin n) (Av (w.under (𝓞 (maximalRealSubfield E))))), GeneralLinearGroup.map (evR hw).toRingHom (thetaGL n (cjv _) g) = thL n w (GeneralLinearGroup.map (evR hw).toRingHom g)` using `fun n g => by`. Rewrite using `[thL, if_neg hw]`. Conclude with `GlobalTheory.ThetaPull.map_thetaGL _ _ _ (cjv_apply hC hU hw) g`. Conclude with `Prod.ext (h a y.1) (h b y.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evY_thv (hC : CjEx) (hU : Unr E) {w : Pl E} (hw : ¬ IsSplitAt w) (a b : ℕ)
     (y : Yv a b (w.under (𝓞 (maximalRealSubfield E)))) :
@@ -124,9 +122,9 @@ theorem evY_thv (hC : CjEx) (hU : Unr E) {w : Pl E} (hw : ¬ IsSplitAt w) (a b :
   exact Prod.ext (h a y.1) (h b y.2)
 
 /- English proof (translation)
-Rewrite using `[Kv, Subgroup.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h (aw w)`. Introduce `h u`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `eq_aw hw u`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem mem_Kv_iff {w : Pl E} (hw : ¬ IsSplitAt w) (a b : ℕ) (y : Yv a b (w.under (𝓞 (maximalRealSubfield E)))) :
     y ∈ Kv a b _ ↔ evY hw a b y ∈ K2 a b w := by
@@ -139,7 +137,7 @@ theorem mem_Kv_iff {w : Pl E} (hw : ¬ IsSplitAt w) (a b : ℕ) (y : Yv a b (w.u
     exact h
 
 /- English proof (translation)
-Establish `h : ∀ n (δ : GL (Fin n) E), GeneralLinearGroup.map (evR hw).toRingHom (GeneralLinearGroup.map (projv (w.under (𝓞 (maximalRealSubfield E)))) (ratF E n δ)) = locEl n w δ` using `fun n δ => by`. Rewrite using `[locEl, if_neg hw]`. Use extensionality with `i j`. Both sides reduce to the same expression. Conclude with `Prod.ext (h a δ₁) (h b δ₂)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem evY_pv {w : Pl E} (hw : ¬ IsSplitAt w) (a b : ℕ) (δ₁ : GL (Fin a) E) (δ₂ : GL (Fin b) E) :
     evY hw a b (pv a b _ (ratF E a δ₁, ratF E b δ₂)) = (locEl a w δ₁, locEl b w δ₂) := by
@@ -151,7 +149,7 @@ theorem evY_pv {w : Pl E} (hw : ¬ IsSplitAt w) (a b : ℕ) (δ₁ : GL (Fin a) 
   exact Prod.ext (h a δ₁) (h b δ₂)
 
 /- English proof (translation)
-Use `letI := uniq hw`. Rewrite using `[fv, finprod_unique]`. Express the relevant statement in the definitionally equal form `_ = ∏ᶠ (_ : w ∈ S), φ₁ w (evw (aw w) y) * if IsSplitAt w then _ else 1`. Rewrite using `[finprod_eq_if, if_pos hS, if_neg hw, mul_one, seen, if_neg hw, evY_apply]`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem fv_eq {w : Pl E} (hw : ¬ IsSplitAt w) {a b : ℕ} {S : Set (Pl E)} (hS : w ∈ S)
     (φ₁ φ₂ : ∀ w : Pl E, GLw a w × GLw b w → ℂ) (y : Yv a b (w.under (𝓞 (maximalRealSubfield E)))) :
@@ -162,7 +160,7 @@ theorem fv_eq {w : Pl E} (hw : ¬ IsSplitAt w) {a b : ℕ} {S : Set (Pl E)} (hS 
   rw [finprod_eq_if, if_pos hS, if_neg hw, mul_one, seen, if_neg hw, evY_apply]
 
 /- English proof (translation)
-Introduce `hC E _ _ _ hU a b S _ φ₁ φ₂ _ _ δ₁ δ₂ _ _ w hS hw`. Rewrite using `[← evY_pv hw a b δ₁ δ₂]`. Conclude with `GlobalTheory.EulerTw.Transport.twOrb_transport _ _ (evY hw a b) _ _ _ _ _ _ _ (evY_thv hC hU hw a b) (mem_Kv_iff hw a b) (fv_eq hw hS φ₁ φ₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locCompareInert : LocCompareInert := by
   intro hC E _ _ _ hU a b S _ φ₁ φ₂ _ _ δ₁ δ₂ _ _ w hS hw

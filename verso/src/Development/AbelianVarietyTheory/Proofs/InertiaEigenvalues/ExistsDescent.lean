@@ -10,11 +10,11 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.CrysWD
 
 /- English proof (translation)
-Set `M : G →* Matrix (Fin a) (Fin a) ↥L.1` to `{ toFun := fun g => Matrix.of fun i j => ⟨_, hL g i j⟩ map_one' := by`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, map_one, Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Use the proof step `map_mul' := fun g h => by`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply] }`. Use `⟨M.toHomUnits, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `Continuous.subtype_mk ((continuous_apply j).comp ((continuous_apply i).comp hr)) _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use extensionality with `g i j`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_descent {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] {a : ℕ}
     (r : G →* Matrix.GeneralLinearGroup (Fin a) (Om l))
@@ -43,11 +43,11 @@ theorem exists_descent {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [Topologica
     rfl
 
 /- English proof (translation)
-Introduce `i a r w hw hr`. Use `⟨fun hc => ?_, fun h => (D.naut.wdOf_unrL i r w hw hr h.1).1 h.2⟩` and prove the remaining obligations. It suffices to establish `hd : D.naut.IsdRW i r w from ⟨hd, (D.naut.wdOf_unrL i r w hw hr hd).2 hc⟩`. Use `D.nd.lPrime i` as an intermediate fact. Take `⟨L, hle, hL⟩` from `GlobalTheory.T.compactGroup_rep_defined_over_finite_extension (D.nd.l i) _ a r hr (D.nbr i w hw).LL`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ, rfl⟩` from `exists_descent r hr L hL`. Take `⟨h1, h2, -⟩` from `(D.loc_tie i w hw).2.2 L hle a ρ hρ`. Use `L.2` as an intermediate fact. Establish `h3` using `(GlobalTheory.Per.CrisDR.isDR_of_isCrys _ _ _ (D.locT (D.nd.l i)) _ L _ _ (h1.1 hc)).1`. Use `h2.2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `IsDR at h3`. Unfold `LocBridge.IsdRE`. Simplify using `using h3`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem crysIffWD (D : D7) : CrysIffWD D.nd D.naut := by
   intro i a r w hw hr

@@ -18,7 +18,7 @@ namespace GlobalTheory.ZH.CrdIso
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rr {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (s : Γ(X, U)) :
     resG X h₂ (resG X h₁ s) = resG X (h₂.trans h₁) s := by
@@ -26,7 +26,7 @@ theorem rr {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (s : Γ(X, U)) :
   rfl
 
 /- English proof (translation)
-Use `erw [Scheme.basicOpen_res]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_res {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)) (x : X) :
     x ∈ X.basicOpen (resG X h a) ↔ x ∈ V ∧ x ∈ X.basicOpen a := by
@@ -34,7 +34,7 @@ theorem mem_res {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)) (x : X) :
   rfl
 
 /- English proof (translation)
-Establish `hu : IsUnit (resG X (X.basicOpen_le a) a)` using `X.toRingedSpace.isUnit_res_basicOpen a`. Use `hu.map (resG X hV)` as an intermediate fact. Rewrite `this` using `[rr]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_res {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)) (hV : V ≤ X.basicOpen a) :
     IsUnit (resG X h a) := by
@@ -43,9 +43,9 @@ theorem isUnit_res {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)) (hV : V ≤ X.ba
   rwa [rr] at this
 
 /- English proof (translation)
-Apply `TopCat.Presheaf.section_ext X.sheaf V` to reduce the goal to its premises. Introduce `x hx`. Take `⟨j, hj⟩` from `ha x hx`. Establish `hu` using `(Scheme.mem_basicOpen X (a j) x hx).1 hj`. Use `congrArg (X.presheaf.germ V x hx).hom (h j)` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_mul]`. Conclude with `hu.mul_right_cancel this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cancel {V : X.Opens} {J : Type} (a : J → Γ(X, V)) (ha : ∀ x ∈ V, ∃ j, x ∈ X.basicOpen (a j))
     {u u' : Γ(X, V)} (h : ∀ j, u * a j = u' * a j) : u = u' := by
@@ -58,19 +58,19 @@ theorem cancel {V : X.Opens} {J : Type} (a : J → Γ(X, V)) (ha : ∀ x ∈ V, 
   exact hu.mul_right_cancel this
 
 /- English proof (translation)
-Establish `hu : ∀ j, IsUnit (resG X (X.basicOpen_le (a j)) (a j))` using `fun j => isUnit_res _ _ le_rfl`. Establish `hq : ∀ j, ∃ q : Γ(X, X.basicOpen (a j)), resG X (X.basicOpen_le (a j)) (b j) = q * resG X (X.basicOpen_le (a j)) (a j)` using `fun j => ⟨resG X (X.basicOpen_le (a j)) (b j) * ↑(hu j).unit⁻¹, by`. Rewrite using `[_root_.mul_assoc, IsUnit.val_inv_mul, _root_.mul_one]⟩`. Use `choose q hq using hq`. Establish `hcov : V ≤ ⨆ j, X.basicOpen (a j)` using `fun x hx => TopologicalSpace.Opens.mem_iSup.2 (ha x hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : TopCat.Presheaf.IsCompatible X.sheaf.1 (fun j => X.basicOpen (a j)) q`. Introduce `i j`. Express the relevant statement in the definitionally equal form `resG X (inf_le_left : X.basicOpen (a i) ⊓ X.basicOpen (a j) ≤ _) (q i) = resG X (inf_le_right : X.basicOpen (a i) ⊓ X.basicOpen (a j) ≤ _) (q j)`. Establish `hV : X.basicOpen (a i) ⊓ X.basicOpen (a j) ≤ V` using `inf_le_left.trans (X.basicOpen_le _)`. Establish `e1` using `congrArg (resG X (inf_le_left : X.basicOpen (a i) ⊓ X.basicOpen (a j) ≤ _)) (hq i)`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (resG X (inf_le_right : X.basicOpen (a i) ⊓ X.basicOpen (a j) ≤ _)) (hq j)`. Establish `e3` using `congrArg (resG X hV) (hab i j)`. Rewrite `e1`, `e2` using `[map_mul, rr, rr]`. Rewrite `e3` using `[map_mul, map_mul, e1, e2]`. Establish `u` using `(isUnit_res hV (a i) inf_le_left).mul (isUnit_res hV (a j) inf_le_right)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `u.mul_right_cancel` to reduce the goal to its premises. Take the linear combination `e3`. Take `⟨r, hr'⟩ : ∃ r : Γ(X, V), ∀ j, resG X (X.basicOpen_le (a j)) r = q j` from `(X.sheaf.existsUnique_gluing' (fun j => X.basicOpen (a j)) V (fun j => homOfLE (X.basicOpen_le _)) hcov q hcomp).exists`. Establish `key : ∀ j, b j = r * a j`. Introduce `j`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `X.sheaf.eq_of_locally_eq' (fun j => X.basicOpen (a j)) V (fun j => homOfLE (X.basicOpen_le _)) hcov _ _ fun k => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resG X (X.basicOpen_le (a k)) _ = resG X (X.basicOpen_le (a k)) _`. Apply `(hu k).mul_right_cancel` to reduce the goal to its premises. Rewrite using `[← map_mul, hab j k, map_mul, map_mul, hr', hq k]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hunit : IsUnit r`. Use `RingedSpace.isUnit_of_isUnit_germ _ _ _ fun x hx => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `ha x hx`. Use `hb j hj` as an intermediate fact. Rewrite `this` using `[key j, Scheme.basicOpen_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `(Scheme.mem_basicOpen X r x hx).1 this.1`. Conclude with `⟨hunit.unit, key⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit {V : X.Opens} {J : Type} (a b : J → Γ(X, V))
     (ha : ∀ x ∈ V, ∃ j, x ∈ X.basicOpen (a j)) (hb : ∀ j, X.basicOpen (a j) ≤ X.basicOpen (b j))
@@ -115,9 +115,9 @@ theorem exists_unit {V : X.Opens} {J : Type} (a b : J → Γ(X, V))
   exact ⟨hunit.unit, key⟩
 
 /- English proof (translation)
-Use `⟨X.residueField x, inferInstance, X.fromSpecResidueField x, fun U => ?_⟩` and prove the remaining obligations. Establish `e` using `Scheme.fromSpecResidueField_apply x`. Prove the components needed by the constructor for the conclusion. Introduce `hU`. Use `hU (Set.mem_univ (IsLocalRing.closedPoint (X.residueField x)))` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `e _ ▸ this`. Introduce `hx y _`. Conclude with `(congrArg (· ∈ U) (e y)).mpr hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_pt (x : X) :
     ∃ (K : Type) (_ : Field K) (p : Sp K ⟶ X), ∀ U : X.Opens, ⊤ ≤ p ⁻¹ᵁ U ↔ x ∈ U := by
@@ -131,7 +131,7 @@ theorem exists_pt (x : X) :
     exact (congrArg (· ∈ U) (e y)).mpr hx
 
 /- English proof (translation)
-Establish `hu` using `SecRatio.isUnit_res t l (V := nonzeroLocus t ⊓ H.U l) inf_le_left inf_le_right`. Establish `: x ∈ X.basicOpen (resG X (inf_le_right : nonzeroLocus t ⊓ H.U l ≤ _) (t.f l))`. Rewrite using `[Scheme.basicOpen_of_isUnit _ hu]`. Conclude with `⟨hx, hl⟩`. Conclude with `((mem_res _ _ _).1 this).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_chart {H : LB X} (t : H.Sec) (l : H.ι) {x : X} (hx : x ∈ nonzeroLocus t) (hl : x ∈ H.U l) :
     x ∈ X.basicOpen (t.f l) := by
@@ -143,7 +143,7 @@ theorem mem_chart {H : LB X} (t : H.Sec) (l : H.ι) {x : X} (hx : x ∈ nonzeroL
 variable {H H' : LB X} {J : Type} {s : J → H.Sec} {s' : J → H'.Sec}
 
 /- English proof (translation)
-Establish `h1 : Crd H s x (fun j => valR x _ ((s j).f i))` using `⟨i, 1, hi, fun j => by simp⟩`. Establish `h2 : Crd H' s' x (fun j => valR x _ ((s' j).f i'))` using `⟨i', 1, hi', fun j => by simp⟩`. Conclude with `CrdCalc.crd_unique (h K x _ h1) h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_prop (h : ∀ (K : Type) [Field K] (x : Sp K ⟶ X) (v : J → K), Crd H s x v → Crd H' s' x v)
     {K : Type} [Field K] (x : Sp K ⟶ X) (i : H.ι) (i' : H'.ι) (hi : ⊤ ≤ x ⁻¹ᵁ H.U i)
@@ -154,15 +154,15 @@ theorem val_prop (h : ∀ (K : Type) [Field K] (x : Sp K ⟶ X) (v : J → K), C
   exact CrdCalc.crd_unique (h K x _ h1) h2
 
 /- English proof (translation)
-Establish `hv : ∀ x ∈ H'.U i' ⊓ H.U i, ∃ (K : Type) (_ : Field K) (φ : Γ(X, H'.U i' ⊓ H.U i) →+* K) (c : Kˣ), (∀ j, φ (resG X inf_le_left ((s' j).f i')) = c * φ (resG X inf_le_right ((s j).f i))) ∧ ∀ f, IsUnit (φ f) ↔ x ∈ X.basicOpen f`. Introduce `x hx`. Take `⟨K, _, p, hp⟩` from `exists_pt x`. Take `⟨c, hc⟩` from `val_prop h p i i' ((hp _).2 hx.2) ((hp _).2 hx.1)`. Use `⟨K, inferInstance, CrdCalc.valHom p _ ((hp _).2 hx), c, fun j => ?_, fun f => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← CrdCalc.valR_eq, ← CrdCalc.valR_eq, CrdCalc.valR_res _ _ ((hp _).2 hx), CrdCalc.valR_res _ _ ((hp _).2 hx), hc]`. Rewrite using `[← CrdCalc.valR_eq, CrdCalc.isUnit_valR_iff _ _ ((hp _).2 hx), hp]`. Apply `exists_unit` to reduce the goal to its premises. Introduce `x hx`. Establish `: x ∈ ⨆ j, nonzeroLocus (s j)` using `by rw [hs]; trivial`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`. Conclude with `⟨j, (mem_res _ _ _).2 ⟨hx, mem_chart _ _ hj hx.2⟩⟩`. Introduce `j x hx`. Establish `hx'` using `X.basicOpen_le _ hx`. Take `⟨K, _, φ, c, hc, hunit⟩` from `hv x hx'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hunit, hc, Units.isUnit_units_mul, hunit]`. Conclude with `hx`. Introduce `j k`. Rewrite using `[← sub_eq_zero, ← basicOpen_eq_bot_iff, eq_bot_iff]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx'` using `X.basicOpen_le _ hx`. Take `⟨K, _, φ, c, hc, hunit⟩` from `hv x hx'`. Use `(hunit _).2 hx` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_mul, hc, hc]`. Conclude with `(this.ne_zero (by ring)).elim`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart_unit [IsReduced X] (hs : ⨆ j, nonzeroLocus (s j) = ⊤)
     (h : ∀ (K : Type) [Field K] (x : Sp K ⟶ X) (v : J → K), Crd H s x v → Crd H' s' x v)
@@ -198,17 +198,17 @@ theorem exists_chart_unit [IsReduced X] (hs : ⨆ j, nonzeroLocus (s j) = ⊤)
     exact (this.ne_zero (by ring)).elim
 
 /- English proof (translation)
-Introduce `X _ H H' J s s' _ _ hs h`. Use `choose w hw using exists_chart_unit hs h`. Use `⟨⟨fun p => w p.2 p.1⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨i', i⟩ ⟨k', k⟩`. Apply `Units.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hi' : H'.U i' ⊓ H.U i ⊓ (H'.U k' ⊓ H.U k) ≤ H'.U i'` using `inf_le_left.trans inf_le_left`. Establish `hi : H'.U i' ⊓ H.U i ⊓ (H'.U k' ⊓ H.U k) ≤ H.U i` using `inf_le_left.trans inf_le_right`. Establish `hk' : H'.U i' ⊓ H.U i ⊓ (H'.U k' ⊓ H.U k) ≤ H'.U k'` using `inf_le_right.trans inf_le_left`. Establish `hk : H'.U i' ⊓ H.U i ⊓ (H'.U k' ⊓ H.U k) ≤ H.U k` using `inf_le_right.trans inf_le_right`. Use `cancel (V := H'.U i' ⊓ H.U i ⊓ (H'.U k' ⊓ H.U k)) (fun j => resG X hi ((s j).f i)) ?_ fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `: x ∈ ⨆ j, nonzeroLocus (s j)` using `by rw [hs]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`. Conclude with `⟨j, (mem_res _ _ _).2 ⟨hx, mem_chart _ _ hj (hi hx)⟩⟩`. Establish `e1` using `congrArg (resG X (inf_le_left : H'.U i' ⊓ H.U i ⊓ (H'.U k' ⊓ H.U k) ≤ _)) (hw i i' j)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (resG X (inf_le_right : H'.U i' ⊓ H.U i ⊓ (H'.U k' ⊓ H.U k) ≤ _)) (hw k k' j)`. Rewrite `e1`, `e2` using `[map_mul, rr, rr]`. Establish `e3` using `SecRatio.compat_res (s j) i k hi hk`. Establish `e4` using `SecRatio.compat_res (s' j) i' k' hi' hk'`. Establish `e5 : ((res (le_inf hi hk) (H.g i k))⁻¹).val * resG X (le_inf hi hk) (H.g i k).val = 1` using `Units.inv_mul _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `resG X (inf_le_left : H'.U i' ⊓ H.U i ⊓ (H'.U k' ⊓ H.U k) ≤ _) (w i i').val * resG X hi ((s j).f i) = resG X (le_inf hi' hk') (H'.g i' k').val * ((res (le_inf hi hk) (H.g i k))⁻¹).val * resG X (inf_le_right : H'.U i' ⊓ H.U i ⊓ (H'.U k' ⊓ H.U k) ≤ _) (w k k').val * resG X hi ((s j …`. Rewrite using `[← e1, e4, e2, e3]`. Take the linear combination `(-(resG X (le_inf hi' hk') (H'.g i' k').val * resG X (inf_le_right : H'.U i' ⊓ H.U i ⊓ (H'.U k' ⊓ H.U k) ≤ _) (w k k').val * resG X hk ((s j).f k))) * e5`. Introduce `j x i i' hi hi'`. Establish `hx : (𝟙 X : X ⟶ X) x ∈ H'.U i' ⊓ H.U i` using `⟨hi', hi⟩`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg (gs (𝟙 X) x (H'.U i' ⊓ H.U i)) (hw i i' j)`. Rewrite `e` using `[gs_mul _ _ _ hx, gs_res _ _ _ hx, gs_res _ _ _ hx]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iso_of_crd : ∀ (X : Scheme.{0}) [IsIntegral X] (H H' : LB X) (J : Type) (s : J → H.Sec) (s' : J → H'.Sec), H.IsLB → H'.IsLB → ⨆ j, nonzeroLocus (s j) = ⊤ → (∀ (K : Type) [Field K] (x : Sp K ⟶ X) (v : J → K), Crd H s x v → Crd H' s' x v) → ∃ w : LB.Iso H H', w.IsGen ∧ ∀ j (x : X) (i : H.ι) (i' : H'.ι), x ∈ H.U i → x ∈ H'.U i' → gs (𝟙 X) x _ ((s' j).f i') = gs (𝟙 X) x _ (w.s (i', i)).val * gs (𝟙 X) x _ ((s j).f i) := by
   intro X _ H H' J s s' _ _ hs h

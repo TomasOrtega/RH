@@ -7,9 +7,9 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.ParSmooth
 
 /- English proof (translation)
-Establish `key : ∀ z : P × Q, iteratedFDeriv ℝ k (fun y => Ψ (y, z.2)) z.1 = (iteratedFDeriv ℝ k Ψ z).compContinuousLinearMap (fun _ => ContinuousLinearMap.inl ℝ P Q)`. Introduce `z`. Establish `h1 : (fun y => Ψ (y, z.2)) = (fun w => Ψ (((0 : P), z.2) + w)) ∘ ContinuousLinearMap.inl ℝ P Q`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h2 : ContDiff ℝ ∞ (fun w => Ψ (((0 : P), z.2) + w))` using `hΨ.comp (contDiff_const.add contDiff_id)`. Rewrite using `[h1, ContinuousLinearMap.iteratedFDeriv_comp_right _ h2 _ (by exact_mod_cast le_top), iteratedFDeriv_comp_add_left]`. Simplify using the standard rewrite rules. Repeatedly rewrite using `[key]`. Conclude with `(ContinuousMultilinearMap.compContinuousLinearMapL (fun _ : Fin k => ContinuousLinearMap.inl ℝ P Q)).continuous.comp (hΨ.continuous_iteratedFDeriv (by exact_mod_cast le_top))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_iteratedFDeriv_partial {P Q E : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P]
     [NormedAddCommGroup Q] [NormedSpace ℝ Q] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -33,7 +33,7 @@ theorem continuous_iteratedFDeriv_partial {P Q E : Type*} [NormedAddCommGroup P]
     (hΨ.continuous_iteratedFDeriv (by exact_mod_cast le_top))
 
 /- English proof (translation)
-Use `GroundTheory.Automorphic.contDiff_integral_of_iteratedFDeriv (μ := ν) (fun y a => Ψ (y, q a)) (fun a => hΨ.comp (contDiff_id.prodMk contDiff_const)) (fun k => ?_) (fun _ => ⟨Set.univ, Filter.univ_mem, Set.univ, isCompact_univ, fun _ _ a ha => absurd (Set.mem_univ a) ha⟩)` and prove the remaining obligations. Establish `h : Continuous fun p : P × β => (p.1, q p.2)` using `continuous_fst.prodMk (hq.comp continuous_snd)`. Conclude with `(continuous_iteratedFDeriv_partial Ψ hΨ k).comp h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_integral_comp_compact {P Q E β : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P]
     [FiniteDimensional ℝ P] [NormedAddCommGroup Q] [NormedSpace ℝ Q] [NormedAddCommGroup E]

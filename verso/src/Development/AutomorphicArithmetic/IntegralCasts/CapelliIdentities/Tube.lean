@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `G X _ _ _ _ T hT h1 hinv g hg hc`. Establish `hK : ∀ᶠ k : G in nhds (1 : G), ∀ w ∈ tsupport g, g (T k w) = g w`. Use `IsCompact.eventually_forall_of_forall_eventually (P := fun (k : G) (w : X) => g (T k w) = g w) hc.isCompact ?_` and prove the remaining obligations. Introduce `y _`. Establish `ha` using `(hg.comp_continuous hT).eventually_eq ((1 : G), y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb` using `(hg.comp_continuous (continuous_snd : Continuous fun p : G × X => p.2)).eventually_eq ((1 : G), y)`. Use `filter_upwards [ha, hb] with z hza hzb`. Simplify using `only [Function.comp_apply, h1] at hza hzb`. Rewrite using `[hza, hzb]`. Establish `hi : Filter.Tendsto (fun k : G => k⁻¹) (nhds 1) (nhds 1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (continuous_inv (G := G)).tendsto 1`. Use `filter_upwards [hK, hi.eventually hK] with k hk hk' w`. Distinguish the cases in `hw : w ∈ tsupport g`. Conclude with `hk w hw`. Distinguish the cases in `hw' : T k w ∈ tsupport g`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hk' _ hw'`. Rewrite `h` using `[hinv]`. Conclude with `h.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hw, image_eq_zero_of_notMem_tsupport hw']`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi19.tube.{u_1, u_2} :
     ∀ {G : Type u_1} {X : Type u_2} [inst : Group G] [inst_1 : TopologicalSpace G] [ContinuousInv G]

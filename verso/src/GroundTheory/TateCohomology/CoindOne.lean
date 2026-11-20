@@ -37,7 +37,7 @@ noncomputable def coindOneIsoCoind :
     (fun _ => LinearMap.ext fun _ => Subtype.ext rfl)
 
 /- English proof (translation)
-The claim follows from `(isZero_groupCohomology_succ_of_subsingleton (Rep.trivial k (⊥ : Subgroup G) X) n).of_iso ((groupCohomology.functor k G (n + 1)).mapIso (coindOneIsoCoind k G X) ≪≫ groupCohomology.coindIso _ (n + 1))`.
+A detailed English derivation is pending.
 -/
 theorem isZero_coindOne (n : ℕ) : Limits.IsZero (groupCohomology (coindOne k G X) (n + 1)) :=
   (isZero_groupCohomology_succ_of_subsingleton (Rep.trivial k (⊥ : Subgroup G) X) n).of_iso
@@ -47,7 +47,7 @@ theorem isZero_coindOne (n : ℕ) : Limits.IsZero (groupCohomology (coindOne k G
 variable {G} (S : Subgroup G)
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.leftRel_apply.1 (Quotient.exact' (QuotientGroup.out_eq' (x : G ⧸ S)))`.
+A detailed English derivation is pending.
 -/
 lemma out_inv_mul_mem (x : G) : ((x : G ⧸ S).out)⁻¹ * x ∈ S :=
   QuotientGroup.leftRel_apply.1 (Quotient.exact' (QuotientGroup.out_eq' (x : G ⧸ S)))
@@ -55,20 +55,20 @@ lemma out_inv_mul_mem (x : G) : ((x : G ⧸ S).out)⁻¹ * x ∈ S :=
 noncomputable def cosetPart (x : G) : S := ⟨((x : G ⧸ S).out)⁻¹ * x, out_inv_mul_mem S x⟩
 
 /- English proof (translation)
-Simplify using `[cosetPart]`.
+Simplify using the standard rewrite rules.
 -/
 lemma out_mul_cosetPart (x : G) : (x : G ⧸ S).out * (cosetPart S x : G) = x := by
   simp [cosetPart]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← QuotientGroup.out_eq' c]`. Conclude with `(QuotientGroup.eq).2 (by simp)`.
+A detailed English derivation is pending.
 -/
 lemma mk_out_mul (c : G ⧸ S) (s : S) : ((c.out * s : G) : G ⧸ S) = c := by
   conv_rhs => rw [← QuotientGroup.out_eq' c]
   exact (QuotientGroup.eq).2 (by simp)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[cosetPart]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 lemma cosetPart_out_mul (c : G ⧸ S) (s : S) : cosetPart S (c.out * s) = s := by
   apply Subtype.ext
@@ -111,7 +111,7 @@ noncomputable def quotientToInvariantsCoindOneIso [S.Normal] :
         induction c using QuotientGroup.induction_on; rfl)
 
 /- English proof (translation)
-The claim follows from `(isZero_coindOne k S (G ⧸ S → X) n).of_iso ((groupCohomology.functor k S (n + 1)).mapIso (resCoindOneIso k X S))`.
+A detailed English derivation is pending.
 -/
 theorem isZero_res_coindOne (n : ℕ) :
     Limits.IsZero (groupCohomology (res S.subtype (coindOne k G X)) (n + 1)) :=
@@ -119,7 +119,7 @@ theorem isZero_res_coindOne (n : ℕ) :
     ((groupCohomology.functor k S (n + 1)).mapIso (resCoindOneIso k X S))
 
 /- English proof (translation)
-The claim follows from `(isZero_coindOne k (G ⧸ S) X n).of_iso ((groupCohomology.functor k (G ⧸ S) (n + 1)).mapIso (quotientToInvariantsCoindOneIso k X S))`.
+A detailed English derivation is pending.
 -/
 theorem isZero_quotientToInvariants_coindOne [S.Normal] (n : ℕ) :
     Limits.IsZero (groupCohomology ((coindOne k G X).quotientToInvariants S) (n + 1)) :=

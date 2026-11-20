@@ -4,9 +4,9 @@ open NumberField
 namespace GlobalTheory.SumIndex
 
 /- English proof (translation)
-Set `g : (∀ i, B i) →+ (AddSubgroup.pi Set.univ B)` to `{ toFun := fun v => ⟨fun i => (v i : G), fun i _ => (v i).2⟩ map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hg : Function.Surjective g` using `fun x => ⟨fun i => ⟨x.1 i, x.2 i (Set.mem_univ i)⟩, rfl⟩`. Establish `hc : ((AddSubgroup.pi Set.univ A).addSubgroupOf (AddSubgroup.pi Set.univ B)).comap g = AddSubgroup.pi Set.univ fun i => (A i).addSubgroupOf (B i)`. Use extensionality with `v`. Simplify using `[g, AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_pi]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[AddSubgroup.relIndex, ← AddSubgroup.index_comap_of_surjective _ hg, hc]`. Repeatedly rewrite using `[AddSubgroup.relIndex, AddSubgroup.index, ← Nat.card_pi]`. Use `Nat.card_congr ((Quotient.congrRight (fun x y ↦ ?_)).trans (Setoid.piQuotientEquiv _).symm)` and prove the remaining obligations. Rewrite using `[QuotientAddGroup.leftRel_pi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_pi_pi_of {ι G : Type} [Fintype ι] [AddCommGroup G] (A B : ι → AddSubgroup G) :
     (AddSubgroup.pi Set.univ A).relIndex (AddSubgroup.pi Set.univ B) = ∏ i, (A i).relIndex (B i) := by
@@ -25,9 +25,9 @@ theorem relIndex_pi_pi_of {ι G : Type} [Fintype ι] [AddCommGroup G] (A B : ι 
   rw [QuotientAddGroup.leftRel_pi]
 
 /- English proof (translation)
-Establish `hb : y b = -∑ a ∈ Finset.univ.erase b, y a`. Rewrite `h0` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ b)]`. Conclude with `eq_neg_of_add_eq_zero_left h0`. Establish `hmem : y b ∈ ⨆ (a) (_ : a ≠ b), S a`. Rewrite using `[hb]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.neg_mem _ (Submodule.sum_mem _ fun a ha => ?_)` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem a (Submodule.mem_iSup_of_mem (Finset.ne_of_mem_erase ha) (hy a))`. Conclude with `(Submodule.disjoint_def.1 (hS b)) _ (hy b) hmem`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sum_eq_zero {ι R V : Type} [Fintype ι] [DecidableEq ι] [Ring R] [AddCommGroup V]
     [Module R V] (S : ι → Submodule R V) (hS : iSupIndep S) (y : ι → V) (hy : ∀ a, y a ∈ S a)
@@ -42,25 +42,25 @@ theorem eq_zero_of_sum_eq_zero {ι R V : Type} [Fintype ι] [DecidableEq ι] [Ri
   exact (Submodule.disjoint_def.1 (hS b)) _ (hy b) hmem
 
 /- English proof (translation)
-Introduce `K _ _ W V _ _ _ _ _ _ _ _ p M ℓ N hNℓ hinj hind`. Set `Φ : (Fin p → W) →ₗ[𝓞 K] V` to `∑ a, ((M a).restrictScalars (𝓞 K)).comp (LinearMap.proj a)`. Establish `hΦ : ∀ x, Φ x = ∑ a, M a (x a)` using `by intro x; simp [Φ]`. Establish `himg : ∀ S : Submodule (𝓞 K) W, (Submodule.pi Set.univ (fun _ : Fin p => S)).map Φ = ⨆ a, S.map ((M a).restrictScalars (𝓞 K))`. Introduce `S`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[hΦ]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.mem_iSup_of_mem a ⟨x a, hx a (Set.mem_univ a), rfl⟩`. Use `iSup_le fun a => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Use `⟨Pi.single a w, ?_, ?_⟩` and prove the remaining obligations. Introduce `b _`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hw`. Simplify using `[Pi.single_apply, h]`. Rewrite using `[hΦ, Finset.sum_eq_single a (fun b _ hb => by simp [Pi.single_apply, hb]) (by simp)]`. Simplify using the standard rewrite rules. Set `Lp : Submodule (𝓞 K) (Fin p → W)` to `Submodule.pi Set.univ (fun _ => ℓ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Np : Submodule (𝓞 K) (Fin p → W)` to `Submodule.pi Set.univ (fun _ => N)`. Establish `hNL : Np ≤ Lp` using `fun x hx a ha => hNℓ (hx a ha)`. Set `g : Lp.toAddSubgroup →+ V` to `Φ.toAddMonoidHom.comp Lp.toAddSubgroup.subtype`. Establish `hg : Function.Injective g`. Use `(injective_iff_map_eq_zero g).2 fun z hz => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : ∑ a, M a (z.1 a) = 0` using `by rw [← hΦ]; exact hz`. Establish `hy` using `eq_zero_of_sum_eq_zero _ hind (fun a => M a (z.1 a)) (fun a => Submodule.subset_span ⟨z.1 a, z.2 a (Set.mem_univ a), rfl⟩) h0`. Conclude with `Subtype.ext (funext fun a => by simpa using hinj a (by simpa using hy a))`. Establish `hL' : (⨆ a, ℓ.map ((M a).restrictScalars (𝓞 K))).toAddSubgroup = (⊤ : AddSubgroup Lp.toAddSubgroup).map g`. Rewrite using `[← himg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `v`. Simplify using `[g, Lp]`. Establish `hN' : (⨆ a, N.map ((M a).restrictScalars (𝓞 K))).toAddSubgroup = (Np.toAddSubgroup.addSubgroupOf Lp.toAddSubgroup).map g`. Rewrite using `[← himg]`. Use extensionality with `v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Submodule.mem_toAddSubgroup, Submodule.mem_map, AddSubgroup.mem_map, AddSubgroup.mem_addSubgroupOf, Subtype.exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x, hNL hx, hx, rfl⟩`. Introduce and unpack `⟨x, _, hx, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨x, hx, rfl⟩`. Rewrite using `[hL', hN', AddSubgroup.relIndex_map_map_of_injective _ _ hg, AddSubgroup.relIndex_top_right]`. Express the relevant statement in the definitionally equal form `Np.toAddSubgroup.relIndex Lp.toAddSubgroup = _`. Establish `e1 : Np.toAddSubgroup = AddSubgroup.pi Set.univ (fun _ : Fin p => N.toAddSubgroup)`. Use extensionality with `x`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Np, AddSubgroup.mem_pi, Submodule.mem_pi]`. Establish `e2 : Lp.toAddSubgroup = AddSubgroup.pi Set.univ (fun _ : Fin p => ℓ.toAddSubgroup)`. Use extensionality with `x`. Simplify using `[Lp, AddSubgroup.mem_pi, Submodule.mem_pi]`. Rewrite using `[e1, e2, relIndex_pi_pi_of, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_iSup_map_eq_pow : ∀ (K : Type) [Field K] [NumberField K] (W V : Type) [AddCommGroup W] [Module K W] [Module (𝓞 K) W]
   [IsScalarTower (𝓞 K) K W] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (p : ℕ)

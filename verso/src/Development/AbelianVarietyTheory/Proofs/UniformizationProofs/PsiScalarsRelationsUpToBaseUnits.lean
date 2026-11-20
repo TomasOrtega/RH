@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.PsiScalUnit
 
 /- English proof (translation)
-Take `⟨t, -, hv⟩` from `exists_gen hM (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => by`. Use `(Fintype.prod_sum_type _).trans (Eq.trans ?_ (Fintype.prod_empty _).symm)` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`. Rewrite using `[hF U h, mul_inv_cancel])`. Use the proof step `(LB.mulGen M _ _ _ _ u (LB.invGen M _ _ u')) (DVR.mulGen_isGen _ _ _ _ _ _ _ hu (DVR.invGen_isGen _ _ _ _ hu'))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `le : (⊤ : Y.Opens) ≤ LB.wchart M (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`. Use `⟨res le (t.s PEmpty.elim), fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_inv_eq_iff_eq_mul, ← val_inv, ← val_mul hJ, ← hv Z r z J hJ, val_of t r z J PEmpty.elim (fun k => k.elim)]`. Conclude with `(gm_res r z le trivial _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratio {X Y : Scheme.{0}} {M : LB X} (hM : M.IsLB) {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} (hF : FormEq φ ε φ' ε')
@@ -42,14 +42,14 @@ def ev (z : (TK V).left) : FractionRing V →+* (TK V).left.presheaf.stalk z :=
   ((TK V).left.presheaf.germ ⊤ z trivial).hom.comp (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).inv.hom
 
 /- English proof (translation)
-Rewrite using `[gs_eq _ z ⊤ trivial]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_eq (z : (TK V).left) (k : FractionRing V) :
     gs (𝟙 _) z ⊤ (scal (𝟙 (TK V) : TK V ⟶ TK V).left k) = ev z k := by
   rw [gs_eq _ z ⊤ trivial]; rfl
 
 /- English proof (translation)
-Use `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom.toMonoidHom w, ?_⟩` and prove the remaining obligations. Rewrite using `[← gs_unit _ z ⊤ trivial, gs_eq _ z ⊤ trivial]`. Establish `e` using `congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom w.val)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap V (FractionRing V))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, Iso.hom_inv_id_apply] at e`. Conclude with `congrArg ((TK V).left.presheaf.germ ⊤ z trivial).hom e.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ev_unit (z : (TK V).left) (w : Γ(Spec (CommRingCat.of V), ⊤)ˣ) :
     ∃ u : Vˣ, (gm (jK V) z ⊤ w).val = ev z (algebraMap V (FractionRing V) u.val) := by
@@ -61,13 +61,13 @@ theorem ev_unit (z : (TK V).left) (w : Γ(Spec (CommRingCat.of V), ⊤)ˣ) :
   exact congrArg ((TK V).left.presheaf.germ ⊤ z trivial).hom e.symm
 
 /- English proof (translation)
-Rewrite using `[DVR.cP, toUnit_unit, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem c_left (D : DegPre V) (χ : D.X) : (D.c χ).left = (DVR.cP D (𝟙_ _) χ).left := by
   rw [DVR.cP, toUnit_unit, Category.id_comp]
 
 /- English proof (translation)
-Take `⟨z⟩ : Nonempty (TK V).left` from `inferInstanceAs (Nonempty (PrimeSpectrum (FractionRing V)))`. Use `choose J hJ using fun χ : (TK V).left ⟶ D.P.A.left => exists_chart D.P.isLB (χ z)`. Use `⟨z, J, hJ, fun χ => Units.ext ?_⟩` and prove the remaining obligations. Conclude with `((h χ).2 (TK V) (𝟙 _) z J hJ).trans (congrArg₂ (· * ·) (ev_eq z _) rfl)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_setup (D : DegPre V)
     (ga : ∀ χ : D.X, LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1)))
@@ -80,26 +80,24 @@ theorem exists_setup (D : DegPre V)
   exact ((h χ).2 (TK V) (𝟙 _) z J hJ).trans (congrArg₂ (· * ·) (ev_eq z _) rfl)
 
 /- English proof (translation)
-The claim follows from `(ev z).injective`.
+A detailed English derivation is pending.
 -/
 theorem ev_inj (z : (TK V).left) : Function.Injective (ev z) := (ev z).injective
 
 /- English proof (translation)
-Take `⟨z, J, hJ, hψ⟩` from `exists_setup D ga a h`. Establish `vτ : ∀ a b : D.X, val (D.tau a b) (𝟙 _) z J = val (D.psi (a + b)) (𝟙 _) z J * (val (D.psi a) (𝟙 _) z J)⁻¹ * (val (D.psi b) (𝟙 _) z J)⁻¹ * (val D.rigK (𝟙 _) z J)⁻¹` using `fun a b => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))`. Establish `vρ : val D.rigK (𝟙 _) z J = val D.rig (toUnit (TK V)).left z J`. Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `vc : val (LB.pullGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t (D.pt3 x y w)) (𝟙 _) z J = cubV D.cub z J (DVR.cP D _ x) (DVR.cP D _ y) (DVR.cP D _ w)`. Use `(val_cub D.cub (𝟙 (TK V)) hJ (DVR.cP D _ x) (DVR.cP D _ y) (DVR.cP D _ w)).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.id_comp, Category.id_comp]`. Establish `e` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ (hB x y w) (𝟙 _)).trans (val_mul hJ _ _ _))`. Rewrite `e` using `[vc, vτ, vτ, vτ, vρ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hψ] at e`. Take `⟨W, hW⟩` from `exists_ratio D.P.isLB (fun U _ f => by`. Establish `p₁` using `prod_cub (DVR.cP D (𝟙_ _) x) (DVR.cP D _ y) (DVR.cP D _ w) f`. Establish `q : eSec D.P.A = (1 : 𝟙_ _ ⟶ D.P.A).left`. Rewrite using `[Hom.one_def, toUnit_unit, Category.id_comp]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `Eq.trans ?_ (DVR.prod_sum₂ (U := U) _ rfl p₁).symm` and prove the remaining obligations. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, c_left, DVR.cPoint_add, q]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use the proof step `module)`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (h (x + y)).1 (h (x + w)).1) (h (y + w)).1)`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (h (x + y + w)).1 (h x).1) (h y).1) (h w).1) D.rig_gen) (DVR.pullGen_isGen D.P.L (thφ D.P.A (x3 D.P.A)) thε _ D.cub.isGe …`. Establish `e₂` using `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_mul hJ _ _ _) rfl)).symm.trans ((hW _ (toUnit (TK V)).left z J hJ).trans (congrArg₂ (· * ·) rfl ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) …`. Rewrite `e₂` using `[DVR.comp_cP, DVR.comp_cP, DVR.comp_cP]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩` from `ev_unit z W`. Use `⟨u, ev_inj z ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul (ev z) (algebraMap _ _ _), ← hu]`. Establish `: Units.map (ev z).toMonoidHom (a (x + y + w) * a x * a y * a w) = gm (toUnit (TK V)).left z ⊤ W * Units.map (ev z).toMonoidHom (a (x + y) * a (x + w) * a (y + w))`. Simplify using `only [map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `a₁` using `congrArg Additive.ofMul e`. Establish `a₂` using `congrArg Additive.ofMul e₂`. Simplify using `only [ofMul_mul, ofMul_inv] at a₁ a₂ ⊢`. Take the linear combination `(norm := abel) a₁ + a₂`.
-
-Conclude with `congrArg Units.val this`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cub_part (D : DegPre V)
     (ga : ∀ χ : D.X, LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1)))
@@ -156,17 +154,15 @@ theorem cub_part (D : DegPre V)
   exact congrArg Units.val this
 
 /- English proof (translation)
-Take `⟨z, J, hJ, hψ⟩` from `exists_setup D ga a h`. Establish `e` using `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_pull hJ _ _ _))).symm.trans (val_corr hJ (hE x) (𝟙 _))`. Rewrite `e` using `[hψ, hψ, Category.id_comp]`. Take `⟨W, hW⟩` from `exists_ratio D.P.isLB (fun U _ f => by`. Establish `q : (D.c x).left ≫ (ι[D.P.A]).left = (D.c (-x)).left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : DVR.cP D (𝟙_ _) 0 = 1` using `by simpa using DVR.cPoint_nsmul D (𝟙_ _) 0 x`. Establish `h1` using `DVR.cPoint_add D (𝟙_ _) (-x) x`. Rewrite `h1` using `[neg_add_cancel, h0]`. Rewrite using `[c_left, c_left, eq_inv_of_mul_eq_one_left h1.symm, ← Over.comp_left]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id, q]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`. Use the proof step `module)`. Use the proof step `(h x).1 (DVR.mulGen_isGen _ _ _ _ _ _ _ (h (-x)).1 (DVR.pullGen_isGen D.P.L _ _ _ D.sym_gen (D.c x).left))`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e₂` using `(hW _ (toUnit (TK V)).left z J hJ).trans (congrArg₂ (· * ·) rfl ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_pull hJ _ _ _))))`. Take `⟨u, hu⟩` from `ev_unit z W`. Use `⟨u, ev_inj z ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul (ev z) (algebraMap _ _ _), ← hu]`. Establish `: Units.map (ev z).toMonoidHom (a (-x)) = gm (toUnit (TK V)).left z ⊤ W * Units.map (ev z).toMonoidHom (a x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e' : Units.map (ev z).toMonoidHom (a (-x)) * val (ga (-x)) (toUnit (TK V)).left z J * val D.sym ((toUnit (TK V)).left ≫ (D.c x).left) z J = Units.map (ev z).toMonoidHom (a x) * val (ga x) (toUnit (TK V)).left z J` using `e`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `a₁` using `congrArg Additive.ofMul e'`. Establish `a₂` using `congrArg Additive.ofMul e₂`. Simplify using `only [ofMul_mul] at a₁ a₂ ⊢`.
-
-Take the linear combination `(norm := abel) a₁ + a₂`. Conclude with `congrArg Units.val this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem even_part (D : DegPre V)
     (ga : ∀ χ : D.X, LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1)))
@@ -207,7 +203,7 @@ theorem even_part (D : DegPre V)
   exact congrArg Units.val this
 
 /- English proof (translation)
-Introduce `_ _ _ _ D ga a h` and use `⟨cub_part D ga a h, even_part D ga a h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (D : DegPre V) (ga : ∀ χ : D.X, LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1))) (a : D.X → (FractionRing V)ˣ), PsiScal D ga a → (D.TauBimult → ∀ x y z, ∃ u : Vˣ, (a (x + y + z) * a x * a y * a z).val = algebraMap V (FractionRing V) u.val * (a (x + y) * a (x + z) * a (y + z)).val) ∧ (D.PsiEven → ∀ x, ∃ u : Vˣ, (a (-x)).val = algebraMap V (FractionRing V) u.val * (a x).val) :=
   fun _ _ _ _ D ga a h => ⟨cub_part D ga a h, even_part D ga a h⟩

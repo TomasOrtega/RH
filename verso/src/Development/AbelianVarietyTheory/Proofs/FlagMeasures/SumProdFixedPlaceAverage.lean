@@ -5,31 +5,29 @@ open Finset
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `c : Finset ι → (∀ i, G i) → ℂ` to `fun S γ => ∏ i, (if i ∈ S then a i (γ i) else if γ i = 1 then 1 else 0)`. Establish `key : ∀ S : Finset ι, ∑ γ, c S γ • f γ = f 1`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[Finset.sum_eq_single (1 : ∀ i, G i)]`. Simplify using `[c]`. Introduce `γ _ hγ`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, γ i ≠ 1 := by`. Assume the negation of the conclusion as `hcon`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hcon`. Conclude with `hγ (funext hcon)`. Establish `: c ∅ γ = 0` using `Finset.prod_eq_zero (mem_univ i) (by simp [hi])`. Rewrite using `[this, zero_smul]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (mem_univ _) h`. Consider the case `insert j S hj ih`. Rewrite using `[← ih]`. Set `h : ∀ i, G i → ℂ` to `fun i x => if i ∈ S then a i x else if x = 1 then 1 else 0`. Establish `cU : ∀ (γ : ∀ i, G i) (β : G j), c S (Function.update γ j β) = h j β * ∏ i ∈ univ.erase j, h i (γ i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `γ β`. Use `show ∏ i, h i (Function.update γ j β i) = _`. Rewrite using `[← Finset.mul_prod_erase univ _ (mem_univ j)]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `i hi`. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hi)]`. Establish `cI : ∀ γ : ∀ i, G i, c (insert j S) γ = a j (γ j) * ∏ i ∈ univ.erase j, h i (γ i)`. Introduce `γ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show ∏ i, _ = _`. Rewrite using `[← Finset.mul_prod_erase univ _ (mem_univ j)]`. Use `congr 1`. Simplify using the standard rewrite rules. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i hi`. Establish `: i ≠ j` using `Finset.ne_of_mem_erase hi`. Simplify using `[h, this]`. Establish `step1 : ∑ γ, c S γ • f γ = ∑ γ, ∑ β : G j, (c S γ * a j β) • f (Function.update γ j β)`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ _`. Distinguish the cases in `hγ : γ j = 1`. Rewrite using `[← hf j γ hγ, Finset.smul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `β _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul]`. Establish `: c S γ = 0` using `Finset.prod_eq_zero (mem_univ j) (by simp [hj, hγ])`. Simplify using `[this]`. Set `e : (∀ i, G i) × G j ≃ (∀ i, G i) × G j` to `{ toFun := fun p => (Function.update p.1 j p.2, p.1 j) invFun := fun p => (Function.update p.1 j p.2, p.1 j) left_inv := by intro p; simp right_inv := by intro p; simp }`. Rewrite using `[step1, ← Fintype.sum_prod_type']`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Fintype.sum_equiv e (fun p => (c S (Function.update p.1 j p.2) * a j (p.1 j)) • f p.1) _ (by`. Introduce `p`. Simplify using `[e])]`. Rewrite using `[Fintype.sum_prod_type]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `γ _`. Simplify using `only`. Rewrite using `[← Finset.sum_smul, ← Finset.sum_mul]`. Repeatedly rewrite using `[cU]`. Rewrite using `[← Finset.sum_mul, cI]`.
-
-Establish `: ∑ β : G j, h j β = 1` using `by simp [h, hj]`. Rewrite using `[this, one_mul, mul_comm]`. Use `key univ` as an intermediate fact. Simplify `this` using `[c]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_prod_fixed_place_average {ι : Type} [Fintype ι] [DecidableEq ι] {G : ι → Type}
     [∀ i, Group (G i)] [∀ i, Fintype (G i)] [∀ i, DecidableEq (G i)] {V : Type}

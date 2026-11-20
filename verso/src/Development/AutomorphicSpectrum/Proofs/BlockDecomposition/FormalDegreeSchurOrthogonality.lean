@@ -9,7 +9,7 @@ open scoped InnerProductSpace ComplexConjugate
 namespace GlobalTheory.CompanionTheory.RgHeA
 
 /- English proof (translation)
-The claim follows from `(⟨(ρ g : B →ₗ[ℂ] B), hρ.norm g⟩ : B →ₗᵢ[ℂ] B).inner_map_map x y`.
+A detailed English derivation is pending.
 -/
 private theorem avg_conj_coef_ge_lemma {Γ : Type} [Group Γ] [TopologicalSpace Γ] {B : Type}
     [NormedAddCommGroup B] [InnerProductSpace ℂ B] {ρ : Γ → (B →L[ℂ] B)} (hρ : IsU ρ)
@@ -17,7 +17,7 @@ private theorem avg_conj_coef_ge_lemma {Γ : Type} [Group Γ] [TopologicalSpace 
   (⟨(ρ g : B →ₗ[ℂ] B), hρ.norm g⟩ : B →ₗᵢ[ℂ] B).inner_map_map x y
 
 /- English proof (translation)
-Rewrite using `[hρ.mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem avg_conj_coef_ge_lemma_2 {Γ : Type} [Group Γ] [TopologicalSpace Γ] {B : Type}
     [NormedAddCommGroup B] [InnerProductSpace ℂ B] {ρ : Γ → (B →L[ℂ] B)} (hρ : IsU ρ)
@@ -25,7 +25,7 @@ private theorem avg_conj_coef_ge_lemma_2 {Γ : Type} [Group Γ] [TopologicalSpac
   rw [hρ.mul]; rfl
 
 /- English proof (translation)
-Establish `e : y = ρ g (ρ g⁻¹ y)`. Rewrite using `[avg_conj_coef_ge_lemma_2 hρ, mul_inv_cancel, hρ.one]`. Both sides reduce to the same expression. Use `conv_lhs => rw [e]`. Conclude with `avg_conj_coef_ge_lemma hρ g x _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem avg_conj_coef_ge_lemma_3 {Γ : Type} [Group Γ] [TopologicalSpace Γ] {B : Type}
     [NormedAddCommGroup B] [InnerProductSpace ℂ B] {ρ : Γ → (B →L[ℂ] B)} (hρ : IsU ρ)
@@ -36,47 +36,43 @@ private theorem avg_conj_coef_ge_lemma_3 {Γ : Type} [Group Γ] [TopologicalSpac
   exact avg_conj_coef_ge_lemma hρ g x _
 
 /- English proof (translation)
-Introduce `Γ _ _ _ _ _ _ _ ν _ _ A B _ _ _ _ _ _ σ ρ d hσ hρ hFd w₀ hw₀ hc i hi z`. Take `⟨hd, hFd'⟩` from `hFd`. Establish `hmap : ∀ g x, i (σ g x) = ρ g (i x)` using `hi.1`. Establish `hiso : ∀ x, ‖i x‖ = ‖x‖` using `hi.2`. Use `set f : Γ → ℂ := fun g => star ⟪w₀, σ g w₀⟫_ℂ with hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set T := coefOp ν ρ hρ f hc with hT`. Establish `hw1 : ⟪w₀, w₀⟫_ℂ = 1`. Rewrite using `[inner_self_eq_norm_sq_to_K, hw₀]`. Simplify using the standard rewrite rules. Use `set a := ContinuousLinearMap.adjoint i z with ha`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA : ⟪i w₀, T z⟫_ℂ = ⟪i w₀, z⟫_ℂ / (d : ℂ)`. Rewrite using `[hT, inner_coefOp]`. Establish `hpt : ∀ g, f g * ⟪i w₀, ρ g z⟫_ℂ = ⟪w₀, σ g a⟫_ℂ * star ⟪w₀, σ g w₀⟫_ℂ`. Introduce `g`. Establish `e1 : ⟪i w₀, ρ g z⟫_ℂ = ⟪w₀, σ g a⟫_ℂ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[avg_conj_coef_ge_lemma_3 hρ, inv_inv]`. Use `_ = ⟪i (σ g⁻¹ w₀), z⟫_ℂ := by rw [hmap]`. Use `_ = ⟪σ g⁻¹ w₀, a⟫_ℂ := by rw [ha, ContinuousLinearMap.adjoint_inner_right]`. Use `_ = ⟪w₀, σ g a⟫_ℂ := by rw [avg_conj_coef_ge_lemma_3 hσ, inv_inv]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hf, mul_comm]`. Repeatedly rewrite using `[hpt]`. Rewrite using `[(hFd' a w₀ w₀ w₀).2, hw1, mul_one, ha, ContinuousLinearMap.adjoint_inner_right]`. Establish `hB1 : ∀ g, ⟪ρ g z, T z⟫_ℂ = ∫ k, f (g * k) * ⟪z, ρ k z⟫_ℂ ∂ν`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hT, inner_coefOp]`. Establish `e : ∀ h, f h * ⟪ρ g z, ρ h z⟫_ℂ = f (g * (g⁻¹ * h)) * ⟪z, ρ (g⁻¹ * h) z⟫_ℂ`. Introduce `h`. Rewrite using `[mul_inv_cancel_left, avg_conj_coef_ge_lemma_3 hρ, avg_conj_coef_ge_lemma_2 hρ]`. Repeatedly rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `integral_mul_left_eq_self (fun k => f (g * k) * ⟪z, ρ k z⟫_ℂ) g⁻¹`. Use `set φ : Γ → ℂ := fun k => ⟪z, ρ k z⟫_ℂ with hφ`. Establish `hfc : Continuous f` using `(continuous_const.inner (hσ.cont w₀)).star`. Establish `hφc : Continuous φ` using `continuous_const.inner (hρ.cont z)`. Establish `hφb : ∀ k, ‖φ k‖ ≤ ‖z‖ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `k`. Combine the equalities or inequalities in the displayed calculation. Establish `hcs : Integrable (fun g => star (f g)) ν` using `hc.mono (hfc.star.aestronglyMeasurable) (ae_of_all _ fun g => by rw [norm_star])`. Establish `hG : Integrable (fun p : Γ × Γ => f p.1 * star (f (p.1 * p.2))) (ν.prod ν)`. Establish `h0 : Integrable (fun p : Γ × Γ => f p.1 * star (f p.2)) (ν.prod ν)` using `hc.mul_prod hcs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(measurePreserving_prod_mul ν ν).integrable_comp_of_integrable h0`. Establish `hF : Integrable (Function.uncurry fun g k => f g * (star (f (g * k)) * star (φ k))) (ν.prod ν)`. Use `Integrable.mono' (hG.norm.mul_const (‖z‖ ^ 2)) ?_ (ae_of_all _ fun p => ?_)` and prove the remaining obligations. Conclude with `(show Continuous (fun p : Γ × Γ => f p.1 * (star (f (p.1 * p.2)) * star (φ p.2))) from (hfc.comp continuous_fst).mul (((hfc.comp (continuous_fst.mul continuous_snd)).star).mul ((hφc.comp continuous_snd).star))).aestronglyMeasurable`. Use `show ‖f p.1 * (star (f (p.1 * p.2)) * star (φ p.2))‖ ≤ ‖f p.1 * star (f (p.1 * p.2))‖ * ‖z‖ ^ 2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [norm_mul, norm_star]`. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (hφb _) (norm_nonneg _)) (norm_nonneg _)`. Establish `hinner : ∀ k, ∫ g, f g * star (f (g * k)) ∂ν = star (f k) / (d : ℂ)`. Introduce `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ g, f g * star (f (g * k)) = ⟪w₀, σ g (σ k w₀)⟫_ℂ * star ⟪w₀, σ g w₀⟫_ℂ`. Introduce `g`. Simplify using `only [hf, star_star]`. Rewrite using `[← avg_conj_coef_ge_lemma_2 hσ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[e]`. Rewrite using `[(hFd' (σ k w₀) w₀ w₀ w₀).2, hw1, mul_one]`. Simplify using `only [hf, star_star]`. Establish `hB2 : ⟪T z, T z⟫_ℂ = star ⟪z, T z⟫_ℂ / (d : ℂ)`. Establish `s1 : ⟪T z, T z⟫_ℂ = ∫ g, f g * ⟪T z, ρ g z⟫_ℂ ∂ν` using `inner_coefOp ν ρ hρ f hc (T z) z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `s2 : ∀ g, f g * ⟪T z, ρ g z⟫_ℂ = ∫ k, f g * (star (f (g * k)) * star (φ k)) ∂ν`. Introduce `g`. Rewrite using `[← inner_conj_symm, hB1 g, ← integral_conj, ← integral_const_mul]`. Simplify using `only [map_mul, starRingEnd_apply, hφ]`. Establish `s3 : ∀ k, ∫ g, f g * (star (f (g * k)) * star (φ k)) ∂ν = star (f k) / (d : ℂ) * star (φ k)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `k`. Repeatedly rewrite using `[← mul_assoc]`. Rewrite using `[integral_mul_const, hinner k]`. Establish `s4 : ⟪z, T z⟫_ℂ = ∫ k, f k * φ k ∂ν` using `inner_coefOp ν ρ hρ f hc z z`. Establish `s5 : ∀ k, star (f k) / (d : ℂ) * star (φ k) = (starRingEnd ℂ) (f k * φ k) / (d : ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Introduce `k`. Rewrite using `[map_mul, starRingEnd_apply, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[s1]`. Repeatedly rewrite using `[s2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_integral_swap hF]`. Repeatedly rewrite using `[s3, s5]`. Rewrite using `[integral_div, integral_conj, ← s4, starRingEnd_apply]`. Establish `hTn : ⟪T z, T z⟫_ℂ = ((‖T z‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[inner_self_eq_norm_sq_to_K]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hdC : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Establish `hX : star ⟪z, T z⟫_ℂ = ((d * ‖T z‖ ^ 2 : ℝ) : ℂ)`. Establish `h` using `hB2.symm.trans hTn`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `h` using `[div_eq_iff hdC]`. Rewrite using `[h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hre : (⟪z, T z⟫_ℂ).re = d * ‖T z‖ ^ 2`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `congrArg Complex.re hX`. Rewrite `h` using `[Complex.ofReal_re]`. Rewrite using `[← h]`. Conclude with `(Complex.conj_re _).symm`. Establish `hle : ‖⟪z, i w₀⟫_ℂ‖ ≤ d * ‖T z‖`.
-
-Establish `h1' : ‖⟪i w₀, T z⟫_ℂ‖ ≤ ‖T z‖`. Combine the equalities or inequalities in the displayed calculation. Establish `h2' : ‖⟪z, i w₀⟫_ℂ‖ = d * ‖⟪i w₀, T z⟫_ℂ‖`. Rewrite using `[hA, norm_div, norm_inner_symm, Complex.norm_real, Real.norm_of_nonneg hd.le]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[h2']`. Conclude with `mul_le_mul_of_nonneg_left h1' hd.le`. Rewrite using `[hre, div_le_iff₀ hd]`. Establish `hsq : ‖⟪z, i w₀⟫_ℂ‖ ^ 2 ≤ (d * ‖T z‖) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) hle 2`. Use polynomial arithmetic with `[hsq]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem avg_conj_coef_ge : ∀ {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [LocallyCompactSpace Γ]
     [SecondCountableTopology Γ] [MeasurableSpace Γ] [BorelSpace Γ] (ν : Measure Γ) [ν.IsHaarMeasure] [ν.IsMulRightInvariant] {A B : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A] [CompleteSpace A] [NormedAddCommGroup B]

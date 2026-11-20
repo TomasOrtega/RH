@@ -17,9 +17,7 @@ open WeilLevel Base
 noncomputable section
 
 /- English proof (translation)
-Establish `hinj : Function.Injective fun q : A ⧸ B => ((α q.out : A) : A ⧸ B)`. Introduce `q q' h`. Rewrite using `[← QuotientAddGroup.out_eq' q, ← QuotientAddGroup.out_eq' q', QuotientAddGroup.eq_iff_sub_mem]`. Conclude with `hα _ _ (QuotientAddGroup.eq_iff_sub_mem.1 h)`. Use `Fintype.sum_bijective _ (Finite.injective_iff_bijective.1 hinj) _ _ fun q => ?_` and prove the remaining obligations.
-
-Conclude with `hf _ _ (QuotientAddGroup.eq_iff_sub_mem.1 (QuotientAddGroup.out_eq' _).symm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_quot_comp {A V : Type} [AddCommGroup A] [AddCommMonoid V] (B : AddSubgroup A)
     [Fintype (A ⧸ B)] (f : A → V) (hf : ∀ x y, x - y ∈ B → f x = f y) (α : A → A)
@@ -36,11 +34,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n N : ℕ} {Λ Λ' 
 
 omit [IsCMField E] in
 /- English proof (translation)
-Take `⟨R, hR, h1, h2⟩` from `hφ`. Take `⟨S, hS, h3, h4⟩` from `hψ`. Establish `k : ∀ (m : ℕ) (y : Matrix (Fin n) (Fin N) E), IntM y → IntM ((m : E) • y)` using `fun m y hy i j => (isIntegral_natCast (R := ℤ) m).mul (hy i j)`. Use `⟨R * S, by positivity, fun x hx => ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : φ x = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite `hx` using `[Pi.add_apply, h, zero_add]`. Rewrite using `[Nat.cast_mul, mul_smul]`. Conclude with `k _ _ (h3 x hx)`. Rewrite using `[Nat.cast_mul, mul_comm, mul_smul]`. Conclude with `k _ _ (h1 x h)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `h2 x _ (k S y hy)`. Establish `e2` using `h4 x _ (k R y hy)`. Rewrite `e1`, `e2` using `[smul_smul]`. Rewrite using `[Pi.add_apply, Pi.add_apply, Nat.cast_mul, e1, mul_comm, e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSB_add {φ ψ : Matrix (Fin n) (Fin N) E → ℂ} (hφ : IsSB φ) (hψ : IsSB ψ) :
     IsSB (φ + ψ) := by
@@ -59,11 +57,11 @@ theorem isSB_add {φ ψ : Matrix (Fin n) (Fin N) E → ℂ} (hφ : IsSB φ) (hψ
     rw [Pi.add_apply, Pi.add_apply, Nat.cast_mul, e1, mul_comm, e2]
 
 /- English proof (translation)
-Establish `hw : IsIntegral ℤ (∑ a, herm 1 (bᵀ a) (yᵀ a))` using `IsIntegral.sum _ fun a _ => (hΛ _).1 (hb a) _ (hy a)`. Take `⟨k, hk⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (Algebra.isIntegral_trace (L := ℚ) (F := E) hw)`. Establish `e2 : ∑ k, ∑ a, 2 * (b k a * cc (y k a)) = (2 : ℚ) • ∑ a, herm 1 (bᵀ a) (yᵀ a)`. Rewrite using `[Finset.sum_comm, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[herm_one, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[Rat.smul_def]`. Rewrite using `[e2, map_smul, ← hk]`. Establish `: (π : ℂ) * I * (((2 : ℚ) • algebraMap ℤ ℚ k : ℚ) : ℂ) = k * (2 * π * I)` using `by simp; ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Complex.exp_int_mul_two_pi_mul_I]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phase_one (hΛ : ∀ x, x ∈ Λ ↔ ∀ y ∈ Λ, IsIntegral ℤ (herm 1 x y))
     {b y : Matrix (Fin n) (Fin N) E} (hb : ColsIn Λ b) (hy : ColsIn Λ y) :
@@ -94,13 +92,13 @@ def cols (Λ : Lt E n) (N : ℕ) : AddSubgroup (Matrix (Fin n) (Fin N ⊕ Fin N)
   neg_mem' := fun hx i => Λ.neg_mem (hx i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `p1` using `phase_one hΛ (b := ((2 * R * R : ℕ) : E) • X.toCols₂) (y := Y.toCols₁) (colsIn_smul _ fun a => hX (Sum.inr a)) (fun a => hY (Sum.inl a))`. Establish `p2` using `phase_one hΛ (b := -(((2 * R * R : ℕ) : E) • Y.toCols₂)) (y := X.toCols₁) (fun a => Λ.neg_mem (colsIn_smul _ (fun a => hY (Sum.inr a)) a)) (fun a => hX (Sum.inl a))`. Simplify using `only [rho, heisH]`. Rewrite using `[mul_assoc (φ _), ← Complex.exp_add, ← mul_one (cexp (_ + _)), ← p1, ← Complex.exp_add, ← mul_one (cexp (_ + _)), ← p2, ← Complex.exp_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `congr 1`. Use extensionality with `k a`. Simplify using `[toCols₁]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Rewrite using `[← mul_add, ← mul_add, ← mul_add, ← Rat.cast_add, ← Rat.cast_add, ← Rat.cast_add, ← map_add, ← map_add, ← map_add]`. Simplify using `only [← Finset.sum_add_distrib]`. Use `congr 3`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.neg_apply, smul_eq_mul, toCols₁, toCols₂, Matrix.of_apply, Matrix.add_apply, cc_sub, cc_mul, cc_nat, cc_add]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_add (hΛ : ∀ x, x ∈ Λ ↔ ∀ y ∈ Λ, IsIntegral ℤ (herm 1 x y)) (R : ℕ)
     {X Y : Matrix (Fin n) (Fin N ⊕ Fin N) E} (hX : X ∈ cols Λ N) (hY : Y ∈ cols Λ N)
@@ -130,7 +128,7 @@ theorem rho_add (hΛ : ∀ x, x ∈ Λ ↔ ∀ y ∈ Λ, IsIntegral ℤ (herm 1 
     ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [rho, heisH, Finset.sum_apply, Finset.sum_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_sum {ι : Type} (s : Finset ι) (R : ℕ) (X : Matrix (Fin n) (Fin N ⊕ Fin N) E)
     (f : ι → Matrix (Fin n) (Fin N) E → ℂ) : rho R X (∑ i ∈ s, f i) = ∑ i ∈ s, rho R X (f i) := by
@@ -139,7 +137,7 @@ theorem rho_sum {ι : Type} (s : Finset ι) (R : ℕ) (X : Matrix (Fin n) (Fin N
 
 omit [IsCMField E] in
 /- English proof (translation)
-Introduce `a` and use `mem_of_coprime Λ h (h1 a) (h2 a)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem colsIn_of_coprime {s t : ℕ} (h : s.Coprime t) {x : Matrix (Fin n) (Fin N) E}
     (h1 : ColsIn Λ ((s : E) • x)) (h2 : ColsIn Λ ((t : E) • x)) : ColsIn Λ x :=
@@ -148,7 +146,7 @@ theorem colsIn_of_coprime {s t : ℕ} (h : s.Coprime t) {x : Matrix (Fin n) (Fin
 omit [IsCMField E] in
 
 /- English proof (translation)
-Use `colsIn_of_coprime (Nat.Coprime.coprime_mul_right_right hs) (fun a => h1 _ (hx a)) ?_` and prove the remaining obligations. Rewrite `hx'` using `[Nat.cast_mul, mul_smul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem colsIn_transfer {s R m : ℕ} (hs : s.Coprime (m * R)) (h1 : ∀ v ∈ Λ, (s : E) • v ∈ Λ')
     {x : Matrix (Fin n) (Fin N) E} (hx : ColsIn Λ ((R : E) • x))
@@ -159,17 +157,17 @@ theorem colsIn_transfer {s R m : ℕ} (hs : s.Coprime (m * R)) (h1 : ∀ v ∈ �
 open Classical in
 
 /- English proof (translation)
-Establish `hd' : ColsIn Λ' X.toCols₁` using `fun a => hX (Sum.inl a)`. Establish `hb' : ColsIn Λ' X.toCols₂` using `fun a => hX (Sum.inr a)`. Simplify using `only [rho, heisH]`. Use `split_ifs with hd`. Establish `e1 : φ (x - ((2 * R : ℕ) : E) • X.toCols₁) = φ x`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hφ.2 x (-(((2 : ℕ) : E) • X.toCols₁)) fun a => Λ.neg_mem (colsIn_smul 2 hd a)]`. Use `congr 1`. Rewrite using `[smul_neg, smul_smul, sub_eq_add_neg, Nat.cast_mul, mul_comm]`. Rewrite using `[e1, one_mul]`. Distinguish the cases in `h0 : φ x = 0`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, zero_mul]`. Establish `h3 : ColsIn Λ' ((R : E) • x)` using `colsIn_transfer (m := m * 2) (by rwa [mul_assoc]) h1 (hφ.1 x h0) (by rwa [mul_assoc])`. Establish `p` using `phase_one hΛ' hb' (y := ((2 : ℕ) : E) • ((R : E) • x) - ((2 * R * R : ℕ) : E) • X.toCols₁) fun a => Λ'.sub_mem (colsIn_smul 2 h3 a) (colsIn_smul _ hd' a)`. Rewrite using `[← mul_one (φ x), mul_assoc, one_mul, ← p]`. Use `congr 5`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, cc_sub, cc_mul, cc_nat]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[zero_mul, mul_eq_zero] left`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h0`. Apply `hd` to reduce the goal to its premises. Establish `h3` using `colsIn_smul (m * 2) (hφ.1 _ h0)`. Use `colsIn_of_coprime (t := (m * (2 * R)) * (2 * R)) (Nat.Coprime.mul_right hs (Nat.Coprime.coprime_mul_left_right hs)) (fun a => h2 _ (hd' a)) fun a => ?_` and prove the remaining obligations. Use `Λ.sub_mem (hx a) (h3 a) using 1` and compare the differences between its conclusion and the goal.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rho_apply (hΛ' : ∀ x, x ∈ Λ' ↔ ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y)) {s R m : ℕ}
     (hs : s.Coprime (m * (2 * R))) (h1 : ∀ v ∈ Λ, (s : E) • v ∈ Λ')
@@ -216,7 +214,7 @@ abbrev Quo (Λ : Lt E n) (N s : ℕ) : Type :=
 
 omit [IsCMField E] in
 /- English proof (translation)
-Simplify using `[AddSubgroup.mem_addSubgroupOf, Nat.cast_smul_eq_nsmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_sub {s : ℕ} (x : cols Λ N) :
     x ∈ ((cols Λ N).map (nsmulAddMonoidHom s)).addSubgroupOf (cols Λ N) ↔
@@ -224,9 +222,9 @@ theorem mem_sub {s : ℕ} (x : cols Λ N) :
   simp [AddSubgroup.mem_addSubgroupOf, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Take `⟨z, hz, e⟩` from `(mem_sub _).1 h`. Establish `e1 : x.1 = y.1 + (x - y).1` using `by simp`. Establish `e2 : rho R (x - y).1 φ = φ`. Rewrite using `[← e]`. Conclude with `heisH_fix hΛ hφ (fun a => h2 _ (hz (Sum.inl a))) (fun a => h2 _ (hz (Sum.inr a)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, rho_add hΛ' R (x - y).2 y.2, e2]`.
+A detailed English derivation is pending.
 -/
 theorem rho_congr (hΛ : ∀ x, x ∈ Λ ↔ ∀ y ∈ Λ, IsIntegral ℤ (herm 1 x y))
     (hΛ' : ∀ x, x ∈ Λ' ↔ ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y)) {s R : ℕ}
@@ -243,7 +241,7 @@ theorem rho_congr (hΛ : ∀ x, x ∈ Λ ↔ ∀ y ∈ Λ, IsIntegral ℤ (herm 
 
 omit [IsCMField E] in
 /- English proof (translation)
-Introduce `i` and use `by have := cols_mul (Λ := Λ) (d := X.toCols₁) (b := X.toCols₂) (fun a => hX (Sum.inl a)) (fun a => hX (Sum.inr a)) hg i rwa [Matrix.fromCols_toCols] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_mem_cols {X : Matrix (Fin n) (Fin N ⊕ Fin N) E} (hX : X ∈ cols Λ N) {g : M2 E N}
     (hg : IntM g) : X * g ∈ cols Λ N := fun i => by
@@ -252,11 +250,11 @@ theorem mul_mem_cols {X : Matrix (Fin n) (Fin N ⊕ Fin N) E} (hX : X ∈ cols �
   rwa [Matrix.fromCols_toCols] at this
 
 /- English proof (translation)
-Use `sum_quot_comp _ (fun x : cols Λ' N => rho R x.1 φ) (rho_congr hΛ hΛ' h2 hφ) (fun x => ⟨x.1 * g, mul_mem_cols x.2 hg⟩) fun x y h => ?_` and prove the remaining obligations. Take `⟨z, hz, ez⟩` from `(mem_sub _).1 h`. Establish `hsE : (s : E) ≠ 0` using `by exact_mod_cast hs0.ne'`. Use `(mem_sub _).2 ⟨(s : E)⁻¹ • (x - y).1, fun i => mem_of_coprime Λ' hs ?_ ?_, smul_inv_smul₀ hsE _⟩` and prove the remaining obligations. Establish `: (s : E) • ((s : E)⁻¹ • (x - y).1)ᵀ i = (x - y).1ᵀ i` using `smul_inv_smul₀ hsE _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(x - y).2 i`. Establish `e3 : (s : E) • z = (x - y).1 * g`. Rewrite using `[ez]`. Conclude with `(Matrix.sub_mul _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : z * g' = (c : E) • (s : E)⁻¹ • (x - y).1`. Rewrite using `[smul_comm, eq_inv_smul_iff₀ hsE, ← Matrix.smul_mul, e3, Matrix.mul_assoc, e, Matrix.mul_smul, Matrix.mul_one]`. Use `mul_mem_cols hz hg' i` as an intermediate fact. Rewrite `this` using `[e4]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sum_rho_mul (hΛ : ∀ x, x ∈ Λ ↔ ∀ y ∈ Λ, IsIntegral ℤ (herm 1 x y))
     (hΛ' : ∀ x, x ∈ Λ' ↔ ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y)) {s R c : ℕ} (hs0 : 0 < s)
@@ -281,9 +279,9 @@ theorem sum_rho_mul (hΛ : ∀ x, x ∈ Λ ↔ ∀ y ∈ Λ, IsIntegral ℤ (her
     rwa [e4] at this
 
 /- English proof (translation)
-Use `levelL_of_fix hΛ' fun d b hd hb => ?_` and prove the remaining obligations. Establish `hY : Matrix.fromCols d b ∈ cols Λ' N`. Introduce and unpack `(i | i)`. Conclude with `hd i`. Conclude with `hb i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `rho R (Matrix.fromCols d b) _ = _`. Rewrite using `[rho_sum, ← sum_quot_comp _ (fun x : cols Λ' N => rho R x.1 φ) (rho_congr hΛ hΛ' h2 hφ) (fun x => ⟨_, hY⟩ + x) fun x y h => by rwa [add_sub_add_left_eq_sub] at h]`. Conclude with `Finset.sum_congr rfl fun q _ => (rho_add hΛ' R q.out.2 hY φ).symm`.
+A detailed English derivation is pending.
 -/
 theorem levelL_sum (hΛ : ∀ x, x ∈ Λ ↔ ∀ y ∈ Λ, IsIntegral ℤ (herm 1 x y))
     (hΛ' : ∀ x, x ∈ Λ' ↔ ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y)) {s R : ℕ} [Fintype (Quo Λ' N s)]
@@ -302,13 +300,13 @@ theorem levelL_sum (hΛ : ∀ x, x ∈ Λ ↔ ∀ y ∈ Λ, IsIntegral ℤ (herm
 omit [IsCMField E] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : ColsIn Λ' ((L : E) • x)`. Take `⟨a, b, hab⟩ : IsCoprime (s : ℤ) ((L * L : ℕ) : ℤ)` from `Nat.isCoprime_iff_coprime.2 (Nat.Coprime.mul_right hs hs)`. Establish `hab' : (a : E) * s + b * (L * L) = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → E) hab`. Establish `z : ∀ (Γ : Lt E n) (k : ℤ) (y : Matrix (Fin n) (Fin N) E), ColsIn Γ y → ColsIn Γ ((k : E) • y)` using `fun Γ k y hy i => by`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Γ.toAddSubgroup.zsmul_mem (hy i) k` as an intermediate fact. Rewrite `this` using `[← Int.cast_smul_eq_zsmul E]`. Then use the resulting hypothesis. Establish `hy` using `z Λ' (-b) _ hx`. Establish `e : (L : E) • (x + (L : E) • ((-b : ℤ) : E) • (L : E) • x) = (a : E) • (s : E) • (L : E) • x`. Use extensionality with `k i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.smul_apply, Matrix.add_apply, smul_eq_mul]`. Use `push_cast`. Take the linear combination `(-(L : E) * x k i) * hab'`. Rewrite using `[← hφ.2 x _ hy, ← hψ.2 x _ hy]`. Apply the tactic sequence `refine h _ ?_ ?_ <;> rw [e]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `z _ _ _ fun i => h2 _ (hx i)`. Conclude with `z _ _ _ (colsIn_smul _ hx)`. Rewrite using `[not_not.1 fun h => hx (hφ.1 x h), not_not.1 fun h => hx (hψ.1 x h)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_agree {s L : ℕ} (hs : s.Coprime L) (h2 : ∀ v ∈ Λ', (s : E) • v ∈ Λ)
     {φ ψ : Matrix (Fin n) (Fin N) E → ℂ} (hφ : LevelL Λ' L φ) (hψ : LevelL Λ' L ψ)
@@ -337,14 +335,14 @@ theorem eq_of_agree {s L : ℕ} (hs : s.Coprime L) (h2 : ∀ v ∈ Λ', (s : E) 
 
 omit [IsCMField E] in
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply]; exact IsIntegral.sum _ fun k _ => (hA i k).mul (hB k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intM_mul {A B : M2 E N} (hA : IntM A) (hB : IntM B) : IntM (A * B) := fun i j => by
   rw [Matrix.mul_apply]; exact IsIntegral.sum _ fun k _ => (hA i k).mul (hB k j)
 
 omit [IsCMField E] in
 /- English proof (translation)
-Apply the tactic sequence `rintro (i | i) (j | j) <;> by_cases h : i = j <;>`. Simplify using `[Matrix.J, h, isIntegral_one, isIntegral_zero, isIntegral_one.neg]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem intM_J : IntM (Matrix.J (Fin N) E) := by
   rintro (i | i) (j | j) <;> by_cases h : i = j <;>
@@ -352,7 +350,7 @@ theorem intM_J : IntM (Matrix.J (Fin N) E) := by
 
 omit [IsCMField E] in
 /- English proof (translation)
-Introduce `i j` and use `by by_cases h : i = j <;> simp [h, isIntegral_zero, isIntegral_natCast]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intM_nat (c : ℕ) : IntM ((c : E) • (1 : M2 E N)) := fun i j => by
   by_cases h : i = j <;> simp [h, isIntegral_zero, isIntegral_natCast]
@@ -366,41 +364,37 @@ namespace GlobalTheory.SW
 open WeilAdm WeilLevel Base in
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ hΨ n N hn c R hc`. Break down `Nat.eq_zero_or_pos R with rfl | hR` into its components or cases. Conclude with `⟨1, fun M φ h => (lt_irrefl _ h.pos.2).elim⟩`. Take `⟨R₀, C, hR₀, hlev⟩` from `GlobalTheory.T.weil_action_level_supNorm_uniform_in_lattice E Ψ hΨ n N hn c R hc hR`. Establish `hD : 0 < (NumberField.discr E).natAbs` using `Int.natAbs_pos.2 (NumberField.discr_ne_zero E)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set D := (NumberField.discr E).natAbs with hDdef`. Use `⟨c * D * (2 * (R₀ * R)), fun M φ hφ γ hγ hden => ?_⟩` and prove the remaining obligations. Establish `l0 : ∀ Λ ∈ Vset E n M, LevelL Λ R (φ Λ)` using `fun Λ hΛ => ⟨hφ.supp Λ hΛ, hφ.per Λ hΛ⟩`. Establish `sb : ∀ Λ ∈ Vset E n M, IsSB (φ Λ)` using `fun Λ hΛ => (hlev M Λ hΛ γ hγ hden _ (l0 Λ hΛ)).1`. Establish `l1 : ∀ Λ ∈ Vset E n M, LevelL Λ (R₀ * R) (φ Λ)` using `fun Λ hΛ => levelL_mul (l0 Λ hΛ) _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l2 : ∀ Λ ∈ Vset E n M, LevelL Λ (R₀ * R) (weil Ψ γ (φ Λ))` using `fun Λ hΛ => by`. Rewrite using `[mul_comm]`. Conclude with `levelL_mul (hlev M Λ hΛ γ hγ hden _ (l0 Λ hΛ)).2.1 _`. Establish `up : ∀ (Λ : Lt E n) (f : Matrix (Fin n) (Fin N) E → ℂ), LevelL Λ (R₀ * R) f → LevelL Λ (c * D * (2 * (R₀ * R))) f` using `fun Λ f hf => by`. Rewrite using `[← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `levelL_mul hf _`. Use `⟨⟨hφ.pos.1, by positivity⟩, fun h hh Λ hΛ Λ' hΛ' hm x => ?_, fun Λ hΛ => (up Λ _ (l2 Λ hΛ)).1, fun Λ hΛ => (up Λ _ (l2 Λ hΛ)).2, ?_⟩` and prove the remaining obligations. Establish `e : φ Λ = fun x => φ Λ' (h * x)` using `funext fun x => (hφ.equiv h hh Λ hΛ Λ' hΛ' hm x).symm`. Express the relevant statement in the definitionally equal form `weil Ψ γ (φ Λ') (h * x) = weil Ψ γ (φ Λ) x`. Rewrite using `[e]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(congrFun ((GlobalTheory.T.hermitianWeilAction_comm_positiveUnitaryGroup E Ψ hΨ n N hn h hh.1 _ (sb Λ' hΛ')).2.1 γ hγ) x).symm`. Introduce and unpack `Λ hΛ Λ' hΛ' ⟨s, hs0, hsM, h1, h2⟩ x hx hx'`. Establish `hs : s.Coprime (c * D * (2 * (R₀ * R)))` using `Nat.Coprime.coprime_mul_right_right hsM`. Establish `hsc : s.Coprime c` using `hs.of_dvd_right ⟨D * (2 * (R₀ * R)), by ring⟩`. Establish `hag : Agree (R * M) Λ Λ'` using `⟨s, hs0, hsM.of_dvd_right ⟨c * D * (2 * R₀), by ring⟩, h1, h2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht0, -, ht, -⟩` from `hΛ'.2.2`. Use `haveI : Fintype (Quo Λ' N s) := by`. Use `(relIndex_nsmul (cols Λ' N) ht0 (fun X hX k i => (mem_stdL _).1 (ht _ (hX i)) k) hs0).1` as an intermediate fact. Use `haveI : Finite (Quo Λ' N s) := Nat.finite_of_card_ne_zero this`. Conclude with `Fintype.ofFinite _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set κ : ℂ := ∑ q : Quo Λ' N s, if ColsIn Λ q.out.1.toCols₁ then 1 else 0 with hκ`. Establish `hκ0 : κ ≠ 0`. Rewrite using `[hκ, Finset.sum_boole, Nat.cast_ne_zero, Finset.card_ne_zero]`. Use `⟨((0 : cols Λ' N) : Quo Λ' N s), Finset.mem_filter.2 ⟨Finset.mem_univ _, fun a => ?_⟩⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `(mem_sub _).1 (QuotientAddGroup.eq_iff_sub_mem.1 (QuotientAddGroup.out_eq' ((0 : cols Λ' N) : Quo Λ' N s)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[sub_zero]`. Rewrite using `[← e]`. Conclude with `h2 _ (hy (Sum.inl a))`. Establish `val : ∀ f : Matrix (Fin n) (Fin N) E → ℂ, LevelL Λ (R₀ * R) f → ∀ y, ColsIn Λ (((c * D * (2 * (R₀ * R)) : ℕ) : E) • y) → ColsIn Λ' (((c * D * (2 * (R₀ * R)) : ℕ) : E) • y) → (∑ q : Quo Λ' N s, rho (R₀ * R) q.out.1 f) y = κ * f y` using `fun f hf y hy hy' => by`. Rewrite using `[Finset.sum_apply, hκ, Finset.sum_mul]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun q _ => rho_apply hΛ'.2.1 hs h1 h2 hf q.out.2 hy hy'`. Establish `main : ∑ q : Quo Λ' N s, rho (R₀ * R) q.out.1 (φ Λ) = κ • φ Λ'`. Use `eq_of_agree hs h2 ?_ ?_ fun y hy hy' => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `levelL_mul (levelL_sum hΛ.2.1 hΛ'.2.1 h2 (l1 Λ hΛ)) c`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `up _ _ (l1 Λ' hΛ')` as an intermediate fact. Conclude with `⟨fun y hy => this.1 y (right_ne_zero_of_mul hy), fun y z hz => congrArg (κ * ·) (this.2 y z hz)⟩`. Rewrite using `[val _ (l1 Λ hΛ) y hy hy', Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Establish `e : c * D * (2 * (R₀ * R)) = c * D * (2 * R₀) * R` using `by ring`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hs`, `hy`, `hy'` using `[e]`. Distinguish the cases in `hR1 : ColsIn Λ ((R : E) • y)`. Conclude with `hφ.loc Λ hΛ Λ' hΛ' hag y hR1 (colsIn_transfer hs h1 hR1 hy')`. Rewrite using `[not_not.1 fun h => hR1 (hφ.supp Λ hΛ y h), not_not.1 fun h => hR1 (colsIn_transfer hs h2 (hφ.supp Λ' hΛ' y h) hy)]`. Take `⟨hdet, -, -, hinv, -⟩` from `(GlobalTheory.T.unitary_act_halfSpace_alt E Ψ N γ hγ).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hden' : IntM ((c : E) • γ⁻¹)`. Establish `e : (c : E) • γ⁻¹ = -(Matrix.J (Fin N) E * ccT ((c : E) • γ) * Matrix.J (Fin N) E)`. Establish `: ccT ((c : E) • γ) = (c : E) • ccT γ`. Use extensionality with `i j`. Simplify using `[ccT, cc_mul, cc_nat]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hinv, this, Matrix.mul_smul, Matrix.smul_mul, smul_neg]`. Rewrite using `[e]`. Conclude with `fun i j => (intM_mul (intM_mul intM_J fun i j => isIntegral_cc (hden j i)) intM_J i j).neg`. Establish `hscc : s.Coprime (c * c)` using `Nat.Coprime.mul_right hsc hsc`. Establish `s1` using `sum_rho_mul hΛ.2.1 hΛ'.2.1 hs0 hscc h2 (l1 Λ hΛ) hden hden' (by`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Proceed by induction.
 
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_nonsing_inv _ hdet, Nat.cast_mul])`. Establish `s2` using `sum_rho_mul hΛ.2.1 hΛ'.2.1 hs0 hscc h2 (l2 Λ hΛ) (intM_nat c) (intM_nat c) (by`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_one, Nat.cast_mul])`. Establish `term : ∀ X : Matrix (Fin n) (Fin N ⊕ Fin N) E, IsSB (rho (R₀ * R) (X * ((c : E) • γ)) (φ Λ)) ∧ weil Ψ γ (rho (R₀ * R) (X * ((c : E) • γ)) (φ Λ)) = rho (R₀ * R) (X * ((c : E) • (1 : M2 E N))) (weil Ψ γ (φ Λ))` using `fun X => by`. Take `⟨a1, -, a2⟩` from `GlobalTheory.T.hermitianHeisenbergOperator_laws E Ψ hΨ n N hn (((2 * (R₀ * R) : ℕ) : E) • (X * ((c : E) • γ)).toCols₁) (((2 * (R₀ * R) : ℕ) : E) • (X * ((c : E) • γ)).toCols₂) _ (sb Λ hΛ)`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Use `⟨a1, (a2 γ hγ).trans ?_⟩` and prove the remaining obligations. Establish `h4 : ∀ Y : Matrix (Fin n) (Fin N ⊕ Fin N) E, Matrix.fromCols (((2 * (R₀ * R) : ℕ) : E) • Y.toCols₁) (((2 * (R₀ * R) : ℕ) : E) • Y.toCols₂) = ((2 * (R₀ * R) : ℕ) : E) • Y` using `fun Y => by`. Apply the tactic sequence `ext k (j | j) <;> rfl`. Rewrite using `[h4, Matrix.smul_mul, Matrix.mul_assoc, Matrix.smul_mul, Matrix.mul_nonsing_inv _ hdet]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `wsum : ∀ (u : Finset (Quo Λ' N s)) (f : Quo Λ' N s → Matrix (Fin n) (Fin N) E → ℂ), (∀ q, IsSB (f q)) → IsSB (∑ q ∈ u, f q) ∧ weil Ψ γ (∑ q ∈ u, f q) = ∑ q ∈ u, weil Ψ γ (f q)` using `fun u f hf => by`. Proceed by induction on `u using Finset.induction_on with`. Consider the case `empty`. Use `(GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn γ hγ 0 isSB_zero).2.2.2.2.1 0` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`.
-
-Conclude with `⟨isSB_zero, this⟩`. Consider the case `insert q u hq ih`. Rewrite using `[Finset.sum_insert hq, Finset.sum_insert hq, ← ih.2]`. Conclude with `⟨isSB_add (hf q) ih.1, ((GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn γ hγ _ (hf q)).2.2.2.1 _ ih.1).2⟩`. Establish `fin` using `(wsum Finset.univ _ fun q => (term q.out.1).1).2`.
-
-Simplify using `only [fun X => (term X).2] at fin`. Rewrite `fin` using `[s1, s2, main, (GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn γ hγ _ (sb Λ' hΛ')).2.2.2.2.1 κ]`. Establish `fin2` using `congrFun fin x`. Rewrite `fin2` using `[val _ (l2 Λ hΛ) x hx hx', Pi.smul_apply, smul_eq_mul]`. Conclude with `(mul_left_cancel₀ hκ0 fin2).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_admissible : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (n N : ℕ), Even n → ∀ c R : ℕ, 0 < c → ∃ R' : ℕ, ∀ (M : ℕ) (φ : Fam E n N), admitted M R φ → ∀ γ ∈ UU E N, Den c γ → admitted M R' (fun Λ => weil Ψ γ (φ Λ)) := by
   classical

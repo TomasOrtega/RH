@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.SelfTwWeak
 
 /- English proof (translation)
-Establish `h1` using `congrArg Polynomial.nextCoeff h`. Rewrite `h1` using `[nextCoeff_map ι.injective, multiset_prod_X_sub_C_nextCoeff]`. Rewrite using `[Matrix.trace_eq_neg_charpoly_nextCoeff, map_neg]`. Express the relevant statement in the definitionally equal form `-(ι.toRingHom N.charpoly.nextCoeff) = _`. Rewrite using `[h1, neg_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_of_charpoly {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a : ℕ} (N : Matrix (Fin a) (Fin a) (Qbar l))
     (S : Multiset ℂ) (h : N.charpoly.map ι.toRingHom = (S.map fun b => X - C b).prod) : ι N.trace = S.sum := by
@@ -24,7 +24,7 @@ theorem trace_of_charpoly {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a : 
   rw [h1, neg_neg]
 
 /- English proof (translation)
-Simplify using `only [UpperTheory.V.Af.algSat]`. Simplify using the standard rewrite rules. Simplify using `only [mul_assoc, Multiset.sum_map_mul_left, Multiset.sum_map_mul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem algSat_mul (n q : ℕ) (B : Multiset ℂˣ) (e : ℂˣ) :
     (UpperTheory.V.Af.algSat n q (B.map (· * e))).sum = (e : ℂ) * (UpperTheory.V.Af.algSat n q B).sum := by
@@ -34,9 +34,9 @@ theorem algSat_mul (n q : ℕ) (B : Multiset ℂˣ) (e : ℂˣ) :
   ring
 
 /- English proof (translation)
-Take `⟨-, -, hev⟩` from `hr`. Use `filter_upwards [hev, hη] with v hv1 hv2 A σ hA hσ`. Take `⟨B, hB, hF⟩` from `hv1`. Take `⟨-, B', hB', hBη⟩` from `hv2`. Establish `hBB : B' = B` using `hB'.unique hB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hBB` using the available equality. Establish `ht` using `trace_of_charpoly ι _ _ ((hF A hA).2 σ hσ)`. Rewrite using `[ht]`. Use `conv_rhs => rw [← hBη]`. Rewrite using `[algSat_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfTw_mul_trace_inv (Ω : Type) [Field Ω] (K : Type) [Field K] [NumberField K] [IsCMField K] [Algebra K Ω]
     [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (π : CuspSub K a)
@@ -57,15 +57,15 @@ theorem selfTw_mul_trace_inv (Ω : Type) [Field Ω] (K : Type) [Field K] [Number
   rw [algSat_mul]
 
 /- English proof (translation)
-Set `ρ : G K Ω →* (M ≃ₐ[K] M)` to `AlgEquiv.restrictNormalHom M`. Establish `hfix : ∀ k : G K Ω, ρ k = 1 → ∀ x : M, k (algebraMap M Ω x) = algebraMap M Ω x`. Introduce `k hk x`. Use `AlgEquiv.restrictNormal_commutes k M x` as an intermediate fact. Rewrite using `[← this]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `algebraMap M Ω (ρ k x) = _`. Rewrite using `[hk]`. Both sides reduce to the same expression. Use `haveI : Fact (Nat.card (M ≃ₐ[K] M)).Prime := ⟨by first`. Consider the case `(rw [IsGalois.card_aut_eq_finrank]; exact hp)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 
-Consider the case `(convert hp using 1; rw [Nat.card_eq_fintype_card]; convert IsGalois.card_aut_eq_finrank K M)⟩`. Break down `Subgroup.eq_bot_or_eq_top_of_prime_card ((χ.ker).map ρ) with hH | hH` into its components or cases. Introduce `hχg`. Take `⟨x, hx⟩` from `hg`. Establish `: ρ g ∈ (χ.ker).map ρ` using `⟨g, hχg, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hH, Subgroup.mem_bot]`. Conclude with `hx (hfix g this x)`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Use extensionality with `k`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: ρ k ∈ (χ.ker).map ρ` using `by rw [hH]; trivial`. Take `⟨k', hk', hkk⟩` from `this`. Establish `h1 : χ (k * k'⁻¹) = 1` using `h3 _ (hfix _ (by rw [map_mul, map_inv, hkk, mul_inv_cancel]))`. Rewrite `h1` using `[map_mul, map_inv, MonoidHom.mem_ker.1 hk', inv_one, mul_one]`. Simplify using `[h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ne_one_of_moves (Ω : Type) [Field Ω] (K : Type) [Field K] [Algebra K Ω] (M : Type) [Field M] [Algebra M Ω]
     [Algebra K M] [IsScalarTower K M Ω] [FiniteDimensional K M] [IsGalois K M] (hp : (Module.finrank K M).Prime)
@@ -100,7 +100,7 @@ theorem ne_one_of_moves (Ω : Type) [Field Ω] (K : Type) [Field K] [Algebra K �
     simp [h1]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hg`. Use `⟨x, fun h => hx ?_⟩` and prove the remaining obligations. Establish `e : (g * g⁻¹) (algebraMap M Ω x) = algebraMap M Ω x` using `by rw [mul_inv_cancel]; rfl`. Rewrite `e` using `[AlgEquiv.mul_apply, h]`. Conclude with `e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_moves {Ω K M : Type} [Field Ω] [Field K] [Algebra K Ω] [Field M] [Algebra M Ω] (g : G K Ω)
     (hg : ∃ x : M, g (algebraMap M Ω x) ≠ algebraMap M Ω x) : ∃ x : M, g⁻¹ (algebraMap M Ω x) ≠ algebraMap M Ω x := by
@@ -111,19 +111,17 @@ theorem inv_moves {Ω K M : Type} [Field Ω] [Field K] [Algebra K Ω] [Field M] 
   exact e
 
 /- English proof (translation)
-Introduce `Ω _ K _ _ _ _ _ M _ _ _ _ _ _ _ _ hp l _ ι a π r hr η hη hst g hg`. Take `⟨χ, hχo, hχ1, hχf⟩` from `GlobalTheory.HeckeToGal.exists_galChar_of_finite_order Ω K η (Module.finrank K M) hp.pos hη.2.1`. Establish `hχne : χ ≠ 1` using `fun h => hη.1 (hχ1 h)`. Establish `h3` using `GlobalTheory.trivial_on_ext_of_frob_eq_normChar Ω K M η hη χ hχo hχf`. Establish `hne` using `ne_one_of_moves Ω K M hp χ hχne h3 g⁻¹ (inv_moves g hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `selfTw_mul_trace_inv Ω K l ι a π r hr η hst`. Establish `hcont : Continuous r` using `hr.1`. Establish `hUo : IsOpen {k : G K Ω | χ k ≠ 1}`. Establish `hc : IsClosed (χ.ker : Set (G K Ω))` using `Subgroup.isClosed_of_isOpen _ hχo`. Establish `: {k : G K Ω | χ k ≠ 1} = (χ.ker : Set (G K Ω))ᶜ` using `by ext k; simp [MonoidHom.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hc.isOpen_compl`. Establish `hT` using `Filter.eventually_cofinite.1 (h1.and hχf)`. Establish `hD` using `GlobalTheory.frob_dense_off_finite K Ω _ hT`. Establish `hc : Continuous fun k : G K Ω => (r k⁻¹).val.trace` using `(Units.continuous_val.comp (hcont.comp continuous_inv)).matrix_trace`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ : IsClosed {k : G K Ω | (r k⁻¹).val.trace = 0}` using `isClosed_eq hc continuous_const`. Establish `hsub` using `hD.open_subset_closure_inter hUo hne`. Establish `key : (r g⁻¹⁻¹).val.trace = 0`. Use `closure_minimal ?_ hZ hsub` and prove the remaining obligations. Introduce and unpack `σ ⟨hσU, v, hv, A, hA, hσ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, not_not] at hv`. Establish `e1` using `hv.1 A σ hA hσ`. Establish `e2` using `hv.2 A σ hA hσ`. Establish `hv1 : (η.val v : ℂ) ≠ 1`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hσU` to reduce the goal to its premises. Rewrite using `[e2]`. Conclude with `Units.val_eq_one.1 h`. Establish `: ι (r σ⁻¹).val.trace = 0`. Establish `h0 : ((η.val v : ℂ) - 1) * ι (r σ⁻¹).val.trace = 0` using `by rw [sub_mul, e1, one_mul, sub_self]`.
-
-Conclude with `(mul_eq_zero.1 h0).resolve_left (sub_ne_zero.2 hv1)`. Conclude with `(map_eq_zero_iff ι ι.injective).1 this`. Rewrite `key` using `[inv_inv]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem trace_eq_zero_of_selfTw : ∀ (Ω : Type) [Field Ω] (K : Type) [Field K] [NumberField K] [IsCMField K] [Algebra K Ω] [IsAlgClosure K Ω] (M : Type) [Field M] [NumberField M] [IsCMField M] [Algebra M Ω] [IsAlgClosure M Ω] [Algebra K M] [IsScalarTower K M Ω] [IsGalois K M], (Module.finrank K M).Prime → ∀ (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (π : CuspSub K a) (r : G K Ω →* GL (Fin a) (Qbar l)), Weak π ι r → ∀ η : HChar K, UpperTheory.V.Published.IsNormChar M η → UpperTheory.V.Published.SelfTw (CG.mk π).HasSat η → ∀ g : G K Ω, (∃ x : M, g (algebraMap M Ω x) ≠ algebraMap M Ω x) → (r g).val.trace = 0 := by
   intro Ω _ K _ _ _ _ _ M _ _ _ _ _ _ _ _ hp l _ ι a π r hr η hη hst g hg

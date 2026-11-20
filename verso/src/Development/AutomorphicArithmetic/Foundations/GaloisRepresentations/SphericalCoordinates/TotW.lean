@@ -39,7 +39,7 @@ variable {L} {h : G.GAf} {N N' : ℕ} {X' : GenModel gb N'} {X : GenModel gb N}
 def Leg.tot (c : Leg L h X' X) : X'.univ.A.left ⟶ X.univ.A.left := c.ψ.left ≫ c.φ.φ
 
 /- English proof (translation)
-Rewrite using `[Leg.tot, Category.assoc, c.φ.cart.1.w, ← Category.assoc, Over.w]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Leg.tot_w (c : Leg L h X' X) : c.tot ≫ X.univ.A.hom = X'.univ.A.hom ≫ c.q := by
   rw [Leg.tot, Category.assoc, c.φ.cart.1.w, ← Category.assoc, Over.w]

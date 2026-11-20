@@ -24,9 +24,9 @@ namespace GlobalTheory.Core.Rk.ZcDer
 open GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift (dOmT)
 
 /- English proof (translation)
-Establish `h1 : gramAt D V τ * Formalism.L2.Theta.conjAt V τ Z = -(Zᴴ * gramAt D V τ)`. Unfold `Formalism.L2.Theta.conjAt`. Rewrite using `[Matrix.mul_neg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (GlobalTheory.SmoothForms.RealPts.gramAt_unit V τ), Matrix.one_mul]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Matrix.conjTranspose h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_neg, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, GlobalTheory.SmoothForms.RealPts.gramAt_herm]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem conjAt_rel {D : D7} (V : HSp D) (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     gramAt D V τ * Formalism.L2.Theta.conjAt V τ Z = -(Zᴴ * gramAt D V τ) ∧
@@ -41,9 +41,9 @@ theorem conjAt_rel {D : D7} (V : HSp D) (τ : D.what₂.Tau) (Z : Matrix (Fin V.
     Matrix.conjTranspose_conjTranspose, GlobalTheory.SmoothForms.RealPts.gramAt_herm] at h2
 
 /- English proof (translation)
-Take `⟨a, b⟩` from `conjAt_rel V τ Z`. Use `show _ + _ = _`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add, a, b]`. Establish `: star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Rewrite using `[this, ← smul_add]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem re_mem {D : D7} (V : HSp D) (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     (1 / 2 : ℂ) • (Z + Formalism.L2.Theta.conjAt V τ Z) ∈ lieAt V τ := by
@@ -56,7 +56,7 @@ theorem re_mem {D : D7} (V : HSp D) (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank
   simp
 
 /- English proof (translation)
-Take `⟨a, b⟩` from `conjAt_rel V τ Z`. Use `show _ + _ = _`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, Matrix.conjTranspose_sub, Matrix.sub_mul, Matrix.mul_sub, a, b]`. Establish `: star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I))` using `by simp`. Rewrite using `[this, sub_neg_eq_add, sub_neg_eq_add, add_comm (Zᴴ * gramAt D V τ), neg_smul, neg_add_cancel]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem im_mem {D : D7} (V : HSp D) (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     (1 / (2 * Complex.I)) • (Z - Formalism.L2.Theta.conjAt V τ Z) ∈ lieAt V τ := by
@@ -68,9 +68,9 @@ theorem im_mem {D : D7} (V : HSp D) (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank
   rw [this, sub_neg_eq_add, sub_neg_eq_add, add_comm (Zᴴ * gramAt D V τ), neg_smul, neg_add_cancel]
 
 /- English proof (translation)
-Take `⟨ht, hd⟩` from `GlobalTheory.Chain.LiftReg.tame_dOmT hθ hω hX`. Establish `h2 : ∀ f, IsThetaFunO ψ S T f → ∀ g h w, HasDerivAt (fun t : ℝ => om (g, h * oneP θ T τ X t) f w) (om (g, h) (dOmT θ om τ X f) w) 0`. Introduce `f hf g h w`. Use `hd f hf (g, h) w` as an intermediate fact. Simplify using `only [Prod.mk_mul_mk, mul_one] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Use `⟨fun f hf => ht.theta hf, h2, fun f hf w => ?_⟩` and prove the remaining obligations. Use `h2 f hf 1 1 w` as an intermediate fact. Simplify using `only [one_mul, Prod.mk_one_one, map_one, Module.End.one_apply] at this`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_dOmT {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {χS χT : (AE D)ˣ →* Circle} {om : WRep S T} (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ S T χS χT om)
@@ -93,9 +93,9 @@ theorem hasDerivAt_dOmT {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D
   exact this
 
 /- English proof (translation)
-Take `⟨-, -, hD⟩` from `hasDerivAt_dOmT hθ hω hX`. Use function extensionality and compare the values at `w`. Establish `h1` using `(hD f hf w).add (hD f' hf' w)`. Establish `h2` using `hD (f + f') ((GlobalTheory.RealWeil.thetaSub ψ S T).add_mem hf hf') w`. Establish `e : (fun t : ℝ => om (1, oneP θ T τ X t) (f + f') w) = fun t => om (1, oneP θ T τ X t) f w + om (1, oneP θ T τ X t) f' w`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [map_add, Pi.add_apply]`. Rewrite `h2` using `[e]`. Conclude with `h2.unique h1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dOmT_add {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {χS χT : (AE D)ˣ →* Circle} {om : WRep S T} (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ S T χS χT om)
@@ -114,9 +114,9 @@ theorem dOmT_add {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T 
   exact h2.unique h1
 
 /- English proof (translation)
-Take `⟨-, -, hD⟩` from `hasDerivAt_dOmT hθ hω hX`. Use function extensionality and compare the values at `w`. Establish `h1` using `(hD f hf w).const_mul c`. Establish `h2` using `hD (c • f) ((GlobalTheory.RealWeil.thetaSub ψ S T).smul_mem c hf) w`. Establish `e : (fun t : ℝ => om (1, oneP θ T τ X t) (c • f) w) = fun t => c * om (1, oneP θ T τ X t) f w`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite `h2` using `[e]`. Conclude with `h2.unique h1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dOmT_smul {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {χS χT : (AE D)ˣ →* Circle} {om : WRep S T} (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ S T χS χT om)
@@ -138,11 +138,11 @@ end GlobalTheory.Core.Rk.ZcDer
 open GlobalTheory.Core.Rk.ZcDer in
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT om hθ hω τ Z`. Establish `hX` using `GlobalTheory.Core.Rk.ZcDer.re_mem T τ Z`. Establish `hY` using `GlobalTheory.Core.Rk.ZcDer.im_mem T τ Z`. Take `⟨tX, dX, -⟩` from `hasDerivAt_dOmT hθ hω hX`. Take `⟨tY, dY, -⟩` from `hasDerivAt_dOmT hθ hω hY`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun f => GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.dOmT θ om τ ((1 / 2 : ℂ) • (Z + Formalism.L2.Theta.conjAt T τ Z)) f + Complex.I • GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.dOmT θ om τ ((1 / (2 * Complex.I)) • (Z - Formalism.L2.Theta.conjAt T τ Z)) f, …` and prove the remaining obligations. Conclude with `(GlobalTheory.RealWeil.thetaSub ψ S T).add_mem (tX f hf) ((GlobalTheory.RealWeil.thetaSub ψ S T).smul_mem _ (tY f hf))`. Use `beta_reduce`. Rewrite using `[dOmT_add hθ hω hX hf hf', dOmT_add hθ hω hY hf hf', smul_add Complex.I]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `beta_reduce`. Rewrite using `[dOmT_smul hθ hω hX c hf, dOmT_smul hθ hω hY c hf, smul_add c, smul_comm Complex.I c]`. Use function extensionality and compare the values at `h`. Simplify using `only [Formalism.L2.Theta.RderC, Formalism.L2.Theta.Rder, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_smul]`. Rewrite using `[(dX f hf g h w).deriv, (dY f hf g h w).deriv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Core.Rk.ZcDer.rderC_om : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : WRep S T), IsInfFam θ → IsWeilDatumO ψ S T χS χT om → ∀ (τ : D.what₂.Tau) (Z : Matrix (Fin T.rank) (Fin T.rank) ℂ), ∃ Dz : (WO S T → ℂ) → (WO S T → ℂ), (∀ f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (Dz f)) ∧ (∀ f f', IsThetaFunO ψ S T f → IsThetaFunO ψ S T f' → Dz (f + f') = Dz f + Dz f') ∧ (∀ (c : ℂ) f, IsThetaFunO ψ S T f → Dz (c • f) = c • Dz f) ∧ ∀ f, IsThetaFunO ψ S T f → ∀ g w, RderC θ T τ Z (fun h => om (g, h) f w) = fun h => om (g, h) (Dz f) w := by
   intro D ψ θ S T χS χT om hθ hω τ Z

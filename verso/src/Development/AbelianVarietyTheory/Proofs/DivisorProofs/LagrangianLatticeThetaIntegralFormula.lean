@@ -13,11 +13,11 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 /- English proof (translation)
-Proceed by induction on `hg using Submonoid.closure_induction with`. Consider the case `mem g hg`. Break down `hg with (⟨A, hA, rfl⟩ | ⟨C, -, rfl⟩) | rfl` into its components or cases. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_fromBlocks_zero₂₁, Matrix.det_transpose]`. Conclude with `hA.mul (Matrix.isUnit_nonsing_inv_det A hA)`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_fromBlocks_zero₁₂]`. Simplify using the standard rewrite rules. Use `IsUnit.of_mul_eq_one (Matrix.fromBlocks 0 (-1) 1 0) ?_` and prove the remaining obligations. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `one => exact isUnit_one`. Consider the case `mul g h _ _ hg hh => exact hg.mul hh`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem isUnit_of_mem_closure {F : Type} [Field F] {κ : Type} [Fintype κ] [DecidableEq κ]
     {g : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : g ∈ Submonoid.closure (GlobalTheory.AdelicSvN.gens F κ)) : IsUnit g := by
@@ -35,11 +35,11 @@ private theorem isUnit_of_mem_closure {F : Type} [Field F] {κ : Type} [Fintype 
   | mul g h _ _ hg hh => exact hg.mul hh
 
 /- English proof (translation)
-Establish `key : ∀ m, (g.map (algebraMap F R) *ᵥ Sum.elim (∑ i, t i • ((fun k => algebraMap F R (v i (Sum.inl k))), (fun k => algebraMap F R (v i (Sum.inr k))))).1 (∑ i, t i • ((fun k => algebraMap F R (v i (Sum.inl k))), (fun k => algebraMap F R (v i (Sum.inr k))))).2) m = ∑ i, t i * algeb …`. Introduce `m`. Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Matrix.map_apply, Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, map_add, map_sum, map_mul, mul_add, Finset.mul_sum, Finset.sum_add_distrib]`. Apply the tactic sequence `congr 1 <;> (rw [Finset.sum_comm]; refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_; ring)`. Use extensionality with `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components.
 
-Rewrite using `[GlobalTheory.AdelicSvN.act]`. Simplify using `only [Function.comp_apply, key]`. Simplify using `only [Prod.fst_sum, Finset.sum_apply, Prod.smul_fst, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[GlobalTheory.AdelicSvN.act]`. Simplify using `only [Function.comp_apply, key]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.snd_sum, Finset.sum_apply, Prod.smul_snd, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem act_sum {F R : Type} [Field F] [CommRing R] [Algebra F R] {κ ι : Type} [Fintype κ] [Fintype ι]
     (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F) (t : ι → R) (v : ι → κ ⊕ κ → F) :
@@ -64,27 +64,25 @@ private theorem act_sum {F R : Type} [Field F] [CommRing R] [Algebra F R] {κ ι
     simp only [Prod.snd_sum, Finset.sum_apply, Prod.smul_snd, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ Λ hiso hrank r u huΛ hli hsp μ hμ ι _ w _ hnd ν hν φ hφ`. Set `Φ : ((κ → AF F) → ℂ) → ℂ` to `fun φ => ∫ x, schr ψ (∑ j, x j • ((fun k => algebraMap F (AF F) ((u j).1 k)), (fun k => algebraMap F (AF F) ((u j).2 k)))) φ 0 ∂μ`. Set `Φ₀ : schA F κ →ₗ[ℂ] ℂ` to `{ toFun := fun φ => Φ φ map_add' := fun φ φ' => by`. Use `Eq.trans ?_ (integral_add (UpperTheory.Dv.LagrForm.integrable_schr_zero ψ hψ u hli μ hμ φ.2) (UpperTheory.Dv.LagrForm.integrable_schr_zero ψ hψ u hli μ hμ φ'.2))` and prove the remaining obligations. Simplify using `only [Φ, schr, Submodule.coe_add, Pi.add_apply, mul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := fun c φ => by`. Use `Eq.trans ?_ (integral_const_mul c _)` and prove the remaining obligations. Simplify using `only [Φ, schr, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c] }`. Take `⟨l, hl⟩` from `LinearMap.exists_extend Φ₀`. Establish `hlΦ : ∀ φ ∈ schA F κ, l φ = Φ φ` using `fun φ hφ => LinearMap.congr_fun hl ⟨φ, hφ⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadm : l ∈ (adeleClass F).adm κ`. Introduce `g hg`. Take `⟨T, hT⟩` from `UpperTheory.Dv.LagrForm.integral_schr_zero ψ hψ u hli μ hμ hg`. Conclude with `⟨T, fun f => (hlΦ _ (Submodule.subset_span ⟨f, g, hg, rfl⟩)).trans (hT f)⟩`. Establish `hinv : ∀ (t : AF F), ∀ v ∈ Λ, ∀ φ ∈ schA F κ, l (schr ψ (t • ((fun k => algebraMap F (AF F) (v.1 k)), (fun k => algebraMap F (AF F) (v.2 k)))) φ) = l φ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t v hv φ hφ`. Rewrite using `[hlΦ _ (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ φ hφ), hlΦ φ hφ]`. Conclude with `GlobalTheory.T.schrodinger_theta_lattice_translation F ψ κ Λ hiso r u huΛ hsp μ hμ t v hv φ`. Take `⟨g, hg, hgL⟩` from `GlobalTheory.T.exists_symplecticBlockGenerators_lagrangian_normal_form F κ Λ hiso hrank`. Take `⟨S, hS, hSs, hSa, hSi⟩` from `GlobalTheory.AdelicSvN.realised_of_mem_closure ψ hψ hg`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l', hl', e⟩` from `hSa l hadm`. Take `⟨c, hc⟩` from `GlobalTheory.T.character_invariant_adelic_form_eq_mul_eval_zero F ψ hψ κ l' hl' (fun y φ hφ => by`. Establish `hm : (fun x => ψ (x ⬝ᵥ y) * φ x) = schr ψ (0, y) φ` using `by funext x; simp [schr]`. Rewrite using `[hm, e _ (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ φ hφ), e φ hφ, hSi _ φ hφ, GlobalTheory.AdelicSvN.act_zero_eq_sum]`. Conclude with `GlobalTheory.AdelicSvN.inv_sum ψ hψ Λ hiso l hinv Finset.univ y _ (fun j => hgL _) _ (hS φ hφ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨φ', hφ', rfl⟩` from `hSs φ hφ`. Take `⟨h, hgh⟩` from `(isUnit_of_mem_closure hg).exists_right_inv`. Set `v : ι → κ ⊕ κ → F` to `fun i => h *ᵥ Sum.elim (w i).1 (w i).2`. Establish `hv : ∀ i, g *ᵥ v i = Sum.elim (w i).1 (w i).2` using `fun i => by`. Rewrite using `[Matrix.mulVec_mulVec, hgh, Matrix.one_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `w' : ι → (κ → F) × (κ → F)` to `fun i => (fun k => v i (Sum.inl k), fun k => v i (Sum.inr k))`. Establish `hw' : LinearIndependent F (fun i => (w' i).1)`. Use `Fintype.linearIndependent_iff.2 fun a ha i => ?_` and prove the remaining obligations. Rewrite using `[hnd a fun z hz => hiso _ ?_ z hz, Pi.zero_apply]`. Establish `h1 : ∑ i, a i • v i = Sum.elim (0 : κ → F) (fun k => (∑ i, a i • v i) (Sum.inr k))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `m`. Break down `m with k | k` into its components or cases. Simplify `congrFun ha k` using `[w', Finset.sum_apply]`. Both sides reduce to the same expression. Establish `h2` using `hgL (fun k => (∑ i, a i • v i) (Sum.inr k))`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite `h2` using `[← h1, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul, hv] at h2`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext k <;> simp [Prod.fst_sum, Prod.snd_sum, Finset.sum_apply]`. Use `((UpperTheory.Dv.LagrForm.integrable_schr_zero ψ hψ w' hw' ν hν hφ').const_mul c).congr (Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hact` using `act_sum g t v`. Simplify using `only [hv, Sum.elim_inl, Sum.elim_inr] at hact`. Establish `hm` using `GlobalTheory.HeisSchA.schr_mem_schA ψ hψ (∑ i, t i • ((fun k => algebraMap F (AF F) ((w' i).1 k)), (fun k => algebraMap F (AF F) ((w' i).2 k)))) φ' hφ'`. Use `((hc _ hm).symm.trans (e _ hm)).trans ?_` and prove the remaining obligations. Rewrite using `[hSi _ φ' hφ', hact]`.
-
-Conclude with `hlΦ _ (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ _ (hS φ' hφ'))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.lagrangian_lattice_theta_integral_formula : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ] (Λ : Submodule F ((κ → F) × (κ → F))), (∀ a ∈ Λ, ∀ b ∈ Λ, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) →
     Module.finrank F Λ = Fintype.card κ → ∀ (r : ℕ) (u : Fin r → (κ → F) × (κ → F)), (∀ j, u j ∈ Λ) →

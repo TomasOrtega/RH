@@ -10,7 +10,7 @@ open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 namespace GlobalTheory.CompanionTheory.Ar.BT
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.UnitarySelfGeneration.bt_exists_bc`.
+A detailed English derivation is pending.
 -/
 theorem QFGroup.exists_isBaseChange_of_injective : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (R' : Type) [CommRing R'] [IsDomain R'] (φ : R →+* R'), Function.Injective φ → ∃ (Γ' : QFGroup R' T) (F : Γ'.G.left ⟶ Γ.G.left), Γ'.IsBaseChange Γ φ F :=
   @PositivityTheory.UnitarySelfGeneration.bt_exists_bc

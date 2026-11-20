@@ -9,9 +9,7 @@ namespace GlobalTheory.CompanionTheory.Ar.RegAtDom
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {X' : Scheme.{0}} {Ω' : Type} [Field Ω']
 
 /- English proof (translation)
-Use `show Spec.map (X.presheaf.stalkSpecializes (x := ξ (IsLocalRing.closedPoint Ω)) (y := q) hq ≫ Scheme.stalkClosedPointTo (R := CommRingCat.of Ω) ξ) ≫ X.fromSpecStalk q = ξ`. Establish `h1` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk (X := X) (x := ξ (IsLocalRing.closedPoint Ω)) (y := q) hq`. Establish `h2` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of Ω) ξ`. Use `Eq.trans ?_ h2` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (fun g => Spec.map (Scheme.stalkClosedPointTo (R := CommRingCat.of Ω) ξ) ≫ g) h1)` and prove the remaining obligations.
-
-Conclude with `(congrArg (fun g => g ≫ X.fromSpecStalk q) (Spec.map_comp _ _)).trans (Category.assoc _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem spec_genMap (ξ : Spec (CommRingCat.of Ω) ⟶ X) (q : X) (hq : genPt ξ ⤳ q) :
     Spec.map (CommRingCat.ofHom (genMap ξ ⟨q, hq⟩) : X.presheaf.stalk q ⟶ _) ≫ X.fromSpecStalk q = ξ := by
@@ -24,7 +22,7 @@ theorem spec_genMap (ξ : Spec (CommRingCat.of Ω) ⟶ X) (q : X) (hq : genPt ξ
   exact (congrArg (fun g => g ≫ X.fromSpecStalk q) (Spec.map_comp _ _)).trans (Category.assoc _ _ _)
 
 /- English proof (translation)
-Establish `h1 : (ξ' ≫ f) (IsLocalRing.closedPoint Ω') = (Spec.map (CommRingCat.ofHom i) ≫ ξ) (IsLocalRing.closedPoint Ω')` using `by rw [show ξ' ≫ f = _ from h]`. Establish `h2 : Spec.map (CommRingCat.ofHom i) (IsLocalRing.closedPoint Ω') = IsLocalRing.closedPoint Ω` using `Subsingleton.elim (α := PrimeSpectrum Ω) _ _`. Conclude with `h1.trans (congrArg ξ h2)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_genPt {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingCat.of Ω') ⟶ X'} {f : X' ⟶ X}
     {i : Ω →+* Ω'} (h : Dominates ξ' ξ f i) : f (genPt ξ') = genPt ξ := by
@@ -35,11 +33,11 @@ theorem map_genPt {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingCat
   exact h1.trans (congrArg ξ h2)
 
 /- English proof (translation)
-Establish `e : f.stalkMap q ≫ (CommRingCat.ofHom (genMap ξ' ⟨q, hq⟩) : X'.presheaf.stalk q ⟶ _) = (CommRingCat.ofHom (genMap ξ ⟨f q, hp⟩) : X.presheaf.stalk (f q) ⟶ _) ≫ CommRingCat.ofHom i`. Apply `Spec.map_injective` to reduce the goal to its premises. Establish `h1` using `spec_genMap ξ' q hq`. Establish `h2` using `spec_genMap ξ (f q) hp`. Generalize the expression as in `(CommRingCat.ofHom (genMap ξ' ⟨q, hq⟩) : X'.presheaf.stalk q ⟶ _) = u at h1 ⊢`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(CommRingCat.ofHom (genMap ξ ⟨f q, hp⟩) : X.presheaf.stalk (f q) ⟶ _) = v at h2 ⊢`. Establish `h3` using `Scheme.SpecMap_stalkMap_fromSpecStalk f (x := q)`. Use `(cancel_mono (X.fromSpecStalk (f q))).1 ?_` and prove the remaining obligations. Establish `l : Spec.map (f.stalkMap q ≫ u) ≫ X.fromSpecStalk (f q) = ξ' ≫ f` using `((congrArg (fun g => g ≫ X.fromSpecStalk (f q)) (Spec.map_comp _ _)).trans (Category.assoc _ _ _)).trans ((congrArg (fun g => Spec.map u ≫ g) h3).trans ((Category.assoc _ _ _).symm.trans (congrArg (fun g => g ≫ f) h1)))`. Establish `r : Spec.map (v ≫ CommRingCat.ofHom i) ≫ X.fromSpecStalk (f q) = Spec.map (CommRingCat.ofHom i) ≫ ξ` using `((congrArg (fun g => g ≫ X.fromSpecStalk (f q)) (Spec.map_comp _ _)).trans (Category.assoc _ _ _)).trans (congrArg (fun g => Spec.map (CommRingCat.ofHom i) ≫ g) h2)`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `l.trans (Eq.trans h r.symm)`. Conclude with `congrArg (fun g => g.hom s) e`.
+A detailed English derivation is pending.
 -/
 theorem genMap_stalkMap {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingCat.of Ω') ⟶ X'} {f : X' ⟶ X}
     {i : Ω →+* Ω'} (h : Dominates ξ' ξ f i) (q : X') (hq : genPt ξ' ⤳ q) (hp : genPt ξ ⤳ f q)
@@ -65,11 +63,11 @@ theorem genMap_stalkMap {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommR
   exact congrArg (fun g => g.hom s) e
 
 /- English proof (translation)
-Introduce `X Ω _ ξ X' Ω' _ ξ' f i hd p'`. Take `⟨q, hq⟩` from `p'`. Establish `hp : genPt ξ ⤳ f q` using `map_genPt hd ▸ hq.map f.continuous`. Use `⟨hp, ?_, fun hg => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(f.stalkMap q).hom s, genMap_stalkMap hd q hq hp s⟩`. Introduce and unpack `_ ⟨s, rfl⟩ ⟨h0, -, t, ht⟩`. Establish `hv` using `genMap_stalkMap hd q hq hp s`. Establish `hone : (f.stalkMap q).hom s * t = 1`. Apply `hg.inj ⟨q, hq⟩` to reduce the goal to its premises.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_mul, map_one, hv, ht]`. Conclude with `mul_inv_cancel₀ h0`. Establish `hu : IsUnit ((f.stalkMap q).hom s)` using `IsUnit.of_mul_eq_one _ hone`. Conclude with `RegAtMono.unitAt_of_isUnit ξ ⟨f q, hp⟩ (isUnit_of_map_unit (f.stalkMap q).hom s hu)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem regAt_dominates :
     ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (X' : Scheme.{0}) (Ω' : Type)

@@ -6,7 +6,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Rewrite using `[← map_one (residue R), ← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Rewrite `hx` using `[← map_one (residue S), ← sub_eq_zero, ← map_sub, residue_eq_zero_iff, ← map_one f, ← map_sub]`. Conclude with `fun hu => hx (hu.map f)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem residue_eq_one_of_map {R S : Type} [CommRing R] [CommRing S] [IsLocalRing R] [IsLocalRing S] (f : R →+* S) (x : R)
     (hx : residue S (f x) = 1) : residue R x = 1 := by
@@ -15,7 +15,7 @@ private theorem residue_eq_one_of_map {R S : Type} [CommRing R] [CommRing S] [Is
   exact fun hu => hx (hu.map f)
 
 /- English proof (translation)
-Consider the cases of `pr`. Conclude with `Function.surjective_id`. Evaluate the decidable proposition.
+Split into cases according to the possible forms of the given data. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 private theorem lab_surj (pr : Bool) : Function.Surjective (lab pr) := by
   cases pr
@@ -23,26 +23,24 @@ private theorem lab_surj (pr : Bool) : Function.Surjective (lab pr) := by
   · decide
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hg.1, hg.2⟩`.
+Supply the required witnesses or components.
 -/
 private theorem ine_resLe {Ω : Type} [Field Ω] [CharZero Ω] {F L : IntermediateField ℚ Ω} [NumberField F] [NumberField L]
     (h : F ≤ L) (A : ValuationSubring Ω) (g : G L Ω) (hg : g ∈ Ine (F := L) A) : resLe h g ∈ Ine (F := F) A :=
   ⟨hg.1, hg.2⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D T c' h K X n u g hg`. Take `⟨⟨g', hg', rfl⟩, hk⟩` from `hg`. Use `⟨g', rfl, ?_⟩` and prove the remaining obligations. Establish `hk' : ∀ i, K.r.chib i (K.V.pr g') = 1` using `fun i => Subgroup.mem_iInf.1 hk i`. Establish `hA : ¬ (K.s.A u.1).valuation (l : Ω) < 1` using `fun hv => K.s.St_l u.1 u.2 ((K.s.hA u.1 l).1 (by simpa using hv))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm, hκ⟩` from `K.tame`. Establish `hβ : K.β g' = 1` using `K.β_t (K.t_unr _ hA hg')`. Establish `hκm : K.κ (g' ^ m) = 1` using `by rw [map_pow]; exact hκ _ hA g' hg'`. Establish `hbar : D.rbar (resQ T.F (resLe T.F_le (g' ^ m))) = 1`. Establish `h1 : ∀ j, residue c.O (D.ps j (resQ T.L (g' ^ m)) : c.O) = 1` using `fun j => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i, rfl⟩` from `lab_surj T.pr j`. Establish `h2` using `K.chib i (g' ^ m)`. Establish `h3 : K.r.chib i (K.V.pr (g' ^ m)) = 1` using `(map_pow ((K.r.chib i).comp K.V.pr) g' m).trans ((congrArg (· ^ m) (hk' i)).trans (one_pow m))`. Rewrite `h2` using `[hκm, h3, Units.val_one, Units.val_one, one_mul]`. Conclude with `residue_eq_one_of_map (inc h) _ h2.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (Matrix.diagonal fun j => (D.ps j (resQ T.L (g' ^ m)) : c.O)).map (residue c.O) = 1`. Rewrite using `[Matrix.diagonal_map (map_zero _), ← Matrix.diagonal_one]`. Conclude with `congrArg _ (funext h1)`. Establish `hr : X.P.r (resLe T.F_le (g' ^ m)) = 1`. Use `X.pair.kill _ ⟨K.s.A u.1, fun p hp => ?_, ine_resLe _ _ _ (pow_mem hg' m), hbar⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : p = l` from `by simpa using hp`. Conclude with `hA`. Establish `hpow : K.rho X n g' ^ m = 1`. Rewrite using `[← map_pow, Link.rho_apply, hr, Link.sc, hκm, map_pow K.β, hβ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, -, hmon, hmap⟩` from `phiCpMap K X n g'`. Use `phiRigid (res c'.O X.B : X.B →+* ResidueField c'.O) (fun x hx => (res_eq_zero_iff c'.O X.B x).1 hx) _ (K.cpT X n g') 4 m hmon ?_ ?_ hpow ?_` and prove the remaining obligations. Rewrite using `[← aeval_map_algebraMap X.A, hmap, Matrix.aeval_self_charpoly]`. Rewrite using `[phiCpRed K X n g']`. Simplify using `[hk']`.
-
-Take `⟨-, -, -, -, -, -, -, -, hu⟩` from `dvrFacts l c'.O`. Simplify using `using (hu m ((Nat.Prime.coprime_iff_not_dvd hl.out).1 hm)).map (algebraMap c'.O X.B)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.phiIne :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h) (X : Space (T.fr ∅) (inc h)) (n : ℕ), ∀ u, ∀ g ∈ K.r.Ip u, ∃ g', K.V.pr g' = g ∧ K.rho X n g' = 1 := by

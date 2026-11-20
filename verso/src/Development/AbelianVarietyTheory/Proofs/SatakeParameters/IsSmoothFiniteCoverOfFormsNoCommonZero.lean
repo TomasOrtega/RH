@@ -27,9 +27,9 @@ open GlobalTheory.ProjSpace GlobalTheory.ProjFrac
 variable {X : Scheme.{0}} {N : ℕ} (ι : X ⟶ PSpace ℂ N)
 
 /- English proof (translation)
-Establish `e : fRatio ι a g ha hg = (ι.appLE (Proj.basicOpen (grading ℂ N) g) (fOpen ι g) le_rfl).hom (frac (grading ℂ N) _ a g ha hg le_rfl)`. Unfold `fRatio`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(resG_appLE ι _ hW _).trans (appLE_resG ι hV hWV _).symm`.
+A detailed English derivation is pending.
 -/
 theorem resG_fRatio {n : ℕ} {a g : MvPolynomial (Fin (N + 1)) ℂ} (ha : a ∈ grading ℂ N n) (hg : g ∈ grading ℂ N n)
     {W : X.Opens} (hW : W ≤ fOpen ι g) {V : (PSpace ℂ N).Opens} (hV : V ≤ Proj.basicOpen (grading ℂ N) g)
@@ -42,7 +42,7 @@ theorem resG_fRatio {n : ℕ} {a g : MvPolynomial (Fin (N + 1)) ℂ} (ha : a ∈
   exact (resG_appLE ι _ hW _).trans (appLE_resG ι hV hWV _).symm
 
 /- English proof (translation)
-Establish `e : X.basicOpen (fRatio ι a g ha hg) = ι ⁻¹ᵁ (PSpace ℂ N).basicOpen (frac (grading ℂ N) _ a g ha hg le_rfl)` using `(Scheme.preimage_basicOpen ι _).symm`. Rewrite using `[e, basicOpen_frac]`. Conclude with `ι.preimage_mono inf_le_right`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basicOpen_fRatio_le {n : ℕ} {a g : MvPolynomial (Fin (N + 1)) ℂ} (ha : a ∈ grading ℂ N n)
     (hg : g ∈ grading ℂ N n) : X.basicOpen (fRatio ι a g ha hg) ≤ fOpen ι a := by
@@ -55,7 +55,7 @@ theorem basicOpen_fRatio_le {n : ℕ} {a g : MvPolynomial (Fin (N + 1)) ℂ} (ha
 variable {d n : ℕ} (f : Fin (d + 1) → MvPolynomial (Fin (N + 1)) ℂ) (hf : ∀ i, f i ∈ grading ℂ N n)
 
 /- English proof (translation)
-The claim follows from `hcov self i := fRatio_self ι (f i) (hf i) mul i j k := by have hWV : fOpen ι (f i) ⊓ fOpen ι (f j) ≤ ι ⁻¹ᵁ (Proj.basicOpen (grading ℂ N) (f i) ⊓ Proj.basicOpen (grading ℂ N) (f j)) := fun x hx => ⟨hx.1, hx.2⟩ rw [resG_fRatio ι (hf j) (hf i) _ inf_le_left hWV, resG_fRatio ι (hf k) …`.
+A detailed English derivation is pending.
 -/
 theorem isCoordFamily_fRatio (hcov : ⨆ i, fOpen ι (f i) = ⊤) :
     IsCoordFamily (fun i => fOpen ι (f i)) (fun i j => fRatio ι (f j) (f i) (hf j) (hf i)) where
@@ -76,19 +76,19 @@ def formMap (p : X ⟶ Sp ℂ) (hcov : ⨆ i, fOpen ι (f i) = ⊤) : X ⟶ PSpa
 variable (p : X ⟶ Sp ℂ) (hcov : ⨆ i, fOpen ι (f i) = ⊤)
 
 /- English proof (translation)
-The claim follows from `(isCoordFamily_fRatio ι f hf hcov).toHom_preimage p i`.
+A detailed English derivation is pending.
 -/
 theorem formMap_preimage (i : Fin (d + 1)) : formMap ι f hf p hcov ⁻¹ᵁ chart ℂ d i = fOpen ι (f i) :=
   (isCoordFamily_fRatio ι f hf hcov).toHom_preimage p i
 
 /- English proof (translation)
-The claim follows from `(isCoordFamily_fRatio ι f hf hcov).toHom_str p`.
+A detailed English derivation is pending.
 -/
 theorem formMap_str : formMap ι f hf p hcov ≫ PSpace.str ℂ d = p :=
   (isCoordFamily_fRatio ι f hf hcov).toHom_str p
 
 /- English proof (translation)
-The claim follows from `(isCoordFamily_fRatio ι f hf hcov).pullRatio_toHom p i j`.
+A detailed English derivation is pending.
 -/
 theorem pullRatio_formMap (i j : Fin (d + 1)) :
     pullRatio (formMap ι f hf p hcov) (fOpen ι (f i)) i (formMap_preimage ι f hf p hcov i).ge j =
@@ -96,16 +96,14 @@ theorem pullRatio_formMap (i j : Fin (d + 1)) :
   (isCoordFamily_fRatio ι f hf hcov).pullRatio_toHom p i j
 
 /- English proof (translation)
-The claim follows from `(Proj.isAffineOpen_basicOpen (grading ℂ N) g hg hn).preimage ι`.
+A detailed English derivation is pending.
 -/
 theorem isAffineOpen_fOpen [IsClosedImmersion ι] {g : MvPolynomial (Fin (N + 1)) ℂ} (hg : g ∈ grading ℂ N n)
     (hn : 0 < n) : IsAffineOpen (fOpen ι g) :=
   (Proj.isAffineOpen_basicOpen (grading ℂ N) g hg hn).preimage ι
 
 /- English proof (translation)
-Use `haveI := isProper_str ℂ N`. Use `haveI := isProper_str ℂ d`. Establish `h1 : IsProper (formMap ι f hf p hcov ≫ PSpace.str ℂ d)`. Rewrite using `[formMap_str, ← hp]`. Use `infer_instance`.
-
-Conclude with `IsFinite.iff_isProper_and_isAffineHom.2 ⟨IsProper.of_comp _ (PSpace.str ℂ d), isAffineHom_of_isAffineOpen_preimage_chart _ fun i => by`. Rewrite using `[formMap_preimage]`. Conclude with `isAffineOpen_fOpen ι (hf i) hn⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinite_formMap [IsClosedImmersion ι] (hp : ι ≫ PSpace.str ℂ N = p) (hn : 0 < n) :
     IsFinite (formMap ι f hf p hcov) := by
@@ -118,7 +116,7 @@ theorem isFinite_formMap [IsClosedImmersion ι] (hp : ι ≫ PSpace.str ℂ N = 
       rw [formMap_preimage]; exact isAffineOpen_fOpen ι (hf i) hn⟩
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appLE, CommRingCat.comp_apply, TopCat.Presheaf.germ_res_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem germ_appLE {Y : Scheme.{0}} (φ : X ⟶ Y) (U : Y.Opens) (W : X.Opens) (h : W ≤ φ ⁻¹ᵁ U) (x : X) (hx : x ∈ W)
     (s : Γ(Y, U)) : (X.presheaf.germ W x hx).hom ((φ.appLE U W h).hom s) =
@@ -126,13 +124,13 @@ theorem germ_appLE {Y : Scheme.{0}} (φ : X ⟶ Y) (U : Y.Opens) (W : X.Opens) (
   rw [Scheme.Hom.appLE, CommRingCat.comp_apply, TopCat.Presheaf.germ_res_apply]
 
 /- English proof (translation)
-The claim follows from `(awayToSection_mk _ 1 _).trans (frac_eq (by ring))`.
+A detailed English derivation is pending.
 -/
 theorem ratioSec_eq (i j : Fin (d + 1)) : XCover.ratioSec d i j = ratio ℂ d i j :=
   (awayToSection_mk _ 1 _).trans (frac_eq (by ring))
 
 /- English proof (translation)
-Establish `hmem : genericPoint X ∈ formMap ι f hf p hcov ⁻¹ᵁ XCover.chart d 0` using `(formMap_preimage ι f hf p hcov 0).ge hg`. Rewrite using `[XCover.rat, dif_pos hmem, ← pullRatio_formMap ι f hf p hcov 0 j, pullRatio, germ_appLE, ratioSec_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rat_formMap [IsIntegral X] (j : Fin (d + 1)) (hg : genericPoint X ∈ fOpen ι (f 0)) :
     XCover.rat (formMap ι f hf p hcov) 0 j =
@@ -144,23 +142,19 @@ theorem rat_formMap [IsIntegral X] (j : Fin (d + 1)) (hg : genericPoint X ∈ fO
 open XCover in
 
 /- English proof (translation)
-Establish `hrat` using `GlobalTheory.T.pulledBackProjCoordinateRatio_overlap_div d X φ`. Establish `h00 : rat φ 0 0 = 1`. Take `⟨h1, h2⟩` from `hrat 0 0 0 (hgen 0) (hgen 0)`. Rewrite `h2` using `[div_self h1]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hch` using `GlobalTheory.T.projective_chart_affine_cover d X φ`. Establish `hne : ∀ I : Finset (Fin (d + 1)), genericPoint X ∈ I.inf fun i => φ ⁻¹ᵁ XCover.chart d i`. Introduce `I`. Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `insert a s _ ih => rw [Finset.inf_insert]`. Conclude with `⟨hgen a, ih⟩`. Establish `hring : ∀ I : Finset (Fin (d + 1)), I.Nonempty → ∀ y, y ∈ rB ℂ X.functionField (crd φ) I ↔ ∃ f : Γ(X, I.inf fun i => φ ⁻¹ᵁ XCover.chart d i), (X.presheaf.germ _ (genericPoint X) (hne I)).hom f = y`. Introduce `I hI y`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `GlobalTheory.T.chart_function_field_integral d X p hinst φ hφ hgen I hI (hne I) y`. Introduce and unpack `⟨f, rfl⟩`. Conclude with `GlobalTheory.T.genericGerm_chartInter_integral_coordinateRatios d X p hinst φ hφ hgen I hI (hne I) f`. Establish `h1 : crd φ 0 = 1` using `Subtype.ext h00`. Use `haveI : CharZero (fld φ) := charZero_of_injective_algebraMap (algebraMap ℂ (fld φ)).injective`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `haveI : Smooth p := SmoothOfRelativeDimension.smooth d p`. Use `⟨IsFinCover.of_charZero ⟨?_, ?_, ?_⟩ (GlobalTheory.T.finite_projection_function_field d X p hinst φ hφ hgen) ?_, ⟨?_, fun I hI => hch.2 I hI, hch.1, hne, hring⟩⟩` and prove the remaining obligations. Introduce `i h`. Conclude with `(hrat 0 i i (hgen 0) (hgen i)).1 (by simpa [crd_val] using congrArg (fun z : fld φ => (z : X.functionField)) h)`. Simplify using `only [h1, div_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `AlgebraicIndependent.of_comp (fld φ).val (GlobalTheory.T.algebraicIndependent_pulledBackProjCoordinateRatios d X p hinst φ hφ hgen)`. Simplify using `only [h1, div_one]`. Rewrite using `[eq_top_iff]`. Introduce `z _`. Establish `hle : fld φ ≤ (IntermediateField.adjoin ℂ (Set.range fun j : Fin d => crd φ j.succ)).map (fld φ).val` using `by show IntermediateField.adjoin ℂ _ ≤ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => rw [h00]`. Conclude with `one_mem _`.
-
-Consider the case `succ k => exact (IntermediateField.mem_map _).2 ⟨crd φ k.succ, IntermediateField.subset_adjoin ℂ _ ⟨k, rfl⟩, rfl⟩`. Take `⟨w, hw, hwz⟩` from `(IntermediateField.mem_map _).1 (hle z.2)`. Establish `: w = z` using `Subtype.ext hwz`. Rewrite using `[← this]` and apply the resulting hypothesis. Introduce `i`.
-
-Conclude with `GlobalTheory.T.affine_germ_subalgebra_smooth X p hinst _ (hch.2 {i} (Finset.singleton_nonempty i)) (hne {i}) _ (hring {i} (Finset.singleton_nonempty i))`. Substitute `hinst` using the available equality. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_finCover_of_isFinite {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp ℂ) (d : ℕ) [SmoothOfRelativeDimension d p]
     [inst : Algebra ℂ X.functionField] (hinst : inst = ffAlg p) (φ : X ⟶ PSpace ℂ d) [IsFinite φ]
@@ -213,9 +207,9 @@ theorem exists_finCover_of_isFinite {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S
     rfl
 
 /- English proof (translation)
-Introduce `X _ p d _ inst hinst N ι hι hp n f hf hn hcov hg`. Use `haveI : IsFinite (formMap ι f hf p hcov) := isFinite_formMap ι f hf p hcov hp hn`. Establish `hpre` using `formMap_preimage ι f hf p hcov`. Take `⟨h1, h2⟩` from `exists_finCover_of_isFinite p d hinst (formMap ι f hf p hcov) (formMap_str ι f hf p hcov) fun i => (hpre i).ge (hg i)`. Establish `hU : (fun i => formMap ι f hf p hcov ⁻¹ᵁ XCover.chart d i) = fun i => fOpen ι (f i)` using `funext hpre`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hU]`. Conclude with `⟨_, _, h1, h2, fun j => rat_formMap ι f hf p hcov j (hg 0)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFinCover_of_forms : ∀ (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp ℂ) (d : ℕ) [SmoothOfRelativeDimension d p]
     [inst : Algebra ℂ X.functionField], inst = ffAlg p → ∀ (N : ℕ) (ι : X ⟶ PSpace ℂ N), IsClosedImmersion ι →

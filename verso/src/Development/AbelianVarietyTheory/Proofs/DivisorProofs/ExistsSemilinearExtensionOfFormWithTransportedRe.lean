@@ -5,31 +5,29 @@ open Module
 namespace GlobalTheory.SemilinearReading
 
 /- English proof (translation)
-Introduce `K LL Cs W G _ _ _ _ _ _ _ _ n m σ₀ σ hσ cu b hbs hbi hbt R hR hRs ρL`. Set `B : Basis (Fin m) LL (Fin n → LL)` to `Basis.mk hbi hbt.ge`. Establish `hB : ∀ k, B k = cu (b k)` using `fun k => Basis.mk_apply _ _ _`. Set `f : (Fin n → LL) →ₛₗ[σ] W` to `{ toFun := fun w => ∑ k, σ (B.repr w k) • R (b k) map_add' := by`. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[add_smul, Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`. Introduce `c x`. Simplify using `[Finset.smul_sum, mul_smul] }`. Establish `hfB : ∀ k, f (B k) = R (b k)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Express the relevant statement in the definitionally equal form `∑ j, σ (B.repr (B k) j) • R (b j) = _`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.single_apply, hj.symm]`. Simplify using the standard rewrite rules. Establish `hcu : ∀ F, f (cu F) = R F`. Introduce `F`. Establish `hF : F ∈ Submodule.span K (Set.range b)` using `by rw [hbs]; trivial`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hF`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smulₛₗ R, ← hB, ← algebraMap_smul LL (a k) (B k), map_smulₛₗ f, hσ, hfB]`. Establish `hsp : ⊤ ≤ Submodule.span ℂ (Set.range fun k => R (b k))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hRs, Submodule.span_le]`. Introduce and unpack `_ ⟨F, rfl⟩`. Rewrite using `[← hcu]`. Express the relevant statement in the definitionally equal form `∑ j, σ (B.repr (cu F) j) • R (b j) ∈ _`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `C : Basis (Fin m) ℂ W` to `Basis.mk hR hsp`. Establish `hC : ∀ k, C k = f (B k)` using `fun k => by rw [hfB]; exact Basis.mk_apply _ _ _`. Set `r : G → W →ₗ[ℂ] W` to `fun g => C.constr ℂ fun k => f (ρL g (B k))`. Establish `hr : ∀ g w, r g (f w) = f (ρL g w)`. Introduce `g w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_lhs => rw [← B.sum_repr w]`. Use `conv_rhs => rw [← B.sum_repr w]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ f, map_smul, map_smul, map_smulₛₗ f, ← hC]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `[r]`. Set `ρ : Representation ℂ G W` to `{ toFun := r map_one' := C.ext fun k => by rw [hC, hr]; simp map_mul' := fun g h => C.ext fun k => by`. Rewrite using `[hC, Module.End.mul_apply, hr, hr, hr, map_mul]`. Use `rfl }`. Use `⟨f, ρ, hcu, hr, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmn : m = n`. Simplify using `using (Module.finrank_eq_card_basis B).symm`. Apply `linearIndependent_of_top_le_span_of_card_eq_finrank` to reduce the goal to its premises. Use `hsp.trans ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Express the relevant statement in the definitionally equal form `R (b k) ∈ _`. Rewrite using `[← hfB, ← (Pi.basisFun LL (Fin n)).sum_repr (B k), map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ f, Pi.basisFun_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite using `[Module.finrank_eq_card_basis C, hmn]`. Rewrite using `[eq_top_iff]`. Use `hsp.trans (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
-
-Conclude with `⟨B k, hfB k⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_semilinear_extension_rep :
     ∀ {K LL Cs W G : Type} [Field K] [Field LL] [Algebra K LL] [AddCommGroup Cs] [Module K Cs] [AddCommGroup W] [Module ℂ W] [Group G] {n m : ℕ} (σ₀ : K →+* ℂ) (σ : LL →+* ℂ), (∀ a, σ (algebraMap K LL a) = σ₀ a) → ∀ (cu : Cs →ₗ[K] (Fin n → LL)) (b : Fin m → Cs), Submodule.span K (Set.range b) = ⊤ → LinearIndependent LL (fun k => cu (b k)) → Submodule.span LL (Set.range fun k => cu (b k)) = ⊤ → ∀ (R : Cs →ₛₗ[σ₀] W), LinearIndependent ℂ (fun k => R (b k)) → Submodule.span ℂ (Set.range R) = ⊤ → ∀ (ρL : G →* ((Fin n → LL) →ₗ[LL] (Fin n → LL))), ∃ (f : (Fin n → LL) →ₛₗ[σ] W) (ρ : Representation ℂ G W), (∀ F, f (cu F) = R F) ∧ (∀ g w, ρ g (f w) = f (ρL g w)) ∧ (LinearIndependent ℂ fun k => f (Pi.single k 1)) ∧ Submodule.span ℂ (Set.range f) = ⊤ := by

@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 open scoped TensorProduct DirectSum
 
 /- English proof (translation)
-Introduce `A B _ ra rb f hf z hz hsurj`. Set `F : ℕ → Type 1` to `fun j => {a : A j // f j a = z j}`. Set `g : ∀ n, F (n + 1) → F n` to `fun n a => ⟨ra n a.1, by rw [← hf, a.2, hz]⟩`. Set `G : ℕᵒᵖ ⥤ Type 1` to `Functor.ofOpSequence (X := F) (fun n => TypeCat.ofHom (g n))`. Use `haveI : ∀ j : ℕᵒᵖ, Finite (G.obj j) := fun j => (inferInstance : Finite (F j.unop))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `haveI : ∀ j : ℕᵒᵖ, Nonempty (G.obj j) := fun j => by`. Take `⟨a, ha⟩` from `hsurj j.unop`. Conclude with `⟨(⟨a, ha⟩ : F j.unop)⟩`. Take `⟨s, hs⟩` from `nonempty_sections_of_finite_inverse_system G`. Use `⟨fun j => (s (Opposite.op j) : F j).1, fun j => ?_, fun j => (s (Opposite.op j) : F j).2⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hs (homOfLE (Nat.le_succ j)).op`. Rewrite `h1` using `[Functor.ofOpSequence_map_homOfLE_succ]`. Establish `h2` using `congrArg Subtype.val h1`. Conclude with `h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.limOnto_holds :
     UpperTheory.Gal.KunnethLefschetz.LimOnto := by

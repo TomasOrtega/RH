@@ -18,9 +18,9 @@ namespace GlobalTheory.ProductL2
 open Formalism.L2.SG.Pf.AmpWinLoc
 
 /- English proof (translation)
-Establish `hW : ∀ x : X.B.I.Ginf, ‖X.Wu u x‖ₑ ^ 2 = ∏ v, ‖X.Wloc u v (x v)‖ₑ ^ 2`. Introduce `x`. Establish `: ‖X.Wu u x‖ₑ = ∏ v, ‖X.Wloc u v (x v)‖ₑ`. Rewrite using `[← ofReal_norm_eq_enorm, Formalism.L2.SG.Pf.WuDec.norm_Wu, ENNReal.ofReal_prod_of_nonneg (fun v _ => norm_nonneg _)]`. Simplify using `only [ofReal_norm_eq_enorm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Finset.prod_pow]`. Repeatedly rewrite using `[hW, ← Finset.prod_mul_distrib]`. Establish `: ∀ v, SigmaFinite (Formalism.REAL.muG (X.B.I.ε v))` using `fun v => inferInstance`. Conclude with `QPK.lintegral_fintype_prod (μ := fun v => Formalism.REAL.muG (X.B.I.ε v)) (fun v y => β v y * ‖X.Wloc u v y‖ₑ ^ 2) (fun v => (hβm v).mul ((X.Wloc_cont u v).enorm.measurable.pow_const 2))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prod_lint (D : D7) (X : HidaSetting D) (u : D.what₂.Word)
     (β : ∀ v : InfinitePlace X.B.I.F, Formalism.REAL.UJ (X.B.I.ε v) → ℝ≥0∞) (hβm : ∀ v, Measurable (β v)) :
@@ -39,11 +39,9 @@ theorem prod_lint (D : D7) (X : HidaSetting D) (u : D.what₂.Word)
     (fun v => (hβm v).mul ((X.Wloc_cont u v).enorm.measurable.pow_const 2))
 
 /- English proof (translation)
-Use `haveI : ∀ v, SigmaFinite (muHl C u (X.pl v) v) := fun v => by`. Establish `h : ∀ τ w, vOf X τ = w → SigmaFinite (muHl C u τ w)`. Introduce and unpack `τ _ rfl`. Conclude with `sf_muHl C u τ`. Conclude with `h _ _ (X.pl.symm_apply_apply v)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Measure.pi_univ]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Establish `h : ∀ τ w, vOf X τ = w → muHl C u τ w Set.univ = 1`. Introduce and unpack `τ _ rfl`. Rewrite using `[← Set.preimage_univ (f := eT C τ (vOf X τ)), ← Measure.map_apply (eT_emb C τ _).measurable MeasurableSet.univ, map_muHl C u τ, C.muW_one u τ]`.
-
-Conclude with `h _ _ (X.pl.symm_apply_apply v)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muH_univ (D : D7) (X : HidaSetting D) (θ : ℝ) (C : Choice X θ) (u : D.what₂.Word) :
     Measure.pi (fun v => muHl C u (X.pl v) v) Set.univ = 1 := by
@@ -65,17 +63,17 @@ namespace GlobalTheory.ProductL2
 open Formalism.L2.SG.Pf.AmpWinLoc
 
 /- English proof (translation)
-Introduce `D X Y θ C hB u hθ _ _ _`. Establish `key : ∀ v, ∃ β : Formalism.REAL.UJ (X.B.I.ε v) → ℝ≥0∞, Measurable β ∧ (∀ x, ∫⁻ s, β (s * x) ∂(QPK.mulMap (muNl C (X.pl v) v) (muHl C u (X.pl v) v)) = 1) ∧ (∫⁻ y, β y * ‖X.Wloc u v y‖ₑ ^ 2 ∂(Formalism.REAL.muG (X.B.I.ε v)) = l2SG (C.nuS u (X.pl v)) (phiOf hB u (X.pl v))) ∧ SigmaFi …`. Introduce `v`. Establish `h : ∀ τ w, vOf X τ = w → ∃ β : Formalism.REAL.UJ (X.B.I.ε w) → ℝ≥0∞, Measurable β ∧ (∀ x, ∫⁻ s, β (s * x) ∂(QPK.mulMap (muNl C τ w) (muHl C u τ w)) = 1) ∧ (∫⁻ y, β y * ‖X.Wloc u w y‖ₑ ^ 2 ∂(Formalism.REAL.muG (X.B.I.ε w)) = l2SG (C.nuS u τ) (phiOf hB u τ)) ∧ SigmaFinite (QPK.mulM …`. Introduce and unpack `τ _ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨β, h1, h2, h3⟩` from `GlobalTheory.T.exists_bruhatFunction_localBesselIntegral_eq_L2Mass D X θ C hB u τ`. Conclude with `⟨β, h1, h2, h3, (invOn_mulMap C u τ).1⟩`. Conclude with `h (X.pl v) v (X.pl.symm_apply_apply v)`. Use `choose β hβm hβ1 hβl hsf using key`. Take `⟨κN, hN0, hNt, hN⟩` from `GlobalTheory.T.unipotentHaar_eq_const_smul_pi_localMeasures D X θ C u`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨κH, hH0, hHt, hH⟩` from `GlobalTheory.T.subgroupHaar_eq_const_smul_pi_localMeasures D X θ C u`. Establish `hS` using `GlobalTheory.T.unipotentSubgroupHaarProduct_eq_pi_localImage D X θ C u κN κH hN hH`. Establish `hW` using `GlobalTheory.T.weil_formula_besselNormSq_bruhatProduct D X u (κN * κH) _ hsf hS β hβm hβ1`. Rewrite `hW` using `[prod_lint D X u β hβm]`. Simplify using `only [hβl] at hW`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : ∏ τ, l2SG (C.nuS u τ) (phiOf hB u τ) = κN * κH`. Rewrite using `[← hW]`. Conclude with `(Equiv.prod_comp X.pl (fun τ => l2SG (C.nuS u τ) (phiOf hB u τ))).symm`. Establish `hP0 : ∏ τ, l2SG (C.nuS u τ) (phiOf hB u τ) ≠ 0` using `by rw [hP]; exact mul_ne_zero hN0 hH0`. Establish `hPt : ∏ τ, l2SG (C.nuS u τ) (phiOf hB u τ) ≠ ⊤` using `by rw [hP]; exact ENNReal.mul_ne_top hNt hHt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne0 : ∀ τ, l2SG (C.nuS u τ) (phiOf hB u τ) ≠ 0` using `fun τ => (Finset.prod_ne_zero_iff.1 hP0) τ (Finset.mem_univ τ)`. Establish `hnet : ∀ τ, l2SG (C.nuS u τ) (phiOf hB u τ) ≠ ⊤`. Introduce `τ ht`. Apply `hPt` to reduce the goal to its premises. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ τ), ht]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `ENNReal.top_mul (Finset.prod_ne_zero_iff.2 fun τ' _ => hne0 τ')`. Use `⟨fun τ => ENNReal.toReal_pos (hne0 τ) (hnet τ), ?_⟩` and prove the remaining obligations. Rewrite using `[← ENNReal.toReal_prod, hP, ← GlobalTheory.T.pi_pulledBack_unipotentMeasure_eq_besselImage D X θ C (Y.FN u) hθ (Y.FN_fund u).1, hN, hH, Measure.smul_apply, Measure.smul_apply, muH_univ D X θ C u]`. Simplify using `only [smul_eq_mul, mul_one, ENNReal.toReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem l2prod : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (θ : ℝ) (C : Choice X θ) (hB : WuBessel C) (u : D.what₂.Word), 0 < θ → Formalism.L2.SG.ConcreteSettingExists.GapHyp D → 0 < (X.muN u (Y.FN u)).toReal → 0 < (X.muH u Set.univ).toReal → (∀ τ, 0 < (l2SG (C.nuS u τ) (phiOf hB u τ)).toReal) ∧ (∏ τ, (l2SG (C.nuS u τ) (phiOf hB u τ)).toReal) * (Measure.pi (fun _ : D.what₂.Tau => muNB D θ) ((fun (x : X.B.I.Ginf) (τ : D.what₂.Tau) => (Matrix.of.symm (Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) (x (vOf X τ))) : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)) '' Y.FN u)).toReal = (X.muN u (Y.FN u)).toReal * (X.muH u Set.univ).toReal := by
   intro D X Y θ C hB u hθ _ _ _

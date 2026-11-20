@@ -11,9 +11,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 namespace UpperTheory.Gal.TP.Skew
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hc emb mα mβ`. Take `⟨ψ₀, hψ₀⟩` from `GlobalTheory.CompanionTheory.SW.CharEx.exists_isCharAF F`. Take `⟨a, -, ha⟩` from `GlobalTheory.StdRescale.exists_isStd_mulShift F hc.1 ψ₀ hψ₀`. Take `⟨v₁, -, ⟨τ₁⟩⟩` from `GlobalTheory.Orb.exists_split_place_notMem hc ∅`. Use `⟨⟨ψ₀.mulShift (algebraMap F (AF F) a), emb, mα, mβ, ∅, fun v => absurd v.2 (Finset.notMem_empty _), v₁, τ₁⟩, rfl, rfl, rfl, rfl, ha, fun hu hg => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `{ cm := hc galois := hg.1 unram := hu std := ha inert := fun v w h => by`. Take `⟨h2, h3, hd⟩` from `hg.2 v w h`. Conclude with `⟨h2, h3, PositivityTheory.Mix.psiUnr_of_not_le ha v hd⟩`. Use `psiP := fun v hv => absurd hv (Finset.notMem_empty _) }`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem baseEx : BaseEx := by
   intro F E _ _ _ _ _ σ hc emb mα mβ

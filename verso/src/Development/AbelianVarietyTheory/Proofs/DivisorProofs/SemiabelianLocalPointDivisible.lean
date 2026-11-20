@@ -18,9 +18,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupBplus.Aff.Divis
 
 /- English proof (translation)
-Introduce `S K A _ _ _ _ _ _ _ _ _ hfin hfl hnt`. Use `haveI : Algebra.IsIntegral S A := Algebra.IsIntegral.of_finite S A`. Take `⟨M, hM⟩` from `Ideal.exists_maximal A`. Establish `hj : Function.Injective (Algebra.TensorProduct.includeRight : A →ₐ[S] K ⊗[S] A)` using `Algebra.TensorProduct.includeRight_injective (IsFractionRing.injective S K)`. Take `⟨σ, -⟩` from `GlobalTheory.GroupBplus.Rigid.exists_section (K := K) (Algebra.TensorProduct.includeRight : A →ₐ[S] K ⊗[S] A) hj M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨σ⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_section : ∀ (S K A : Type) [CommRing S] [IsDomain S] [IsIntegrallyClosed S] [Field K] [IsAlgClosed K]
     [Algebra S K] [IsFractionRing S K] [CommRing A] [Algebra S A], Module.Finite S A → Module.Flat S A → Nontrivial A →
@@ -34,23 +34,19 @@ theorem nonempty_section : ∀ (S K A : Type) [CommRing S] [IsDomain S] [IsInteg
   exact ⟨σ⟩
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG q x m hm`. Set `Rq` to `Localization.AtPrime q.asIdeal`. Use `letI : Algebra Rq K := IsLocalization.localizationAlgebraOfSubmonoidLe _ K q.asIdeal.primeCompl (nonZeroDivisors R) q.asIdeal.primeCompl_le_nonZeroDivisors`. Use `haveI : IsScalarTower R Rq K := IsLocalization.localization_isScalarTower_of_submonoid_le _ K q.asIdeal.primeCompl (nonZeroDivisors R) q.asIdeal.primeCompl_le_nonZeroDivisors`. Use `haveI : IsFractionRing Rq K := IsFractionRing.isFractionRing_of_isDomain_of_isLocalization q.asIdeal.primeCompl _ K`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsIntegrallyClosed Rq := isIntegrallyClosed_of_isLocalization _ q.asIdeal.primeCompl q.asIdeal.primeCompl_le_nonZeroDivisors`. Use `haveI : HenselianLocalRing Rq := henselianLocalRing_atPrime R K q.asIdeal`. Establish `hfq` using `GlobalTheory.SemiAbMulFlat.flat_and_locallyQuasiFinite_pow _ G hG m hm`. Use `hG.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hG.quasiCompact` as an intermediate fact. Set `ml` to `((𝟙 G) ^ m : G ⟶ G).left`. Establish `hml : ml ≫ G.hom = G.hom` using `Over.w _`. Use `haveI : Flat ml := hfq.1`. Use `haveI : LocallyQuasiFinite ml := hfq.2`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsSeparated ml := by`. Establish `: IsSeparated (ml ≫ G.hom)` using `by rw [hml]; infer_instance`. Conclude with `IsSeparated.of_comp ml G.hom`. Use `haveI : LocallyOfFiniteType ml := by`. Establish `: LocallyOfFiniteType (ml ≫ G.hom)` using `by rw [hml]; infer_instance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `locallyOfFiniteType_of_comp ml G.hom`. Use `haveI : QuasiCompact ml := by`. Establish `: QuasiCompact (ml ≫ G.hom)` using `by rw [hml]; infer_instance`. Conclude with `QuasiCompact.of_comp ml G.hom`. Set `f` to `pullback.snd ml x.left`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := GlobalTheory.T.semiAbelian_mul_nat_surjective _ G hG m hm`. Take `⟨g, hg⟩` from `ml.surjective (x.left (IsLocalRing.closedPoint Rq))`. Take `⟨y, -, hy⟩` from `Scheme.exists_preimage_of_isPullback (IsPullback.of_hasPullback ml x.left) g (IsLocalRing.closedPoint Rq) hg`. Take `⟨A, _, _, hfin, hfl, hnt, h, hh⟩` from `GlobalTheory.T.exists_finite_flat_quasi_section Rq _ f ⟨y, hy⟩`. Take `⟨σ⟩` from `nonempty_section Rq K A hfin hfl hnt`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `s : Sp Rq ⟶ Spec (.of A)` to `Spec.map (CommRingCat.ofHom (σ : A →+* Rq))`. Establish `hs : s ≫ h ≫ f = 𝟙 _`. Rewrite using `[hh, ← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Use extensionality with `a`.
-
-Conclude with `σ.commutes a`. Set `yl : Sp Rq ⟶ G.left` to `s ≫ h ≫ pullback.fst ml x.left`. Establish `hyl : yl ≫ ml = x.left`. Establish `e : yl ≫ ml = (s ≫ h ≫ f) ≫ x.left`. Simplify using `only [yl, f, Category.assoc, pullback.condition]`.
-
-Rewrite using `[e, hs, Category.id_comp]`. Establish `e' (z : SpAlg R Rq ⟶ G) : z ^ m = z ≫ (𝟙 G) ^ m` using `by rw [MonObj.comp_pow, Category.comp_id]`. Use `⟨Over.homMk yl (by rw [← hml, ← Category.assoc, hyl]; exact Over.w x), ?_⟩` and prove the remaining obligations. Rewrite using `[e']`. Conclude with `Over.OverMorphism.ext hyl`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_eq : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (q : PrimeSpectrum R) (x : SpAlg R (Localization.AtPrime q.asIdeal) ⟶ G) (m : ℕ), m ≠ 0 → ∃ y, y ^ m = x := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG q x m hm

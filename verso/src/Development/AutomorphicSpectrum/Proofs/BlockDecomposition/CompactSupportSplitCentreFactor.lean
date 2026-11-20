@@ -13,13 +13,11 @@ variable {X G : Type*} [TopologicalSpace X] [T2Space X] [SecondCountableTopology
   [BorelSpace X] [TopologicalSpace G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Establish `hK : IsCompact (Prod.snd '' tsupport F)` using `hs.isCompact.image continuous_snd`. Establish `hK₁ : IsCompact (Prod.fst '' tsupport F)` using `hs.isCompact.image continuous_fst`. Establish `hcont : Continuous fun x : X => ∫ t, F (x, t)`. Rewrite using `[← continuousOn_univ]`. Use `continuousOn_integral_of_compact_support (f := fun x t => F (x, t)) hK ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hF.continuousOn`. Introduce `p x _ hx`. Assume the negation of the conclusion as `h`. Conclude with `hx ⟨(p, x), subset_tsupport _ h, rfl⟩`. Use `⟨⟨⟨fun x => r * ∫ t, F (x, t), continuous_const.mul hcont⟩, ?_⟩, fun x => rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `HasCompactSupport.intro hK₁ fun x hx => ?_` and prove the remaining obligations. Establish `h0 : ∀ t, F (x, t) = 0`. Introduce `t`. Assume the negation of the conclusion as `h`. Conclude with `hx ⟨(x, t), subset_tsupport _ h, rfl⟩`.
-
-Simplify using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_fibreIntegral (F : X × ℝ → ℂ) (hF : Continuous F) (hs : HasCompactSupport F) (r : ℂ) :
     ∃ f₁ : CompactlySupportedContinuousMap X ℂ, ∀ x, f₁ x = r * ∫ t, F (x, t) := by
@@ -41,13 +39,13 @@ theorem exists_fibreIntegral (F : X × ℝ → ℂ) (hF : Continuous F) (hs : Ha
   simp [h0]
 
 /- English proof (translation)
-Establish `hr : c.toReal ≠ 0` using `(ENNReal.toReal_pos hc0 hct).ne'`. Establish `hrC : (c.toReal : ℂ) ≠ 0` using `by exact_mod_cast hr`. Establish `hFc : Continuous fun p : X × ℝ => f (e p)` using `hf.comp e.continuous`. Establish `hFs : HasCompactSupport fun p : X × ℝ => f (e p)` using `hs.comp_homeomorph e`. Establish `hint : Integrable (fun p : X × ℝ => f (e p) • W (e p)) (ν.prod volume)` using `(hFc.smul (hW.comp e.continuous)).integrable_of_hasCompactSupport hFs.smul_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : c.toReal • ∫ g, f g • W g ∂μ = ∫ p, f (e p) • W (e p) ∂(ν.prod volume)`. Rewrite using `[← integral_smul_measure, ← hmap]`. Conclude with `e.measurableEmbedding.integral_map _`. Establish `h2 : ∫ p, f (e p) • W (e p) ∂(ν.prod volume) = ∫ x, (∫ t, f (e (x, t))) • w x ∂ν`. Rewrite using `[integral_prod _ hint]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [hw]`. Conclude with `integral_smul_const _ _`. Establish `h3 : ∫ x, f₁ x • w x ∂ν = (c.toReal : ℂ)⁻¹ • ∫ x, (∫ t, f (e (x, t))) • w x ∂ν`. Rewrite using `[← integral_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [hf₁, mul_smul]`. Rewrite using `[h3, ← h2, ← h1, ← Complex.coe_smul, smul_smul, inv_mul_cancel₀ hrC, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_eq_of_map (e : X × ℝ ≃ₜ G) (ν : Measure X) [SFinite ν] [IsFiniteMeasureOnCompacts ν]
     (μ : Measure G) (c : ENNReal) (hc0 : c ≠ 0) (hct : c ≠ ⊤)
@@ -80,9 +78,9 @@ theorem integral_eq_of_map (e : X × ℝ ≃ₜ G) (ν : Measure X) [SFinite ν]
 end Abstract
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha μ _ ν _ c hc0 hct hmap f hf hs`. Take `⟨e, he⟩` from `GlobalTheory.T.adelic_GL_norm_one_split E a ha`. Establish `hfun : (fun p : normOneGL E a × ℝ => splitCentre E a p.2 * (p.1 : GA E a)) = e`. Use function extensionality and compare the values at `p`. Conclude with `(he p.1 p.2).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmap` using `[hfun]`. Take `⟨f₁, hf₁⟩` from `exists_fibreIntegral (fun p : normOneGL E a × ℝ => f (e p)) (hf.comp e.continuous) (hs.comp_homeomorph e) ((c.toReal : ℂ)⁻¹)`. Use `⟨f₁, fun K _ _ _ W hW hinv => ?_⟩` and prove the remaining obligations. Conclude with `integral_eq_of_map e ν μ c hc0 hct hmap f hf hs f₁ hf₁ W (fun x => W (x : GA E a)) hW (fun x t => by rw [he, hinv])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_normOne_integral : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 0 < a → ∀ (μ : Measure (GA E a)) [μ.IsHaarMeasure] (ν : Measure (normOneGL E a)) [ν.IsHaarMeasure] (c : ENNReal), c ≠ 0 → c ≠ ⊤ → Measure.map (fun p : normOneGL E a × ℝ => splitCentre E a p.2 * (p.1 : GA E a)) (ν.prod volume) = c • μ → ∀ f : GA E a → ℂ, Continuous f → HasCompactSupport f → ∃ f₁ : CompactlySupportedContinuousMap (normOneGL E a) ℂ, ∀ (K : Type) [NormedAddCommGroup K] [NormedSpace ℂ K] [CompleteSpace K] (W : GA E a → K), Continuous W → (∀ t g, W (splitCentre E a t * g) = W g) → ∫ g, f g • W g ∂μ = ∫ x, f₁ x • W (x : GA E a) ∂ν := by
   intro E _ _ _ a ha μ _ ν _ c hc0 hct hmap f hf hs

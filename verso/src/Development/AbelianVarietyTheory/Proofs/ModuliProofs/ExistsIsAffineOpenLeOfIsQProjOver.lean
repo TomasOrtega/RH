@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ X s hs F U hF hFU`. Use `haveI := FiniteSubsetsInAffineOpens.of_isQProjOver hs`. Conclude with `FiniteSubsetsInAffineOpens.exists_isAffineOpen_le hF U hFU`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_isAffineOpen_le_of_isQProjOver :
     ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R), IsQProjOver s →

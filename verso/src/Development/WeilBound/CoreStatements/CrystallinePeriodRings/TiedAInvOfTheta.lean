@@ -19,7 +19,7 @@ open GroundTheory.PAdicHodge
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `h1 : y ∉ IsLocalRing.maximalIdeal (Per6.BdRp l)`. Rewrite using `[← filq_ker_eq]`. Conclude with `h`. Conclude with `(IsLocalRing.notMem_maximalIdeal.1 h1).exists_right_inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tiedA_inv_of_theta {y : Per6.BdRp l} (h : Per6.θD l y ≠ 0) : ∃ z, y * z = 1 := by
   have h1 : y ∉ IsLocalRing.maximalIdeal (Per6.BdRp l) := by
@@ -30,14 +30,14 @@ theorem tiedA_inv_of_theta {y : Per6.BdRp l} (h : Per6.θD l y ≠ 0) : ∃ z, y
 variable {P : LocPrime l} {AI : LocAinf l P}
 
 /- English proof (translation)
-The claim follows from `Set.ext_iff.1 (P.PD_Fil K K' a) x`.
+A detailed English derivation is pending.
 -/
 theorem tiedA_fil_iff (P : LocPrime l) (K K' : FinExt l) (a : ℤ) (x : P.R.BdR) :
     x ∈ (P.PD K).Fil a ↔ x ∈ (P.PD K').Fil a :=
   Set.ext_iff.1 (P.PD_Fil K K' a) x
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `tiedA_inv_of_theta hy`. Establish `e` using `T.eD.apply_symm_apply (algebraMap (Per6.BdRp l) (Per6.BdR l) z)`. Use `⟨_, (tie_fil_zero T K _).2 ⟨z, e⟩, T.eD.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, e, h, ← map_mul, hz, map_one, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tiedA_inv (T : LocTied6 l P AI) (K : FinExt l) {x : P.R.BdR} {y : Per6.BdRp l}
     (h : T.eD x = algebraMap (Per6.BdRp l) (Per6.BdR l) y) (hy : Per6.θD l y ≠ 0) :
@@ -48,19 +48,19 @@ theorem tiedA_inv (T : LocTied6 l P AI) (K : FinExt l) {x : P.R.BdR} {y : Per6.B
   rw [map_mul, e, h, ← map_mul, hz, map_one, map_one]
 
 /- English proof (translation)
-Introduce `a b h` and use `(P.PD (MainNotions.LocalSituation.botExt l)).ι_inj (((P.PD_ι _ a).trans h).trans (P.PD_ι _ b).symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tiedA_ι_injective (P : LocPrime l) : Function.Injective P.ιB := fun a b h =>
   (P.PD (MainNotions.LocalSituation.botExt l)).ι_inj (((P.PD_ι _ a).trans h).trans (P.PD_ι _ b).symm)
 
 /- English proof (translation)
-Introduce `a b h` and use `(P.PD (MainNotions.LocalSituation.botExt l)).φ_inj (((P.PD_φ _ a).trans h).trans (P.PD_φ _ b).symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tiedA_φ_injective (P : LocPrime l) : Function.Injective P.φB := fun a b h =>
   (P.PD (MainNotions.LocalSituation.botExt l)).φ_inj (((P.PD_φ _ a).trans h).trans (P.PD_φ _ b).symm)
 
 /- English proof (translation)
-The claim follows from `T.eD.toMulEquiv.isField (Field.toIsField (Per6.BdR l))`.
+A detailed English derivation is pending.
 -/
 theorem tiedA_isField (T : LocTied6 l P AI) : IsField P.R.BdR :=
   T.eD.toMulEquiv.isField (Field.toIsField (Per6.BdR l))
@@ -68,7 +68,7 @@ theorem tiedA_isField (T : LocTied6 l P AI) : IsField P.R.BdR :=
 variable (K : IntermediateField ℚ_[l] (PadicAlgCl l))
 
 /- English proof (translation)
-Rewrite using `[ContRepresentation.mem_invariants]`. Introduce `σ`. Rewrite using `[← grMap_tBdR_gal_smul σ x, ← sub_eq_zero, ← map_sub]`. Conclude with `(IsPerfectoidField.grMap_eq_zero_iff maximalIdeal_eq_span_tBdR _).2 (hx σ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tiedA_grMap_mem {i : ℤ} (x : IsPerfectoidField.fil ℂ_[l] l i)
     (hx : ∀ σ : Gal(PadicAlgCl l/K),
@@ -82,7 +82,7 @@ theorem tiedA_grMap_mem {i : ℤ} (x : IsPerfectoidField.fil ℂ_[l] l i)
 variable [FiniteDimensional ℚ_[l] K]
 
 /- English proof (translation)
-Establish `h` using `tiedA_grMap_mem K ⟨x, hxi⟩ hx`. Rewrite `h` using `[cpTwistRep_invariants_eq_bot K hi, Submodule.mem_bot]`. Conclude with `(IsPerfectoidField.grMap_eq_zero_iff maximalIdeal_eq_span_tBdR ⟨x, hxi⟩).1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tiedA_graded_ne {i : ℤ} (hi : i ≠ 0) {x : Per6.BdR l}
     (hxi : x ∈ IsPerfectoidField.fil ℂ_[l] l i)
@@ -93,9 +93,9 @@ theorem tiedA_graded_ne {i : ℤ} (hi : i ≠ 0) {x : Per6.BdR l}
   exact (IsPerfectoidField.grMap_eq_zero_iff maximalIdeal_eq_span_tBdR ⟨x, hxi⟩).1 h
 
 /- English proof (translation)
-Establish `hinv` using `tiedA_grMap_mem K ⟨x, hxi⟩ hx`. Rewrite `hinv` using `[cpTwistRep_invariants_zero K]`. Take `⟨k, hk⟩` from `hinv`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hk0 : algebraMap (Per6.BdRp l) (Per6.BdR l) (algClToBdR l k) ∈ IsPerfectoidField.fil ℂ_[l] l 0` using `(IsPerfectoidField.mem_fil_zero_iff ℂ_[l] l).2 ⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hgr0` using `grMap_zero_algebraMap (algClToBdR l k) hk0`. Rewrite `hgr0` using `[thetaAlgHom_algClToBdR]`. Establish `hgr : IsPerfectoidField.grMap maximalIdeal_eq_span_tBdR 0 ((⟨x, hxi⟩ : IsPerfectoidField.fil ℂ_[l] l 0) - ⟨_, hk0⟩) = 0`. Rewrite using `[map_sub, hgr0, ← hk, Algebra.linearMap_apply, algebraMap_intermediateField_cp, sub_self]`. Conclude with `(IsPerfectoidField.grMap_eq_zero_iff maximalIdeal_eq_span_tBdR _).1 hgr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tiedA_graded_zero {x : Per6.BdR l}
     (hxi : x ∈ IsPerfectoidField.fil ℂ_[l] l 0)
@@ -119,9 +119,9 @@ theorem tiedA_graded_zero {x : Per6.BdR l}
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `l _ P AI T`. Establish `hF` using `tiedA_isField T`. Establish `hD : IsDomain P.R.BdR` using `hF.isDomain`. Use `⟨hF, (tiedA_ι_injective P).isDomain P.ιB.toRingHom, tiedA_ι_injective P, tiedA_φ_injective P, fun K x h0 h1 => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `(tie_fil_zero T K x).1 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `tiedA_inv T K hy fun h => h1 ((filq_tie_fil T K 1 hy).2 ?_)` and prove the remaining obligations. Rewrite using `[pow_one]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tied_field : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied6 l P AI →
     IsField P.R.BdR ∧ IsDomain P.R.B ∧ Function.Injective P.ιB ∧ Function.Injective P.φB ∧
@@ -138,9 +138,9 @@ theorem tied_field : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf
   exact h
 
 /- English proof (translation)
-Introduce `l _ P AI T`. Use `⟨fun K => (tiedA_fil_iff P _ K _ _).1 (thetaL T).t_μ, fun K => tiedA_inv T K (tie_a T AI.π₁) ?_, fun K a x => ?_⟩` and prove the remaining obligations. Rewrite using `[filq_θD_π₁, sub_ne_zero]`. Conclude with `fun h => AI.ζ_one (Subtype.ext h)`. Use `(tiedA_fil_iff P K _ _ _).trans (((thetaL T).fil_succ_iff_mul_t a x).trans ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `exists_congr fun y => and_congr_left fun _ => tiedA_fil_iff P _ K _ _`.
+A detailed English derivation is pending.
 -/
 theorem tied_uniformiser : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     LocTied6 l P AI → (∀ K : FinExt l, P.ιB (AI.ιA AI.μ) - P.ιB P.tB ∈ (P.PD K).Fil 2) ∧
@@ -156,13 +156,13 @@ theorem tied_uniformiser : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : L
     exact exists_congr fun y => and_congr_left fun _ => tiedA_fil_iff P _ K _ _
 
 /- English proof (translation)
-Use `K.2` as an intermediate fact. Establish `he'` using `(TT.fil K n e).1 he`. Establish `hg' : ∀ σ : Gal(PadicAlgCl l/K.1), σ • TT.eD e - TT.eD e ∈ Per6.FilD l (n + 1)` using `fun σ => by`. Establish `h` using `(TT.fil K _ _).1 (hg ⟨_, inv_restrictScalars_mem K σ⟩)`. Rewrite `h` using `[map_sub, P.PD_actdR, TT.actD]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[GroundTheory.PAdicHodge.gal_smul_bDeRham_def, inv_galBdRField_eq]`. Conclude with `h`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Take `⟨k, hk⟩` from `tiedA_graded_zero K.1 he' hg'`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : TT.eD (algebraMap (Om l) P.R.BdR k) = algebraMap (Per6.BdRp l) (Per6.BdR l) (GroundTheory.PAdicHodge.algClToBdR l k)` using `(tie_o TT _).trans (GaloisCommutant.oD_apply _)`. Use `⟨algebraMap (Om l) P.R.BdR k, (tie_fil_zero TT K _).2 ⟨_, e1⟩, fun g => ?_, fun h => absurd rfl h, (TT.fil K _ _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[P.PD_actdR, P.actQdR_Om, (IntermediateField.mem_fixingSubgroup_iff _ _).1 g.2 _ k.2]`. Rewrite using `[map_sub, e1]`. Conclude with `hk`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨0, zero_mem _, fun g => map_zero _, fun _ => rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_zero]`. Conclude with `(TT.fil K _ _).2 (tiedA_graded_ne K.1 hn he' hg')`.
+A detailed English derivation is pending.
 -/
 theorem graded_invariants {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P}
     (TT : LocTied6 l P AI) (Θ : MainNotions.LocalSituation.ThetaL P AI) (K : FinExt l) (n : ℤ)

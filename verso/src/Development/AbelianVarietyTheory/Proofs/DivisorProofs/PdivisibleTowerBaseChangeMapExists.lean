@@ -32,7 +32,7 @@ def FinTower.fibreY (n : ℕ) : SpAlg K (K ⊗[R] Γ.A n) ⟶ A :=
     (spOver Algebra.TensorProduct.includeRight ≫ s.y n)).choose
 
 /- English proof (translation)
-The claim follows from `congrArg Over.Hom.left ((ptsDown_bijective (grpMor_of_isGrpPullback h) h.1 (K ⊗[R] Γ.A n) fun _ => rfl).2 (spOver Algebra.TensorProduct.includeRight ≫ s.y n)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem FinTower.fibreY_left (n : ℕ) : (s.fibreY h n).left ≫ φ =
     spMap (toBaseChange R K (Γ.A n)).toRingHom ≫ (s.y n).left :=
@@ -40,7 +40,7 @@ theorem FinTower.fibreY_left (n : ℕ) : (s.fibreY h n).left ≫ φ =
     fun _ => rfl).2 (spOver Algebra.TensorProduct.includeRight ≫ s.y n)).choose_spec
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by rw [ptsDown_left, Over.comp_left, Category.assoc, FinTower.fibreY_left, spOver_left, ← Category.assoc, ← Cris.spMap_comp] rfl)`.
+A detailed English derivation is pending.
 -/
 theorem FinTower.ptsDown_fibreY (n : ℕ) (B : Type) [CommRing B] [Algebra R B] [Algebra K B]
     (hB : ∀ r, algebraMap R B r = algebraMap K B (algebraMap R K r))
@@ -61,7 +61,7 @@ def FinTower.fibrePts (n : ℕ) (B : Type) [CommRing B] [Algebra K B] :
       _root_.map_mul, _root_.map_mul]
 
 /- English proof (translation)
-Introduce `x y e` and use `by let _ : Algebra R B := ((algebraMap K B).comp (algebraMap R K)).toAlgebra have e' := congrArg (ptsDown (grpMor_of_isGrpPullback h) B fun _ => rfl) e exact (toBaseChange_pts_bijective K B _).1 (ofConv_injective (s.inj n B _ _ ((s.ptsDown_fibreY h n B _ x).symm.trans (e'.trans ( …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FinTower.fibrePts_injective (n : ℕ) (B : Type) [CommRing B] [Algebra K B] :
     Function.Injective (s.fibrePts h n B) := fun x y e => by
@@ -71,7 +71,7 @@ theorem FinTower.fibrePts_injective (n : ℕ) (B : Type) [CommRing B] [Algebra K
     ((s.ptsDown_fibreY h n B _ x).symm.trans (e'.trans (s.ptsDown_fibreY h n B _ y)))))
 
 /- English proof (translation)
-Establish `e : s.fibrePts h n _ (toConv (AlgHom.id K _)) = s.fibreY h n`. Express the relevant statement in the definitionally equal form `spOver (AlgHom.id K _) ≫ _ = _`. Rewrite using `[spOver_id, Category.id_comp]`. Rewrite using `[← e, ← map_pow, (Γ.baseChange K).pts_pow_self, map_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem FinTower.fibreY_pow (n : ℕ) : s.fibreY h n ^ p ^ n = 1 := by
   have e : s.fibrePts h n _ (toConv (AlgHom.id K _)) = s.fibreY h n := by
@@ -80,7 +80,7 @@ theorem FinTower.fibreY_pow (n : ℕ) : s.fibreY h n ^ p ^ n = 1 := by
   rw [← e, ← map_pow, (Γ.baseChange K).pts_pow_self, map_one]
 
 /- English proof (translation)
-Use `Over.OverMorphism.ext (h.1.hom_ext ?_ (by rw [Over.w, Over.w]))` and prove the remaining obligations. Rewrite using `[Over.comp_left, Category.assoc, s.fibreY_left, s.fibreY_left, ← s.res n, Over.comp_left, spOver_left, spOver_left, ← Category.assoc, ← Category.assoc, ← Cris.spMap_comp, ← Cris.spMap_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem FinTower.res_fibreY (n : ℕ) :
     spOver ((Γ.baseChange K).res n : K ⊗[R] Γ.A (n + 1) →ₐ[K] K ⊗[R] Γ.A n) ≫ s.fibreY h (n + 1) =
@@ -96,7 +96,7 @@ variable {𝒜 : PDivGroup p K} (t : 𝒜.TorsionTower A)
 def FinTower.inclAlg (n : ℕ) : 𝒜.A n →ₐ[K] K ⊗[R] Γ.A n := t.lift n _ (s.fibreY_pow h n)
 
 /- English proof (translation)
-Rewrite using `[TorsionTower.pts_apply, ofConv_toConv, ← spOver_comp, Category.assoc, FinTower.inclAlg, t.lift_y]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem FinTower.pts_inclAlg (n : ℕ) (B : Type) [CommRing B] [Algebra K B]
     (x : WithConv (K ⊗[R] Γ.A n →ₐ[K] B)) :
@@ -120,7 +120,7 @@ def FinTower.inclApp (n : ℕ) : 𝒜.A n →ₐc[K] K ⊗[R] Γ.A n :=
       exact (DFunLike.congr_fun (congrArg ofConv (t.pts_injective n B e)) a).symm)).toBialgHom
 
 /- English proof (translation)
-The claim follows from `t.lift_y n _ (s.fibreY_pow h n)`.
+A detailed English derivation is pending.
 -/
 theorem FinTower.inclApp_y (n : ℕ) :
     spOver (s.inclApp h t n : 𝒜.A n →ₐ[K] K ⊗[R] Γ.A n) ≫ t.y n = s.fibreY h n :=
@@ -135,20 +135,18 @@ def FinTower.incl : Γ.baseChange K ⟶ 𝒜 :=
       s.res_fibreY]))⟩
 
 /- English proof (translation)
-Introduce `n` and use `by rw [← Category.assoc] exact (congrArg (·.left ≫ φ) (s.inclApp_y h t n)).trans (s.fibreY_left h n)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FinTower.isIncl_incl : s.IsIncl t φ (s.incl h t) := fun n => by
   rw [← Category.assoc]
   exact (congrArg (·.left ≫ φ) (s.inclApp_y h t n)).trans (s.fibreY_left h n)
 
 /- English proof (translation)
-Set `f : 𝒜.A n →+* K ⊗[R] Γ.A n` to `s.inclAlg h t n`. Establish `: Epi (CommRingCat.ofHom f)` using `⟨fun {Z} u v e => by`. Establish `e' : ∀ a, u.hom (s.inclAlg h t n a) = v.hom (s.inclAlg h t n a)` using `fun a => congrArg (fun k : CommRingCat.of (𝒜.A n) ⟶ Z => k.hom a) e`. Set `_ : Algebra K Z` to `(u.hom.comp (algebraMap K _)).toAlgebra`. Set `u' : K ⊗[R] Γ.A n →ₐ[K] Z` to `{ u.hom with commutes' := fun _ => rfl }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `v' : K ⊗[R] Γ.A n →ₐ[K] Z` to `{ v.hom with commutes' := fun r => by`. Use `e' (algebraMap K _ r)` as an intermediate fact. Rewrite `this` using `[AlgHom.commutes]`. Conclude with `this.symm }`. Establish `e2 : toConv u' = toConv v'` using `s.fibrePts_injective h n Z (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← s.pts_inclAlg h t, ← s.pts_inclAlg h t]`. Conclude with `congrArg (t.pts n Z <| toConv ·) (AlgHom.ext e'))`. Conclude with `CommRingCat.hom_ext (congrArg (fun k => k.ofConv.toRingHom) e2)⟩`. Use `RingHom.surjective_of_epi_of_finite (CommRingCat.ofHom f) ?_` and prove the remaining obligations. Use `RingHom.Finite.of_comp_finite (f := algebraMap K (𝒜.A n)) ?_` and prove the remaining obligations.
-
-Establish `e : f.comp (algebraMap K (𝒜.A n)) = algebraMap K _` using `RingHom.ext (s.inclAlg h t n).commutes`. Conclude with `e ▸ RingHom.finite_algebraMap.2 inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem FinTower.inclApp_surjective (n : ℕ) : Function.Surjective (s.inclApp h t n) := by
   let f : 𝒜.A n →+* K ⊗[R] Γ.A n := s.inclAlg h t n
@@ -174,9 +172,9 @@ theorem FinTower.inclApp_surjective (n : ℕ) : Function.Surjective (s.inclApp h
 include h in
 
 /- English proof (translation)
-Establish `key : ∀ (T : Over (Sp K)) (x y : T ⟶ A), x * y = y * x` using `fun T x y => by`. Set `d : (T ⟶ A) → (Over.mk (T.hom ≫ spMap (algebraMap R K)) ⟶ G)` to `fun z => Over.homMk (z.left ≫ φ) (by rw [Category.assoc, h.1.w, ← Category.assoc, Over.w]; rfl)`. Use `Over.OverMorphism.ext (h.1.hom_ext ?_ (by rw [Over.w, Over.w]))` and prove the remaining obligations. Rewrite using `[← h.2 T x y (d x) (d y) rfl rfl, ← h.2 T y x (d y) (d x) rfl rfl, mul_comm]`. Use `⟨?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `key _ (snd A A) (fst A A)`. Rewrite `e` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, lift_snd_fst, Category.id_comp]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCommMonObj_of_isGrpPullback [IsCommMonObj G] : IsCommMonObj A := by
   have key : ∀ (T : Over (Sp K)) (x y : T ⟶ A), x * y = y * x := fun T x y => by
@@ -190,13 +188,13 @@ theorem isCommMonObj_of_isGrpPullback [IsCommMonObj G] : IsCommMonObj A := by
   exact e
 
 /- English proof (translation)
-Use `isCommMonObj_of_isGrpPullback h` as an intermediate fact. Take `⟨d, v, hv⟩` from `Chart.exists_isLieBasis G hs`. Take `⟨v', hv', e⟩` from `exists_isLieBasis_baseChange R K (algebraMap R K) G A φ h hs d v hv`. Take `⟨c, ⟨u, hu, rfl⟩, -⟩` from `hv'.2 w hw`. Use `Submonoid.list_prod_mem _ fun z hz => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hz`. Establish `: Module.Finite R (DualNumber R)` using `inferInstanceAs (Module.Finite R (R × R))`. Take `⟨x₀, hx₀⟩` from `s.surj 1 (DualNumber R) (v i) (by`. Rewrite using `[GrpTangent.pow_eq_epsScale_comp (hv.1 i), pow_one, hp, GrpTangent.epsScale_zero_comp (hv.1 i)])`. Set `_ : Algebra R (DualNumber K)` to `((algebraMap K _).comp (algebraMap R K)).toAlgebra`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `j : DualNumber R →ₐ[R] DualNumber K` to `{ (epsScaleR (c i)).comp (Chart.dualMapR (algebraMap R K)) with commutes' := fun r => by`. Express the relevant statement in the definitionally equal form `_ = algebraMap K _ (algebraMap R K r)`. Apply the tactic sequence `ext <;> simp [epsScaleR, Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl'] }`. Take `⟨x, hx⟩` from `(toBaseChange_pts_bijective (R := R) K (DualNumber K) fun _ => rfl).2 (toConv (j.comp x₀))`. Use `⟨x, (ptsDown_bijective (grpMor_of_isGrpPullback h) h.1 (DualNumber K) fun _ => rfl).1 ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(s.ptsDown_fibreY h 1 _ _ x).trans (Over.OverMorphism.ext ?_)` and prove the remaining obligations. Rewrite using `[hx, ptsDown_left, hu, Category.assoc, e, ← hx₀, ← Category.assoc, ← Cris.spMap_comp, Over.comp_left, ← Category.assoc, spOver_left, ← Cris.spMap_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem FinTower.tangent_mem_range [IsLocalRing R] [IsCommMonObj G] (hs : Smooth G.hom) (hp : (p : R) = 0)
     {w : epsR K ⟶ A} (hw : IsTangent w) : w ∈ MonoidHom.mrange (s.fibrePts h 1 (DualNumber K)) := by
@@ -225,17 +223,15 @@ theorem FinTower.tangent_mem_range [IsLocalRing R] [IsCommMonObj G] (hs : Smooth
 end
 
 /- English proof (translation)
-Use `hG.comm` as an intermediate fact. Establish `hK : (p : K) = 0` using `by rw [← map_natCast (algebraMap R K), hp, map_zero]`. Use `⟨s.incl h t, s.isIncl_incl h t, s.inclApp_surjective h t 1, ?_⟩` and prove the remaining obligations. Establish `hc : Function.Bijective (cotMap (s.inclApp h t 1))`. Use `⟨(injective_iff_map_eq_zero _).2 fun w hw => ?_, fun w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Module.forall_dual_apply_eq_zero_iff K w).1 fun f => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `AugCot.d_surjective _ w`. Set `ψ : 𝒜.A 1 →ₐ[K] DualNumber K` to `AugCot.toSqZero _ f`. Establish `hψ : IsTangent (G` using `A) (spOver ψ ≫ t.y 1) := by`. Establish `h1` using `congrArg Over.Hom.left ((t.eq_one_iff 1 ((TrivSqZeroExt.fstHom K K K).comp ψ)).2 fun a => AugCot.fst_toSqZero _ f a)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← spOver_comp, Category.assoc, Over.comp_left, Hom.one_def, Over.comp_left]`. Use `h1.trans ?_` and prove the remaining obligations. Establish `h2 : (toUnit (SpAlg K K)).left = 𝟙 (Sp K)` using `Cris.spMap_id K`. Conclude with `(congrArg (· ≫ η[A].left) h2).trans (Category.id_comp _)`. Take `⟨x, hx⟩` from `s.tangent_mem_range h hG.smooth hp hψ`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : ∀ a, x.ofConv (s.inclApp h t 1 a) = ψ a` using `DFunLike.congr_fun (t.inj 1 _ _ _ ((s.pts_inclAlg h t 1 _ x).trans hx))`. Establish `h4 : ∀ b, (x.ofConv b).fst = counitAlgHom K _ b` using `fun b => by`. Take `⟨a, rfl⟩` from `s.inclApp_surjective h t 1 b`. Rewrite using `[h3, AugCot.fst_toSqZero]`. Conclude with `(CoalgHomClass.counit_comp_apply (s.inclApp h t 1) a).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5` using `congrArg (AugCot.ofSqZero _ x.ofConv h4) hw`. Rewrite `h5` using `[cotMap_d, AugCot.ofSqZero_d, h3, AugCot.snd_toSqZero, map_zero]`. Conclude with `h5`. Take `⟨b, rfl⟩` from `AugCot.d_surjective _ w`. Take `⟨a, rfl⟩` from `s.inclApp_surjective h t 1 b`.
-
-Conclude with `⟨dUnit K a, cotMap_d _ a⟩`. Establish `e : (Γ'.baseChange K).omegaLevel 1 ∘ omegaMap _ _ (s.incl h t) = cotMap (s.inclApp h t 1) ∘ 𝒜.omegaLevel 1` using `rfl`. Conclude with `(Function.Bijective.of_comp_iff' ((Γ'.baseChange K).omegaLevel_one_bijective hK) _).1 (e ▸ hc.comp (𝒜.omegaLevel_one_bijective hK))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isIncl (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] (A : Over (Sp K)) [GrpObj A]

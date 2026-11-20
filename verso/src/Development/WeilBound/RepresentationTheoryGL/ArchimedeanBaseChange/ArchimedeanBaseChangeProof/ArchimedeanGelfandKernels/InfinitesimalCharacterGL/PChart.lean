@@ -16,43 +16,43 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `unfold chart; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chart_add' (φ ψ : GA E a → ℂ) (g : GA E a) (x : Lie E a) : chart (φ + ψ) g x = chart φ g x + chart ψ g x := by
   unfold chart; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `unfold chart; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chart_smul' (c : ℂ) (φ : GA E a → ℂ) (g : GA E a) (x : Lie E a) : chart (c • φ) g x = c • chart φ g x := by
   unfold chart; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `unfold chart; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chart_zero' (g : GA E a) (x : Lie E a) : chart (0 : GA E a → ℂ) g x = 0 := by
   unfold chart; split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `funext fun x => chart_add' φ ψ g _`.
+A detailed English derivation is pending.
 -/
 theorem along_add (w : InfinitePlace E) (g : GA E a) (φ ψ : GA E a → ℂ) :
     along w g (φ + ψ) = along w g φ + along w g ψ := funext fun x => chart_add' φ ψ g _
 
 /- English proof (translation)
-The claim follows from `funext fun x => chart_smul' c φ g _`.
+A detailed English derivation is pending.
 -/
 theorem along_smul (w : InfinitePlace E) (g : GA E a) (c : ℂ) (φ : GA E a → ℂ) :
     along w g (c • φ) = c • along w g φ := funext fun x => chart_smul' c φ g _
 
 /- English proof (translation)
-The claim follows from `funext fun x => chart_zero' g _`.
+A detailed English derivation is pending.
 -/
 theorem along_zero (w : InfinitePlace E) (g : GA E a) : along w g (0 : GA E a → ℂ) = 0 :=
   funext fun x => chart_zero' g _
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp [along_zero]`. Consider the case `insert b S hb ih => rw [sum_insert hb, sum_insert hb, along_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem along_sum {ι : Type} (S : Finset ι) (w : InfinitePlace E) (g : GA E a) (φ : ι → GA E a → ℂ) :
     along w g (∑ i ∈ S, φ i) = ∑ i ∈ S, along w g (φ i) := by
@@ -62,7 +62,7 @@ theorem along_sum {ι : Type} (S : Finset ι) (w : InfinitePlace E) (g : GA E a)
   | insert b S hb ih => rw [sum_insert hb, sum_insert hb, along_add, ih]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j v`. Distinguish the cases in `h : v = w`. Apply the tactic sequence `subst h; simp [atW, Matrix.one_apply]; split_ifs <;> rfl`. Apply the tactic sequence `simp [atW, h, Matrix.one_apply]; split_ifs <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem atW_one (w : InfinitePlace E) : atW w (1 : Matrix (Fin a) (Fin a) ℂ) = oneL E a := by
   funext i j v
@@ -71,7 +71,7 @@ theorem atW_one (w : InfinitePlace E) : atW w (1 : Matrix (Fin a) (Fin a) ℂ) =
   · simp [atW, h, Matrix.one_apply]; split_ifs <;> rfl
 
 /- English proof (translation)
-Establish `h` using `chart_val φ g 1`. Simplify using `only [Units.val_one, map_one, mul_one] at h`. Rewrite using `[along, atW_one]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem along_one (w : InfinitePlace E) (g : GA E a) (φ : GA E a → ℂ) : along w g φ 1 = φ g := by
   have h := chart_val φ g 1
@@ -80,7 +80,7 @@ theorem along_one (w : InfinitePlace E) (g : GA E a) (φ : GA E a → ℂ) : alo
   exact h
 
 /- English proof (translation)
-Use extensionality with `i j v`. Rewrite using `[Matrix.mul_apply, Finset.sum_apply]`. Distinguish the cases in `h : v = w`. Simplify using `[atW, h, Matrix.mul_apply]`. Simplify using `[atW, h, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem atW_mul (w : InfinitePlace E) (x y : Matrix (Fin a) (Fin a) ℂ) :
     Matrix.of (atW w x) * Matrix.of (atW w y) = Matrix.of (atW w (x * y)) := by
@@ -91,9 +91,9 @@ theorem atW_mul (w : InfinitePlace E) (x y : Matrix (Fin a) (Fin a) ℂ) :
   · simp [atW, h, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hx' : IsUnit x.det` using `isUnit_iff_ne_zero.mpr hx`. Establish `h1 : Matrix.of (atW w x) * Matrix.of (atW w x⁻¹) = 1`. Rewrite using `[atW_mul, Matrix.mul_nonsing_inv _ hx', atW_one]`. Both sides reduce to the same expression. Establish `h2 : Matrix.of (atW w x⁻¹) * Matrix.of (atW w x) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[atW_mul, Matrix.nonsing_inv_mul _ hx', atW_one]`. Both sides reduce to the same expression. Conclude with `⟨⟨_, _, h1, h2⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components.
 -/
 theorem isUnit_atW (w : InfinitePlace E) {x : Matrix (Fin a) (Fin a) ℂ} (hx : x ∈ PositivityTheory.RgBcC.GLs a) :
     atW w x ∈ invSet E a := by
@@ -105,7 +105,7 @@ theorem isUnit_atW (w : InfinitePlace E) {x : Matrix (Fin a) (Fin a) ℂ} (hx : 
   exact ⟨⟨_, _, h1, h2⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[atEmb_eq τ (z + z'), atEmb_eq τ z, atEmb_eq τ z']`. Simplify using `only [Complex.add_re, Complex.add_im, add_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem atEmb_add (τ : E →+* ℂ) (z z' : ℂ) : atEmb τ (z + z') = atEmb τ z + atEmb τ z' := by
   rw [atEmb_eq τ (z + z'), atEmb_eq τ z, atEmb_eq τ z']
@@ -113,7 +113,7 @@ theorem atEmb_add (τ : E →+* ℂ) (z z' : ℂ) : atEmb τ (z + z') = atEmb τ
   abel
 
 /- English proof (translation)
-Rewrite using `[atEmb_eq τ (r • z), atEmb_eq τ z]`. Simplify using `only [Complex.real_smul, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero, add_zero, smul_add, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem atEmb_smul (τ : E →+* ℂ) (r : ℝ) (z : ℂ) : atEmb τ (r • z) = r • atEmb τ z := by
   rw [atEmb_eq τ (r • z), atEmb_eq τ z]
@@ -133,9 +133,9 @@ def linW (w : InfinitePlace E) : Matrix (Fin a) (Fin a) ℂ →L[ℝ] Lie E a :=
         exact atEmb_smul _ _ _ }
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j v`. Express the relevant statement in the definitionally equal form `atW w x i j v = atEmb w.embedding (x i j) v + atW w 0 i j v`. Rewrite using `[GlobalTheory.BCT.MuProps.atEmb_emb]`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[atW]`. Simplify using `[atW, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem atW_eq (w : InfinitePlace E) (x : Matrix (Fin a) (Fin a) ℂ) :
     atW w x = linW w x + atW w 0 := by
@@ -147,13 +147,13 @@ theorem atW_eq (w : InfinitePlace E) (x : Matrix (Fin a) (Fin a) ℂ) :
   · simp [atW, h]
 
 /- English proof (translation)
-Establish `hz` using `isUnit_atW w hx`. Establish `hA : HasFDerivAt (atW w) (linW w) x`. Establish `e : (atW w : Matrix (Fin a) (Fin a) ℂ → Lie E a) = fun y => linW w y + atW w 0`. Use function extensionality and compare the values at `fun y => atW_eq w y`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(linW w).hasFDerivAt.add_const _`. Establish `hc : HasFDerivAt (chart φ.1 g) (fderiv ℝ (chart φ.1 g) (atW w x)) (atW w x)` using `((contDiffAt_chart φ.2 g hz).differentiableAt (by simp)).hasFDerivAt`. Establish `hcomp : HasFDerivAt (along w g φ.1) ((fderiv ℝ (chart φ.1 g) (atW w x)).comp (linW w)) x` using `hc.comp x hA`. Rewrite using `[PositivityTheory.RgBcC.Rd, hcomp.fderiv, along, chart_lieD φ.2 _ g hz]`. Simplify using `only [ContinuousLinearMap.coe_comp, Function.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i j v`. Express the relevant statement in the definitionally equal form `atEmb w.embedding ((x * X) i j) v = (Matrix.of (atW w x) * Matrix.of (toL (X.map (atEmb w.embedding)))) i j v`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[atW, GlobalTheory.BCT.MuProps.atEmb_emb, Matrix.mul_apply, Finset.sum_apply]`. Simplify using `[atW, GlobalTheory.BCT.MuProps.atEmb_emb, Matrix.mul_apply, Finset.sum_apply, h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rd_along (w : InfinitePlace E) (g : GA E a) (φ : Sm E a) (X : Matrix (Fin a) (Fin a) ℂ)
     {x : Matrix (Fin a) (Fin a) ℂ} (hx : x ∈ PositivityTheory.RgBcC.GLs a) :
@@ -179,7 +179,7 @@ theorem rd_along (w : InfinitePlace E) (g : GA E a) (φ : Sm E a) (X : Matrix (F
   · simp [atW, GlobalTheory.BCT.MuProps.atEmb_emb, Matrix.mul_apply, Finset.sum_apply, h]
 
 /- English proof (translation)
-Rewrite using `[rd_along w g φ _ hx, GlobalTheory.OneRep.map_single_atEmb, lieS_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rd_along' (w : InfinitePlace E) (g : GA E a) (φ : Sm E a) (i j : Fin a) (z : ℂ)
     {x : Matrix (Fin a) (Fin a) ℂ} (hx : x ∈ PositivityTheory.RgBcC.GLs a) :
@@ -188,13 +188,13 @@ theorem rd_along' (w : InfinitePlace E) (g : GA E a) (φ : Sm E a) (i j : Fin a)
   rfl
 
 /- English proof (translation)
-Establish `h1` using `rd_along' w g φ i j 1 hx`. Establish `h2` using `rd_along' w g φ i j Complex.I hx`. Establish `e1 : atEmb w.embedding 1 = GlobalTheory.CompanionTheory.CasFamily.eW w` using `rfl`. Establish `e2 : atEmb w.embedding Complex.I = GlobalTheory.CompanionTheory.CasFamily.fW w` using `rfl`. Rewrite `h1` using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[e2]`. Consider the cases of `s`. Establish `hE` using `GlobalTheory.CompanionTheory.CasFamily.Eop_conjugate (a := a) w i j`. Simplify using `only [PositivityTheory.RgBcC.Eu, Pi.add_apply, Pi.smul_apply, smul_eq_mul, h1, h2, eopW, hE, Bool.false_eq_true, if_false, LinearMap.smul_apply, LinearMap.add_apply, Submodule.coe_smul, Submodule.coe_add, along_smul, along_add]`. Establish `hE` using `GlobalTheory.CompanionTheory.CasFamily.Eop_embedding (a := a) w i j`.
+Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [PositivityTheory.RgBcC.Eu, Pi.add_apply, Pi.smul_apply, smul_eq_mul, h1, h2, eopW, hE, if_true, LinearMap.smul_apply, LinearMap.sub_apply, Submodule.coe_smul, Submodule.coe_sub, along_smul, Pi.sub_apply]`. Establish `hsub : ∀ f f' : GA E a → ℂ, along w g (f - f') = along w g f - along w g f'` using `fun f f' => by`. Rewrite using `[sub_eq_add_neg, along_add, ← neg_one_smul ℂ f', along_smul]`. Simplify using `[sub_eq_add_neg]`. Rewrite using `[hsub, along_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eu_along (w : InfinitePlace E) (g : GA E a) (s : Bool) (φ : Sm E a) (i j : Fin a)
     {x : Matrix (Fin a) (Fin a) ℂ} (hx : x ∈ PositivityTheory.RgBcC.GLs a) :
@@ -221,7 +221,7 @@ theorem eu_along (w : InfinitePlace E) (g : GA E a) (s : Bool) (φ : Sm E a) (i 
     ring
 
 /- English proof (translation)
-Establish `e : PositivityTheory.RgBcC.GLs a = (fun x : Matrix (Fin a) (Fin a) ℂ => x.det) ⁻¹' ({0}ᶜ : Set ℂ)`. Use extensionality with `x`. Simplify using `[PositivityTheory.RgBcC.GLs]`. Rewrite using `[e]`. Conclude with `(continuous_id.matrix_det).isOpen_preimage _ isOpen_compl_singleton`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_GLs : IsOpen (PositivityTheory.RgBcC.GLs a) := by
   have e : PositivityTheory.RgBcC.GLs a = (fun x : Matrix (Fin a) (Fin a) ℂ => x.det) ⁻¹' ({0}ᶜ : Set ℂ) := by
@@ -230,25 +230,25 @@ theorem isOpen_GLs : IsOpen (PositivityTheory.RgBcC.GLs a) := by
   exact (continuous_id.matrix_det).isOpen_preimage _ isOpen_compl_singleton
 
 /- English proof (translation)
-Simplify using `only [PositivityTheory.RgBcC.Rd, h.fderiv_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rd_congr (X : Matrix (Fin a) (Fin a) ℂ) {F G : Matrix (Fin a) (Fin a) ℂ → ℂ} {x : Matrix (Fin a) (Fin a) ℂ}
     (h : F =ᶠ[nhds x] G) : PositivityTheory.RgBcC.Rd X F x = PositivityTheory.RgBcC.Rd X G x := by
   simp only [PositivityTheory.RgBcC.Rd, h.fderiv_eq]
 
 /- English proof (translation)
-Simplify using `only [PositivityTheory.RgBcC.Eu, Pi.add_apply, Pi.smul_apply, rd_congr _ h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eu_congr (s : Bool) (i j : Fin a) {F G : Matrix (Fin a) (Fin a) ℂ → ℂ} {x : Matrix (Fin a) (Fin a) ℂ}
     (h : F =ᶠ[nhds x] G) : PositivityTheory.RgBcC.Eu s i j F x = PositivityTheory.RgBcC.Eu s i j G x := by
   simp only [PositivityTheory.RgBcC.Eu, Pi.add_apply, Pi.smul_apply, rd_congr _ h]
 
 /- English proof (translation)
-Proceed by induction on `m generalizing i j x with`. Consider the case `zero`. Simplify using `only [PositivityTheory.RgBcC.Epow, Formalism.REAL.epow]`. Use `split_ifs with h`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[along_zero]`. Consider the case `succ m ih`. Simplify using `only [PositivityTheory.RgBcC.Epow]`. Rewrite using `[Finset.sum_apply, epow_succ']`. Simplify using `only [LinearMap.sum_apply, Module.End.mul_apply, Submodule.coe_sum, along_sum, Finset.sum_apply]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hev : PositivityTheory.RgBcC.Epow s m c j (along w g φ.1) =ᶠ[nhds x] along w g (Formalism.REAL.epow (eopW w s) m c j φ).1` using `Filter.eventually_of_mem (isOpen_GLs.mem_nhds hx) fun y hy => ih c j hy`. Rewrite using `[eu_congr s i c hev, eu_along w g s _ i c hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epow_along (w : InfinitePlace E) (g : GA E a) (s : Bool) (m : ℕ) (i j : Fin a) (φ : Sm E a)
     {x : Matrix (Fin a) (Fin a) ℂ} (hx : x ∈ PositivityTheory.RgBcC.GLs a) :
@@ -270,7 +270,7 @@ theorem epow_along (w : InfinitePlace E) (g : GA E a) (s : Bool) (m : ℕ) (i j 
     rw [eu_congr s i c hev, eu_along w g s _ i c hx]
 
 /- English proof (translation)
-Simplify using `only [PositivityTheory.RgBcC.gel, Formalism.REAL.etr, Finset.sum_apply, LinearMap.sum_apply, Submodule.coe_sum, along_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => epow_along w g s m i i φ hx`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gel_along (w : InfinitePlace E) (g : GA E a) (s : Bool) (m : ℕ) (φ : Sm E a)
     {x : Matrix (Fin a) (Fin a) ℂ} (hx : x ∈ PositivityTheory.RgBcC.GLs a) :

@@ -16,7 +16,7 @@ variable {R V E : Type*} [Ring R] [AddCommGroup V] [Module R V] [NormedAddCommGr
     [InnerProductSpace ℝ E] (ρ : V →+ E)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[satR_mem_zl]`. Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `⟨y, h hy, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem satBasic_zl_mono {A B : Submodule R V} (h : A ≤ B) : zl ρ A ≤ zl ρ B := by
   intro x hx
@@ -25,9 +25,9 @@ theorem satBasic_zl_mono {A B : Submodule R V} (h : A ≤ B) : zl ρ A ≤ zl ρ
   exact ⟨y, h hy, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[satR_mem_zl, Submodule.mem_bot]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite `hy` using `[Submodule.mem_bot]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hy, map_zero]`. Introduce `hx`. Conclude with `⟨0, Submodule.zero_mem _, by rw [hx, map_zero]⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem satBasic_zl_bot : zl ρ (⊥ : Submodule R V) = ⊥ := by
   ext x
@@ -42,31 +42,29 @@ theorem satBasic_zl_bot : zl ρ (⊥ : Submodule R V) = ⊥ := by
 end
 
 /- English proof (translation)
-Introduce `R V E _ _ _ _ _ _ ρ L hL`. Use `haveI hLd : DiscreteTopology (zl ρ L) := hL.2`. Establish `hdisc : ∀ N : Submodule R V, N ≤ L → DiscreteTopology (zl ρ N)` using `fun N h => Formalism.F.discreteTopology_of_le (satBasic_zl_mono ρ h)`. Establish `hrev : ∀ A B : Submodule R V, A ≤ L → B ≤ L → zl ρ B ≤ zl ρ A → B ≤ A`. Introduce `A B hAL hBL h y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, hzy⟩` from `(satR_mem_zl ρ A _).mp (h ((satR_mem_zl ρ B _).mpr ⟨y, hy, rfl⟩))`. Use `hL.1 (hAL hz) (hBL hy) hzy` as an intermediate fact. Rewrite using `[← this]`. Conclude with `hz`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `N h`. Conclude with `⟨hL.1.mono (fun x hx => h hx), hdisc N h⟩`. Introduce `A B hAB hBL haveI := hdisc B hBL haveI := hdisc A (hAB.trans hBL)`. Use `⟨Formalism.F.att_rk_le (satBasic_zl_mono ρ hAB), fun hr => ?_⟩` and prove the remaining obligations. Establish `hc` using `Formalism.F.covolAntiSameRank E (zl ρ A) (zl ρ B) (hdisc B hBL) (satBasic_zl_mono ρ hAB) hr`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpB` using `Formalism.F.covol_pos (zl ρ B)`. Use `show -Real.log (Formalism.F.covol (zl ρ A)) ≤ -Real.log (Formalism.F.covol (zl ρ B))`. Use `Real.log_le_log hpB hc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `S N hS hSN hNL hr haveI := hdisc N hNL`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `le_antisymm (hrev S N hS.1 hNL ?_) hSN` and prove the remaining obligations. Introduce `x hx`. Take `⟨a, ha, hax⟩` from `exists_smul_mem_of_finrank_eq (zl ρ N) (zl ρ S) (satBasic_zl_mono ρ hSN) hr x hx`. Use `hS.2.2 x (satBasic_zl_mono ρ hNL hx) ?_` and prove the remaining obligations. Establish `hx' : x = (a : ℝ)⁻¹ • ((a : ℝ) • x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inv_smul_smul₀ (by exact_mod_cast ha)]`. Rewrite using `[hx']`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `hax`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `N hNL haveI := hdisc N hNL`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `h0' : Formalism.F.rk (zl ρ N) = 0` using `h0`. Establish `hb : zl ρ N = ⊥`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Use `Formalism.F.att_rk_pos hne` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[eq_bot_iff]`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hy' : ρ y ∈ zl ρ N` using `(satR_mem_zl ρ N _).mpr ⟨y, hy, rfl⟩`. Rewrite `hy'` using `[hb, Submodule.mem_bot]`. Rewrite using `[Submodule.mem_bot]`. Conclude with `hL.1 (hNL hy) (Submodule.zero_mem L) (by rw [hy', map_zero])`. Introduce and unpack `rfl show Formalism.F.rk (zl ρ ⊥) = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[satBasic_zl_bot ρ]`. Simplify using `[Formalism.F.rk]`. Use `show -Real.log (Formalism.F.covol (zl ρ ⊥)) = 0`. Rewrite using `[satBasic_zl_bot ρ, (Formalism.F.covolBasic E).1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨bot_le, ?_⟩` and prove the remaining obligations. Rewrite using `[satBasic_zl_bot ρ]`. Use `⟨bot_le, fun x _ hx => ?_⟩` and prove the remaining obligations. Simplify using `using hx`. Conclude with `⟨le_rfl, le_rfl, fun x hx _ => hx⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `S hS haveI := hdisc S hS.1`. Take `⟨_, h2, h3⟩` from `Formalism.F.degQuot E (zl ρ L) (zl ρ S) hLd hS.2`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show _ = Formalism.F.rk (zl ρ L) - Formalism.F.rk (zl ρ S)`. Use linear arithmetic over natural numbers and integers.
-
-Use `show Formalism.F.rk (zl ρ S) ≤ Formalism.F.rk (zl ρ L)`. Use linear arithmetic over natural numbers and integers. Use `show _ = Formalism.F.deg (zl ρ L) - Formalism.F.deg (zl ρ S)`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem saturation_basic_properties : SatBasic := by
   intro R V E _ _ _ _ _ _ ρ L hL

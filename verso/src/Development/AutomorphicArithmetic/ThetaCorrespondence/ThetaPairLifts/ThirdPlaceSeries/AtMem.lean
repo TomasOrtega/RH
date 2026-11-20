@@ -20,7 +20,7 @@ end Local
 end GlobalTheory.BlockLiftFrame
 end
 /- English proof (translation)
-Introduce `hL`. Use `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun K B f T _ w Z Wt p0 t nch n xd c hE hR hP => ?_` and prove the remaining obligations. Introduce `s`. Take `⟨plg, iso, h1, -, -, h4⟩` from `t.r.z.pins.keep.grp`. Conclude with `GlobalTheory.BlockLiftFrame.exists_blockLift (w.st Z).toD7 (t.r.z.lev.is.Q_pl s) t.r.z.R.eG t.r.z.cG ⟨plg, iso, h1, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BlockLiftFrame.atMem_alt : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t _ _ _ =>
   ∀ s, ∃ L : G0g (w.st Z).toD7.nd → Formalism.AUTREP.GAf (w.st Z).toD7.host.E (w.st Z).toD7.R.nV,

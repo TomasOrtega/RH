@@ -8,9 +8,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Galo
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Chr
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl O _ _ _ _ _ N _ e ψ he hψ`. Establish `key : ∀ (A : ValuationSubring Ω) (U : Subgroup (G ℚ Ω)), A.valuation (l : Ω) < 1 → Ine (F` using `ℚ) A ≤ U → h0 l e ψ U ≤ (LDataCardLeFinrank.nuBound l N e : ℕ∞) * eO l O := by`. Introduce `A U hA hU`. Establish `h1` using `(h0Nu ℚ Ω l O e ψ U).1 (Ine (F := ℚ) A ⊓ (cls ℚ Ω N).ker) (inf_le_left.trans hU)`. Establish `h2` using `(h0Nu ℚ Ω l O e ψ (Ine (F := ℚ) A ⊓ (cls ℚ Ω N).ker)).2 (inf_le_right.trans hψ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `LDataCardLeFinrank.nuLeBound l N e _ ((clsOnto Ω N).2 l A hA) he`. Conclude with `h1.trans (h2.trans (mul_le_mul_left h3 _))`. Take `⟨A, hA⟩` from `(placesQ Ω).1 l hl.out`. Conclude with `⟨key, key A ⊤ hA le_top⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Chr.H0_local_card_bounded_of_cls_ker_le_ker :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (N : ℕ) [NeZero N] (e : ℕ) (ψ : G ℚ Ω →* Oˣ), e ≠ 0 → (cls ℚ Ω N).ker ≤ ψ.ker →

@@ -14,11 +14,9 @@ variable {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountabl
   (A : WeightedAtlas n Y ι La)
 
 /- English proof (translation)
-Introduce `y hy`. Use `set i := A.pick y`. Establish `hsrc : (A.chart i).source ∩ U ∈ 𝓝 y` using `((A.chart i).open_source.inter hU).mem_nhds ⟨A.mem_pick y, hy⟩`. Establish `h1 : ContinuousOn (a i ∘ (A.chart i).symm) ((A.chart i).target ∩ (A.chart i).symm ⁻¹' U)` using `(ha.1 i).continuousOn`. Establish `h2 : ContinuousOn (a i) ((A.chart i).source ∩ U)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1.comp ((A.chart i).continuousOn.mono Set.inter_subset_left) (fun x (hx : x ∈ (A.chart i).source ∩ U) => ⟨(A.chart i).map_source hx.1, by simpa [(A.chart i).left_inv hx.1] using hx.2⟩)` as an intermediate fact. Conclude with `this.congr fun x hx => by simp [(A.chart i).left_inv hx.1]`. Establish `hc : ContinuousAt (fun x => ‖a i x‖ ^ 2 * Real.exp (-A.ph la i x)) y`. Establish `h3` using `h2.continuousAt hsrc`. Establish `h4` using `(bsA_ph_cont A la i).continuousAt ((A.chart i).open_source.mem_nhds (A.mem_pick y))`.
-
-Conclude with `(h3.norm.pow 2).mul (h4.neg.rexp)`. Use `(hc.congr ?_).continuousWithinAt` and prove the remaining obligations. Use `filter_upwards [hsrc] with x hx`. Conclude with `(bsA_nsq_chart A ha.2 hx.2 hx.1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bsC_nsq_contOn {la : La} {U : Set Y} {a : ι → Y → ℂ} (ha : A.IsSecOn la U a)
     (hU : IsOpen U) : ContinuousOn (A.nsq la a) U := by
@@ -42,7 +40,7 @@ theorem bsC_nsq_contOn {la : La} {U : Set Y} {a : ι → Y → ℂ} (ha : A.IsSe
   exact (bsA_nsq_chart A ha.2 hx.2 hx.1).symm
 
 /- English proof (translation)
-Unfold `nsq`. Rewrite using `[hq, A.ph_add la (m • L) _ y (A.mem_pick y), bsA_ph_nsmul A L m (A.mem_pick y)]`. Rewrite using `[norm_mul, norm_mul, norm_pow, mul_pow, mul_pow, mul_pow, ← pow_mul, neg_add, Real.exp_add, show -((m : ℝ) * A.ph L (A.pick y) y) = (m : ℝ) * (-A.ph L (A.pick y) y) by ring, Real.exp_nat_mul, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bsC_nsq_prod (la L : La) (m : ℕ) (q u v : ι → Y → ℂ) (c : ℂ) (y : Y)
     (hq : q (A.pick y) y = c * (u (A.pick y) y * v (A.pick y) y ^ m)) :
@@ -55,7 +53,7 @@ theorem bsC_nsq_prod (la L : La) (m : ℕ) (q u v : ι → Y → ℂ) (c : ℂ) 
   ring
 
 /- English proof (translation)
-Unfold `sqn nsq`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `: ‖w0 (A.pick y) y‖ ≠ 0` using `norm_ne_zero_iff.mpr h0`. Rewrite using `[norm_div, div_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -70,9 +68,9 @@ theorem bsC_sqn_ratio {N : ℕ} (la : La) (u : Fin N → ι → Y → ℂ) (w0 :
   field_simp
 
 /- English proof (translation)
-Rewrite using `[Real.mul_rpow ha.le hZ.le, Real.mul_rpow ha.le hS.le]`. Establish `key : a ^ m * a ^ (-((m : ℝ) - 1 / 2)) * a ^ (-(1 / 2 : ℝ)) = 1`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add ha, ← Real.rpow_add ha]`. Put the polynomial expressions in normal form. Conclude with `Real.rpow_zero a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem bsC_alg (Fn nσ a Z S ρ : ℝ) (m : ℕ) (ha : 0 < a) (hZ : 0 < Z) (hS : 0 < S) :
     Fn * nσ * a ^ m * (a * Z) ^ (-((m : ℝ) - 1 / 2)) * (a * S) ^ (-(1 / 2 : ℝ)) * ρ =
@@ -88,7 +86,7 @@ theorem bsC_alg (Fn nσ a Z S ρ : ℝ) (m : ℕ) (ha : 0 < a) (hZ : 0 < Z) (hS 
     _ = _ := by rw [key, mul_one]
 
 /- English proof (translation)
-Unfold `bsPh0 bsPsi`. Establish `hd2 : 0 < ‖(jz A w0 s (A.pick y) y).det‖ ^ 2` using `by positivity`. Rewrite using `[Real.rpow_def_of_pos hS]`. Rewrite using `[show -(-Real.log (A.nsq mu0 σ y) - A.ph A.kap (A.pick y) y + Real.log (‖(jz A w0 s (A.pick y) y).det‖ ^ 2) + 1 / 2 * Real.log (∑ k, ‖w k (A.pick y) y / w0 (A.pick y) y‖ ^ 2)) = Real.log (A.nsq mu0 σ y) + A.ph A.kap (A.pick y) y - Real.log (‖(jz A w0 s (A.pick y) y).det‖ ^ 2) + R …`. Rewrite using `[Real.exp_add, Real.exp_sub, Real.exp_add, Real.exp_log hσ, Real.exp_log hd2]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

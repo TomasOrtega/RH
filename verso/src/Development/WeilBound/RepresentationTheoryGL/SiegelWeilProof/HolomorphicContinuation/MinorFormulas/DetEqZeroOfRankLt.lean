@@ -12,15 +12,13 @@ namespace NullPf
 variable {K : Type*} [Field K]
 
 /- English proof (translation)
-Take `⟨b, hbs, hspan, hli⟩` from `exists_linearIndependent K (Set.range M.row)`. Establish `hfin : b.Finite` using `(Set.finite_range _).subset hbs`. Establish `: Fintype b` using `hfin.fintype`. Establish `hcard : M.rank = b.toFinset.card`. Rewrite using `[M.rank_eq_finrank_span_row, ← hspan]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finrank_span_set_eq_card hli`. Establish `hkb : k ≤ Fintype.card b` using `by rw [← Set.toFinset_card]; omega`. Set `e : Fin k ↪ b` to `(Fin.castLEEmb hkb).trans (Fintype.equivFin b).symm.toEmbedding`. Set `sec : b → m` to `fun v => (hbs v.2).choose`. Establish `hsec : ∀ v : b, M.row (sec v) = v` using `fun v => (hbs v.2).choose_spec`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective sec`. Introduce `v w h`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hsec v, ← hsec w, h]`. Use `⟨e.trans ⟨sec, hinj⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : (fun p => M ((e.trans ⟨sec, hinj⟩) p)) = (fun v : b => (v : n → K)) ∘ e`. Use function extensionality and compare the values at `p`. Simplify using `only [Function.comp_apply, Function.Embedding.trans_apply, Function.Embedding.coeFn_mk]`. Conclude with `hsec (e p)`. Rewrite using `[h2]`.
-
-Conclude with `hli.comp e e.injective`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rows {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] (M : Matrix m n K) {k : ℕ} (hk : k ≤ M.rank) :
     ∃ I : Fin k ↪ m, LinearIndependent K (fun p => M (I p)) := by
@@ -48,13 +46,11 @@ theorem exists_rows {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] (M : M
   exact hli.comp e e.injective
 
 /- English proof (translation)
-Take `⟨I, hI⟩` from `exists_rows M hk`. Use `set R : Matrix (Fin k) (Fin n) K := M.submatrix I id with hR`. Establish `hRrank : R.rank = k`. Establish `: LinearIndependent K R.row` using `hI`. Simplify using `using this.rank_matrix`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hRt : k ≤ Rᵀ.rank` using `by rw [rank_transpose, hRrank]`. Take `⟨J, hJ⟩` from `exists_rows Rᵀ hRt`. Use `⟨I, J, ?_⟩` and prove the remaining obligations. Use `set T : Matrix (Fin k) (Fin k) K := Rᵀ.submatrix J id with hT`. Establish `hTu : IsUnit T`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← linearIndependent_rows_iff_isUnit]`. Conclude with `hJ`. Establish `hTeq : T = (M.submatrix I J)ᵀ`. Use extensionality with `p q`. Simplify using `[T, R, transpose_apply, submatrix_apply]`.
-
-Use `(Matrix.isUnit_iff_isUnit_det T).1 hTu` as an intermediate fact. Rewrite `this` using `[hTeq, det_transpose]`. Conclude with `this.ne_zero`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_minor_ne_zero {n : ℕ} (M : Matrix (Fin n) (Fin n) K) {k : ℕ} (hk : k ≤ M.rank) :
     ∃ I J : Fin k ↪ Fin n, (M.submatrix I J).det ≠ 0 := by
@@ -79,7 +75,7 @@ theorem exists_minor_ne_zero {n : ℕ} (M : Matrix (Fin n) (Fin n) K) {k : ℕ} 
   exact this.ne_zero
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Take `⟨I, J, hIJ⟩` from `exists_minor_ne_zero M (not_lt.1 hc)`. Conclude with `hIJ (h I J)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rank_lt_of_minors {n : ℕ} (M : Matrix (Fin n) (Fin n) K) {k : ℕ}
     (h : ∀ I J : Fin k ↪ Fin n, (M.submatrix I J).det = 0) : M.rank < k := by
@@ -88,7 +84,7 @@ theorem rank_lt_of_minors {n : ℕ} (M : Matrix (Fin n) (Fin n) K) {k : ℕ}
   exact hIJ (h I J)
 
 /- English proof (translation)
-Unfold `Matrix.rank`. Rewrite using `[Matrix.mulVecLin_add]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem rank_add_le' {n : ℕ} (A B : Matrix (Fin n) (Fin n) K) : (A + B).rank ≤ A.rank + B.rank := by
   unfold Matrix.rank
@@ -99,7 +95,7 @@ theorem rank_add_le' {n : ℕ} (A B : Matrix (Fin n) (Fin n) K) : (A + B).rank �
     _ ≤ _ := Submodule.finrank_add_le_finrank_add_finrank _ _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hd`. Use `Matrix.rank_of_isUnit M ((Matrix.isUnit_iff_isUnit_det M).2 (Ne.isUnit hd))` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem det_eq_zero_of_rank_lt {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (h : M.rank < n) : M.det = 0 := by
   by_contra hd
@@ -111,29 +107,25 @@ end NullPf
 
 open NullPf in
 /- English proof (translation)
-Introduce `n m hmn N₀`. Use `set S : Set (PAB n) := {x : PAB n | ∃ i j : ℕ, i + j = n - m ∧ ((i = 0 ∧ j = 0 ∧ x = 1) ∨ (i = 0 ∧ 0 < j ∧ ∃ (I J : Fin j ↪ Fin n), x = minorPolynomial true I J ^ N₀) ∨ (0 < i ∧ j = 0 ∧ ∃ (I J : Fin (m + i) ↪ Fin n), x = minorPolynomial false I J ^ N₀) ∨ (0 < i ∧ 0 < j ∧ ∃ (I J : …`. Use `set D : PAB n := Matrix.det (fun p q : Fin n => (X (false, p, q) + X (true, p, q) : PAB n)) with hD`. It suffices to establish `hrad : D ∈ (Ideal.span S).radical from (Ideal.mem_radical_iff).1 hrad`. Rewrite using `[← vanishingIdeal_zeroLocus_eq_radical (K := ℂ)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Rewrite `hx` using `[mem_zeroLocus_iff]`. Establish `hgen : ∀ s ∈ S, aeval x s = 0` using `fun s hs => hx s (Ideal.subset_span hs)`. Use `set A : Matrix (Fin n) (Fin n) ℂ := fun p q => x (false, p, q) with hA`. Use `set B : Matrix (Fin n) (Fin n) ℂ := fun p q => x (true, p, q) with hB`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hminor : ∀ (b : Bool) {ρ : ℕ} (I J : Fin ρ ↪ Fin n), aeval x (minorPolynomial b I J) = Matrix.det (fun p q : Fin ρ => x (b, I p, J q))`. Introduce `b ρ I J`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `RingHom.map_det ((aeval x : PAB n →ₐ[ℂ] ℂ) : PAB n →+* ℂ) (Matrix.of fun p q : Fin ρ => (X (b, I p, J q) : PAB n))`. Use `h.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 1`. Use extensionality with `p q`. Simplify using the standard rewrite rules. Establish `hpow : ∀ (a : ℂ), a ^ N₀ = 0 → a = 0` using `fun a h => ((pow_eq_zero_iff' (M₀ := ℂ)).1 h).1`. Establish `hr : 0 < n - m` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hBr : B.rank < n - m`. Apply `rank_lt_of_minors` to reduce the goal to its premises. Introduce `I J`. Use `hgen (minorPolynomial true I J ^ N₀) ⟨0, n - m, by omega, Or.inr (Or.inl ⟨rfl, hr, I, J, rfl⟩)⟩` as an intermediate fact. Rewrite `this` using `[map_pow, hminor]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hpow _ this`. Establish `hsum : (A + B).rank < n`. Break down `Nat.eq_zero_or_pos B.rank with h0 | hpos` into its components or cases. Establish `hAr : A.rank < m + (n - m)`. Apply `rank_lt_of_minors` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Introduce `I J`. Use `hgen (minorPolynomial false I J ^ N₀) ⟨n - m, 0, by omega, Or.inr (Or.inr (Or.inl ⟨hr, rfl, I, J, rfl⟩))⟩` as an intermediate fact. Rewrite `this` using `[map_pow, hminor]`. Conclude with `hpow _ this`. Use `rank_add_le' A B` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨I', J', hIJ'⟩` from `exists_minor_ne_zero B (le_refl B.rank)`. Establish `hAr : A.rank < m + (n - m - B.rank)`. Apply `rank_lt_of_minors` to reduce the goal to its premises. Introduce `I J`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `hgen (minorPolynomial false I J ^ N₀ * minorPolynomial true I' J' ^ N₀) ⟨n - m - B.rank, B.rank, by omega, Or.inr (Or.inr (Or.inr ⟨by omega, hpos, I, J, I', J', rfl⟩))⟩` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, map_pow, hminor, hminor]`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `hpow _ h`. Conclude with `absurd (hpow _ h) hIJ'`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `rank_add_le' A B` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hdet` using `det_eq_zero_of_rank_lt (A + B) hsum`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `RingHom.map_det ((aeval x : PAB n →ₐ[ℂ] ℂ) : PAB n →+* ℂ) (Matrix.of fun p q : Fin n => (X (false, p, q) + X (true, p, q) : PAB n))`.
-
-Use `h.trans ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `p q`. Simplify using `[A, B, Matrix.add_apply]`. Both sides reduce to the same expression.
-
-Use `_ = 0 := hdet`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem null : Null := by
   classical

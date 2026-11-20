@@ -10,25 +10,23 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Introduce `K _ _ f β hf hβ hc`. Take `⟨h1, -, h3, h4, -⟩` from `hpSpec (K := K)`. Take `⟨-, -, hl, -⟩` from `blkLaws (K := K)`. Take `⟨w, hw⟩ : ∃ w : ℝ → ℂ, w = fun t => β t * Complex.exp ((((2 + 2 : ℕ) : ℝ) / 2 * t : ℝ) : ℂ)` from `⟨_, rfl⟩`. Establish `hbf : ∀ g, bf β f g = w (HH g) * f g` using `fun g => by rw [hw]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwc : Continuous w`. Rewrite using `[hw]`. Conclude with `hβ.mul (Complex.continuous_exp.comp (Complex.continuous_ofReal.comp (continuous_const.mul continuous_id)))`. Establish `hws : HasCompactSupport w`. Rewrite using `[hw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hc.mul_right`. Take `⟨B, hB⟩` from `hwc.bounded_above_of_compact_support hws`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0)`. Establish `hn : ∀ (X : UPos (2 + 2) 2 → 𝔸[K]) (g : G1 K (2 + 2)), HH (nn X * g) = HH g` using `fun X g => by`. Use `h1 X 1 1 0 g` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[hl, mul_one, zero_add]`. Then use the resulting hypothesis. Establish `hm : ∀ (m₁ m₂ : G1 K 2) (g : G1 K (2 + 2)), HH (lv m₁ m₂ 0 * g) = HH g` using `fun m₁ m₂ g => by`. Use `h1 0 m₁ m₂ 0 g` as an intermediate fact. Rewrite `this` using `[mul_assoc, hn, zero_add]`. Then use the resulting hypothesis. Establish `hle : ∀ g, ‖bf β f g‖ ≤ B * ‖f g‖` using `fun g => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hbf, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hB _) (norm_nonneg _)`. Use `⟨⟨?_, ?_, ?_, ?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show bf β f = fun g => w (HH g) * f g from funext hbf]`. Conclude with `(hwc.comp h4).mul hf.cont`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨C, hC⟩` from `hf.bdd`. Conclude with `⟨B * C, fun g => (hle g).trans (mul_le_mul_of_nonneg_left (hC g) hB0)⟩`. Introduce `X g`. Rewrite using `[hbf, hbf, hn, hf.unip]`. Introduce `γ hγ g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbf, hbf, h3 γ hγ, hf.rat γ hγ]`. Introduce `g`. Repeatedly rewrite using `[hbf, hm]`. Rewrite using `[integral_const_mul, hf.cusp₁ g, mul_zero]`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[hbf, hm]`. Rewrite using `[integral_const_mul, hf.cusp₂ g, mul_zero]`. Take `⟨R, hR⟩` from `hws.isCompact.isBounded.exists_norm_le`. Use `⟨R, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[hbf]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hR _ (subset_tsupport w (left_ne_zero_of_mul hg))`. Introduce `N R`. Take `⟨C, hC⟩` from `hf.dec N R`. Use `⟨B * C, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hC x hx`.
-
-Use `⟨γ, hγ, ?_⟩` and prove the remaining obligations. Use `(mul_le_mul_of_nonneg_right (hle x) (pow_nonneg (AutomorphicForm.height_pos _).le N)).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left h hB0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.bfFun :
     ∀ {K : Type} [Field K] [NumberField K] (f : G1 K (2 + 2) → ℂ) (β : ℝ → ℂ), SFun f → Continuous β → HasCompactSupport β → PFun (bf β f) ∧ InBand (bf β f) ∧ Decays (bf β f) := by

@@ -27,7 +27,7 @@ def sigmaFinSuccIso (V : Scheme.{0}) (k : ℕ) :
       simp
 
 /- English proof (translation)
-Use extensionality with `i`. Proceed by induction on `i using Fin.cases`. Simplify using `only [sigmaFinSuccIso, Sigma.ι_desc_assoc, Fin.cases_zero, Sigma.ι_desc]`. Conclude with `coprod.inl_desc _ _`. Simplify using `only [sigmaFinSuccIso, Sigma.ι_desc_assoc, Fin.cases_succ, Sigma.ι_desc, Category.assoc] erw [coprod.inr_desc, Sigma.ι_desc]`.
+By extensionality, compare the relevant components. Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sigmaFinSuccIso_hom_desc (V : Scheme.{0}) (k : ℕ) :
     (sigmaFinSuccIso V k).hom ≫ coprod.desc (𝟙 V) (Sigma.desc fun _ : Fin k => 𝟙 V) =
@@ -40,7 +40,7 @@ theorem sigmaFinSuccIso_hom_desc (V : Scheme.{0}) (k : ℕ) :
     erw [coprod.inr_desc, Sigma.ι_desc]
 
 /- English proof (translation)
-The claim follows from `| 0 => by have : IsEmpty (∐ fun _ : Fin 0 => V : Scheme.{0}) := by refine ⟨fun x => ?_⟩ obtain ⟨i, _, _⟩ := (sigmaOpenCover fun _ : Fin 0 => V).exists_eq x exact i.elim0 infer_instance | k + 1 => by have := isFinite_sigmaDesc_fin V k rw [← sigmaFinSuccIso_hom_desc] infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isFinite_sigmaDesc_fin (V : Scheme.{0}) : ∀ k : ℕ, IsFinite (Sigma.desc fun _ : Fin k => 𝟙 V)
   | 0 => by
@@ -55,9 +55,9 @@ theorem isFinite_sigmaDesc_fin (V : Scheme.{0}) : ∀ k : ℕ, IsFinite (Sigma.d
     infer_instance
 
 /- English proof (translation)
-Introduce `n hn V`. Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn`. Use `⟨isFinite_sigmaDesc_fin V (m + 1), ?_, ?_⟩` and prove the remaining obligations. Use `HasRingHomProperty.instIsZariskiLocalAtSource (P := @Etale)` as an intermediate fact. Conclude with `IsZariskiLocalAtSource.sigmaDesc (P := @Etale) fun _ => inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Surjective.sigmaDesc_of_union_range_eq_univ (Set.eq_univ_of_forall fun v => ?_)` and prove the remaining obligations. Conclude with `Set.mem_iUnion.2 ⟨0, v, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem proj_finite_etale_surjective :
     ∀ (n : ℕ), n ≠ 0 → ∀ (V : Scheme.{0}), IsFinite (proj n V) ∧ Etale (proj n V) ∧ Surjective (proj n V) := by

@@ -8,7 +8,7 @@ open Complex Matrix Filter Topology
 namespace PositivityTheory.RL.Up
 
 /- English proof (translation)
-Establish `d : ∀ z : ℂ, HasDerivAt (fun t : ℝ => cexp (z * t)) z 0` using `fun z => by`. Simplify using `using (((hasDerivAt_id (0 : ℝ)).ofReal_comp).const_mul z).cexp`. Use `d z` as an intermediate fact. Simplify using `only [h] at this`. Conclude with `this.unique (d z')`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exp_mul_inj {z z' : ℂ} (h : ∀ t : ℝ, cexp (z * t) = cexp (z' * t)) : z = z' := by
   have d : ∀ z : ℂ, HasDerivAt (fun t : ℝ => cexp (z * t)) z 0 := fun z => by
@@ -28,7 +28,7 @@ def expU (Z : 𝔸) : 𝔸ˣ :=
     by rw [← NormedSpace.exp_add_of_commute (Commute.refl Z).neg_left, neg_add_cancel, NormedSpace.exp_zero]⟩
 
 /- English proof (translation)
-Use `letI : NormedAlgebra ℚ 𝔸 := NormedAlgebra.restrictScalars ℚ ℝ 𝔸`. Use `Units.ext ?_` and prove the remaining obligations. Use `show NormedSpace.exp _ = NormedSpace.exp _ * NormedSpace.exp _`. Rewrite using `[add_smul, NormedSpace.exp_add_of_commute (((Commute.refl Z).smul_left s).smul_right t)]`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expU_add (Z : 𝔸) (s t : ℝ) : expU ((s + t) • Z) = expU (s • Z) * expU (t • Z) := by
   letI : NormedAlgebra ℚ 𝔸 := NormedAlgebra.restrictScalars ℚ ℝ 𝔸
@@ -37,39 +37,37 @@ theorem expU_add (Z : 𝔸) (s t : ℝ) : expU ((s + t) • Z) = expU (s • Z) 
   rw [add_smul, NormedSpace.exp_add_of_commute (((Commute.refl Z).smul_left s).smul_right t)]
 
 /- English proof (translation)
-The claim follows from `Units.ext NormedSpace.exp_zero`.
+A detailed English derivation is pending.
 -/
 theorem expU_zero : expU (0 : 𝔸) = 1 := Units.ext NormedSpace.exp_zero
 
 /- English proof (translation)
-The claim follows from `Units.isOpenEmbedding_val.isInducing.continuous_iff.2 (continuous_iff_continuousAt.2 fun t => (hasDerivAt_exp_smul_const (𝕂 := ℝ) Z t).continuousAt)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_expU (Z : 𝔸) : Continuous fun t : ℝ => expU (t • Z) :=
   Units.isOpenEmbedding_val.isInducing.continuous_iff.2
     (continuous_iff_continuousAt.2 fun t => (hasDerivAt_exp_smul_const (𝕂 := ℝ) Z t).continuousAt)
 
 /- English proof (translation)
-Use `letI : NormedAlgebra ℚ 𝔸 := NormedAlgebra.restrictScalars ℚ ℝ 𝔸`. Set `ex : 𝔤 → S` to `fun Z => ⟨expU Z.1, hS _ Z.2⟩`. Use `choose z hz using hz`. Establish `hz' : ∀ (Z : 𝔤) (t : ℝ), χ (ex (t • Z)) = cexp (z Z.1 Z.2 * t)` using `fun Z t => hz Z.1 Z.2 t`. Establish `hsm : ∀ (r : ℝ) (Z : 𝔤), z (r • Z).1 (r • Z).2 = r • z Z.1 Z.2` using `fun r Z => exp_mul_inj fun t => by`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hz', smul_smul, hz', real_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hex : ∀ X Y : 𝔤, χ (ex (X + Y)) = χ (ex X) * χ (ex Y)` using `fun X Y => by`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Tendsto (fun n : ℕ => (ex (((n : ℝ)⁻¹) • X) * ex (((n : ℝ)⁻¹) • Y)) ^ n) atTop (𝓝 (ex (X + Y)))`. Rewrite using `[Topology.IsInducing.subtypeVal.tendsto_nhds_iff, Units.isOpenEmbedding_val.isInducing.tendsto_nhds_iff]`. Conclude with `Formalism.FourierDecayAlt.P.GroupGeneratedByExp.trotter X.1 Y.1`. Establish `h2 : Tendsto (fun n : ℕ => (ex (((n : ℝ)⁻¹) • X) * ex (((n : ℝ)⁻¹) • Y)) ^ n * (ex (X + Y))⁻¹) atTop (𝓝 1)`. Simplify using `using h1.mul_const (ex (X + Y))⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `(hc.tendsto.comp h2).mul_const (χ (ex (X + Y)))`. Rewrite `h3` using `[map_one, one_mul]`. Use `tendsto_nhds_unique h3 (tendsto_const_nhds.congr' ?_)` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with n hn`. Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : ∀ Z : 𝔤, χ (ex (((n : ℝ)⁻¹) • Z)) ^ n = χ (ex Z)` using `fun Z => by`. Use `hz' Z 1` as an intermediate fact. Rewrite `this` using `[one_smul]`. Rewrite using `[hz', this, ← Complex.exp_nat_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Function.comp_apply, ← map_mul χ (_ * _), inv_mul_cancel_right, map_pow, map_mul, mul_pow, e, e]`. Set `ζ0 : 𝔤 →ₗ[ℝ] ℂ` to `{ toFun := fun Z => z Z.1 Z.2 map_smul' := hsm map_add' := fun X Y => exp_mul_inj fun t => by rw [← hz', smul_add, hex, hz', hz', ← Complex.exp_add, add_mul] }`. Take `⟨ζ, hζ⟩` from `ζ0.exists_extend`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hζ' : ∀ Z (h : Z ∈ 𝔤), ζ Z = z Z h` using `fun Z h => LinearMap.congr_fun hζ ⟨Z, h⟩`. Use `⟨ζ, fun Z h t => by rw [hζ' Z h, hz], fun X hX Y hY => ?_⟩` and prove the remaining obligations. Establish `hA : ∀ s : ℝ, ζ (NormedSpace.exp (s • X) * Y * NormedSpace.exp (s • -X)) = ζ Y` using `fun s => by`. Establish `hm` using `hAd _ (𝔤.smul_mem s hX) Y hY`. Rewrite using `[smul_neg, hζ' _ hm, hζ' _ hY]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `exp_mul_inj fun t => ?_` and prove the remaining obligations. Rewrite using `[← hz, ← hz]`. Set `g : S` to `ex (s • ⟨X, hX⟩)`. Establish `e : (⟨expU (t • (NormedSpace.exp (s • X) * Y * NormedSpace.exp (-(s • X)))), hS _ (𝔤.smul_mem t hm)⟩ : S) = g * ⟨expU (t • Y), hS _ (𝔤.smul_mem t hY)⟩ * g⁻¹`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `NormedSpace.exp_units_conj (expU (s • X)) (t • Y)` as an intermediate fact. Rewrite `this` using `[mul_smul_comm, smul_mul_assoc]`. Conclude with `this`. Rewrite using `[e, map_mul, map_mul, mul_right_comm, ← map_mul, mul_inv_cancel, map_one, one_mul]`. Establish `h1` using `((hasDerivAt_exp_smul_const (𝕂 := ℝ) X 0).mul_const Y).mul (hasDerivAt_exp_smul_const (𝕂 := ℝ) (-X) 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `ζ.toContinuousLinearMap.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Establish `h3 : HasDerivAt (fun s : ℝ => ζ (NormedSpace.exp (s • X) * Y * NormedSpace.exp (s • -X))) 0 0`. Simplify using `only [hA]`. Conclude with `hasDerivAt_const _ _`. Use `h2.unique h3` as an intermediate fact.
-
-Simplify `this` using `[sub_eq_add_neg]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem char_lie [FiniteDimensional ℝ 𝔸] (S : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸) (hS : ∀ Z ∈ 𝔤, expU Z ∈ S)
     (hAd : ∀ Z ∈ 𝔤, ∀ Y ∈ 𝔤, NormedSpace.exp Z * Y * NormedSpace.exp (-Z) ∈ 𝔤) (χ : S →* ℂ) (hc : ContinuousAt χ 1)
@@ -135,13 +133,13 @@ theorem char_lie [FiniteDimensional ℝ 𝔸] (S : Subgroup 𝔸ˣ) (𝔤 : Subm
 end Banach
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty β with hβ | ⟨⟨b⟩⟩` into its components or cases. Conclude with `⟨0, fun A => by rw [Subsingleton.elim A 0, map_zero, zero_mul]⟩`. Use `⟨ξ (single b b 1), fun A => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ i j, i ≠ j → ξ (single i j 1) = 0` using `fun i j hij => by`. Use `h (single i i 1) (single i j 1)` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[single_mul_single_same, single_mul_single_of_ne (h := hij.symm), one_mul, sub_zero]`. Then use the resulting hypothesis. Establish `h2 : ∀ i, ξ (single i i 1) = ξ (single b b 1)` using `fun i => by`. Use `h (single i b 1) (single b i 1)` as an intermediate fact. Rewrite `this` using `[single_mul_single_same, single_mul_single_same, one_mul, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Use `conv_lhs => rw [matrix_eq_sum_single A]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum]`. Rewrite using `[Matrix.trace, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : ∀ j, ξ (single i j (A i j)) = A i j * ξ (single i j 1)` using `fun j => by`. Rewrite using `[← smul_eq_mul, ← map_smul, smul_single, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [e, h1 i j hj.symm, mul_zero]) (by simp), e, h2, mul_comm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_trace {β : Type} [Fintype β] [DecidableEq β] (ξ : Matrix β β ℂ →ₗ[ℂ] ℂ)
     (h : ∀ A B, ξ (A * B - B * A) = 0) : ∃ c : ℂ, ∀ A, ξ A = c * A.trace := by
@@ -164,23 +162,23 @@ theorem eq_trace {β : Type} [Fintype β] [DecidableEq β] (ξ : Matrix β β �
   rfl
 
 /- English proof (translation)
-Set `P : Matrix β β ℂ → Matrix β β ℂ` to `fun A => (1 / 2 : ℝ) • (A + τ A)`. Establish `hP : ∀ A, τ (P A) = P A` using `fun A => by simp only [P, map_smul, map_add, hτ, add_comm]`. Set `ξ0 : Matrix β β ℂ → ℂ` to `fun A => ζ (P A) - I * ζ (P (I • A))`. Establish `add : ∀ A B, ξ0 (A + B) = ξ0 A + ξ0 B` using `fun A B => by`. Simplify using `only [ξ0, P, smul_add, map_add, map_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `rs : ∀ (r : ℝ) A, ξ0 (r • A) = r * ξ0 A` using `fun r A => by`. Simplify using `only [ξ0, P, smul_comm I r, smul_add, map_add, map_smul, real_smul]`. Expand and normalize the polynomial expressions, which then agree. Establish `is : ∀ A, ξ0 (I • A) = I * ξ0 A` using `fun A => by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [ξ0, P, smul_smul, I_mul_I, neg_smul, one_smul, smul_add, map_add, map_smul, map_neg, real_smul, smul_neg]`. Take the linear combination `((((1 / 2 : ℝ) : ℂ) * ζ (I • A) + ((1 / 2 : ℝ) : ℂ) * ζ (τ (I • A)))) * I_mul_I`. Set `ξ : Matrix β β ℂ →ₗ[ℂ] ℂ` to `{ toFun := ξ0 map_add' := add map_smul' := fun c A => by`. Establish `e : c • A = c.re • A + I • (c.im • A)`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.smul_apply, Matrix.add_apply, smul_eq_mul, real_smul]`. Take the linear combination `(-A i j) * re_add_im c`. Rewrite using `[e, add, is, rs, rs, RingHom.id_apply, smul_eq_mul]`. Take the linear combination `(ξ0 A) * re_add_im c }`. Establish `fix : ∀ Z, τ Z = Z → ξ Z = ζ Z` using `fun Z hZ => by`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e1 : P Z = Z`. Simplify using `only [P, hZ]`. Use `module`. Establish `e2 : P (I • Z) = 0` using `by simp only [P, hI, hZ, add_neg_cancel, smul_zero]`. Use `show ζ (P Z) - I * ζ (P (I • Z)) = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, map_zero, mul_zero, sub_zero]`. Establish `dec : ∀ A, A = P A - I • P (I • A)` using `fun A => by`. Simplify using `only [P, hI]`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, Matrix.sub_apply, Matrix.neg_apply, smul_eq_mul, real_smul]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `push_cast`. Take the linear combination `((A i j - τ A i j) / 2) * I_mul_I`. Establish `br : ∀ X Y, τ X = X → τ Y = Y → ξ (X * Y - Y * X) = 0` using `fun X Y hX hY => by`. Rewrite using `[fix _ (hb X Y hX hY).1, (hb X Y hX hY).2]`. Take `⟨c, hc⟩` from `eq_trace ξ fun A B => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ X, τ X = X → ξ (X * B - B * X) = 0` using `fun X hX => by`. Establish `e : X * B - B * X = (X * P B - P B * X) - I • (X * P (I • B) - P (I • B) * X)` using `by conv_lhs => rw [dec B]`. Simplify using `only [mul_sub, sub_mul, Matrix.mul_smul, Matrix.smul_mul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, map_sub, map_smul, br _ _ hX (hP _), br _ _ hX (hP _), smul_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : A * B - B * A = (P A * B - B * P A) - I • (P (I • A) * B - B * P (I • A))` using `by conv_lhs => rw [dec A]`. Simplify using `only [mul_sub, sub_mul, Matrix.mul_smul, Matrix.smul_mul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, map_sub, map_smul, h1 _ (hP _), h1 _ (hP _), smul_zero, sub_zero]`. Conclude with `⟨c, fun Z hZ => by rw [← fix Z hZ, hc]⟩`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem real_form_trace {β : Type} [Fintype β] [DecidableEq β] (τ : Matrix β β ℂ →ₗ[ℝ] Matrix β β ℂ)
     (hI : ∀ A, τ (I • A) = -(I • τ A)) (hτ : ∀ A, τ (τ A) = A) (ζ : Matrix β β ℂ →ₗ[ℝ] ℂ)

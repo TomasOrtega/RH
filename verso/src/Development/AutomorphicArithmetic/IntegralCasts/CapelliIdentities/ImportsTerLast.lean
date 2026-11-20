@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `L _ _ m _ c r`. Establish `hK : IsCompact {A : Matrix (Fin m) (Fin m) L | ∀ i j, ‖A i j - c i j‖ ≤ r}`. Establish `h : IsCompact (Set.univ.pi fun i : Fin m => Set.univ.pi fun j : Fin m => Metric.closedBall (c i j) r)` using `isCompact_univ_pi fun i => isCompact_univ_pi fun j => isCompact_closedBall (c i j) r`. Establish `e : {A : Matrix (Fin m) (Fin m) L | ∀ i j, ‖A i j - c i j‖ ≤ r} = (Set.univ.pi fun i : Fin m => Set.univ.pi fun j : Fin m => Metric.closedBall (c i j) r)`. Use extensionality with `A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hA i _ j _`. Conclude with `mem_closedBall_iff_norm.2 (hA i j)`. Introduce `hA i j`. Conclude with `mem_closedBall_iff_norm.1 (hA i (Set.mem_univ i) j (Set.mem_univ j))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `h`. Establish `hK' : IsCompact (MulOpposite.unop ⁻¹' {A : Matrix (Fin m) (Fin m) L | ∀ i j, ‖A i j - c i j‖ ≤ r})` using `(MulOpposite.opHomeomorph (M := Matrix (Fin m) (Fin m) L)).symm.isCompact_preimage.2 hK`. Conclude with `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin m) (Fin m) L)).isCompact_preimage (hK.prod hK')`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf31.isCompact_box :
     ∀ {L : Type} [inst : NontriviallyNormedField L] [IsUltrametricDist L] {m : ℕ}

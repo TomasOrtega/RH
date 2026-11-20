@@ -13,19 +13,17 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ThK.LawSep
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' hT`. Establish `hcm` using `hT.base.cm`. Take `⟨w₀⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hκ : 0 < B.mα w₀ - B.mβ w₀` using `lt_of_le_of_lt (by positivity) (hT.geo.kappa w₀)`. Take `⟨ξ, hξ0, hξ⟩` from `GlobalTheory.T.exists_element_angle_nontrivial F E σ hcm (B.emb w₀).1 (B.mα w₀ - B.mβ w₀).toNat (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `GlobalTheory.T.exists_idele_character_value F E σ hcm B.emb w₀ ξ hξ0`. Take `⟨m, hm⟩` from `GlobalTheory.T.exists_levi_torus_element_cm F E σ B _ _ G.W G₁.W H' _ _ 0 (b + 1) hcm hT.geo.hW hC.hH' t`. Use `⟨t, m, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[ht _ _ hT.chars.expα, ht _ _ hT.chars.expβ]`. Use `set u : ℂ := (B.emb w₀).1 ξ / (‖(B.emb w₀).1 ξ‖ : ℂ) with hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hτ0 : (B.emb w₀).1 ξ ≠ 0` using `(map_ne_zero _).2 hξ0`. Establish `hu0 : u ≠ 0` using `div_ne_zero hτ0 (by exact_mod_cast norm_ne_zero_iff.2 hτ0)`. Establish `hun : ‖u‖ = 1` using `by rw [hu, norm_div, Complex.norm_real, norm_norm, div_self (norm_ne_zero_iff.2 hτ0)]`. Establish `hA : 0 < (absE F E t : ℝ)`. Establish `h1 : absE F E t * absE F E t⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: absE F E t ≠ 0` using `fun h => by simp [h] at h1`. Conclude with `NNReal.coe_pos.2 (pos_iff_ne_zero.2 this)`. Use `set P : ℝ := (absE F E t : ℝ) ^ ((a' : ℝ) / 2) with hP`. Use `set Q : ℝ := (absE F E t : ℝ) ^ (((b + 2 : ℕ) : ℝ) / 2) with hQ`. Establish `hP0 : 0 < P` using `Real.rpow_pos_of_pos hA _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hQ0 : 0 < Q` using `Real.rpow_pos_of_pos hA _`. Establish `hsplit : B.mα w₀ = B.mβ w₀ + ((B.mα w₀ - B.mβ w₀).toNat : ℤ)` using `by omega`. Introduce `heq`. Rewrite `heq` using `[hsplit, zpow_add₀ hu0, zpow_natCast, mul_assoc]`. Establish `h2 : u ^ (B.mα w₀ - B.mβ w₀).toNat * (P : ℂ) = (Q : ℂ)` using `mul_left_cancel₀ (zpow_ne_zero _ hu0) heq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ‖u ^ (B.mα w₀ - B.mβ w₀).toNat‖ = 1` using `by rw [norm_pow, hun, one_pow]`. Establish `h4 : P = Q`. Use `congrArg norm h2` as an intermediate fact. Rewrite `this` using `[norm_mul, h3, one_mul, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg hP0.le, Real.norm_of_nonneg hQ0.le]`. Conclude with `this`.
-
-Apply `hξ` to reduce the goal to its premises. Rewrite `h2` using `[← h4]`. Conclude with `mul_right_cancel₀ (by exact_mod_cast hP0.ne') (h2.trans (one_mul _).symm)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lawSep : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

@@ -21,9 +21,9 @@ namespace GlobalTheory.TorusFibreImm
 set_option backward.isDefEq.respectTransparency.types false
 
 /- English proof (translation)
-Establish `h1 : ((Over.pullback a).map v).left ≫ pullback.fst Y.hom a = pullback.fst X.hom a ≫ v.left` using `pullback.lift_fst _ _ _`. Establish `h2 : ((Over.pullback a).map v).left ≫ pullback.snd Y.hom a = pullback.snd X.hom a` using `Over.w ((Over.pullback a).map v)`. Use `IsPullback.of_right ?_ h1 (IsPullback.of_hasPullback Y.hom a).flip` and prove the remaining obligations. Establish `h` using `(IsPullback.of_hasPullback X.hom a).flip`. Rewrite using `[h2, Over.w v]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_pullback_map {S S' : Scheme.{0}} (a : S' ⟶ S) {X Y : Over S} (v : X ⟶ Y) :
     IsPullback ((Over.pullback a).map v).left (pullback.fst X.hom a) (pullback.fst Y.hom a) v.left := by
@@ -37,7 +37,7 @@ theorem isPullback_pullback_map {S S' : Scheme.{0}} (a : S' ⟶ S) {X Y : Over S
   exact h
 
 /- English proof (translation)
-Set `e` to `Over.pullbackComp b a`. Conclude with `MorphismProperty.arrow_mk_iso_iff @IsClosedImmersion (Arrow.isoMk ((Over.forget _).mapIso (e.app X)) ((Over.forget _).mapIso (e.app Y)) (congrArg (·.left) (e.hom.naturality v).symm))`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem closedImm_comp_iff {S S' S'' : Scheme.{0}} (b : S'' ⟶ S') (a : S' ⟶ S) {X Y : Over S} (v : X ⟶ Y) :
     IsClosedImmersion ((Over.pullback (b ≫ a)).map v).left ↔
@@ -48,16 +48,16 @@ theorem closedImm_comp_iff {S S' S'' : Scheme.{0}} (b : S'' ⟶ S') (a : S' ⟶ 
       (congrArg (·.left) (e.hom.naturality v).symm))
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @IsClosedImmersion) (isPullback_pullback_map a v).flip h`.
+A detailed English derivation is pending.
 -/
 theorem closedImm_pullback {S S' : Scheme.{0}} (a : S' ⟶ S) {X Y : Over S} (v : X ⟶ Y)
     (h : IsClosedImmersion v.left) : IsClosedImmersion ((Over.pullback a).map v).left :=
   MorphismProperty.of_isPullback (P := @IsClosedImmersion) (isPullback_pullback_map a v).flip h
 
 /- English proof (translation)
-Use `letI := hk.toField`. Use `letI := hΩ.toField`. Use `letI := φ.hom.toAlgebra`. Establish `hd` using `GlobalTheory.ClosedImmFieldDescent.isClosedImmersion_descendsAlong_fpqc`. Establish `hq : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) (Spec.map φ)` using `GlobalTheory.ClosedImmFieldDescent.fpqc_specMap_field k Ω`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `MorphismProperty.of_isPullback_of_descendsAlong (P := @IsClosedImmersion) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) (isPullback_pullback_map _ v) (MorphismProperty.of_isPullback (P := @Surjective ⊓ @Flat ⊓ @QuasiCompact) (IsPullback.of_hasPullback Y.hom (Spec.map φ)).flip hq) h`.
+A detailed English derivation is pending.
 -/
 theorem closedImm_of_pullback {k Ω : CommRingCat.{0}} (hk : IsField k) (hΩ : IsField Ω) (φ : k ⟶ Ω)
     {X Y : Over (Spec k)} (v : X ⟶ Y)
@@ -74,7 +74,7 @@ theorem closedImm_of_pullback {k Ω : CommRingCat.{0}} (hk : IsField k) (hΩ : I
       (IsPullback.of_hasPullback Y.hom (Spec.map φ)).flip hq) h
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField k W w]`. Rewrite using `[closedImm_comp_iff]`. Conclude with `⟨closedImm_of_pullback (Field.toIsField _) (Field.toIsField _) _ _, closedImm_pullback _ _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem closedImm_iff_residue {W : Scheme.{0}} {X Y : Over W} (v : X ⟶ Y) (k : Type) [Field k] (w : Sp k ⟶ W) :
     IsClosedImmersion ((Over.pullback w).map v).left ↔
@@ -84,19 +84,15 @@ theorem closedImm_iff_residue {W : Scheme.{0}} {X Y : Over W} (v : X ⟶ Y) (k :
   exact ⟨closedImm_of_pullback (Field.toIsField _) (Field.toIsField _) _ _, closedImm_pullback _ _⟩
 
 /- English proof (translation)
-Introduce `hT W _ _ G _ hG r u hu hgen k _ w`. Distinguish the cases in `hx : w (IsLocalRing.closedPoint k) = genericPoint W`. Conclude with `hgen k w hx`. Take `⟨O, _, _, -, ξ, h0, h1⟩` from `GlobalTheory.exists_complete_discreteValuationRing_of_specializes (genericPoint_specializes (w (IsLocalRing.closedPoint k))) (Ne.symm hx)`. Set `K` to `FractionRing O`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `κ` to `IsLocalRing.ResidueField O`. Set `ξ' : Spec (CommRingCat.of O) ⟶ W` to `ξ`. Set `uR : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.torus O r ⟶ (Over.pullback ξ').obj G` to `(SplitTorus.bcIso ξ' (Fin r → ℤ)).hom ≫ (Over.pullback ξ').map u`. Use `haveI : IsMonHom uR := inferInstance`. Establish `key : ∀ {S : Scheme.{0}} (b : S ⟶ Spec (CommRingCat.of O)), IsClosedImmersion ((Over.pullback b).map uR).left ↔ IsClosedImmersion ((Over.pullback (b ≫ ξ')).map u).left`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `S b`. Rewrite using `[closedImm_comp_iff, Functor.map_comp, Over.comp_left]`. Use `haveI : IsIso ((Over.pullback b).map (SplitTorus.bcIso ξ' (Fin r → ℤ)).hom).left := ((Over.forget _).mapIso ((Over.pullback b).mapIso (SplitTorus.bcIso ξ' (Fin r → ℤ)))).isIso_hom`. Conclude with `MorphismProperty.cancel_left_of_respectsIso @IsClosedImmersion _ _`. Establish `hK : IsClosedImmersion ((GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange O K).map uR).left`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(key _).2 (hgen K _ ?_)` and prove the remaining obligations. Rewrite using `[← h0]`. Use `(Scheme.Hom.comp_apply _ _ _).trans (congrArg ξ ?_)` and prove the remaining obligations. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap O K) (IsLocalRing.maximalIdeal K) = ⊥`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[IsLocalRing.maximalIdeal_eq_bot, ← RingHom.ker_eq_comap_bot]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective O K)`. Take `⟨u', _, -, huniq, hsat, -⟩` from `hT O K _ (IsSemiAbelian.pullback ξ' G hG) r _ inferInstance hK`. Rewrite `hsat` using `[← huniq uR inferInstance rfl]`. Establish `h2` using `(closedImm_iff_residue u κ _).1 ((key _).1 hsat)`.
-
-Establish `h3 : (Spec.map (CommRingCat.ofHom (algebraMap O κ)) ≫ ξ') (IsLocalRing.closedPoint κ) = w (IsLocalRing.closedPoint k)`. Rewrite using `[← h1]`. Use `(Scheme.Hom.comp_apply _ _ _).trans (congrArg ξ ?_)` and prove the remaining obligations. Conclude with `IsLocalRing.comap_closedPoint (IsLocalRing.residue O)`. Rewrite using `[closedImm_iff_residue, ← h3]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_fibre : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.TorusSaturated → ∀ (W : Scheme.{0}) [IsIntegral W] [IsLocallyNoetherian W] (G : Over W) [GrpObj G], IsSemiAbelian G → ∀ (r : ℕ) (u : splitTorus W (Fin r → ℤ) ⟶ G), IsMonHom u → (∀ (k : Type) [Field k] (g : Sp k ⟶ W), g (IsLocalRing.closedPoint k) = genericPoint W → IsClosedImmersion ((Over.pullback g).map u).left) → ∀ (k : Type) [Field k] (w : Sp k ⟶ W), IsClosedImmersion ((Over.pullback w).map u).left := by
   intro hT W _ _ G _ hG r u hu hgen k _ w

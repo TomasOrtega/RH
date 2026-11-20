@@ -16,7 +16,7 @@ local notation "𝒮" => tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E)
 local notation "ιA" => inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
 
 /- English proof (translation)
-Rewrite using `[glob_sup hΛ (isLat_smul (hJ _ hΛ) ha), glob_smul (hJ _ hΛ) ha, glob_dl σ J hJ hΛ g hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem glob_companion (σ : E →ₐ[F] E) (J : Matrix n n E)
     (hJ : ∀ M : Submodule (𝓞 E) (n → E), IsLat M → IsLat (dl σ J M))
@@ -26,7 +26,7 @@ theorem glob_companion (σ : E →ₐ[F] E) (J : Matrix n n E)
   rw [glob_sup hΛ (isLat_smul (hJ _ hΛ) ha), glob_smul (hJ _ hΛ) ha, glob_dl σ J hJ hΛ g hg]
 
 /- English proof (translation)
-Rewrite using `[← glob_dl σ J hJ hΛ g hg, hsd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem glob_selfdual (σ : E →ₐ[F] E) (J : Matrix n n E)
     (hJ : ∀ M : Submodule (𝓞 E) (n → E), IsLat M → IsLat (dl σ J M))
@@ -35,11 +35,11 @@ theorem glob_selfdual (σ : E →ₐ[F] E) (J : Matrix n n E)
   rw [← glob_dl σ J hJ hΛ g hg, hsd]
 
 /- English proof (translation)
-Establish `H : ∀ {p : Type} [Fintype p] (M : Matrix p p A) (a b : p → A), ∑ i, ∑ j, a i * M i j * b j = (a ᵥ* M) ⬝ᵥ b`. Introduce `p _ M a b`. Simplify using `only [Matrix.vecMul, dotProduct, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Unfold `Formalism.UG.hform Formalism.UG.cT`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[show (∑ i, ∑ j, τ ((Q *ᵥ x) i) * J' i j * (Q *ᵥ y) j) = ((fun i => τ ((Q *ᵥ x) i)) ᵥ* J') ⬝ᵥ (Q *ᵥ y) from H _ _ _, show (∑ i, ∑ j, τ (x i) * ((Q.map τ)ᵀ * J' * Q) i j * y j) = ((fun i => τ (x i)) ᵥ* ((Q.map τ)ᵀ * J' * Q)) ⬝ᵥ y from H _ _ _]`. Establish `hx : (fun i => τ ((Q *ᵥ x) i)) = (fun i => τ (x i)) ᵥ* (Q.map τ)ᵀ`. Rewrite using `[Matrix.vecMul_transpose]`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_mulVec_rect {A : Type} [CommRing A] (τ : A →+* A) (J' : Matrix m m A) (Q : Matrix m n A)
     (x y : n → A) : hform τ J' (Q *ᵥ x) (Q *ᵥ y) = hform τ (cT τ Q * J' * Q) x y := by
@@ -60,15 +60,13 @@ theorem hform_mulVec_rect {A : Type} [CommRing A] (τ : A →+* A) (J' : Matrix 
   rw [hx, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `key : ∀ a b, hform (σ : E →+* E) (1 : Matrix m m E) (Q *ᵥ a) (Q *ᵥ b) = hform (σ : E →+* E) J a b`. Introduce `a b`. Rewrite using `[hform_mulVec_rect, hQ]`. Unfold `dl mapQ`. Rewrite using `[Submodule.map_span]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `x`. Unfold `dualSet`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Use `⟨Q' *ᵥ x, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `h` using `hx (Q *ᵥ y) ⟨y, hy, rfl⟩`. Rewrite using `[← key y (Q' *ᵥ x), Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `h`. Use `show Q *ᵥ (Q' *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Introduce and unpack `⟨z, hz, rfl⟩`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
-
-Use `show hform _ 1 (Q *ᵥ y) (Q *ᵥ z) ∈ _`. Rewrite using `[key]`. Conclude with `hz y hy`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dl_mapQ (σ : E →ₐ[F] E) (J : Matrix n n E) (Q : Matrix m n E) (Q' : Matrix n m E) (h1 : Q * Q' = 1)
     (hQ : cT (σ : E →+* E) Q * (1 : Matrix m m E) * Q = J) (M : Submodule (𝓞 E) (n → E)) :
@@ -98,9 +96,9 @@ theorem dl_mapQ (σ : E →ₐ[F] E) (J : Matrix n n E) (Q : Matrix m n E) (Q' :
     exact hz y hy
 
 /- English proof (translation)
-Unfold `Formalism.UG.cT`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply]`. Use `first`. Consider the case `rfl`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [Formalism.UG.sigR, Formalism.UG.inclE]`. Consider the case `simp [Formalism.UG.P.sigR, Formalism.UG.P.inclE]`. Consider the case `simp [Formalism.UG.CS.sigR, Formalism.UG.CS.inclE]`. Consider the case `(unfold Formalism.UG.sigR; done)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cT_map (σ : E →ₐ[F] E) {p q : Type} (Q : Matrix p q E) :
     cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (Q.map ιA) = (cT (σ : E →+* E) Q).map ιA := by
@@ -115,17 +113,15 @@ theorem cT_map (σ : E →ₐ[F] E) {p q : Type} (Q : Matrix p q E) :
   | (unfold Formalism.UG.sigR; done)
 
 /- English proof (translation)
-Establish `hcTA : ∀ {p q r : Type} [Fintype q] (M : Matrix p q (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (N : Matrix q r (E ⊗[F] FiniteAdeleRing (𝓞 F) F)), cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (M * N) = cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) N * cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) M`. Introduce `p q r _ M N`. Unfold `Formalism.UG.cT`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`. Establish `hcTE : ∀ {p q r : Type} [Fintype q] (M : Matrix p q E) (N : Matrix q r E), cT (σ : E →+* E) (M * N) = cT (σ : E →+* E) N * cT (σ : E →+* E) M`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p q r _ M N`. Unfold `Formalism.UG.cT`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`. Establish `hcT1 : cT (σ : E →+* E) (1 : Matrix m m E) = 1`. Unfold `Formalism.UG.cT`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Establish `hmap1 : (1 : Matrix m m E).map ιA = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hA : cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (Q.map ιA) * Q.map ιA = J.map ιA`. Rewrite using `[cT_map, ← Matrix.map_mul, ← hQ, Matrix.mul_one]`. Establish `hE : cT (σ : E →+* E) Q' * J * Q' = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hQ, Matrix.mul_one, ← Matrix.mul_assoc, ← hcTE, Matrix.mul_assoc, h1, hcT1, Matrix.mul_one]`. Establish `hA' : cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (Q'.map ιA) * J.map ιA * Q'.map ιA = 1`. Rewrite using `[cT_map, ← Matrix.map_mul, ← Matrix.map_mul, hE]`. Conclude with `hmap1`. Establish `hg' : cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (g : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) * J.map ιA * (g : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) = J.map ιA` using `hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (Q.map ιA * (g : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) * Q'.map ιA) * (1 : Matrix m m E).map ιA * (Q.map ιA * (g : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) * Q'.map ιA) = (1 : Matrix m m E).map ιA`. Rewrite using `[hmap1, Matrix.mul_one, hcTA, hcTA]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (Q'.map ιA) * J.map ιA * Q'.map ιA := by rw [hA, hg']`.
-
-Use `_ = 1 := hA'`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conjQ_mem (σ : E →ₐ[F] E) (J : Matrix n n E) (Q : Matrix m n E) (Q' : Matrix n m E) (h1 : Q * Q' = 1)
     (h2 : Q' * Q = 1) (hQ : cT (σ : E →+* E) Q * (1 : Matrix m m E) * Q = J) (g : GL n 𝒜)
@@ -173,17 +169,15 @@ theorem conjQ_mem (σ : E →ₐ[F] E) (J : Matrix n n E) (Q : Matrix m n E) (Q'
     _ = 1 := hA'
 
 /- English proof (translation)
-Establish `hmap1 : ∀ {p : Type} [Fintype p] [DecidableEq p], (1 : Matrix p p E).map ιA = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hG' : cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (G : Matrix m m 𝒜) * (1 : Matrix m m E).map ιA * (G : Matrix m m 𝒜) = (1 : Matrix m m E).map ιA` using `hG`. Rewrite `hG'` using `[hmap1, Matrix.mul_one]`. Use `set u : 𝒜ˣ := Matrix.GeneralLinearGroup.det G with hu`. Establish `hud : (u : 𝒜) = Matrix.det (G : Matrix m m 𝒜)` using `Matrix.GeneralLinearGroup.val_det_apply G`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : sigR σ (FiniteAdeleRing (𝓞 F) F) (u : 𝒜) * (u : 𝒜) = 1`. Establish `h` using `congrArg Matrix.det hG'`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_one]`. Unfold `Formalism.UG.cT at h`. Rewrite `h` using `[Matrix.det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hud]`. Conclude with `h`. Set `x : GL (Fin 1) 𝒜` to `⟨Matrix.diagonal (fun _ => (u : 𝒜)), Matrix.diagonal (fun _ => ((u⁻¹ : 𝒜ˣ) : 𝒜)), by simp [Matrix.diagonal_mul_diagonal], by simp [Matrix.diagonal_mul_diagonal]⟩`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Use `show cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (Matrix.diagonal (fun _ : Fin 1 => (u : 𝒜))) * (1 : Matrix (Fin 1) (Fin 1) E).map ιA * Matrix.diagonal (fun _ : Fin 1 => (u : 𝒜)) = (1 : Matrix (Fin 1) (Fin 1) E).map ιA`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmap1, Matrix.mul_one]`. Unfold `Formalism.UG.cT`. Rewrite using `[Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose, Matrix.diagonal_mul_diagonal]`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Conclude with `hd`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Use `show Matrix.det (Matrix.diagonal (fun _ : Fin 1 => (u : 𝒜))) = (u : 𝒜)`.
-
-Rewrite using `[Matrix.det_diagonal]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unitary_one_det_eq (σ : E →ₐ[F] E) (G : GL m 𝒜) (hG : G ∈ UPts σ (1 : Matrix m m E) (FiniteAdeleRing (𝓞 F) F)) :
     ∃ x : GL (Fin 1) 𝒜, x ∈ UPts σ (1 : Matrix (Fin 1) (Fin 1) E) (FiniteAdeleRing (𝓞 F) F) ∧

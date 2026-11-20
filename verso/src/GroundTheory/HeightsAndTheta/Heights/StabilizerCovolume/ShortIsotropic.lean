@@ -49,33 +49,33 @@ section Herm
 variable {Em : Type} [Field Em] [NumberField Em] [IsCMField Em] {Ψ : Type} [Fintype Ψ] {N j : ℕ}
 
 /- English proof (translation)
-Simplify using `[hermForm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_zero_left (H : Matrix (Fin N) (Fin N) Em) (y : Fin N → Em) : hermForm Em H 0 y = 0 := by
   simp [hermForm]
 
 /- English proof (translation)
-Simplify using `[hermForm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_zero_right (H : Matrix (Fin N) (Fin N) Em) (x : Fin N → Em) : hermForm Em H x 0 = 0 := by
   simp [hermForm]
 
 /- English proof (translation)
-Simplify using `only [hermForm, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_add_left (H : Matrix (Fin N) (Fin N) Em) (x x' y : Fin N → Em) :
     hermForm Em H (x + x') y = hermForm Em H x y + hermForm Em H x' y := by
   simp only [hermForm, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hermForm, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_add_right (H : Matrix (Fin N) (Fin N) Em) (x y y' : Fin N → Em) :
     hermForm Em H x (y + y') = hermForm Em H x y + hermForm Em H x y' := by
   simp only [hermForm, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hermForm, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermForm_smul_left (H : Matrix (Fin N) (Fin N) Em) (c : Em) (x y : Fin N → Em) :
     hermForm Em H (c • x) y = IsCMField.complexConj Em c * hermForm Em H x y := by
@@ -83,7 +83,7 @@ theorem hermForm_smul_left (H : Matrix (Fin N) (Fin N) Em) (c : Em) (x y : Fin N
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hermForm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermForm_smul_right (H : Matrix (Fin N) (Fin N) Em) (c : Em) (x y : Fin N → Em) :
     hermForm Em H x (c • y) = c * hermForm Em H x y := by
@@ -97,7 +97,7 @@ Both sides reduce to the same expression.
 theorem oSmul_eq (c : 𝓞 Em) (x : Fin N → Em) : c • x = (c : Em) • x := rfl
 
 /- English proof (translation)
-Simplify using `only [hermForm, map_sum, map_mul, IsCMField.complexEmbedding_complexConj, dotProduct, Matrix.mulVec, Matrix.map_apply, Pi.star_apply, Finset.mul_sum, mul_assoc, starRingEnd_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem emb_hermForm (σ : Em →+* ℂ) (H : Matrix (Fin N) (Fin N) Em) (x y : Fin N → Em) :
     σ (hermForm Em H x y) = star (fun a => σ (x a)) ⬝ᵥ (H.map σ *ᵥ fun b => σ (y b)) := by
@@ -105,14 +105,14 @@ theorem emb_hermForm (σ : Em →+* ℂ) (H : Matrix (Fin N) (Fin N) Em) (x y : 
     Matrix.map_apply, Pi.star_apply, Finset.mul_sum, mul_assoc, starRingEnd_apply]
 
 /- English proof (translation)
-Rewrite using `[signMat, Matrix.det_diagonal]`. Apply the tactic sequence `exact Finset.prod_ne_zero_iff.mpr fun a _ => by split_ifs <;> norm_num`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_signMat_ne_zero (N j : ℕ) : (signMat N j).det ≠ 0 := by
   rw [signMat, Matrix.det_diagonal]
   exact Finset.prod_ne_zero_iff.mpr fun a _ => by split_ifs <;> norm_num
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Establish `h` using `congrArg Matrix.det hW`. Rewrite `h` using `[Matrix.det_mul, h0, mul_zero]`. Conclude with `det_signMat_ne_zero N j h.symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_witt {M P : Matrix (Fin N) (Fin N) ℂ} (hW : Pᴴ * M * P = signMat N j) : IsUnit P.det := by
   rw [isUnit_iff_ne_zero]
@@ -122,9 +122,9 @@ theorem isUnit_det_of_witt {M P : Matrix (Fin N) (Fin N) ℂ} (hW : Pᴴ * M * P
   exact det_signMat_ne_zero N j h.symm
 
 /- English proof (translation)
-Establish `hu` using `isUnit_det_of_witt hW`. Establish `hx : x = P *ᵥ (P⁻¹ *ᵥ x)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec]`. Establish `hy : y = P *ᵥ (P⁻¹ *ᵥ y)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `P⁻¹ *ᵥ x = a at hx ⊢`. Generalize the expression as in `P⁻¹ *ᵥ y = b at hy ⊢`. Substitute `hx hy` using the available equality. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hW]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_witt {M P : Matrix (Fin N) (Fin N) ℂ} (hW : Pᴴ * M * P = signMat N j) (x y : Fin N → ℂ) :
     star x ⬝ᵥ (M *ᵥ y) = star (P⁻¹ *ᵥ x) ⬝ᵥ (signMat N j *ᵥ (P⁻¹ *ᵥ y)) := by
@@ -139,9 +139,9 @@ theorem form_witt {M P : Matrix (Fin N) (Fin N) ℂ} (hW : Pᴴ * M * P = signMa
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hW]
 
 /- English proof (translation)
-Establish `h1 : ‖star a ⬝ᵥ (signMat N j *ᵥ b)‖ ≤ ∑ c, ‖a c‖ * ‖b c‖`. Simplify using `only [signMat, dotProduct, Matrix.mulVec_diagonal]`. Use `(norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun c _ => ?_))` and prove the remaining obligations. Simplify using `only [Pi.star_apply, norm_mul, norm_star]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `h1.trans (Real.sum_mul_le_sqrt_mul_sqrt _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem norm_sign_form_le (a b : Fin N → ℂ) :
     ‖star a ⬝ᵥ (signMat N j *ᵥ b)‖ ≤ Real.sqrt (∑ c, ‖a c‖ ^ 2) * Real.sqrt (∑ c, ‖b c‖ ^ 2) := by
@@ -153,19 +153,17 @@ theorem norm_sign_form_le (a b : Fin N → ℂ) :
   exact h1.trans (Real.sum_mul_le_sqrt_mul_sqrt _ _ _)
 
 /- English proof (translation)
-Set `e : Ψ × Bool → (Em →+* ℂ)` to `fun p => if p.2 then (starRingEnd ℂ).comp (A.emb p.1) else A.emb p.1`. Establish `cc : ∀ σ : Em →+* ℂ, (starRingEnd ℂ).comp ((starRingEnd ℂ).comp σ) = σ`. Introduce `σ`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ τ τ', A.emb τ ≠ (starRingEnd ℂ).comp (A.emb τ')`. Introduce `τ τ' h`. Use `(A.cmType (A.emb τ)).1 ⟨τ, rfl⟩ ⟨τ', ?_⟩` and prove the remaining obligations. Rewrite using `[h, cc]`. Establish `he : Function.Bijective e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, b⟩ ⟨τ', b'⟩ h`. Apply the tactic sequence `cases b <;> cases b' <;> simp only [e, Bool.false_eq_true, if_true, if_false] at h`. Rewrite using `[A.emb_inj h]`. Conclude with `absurd h (key _ _)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd h.symm (key _ _)`. Establish `h'` using `congrArg (fun f : Em →+* ℂ => (starRingEnd ℂ).comp f) h`. Simplify using `only [cc] at h'`. Rewrite using `[A.emb_inj h']`. Introduce `σ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hσ : ∃ τ, A.emb τ = σ`. Take `⟨τ, rfl⟩` from `hσ`. Conclude with `⟨(τ, false), rfl⟩`. Take `⟨τ, hτ⟩` from `not_not.mp (mt (A.cmType σ).2 hσ)`. Use `⟨(τ, true), ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e, if_true]`. Rewrite using `[hτ, cc]`. Rewrite using `[← he.sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool]`.
-
-Simplify using `only [e, if_true, Bool.false_eq_true, if_false, add_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_embeddings (A : HermDatum Em Ψ N j) (g : (Em →+* ℂ) → ℝ) :
     ∑ σ : Em →+* ℂ, g σ = ∑ τ, (g (A.emb τ) + g ((starRingEnd ℂ).comp (A.emb τ))) := by
@@ -200,7 +198,7 @@ theorem sum_embeddings (A : HermDatum Em Ψ N j) (g : (Em →+* ℂ) → ℝ) :
   simp only [e, if_true, Bool.false_eq_true, if_false, add_comm]
 
 /- English proof (translation)
-The claim follows from `|((Algebra.trace ℚ Em x : ℚ) : ℝ)| ≤ ∑ τ, 2 * ‖A.emb τ x‖ := by have htr : ((Algebra.trace ℚ Em x : ℚ) : ℂ) = ∑ σ : Em →+* ℂ, σ x := by have h := trace_eq_sum_embeddings (K := ℚ) (L := Em) (E := ℂ) (x := x) rw [eq_ratCast (algebraMap ℚ ℂ)] at h rw [h] exact (Fintype.sum_equiv (Ri …`.
+A detailed English derivation is pending.
 -/
 theorem abs_trace_le (A : HermDatum Em Ψ N j) (x : Em) :
     |((Algebra.trace ℚ Em x : ℚ) : ℝ)| ≤ ∑ τ, 2 * ‖A.emb τ x‖ := by
@@ -218,7 +216,7 @@ theorem abs_trace_le (A : HermDatum Em Ψ N j) (x : Em) :
   simp [two_mul]
 
 /- English proof (translation)
-The claim follows from `|((trForm Em A.ξ A.H x y : ℚ) : ℝ)| ≤ A.hodgeNorm P x * A.hodgeNorm P y := by set nx : Ψ → ℝ := fun τ => Real.sqrt (∑ c, ‖((P τ)⁻¹ *ᵥ fun a => A.emb τ (x a)) c‖ ^ 2) with hnx set ny : Ψ → ℝ := fun τ => Real.sqrt (∑ c, ‖((P τ)⁻¹ *ᵥ fun a => A.emb τ (y a)) c‖ ^ 2) with hny set s : …`.
+A detailed English derivation is pending.
 -/
 theorem abs_trForm_le (A : HermDatum Em Ψ N j) {P : Ψ → Matrix (Fin N) (Fin N) ℂ} (hP : A.IsWittPoint P)
     (x y : Fin N → Em) :
@@ -250,13 +248,13 @@ theorem abs_trForm_le (A : HermDatum Em Ψ N j) {P : Ψ → Matrix (Fin N) (Fin 
     _ = A.hodgeNorm P x * A.hodgeNorm P y := by rw [hsq x, hsq y]; rfl
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ vr` using `(norm_nonneg _).trans (hc (Classical.choice inferInstance))`. Establish `hsq : A.hodgeNormSq P (c • x) ≤ vr ^ 2 * A.hodgeNormSq P x`. Unfold `HermDatum.hodgeNormSq`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv : ((P τ)⁻¹ *ᵥ fun a => A.emb τ ((c • x) a)) = A.emb τ c • ((P τ)⁻¹ *ᵥ fun a => A.emb τ (x a))`. Rewrite using `[← Matrix.mulVec_smul]`. Use `congr 1`. Use extensionality with `a`. Simplify using `[smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hS : ∑ c', ‖(A.emb τ c • ((P τ)⁻¹ *ᵥ fun a => A.emb τ (x a))) c'‖ ^ 2 = ‖A.emb τ c‖ ^ 2 * ∑ c', ‖((P τ)⁻¹ *ᵥ fun a => A.emb τ (x a)) c'‖ ^ 2`. Rewrite using `[Finset.mul_sum]`. Simplify using `[mul_pow]`. Rewrite using `[hv, hS]`. Establish `ht : ‖A.emb τ c‖ ^ 2 ≤ vr ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) (hc _) 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Unfold `HermDatum.hodgeNorm`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem hodgeNorm_smul_le (A : HermDatum Em Ψ N j) (P : Ψ → Matrix (Fin N) (Fin N) ℂ) {vr : ℝ} (c : Em)
     (hc : ∀ σ : Em →+* ℂ, ‖σ c‖ ≤ vr) (x : Fin N → Em) :
@@ -287,19 +285,19 @@ theorem hodgeNorm_smul_le (A : HermDatum Em Ψ N j) (P : Ψ → Matrix (Fin N) (
     _ = vr * Real.sqrt (A.hodgeNormSq P x) := by rw [Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq h0]
 
 /- English proof (translation)
-Take `⟨κ, _, a, hcard, hli, hbd⟩` from `hvr`. Establish `hvr0 : 0 < vr`. Establish `h1 : 0 < (Real.sqrt vr)⁻¹` using `lt_of_le_of_lt (Real.sqrt_nonneg _) hvs`. Conclude with `Real.sqrt_pos.mp (inv_pos.mp h1)`. Establish `step : ∀ i, trForm Em A.ξ A.H ((a i : Em) • v) w = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `hmem : (a i : Em) • v ∈ A.L` using `A.L.smul_mem (a i) hv`. Take `⟨m, hm⟩` from `(A.selfDual _).1 hmem w hw`. Establish `hlt : |((trForm Em A.ξ A.H ((a i : Em) • v) w : ℚ) : ℝ)| < 1`. Use `lt_of_le_of_lt (abs_trForm_le A hP _ _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hnv` using `Real.sqrt_nonneg (A.hodgeNormSq P v)`. Establish `hnw` using `Real.sqrt_nonneg (A.hodgeNormSq P w)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← mul_inv, Real.mul_self_sqrt hvr0.le, mul_inv_cancel₀ hvr0.ne']`. Rewrite `hlt` using `[hm, Rat.cast_intCast]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm0 : m = 0` using `Int.abs_lt_one_iff.mp (by exact_mod_cast hlt)`. Rewrite using `[hm, hm0, Int.cast_zero]`. Use `set t := hermForm Em A.H v w`. Set `conjQ : Em →ₗ[ℚ] Em` to `((IsCMField.complexConj Em : Em →+* Em).toRatAlgHom).toLinearMap`. Set `φ : Em →ₗ[ℚ] ℚ` to `(Algebra.trace ℚ Em).comp ((LinearMap.mulRight ℚ (A.ξ * t)).comp conjQ)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφ : ∀ b : Em, φ b = trForm Em A.ξ A.H (b • v) w`. Introduce `b`. Simplify using `only [φ, conjQ, LinearMap.comp_apply, LinearMap.mulRight_apply, AlgHom.toLinearMap_apply, RingHom.toRatAlgHom_apply, trForm, hermForm_smul_left, t]`. Use `congr 1`. Simplify using `only [RingHom.coe_coe]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hspan` using `hli.span_eq_top_of_card_eq_finrank' hcard`. Establish `hφ0 : φ = 0` using `LinearMap.ext_on_range hspan fun i => by rw [hφ, LinearMap.zero_apply]; exact step i`. Assume the negation of the conclusion as `ht`. Establish `hξt : A.ξ * t ≠ 0` using `mul_ne_zero A.ξ_ne ht`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `LinearMap.congr_fun hφ0 (IsCMField.complexConj Em (A.ξ * t)⁻¹)`. Simplify using `only [φ, conjQ, LinearMap.comp_apply, LinearMap.mulRight_apply, AlgHom.toLinearMap_apply, RingHom.toRatAlgHom_apply, LinearMap.zero_apply, RingHom.coe_coe, IsCMField.complexConj_apply_apply, inv_mul_cancel₀ hξt] at h1`. Rewrite `h1` using `[show (1 : Em) = algebraMap ℚ Em 1 from (map_one _).symm, Algebra.trace_algebraMap]`. Simplify using `only [nsmul_eq_mul, mul_one, Nat.cast_eq_zero] at h1`. Conclude with `(Module.finrank_pos (R := ℚ) (M := Em)).ne' h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermForm_eq_zero_of_short (A : HermDatum Em Ψ N j) {P : Ψ → Matrix (Fin N) (Fin N) ℂ}
     (hP : A.IsWittPoint P) {vr : ℝ} (hvr : IntegralBasisBound Em vr) {v w : Fin N → Em} (hv : v ∈ A.L)
@@ -349,11 +347,11 @@ theorem hermForm_eq_zero_of_short (A : HermDatum Em Ψ N j) {P : Ψ → Matrix (
   exact (Module.finrank_pos (R := ℚ) (M := Em)).ne' h1
 
 /- English proof (translation)
-Establish `right : ∀ v ∈ {v | v ∈ A.L ∧ A.hodgeNorm P v < (Real.sqrt vr)⁻¹}, ∀ y ∈ A.shortSpan P (Real.sqrt vr)⁻¹, hermForm Em A.H v y = 0`. Introduce `v hv y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw => exact hermForm_eq_zero_of_short A hP hvr hv.1 hw.1 hv.2 hw.2`. Consider the case `zero => exact hermForm_zero_right _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y y' _ _ h h' => rw [hermForm_add_right, h, h', add_zero]`. Consider the case `smul c y _ h => rw [oSmul_eq, hermForm_smul_right, h, mul_zero]`. Introduce `x hx y hy`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem v hv => exact right v hv y hy`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact hermForm_zero_left _ _`. Consider the case `add x x' _ _ h h' => rw [hermForm_add_left, h, h', add_zero]`. Consider the case `smul c x _ h => rw [oSmul_eq, hermForm_smul_left, h, mul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem isIso_shortSpan (A : HermDatum Em Ψ N j) {P : Ψ → Matrix (Fin N) (Fin N) ℂ} (hP : A.IsWittPoint P)
     {vr : ℝ} (hvr : IntegralBasisBound Em vr) : A.IsIso (A.shortSpan P (Real.sqrt vr)⁻¹) := by
@@ -375,7 +373,7 @@ theorem isIso_shortSpan (A : HermDatum Em Ψ N j) {P : Ψ → Matrix (Fin N) (Fi
 end Herm
 
 /- English proof (translation)
-Introduce `z hz _ hvr` and use `isIso_shortSpan D.herm (fun τ => D.per_witt z hz τ) hvr`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem proof (D : FullerData II Ψ K ι Ω E Em) : ShortIsotropic.Statement D :=
   fun z hz _ hvr => isIso_shortSpan D.herm (fun τ => D.per_witt z hz τ) hvr
@@ -385,18 +383,18 @@ end ShortIsotropic
 namespace ShortIsotropic
 
 /- English proof (translation)
-Introduce `_` and use `Gauss.gauss_signature`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gauss_isWittPoint : Gauss.gaussDatum.IsWittPoint (fun _ => 1) := fun _ => Gauss.gauss_signature
 
 /- English proof (translation)
-Use `⟨Fin 2, inferInstance, ![1, ⟨Gauss.ζ, Gauss.ζ_isIntegral⟩], by rw [Fintype.card_fin, Gauss.finrank_Em], ?_, ?_⟩` and prove the remaining obligations. Establish `he : (fun i => ((![1, ⟨Gauss.ζ, Gauss.ζ_isIntegral⟩] : Fin 2 → 𝓞 Gauss.Em) i : Gauss.Em)) = ![1, Gauss.ζ]`. Apply the tactic sequence `ext i; fin_cases i <;> rfl`. Rewrite using `[he, LinearIndependent.pair_iff]`. Introduce `s t hst`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Algebra.smul_def, eq_ratCast, mul_one] at hst`. Establish `h2` using `congrArg (Algebra.trace ℚ Gauss.Em) hst`. Rewrite `h2` using `[Gauss.trace_rep, map_zero]`. Establish `hs : s = 0` using `by linarith`. Use `⟨hs, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hst` using `[hs, Rat.cast_zero, zero_add]`. Use `(mul_eq_zero.mp hst).resolve_right (Gauss.hζ.ne_zero (by norm_num))` as an intermediate fact. Conclude with `this` after adjusting the coercions. Introduce `i σ fin_cases i`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `show ‖σ Gauss.ζ‖ ≤ 1`. Apply the tactic sequence `rcases Gauss.emb_ζ σ with h | h <;> simp [h]`.
+A detailed English derivation is pending.
 -/
 theorem gauss_integralBasisBound : IntegralBasisBound Gauss.Em 1 := by
   refine ⟨Fin 2, inferInstance, ![1, ⟨Gauss.ζ, Gauss.ζ_isIntegral⟩],
@@ -421,7 +419,7 @@ theorem gauss_integralBasisBound : IntegralBasisBound Gauss.Em 1 := by
       rcases Gauss.emb_ζ σ with h | h <;> simp [h]
 
 /- English proof (translation)
-Use `⟨⟨fun _ => ⟨0, one_ne_zero⟩, fun f hf => ?_⟩, fun h => h⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f ∈ mCoordIdeal Line.yLine at hf`. Rewrite `hf` using `[Line.mCoordIdeal_yLine, Ideal.mem_bot]`. Simplify using `[hf]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lineFuller_point : (fun _ => (1 : ℂ)) ∈
     mcPts (mCoordIdeal LineFuller.lineFullerZero.y) \ LineFuller.lineFullerZero.Bd := by
@@ -431,7 +429,7 @@ theorem lineFuller_point : (fun _ => (1 : ℂ)) ∈
   simp [hf]
 
 /- English proof (translation)
-The claim follows from `proof _ _ lineFuller_point 1 gauss_integralBasisBound`.
+A detailed English derivation is pending.
 -/
 theorem lineFuller_instance :
     LineFuller.lineFullerZero.herm.IsIso (LineFuller.lineFullerZero.herm.shortSpan

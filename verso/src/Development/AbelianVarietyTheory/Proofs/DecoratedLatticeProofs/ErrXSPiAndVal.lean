@@ -6,11 +6,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Gl
 namespace GlobalTheory.Core.Cls
 
 /- English proof (translation)
-Introduce `K B f T w Z b`. Establish `hc : b.t.full.1.cols = b.t.C.herm` using `b.t.full.2`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (b.t.full.1.cols.levelZeroCompatibility (w.D Z).u₀).piG = _`. Rewrite using `[hc, ← b.t.C.piG]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(b.t.std _).gl.piG`. Use function extensionality and compare the values at `u show (b.t.full.1.cols.atT u).piU = _`. Rewrite using `[hc, ← b.t.C.piU u]`. Conclude with `(b.t.std u).piU`. Break down `w with ⟨px, I, ok, C_eq, S_eq, xi_range, pins, l, l0, δ, exact, fld, val⟩` into its components or cases.
-
-Substitute `C_eq` using the available equality. Conclude with `val _ _ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem errXS_pi_and_val : ∀ (K : Ctx) (B : GlobalTheory.Mem.Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (b : CoreB K w Z), (Formalism.L2.Herm.toErrXS b.t.full.1).piG = w.px.piG ∧ (Formalism.L2.Herm.toErrXS b.t.full.1).piT = w.px.piT ∧ Formalism.L2.Host.ValLL0 (w.D Z) (TC.cf w.I w.l Z) := by
   intro K B f T w Z b

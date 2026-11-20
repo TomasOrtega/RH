@@ -19,7 +19,7 @@ variable {K : Type} [Field K] [NumberField K] {G : Type} [Group G] [Fintype G]
   {U : Type} [AddCommGroup U] [Module K U]
 
 /- English proof (translation)
-Unfold `Formalism.IndefR.IndefiniteEpsilonOperator.epOp Formalism.IndefR.TransferLatticeStatement.epP`. Simplify using `only [hχ]`. Reduce the equality to equality of the corresponding arguments. Conclude with `Subsingleton.elim _ _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem epOp_eq_epP (σ : Representation K G U) (P : Subgroup G) (ψ : P →* Kˣ) (χ : P →* (𝓞 K)ˣ)
     (hχ : ∀ h, (((χ h : (𝓞 K)ˣ) : 𝓞 K) : K) = ((ψ h : Kˣ) : K)) :
@@ -30,7 +30,7 @@ theorem epOp_eq_epP (σ : Representation K G U) (P : Subgroup G) (ψ : P →* K�
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Unfold `Formalism.IndefR.IndefiniteEpsilonOperator.nOf Formalism.IndefR.TransferLatticeStatement.nS`. Use `first`. Consider the case `(unfold Formalism.IndefR.IndefiniteEpsilonOperator.epSp; rw [epOp_eq_epP τ P ψ χ hχ])`. Consider the case `(simp only [Formalism.IndefR.IndefiniteEpsilonOperator.epSp, epOp_eq_epP τ P ψ χ hχ])`. Consider the case `(rw [← epOp_eq_epP τ P ψ χ hχ]; rfl)`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nOf_eq_nS {W : Type} [AddCommGroup W] [Module K W] (τ : Representation K G W) (P : Subgroup G) (ψ : P →* Kˣ)
     (χ : P →* (𝓞 K)ˣ) (hχ : ∀ h, (((χ h : (𝓞 K)ˣ) : 𝓞 K) : K) = ((ψ h : Kˣ) : K)) :
@@ -54,7 +54,7 @@ def rep (h1 : I.ρf 1 = 1) (hm : ∀ g h, I.ρf (g * h) = I.ρf g * I.ρf h) : R
   map_mul' g h := by rw [hm, Matrix.toLin'_mul]; rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [rep, Matrix.toLin'_apply]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rep_apply (h1 : I.ρf 1 = 1) (hm : ∀ g h, I.ρf (g * h) = I.ρf g * I.ρf h) (g : G) (x : Fin I.Sg.D → K) :
     I.rep h1 hm g x = I.ρf g *ᵥ x := by
@@ -63,9 +63,9 @@ theorem rep_apply (h1 : I.ρf 1 = 1) (hm : ∀ g h, I.ρf (g * h) = I.ρf g * I.
   | simp [rep, Matrix.toLin'_apply]
 
 /- English proof (translation)
-Rewrite using `[← epOp_eq_epP (I.rep h1 hm) P ψ χ hχ]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Unfold `epM Formalism.IndefR.IndefiniteEpsilonOperator.epOp`. Rewrite using `[Matrix.mulVecLin_apply, Matrix.smul_mulVec, Matrix.sum_mulVec, LinearMap.smul_apply, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mulVec, LinearMap.smul_apply, rep_apply, map_inv]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem epM_eq (h1 : I.ρf 1 = 1) (hm : ∀ g h, I.ρf (g * h) = I.ρf g * I.ρf h) (P : Subgroup G) (ψ : P →* Kˣ)
     (χ : P →* (𝓞 K)ˣ) (hχ : ∀ h, (((χ h : (𝓞 K)ˣ) : 𝓞 K) : K) = ((ψ h : Kˣ) : K)) :
@@ -81,9 +81,9 @@ theorem epM_eq (h1 : I.ρf 1 = 1) (hm : ∀ g h, I.ρf (g * h) = I.ρf g * I.ρf
   rw [Matrix.smul_mulVec, LinearMap.smul_apply, rep_apply, map_inv]
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Unfold `eMat Formalism.IndefR.TransferLatticeStatement.eS`. Rewrite using `[Matrix.mulVecLin_apply, Matrix.smul_mulVec, Matrix.sum_mulVec, LinearMap.smul_apply, LinearMap.sum_apply]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mulVec, LinearMap.smul_apply, rep_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eMat_eq (h1 : I.ρf 1 = 1) (hm : ∀ g h, I.ρf (g * h) = I.ρf g * I.ρf h) {W : Type} [AddCommGroup W]
     [Module K W] (τ : Representation K G W) :
@@ -97,25 +97,23 @@ theorem eMat_eq (h1 : I.ρf 1 = 1) (hm : ∀ g h, I.ρf (g * h) = I.ρf g * I.ρ
   rw [Matrix.smul_mulVec, LinearMap.smul_apply, rep_apply]
 
 /- English proof (translation)
-Take `⟨h1, hm, -⟩` from `hρ s H`. Take `⟨χ0, hχ0⟩` from `Formalism.IndefR.LatticeTransfer.liftChar K I.P0 I.ψ0`. Take `⟨χ1, hχ1⟩` from `Formalism.IndefR.LatticeTransfer.liftChar K I.P1 I.ψ1`. Establish `hFrm : (I.LA τ nbar).FramesG` using `hFr s H`. Establish `hL : (I.LA τ nbar).LatG` using `hLat s H`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key0 : (I.LA τ nbar).ep0.mulVecLin = Formalism.IndefR.TransferLatticeStatement.epP I.P0 χ0 (I.rep h1 hm)` using `I.epM_eq h1 hm I.P0 I.ψ0 χ0 hχ0`. Establish `key1 : (I.LA τ nbar).ep1.mulVecLin = Formalism.IndefR.TransferLatticeStatement.epP I.P1 χ1 (I.rep h1 hm)` using `I.epM_eq h1 hm I.P1 I.ψ1 χ1 hχ1`. Establish `hs : ∀ t : S, (I.eMat (τ t)).mulVecLin = Formalism.IndefR.TransferLatticeStatement.eS (τ t) (I.rep h1 hm)` using `fun t => I.eMat_eq h1 hm (τ t)`. Establish `hnS : ∀ t : S, Formalism.IndefR.IndefiniteEpsilonOperator.nOf (τ t) ⟨I.P1, I.ψ1⟩ = Formalism.IndefR.TransferLatticeStatement.nS (τ t) I.P1 χ1` using `fun t => nOf_eq_nS (τ t) I.P1 I.ψ1 χ1 hχ1`. Establish `hM1' : Formalism.IndefR.TransferLatticeStatement.M1 τ I.P0 χ0` using `fun t => by rw [← nOf_eq_nS (τ t) I.P0 I.ψ0 χ0 hχ0]; exact hM1 t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgood : Formalism.IndefR.TransferLatticeStatement.eGood τ (I.rep h1 hm) = LinearMap.id`. Unfold `Formalism.IndefR.TransferLatticeStatement.eGood`. Rewrite using `[← Finset.sum_congr rfl fun t _ => hs t]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx` using `congrArg (fun M : Matrix (Fin I.Sg.D) (Fin I.Sg.D) K => M *ᵥ x) (hGood s H hτ hX)`. Simplify using `only [Matrix.sum_mulVec, Matrix.one_mulVec] at hx`. Rewrite using `[LinearMap.sum_apply, LinearMap.id_apply]`. Simplify `hx` using `only [Matrix.mulVecLin_apply]`. Establish `hst : ∀ g : G, ∀ a ∈ I.Sg.RR, I.rep h1 hm g a ∈ I.Sg.RR` using `fun g a ha => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[rep_apply]`. Conclude with `hGL s H g a ha`. Establish `hUn : Formalism.IndefR.TransferLatticeStatement.IsUnitaryRep (Pi.basisFun K (Fin I.Sg.D)) I.Sg.XE (I.rep h1 hm)` using `fun v g x y => by`. Rewrite using `[rep_apply, rep_apply]`. Conclude with `hU s H v g x y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hRk, hD0, hD1, hMx⟩` from `Formalism.IndefR.LatticeTransfer.levelAmb_transfer (I.LA τ nbar) τ I.P0 χ0 I.P1 χ1 (I.rep h1 hm) hτ hM1' key0 key1 hs hnS rfl hgood hFrm hL hst hUn`. Establish `hE : ∀ b, (I.LA τ nbar).EmbAt (I.Jm b) (I.epM (I.lvP b) (I.lvψ b)) (Nat.card (I.lvP b)) (I.Sb b).XE` using `fun b => ⟨(hJ s H b).2, hR s H b, hMet s H b⟩`. Establish `hSd : ∀ b, (I.LA τ nbar).SandAt (I.Jm b) (I.epM (I.lvP b) (I.lvψ b)) (Nat.card (I.lvP b)) (I.Sb b).RR`. Introduce `b`. Take `⟨hin, hout⟩` from `hS s H b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨x, hx, rfl⟩`. Use `⟨hin x hx, ?_⟩` and prove the remaining obligations. Use `show (I.Jm b *ᵥ x) ∈ LinearMap.range (I.epM (I.lvP b) (I.lvψ b)).mulVecLin`. Rewrite using `[← hR s H b]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, rfl⟩`. Introduce and unpack `y ⟨hyR, hyE⟩`. Take `⟨x, hx, hxy⟩` from `hout y hyR hyE`. Conclude with `⟨x, hx, hxy⟩`. Establish `hRows : (I.LA τ nbar).RowsG` using `⟨Formalism.L2.GlobalTheoryTheory.DivPassage2.rows_gen (I.LA τ nbar) hL (I.Jm false) _ H.pos0 (hJ s H false).2 (hR s H false), Formalism.L2.GlobalTheoryTheory.DivPassage2.rows_gen (I.LA τ nbar) hL (I.Jm true) _ H.pos1 (hJ s H true).2 (hR s H true)⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hSz : (I.LA τ nbar).Sizes N.la`. Use `⟨Nat.card_pos, ?_, Nat.card_pos, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Subgroup.card_le_card_group I.P0).trans (Nat.card_eq_fintype_card).le`. Conclude with `(Subgroup.card_le_card_group I.P1).trans (Nat.card_eq_fintype_card).le`. Rewrite using `[hla]`.
-
-Conclude with `le_refl _`. Conclude with `passage_from_levels K I.A.fam.base _ _ N (I.Sb false) (I.Sb true) (I.LA τ nbar) hFrm hL (hE false) (hE true) (hSd false) (hSd true) hSz hRk hD0 hD1 (hMx hRows.2) ⟨hn, hM2⟩ hRows`.
+A detailed English derivation is pending.
 -/
 theorem passage_of_steps [IsTotallyComplex K] {s : ℕ} (H : I.Hyp s) {S : Type} [Fintype S] {Ws : S → Type}
     [∀ s, AddCommGroup (Ws s)] [∀ s, Module K (Ws s)] [∀ s, FiniteDimensional K (Ws s)]

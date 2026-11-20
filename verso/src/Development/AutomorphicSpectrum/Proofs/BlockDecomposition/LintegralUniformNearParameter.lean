@@ -5,7 +5,7 @@ open scoped ENNReal NNReal Topology
 namespace GlobalTheory.CompanionTheory.FibSch
 
 /- English proof (translation)
-Establish `ha' : 0 < 1 + a` using `by linarith`. Establish `hb' : 0 < 1 + b` using `by linarith`. Rewrite using `[Real.rpow_neg ha'.le, Real.rpow_neg hb'.le, Real.rpow_natCast, Real.rpow_natCast, ← div_eq_mul_inv, le_div_iff₀ (pow_pos ha' n), inv_mul_le_iff₀ (pow_pos hb' n), ← mul_pow]`. Rewrite using `[mul_comm (1 + b) M]`. Conclude with `pow_le_pow_left₀ ha'.le h n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weight_le_of_one_add_le {a b M : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (n : ℕ)
     (h : 1 + a ≤ M * (1 + b)) :
@@ -18,17 +18,15 @@ theorem weight_le_of_one_add_le {a b M : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (n :
   exact pow_le_pow_left₀ ha'.le h n
 
 /- English proof (translation)
-Introduce `X P _ _ _ _ _ _ N e he c m0 A hA hlim δ hδ hev hfin u C hu hub`. Establish `hw_cont : Continuous fun x => (1 + ‖e x‖) ^ (-((N + 1 : ℕ) : ℝ))` using `(continuous_const.add he.norm).rpow_const (fun x => Or.inl (by positivity : (0 : ℝ) < 1 + ‖e x‖).ne')`. Establish `hw_nonneg : ∀ x, 0 ≤ (1 + ‖e x‖) ^ (-((N + 1 : ℕ) : ℝ))` using `fun x => Real.rpow_nonneg (by positivity) _`. Establish `hw_int : Integrable (fun x => (1 + ‖e x‖) ^ (-((N + 1 : ℕ) : ℝ))) m0`. Use `⟨hw_cont.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall hw_nonneg)]`. Conclude with `lt_top_iff_ne_top.mpr hfin`. Establish `hM : ∀ a b : ℝ, 0 ≤ a → δ * a ≤ b → 1 + a ≤ max 1 (1 / δ) * (1 + b)`. Introduce `a b ha hab`. Establish `h1 : (1 : ℝ) ≤ max 1 (1 / δ)` using `le_max_left _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 1 / δ ≤ max 1 (1 / δ)` using `le_max_right _ _`. Establish `hb : 0 ≤ b` using `le_trans (mul_nonneg hδ.le ha) hab`. Establish `h3 : a ≤ 1 / δ * b`. Rewrite using `[one_div, ← div_eq_inv_mul, le_div_iff₀ hδ, mul_comm]`. Conclude with `hab`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : a ≤ max 1 (1 / δ) * b` using `h3.trans (mul_le_mul_of_nonneg_right h2 hb)`. Rewrite using `[mul_add, mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbound : ∀ᶠ s in nhds c, ∀ x, ‖u (e (A s x))‖ ≤ |C| * max 1 (1 / δ) ^ (N + 1) * (1 + ‖e x‖) ^ (-((N + 1 : ℕ) : ℝ))` using `by filter_upwards [hev] with s hs x`. Establish `hb` using `GlobalTheory.CompanionTheory.FibSch.weight_le_of_one_add_le (norm_nonneg (e x)) (norm_nonneg (e (A s x))) (N + 1) (hM _ _ (norm_nonneg _) (hs x))`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc]`. Establish `hg_int` using `hw_int.const_mul (|C| * max 1 (1 / δ) ^ (N + 1))`. Establish `hmeas : ∀ s, AEStronglyMeasurable (fun x => u (e (A s x))) m0` using `fun s => (hu.comp (he.comp (hA s))).aestronglyMeasurable`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Use `filter_upwards [hbound] with s hs`. Conclude with `hg_int.mono' (hmeas s) (Filter.Eventually.of_forall hs)`. Conclude with `tendsto_integral_filter_of_dominated_convergence _ (Filter.Eventually.of_forall hmeas) (hbound.mono fun s hs => Filter.Eventually.of_forall hs) hg_int (Filter.Eventually.of_forall fun x => (hu.comp he).continuousAt.tendsto.comp (hlim x))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integral_comp_additive_continuousAt :
     ∀ (X P : Type) [AddCommGroup X] [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X]

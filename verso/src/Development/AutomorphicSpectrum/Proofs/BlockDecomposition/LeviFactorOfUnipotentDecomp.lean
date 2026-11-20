@@ -10,13 +10,13 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.LimV.LeviCf
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `lev_mul_unip (g⁻¹) (-x)`. Establish `hu : (unip x : GL (Fin (r + s)) R)⁻¹ = unip (-x)`. Rewrite using `[inv_eq_iff_mul_eq_one, ← D.unip_add', add_neg_cancel, unip_zero]`. Establish `hi : (unip x * lev R r s g : GL (Fin (r + s)) R)⁻¹ = unip v * lev R r s g⁻¹`. Rewrite using `[_root_.mul_inv_rev, hu, ← map_inv, hv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h'` using `[hi]`. Use `⟨⟨fun a b => ?_, fun a b => ?_⟩, fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[← unip_lev_cc x g a b]`. Conclude with `h _ _`. Use `unip_lev_cc v g⁻¹ a b` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Prod.fst_inv]`. Rewrite using `[← this]`. Conclude with `h' _ _`. Rewrite using `[← unip_lev_nn x g a b]`. Conclude with `h _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `unip_lev_nn v g⁻¹ a b` as an intermediate fact. Rewrite `this` using `[Prod.snd_inv]`. Rewrite using `[← this]`. Conclude with `h' _ _`.
+A detailed English derivation is pending.
 -/
 theorem entries_of_unip_lev {R : Type} [CommRing R] {r s : ℕ} (S : Set R) (x : BlockIx (r + s) r → R)
     (g : GL (Fin r) R × GL (Fin s) R)
@@ -44,9 +44,9 @@ theorem entries_of_unip_lev {R : Type} [CommRing R] {r s : ℕ} (S : Set R) (x :
     rw [← this]; exact h' _ _
 
 /- English proof (translation)
-Take `⟨k₁, g₁, k₂, g₂, hm⟩` from `levi_cf h`. Establish `f1 : GeneralLinearGroup.map (pFin E) m.1 = g₁`. Rewrite using `[hm, cf, map_mul, pFin_infGL, pFin_finGL, one_mul]`. Establish `f2 : GeneralLinearGroup.map (pFin E) m.2 = g₂`. Rewrite using `[show m.2 = cf s k₂ g₂ by rw [hm], cf, map_mul, pFin_infGL, pFin_finGL, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrArg (GeneralLinearGroup.map (pFin E)) h`. Rewrite `h2` using `[map_mul, IwaAd.map_unip, IwaAd.map_lev, cf, map_mul, pFin_infGL, pFin_finGL, one_mul, f1, f2]`. Take `⟨hc1, hc2⟩` from `(GroundTheory.Automorphic.AdelicGLn.mem_integralFiniteGL_iff E (r + s)).1 hc`. Take `⟨⟨a1, a2⟩, b1, b2⟩` from `entries_of_unip_lev (↑(GroundTheory.Global.integralFiniteAdeles (𝓞 E) E) : Set (Af E)) _ (g₁, g₂) (by rw [h2]; exact hc1) (by rw [h2]; exact hc2)`. Conclude with `⟨k₁, g₁, k₂, g₂, (GroundTheory.Automorphic.AdelicGLn.mem_integralFiniteGL_iff E r).2 ⟨a1, a2⟩, (GroundTheory.Automorphic.AdelicGLn.mem_integralFiniteGL_iff E s).2 ⟨b1, b2⟩, hm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem levi_cf_integral {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r s : ℕ}
     (u : BlockIx (r + s) r → Ad E) (m : GA E r × GA E s) (k : Kinf E (r + s)) (c : GL (Fin (r + s)) (Af E))

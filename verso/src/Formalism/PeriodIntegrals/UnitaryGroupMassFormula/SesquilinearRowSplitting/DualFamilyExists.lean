@@ -6,11 +6,11 @@ open NumberField Module
 namespace PI.SRW
 
 /- English proof (translation)
-Introduce `E V _ _ _ n g hg`. Set `b` to `Basis.span hg`. Use `choose c hc using fun i => LinearMap.exists_extend (b.coord i)`. Use `⟨c, fun i j => ?_⟩` and prove the remaining obligations. Establish `hmem : g j ∈ Submodule.span E (Set.range g)` using `Submodule.subset_span ⟨j, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : c i (g j) = b.coord i ⟨g j, hmem⟩`. Rewrite using `[← hc i]`. Both sides reduce to the same expression. Establish `h2 : (⟨g j, hmem⟩ : Submodule.span E (Set.range g)) = b j`. Rewrite using `[Basis.span_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, Basis.coord_apply, Basis.repr_self, Finsupp.single_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualFamilyExists : CoordStep := by
   intro E V _ _ _ n g hg

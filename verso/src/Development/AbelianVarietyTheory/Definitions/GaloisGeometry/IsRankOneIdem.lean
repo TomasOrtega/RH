@@ -95,7 +95,7 @@ structure LevModel (M₀ : Model b N) (w : Ideal (𝓞 D.F)) (m : ℕ) (e : D.O)
 section Basic₂
 
 /- English proof (translation)
-Establish `h : powO D w 0 = ⊤`. Rewrite using `[powO, pow_zero, Ideal.one_eq_top]`. Conclude with `(Ideal.eq_top_iff_one _).2 (by simpa using Ideal.mem_map_of_mem (algebraMap (𝓞 D.F) D.O) (Submodule.mem_top (x := (1 : 𝓞 D.F))))`. Apply the tactic sequence `refine ⟨?_, fun x => ⟨0, ?_⟩, he⟩ <;> simp [h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 example (D : Datum p) (w : Ideal (𝓞 D.F)) (e : D.O) (he : e ∉ powO D w 1) : IsRankOneIdem D w 0 e := by
   have h : powO D w 0 = ⊤ := by
@@ -104,7 +104,7 @@ example (D : Datum p) (w : Ideal (𝓞 D.F)) (e : D.O) (he : e ∉ powO D w 1) :
   refine ⟨?_, fun x => ⟨0, ?_⟩, he⟩ <;> simp [h]
 
 /- English proof (translation)
-Use `o.act.hom e` as an intermediate fact. Use `⟨fun a _ => ?_, ?_⟩` and prove the remaining obligations. Use `(htAct o).hom a` as an intermediate fact. Conclude with `MonObj.one_comp _`. Conclude with `MonObj.one_comp _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example {s : S ⟶ Sp R} (o : Obj b N s) (w : Ideal (𝓞 D.F)) (m : ℕ) (e : D.O) :
     IsEpsTors o w m e (1 : 𝟙_ (Over S) ⟶ o.A) := by

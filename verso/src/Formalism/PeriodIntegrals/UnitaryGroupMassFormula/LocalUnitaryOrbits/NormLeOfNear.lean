@@ -10,32 +10,28 @@ open PI.Landherr₃
 namespace PI.OmLocU.Nrm
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_left.goal1 .. | (apply Bl.general_b_fact_left.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ff_binary {k : Type} [Field k] [Fintype k] (t m e : k) (hD : t ^ 2 - 4 * m ≠ 0) :
     ∃ x y : k, x ^ 2 + t * x * y + m * y ^ 2 = e := by
   first | exact Bl.general_b_fact_left.goal1 .. | (apply Bl.general_b_fact_left.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left.goal1 <;> assumption)
 
 /- English proof (translation)
-Distinguish the cases in `hα : α = 0`. Substitute `hα` using the available equality. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `hβ : ‖β‖ = 1` using `by simpa using hg`. Establish `e : β * (y - y₀) = -(0 * y₀ ^ 2 + β * y₀ + γ)` using `by linear_combination hy`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg norm e` as an intermediate fact. Rewrite `this` using `[norm_mul, hβ, one_mul, norm_neg]`. Rewrite using `[this]`. Conclude with `hf`. Use `set y' := -(β / α) - y with hy'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : α * y' ^ 2 + β * y' = α * y ^ 2 + β * y` using `by rw [hy']; field_simp; ring`. Establish `hroot' : α * y' ^ 2 + β * y' + γ = 0` using `by linear_combination hq + hy`. Take `⟨a, ha_def⟩ : ∃ a, a = α * (y₀ - y)` from `⟨_, rfl⟩`. Take `⟨b, hb_def⟩ : ∃ b, b = α * (y₀ - y')` from `⟨_, rfl⟩`. Establish `hb' : b = α * y₀ + β + α * y` using `by rw [hb_def, hy']; field_simp; ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab : a + b = 2 * α * y₀ + β` using `by rw [ha_def, hb']; ring`. Establish `hprod : a * b = α * (α * y₀ ^ 2 + β * y₀ + γ)`. Rewrite using `[ha_def, hb']`. Take the linear combination `(-α) * hy`. Establish `hαpos : 0 < ‖α‖` using `norm_pos_iff.mpr hα`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpr : ‖a * b‖ < ‖α‖`. Rewrite using `[hprod, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hmax : 1 ≤ max ‖a‖ ‖b‖`. Rewrite using `[← hg, ← hab]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `IsUltrametricDist.norm_add_le_max a b`. Break down `le_max_iff.mp hmax with ha | hb` into its components or cases. Use `⟨y', hroot', ?_⟩` and prove the remaining obligations. Establish `hb : ‖b‖ < ‖α‖`. Establish `: ‖b‖ ≤ ‖a * b‖`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul a b]`. Conclude with `le_mul_of_one_le_left (norm_nonneg b) ha`. Conclude with `this.trans_lt hpr`. Establish `: ‖α‖ * ‖y₀ - y'‖ < ‖α‖ * 1`. Rewrite using `[← norm_mul, mul_one, ← hb_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb`. Rewrite using `[← norm_neg, neg_sub]`. Conclude with `lt_of_mul_lt_mul_left this hαpos.le`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `ha : ‖a‖ < ‖α‖`.
-
-Establish `: ‖a‖ ≤ ‖a * b‖`. Rewrite using `[norm_mul a b]`. Conclude with `le_mul_of_one_le_right (norm_nonneg a) hb`. Conclude with `this.trans_lt hpr`. Establish `: ‖α‖ * ‖y₀ - y‖ < ‖α‖ * 1`.
-
-Rewrite using `[← norm_mul, mul_one, ← ha_def]`. Conclude with `ha`. Rewrite using `[← norm_neg, neg_sub]`. Conclude with `lt_of_mul_lt_mul_left this hαpos.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem near_root {K : Type} [NormedField K] [IsUltrametricDist K] (α β γ y₀ y : K)
     (hg : ‖2 * α * y₀ + β‖ = 1) (hf : ‖α * y₀ ^ 2 + β * y₀ + γ‖ < 1) (hy : α * y ^ 2 + β * y + γ = 0) :
@@ -85,7 +81,7 @@ theorem near_root {K : Type} [NormedField K] [IsUltrametricDist K] (α β γ y�
       exact lt_of_mul_lt_mul_left this hαpos.le
 
 /- English proof (translation)
-Establish `e : z = (z - y₀) + y₀` using `by ring`. Rewrite using `[e]`. Conclude with `unitNormLoc_add_le h.le h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_near {K : Type} [NormedField K] [IsUltrametricDist K] {z y₀ : K} (h : ‖z - y₀‖ < 1)
     (h0 : ‖y₀‖ ≤ 1) : ‖z‖ ≤ 1 := by
@@ -93,23 +89,21 @@ theorem norm_le_of_near {K : Type} [NormedField K] [IsUltrametricDist K] {z y₀
   rw [e]; exact unitNormLoc_add_le h.le h0
 
 /- English proof (translation)
-Establish `h2 : ‖(2 : K)‖ ≤ 1` using `unitNormLoc_norm_two_le`. Establish `hgx : ‖2 * x₀ + T * y₀‖ ≤ 1` using `unitNormLoc_add_le (unitNormLoc_mul_le h2 hx) (unitNormLoc_mul_le hT hy)`. Break down `hgx.lt_or_eq with hlt | heq` into its components or cases. Establish `hgy : ‖2 * M * y₀ + T * x₀‖ = 1`. Establish `hle : ‖2 * M * y₀ + T * x₀‖ ≤ 1` using `unitNormLoc_add_le (unitNormLoc_mul_le (unitNormLoc_mul_le h2 hM) hy) (unitNormLoc_mul_le hT hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hle.lt_or_eq with hlt' | h'` into its components or cases. It suffices to derive a contradiction. Establish `ey : (T ^ 2 - 4 * M) * y₀ = T * (2 * x₀ + T * y₀) + (-2) * (2 * M * y₀ + T * x₀)` using `by ring`. Establish `ex : (T ^ 2 - 4 * M) * x₀ = T * (2 * M * y₀ + T * x₀) + (-2 * M) * (2 * x₀ + T * y₀)` using `by ring`. Establish `hn2 : ‖(-2 : K)‖ ≤ 1` using `by rw [norm_neg]; exact h2`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy1 : ‖y₀‖ < 1`. Use `unitNormLoc_add_lt (unitNormLoc_mul_lt hT hlt) (unitNormLoc_mul_lt hn2 hlt')` as an intermediate fact. Rewrite `this` using `[← ey, norm_mul, hD, one_mul]`. Then use the resulting hypothesis. Establish `hx1 : ‖x₀‖ < 1`. Use `unitNormLoc_add_lt (unitNormLoc_mul_lt hT hlt') (unitNormLoc_mul_lt (unitNormLoc_mul_le hn2 hM) hlt)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← ex, norm_mul, hD, one_mul]`. Then use the resulting hypothesis. Establish `hq : ‖x₀ ^ 2 + T * x₀ * y₀ + M * y₀ ^ 2‖ < 1`. Use `unitNormLoc_add_lt (unitNormLoc_add_lt ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[pow_two]`. Conclude with `unitNormLoc_mul_lt hx hx1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `unitNormLoc_mul_lt (unitNormLoc_mul_le hT hx) hy1`. Rewrite using `[pow_two, ← mul_assoc]`. Conclude with `unitNormLoc_mul_lt (unitNormLoc_mul_le hM hy) hy1`. Establish `: ‖ε‖ < 1`. Establish `e : ε = (x₀ ^ 2 + T * x₀ * y₀ + M * y₀ ^ 2) + -(x₀ ^ 2 + T * x₀ * y₀ + M * y₀ ^ 2 - ε)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]; exact unitNormLoc_add_lt hq (by rw [norm_neg]; exact h0)`. Rewrite `this` using `[hε]`. Conclude with `lt_irrefl _ this`. Conclude with `h'`. Establish `hf : ‖M * y₀ ^ 2 + T * x₀ * y₀ + (x₀ ^ 2 - ε)‖ < 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `e : M * y₀ ^ 2 + T * x₀ * y₀ + (x₀ ^ 2 - ε) = x₀ ^ 2 + T * x₀ * y₀ + M * y₀ ^ 2 - ε` using `by ring`. Rewrite using `[e]`. Conclude with `h0`. Take `⟨y, hy'⟩` from `unitNormLoc_newton M (T * x₀) (x₀ ^ 2 - ε) y₀ hM (by rw [hgy, one_pow]; exact hf)`. Take `⟨z, hz, hzn⟩` from `near_root M (T * x₀) (x₀ ^ 2 - ε) y₀ y hgy hf hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x₀, z, hx, norm_le_of_near hzn hy, by linear_combination hz⟩`. Establish `hf : ‖1 * x₀ ^ 2 + T * y₀ * x₀ + (M * y₀ ^ 2 - ε)‖ < 1`. Establish `e2 : 1 * x₀ ^ 2 + T * y₀ * x₀ + (M * y₀ ^ 2 - ε) = x₀ ^ 2 + T * x₀ * y₀ + M * y₀ ^ 2 - ε` using `by ring`. Rewrite using `[e2]`. Conclude with `h0`.
-
-Establish `hg : ‖2 * 1 * x₀ + T * y₀‖ = 1` using `by rw [mul_one]; exact heq`. Take `⟨x, hx'⟩` from `unitNormLoc_newton 1 (T * y₀) (M * y₀ ^ 2 - ε) x₀ (by rw [norm_one]) (by rw [hg, one_pow]; exact hf)`. Take `⟨z, hz, hzn⟩` from `near_root 1 (T * y₀) (M * y₀ ^ 2 - ε) x₀ x hg hf hx'`. Conclude with `⟨z, y₀, norm_le_of_near hzn hx, hy, by linear_combination hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem solve_int {K : Type} [NormedField K] [CompleteSpace K] [IsUltrametricDist K]
     (T M ε x₀ y₀ : K) (hT : ‖T‖ ≤ 1) (hM : ‖M‖ ≤ 1) (hD : ‖T ^ 2 - 4 * M‖ = 1) (hε : ‖ε‖ = 1)

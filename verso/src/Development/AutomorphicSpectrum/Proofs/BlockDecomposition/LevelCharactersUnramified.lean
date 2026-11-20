@@ -14,16 +14,16 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {S : Subring (Fv F v ⊗[F] E)} {σS : S →+* S} {ϖ : Fv F v} {ε : ℤ}
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, sigR_smul, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sigR_algebraMap (c : Fv F v) :
     sigR (Fv F v) σ (algebraMap (Fv F v) (Fv F v ⊗[F] E) c) = algebraMap (Fv F v) (Fv F v ⊗[F] E) c := by
   rw [Algebra.algebraMap_eq_smul_one, sigR_smul, map_one]
 
 /- English proof (translation)
-Establish `h1 : x ∈ Rv bs v`. Rewrite using `[← hG.carrier]`. Conclude with `hx`. Establish `h2 : β • x ∈ Rv bs v` using `fun k => by`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_mem hβ (h1 k)`. Rewrite `h2` using `[← hG.carrier]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) {β : Fv F v} (hβ : β ∈ v.adicCompletionIntegers F)
     {x : Fv F v ⊗[F] E} (hx : x ∈ S) : β • x ∈ S := by
@@ -37,16 +37,14 @@ theorem smul_mem (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) {β : Fv F v} (hβ :
   exact h2
 
 /- English proof (translation)
-The claim follows from `hG.fixed a (by rw [← hG.sig, ha])`.
+A detailed English derivation is pending.
 -/
 theorem fixed_eq (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (a : S) (ha : σS a = a) :
     ∃ α : Fv F v, (a : Fv F v ⊗[F] E) = algebraMap (Fv F v) (Fv F v ⊗[F] E) α :=
   hG.fixed a (by rw [← hG.sig, ha])
 
 /- English proof (translation)
-Establish `h : Algebra.TensorProduct.basis (Fv F v) bs i ∈ Rv bs v` using `fun k => by`. Rewrite using `[Module.Basis.repr_self, Finsupp.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
-
-Rewrite `h` using `[← hG.carrier]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_mem (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (i : Fin d) :
     Algebra.TensorProduct.basis (Fv F v) bs i ∈ S := by
@@ -59,7 +57,7 @@ theorem basis_mem (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (i : Fin d) :
   exact h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hG.quad.notUnit (isUnit_of_subsingleton _)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nontrivial_S (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) : Nontrivial S := by
   by_contra h
@@ -67,21 +65,19 @@ theorem nontrivial_S (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) : Nontrivial S :
   exact hG.quad.notUnit (isUnit_of_subsingleton _)
 
 /- English proof (translation)
-Take `⟨u, hu, hb⟩` from `hG.quad.basis`. Establish `: Nontrivial S` using `nontrivial_S hG`. Establish `: Nontrivial (Fv F v ⊗[F] E)` using `(Subtype.val_injective (p := fun x => x ∈ S)).nontrivial`. Establish `hinj` using `(algebraMap (Fv F v) (Fv F v ⊗[F] E)).injective`. Establish `hli : LinearIndependent (Fv F v) ![(1 : Fv F v ⊗[F] E), (u : Fv F v ⊗[F] E)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t h`. Establish `ht : t = 0`. Assume the negation of the conclusion as `ht`. Establish `e : (u : Fv F v ⊗[F] E) = algebraMap (Fv F v) (Fv F v ⊗[F] E) (-(t⁻¹ * s))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h3 : t • (u : Fv F v ⊗[F] E) = -(s • (1 : Fv F v ⊗[F] E))` using `eq_neg_of_add_eq_zero_right h`. Establish `h4 : (u : Fv F v ⊗[F] E) = t⁻¹ • (t • (u : Fv F v ⊗[F] E))`. Rewrite using `[smul_smul, inv_mul_cancel₀ ht, one_smul]`. Rewrite using `[h4, h3, Algebra.algebraMap_eq_smul_one, smul_neg, neg_smul, smul_smul]`. Establish `hfix : σS u = u` using `Subtype.ext (by rw [hG.sig, e, sigR_algebraMap])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu` using `[hfix, sub_self, isUnit_zero_iff]`. Conclude with `zero_ne_one hu`. Substitute `ht` using the available equality. Use `⟨?_, rfl⟩` and prove the remaining obligations. Rewrite `h` using `[zero_smul, add_zero, ← Algebra.algebraMap_eq_smul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hinj (by rw [h, map_zero])`. Establish `hsp : ⊤ ≤ Submodule.span (Fv F v) (Set.range ![(1 : Fv F v ⊗[F] E), (u : Fv F v ⊗[F] E)])`. Rewrite using `[← (Algebra.TensorProduct.basis (Fv F v) bs).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨x, y, hx, hy, e⟩` from `hb ⟨_, basis_mem hG i⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα⟩` from `fixed_eq hG x hx`. Take `⟨β, hβ⟩` from `fixed_eq hG y hy`. Establish `e2 : Algebra.TensorProduct.basis (Fv F v) bs i = α • (1 : Fv F v ⊗[F] E) + β • (u : Fv F v ⊗[F] E)`. Establish `e3` using `congrArg Subtype.val e`. Simplify using `only [Subring.coe_add, Subring.coe_mul] at e3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3, hα, hβ, Algebra.smul_def, Algebra.smul_def, mul_one]`. Rewrite using `[SetLike.mem_coe, e2]`. Conclude with `add_mem (Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, rfl⟩))`. Establish `h1` using `Module.finrank_eq_card_basis (Module.Basis.mk hli hsp)`. Establish `h2` using `Module.finrank_eq_card_basis (Algebra.TensorProduct.basis (Fv F v) bs)`.
-
-Simplify using `using h2.symm.trans h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_eq_two (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) : d = 2 := by
   obtain ⟨u, hu, hb⟩ := hG.quad.basis
@@ -124,7 +120,7 @@ theorem card_eq_two (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) : d = 2 := by
   simpa using h2.symm.trans h1
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_algebraMap_of_basis (Algebra.TensorProduct.basis (Fv F v) bs), Fintype.card_fin, card_eq_two hG, two_nsmul, two_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_algebraMap_eq (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (x : Fv F v) :
     Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (algebraMap (Fv F v) (Fv F v ⊗[F] E) x) = 2 * x := by
@@ -132,7 +128,7 @@ theorem trace_algebraMap_eq (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (x : Fv F
     card_eq_two hG, two_nsmul, two_mul]
 
 /- English proof (translation)
-Unfold `psiF`. Rewrite using `[← Algebra.smul_def, map_smul, smul_eq_mul, ← mul_assoc ((ϖ ^ (k + 1))⁻¹), pow_succ, mul_inv, mul_assoc (ϖ ^ k)⁻¹, inv_mul_cancel₀ hG.unif_ne, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiF_compat (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (c : Fv F v) (k : ℕ) (a : Fv F v ⊗[F] E) :
     psiF ψv ϖ c (k + 1) (algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ * a) = psiF ψv ϖ c k a := by
@@ -141,23 +137,21 @@ theorem psiF_compat (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (c : Fv F v) (k :
     mul_assoc (ϖ ^ k)⁻¹, inv_mul_cancel₀ hG.unif_ne, mul_one]
 
 /- English proof (translation)
-Establish `h20 : (2 : Fv F v) ≠ 0`. Introduce `h`. Use `hG.two` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα⟩` from `fixed_eq hG a ha`. Establish `hαO : α ∈ v.adicCompletionIntegers F`. Establish `h2` using `hG.trace_mem a.2`. Rewrite `h2` using `[hα, trace_algebraMap_eq hG]`. Establish `h3` using `mul_mem hG.half_mem h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h3` using `[← mul_assoc, inv_mul_cancel₀ h20, one_mul]`. Then use the resulting hypothesis. Establish `hkey : c * (ϖ⁻¹ * α) ∈ v.adicCompletionIntegers F`. Use `(hG.psi_cond _).1 fun β hβ => ?_` and prove the remaining obligations. Establish `hbS : algebraMap (Fv F v) (Fv F v ⊗[F] E) β ∈ S`. Establish `h1` using `smul_mem hG hβ (one_mem S)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[← Algebra.algebraMap_eq_smul_one]`. Then use the resulting hypothesis. Establish `hfix : σS ⟨_, hbS⟩ = ⟨_, hbS⟩` using `Subtype.ext (by rw [hG.sig]; exact sigR_algebraMap β)`. Establish `h1` using `hb _ hfix`. Rewrite `h1` using `[hG.psiLev_mk]`. Establish `e : ((a * ⟨_, hbS⟩ : S) : Fv F v ⊗[F] E) = algebraMap (Fv F v) (Fv F v ⊗[F] E) (α * β)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subring.coe_mul, hα, map_mul]`. Rewrite `h1` using `[e]`. Unfold `psiF at h1`. Rewrite `h1` using `[trace_algebraMap_eq hG]`. Rewrite using `[← h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `hG.unif_ne` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `hγ : ϖ⁻¹ * α ∈ v.adicCompletionIntegers F`. Rewrite `hkey`, the goal using `[HeightOneSpectrum.mem_adicCompletionIntegers, ← Valued.toNormedField.norm_le_one_iff]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hkey` using `[norm_mul, hc1, one_mul]`. Conclude with `hkey`. Establish `hgS : algebraMap (Fv F v) (Fv F v ⊗[F] E) (ϖ⁻¹ * α) ∈ S`. Establish `h1` using `smul_mem hG hγ (one_mem S)`. Rewrite `h1` using `[← Algebra.algebraMap_eq_smul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.mem_span_singleton'.2 ⟨⟨_, hgS⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, Subring.coe_mul, hα]`. Use `show algebraMap (Fv F v) (Fv F v ⊗[F] E) (ϖ⁻¹ * α) * algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ = _`. Rewrite using `[← map_mul]`. Use `congr 1`.
-
-Use `hG.unif_ne` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem mem_level_of_character_trivial (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F)
     (hc1 : ‖c‖ = 1) (a : S) (ha : σS a = a)
@@ -206,7 +200,7 @@ theorem mem_level_of_character_trivial (hG : GoodLoc σ J T bs v ψv S σS ϖ ε
   field_simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M n d J T bs v ψv S σS ϖ ε hG c hc hc1`. Use `⟨fun k a => ?_, fun a ha hb => mem_level_of_character_trivial hG hc hc1 a ha hb⟩` and prove the remaining obligations. Rewrite using `[GoodLoc.psiLev_mk, GoodLoc.psiLev_mk]`. Conclude with `psiF_compat hG c k a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levChars : PositivityTheory.SiegelWeilFormula.Gunr.LevChars := by
   intro F E _ _ _ _ _ σ M n d J T bs v ψv S σS ϖ ε hG c hc hc1

@@ -7,11 +7,11 @@ open Matrix MeasureTheory ReciprocityTheory.ChartRestriction.G.FD
 noncomputable section
 
 /- English proof (translation)
-Set `e` to `MeasurableEquiv.piEquivPiSubtypeProd (fun _ : I => ℂ) (fun j => j ≠ i0)`. Establish `hmp : MeasurePreserving e (volume : Measure (I → ℂ)) ((Measure.pi fun _ : {j // j ≠ i0} => (volume : Measure ℂ)).prod (Measure.pi fun _ : {j // ¬ j ≠ i0} => (volume : Measure ℂ)))` using `measurePreserving_piEquivPiSubtypeProd (fun _ : I => (volume : Measure ℂ)) (fun j => j ≠ i0)`. Establish `hS' : MeasurableSet (e.symm ⁻¹' S)` using `e.symm.measurable hS`. Rewrite using `[← hmp.symm.measure_preimage_equiv S, Measure.measure_prod_null hS']`. Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Nonempty {j // ¬ j ≠ i0} := ⟨⟨i0, not_not.2 rfl⟩⟩`. Use `show (Measure.pi fun _ : {j // ¬ j ≠ i0} => (volume : Measure ℂ)) _ = 0`. Use `Set.Subsingleton.measure_zero ?_ _` and prove the remaining obligations. Introduce `y hy y' hy'`. Establish `hxy : e.symm (x, y) = e.symm (x, y')`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `huniq _ hy _ hy' fun j hj => ?_` and prove the remaining obligations. Simplify using `[e, MeasurableEquiv.piEquivPiSubtypeProd, Equiv.piEquivPiSubtypeProd, hj]`. Use `e.symm.injective hxy` as an intermediate fact. Conclude with `(Prod.ext_iff.1 this).2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem volume_null_of_slice {I : Type*} [Fintype I] [DecidableEq I] (i0 : I) {S : Set (I → ℂ)}
     (hS : MeasurableSet S) (huniq : ∀ v ∈ S, ∀ v' ∈ S, (∀ j, j ≠ i0 → v j = v' j) → v = v') :
@@ -36,15 +36,15 @@ theorem volume_null_of_slice {I : Type*} [Fintype I] [DecidableEq I] (i0 : I) {S
   exact (Prod.ext_iff.1 this).2
 
 /- English proof (translation)
-Establish `hrows : ∀ j : Fin (k + 1), B.submatrix (Fin.last k).succAbove j.succAbove = B'.submatrix (Fin.last k).succAbove j.succAbove`. Introduce `j`. Use extensionality with `a b`. Use `h _ _ fun hab => ?_` and prove the remaining obligations. Use `hab.1` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Fin.succAbove_last]`. Conclude with `Fin.castSucc_ne_last a this`. Rewrite using `[Matrix.det_succ_row B (Fin.last k), Matrix.det_succ_row B' (Fin.last k), ← Finset.sum_sub_distrib, Finset.sum_eq_single (Fin.last k)]`. Rewrite using `[hrows (Fin.last k)]`. Establish `hs : (-1 : ℂ) ^ ((Fin.last k : ℕ) + (Fin.last k : ℕ)) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.val_last, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Establish `hc : B.submatrix Fin.castSucc Fin.castSucc = B'.submatrix Fin.castSucc Fin.castSucc`. Simplify `hrows (Fin.last k)` using `[Fin.succAbove_last]`. Rewrite using `[hs, Fin.succAbove_last, hc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `j _ hj`. Establish `hrow : B (Fin.last k) j = B' (Fin.last k) j` using `h _ _ fun hab => hj hab.2`. Rewrite using `[hrow, hrows j]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hmem`. Conclude with `absurd (Finset.mem_univ _) hmem`.
+A detailed English derivation is pending.
 -/
 lemma det_diff_last {k : ℕ} (B B' : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
     (h : ∀ a b, ¬ (a = Fin.last k ∧ b = Fin.last k) → B a b = B' a b) :
@@ -77,7 +77,7 @@ lemma det_diff_last {k : ℕ} (B B' : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {r : ℕ}
 
 /- English proof (translation)
-Unfold `Mt lminor`. Use `Continuous.matrix_det ?_` and prove the remaining obligations. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Conclude with `continuous_apply _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma continuous_lminor (τ : ι) (i : Fin (r + 1)) : Continuous fun v : Ix ι r → ℂ => lminor (Mt v τ) i := by
   unfold Mt lminor
@@ -86,23 +86,23 @@ lemma continuous_lminor (τ : ι) (i : Fin (r + 1)) : Continuous fun v : Ix ι r
   exact continuous_apply _
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `h`. Establish `hempty : {v : Ix ι r → ℂ | lminor (Mt v τ) ⟨0, h⟩ = 0} = ∅`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `v`. Simplify using `[lminor]`. Rewrite using `[hempty, measure_empty]`. Consider the case `succ k ih`. Introduce `h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk : k < r + 1` using `by omega`. Establish `hkr : k < r` using `by omega`. Establish `hl : (Fin.castLE (Nat.le_of_lt_succ h) (Fin.last k) : Fin r) = ⟨k, hkr⟩` using `Fin.ext (by simp)`. Establish `key : ∀ w : Ix ι r → ℂ, lminor (Mt w τ) ⟨k, hk⟩ = (((Mt w τ).submatrix (Fin.castLE (Nat.le_of_lt_succ h)) (Fin.castLE (Nat.le_of_lt_succ h))).submatrix Fin.castSucc Fin.castSucc).det` using `fun w => rfl`. Establish `hmeas : MeasurableSet {v : Ix ι r → ℂ | lminor (Mt v τ) ⟨k + 1, h⟩ = 0 ∧ lminor (Mt v τ) ⟨k, hk⟩ ≠ 0}` using `(isClosed_eq (continuous_lminor τ _) continuous_const).measurableSet.inter (isClosed_eq (continuous_lminor τ _) continuous_const).isOpen_compl.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `measure_mono_null (t := {v : Ix ι r → ℂ | lminor (Mt v τ) ⟨k, hk⟩ = 0} ∪ {v : Ix ι r → ℂ | lminor (Mt v τ) ⟨k + 1, h⟩ = 0 ∧ lminor (Mt v τ) ⟨k, hk⟩ ≠ 0}) ?_ ?_` and prove the remaining obligations. Introduce `v hv`. Distinguish the cases in `h0 : lminor (Mt v τ) ⟨k, hk⟩ = 0`. Conclude with `Or.inl h0`. Conclude with `Or.inr ⟨hv, h0⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 
-Use `measure_union_null (ih hk) ?_` and prove the remaining obligations. Use `volume_null_of_slice (τ, ⟨k, hkr⟩, ⟨k, hkr⟩) hmeas ?_` and prove the remaining obligations. Introduce `v hv v' hv' hagree`. Establish `dd` using `det_diff_last ((Mt v τ).submatrix (Fin.castLE (Nat.le_of_lt_succ h)) (Fin.castLE (Nat.le_of_lt_succ h))) ((Mt v' τ).submatrix (Fin.castLE (Nat.le_of_lt_succ h)) (Fin.castLE (Nat.le_of_lt_succ h))) (by`. Introduce `a b hab`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hagree _ fun heq => hab ?_` and prove the remaining obligations. Simplify using `only [Prod.mk.injEq, Fin.ext_iff, Fin.coe_castLE] at heq`. Conclude with `⟨Fin.ext (by simp [heq.2.1]), Fin.ext (by simp [heq.2.2])⟩)`. Establish `h1 : lminor (Mt v τ) ⟨k + 1, h⟩ = 0` using `hv.1`. Establish `h2 : lminor (Mt v' τ) ⟨k + 1, h⟩ = 0` using `hv'.1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : lminor (Mt v τ) ⟨k, hk⟩ ≠ 0` using `hv.2`. Rewrite `hm` using `[key v]`. Simplify using `only [lminor] at h1 h2`. Rewrite `dd` using `[h1, h2, sub_zero]`. Simplify using `only [Matrix.submatrix_apply, hl] at dd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hz : v (τ, ⟨k, hkr⟩, ⟨k, hkr⟩) - v' (τ, ⟨k, hkr⟩, ⟨k, hkr⟩) = 0`. Break down `mul_eq_zero.1 dd.symm with hz | hz` into its components or cases. Conclude with `hz`. Conclude with `absurd hz hm`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hj : j = (τ, ⟨k, hkr⟩, ⟨k, hkr⟩)`. Substitute `hj` using the available equality. Conclude with `sub_eq_zero.1 hz`. Conclude with `hagree j hj`.
+A detailed English derivation is pending.
 -/
 theorem volume_lminor_zero (τ : ι) :
     ∀ k (h : k < r + 1), volume {v : Ix ι r → ℂ | lminor (Mt v τ) ⟨k, h⟩ = 0} = 0 := by
@@ -161,9 +161,9 @@ theorem volume_lminor_zero (τ : ι) :
     · exact hagree j hj
 
 /- English proof (translation)
-Establish `hU : (BC ι r)ᶜ = ⋃ τ : ι, ⋃ i : Fin (r + 1), {v : Ix ι r → ℂ | lminor (Mt v τ) i = 0}`. Use extensionality with `v`. Simplify using `[BC]`. Rewrite using `[hU]`. Use `measure_iUnion_null fun τ => measure_iUnion_null fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `volume_lminor_zero τ i.1 i.2`.
+A detailed English derivation is pending.
 -/
 theorem volume_BC_compl : volume (BC ι r)ᶜ = 0 := by
   have hU : (BC ι r)ᶜ = ⋃ τ : ι, ⋃ i : Fin (r + 1), {v : Ix ι r → ℂ | lminor (Mt v τ) i = 0} := by

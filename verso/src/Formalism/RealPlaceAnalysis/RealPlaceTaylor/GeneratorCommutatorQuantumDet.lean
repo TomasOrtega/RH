@@ -7,14 +7,14 @@ noncomputable section
 namespace Formalism.REAL
 
 /- English proof (translation)
-Rewrite using `[Function.update_apply, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem update_zero_apply_zero {A : Type*} {t : ℕ} (F : Fin (t + 1) → A) (x : A) :
     Function.update F 0 x 0 = x := by
   rw [Function.update_apply, if_pos rfl]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Function.update_apply, if_neg (Fin.succ_ne_zero i)]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 private theorem update_zero_comp_succ {A : Type*} {t : ℕ} (F : Fin (t + 1) → A) (x : A) :
     (fun i : Fin t => Function.update F 0 x i.succ) = fun i => F i.succ := by
@@ -22,14 +22,14 @@ private theorem update_zero_comp_succ {A : Type*} {t : ℕ} (F : Fin (t + 1) →
   rw [Function.update_apply, if_neg (Fin.succ_ne_zero i)]
 
 /- English proof (translation)
-Rewrite using `[Function.update_apply, if_neg (Fin.succ_ne_zero j).symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem update_succ_apply_zero {A : Type*} {t : ℕ} (F : Fin (t + 1) → A) (j : Fin t) (x : A) :
     Function.update F j.succ x 0 = F 0 := by
   rw [Function.update_apply, if_neg (Fin.succ_ne_zero j).symm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Function.update_apply, Function.update_apply]`. Simplify using `only [Fin.succ_inj]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem update_succ_comp_succ {A : Type*} {t : ℕ} (F : Fin (t + 1) → A) (j : Fin t) (x : A) :
     (fun i : Fin t => Function.update F j.succ x i.succ) = Function.update (fun i => F i.succ) j x := by
@@ -38,14 +38,14 @@ private theorem update_succ_comp_succ {A : Type*} {t : ℕ} (F : Fin (t + 1) →
   simp only [Fin.succ_inj]
 
 /- English proof (translation)
-Rewrite using `[List.ofFn_succ, List.prod_cons, update_zero_apply_zero, update_zero_comp_succ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_ofFn_update_zero {A : Type*} [Monoid A] {t : ℕ} (F : Fin (t + 1) → A) (x : A) :
     (List.ofFn (Function.update F 0 x)).prod = x * (List.ofFn fun i : Fin t => F i.succ).prod := by
   rw [List.ofFn_succ, List.prod_cons, update_zero_apply_zero, update_zero_comp_succ]
 
 /- English proof (translation)
-Rewrite using `[List.ofFn_succ, List.prod_cons, update_succ_apply_zero, update_succ_comp_succ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_ofFn_update_succ {A : Type*} [Monoid A] {t : ℕ} (F : Fin (t + 1) → A) (j : Fin t) (x : A) :
     (List.ofFn (Function.update F j.succ x)).prod =
@@ -53,7 +53,7 @@ private theorem prod_ofFn_update_succ {A : Type*} [Monoid A] {t : ℕ} (F : Fin 
   rw [List.ofFn_succ, List.prod_cons, update_succ_apply_zero, update_succ_comp_succ]
 
 /- English proof (translation)
-The claim follows from `| 0, _, k => k.elim0 | t + 1, F, k => by refine Fin.cases ?_ (fun k' => ?_) k · refine ⟨1, (List.ofFn fun i : Fin t => F i.succ).prod, fun x => ?_⟩ simp [List.ofFn_succ, Function.update_apply, Fin.succ_ne_zero] · obtain ⟨L, R, h⟩ := prod_ofFn_update_eq_mul (fun i : Fin t => F i.s …`.
+A detailed English derivation is pending.
 -/
 theorem prod_ofFn_update_eq_mul {A : Type*} [Ring A] : ∀ {t : ℕ} (F : Fin t → A) (k : Fin t),
     ∃ L R : A, ∀ x : A, (List.ofFn (Function.update F k x)).prod = L * x * R
@@ -71,7 +71,7 @@ theorem prod_ofFn_update_eq_mul {A : Type*} [Ring A] : ∀ {t : ℕ} (F : Fin t 
       simp [Function.update_apply, (Fin.succ_ne_zero k').symm, mul_assoc]
 
 /- English proof (translation)
-Take `⟨L, R, h⟩` from `prod_ofFn_update_eq_mul F k`. Rewrite using `[h, h, h, mul_sub, sub_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_ofFn_update_sub {A : Type*} [Ring A] {t : ℕ} (F : Fin t → A) (k : Fin t) (x y : A) :
     (List.ofFn (Function.update F k (x - y))).prod =
@@ -80,7 +80,7 @@ theorem prod_ofFn_update_sub {A : Type*} [Ring A] {t : ℕ} (F : Fin t → A) (k
   rw [h, h, h, mul_sub, sub_mul]
 
 /- English proof (translation)
-Distinguish the cases in `hp : p`. Simplify using `only [if_pos hp]`. Simplify using `only [if_neg hp]`. Take `⟨L, R, h⟩` from `prod_ofFn_update_eq_mul F k`. Rewrite using `[h, mul_zero, zero_mul]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_ofFn_update_ite {A : Type*} [Ring A] {t : ℕ} (F : Fin t → A) (k : Fin t) (p : Prop)
     [Decidable p] (x : A) :
@@ -93,7 +93,7 @@ theorem prod_ofFn_update_ite {A : Type*} [Ring A] {t : ℕ} (F : Fin t → A) (k
     rw [h, mul_zero, zero_mul]
 
 /- English proof (translation)
-The claim follows from `| 0, F => by simp | t + 1, F => by have ih := commutator_prod_ofFn_eq_sum_update X (fun i : Fin t => F i.succ) rw [Fin.sum_univ_succ] have h0 : (List.ofFn (Function.update F 0 (X * F 0 - F 0 * X))).prod = (X * F 0 - F 0 * X) * (List.ofFn fun i : Fin t => F i.succ).prod := by simp …`.
+A detailed English derivation is pending.
 -/
 theorem commutator_prod_ofFn_eq_sum_update {A : Type*} [Ring A] (X : A) : ∀ {t : ℕ} (F : Fin t → A),
     X * (List.ofFn F).prod - (List.ofFn F).prod * X =
@@ -119,15 +119,15 @@ theorem commutator_prod_ofFn_eq_sum_update {A : Type*} [Ring A] (X : A) : ∀ {t
     noncomm_ring
 
 /- English proof (translation)
-Establish `hc` using `hE c d a b`. Establish `hcomm : E c d * (if a = b then algebraMap ℂ A v else 0) = (if a = b then algebraMap ℂ A v else 0) * E c d`. Distinguish the cases in `hab : a = b`. Simplify using `only [if_pos hab]`. Conclude with `(Algebra.commutes v (E c d)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_neg hab, mul_zero, zero_mul]`. Establish `key : E c d * Tm E v a b - Tm E v a b * E c d = E c d * E a b - E a b * E c d`. Unfold `Tm`. Rewrite using `[mul_add, add_mul, hcomm]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, hc]`. Unfold `Tm`. Distinguish the cases in `h1 : d = a`. Distinguish the cases in `h2 : b = c`. Substitute `h1` using the available equality.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Substitute `h1` using the available equality. Simplify using `[h2, Ne.symm h2]`. Distinguish the cases in `h2 : b = c`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h2` using the available equality. Simplify using `[h1, Ne.symm h1]`. Simplify using `[h1, h2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shiftedGenerator_commutator {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E)
     (v : ℂ) (a b c d : Fin n) :
@@ -156,9 +156,9 @@ theorem shiftedGenerator_commutator {A : Type*} [Ring A] [Algebra ℂ A] {n : �
     · simp [h1, h2]
 
 /- English proof (translation)
-Establish `h2 : (2 : ℂ) • x = 0`. Rewrite using `[two_smul]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = 0 := by simp`. Establish `h3 : x = (2 : ℂ)⁻¹ • ((2 : ℂ) • x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, inv_mul_cancel₀ (two_ne_zero : (2 : ℂ) ≠ 0), one_smul]`. Rewrite using `[h3, h2, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_eq_neg_self_of_algebra_complex {A : Type*} [Ring A] [Algebra ℂ A] (x : A) (h : x = -x) : x = 0 := by
   have h2 : (2 : ℂ) • x = 0 := by
@@ -170,9 +170,9 @@ theorem eq_zero_of_eq_neg_self_of_algebra_complex {A : Type*} [Ring A] [Algebra 
   rw [h3, h2, smul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[Function.comp_apply, Equiv.swap_apply_def]`. Distinguish the cases in `h1 : x = p`. Rewrite using `[if_pos h1, h1]`. Conclude with `h.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1]`. Distinguish the cases in `h2 : x = q`. Rewrite using `[if_pos h2, h2]`. Conclude with `h`. Rewrite using `[if_neg h2]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_swap_of_eq {α β : Type*} [DecidableEq α] (f : α → β) (p q : α) (h : f p = f q) :
     f ∘ Equiv.swap p q = f := by
@@ -186,7 +186,7 @@ theorem comp_swap_of_eq {α β : Type*} [DecidableEq α] (f : α → β) (p q : 
     · rw [if_neg h2]
 
 /- English proof (translation)
-Establish `h1` using `hr A n t E a b (Equiv.swap p q) u`. Rewrite `h1` using `[comp_swap_of_eq a p q h, Equiv.Perm.sign_swap hpq, Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one, neg_one_mul]`. Conclude with `eq_zero_of_eq_neg_self_of_algebra_complex _ h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quantumMinor_eq_zero_of_row_eq (hr : QSkewRow) {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ}
     (E : Fin n → Fin n → A) (a b : Fin t → Fin n) (u : ℂ) (p q : Fin t) (hpq : p ≠ q)
@@ -197,7 +197,7 @@ theorem quantumMinor_eq_zero_of_row_eq (hr : QSkewRow) {A : Type} [Ring A] [Alge
   exact eq_zero_of_eq_neg_self_of_algebra_complex _ h1
 
 /- English proof (translation)
-Establish `h1` using `hc A n t E hE a b (Equiv.swap p q) u`. Rewrite `h1` using `[comp_swap_of_eq b p q h, Equiv.Perm.sign_swap hpq, Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one, neg_one_mul]`. Conclude with `eq_zero_of_eq_neg_self_of_algebra_complex _ h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quantumMinor_eq_zero_of_col_eq (hc : QSkewCol) {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ}
     (E : Fin n → Fin n → A) (hE : GlRel E) (a b : Fin t → Fin n) (u : ℂ) (p q : Fin t)
@@ -208,21 +208,21 @@ theorem quantumMinor_eq_zero_of_col_eq (hc : QSkewCol) {A : Type} [Ring A] [Alge
   exact eq_zero_of_eq_neg_self_of_algebra_complex _ h1
 
 /- English proof (translation)
-Establish `hs : ∀ (z : ℤ) (X P : A), X * ((z : A) * P) - (z : A) * P * X = (z : A) * (X * P - P * X)`. Introduce `z X P`. Simplify using `only [mul_sub, ← mul_assoc, (Int.cast_commute z X).eq]`. Unfold `qdet qminor`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[hs, ← mul_sub]`. Use `congr 1`. Rewrite using `[commutator_prod_ofFn_eq_sum_update]`. Simplify using `only [shiftedGenerator_commutator E hE, prod_ofFn_update_sub, prod_ofFn_update_ite, Finset.sum_sub_distrib, id_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[Finset.sum_eq_single (σ.symm d)]`. Rewrite using `[if_pos (σ.apply_symm_apply d).symm]`. Use `congr 1`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[Function.update_apply, Function.update_apply]`. Distinguish the cases in `hk : k = σ.symm d`. Rewrite using `[if_pos hk, if_pos (show σ k = d by rw [hk, Equiv.apply_symm_apply])]`. Substitute `hk` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Both sides reduce to the same expression. Apply the tactic sequence `rw [if_neg hk, if_neg (show ¬ σ k = d from fun h => hk (by rw [← h, Equiv.symm_apply_apply]))] try rfl`. Introduce `b _ hb`. Rewrite using `[if_neg (show ¬ d = σ b from fun h => hb (by rw [h, Equiv.symm_apply_apply]))]`. Introduce `h`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_apply, Function.update_apply]`. Distinguish the cases in `hk : k = c`. Rewrite using `[if_pos hk, if_pos hk]`. Substitute `hk` using the available equality. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rw [if_neg hk, if_neg hk] try rfl`.
+A detailed English derivation is pending.
 -/
 theorem generator_commutator_quantumDet {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A)
     (hE : GlRel E) (u : ℂ) (c d : Fin n) :
@@ -269,13 +269,13 @@ theorem generator_commutator_quantumDet {A : Type*} [Ring A] [Algebra ℂ A] {n 
       try rfl
 
 /- English proof (translation)
-Unfold `QDetCentral`. Introduce `A _ _ n E hE u c d`. Establish `h` using `generator_commutator_quantumDet E hE u c d`. Establish `key : qminor E (Function.update id d c) id u - qminor E id (Function.update id c d) u = 0`. Distinguish the cases in `hcd : c = d`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hcd]`. Establish `hid : Function.update (id : Fin n → Fin n) d d = id`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x = d`. Substitute `hx` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[hx]`. Rewrite using `[hid, sub_self]`. Rewrite using `[quantumMinor_eq_zero_of_row_eq hr E (Function.update (id : Fin n → Fin n) d c) id u c d hcd (by simp [hcd]), quantumMinor_eq_zero_of_col_eq hc E hE id (Function.update (id : Fin n → Fin n) c d) u c d hcd (by simp [Ne.symm hcd]), sub_zero]`. Rewrite `h` using `[key, sub_eq_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem qDetCentral_of (hr : QSkewRow) (hc : QSkewCol) : QDetCentral := by
   unfold QDetCentral
@@ -301,7 +301,7 @@ def cycleToLast (m : ℕ) (j : Fin (m + 1)) : Equiv.Perm (Fin (m + 1)) :=
   (Fin.revPerm.trans (Fin.cycleRange j.rev).symm).trans Fin.revPerm
 
 /- English proof (translation)
-Simplify using `only [cycleToLast, Equiv.trans_apply, Fin.revPerm_apply, Fin.rev_castSucc, Fin.cycleRange_symm_succ, Fin.rev_succAbove, Fin.rev_rev]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cycleToLast_castSucc (m : ℕ) (j : Fin (m + 1)) (k : Fin m) :
     cycleToLast m j k.castSucc = j.succAbove k := by
@@ -309,13 +309,13 @@ theorem cycleToLast_castSucc (m : ℕ) (j : Fin (m + 1)) (k : Fin m) :
     Fin.rev_succAbove, Fin.rev_rev]
 
 /- English proof (translation)
-Simplify using `only [cycleToLast, Equiv.trans_apply, Fin.revPerm_apply, Fin.rev_last, Fin.cycleRange_symm_zero, Fin.rev_rev]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cycleToLast_last (m : ℕ) (j : Fin (m + 1)) : cycleToLast m j (Fin.last m) = j := by
   simp only [cycleToLast, Equiv.trans_apply, Fin.revPerm_apply, Fin.rev_last, Fin.cycleRange_symm_zero, Fin.rev_rev]
 
 /- English proof (translation)
-Rewrite using `[cycleToLast, Equiv.Perm.sign_trans, Equiv.Perm.sign_trans, Equiv.Perm.sign_symm, Fin.sign_cycleRange, Fin.val_rev, mul_left_comm, Int.units_mul_self, mul_one]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sign_cycleToLast (m : ℕ) (j : Fin (m + 1)) :
     Equiv.Perm.sign (cycleToLast m j) = (-1) ^ (m - (j : ℕ)) := by
@@ -328,20 +328,20 @@ def extendLast {m : ℕ} (τ : Equiv.Perm (Fin m)) : Equiv.Perm (Fin (m + 1)) :=
   (finSuccEquivLast.trans (Equiv.optionCongr τ)).trans finSuccEquivLast.symm
 
 /- English proof (translation)
-Simplify using `[extendLast, finSuccEquivLast_castSucc, finSuccEquivLast_symm_some]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extendLast_castSucc {m : ℕ} (τ : Equiv.Perm (Fin m)) (k : Fin m) :
     extendLast τ k.castSucc = (τ k).castSucc := by
   simp [extendLast, finSuccEquivLast_castSucc, finSuccEquivLast_symm_some]
 
 /- English proof (translation)
-Simplify using `[extendLast, finSuccEquivLast_last, finSuccEquivLast_symm_none]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extendLast_last {m : ℕ} (τ : Equiv.Perm (Fin m)) : extendLast τ (Fin.last m) = Fin.last m := by
   simp [extendLast, finSuccEquivLast_last, finSuccEquivLast_symm_none]
 
 /- English proof (translation)
-Rewrite using `[extendLast, Equiv.Perm.sign_trans_trans_symm]`. Conclude with `Equiv.optionCongr_sign τ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sign_extendLast {m : ℕ} (τ : Equiv.Perm (Fin m)) :
     Equiv.Perm.sign (extendLast τ) = Equiv.Perm.sign τ := by
@@ -352,11 +352,11 @@ def lastColumnSplit (m : ℕ) (p : Fin (m + 1) × Equiv.Perm (Fin m)) : Equiv.Pe
   cycleToLast m p.1 * extendLast p.2
 
 /- English proof (translation)
-Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨j, τ⟩ ⟨j', τ'⟩ h`. Simplify using `only [lastColumnSplit] at h`. Establish `hj : j = j'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h'` using `congrArg (fun σ : Equiv.Perm (Fin (m + 1)) => σ (Fin.last m)) h`. Simplify `h'` using `[Equiv.Perm.mul_apply, extendLast_last, cycleToLast_last]`. Substitute `hj` using the available equality. Establish `he : extendLast τ = extendLast τ'` using `mul_left_cancel h`. Establish `hτ : τ = τ'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Equiv.ext (fun k => ?_)` and prove the remaining obligations. Establish `h'` using `congrArg (fun σ : Equiv.Perm (Fin (m + 1)) => σ k.castSucc) he`. Simplify `h'` using `[extendLast_castSucc]`. Rewrite using `[hτ]`. Simplify using `[Fintype.card_perm, Nat.factorial_succ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lastColumnSplit_bijective (m : ℕ) : Function.Bijective (lastColumnSplit m) := by
   rw [Fintype.bijective_iff_injective_and_card]
@@ -376,9 +376,9 @@ theorem lastColumnSplit_bijective (m : ℕ) : Function.Bijective (lastColumnSpli
   · simp [Fintype.card_perm, Nat.factorial_succ]
 
 /- English proof (translation)
-Unfold `qminor`. Rewrite using `[← (Equiv.ofBijective _ (lastColumnSplit_bijective m)).sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun τ _ => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Equiv.ofBijective_apply, lastColumnSplit, Equiv.Perm.sign_mul, sign_cycleToLast, sign_extendLast, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one, Int.cast_mul, List.ofFn_succ', List.concat_eq_append, List.prod_append, List.prod_cons, List.prod_nil, mu …`.
+Simplify using the standard rewrite rules.
 -/
 theorem quantumMinor_expand_last {A : Type*} [Ring A] [Algebra ℂ A] {n m : ℕ} (E : Fin n → Fin n → A)
     (a b : Fin (m + 1) → Fin n) (u : ℂ) :
@@ -396,21 +396,21 @@ theorem quantumMinor_expand_last {A : Type*} [Ring A] [Algebra ℂ A] {n m : ℕ
     Fin.val_castSucc, Fin.val_last, Function.comp_apply, mul_assoc]
 
 /- English proof (translation)
-Unfold `QComatrix`. Introduce `A _ _ m E hE u i l`. Take `⟨b', hbc, hbl⟩ : ∃ b' : Fin (m + 1) → Fin (m + 1), (∀ k : Fin m, b' k.castSucc = i.succAbove k) ∧ b' (Fin.last m) = l` from `⟨Fin.snoc (α := fun _ => Fin (m + 1)) (fun k => i.succAbove k) l, fun k => by simp, by simp⟩`. Establish `hexp` using `quantumMinor_expand_last E id b' u`. Establish `hbc' : b' ∘ Fin.castSucc = Fin.succAbove i` using `funext hbc`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hexp` using `[hbc', hbl]`. Simplify using `only [Function.id_comp, id_eq] at hexp`. Establish `hsign : ∀ j : Fin (m + 1), ((-1 : ℤ) ^ ((i : ℕ) + (j : ℕ))) = (-1) ^ (m - (i : ℕ)) * (-1) ^ (m - (j : ℕ))`. Introduce `j`. Rewrite using `[← pow_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Break down `Nat.even_or_odd ((i : ℕ) + j) with h | h` into its components or cases. Rewrite using `[h.neg_one_pow, Even.neg_one_pow]`. Rewrite `h`, the goal using `[Nat.even_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[h.neg_one_pow, Odd.neg_one_pow]`. Rewrite `h`, the goal using `[Nat.odd_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hL : ∑ j : Fin (m + 1), (((-1 : ℤ) ^ ((i : ℕ) + (j : ℕ)) : ℤ) : A) * qminor E (Fin.succAbove j) (Fin.succAbove i) u * Tm E (u - (m : ℂ)) j l = (((-1 : ℤ) ^ (m - (i : ℕ)) : ℤ) : A) * qminor E id b' u`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[hexp, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Simplify using `only [hsign j, Int.cast_mul, mul_assoc]`. Rewrite using `[hL]`. Distinguish the cases in `hil : i = l`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hil, qdet]`. Establish `hb : b' = id ∘ (cycleToLast m i)`. Use function extensionality and compare the values at `x`. Use `Fin.lastCases ?_ (fun k => ?_) x` and prove the remaining obligations. Rewrite using `[hbl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[cycleToLast_last, hil]`. Rewrite using `[hbc]`. Simplify using `[cycleToLast_castSucc]`. Rewrite using `[hb, hc A (m + 1) (m + 1) E hE id id (cycleToLast m i) u, sign_cycleToLast, Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one, ← mul_assoc, ← Int.cast_mul, ← mul_pow, neg_one_mul, neg_neg, one_pow, Int.cast_one, one_mul]`. Rewrite using `[if_neg hil]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz⟩` from `Fin.exists_succAbove_eq (Ne.symm hil)`. Rewrite using `[quantumMinor_eq_zero_of_col_eq hc E hE id b' u z.castSucc (Fin.last m) (Fin.castSucc_lt_last z).ne (by rw [hbc, hbl, hz]), mul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem qComatrix_of (hr : QSkewRow) (hc : QSkewCol) : QComatrix := by
   unfold QComatrix

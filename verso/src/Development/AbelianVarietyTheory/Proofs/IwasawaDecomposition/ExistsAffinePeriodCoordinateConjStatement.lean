@@ -7,7 +7,7 @@ open NumberField Matrix ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheor
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.frame_col_top_letter` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsAffinePeriodCoordinateConj.lean&line=8#L8)
 -/

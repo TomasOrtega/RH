@@ -6,7 +6,7 @@ open MeasureTheory
 namespace GlobalTheory.CompanionTheory.RealTateConv
 
 /- English proof (translation)
-The claim follows from `|x| ^ r ≤ (2 : ℝ) ^ |r| * (1 + |x|) ^ r := by have hx0 : 0 < |x| := by linarith have h1x : 0 < 1 + |x| := by linarith rcases le_or_gt 0 r with hr | hr · have h2 : (1 : ℝ) ≤ (2 : ℝ) ^ |r| := Real.one_le_rpow (by norm_num) (abs_nonneg r) have h3 : |x| ^ r ≤ (1 + |x|) ^ r := Real.rp …`.
+A detailed English derivation is pending.
 -/
 theorem abs_rpow_le_two_rpow_mul_one_add_abs_rpow (r : ℝ) {x : ℝ} (hx : 1 < |x|) :
     |x| ^ r ≤ (2 : ℝ) ^ |r| * (1 + |x|) ^ r := by
@@ -29,13 +29,13 @@ theorem abs_rpow_le_two_rpow_mul_one_add_abs_rpow (r : ℝ) {x : ℝ} (hx : 1 < 
       _ ≤ (2 : ℝ) ^ |r| * (1 + |x|) ^ r := mul_le_mul_of_nonneg_left h3 h6
 
 /- English proof (translation)
-Introduce `r N hr hN`. Establish `hG : Integrable (fun x : ℝ => (Set.Icc (-1 : ℝ) 1).indicator (fun x => |x| ^ r) x + (2 : ℝ) ^ |r| * (1 + ‖x‖) ^ (-(N - r)))` using `((integrableOn_abs_rpow hr).integrable_indicator measurableSet_Icc).add ((integrable_one_add_norm (by simp; linarith)).const_mul _)`. Establish `hm : AEStronglyMeasurable (fun x : ℝ => |x| ^ r * (1 + |x|) ^ (-N)) volume` using `((measurable_abs.pow_const r).mul ((measurable_const.add measurable_abs).pow_const _)).aestronglyMeasurable`. Use `hG.mono' hm (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Establish `h1x : 0 < 1 + |x|` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hA : 0 ≤ |x| ^ r` using `Real.rpow_nonneg (abs_nonneg x) r`. Establish `hB : 0 ≤ (1 + |x|) ^ (-N)` using `Real.rpow_nonneg h1x.le _`. Rewrite using `[Real.norm_of_nonneg (mul_nonneg hA hB)]`. Establish `hC : 0 ≤ (2 : ℝ) ^ |r| * (1 + ‖x‖) ^ (-(N - r))` using `by positivity`. Distinguish the cases in `hx : x ∈ Set.Icc (-1 : ℝ) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem hx]`. Establish `h1 : (1 + |x|) ^ (-N) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos (by linarith [abs_nonneg x]) (by linarith)`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[Set.indicator_of_notMem hx, zero_add, Real.norm_eq_abs, show -(N - r) = r + -N by ring, Real.rpow_add h1x, ← mul_assoc]`. Establish `hx1 : 1 < |x|`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hx (abs_le.1 (not_lt.1 h))`. Conclude with `mul_le_mul_of_nonneg_right (abs_rpow_le_two_rpow_mul_one_add_abs_rpow r hx1) hB`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem integrable_abs_rpow_mul_one_add_abs_rpow :
     ∀ (r N : ℝ), -1 < r → r + 1 < N →

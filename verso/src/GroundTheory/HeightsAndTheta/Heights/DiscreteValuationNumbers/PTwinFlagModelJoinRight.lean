@@ -15,7 +15,7 @@ namespace FlagModelJoinRightAlt
 variable {K K' K₂ : Type} {ι : K → Type} {ι' : K' → Type} {ι₂ : K₂ → Type}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `rcases k with k | k | k <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem midDeg_pullDeg (a : K → ℤ) :
     midDeg (K₂ := K₂) (pullDeg (K' := K') a) = pullDeg (K' := K₂ ⊕ K') a := by
@@ -30,7 +30,7 @@ theorem midVar_comp_liftVar :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `cases k <;> simp [pullDeg]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pullDeg_sub (a b : K → ℤ) :
     pullDeg (K' := K') a - pullDeg (K' := K') b = pullDeg (K' := K') (a - b) := by
@@ -42,13 +42,13 @@ end FlagModelJoinRightAlt
 open FlagModelJoinRightAlt in
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ ι _ x d N V _ _ E E' _ _ F K₂ _ ι₂ _ w hZ hfn EB E'B hp hp'`. Take `⟨ψ, -, -, -, hdeg, hdeg', hf, hg⟩` from `hFlag O Ω K ι x F.K' F.ι' F.z K₂ ι₂ w N V E E' F.EB F.E'B F.pull F.pull' F.flag EB E'B hp hp'`. Use `⟨ψ, fun I I₁ hI hI₁ G r y y' f g hv c Q hc hG hQ => ?_⟩` and prove the remaining obligations. Establish `hvert : ∀ i, IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsVertDiv O (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcIdeal O (joinCoord x F.z)) (Fin.append F.flag.deg (fun l => pullDeg (K'` using `F.K') (y l)) i - Fin.append F.flag.deg' (fun l => pullDeg (K' := F.K') (y' l)) i) (Fin.append F.flag.f (fun l => rename (liftVar F.ι') (f l)) i) (Fin.append F.flag.g (fun l => rename (liftVar F.ι') (g l)) i) := by`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.append_left]`. Conclude with `F.flag.vert j`. Simplify using `only [Fin.append_right, pullDeg_sub]`. Conclude with `hVert O Ω K ι x F.K' F.ι' F.z _ _ _ (hv j)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : (rename (Fin.castAdd r) G * rename (Fin.natAdd N) Q).IsHomogeneous (d + 1)`. Establish `h : (rename (Fin.castAdd r) G * rename (Fin.natAdd N) Q).IsHomogeneous (c + (d + 1 - c))` using `hG.rename_isHomogeneous.mul hQ.rename_isHomogeneous`. Rewrite `h` using `[show c + (d + 1 - c) = d + 1 by omega]`. Then use the resulting hypothesis. Unfold `FlagModel.value`. Rewrite using `[hNum O Ω K ι x F.K' F.ι' F.z K₂ ι₂ w d F.model hZ (hfn.trans F.birat.symm) I I₁ hI hI₁ (N + r) _ _ _ _ hvert _ hH]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `congr 1 <;> funext i <;> refine Fin.addCases (fun j => ?_) (fun j => ?_) i <;>`. Simplify using `[hdeg, hdeg', hf, hg, midDeg_pullDeg, midVar_comp_liftVar]`.
+A detailed English derivation is pending.
 -/
 theorem FlagModelJoinRightAlt.proof (hVert : JoinVerticalDivisor.Statement)
     (hFlag : FlagPairJoinRight.Statement) (hNum : PairNumberJoinRight.Statement) :

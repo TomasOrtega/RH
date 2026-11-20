@@ -17,9 +17,9 @@ open ValuativeRel
 open scoped Topology NNReal
 
 /- English proof (translation)
-Use `hK.elim_directed_cover (fun s : Fˣ => GlobalTheory.SplitWeil.cball s) GlobalTheory.SplitWeil.isOpen_cball ?_ ?_` and prove the remaining obligations. Introduce `x _`. Distinguish the cases in `hx : x = 0`. Conclude with `Set.mem_iUnion.mpr ⟨1, by simp [GlobalTheory.SplitWeil.cball, hx]⟩`. Conclude with `Set.mem_iUnion.mpr ⟨Units.mk0 x hx, by simp [GlobalTheory.SplitWeil.cball]⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `a b`. Break down `le_total (valuation F (a : F)) (valuation F (b : F)) with h | h` into its components or cases. Conclude with `⟨b, fun x hx => le_trans (show valuation F x ≤ _ from hx) h, fun x hx => hx⟩`. Conclude with `⟨a, fun x hx => hx, fun x hx => le_trans (show valuation F x ≤ _ from hx) h⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem compact_subset_cball {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {K : Set F} (hK : IsCompact K) :
@@ -35,7 +35,7 @@ theorem compact_subset_cball {F : Type} [Field F] [ValuativeRel F] [TopologicalS
     · exact ⟨a, fun x hx => hx, fun x hx => le_trans (show valuation F x ≤ _ from hx) h⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[Filter.not_neBot, ← isOpen_singleton_iff_punctured_nhds]`. Take `⟨s, hs⟩` from `GlobalTheory.SplitWeil.exists_cball_subset (h.mem_nhds rfl)`. Conclude with `s.ne_zero (hs (by simp [GlobalTheory.SplitWeil.cball]))`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem punctured_neBot (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] : (𝓝[≠] (0 : F)).NeBot := by
@@ -45,7 +45,7 @@ theorem punctured_neBot (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace 
   exact s.ne_zero (hs (by simp [GlobalTheory.SplitWeil.cball]))
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, map_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, le_inv_mul_iff₀ (by simp [zero_lt_iff])]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem_cball_iff {F : Type} [Field F] [ValuativeRel F] (a s : Fˣ) (x : F) :
     valuation F ((a : F) * x) ≤ valuation F (s : F) ↔ valuation F x ≤ valuation F ((a⁻¹ * s : Fˣ) : F) := by
@@ -53,39 +53,33 @@ theorem mul_mem_cball_iff {F : Type} [Field F] [ValuativeRel F] (a s : Fˣ) (x :
     le_inv_mul_iff₀ (by simp [zero_lt_iff])]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ _ c δ hE ψ hψ hψ1 hψ0 _ _ μ _ t ht`. Use `borelize F`. Take `⟨hfd, hring, -, ht2, -, hN, -, -⟩` from `GlobalTheory.T.quadExt_topological_properties F E c δ hE`. Use `haveI := GlobalTheory.SplitWeil.t2Space F`. Use `haveI := punctured_neBot F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : ContinuousSMul F E := IsModuleTopology.toContinuousSMul F E`. Use `haveI : (𝓝[≠] (0 : E)).NeBot := Module.punctured_nhds_neBot F E 0`. Use `haveI : LocallyCompactSpace E := by`. Take `⟨L, -, h1, h2⟩` from `GlobalTheory.T.exists_compactOpen_normClosedBall_quadratic F E c δ hE 1`. Conclude with `h1.locallyCompactSpace_of_mem_nhds_of_addGroup (h2.mem_nhds L.zero_mem)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hμ0 : μ {0} = 0` using `measure_singleton 0`. Take `⟨lam, hlam, -⟩` from `GlobalTheory.SplitWeil.exists_isUnitVol F`. Take `⟨s₀, hs₀⟩` from `GlobalTheory.T.exists_integral_closedBall_addChar_eq_zero F lam ψ hψ hψ1 hψ0`. Establish `hm : ∀ a : F, Measurable fun z : E => a * Algebra.norm F z` using `fun a => (continuous_const.mul hN).measurable`. Set `m : Fˣ → Measure F` to `fun a => μ.map fun z : E => (a : F) * Algebra.norm F z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `n : Fˣ → Measure F` to `fun a => distribHaarChar F a • m a`. Establish `hmc : ∀ a, IsFiniteMeasureOnCompacts (m a)` using `fun a => ⟨fun K hK => by`. Take `⟨s, hs⟩` from `compact_subset_cball hK`. Take `⟨L, hL, h1, -⟩` from `GlobalTheory.T.exists_compactOpen_normClosedBall_quadratic F E c δ hE (a⁻¹ * s)`. Rewrite using `[Measure.map_apply (hm a) hK.measurableSet]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `lt_of_le_of_lt (measure_mono ?_) (h1.measure_lt_top (μ := μ))` and prove the remaining obligations. Introduce `z hz`. Rewrite using `[hL]`. Conclude with `(mul_mem_cball_iff a s _).mp (hs hz)⟩`. Establish `hnc : ∀ a, IsFiniteMeasureOnCompacts (n a)` using `fun a => by haveI := hmc a`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `IsFiniteMeasureOnCompacts.smul_nnreal (m a) _`. Establish `hn0 : ∀ a, n a {0} = 0` using `fun a => by`. Establish `: (fun z : E => (a : F) * Algebra.norm F z) ⁻¹' {0} = {0}`. Use extensionality with `z`. Simplify using `[Algebra.norm_eq_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [n, m, Measure.smul_apply]`. Rewrite using `[Measure.map_apply (hm a) (measurableSet_singleton 0), this, hμ0, smul_zero]`. Establish `hn1 : ∀ (a : Fˣ) (b : Fˣ), b ∈ (Units.map (Algebra.norm F : E →* F)).range → n (b * a) = n a`. Introduce and unpack `a _ ⟨w, rfl⟩`. Establish `h1` using `GlobalTheory.T.map_mul_left_eq_inv_norm_haarChar_smul F E c δ hE μ w`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : m (Units.map (Algebra.norm F : E →* F) w * a) = (μ.map fun x => (w : E) * x).map fun z : E => (a : F) * Algebra.norm F z`. Rewrite using `[Measure.map_map (hm a) (measurable_const_mul _)]`. Simplify using `only [m]`. Use `congr 1`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Units.val_mul, Units.coe_map, Function.comp, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [n]`. Rewrite using `[h2, h1, Measure.map_smul, smul_smul, map_mul, mul_right_comm, mul_inv_cancel₀ (distribHaarChar_pos).ne', one_mul]`. Establish `hn2 : ∀ a u : Fˣ, (n a).map (fun x => (u : F) * x) = (distribHaarChar F u)⁻¹ • n (u * a)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a u`. Simplify using `only [n, m]`. Rewrite using `[Measure.map_smul, Measure.map_map (measurable_const_mul _) (hm a), smul_smul, map_mul, inv_mul_cancel_left₀ (distribHaarChar_pos).ne']`. Use `congr 2`. Use function extensionality and compare the values at `z`.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[mul_assoc]`. Establish `hhom : ∀ u : Fˣ, (n 1 + n t).map (fun x => (u : F) * x) = (distribHaarChar F u)⁻¹ • (n 1 + n t)`. Introduce `u`. Rewrite using `[Measure.map_add _ _ (measurable_const_mul _), hn2, hn2, ← smul_add]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hu : u ∈ (Units.map (Algebra.norm F : E →* F)).range`. Rewrite using `[hn1 _ _ hu, hn1 _ _ hu]`. Establish `h1` using `GlobalTheory.T.mul_mem_range_norm_of_not_mem F E c δ hE u t hu ht`. Establish `h2` using `GlobalTheory.T.mul_mem_range_norm_of_not_mem F E c δ hE t t ht ht`. Establish `h3` using `hn1 1 _ h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4` using `hn1 t _ (mul_mem h1 (inv_mem h2))`. Rewrite `h3` using `[mul_one]`. Establish `h5 : u * t * (t * t)⁻¹ * t = u * 1` using `by group`. Rewrite `h4` using `[h5]`. Rewrite using `[h3, h4, add_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `haveI := hnc 1`. Use `haveI := hnc t`. Use `haveI : IsFiniteMeasureOnCompacts (n 1 + n t) := ⟨fun K hK => by`. Rewrite using `[Measure.add_apply]`. Conclude with `ENNReal.add_lt_top.mpr ⟨hK.measure_lt_top, hK.measure_lt_top⟩⟩`.
-
-Take `⟨r, hr⟩` from `GlobalTheory.T.homogeneousMeasure_eq_smul_addHaar_localField F lam (n 1 + n t) (by rw [Measure.add_apply, hn0, hn0, add_zero]) hhom`. Use `⟨s₀, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hB` using `GlobalTheory.SplitWeil.isCompact_cball s`. Establish `hint : ∀ a : Fˣ, ∫ x in GlobalTheory.SplitWeil.cball s, ψ x ∂(n a) = (nabs F a : ℂ) * ∫ z in {z : E | (a : F) * Algebra.norm F z ∈ GlobalTheory.SplitWeil.cball s}, ψ ((a : F) * Algebra.norm F z) ∂μ`. Introduce `a`.
-
-Simplify using `only [n, m]`. Rewrite using `[Measure.restrict_smul, integral_smul_nnreal_measure, setIntegral_map hB.measurableSet hψ.aestronglyMeasurable (hm a).aemeasurable]`. Both sides reduce to the same expression. Establish `h1 : ∫ x in GlobalTheory.SplitWeil.cball s, ψ x ∂(n 1 + n t) = 0`. Rewrite using `[hr, Measure.restrict_smul, integral_smul_nnreal_measure, hs₀ s hs, smul_zero]`.
-
-Rewrite `h1` using `[Measure.restrict_add, integral_add_measure (hψ.continuousOn.integrableOn_compact hB) (hψ.continuousOn.integrableOn_compact hB), hint, hint]`. Simplify `h1` using `[GlobalTheory.SplitWeil.nabs_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gauss_cancel : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E] (c : E →ₐ[F] E) (δ : E) (hE : IsQuad c δ) (ψ : AddChar F ℂ) (hψ : Continuous ψ) (_ : ∀ t, ‖ψ t‖ = 1) (_ : ψ ≠ 1) [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] (t : Fˣ), t ∉ (Units.map (Algebra.norm F : E →* F)).range → ∃ s₀ : Fˣ, ∀ s : Fˣ, (s₀ : F) ∈ GlobalTheory.SplitWeil.cball s → (∫ z in {z : E | Algebra.norm F z ∈ GlobalTheory.SplitWeil.cball s}, ψ (Algebra.norm F z) ∂μ) + (nabs F t : ℂ) * ∫ z in {z : E | (t : F) * Algebra.norm F z ∈ GlobalTheory.SplitWeil.cball s}, ψ ((t : F) * Algebra.norm F z) ∂μ = 0 := by
   intro F _ _ _ _ _ E _ _ _ _ c δ hE ψ hψ hψ1 hψ0 _ _ μ _ t ht

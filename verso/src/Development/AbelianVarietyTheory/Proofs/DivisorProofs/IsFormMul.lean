@@ -12,9 +12,9 @@ open scoped ContDiff
 namespace GlobalTheory.CxForm.FormMul
 
 /- English proof (translation)
-Introduce `M _ n A α β hα hβ`. Use `⟨fun i S => ?_, fun x x' h => ?_⟩` and prove the remaining obligations. Establish `e : (fun v => (bas n).repr (A.loc (α * β) i v) S) = fun v => ∑ p : Finset (Fin (n + n)) × Finset (Fin (n + n)), (bas n).repr (A.loc α i v) p.1 * (bas n).repr (A.loc β i v) p.2 * (bas n).repr (bas n p.1 * bas n p.2) S`. Use function extensionality and compare the values at `fun v => by rw [loc_mul, repr_mul]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ContDiffOn.sum fun p _ => ((hα.smooth i p.1).mul (hβ.smooth i p.2)).mul contDiffOn_const`. Use `show α x * β x = pull (fderiv ℂ (x'.ch ∘ x.ch.symm) x.crd) (α x' * β x')`. Rewrite using `[map_mul, ← hα.compat x x' h, ← hβ.compat x x' h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isForm_mul : ∀ {M : Type} [TopologicalSpace M] {n : ℕ} (A : GlobalTheory.CxForm.HolAtlas M n) (α β : A.Fld),
     A.IsForm α → A.IsForm β → A.IsForm (α * β) := by

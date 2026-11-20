@@ -18,15 +18,13 @@ variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `hP : w ∈ L.Pg`. Establish `hr : D.R.r ≤ a` using `ha ▸ Nat.le_add_right _ _`. Rewrite using `[stepFn_of_mem_Pg t w hP]`. Distinguish the cases in `H : LowZero a (N.map (resS D.host.F w)) ∧ ∃ g, TopCond D.R.t hr (N.map (resS D.host.F w)) g`. Take `⟨h0, g, hg⟩` from `H`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `h0' : LowZero a (N'.map (resS D.host.F w))` using `by rw [← h]; exact h0`. Establish `hg' : TopCond D.R.t hr (N'.map (resS D.host.F w)) g` using `by rw [← h]; exact hg`. Establish `e1` using `iterPhi_eq (isTame_muBase (L := L) w) (isRed w) (isIx_ixOf G t w ha) (isIx_ixOf G t w hb) hr (χ := fun c => L.chi c w) (fun c hc => compat_chi w hL hP (hc.trans_lt hj)) N h0 hg`. Establish `e2` using `iterPhi_eq (isTame_muBase (L := L) w) (isRed w) (isIx_ixOf G t w ha) (isIx_ixOf G t w hb) hr (χ := fun c => L.chi c w) (fun c hc => compat_chi w hL hP (hc.trans_lt hj)) N' h0' hg'`. Conclude with `e1.trans e2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H' : ¬ (LowZero a (N'.map (resS D.host.F w)) ∧ ∃ g, TopCond D.R.t hr (N'.map (resS D.host.F w)) g)` using `by rw [← h]; exact H`. Establish `e1` using `not_ne_iff.1 (mt (iterPhi_ne_zero_iff (isTame_muBase (L := L) w) (isRed w) (isIx_ixOf G t w ha) (isIx_ixOf G t w hb) hr N).1 H)`. Establish `e2` using `not_ne_iff.1 (mt (iterPhi_ne_zero_iff (isTame_muBase (L := L) w) (isRed w) (isIx_ixOf G t w ha) (isIx_ixOf G t w hb) hr N').1 H')`. Conclude with `e1.trans e2.symm`. Establish `hQ : w ∈ L.Q t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `topPl at hw`. Conclude with `(Finset.mem_union.1 hw).resolve_left hP`. Establish `e1` using `stepFn_eq_of_mem_Q G t w hL hQ ha hb N`. Establish `e2` using `stepFn_eq_of_mem_Q G t w hL hQ ha hb N'`. Use `e1.trans (Eq.trans ?_ e2.symm)` and prove the remaining obligations.
-
-Conclude with `congrArg (fun y => if H : LowZero D.R.r y ∧ IsUnit (topL D.R.r y).det then (L.xiR t w H.2.unit : ℂ) else 0) h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stepFn_congr_red (G : GridData L sc) {μ₀ : T} (hL : L.Is μ₀) (t : T) {j : ℕ} (hj : j < D.R.m) {w : Pl D.host.E}
     (hw : w ∈ topPl L t) {a b : ℕ} (ha : a = D.R.r + j * D.R.t) (hb : b = D.R.r + (j + 1) * D.R.t)
@@ -60,29 +58,25 @@ theorem stepFn_congr_red (G : GridData L sc) {μ₀ : T} (hL : L.Is μ₀) (t : 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D T L sc G B μ₀ hL t e he j hj`. Establish `hFS : IsFrame (B.β 0 j) (G.Λ (.grid 0 j))` using `B.isFrame_β hL (Nat.zero_le _) hj.le`. Establish `hFT : IsFrame (B.β 0 (j + 1)) (G.Λ (.grid 0 (j + 1)))` using `B.isFrame_β hL (Nat.zero_le _) hj`. Take `⟨a, ha, h1⟩` from `WeilOver.exists_hom_le (S := G.V (.grid 0 j)) (T := G.V (.grid 0 (j + 1))) (GlobalTheory.DiagLiftFix.isLattice_of_isFrame hFS) (GlobalTheory.DiagLiftFix.isLattice_of_isFrame hFT)`. Take `⟨b, hb, h2⟩` from `WeilOver.exists_le_hom (S := G.V (.grid 0 j)) (T := G.V (.grid 0 (j + 1))) (GlobalTheory.DiagLiftFix.isLattice_of_isFrame hFS) (GlobalTheory.DiagLiftFix.isLattice_of_isFrame hFT)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e0, -, -⟩` from `cpt_idemSum he`. Use `set 𝔪 : Ideal (𝓞 D.host.E) := ∏ w ∈ topPl L t, w.asIdeal ^ 1 with h𝔪`. Establish `hN : 0 < Ideal.absNorm 𝔪` using `Nat.pos_of_ne_zero fun h => CosSB.prod_pow_ne_bot (topPl L t) 1 (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hle : ∀ w ∈ topPl L t, 𝔪 ≤ w.asIdeal ^ 1` using `fun w hw => Ideal.le_of_dvd (Finset.dvd_prod_of_mem (fun w : Pl D.host.E => w.asIdeal ^ 1) hw)`. Take `⟨K, hK⟩ : ∃ K : ℕ, K = a * (b * Ideal.absNorm 𝔪)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x hx => ?_, K, by rw [hK]; positivity, fun u hu hh x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hx (by unfold GlobalTheory.FlipTop.topFn; rw [if_neg fun H => h H.1])`. Establish `hk : K • u ∈ hatMx (𝔪 • homLat (G.Λ (.grid 0 j)) (G.Λ (.grid 0 (j + 1))))`. Use `nsmul_mem (CosSB.nsmul_mem_hatMx h2 𝔪 hu) a` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[smul_smul, ← hK]`. Then use the resulting hypothesis. Establish `hk2` using `((mem_hatMx_iff hFS hFT 𝔪 _).1 hk).2`. Establish `hXYZ : fr (B.β 0 (j + 1)) (B.β 0 j) ((x + K • u).map (toEAf D)) = fr (B.β 0 (j + 1)) (B.β 0 j) (x.map (toEAf D)) + fr (B.β 0 (j + 1)) (B.β 0 j) ((K • u).map (toEAf D))`. Rewrite using `[Matrix.map_add _ (toEAf D).map_add, fr_add]`. Establish `hZ : ∀ i l, fr (B.β 0 (j + 1)) (B.β 0 j) ((K • u).map (toEAf D)) i l ∈ OA D` using `fun i l => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, -, hs⟩` from `hk2 i l`. Rewrite using `[← hs]`. Conclude with `s.2`. Establish `hint : IsIntM (fr (B.β 0 (j + 1)) (B.β 0 j) ((x + K • u).map (toEAf D))) ↔ IsIntM (fr (B.β 0 (j + 1)) (B.β 0 j) (x.map (toEAf D)))`. Use `forall₂_congr fun i l => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Rewrite using `[hXYZ, Matrix.add_apply]`. Conclude with `⟨fun h => by simpa using sub_mem h (hZ i l), fun h => add_mem h (hZ i l)⟩`. Unfold `GlobalTheory.FlipTop.topFn`. Use `split_ifs with H1 H2 H2`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `NX : Matrix (Fin (G.V (.grid 0 (j + 1))).rank) (Fin (G.V (.grid 0 j)).rank) (OA D)` to `fun i l => ⟨_, H1.2 i l⟩`. Set `NY : Matrix (Fin (G.V (.grid 0 (j + 1))).rank) (Fin (G.V (.grid 0 j)).rank) (OA D)` to `fun i l => ⟨_, H2.2 i l⟩`. Establish `eX : (fr (B.β 0 (j + 1)) (B.β 0 j) ((x + K • u).map (toEAf D))).map (cpt (D` using `D) w) = NX.map (cptO w) := Matrix.ext fun i l => (cptO_apply w (NX i l)).symm`. Establish `eY : (fr (B.β 0 (j + 1)) (B.β 0 j) (x.map (toEAf D))).map (cpt (D` using `D) w) = NY.map (cptO w) := Matrix.ext fun i l => (cptO_apply w (NY i l)).symm`. Rewrite using `[eX, eY]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `stepFn_congr_red G hL t hj hw _ _ NX NY (Matrix.ext fun i l => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, Matrix.map_apply, ← sub_eq_zero, ← map_sub, (isRed w).ker, cptO_apply]`. Take `⟨s, hs, hs'⟩` from `hk2 i l`. Establish `e3 : ((NX i l - NY i l : OA D) : EAf D) = s.1`. Rewrite using `[hs', AddSubgroupClass.coe_sub]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `fr (B.β 0 (j + 1)) (B.β 0 j) ((x + K • u).map (toEAf D)) i l - fr (B.β 0 (j + 1)) (B.β 0 j) (x.map (toEAf D)) i l = _`. Rewrite using `[hXYZ, Matrix.add_apply, add_sub_cancel_left]`. Rewrite using `[e3]`. Conclude with `(vEq w).lt_one_iff_lt_one.2 ((v_lt_one_iff _).2 (v_le_of_mem_idS (hle w hw) hs))`. Conclude with `absurd ⟨(CosSB.isHalf_add_nsmul K hh).1 H1.1, hint.1 H1.2⟩ H2`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd ⟨(CosSB.isHalf_add_nsmul K hh).2 H2.1, hint.2 H2.2⟩ H1`. Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨hth, hti⟩ : IsHalf e x ∧ IsIntM (fr (B.β 0 (j + 1)) (B.β 0 j) (x.map (toEAf D))) := by`. Assume the negation of the conclusion as `h`. Conclude with `hx (by unfold GlobalTheory.FlipTop.topFn; rw [if_neg h])`.
-
-Establish `hmem : x ∈ hatMx ((⊤ : Ideal (𝓞 D.host.E)) • homLat (G.Λ (.grid 0 j)) (G.Λ (.grid 0 (j + 1))))`. Use `(mem_hatMx_iff hFS hFT ⊤ _).2 ⟨fun i l => ?_, fun i l => ⟨⟨_, hti i l⟩, ?_, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[← hth i l, map_mul, e0, zero_mul]`. Rewrite using `[idS, Ideal.map_top]`. Conclude with `Submodule.mem_top`.
-
-Use `nsmul_mem (CosSB.nsmul_mem_latO h1 ⊤ hmem) (b * Ideal.absNorm 𝔪)` as an intermediate fact. Rewrite `this` using `[smul_smul, mul_comm (b * Ideal.absNorm 𝔪) a, ← hK]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isSBHalf_topFn : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (B : Frames G) {μ₀ : T},
     L.Is μ₀ → ∀ (t : T) {e : AE D}, IsIdemSum e (GlobalTheory.FlipTop.topPl L t) → ∀ (j : ℕ) (hj : j < D.R.m),

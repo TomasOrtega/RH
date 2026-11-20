@@ -19,13 +19,13 @@ namespace UpperTheory.Gal.projectedFormsSystemPart.Pm
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `⟨⟨Segment.ofFirst ρ hρ 2 two_pos, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Segment.carrier_single, Segment.carrier_single]`. Use extensionality with `z`. Rewrite using `[Segment.mem_carrier]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Segment.first_ofFirst, Segment.len_ofFirst, Set.mem_union, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, rfl⟩ interval_cases i`. Use `left`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `right`. Simplify using the standard rewrite rules. Introduce and unpack `(rfl | rfl)`. Conclude with `⟨0, by norm_num, by simp⟩`. Conclude with `⟨1, by norm_num, by simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Segment.carrier_single, Segment.carrier_single, Set.singleton_subset_iff, Set.mem_singleton_iff]`. Conclude with `hne`. Rewrite using `[Segment.carrier_single, Segment.carrier_single, Set.singleton_subset_iff, Set.mem_singleton_iff]`. Conclude with `fun e => hne e.symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem linked_single {ρ ρ' : IrrGL k} (hρ : ρ.IsCusp) (hρ' : ρ'.IsCusp) (hne : ρ ≠ ρ.nu 1) (e : ρ' = ρ.nu 1) :
     (Segment.single ρ hρ).Linked (Segment.single ρ' hρ') := by
@@ -49,7 +49,7 @@ theorem linked_single {ρ ρ' : IrrGL k} (hρ : ρ.IsCusp) (hρ' : ρ'.IsCusp) (
     exact fun e => hne e.symm
 
 /- English proof (translation)
-The claim follows from `Segment.ext_first (by simp [Segment.single]) (by simp [Segment.single, h])`.
+A detailed English derivation is pending.
 -/
 theorem eq_single_of_len {Δ : Segment k} (h : Δ.len = 1) : Δ = Segment.single Δ.first Δ.isCusp_first :=
   Segment.ext_first (by simp [Segment.single]) (by simp [Segment.single, h])
@@ -58,7 +58,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Introduce `e0`. Use `WD.lpTw_one_ne (rc ρ) (by rw [L.dim]; exact hρ.1) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem ne_nu_one {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
     {rc : IrrGL (w.adicCompletion E) → WD h} (L : UpperTheory.Zero.LLC.LawsT a ha rc) {ρ : IrrGL (w.adicCompletion E)}
@@ -73,25 +73,23 @@ end UpperTheory.Gal.projectedFormsSystemPart.Pm
 open UpperTheory.Gal.projectedFormsSystemPart.Pm in
 
 /- English proof (translation)
-Introduce `Ω _ E _ _ _ _ _ n _ π w A h σ hσ hT rc hrc hm`. Take `⟨a, ha, L⟩` from `hrc`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Establish `hg : IsGeneric σ.ρ` using `GlobalTheory.CuspRep.Generic.isGeneric_of_isLocComp E n π w σ hσ`. Establish `hnu : ∀ (z : IrrGL (w.adicCompletion E)) (s : ℂ), IsGeneric z.rep → IsGeneric (z.nu s).rep` using `fun z s hz => (isGeneric_congr (IrrGL.twEquiv z _ _)).1 ((isGeneric_twist_iff _).2 hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgτ : IsGeneric (algNorm σ).rep` using `hnu _ _ ((isGeneric_congr (IrrGL.equivOf σ.ρ σ.smooth σ.irred)).1 hg)`. Take `⟨c, Δ, y, hd, hun, hL, ⟨e⟩⟩` from `GlobalTheory.genericUnlinkedGL_outright (w.adicCompletion E) (algNorm σ).1 _ (algNorm σ).rep (algNorm σ).2.rep.smooth (algNorm σ).2.rep.irr hgτ`. Establish `hIsL : IsL ((List.ofFn Δ : List (Segment (w.adicCompletion E))) : Multiset (Segment (w.adicCompletion E))) (algNorm σ).rep` using `⟨c, y, hd, ⟨Δ, ⟨Fin.univ_val_map Δ, fun i j hij hp => hun i j hij.ne hp.1⟩, hL⟩, (isCosocle_self (algNorm σ).2.rep.irr).of_equiv (.refl _) e⟩`. Establish `hm'` using `hm`. Rewrite `hm'` using `[L.langlands (List.ofFn Δ) (algNorm σ) hIsL, segSum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlen : ∀ i, (Δ i).len = 1`. Introduce `i`. Establish `hmi` using `GlobalTheory.UnlinkedMono.noMonodromy_of_mem_weilDeligneListSum _ hm' _ (List.mem_map.2 ⟨Δ i, List.mem_ofFn.2 ⟨i, rfl⟩, rfl⟩)`. Assume the negation of the conclusion as `hne`. Establish `hirr : IsIrrWD ((rc (Δ i).first).lpTw ((((Δ i).len : ℝ) - 1) / 2))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← L.nu]`. Conclude with `L.cusp _ ((Δ i).isCusp_first.nu _)`. Conclude with `GlobalTheory.SegLen.not_mono0_lpChar_lpSp hirr (by have := (Δ i).len_pos; omega) hmi`. Take `⟨s, hs, hch⟩` from `hT`. Establish `hs'` using `GlobalTheory.LocGL.SupportRing.hasSupport_nu hs (((1 - (n : ℝ)) / 2 : ℝ) : ℂ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hms` using `GlobalTheory.LocGL.ZelevinskyExpansion.msupp_eq_of_isL (algNorm σ).2.rep.irr hIsL hs'`. Establish `mem : ∀ u ∈ s, ∃ i, (Δ i).first = u.nu (((1 - (n : ℝ)) / 2 : ℝ) : ℂ)`. Introduce `u hu`. Establish `hu' : u.nu (((1 - (n : ℝ)) / 2 : ℝ) : ℂ) ∈ msupp ((List.ofFn Δ : List (Segment (w.adicCompletion E))) : Multiset (Segment (w.adicCompletion E)))`. Rewrite using `[hms]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Multiset.mem_map_of_mem _ hu`. Rewrite `hu'` using `[msupp, Multiset.mem_bind]`. Take `⟨D, hD, hu''⟩` from `hu'`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 (Multiset.mem_coe.1 hD)`. Rewrite `hu''` using `[Segment.mem_ms, Segment.mem_carrier]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 
-Take `⟨m, hm1, e'⟩` from `hu''`. Establish `: m = 0` using `by have := hlen i; omega`. Substitute `this` using the available equality. Conclude with `⟨i, by simpa using e'⟩`. Use `⟨s, hs, hch, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y1 hy1 z1 hz1 hyz`. Take `⟨i, hi⟩` from `mem y1 hy1`. Take `⟨j, hj⟩` from `mem z1 hz1`. Establish `key : (Δ i).first = (Δ j).first.nu 1`. Rewrite using `[hi, hj, hyz, IrrGL.nu_nu, IrrGL.nu_nu, add_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne` using `ne_nu_one L (Δ j).isCusp_first`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Conclude with `hne key`. Use `hun j i (Ne.symm hij) ?_` and prove the remaining obligations.
-
-Rewrite using `[eq_single_of_len (hlen j), eq_single_of_len (hlen i)]`. Conclude with `linked_single _ _ hne key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.projectedFormsSystemPart.plainTor_of_mono0 : ∀ (Ω : Type) [Field Ω] (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra E Ω] [IsAlgClosure E Ω] (n : ℕ), 1 ≤ n → ∀ π : CuspSub E n, ∀ (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (h : IsPlaceOver A w), ∀ σ : SmIrr (GL (Fin n) (w.adicCompletion E)), π.IsLocComp w σ → UpperTheory.Zero.LLC.Toral (IrrGL.of σ.ρ σ.smooth σ.irred) → ∀ rc : IrrGL (w.adicCompletion E) → WD h, UpperTheory.Zero.LLC.IsRecT h rc → (rc (algNorm σ)).mono0 → PlainTor (IrrGL.of σ.ρ σ.smooth σ.irred) := by
   intro Ω _ E _ _ _ _ _ n _ π w A h σ hσ hT rc hrc hm
@@ -148,13 +146,13 @@ theorem UpperTheory.Gal.projectedFormsSystemPart.plainTor_of_mono0 : ∀ (Ω : T
     exact linked_single _ _ hne key
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ n hn π w A h σ hσ rc hrc χ ⟨b, hb, hN, hχ⟩`. Establish `hm : (rc (algNorm σ)).mono0` using `hb ▸ (WD.monodromyZero_ofWeilDeligneRepClass_iff b).2 hN`. Use `UpperTheory.Gal.projectedFormsSystemPart.plainTor_of_mono0 Ω E n hn π w A h σ hσ ?_ rc hrc hm` and prove the remaining obligations. Establish `hT : UpperTheory.Zero.LLC.Toral (algNorm σ)`. Use `UpperTheory.Zero.LLC.abConv E Ω A w h rc hrc (algNorm σ) (fun j : Fin n => (χ j).comp (Weil h).subtype) fun t => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hb, WD.charPol_mk, hχ t, Matrix.charpoly_toLin', Matrix.charpoly_diagonal]`. Both sides reduce to the same expression. Take `⟨s, hs, hch⟩` from `hT`. Establish `hs'` using `GlobalTheory.LocGL.SupportRing.hasSupport_nu hs (-(((1 - (n : ℝ)) / 2 : ℝ) : ℂ))`. Establish `e : (algNorm σ).nu (-(((1 - (n : ℝ)) / 2 : ℝ) : ℂ)) = IrrGL.of σ.ρ σ.smooth σ.irred`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `algNorm`. Rewrite using `[IrrGL.nu_nu, add_neg_cancel, IrrGL.nu_zero]`. Rewrite using `[← e]`. Use `⟨_, hs', fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.1 hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hch z hz`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.projectedFormsSystemPart.typePlain : UpperTheory.Gal.projectedFormsSystemPart.TypePlain := by
   intro E Ω _ _ _ _ _ _ n hn π w A h σ hσ rc hrc χ ⟨b, hb, hN, hχ⟩

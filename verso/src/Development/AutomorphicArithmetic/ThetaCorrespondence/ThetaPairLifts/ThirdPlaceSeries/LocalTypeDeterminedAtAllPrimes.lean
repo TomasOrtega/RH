@@ -20,7 +20,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 namespace GlobalTheory.TypePrimesFinished
 /- English proof (translation)
-Introduce `hC hP hS hL`. Use `_root_.GlobalTheory.HeightCounting.Up.Model.AtMem.at_member_imp (_root_.GlobalTheory.HeightCounting.Up.Model.AtMem.and_z (_root_.GlobalTheory.T.tieChi_at_mem_of_depth_zero_inputs hC hP hS hL) (_root_.GlobalTheory.HeightCounting.Up.Model.AtMem.and_z (_root_.GlobalTheory.T.exists_c …` and prove the remaining obligations. Introduce `K B f T w Z Wt p0 t nch n c h`. Take `⟨⟨h1, h2⟩, ⟨P, _⟩, h4⟩` from `h`. Conclude with `⟨h1, h2, _root_.GlobalTheory.T.tieInePoly_of_characterChoice hL (w.D Z) P, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem locComp_of_isRc_classMapD_cenLoc : GlobalTheory.HeightCounting.HtCard → _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → GlobalTheory.Published.DepthZeroSupport → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ _ _ _ _ => (PairedCharacterCondition.tieChi (D := w.D Z) ∧ (∃ Q : PairedCharacterCondition.Pend (w.D Z), PairedCharacterCondition.admDZ Q ∧ GlobalTheory.Pass.EigSpan Q) ∧ GlobalTheory.Pass.TieInePoly (w.D Z) ∧ GlobalTheory.TypeLeaf.SerLoc (w.D Z)) := by
   intro hC hP hS hL
@@ -37,7 +37,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.TypePrimesFinished.locComp_of_isRc_classMapD_cenLoc | exact _root_.GlobalTheory.TypePrimesFinished.locComp_of_isRc_classMapD_cenLoc | (intros; apply _root_.GlobalTheory.TypePrimesFinished.locComp_of_isRc_classMapD_cenLoc <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.tieChi_at_members_of_depthZero : GlobalTheory.HeightCounting.HtCard → _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → GlobalTheory.Published.DepthZeroSupport → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ _ _ _ _ => (PairedCharacterCondition.tieChi (D := w.D Z) ∧ (∃ Q : PairedCharacterCondition.Pend (w.D Z), PairedCharacterCondition.admDZ Q ∧ GlobalTheory.Pass.EigSpan Q) ∧ GlobalTheory.Pass.TieInePoly (w.D Z) ∧ GlobalTheory.TypeLeaf.SerLoc (w.D Z)) := by
   first | exact @_root_.GlobalTheory.TypePrimesFinished.locComp_of_isRc_classMapD_cenLoc | exact _root_.GlobalTheory.TypePrimesFinished.locComp_of_isRc_classMapD_cenLoc | (intros; apply _root_.GlobalTheory.TypePrimesFinished.locComp_of_isRc_classMapD_cenLoc <;> assumption)

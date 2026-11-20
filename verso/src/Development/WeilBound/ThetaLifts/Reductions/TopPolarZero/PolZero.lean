@@ -33,7 +33,7 @@ open PositivityTheory.ThKEst (GrpTop EpsOf SiegelAll FinVolU)
 open PositivityTheory.ThKF (Unimod ArchOp ICont PureAct CartanConj CartanMove)
 
 /- English proof (translation)
-The claim follows from `have p1 := siegelWeilAniso_of p0 frameConj finLevel stab2Cpt have hc := cptAll_of g1 g2 g3 g4 g5 have l1 := boxSec_of finLevel stab2Cpt have l6 := pairsStable polZero_of hc (hermLine_of' hc l6 pairsIrr hF hN hW hB hI hM) (coefLine_of (swFull_of p1.1 (eisContinues_of p2 frameConj) …`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.ThKR.polynomial_vanishing_of_compactness (p0 : SiegelWeilStd) (p2 : EisBL) (p5 : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne)
     (hN : NonZeroAn) (hF : Factor) (hM : MatchEx) (hB : ThetaBasic) (hW : WeilConv) (hD : KDecay) (hI : ICont)

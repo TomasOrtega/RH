@@ -9,23 +9,19 @@ open MeasureTheory GlobalTheory.Dec
 namespace GlobalTheory.Dec
 
 /- English proof (translation)
-Use `set f : G × G → ℂ := fun p => ((β (p.1⁻¹ * p.2)).toReal : ℂ) * (F p.2 * φ p.2) with hf_def`. Establish `hβm : Measurable fun p : G × G => β (p.1⁻¹ * p.2)` using `hβ.comp (measurable_fst.inv.mul measurable_snd)`. Establish `hfm : Measurable f` using `(Complex.measurable_ofReal.comp hβm.ennreal_toReal).mul ((hF.comp measurable_snd).mul (hφ.comp measurable_snd))`. Establish `hβy : ∀ y, Measurable fun m : G => β (m⁻¹ * y)` using `fun y => hβ.comp (measurable_inv.mul_const y)`. Establish `hfib : ∀ y, ∫ m, (β (m⁻¹ * y)).toReal ∂ν = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Rewrite using `[integral_toReal (hβy y).aemeasurable (Filter.Eventually.of_forall fun m => (hβt _).lt_top), hβ1 y, ENNReal.toReal_one]`. Establish `hfibI : ∀ y, Integrable (fun m => (β (m⁻¹ * y)).toReal) ν` using `fun y => integrable_toReal_of_lintegral_ne_top (hβy y).aemeasurable (by rw [hβ1 y]; exact ENNReal.one_ne_top)`. Establish `hA : ∫ y, F y * φ y ∂μ = ∫ y, ∫ m, f (m, y) ∂ν ∂μ`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hf_def]`. Rewrite using `[integral_mul_const, integral_complex_ofReal, hfib y]`. Simplify using the standard rewrite rules. Establish `hfI : Integrable f (ν.prod μ)`. Rewrite using `[integrable_prod_iff' hfm.aestronglyMeasurable]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Filter.Eventually.of_forall fun y => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hf_def]`. Conclude with `(hfibI y).ofReal.mul_const _`. Establish `hn : (fun y => ∫ m, ‖f (m, y)‖ ∂ν) = fun y => ‖F y * φ y‖`. Use function extensionality and compare the values at `y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hf_def, norm_mul, Complex.norm_real, Real.norm_eq_abs, ENNReal.abs_toReal]`. Rewrite using `[integral_mul_const, hfib y, one_mul]`. Rewrite using `[hn]`. Conclude with `hint.norm`. Establish `hmp : MeasurePreserving (fun p : G × G => (p.1, p.1 * p.2)) (ν.prod μ) (ν.prod μ)` using `measurePreserving_prod_mul ν μ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hemb : MeasurableEmbedding (fun p : G × G => (p.1, p.1 * p.2))` using `(MeasurableEquiv.shearMulRight G).measurableEmbedding`. Establish `hae : ∀ᵐ p ∂(ν.prod μ), f (p.1, p.1 * p.2) = ((β p.2).toReal : ℂ) * (F p.2 * φ (p.1 * p.2))`. Establish `h1 : ∀ᵐ p ∂(ν.prod μ), ∀ y, F (p.1 * y) = F y` using `Measure.quasiMeasurePreserving_fst.ae hinv`. Use `filter_upwards [h1] with p hp`. Simplify using `only [hf_def, inv_mul_cancel_left, hp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgI : Integrable (fun p : G × G => ((β p.2).toReal : ℂ) * (F p.2 * φ (p.1 * p.2))) (ν.prod μ)` using `((hmp.integrable_comp_emb hemb).2 hfI).congr hae`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hA, ← integral_prod_symm f hfI, ← hmp.integral_comp hemb f]`. Conclude with `integral_congr_ae hae`. Use `_ = ∫ z, ∫ m, ((β z).toReal : ℂ) * (F z * φ (m * z)) ∂ν ∂μ := integral_prod_symm _ hgI`.
-
-Use `_ = 0 := by`. Establish `hz : ∀ z, ∫ m, ((β z).toReal : ℂ) * (F z * φ (m * z)) ∂ν = 0`. Introduce `z`. Repeatedly rewrite using `[← mul_assoc]`. Rewrite using `[integral_const_mul, h0 z, mul_zero]`.
-
-Simplify using `only [hz, integral_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_mul_eq_zero_of_cutoff {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G]
     (μ ν : Measure G) [SFinite μ] [SFinite ν] [μ.IsMulLeftInvariant]
@@ -93,9 +89,9 @@ theorem integral_mul_eq_zero_of_cutoff {G : Type} [Group G] [MeasurableSpace G] 
         simp only [hz, integral_zero]
 
 /- English proof (translation)
-Unfold `WeilVanish`. Introduce `G _ _ _ _ _ _ _ _ μ _ N ν hN hν F φ hF hφ hinv hint h0`. Take `⟨β, hβ, hβt, hβ1⟩` from `exists_measurable_cutoff_fibre_integral_one G N ν hN hν`. Use `haveI : IsFiniteMeasureOnCompacts ν := hν.2.1`. Establish `hN' : ∀ᵐ m ∂ν, m ∈ (N : Set G)` using `mem_ae_iff.2 hν.2.2.1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ m ∂ν, ∀ y, F (m * y) = F y` using `hN'.mono fun m hm y => hinv m hm y`. Conclude with `integral_mul_eq_zero_of_cutoff μ ν β hβ hβt hβ1 F φ hF hφ hae hint h0`.
+A detailed English derivation is pending.
 -/
 theorem weilVanish : WeilVanish := by
   unfold WeilVanish

@@ -21,9 +21,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.WeilIntegral
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hC S A hA L hL (G3 A) (x3 A 0) (x3 A 1) (x3 A 2)`. Establish `e : lift (x3 A 0) (lift (x3 A 1) (x3 A 2)) = 𝟙 (G3 A)`. Apply the tactic sequence `ext <;> simp [x3]`. Take `⟨t', ht', -⟩` from `exists_gen hL (φ' := thφ A (x3 A)) (ε' := thε) (fun V _ k => by`. Establish `h` using `prod_cub (x3 A 0) (x3 A 1) (x3 A 2) k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Use `Eq.trans ?_ (h.symm.trans (Finset.prod_congr rfl fun I _ => congrArg (fun q => k q ^ thε I) (Category.id_comp _)))` and prove the remaining obligations. Simplify using `[Fin.prod_univ_eight]) t ht`. Conclude with `⟨t', ht'⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem triv_theta (hC : GlobalTheory.Published.CubeTheorem) {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
     (hA : IsAbelianScheme A) {L : LB A.left} (hL : L.IsLB) : AbLaw.Triv (Theta A L) := by
@@ -39,9 +39,9 @@ theorem triv_theta (hC : GlobalTheory.Published.CubeTheorem) {S : Scheme.{0}} {A
   exact ⟨t', ht'⟩
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : AbLaw.Triv (P.pull (eSec (A ⊗ B))) := by`. Establish `e` using `(AbDual.triv_ev_iff hP.isLB _ _).2 (AbDual.evc_one_right hP.isLB hP.zero (1 : 𝟙_ (Over S) ⟶ A))`. Establish `e' : lift (1 : 𝟙_ (Over S) ⟶ A) (1 : 𝟙_ (Over S) ⟶ B) = η[A ⊗ B]`. Apply the tactic sequence `ext <;> simp [Hom.one_def]`. Rewrite `e` using `[AbDual.ev, e']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`. Take `⟨t, ht⟩` from `triv_theta hC hAB hP.isLB`. Take `⟨t', ht', hn'⟩` from `AbLaw.Cube.exists_normalised hP.isLB t ht`. Conclude with `⟨⟨P, r, hP.isLB, hr⟩, rfl, ⟨AbLaw.Cube.cubicalOfNormalised globalFns_holds hAB ⟨P, r, hP.isLB, hr⟩ t' ht' hn'⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cubical (hC : GlobalTheory.Published.CubeTheorem) {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B]
     [IsCommMonObj (A ⊗ B)] (hAB : IsAbelianScheme (A ⊗ B)) {P : LB (A ⊗ B).left} (hP : IsDual A B P) :
@@ -58,7 +58,7 @@ theorem exists_cubical (hC : GlobalTheory.Published.CubeTheorem) {S : Scheme.{0}
   exact ⟨⟨P, r, hP.isLB, hr⟩, rfl, ⟨AbLaw.Cube.cubicalOfNormalised globalFns_holds hAB ⟨P, r, hP.isLB, hr⟩ t' ht' hn'⟩⟩
 
 /- English proof (translation)
-Use `⟨isPullback_prod m.1 n.1 h₁ h₂, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Conclude with `(grpMor_prod (κ := dp0 ℤ) (κ' := dp0 ℤ) (σ := RingHom.id ℤ) (t := specZIsTerminal.from _) (t' := specZIsTerminal.from _) ⟨Cris.isDPMorphism_of_eq_bot _ rfl _ _, specZIsTerminal.hom_ext _ _, m.1.w, m.2⟩ ⟨Cris.isDPMorphism_of_eq_bot _ rfl _ _, specZIsTerminal.hom_ext _ _, n.1.w, n. …`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isGrpPullback_prod {S S' : Scheme.{0}} {A B : Over S} {A' B' : Over S'} [GrpObj A] [GrpObj B]
     [GrpObj A'] [GrpObj B'] {b : S' ⟶ S} {f : A'.left ⟶ A.left} {g : B'.left ⟶ B.left}
@@ -71,9 +71,9 @@ theorem isGrpPullback_prod {S S' : Scheme.{0}} {A B : Over S} {A' B' : Over S'} 
     ⟨Cris.isDPMorphism_of_eq_bot _ rfl _ _, specZIsTerminal.hom_ext _ _, n.1.w, n.2⟩ h₁ h₂).mul T x y x₀ y₀ hx hy
 
 /- English proof (translation)
-Establish `h₁` using `UU.cubWeil_of_isPullCubical _ _ f G G' m hp.1.w (fun T a b => Over.OverMorphism.ext (hp.2 T a b _ _ rfl rfl).symm) L L' c c' hc N T' x' y' ζ' h'`. Set `σ : Over.mk (T'.hom ≫ f) ⟶ T` to `Over.homMk τ hτ`. Establish `h₂` using `h.comp σ`. Establish `e₁ : σ ≫ x = Out.toBase hp.1.w x'` using `Over.OverMorphism.ext hx.symm`. Establish `e₂ : σ ≫ y = Out.toBase hp.1.w y'` using `Over.OverMorphism.ext hy.symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h₂` using `[e₁, e₂]`. Conclude with `h₁.unique h₂`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cubWeil_eq_of_pull {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] [IsCommMonObj G] {G' : Over S'}
     [GrpObj G'] [IsCommMonObj G'] (m : CubeMap G' G) (hp : IsGrpPullback G' G f m.F) {L : RigLB G} {L' : RigLB G'}
@@ -92,7 +92,7 @@ theorem cubWeil_eq_of_pull {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpO
   exact h₁.unique h₂
 
 /- English proof (translation)
-Establish `p : IsPullback (fst G G).left (snd G G).left G.hom G.hom` using `IsPullback.of_hasPullback _ _`. Apply `p.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h₁, ← Category.assoc, ← Over.comp_left, lift_fst, hx, Category.assoc, ← Over.comp_left, lift_fst]`. Rewrite using `[Category.assoc, h₂, ← Category.assoc, ← Over.comp_left, lift_snd, hy, Category.assoc, ← Over.comp_left, lift_snd]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_left_comm {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} {φ : G'.left ⟶ G.left}
     {h : (G' ⊗ G').left ⟶ (G ⊗ G).left} (h₁ : h ≫ (fst G G).left = (fst G' G').left ≫ φ)
@@ -107,7 +107,7 @@ theorem lift_left_comm {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} {φ : G'.
       lift_snd]
 
 /- English proof (translation)
-Set `σ : Over.mk (T'.hom ≫ f) ⟶ T` to `Over.homMk τ hτ`. Conclude with `congrArg (fun q => q.left) ((map_one (pushHom hp T')).trans (MonObj.comp_one σ).symm)`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem one_left_comm {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G']
     {φ : G'.left ⟶ G.left} (hp : IsGrpPullback G' G f φ) {T : Over S} {T' : Over S'} (τ : T'.left ⟶ T.left)
@@ -116,24 +116,24 @@ theorem one_left_comm {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G]
   exact congrArg (fun q => q.left) ((map_one (pushHom hp T')).trans (MonObj.comp_one σ).symm)
 
 /- English proof (translation)
-Apply the tactic sequence `ext1 <;> simp only [MonObj.pow_comp, MonObj.one_comp, lift_fst, lift_snd, hx, hy]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_pow {S : Scheme.{0}} {G : Over S} [GrpObj G] {T : Over S} {x y : T ⟶ G} {N : ℕ} (hx : x ^ N = 1)
     (hy : y ^ N = 1) : lift x y ^ N = 1 := by
   ext1 <;> simp only [MonObj.pow_comp, MonObj.one_comp, lift_fst, lift_snd, hx, hy]
 
 /- English proof (translation)
-Establish `hAA` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Use `hAA.comm` as an intermediate fact. Use `hG.comm` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hG.quasiCompact` as an intermediate fact. Use `CubeExtension.smooth_tensor G G` as an intermediate fact. Use `CubeExtension.geometricallyConnected_tensor G G` as an intermediate fact. Establish `hq : QuasiCompact (G ⊗ G).hom`. Rewrite using `[Over.tensorObj_hom]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Use `LBExtDVR.isOpenImmersion_spMap_fractionRing R K` as an intermediate fact. Take `⟨h, h₁, h₂⟩` from `exists_prod_pullback hp hp`. Establish `hpp` using `isGrpPullback_prod hp hp h₁ h₂`. Take `⟨L, rfl, ⟨c⟩⟩` from `exists_cubical hC hAA hP`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM, iM⟩` from `LBExtDVR.exists_lineBundle_extension_genericFibre R K _ _ (G ⊗ G).hom (A ⊗ A).hom h inferInstance hq hpp.1 L.L L.isLB`. Take `⟨L', c', m, rfl, -, hc, -⟩` from `NormalCubeExt.exists_cubical_extension (Sp R) ((isNormalScheme_iff_pred _).1 inferInstance) (Sp K) (spMap (algebraMap R K)) (G ⊗ G) (A ⊗ A) h hpp L c M hM iM`. Establish `hτ : spMap f ≫ (SpAlg R B).hom = (SpAlg K C).hom ≫ spMap (algebraMap R K)`. Rewrite using `[← Over.w x, ← Category.assoc, ← ex, Category.assoc, hp.1.w, ← Category.assoc, Over.w]`. Establish `o` using `one_left_comm hp (T := SpAlg R B) (T' := SpAlg K C) (spMap f) hτ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ, hζ, -⟩` from `UU.existsUnique_cubWeil c' (lift_pow hx (one_pow N)) (lift_pow (one_pow N) hy)`. Take `⟨U', rfl⟩` from `EpsWeil.unitOn_bijective.2 ζ`. Establish `k` using `((UU.cubWeil_iff_weilIs (c := c) globalFns_holds hAA (lift_pow hx' (one_pow N)) (lift_pow (one_pow N) hy') _).2 hU).comp (spOver g)`. Rewrite `k` using `[comp_lift, comp_lift, MonObj.comp_one]`. Establish `e` using `cubWeil_eq_of_pull m hpp hc (T := SpAlg R B) (T' := SpAlg K C) (spMap f) hτ (lift_left_comm h₁ h₂ _ ex o) (lift_left_comm h₁ h₂ _ o ey) hζ k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨U', congrArg Units.val (EpsWeil.unitOn_bijective.1 (((EpsWeil.map_unitOn (g : D →+* C) U).symm.trans e).trans (EpsWeil.map_unitOn f U')))⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit (hC : GlobalTheory.Published.CubeTheorem) {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     {K : Type} [Field K] [Algebra R K] [IsFractionRing R K] {G : Over (Sp R)} [GrpObj G] {A : Over (Sp K)} [GrpObj A]
@@ -186,7 +186,7 @@ def twoMap [Algebra R B] : B ⊗[R] B →ₐ[R] (K ⊗[R] B) ⊗[K] (K ⊗[R] B)
     fun _ _ => .all _ _
 
 /- English proof (translation)
-Simplify using `[twoMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twoMap_tmul [Algebra R B] (a b : B) :
     twoMap (K := K) B (a ⊗ₜ[R] b) = ((1 : K) ⊗ₜ[R] a) ⊗ₜ[K] ((1 : K) ⊗ₜ[R] b) := by
@@ -195,9 +195,9 @@ theorem twoMap_tmul [Algebra R B] (a b : B) :
 variable {B} [Bialgebra R B] [Module.Finite R B] [Module.Projective R B]
 
 /- English proof (translation)
-Proceed by induction on `u with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, tmul_add]`. Consider the case `tmul a b`. Use `CartierDual.baseChange_tmul_tmul K 1 1 χ b` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[twoMap_tmul, LinearMap.lTensor_tmul, LinearMap.lTensor_tmul, rid_tmul, rid_tmul]`. Rewrite using `[show (CartierDual.baseChange R K B ((1 : K) ⊗ₜ χ)).ofConv ((1 : K) ⊗ₜ b) = χ.ofConv b • (1 * 1 : K) from this, _root_.mul_one, smul_assoc, one_smul, tmul_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem contract_twoMap (χ : CartierDual R B) (u : B ⊗[R] B) :
     TensorProduct.rid K _ ((CartierDual.baseChange R K B ((1 : K) ⊗ₜ χ)).ofConv.lTensor _ (twoMap (K := K) B u)) =
@@ -212,7 +212,7 @@ theorem contract_twoMap (χ : CartierDual R B) (u : B ⊗[R] B) :
       _root_.mul_one, smul_assoc, one_smul, tmul_smul]
 
 /- English proof (translation)
-Proceed by induction on `u with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem contract_map {D C : Type} [CommRing D] [Algebra K D] [CommRing C] [Algebra K C] (κ : D →ₐ[K] C)
     (ψ : C →ₗ[K] K) (u : D ⊗[K] D) :
@@ -226,7 +226,7 @@ theorem contract_map {D C : Type} [CommRing D] [Algebra K D] [CommRing C] [Algeb
 end Algebra
 
 /- English proof (translation)
-Set `F : WithConv (Γ.A n →ₐ[R] B) →* (SpAlg R B ⟶ G)` to `MonoidHom.mk' (fun φ => spOver φ.ofConv ≫ s.y n) (s.mul n B)`. Conclude with `(map_pow F (WithConv.toConv ψ) _).symm.trans ((congrArg F (Γ.pts_pow_self n _)).trans (map_one F))`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem finTower_pow {p : ℕ} {R : Type} [CommRing R] {Γ : PDivGroup p R} {G : Over (Sp R)} [GrpObj G]
     (s : FinTower Γ G) (n : ℕ) {B : Type} [CommRing B] [Algebra R B] (ψ : Γ.A n →ₐ[R] B) :
@@ -240,7 +240,7 @@ section Level
 variable {p : ℕ} {R K : Type} [CommRing R] [CommRing K] [Algebra R K] {Γ : PDivGroup p R} {𝒜 : PDivGroup p K}
 
 /- English proof (translation)
-Establish `h` using `congrArg (spMap l ≫ ·) (hκ n)`. Simplify using `only [← Category.assoc, ← Cris.spMap_comp] at h`. Simplify using `only [Over.comp_left, PDiv.spOver_left, ← Category.assoc, ← Cris.spMap_comp]`. Conclude with `(congrArg (fun q => (spMap q ≫ (t.y n).left) ≫ φ) (RingHom.ext e₁)).trans (h.trans (congrArg (fun q => spMap q ≫ (s.y n).left) (RingHom.ext fun a => (e₂ a).symm)))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem univ_left_comm {G : Over (Sp R)} [GrpObj G] {A : Over (Sp K)} [GrpObj A] {φ : A.left ⟶ G.left}
     {s : FinTower Γ G} {t : 𝒜.TorsionTower A} {κ : Γ.baseChange K ⟶ 𝒜} (hκ : s.IsIncl t φ κ) (n : ℕ)
@@ -262,7 +262,7 @@ theorem comp_weilProj_app [Fact p.Prime] (κ : Γ.baseChange K ⟶ 𝒜) (w : �
       κ.app n (w.app n (CartierDual.map (κ.app n) (CartierDual.baseChange R K (Γ.A n) x))) := rfl
 
 /- English proof (translation)
-Rewrite using `[comp_weilProj_app, hw, ← contract_twoMap, ← e, ← contract_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comp_weilProj_app_eq [Fact p.Prime] (κ : Γ.baseChange K ⟶ 𝒜) (w : 𝒜 ⟶ 𝒜.dual) (n : ℕ)
     {U : 𝒜.A n ⊗[K] 𝒜.A n}
@@ -276,9 +276,9 @@ theorem comp_weilProj_app_eq [Fact p.Prime] (κ : Γ.baseChange K ⟶ 𝒜) (w :
 end Level
 
 /- English proof (translation)
-Introduce `hC p _ R _ _ _ K _ _ _ G _ A _ φ hG hp Γ s 𝒜 t κ hκ hA P hP w hw`. Use `PDivDescend.exists_baseChangeMap_eq p R K Γ Γ.dual _ fun n χ => ?_` and prove the remaining obligations. Take `⟨U, hU, hwU⟩` from `hw n`. Set `κ' : 𝒜.A n →ₐ[K] K ⊗[R] Γ.A n` to `κ.app n`. Establish `pw : ∀ {D : Type} [CommRing D] [Algebra K D] (ψ : 𝒜.A n →ₐ[K] D), (spOver ψ ≫ t.y n) ^ p ^ n = 1` using `fun ψ => by rw [← MonObj.comp_pow, t.y_pow, MonObj.comp_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₁` using `univ_left_comm hκ n (Algebra.TensorProduct.map κ' κ') (twoMap (R := R) (K := K) (Γ.A n)).toRingHom Algebra.TensorProduct.includeLeft Algebra.TensorProduct.includeLeft Algebra.TensorProduct.includeLeftRingHom (fun a => by simp [κ']) fun a => twoMap_tmul _ a 1`. Establish `e₂` using `univ_left_comm hκ n (Algebra.TensorProduct.map κ' κ') (twoMap (R := R) (K := K) (Γ.A n)).toRingHom Algebra.TensorProduct.includeRight Algebra.TensorProduct.includeRight (Algebra.TensorProduct.includeRight (R := K)).toRingHom (fun a => by simp [κ']) fun a => twoMap_tmul _ 1 a`. Take `⟨U', e⟩` from `exists_unit hC hG hp hA hP (finTower_pow s n _) (finTower_pow s n _) (pw _) (pw _) hU _ _ e₁ e₂`. Conclude with `⟨_, comp_weilProj_app_eq κ w n hwU e χ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_baseChangeMap_eq_weilProj : GlobalTheory.Published.CubeTheorem → ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] (A : Over (Sp K)) [GrpObj A] (φ : A.left ⟶ G.left), IsSemiAbelian G → IsGrpPullback A G (spMap (algebraMap R K)) φ → ∀ (Γ' : PDivGroup p R) (s : FinTower Γ' G) (𝒜 : PDivGroup p K) (t : 𝒜.TorsionTower A) (κ : Γ'.baseChange K ⟶ 𝒜), s.IsIncl t φ κ → IsAbelianScheme A → ∀ (P : LB (A ⊗ A).left), IsDual A A P → ∀ w : 𝒜 ⟶ 𝒜.dual, IsWeilHom t t P w → ∃ h : Γ' ⟶ Γ'.dual, PDivGroup.baseChangeMap K h = κ ≫ weilProj κ w := by
   intro hC p _ R _ _ _ K _ _ _ G _ A _ φ hG hp Γ s 𝒜 t κ hκ hA P hP w hw

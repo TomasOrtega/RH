@@ -18,7 +18,7 @@ variable {X : Type*} {k : ℕ} (C : Fin k → Set X)
 def cellUnion (j : ℕ) : Set X := ⋃ l : Fin k, ⋃ (_ : (l : ℕ) < j), C l
 
 /- English proof (translation)
-Simplify using `[cellUnion]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_cellUnion {j : ℕ} {x : X} : x ∈ cellUnion C j ↔ ∃ l : Fin k, (l : ℕ) < j ∧ x ∈ C l := by
   simp [cellUnion]
@@ -26,23 +26,23 @@ theorem mem_cellUnion {j : ℕ} {x : X} : x ∈ cellUnion C j ↔ ∃ l : Fin k,
 variable {C}
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[mem_cellUnion]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cellUnion_zero : cellUnion C 0 = ∅ := by
   ext x
   simp [mem_cellUnion]
 
 /- English proof (translation)
-Introduce `x hx` and use `by obtain ⟨l, hl, hx⟩ := (mem_cellUnion C).1 hx exact (mem_cellUnion C).2 ⟨l, lt_of_lt_of_le hl h, hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cellUnion_mono {i j : ℕ} (h : i ≤ j) : cellUnion C i ⊆ cellUnion C j := fun x hx => by
   obtain ⟨l, hl, hx⟩ := (mem_cellUnion C).1 hx
   exact (mem_cellUnion C).2 ⟨l, lt_of_lt_of_le hl h, hx⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mem_cellUnion, mem_union]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, hx⟩`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hl with hl | hl` into its components or cases.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl ⟨l, hl, hx⟩`. Conclude with `Or.inr (Fin.ext hl ▸ hx)`. Introduce and unpack `(⟨l, hl, hx⟩ | hx)`. Conclude with `⟨l, by omega, hx⟩`. Conclude with `⟨j, by omega, hx⟩`.
+Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem cellUnion_succ (j : Fin k) : cellUnion C ((j : ℕ) + 1) = cellUnion C j ∪ C j := by
   ext x
@@ -57,7 +57,7 @@ theorem cellUnion_succ (j : Fin k) : cellUnion C ((j : ℕ) + 1) = cellUnion C j
     · exact ⟨j, by omega, hx⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨l, hl⟩` from `hcov x`. Simplify using `only [mem_univ, iff_true]`. Conclude with `(mem_cellUnion C).2 ⟨l, l.2, hl⟩`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cellUnion_of_cover (hcov : ∀ x, ∃ l, x ∈ C l) : cellUnion C k = univ := by
   ext x
@@ -71,13 +71,13 @@ variable (hdisj : Pairwise fun i j => Disjoint (C i) (C j)) (hcov : ∀ x, ∃ l
 include hdisj hcov hcl
 
 /- English proof (translation)
-Establish `hc : (cellUnion C j)ᶜ = ⋃ l : Fin k, ⋃ (_ : j ≤ (l : ℕ)), closure (C l)`. Use extensionality with `x`. Simplify using `only [mem_compl_iff, mem_cellUnion, mem_iUnion, not_exists, not_and, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨l, hl⟩` from `hcov x`. Conclude with `⟨l, not_lt.1 fun h' => h l h' hl, subset_closure hl⟩`. Introduce and unpack `⟨l, hjl, hx⟩ l' hl' hx'`. Take `⟨l'', hll'', hx''⟩` from `mem_iUnion₂.1 (hcl l hx)`. Establish `: l'' = l'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Conclude with `Set.disjoint_left.1 (hdisj hne) hx'' hx'`. Substitute `this` using the available equality. Establish `: (l : ℕ) ≤ l''` using `hll''`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hc' : (⋃ l : Fin k, ⋃ (_ : j ≤ (l : ℕ)), closure (C l)) = ⋃ l ∈ Finset.univ.filter (fun l : Fin k => j ≤ (l : ℕ)), closure (C l)`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[← isClosed_compl_iff, hc, hc']`. Conclude with `isClosed_biUnion_finset fun l _ => isClosed_closure`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_cellUnion (j : ℕ) : IsOpen (cellUnion C j) := by
   have hc : (cellUnion C j)ᶜ = ⋃ l : Fin k, ⋃ (_ : j ≤ (l : ℕ)), closure (C l) := by
@@ -105,11 +105,11 @@ theorem isOpen_cellUnion (j : ℕ) : IsOpen (cellUnion C j) := by
 omit hcov in
 
 /- English proof (translation)
-Apply `subset_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨hx, hxu⟩`. Take `⟨l, hl, hxl⟩` from `(mem_cellUnion C).1 hxu`. Take `⟨l', hjl', hx'⟩` from `mem_iUnion₂.1 (hcl j hx)`. Establish `: l' = l`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Conclude with `Set.disjoint_left.1 (hdisj hne) hx' hxl`. Substitute `this` using the available equality. Establish `: j = l'` using `Fin.ext (by have : (j : ℕ) ≤ l' := hjl'; omega)`. Substitute `this` using the available equality.
+Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx'`. Introduce `x hx`. Use `⟨subset_closure hx, ?_⟩` and prove the remaining obligations. Rewrite using `[cellUnion_succ (C := C) j]`. Conclude with `Or.inr hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem closure_inter_cellUnion_succ (j : Fin k) :
     closure (C j) ∩ cellUnion C ((j : ℕ) + 1) = C j := by
@@ -131,7 +131,7 @@ theorem closure_inter_cellUnion_succ (j : Fin k) :
 
 omit [TopologicalSpace X] hcov hcl in
 /- English proof (translation)
-Rewrite using `[Set.disjoint_left]`. Introduce `x hx hxu`. Take `⟨l, hl, hxl⟩` from `(mem_cellUnion C).1 hxu`. Establish `hne : l ≠ j` using `fun h => by rw [h] at hl; exact lt_irrefl _ hl`. Conclude with `Set.disjoint_left.1 (hdisj hne) hxl hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem disjoint_cellUnion (j : Fin k) : Disjoint (C j) (cellUnion C j) := by
   rw [Set.disjoint_left]
@@ -147,19 +147,17 @@ section Cells
 variable {F : Type*} [Field F] {n : ℕ} (β γ : Fin n → ℕ)
 
 /- English proof (translation)
-Set `rk : Equiv.Perm (Fin n) → ℕ → ℕ → ℕ` to `fun w a b => cellRank β γ (permGL F w) a b`. Set `S : Finset (ℕ → ℕ → ℕ)` to `Finset.univ.image rk`. Set `e0 : Fin S.card ≃ S` to `S.equivFin.symm`. Establish `hrep : ∀ r : S, ∃ w, rk w = r` using `fun r => by`. Take `⟨w, -, hw⟩` from `Finset.mem_image.1 r.2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w, hw⟩`. Use `choose rep hrep using hrep`. Establish `hrep' : ∀ (r : S) (a b : ℕ), cellRank β γ (permGL F (rep r)) a b = (r : ℕ → ℕ → ℕ) a b` using `fun r a b => congrFun (congrFun (hrep r) a) b`. Set `ht : Fin S.card → ℕ` to `fun i => cellHeight β γ (permGL F (rep (e0 i)))`. Set `s` to `Tuple.sort (fun i => OrderDual.toDual (ht i))`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hs : Monotone ((fun i => OrderDual.toDual (ht i)) ∘ s)` using `Tuple.monotone_sort _`. Use `⟨S.card, fun j => rep (e0 (s j)), fun g => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `exists_permGL_mem_doubleCoset (β := β) (γ := γ) g`. Establish `hmem : rk w ∈ S` using `Finset.mem_image_of_mem _ (Finset.mem_univ w)`. Take `⟨j', hj⟩` from `(s.trans e0).surjective ⟨rk w, hmem⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hj2 : e0 (s j') = ⟨rk w, hmem⟩` using `hj`. Establish `hg : g ∈ doubleCoset (permGL F (rep (e0 (s j')))) (blockUpper F n β : Set (GL (Fin n) F)) (blockUpper F n γ)`. Apply `mem_doubleCoset_of_cellRank_eq` to reduce the goal to its premises. Introduce `a b`. Rewrite using `[hrep', cellRank_of_mem_doubleCoset hw, hj2]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨j', hg, fun j'' hj'' => ?_⟩` and prove the remaining obligations. Apply `s.injective` to reduce the goal to its premises. Apply `e0.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a b`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1` using `hrep' (e0 (s j'')) a b`. Establish `h2` using `hrep' (e0 (s j')) a b`. Rewrite `h1` using `[← cellRank_of_mem_doubleCoset hj'']`. Rewrite `h2` using `[← cellRank_of_mem_doubleCoset hg]`. Rewrite using `[← h1, ← h2]`.
-
-Conclude with `hs hij`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cellEnumeration :
     ∃ (k : ℕ) (w : Fin k → Equiv.Perm (Fin n)),
@@ -209,11 +207,11 @@ variable {F : Type*} [Field F] [TopologicalSpace F] [IsTopologicalRing F] [T1Spa
   {β γ : Fin n → ℕ}
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨l, hl, -⟩` from `hcov x`. Use `mem_iUnion₂.2 ⟨l, ?_, hl⟩` and prove the remaining obligations. Break down `closure_doubleCoset_subset _ hx with h | h` into its components or cases. Take `⟨j', -, hu⟩` from `hcov x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hu j h`. Establish `h2` using `hu l hl`. Rewrite using `[h1, h2]`. Assume the negation of the conclusion as `hjl`. Use `hanti (le_of_lt (not_le.1 hjl))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h` using `[Set.mem_ofPred_eq, cellHeight_of_mem_doubleCoset hl]`. Conclude with `absurd this (not_le.2 h)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closure_doubleCoset_subset_of_antitone {k : ℕ} {w : Fin k → Equiv.Perm (Fin n)}
     (hcov : ∀ g : GL (Fin n) F, ∃! j, g ∈ doubleCoset (permGL F (w j))
@@ -255,23 +253,23 @@ def supportedIn (Y : Set (GL (Fin n) F)) : Submodule ℂ (parabolicIndSpace F n 
 variable {σ}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_supportedIn {Y : Set (GL (Fin n) F)} {f : parabolicIndSpace F n β σ} :
     f ∈ supportedIn σ Y ↔ ∀ g ∉ Y, (f : GL (Fin n) F → W) g = 0 :=
   Iff.rfl
 
 /- English proof (translation)
-Introduce `f hf g hg` and use `hf g fun hgY => hg (h hgY)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem supportedIn_mono {Y Y' : Set (GL (Fin n) F)} (h : Y ⊆ Y') :
     supportedIn σ Y ≤ supportedIn σ Y' :=
   fun f hf g hg => hf g fun hgY => hg (h hgY)
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `f hf`. Rewrite using `[Submodule.mem_bot]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hf g (Set.notMem_empty g)`.
+A detailed English derivation is pending.
 -/
 theorem supportedIn_empty : supportedIn σ (∅ : Set (GL (Fin n) F)) = ⊥ := by
   rw [eq_bot_iff]
@@ -282,7 +280,7 @@ theorem supportedIn_empty : supportedIn σ (∅ : Set (GL (Fin n) F)) = ⊥ := b
   exact hf g (Set.notMem_empty g)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `_ _ g hg`. Conclude with `absurd (mem_univ g) hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem supportedIn_univ : supportedIn σ (univ : Set (GL (Fin n) F)) = ⊤ := by
   rw [eq_top_iff]
@@ -290,9 +288,9 @@ theorem supportedIn_univ : supportedIn σ (univ : Set (GL (Fin n) F)) = ⊤ := b
   exact absurd (mem_univ g) hg
 
 /- English proof (translation)
-Introduce `f hf g hg`. Use `show ((parabolicInd F n β σ q f : parabolicIndSpace F n β σ) : GL (Fin n) F → W) g = 0`. Rewrite using `[coe_indRep_apply]`. Apply `hf` to reduce the goal to its premises. Introduce `hgq`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hg` to reduce the goal to its premises. Simplify using `using hY _ hgq _ ((blockUpper F n γ).inv_mem hq)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem supportedIn_le_comap {Y : Set (GL (Fin n) F)}
     (hY : ∀ g ∈ Y, ∀ q ∈ blockUpper F n γ, g * q ∈ Y) {q : GL (Fin n) F}
@@ -311,27 +309,27 @@ def jacquetFiltration (Y : Set (GL (Fin n) F)) :
   (supportedIn σ Y).map (Representation.Coinvariants.mk _)
 
 /- English proof (translation)
-The claim follows from `Submodule.map_mono (supportedIn_mono h)`.
+A detailed English derivation is pending.
 -/
 theorem jacquetFiltration_mono {Y Y' : Set (GL (Fin n) F)} (h : Y ⊆ Y') :
     jacquetFiltration γ (σ := σ) Y ≤ jacquetFiltration γ Y' :=
   Submodule.map_mono (supportedIn_mono h)
 
 /- English proof (translation)
-Rewrite using `[jacquetFiltration, supportedIn_empty, Submodule.map_bot]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jacquetFiltration_empty : jacquetFiltration γ (σ := σ) ∅ = ⊥ := by
   rw [jacquetFiltration, supportedIn_empty, Submodule.map_bot]
 
 /- English proof (translation)
-Rewrite using `[jacquetFiltration, supportedIn_univ, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `Representation.Coinvariants.mk_surjective _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jacquetFiltration_univ : jacquetFiltration γ (σ := σ) univ = ⊤ := by
   rw [jacquetFiltration, supportedIn_univ, Submodule.map_top, LinearMap.range_eq_top]
   exact Representation.Coinvariants.mk_surjective _
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨f, hf, rfl⟩`. Rewrite using `[Submodule.mem_comap, jacquetRep_mk]`. Conclude with `Submodule.smul_mem _ _ ⟨_, supportedIn_le_comap γ hY (levi_le_blockUpper m.2) hf, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jacquetFiltration_le_comap {Y : Set (GL (Fin n) F)}
     (hY : ∀ g ∈ Y, ∀ q ∈ blockUpper F n γ, g * q ∈ Y) (m : levi F n γ) :

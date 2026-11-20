@@ -21,13 +21,13 @@ open MvPolynomial Formalism.GradedWeylDivisibility Formalism.BasicNotions Global
 namespace GlobalTheory.AlcZero
 
 /- English proof (translation)
-Establish `hZ : ∀ j, hcVal ℤ (fun i => (μ i : ℤ)) j = hcVal ℤ (fun i => (ν i : ℤ)) j`. Introduce `j`. Apply `Int.cast_injective (α := k)` to reduce the goal to its premises. Establish `h1` using `hcVal_map (Int.castRingHom k) (fun i => (μ i : ℤ)) j`. Establish `h2` using `hcVal_map (Int.castRingHom k) (fun i => (ν i : ℤ)) j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [eq_intCast, Int.cast_natCast] at h1 h2`. Rewrite using `[← h1, ← h2]`. Conclude with `hv j`. Take `⟨p, hp1, hp⟩` from `Nat.exists_infinite_primes (∑ i, ν i + N)`. Use `haveI := Fact.mk hp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `eq_of_hcVal_eq p hp (ZMod p) N ν μ hν hμ` to reduce the goal to its premises. Introduce `h`. Use `⟨(hc h).1, (hc h).2, ?_⟩` and prove the remaining obligations. Establish `: ν ⟨0, h⟩ ≤ ∑ i, ν i` using `Finset.single_le_sum (fun i _ => Nat.zero_le (ν i)) (Finset.mem_univ _)`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j`. Establish `h1` using `hcVal_map (Int.castRingHom (ZMod p)) (fun i => (μ i : ℤ)) j`. Establish `h2` using `hcVal_map (Int.castRingHom (ZMod p)) (fun i => (ν i : ℤ)) j`. Simplify using `only [eq_intCast, Int.cast_natCast] at h1 h2`. Rewrite using `[h1, h2, hZ j]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_hcVal_eq_charZero (k : Type) [Field k] [CharZero k] (N : ℕ) (ν μ : Fin N → ℕ)
     (hν : Antitone ν) (hμ : Antitone μ) (hc : ∀ h : 0 < N, ν ⟨N - 1, by omega⟩ = 0 ∧ μ ⟨0, h⟩ ≤ ν ⟨0, h⟩)
@@ -58,9 +58,9 @@ end GlobalTheory.AlcZero
 namespace GlobalTheory.AlcZero
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [rowAct]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, hp, map_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `[rowAct, map_sum, Matrix.map_apply]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem map_rowAct_eq {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {N : ℕ}
     (g : Matrix (Fin N) (Fin N) R) (f : MvPolynomial (Fin N × Fin N) R) :
@@ -74,9 +74,9 @@ theorem map_rowAct_eq {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {N
     simp [rowAct, map_sum, Matrix.map_apply]
 
 /- English proof (translation)
-Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy`. Rewrite using `[smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_span_map {S A : Type} [CommRing S] [CommRing A] (ψ : S →+* A) {σ : Type}
     (X : Set (MvPolynomial σ S)) (P : MvPolynomial σ S) (hP : P ∈ Submodule.span S X) :
@@ -90,27 +90,25 @@ theorem map_mem_span_map {S A : Type} [CommRing S] [CommRing A] (ψ : S →+* A)
     exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-Introduce `A _ _ g f hf`. Set `S` to `MvPolynomial (Fin N × Fin N) k`. Set `Y : Matrix (Fin N) (Fin N) S` to `Matrix.mvPolynomialX (Fin N) (Fin N) k`. Set `P : MvPolynomial (Fin N × Fin N) S` to `rowAct S (n := N) Y.transpose (MvPolynomial.map (algebraMap k S) f)`. Establish `hP : P ∈ Submodule.span S (MvPolynomial.map (algebraMap k S) '' (M : Set (MvPolynomial (Fin N × Fin N) k)))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `GlobalTheory.T.mem_span_map_of_eval_mem_of_ne_zero k _ _ M Y.det (Matrix.det_mvPolynomialX_ne_zero _ _) P ?_` and prove the remaining obligations. Introduce `y hy`. Set `m0 : Matrix (Fin N) (Fin N) k` to `Matrix.of fun i j => y (i, j)`. Establish `hm0 : Y.map (MvPolynomial.eval y) = m0`. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Y, m0, Matrix.mvPolynomialX]`. Establish `hdet : m0.det ≠ 0`. Rewrite using `[← hm0]`. Rewrite `hy` using `[RingHom.map_det]`. Conclude with `hy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `g0 : GL (Fin N) k` to `Matrix.nonsingInvUnit m0 (isUnit_iff_ne_zero.mpr hdet)`. Establish `h1` using `hG g0 f hf`. Establish `hu : detPow k N g0 lam.detShift ≠ 0` using `Units.ne_zero _`. Rewrite `h1` using `[sqAct, Submodule.smul_mem_iff M hu]`. Establish `e1 : MvPolynomial.map (MvPolynomial.eval y) P = rowAct k (n` using `N) (m0.transpose) f := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [P]`. Rewrite using `[map_rowAct_eq, MvPolynomial.map_map]`. Establish `: (MvPolynomial.eval y).comp (algebraMap k S) = RingHom.id k`. Use extensionality with `a`. Simplify using `[S]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, MvPolynomial.map_id, Matrix.transpose_map, hm0]`. Rewrite using `[e1]`. Conclude with `h1`. Set `ψ : S →+* A` to `MvPolynomial.eval₂Hom (algebraMap k A) fun v => (g : Matrix (Fin N) (Fin N) A) v.1 v.2`. Establish `e2 : MvPolynomial.map ψ P = rowAct A (n` using `N) (g : Matrix (Fin N) (Fin N) A).transpose (MvPolynomial.map (algebraMap k A) f) := by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [P]`. Rewrite using `[map_rowAct_eq, MvPolynomial.map_map]`. Establish `h3 : ψ.comp (algebraMap k S) = algebraMap k A`. Use extensionality with `a`. Simplify using `[ψ, S]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h4 : (Y.transpose).map ψ = (g : Matrix (Fin N) (Fin N) A).transpose`. Use extensionality with `i j`. Simplify using `only [Y, ψ, Matrix.mvPolynomialX, Matrix.map_apply, Matrix.transpose_apply, Matrix.of_apply, MvPolynomial.coe_eval₂Hom]`. Conclude with `MvPolynomial.eval₂_X _ _ _`. Rewrite using `[h3, h4]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5` using `map_mem_span_map ψ _ P hP`. Rewrite `h5` using `[Set.image_image]`. Establish `h6 : (fun x : MvPolynomial (Fin N × Fin N) k => MvPolynomial.map ψ (MvPolynomial.map (algebraMap k S) x)) = ⇑(MvPolynomial.map (σ` using `Fin N × Fin N) (algebraMap k A)) := by`. Establish `h3 : ψ.comp (algebraMap k S) = algebraMap k A`. Use extensionality with `a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ψ, S]`. Use function extensionality and compare the values at `x`. Rewrite using `[MvPolynomial.map_map, h3]`. Rewrite `h5` using `[h6, e2]`. Rewrite using `[sqAct]`.
-
-Conclude with `Submodule.smul_mem _ _ h5`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGLSubmodule_of_stable (k : Type) [Field k] [Infinite k] (N : ℕ) (lam : DomWeight N)
     (M : Submodule k (MvPolynomial (Fin N × Fin N) k))
@@ -169,21 +167,19 @@ end GlobalTheory.AlcZero
 namespace GlobalTheory.AlcZero
 
 /- English proof (translation)
-Establish `dom` using `GlobalTheory.T.rowDeg_dominated_of_mem_dualWeylModule k N ν`. Take `⟨μ, v, hμ, hvM', hvM, hvw, hraise⟩` from `GlobalTheory.T.exists_dominant_highest_vector_of_lt_stable k N M M' hM hM' hlt ⟨∑ a, ν a, fun f hf m hm => ((dom f (hle hf) m hm).2).le⟩`. Establish `hv0 : v ≠ 0` using `fun h => hvM (h ▸ zero_mem M)`. Establish `hwt` using `GlobalTheory.T.rowPolarizationOperators_action_on_rowWeight k N N μ v hvw`. Establish `hrel` using `(GlobalTheory.T.rowPolarizationOperators_relations_divPow_baseChange k N N).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhw` using `GlobalTheory.T.trace_glMatrixUnit_pow_highestWeight_mod k _ N (rowE k N N) hrel M (fun a b f hf => hM.1 a b f hf) (fun a => (μ a : k)) v hraise (fun a => by rw [hwt.1 a, sub_self]; exact zero_mem M)`. Establish `hval : ∀ j, hcVal k (fun i => (μ i : k)) j = hcVal k (fun i => (ν i : k)) j`. Introduce `j`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hhw j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : gel k N N j v = hcVal k (fun i => (ν i : k)) j • v` using `GlobalTheory.T.traceRowOperatorPower_dualWeyl_field_smul k N ν hν j v (hle hvM')`. Express the relevant statement in the definitionally equal form `gel k N N j v - _ ∈ M at h1`. Rewrite `h1` using `[h2, ← sub_smul]`. Conclude with `hvM ((Submodule.smul_mem_iff M (sub_ne_zero.mpr (Ne.symm hne))).mp h1)`. Take `⟨m, hm⟩ : v.support.Nonempty` from `Finset.nonempty_iff_ne_empty.mpr (by rwa [Ne, MvPolynomial.support_eq_empty])`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmμ : ∀ a, μ a = rowDeg m a` using `fun a => by`. Rewrite using `[← hvw (mem_support_iff.mp hm)]`. Conclude with `(weight_rowW_apply m a)`. Establish `hcond : ∀ h : 0 < N, ν ⟨N - 1, by omega⟩ = 0 ∧ μ ⟨0, h⟩ ≤ ν ⟨0, h⟩`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hlast h, ?_⟩` and prove the remaining obligations. Establish `hd` using `(dom v (hle hvM') m hm).1 1`. Establish `hs : (Finset.univ.filter fun a : Fin N => a.val < 1) = {⟨0, h⟩}`. Use extensionality with `a`. Simplify using `[Fin.ext_iff]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hd` using `[hs, Finset.sum_singleton, Finset.sum_singleton]`. Rewrite using `[hmμ]`. Conclude with `hd`. Establish `hμν : μ = ν` using `eq_of_hcVal_eq_charZero k N ν μ hν hμ hcond hval`. Substitute `hμν` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `GlobalTheory.T.dualWeyl_highestWeight_space_line_field k N μ hν v (hle hvM') hvw`. Establish `hc0 : c ≠ 0` using `by rintro rfl; exact hv0 (by rw [hc, zero_smul])`. Use `⟨?_, fun h => hvM (hc ▸ M.smul_mem c h)⟩` and prove the remaining obligations. Establish `: hw k le_rfl μ = c⁻¹ • v` using `by rw [hc, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Rewrite using `[this]`.
-
-Conclude with `M'.smul_mem _ hvM'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hw_mem_of_lt_charZero (k : Type) [Field k] [CharZero k] (N : ℕ) (ν : Fin N → ℕ) (hν : Antitone ν)
     (hlast : ∀ h : 0 < N, ν ⟨N - 1, by omega⟩ = 0)
@@ -226,9 +222,9 @@ theorem hw_mem_of_lt_charZero (k : Type) [Field k] [CharZero k] (N : ℕ) (ν : 
   rw [this]; exact M'.smul_mem _ hvM'
 
 /- English proof (translation)
-Introduce `k _ _ N lam M hM hG`. Use `haveI : Infinite k := Infinite.of_injective _ Nat.cast_injective`. Establish `hN` using `factNatW N lam`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMg : Good M` using `good_of_isGLSubmodule k N lam M (isGLSubmodule_of_stable k N lam M hG)`. Establish `key` using `hw_mem_of_lt_charZero k N lam.natW hN.1 hN.2.2`. Establish `h1` using `(key ⊥ M (good_top_bot k N N).2 hMg (bot_lt_iff_ne_bot.2 hc.1) hM).1`. Establish `h2` using `(key M (nablaSq k N lam) hMg (good_nablaSq k N lam) (lt_of_le_of_ne hM hc.2) le_rfl).2`. Conclude with `h2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nablaSq_simple_charZero : ∀ (k : Type) [Field k] [CharZero k] (N : ℕ) (lam : DomWeight N)
     (M : Submodule k (MvPolynomial (Fin N × Fin N) k)),

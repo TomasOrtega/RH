@@ -46,17 +46,17 @@ def badS (D : D7) : Set ℕ :=
     ((Set.range fun u : D.what₂.Word => (D.mem u).A.T) ∪ (D.host.small : Set ℕ))
 
 /- English proof (translation)
-The claim follows from `Or.inr (Or.inl ⟨u, rfl⟩)`.
+Prove the second alternative.
 -/
 theorem T_mem_badS (D : D7) (u : D.what₂.Word) : (D.mem u).A.T ∈ badS D := Or.inr (Or.inl ⟨u, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Or.inr (Or.inr (Finset.mem_coe.2 h))`.
+Prove the second alternative.
 -/
 theorem small_mem_badS (D : D7) (l : ℕ) (h : l ∈ D.host.small) : l ∈ badS D := Or.inr (Or.inr (Finset.mem_coe.2 h))
 
 /- English proof (translation)
-The claim follows from `Or.inl (by fin_cases i <;> simp)`.
+Prove the first alternative.
 -/
 theorem g_mem_badS (D : D7) (i : Fin 2) : D.host.g i ∈ badS D := Or.inl (by fin_cases i <;> simp)
 
@@ -160,7 +160,7 @@ def periodBound_at (D : D7) (L : SizeData₂ D) (EX : ErrX D) (Dx : DivX D)
           ChainTie Ch sel Dx mu0 (ambOf (recSeam D) B χ cD) u μ → BoundAt L EX C1 i w u μ
 
 /- English proof (translation)
-Establish `h` using `RingHom.congr_fun D.embE_φ₀ (D.host.sigmaOf (D.eTau τ : D.R.GG) x)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem recSeam_emb (D : D7) (τ : D.what₂.Tau) (x : D.host.E) :
     (recSeam D).σ₀ ((recFields D).emb τ x) = TaylorLogMetric.embT D ((recSeam D).iT τ) ((recSeam D).iE x) := by
@@ -168,7 +168,7 @@ theorem recSeam_emb (D : D7) (τ : D.what₂.Tau) (x : D.host.E) :
   exact h
 
 /- English proof (translation)
-Use `show RowPar.of (D.hcW u τ) = RowPar.of (D.hc τ)`. Simplify using `only [RowPar.of, D.hcW_v, D.hcW_b, D.hcW_e]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem recWts_row {D : D7} (EX : ErrX D) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     RowPar.of ((recWts EX).hc u τ) = (recWts EX).row τ := by

@@ -5,16 +5,16 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd UpperTheory.V.Sd.Wc UpperTheory.V.Af.GlobalFixedVectors Matrix
 
 /- English proof (translation)
-Simplify using `[Kc, Subgroup.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_Kc {F : Type} [Field F] [NumberField F] {c : Pl F → ℕ} {k : GF F} :
     k ∈ Kc c ↔ ∀ w, GeneralLinearGroup.map (pLoc F w) k ∈ K1 w (c w) := by
   simp [Kc, Subgroup.mem_iInf]
 
 /- English proof (translation)
-Use `mem_Ohat.2 fun w => ?_` and prove the remaining obligations. Take `⟨g, -, hg⟩` from `mem_Kc.1 hk w`. Establish `e` using `congrArg (fun x : GL (Fin 2) (w.adicCompletion F) => x i j) hg`. Express the relevant statement in the definitionally equal form `((g i j : w.adicCompletionIntegers F) : w.adicCompletion F) = pLoc F w (k i j) at e`. Rewrite using `[← e]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(g i j).2`.
+A detailed English derivation is pending.
 -/
 private theorem entry_Kc {F : Type} [Field F] [NumberField F] {c : Pl F → ℕ} {k : GF F} (hk : k ∈ Kc c) (i j : Fin 2) :
     k i j ∈ UpperTheory.V.Af.Ohat F := by
@@ -26,11 +26,9 @@ private theorem entry_Kc {F : Type} [Field F] [NumberField F] {c : Pl F → ℕ}
   exact (g i j).2
 
 /- English proof (translation)
-Set `A : Matrix (Fin 2) (Fin 2) (UpperTheory.V.Af.Ohat F)` to `fun i j => ⟨k i j, entry_Kc hk i j⟩`. Set `B : Matrix (Fin 2) (Fin 2) (UpperTheory.V.Af.Ohat F)` to `fun i j => ⟨(k⁻¹ : GF F) i j, entry_Kc (inv_mem hk) i j⟩`. Establish `hA : (UpperTheory.V.Af.Ohat F).subtype.mapMatrix A = k.val` using `rfl`. Establish `hB : (UpperTheory.V.Af.Ohat F).subtype.mapMatrix B = (k⁻¹ : GF F).val` using `rfl`. Establish `hinj : Function.Injective ((UpperTheory.V.Af.Ohat F).subtype.mapMatrix (m` using `Fin 2)) := Matrix.map_injective Subtype.val_injective`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨A, B, hinj ?_, hinj ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_one, hA, hB, Units.mul_inv]`. Rewrite using `[map_mul, map_one, hA, hB, Units.inv_mul]`. Use `haveI : Subsingleton (UpperTheory.V.Af.Ohat F ⧸ Ideal.span {((1 : ℕ) : ↥(UpperTheory.V.Af.Ohat F))}) := Ideal.Quotient.subsingleton_iff.2 (by simp)`. Use extensionality with `i j`.
-
-Conclude with `Subsingleton.elim _ _`. Conclude with `Units.ext hA`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem Kc_le {F : Type} [Field F] [NumberField F] {c : Pl F → ℕ} {k : GF F} (hk : k ∈ Kc c) : k ∈ KLev F 2 1 := by
   let A : Matrix (Fin 2) (Fin 2) (UpperTheory.V.Af.Ohat F) := fun i j => ⟨k i j, entry_Kc hk i j⟩
@@ -49,17 +47,17 @@ private theorem Kc_le {F : Type} [Field F] [NumberField F] {c : Pl F → ℕ} {k
   · exact Units.ext hA
 
 /- English proof (translation)
-Introduce `F _ _ V _ _ ρ hρ c x hc`. Establish `key : ∀ S : Finset (Pl F), (∀ k ∈ KAway 2 1 S, k ∈ Kc c → ρ k x = x) → (∀ k ∈ KAway 2 1 ∅, k ∈ Kc c → ρ k x = x)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact id`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert w S hw ih`. Introduce `h`. Use `ih fun k hk hl => ?_` and prove the remaining obligations. Rewrite `hl` using `[mem_Kc]`. Establish `h1` using `loc_mem w (mem_KAway.1 hk).1`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : k * (locGL F 2 w (GeneralLinearGroup.map (pLoc F w) k))⁻¹ ∈ KAway 2 1 (insert w S)`. Use `mem_KAway.2 ⟨mul_mem (mem_KAway.1 hk).1 (inv_mem h1), fun u hu => ?_⟩` and prove the remaining obligations. Distinguish the cases in `huw : u = w`. Substitute `huw` using the available equality. Simplify using `[pLoc_locGL]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[pLoc_locGL_of_ne huw, (mem_KAway.1 hk).2 u ((Finset.mem_insert.1 hu).resolve_left huw)]`. Establish `h3 : ρ (locGL F 2 w (GeneralLinearGroup.map (pLoc F w) k)) x = x` using `hc w _ (hl w)`. Establish `h4` using `h _ h2 (mem_Kc.2 fun v => by`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[pLoc_locGL]`. Simplify `hl v)` using `[pLoc_locGL_of_ne hv]`. Rewrite `h4` using `[← h3, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right, h3]`. Then use the resulting hypothesis. Take `⟨S, hS⟩` from `exists_KAway_subset (M := 1) ((hρ x).mem_nhds (by simp))`. Introduce `k hk`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `key S (fun k hk _ => hS hk) k (mem_KAway.2 ⟨Kc_le hk, by simp⟩) hk`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.Wc.fixGlob :
     UpperTheory.V.Sd.Wc.FixGlob := by

@@ -54,7 +54,7 @@ def kitWith (Φ : s.Flag) (key : KeySec s.Xo κ.c) (x : ToroidalCompactification
 variable {s L jC} in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hc, hB, rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isKitWith_kitWith (Φ : s.Flag) (key : KeySec s.Xo κ.c) {x : ToroidalCompactificationData s} {B : s.Bd L} (hB : IsBdOf x L B)
     (P : PolOf x Φ) {cts : Ats S κ} (hc : cts.Over jC) (hj : jC.Pinned) (hA : AdmEx S κ) :
@@ -68,13 +68,13 @@ variable {F s L jC} {k : KitT s L jC} {d : s.Comp → D.what₂.Tau → ℝ} {x 
 include h
 
 /- English proof (translation)
-The claim follows from `h.pad`.
+A detailed English derivation is pending.
 -/
 theorem pad_eq : k.pad = padAt s (locStOf F cts) (globStOf F cts) (admissible_representation_factorisation S κ jC hj hA) (flatSt s k.Φ (metsOf x k.Φ))
     (arIn s k.Φ (metsOf x k.Φ)) := h.pad
 
 /- English proof (translation)
-The claim follows from `h.fl ▸ isBetti_flBetti hb`.
+A detailed English derivation is pending.
 -/
 theorem isBetti {c : s.Comp} {τ : D.what₂.Tau} (hb : ∃ b, IsBetti s k.Φ L c τ (flatSec s k.Φ c τ) b) :
     IsBetti s k.Φ L c τ (flatSec s k.Φ c τ) (k.fl c τ) := h.fl ▸ isBetti_flBetti hb
@@ -82,13 +82,13 @@ theorem isBetti {c : s.Comp} {τ : D.what₂.Tau} (hb : ∃ b, IsBetti s k.Φ L 
 open Formalism.DegreeFormula Formalism.MJ GlobalTheory.HodgeDomain in
 
 /- English proof (translation)
-The claim follows from `h.bd.r_eq c hz`.
+A detailed English derivation is pending.
 -/
 theorem r_eq (c : s.Comp) {z} (hz : z ∈ DomI D.what₂.Tau j (N - j)) :
     (k.B c).r z = x.r κ.σ₀ (s.toCpt L c z) := h.bd.r_eq c hz
 
 /- English proof (translation)
-Introduce `e` and use `have ⟨c⟩ := s.compNe h.bd.m_ne_zero c hb (by rw [e]; rfl)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bd_ne_invariant (hb : (genBd s.T.Z : Set (gen s.T.Z : Scheme.{0})).Nonempty) :
     k.B ≠ GlobalTheory.TrueCx.invariantB _ _ (GlobalTheory.TrueCx.first_index_eq_of_unfolded _ s.isUnf S.p_eq) _ := fun e =>
@@ -109,12 +109,12 @@ variable {st : StFams D} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s 
 include h
 
 /- English proof (translation)
-The claim follows from `have ⟨_, _, _, _, _, h⟩ := h; h.fl`.
+A detailed English derivation is pending.
 -/
 theorem fl_eq : k.fl = flBetti s k.Φ L := have ⟨_, _, _, _, _, h⟩ := h; h.fl
 
 /- English proof (translation)
-The claim follows from `have ⟨_, _, _, _, _, h⟩ := h; h.bd_ne_invariant hb`.
+A detailed English derivation is pending.
 -/
 theorem bd_ne_invariant (hb : (genBd s.T.Z : Set (gen s.T.Z : Scheme.{0})).Nonempty) :
     k.B ≠ GlobalTheory.TrueCx.invariantB _ _ (GlobalTheory.TrueCx.first_index_eq_of_unfolded _ s.isUnf S.p_eq) _ :=
@@ -123,14 +123,14 @@ theorem bd_ne_invariant (hb : (genBd s.T.Z : Set (gen s.T.Z : Scheme.{0})).Nonem
 end IsKitOf
 
 /- English proof (translation)
-The claim follows from `detEx_eq S L τ`.
+A detailed English derivation is pending.
 -/
 example {A : Amb D} {N j : ℕ} (S : Sig A N j) (L : CmList A) (τ : D.what₂.Tau) :
     expo S.Dw (detSym S.Dw (fun _ => false) none (DV.tauEmb D τ)) =
       fun z => -GlobalTheory.AllWt.exOf S.Dw (GlobalTheory.FlatLine.flatWt S.Dw (L.ψ τ)) 0 (some z) := detEx_eq S L τ
 
 /- English proof (translation)
-Introduce `h'` and use `have ⟨c⟩ := s.compNe by simpa using congrFun₂ (h'.deg.trans h.deg.symm) c τ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {F : StFam S κ} {s : FinalTheorems S κ} {L : CmList A} {jC : JC D}
     {k : KitT s L jC} {d : s.Comp → D.what₂.Tau → ℝ} {x : ToroidalCompactificationData s} {P : PolOf x k.Φ} {cts : Ats S κ}
@@ -140,7 +140,7 @@ example {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {F : StFam S κ} {s 
   by simpa using congrFun₂ (h'.deg.trans h.deg.symm) c τ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c τ`. Simplify using `[h.deg, degFlat, hq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 example {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {F : StFam S κ} {s : FinalTheorems S κ} {L : CmList A} {jC : JC D}
     {k : KitT s L jC} {d : s.Comp → D.what₂.Tau → ℝ} {x : ToroidalCompactificationData s} {P : PolOf x k.Φ} {cts : Ats S κ}

@@ -8,11 +8,11 @@ namespace GroundTheory.Heights₂.Heights
 namespace RestTerms
 
 /- English proof (translation)
-Introduce `p k c M hp hk hc`. Take `⟨hsum, hle⟩` from `GeometricTail.intersectionNumber_baseChange p k hp hk`. Establish `hM : 0 ≤ M` using `(abs_nonneg (c 0)).trans (hc 0)`. Establish `hnn : ∀ n : ℕ, 0 ≤ (p ^ ((n + 1) * k))⁻¹` using `fun n => by`. Establish `: (0 : ℝ) ≤ p` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hbound : ∀ n : ℕ, ‖(p ^ ((n + 1) * k))⁻¹ * c n‖ ≤ (p ^ ((n + 1) * k))⁻¹ * M`. Introduce `n`. Rewrite using `[Real.norm_eq_abs, abs_mul, abs_of_nonneg (hnn n)]`. Conclude with `mul_le_mul_of_nonneg_left (hc n) (hnn n)`.
+Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsumM : Summable (fun n : ℕ => (p ^ ((n + 1) * k))⁻¹ * M)` using `hsum.mul_right M`. Establish `hS : Summable (fun n : ℕ => (p ^ ((n + 1) * k))⁻¹ * c n)` using `Summable.of_norm_bounded hsumM hbound`. Use `⟨hS, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem RestInnerTsumBound.proof : RestInnerTsumBound.Statement := by
   intro p k c M hp hk hc

@@ -5,11 +5,11 @@ set_option autoImplicit false
 namespace CrystallineSemistableComparison.Pb.EtaleIntegralityFacts
 
 /- English proof (translation)
-Take `⟨x₀⟩` from `(inferInstance : Nonempty α)`. Establish `hopen : IsOpen (irreducibleComponent x₀)`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `z hz`. Take `⟨U, hU, hzU, hUirr⟩` from `h z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨U, ?_, hU, hzU⟩` and prove the remaining obligations. Establish `h1 : irreducibleComponent x₀ ⊆ closure U` using `(subset_closure_inter_of_isPreirreducible_of_isOpen isIrreducible_irreducibleComponent.2 hU ⟨z, hz, hzU⟩).trans (closure_mono Set.inter_subset_right)`. Establish `h2 : closure U = irreducibleComponent x₀` using `eq_irreducibleComponent hUirr.closure.2 h1`. Conclude with `subset_closure.trans h2.le`. Establish `hclopen : IsClopen (irreducibleComponent x₀)` using `⟨isClosed_irreducibleComponent, hopen⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huniv : irreducibleComponent x₀ = Set.univ` using `hclopen.eq_univ ⟨x₀, mem_irreducibleComponent⟩`. Establish `hirr : IsIrreducible (Set.univ : Set α)` using `huniv ▸ isIrreducible_irreducibleComponent`. Conclude with `(irreducibleSpace_def α).2 hirr`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem irreducibleSpace_of_connected_of_locally {α : Type*} [TopologicalSpace α] [ConnectedSpace α]
     (h : ∀ x : α, ∃ U : Set α, IsOpen U ∧ x ∈ U ∧ IsIrreducible U) : IrreducibleSpace α := by

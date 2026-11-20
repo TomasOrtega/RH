@@ -13,15 +13,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {X : Spc F E n} {W : Spc F E d}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Submodule.span_le.2 fun _ ⟨_, _, _, h, _, h₁, _, e⟩ => e ▸ (SB _).sub_mem h₁ h, le_rfl, fun _ _ _ _ _ h _ => h⟩`.
+Supply the required witnesses or components.
 -/
 theorem thetaSub_top (om : Rep σ X W) (v : Pl F) : ThetaSub om v (SB _) :=
   ⟨Submodule.span_le.2 fun _ ⟨_, _, _, h, _, h₁, _, e⟩ => e ▸ (SB _).sub_mem h₁ h, le_rfl, fun _ _ _ _ _ h _ => h⟩
 
 /- English proof (translation)
-Establish `e : tens (evFin F v) (0 : (κ → Fv F v) → ℂ) (1 : (κ → AF F) → ℂ) = 0` using `by funext x; simp [tens]`. Use `h 1 ⟨fun _ _ _ => rfl, e ▸ (schA F κ).zero_mem⟩` as an intermediate fact. Rewrite `this` using `[e, map_zero]`. Use function extensionality and compare the values at `y`. Use `choose s hs using hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrFun this (fun i => s (y i))` as an intermediate fact. Simplify `this.symm` using `[tens, hs]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem acts_zero {κ : Type} [Fintype κ] (v : Pl F) (T : Module.End ℂ ((κ → AF F) → ℂ)) (φ₁ : (κ → Fv F v) → ℂ)
     (hs : Function.Surjective (evFin F v)) (h : Acts (evFin F v) T 0 φ₁) : φ₁ = 0 := by
@@ -34,9 +34,9 @@ theorem acts_zero {κ : Type} [Fintype κ] (v : Pl F) (T : Module.End ℂ ((κ �
   simpa [tens, hs] using this.symm
 
 /- English proof (translation)
-Establish `hf : Module.finrank ℂ ((Fin n × Fin d → Fv F v) → ℂ) = 1`. Rewrite using `[Module.finrank_fintype_fun_eq_card]`. Simplify using the standard rewrite rules. Use `haveI : IsSimpleOrder (Submodule ℂ ((Fin n × Fin d → Fv F v) → ℂ)) := is_simple_module_of_finrank_eq_one hf`. Use `⟨⟨2, fun m N hN _ => ?_⟩, fun N N' h h' hN hN' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (Fintype.card_le_of_injective (IsSimpleOrder.equivBool ∘ N) (IsSimpleOrder.equivBool.injective.comp hN.injective))`. Establish `b : ∀ N, ThetaSub om v N → N ≠ SB _ → N = ⊥` using `fun N h hN => (eq_bot_or_eq_top N).resolve_right fun e => hN (le_antisymm h.2.1 (e ▸ le_top))`. Rewrite using `[b N h hN, bot_sup_eq]`. Conclude with `hN'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conclusion_rank_zero [IsEmpty (Fin n × Fin d)] (om : Rep σ X W) (v : Pl F) :
     (∃ L : ℕ, ∀ (m : ℕ) (N : Fin m → Submodule ℂ _), StrictMono N → (∀ i, ThetaSub om v (N i)) → m ≤ L) ∧
@@ -61,7 +61,7 @@ variable {R : Type} [CommRing R] [Invertible (2 : R)] {S : Type} [CommRing S] [A
 
 omit [IsModuleTopology R S] [DecidableEq α] in
 /- English proof (translation)
-Use `⟨⟨fun g φ h => h, fun g w φ _ => ?_, fun g l h => h⟩, fun μ _ g φ _ => rfl, fun l _ φ _ => continuous_const (y := l φ)⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr, dotProduct, Subsingleton.elim (x + _) x]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem split_one (ψ : AddChar R ℂ) {ξ : S} {JA : Matrix α α S} {JB : Matrix β β S} [IsEmpty κ]
     (co : Darboux (symp c ξ JA JB) κ) : IsUSplitting C ψ co (actB c) (1 : UG c JB →* Module.End ℂ ((κ → R) → ℂ)) := by
@@ -71,9 +71,9 @@ theorem split_one (ψ : AddChar R ℂ) {ξ : S} {JA : Matrix α α S} {JB : Matr
 
 omit [DecidableEq α] in
 /- English proof (translation)
-Use `haveI : IsEmpty (α × (β ⊕ β)) := ⟨fun ⟨a, b⟩ => b.elim (fun b => isEmptyElim (a, b)) fun b => isEmptyElim (a, b)⟩`. Use `⟨split_one ψ co, GlobalTheory.WeilM.SiegelModel.darbZero ξ JA (dbl JB) _, 1, fun _ _ => Subsingleton.elim _ _, ⟨isLagr_diagCols c JB, split_one ψ _, fun l _ _ p t hp φ _ => ?_⟩, fun g gd h φ₁ _ φ₂ _ => rfl⟩` and prove the remaining obligations. Break down `isEmpty_prod.1 (inferInstance : IsEmpty (α × β)) with h | h` into its components or cases. Simplify using the standard rewrite rules. Establish `: Matrix.GeneralLinearGroup.det t = 1` using `by ext; simp`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem weilB_one (ψ : AddChar R ℂ) {ξ : S} {JA : Matrix α α S} {JB : Matrix β β S} [IsEmpty κ] [IsEmpty (α × β)]
     (co : Darboux (symp c ξ JA JB) κ) : IsUWeilB c C ψ ξ JA JB co 1 1 := by
@@ -88,7 +88,7 @@ theorem weilB_one (ψ : AddChar R ℂ) {ξ : S} {JA : Matrix α α S} {JB : Matr
 end Triv
 
 /- English proof (translation)
-Use `⟨⟨GlobalTheory.WeilM.SiegelModel.darbZero _ _ _ _, fun _ => 0, 0, ∅⟩, 1, 1, 1, fun a => by rw [pow_zero, ite_self]; rfl, fun a => by rw [hd.neg_one_pow, ite_self]; rfl, ⟨continuous_const, fun _ => rfl⟩, ⟨continuous_const, fun _ => rfl⟩, weilB_one ψ _, ⟨GlobalTheory.WeilM.SiegelMo …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hyps_rank_zero (X : Spc F E 0) (W : Spc F E d) (hd : Even d) (ψ : AddChar (AF F) ℂ) :
     ∃ (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W),
@@ -100,7 +100,7 @@ theorem hyps_rank_zero (X : Spc F E 0) (W : Spc F E d) (hd : Even d) (ψ : AddCh
     ⟨GlobalTheory.WeilM.SiegelModel.darbZero _ _ _ _, fun _ => Subsingleton.elim _ _, weilB_one ψ _⟩, fun l _ φ _ => continuous_const (y := l φ)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨!![0, 1; -1, 0], ⊥, fun _ => 1, fun _ => 1⟩, fun i j => by fin_cases i <;> fin_cases j <;> simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem skew_two : ∃ W : Spc F E 2, (∀ i j, σ (W.J j i) = -W.J i j) ∧ W.J.det ≠ 0 :=
   ⟨⟨!![0, 1; -1, 0], ⊥, fun _ => 1, fun _ => 1⟩, fun i j => by fin_cases i <;> fin_cases j <;> simp, by simp⟩
@@ -113,11 +113,9 @@ variable {G H Y V T : Type} [Group G] [Group H] [TopologicalSpace Y] [AddCommGro
   [Module ℂ T]
 
 /- English proof (translation)
-Set `N : Subrepresentation π` to `⟨ℂ ∙ v, fun g w hw => by`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hw`. Rewrite using `[map_smul, h]`. Conclude with `hw⟩`. Establish `hN : N = ⊤` using `(eq_bot_or_eq_top N).resolve_left fun e => hv (by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: v ∈ N.toSubmodule` using `Submodule.mem_span_singleton_self v`. Rewrite `this` using `[e]`. Conclude with `this)`. Establish `hs : ∀ w, ∃ a : ℂ, a • v = w` using `fun w => Submodule.mem_span_singleton.1 (by show w ∈ N.toSubmodule`. Rewrite using `[hN]`.
-
-Use the proof step `trivial)`. Conclude with `⟨(finrank_eq_one_iff_of_nonzero' v hv).2 hs, fun g w => by obtain ⟨a, rfl⟩ := hs w; rw [map_smul, h]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem triv_of_fixed (π : Representation ℂ G V) (hπ : π.IsIrreducible) (v : V) (hv : v ≠ 0) (h : ∀ g, π g v = v) :
     Module.finrank ℂ V = 1 ∧ ∀ g w, π g w = w := by
@@ -133,9 +131,9 @@ theorem triv_of_fixed (π : Representation ℂ G V) (hπ : π.IsIrreducible) (v 
   exact ⟨(finrank_eq_one_iff_of_nonzero' v hv).2 hs, fun g w => by obtain ⟨a, rfl⟩ := hs w; rw [map_smul, h]⟩
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℂ T`. Establish `hx' : TensorProduct.equivFinsuppOfBasisRight b x ≠ 0` using `by simpa using hx`. Take `⟨i, hi⟩` from `Finsupp.ne_iff.1 hx'`. Use `⟨_, hi, fun g => ?_⟩` and prove the remaining obligations. Establish `: ∀ y : V ⊗[ℂ] T, π g (TensorProduct.equivFinsuppOfBasisRight b y i) = TensorProduct.equivFinsuppOfBasisRight b (TensorProduct.map (π g) LinearMap.id y) i` using `fun y => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp`. Consider the case `add a t ha ht => simp [ha, ht]`. Rewrite using `[this, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem fixed_of_tensor (π : Representation ℂ G V) (x : V ⊗[ℂ] T) (hx : x ≠ 0)
     (h : ∀ g, TensorProduct.map (π g) LinearMap.id x = x) : ∃ v : V, v ≠ 0 ∧ ∀ g, π g v = v := by
@@ -153,7 +151,7 @@ theorem fixed_of_tensor (π : Representation ℂ G V) (x : V ⊗[ℂ] T) (hx : x
   rw [this, h]
 
 /- English proof (translation)
-Use `haveI : IsSimpleOrder (Submodule ℂ ℂ) := is_simple_module_of_finrank_eq_one (K := ℂ) (Module.finrank_self ℂ)`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun e => ?_⟩, eq_bot_or_eq_top := fun N => ?_ }` and prove the remaining obligations. Conclude with `bot_ne_top (α := Submodule ℂ ℂ) (congrArg Subrepresentation.toSubmodule e)`. Conclude with `(eq_bot_or_eq_top N.toSubmodule).imp (fun e => Subrepresentation.toSubmodule_injective e) fun e => Subrepresentation.toSubmodule_injective e`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem irr_trivial (H : Type) [Group H] : (Representation.trivial ℂ H ℂ).IsIrreducible := by
   haveI : IsSimpleOrder (Submodule ℂ ℂ) := is_simple_module_of_finrank_eq_one (K := ℂ) (Module.finrank_self ℂ)
@@ -163,27 +161,23 @@ theorem irr_trivial (H : Type) [Group H] : (Representation.trivial ℂ H ℂ).Is
       fun e => Subrepresentation.toSubmodule_injective e
 
 /- English proof (translation)
-Set `φ₀ : SB Y` to `⟨fun _ => 1, IsLocallyConstant.const 1, HasCompactSupport.of_compactSpace _⟩`. Establish `hφ : ∀ φ : SB Y, ∃ a : ℂ, φ = a • φ₀` using `fun φ => ⟨φ.1 default, by`. Use extensionality with `y`. Simplify using `[φ₀, Subsingleton.elim y default]⟩`. Establish `ne : ∀ {M : Type} [AddCommGroup M] [Module ℂ M] (f : SB Y →ₗ[ℂ] M), f ≠ 0 → f φ₀ ≠ 0` using `fun f hf h => hf (LinearMap.ext fun φ => by obtain ⟨a, rfl⟩ := hφ φ; rw [map_smul, h]; simp)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : ∀ {V T : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup T] [Module ℂ T] (π : Representation ℂ G V) (τ : Representation ℂ H T), π.IsIrreducible → τ.IsIrreducible → ∀ f : SB Y →ₗ[ℂ] V ⊗[ℂ] T, IsPairHom 1 π τ f → f ≠ 0 → (Module.finrank ℂ V = 1 ∧ ∀ g w, π g w = w) ∧ Module. …`. Introduce `V T _ _ _ _ π τ hπ hτ f hf h0`. Prove the components needed by the constructor for the conclusion. Take `⟨v, hv, h⟩` from `fixed_of_tensor π _ (ne f h0) fun g => by`. Use `hf g 1 φ₀ φ₀ rfl` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[map_one]`. Conclude with `this.symm`. Conclude with `triv_of_fixed π hπ v hv h`. Take `⟨v, hv, h⟩` from `fixed_of_tensor τ (TensorProduct.comm ℂ V T (f φ₀)) (by simpa using ne f h0) fun g => by`. Use `hf 1 g φ₀ φ₀ rfl` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[map_one]`. Use `conv_rhs => rw [this]`. Conclude with `TensorProduct.map_comm _ _ _`. Conclude with `(triv_of_fixed τ hτ v hv h).1`. Introduce `V _ _ π hπ _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨?_, fun T _ _ τ hτ _ f hf h0 => ⟨fun f' _ => ?_, fun V' _ _ π' hπ' _ f' hf' h0' => ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hex : ∃ f : SB Y →ₗ[ℂ] V, IsLeftHom (1 : G × H →* Module.End ℂ (Y → ℂ)) π f ∧ f ≠ 0`. Take `⟨f, hf, h0⟩` from `hex`. Take `⟨h1, h2⟩` from `triv_of_fixed π hπ _ (ne f h0) fun g => (hf g φ₀ φ₀ rfl).symm`. Establish `hirr` using `irr_trivial H`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨ℂ, inferInstance, inferInstance, Representation.trivial ℂ H ℂ, (TensorProduct.rid ℂ V).symm.toLinearMap ∘ₗ f, ⟨fun g h φ φ₁ e => ?_, ?_, fun φ => ?_⟩, fun v => by simp, ?_, fun N N' a b => ?_⟩` and prove the remaining obligations. Take `rfl : φ₁ = φ` from `Subtype.ext e`. Simplify using `[h2]`. Use `Function.Surjective.comp (g := (TensorProduct.rid ℂ V).symm) (f := f) (TensorProduct.rid ℂ V).symm.surjective fun w => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(finrank_eq_one_iff_of_nonzero' _ (ne f h0)).1 h1 w`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `⟨a • φ₀, map_smul _ _ _⟩`. Use `⟨fun h f' _ => ?_, fun h => by simp [h f hf]⟩` and prove the remaining obligations. Establish `h3 : f φ = 0` using `(TensorProduct.rid ℂ V).symm.map_eq_zero_iff.1 h`. Take `⟨a, rfl⟩` from `hφ φ`. Rewrite `h3`, the goal using `[map_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[(smul_eq_zero.1 h3).resolve_right (ne f h0), zero_smul]`. Use `haveI := (Representation.irreducible_iff_isSimpleModule_asModule _).1 hirr`. Conclude with `isFiniteLength_iff_isNoetherian_isArtinian.2 ⟨inferInstance, inferInstance⟩`. Rewrite using `[(eq_bot_or_eq_top N).resolve_right a.1, (eq_bot_or_eq_top N').resolve_right b.1]`. Use `push Not at hex`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨PUnit, inferInstance, inferInstance, Representation.trivial ℂ H PUnit, 0, ⟨fun g h φ φ₁ e => by simp, fun x => ⟨0, Subsingleton.elim _ _⟩, fun φ => ⟨fun _ f hf => by simp [hex f hf], fun _ => rfl⟩⟩, fun v => by simp, ?_, fun N N' a b => Subrepresentation.toSubmodule_injective (S …` and prove the remaining obligations. Use `haveI : Subsingleton (Representation.trivial ℂ H PUnit).asModule := inferInstanceAs (Subsingleton PUnit)`. Conclude with `IsFiniteLength.of_subsingleton`. Take `⟨⟨h1, -⟩, h2⟩` from `key π τ hπ hτ f hf h0`. Establish `h3 : Module.finrank ℂ (V ⊗[ℂ] T) = 1` using `by rw [Module.finrank_tensorProduct, h1, h2]`.
-
-Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' _ (ne f h0)).1 h3 (f' φ₀)`. Conclude with `⟨a, LinearMap.ext fun φ => by obtain ⟨b, rfl⟩ := hφ φ; rw [map_smul, map_smul, ← ha]; rfl⟩`. Take `⟨⟨h1, h2⟩, -⟩` from `key π τ hπ hτ f hf h0`. Take `⟨⟨h1', h2'⟩, -⟩` from `key π' τ hπ' hτ f' hf' h0'`. Use `haveI := Module.finite_of_finrank_eq_succ h1`.
-
-Use `haveI := Module.finite_of_finrank_eq_succ h1'`. Conclude with `⟨Representation.Equiv.mk (LinearEquiv.ofFinrankEq V V' (h1.trans h1'.symm)) fun g => LinearMap.ext fun w => by`. Simplify using `[h2, h2']⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem howeFor_point [TopologicalSpace G] [TopologicalSpace H] [Unique Y] :
     HoweDualityFor (1 : G × H →* Module.End ℂ (Y → ℂ)) := by
@@ -248,11 +242,11 @@ theorem howeFor_point [TopologicalSpace G] [TopologicalSpace H] [Unique Y] :
       simp [h2, h2']⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `hirr` using `irr_trivial Unit`. Set `ev : Bool → (SB Bool →ₗ[ℂ] ℂ ⊗[ℂ] ℂ)` to `fun b => (TensorProduct.rid ℂ ℂ).symm.toLinearMap ∘ₗ LinearMap.proj b ∘ₗ (SB Bool).subtype`. Establish `hp : ∀ b, IsPairHom (1 : Unit × Unit →* Module.End ℂ (Bool → ℂ)) (Representation.trivial ℂ Unit ℂ) (Representation.trivial ℂ Unit ℂ) (ev b)` using `fun b g h φ φ₁ e => by`. Take `rfl : φ₁ = φ` from `Subtype.ext e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `[ev]`. Set `s : Bool → SB Bool` to `fun b => ⟨Pi.single b 1, IsLocallyConstant.of_discrete _, HasCompactSupport.of_compactSpace _⟩`. Take `⟨a, ha⟩` from `((h ℂ _ hirr ⟨fun v => isOpen_discrete _, fun _ _ _ => inferInstance⟩).2 ℂ _ hirr (fun v => isOpen_discrete _) (ev true) (hp _) (fun e => by`. Use `congrArg (TensorProduct.rid ℂ ℂ) (LinearMap.congr_fun e (s true))` as an intermediate fact. Simplify using `[ev, s] at this)).1 (ev false) (hp _)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (TensorProduct.rid ℂ ℂ) (LinearMap.congr_fun ha (s false))` as an intermediate fact. Simplify using `[ev, s] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_howeFor_two : ¬ HoweDualityFor (1 : Unit × Unit →* Module.End ℂ (Bool → ℂ)) := by
   intro h
@@ -272,7 +266,7 @@ theorem not_howeFor_two : ¬ HoweDualityFor (1 : Unit × Unit →* Module.End �
   simp [ev, s] at this
 
 /- English proof (translation)
-Take `⟨t, m, c, δ, -, ψ, -, hq, -, h1, h2, h3, -, -⟩` from `GlobalTheory.SplitUnitary.Model.isQuad_isHerm_continuous_resEtaPow K e 0`. Apply the tactic sequence `refine ⟨t, m, c, δ, ψ, 1, !![0, 1; -1, 0], GlobalTheory.WeilM.SiegelModel.darbZero _ _ _ _, 1, hq, h1, h2, h3, ⟨fun i => i.elim0, by simp⟩, fun i j => by fin_cases i <;> fin_cases j <;> simp, by simp, fun a => by simp, fun a => by simp, ⟨weilB_one ψ _, ⟨GlobalTheory.WeilM.SiegelM …`. Rewrite using `[MonoidHom.one_comp]`. Conclude with `howeFor_point`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_rank_zero (K : Type) [Field K] [CharZero K] [Invertible (2 : K)] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] (e : K) [Fact (∀ r : K, r ^ 2 ≠ e + 0 * r)] :

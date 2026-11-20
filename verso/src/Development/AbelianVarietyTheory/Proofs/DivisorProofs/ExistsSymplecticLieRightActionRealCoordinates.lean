@@ -12,25 +12,25 @@ namespace GlobalTheory.HoweD.SpLieD
 open Matrix GlobalTheory.RealLift.SpLie
 
 /- English proof (translation)
-Introduce `ι l _ _ _ _ P Q R S φ hφ Y hY`. Set `G : (∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) →ₗ[ℝ] (∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ)` to `{ toFun := fun c w => c w * (Y w)ᵀ map_add' := fun c c' => by ext w : 1; simp [Matrix.add_mul] map_smul' := fun r c => by ext w : 1; simp [Matrix.smul_mul] }`. Use `set Z := LinearMap.toMatrix' (φ.toLinearMap ∘ₗ G ∘ₗ φ.symm.toLinearMap) with hZdef`. Establish `hZ : ∀ c, Z *ᵥ φ c = φ fun w => c w * (Y w)ᵀ`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZdef, LinearMap.toMatrix'_mulVec]`. Simplify using `[G]`. Use `⟨Z, ?_, hZ, ?_⟩` and prove the remaining obligations. Use `mem_sp_of_sympl Z fun u v => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `φ.surjective u`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c', rfl⟩` from `φ.surjective v`. Establish `hs : (∑ w, ∑ a, ∑ b, lineSign a b * (c w * (Y w)ᵀ) a b * star (c' w a b)) + (∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star ((c' w * (Y w)ᵀ) a b)) = 0`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_eq_zero fun w _ => sum_zero _ _ _ (hY w)`. Rewrite using `[hZ, hZ, hφ, hφ, ← mul_add, ← Complex.add_im]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hs, Complex.zero_im, mul_zero]`. Introduce `t c`. Establish `hpow : ∀ (n : ℕ) (c : ∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ), (t • Z) ^ n *ᵥ φ c = φ fun w => c w * ((t • Y w) ^ n)ᵀ`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `zero => intro c`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `c`. Rewrite using `[pow_succ, ← mulVec_mulVec, Matrix.smul_mulVec, hZ, ← φ.map_smul]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: (t • fun w => c w * (Y w)ᵀ) = fun w => c w * (t • Y w)ᵀ`. Use function extensionality and compare the values at `w`. Simplify using `[Matrix.transpose_smul, Matrix.mul_smul]`. Rewrite using `[this, ih]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[pow_succ, Matrix.transpose_mul, Matrix.mul_assoc]`. Use `letI : NormedRing (Matrix (l ⊕ l) (l ⊕ l) ℝ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (l ⊕ l) (l ⊕ l) ℝ) := Matrix.linftyOpNormedAlgebra`. Establish `h1 : HasSum (fun n : ℕ => (((n.factorial : ℝ)⁻¹) • (t • Z) ^ n) *ᵥ φ c) (NormedSpace.exp (t • Z) *ᵥ φ c)` using `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) (t • Z)).map (Matrix.mulVec.addMonoidHomLeft (φ c)) (Continuous.matrix_mulVec continuous_id continuous_const)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : ∀ w, HasSum (fun n : ℕ => c w * (((n.factorial : ℝ)⁻¹ • (t • Y w) ^ n))ᵀ) (c w * (NormedSpace.exp (t • Y w))ᵀ)`. Introduce `w`. Use `letI : NormedRing (Mat (R w) (S w)) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Mat (R w) (S w)) := Matrix.linftyOpNormedAlgebra`. Use `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) (t • Y w)).matrix_transpose` as an intermediate fact.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this.map (AddMonoidHom.mk' (fun M => c w * M) fun _ _ => Matrix.mul_add _ _ _) (continuous_const.matrix_mul continuous_id)`. Establish `h2` using `(Pi.hasSum.2 hw).map φ (LinearMap.continuous_of_finiteDimensional φ.toLinearMap)`. Use `h1.unique ?_` and prove the remaining obligations. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Function.comp_def]`. Rewrite using `[Matrix.smul_mulVec, hpow, ← φ.map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using `[Matrix.transpose_smul, Matrix.mul_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sp_rightActD : ∀ (ι l : Type) [Fintype ι] [DecidableEq ι] [Fintype l] [DecidableEq l] (P Q R S : ι → ℕ)
     (φ : (∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) ≃ₗ[ℝ] (l ⊕ l → ℝ)),

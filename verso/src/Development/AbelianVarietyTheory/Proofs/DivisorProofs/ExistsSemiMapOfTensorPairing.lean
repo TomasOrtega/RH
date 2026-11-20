@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.EtC.SemiTens
 
 /- English proof (translation)
-Use `congrArg (fun k => k.hom z) (f.hom.naturality g.op)` as an intermediate fact. Simplify using `using this.symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem res_map {R : Type} [CommRing R] {F G : Shv R} (f : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (z : Sec F U) :
     Sec.res g (Sec.map f z) = Sec.map f (Sec.res g z) := by
@@ -20,9 +20,7 @@ theorem res_map {R : Type} [CommRing R] {F G : Shv R} (f : F ⟶ G) {V U : Schem
   simpa using this.symm
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(show ((0 : F ⟶ G).hom.app (op U)).hom z = 0`. Rewrite using `[Sheaf.Hom.zero_hom]`. Use the proof step `rfl)`.
-
-Consider the case `(simp [Sec.map, Sheaf.zero_val])`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_zero' {R : Type} [CommRing R] {F G : Shv R} {U : Scheme.{0}} (z : Sec F U) :
     Sec.map (0 : F ⟶ G) z = 0 := by
@@ -40,7 +38,7 @@ def pairHom (ν : Pair I' J' K') (ρ₁ : SemiMap I I') (ρ₂ : SemiMap J J') (
     (fun a₁ a₂ => by ext b; simp)
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n : ℤ, (n : ULift.{1} (ZMod Q)) = r` from `⟨(r.down.cast : ℤ), ULift.ext _ _ (by change ((r.down.cast : ℤ) : ZMod Q) = r.down; exact ZMod.intCast_zmod_cast _)⟩`. Simplify using `[pairHom, Int.cast_smul_eq_zsmul, map_zsmul, LinearMap.smul_apply]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem pairHom_smul (ν : Pair I' J' K') (ρ₁ : SemiMap I I') (ρ₂ : SemiMap J J') (U : Scheme.{0}) (s t w : ℤ)
     (h : s + t = w) (r : ULift.{1} (ZMod Q)) (a : Sec (I.X s) U) (b : Sec (J.X t) U) :
@@ -56,7 +54,7 @@ def bmap (ν : Pair I' J' K') (ρ₁ : SemiMap I I') (ρ₂ : SemiMap J J') (U :
     TensorProduct.liftAddHom (pairHom ν ρ₁ ρ₂ U p.1.1 p.1.2 w p.2) (pairHom_smul ν ρ₁ ρ₂ U p.1.1 p.1.2 w p.2)
 
 /- English proof (translation)
-Unfold `bmap`. Rewrite using `[DirectSum.toAddMonoid_of]`. Simplify using `[pairHom]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bmap_of (ν : Pair I' J' K') (ρ₁ : SemiMap I I') (ρ₂ : SemiMap J J') (U : Scheme.{0}) (w : ℤ)
     (p : {p : ℤ × ℤ // p.1 + p.2 = w}) (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
@@ -66,7 +64,7 @@ theorem bmap_of (ν : Pair I' J' K') (ρ₁ : SemiMap I I') (ρ₂ : SemiMap J J
   simp [pairHom]
 
 /- English proof (translation)
-Unfold `Pair.lift`. Rewrite using `[← DirectSum.lof_eq_of (ULift.{1} (ZMod Q)), DirectSum.toModule_lof]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lift_of (τ : Pair I J T) (U : Scheme.{0}) (w : ℤ)
     (p : {p : ℤ × ℤ // p.1 + p.2 = w}) (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
@@ -76,7 +74,7 @@ theorem lift_of (τ : Pair I J T) (U : Scheme.{0}) (w : ℤ)
   simp
 
 /- English proof (translation)
-Unfold `Tens.res`. Rewrite using `[← DirectSum.lof_eq_of (ULift.{1} (ZMod Q)), DirectSum.lmap_lof]`. Simplify using `[DirectSum.lof_eq_of]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tensRes_of {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ)
     (p : {p : ℤ × ℤ // p.1 + p.2 = w}) (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
@@ -86,9 +84,9 @@ theorem tensRes_of {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ)
   simp [DirectSum.lof_eq_of]
 
 /- English proof (translation)
-Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of p y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b => rw [bmap_of, tensRes_of, bmap_of, ν.nat, ρ₁.nat, ρ₂.nat]`. Consider the case `add y₁ y₂ h₁ h₂ => have e := congrArg₂ (· + ·) h₁ h₂`. Simplify `e` using `only [map_add]`. Consider the case `add x y hx hy => have e := congrArg₂ (· + ·) hx hy`. Simplify `e` using `only [map_add]`.
+Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bmap_nat (ν : Pair I' J' K') (ρ₁ : SemiMap I I') (ρ₂ : SemiMap J J') {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ)
     (x : Tens I J U w) : Sec.res g (bmap ν ρ₁ ρ₂ U w x) = bmap ν ρ₁ ρ₂ V w (Tens.res g w x) := by
@@ -108,19 +106,19 @@ namespace GlobalTheory.EtC
 open SemiTens in
 
 /- English proof (translation)
-Introduce `Q R _ I J T I' J' K' τ hτ ν ρ₁ ρ₂`. Establish `H` using `fun w => GlobalTheory.T.sheafComplexPairing_tensor_universal_property (ZMod Q) R τ hτ w (K'.X w) (fun U => bmap ν ρ₁ ρ₂ U w) (fun V U g x => bmap_nat ν ρ₁ ρ₂ g w x)`. Use `choose φ hnat hlift using H`. Establish `hmul : ∀ (U : Scheme.{0}) (s t w : ℤ) (h : s + t = w) (a : Sec (I.X s) U) (b : Sec (J.X t) U), φ w U (τ.mul U s t w h a b) = ν.mul U s t w h (ρ₁.app U s a) (ρ₂.app U t b)`. Introduce `U s t w h a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hlift w U (DirectSum.of _ ⟨(s, t), h⟩ (a ⊗ₜ b))` as an intermediate fact. Rewrite `this` using `[lift_of, bmap_of]`. Conclude with `this`. Establish `key : ∀ (V : Scheme.{0}) (s : ℤ) (x : Tens I J V s), Sec.map (K'.d s (s + 1)) (bmap ν ρ₁ ρ₂ V s x) = φ (s + 1) V (Sec.map (T.d s (s + 1)) (τ.lift V s x))`. Introduce `V s x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of p y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `tmul a b`. Take `⟨⟨s₁, t₁⟩, hp⟩` from `p`. Rewrite using `[bmap_of, lift_of, ν.leibniz, τ.leibniz, map_add, Units.smul_def, Units.smul_def, map_zsmul, hmul, hmul, ρ₁.comm, ρ₂.comm]`. Consider the case `add y₁ y₂ h₁ h₂ => have e := congrArg₂ (· + ·) h₁ h₂`. Simplify `e` using `only [map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `add x y hx hy => have e := congrArg₂ (· + ·) hx hy`. Simplify `e` using `only [map_add]`. Use `⟨⟨fun U w => φ w U, fun g w a => hnat w _ _ g a, ?_⟩, hmul⟩` and prove the remaining obligations. Introduce `U s t y`. Distinguish the cases in `hst : (ComplexShape.up ℤ).Rel s t`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `ht : t = s + 1` using `hst.symm`. Substitute `ht` using the available equality. Apply `(GlobalTheory.T.etaleSheafSections_ext_and_glue R (K'.X (s + 1)) U).1` to reduce the goal to its premises. Take `⟨S, hS, hP⟩` from `hτ.1 U s y`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx⟩` from `hP V g hg`. Rewrite using `[res_map, hnat, ← hx, hlift, key, hnat, res_map, ← hx]`. Rewrite using `[T.shape s t hst, K'.shape s t hst, map_zero', map_zero', map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semiMap_of_tensorPair : ∀ (Q : ℕ) (R : Type) [CommRing R] {I J T : Cx (ZMod Q)} {I' J' K' : Cx R} (τ : Pair I J T),
     τ.IsTensor → ∀ (ν : Pair I' J' K') (ρ₁ : SemiMap I I') (ρ₂ : SemiMap J J'), ∃ σ : SemiMap T K',

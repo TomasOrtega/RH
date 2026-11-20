@@ -207,312 +207,312 @@ set_option genSizeOfSpec false in
 structure UpperTheory.LiteratureTheorems.OpenImageCondition : Prop where
   galoisRepOfPolarizedPairLit : _root_.UpperTheory.V.Z.Win.RowT
 /- English proof (translation)
-The claim follows from `PositivityTheory.Prw.ellipticMainTheoremCM_holds`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.elliptic_main_theorem_cm_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.EllipticMainTheoremCM :=
   PositivityTheory.Prw.ellipticMainTheoremCM_holds
 /- English proof (translation)
-The claim follows from `GlobalTheory.Top.heckeTateFE`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.hecke_tate_functional_equation_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.HeckeTateFunctionalEquation :=
   GlobalTheory.Top.heckeTateFE
 /- English proof (translation)
-The claim follows from `GlobalTheory.Laid.hcfj_holds`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.hilbert_class_field_j_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.HilbertClassFieldJ :=
   GlobalTheory.Laid.hcfj_holds
 /- English proof (translation)
-The claim follows from `PositivityTheory.Prw.partialZetaFunctionalEquation_holds`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.partial_zeta_functional_equation_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.PartialZetaFunctionalEquation :=
   PositivityTheory.Prw.partialZetaFunctionalEquation_holds
 /- English proof (translation)
-The claim follows from `PositivityTheory.PfDR.deligneRibet_holds`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.deligne_ribet_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.DeligneRibet :=
   PositivityTheory.PfDR.deligneRibet_holds
 /- English proof (translation)
-The claim follows from `PositivityTheory.Prw.siegelKlingenDeligneRibet_of PositivityTheory.Prw.siegelKlingen_holds (_root_.UpperTheory.LiteratureTheorems.deligne_ribet_of_open O)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.siegel_klingen_deligne_ribet_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.SiegelKlingenDeligneRibet :=
   PositivityTheory.Prw.siegelKlingenDeligneRibet_of PositivityTheory.Prw.siegelKlingen_holds (_root_.UpperTheory.LiteratureTheorems.deligne_ribet_of_open O)
 /- English proof (translation)
-The claim follows from `PositivityTheory.DualRT.abelianDeRham`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.abelian_de_rham_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.AbelianDeRham :=
   PositivityTheory.DualRT.abelianDeRham
 /- English proof (translation)
-The claim follows from `GlobalTheory.deRham_potentiallySemistable`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.de_rham_pot_semistable_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.DeRhamPotSemistable :=
   GlobalTheory.deRham_potentiallySemistable
 /- English proof (translation)
-The claim follows from `GlobalTheory.globalArtinReciprocity_holds`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.global_artin_reciprocity_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.GlobalArtinReciprocity :=
   GlobalTheory.globalArtinReciprocity_holds
 /- English proof (translation)
-The claim follows from `UpperTheory.Lit.heckeLAdicCharacterDeRham`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.hecke_ladic_character_de_rham_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.HeckeLAdicCharacterDeRham :=
   UpperTheory.Lit.heckeLAdicCharacterDeRham
 /- English proof (translation)
-The claim follows from `UpperTheory.Lit.CharWD.algebraicCharacterWD (_root_.UpperTheory.LiteratureTheorems.global_artin_reciprocity_of_open O) (_root_.UpperTheory.LiteratureTheorems.hecke_ladic_character_de_rham_of_open O) (_root_.UpperTheory.LiteratureTheorems.de_rham_pot_semistable_of_open O)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.algebraic_character_wd_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.AlgebraicCharacterWD :=
   UpperTheory.Lit.CharWD.algebraicCharacterWD (_root_.UpperTheory.LiteratureTheorems.global_artin_reciprocity_of_open O) (_root_.UpperTheory.LiteratureTheorems.hecke_ladic_character_de_rham_of_open O) (_root_.UpperTheory.LiteratureTheorems.de_rham_pot_semistable_of_open O)
 /- English proof (translation)
-The claim follows from `CuspFormAutomorphicBounds.automorphicFormsFiniteGL`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.automorphic_forms_finite_gl_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.AutomorphicFormsFiniteGL :=
   CuspFormAutomorphicBounds.automorphicFormsFiniteGL
 /- English proof (translation)
-The claim follows from `PositivityTheory.RgUd.All.bernsteinUnitaryProductIrreducible`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.bernstein_unitary_product_irreducible_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.BernsteinUnitaryProductIrreducible :=
   PositivityTheory.RgUd.All.bernsteinUnitaryProductIrreducible
 /- English proof (translation)
-The claim follows from `PositivityTheory.Prw.bernsteinZelevinskyFiniteness_holds`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.bernstein_zelevinsky_finiteness_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.BernsteinZelevinskyFiniteness :=
   PositivityTheory.Prw.bernsteinZelevinskyFiniteness_holds
 /- English proof (translation)
-The claim follows from `UpperTheory.Lit.blochKatoLocal`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.bloch_kato_local_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.BlochKatoLocal :=
   UpperTheory.Lit.blochKatoLocal
 /- English proof (translation)
-The claim follows from `(GlobalTheory.BrauerZero.brauerDegreeZero )`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.brauer_degree_zero_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.BrauerDegreeZero :=
   (GlobalTheory.BrauerZero.brauerDegreeZero )
 /- English proof (translation)
-The claim follows from `PositivityTheory.Exh.essSquareIntegrableSegments_of_seg (PositivityTheory.RgGu.segmentRepresentation)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.ess_square_integrable_segments_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.EssSquareIntegrableSegments :=
   PositivityTheory.Exh.essSquareIntegrableSegments_of_seg (PositivityTheory.RgGu.segmentRepresentation)
 /- English proof (translation)
-The claim follows from `DiscreteGroups.sglob.LConv.localConverseGL`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.local_converse_gl_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.LocalConverseGL :=
   DiscreteGroups.sglob.LConv.localConverseGL
 /- English proof (translation)
-The claim follows from `UpperTheory.V.Af.cuspSpectrumGL.2.2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.cusp_forms_bounded_gl_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.CuspFormsBoundedGL :=
   UpperTheory.V.Af.cuspSpectrumGL.2.2
 /- English proof (translation)
-The claim follows from `PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.jacquet_shalika_rigidity_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.JacquetShalikaRigidity :=
   PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity
 /- English proof (translation)
-The claim follows from `PositivityTheory.JMult1.gelfandKazhdanDual_of_rigidity (_root_.UpperTheory.LiteratureTheorems.jacquet_shalika_rigidity_of_open O) (_root_.UpperTheory.LiteratureTheorems.cusp_forms_bounded_gl_of_open O)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.gelfand_kazhdan_dual_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.GelfandKazhdanDual :=
   PositivityTheory.JMult1.gelfandKazhdanDual_of_rigidity (_root_.UpperTheory.LiteratureTheorems.jacquet_shalika_rigidity_of_open O) (_root_.UpperTheory.LiteratureTheorems.cusp_forms_bounded_gl_of_open O)
 /- English proof (translation)
-The claim follows from `GlobalTheory.RgGu.genericUnlinkedGL_of_segRep2 (PositivityTheory.RgGu.segmentRepresentation)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.generic_unlinked_gl_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.GenericUnlinkedGL :=
   GlobalTheory.RgGu.genericUnlinkedGL_of_segRep2 (PositivityTheory.RgGu.segmentRepresentation)
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Published.chevalleyUnits' )`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.chevalley_units_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.ChevalleyUnits :=
   (GlobalTheory.Published.chevalleyUnits' )
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.GeoLink.geometricLemma`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.bernstein_zelevinsky_geometric_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.GeometricLemma :=
   GlobalTheory.CompanionTheory.GeoLink.geometricLemma
 /- English proof (translation)
-The claim follows from `PositivityTheory.Groth.grothendieckRingPolynomial_of_seg (PositivityTheory.RgGu.segmentRepresentation)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.grothendieck_ring_polynomial_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.GrothendieckRingPolynomial :=
   PositivityTheory.Groth.grothendieckRingPolynomial_of_seg (PositivityTheory.RgGu.segmentRepresentation)
 /- English proof (translation)
-The claim follows from `PositivityTheory.RgGu.segmentRepresentation`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.segment_representation_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.SegmentRepresentation :=
   PositivityTheory.RgGu.segmentRepresentation
 /- English proof (translation)
-The claim follows from `PositivityTheory.Prw.zelevinskyPolynomialRing_of PositivityTheory.Prw.bernsteinZelevinskyFiniteness_holds (_root_.UpperTheory.LiteratureTheorems.segment_representation_of_open O) (_root_.UpperTheory.LiteratureTheorems.grothendieck_ring_polynomial_of_open O)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.zelevinsky_polynomial_ring_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.ZelevinskyPolynomialRing :=
   PositivityTheory.Prw.zelevinskyPolynomialRing_of PositivityTheory.Prw.bernsteinZelevinskyFiniteness_holds (_root_.UpperTheory.LiteratureTheorems.segment_representation_of_open O) (_root_.UpperTheory.LiteratureTheorems.grothendieck_ring_polynomial_of_open O)
 /- English proof (translation)
-The claim follows from `(GlobalTheory.DepthZeroPass.depthZeroInduction (_root_.UpperTheory.LiteratureTheorems.bernstein_zelevinsky_geometric_of_open O) (_root_.UpperTheory.LiteratureTheorems.bernstein_zelevinsky_finiteness_of_open O) (_root_.UpperTheory.LiteratureTheorems.zelevinsky_polynomial_ring_of_o …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.depth_zero_induction_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.DepthZeroInduction :=
   (GlobalTheory.DepthZeroPass.depthZeroInduction (_root_.UpperTheory.LiteratureTheorems.bernstein_zelevinsky_geometric_of_open O) (_root_.UpperTheory.LiteratureTheorems.bernstein_zelevinsky_finiteness_of_open O) (_root_.UpperTheory.LiteratureTheorems.zelevinsky_polynomial_ring_of_open O))
 /- English proof (translation)
-The claim follows from `PositivityTheory.Exh.langlandsExhaustionGL_of_seg (PositivityTheory.RgGu.segmentRepresentation)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.langlands_exhaustion_gl_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.LanglandsExhaustionGL :=
   PositivityTheory.Exh.langlandsExhaustionGL_of_seg (PositivityTheory.RgGu.segmentRepresentation)
 /- English proof (translation)
-The claim follows from `PositivityTheory.Exh.langlandsMultisegments_of_seg (PositivityTheory.RgGu.segmentRepresentation)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.langlands_multisegments_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.LanglandsMultisegments :=
   PositivityTheory.Exh.langlandsMultisegments_of_seg (PositivityTheory.RgGu.segmentRepresentation)
 /- English proof (translation)
-The claim follows from `PositivityTheory.Exh.standardCosocleGL_of_seg (PositivityTheory.RgGu.segmentRepresentation)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.standard_cosocle_gl_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.StandardCosocleGL :=
   PositivityTheory.Exh.standardCosocleGL_of_seg (PositivityTheory.RgGu.segmentRepresentation)
 /- English proof (translation)
-The claim follows from `PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.irreducible_admissible_gl_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.IrreducibleAdmissibleGL :=
   PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top
 /- English proof (translation)
-The claim follows from `PositivityTheory.Tls2.BZGL.standardFunctorsFiniteLength_top`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.standard_functors_finite_length_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.StandardFunctorsFiniteLength :=
   PositivityTheory.Tls2.BZGL.standardFunctorsFiniteLength_top
 /- English proof (translation)
-The claim follows from `UpperTheory.Lit.Cas.temperedProduct (_root_.UpperTheory.LiteratureTheorems.bernstein_zelevinsky_geometric_of_open O) (_root_.UpperTheory.LiteratureTheorems.bernstein_zelevinsky_finiteness_of_open O) (_root_.UpperTheory.LiteratureTheorems.irreducible_admissible_gl_of_open O) (_roo …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.tempered_product_of_square_integrable_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.TemperedProductOfSquareIntegrable :=
   UpperTheory.Lit.Cas.temperedProduct (_root_.UpperTheory.LiteratureTheorems.bernstein_zelevinsky_geometric_of_open O) (_root_.UpperTheory.LiteratureTheorems.bernstein_zelevinsky_finiteness_of_open O) (_root_.UpperTheory.LiteratureTheorems.irreducible_admissible_gl_of_open O) (_root_.UpperTheory.LiteratureTheorems.standard_functors_finite_length_of_open O) (_root_.UpperTheory.LiteratureTheorems.langlands_exhaustion_gl_of_open O) (_root_.UpperTheory.LiteratureTheorems.standard_cosocle_gl_of_open O) (_root_.UpperTheory.LiteratureTheorems.langlands_multisegments_of_open O) (_root_.UpperTheory.LiteratureTheorems.ess_square_integrable_segments_of_open O)
 /- English proof (translation)
-The claim follows from `PositivityTheory.Rg.Cz.clozelCohomological`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.clozel_cohomological_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.ClozelCohomological :=
   PositivityTheory.Rg.Cz.clozelCohomological
 /- English proof (translation)
-The claim follows from `PositivityTheory.Lit1.ClozelPurity.clozelPurity`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.clozel_purity_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.ClozelPurity :=
   PositivityTheory.Lit1.ClozelPurity.clozelPurity
 /- English proof (translation)
-The claim follows from `(GlobalTheory.RapidDecay.cuspRapidDecay )`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.cusp_rapid_decay_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.CuspRapidDecay :=
   (GlobalTheory.RapidDecay.cuspRapidDecay )
 /- English proof (translation)
-The claim follows from `RfCs.cuspidalSpectrumGL`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.cuspidal_spectrum_gl_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.CuspidalSpectrumGL :=
   RfCs.cuspidalSpectrumGL
 /- English proof (translation)
-The claim follows from `PositivityTheory.Stage1.PM.greenRegularCharacters`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.green_regular_characters_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.GreenRegularCharacters :=
   PositivityTheory.Stage1.PM.greenRegularCharacters
 /- English proof (translation)
-The claim follows from `GlobalTheory.abelianScheme_hom_lifting_nilpotent_dividedPowers`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.abelian_lifting_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.AbelianLifting :=
   GlobalTheory.abelianScheme_hom_lifting_nilpotent_dividedPowers
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.grothendieckDeformation_of_lifting (_root_.UpperTheory.LiteratureTheorems.abelian_de_rham_of_open O) (_root_.UpperTheory.LiteratureTheorems.abelian_lifting_of_open O)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.grothendieck_deformation_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.GrothendieckDeformation :=
   GlobalTheory.Published.grothendieckDeformation_of_lifting (_root_.UpperTheory.LiteratureTheorems.abelian_de_rham_of_open O) (_root_.UpperTheory.LiteratureTheorems.abelian_lifting_of_open O)
 /- English proof (translation)
-The claim follows from `PositivityTheory.RgHf.harishChandraFinite`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.harish_chandra_finite_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.HarishChandraFinite :=
   PositivityTheory.RgHf.harishChandraFinite
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Lit.hecke_ladic_char_crystalline_of_de_rham_pst_wd_llc (_root_.UpperTheory.LiteratureTheorems.hecke_ladic_character_de_rham_of_open O) (_root_.UpperTheory.LiteratureTheorems.de_rham_pot_semistable_of_open O) (_root_.UpperTheory.LiteratureTheorems.algebraic_char …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.hecke_ladic_character_crystalline_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.HeckeLAdicCharacterCrystalline :=
   _root_.UpperTheory.Lit.hecke_ladic_char_crystalline_of_de_rham_pst_wd_llc (_root_.UpperTheory.LiteratureTheorems.hecke_ladic_character_de_rham_of_open O) (_root_.UpperTheory.LiteratureTheorems.de_rham_pot_semistable_of_open O) (_root_.UpperTheory.LiteratureTheorems.algebraic_character_wd_of_open O)
 /- English proof (translation)
-The claim follows from `GlobalTheory.HeckeAboveBridge.heckeLAdicCharacterAbove_of_potSemistable (_root_.UpperTheory.LiteratureTheorems.hecke_ladic_character_de_rham_of_open O) (_root_.UpperTheory.LiteratureTheorems.hecke_ladic_character_crystalline_of_open O) (_root_.UpperTheory.LiteratureTheorems.de_rh …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.hecke_ladic_character_above_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.HeckeLAdicCharacterAbove :=
   GlobalTheory.HeckeAboveBridge.heckeLAdicCharacterAbove_of_potSemistable (_root_.UpperTheory.LiteratureTheorems.hecke_ladic_character_de_rham_of_open O) (_root_.UpperTheory.LiteratureTheorems.hecke_ladic_character_crystalline_of_open O) (_root_.UpperTheory.LiteratureTheorems.de_rham_pot_semistable_of_open O)
 /- English proof (translation)
-The claim follows from `PositivityTheory.AdelicQuotientData.jacquetShalika`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.jacquet_shalika_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.JacquetShalika :=
   PositivityTheory.AdelicQuotientData.jacquetShalika
 /- English proof (translation)
-The claim follows from `PositivityTheory.Prw.moyPrasadJacquetIso_holds`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.moy_prasad_jacquet_iso_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.MoyPrasadJacquetIso :=
   PositivityTheory.Prw.moyPrasadJacquetIso_holds
 /- English proof (translation)
-The claim follows from `PositivityTheory.Lit1.PTN.poitouTateNormalised_holds`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.poitou_tate_normalised_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.PoitouTateNormalised :=
   PositivityTheory.Lit1.PTN.poitouTateNormalised_holds
 /- English proof (translation)
-The claim follows from `PositivityTheory.Stage1.PM.rayClassFieldSt`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.ray_class_field_st_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.RayClassFieldSt :=
   PositivityTheory.Stage1.PM.rayClassFieldSt
 /- English proof (translation)
-The claim follows from `PositivityTheory.Prw.squareIntegrableSegment_of (_root_.UpperTheory.LiteratureTheorems.ess_square_integrable_segments_of_open O)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.square_integrable_segment_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.SquareIntegrableSegment :=
   PositivityTheory.Prw.squareIntegrableSegment_of (_root_.UpperTheory.LiteratureTheorems.ess_square_integrable_segments_of_open O)
 /- English proof (translation)
-The claim follows from `PositivityTheory.SlGl.totallyDisjointProductIrreducible_of_parts (GlobalTheory.geometricLemma_of_filtration PositivityTheory.Prw.bernsteinZelevinskyFiniteness_holds PositivityTheory.Geo.geometricLemmaFiltration) (PositivityTheory.RgGu.segmentRepresentation) (PositivityTheory.Grot …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.totally_disjoint_product_irreducible_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.TotallyDisjointProductIrreducible :=
   PositivityTheory.SlGl.totallyDisjointProductIrreducible_of_parts (GlobalTheory.geometricLemma_of_filtration PositivityTheory.Prw.bernsteinZelevinskyFiniteness_holds PositivityTheory.Geo.geometricLemmaFiltration) (PositivityTheory.RgGu.segmentRepresentation) (PositivityTheory.Groth.grothendieckRingPolynomial_of_seg (PositivityTheory.RgGu.segmentRepresentation))
 /- English proof (translation)
-The claim follows from `GlobalTheory.dualAbelianScheme`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.dual_abelian_scheme_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Published.DualAbelianScheme :=
   GlobalTheory.dualAbelianScheme
 /- English proof (translation)
-The claim follows from `PositivityTheory.Lit1.GEN.globalEulerChar_full`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.global_euler_char_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : ReciprocityTheory.Gal.GlobalEulerChar :=
   PositivityTheory.Lit1.GEN.globalEulerChar_full
 /- English proof (translation)
-The claim follows from `PositivityTheory.Lit1.GF.globalFiniteness`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.global_finiteness_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : ReciprocityTheory.Gal.GlobalFiniteness :=
   PositivityTheory.Lit1.GF.globalFiniteness
 /- English proof (translation)
-The claim follows from `GlobalTheory.Laid.loceuler_holds`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.localEulerChar_alt (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : ReciprocityTheory.Gal.LocalEulerChar :=
   GlobalTheory.Laid.loceuler_holds
 /- English proof (translation)
-The claim follows from `GlobalTheory.Laid.locfin_holds`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.local_finiteness_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : ReciprocityTheory.Gal.LocalFiniteness :=
   GlobalTheory.Laid.locfin_holds
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocalDualityAll.localTateDuality`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.local_tate_duality_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : ReciprocityTheory.Gal.LocalTateDuality :=
   GlobalTheory.LocalDualityAll.localTateDuality
 /- English proof (translation)
-The claim follows from `UpperTheory.Lit.greenbergWiles (_root_.UpperTheory.LiteratureTheorems.poitou_tate_normalised_of_open O) (_root_.UpperTheory.LiteratureTheorems.global_euler_char_of_open O) (_root_.UpperTheory.LiteratureTheorems.local_tate_duality_of_open O) (_root_.UpperTheory.LiteratureTheorems. …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.greenberg_wiles_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : ReciprocityTheory.Gal.GreenbergWiles :=
   UpperTheory.Lit.greenbergWiles (_root_.UpperTheory.LiteratureTheorems.poitou_tate_normalised_of_open O) (_root_.UpperTheory.LiteratureTheorems.global_euler_char_of_open O) (_root_.UpperTheory.LiteratureTheorems.local_tate_duality_of_open O) (_root_.UpperTheory.LiteratureTheorems.localEulerChar_alt O) (_root_.UpperTheory.LiteratureTheorems.local_finiteness_of_open O)
 /- English proof (translation)
-The claim follows from `GlobalTheory.unramifiedOrthogonality_holds`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.unramified_orthogonality_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : ReciprocityTheory.Gal.UnramifiedOrthogonality :=
   GlobalTheory.unramifiedOrthogonality_holds
 /- English proof (translation)
-The claim follows from `CompanionTheory.LocalTateOrthogonality.Gcoh.top_euler`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.local_euler_char_k_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : Formalism.GaloisCohomology.LocalEulerCharK :=
   CompanionTheory.LocalTateOrthogonality.Gcoh.top_euler
 /- English proof (translation)
-The claim follows from `CompanionTheory.LocalTateOrthogonality.Gcoh.top_locfin`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.local_finiteness_k_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : Formalism.GaloisCohomology.LocalFinitenessK :=
   CompanionTheory.LocalTateOrthogonality.Gcoh.top_locfin
 /- English proof (translation)
-The claim follows from `CompanionTheory.LocalTateOrthogonality.Gcoh.top_tate`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.local_tate_duality_k_of_open (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : Formalism.GaloisCohomology.LocalTateDualityK :=
   CompanionTheory.LocalTateOrthogonality.Gcoh.top_tate
 /- English proof (translation)
-The claim follows from `(_root_.UpperTheory.LiteratureTheorems.poitou_tate_normalised_of_open O) lf := (_root_.UpperTheory.LiteratureTheorems.local_finiteness_of_open O) lt := (_root_.UpperTheory.LiteratureTheorems.local_tate_duality_of_open O) le := (_root_.UpperTheory.LiteratureTheorems.localEulerChar …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.LiteratureTheorems.galois_cohomology_from_literature (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : GlobalTheory.Mem.LiteralAutomorphy.LitCoh where
   pt := (_root_.UpperTheory.LiteratureTheorems.poitou_tate_normalised_of_open O)

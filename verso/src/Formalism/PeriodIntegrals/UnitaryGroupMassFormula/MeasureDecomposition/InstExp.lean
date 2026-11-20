@@ -8,13 +8,13 @@ open Matrix
 namespace PI.ScMuExists.UnitaryGroupMassFormula
 
 /- English proof (translation)
-Establish `hE : NormedSpace.exp (l : ℂ) = ((Real.exp l : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_exp]`. Use `first`. Consider the case `rw [Complex.exp_eq_exp_ℂ]`. Consider the case `exact (congrFun Complex.exp_eq_exp_ℂ (l : ℂ)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : ((Real.exp l : ℝ) : ℂ) = 1` using `mul_right_cancel₀ hy (h.trans (one_mul y).symm)`. Establish `h2 : Real.exp l = 1` using `by exact_mod_cast h1`. Establish `h3 : l = 0` using `Real.exp_eq_one_iff l |>.mp h2`. Simplify using `[h3]`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.mp h with hl | hy` into its components or cases. Establish `h3 : l = 0` using `by exact_mod_cast hl`. Simplify using `[h3]`. Simplify using `[hy]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inst_exp_real_entry (l : ℝ) (y : ℂ) :
     NormedSpace.exp (l : ℂ) * y = y ↔ (l : ℂ) * y = 0 := by
@@ -39,15 +39,13 @@ theorem inst_exp_real_entry (l : ℝ) (y : ℂ) :
     · simp [hy]
 
 /- English proof (translation)
-Establish `h1 : star (hX.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * (hX.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) = 1` using `by first`. Consider the case `exact hX.eigenvectorUnitary.2.1`. Consider the case `exact (Matrix.mem_unitaryGroup_iff'.mp hX.eigenvectorUnitary.2)`. Consider the case `exact Unitary.star_mul_self_of_mem hX.eigenvectorUnitary.2`. Consider the case `exact unitary.star_mul_self_of_mem hX.eigenvectorUnitary.2`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h2 : (hX.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * star (hX.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) = 1` using `by first`. Consider the case `exact hX.eigenvectorUnitary.2.2`. Consider the case `exact (Matrix.mem_unitaryGroup_iff.mp hX.eigenvectorUnitary.2)`. Consider the case `exact Unitary.mul_star_self_of_mem hX.eigenvectorUnitary.2`. Consider the case `exact unitary.mul_star_self_of_mem hX.eigenvectorUnitary.2`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `⟨hX.eigenvectorUnitary, hX.eigenvalues, h1, h2, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `(conv_lhs => rw [hX.spectral_theorem])`. Simplify using `[Function.comp_def]`. Consider the case `(conv_lhs => rw [hX.spectral_theorem])`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.comp_def, Unitary.conjStarAlgAut_apply]`. Consider the case `(have h3 := hX.star_mul_self_mul_eq_diagonal`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Matrix.mul_assoc, h2, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, h2, Matrix.mul_one]`.
-
-Use `_ = _ := by rw [h3]; simp [Function.comp_def])`.
+Treat this case separately. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_unitary_diagonal_of_isHermitian {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (hX : X.IsHermitian) :
     ∃ (U : Matrix (Fin n) (Fin n) ℂ) (d : Fin n → ℝ), star U * U = 1 ∧ U * star U = 1 ∧
@@ -80,27 +78,25 @@ private theorem exists_unitary_diagonal_of_isHermitian {n : ℕ} (X : Matrix (Fi
          _ = _ := by rw [h3]; simp [Function.comp_def])
 
 /- English proof (translation)
-Introduce `n X hX w`. Take `⟨U, d, hUU, hUU', hX'⟩` from `exists_unitary_diagonal_of_isHermitian X hX`. Establish `hexp : NormedSpace.exp X = U * diagonal (fun i => NormedSpace.exp (d i : ℂ)) * star U`. Establish `hunit : IsUnit U` using `⟨⟨U, star U, hUU', hUU⟩, rfl⟩`. Establish `hinv : U⁻¹ = star U` using `Matrix.inv_eq_left_inv hUU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hX', ← hinv]`. Establish `hd : NormedSpace.exp (diagonal (fun i => (d i : ℂ))) = diagonal (fun i => NormedSpace.exp (d i : ℂ))`. Rewrite using `[Matrix.exp_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `first`. Consider the case `exact Pi.exp_apply _ _`. Consider the case `simp [Pi.exp_def]`. Consider the case `rfl`. Use `first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [Matrix.exp_conj _ _ hunit, hd]`. Consider the case `rw [Matrix.exp_conj ℂ _ _ hunit, hd]`. Establish `inj : ∀ a b : Fin n → ℂ, U *ᵥ a = U *ᵥ b → a = b`. Introduce `a b h`. Establish `h2` using `congrArg (fun v => star U *ᵥ v) h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify `h2` using `only [Matrix.mulVec_mulVec, hUU, Matrix.one_mulVec]`. Take `⟨y, hy⟩ : ∃ y, y = star U *ᵥ w` from `⟨_, rfl⟩`. Establish `hw : w = U *ᵥ y` using `by rw [hy, Matrix.mulVec_mulVec, hUU', Matrix.one_mulVec]`. Establish `hXw : X *ᵥ w = U *ᵥ (fun i => (d i : ℂ) * y i)`. Rewrite using `[hX', ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_diagonal]`. Establish `hEw : NormedSpace.exp X *ᵥ w = U *ᵥ (fun i => NormedSpace.exp (d i : ℂ) * y i)`. Rewrite using `[hexp, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← hy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_diagonal]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (fun i => NormedSpace.exp (d i : ℂ) * y i) = y`. Apply `inj` to reduce the goal to its premises. Rewrite using `[← hEw, h]`. Conclude with `hw`. Rewrite using `[hXw]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (fun i => (d i : ℂ) * y i) = 0`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `exact (inst_exp_real_entry (d i) (y i)).mp (congrFun h1 i)`. Rewrite using `[h0, Matrix.mulVec_zero]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hXw]`. Establish `h2 : (fun i => (d i : ℂ) * y i) = 0` using `inj _ 0 (by rw [h, Matrix.mulVec_zero])`. Rewrite using `[hEw]`. Establish `h3 : (fun i => NormedSpace.exp (d i : ℂ) * y i) = y`. Use function extensionality and compare the values at `i`.
-
-Apply the tactic sequence `exact (inst_exp_real_entry (d i) (y i)).mpr (congrFun h2 i)`. Rewrite using `[h3, ← hw]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exponent_fixed_instance : InstExpFix := by
   intro n X hX w

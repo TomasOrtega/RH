@@ -7,15 +7,15 @@ open scoped Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨ε, hε, hεS⟩` from `Metric.mem_nhds_iff.1 hS`. Take `⟨z₁, hz₁, hz₁b⟩` from `(hfr.and_eventually (ball_mem_nhds z₀ (half_pos hε))).exists`. Establish `hv : ‖z₁ - z₀‖ < ε / 2` using `by simpa [dist_eq_norm] using hz₁b`. Establish `hmem : ∀ t ∈ ball (0 : ℂ) 2, z₀ + t • (z₁ - z₀) ∈ S`. Introduce `t ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hεS` to reduce the goal to its premises. Rewrite `ht` using `[mem_ball_zero_iff]`. Rewrite using `[mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul]`. Use polynomial arithmetic with `[norm_nonneg t, norm_nonneg (z₁ - z₀)]`. Establish `hd : DifferentiableOn ℂ (fun t : ℂ => g (z₀ + t • (z₁ - z₀))) (ball 0 2)` using `hg.comp (f := fun t : ℂ => z₀ + t • (z₁ - z₀)) (by fun_prop) hmem`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `han` using `hd.analyticOnNhd isOpen_ball`. Establish `h0 : (0 : ℂ) ∈ ball (0 : ℂ) 2` using `by simp`. Break down `(han 0 h0).eventually_eq_zero_or_eventually_ne_zero with h | h` into its components or cases. Use `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball 0 2).isPreconnected h0 h (show (1 : ℂ) ∈ ball (0 : ℂ) 2 by simp)` as an intermediate fact. Conclude with `absurd (by simpa using this) hz₁`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[eventually_nhdsWithin_iff]`. Take `⟨r, hr, hrs⟩` from `nhds_basis_closedBall.mem_iff.1 (h.and (ball_mem_nhds (0 : ℂ) two_pos))`. Use `⟨z₁ - z₀, r, hr, fun t ht => hmem t (hrs ht).2, fun t ht => ?_⟩` and prove the remaining obligations. Use `(hrs (sphere_subset_closedBall ht)).1 ?_` and prove the remaining obligations. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `at ht`. Conclude with `hr.ne ht`.
+A detailed English derivation is pending.
 -/
 theorem exists_circle_ne_zero_of_frequently_ne_zero {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] {S : Set E} {g : E → ℂ} {z₀ : E} (hS : S ∈ 𝓝 z₀)
@@ -49,19 +49,19 @@ theorem exists_circle_ne_zero_of_frequently_ne_zero {E : Type*} [NormedAddCommGr
     exact hr.ne ht
 
 /- English proof (translation)
-Introduce `V V' _ _ _ _ _ _ W f θ F hW hf hθ hF hsl hfr w hw`. Take `⟨v, r, hr, hin, hne⟩` from `exists_circle_ne_zero_of_frequently_ne_zero (S := {z | (w.1, z) ∈ W}) (g := fun z => θ (w.1, z)) (z₀ := w.2) ((hW.preimage (f := fun z => (w.1, z)) (by fun_prop)).mem_nhds hw) (hθ.comp (f := fun z => (w.1, z)) (by fun_prop) fun z hz => hz) (hfr w hw)`. Set `p : V × V' → ℂ → V × V'` to `fun y t => (y.1, y.2 + t • v)`. Establish `hp : Continuous fun q : (V × V') × ℂ => p q.1 q.2` using `by fun_prop`. Establish `h1 : ∀ᶠ y in 𝓝 w, ∀ t ∈ closedBall (0 : ℂ) r, p y t ∈ W` using `(isCompact_closedBall (0 : ℂ) r).eventually_forall_of_forall_eventually fun t ht => hp.continuousAt.eventually (hW.mem_nhds (hin t ht))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ᶠ y in 𝓝 w, ∀ t ∈ sphere (0 : ℂ) r, θ (p y t) ≠ 0` using `(isCompact_sphere (0 : ℂ) r).eventually_forall_of_forall_eventually fun t ht => by`. Establish `hc : ContinuousAt θ (p w t)` using `(hθ.differentiableAt (hW.mem_nhds (hin t (sphere_subset_closedBall ht)))).continuousAt`. Conclude with `(ContinuousAt.comp (g := θ) (f := fun q : (V × V') × ℂ => p q.1 q.2) (x := (w, t)) hc hp.continuousAt).eventually_ne (hne t ht)`. Take `⟨U, hU, hUo, hwU⟩` from `_root_.eventually_nhds_iff.1 (h1.and h2)`. Establish `hcm : ∀ s : ℝ, circleMap 0 r s ∈ sphere (0 : ℂ) r` using `fun s => circleMap_mem_sphere 0 hr.le s`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG` using `(differentiableOn_intervalIntegral_of_holomorphic_of_continuousOn (F := fun (s : ℝ) (y : V × V') => f (p y (circleMap 0 r s)) / θ (p y (circleMap 0 r s))) (a := 0) (b := 2 * Real.pi) hUo ?_ ?_).1`. Establish `hEq : ∀ y ∈ U, F y = (2 * Real.pi)⁻¹ • ∫ s in (0 : ℝ)..2 * Real.pi, f (p y (circleMap 0 r s)) / θ (p y (circleMap 0 r s))`. Introduce `y hy`. Establish `hd : DifferentiableOn ℂ (fun t : ℂ => F (p y t)) (closedBall 0 r)` using `(hsl y.1).comp (f := fun t : ℂ => y.2 + t • v) (by fun_prop) fun t ht => (hU y hy).1 t ht`. Establish `hdc : DiffContOnCl ℂ (fun t : ℂ => F (p y t)) (ball 0 |r|)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises. Rewrite using `[abs_of_pos hr, closure_ball _ hr.ne']` and apply the resulting hypothesis. Establish `hav` using `hdc.circleAverage`. Rewrite `hav` using `[Real.circleAverage_def]`. Establish `: F y = F (p y 0)` using `by simp [p]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← hav]`. Use `congr 1`. Use `intervalIntegral.integral_congr fun s _ => ?_` and prove the remaining obligations. Establish `hs` using `hcm s`. Rewrite using `[eq_div_iff ((hU y hy).2 _ hs), hF _ ((hU y hy).1 _ (sphere_subset_closedBall hs))]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hFU : DifferentiableOn ℂ F U` using `(hG.const_smul ((2 * Real.pi)⁻¹ : ℝ)).congr hEq`. Conclude with `(hFU.differentiableAt (hUo.mem_nhds hwU)).differentiableWithinAt`. Establish `hq : Continuous fun q : ℝ × (V × V') => p q.2 (circleMap 0 r q.1)` using `hp.comp (f := fun q : ℝ × (V × V') => (q.2, circleMap 0 r q.1)) (by fun_prop)`. Establish `hm : ∀ q : ℝ × (V × V'), q ∈ uIcc 0 (2 * Real.pi) ×ˢ U → p q.2 (circleMap 0 r q.1) ∈ W` using `fun q hq => (hU _ hq.2).1 _ (sphere_subset_closedBall (hcm _))`. Conclude with `(hf.continuousOn.comp hq.continuousOn hm).div (hθ.continuousOn.comp hq.continuousOn hm) fun q hq => (hU _ hq.2).2 _ (hcm _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s _`. Establish `hq : Differentiable ℂ fun y : V × V' => p y (circleMap 0 r s)` using `by fun_prop`. Establish `hm : ∀ y ∈ U, p y (circleMap 0 r s) ∈ W` using `fun y hy => (hU _ hy).1 _ (sphere_subset_closedBall (hcm _))`. Simplify using `only [div_eq_mul_inv]`. Conclude with `(hf.comp hq.differentiableOn hm).mul ((hθ.comp hq.differentiableOn hm).inv fun y hy => (hU _ hy).2 _ (hcm _))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableOn_quotient_of_differentiableOn_slice :
     ∀ (V V' : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]

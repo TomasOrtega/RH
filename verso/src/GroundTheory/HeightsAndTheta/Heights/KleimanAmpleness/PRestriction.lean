@@ -11,7 +11,7 @@ noncomputable section
 universe u w
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by rw [zero_mul]; exact Submodule.zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem zero_mem_ampleChart {S : Type u} [CommRing S] {E : Type w} [Field E] [Algebra S E] {M : ℕ}
     {z : Fin (M + 1) → E} {H : SubSystem S z E} {σ : E} {I : Chart z} :
@@ -22,71 +22,61 @@ variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {K' : Ty
   [Algebra k K'] {N : ℕ} {x : Fin (N + 1) → Ω} {y : Fin (N + 1) → K'}
 
 /- English proof (translation)
-Take `⟨l₀, hg0, hgl, hg⟩` from `exists_redGood hsp hxy hV I₀`. Take `⟨Q', hQ⟩` from `exists_lineBundle_redSys hsp hxy hV hg0 hg (mem_sub_of_isVeryAmpleBy hV l₀)`. Use `set g := h l₀ with hgdef`. Use `set ρ : Ω → K' := fun q => redAt k x y (q / g) with hρ`. Establish `hloc : ∀ {j : Fin (r + 1)} (_ : redAt k x y (h j / g) ≠ 0) {c : Ω}, c ∈ ampleRing Nb.toSubSystem 1 (h j) → c ∈ locAt k x y ∧ redAt k x y c ∈ ampleBase (S` using `k) (ρ ∘ h) j := fun {j} hr {c} hc => redAt_mem_ampleBase hsp hg0 hgl hr (hV.closed j (ne_zero_of_redAt_div hsp (hgl j) hr) hc)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hvery : IsVeryAmpleBy Q'.toSubSystem (ρ ∘ h)`. Use `⟨fun l => ?_, fun I => ?_, fun j hj => ?_, fun j hj => ?_⟩` and prove the remaining obligations. Use `(Submodule.mem_iInf _).mpr fun I => ?_` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem, hQ]`. Conclude with `Submodule.subset_span ⟨h l, mem_sub_of_isVeryAmpleBy hV l _, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hQ, redSys_sub_eq hsp hxy hV hg]`. Both sides reduce to the same expression. Establish `hσ` using `hgl j`. Establish `hσr : redAt k x y (h j / g) ≠ 0` using `hj`. Take `⟨n, a', b', J, ha', hb', hsum, hbJ⟩` from `hV.affine j (ne_zero_of_redAt_div hsp hσ hσr)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Establish `hE : ∀ kk, ∃ E : ℕ, redAt k x y (b' kk) ^ (E + 1) * a ∈ ampleBase (S` using `k) (ρ ∘ h) j := by`. Introduce `kk`. Distinguish the cases in `hbr : redAt k x y (b' kk) = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hbr, zero_pow (Nat.succ_ne_zero 0), zero_mul]`. Conclude with `zero_mem _`. Establish `hbl` using `(hloc hσr (hb' kk)).1`. Establish `hJ` using `subset_support_of_redAt_ne_zero hsp hxy hg hσ hσr I₀ hbl hbr (hbJ kk)`. Set `Jy : Chart y` to `⟨(J kk).1, (J kk).2.1, hJ⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, he, hea⟩` from `exists_lift_ampleChart hsp hxy hg Q' hQ hσ hσr Jy (Set.mem_iInter.mp ha Jy)`. Establish `hel` using `(redAt_mem_ampleChart hsp hxy hg Q' hQ hσ hσr Jy he).1`. Take `⟨E, hEm⟩` from `res_exists_pow_mul_mem_ampleRing Nb (hb' kk) (hbJ kk) (J := J kk) he`. Establish `hm` using `hloc hσr hEm`. Rewrite `hm` using `[(locAt_mul hsp (locAt_pow hsp hbl E).1 hel).2, (locAt_pow hsp hbl E).2, hea]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `⟨E, ?_⟩` and prove the remaining obligations. Establish `: redAt k x y (b' kk) ^ (E + 1) * a = redAt k x y (b' kk) * (redAt k x y (b' kk) ^ E * a)` using `by ring`. Rewrite using `[this]`. Conclude with `mul_mem (hloc hσr (hb' kk)).2 hm.2`. Use `choose E hE using hE`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `T` to `Finset.univ.sup E + 1`. Set `β : Fin n → ampleBase (S` to `k) (ρ ∘ h) j := fun kk => ⟨redAt k x y (b' kk), (hloc hσr (hb' kk)).2⟩`. Set `α : Fin n → ampleBase (S` to `k) (ρ ∘ h) j := fun kk => ⟨redAt k x y (a' kk), (hloc hσr (ha' kk)).2⟩`. Establish `hsum' : ∑ kk, α kk * β kk = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[AddSubmonoidClass.coe_finsetSum, OneMemClass.coe_one]`. Establish `h2` using `(locAt_sum hsp Finset.univ (fun kk => a' kk * b' kk) fun kk _ => (locAt_mul hsp (hloc hσr (ha' kk)).1 (hloc hσr (hb' kk)).1).1).2`. Rewrite `h2` using `[hsum, (locAt_one hsp).2]`. Use `Eq.trans (Finset.sum_congr rfl fun kk _ => ?_) h2.symm` and prove the remaining obligations. Rewrite using `[(locAt_mul hsp (hloc hσr (ha' kk)).1 (hloc hσr (hb' kk)).1).2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hspan : Ideal.span (Set.range β) = ⊤`. Rewrite using `[Ideal.eq_top_iff_one, ← hsum']`. Conclude with `Ideal.sum_mem _ fun kk _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨kk, rfl⟩)`. Establish `hT` using `Ideal.span_pow_eq_top (Set.range β) hspan T`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Set `𝔞 : Ideal (ampleBase (S` to `k) (ρ ∘ h) j) := { carrier := {c | (c : K') * a ∈ ampleBase (S := k) (ρ ∘ h) j} add_mem' := fun {u v} hu hv => by`. Simplify using `only [Set.mem_ofPred_eq, AddMemClass.coe_add, add_mul] at hu hv ⊢`. Conclude with `add_mem hu hv`. Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_ofPred_eq, ZeroMemClass.coe_zero, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `zero_mem _`. Use the proof step `smul_mem' := fun c u hu => by`. Simplify using `only [Set.mem_ofPred_eq, smul_eq_mul, MulMemClass.coe_mul, mul_assoc] at hu ⊢`. Conclude with `mul_mem c.2 hu }`. Establish `hle : Ideal.span ((fun c => c ^ T) '' Set.range β) ≤ 𝔞`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨kk, rfl⟩, rfl⟩`. Use `show ((β kk ^ T : ampleBase (S := k) (ρ ∘ h) j) : K') * a ∈ ampleBase (S := k) (ρ ∘ h) j`. Establish `hk : E kk + 1 ≤ T` using `Nat.succ_le_succ (Finset.le_sup (Finset.mem_univ kk))`. Rewrite using `[SubmonoidClass.coe_pow, ← Nat.sub_add_cancel hk, pow_add, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_mem (pow_mem (β kk).2 _) (hE kk)`. Establish `h1 : (1 : ampleBase (S` using `k) (ρ ∘ h) j) ∈ 𝔞 := hle (by rw [hT]; exact Submodule.mem_top)`. Establish `h1' : ((1 : ampleBase (S` using `k) (ρ ∘ h) j) : K') * a ∈ ampleBase (S := k) (ρ ∘ h) j := h1`. Rewrite `h1'` using `[OneMemClass.coe_one, one_mul]`. Then use the resulting hypothesis. Establish `hσ` using `hgl j`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify by unfolding definitions.
 
-Establish `hσr : redAt k x y (h j / g) ≠ 0` using `hj`. Take `⟨n, a', b', J, ha', hb', hsum, hbJ⟩` from `hV.affine j (ne_zero_of_redAt_div hsp hσ hσr)`. Establish `hred : ∀ {c : Ω}, c ∈ ampleRing Nb.toSubSystem 1 (h j) → redAt k x y c ∈ ampleRing Q'.toSubSystem 1 ((ρ ∘ h) j)` using `fun hc => Set.mem_iInter.mpr fun I => (redAt_mem_ampleChart hsp hxy hg Q' hQ hσ hσr I (Set.mem_iInter.mp hc (liftChart hxy I))).2`. Establish `hsupp : ∀ kk, redAt k x y (b' kk) ≠ 0 → (J kk).1 ⊆ support y` using `fun kk hbr => subset_support_of_redAt_ne_zero hsp hxy hg hσ hσr I₀ (hloc hσr (hb' kk)).1 hbr (hbJ kk)`. Use `⟨n, fun kk => redAt k x y (a' kk), fun kk => if redAt k x y (b' kk) = 0 then 0 else redAt k x y (b' kk), fun kk => if hb : redAt k x y (b' kk) = 0 then I₀ else ⟨(J kk).1, (J kk).2.1, hsupp kk hb⟩, fun kk => hred (ha' kk), fun kk => ?_, ?_, fun kk I => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only split_ifs with hb`. Conclude with `Set.mem_iInter.mpr fun I => zero_mem_ampleChart`. Conclude with `hred (hb' kk)`. Establish `h2` using `(locAt_sum hsp Finset.univ (fun kk => a' kk * b' kk) fun kk _ => (locAt_mul hsp (hloc hσr (ha' kk)).1 (hloc hσr (hb' kk)).1).1).2`. Rewrite `h2` using `[hsum, (locAt_one hsp).2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans (Finset.sum_congr rfl fun kk _ => ?_) h2.symm` and prove the remaining obligations. Rewrite using `[(locAt_mul hsp (hloc hσr (ha' kk)).1 (hloc hσr (hb' kk)).1).2]`. Simplify using `only`. Use `split_ifs with hb`. Rewrite using `[hb, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only`. Distinguish the cases in `hb : redAt k x y (b' kk) = 0`. Rewrite using `[if_pos hb, dif_pos hb]`. Conclude with `⟨1, by rw [pow_one, zero_mul]; exact zero_mem_ampleChart⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_neg hb, dif_neg hb]`. Take `⟨e, he⟩` from `hbJ kk (liftChart hxy I)`. Establish `hbl` using `(hloc hσr (hb' kk)).1`. Establish `hJ` using `hsupp kk hb`. Establish `hf` using `(res_isHomogeneous_prod_X (S := k) I.1).pow (J kk).1.card`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hs : ((∏ l ∈ (J kk).1, (X l : Poly k N)) ^ I.1.card).IsHomogeneous (I.1.card * (J kk).1.card)`. Rewrite using `[mul_comm]`. Conclude with `(res_isHomogeneous_prod_X (S := k) (J kk).1).pow I.1.card`. Establish `hsy : aeval y ((∏ l ∈ (J kk).1, (X l : Poly k N)) ^ I.1.card) ≠ 0`. Rewrite using `[map_pow, res_aeval_prod_X]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `pow_ne_zero _ (Finset.prod_ne_zero_iff.mpr fun i hi => (mem_support y).mp (hJ hi))`. Establish `ht : xProd (liftChart hxy I) ^ (J kk).1.card / xProd (J kk) ^ (liftChart hxy I).1.card = aeval x ((∏ l ∈ I.1, (X l : Poly k N)) ^ (J kk).1.card) / aeval x ((∏ l ∈ (J kk).1, (X l : Poly k N)) ^ I.1.card)`. Rewrite using `[map_pow, map_pow, res_aeval_prod_X, res_aeval_prod_X]`. Both sides reduce to the same expression. Take `⟨-, h2⟩` from `redAt_mem_ampleChart hsp hxy hg Q' hQ hσ hσr I he`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[ht, (locAt_mul hsp (locAt_pow hsp hbl e).1 (mem_locAt hf hs hsy)).2, (locAt_pow hsp hbl e).2, redAt_eq hsp hf hs hsy, map_pow, map_pow, res_aeval_prod_X, res_aeval_prod_X]`. Conclude with `⟨e, h2⟩`. Establish `hdim : funField (k` using `k) y = funField (k := k) (ρ ∘ h) := by`. Take `⟨i₀, hi₀⟩` from `I₀.2.1`. Establish `hy₀ : y i₀ ≠ 0` using `(mem_support y).mp (I₀.2.2 hi₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `haeval : ∀ p : Poly k N, aeval (fun l => y l / y i₀) p ∈ funField (k` using `k) y := fun p => MvPolynomial.induction_on (motive := fun p => aeval (fun l => y l / y i₀) p ∈ funField (k := k) y) p (fun c => by rw [aeval_C]; exact IntermediateField.algebraMap_mem _ c) (fun p q hp hq => by rw [map_add]; exact add_mem hp hq) (fun p l hp => by`. Rewrite using `[map_mul, aeval_X]`. Conclude with `mul_mem hp (IntermediateField.subset_adjoin _ _ ⟨i₀, l, hy₀, rfl⟩))`. Establish `hredF : ∀ {c : Ω}, c ∈ locAt k x y → redAt k x y c ∈ funField (k` using `k) y := by`. Introduce and unpack `_ ⟨f, s, e, hf, hs, hsy, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[redAt_eq hsp hf hs hsy, ← div_div_div_cancel_right₀ (pow_ne_zero e hy₀), ← aeval_div_of_isHomogeneous hf i₀, ← aeval_div_of_isHomogeneous hs i₀]`. Conclude with `div_mem (haeval f) (haeval s)`. Apply `le_antisymm` to reduce the goal to its premises. Establish `hg1' : redAt k x y (g / g) ≠ 0`. Rewrite using `[div_self hg0, (locAt_one hsp).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `one_ne_zero`. Take `⟨n, a', b', J, ha', hb', hsum, hbJ⟩` from `hV.affine l₀ hg0`. Establish `h2` using `(locAt_sum hsp Finset.univ (fun kk => a' kk * b' kk) fun kk _ => (locAt_mul hsp (hloc hg1' (ha' kk)).1 (hloc hg1' (hb' kk)).1).1).2`. Rewrite `h2` using `[hsum, (locAt_one hsp).2]`. Establish `hne : ∑ kk, redAt k x y (a' kk * b' kk) ≠ 0` using `by rw [← h2]; exact one_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨kk, -, hkk⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Rewrite `hkk` using `[(locAt_mul hsp (hloc hg1' (ha' kk)).1 (hloc hg1' (hb' kk)).1).2]`. Establish `hbr : redAt k x y (b' kk) ≠ 0` using `right_ne_zero_of_mul hkk`. Establish `hbl` using `(hloc hg1' (hb' kk)).1`. Establish `hJ` using `subset_support_of_redAt_ne_zero hsp hxy hg (hgl l₀) hg1' I₀ hbl hbr (hbJ kk)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `(J kk).2.1`. Establish `hyc : y c ≠ 0` using `(mem_support y).mp (hJ hc)`. Establish `hBF : ampleBase (S` using `k) (ρ ∘ h) l₀ ≤ (funField (k := k) (ρ ∘ h)).toSubalgebra := by`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, rfl⟩`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IntermediateField.subset_adjoin _ _ ⟨l₀, l, hg1', rfl⟩`. Establish `hbF : redAt k x y (b' kk) ∈ funField (k` using `k) (ρ ∘ h) := hBF (hloc hg1' (hb' kk)).2`. Establish `hratio : ∀ m, y m / y c ∈ funField (k` using `k) (ρ ∘ h) := by`. Introduce `m`. Establish `hmc : x m / x c ∈ chartRing k x (J kk)` using `⟨X m, X c, 1, X_mem_monos hc, isHomogeneous_X k m, isHomogeneous_X k c, by simp⟩`.
-
-Take `⟨E, hE⟩` from `res_exists_pow_mul_mem_ampleRing Nb (hb' kk) (hbJ kk) (res_chartRing_sub_ampleChart hmc)`. Establish `hm` using `hloc hg1' hE`. Establish `hsy : aeval y (X c : Poly k N) ≠ 0` using `by rw [aeval_X]; exact hyc`. Establish `hmcl : x m / x c ∈ locAt k x y`. Use `mem_locAt (x := x) (isHomogeneous_X k m) (isHomogeneous_X k c) hsy` as an intermediate fact.
-
-Simplify `this` using `only [aeval_X]`. Establish `hmcr : redAt k x y (x m / x c) = y m / y c`. Use `redAt_eq hsp (isHomogeneous_X k m) (isHomogeneous_X k c) hsy` as an intermediate fact. Simplify `this` using `only [aeval_X]`. Rewrite `hm` using `[(locAt_mul hsp (locAt_pow hsp hbl E).1 hmcl).2, (locAt_pow hsp hbl E).2, hmcr]`.
-
-Establish `hF` using `hBF hm.2`. Establish `hbE : redAt k x y (b' kk) ^ E ≠ 0` using `pow_ne_zero _ hbr`. Establish `: y m / y c = (redAt k x y (b' kk) ^ E * (y m / y c)) / redAt k x y (b' kk) ^ E`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
-
-Conclude with `div_mem hF (pow_mem hbF E)`. Rewrite using `[funField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨i, i', hi, rfl⟩`. Rewrite using `[← div_div_div_cancel_right₀ hyc (y i') (y i)]`. Conclude with `div_mem (hratio i') (hratio i)`.
-
-Rewrite using `[funField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨i, i', -, rfl⟩`. Conclude with `div_mem (hredF (hgl i')) (hredF (hgl i))`. Use `⟨Q', ρ, restrictData_redSys hsp hxy hg Q' hQ, hvery, ?_⟩` and prove the remaining obligations. Rewrite using `[dimCl, dimCl, hdim]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_restrictData_isVeryAmpleBy (hsp : primeOf (S := k) x ≤ primeOf (S := k) y)
     (hxy : ∀ i, y i ≠ 0 → x i ≠ 0) (I₀ : Chart y) (Nb : LineBundle k x) {r : ℕ}
@@ -292,9 +282,7 @@ theorem exists_restrictData_isVeryAmpleBy (hsp : primeOf (S := k) x ≤ primeOf 
   rw [dimCl, dimCl, hdim]
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x Nb r h hV pp _ _ _ j hj _ K' _ _ ψ _ hxy`. Establish `hsp` using `primeOf_le_primeOf_of_algHom hj ψ`. Establish `hyj : (fun i => ψ (ratio hj i)) j ≠ 0` using `by show ψ (ratio hj j) ≠ 0`. Rewrite using `[algHom_ratio_self]`. Conclude with `one_ne_zero`.
-
-Conclude with `exists_restrictData_isVeryAmpleBy hsp hxy (singleChart hyj) Nb h hV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Restriction.proof : Restriction.Statement.{u, w} := by
   intro k _ Ω _ _ N x Nb r h hV pp _ _ _ j hj _ K' _ _ ψ _ hxy

@@ -18,13 +18,13 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE.Step
 
 /- English proof (translation)
-Introduce `hG A _ _ I X _ _ H hH P hP S hS`. Establish `hln : IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian (X ↘ Spec (.of A))`. Establish `hPq : P.IsQuasicoherent` using `hP.1`. Establish `hL : H.IsLB` using `hH.isLB`. Take `⟨k, g, hg⟩` from `exists_fin_generators I`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgI : ∀ i, g i ∈ I` using `fun i => hg ▸ Ideal.subset_span ⟨i, rfl⟩`. Establish `hr : ∀ i, MapsDown S (toFunctions (X` using `X) (A := A) ⊤ (g i)) := fun i => GlobalTheory.T.ideal_element_maps_closed_system_down I hPq S hS (g i) (hgI i)`. Establish `hO : OpSeq k (fun e => gr (anti hS) e) (fun i e => grT (anti hS) (hr i) e) 0` using `⟨fun e => GlobalTheory.T.graded_closed_system_coherent I hP S hS e, fun i j e => grT_comm _ _ _ _, fun e _ U => GlobalTheory.T.graded_pieces_generated_by_ideal_generators I hPq S hS g hg hr e U⟩`. Take `⟨n₁, h₁⟩` from `@hG A _ _ X _ _ H hH k _ _ 0 hO`. Establish `hS0 : IsCoherent (S 0 : X.Modules)` using `GlobalTheory.T.coherent_subobject_coherent hP (S 0) (hS.qcoh 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n₂, h₂⟩` from `GlobalTheory.T.serre_vanishing_first_cohomology A H hH hS0`. Use `⟨max n₁ n₂, fun n hn e => ?_⟩` and prove the remaining obligations. Establish `hl : ∀ e, Lifts I H hS n e`. Introduce `e`. Proceed by induction on `e with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => exact GlobalTheory.T.lifting_base_of_vanishing_cohomology I H hL S hS n (h₂ n (le_of_max_le_right hn))`. Consider the case `succ e ih => exact GlobalTheory.T.twisted_graded_generation_global_sections I H S hS g hgI hr n e (h₁ n (le_of_max_le_left hn) e (Nat.zero_le _)) ih`. Conclude with `GlobalTheory.T.lifting_inductive_successive_approximation I H hL S hS n e (hl (e + 1))`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem step_uniform : UniformGen → ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Scheme.{0}} [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))] (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X), GlobalTheory.IsAmpleLB H → ∀ {P : X.Modules}, IsCoherent P → ∀ S : ℕ → Subobject P, ClosedSys I P S → ∃ n₁ : ℤ, ∀ n, n₁ ≤ n → ∀ e, ∀ x ∈ twSecs H n (S e), ∃ y ∈ twSecs H n (S (e + 1)), x - y ∈ twPow I H n P (e + 1) := by
   intro hG A _ _ I X _ _ H hH P hP S hS

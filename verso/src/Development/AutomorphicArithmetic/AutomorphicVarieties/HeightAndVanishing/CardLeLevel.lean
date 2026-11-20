@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Establish `hli` using `linearIndependent_monoidHom (ZMod N) O`. Set `g : T → (ZMod N →* O)` to `fun χ => (χ.1 : MulChar (ZMod N) O).toMonoidHom`. Establish `hg : Function.Injective g`. Introduce `a b h`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MulChar.ext'` to reduce the goal to its premises. Introduce `y`. Use `DFunLike.congr_fun h y` as an intermediate fact. Simplify `this` using `[g]`. Establish `hT` using `(hli.comp g hg).fintype_card_le_finrank`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `hT` using `[Module.finrank_fintype_fun_eq_card, ZMod.card, Fintype.card_coe]`. Conclude with `hT`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_le_level (O : Type) [CommRing O] [IsDomain O] (N : ℕ) [NeZero N]
     (T : Finset (DirichletCharacter O N)) : T.card ≤ N := by
@@ -26,15 +26,15 @@ private theorem card_le_level (O : Type) [CommRing O] [IsDomain O] (N : ℕ) [Ne
   exact hT
 
 /- English proof (translation)
-Introduce `O _ _ N _`. Use `⟨card_le_level O N, ?_⟩` and prove the remaining obligations. Introduce `M hM T hT`. Use `set g := Nat.gcd M N with hgdef`. Establish `hgN : g ∣ N` using `Nat.gcd_dvd_right M N`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgM : g ≤ M` using `Nat.le_of_dvd hM (Nat.gcd_dvd_left M N)`. Use `haveI : NeZero g := ⟨(Nat.gcd_pos_of_pos_left N hM).ne'⟩`. Establish `hex : ∀ ψ ∈ T, ∃ ψ₀ : DirichletCharacter O g, ψ = DirichletCharacter.changeLevel hgN ψ₀`. Introduce `ψ hψ`. Take `⟨hc, χ₀, hχ₀⟩` from `ψ.factorsThrough_conductor`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcg : ψ.conductor ∣ g` using `Nat.dvd_gcd (hT ψ hψ) hc`. Use `⟨DirichletCharacter.changeLevel hcg χ₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← DirichletCharacter.changeLevel_trans]`. Conclude with `hχ₀`. Set `f : DirichletCharacter O N → DirichletCharacter O g` to `fun ψ => if h : ∃ ψ₀ : DirichletCharacter O g, ψ = DirichletCharacter.changeLevel hgN ψ₀ then h.choose else 1`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hf : ∀ ψ ∈ T, ψ = DirichletCharacter.changeLevel hgN (f ψ)`. Introduce `ψ hψ`. Establish `h` using `hex ψ hψ`. Simplify using `only [f, dif_pos h]`. Conclude with `h.choose_spec`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hinj : Set.InjOn f T`. Introduce `a ha b hb hab`. Rewrite using `[hf a ha, hf b hb, hab]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.xCard :
     ∀ (O : Type) [CommRing O] [IsDomain O] (N : ℕ) [NeZero N], (∀ T : Finset (DirichletCharacter O N), T.card ≤ N) ∧

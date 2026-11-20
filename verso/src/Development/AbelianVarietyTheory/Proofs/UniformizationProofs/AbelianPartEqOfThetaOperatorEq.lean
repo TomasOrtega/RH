@@ -18,7 +18,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PhiBase
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Take `⟨θ', h⟩` from `exists_sec hL (φ' := fun _ : PUnit => t ≫ f) (ε' := fun _ => 1) (fun U _ h => by simp [Fintype.prod_sum_type]) (pullMulSec (L := L) (φ := fun _ : PUnit => f) (ε := fun _ => 1) θ t (LB.oneGen L (Y := Y')) (fun _ _ => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (ma …`. Use `⟨θ', fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Use `(h Z r z J hJ).trans ((sval_pullMulSec _ _ _ _ _ z hJ).trans ?_)` and prove the remaining obligations. Rewrite using `[val_one, Units.val_one, _root_.mul_one]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pull_sec {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) (f : Y ⟶ X) (t : Y' ⟶ Y) (g : Y' ⟶ X)
     (hg : t ≫ f = g) (θ : LB.Sec (L.pull f)) : ∃ θ' : LB.Sec (L.pull g),
@@ -35,7 +35,7 @@ theorem exists_pull_sec {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) (f : Y �
   rw [val_one, Units.val_one, _root_.mul_one]
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, DVR.tr_fst, DVR.tr_fst, Category.id_comp]`. Establish `: (DegPre.trPt D F b⁻¹ ≫ DegPre.trPt D F b) ≫ DegPre.prB D F = DegPre.prB D F`. Rewrite using `[Category.assoc, DVR.tr_pr, MonObj.comp_mul, DVR.tr_pr, ← Category.assoc, DVR.tr_fst, _root_.mul_assoc, ← MonObj.comp_mul, inv_mul_cancel, MonObj.comp_one, _root_.mul_one]`. Conclude with `this.trans (Category.id_comp _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trPt_inv_comp {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] (b : TF (R := R) F ⟶ D.P.A) :
@@ -48,7 +48,7 @@ theorem trPt_inv_comp {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : T
     exact this.trans (Category.id_comp _).symm
 
 /- English proof (translation)
-The claim follows from `ThetaPow.prod_fam_zero D F k (fun q => h (t.left ≫ q))`.
+A detailed English derivation is pending.
 -/
 theorem prod_comp_fam_zero {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] (k : ℕ) (t : DegPre.BF D F ⟶ DegPre.BF D F) {U : Type} [CommGroup U]
@@ -57,23 +57,21 @@ theorem prod_comp_fam_zero {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (
   ThetaPow.prod_fam_zero D F k (fun q => h (t.left ≫ q))
 
 /- English proof (translation)
-Introduce `hG hT R _ _ D hB F _ _ n hn p p' w w' hw hw' H hy`. Establish `hL` using `D.P.isLB`. Take `⟨θ, σ, hθ, hσ⟩` from `ThetaPow.exists_theta_pow hT R D F n hn`. Take `⟨s, hs, -⟩` from `FamFree.exists_fam_single hG hB hn 0 σ`. Take `⟨s', h₁, h₂⟩` from `H s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `v₁` using `(DVR.phiRel_iff hG p w hw s s').1 h₁ 0 p.y (zero_add _) _ (𝟙 _)`. Establish `v₂` using `(DVR.phiRel_iff hG p' w' hw' s s').1 h₂ 0 p.y ((zero_add _).trans hy) _ (𝟙 _)`. Take `⟨⟨u, hu, hc⟩, hv⟩` from `DVR.gen_phi hG p w hw 0`. Take `⟨⟨u', hu', hc'⟩, hv'⟩` from `DVR.gen_phi hG p' w' hw' 0`. Take `⟨θ₁, hθ₁⟩` from `exists_pull_sec hL (DegPre.prB D F).left (DegPre.trPt D F p.g.b).left (DegPre.trPt D F p.g.b ≫ DegPre.prB D F).left rfl θ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨θ₂, hθ₂⟩` from `exists_pull_sec hL (DegPre.prB D F).left (DegPre.trPt D F p'.g.b).left (DegPre.trPt D F p'.g.b ≫ DegPre.prB D F).left rfl θ`. Take `⟨v, hvg, hvv⟩` from `exists_gen hL (K' := Fin 2) (φ' := ![(DegPre.trPt D F p.g.b ≫ DegPre.prB D F).left, (DegPre.trPt D F p'.g.b ≫ DegPre.prB D F).left]) (ε' := ![(n : ℤ), -(n : ℤ)]) (fun U _ h => by`. Establish `a` using `prod_comp_fam_zero D F n (DegPre.trPt D F p.g.b) h`. Establish `a'` using `prod_comp_fam_zero D F n (DegPre.trPt D F p'.g.b) h`. Establish `c : ∏ i, h (DegPre.famφ D F (0 + p'.y) i) ^ DegPre.famε n i = ∏ i, h (DegPre.famφ D F (0 + p.y) i) ^ DegPre.famε n i` using `by rw [hy]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Eq.trans (DVR.prod_sum₂ (K := Fin 4 ⊕ Fin 4) (K' := Fin 4 ⊕ Fin 4) (U := U) _ (DVR.prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ c (DVR.prod_neg _ _ a')) (DVR.prod_neg _ _ (DVR.prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (c := ∏ i, h (DegPre.famφ D F (0 + p.y) i) ^ DegPre.f …` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg, zpow_natCast]`. Rewrite using `[mul_inv, inv_inv, _root_.mul_mul_mul_comm, mul_inv_cancel, _root_.one_mul, _root_.mul_comm])`. Use the proof step `(LB.mulGen D.P.L _ _ _ _ u' (LB.invGen D.P.L _ _ u))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ hu' (DVR.invGen_isGen _ _ _ _ hu))`. Take `⟨hI, hN⟩` from `degPre_abelianPart_isIntegral_and_isIntegrallyClosed_stalk R D F`. Establish `hne : ∃ j, θ₂.f j ≠ 0`. Assume the negation of the conclusion as `h0`. Establish `h0' : ∀ j, θ₂.f j = 0` using `fun j => by_contra fun hj => h0 ⟨j, hj⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨j, hj⟩` from `hθ`. Use `hj (sec_ext_val (L := D.P.L) (φ := fun _ : PUnit => (DegPre.prB D F).left) (ε := fun _ => 1) (s := θ) (s' := DVR.SecOps.secZero) hL (fun y J hJ => ?_) j)` and prove the remaining obligations. Establish `e` using `hθ₂ _ (DegPre.trPt D F p'.g.b⁻¹).left y J hJ`. Rewrite `e` using `[← Over.comp_left, trPt_inv_comp, Over.id_left]`. Rewrite using `[← e, DVR.UUA.sval_zero_of h0' _ y J (hJ.mem _ _), DVR.UUA.sval_zero_of (s := DVR.SecOps.secZero) (fun _ => rfl) _ y J (hJ.mem _ _)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr, -⟩` from `RootUnit.exists_gen_of_pow _ _ hN D.P.L hL _ _ n hn θ₁ θ₂ v hvg hne (fun y J hJ => by`. Establish `e₁` using `v₁ y J hJ`. Establish `e₂` using `v₂ y J hJ`. Rewrite `e₁` using `[← hv u hu hc _ (𝟙 _) y J hJ, hs, hσ _ _ y J hJ]`. Rewrite `e₂` using `[← hv' u' hu' hc' _ (𝟙 _) y J hJ, hs, hσ _ _ y J hJ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `e₁.symm.trans e₂`. Establish `f₁` using `hθ₁ _ (𝟙 _) y J hJ`. Establish `f₂` using `hθ₂ _ (𝟙 _) y J hJ`. Simplify using `only [Category.id_comp, Over.id_left] at e f₁ f₂`. Rewrite `e` using `[← f₁, ← f₂]`.
-
-Rewrite using `[hvv _ _ y J hJ, val_mul hJ, val_inv, Units.val_mul, mul_right_comm, _root_.mul_comm (Units.val _)]`. Conclude with `((Units.eq_mul_inv_iff_mul_eq _).2 e))`. Conclude with `eq_of_isGen_transl R D F _ _ r hr`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem b_eq_of_phiRel : GlobalFnsSt → SecTwistSt → ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R), D.TauBimult → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (n : ℕ), 1 ≤ n → ∀ (p p' : QkPt D F n) (w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F p.g.b) (DegPre.lineε n))) (w' : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F p'.g.b) (DegPre.lineε n))), w.IsGen → w'.IsGen → (∀ s : Fam D F n, ∃ s' : Fam D F n, PhiRel D F n p w s s' ∧ PhiRel D F n p' w' s s') → p'.y = p.y → p.g.b = p'.g.b := by
   intro hG hT R _ _ D hB F _ _ n hn p p' w w' hw hw' H hy

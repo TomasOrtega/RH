@@ -17,13 +17,11 @@ open ValuativeRel
 namespace GlobalTheory.AscFin.FrameBF
 
 /- English proof (translation)
-Introduce `D hq T L μ0 hL sc G W M hM F hF σ h v hv`. Take `⟨k, i1, i2, i3, i4, p, β, ϖ, κ, h1, h2, h3, h4, h5, h6, h7⟩` from `GlobalTheory.T.exists_splitPoint_besselStaircaseLattice_frame D hq T L μ0 hL sc G W M hM F hF σ h v hv`. Take `⟨s, t, hs, ht⟩` from `GlobalTheory.T.besselStep_basePoint_scaled_coordinates D hq T L μ0 hL sc G W M hM F hF σ h v hv k p β ϖ κ h1 h2 h3 h4 h5 h6 h7`. Use `⟨k, i1, i2, i3, i4, p, β, fun q => κ ⟨q.1, by omega⟩, fun q => κ ⟨2 * (σ + 1) - 1 - q.1, by omega⟩, s, t, h1, h2, h3, ?_, ?_, ?_, hs, ht, fun a ha => ⟨GlobalTheory.T.split_frame_odd_lattice_left D hq T L μ0 hL sc G W M hM F hF σ h v hv k p β ϖ κ h1 h2 h3 h4 h5 h6 h7 s hs a ha, Gl …` and prove the remaining obligations. Introduce `a b e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Fin.ext (Fin.mk.inj (h5 e))`. Introduce `a b e`. Use `Fin.mk.inj (h5 e)` as an intermediate fact. Establish `ha` using `a.2`. Establish `hb` using `b.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Fin.ext (by omega)`. Introduce `a b e`. Use `Fin.mk.inj (h5 e)` as an intermediate fact. Establish `ha` using `a.2`. Establish `hb` using `b.2`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem frame_bf : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m), ∀ v ∈ G.pl.S0,
   ∃ (k : Type) (_ : Field k) (_ : ValuativeRel k) (_ : TopologicalSpace k) (_ : IsNonarchimedeanLocalField k)

@@ -20,41 +20,37 @@ noncomputable section
 namespace GlobalTheory.ZM.NearBuild
 
 /- English proof (translation)
-Introduce `hL hL2 g J _ Mat κ n hn hodd`. Take `⟨j₀, hj₀⟩` from `GlobalTheory.cutBy_graph_addition hL hL2 g J Mat κ n hn hodd`. Use `⟨j₀, fun j hj o _ b R _ _ _ β v Z M th sc q₀ hDen hFam hSm => ?_⟩` and prove the remaining obligations. Take `⟨Q, d, hQ⟩` from `hj₀ j hj o b`. Establish `: NeZero ((n ^ j) ^ 2)` using `⟨pow_ne_zero _ (pow_ne_zero _ hn.ne_zero)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨I, p, hPR, hp⟩, -, hfib⟩` from `hFam`. Take `⟨I₂, M₂, th₂, hPR₂, hseg⟩` from `GlobalTheory.SegreCoord.exists_segre_coordinates R (Ix g ((n ^ j) ^ 2)) I Z M th hPR`. Establish `hP1` using `(GlobalTheory.ZM.projRep_projective_ample _ _ _ _ _ _ hPR).2.1`. Establish `hP2` using `(GlobalTheory.ZM.projRep_projective_ample _ _ _ _ _ _ hPR₂).2.1`. Establish `hS2 : Smooth (Z ⊗ Z).hom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hSm` as an intermediate fact. Rewrite using `[Over.tensorObj_hom]`. Use `infer_instance`. Set `G : ∀ (K : Type) [Field K] (x : R →+* K), (pullback (Z ⊗ Z).hom (spMap x) ⟶ Z.left) → Prop` to `fun K _ x φ => ∃ (_ : IsAlgClosed K) (s : Sp K ⟶ Sp o) (t : TObj g ((n ^ j) ^ 2) J b s) (ψ : t.A.left ⟶ Z.left) (e : (t.A ⊗ t.A).left ⟶ pullback (Z ⊗ Z).hom (spMap x)), IsIso e ∧ Good b Mat κ β v x t ∧ Fib (n ^ 2) M th sc x t ψ ∧ IsSquare ψ (e ≫ pullback.fst _ _) ∧ e ≫ pullback.s …`. Establish `mk : ∀ (K : Type) [Field K] [IsAlgClosed K] (x : R →+* K) (s : Sp K ⟶ Sp o) (t : TObj g ((n ^ j) ^ 2) J b s) (ψ : t.A.left ⟶ Z.left), Good b Mat κ β v x t → Fib (n ^ 2) M th sc x t ψ → ∀ φ₂ : (t.A ⊗ t.A).left ⟶ (Z ⊗ Z).left, IsSquare ψ φ₂ → ∃ φ, G K x φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `K _ _ x s t ψ hG hF φ₂ hsq`. Establish `hpb` using `GlobalTheory.ZM.BuildAdd.isPullback_square hF.1 φ₂ hsq`. Use `⟨hpb.isoPullback.inv ≫ (μ[t.A]).left ≫ ψ, inferInstance, s, t, ψ, hpb.isoPullback.hom, inferInstance, hG, hF, ?_, hpb.isoPullback_hom_snd, by simp⟩` and prove the remaining obligations. Rewrite using `[hpb.isoPullback_hom_fst]`. Conclude with `hsq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hGprop : ∀ (K : Type) [Field K] (x : R →+* K) (φ : pullback (Z ⊗ Z).hom (spMap x) ⟶ Z.left), G K x φ → φ ≫ Z.hom = pullback.snd _ _ ≫ spMap x ∧ CutBy (graphIdeal (pullback.snd (Z ⊗ Z).hom (spMap x)) M₂ th₂ (pullback.fst _ _) M th φ) Q d (fun (h : Ix g ((n ^ j) ^ 2) × Ix g ((n ^ j …`. Introduce `K _ x φ hφ`. Take `⟨_, s, t, ψ, e, _, hG, hF, hsq, hsn, heφ⟩` from `hφ`. Establish `hw : ψ ≫ Z.hom = t.A.hom ≫ spMap x` using `hF.1.w`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← cancel_epi e, reassoc_of% heφ, reassoc_of% hsn, hw, ← Category.assoc, Over.w]`. Establish `hs : s = spMap (x.comp β)` using `hG.1.trans (spMap_comp x β).symm`. Substitute `hs` using the available equality. Take `⟨-, ⟨σ, hEmb, hσ⟩, -, hlab⟩` from `hF`. Take `⟨N₂, t₂, hN₂, hseg₂, heq⟩` from `GlobalTheory.ZM.BuildAdd.graph_transport x Z M th M₂ th₂ hPR₂.1 hseg t.A ψ _ σ hσ e hsq hsn φ heφ`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← heq]`. Establish `hl : ∀ h, SecCoord _ σ (lift (𝟙 (Over.mk (𝟙 (Sp K)))) (t.lab h ^ n ^ j)).left (fun a => x (p h a))`. Introduce `h`. Rewrite using `[hσ, ← Category.assoc, ← Over.comp_left, lift_snd, hlab h]`. Establish `hx : (sc h).left ≫ Z.hom = spMap (RingHom.id R)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Over.w]`. Simplify using `[Out.baseOver, spMap]`. Establish `hu` using `(hPR.2.1 R (RingHom.id R) (sc h).left (p h) hx (hp h)).1`. Conclude with `GlobalTheory.SegreCoord.secCoord_of_loc (GlobalTheory.SegreCoord.unimod_map hu x) ((GlobalTheory.SegreCoord.loc_of_secCoord (hp h)).baseChange x)`. Use `hQ K (x.comp β) t σ (fun h a => x (p h a)) N₂ t₂ hN₂ hEmb hseg₂ hl` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_mul]`. Conclude with `this`. Establish `hDense : DenseP {q | ∃ (K : Type) (_ : Field K) (x : R →+* K) (φ : _), RingHom.ker x = q ∧ G K x φ}`. Introduce `f hf`. Apply `hDen.1 f` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `q hq hqp`. Take `⟨K, _, _, x, t, hker, hsh, hth⟩` from `hq`. Establish `hG : Good b Mat κ β v x t` using `⟨rfl, hsh, hth⟩`. Take `⟨ψ, hψ⟩` from `hfib K x _ t hG`. Take `⟨φ₂, hsq⟩` from `GlobalTheory.ZM.BuildAdd.exists_isSquare hψ.1.w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩` from `mk K x _ t ψ hG hψ φ₂ hsq`. Conclude with `hf q ⟨K, inferInstance, x, φ, hker, hφ⟩ hqp`. Take `⟨K₀, _, _, x₀, t₀, hker₀, hsh₀, hth₀⟩` from `hDen.2`. Establish `hG₀ : Good b Mat κ β v x₀ t₀` using `⟨rfl, hsh₀, hth₀⟩`. Take `⟨ψ₀, hψ₀⟩` from `hfib K₀ x₀ _ t₀ hG₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨φ₂₀, hsq₀⟩` from `GlobalTheory.ZM.BuildAdd.exists_isSquare hψ₀.1.w`. Take `⟨φ₀, hφ₀⟩` from `mk K₀ x₀ _ t₀ ψ₀ hG₀ hψ₀ φ₂₀ hsq₀`. Take `⟨f, hf0, H⟩` from `GlobalTheory.ZM.NearBuild.exists_hom_of_graphs_of_isUnit R (Ix g ((n ^ j) ^ 2) × Ix g ((n ^ j) ^ 2)) (Ix g ((n ^ j) ^ 2)) (Ix g ((n ^ j) ^ 2) × Ix g ((n ^ j) ^ 2)) (Z ⊗ Z) Z I₂ I M₂ M th₂ th (fun h i => p h.1 i.1 * p h.2 i.2) (fun h c => p (h.1 + h.2) c) Q d G hPR₂ hPR hP2 hP1 hS …`. Use `⟨f, fun hf => hf0 ?_, ?_⟩` and prove the remaining obligations. Rewrite `hf` using `[← hker₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `RingHom.mem_ker.mp hf`. Introduce `R' _ ρ hu Z' π hπ`. Take `⟨π₂, hsqπ⟩` from `GlobalTheory.ZM.BuildAdd.exists_isSquare hπ.w`. Establish `hpbπ` using `GlobalTheory.ZM.BuildAdd.isPullback_square hπ π₂ hsqπ`. Take `⟨F, hF, hU⟩` from `H R' ρ hu (Z' ⊗ Z').left π₂ (Z' ⊗ Z').hom hpbπ.w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨Over.homMk (hπ.lift F (Z' ⊗ Z').hom hF) (hπ.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Introduce `K _ _ x s t φ hG hFib hφw φ₂ hsq`. Establish `hpb1 : IsPullback φ t.A.hom Z'.hom (spMap x)`. Use `IsPullback.of_right ?_ hφw hπ` and prove the remaining obligations. Rewrite using `[← spMap_comp]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hFib.1`. Establish `hpb2` using `GlobalTheory.ZM.BuildAdd.isPullback_square hpb1 φ₂ hsq`. Establish `hsq' : IsSquare (φ ≫ π) (φ₂ ≫ π₂)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Category.assoc, hsqπ.1, reassoc_of% hsq.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hsqπ.2, reassoc_of% hsq.2]`. Establish `hpb3` using `GlobalTheory.ZM.BuildAdd.isPullback_square hFib.1 (φ₂ ≫ π₂) hsq'`. Establish `hGφ : G K (x.comp ρ) (hpb3.isoPullback.inv ≫ (μ[t.A]).left ≫ φ ≫ π)` using `⟨inferInstance, s, t, φ ≫ π, hpb3.isoPullback.hom, inferInstance, hG, hFib, by rw [hpb3.isoPullback_hom_fst]; exact hsq', hpb3.isoPullback_hom_snd, by simp⟩`. Establish `key` using `hU K (x.comp ρ) _ hGφ (hpb3.isoPullback.inv ≫ φ₂) (by rw [Category.assoc]; exact hpb3.isoPullback_inv_fst)`. Rewrite `key` using `[Category.assoc, cancel_epi]`.
-
-Use `show φ₂ ≫ hπ.lift F (Z' ⊗ Z').hom hF = (μ[t.A]).left ≫ φ`. Apply `hπ.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hπ.lift_fst, Category.assoc]`. Conclude with `key.symm`. Rewrite using `[Category.assoc, hπ.lift_snd, Category.assoc, hφw, ← Category.assoc, Over.w]`.
-
-Conclude with `hpb2.w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_add_near : Out.Laws → Out.Laws2 → ∀ (g : ℕ) (J : Type) [Finite J] (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ n : ℕ), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)) (R : Type) [CommRing R] [IsNoetherianRing R] [IsReduced R] (β : o →+* R) (v : Ix g ((n ^ j) ^ 2) → R) (Z : Over (Sp R)) (M : LB Z.left) (th : Ix g ((n ^ j) ^ 2) → M.Sec) (sc : Ix g ((n ^ j) ^ 2) → (Out.baseOver (Sp R) ⟶ Z)) (q₀ : Ideal R), Den b Mat κ β v q₀ → Fam b Mat κ β v (n ^ 2) M th sc → Smooth Z.hom → ∃ f : R, f ∉ q₀ ∧ ∀ (R' : Type) [CommRing R'] (ρ : R →+* R'), IsUnit (ρ f) → ∀ (Z' : Over (Sp R')) (π : Z'.left ⟶ Z.left), IsPullback π Z'.hom Z.hom (spMap ρ) → ∃ mu : Z' ⊗ Z' ⟶ Z', AddOk b Mat κ β v (n ^ 2) M th sc ρ π mu := by
   intro hL hL2 g J _ Mat κ n hn hodd

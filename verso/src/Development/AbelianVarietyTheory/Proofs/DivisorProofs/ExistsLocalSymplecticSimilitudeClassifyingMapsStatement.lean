@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.HTLocSim.exists_local_similitude) | (exact GlobalTheory.HTLocSim.exists_local_similitude) | (intros; apply GlobalTheory.HTLocSim.exists_local_similitude <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_local_symplecticSimilitude_classifyingMaps : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N h M : ℕ),
   3 ≤ N → N.Coprime p → 3 ≤ M → Odd M → M.Coprime p →

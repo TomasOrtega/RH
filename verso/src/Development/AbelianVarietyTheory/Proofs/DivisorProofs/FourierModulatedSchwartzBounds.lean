@@ -5,9 +5,9 @@ open scoped SchwartzMap ContDiff
 namespace GlobalTheory.SchwartzCharMul
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[iteratedDeriv_succ, ih]`. Use function extensionality and compare the values at `t`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h : HasDerivAt (fun t : ℝ => Complex.exp ((t : ℂ) * Complex.I)) (Complex.exp ((t : ℂ) * Complex.I) * (1 * Complex.I)) t` using `((Complex.ofRealCLM.hasDerivAt (x := t)).mul_const Complex.I).cexp`. Rewrite using `[(h.const_mul (Complex.I ^ n)).deriv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem iteratedDeriv_cexp_ofReal_mul_I (n : ℕ) :
     iteratedDeriv n (fun t : ℝ => Complex.exp ((t : ℂ) * Complex.I)) =
@@ -24,7 +24,7 @@ theorem iteratedDeriv_cexp_ofReal_mul_I (n : ℕ) :
     ring
 
 /- English proof (translation)
-Establish `h : ContDiff ℝ ∞ (fun t : ℝ => (Complex.ofRealCLM t : ℂ) * Complex.I)` using `Complex.ofRealCLM.contDiff.mul contDiff_const`. Conclude with `h.cexp`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_cexp_ofReal_mul_I :
     ContDiff ℝ ∞ (fun t : ℝ => Complex.exp ((t : ℂ) * Complex.I)) := by
@@ -33,7 +33,7 @@ theorem contDiff_cexp_ofReal_mul_I :
   exact h.cexp
 
 /- English proof (translation)
-Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv, iteratedDeriv_cexp_ofReal_mul_I]`. Simplify using `[Complex.norm_exp_ofReal_mul_I]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_iteratedFDeriv_cexp_ofReal_mul_I (n : ℕ) (t : ℝ) :
     ‖iteratedFDeriv ℝ n (fun t : ℝ => Complex.exp ((t : ℂ) * Complex.I)) t‖ = 1 := by
@@ -45,14 +45,14 @@ section Character
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 /- English proof (translation)
-The claim follows from `contDiff_cexp_ofReal_mul_I.comp ξ.contDiff`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_cexp_clm_mul_I (ξ : V →L[ℝ] ℝ) :
     ContDiff ℝ ∞ (fun x : V => Complex.exp ((ξ x : ℂ) * Complex.I)) :=
   contDiff_cexp_ofReal_mul_I.comp ξ.contDiff
 
 /- English proof (translation)
-Establish `h : (fun x : V => Complex.exp ((ξ x : ℂ) * Complex.I)) = (fun t : ℝ => Complex.exp ((t : ℂ) * Complex.I)) ∘ ξ` using `rfl`. Rewrite using `[h, ξ.iteratedFDeriv_comp_right contDiff_cexp_ofReal_mul_I x (by exact_mod_cast le_top)]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Simplify using `[norm_iteratedFDeriv_cexp_ofReal_mul_I]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem norm_iteratedFDeriv_cexp_clm_mul_I_le (ξ : V →L[ℝ] ℝ) (j : ℕ) (x : V) :
     ‖iteratedFDeriv ℝ j (fun x : V => Complex.exp ((ξ x : ℂ) * Complex.I)) x‖ ≤ ‖ξ‖ ^ j := by
@@ -63,11 +63,9 @@ theorem norm_iteratedFDeriv_cexp_clm_mul_I_le (ξ : V →L[ℝ] ℝ) (j : ℕ) (
   simp [norm_iteratedFDeriv_cexp_ofReal_mul_I]
 
 /- English proof (translation)
-Establish `hL` using `norm_iteratedFDeriv_mul_le (contDiff_cexp_clm_mul_I ξ) (g.smooth ⊤) x (n := n) (by exact_mod_cast le_top)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; refine Finset.sum_congr rfl fun i _ => by ring`. Use `_ ≤ ∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * (1 + ‖ξ‖) ^ n * SchwartzMap.seminorm ℂ k (n - i) g := by`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hi' : i ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Establish `h1` using `norm_iteratedFDeriv_cexp_clm_mul_I_le ξ i x`. Establish `h2 : ‖ξ‖ ^ i ≤ (1 + ‖ξ‖) ^ n` using `(pow_le_pow_left₀ (norm_nonneg _) (by linarith [norm_nonneg ξ]) i).trans (pow_le_pow_right₀ (by linarith [norm_nonneg ξ]) hi')`. Establish `h3` using `SchwartzMap.le_seminorm ℂ k (n - i) g x`. Use `gcongr`.
-
-Conclude with `h1.trans h2`. Use `_ = _ := by rw [Finset.sum_mul]; refine Finset.sum_congr rfl fun i _ => by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_pow_mul_iteratedFDeriv_cexp_clm_mul_le (g : 𝓢(V, ℂ)) (ξ : V →L[ℝ] ℝ)
     (k n : ℕ) (x : V) :
@@ -104,7 +102,7 @@ noncomputable def charMul (g : 𝓢(V, ℂ)) (ξ : V →L[ℝ] ℝ) : 𝓢(V, �
   decay' k n := ⟨_, norm_pow_mul_iteratedFDeriv_cexp_clm_mul_le g ξ k n⟩
 
 /- English proof (translation)
-Introduce `V _ _ _ g`. Use `⟨charMul g, fun ξ x => rfl, fun k n => ⟨∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * SchwartzMap.seminorm ℂ k (n - i) g, fun ξ x => ?_⟩⟩` and prove the remaining obligations. Conclude with `norm_pow_mul_iteratedFDeriv_cexp_clm_mul_le g ξ k n x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_charMul_schwartz_bound :
     ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (g : SchwartzMap V ℂ),

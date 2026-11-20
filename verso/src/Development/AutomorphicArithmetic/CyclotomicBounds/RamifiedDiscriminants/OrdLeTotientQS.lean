@@ -3,7 +3,7 @@ import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.Hos
 import Development.AutomorphicArithmetic.CyclotomicBounds.RamifiedDiscriminants.OrdLeQS
 
 /- English proof (translation)
-Introduce `φ H`. Take `⟨h1, h2, -⟩` from `UpperTheory.KR.two_ord_le_QS H`. Conclude with `⟨h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Ram.ord_le_totient_QS :
     ∀ {φ : Formalism.HC.Frame} (H : Formalism.HC.HostAx φ), φ.ord ≤ H.QS.totient ∧ 2 * φ.ord ≤ H.QS := by

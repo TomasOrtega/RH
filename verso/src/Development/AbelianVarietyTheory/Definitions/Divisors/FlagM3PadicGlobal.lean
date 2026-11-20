@@ -60,7 +60,7 @@ def GenTyG : Prop :=
         (∀ w ∈ S, GenAt D U' w) ∧ ϑ = fun j => ι.symm (η U' j)}
 
 /- English proof (translation)
-The claim follows from `(polyApprox_zero_padic p).1.mono fun ϑ ⟨n, hn⟩ => by simpa [hn] using (Fact.out : p.Prime).ne_zero`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] : PolyApprox (fun _ : Unit => (0 : ℚ_[p]))
     {ϑ | MvPolynomial.aeval ϑ (MvPolynomial.X () : MvPolynomial Unit ℤ) ≠ 0} :=

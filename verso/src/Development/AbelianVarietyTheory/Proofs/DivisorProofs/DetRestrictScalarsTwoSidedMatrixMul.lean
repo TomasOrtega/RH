@@ -16,11 +16,11 @@ def twoSidedMulLin {E : Type} [Field E] {α ν : Type} [Fintype α] [Fintype ν]
   map_smul' c x := by rw [Matrix.mul_smul, Matrix.smul_mul]; rfl
 
 /- English proof (translation)
-Set `e : (α × ν → E) ≃ₗ[E] Matrix α ν E` to `LinearEquiv.curry E E α ν`. Establish `h : twoSidedMulLin u a = (e : _ →ₗ[E] _) ∘ₗ (Matrix.toLin' (Matrix.kroneckerMap (· * ·) u a.transpose)) ∘ₗ (e.symm : _ →ₗ[E] _)`. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `(u * z * a) i j = (Matrix.kroneckerMap (· * ·) u a.transpose).mulVec (Function.uncurry z) (i, j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Matrix.mul_apply, Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Matrix.kroneckerMap_apply, Matrix.transpose_apply, Function.uncurry_apply_pair, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[show Function.uncurry z (b, c) = z b c from rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h, LinearMap.det_conj, LinearMap.det_toLin', Matrix.det_kronecker, Matrix.det_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_twoSidedMulLin {E : Type} [Field E] {α ν : Type} [Fintype α] [DecidableEq α]
     [Fintype ν] [DecidableEq ν] (u : Matrix α α E) (a : Matrix ν ν E) :
@@ -41,9 +41,9 @@ theorem det_twoSidedMulLin {E : Type} [Field E] {α ν : Type} [Fintype α] [Dec
   rw [h, LinearMap.det_conj, LinearMap.det_toLin', Matrix.det_kronecker, Matrix.det_transpose]
 
 /- English proof (translation)
-Introduce `F _ E _ _ _ α _ _ ν _ _ u a T hT`. Establish `hT' : T = (twoSidedMulLin u a).restrictScalars F`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[hT]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hT', LinearMap.det_restrictScalars, det_twoSidedMulLin, map_mul, map_pow, map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_restrictScalars_twoSidedMul : ∀ (F : Type) [Field F] (E : Type) [Field E] [Algebra F E]
     [FiniteDimensional F E] (α : Type) [Fintype α] [DecidableEq α] (ν : Type) [Fintype ν]

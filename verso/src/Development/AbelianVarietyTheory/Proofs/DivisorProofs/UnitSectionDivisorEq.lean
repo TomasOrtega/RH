@@ -12,7 +12,7 @@ set_option autoImplicit false
 namespace GlobalTheory.LKGeo
 
 /- English proof (translation)
-Simplify using `only [actOn, Algebra.TensorProduct.lift_tmul, Algebra.ofId_apply, AlgHom.coe_comp, Function.comp_apply, Module.End.mul_apply, Algebra.algebraMap_eq_smul_one, LinearMap.smul_apply, Module.End.one_apply]`. Express the relevant statement in the definitionally equal form `r • (rep c).baseChange R (a ⊗ₜ v) = _`. Rewrite using `[LinearMap.baseChange_tmul, TensorProduct.smul_tmul', smul_eq_mul]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem actOn_tmul_tmul' {C V : Type} [Ring C] [Algebra ℚ C] [AddCommGroup V] [Module ℚ V]
     (rep : C →ₐ[ℚ] Module.End ℚ V) (R : Type) [CommRing R] [Algebra ℚ R] (r a : R) (c : C) (v : V) :
@@ -23,11 +23,11 @@ theorem actOn_tmul_tmul' {C V : Type} [Ring C] [Algebra ℚ C] [AddCommGroup V] 
   rw [LinearMap.baseChange_tmul, TensorProduct.smul_tmul', smul_eq_mul]
 
 /- English proof (translation)
-Introduce `p _ D G L x v w`. Proceed by induction on `x using TensorProduct.induction_on generalizing v w with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, MulOpposite.unop_add, hx, hy]`. Consider the case `tmul r c`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[starT_tmul]`. Proceed by induction on `v using TensorProduct.induction_on generalizing w with`. Consider the case `zero => simp`. Consider the case `add v v' hv hv' => simp only [map_add, LinearMap.add_apply, hv, hv']`. Consider the case `tmul a v₀`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add w w' hw hw' => simp only [map_add, hw, hw']`. Consider the case `tmul a' w₀`. Rewrite using `[actOn_tmul_tmul', actOn_tmul_tmul', LinearMap.BilinForm.baseChange_tmul, LinearMap.BilinForm.baseChange_tmul, L.adj c v₀ w₀, mul_left_comm, _root_.mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

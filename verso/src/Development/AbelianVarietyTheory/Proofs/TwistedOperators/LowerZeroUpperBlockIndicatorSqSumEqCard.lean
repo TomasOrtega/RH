@@ -5,9 +5,9 @@ open Classical
 namespace GlobalTheory.LevelVecNorm
 
 /- English proof (translation)
-Distinguish the cases in `hs : s.Finite`. Rewrite using `[← finsum_mem_def, finsum_mem_eq_finite_toFinset_sum _ hs, Set.ncard_eq_toFinset_card s hs]`. Simplify using the standard rewrite rules. Establish `hsupp : Function.support (s.indicator (fun _ => (1:ℝ))) = s`. Apply the tactic sequence `ext x; by_cases hx : x ∈ s <;> simp [hx]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[finsum_of_infinite_support (by rw [hsupp]; exact hs), Set.Infinite.ncard hs]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finsum_indicator_one_eq_ncard' {α : Type} (s : Set α) :
     (∑ᶠ x, s.indicator (fun _ => (1:ℝ)) x) = (s.ncard : ℝ) := by
@@ -20,23 +20,23 @@ theorem finsum_indicator_one_eq_ncard' {α : Type} (s : Set α) :
     simp
 
 /- English proof (translation)
-Introduce `k _ b a r t hb ha H`. Substitute `hb` using the available equality. Substitute `a` using the available equality. Set `f : GL (Fin r) k → Matrix (Fin (r + t)) (Fin r) k` to `fun g i j => if h : i.val < r then (g : Matrix (Fin r) (Fin r) k) ⟨i.val, h⟩ j else 0`. Establish `htop : ∀ g, Formalism.IndefR.Datum.topL r (f g) = (g : Matrix (Fin r) (Fin r) k)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `g`. Use extensionality with `i j`. Simplify using `[Formalism.IndefR.Datum.topL, f, i.isLt, j.isLt, show i.val < r + t by omega]`. Establish `hlow : ∀ g, Formalism.IndefR.Datum.LowZero r (f g)`. Introduce `g i j hi _`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[f, show ¬ i.val < r by omega]`. Establish `hinj : Function.Injective f`. Introduce `g g' h`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← htop g, ← htop g', h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `S : Set (Matrix (Fin (r + t)) (Fin r) k)` to `{z | Formalism.IndefR.Datum.LowZero r z ∧ ∃ g ∈ H, ((g : GL (Fin r) k) : Matrix (Fin r) (Fin r) k) = Formalism.IndefR.Datum.topL r z}`. Establish `hS : S = f '' (H : Set (GL (Fin r) k))`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, g, hg, hgz⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Distinguish the cases in `hi : i.val < r`. Use `congrFun (congrFun hgz ⟨i.val, hi⟩) j` as an intermediate fact. Simplify using `only [Formalism.IndefR.Datum.topL, j.isLt, show i.val < r + t by omega] at this`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[f, hi]`. Simplify using `[f, hi, hz i j (by omega) j.isLt]`. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨hlow g, g, hg, (htop g).symm⟩`. Establish `hfun : ∀ z, GlobalTheory.LevelVecNorm.suppInd r H z ^ 2 = S.indicator (fun _ => (1:ℝ)) z`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `z`. Unfold `GlobalTheory.LevelVecNorm.suppInd`. Distinguish the cases in `hz : z ∈ S`. Establish `hz'` using `hz`. Simplify using `only [S, Set.mem_ofPred_eq] at hz'`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos hz', Set.indicator_of_mem hz]`. Evaluate the numerical expressions. Establish `hz'` using `hz`. Simplify using `only [S, Set.mem_ofPred_eq] at hz'`. Rewrite using `[if_neg hz', Set.indicator_of_notMem hz]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Repeatedly rewrite using `[hfun]`. Rewrite using `[finsum_indicator_one_eq_ncard', hS, Set.ncard_image_of_injective _ hinj, ← Nat.card_coe_set_eq]`. Both sides reduce to the same expression.
+Evaluate the numerical expressions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem suppInd_sq_sum_eq_card : ∀ {k : Type} [CommRing k] {b a : ℕ} (r t : ℕ), b = r + t → a = r → ∀ H : Subgroup (GL (Fin r) k),
     ∑ᶠ z : Matrix (Fin b) (Fin a) k, GlobalTheory.LevelVecNorm.suppInd r H z ^ 2 = (Nat.card H : ℝ) := by

@@ -8,7 +8,7 @@ open GlobalTheory.PRep (fixed)
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨f, hf, hE⟩` from `h E a n e g`. Conclude with `⟨f, hf, fun t u ψ => (UpperTheory.algMod_of_injective_intertwining _ _ a f _ _ (hE t) _ ψ).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem slice_cap (h : UpperTheory.V.Cj.S.Slice) {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a n : ℕ}
     (e : Fin a ↪ Fin n) (g : GA E n) :
@@ -18,11 +18,11 @@ private theorem slice_cap (h : UpperTheory.V.Cj.S.Slice) {E : Type} [Field E] [N
   exact ⟨f, hf, fun t u ψ => (UpperTheory.algMod_of_injective_intertwining _ _ a f _ _ (hE t) _ ψ).symm⟩
 
 /- English proof (translation)
-Introduce `hS hB E _ _ _ r s ψ hψ t u`. Use `⟨res (capB (e1 r s) t (u - (s : ℂ) / 2) ψ).1, fun y => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hc⟩` from `slice_cap hS (e1 r s) (emb (e2 r s) y)`. Establish `key : ∀ φ : Sm E (r + s), (f φ).1 = fun x => res φ.1 x y` using `fun φ => funext fun x => by`. Rewrite using `[hf, res, blk, UpperTheory.V.Af.Fin.emb_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨f ψ, key ψ, by rw [hc, key]⟩`. Take `⟨f, hf, hc⟩` from `slice_cap hS (e2 r s) (emb (e1 r s) x)`. Establish `key : ∀ φ : Sm E (r + s), (f φ).1 = res φ.1 x` using `fun φ => funext fun y => hf φ y`. Use `⟨f _, key _, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, key]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `funext fun y => (hB E r s ψ hψ t u x y).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.S.capRel :
     UpperTheory.V.Cj.S.Slice → UpperTheory.V.Cj.S.CapBlock → UpperTheory.V.Cj.S.CapRel := by

@@ -17,7 +17,7 @@ def repEnd (ρ : G →* GL (Fin N) ℂ) : G →* Module.End ℂ (Fin N → ℂ) 
     rfl
 
 /- English proof (translation)
-Simplify using `[repEnd, Matrix.toLin'_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem repEnd_apply (ρ : G →* GL (Fin N) ℂ) (g : G) (v : Fin N → ℂ) :
     repEnd ρ g v = ((ρ g : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ).mulVec v := by
@@ -36,7 +36,7 @@ theorem spanAlg_smul (ρ : G →* GL (Fin N) ℂ) (a : spanAlg ρ) (v : Fin N �
     a • v = (a : Module.End ℂ (Fin N → ℂ)) v := rfl
 
 /- English proof (translation)
-Rewrite using `[spanAlg, Algebra.adjoin_eq_span]`. Use `congr 1`. Rewrite using `[← MonoidHom.coe_mrange, Submonoid.closure_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem spanAlg_toSubmodule (ρ : G →* GL (Fin N) ℂ) :
     Subalgebra.toSubmodule (spanAlg ρ) = Submodule.span ℂ (Set.range (repEnd ρ)) := by
@@ -45,19 +45,19 @@ theorem spanAlg_toSubmodule (ρ : G →* GL (Fin N) ℂ) :
   rw [← MonoidHom.coe_mrange, Submonoid.closure_eq]
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨g, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem repEnd_mem (ρ : G →* GL (Fin N) ℂ) (g : G) : repEnd ρ g ∈ spanAlg ρ :=
   Algebra.subset_adjoin ⟨g, rfl⟩
 
 /- English proof (translation)
-Establish `: Nonempty (Fin N)` using `⟨⟨0, hN⟩⟩`. Establish `: Nontrivial (Fin N → ℂ)` using `inferInstance`. Use `{ eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations. Establish `hT` using `hI (S.restrictScalars ℂ) (fun g v hv => by`. Use `S.smul_mem ⟨repEnd ρ g, repEnd_mem ρ g⟩ hv` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[spanAlg_smul]`. Simplify `this)` using `[repEnd_apply]`. Break down `hT with hT | hT` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Establish `: v ∈ S.restrictScalars ℂ` using `hv`. Rewrite `this` using `[hT]`. Simplify using `using this`. Use `right`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `: v ∈ S.restrictScalars ℂ` using `by rw [hT]; trivial`. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spanAlg_simple (ρ : G →* GL (Fin N) ℂ) (hN : 0 < N) (hI : Irr ρ) :
     IsSimpleModule (spanAlg ρ) (Fin N → ℂ) := by
@@ -82,15 +82,15 @@ theorem spanAlg_simple (ρ : G →* GL (Fin N) ℂ) (hN : 0 < N) (hI : Irr ρ) :
     exact this
 
 /- English proof (translation)
-Use `spanAlg_simple ρ hN hI` as an intermediate fact. Establish `: Nonempty (Fin N)` using `⟨⟨0, hN⟩⟩`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (φ.restrictScalars ℂ)`. Take `⟨v, hv⟩` from `hc.exists_hasEigenvector`. Use `⟨c, fun w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `K : Submodule (spanAlg ρ) (Fin N → ℂ)` to `{ carrier := {w | φ w = c • w} add_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_ofPred_eq] at *`. Rewrite using `[map_add, ha, hb, smul_add]`. Use the proof step `zero_mem' := by simp`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `smul_mem' := by`. Introduce `a x hx`. Simplify using `only [Set.mem_ofPred_eq] at *`. Rewrite using `[map_smul, hx, spanAlg_smul, spanAlg_smul, map_smul] }`. Establish `hvK : v ∈ K`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hv.apply_eq_smul` as an intermediate fact. Simplify `this` using `[K]`. Establish `hK : K = ⊤`. Break down `IsSimpleOrder.eq_bot_or_eq_top K with h | h` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: v ∈ (⊥ : Submodule (spanAlg ρ) (Fin N → ℂ))` using `h ▸ hvK`. Conclude with `hv.2 ((Submodule.mem_bot _).mp this)`. Conclude with `h`. Establish `: w ∈ K` using `hK ▸ Submodule.mem_top`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem schur (ρ : G →* GL (Fin N) ℂ) (hN : 0 < N) (hI : Irr ρ)
     (φ : (Fin N → ℂ) →ₗ[spanAlg ρ] (Fin N → ℂ)) : ∃ c : ℂ, ∀ v, φ v = c • v := by
@@ -123,11 +123,11 @@ theorem schur (ρ : G →* GL (Fin N) ℂ) (hN : 0 < N) (hI : Irr ρ)
   exact this
 
 /- English proof (translation)
-Introduce `f`. Use `spanAlg_simple ρ hN hI` as an intermediate fact. Set `F : Module.End (Module.End (spanAlg ρ) (Fin N → ℂ)) (Fin N → ℂ)` to `{ toFun := f map_add' := f.map_add map_smul' := by`. Introduce `φ v`. Take `⟨c, hc⟩` from `schur ρ hN hI φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Module.End.smul_def, RingHom.id_apply, hc, map_smul] }`. Take `⟨r, hr⟩` from `jacobson_density F (Finset.univ.image (fun i => Pi.single i (1 : ℂ)))`. Establish `: (r : Module.End ℂ (Fin N → ℂ)) = f`. Apply `(Pi.basisFun ℂ (Fin N)).ext` to reduce the goal to its premises. Introduce `i`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hr (Pi.single i 1) (Finset.mem_image_of_mem _ (Finset.mem_univ i))` as an intermediate fact. Rewrite using `[Pi.basisFun_apply, ← spanAlg_smul]`. Conclude with `this.symm`. Conclude with `this ▸ r.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanAlg_eq_top (ρ : G →* GL (Fin N) ℂ) (hN : 0 < N) (hI : Irr ρ) :
     ∀ f : Module.End ℂ (Fin N → ℂ), f ∈ spanAlg ρ := by
@@ -150,13 +150,13 @@ theorem spanAlg_eq_top (ρ : G →* GL (Fin N) ℂ) (hN : 0 < N) (hI : Irr ρ) :
   exact this ▸ r.2
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos N with hN | hN` into its components or cases. Substitute `hN` using the available equality. Use extensionality with `T`. Establish `: T = 0` using `Subsingleton.elim _ _`. Simplify using `[this]`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `ℓ' : Module.End ℂ (Fin N → ℂ) →ₗ[ℂ] ℂ` to `ℓ ∘ₗ (Matrix.toLin' (R := ℂ) (m := Fin N) (n := Fin N)).symm.toLinearMap`. Establish `hspan : Submodule.span ℂ (Set.range (repEnd ρ)) ≤ LinearMap.ker ℓ'`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Simplify using `[ℓ', repEnd, h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `h' : ∀ f, ℓ' f = 0`. Introduce `f`. Establish `hf : f ∈ Subalgebra.toSubmodule (spanAlg ρ)` using `spanAlg_eq_top ρ hN hI f`. Rewrite `hf` using `[spanAlg_toSubmodule]`. Conclude with `hspan hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `T`. Use `h' (Matrix.toLin' T)` as an intermediate fact. Simplify `this` using `[ℓ']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem functional_eq_zero (ρ : G →* GL (Fin N) ℂ) (hI : Irr ρ)
     (ℓ : Matrix (Fin N) (Fin N) ℂ →ₗ[ℂ] ℂ)

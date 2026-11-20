@@ -16,31 +16,27 @@ variable (h : IsExpLieAlgebra G 𝔤) [MeasurableSpace G] [BorelSpace G] (μ : M
   [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Take `⟨r, ρ, c, W, hr, hρ, hρpos, hW, hPW, hcP, hc, hint⟩` from `h.exists_haar_density_prodExp μ b`. Use `set P := h.prodExp (⇑b) with hPdef`. Establish `hPc : Continuous P` using `h.continuous_prodExp _`. Use `⟨r / 2, by positivity, fun K hK hKs => ?_⟩` and prove the remaining obligations. Establish `hεr : closedBall (0 : Fin d → ℝ) (r / 2) ⊆ ball 0 r` using `closedBall_subset_ball (by linarith)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C := P '' closedBall (0 : Fin d → ℝ) (r / 2) with hCdef`. Establish `hCc : IsCompact C` using `(isCompact_closedBall _ _).image hPc`. Set `κ : G → ℂ` to `W.indicator fun y => K (c y) * (((ρ (c y))⁻¹ : ℝ) : ℂ)`. Establish `hκC : ∀ y, y ∉ C → κ y = 0`. Introduce `y hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hyW : y ∈ W`. Establish `hz : c y ∉ closedBall (0 : Fin d → ℝ) (r / 2)` using `fun hz => hy ⟨c y, hz, hcP y hyW⟩`. Establish `: K (c y) = 0` using `image_eq_zero_of_notMem_tsupport fun h' => hz (hKs h')`. Simplify using `[κ, indicator_of_mem hyW, this]`. Simplify using `[κ, indicator_of_notMem hyW]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκsupp : tsupport κ ⊆ C` using `closure_minimal (fun y hy => by_contra fun h' => hy (hκC y h')) hCc.isClosed`. Establish `hκW : ∀ z ∈ ball (0 : Fin d → ℝ) r, κ (P z) * (ρ z : ℂ) = K z`. Introduce `z hz`. Take `⟨hzW, hcz⟩` from `hPW z hz`. Establish `hρz : (ρ z : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (hρpos z hz).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [κ, indicator_of_mem hzW, hcz, Complex.ofReal_inv]`. Clear the denominators using the available nonvanishing facts. Establish `hsmooth : (letI` using `h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ κ) := by`. Introduce `g`. Rewrite using `[h.contMDiffAt_iff_expG]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous (fun Y : 𝔤 => g * h.expG Y)` using `continuous_const.mul h.continuous_expG`. Establish `hg0 : g * h.expG 0 = g` using `by rw [h.expG_zero, mul_one]`. Distinguish the cases in `hg : g ∈ C`. Take `⟨z₀, hz₀, rfl⟩` from `hg`. Establish `hz₀r : z₀ ∈ ball (0 : Fin d → ℝ) r` using `hεr hz₀`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hgW, hcg⟩` from `hPW z₀ hz₀r`. Establish `hev : (fun Y : 𝔤 => κ (P z₀ * h.expG Y)) =ᶠ[𝓝 0] fun Y => K (c (P z₀ * h.expG Y)) * (((ρ (c (P z₀ * h.expG Y)))⁻¹ : ℝ) : ℂ)`. Establish `: ∀ᶠ Y in 𝓝 (0 : 𝔤), P z₀ * h.expG Y ∈ W`. Use `hcont.continuousAt (x := 0)` as an intermediate fact. Rewrite `this` using `[ContinuousAt, hg0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this (hW.mem_nhds hgW)`. Use `filter_upwards [this] with Y hY`. Simplify using `[κ, indicator_of_mem hY]`. Use `ContDiffAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Establish `hc0` using `hc (P z₀) hgW`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ0 : ρ (c (P z₀ * h.expG 0)) ≠ 0`. Rewrite using `[hg0, hcg]`. Conclude with `(hρpos z₀ hz₀r).ne'`. Conclude with `(hK.contDiffAt.comp _ hc0).mul ((Complex.ofRealCLM.contDiff.contDiffAt).comp _ ((hρ.contDiffAt.comp _ hc0).inv hρ0))`. Establish `hev : (fun Y : 𝔤 => κ (g * h.expG Y)) =ᶠ[𝓝 0] fun _ => 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ∀ᶠ Y in 𝓝 (0 : 𝔤), g * h.expG Y ∈ Cᶜ`. Use `hcont.continuousAt (x := 0)` as an intermediate fact. Rewrite `this` using `[ContinuousAt, hg0]`. Conclude with `this (hCc.isClosed.isOpen_compl.mem_nhds hg)`. Use `filter_upwards [this] with Y hY`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hκC _ hY`. Conclude with `contDiffAt_const.congr_of_eventuallyEq hev`. Establish `hκc : Continuous κ`. Set `` to `h.chartedSpace`. Conclude with `hsmooth.continuous`.
-
-Use `⟨κ, hsmooth, HasCompactSupport.intro hCc hκC, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hψ₀s : tsupport (fun y => κ y * φ y) ⊆ P '' ball 0 r` using `(tsupport_mul_subset_left).trans (hκsupp.trans (image_mono hεr))`. Rewrite using `[hint (fun y => κ y * φ y) (hκc.mul hφ) ((HasCompactSupport.intro hCc hκC).mul_right) hψ₀s]`. Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero (f := fun t => K t * φ (P t)) (s := ball (0 : Fin d → ℝ) r) fun z hz => by`. Establish `: K z = 0` using `image_eq_zero_of_notMem_tsupport fun h' => hz (hεr (hKs h'))`.
-
-Simplify using `[this]]`. Use `setIntegral_congr_fun measurableSet_ball fun z hz => ?_` and prove the remaining obligations. Rewrite using `[mul_right_comm, hκW z hz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smooth_density_prodExp {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) :
     ∃ ε > 0, ∀ K : (Fin d → ℝ) → ℂ, ContDiff ℝ ∞ K → tsupport K ⊆ closedBall 0 ε →

@@ -16,7 +16,7 @@ namespace GlobalTheory.OrthFrameMahler
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use `continuousOn_pi.2 fun τ => continuousOn_pi.2 fun a => continuousOn_pi.2 fun c => ?_` and prove the remaining obligations. Use `show ContinuousOn (fun y : Frame Ψ r => ∑ k, y τ a k * β y τ k c) K`. Use `continuousOn_finset_sum _ fun k _ => ContinuousOn.mul (by fun_prop) ?_` and prove the remaining obligations. Conclude with `continuousOn_pi.1 (continuousOn_pi.1 (continuousOn_pi.1 hβ τ) k) c`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousOn_rmul_self {Ψ : Finset (E →+* ℂ)} {r : ℕ} {β : Frame Ψ r → Frame Ψ r}
     {K : Set (Frame Ψ r)} (hβ : ContinuousOn β K) : ContinuousOn (fun y => rmul y (β y)) K := by
@@ -26,9 +26,9 @@ theorem continuousOn_rmul_self {Ψ : Finset (E →+* ℂ)} {r : ℕ} {β : Frame
   exact continuousOn_pi.1 (continuousOn_pi.1 (continuousOn_pi.1 hβ τ) k) c
 
 /- English proof (translation)
-Establish `h1 : rmul z t τ a c = z τ a c * t τ c c` using `by show ∑ k, z τ a k * t τ k c = _`. Use `Finset.sum_eq_single c (fun k _ hk => ?_) (fun h => absurd (Finset.mem_univ c) h)` and prove the remaining obligations. Rewrite using `[(hdiag τ k).2 c (Ne.symm hk), mul_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, norm_mul, (hdiag τ c).1, mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ ‖rmul z t τ a‖ := norm_le_pi_norm _ c`. Use `_ ≤ ‖rmul z t τ‖ := norm_le_pi_norm _ a`. Use `_ ≤ ‖rmul z t‖ := norm_le_pi_norm _ τ`.
+A detailed English derivation is pending.
 -/
 theorem norm_apply_le_of_diagonal {Ψ : Finset (E →+* ℂ)} {r : ℕ} (z t : Frame Ψ r)
     (hdiag : ∀ τ a, ‖t τ a a‖ = 1 ∧ ∀ c, c ≠ a → t τ a c = 0) (τ : Ψ) (a c : Fin r) :
@@ -44,11 +44,11 @@ theorem norm_apply_le_of_diagonal {Ψ : Finset (E →+* ℂ)} {r : ℕ} (z t : F
     _ ≤ ‖rmul z t‖ := norm_le_pi_norm _ τ
 
 /- English proof (translation)
-Introduce `r X ε hε`. Take `⟨K, hKc, hKd, hK⟩` from `GlobalTheory.FlagMahler.mahler_compactness (E := E) r X ε hε`. Take `⟨β, hβc, hβ⟩` from `GlobalTheory.GramSchmidtCont.exists_continuous_gramSchmidt (E := E) r X`. Take `⟨R, hR⟩` from `hKc.exists_bound_of_continuousOn (continuousOn_rmul_self (hβc.mono hKd))`. Use `⟨R, fun x hx hla => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hγ, b, hb, hy⟩` from `hK x (IW.orth_mem_dom X x hx) hla`. Use `⟨γ, X.Γ_stab γ hγ, fun τ a c => ?_⟩` and prove the remaining obligations. Take `⟨hβb, hβo⟩` from `hβ _ (hKd hy)`. Establish `hRy : ‖rmul (lact γ (rmul x b)) (β (lact γ (rmul x b)))‖ ≤ R` using `hR _ hy`. Generalize the expression as in `β (lact γ (rmul x b)) = s at hβb hβo hRy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Rewrite `hβo`, `hRy` using `[FundSetPf.lact_rmul, ExtFPf.rmul_assoc]`. Establish `hγo : IsOrth X (lact γ x)` using `fun σ => by rw [OntoS.gram_lact X hγ]; exact hx σ`. Establish `hdiag` using `(GlobalTheory.isOrth_rmul_iff_unitary_diagonal r X _ _ hγo (ExtFPf.mul_mem X hb hβb)).1 hβo`. Conclude with `(norm_apply_le_of_diagonal _ _ hdiag τ a c).trans hRy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_bound_orthonormal_frame :
     (∀ (r : ℕ) (X : Data E r) (ε : ℝ), 0 < ε → ∃ R : ℝ, ∀ x, IsOrth X x → ε ≤ X.la1 x →

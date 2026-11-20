@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hx : IsOfFinOrder x` using `isOfFinOrder_of_finite x`. Establish `hpow : ((f x : ℂˣ) : ℂ) ^ orderOf x = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_orderOf_eq_one, map_one, Units.val_one]`. Conclude with `Complex.norm_eq_one_of_pow_eq_one hpow hx.orderOf_pos.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_residueChar_eq_one {E : Type} [Field E] [NumberField E] (PP : Pl E) (f : (kP PP)ˣ →* ℂˣ) (x : (kP PP)ˣ) :
     ‖((f x : ℂˣ) : ℂ)‖ = 1 := by
@@ -22,11 +22,11 @@ theorem norm_residueChar_eq_one {E : Type} [Field E] [NumberField E] (PP : Pl E)
   exact Complex.norm_eq_one_of_pow_eq_one hpow hx.orderOf_pos.ne'
 
 /- English proof (translation)
-Introduce `D V β L κ _`. Establish `hP : ∀ x, ext1 (flagL L).P.H (flagL L).P.chi x = 1`. Introduce `x`. Unfold `ext1`. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite using `[levChi, levFn, hP, one_mul, Units.val_mul, norm_mul, Units.coe_prod, Units.coe_prod, norm_prod, norm_prod, Finset.prod_eq_one, Finset.prod_eq_one, one_mul]`. Introduce `PP _`. Conclude with `norm_residueChar_eq_one PP _ _`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `PP _`. Rewrite using `[Units.coe_prod, norm_prod]`. Conclude with `Finset.prod_eq_one fun c _ => norm_residueChar_eq_one PP _ _`.
+A detailed English derivation is pending.
 -/
 theorem norm_levChi_flagL_eq_one :
     ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank),

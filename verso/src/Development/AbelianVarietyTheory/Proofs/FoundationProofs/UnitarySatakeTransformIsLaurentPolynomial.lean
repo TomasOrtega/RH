@@ -18,9 +18,7 @@ def cellSum (ϖ : L) (h : GU σ n → ℂ) (a : Fin (n / 2) → ℤ) : ℂ :=
   ∑ᶠ x : GU σ n ⧸ KU σ n, if Cell ϖ a x then h x.out else 0
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `ha (finsum_eq_zero_of_forall_eq_zero fun x => ?_)` and prove the remaining obligations. Use `split_ifs with hx`. Assume the negation of the conclusion as `h0`.
-
-Conclude with `hne x h0 hx`. Both sides reduce to the same expression.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_of_cellSum {h : GU σ n → ℂ} {a : Fin (n / 2) → ℤ} (ha : cellSum ϖ h a ≠ 0) :
     ∃ x : GU σ n ⧸ KU σ n, h x.out ≠ 0 ∧ Cell ϖ a x := by
@@ -34,16 +32,14 @@ theorem exists_of_cellSum {h : GU σ n → ℂ} {a : Fin (n / 2) → ℤ} (ha : 
   · rfl
 
 /- English proof (translation)
-The claim follows from `P.finite_support_cosets (P.isCommensurated_integral_unitary_of_unramified hU n) hh.2`.
+A detailed English derivation is pending.
 -/
 theorem finite_supp (hU : IsUnramInv ϖ σ q) {h : GU σ n → ℂ} (hh : h ∈ Hecke ℂ (KU σ n)) :
     {x : GU σ n ⧸ KU σ n | h x.out ≠ 0}.Finite :=
   P.finite_support_cosets (P.isCommensurated_integral_unitary_of_unramified hU n) hh.2
 
 /- English proof (translation)
-Use `((finite_supp hU hh).biUnion (t := fun x => {a | Cell ϖ a x}) fun x _ => Set.Subsingleton.finite ?_).subset ?_` and prove the remaining obligations. Introduce and unpack `a ⟨u, hu, k, hk, e⟩ a' ⟨u', hu', k', hk', e'⟩`. Conclude with `P.fSatake_cell_unique hU (Nat.mul_div_le n 2) hu hu' hk hk' (e.symm.trans e')`. Introduce `a ha`. Take `⟨x, hx⟩` from `exists_of_cellSum ha`.
-
-Conclude with `Set.mem_biUnion hx.1 hx.2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_cellSum (hU : IsUnramInv ϖ σ q) {h : GU σ n → ℂ} (hh : h ∈ Hecke ℂ (KU σ n)) :
     {a | cellSum ϖ h a ≠ 0}.Finite := by
@@ -55,17 +51,15 @@ theorem finite_cellSum (hU : IsUnramInv ϖ σ q) {h : GU σ n → ℂ} (hh : h �
     exact Set.mem_biUnion hx.1 hx.2
 
 /- English proof (translation)
-Establish `hf : {x : GU σ n ⧸ KU σ n | Cell ϖ ε x ∧ dosetInd ℂ (KU σ n) t x.out ≠ 0}.Finite` using `(finite_supp hU (Final.DosetIndMem _ _ ℂ t)).subset fun x hx => hx.2`. Establish `key : ∀ x : GU σ n ⧸ KU σ n, ∀ [Decidable (Cell ϖ ε x)], (if Cell ϖ ε x then dosetInd ℂ (KU σ n) t x.out else 0) = if x ∈ hf.toFinset then 1 else 0`. Introduce `x _`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Distinguish the cases in `h1 : Cell ϖ ε x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : dosetInd ℂ (KU σ n) t x.out = 0`. Simplify using `[h1, h2]`. Rewrite using `[if_pos h1, if_pos ⟨h1, h2⟩]`. Unfold `dosetInd at h2 ⊢`. Conclude with `Set.indicator_of_mem (Set.mem_of_indicator_ne_zero h2) _`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `[h1]`. Unfold `cellSum`. Rewrite using `[finsum_congr fun x => @key x _, finsum_eq_sum_of_support_subset (s := hf.toFinset) _ (fun x hx => by`. Assume the negation of the conclusion as `h`. Conclude with `hx (if_neg h)), Finset.sum_congr rfl fun x hx => if_pos hx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.sum_const, nsmul_eq_mul, mul_one, ne_eq, Nat.cast_eq_zero, Finset.card_eq_zero]`. Use `Finset.ne_empty_of_mem (a := (QuotientGroup.mk t : GU σ n ⧸ KU σ n)) ?_` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (KU σ n) t`. Use `⟨⟨1, ⟨P.fSatake_borel_one, fun i => by simp⟩, k, k.2, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hk]`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, ht, OneMemClass.coe_one, Units.val_one, Matrix.mul_one]`. Rewrite using `[hk]`. Unfold `dosetInd`. Rewrite using `[Set.indicator_of_mem (DoubleCoset.mem_doubleCoset.2 ⟨1, one_mem _, k.1, k.2, by rw [one_mul]⟩ : t * k.1 ∈ DoubleCoset.doubleCoset t (KU σ n : Set (GU σ n)) (KU σ n : Set (GU σ n)))]`.
-
-Conclude with `one_ne_zero`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cellSum_dosetInd (hU : IsUnramInv ϖ σ q) (t : GU σ n) (ε : Fin (n / 2) → ℤ)
     (ht : ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = tMat ϖ n (n / 2) ε) :
@@ -102,13 +96,13 @@ theorem cellSum_dosetInd (hU : IsUnramInv ϖ σ q) (t : GU σ n) (ε : Fin (n / 
     exact one_ne_zero
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q n hU h hh`. Establish `hq : (q : ℂ) ≠ 0`. Use `hU.2.2.2.2.2.1` as an intermediate fact. Conclude with `(by omega : q ≠ 0)` after adjusting the coercions. Set `f : (Fin (n / 2) → ℤ) → ℂ` to `fun a => (∏ i : Fin (n / 2), (q : ℂ) ^ (-(a i) * ((n : ℤ) - 1 - 2 * (i.val : ℤ)))) * cellSum ϖ h a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : (Function.support f).Finite` using `(finite_cellSum hU hh).subset fun a ha => right_ne_zero_of_mul ha`. Use `⟨Finsupp.ofSupportFinite f hf, fun α => ?_, fun κ hκ => ?_, fun t ε ht e => ?_⟩` and prove the remaining obligations. Establish `e : SatU ϖ q h α = ∑ᶠ a, f a * ∏ i, α i ^ a i`. Unfold `SatU`. Use `finsum_congr fun a => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_mul_distrib, mul_comm (∏ i, α i ^ a i), mul_right_comm]`. Both sides reduce to the same expression. Rewrite using `[e, Finsupp.sum]`. Conclude with `finsum_eq_sum_of_support_subset _ fun a ha => Finset.mem_coe.2 (Finsupp.mem_support_iff.2 (left_ne_zero_of_mul ha))`. Take `⟨x, h1, h2⟩` from `exists_of_cellSum (right_ne_zero_of_mul (show f κ ≠ 0 from hκ))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Substitute using the available equality.
 
-Conclude with `⟨x.out, h1, h2⟩`. Substitute `e` using the available equality. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ hq) (cellSum_dosetInd hU t ε ht)`.
+A detailed English derivation is pending.
 -/
 theorem satU_laurent : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q n : ℕ), IsUnramInv ϖ σ q → ∀ h ∈ Hecke ℂ (KU σ n), ∃ s : (Fin (n / 2) → ℤ) →₀ ℂ, (∀ α : Fin (n / 2) → ℂ, SatU ϖ q h α = s.sum fun a c => c * ∏ i, α i ^ a i) ∧ (∀ κ, s κ ≠ 0 → ∃ g : GU σ n, h g ≠ 0 ∧ ∃ u : GU σ n, IsUnipU u ∧ ∃ k ∈ KU σ n, ((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = tMat ϖ n (n / 2) κ * ((u : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((k : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) ∧ ∀ (t : GU σ n) (ε : Fin (n / 2) → ℤ), ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = tMat ϖ n (n / 2) ε → h = dosetInd ℂ (KU σ n) t → s ε ≠ 0 := by
   intro L _ _ ϖ σ q n hU h hh

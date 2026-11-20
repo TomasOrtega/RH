@@ -20,7 +20,7 @@ def scaleHom (D : ComponentData II Ψ K ι Ω E) (s : K ⊕ (Ψ × Fin (D.N - 1)
 
 omit [DecidableEq Ψ] in
 /- English proof (translation)
-Simplify using `[scaleHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scaleHom_X_inl (D : ComponentData II Ψ K ι Ω E) (s : K ⊕ (Ψ × Fin (D.N - 1)) → R) (β) :
     scaleHom D s (X (Sum.inl β)) = C (s β) * X (Sum.inl β) := by
@@ -28,7 +28,7 @@ theorem scaleHom_X_inl (D : ComponentData II Ψ K ι Ω E) (s : K ⊕ (Ψ × Fin
 
 omit [DecidableEq Ψ] in
 /- English proof (translation)
-Simplify using `[scaleHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scaleHom_X_inr (D : ComponentData II Ψ K ι Ω E) (s : K ⊕ (Ψ × Fin (D.N - 1)) → R) (g) :
     scaleHom D s (X (Sum.inr g)) = X (Sum.inr g) := by
@@ -36,7 +36,7 @@ theorem scaleHom_X_inr (D : ComponentData II Ψ K ι Ω E) (s : K ⊕ (Ψ × Fin
 
 omit [DecidableEq Ψ] in
 /- English proof (translation)
-Simplify using `[scaleHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scaleHom_C (D : ComponentData II Ψ K ι Ω E) (s : K ⊕ (Ψ × Fin (D.N - 1)) → R) (c : R) :
     scaleHom D s (C c) = C c := by
@@ -45,9 +45,9 @@ theorem scaleHom_C (D : ComponentData II Ψ K ι Ω E) (s : K ⊕ (Ψ × Fin (D.
 omit [DecidableEq Ψ] in
 
 /- English proof (translation)
-Establish `: (scaleHom D s).comp (scaleHom D t) = AlgHom.id R _`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `(β | g)`. Simplify using `only [AlgHom.comp_apply, scaleHom_X_inl, map_mul, scaleHom_C, AlgHom.id_apply]`. Rewrite using `[← mul_assoc, ← C_mul, h, C_1, one_mul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[scaleHom_X_inr]`. Conclude with `AlgHom.congr_fun this p`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scaleHom_scaleHom (D : ComponentData II Ψ K ι Ω E) (s t : K ⊕ (Ψ × Fin (D.N - 1)) → R)
     (h : ∀ β, t β * s β = 1) (p : MvPolynomial (GV D) R) : scaleHom D s (scaleHom D t p) = p := by
@@ -62,11 +62,11 @@ theorem scaleHom_scaleHom (D : ComponentData II Ψ K ι Ω E) (s t : K ⊕ (Ψ �
 omit [DecidableEq Ψ] in
 
 /- English proof (translation)
-Break down `j with ⟨k | q, t⟩` into its components or cases. Use `show scaleHom D α (X (Sum.inl (Sum.inl k)) * C (x ⟨k, t⟩)) = X (Sum.inl (Sum.inl k)) * C (α (Sum.inl k) * x ⟨k, t⟩)`. Rewrite using `[map_mul, scaleHom_X_inl, scaleHom_C, C_mul, mul_assoc]`. Conclude with `mul_left_comm _ _ _`. Use `show scaleHom D α (X (Sum.inl (Sum.inr q)) * ∑ c : Fin ((q.2 : ℕ) + 1) → Fin D.N, (∏ a, X (Sum.inr (q.1, headIdx (step_le q.2) a, c a))) * C (V q t c)) = X (Sum.inl (Sum.inr q)) * ∑ c : Fin ((q.2 : ℕ) + 1) → Fin D.N, (∏ a, X (Sum.inr (q.1, headIdx (step_le q.2) a, c a))) * C (α ( …`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : (∑ c : Fin ((q.2 : ℕ) + 1) → Fin D.N, (∏ a, X (Sum.inr (q.1, headIdx (step_le q.2) a, c a))) * C (α (Sum.inr q) * V q t c) : MvPolynomial (GV D) R) = C (α (Sum.inr q)) * ∑ c : Fin ((q.2 : ℕ) + 1) → Fin D.N, (∏ a, X (Sum.inr (q.1, headIdx (step_le q.2) a, c a))) * C (V q t c)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[C_mul, mul_left_comm]`. Establish `hterm : ∀ c : Fin ((q.2 : ℕ) + 1) → Fin D.N, scaleHom D α ((∏ a, X (Sum.inr (q.1, headIdx (step_le q.2) a, c a))) * C (V q t c)) = (∏ a, X (Sum.inr (q.1, headIdx (step_le q.2) a, c a))) * C (V q t c)` using `fun c => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_prod, scaleHom_C]`. Simplify using `only [scaleHom_X_inr]`. Rewrite using `[hs, map_mul, scaleHom_X_inl, map_sum, Finset.sum_congr rfl fun c _ => hterm c, mul_assoc]`. Conclude with `mul_left_comm _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem scaleHom_genPtR {D : ComponentData II Ψ K ι Ω E} (Pl : PlueckerData D) (x : (Σ k, ι k) → R)
     (V : WedgeVals Pl R) (α : K ⊕ (Ψ × Fin (D.N - 1)) → R) (j : Σ k, Pl.ιY k) :
@@ -102,11 +102,11 @@ end FlagGenericPointScale
 open FlagGenericPointScale in
 
 /- English proof (translation)
-Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D Pl R _ x V α hα F`. Establish `key : aeval (genPtR Pl (fun p => α (Sum.inl p.1) * x p) (fun q m c => α (Sum.inr q) * V q m c)) F = scaleHom D α (aeval (genPtR Pl x V) F)`. Use `comp_aeval_apply (f := genPtR Pl x V) ((scaleHom D α).restrictScalars ℤ) F` as an intermediate fact. Rewrite `this` using `[AlgHom.restrictScalars_apply]`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun f => aeval f F) (funext fun j => by`. Rewrite using `[AlgHom.restrictScalars_apply, scaleHom_genPtR])`. Rewrite using `[key]`. Set `t : K ⊕ (Ψ × Fin (D.N - 1)) → R` to `fun β => ((hα β).unit⁻¹ : Rˣ)`. Establish `ht : ∀ β, α β * t β = 1` using `fun β => (hα β).mul_val_inv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite using `[← scaleHom_scaleHom D t α ht (aeval (genPtR Pl x V) F), h0, map_zero]`. Introduce `h0`. Rewrite using `[h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FlagGenericPointScale.proof : FlagGenericPointScale.Statement := by
   intro II Ψ _ _ K _ ι _ Ω _ _ E _ _ D Pl R _ x V α hα F

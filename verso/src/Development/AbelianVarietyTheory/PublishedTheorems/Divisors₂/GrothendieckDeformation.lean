@@ -20,7 +20,7 @@ set_option autoImplicit false in
 open DividedPowers in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.Published.GrothendieckMessing`. Introduce `_ _ R _ _ I κ hκ R₀ _ π hπ hker`. Conclude with `H R I κ hκ R₀ π hπ hker`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Published.GrothendieckDeformation.grothendieckMessing (H : _root_.GlobalTheory.Published.GrothendieckDeformation) :
     _root_.GlobalTheory.Published.GrothendieckMessing := by
@@ -32,7 +32,7 @@ set_option autoImplicit false in
 open DividedPowers in
 
 /- English proof (translation)
-Use `H _ _ (_root_.GlobalTheory.DeRham.epsDP R) ?_ R _ (fun r => ⟨TrivSqZeroExt.inl r, rfl⟩)` and prove the remaining obligations. Both sides reduce to the same expression. Unfold `_root_.GlobalTheory.DeRham.epsDP`. Conclude with `_root_.GlobalTheory.Cris.isDPNilpotent_squareZero _`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Published.GrothendieckDeformation.at_dualNumber (H : _root_.GlobalTheory.Published.GrothendieckDeformation) (R : Type)
     [CommRing R] :

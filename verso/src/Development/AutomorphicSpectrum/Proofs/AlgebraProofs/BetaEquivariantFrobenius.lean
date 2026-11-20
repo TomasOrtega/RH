@@ -10,9 +10,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Conj
 open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ GlobalTheory.CompanionTheory.Ar.Crv
 
 /- English proof (translation)
-Introduce `R _ p _ _ d O _ _ B a y`. Use `dotProduct_eq _ _ fun u => ?_` and prove the remaining obligations. Establish `hadj` using `(GlobalTheory.T.formal_hermitian_action_pairing R d O B).2.2 (star a) (alpha B p u) y`. Rewrite `hadj` using `[star_star]`. Establish `htw` using `GlobalTheory.T.alpha_equivariant_frobenius R p d O B (star a) u`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dotProduct_comm, dotProduct_beta, ← hadj, ← htw, ← dotProduct_beta, dotProduct_comm _ (beta B p y), Matrix.dotProduct_mulVec, Matrix.transpose_map, Matrix.mulVec_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem beta_rhoH_eq : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime] [CharP R p] (d : ℕ) (O : Type) [CommRing O]
     [StarRing O] (B : FB R d O) (a : O) (y : (Fin d → R) × (Fin d → R)),

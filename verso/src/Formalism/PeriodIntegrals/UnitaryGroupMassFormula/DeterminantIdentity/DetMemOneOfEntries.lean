@@ -11,17 +11,15 @@ namespace PI.DIP
 variable {E : Type} [Field E] [NumberField E] {N : ℕ}
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `hfg`. Establish `hs : ∀ z : E, ∃ b : 𝓞 E, b ≠ 0 ∧ algebraMap (𝓞 E) E b * z ∈ (1 : Submodule (𝓞 E) E)`. Introduce `z`. Take `⟨q, hq⟩` from `IsLocalization.surj (nonZeroDivisors (𝓞 E)) z`. Use `⟨q.2, nonZeroDivisors.ne_zero q.2.2, Submodule.mem_one.mpr ⟨q.1, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hq, mul_comm]`. Use `choose b hb0 hb using hs`. Use `⟨∏ g ∈ G, ∏ i, b (g i), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.mpr fun g _ => Finset.prod_ne_zero_iff.mpr fun i _ => hb0 _`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Rewrite `hx` using `[← hG]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Introduce `i`. Establish `hdvd : b (y i) ∣ ∏ g ∈ G, ∏ i, b (g i)` using `(Finset.dvd_prod_of_mem (fun i => b (y i)) (Finset.mem_univ i)).trans (Finset.dvd_prod_of_mem (fun g => ∏ i, b (g i)) hy)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e, he⟩` from `hdvd`. Rewrite using `[he, map_mul, mul_comm (algebraMap _ _ (b (y i))), mul_assoc, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (hb _)`. Consider the case `zero => intro i`. Simplify using the standard rewrite rules.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `add y z _ _ hy hz`. Introduce `i`. Simplify using `only [Pi.add_apply, mul_add]`. Conclude with `add_mem (hy i) (hz i)`. Consider the case `smul a y _ hy`.
-
-Introduce `i`. Rewrite using `[Pi.smul_apply, mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ (hy i)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den (L₀ : Submodule (𝓞 E) (Fin N → E)) (hfg : L₀.FG) :
     ∃ d : 𝓞 E, d ≠ 0 ∧ ∀ x ∈ L₀, ∀ i, algebraMap (𝓞 E) E d * x i ∈ (1 : Submodule (𝓞 E) E) := by

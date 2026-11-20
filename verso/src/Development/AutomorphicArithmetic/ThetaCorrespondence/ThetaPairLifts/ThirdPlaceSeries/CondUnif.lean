@@ -24,13 +24,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {K : Type} [Field K] [NumberField K]
 end Unif
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u hW a PP hPP l`. Establish `hstd : IsStdChar D (_root_.GlobalTheory.Fam.pk_z W).ψ (-1)` using `W.Q.stdChar`. Use `⟨?_, GlobalTheory.SplitWeil.exists_isUnitVol l.k, fun hQ => ?_⟩` and prove the remaining obligations. Take `⟨⟨ψk, hψk⟩, -, hxi, -⟩` from `GlobalTheory.LocChar.weil_char_split D l.k (ofSplit l.q) (_root_.GlobalTheory.Fam.pk_z W).ψ hstd`. Conclude with `⟨ψk, hψk, hasConductor_weil l.q l.unit _ hstd ψk hψk hxi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨t, ht⟩` from `hQ`. Take `⟨⟨p, -, hcard, hp2, -⟩, -⟩` from `W.Q.charW.base.lev.Q_pl t PP ht`. Establish `hqp : Formalism.L2.Col.qOf PP = p`. Rewrite using `[← hcard]`. Unfold `Formalism.L2.Col.qOf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hq2 : ((Formalism.L2.Col.qOf PP : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal ^ 2` using `by rw [hqp]; exact hp2`. Take `⟨k', _, _, _, _, q', hqe, -, hint', hd'⟩` from `GlobalTheory.LocMod.SplitCompl.exists_place D PP l.q.e l.idem`. Establish `hint : ∀ x, (l.q.pr.comp (incA D)) x ∈ 𝒪[l.k] ↔ Formalism.L2.Col.IntAt PP x` using `fun x => (int_transfer l.q q' hqe.symm (incA D x)).trans (hint' x)`. Establish `hd` using `dense_transfer l.q q' hqe.symm hd'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ϖ, hu, hϖ⟩` from `isUnif_of PP _ hint hd hq2`. Conclude with `⟨ϖ, hu, ⟨hint, hd, rfl, hϖ⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cond_unif_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (u : D.what₂.Word), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ (a : XGeo D) (PP : Pl D.host.E), PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg ∨ _root_.GlobalTheory.Fam.QAllAlt W PP → ∀ l : LocX a (_root_.GlobalTheory.Fam.pk_z W).βX PP, (∃ ψk : AddChar l.k Circle, (ofSplit l.q).IsChar (_root_.GlobalTheory.Fam.pk_z W).ψ ψk ∧ HasConductor ψk 1) ∧ (∃ ν : Measure l.k, IsUnitVol ν) ∧ (_root_.GlobalTheory.Fam.QAllAlt W PP → ∃ ϖ : l.kˣ, GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ ∧ GlobalTheory.SymBridge.IsCompl PP (Formalism.L2.Col.qOf PP) (l.q.pr.comp (incA D)) ϖ) := by
   intro D L hT Gi Gl Kc Yd cX ex W u hW a PP hPP l

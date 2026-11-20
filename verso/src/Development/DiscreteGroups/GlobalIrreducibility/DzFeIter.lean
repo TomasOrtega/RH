@@ -9,25 +9,23 @@ open GlobalTheory.GLq GlobalTheory.Whittaker GlobalTheory.SmGL GlobalTheory.LocL
 namespace DiscreteGroups.sglob.DzFe
 
 /- English proof (translation)
-Introduce `hfe g _ m ψ₀ hψ τ hτ γ hγ l hl x hx`. Establish `hfix : ∀ k, ∀ h : Gn g (m + 1), (∃ b : GL (Fin m) (ZMod g), (∀ i j : Fin m, i < j → (b : Matrix (Fin m) (Fin m) (ZMod g)) i j = 0) ∧ corner b = cyc g (m + 1) ^ k * h * (cyc g (m + 1) ^ k)⁻¹) → τ.ρ h (τ.ρ (cyc g (m + 1) ^ k)⁻¹ x) = τ.ρ (cyc g (m + 1) ^ k)⁻¹ x`. Introduce and unpack `k h ⟨b, hb, hcb⟩`. Establish `e : h * (cyc g (m + 1) ^ k)⁻¹ = (cyc g (m + 1) ^ k)⁻¹ * (cyc g (m + 1) ^ k * h * (cyc g (m + 1) ^ k)⁻¹)` using `by group`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `step : ∀ t, t < m → γ * l (τ.ρ (cyc g (m + 1) ^ t)⁻¹ x) = (g : ℂ) ^ ((m + 1) * m / 2 + (t + 1)) * l (τ.ρ (cyc g (m + 1) ^ (t + 1))⁻¹ x)`. Introduce `t ht`. Establish `hv : τ.ρ (cyc g (m + 1))⁻¹ (τ.ρ (cyc g (m + 1) ^ t)⁻¹ x) = τ.ρ (cyc g (m + 1) ^ (t + 1))⁻¹ x`. Rewrite using `[pow_succ, _root_.mul_inv_rev, map_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `hfe g m ψ₀ hψ τ hτ γ hγ l hl (m - 1 - t) (by omega) (τ.ρ (cyc g (m + 1) ^ t)⁻¹ x) (fun h hh => hfix t h (colFix_conj ht h hh)) (fun h hh => hfix t h (rowFix_conj ht h hh))` as an intermediate fact. Rewrite using `[this, hv, show (m + 1) * m / 2 + m - (m - 1 - t) = (m + 1) * m / 2 + (t + 1) by omega]`. Establish `key : ∀ t, t ≤ m → γ ^ t * l x = (g : ℂ) ^ (t * ((m + 1) * m / 2) + t * (t + 1) / 2) * l (τ.ρ (cyc g (m + 1) ^ t)⁻¹ x)`. Introduce `t ht`. Proceed by induction on `t with`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ t ih`. Establish `ih` using `ih (by omega)`. Establish `h2 : (t + 1) * (t + 1 + 1) / 2 = t * (t + 1) / 2 + (t + 1)`. Rewrite using `[show (t + 1) * (t + 1 + 1) = t * (t + 1) + 2 * (t + 1) by ring, Nat.add_mul_div_left _ _ (by norm_num)]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hE : t * ((m + 1) * m / 2) + t * (t + 1) / 2 + ((m + 1) * m / 2 + (t + 1)) = (t + 1) * ((m + 1) * m / 2) + (t + 1) * (t + 1 + 1) / 2`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ih]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (g : ℂ) ^ (t * ((m + 1) * m / 2) + t * (t + 1) / 2) * (γ * l (τ.ρ (cyc g (m + 1) ^ t)⁻¹ x)) := by`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (g : ℂ) ^ (t * ((m + 1) * m / 2) + t * (t + 1) / 2) * ((g : ℂ) ^ ((m + 1) * m / 2 + (t + 1)) * l (τ.ρ (cyc g (m + 1) ^ (t + 1))⁻¹ x)) := by`. Rewrite using `[step t (by omega)]`. Use `_ = _ := by rw [← mul_assoc, ← pow_add, hE]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcm : (cyc g (m + 1) ^ m)⁻¹ = cyc g (m + 1)`. Establish `h1` using `cyc_pow_eq_one (g := g) m`. Rewrite `h1` using `[pow_succ]`. Conclude with `inv_eq_of_mul_eq_one_right h1`. Establish `hfin` using `key m le_rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hfin` using `[hcm]`. Establish `hexp : m * (m + 1) ^ 2 / 2 = m * ((m + 1) * m / 2) + m * (m + 1) / 2`. Take `⟨r, hr⟩` from `Nat.even_mul_succ_self m`. Establish `h1 : (m + 1) * m / 2 = r` using `by rw [mul_comm, hr]; omega`. Establish `h2 : m * (m + 1) / 2 = r` using `by rw [hr]; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : m * (m + 1) ^ 2 / 2 = r * (m + 1)`. Rewrite using `[show m * (m + 1) ^ 2 = 2 * (r * (m + 1)) by`. Rewrite using `[show m * (m + 1) ^ 2 = m * (m + 1) * (m + 1) by ring, hr]; ring]`. Conclude with `Nat.mul_div_cancel_left _ (by norm_num)`. Rewrite using `[h1, h2, h3]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[longElt_corner_eq_cyc, hfin, hexp]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lFE_of_fe : FunctionalEquationAtIndex → DzType.LFE := by
   intro hfe g _ m ψ₀ hψ τ hτ γ hγ l hl x hx

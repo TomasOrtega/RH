@@ -14,9 +14,9 @@ namespace GlobalTheory.PMon.MooreDeterminant
 variable {B Q : Type} [CommRing B] [IsDomain B] [Field Q] [Algebra Q B]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Establish `hz : S 0` using `by simpa using h0 0`. Use `Finset.sum_induction _ S hadd hz ?_` and prove the remaining obligations. Introduce `σ _`. Rewrite using `[Units.smul_def, zsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `hmul` to reduce the goal to its premises. Use `h0 (((Equiv.Perm.sign σ : ℤˣ) : ℤ) : Q)` as an intermediate fact. Simplify using `using this`. Establish `h1 : S 1` using `by simpa using h0 1`. Conclude with `Finset.prod_induction _ S hmul h1 (fun i _ => hM _ _)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem det_mem (S : B → Prop) (h0 : ∀ q : Q, S (algebraMap Q B q))
     (hadd : ∀ a b, S a → S b → S (a + b)) (hmul : ∀ a b, S a → S b → S (a * b))
@@ -33,50 +33,46 @@ theorem det_mem (S : B → Prop) (h0 : ∀ q : Q, S (algebraMap Q B q))
     exact Finset.prod_induction _ S hmul h1 (fun i _ => hM _ _)
 
 /- English proof (translation)
-The claim follows from `RingHom.coe_pow φ m`.
+A detailed English derivation is pending.
 -/
 theorem iter_eq (φ : B →+* B) (m : ℕ) : ⇑(φ ^ m) = (⇑φ)^[m] := RingHom.coe_pow φ m
 
 /- English proof (translation)
-Establish `hSit : ∀ (i : ℕ) b, S b → S (φ^[i] b)`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro b hb`. Simplify using `using hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ i ih => intro b hb`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `hφ _ (ih b hb)`. Introduce `n`. Proceed by induction on `n with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Introduce `a _ _ _ ha`. Rewrite using `[Matrix.det_fin_one]`. Simplify using `using ha.ne_zero 0`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a hk hSa hfa ha hdet`. Use `set M : Matrix (Fin (n + 2)) (Fin (n + 2)) B := Matrix.of fun i j => φ^[i] (a j) with hMdef`. Establish `hA` using `ih (a ∘ Fin.castSucc) (by omega) (fun j => hSa _) (fun j => hfa _) (ha.comp _ (Fin.castSucc_injective _))`. Use `set ω : Fin (n + 2) → B := fun m => (Matrix.of fun i j : Fin (n + 1) => φ^[i] (a (m.succAbove j))).det with hωdef`. Establish `hωl : ω (Fin.last _) = (Matrix.of fun i j : Fin (n + 1) => φ^[i] ((a ∘ Fin.castSucc) j)).det`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[ω, Fin.succAbove_last]`. Establish `hωl0 : ω (Fin.last _) ≠ 0` using `by rw [hωl]; exact hA`. Establish `hu : ∀ m, M.adjugate m (Fin.last _) = (-1) ^ ((n + 1 : ℕ) + (m : ℕ)) * ω m`. Introduce `m`. Rewrite using `[Matrix.adjugate_fin_succ_eq_det_submatrix]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [Fin.val_last, Fin.succAbove_last, ω]`. Use `congr 2`. Establish `hw : ∀ m, M.adjugate m 0 = (-1) ^ (m : ℕ) * φ (ω m)`. Introduce `m`. Rewrite using `[Matrix.adjugate_fin_succ_eq_det_submatrix, hωdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Fin.val_zero, zero_add, Fin.succAbove_zero]`. Rewrite using `[RingHom.map_det]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[M, Matrix.submatrix_apply, RingHom.mapMatrix_apply, Function.iterate_succ_apply']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : M * M.adjugate = 0` using `by rw [Matrix.mul_adjugate, hdet, zero_smul]`. Establish `hker : ∀ i c, ∑ m, M i m * M.adjugate m c = 0` using `fun i c => by`. Use `congrFun (congrFun hK i) c` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Use `set v : Fin (n + 2) → B := fun m => M.adjugate (Fin.last _) (Fin.last _) * M.adjugate m 0 - M.adjugate (Fin.last _) 0 * M.adjugate m (Fin.last _) with hvdef`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ i, ∑ m, M i m * v m = 0`. Introduce `i`. Establish `e1` using `hker i 0`. Establish `e2` using `hker i (Fin.last _)`. Simplify using `only [v, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∑ m, M i m * (M.adjugate (Fin.last _) (Fin.last _) * M.adjugate m 0) = M.adjugate (Fin.last _) (Fin.last _) * ∑ m, M i m * M.adjugate m 0`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring`. Establish `: ∑ m, M i m * (M.adjugate (Fin.last _) 0 * M.adjugate m (Fin.last _)) = M.adjugate (Fin.last _) 0 * ∑ m, M i m * M.adjugate m (Fin.last _)`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring`. Simplify the hypotheses and the goal together.
+Simplify the hypotheses and the goal together. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hvl : v (Fin.last _) = 0` using `by simp only [v]; ring`. Establish `hv' : Matrix.mulVec (Matrix.of fun i j : Fin (n + 1) => φ^[i] ((a ∘ Fin.castSucc) j)) (v ∘ Fin.castSucc) = 0`. Use function extensionality and compare the values at `i`. Use `hv (Fin.castSucc i)` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_castSucc, hvl, mul_zero, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `[Matrix.mulVec, dotProduct, M]`. Establish `hv0` using `Matrix.eq_zero_of_mulVec_eq_zero hA hv'`. Establish `hvall : ∀ m, v m = 0`. Introduce `m`. Use `Fin.lastCases hvl (fun j => ?_) m` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `congrFun hv0 j`. Establish `hcomm : ∀ m, φ (ω m) * ω (Fin.last _) = ω m * φ (ω (Fin.last _))`. Introduce `m`. Establish `E` using `hvall m`. Simplify using `only [v, hu, hw, Fin.val_last, pow_add] at E`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ((-1 : B) ^ (m : ℕ)) ^ 2 = 1` using `by rw [← pow_mul, mul_comm, pow_mul]; simp`. Establish `he : ((-1 : B) ^ (n + 1)) ^ 2 = 1` using `by rw [← pow_mul, mul_comm, pow_mul]; simp`. Take the linear combination `((-1 : B) ^ (m : ℕ)) * E - (φ (ω m) * ω (Fin.last _) - ω m * φ (ω (Fin.last _))) * hs - (φ (ω m) * ω (Fin.last _) - ω m * φ (ω (Fin.last _))) * ((-1 : B) ^ (m : ℕ)) ^ 2 * he`. Establish `hSω : ∀ m, S (ω m)` using `fun m => det_mem S h0 hadd hmul _ (fun i j => hSit _ _ (hSa _))`. Establish `hLi : ∀ i : ℕ, φ^[i] L = L` using `fun i => Function.iterate_fixed hL i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hfω : ∀ m, φ^[h] (ω m) = L ^ (n + 1) * ω m`. Introduce `m`. Rewrite using `[← iter_eq, hωdef]`. Simplify using `only`. Rewrite using `[RingHom.map_det]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: (φ ^ h).mapMatrix (Matrix.of fun i j : Fin (n + 1) => φ^[i] (a (m.succAbove j))) = L • (Matrix.of fun i j : Fin (n + 1) => φ^[i] (a (m.succAbove j)))`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, iter_eq]`. Rewrite using `[← Function.iterate_add_apply, add_comm, Function.iterate_add_apply, hfa, ← iter_eq, map_mul, iter_eq, hLi]`. Rewrite using `[this, Matrix.det_smul, Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrat : ∀ m, ∃ c : Q, ω m = c • ω (Fin.last _)` using `fun m => ratio (n + 1) (by omega) _ _ (hSω m) (hSω _) (hfω m) (hfω _) hωl0 (hcomm m)`. Use `choose c hc using hrat`. Establish `hrow` using `hker 0 (Fin.last _)`. Use `set d : Fin (n + 2) → Q := fun m => (-1) ^ ((n + 1 : ℕ) + (m : ℕ)) * c m with hd`. Establish `hsum : (∑ m, d m • a m) * ω (Fin.last _) = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hrow, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[hu, hc m]`. Simplify using `only [M, Matrix.of_apply, Fin.val_zero, Function.iterate_zero, id, hd, Algebra.smul_def, map_mul, map_pow, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hsum0 : ∑ m, d m • a m = 0` using `(mul_eq_zero.1 hsum).resolve_right hωl0`. Establish `hdl` using `Fintype.linearIndependent_iff.1 ha d hsum0 (Fin.last _)`. Establish `hcl : c (Fin.last _) = 0`. Simplify using `only [hd, mul_eq_zero, pow_eq_zero_iff', neg_eq_zero, one_ne_zero, false_and, false_or] at hdl`. Conclude with `hdl`.
-
-Apply `hωl0` to reduce the goal to its premises. Rewrite using `[hc (Fin.last _), hcl, zero_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moore_core (φ : B →+* B) (S : B → Prop)
     (hφ : ∀ b, S b → S (φ b)) (h0 : ∀ q : Q, S (algebraMap Q B q))
@@ -201,9 +197,9 @@ end GlobalTheory.PMon.MooreDeterminant
 namespace GlobalTheory.PMon
 
 /- English proof (translation)
-Introduce `l _ P AI T h k hk a hPa hfa ha`. Take `⟨hF, hinj, -⟩` from `GlobalTheory.T.deRhamPeriodRing_field_tPow_filtration_units l P AI T`. Take `⟨hpφ, -, hpR, hpQ, -⟩` from `GlobalTheory.T.bcrisPlus_frobeniusStable_subring_in_filZero l P AI T`. Use `haveI : IsDomain P.R.BdR := hF.isDomain`. Use `haveI : IsDomain P.R.B := Function.Injective.isDomain (P.ιB : P.R.B →+* P.R.BdR) hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `k with`. Consider the case `zero => simp`. Consider the case `succ n`. Conclude with `GlobalTheory.PMon.MooreDeterminant.moore_core (Q := ℚ_[l]) (P.φB : P.R.B →+* P.R.B) (Plus T) hpφ hpQ (fun a b ha hb => (hpR a b ha hb).1) (fun a b ha hb => (hpR a b ha hb).2) (l : P.R.B) (map_natCast _ l) h (fun s hs ω ω' h1 h2 h3 h4 h5 h6 => GlobalTheory.T.crisPlus_frob_eigenvec …`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem moore_statement : Moore := by
   intro l _ P AI T h k hk a hPa hfa ha

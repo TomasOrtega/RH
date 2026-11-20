@@ -10,31 +10,29 @@ open scoped Classical
 namespace GlobalTheory.Shin
 
 /- English proof (translation)
-Use `letI S : Setoid ι := ⟨R, hR⟩`. Set `rep : Quotient S → ι` to `Quotient.out`. Establish `hrep : ∀ t : ι, R t (rep ⟦t⟧)` using `fun t => hR.symm (Quotient.mk_out t)`. Use `choose a ha hfa using fun t => hrel t _ (hrep t)`. Set `n : Quotient S → ℕ → ℤ` to `fun i b => ∑ t, if (⟦t⟧ : Quotient S) = i ∧ a t = b then c t else 0`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `C : Quotient S → ℂ` to `fun i => ∑ b ∈ Finset.range l, (n i b : ℂ) * ζ ^ b`. Establish `hF : ∀ g, ∑ t, (c t : ℂ) * f t g = ∑ i, C i * f (rep i) g`. Introduce `g`. Establish `h1 : ∀ i, C i * f (rep i) g = ∑ t, if (⟦t⟧ : Quotient S) = i then (c t : ℂ) * (ζ ^ a t * f (rep i) g) else 0`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [C, n, Int.cast_sum, Int.cast_ite, Int.cast_zero, Finset.sum_mul, ite_mul, zero_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : (⟦t⟧ : Quotient S) = i`. Simplify using `only [h, true_and, if_true]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_ite_eq]`. Simplify using `only [Finset.mem_range, ha t, if_true]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h]`. Repeatedly rewrite using `[h1]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq]`. Simplify using `[hfa t g]`. Establish `hort : ∀ i j, i ≠ j → ∑ g, f (rep i) g * star (f (rep j) g) = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Assume the negation of the conclusion as `h`. Apply `hij` to reduce the goal to its premises. Rewrite using `[← Quotient.out_eq i, ← Quotient.out_eq j]`. Conclude with `Quotient.sound (horth _ _ h)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hexp : ∀ g, (∑ i, C i * f (rep i) g) * star (∑ i, C i * f (rep i) g) = ∑ i, ∑ j, C i * star (C j) * (f (rep i) g * star (f (rep j) g))`. Introduce `g`. Rewrite using `[star_sum, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∑ g, (∑ i, C i * f (rep i) g) * star (∑ i, C i * f (rep i) g) = (∑ i, C i * star (C i)) * Fintype.card G`. Repeatedly rewrite using `[hexp]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_mul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, Finset.sum_eq_single i]`. Rewrite using `[← Finset.mul_sum, hnorm]`. Introduce `j _ hji`. Rewrite using `[← Finset.mul_sum, hort i j (Ne.symm hji), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses repeatedly using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Rewrite `hsum` using `[hF]`. Rewrite `hsum` using `[h2]`. Establish `h3 : ∑ i, C i * star (C i) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `hsum` as an intermediate fact. Rewrite `this` using `[← one_mul (Fintype.card G : ℂ)]`. Conclude with `mul_right_cancel₀ hG (by simpa using this)`. Take `⟨i₀, -, hi₀⟩` from `GlobalTheory.T.cyclotomic_sum_normSq_eq_one_single_nonzero l ζ hl hζ (Quotient S) Finset.univ n h3`. Use `⟨rep i₀, C i₀, fun g => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF, Finset.sum_eq_single i₀]`. Introduce `i _ hi`. Establish `: C i = 0` using `hi₀ i (Finset.mem_univ i) hi`. Rewrite using `[this, zero_mul]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ i₀) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem int_comb_unit_norm_single {ι G : Type} [Fintype ι] [Fintype G] (l : ℕ) (hl : l.Prime)
     (ζ : ℂ) (hζ : IsPrimitiveRoot ζ l) (f : ι → G → ℂ) (c : ι → ℤ) (R : ι → ι → Prop)
@@ -112,29 +110,25 @@ end GlobalTheory.Shin
 namespace GlobalTheory.Shin
 
 /- English proof (translation)
-Introduce `G Γ _ _ _ _ φ s hp hs X hX hXn`. Use `haveI : Fintype G := Fintype.ofFinite G`. Use `haveI : Finite (G ⋊[φ] Γ) := Finite.of_injective (fun x : G ⋊[φ] Γ => (x.left, x.right)) (fun x y h => SemidirectProduct.ext (congrArg Prod.fst h) (congrArg Prod.snd h))`. Take `⟨c, hirr, hXc, -⟩` from `GlobalTheory.BI.virt_expand (G ⋊[φ] Γ) X hX`. Set `T` to `c.support.filter (fun χ : G ⋊[φ] Γ → ℂ => ¬ ∀ δ, χ (inl δ * inr s) = 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hT : ∀ t : T, IsIrrChar ℂ ℂ t.1 ∧ ¬ ∀ δ, t.1 (inl δ * inr s) = 0` using `fun t => ⟨hirr _ (Finset.mem_filter.1 t.2).1, (Finset.mem_filter.1 t.2).2⟩`. Set `f : T → G → ℂ` to `fun t g => t.1 (inl g * inr s)`. Establish `hX' : ∀ g, X (inl g * inr s) = ∑ t : T, (c t.1 : ℂ) * f t g`. Introduce `g`. Rewrite using `[hXc, Finsupp.sum, Finset.sum_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, zsmul_eq_mul]`. Rewrite using `[Finset.sum_coe_sort T (fun χ => (c χ : ℂ) * χ (inl g * inr s))]`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun χ _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Rewrite using `[h g, mul_zero]`. Both sides reduce to the same expression. Set `R : T → T → Prop` to `fun t u => ∃ η : G ⋊[φ] Γ →* ℂˣ, (∀ g, η (inl g) = 1) ∧ ∀ x, t.1 x = u.1 x * (η x : ℂ)`. Establish `hR : Equivalence R`. Use `⟨fun t => ⟨1, fun g => rfl, fun x => by simp⟩, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `t u ⟨η, h1, h2⟩`. Use `⟨η⁻¹, fun g => by simp [h1 g], fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 x, MonoidHom.inv_apply, mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, mul_one]`. Introduce and unpack `t u v ⟨η, h1, h2⟩ ⟨η', h1', h2'⟩`. Use `⟨η' * η, fun g => by simp [h1 g, h1' g], fun x => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2 x, h2' x, MonoidHom.mul_apply, Units.val_mul, mul_assoc]`. Use `haveI : NeZero (Nat.card Γ) := ⟨hp.ne_zero⟩`. Establish `hζ` using `Complex.isPrimitiveRoot_exp (Nat.card Γ) hp.ne_zero`. Establish `hnorm : ∀ t, ∑ g, f t g * star (f t g) = Fintype.card G`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `GlobalTheory.T.clifford_semidirect_primeIndex_irreducibleCharacter G Γ φ s hp hs t.1 (hT t).1 with h | ⟨-, h⟩` into its components or cases. Conclude with `absurd h (hT t).2`. Rewrite `h` using `[finsum_eq_sum_of_fintype, Nat.card_eq_fintype_card]`. Conclude with `h`. Establish `horth : ∀ t u, ∑ g, f t g * star (f u g) ≠ 0 → R t u`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `t u h`. Break down `GlobalTheory.T.semidirect_coset_pairing_eq_zero_or_twist G Γ φ s hp hs t.1 u.1 (hT t).1 (hT u).1 with h' | h'` into its components or cases. Rewrite `h'` using `[finsum_eq_sum_of_fintype]`. Conclude with `absurd h' h`. Conclude with `h'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hrel : ∀ t u, R t u → ∃ a < Nat.card Γ, ∀ g, f t g = Complex.exp (2 * Real.pi * Complex.I / (Nat.card Γ : ℂ)) ^ a * f u g`. Introduce and unpack `t u ⟨η, h1, h2⟩`. Establish `hpow : ((η (inr s) : ℂˣ) : ℂ) ^ Nat.card Γ = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, ← map_pow, pow_card_eq_one', map_one, map_one, Units.val_one]`. Take `⟨a, ha, hb⟩` from `hζ.eq_pow_of_pow_eq_one hpow`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, ha, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [f]`. Rewrite using `[h2, map_mul, h1, one_mul, hb, mul_comm]`. Establish `hsum : ∑ g, (∑ t : T, (c t.1 : ℂ) * f t g) * star (∑ t : T, (c t.1 : ℂ) * f t g) = Fintype.card G`. Rewrite `hXn` using `[finsum_eq_sum_of_fintype, Nat.card_eq_fintype_card]`.
-
-Repeatedly rewrite using `[← hX']`. Conclude with `hXn`. Take `⟨t₀, e, he⟩` from `int_comb_unit_norm_single (Nat.card Γ) hp _ hζ f (fun t => c t.1) R hR (Nat.cast_ne_zero.2 Fintype.card_ne_zero) hnorm horth hrel hsum`. Use `⟨t₀.1, e, (hT t₀).1, ?_, fun δ => by rw [hX', he]⟩` and prove the remaining obligations. Break down `GlobalTheory.T.clifford_semidirect_primeIndex_irreducibleCharacter G Γ φ s hp hs t₀.1 (hT t₀).1 with h | ⟨h, -⟩` into its components or cases.
-
-Conclude with `absurd h (hT t₀).2`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem virt_coset_norm_one_single : ∀ (G Γ : Type) [Group G] [Finite G] [Group Γ] [Fintype Γ]
     (φ : Γ →* MulAut G) (s : Γ), (Nat.card Γ).Prime → s ≠ 1 → ∀ X ∈ Virt ℂ ℂ (G ⋊[φ] Γ),

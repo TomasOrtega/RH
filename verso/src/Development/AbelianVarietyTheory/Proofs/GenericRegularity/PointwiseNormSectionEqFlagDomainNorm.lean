@@ -22,19 +22,19 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G Reciproci
 namespace GlobalTheory.FrameNorm.Comparison₂
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (IsReduced ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem isReduced_cAt {K : Type} [Field K] (σ : K →+* ℂ) : IsReduced (CAt σ) :=
   inferInstanceAs (IsReduced ℂ)
 
 /- English proof (translation)
-The claim follows from `norm_mul (show ℂ from z) (show ℂ from w)`.
+A detailed English derivation is pending.
 -/
 theorem cabs_mul {K : Type} [Field K] {σ : K →+* ℂ} (z w : CAt σ) : cabs (z * w) = cabs z * cabs w :=
   norm_mul (show ℂ from z) (show ℂ from w)
 
 /- English proof (translation)
-Establish `h` using `norm_prod (α := ℂ) Finset.univ (fun i => (show ℂ from (t i : CAt σ)) ^ e i)`. Conclude with `h.trans (Finset.prod_congr rfl fun i _ => norm_pow (α := ℂ) _ _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cabs_wchar {K : Type} [Field K] {σ : K →+* ℂ} {ι : Type} [Fintype ι] (e : ι → ℕ) (t : ι → (CAt σ)ˣ) :
     cabs (wchar e t) = ∏ i, cabs (t i : CAt σ) ^ e i := by
@@ -42,13 +42,13 @@ theorem cabs_wchar {K : Type} [Field K] {σ : K →+* ℂ} {ι : Type} [Fintype 
   exact h.trans (Finset.prod_congr rfl fun i _ => norm_pow (α := ℂ) _ _)
 
 /- English proof (translation)
-The claim follows from `norm_pos_iff.2 (Units.ne_zero (M₀ := ℂ) u)`.
+A detailed English derivation is pending.
 -/
 theorem cabs_unit_pos {K : Type} [Field K] {σ : K →+* ℂ} (u : (CAt σ)ˣ) : 0 < cabs (u : CAt σ) :=
   norm_pos_iff.2 (Units.ne_zero (M₀ := ℂ) u)
 
 /- English proof (translation)
-The claim follows from `Complex.norm_conj (show ℂ from z)`.
+A detailed English derivation is pending.
 -/
 theorem cabs_conjAlg {K : Type} [Field K] (σ : K →+* ℂ) (z : CAt σ) : cabs (conjAlg σ z) = cabs z :=
   Complex.norm_conj (show ℂ from z)
@@ -56,7 +56,7 @@ theorem cabs_conjAlg {K : Type} [Field K] (σ : K →+* ℂ) (z : CAt σ) : cabs
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `none => exact one_pos`. Consider the case `some p => exact Real.sqrt_pos.2 (by positivity)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem baseNorm_pos (Dw : Datum H) {x : ℝ} (hx : 0 < x) (i : Ix Dw) : 0 < baseNorm Dw x i := by
   cases i with
@@ -64,9 +64,9 @@ theorem baseNorm_pos (Dw : Datum H) {x : ℝ} (hx : 0 < x) (i : Ix Dw) : 0 < bas
   | some p => exact Real.sqrt_pos.2 (by positivity)
 
 /- English proof (translation)
-Establish `hp : 0 < 2 * Real.pi * x` using `by positivity`. Establish `hs : (Real.sqrt (2 * Real.pi * x))⁻¹ = Real.exp (-(1 / 2) * Real.log (2 * Real.pi * x))`. Rewrite using `[Real.sqrt_eq_rpow, Real.rpow_def_of_pos hp, ← Real.exp_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Fintype.prod_option]`. Simplify using `only [baseNorm, ex, inv_one, one_pow, one_mul, hs, ← Real.exp_nat_mul]`. Rewrite using `[← Real.exp_sum, Formalism.L2.PjFree.lieFac, ← Finset.sum_mul]`. Use `congr 1`. Rewrite using `[Fintype.sum_sigma]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -85,21 +85,21 @@ theorem prod_baseNorm (Dw : Datum H) {x : ℝ} (hx : 0 < x) (a : (E →+* ℂ) �
   ring
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U hU xR fn hx hP`. Establish `hB : Out.SecBaseChangeSt` using `GlobalTheory.lawsFieldsSeparately.2.1`. Take `⟨-, -, hWD, -, -, -, hwt⟩` from `GlobalTheory.Frames.algebraic_laws hB E H Dw l Xo c`. Establish `hT : AllTest Xo c` using `GlobalTheory.Frames.allTest_of_secBaseChange hB E H Dw l Xo c`. Establish `hgood : ∀ σ, Formalism.L2.PjFree.GoodEmb c σ → ∀ y i, fn σ y i ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ hσ y i`. Take `⟨k, x, t, hx1, ht⟩` from `(GlobalTheory.FrameNorm.exists_unitFr_frBor E H Dw l Xo c σ r (U σ) hσ (hU σ hσ)).2 y`. Establish `h` using `hP.1 σ hσ k x hx1 t y ht i`. Rewrite using `[← abs_pos, h]`. Conclude with `mul_pos (cabs_unit_pos _) (baseNorm_pos Dw hx i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun σ y i => ?_, fun σ hσ k x t y ht a n hd f hf => ?_, fun σ y y' hm a n f hf => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hσ : Formalism.L2.PjFree.GoodEmb c σ`. Conclude with `hgood σ hσ y i`. Establish `hσ' : Formalism.L2.PjFree.GoodEmb c ((starRingEnd ℂ).comp σ)`. Establish `h` using `Formalism.L2.PjFree.goodEmb_goodOf c σ`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[Formalism.L2.PjFree.goodOf, if_neg hσ]`. Then use the resulting hypothesis. Take `⟨y', hy'⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hB E H Dw l Xo c _ _ (conjAlg σ) y`. Rewrite using `[← abs_pos, ← hP.2 σ y y' hy' i, abs_pos]`. Conclude with `hgood _ hσ' y' i`. Take `⟨x', hx', -, ⟨t', ht'⟩, hpn⟩` from `(GlobalTheory.FrameNorm.exists_unitFr_frBor E H Dw l Xo c σ r (U σ) hσ (hU σ hσ)).1 k x`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htt` using `(GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c (CAt σ)).2.1 t' t _ _ _ ht' ht`. Establish `hfn` using `hP.1 σ hσ k x' hx' _ y htt`. Establish `hev` using `hwt (CAt σ) (isReduced_cAt σ) a n f hf _ _ _ htt`. Rewrite using `[hpn _ _ ((hU σ hσ).2.2.2.2.1 a n hd f hf k)]`. Establish `hrd : ‖Formalism.L2.PjFree.rdU (U σ) f k x'.1‖ = cabs (evR Xo c f ((U σ).un k x'))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : Formalism.L2.PjFree.rdU (U σ) f k x'.1 = Formalism.L2.PjFree.toC (evR Xo c f ((U σ).un k x'))` using `dif_pos x'.2`. Rewrite using `[e]`. Both sides reduce to the same expression. Rewrite using `[hrd, ← prod_baseNorm Dw hx a n]`. Express the relevant statement in the definitionally equal form `cabs (evR Xo c f y) * _ = _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hev, cabs_mul, cabs_wchar, mul_right_comm, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hfn i, ← mul_pow, mul_inv, ← mul_assoc, mul_inv_cancel₀ (cabs_unit_pos _).ne', one_mul]`. Use `isReduced_cAt σ` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hev` using `evR_frMap hWD f hf.1 (conjAlg σ) y (hT _ y) y' hm`. Express the relevant statement in the definitionally equal form `cabs (evR Xo c f y') * _ = cabs (evR Xo c f y) * _`. Rewrite using `[hev, cabs_conjAlg]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [hP.2 σ y y' hm i]`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ptNorm_eq_pnorm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r), (∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf (U σ)) → ∀ (xR : ℝ) (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ), 0 < xR → FnPin U xR fn → FnNe Xo c fn ∧ (∀ σ, Formalism.L2.PjFree.GoodEmb c σ → ∀ k (x : ((U σ).X k).dom) (t : Ix Dw → (CAt σ)ˣ) (y : FrPt Xo c (CAt σ)), FrBor t ((U σ).un k x) y → ∀ a n, Dom a n → ∀ f ∈ sec Xo c a n, ptNorm (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) σ (fn σ) (ex Dw a n) f y = Formalism.L2.PjFree.lieFac Dw xR a * ((U σ).X k).pnorm (Formalism.L2.PjFree.laU (U σ) a n k) (Formalism.L2.PjFree.rdU (U σ) f k) x.1) ∧ ∀ (σ : c.F →+* ℂ) (y : FrPt Xo c (CAt σ)) (y' : FrPt Xo c (CAt ((starRingEnd ℂ).comp σ))), FrMap (conjAlg σ) y y' → ∀ a n, ∀ f ∈ sec Xo c a n, ptNorm (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) ((starRingEnd ℂ).comp σ) (fn ((starRingEnd ℂ).comp σ)) (ex Dw a n) f y' = ptNorm (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) σ (fn σ) (ex Dw a n) f y := by
   intro E _ _ _ H Dw l Xo c r U hU xR fn hx hP

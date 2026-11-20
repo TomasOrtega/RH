@@ -10,23 +10,21 @@ namespace PositivityTheory.Rg.Rsw.L.LPosExt
 variable {X : Type} [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X] [MeasurableSpace X] [BorelSpace X]
 
 /- English proof (translation)
-Take `⟨Λ, hΛ⟩` from `extend A hA hbump L hpos`. Use `set ν := RealRMK.rieszMeasure Λ`. Establish `rep : ∀ a : AR A, ∫ x, (a.1 x).re ∂ν = (L ⟨a.1, a.2.1⟩).re` using `fun a => (RealRMK.integral_rieszMeasure Λ (reC A hA a)).trans (hΛ a)`. Use `⟨ν, inferInstance, fun f => ?_⟩` and prove the remaining obligations. Set `u : X → ℂ` to `(1 / 2 : ℂ) • (f.1 + star f.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `v : X → ℂ` to `(-(Complex.I / 2)) • (f.1 - star f.1)`. Establish `hux : ∀ x, u x = ((f.1 x).re : ℂ)` using `fun x => by`. Apply the tactic sequence `apply Complex.ext <;> simp [u] <;> ring`. Establish `hvx : ∀ x, v x = ((f.1 x).im : ℂ)` using `fun x => by`. Apply the tactic sequence `apply Complex.ext <;> simp [v] <;> ring`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `huA : u ∈ A` using `A.smul_mem _ (A.add_mem f.2 (hstar _ f.2))`. Establish `hvA : v ∈ A` using `A.smul_mem _ (A.sub_mem f.2 (hstar _ f.2))`. Set `uR : AR A` to `⟨u, huA, fun x => by simp [hux x]⟩`. Set `vR : AR A` to `⟨v, hvA, fun x => by simp [hvx x]⟩`. Establish `hsplit : f = (⟨uR.1, uR.2.1⟩ : A) + Complex.I • (⟨vR.1, vR.2.1⟩ : A)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Simplify using `only [Submodule.coe_add, Submodule.coe_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul, uR, vR, hux, hvx]`. Rewrite using `[mul_comm]`. Conclude with `(Complex.re_add_im _).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `iu` using `im_L A hA hbump L hpos uR`. Establish `iv` using `im_L A hA hbump L hpos vR`. Establish `ru : (L ⟨uR.1, uR.2.1⟩).re = ∫ x, (f.1 x).re ∂ν`. Rewrite using `[← rep uR]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Simplify using `[uR, hux]`. Establish `rv : (L ⟨vR.1, vR.2.1⟩).re = ∫ x, (f.1 x).im ∂ν`. Rewrite using `[← rep vR]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Simplify using `[vR, hvx]`. Establish `hint : Integrable f.1 ν` using `(hA _ f.2).1.integrable_of_hasCompactSupport (hA _ f.2).2`. Establish `hre : (∫ x, f.1 x ∂ν).re = ∫ x, (f.1 x).re ∂ν` using `(integral_re hint).symm`. Establish `him : (∫ x, f.1 x ∂ν).im = ∫ x, (f.1 x).im ∂ν` using `(integral_im hint).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hsplit, map_add, map_smul, ← hsplit]`. Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[hre, Complex.add_re, smul_eq_mul, Complex.mul_re, Complex.I_re, Complex.I_im, iv, ru]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[him, Complex.add_im, smul_eq_mul, Complex.mul_im, Complex.I_re, Complex.I_im, iu, rv]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exist (A : Submodule ℂ (X → ℂ)) (hA : ∀ f ∈ A, Continuous f ∧ HasCompactSupport f)
     (hstar : ∀ f ∈ A, star f ∈ A)
@@ -68,7 +66,7 @@ theorem exist (A : Submodule ℂ (X → ℂ)) (hA : ∀ f ∈ A, Continuous f �
   · rw [him, Complex.add_im, smul_eq_mul, Complex.mul_im, Complex.I_re, Complex.I_im, iu, rv]; ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun L hpos => exist A hA hstar hbump L hpos, fun ν ν' hν hν' heq => uniq' A hA hmul hstar hsep hbump ν ν' hν hν' heq⟩`.
+Supply the required witnesses or components.
 -/
 theorem main [SecondCountableTopology X] (A : Submodule ℂ (X → ℂ)) (hA : ∀ f ∈ A, Continuous f ∧ HasCompactSupport f)
     (hmul : ∀ f ∈ A, ∀ g ∈ A, f * g ∈ A) (hstar : ∀ f ∈ A, star f ∈ A)

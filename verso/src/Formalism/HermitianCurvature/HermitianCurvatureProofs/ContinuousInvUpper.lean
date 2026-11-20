@@ -14,7 +14,7 @@ instance sigmaFinite_muPi (β : ℂ) (ι : Type) [Fintype ι] : SigmaFinite (muP
   unfold muPi; infer_instance
 
 /- English proof (translation)
-Unfold `muPi`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Simplify using `only [mu, Measure.smul_apply, volume_pi_pi, ENNReal.smul_def, smul_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ENNReal.coe_pow]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem muPi_eq (β : ℂ) (ι : Type) [Fintype ι] :
     muPi β ι = (Real.toNNReal (‖β‖ / (2 * Real.pi))) ^ Fintype.card ι • (volume : Measure (ι → ℂ)) := by
@@ -24,9 +24,9 @@ theorem muPi_eq (β : ℂ) (ι : Type) [Fintype ι] :
     Finset.prod_const, Finset.card_univ, ENNReal.coe_pow]
 
 /- English proof (translation)
-Establish `hdet : LinearMap.det ((Matrix.toLin' M).restrictScalars ℝ) = 1`. Rewrite using `[LinearMap.det_restrictScalars, LinearMap.det_toLin', Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq, h, one_pow]`. Establish `h2` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (ι → ℂ)) (f := (Matrix.toLin' M).restrictScalars ℝ) (by rw [hdet]; exact one_ne_zero)`. Rewrite `h2` using `[hdet]`. Establish `h3 : Measure.map (fun x : ι → ℂ => M *ᵥ x) volume = ENNReal.ofReal |(1 : ℝ)⁻¹| • volume` using `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using h3`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_mulVec_volume {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℂ) (h : ‖M.det‖ = 1) :
     Measure.map (fun x : ι → ℂ => M *ᵥ x) volume = volume := by
@@ -40,7 +40,7 @@ theorem map_mulVec_volume {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix 
   simpa using h3
 
 /- English proof (translation)
-Establish `hm : Measurable (fun x : ι → ℂ => M *ᵥ x)` using `(Continuous.matrix_mulVec continuous_const continuous_id).measurable`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[muPi_eq, Measure.map_smul, map_mulVec_volume M h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mp_mulVec (β : ℂ) {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℂ) (h : ‖M.det‖ = 1) :
     MeasurePreserving (fun x : ι → ℂ => M *ᵥ x) (muPi β ι) (muPi β ι) := by
@@ -49,7 +49,7 @@ theorem mp_mulVec (β : ℂ) {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matr
   rw [muPi_eq, Measure.map_smul, map_mulVec_volume M h]
 
 /- English proof (translation)
-Use `mp_mulVec β Mᵀ (by rwa [Matrix.det_transpose])` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec_transpose]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mp_vecMul (β : ℂ) {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℂ) (h : ‖M.det‖ = 1) :
     MeasurePreserving (fun x : ι → ℂ => x ᵥ* M) (muPi β ι) (muPi β ι) := by
@@ -57,7 +57,7 @@ theorem mp_vecMul (β : ℂ) {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matr
   simpa only [Matrix.mulVec_transpose] using this
 
 /- English proof (translation)
-Use `⟨measurable_add_const c, ?_⟩` and prove the remaining obligations. Rewrite using `[muPi_eq, Measure.map_smul, map_add_right_eq_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mp_add_const (β : ℂ) {ι : Type} [Fintype ι] (c : ι → ℂ) :
     MeasurePreserving (fun x : ι → ℂ => x + c) (muPi β ι) (muPi β ι) := by
@@ -65,9 +65,9 @@ theorem mp_add_const (β : ℂ) {ι : Type} [Fintype ι] (c : ι → ℂ) :
   rw [muPi_eq, Measure.map_smul, map_add_right_eq_self]
 
 /- English proof (translation)
-Establish `hdet : LinearMap.det ((z • (LinearMap.id : (ι → ℂ) →ₗ[ℂ] (ι → ℂ))).restrictScalars ℝ) = ‖z‖ ^ (2 * Fintype.card ι)`. Rewrite using `[LinearMap.det_restrictScalars, LinearMap.det_smul, LinearMap.det_id, mul_one, Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq, norm_pow, ← pow_mul, mul_comm]`. Simplify using the standard rewrite rules. Establish `hpos : (0 : ℝ) < ‖z‖ ^ (2 * Fintype.card ι)` using `by positivity`. Establish `h2` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (ι → ℂ)) (f := (z • (LinearMap.id : (ι → ℂ) →ₗ[ℂ] (ι → ℂ))).restrictScalars ℝ) (by rw [hdet]; exact hpos.ne')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[hdet, abs_of_pos (inv_pos.2 hpos)]`. Establish `h3 : Measure.map (fun v : ι → ℂ => z • v) volume = ENNReal.ofReal ((‖z‖ ^ (2 * Fintype.card ι))⁻¹) • volume` using `h2`. Rewrite using `[muPi_eq, Measure.map_smul, h3, smul_comm]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_smul_muPi (β z : ℂ) (ι : Type) [Fintype ι] (hz : z ≠ 0) :
     Measure.map (fun v : ι → ℂ => z • v) (muPi β ι) =
@@ -88,9 +88,9 @@ theorem map_smul_muPi (β z : ℂ) (ι : Type) [Fintype ι] (hz : z ≠ 0) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `key : ∀ k : Fin d, (if k = i.rev then (1:ℂ) else 0) * (if j = k.rev then (1:ℂ) else 0) = if k = i.rev then (if i = j then 1 else 0) else 0`. Introduce `k`. Distinguish the cases in `hk : k = i.rev`. Simplify using `[hk, eq_comm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hk]`. Simplify using `only [wMat, Matrix.mul_apply, Matrix.one_apply, Matrix.of_apply, key]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem wMat_mul_self (d : ℕ) : wMat d * wMat d = 1 := by
   ext i j
@@ -104,7 +104,7 @@ theorem wMat_mul_self (d : ℕ) : wMat d * wMat d = 1 := by
   simp
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun M => ‖Matrix.det M‖) (wMat_mul_self d)`. Simplify using `only [Matrix.det_mul, norm_mul, Matrix.det_one, norm_one] at h`. Use polynomial arithmetic with `[norm_nonneg (wMat d).det]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_det_wMat (d : ℕ) : ‖(wMat d).det‖ = 1 := by
   have h := congrArg (fun M => ‖Matrix.det M‖) (wMat_mul_self d)
@@ -112,9 +112,9 @@ theorem norm_det_wMat (d : ℕ) : ‖(wMat d).det‖ = 1 := by
   nlinarith [norm_nonneg (wMat d).det]
 
 /- English proof (translation)
-Establish `h : (upper v).BlockTriangular id`. Introduce `i j hij`. Establish `hij' : j < i` using `hij`. Simplify using `[upper, strictUpper, hij'.ne', not_lt.2 hij'.le]`. Rewrite using `[Matrix.det_of_isUpperTriangular h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[upper, strictUpper]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_upper {d : ℕ} (v : UT d → ℂ) : (upper v).det = 1 := by
   have h : (upper v).BlockTriangular id := by
@@ -125,9 +125,7 @@ theorem det_upper {d : ℕ} (v : UT d → ℂ) : (upper v).det = 1 := by
   simp [upper, strictUpper]
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [upper, strictUpper, Matrix.add_apply, Matrix.of_apply]`. Use `continuous_const.add ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `continuous_apply _`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_upper (d : ℕ) : Continuous (upper : (UT d → ℂ) → Matrix (Fin d) (Fin d) ℂ) := by
   refine continuous_matrix fun i j => ?_
@@ -138,9 +136,9 @@ theorem continuous_upper (d : ℕ) : Continuous (upper : (UT d → ℂ) → Matr
   · exact continuous_const
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_subtype, Finset.card_filter, Fintype.sum_prod_type_right]`. Repeatedly rewrite using `[← Finset.card_filter]`. Establish `: ∀ y : Fin n, (Finset.univ.filter (fun x : Fin n => x < y)).card = (y : ℕ)`. Introduce `y`. Rewrite using `[show Finset.univ.filter (fun x : Fin n => x < y) = Finset.Iio y by ext; simp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fin.card_Iio y`. Repeatedly rewrite using `[this]`. Conclude with `Fin.sum_univ_eq_sum_range (fun i => i) n`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_UT (n : ℕ) : Fintype.card (UT n) = ∑ i ∈ Finset.range n, i := by
   rw [Fintype.card_subtype, Finset.card_filter, Fintype.sum_prod_type_right]
@@ -153,13 +151,13 @@ theorem card_UT (n : ℕ) : Fintype.card (UT n) = ∑ i ∈ Finset.range n, i :=
   exact Fin.sum_univ_eq_sum_range (fun i => i) n
 
 /- English proof (translation)
-Rewrite using `[card_UT, mul_comm]`. Conclude with `Finset.sum_range_id_mul_two n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_card_UT (n : ℕ) : 2 * Fintype.card (UT n) = n * (n - 1) := by
   rw [card_UT, mul_comm]; exact Finset.sum_range_id_mul_two n
 
 /- English proof (translation)
-Establish `hm : Measurable (Function.uncurry fun (q : (UT n → ℂ) × (Fin n → ℂ)) (a : Fin n → ℂ) => a ᵥ* (wMat n * upper q.1))`. Use `Continuous.measurable ?_` and prove the remaining obligations. Conclude with `Continuous.matrix_vecMul continuous_snd (continuous_const.matrix_mul ((continuous_upper n).comp (continuous_fst.comp continuous_fst)))`. Establish `h1` using `(MeasurePreserving.id ((muPi β (UT n)).prod (muPi β (Fin n)))).skew_product (μc := muPi β (Fin n)) (μd := muPi β (Fin n)) hm (Filter.Eventually.of_forall fun q => (mp_vecMul β (wMat n * upper q.1) (by rw [Matrix.det_mul, det_upper, mul_one, norm_det_wMat])).map_eq)`. Conclude with `(Measure.measurePreserving_swap.comp h1).comp Measure.measurePreserving_swap`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mp_shear (n : ℕ) (β : ℂ) :
     MeasurePreserving (fun p : BlockCoord n => ((p.1 ᵥ* (wMat n * upper p.2.1), p.2.1, p.2.2) : BlockCoord n))
@@ -176,52 +174,52 @@ theorem mp_shear (n : ℕ) (β : ℂ) :
   exact (Measure.measurePreserving_swap.comp h1).comp Measure.measurePreserving_swap
 
 /- English proof (translation)
-The claim follows from `finSumFinEquiv_symm_apply_castAdd (n := 1) i`.
+A detailed English derivation is pending.
 -/
 theorem symm_castSucc {n : ℕ} (i : Fin n) :
     finSumFinEquiv.symm (i.castSucc : Fin (n + 1)) = Sum.inl i :=
   finSumFinEquiv_symm_apply_castAdd (n := 1) i
 
 /- English proof (translation)
-The claim follows from `finSumFinEquiv_symm_apply_natAdd (m := n) (0 : Fin 1)`.
+A detailed English derivation is pending.
 -/
 theorem symm_last (n : ℕ) : finSumFinEquiv.symm (Fin.last n : Fin (n + 1)) = Sum.inr (0 : Fin 1) :=
   finSumFinEquiv_symm_apply_natAdd (m := n) (0 : Fin 1)
 
 /- English proof (translation)
-Simplify using `[blk, symm_castSucc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_cc {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) (i j : Fin n) :
     blk A b a e i.castSucc j.castSucc = A i j := by
   simp [blk, symm_castSucc]
 
 /- English proof (translation)
-Simplify using `[blk, symm_castSucc, symm_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_cl {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) (i : Fin n) :
     blk A b a e i.castSucc (Fin.last n) = b i := by
   simp [blk, symm_castSucc, symm_last]
 
 /- English proof (translation)
-Simplify using `[blk, symm_castSucc, symm_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_lc {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) (j : Fin n) :
     blk A b a e (Fin.last n) j.castSucc = a j := by
   simp [blk, symm_castSucc, symm_last]
 
 /- English proof (translation)
-Simplify using `[blk, symm_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_ll {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) :
     blk A b a e (Fin.last n) (Fin.last n) = e := by
   simp [blk, symm_last]
 
 /- English proof (translation)
-Unfold `blk`. Rewrite using `[Matrix.reindex_apply, Matrix.reindex_apply, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.vecMulVec_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.vecMul, dotProduct]`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mul_apply, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_mul {n : ℕ} (A A' : Matrix (Fin n) (Fin n) ℂ) (b a b' a' : Fin n → ℂ) (e e' : ℂ) :
     blk A b a e * blk A' b' a' e' =
@@ -236,14 +234,14 @@ theorem blk_mul {n : ℕ} (A A' : Matrix (Fin n) (Fin n) ℂ) (b a b' a' : Fin n
   · ext i j; simp [Matrix.mul_apply, dotProduct]
 
 /- English proof (translation)
-Rewrite using `[blk_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blk_mul_upper {n : ℕ} (A A' : Matrix (Fin n) (Fin n) ℂ) (b b' : Fin n → ℂ) :
     blk A b 0 1 * blk A' b' 0 1 = blk (A * A') (A *ᵥ b' + b) 0 1 := by
   rw [blk_mul]; simp
 
 /- English proof (translation)
-Unfold `lowRow`. Rewrite using `[blk_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lowRow_mul {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (a : Fin n → ℂ) :
     lowRow a * blk A 0 0 1 = blk A 0 (a ᵥ* A) 1 := by
@@ -251,7 +249,7 @@ theorem lowRow_mul {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (a : Fin n → ℂ
   rw [blk_mul]; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `induction i using Fin.lastCases <;> induction j using Fin.lastCases <;>`. Simplify using `[Matrix.transpose_apply, blk_cc, blk_cl, blk_lc, blk_ll]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blk_transpose {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) :
     (blk A b a e)ᵀ = blk Aᵀ a b e := by
@@ -260,7 +258,7 @@ theorem blk_transpose {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n �
     simp [Matrix.transpose_apply, blk_cc, blk_cl, blk_lc, blk_ll]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `induction i using Fin.lastCases <;> induction j using Fin.lastCases <;>`. Simplify using `[blk_cc, blk_cl, blk_lc, blk_ll, Matrix.one_apply, Fin.ext_iff, ne_of_gt, ne_of_lt]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blk_one (n : ℕ) : blk (1 : Matrix (Fin n) (Fin n) ℂ) 0 0 1 = 1 := by
   ext i j
@@ -268,13 +266,13 @@ theorem blk_one (n : ℕ) : blk (1 : Matrix (Fin n) (Fin n) ℂ) 0 0 1 = 1 := by
     simp [blk_cc, blk_cl, blk_lc, blk_ll, Matrix.one_apply, Fin.ext_iff, ne_of_gt, ne_of_lt]
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_nonsing_inv _ (by rw [det_upper]; exact isUnit_one)`.
+A detailed English derivation is pending.
 -/
 theorem upper_mul_inv {d : ℕ} (v : UT d → ℂ) : upper v * (upper v)⁻¹ = 1 :=
   Matrix.mul_nonsing_inv _ (by rw [det_upper]; exact isUnit_one)
 
 /- English proof (translation)
-Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[blk_mul_upper, upper_mul_inv, Matrix.mulVec_mulVec, Matrix.mul_neg, upper_mul_inv, Matrix.neg_mulVec, Matrix.one_mulVec, neg_add_cancel, blk_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_blk {n : ℕ} (v : UT n → ℂ) (b : Fin n → ℂ) :
     (blk (upper v) b 0 1)⁻¹ = blk (upper v)⁻¹ ((-(upper v)⁻¹) *ᵥ b) 0 1 := by
@@ -283,13 +281,13 @@ theorem inv_blk {n : ℕ} (v : UT n → ℂ) (b : Fin n → ℂ) :
     Matrix.one_mulVec, neg_add_cancel, blk_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_nonsing_inv, det_upper, Ring.inverse_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_inv_upper {d : ℕ} (v : UT d → ℂ) : ((upper v)⁻¹).det = 1 := by
   rw [Matrix.det_nonsing_inv, det_upper, Ring.inverse_one]
 
 /- English proof (translation)
-Establish `h : (fun v : UT d → ℂ => (upper v)⁻¹) = fun v => (upper v).adjugate`. Use function extensionality and compare the values at `v`. Rewrite using `[Matrix.inv_def, det_upper, Ring.inverse_one, one_smul]`. Rewrite using `[h]`. Conclude with `(continuous_upper d).matrix_adjugate`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_inv_upper (d : ℕ) : Continuous (fun v : UT d → ℂ => (upper v)⁻¹) := by
   have h : (fun v : UT d → ℂ => (upper v)⁻¹) = fun v => (upper v).adjugate := by
@@ -299,13 +297,13 @@ theorem continuous_inv_upper (d : ℕ) : Continuous (fun v : UT d → ℂ => (up
   exact (continuous_upper d).matrix_adjugate
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun p => continuous_id.matrix_elem p.1.1 p.1.2`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coordU (d : ℕ) : Continuous (coordU : Matrix (Fin d) (Fin d) ℂ → UT d → ℂ) :=
   continuous_pi fun p => continuous_id.matrix_elem p.1.1 p.1.2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨⟨i, j⟩, h⟩` from `p`. Establish `h' : i < j` using `h`. Simplify using `[coordU, upper, strictUpper, h', h'.ne]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem coordU_upper {d : ℕ} (v : UT d → ℂ) : coordU (upper v) = v := by
   funext p
@@ -344,16 +342,14 @@ noncomputable def joinU {n : ℕ} (q : (UT n → ℂ) × (Fin n → ℂ)) : UT (
   fun p => Sum.elim q.1 q.2 ((idxEquiv n).symm p)
 
 /- English proof (translation)
-Simplify using `[joinU]`.
+Simplify using the standard rewrite rules.
 -/
 theorem joinU_idx {n : ℕ} (q : (UT n → ℂ) × (Fin n → ℂ)) (s : UT n ⊕ Fin n) :
     joinU q (idxEquiv n s) = Sum.elim q.1 q.2 s := by
   simp [joinU]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨s, rfl⟩` from `(idxEquiv n).surjective p`. Rewrite using `[joinU_idx]`. Break down `s with ⟨⟨i, j⟩, h⟩ | i` into its components or cases. Conclude with `blk_cc A b a e i j`.
-
-Conclude with `blk_cl A b a e i`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem coordU_blk {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) :
     coordU (blk A b a e) = joinU (coordU A, b) := by
@@ -365,9 +361,9 @@ theorem coordU_blk {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → �
   · exact blk_cl A b a e i
 
 /- English proof (translation)
-Introduce `k`. Use `⟨(fun p => k (idxEquiv n (Sum.inl p)), fun i => k (idxEquiv n (Sum.inr i))), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Take `⟨s, rfl⟩` from `(idxEquiv n).surjective p`. Rewrite using `[joinU_idx]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases s with p | i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem joinU_surjective (n : ℕ) : Function.Surjective (joinU : (UT n → ℂ) × (Fin n → ℂ) → UT (n + 1) → ℂ) := by
   intro k
@@ -378,13 +374,13 @@ theorem joinU_surjective (n : ℕ) : Function.Surjective (joinU : (UT n → ℂ)
   rcases s with p | i <;> rfl
 
 /- English proof (translation)
-Establish `hj : joinU (v, b) = coordU (blk (upper v) b 0 1)` using `by rw [coordU_blk, coordU_upper]`. Rewrite using `[hj]`. Use extensionality with `i j`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [upper, strictUpper, blk_ll]`. Consider the case `cast j`. Establish `h1 : ¬ (Fin.last n < j.castSucc)` using `not_lt.2 (Fin.castSucc_lt_last j).le`. Simplify using `[upper, strictUpper, blk_lc, h1, (Fin.castSucc_lt_last j).ne']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [upper, strictUpper, coordU, blk_cl, Fin.castSucc_lt_last, (Fin.castSucc_lt_last i).ne]`. Consider the case `cast j`. Distinguish the cases in `h : i < j`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Simplify using `[upper, strictUpper, coordU, blk_cc, h, h.ne]`. Simplify using `[upper, strictUpper, coordU, blk_cc, h, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem upper_joinU {n : ℕ} (v : UT n → ℂ) (b : Fin n → ℂ) : upper (joinU (v, b)) = blk (upper v) b 0 1 := by
   have hj : joinU (v, b) = coordU (blk (upper v) b 0 1) := by rw [coordU_blk, coordU_upper]
@@ -406,9 +402,9 @@ theorem upper_joinU {n : ℕ} (v : UT n → ℂ) (b : Fin n → ℂ) : upper (jo
       · simp [upper, strictUpper, coordU, blk_cc, h, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `h` using `measurePreserving_piCongrLeft (α := fun _ : ι => ℂ) (fun _ : ι => mu β) σ.symm`. Establish `he : (fun v : ι' → ℂ => v ∘ σ) = MeasurableEquiv.piCongrLeft (fun _ : ι => ℂ) σ.symm`. Use function extensionality and compare the values at `v i`. Take `⟨j, rfl⟩` from `σ.symm.surjective i`. Rewrite using `[MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_apply_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[he]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mp_comp_equiv (β : ℂ) {ι ι' : Type} [Fintype ι] [Fintype ι'] (σ : ι ≃ ι') :
     MeasurePreserving (fun v : ι' → ℂ => v ∘ σ) (muPi β ι') (muPi β ι) := by
@@ -422,9 +418,9 @@ theorem mp_comp_equiv (β : ℂ) {ι ι' : Type} [Fintype ι] [Fintype ι'] (σ 
   exact h
 
 /- English proof (translation)
-Establish `h1` using `measurePreserving_sumPiEquivProdPi_symm (X := fun _ : UT n ⊕ Fin n => ℂ) (fun _ => mu β)`. Establish `h2` using `mp_comp_equiv β (idxEquiv n).symm`. Establish `h3` using `h2.comp h1`. Establish `he : (joinU : (UT n → ℂ) × (Fin n → ℂ) → UT (n + 1) → ℂ) = (fun v : UT n ⊕ Fin n → ℂ => v ∘ (idxEquiv n).symm) ∘ (MeasurableEquiv.sumPiEquivProdPi (fun _ : UT n ⊕ Fin n => ℂ)).symm`. Use function extensionality and compare the values at `q p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [joinU, Function.comp]`. Apply the tactic sequence `rcases (idxEquiv n).symm p with s | s <;> rfl`. Rewrite using `[he]`. Conclude with `h3`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mp_joinU (β : ℂ) (n : ℕ) :
     MeasurePreserving (joinU : (UT n → ℂ) × (Fin n → ℂ) → UT (n + 1) → ℂ)
@@ -442,7 +438,7 @@ theorem mp_joinU (β : ℂ) (n : ℕ) :
   exact h3
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hF, by rw [← hJ.map_eq, Measure.map_map hF hJ.measurable]; exact h.map_eq⟩`.
+Supply the required witnesses or components.
 -/
 theorem mp_of_comp {α β γ : Type*} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ]
     {ν : Measure α} {μ : Measure β} {μ' : Measure γ} {J : α → β} {F : β → γ}
@@ -454,15 +450,13 @@ instance sigmaFinite_muBlock (β : ℂ) (n : ℕ) : SigmaFinite (muBlock β n) :
   unfold muBlock; infer_instance
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Establish `h : (fun v : UT 0 → ℂ => coordU (upper v)⁻¹) = id`. Use function extensionality and compare the values at `v p`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `p.1.1.elim0`. Rewrite using `[h]`. Conclude with `MeasurePreserving.id _`. Consider the case `succ n ih`. Establish `hF : Measurable (fun v : UT (n + 1) → ℂ => coordU (upper v)⁻¹)` using `((continuous_coordU _).comp (continuous_inv_upper _)).measurable`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mp_of_comp (mp_joinU β n) hF ?_` and prove the remaining obligations. Establish `hm : Measurable (Function.uncurry fun (v : UT n → ℂ) (b : Fin n → ℂ) => (-(upper v)⁻¹) *ᵥ b)`. Use `Continuous.measurable ?_` and prove the remaining obligations. Conclude with `Continuous.matrix_mulVec ((continuous_inv_upper n).comp continuous_fst).neg continuous_snd`. Establish `hS` using `ih.skew_product (μc := muPi β (Fin n)) (μd := muPi β (Fin n)) hm (Filter.Eventually.of_forall fun v => (mp_mulVec β (-(upper v)⁻¹) (by rw [Matrix.det_neg, det_inv_upper]; simp)).map_eq)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Establish `he : (fun v : UT (n + 1) → ℂ => coordU (upper v)⁻¹) ∘ joinU = joinU ∘ fun p : (UT n → ℂ) × (Fin n → ℂ) => (coordU (upper p.1)⁻¹, (-(upper p.1)⁻¹) *ᵥ p.2)`. Use function extensionality and compare the values at `p`. Take `⟨v, b⟩` from `p`. Simplify using `only [Function.comp]`. Rewrite using `[upper_joinU, inv_blk, coordU_blk]`.
-
-Rewrite using `[he]`. Conclude with `(mp_joinU β n).comp hS`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mp_invU (β : ℂ) : ∀ n : ℕ,
     MeasurePreserving (fun v : UT n → ℂ => coordU (upper v)⁻¹) (muPi β (UT n)) (muPi β (UT n)) := by
@@ -494,15 +488,13 @@ theorem mp_invU (β : ℂ) : ∀ n : ℕ,
     exact (mp_joinU β n).comp hS
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `k`. Establish `h : (fun u : UT 0 → ℂ => coordU (upper k * upper u)) = id`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `v p`. Conclude with `p.1.1.elim0`. Rewrite using `[h]`. Conclude with `MeasurePreserving.id _`. Consider the case `succ n ih`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `k`. Take `⟨⟨k0, kb⟩, rfl⟩` from `joinU_surjective n k`. Establish `hF : Measurable (fun u : UT (n + 1) → ℂ => coordU (upper (joinU (k0, kb)) * upper u))` using `((continuous_coordU _).comp (continuous_const.matrix_mul (continuous_upper _))).measurable`. Use `mp_of_comp (mp_joinU β n) hF ?_` and prove the remaining obligations. Establish `hS` using `(ih k0).prod ((mp_add_const β kb).comp (mp_mulVec β (upper k0) (by rw [det_upper]; simp)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `he : (fun u : UT (n + 1) → ℂ => coordU (upper (joinU (k0, kb)) * upper u)) ∘ joinU = joinU ∘ Prod.map (fun u : UT n → ℂ => coordU (upper k0 * upper u)) ((fun x : Fin n → ℂ => x + kb) ∘ fun x : Fin n → ℂ => upper k0 *ᵥ x)`. Use function extensionality and compare the values at `p`. Take `⟨v, b⟩` from `p`. Simplify using `only [Function.comp, Prod.map]`. Rewrite using `[upper_joinU, upper_joinU, blk_mul_upper, coordU_blk]`.
-
-Rewrite using `[he]`. Conclude with `(mp_joinU β n).comp hS`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mp_lmulU (β : ℂ) : ∀ (n : ℕ) (k : UT n → ℂ),
     MeasurePreserving (fun u : UT n → ℂ => coordU (upper k * upper u)) (muPi β (UT n)) (muPi β (UT n)) := by
@@ -539,16 +531,16 @@ def revEquiv (n : ℕ) : UT n ≃ UT n where
   right_inv p := by simp
 
 /- English proof (translation)
-Simplify using `[wMat, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wMat_mul_apply {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     (wMat n * A) i j = A i.rev j := by
   simp [wMat, Matrix.mul_apply]
 
 /- English proof (translation)
-Establish `h : ∀ k : Fin n, (j = k.rev) = (k = j.rev)` using `fun k => by`. Rewrite using `[eq_iff_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Simplify using `[wMat, Matrix.mul_apply, h]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mul_wMat_apply {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     (A * wMat n) i j = A i j.rev := by
@@ -560,7 +552,7 @@ theorem mul_wMat_apply {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) 
   simp [wMat, Matrix.mul_apply, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [coordU, Matrix.transpose_apply, mul_wMat_apply, wMat_mul_apply, Function.comp, revEquiv, Equiv.coe_fn_mk]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coordU_conj {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) :
     coordU (wMat n * A * wMat n)ᵀ = coordU A ∘ revEquiv n := by
@@ -575,11 +567,11 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.G Formalism.FourierDecayAlt.P.G5
 
 /- English proof (translation)
-Introduce `n β t ht`. Establish `hcomp : coordMap n t = (Prod.map (fun v : Fin n → ℂ => t • v) (Prod.map (fun v : UT n → ℂ => t • v) (fun v : Fin n → ℂ => t • v))) ∘ (fun p : BlockCoord n => ((p.1 ᵥ* (wMat n * upper p.2.1), p.2.1, p.2.2) : BlockCoord n))`. Use function extensionality and compare the values at `p`. Both sides reduce to the same expression. Establish `hm1 : ∀ ι : Type, Measurable (fun v : ι → ℂ => t • v)` using `fun ι => measurable_const_smul t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hcomp, ← Measure.map_map ((hm1 _).prodMap ((hm1 _).prodMap (hm1 _))) (mp_shear n β).measurable, (mp_shear n β).map_eq]`. Unfold `muBlock`. Rewrite using `[← Measure.map_prod_map _ _ (hm1 _) ((hm1 _).prodMap (hm1 _)), ← Measure.map_prod_map _ _ (hm1 _) (hm1 _), map_smul_muPi β t _ ht, map_smul_muPi β t _ ht, Measure.prod_smul_left, Measure.prod_smul_left, Measure.prod_smul_right, Measure.prod_smul_right, Measure.prod_smul_right, sm …`. Use `congr 1`. Rewrite using `[← Real.toNNReal_mul (by positivity), ← Real.toNNReal_mul (by positivity), ← mul_inv, ← mul_inv, ← pow_add, ← pow_add, two_card_UT, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 3`. Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ k => simp only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem jacobian_formula : Formalism.FourierDecayAlt.G.Jacobian := by
   intro n β t ht
@@ -604,15 +596,13 @@ theorem jacobian_formula : Formalism.FourierDecayAlt.G.Jacobian := by
   | succ k => simp only [Nat.add_sub_cancel]; ring
 
 /- English proof (translation)
-Introduce `n β`. Establish `hι : MeasurePreserving (fun k : UT n → ℂ => coordU (wMat n * (upper k)⁻¹ * wMat n)ᵀ) (muPi β (UT n)) (muPi β (UT n))`. Simplify using `only [coordU_conj]`. Conclude with `(mp_comp_equiv β (revEquiv n)).comp (mp_invU β n)`. Establish `hm : Measurable (Function.uncurry fun (k : UT n → ℂ) (r : BlockCoord n) => ((r.1 ᵥ* (wMat n * (upper k)⁻¹ * wMat n), coordU (upper k * upper r.2.1), upper k *ᵥ r.2.2) : BlockCoord n))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Continuous.measurable ?_` and prove the remaining obligations. Establish `hk : Continuous fun p : (UT n → ℂ) × BlockCoord n => upper p.1` using `(continuous_upper n).comp continuous_fst`. Establish `hki : Continuous fun p : (UT n → ℂ) × BlockCoord n => (upper p.1)⁻¹` using `(continuous_inv_upper n).comp continuous_fst`. Use `Continuous.prodMk ?_ (Continuous.prodMk ?_ ?_)` and prove the remaining obligations. Conclude with `Continuous.matrix_vecMul (continuous_fst.comp continuous_snd) ((continuous_const.matrix_mul hki).matrix_mul continuous_const)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(continuous_coordU n).comp (hk.matrix_mul ((continuous_upper n).comp (continuous_fst.comp (continuous_snd.comp continuous_snd))))`. Conclude with `Continuous.matrix_mulVec hk (continuous_snd.comp (continuous_snd.comp continuous_snd))`. Establish `hS` using `hι.skew_product (μc := muBlock β n) (μd := muBlock β n) hm (Filter.Eventually.of_forall fun k => ((mp_vecMul β (wMat n * (upper k)⁻¹ * wMat n) (by rw [Matrix.det_mul, Matrix.det_mul, det_inv_upper, norm_mul, norm_mul, norm_det_wMat]; simp)).prod ((mp_lmulU β n k).prod (mp_mulVec …`. Establish `hA` using `(measurePreserving_prodAssoc (muPi β (UT n)) (muPi β (Fin n)) ((muPi β (UT n)).prod (muPi β (Fin n)))).symm`. Establish `hJ` using `(mp_joinU β n).prod (mp_joinU β n)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Establish `hall` using `hJ.comp (hA.comp hS)`. Establish `he : quotMap n = Prod.map joinU joinU ∘ (MeasurableEquiv.prodAssoc.symm ∘ fun p : (UT n → ℂ) × BlockCoord n => (coordU (wMat n * (upper p.1)⁻¹ * wMat n)ᵀ, ((p.2.1 ᵥ* (wMat n * (upper p.1)⁻¹ * wMat n), coordU (upper p.1 * upper p.2.2.1), upper p.1 *ᵥ p.2.2.2) : BlockCoord n)))`. Use function extensionality and compare the values at `q`. Take `⟨k, a, u, b⟩` from `q`. Simplify using `only [quotMap, Function.comp]`.
-
-Rewrite using `[lowRow_mul, blk_transpose, coordU_blk, blk_mul_upper, coordU_blk, add_zero]`. Both sides reduce to the same expression. Rewrite using `[he]`. Conclude with `hall`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotient_measure : Formalism.FourierDecayAlt.G.QuotientMeasure := by
   intro n β

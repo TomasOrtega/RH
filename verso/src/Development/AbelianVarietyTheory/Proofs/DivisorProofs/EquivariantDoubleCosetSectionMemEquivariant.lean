@@ -19,15 +19,13 @@ def secMemLeftMul {H V : Type} [Group H] [AddCommGroup V] [Module ℂ V]
   map_add' a b := mul_add _ a b
 
 /- English proof (translation)
-Introduce `G H V _ _ _ _ ι ρ K' x v`. Use `⟨fun g y => ?_, fun k hk y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((stabCard ι K' x : ℂ))⁻¹ • (∑ᶠ h : H, if (ι h * x)⁻¹ * (ι g * y) ∈ K' then ρ h else 0) v = ρ g (((stabCard ι K' x : ℂ))⁻¹ • (∑ᶠ h : H, if (ι h * x)⁻¹ * y ∈ K' then ρ h else 0) v)`. Establish `hsum : (∑ᶠ h : H, if (ι h * x)⁻¹ * (ι g * y) ∈ K' then ρ h else 0) = ρ g * (∑ᶠ h : H, if (ι h * x)⁻¹ * y ∈ K' then ρ h else 0)`. Rewrite using `[← finsum_comp_equiv (Equiv.mulLeft g)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ h' : H, (fun h : H => if (ι h * x)⁻¹ * (ι g * y) ∈ K' then ρ h else 0) ((Equiv.mulLeft g) h') = secMemLeftMul ρ g (if (ι h' * x)⁻¹ * y ∈ K' then ρ h' else 0)`. Introduce `h'`. Establish `he : (ι (g * h') * x)⁻¹ * (ι g * y) = (ι h' * x)⁻¹ * y`. Rewrite using `[map_mul]`. Use `group`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.coe_mulLeft, he]`. Express the relevant statement in the definitionally equal form `_ = ρ g * _`. Use `split_ifs`. Conclude with `map_mul ρ g h'`. Conclude with `(mul_zero _).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Repeatedly rewrite using `[hpt]`. Conclude with `(AddEquiv.map_finsum (secMemLeftMul ρ g) _).symm`. Rewrite using `[hsum, map_smul]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((stabCard ι K' x : ℂ))⁻¹ • (∑ᶠ h : H, if (ι h * x)⁻¹ * (y * k) ∈ K' then ρ h else 0) v = ((stabCard ι K' x : ℂ))⁻¹ • (∑ᶠ h : H, if (ι h * x)⁻¹ * y ∈ K' then ρ h else 0) v`.
-
-Establish `hc : ∀ h : H, ((ι h * x)⁻¹ * (y * k) ∈ K' ↔ (ι h * x)⁻¹ * y ∈ K')`. Introduce `h`. Rewrite using `[← mul_assoc]`. Conclude with `Subgroup.mul_mem_cancel_right K' hk`. Repeatedly rewrite using `[hc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secM_mem_eqvM : ∀ (G H V : Type) [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
     (ι : H →* G) (ρ : Representation ℂ H V) (K' : Subgroup G) (x : G) (v : V),

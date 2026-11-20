@@ -41,7 +41,7 @@ private def entM (c : mixedSpace K ≃+* (ι → ℂ)) (n : ℕ) :
 private def entC (c : mixedSpace K ≃+* (ι → ℂ)) (n : ℕ) : ArchMatrix K n ≃+* (ι → Matrix (Fin n) (Fin n) ℂ) := entM c n
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Establish `h : Continuous fun X : Matrix (Fin n) (Fin n) (mixedSpace K) => X a b` using `continuous_id.matrix_elem a b`. Conclude with `(continuous_apply i).comp (hc.comp h)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem continuous_entC {c : mixedSpace K ≃+* (ι → ℂ)} (hc : Continuous c) (n : ℕ) : Continuous (entC c n) := by
   refine continuous_pi fun i => ?_
@@ -50,7 +50,7 @@ private theorem continuous_entC {c : mixedSpace K ≃+* (ι → ℂ)} (hc : Cont
   exact (continuous_apply i).comp (hc.comp h)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Continuous fun Y : ι → Matrix (Fin n) (Fin n) ℂ => (Matrix.of fun a b => c.symm fun i => Y i a b : Matrix (Fin n) (Fin n) (mixedSpace K))`. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Conclude with `hs.comp (continuous_pi fun i => ((continuous_apply i).matrix_elem a b))`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuous_entC_symm {c : mixedSpace K ≃+* (ι → ℂ)} (hs : Continuous c.symm) (n : ℕ) :
     Continuous (entC c n).symm := by
@@ -76,7 +76,7 @@ private theorem psiC_val (c : mixedSpace K ≃+* (ι → ℂ)) (hc : Continuous 
     ((psiC c hc hs n g i : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = entC c n ((g : (ArchMatrix K n)ˣ) : ArchMatrix K n) i := rfl
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨continuous_subtype_val, ?_⟩` and prove the remaining obligations. Conclude with `continuous_star.comp continuous_subtype_val`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuous_toUnits (n : ℕ) :
     Continuous fun u : unitaryGroup (Fin n) ℂ => (Unitary.toUnits u : GL (Fin n) ℂ) := by
@@ -137,21 +137,21 @@ private def cF (F : Type) [Field F] [NumberField F] [IsTotallyComplex F] : mixed
 variable (F : Type) [Field F] [NumberField F] [IsTotallyComplex F]
 
 /- English proof (translation)
-Use `continuous_pi fun w => ?_` and prove the remaining obligations. Conclude with `continuous_complexComp ⟨w, IsTotallyComplex.isComplex w⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuous_cF : Continuous (cF F) := by
   refine continuous_pi fun w => ?_
   exact continuous_complexComp ⟨w, IsTotallyComplex.isComplex w⟩
 
 /- English proof (translation)
-Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => continuous_apply _)` and prove the remaining obligations. Conclude with `absurd v.2 (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex v.1))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuous_cF_symm : Continuous (cF F).symm := by
   refine Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => continuous_apply _)
   exact absurd v.2 (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex v.1))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h w`. Conclude with `complexCompM_mem_unitaryGroup h ⟨w, IsTotallyComplex.isComplex w⟩`. Introduce `h`. Conclude with `mem_archCompact_of_unitary g (fun v => absurd v.2 (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex v.1))) fun v => h v.1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem unitary_cF (n : ℕ) (g : archGroup F n) : g ∈ archCompact F n ↔
     ∀ w, entC (cF F) n ((g : (ArchMatrix F n)ˣ) : ArchMatrix F n) w ∈ unitaryGroup (Fin n) ℂ := by
@@ -163,7 +163,7 @@ private theorem unitary_cF (n : ℕ) (g : archGroup F n) : g ∈ archCompact F n
       (fun v => absurd v.2 (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex v.1))) fun v => h v.1
 
 /- English proof (translation)
-Establish `e : ⇑(InfiniteAdeleRing.ringEquiv_mixedSpace K) = ⇑(GroundTheory.Global.homeomorphMixedSpace K)`. Use function extensionality and compare the values at `fun x => (GroundTheory.Global.homeomorphMixedSpace_apply K x).symm`. Rewrite using `[e]`. Conclude with `(GroundTheory.Global.homeomorphMixedSpace K).continuous`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem continuous_psi (K : Type) [Field K] [NumberField K] :
     Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace K) := by
@@ -173,9 +173,9 @@ private theorem continuous_psi (K : Type) [Field K] [NumberField K] :
   exact (GroundTheory.Global.homeomorphMixedSpace K).continuous
 
 /- English proof (translation)
-Establish `e : ⇑(InfiniteAdeleRing.ringEquiv_mixedSpace K).symm = ⇑(GroundTheory.Global.homeomorphMixedSpace K).symm`. Use function extensionality and compare the values at `x`. Apply `(InfiniteAdeleRing.ringEquiv_mixedSpace K).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, ← GroundTheory.Global.homeomorphMixedSpace_apply, Homeomorph.apply_symm_apply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GroundTheory.Global.homeomorphMixedSpace K).symm.continuous`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_psi_symm (K : Type) [Field K] [NumberField K] :
     Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace K).symm := by
@@ -202,7 +202,7 @@ private def cE (D : InfD σ 1) : mixedSpace E ≃+* (Fin 2 × InfinitePlace F �
       (unc (Fin (1 + 1)) (InfinitePlace F)))
 
 /- English proof (translation)
-Use `continuous_pi fun p => ?_` and prove the remaining obligations. Conclude with `(continuous_apply p.2).comp ((continuous_cF F).comp ((continuous_psi F).comp ((continuous_apply p.1).comp (D.cont.comp (continuous_psi_symm E)))))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuous_cE (D : InfD σ 1) : Continuous (cE D) := by
   refine continuous_pi fun p => ?_
@@ -210,7 +210,7 @@ private theorem continuous_cE (D : InfD σ 1) : Continuous (cE D) := by
     ((continuous_apply p.1).comp (D.cont.comp (continuous_psi_symm E)))))
 
 /- English proof (translation)
-Use `(continuous_psi E).comp (D.cont_symm.comp (continuous_pi fun s => ?_))` and prove the remaining obligations. Conclude with `(continuous_psi_symm F).comp ((continuous_cF_symm F).comp (continuous_pi fun u => continuous_apply (s, u)))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuous_cE_symm (D : InfD σ 1) : Continuous (cE D).symm := by
   refine (continuous_psi E).comp (D.cont_symm.comp (continuous_pi fun s => ?_))
@@ -225,9 +225,9 @@ private theorem ent_comp (D : InfD σ 1) (n : ℕ) (g : archGroup E n) (s : Fin 
       entC (cE D) n ((g : (ArchMatrix E n)ˣ) : ArchMatrix E n) (s, u) := rfl
 
 /- English proof (translation)
-Rewrite using `[(UpperTheory.ConvolutionTheory.L1.positionOf F E σ 1 D).2 n g]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h ⟨s, u⟩`. Rewrite using `[← ent_comp]`. Conclude with `(unitary_cF F n _).1 (h s) u`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h s`. Use `(unitary_cF F n _).2 fun u => ?_` and prove the remaining obligations. Rewrite using `[ent_comp D n g s u]`. Conclude with `h (s, u)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unitary_cE (D : InfD σ 1) (n : ℕ) (g : archGroup E n) : g ∈ archCompact E n ↔
     ∀ p, entC (cE D) n ((g : (ArchMatrix E n)ˣ) : ArchMatrix E n) p ∈ unitaryGroup (Fin n) ℂ := by
@@ -246,7 +246,7 @@ end co
 end UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ σ D`. Use `⟨mkCo (cF F) (continuous_cF F) (continuous_cF_symm F) (unitary_cF F), mkCo (cE D) (continuous_cE D) (continuous_cE_symm D) (unitary_cE D), fun n g s u => ?_⟩` and prove the remaining obligations. Conclude with `Units.ext (ent_comp D n g s u).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.coEx :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyComplex F] [IsTotallyComplex E] (σ : E ≃ₐ[F] E) (D : InfD σ 1), ∃ (CF : Co F (InfinitePlace F)) (CE : Co E (Fin 2 × InfinitePlace F)),

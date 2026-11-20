@@ -17,7 +17,7 @@ namespace GlobalTheory.PullPow
 variable {X Y Z : Scheme.{0}}
 
 /- English proof (translation)
-Use `show (∏ k : PUnit, _) = (∏ k : PUnit, _) ^ n`. Use `erw [Fintype.prod_unique, Fintype.prod_unique, zpow_one, zpow_one]`. Use `erw [map_zpow, map_zpow]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pull_pw_g (H : LB X) (g : Z ⟶ X) (n : ℤ) (i j : ((GlobalTheory.AbLaw.pw H n).pull g).ι) :
     ((GlobalTheory.AbLaw.pw H n).pull g).g i j = ((H.pull g).g i j) ^ n := by
@@ -27,7 +27,7 @@ theorem pull_pw_g (H : LB X) (g : Z ⟶ X) (n : ℤ) (i j : ((GlobalTheory.AbLaw
   rfl
 
 /- English proof (translation)
-Simplify using `only [LB.div, pull_pw_g]`. Use `erw [map_zpow, map_zpow, ← inv_zpow, ← mul_zpow]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem div_pull_pw_g (M : LB X) (H : LB Y) (f : Z ⟶ X) (g : Z ⟶ Y) (n : ℤ)
     (p q : (LB.div ((GlobalTheory.AbLaw.pw H n).pull g) ((GlobalTheory.AbLaw.pw M n).pull f)).ι) :
@@ -42,7 +42,7 @@ def isoPow {M : LB X} {H : LB Y} {f : Z ⟶ X} {g : Z ⟶ Y} (w : LB.Iso (M.pull
   s := fun p => (w.s p) ^ n
 
 /- English proof (translation)
-Introduce `p q`. Rewrite using `[div_pull_pw_g]`. Use `erw [map_zpow, map_zpow]`. Use `erw [hw p q, mul_zpow]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isoPow_isGen {M : LB X} {H : LB Y} {f : Z ⟶ X} {g : Z ⟶ Y} (w : LB.Iso (M.pull f) (H.pull g))
     (hw : w.IsGen) (n : ℤ) : (isoPow w n).IsGen := by
@@ -53,7 +53,7 @@ theorem isoPow_isGen {M : LB X} {H : LB Y} {f : Z ⟶ X} {g : Z ⟶ Y} (w : LB.I
   rfl
 
 /- English proof (translation)
-Introduce `_ _ _ _ w _ _ hw n` and use `⟨isoPow w n, isoPow_isGen w hw n⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_isGen_iso_pw : ∀ {X Y Z : Scheme.{0}} (M : LB X) (H : LB Y) (f : Z ⟶ X) (g : Z ⟶ Y)
     (w : LB.Iso (M.pull f) (H.pull g)), M.IsLB → H.IsLB → w.IsGen → ∀ n : ℤ,

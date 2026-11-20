@@ -14,7 +14,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
 /- English proof (translation)
-The claim follows from `X.2 i`.
+A detailed English derivation is pending.
 -/
 theorem memA {a : ℕ} (X : lamA v Λ a) (i : Fin a) : (X : TupV (E := E) v n a) i ∈ latLoc (E := E) v Λ :=
   X.2 i

@@ -7,15 +7,13 @@ open scoped ComplexOrder
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ P l0 T ν' m₀ Θ TP f χ admitted ε hε w hw hne Y`. Unfold `TB.PSDOn`. Use `set F := D.cutF T.base χ f ε`. Use `set dd := Top.dH P l0 (Formalism.QuantumDeterminants.Tz P.k P.r T.base.z * Formalism.QuantumDeterminants.Tz P.k P.r T.base.z') w`. Set `X : Wd.Ix (Fin w.length) → M.Ty P → C.LPt → (Wq →L[ℂ] Wp)` to `fun e ρ p => (TP.E ρ).comp (D.vecV T.base ν' m₀ (Θ.Θ w e F) p)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : Wd.Ix (Fin w.length) → M.Ty P → Matrix Y Y ℂ` to `fun e ρ => Matrix.of fun x y => ((dd (x : C.LPt) e ρ * dd (y : C.LPt) e ρ : ℝ) : ℂ) * B.hsInner (X e ρ x) (X e ρ y)`. Establish `hterm : ∀ e ρ, (g e ρ).PosSemidef`. Introduce `e ρ`. Set `v : Y → _` to `fun x => ((dd (x : C.LPt) e ρ : ℝ) : ℂ) • B.hsVec (X e ρ x)`. Establish `h` using `(Matrix.posSemidef_gram ℂ v).transpose`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `heq : g e ρ = (Matrix.gram ℂ v).transpose`. Use extensionality with `x y`. Simplify using `only [g, v, Matrix.of_apply, Matrix.transpose_apply, Matrix.gram_apply, inner_smul_left, inner_smul_right, B.hsInner, Complex.conj_ofReal]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Conclude with `h`. Establish `hsum : (Matrix.of fun x y : Y => Top.topOf P l0 T ν' m₀ Θ TP F w x y) = ∑ e, ∑ ρ, g e ρ`. Use extensionality with `x y`. Simplify using `[g, X, dd, Top.topOf, Matrix.sum_apply]`.
-
-Rewrite using `[hsum]`. Use `Finset.sum_induction _ Matrix.PosSemidef (fun _ _ ha hb => ha.add hb) Matrix.PosSemidef.zero (fun e _ => ?_)` and prove the remaining obligations. Conclude with `Finset.sum_induction _ Matrix.PosSemidef (fun _ _ ha hb => ha.add hb) Matrix.PosSemidef.zero (fun ρ _ => hterm e ρ)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem top_positive_semidefinite : Top.TopPSDT := by
   intro Wp Wq _ _ _ _ _ P l0 T ν' m₀ Θ TP f χ admitted ε hε w hw hne Y

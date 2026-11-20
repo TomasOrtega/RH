@@ -12,19 +12,17 @@ open Formalism.InvariantFactorPaths.G7 (lgF at1 UnrOK)
 namespace OrbitCoverLemmas
 
 /- English proof (translation)
-Establish `hE` using `expSpec K l hl`. Establish `hsum0 : ∀ r', MvPowerSeries.constantCoeff (∑ r, MvPowerSeries.C (M r' r) * at1 ((true, r) : Bool × ι) (lgF K l)) = 0`. Introduce `r'`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, Pair.constantCoeff_inVar_eq_zero _ (Pair.cc_lgF hl), mul_zero]`. Take `⟨φ, hφdef⟩ : ∃ φ : Bool × ι → MvPowerSeries (Bool × ι) K, φ = fun x : Bool × ι => if x.1 = true then PowerSeries.subst (∑ r, MvPowerSeries.C (M x.2 r) * at1 (true, r) (lgF K l)) (expF K l) else (MvPowerSeries.X x : MvPowerSeries (Bool × ι) K)` from `⟨_, rfl⟩`. Rewrite using `[← hφdef]`. Establish `hφ0 : ∀ x, MvPowerSeries.constantCoeff (φ x) = 0`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hφdef]`. Simplify using `only`. Use `split_ifs`. Conclude with `Pair.cc_ps (hsum0 _) hE.1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφ : MvPowerSeries.HasSubst φ` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hφ0`. Rewrite using `[Pair.subst_sum hφ, Finset.mul_sum]`. Establish `h1 : ∀ r', MvPowerSeries.subst φ (MvPowerSeries.C (w r') * at1 (true, r') (lgF K l)) = MvPowerSeries.C (w r') * ∑ r, MvPowerSeries.C (M r' r) * at1 (true, r) (lgF K l)`. Introduce `r'`. Rewrite using `[TorusDerivation.subst_C_mul hφ, Pair.subst_single_var hφ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `e : φ (true, r') = PowerSeries.subst (∑ r, MvPowerSeries.C (M r' r) * at1 (true, r) (lgF K l)) (expF K l)`. Rewrite using `[hφdef]`. Conclude with `if_pos rfl`. Rewrite using `[e, Pair.ps_comp (hsum0 r') hE.1, hE.2.1, PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero (hsum0 r'))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [h1, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← map_mul, h r, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun r' _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem odd_gen {K : Type} [Field K] {l : ℕ} (hl : 2 ≤ l) {ι : Type} [Fintype ι]
     (M : ι → ι → K) (e : K) (w : ι → K) (h : ∀ r, e * w r = ∑ r', M r' r * w r') :
@@ -76,7 +74,7 @@ theorem odd_gen {K : Type} [Field K] {l : ℕ} (hl : 2 ≤ l) {ι : Type} [Finty
   ring
 
 /- English proof (translation)
-Establish `hpw : ∀ x, σ^[k] x = (σ ^ k) x` using `fun x => by rw [RingHom.coe_pow]`. Rewrite using `[hpw, map_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[← hpw, iterate_map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem iter_sum {K : Type} [Field K] (σ : K →+* K) (k : ℕ) {ι : Type} [Fintype ι] (f g : ι → K) :
     σ^[k] (∑ r, f r * g r) = ∑ r, σ^[k] (f r) * σ^[k] (g r) := by
@@ -88,9 +86,9 @@ theorem iter_sum {K : Type} [Field K] (σ : K →+* K) (k : ℕ) {ι : Type} [Fi
 end OrbitCoverLemmas
 
 /- English proof (translation)
-Establish `hs' : ¬ s.val % 2 = 0` using `by omega`. Unfold `zXY`. Rewrite using `[if_neg hs']`. Use `OrbitCoverLemmas.odd_gen hl (fun r' r => σ (c r' r)) _ _ fun r => ?_` and prove the remaining obligations. Rewrite using `[← iterate_map_mul, hact r, OrbitCoverLemmas.iter_sum]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun r' _ => ?_` and prove the remaining obligations. Rewrite using `[InverseCommuting.iter_odd (hc r r') hs']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eigenOdd_conj (K : Type) [Field K] (l d : ℕ) [NeZero d] (σ : K →+* K) (hl : 2 ≤ l)
     (ι : Type) [Fintype ι] (om oms : ι → K) (b : K) (c : ι → ι → K)
@@ -109,7 +107,7 @@ theorem eigenOdd_conj (K : Type) [Field K] (l d : ℕ) [NeZero d] (σ : K →+* 
   rw [InverseCommuting.iter_odd (hc r r') hs']
 
 /- English proof (translation)
-Establish `h` using `eigenOdd_conj K l d σ hl ι om oms b (fun r' r => σ (c r' r)) (fun r r' => by rw [hc]) hact s hs`. Simplify `h` using `only [hc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eigenOdd_plain (K : Type) [Field K] (l d : ℕ) [NeZero d] (σ : K →+* K) (hl : 2 ≤ l)
     (ι : Type) [Fintype ι] (om oms : ι → K) (b : K) (c : ι → ι → K)
@@ -124,7 +122,7 @@ theorem eigenOdd_plain (K : Type) [Field K] (l d : ℕ) [NeZero d] (σ : K →+*
   simpa only [hc] using h
 
 /- English proof (translation)
-The claim follows from `eigenOdd_plain`.
+A detailed English derivation is pending.
 -/
 theorem odd_eigenspace : EigenOdd := eigenOdd_plain
 
@@ -134,9 +132,9 @@ def blk {K : Type} [Field K] (lam : K) (k x : Bool) : K :=
   if x = false then (if k = false then 1 else lam) else (if k = false then 2⁻¹ else -lam * 2⁻¹)
 
 /- English proof (translation)
-Establish `s2 : σ 2 = 2` using `map_ofNat σ 2`. Apply the tactic sequence `cases x <;> cases x' <;> simp [blk, map_inv₀, s2]`. Take the linear combination `h`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-h`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `-h`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem blk_gram {K : Type} [Field K] (σ : K →+* K) (lam : K) (h2 : (2 : K) ≠ 0)
     (h : lam * σ lam = -1) (x x' : Bool) :
@@ -149,9 +147,9 @@ theorem blk_gram {K : Type} [Field K] (σ : K →+* K) (lam : K) (h2 : (2 : K) �
   · field_simp; linear_combination h
 
 /- English proof (translation)
-Establish `e : (2 * m + 1) ^ 2 - 1 = (m * (2 * m + 2)) * 2`. Establish `: (2 * m + 1) ^ 2 = (m * (2 * m + 2)) * 2 + 1` using `by ring`. Use linear arithmetic over natural numbers and integers. Establish `hp : IsPrimitiveRoot (ζ ^ (m * (2 * m + 2))) 2`. Use `hζ.pow_of_dvd (p := m * (2 * m + 2)) (by positivity) (by rw [e]; exact Dvd.intro _ rfl)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e, Nat.mul_div_cancel_left _ (by positivity)]`. Then use the resulting hypothesis. Use `hp.eq_neg_one_of_two_right` as an intermediate fact. Rewrite using `[map_pow, hσ, ← this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lam_spec {K : Type} [Field K] (σ : K →+* K) (m : ℕ) (hm : 0 < m) (ζ : K)
     (hζ : IsPrimitiveRoot ζ ((2 * m + 1) ^ 2 - 1)) (hσ : σ ζ = ζ ^ (2 * m + 1)) :
@@ -166,11 +164,11 @@ theorem lam_spec {K : Type} [Field K] (σ : K →+* K) (m : ℕ) (hm : 0 < m) (�
   rw [map_pow, hσ, ← this]; ring
 
 /- English proof (translation)
-Establish `h2 : ‖(2 : K)‖ ≤ 1`. Use `IsUltrametricDist.norm_natCast_le_one K 2` as an intermediate fact. Simplify using `using this`. Use `le_antisymm h2 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hlt` using `[not_le]`. Establish `hm : ‖(m : K)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one K m`. Establish `e : (1 : K) = ((2 * m + 1 : ℕ) : K) + -(2 * (m : K))` using `by push_cast; ring`. Establish `h1 : ‖(1 : K)‖ < 1`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt h ?_)` and prove the remaining obligations. Rewrite using `[norm_neg, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[norm_one]`. Conclude with `lt_irrefl _ h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_two {K : Type} [NormedField K] [IsUltrametricDist K] (m : ℕ)
     (h : ‖((2 * m + 1 : ℕ) : K)‖ < 1) : ‖(2 : K)‖ = 1 := by
@@ -194,27 +192,27 @@ theorem norm_two {K : Type} [NormedField K] [IsUltrametricDist K] (m : ℕ)
 end OrbitCoverLemmas
 
 /- English proof (translation)
-Introduce `K _ _ _ l σ hU hζ E _ _`. Take `⟨ζ, hζ⟩` from `hζ`. Take `⟨hp, hl2, hnl, -, -⟩` from `id hU`. Choose the witnesses or unpack the hypotheses as in `⟨m, rfl⟩ : ∃ m, l = 2 * m + 1 := by`. Break down `hp.eq_two_or_odd' with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hm : 0 < m` using `by omega`. Establish `hσζ : σ ζ = ζ ^ (2 * m + 1)` using `teichSigma K _ 2 σ hU (by norm_num) ζ hζ.pow_eq_one`. Establish `hN0 : (2 * m + 1) ^ 2 - 1 ≠ 0`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 < (2 * m + 1) ^ 2` using `Nat.one_lt_pow (by norm_num) (by omega)`. Use linear arithmetic over natural numbers and integers. Establish `nζ : ‖ζ‖ = 1` using `FormalExponential.norm_eq_one_of_pow hN0 hζ.pow_eq_one`. Establish `hσσ : σ (σ ζ) = ζ`. Rewrite using `[hσζ, map_pow, hσζ, ← pow_mul, ← sq]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (2 * m + 1) ^ 2 = ((2 * m + 1) ^ 2 - 1) + 1` using `by omega`. Rewrite using `[e, pow_succ, hζ.pow_eq_one, one_mul]`. Establish `hlam` using `OrbitCoverLemmas.lam_spec σ m hm ζ hζ hσζ`. Establish `n2 : ‖(2 : K)‖ = 1`. Use `OrbitCoverLemmas.norm_two m ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hnl]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt)`. Establish `h2 : (2 : K) ≠ 0` using `two_ne_zero`. Establish `nlam : ‖ζ ^ m‖ = 1` using `by rw [norm_pow, nζ, one_pow]`. Establish `s2 : σ 2 = 2` using `map_ofNat σ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hblk : ∀ k x : Bool, ‖OrbitCoverLemmas.blk (ζ ^ m) k x‖ ≤ 1 ∧ σ (σ (OrbitCoverLemmas.blk (ζ ^ m) k x)) = OrbitCoverLemmas.blk (ζ ^ m) k x`. Introduce `k x`. Apply the tactic sequence `cases k <;> cases x <;> simp [OrbitCoverLemmas.blk, nlam, hσσ, n2, s2, map_inv₀]`. Use `⟨fun k x => if k.2 = x.2 then OrbitCoverLemmas.blk (ζ ^ m) k.1 x.1 else 0, fun k x => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Conclude with `hblk _ _`. Simplify using the standard rewrite rules. Introduce and unpack `⟨b, e⟩ ⟨b', e'⟩`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Distinguish the cases in `h : e = e'`. Substitute `h` using the available equality. Establish `h3 : ∀ k : Bool, ∑ y : E, (if y = e then OrbitCoverLemmas.blk (ζ ^ m) k b else 0) * σ (if y = e then OrbitCoverLemmas.blk (ζ ^ m) k b' else 0) = OrbitCoverLemmas.blk (ζ ^ m) k b * σ (OrbitCoverLemmas.blk (ζ ^ m) k b')`. Introduce `k`. Rewrite using `[Finset.sum_eq_single e]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `y _ hy`. Simplify using `[hy]`. Simplify using the standard rewrite rules. Simplify using `only [h3]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[OrbitCoverLemmas.blk_gram σ _ h2 hlam]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h' => h h'.2)]`. Use `Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun y _ => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y = e`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `: ¬ y = e'` using `fun h' => h (hy ▸ h')`. Simplify using `[this]`. Simplify using `[hy]`.
+A detailed English derivation is pending.
 -/
 theorem gram_matrix_exists : GramExists := by
   intro K _ _ _ l σ hU hζ E _ _

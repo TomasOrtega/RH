@@ -5,7 +5,7 @@ namespace PI.StabSplit.Alg
 variable {R : Type*} [Ring R]
 
 /- English proof (translation)
-Establish `r : P * P - P = 0` using `sub_eq_zero.mpr hPP`. Establish `e : (h * P + (1 - P)) * (h * (1 - P) + P) - h = h * (P * h * (1 - P)) + h * (P * P - P) - P * h * (1 - P) - (P * P - P)` using `by noncomm_ring`. Establish `z : h * (P * h * (1 - P)) + h * (P * P - P) - P * h * (1 - P) - (P * P - P) = 0`. Simplify using `only [hU, r, mul_zero, add_zero, sub_zero]`. Conclude with `sub_eq_zero.mp (e.trans z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem decomp (h P : R) (hPP : P * P = P) (hU : P * h * (1 - P) = 0) :
     (h * P + (1 - P)) * (h * (1 - P) + P) = h := by
@@ -18,11 +18,11 @@ theorem decomp (h P : R) (hPP : P * P = P) (hU : P * h * (1 - P) = 0) :
   exact sub_eq_zero.mp (e.trans z)
 
 /- English proof (translation)
-Establish `a : ρ * κ - h = 0` using `sub_eq_zero.mpr hρκ`. Establish `b : ρ * (1 - P) - (1 - P) = 0` using `sub_eq_zero.mpr hρ`. Establish `c : κ * P - P = 0` using `sub_eq_zero.mpr hκ`. Prove the components needed by the constructor for the conclusion. Establish `e : ρ - (h * P + (1 - P)) = (ρ * κ - h) * P - ρ * (κ * P - P) + (ρ * (1 - P) - (1 - P))` using `by noncomm_ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `z : (ρ * κ - h) * P - ρ * (κ * P - P) + (ρ * (1 - P) - (1 - P)) = 0`. Simplify using `only [a, b, c, mul_zero, zero_mul, add_zero, sub_zero]`. Conclude with `sub_eq_zero.mp (e.trans z)`. Establish `e : κ - (h * (1 - P) + P) = (κ * P - P) + P * κ * (1 - P) + (ρ * κ - h) * (1 - P) - ρ * (P * κ * (1 - P)) - (ρ * (1 - P) - (1 - P)) * κ * (1 - P)` using `by noncomm_ring`. Establish `z : (κ * P - P) + P * κ * (1 - P) + (ρ * κ - h) * (1 - P) - ρ * (P * κ * (1 - P)) - (ρ * (1 - P) - (1 - P)) * κ * (1 - P) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [a, b, c, hκU, mul_zero, zero_mul, add_zero, sub_zero]`. Conclude with `sub_eq_zero.mp (e.trans z)`.
+A detailed English derivation is pending.
 -/
 theorem uniq (h P ρ κ : R) (hρκ : ρ * κ = h) (hρ : ρ * (1 - P) = 1 - P) (hκ : κ * P = P)
     (hκU : P * κ * (1 - P) = 0) :
@@ -45,9 +45,9 @@ theorem uniq (h P ρ κ : R) (hρκ : ρ * κ = h) (hρ : ρ * (1 - P) = 1 - P) 
     exact sub_eq_zero.mp (e.trans z)
 
 /- English proof (translation)
-Establish `b : ρ * (1 - P) - (1 - P) = 0` using `sub_eq_zero.mpr hρ`. Establish `c : κ * P - P = 0` using `sub_eq_zero.mpr hκ`. Establish `e : ρ * κ - κ * ρ = ρ * (κ * P - P) + ρ * (P * κ * (1 - P)) - P * κ * (1 - P) + (ρ * (1 - P) - (1 - P)) * κ * (1 - P) + (1 - P) * ρ * P - (κ * P - P) * ρ * P - κ * ((1 - P) * ρ * P) - κ * (ρ * (1 - P) - (1 - P))` using `by noncomm_ring`. Establish `z : ρ * (κ * P - P) + ρ * (P * κ * (1 - P)) - P * κ * (1 - P) + (ρ * (1 - P) - (1 - P)) * κ * (1 - P) + (1 - P) * ρ * P - (κ * P - P) * ρ * P - κ * ((1 - P) * ρ * P) - κ * (ρ * (1 - P) - (1 - P)) = 0`. Simplify using `only [b, c, hρM, hκU, mul_zero, zero_mul, add_zero, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.mp (e.trans z)`.
+A detailed English derivation is pending.
 -/
 theorem comm (P ρ κ : R) (hρ : ρ * (1 - P) = 1 - P) (hκ : κ * P = P)
     (hρM : (1 - P) * ρ * P = 0) (hκU : P * κ * (1 - P) = 0) : ρ * κ = κ * ρ := by
@@ -64,9 +64,9 @@ theorem comm (P ρ κ : R) (hρ : ρ * (1 - P) = 1 - P) (hκ : κ * P = P)
   exact sub_eq_zero.mp (e.trans z)
 
 /- English proof (translation)
-Establish `r : P * P - P = 0` using `sub_eq_zero.mpr hPP`. Establish `h1 : (g - 1) * P = P * ((g - 1) * P)`. Establish `e : (g - 1) * P - P * ((g - 1) * P) = (1 - P) * g * P + (P * P - P)` using `by noncomm_ring`. Rewrite `e` using `[hgM, r, add_zero]`. Conclude with `sub_eq_zero.mp e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : g - 1 = (g - 1) * P`. Establish `e : (g - 1) - (g - 1) * P = (g - 1) * (1 - P)` using `by noncomm_ring`. Rewrite `e` using `[hgQ]`. Conclude with `sub_eq_zero.mp e`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem nilp (P g : R) (m : ℕ) (hPP : P * P = P) (hgQ : (g - 1) * (1 - P) = 0)
     (hgM : (1 - P) * g * P = 0) (hm : (g - 1) ^ m * P = 0) : (g - 1) ^ (m + 1) = 0 := by
@@ -88,11 +88,9 @@ theorem nilp (P g : R) (m : ℕ) (hPP : P * P = P) (hgQ : (g - 1) * (1 - P) = 0)
 variable [StarRing R]
 
 /- English proof (translation)
-Establish `r1 : star P * H - H * P = 0` using `sub_eq_zero.mpr hPH`. Establish `r2 : P * P - P = 0` using `sub_eq_zero.mpr hPP`. Establish `r3 : star h * H * h - H = 0` using `sub_eq_zero.mpr hh`. Establish `r5 : (1 - star P) * (star h * star P) = 0`. Simplify `congrArg star hU` using `only [star_mul, star_sub, star_one, star_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e : star (h * (1 - P) + P) * H * (h * (1 - P) + P) - H = H * (P * P - P) + H * (P * P - P) - (star P * H - H * P) * (1 - P) + (1 - star P) * (star h * H * h - H) * (1 - P) + (1 - star P) * (star h * star P) * H - (1 - star P) * star h * (star P * H - H * P) + H * (P * h * (1 - P) …`. Simplify using `only [star_add, star_mul, star_sub, star_one]`. Use `noncomm_ring`. Establish `z : H * (P * P - P) + H * (P * P - P) - (star P * H - H * P) * (1 - P) + (1 - star P) * (star h * H * h - H) * (1 - P) + (1 - star P) * (star h * star P) * H - (1 - star P) * star h * (star P * H - H * P) + H * (P * h * (1 - P)) + (star P * H - H * P) * h * (1 - P) + (star P * H …`. Simplify using `only [r1, r2, r3, r5, hU, mul_zero, zero_mul, add_zero, sub_zero]`.
-
-Conclude with `sub_eq_zero.mp (e.trans z)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitK (H P h : R) (hH : star H = H) (hPH : star P * H = H * P) (hPP : P * P = P)
     (hh : star h * H * h = H) (hU : P * h * (1 - P) = 0) :

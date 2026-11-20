@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.IndLine
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM v hv _hT ξ hfix`. Establish `hξ : ξ ∈ (SB (Fin a × Fin (a + a') → Fv F v)).map (Rf.p v)`. Rewrite using `[hM.fin.onto v]`. Conclude with `Submodule.mem_top`. Take `⟨φ, hφ, hpφ⟩` from `Submodule.mem_map.1 hξ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `GlobalTheory.T.local_theta_nonsplit_invariant hKP F E σ B a a' G X om om' R Rf hM v hv φ hφ (fun k hk φ₁ hφ₁ hA => (hfix k hk φ hφ φ₁ hφ₁ hA hpφ).trans hpφ.symm)`. Conclude with `⟨c, hpφ ▸ hc⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fixed_eq_smul_pVac : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)

@@ -15,7 +15,7 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 def trR (a : E) : ℝ := (∑ σ : E →+* ℂ, σ a).re
 
 /- English proof (translation)
-Establish `h2` using `trace_eq_sum_embeddings (K := ℚ) (L := E) (E := ℂ) (x := a)`. Establish `h3 : ∑ σ : E →ₐ[ℚ] ℂ, σ a = ∑ φ : E →+* ℂ, φ a` using `Fintype.sum_equiv (RingHom.equivRatAlgHom (R := E) (S := ℂ)).symm _ _ fun σ ↦ rfl`. Unfold `trR`. Rewrite using `[← h3, ← h2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trR_eq (a : E) : trR a = ((Algebra.trace ℚ E a : ℚ) : ℝ) := by
   have h2 := trace_eq_sum_embeddings (K := ℚ) (L := E) (E := ℂ) (x := a)
@@ -26,13 +26,13 @@ theorem trR_eq (a : E) : trR a = ((Algebra.trace ℚ E a : ℚ) : ℝ) := by
   simp
 
 /- English proof (translation)
-Simplify using `[trR, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trR_add (a b : E) : trR (a + b) = trR a + trR b := by
   simp [trR, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `trR`. Simplify using `only [hσ, ← star_sum]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem trR_star (hσ : ∀ (φ : E →+* ℂ) a, φ (star a) = star (φ a)) (a : E) : trR (star a) = trR a := by
   unfold trR
@@ -44,9 +44,9 @@ structure Model (S : HSpace E) where
   hY : ∀ σ (y : S.V), ∑ i, ‖(Y σ *ᵥ fun j ↦ σ (S.frame.repr y j)) i‖ ^ 2 = (σ (S.hT y y)).re
 
 /- English proof (translation)
-Establish `h : ∀ σ : E →+* ℂ, ∃ Y : Matrix (Fin S.rank) (Fin S.rank) ℂ, ∀ y : S.V, ∑ i, ‖(Y *ᵥ fun j ↦ σ (S.frame.repr y j)) i‖ ^ 2 = (σ (S.hT y y)).re`. Introduce `σ`. Establish `hs` using `hsig σ`. Rewrite `hs` using `[hpos σ]`. Take `⟨Y, -, hY⟩` from `S.frame_of_pos σ (fun a ↦ hσ σ a) hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Y, hY⟩`. Use `choose Y hY using h`. Conclude with `⟨⟨Y, hY⟩⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem model_exists (S : HSpace E) (hσ : ∀ (φ : E →+* ℂ) a, φ (star a) = star (φ a)) (hsig : S.SigOK)
     (hpos : S.IsPosDef) : Nonempty (Model S) := by
@@ -66,7 +66,7 @@ def vec {S : HSpace E} (M : Model S) (σ : E →+* ℂ) (x : S.V) : Fin S.rank �
   M.Y σ *ᵥ fun j ↦ σ (S.frame.repr x j)
 
 /- English proof (translation)
-Unfold `vec`. Rewrite using `[← Matrix.mulVec_add]`. Use `congr 1`. Use extensionality with `j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vec_add {S : HSpace E} (M : Model S) (σ : E →+* ℂ) (x y : S.V) :
     vec M σ (x + y) = vec M σ x + vec M σ y := by
@@ -77,7 +77,7 @@ theorem vec_add {S : HSpace E} (M : Model S) (σ : E →+* ℂ) (x y : S.V) :
   simp
 
 /- English proof (translation)
-Unfold `vec`. Rewrite using `[← Matrix.mulVec_smul]`. Use `congr 1`. Use extensionality with `j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vec_rat {S : HSpace E} (M : Model S) (σ : E →+* ℂ) (r : ℚ) (x : S.V) :
     vec M σ ((r : E) • x) = (r : ℂ) • vec M σ x := by
@@ -107,7 +107,7 @@ theorem psi_apply {S : HSpace E} (M : Model S) (x : S.V) (p : Idx S) :
     psi M x p = if p.2.2 then (vec M p.1 x p.2.1).re else (vec M p.1 x p.2.1).im := rfl
 
 /- English proof (translation)
-Use extensionality with `p`. Rewrite using `[PiLp.smul_apply, psi_apply, psi_apply, vec_rat]`. Establish `: ((r : ℂ)) = ((r : ℝ) : ℂ)` using `by simp`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp [smul_eq_mul, Complex.mul_re, Complex.mul_im]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem psi_rat {S : HSpace E} (M : Model S) (r : ℚ) (x : S.V) : psi M ((r : E) • x) = (r : ℝ) • psi M x := by
   ext p
@@ -117,9 +117,9 @@ theorem psi_rat {S : HSpace E} (M : Model S) (r : ℚ) (x : S.V) : psi M ((r : E
   split_ifs <;> simp [smul_eq_mul, Complex.mul_re, Complex.mul_im]
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type, trR, Complex.re_sum]`. Use `Finset.sum_congr rfl fun σ _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type, ← M.hY σ x]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool, psi_apply, psi_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [if_true, Bool.false_eq_true, if_false, Real.norm_eq_abs, sq_abs]`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Simplify using `only [vec]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_psi_sq {S : HSpace E} (M : Model S) (x : S.V) : ‖psi M x‖ ^ 2 = trR (S.hT x x) := by
   rw [EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type, trR, Complex.re_sum]
@@ -133,9 +133,9 @@ theorem norm_psi_sq {S : HSpace E} (M : Model S) (x : S.V) : ‖psi M x‖ ^ 2 =
   ring
 
 /- English proof (translation)
-Rewrite using `[real_inner_eq_norm_add_mul_self_sub_norm_mul_self_sub_norm_mul_self_div_two, ← map_add]`. Establish `h1` using `norm_psi_sq M (x + y)`. Establish `h2` using `norm_psi_sq M x`. Establish `h3` using `norm_psi_sq M y`. Rewrite `h1`, `h2`, `h3` using `[sq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1, h2, h3]`. Establish `hsym : S.hT y x = star (S.hT x y)` using `(S.herm.eq x y).symm`. Simplify using `only [map_add, LinearMap.add_apply, trR_add, hsym, trR_star hσ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_psi {S : HSpace E} (hσ : ∀ (φ : E →+* ℂ) a, φ (star a) = star (φ a)) (M : Model S) (x y : S.V) :
     ⟪psi M x, psi M y⟫_ℝ = trR (S.hT x y) := by

@@ -71,7 +71,7 @@ def locBox (D : Fin a × Fin M × Fin d → ∀ v : HeightOneSpectrum (𝓞 F), 
 variable {b}
 
 /- English proof (translation)
-The claim follows from `(show IsClopen (Set.pi univ fun c => D c v) from ⟨isClosed_set_pi (fun c _ => (hD.1 c v).1.isClosed), isOpen_set_pi finite_univ (fun c _ => (hD.1 c v).1.isOpen)⟩).preimage (crdH b (Fv F v)).continuous`.
+A detailed English derivation is pending.
 -/
 theorem isClopen_locBox {D : Fin a × Fin M × Fin d → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)}
     (hD : IsBoxD D) (v : HeightOneSpectrum (𝓞 F)) : IsClopen (locBox b D v) :=
@@ -79,14 +79,14 @@ theorem isClopen_locBox {D : Fin a × Fin M × Fin d → ∀ v : HeightOneSpectr
     isOpen_set_pi finite_univ (fun c _ => (hD.1 c v).1.isOpen)⟩).preimage (crdH b (Fv F v)).continuous
 
 /- English proof (translation)
-The claim follows from `(crdH b (Fv F v)).isCompact_preimage.2 (isCompact_univ_pi fun c => (hD.1 c v).2)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_locBox {D : Fin a × Fin M × Fin d → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)}
     (hD : IsBoxD D) (v : HeightOneSpectrum (𝓞 F)) : IsCompact (locBox b D v) :=
   (crdH b (Fv F v)).isCompact_preimage.2 (isCompact_univ_pi fun c => (hD.1 c v).2)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(LocallyConstant.indicator (LocallyConstant.const _ (1 : ℂ)) (isClopen_locBox hD v)).isLocallyConstant, HasCompactSupport.intro' (isCompact_locBox hD v) (isClopen_locBox hD v).isClosed fun Y hY => Set.indicator_of_notMem hY _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSB_locBox {D : Fin a × Fin M × Fin d → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)}
     (hD : IsBoxD D) (v : HeightOneSpectrum (𝓞 F)) :
@@ -96,9 +96,9 @@ theorem isSB_locBox {D : Fin a × Fin M × Fin d → ∀ v : HeightOneSpectrum (
       fun Y hY => Set.indicator_of_notMem hY _⟩
 
 /- English proof (translation)
-Use extensionality with `Y`. Simplify using `only [locBox, latV, mem_preimage, Set.mem_univ_pi, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h x i k`. Establish `h1` using `h (x, i, k)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[hv]`. Conclude with `h1`. Introduce `h c`. Rewrite using `[hv]`. Conclude with `h c.1 c.2.1 c.2.2`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locBox_eq_latV {D : Fin a × Fin M × Fin d → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)}
     (v : HeightOneSpectrum (𝓞 F)) (hv : ∀ c, D c v = (v.adicCompletionIntegers F : Set (Fv F v))) :
@@ -115,9 +115,9 @@ theorem locBox_eq_latV {D : Fin a × Fin M × Fin d → ∀ v : HeightOneSpectru
     exact h c.1 c.2.1 c.2.2
 
 /- English proof (translation)
-Distinguish the cases in `hall : ∀ v, P v`. Rewrite using `[if_pos hall]`. Conclude with `finprod_eq_one_of_forall_eq_one fun v => if_pos (hall v)`. Rewrite `hall` using `[if_neg hall] push Not`. Take `⟨v0, hv0⟩` from `hall`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `finprod_eq_zero _ v0 (if_neg hv0) ?_` and prove the remaining obligations. Use `(eventually_cofinite.1 h).subset fun v hv => ?_` and prove the remaining obligations. Introduce `hP`. Conclude with `hv (if_pos hP)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finprod_ite {α : Type} (P : α → Prop) [DecidablePred P] [Decidable (∀ v, P v)] (h : ∀ᶠ v in cofinite, P v) :
     ∏ᶠ v, (if P v then (1 : ℂ) else 0) = if ∀ v, P v then 1 else 0 := by
@@ -133,11 +133,11 @@ theorem finprod_ite {α : Type} (P : α → Prop) [DecidablePred P] [Decidable (
     exact hv (if_pos hP)
 
 /- English proof (translation)
-Use `set q := crdH b (Af F) W`. Establish `hv : ∀ v, (locBox b D v).indicator (1 : (Fin a → Fin M → Fv F v ⊗[F] E) → ℂ) (projV v W) = if (∀ c, q c v ∈ D c v) then 1 else 0`. Introduce `v`. Establish `e : ∀ c, crdH b (Fv F v) (projV v W) c = q c v` using `fun c => crd_map b (evalV F v) (W c.1 c.2.1) c.2.2`. Rewrite using `[Set.indicator_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [locBox, mem_preimage, Set.mem_univ_pi, e, Pi.one_apply]`. Rewrite using `[finprod_congr hv, finprod_ite _ ?_]`. Rewrite using `[Set.indicator_apply]`. Distinguish the cases in `hq : q ∈ boxS D`. Rewrite using `[if_pos hq, if_pos (fun v c => hq c v)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[if_neg hq, if_neg (fun h' => hq (fun c v => h' v c))]`. Use `filter_upwards [hD.2, eventually_all.2 fun c => (q c).eventually] with v h1 h2 c`. Rewrite using `[h1 c]`. Conclude with `h2 c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finprod_locBox {D : Fin a × Fin M × Fin d → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)}
     (hD : IsBoxD D) (W : Fin a → Fin M → Af F ⊗[F] E) :
@@ -177,7 +177,7 @@ def psiH : (Fin a → Fin M → AF F ⊗[F] E) ≃ₜ
   (crdH (Module.finBasis F E) (AF F)).trans (splitH F _)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Conclude with `(crd_map (Module.finBasis F E) (fstA F) (X c.1 c.2.1) c.2.2).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem psiH_fst (X : Fin a → Fin M → AF F ⊗[F] E) :
     (psiH F E a M X).1 = crdH (Module.finBasis F E) (Ainf F) (projInf X) := by
@@ -185,7 +185,7 @@ theorem psiH_fst (X : Fin a → Fin M → AF F ⊗[F] E) :
   exact (crd_map (Module.finBasis F E) (fstA F) (X c.1 c.2.1) c.2.2).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Conclude with `(crd_map (Module.finBasis F E) (sndA F) (X c.1 c.2.1) c.2.2).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem psiH_snd (X : Fin a → Fin M → AF F ⊗[F] E) :
     (psiH F E a M X).2 = crdH (Module.finBasis F E) (Af F) (projFin X) := by
@@ -193,17 +193,15 @@ theorem psiH_snd (X : Fin a → Fin M → AF F ⊗[F] E) :
   exact (crd_map (Module.finBasis F E) (sndA F) (X c.1 c.2.1) c.2.2).symm
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F E`. Set `Φinf : (Fin a → Fin M → Ainf F ⊗[F] E) → ℂ` to `fun Y => ((f (crdH b (Ainf F) Y) : ℝ) : ℂ)`. Set `Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin a → Fin M → Fv F v ⊗[F] E) → ℂ` to `fun v => (locBox b D v).indicator 1`. Set `Φf : (Fin a → Fin M → Af F ⊗[F] E) → ℂ` to `fun W => ∏ᶠ v, Φv v (projV v W)`. Set `Φ : (Fin a → Fin M → AF F ⊗[F] E) → ℂ` to `fun X => Φinf (projInf X) * Φf (projFin X)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hadm : IsAdm F E Φ`. Use `⟨_, b, Φinf, Φf, Φv, ?_, ?_, ⟨fun v => isSB_locBox hD v, ?_, fun _ => rfl⟩, fun _ => rfl⟩` and prove the remaining obligations. Conclude with `Complex.continuous_ofReal.comp (f.continuous.comp (crdH b (Ainf F)).continuous)`. Conclude with `(f.hasCompactSupport.comp_homeomorph (crdH b (Ainf F))).comp_left Complex.ofReal_zero`. Use `filter_upwards [hD.2] with v hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `congrArg (fun s => s.indicator (1 : (Fin a → Fin M → Fv F v ⊗[F] E) → ℂ)) (locBox_eq_latV v hv)`. Establish `hΦ : ∀ X, Φ X = ((f (psiH F E a M X).1 * (boxS D).indicator (fun _ => (1 : ℝ)) (psiH F E a M X).2 : ℝ) : ℂ)`. Introduce `X`. Establish `e2 : Φf (projFin X) = (boxS D).indicator 1 ((psiH F E a M X).2)`. Rewrite using `[psiH_snd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Conclude with `finprod_locBox hD (projFin X)`. Simplify using `only [Φ, e2, psiH_fst, Φinf, b]`. Rewrite using `[Complex.ofReal_mul]`. Use `congr 1`. Distinguish the cases in `hq : (psiH F E a M X).2 ∈ boxS D`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_mem hq, Set.indicator_of_mem hq]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hq, Set.indicator_of_notMem hq]`. Simplify using the standard rewrite rules. Use `h Φ hadm` as an intermediate fact.
-
-Simplify using `only [hΦ] at this`. Rewrite `this` using `[integral_complex_ofReal, integral_complex_ofReal]`. Conclude with `this` after adjusting the coercions.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key_int (ν1 ν2 : Measure (Fin a → Fin M → AF F ⊗[F] E))
     (h : ∀ Φ, IsAdm F E Φ → ∫ X, Φ X ∂ν1 = ∫ X, Φ X ∂ν2)

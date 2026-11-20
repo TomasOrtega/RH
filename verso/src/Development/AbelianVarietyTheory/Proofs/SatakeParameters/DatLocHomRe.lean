@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwU
 
 /- English proof (translation)
-Introduce `D cc SS cl a b a' b' ha hb N N' M M' Ξ hN hN' h`. Substitute `ha hb` using the available equality. Consider the cases of `eq_of_heq hN`. Consider the cases of `eq_of_heq hN'`. Establish `hx : (fun z => Ξ (homRe rfl rfl z)) = Ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Use `congr 1`. Rewrite using `[hx]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem datLoc_homRe : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ) {a b a' b' : ℕ} (ha : a = a') (hb : b = b') (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)) (M : Submodule (𝓞 D.host.E) (Fin a' → D.host.E)) (M' : Submodule (𝓞 D.host.E) (Fin b' → D.host.E)) (Ξ : Formalism.L2.Col.HomE D.host.E a' b' → ℂ), HEq N M → HEq N' M' → DatLoc D cc SS cl M M' Ξ → DatLoc D cc SS cl N N' (fun z => Ξ (homRe ha hb z)) := by
   intro D cc SS cl a b a' b' ha hb N N' M M' Ξ hN hN' h

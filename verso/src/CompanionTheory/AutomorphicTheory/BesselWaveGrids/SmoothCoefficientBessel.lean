@@ -6,20 +6,20 @@ namespace CompanionTheory.WaveGrid.Coef
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P Formalism.FourierDecayAlt.P.CutMP Formalism.FourierDecayAlt.P.CutMP.SmoothTransferRegularity Formalism.QuantumDeterminants MeasureTheory
 
 /- English proof (translation)
-The claim follows from `gRegJ_of nilpotent_derivative unitary_capelli_holds group_equations_post_holds smooth_of_coefficients_holds (gRegScalar_of group_chart_holds chart_equations_holds classical_to_weak_solution elliptic_regularity_weighted JfS.symbol_nilpotent_holds lie_stabilizer_splitting)`.
+A detailed English derivation is pending.
 -/
 theorem global_regularity_jacobi : GRegJ :=
   gRegJ_of nilpotent_derivative unitary_capelli_holds group_equations_post_holds smooth_of_coefficients_holds
     (gRegScalar_of group_chart_holds chart_equations_holds classical_to_weak_solution elliptic_regularity_weighted JfS.symbol_nilpotent_holds lie_stabilizer_splitting)
 
 /- English proof (translation)
-Introduce `P Wp Wq _ _ _ _ _ _ p f A hA hCk hCC heig`. Establish `hThr : JF.TransportedAlt P.k P.r A (2 * P.r + P.k + 1)` using `hA _ (by`. Unfold `CompanionTheory.JfS.NN`. Use polynomial arithmetic with `[Nat.zero_le (2 * P.r * (2 * P.r + P.k + 1) * (2 * P.r + P.k + 1))])`. Establish `hF` using `Gr.jf_mem_FFlM p.T.base A (2 * P.r + P.k + 1) f hThr (hCC _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Take `⟨_, _, _, _, _, hTy, hTy'⟩` from `p.hP`. Use `global_regularity_jacobi P.k P.r Wp Wq p.T.base _ _ (B.JF p.T.base f) hTy hTy' hF fun Y => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `heig Y`. Use `⟨c, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hgG : g ∈ B.GV P.k P.r` using `hg.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hCkn : B.CkOn ((2 * P.r + P.k + 1 : ℕ) : ℕ∞) (B.GV P.k P.r) f` using `B5.ckOn_mono le_top hCk`. Rewrite using `[casimir_under_jacquet_integral P.k P.r Wp Wq p.T.base A (2 * P.r + P.k + 1) f (Y : ℂ) le_rfl hThr (hCC _) _ hg]`. Establish `hint : ∀ᵐ q ∂p.T.base.μSS, JF.xiP p.T.base q • Q.CV P.k P.r (Y : ℂ) (B.rho p.T.base q f) g = c • (JF.xiP p.T.base q • B.rho p.T.base q f g)` using `by filter_upwards [B7.ae_inSS p.T.base] with q hq`. Rewrite using `[capelli_rho_commute P.k P.r _ _ p.T.base (Y : ℂ) f q hq hCkn _ hgG]`. Establish `hs` using `B7.sgs_mem p.T.base hq hgG`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [B.rho]`. Rewrite using `[hc _ hs, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, smul_comm]`. Rewrite using `[integral_congr_ae hint, integral_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem smooth_coefficient_bessel : SmoothKB := by
   intro P Wp Wq _ _ _ _ _ _ p f A hA hCk hCC heig

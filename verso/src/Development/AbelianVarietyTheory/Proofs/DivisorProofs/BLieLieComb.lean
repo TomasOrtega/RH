@@ -37,7 +37,7 @@ theorem lieComb_succ {O : Type} [CommRing O] (G : Over (Spec (CommRingCat.of O))
     lieComb G a x = lieAdd (AvDefs.lieScale G (a 0) (x 0)) (lieComb G (Fin.tail a) (Fin.tail x)) := rfl
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [lieComb_zero, P.bLie_zero]`. Consider the case `succ m ih`. Rewrite using `[lieComb_succ, P.bLie_add, P.bLie_scale, ih, Fin.sum_univ_succ]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bLie_lieComb {E : Type} [Field E] [NumberField E] {p : ℕ} [Fact p.Prime] [StarRing (𝓞 E)] (P : PtP E p)
     {m : ℕ} (a : Fin m → 𝓞_ℂ_[p])

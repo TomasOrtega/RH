@@ -20,7 +20,7 @@ def resW (R : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.R
   (Ψ (segre (R.pt x)) 0)⁻¹ • segre (R.pt x)
 
 /- English proof (translation)
-The claim follows from `R.R.lift_mem (R.idx x) x (R.mem_src_idx x)`.
+A detailed English derivation is pending.
 -/
 theorem pt_mem_conePts (R : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.Res ι W e) (x : R.R.M) :
     R.pt x ∈ ReciprocityTheory.AnForm.R.conePts W :=
@@ -29,7 +29,7 @@ theorem pt_mem_conePts (R : GroundTheory.Heights₂.Heights.IndefiniteRowSideFul
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hz.1, fun _ hf => hz.2 _ (hW (Ideal.mem_map_of_mem _ hf))⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_mcPts_of_conePts {P : Ideal (MRing ι)}
     (hW : P.map (MvPolynomial.map (Int.castRingHom ℂ)) ≤ W) {z : (Σ k, ι k) → ℂ}
@@ -37,13 +37,13 @@ theorem mem_mcPts_of_conePts {P : Ideal (MRing ι)}
   ⟨hz.1, fun _ hf => hz.2 _ (hW (Ideal.mem_map_of_mem _ hf))⟩
 
 /- English proof (translation)
-Take `⟨k0⟩` from `hK`. Set `c : K → ℂ` to `Function.update (fun _ => (1 : ℂ)) k0 (Ψ (segre z) 0)⁻¹`. Establish `hc : ∀ k, c k ≠ 0`. Introduce `k`. Distinguish the cases in `hk : k = k0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Simplify using `[c, h0]`. Simplify using `[c, Function.update_of_ne hk]`. Establish `hpc : ∏ k, c k = (Ψ (segre z) 0)⁻¹`. Simplify using `[c, Finset.prod_update_of_mem (Finset.mem_univ k0)]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun p => c p.1 * z p, mcPts_smul hPh c hc hz, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[segre_smul, hpc]`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[h0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, Fin.cons_succ]`. Rewrite using `[div_eq_inv_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_segre_mem_fibre {P : Ideal (MRing ι)} (hK : Nonempty K) (hPh : IsMultiHomogIdeal P)
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P)
@@ -68,9 +68,9 @@ theorem smul_segre_mem_fibre {P : Ideal (MRing ι)} (hK : Nonempty K) (hPh : IsM
       rw [div_eq_inv_mul]
 
 /- English proof (translation)
-Introduce `x hx x' hx' hw`. Establish `hseg : segre (R.pt x) = (Ψ (segre (R.pt x)) 0 * (Ψ (segre (R.pt x')) 0)⁻¹) • segre (R.pt x')`. Use `congrArg (fun v => Ψ (segre (R.pt x)) 0 • v) hw` as an intermediate fact. Simplify using `only [resW, smul_smul, mul_inv_cancel₀ hx.2, one_smul] at this`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hcz⟩` from `sameOrbit_of_segre (pt_mem_conePts R x').1 _ (by simp [hx.2, hx'.2]) hseg`. Conclude with `R.R.inj (R.idx x) (R.idx x') x (R.mem_src_idx x) x' (R.mem_src_idx x') hx.1 ⟨c, hc, hcz⟩`.
+A detailed English derivation is pending.
 -/
 theorem resW_injOn (R : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.Res ι W e)
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) :
@@ -86,9 +86,9 @@ theorem resW_injOn (R : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHec
   exact R.R.inj (R.idx x) (R.idx x') x (R.mem_src_idx x) x' (R.mem_src_idx x') hx.1 ⟨c, hc, hcz⟩
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P e W R Ψ hP hW hΨ y`. Establish `hle : P.map (MvPolynomial.map (Int.castRingHom ℂ)) ≤ W` using `hW.1.2`. Establish `hbad : ∀ x ∉ resBad R Ψ, R.pt x ∉ ReciprocityTheory.AnForm.R.conePts R.D ∧ Ψ (segre (R.pt x)) 0 ≠ 0` using `fun x hx => ⟨fun h => hx (Or.inl (Or.inl h)), fun h => hx (Or.inl (Or.inr h))⟩`. Use `Set.Finite.of_finite_image (f := resW R Ψ) ((fibreFinite K ι P e Ψ hP hΨ y).subset ?_) ((resW_injOn R Ψ).mono fun x hx => hbad x hx.2)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `smul_segre_mem_fibre hP.1 hP.2.1.2.1 Ψ (mem_mcPts_of_conePts hle (pt_mem_conePts R x)) (hbad x hx.2).2` as an intermediate fact. Establish `hy : resProj R Ψ x = y` using `hx.1`. Rewrite using `[← hy]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof : ComponentResFibreFinite.Statement := by
   intro K _ _ ι _ P e W R Ψ hP hW hΨ y

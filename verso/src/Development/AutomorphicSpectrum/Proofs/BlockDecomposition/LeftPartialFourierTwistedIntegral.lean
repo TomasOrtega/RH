@@ -8,9 +8,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.GL2DualWhittakerPair.Slice
 
 /- English proof (translation)
-Establish `h1 : ∫ a, ∫ b, ∫ d, J (a, b, d) ∂μ ∂μ ∂μ = ∫ a, ∫ t, J (a, t) ∂(μ.prod μ) ∂μ`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hJ.prod_right_ae] with a ha`. Conclude with `(integral_prod (fun t => J (a, t)) ha).symm`. Establish `h2 : ∫ a, ∫ t, J (a, t) ∂(μ.prod μ) ∂μ = ∫ t, ∫ a, J (a, t) ∂μ ∂(μ.prod μ)` using `integral_integral_swap (f := fun a t => J (a, t)) hJ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∫ t, ∫ a, J (a, t) ∂μ ∂(μ.prod μ) = ∫ b, ∫ d, ∫ a, J (a, b, d) ∂μ ∂μ ∂μ` using `integral_prod (fun t => ∫ a, J (a, t) ∂μ) hJ.integral_prod_right`. Rewrite using `[h1, h2, h3]`.
+A detailed English derivation is pending.
 -/
 theorem fubini3 {F : Type} [MeasurableSpace F] (μ : Measure F) [SFinite μ] (J : F × F × F → ℂ)
     (hJ : Integrable J (μ.prod (μ.prod μ))) :
@@ -29,7 +29,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-The claim follows from `hp.comp_isClosedEmbedding (h.isClosedEmbedding hr hι)`.
+A detailed English derivation is pending.
 -/
 theorem hcs_comp {X : Type} [TopologicalSpace X] [T2Space X] {p : Matrix (Fin 2) (Fin 2) F → ℂ}
     (hp : HasCompactSupport p) (ι : X → Matrix (Fin 2) (Fin 2) F) (r : Matrix (Fin 2) (Fin 2) F → X)
@@ -41,9 +41,9 @@ def J (ψ : AddChar F Circle) (p : Matrix (Fin 2) (Fin 2) F → ℂ) (t : F × F
   p !![t.1, t.2.1; t.2.2, 1] * (ψ (-(t.2.1 + t.2.2)) : ℂ)
 
 /- English proof (translation)
-Establish `hι : Continuous (fun t : F × F × F => (!![t.1, t.2.1; t.2.2, 1] : Matrix (Fin 2) (Fin 2) F))`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`. Establish `hr : Continuous (fun M : Matrix (Fin 2) (Fin 2) F => ((M 0 0, M 0 1, M 1 0) : F × F × F))` using `by fun_prop`. Establish `hc : HasCompactSupport (fun t : F × F × F => p !![t.1, t.2.1; t.2.2, 1])` using `hcs_comp hp.2 _ _ hι hr (fun t => by simp)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous (J ψ p)`. Unfold `J`. Use `(hp.1.continuous.comp hι).mul ?_` and prove the remaining obligations. Conclude with `continuous_subtype_val.comp (hψ.comp (by fun_prop))`. Conclude with `hcont.integrable_of_hasCompactSupport (hc.mul_right)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_J {ψ : AddChar F Circle} (hψ : Continuous ψ) {p : Matrix (Fin 2) (Fin 2) F → ℂ} (hp : SB2 p) :
     Integrable (J ψ p) ((selfDualMeasure ψ).prod ((selfDualMeasure ψ).prod (selfDualMeasure ψ))) := by
@@ -61,19 +61,17 @@ theorem integrable_J {ψ : AddChar F Circle} (hψ : Continuous ψ) {p : Matrix (
   exact hcont.integrable_of_hasCompactSupport (hc.mul_right)
 
 /- English proof (translation)
-Use `set μ := selfDualMeasure ψ with hμ`. Establish `hι : Continuous (fun y : F × F => (!![y.1 - u * y.2, -u; y.2, 1] : Matrix (Fin 2) (Fin 2) F))`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`. Establish `hr : Continuous (fun M : Matrix (Fin 2) (Fin 2) F => ((M 0 0 + u * M 1 0, M 1 0) : F × F))` using `by fun_prop`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : HasCompactSupport (fun y : F × F => p !![y.1 - u * y.2, -u; y.2, 1])` using `hcs_comp hp.2 _ _ hι hr (fun t => by simp)`. Use `set h : F × F → ℂ := fun y => p !![y.1 - u * y.2, -u; y.2, 1] * (ψ (-y.2) : ℂ) with hh`. Establish `hint : Integrable h (μ.prod μ)`. Establish `hcont : Continuous h`. Use `(hp.1.continuous.comp hι).mul ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `continuous_subtype_val.comp (hψ.comp (by fun_prop))`. Conclude with `hcont.integrable_of_hasCompactSupport hc.mul_right`. Establish `hL : Lpart ψ (fun M => p ((uni2 (-u)).val * M)) = ∫ y, h y ∂(μ.prod μ)`. Unfold `Lpart LFS.vol2`. Rewrite using `[← ((measurePreserving_finTwoArrow μ).symm MeasurableEquiv.finTwoArrow).integral_comp']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `e0 : (MeasurableEquiv.finTwoArrow.symm y : Fin 2 → F) 0 = y.1` using `rfl`. Establish `e1 : (MeasurableEquiv.finTwoArrow.symm y : Fin 2 → F) 1 = y.2` using `rfl`. Establish `hm : (uni2 (-u)).val * col2 (MeasurableEquiv.finTwoArrow.symm y) = !![y.1 - u * y.2, -u; y.2, 1]`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, col2, e0, e1, Matrix.mul_apply, Fin.sum_univ_two] <;> ring`. Simplify using `only [hh, hm, e1]`. Rewrite using `[hL, integral_prod_symm h hint, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun d => ?_)` and prove the remaining obligations. Establish `hs : ∫ x, h (x, d) ∂μ = ∫ a, p !![a, -u; d, 1] * (ψ (-d) : ℂ) ∂μ` using `integral_sub_right_eq_self (fun a => p !![a, -u; d, 1] * (ψ (-d) : ℂ)) (u * d)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only []`. Rewrite using `[hs, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Establish `hψm : (ψ (-(-u + d)) : ℂ) = (ψ u : ℂ) * (ψ (-d) : ℂ)`. Rewrite using `[show -(-u + d) = u + -d by ring, AddChar.map_add_eq_mul]; simp`.
-
-Simplify using `only [J, hψm]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mul_Lpart {ψ : AddChar F Circle} (hψ : Continuous ψ) {p : Matrix (Fin 2) (Fin 2) F → ℂ} (hp : SB2 p) (u : F) :
     (ψ u : ℂ) * Lpart ψ (fun M => p ((uni2 (-u)).val * M)) =
@@ -115,7 +113,7 @@ theorem mul_Lpart {ψ : AddChar F Circle} (hψ : Continuous ψ) {p : Matrix (Fin
   ring
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ p hp`. Establish `h1 : ∫ u, (ψ u : ℂ) * Lpart ψ (fun M => p ((uni2 (-u)).val * M)) ∂selfDualMeasure ψ = ∫ u, (fun b => ∫ d, ∫ a, J ψ p (a, b, d) ∂selfDualMeasure ψ ∂selfDualMeasure ψ) (-u) ∂selfDualMeasure ψ` using `integral_congr_ae (Filter.Eventually.of_forall fun u => mul_Lpart hψ.1 hp u)`. Establish `h2` using `integral_neg_eq_self (fun b => ∫ d, ∫ a, J ψ p (a, b, d) ∂selfDualMeasure ψ ∂selfDualMeasure ψ) (selfDualMeasure ψ)`. Rewrite using `[h1, h2, fubini3 _ _ (integrable_J hψ.1 hp)]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sliceForm : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), IsStd ψ →

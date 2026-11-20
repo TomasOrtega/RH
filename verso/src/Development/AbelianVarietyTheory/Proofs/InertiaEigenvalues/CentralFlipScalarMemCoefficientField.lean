@@ -24,7 +24,7 @@ def sqN {E : Type} [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 E)) : 
   Real.sqrt ((Ideal.absNorm v.asIdeal : ℕ) : ℝ)
 
 /- English proof (translation)
-Establish `: Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_pos {E : Type} [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 E)) :
     (0 : ℝ) < ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) := by
@@ -33,20 +33,20 @@ theorem absNorm_pos {E : Type} [Field E] [NumberField E] (v : HeightOneSpectrum 
   exact_mod_cast Nat.pos_of_ne_zero this
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_pos.2 (absNorm_pos v)`.
+A detailed English derivation is pending.
 -/
 theorem sqN_pos {E : Type} [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 E)) : 0 < sqN v :=
   Real.sqrt_pos.2 (absNorm_pos v)
 
 /- English proof (translation)
-The claim follows from `Real.sq_sqrt (absNorm_pos v).le`.
+A detailed English derivation is pending.
 -/
 theorem sqN_sq {E : Type} [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 E)) :
     sqN v ^ 2 = ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) :=
   Real.sq_sqrt (absNorm_pos v).le
 
 /- English proof (translation)
-Rewrite using `[Real.sqrt_eq_rpow, Complex.ofReal_cpow (Nat.cast_nonneg _)]`. Use `push_cast`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cpow_neg_half (n : ℕ) :
     ((n : ℕ) : ℂ) ^ (-(((-1 / 2 : ℝ)) : ℂ)) = ((Real.sqrt n : ℝ) : ℂ) := by
@@ -56,9 +56,9 @@ theorem cpow_neg_half (n : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `h0 : ((M₀ : ℕ) : 𝓞 E) ≠ 0`. Introduce `h`. Establish `: ((M₀ : ℕ) : E) = 0`. Use `congrArg (algebraMap (𝓞 E) E) h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `u.ne_zero (hu.trans this)`. Establish `e : (u : E) = algebraMap (𝓞 E) E ((M₀ : ℕ) : 𝓞 E)` using `by rw [hu, map_natCast]`. Rewrite using `[ordF, e, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_if_neg v h0, WithZero.log_exp, neg_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordF_natCast {E : Type} [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 E)) (u : Eˣ) (M₀ : ℕ)
     (hu : (u : E) = ((M₀ : ℕ) : E)) :
@@ -81,51 +81,45 @@ open Formalism.L2.Host
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `E _ _ χ M₀ r w u a T k _ σ hw hu ha hT hunr hval hinf hTa hST`. Establish `hM0 : ((M₀ : ℕ) : 𝓞 E) ≠ 0`. Introduce `h`. Establish `: ((M₀ : ℕ) : E) = 0`. Use `congrArg (algebraMap (𝓞 E) E) h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Conclude with `u.ne_zero (hu.trans this)`. Establish `hSfin : {v : HeightOneSpectrum (𝓞 E) | ((M₀ : ℕ) : 𝓞 E) ∈ v.asIdeal}.Finite`. Use `(Ideal.finite_factors (I := Ideal.span {((M₀ : ℕ) : 𝓞 E)}) ?_).subset fun v hv => ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hv)`. Use `set S := hSfin.toFinset with hSdef`. Establish `hmemS : ∀ v, v ∈ S ↔ ((M₀ : ℕ) : 𝓞 E) ∈ v.asIdeal` using `fun v => Set.Finite.mem_toFinset _`. Use `set R := (GlobalTheory.HeckeProduct.finite_ordF a).toFinset with hRdef`. Establish `hR : ∀ v, v ∉ R → ordF v a = 0` using `fun v hv => by`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Conclude with `hv ((Set.Finite.mem_toFinset _).2 h)`. Establish `hTS : T ⊆ S` using `fun v hv => (hmemS v).2 (hT v hv)`. Establish `hoST : ∀ v ∈ S, v ∉ T → ordF v a = 0` using `fun v hv hvT => by`. Rewrite using `[ordF, (hST v ((hmemS v).1 hv) hvT).2, WithZero.log_one, neg_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hoT : ∀ v ∈ T, ordF v a = ordF v u` using `fun v hv => by`. Rewrite using `[ordF, ordF, (hTa v hv).2, hu]`. Establish `hPR` using `Formalism.L2.Host.HChar.productRule χ S (fun v hv => hunr v (fun h => hv ((hmemS v).2 h))) a`. Establish `hloc : ∏ v ∈ S, χ.locK v a = ∏ v ∈ T, χ.locK v u`. Rewrite using `[← Finset.prod_subset hTS (fun v hv hvT => (hST v ((hmemS v).1 hv) hvT).1)]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.prod_congr rfl fun v hv => (hTa v hv).1`. Establish `hfin : (∏ᶠ (v : HeightOneSpectrum (𝓞 E)) (_ : v ∉ S), χ.val v ^ ordF v a) = ∏ v ∈ R \ S, χ.val v ^ ordF v a`. Apply `finprod_mem_eq_prod_of_subset (s := {v | v ∉ S})` to reduce the goal to its premises. Introduce and unpack `v ⟨hv1, hv2⟩`. Simplify using `only [Finset.coe_sdiff, Set.mem_diff, Finset.mem_coe]`.
+Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨?_, hv1⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hv2 (by simp [hR v h])`. Introduce `v hv`. Simplify using `only [Finset.coe_sdiff, Set.mem_diff, Finset.mem_coe] at hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hv.2`. Rewrite `hPR` using `[hloc, hfin]`. Use `choose! y hy using hval`. Establish `hvalv : ∀ v, v ∉ S → ((χ.val v : ℂˣ) : ℂ) = σ (y v) / ((sqN v : ℝ) : ℂ)` using `fun v hv => by`. Establish `h1` using `hy v (hunr v fun h => hv ((hmemS v).2 h))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((sqN v : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (sqN_pos v).ne'`. Rewrite using `[h1, HChar.valTw, cpow_neg_half, ← sqN, mul_div_assoc, div_self h2, mul_one]`. Take `⟨y0, hy0⟩` from `hinf`. Use `set Q : ℝ := ∏ v ∈ R, sqN v ^ ordF v a with hQ`. Establish `hQpos : 0 < Q` using `Finset.prod_pos fun v _ => zpow_pos (sqN_pos v) _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Establish `hNa : |((Algebra.norm ℚ (a : E) : ℚ) : ℝ)| = Q ^ 2`. Rewrite using `[← PI.AlgValsFin.W.prod_norm_emb, PI.AlgValsFin.W.prodNorm a R hR, hQ, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← sqN_sq v, ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_mul, mul_comm]`. Establish `hinfv : ((χ.inf a : ℂˣ) : ℂ) = σ y0 * (((Q ^ w)⁻¹ : ℝ) : ℂ)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy0, hNa]`. Use `congr 2`. Rewrite using `[← Real.rpow_natCast Q 2, ← Real.rpow_mul hQpos.le, ← Real.rpow_natCast, ← Real.rpow_neg hQpos.le]`. Use `congr 1`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set A : ℝ := ∏ v ∈ T, sqN v ^ ordF v a with hA`. Use `set B : ℝ := ∏ v ∈ R \ S, sqN v ^ ordF v a with hB`. Establish `hApos : 0 < A` using `Finset.prod_pos fun v _ => zpow_pos (sqN_pos v) _`. Establish `hBpos : 0 < B` using `Finset.prod_pos fun v _ => zpow_pos (sqN_pos v) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQAB : Q = A * B`. Rewrite using `[hQ, ← Finset.prod_inter_mul_prod_diff R S]`. Use `congr 1`. Establish `e1 : ∏ v ∈ R ∩ S, sqN v ^ ordF v a = ∏ v ∈ S, sqN v ^ ordF v a` using `Finset.prod_subset Finset.inter_subset_right fun v hv hv' => by`. Rewrite using `[hR v (fun h => hv' (Finset.mem_inter.2 ⟨h, hv⟩)), zpow_zero]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∏ v ∈ T, sqN v ^ ordF v a = ∏ v ∈ S, sqN v ^ ordF v a` using `Finset.prod_subset hTS fun v hv hvT => by rw [hoST v hv hvT, zpow_zero]`. Rewrite using `[e1, ← e2]`. Establish `hprodval : ∏ v ∈ R \ S, ((χ.val v : ℂˣ) : ℂ) ^ ordF v a = σ (∏ v ∈ R \ S, y v ^ ordF v a) / ((B : ℝ) : ℂ)`. Rewrite using `[map_prod, hB, Complex.ofReal_prod, ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hvalv v (Finset.mem_sdiff.1 hv).2, map_zpow₀, Complex.ofReal_zpow, div_zpow]`. Establish `key` using `congrArg (fun z : ℂˣ => (z : ℂ)) hPR`. Simplify using `only [Units.val_mul, Units.val_one, Units.coe_prod, Units.val_zpow_eq_zpow_val] at key`. Rewrite `key` using `[hinfv, hprodval, hQAB]`. Use `set P : ℂ := ∏ v ∈ T, ((χ.locK v u : ℂˣ) : ℂ) with hPdef`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `set Y : k := ∏ v ∈ R \ S, y v ^ ordF v a with hY`. Establish `h1 : σ y0 ≠ 0` using `fun h => by rw [h] at key; simp at key`. Establish `h2 : σ Y ≠ 0` using `fun h => by rw [h] at key; simp at key`. Establish `hA0 : ((A : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hApos.ne'`. Establish `hB0 : ((B : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hBpos.ne'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : P = ((A : ℝ) : ℂ) ^ w * ((B : ℝ) : ℂ) ^ (w + 1) / (σ y0 * σ Y)`. Rewrite using `[eq_div_iff (mul_ne_zero h1 h2)]`. Move the coercions through the operations in `at key`. Clear denominators, using `at key` for the nonvanishing conditions. Take the linear combination `key`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hsqrt : Real.sqrt ((∏ PP ∈ T, Ideal.absNorm (PP.maxPowDividing (Ideal.span {((M₀ : ℕ) : 𝓞 E)})) ^ (r * w) : ℕ) : ℝ) = A ^ (r * w)`. Rewrite using `[← Real.sqrt_sq (pow_nonneg hApos.le _)]`. Use `congr 1`. Use `push_cast`. Rewrite using `[hA, ← Finset.prod_pow, ← Finset.prod_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[hoT v hv, ordF_natCast v u M₀ hu, HeightOneSpectrum.maxPowDividing, map_pow, zpow_natCast]`. Use `push_cast`. Rewrite using `[← sqN_sq v]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `set q : ℚ := ∏ v ∈ R \ S, ((Ideal.absNorm v.asIdeal : ℕ) : ℚ) ^ ordF v a with hq`. Establish `hqB : ((q : ℚ) : ℂ) = ((B : ℝ) : ℂ) ^ 2`. Establish `: ((q : ℚ) : ℝ) = B ^ 2`. Rewrite using `[hq, hB, ← Finset.prod_pow]`. Use `push_cast`.
-
-Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← sqN_sq v, ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_mul, mul_comm]`. Rewrite using `[← Complex.ofReal_ratCast, this, Complex.ofReal_pow]`. Take `⟨m, rfl⟩` from `hw`. Establish `heq : (∏ PP ∈ T, ((χ.locK PP u : ℂˣ) : ℂ) ^ r) * ((Real.sqrt ((∏ PP ∈ T, Ideal.absNorm (PP.maxPowDividing (Ideal.span {((M₀ : ℕ) : 𝓞 E)})) ^ (r * (2 * m + 1)) : ℕ) : ℝ) : ℝ) : ℂ)⁻¹ = (((q : ℚ) : ℂ) ^ (m + 1)) ^ r * ((σ y0 * σ Y)⁻¹) ^ r`.
-
-Rewrite using `[hsqrt, Finset.prod_pow, ← hPdef, hP, hqB]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`.
-
-Use `mul_mem (pow_mem (pow_mem (SubfieldClass.ratCast_mem _ q) _) _) (pow_mem (inv_mem (mul_mem ?_ ?_)) _)` and prove the remaining obligations. Conclude with `⟨y0, rfl⟩`. Conclude with `⟨Y, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_fieldRange : ∀ (E : Type) [Field E] [NumberField E] (χ : Formalism.L2.Host.HChar E) (M₀ r w : ℕ) (u a : Eˣ) (T : Finset (HeightOneSpectrum (𝓞 E))) (k : Type) [Field k] (σ : k →+* ℂ), Odd w → (u : E) = ((M₀ : ℕ) : E) → IsIntegral ℤ (a : E) → (∀ v ∈ T, ((M₀ : ℕ) : 𝓞 E) ∈ v.asIdeal) → (∀ v : HeightOneSpectrum (𝓞 E), ((M₀ : ℕ) : 𝓞 E) ∉ v.asIdeal → χ.UnrAt v) → χ.ValuesIn (-1 / 2) σ → (∃ y : k, ((χ.inf a : ℂˣ) : ℂ) = σ y * ((|((Algebra.norm ℚ (a : E) : ℚ) : ℝ)| ^ (-(w : ℝ) / 2) : ℝ) : ℂ)) → (∀ v ∈ T, χ.locK v a = χ.locK v u ∧ v.valuation E (a : E) = v.valuation E ((M₀ : ℕ) : E)) → (∀ v : HeightOneSpectrum (𝓞 E), ((M₀ : ℕ) : 𝓞 E) ∈ v.asIdeal → v ∉ T → χ.locK v a = 1 ∧ v.valuation E (a : E) = 1) → (∏ PP ∈ T, ((χ.locK PP u : ℂˣ) : ℂ) ^ r) * ((Real.sqrt ((∏ PP ∈ T, Ideal.absNorm (PP.maxPowDividing (Ideal.span {((M₀ : ℕ) : 𝓞 E)})) ^ (r * w) : ℕ) : ℝ) : ℝ) : ℂ)⁻¹ ∈ σ.fieldRange := by
   intro E _ _ χ M₀ r w u a T k _ σ hw hu ha hT hunr hval hinf hTa hST

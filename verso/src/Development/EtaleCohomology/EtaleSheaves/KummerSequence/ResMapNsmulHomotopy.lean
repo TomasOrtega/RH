@@ -15,7 +15,7 @@ namespace LateralTheory.E.H2CurveOrder
 open LateralTheory.E.E4 LeafKumSeqPf KummerH0Surjection
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Establish `H : Homotopy (InjectiveResolution.desc (q • 𝟙 F) (injectiveResolution F) (injectiveResolution F)) (q • 𝟙 (injectiveResolution F).cocomplex)` using `InjectiveResolution.descHomotopy (q • 𝟙 F) _ _ (by simp) (by simp [Preadditive.comp_nsmul, Preadditive.nsmul_comp, Functor.map_nsmul])`. Use `(H.extend ComplexShape.embeddingUpNat).trans (Homotopy.ofEq ?_)` and prove the remaining obligations. Conclude with `((ComplexShape.embeddingUpNat.extendFunctor (Shv ℤ)).map_nsmul).trans (congrArg (q • ·) ((ComplexShape.embeddingUpNat.extendFunctor (Shv ℤ)).map_id _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem resMap_nsmul_homotopy (F : Shv ℤ) (q : ℕ) :
     Nonempty (Homotopy (resMap ℤ (q • 𝟙 F)) (q • 𝟙 (res ℤ F))) := by
@@ -29,7 +29,7 @@ theorem resMap_nsmul_homotopy (F : Shv ℤ) (q : ℕ) :
     (congrArg (q • ·) ((ComplexShape.embeddingUpNat.extendFunctor (Shv ℤ)).map_id _))
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih => rw [succ_nsmul, succ_nsmul, Cochain.ofHom_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ofHom_nsmul {K L : Cx ℤ} (f : K ⟶ L) (q : ℕ) : Cochain.ofHom (q • f) = q • Cochain.ofHom f := by
   induction q with
@@ -37,7 +37,7 @@ theorem ofHom_nsmul {K L : Cx ℤ} (f : K ⟶ L) (q : ℕ) : Cochain.ofHom (q �
   | succ q ih => rw [succ_nsmul, succ_nsmul, Cochain.ofHom_add, ih]
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih => rw [succ_nsmul, succ_nsmul, Cochain.comp_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_nsmul' {K L M : Cx ℤ} {n : ℤ} (a : Cochain K L n) (b : Cochain L M 0) (q : ℕ) :
     a.comp (q • b) (add_zero n) = q • a.comp b (add_zero n) := by
@@ -46,7 +46,7 @@ theorem comp_nsmul' {K L M : Cx ℤ} {n : ℤ} (a : Cochain K L n) (b : Cochain 
   | succ q ih => rw [succ_nsmul, succ_nsmul, Cochain.comp_add, ih]
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih => rw [succ_nsmul, succ_nsmul, CohomologyClass.mk_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem mk_nsmul {K L : Cx ℤ} {n : ℤ} (a : Cocycle K L n) (q : ℕ) :
     CohomologyClass.mk (q • a) = q • CohomologyClass.mk a := by
@@ -55,9 +55,9 @@ theorem mk_nsmul {K L : Cx ℤ} {n : ℤ} (a : Cocycle K L n) (q : ℕ) :
   | succ q ih => rw [succ_nsmul, succ_nsmul, CohomologyClass.mk_add, ih]
 
 /- English proof (translation)
-Take `⟨H⟩` from `resMap_nsmul_homotopy F q`. Take `⟨a, rfl⟩` from `CohomologyClass.mk_surjective x`. Rewrite using `[← mk_nsmul]`. Use `show CohomologyClass.mk _ = CohomologyClass.mk _`. Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a.1.comp (Cochain.ofHomotopy H) (by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[δ_comp _ _ _ (n + 1) 0 n (by omega) rfl (by omega), δ_ofHomotopy, Cocycle.δ_eq_zero, ofHom_nsmul, Cochain.comp_sub, comp_nsmul']`. Simplify using `[zcomp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem post_nsmul (K : Cx ℤ) (F : Shv ℤ) (q : ℕ) (n : ℤ) (x : HK ℤ K F n) :
     HK.post ℤ K (q • 𝟙 F) n x = q • x := by
@@ -74,9 +74,9 @@ theorem post_nsmul (K : Cx ℤ) (F : Shv ℤ) (q : ℕ) (n : ℤ) (x : HK ℤ K 
   rfl
 
 /- English proof (translation)
-Establish `h : Functor.whiskerLeft Scheme.Γ (powNat q) = q • 𝟙 (Scheme.Γ ⋙ unitsF)`. Use extensionality with `U x`. Simplify using `[powNat]`. Both sides reduce to the same expression. Unfold `powGm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[h, Functor.map_nsmul, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem powGm_eq (q : ℕ) : powGm q = q • 𝟙 Gm := by
   have h : Functor.whiskerLeft Scheme.Γ (powNat q) = q • 𝟙 (Scheme.Γ ⋙ unitsF) := by
@@ -88,7 +88,7 @@ theorem powGm_eq (q : ℕ) : powGm q = q • 𝟙 Gm := by
   rfl
 
 /- English proof (translation)
-Establish `hI` using `LeafKumMuInjPfGlue.LeafKumMuInj_of TwLocGenPf.TwLocGen_of GmSepPf.GmSep_of`. Conclude with `LeafKumMuUnitsPf.LeafKumMuUnits_of LeafKumMuMapPf.LeafKumMuMap_of hI (LeafKumMuSurjPf.etale_mu_twist_sections_surj_of_prim_root_pow_inj LeafKumMuSurjPrimPf.LeafKumMuSurjPrim_of LeafKumMuSurjPowPf.LeafKumMuSurjPow_of hI)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem muUnits : LeafKumMuPf.LeafKumMuUnits := by
   have hI := LeafKumMuInjPfGlue.LeafKumMuInj_of TwLocGenPf.TwLocGen_of GmSepPf.GmSep_of
@@ -97,35 +97,35 @@ theorem muUnits : LeafKumMuPf.LeafKumMuUnits := by
       LeafKumMuSurjPowPf.LeafKumMuSurjPow_of hI)
 
 /- English proof (translation)
-The claim follows from `LeafKumSecSurjPf.LeafKumSecSurj_of LeafUnitRootPf.LeafUnitRoot_of`.
+A detailed English derivation is pending.
 -/
 theorem kumSecSurj : LeafKumSecSurj := LeafKumSecSurjPf.LeafKumSecSurj_of LeafUnitRootPf.LeafUnitRoot_of
 
 /- English proof (translation)
-Simplify using `using hq.map ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv ≫ x.appTop).hom`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unit_of_over (q : ℕ) {Ω : Type} [CommRing Ω] (hq : IsUnit (q : Ω)) {U : Scheme.{0}} (x : U ⟶ Sp Ω) :
     IsUnit (q : Γ(U, ⊤)) := by
   simpa using hq.map ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv ≫ x.appTop).hom
 
 /- English proof (translation)
-Introduce `hy q _ Ω _ _ hq C c hc`. Establish `hA7 : A7` using `hy.2.2.2.2.2.1`. Establish `hA8 : A8` using `hy.2.2.2.2.2.2.1`. Establish `hA10 : A10` using `hy.2.2.2.2.2.2.2.2.1`. Take `⟨a, ha0⟩` from `LeafKumMuPf.LeafKumMuSec_of muUnits q Ω hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ha` using `hA10 ℤ (sch.obj C) a (fun U ⟨x⟩ => ha0 U ⟨(show U ⟶ C from x) ≫ c⟩) 2`. Establish `hβ` using `hA10 ℤ (sch.obj C) (kumM q) (fun U ⟨x⟩ => ⟨sec_injective _ U, kumSecSurj q U (unit_of_over q hq ((show U ⟶ C from x) ≫ c))⟩) 1`. Use `set K := (chains ℤ).obj (sch.obj C) with hK`. Take `⟨z, hz⟩` from `hA7 ℤ (kumSC q) (kumSC_shortExact q)`. Take `⟨_, hex1, hex2⟩` from `hz K 1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hR` using `hA8 ℤ (ZMod q) (Int.castRingHom (ZMod q)) (sch.obj C) (tw q 1) 2`. Set `P` to `AddEquiv.ofBijective (HK.post ℤ K (kumM q) 1) hβ`. Set `A` to `AddEquiv.ofBijective (HK.post ℤ K a 2) ha`. Set `Rr` to `AddEquiv.ofBijective (restrH (Int.castRingHom (ZMod q)) (sch.obj C) (tw q 1) 2) hR`. Set `T : Ht q (sch.obj C) 2 1 ≃+ HK ℤ K (kumSC q).X₁ (1 + 1)` to `Rr.trans A`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ex : HK ℤ K (kumSC q).X₃ 1 →+ HK ℤ K (kumSC q).X₁ (1 + 1)` to `HK.ext ℤ K z 1 (1 + 1) rfl`. Set `fm : HK ℤ K (kumSC q).X₁ (1 + 1) →+ HK ℤ K Gm 2` to `HK.post ℤ K (kumSC q).f (1 + 1)`. Set `gm : HK ℤ K Gm 1 →+ HK ℤ K (kumSC q).X₃ 1` to `HK.post ℤ K (kumSC q).g 1`. Establish `e1 : Function.Exact gm ex` using `hex1`. Establish `e2 : Function.Exact ex fm` using `hex2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpg : ∀ w, P (gm w) = q • w`. Introduce `w`. Use `(post_comp ℤ K (kumSC q).g (kumM q) 1 w).symm.trans ?_` and prove the remaining obligations. Establish `: (kumSC q).g ≫ kumM q = q • 𝟙 Gm` using `(cokernel.π_desc _ _ _).trans (powGm_eq q)`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `post_nsmul K Gm q 1 w`. Use `⟨T.symm.toAddMonoidHom.comp (ex.comp P.symm.toAddMonoidHom), fm.comp T.toAddMonoidHom, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Express the relevant statement in the definitionally equal form `T.symm (ex (P.symm y)) = 0 ↔ _`. Rewrite using `[AddEquiv.map_eq_zero_iff, e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`. Conclude with `⟨w, by rw [← hpg, hw, AddEquiv.apply_symm_apply]⟩`. Introduce and unpack `⟨w, rfl⟩`. Conclude with `⟨w, by rw [← hpg, AddEquiv.symm_apply_apply]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `x`. Express the relevant statement in the definitionally equal form `fm (T x) = 0 ↔ ∃ y, T.symm (ex (P.symm y)) = x`. Rewrite using `[e2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨P w, by rw [AddEquiv.symm_apply_apply, hw, AddEquiv.symm_apply_apply]⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨P.symm y, (T.apply_symm_apply _).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kumSeq : LateralTheory.E.LeafKumDeltaPf.LeafKumSeq := by
   intro hy q _ Ω _ _ hq C c hc

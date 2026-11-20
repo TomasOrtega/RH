@@ -15,7 +15,7 @@ namespace PhiModule.UnitOrd
 variable {R : Type*} [CommRing R] {φ : R →+* R} (v : UnitOrd R φ)
 
 /- English proof (translation)
-Break down `k with n | n` into its components or cases. Rewrite using `[Int.ofNat_eq_natCast, zpow_natCast, v.map_pow]`. Rewrite using `[zpow_negSucc, v.map_inv, v.map_pow, Int.negSucc_eq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem map_zpow (a : Rˣ) (k : ℤ) : v.ord (a ^ k) = k * v.ord a := by
   rcases k with n | n
@@ -31,9 +31,9 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CompleteSpace L]
 
 /- English proof (translation)
-Introduce `h`. Use `T.ofRad_πExt ⟨1 / 2, by norm_num, by norm_num⟩` as an intermediate fact. Rewrite `this` using `[h]`. Establish `h1` using `T.πExt_mul_πInvExt ⟨1 / 2, by norm_num, by norm_num⟩`. Establish `h2` using `congrArg (T.ofRad ⟨1 / 2, by norm_num, by norm_num⟩) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_mul, this, zero_mul, map_one]`. Conclude with `zero_ne_one h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem πTilde_ne_zero : T.πTilde ≠ 0 := by
   intro h
@@ -45,7 +45,7 @@ theorem πTilde_ne_zero : T.πTilde ≠ 0 := by
   exact zero_ne_one h2
 
 /- English proof (translation)
-Rewrite using `[T.isUnit_iff]`. Conclude with `⟨πTilde_ne_zero, ⟨TeichFrob.πEdag T, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isUnit_πTilde : IsUnit T.πTilde := by
   rw [T.isUnit_iff]
@@ -56,14 +56,12 @@ variable (T) in
 def πUnit : T.RobbaTildeˣ := (isUnit_πTilde (T := T)).unit
 
 /- English proof (translation)
-The claim follows from `IsUnit.unit_spec _`.
+A detailed English derivation is pending.
 -/
 theorem coe_πUnit : ((πUnit T : T.RobbaTildeˣ) : T.RobbaTilde) = T.πTilde := IsUnit.unit_spec _
 
 /- English proof (translation)
-Rewrite using `[T.tildeOrd_eq (b := TeichFrob.πEdag T) (by rw [coe_πUnit]; rfl)]`. Use `show T.ordB (algebraMap Γ T.B T.π) = 1`. Establish `h1 : algebraMap Γ T.B T.π = ((T.piB ^ (1 : ℤ) : T.Bˣ) : T.B) * algebraMap Γ T.B 1`. Rewrite using `[map_one, mul_one, zpow_one, piB_val]`. Rewrite using `[h1]`.
-
-Conclude with `T.ordB_piB_zpow_mul _ (by rw [map_one]; exact one_ne_zero)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tildeOrd_πUnit : T.tildeOrd (πUnit T) = 1 := by
   rw [T.tildeOrd_eq (b := TeichFrob.πEdag T) (by rw [coe_πUnit]; rfl)]

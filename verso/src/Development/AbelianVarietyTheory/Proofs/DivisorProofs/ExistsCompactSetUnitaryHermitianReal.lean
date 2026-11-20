@@ -12,21 +12,19 @@ section Gen
 variable {K : Type} [NontriviallyNormedField K] [ProperSpace K] {n m : ℕ}
 
 /- English proof (translation)
-Establish `hns : ∀ (c : K) y, ‖Q (c • y)‖ = ‖c‖ * ‖c‖ * ‖Q y‖` using `fun c y => by`. Rewrite using `[hs, norm_smul, norm_mul]`. Take `⟨c, hc1⟩` from `NormedField.exists_one_lt_norm K`. Establish `hc0 : 0 < ‖c‖` using `lt_trans one_pos hc1`. Set `S : Set (Fin n → K)` to `{y | 1 / ‖c‖ ≤ ‖y‖ ∧ ‖y‖ ≤ 1}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hSc : IsCompact S` using `(isCompact_closedBall (0 : Fin n → K) 1).of_isClosed_subset ((isClosed_le continuous_const continuous_norm).inter (isClosed_le continuous_norm continuous_const)) (fun y hy => mem_closedBall_zero_iff.2 hy.2)`. Establish `hcont : Continuous fun y => ‖Q y‖` using `hc.norm`. Distinguish the cases in `hS : S.Nonempty`. Take `⟨y₀, hy₀S, hmin⟩` from `hSc.exists_isMinOn hS hcont.continuousOn`. Establish `hy₀ : y₀ ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Use `hy₀S.1` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `absurd this (not_le.2 (by positivity))`. Use `⟨‖Q y₀‖, norm_pos_iff.2 (fun h => hy₀ (h0 _ h)), fun y => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy : y = 0`. Rewrite using `[hy, norm_zero]`. Simplify using the standard rewrite rules. Take `⟨d, hd0, hdlt, hdge, -⟩` from `rescale_to_shell hc1 one_pos hy`. Establish `hdS : d • y ∈ S` using `⟨hdge, hdlt.le⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖Q y₀‖ ≤ ‖d‖ * ‖d‖ * ‖Q y‖`. Rewrite using `[← hns]`. Conclude with `hmin hdS`. Establish `h2 : ‖d‖ * ‖y‖ < 1`. Rewrite using `[← norm_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hdlt`. Establish `hn` using `norm_nonneg y`. Establish `hd` using `norm_nonneg d`. Establish `hf` using `norm_nonneg (Q y)`. Establish `h3 : (‖d‖ * ‖y‖) ^ 2 ≤ 1` using `by nlinarith [mul_nonneg hd hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨1, one_pos, fun y => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y = 0`. Rewrite using `[hy, norm_zero]`. Simplify using the standard rewrite rules.
-
-Take `⟨d, -, hdlt, hdge, -⟩` from `rescale_to_shell hc1 one_pos hy`. Conclude with `absurd ⟨d • y, hdge, hdlt.le⟩ hS`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_mul_sq_le (Q : (Fin n → K) → (Fin m → K)) (hc : Continuous Q)
     (hs : ∀ (c : K) y, Q (c • y) = (c * c) • Q y) (h0 : ∀ y, Q y = 0 → y = 0) :
@@ -77,13 +75,13 @@ theorem exists_mul_sq_le (Q : (Fin n → K) → (Fin m → K)) (hc : Continuous 
     exact absurd ⟨d • y, hdge, hdlt.le⟩ hS
 
 /- English proof (translation)
-Establish `hns : ∀ (c : K) y, ‖Q (c • y)‖ = ‖c‖ * ‖c‖ * ‖Q y‖` using `fun c y => by`. Rewrite using `[hs, norm_smul, norm_mul]`. Establish `hQ0 : Q 0 = 0` using `by simpa using hs 0 0`. Take `⟨c, hc1⟩` from `NormedField.exists_one_lt_norm K`. Take `⟨M₀, hM₀⟩` from `(isCompact_closedBall (0 : Fin n → K) 1).exists_bound_of_continuousOn hc.continuousOn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hM₀0 : 0 ≤ M₀` using `le_trans (norm_nonneg _) (hM₀ 0 (mem_closedBall_self zero_le_one))`. Use `⟨M₀ * ‖c‖ ^ 2, by positivity, fun y => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y = 0`. Rewrite using `[hy, hQ0, norm_zero]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Take `⟨d, hd0, hdlt, -, hdinv⟩` from `rescale_to_shell hc1 one_pos hy`. Establish `h1` using `hM₀ (d • y) (mem_closedBall_zero_iff.2 hdlt.le)`. Rewrite `h1` using `[hns]`. Establish `ht : ‖d‖⁻¹ ≤ ‖c‖ * ‖y‖` using `by simpa using hdinv`. Establish `hdpos : 0 < ‖d‖` using `norm_pos_iff.2 hd0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : ‖Q y‖ = ‖d‖⁻¹ ^ 2 * (‖d‖ * ‖d‖ * ‖Q y‖)`. Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_le_mul_sq (Q : (Fin n → K) → (Fin m → K)) (hc : Continuous Q)
     (hs : ∀ (c : K) y, Q (c • y) = (c * c) • Q y) :
@@ -115,14 +113,14 @@ theorem exists_le_mul_sq (Q : (Fin n → K) → (Fin m → K)) (hc : Continuous 
 end Gen
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq {A : Type} [CommRing A] {n : Type} [Fintype n] (c : A →+* A) (J : Matrix n n A)
     (x y : n → A) : Formalism.UG.hform c J x y = (fun i => c (x i)) ⬝ᵥ (J *ᵥ y) := by
   simp only [Formalism.UG.hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : (fun i => c ((g *ᵥ x) i)) = (g.map c) *ᵥ (fun i => c (x i))`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec _ _ _ i`. Rewrite using `[hform_eq, hform_eq, h1, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, Matrix.dotProduct_mulVec]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hform_mulVec {A : Type} [CommRing A] {n : Type} [Fintype n] (c : A →+* A)
     (J g : Matrix n n A) (x : n → A) :
@@ -139,7 +137,7 @@ section Tens
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (K : Type) [Field K] [Algebra F K]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy, map_add, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_smul (σ : E →ₐ[F] E) (c : K) (z : K ⊗[F] E) : sigR K σ (c • z) = c • sigR K σ z := by
   induction z using TensorProduct.induction_on with
@@ -153,7 +151,7 @@ def sigL (σ : E →ₐ[F] E) : K ⊗[F] E →ₗ[K] K ⊗[F] E where
   map_smul' := sigR_smul K σ
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, Pi.smul_apply, sigR_smul, smul_mul_assoc, mul_smul_comm, Finset.smul_sum, smul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hR_smul (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (c : K)
     (x : Fin M → K ⊗[F] E) : hR K σ J (c • x) (c • x) = (c * c) • hR K σ J x x := by
@@ -169,27 +167,25 @@ namespace GlobalTheory.AnisoCpt
 open Metric Matrix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm K _ _ _ M J _ haniso`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hcm.2.2.1]; norm_num)`. Use `haveI : IsModuleTopology K (K ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (K ⊗[F] E) := IsModuleTopology.isTopologicalRing K _`. Set `bV` to `Module.finBasis K (Fin M → K ⊗[F] E)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `bE` to `Module.finBasis K (K ⊗[F] E)`. Set `φ` to `bV.equivFun`. Set `ψ` to `bE.equivFun`. Establish `hφs : Continuous φ.symm` using `IsModuleTopology.continuous_of_linearMap φ.symm.toLinearMap`. Establish `hψ : Continuous ψ` using `IsModuleTopology.continuous_of_linearMap ψ.toLinearMap`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hs : Continuous (sigR K σ)` using `IsModuleTopology.continuous_of_linearMap (sigL K σ)`. Establish `hhc : Continuous fun x : Fin M → K ⊗[F] E => hR K σ J x x` using `by show Continuous fun x => Formalism.UG.hform (sigR K σ) (JR K J) x x`. Unfold `Formalism.UG.hform`. Conclude with `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ((hs.comp (continuous_apply i)).mul continuous_const).mul (continuous_apply j)`. Set `Q : (Fin (Module.finrank K (Fin M → K ⊗[F] E)) → K) → (Fin (Module.finrank K (K ⊗[F] E)) → K)` to `fun y => ψ (hR K σ J (φ.symm y) (φ.symm y))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hQc : Continuous Q` using `hψ.comp (hhc.comp hφs)`. Establish `hQs : ∀ (c : K) y, Q (c • y) = (c * c) • Q y`. Introduce `c y`. Simplify using `only [Q, map_smul, hR_smul]`. Establish `hQ0 : ∀ y, Q y = 0 → y = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `y hy`. Establish `h1 : hR K σ J (φ.symm y) (φ.symm y) = 0`. Conclude with `ψ.injective (hy.trans (map_zero ψ).symm)`. Establish `h2` using `haniso _ h1`. Simplify using `using congrArg φ h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, hlow⟩` from `exists_mul_sq_le Q hQc hQs hQ0`. Take `⟨B, hB, hup⟩` from `exists_le_mul_sq Q hQc hQs`. Establish `hunit : ∀ g : Matrix (Fin M) (Fin M) (K ⊗[F] E), Formalism.UG.cT (sigR K σ) g * JR K J * g = JR K J → ∀ x, hR K σ J (g *ᵥ x) (g *ᵥ x) = hR K σ J x x`. Introduce `g hg x`. Use `show Formalism.UG.hform _ _ _ _ = Formalism.UG.hform _ _ _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hform_mulVec, hg]`. Set `e : Fin M → Fin (Module.finrank K (Fin M → K ⊗[F] E)) → K` to `fun j => φ (Pi.single j 1)`. Set `D` to `∑ j, ‖e j‖ ^ 2`. Establish `hD0 : 0 ≤ D` using `Finset.sum_nonneg fun j _ => sq_nonneg _`. Set `r` to `B / a * D + 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⋃ i : Fin M, (fun y => φ.symm y i) '' closedBall 0 r, isCompact_iUnion fun i => (isCompact_closedBall _ _).image ((continuous_apply i).comp hφs), ?_⟩` and prove the remaining obligations. Introduce `g hg i j`. Use `Set.mem_iUnion.2 ⟨i, φ (g *ᵥ Pi.single j 1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff] set t := ‖φ (g *ᵥ Pi.single j 1)‖`. Establish `ht : 0 ≤ t` using `norm_nonneg _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hlow (φ (g *ᵥ Pi.single j 1))`. Establish `hQeq : Q (φ (g *ᵥ Pi.single j 1)) = Q (e j)`. Simplify using `only [Q, e, LinearEquiv.symm_apply_apply, hunit g hg]`. Rewrite `h1` using `[hQeq]`. Establish `h2` using `hup (e j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hej : ‖e j‖ ^ 2 ≤ D` using `Finset.single_le_sum (f := fun j => ‖e j‖ ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ j)`. Establish `h3 : t ^ 2 ≤ B / a * D`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ ha]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : 0 ≤ B / a * D` using `mul_nonneg (div_nonneg hB ha.le) hD0`.
-
-Use polynomial arithmetic with `[sq_nonneg (t - 1)]`. Simplify using `only [LinearEquiv.symm_apply_apply]`. Rewrite using `[Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isCompact_entries_of_anisotropic :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),

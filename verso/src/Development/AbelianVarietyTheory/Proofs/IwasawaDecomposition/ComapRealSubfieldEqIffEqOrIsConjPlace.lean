@@ -9,14 +9,14 @@ noncomputable section
 namespace GlobalTheory.PlacePair
 
 /- English proof (translation)
-The claim follows from `D.host.φ₀.injective (by rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply])`.
+A detailed English derivation is pending.
 -/
 theorem hostConj_eq (D : D7) (x : D.host.E) : D.host.conj x = IsCMField.complexConj D.host.E x :=
   D.host.φ₀.injective (by
     rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply])
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj, IsCMField.coe_ringOfIntegersComplexConj]`. Conclude with `IsCMField.complexConj_apply_apply D.host.E (x : D.host.E)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cO_cO (D : D7) (x : 𝓞 D.host.E) :
     IsCMField.ringOfIntegersComplexConj D.host.E (IsCMField.ringOfIntegersComplexConj D.host.E x) = x := by
@@ -25,7 +25,7 @@ theorem cO_cO (D : D7) (x : 𝓞 D.host.E) :
   exact IsCMField.complexConj_apply_apply D.host.E (x : D.host.E)
 
 /- English proof (translation)
-The claim follows from `(IsCMField.ringOfIntegersComplexConj_eq_self_iff D.host.E _).2 ⟨a, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem cO_algebraMap (D : D7) (a : 𝓞 (maximalRealSubfield D.host.E)) :
     IsCMField.ringOfIntegersComplexConj D.host.E
@@ -34,9 +34,9 @@ theorem cO_algebraMap (D : D7) (a : 𝓞 (maximalRealSubfield D.host.E)) :
   (IsCMField.ringOfIntegersComplexConj_eq_self_iff D.host.E _).2 ⟨a, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x`. Conclude with `h x _ (by rw [IsCMField.coe_ringOfIntegersComplexConj, hostConj_eq])`. Introduce `h x y hxy`. Establish `: y = IsCMField.ringOfIntegersComplexConj D.host.E x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hxy, hostConj_eq, IsCMField.coe_ringOfIntegersComplexConj]`. Rewrite using `[this]`. Conclude with `h x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isConjPl_iff (D : D7) (P P' : PlE D.host) :
     IsConjPl D.host P P' ↔
@@ -51,17 +51,15 @@ theorem isConjPl_iff (D : D7) (P P' : PlE D.host) :
     rw [this]; exact h x
 
 /- English proof (translation)
-Use `set Q : Ideal (𝓞 D.host.E) := P.asIdeal.comap (IsCMField.ringOfIntegersComplexConj D.host.E : 𝓞 D.host.E →+* 𝓞 D.host.E) with hQ`. Establish `hQp : Q.IsPrime` using `Ideal.comap_isPrime _ _`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨h1, h2⟩` from `hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `nle : ∀ I : Ideal (𝓞 D.host.E), I.IsPrime → w.asIdeal ≠ I → ¬ w.asIdeal ≤ I` using `fun I hI h hle => h (w.isMaximal.eq_of_le hI.ne_top hle)`. Take `⟨a, ha, haP⟩` from `Set.not_subset.mp (nle P.asIdeal P.isPrime h1)`. Take `⟨b, hb, hbQ⟩` from `Set.not_subset.mp (nle Q hQp h2)`. Establish `key : ∃ x ∈ w.asIdeal, x ∉ P.asIdeal ∧ x ∉ Q`. Distinguish the cases in `haQ : a ∈ Q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hbP : b ∈ P.asIdeal`. Use `⟨a + b, w.asIdeal.add_mem ha hb, fun h => haP ?_, fun h => hbQ ?_⟩` and prove the remaining obligations. Simplify using `using P.asIdeal.sub_mem h hbP`. Simplify using `using Q.sub_mem h haQ`. Conclude with `⟨b, hb, hbP, hbQ⟩`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, ha, haP, haQ⟩`. Take `⟨x, hx, hxP, hxQ⟩` from `key`. Establish `hxQ' : IsCMField.ringOfIntegersComplexConj D.host.E x ∉ P.asIdeal` using `hxQ`. Establish `hfix : IsCMField.ringOfIntegersComplexConj D.host.E (x * IsCMField.ringOfIntegersComplexConj D.host.E x) = x * IsCMField.ringOfIntegersComplexConj D.host.E x`. Rewrite using `[map_mul, cO_cO, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `(IsCMField.ringOfIntegersComplexConj_eq_self_iff D.host.E _).1 hfix`. Establish `hyw : y ∈ w.asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E))`. Rewrite using `[Ideal.mem_comap, hy]`. Conclude with `w.asIdeal.mul_mem_right _ hx`. Rewrite `hyw` using `[hw, Ideal.mem_comap, hy]`.
-
-Break down `P.isPrime.mem_or_mem hyw with h | h` into its components or cases. Conclude with `hxP h`. Conclude with `hxQ' h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eq_or_eq_conj (D : D7) (P w : PlE D.host)
     (hw : w.asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E)) =
@@ -100,11 +98,11 @@ theorem eq_or_eq_conj (D : D7) (P w : PlE D.host)
   · exact hxQ' h
 
 /- English proof (translation)
-Introduce `D P P'`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Break down `eq_or_eq_conj D P P' h.symm with e | e` into its components or cases. Conclude with `Or.inl (HeightOneSpectrum.ext e.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use `Or.inr ((isConjPl_iff D P P').2 fun x => ?_)` and prove the remaining obligations. Rewrite using `[e, Ideal.mem_comap, RingHom.coe_coe, cO_cO]`. Introduce and unpack `(rfl | h)`. Both sides reduce to the same expression. Rewrite `h` using `[isConjPl_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `a`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, h, cO_algebraMap]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_eq_iff : ∀ (D : D7) (P P' : PlE D.host),
     P.asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E)) =

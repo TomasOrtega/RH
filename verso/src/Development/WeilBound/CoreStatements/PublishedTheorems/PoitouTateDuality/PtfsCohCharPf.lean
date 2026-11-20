@@ -11,27 +11,23 @@ namespace PositivityTheory.Lit1.PTN
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Establish `hθs : Continuous (θ.symm : H ≃* G).toMonoidHom` using `θ.symm.continuous`. Set `rho' : Representation R H M` to `rho.comp (θ.symm : H ≃* G).toMonoidHom`. Establish `hM' : ∀ h m, eM (rho' h m) = A.ρ h (eM m)` using `fun h m => by show eM (rho (θ.symm h) m) = _`. Rewrite using `[hM]`. Conclude with `congrArg (fun t => A.ρ t (eM m)) (θ.apply_symm_apply h)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e0, he0⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc0 H R M rho' A eM hM'`. Establish `hEq : H0 rho = H0 rho'`. Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce `hm h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hm _`. Introduce `hm g`. Use `hm (θ g)` as an intermediate fact. Express the relevant statement in the definitionally equal form `rho (θ.symm (θ g)) m = m at this`. Rewrite `this` using `[θ.symm_apply_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `r0 : ↥(H0 rho) ≃ₗ[R] ↥(H0 rho')` to `LinearEquiv.ofEq _ _ hEq`. Establish `hloc : ∀ v, ∀ σ m, eM (((rho.comp (lam v)).comp (ev v).toMonoidHom) σ m) = (Rep.res (φ v).toMonoidHom A).ρ σ (eM m)` using `fun v σ m => by show eM (rho (lam v (ev v σ)) m) = A.ρ (φ v σ) (eM m)`. Rewrite using `[hM, hev]`. Use `choose ev0 hev0 using fun v => PositivityTheory.LocalTateOrthogonality.Gcoh.gc0 (Hv v) R M ((rho.comp (lam v)).comp (ev v).toMonoidHom) (Rep.res (φ v).toMonoidHom A) eM (hloc v)`. Establish `hEqv : ∀ v, H0 (rho.comp (lam v)) = H0 ((rho.comp (lam v)).comp (ev v).toMonoidHom)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `v`. Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce `hm h`. Conclude with `hm _`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `hm g`. Use `hm ((ev v).symm g)` as an intermediate fact. Express the relevant statement in the definitionally equal form `rho (lam v (ev v ((ev v).symm g))) m = m at this`. Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Set `rv : ∀ v, ↥(H0 (rho.comp (lam v))) ≃ₗ[R] ↥(H0 ((rho.comp (lam v)).comp (ev v).toMonoidHom))` to `fun v => LinearEquiv.ofEq _ _ (hEqv v)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r0.toAddEquiv.trans e0, fun v => (rv v).toAddEquiv.trans (ev0 v), fun v z => ?_, fun z x hx => ?_, fun v z x hx => ?_⟩` and prove the remaining obligations. Establish `hz' : (z : M) ∈ H0 rho'` using `hEq ▸ z.2`. Take `⟨x, hx⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.exists_coc A 0 (fun _ => eM z.1) (IsLocallyConstant.const _) (by`. Use `(PositivityTheory.LocalTateOrthogonality.Gcoh.d_comp rho' A eM hM' 0 fun _ => z.1).trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `s`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[PositivityTheory.LocalTateOrthogonality.Gcoh.dn_zero, hz' (s 0), sub_self]`. Conclude with `map_zero eM)`. Establish `hE : e0 (r0 z) = cohomologyπ A 0 x` using `he0 _ x (fun s => congrFun hx s)`. Use `show ev0 v (rv v (resH0 rho (lam v) z)) = ptRes φ A v 0 (e0 (r0 z))`. Rewrite using `[hE]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : ptRes φ A v 0 (cohomologyπ A 0 x) = cohomologyπ _ 0 (cocyclesMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) 0 x)`. Unfold `ptRes`. Conclude with `congrArg (fun f => f.hom x) (cohomologyπ_cohomologyMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) 0)`. Rewrite using `[hP]`. Apply `hev0 v` to reduce the goal to its premises.
-
-Introduce `s`. Rewrite using `[cochainOf_cocycleι_cocyclesMapAlong]`. Simplify using `only`. Rewrite using `[hx]`. Both sides reduce to the same expression.
-
-Use `show e0 (r0 z) = _`. Conclude with `he0 _ x (fun s => hx s)`. Use `show ev0 v (rv v z) = _`. Conclude with `hev0 v _ x (fun s => hx s)`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem resCmpChar0' {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group H]
     [TopologicalSpace H] [IsTopologicalGroup H] (θ : G ≃ₜ* H) {ι : Type} {Lv Hv : ι → Type}
@@ -115,21 +111,17 @@ theorem resCmpChar0' {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalG
     exact hev0 v _ x (fun s => hx s)
 
 /- English proof (translation)
-Establish `hθs : Continuous (θ.symm : H ≃* G).toMonoidHom` using `θ.symm.continuous`. Set `rho' : Representation R H M` to `rho.comp (θ.symm : H ≃* G).toMonoidHom`. Establish `hM' : ∀ h m, eM (rho' h m) = A.ρ h (eM m)` using `fun h m => by show eM (rho (θ.symm h) m) = _`. Rewrite using `[hM]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨e1, he1a, he1b⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc1 H R M rho' A eM hM'`. Establish `bij` using `resH1_bijective_of_inverse rho (θ.symm : H ≃* G).toMonoidHom hθs (θ : G ≃* H).toMonoidHom θ.continuous (fun g => θ.symm_apply_apply g) (fun h => θ.apply_symm_apply h)`. Set `r1 : H1 rho ≃ₗ[R] H1 rho'` to `LinearEquiv.ofBijective _ bij`. Establish `hloc : ∀ v, ∀ σ m, eM (((rho.comp (lam v)).comp (ev v).toMonoidHom) σ m) = (Rep.res (φ v).toMonoidHom A).ρ σ (eM m)` using `fun v σ m => by show eM (rho (lam v (ev v σ)) m) = A.ρ (φ v σ) (eM m)`. Rewrite using `[hM, hev]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose ev1 hev1a hev1b using fun v => PositivityTheory.LocalTateOrthogonality.Gcoh.gc1 (Hv v) R M ((rho.comp (lam v)).comp (ev v).toMonoidHom) (Rep.res (φ v).toMonoidHom A) eM (hloc v)`. Establish `bijv` using `fun v => resH1_bijective_of_inverse (rho.comp (lam v)) (ev v).toMonoidHom (hev1 v) (ev v).symm.toMonoidHom (hev2 v) (fun g => (ev v).apply_symm_apply g) (fun h => (ev v).symm_apply_apply h)`. Set `rv : ∀ v, H1 (rho.comp (lam v)) ≃ₗ[R] H1 ((rho.comp (lam v)).comp (ev v).toMonoidHom)` to `fun v => LinearEquiv.ofBijective _ (bijv v)`. Use `⟨r1.toAddEquiv.trans e1, fun v => (rv v).toAddEquiv.trans (ev1 v), fun v x => ?_, fun z x hx => ?_, fun v z x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `H z`. Take `⟨y, hy⟩` from `he1a (restrictCocycles1 rho (θ.symm : H ≃* G).toMonoidHom hθs z)`. Establish `hE : e1 (r1 (Submodule.Quotient.mk z)) = cohomologyπ A 1 y` using `he1b _ y hy`. Use `show ev1 v (rv v (resH1 rho (lam v) (hlam v) (Submodule.Quotient.mk z))) = ptRes φ A v 1 (e1 (r1 (Submodule.Quotient.mk z)))`. Rewrite using `[hE]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hP : ptRes φ A v 1 (cohomologyπ A 1 y) = cohomologyπ _ 1 (cocyclesMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) 1 y)`. Unfold `ptRes`. Conclude with `congrArg (fun f => f.hom y) (cohomologyπ_cohomologyMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) 1)`. Rewrite using `[hP]`. Apply `hev1b v` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Introduce `s`. Rewrite using `[cochainOf_cocycleι_cocyclesMapAlong]`. Simplify using `only`. Rewrite using `[hy]`. Express the relevant statement in the definitionally equal form `eM (z.1 (θ.symm (φ v (s 0)))) = eM (z.1 (lam v (ev v (s 0))))`.
-
-Rewrite using `[← hev]`. Conclude with `congrArg (fun t => eM (z.1 t)) (θ.symm_apply_apply _)`. Use `show e1 (r1 (Submodule.Quotient.mk z)) = _`. Conclude with `he1b (restrictCocycles1 rho (θ.symm : H ≃* G).toMonoidHom hθs z) x (fun s => by rw [hx s]; rfl)`. Use `show ev1 v (rv v (Submodule.Quotient.mk z)) = _`.
-
-Conclude with `hev1b v (restrictCocycles1 (rho.comp (lam v)) (ev v).toMonoidHom (hev1 v) z) x (fun s => by rw [hx s]; rfl)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resCmpChar1' {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group H]
     [TopologicalSpace H] [IsTopologicalGroup H] (θ : G ≃ₜ* H) {ι : Type} {Lv Hv : ι → Type}
@@ -198,21 +190,17 @@ theorem resCmpChar1' {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalG
     exact hev1b v (restrictCocycles1 (rho.comp (lam v)) (ev v).toMonoidHom (hev1 v) z) x (fun s => by rw [hx s]; rfl)
 
 /- English proof (translation)
-Establish `hθs : Continuous (θ.symm : H ≃* G).toMonoidHom` using `θ.symm.continuous`. Set `rho' : Representation R H M` to `rho.comp (θ.symm : H ≃* G).toMonoidHom`. Establish `hM' : ∀ h m, eM (rho' h m) = A.ρ h (eM m)` using `fun h m => by show eM (rho (θ.symm h) m) = _`. Rewrite using `[hM]`. Conclude with `congrArg (fun t => A.ρ t (eM m)) (θ.apply_symm_apply h)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e2, he2a, he2b⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc2 H R M rho' A eM hM'`. Establish `bij` using `resH2_bijective_of_inverse rho (θ.symm : H ≃* G).toMonoidHom hθs (θ : G ≃* H).toMonoidHom θ.continuous (fun g => θ.symm_apply_apply g) (fun h => θ.apply_symm_apply h)`. Set `r2 : H2 rho ≃ₗ[R] H2 rho'` to `LinearEquiv.ofBijective _ bij`. Establish `hloc : ∀ v, ∀ σ m, eM (((rho.comp (lam v)).comp (ev v).toMonoidHom) σ m) = (Rep.res (φ v).toMonoidHom A).ρ σ (eM m)` using `fun v σ m => by show eM (rho (lam v (ev v σ)) m) = A.ρ (φ v σ) (eM m)`. Rewrite using `[hM, hev]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose ev2 hev2a hev2b using fun v => PositivityTheory.LocalTateOrthogonality.Gcoh.gc2 (Hv v) R M ((rho.comp (lam v)).comp (ev v).toMonoidHom) (Rep.res (φ v).toMonoidHom A) eM (hloc v)`. Establish `bijv` using `fun v => resH2_bijective_of_inverse (rho.comp (lam v)) (ev v).toMonoidHom (hev1 v) (ev v).symm.toMonoidHom (hev2 v) (fun g => (ev v).apply_symm_apply g) (fun h => (ev v).symm_apply_apply h)`. Set `rv : ∀ v, H2 (rho.comp (lam v)) ≃ₗ[R] H2 ((rho.comp (lam v)).comp (ev v).toMonoidHom)` to `fun v => LinearEquiv.ofBijective _ (bijv v)`. Use `⟨r2.toAddEquiv.trans e2, fun v => (rv v).toAddEquiv.trans (ev2 v), fun v x => ?_, fun z x hx => ?_, fun v z x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `H z`. Take `⟨y, hy⟩` from `he2a (restrictCocycles2 rho (θ.symm : H ≃* G).toMonoidHom hθs z)`. Establish `hE : e2 (r2 (Submodule.Quotient.mk z)) = cohomologyπ A 2 y` using `he2b _ y hy`. Use `show ev2 v (rv v (resH2 rho (lam v) (hlam v) (Submodule.Quotient.mk z))) = ptRes φ A v 2 (e2 (r2 (Submodule.Quotient.mk z)))`. Rewrite using `[hE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : ptRes φ A v 2 (cohomologyπ A 2 y) = cohomologyπ _ 2 (cocyclesMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) 2 y)`. Unfold `ptRes`. Conclude with `congrArg (fun f => f.hom y) (cohomologyπ_cohomologyMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) 2)`. Rewrite using `[hP]`. Apply `hev2b v` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `s`. Rewrite using `[cochainOf_cocycleι_cocyclesMapAlong]`. Simplify using `only`. Rewrite using `[hy]`. Express the relevant statement in the definitionally equal form `eM (z.1 (θ.symm (φ v (s 0)), θ.symm (φ v (s 1)))) = eM (z.1 (lam v (ev v (s 0)), lam v (ev v (s 1))))`.
-
-Rewrite using `[← hev, ← hev]`. Conclude with `congrArg (fun t => eM (z.1 t)) (Prod.ext (θ.symm_apply_apply _) (θ.symm_apply_apply _))`. Use `show e2 (r2 (Submodule.Quotient.mk z)) = _`. Conclude with `he2b (restrictCocycles2 rho (θ.symm : H ≃* G).toMonoidHom hθs z) x (fun s => by rw [hx s]; rfl)`. Use `show ev2 v (rv v (Submodule.Quotient.mk z)) = _`.
-
-Conclude with `hev2b v (restrictCocycles2 (rho.comp (lam v)) (ev v).toMonoidHom (hev1 v) z) x (fun s => by rw [hx s]; rfl)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resCmpChar2' {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group H]
     [TopologicalSpace H] [IsTopologicalGroup H] (θ : G ≃ₜ* H) {ι : Type} {Lv Hv : ι → Type}

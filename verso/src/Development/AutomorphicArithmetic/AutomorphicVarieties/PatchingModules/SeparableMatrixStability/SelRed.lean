@@ -8,39 +8,39 @@ section
 variable {A X X' : Type} [CommRing A] [CommRing X] [Algebra A X] [CommRing X'] [Algebra A X'] (f : X →ₐ[A] X') {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_alg (M : Matrix (Fin n) (Fin n) A) :
     (M.map (algebraMap A X)).map f = M.map (algebraMap A X') := by
   ext i j; simp
 
 /- English proof (translation)
-The claim follows from `map_mul f.mapMatrix M N`.
+A detailed English derivation is pending.
 -/
 private theorem map_mul_alg (M N : Matrix (Fin n) (Fin n) X) : (M * N).map f = M.map f * N.map f :=
   map_mul f.mapMatrix M N
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_add _ (map_add f), Matrix.map_one _ (map_zero f) (map_one f)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_add_one (M : Matrix (Fin n) (Fin n) X) : (1 + M).map f = 1 + M.map f := by
   rw [Matrix.map_add _ (map_add f), Matrix.map_one _ (map_zero f) (map_one f)]
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_sub _ (map_sub f), Matrix.map_one _ (map_zero f) (map_one f)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_sub_one (M : Matrix (Fin n) (Fin n) X) : (1 - M).map f = 1 - M.map f := by
   rw [Matrix.map_sub _ (map_sub f), Matrix.map_one _ (map_zero f) (map_one f)]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j <;> simp [DD.epM, DD.map]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_epM {g : ℕ} (Z : Fin g → Matrix (Fin n) (Fin n) A) :
     (DD.epM fun j => (Z j).map (algebraMap A X)).map (DD.map g f) = DD.epM fun j => (Z j).map (algebraMap A X') := by
   ext i j <;> simp [DD.epM, DD.map]
 
 /- English proof (translation)
-Introduce `_ hZ i j` and use `⟨fun e => h₁ _ ((hZ i j).1 e), fun e => h₂ _ ((hZ i j).2 e)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private theorem blk_map (a : ℕ) (V₁ V₂ : Submodule A X) (V₁' V₂' : Submodule A X')
     (h₁ : ∀ y ∈ V₁, f y ∈ V₁') (h₂ : ∀ y ∈ V₂, f y ∈ V₂') :
@@ -48,11 +48,11 @@ private theorem blk_map (a : ℕ) (V₁ V₂ : Submodule A X) (V₁' V₂' : Sub
   fun _ hZ i j => ⟨fun e => h₁ _ ((hZ i j).1 e), fun e => h₂ _ ((hZ i j).2 e)⟩
 
 /- English proof (translation)
-Introduce and unpack `y ⟨ha, hep, hep', heta⟩`. Use `⟨fun hb => ?_, fun hb => ?_, fun hb => ?_, fun hb => ?_⟩` and prove the remaining obligations. Use `show f y.a = 0`. Rewrite using `[ha hb, map_zero]`. Use `show (fun j => f (y.ep j)) = 0`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[hep hb]`. Simplify using the standard rewrite rules. Use `show (fun j => f (y.ep' j)) = 0`. Use function extensionality and compare the values at `j`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hep' hb]`. Simplify using the standard rewrite rules. Use `show f y.eta = 0`. Rewrite using `[heta hb, map_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem part_map (g : ℕ) (b₁ b₂ b₃ b₄ : Bool) :
     ∀ y ∈ ddPart A X g b₁ b₂ b₃ b₄, DD.map g f y ∈ ddPart A X' g b₁ b₂ b₃ b₄ := by
@@ -74,17 +74,17 @@ private theorem part_map (g : ℕ) (b₁ b₂ b₃ b₄ : Bool) :
 end
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x k X X' _ _ _ _ f`. Establish `hρ1 : ∀ g, (k.ρ1 X g).map (DD.map k.g f) = k.ρ1 X' g`. Introduce `g`. Unfold `Kap.ρ1 NP.ρX`. Rewrite using `[map_mul_alg, map_add_one, map_epM, map_alg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hw1 : ∀ v, (k.w1 X v).map (DD.map k.g f) = k.w1 X' v`. Introduce `v`. Unfold `Kap.w1 NP.wX`. Rewrite using `[map_mul_alg, map_sub_one, map_epM, map_alg]`. Establish `hwi1 : ∀ v, (k.wi1 X v).map (DD.map k.g f) = k.wi1 X' v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v`. Unfold `Kap.wi1 NP.wiX`. Rewrite using `[map_mul_alg, map_add_one, map_epM, map_alg]`. Use `⟨fun z hz => ?_, fun z hz => ?_, fun z hz => ?_, hρ1, fun v => ⟨hw1 v, hwi1 v⟩⟩` and prove the remaining obligations. Establish `hV : ∀ Z ∈ Ev x.A X n x.a, Z.map f ∈ Ev x.A X' n x.a` using `blk_map f x.a ⊤ ⊥ ⊤ ⊥ (fun _ _ => Submodule.mem_top) (fun y hy => by`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hy`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hy, map_zero])`. Establish `H` using `(sel_map l G.frame n x.A X X' f x.t (fun g => x.ρX X (h.p₀ g)) (x.wX X) (x.wiX X) _ _ hV z).1 hz`. Simplify using `only [NP.ρX, NP.wX, NP.wiX, map_alg] at H`. Conclude with `H`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hV : ∀ Z ∈ W1 n x.A X k.g x.a, Z.map (DD.map k.g f) ∈ W1 n x.A X' k.g x.a` using `blk_map (DD.map k.g f) x.a _ _ _ _ (part_map f k.g _ _ _ _) (part_map f k.g _ _ _ _)`. Establish `H` using `(sel_map l G.frame n x.A (DD X k.g) (DD X' k.g) (DD.map k.g f) x.t (fun g => k.ρ1 X (h.p₀ g)) (k.w1 X) (k.wi1 X) _ _ hV z).1 hz`. Simplify using `only [hρ1, hw1, hwi1] at H`. Conclude with `H`. Establish `hV : ∀ Z ∈ W2 n x.A X k.g x.a, Z.map (DD.map k.g f) ∈ W2 n x.A X' k.g x.a` using `blk_map (DD.map k.g f) x.a _ _ _ _ (part_map f k.g _ _ _ _) (part_map f k.g _ _ _ _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `H` using `(sel_map l G.frame n x.A (DD X k.g) (DD X' k.g) (DD.map k.g f) x.t (fun g => k.ρ1 X (h.p₀ g)) (k.w1 X) (k.wi1 X) _ _ hV z).1 hz`. Simplify using `only [hρ1, hw1, hwi1] at H`. Conclude with `H`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.sel_red :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n) (k : Kap x) (X X' : Type) [CommRing X] [Algebra x.A X] [CommRing X'] [Algebra x.A X'] (f : X →ₐ[x.A] X'), (∀ z ∈ SelP h x X, (fun g => (z g).map f) ∈ SelP h x X') ∧ (∀ z ∈ Sel1 h X k, (fun g => (z g).map (DD.map k.g f)) ∈ Sel1 h X' k) ∧ (∀ z ∈ Sel2 h X k, (fun g => (z g).map (DD.map k.g f)) ∈ Sel2 h X' k) ∧ (∀ g, (k.ρ1 X g).map (DD.map k.g f) = k.ρ1 X' g) ∧ ∀ v, (k.w1 X v).map (DD.map k.g f) = k.w1 X' v ∧ (k.wi1 X v).map (DD.map k.g f) = k.wi1 X' v := by

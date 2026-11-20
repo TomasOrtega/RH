@@ -11,13 +11,13 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] (A : 
 def rat (σ : G E Ω) : Ωˣ →* Ωˣ := (Units.map (σ : Ω →* Ω)) / MonoidHom.id _
 
 /- English proof (translation)
-Simplify using `[rat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rat_val (σ : G E Ω) (y : Ωˣ) : ((rat σ y : Ωˣ) : Ω) = σ y / y := by
   simp [rat]
 
 /- English proof (translation)
-Use `ext`. Use `y.ne_zero` as an intermediate fact. Establish `h2 : σ (y : Ω) ≠ 0` using `(map_ne_zero σ).mpr this`. Establish `h3 : τ (y : Ω) ≠ 0` using `(map_ne_zero τ).mpr this`. Simplify using `only [Units.val_mul, rat_val, map_div₀, AlgEquiv.mul_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -30,7 +30,7 @@ theorem rat_mul (σ τ : G E Ω) (y : Ωˣ) : rat (σ * τ) y = rat σ (rat τ y
   field_simp
 
 /- English proof (translation)
-Rewrite using `[ValuationSubring.mem_principalUnitGroup_iff, rat_val, div_sub_one u.ne_zero, map_div₀, hu, div_one]`. Conclude with `hσ.2 _ hu.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_princ {σ : G E Ω} (hσ : σ ∈ Ine (F := E) A) (u : Ωˣ) (hu : A.valuation u = 1) :
     rat σ u ∈ A.principalUnitGroup := by
@@ -38,13 +38,13 @@ theorem rat_princ {σ : G E Ω} (hσ : σ ∈ Ine (F := E) A) (u : Ωˣ) (hu : A
   exact hσ.2 _ hu.le
 
 /- English proof (translation)
-Introduce `h`. Establish `step : ∀ j : ℕ, A.valuation ((σ ^ j) (σ y)) < A.valuation ((σ ^ j) y)` using `fun j => by`. Establish `h1 : A.valuation (σ y / y) < 1`. Rewrite using `[map_div₀, div_lt_one₀ (zero_lt_iff.mpr (by simpa using hy))]; exact h`. Establish `h2` using `(valuation_apply_lt_one_iff (pow_mem hσ j) (σ y / y)).mpr h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_div₀, map_div₀, div_lt_one₀ (zero_lt_iff.mpr ((Valuation.ne_zero_iff _).mpr ((map_ne_zero (σ ^ j)).mpr hy)))]`. Then use the resulting hypothesis. Establish `all : ∀ j : ℕ, A.valuation ((σ ^ (j + 1)) y) < A.valuation y` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => simpa using h`. Consider the case `succ j ih`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `lt_trans ?_ ih` and prove the remaining obligations. Rewrite using `[pow_succ σ (j + 1), AlgEquiv.mul_apply]`. Conclude with `step (j + 1)`. Take `⟨j, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hN.ne'`. Use `all j` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hfix]`. Conclude with `lt_irrefl _ this`.
+A detailed English derivation is pending.
 -/
 theorem rat_not_lt {σ : G E Ω} (hσ : σ ∈ Dec (F := E) A) (y : Ω) (hy : y ≠ 0) (N : ℕ) (hN : 0 < N)
     (hfix : (σ ^ N) y = y) : ¬ A.valuation (σ y) < A.valuation y := by
@@ -68,11 +68,9 @@ theorem rat_not_lt {σ : G E Ω} (hσ : σ ∈ Dec (F := E) A) (y : Ω) (hy : y 
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Establish `h1` using `rat_not_lt A hσ y hy N hN (hfix 0 y (by simp))`. Establish `h2` using `rat_not_lt A (inv_mem hσ) (σ y) ((map_ne_zero σ).mpr hy) N hN (by`. Use `hfix 1 (σ y) (by simp)` as an intermediate fact. Rewrite using `[inv_pow]`. Use `conv_lhs => rw [← this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ((σ ^ N)⁻¹ * σ ^ N) (σ y) = σ y`. Rewrite using `[inv_mul_cancel]`. Use the proof step `rfl)`. Establish `h3 : (σ⁻¹ : G E Ω) (σ y) = y` using `by show (σ⁻¹ * σ) y = y`. Rewrite using `[inv_mul_cancel]`.
-
-Both sides reduce to the same expression. Rewrite `h2` using `[h3]`. Conclude with `le_antisymm (not_lt.mp h2) (not_lt.mp h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eq {σ : G E Ω} (hσ : σ ∈ Dec (F := E) A) (y : Ω) (hy : y ≠ 0) (N : ℕ) (hN : 0 < N)
     (hfix : ∀ z : ℤ, ∀ x, x = (σ ^ z) y → (σ ^ N) x = x) : A.valuation (σ y) = A.valuation y := by
@@ -90,11 +88,9 @@ theorem val_eq {σ : G E Ω} (hσ : σ ∈ Dec (F := E) A) (y : Ω) (hy : y ≠ 
   exact le_antisymm (not_lt.mp h2) (not_lt.mp h1)
 
 /- English proof (translation)
-Establish `hle : ∀ z : ℤ, A.valuation (z : Ω) ≤ 1` using `fun z => (A.valuation_le_one_iff _).mpr (intCast_mem A z)`. Establish `hN : A.valuation (N : Ω) ≤ 1` using `by exact_mod_cast hle N`. Use `le_antisymm hN (not_lt.mp fun hlt => ?_)` and prove the remaining obligations. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.mpr hc`. Establish `e : (a : Ω) * N + (b : Ω) * p = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → Ω) hab`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: A.valuation ((a : Ω) * N + (b : Ω) * p) < 1`. Apply the tactic sequence `refine Valuation.map_add_lt _ ?_ ?_ <;> rw [map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hle a)) hlt`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hle b)) hp`. Rewrite `this` using `[e, map_one]`.
-
-Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_nat_eq_one (p N : ℕ) (hp : A.valuation (p : Ω) < 1) (hc : N.Coprime p) :
     A.valuation (N : Ω) = 1 := by
@@ -111,21 +107,19 @@ theorem val_nat_eq_one (p N : ℕ) (hp : A.valuation (p : Ω) < 1) (hc : N.Copri
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Establish `hint : ∀ x : 𝓞 L, i (x : L) ∈ A` using `fun x => by`. Establish `h1 : IsIntegral ℤ (i (x : L))` using `(RingOfIntegers.isIntegral_coe x).map i.toIntAlgHom`. Establish `h2 : IsIntegral A (i (x : L))` using `h1.tower_top`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := A) (K := Ω)).mp h2`. Rewrite using `[← hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `y.2`. Set `j : 𝓞 L →+* A` to `(i.comp (algebraMap (𝓞 L) L)).codRestrict A.toSubring hint`. Set `P : Ideal (𝓞 L)` to `(IsLocalRing.maximalIdeal A).comap j`. Establish `hP : ∀ x : 𝓞 L, x ∈ P ↔ A.valuation (i (x : L)) < 1` using `fun x => ValuationSubring.valuation_lt_one_iff A (j x)`. Set `w : HeightOneSpectrum (𝓞 L)` to `⟨P, Ideal.comap_isPrime _ _, fun hb => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: (p : 𝓞 L) ∈ P` using `(hP _).mpr (by simpa using hp)`. Rewrite `this` using `[hb, Ideal.mem_bot]`. Conclude with `hp0 (by exact_mod_cast this)⟩`. Establish `hunit : ∀ x : 𝓞 L, x ∉ P → A.valuation (i (x : L)) = 1` using `fun x hx => le_antisymm ((A.valuation_le_one_iff _).mpr (hint x)) (not_lt.mp fun h => hx ((hP x).mpr h))`. Take `⟨π, hπ⟩` from `w.valuation_exists_uniformizer L`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`. Use `⟨π, hπ0, fun y hy => ⟨-WithZero.log (w.valuation L y), ?_⟩⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : w.valuation L y ≠ 0` using `(Valuation.ne_zero_iff _).mpr hy`. Establish `h1 : w.valuation L (y / π ^ (-WithZero.log (w.valuation L y))) = 1`. Rewrite using `[map_div₀, map_zpow₀, hπ, ← WithZero.exp_zsmul]`. Simplify using `[WithZero.exp_log hv, hv]`. Generalize the expression as in `y / π ^ (-WithZero.log (w.valuation L y)) = z at h1`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, b, hab⟩` from `w.exists_primeCompl_mul_eq_of_integer z h1.le`. Establish `hb : A.valuation (i ((b : 𝓞 L) : L)) = 1` using `hunit _ b.2`. Establish `ha : a ∉ P`. Introduce `ha`. Establish `h2 : w.valuation L (algebraMap (𝓞 L) L a) < 1` using `(w.valuation_lt_one_iff_mem _).mpr ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : w.valuation L (algebraMap (𝓞 L) L b) = 1` using `(w.valuation_eq_one_iff_notMem).mpr b.2`. Rewrite `h2` using `[← hab, map_mul, h1, h3, mul_one]`. Conclude with `lt_irrefl _ h2`. Use `congrArg (fun t => A.valuation (i t)) hab` as an intermediate fact. Simplify using `only [map_mul] at this`.
-
-Establish `hb' : A.valuation (i (algebraMap (𝓞 L) L b)) = 1` using `hb`. Rewrite `this` using `[hb', mul_one]`. Conclude with `this.trans (hunit a ha)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unif (L : Type) [Field L] [NumberField L] (i : L →+* Ω) (p : ℕ) (hp0 : p ≠ 0)
     (hp : A.valuation (p : Ω) < 1) :
@@ -177,7 +171,7 @@ def Near {A' : Type} [Group A'] (φ : G E Ω →* A') (σ : G E Ω) : Prop :=
 
 omit [NumberField E] [IsAlgClosure E Ω] in
 /- English proof (translation)
-Introduce `y hy hf` and use `by have : σ' y = σ y := by have h1 := hf (σ⁻¹ * σ') (by rw [MonoidHom.mem_ker, map_mul, map_inv, e, inv_mul_cancel]) have h2 : σ' = σ * (σ⁻¹ * σ') := by group rw [h2, AlgEquiv.mul_apply, h1] rw [this]; exact h y hy hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Near.congr {A' : Type} [Group A'] {φ : G E Ω →* A'} {σ σ' : G E Ω} (e : φ σ = φ σ')
     (h : Near A φ σ) : Near A φ σ' := fun y hy hf => by
@@ -188,33 +182,29 @@ theorem Near.congr {A' : Type} [Group A'] {φ : G E Ω →* A'} {σ σ' : G E Ω
   rw [this]; exact h y hy hf
 
 /- English proof (translation)
-Establish `: IsGalois E Ω` using `IsAlgClosure.isGalois E Ω`. Set `L` to `IntermediateField.fixedField φ.ker`. Establish `hL : L.fixingSubgroup = φ.ker` using `InfiniteGalois.fixingSubgroup_fixedField ⟨φ.ker, Subgroup.isClosed_of_isOpen _ ho⟩`. Establish `: FiniteDimensional E L` using `(InfiniteGalois.isOpen_iff_finite L).mp (by rw [hL]; exact ho)`. Establish `: NumberField L` using `NumberField.of_module_finite E L`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ x, x ∈ L ↔ ∀ κ ∈ φ.ker, κ x = x` using `fun x => IntermediateField.mem_fixedField_iff _ x`. Establish `hstab : ∀ (σ : G E Ω), ∀ x ∈ L, σ x ∈ L` using `fun σ x hx => (hmem _).mpr fun κ hκ => by`. Establish `h1 : σ⁻¹ * κ * σ ∈ φ.ker`. Rewrite `hκ`, the goal using `[MonoidHom.mem_ker]`. Simplify using `[hκ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `(hmem x).mp hx _ h1`. Establish `: (κ * σ) x = (σ * (σ⁻¹ * κ * σ)) x` using `by congr 1; group`. Rewrite `this` using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply σ, h2]`. Conclude with `this`. Use `set N := Nat.card A' with hNdef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : 0 < N` using `Nat.card_pos`. Establish `hpow : ∀ (σ : G E Ω), ∀ x ∈ L, (σ ^ N) x = x` using `fun σ x hx => (hmem x).mp hx _ (by rw [MonoidHom.mem_ker, map_pow, hNdef, pow_card_eq_one'])`. Take `⟨π, hπ0, hπ⟩` from `exists_unif A L (algebraMap L Ω) p hp0 hp`. Set `u : Ωˣ` to `Units.mk0 (π : Ω) (by simpa using hπ0)`. Establish `hu : ∀ σ ∈ Ine (F` using `E) A, rat σ u ∈ A.unitGroup := fun σ hσ => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ValuationSubring.mem_unitGroup_iff, rat_val, map_div₀, val_eq A (Ine_le_Dec A hσ) _ u.ne_zero N hN (fun z x hx => hpow σ x (hx ▸ hstab _ _ π.2)), div_self (by simp)]`. Establish `hker : ∀ x : A.unitGroup, A.unitGroupToResidueFieldUnits x = 1 ↔ (x : Ωˣ) ∈ A.principalUnitGroup` using `fun x => by rw [← MonoidHom.mem_ker, A.ker_unitGroupToResidueFieldUnits]; rfl`. Set `θ : Ine (F` to `E) A →* (IsLocalRing.ResidueField A)ˣ := MonoidHom.mk' (fun σ => A.unitGroupToResidueFieldUnits ⟨rat σ.1 u, hu _ σ.2⟩) (fun σ τ => by`. Establish `h1` using `rat_princ A σ.2 (rat τ.1 u) ((A.mem_unitGroup_iff _).mp (hu _ τ.2))`. Establish `h2` using `(hker ⟨_, A.principal_units_le_units h1⟩).mpr h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (⟨rat (σ * τ).1 u, hu _ (σ * τ).2⟩ : A.unitGroup) = ⟨_, A.principal_units_le_units h1⟩ * ⟨rat τ.1 u, hu _ τ.2⟩ * ⟨rat σ.1 u, hu _ σ.2⟩` using `Subtype.ext (rat_mul σ.1 τ.1 u)`. Rewrite using `[h3, map_mul, map_mul, h2, one_mul, mul_comm])`. Establish `near : ∀ σ : Ine (F` using `E) A, θ σ = 1 → ∀ y ∈ L, y ≠ 0 → A.valuation (σ.1 y / y - 1) < 1 := fun σ hσ y hy hy0 => by`. Establish `h1 : rat σ.1 u ∈ A.principalUnitGroup` using `(hker _).mp hσ`. Take `⟨n, hn⟩` from `hπ ⟨y, hy⟩ (fun h => hy0 (congrArg Subtype.val h))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `yu : Ωˣ` to `Units.mk0 y hy0`. Establish `h2` using `rat_princ A σ.2 (yu / u ^ n) (by simpa [yu, u] using hn)`. Establish `h3 : rat σ.1 yu ∈ A.principalUnitGroup`. Use `mul_mem h2 (zpow_mem h1 n)` as an intermediate fact. Rewrite `this` using `[← map_zpow, ← map_mul, div_mul_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[ValuationSubring.mem_principalUnitGroup_iff, rat_val]`. Conclude with `h3`. Establish `hfix : ∀ τ : Ine (F` using `E) A, τ.1 (u : Ω) = u → θ τ = 1 := fun τ hτ => by`. Use `(hker _).mpr ?_` and prove the remaining obligations. Establish `: rat τ.1 u = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `ext`. Rewrite using `[rat_val, hτ, div_self u.ne_zero]`. Both sides reduce to the same expression. Use `show rat τ.1 u ∈ _`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Use `clear_value θ`. Establish `hθN : ∀ σ : Ine (F` using `E) A, θ σ ^ N = 1 := fun σ => by`. Rewrite using `[← map_pow]`. Apply `hfix` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[SubgroupClass.coe_pow]`. Conclude with `hpow σ.1 _ π.2`. Establish `: NeZero N` using `⟨hN.ne'⟩`. Establish `hle : θ.range ≤ rootsOfUnity N (IsLocalRing.ResidueField A)`. Introduce and unpack `_ ⟨σ, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mem_rootsOfUnity _ _).mpr (hθN σ)`. Establish `: Finite θ.range` using `Finite.of_injective _ (Subgroup.inclusion_injective hle)`. Establish `: IsCyclic θ.range` using `isCyclic_of_injective_ringHom ((Units.coeHom _).comp θ.range.subtype) (Units.val_injective.comp Subtype.val_injective)`. Take `⟨⟨g, γ, rfl⟩, hg⟩` from `IsCyclic.exists_generator (α := θ.range)`. Use `⟨γ.1, γ.2, fun σ hσ => ?_⟩` and prove the remaining obligations.
-
-Take `⟨n, hn⟩` from `hg ⟨θ ⟨σ, hσ⟩, ⟨_, rfl⟩⟩`. Establish `hn' : θ γ ^ n = θ ⟨σ, hσ⟩` using `congrArg Subtype.val hn`. Use `⟨n, fun y hy hf => ?_⟩` and prove the remaining obligations. Establish `h` using `near ((γ ^ n)⁻¹ * ⟨σ, hσ⟩) (by rw [map_mul, map_inv, map_zpow, hn', inv_mul_cancel]) y ((hmem y).mpr hf) hy`. Rewrite `h` using `[Subgroup.coe_mul, Subgroup.coe_inv, SubgroupClass.coe_zpow]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen (p : ℕ) (hp0 : p ≠ 0) (hp : A.valuation (p : Ω) < 1) (A' : Type) [Group A'] [Finite A']
     (φ : G E Ω →* A') (ho : IsOpen (φ.ker : Set (G E Ω))) :
@@ -310,23 +300,23 @@ def Test.prod {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] (s t : Test E Ω
 
 omit [NumberField E] [IsAlgClosure E Ω] in
 /- English proof (translation)
-Introduce `y hy hf` and use `h y hy fun κ hκ => hf κ (congrArg Prod.fst hκ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem near_left {s t : Test E Ω} {σ : G E Ω} (h : Near A (s.prod t).φ σ) : Near A s.φ σ :=
   fun y hy hf => h y hy fun κ hκ => hf κ (congrArg Prod.fst hκ)
 
 omit [NumberField E] [IsAlgClosure E Ω] in
 /- English proof (translation)
-Introduce `y hy hf` and use `h y hy fun κ hκ => hf κ (congrArg Prod.snd hκ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem near_right {s t : Test E Ω} {σ : G E Ω} (h : Near A (s.prod t).φ σ) : Near A t.φ σ :=
   fun y hy hf => h y hy fun κ hκ => hf κ (congrArg Prod.snd hκ)
 
 omit [NumberField E] [IsAlgClosure E Ω] in
 /- English proof (translation)
-Set `_ : TopologicalSpace t.A'` to `⊥`. Establish `: DiscreteTopology t.A'` using `⟨rfl⟩`. Establish `hc : Continuous t.φ`. Use `continuous_of_continuousAt_one t.φ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one, nhds_discrete t.A', Filter.tendsto_pure]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `t.ho.mem_nhds (one_mem t.φ.ker)`. Establish `: X = t.φ ⁻¹' (t.φ '' X)` using `Set.Subset.antisymm (Set.subset_preimage_image _ _) fun σ' ⟨σ, hσ, e⟩ => h σ σ' e hσ`. Rewrite using `[this]`. Conclude with `(isClosed_discrete _).preimage hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closed_of_sat (t : Test E Ω) (X : Set (G E Ω))
     (h : ∀ σ σ', t.φ σ = t.φ σ' → σ ∈ X → σ' ∈ X) : IsClosed X := by
@@ -342,9 +332,9 @@ theorem closed_of_sat (t : Test E Ω) (X : Set (G E Ω))
   exact (isClosed_discrete _).preimage hc
 
 /- English proof (translation)
-Establish `: IsGalois E Ω` using `IsAlgClosure.isGalois E Ω`. Set `L` to `FiniteGaloisIntermediateField.adjoin E ({y} : Set Ω)`. Establish `hk` using `IntermediateField.restrictNormalHom_ker L.toIntermediateField`. Use `⟨{ A' := L ≃ₐ[E] L, φ := AlgEquiv.restrictNormalHom L.toIntermediateField ho := by rw [hk]; exact L.toIntermediateField.fixingSubgroup_isOpen }, fun κ hκ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `κ ∈ (AlgEquiv.restrictNormalHom L.toIntermediateField).ker at hκ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hκ` using `[hk, IntermediateField.mem_fixingSubgroup_iff]`. Conclude with `hκ y (FiniteGaloisIntermediateField.subset_adjoin E {y} rfl)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_test (y : Ω) : ∃ t : Test E Ω, ∀ κ ∈ t.φ.ker, κ y = y := by
   have : IsGalois E Ω := IsAlgClosure.isGalois E Ω
@@ -357,13 +347,13 @@ theorem exists_test (y : Ω) : ∃ t : Test E Ω, ∀ κ ∈ t.φ.ker, κ y = y 
   exact hκ y (FiniteGaloisIntermediateField.subset_adjoin E {y} rfl)
 
 /- English proof (translation)
-Establish `: IsGalois E Ω` using `IsAlgClosure.isGalois E Ω`. Establish `: Nonempty (Test E Ω)` using `⟨(exists_test (E := E) (0 : Ω)).choose⟩`. Set `S : Test E Ω → Set (G E Ω)` to `fun t => (Ine (F := E) A : Set (G E Ω)) ∩ {γ | ∀ σ ∈ Ine (F := E) A, ∃ n : ℤ, Near A t.φ ((γ ^ n)⁻¹ * σ)}`. Establish `hcl : ∀ t, IsClosed (S t)` using `fun t => (isClosed_Ine (F := E) A).inter (closed_of_sat t _ fun γ γ' e h σ hσ => (h σ hσ).imp fun n hn => hn.congr A (by simp only [map_mul, map_inv, map_zpow, e]))`. Take `⟨γ, hγ⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed S (fun s t => ⟨s.prod t, fun γ h => ⟨h.1, fun σ hσ => (h.2 σ hσ).imp fun _ hn => near_left A hn⟩, fun γ h => ⟨h.1, fun σ hσ => (h.2 σ hσ).imp fun _ hn => near_right A hn⟩⟩) (fun t => exists_gen A p hp0 hp t.A' t.φ …`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hγ` using `[Set.mem_iInter]`. Use `⟨γ, (hγ (Classical.arbitrary _)).1, fun σ hσ => ?_⟩` and prove the remaining obligations. Use `set C := Subgroup.closure (insert γ {σ : G E Ω | ∀ y : Ω, y ≠ 0 → A.valuation (σ y / y - 1) < 1})`. Set `U : Test E Ω → Set (G E Ω)` to `fun t => (C.topologicalClosure : Set (G E Ω)) ∩ {τ | Near A t.φ (τ⁻¹ * σ)}`. Establish `hU : ∀ t, IsClosed (U t)` using `fun t => C.isClosed_topologicalClosure.inter (closed_of_sat t _ fun τ τ' e h => Near.congr A (by simp only [map_mul, map_inv, e]) h)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed U (fun s t => ⟨s.prod t, fun τ h => ⟨h.1, near_left A h.2⟩, fun τ h => ⟨h.1, near_right A h.2⟩⟩) (fun t => by`. Take `⟨n, hn⟩` from `(hγ t).2 σ hσ`. Conclude with `⟨γ ^ n, C.le_topologicalClosure (zpow_mem (Subgroup.subset_closure (Set.mem_insert _ _)) n), hn⟩)`. Use the proof step `(fun t => (hU t).isCompact) hU`. Rewrite `hτ` using `[Set.mem_iInter]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw : τ⁻¹ * σ ∈ C` using `Subgroup.subset_closure (Set.mem_insert_of_mem _ fun y hy => by`. Take `⟨t, ht⟩` from `exists_test (E := E) y`. Conclude with `(hτ t).2 y hy ht)`. Use `mul_mem (hτ (Classical.arbitrary _)).1 (C.le_topologicalClosure hw)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_tameGen (p : ℕ) (hp0 : p ≠ 0) (hp : A.valuation (p : Ω) < 1) :
     ∃ γ : G E Ω, TameGenAt A γ := by

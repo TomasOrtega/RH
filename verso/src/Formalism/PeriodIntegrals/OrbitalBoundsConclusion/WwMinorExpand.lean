@@ -3,6 +3,6 @@ import Formalism.PeriodIntegrals.WwMinorExpand
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MinorExpansion.WwMinorExpandMain
 
 /- English proof (translation)
-The claim follows from `PI.WwMinorExpandWork.wwMinorExpand_main`.
+A detailed English derivation is pending.
 -/
 theorem minor_expansion : PI.WwMinorExpand.WwMinorExpand := PI.WwMinorExpandWork.wwMinorExpand_main

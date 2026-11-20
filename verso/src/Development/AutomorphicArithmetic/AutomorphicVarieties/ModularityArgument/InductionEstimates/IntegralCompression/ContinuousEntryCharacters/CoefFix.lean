@@ -9,25 +9,21 @@ open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.Invariant
 open scoped ComplexConjugate Classical InnerProductSpace
 
 /- English proof (translation)
-Use `haveI := hμ.prob`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, hcpt, -⟩` from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.u4`. Establish `hN : ((KT.normSqInt n q : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (KT.normSqInt_pos n q).ne'`. Establish `hec : Continuous (eOf μ ψ)`. Unfold `eOf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `continuous_const.mul (Complex.continuous_conj.comp hψ)`. Establish `hTc : Continuous (T n q)`. Unfold `T`. Conclude with `continuous_const.mul (KT.continuous_conj_psi n q n)`. Establish `hA : ∀ m, Φ (g * ι m) = ∫ k, eOf μ ψ ((ι m)⁻¹ * k) * Φ (g * k) ∂μ`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m`. Rewrite using `[← hfix (g * ι m)]`. Establish `h` using `(hμ.left (ι m)).integral_comp (Homeomorph.mulLeft (ι m)).measurableEmbedding (fun k => eOf μ ψ ((ι m)⁻¹ * k) * Φ (g * k))`. Rewrite using `[← h]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Simplify using `only [inv_mul_cancel_left, mul_assoc]`. Establish `hint : Integrable (Function.uncurry fun m k => T n q m * (eOf μ ψ ((ι m)⁻¹ * k) * Φ (g * k))) (μK.prod μ)`. Establish `hcont : Continuous (Function.uncurry fun m k => T n q m * (eOf μ ψ ((ι m)⁻¹ * k) * Φ (g * k)))`. Unfold `Function.uncurry`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hTc.comp continuous_fst).mul ((hec.comp ?_).mul (hΦ.comp (continuous_const.mul continuous_snd)))` and prove the remaining obligations. Conclude with `((hι.comp continuous_fst).inv).mul continuous_snd`. Conclude with `hcont.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `hB : ∀ k, ∫ m, T n q m * eOf μ ψ ((ι m)⁻¹ * k) ∂μK = eOf μ ψ k`. Introduce `k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h` using `congrArg conj (hin k)`. Rewrite `h` using `[← integral_conj]`. Establish `e : ∀ m, T n q m * eOf μ ψ ((ι m)⁻¹ * k) = (((KT.normSqInt n q : ℝ) : ℂ)⁻¹ * ((∫ h, ‖ψ h‖ ^ 2 ∂μ : ℝ) : ℂ)⁻¹) * conj (KT.psi n q n m * ψ ((ι m)⁻¹ * k))`. Introduce `m`. Simplify using `only [T, eOf, map_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Chain the equalities or inequalities of the calculation.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e]`. Rewrite using `[integral_const_mul, h, map_mul, Complex.conj_ofReal, eOf]`. Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `m`. Rewrite using `[hA m, integral_const_mul]`. Use `_ = ∫ k, ∫ m, T n q m * (eOf μ ψ ((ι m)⁻¹ * k) * Φ (g * k)) ∂μK ∂μ := integral_integral_swap hint`. Use `_ = ∫ k, eOf μ ψ k * Φ (g * k) ∂μ := by`.
-
-Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[← hB k, ← integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `m`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ = Φ g := hfix g`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem fixOf (μ : Measure U4) (hμ : Haar4 μ) (ψ : U4 → ℂ) (hψ : Continuous ψ) (ι : U2 → U4) (hι : Continuous ι)
     (n : ℕ) (q : ℤ)
@@ -82,11 +78,11 @@ private theorem fixOf (μ : Measure U4) (hμ : Haar4 μ) (ψ : U4 → ℂ) (hψ 
     _ = Φ g := hfix g
 
 /- English proof (translation)
-Establish `hci : ∀ j, Integrable (fun m => KT.psi n q n m * a j (ι m)⁻¹) μK` using `fun j => KT.integrable_of_continuous ((KT.continuous_psi n q n).mul ((hc j).1.comp hι.inv))`. Establish `h1 : ∀ m, KT.psi n q n m * ψ ((ι m)⁻¹ * k) = ∑ j, (KT.psi n q n m * a j (ι m)⁻¹) * b j k`. Introduce `m`. Rewrite using `[hexp, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h1]`. Rewrite using `[integral_finset_sum _ fun j _ => (hci j).mul_const _]`. Simplify using `only [integral_mul_const]`. Rewrite using `[Finset.sum_eq_single j₀ (fun j _ hj => by rw [hz j hj, zero_mul]) (fun h => absurd (Finset.mem_univ _) h), ha, hb]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← KT.integral_conj_psi_self n q]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Rewrite using `[hres, mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem innerOf (ψ : U4 → ℂ) (ι : U2 → U4) (hι : Continuous ι) (n : ℕ) (q : ℤ)
     {J : Type} [Fintype J] (j₀ : J) (a b : J → U4 → ℂ) (hc : ∀ j, Continuous (a j) ∧ Continuous (b j))
@@ -110,13 +106,13 @@ private theorem innerOf (ψ : U4 → ℂ) (ι : U2 → U4) (hι : Continuous ι)
   rw [hres, mul_comm]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hI`. Use `hne (hsplit (fun s t => ?_) fun s t => ?_)` and prove the remaining obligations. Apply `mul_right_cancel₀ hI conv_lhs => rw [← integral_mul_left_K _ (tC s t)]` to reduce the goal to its premises. Rewrite using `[← integral_const_mul, ← integral_const_mul]`. Use `congr 1`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `m`. Establish `e : a₀ (ι m)⁻¹ = chi ν (D s t) * a₀ (ι (tC s t * m))⁻¹`. Rewrite using `[← hr, hmul, hD, _root_.mul_inv_rev, inv_mul_cancel_right]`. Rewrite using `[hψ, e]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hx : ∃ m, a₀ (ι m)⁻¹ ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hI (by simp [hcon])`. Take `⟨m, hm⟩` from `hx`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `mul_right_cancel₀ hm` to reduce the goal to its premises. Establish `hcomm : Commute (dg (D' s t)) (ι m)⁻¹` using `(show Commute (dg (D' s t)) (ι m) from hD' s t m).inv_right`. Rewrite using `[← hr, ← hl, hcomm.eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem vanish (a₀ : U4 → ℂ) (ν μ₀ : Fin (2 + 2) → ℤ) (ι : U2 → U4) (n : ℕ) (q : ℤ) (D D' : ℝ → ℝ → Fin (2 + 2) → ℝ)
     (hr : ∀ θ h, a₀ (h * dg θ) = chi ν θ * a₀ h) (hl : ∀ θ h, a₀ (dg θ * h) = chi μ₀ θ * a₀ h)
@@ -145,9 +141,9 @@ private theorem vanish (a₀ : U4 → ℂ) (ν μ₀ : Fin (2 + 2) → ℤ) (ι 
     rw [← hr, ← hl, hcomm.eq]
 
 /- English proof (translation)
-Simplify using `only [chi]`. Rewrite using `[← Complex.exp_add, ← mul_add, ← Finset.sum_add_distrib]`. Use `congr 2`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem chi_add (ν : Fin (2 + 2) → ℤ) (θ θ' : Fin (2 + 2) → ℝ) : chi ν (θ + θ') = chi ν θ * chi ν θ' := by
   simp only [chi]
@@ -159,7 +155,7 @@ private theorem chi_add (ν : Fin (2 + 2) → ℤ) (θ θ' : Fin (2 + 2) → ℝ
   ring
 
 /- English proof (translation)
-Use `hchi _ _ fun θ => ?_` and prove the remaining obligations. Establish `e : θ = ![θ 0, θ 1, 0, 0] + ![0, 0, θ 2, θ 3]`. Apply the tactic sequence `funext i; fin_cases i <;> simp`. Rewrite using `[e, chi_add, chi_add, h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 private theorem chi_split (hchi : ∀ ν ν' : Fin (2 + 2) → ℤ, (∀ θ, chi ν θ = chi ν' θ) → ν = ν') (ν ν' : Fin (2 + 2) → ℤ)
     (h1 : ∀ s t : ℝ, chi ν ![s, t, 0, 0] = chi ν' ![s, t, 0, 0])
@@ -170,7 +166,7 @@ private theorem chi_split (hchi : ∀ ν ν' : Fin (2 + 2) → ℤ, (∀ θ, chi
   rw [e, chi_add, chi_add, h1, h2]
 
 /- English proof (translation)
-Rewrite using `[chi]`. Use `congr 2`. Use `Fin.sum_univ_four (fun i : Fin 4 => ((wt n q n' q' i : ℤ) : ℂ) * (((![s, t, 0, 0] : Fin 4 → ℝ) i : ℝ) : ℂ))` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Simplify using `[wt]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem chi_wt₁ (n : ℕ) (q : ℤ) (n' : ℕ) (q' : ℤ) (s t : ℝ) :
     chi (wt n q n' q') ![s, t, 0, 0] = Complex.exp (Complex.I * ((((n : ℝ) + q) * s + ((n : ℝ) - n + q) * t : ℝ) : ℂ)) := by
@@ -181,7 +177,7 @@ private theorem chi_wt₁ (n : ℕ) (q : ℤ) (n' : ℕ) (q' : ℤ) (s t : ℝ) 
   simp [wt]
 
 /- English proof (translation)
-Rewrite using `[chi]`. Use `congr 2`. Use `Fin.sum_univ_four (fun i : Fin 4 => ((wt n q n' q' i : ℤ) : ℂ) * (((![0, 0, s, t] : Fin 4 → ℝ) i : ℝ) : ℂ))` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Simplify using `[wt]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem chi_wt₂ (n : ℕ) (q : ℤ) (n' : ℕ) (q' : ℤ) (s t : ℝ) :
     chi (wt n q n' q') ![0, 0, s, t] = Complex.exp (Complex.I * ((((n' : ℝ) + q') * s + ((n' : ℝ) - n' + q') * t : ℝ) : ℂ)) := by
@@ -192,15 +188,15 @@ private theorem chi_wt₂ (n : ℕ) (q : ℤ) (n' : ℕ) (q' : ℤ) (s t : ℝ) 
   simp [wt]
 
 /- English proof (translation)
-Introduce `μ ψ n q n' q' hH hO hC Φ hΦ hfix g`. Take `⟨hψc, -, -, -⟩` from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.coefIdem μ ψ n q n' q' hH hO hC`. Take `⟨-, hmul, -, hinv, hcont, -, -, -, hdg, -, hchi, -, -⟩` from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.u4`. Take `⟨J, _, j₀, a, b, ν, hc, hexp, ha, hb, -, hw, -, hne⟩` from `hC.exp`. Establish `ht0 : tC 0 0 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [tC]`. Establish `h1 : ∀ s t : ℝ, bd (tC s t) 1 = dg ![s, t, 0, 0]` using `fun s t => by rw [hdg, ht0]`. Establish `h2 : ∀ s t : ℝ, bd 1 (tC s t) = dg ![0, 0, s, t]` using `fun s t => by rw [hdg, ht0]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hι₁ : Continuous fun m : U2 => bd m 1` using `hcont.comp (continuous_id.prodMk continuous_const)`. Establish `hι₂ : Continuous fun m : U2 => bd 1 m` using `hcont.comp (continuous_const.prodMk continuous_id)`. Prove the components needed by the constructor for the conclusion. Use `fixOf μ hH ψ hψc (fun m => bd m 1) hι₁ n q (fun k => innerOf ψ (fun m => bd m 1) hι₁ n q j₀ a b hc hexp ha hb (fun j hj => ?_) (fun m => ?_) k) Φ hΦ hfix g` and prove the remaining obligations. Use `vanish (a j) (ν j) (wt n q n' q') (fun m => bd m 1) n q (fun s t => ![s, t, 0, 0]) (fun s t => ![0, 0, s, t]) (fun θ h => (hw j θ h).1) (fun θ h => (hw j θ h).2.1) (fun x y => ?_) h1 (fun s t m => ?_) (fun s t m => ?_) (chi_split hchi _ _) (hne j hj)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hmul, mul_one]`. Simplify using `only [← h2, hmul, mul_one, one_mul]`. Rewrite using `[KT.psi_tC_mul n q le_rfl, chi_wt₁]`. Simplify using `only [hinv, hC.res, inv_one, KT.psi_one, mul_one, KT.psi_self_inv]`. Use `fixOf μ hH ψ hψc (fun m => bd 1 m) hι₂ n' q' (fun k => innerOf ψ (fun m => bd 1 m) hι₂ n' q' j₀ a b hc hexp ha hb (fun j hj => ?_) (fun m => ?_) k) Φ hΦ hfix g` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `vanish (a j) (ν j) (wt n q n' q') (fun m => bd 1 m) n' q' (fun s t => ![0, 0, s, t]) (fun s t => ![s, t, 0, 0]) (fun θ h => (hw j θ h).1) (fun θ h => (hw j θ h).2.1) (fun x y => ?_) h2 (fun s t m => ?_) (fun s t m => ?_) (fun e₂ e₁ => chi_split hchi _ _ e₁ e₂) (hne j hj)` and prove the remaining obligations. Simplify using `only [hmul, mul_one]`. Simplify using `only [← h1, hmul, mul_one, one_mul]`. Rewrite using `[KT.psi_tC_mul n' q' le_rfl, chi_wt₂]`. Simplify using `only [hinv, hC.res, inv_one, KT.psi_one, one_mul, KT.psi_self_inv]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.coefFix :
     ∀ (μ : Measure U4) ψ n q n' q', Haar4 μ → μ.IsOpenPosMeasure → Coef ψ n q n' q' → ∀ Φ : U4 → ℂ, Continuous Φ → RFix μ (eOf μ ψ) Φ → ∀ g,

@@ -8,35 +8,33 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Inh
 namespace Formalism.L2.SG.Pf.WuBL
 
 /- English proof (translation)
-Establish `hk` using `R.m_add_three_le_k`. Establish `hm` using `R.two_le_m`. Establish `hr : R.r = R.k + R.m - 1` using `rfl`. Establish `hdim : 2 * R.rS + R.k + 1 = R.r` using `dimS_eq R`. Establish `h0 : (0 : ℚ) ≤ 16 * (R.r : ℚ) ^ 19` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `bmono : ∀ n : ℕ, ∀ (j j' : Fin R.m), j'.val = j.val + n + 1 → 16 * (R.r : ℚ) ^ 19 ≤ P.b j' - P.b j`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `j j' hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hg j (by omega)`. Establish `e : (⟨j.1 + 1, by omega⟩ : Fin R.m) = j'` using `Fin.ext (by simp [hj])`. Rewrite `h` using `[e]`. Conclude with `h`. Consider the case `succ n ih`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j j' hj`. Establish `h1` using `ih j ⟨j.1 + n + 1, by omega⟩ rfl`. Apply the tactic sequence `have h2 := hg ⟨j.1 + n + 1, by omega⟩ (by first | omega | (simp; omega))`. Apply the tactic sequence `have e : (⟨j.1 + n + 1 + 1, by omega⟩ : Fin R.m) = j' := Fin.ext (by first | omega | (simp; omega))`. Simplify using `only at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `umono : ∀ n : ℕ, ∀ i : Fin R.k, i.val + n = R.k - 1 → P.u ⟨R.k - 1, by omega⟩ ≤ P.u i`. Introduce `n`. Proceed by induction on `n with`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Introduce `i hi`. Establish `e : i = ⟨R.k - 1, by omega⟩` using `Fin.ext (by simpa using hi)`. Rewrite using `[e]`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Apply the tactic sequence `have h1 := ih ⟨i.1 + 1, by omega⟩ (by first | omega | (simp; omega))`. Establish `h2` using `P.v_gt_u ⟨i.1, by omega⟩`. Establish `h3` using `P.u_gt_v ⟨i.1, by omega⟩`. Simplify using `only at h2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlast` using `P.u_last_gt (by omega) (by omega)`. Unfold `epsSH epsS at he`. Unfold `lamSH lamS`. Simplify using `only [Fin.coe_cast] at he ⊢`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ha : a.val < R.r` using `by have := a.isLt; omega`. Establish `hb : b.val < R.r` using `by have := b.isLt; omega`. Establish `hab' : a.val < b.val` using `hab`. Apply the tactic sequence `by_cases hak : a.val < R.k - 1 <;> by_cases hbk : b.val < R.k - 1`. Rewrite `he` using `[if_pos hak, if_pos hbk]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd rfl he`. Rewrite `he` using `[if_pos hak, if_neg hbk]`. Establish `hjb : b.val - (R.k - 1) < R.m` using `by omega`. Establish `hodd : (b.val - (R.k - 1)) % 2 ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `he (by simp [h])`. Rewrite using `[dif_pos hak, dif_neg hbk, dif_pos hjb]`. Apply the tactic sequence `have h1 := bmono (b.val - (R.k - 1) - 1) ⟨0, by omega⟩ ⟨b.val - (R.k - 1), hjb⟩ (by first | omega | (simp; omega))`. Apply the tactic sequence `have h2 := umono (R.k - 1 - (a.val + 1)) ⟨a.val + 1, by omega⟩ (by first | omega | (simp; omega))`. Establish `h3` using `P.v_gt_u ⟨a.val, hak⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at h3`. Establish `hq : 16 * (R.r : ℚ) ^ 19 ≤ P.v ⟨a.val, hak⟩ + P.b ⟨b.val - (R.k - 1), hjb⟩` using `by linarith`. Establish `hq'` using `(Rat.cast_le (K := ℝ)).2 hq`. Move the coercions through the operations in `at hq'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `he` using `[if_neg hak, if_neg hbk]`. Establish `hja : a.val - (R.k - 1) < R.m` using `by omega`. Establish `hjb : b.val - (R.k - 1) < R.m` using `by omega`. Establish `hne : a.val - (R.k - 1) ≠ b.val - (R.k - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `he (by simp [h])`. Rewrite using `[dif_neg hak, dif_neg hbk, dif_pos hja, dif_pos hjb]`. Apply the tactic sequence `have h1 := bmono (b.val - (R.k - 1) - (a.val - (R.k - 1)) - 1) ⟨a.val - (R.k - 1), hja⟩ ⟨b.val - (R.k - 1), hjb⟩ (by first | omega | (simp; omega))`. Establish `hq'` using `(Rat.cast_le (K := ℝ)).2 h1`.
-
-Move the coercions through the operations in `at hq'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gap_lt (R : Ranks) (P : HCParam R)
     (hg : ∀ (j : Fin R.m) (h : j.1 + 1 < R.m), 16 * (R.r : ℚ) ^ 19 ≤ P.b ⟨j.1 + 1, h⟩ - P.b j)
@@ -118,9 +116,7 @@ theorem gap_lt (R : Ranks) (P : HCParam R)
     linarith
 
 /- English proof (translation)
-Introduce `a b he`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases. Conclude with `(gap_lt R P hg a b hab he).trans (le_abs_self _)`. Conclude with `absurd rfl he`. Rewrite using `[abs_sub_comm]`.
-
-Conclude with `(gap_lt R P hg b a hab (Ne.symm he)).trans (le_abs_self _)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gapAtLeast_of (R : Ranks) (P : HCParam R)
     (hg : ∀ (j : Fin R.m) (h : j.1 + 1 < R.m), 16 * (R.r : ℚ) ^ 19 ≤ P.b ⟨j.1 + 1, h⟩ - P.b j) :
@@ -135,29 +131,29 @@ theorem gapAtLeast_of (R : Ranks) (P : HCParam R)
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hr : R.r = R.k + R.m - 1` using `rfl`. Establish `hrs : R.rS = R.m / 2 - 1` using `rfl`. Establish `hmk` using `R.m_add_three_le_k`. Establish `hm2` using `R.two_le_m`. Establish `hN : 2 * R.rS + R.k + 1 ≤ 2 * R.r` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h16 : 60 ≤ R.r ^ 16` using `le_trans (by omega) (Nat.le_self_pow (by norm_num) R.r)`. Establish `hx0 : (0:ℝ) ≤ (R.rS:ℝ)` using `Nat.cast_nonneg _`. Establish `hk0 : (0:ℝ) ≤ (R.k:ℝ)` using `Nat.cast_nonneg _`. Establish `hxr : (R.rS:ℝ) ≤ (R.r:ℝ)` using `by exact_mod_cast (show R.rS ≤ R.r by omega)`. Establish `hkr : (R.k:ℝ) ≤ (R.r:ℝ)` using `by exact_mod_cast (show R.k ≤ R.r by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ : (1801:ℝ) ≤ (R.r:ℝ)` using `by exact_mod_cast h1801`. Establish `hρ0 : (0:ℝ) ≤ (R.r:ℝ)` using `by linarith`. Establish `hs : Real.sqrt (2 * ((R.rS:ℝ) + 1)) ≤ 2 * (R.r:ℝ)`. Combine the equalities or inequalities in the displayed calculation. Establish `hsp : 0 < Real.sqrt (2 * ((R.rS:ℝ) + 1))` using `Real.sqrt_pos.mpr (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `p0 : (1:ℝ) ≤ (R.r:ℝ) ^ 2` using `by nlinarith`. Establish `p23 : 16 * (R.r:ℝ) ^ 2 ≤ (R.r:ℝ) ^ 3` using `by nlinarith`. Establish `p35 : (R.r:ℝ) ^ 3 ≤ (R.r:ℝ) ^ 5` using `by nlinarith`. Establish `p13 : (400:ℝ) ≤ (R.r:ℝ) ^ 13`. Establish `h2 : (1801:ℝ) ^ 13 ≤ (R.r:ℝ) ^ 13` using `by gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `p6 : 0 ≤ (R.r:ℝ) ^ 6` using `by positivity`. Establish `hbig : 6400 * (R.r:ℝ) ^ 6 ≤ 16 * (R.r:ℝ) ^ 19` using `by nlinarith`. Establish `fin : ∀ E : ℝ, E ≤ 400 * (R.r:ℝ) ^ 5 → E ≤ 16 * (R.r:ℝ) ^ 19 / (8 * Real.sqrt (2 * ((R.rS:ℝ) + 1)))`. Introduce `E hE`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[le_div_iff₀ (by positivity)]`. Establish `h1` using `mul_le_mul_of_nonneg_right hE hsp.le`. Establish `h2 : 400 * (R.r:ℝ) ^ 5 * Real.sqrt (2 * ((R.rS:ℝ) + 1)) ≤ 400 * (R.r:ℝ) ^ 5 * (2 * R.r)` using `mul_le_mul_of_nonneg_left hs (by positivity)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hxx` using `mul_le_mul hxr hxr hx0 hρ0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hxk` using `mul_le_mul hxr hkr hk0 hρ0`. Establish `hG : 4 * ((R.k:ℝ) + R.rS) * ((R.rS:ℝ) + 1) ≤ 16 * (R.r:ℝ) ^ 2`. Use `mul_le_mul (show (R.k:ℝ) + R.rS ≤ 2 * R.r by linarith) (show (R.rS:ℝ) + 1 ≤ 2 * R.r by linarith) (by linarith) (by linarith)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hG0 : 0 ≤ 4 * ((R.k:ℝ) + R.rS) * ((R.rS:ℝ) + 1)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Unfold `Formalism.FourierDecayAlt.ThreeDimData.GapOK Formalism.FourierDecayAlt.ThreeDimData.AS Formalism.FourierDecayAlt.ThreeDimData.dN Formalism.FourierDecayAlt.ThreeDimData.aOf Formalism.FourierDecayAlt.ThreeDimData.AG Formalism.FourierDecayAlt.ThreeDimData.Mexp`. Use `⟨by omega, ?_, fin _ ?_, fin _ ?_⟩` and prove the remaining obligations. Establish `h3 : (2 * R.rS + R.k + 1) ^ 3 ≤ (2 * R.r) ^ 3` using `Nat.pow_le_pow_left hN 3`. Establish `key : 120 * (2 * R.rS + R.k + 1) ^ 3 ≤ 16 * R.r ^ 19`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `key` after adjusting the coercions. Use `push_cast`. Establish `hD : (R.rS:ℝ) * ((R.rS:ℝ) - 1) + 2 * R.rS * ((R.k:ℝ) + 1) + (R.rS:ℝ) ^ 2 ≤ 6 * (R.r:ℝ) ^ 2`. Use the polynomial consequences of the given equalities and inequalities. Establish `hD0 : 0 ≤ (R.rS:ℝ) * ((R.rS:ℝ) - 1) + 2 * R.rS * ((R.k:ℝ) + 1) + (R.rS:ℝ) ^ 2` using `by nlinarith`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAS` using `mul_le_mul (show 2 * (R.rS:ℝ) + R.k ≤ 3 * R.r by linarith) hD hD0 (by linarith)`. Establish `hsum : (2 * (R.rS:ℝ) + R.k) * ((R.rS:ℝ) * ((R.rS:ℝ) - 1) + 2 * R.rS * ((R.k:ℝ) + 1) + (R.rS:ℝ) ^ 2) + 4 * ((R.k:ℝ) + R.rS) * ((R.rS:ℝ) + 1) ≤ 19 * (R.r:ℝ) ^ 3` using `by nlinarith`. Establish `hsum0 : 0 ≤ (2 * (R.rS:ℝ) + R.k) * ((R.rS:ℝ) * ((R.rS:ℝ) - 1) + 2 * R.rS * ((R.k:ℝ) + 1) + (R.rS:ℝ) ^ 2) + 4 * ((R.k:ℝ) + R.rS) * ((R.rS:ℝ) + 1)` using `by positivity`. Establish `hA : 2 * (2 * ((R.rS:ℝ) ^ 2 + R.rS + 1)) ≤ 12 * (R.r:ℝ) ^ 2` using `by nlinarith`. Establish `hprod` using `mul_le_mul hA hsum hsum0 (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `push_cast`. Establish `hq` using `mul_le_mul (show 2 * (R.rS:ℝ) + R.k + 1 ≤ 4 * R.r by linarith) (show 2 * (R.rS:ℝ) + R.k + 1 ≤ 4 * R.r by linarith) (by positivity) (by linarith)`. Establish `hq0 : 0 ≤ (2 * (R.rS:ℝ) + R.k + 1) * (2 * (R.rS:ℝ) + R.k + 1)` using `by positivity`. Establish `hc` using `mul_le_mul (show (R.rS:ℝ) + 1 ≤ 2 * R.r by linarith) hq hq0 (by linarith)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[hc, hG, p0, p23, p35]`.
+A detailed English derivation is pending.
 -/
 theorem gapOK_of (R : Ranks) (h1801 : 1801 ≤ R.r) :
     Formalism.FourierDecayAlt.ThreeDimData.GapOK R.k R.rS (16 * (R.r : ℝ) ^ 19) := by
@@ -230,7 +226,7 @@ theorem gapOK_of (R : Ranks) (h1801 : 1801 ≤ R.r) :
     linarith [hc, hG, p0, p23, p35]
 
 /- English proof (translation)
-Introduce `D hD τ`. Conclude with `⟨16 * (D.R.r : ℝ) ^ 19, gapAtLeast_of D.R (D.hc τ) (hD.2 τ), gapOK_of D.R hD.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem parameter_gap_of_hypothesis : GapOfHyp := by
   intro D hD τ

@@ -14,7 +14,7 @@ namespace ProjFrameGraph
 variable {κ : Type} {D : ℕ}
 
 /- English proof (translation)
-Simplify using `only [linForm, projMat]`. Rewrite using `[Finset.sum_eq_single (e k).2]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[Ne.symm hi]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -29,7 +29,7 @@ theorem linForm_projMat [Fintype κ] (e : Fin (D + 1) → Ix κ) (k : Fin (D + 1
   · simp
 
 /- English proof (translation)
-The claim follows from `RingHom.ker_isPrime _`.
+A detailed English derivation is pending.
 -/
 theorem graphIdeal_isPrime {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {K₂ : Type} [Fintype K₂] {ι₂ : K₂ → Type} [∀ k, Fintype (ι₂ k)]
@@ -39,9 +39,9 @@ theorem graphIdeal_isPrime {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fint
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Introduce `h`. Establish `hX : (X k : MvPolynomial (Fin (D + 1)) ℤ) ∈ coordIdeal ℤ (x ∘ e)`. Rewrite using `[coordIdeal, RingHom.mem_ker]`. Simplify using `[coneMap, h]`. Rewrite `hX` using `[hF.free, Ideal.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `X_ne_zero k hX`.
+A detailed English derivation is pending.
 -/
 theorem frame_ne_zero {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hF : IsProjFrame x e) (k : Fin (D + 1)) :
     x (e k) ≠ 0 := by
@@ -53,11 +53,9 @@ theorem frame_ne_zero {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hF : IsPro
   exact X_ne_zero k hX
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (X ⟨Sum.inl (), j⟩ : MRing (Sum.elim (GlobalTheory κ) ι₂)) ∈ graphIdeal (coordIdeal ℤ x) g`. Rewrite using `[← G.genericFibre_ker_target, RingHom.mem_ker]`. Simplify using `using h`. Rewrite `h1` using `[graphIdeal, RingHom.mem_ker, graphMap, eval₂Hom_X']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (X ⟨(), j⟩ : MvPolynomial (Ix κ) ℤ) ∈ coordIdeal ℤ x`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `MvPolynomial.C_eq_zero.1 h1`. Rewrite `h2` using `[coordIdeal, RingHom.mem_ker]`. Simplify using `[coneMap] at h2`.
-
-Conclude with `hj h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genFibre_x'_ne_zero {x : Ix κ → Ω} {K₂ : Type} [Fintype K₂] {ι₂ : K₂ → Type} [∀ k, Fintype (ι₂ k)]
     [Fintype κ] {g : (Σ k, ι₂ k) → MRing (GlobalTheory κ)}
@@ -81,7 +79,7 @@ def fibreChart {K₂ : Type} {ι₂ : K₂ → Type} (j : κ) :
   | ⟨Sum.inr k, h⟩ => absurd ⟨k, rfl⟩ h
 
 /- English proof (translation)
-Introduce and unpack `⟨(u | k), h⟩`. Consider the cases of `u`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.AI.I4.fibreIdeal, RingHom.mem_ker, aeval_X]`. Conclude with `genFibre_x'_ne_zero G j hj`. Conclude with `absurd ⟨k, rfl⟩ h`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isChart_fibreChart {x : Ix κ → Ω} {K₂ : Type} [Fintype K₂] {ι₂ : K₂ → Type} [∀ k, Fintype (ι₂ k)]
     [Fintype κ] {g : (Σ k, ι₂ k) → MRing (GlobalTheory κ)}

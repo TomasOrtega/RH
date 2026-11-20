@@ -45,9 +45,9 @@ def cls (L : LB X) (ψ : Y ⟶ X) : PullClass L Y := QuotientGroup.mk' _ (Abelia
 variable {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
 
 /- English proof (translation)
-Establish `e : ∏ k, cls L (φ k) ^ ε k = QuotientGroup.mk' (trivialSums L Y) (∏ k, Abelianization.of (FreeGroup.of (φ k)) ^ ε k)`. Simplify using `only [map_prod, map_zpow, cls]`. Rewrite using `[e, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Use `⟨fun h => ⟨K, inferInstance, φ, ε, h, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨K', _, φ', ε', h, e⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `h.of_formEq hL fun U _ f => ?_` and prove the remaining obligations. Simplify `congrArg (Abelianization.lift (FreeGroup.lift f)) e` using `only [map_prod, map_zpow, Abelianization.lift_apply_of, FreeGroup.lift_apply_of]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasGen_iff (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) :
     HasGen L φ ε ↔ ∏ k, cls L (φ k) ^ ε k = 1 := by
@@ -96,7 +96,7 @@ def chartDivIn (L : LB X) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → 
       rfl }
 
 /- English proof (translation)
-Establish `e : LBIso (LB.LinComb L φ ε) (LB.LinComb L φ' ε') ↔ HasGen L (Sum.elim φ' φ) (Sum.elim ε' fun k => -ε k)` using `⟨fun ⟨w, hw⟩ => gen_chartPull (chartDivIn L φ ε φ' ε') w hw, fun ⟨w, hw⟩ => gen_chartPull (chartDivOut L φ ε φ' ε') w hw⟩`. Rewrite using `[e, hasGen_iff hL]`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, mul_inv_eq_one]`. Conclude with `eq_comm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lbIso_iff (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) :
     LBIso (LB.LinComb L φ ε) (LB.LinComb L φ' ε') ↔ ∏ k, cls L (φ k) ^ ε k = ∏ k, cls L (φ' k) ^ ε' k := by
@@ -125,14 +125,14 @@ def chartFlat (L : LB X) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (ψ : K' → (Z
       simp only [← Finset.prod_zpow, zpow_mul, Category.assoc] }
 
 /- English proof (translation)
-Simplify using `only [Fintype.prod_prod_type, ← Finset.prod_zpow, zpow_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prod_flat (φ : K → (Y ⟶ X)) (ε : K → ℤ) (ψ : K' → (Z ⟶ Y)) (δ : K' → ℤ) :
     ∏ p : K' × K, cls L (ψ p.1 ≫ φ p.2) ^ (ε p.2 * δ p.1) = ∏ k, (∏ l, cls L (ψ k ≫ φ l) ^ ε l) ^ δ k := by
   simp only [Fintype.prod_prod_type, ← Finset.prod_zpow, zpow_mul]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `(hasGen_iff hL _ _).2 ((prod_flat φ ε ψ δ).trans h)`. Conclude with `gen_chartPull (chartFlat L φ ε ψ δ) t ht`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hasGen_nested (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (ψ : K' → (Z ⟶ Y)) (δ : K' → ℤ)
     (h : ∏ k, (∏ l, cls L (ψ k ≫ φ l) ^ ε l) ^ δ k = 1) : HasGen (LB.LinComb L φ ε) ψ δ := by
@@ -140,7 +140,7 @@ theorem hasGen_nested (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (ψ 
   exact gen_chartPull (chartFlat L φ ε ψ δ) t ht
 
 /- English proof (translation)
-The claim follows from `((lbIso_iff hL _ _ χ κ).2 ((prod_flat φ ε ψ δ).trans h)).chartPull (chartFlat L φ ε ψ δ) (chartPullId _)`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_nested (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (ψ : K' → (Z ⟶ Y)) (δ : K' → ℤ)
     {K₃ : Type} [Fintype K₃] (χ : K₃ → (Z ⟶ X)) (κ : K₃ → ℤ)
@@ -162,13 +162,13 @@ def diff₃ (m : A → U) (x y z : A) : U :=
 variable {m : A → U}
 
 /- English proof (translation)
-Rewrite using `[diff₂, diff₂, mul_comm x, mul_right_comm (m (y * x))]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem diff₂_comm (x y : A) : diff₂ m x y = diff₂ m y x := by
   rw [diff₂, diff₂, mul_comm x, mul_right_comm (m (y * x))]
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [diff₂, diff₃, ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem diff₂_mul_left_eq (x y z : A) : diff₂ m (x * y) z = diff₃ m x y z * (diff₂ m x z * diff₂ m y z) := by
   apply Additive.ofMul.injective
@@ -179,21 +179,21 @@ variable (hc : ∀ x y z, diff₃ m x y z = 1)
 include hc
 
 /- English proof (translation)
-Rewrite using `[diff₂_mul_left_eq, hc, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem diff₂_mul_left (x y z : A) : diff₂ m (x * y) z = diff₂ m x z * diff₂ m y z := by
   rw [diff₂_mul_left_eq, hc, _root_.one_mul]
 
 /- English proof (translation)
-Rewrite using `[diff₂_comm, diff₂_mul_left hc, diff₂_comm y, diff₂_comm z]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem diff₂_mul_right (x y z : A) : diff₂ m x (y * z) = diff₂ m x y * diff₂ m x z := by
   rw [diff₂_comm, diff₂_mul_left hc, diff₂_comm y, diff₂_comm z]
 
 /- English proof (translation)
-Establish `o : ∀ z, diff₂ m 1 z = 1` using `fun z => mul_eq_left.1 ((diff₂_mul_left hc 1 1 z).symm.trans (by rw [_root_.mul_one]))`. Establish `a` using `diff₂_mul_left hc x⁻¹ x y⁻¹`. Establish `b` using `diff₂_mul_right hc x y y⁻¹`. Rewrite `a` using `[inv_mul_cancel, o]`. Rewrite `b` using `[mul_inv_cancel, diff₂_comm, o]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_right_cancel (a.symm.trans b)`.
+A detailed English derivation is pending.
 -/
 theorem diff₂_inv_inv (x y : A) : diff₂ m x⁻¹ y⁻¹ = diff₂ m x y := by
   have o : ∀ z, diff₂ m 1 z = 1 := fun z => mul_eq_left.1 ((diff₂_mul_left hc 1 1 z).symm.trans (by rw [_root_.mul_one]))
@@ -204,9 +204,9 @@ theorem diff₂_inv_inv (x y : A) : diff₂ m x⁻¹ y⁻¹ = diff₂ m x y := b
   exact mul_right_cancel (a.symm.trans b)
 
 /- English proof (translation)
-Establish `o : diff₂ m 1 (w 1) = 1` using `mul_eq_left.1 ((diff₂_mul_left hc 1 1 _).symm.trans (by rw [_root_.mul_one]))`. Establish `e : diff₂ m x y = diff₂ m x (w y) * diff₂ m y (w x)`. Rewrite using `[diff₂_comm y, ha, ← diff₂_mul_right hc, hw]`. Rewrite using `[e]`. Use `show diff₂ m (x * y) (w (x * y)) * (diff₂ m x (w x))⁻¹ * (diff₂ m y (w y))⁻¹ * diff₂ m 1 (w 1) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[o, map_mul, diff₂_mul_left hc, diff₂_mul_right hc, diff₂_mul_right hc]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem diff₂_quadratic (w w' : A →* A) (hw : ∀ y, w y * w' y = y)
     (ha : ∀ x y, diff₂ m (w x) y = diff₂ m x (w' y)) (x y : A) :
@@ -222,7 +222,7 @@ theorem diff₂_quadratic (w w' : A →* A) (hw : ∀ y, w y * w' y = y)
   abel
 
 /- English proof (translation)
-Establish `e` using `diff₂_mul_left_eq (m := fun x => diff₂ m x (w x)) x y z`. Rewrite `e` using `[diff₂_quadratic hc w w' hw ha, diff₂_quadratic hc w w' hw ha, diff₂_quadratic hc w w' hw ha, diff₂_mul_left hc]`. Conclude with `mul_eq_right.1 e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diff₃_quadratic (w w' : A →* A) (hw : ∀ y, w y * w' y = y)
     (ha : ∀ x y, diff₂ m (w x) y = diff₂ m x (w' y)) (x y z : A) :
@@ -239,7 +239,7 @@ section Group
 variable {S : Scheme.{0}} {B : Over S} [GrpObj B] [IsCommMonObj B]
 
 /- English proof (translation)
-Take `rfl : x' = fun i => ρ ≫ x i` from `funext hx`. Conclude with `congrArg (fun q : T' ⟶ B => q.left) (foldr_padd_pre ρ x _)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem psum_pre {T T' : Over S} (ρ : T' ⟶ T) {n : ℕ} (x : Fin n → (T ⟶ B)) (x' : Fin n → (T' ⟶ B))
     (hx : ∀ i, x' i = ρ ≫ x i) (I : Finset (Fin n)) : (psum B x' I).left = ρ.left ≫ (psum B x I).left := by
@@ -253,11 +253,11 @@ def chartSquare (L : LB B.left) {T T' : Over S} (ρ : T' ⟶ T) {a b : T ⟶ B} 
     exacts [ha, hb]) I.down
 
 /- English proof (translation)
-Apply the tactic sequence `refine (Fintype.prod_equiv (Equiv.ulift : ULift.{0} (Finset (Fin 2)) ≃ Finset (Fin 2)) _ (fun I => h (psum B ![ρ ≫ x, ρ ≫ y] I).left ^ ((-1 : ℤ) ^ (2 - I.card))) (fun I => congrArg (fun q => h q ^ ((-1 : ℤ) ^ (2 - I.down.card))) (psum_pre ρ ![x, y] _ (fun i => by fin_cases i <;> …`. Generalize the expression as in `ρ ≫ x = a`. Generalize the expression as in `ρ ≫ y = b`. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} by decide, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`. Establish `p₀ : psum B ![a, b] ∅ = 1` using `rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `p₁ : psum B ![a, b] {0} = a` using `_root_.mul_one a`. Establish `p₂ : psum B ![a, b] {1} = b` using `_root_.mul_one b`. Establish `p₃ : psum B ![a, b] {0, 1} = a * b` using `congrArg (a * ·) (_root_.mul_one b)`. Establish `q₀ : (-1 : ℤ) ^ (2 - (∅ : Finset (Fin 2)).card) = 1` using `by decide`. Establish `q₁ : ∀ i : Fin 2, (-1 : ℤ) ^ (2 - ({i} : Finset (Fin 2)).card) = -1` using `by decide`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q₃ : (-1 : ℤ) ^ (2 - ({0, 1} : Finset (Fin 2)).card) = 1` using `by decide`. Rewrite using `[p₀, p₁, p₂, p₃, q₀, q₁, q₁, q₃]`. Simplify using `only [zpow_neg, zpow_one, diff₂]`. The two sides agree by associativity and commutativity.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity.
 -/
 theorem prod_square {T T' : Over S} (ρ : T' ⟶ T) (x y : T ⟶ B) {U : Type} [CommGroup U] (h : (T'.left ⟶ B.left) → U) :
     ∏ I : ULift.{0} (Finset (Fin 2)), h (ρ.left ≫ (psum B ![x, y] I.down).left) ^ ((-1 : ℤ) ^ (2 - I.down.card)) =
@@ -283,7 +283,7 @@ theorem prod_square {T T' : Over S} (ρ : T' ⟶ T) (x y : T ⟶ B) {U : Type} [
   ac_rfl
 
 /- English proof (translation)
-Establish `e` using `prod_square (𝟙 T) x y h`. Simplify `e` using `only [Over.id_left, Category.id_comp]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prod_square_id {T : Over S} (x y : T ⟶ B) {U : Type} [CommGroup U] (h : (T.left ⟶ B.left) → U) :
     ∏ I : ULift.{0} (Finset (Fin 2)), h (psum B ![x, y] I.down).left ^ ((-1 : ℤ) ^ (2 - I.down.card)) =
@@ -292,21 +292,19 @@ theorem prod_square_id {T : Over S} (x y : T ⟶ B) {U : Type} [CommGroup U] (h 
   simpa only [Over.id_left, Category.id_comp] using e
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Establish `he : eSec B ≫ (GrpObj.inv (X` using `B)).left = 𝟙 _ ≫ eSec B := by`. Rewrite using `[Category.id_comp]`. Conclude with `congrArg (fun q => q.left) (show η[B] ≫ GrpObj.inv = η[B] by simp)`. Set `n : B.left ⟶ B.left` to `(toUnit B).left ≫ eSec B`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hn : eSec B ≫ n = eSec B`. Rewrite using `[← Category.assoc, show eSec B ≫ (toUnit B).left = 𝟙 _ from congrArg (fun q => q.left) (show η[B] ≫ toUnit B = 𝟙 _ by simp), Category.id_comp]`. Take `⟨u, hu, hv⟩` from `exists_gen P.isLB (K' := Fin 2) (φ' := ![(GrpObj.inv (X := B)).left, 𝟙 _]) (ε' := ![1, -1]) (fun V _ k => by`. Establish `e : n ≫ (GrpObj.inv (X` using `B)).left = n := by rw [Category.assoc, he, Category.id_comp]`. Simplify using `[Fintype.prod_sum_type, Fin.prod_univ_succ, e])`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `(LB.mulGen P.L _ _ _ _ t (LB.invGen P.L _ _ (LB.pullGen P.L _ _ t n)))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ ht n)))`. Establish `le : ∀ p : (PUnit → P.L.ι) × P.L.ι, (P.L.pull (GrpObj.inv (X` using `B)).left).U p.1 ⊓ P.L.U p.2 ≤ LB.wchart P.L (K := Fin 2) ![(GrpObj.inv (X := B)).left, 𝟙 _] ![p.1 PUnit.unit, p.2] := fun p y hy => Set.mem_iInter.2 fun k => by fin_cases k exacts [mem_pull.1 hy.1, hy.2]`. Set `w : LB.Iso P.L (P.L.pull (GrpObj.inv (X` to `B)).left) := ⟨fun p => res (le p) (u.s ![p.1 PUnit.unit, p.2])⟩`. Establish `gwv : ∀ (Y : Scheme.{0}) (f : Y ⟶ B.left) (y : Y) (j k : P.L.ι), (GrpObj.inv (X` using `B)).left (f y) ∈ P.L.U j → f y ∈ P.L.U k → gw w f y j k = gm f y _ (u.s ![j, k]) := fun Y f y j k hj hk => gm_res f y (le (fun _ => j, k)) ⟨mem_pull.2 hj, hk⟩ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `tr : ∀ (Y : Scheme.{0}) (f : Y ⟶ B.left) (y : Y) (j j' k k' : P.L.ι), (GrpObj.inv (X` using `B)).left (f y) ∈ P.L.U j → (GrpObj.inv (X := B)).left (f y) ∈ P.L.U j' → f y ∈ P.L.U k → f y ∈ P.L.U k' → gw w f y j k = gm (f ≫ (GrpObj.inv (X := B)).left) y _ (P.L.g j j') * (gm f y _ (P.L.g k k'))⁻¹ * gw w f y j' k' := by`. Introduce `Y f y j j' k k' hj hj' hk hk'`. Rewrite using `[gwv Y f y j k hj hk, gwv Y f y j' k' hj' hk']`. Use `(gen_trans hu f y (le (fun _ => j, k) ⟨mem_pull.2 hj, hk⟩) (le (fun _ => j', k') ⟨mem_pull.2 hj', hk'⟩)).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Rewrite using `[trF, Fin.prod_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show gm (f ≫ (GrpObj.inv (X := B)).left) y (P.L.U j ⊓ P.L.U j') (P.L.g j j') ^ (1 : ℤ) * gm (f ≫ 𝟙 _) y (P.L.U k ⊓ P.L.U k') (P.L.g k k') ^ (-1 : ℤ) = _`. Rewrite using `[Category.comp_id, zpow_one, zpow_neg, zpow_one]`. Use `⟨he, w, (isGen_iff w).2 tr, (maps_iff w _ (fun _ : PUnit => eSec B) _ P.rig P.rig (𝟙 _) _ (rigPull_le _ _ he P.L) (fun _ => rfl)).2 ?_⟩` and prove the remaining obligations. Introduce `Z r z p q hp hq`. Establish `hi : (r ≫ eSec B) ≫ (GrpObj.inv (X` using `B)).left = r ≫ eSec B := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, he, Category.id_comp]`. Establish `hq' : (r ≫ eSec B) z ∈ P.L.U (q PUnit.unit)` using `hq PUnit.unit`. Establish `hp₁ : (GrpObj.inv (X` using `B)).left ((r ≫ eSec B) z) ∈ P.L.U (p PUnit.unit) := hp PUnit.unit`. Establish `pt : (GrpObj.inv (X` using `B)).left ((r ≫ eSec B) z) = (r ≫ eSec B) z := congrArg (fun g => g z) hi`. Establish `hq₁ : (GrpObj.inv (X` using `B)).left ((r ≫ eSec B) z) ∈ P.L.U (q PUnit.unit) := by rw [pt]; exact hq'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp' : (r ≫ eSec B) z ∈ P.L.U (p PUnit.unit)` using `by rw [← pt]; exact hp₁`. Take `⟨J, hJ, eJ⟩` from `exists_good P.L P.isLB z (fun _ : PUnit => r ≫ eSec B) q (fun _ _ _ => rfl) (fun _ => hq')`. Establish `one : gw w (r ≫ eSec B) z (q PUnit.unit) (q PUnit.unit) = 1`. Use `(gwv Z _ z _ _ hq₁ hq').trans ((val_of u (r ≫ eSec B) z J _ (fun k => by fin_cases k` and prove the remaining obligations. Conclude with `(congrArg J hi).trans (eJ PUnit.unit)`.
-
-Conclude with `(congrArg J (Category.comp_id _)).trans (eJ PUnit.unit))).symm.trans ?_)`. Rewrite using `[hv Z _ z J hJ, val_mul hJ, val_inv, val_pull hJ, Category.assoc, hn, mul_inv_cancel]`. Rewrite using `[Category.comp_id, Fintype.prod_unique, zpow_one, tr Z _ z _ (q PUnit.unit) _ (q PUnit.unit) hp₁ hq₁ hq' hq', one, gm_self P.isLB _ z hq', hi, inv_one, _root_.mul_one, _root_.mul_one]`. Use `(gen_trans P.rigGen r z (Set.mem_iInter.2 fun _ => hp') (Set.mem_iInter.2 hq)).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Rewrite using `[trF, Fintype.prod_unique, zpow_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSymmetric_of_hasGen (P : RigLB B)
     (h : HasGen P.L (K := Fin 2) ![(GrpObj.inv (X := B)).left, 𝟙 _] ![1, -1]) : P.IsSymmetric := by
@@ -382,7 +380,7 @@ def postHom (f : B ⟶ B) [IsMonHom f] (T : Over S) : (T ⟶ B) →* (T ⟶ B) :
 abbrev ptCls (M : LB B.left) (T : Over S) : (T ⟶ B) → PullClass M T.left := fun q => cls M q.left
 
 /- English proof (translation)
-The claim follows from `(prod_cub x y z (cls M)).symm.trans ((hasGen_iff hM _ _).1 (HasGen.pull (φ := thφ B (x3 B)) (ε := thε) h (lift x (lift y z)).left))`.
+A detailed English derivation is pending.
 -/
 theorem diff₃_ptCls (hM : M.IsLB) (h : ∃ t : LB.Gen (Theta B M), t.IsGen) {T : Over S} (x y z : T ⟶ B) :
     diff₃ (ptCls M T) x y z = 1 :=
@@ -390,7 +388,7 @@ theorem diff₃_ptCls (hM : M.IsLB) (h : ∃ t : LB.Gen (Theta B M), t.IsGen) {T
     ((hasGen_iff hM _ _).1 (HasGen.pull (φ := thφ B (x3 B)) (ε := thε) h (lift x (lift y z)).left))
 
 /- English proof (translation)
-The claim follows from `(prod_square_id _ _ (cls M)).symm.trans (((lbIso_iff hM _ _ _ _).1 (h.chartPull (chartSquare M (lift x y) (by simp) (by simp)) (chartSquare M (lift x y) (by simp) (by simp)))).trans (prod_square_id _ _ (cls M)))`.
+A detailed English derivation is pending.
 -/
 theorem diff₂_ptCls_adj (hM : M.IsLB) {f g : B ⟶ B}
     (h : LBIso (cubeLB B ![fst B B ≫ f, snd B B] M) (cubeLB B ![fst B B, snd B B ≫ g] M)) {T : Over S} (x y : T ⟶ B) :
@@ -403,23 +401,23 @@ def normCls (M : LB B.left) (w : B ⟶ B) {Y : Scheme.{0}} (ψ : Y ⟶ B.left) :
   ∏ I : ULift.{0} (Finset (Fin 2)), cls M (ψ ≫ (psum B ![𝟙 B, w] I.down).left) ^ ((-1 : ℤ) ^ (2 - I.down.card))
 
 /- English proof (translation)
-The claim follows from `(prod_square x (𝟙 B) w (cls M)).trans (by rw [Category.comp_id])`.
+A detailed English derivation is pending.
 -/
 theorem normCls_left (w : B ⟶ B) {T : Over S} (x : T ⟶ B) : normCls M w x.left = diff₂ (ptCls M T) x (x ≫ w) :=
   (prod_square x (𝟙 B) w (cls M)).trans (by rw [Category.comp_id])
 
 /- English proof (translation)
-Establish `hc` using `fun T : Over S => diff₃_ptCls (T := T) hM hT`. Establish `hq : ∀ T : Over S, (fun x : T ⟶ B => normCls M w x.left) = fun x => diff₂ (ptCls M T) x (postHom w T x)` using `fun T => funext fun x => normCls_left w x`. Establish `hs : ∀ (T : Over S) (y : T ⟶ B), postHom w T y * postHom w' T y = y` using `fun T y => (MonObj.comp_mul y w w').symm.trans (by rw [hw, Category.comp_id])`. Establish `hadj : ∀ (T : Over S) (x y : T ⟶ B), diff₂ (ptCls M T) (postHom w T x) y = diff₂ (ptCls M T) x (postHom w' T y)` using `fun T x y => diff₂_ptCls_adj hM ha x y`. Establish `hL : (cubeLB B ![𝟙 B, w] M).IsLB` using `DVR.linComb_isLB _ hM _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨rig, hrig⟩ : HasGen (cubeLB B ![𝟙 B, w] M) (K` from `PUnit) (fun _ => eSec B) (fun _ => 1) := by`. Use `hasGen_nested hM _ _ _ _ ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique, zpow_one]`. Use `(normCls_left w η[B]).trans ?_` and prove the remaining obligations. Establish `e : η[B] = (1 : 𝟙_ (Over S) ⟶ B)` using `by simp [Hom.one_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, MonObj.one_comp]`. Simplify using `[diff₂]`. Set `P : RigLB B` to `⟨_, rig, hL, hrig⟩`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : HasGen (cubeLB B ![𝟙 B, w] M) (thφ B (x3 B)) thε := by`. Use `hasGen_nested hM _ _ _ _ ((GlobalTheory.AbLaw.Cube.prod_theta (normCls M w)).trans ((prod_cub _ _ _ (normCls M w)).trans ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `diff₃_quadratic (hc (G3 B)) _ _ (hs _) (hadj _) (x3 B 0) (x3 B 1) (x3 B 2)` as an intermediate fact. Rewrite `this` using `[← hq]`. Conclude with `this`. Take `⟨t', ht', hn⟩` from `GlobalTheory.AbLaw.Cube.exists_normalised hL t ht`. Use `⟨P, GlobalTheory.AbLaw.Cube.cubicalOfNormalised hG hB P t' ht' hn, rfl, isSymmetric_of_hasGen P ?_, fun T x y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `hasGen_nested hM _ _ _ _ ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_two]`. Use `show normCls M w (GrpObj.inv (X := B)).left ^ (1 : ℤ) * normCls M w (𝟙 B : B ⟶ B).left ^ (-1 : ℤ) = 1`. Establish `e : GrpObj.inv (X` using `B) = (𝟙 B)⁻¹ := by simp [Hom.inv_def]`. Establish `e' : (𝟙 B)⁻¹ ≫ w = (𝟙 B ≫ w)⁻¹` using `map_inv (postHom w B) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[normCls_left, normCls_left, e, e', diff₂_inv_inv (hc B), zpow_neg, mul_inv_cancel]`. Use `lbIso_nested hM _ _ _ _ _ _ ((prod_square_id x y (normCls M w)).trans (Eq.trans ?_ (prod_square_id x y (cls M)).symm))` and prove the remaining obligations. Rewrite using `[hq]`. Conclude with `diff₂_quadratic (hc T) _ _ (hs _) (hadj _) x y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_normalised_bundle (hG : Out.GlobalFnsSt) (hB : IsAbelianScheme B) (hM : M.IsLB)
     (hT : ∃ t : LB.Gen (Theta B M), t.IsGen) (w w' : B ⟶ B) [IsMonHom w] [IsMonHom w'] (hw : w * w' = 𝟙 B)
@@ -465,11 +463,9 @@ theorem exists_normalised_bundle (hG : Out.GlobalFnsSt) (hB : IsAbelianScheme B)
 end Main
 
 /- English proof (translation)
-Introduce `hG E _ _ _ H S B _ _ act M hB hM hT ha`. Use `act.hom H.w0` as an intermediate fact. Use `act.hom (H.bar H.w0)` as an intermediate fact. Take `⟨P, c, e, sym, iso⟩` from `exists_normalised_bundle hG hB hM hT (act.act H.w0) (act.act (H.bar H.w0)) (by rw [← act.add, GlobalTheory.HostModel.cmHost_bar_halfIntegerGenerator, add_sub_cancel, act.one]) (ha H.w0)`. Establish `lb : ∀ {T : Over S} (x : Fin 2 → (T ⟶ B)) {L : LB B.left}, L.IsLB → (cubeLB B x L).IsLB` using `fun x L hL => DVR.linComb_isLB _ hL _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨P, c, sym, ?_, iso _ _ _, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(lbIso_iff hM _ _ _ _).2 rfl`. Use `(iso B (𝟙 B) (act.act H.w0)).symm` as an intermediate fact. Rewrite `this` using `[← e]`. Then use the resulting hypothesis.
-
-Conclude with `LBIso.trans (lb _ P.isLB) (lb _ hM) (lb _ P.isLB) (iso _ _ _) (LBIso.trans (lb _ hM) (lb _ hM) (lb _ P.isLB) (ha a) (iso _ _ _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_primitive_normalisation :
     Out.GlobalFnsSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (B : Over S)

@@ -12,9 +12,9 @@ open Formalism.FourierDecayAlt
 variable {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [G.upper, G.strictUpper, StabilizerDisintegration.utc, Matrix.add_apply, Matrix.one_apply, Matrix.of_apply]`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Rewrite using `[dif_pos h, if_neg (ne_of_lt h), zero_add]`. Rewrite using `[dif_neg (lt_irrefl _), if_pos rfl, hM.2, add_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg (not_lt.2 h.le), if_neg (ne_of_gt h), hM.1 i j h, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem upper_utc {M : Matrix (Fin n) (Fin n) ℂ} (hM : M ∈ C2.UTset n) : G.upper (StabilizerDisintegration.utc M) = M := by
   ext i j
@@ -25,7 +25,7 @@ theorem upper_utc {M : Matrix (Fin n) (Fin n) ℂ} (hM : M ∈ C2.UTset n) : G.u
   · rw [dif_neg (not_lt.2 h.le), if_neg (ne_of_gt h), hM.1 i j h, add_zero]
 
 /- English proof (translation)
-Use `⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `[G.upper, G.strictUpper, not_lt.2 h.le, ne_of_gt h]`. Simplify using `[G.upper, G.strictUpper]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem upper_ut (v : G.UT n → ℂ) : G.upper v ∈ C2.UTset n := by
   refine ⟨fun i j h => ?_, fun i => ?_⟩
@@ -40,7 +40,7 @@ def Gam (p : ((Fin r → Fin r → ℂ) × X) × (G.UT r → ℂ)) : (Fin r → 
   (Matrix.of.symm (Matrix.of p.1.1 * Wm (Matrix.of p.1.1) * G.upper p.2), p.1.2)
 
 /- English proof (translation)
-Simplify using `only [Gam, Equiv.apply_symm_apply]`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, C2x2.ut_det (Wm_ut _), C2x2.ut_det (upper_ut p.2), mul_one, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Gam_det (p : ((Fin r → Fin r → ℂ) × X) × (G.UT r → ℂ)) :
     (Matrix.of (Gam p).1).det = (Matrix.of p.1.1).det := by
@@ -48,7 +48,7 @@ theorem Gam_det (p : ((Fin r → Fin r → ℂ) × X) × (G.UT r → ℂ)) :
   rw [Matrix.det_mul, Matrix.det_mul, C2x2.ut_det (Wm_ut _), C2x2.ut_det (upper_ut p.2), mul_one, mul_one]
 
 /- English proof (translation)
-Simplify using `only [Gam, Equiv.apply_symm_apply]`. Rewrite using `[Wm_mul hdet hu, upper_utc (Sm_ut _), Matrix.mul_assoc (Matrix.of q.1) u, Matrix.mul_nonsing_inv_cancel_left _ _ (C2x2.ut_unit hu), Matrix.mul_assoc, Wm_mul_Sm, Matrix.mul_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Gam_eq (q : (Fin r → Fin r → ℂ) × X) (u : Matrix (Fin r) (Fin r) ℂ) (hdet : (Matrix.of q.1).det ≠ 0)
     (hu : u ∈ C2.UTset r) : Gam ((Matrix.of.symm (Matrix.of q.1 * u), q.2), StabilizerDisintegration.utc (Sm (Matrix.of q.1))) = q := by
@@ -58,11 +58,9 @@ theorem Gam_eq (q : (Fin r → Fin r → ℂ) × X) (u : Matrix (Fin r) (Fin r) 
   rfl
 
 /- English proof (translation)
-Establish `hW : ∀ a b : Fin r, ContinuousOn (fun p : ((Fin r → Fin r → ℂ) × X) × (G.UT r → ℂ) => Wm (Matrix.of p.1.1) a b) S` using `fun a b => (cd_Wm a b).continuousOn.comp (continuous_fst.comp continuous_fst).continuousOn fun p hp => hS p hp`. Use `ContinuousOn.prodMk (continuousOn_pi.2 fun a => continuousOn_pi.2 fun b => ?_) (continuous_snd.comp continuous_fst).continuousOn` and prove the remaining obligations. Establish `e : ∀ p : ((Fin r → Fin r → ℂ) × X) × (G.UT r → ℂ), (Gam p).1 a b = ∑ c : Fin r, (∑ d : Fin r, p.1.1 a d * Wm (Matrix.of p.1.1) d c) * G.upper p.2 c b`. Introduce `p`. Simplify using `only [Gam]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `key : ContinuousOn (fun p : ((Fin r → Fin r → ℂ) × X) × (G.UT r → ℂ) => ∑ c : Fin r, (∑ d : Fin r, p.1.1 a d * Wm (Matrix.of p.1.1) d c) * G.upper p.2 c b) S`. Use `continuousOn_finsetSum _ fun c _ => ContinuousOn.mul (continuousOn_finsetSum _ fun d _ => ?_) ?_` and prove the remaining obligations. Conclude with `(((continuous_apply_apply a d).comp (continuous_fst.comp continuous_fst)).continuousOn).mul (hW d c)`. Conclude with `((continuous_apply_apply c b).comp (Formalism.FourierDecayAlt.P.Dx2.SL.cont_upper.comp continuous_snd)).continuousOn`.
-
-Conclude with `key.congr fun p _ => e p`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Gam_cont [TopologicalSpace X] (S : Set (((Fin r → Fin r → ℂ) × X) × (G.UT r → ℂ)))
     (hS : ∀ p ∈ S, (Matrix.of p.1.1).det ≠ 0) : ContinuousOn Gam S := by
@@ -85,17 +83,15 @@ theorem Gam_cont [TopologicalSpace X] (S : Set (((Fin r → Fin r → ℂ) × X)
 end gam
 
 /- English proof (translation)
-Introduce `r`. Set `φ : ContDiffBump (0 : G.UT r → ℂ)` to `⟨1, 2, one_pos, one_lt_two⟩`. Use `set β₀ : (G.UT r → ℂ) → ℝ := φ.normed volume with hβ₀`. Establish `hcont : Continuous β₀` using `φ.continuous_normed`. Use `⟨fun Z => β₀ (StabilizerDisintegration.utc (Sm (Matrix.of Z))), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hS : ContDiffOn ℝ ∞ (fun Z : Fin r → Fin r → ℂ => StabilizerDisintegration.utc (Sm (Matrix.of Z))) {Z | (Matrix.of Z).det ≠ 0}` using `contDiffOn_pi.2 fun q => cd_Sm q.1.1 q.1.2`. Conclude with `(φ.contDiff_normed (n := ⊤)).comp_contDiffOn hS`. Introduce `Z hZ`. Establish `hmp` using `Formalism.FourierDecayAlt.P.StabilizerDisintegration.HC.mp_UTleft (Sm_ut (Matrix.of Z))`. Establish `hfun : (fun v : G.UT r → ℂ => β₀ (StabilizerDisintegration.utc (Sm (Matrix.of (Matrix.of.symm (Matrix.of Z * G.upper v)))))) = fun v => β₀ (StabilizerDisintegration.utc (Sm (Matrix.of Z) * G.upper v))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `v`. Simplify using `only [Equiv.apply_symm_apply]`. Rewrite using `[Sm_mul hZ (upper_ut v)]`. Use `show Integrable (fun v : G.UT r → ℂ => β₀ (StabilizerDisintegration.utc (Sm (Matrix.of (Matrix.of.symm (Matrix.of Z * G.upper v)))))) ∧ ∫ v : G.UT r → ℂ, β₀ (StabilizerDisintegration.utc (Sm (Matrix.of (Matrix.of.symm (Matrix.of Z * G.upper v))))) = 1`. Rewrite using `[hfun]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Establish `hi` using `(integrable_map_measure hcont.aestronglyMeasurable hmp.measurable.aemeasurable).1 (by rw [hmp.map_eq]; exact φ.integrable_normed)`. Conclude with `hi`. Rewrite using `[← integral_map hmp.measurable.aemeasurable hcont.aestronglyMeasurable, hmp.map_eq]`. Conclude with `φ.integral_normed`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `X _ K hK hKdet`. Establish `hC₀ : IsCompact (tsupport β₀)` using `φ.hasCompactSupport_normed`. Use `⟨Gam '' (K ×ˢ tsupport β₀), (hK.prod hC₀).image_of_continuousOn (Gam_cont _ fun p hp => hKdet _ hp.1), ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `q ⟨⟨q', c⟩, ⟨hq', -⟩, rfl⟩`. Conclude with `⟨by rw [Gam_det]; exact hKdet q' hq', q', hq', rfl⟩`.
-
-Introduce and unpack `q hdet hβ ⟨u, hu, hK'⟩`. Establish `huT : u ∈ C2.UTset r` using `⟨fun i j h => hu.1 h, hu.2⟩`. Conclude with `⟨((Matrix.of.symm (Matrix.of q.1 * u), q.2), StabilizerDisintegration.utc (Sm (Matrix.of q.1))), ⟨hK', subset_tsupport _ hβ⟩, Gam_eq q u hdet huT⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem top_truncation_construction : MkTopCut := by
   intro r

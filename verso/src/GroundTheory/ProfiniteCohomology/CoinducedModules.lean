@@ -13,9 +13,9 @@ section Translation
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
 
 /- English proof (translation)
-Establish `key` using `isCompact_univ.eventually_forall_of_forall_eventually (x₀ := (1 : G)) (P := fun g x => f (x * g) = f x) (K := Set.univ) ?_`. Conclude with `key.mono fun g hg x => hg x (Set.mem_univ x)`. Introduce `y _`. Establish `h1` using `(f.isLocallyConstant.comp_continuous (continuous_snd.mul continuous_fst : Continuous fun z : G × G => z.2 * z.1)).eventually_eq ((1 : G), y)`. Establish `h2` using `(f.isLocallyConstant.comp_continuous (continuous_snd : Continuous fun z : G × G => z.2)).eventually_eq ((1 : G), y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `filter_upwards [h1, h2] with z hz1 hz2`. Express the relevant statement in the definitionally equal form `f (z.2 * z.1) = f (y * 1) at hz1`. Express the relevant statement in the definitionally equal form `f z.2 = f y at hz2`. Rewrite using `[hz1, hz2, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_forall_mul_eq {Y : Type*} (f : LocallyConstant G Y) :
     ∀ᶠ g in 𝓝 (1 : G), ∀ x : G, f (x * g) = f x := by
@@ -90,7 +90,7 @@ noncomputable def invariantsDiscreteCoindEquiv :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem invariantsDiscreteCoindEquiv_apply (f : (discreteCoindRep k G X).invariants) :
     invariantsDiscreteCoindEquiv k G X f = (f : LocallyConstant G X) 1 :=
@@ -120,7 +120,7 @@ noncomputable def coindEmbedding (A : Rep.{u} k G) [IsDiscreteRep A] : A ⟶ dis
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem coindEmbedding_hom_apply (A : Rep.{u} k G) [IsDiscreteRep A] (a : A) (g : G) :
     ((coindEmbedding A).hom a : LocallyConstant G A) g = A.ρ g a :=
@@ -128,7 +128,7 @@ theorem coindEmbedding_hom_apply (A : Rep.{u} k G) [IsDiscreteRep A] (a : A) (g 
 
 @[simp]
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `A.ρ 1 a = a`. Rewrite using `[map_one, Module.End.one_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coindEval_coindEmbedding (A : Rep.{u} k G) [IsDiscreteRep A] (a : A) :
     coindEval k G A ((coindEmbedding A).hom a) = a := by
@@ -136,7 +136,7 @@ theorem coindEval_coindEmbedding (A : Rep.{u} k G) [IsDiscreteRep A] (a : A) :
   rw [map_one, Module.End.one_apply]
 
 /- English proof (translation)
-The claim follows from `Function.LeftInverse.injective (g := coindEval k G A) (coindEval_coindEmbedding A)`.
+A detailed English derivation is pending.
 -/
 theorem coindEmbedding_injective (A : Rep.{u} k G) [IsDiscreteRep A] :
     Function.Injective (coindEmbedding A).hom :=
@@ -150,14 +150,14 @@ noncomputable def coindEmbeddingRange (A : Rep.{u} k G) [IsDiscreteRep A] :
   LinearMap.range (coindEmbedding A).hom.toLinearMap
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_coindEmbeddingRange (A : Rep.{u} k G) [IsDiscreteRep A] (f : LocallyConstant G A) :
     f ∈ coindEmbeddingRange A ↔ ∃ a : A, (coindEmbedding A).hom a = f :=
   Iff.rfl
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨A.ρ g a, Rep.hom_comm_apply (coindEmbedding A) g a⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem coindEmbeddingRange_le_comap (A : Rep.{u} k G) [IsDiscreteRep A] (g : G) :
     coindEmbeddingRange A ≤ (coindEmbeddingRange A).comap ((discreteCoind k G A).ρ g) := by
@@ -176,7 +176,7 @@ instance isDiscreteRep_coindCokernel [CompactSpace G] (A : Rep.{u} k G) [IsDiscr
   isDiscreteRep_quotient (discreteCoind k G A) _ _
 
 /- English proof (translation)
-Use extensionality with `a`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨a, rfl⟩`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem coindEmbedding_comp_coindCokernelπ (A : Rep.{u} k G) [IsDiscreteRep A] :
     coindEmbedding A ≫ coindCokernelπ A = 0 := by
@@ -188,9 +188,9 @@ noncomputable def coindShortComplex (A : Rep.{u} k G) [IsDiscreteRep A] :
   ShortComplex.mk (coindEmbedding A) (coindCokernelπ A) (coindEmbedding_comp_coindCokernelπ A)
 
 /- English proof (translation)
-Rewrite using `[← ShortComplex.exact_map_iff_of_faithful _ (forget₂ (Rep.{u} k G) (ModuleCat.{u} k)), ShortComplex.moduleCat_exact_iff]`. Introduce `f hf`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p := coindEmbeddingRange A) f = 0 at hf`. Take `⟨a, ha⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hf`. Conclude with `⟨a, ha⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `mono_f := by`. Express the relevant statement in the definitionally equal form `Mono (coindEmbedding A)`. Use `infer_instance`. Use `epi_g := (Rep.epi_iff_surjective _).2 (Submodule.mkQ_surjective _)`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem coindShortComplex_shortExact (A : Rep.{u} k G) [IsDiscreteRep A] :
     (coindShortComplex A).ShortExact where
@@ -225,7 +225,7 @@ theorem coindCokernelSection_mk (A : Rep.{u} k G) [IsDiscreteRep A] (f : Locally
   rfl
 
 /- English proof (translation)
-Proceed by induction on `c using Submodule.Quotient.induction_on with`. Consider the case `H f`. Rewrite using `[coindCokernelSection_mk]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = Submodule.Quotient.mk _`. Rewrite using `[Submodule.Quotient.mk_sub, (Submodule.Quotient.mk_eq_zero _).2 ((mem_coindEmbeddingRange A _).2 ⟨coindEval k G A f, rfl⟩), sub_zero]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coindCokernelπ_coindCokernelSection (A : Rep.{u} k G) [IsDiscreteRep A]
     (c : LocallyConstant G A ⧸ coindEmbeddingRange A) :

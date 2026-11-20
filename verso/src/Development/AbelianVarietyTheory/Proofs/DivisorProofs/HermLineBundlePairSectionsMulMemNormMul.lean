@@ -10,7 +10,7 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.VolBr.NuMul
 
 /- English proof (translation)
-Establish `h1 : (P.r i : X.functionField) ≠ 0` using `(P.r i).ne_zero`. Establish `h2 : (P.r' j : X.functionField) ≠ 0` using `(P.r' j).ne_zero`. Simplify using `only [Pair.loc, zpow_add₀ h1, zpow_add₀ h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem loc_mul {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} (P : Pair p)
     (a b a' b' : ℤ) (f g : X.functionField) (i : P.L.B.ι) (j : P.A.B.ι) :
@@ -21,11 +21,11 @@ theorem loc_mul {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X �
   ring
 
 /- English proof (translation)
-Introduce `k _ X _ p P a b a' b' f g hf hg`. Use `⟨fun x i j hi hj => ?_, fun σ y => ?_⟩` and prove the remaining obligations. Rewrite using `[loc_mul]`. Conclude with `(hf x i j hi hj).mul (hg x i j hi hj)`. Establish `hi` using `mem_ptsIn.1 (mem_pick (P.L.φ σ).isLB y)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj` using `mem_ptsIn.1 (mem_pick (P.A.φ σ).isLB y)`. Simplify using `only [Pair.nu]`. Rewrite using `[loc_mul, ratVal_mul (hf _ _ _ hi hj) (hg _ _ _ hi hj), norm_mul]`. Establish `e : -(((a + a' : ℤ) : ℝ) * (P.L.φ σ).φ (pick (P.L.φ σ).isLB y) y + ((b + b' : ℤ) : ℝ) * (P.A.φ σ).φ (pick (P.A.φ σ).isLB y) y) / 2 = -((a : ℝ) * (P.L.φ σ).φ (pick (P.L.φ σ).isLB y) y + (b : ℝ) * (P.A.φ σ).φ (pick (P.A.φ σ).isLB y) y) / 2 + -((a' : ℝ) * (P.L.φ σ).φ (pick (P.L.φ σ) …` using `by push_cast; ring`. Rewrite using `[e, Real.exp_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_H_and_nu_mul : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (P : Pair p), ∀ (a b a' b' : ℤ) (f g : X.functionField), f ∈ P.H a b → g ∈ P.H a' b' → f * g ∈ P.H (a + a') (b + b') ∧ ∀ (σ : k →+* ℂ) (y : CxPts p σ), P.nu (a + a') (b + b') σ y (f * g) = P.nu a b σ y f * P.nu a' b' σ y g := by
   intro k _ X _ p P a b a' b' f g hf hg

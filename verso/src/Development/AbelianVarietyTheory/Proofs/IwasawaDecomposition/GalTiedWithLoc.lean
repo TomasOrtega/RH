@@ -12,11 +12,11 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hL hLp D' b fr hfr hpht hstar hexp hsplit hcheb`. Take `⟨Hk, hHk⟩` from `GlobalTheory.FitHecke.heckeOpen_withLoc b.D b.cf b.jE b.A b.low b.Pq b.S b.hL b.eig b.θ b.Bs b.M b.C b.tp b.ch b.mt hstar hexp hsplit hcheb b.big b.L b.Sp b.Au`. Set `lp : LPTiedPlaceholder (withLoc b.L)` to `⟨⟩`. Set `fr' : OmFrame (withLoc b.L)` to `{ fr with }`. Establish `au : AUTied (withLoc b.L) lp (mtL b.L b.M) Hk.av` using `{ Hk.au with emb := Hk.emb }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : NGalTied (withLoc b.L)` to `{ fr := fr', lp := lp, mt := mtL b.L b.M, hecke := Hk.hecke, av := Hk.av, au := au rational := Hk.rational, tup := b.tp.tup, level := Hk.level }`. Use `⟨g, hfr, rfl, rfl, ⟨Hk.data⟩, ⟨Hk.cover⟩, ?_⟩` and prove the remaining obligations. Introduce `F hF`. Use `⟨fun i σ v w hov Dv hα => ?_⟩` and prove the remaining obligations. Rewrite `hα`, the goal using `[hF]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨α, hS, he⟩` from `b.row.2 σ v w hov Dv hα`. Use `⟨α, hS, ?_⟩` and prove the remaining obligations. Use `show b.L.Y.satW i σ w = _`. Rewrite using `[b.Au.satW i σ w]`. Conclude with `he`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galTied_withLoc : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL), LpCmp hL → ∀ (D' : D7) (b : NBuilt hL D') (fr : OmFrame b.D), fr.jE = b.jE → (PhtOn b.A.wd fr fun _ _ _ _ => True) → (∀ x : b.D.LL0, star (x : b.D.what₂.LL) ∈ b.D.LL0) → (∀ j g, ∃ z : ℤ, eExp b.D j g = z) → (∀ v, v ∈ placesOver b.D.host.E b.D.host.pde ∨ v ∈ placesOver b.D.host.E b.D.host.pde' → IsSplitPl b.D.host v) → GlobalTheory.RowTie.ChebSplit b.D.nd → ∃ g : NGalTied (withLoc b.L), g.fr.jE = b.jE ∧ g.mt = mtL b.L b.M ∧ g.tup = b.tp.tup ∧ Nonempty (NormalizedDataCompatibility (withLoc b.L)) ∧ Nonempty (NormalizedLocalCompatibility (withLoc b.L) (mtL b.L b.M)) ∧ ∀ F : RowFrame (withLoc b.L), F.rep = b.rep → RowLocTied (withLoc b.L) g.lp F := by
   intro hL hLp D' b fr hfr hpht hstar hexp hsplit hcheb

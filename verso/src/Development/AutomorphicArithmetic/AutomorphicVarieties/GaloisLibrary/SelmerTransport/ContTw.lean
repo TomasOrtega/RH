@@ -5,11 +5,9 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Locally
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base
 
 /- English proof (translation)
-Use `(QO.isBaseChange l O).inductionOn m (motive := fun m => Continuous fun g => ((χ g : ℤ_[l]ˣ) : ℤ_[l]) • m) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `using continuous_const`. Introduce `x`. Establish `h1 : Continuous fun g => ((χ g : ℤ_[l]ˣ) : ℤ_[l]) • x` using `Continuous.comp (LDataCardLeFinrank.contScal l Γ χ hχ) (Continuous.prodMk_left x)`. Establish `h2 : Continuous (QO.incl l O)` using `continuous_of_discreteTopology`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(h2.comp h1).congr fun g => ?_` and prove the remaining obligations. Conclude with `map_smul (QO.incl l O) _ x`. Introduce `s x hx`. Establish `h2 : Continuous fun y : QO l O => s • y` using `continuous_of_discreteTopology`. Conclude with `(h2.comp hx).congr fun g => smul_comm _ _ _`.
-
-Introduce `x y hx hy`. Conclude with `(hx.add hy).congr fun g => (smul_add _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem cont_smul (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O] (Γ : Type) [Group Γ]
     [TopologicalSpace Γ] (χ : Γ →* ℤ_[l]ˣ) (hχ : Continuous fun g => ((χ g : ℤ_[l]ˣ) : ℤ_[l])) (m : QO l O) :
@@ -30,18 +28,16 @@ private theorem cont_smul (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Alge
     exact (hx.add hy).congr fun g => (smul_add _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.LocallyConstantFunctions.locConst ψ h`.
+A detailed English derivation is pending.
 -/
 private theorem locConst {Γ A : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group A] (ψ : Γ →* A)
     (h : IsOpen (ψ.ker : Set Γ)) : IsLocallyConstant ψ :=
   _root_.UpperTheory.Reformulated.B.LocallyConstantFunctions.locConst ψ h
 
 /- English proof (translation)
-Introduce `k Ω _ _ _ _ _ l _`. Establish `hc` using `continuous_cycZ k Ω l`. Use `⟨hc, fun e => LDataCardLeFinrank.contScal l _ _ (Units.continuous_val.comp (hc.zpow (-e))), fun O _ _ ψ n hψ => ?_⟩` and prove the remaining obligations. Use `continuous_prod_of_discrete_right.2 fun m => ?_` and prove the remaining obligations. Establish `h1` using `cont_smul l O _ (cycZ k Ω l ^ n) (Units.continuous_val.comp (hc.zpow n)) m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `((locConst ψ hψ).prodMk ((IsLocallyConstant.iff_continuous _).2 h1)).comp fun p : Oˣ × QO l O => (p.1 : O) • p.2`. Use `h2.continuous.congr fun g => ?_` and prove the remaining obligations. Use `show (ψ g : O) • (((cycZ k Ω l g ^ n : ℤ_[l]ˣ) : ℤ_[l]) • m) = ((ψ g * chiO k Ω l O g ^ n : Oˣ) : O) • m`. Establish `e : chiO k Ω l O g ^ n = Units.map (algebraMap ℤ_[l] O).toMonoidHom (cycZ k Ω l g ^ n)` using `(map_zpow (Units.map (algebraMap ℤ_[l] O).toMonoidHom) (cycZ k Ω l g) n).symm`. Rewrite using `[Units.val_mul, mul_smul, e]`.
-
-Conclude with `congrArg _ (algebraMap_smul O _ m).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.contTw :
     ∀ (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (l : ℕ) [Fact l.Prime],

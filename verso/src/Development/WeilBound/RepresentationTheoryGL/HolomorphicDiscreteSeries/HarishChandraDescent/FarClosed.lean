@@ -29,7 +29,7 @@ import Development.WeilBound.RepresentationTheoryGL.HolomorphicDiscreteSeries.Ha
 namespace PositivityTheory.RgHe3
 
 /- English proof (translation)
-Establish `hs : SqId` using `square_identity_holds`. Establish `hadeq : AdEq` using `adjoint_equation_holds`. Establish `htrial : Trial` using `trial_of_inputs discrete_series_data_holds (second_moment_of_bounds (root_bound_of_square_identity hs) matrix_bound_holds hadeq) (approximation_of_square_identity hs) restriction_holds`. Establish `hcore : Core` using `discrete_series_bound_of_inputs (comp_proof hs) (parts_of_square_identity hs) (casimir_bound_of_inputs hs markov_inequality_holds positive_negative_holds inverse_holds commutant_holds hadeq casimir_adjoint_holds) (ascent_of_square_identity hs) (mem_span_of_frobenius_mem_span hs k …`. Conclude with `far_of_trial_bound htrial hcore`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem far_closed : Far := by
   have hs : SqId := square_identity_holds
@@ -45,7 +45,7 @@ theorem far_closed : Far := by
   exact far_of_trial_bound htrial hcore
 
 /- English proof (translation)
-The claim follows from `base_of_far_models_frame far_closed`.
+A detailed English derivation is pending.
 -/
 theorem base : PositivityTheory.RgHe.Models → PositivityTheory.RgHe.Frame → PositivityTheory.RgHe.Base := base_of_far_models_frame far_closed
 

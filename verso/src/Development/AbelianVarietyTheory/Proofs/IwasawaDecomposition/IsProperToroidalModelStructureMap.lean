@@ -21,9 +21,9 @@ section Top
 variable {X : Type} [TopologicalSpace X] [NoetherianSpace X] [QuasiSober X]
 
 /- English proof (translation)
-Take `⟨S, hS, hc, hi, rfl⟩` from `NoetherianSpace.exists_finite_set_isClosed_irreducible hF`. Use `choose η hη using fun t (ht : t ∈ S) => QuasiSober.sober (hi t ht) (hc t ht)`. Use `haveI := hS.to_subtype`. Use `⟨Set.range fun t : S => η t.1 t.2, Set.finite_range _, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨t.1, t.2, (hη t.1 t.2).mem⟩`. Introduce and unpack `x ⟨t, ht, hx⟩`. Conclude with `⟨_, ⟨⟨t, ht⟩, rfl⟩, (hη t ht).specializes hx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_generic {F : Set X} (hF : IsClosed F) :
     ∃ G : Set X, G.Finite ∧ G ⊆ F ∧ ∀ x ∈ F, ∃ g ∈ G, g ⤳ x := by
@@ -37,7 +37,7 @@ theorem exists_finite_generic {F : Set X} (hF : IsClosed F) :
     exact ⟨_, ⟨⟨t, ht⟩, rfl⟩, (hη t ht).specializes hx⟩
 
 /- English proof (translation)
-Take `⟨G, hG, hGF, h⟩` from `exists_finite_generic hF`. Use `(hG.subset (s := G) (t := {x | x ∈ F ∧ ∀ x' : X, x' ∈ F → x' ⤳ x → x' = x}) ?_).to_subtype` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hm⟩`. Take `⟨g, hg, hgx⟩` from `h x hx`. Conclude with `hm g (hGF hg) hgx ▸ hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_maximal {F : Set X} (hF : IsClosed F) :
     Finite {x : X // x ∈ F ∧ ∀ x' : X, x' ∈ F → x' ⤳ x → x' = x} := by
@@ -48,9 +48,9 @@ theorem finite_maximal {F : Set X} (hF : IsClosed F) :
   exact hm g (hGF hg) hgx ▸ hg
 
 /- English proof (translation)
-Take `⟨G, hG, hGF, h⟩` from `exists_finite_generic hF`. Take `⟨x, hx⟩` from `hne`. Take `⟨g₀, hg₀, -⟩` from `h x hx`. Take `⟨g, hg⟩` from `hG.exists_maximalFor (fun g : X => closure ({g} : Set X)) G ⟨g₀, hg₀⟩`. Use `⟨⟨g, hGF hg.1, fun x' hx' hs => ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g', hg', hs'⟩` from `h x' hx'`. Establish `h1` using `hg.2 hg' (specializes_iff_closure_subset.1 (hs'.trans hs))`. Conclude with `(hs.antisymm ((specializes_iff_closure_subset.2 h1).trans hs')).eq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nonempty_maximal [T0Space X] {F : Set X} (hF : IsClosed F) (hne : F.Nonempty) :
     Nonempty {x : X // x ∈ F ∧ ∀ x' : X, x' ∈ F → x' ⤳ x → x' = x} := by
@@ -64,9 +64,9 @@ theorem nonempty_maximal [T0Space X] {F : Set X} (hF : IsClosed F) (hne : F.None
   exact (hs.antisymm ((specializes_iff_closure_subset.2 h1).trans hs')).eq
 
 /- English proof (translation)
-Take `⟨G, hG, -, h⟩` from `exists_finite_generic (isClosed_univ (X := X))`. Establish `hC : IsClosed (⋃ g ∈ G \ {x}, closure ({g} : Set X))` using `(hG.subset Set.diff_subset).isClosed_biUnion fun _ _ => isClosed_closure`. Take `⟨y, hy, hyU⟩` from `hd.inter_open_nonempty _ hC.isOpen_compl ⟨x, fun hm => by`. Take `⟨g, hg, hgx⟩` from `Set.mem_iUnion₂.1 hm`. Conclude with `hg.2 (hx g (specializes_iff_mem_closure.2 hgx))⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hgy⟩` from `h y trivial`. Distinguish the cases in `e : g = x`. Conclude with `(e ▸ hgy).mem_open hU hyU`. Conclude with `absurd (Set.mem_iUnion₂.2 ⟨g, ⟨hg, e⟩, specializes_iff_mem_closure.1 hgy⟩) hy`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem mem_of_maximal {x : X} (hx : ∀ x' : X, x' ⤳ x → x' = x) {U : Set X} (hU : IsOpen U) (hd : Dense U) :
     x ∈ U := by
@@ -89,7 +89,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-Rewrite `hW`, the goal using `[ValuationSubring.mem_nonunits_iff_or]`. Break down `hW with h | h` into its components or cases. Conclude with `absurd (by exact_mod_cast h) hp`. Conclude with `Or.inr fun h' => h (by simpa [Coeff.V] using h')`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem mem_nonunits_V {l : Level H} (c : Coeff l) (hp : p ≠ 0) (hW : (p : ℂ) ∈ W.nonunits) :
     (p : c.F) ∈ (c.V W).nonunits := by
@@ -99,7 +99,7 @@ theorem mem_nonunits_V {l : Level H} (c : Coeff l) (hp : p ≠ 0) (hW : (p : ℂ
   · exact Or.inr fun h' => h (by simpa [Coeff.V] using h')
 
 /- English proof (translation)
-Use `isProper_str (Z.i.c.V W) Z.n` as an intermediate fact. Unfold `Pre.s`. Use `infer_instance`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isProper_toroidalModel_structureMap (Z : Mdl Y i₀) : IsProper Z.s := by
   have := isProper_str (Z.i.c.V W) Z.n
@@ -107,9 +107,7 @@ theorem isProper_toroidalModel_structureMap (Z : Mdl Y i₀) : IsProper Z.s := b
   infer_instance
 
 /- English proof (translation)
-Use `haveI := Z.i.c.fin`. Use `haveI : NumberField Z.i.c.F := {}`. Use `haveI := (isDiscreteValuationRing_and_finite_residueField_of_numberField (Z.i.c.V W) hp (mem_nonunits_V Z.i.c hp hW)).1`. Use `haveI := isProper_toroidalModel_structureMap Z`. Use `haveI : IsLocallyNoetherian Z.X := LocallyOfFiniteType.isLocallyNoetherian Z.s`.
-
-Use `haveI : CompactSpace Z.X := QuasiCompact.compactSpace_of_compactSpace Z.s`. Use `haveI : IsNoetherian Z.X := {}`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem noetherianSpace (hp : p ≠ 0) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) : NoetherianSpace Z.X := by
   haveI := Z.i.c.fin
@@ -123,7 +121,7 @@ theorem noetherianSpace (hp : p ≠ 0) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl 
   infer_instance
 
 /- English proof (translation)
-Take `⟨⟨C⟩, -, h, -⟩` from `GlobalTheory.Exist.comp_nonempty_finite_genFr_trdeg E H Dw Z.i.l (Xo Z.i.l) Z.i.c h1`. Take `⟨P, -⟩` from `h C`. Take `⟨g, -⟩` from `Descent.exists_tie_frame (Z := Y Z.i) P rfl`. Take `⟨w, -⟩` from `Z.bij _ _ _ (Descent.ptF_snd P) g.v ⟨fun τ i => ⟨g.tan τ i, g.eig τ i⟩, g.basis⟩`. Conclude with `⟨w (IsLocalRing.closedPoint _)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_model (h1 : 1 ≤ Dw.p + Dw.q) (Z : Mdl Y i₀) : Nonempty Z.X := by
   obtain ⟨⟨C⟩, -, h, -⟩ := GlobalTheory.Exist.comp_nonempty_finite_genFr_trdeg E H Dw Z.i.l (Xo Z.i.l) Z.i.c h1
@@ -133,17 +131,15 @@ theorem nonempty_model (h1 : 1 ≤ Dw.p + Dw.q) (Z : Mdl Y i₀) : Nonempty Z.X 
   exact ⟨w (IsLocalRing.closedPoint _)⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hne`. Apply `h` to reduce the goal to its premises. Set `φ : Z.i.c.V W →+* Z.X.residueField x` to `(Z.X.evaluation ⊤ x trivial).hom.comp (GlobalTheory.QCoh.structureRingHom Z.s)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression.
 
-Take `⟨q, hq⟩` from `CharP.exists (Z.X.residueField x)`. Break down `CharP.char_is_prime_or_zero (Z.X.residueField x) q with hqp | rfl` into its components or cases. It suffices to derive a contradiction. Establish `hpq : p ≠ q`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hne (CharP.cast_eq_zero _ _)`. Establish `hco : IsCoprime (p : Z.i.c.V W) (q : Z.i.c.V W)`. Conclude with `(Nat.Coprime.cast (R := Z.i.c.V W) ((Nat.coprime_primes hp hqp).2 hpq))` after adjusting the coercions. Establish `hpn : ¬ IsUnit (p : Z.i.c.V W)`. Use `mem_nonunits_V Z.i.c hp.ne_zero hW` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `(ValuationSubring.coe_mem_nonunits_iff (A := Z.i.c.V W) (a := (p : Z.i.c.V W))).1 (by simpa using this)`. Conclude with `h2`. Take `⟨a, b, hab⟩` from `hco`. Establish `hqu : IsUnit (q : Z.i.c.V W)`. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one hab with h | h` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (isUnit_of_mul_isUnit_right h) hpn`. Conclude with `isUnit_of_mul_isUnit_right h`. Use `hqu.map φ` as an intermediate fact. Rewrite `this` using `[map_natCast, CharP.cast_eq_zero]`. Conclude with `not_isUnit_zero this`.
-
-Conclude with `CharP.charP_to_charZero _`. Introduce `h hc haveI : CharZero (Z.X.residueField x) := hc`. Conclude with `hp.ne_zero (by exact_mod_cast h)`.
+A detailed English derivation is pending.
 -/
 theorem not_inQ_iff (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) (x : Z.X) :
     ¬ Z.inQ x ↔ (p : Z.X.residueField x) = 0 := by
@@ -179,7 +175,7 @@ theorem not_inQ_iff (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i�
     exact hp.ne_zero (by exact_mod_cast h)
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Set.mem_setOf_eq, not_inQ_iff hp hW, ← map_natCast (Z.X.evaluation ⊤ x trivial).hom]`. Conclude with `Scheme.evaluation_eq_zero_iff_notMem_basicOpen (U := ⊤) Z.X x trivial _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setOf_not_inQ (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) :
     {x : Z.X | ¬ Z.inQ x} = (Z.genO : Set Z.X)ᶜ := by
@@ -188,11 +184,11 @@ theorem setOf_not_inQ (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y 
   exact Scheme.evaluation_eq_zero_iff_notMem_basicOpen (U := ⊤) Z.X x trivial _
 
 /- English proof (translation)
-Use `haveI := isProper_toroidalModel_structureMap Z`. Take `⟨x⟩` from `nonempty_model h1 Z`. Establish `hc : IsClosed (Set.range Z.s)` using `Z.s.isClosedMap.isClosed_range`. Take `⟨y, hy⟩ : IsLocalRing.closedPoint (Z.i.c.V W) ∈ Set.range Z.s` from `(IsLocalRing.specializes_closedPoint (Z.s x)).mem_closed hc ⟨x, rfl⟩`. Use `⟨y, fun hm => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : Z.genO = Z.s ⁻¹ᵁ (Sp (Z.i.c.V W)).basicOpen ((Scheme.ΓSpecIso (.of (Z.i.c.V W))).inv (p : Z.i.c.V W))`. Rewrite using `[Scheme.preimage_basicOpen_top, map_natCast, map_natCast]`. Both sides reduce to the same expression. Rewrite `hm` using `[e, basicOpen_eq_of_affine]`. Establish `hm' : Z.s y ∈ PrimeSpectrum.basicOpen (p : Z.i.c.V W)` using `hm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm'` using `[hy]`. Conclude with `hm' ((ValuationSubring.coe_mem_nonunits_iff (A := Z.i.c.V W) (a := (p : Z.i.c.V W))).1 (by simpa using mem_nonunits_V Z.i.c hp.ne_zero hW))`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_special (h1 : 1 ≤ Dw.p + Dw.q) (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) :
     ((Z.genO : Set Z.X)ᶜ).Nonempty := by
@@ -212,11 +208,9 @@ theorem nonempty_special (h1 : 1 ≤ Dw.p + Dw.q) (hp : p.Prime) (hW : (p : ℂ)
     (by simpa using mem_nonunits_V Z.i.c hp.ne_zero hW))
 
 /- English proof (translation)
-Use `haveI := noetherianSpace hp hW Z`. Establish `ho : IsOpen Z.opn`. Rewrite using `[← Z.cover]`. Conclude with `isOpen_iUnion fun a => (Z.U a).1.2`. Take `⟨z, hz⟩` from `mem_of_maximal hx ho Z.dense`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (Y Z.i).jQ z ∈ pullback.fst (Y Z.i).s (spMap (Z.i.c.V W).subtype) ⁻¹' abLocus (Y Z.i).t.G`. Rewrite using `[(Y Z.i).ab_gen]`. Conclude with `⟨z, rfl⟩`. Unfold `Mdl.abP`. Rewrite using `[← hz]`.
-
-Conclude with `this`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abP_of_isGenP (hp : p ≠ 0) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) (x : Z.X) (hx : Z.isGenP x) :
     Z.abP x := by
@@ -233,7 +227,7 @@ theorem abP_of_isGenP (hp : p ≠ 0) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y 
   exact this
 
 /- English proof (translation)
-Establish `h : ∀ a m, GlobalTheory.QCoh.IsFiniteQC (Z.free a m)` using `fun a m => GlobalTheory.Twist.isFiniteQC_twist (LB.isLB_pull (GlobalTheory.ProjSpace.On_isLB _ _ _) _)`. Use `haveI := h F.a F.m`. Use `haveI := h F.a' F.m'`. Conclude with `GlobalTheory.QCoh.isFiniteQC_cokernel F.φ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFiniteQC_toMod (Z : Mdl Y i₀) (F : Z.Sh) : GlobalTheory.QCoh.IsFiniteQC F.toMod := by
   have h : ∀ a m, GlobalTheory.QCoh.IsFiniteQC (Z.free a m) := fun a m =>
@@ -243,7 +237,7 @@ theorem isFiniteQC_toMod (Z : Mdl Y i₀) (F : Z.Sh) : GlobalTheory.QCoh.IsFinit
   exact GlobalTheory.QCoh.isFiniteQC_cokernel F.φ
 
 /- English proof (translation)
-The claim follows from `Real.sSup_nonneg (by rintro r ⟨U, -, h, k, g, lam, -, rfl⟩ positivity)`.
+A detailed English derivation is pending.
 -/
 theorem nrm_nonneg (Z : Mdl Y i₀) (F : Z.X.Modules) (f : Γ(F, Z.genO)) (y : Z.Pt) : 0 ≤ Mdl.nrm F f y :=
   Real.sSup_nonneg (by
@@ -251,15 +245,15 @@ theorem nrm_nonneg (Z : Mdl Y i₀) (F : Z.X.Modules) (f : Γ(F, Z.genO)) (y : Z
     positivity)
 
 /- English proof (translation)
-Use `Real.sSup_le ?_ zero_le_one` and prove the remaining obligations. Introduce and unpack `r ⟨U, hU, h, k, g, lam, hg, rfl⟩`. Use `set g₁ : Γ(F, U) := (F.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op).hom g₀ with hg₁`. Establish `e : U ⊓ Z.genO = Z.X.basicOpen ((p : ℕ) : Γ(Z.X, U))`. Rewrite using `[← map_natCast (Z.X.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op).hom, Scheme.basicOpen_res]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨n, hn⟩` from `GlobalTheory.QCoh.exists_pow_smul_eq_zero F hU _ inf_le_left e (g - p ^ k • g₁) (by`. Rewrite using `[map_sub, map_nsmul, sub_eq_zero]`. Use `hg.trans (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[hg₁]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(F.presheaf.map _ ≫ F.presheaf.map _).hom g₀ = (F.presheaf.map _ ≫ F.presheaf.map _).hom g₀`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp]`. Use the proof step `rfl)`. Establish `h2` using `congrArg lam hn`. Rewrite `h2` using `[map_smulₛₗ, map_zero, map_sub, map_nsmul, map_pow, map_natCast, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp' : ((p : ↥(intO ↥y.C.S))) ≠ 0` using `Nat.cast_ne_zero.2 hp`. Establish `h3 : lam g = p ^ k • lam g₁` using `sub_eq_zero.1 ((mul_eq_zero.1 h2).resolve_left (pow_ne_zero _ hp'))`. Establish `h4 : ‖((lam g₁ : ↥(intO ↥y.C.S)) : ↥y.C.S)‖ ≤ 1` using `(lam g₁).2`. Establish `hp0 : (p : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hp`. Rewrite using `[h3, nsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[norm_mul, norm_pow, y.C.norm_p, mul_right_comm, ← mul_pow, inv_mul_cancel₀ hp0, one_pow, one_mul]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem nrm_le_one (hp : p ≠ 0) (Z : Mdl Y i₀) (F : Z.X.Modules) [F.IsQuasicoherent] (g₀ : Γ(F, ⊤)) (y : Z.Pt) :
     Mdl.nrm F ((F.presheaf.map (homOfLE (le_top : Z.genO ≤ ⊤)).op).hom g₀) y ≤ 1 := by
@@ -290,17 +284,15 @@ theorem nrm_le_one (hp : p ≠ 0) (Z : Mdl Y i₀) (F : Z.X.Modules) [F.IsQuasic
 end Free
 
 /- English proof (translation)
-Introduce `D A N j S κ p ct`. Establish `h1 : 1 ≤ S.Dw.p + S.Dw.q` using `by have := S.rank_eq; have := S.two_le; omega`. Use `⟨fun F f y => nrm_nonneg _ _ f y, ?_, fun l => ?_, fun x hx => abP_of_isGenP ct.hp.ne_zero ct.hW _ x hx, fun Z => ?_, fun Z => ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `Z F f ⟨g₀, rfl⟩ y haveI := isFiniteQC_toMod Z F`. Conclude with `nrm_le_one ct.hp.ne_zero Z F.toMod g₀ y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.T.graded_line_bundle_exists _ _ _ _ p ct.W ct.hp ct.hW _ _ ct.YY ct.isYY.2.1 (ct.expo l)`. Establish `hv` using `GlobalTheory.VB.isVB_toMod h.choose_spec.1`. Use `haveI := hv.isFiniteQC`. Take `⟨e⟩` from `GlobalTheory.ModelPresentation.nonempty_ofMod_toMod_iso _ _ _ _ p ct.W ct.hp ct.hW _ _ ct.YY (GlobalTheory.LB.toMod h.choose)`. Unfold `At.IsInv At.Lb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos h]`. Conclude with `hv.of_iso e.symm`. Use `haveI := noetherianSpace ct.hp.ne_zero ct.hW Z`. Conclude with `finite_maximal (F := {x : Z.X | ¬ Z.inQ x}) (by`. Rewrite using `[setOf_not_inQ ct.hp ct.hW]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Z.genO.2.isClosed_compl)`. Use `haveI := noetherianSpace ct.hp.ne_zero ct.hW Z`. Conclude with `nonempty_maximal (F := {x : Z.X | ¬ Z.inQ x}) (by`. Rewrite using `[setOf_not_inQ ct.hp ct.hW]; exact Z.genO.2.isClosed_compl) (by`. Rewrite using `[setOf_not_inQ ct.hp ct.hW]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression.
 
-Conclude with `nonempty_special h1 ct.hp ct.hW Z)`. Introduce `Z y c c' hc a`. Establish `e : c' = A.H.bar c`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hc, A.H.bar_eq]`.
-
-Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`. Substitute `e` using the available equality. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem lawSt : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (p : ℕ), ∀ ct : At S κ p, LawSt ct := by
   intro D A N j S κ p ct

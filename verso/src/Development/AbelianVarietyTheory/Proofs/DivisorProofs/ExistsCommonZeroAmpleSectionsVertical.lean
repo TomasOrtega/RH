@@ -7,11 +7,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSAmp
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX P hA ℓ d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `C e g hℓ hC hCc hCf hd hg`. Take `⟨x, hx⟩` from `hC.nonempty`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, hx, by simp⟩`. Consider the case `succ d ih`. Introduce `C e g hℓ hC hCc hCf hd hg`. Take `⟨C', h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_irreducible_codim_one_zero_ample_section_fibre k X p D hX P hA ℓ d (e 0) C (g 0) hℓ hC hCc hCf (by exact_mod_cast hd) (hg 0).1 (hg 0).2`. Take `⟨x, hxC', hx⟩` from `ih C' (fun j => e j.succ) (fun j => g j.succ) hℓ h1 h2 (h3.trans (Set.diff_subset.trans hCf)) h4 (fun j => hg j.succ)`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨x, (h3 hxC').1, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion, not_exists] at hx ⊢`. Introduce `j`. Use `Fin.cases ?_ (fun j => hx j) j` and prove the remaining obligations. Conclude with `(h3 hxC').2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HSAmp.common_zero_of_le_dim : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (ℓ d : ℕ) (C : Set X) (e : Fin d → ℕ) (g : Fin d → X.functionField), ℓ.Prime → IsIrreducible C → IsClosed C → C ⊆ fib X ℓ → (d : WithBot ℕ∞) ≤ topologicalKrullDim C → (∀ j, 0 < e j ∧ g j ∈ P.H (e j) 0) → (C \ ⋃ j, NV P (e j) 0 (g j)).Nonempty := by
   intro k _ X _ p D hX P hA ℓ d

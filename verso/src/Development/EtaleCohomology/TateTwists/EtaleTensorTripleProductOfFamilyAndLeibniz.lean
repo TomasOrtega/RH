@@ -24,7 +24,7 @@ def LateralTheory.EtaleFoundations.EtaleTensorTripleProductLeibniz : Prop :=
           s.negOnePow • m U s (t + 1) (w + 1) (by omega) a (Sec.map (K.d t (t + 1)) b)
 
 /- English proof (translation)
-Introduce `R _ I J K T T3 τ τ' hτ _ M L μ' ν'`. Take `⟨m, hnat, heq⟩` from `hfam R τ hτ μ' ν'`. Use `⟨⟨m, hnat, hleib R τ hτ μ' ν' m hnat heq⟩, ?_⟩` and prove the remaining obligations. Introduce `U s t u st tu w h1 h2 h3 h4 a b c`. Conclude with `heq U s t u st tu w h1 h2 h3 h4 a b c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.etale_tensor_triple_product_of_family_and_leibniz (hfam : LateralTheory.EtaleFoundations.EtaleTensorTripleProductFamilyExists)
     (hleib : LateralTheory.EtaleFoundations.EtaleTensorTripleProductLeibniz) : LateralTheory.EtaleFoundations.EtaleTensorPairProductAssociative := by

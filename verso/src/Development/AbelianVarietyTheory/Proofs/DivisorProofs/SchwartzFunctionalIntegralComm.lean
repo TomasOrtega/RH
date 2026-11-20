@@ -23,7 +23,7 @@ theorem weightedDeriv_apply (k m : ℕ) (f : 𝓢(E, ℂ)) (x : E) :
     weightedDeriv k m f x = (‖x‖ ^ k : ℝ) • iteratedFDeriv ℝ m f x := rfl
 
 /- English proof (translation)
-The claim follows from `(BoundedContinuousFunction.norm_le (apply_nonneg _ _)).mpr fun x => by rw [weightedDeriv_apply, norm_smul, Real.norm_eq_abs, abs_of_nonneg (by positivity)] exact f.le_seminorm ℂ k m x`.
+A detailed English derivation is pending.
 -/
 theorem norm_weightedDeriv_le (k m : ℕ) (f : 𝓢(E, ℂ)) :
     ‖weightedDeriv k m f‖ ≤ SchwartzMap.seminorm ℂ k m f :=
@@ -32,7 +32,7 @@ theorem norm_weightedDeriv_le (k m : ℕ) (f : 𝓢(E, ℂ)) :
     exact f.le_seminorm ℂ k m x
 
 /- English proof (translation)
-The claim follows from `SchwartzMap.seminorm_le_bound ℂ k m f (norm_nonneg _) fun x => by have h := (weightedDeriv k m f).norm_coe_le_norm x rwa [weightedDeriv_apply, norm_smul, Real.norm_eq_abs, abs_of_nonneg (by positivity)] at h`.
+A detailed English derivation is pending.
 -/
 theorem seminorm_le_norm_weightedDeriv (k m : ℕ) (f : 𝓢(E, ℂ)) :
     SchwartzMap.seminorm ℂ k m f ≤ ‖weightedDeriv k m f‖ :=
@@ -68,7 +68,7 @@ variable {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensiona
   [BorelSpace W] {ν : Measure W}
 
 /- English proof (translation)
-Establish `h` using `((BoundedContinuousFunction.evalCLM ℂ y).comp (weightedDerivCLM (E := E) 0 m)).continuous.comp hG`. Use `h.congr fun w => ?_` and prove the remaining obligations. Simplify using `[weightedDerivCLM_apply, weightedDeriv_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem continuous_iteratedFDeriv_param {G : W → 𝓢(E, ℂ)} (hG : Continuous G) (m : ℕ) (y : E) :
     Continuous fun w => iteratedFDeriv ℝ m (G w) y := by
@@ -77,7 +77,7 @@ theorem continuous_iteratedFDeriv_param {G : W → 𝓢(E, ℂ)} (hG : Continuou
   simp [weightedDerivCLM_apply, weightedDeriv_apply]
 
 /- English proof (translation)
-The claim follows from `(hint 0 m).mono' (continuous_iteratedFDeriv_param hG m y).aestronglyMeasurable (.of_forall fun w => (G w).norm_iteratedFDeriv_le_seminorm ℂ m y)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_iteratedFDeriv_param {G : W → 𝓢(E, ℂ)} (hG : Continuous G)
     (hint : ∀ k m : ℕ, Integrable (fun w => SchwartzMap.seminorm ℂ k m (G w)) ν) (m : ℕ) (y : E) :
@@ -86,17 +86,15 @@ theorem integrable_iteratedFDeriv_param {G : W → 𝓢(E, ℂ)} (hG : Continuou
     (.of_forall fun w => (G w).norm_iteratedFDeriv_le_seminorm ℂ m y)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Use function extensionality and compare the values at `x`. Simplify using `only [iteratedFDeriv_zero_eq_comp, Function.comp_apply, hg x]`. Conclude with `((continuousMultilinearCurryFin0 ℝ E ℂ).symm.toLinearIsometry.integral_comp_comm _).symm`.
+Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ m ih`. Use function extensionality and compare the values at `x`. Use `set Ψ := continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (m + 1) => E) ℂ`. Establish `key : ∀ (f : E → ℂ) (y : E), iteratedFDeriv ℝ (m + 1) f y = Ψ.symm (fderiv ℝ (iteratedFDeriv ℝ m f) y)`. Introduce `f y`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[iteratedFDeriv_succ_eq_comp_left]`. Both sides reduce to the same expression. Establish `hdiff : ∀ w, Differentiable ℝ (iteratedFDeriv ℝ m (G w))` using `fun w => ((G w).smooth ⊤).differentiable_iteratedFDeriv (by exact_mod_cast ENat.coe_lt_top m)`. Establish `hF' : ∀ w y, fderiv ℝ (iteratedFDeriv ℝ m (G w)) y = Ψ (iteratedFDeriv ℝ (m + 1) (G w) y)`. Introduce `w y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[key, LinearIsometryEquiv.apply_symm_apply]`. Establish `hd : HasFDerivAt (fun y => ∫ w, iteratedFDeriv ℝ m (G w) y ∂ν) (∫ w, fderiv ℝ (iteratedFDeriv ℝ m (G w)) x ∂ν) x`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (bound := fun w => SchwartzMap.seminorm ℂ 0 (m + 1) (G w)) Filter.univ_mem (.of_forall fun y => (continuous_iteratedFDeriv_param hG m y).aestronglyMeasurable) (integrable_iteratedFDeriv_param hG hint m x) ?_ (.of_forall fun w y _ => …` and prove the remaining obligations. Repeatedly rewrite using `[hF']`. Conclude with `(Ψ.continuous.comp (continuous_iteratedFDeriv_param hG (m + 1) x)).aestronglyMeasurable`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_fderiv_iteratedFDeriv]`. Conclude with `(G w).norm_iteratedFDeriv_le_seminorm ℂ (m + 1) y`. Rewrite using `[key, ih, hd.fderiv]`. Use `Ψ.symm.toLinearIsometry.integral_comp_comm (μ := ν) (fun w => fderiv ℝ (iteratedFDeriv ℝ m (G w)) x)` as an intermediate fact. Simplify using `only [LinearIsometryEquiv.coe_toLinearIsometry] at this`.
-
-Rewrite using `[← this]`. Repeatedly rewrite using `[hF', LinearIsometryEquiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iteratedFDeriv_eq_integral {G : W → 𝓢(E, ℂ)} (hG : Continuous G)
     (hint : ∀ k m : ℕ, Integrable (fun w => SchwartzMap.seminorm ℂ k m (G w)) ν) {g : 𝓢(E, ℂ)}
@@ -147,7 +145,7 @@ Both sides reduce to the same expression.
 theorem embed_apply (s : Finset (ℕ × ℕ)) (f : 𝓢(E, ℂ)) (i : s) : embed s f i = weightedDeriv i.1.1 i.1.2 f := rfl
 
 /- English proof (translation)
-The claim follows from `(pi_norm_le_iff_of_nonneg (Finset.sum_nonneg fun i _ => apply_nonneg _ _)).mpr fun i => (norm_weightedDeriv_le _ _ f).trans (Finset.single_le_sum (f := fun j : ℕ × ℕ => SchwartzMap.seminorm ℂ j.1 j.2 f) (fun j _ => apply_nonneg _ _) i.2)`.
+A detailed English derivation is pending.
 -/
 theorem norm_embed_le (s : Finset (ℕ × ℕ)) (f : 𝓢(E, ℂ)) :
     ‖embed s f‖ ≤ ∑ i ∈ s, SchwartzMap.seminorm ℂ i.1 i.2 f :=
@@ -157,30 +155,28 @@ theorem norm_embed_le (s : Finset (ℕ × ℕ)) (f : 𝓢(E, ℂ)) :
         (fun j _ => apply_nonneg _ _) i.2)
 
 /- English proof (translation)
-The claim follows from `(seminorm_le_norm_weightedDeriv _ _ f).trans (norm_le_pi_norm (embed s f) ⟨i, hi⟩)`.
+A detailed English derivation is pending.
 -/
 theorem seminorm_le_norm_embed (s : Finset (ℕ × ℕ)) (f : 𝓢(E, ℂ)) {i : ℕ × ℕ} (hi : i ∈ s) :
     SchwartzMap.seminorm ℂ i.1 i.2 f ≤ ‖embed s f‖ :=
   (seminorm_le_norm_weightedDeriv _ _ f).trans (norm_le_pi_norm (embed s f) ⟨i, hi⟩)
 
 /- English proof (translation)
-Take `⟨s, C, -, hC⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ E ℂ) ((normSeminorm ℂ ℂ).comp (L : 𝓢(E, ℂ) →ₗ[ℂ] ℂ)) (continuous_norm.comp L.continuous)`. Establish `hL : ∀ f, ‖L f‖ ≤ C * (s.sup (schwartzSeminormFamily ℂ E ℂ)) f` using `fun f => hC f`. Use `set t := insert ((0 : ℕ), (0 : ℕ)) s`. Establish `hLt : ∀ f, ‖L f‖ ≤ C * ‖embed t f‖` using `fun f => (hL f).trans (mul_le_mul_of_nonneg_left (Seminorm.finset_sup_apply_le (norm_nonneg _) fun i hi => seminorm_le_norm_embed t f (Finset.mem_insert_of_mem hi)) C.2)`. Establish `hinj : Function.Injective (embed (E` using `E) t) := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(injective_iff_map_eq_zero (embed (E := E) t)).mpr fun f hf => ?_` and prove the remaining obligations. Use extensionality with `x`. Establish `h1` using `seminorm_le_norm_embed t f (Finset.mem_insert_self _ _)`. Rewrite `h1` using `[hf, norm_zero]`. Establish `h2` using `(f.norm_le_seminorm ℂ x).trans h1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h2`. Set `Φ : 𝓢(E, ℂ) →ₗ[ℂ] Target E t` to `(embed (E := E) t : 𝓢(E, ℂ) →ₗ[ℂ] Target E t)`. Set `e` to `LinearEquiv.ofInjective Φ hinj`. Establish `he : ∀ y : LinearMap.range Φ, embed t (e.symm y) = y` using `fun y => by`. Use `congrArg Subtype.val (e.apply_symm_apply y)` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `(LinearEquiv.ofInjective_apply Φ (e.symm y)).symm.trans this`. Set `f0 : LinearMap.range Φ →ₗ[ℂ] ℂ` to `(L : 𝓢(E, ℂ) →ₗ[ℂ] ℂ).comp e.symm.toLinearMap`. Set `f1 : StrongDual ℂ (LinearMap.range Φ)` to `f0.mkContinuous C fun y => by show ‖L (e.symm y)‖ ≤ C * ‖(y : Target E t)‖`. Rewrite using `[← he]`. Conclude with `hLt _`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ℓ, hℓ, -⟩` from `exists_extension_norm_eq (LinearMap.range Φ) f1`. Establish `hLℓ : ∀ f, L f = ℓ (embed t f)`. Introduce `f`. Establish `h1` using `hℓ ⟨embed t f, LinearMap.mem_range_self Φ f⟩`. Establish `h2 : e.symm ⟨embed t f, LinearMap.mem_range_self Φ f⟩ = f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `Subtype.ext rfl`. Establish `h3 : ℓ (embed t f) = f1 ⟨embed t f, LinearMap.mem_range_self Φ f⟩` using `h1`. Rewrite using `[h3, LinearMap.mkContinuous_apply]`. Use `show L f = L (e.symm _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[h2]`. Establish `hcont : Continuous fun w => embed t (G w)` using `(embed t).continuous.comp hG`. Use `haveI : SecondCountableTopology W := inferInstance`. Use `haveI : SecondCountableTopologyEither W (Target E t) := secondCountableTopologyEither_of_left _ _`. Establish `hInt : Integrable (fun w => embed t (G w)) ν` using `(integrable_finset_sum t fun i _ => hint i.1 i.2).mono' hcont.aestronglyMeasurable (.of_forall fun w => norm_embed_le t (G w))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hemb : embed t g = ∫ w, embed t (G w) ∂ν`. Use function extensionality and compare the values at `i`. Use `BoundedContinuousFunction.ext fun x => ?_` and prove the remaining obligations. Establish `h1` using `((BoundedContinuousFunction.evalCLM ℂ x).comp (ContinuousLinearMap.proj (R := ℂ) (φ := fun i : t => E →ᵇ ContinuousMultilinearMap ℝ (fun _ : Fin i.1.2 => E) ℂ) i)).integral_comp_comm hInt`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply, BoundedContinuousFunction.evalCLM_apply] at h1`.
-
-Rewrite using `[← h1]`. Simplify using `only [embed_apply, weightedDeriv_apply]`. Rewrite using `[integral_smul, iteratedFDeriv_eq_integral hG hint hg]`. Rewrite using `[hLℓ g, hemb, ← ℓ.integral_comp_comm hInt]`. Repeatedly rewrite using `[← hLℓ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clm_apply_eq_integral (L : 𝓢(E, ℂ) →L[ℂ] ℂ) {G : W → 𝓢(E, ℂ)} (hG : Continuous G)
     (hint : ∀ k m : ℕ, Integrable (fun w => SchwartzMap.seminorm ℂ k m (G w)) ν) {g : 𝓢(E, ℂ)}
@@ -242,11 +238,11 @@ theorem clm_apply_eq_integral (L : 𝓢(E, ℂ) →L[ℂ] ℂ) {G : W → 𝓢(E
 end Param
 
 /- English proof (translation)
-Introduce `W _ _ _ _ _ ν _ n L G c g hG hc hint hg`. Establish `hG' : Continuous fun w => c w • G w` using `hc.smul hG`. Establish `hint' : ∀ k m : ℕ, Integrable (fun w => SchwartzMap.seminorm ℂ k m (c w • G w)) ν`. Introduce `k m`. Simplify `hint k m` using `only [map_smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hg' : ∀ x, g x = ∫ w, (c w • G w) x ∂ν`. Introduce `x`. Rewrite using `[hg x]`. Both sides reduce to the same expression. Rewrite using `[clm_apply_eq_integral L hG' hint' hg']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem clm_integral_interchange : ∀ (W : Type) [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]
     [MeasurableSpace W] [BorelSpace W] (ν : Measure W) [SigmaFinite ν] (n : ℕ) (L : Sch (Fin n) →L[ℂ] ℂ)

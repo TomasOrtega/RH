@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.ProjFinite
 
 /- English proof (translation)
-Take `⟨H, hH, m, s, hs⟩` from `h`. Establish `e : GlobalTheory.AbLaw.pw H ((1 : ℕ) : ℤ) = H`. Consider the cases of `H`. Simplify using `[GlobalTheory.AbLaw.pw]`. Establish `k : ∀ s : Fin (m + 1) → LB.Sec (GlobalTheory.AbLaw.pw H ((1 : ℕ) : ℤ)), GlobalTheory.AbLaw.VeryAmpleBy A.hom (GlobalTheory.AbLaw.pw H ((1 : ℕ) : ℤ)) s → Out.RelAmple A H` using `fun s hs => GlobalTheory.Unif.relAmple_of_veryAmpleBy hH le_rfl s hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `k` using `[e]`. Conclude with `⟨H, hH, k s hs⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_relAmple_of_isProjBy {R : Type} [CommRing R] {A : Over (Sp R)} (h : GlobalTheory.AbLaw.IsProjBy A.hom) :
     ∃ H : LB A.left, H.IsLB ∧ Out.RelAmple A H := by
@@ -36,9 +36,9 @@ theorem exists_relAmple_of_isProjBy {R : Type} [CommRing R] {A : Over (Sp R)} (h
   exact ⟨H, hH, k s hs⟩
 
 /- English proof (translation)
-Establish `: Subsingleton (Spec (CommRingCat.of K₀))` using `inferInstanceAs (Subsingleton (PrimeSpectrum K₀))`. Establish `: Nonempty (Spec (CommRingCat.of K))` using `inferInstanceAs (Nonempty (PrimeSpectrum K))`. Establish `: Flat (Out.specOf i)` using `inferInstance`. Establish `: Surjective (Out.specOf i)` using `inferInstance`. Establish `: IsProper A.hom` using `MorphismProperty.of_isPullback (P := @IsProper) h inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompactSpace A₀.left` using `QuasiCompact.compactSpace_of_compactSpace A₀.hom`. Establish `: QuasiSeparatedSpace A₀.left` using `quasiSeparatedSpace_of_quasiSeparated A₀.hom`. Establish `h₀ : Out.RelAmple A₀ L₀` using `(relAmple_iff_isAmpleLB_of_isAffine A₀ hL₀).2 (AmpleDescent.isAmpleLB_of_pull i h hL₀ ((isAmpleLB_of_relAmple_of_isAffine A hL hA).of_lbIso (LB.isLB_pull hL₀ φ) hw.symm))`. Take `⟨d, -, n, s, hs⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy K₀ A₀ L₀ hL₀).1 h₀`. Conclude with `⟨_, GlobalTheory.AbLaw.isLB_pw hL₀ d, n, s, hs⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isProjBy_of_fieldExtension {K₀ K : Type} [Field K₀] [Field K] (i : K₀ →+* K) {A₀ : Over (Sp K₀)}
     {A : Over (Sp K)} [IsProper A₀.hom] {φ : A.left ⟶ A₀.left} (h : IsPullback φ A.hom A₀.hom (spMap i))
@@ -58,7 +58,7 @@ theorem isProjBy_of_fieldExtension {K₀ K : Type} [Field K₀] [Field K] (i : K
   exact ⟨_, GlobalTheory.AbLaw.isLB_pw hL₀ d, n, s, hs⟩
 
 /- English proof (translation)
-Establish `w : π₂ ≫ f = (f₂ ≫ u) ≫ t₁` using `by rw [Category.assoc, hu, h₂.w]`. Use `⟨h₁.lift _ _ w, h₁.lift_fst _ _ _, IsPullback.of_right ?_ (h₁.lift_snd _ _ _) h₁⟩` and prove the remaining obligations. Rewrite using `[h₁.lift_fst, hu]`. Conclude with `h₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPullback {S X T₁ T₂ X₁ X₂ : Scheme.{0}} {f : X ⟶ S} {π₁ : X₁ ⟶ X} {f₁ : X₁ ⟶ T₁} {t₁ : T₁ ⟶ S}
     {π₂ : X₂ ⟶ X} {f₂ : X₂ ⟶ T₂} {t₂ : T₂ ⟶ S} (h₁ : IsPullback π₁ f₁ f t₁) (h₂ : IsPullback π₂ f₂ f t₂)
@@ -69,24 +69,24 @@ theorem exists_isPullback {S X T₁ T₂ X₁ X₂ : Scheme.{0}} {f : X ⟶ S} {
   exact h₂
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Introduce `K _ A _ hA`. Use `hA.proper` as an intermediate fact. Use `hA.comm` as an intermediate fact. Set `Ω` to `AlgebraicClosure K`. Set `a : K →+* Ω` to `algebraMap K Ω`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B : Over (Sp Ω)` to `(Over.pullback (spMap a)).obj A`. Establish `sqB : IsPullback (pullback.fst A.hom (spMap a)) B.hom A.hom (spMap a)` using `IsPullback.of_hasPullback _ _`. Establish `hB : IsAbelianScheme B` using `{ comm := inferInstance smooth := MorphismProperty.of_isPullback (P := @Smooth) sqB hA.smooth proper := MorphismProperty.of_isPullback (P := @IsProper) sqB hA.proper geomConnected := MorphismProperty.of_isPullback (P := @GeometricallyConnected) sqB hA.geomConnected }`. Take `⟨H, hH, hamp⟩` from `exists_relAmple_of_isProjBy (GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme Ω B hB)`. Set `K₀ : Subfield Ω` to `a.fieldRange`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `j : K →+* K₀` to `a.rangeRestrictField`. Establish `sq₀` using `IsPullback.of_hasPullback A.hom (spMap j)`. Take `⟨φ, hφ, sq⟩` from `exists_isPullback sq₀ sqB (spMap K₀.subtype) (spMap_comp _ _)`. Take `⟨s, hs⟩` from `GlobalTheory.LBDescent.exists_lb_subfield Ω K₀ _ _ _ _ φ H hH sq`. Set `L : IntermediateField K Ω` to `IntermediateField.adjoin K (s : Set Ω)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hfin : FiniteDimensional K L` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Establish `h : K₀ ≤ L.toSubfield`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `L.algebraMap_mem x`. Use `⟨L, inferInstance, inferInstance, hfin, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `C : Over (Sp L)` to `(Over.pullback (spMap (algebraMap K L))).obj A`. Establish `sqC : IsPullback (pullback.fst A.hom (spMap (algebraMap K L))) C.hom A.hom (spMap (algebraMap K L))` using `IsPullback.of_hasPullback _ _`. Take `⟨φ₁, hφ₁, sq₁⟩` from `exists_isPullback sq₀ sqC (spMap (Subfield.inclusion h)) (spMap_comp _ _)`. Take `⟨ψ, hψ, sq₂⟩` from `exists_isPullback sqC sqB (spMap L.toSubfield.subtype) (spMap_comp _ _)`. Take `⟨L₁, hL₁, hw⟩` from `hs L.toSubfield h (IntermediateField.subset_adjoin K _) C.left C.hom φ₁ ψ sq₁ (sq₀.hom_ext (by rw [Category.assoc, hφ₁, hψ, hφ]) (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, sq₁.w, ← Category.assoc, sq₂.w, Category.assoc, sq.w]`. Conclude with `congrArg _ (spMap_comp _ _))) sq₂.w`. Establish `: IsProper C.hom` using `MorphismProperty.of_isPullback (P := @IsProper) sqC hA.proper`. Conclude with `isProjBy_of_fieldExtension L.toSubfield.subtype sq₂ hL₁ hH hw hamp`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_finite_isProjBy : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∃ (L : Type) (_ : Field L) (_ : Algebra K L) (_ : FiniteDimensional K L), GlobalTheory.AbLaw.IsProjBy ((Over.pullback (spMap (algebraMap K L))).obj A).hom := by
   intro K _ A _ hA

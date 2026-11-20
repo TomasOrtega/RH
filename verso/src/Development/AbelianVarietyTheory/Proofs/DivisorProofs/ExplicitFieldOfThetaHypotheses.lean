@@ -75,7 +75,7 @@ open GlobalTheory.RowEx
 namespace GlobalTheory.RowEx
 
 /- English proof (translation)
-Introduce `hw hm P hJ ht K WC LM TA FS` and use `exField_of_keyFin_exKey keyFin_holds (exKey_of (GlobalTheory.RowEx.gridEx_of_hypotheses P) (isEx_of_separates FS (GlobalTheory.RowEx.linB P (GlobalTheory.PairLift.liftsCuspidal_of_classicalTheorems P)) (baseEx_of P (GlobalTheory.RowEx.constEx_of hw hm P K WC LM TA))) (nfAll_of Gl …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exField_of_join : GlobalTheory.Published.HoweDualityReal → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Mem.LiteralAutomorphy.JoinOut → GlobalTheory.Published.HeckeTateFunctionalEquation → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate → ExField :=
   fun hw hm P hJ ht K WC LM TA FS =>

@@ -15,9 +15,9 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Core.Rk.LatMove
 
 /- English proof (translation)
-Introduce `D A L L' hL hL'`. Take `⟨b, hb, hbL⟩` from `GlobalTheory.T.exists_unitary_finiteAdelic_map_selfDual_completions D A L L' hL hL'`. Set `y : GFin D.sp.cm.sig A.gram` to `⟨b, hb⟩`. Establish `hk : ofFin D.sp.cm.sig A.gram y ∈ GfC A` using `by show infHom A (ofFin D.sp.cm.sig A.gram y) = 1`. Use `projInf_ofFin D.sp.cm.sig A.gram y` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (GlobalTheory.AdelicU.matHom _ D.sp.cm.sig A.gram) this`. Use `⟨ofFin D.sp.cm.sig A.gram y, hk, GlobalTheory.T.doubledCompactSubgroup_conj_hermitianSpace D A L L' _ hk ?_⟩` and prove the remaining obligations. Introduce `v z`. Rewrite using `[proj_ofFin]`. Conclude with `GlobalTheory.T.mem_localLattice_iff_of_finiteAdelic_completion_map D.host.F D.host.E A.rank L L' hL.1.fg hL'.1.fg b hbL v z`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj_KAd_of_selfDual : ∀ (D : D7) (A : HSp D) (L L' : Lat A), IsSelfDualC A L → IsSelfDualC A L' →
     ∃ k ∈ GfC A, ∀ (a : GL (Fin A.rank) (AE D)) (x : GA D (dblSp A)),

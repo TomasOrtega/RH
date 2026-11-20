@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {θ : InfFam D} {V : HSp D}
 
 /- English proof (translation)
-Establish `hU : Matrix.conjTranspose (infMat D.sp.cm.sig V.gram (θ τ) k) * gramAt D V τ * infMat D.sp.cm.sig V.gram (θ τ) k = gramAt D V τ` using `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V k τ`. Conclude with `skew_conj hU (GlobalTheory.Mem.AutSpace.infMat_mul_inv (θ := θ) (V := V) (τ := τ) (g := k)) hX`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem adAt_mem_lieAt (hθ : IsInfFam θ) (k : GA D V) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) : adAt θ k τ X ∈ lieAt V τ := by
@@ -27,7 +27,7 @@ theorem adAt_mem_lieAt (hθ : IsInfFam θ) (k : GA D V) {τ : D.what₂.Tau} {X 
   exact skew_conj hU (GlobalTheory.Mem.AutSpace.infMat_mul_inv (θ := θ) (V := V) (τ := τ) (g := k)) hX
 
 /- English proof (translation)
-Establish `h1 : infHom V f = 1` using `hf`. Establish `h2` using `congrArg (fun u => (u.val).map (θ τ)) h1`. Simplify using `only [Units.val_one] at h2`. Rewrite `h2` using `[Matrix.map_one (θ τ) (map_zero (θ τ)) (map_one (θ τ))]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem infMat_eq_one_of_mem_GfC {f : GA D V} (hf : f ∈ GfC V) (τ : D.what₂.Tau) :
     infMat D.sp.cm.sig V.gram (θ τ) f = 1 := by
@@ -39,7 +39,7 @@ private theorem infMat_eq_one_of_mem_GfC {f : GA D V} (hf : f ∈ GfC V) (τ : D
   exact h2
 
 /- English proof (translation)
-Unfold `adAt`. Rewrite using `[mul_inv_rev, GlobalTheory.PointAtPlaceHom.infMat_mul, GlobalTheory.PointAtPlaceHom.infMat_mul, infMat_eq_one_of_mem_GfC hf τ, infMat_eq_one_of_mem_GfC (inv_mem hf) τ, one_mul, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem adAt_mul_of_mem_GfC (a : GA D V) {f : GA D V} (hf : f ∈ GfC V) (τ : D.what₂.Tau)
     (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) : adAt θ (a * f) τ X = adAt θ a τ X := by
@@ -49,7 +49,7 @@ private theorem adAt_mul_of_mem_GfC (a : GA D V) {f : GA D V} (hf : f ∈ GfC V)
     infMat_eq_one_of_mem_GfC (inv_mem hf) τ, one_mul, mul_one]
 
 /- English proof (translation)
-Take `⟨a, ha, f, hf, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D V).1 k`. Establish `hreal : IsRealPt θ a` using `⟨ha, fun σ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V a σ⟩`. Establish `hinf : oneP θ V τ (adAt θ a τ X) t ∈ GinfC V` using `atTau_mem V τ _`. Rewrite using `[adAt_mul_of_mem_GfC a hf, ← mul_assoc, oneP_mul hθ hreal hX t, mul_assoc, mul_assoc, comm_of_mem V hinf hf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem oneP_mul_adelic (hθ : IsInfFam θ) (k : GA D V) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (t : ℝ) : oneP θ V τ X t * k = k * oneP θ V τ (adAt θ k τ X) t := by
@@ -61,7 +61,7 @@ theorem oneP_mul_adelic (hθ : IsInfFam θ) (k : GA D V) {τ : D.what₂.Tau} {X
     comm_of_mem V hinf hf]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Use `show deriv (fun t : ℝ => φ (g * oneP θ V τ X t * k)) 0 = deriv (fun t : ℝ => φ (g * k * oneP θ V τ (adAt θ k τ X) t)) 0`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[mul_assoc, oneP_mul_adelic hθ k hX t, ← mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rder_rTr_adelic (hθ : IsInfFam θ) (k : GA D V) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (φ : GA D V → ℂ) :
@@ -74,9 +74,9 @@ theorem Rder_rTr_adelic (hθ : IsInfFam θ) (k : GA D V) {τ : D.what₂.Tau} {X
   rw [mul_assoc, oneP_mul_adelic hθ k hX t, ← mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp only [rWord, wordAct, List.foldr_nil, List.map_nil]`. Consider the case `cons p l ih`. Establish `hp : p.2 ∈ lieAt V p.1` using `hl p List.mem_cons_self`. Establish `hl' : IsLieWord V l` using `fun q hq => hl q (List.mem_cons_of_mem _ hq)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ih'` using `ih hl'`. Simplify using `only [rWord, wordAct, List.foldr_cons, List.map_cons] at ih' ⊢`. Rewrite using `[ih', Rder_rTr_adelic hθ k hp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rWord_rTr_adelic (hθ : IsInfFam θ) (k : GA D V) (φ : GA D V → ℂ)
     {l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)} (hl : IsLieWord V l) :
@@ -92,9 +92,9 @@ theorem rWord_rTr_adelic (hθ : IsInfFam θ) (k : GA D V) (φ : GA D V → ℂ)
     rw [ih', Rder_rTr_adelic hθ k hp]
 
 /- English proof (translation)
-Introduce `n τs Xs hXs g`. Establish `key` using `hφ n τs (fun i => adAt θ k (τs i) (Xs i)) (fun i => adAt_mem_lieAt hθ k (hXs i)) (g * k)`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Use `show φ (g * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod * k) = φ (g * k * (List.ofFn fun i => oneP θ V (τs i) (adAt θ k (τs i) (Xs i)) (t i)).prod)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, prod_mul_eq k n (fun i => oneP θ V (τs i) (Xs i) (t i)) (fun i => oneP θ V (τs i) (adAt θ k (τs i) (Xs i)) (t i)) (fun i => oneP_mul_adelic hθ k (hXs i) (t i)), ← mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem rTr_mem_smFun (hθ : IsInfFam θ) (k : GA D V) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) :
     rTr V k φ ∈ SmFun θ V := by
@@ -110,9 +110,9 @@ theorem rTr_mem_smFun (hθ : IsInfFam θ) (k : GA D V) {φ : GA D V → ℂ} (h�
     ← mul_assoc]
 
 /- English proof (translation)
-Establish `hR` using `h.rapidDec.mul_right a`. Use `⟨⟨hR.1, ?_, hR.2.1⟩, rTr_mem_smFun hθ a h.smooth, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hUφ⟩` from `h.level`. Use `⟨U, hU, fun u hu huf g => ?_⟩` and prove the remaining obligations. Use `show φ (g * u * a) = φ (g * a)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, ← comm_of_mem V ha huf, ← mul_assoc, hUφ u hu huf]`. Rewrite using `[rWord_rTr_adelic hθ a φ hl]`. Use `(h.decay _ fun p hp => ?_).mul_right a` and prove the remaining obligations. Take `⟨q, hq, rfl⟩` from `List.mem_map.1 hp`. Conclude with `adAt_mem_lieAt hθ a (hl q hq)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem rapidDecSm_rTr_of_mem_GinfC (hθ : IsInfFam θ) {a : GA D V} (ha : a ∈ GinfC V) {φ : GA D V → ℂ}
     (h : RapidDecSm θ V φ) : RapidDecSm θ V (Formalism.L2.Theta.rTr V a φ) := by
@@ -129,9 +129,9 @@ private theorem rapidDecSm_rTr_of_mem_GinfC (hθ : IsInfFam θ) {a : GA D V} (ha
     exact adAt_mem_lieAt hθ a (hl q hq)
 
 /- English proof (translation)
-Take `⟨a, ha, f, hf, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D V).1 k`. Establish `e : Formalism.L2.Theta.rTr V (a * f) φ = Formalism.L2.Theta.rTr V a (Formalism.L2.Theta.rTr V f φ)`. Use function extensionality and compare the values at `g`. Simplify using `only [Formalism.L2.Theta.rTr, mul_assoc]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `rapidDecSm_rTr_of_mem_GinfC hθ ha (h.rTr_fin hf)`.
+A detailed English derivation is pending.
 -/
 theorem RapidDecSm.rTr (hθ : IsInfFam θ) {φ : GA D V → ℂ} (h : RapidDecSm θ V φ) (k : GA D V) :
     RapidDecSm θ V (Formalism.L2.Theta.rTr V k φ) := by

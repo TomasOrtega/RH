@@ -27,9 +27,9 @@ open GlobalTheory.ThetaTransl GlobalTheory.ThetaTranslDecomp
 variable {Λ : AddSubgroup ℂ}
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify using `using hlaw l hl z`. Distinguish the cases in `hz : z ∈ Λ`. Rewrite using `[(hΛ.sg_eq_zero z).2 hz, (hΛ.sg_eq_zero _).2 (add_mem hz hl), zero_pow hk.ne']`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0` using `(hΛ.sg_eq_zero z).not.2 hz`. Establish `h1 : sgStar Λ (z + l) ≠ 0` using `(hΛ.sg_eq_zero _).not.2 (fun h => hz (by simpa using sub_mem h hl))`. Rewrite using `[div_eq_div_iff (pow_ne_zero _ h1) (pow_ne_zero _ h0)]`. Conclude with `hlaw l hl z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_add (hΛ : IsLat Λ) {G : ℂ → ℂ} {k : ℕ}
     (hlaw : ∀ ω ∈ Λ, ∀ z, G (z + ω) * sgStar Λ z ^ k = G z * sgStar Λ (z + ω) ^ k)
@@ -46,21 +46,19 @@ theorem ratio_add (hΛ : IsLat Λ) {G : ℂ → ℂ} {k : ℕ}
   exact hlaw l hl z
 
 /- English proof (translation)
-Introduce `Λ hΛ k G hG hlaw v hv`. Take `⟨L, h⟩` from `GlobalTheory.OddTheta.exists_periodPair Λ hΛ`. Establish `hσ` using `hΛ.differentiable`. Establish `hS` using `hΛ.differentiable_sqTh v`. Establish `hT : Continuous (sqThD Λ v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hσ.deriv.continuous`. Establish `h2` using `hS.deriv.continuous`. Establish `h3` using `hσ.continuous`. Establish `h4` using `hS.continuous`. Unfold `sqThD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `fun_prop`. Establish `hc : ∀ z, z ∉ L.lattice → ContinuousAt (fun z => G z / sgStar Λ z ^ k) z` using `fun z hz => (hG z).continuousAt.div ((hσ z).continuousAt.pow k) (pow_ne_zero _ ((hΛ.sg_eq_zero z).not.2 ((h z).not.2 hz)))`. Take `⟨A, B, hAB⟩` from `GlobalTheory.EllipticPoles.no_pole_case L (g := fun z => G z / sgStar Λ z ^ k) (fun a => (hG.analyticAt a).meromorphicAt.div ((hσ.analyticAt a).meromorphicAt.pow k)) (fun a ha => ⟨_, (hc a ha).tendsto.mono_left nhdsWithin_le_nhds⟩) (fun z l hl => ratio_add hΛ hlaw z ((h l).2 hl))`. Establish `hAB' : ∀ z, z ∉ L.lattice → G z / sgStar Λ z ^ k = A.eval (L.weierstrassP z) + B.eval (L.weierstrassP z) * L.derivWeierstrassP z`. Introduce `z hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `(L.analyticOnNhd_weierstrassP z hz).continuousAt`. Establish `h2` using `(L.analyticOnNhd_derivWeierstrassP z hz).continuousAt`. Establish `h3 : ContinuousAt (fun z => A.eval (L.weierstrassP z) + B.eval (L.weierstrassP z) * L.derivWeierstrassP z) z` using `(A.continuous.continuousAt.comp h1).add ((B.continuous.continuousAt.comp h1).mul h2)`. Conclude with `tendsto_nhds_unique_of_eventuallyEq ((hc z hz).tendsto.mono_left nhdsWithin_le_nhds) (h3.tendsto.mono_left nhdsWithin_le_nhds) (hAB z)`. Use `set A' := Polynomial.taylor (wpF Λ v) A with hA'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set B' := Polynomial.taylor (wpF Λ v) B with hB'`. Take `⟨I, hI⟩ : ∃ I, I = A'.natDegree + B'.natDegree + k` from `⟨_, rfl⟩`. Use `⟨I, A'.coeff, B'.coeff, by omega, fun z => ?_⟩` and prove the remaining obligations. Establish `h3` using `hσ.continuous`. Establish `h4` using `hS.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `hG.continuous`. Use `congrFun (Continuous.ext_on hΛ.dense_compl (f := fun z => sgStar Λ z ^ (2 * I + 3 - k) * G z) (g := fun z => ∑ i ∈ Finset.range (I + 1), A'.coeff i * (sgStar Λ z ^ (2 * (I - i) + 3) * sqTh Λ v z ^ i) + ∑ j ∈ Finset.range (I + 1), B'.coeff j * (sgStar Λ z ^ (2 * (I - j)) * sqTh Λ …` and prove the remaining obligations. Establish `hz' : z ∉ L.lattice` using `(h z).not.1 hz`. Establish `h0` using `(hΛ.sg_eq_zero z).not.2 hz`. Establish `e` using `hAB' z hz'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Rewrite `e` using `[← Polynomial.taylor_eval_sub (wpF Λ v) A, ← Polynomial.taylor_eval_sub (wpF Λ v) B, ← hA', ← hB', Polynomial.eval_eq_sum_range' (n := I + 1) (p := A') (by omega), Polynomial.eval_eq_sum_range' (n := I + 1) (p := B') (by omega), div_eq_iff (pow_ne_zero _ h0)]`. Use `beta_reduce`. Rewrite using `[e, mul_left_comm, ← pow_add, Nat.sub_add_cancel (by omega), sqThD_eq hΛ L h hv hz, hΛ.sqTh_eq hv hz, GlobalTheory.OddTheta.wpF_eq L Λ h z, add_mul, Finset.sum_mul, Finset.sum_mul, Finset.sum_mul]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun i hi => ?_`. Use `all_goals`.
-
-Take `⟨m, rfl⟩ : ∃ m, I = i + m` from `Nat.exists_eq_add_of_le (by simpa [Nat.lt_succ_iff] using hi)`. Rewrite using `[Nat.add_sub_cancel_left, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_decomp_gen : ∀ (Λ : AddSubgroup ℂ), IsLat Λ → ∀ (k : ℕ) (G : ℂ → ℂ), Differentiable ℂ G →
     (∀ ω ∈ Λ, ∀ z, G (z + ω) * sgStar Λ z ^ k = G z * sgStar Λ (z + ω) ^ k) →
@@ -132,27 +130,25 @@ theorem exists_decomp_gen : ∀ (Λ : AddSubgroup ℂ), IsLat Λ → ∀ (k : �
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `p _ g hok hlat' h2 h3 hdisc hsg v hv hwv k G hG hlaw`. Take `⟨hu1, hwq1, -, he0, hsgU⟩` from `GlobalTheory.EvenTheta.DatumBasic.datum_basic p g hok hlat' h2 h3 hdisc`. Use `set e := ePhi1 g.lam g.abelian₂ g.C g.wq with he_def`. Use `set ε : ℂ_[p] := ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) with hε_def`. Establish `he : e ≠ 0` using `fun h => by rw [h, map_zero] at he0; exact zero_ne_one he0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `gσ : GoodAt g 1 (sgStar g.abelian₂)` using `⟨hsg, PowerSeries.C ε * PowerSeries.X, bdd_mul (bdd_C ε) bdd_X, by rw [hsgU]; ring⟩`. Take `⟨hSa, hSe⟩` from `GlobalTheory.EvenTheta.Param.sqTh_atU p g hok.2.1 hlat' h2 h3 hsg v hv hwv`. Establish `gS : GoodAt g 2 (sqTh g.abelian₂ v)` using `⟨hSa, lineSer g.wq⁻¹ (xAt g v), bdd_sub ⟨1, hwq1⟩ (bdd_mul (bdd_C _) (by rw [sq]; exact bdd_mul (bdd_X (p := p)) (bdd_X (p := p)))), hSe⟩`. Take `⟨hTa, w, hw, hTe⟩` from `GlobalTheory.ThetaTransl.CubeSer.sqThD_atU p g hok hlat' h2 h3 hdisc hsg v hv hwv`. Establish `gT : GoodAt g 3 (sqThD g.abelian₂ v)` using `⟨hTa, w, hw, hTe⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨I, a, b, hle, hid⟩` from `exists_decomp_gen g.abelian₂ hlat' k G hG.1 hlaw v hv`. Set `φ : Fin (I + 1) ⊕ Fin (I + 1) → ℂ → ℂ` to `Sum.elim (fun i z => sgStar g.abelian₂ z ^ (2 * (I - (i : ℕ)) + 3) * sqTh g.abelian₂ v z ^ (i : ℕ)) (fun j z => sgStar g.abelian₂ z ^ (2 * (I - (j : ℕ))) * sqTh g.abelian₂ v z ^ (j : ℕ) * sqThD g.abelian₂ v z)`. Set `c : Fin (I + 1) ⊕ Fin (I + 1) → ℂ` to `Sum.elim (fun i => a i) (fun j => b j)`. Establish `gφ : ∀ k, GoodAt g (2 * I + 3) (φ k)`. Introduce and unpack `(i | j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi` using `i.isLt`. Conclude with `good_congr (good_mul (good_pow gσ (2 * (I - (i : ℕ)) + 3)) (good_pow gS (i : ℕ))) (by omega)`. Establish `hj` using `j.isLt`. Conclude with `good_congr (good_mul (good_mul (good_pow gσ (2 * (I - (j : ℕ)))) (good_pow gS (j : ℕ))) gT) (by omega)`. Take `⟨hEa, hEe⟩` from `atU_mul_pow (g := g) hsg hG (2 * I + 3 - k) 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hEq : ∀ z, sgStar g.abelian₂ z ^ (2 * I + 3 - k) * G z ^ 1 = ∑ j, c j * φ j z`. Introduce `z`. Rewrite using `[pow_one, hid z, Fintype.sum_sum_type]`. Use `congr 1`. Rewrite using `[← Fin.sum_univ_eq_sum_range]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Rewrite using `[← Fin.sum_univ_eq_sum_range]`. Both sides reduce to the same expression. Take `⟨a', -, hlin⟩` from `GlobalTheory.TranslLin.transl_lin p g _ φ c _ hEa (fun j => (gφ j).1) hEq`. Use `choose B hB hBe using fun j => (gφ j).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : BddSer (∑ j, PowerSeries.C (lamC g.lam (a' j)) * B j)` using `bdd_sum _ _ fun j _ => bdd_mul (bdd_C _) (hB j)`. Rewrite `hlin` using `[hEe, hsgU, pow_one]`. Simplify using `only [hBe] at hlin`. Use `set Bk : PowerSeries ℂ_[p] := (e ^ k)⁻¹ * g.atU G with hBk`. Establish `hGe : g.atU G = e ^ k * Bk`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hBk, ← mul_assoc, PowerSeries.mul_inv_cancel _ (by rw [map_pow, he0, one_pow]; exact one_ne_zero), one_mul]`. Rewrite `hlin` using `[hGe]`. Use `set K := 2 * I + 3 - k with hKd`. Establish `hK : K + k = 2 * I + 3` using `Nat.sub_add_cancel hle`. Establish `hsum : ∑ j, PowerSeries.C (lamC g.lam (a' j)) * (e ^ (2 * I + 3) * B j) = e ^ (2 * I + 3) * ∑ j, PowerSeries.C (lamC g.lam (a' j)) * B j`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Establish `hleft : (PowerSeries.C ε * PowerSeries.X * e) ^ K * (e ^ k * Bk) = e ^ (2 * I + 3) * (PowerSeries.C (ε ^ K) * (PowerSeries.X ^ K * Bk))`. Rewrite using `[← hK, pow_add, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `hleft.symm.trans (hlin.trans hsum)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key2` using `mul_left_cancel₀ (pow_ne_zero _ he) key`. Take `⟨C0, hC0⟩` from `hS`. Use `⟨Bk, ⟨C0, fun n => ?_⟩, hGe⟩` and prove the remaining obligations. Establish `h1` using `congrArg (PowerSeries.coeff (n + K)) key2`. Rewrite `h1` using `[PowerSeries.coeff_C_mul, PowerSeries.coeff_X_pow_mul', if_pos (by omega), Nat.add_sub_cancel]`.
-
-Establish `h2` using `hC0 (n + K)`. Rewrite `h2` using `[← h1, norm_mul, norm_pow, hu1, one_pow, one_mul]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem order_bdd : ∀ (p : ℕ) [Fact p.Prime] (g : GL3Theta.G1 p), g.Ok → IsLat g.abelian₂ → g2 g.abelian₂ ∈ Qbar →
     g3 g.abelian₂ ∈ Qbar → TaylorLogMetric.discr g.abelian₂ = 1 → AlgEnt (sgStar g.abelian₂) → ∀ v, v ∉ g.abelian₂ → wpF g.abelian₂ v ∈ Qbar →

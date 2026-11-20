@@ -27,7 +27,7 @@ structure IsBalancedGauge (B : FB R d O) (h : PS k 2 d) : Prop where
     ev (n := 2) ![pt k d 0, comp1 (B.actK k (star a)) (pt k d 1)] h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hh.ax0, hh.ax1, hh.ph1, hh.ph2, hh.ad⟩`.
+Supply the required witnesses or components.
 -/
 theorem isBalancedGauge_of_canon (B : FB R d O) (h : PS k 2 d) (hh : B.IsCanonGauge k h) :
     IsBalancedGauge k B h :=
@@ -94,7 +94,7 @@ def IsHarmonic {k : Type} [Field k] (r : (E →+* k) → ℕ) {n : ℕ}
       (MvPolynomial.pderiv ((⟨conjType E τ, i'⟩ : Σ τ : E →+* k, Fin (r τ)), b) P) = 0
 
 /- English proof (translation)
-Introduce `τ i i'`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 example {k : Type} [Field k] (r : (E →+* k) → ℕ) {n : ℕ} (c : k) :
     IsHarmonic r (n := n) (MvPolynomial.C c) := by
@@ -102,7 +102,7 @@ example {k : Type} [Field k] (r : (E →+* k) → ℕ) {n : ℕ} (c : k) :
   simp
 
 /- English proof (translation)
-Introduce `τ i i'`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.pderiv_X, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example {k : Type} [Field k] (r : (E →+* k) → ℕ) {n : ℕ} (p : (Σ τ : E →+* k, Fin (r τ)) × Fin n) :
     IsHarmonic r (n := n) (MvPolynomial.X p) := by
@@ -134,7 +134,7 @@ def addSeries (k : Type) [CommRing k] (g : ℕ) : Fin g → PS k 2 g :=
   fun i => X ((0 : Fin 2), i) + X ((1 : Fin 2), i)
 
 /- English proof (translation)
-Unfold `addSeries ev`. Rewrite using `[subst_add (hasSubst_of_constantCoeff_zero ha), subst_X (hasSubst_of_constantCoeff_zero ha), subst_X (hasSubst_of_constantCoeff_zero ha)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_addSeries_two (a : Fin 2 → Pt k n g) (ha : ∀ p : Fin 2 × Fin g, constantCoeff (a p.1 p.2) = 0) (i : Fin g) :
     ev a (addSeries k g i) = a 0 i + a 1 i := by
@@ -143,7 +143,7 @@ theorem eval_addSeries_two (a : Fin 2 → Pt k n g) (ha : ∀ p : Fin 2 × Fin g
     subst_X (hasSubst_of_constantCoeff_zero ha)]
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[subst_mul (hasSubst_of_constantCoeff_zero ha), subst_X (hasSubst_of_constantCoeff_zero ha)]`. Use `congr 1`. Rewrite using `[subst_C]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_const_mul_X (a : Fin 1 → Pt k n g) (ha : ∀ p : Fin 1 × Fin g, constantCoeff (a p.1 p.2) = 0) (c : k)
     (i : Fin g) : ev a (C c * X ((0 : Fin 1), i) : PS k 1 g) = C c * a 0 i := by
@@ -153,7 +153,7 @@ theorem eval_const_mul_X (a : Fin 1 → Pt k n g) (ha : ∀ p : Fin 1 × Fin g, 
   rw [subst_C]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `eval_addSeries_two ![a, b] (fun ⟨j, l⟩ => by fin_cases j; exacts [ha l, hb l]) i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem addOf_addSeries (a b : Pt k n g) (ha : ∀ i, constantCoeff (a i) = 0)
     (hb : ∀ i, constantCoeff (b i) = 0) : addOf (addSeries k g) a b = a + b := by
@@ -161,7 +161,7 @@ theorem addOf_addSeries (a b : Pt k n g) (ha : ∀ i, constantCoeff (a i) = 0)
   exact eval_addSeries_two ![a, b] (fun ⟨j, l⟩ => by fin_cases j; exacts [ha l, hb l]) i
 
 /- English proof (translation)
-Use extensionality with `e`. Rewrite using `[FB.expS, PowerSeries.coeff_subst PowerSeries.HasSubst.zero, finsum_eq_single _ 0]`. Simplify using `[PowerSeries.coeff_exp]`. Introduce `j hj`. Simplify using `[zero_pow hj]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem expS_zero [Algebra ℚ k] : FB.expS k (0 : PS k n g) = 1 := by
   ext e
@@ -171,7 +171,7 @@ theorem expS_zero [Algebra ℚ k] : FB.expS k (0 : PS k n g) = 1 := by
     simp [zero_pow hj]
 
 /- English proof (translation)
-Simplify using `[pt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cc_pt (j : Fin n) (i : Fin g) : constantCoeff (pt k g j i) = 0 := by simp [pt]
 
@@ -198,13 +198,13 @@ def addLaw (k : Type) [CommRing k] (g : ℕ) : FGLaw k g where
 def diagSeries (χ : Fin g → (O →+* k)) (a : O) : Pt k 1 g := fun l => C (χ l a) * X ((0 : Fin 1), l)
 
 /- English proof (translation)
-Simplify using `[diagSeries]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cc_diag (χ : Fin g → (O →+* k)) (a : O) (i : Fin g) : constantCoeff (diagSeries χ a i) = 0 := by
   simp [diagSeries]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `eval_const_mul_X ![b] (fun ⟨j, l⟩ => by fin_cases j; exact hb l) _ i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem comp_diagonalSeries (χ : Fin g → (O →+* k)) (a : O) (b : Pt k n g) (hb : ∀ i, constantCoeff (b i) = 0) :
     comp1 (diagSeries χ a) b = fun i => C (χ i a) * b i := by

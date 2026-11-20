@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.GenericIso
 
 /- English proof (translation)
-Establish `h : genericPoint Y ∈ Set.range f` using `(Flat.generalizingMap f).stableUnderGeneralization_range (genericPoint_specializes (f (Classical.arbitrary X))) ⟨_, rfl⟩`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[DenseRange, dense_iff_closure_eq, ← Set.univ_subset_iff, ← (genericPoint_spec Y).def]`. Conclude with `closure_mono (Set.singleton_subset_iff.2 h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDominant_of_flat {X Y : Scheme.{0}} [IsIntegral Y] (f : X ⟶ Y) [Flat f] [Nonempty X] : IsDominant f := by
   have h : genericPoint Y ∈ Set.range f :=
@@ -28,9 +28,9 @@ theorem isDominant_of_flat {X Y : Scheme.{0}} [IsIntegral Y] (f : X ⟶ Y) [Flat
   exact closure_mono (Set.singleton_subset_iff.2 h)
 
 /- English proof (translation)
-Set `ξ : Spec (CommRingCat.of (FractionRing R))` to `IsLocalRing.closedPoint (FractionRing R)`. Establish `hs : jK R ξ ⤳ (g ≫ p) t` using `(PrimeSpectrum.le_iff_specializes _ _).1 fun a ha => by`. Establish `h₁ : algebraMap R (FractionRing R) a ∈ IsLocalRing.maximalIdeal (FractionRing R)` using `ha`. Rewrite `h₁` using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot]`. Take `rfl : a = 0` from `IsFractionRing.injective R (FractionRing R) (h₁.trans (map_zero _).symm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.zero_mem _`. Take `⟨b, hb⟩` from `(Flat.generalizingMap (g ≫ p)).stableUnderGeneralization_range hs ⟨t, rfl⟩`. Take `⟨y, hy, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := p) (g := jK R) (g b) ξ hb`. Take `⟨z, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := g) (g := pullback.fst p (jK R)) b y hy.symm`. Conclude with `⟨z⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_pullback_generic {R : Type} [CommRing R] [IsDomain R] {T X : Scheme.{0}} (g : T ⟶ X)
     (p : X ⟶ Spec (CommRingCat.of R)) [Flat g] [Flat p] (t : T) :
@@ -54,13 +54,13 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D D' : DegData R I}
   {w : LB.Iso (U'.LG.L.pull (pullback.fst G'.hom (jK R))) (U.LG.L.pull (Φ.hom.left ≫ pullback.fst G.hom (jK R)))}
 
 /- English proof (translation)
-Establish `c : (ρ ≫ g) ≫ G.hom = (r ≫ pullback.snd G'.hom (jK R)) ≫ jK R`. Rewrite using `[Category.assoc, h₂, ← h₁, ← Category.assoc, ← hr, Category.assoc, Category.assoc, pullback.condition]`. Take `⟨f₂, e₁, e₂⟩ : ∃ f₂ : Z ⟶ ((Over.pullback (jK R)).obj G).left, f₂ ≫ pullback.fst G.hom (jK R) = ρ ≫ g ∧ f₂ ≫ pullback.snd G.hom (jK R) = r ≫ pullback.snd G'.hom (jK R)` from `⟨pullback.lift _ _ c, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Rewrite using `[← e₁, ← Category.assoc]`. Use `congrArg (· ≫ _) (GlobalTheory.hom_ext_of_integral_ratios hL R I D A G U (fun k σ => ∃ σ', AgreeAll U.toUnifPre U'.toUnifPre hD j k σ σ') (fun k hk σ₀ => ?_) Z _ _ ?_ fun z => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, σ', σ, h⟩` from `(hE k hk).1 σ₀`. Conclude with `⟨c, σ, h.1, h.2.1, σ', h.2.2⟩`. Rewrite using `[e₂, Category.assoc]`. Conclude with `congrArg (r ≫ ·) (Over.w Φ.hom)`. Take `⟨i, hi⟩` from `exists_chart U.LG.isLB ((r ≫ Φ.hom.left ≫ pullback.fst G.hom (jK R)) z)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hi' : (r ≫ pullback.fst G'.hom (jK R)) z ∈ U'.LG.L.U jL'` using `by rw [hr]; exact h₃ (Set.mem_univ (ρ z))`. Rewrite using `[Category.assoc, e₁]`. Use `⟨i, jL, hi, h₄ (Set.mem_univ (ρ z)), ?_⟩` and prove the remaining obligations. Introduce and unpack `k hk σ τ ⟨σ', hσ⟩ ⟨τ', hτ⟩`. Establish `x` using `GlobalTheory.GenericIso.cross_identity R I hR D D' A A' G G' hG hG' U U' hD j B g' g jL jL' hB h₁ h₃ h₄ h₅ k σ τ σ' τ' hσ hτ Z ρ z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw.2 k hk σ' σ hσ Z r z i jL' hi hi', hw.2 k hk τ' τ hτ Z r z i jL' hi hi', hr, _root_.mul_assoc, _root_.mul_assoc]`. Conclude with `congrArg _ ((mul_comm _ _).trans (x.symm.trans (mul_comm _ _)))`.
+A detailed English derivation is pending.
 -/
 theorem GenericRel.point (hL : Laws) (hR : AdmBase R I) (hG : IsSemiAbelian G) (hG' : IsSemiAbelian G')
     (hE : Enough U.toUnifPre U'.toUnifPre hD j) (hw : GenericRel U.toUnifPre U'.toUnifPre hD j Φ w)
@@ -97,21 +97,19 @@ theorem GenericRel.point (hL : Laws) (hR : AdmBase R I) (hG : IsSemiAbelian G) (
     exact congrArg _ ((mul_comm _ _).trans (x.symm.trans (mul_comm _ _)))
 
 /- English proof (translation)
-Use `hR.1` as an intermediate fact. Use `U'.smooth` as an intermediate fact. Use `U.separated` as an intermediate fact. Establish `P : ∀ {S : Scheme.{0}} (t : S ⟶ Spec (CommRingCat.of R)) {X Y : Over (Spec (CommRingCat.of R))} (c : X ⟶ Y), ((Over.pullback t).map c).left ≫ pullback.fst Y.hom t = pullback.fst X.hom t ≫ c.left` using `fun e _ _ c => pullback.lift_fst _ _ _`. Establish `: Nontrivial (R ⧸ I ^ (0 + 1))` using `Ideal.Quotient.nontrivial_iff.2 (by rwa [zero_add, pow_one])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `x : (thickObj R I 0 G').left` to `eSec (thickObj R I 0 G') (Classical.arbitrary (PrimeSpectrum (R ⧸ I ^ (0 + 1))))`. Take `⟨i₁, m₁⟩` from `exists_chart U.LG.isLB ((fstG I 0 G).left ((j 0).hom.left x))`. Take `⟨i₂, m₂⟩` from `exists_chart U.LG.isLB (a.left ((fstG I 0 G).left ((j 0).hom.left x)))`. Take `⟨i₁', m₁'⟩` from `exists_chart U'.LG.isLB ((fstG I 0 G').left x)`. Take `⟨i₂', m₂'⟩` from `exists_chart U'.LG.isLB (a'.left ((fstG I 0 G').left x))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, _, _, g', g, hB, -, hf, ⟨b, -⟩, h₁, h₂, h₃, h₄, h₅⟩` from `CompletedPoint.exists_completed_point I G G' (fun e => (j e).hom) (fun e => (hj e).2.1) x (U.LG.L.U i₁ ⊓ a.left ⁻¹ᵁ U.LG.L.U i₂) (U'.LG.L.U i₁' ⊓ a'.left ⁻¹ᵁ U'.LG.L.U i₂') ⟨m₁, m₂⟩ ⟨m₁', m₂'⟩`. Establish `h₆ : ∀ (e : ℕ) (Z : Scheme.{0}) (ρ : Z ⟶ Spec (CommRingCat.of B)) (r : Z ⟶ (thickObj R I e G').left), r ≫ (fstG I e G').left = ρ ≫ g' ≫ a'.left → r ≫ (j e).hom.left ≫ (fstG I e G).left = ρ ≫ g ≫ a.left`. Introduce `e Z ρ r hr`. Establish `hr' : r ≫ pullback.fst G'.hom (thick R I e) = ρ ≫ g' ≫ a'.left` using `hr`. Establish `c : (ρ ≫ g') ≫ G'.hom = (r ≫ pullback.snd G'.hom (thick R I e)) ≫ thick R I e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc _ (pullback.snd _ _), ← pullback.condition, ← Category.assoc r, hr']`. Simplify using `only [Category.assoc, Over.w]`. Take `⟨r₀, e₁, e₂⟩ : ∃ r₀ : Z ⟶ (thickObj R I e G').left, r₀ ≫ pullback.fst G'.hom (thick R I e) = ρ ≫ g' ∧ r₀ ≫ pullback.snd G'.hom (thick R I e) = r ≫ pullback.snd G'.hom (thick R I e)` from `⟨pullback.lift _ _ c, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Choose the witnesses or unpack the hypotheses as in `rfl : r = r₀ ≫ ((Over.pullback (thick R I e)).map a').left := by`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hr', Category.assoc, P, ← Category.assoc r₀, e₁, Category.assoc]`. Rewrite using `[← e₂, Category.assoc]`. Conclude with `congrArg (r₀ ≫ ·) (Over.w ((Over.pullback (thick R I e)).map a')).symm`. Establish `e₃` using `congrArg (· ≫ a.left) (h₅ e Z ρ r₀ e₁)`. Establish `e₄` using `congrArg (fun q => r₀ ≫ q.left ≫ pullback.fst G.hom (thick R I e)) (ha e)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.comp_left, Category.assoc, P] at e₃ e₄ ⊢`. Conclude with `e₄.trans e₃`. Use `(unifPre_genericFibre_surjective_appTop_and_isIntegral hL.globalFns R I D' A' G' U'.toUnifPre).2` as an intermediate fact. Use `nonempty_pullback_generic g' G'.hom b` as an intermediate fact. Use `isDominant_of_flat (pullback.snd g' (pullback.fst G'.hom (jK R)))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p₁` using `hw.point hL hR hG hG' hE hB h₁ h₂ (fun y hy => (h₃ hy).1) (fun y hy => (h₄ hy).1) h₅ (pullback.fst g' (pullback.fst G'.hom (jK R))) (pullback.snd g' (pullback.fst G'.hom (jK R))) pullback.condition.symm`. Establish `p₂` using `hw.point hL hR hG hG' hE (g' := g' ≫ a'.left) (g := g ≫ a.left) hB (by rw [Category.assoc, Over.w, h₁]) (by rw [Category.assoc, Over.w, h₂]) (fun y hy => (h₃ hy).2) (fun y hy => (h₄ hy).2) h₆ (pullback.fst g' (pullback.fst G'.hom (jK R))) (pullback.snd g' (pullback.fst G'.hom (jK …`. Use `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated (X := pullback G'.hom (jK R)) (pullback.snd G.hom (jK R)) ((Over.w _).trans (Over.w _).symm) (pullback.snd g' (pullback.fst G'.hom (jK R))) (pullback.hom_ext ?_ ?_))` and prove the remaining obligations. Establish `e₃` using `congrArg (· ≫ a.left) p₁`. Simplify using `only [Over.comp_left, Category.assoc, P] at e₃ p₂ ⊢`.
-
-Conclude with `p₂.trans e₃.symm`. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `congrArg (_ ≫ ·) ((Over.w _).trans (Over.w _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GenericRel.comm (hL : Laws) (hR : AdmBase R I) (hI : I ≠ ⊤) (hG : IsSemiAbelian G) (hG' : IsSemiAbelian G')
     (hj : LevelIso U.toUnifPre U'.toUnifPre hD j)
@@ -174,9 +172,9 @@ theorem GenericRel.comm (hL : Laws) (hR : AdmBase R I) (hI : I ≠ ⊤) (hG : Is
     exact congrArg (_ ≫ ·) ((Over.w _).trans (Over.w _).symm)
 
 /- English proof (translation)
-Establish `h` using `hw.comm hL hR hI hG hG' hj hE 1 1 fun e => by`. Use `(hj e).1` as an intermediate fact. Rewrite using `[Functor.map_one, Functor.map_one, MonObj.comp_one, MonObj.one_comp]`. Rewrite `h` using `[Functor.map_one, Functor.map_one, MonObj.comp_one]`. Establish `e` using `congrArg (η[(Over.pullback (jK R)).obj G'] ≫ ·) h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [← Category.assoc, MonObj.comp_one] at e`. Simplify `e` using `[Hom.one_def]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem GenericRel.one (hL : Laws) (hR : AdmBase R I) (hI : I ≠ ⊤) (hG : IsSemiAbelian G) (hG' : IsSemiAbelian G')
     (hj : LevelIso U.toUnifPre U'.toUnifPre hD j)

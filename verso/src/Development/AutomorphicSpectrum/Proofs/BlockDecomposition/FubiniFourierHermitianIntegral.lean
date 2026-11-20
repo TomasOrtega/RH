@@ -17,11 +17,11 @@ section Abstract
 variable {Y X : Type*} [MeasurableSpace Y] [MeasurableSpace X]
 
 /- English proof (translation)
-Establish `h0 : Integrable (fun z : Y × X => f z.1 * g z.2) (dy.prod dx)` using `hf.mul_prod hg`. Establish `hint : Integrable (Function.uncurry fun y x => f y * (g x * u y x)) (dy.prod dx)`. Use `h0.mono ?_ (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Use `(h0.aestronglyMeasurable.mul hu).congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [Function.uncurry, Pi.mul_apply, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.uncurry, norm_mul, hn, mul_one, le_refl]`. Establish `hL : ∀ y, f y * ∫ x, g x * u y x ∂dx = ∫ x, f y * (g x * u y x) ∂dx` using `fun y => (integral_const_mul _ _).symm`. Establish `hR : ∀ x, g x * ∫ y, f y * u y x ∂dy = ∫ y, f y * (g x * u y x) ∂dy` using `fun x => by`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hL, hR]`. Conclude with `integral_integral_swap hint`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fubini_unimod {dy : Measure Y} {dx : Measure X} [SFinite dy] [SFinite dx] {f : Y → ℂ} {g : X → ℂ}
     (hf : Integrable f dy) (hg : Integrable g dx) {u : Y → X → ℂ}
@@ -50,14 +50,14 @@ section Pair
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `only [pairHerm, AddSubgroup.coe_sub, Matrix.sub_apply, mul_sub, Finset.sum_sub_distrib, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairHerm_sub (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {n : ℕ} (S A B : HermR R σ n) :
     pairHerm R σ n S (A - B) = pairHerm R σ n S A - pairHerm R σ n S B := by
   simp only [pairHerm, AddSubgroup.coe_sub, Matrix.sub_apply, mul_sub, Finset.sum_sub_distrib, map_sub]
 
 /- English proof (translation)
-Simplify using `only [pairHerm, Matrix.trace, Matrix.diag, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem half_trace_mul_eq_pairHerm (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {n : ℕ} (S G : HermR R σ n) :
     algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E)
@@ -66,7 +66,7 @@ theorem half_trace_mul_eq_pairHerm (R : Type) [CommRing R] [Algebra F R] (σ : E
   simp only [pairHerm, Matrix.trace, Matrix.diag, Matrix.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.trace_mul_comm]`. Conclude with `half_trace_mul_eq_pairHerm R σ S G`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_trace_mul_eq_pairHerm' (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {n : ℕ} (S G : HermR R σ n) :
     algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E)
@@ -76,7 +76,7 @@ theorem half_trace_mul_eq_pairHerm' (R : Type) [CommRing R] [Algebra F R] (σ : 
   exact half_trace_mul_eq_pairHerm R σ S G
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (R ⊗[F] E) := GlobalTheory.CompanionTheory.SW.TopK.isTopRing R`. Unfold `pairHerm`. Use `continuous_const.mul ((GlobalTheory.CompanionTheory.SW.TopK.continuous_trace R).comp ?_)` and prove the remaining obligations. Use `continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun b _ => ?_` and prove the remaining obligations. Conclude with `((continuous_subtype_val.comp continuous_fst).matrix_elem a b).mul ((continuous_subtype_val.comp continuous_snd).matrix_elem b a)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_pairHerm (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
     [Module.Finite F E] (σ : E →ₐ[F] E) (n : ℕ) :
@@ -95,11 +95,11 @@ section Cm
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `hp` using `continuous_pairHerm (F := F) (E := E) R σ n`. Establish `hgH : Continuous fun x : Fin n → Fin M → R ⊗[F] E => gramH hCM hJ R x` using `Continuous.subtype_mk hg _`. Establish `m1 : Continuous fun z : HermR R σ n × (Fin n → Fin M → R ⊗[F] E) => ((z.1, gramH hCM hJ R z.2) : HermR R σ n × HermR R σ n)` using `Continuous.prodMk continuous_fst (hgH.comp continuous_snd)`. Establish `m2 : Continuous fun z : HermR R σ n × (Fin n → Fin M → R ⊗[F] E) => ((z.1, c) : HermR R σ n × HermR R σ n)` using `Continuous.prodMk continuous_fst continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Continuous fun z : HermR R σ n × (Fin n → Fin M → R ⊗[F] E) => pairHerm R σ n z.1 (gramH hCM hJ R z.2)`. Establish `h` using `hp.comp m1`. Conclude with `h`. Establish `h2 : Continuous fun z : HermR R σ n × (Fin n → Fin M → R ⊗[F] E) => pairHerm R σ n z.1 c`. Establish `h` using `hp.comp m2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h`. Use `h1.sub h2` as an intermediate fact. Use `this.congr fun z => ?_` and prove the remaining obligations. Conclude with `(pairHerm_sub R σ z.1 _ c).symm`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pairHerm_gramH_sub (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
     {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {M n : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J)
@@ -134,7 +134,7 @@ section Adelic
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[← half_trace_mul_eq_pairHerm' (AF F) σ y (hermOf (AF F) σ T hT)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chiT_eq (σ : E →ₐ[F] E) {n : ℕ} (ψ : AddChar (AF F) ℂ) (T : Matrix (Fin n) (Fin n) E)
     (hT : ∀ a c, σ (T c a) = T a c) (y : HermR (AF F) σ n) :
@@ -143,7 +143,7 @@ theorem chiT_eq (σ : E →ₐ[F] E) {n : ℕ} (ψ : AddChar (AF F) ℂ) (T : Ma
   rfl
 
 /- English proof (translation)
-Establish `h2 : algebraMap F (AF F) (1 / 2) * Algebra.trace (AF F) (AF F ⊗[F] E) (Matrix.trace ((y : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) * gramR (AF F) σ J x)) = pairHerm (AF F) σ n y (gramH hCM hJ (AF F) x)` using `half_trace_mul_eq_pairHerm (AF F) σ y (gramH hCM hJ (AF F) x)`. Rewrite using `[h2, chiT_eq σ ψ T hT, ← AddChar.map_add_eq_mul, pairHerm_sub, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_mul_chiT {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {M n : ℕ} {J : Matrix (Fin M) (Fin M) E}
     (hJ : IsHermND σ J) (ψ : AddChar (AF F) ℂ) (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a c, σ (T c a) = T a c)
@@ -158,7 +158,7 @@ theorem psi_mul_chiT {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {M n : ℕ} {J 
   rw [h2, chiT_eq σ ψ T hT, ← AddChar.map_add_eq_mul, pairHerm_sub, sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.SiegelND.starN, ← integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[mul_assoc, psi_mul_chiT hCM hJ ψ T hT]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem starN_mul_chiT {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {M n : ℕ} {J : Matrix (Fin M) (Fin M) E}
     (hJ : IsHermND σ J) (ψ : AddChar (AF F) ℂ) (dx : Measure (Fin n → Fin M → AF F ⊗[F] E))
@@ -178,15 +178,15 @@ end GlobalTheory.CompanionTheory.SiegelND.Coef
 namespace GlobalTheory.CompanionTheory.SiegelND.Coef
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M J hJ n hCM ψ hψ dx db _ _ Φ hΦ τ hTh hinv T hT`. Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Take `⟨_, _, _, _, -, -, -, hB, -, hg⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)`. Use `hB n M` as an intermediate fact. Establish `: BorelSpace (AF F)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨hψc, hψn, -⟩` from `hψ`. Establish `hpc` using `continuous_pairHerm_gramH_sub (AF F) hCM hJ (hg n M J) (hermOf (AF F) σ T hT)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hp` using `continuous_pairHerm (F := F) (E := E) (AF F) σ n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m : Continuous fun y : HermR (AF F) σ n => ((y, hermOf (AF F) σ T hT) : HermR (AF F) σ n × HermR (AF F) σ n)` using `Continuous.prodMk continuous_id continuous_const`. Establish `h1` using `(hp.comp m).neg`. Establish `h2` using `hψc.comp h1`. Establish `: GlobalTheory.CompanionTheory.SiegelND.Coef.chiT σ ψ T = fun y => ψ (-pairHerm (AF F) σ n y (hermOf (AF F) σ T hT))` using `funext (chiT_eq σ ψ T hT)`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `hmeas : AEStronglyMeasurable (Function.uncurry fun (y : HermR (AF F) σ n) (x : Fin n → Fin M → AF F ⊗[F] E) => ψ (pairHerm (AF F) σ n y (gramH hCM hJ (AF F) x - hermOf (AF F) σ T hT))) (db.prod dx)` using `(hψc.comp hpc).aestronglyMeasurable`. Establish `key` using `fubini_unimod hTh hΦ hmeas (fun y x => hψn _)`. Establish `hL : ∀ y, fouH σ ψ db τ y * (GlobalTheory.CompanionTheory.SiegelND.starN σ J ψ dx Φ y * chiT σ ψ T y) = fouH σ ψ db τ y * ∫ x, Φ x * ψ (pairHerm (AF F) σ n y (gramH hCM hJ (AF F) x - hermOf (AF F) σ T hT)) ∂dx` using `fun y => by`. Rewrite using `[starN_mul_chiT hCM hJ ψ dx Φ T hT y]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : ∀ x, ∫ y, fouH σ ψ db τ y * ψ (pairHerm (AF F) σ n y (gramH hCM hJ (AF F) x - hermOf (AF F) σ T hT)) ∂db = τ (hermOf (AF F) σ T hT - gramH hCM hJ (AF F) x)` using `fun x => by`. Rewrite using `[hinv, neg_sub]`. Repeatedly rewrite using `[hL]`. Rewrite using `[key]`. Repeatedly rewrite using `[hR]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fubini_starN_fouH : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (n : ℕ) (hCM : IsCMExt F E σ), ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∀ (dx : Measure (Fin n → Fin M → AF F ⊗[F] E)) (db : Measure (HermR (AF F) σ n)), SFinite dx → SFinite db → ∀ Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ, Integrable Φ dx → ∀ τ : HermR (AF F) σ n → ℂ, Integrable (GlobalTheory.CompanionTheory.SiegelND.Coef.fouH σ ψ db τ) db → (∀ z, ∫ y, GlobalTheory.CompanionTheory.SiegelND.Coef.fouH σ ψ db τ y * ψ (pairHerm (AF F) σ n y z) ∂db = τ (-z)) → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a c, σ (T c a) = T a c), Continuous (GlobalTheory.CompanionTheory.SiegelND.Coef.chiT σ ψ T) ∧ ∫ y, GlobalTheory.CompanionTheory.SiegelND.Coef.fouH σ ψ db τ y * (GlobalTheory.CompanionTheory.SiegelND.starN σ J ψ dx Φ y * GlobalTheory.CompanionTheory.SiegelND.Coef.chiT σ ψ T y) ∂db = ∫ x, Φ x * τ (hermOf (AF F) σ T hT - GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ (AF F) x) ∂dx := by
   intro F E _ _ _ _ _ σ M J hJ n hCM ψ hψ dx db _ _ Φ hΦ τ hTh hinv T hT

@@ -14,14 +14,14 @@ variable {n : ℕ}
 def lamd (lam : Fin n → ℝ) : Fin n → ℝ := fun a => -lam (Fin.rev a)
 
 /- English proof (translation)
-Apply the tactic sequence `apply Finset.card_bij' (fun b _ => Fin.rev b) (fun b _ => Fin.rev b) <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem card_eq_of_rev (P Q : Fin n → Prop) [DecidablePred P] [DecidablePred Q]
     (h : ∀ b, P b ↔ Q (Fin.rev b)) : (univ.filter P).card = (univ.filter Q).card := by
   apply Finset.card_bij' (fun b _ => Fin.rev b) (fun b _ => Fin.rev b) <;> simp [h]
 
 /- English proof (translation)
-Establish `h1 : (univ.filter fun b => a < b ∧ (ε ∘ Fin.rev) b ≠ (ε ∘ Fin.rev) a).card = (univ.filter fun b => b < Fin.rev a ∧ ε b ≠ ε (Fin.rev a)).card` using `card_eq_of_rev _ _ fun b => by simp [Fin.rev_lt_rev]`. Establish `h2 : (univ.filter fun b => b < a ∧ (ε ∘ Fin.rev) b ≠ (ε ∘ Fin.rev) a).card = (univ.filter fun b => Fin.rev a < b ∧ ε b ≠ ε (Fin.rev a)).card` using `card_eq_of_rev _ _ fun b => by simp [Fin.rev_lt_rev]`. Unfold `rhoN`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rhoN_rev (ε : Fin n → Bool) (a : Fin n) : rhoN (ε ∘ Fin.rev) a = -rhoN ε (Fin.rev a) := by
   have h1 : (univ.filter fun b => a < b ∧ (ε ∘ Fin.rev) b ≠ (ε ∘ Fin.rev) a).card =
@@ -35,7 +35,7 @@ theorem rhoN_rev (ε : Fin n → Bool) (a : Fin n) : rhoN (ε ∘ Fin.rev) a = -
   ring
 
 /- English proof (translation)
-Establish `h1 : (univ.filter fun b => a < b ∧ (ε ∘ Fin.rev) b = (ε ∘ Fin.rev) a).card = (univ.filter fun b => b < Fin.rev a ∧ ε b = ε (Fin.rev a)).card` using `card_eq_of_rev _ _ fun b => by simp [Fin.rev_lt_rev]`. Establish `h2 : (univ.filter fun b => b < a ∧ (ε ∘ Fin.rev) b = (ε ∘ Fin.rev) a).card = (univ.filter fun b => Fin.rev a < b ∧ ε b = ε (Fin.rev a)).card` using `card_eq_of_rev _ _ fun b => by simp [Fin.rev_lt_rev]`. Unfold `rhoC`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rhoC_rev (ε : Fin n → Bool) (a : Fin n) : rhoC (ε ∘ Fin.rev) a = -rhoC ε (Fin.rev a) := by
   have h1 : (univ.filter fun b => a < b ∧ (ε ∘ Fin.rev) b = (ε ∘ Fin.rev) a).card =
@@ -49,7 +49,7 @@ theorem rhoC_rev (ε : Fin n → Bool) (a : Fin n) : rhoC (ε ∘ Fin.rev) a = -
   ring
 
 /- English proof (translation)
-Simplify using `only [lowK, Pi.add_apply, Pi.sub_apply, lamd, rhoN_rev, rhoC_rev]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lowK_rev (ε : Fin n → Bool) (lam : Fin n → ℝ) (a : Fin n) :
     lowK (ε ∘ Fin.rev) (lamd lam) a = -lowK ε lam (Fin.rev a) := by
@@ -57,7 +57,7 @@ theorem lowK_rev (ε : Fin n → Bool) (lam : Fin n → ℝ) (a : Fin n) :
   ring
 
 /- English proof (translation)
-Unfold `casVal nsq dot`. Simplify using `only [lamd, neg_mul_neg]`. Use `congr 1`. Conclude with `Equiv.sum_comp Fin.revPerm (fun a => lam a * lam a)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem casVal_rev (lam : Fin n → ℝ) : casVal (lamd lam) = casVal lam := by
   unfold casVal nsq dot
@@ -66,25 +66,25 @@ theorem casVal_rev (lam : Fin n → ℝ) : casVal (lamd lam) = casVal lam := by
   exact Equiv.sum_comp Fin.revPerm (fun a => lam a * lam a)
 
 /- English proof (translation)
-The claim follows from `card_eq_of_rev _ _ fun b => by simp`.
+A detailed English derivation is pending.
 -/
 theorem pOf_rev (ε : Fin n → Bool) : pOf (ε ∘ Fin.rev) = pOf ε :=
   card_eq_of_rev _ _ fun b => by simp
 
 /- English proof (translation)
-The claim follows from `card_eq_of_rev _ _ fun b => by simp`.
+A detailed English derivation is pending.
 -/
 theorem qOf_rev (ε : Fin n → Bool) : qOf (ε ∘ Fin.rev) = qOf ε :=
   card_eq_of_rev _ _ fun b => by simp
 
 /- English proof (translation)
-Unfold `hNeed`. Rewrite using `[pOf_rev, qOf_rev]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hNeed_rev (ε : Fin n → Bool) : hNeed (ε ∘ Fin.rev) = hNeed ε := by
   unfold hNeed; rw [pOf_rev, qOf_rev]
 
 /- English proof (translation)
-Take `⟨hanti, hgap, hh⟩` from `hg`. Use `⟨fun a b hab => neg_lt_neg (hanti (Fin.rev_lt_rev.mpr hab)), fun a b hab => ?_, by rwa [hNeed_rev]⟩` and prove the remaining obligations. Use `hgap (Fin.rev a) (Fin.rev b) hab` as an intermediate fact. Rewrite using `[show lamd lam a - lamd lam b = -(lam (Fin.rev a) - lam (Fin.rev b)) by simp only [lamd]; ring, abs_neg]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gapLap_rev {ε : Fin n → Bool} {lam : Fin n → ℝ} {h : ℝ} (hg : GapLap ε lam h) :
     GapLap (ε ∘ Fin.rev) (lamd lam) h := by
@@ -99,7 +99,7 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {D : Submod
 def cjV (V : Submodule ℂ D) : Submodule ℂ (cjSub D) := V.map (ofDL (D := D))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `hu`. Introduce `h`. Conclude with `⟨toD x, h, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_cjV {V : Submodule ℂ D} (x : cjSub D) : x ∈ cjV V ↔ toD x ∈ V := by
   constructor
@@ -107,7 +107,7 @@ theorem mem_cjV {V : Submodule ℂ D} (x : cjSub D) : x ∈ cjV V ↔ toD x ∈ 
   · intro h; exact ⟨toD x, h, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Edd_ofD, smul_ofD, Fin.rev_rev, Fin.rev_rev, smul_smul]`. Establish `h1 : conj (-(sg ε (Fin.rev b) * sg ε (Fin.rev a))) * -(sg ε (Fin.rev b) * sg ε (Fin.rev a)) = 1`. Simplify using `only [map_neg, map_mul, conj_sg]`. Take the linear combination `(sg ε (Fin.rev a) * sg ε (Fin.rev a)) * sg_sq ε (Fin.rev b) + sg_sq ε (Fin.rev a)`. Rewrite using `[h1, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofD_E (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ D) (a b : Fin n) (u : D) :
     ofD (E a b u) = (-(sg ε (Fin.rev b) * sg ε (Fin.rev a))) • Edd ε E (Fin.rev b) (Fin.rev a) (ofD u) := by
@@ -118,21 +118,19 @@ theorem ofD_E (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ D) (
   rw [h1, one_smul]
 
 /- English proof (translation)
-Take `⟨hfin, hst, hirr, w, hwV, hw0, hwa, hwb⟩` from `hV`. Use `⟨?_, ?_, ?_, ofD w, (mem_cjV _).2 hwV, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hfg : V.FG` using `Module.Finite.iff_fg.mp hfin`. Conclude with `Module.Finite.iff_fg.mpr (hfg.map _)`. Introduce `a b hab v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hv`, the goal using `[mem_cjV]`. Conclude with `V.smul_mem _ (hst (Fin.rev b) (Fin.rev a) hab.symm _ hv)`. Introduce `S' hle hS'`. Establish `hSle : S'.comap (ofDL (D` using `D)) ≤ V := fun u hu => (mem_cjV (ofD u)).1 (hle hu)`. Establish `hSst : IsKStableSub ε E (S'.comap (ofDL (D` using `D))) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b hab u hu`. Use `show ofD (E a b u) ∈ S'`. Rewrite using `[ofD_E ε E a b u]`. Use `S'.smul_mem _ (hS' _ _ ?_ _ hu)` and prove the remaining obligations. Simplify using `[hab]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hirr _ hSle hSst with h0 | h1` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `: toD x ∈ S'.comap (ofDL (D` using `D)) := hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[h0, Submodule.mem_bot]`. Rewrite using `[Submodule.mem_bot, ← ofD_toD x, this]`. Both sides reduce to the same expression. Use `right`. Use `le_antisymm hle fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `: toD x ∈ S'.comap (ofDL (D` using `D)) := by rw [h1]; exact (mem_cjV x).1 hx`. Conclude with `this`. Introduce `h`. Apply `hw0` to reduce the goal to its premises. Apply `ofD_injective` to reduce the goal to its premises.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[h]`. Both sides reduce to the same expression. Introduce `a`. Rewrite using `[Edd_ofD, hwa, smul_smul, sg_sq, smul_ofD, lowK_rev]`. Use `congr 1`.
-
-Use `push_cast`. Simplify using the standard rewrite rules. Introduce `a b hab hε`. Rewrite using `[Edd_ofD, hwb _ _ (Fin.rev_lt_rev.mpr hab) hε.symm, smul_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kirr_cjV {ε : Fin n → Bool} {lam : Fin n → ℝ} {E : Fin n → Fin n → Module.End ℂ D}
     {V : Submodule ℂ D} (hV : IsKIrrHW ε E (lowK ε lam) V) :
@@ -178,9 +176,9 @@ theorem kirr_cjV {ε : Fin n → Bool} {lam : Fin n → ℝ} {E : Fin n → Fin 
     rfl
 
 /- English proof (translation)
-Unfold `casimir`. Simplify using `only [LinearMap.sum_apply, Module.End.mul_apply, Edd_ofD, ofD_sum, LinearMap.map_smul, smul_smul]`. Use `conv_lhs => rw [sum_rev_swap]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.rev_rev]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : -(sg ε (Fin.rev b) * sg ε (Fin.rev a)) * -(sg ε (Fin.rev a) * sg ε (Fin.rev b)) = 1`. Take the linear combination `(sg ε (Fin.rev a) * sg ε (Fin.rev a)) * sg_sq ε (Fin.rev b) + sg_sq ε (Fin.rev a)`. Rewrite using `[h1, one_smul]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem casimir_Edd (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ D) (u : D) :
     casimir (Edd ε E) (ofD u) = ofD (casimir E u) := by
@@ -194,13 +192,13 @@ theorem casimir_Edd (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End �
   rw [h1, one_smul]
 
 /- English proof (translation)
-The claim follows from `le_sInf fun _ hT => hT.1`.
+A detailed English derivation is pending.
 -/
 theorem le_genSub' {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     (S : Submodule ℂ M) : S ≤ genSub E S := le_sInf fun _ hT => hT.1
 
 /- English proof (translation)
-Unfold `genSub at hv ⊢`. Rewrite `hv`, the goal using `[Submodule.mem_sInf]`. Introduce `T hT`. Conclude with `hT.2 a b v (hv T hT)`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem genSub_stable' {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     (S : Submodule ℂ M) (a b : Fin n) {v : M} (hv : v ∈ genSub E S) : E a b v ∈ genSub E S := by
@@ -210,16 +208,14 @@ theorem genSub_stable' {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n �
   exact hT.2 a b v (hv T hT)
 
 /- English proof (translation)
-The claim follows from `sInf_le ⟨hS, hT⟩`.
+A detailed English derivation is pending.
 -/
 theorem genSub_le' {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     {S T : Submodule ℂ M} (hS : S ≤ T) (hT : ∀ a b, ∀ v ∈ T, E a b v ∈ T) : genSub E S ≤ T :=
   sInf_le ⟨hS, hT⟩
 
 /- English proof (translation)
-Establish `hle : genSub E V ≤ (genSub (Edd ε E) (cjV V)).comap (ofDL (D` using `D)) := by`. Use `genSub_le' E (fun v hv => (le_genSub' (Edd ε E) (cjV V) ((mem_cjV (ofD v)).2 hv) : ofD v ∈ genSub (Edd ε E) (cjV V))) fun a b v hv => ?_` and prove the remaining obligations. Use `show ofD (E a b v) ∈ _`. Rewrite using `[ofD_E ε E a b v]`. Conclude with `Submodule.smul_mem _ _ (genSub_stable' (Edd ε E) (cjV V) _ _ (hv : ofD v ∈ genSub (Edd ε E) (cjV V)))`.
-
-Conclude with `hle hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_genSub_Edd (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ D) (V : Submodule ℂ D) {u : D}
     (hu : u ∈ genSub E V) : ofD u ∈ genSub (Edd ε E) (cjV V) := by
@@ -244,7 +240,7 @@ def Tfh (ε : Fin n → Bool) : (Fin n → D) →+ (Fin n → cjSub D) where
     rw [smul_add, ofD_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Use `show ofD (sg ε c • (z • f (Fin.rev c))) = conj z • ofD (sg ε c • f (Fin.rev c))`. Rewrite using `[smul_ofD, Complex.conj_conj, smul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tf_smul (ε : Fin n → Bool) (z : ℂ) (f : Fin n → D) : Tfh ε (z • f) = conj z • Tfh ε f := by
   funext c
@@ -252,7 +248,7 @@ theorem Tf_smul (ε : Fin n → Bool) (z : ℂ) (f : Fin n → D) : Tfh ε (z �
   rw [smul_ofD, Complex.conj_conj, smul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Establish `h1` using `congrFun h (Fin.rev c)`. Simplify using `only [Tf, Fin.rev_rev, Pi.zero_apply] at h1`. Establish `h2 : sg ε (Fin.rev c) • g c = 0` using `ofD_injective (h1.trans ofD_zero.symm)`. Conclude with `(smul_eq_zero.mp h2).resolve_left (sg_ne ε _)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Tf_inj (ε : Fin n → Bool) {g : Fin n → D} (h : Tf ε g = 0) : g = 0 := by
   funext c
@@ -262,11 +258,11 @@ theorem Tf_inj (ε : Fin n → Bool) {g : Fin n → D} (h : Tf ε g = 0) : g = 0
   exact (smul_eq_zero.mp h2).resolve_left (sg_ne ε _)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `d`. Simplify using `only [Tf, eeV, eeVd, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.neg_apply, LinearMap.comp_apply, prj, LinearMap.proj_apply, Edd_ofD, LinearMap.map_smul, smul_smul]`. Rewrite using `[← ofD_sum]`. Use `congr 1`. Rewrite using `[smul_neg, Finset.smul_sum, ← Finset.sum_neg_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← Equiv.sum_comp Fin.revPerm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.revPerm_apply]`. Rewrite using `[← neg_smul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-sg ε d) * sg_sq ε c`.
+A detailed English derivation is pending.
 -/
 theorem weightVector_tensor_eq_dual (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ D) (f : Fin n → D) :
     eeV (Edd ε E) (Tf ε f) = Tf ε (eeVd E f) := by
@@ -284,14 +280,14 @@ theorem weightVector_tensor_eq_dual (ε : Fin n → Bool) (E : Fin n → Fin n �
   linear_combination (-sg ε d) * sg_sq ε c
 
 /- English proof (translation)
-Unfold `prodShift`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prodShift_eq {X : Type*} [AddCommGroup X] [Module ℂ X] (A : Module.End ℂ X) (θ : Fin n → ℝ) :
     prodShift A θ = ((List.ofFn θ).map fun r : ℝ => A - ((r : ℝ) : ℂ) • (1 : Module.End ℂ X)).prod := by
   unfold prodShift; rw [List.map_ofFn]; rfl
 
 /- English proof (translation)
-Rewrite using `[← List.prod_ofFn, map_list_prod, List.map_ofFn]`. Unfold `prodShift`. Use `congr 2`. Use function extensionality and compare the values at `t`. Simplify using `[Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem prodShift_aeval {X : Type*} [AddCommGroup X] [Module ℂ X] (A : Module.End ℂ X) (θ : Fin n → ℝ) :
     prodShift A θ = Polynomial.aeval A (∏ t, (Polynomial.X - Polynomial.C ((θ t : ℝ) : ℂ))) := by
@@ -302,7 +298,7 @@ theorem prodShift_aeval {X : Type*} [AddCommGroup X] [Module ℂ X] (A : Module.
   simp [Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Rewrite using `[prodShift_aeval, prodShift_aeval]`. Use `congr 1`. Conclude with `Equiv.prod_comp Fin.revPerm (fun t => Polynomial.X - Polynomial.C ((θ t : ℝ) : ℂ))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem prodShift_rev {X : Type*} [AddCommGroup X] [Module ℂ X] (A : Module.End ℂ X) (θ : Fin n → ℝ) :
     prodShift A (fun t => θ (Fin.rev t)) = prodShift A θ := by
@@ -311,7 +307,7 @@ theorem prodShift_rev {X : Type*} [AddCommGroup X] [Module ℂ X] (A : Module.En
   exact Equiv.prod_comp Fin.revPerm (fun t => Polynomial.X - Polynomial.C ((θ t : ℝ) : ℂ))
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons r L ih`. Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Rewrite using `[map_sub, hAB, hs, Complex.conj_ofReal, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem list_inter {X Y : Type*} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
     (T : X →+ Y) (hs : ∀ (z : ℂ) (x : X), T (z • x) = conj z • T x) (A : Module.End ℂ Y)

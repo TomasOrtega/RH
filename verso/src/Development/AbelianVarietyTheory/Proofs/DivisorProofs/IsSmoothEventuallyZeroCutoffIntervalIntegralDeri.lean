@@ -8,7 +8,7 @@ open Set MeasureTheory
 namespace GlobalTheory.ParamIntCut
 
 /- English proof (translation)
-Establish `h1 : HasFDerivAt (Function.uncurry F) (fderiv ℝ (Function.uncurry F) (s, y)) (s, y)` using `(hF.differentiable one_ne_zero (s, y)).hasFDerivAt`. Establish `h2 : HasDerivAt (fun t : ℝ => ((s, t) : ℝ × ℝ)) ((0, 1) : ℝ × ℝ) y` using `(hasDerivAt_const y s).prodMk (hasDerivAt_id y)`. Conclude with `h1.comp_hasDerivAt y h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_snd {F : ℝ → ℝ → ℝ} (hF : ContDiff ℝ 1 (Function.uncurry F)) (s y : ℝ) :
     HasDerivAt (F s) (fderiv ℝ (Function.uncurry F) (s, y) (0, 1)) y := by
@@ -19,9 +19,9 @@ theorem hasDerivAt_snd {F : ℝ → ℝ → ℝ} (hF : ContDiff ℝ 1 (Function.
   exact h1.comp_hasDerivAt y h2
 
 /- English proof (translation)
-Use `set P : ℝ → ℝ → ℝ := fun s y => fderiv ℝ (Function.uncurry F) (s, y) (0, 1) with hP`. Establish `hPc : Continuous (Function.uncurry P)` using `(hF.continuous_fderiv one_ne_zero).clm_apply continuous_const`. Establish `hFc : Continuous (Function.uncurry F)` using `hF.continuous`. Establish `hsec : ∀ (G : ℝ → ℝ → ℝ), Continuous (Function.uncurry G) → ∀ y, Continuous (fun s => G s y)` using `fun G hG y => hG.comp (continuous_id.prodMk continuous_const)`. Take `⟨C, hC⟩ : ∃ C, ∀ p ∈ (uIcc a b) ×ˢ (Metric.closedBall y₀ 1), ‖Function.uncurry P p‖ ≤ C` from `(isCompact_uIcc.prod (isCompact_closedBall y₀ 1)).exists_bound_of_continuousOn hPc.continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key` using `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le (𝕜 := ℝ) (μ := volume) (a := a) (b := b) (F := fun y s => F s y) (F' := fun y s => P s y) (x₀ := y₀) (bound := fun _ => C) (s := Metric.ball y₀ 1) (Metric.ball_mem_nhds y₀ one_pos) (Filter.Eventually.of_forall fun …`. Conclude with `key.2`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_intervalIntegral {F : ℝ → ℝ → ℝ} (a b : ℝ)
     (hF : ContDiff ℝ 1 (Function.uncurry F)) (y₀ : ℝ) :
@@ -48,7 +48,7 @@ theorem hasDerivAt_intervalIntegral {F : ℝ → ℝ → ℝ} (a b : ℝ)
   exact key.2
 
 /- English proof (translation)
-The claim follows from `| 0, F, hF => by have h1 : ContDiff ℝ 1 (Function.uncurry F) := hF.of_le (by exact_mod_cast le_top) rw [Nat.cast_zero, contDiff_zero] exact continuous_iff_continuousAt.2 fun y => (hasDerivAt_intervalIntegral a b h1 y).continuousAt | n + 1, F, hF => by have h1 : ContDiff ℝ 1 (Func …`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_nat_intervalIntegral (a b : ℝ) :
     ∀ (n : ℕ) (F : ℝ → ℝ → ℝ), ContDiff ℝ ∞ (Function.uncurry F) →
@@ -75,9 +75,9 @@ end GlobalTheory.ParamIntCut
 namespace GlobalTheory.PsCo.Pc1
 
 /- English proof (translation)
-Introduce `F a b hF ⟨R, hR⟩`. Establish `h1 : ContDiff ℝ 1 (Function.uncurry F)` using `hF.of_le (by exact_mod_cast le_top)`. Use `⟨⟨contDiff_infty.2 fun n => GlobalTheory.ParamIntCut.contDiff_nat_intervalIntegral a b n F hF, R, fun y hy => ?_⟩, fun y => ?_⟩` and prove the remaining obligations. Use `show ∫ s in a..b, F s y = 0`. Rewrite using `[intervalIntegral.integral_congr (g := fun _ => (0 : ℝ)) (fun s hs => hR s hs y hy)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[(GlobalTheory.ParamIntCut.hasDerivAt_intervalIntegral a b h1 y).deriv]`. Use `intervalIntegral.integral_congr fun s _ => ?_` and prove the remaining obligations. Conclude with `((GlobalTheory.ParamIntCut.hasDerivAt_snd h1 s y).deriv).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCutFn_intervalIntegral_and_deriv :
     ∀ (F : ℝ → ℝ → ℝ) (a b : ℝ), ContDiff ℝ (⊤ : ℕ∞) (Function.uncurry F) →

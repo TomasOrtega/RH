@@ -14,19 +14,19 @@ open Pb HT
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨φ, hφf, hφg⟩ : ∃ φ : Module.Dual K (Hdg S.Y.q A (2 + 2 * d)), φ ∘ₗ pullH (Model.genMap S.π S.hπ) (Model.genMap_q S.π S.hπ) A (2 + 2 * d) = Θ ∧ ∀ (a₀ : ℕ) (ha : 1 + a₀ = A) (u : Hdg S.Y.q a₀ (2 * d)), φ (cupH S.Y.q ha rfl e u) = 0 := by`. Break down `Nat.eq_zero_or_pos A with hA | hA` into its components or cases. Substitute `hA` using the available equality. Take `⟨φ, h1, -⟩` from `la_kill (pullH (Model.genMap S.π S.hπ) (Model.genMap_q S.π S.hπ) 0 (2 + 2 * d)) (0 : Hdg S.Y.q 0 (2 + 2 * d) →ₗ[K] Hdg S.Y.q 0 (2 + 2 * d)) Θ (fun C u h => hΘ C (Or.inl (by simpa using h)))`. Conclude with `⟨φ, h1, fun a₀ ha => absurd ha (by omega)⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, rfl⟩ : ∃ a, A = 1 + a` from `⟨A - 1, by omega⟩`. Take `⟨φ, h1, h2⟩` from `la_kill (pullH (Model.genMap S.π S.hπ) (Model.genMap_q S.π S.hπ) (1 + a) (2 + 2 * d)) (cupL hC S.Y.q (a := 1) (a' := a) (c := 1 + a) (i := 2) (j := 2 * d) (n := 2 + 2 * d) rfl rfl e) Θ (fun C u h => hΘ C (Or.inr ⟨a, 2 * d, rfl, rfl, u, by rw [h, cupL_apply]⟩))`. Use `⟨φ, h1, fun a₀ ha u => ?_⟩` and prove the remaining obligations. Take `rfl : a₀ = a` from `by omega`. Use `LinearMap.congr_fun h2 u` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify `this` using `[cupL_apply]`. Establish `hc1` using `P.c1 S.Y S.smY S.D hEt S.loc r v e hv he`. Set `b : ∀ a, Module.Basis (Fin (Module.finrank K (Hdg S.Y.q a 2))) K (Hdg S.Y.q a 2)` to `fun a => haveI := (P.fin S.Y S.smY a 2).1 Module.finBasis K _`. Set `b' : ∀ a, Module.Basis (Fin (Module.finrank K (Hdg S.Y.q a (2 * d)))) K (Hdg S.Y.q a (2 * d))` to `fun a => haveI := (P.fin S.Y S.smY a (2 * d)).1 Module.finBasis K _`. Establish `key : ∀ (a a' : ℕ) (ha : a + a' = A), ∑ s, ∑ s', P.h S.Y a 2 (S.Y.toV _ v) ((b a).coord s) * P.h S.Y a' (2 * d) (S.Y.toV _ w) ((b' a').coord s') * kC K (φ (cupH S.Y.q ha rfl (b a s) (b' a' s'))) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a a' ha`. Distinguish the cases in `h1 : a = 1`. Substitute `h1` using the available equality. Repeatedly rewrite using `[hc1.1]`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun s' _ => ?_` and prove the remaining obligations. Establish `hs` using `esum (kC K) (b 1) (φ ∘ₗ (cupL hC S.Y.q (i := 2) (j := 2 * d) ha rfl).flip (b' a' s')) e`. Simplify using `only [LinearMap.comp_apply, LinearMap.flip_apply, cupL_apply] at hs`. Rewrite `hs` using `[hφg a' ha, map_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [hs, mul_zero]`. Use `Finset.sum_eq_zero fun s _ => Finset.sum_eq_zero fun s' _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc1.2 a h1, zero_mul, zero_mul]`. Rewrite using `[← hφf, ← P.nat S.Y S.P S.π S.hπ S.smY S.smP A (2 + 2 * d) (S.P.toV _ c) φ, pullV_toV, hcz, P.cup S.Y S.smY v w z hz b b' A φ]`. Conclude with `Finset.sum_eq_zero fun p _ => key _ _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepA (hC : CupLaws) (P : HTPre l K) {M : Model l K} {d : ℕ} (S : Sq M (d + 1)) (hEt : Etale S.D.f)
     (r : E.Roots l) (v : S.Y.T 2) (hv : IsEtaleFirstChernUntwisted r S.D v) (e : Hdg S.Y.q 1 2) (he : IsDlogFirstChernClass S.Y.q (genD S.D) e)

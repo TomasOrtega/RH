@@ -26,9 +26,9 @@ def coefMap {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (dual :
   ∑ c, inner ℂ (η c) (tensGrp dual σ g f c)
 
 /- English proof (translation)
-Introduce `f hf`. Use `⟨⟨occA_coef_smooth dual hσ _ _ (fun d => hsm (f d)), fun w => ?_⟩, fun a b g hg => occA_coef_Eab dual hσ hD _ f a b hg, ?_⟩` and prove the remaining obligations. Use `(occA_coef_memLp dual hσ hW η (tensWord dual E w f) hη (occA_tensWord_mem dual w f hf)).ae_eq ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun g => (occA_coef_Eword dual hσ hD _ w f g.2).symm`. Introduce `k hk f' _ hff g hg show ∑ c, _ = ∑ c, _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[occA_tensGrp_mul dual hσ hg hk, ← hff]`.
+A detailed English derivation is pending.
 -/
 theorem coef_embed (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
@@ -57,7 +57,7 @@ theorem coef_embed (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCom
     rw [occA_tensGrp_mul dual hσ hg hk, ← hff]
 
 /- English proof (translation)
-Establish `hB` using `occB_pairing_ne dual hP hP' hv₀' hpos hpos' (occB_memLp_psi hgap hP hv₀ hW) s hlam'`. Take `⟨ps, hps, hne⟩` from `occC_exists_ps dual hgap hP hv₀ hgap' hP' hv₀' hW (occC_pairing dual hgap hP hv₀ hP' hW hB)`. Take `⟨ι, hι⟩` from `occAdj_emb dual hgap hP hv₀ hgap' hP' hv₀' hps hne`. Conclude with `⟨ι, hι, occD_eeF dual hP hP' s hlam' hι⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem occ_exists (dual : Bool) {ε : Fin n → Bool} {lam lam' : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {T' : S7.KType ε (lowK ε lam')} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}

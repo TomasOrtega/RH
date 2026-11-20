@@ -5,19 +5,17 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan.Mark
 
 /- English proof (translation)
-Establish `hone : ∀ x, InFace bar ψ lab β x → x ≠ 0 → 1 ≤ ψ.evalZ x`. Introduce `x hx h0`. Take `⟨n, hn⟩` from `hint x hx`. Establish `hp` using `hpos x hx h0`. Rewrite `hp`, the goal using `[hn]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `: (0 : ℤ) < n` using `by exact_mod_cast hp`. Conclude with `this` after adjusting the coercions. Establish `key : ∀ N : ℕ, ∀ x, InFace bar ψ lab β x → x ≠ 0 → ψ.evalZ x < N → x ∈ AddSubmonoid.closure {y | IsIndec bar ψ lab β y}`. Introduce `N`. Proceed by induction on `N with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Introduce `x hx h0 hN`. Use `hpos x hx h0` as an intermediate fact. Simplify using `only [Nat.cast_zero] at hN`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately.
 
-Consider the case `succ N ih`. Introduce `x hx h0 hN`. Distinguish the cases in `hI : IsIndec bar ψ lab β x`. Conclude with `AddSubmonoid.subset_closure hI`. Establish `: ∃ y z, InFace bar ψ lab β y ∧ InFace bar ψ lab β z ∧ y ≠ 0 ∧ z ≠ 0 ∧ y + z = x`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hI ⟨hx, h0, fun y z hy hz hy0 hz0 e => hc ⟨y, z, hy, hz, hy0, hz0, e⟩⟩`. Take `⟨y, z, hy, hz, hy0, hz0, rfl⟩` from `this`. Establish `hs` using `(hadd y z hy hz).2`. Establish `h1` using `hone y hy hy0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `hone z hz hz0`. Move the coercions through the operations in `at hN`. Conclude with `add_mem (ih y hy hy0 (by linarith)) (ih z hz hz0 (by linarith))`. Introduce `x hx`. Distinguish the cases in `h0 : x = 0`.
-
-Rewrite using `[h0]`. Conclude with `zero_mem _`. Take `⟨N, hN⟩` from `exists_nat_gt (ψ.evalZ x)`. Conclude with `key N x hx h0 hN`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_closure_isIndec (O : Type) [CommRing O] (bar : O → O) (ψ lab : InvFun O) (X : Type) [AddCommGroup X]
     [Module O X] [Module.Finite O X] (β : LinearMap.BilinForm ℤ X)

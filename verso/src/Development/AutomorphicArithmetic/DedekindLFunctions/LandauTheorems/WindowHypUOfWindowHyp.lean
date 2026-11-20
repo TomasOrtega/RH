@@ -7,11 +7,9 @@ noncomputable section
 namespace Deduction
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨h1, h2⟩, rfl⟩`. Conclude with `⟨Real.exp_le_exp.2 h1, Real.exp_le_exp.2 h2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `hy : 0 < y` using `lt_of_lt_of_le (Real.exp_pos a) h1`. Use `⟨Real.log y, ⟨?_, ?_⟩, Real.exp_log hy⟩` and prove the remaining obligations. Rewrite using `[← Real.exp_le_exp, Real.exp_log hy]`. Conclude with `h1`. Rewrite using `[← Real.exp_le_exp, Real.exp_log hy]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem windowHypU_of_windowHyp_image (a b : ℝ) :
     Real.exp '' Icc a b = Icc (Real.exp a) (Real.exp b) := by
@@ -26,7 +24,7 @@ theorem windowHypU_of_windowHyp_image (a b : ℝ) :
     · rw [← Real.exp_le_exp, Real.exp_log hy]; exact h2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Rewrite using `[abs_of_pos (Real.exp_pos u), smul_eq_mul, ← Real.exp_mul, mul_left_comm, ← Real.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem windowHypU_of_windowHyp_fun (R : ℝ → ℝ) (θ : ℝ) :
     (fun u : ℝ => |Real.exp u| • (R (Real.exp u) * Real.exp u ^ (-θ - 1))) =
@@ -37,15 +35,13 @@ theorem windowHypU_of_windowHyp_fun (R : ℝ → ℝ) (θ : ℝ) :
   ring
 
 /- English proof (translation)
-Introduce `η hη U₀`. Take `⟨Y, hY, R, hint, hR, hbound⟩` from `h η hη (Real.exp U₀)`. Establish `hYpos : 0 < Y` using `lt_of_lt_of_le (Real.exp_pos _) hY`. Establish `hS : Real.exp '' Icc (Real.log Y) ((1 + δ) * Real.log Y) = Icc Y (Y ^ (1 + δ))`. Rewrite using `[windowHypU_of_windowHyp_image, Real.exp_log hYpos, Real.rpow_def_of_pos hYpos, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : ∀ x ∈ Icc (Real.log Y) ((1 + δ) * Real.log Y), HasDerivWithinAt Real.exp (Real.exp x) (Icc (Real.log Y) ((1 + δ) * Real.log Y)) x` using `fun x _ => (Real.hasDerivAt_exp x).hasDerivWithinAt`. Establish `hinj : InjOn Real.exp (Icc (Real.log Y) ((1 + δ) * Real.log Y))` using `Real.exp_injective.injOn`. Use `⟨Real.log Y, ?_, fun u => R (Real.exp u), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Real.exp_le_exp, Real.exp_log hYpos]`. Conclude with `hY`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(integrableOn_image_iff_integrableOn_abs_deriv_smul measurableSet_Icc hd hinj (fun y => R y * y ^ (-θ - 1))).1 (by rw [hS]; exact hint)` as an intermediate fact. Rewrite `this` using `[windowHypU_of_windowHyp_fun]`. Conclude with `this`. Introduce `u hu`. Establish `hmem : Real.exp u ∈ Icc Y (Y ^ (1 + δ))`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← hS]`. Conclude with `⟨u, hu, rfl⟩`. Conclude with `hR _ hmem`. Establish `e` using `integral_image_eq_integral_abs_deriv_smul measurableSet_Icc hd hinj (fun y => R y * y ^ (-θ - 1))`. Rewrite `e` using `[hS, windowHypU_of_windowHyp_fun]`.
-
-Rewrite using `[← e]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem windowHypU_of_windowHyp (F : CharFamily) {θ δ : ℝ} (hδ : 0 < δ) (h : WindowHyp F θ δ) :
     WindowHypU (gm F) θ δ := by

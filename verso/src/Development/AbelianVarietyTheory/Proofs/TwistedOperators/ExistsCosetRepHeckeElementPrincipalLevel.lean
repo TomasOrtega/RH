@@ -11,15 +11,15 @@ open NumberField
 open Formalism.IndefR.Lev GlobalTheory.HeckeParts Formalism.L2.NTheta
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R hL hF i P k α Rc e ϖ a₀ hso hα hRc he hϖ hϖ2 ha₀`. Take `⟨c, hβ⟩` from `hL.βW i`. Establish `hN : ((1 ^ c : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Rewrite using `[one_pow, Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 P.isPrime.ne_top`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hoff : ∀ PP, PP ∈ (R.datWp i R.triv).Pg ∨ PP ∈ (R.datWp i R.triv).Q → PP ≠ P ∧ ¬ Lev.IsConjPl PP P`. Introduce `PP hPP`. Establish `hPP' : PP ∈ R.Pg` using `hPP.elim id fun h => absurd h (Finset.notMem_empty _)`. Establish `hS : PP ∈ (R.Sb : Set (Formalism.L2.DIV.Pl D.host.E))` using `hF.Sb hPP'`. Use `⟨fun h => hso.2.1 (h ▸ hS), fun h => hso.2.2 PP hS ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.Col.conjIdeal_asIdeal]`. Use `PP.isMaximal.eq_of_le (Formalism.L2.Col.conjPrime₂ P).isPrime.ne_top fun a ha => ?_` and prove the remaining obligations. Take `⟨a', ha', e⟩` from `h a ha`. Rewrite using `[Formalism.L2.Col.mem_conjP]`. Establish `: Formalism.L2.Col.cO D.host.E a = a'` using `RingOfIntegers.ext e.symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[this]` and apply the resulting hypothesis. Take `⟨Lp, -, -, -, hK⟩` from `loc_package hβ (L := R.datWp i R.triv) ⟨hso.1, hN, hoff⟩ he`. Take `⟨e', ϖ', he', h1', h2', hαe'⟩` from `hα`. Establish `hee : e' = e` using `idem_unique (Wc D i) he he'`. Rewrite `hαe'` using `[hee]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hloc⟩` from `GlobalTheory.SplitPlace.split_local (Wc D i) P e he`. Take `⟨x, hx, y, hy, hxy⟩` from `((hloc ϖ' h1' h2').2 k α hαe').2 ϖ a₀ hϖ hϖ2 ha₀`. Take `⟨a, ⟨haR, haK⟩, -⟩` from `hRc.2 a₀ ⟨⟨x, ((hK x).1 hx).1⟩, ⟨y, ((hK y).1 hy).1⟩, hxy⟩`. Conclude with `⟨a, haR, haK⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeckeDC.exists_rep : ∀ (D : D7) {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks),

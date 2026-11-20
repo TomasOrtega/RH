@@ -4,13 +4,13 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hf : f ≠ 0` using `(Fact.out : Irreducible f).ne_zero`. Set `φ : AdjoinRoot f →+* Module.End F Q` to `Ideal.Quotient.lift (Ideal.span {f}) (aeval g : F[X] →ₐ[F] Module.End F Q).toRingHom (by`. Introduce `a ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Simplify using `[h])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hφ : ∀ p : F[X], φ (AdjoinRoot.mk f p) = aeval g p` using `fun p => rfl`. Use `letI : Module (AdjoinRoot f) Q := Module.compHom Q φ`. Establish `hs : ∀ (a : AdjoinRoot f) (v : Q), a • v = φ a v` using `fun _ _ => rfl`. Use `haveI : IsScalarTower F (AdjoinRoot f) Q := ⟨fun c a v => by`. Take `⟨p, rfl⟩` from `AdjoinRoot.mk_surjective a`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, hs, AdjoinRoot.smul_mk, hφ, hφ]`. Use the proof step `simp⟩`. Use `haveI : Module.Finite (AdjoinRoot f) Q := Module.Finite.of_restrictScalars_finite F _ _`. Use `⟨Module.finrank (AdjoinRoot f) Q, (Module.finBasis (AdjoinRoot f) Q).equivFun.restrictScalars F, fun v => ?_, ?_⟩` and prove the remaining obligations. Establish `: g v = AdjoinRoot.root f • v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, ← AdjoinRoot.mk_X, hφ]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `map_smul (Module.finBasis (AdjoinRoot f) Q).equivFun _ _`. Rewrite using `[← Module.finrank_mul_finrank F (AdjoinRoot f) Q, (AdjoinRoot.powerBasis hf).finrank, AdjoinRoot.powerBasis_dim]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_equiv_pi_adjoinRoot_of_aeval_eq_zero (F : Type) [Field F] (Q : Type) [AddCommGroup Q]
     [Module F Q] [FiniteDimensional F Q] (g : Module.End F Q) (f : F[X]) [Fact (Irreducible f)]
@@ -41,21 +41,19 @@ theorem exists_equiv_pi_adjoinRoot_of_aeval_eq_zero (F : Type) [Field F] (Q : Ty
       AdjoinRoot.powerBasis_dim]
 
 /- English proof (translation)
-Use `set N : Submodule F V := LinearMap.range (aeval g f) with hN`. Establish `hg : N ≤ N.comap g`. Introduce and unpack `_ ⟨v, rfl⟩`. Use `⟨g v, ?_⟩` and prove the remaining obligations. Establish `h1 : aeval g f * g = g * aeval g f`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: aeval g (f * X) = aeval g (X * f)` using `by rw [mul_comm]`. Simplify using `using this`. Conclude with `congrArg (fun u : Module.End F V => u v) h1`. Set `gq : Module.End F (V ⧸ N)` to `N.mapQ N g hg`. Establish `hq : ∀ v, gq (N.mkQ v) = N.mkQ (g v)` using `fun v => rfl`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp : ∀ (p : F[X]) (v : V), aeval gq p (N.mkQ v) = N.mkQ (aeval g p v)`. Introduce `p`. Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a => intro v`. Simplify using `[Module.algebraMap_end_apply]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `add p q hp hq => intro v`. Simplify using `only [map_add, LinearMap.add_apply, hp, hq]`. Consider the case `monomial n a ih`. Introduce `v`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, map_mul (aeval g), aeval_X, aeval_X, Module.End.mul_apply, Module.End.mul_apply, hq, ih]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h0 : aeval gq f = 0`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨v, rfl⟩` from `N.mkQ_surjective x`. Rewrite using `[hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Submodule.Quotient.mk_eq_zero N).2 ⟨v, rfl⟩`. Take `⟨t, e, he, hd⟩` from `exists_equiv_pi_adjoinRoot_of_aeval_eq_zero F (V ⧸ N) gq f h0`. Use `⟨t, e.toLinearMap ∘ₗ N.mkQ, e.surjective.comp N.mkQ_surjective, fun v => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `he (N.mkQ v)` as an intermediate fact. Rewrite `this` using `[hq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Rewrite using `[LinearEquiv.ker_comp, Submodule.ker_mkQ]`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (aeval g f)`. Establish `h2` using `Submodule.finrank_quotient_add_finrank N`. Rewrite `h1` using `[← hN]`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_surjective_pi_adjoinRoot_ker_eq_range (F : Type) [Field F] (V : Type)
     [AddCommGroup V] [Module F V] [FiniteDimensional F V] (g : Module.End F V) (f : F[X])

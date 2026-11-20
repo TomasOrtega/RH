@@ -17,7 +17,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `mul_eq_one_comm.1 (GlobalTheory.OrientedSmall.gramInv_mul V)`.
+A detailed English derivation is pending.
 -/
 theorem mul_gramInv (V : HSp D) : V.gram.map (incA D) * (V.gram⁻¹).map (incA D) = 1 :=
   mul_eq_one_comm.1 (GlobalTheory.OrientedSmall.gramInv_mul V)
@@ -48,19 +48,19 @@ theorem coord_symm_apply (S T : HSp D) (y : WA S T) :
     (coord S T).symm y = HMul.hMul (y : Matrix (Fin S.rank) (Fin T.rank) (AE D))ᵀ (S.gram.map (incA D)) := rfl
 
 /- English proof (translation)
-The claim follows from `(continuous_id.matrix_mul continuous_const).matrix_transpose`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coord (S T : HSp D) : Continuous (coord S T) :=
   (continuous_id.matrix_mul continuous_const).matrix_transpose
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_transpose.matrix_mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coord_symm (S T : HSp D) : Continuous (coord S T).symm :=
   continuous_id.matrix_transpose.matrix_mul continuous_const
 
 /- English proof (translation)
-Rewrite using `[coord_apply]`. Unfold `ratW`. Rewrite using `[← Matrix.map_mul, Matrix.transpose_map]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_ratW (S T : HSp D) (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     coord S T (ratW T S γ) = ratW S T (γ * S.gram⁻¹)ᵀ := by
@@ -69,7 +69,7 @@ theorem coord_ratW (S T : HSp D) (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E
   rw [← Matrix.map_mul, Matrix.transpose_map]
 
 /- English proof (translation)
-Rewrite using `[coord_symm_apply]`. Unfold `ratW`. Rewrite using `[Matrix.map_mul, Matrix.transpose_map]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_symm_ratW (S T : HSp D) (γ : Matrix (Fin S.rank) (Fin T.rank) D.host.E) :
     (coord S T).symm (ratW S T γ) = ratW T S (γᵀ * S.gram) := by
@@ -78,21 +78,21 @@ theorem coord_symm_ratW (S T : HSp D) (γ : Matrix (Fin S.rank) (Fin T.rank) D.h
   rw [Matrix.map_mul, Matrix.transpose_map]
 
 /- English proof (translation)
-Rewrite using `[coord_apply, Matrix.transpose_map, Matrix.map_mul, h, Matrix.zero_mul, Matrix.transpose_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_map_zero (S T : HSp D) {R : Type} [CommRing R] (φ : AE D →+* R) (x : WO S T) (h : x.map φ = 0) :
     (coord S T x).map φ = 0 := by
   rw [coord_apply, Matrix.transpose_map, Matrix.map_mul, h, Matrix.zero_mul, Matrix.transpose_zero]
 
 /- English proof (translation)
-Rewrite using `[coord_symm_apply, Matrix.map_mul, Matrix.transpose_map, h, Matrix.transpose_zero, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_symm_map_zero (S T : HSp D) {R : Type} [CommRing R] (φ : AE D →+* R) (y : WA S T) (h : y.map φ = 0) :
     ((coord S T).symm y).map φ = 0 := by
   rw [coord_symm_apply, Matrix.map_mul, Matrix.transpose_map, h, Matrix.transpose_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Unfold `symplOH symplH`. Rewrite using `[(GlobalTheory.OrientedSmall.bridgeSmall D S T hr).1 x y]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem symplOH_eq (S T : HSp D) (hr : S.rank ≤ T.rank) (x y : WO S T) :
     symplOH S T x y = symplH S T (coord S T x) (coord S T y) := by
@@ -101,7 +101,7 @@ theorem symplOH_eq (S T : HSp D) (hr : S.rank ≤ T.rank) (x y : WO S T) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [heisO, Formalism.L2.Theta.Heisenberg₂, map_add, symplOH_eq S T hr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heisO_coord (S T : HSp D) (hr : S.rank ≤ T.rank) (ψ : AddChar (AF D.host.F) ℂ) (w : WO S T) (f : WA S T → ℂ) :
     heisO ψ S T w (fun x => f (coord S T x)) = fun x => Heisenberg₂ ψ S T (coord S T w) f (coord S T x) := by
@@ -109,15 +109,15 @@ theorem heisO_coord (S T : HSp D) (hr : S.rank ≤ T.rank) (ψ : AddChar (AF D.h
   simp only [heisO, Formalism.L2.Theta.Heisenberg₂, map_add, symplOH_eq S T hr]
 
 /- English proof (translation)
-Establish `c1` using `continuous_coord S T`. Establish `c2` using `continuous_coord_symm S T`. Use `⟨fun hf => ⟨fun γ w => ?_, ?_, ?_, fun k L hL h0 w => ?_⟩, fun hf => ⟨fun γ w => ?_, ?_, hf.cont.comp c1, fun k L hL h0 w => ?_⟩⟩` and prove the remaining obligations. Use `hf.quasi (γᵀ * S.gram) ((coord S T).symm w)` as an intermediate fact. Rewrite `this` using `[← coord_symm_ratW, symplOH_eq S T hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `only [map_add, AddEquiv.apply_symm_apply]`. Take `⟨U, hU, hfix⟩` from `hf.level`. Use `⟨U.comap (coord S T).symm.toAddMonoidHom, hU.preimage c2, fun u hu h0 => ?_⟩` and prove the remaining obligations. Use `hfix ((coord S T).symm u) hu (coord_symm_map_zero S T _ u h0)` as an intermediate fact. Rewrite `this` using `[heisO_coord S T hr]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `y`. Simplify `congrFun this ((coord S T).symm y)` using `only [AddEquiv.apply_symm_apply]`. Simplify `hf.cont.comp c2` using `only [Function.comp_def, AddEquiv.apply_symm_apply]`. Use `hf.smooth k ((coord S T).symm.toAddMonoidHom.comp L) (c2.comp hL) (fun t => coord_symm_map_zero S T _ _ (h0 t)) ((coord S T).symm w)` as an intermediate fact. Simplify `this` using `only [map_add, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, AddEquiv.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, AddEquiv.apply_symm_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hf.quasi (γ * S.gram⁻¹)ᵀ (coord S T w)` as an intermediate fact. Rewrite `this` using `[← coord_ratW, ← symplOH_eq S T hr]`. Simplify `this` using `only [map_add]`. Take `⟨U, hU, hfix⟩` from `hf.level`. Use `⟨U.comap (coord S T).toAddMonoidHom, hU.preimage c1, fun u hu h0 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[heisO_coord S T hr, hfix (coord S T u) hu (coord_map_zero S T _ u h0)]`. Use `hf.smooth k ((coord S T).toAddMonoidHom.comp L) (c1.comp hL) (fun t => coord_map_zero S T _ _ (h0 t)) (coord S T w)` as an intermediate fact. Simplify `this` using `only [map_add, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, AddEquiv.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isThetaFunO_coord (S T : HSp D) (hr : S.rank ≤ T.rank) (ψ : AddChar (AF D.host.F) ℂ) (f : WA S T → ℂ) :
     IsThetaFunO ψ S T (fun x => f (coord S T x)) ↔ IsThetaFun ψ S T f := by
@@ -151,9 +151,9 @@ theorem isThetaFunO_coord (S T : HSp D) (hr : S.rank ≤ T.rank) (ψ : AddChar (
       AddMonoidHom.coe_coe] using this
 
 /- English proof (translation)
-Rewrite using `[← AddEquiv.eq_symm_apply, coord_symm_apply]`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.mul_sum, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `: incA D (S.gram k j) = (1 : AF D.host.F) ⊗ₜ[D.host.F] S.gram k j` using `rfl`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coord_gen (S T : HSp D) (β : AF D.host.F) (a : D.host.E) (s : Fin S.rank → D.host.E) (t : Fin T.rank → D.host.E) :
     coord S T (Matrix.of fun i j => β ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j)) =
@@ -169,9 +169,9 @@ theorem coord_gen (S T : HSp D) (β : AF D.host.F) (a : D.host.E) (s : Fin S.ran
   ring
 
 /- English proof (translation)
-Establish `: latO S T (L0c D S) (L0c D T) (fun v => v ∉ Z) ≤ (latVWS S T Z).comap (coord S T).toAddMonoidHom`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨α, hα, h0, a, ha, s, hs, t, ht, rfl⟩`. Use `AddSubgroup.subset_closure ⟨α, hα, fun v hv => h0 v (not_not.2 hv), a, ha, s, hs, t, ht, ?_⟩` and prove the remaining obligations. Simplify using `only [if_pos hr]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `coord_gen S T _ a s t`. Conclude with `this hu`.
+A detailed English derivation is pending.
 -/
 theorem coord_mem_latVWS (S T : HSp D) (hr : S.rank ≤ T.rank) (Z : Finset (HeightOneSpectrum (𝓞 D.host.F))) (u : WO S T)
     (hu : u ∈ latO S T (L0c D S) (L0c D T) (fun v => v ∉ Z)) : coord S T u ∈ latVWS S T Z := by
@@ -184,9 +184,9 @@ theorem coord_mem_latVWS (S T : HSp D) (hr : S.rank ≤ T.rank) (Z : Finset (Hei
   exact this hu
 
 /- English proof (translation)
-Introduce `D S T hr`. Use `⟨coord S T, continuous_coord S T, continuous_coord_symm S T, fun _ => rfl, fun x => ⟨?_, ?_⟩, fun a x => ?_, heisO_coord S T hr, isThetaFunO_coord S T hr, coord_mem_latVWS S T hr⟩` and prove the remaining obligations. Introduce and unpack `⟨γ, hγ⟩`. Establish `hγ' : ratW S T γ = coord S T x` using `hγ`. Use `⟨γᵀ * S.gram, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `ratW T S _ = x`. Rewrite using `[← coord_symm_ratW, hγ', AddEquiv.symm_apply_apply]`. Introduce and unpack `⟨γ, rfl⟩`. Conclude with `⟨(γ * S.gram⁻¹)ᵀ, (coord_ratW S T γ).symm⟩`. Rewrite using `[coord_apply, coord_apply, Matrix.smul_mul, Matrix.transpose_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_coord : ∀ (D : D7) (S T : HSp D), S.rank ≤ T.rank → ∃ e : WO S T ≃+ WA S T, Continuous e ∧ Continuous e.symm ∧ (∀ x, e x = toTWsmall S T x) ∧ (∀ x, e x ∈ ratL S T ↔ x ∈ ratL T S) ∧ (∀ (a : AE D) (x : WO S T), e (a • x) = a • e x) ∧ (∀ (ψ : AddChar (AF D.host.F) ℂ) (w : WO S T) (f : WA S T → ℂ), heisO ψ S T w (fun x => f (e x)) = fun x => Heisenberg₂ ψ S T (e w) f (e x)) ∧ (∀ (ψ : AddChar (AF D.host.F) ℂ) (f : WA S T → ℂ), IsThetaFunO ψ S T (fun x => f (e x)) ↔ IsThetaFun ψ S T f) ∧ ∀ (Z : Finset (HeightOneSpectrum (𝓞 D.host.F))) (u : WO S T), u ∈ latO S T (L0c D S) (L0c D T) (fun v => v ∉ Z) → e u ∈ latVWS S T Z := by
   intro D S T hr

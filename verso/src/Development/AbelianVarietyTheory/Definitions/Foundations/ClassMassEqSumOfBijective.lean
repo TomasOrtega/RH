@@ -33,12 +33,12 @@ def classMass (Γ K : Subgroup G) : ℝ := ∑ᶠ c : ClassSet Γ K, ((stabOrder
 variable {Γ K K' : Subgroup G}
 
 /- English proof (translation)
-Simplify using `[stabAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_mem_stabAt (Γ K : Subgroup G) (g : G) : (1 : Γ) ∈ stabAt Γ K g := by simp [stabAt]
 
 /- English proof (translation)
-Proceed by induction on `c using Quotient.inductionOn' with`. Consider the case `h g => haveI := h.2 g haveI : Nonempty (stabAt Γ K g) := ⟨⟨1, one_mem_stabAt Γ K g⟩⟩`. Conclude with `Nat.card_pos (α := stabAt Γ K g)`.
+Proceed by induction. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem FiniteClasses.stabOrder_pos (h : FiniteClasses Γ K) (c : ClassSet Γ K) : 0 < stabOrder Γ K c := by
   induction c using Quotient.inductionOn' with
@@ -48,13 +48,13 @@ theorem FiniteClasses.stabOrder_pos (h : FiniteClasses Γ K) (c : ClassSet Γ K)
     exact Nat.card_pos (α := stabAt Γ K g)
 
 /- English proof (translation)
-The claim follows from `finsum_eq_sum_of_fintype _`.
+A detailed English derivation is pending.
 -/
 theorem classMass_eq_sum [Fintype (ClassSet Γ K)] :
     classMass Γ K = ∑ c : ClassSet Γ K, ((stabOrder Γ K c : ℝ))⁻¹ := finsum_eq_sum_of_fintype _
 
 /- English proof (translation)
-Rewrite using `[classMass, ← finsum_comp _ hg, finsum_eq_sum_of_fintype]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem classMass_eq_sum_of_bijective {ι : Type*} [Fintype ι] (g : ι → G)
     (hg : Function.Bijective fun i => (DoubleCoset.mk Γ K (g i) : ClassSet Γ K)) :
@@ -63,7 +63,7 @@ theorem classMass_eq_sum_of_bijective {ι : Type*} [Fintype ι] (g : ι → G)
   rfl
 
 /- English proof (translation)
-Use `finsum_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[← stabOrder_mk, DoubleCoset.out_eq']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem classMass_eq_finsum_out (Γ K : Subgroup G) :
     classMass Γ K = ∑ᶠ c : ClassSet Γ K, ((Nat.card (stabAt Γ K c.out) : ℝ))⁻¹ := by
@@ -71,7 +71,7 @@ theorem classMass_eq_finsum_out (Γ K : Subgroup G) :
   rw [← stabOrder_mk, DoubleCoset.out_eq']
 
 /- English proof (translation)
-Use `haveI := h.1`. Use `haveI := Fintype.ofFinite (ClassSet Γ K)`. Rewrite using `[classMass_eq_sum, ← stabOrder_mk]`. Conclude with `Finset.single_le_sum (f := fun c => ((stabOrder Γ K c : ℝ))⁻¹) (fun _ _ => by positivity) (Finset.mem_univ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FiniteClasses.inv_card_le (h : FiniteClasses Γ K) (g : G) :
     ((Nat.card (stabAt Γ K g) : ℝ))⁻¹ ≤ classMass Γ K := by
@@ -82,15 +82,15 @@ theorem FiniteClasses.inv_card_le (h : FiniteClasses Γ K) (g : G) :
     (Finset.mem_univ _)
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le (inv_pos.2 (by exact_mod_cast h.stabOrder_pos (DoubleCoset.mk Γ K 1))) (h.inv_card_le 1)`.
+A detailed English derivation is pending.
 -/
 theorem FiniteClasses.classMass_pos (h : FiniteClasses Γ K) : 0 < classMass Γ K :=
   lt_of_lt_of_le (inv_pos.2 (by exact_mod_cast h.stabOrder_pos (DoubleCoset.mk Γ K 1))) (h.inv_card_le 1)
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite (ClassSet Γ K)`. Establish `: ∀ c, stabOrder Γ K c = 1` using `fun c => by`. Proceed by induction on `c using Quotient.inductionOn' with`. Consider the case `h g => change Nat.card (stabAt Γ K g) = 1`. Rewrite using `[h g]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[classMass_eq_sum, this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem classMass_of_isNeat [Finite (ClassSet Γ K)] (h : IsNeat Γ K) :
     classMass Γ K = Nat.card (ClassSet Γ K) := by
@@ -101,11 +101,9 @@ theorem classMass_of_isNeat [Finite (ClassSet Γ K)] (h : IsNeat Γ K) :
   simp [classMass_eq_sum, this]
 
 /- English proof (translation)
-Use `haveI := h.1`. Use `haveI : Finite (K ⧸ K'.subgroupOf K) := Nat.finite_of_card_ne_zero hi`. Use `⟨Finite.of_surjective (fun p : ClassSet Γ K × (K ⧸ K'.subgroupOf K) => (DoubleCoset.mk Γ K' (p.1.out * (p.2.out : K)) : ClassSet Γ K')) fun c => ?_, fun g => ?_⟩` and prove the remaining obligations. Proceed by induction on `c using Quotient.inductionOn' with`. Consider the case `h g`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, k, hγ, hk, e⟩` from `DoubleCoset.mk_out_eq_mul Γ K g`. Take `⟨k', e'⟩` from `QuotientGroup.mk_out_eq_mul (K'.subgroupOf K) (⟨k, hk⟩ : K)⁻¹`. Use `⟨(DoubleCoset.mk Γ K g, QuotientGroup.mk (⟨k, hk⟩ : K)⁻¹), ?_⟩` and prove the remaining obligations. Use `((DoubleCoset.eq Γ K' _ _).2 ⟨γ, hγ, (k' : K), k'.2, ?_⟩).symm` and prove the remaining obligations. Simplify using `only [e, e', Subgroup.coe_mul, Subgroup.coe_inv]`.
-
-Use `group`. Use `haveI := h.2 g`. Conclude with `Finite.of_injective (fun x : stabAt Γ K' g => (⟨x.1, hle x.2⟩ : stabAt Γ K g)) fun x y e => Subtype.ext (congrArg (fun z : stabAt Γ K g => z.1) e)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem FiniteClasses.of_le (h : FiniteClasses Γ K) (hle : K' ≤ K) (hi : K'.relIndex K ≠ 0) :
     FiniteClasses Γ K' := by
@@ -126,15 +124,13 @@ theorem FiniteClasses.of_le (h : FiniteClasses Γ K) (hle : K' ≤ K) (hi : K'.r
       fun x y e => Subtype.ext (congrArg (fun z : stabAt Γ K g => z.1) e)
 
 /- English proof (translation)
-Use `haveI := h.1`. Use `haveI : Finite (K ⧸ K'.subgroupOf K) := Nat.finite_of_card_ne_zero hi`. Use `⟨Finite.of_surjective (fun c : ClassSet Γ K' => (DoubleCoset.mk Γ K c.out : ClassSet Γ K)) fun c => ?_, fun g => ?_⟩` and prove the remaining obligations. Proceed by induction on `c using Quotient.inductionOn' with`. Consider the case `h g`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨γ, k, hγ, hk, e⟩` from `DoubleCoset.mk_out_eq_mul Γ K' g`. Conclude with `⟨DoubleCoset.mk Γ K' g, ((DoubleCoset.eq Γ K _ _).2 ⟨γ, hγ, k, hle hk, e⟩).symm⟩`. Use `haveI := h.2 g`. Set `f : stabAt Γ K g → K ⧸ K'.subgroupOf K` to `fun x => QuotientGroup.mk ⟨_, x.2⟩`. Set `s : (K ⧸ K'.subgroupOf K) → stabAt Γ K g` to `fun q => Classical.epsilon (h := ⟨⟨1, one_mem_stabAt Γ K g⟩⟩) fun x => f x = q`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ x, f (s (f x)) = f x` using `fun x => Classical.epsilon_spec (p := fun y => f y = f x) ⟨x, rfl⟩`. Establish `hm : ∀ x : stabAt Γ K g, (s (f x)).1⁻¹ * x.1 ∈ stabAt Γ K' g` using `fun x => by`. Establish `h1 : (g⁻¹ * ((s (f x)).1 : G) * g)⁻¹ * (g⁻¹ * (x.1 : G) * g) ∈ K'` using `(QuotientGroup.eq (s := K'.subgroupOf K)).1 (hs x)`. Express the relevant statement in the definitionally equal form `g⁻¹ * (((s (f x)).1 : G)⁻¹ * (x.1 : G)) * g ∈ K'`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Express the relevant assertion in an equivalent form by its definition. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `group`. Use `Finite.of_injective (fun x => (f x, (⟨_, hm x⟩ : stabAt Γ K' g))) fun x y e => ?_` and prove the remaining obligations. Establish `e1 : f x = f y` using `congrArg Prod.fst e`. Establish `e2 : (s (f x)).1⁻¹ * x.1 = (s (f y)).1⁻¹ * y.1` using `congrArg (fun p => p.2.1) e`. Rewrite `e2` using `[e1]`.
-
-Conclude with `Subtype.ext (mul_left_cancel e2)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FiniteClasses.of_ge (h : FiniteClasses Γ K') (hle : K' ≤ K) (hi : K'.relIndex K ≠ 0) :
     FiniteClasses Γ K := by
@@ -164,7 +160,7 @@ theorem FiniteClasses.of_ge (h : FiniteClasses Γ K') (hle : K' ≤ K) (hi : K'.
     exact Subtype.ext (mul_left_cancel e2)
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Use `haveI := Subgroup.quotient_finite_of_isOpen (K'.subgroupOf K) (hK'.preimage continuous_subtype_val)`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_isOpen [TopologicalSpace G] [IsTopologicalGroup G] (hK : IsCompact (K : Set G))
     (hK' : IsOpen (K' : Set G)) : K'.relIndex K ≠ 0 := by
@@ -173,7 +169,7 @@ theorem relIndex_ne_zero_of_isOpen [TopologicalSpace G] [IsTopologicalGroup G] (
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Use `(h.of_le (K' := K' ⊓ K) inf_le_right ?_).of_ge inf_le_left ?_` and prove the remaining obligations. Rewrite using `[Subgroup.inf_relIndex_right]`. Conclude with `relIndex_ne_zero_of_isOpen hc ho'`. Rewrite using `[Subgroup.inf_relIndex_left]`. Conclude with `relIndex_ne_zero_of_isOpen hc' ho`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FiniteClasses.of_isCompact_isOpen [TopologicalSpace G] [IsTopologicalGroup G] (h : FiniteClasses Γ K)
     (hc : IsCompact (K : Set G)) (ho : IsOpen (K : Set G)) (hc' : IsCompact (K' : Set G))
@@ -187,11 +183,11 @@ section Transport
 variable {G' : Type} [Group G'] (π : G →* G') (Γ : Subgroup G) (L : Subgroup G')
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `c d e`. Take `⟨_, ⟨γ, hγ, rfl⟩, k, hk, e'⟩` from `(DoubleCoset.eq _ _ _ _).1 e`. Rewrite using `[← DoubleCoset.out_eq' _ _ c, ← DoubleCoset.out_eq' _ _ d]`. Use `(DoubleCoset.eq _ _ _ _).2 ⟨γ, hγ, (γ * c.out)⁻¹ * d.out, ?_, by group⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subgroup.mem_comap, map_mul, e', map_inv, map_mul, inv_mul_cancel_left]`. Conclude with `hk`. Introduce `c`. Proceed by induction on `c using Quotient.inductionOn' with`. Consider the case `h g'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `hπ g'`. Take `⟨γ, k, hγ, hk, e⟩` from `DoubleCoset.mk_out_eq_mul Γ (L.comap π) g`. Use `⟨DoubleCoset.mk Γ (L.comap π) g, ((DoubleCoset.eq (Γ.map π) L _ _).2 ⟨π γ, ⟨γ, hγ, rfl⟩, π k, hk, ?_⟩).symm⟩` and prove the remaining obligations. Rewrite using `[e, map_mul, map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_classMap (hπ : Function.Surjective π) :
     Function.Bijective fun c : ClassSet Γ (L.comap π) =>
@@ -213,9 +209,9 @@ theorem bijective_classMap (hπ : Function.Surjective π) :
       rw [e, map_mul, map_mul]
 
 /- English proof (translation)
-Use `⟨Equiv.ofBijective (fun x => ⟨⟨π x.1, x.1, x.1.2, rfl⟩, ?_⟩) ⟨fun x y e => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `h : π (g⁻¹ * x.1 * g) ∈ L` using `x.2`. Rewrite `h` using `[map_mul, map_mul, map_inv]`. Then use the resulting hypothesis. Conclude with `Subtype.ext (Subtype.ext (hΓ x.1.2 y.1.2 (congrArg (fun z => z.1.1) e)))`. Introduce and unpack `⟨⟨_, γ, hγ, rfl⟩, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨⟨γ, hγ⟩, ?_⟩, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `π (g⁻¹ * γ * g) ∈ L`. Rewrite using `[map_mul, map_mul, map_inv]`. Conclude with `h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_stabAt_equiv (hΓ : Set.InjOn π Γ) (g : G) :
     Nonempty (stabAt Γ (L.comap π) g ≃ stabAt (Γ.map π) L (π g)) := by
@@ -230,7 +226,7 @@ theorem nonempty_stabAt_equiv (hΓ : Set.InjOn π Γ) (g : G) :
     exact h
 
 /- English proof (translation)
-Rewrite using `[classMass_eq_finsum_out, classMass, ← finsum_comp _ (bijective_classMap π Γ L hπ)]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Take `⟨e⟩` from `nonempty_stabAt_equiv π Γ L hΓ c.out`. Rewrite using `[stabOrder_mk, Nat.card_congr e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem classMass_comap (hπ : Function.Surjective π) (hΓ : Set.InjOn π Γ) :
     classMass Γ (L.comap π) = classMass (Γ.map π) L := by
@@ -240,9 +236,7 @@ theorem classMass_comap (hπ : Function.Surjective π) (hΓ : Set.InjOn π Γ) :
   rw [stabOrder_mk, Nat.card_congr e]
 
 /- English proof (translation)
-Use `and_congr (bijective_classMap π Γ L hπ).finite_iff ⟨fun h g' => ?_, fun h g => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hπ g'`. Take `⟨e⟩` from `nonempty_stabAt_equiv π Γ L hΓ g`. Conclude with `e.finite_iff.1 (h g)`. Take `⟨e⟩` from `nonempty_stabAt_equiv π Γ L hΓ g`.
-
-Conclude with `e.finite_iff.2 (h _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finiteClasses_comap (hπ : Function.Surjective π) (hΓ : Set.InjOn π Γ) :
     FiniteClasses Γ (L.comap π) ↔ FiniteClasses (Γ.map π) L := by
@@ -258,13 +252,13 @@ end Transport
 open MeasureTheory in
 
 /- English proof (translation)
-Use `haveI := h.1`. Use `haveI := Fintype.ofFinite (ClassSet Γ K)`. Establish `e : ∀ g, Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.stab Γ K g = stabAt Γ K g` using `fun g => by`. Use extensionality with `γ`. Simplify using `only [Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.stab, stabAt, mul_assoc]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measure_fd_toReal μ hK hK1 (fun c : ClassSet Γ K => c.out) ?_ ?_ ?_ h𝓕, classMass_eq_finsum_out, finsum_eq_sum_of_fintype]`. Simplify using `only [e]`. Introduce `x`. Take `⟨γ, hγ, k, hk, e⟩` from `(DoubleCoset.eq Γ K _ x).1 (DoubleCoset.out_eq' Γ K (DoubleCoset.mk Γ K x))`. Conclude with `⟨_, ⟨γ, hγ⟩, ⟨k, hk⟩, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j γ γ' k k' e`. Rewrite using `[← DoubleCoset.out_eq' _ _ i, ← DoubleCoset.out_eq' _ _ j]`. Use `(DoubleCoset.eq _ _ _ _).2 ⟨(γ'⁻¹ * γ : Γ), (γ'⁻¹ * γ).2, (k * k'⁻¹ : K), (k * k'⁻¹).2, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, mul_assoc, mul_assoc, ← mul_assoc (γ : G), ← mul_assoc, ← mul_assoc, mul_assoc _ _ (k : G), e]`. Simplify using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[e]`. Conclude with `h.2 _`.
+A detailed English derivation is pending.
 -/
 theorem FiniteClasses.measure_toReal [MeasurableSpace G] [MeasurableMul G] [Countable Γ] (h : FiniteClasses Γ K)
     (μ : Measure G) [μ.IsMulLeftInvariant] (hK : MeasurableSet (K : Set G)) (hK1 : μ K = 1) {𝓕 : Set G}
@@ -306,7 +300,7 @@ def ratIn : Subgroup (HA R σ J) := HFinIn R σ J
 def swapTens (F E R : Type) [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R] : R ⊗[F] E ≃+* E ⊗[F] R := (Algebra.TensorProduct.comm F R E).toRingEquiv
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem swapTens_sig (x : R ⊗[F] E) :
     swapTens F E R (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ x) = Formalism.UG.sigR σ R (swapTens F E R x) := by
@@ -316,7 +310,7 @@ theorem swapTens_sig (x : R ⊗[F] E) :
   | tmul a x => rfl
 
 /- English proof (translation)
-The claim follows from `Formalism.UG.Final.UJTransport _ _ (Fin M) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ) (Formalism.UG.sigR σ R) (swapTens F E R) (RingHom.ext (swapTens_sig R σ)) (JR R J)`.
+A detailed English derivation is pending.
 -/
 theorem exists_swapPts : ∃ e : HA R σ J ≃* UPts σ J R,
     ∀ g, (e g : GL (Fin M) (E ⊗[F] R)) = bc (swapTens F E R : R ⊗[F] E →+* E ⊗[F] R) (HA.mat R σ J g) :=
@@ -326,18 +320,18 @@ theorem exists_swapPts : ∃ e : HA R σ J ≃* UPts σ J R,
 def swapPts : HA R σ J ≃* UPts σ J R := (exists_swapPts R σ J).choose
 
 /- English proof (translation)
-The claim follows from `(exists_swapPts R σ J).choose_spec g`.
+A detailed English derivation is pending.
 -/
 theorem coe_swapPts (g : HA R σ J) :
     (swapPts R σ J g : GL (Fin M) (E ⊗[F] R)) = bc (swapTens F E R : R ⊗[F] E →+* E ⊗[F] R) (HA.mat R σ J g) :=
   (exists_swapPts R σ J).choose_spec g
 
 /- English proof (translation)
-Establish `key : ∀ u : GL (Fin M) E, bc (swapTens F E R : R ⊗[F] E →+* E ⊗[F] R) (bc (inclR R) u) = bc (inclE (F` using `F) R) u := fun u => Units.ext rfl`. Use extensionality with `x`. Take `⟨g, rfl⟩` from `(swapPts R σ J).surjective x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g', ⟨u, hu, e⟩, e'⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Establish `e'' : swapPts R σ J g' = swapPts R σ J g` using `e'`. Express the relevant statement in the definitionally equal form `_ = ((swapPts R σ J g : UPts σ J R) : GL (Fin M) (E ⊗[F] R))`. Rewrite using `[← e'', coe_swapPts, ← key, e]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨u, hu, e⟩`. Use `⟨g, ⟨u, hu, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `e' : bc (inclE (F` using `F) R) u = ((swapPts R σ J g : UPts σ J R) : GL (Fin M) (E ⊗[F] R)) := e`. Rewrite `e'` using `[coe_swapPts, ← key]`. Conclude with `Units.ext (Matrix.map_injective (swapTens F E R).injective (congrArg Units.val e'))`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_swapPts_rat :
     (ratIn R σ J).map (swapPts R σ J : HA R σ J →* UPts σ J R) =
@@ -370,7 +364,7 @@ def unitaryMass (K : Subgroup (HA (Af F) σ J)) : ℝ :=
 omit [NumberField E] in
 
 /- English proof (translation)
-Rewrite using `[unitaryMass, classMass_comap _ _ _ (swapPts (Af F) σ J).surjective (swapPts (Af F) σ J).injective.injOn, map_swapPts_rat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unitaryMass_comap_swapPts (L : Subgroup (UPts σ J (Af F))) :
     unitaryMass σ J (L.comap (swapPts (Af F) σ J : HA (Af F) σ J →* UPts σ J (Af F))) =
@@ -386,11 +380,9 @@ def stdLevel : Subgroup (HA (Af F) σ J) :=
   ((levelAf σ J).subgroupOf (UPts σ J (Af F))).comap (swapPts (Af F) σ J : HA (Af F) σ J →* UPts σ J (Af F))
 
 /- English proof (translation)
-Establish `hm : ∀ x : n → A, x ∈ stdLat (n` using `n) (A := A) S ↔ ∀ i, x i ∈ S := fun x => ⟨fun h i => by obtain ⟨s, hs⟩ := h i trivial; exact hs ▸ s.2, fun h i _ => ⟨⟨x i, h i⟩, rfl⟩⟩`. Establish `h1 : ∀ g ∈ stabGL (stdLat (n` using `n) (A := A) S), ∀ i j, g.1 i j ∈ S := fun g hg i j => by`. Use `(hm _).1 ((hg (Pi.single j 1)).1 ((hm _).2 fun k => by` as an intermediate fact. Rewrite using `[Pi.single_apply]`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `exacts [one_mem _, zero_mem _])) i`. Simplify using `using this`. Establish `h2 : ∀ m : Matrix n n A, (∀ i j, m i j ∈ S) → ∀ x ∈ stdLat (n` using `n) (A := A) S, m *ᵥ x ∈ stdLat (n := n) (A := A) S := fun m h x hx => (hm _).2 fun i => sum_mem fun j _ => mul_mem (h i j) ((hm _).1 hx j)`. Use `⟨fun h i j => ⟨h1 g h i j, h1 _ (inv_mem h) i j⟩, fun h x => ⟨h2 _ (fun i j => (h i j).1) x, fun hx => ?_⟩⟩` and prove the remaining obligations. Use `h2 _ (fun i j => (h i j).2) _ hx` as an intermediate fact.
-
-Rewrite `this` using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_stabGL_stdLat {A : Type} [CommRing A] (S : Subring A) {n : Type} [Fintype n] [DecidableEq n]
     (g : GL n A) : g ∈ stabGL (stdLat (n := n) (A := A) S) ↔ ∀ i j, g.1 i j ∈ S ∧ (g⁻¹).1 i j ∈ S := by
@@ -408,7 +400,7 @@ theorem mem_stabGL_stdLat {A : Type} [CommRing A] (S : Subring A) {n : Type} [Fi
   rwa [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at this
 
 /- English proof (translation)
-Establish `: g ∈ stdLevel σ J ↔ (swapPts (Af F) σ J g : GL (Fin M) (E ⊗[F] Af F)) ∈ stabGL (stdLat (n` using `Fin M) (A := E ⊗[F] Af F) (tensInt (F := F) (Af F) (intOE E) (intAd F))) := ⟨fun h => h.2, fun h => ⟨(swapPts (Af F) σ J g).2, h⟩⟩`. Rewrite using `[this, mem_stabGL_stdLat, coe_swapPts]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_stdLevel (g : HA (Af F) σ J) : g ∈ stdLevel σ J ↔
     ∀ i j, (HA.mat (Af F) σ J g).1 i j ∈ intTens F E ∧ ((HA.mat (Af F) σ J g)⁻¹).1 i j ∈ intTens F E := by
@@ -419,35 +411,31 @@ theorem mem_stdLevel (g : HA (Af F) σ J) : g ∈ stdLevel σ J ↔
   rfl
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Af F ⊗[F] E) := IsModuleTopology.isTopologicalRing (Af F) _`. Set `L : Submodule (𝓞 E) (Fin 1 → E)` to `Submodule.span (𝓞 E) {fun _ => 1}`. Establish `h1 : (fun _ => 1 : Fin 1 → E) ∈ L` using `Submodule.subset_span rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsp : Submodule.span E (L : Set (Fin 1 → E)) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `: v = v 0 • (fun _ => 1 : Fin 1 → E)` using `by funext i; simp [Subsingleton.elim i 0]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`. Prove the components needed by the constructor for the conclusion. Establish `ho` using `(GlobalTheory.AdLat.OpenLat.isOpen_nsmul_hat F E 1 L hsp).1 1 one_pos`. Establish `hc : Continuous fun w : Af F ⊗[F] E => (fun _ => w : Fin 1 → Af F ⊗[F] E)` using `continuous_pi fun _ => continuous_id`. Use `(intTens F E).toAddSubgroup.isOpen_of_mem_nhds (g := 0) (Filter.mem_of_superset ((ho.preimage hc).mem_nhds ⟨0, zero_mem _, by rw [smul_zero]; rfl⟩) ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Introduce and unpack `w ⟨y, hy, e⟩`. Establish `hw : w = y 0` using `by simpa using congrFun e 0`. Rewrite using `[hw]`. Use `clear e hw`. Proceed by induction on `hy using AddSubgroup.closure_induction with`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Express the relevant statement in the definitionally equal form `((c • (fun _ => 1 : Fin 1 → E)) 0) ⊗ₜ[F] a ∈ tensInt (F := F) (Af F) (intOE E) (intAd F)`. Establish `: ((c • (fun _ => 1 : Fin 1 → E)) 0) ⊗ₜ[F] a = (algebraMap (𝓞 E) E c ⊗ₜ[F] (1 : Af F)) * ((1 : E) ⊗ₜ[F] a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, Pi.smul_apply, Algebra.smul_def]`. Rewrite using `[this]`. Conclude with `mul_mem (Subring.subset_closure (Or.inl ⟨⟨_, c, rfl⟩, rfl⟩)) (Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩))`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `neg x _ hx => exact neg_mem hx`. Take `⟨C, hC, hLC⟩` from `GlobalTheory.StabCompact.exists_compact_latHat F E L (Submodule.fg_span_singleton _)`. Use `⟨(fun y => y 0) '' C, hC.image (continuous_apply 0), fun w hw => ?_⟩` and prove the remaining obligations. Establish `gen : ∀ t : Af F ⊗[F] E, (∀ a ∈ Formalism.MainNotions.StandardLattice.intAf F, ∀ x ∈ L, t • (fun i => a ⊗ₜ[F] x i) ∈ Formalism.MainNotions.StandardLattice.latHat F E (L : Set (Fin 1 → E))) → ∀ y ∈ Formalism.MainNotions.StandardLattice.latHat F E (L : Set (Fin 1 → E)), t • y ∈ For …`. Introduce `t ht y hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz => obtain ⟨a, ha, x, hx, rfl⟩ := hz`. Conclude with `ht a ha x hx`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`. Establish `key : ∀ t ∈ tensInt (F` using `F) (Af F) (intOE E) (intAd F), ∀ y ∈ Formalism.MainNotions.StandardLattice.latHat F E (L : Set (Fin 1 → E)), (swapTens F E (Af F)).symm t • y ∈ Formalism.MainNotions.StandardLattice.latHat F E (L : Set (Fin 1 → E)) := by`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `t ht`. Proceed by induction on `ht using Subring.closure_induction with`. Consider the case `mem z hz`. Break down `hz with ⟨⟨_, c, rfl⟩, rfl⟩ | ⟨b, rfl⟩` into its components or cases. Use `gen _ fun a ha x hx => AddSubgroup.subset_closure ⟨a, ha, c • x, L.smul_mem c hx, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `((1 : Af F) ⊗ₜ[F] algebraMap (𝓞 E) E c) * (a ⊗ₜ[F] x i) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, Pi.smul_apply, Algebra.smul_def]`. Use `gen _ fun a ha x hx => AddSubgroup.subset_closure ⟨b * a, fun v => by rw [map_mul]; exact mul_mem (b.2 v) (ha v), x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((b : Af F) ⊗ₜ[F] (1 : E)) * (a ⊗ₜ[F] x i) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => intro y _`. Rewrite using `[map_zero, zero_smul]`. Conclude with `zero_mem _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Consider the case `one => intro y hy`. Rewrite using `[map_one, one_smul]` and apply the resulting hypothesis. Consider the case `add a b _ _ ha hb => intro y hy`. Rewrite using `[map_add, add_smul]`. Conclude with `add_mem (ha y hy) (hb y hy)`.
-
-Consider the case `neg a _ ha => intro y hy`. Rewrite using `[map_neg, neg_smul]`. Conclude with `neg_mem (ha y hy)`. Consider the case `mul a b _ _ ha hb => intro y hy`. Rewrite using `[map_mul, mul_smul]`.
-
-Conclude with `ha _ (hb y hy)`. Establish `h0` using `key _ hw _ (AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, _, h1, rfl⟩)`. Use `⟨_, hLC _ h0, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(swapTens F E (Af F)).symm (swapTens F E (Af F) w) * ((1 : Af F) ⊗ₜ[F] (1 : E)) = w`. Rewrite using `[RingEquiv.symm_apply_apply, ← Algebra.TensorProduct.one_def, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intTens_open_compact (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
     IsOpen (intTens F E : Set (Af F ⊗[F] E)) ∧
@@ -526,7 +514,7 @@ theorem intTens_open_compact (F E : Type) [Field F] [NumberField F] [Field E] [N
     rw [RingEquiv.symm_apply_apply, ← Algebra.TensorProduct.one_def, mul_one]
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Af F ⊗[F] E) := IsModuleTopology.isTopologicalRing (Af F) _`. Conclude with `inferInstanceAs (IsTopologicalGroup (HR (Af F) σ J))`.
+A detailed English derivation is pending.
 -/
 theorem topGroup_fin : IsTopologicalGroup (HA (Af F) σ J) := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -535,9 +523,9 @@ theorem topGroup_fin : IsTopologicalGroup (HA (Af F) σ J) := by
   exact inferInstanceAs (IsTopologicalGroup (HR (Af F) σ J))
 
 /- English proof (translation)
-Establish `hm : Continuous (HA.mat (Af F) σ J)` using `continuous_subtype_val`. Establish `: (stdLevel σ J : Set (HA (Af F) σ J)) = ⋂ i, ⋂ j, ((fun g => (HA.mat (Af F) σ J g).1 i j) ⁻¹' (intTens F E) ∩ (fun g => ((HA.mat (Af F) σ J g)⁻¹).1 i j) ⁻¹' (intTens F E))`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_stdLevel, Set.mem_iInter, Set.mem_inter_iff, Set.mem_preimage]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => IsOpen.inter ?_ ?_` and prove the remaining obligations. Conclude with `(intTens_open_compact F E).1.preimage ((Units.continuous_val.comp hm).matrix_elem i j)`. Conclude with `(intTens_open_compact F E).1.preimage ((Units.continuous_coe_inv.comp hm).matrix_elem i j)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_stdLevel : IsOpen (stdLevel σ J : Set (HA (Af F) σ J)) := by
   have hm : Continuous (HA.mat (Af F) σ J) := continuous_subtype_val
@@ -552,9 +540,7 @@ theorem isOpen_stdLevel : IsOpen (stdLevel σ J : Set (HA (Af F) σ J)) := by
   · exact (intTens_open_compact F E).1.preimage ((Units.continuous_coe_inv.comp hm).matrix_elem i j)
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI := topGroup_fin σ J`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Take `⟨C, hC, hCe⟩` from `(intTens_open_compact F E).2`. Take `⟨K, hK, hKe⟩` from `GlobalTheory.StabCompact.exists_compact_of_entries (Af F) σ J hJ C hC`.
-
-Conclude with `hK.of_isClosed_subset ((stdLevel σ J).isClosed_of_isOpen (isOpen_stdLevel σ J)) fun g hg => hKe g fun i j => hCe _ ((mem_stdLevel σ J g).1 hg i j).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCompact_stdLevel (hJ : J.det ≠ 0) : IsCompact (stdLevel σ J : Set (HA (Af F) σ J)) := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -568,9 +554,9 @@ theorem isCompact_stdLevel (hJ : J.det ≠ 0) : IsCompact (stdLevel σ J : Set (
 variable {σ J}
 
 /- English proof (translation)
-Use `haveI := topGroup_fin σ J`. Establish `hτ : ∀ τ : E →+* ℂ, τ.comp (σ : E →+* E) = (starRingEnd ℂ).comp τ` using `fun τ => RingHom.ext (hσ.2.2.2 τ)`. Establish `hH : IsHerm (σ : E →+* E) J` using `Matrix.ext fun i j => hJ.1 i j`. Use `FiniteClasses.of_isCompact_isOpen (K := stdLevel σ J) ?_ (isCompact_stdLevel σ J hJ.2) (isOpen_stdLevel σ J) hc ho` and prove the remaining obligations. Rewrite using `[stdLevel, finiteClasses_comap _ _ _ (swapPts (Af F) σ J).surjective (swapPts (Af F) σ J).injective.injOn, map_swapPts_rat]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Formalism.UG.Final.ClassSetFinite F E _ σ J hτ hH hJ.2.isUnit hd, Formalism.UG.Final.AdelicStabFinite F E _ σ J hτ hH hJ.2.isUnit hd⟩`.
+A detailed English derivation is pending.
 -/
 theorem finiteClasses_unitary (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hd : IsTotDef σ J)
     {K : Subgroup (HA (Af F) σ J)} (hc : IsCompact (K : Set (HA (Af F) σ J)))
@@ -588,7 +574,7 @@ theorem finiteClasses_unitary (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hd : 
     Formalism.UG.Final.AdelicStabFinite F E _ σ J hτ hH hJ.2.isUnit hd⟩
 
 /- English proof (translation)
-Establish `hτ : ∀ τ : E →+* ℂ, τ.comp (σ : E →+* E) = (starRingEnd ℂ).comp τ` using `fun τ => RingHom.ext (hσ.2.2.2 τ)`. Establish `hH : IsHerm (σ : E →+* E) J` using `Matrix.ext fun i j => hJ.1 i j`. Rewrite using `[finiteClasses_comap _ _ _ (swapPts (Af F) σ J).surjective (swapPts (Af F) σ J).injective.injOn, map_swapPts_rat]`. Conclude with `⟨Formalism.UG.Final.ClassSetFiniteL F E _ σ J hτ hH hJ.2.isUnit hd Λ hΛ hsp, Formalism.UG.Final.AdelicStabFiniteL F E _ σ J hτ hH hJ.2.isUnit hd Λ hΛ hsp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem finiteClasses_lattice (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hd : IsTotDef σ J)
     (Λ : Submodule (𝓞 E) (Fin M → E)) (hΛ : Module.Finite (𝓞 E) Λ)
@@ -604,7 +590,7 @@ theorem finiteClasses_lattice (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hd : 
     Formalism.UG.Final.AdelicStabFiniteL F E _ σ J hτ hH hJ.2.isUnit hd Λ hΛ hsp⟩
 
 /- English proof (translation)
-The claim follows from `(finiteClasses_unitary hσ hJ hd hc ho).classMass_pos`.
+A detailed English derivation is pending.
 -/
 theorem unitaryMass_pos (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hd : IsTotDef σ J)
     {K : Subgroup (HA (Af F) σ J)} (hc : IsCompact (K : Set (HA (Af F) σ J)))
@@ -626,9 +612,9 @@ def IsFinProj (π : HA (AF F) σ J →* HA (Af F) σ J) : Prop :=
     bc (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom (HA.mat (AF F) σ J g)
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Establish `hi : ∀ x y : AF F ⊗[F] E, (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom x = (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom y → (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom x = (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)). …` using `fun x y h1 h2 => e.injective (Prod.ext (((he x).1.trans h1).trans (he y).1.symm) (((he x).2.trans h2).trans (he y).2.symm))`. Use `⟨fun g => ?_, GlobalTheory.UnitarySplit.gl_glue _ _ hi fun a b => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.UnitarySplit.mem_iff _ _ hi (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ) (GlobalTheory.UnitarySplit.map_s …` as an intermediate fact. Rewrite `this` using `[GlobalTheory.UnitarySplit.map_JR, GlobalTheory.UnitarySplit.map_JR]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Apply the tactic sequence `refine ⟨e.symm (a, b), (he _).1.symm.trans ?_, (he _).2.symm.trans ?_⟩ <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem parts_spec :
     (∀ g : GL (Fin M) (AF F ⊗[F] E), g ∈ HR (AF F) σ J ↔
@@ -650,7 +636,7 @@ theorem parts_spec :
   · refine ⟨e.symm (a, b), (he _).1.symm.trans ?_, (he _).2.symm.trans ?_⟩ <;> simp
 
 /- English proof (translation)
-Use `⟨((bc (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom).comp (HR (AF F) σ J).subtype).codRestrict (HR (Af F) σ J) fun g => (((parts_spec σ J).1 _).1 g.2).2, fun _ => rfl, fun π h => MonoidHom.ext fun g => Subtype.ext (h g)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem existsUnique_isFinProj : ∃! π, IsFinProj σ J π := by
   refine ⟨((bc (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom).comp
@@ -660,7 +646,7 @@ theorem existsUnique_isFinProj : ∃! π, IsFinProj σ J π := by
 variable {σ J} {π : HA (AF F) σ J →* HA (Af F) σ J}
 
 /- English proof (translation)
-Introduce `b` and use `by obtain ⟨g, h1, h2⟩ := (parts_spec σ J).2 1 (HA.mat (Af F) σ J b) refine ⟨⟨g, ((parts_spec σ J).1 g).2 ⟨h1 ▸ one_mem _, h2 ▸ b.2⟩⟩, Subtype.ext ((h _).trans h2)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsFinProj.surjective (h : IsFinProj σ J π) : Function.Surjective π := fun b => by
   obtain ⟨g, h1, h2⟩ := (parts_spec σ J).2 1 (HA.mat (Af F) σ J b)
@@ -669,11 +655,9 @@ theorem IsFinProj.surjective (h : IsFinProj σ J π) : Function.Surjective π :=
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `haveI : Nontrivial (Af F) := by`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 F)`. Conclude with `(Formalism.UG.evalV F ⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField F)⟩).toRingHom.domain_nontrivial`. Use `haveI : Nontrivial (Af F ⊗[F] E) := (Algebra.TensorProduct.includeLeft_injective (R := F) (S := F) (A := Af F) (B := E) (algebraMap F E).injective).nontrivial`. Introduce and unpack `x ⟨u, -, hu⟩ y ⟨v, -, hv⟩ e`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : bc (inclR (F` using `F) (Af F)) u = bc (inclR (F := F) (Af F)) v := by`. Establish `hx` using `h x`. Establish `hy` using `h y`. Rewrite `hx` using `[e, hy]`. Express the relevant statement in the definitionally equal form `bc _ ((HR (AF F) σ J).subtype y) = bc _ ((HR (AF F) σ J).subtype x) at hx`.
-
-Rewrite `hx` using `[← hu, ← hv]`. Conclude with `hx.symm`. Establish `e2 : u = v` using `Units.ext (Matrix.map_injective (inclR (F := F) (E := E) (Af F)).injective (congrArg Units.val e1 : (u : Matrix (Fin M) (Fin M) E).map (inclR (F := F) (Af F)) = (v : Matrix (Fin M) (Fin M) E).map (inclR (F := F) (Af F))))`. Conclude with `Subtype.ext (hu.symm.trans (e2 ▸ hv))`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsFinProj.injOn (h : IsFinProj σ J π) : Set.InjOn π (ratIn (AF F) σ J) := by
   haveI : Nontrivial (Af F) := by
@@ -696,11 +680,11 @@ theorem IsFinProj.injOn (h : IsFinProj σ J π) : Set.InjOn π (ratIn (AF F) σ 
   exact Subtype.ext (hu.symm.trans (e2 ▸ hv))
 
 /- English proof (translation)
-Use extensionality with `b`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨u, hu, e⟩, rfl⟩`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Establish `hx` using `h x`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = bc _ ((HR (AF F) σ J).subtype x) at hx`. Rewrite `hx` using `[← e]`. Conclude with `hx.symm`. Introduce and unpack `⟨u, hu, e⟩`. Establish `hm : bc (inclR (F` using `F) (AF F)) u ∈ HR (AF F) σ J := Formalism.UG.Final.BCMem _ _ (Fin M) (σ : E →+* E) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (inclR (AF F)) (RingHom.ext fun _ => rfl) J u hu`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨⟨_, hm⟩, ⟨u, hu, rfl⟩, Subtype.ext ((h _).trans e)⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsFinProj.map_ratIn (h : IsFinProj σ J π) : (ratIn (AF F) σ J).map π = ratIn (Af F) σ J := by
   ext b
@@ -718,9 +702,9 @@ theorem IsFinProj.map_ratIn (h : IsFinProj σ J π) : (ratIn (AF F) σ J).map π
     exact ⟨⟨_, hm⟩, ⟨u, hu, rfl⟩, Subtype.ext ((h _).trans e)⟩
 
 /- English proof (translation)
-Take `⟨e, he, hc, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Establish `hq : Continuous (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom` using `(continuous_snd.comp hc).congr fun z => (he z).2`. Establish `hm : Continuous (HA.mat (AF F) σ J)` using `continuous_subtype_val`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun g => HA.mat (Af F) σ J (π g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [h _]`. Conclude with `Units.continuous_iff.2 ⟨(Units.continuous_val.comp hm).matrix_map hq, (Units.continuous_coe_inv.comp hm).matrix_map hq⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsFinProj.continuous (h : IsFinProj σ J π) : Continuous π := by
   obtain ⟨e, he, hc, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv F E
@@ -734,16 +718,14 @@ theorem IsFinProj.continuous (h : IsFinProj σ J π) : Continuous π := by
     (Units.continuous_coe_inv.comp hm).matrix_map hq⟩
 
 /- English proof (translation)
-Rewrite using `[classMass_comap π _ K h.surjective h.injOn, h.map_ratIn, unitaryMass]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsFinProj.unitaryMass_eq (h : IsFinProj σ J π) (K : Subgroup (HA (Af F) σ J)) :
     unitaryMass σ J K = classMass (ratIn (AF F) σ J) (K.comap π) := by
   rw [classMass_comap π _ K h.surjective h.injOn, h.map_ratIn, unitaryMass]
 
 /- English proof (translation)
-Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableMulHA σ J`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA σ J`. Use `haveI : Countable (ratIn (AF F) σ J) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma σ J`. Establish `hf : FiniteClasses (ratIn (AF F) σ J) (K.comap π)`. Rewrite using `[finiteClasses_comap π _ K h.surjective h.injOn, h.map_ratIn]`.
-
-Conclude with `finiteClasses_unitary hσ hJ hd hc ho`. Rewrite using `[h.unitaryMass_eq]`. Conclude with `hf.measure_toReal μ (ho.preimage h.continuous).measurableSet hK1 h𝓕`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsFinProj.measure_toReal (h : IsFinProj σ J π) (hσ : IsCMExt F E σ) (hJ : IsHermND σ J)
     (hd : IsTotDef σ J) {K : Subgroup (HA (Af F) σ J)} (hc : IsCompact (K : Set (HA (Af F) σ J)))
@@ -762,7 +744,7 @@ theorem IsFinProj.measure_toReal (h : IsFinProj σ J π) (hσ : IsCMExt F E σ) 
 end Adelic
 
 /- English proof (translation)
-Rewrite using `[classMass_eq_sum_of_bijective (ι := Unit) (fun _ => 1) ⟨fun _ _ _ => rfl, fun c => ?_⟩]`. Establish `: stabAt (⊤ : Subgroup G) ⊤ 1 = Set.univ` using `Set.eq_univ_of_forall fun _ => Subgroup.mem_top _`. Simplify using `[this]`. Proceed by induction on `c using Quotient.inductionOn' with`. Consider the case `h g => exact ⟨(), (DoubleCoset.eq ⊤ ⊤ _ _).2 ⟨g, trivial, 1, trivial, by simp⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 -/
 theorem classMass_top_top (G : Type) [Group G] :
     classMass (⊤ : Subgroup G) ⊤ = ((Nat.card G : ℝ))⁻¹ := by
@@ -773,7 +755,7 @@ theorem classMass_top_top (G : Type) [Group G] :
     | h g => exact ⟨(), (DoubleCoset.eq ⊤ ⊤ _ _).2 ⟨g, trivial, 1, trivial, by simp⟩⟩
 
 /- English proof (translation)
-Establish `e : ClassSet (⊥ : Subgroup G) K = (G ⧸ K)` using `DoubleCoset.left_bot_eq_left_quot K`. Use `haveI : Finite (ClassSet (⊥ : Subgroup G) K) := by rw [e]; infer_instance`. Rewrite using `[classMass_of_isNeat fun g => Set.eq_singleton_iff_unique_mem.2 ⟨one_mem_stabAt _ _ _, fun _ _ => Subsingleton.elim _ _⟩, e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem classMass_bot {G : Type} [Group G] (K : Subgroup G) [K.FiniteIndex] :
     classMass (⊥ : Subgroup G) K = K.index := by
@@ -784,27 +766,27 @@ theorem classMass_bot {G : Type} [Group G] (K : Subgroup G) [K.FiniteIndex] :
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Quotient.finite _, fun _ => inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 theorem finiteClasses_of_finite {G : Type} [Group G] [Finite G] (Γ K : Subgroup G) : FiniteClasses Γ K :=
   ⟨Quotient.finite _, fun _ => inferInstance⟩
 
 /- English proof (translation)
-Rewrite using `[classMass_top_top, Nat.card_eq_fintype_card, Fintype.card_perm]`. Evaluate the numerical expressions using `[Nat.factorial]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 example : classMass (⊤ : Subgroup (Equiv.Perm (Fin 3))) ⊤ = 1 / 6 := by
   rw [classMass_top_top, Nat.card_eq_fintype_card, Fintype.card_perm]
   norm_num [Nat.factorial]
 
 /- English proof (translation)
-Rewrite using `[classMass_bot, Subgroup.index_bot, Nat.card_eq_fintype_card, Fintype.card_perm]`. Evaluate the numerical expressions using `[Nat.factorial]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 example : classMass (⊥ : Subgroup (Equiv.Perm (Fin 3))) ⊥ = 6 := by
   rw [classMass_bot, Subgroup.index_bot, Nat.card_eq_fintype_card, Fintype.card_perm]
   norm_num [Nat.factorial]
 
 /- English proof (translation)
-Introduce `h` and use `by haveI := h.2 1 exact not_finite_iff_infinite.2 inferInstance (Finite.of_injective (fun n : Multiplicative ℤ => (⟨⟨n, trivial⟩, Subgroup.mem_top _⟩ : stabAt (⊤ : Subgroup (Multiplicative ℤ)) ⊤ 1)) fun x y e => congrArg (fun z => z.1.1) e)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ¬ FiniteClasses (⊤ : Subgroup (Multiplicative ℤ)) ⊤ := fun h => by
   haveI := h.2 1
@@ -815,7 +797,7 @@ example : ¬ FiniteClasses (⊤ : Subgroup (Multiplicative ℤ)) ⊤ := fun h =>
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes in
 
 /- English proof (translation)
-Use `haveI : Subsingleton (HA (Af F) σ J) := ⟨fun x y => Subtype.ext (Units.ext (Subsingleton.elim _ _))⟩`. Rewrite using `[unitaryMass, Subsingleton.elim (ratIn (Af F) σ J) ⊥, classMass_bot]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (J : Matrix (Fin 0) (Fin 0) E) : unitaryMass σ J ⊤ = 1 := by

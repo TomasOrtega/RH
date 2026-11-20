@@ -5,15 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CardE
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `UpperTheory.V.AlgebraTools.lemma_B f`. Use `⟨e, fun m E' _ _ r T hk hT => ?_⟩` and prove the remaining obligations. Establish `h` using `he m`. Use `set N := (⨅ s, (IsLocalRing.maximalIdeal A ^ m • (⊤ : Submodule A E)).comap (f s)).map (IsLocalRing.maximalIdeal A ^ m • (⊤ : Submodule A E)).mkQ with hN`. Establish `hne : Module.length A N ≠ ⊤` using `ne_top_of_le_ne_top (ENat.coe_ne_top _) h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : Finite N` using `(UpperTheory.V.AlgebraTools.card_eq_pow_length (A := A) (X := N)).1.2 hne`. Establish `hc` using `(UpperTheory.V.AlgebraTools.card_eq_pow_length (A := A) (X := N)).2 hfin`. Establish `hsub : T ⊆ ((IsLocalRing.maximalIdeal A ^ m • (⊤ : Submodule A E)).liftQ r hk.ge) '' (SetLike.coe N)`. Introduce `Y hY`. Take `⟨Z, rfl, hZ⟩` from `hT Y hY`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, Submodule.mem_map_of_mem (r := Z) ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_iInf]`. Introduce `s`. Rewrite using `[Submodule.mem_comap, ← hk]`. Conclude with `hZ s`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf : (SetLike.coe N).Finite` using `Set.toFinite _`. Use `(Set.ncard_le_ncard hsub (hf.image _)).trans ((Set.ncard_image_le hf).trans ?_)` and prove the remaining obligations. Establish `: (SetLike.coe N).ncard = Nat.card N` using `rfl`. Rewrite using `[this, hc]`. Use `Nat.pow_le_pow_right Nat.card_pos ?_` and prove the remaining obligations.
-
-Rewrite using `[mul_comm]`. Conclude with `ENat.toNat_le_of_le_coe h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fixBd_abs {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
     [Finite (IsLocalRing.ResidueField A)] {E S : Type} [AddCommGroup E] [Module A E] [Module.Finite A E]
@@ -47,13 +45,13 @@ private theorem fixBd_abs {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValuat
   exact ENat.toNat_le_of_le_coe h
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ hO _ n S Φ`. Take `⟨-, hfin, -⟩` from `hO`. Take `⟨C, hC⟩` from `fixBd_abs Φ`. Use `⟨C, fun m => hC m (Mm O n m) (Ideal.Quotient.mkₐ O (maximalIdeal O ^ m)).toLinearMap.mapMatrix _ ?_ fun Y hY => hY⟩` and prove the remaining obligations. Use extensionality with `Z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[Matrix.matrix_eq_sum_single Z]`. Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Z i j ∈ maximalIdeal O ^ m` using `Ideal.Quotient.eq_zero_iff_mem.1 (congrFun (congrFun h i) j)`. Establish `e : Matrix.single i j (Z i j) = Z i j • Matrix.single i j (1 : O)` using `by simp`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem_smul h1 Submodule.mem_top`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_induction_on h (fun a ha Y _ => ?_) fun a b ha hb => by rw [map_add, ha, hb, add_zero]` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mul_mem_right _ _ ha)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.fixCnt :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (S : Type) (Φ : S → Matrix (Fin n) (Fin n) O →ₗ[O] Matrix (Fin n) (Fin n) O), ∃ C : ℕ, ∀ m, {Y : Mm O n m | ∃ Y', red m Y' = Y ∧ ∀ s, red m (Φ s Y') = 0}.ncard ≤ Nat.card (ResidueField O) ^ (m * Module.finrank O (⨅ s, LinearMap.ker (Φ s) : Submodule O (Matrix (Fin n) (Fin n) O)) + C) := by

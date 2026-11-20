@@ -6,21 +6,21 @@ open GlobalTheory.KummerEisensteinGalois
 namespace GlobalTheory.KummerEisensteinGalois
 
 /- English proof (translation)
-Simplify using `[smF, eisF, const0, coefPos, apply_ite f, map_ofNat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_smF_hom {K L : Type} [Field K] [CharZero K] [Field L] [CharZero L] (f : K →+* L) (c : ℤ) (j M : ℕ) (ζ : K)
     (a b : ℤ) (n : ℕ) : f (smF c j M ζ a b n) = smF c j M (f ζ) a b n := by
   simp [smF, eisF, const0, coefPos, apply_ite f, map_ofNat]
 
 /- English proof (translation)
-Simplify using `[cmul, map_sum, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_cmul_hom {K L : Type} [Field K] [CharZero K] [Field L] [CharZero L] (f : K →+* L) (u v : ℕ → K) (n : ℕ) :
     f (cmul u v n) = cmul (fun i => f (u i)) (fun i => f (v i)) n := by
   simp [cmul, map_sum, map_mul]
 
 /- English proof (translation)
-Distinguish the cases in `h : IsUnit x`. Take `⟨u, rfl⟩` from `h`. Simplify using `[MulChar.one_apply_coe]`. Simplify using `[MulChar.map_nonunit _ h]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_one_dirichlet {K L : Type} [Field K] [Field L] (f : K →+* L) (q : ℕ) (x : ZMod q) :
     f ((1 : DirichletCharacter K q) x) = (1 : DirichletCharacter L q) x := by
@@ -30,7 +30,7 @@ theorem map_one_dirichlet {K L : Type} [Field K] [Field L] (f : K →+* L) (q : 
   · simp [MulChar.map_nonunit _ h]
 
 /- English proof (translation)
-Introduce `N p m k _ K L _ _ _ _ f c d w w' ζ S r`. Simplify using `only [pieceT, map_mul, map_neg, map_zpow₀, map_natCast, map_sum, map_cmul_hom, map_smF_hom, map_one_dirichlet]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem map_pieceT_one : ∀ (N p m k : ℕ) [NeZero p] (K L : Type) [Field K] [CharZero K] [Field L] [CharZero L] (f : K →+* L) (c d : ℤ) (w w' : ℤ × ℤ)
     (ζ : K) (S : Finset (GL (Fin 2) (ZMod (p ^ m)))) (r : ℕ),

@@ -16,9 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RefGlob
 
 /- English proof (translation)
-Use `⟨⟨Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hP i).1.1, fun σ i i' hi t => ?_, fun q hq => ?_⟩, fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_smul, (hP j).1.2.1 σ i i' hi t]`. Take `⟨j, -, hj⟩` from `Finset.mem_biUnion.1 (MvPolynomial.support_sum hq)`. Conclude with `(hP j).1.2.2 q (MvPolynomial.support_smul hj)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.coeff_sum]`. Conclude with `O.sum_mem fun j _ => by`. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Conclude with `O.mul_mem (hx j) ((hP j).2 q)`.
+A detailed English derivation is pending.
 -/
 theorem sum_smul_mem_HaO {Ty : Type} {r : Ty → ℕ} {n : ℕ} {k : Type} [Field k] (O : Subring k) (cc : Ty → Ty)
     (isX : Ty → Prop) (a : Ty → ℕ → ℕ) {m : ℕ} (x : Fin m → k) (P : Fin m → MvPolynomial (Letter Ty r n) k)
@@ -36,13 +36,13 @@ theorem sum_smul_mem_HaO {Ty : Type} {r : Ty → ℕ} {n : ℕ} {k : Type} [Fiel
       exact O.mul_mem (hx j) ((hP j).2 q)
 
 /- English proof (translation)
-Take `⟨k, h, e⟩` from `GlobalTheory.DefPt.Model.denseIn_of_initial w T₀ io₀ hini (algebraMap T₀.V T₀.Fr v) (d : T₀.V) (Nat.cast_ne_zero.2 hd)`. Establish `hval : ∀ y : K, valV T₀.V (io₀ y) = w.valuation K y` using `fun y => by`. Rewrite using `[GlobalTheory.PlaceCompletion.valV_eq_pow_of_overLa ho, pow_one]`. Establish `hk : io₀ k = algebraMap T₀.V T₀.Fr (v - d * h)` using `by rw [map_sub, e]; ring`. Establish `hk1 : w.valuation K k ≤ 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hval, hk]`. Conclude with `GlobalTheory.PlaceCompletion.valV_algebraMap_le_one _`. Establish `hdK : (d : K) ≠ 0` using `Nat.cast_ne_zero.2 hd`. Establish `hd0 : w.valuation K (d : K) ≠ 0` using `by simpa using hd`. Take `⟨x, hx⟩` from `w.exists_valuation_sub_lt_of_integer hk1 (Units.mk0 _ hd0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `GlobalTheory.PlaceCompletion.exists_algebraMap_eq_of_valV_le_one (V := T₀.V) (x := io₀ ((algebraMap (𝓞 K) K x - k) / d)) (by`. Rewrite using `[hval, map_div₀]`. Conclude with `div_le_one_of_le₀ hx.le zero_le)`. Use `⟨x, z - h, ?_⟩` and prove the remaining obligations. Establish `h2 : io₀ (x : K) = io₀ k + (d : T₀.Fr) * algebraMap T₀.V T₀.Fr z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, ← map_natCast io₀, ← map_mul, ← map_add, mul_div_cancel₀ _ hdK]`. Conclude with `congrArg io₀ (by simp)`. Rewrite using `[h2, hk]`. Simplify using `only [map_sub, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_integer_congr {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) (T₀ : CDVR)
     (io₀ : K →+* T₀.Fr) (ho : OverLa w T₀.V io₀ 1)
@@ -82,11 +82,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 include hχ
 
 /- English proof (translation)
-Take `⟨blk, hb⟩` from `hB`. Use `⟨blk, fun f => ?_⟩` and prove the remaining obligations. Take `⟨h1, ⟨r, h2⟩, h3⟩` from `hb f`. Use `⟨fun b j hj => (congrArg g (h1 b j hj)).trans (map_zero g), ⟨r, ?_⟩, fun N => ?_⟩` and prove the remaining obligations. Use `h2.map g` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[RingHom.map_det]`. Conclude with `this`. Take `⟨x, hx1, hx2, hx3⟩` from `h3 N`. Use `⟨x, hx1, fun b j => ?_, hx3⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hx2 b j`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g z, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hz, hχ]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCols_map {io₀ : c.F →+* T₀.Fr} {p n : ℕ} {cx : Lt1 Dw → ℕ} {B : ∀ f : Lt1 Dw, Fin (rk f) → Fin n → T₀.V}
     (hB : IsCols c T₀ io₀ p cx B) : IsCols c T (χ.comp io₀) p cx fun f b j => g (B f b j) := by
@@ -105,9 +105,9 @@ theorem isCols_map {io₀ : c.F →+* T₀.Fr} {p n : ℕ} {cx : Lt1 Dw → ℕ}
     simp only [map_add, map_mul, map_pow, map_natCast]
 
 /- English proof (translation)
-Simplify using `only [polyT, polyP, map_prod, map_pow]`. Use `Finset.prod_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 2`. Use extensionality with `ρ i : 2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[GlobalTheory.CombMinor.cMat, hχ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_polyT {n : ℕ} (cx : Lt1 Dw → ℕ) (B : ∀ f : Lt1 Dw, Fin (rk f) → Fin n → T₀.V) :
     MvPolynomial.map χ (polyT B cx) = polyT (fun f b j => g (B f b j)) cx := by
@@ -121,11 +121,11 @@ theorem map_polyT {n : ℕ} (cx : Lt1 Dw → ℕ) (B : ∀ f : Lt1 Dw, Fin (rk f
 end Push
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `p hp la a ha n hn N`. Take `⟨T₀, io₀, ho₀, -, hini⟩` from `GlobalTheory.PlaceCompletion.exists_initial_completion c.F la.1`. Apply the tactic sequence `obtain ⟨B₀, hB₀⟩ := GlobalTheory.IsoCols.exists_isCols E H Dw l Xo c p la T₀ io₀ 1 ho₀ (gap Dw a) n (le_trans (Finset.sum_le_sum fun f _ => by split_ifs <;> simp) hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨-, k, cf, Pi, hPi, hsum⟩` from `GlobalTheory.totalDegree_le_and_exists_combination_of_mem_FFV E H Dw l Xo c T₀ io₀ a n _ (polyT_mem_FFV ha hB₀)`. Use `choose x z hxz using fun i => exists_integer_congr la.1 T₀ io₀ ho₀ hini (p ^ N) (pow_ne_zero N hp.out.ne_zero) (cf i)`. Use `⟨∑ i, (x i : c.F) • Pi i, sum_smul_mem_HaO _ _ _ _ _ _ (fun i => (x i).2) hPi, fun T io e ho => ?_⟩` and prove the remaining obligations. Take `⟨g, χ, -, rfl, h2, -⟩` from `hini T io e ho`. Establish `hχ : ∀ y, χ (algebraMap T₀.V T₀.Fr y) = algebraMap T.V T.Fr (g y)` using `RingHom.congr_fun h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun f b j => g (B₀ f b j), ∑ i, algebraMap T.V T.Fr (g (z i)) • MvPolynomial.map (χ.comp io₀) (Pi i), isCols_map g χ hχ hB₀, sum_smul_mem_HaO _ _ _ _ _ _ (fun i => ⟨_, rfl⟩) (fun i => PullbackSections.ffvMap E H Dw l c a n _ (hPi i) T _), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_polyT g χ hχ, hsum, map_sum, map_sum, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, MvPolynomial.map_map, RingHom.comp_apply, hxz i, map_add, hχ, map_natCast, Nat.cast_pow, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_harmA_congr_polyT : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (p : ℕ) [Fact p.Prime] (la : PointsOfFlagModel.abelian₂ p c) (a : (E →+* ℂ) × ℕ → ℕ), (∀ τ, Antitone fun i => a (τ, i)) → ∀ n : ℕ, ∑ f : Lt1 Dw, 2 * rk f ≤ n → ∀ N : ℕ, ∃ P₁ ∈ harmA (Dw := Dw) c a n, ∀ (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ), OverLa la.1 T.V io e → ∃ (B : ∀ f : Lt1 Dw, Fin (rk f) → Fin n → T.V) (R : MvPolynomial (LtN Dw n) T.Fr), IsCols c T io p (gap Dw a) B ∧ R ∈ FFV (Dw := Dw) T a n ∧ MvPolynomial.map io P₁ = polyT B (gap Dw a) + ((p : T.Fr) ^ N) • R := by
   intro E _ _ _ H Dw l Xo c

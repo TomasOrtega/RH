@@ -12,7 +12,7 @@ def pform {ι : Type} (e : Module.Basis ι ℤ X) (i j : ι) : LinearMap.BilinFo
   (e.coord i).smulRight (e.coord j)
 
 /- English proof (translation)
-Simplify using `[pform]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem pform_apply {ι : Type} (e : Module.Basis ι ℤ X) (i j : ι) (x y : X) :
     pform e i j x y = e.coord i x * e.coord j y := by

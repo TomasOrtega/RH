@@ -24,13 +24,11 @@ namespace GlobalTheory.ArcPsiOn
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.ArcPull
 
 /- English proof (translation)
-Rewrite using `[genRel_iff w t t₀ x z]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hp, H⟩`. Use `⟨hp _, fun J₀ J hJ₀ hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `H (fun k => J (pt k)) (fun k => J₀ (pt k ≫ φ)) (fun k => hJ₀ (pt k ≫ φ)) (fun k => hJ (pt k))`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[Fintype.prod_unique]`. Rewrite using `[val_of t _ z J (fun k => J (pt k)) (fun k => by rw [Category.id_comp]), val_of t₀ _ z J₀ (fun k => J₀ (pt k ≫ φ)) (fun k => by rw [Category.id_comp, hp])]`. Conclude with `e`. Introduce and unpack `⟨hp, H⟩`. Use `⟨fun _ => hp, fun j j₀ h₀ h₁ => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ, eJ⟩` from `exists_good M hM z pt j (fun _ _ _ => rfl) h₁`. Take `⟨J₀, hJ₀, eJ₀⟩` from `exists_good M₀ hM₀ z (fun k => pt k ≫ φ) j₀ (fun _ _ _ => rfl) h₀`. Establish `e` using `H J₀ J hJ₀ hJ`. Rewrite `e` using `[val_of t _ z J j (fun k => by rw [Category.id_comp]; exact eJ k), val_of t₀ _ z J₀ j₀ (fun k => by rw [Category.id_comp, ← eJ₀ k]; exact congrArg J₀ hp.symm), om, eJ, eJ₀ PUnit.unit]`. Rewrite using `[Fintype.prod_unique]`.
-
-Conclude with `e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genRel_iff_val {F : Type} [Field F] {B B₀ : Scheme.{0}} {M : LB B} {M₀ : LB B₀} (hM : M.IsLB) (hM₀ : M₀.IsLB)
     {φ : B ⟶ B₀} (w : LB.Iso M (M₀.pull φ)) {pt : PUnit → (Sp F ⟶ B)} {pt₀ : PUnit → (Sp F ⟶ B₀)} {ε : PUnit → ℤ}
@@ -58,15 +56,13 @@ theorem genRel_iff_val {F : Type} [Field F] {B B₀ : Scheme.{0}} {M : LB B} {M�
     exact e
 
 /- English proof (translation)
-Set `U : (Spec (CommRingCat.of R)).Opens` to `PrimeSpectrum.basicOpen u`. Set `s : Γ(Spec (CommRingCat.of R), ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom u`. Establish `hc : IsUnit ((U.ι.app ⊤).hom s)`. Apply `U.toScheme.toRingedSpace.isUnit_of_isUnit_germ` to reduce the goal to its premises. Introduce `y hy`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: y ∈ U.toScheme.basicOpen ((U.ι.app ⊤).hom s)`. Rewrite using `[← Scheme.preimage_basicOpen]`. Use `show U.ι y ∈ (Spec (CommRingCat.of R)).basicOpen s`. Rewrite using `[basicOpen_eq_of_affine]`. Conclude with `y.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Scheme.mem_basicOpen _ _ y hy).1 this`. Use `⟨hc.unit, fun F _ r z hz p n => ?_⟩` and prove the remaining obligations. Establish `e : (gm z p ⊤ hc.unit).val = toStk p (r u)`. Establish `e₁ : (gm z p ⊤ hc.unit).val = gs (z ≫ U.ι) p ⊤ s` using `(gs_unit z p ⊤ trivial hc.unit).symm.trans (gs_pull z U.ι p ⊤ trivial s)`. Establish `hz' : z ≫ U.ι = specOf r` using `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e₁, hz', gs_eq _ p ⊤ trivial]`. Establish `nat` using `congrArg (fun q => q.hom u) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom r))`. Conclude with `congrArg ((Sp F).presheaf.germ ⊤ p trivial).hom nat.symm`. Establish `h0 : r u ≠ 0` using `fun h => by`. Rewrite `e` using `[h, map_zero]`.
-
-Conclude with `(gm z p ⊤ hc.unit).ne_zero e`. Establish `e' : Units.map (toStk p).toMonoidHom (Units.mk0 _ h0) = gm z p ⊤ hc.unit` using `Units.ext e.symm`. Use `(congrArg Units.val ((map_zpow (gm z p ⊤) hc.unit n).trans ((congrArg (· ^ n) e'.symm).trans (map_zpow _ _ n).symm))).trans ?_` and prove the remaining obligations. Use `show toStk p _ = _`. Rewrite using `[Units.val_zpow_eq_zpow_val, Units.val_mk0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_basicOpen {R : Type} [CommRing R] (u : R) :
     ∃ c : Γ((TW (R := R) (PrimeSpectrum.basicOpen u)).left, ⊤)ˣ, ∀ (F : Type) [Field F] (r : R →+* F)
@@ -102,7 +98,7 @@ theorem exists_unit_basicOpen {R : Type} [CommRing R] (u : R) :
   rw [Units.val_zpow_eq_zpow_val, Units.val_mk0]
 
 /- English proof (translation)
-The claim follows from `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z _ (hJ.mem φ r) _) rfl)`.
+A detailed English derivation is pending.
 -/
 theorem val_scale' {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (c : Γ(Y, ⊤)ˣ) (t : LB.Gen (LB.LinComb L φ ε)) (r : Z ⟶ Y) {z : Z} {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
@@ -112,11 +108,11 @@ theorem val_scale' {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : 
 variable {O' R : Type} [CommRing O'] [IsDomain O'] [CommRing R] [IsDomain R] {D₀ : DegPre O'} {D : DegPre R}
 
 /- English proof (translation)
-Take `⟨t, ht, H⟩` from `(psiUnitOn_univ_iff D₀ y).1 hy`. Take `⟨c, hcu⟩` from `exists_unit_basicOpen u`. Establish `hψ : (toUnit (TW (R` using `R) (PrimeSpectrum.basicOpen u)) ≫ D.c x).left ≫ φ = ((TW (R := R) (PrimeSpectrum.basicOpen u)).hom ≫ spMap f) ≫ (D₀.c y).left := by show ((TW (R := R) (PrimeSpectrum.basicOpen u)).hom ≫ (D.c x).left) ≫ φ = _`. Rewrite using `[Category.assoc, hc, Category.assoc]`. Take `⟨a, ha, va⟩` from `exists_down_om hw D₀.P.isLB D.P.isLB (K := PUnit) (φ' := fun _ => (toUnit (TW (R := R) (PrimeSpectrum.basicOpen u)) ≫ D.c x).left) ((TW (R := R) (PrimeSpectrum.basicOpen u)).hom ≫ spMap f) (fun _ => hψ) t ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨scaleGen (c ^ n) a, scaleGen_isGen _ _ ha, fun F _ r z hz j hj => ?_⟩` and prove the remaining obligations. Establish `p : Sp F` using `(default : PrimeSpectrum F)`. Establish `hzj : z ≫ (TW (R` using `R) (PrimeSpectrum.basicOpen u)).hom ≫ spMap f = j ≫ jK O' := by`. Rewrite using `[← Category.assoc, hz, hj]`. Use `(genRel_iff_val D.P.isLB D₀.P.isLB w _ _ _ p).2 ⟨?_, fun J₀ J hJ₀ hJ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (z ≫ (toUnit (TW (R := R) (PrimeSpectrum.basicOpen u)) ≫ D.c x).left) ≫ φ = j ≫ jK O' ≫ (D₀.c y).left`. Rewrite using `[Category.assoc, hψ, ← Category.assoc, hzj, Category.assoc]`. Establish `e` using `va _ z p J₀ J hJ₀ hJ`. Rewrite `e` using `[Fintype.prod_unique, hzj, ← val_pull hJ₀, val_corr hJ₀ H]`. Rewrite using `[val_pull hJ, val_pull hJ₀, Category.id_comp, Category.id_comp, val_scale' _ _ _ hJ, e, ← hcu F r z hz p n, ← Units.val_mul, mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen_on (f : O' →+* R) (u : R) {φ : D.P.A.left ⟶ D₀.P.A.left} (w : LB.Iso D.P.L (D₀.P.L.pull φ))
     (hw : w.IsGen) (y : D₀.X) (x : D.X) (hc : (D.c x).left ≫ φ = spMap f ≫ (D₀.c y).left)
@@ -149,7 +145,7 @@ theorem exists_gen_on (f : O' →+* R) (u : R) {φ : D.P.A.left ⟶ D₀.P.A.lef
       ← Units.val_mul, mul_left_comm]
 
 /- English proof (translation)
-Take `⟨J₀, hJ₀⟩` from `DegPull.exists_good' hM₀ z`. Establish `e` using `((genRel_iff_val hM hM₀ w _ _ _ z).1 h).2 J₀ J hJ₀ hJ`. Establish `e'` using `((genRel_iff_val hM hM₀ w _ _ _ z).1 h').2 J₀ J hJ₀ hJ`. Rewrite `e` using `[hp, ← e']`. Conclude with `mul_left_cancel (Units.ext e)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eq_of_genRel {F : Type} [Field F] {B B₀ : Scheme.{0}} {M : LB B} {M₀ : LB B₀} (hM : M.IsLB) (hM₀ : M₀.IsLB)
     {φ : B ⟶ B₀} {w : LB.Iso M (M₀.pull φ)} {pt pt' : PUnit → (Sp F ⟶ B)} {pt₀ : PUnit → (Sp F ⟶ B₀)} {ε : PUnit → ℤ}
@@ -163,13 +159,11 @@ theorem val_eq_of_genRel {F : Type} [Field F] {B B₀ : Scheme.{0}} {M : LB B} {
   exact mul_left_cancel (Units.ext e)
 
 /- English proof (translation)
-Establish `sep : D.P.A.left.IsSeparated`. Use `D.P.isAb.proper` as an intermediate fact. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← terminal.comp_from D.P.A.hom]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨lam, hl⟩ : ∃ lam : Sp F ⟶ (jK R ⁻¹ᵁ U).toScheme, lam ≫ (jK R ⁻¹ᵁ U).ι = jFK (R` from `R) F := ⟨IsOpenImmersion.lift _ _ (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `TauPull.jK_mem _ U hU), IsOpenImmersion.lift_fac _ _ _⟩`. Establish `hκ : (lam ≫ jK R ∣_ U) ≫ U.ι = jFK (R` using `R) F ≫ jK R := by`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, morphismRestrict_ι, ← Category.assoc, hl]`. Establish `p : Sp F` using `(default : PrimeSpectrum F)`. Establish `hss : Subsingleton (Spec (CommRingCat.of (FractionRing R)))` using `inferInstanceAs (Subsingleton (PrimeSpectrum (FractionRing R)))`. Use `TauPull.corr_of_dense D.P.isLB lam p (fun V ⟨y, hy⟩ => ?_) fun J hJ => ?_` and prove the remaining obligations. Rewrite using `[show lam p = y from Subtype.ext (Subsingleton.elim _ _)]`.
-
-Conclude with `hy`. Rewrite using `[val_pull hJ, val_pull hJ, hl]`. Conclude with `H _ hκ p J hJ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corr_of_geom (U : (Spec (CommRingCat.of R)).Opens) (hU : (U : Set (Spec (CommRingCat.of R))).Nonempty)
     (x : D.X) (s : LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (toUnit (TW U) ≫ D.c x).left) (fun _ => -1)))
@@ -203,13 +197,13 @@ end GlobalTheory.ArcPsiOn
 open GlobalTheory.ArcPsiOn GlobalTheory.ArcPull ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dm l Xo c O _ β Y O' _ _ b a R _ _ I f hf u hu χ W`. Take `⟨-, s2, -, -, s5, s6⟩` from `W.spec`. Use `choose s hs H using fun x : W.P.D.toPre.X => exists_gen_on f u W.w s2 (W.e.symm x) x (by simpa only [LinearEquiv.apply_symm_apply] using s5 (W.e.symm x)) (a.gen _) (a.be (W.e.symm x) (W.e.symm x) / 2)`. Use `⟨⟨s, hs, fun x => ?_⟩, fun F _ _ r z hz hr y => ?_⟩` and prove the remaining obligations. Set `F` to `AlgebraicClosure (FractionRing R)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : Algebra (FractionRing O') F := ((algebraMap (FractionRing R) F).comp (fracMap hf)).toAlgebra`. Establish `hF : ∀ x, algebraMap (FractionRing O') F (algebraMap O' _ x) = algebraMap (FractionRing R) F (algebraMap R _ (f x))` using `fun x => congrArg (algebraMap (FractionRing R) F) (fracMap_algebraMap hf x)`. Use `corr_of_geom _ ⟨⟨⊥, Ideal.isPrime_bot⟩, hu⟩ x (s x) F fun z hz p J hJ => ?_` and prove the remaining obligations. Establish `hj : jFK (R` using `R) F ≫ jK R = specOf ((algebraMap (FractionRing R) F).comp (algebraMap R _)) := (spMap_comp _ _).symm`. Establish `k` using `H x F _ z (hz.trans hj) (jFK (R := O') F) ((spMap_comp _ _).symm.trans ((congrArg spMap (RingHom.ext hF)).trans (spMap_comp f _)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k'` using `(s6 F _ hF rfl).1 (W.e.symm x)`. Rewrite `k'` using `[LinearEquiv.apply_symm_apply]`. Establish `e` using `val_eq_of_genRel W.P.D.toPre.P.isLB a.D₀.P.isLB (by show z ≫ (TW (R := R) (PrimeSpectrum.basicOpen u)).hom ≫ (W.P.D.toPre.c x).left = jFK (R := R) F ≫ jK R ≫ (W.P.D.toPre.c x).left`. Rewrite using `[← Category.assoc, hz, Category.assoc]) k k' p hJ`. Rewrite `e` using `[val_pull hJ, val_pull hJ, Category.id_comp, Category.id_comp]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `k` using `H (W.e y) F r z hz (jFK (R := O') F) ((spMap_comp _ _).symm.trans ((congrArg spMap (RingHom.ext hr)).trans (spMap_comp f r)))`. Rewrite `k` using `[LinearEquiv.symm_apply_apply]`. Conclude with `k`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.arcWit_psiOn_basicOpen : ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Geo.Tor.Host E) (Dm : Geo.Tor.Datum H) (l : Geo.Tor.Level H) (Xo : Geo.Tor.Moduli Dm l) (c : Geo.Tor.Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Geo.Tor.Model Xo c β) (O' : Type) [CommRing O'] [IsDomain O'] (b : O →+* O') (a : Geo.Tor.ArcIn Dm l β O' b) (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (f : O' →+* R), Function.Injective f → ∀ (u : R), u ≠ 0 → ∀ (χ : Geo.Tor.Sp R ⟶ Y.X) (W : Geo.Tor.ArcWit Y a I f u χ), ∃ ψW : PsiOn W.P.D.toPre (PrimeSpectrum.basicOpen u), ∀ (F : Type) [Field F] [Algebra (FractionRing O') F] (r : R →+* F) (z : Spec (CommRingCat.of F) ⟶ (TW (R := R) (PrimeSpectrum.basicOpen u)).left), z ≫ (TW (R := R) (PrimeSpectrum.basicOpen u)).hom = specOf r → (∀ x, algebraMap (FractionRing O') F (algebraMap O' _ x) = r (f x)) → ∀ y, Geo.Tor.GenRel W.w (LB.pullGen _ _ _ (ψW.psi (W.e y)) z) (LB.pullGen _ _ _ (a.D₀.psi y) (jFK (R := O') F)) (r u ^ (a.be y y / 2)) := by
   intro E _ _ _ H Dm l Xo c O _ β Y O' _ _ b a R _ _ I f hf u hu χ W

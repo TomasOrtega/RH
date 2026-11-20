@@ -27,7 +27,7 @@ structure LevelF {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F �
     ∃ κ, FlagAt M m r A κ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨H.cont, H.away, fun w hw => by obtain ⟨A, hA, χ, κ, h1, h2, h3, -⟩ := H.above w hw exact ⟨A, hA, κ, χ, h1, h2, h3⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem LevelF.of_level {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
     {n M : ℕ} {m : Fin n → ℤ} {r : G F Ω →* GL (Fin n) (Qbar l)} (H : Level l M m r) : LevelF l M m r :=

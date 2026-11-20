@@ -7,13 +7,13 @@ open UpperTheory.V.Af.Bc (cPl)
 open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm UpperTheory.V.Z.Tf.GaloisFromTraceFormula
 
 /- English proof (translation)
-Introduce `mw dw E _ _ _ n l D hD τ`. Establish `hτ` using `hD τ`. Break down `InfinitePlace.embedding_mk_eq τ with h | h` into its components or cases. Use `⟨l (InfinitePlace.mk τ), ?_⟩` and prove the remaining obligations. Establish `h1` using `(mw E n l (InfinitePlace.mk τ)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[h]`. Rewrite using `[hτ, h1]`. Take `⟨lam, hlam⟩` from `dw n (l (InfinitePlace.mk τ))`. Use `⟨lam, ?_⟩` and prove the remaining obligations. Establish `hc : ComplexEmbedding.conjugate (InfinitePlace.mk τ).embedding = τ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h]`. Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `h2` using `(mw E n l (InfinitePlace.mk τ)).2`. Rewrite `h2` using `[hc]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hτ, h2, hlam]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Z.Tf.GaloisFromTraceFormula.regOf :
     MWAt → DualWt → RegOf := by

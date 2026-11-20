@@ -10,13 +10,13 @@ section General
 variable {R : Type*} [CommRing R] {M : Type*} [AddCommGroup M] [Module R M]
 
 /- English proof (translation)
-Set `g : M →ₗ[R] (ι → R ⧸ Ideal.span {a})` to `LinearMap.pi fun i => (Ideal.span {a} : Ideal R).mkQ ∘ₗ b.coord i`. Establish `hg : ∀ x i, g x i = Ideal.Quotient.mk (Ideal.span {a}) (b.repr x i)` using `fun _ _ => rfl`. Establish `hs : Function.Surjective g`. Introduce `y`. Use `choose c hc using fun i => Ideal.Quotient.mk_surjective (y i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b.equivFun.symm c, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hg, ← hc i, ← b.equivFun_apply, LinearEquiv.apply_symm_apply]`. Establish `hk : (a • ⊤ : Submodule R M) = LinearMap.ker g`. Use extensionality with `x`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists, LinearMap.mem_ker, funext_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hg, Pi.zero_apply, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, -, rfl⟩ i`. Conclude with `⟨b.repr y i, by simp [mul_comm]⟩`. Introduce `h choose c hc using h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b.equivFun.symm c, trivial, b.equivFun.injective (funext fun i => ?_)⟩` and prove the remaining obligations. Rewrite using `[map_smul, LinearEquiv.apply_symm_apply, b.equivFun_apply, ← hc i, Pi.smul_apply, smul_eq_mul, mul_comm]`. Conclude with `⟨Submodule.quotEquivOfEq _ _ hk ≪≫ₗ g.quotKerEquivOfSurjective hs⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_quotient_smul_top_equiv_pi {ι : Type*} [Finite ι] (b : Module.Basis ι R M)
     (a : R) :
@@ -44,7 +44,7 @@ theorem nonempty_quotient_smul_top_equiv_pi {ι : Type*} [Finite ι] (b : Module
   exact ⟨Submodule.quotEquivOfEq _ _ hk ≪≫ₗ g.quotKerEquivOfSurjective hs⟩
 
 /- English proof (translation)
-Rewrite using `[(nonempty_quotient_smul_top_equiv_pi (Module.finBasis R M) a).some.length_eq, Module.length_pi, mul_comm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem length_quotient_smul_top_of_free [Nontrivial R] [Module.Free R M] [Module.Finite R M]
     (a : R) :
@@ -55,9 +55,9 @@ theorem length_quotient_smul_top_of_free [Nontrivial R] [Module.Free R M] [Modul
   simp
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Submodule.submoduleOf, Submodule.mem_comap, Submodule.mem_smul_pointwise_iff_exists, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h⟩`. Conclude with `⟨⟨y, hy⟩, trivial, Subtype.ext h⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, -, rfl⟩`. Conclude with `⟨y, y.2, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem submoduleOf_smul_self (A : Submodule R M) (a : R) :
     (a • A).submoduleOf A = (a • ⊤ : Submodule R A) := by
@@ -71,7 +71,7 @@ theorem submoduleOf_smul_self (A : Submodule R M) (a : R) :
     exact ⟨y, y.2, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[relLength_def, submoduleOf_smul_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relLength_smul_self_eq_length (A : Submodule R M) (a : R) :
     relLength A (a • A) = Module.length R (A ⧸ (a • ⊤ : Submodule R A)) := by
@@ -86,14 +86,14 @@ open IsDiscreteValuationRing
 variable {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
 
 /- English proof (translation)
-The claim follows from `Ring.ord_eq_addVal a`.
+A detailed English derivation is pending.
 -/
 theorem length_quotient_span_singleton_dvr (a : R) :
     Module.length R (R ⧸ Ideal.span {a}) = addVal R a :=
   Ring.ord_eq_addVal a
 
 /- English proof (translation)
-Rewrite using `[addVal_pow, addVal_uniformizer hϖ, nsmul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem addVal_irreducible_pow {ϖ : R} (hϖ : Irreducible ϖ) (e : ℕ) :
     addVal R (ϖ ^ e) = e := by
@@ -104,7 +104,7 @@ section Free
 variable (M : Type*) [AddCommGroup M] [Module R M] [Module.Free R M] [Module.Finite R M]
 
 /- English proof (translation)
-Rewrite using `[length_quotient_smul_top_of_free, length_quotient_span_singleton_dvr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem length_quotient_smul_top_dvr (a : R) :
     Module.length R (M ⧸ (a • ⊤ : Submodule R M)) = addVal R a * (Module.finrank R M : ℕ∞) := by
@@ -116,7 +116,7 @@ variable {V : Type*} [AddCommGroup V] [Module R V] [Module.IsTorsionFree R V]
   {A : Submodule R V}
 
 /- English proof (translation)
-Establish `: Module.Finite R A` using `Module.Finite.iff_fg.mpr hA`. Rewrite using `[relLength_smul_self_eq_length, length_quotient_smul_top_dvr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem relLength_smul_self (hA : A.FG) (a : R) :
     relLength A (a • A) = addVal R a * (Module.finrank R A : ℕ∞) := by
@@ -124,21 +124,21 @@ theorem relLength_smul_self (hA : A.FG) (a : R) :
   rw [relLength_smul_self_eq_length, length_quotient_smul_top_dvr]
 
 /- English proof (translation)
-Rewrite using `[relLength_smul_self hA, hn, Nat.cast_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relLength_smul_self_of_addVal_eq (hA : A.FG) {a : R} {n : ℕ} (hn : addVal R a = n) :
     relLength A (a • A) = ((n * Module.finrank R A : ℕ) : ℕ∞) := by
   rw [relLength_smul_self hA, hn, Nat.cast_mul]
 
 /- English proof (translation)
-The claim follows from `relLength_smul_self_of_addVal_eq hA (addVal_irreducible_pow hϖ e)`.
+A detailed English derivation is pending.
 -/
 theorem relLength_irreducible_pow_smul_self (hA : A.FG) {ϖ : R} (hϖ : Irreducible ϖ) (e : ℕ) :
     relLength A (ϖ ^ e • A) = ((e * Module.finrank R A : ℕ) : ℕ∞) :=
   relLength_smul_self_of_addVal_eq hA (addVal_irreducible_pow hϖ e)
 
 /- English proof (translation)
-Rewrite using `[relLength_smul_self hA]`. Conclude with `WithTop.mul_ne_top (addVal_eq_top_iff.not.mpr ha) (ENat.coe_ne_top _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relLength_smul_self_ne_top (hA : A.FG) {a : R} (ha : a ≠ 0) :
     relLength A (a • A) ≠ ⊤ := by
@@ -146,7 +146,7 @@ theorem relLength_smul_self_ne_top (hA : A.FG) {a : R} (ha : a ≠ 0) :
   exact WithTop.mul_ne_top (addVal_eq_top_iff.not.mpr ha) (ENat.coe_ne_top _)
 
 /- English proof (translation)
-The claim follows from `(lengthCommensurable_iff_of_ge (Submodule.smul_le_self_of_tower a A)).mpr (relLength_smul_self_ne_top hA ha)`.
+A detailed English derivation is pending.
 -/
 theorem lengthCommensurable_smul_self (hA : A.FG) {a : R} (ha : a ≠ 0) :
     LengthCommensurable A (a • A) :=
@@ -154,7 +154,7 @@ theorem lengthCommensurable_smul_self (hA : A.FG) {a : R} (ha : a ≠ 0) :
     (relLength_smul_self_ne_top hA ha)
 
 /- English proof (translation)
-Establish `ha : a ≠ 0` using `addVal_eq_top_iff.not.mp (hn ▸ ENat.coe_ne_top n)`. Rewrite using `[← Nat.cast_mul, (lengthCommensurable_smul_self hA ha).signedLength_eq_natCast_iff_of_ge (Submodule.smul_le_self_of_tower a A), relLength_smul_self_of_addVal_eq hA hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem signedLength_smul_self_of_addVal_eq (hA : A.FG) {a : R} {n : ℕ} (hn : addVal R a = n) :
     signedLength A (a • A) = (n : ℤ) * (Module.finrank R A : ℤ) := by
@@ -163,7 +163,7 @@ theorem signedLength_smul_self_of_addVal_eq (hA : A.FG) {a : R} {n : ℕ} (hn : 
     (Submodule.smul_le_self_of_tower a A), relLength_smul_self_of_addVal_eq hA hn]
 
 /- English proof (translation)
-The claim follows from `signedLength_smul_self_of_addVal_eq hA (ENat.coe_toNat (addVal_eq_top_iff.not.mpr ha)).symm`.
+A detailed English derivation is pending.
 -/
 theorem signedLength_smul_self (hA : A.FG) {a : R} (ha : a ≠ 0) :
     signedLength A (a • A) = ((addVal R a).toNat : ℤ) * (Module.finrank R A : ℤ) :=
@@ -172,7 +172,7 @@ theorem signedLength_smul_self (hA : A.FG) {a : R} (ha : a ≠ 0) :
 end DVR
 
 /- English proof (translation)
-Rewrite using `[relLength_irreducible_pow_smul_self Module.Finite.fg_top PadicInt.irreducible_p]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example (p : ℕ) [Fact p.Prime] :
     relLength (⊤ : Submodule ℤ_[p] (Fin 2 → ℤ_[p])) ((p : ℤ_[p]) ^ 3 • ⊤) = 6 := by

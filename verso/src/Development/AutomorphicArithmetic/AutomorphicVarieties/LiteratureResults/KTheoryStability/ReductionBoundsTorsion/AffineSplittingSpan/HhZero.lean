@@ -10,9 +10,9 @@ open PrismSpan
 variable {P Q : Type} [Group P] [Group Q]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x y`. Unfold `PInv at hF`. Establish `h` using `hF (s u)⁻¹ (fun i => x i * u) y`. Simplify using `only [map_inv, hs] at h`. Use `show F (fun i => x i * u) y = F x (fun j => (s u)⁻¹ * y j * s u * (s u)⁻¹)`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hu (x i), inv_mul_cancel_left]`. Use function extensionality and compare the values at `j group`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ru_eq (pr : P →* Q) (s : Q →* P) (hs : ∀ g, pr (s g) = g) (u : Q) (hu : ∀ g, g * u = u * g)
     {a b : ℕ} {F : Bi P Q a b} (hF : PInv pr F) : Ru u F = Tc (s u) (Rt (s u)⁻¹ F) := by

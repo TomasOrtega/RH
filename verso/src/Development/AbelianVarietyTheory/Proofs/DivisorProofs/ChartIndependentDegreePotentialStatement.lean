@@ -7,7 +7,7 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ChernWeilLine.glueMeas_real_sub_eq_mInt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChartIndependentDegreePotential.lean&line=21#L21)
 -/

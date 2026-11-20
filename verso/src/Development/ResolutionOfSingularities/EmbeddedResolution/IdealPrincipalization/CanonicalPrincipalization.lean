@@ -19,7 +19,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Repeat the step `intro _` while it applies. Name the introduced variables `h`. Conclude with `isNoetherian_of_isBlowupAlongIdealSheaf h`.
+A detailed English derivation is pending.
 -/
 theorem blowupPreservesNoetherian : BlowupPreservesNoetherian.{u} := by
   repeat intro _
@@ -37,7 +37,7 @@ def canonicalPrincipalization (hres : FunctorialResolution.Blowup.StrictTransfor
   (canonicalAlgorithmRules hres).principalization hrad
 
 /- English proof (translation)
-The claim follows from `PrincipalizationRules.isFunctorialPrincipalization_principalization (canonicalAlgorithmRules hres) hB hrad hemb`.
+A detailed English derivation is pending.
 -/
 theorem isFunctorialPrincipalization_canonicalPrincipalization (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension) (hrad : SmoothSubschemeIdealIsRadical.{u})

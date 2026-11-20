@@ -4,7 +4,7 @@ open CategoryTheory Limits
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : Nat.card B = Nat.card (B ⧸ LinearMap.ker d) * Nat.card (LinearMap.ker d)` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup (LinearMap.ker d).toAddSubgroup`. Rewrite using `[h1, Nat.card_congr d.quotKerEquivRange.toEquiv, e₃, e₁, Nat.card_congr g.quotKerEquivRange.toEquiv, e₂, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCard_eq_coker_mul_ker_of_exact {R : Type} [Ring R] {A A' B D D' : Type}
     [AddCommGroup A] [AddCommGroup A'] [AddCommGroup B] [AddCommGroup D] [AddCommGroup D']
@@ -19,13 +19,13 @@ theorem natCard_eq_coker_mul_ker_of_exact {R : Type} [Ring R] {A A' B D D' : Typ
     Nat.card_congr g.quotKerEquivRange.toEquiv, e₂, mul_comm]
 
 /- English proof (translation)
-Introduce `p C G π hz hS n`. Establish `hmul0 : ∀ k, HomologicalComplex.homologyMap ((p : ℤ) • 𝟙 C) k = (p : ℤ) • 𝟙 _`. Introduce `k`. Use `(HomologicalComplex.homologyFunctor (ModuleCat.{0} ℤ) (ComplexShape.up ℕ) k).map_zsmul (f := 𝟙 C) (r := (p : ℤ))` as an intermediate fact. Rewrite `this` using `[CategoryTheory.Functor.map_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hmul : ∀ k, (HomologicalComplex.homologyMap ((p : ℤ) • 𝟙 C) k).hom = (p : ℤ) • (LinearMap.id : C.homology k →ₗ[ℤ] C.homology k)`. Introduce `k`. Rewrite using `[hmul0]`. Use extensionality with `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `e2` using `(hS.homology_exact₂ n).moduleCat_range_eq_ker`. Establish `e3` using `(hS.homology_exact₃ n (n+1) rfl).moduleCat_range_eq_ker`. Establish `e1` using `(hS.homology_exact₁ n (n+1) rfl).moduleCat_range_eq_ker`. Simplify using `only at e1 e2 e3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1`, `e2` using `[hmul]`. Conclude with `natCard_eq_coker_mul_ker_of_exact _ _ _ _ e2 e3 e1`.
+A detailed English derivation is pending.
 -/
 theorem natCard_homology_of_shortExact_mul : ∀ (p : ℕ) (C G : CochainComplex (ModuleCat.{0} ℤ) ℕ) (π : C ⟶ G) (hz : ((p : ℤ) • 𝟙 C) ≫ π = 0), (ShortComplex.mk ((p : ℤ) • 𝟙 C) π hz).ShortExact → ∀ n : ℕ, Nat.card (G.homology n) = Nat.card ((C.homology n) ⧸ LinearMap.range ((p : ℤ) • (LinearMap.id : C.homology n →ₗ[ℤ] C.homology n))) * Nat.card (LinearMap.ker ((p : ℤ) • (LinearMap.id : C.homology (n + 1) →ₗ[ℤ] C.homology (n + 1)))) := by
   intro p C G π hz hS n

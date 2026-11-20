@@ -15,7 +15,7 @@ open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.LatVal ReciprocityTheory.
 namespace GlobalTheory.WpFam.LatConst
 
 /- English proof (translation)
-Establish `h1 : (tauPair τ).ω₁ = (τ : ℂ)` using `rfl`. Establish `h2 : (tauPair τ).ω₂ = 1` using `rfl`. Rewrite using `[area, h1, h2]`. Simplify using `[abs_of_pos τ.im_pos]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem area_tauPair (τ : ℍ) : area (tauPair τ) = τ.im := by
   have h1 : (tauPair τ).ω₁ = (τ : ℂ) := rfl
@@ -24,9 +24,9 @@ theorem area_tauPair (τ : ℍ) : area (tauPair τ) = τ.im := by
   simp [abs_of_pos τ.im_pos]
 
 /- English proof (translation)
-Establish `h1 : (tauPair τ).ω₁ = (τ : ℂ)` using `rfl`. Establish `h2 : (tauPair τ).ω₂ = 1` using `rfl`. Establish `h` using `(etaEisenstein (tauPair τ)).2`. Rewrite `h` using `[h1, h2]`. Rewrite using `[h, one_mul, ← LegendreModelEllipticTorsion.tsum_e2Summand]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun m => ?_` and prove the remaining obligations. Rewrite using `[EisensteinSeries.e2Summand]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Simplify using `[EisensteinSeries.eisSummand, zpow_ofNat]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem wEta_one (τ : ℍ) : wEta (tauPair τ) 1 = EisensteinSeries.G2 τ := by
   have h1 : (tauPair τ).ω₁ = (τ : ℂ) := rfl
@@ -40,7 +40,7 @@ theorem wEta_one (τ : ℍ) : wEta (tauPair τ) 1 = EisensteinSeries.G2 τ := by
   simp [EisensteinSeries.eisSummand, zpow_ofNat]
 
 /- English proof (translation)
-Introduce `τ`. Use `⟨?_, area_tauPair τ⟩` and prove the remaining obligations. Establish `h` using `etaSplit (tauPair τ) 1`. Rewrite `h` using `[wEta_one, area_tauPair]`. Rewrite using `[G2s, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

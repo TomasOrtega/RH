@@ -44,9 +44,9 @@ def VacFixed (D : D7) : Prop :=
   ∀ v : HeightOneSpectrum (𝓞 D.host.F), ExtUnramAt D v → VacFixedAt D v
 
 /- English proof (translation)
-Establish `h : Formalism.L2.Theta.mt V 1 = 1` using `by simp [Formalism.L2.Theta.mt]`. Use `⟨?_, fun w _ => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[h, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[h, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem inStabAt_one (V : HSp D) (L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (v : HeightOneSpectrum (𝓞 D.host.F)) : InStabAt V L v 1 := by
@@ -57,7 +57,7 @@ theorem inStabAt_one (V : HSp D) (L : Submodule (𝓞 D.host.E) (Fin V.rank → 
   · rw [h, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `hle : (latO S T LS LT fun w => w = v) ≤ latO S T LS LT fun _ => True`. Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `x ⟨α, hα, -, h⟩`. Conclude with `⟨α, hα, fun w hw => absurd trivial hw, h⟩`. Conclude with `⟨fun u hu => hf.1 u (hle hu), fun e he u hu => hf.2 e he u (hle hu)⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem isLatVac_at_of_all {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)}
     {LT : Set (Fin T.rank → D.host.E)} {f : WO S T → ℂ}

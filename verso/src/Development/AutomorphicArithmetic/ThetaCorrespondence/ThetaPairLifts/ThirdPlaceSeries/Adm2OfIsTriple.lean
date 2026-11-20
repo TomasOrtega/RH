@@ -26,25 +26,25 @@ section Comparison₂
 variable {Y : NTw D.R D.host D.what₂ D.LL0 D.nd} {i : Y.Tw} {b : Bool}
 variable {C : CharFrame D} {art : Neutral.B1.Ideles D.host.E →* GlobalTheory.HeckeGal.Gab D.host.E D.nd.Om}
 /- English proof (translation)
-Establish `: Fact (D.what₂.places.resChar w).Prime` using `⟨D.what₂.places.resChar_prime w⟩`. Establish `hl` using `h.induces.resChar`. Take `⟨κ, hκ⟩` from `exists_residue_lift ρ (red.comp (toZ ρ)) (by rw [← hl]; exact CharP.cast_eq_zero _ _)`. Use `⟨κ, h.good, h.occurs, hl, fun x => ?_, ⟨(Units.map (red.comp (toZ ρ)).toMonoidHom).comp ν, fun v hv A hA t ht => ?_, fun g => ?_⟩, fun k hk v => ?_⟩` and prove the remaining obligations. Take `⟨-, -, hint, -⟩` from `GlobalTheory.CoefEmbed.embedding_closed_integral _ _ (Y.twistBaseCoefficientRing_isAdic i) ρ.κ ρ.κ_alg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e : ∀ y : ↥D.LL0, ρ.ι.symm (D.what₂.embLL (y : D.what₂.LL)) = ρ.κ (GlobalTheory.Triple.embSide Y i (Y.side i s) y)` using `fun y => by rw [RingEquiv.symm_apply_eq, ρ.read]; rfl`. Establish `h1 : 0 < D.what₂.places.val w ((x : ↥D.LL0) : D.what₂.LL) ↔ ‖ρ.κ (GlobalTheory.Triple.embSide Y i (Y.side i s) (x : ↥D.LL0))‖ < 1`. Rewrite using `[← e]`. Generalize the expression as in `((x : ↥D.LL0) : D.what₂.LL) = y`. Break down `eq_or_ne y 0 with rfl | hy` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Establish `h2` using `h.induces y⁻¹`. Establish `h3 : 0 < ‖ρ.ι.symm (D.what₂.embLL y)‖` using `by simpa using hy`. Rewrite `h2` using `[map_inv₀ D.what₂.embLL, map_inv₀ ρ.ι.symm, norm_inv, inv_le_one₀ h3]`. Rewrite using `[← not_le, ← not_le, ← h2, not_iff_not, AddValuation.map_inv]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn⟩` from `WithTop.ne_top_iff_exists.1 ((D.what₂.places.val w).ne_top_iff.2 hy)`. Rewrite using `[← hn, ← WithTop.LinearOrderedAddCommGroup.coe_neg, ← WithTop.coe_zero, WithTop.coe_le_coe, WithTop.coe_le_coe, neg_nonneg]`. Rewrite using `[h1]`. Use `⟨?_, fun h2 => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, e1⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[GlobalTheory.Triple.embSide, ← e1]`. Conclude with `(mem_maximalIdeal_iff ρ y).1 hy`. Take `⟨y, hy⟩` from `hint _ h2.le`. Conclude with `⟨y, (mem_maximalIdeal_iff ρ y).2 (by rw [← hy] at h2; exact h2), hy⟩`. Take `⟨n, hn⟩` from `h.shift`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.comp_apply, (hn.unr_iff ha (Or.inl hv) hA).2 (GlobalTheory.Triple.shiftChar_unr C v) t ht, map_one]`. Take `⟨p, h1, h2⟩` from `h.residual.charpoly g`. Set `M : Matrix (Fin D.R.r) (Fin D.R.r) (Y.O0 i)` to `(((ν g)⁻¹ : (Y.O0 i)ˣ) : Y.O0 i) • ((Y.rhoS i s g : GL (Fin D.R.r) (Y.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (Y.O0 i))`. Establish `e1 : (M.map (toZ ρ)).map (Zbar (Y.l i)).subtype = (r g : GL (Fin D.R.r) (Qbar (Y.l i)))`. Use extensionality with `x y`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `congrFun (congrFun (h.rho g) x) y` as an intermediate fact. Express the relevant statement in the definitionally equal form `toQ ρ.κ (_ * _) = _`. Rewrite using `[map_mul]`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul] at this`. Rewrite using `[this, ← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : p = (M.map (toZ ρ)).charpoly` using `Polynomial.map_injective (Zbar (Y.l i)).subtype Subtype.val_injective (by rw [h1, ← Matrix.charpoly_map, e1])`. Rewrite `h2` using `[e2, ← Matrix.charpoly_map]`. Rewrite using `[← charpoly_smul_congr _ h2]`. Use `congr 1`. Use extensionality with `x y`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `κ (IsLocalRing.residue _ _) = red (toZ ρ (ν g : (Y.O0 i)ˣ)) * red (toZ ρ (_ * _))`. Rewrite using `[hκ, ← map_mul, ← map_mul, ← mul_assoc, Units.mul_inv, one_mul]`. Both sides reduce to the same expression. Take `⟨u, hu, e⟩` from `hχ.tame (jIdx s) k hk.symm v`. Use `⟨u, hu, (hκ _).trans (h.residual.teich k hk.symm v _ (toFb_ne_zero k u) _ ?_)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, GlobalTheory.Triple.jIdx_add_one, Reading.toC_apply, RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_kappa_of_isTripleWith (ha : GlobalTheory.HeckeGal.IsGlobalArtin art) {s : Y.Sig i} {ρ : Reading Y i (Y.side i s)}
     (hχ : IsChars C art ρ) {σ : D.what₂.FT} {π : D.naut.CG D.R.r} {r : GalE D →* GL (Fin D.R.r) (Qbar (Y.l i))}
@@ -105,15 +105,15 @@ theorem exists_kappa_of_isTripleWith (ha : GlobalTheory.HeckeGal.IsGlobalArtin a
     rfl
 variable {Z : NExp D.R D.host D.what₂ D.LL0 D.nd Y}
 /- English proof (translation)
-Take `⟨C, art, h⟩` from `h`. Introduce `i hi j b h1 h2 k hk v hv A hA t ht t' ht'`. Take `⟨ρ, hχ, -⟩` from `h.evidence i hi b`. Take `⟨j, rfl⟩ : ∃ j' : Fin D.R.m, j = j'.1 + 1` from `⟨⟨j - 1, by omega⟩, by simp only; omega⟩`. Take `⟨n, hn⟩` from `hχ.chi j`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n0, h0⟩` from `exists_isAlgPos_mu0 (hframe C) GlobalTheory.Triple.eExp_int j`. Take `⟨r, hr, hL⟩` from `h.artin.exists_isLAdicOf ρ.ι (isAlgPos_mul h0 (del_alg (hframe C) (Y.l i)))`. Establish `hanti : AntiHom Y.cc r` using `antiHom_of_isLAdicOf h.artin hr hL (((hframe C).isMu0 j).triv.mul (inertialOrderFifteenChar_auxiliaryPrime_spec (hframe C) (l := Y.l i)).2.2.2.2.triv)`. Establish `key : ∀ v, v ∉ placesOver D.host.E (Y.l i) → ∀ A : ValuationSubring D.nd.Om, IsPlaceOver A v → ∀ t ∈ Ine (F` using `D.host.E) A, inQ ρ.κ (Y.chi1 i (j.1 + 1) b) t = r t := fun v hv A hA t ht => by`. Take `⟨x, hx, e⟩` from `exists_unit h.artin hA ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e1` using `hn.loc (Or.inl hv) e`. Rewrite `e1` using `[GlobalTheory.Triple.blockChar, block_loc (C.isEta.unr v) hx]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hL.loc_away (Or.inl hv) x t e, inQ_val, RingEquiv.eq_symm_apply]`. Conclude with `e1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvl : v ∉ placesOver D.host.E (Y.l i)` using `notMem_of_ne (D.host.g_prime k) (Y.lPrime i).out hk hv`. Take `⟨bar, -, hbar⟩` from `GlobalTheory.ConjPoly.exists_conj D`. Take `rfl : t' = cConj Y t` from `AlgEquiv.ext ht'`. Rewrite using `[← map_inv]`. Use `inQ_inj ρ.κ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv, key v hvl A hA t ht, key (bar v) (fun hm => hvl (mem_placesOver_conj (TwistDet.isConjPl_symm (hbar v).1) hm)) _ (isPlaceOver_moveVal_cc Y (hbar v).1 hA) _ (cConj_mem_ine Y ht), hanti t _ ht']`.
+A detailed English derivation is pending.
 -/
 theorem blockCharConj_of_isTripleOf (h : _root_.GlobalTheory.Triple.IsGaloisTripleOfExpansion Z) : BlockCharConj Y := by
   obtain ⟨C, art, h⟩ := h
@@ -141,11 +141,11 @@ theorem blockCharConj_of_isTripleOf (h : _root_.GlobalTheory.Triple.IsGaloisTrip
   rw [map_inv, key v hvl A hA t ht, key (bar v) (fun hm => hvl (mem_placesOver_conj (TwistDet.isConjPl_symm (hbar v).1) hm)) _
     (isPlaceOver_moveVal_cc Y (hbar v).1 hA) _ (cConj_mem_ine Y ht), hanti t _ ht']
 /- English proof (translation)
-Introduce `i hi s`. Establish `hχ` using `_root_.GlobalTheory.TripleAdm.blockCharConj_of_isTripleOf hT`. Take `⟨C, art, h⟩` from `hT`. Take `⟨ρ, h1, σ, π, r, ν, w, red, h2⟩` from `h.triple hi s`. Take `⟨κ, h3⟩` from `_root_.GlobalTheory.TripleAdm.exists_kappa_of_isTripleWith h.artin h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: Fact (D.what₂.places.resChar w).Prime` using `⟨D.what₂.places.resChar_prime w⟩`. Establish `hl` using `h2.induces.resChar`. Take `⟨hirr, hrow⟩` from `_root_.GlobalTheory.TripleAdm.irredOn_rbar_and_inertia_of_residual Y hW h2.good h2.param hl h2.gal h2.residual`. Use `admissible_at_of_irreducible_tame h3 hirr fun k hk v hv A hA => ?_` and prove the remaining obligations. Use `tameOff_all Y (fun e => hk (e.symm.trans hl)) (D.ntypes.rbar_open σ w) (fun v => (hrow k hk.symm v).1) (fun v t ht => ?_) (fun v => ⟨(hrow k hk.symm v).2.1, ?_⟩) hv hA` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `hχ i hi _ (Y.side i s) (Y.jS_range i s).1 (Y.jS_range i s).2 k hk _ (D.naut.plGw_over k v) _ (D.nd.plOm.2 _) t ht _ (cConj_apply Y t)` as an intermediate fact. Rewrite using `[← map_inv, MonoidHom.comp_apply, MonoidHom.comp_apply, map_inv]`. Conclude with `congrArg _ this`. Take `⟨u, hu, e⟩` from `h3.2.2.2.2.2 k hk v`. Conclude with `⟨_, D.ntypes.tg_mem k v, fun h0 => (hrow k hk.symm v).2.2 _ u hu (e ▸ h0)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gen_adm2_of_isTripleOf (hT : _root_.GlobalTheory.Triple.IsGaloisTripleOfExpansion Z) (hW : WildOne D) : BlochKatoReduction.Gen.adm2 Y := by
   intro i hi s
@@ -167,7 +167,7 @@ theorem gen_adm2_of_isTripleOf (hT : _root_.GlobalTheory.Triple.IsGaloisTripleOf
     exact ⟨_, D.ntypes.tg_mem k v, fun h0 => (hrow k hk.symm v).2.2 _ u hu (e ▸ h0)⟩
 end Comparison₂
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.TripleAdm.gen_adm2_of_isTripleOf hT hW`.
+A detailed English derivation is pending.
 -/
 theorem adm2_of_isTriple_wildOne (D : D7) (hT : _root_.GlobalTheory.Triple.IsGaloisTriple D) (hW : WildOne D) : BlochKatoReduction.adm2 D := _root_.GlobalTheory.TripleAdm.gen_adm2_of_isTripleOf hT hW
 end GlobalTheory.TripleAdm

@@ -16,13 +16,13 @@ def Adjacent (fl fl' : Flag E N) : Prop :=
   ∃ j : Fin (N + 1), ∀ i, i ≠ j → fl.SameStep fl' i
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Iso.refl _, Category.id_comp _⟩`.
+Supply the required witnesses or components.
 -/
 theorem sameStep_refl (fl : Flag E N) (i : Fin (N + 1)) : fl.SameStep fl i :=
   ⟨Iso.refl _, Category.id_comp _⟩
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h`. Conclude with `⟨e.symm, by rw [Iso.symm_hom, ← he, Iso.inv_hom_id_assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SameStep.symm {fl fl' : Flag E N} {i : Fin (N + 1)} (h : fl.SameStep fl' i) :
     fl'.SameStep fl i := by
@@ -30,12 +30,12 @@ theorem SameStep.symm {fl fl' : Flag E N} {i : Fin (N + 1)} (h : fl.SameStep fl'
   exact ⟨e.symm, by rw [Iso.symm_hom, ← he, Iso.inv_hom_id_assoc]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun i _ => fl.sameStep_refl i⟩`.
+Supply the required witnesses or components.
 -/
 theorem adjacent_refl (fl : Flag E N) : fl.Adjacent fl := ⟨0, fun i _ => fl.sameStep_refl i⟩
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `h`. Conclude with `⟨j, fun i hi => (hj i hi).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Adjacent.symm {fl fl' : Flag E N} (h : fl.Adjacent fl') : fl'.Adjacent fl := by
   obtain ⟨j, hj⟩ := h

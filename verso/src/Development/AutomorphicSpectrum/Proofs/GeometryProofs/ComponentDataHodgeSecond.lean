@@ -16,19 +16,19 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.BlockSumFrame
 
 /- English proof (translation)
-Establish `hmem : ∀ x, i x ∈ S` using `fun x => hrange ▸ LinearMap.mem_range_self i x`. Set `e : E →ₗ[Ω] S` to `i.codRestrict S hmem`. Establish `hei : ∀ x, ((e x : S) : E') = i x` using `fun x => rfl`. Establish `he_inj : Function.Injective e` using `fun x y hxy => hinj (by rw [← hei, ← hei, hxy])`. Establish `he_surj : Function.Surjective e` using `fun s => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (s : E') ∈ LinearMap.range i` using `hrange ▸ s.2`. Take `⟨x, hx⟩` from `this`. Conclude with `⟨x, Subtype.ext hx⟩`. Set `eq : E ≃ₗ[Ω] S` to `LinearEquiv.ofBijective e ⟨he_inj, he_surj⟩`. Establish `heq : ∀ x, ((eq x : S) : E') = i x` using `fun x => rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `p hp`. Take `⟨U, hpU, b, hspan, hfr⟩` from `h p hp`. Use `⟨U, hpU, fun k => eq.symm (b k), ?_, fun q hq hqU => ?_⟩` and prove the remaining obligations. Establish `: Set.range (fun k => eq.symm (b k)) = eq.symm '' Set.range b`. Rewrite using `[← Set.range_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this, ← LinearEquiv.coe_coe, ← Submodule.map_span, hspan, Submodule.map_top, LinearEquiv.range]`. Take `⟨hli, hst⟩` from `hfr q hq hqU`. Use `⟨hli.map' eq.symm.toLinearMap (LinearEquiv.ker _), ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `h1 : x ∈ Lat.comap A i q ↔ eq x ∈ Lat.comap A S.subtype q` using `Iff.rfl`. Rewrite using `[h1, hst]`. Set `eR : E ≃ₗ[regAt ξ q] S` to `eq.restrictScalars (regAt ξ q)`. Establish `hrng : Set.range b = eR '' Set.range (fun k => eq.symm (b k))`. Rewrite using `[← Set.range_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Set.range (funext fun k => (eq.apply_symm_apply (b k)).symm)`. Rewrite using `[hrng, ← LinearEquiv.coe_coe, ← Submodule.map_span]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyx⟩`. Establish `: y = x` using `eR.injective hyx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this ▸ hy`. Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isVB_comap_of_range {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {E E' : Type} [AddCommGroup E] [Module Ω E] [AddCommGroup E'] [Module Ω E'] (A : Lat ξ E')
@@ -68,9 +68,9 @@ theorem isVB_comap_of_range {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (
       exact ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or z w τ cc f b h hw hfr hd`. Establish `hT : CoordTie ℤ Or.𝔐.ξ (segreCoord Dc.y)` using `Or.𝔐.tie`. Establish `hrk : labelRk D (Or.bg τ) + labelRk D (Or.sm τ) = Dc.N`. Rewrite using `[Or.rk_bg, Or.rk_sm]`. Conclude with `Nat.add_sub_cancel' Dc.j_le_N`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum` using `GlobalTheory.T.pair_lattice_sum_comap E H D l Xo c Y S₀ Ω K J Dc.y Or.𝔐 (Or.bg τ) (Or.sm τ) (Or.bg_ne_sm τ τ)`. Rewrite `hsum` using `[hrk]`. Establish `hvb : (Lat.comap (fun p => Or.𝔐.V (Or.bg τ) p ⊔ Or.𝔐.V (Or.sm τ) p) (Or.i τ)).IsVB Dc.N ⊤` using `isVB_comap_of_range _ _ (Or.i τ) (Or.i_inj τ) (Or.i_range τ) hsum`. Take `⟨c1, c2⟩` from `GlobalTheory.T.frame_domain_in_segre_chart Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y hT z w cc f h hw hd`. Conclude with `(GlobalTheory.T.segre_chart_bundle Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y (W τ) Dc.N (Dc.W τ) _ hT hvb (Or.lat τ) cc f b hfr.1 hfr.2.1 hfr.2.2.1).1 hfr _ c1 c2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem frame_at : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (z : Spec (CommRingCat.of ℂ) ⟶ Or.𝔐.X) (w : (Σ k, J k) → ℂ) (τ : CMType H) (cc : (k : K) → J k) (f : Ω) (b : Fin Dc.N → W τ) (h : genPt Or.𝔐.ξ ⤳ centre z), CoordsAt Or.𝔐.ξ Dc.y z w → IsFrameOver Dc.y (Dc.W τ) cc f b → InFrameDomain Dc.y cc f w → (Lat.comap (fun p => Or.𝔐.V (Or.bg τ) p ⊔ Or.𝔐.V (Or.sm τ) p) (Or.i τ)).IsFrameAt b ⟨centre z, h⟩ := by
   intro E _ _ _ H D l Xo c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or z w τ cc f b h hw hfr hd

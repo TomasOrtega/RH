@@ -10,14 +10,14 @@ open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] {Δ τ : K}
 
 /- English proof (translation)
-Use `(L.two.map (algebraMap O K)).ne_zero` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsLoc.two_ne (L : IsLoc O Δ) : (2 : K) ≠ 0 := by
   have := (L.two.map (algebraMap O K)).ne_zero
   rwa [map_ofNat] at this
 
 /- English proof (translation)
-Introduce `t ht x` and use `by rw [Units.val_mul, mul_smul] exact lcountNorm O K Δ τ L c d _ (datSmul K Δ τ c d m h x) t ht`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lcount_inv (L : IsLoc O Δ) {c : K} {d m : EL Δ τ} (h : IsDat c d m) : ∀ t ∈ NE τ, ∀ x : Kˣ,
     lcount O c d (((t * x : Kˣ) : K) • m) = lcount O c d ((x : K) • m) := fun t ht x => by
@@ -25,19 +25,17 @@ theorem lcount_inv (L : IsLoc O Δ) {c : K} {d m : EL Δ τ} (h : IsDat c d m) :
   exact lcountNorm O K Δ τ L c d _ (datSmul K Δ τ c d m h x) t ht
 
 /- English proof (translation)
-Establish `h1 : (ω : Etau K τ) * (algebraMap K (Etau K τ) τ - ω) = 1`. Apply the tactic sequence `ext <;> simp`. Establish `hω : IsUnit (ofE Δ (ω : Etau K τ))`. Use `isUnit_iff_exists_inv.2 ⟨ofE Δ (algebraMap K (Etau K τ) τ - ω), ?_⟩` and prove the remaining obligations. Rewrite using `[← ofE_mul, h1]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp [ofE]`. Establish `hd : IsUnit d` using `isUnit_of_mul_isUnit_left (h.d_norm ▸ hω)`. Take `⟨u, hu⟩` from `hd`. Establish `hβ : ((u⁻¹ : (EL Δ τ)ˣ) : EL Δ τ) * d₀ * sigL (((u⁻¹ : (EL Δ τ)ˣ) : EL Δ τ) * d₀) = 1`. Establish `hn` using `h.d_norm`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hn` using `[← hu]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sigL_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ((u⁻¹ : (EL Δ τ)ˣ) : EL Δ τ) * sigL ((u⁻¹ : (EL Δ τ)ˣ) : EL Δ τ) * ((u : EL Δ τ) * sigL (u : EL Δ τ)) := by`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h₀, hn]`. Use `_ = (((u⁻¹ : (EL Δ τ)ˣ) : EL Δ τ) * (u : EL Δ τ)) * sigL (((u⁻¹ : (EL Δ τ)ˣ) : EL Δ τ) * (u : EL Δ τ)) := by`. Rewrite using `[sigL_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 1 := by simp [sigL_one]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `h90 O K Δ τ L h.reg _ hβ`. Establish `key : d * sigL (y : EL Δ τ) * ((y⁻¹ : (EL Δ τ)ˣ) : EL Δ τ) = d₀`. Rewrite using `[hy, ← hu]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `_ = d₀ := by simp`. Use `⟨m * y * star (sigL (y : EL Δ τ)), ?_, fun t => ?_⟩` and prove the remaining obligations. Establish `hD` using `(datIso O K Δ τ c d m y).2 h`. Rewrite `hD` using `[key]`. Then use the resulting hypothesis. Establish `e` using `(datIso O K Δ τ c d (t • m) y).1`.
-
-Rewrite `e` using `[key, smul_mul_assoc, smul_mul_assoc]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dat_move (L : IsLoc O Δ) {c : K} {d m : EL Δ τ} (h : IsDat c d m) {d₀ : EL Δ τ} (h₀ : d₀ * sigL d₀ = ofE Δ (ω : Etau K τ)) :
     ∃ m', IsDat c d₀ m' ∧ ∀ t : K, lcount O c d (t • m) = lcount O c d₀ (t • m') := by
@@ -75,21 +73,17 @@ theorem dat_move (L : IsLoc O Δ) {c : K} {d m : EL Δ τ} (h : IsDat c d m) {d�
     exact e
 
 /- English proof (translation)
-Establish `h4 : IsUnit (4 : O)`. Establish `h` using `L.two.mul L.two`. Evaluate the numerical expressions using `at h`. Conclude with `h`. Establish `unit_of : ∀ x : O, x ∈ IsLocalRing.maximalIdeal O → IsUnit (4 + x)`.
+Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Assume the negation of the conclusion as `hn`. Establish `h1 : 4 + x ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 hn`. Establish `h2 : (4 : O) ∈ IsLocalRing.maximalIdeal O`. Simplify using `using (IsLocalRing.maximalIdeal O).sub_mem h1 hx`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal _).1 h2 h4`. Establish `unit_nm : ∀ x : O, x ∉ IsLocalRing.maximalIdeal O → IsUnit x`. Introduce `x hx`. Assume the negation of the conclusion as `hn`. Conclude with `hx ((IsLocalRing.mem_maximalIdeal _).2 hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `ha : τ₀ - 2 ∈ IsLocalRing.maximalIdeal O`. Use `left`. Use `⟨ha, ?_⟩` and prove the remaining obligations. Establish `h` using `unit_of _ ha`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hb : τ₀ + 2 ∈ IsLocalRing.maximalIdeal O`. Use `right`. Use `left`. Use `⟨hb, ?_⟩` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h` using `unit_of _ ((IsLocalRing.maximalIdeal O).neg_mem hb)`. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `right`. Use `right`.
-
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `unit_nm _ hb`. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `(unit_nm _ ha).neg`.
-
-Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tri (L : IsLoc O Δ) (τ₀ : O) : τ₀ - 2 ∈ IsLocalRing.maximalIdeal O ∧ IsUnit (2 + τ₀) ∨ τ₀ + 2 ∈ IsLocalRing.maximalIdeal O ∧ IsUnit (2 - τ₀) ∨
     IsUnit (2 + τ₀) ∧ IsUnit (2 - τ₀) := by
@@ -131,9 +125,9 @@ theorem tri (L : IsLoc O Δ) (τ₀ : O) : τ₀ - 2 ∈ IsLocalRing.maximalIdea
 
 omit [IsDomain O] [IsDiscreteValuationRing O] in
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `hu`. Take `⟨w, s, hs, he⟩` from `h`. Use `⟨w * v⁻¹, s, hs, ?_⟩` and prove the remaining obligations. Establish `hv : algebraMap O K (v : O) * algebraMap O K ((v⁻¹ : Oˣ) : O) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, hv, mul_one]`. Use `_ = _ := by`. Rewrite using `[he, Units.val_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem EvenVal.of_mul_unit {c : K} {u : O} (hu : IsUnit u) (h : EvenVal O (c * algebraMap O K u)) : EvenVal O c := by
   obtain ⟨v, rfl⟩ := hu
@@ -149,9 +143,9 @@ theorem EvenVal.of_mul_unit {c : K} {u : O} (hu : IsUnit u) (h : EvenVal O (c * 
 
 omit [IsDomain O] [IsDiscreteValuationRing O] in
 /- English proof (translation)
-Establish `h2 : 2 + τ ≠ 0`. Introduce `h`. Apply `hτ` to reduce the goal to its premises. Establish `e : τ = -2` using `by linear_combination h`. Rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Use `⟨⟨1 + ω, ⟨(1 + τ) / (2 + τ), -1 / (2 + τ)⟩, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp <;> field_simp <;> ring`. Apply the tactic sequence `ext <;> simp <;> field_simp <;> ring`.
+Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_unit_one_add_generator (hτ : τ ^ 2 - 4 ≠ 0) : ∃ z : (Etau K τ)ˣ, (z : Etau K τ) = 1 + ω := by
   have h2 : 2 + τ ≠ 0 := by
@@ -165,7 +159,7 @@ theorem exists_unit_one_add_generator (hτ : τ ^ 2 - 4 ≠ 0) : ∃ z : (Etau K
   · ext <;> simp <;> field_simp <;> ring
 
 /- English proof (translation)
-Establish `h1 : (ω : Etau K τ) * (algebraMap K (Etau K τ) τ - ω) = 1`. Apply the tactic sequence `ext <;> simp`. Conclude with `⟨⟨ω, algebraMap K (Etau K τ) τ - ω, h1, by rw [mul_comm]; exact h1⟩, rfl⟩`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 -/
 theorem exists_a : ∃ a : (Etau K τ)ˣ, (a : Etau K τ) = ω := by
   have h1 : (ω : Etau K τ) * (algebraMap K (Etau K τ) τ - ω) = 1 := by

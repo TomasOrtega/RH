@@ -14,11 +14,11 @@ noncomputable section
 namespace GlobalTheory.DegVol.RefCov
 
 /- English proof (translation)
-Establish `ue : ∀ a : Fin r, u (eI k r a) = 0` using `fun a => hu _ (Or.inl (by simp [eI]))`. Establish `us : ∀ b : Fin r, u (esI k r b) = 0` using `fun b => hu _ (Or.inr (by have := b.2; simp [esI]; omega))`. Establish `we : ∀ a : Fin r, w (eI k r a) = 0` using `fun a => hw _ (Or.inl (by simp [eI]))`. Establish `ws : ∀ b : Fin r, w (esI k r b) = 0` using `fun b => hw _ (Or.inr (by have := b.2; simp [esI]; omega))`. Establish `inner : ∀ l, (Hpk k r *ᵥ u) (wI k r l) = Rad.sg k l * u (wI k r l)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `l`. Rewrite using `[Matrix.mulVec, dotProduct, Rad.sum3 (fun j => Hpk k r (wI k r l) j * u j)]`. Simplify using `only [ue, us, mul_zero, Finset.sum_const_zero, add_zero, zero_add, Rad.H_ww]`. Apply the tactic sequence `rw [Finset.sum_eq_single l] <;> simp +contextual [eq_comm]`. Rewrite using `[Rad.herm_Hb, herm, dotProduct, Rad.sum3 (fun i => star w i * (Hpk k r *ᵥ u) i)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Pi.star_apply, we, ws, star_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, inner]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermPk_eq_Hb {k r : ℕ} (u w : Fin (2 * r + k + 1) → ℂ) (hu : inWb k r u) (hw : inWb k r w) :
     herm (Hpk k r) u w = herm (Hb k) (fun l => u (wI k r l)) (fun l => w (wI k r l)) := by
@@ -35,15 +35,15 @@ theorem hermPk_eq_Hb {k r : ℕ} (u w : Fin (2 * r + k + 1) → ℂ) (hu : inWb 
   simp only [Pi.star_apply, we, ws, star_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, inner]
 
 /- English proof (translation)
-Use `set f : S →ₗ[𝓞 K] V := S.subtype.restrictScalars (𝓞 K)`. Establish `h1 : L ⊓ rs (𝓞 K) S = (L.comap f).map f`. Use extensionality with `z`. Simplify using `only [Submodule.mem_inf, Submodule.restrictScalars_mem, Submodule.mem_map, Submodule.mem_comap]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hz, hs⟩`. Conclude with `⟨⟨z, hs⟩, hz, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨hy, y.2⟩`. Establish `h2 : A • (L.comap f).map f = (A • L.comap f).map f`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.smul_le]`. Introduce and unpack `c hc _ ⟨y, hy, rfl⟩`. Conclude with `⟨c • y, Submodule.smul_mem_smul hc hy, rfl⟩`. Rewrite using `[Submodule.map_le_iff_le_comap, Submodule.smul_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc y hy`. Rewrite using `[Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `((c • y : S) : V) ∈ A • Submodule.map f (Submodule.comap f L)`. Rewrite using `[Submodule.coe_smul_of_tower]`. Conclude with `Submodule.smul_mem_smul hc ⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1, h2, Submodule.mem_map]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mem_smul_inf_rs {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (S : Submodule K V) (A : Submodule (𝓞 K) K)
@@ -73,9 +73,9 @@ theorem mem_smul_inf_rs {K V : Type} [Field K] [NumberField K] [AddCommGroup V] 
 end GlobalTheory.DegVol.RefCov
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ H hK S HW k r ι _ σ Φ hHW hσ hk hΦ hWb L 𝔡 n ρ hL h𝔡 hρ`. Take `⟨F, hF, hU, hvol⟩` from `GlobalTheory.T.unimodular_lattice_fundamentalSet_volume K S HW hK k ι σ (fun v x l => Φ v (x : V) (wI k r l)) hσ hk (fun v x y => by funext l; simp [(hΦ v).1 (x : V) y]) (fun v c x => by funext l; simp [(hΦ v).2.1 c (x : V)]) (fun v x y => by`. Rewrite using `[← GlobalTheory.DegVol.RefCov.hermPk_eq_Hb _ _ (hWb v x x.2) (hWb v y y.2), (hΦ v).2.2.1, hHW])`. Use the proof step `(L.comap (S.subtype.restrictScalars (𝓞 K))) 𝔡 n ρ hL h𝔡 hρ`. Use `⟨F, hF, fun a => ?_, hvol⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, ⟨hy, hyF⟩, hyu⟩` from `hU a`. Use `⟨(y : V), ⟨(GlobalTheory.DegVol.RefCov.mem_smul_inf_rs S _ L _).2 ⟨y, hy, rfl⟩, hyF⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hxF⟩`. Take `⟨y', hy', rfl⟩` from `(GlobalTheory.DegVol.RefCov.mem_smul_inf_rs S _ L _).1 hx`. Rewrite using `[hyu y' ⟨hy', hxF⟩]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.DegVol.RefCov.rowsFund : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (S : Submodule K V) (HW : HermSpace K S) (k r : ℕ) (ι : Type) [Fintype ι] (σ : ι → (K →+* ℂ)) (Φ : ι → V → Fin (2 * r + k + 1) → ℂ), (∀ x y : S, HW.B x y = H.B x y) → IsPlaces σ → Module.finrank K S = k + 1 → (∀ v, IsReal H k r (σ v) (Φ v)) → (∀ v, ∀ w ∈ S, inWb k r (Φ v w)) → ∀ (L : Submodule (𝓞 K) V) (𝔡 : Ideal (𝓞 K)) (n : ℤ) (ρ : ℝ), GlobalTheory.HermLat.IsUnimod HW (L.comap (S.subtype.restrictScalars (𝓞 K))) → 𝔡 ≠ ⊥ → 0 < ρ → ∃ F : Set (ι → Fin (k + 1) → ℂ), MeasurableSet F ∧ (∀ a : ι → Fin (k + 1) → ℂ, ∃! x : V, x ∈ ipow 𝔡 n • (L ⊓ rs (𝓞 K) S) ∧ ((fun v => (ρ : ℂ) • fun l => Φ v x (wI k r l)) + a) ∈ F) ∧ volume F = ENNReal.ofReal ((Formalism.HermitianLatticesTheory.vInv K ^ Fintype.card ι * (Ideal.absNorm 𝔡 : ℝ) ^ n * ρ ^ (2 * Fintype.card ι)) ^ (k + 1)) := by
   intro K V _ _ _ _ _ _ _ _ H hK S HW k r ι _ σ Φ hHW hσ hk hΦ hWb L 𝔡 n ρ hL h𝔡 hρ

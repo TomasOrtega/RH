@@ -17,7 +17,7 @@ namespace GlobalTheory.ConeMeasPure
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `g _`. Use `⟨g (fun i => (x i).2) • (BoundedContinuousFunction.evalCLM ℂ (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ), fun f => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.proj_apply, pureA, ContinuousLinearMap.coe_smul', ContinuousLinearMap.coe_comp', Function.comp_apply, Pi.smul_apply, SchwartzMap.toBoundedContinuousFunctionCLM_apply, BoundedContinuousFunction.evalCLM_apply, smul_eq_mul]`. Rewrite using `[mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_mem_adm (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (x : κ → AF F) :
     (LinearMap.proj x : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ := by
@@ -30,21 +30,15 @@ theorem proj_mem_adm (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype �
   rw [mul_comm]
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B a b G G₁ H H' _ e' hE K _ X om om' om₁ om₁' hT hT₁ ei ev _ _ _ f φ hφ hφc y`. Establish `hM` using `hT.geo.hM'`. Establish `hM₁` using `hT₁.geo.hM'`. Establish `hψ` using `hT.base.std`. Establish `hS` using `IsUWeilPair.isUSplitting hT.weil'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦA : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ schA F _` using `GlobalTheory.TensUniq.pure_mem_schA f φ hφ ((hφc.and hM.std).mono fun v hv => hv.1.trans hv.2)`. Take `⟨t1, t2, t3, t4⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ _ G.V'.J`. Take `⟨v1, v2⟩` from `GlobalTheory.ConeMeasSmall.idele_top (F := F) (E := E)`. Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : TopologicalSpace.MetrizableSpace (UA σ G.V'.J) := GlobalTheory.ConeMeasSmall.metrizable_group _ t1 t4 t3`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsModuleTopology (AF F) (Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (AE F E)) := inferInstanceAs (IsModuleTopology (AF F) (Fin (b + 2) → Fin (a + (b + 2)) → AE F E))`. Establish `hco : Continuous G.M'.co.e` using `IsModuleTopology.continuous_of_linearMap G.M'.co.e.toLinearMap`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcA : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Establish `hsh : Continuous (shiftB σ H H')`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `(hcA.comp Units.continuous_val).mul continuous_const`. Establish `hadm` using `GlobalTheory.ConeMeasV.comp_ev_mem_adm hM hM₁ hE (proj_mem_adm F _ y)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν0 : Continuous (X.ν)` using `by show Continuous fun x => X.α x / X.β x`. Conclude with `hT.chars.heckeα.1.div' hT.chars.heckeβ.1`. Establish `hν : Continuous fun l : (AE F E)ˣ => ((X.ν l : Circle) : ℂ)` using `continuous_subtype_val.comp hν0`. Establish `habs : Continuous fun l : (AE F E)ˣ => (((absE F E l : NNReal) : ℝ) : ℂ) ^ ((a - (b + 2)) / 2 + 1)` using `(Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp GlobalTheory.Doubling.continuous_absE)).pow _`. Establish `ck : ∀ l : (AE F E)ˣ, Continuous fun k : K => coneInt B G.M' om' e' (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) k.1 l y`.
-
-Introduce `l`. Establish `h1` using `(hS.cont _ (GlobalTheory.ConeMeasV.comp_schr_mem_adm hψ (G.M'.co.e (shiftB σ H H' l)) hadm) _ hΦA).comp (continuous_subtype_val.prodMk continuous_const : Continuous fun k : K => ((k.1, (1 : UA σ G.W.J))))`. Conclude with `(h1.mul continuous_const).mul continuous_const`. Establish `cl : ∀ k : K, Continuous fun l : (AE F E)ˣ => coneInt B G.M' om' e' (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) k.1 l y`. Introduce `k`.
-
-Establish `h1` using `(GlobalTheory.ConeMeasSmall.continuous_schr hψ hadm (hS.pres (k.1, 1) _ hΦA)).comp (hco.comp hsh)`. Conclude with `(h1.mul hν).mul habs`. Use `haveI : TopologicalSpace.MetrizableSpace K := Topology.IsEmbedding.subtypeVal.metrizableSpace`. Use `haveI : SecondCountableTopology K := Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Use `haveI : BorelSpace K := Subtype.borelSpace _`.
-
-Conclude with `(measurable_uncurry_of_continuous_of_measurable ck fun k => (cl k).measurable).stronglyMeasurable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coneInt_pure_stronglyMeasurable : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {a b : ℕ}
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

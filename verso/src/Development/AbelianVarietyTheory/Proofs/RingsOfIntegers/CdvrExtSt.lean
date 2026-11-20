@@ -9,9 +9,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PlaceExtField
 
 /- English proof (translation)
-Introduce `T hT K _ jK hfin`. Use `letI := jK.toAlgebra`. Take `⟨T', iT, e, ψ, _, he, hv, hψ, _, hres⟩` from `exists_cdvr_finite_extension T K`. Use `⟨T', ψ.toRingHom, e, he, fun a _ => ?_, hres hT⟩` and prove the remaining obligations. Establish `h : ψ.toRingHom (jK a) = iT a` using `hψ a`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h, hv a]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cdvrExtSt : PullbackSections.CDVRExtSt := by
   intro T hT K _ jK hfin

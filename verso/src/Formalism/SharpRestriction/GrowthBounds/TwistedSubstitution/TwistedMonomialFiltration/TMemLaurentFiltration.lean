@@ -64,15 +64,15 @@ def flt_L (A : Type*) [CommRing A] (e : ℤ) : flt_Fil (LaurentPolynomial A) whe
     exact h.trans (hf k hk)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem flt_L_mem {A : Type*} [CommRing A] {e t : ℤ} {f : LaurentPolynomial A} :
     f ∈ (flt_L A e).F t ↔ ∀ k : ℤ, f.coeff k ≠ 0 → t ≤ e * k := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[flt_L_mem]`. Introduce `k hk`. Distinguish the cases in `h : k = 0`. Simplify using `[h]`. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. It suffices to derive a contradiction.
 
-Apply `hk` to reduce the goal to its premises. Rewrite using `[← LaurentPolynomial.single_eq_C]`. Simplify using `[Finsupp.single_apply, Ne.symm h]`. Introduce `h'`. Conclude with `absurd h' h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem flt_L_C {A : Type*} [CommRing A] (e : ℤ) (a : A) : LaurentPolynomial.C a ∈ (flt_L A e).F 0 := by
   rw [flt_L_mem]
@@ -87,9 +87,7 @@ theorem flt_L_C {A : Type*} [CommRing A] (e : ℤ) (a : A) : LaurentPolynomial.C
     exact absurd h' h
 
 /- English proof (translation)
-Rewrite using `[flt_L_mem]`. Introduce `k' hk`. Rewrite `hk` using `[LaurentPolynomial.T_apply]`. Use `split_ifs at hk with h`. Rewrite using `[h]`.
-
-Conclude with `absurd rfl hk`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_mem_laurentFiltration {A : Type*} [CommRing A] (e k : ℤ) : (LaurentPolynomial.T k : LaurentPolynomial A) ∈ (flt_L A e).F (e * k) := by
   rw [flt_L_mem]
@@ -135,15 +133,13 @@ def flt_lift {B : Type*} [CommRing B] {σ : Type*} (Fl : flt_Fil B) (wt : (σ �
     exact Fl.anti (by linarith) (hP m)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem flt_lift_mem {B : Type*} [CommRing B] {σ : Type*} {Fl : flt_Fil B} {wt : (σ →₀ ℕ) →+ ℤ} {t : ℤ}
     {P : MvPolynomial σ B} : P ∈ (flt_lift Fl wt).F t ↔ ∀ m, coeff m P ∈ Fl.F (t - wt m) := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[flt_lift_mem]`. Introduce `m'`. Rewrite using `[coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality.
-
-Conclude with `ha`. Conclude with `(Fl.F _).zero_mem`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem flt_monomial_mem {B : Type*} [CommRing B] {σ : Type*} {Fl : flt_Fil B} {wt : (σ →₀ ℕ) →+ ℤ} {t : ℤ}
     {m : σ →₀ ℕ} {a : B} (ha : a ∈ Fl.F (t - wt m)) : monomial m a ∈ (flt_lift Fl wt).F t := by
@@ -156,7 +152,7 @@ theorem flt_monomial_mem {B : Type*} [CommRing B] {σ : Type*} {Fl : flt_Fil B} 
   · exact (Fl.F _).zero_mem
 
 /- English proof (translation)
-Use `flt_monomial_mem (wt := wt) (m := 0) (a := a) (t := t) (by simpa using ha)` as an intermediate fact. Rewrite `this` using `[← C_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem flt_C_mem {B : Type*} [CommRing B] {σ : Type*} {Fl : flt_Fil B} {wt : (σ →₀ ℕ) →+ ℤ} {t : ℤ}
     {a : B} (ha : a ∈ Fl.F t) : (C a : MvPolynomial σ B) ∈ (flt_lift Fl wt).F t := by
@@ -164,9 +160,9 @@ theorem flt_C_mem {B : Type*} [CommRing B] {σ : Type*} {Fl : flt_Fil B} {wt : (
   rwa [← C_apply] at this
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using Fl.one_mem`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Use `Fl.mul_mem ih ha` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ((k : ℤ) * t + t) = ((k + 1 : ℕ) : ℤ) * t` using `by push_cast; ring`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem flt_pow_mem {B : Type*} [CommRing B] (Fl : flt_Fil B) {t : ℤ} {a : B} (ha : a ∈ Fl.F t) (k : ℕ) :
     a ^ k ∈ Fl.F (k * t) := by
@@ -179,11 +175,11 @@ theorem flt_pow_mem {B : Type*} [CommRing B] (Fl : flt_Fil B) {t : ℤ} {a : B} 
     rwa [e] at this
 
 /- English proof (translation)
-Use `Finsupp.induction m ?_ ?_` and prove the remaining obligations. Simplify using `using Fl'.one_mem`. Introduce `a b f _ _ ih`. Establish `e : monomial (Finsupp.single a b + f) (1 : B₀) = monomial (Finsupp.single a b) 1 * monomial f 1`. Rewrite using `[monomial_mul, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← X_pow_eq_monomial, map_mul, map_pow, map_add]`. Use `Fl'.mul_mem ?_ ih` and prove the remaining obligations. Establish `hp` using `flt_pow_mem Fl' (hX a) b`. Establish `e2 : Finsupp.single a b = b • Finsupp.single a 1` using `by simp`. Rewrite using `[e2, map_nsmul, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp`.
+A detailed English derivation is pending.
 -/
 theorem flt_hom_monomial {B₀ B' : Type*} [CommRing B₀] [CommRing B'] {σ : Type*} (Fl' : flt_Fil B')
     (φ : MvPolynomial σ B₀ →+* B') (wt : (σ →₀ ℕ) →+ ℤ)
@@ -203,9 +199,9 @@ theorem flt_hom_monomial {B₀ B' : Type*} [CommRing B₀] [CommRing B'] {σ : T
     exact hp
 
 /- English proof (translation)
-Rewrite using `[P.as_sum, map_sum]`. Use `(Fl'.F t).sum_mem fun m _ => ?_` and prove the remaining obligations. Establish `e : monomial m (coeff m P) = C (coeff m P) * monomial m 1`. Rewrite using `[C_mul_monomial, mul_one]`. Rewrite using `[e, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Fl'.mul_mem (hC _ _ ((flt_lift_mem.1 hP) m)) (flt_hom_monomial Fl' φ wt hX m)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem flt_hom_mem {B₀ B' : Type*} [CommRing B₀] [CommRing B'] {σ : Type*} (Fl : flt_Fil B₀) (Fl' : flt_Fil B')
     (φ : MvPolynomial σ B₀ →+* B') (wt : (σ →₀ ℕ) →+ ℤ)
@@ -225,11 +221,11 @@ abbrev laurentCoeffFiltration (R : Type*) [CommRing R] (n : ℕ) (σ : Type*) (e
   flt_lift (flt_L (GLCoord R n) e) 0
 
 /- English proof (translation)
-Unfold `sDegs`. Rewrite using `[Finset.mem_biUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, -, hk⟩`. Conclude with `⟨m, Finsupp.mem_support_iff.1 hk⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨m, hm⟩`. Use `⟨m, ?_, Finsupp.mem_support_iff.2 hm⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_support_iff]`. Introduce `h`. Apply `hm` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem flt_mem_sDegs {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     (G : MvPolynomial (ι × Fin n) R) (k : ℤ) :
@@ -249,11 +245,11 @@ theorem flt_mem_sDegs {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Lett
     rfl
 
 /- English proof (translation)
-Unfold `valS`. Rewrite using `[Finset.le_inf_iff, flt_lift_mem]`. Prove the components needed by the constructor for the conclusion. Introduce `h m`. Rewrite using `[flt_L_mem]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k hk`. Use `h k ((flt_mem_sDegs LL S _ G k).2 ⟨m, hk⟩)` as an intermediate fact. Simplify using `only [AddMonoidHom.zero_apply, sub_zero, one_mul]`. Conclude with `WithTop.coe_le_coe.1 this`. Introduce `h k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `(flt_mem_sDegs LL S _ G k).1 hk`. Use `(flt_L_mem.1 (h m)) k hm` as an intermediate fact. Simplify using `only [AddMonoidHom.zero_apply, sub_zero, one_mul] at this`. Conclude with `WithTop.coe_le_coe.2 this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flt_le_valS {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (G : MvPolynomial (ι × Fin n) R) (t : ℤ) :
@@ -274,11 +270,11 @@ theorem flt_le_valS {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (
     exact WithTop.coe_le_coe.2 this
 
 /- English proof (translation)
-Unfold `lam1S`. Rewrite using `[Finset.sup_le_iff, flt_lift_mem]`. Prove the components needed by the constructor for the conclusion. Introduce `h m`. Rewrite using `[flt_L_mem]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k hk`. Use `WithBot.coe_le_coe.1 (h k ((flt_mem_sDegs LL S _ G k).2 ⟨m, hk⟩))` as an intermediate fact. Simplify using `only [AddMonoidHom.zero_apply, sub_zero, neg_one_mul, neg_le_neg_iff]`. Conclude with `this`. Introduce `h k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `(flt_mem_sDegs LL S _ G k).1 hk`. Use `(flt_L_mem.1 (h m)) k hm` as an intermediate fact. Simplify using `only [AddMonoidHom.zero_apply, sub_zero, neg_one_mul, neg_le_neg_iff] at this`. Conclude with `WithBot.coe_le_coe.2 this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flt_lam1S_le {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (G : MvPolynomial (ι × Fin n) R) (M : ℤ) :
@@ -299,11 +295,11 @@ theorem flt_lam1S_le {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] 
     exact WithBot.coe_le_coe.2 this
 
 /- English proof (translation)
-Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top`. Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe c`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-It suffices to derive a contradiction. Use `WithTop.coe_le_coe.1 (h (c + N + 1) le_top)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `coe x`. Establish `h1` using `h x le_rfl`.
+It suffices to derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe c`. Use `WithTop.coe_le_coe.1 h1` as an intermediate fact. Rewrite using `[← WithTop.coe_add, WithTop.coe_le_coe]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -327,11 +323,11 @@ theorem flt_withTop_le {a b : WithTop ℤ} {N : ℤ}
       linarith
 
 /- English proof (translation)
-Proceed by induction on `b using WithBot.recBotCoe with`. Consider the case `bot`. Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot => simp`. Consider the case `coe x`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-It suffices to derive a contradiction. Use `WithBot.coe_le_coe.1 (h (x - N - 1) bot_le)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `coe c`. Use `h c le_rfl` as an intermediate fact.
+It suffices to derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[← WithBot.coe_add]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem flt_withBot_le {a b : WithBot ℤ} {N : ℤ}
     (h : ∀ M : ℤ, b ≤ (M : WithBot ℤ) → a ≤ ((M + N : ℤ) : WithBot ℤ)) : a ≤ b + (N : WithBot ℤ) := by
@@ -348,15 +344,15 @@ theorem flt_withBot_le {a b : WithBot ℤ} {N : ℤ}
     rwa [← WithBot.coe_add]
 
 /- English proof (translation)
-Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top`. Proceed by induction on `c using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe z`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-It suffices to derive a contradiction. Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top`. Use `WithTop.coe_le_coe.1 (h (z + 1) 0 le_top le_top)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+It suffices to derive a contradiction. Proceed by induction. Treat this case separately. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Consider the case `coe y`. Use `WithTop.coe_le_coe.1 (h (z - y + 1) y le_top le_rfl)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `coe x`. Proceed by induction on `b using WithTop.recTopCoe with`.
+Treat this case separately. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Proceed by induction.
 
-Consider the case `top`. Proceed by induction on `c using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe z`. It suffices to derive a contradiction.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. It suffices to derive a contradiction.
 
-Use `WithTop.coe_le_coe.1 (h x (z - x + 1) le_rfl le_top)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `coe y`. Rewrite using `[← WithTop.coe_add]`. Conclude with `h x y le_rfl le_rfl`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_withTop_add_le {a b c : WithTop ℤ}
     (h : ∀ t u : ℤ, (t : WithTop ℤ) ≤ a → (u : WithTop ℤ) ≤ b → ((t + u : ℤ) : WithTop ℤ) ≤ c) : a + b ≤ c := by
@@ -387,15 +383,15 @@ theorem flt_withTop_add_le {a b c : WithTop ℤ}
       exact h x y le_rfl le_rfl
 
 /- English proof (translation)
-Proceed by induction on `c using WithBot.recBotCoe with`. Consider the case `bot => exact bot_le`. Consider the case `coe z`. Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-It suffices to derive a contradiction. Proceed by induction on `b using WithBot.recBotCoe with`. Consider the case `bot`. Use `WithBot.coe_le_coe.1 (h (z - 1) 0 bot_le bot_le)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+It suffices to derive a contradiction. Proceed by induction. Treat this case separately. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Consider the case `coe y`. Use `WithBot.coe_le_coe.1 (h (z - y - 1) y bot_le le_rfl)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `coe x`. Proceed by induction on `b using WithBot.recBotCoe with`.
+Treat this case separately. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Proceed by induction.
 
-Consider the case `bot`. It suffices to derive a contradiction. Use `WithBot.coe_le_coe.1 (h x (z - x - 1) le_rfl bot_le)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `coe y`.
+Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately.
 
-Rewrite using `[← WithBot.coe_add]`. Conclude with `h x y le_rfl le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_withBot_le_add {a b c : WithBot ℤ}
     (h : ∀ t u : ℤ, a ≤ (t : WithBot ℤ) → b ≤ (u : WithBot ℤ) → c ≤ ((t + u : ℤ) : WithBot ℤ)) : c ≤ a + b := by
@@ -423,9 +419,9 @@ theorem flt_withBot_le_add {a b c : WithBot ℤ}
         exact h x y le_rfl le_rfl
 
 /- English proof (translation)
-Establish `key` using `flt_withTop_le (a := min (valS LL S F) (valS LL S G)) (b := valS LL S (F + G)) (N := 0) ?_`. Simplify using `using key`. Introduce `t ht`. Take `⟨h1, h2⟩` from `le_min_iff.1 ht`. Simplify using `only [sub_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite `h1`, `h2`, the goal using `[flt_le_valS]`. Rewrite using `[map_add]`. Conclude with `AddSubgroup.add_mem _ h1 h2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_valS_add {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F G : MvPolynomial (ι × Fin n) R) : min (valS LL S F) (valS LL S G) ≤ valS LL S (F + G) := by
@@ -439,9 +435,9 @@ theorem flt_valS_add {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] 
   exact AddSubgroup.add_mem _ h1 h2
 
 /- English proof (translation)
-Establish `key` using `flt_withBot_le (a := lam1S LL S (F + G)) (b := max (lam1S LL S F) (lam1S LL S G)) (N := 0) ?_`. Simplify using `using key`. Introduce `M hM`. Take `⟨h1, h2⟩` from `max_le_iff.1 hM`. Simplify using `only [add_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite `h1`, `h2`, the goal using `[flt_lam1S_le]`. Rewrite using `[map_add]`. Conclude with `AddSubgroup.add_mem _ h1 h2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_lam1S_add {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F G : MvPolynomial (ι × Fin n) R) : lam1S LL S (F + G) ≤ max (lam1S LL S F) (lam1S LL S G) := by
@@ -455,7 +451,7 @@ theorem flt_lam1S_add {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n]
   exact AddSubgroup.add_mem _ h1 h2
 
 /- English proof (translation)
-Apply `flt_withTop_add_le` to reduce the goal to its premises. Introduce `t u ht hu`. Rewrite `ht`, `hu`, the goal using `[flt_le_valS]`. Rewrite using `[map_mul]`. Conclude with `(laurentCoeffFiltration R n (ι × Fin n) 1).mul_mem ht hu`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_valS_mul_ge {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F G : MvPolynomial (ι × Fin n) R) : valS LL S F + valS LL S G ≤ valS LL S (F * G) := by
@@ -466,9 +462,9 @@ theorem flt_valS_mul_ge {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero 
   exact (laurentCoeffFiltration R n (ι × Fin n) 1).mul_mem ht hu
 
 /- English proof (translation)
-Apply `flt_withBot_le_add` to reduce the goal to its premises. Introduce `t u ht hu`. Rewrite `ht`, `hu`, the goal using `[flt_lam1S_le]`. Rewrite using `[map_mul]`. Use `(laurentCoeffFiltration R n (ι × Fin n) (-1)).mul_mem ht hu` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show -(t + u) = -t + -u by ring]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem flt_lam1S_mul_le {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F G : MvPolynomial (ι × Fin n) R) : lam1S LL S (F * G) ≤ lam1S LL S F + lam1S LL S G := by

@@ -16,7 +16,7 @@ set_option synthInstance.maxHeartbeats 200000
 namespace UpperTheory.V.Z.Desc.V0.InertiaSectionNorm
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hg`. Take `⟨b, hb, rfl⟩` from `hx`. Use `⟨a⁻¹ * b * a, ?_, by simp only [map_mul, map_inv]⟩` and prove the remaining obligations. Establish `hb'` using `MonoidHom.mem_ker.1 hb`. Conclude with `MonoidHom.mem_ker.2 (by simp only [map_mul, map_inv, hb', mul_one, inv_mul_cancel])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem Kc_conj {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
     {g x : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) (hx : x ∈ Kc k n 1) : g⁻¹ * x * g ∈ Kc k n 1 := by
@@ -30,7 +30,7 @@ variable {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMF
   [IsAlgClosure L Ω] {n : ℕ}
 
 /- English proof (translation)
-Unfold `CaseU.cmp`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cmp_of {w : Plc L} (h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) (x : UA L n) :
     cmp n w ((away l L n).rangeRestrict x) = cLoc w x := by
@@ -39,7 +39,7 @@ private theorem cmp_of {w : Plc L} (h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) (x :
   rfl
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `(away l L n).rangeRestrict_surjective x`. Take `⟨y, rfl⟩` from `(away l L n).rangeRestrict_surjective y`. Use `Subtype.ext (funext fun w => ?_)` and prove the remaining obligations. Establish `e` using `h w.1`. Rewrite `e` using `[cmp_of w.2, cmp_of w.2]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem ext_cmp {x y : Ga l L n} (h : ∀ w, cmp n w x = cmp n w y) : x = y := by
   obtain ⟨x, rfl⟩ := (away l L n).rangeRestrict_surjective x
@@ -49,7 +49,7 @@ private theorem ext_cmp {x y : Ga l L n} (h : ∀ w, cmp n w x = cmp n w y) : x 
   rwa [cmp_of w.2, cmp_of w.2] at e
 
 /- English proof (translation)
-Use `ext_cmp fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Apply the tactic sequence `rcases h w with h | h <;> rw [h] <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem comm_of {a b : Ga l L n} (h : ∀ w, cmp n w a = 1 ∨ cmp n w b = 1) : Commute a b := by
   refine ext_cmp fun w => ?_
@@ -59,7 +59,7 @@ private theorem comm_of {a b : Ga l L n} (h : ∀ w, cmp n w a = 1 ∨ cmp n w b
 variable (s : HidaSetting l L Ω)
 
 /- English proof (translation)
-Unfold `CaseU.sec`. Use `split_ifs with hb`. Establish `hm` using `((MulEquiv.ofBijective _ hb).symm h).2`. Conclude with `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hm w') hw)`. Conclude with `map_one _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem sec_one (w w' : Plc L) (h : GLw n w) (hw : w'.under (𝓞 (Lp L)) ≠ w.under (𝓞 (Lp L))) :
     cmp n w' (sec n s w h : Ga l L n) = 1 := by
@@ -70,7 +70,7 @@ private theorem sec_one (w w' : Plc L) (h : GLw n w) (hw : w'.under (𝓞 (Lp L)
   · exact map_one _
 
 /- English proof (translation)
-Unfold `secS`. Rewrite using `[dif_pos h]`. Conclude with `⟨(MulEquiv.ofBijective _ h).apply_symm_apply g, ((MulEquiv.ofBijective _ h).symm g).2⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem secS_spec (h : Function.Bijective ((toGS n s).comp (GaS n s).subtype)) (g : GS n s) :
     toGS n s (secS n s g) = g ∧ secS n s g ∈ GaS n s := by
@@ -79,14 +79,14 @@ private theorem secS_spec (h : Function.Bijective ((toGS n s).comp (GaS n s).sub
   exact ⟨(MulEquiv.ofBijective _ h).apply_symm_apply g, ((MulEquiv.ofBijective _ h).symm g).2⟩
 
 /- English proof (translation)
-The claim follows from `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hx w) hw)`.
+A detailed English derivation is pending.
 -/
 private theorem mem_GaS {x : Ga l L n} (hx : x ∈ GaS n s) {w : Plc L}
     (hw : w.under (𝓞 (Lp L)) ∉ s.St ∧ w.under (𝓞 (Lp L)) ≠ s.v0) : cmp n w x = 1 :=
   MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hx w) hw)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun e => h (Or.inr (Or.inl e)), fun e => h (Or.inr (Or.inr e))⟩`.
+Supply the required witnesses or components.
 -/
 private theorem notS {w : Plc L} (h : w.under (𝓞 (Lp L)) ∉ s.S) :
     w.under (𝓞 (Lp L)) ∉ s.St ∧ w.under (𝓞 (Lp L)) ≠ s.v0 :=
@@ -96,23 +96,21 @@ end UpperTheory.V.Z.Desc.V0.InertiaSectionNorm
 
 open UpperTheory.V.Z.Desc.V0.InertiaSectionNorm in
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s n hn V hV Q c m τ₀`. Take `⟨hb, hcomm, hdesc⟩` from `secSp l L Ω s n hn V hV`. Establish `spec` using `secS_spec (n := n) s hb`. Establish `hq : IsEmpty Q.Q` using `⟨fun q => Q.notS q (by`. Establish `h : (Q.wq q).under (𝓞 (Lp L)) ∈ V.S'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Q.range]`. Conclude with `Or.inr ⟨q, rfl⟩`. Rewrite using `[hV] at h)⟩` and apply the resulting hypothesis. Establish `hlev : ∀ K, (hset Q τ₀).lev K = (hset Q τ₀).UQ` using `fun K => by haveI : IsEmpty (hset Q τ₀).Q := hq`. Unfold `HSet.lev`.
+Rewrite the conclusion using the stated equalities. Prove the second alternative. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[iSup_of_empty]`. Conclude with `sup_bot_eq _`. Establish `h0 : ∀ (g : GLw n (s.w s.v0)) (t : s.St), cmp n (s.w t) (sec0 n s g) = 1` using `fun g t => congrFun (congrArg Prod.fst (spec (1, g)).1) t`. Establish `hτ : ∀ (u u' : Ub n s), (∀ t : s.St, cmp n (s.w t) (u : Ga l L n) = cmp n (s.w t) (u' : Ga l L n)) → (hset Q τ₀).τ u = (hset Q τ₀).τ u'` using `fun u u' h => congrArg τ₀ (Subtype.ext (funext h))`. Establish `huq : ∀ g : GLw n (s.w s.v0), g ∈ KO _ (Fin n) → ∀ u ∈ UQ n Q, ∃ u' ∈ UQ n Q, (u' : Ga l L n) = (sec0 n s g)⁻¹ * (u : Ga l L n) * sec0 n s g ∧ (hset Q τ₀).τ u' = (hset Q τ₀).τ u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg u hu`. Take `⟨k, hk, p, hp, e⟩` from `(hdesc Q (u : Ga l L n)).1 ⟨u, hu, rfl⟩`. Establish `hp' : ((p.1, g⁻¹ * p.2 * g) : GS n s) ∈ (KT n (wt s)).prod (Kc _ n 1)` using `Subgroup.mem_prod.2 ⟨(Subgroup.mem_prod.1 hp).1, Kc_conj hg (Subgroup.mem_prod.1 hp).2⟩`. Establish `hconj : ((p.1, g⁻¹ * p.2 * g) : GS n s) = ((1, g) : GS n s)⁻¹ * p * (1, g)` using `Prod.ext (by simp) (by simp)`. Establish `e' : (sec0 n s g)⁻¹ * (u : Ga l L n) * sec0 n s g = secS n s (p.1, g⁻¹ * p.2 * g) * k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : k * sec0 n s g = sec0 n s g * k` using `(hcomm (1, g) k hk).eq.symm`. Rewrite using `[hconj, map_mul, map_mul, map_inv, e]`. Express the relevant statement in the definitionally equal form `(sec0 n s g)⁻¹ * (secS n s p * k) * sec0 n s g = (sec0 n s g)⁻¹ * secS n s p * sec0 n s g * k`. Simplify using `only [mul_assoc, hc]`. Take `⟨u', hu', e''⟩` from `(hdesc Q _).2 ⟨k, hk, _, hp', e'⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e3 : (u' : Ga l L n) = (sec0 n s g)⁻¹ * (u : Ga l L n) * sec0 n s g` using `e''`. Use `⟨u', hu', e3, hτ _ _ fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[e3, map_mul, map_mul, map_inv, h0, inv_one, one_mul, mul_one]`. Use `⟨fun g hg => ⟨fun K u hu => ?_, fun u hu => huq g hg u hu, fun w hw h => ?_⟩, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[hlev]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u', hu', h⟩` from `huq g hg u hu`. Conclude with `⟨u', by rw [hlev]; exact hu', h⟩`. Use `comm_of fun w' => ?_` and prove the remaining obligations. Distinguish the cases in `hu : w'.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))`. Use `Or.inl (mem_GaS s (spec (1, g)).2 (notS s ?_))` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, ← hV]`. Conclude with `hw.1`. Conclude with `Or.inr (sec_one s w w' h hu)`. Take `⟨u, hu, e⟩` from `(hdesc Q (sec0 n s g)).2 ⟨1, one_mem _, (1, g), Subgroup.mem_prod.2 ⟨one_mem _, hg⟩, (mul_one _).symm⟩`. Establish `e3 : (u : Ga l L n) = sec0 n s g` using `e`.
-
-Use `⟨u, hu, e3, ?_⟩` and prove the remaining obligations. Conclude with `(hτ u 1 fun t => by rw [e3, h0]; exact (map_one _).symm).trans (map_one (hset Q τ₀).τ)`.
+Prove the second alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Desc.V0.normS :
     NormS := by

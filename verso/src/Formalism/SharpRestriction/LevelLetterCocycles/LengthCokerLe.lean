@@ -41,9 +41,9 @@ def DetCols : Prop :=
           (Matrix.of fun l k => red (cols k) l).det ∣ ((PD.p : ℕ) : O) ^ V
 
 /- English proof (translation)
-Establish `hdet0 : QQ.det ≠ 0`. Introduce `h0`. Rewrite `hd` using `[h0, zero_dvd_iff]`. Conclude with `pow_ne_zero V hl hd`. Establish `hL` using `Formalism.KernelCokernelLengths.length_theorems_all_hold.1 O (Fin r → O) (Matrix.toLin' QQ) (by rwa [LinearMap.det_toLin'])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, LinearMap.det_toLin', ← Formalism.KernelCokernelLengths.TorsionKernelSumLemmas.len_pow l hl V]`. Establish `hle : Ideal.span {l ^ V} ≤ Ideal.span {QQ.det}` using `Ideal.span_singleton_le_span_singleton.2 hd`. Use `first`. Consider the case `exact Module.length_le_of_surjective (Submodule.factor hle) (Submodule.factor_surjective hle)`. Consider the case `exact Module.length_le_of_surjective (Ideal.Quotient.factorₐ O hle).toLinearMap (Ideal.Quotient.factor_surjective hle)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem length_coker_le {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {r : ℕ}
     (QQ : Matrix (Fin r) (Fin r) O) (l : O) (hl : l ≠ 0) (V : ℕ) (hd : QQ.det ∣ l ^ V) :
@@ -63,41 +63,35 @@ theorem length_coker_le {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuatio
         (Ideal.Quotient.factor_surjective hle)
 
 /- English proof (translation)
-Take `⟨hdom, hdvr, -⟩` from `hS.2.2.2.1`. Use `haveI := hdom`. Use `haveI := hdvr`. Take `⟨ζ, hζ⟩` from `hS.2.2.2.2.1`. Establish `hp11 : 11 ≤ PD.p` using `hS.2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : NeZero PD.p := ⟨by omega⟩`. Establish `hpL : ((PD.p : ℕ) : LL) ≠ 0` using `(hζ.neZero').out`. Establish `hp0 : ((PD.p : ℕ) : O) ≠ 0`. Introduce `h`. Apply `hpL` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `congrArg (algebraMap O LL) h` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Then use the resulting hypothesis. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hp0 hϖ`. Establish `hm : IsLocalRing.maximalIdeal O = Ideal.span {ϖ}` using `by first`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact hϖ.maximalIdeal_eq`. Consider the case `exact (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Establish `hlen1 : Module.length O (O ⧸ Ideal.span {ϖ}) = 1`. Rewrite using `[← hm]`. Use `first`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact Module.length_eq_one_iff.2 (isSimpleModule_iff_isCoatom.2 (IsLocalRing.maximalIdeal.isMaximal O).out)`. Consider the case `exact Module.length_eq_one_iff.2 (isSimpleModule_iff_isCoatom.2 (Ideal.isMaximal_def.1 (IsLocalRing.maximalIdeal.isMaximal O)))`. Establish `hlenp : Module.length O (O ⧸ Ideal.span {((PD.p : ℕ) : O)}) = (k : ℕ∞)`. Rewrite using `[hu, Ideal.span_singleton_mul_left_unit u.isUnit, Formalism.KernelCokernelLengths.TorsionKernelSumLemmas.len_pow ϖ hϖ.ne_zero k, hlen1, mul_one]`. Set `s : Finset (W.DD T₂)` to `Finset.univ.image g`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨s, ?_, ?_, V * k, k, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.card_image_le.trans (by simpa using hm')`. Introduce `x hx`. Simplify using `only [s, Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_range] at hx`. Take `⟨j, rfl⟩` from `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgN j`. Use `set X := (((NDl W T₂ i).map (W.π₀ • (LinearMap.id : W.DD T₂ →ₗ[O] W.DD T₂)) ⊔ (PhiPullΔ W T₂ i).map ((Formalism.MainNotions.LiftingTheory.qp W ^ (b i + S)) • (LinearMap.id : W.DD T₂ →ₗ[O] W.DD T₂)) ⊔ Submodule.span O (↑s : Set (W.DD T₂))).comap (NDl W T₂ i).subtype) with hX`. Establish `hkerX : LinearMap.ker red ≤ X`. Rewrite using `[hker]`. Conclude with `Submodule.comap_mono (le_sup_left.trans le_sup_left)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hcolX : ∀ k', cols k' ∈ X`. Introduce `k'`. Rewrite using `[hX, Submodule.mem_comap, Submodule.coe_subtype]`. Break down `hcols k' with h | ⟨j, hj⟩` into its components or cases. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right h)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hj]`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span (by simp [s]))`. Set `QQ : Matrix (Fin r) (Fin r) O` to `Matrix.of fun l k' => red (cols k') l`. Set `e` to `LinearMap.quotKerEquivOfSurjective red hsurj`. Set `f : (Fin r → O) →ₗ[O] (↥(NDl W T₂ i) ⧸ X)` to `(Submodule.factor hkerX) ∘ₗ e.symm.toLinearMap`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hf : Function.Surjective f` using `(Submodule.factor_surjective hkerX).comp e.symm.surjective`. Establish `hrange : LinearMap.range (Matrix.toLin' QQ) ≤ LinearMap.ker f`. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Establish `hv : Matrix.toLin' QQ v = red (∑ k', v k' • cols k')`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `l'`. Simplify using `[Matrix.toLin'_apply, Matrix.mulVec, dotProduct, map_sum, map_smul, QQ, mul_comm]`. Establish `he : e.symm (red (∑ k', v k' • cols k')) = Submodule.Quotient.mk (∑ k', v k' • cols k')`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use `first`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `rfl`. Consider the case `exact (LinearMap.quotKerEquivOfSurjective_apply_mk red hsurj _).symm`. Simplify using `only [f, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, hv, he, Submodule.factor_mk, Submodule.Quotient.mk_eq_zero]`. Use `first`. Consider the case `rw [Submodule.factor_mk, Submodule.Quotient.mk_eq_zero]`.
+Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Consider the case `(change Submodule.Quotient.mk (p := X) (∑ k', v k' • cols k') = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero])`. Conclude with `Submodule.sum_mem _ fun k' _ => Submodule.smul_mem _ _ (hcolX k')`. Set `g'` to `(LinearMap.range (Matrix.toLin' QQ)).liftQ f hrange`. Establish `hg' : Function.Surjective g'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `z`. Take `⟨y, rfl⟩` from `hf z`. Conclude with `⟨Submodule.Quotient.mk y, rfl⟩`. Combine the equalities or inequalities in the displayed calculation. Unfold `Formalism.WeaklyAdmissibleFiltrations.lenOl`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `hlenp`. Establish `hp1 : (1 : ℝ) < (PD.p : ℝ)` using `by exact_mod_cast (by omega : 1 < PD.p)`. Establish `hcD : 0 ≤ Formalism.MainNotions.RamifiedCoefficientChains.cD PD.p (hpar n b S + η)`. Unfold `Formalism.MainNotions.RamifiedCoefficientChains.cD`. Establish `h1 : 0 < (PD.p : ℝ) - 1` using `by linarith`.
-
-Establish `h2 : 0 ≤ ((hpar n b S + η : ℕ) : ℝ) + 1` using `by positivity`. Use `div_nonneg h2 h1.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfl` using `Nat.floor_le hcD`. Establish `hV' : (V : ℝ) ≤ (finrank LL T₂.V : ℝ) * S + 2 * m * Formalism.MainNotions.RamifiedCoefficientChains.cD PD.p (hpar n b S + η)`.
-
-Establish `h` using `(Nat.cast_le (α := ℝ)).2 hV`. Move the coercions through the operations in `at h`. Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Use polynomial arithmetic with `[h, hfl, hm0]`. Unfold `Formalism.MainNotions.RamifiedCoefficientChains.S9.lenC`.
-
-Use `push_cast`. Conclude with `mul_le_mul_of_nonneg_right hV' (Nat.cast_nonneg k)`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem lemmaDN_core {d : ℕ} {T₁ T₂ : LocLat G Qp LL O} {F : LatHom T₁.L T₂.L} {b : ZMod n → ℕ} {S η m : ℕ}
     (hS : SetCS W d T₁ T₂ F b S η m) (i : ZMod n) {r : ℕ} (red : ↥(NDl W T₂ i) →ₗ[O] (Fin r → O))
@@ -219,7 +213,7 @@ theorem lemmaDN_core {d : ℕ} {T₁ T₂ : LocLat G Qp LL O} {F : LatHom T₁.L
     exact mul_le_mul_of_nonneg_right hV' (Nat.cast_nonneg k)
 
 /- English proof (translation)
-Introduce `d T₁ T₂ F b S η m hS i hi`. Take `⟨r, red, hred⟩` from `h0 d T₁ T₂ F b S η m hS i hi`. Take `⟨m', hm', g, hgN, cols, hcols, V, hV, hdet⟩` from `h1 d T₁ T₂ F b S η m hS i hi r red hred`. Take `⟨hsurj, hker⟩` from `hred`. Conclude with `lemmaDN_core W hS i red hsurj hker hm' g hgN cols hcols V hV hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lemmaDN_of_det (h0 : DetRed W) (h1 : DetCols W) :
     LemmaDN W := by
@@ -241,7 +235,7 @@ def DetColsE : Prop :=
           (Matrix.of fun l k => red (cols k) l).det ∣ ((PD.p : ℕ) : O) ^ V
 
 /- English proof (translation)
-Introduce `d T₁ T₂ F b S η m hS i hi`. Take `⟨r, red, hred, m', hm', g, hgN, cols, hcols, V, hV, hdet⟩` from `h d T₁ T₂ F b S η m hS i hi`. Take `⟨hsurj, hker⟩` from `hred`. Conclude with `lemmaDN_core W hS i red hsurj hker hm' g hgN cols hcols V hV hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lemmaDN_of_detE (h : DetColsE W) : LemmaDN W := by
   intro d T₁ T₂ F b S η m hS i hi

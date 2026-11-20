@@ -8,15 +8,15 @@ noncomputable section
 namespace GlobalTheory.NormSheaf
 
 /- English proof (translation)
-Use `set b := Module.finBasis K L`. Set `V : Matrix (Fin (Module.finrank K L)) (Fin (Module.finrank K L)) Ω` to `.of fun i k => e i (b k)`. Establish `hV : V.det ≠ 0`. Establish `hli` using `(linearIndependent_algHom_toLinearMap K L Ω).comp e e.injective`. Introduce `h0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc0, hc⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Use `hc0 (funext (Fintype.linearIndependent_iff.1 hli c (b.ext fun k => ?_)))` and prove the remaining obligations. Use `congrFun hc k` as an intermediate fact. Simplify `this` using `[V, Matrix.vecMul, dotProduct]`. Establish `key : V.map (C : Ω →+* MvPolynomial (Fin m) Ω) * (MvPolynomial.map (algebraMap K Ω)).mapMatrix (∑ i, (X i : MvPolynomial (Fin m) K) • (Algebra.leftMulMatrix b (x i)).map (C : K →+* MvPolynomial (Fin m) K)) = Matrix.diagonal (fun j => ∑ i, C (e j (x i)) * X i) * V.map (C : Ω →+* M …` using `by ext1 j k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h (i : Fin m) : e j (x i) * e j (b k) = ∑ l, e j (b l) * algebraMap K Ω (Algebra.leftMulMatrix b (x i) l k)`. Rewrite using `[← map_mul, ← b.sum_repr (x i * b k), map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.leftMulMatrix_eq_repr_mul, Algebra.smul_def, mul_comm]`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [V, Matrix.of_apply, Matrix.map_apply, RingHom.mapMatrix_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, map_X, map_C, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← C_mul, h, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[C_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd` using `congrArg Matrix.det key`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, mul_comm, ← RingHom.mapMatrix_apply, ← RingHom.map_det, ← RingHom.map_det]`. Rewrite using `[normForm, mul_right_cancel₀ (C_eq_zero.not.2 hV) hd]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_normForm_eq_prod (K L Ω : Type) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L]
     [Field Ω] [Algebra K Ω] (e : Fin (Module.finrank K L) ≃ (L →ₐ[K] Ω)) {m : ℕ} (x : Fin m → L) :
@@ -62,33 +62,29 @@ noncomputable section
 namespace GlobalTheory.NormSheaf
 
 /- English proof (translation)
-Introduce `A B K L _ _ _ _ _ _ _ _ _ _ _ _ _ _ φ hφ hcomp`. Use `letI : Algebra A B := φ.toAlgebra`. Use `haveI : Module.Finite A B := hφ`. Establish `hcard : Fintype.card (L →ₐ[K] AlgebraicClosure K) = Module.finrank K L` using `AlgHom.card K L _`. Set `e : Fin (Module.finrank K L) ≃ (L →ₐ[K] AlgebraicClosure K)` to `(Fintype.equivFinOfCardEq hcard).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hAΩ : algebraMap A (AlgebraicClosure K) = (algebraMap K (AlgebraicClosure K)).comp (algebraMap A K)` using `IsScalarTower.algebraMap_eq A K _`. Set `F : Fin (Module.finrank K L) → (B →ₐ[A] AlgebraicClosure K)` to `fun j => { ((e j).toRingHom.comp (algebraMap B L)) with commutes' := fun a => by`. Establish `h1` using `congrArg (fun f => f a) hcomp`. Simplify using `only [RingHom.coe_comp, Function.comp_apply] at h1`. Express the relevant statement in the definitionally equal form `e j (algebraMap B L (φ a)) = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, AlgHom.commutes, hAΩ, RingHom.comp_apply] }`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := A) (M := B)`. Set `S : Set (AlgebraicClosure K)` to `Set.range fun p : Fin (Module.finrank K L) × s => F p.1 p.2`. Set `R : Subalgebra A (AlgebraicClosure K)` to `Algebra.adjoin A S`. Establish `hSfin : S.Finite` using `Set.finite_range _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSint : ∀ y ∈ S, IsIntegral A y`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `(Algebra.IsIntegral.isIntegral (R := A) (p.2 : B)).map (F p.1)`. Establish `hRfin : Module.Finite A R`. Conclude with `Module.Finite.iff_fg.mpr (fg_adjoin_of_finite hSfin hSint)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : ∀ j (y : B), F j y ∈ R`. Introduce `j y`. Establish `hy : y ∈ Submodule.span A (s : Set B)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz => exact Algebra.subset_adjoin ⟨(j, ⟨z, hz⟩), rfl⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [map_add]`. Conclude with `R.add_mem hu hv`. Consider the case `smul a u _ hu => rw [map_smul]`. Conclude with `R.smul_mem hu a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `σ : Fin (Module.finrank K L) → (B →+* R)` to `fun j => ((F j).codRestrict R (hmem j)).toRingHom`. Establish `hinjAΩ : Function.Injective (algebraMap A (AlgebraicClosure K))`. Rewrite using `[hAΩ]`. Conclude with `(algebraMap K _).injective.comp (IsFractionRing.injective A K)`. Establish `hval : (algebraMap R (AlgebraicClosure K)).comp (algebraMap A R) = algebraMap A (AlgebraicClosure K)` using `(IsScalarTower.algebraMap_eq A R _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `⟨R, inferInstance, inferInstance, ?_, hRfin, σ, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Apply `hinjAΩ` to reduce the goal to its premises. Rewrite using `[← hval, RingHom.comp_apply, RingHom.comp_apply, hab]`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `a`. Conclude with `congrArg Subtype.val (((F j).codRestrict R (hmem j)).commutes a)`. Introduce `m g`. Set `Q : MvPolynomial (Fin m) R` to `∏ j, ∑ i, C (σ j (g i)) * X i`. Establish `hQ : Q.map (algebraMap R (AlgebraicClosure K)) = (normForm K L (fun i => algebraMap B L (g i))).map (algebraMap K (AlgebraicClosure K))`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_normForm_eq_prod K L _ e]`. Simplify using `only [Q, map_prod, map_sum, map_mul, map_C, map_X]`. Both sides reduce to the same expression. Use `set N := normForm K L (fun i => algebraMap B L (g i))`. Establish `hcoef : ∀ n, ∃ a : A, algebraMap A K a = N.coeff n`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Establish `h1 : algebraMap K (AlgebraicClosure K) (N.coeff n) = algebraMap R (AlgebraicClosure K) (Q.coeff n)`. Rewrite using `[← coeff_map, ← coeff_map, hQ]`. Establish `h2 : IsIntegral A (algebraMap R (AlgebraicClosure K) (Q.coeff n))` using `(Algebra.IsIntegral.isIntegral (R := A) (Q.coeff n)).map (IsScalarTower.toAlgHom A R (AlgebraicClosure K))`. Rewrite `h2` using `[← h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h3 : IsIntegral A (N.coeff n)` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom A K (AlgebraicClosure K)) (algebraMap K _).injective).1 h2`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 h3`. Establish `hrange : N ∈ Set.range (MvPolynomial.map (algebraMap A K))`. Rewrite using `[mem_range_map_iff_coeffs_subset]`. Introduce `c hc`.
-
-Take `⟨n, -, rfl⟩` from `mem_coeffs_iff.1 hc`. Conclude with `hcoef n`. Take `⟨P, hP⟩` from `hrange`. Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Apply `map_injective (algebraMap R (AlgebraicClosure K)) Subtype.val_injective` to reduce the goal to its premises.
-
-Rewrite using `[map_map, hval, hQ, ← hP, map_map, hAΩ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_split_normForm : ∀ (A B K L : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [CommRing B] [IsDomain B]
     [Field K] [Field L] [CharZero K] [Algebra A K] [Algebra B L] [Algebra K L] [FiniteDimensional K L]

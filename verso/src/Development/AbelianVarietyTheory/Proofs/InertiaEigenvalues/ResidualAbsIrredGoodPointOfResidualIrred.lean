@@ -8,41 +8,37 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.ResAbsIrrGood
 
 /- English proof (translation)
-Use `set K := AlgebraicClosure k`. Use `set f := algebraMap k K with hf`. Use `letI : Algebra k L := φ.toAlgebra`. Set `ψ : K →ₐ[k] L` to `IsAlgClosed.lift`. Establish `hψ : ∀ x : k, ψ (f x) = φ x` using `fun x => ψ.commutes x`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψinj : Function.Injective ψ` using `ψ.toRingHom.injective`. Use `haveI : Nonempty (Fin a) := ⟨⟨0, ha⟩⟩`. Establish `hspan : Submodule.span K ((fun v : Fin a → k => f ∘ v) '' ((⊤ : Submodule k (Fin a → k)) : Set _)) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `v _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Finset.univ_sum_single v]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `: (Pi.single i (v i) : Fin a → K) = v i • (f ∘ (Pi.single i (1 : k) : Fin a → k))`. Use extensionality with `j`. Distinguish the cases in `hij : j = i`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hij]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, trivial, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `AbsIrrSub`. Rewrite using `[hspan]`. Establish `hmat : ∀ g, ((mapRep φ ρ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L) = (((mapRep f ρ g : GL (Fin a) K) : Matrix (Fin a) (Fin a) K)).map ψ`. Introduce `g`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[mapRep, hψ]`. Use `⟨top_ne_bot, fun _ _ _ => trivial, fun W' _ hW' => ?_⟩` and prove the remaining obligations. Use `set W'' : Submodule L (Fin a → L) := Submodule.span L ((fun v : Fin a → K => ψ ∘ v) '' (W' : Set _))`. Establish `hst : ∀ g, ∀ x ∈ W'', ((mapRep φ ρ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L).mulVec x ∈ W''`. Introduce `g x hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, hu, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨_, hW' g u hu, ?_⟩` and prove the remaining obligations. Use extensionality with `p`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hmat g]`. Conclude with `RingHom.map_mulVec ψ.toRingHom _ u p`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Break down `h W'' hst with h1 | h1` into its components or cases. Use `left`. Rewrite `h1` using `[Submodule.span_eq_bot]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Use `h1 _ ⟨v, hv, rfl⟩` as an intermediate fact. Rewrite using `[Submodule.mem_bot]`. Use extensionality with `p`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hψinj` to reduce the goal to its premises. Simplify using `using congrFun this p`. Use `right`. Assume the negation of the conclusion as `hne`. Take `⟨θ, hθ0, hθ⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Set `c : Fin a → L` to `fun i => ψ (θ (Pi.single i 1))`. Establish `hθv : ∀ v : Fin a → K, θ v = ∑ i, v i * θ (Pi.single i 1)`. Introduce `v`. Use `conv_lhs => rw [← Finset.univ_sum_single v]`. Rewrite using `[map_sum]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show (Pi.single i (v i) : Fin a → K) = v i • (Pi.single i (1 : K) : Fin a → K) by`. Apply the tactic sequence `ext j; by_cases hij : j = i <;> simp [Pi.single_apply, hij], map_smul, smul_eq_mul]`. Establish `hkill : ∀ X ∈ W'', ∑ i, X i * c i = 0`. Introduce `X hX`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, hu, rfl⟩` from `hx`. Establish `h0 : θ u = 0` using `hθ hu`. Use `congrArg ψ (hθv u)` as an intermediate fact.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, map_zero, map_sum]`. Rewrite using `[this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[c]`. Consider the case `zero => simp`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `add x y _ _ hx hy => simp [add_mul, Finset.sum_add_distrib, hx, hy]`. Consider the case `smul s x _ hx => simp only [Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum, hx, mul_zero]`. Apply `hθ0` to reduce the goal to its premises. Apply `LinearMap.pi_ext` to reduce the goal to its premises. Introduce `i x`.
-
-Establish `hci : c i = 0`. Use `hkill (Pi.single i 1) (h1 ▸ Submodule.mem_top)` as an intermediate fact. Simplify `this` using `[Pi.single_apply]`. Establish `: θ (Pi.single i 1) = 0` using `hψinj (by simpa [c] using hci)`. Rewrite using `[show (Pi.single i x : Fin a → K) = x • (Pi.single i (1 : K) : Fin a → K) by`.
-
-Apply the tactic sequence `ext j; by_cases hij : j = i <;> simp [Pi.single_apply, hij], map_smul, this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem absIrrSub_top_of_irred {k L : Type} [Field k] [Field L] [IsAlgClosed L] (φ : k →+* L)
     {Γ : Type} [Group Γ] {a : ℕ} (ha : 0 < a) (ρ : Γ →* GL (Fin a) k)
@@ -140,13 +136,13 @@ theorem absIrrSub_top_of_irred {k L : Type} [Field k] [Field L] [IsAlgClosed L] 
 end GlobalTheory.ResAbsIrrGood
 
 /- English proof (translation)
-Introduce `D hN9 a π hπ ρ hρ`. Take `⟨hcont, r, hr, e, he⟩` from `hρ`. Establish `hdec : Formalism.MainNotions.TruncatedSeriesCountingIdentities.SemisimpleDecomposition (D` using `D) a (fun _ => r) (fun _ => ρ) π := ⟨e, he⟩`. Establish `hrb : IsRhoBar D.nd a (redRep D.nd a ρ)`. Use `⟨isOpen_ker_redRep D a ρ hcont, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x w hw B σ hB hσ`. Establish `e2` using `congrArg (Polynomial.map (IsLocalRing.residue (D.nd.O a))) (charpoly_of_decomp D a _ _ π hdec σ)`. Rewrite `e2` using `[Polynomial.map_mul, Polynomial.map_prod, ← Matrix.charpoly_map, ← Matrix.charpoly_map]`. Rewrite using `[heckePol_res D a x π w, ← hr.2.2 w hw B σ hB hσ, ← Matrix.charpoly_map]`. Use `(e2.trans ?_).symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hHG : HG D.nd D.naut a` using `⟨π, (D.Zgood_tie a π).1 hπ⟩`. Establish `hirr` using `(hN9 a hHG _ hrb).1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < D.R.r`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Conclude with `GlobalTheory.ResAbsIrrGood.absIrrSub_top_of_irred (D.naut.kFbar a) hpos _ fun W hW => hirr W fun g _ x hx => hW g x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PtCore.residualAbsIrredGoodPoint_of_residualIrred : ∀ D : D7, ResidualIrreducibleRankR D → GlobalTheory.PtCore.ResAbsIrr D := by
   intro D hN9 a π hπ ρ hρ

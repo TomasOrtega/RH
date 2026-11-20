@@ -12,9 +12,9 @@ namespace CrystallineSemistableComparison.KummerTwistLemmas
 open GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `p`. Set `K` to `AlgebraicClosure p.asIdeal.ResidueField`. Set `ψ : A →+* K` to `(algebraMap p.asIdeal.ResidueField K).comp (algebraMap A p.asIdeal.ResidueField)`. Take `⟨χ, hχ⟩` from `h K ψ`. Use `⟨⟨RingHom.ker χ, RingHom.ker_isPrime χ⟩, PrimeSpectrum.ext (Ideal.ext fun a => ?_)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `χ (algebraMap A S a) = 0 ↔ a ∈ p.asIdeal`. Rewrite using `[← RingHom.comp_apply, hχ]`. Simplify using `only [ψ, RingHom.comp_apply, map_eq_zero_iff _ (algebraMap p.asIdeal.ResidueField K).injective]`. Rewrite using `[← RingHom.mem_ker, Ideal.ker_algebraMap_residueField]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_surj_of_lift {A S : Type} [CommRing A] [CommRing S] [Algebra A S]
     (h : ∀ (K : Type) [Field K] [IsAlgClosed K] (ψ : A →+* K), ∃ χ : S →+* K, χ.comp (algebraMap A S) = ψ) :
@@ -30,11 +30,11 @@ theorem comap_surj_of_lift {A S : Type} [CommRing A] [CommRing S] [Algebra A S]
   rw [← RingHom.mem_ker, Ideal.ker_algebraMap_residueField]
 
 /- English proof (translation)
-Set `φ0 : Γ(U, ⊤) ⟶ CommRingCat.of S` to `CommRingCat.ofHom (algebraMap Γ(U, ⊤) S)`. Establish `: Etale (Spec.map φ0)` using `HasRingHomProperty.Spec_iff.mpr (RingHom.etale_algebraMap.mpr inferInstance)`. Establish `: Surjective (Spec.map φ0)` using `⟨hS⟩`. Establish `: Surjective (pullback.fst U.toSpecΓ (Spec.map φ0))` using `MorphismProperty.pullback_fst (P := @Surjective) _ _ inferInstance`. Use `⟨pullback U.toSpecΓ (Spec.map φ0), pullback.fst _ _, ((Scheme.ΓSpecIso (CommRingCat.of S)).inv ≫ (pullback.snd U.toSpecΓ (Spec.map φ0)).appTop).hom, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `𝒰 : U.Cover (Scheme.precoverage @Etale)` to `Scheme.Cover.mkOfCovers Unit (fun _ => pullback U.toSpecΓ (Spec.map φ0)) (fun _ => pullback.fst _ _) (fun x => ⟨(), (pullback.fst U.toSpecΓ (Spec.map φ0)).surjective x⟩) (fun _ => inferInstance)`. Conclude with `𝒰.mem_grothendieckTopology`. Introduce `a`. Establish `h` using `congrArg Scheme.Hom.appTop (pullback.condition (f := U.toSpecΓ) (g := Spec.map φ0))`. Rewrite `h` using `[Scheme.Hom.comp_appTop, Scheme.Hom.comp_appTop, Scheme.toSpecΓ_appTop]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : φ0 ≫ (Scheme.ΓSpecIso (CommRingCat.of S)).inv ≫ (pullback.snd U.toSpecΓ (Spec.map φ0)).appTop = (pullback.fst U.toSpecΓ (Spec.map φ0)).appTop`. Rewrite using `[← cancel_epi (Scheme.ΓSpecIso Γ(U, ⊤)).hom, h, ← Category.assoc, ← Scheme.ΓSpecIso_naturality]`. Simplify using `only [Category.assoc, Iso.hom_inv_id_assoc]`. Conclude with `congrArg (fun k => k.hom a) key`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem etaleCover (U : Scheme.{0}) (S : Type) [CommRing S] [Algebra Γ(U, ⊤) S] [Algebra.Etale Γ(U, ⊤) S]
     (hS : Function.Surjective (PrimeSpectrum.comap (algebraMap Γ(U, ⊤) S))) :
@@ -62,7 +62,7 @@ theorem etaleCover (U : Scheme.{0}) (S : Type) [CommRing S] [Algebra Γ(U, ⊤) 
     exact congrArg (fun k => k.hom a) key
 
 /- English proof (translation)
-Take `⟨W, π, φ, hmem, hφ⟩` from `etaleCover U S hS`. Use `⟨_, hmem, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨_, h, _, ⟨i⟩, rfl⟩` from `hg`. Use `hP V (h ≫ π) (h.appTop.hom.comp φ) fun a => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hφ, Scheme.Hom.comp_appTop]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -79,17 +79,17 @@ theorem loc_of_etale (U : Scheme.{0}) (S : Type) [CommRing S] [Algebra Γ(U, ⊤
   rfl
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos m with rfl | hm0` into its components or cases. Use `⟨⊤, (Scheme.etaleTopology).top_mem U, fun V g _ => ⟨1, ?_⟩⟩` and prove the remaining obligations. Establish `h01 : (0 : Γ(U, ⊤)) = 1` using `by simpa using isUnit_zero_iff.mp (by simpa using hm)`. Establish `h01' : (0 : Γ(V, ⊤)) = 1` using `by simpa using congrArg g.appTop.hom h01`. Use `subsingleton_of_zero_eq_one h01'` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subsingleton.elim _ _`. Set `c : Γ(U, ⊤)` to `(hm.unit⁻¹ : (Γ(U, ⊤))ˣ)`. Establish `hc : c * (m : Γ(U, ⊤)) = 1` using `hm.val_inv_mul`. Set `Pp : StandardEtalePair Γ(U, ⊤)` to `{ f := X ^ m - C u.1 monic_f := monic_X_pow_sub_C _ hm0.ne' g := X cond := ⟨C c * X, 0, m, by`. Rewrite using `[derivative_sub, derivative_X_pow, derivative_C, sub_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hX : (X : (Γ(U, ⊤))[X]) ^ (m - 1) * X = X ^ m` using `by rw [← pow_succ, Nat.sub_add_cancel hm0]`. Establish `hC : C (m : Γ(U, ⊤)) * C c = 1` using `by rw [← C_mul, mul_comm, hc, C_1]`. Take the linear combination `(X ^ (m - 1) * X) * hC + hX⟩ }`. Use `loc_of_etale U Pp.Ring (comap_surj_of_lift fun K _ _ ψ => ?_) _ fun V g χ hχ => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `IsAlgClosed.exists_pow_nat_eq (ψ u.1) hm0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `_` to `ψ.toAlgebra`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[zero_pow hm0.ne']`. Conclude with `(u.isUnit.map ψ).ne_zero hx.symm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hmap : Pp.HasMap x` using `⟨by simp [Pp, hx, RingHom.algebraMap_toAlgebra], by simpa [Pp] using hx0⟩`. Conclude with `⟨(Pp.lift x hmap).toRingHom, (Pp.lift x hmap).comp_algebraMap⟩`. Use `⟨χ Pp.X, ?_⟩` and prove the remaining obligations. Establish `h0` using `(StandardEtalePair.hasMap_X (P := Pp)).1`. Establish `h1 : Pp.X ^ m = algebraMap Γ(U, ⊤) Pp.Ring u.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `h0` using `[Pp, sub_eq_zero]`. Rewrite using `[← map_pow, h1, hχ]`.
+A detailed English derivation is pending.
 -/
 theorem kumLoc (U : Scheme.{0}) (m : ℕ) (u : (Γ(U, ⊤))ˣ) (hm : IsUnit (m : Γ(U, ⊤))) :
     Loc U fun V g => ∃ v : Γ(V, ⊤), v ^ m = g.appTop.hom u.1 := by
@@ -126,21 +126,19 @@ theorem kumLoc (U : Scheme.{0}) (m : ℕ) (u : (Γ(U, ⊤))ˣ) (hm : IsUnit (m :
       rw [← map_pow, h1, hχ]
 
 /- English proof (translation)
-Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero (NeZero.ne m)`. Set `c : Γ(U, ⊤)` to `(hm.unit⁻¹ : (Γ(U, ⊤))ˣ)`. Establish `hc : c * (m : Γ(U, ⊤)) = 1` using `hm.val_inv_mul`. Take `⟨h, hh⟩` from `cyclotomic.dvd_X_pow_sub_one m Γ(U, ⊤)`. Set `Pp : StandardEtalePair Γ(U, ⊤)` to `{ f := cyclotomic m Γ(U, ⊤) monic_f := cyclotomic.monic m Γ(U, ⊤) g := X cond := ⟨C c * X * h, C c * X * derivative h, m, by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hd` using `congrArg derivative hh`. Rewrite `hd` using `[derivative_sub, derivative_X_pow, derivative_one, sub_zero, derivative_mul]`. Establish `hX : (X : (Γ(U, ⊤))[X]) * X ^ (m - 1) = X ^ m` using `by rw [← pow_succ', Nat.sub_add_cancel hm0]`. Establish `hC : C c * C (m : Γ(U, ⊤)) = 1` using `by rw [← C_mul, hc, C_1]`. Take the linear combination `(C c * X) * hd.symm + (X * X ^ (m - 1)) * hC + hX⟩ }`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `loc_of_etale U Pp.Ring (comap_surj_of_lift fun K _ _ ψ => ?_) _ fun V g χ hχ => ?_` and prove the remaining obligations. Set `_` to `ψ.toAlgebra`. Establish `hdeg : (cyclotomic m K).degree ≠ 0`. Rewrite using `[degree_cyclotomic]`. Conclude with `(Nat.totient_pos.2 hm0).ne'` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `IsAlgClosed.exists_root _ hdeg`. Establish `hx1 : x ^ m = 1`. Take `⟨k, hk⟩` from `cyclotomic.dvd_X_pow_sub_one m K`. Use `congrArg (eval x) hk` as an intermediate fact. Rewrite `this` using `[eval_sub, eval_pow, eval_X, eval_one, eval_mul, hx.eq_zero, zero_mul, sub_eq_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx1` using `[zero_pow hm0.ne']`. Conclude with `zero_ne_one hx1`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap : Pp.HasMap x` using `⟨by`. Express the relevant statement in the definitionally equal form `aeval x (cyclotomic m Γ(U, ⊤)) = 0`. Rewrite using `[aeval_def, eval₂_eq_eval_map, map_cyclotomic]`. Conclude with `hx.eq_zero, by simpa [Pp] using hx0⟩`. Conclude with `⟨(Pp.lift x hmap).toRingHom, (Pp.lift x hmap).comp_algebraMap⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨χ Pp.X, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `: IsUnit ((m : ℕ) : Γ(V, ⊤))` using `by simpa using hm.map g.appTop.hom`. Conclude with `this`. Establish `h0 : aeval Pp.X (cyclotomic m Γ(U, ⊤)) = 0` using `(StandardEtalePair.hasMap_X (P := Pp)).1`. Establish `h2 : aeval Pp.X (cyclotomic m ℤ) = 0`.
-
-Rewrite `h0` using `[← map_cyclotomic_int, ← algebraMap_int_eq, aeval_map_algebraMap]`. Conclude with `h0`. Establish `h3` using `Polynomial.aeval_algHom_apply χ.toIntAlgHom Pp.X (cyclotomic m ℤ)`. Rewrite `h3` using `[h2, map_zero]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primLoc (U : Scheme.{0}) (m : ℕ) [NeZero m] (hm : IsUnit (m : Γ(U, ⊤))) :
     Loc U fun V _ => Nonempty (Prim m Γ(V, ⊤)) := by

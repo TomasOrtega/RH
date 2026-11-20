@@ -14,17 +14,17 @@ noncomputable section
 namespace GlobalTheory.SBUnif
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n n' _ _ _ _ Ψ hΨ`. Take `⟨a, ha⟩` from `GlobalTheory.LocMod.Inhab.exists_box_subset (GlobalTheory.LocMod.Inhab.eventually_invariant hΨ)`. Establish `hinv : ∀ X u, u ∈ GlobalTheory.LocMod.Inhab.box n n' a → Ψ (X + u) = Ψ X` using `fun X u hu => GlobalTheory.LocMod.Inhab.invariant_of_tsupport (K := GlobalTheory.LocMod.Inhab.box n n' a) (fun u hu => ha u hu) u hu X`. Take `⟨R, hR⟩` from `GlobalTheory.LocMod.Inhab.exists_cosets hΨ a`. Set `F : Finset k` to `insert (a : k) ((R ×ˢ (Finset.univ ×ˢ Finset.univ)).image fun x => x.1 x.2.1 x.2.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨b, -, hb⟩` from `F.exists_max_image (fun x => valuation k x) ⟨_, Finset.mem_insert_self _ _⟩`. Establish `hab : valuation k (a : k) ≤ valuation k b` using `hb _ (Finset.mem_insert_self _ _)`. Establish `ha0 : valuation k (a : k) ≠ 0` using `by simp`. Establish `hb0 : valuation k b ≠ 0` using `fun h => ha0 (le_antisymm (h ▸ hab) zero_le')`. Establish `hsupp : ∀ X, Ψ X ≠ 0 → ∀ i j, valuation k (X i j) ≤ valuation k b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `X hX i j`. Take `⟨r, hr, hXr⟩` from `hR X hX`. Establish `h1 : valuation k ((X - r) i j) ≤ valuation k (a : k)` using `hXr i j`. Establish `h2 : valuation k (r i j) ≤ valuation k b` using `hb _ (Finset.mem_insert_of_mem (Finset.mem_image.2 ⟨(r, i, j), by simp [hr], rfl⟩))`. Establish `e : X i j = r i j + (X - r) i j` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Valuation.map_add_le _ h2 (h1.trans hab)`. Establish `hq` using `GlobalTheory.RootEx.UnipPow.valuation_resCard_lt_one (k := k)`. Take `⟨e₁, he₁⟩` from `exists_pow_lt₀ hq (Units.mk0 _ ha0)`. Take `⟨e₂, he₂⟩` from `exists_pow_lt₀ hq (Units.mk0 _ (inv_ne_zero hb0))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpos : 0 < resCard k` using `Nat.card_pos`. Use `⟨resCard k ^ (e₁ + e₂), pow_pos hpos _, ?_, ?_⟩` and prove the remaining obligations. Introduce `X Y hY`. Use `hinv X _ fun r q => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, Nat.cast_pow, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hY' : valuation k (Y r q) ≤ 1` using `hY r q`. Combine the equalities or inequalities in the displayed calculation. Introduce `X hX i j show valuation k _ ≤ 1`. Rewrite using `[map_mul, Nat.cast_pow, map_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem uniform : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (Ψ : Matrix n n' k → ℂ), Ψ ∈ SB (Matrix n n' k) → ∃ N : ℕ, 0 < N ∧ (∀ X Y : Matrix n n' k, (∀ i j, Y i j ∈ 𝒪[k]) → Ψ (X + (N : k) • Y) = Ψ X) ∧ ∀ X, Ψ X ≠ 0 → ∀ i j, (N : k) * X i j ∈ 𝒪[k] := by
   intro k _ _ _ _ n n' _ _ _ _ Ψ hΨ

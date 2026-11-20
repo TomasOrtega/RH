@@ -43,11 +43,9 @@ Both sides reduce to the same expression.
 theorem smul_snd (p : pairs Γ hn) (z : N' × N) : (p • z).2 = p.1.2 * z.2 := rfl
 
 /- English proof (translation)
-Take `⟨b, hb, hb'⟩` from `hB z.2`. Take `⟨d, hd, hd'⟩` from `hA ⟨(b.1 : G) * z.1 * (b.1 : G)⁻¹, hn _ b.1.2 _ z.1.2⟩`. Use `⟨⟨(⟨d.1.1, hle d.1.2⟩ * b.1, b.1), Γ.mul_mem (show d.1.1 ∈ Γ from d.2) (show b.1.1 ∈ Γ from b.2), b.2, by simp⟩, ⟨?_, hb⟩, fun q hq => ?_⟩` and prove the remaining obligations. Use `hd using 1` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext (by simp [smul_fst, mul_assoc])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Establish `e : q.1.2 = b.1` using `congrArg Subtype.val (hb' ⟨q.1.2, q.2.2.1⟩ hq.2)`. Establish `e'` using `hd' ⟨⟨_, q.2.2.2⟩, mul_mem q.2.1 (inv_mem q.2.2.1)⟩ (by`. Use `hq.1 using 1` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext (by simp [smul_fst, mul_assoc, e]))`. Use `Subtype.ext (Prod.ext (Subtype.ext ?_) e)` and prove the remaining obligations.
-
-Simplify using `[← e', e]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem existsUnique_prod (hle : N' ≤ N) {A : Set N'} {B : Set N}
     (hA : ∀ m : N', ∃! δ : Γ.subgroupOf N', (δ : N') * m ∈ A)
@@ -66,9 +64,9 @@ theorem existsUnique_prod (hle : N' ≤ N) {A : Set N'} {B : Set N}
     simp [← e', e]
 
 /- English proof (translation)
-Set `s : pairs Γ hn → pairs Γ hn` to `fun p => ⟨p.1.swap, p.2.2.1, p.2.1, by simpa using inv_mem p.2.2.2⟩`. Establish `hs : ∀ p : pairs Γ hn, p • z ∈ (fun z : N' × N => (z.1, Subgroup.inclusion hle z.1 * z.2)) ⁻¹' (A⁻¹ ×ˢ B) ↔ s p • (z.1⁻¹, Subgroup.inclusion hle z.1 * z.2) ∈ A ×ˢ B` using `fun p => by`. Use `and_congr (Iff.of_eq (congrArg (· ∈ A) (Subtype.ext ?_))) (Iff.of_eq (congrArg (· ∈ B) (Subtype.ext ?_)))` and prove the remaining obligations. Simplify using `[smul_fst, s, mul_assoc]`. Simplify using `[smul_fst, smul_snd, s, mul_assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take `⟨p, hp, hp'⟩` from `existsUnique_prod (hn := hn) hle hA hB (z.1⁻¹, Subgroup.inclusion hle z.1 * z.2)`. Conclude with `⟨s p, (hs _).2 hp, fun q hq => congrArg s (hp' _ ((hs q).1 hq))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_shear (hle : N' ≤ N) {A : Set N'} {B : Set N}
     (hA : ∀ m : N', ∃! δ : Γ.subgroupOf N', (δ : N') * m ∈ A)
@@ -90,7 +88,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Secon
   [LocallyCompactSpace N']
 
 /- English proof (translation)
-Rewrite using `[constTermOn, probMeasure_eq μ, integral_smul_measure, quotMeasure_univ h, integral_quotMeasure h, ENNReal.toReal_inv, measureReal_def]`. Conclude with `congrArg _ (integral_congr_ae (.of_forall hφ.descend_mk))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constTermOn_eq' {μ : Measure N} [μ.IsHaarMeasure] {𝓕 : Set N} (h : IsFundamentalDomain (Γ.subgroupOf N) 𝓕 μ)
     {φ : G → ℂ} {x : G} (hφ : LeftInv (Γ.subgroupOf N) fun n : N => φ (n * x)) :
@@ -100,9 +98,9 @@ theorem constTermOn_eq' {μ : Measure N} [μ.IsHaarMeasure] {𝓕 : Set N} (h : 
   exact congrArg _ (integral_congr_ae (.of_forall hφ.descend_mk))
 
 /- English proof (translation)
-Set `e : N ≃ₜ* N` to `{ toFun := fun n => ⟨γ * n * γ⁻¹, h1 _ n.2⟩ invFun := fun n => ⟨γ⁻¹ * n * γ, by simpa using h2 _ n.2⟩ left_inv := fun n => by simp [mul_assoc] right_inv := fun n => by simp [mul_assoc] map_mul' := fun a b => by simp [mul_assoc] continuous_toFun := by fun_prop continuous_invFun := …`. Establish `hm : Measurable e` using `e.continuous.measurable`. Establish `h` using `isFundamentalDomain_stdDom (Γ.subgroupOf N) μ`. Establish `he` using `Measure.isMulLeftInvariant_eq_smul (μ.map e) μ`. Establish `h' : IsFundamentalDomain (Γ.subgroupOf N) (e ⁻¹' stdDom (Γ.subgroupOf N)) μ` using `h.preimage_of_equiv ⟨hm, he ▸ Measure.smul_absolutelyContinuous⟩ (e := fun δ => ⟨e.symm δ, mul_mem (mul_mem (inv_mem hγ) δ.2) hγ⟩) ⟨fun a b hab => Subtype.ext (e.symm.injective (congrArg Subtype.val hab)), fun δ => ⟨⟨e δ, mul_mem (mul_mem hγ δ.2) (inv_mem hγ)⟩, Subtype.ext (e.sym …`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `h'.measure_eq h`. Rewrite `h1` using `[← Measure.map_apply hm (measurableSet_stdDom _), he, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, ENNReal.mul_eq_right (h.measure_ne_zero (NeZero.ne μ)) (hc.measure_ne_top h), ENNReal.coe_eq_one]`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `μ.map e = μ`. Rewrite using `[he, h1, one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem measurePreserving_conj (hc : Cocompact Γ N) (μ : Measure N) [μ.IsHaarMeasure] {γ : G} (hγ : γ ∈ Γ)
     (h1 : ∀ n ∈ N, γ * n * γ⁻¹ ∈ N) (h2 : ∀ n ∈ N, γ⁻¹ * n * γ⁻¹⁻¹ ∈ N) :
@@ -132,17 +130,17 @@ theorem measurePreserving_conj (hc : Cocompact Γ N) (μ : Measure N) [μ.IsHaar
   rw [he, h1, one_smul]
 
 /- English proof (translation)
-Establish `hp : ∀ p : pairs Γ hn, MeasurePreserving (fun z : N' × N => p • z) (μ'.prod μ) (μ'.prod μ)` using `fun p => by`. Use `((measurePreserving_mul_left μ' ⟨_, p.2.2.2⟩).comp (measurePreserving_conj hc' μ' p.2.2.1 (hn _ p.1.2.2) (hn _ (inv_mem p.1.2.2)))).prod (measurePreserving_mul_left μ p.1.2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Conclude with `Prod.ext (Subtype.ext (by simp [smul_fst, mul_assoc])) rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `: MeasurableConstSMul (pairs Γ hn) (N' × N)` using `⟨fun p => (hp p).measurable⟩`. Establish `: SMulInvariantMeasure (pairs Γ hn) (N' × N) (μ'.prod μ)` using `⟨fun p s hs => (hp p).measure_preimage hs.nullMeasurableSet⟩`. Establish `: Countable Γ` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `: Countable (pairs Γ hn)` using `Function.Injective.countable (f := fun p : pairs Γ hn => ((⟨_, p.2.1⟩, ⟨_, p.2.2.1⟩) : Γ × Γ)) fun p q h => Subtype.ext (Prod.ext (Subtype.ext (congrArg (fun z : Γ × Γ => z.1.1) h)) (Subtype.ext (congrArg (fun z : Γ × Γ => z.2.1) h)))`. Establish `hA` using `measurableSet_stdDom (Γ.subgroupOf N')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `measurableSet_stdDom (Γ.subgroupOf N)`. Establish `hi : Continuous (Subgroup.inclusion hle)` using `continuous_subtype_val.subtype_mk _`. Establish `ht : MeasurePreserving (fun z : N' × N => (z.1, Subgroup.inclusion hle z.1 * z.2)) (μ'.prod μ) (μ'.prod μ)` using `(MeasurePreserving.id μ').skew_product (g := fun m n => Subgroup.inclusion hle m * n) (Continuous.measurable (by fun_prop)) (.of_forall fun m => map_mul_left_eq_self μ _)`. Establish `d1` using `IsFundamentalDomain.mk' (μ := μ'.prod μ) (hA.prod hB).nullMeasurableSet (existsUnique_prod (hn := hn) hle (existsUnique_stdDom _) (existsUnique_stdDom _))`. Establish `d2` using `IsFundamentalDomain.mk' (μ := μ'.prod μ) (ht.measurable (hA.inv.prod hB)).nullMeasurableSet (existsUnique_shear (hn := hn) hle (existsUnique_stdDom _) (existsUnique_stdDom _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `d1.setIntegral_eq d2 (f := fun z : N' × N => φ (z.1 * (z.2 * x))) fun p z => by`. Rewrite using `[smul_fst, smul_snd, ← hφ _ p.2.1 (z.1 * (z.2 * x))]`. Simplify using `[mul_assoc]`. Establish `: IsFiniteMeasure (μ.restrict (stdDom (Γ.subgroupOf N)))` using `isFiniteMeasure_restrict.2 (hc.measure_ne_top (isFundamentalDomain_stdDom _ _))`. Establish `: IsFiniteMeasure (μ'.restrict (stdDom (Γ.subgroupOf N')))` using `isFiniteMeasure_restrict.2 (hc'.measure_ne_top (isFundamentalDomain_stdDom _ _))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK, hs⟩` from `id hc`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn (f := fun n : N => φ (n * x)) (by fun_prop)`. Establish `hb : ∀ n : N, ‖φ (n * x)‖ ≤ C` using `fun n =>`. Set `⟨γ, hγ, hk⟩` to `hs n`. Use the proof step `(congrArg norm (leftInv_integrand hφ x γ hγ n)).ge.trans (hC _ hk)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[← Measure.prod_restrict, integral_prod_symm _ (.of_bound (Continuous.aestronglyMeasurable (by fun_prop)) C (.of_forall fun z => by simpa [mul_assoc] using hb (Subgroup.inclusion hle z.1 * z.2)))]`. Establish `e2` using `integral_map (f := fun z : N' × N => φ (z.2 * x)) (ht.restrict_preimage (hA.inv.prod hB)).aemeasurable (Continuous.aestronglyMeasurable (by fun_prop))`. Rewrite `e2` using `[(ht.restrict_preimage (hA.inv.prod hB)).map_eq, ← Measure.prod_restrict, integral_fun_snd (fun n : N => φ (n * x)), measureReal_restrict_apply_univ]`. Rewrite using `[e, e2]`. Simplify using `[mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_integral (hle : N' ≤ N) (hn : ∀ p ∈ N, ∀ n ∈ N', p * n * p⁻¹ ∈ N') (hc : Cocompact Γ N)
     (hc' : Cocompact Γ N') (μ : Measure N) [μ.IsHaarMeasure] (μ' : Measure N') [μ'.IsHaarMeasure]
@@ -195,13 +193,11 @@ theorem integral_integral (hle : N' ≤ N) (hn : ∀ p ∈ N, ∀ n ∈ N', p * 
   simp [mul_assoc]
 
 /- English proof (translation)
-Establish `h` using `isFundamentalDomain_stdDom (Γ.subgroupOf N) Measure.haar`. Establish `h'` using `isFundamentalDomain_stdDom (Γ.subgroupOf N') Measure.haar`. Establish `h0` using `ENNReal.toReal_ne_zero.2 ⟨h.measure_ne_zero (NeZero.ne _), hc.measure_ne_top h⟩`. Establish `h0'` using `ENNReal.toReal_ne_zero.2 ⟨h'.measure_ne_zero (NeZero.ne _), hc'.measure_ne_top h'⟩`. Rewrite `h0`, `h0'` using `[← measureReal_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `integral_integral hle hn hc hc' Measure.haar Measure.haar (φ := fun _ => 1) (fun _ _ _ => rfl) continuous_const x`. Establish `e2 : Measure.haar.real (stdDom (Γ.subgroupOf N'))⁻¹ = Measure.haar.real (stdDom (Γ.subgroupOf N'))`. Simplify using `only [integral_const, measureReal_restrict_apply_univ, smul_smul] at e1`. Use `smul_left_injective ℝ (one_ne_zero (α := ℂ)) e1` as an intermediate fact. Rewrite `this` using `[mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_right_cancel₀ h0 this).symm`. Rewrite using `[constTermOn_eq h hφ, constTermOn_eq' h fun γ hγ n => by`. Simplify using `only [Subgroup.coe_mul, mul_assoc]`. Conclude with `constTermOn_mul_left_of_normalizer hφ hγ (fun m => ⟨hn _ γ.2 m, fun hm => by simpa [mul_assoc] using hn _ (inv_mem γ.2) _ hm⟩) _]`. Simplify using `only [constTermOn_eq h' hφ]`.
-
-Rewrite using `[integral_smul, integral_integral hle hn hc hc' _ _ hφ hφc, e2, inv_smul_smul₀ h0']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constTermOn_stages (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [T2Space G] [LocallyCompactSpace G] [MeasurableSpace G] [BorelSpace G]

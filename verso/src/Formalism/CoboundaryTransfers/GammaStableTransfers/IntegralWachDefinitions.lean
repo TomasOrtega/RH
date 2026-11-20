@@ -6,9 +6,9 @@ noncomputable section
 namespace Formalism.CoboundaryTransfers
 
 /- English proof (translation)
-Introduce `O A _ _ _ B M M' D _ _ _ _ W hMM' hGQ`. Use `⟨{ N := W.N φ := W.φ γ := W.γ φ_smul := W.φ_smul γ_smul := W.γ_smul comm := W.comm X_inj := W.X_inj Q_bij := W.Q_bij φ_N := fun x hx => by` and prove the remaining obligations. Establish `h : B.Q ^ M' = B.Q ^ (M' - M) * B.Q ^ M`. Rewrite using `[← pow_add, Nat.sub_add_cancel hMM']`. Rewrite using `[h, mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W.N.smul_mem _ (W.φ_N x hx)`. Use `γ_N := W.γ_N`. Use `γ_QN := gammaStableOfGammaQUnit_holds O A B M' D W.N W.γ hGQ W.Q_bij W.γ_smul W.γ_N }, rfl, rfl, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem liftsAt_mono : Mono := by
   intro O A _ _ _ B M M' D _ _ _ _ W hMM' hGQ
@@ -30,19 +30,19 @@ theorem liftsAt_mono : Mono := by
     γ_QN := gammaStableOfGammaQUnit_holds O A B M' D W.N W.γ hGQ W.Q_bij W.γ_smul W.γ_N }, rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Introduce `O A _ _ _ B M D _ _ _ _ W`. Establish `h1 : ∀ y, y ∈ W.QInvSub ↔ W.QInv y`. Introduce `y`. Simplify using `only [WachMod.QInvSub, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply, WachMod.QInv]`. Establish `h2 : ∀ z, z ∈ W.XNSub ↔ W.XN z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `z`. Simplify using `only [WachMod.XNSub, Submodule.mem_map, LinearMap.smul_apply, LinearMap.id_apply, WachMod.XN]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, rfl⟩`. Conclude with `⟨n, hn, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨n, hn, rfl⟩`. Conclude with `⟨n, hn, rfl⟩`. Establish `h3 : ∀ y z, (y, z) ∈ W.ZInt ↔ W.Cocycle y z`. Introduce `y z`. Rewrite using `[WachMod.ZInt, Submodule.mem_inf, Submodule.mem_prod, Submodule.restrictScalars_mem, Submodule.restrictScalars_mem, h1, h2, W.mem_Z1_iff_cocycle]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h4 : ∀ y z, (y, z) ∈ W.BInt ↔ W.IsCob1 y z`. Introduce `y z`. Establish `hf : ∀ x, ((W.φ - LinearMap.id).prod (W.γ - LinearMap.id)) x = (W.φ x - x, W.γ x - x)` using `fun _ => rfl`. Rewrite using `[WachMod.BInt, Submodule.mem_map]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hxe⟩`. Rewrite `hxe` using `[hf]`. Take `⟨e1, e2⟩` from `Prod.mk.inj hxe`. Conclude with `⟨x, hx, e1.symm, e2.symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, hx, rfl, rfl⟩`. Conclude with `⟨x, hx, hf x⟩`. Use `⟨h1, h2, h3, h4, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, z⟩ h`. Conclude with `(h3 y z).2 (W.cocycle_of_isCob1 ((h4 y z).1 h))`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, z⟩ h`. Conclude with `W.mem_coboundaries_of_isOneCoboundary ((h4 y z).1 h)`. Introduce and unpack `⟨y, z⟩ h`. Conclude with `W.cocycle_mem_Zf ((h3 y z).1 h)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem integral_wach_definitions : IntDefs := by
   intro O A _ _ _ B M D _ _ _ _ W

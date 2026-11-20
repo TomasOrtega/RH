@@ -18,7 +18,7 @@ structure MinimalHyp6 : Prop where
   cyc : CyclicBaseChange
 
 /- English proof (translation)
-The claim follows from `{ litN := h.litN, cohC := clozelCohC h.litN, conjC := h.conjC, borelC := h.borelC, galR := Z.Bc.galoisRepRankTwoReal_of h.galR, smoR := strongMultOneReal, gkR := gelfandKazhdanReal strongMultOneReal, admR := admissibleReal, bc := Br.quadBC0_of_cyclic h.litN.aut.art strongMultOneR …`.
+A detailed English derivation is pending.
 -/
 theorem MinimalHyp6.toClassicalTheorems (h : MinimalHyp6) : Hypotheses₂ :=
   { litN := h.litN, cohC := clozelCohC h.litN, conjC := h.conjC, borelC := h.borelC,

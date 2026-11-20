@@ -8,65 +8,51 @@ open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 namespace GlobalTheory.LeviHC
 
 /- English proof (translation)
-Introduce `N _ _ p q hp hq hpp hqq hpq v hfin`. Break down `subsingleton_or_nontrivial N with hN | hN` into its components or cases. Use `infer_instance`. Take `⟨d, c₀, hcd, hpc₀⟩` from `hp`. Take `⟨e, b₀, hbe, hqb₀⟩` from `hq`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `set T := Algebra.adjoin ℂ (Set.range fun u => p u * q u) with hT`. Use `set Wsp := Submodule.span ℂ {y | ∃ a ∈ T, y = a v} with hWsp`. Set `s : Set (Module.End ℂ N)` to `Set.range p ∪ Set.range q`. Establish `hcomm : ∀ a ∈ s, ∀ b ∈ s, a * b = b * a`. Introduce and unpack `a (⟨u, rfl⟩ | ⟨u, rfl⟩) b (⟨u', rfl⟩ | ⟨u', rfl⟩)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Conclude with `hpp u u'`. Conclude with `hpq u u'`. Conclude with `(hpq u' u).symm`. Conclude with `hqq u u'`. Set `S` to `Algebra.adjoin ℂ s`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `letI : CommRing S := Algebra.adjoinCommRingOfComm ℂ hcomm`. Set `c : ℕ → Module.End ℂ N` to `fun i => if i < d + 1 then c₀ i else 0`. Set `b : ℕ → Module.End ℂ N` to `fun i => if i < e + 1 then b₀ i else 0`. Establish `hpc : ∀ u, p u = ∑ i ∈ Finset.range (d + 1), u ^ i • c i` using `fun u => by`. Rewrite using `[hpc₀ u]; exact Finset.sum_congr rfl fun i hi => by show _ = u ^ i • (if i < d + 1 then c₀ i else 0); rw [if_pos (Finset.mem_range.1 hi)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hqb : ∀ u, q u = ∑ i ∈ Finset.range (e + 1), u ^ i • b i` using `fun u => by`. Rewrite using `[hqb₀ u]; exact Finset.sum_congr rfl fun i hi => by show _ = u ^ i • (if i < e + 1 then b₀ i else 0); rw [if_pos (Finset.mem_range.1 hi)]`. Establish `hpS : Submodule.span ℂ (Set.range p) ≤ Subalgebra.toSubmodule S` using `Submodule.span_le.2 fun x hx => Algebra.subset_adjoin (Or.inl hx)`. Establish `hqS : Submodule.span ℂ (Set.range q) ≤ Subalgebra.toSubmodule S` using `Submodule.span_le.2 fun x hx => Algebra.subset_adjoin (Or.inr hx)`. Establish `hcS : ∀ i, c i ∈ S` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i < d + 1`. Use `show (if i < d + 1 then c₀ i else 0) ∈ S`. Rewrite using `[if_pos h]`. Conclude with `hpS (coeff_mem_span hpc₀ h)`. Use `show (if i < d + 1 then c₀ i else 0) ∈ S`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[if_neg h]`. Conclude with `S.zero_mem`. Establish `hbS : ∀ i, b i ∈ S` using `fun i => by`. Distinguish the cases in `h : i < e + 1`. Use `show (if i < e + 1 then b₀ i else 0) ∈ S`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h]`. Conclude with `hqS (coeff_mem_span hqb₀ h)`. Use `show (if i < e + 1 then b₀ i else 0) ∈ S`. Rewrite using `[if_neg h]`. Conclude with `S.zero_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Set `c' : ℕ → S` to `fun i => ⟨c i, hcS i⟩`. Set `b' : ℕ → S` to `fun i => ⟨b i, hbS i⟩`. Set `P : Polynomial S` to `∑ i ∈ Finset.range (d + 1), Polynomial.monomial i (c' i)`. Set `Q : Polynomial S` to `∑ i ∈ Finset.range (e + 1), Polynomial.monomial i (b' i)`. Establish `hPe : ∀ u, ((P.eval (algebraMap ℂ S u) : S) : Module.End ℂ N) = p u` using `fun u => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hpc u]`. Simplify using `only [P, Polynomial.eval_finset_sum, Polynomial.eval_monomial]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Algebra.commutes, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQe : ∀ u, ((Q.eval (algebraMap ℂ S u) : S) : Module.End ℂ N) = q u` using `fun u => by`. Rewrite using `[hqb u]`. Simplify using `only [Q, Polynomial.eval_finset_sum, Polynomial.eval_monomial]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Algebra.smul_def, Algebra.commutes, map_pow]`. Establish `hPc : ∀ i, i < d + 1 → P.coeff i = c' i` using `fun i hi => by`. Simplify using `[P, Polynomial.finset_sum_coeff, Polynomial.coeff_monomial, hi]`. Establish `hPm : P.Monic`. Use `Polynomial.monic_of_degree_le d ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Polynomial.degree_sum_le _ _).trans (Finset.sup_le fun i hi => ?_)` and prove the remaining obligations. Conclude with `(Polynomial.degree_monomial_le _ _).trans (by exact_mod_cast Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))`. Rewrite using `[hPc d (Nat.lt_succ_self d)]`. Conclude with `Subtype.ext (by simp [c', c, hcd])`. Establish `hQm : Q.Monic`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Polynomial.monic_of_degree_le e ?_ ?_` and prove the remaining obligations. Use `(Polynomial.degree_sum_le _ _).trans (Finset.sup_le fun i hi => ?_)` and prove the remaining obligations. Conclude with `(Polynomial.degree_monomial_le _ _).trans (by exact_mod_cast Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))`. Simplify using `only [Q, Polynomial.finset_sum_coeff, Polynomial.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq' (Finset.range (e + 1)) e b', if_pos (Finset.mem_range.2 (Nat.lt_succ_self e))]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext (by simp [b', b, hbe])`. Set `R : Subalgebra ℂ S` to `Algebra.adjoin ℂ (Set.range fun u => P.eval (algebraMap ℂ S u) * Q.eval (algebraMap ℂ S u))`. Establish `hRT : ∀ r ∈ R, ((r : S) : Module.End ℂ N) ∈ T`. Introduce `r hr`. Establish `hle : R ≤ Subalgebra.comap S.val T` using `Algebra.adjoin_le (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨u, rfl⟩`. Use `show ((P.eval (algebraMap ℂ S u) * Q.eval (algebraMap ℂ S u) : S) : Module.End ℂ N) ∈ T`. Rewrite using `[Subalgebra.coe_mul, hPe, hQe]`. Conclude with `Algebra.subset_adjoin ⟨u, rfl⟩)`. Conclude with `hle hr`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hPQR : ∀ k, (P * Q).coeff k ∈ R`. Introduce `k`. Distinguish the cases in `hk : k < (P * Q).natDegree + 1`. Establish `hf : ∀ u, (P * Q).eval (algebraMap ℂ S u) = ∑ i ∈ Finset.range ((P * Q).natDegree + 1), u ^ i • (P * Q).coeff i` using `fun u => by`. Rewrite using `[Polynomial.eval_eq_sum_range]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_pow, mul_comm]`. Establish `h1` using `coeff_mem_span hf hk`. Establish `h2 : Submodule.span ℂ (Set.range fun u => (P * Q).eval (algebraMap ℂ S u)) ≤ Subalgebra.toSubmodule R`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨u, rfl⟩`. Use `show Polynomial.eval (algebraMap ℂ S u) (P * Q) ∈ R`. Rewrite using `[Polynomial.eval_mul]`. Conclude with `Algebra.subset_adjoin ⟨u, rfl⟩`. Conclude with `h2 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)]`. Conclude with `R.zero_mem`. Establish `hlift : P * Q ∈ Polynomial.lifts (algebraMap R S)` using `(Polynomial.lifts_iff_coeff_lifts _).2 fun k => ⟨⟨_, hPQR k⟩, rfl⟩`. Take `⟨F, hF, -, hFm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hlift (hPm.mul hQm)`. Set `C : Set S` to `c' '' (Finset.range (d + 1) : Set ℕ)`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hCf : C.Finite` using `(Finset.range (d + 1)).finite_toSet.image c'`. Establish `hCi : ∀ x ∈ C, IsIntegral R x`. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Use `Polynomial.isIntegral_coeff_of_dvd F P hFm hPm (by rw [hF]; exact dvd_mul_right P Q) i` as an intermediate fact. Rewrite `this` using `[hPc i (Finset.mem_range.1 hi)]`. Then use the resulting hypothesis.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨G, hG⟩` from `fg_adjoin_of_finite hCf hCi`. Set `B : Subalgebra ℂ S` to `(Algebra.adjoin R C).restrictScalars ℂ`. Establish `hpB : Algebra.adjoin ℂ (Set.range fun u => P.eval (algebraMap ℂ S u)) ≤ B`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [P, Polynomial.eval_finset_sum, Polynomial.eval_monomial]`. Use `B.sum_mem fun i hi => B.mul_mem ?_ (B.pow_mem (B.algebraMap_mem u) _)` and prove the remaining obligations. Conclude with `(Subalgebra.mem_restrictScalars _).2 (Algebra.subset_adjoin ⟨i, hi, rfl⟩)`. Establish `hmap : Algebra.adjoin ℂ (Set.range p) = (Algebra.adjoin ℂ (Set.range fun u => P.eval (algebraMap ℂ S u))).map S.val`. Rewrite using `[AlgHom.map_adjoin, ← Set.range_comp]`.
-
-Conclude with `congrArg (fun f => Algebra.adjoin ℂ (Set.range f)) (funext fun u => (hPe u).symm)`. Set `Xs : Submodule ℂ N` to `⨆ g : (G : Set S), (Wsp.map ((g : S) : Module.End ℂ N) : Submodule ℂ N)`. Use `haveI : FiniteDimensional ℂ Wsp := hfin`. Establish `key : ∀ x ∈ Submodule.span R (G : Set S), ∀ t ∈ T, ((x : S) : Module.End ℂ N) (t v) ∈ Xs`. Introduce `x hx`.
-
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem g hg`. Introduce `t ht`. Establish `h1 : t v ∈ Wsp` using `Submodule.subset_span ⟨t, ht, rfl⟩`. Conclude with `(le_iSup (fun g : (G : Set S) => (Wsp.map ((g : S) : Module.End ℂ N) : Submodule ℂ N)) ⟨g, hg⟩) (Submodule.mem_map_of_mem h1)`.
-
-Consider the case `zero => intro t _`. Simplify using `[Xs]`. Consider the case `add x y _ _ ihx ihy`. Introduce `t ht`. Rewrite using `[Subalgebra.coe_add, LinearMap.add_apply]`.
-
-Conclude with `Xs.add_mem (ihx t ht) (ihy t ht)`. Consider the case `smul a x _ ih`. Introduce `t ht`. Establish `e1 : (a • x : S) = x * (a : S)` using `by rw [Algebra.smul_def, mul_comm]; rfl`. Rewrite using `[e1, Subalgebra.coe_mul, Module.End.mul_apply]`.
-
-Use `ih _ (T.mul_mem (hRT a a.2) ht)` as an intermediate fact. Rewrite `this` using `[Module.End.mul_apply]`. Then use the resulting hypothesis. Use `Submodule.finiteDimensional_of_le (S₂ := Xs) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Rewrite `ha` using `[hmap]`.
-
-Take `⟨x, hx, rfl⟩` from `Subalgebra.mem_map.1 ha`. Establish `hx' : x ∈ Submodule.span R (G : Set S)`. Rewrite using `[hG]`. Conclude with `(Subalgebra.mem_restrictScalars _).1 (hpB hx)`. Use `key x hx' 1 T.one_mem` as an intermediate fact.
-
-Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem monicFactorFinite : MonicFactorFinite := by
   intro N _ _ p q hp hq hpp hqq hpq v hfin

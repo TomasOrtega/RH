@@ -22,11 +22,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 namespace GlobalTheory.HeightCounting.Up
 /- English proof (translation)
-Introduce `hN hM hL`. Establish `hlift` using `_root_.GlobalTheory.T.liftAll_of_parIn_of_mtInput hN hL`. Establish `hloc` using `_root_.GlobalTheory.T.local_component_of_par_in_third_layer hN hL`. Establish `hsz` using `GlobalTheory.T.eventually_sizes_congruences_hostFacts_columnChoices`. Use `Step.trans (Step.and (Step.and (Step.and (Step.of_evLgG (KP := KPx) (p := fun _ _ _ _ => True) hlift) (Step.of_evLgG hloc)) (Step.of_evLgG hsz)) hM) (Step.of_all ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `K B f T - hKP - ⟨⟨⟨h1, h2⟩, h3⟩, h4⟩ w hS P x l`. Take `⟨cp⟩` from `hS.1`. Take `⟨⟨M, ad, mt⟩⟩` from `h4 w hS P x`. Establish `hpar : _root_.GlobalTheory.HeightCounting.Up.ParityConditions hL (Dof x) (cfOf x) (repOf x.r.Y) l.a.A.row` using `_root_.GlobalTheory.HeightCounting.Up.ParityConditions.ofSt l.a`. Establish `hLift` using `h1 hKP w cp x.o.Z _ _ x.m.z x.s.p0 x.r.Y x.m.intersectionNumber_baseChange x.m.exAt x.m.inGeo x.fits.grp x.fits.grpAt l.a.A.row hpar M _ _ ad mt`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLoc` using `h2 hKP w cp x.o.Z _ _ x.m.z x.s.p0 x.r.Y x.m.intersectionNumber_baseChange x.m.exAt x.m.inGeo x.fits.grp x.fits.grpAt l.a.A.row hpar`. Take `⟨-, -, -, hEFK, hCM, hDef, -⟩` from `h3 hKP T w x.o.Z`. Establish `hLaws` using `_root_.UpperTheory.GalN.par_laws_bare hN hL (Dof x) (cfOf x) (repOf x.r.Y) l.a.A.row l.a.A.bare hpar`. Establish `hconds` using `_root_.UpperTheory.BaseChangeIdentities.Conclusion1_alt_alt_alt hN.bc hN.what₂.bern hN.gen hN.std hL (Dof x) l.a.A.wdT l.a.A.au l.a.cg l.a.au`. Conclude with `_root_.GlobalTheory.T.cuspParam_of_definite_liftAll (Dof x) l.a.A.row hLaws hconds hEFK hCM hDef hLift hLoc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conjDualParam_stable_of_prime_not_dividing_level_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SMt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.ParameterStatement hL := by
   intro hN hM hL
@@ -53,7 +53,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Up.conjDualParam_stable_of_prime_not_dividing_level_alt | exact _root_.GlobalTheory.HeightCounting.Up.conjDualParam_stable_of_prime_not_dividing_level_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.conjDualParam_stable …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.parSt_of_third_layer_sMt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SMt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.ParameterStatement hL := by
   first | exact @_root_.GlobalTheory.HeightCounting.Up.conjDualParam_stable_of_prime_not_dividing_level_alt | exact _root_.GlobalTheory.HeightCounting.Up.conjDualParam_stable_of_prime_not_dividing_level_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.conjDualParam_stable_of_prime_not_dividing_level_alt <;> assumption)

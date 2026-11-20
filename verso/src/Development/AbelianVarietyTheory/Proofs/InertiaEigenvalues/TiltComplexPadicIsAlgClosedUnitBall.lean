@@ -11,11 +11,11 @@ namespace GlobalTheory.PSer
 open GroundTheory.PAdicHodge
 
 /- English proof (translation)
-Introduce `l _`. Take `⟨e, he⟩` from `exists_flEquiv_untilt l`. Establish `hC : IsAlgClosed (Formalism.BasicNotions.Loc.Cb l)` using `(GlobalTheory.TiltAlgClosed.isAlgClosed_tilt_and_valuationRing l).1`. Use `⟨?_, (algebraMap (PreTilt (normInteger ℂ_[l]) l) _).comp (e : Fl l →+* _), ?_, ?_⟩` and prove the remaining obligations. Set `e' : Formalism.BasicNotions.Loc.Cb l ≃+* Tilt ℂ_[l] NormedField.valuation (GroundTheory.PAdicHodge.normInteger ℂ_[l]) GroundTheory.PAdicHodge.normInteger_integers l` to `IsFractionRing.ringEquivOfRingEquiv (A := Formalism.BasicNotions.Loc.OCb l) (B := PreTilt (normInteger ℂ_[l]) l) e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `IsAlgClosed.of_ringEquiv _ _ e'`. Introduce `x`. Rewrite using `[RingHom.comp_apply, tiltSharp_algebraMap]`. Conclude with `he x`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, rfl⟩` from `norm_le_one_iff_exists_algebraMap.1 hz`. Conclude with `⟨e.symm a, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem tilt_isAlgClosed_and_unitBall : ∀ (l : ℕ) [Fact l.Prime], IsAlgClosed (Tilt ℂ_[l] NormedField.valuation (GroundTheory.PAdicHodge.normInteger ℂ_[l]) GroundTheory.PAdicHodge.normInteger_integers l) ∧ ∃ ι : Fl l →+* (Tilt ℂ_[l] NormedField.valuation (GroundTheory.PAdicHodge.normInteger ℂ_[l]) GroundTheory.PAdicHodge.normInteger_integers l), (∀ x, GroundTheory.PAdicHodge.tiltSharp ℂ_[l] l (ι x) = sh x) ∧ (∀ z : (Tilt ℂ_[l] NormedField.valuation (GroundTheory.PAdicHodge.normInteger ℂ_[l]) GroundTheory.PAdicHodge.normInteger_integers l), ‖z‖ ≤ 1 → ∃ x, ι x = z) := by
   intro l _

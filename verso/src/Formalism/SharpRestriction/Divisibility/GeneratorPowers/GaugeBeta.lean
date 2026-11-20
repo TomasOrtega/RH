@@ -23,7 +23,7 @@ def BetaUniqSt : Prop :=
 namespace GaugeBeta
 
 /- English proof (translation)
-Set `rig1 : LB.Gen (LB.LinComb L (K` to `PUnit) (fun _ => ψ) fun _ => 1) := ⟨rig.s⟩`. Conclude with `pull_unit_eq_one L hL φ ε h ψ rig1 t t' u hu hc hc'`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem pull_unit_eq_one_k {X Y S0 : Scheme.{0}} (L : LB X) (hL : L.IsLB) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (h : S0 ⟶ Y) (ψ : S0 ⟶ X) (k : ℤ)
@@ -40,15 +40,15 @@ theorem pull_unit_eq_one_k {X Y S0 : Scheme.{0}} (L : LB X) (hL : L.IsLB) {K : T
 end GaugeBeta
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo a β β' hβ hβ' hc hc'`. Establish `hL : Xo.univ.t.PP.L.IsLB` using `Xo.univ.t.PP.isLB`. Take `⟨u, hu⟩` from `gen_ratio _ (wchart_cover Xo.univ.t.PP.L hL _) β β' hβ hβ'`. Establish `h1` using `GaugeBeta.pull_unit_eq_one_k Xo.univ.t.PP.L hL _ _ (eSec Xo.univ.t.G) (eSec Xo.univ.t.G) (-3) (rigPow Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig (-3)) β β' u hu hc hc'`. Establish `hu1 : u = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `(hglob _ Xo.univ.t.G (isAbelianScheme_univ Xo)).2 (u : Γ(Xo.univ.t.G.left, ⊤))`. Establish `hw : eSec Xo.univ.t.G ≫ Xo.univ.t.G.hom = 𝟙 _`. Unfold `eSec`. Conclude with `Over.w _`. Establish `e1 : (Scheme.Hom.app (eSec Xo.univ.t.G) ⊤).hom ((Scheme.Hom.appTop Xo.univ.t.G.hom).hom v) = v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun f => (Scheme.Hom.appTop f).hom v) hw` as an intermediate fact. Simplify using `at this`. Conclude with `this`. Rewrite `e1` using `[hv]`. Establish `hv1 : v = 1` using `e1.symm.trans h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← hv, hv1, map_one]`. Both sides reduce to the same expression. Consider the cases of `β`. Consider the cases of `β'`.
+Both sides reduce to the same expression. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Establish `hj` using `hu j`. Rewrite `hj` using `[hu1, map_one, one_mul]`. Conclude with `hj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem betaUniq_of_global (hglob : GlobalFnsSt) : BetaUniqSt := by
   intro E _ _ _ H Dw l Xo a β β' hβ hβ' hc hc'

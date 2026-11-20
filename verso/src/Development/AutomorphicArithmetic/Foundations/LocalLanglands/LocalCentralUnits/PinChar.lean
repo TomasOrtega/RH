@@ -8,7 +8,7 @@ namespace UpperTheory.Zero.LLC.CharacterSumPairs
 variable {G : Type} [CommGroup G] [Fintype G]
 
 /- English proof (translation)
-Establish `h : ((χ z : ℂˣ) : ℂ) ^ Fintype.card G = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one, map_one, Units.val_one]`. Conclude with `Complex.norm_eq_one_of_pow_eq_one h Fintype.card_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_char (χ : G →* ℂˣ) (z : G) : ‖((χ z : ℂˣ) : ℂ)‖ = 1 := by
   have h : ((χ z : ℂˣ) : ℂ) ^ Fintype.card G = 1 := by
@@ -16,22 +16,22 @@ theorem norm_char (χ : G →* ℂˣ) (z : G) : ‖((χ z : ℂˣ) : ℂ)‖ = 1
   exact Complex.norm_eq_one_of_pow_eq_one h Fintype.card_ne_zero
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qe46.sum_char χ h`.
+A detailed English derivation is pending.
 -/
 theorem sum_char (χ : G →* ℂˣ) (h : χ ≠ 1) : ∑ z, ((χ z : ℂˣ) : ℂ) = 0 :=
   _root_.UpperTheory.Reformulated.B.Qe46.sum_char χ h
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, Complex.inv_eq_conj (norm_char χ z)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_char (χ : G →* ℂˣ) (z : G) : conj ((χ z : ℂˣ) : ℂ) = (((χ⁻¹) z : ℂˣ) : ℂ) := by
   rw [MonoidHom.inv_apply, Units.val_inv_eq_inv_val, Complex.inv_eq_conj (norm_char χ z)]
 
 open Classical in
 /- English proof (translation)
-Establish `: ∀ z, ((χ z : ℂˣ) : ℂ) * conj ((ψ z : ℂˣ) : ℂ) = (((χ * ψ⁻¹) z : ℂˣ) : ℂ)`. Introduce `z`. Rewrite using `[conj_char, MonoidHom.mul_apply, Units.val_mul]`. Repeatedly rewrite using `[this]`. Use `split_ifs with h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Conclude with `sum_char _ (fun hh => h (mul_inv_eq_one.mp hh))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_mul_conj (χ ψ : G →* ℂˣ) :
     ∑ z, ((χ z : ℂˣ) : ℂ) * conj ((ψ z : ℂˣ) : ℂ) = if χ = ψ then (Fintype.card G : ℂ) else 0 := by
@@ -49,9 +49,9 @@ noncomputable def dif (A B : Finset (G →* ℂˣ)) (z : G) : ℂ :=
 
 open Classical in
 /- English proof (translation)
-Establish `key : ∀ C : Finset (G →* ℂˣ), ∑ z, (∑ χ ∈ C, ((χ z : ℂˣ) : ℂ)) * conj ((ψ z : ℂˣ) : ℂ) = (Fintype.card G : ℂ) * (if ψ ∈ C then 1 else 0)`. Introduce `C`. Repeatedly rewrite using `[Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[sum_mul_conj]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_ite_eq' C ψ]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [dif, sub_mul, Finset.sum_sub_distrib, key]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_dif (A B : Finset (G →* ℂˣ)) (ψ : G →* ℂˣ) :
     ∑ z, dif A B z * conj ((ψ z : ℂˣ) : ℂ) =
@@ -69,13 +69,13 @@ theorem inner_dif (A B : Finset (G →* ℂˣ)) (ψ : G →* ℂˣ) :
   ring
 
 /- English proof (translation)
-Establish `hc : ∀ z, conj (dif A B z) = ∑ χ ∈ A, conj ((χ z : ℂˣ) : ℂ) - ∑ χ ∈ B, conj ((χ z : ℂˣ) : ℂ)`. Introduce `z`. Simplify using `[dif, map_sub, map_sum]`. Repeatedly rewrite using `[hc, mul_sub, Finset.mul_sum]`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm (s := Finset.univ) (t := B)]`. Repeatedly rewrite using `[inner_dif]`. Establish `hA : ∑ ψ ∈ A, (Fintype.card G : ℂ) * ((if ψ ∈ A then 1 else 0) - (if ψ ∈ B then 1 else 0)) = (Fintype.card G : ℂ) * #A`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => (Fintype.card G : ℂ))]`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `ψ hψ`. Establish `: ψ ∉ B` using `Finset.disjoint_left.mp hd hψ`. Simplify using `[hψ, this]`. Establish `hB : ∑ ψ ∈ B, (Fintype.card G : ℂ) * ((if ψ ∈ A then 1 else 0) - (if ψ ∈ B then 1 else 0)) = - ((Fintype.card G : ℂ) * #B)`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => - (Fintype.card G : ℂ))]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_comm]`. Introduce `ψ hψ`. Establish `: ψ ∉ A` using `Finset.disjoint_right.mp hd hψ`. Simplify using `[hψ, this]`. Rewrite using `[hA, hB]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -108,7 +108,7 @@ theorem parseval (A B : Finset (G →* ℂˣ)) (hd : Disjoint A B) :
   ring
 
 /- English proof (translation)
-Establish `h : ∀ C : Finset (G →* ℂˣ), ‖∑ χ ∈ C, ((χ z : ℂˣ) : ℂ)‖ ≤ #C`. Introduce `C`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Simplify using `[norm_char]`. Conclude with `(norm_sub_le _ _).trans (add_le_add (h A) (h B))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_dif_le (A B : Finset (G →* ℂˣ)) (z : G) : ‖dif A B z‖ ≤ (#A : ℝ) + #B := by
   have h : ∀ C : Finset (G →* ℂˣ), ‖∑ χ ∈ C, ((χ z : ℂˣ) : ℂ)‖ ≤ #C := by
@@ -118,13 +118,13 @@ theorem norm_dif_le (A B : Finset (G →* ℂˣ)) (z : G) : ‖dif A B z‖ ≤ 
   exact (norm_sub_le _ _).trans (add_le_add (h A) (h B))
 
 /- English proof (translation)
-Establish `h1 : ∑ z, ‖dif A B z‖ ^ 2 = (Fintype.card G : ℝ) * ((#A : ℝ) + #B)`. Use `parseval A B hd` as an intermediate fact. Rewrite `this` using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Conclude with `this` after adjusting the coercions. Establish `h2 : ∑ z, ‖dif A B z‖ ^ 2 = ∑ z ∈ D, ‖dif A B z‖ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Use symmetry to reverse the relation.
 
-Use `symm`. Use `Finset.sum_subset (Finset.subset_univ _) (fun z _ hz => ?_)` and prove the remaining obligations. Simplify using `[hD z hz]`. Establish `h3 : ∑ z ∈ D, ‖dif A B z‖ ^ 2 ≤ (#D : ℝ) * ((#A : ℝ) + #B) ^ 2`. Establish `: ∀ z ∈ D, ‖dif A B z‖ ^ 2 ≤ ((#A : ℝ) + #B) ^ 2` using `fun z _ => pow_le_pow_left₀ (norm_nonneg _) (norm_dif_le A B z) 2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Finset.sum_le_sum this`. Establish `hpos : (0 : ℝ) < (#A : ℝ) + #B` using `by exact_mod_cast hne`. Establish `h4 : (Fintype.card G : ℝ) ≤ (#D : ℝ) * ((#A : ℝ) + #B)`. Establish `: (Fintype.card G : ℝ) * ((#A : ℝ) + #B) ≤ ((#D : ℝ) * ((#A : ℝ) + #B)) * ((#A : ℝ) + #B)`. Rewrite using `[← h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[h3]`. Conclude with `le_of_mul_le_mul_right this hpos`. Conclude with `h4` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem card_le (A B : Finset (G →* ℂˣ)) (hd : Disjoint A B) (D : Finset G)
     (hD : ∀ z, z ∉ D → dif A B z = 0) (hne : 0 < #A + #B) :
@@ -150,13 +150,13 @@ theorem card_le (A B : Finset (G →* ℂˣ)) (hd : Disjoint A B) (D : Finset G)
   exact_mod_cast h4
 
 /- English proof (translation)
-Establish `h1 : ∑ z, dif A B z * conj (((ψ * η) z : ℂˣ) : ℂ) = ∑ z, dif A B z * conj ((ψ z : ℂˣ) : ℂ)`. Use `Finset.sum_congr rfl (fun z _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ D`. Simplify using `[hη z hz]`. Simplify using `[hD z hz]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[inner_dif, inner_dif]`. Establish `hc : (Fintype.card G : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `h2` using `mul_left_cancel₀ hc h1`. Prove the components needed by the constructor for the conclusion. Introduce `hψ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB : ψ ∉ B` using `Finset.disjoint_left.mp hd hψ`. Assume the negation of the conclusion as `hn`. Apply the tactic sequence `by_cases hb : ψ * η ∈ B <;> simp [hn, hψ, hB, hb] at h2`. Evaluate the numerical expressions using `at h2`. Introduce `hψ`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Apply the first step, then apply the next step to every resulting obligation. Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA : ψ ∉ A` using `Finset.disjoint_right.mp hd hψ`. Assume the negation of the conclusion as `hn`. Apply the tactic sequence `by_cases ha : ψ * η ∈ A <;> simp [hn, hψ, hA, ha] at h2`. Evaluate the numerical expressions using `at h2`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Apply the first step, then apply the next step to every resulting obligation. Evaluate the numerical expressions.
 -/
 theorem mul_mem (A B : Finset (G →* ℂˣ)) (hd : Disjoint A B) (D : Finset G)
     (hD : ∀ z, z ∉ D → dif A B z = 0) (η : G →* ℂˣ) (hη : ∀ z ∈ D, η z = 1) (ψ : G →* ℂˣ) :

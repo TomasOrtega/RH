@@ -12,28 +12,28 @@ noncomputable section
 namespace SheetDecomposition.Univ
 
 /- English proof (translation)
-Rewrite using `[add_dotProduct, Complex.add_im]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem imH_add_left {g : ℕ} (M : Matrix (Fin g) (Fin g) ℂ) (z z' w : Fin g → ℂ) :
     ((z + z') ⬝ᵥ M *ᵥ star w).im = (z ⬝ᵥ M *ᵥ star w).im + (z' ⬝ᵥ M *ᵥ star w).im := by
   rw [add_dotProduct, Complex.add_im]
 
 /- English proof (translation)
-Rewrite using `[smul_dotProduct, Complex.smul_im, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem imH_smul_left {g : ℕ} (M : Matrix (Fin g) (Fin g) ℂ) (r : ℝ) (z w : Fin g → ℂ) :
     ((r • z) ⬝ᵥ M *ᵥ star w).im = r * (z ⬝ᵥ M *ᵥ star w).im := by
   rw [smul_dotProduct, Complex.smul_im, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[star_add, mulVec_add, dotProduct_add, Complex.add_im]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem imH_add_right {g : ℕ} (M : Matrix (Fin g) (Fin g) ℂ) (z w w' : Fin g → ℂ) :
     (z ⬝ᵥ M *ᵥ star (w + w')).im = (z ⬝ᵥ M *ᵥ star w).im + (z ⬝ᵥ M *ᵥ star w').im := by
   rw [star_add, mulVec_add, dotProduct_add, Complex.add_im]
 
 /- English proof (translation)
-Establish `h : star (r • w) = (r : ℂ) • star w`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[h, mulVec_smul, dotProduct_smul, smul_eq_mul, Complex.im_ofReal_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem imH_smul_right {g : ℕ} (M : Matrix (Fin g) (Fin g) ℂ) (r : ℝ) (z w : Fin g → ℂ) :
     (z ⬝ᵥ M *ᵥ star (r • w)).im = r * (z ⬝ᵥ M *ᵥ star w).im := by
@@ -43,29 +43,27 @@ theorem imH_smul_right {g : ℕ} (M : Matrix (Fin g) (Fin g) ℂ) (r : ℝ) (z w
   rw [h, mulVec_smul, dotProduct_smul, smul_eq_mul, Complex.im_ofReal_mul]
 
 /- English proof (translation)
-Use `haveI := R.free`. Use `haveI := R.fin`. Establish `hspan : Submodule.span ℝ (Set.range R.P) = ⊤` using `(SheetDecomposition.riemBasic E g Λ Unit R).2.1`. Set `b : Module.Basis (Fin (2 * g)) ℤ Λ` to `Module.finBasisOfFinrankEq ℤ Λ R.rank`. Set `v : Fin (2 * g) → Fin g → ℂ` to `fun k => R.P (b k)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∀ (Q : Λ →+ (Fin g → ℂ)) (x : Λ), Q x = ∑ k, (b.repr x k : ℝ) • Q (b k)`. Introduce `Q x`. Use `conv_lhs => rw [← b.sum_repr x, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Int.cast_smul_eq_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hv : (⊤ : Submodule ℝ (Fin g → ℂ)) ≤ Submodule.span ℝ (Set.range v)`. Rewrite using `[← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[hsum R.P x]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card (Fin (2 * g)) = Module.finrank ℝ (Fin g → ℂ)`. Simplify using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, mul_comm]`. Set `c : Module.Basis (Fin (2 * g)) ℝ (Fin g → ℂ)` to `basisOfTopLeSpanOfCardEqFinrank v hv hcard`. Establish `hc : ∀ k, c k = R.P (b k)` using `fun k => by`. Simplify using `[c, v, coe_basisOfTopLeSpanOfCardEqFinrank]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `L : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)` to `c.constr ℝ fun k => R'.P (b k)`. Establish `hLb : ∀ k, L (R.P (b k)) = R'.P (b k)` using `fun k => by`. Rewrite using `[← hc k]`. Conclude with `c.constr_basis ℝ _ k`. Establish `hL : ∀ x, L (R.P x) = R'.P x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[hsum R.P x, hsum R'.P x, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hLb]`. Establish `hall : ∀ z : Fin g → ℂ, z ∈ Submodule.span ℝ (Set.range R.P)` using `fun z => hspan ▸ Submodule.mem_top`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `⟨L, hL, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ (x : Λ) (w : Fin g → ℂ), (L (R.P x) ⬝ᵥ R'.Hm *ᵥ star (L w)).im = (R.P x ⬝ᵥ R.Hm *ᵥ star w).im`. Introduce `x w`. Proceed by induction on `hall w using Submodule.span_induction with`. Consider the case `mem w hw`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨y, rfl⟩` from `hw`. Rewrite using `[hL, hL, R'.im, R.im, hf]`. Consider the case `zero => simp`. Consider the case `add w w' _ _ h h' => rw [map_add, imH_add_right, imH_add_right, h, h']`. Consider the case `smul r w _ h => rw [map_smul, imH_smul_right, imH_smul_right, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Introduce `z w`. Proceed by induction on `hall z using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, rfl⟩` from `hz`. Conclude with `h1 x w`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add z z' _ _ h h' => rw [map_add, imH_add_left, imH_add_left, h, h']`. Consider the case `smul r z _ h => rw [map_smul, imH_smul_left, imH_smul_left, h]`. Introduce `a z`. Proceed by induction on `hall z using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem z hz`. Take `⟨x, rfl⟩` from `hz`. Rewrite using `[← R.act, hL, hL, R'.act]`. Consider the case `zero => simp`. Consider the case `add z z' _ _ h h' => simp only [map_add, h, h']`.
-
-Consider the case `smul r z _ h`. Rewrite using `[LinearMap.map_smul_of_tower, map_smul, h, map_smul, LinearMap.map_smul_of_tower]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_realExt {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
     [Module (𝓞 E) Λ] (R R' : RiemLat E g Λ) (hf : R'.form = R.form) :

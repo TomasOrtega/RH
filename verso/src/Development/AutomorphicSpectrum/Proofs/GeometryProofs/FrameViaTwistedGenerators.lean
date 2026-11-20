@@ -8,7 +8,7 @@ namespace GlobalTheory.CompanionTheory.Ar.FlagBun
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hg.bij.2 a`. Use `(RingHom.mem_range).2 ⟨s, ?_⟩` and prove the remaining obligations. Use `show (X.presheaf.stalkSpecializes (specializes_refl (genPt ξ)) ≫ Scheme.stalkClosedPointTo ξ).hom s = a`. Rewrite using `[TopCat.Presheaf.stalkSpecializes_refl]`. Conclude with `hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regAt_generic_eq_top {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     (hg : IsCptGen ξ) (a : Ω) : a ∈ regAt ξ ⟨genPt ξ, specializes_rfl⟩ := by
@@ -19,25 +19,23 @@ theorem regAt_generic_eq_top {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec 
   exact hs
 
 /- English proof (translation)
-Set `p₀ : Cpt ξ` to `⟨genPt ξ, specializes_rfl⟩`. Establish `hreg : ∀ a : Ω, a ∈ regAt ξ p₀` using `fun a => regAt_generic_eq_top hT.gen a`. Take `⟨k, hk⟩` from `hT.cover p₀`. Unfold `Lat.IsVB Lat.IsVBOn at hV`. Take `⟨U, hU, b, hbV, hbF⟩` from `hV p₀ (Set.mem_univ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hLp⟩` from `hbF p₀ (Set.mem_univ _) hU`. Take `⟨-, hG2⟩` from `hG`. Establish `hw0 : ∀ i : Fin r, ∃ w : Module.Dual Ω E, ∀ l, w (c l) = if i = l then 1 else 0`. Introduce `i`. Take `⟨w, hwf⟩` from `LinearMap.exists_extend ((Module.Basis.span hc).coord i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨w, fun l => ?_⟩` and prove the remaining obligations. Establish `h1 : w (c l) = (Module.Basis.span hc).coord i (Module.Basis.span hc l)`. Rewrite using `[← hwf]`. Simplify using `[Module.Basis.span_apply]`. Rewrite using `[h1, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i = l`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Use `choose w hw using hw0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hg0 : ∀ i, ∃ g : Fin n → Ω, (∀ j, g j ∈ regAt ξ p₀) ∧ ∀ e ∈ L p₀, w i e = ∑ j, g j * (φ j e / x k ^ m)` using `fun i => hG2 p₀ k hk (w i) (fun e _ => hreg _)`. Use `choose g hgr hg using hg0`. Establish `key : ∀ i, ∀ e ∈ V, w i e = ∑ j, g i j / x k ^ m * φ j e`. Introduce `i`. Take `⟨ψ, hψdef⟩ : ∃ ψ : E →ₗ[Ω] Ω, ψ = ∑ j, (g i j / x k ^ m) • φ j` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψ : ∀ e, ψ e = ∑ j, g i j / x k ^ m * φ j e`. Introduce `e`. Rewrite using `[hψdef]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Establish `heq : Set.EqOn (w i) ψ (Set.range b)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨t, rfl⟩`. Establish `hbt : b t ∈ L p₀`. Rewrite using `[hLp]`. Conclude with `Submodule.subset_span ⟨t, rfl⟩`. Rewrite using `[hg i (b t) hbt, hψ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Introduce `e he`. Rewrite `he` using `[← hbV]`. Rewrite using `[LinearMap.eqOn_span' heq he, hψ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `⟨Matrix.of fun i j => g i j / x k ^ m, ?_⟩` and prove the remaining obligations. Use extensionality with `i l`. Establish `hcl : c l ∈ V`. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span ⟨l, rfl⟩`.
-
-Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]`. Rewrite using `[← key i (c l) hcl, hw i l]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_leftInverse_flagForms (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (E : Type) [AddCommGroup E] [Module Ω E] (κ : Type) (x : κ → Ω) (L : Lat ξ E) (r : ℕ)

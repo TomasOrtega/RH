@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Fo
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RealPar.isKStableOn_of_kStable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FHeightProofs%2FIsKStableOnOfLieStableFiniteDim.lean&line=70#L70)
 -/

@@ -19,9 +19,9 @@ def WeightBound {ι : Type} [Fintype ι] (K Cμ : ℝ) (U : Set (ι → ℂ)) (r
       |(leviForm s z ξ ξ).re| ≤ K * gnorm (G z) ξ ^ 2 * (1 - s z))
 
 /- English proof (translation)
-Introduce `z _`. Use `⟨hc.1, hc.2, fun ξ => Or.inl ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `[del, linPart_apply]`. Establish `h : (dbar fun _ : ι → ℂ => ((c : ℝ) : ℂ)) = fun _ => 0`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use extensionality with `v`. Simplify using `[dbar, antilinPart_apply]`. Simplify using `only [leviForm, ddbar, h]`. Simplify using `[del, linPart_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem weightBound_const {ι : Type} [Fintype ι] (K Cμ : ℝ) (U : Set (ι → ℂ))
     (r : (ι → ℂ) → ℝ) (G : (ι → ℂ) → Matrix ι ι ℂ) {c : ℝ} (hc : c ∈ Set.Icc (0 : ℝ) 1) :

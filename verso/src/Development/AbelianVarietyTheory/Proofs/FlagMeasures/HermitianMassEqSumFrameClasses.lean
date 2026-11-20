@@ -13,19 +13,19 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S d P hP`. Establish `hK : S.K0 ≤ S.St` using `inf_le_left.trans inf_le_left`. Establish `key` using `mass_orbits_eq_tsum_fiber S.St S.K0 (fun Λ => S.IsTerm d Λ ∧ P Λ) (S.Fr d) hK (by`. Introduce and unpack `h hh Λ ⟨ht, hp⟩`. Take `⟨ht', -, -, -, hFr, -⟩` from `GlobalTheory.T.hermitianFrames_stabilizer_acts_on_terms L r k S d Λ ht h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hlat` using `(TermBasic.term_basic L r k S d Λ ht).1.1`. Conclude with `⟨⟨ht', hP h hh Λ ht hp⟩, hFr, ((GlobalTheory.T.commonStabilizer_stabilizers_commensurable_volume L r k S).1 Λ hlat).2.2 h hh⟩)`. Use the proof step `(by`. Introduce and unpack `Λ ⟨ht, -⟩`. Establish `tb` using `TermBasic.term_basic L r k S d Λ ht`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `(GlobalTheory.T.commonStabilizer_stabilizers_commensurable_volume L r k S).1 Λ tb.1.1`. Establish `hC` using `(GlobalTheory.T.commonStabilizer_stabilizers_commensurable_volume L r k S).2 (S.Fr d Λ) tb.2.2.2.2.2.2.1.1`. Conclude with `⟨hA.1, hA.2.1, hC.1, hC.2.1⟩)`. Use `beta_reduce at key`. Unfold `Frames.mass Frames.mu`.
+Establish an intermediate fact. Supply the required witnesses or components. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `Eq.trans ?_ (key.trans ?_)` and prove the remaining obligations. Apply the tactic sequence `exact tsum_congr fun o => by split_ifs <;> rfl`. Unfold `Frames.sumCls Frames.nT Frames.wC`. Use `tsum_congr fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hc : S.IsIntCls c.out`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos hc]`. Establish `hs : {x | (S.IsTerm d x ∧ P x) ∧ S.Fr d x = c.out} = {Λ | S.IsTerm d Λ ∧ P Λ ∧ S.Fr d Λ = c.out}`. Use extensionality with `Λ`. Simplify using `only [Set.mem_ofPred_eq, and_assoc]`. Rewrite using `[hs]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg hc]`. Establish `hs : {x | (S.IsTerm d x ∧ P x) ∧ S.Fr d x = c.out} = (∅ : Set (Submodule L.O S.V))`. Use extensionality with `Λ`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨⟨ht, -⟩, hF⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hc (hF ▸ (TermBasic.term_basic L r k S d Λ ht).2.2.2.2.2.2.1)`. Rewrite using `[hs, Set.encard_empty]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem mass_eq_sumCls : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ (d : S.Datum) (P : Submodule L.O S.V → Prop), (∀ h ∈ S.St, ∀ Λ, S.IsTerm d Λ → P Λ → P (h • Λ)) → S.mass d P = S.sumCls fun C => S.nT d C P := by
   intro F _ _ _ _ _ E _ _ _ L r k S d P hP

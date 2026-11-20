@@ -8,17 +8,17 @@ open scoped ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff K]`. Introduce `φ`. Establish `hφ : ∀ (x : 𝓞 K) (v : V), φ (x • v) = algebraMap (𝓞 K) K x * φ v`. Introduce `x v`. Rewrite using `[← algebraMap_smul K x v, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : ∀ b' : Fin (r + 1), (Y.map (algebraMap (𝓞 K) K)).submatrix id b'.succAbove = (algebraMap (𝓞 K) K).mapMatrix (Y.submatrix id b'.succAbove)`. Introduce `b'`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `h0 : ∑ b, φ (u b) * Formalism.HermitianLatticeCounting.LatticeSumBounds.cofVec (Y.map (algebraMap (𝓞 K) K)) b = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg φ hu` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Rewrite using `[hφ, mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Unfold `Formalism.HermitianLatticeCounting.LatticeSumBounds.cofVec`. Rewrite using `[hsub, ← RingHom.map_det, map_mul, map_pow, map_neg, map_one]`. Establish `h` using `congrFun ((Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.kernelRowSpace K r (Y.map (algebraMap (𝓞 K) K))).2 (fun b => φ (u b)) h0 b₀) b`. Rewrite `h` using `[hsub, ← RingHom.map_det, ← RingHom.map_adjugate]`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_sub, sub_eq_zero, hφ, map_sum]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h`. Rewrite using `[h]`. Simplify using `only [Matrix.vecMul, dotProduct, hφ, map_sum, RingHom.mapMatrix_apply, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem minor_smul_eq_rowSpace_of_cofVec_orth (K V : Type) [Field K] [NumberField K]
     [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (r : ℕ)
@@ -57,27 +57,25 @@ theorem minor_smul_eq_rowSpace_of_cofVec_orth (K V : Type) [Field K] [NumberFiel
   rw [mul_comm]
 
 /- English proof (translation)
-Set `P : Submodule (𝓞 K) V` to `{ carrier := {x | ∀ j ∈ J, j • x ∈ S0} add_mem' := fun {a b} ha hb j hj => by`. Rewrite using `[smul_add]`. Conclude with `S0.add_mem (ha j hj) (hb j hj)`. Use the proof step `zero_mem' := fun j hj => by simp`. Use the proof step `smul_mem' := fun c x hx j hj => by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[smul_comm]`. Conclude with `S0.smul_mem c (hx j hj) }`. Take `⟨j₀, hj₀, hj₀0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hJ`. Establish `hinj : Function.Injective (algebraMap (𝓞 K) K)` using `IsFractionRing.injective _ _`. Establish `hj₀K : algebraMap (𝓞 K) K j₀ ≠ 0` using `fun h => hj₀0 (hinj (by simpa using h))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: Module.IsTorsionFree (𝓞 K) V`. Use `Module.IsTorsionFree.of_smul_eq_zero fun c x h => ?_` and prove the remaining obligations. Rewrite `h` using `[← algebraMap_smul K c x, smul_eq_zero]`. Break down `h with h | h` into its components or cases. Conclude with `Or.inl (hinj (by simpa using h))`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Or.inr h`. Establish `: Module.Finite (𝓞 K) S0` using `Module.Finite.iff_fg.mpr hS`. Set `f : P →ₗ[𝓞 K] S0` to `(j₀ • P.subtype).codRestrict S0 (fun x => x.2 j₀ hj₀)`. Establish `hf : Function.Injective f`. Introduce `x y h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : j₀ • (x : V) = j₀ • (y : V)` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (smul_right_injective V hj₀0 h')`. Establish `: Module.Finite (𝓞 K) P` using `Module.Finite.of_injective f hf`. Establish `: Module.FinitePresentation (𝓞 K) P` using `Module.finitePresentation_of_finite _ _`. Establish `: Module.Flat (𝓞 K) P` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Module.Projective (𝓞 K) P` using `Module.Flat.projective_of_finitePresentation`. Establish `hcard` using `Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.projQuotCard K P J hJ`. Establish `hN : Ideal.absNorm J ≠ 0` using `by rwa [Ne, Ideal.absNorm_eq_zero_iff]`. Establish `hrk : finrank (𝓞 K) P ≤ finrank K (Submodule.span K (S0 : Set V))`. Take `⟨g, hg⟩` from `exists_linearIndependent_of_le_finrank (R := 𝓞 K) (M := P) le_rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : ∀ i, (g i : V) ∈ Submodule.span K (S0 : Set V)`. Introduce `i`. Establish `h1 : j₀ • (g i : V) ∈ Submodule.span K (S0 : Set V)` using `Submodule.subset_span ((g i).2 j₀ hj₀)`. Rewrite `h1` using `[← algebraMap_smul K j₀]`. Conclude with `(Submodule.smul_mem_iff _ hj₀K).mp h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg1 : LinearIndependent (𝓞 K) (fun i => (g i : V))` using `hg.map' P.subtype (Submodule.ker_subtype P)`. Establish `hg2 : LinearIndependent K (fun i => (g i : V))` using `(LinearIndependent.iff_fractionRing (𝓞 K) K).mp hg1`. Establish `hg3 : LinearIndependent K (fun i => (⟨g i, hmem i⟩ : Submodule.span K (S0 : Set V)))` using `LinearIndependent.of_comp (Submodule.span K (S0 : Set V)).subtype hg2`. Simplify using `using hg3.fintype_card_le_finrank`. Establish `: Finite (P ⧸ (J • ⊤ : Submodule (𝓞 K) P))` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ hN)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `: Fintype (P ⧸ (J • ⊤ : Submodule (𝓞 K) P))` using `Fintype.ofFinite _`. Use `⟨Finset.univ.image (fun q : P ⧸ (J • ⊤ : Submodule (𝓞 K) P) => ((Quotient.out q : P) : V)), ?_, ?_⟩` and prove the remaining obligations. Use `Finset.card_image_le.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.card_univ, ← Nat.card_eq_fintype_card, hcard]`. Conclude with `Nat.pow_le_pow_right (Nat.pos_of_ne_zero hN) hrk`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Set `x' : P` to `⟨x, hx⟩`. Set `q : P ⧸ (J • ⊤ : Submodule (𝓞 K) P)` to `Submodule.Quotient.mk x'`. Use `⟨_, Finset.mem_image_of_mem _ (Finset.mem_univ q), ?_⟩` and prove the remaining obligations. Establish `h1 : x' - Quotient.out q ∈ (J • ⊤ : Submodule (𝓞 K) P)` using `(Submodule.Quotient.eq _).mp (Quotient.out_eq q).symm`.
-
-Establish `h2 : ∀ z ∈ (J • ⊤ : Submodule (𝓞 K) P), (z : V) ∈ S0`. Introduce `z hz`. Use `Submodule.smul_induction_on hz (fun j hj n _ => n.2 j hj) (fun a b ha hb => ?_)` and prove the remaining obligations. Conclude with `S0.add_mem ha hb`. Conclude with `h2 _ h1`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_reps_ideal_inv_lattice (K V : Type) [Field K] [NumberField K]
     [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V]
@@ -151,21 +149,19 @@ theorem exists_reps_ideal_inv_lattice (K V : Type) [Field K] [NumberField K]
     exact h2 _ h1
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ S0 B I r s Y b₀ hS hs hI hIB hd`. Use `set d := (Y.submatrix id b₀.succAbove).det with hd_def`. Establish `hJ : Ideal.span {d} * I ≠ ⊥`. Use `mul_ne_zero ?_ hI` and prove the remaining obligations. Simplify using `using hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hR, hrep⟩` from `exists_reps_ideal_inv_lattice K V S0 _ hS hJ`. Rewrite `hR` using `[hs]`. Establish `hdK : algebraMap (𝓞 K) K d ≠ 0` using `fun h => hd (IsFractionRing.injective (𝓞 K) K (by simpa using h))`. Use `⟨(Fintype.piFinset fun _ : Fin r => R).image (fun w b => ∑ a, Y a b • w a), ?_, ?_⟩` and prove the remaining obligations. Use `Finset.card_image_le.trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, Fintype.card_fin, pow_mul]`. Conclude with `Nat.pow_le_pow_left hR r`. Introduce `u huB hu`. Set `w : Fin r → V` to `fun a => ∑ c, (Y.submatrix id b₀.succAbove).adjugate c a • u (b₀.succAbove c)`. Establish `hwB : ∀ a, w a ∈ B` using `fun a => B.sum_mem fun c _ => B.smul_mem _ (huB _)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `v' : Fin r → V` to `fun a => (algebraMap (𝓞 K) K d)⁻¹ • w a`. Establish `hdv : ∀ a, d • v' a = w a` using `fun a => by`. Rewrite using `[← algebraMap_smul K d, smul_inv_smul₀ hdK]`. Establish `huv : ∀ b, u b = ∑ a, Y a b • v' a`. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h` using `minor_smul_eq_rowSpace_of_cofVec_orth K V r Y b₀ u hu b`. Apply `smul_right_injective V hdK` to reduce the goal to its premises. Simplify using `only [algebraMap_smul]`. Rewrite using `[h, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[smul_comm d, hdv]`. Establish `hv' : ∀ a, ∀ j ∈ Ideal.span {d} * I, j • v' a ∈ S0`. Introduce `a j hj`. Take `⟨i, hi, rfl⟩` from `Ideal.mem_span_singleton_mul.mp hj`. Rewrite using `[mul_comm, mul_smul, hdv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hIB (Submodule.smul_mem_smul hi (hwB a))`. Use `choose y hyR hy using fun a => hrep (v' a) (hv' a)`. Use `⟨_, Finset.mem_image_of_mem _ (Fintype.mem_piFinset.mpr hyR), fun a => v' a - y a, hy, ?_⟩` and prove the remaining obligations. Introduce `b`. Rewrite using `[huv b, ← Finset.sum_add_distrib]`.
-
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_add, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reps_cofVec_orth_mod_rowSpace :
     ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (S0 B : Submodule (𝓞 K) V) (I : Ideal (𝓞 K)) (r s : ℕ) (Y : Matrix (Fin r) (Fin (r + 1)) (𝓞 K)) (b₀ : Fin (r + 1)), S0.FG → finrank K (Submodule.span K (S0 : Set V)) = s → I ≠ ⊥ → I • B ≤ S0 → (Y.submatrix id b₀.succAbove).det ≠ 0 → ∃ reps : Finset (Fin (r + 1) → V), reps.card ≤ Ideal.absNorm (Ideal.span {(Y.submatrix id b₀.succAbove).det} * I) ^ (s * r) ∧ ∀ u : Fin (r + 1) → V, (∀ b, u b ∈ B) → ∑ b, Formalism.HermitianLatticeCounting.LatticeSumBounds.cofVec Y b • u b = 0 → ∃ u₀ ∈ reps, ∃ v : Fin r → V, (∀ a, v a ∈ S0) ∧ ∀ b, u b = u₀ b + ∑ a, Y a b • v a := by

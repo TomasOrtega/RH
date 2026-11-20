@@ -11,19 +11,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 open Classical in
 
 /- English proof (translation)
-Use `show (wtOf Dw (flatWt Dw τ) 0).1 (σ, (i : ℕ)) = _`. Establish `hi` using `i.2`. Distinguish the cases in `h : σ (H.rt : E) = H.rt0`. Establish `hp : (i : ℕ) < Dw.p` using `by simpa [Datum.mult, h] using hi`. Establish `e0` using `wtOf_big (flatWt Dw τ) 0 ⟨σ, h⟩ i hp`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `e0.trans ?_` and prove the remaining obligations. Establish `hne : σ ≠ conjEmb τ.1` using `fun e => conj_not_mem τ (e ▸ h)`. Distinguish the cases in `e : σ = τ.1`. Establish `: (⟨σ, h⟩ : Psi H) = τ` using `Subtype.ext e`. Simplify using `[flatWt, parWt, this, e]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (⟨σ, h⟩ : Psi H) ≠ τ` using `fun e' => e (congrArg Subtype.val e')`. Simplify using `[flatWt, parWt, this, e, hne]`. Establish `h'` using `conj_mem h`. Establish `hq : (i : ℕ) < Dw.q` using `by simpa [Datum.mult, h] using hi`. Establish `e0` using `wtOf_small (flatWt Dw τ) 0 ⟨conjEmb σ, h'⟩ i hq`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [conjEmb_conjEmb] at e0`. Use `e0.trans ?_` and prove the remaining obligations. Establish `hne : σ ≠ τ.1` using `fun e' => h (e' ▸ τ.2)`. Establish `hiff : (⟨conjEmb σ, h'⟩ : Psi H) = τ ↔ σ = conjEmb τ.1`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e'`. Rewrite using `[← congrArg Subtype.val e', conjEmb_conjEmb]`. Introduce `e'`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show conjEmb σ = τ.1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[e', conjEmb_conjEmb]`. Distinguish the cases in `e : σ = conjEmb τ.1`. Establish `h2` using `hiff.2 e`. Rewrite using `[if_neg hne, if_pos e]`. Simplify using `only [flatWt, parWt, if_pos h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Evaluate the numerical expressions. Establish `: (⟨conjEmb σ, h'⟩ : Psi H) ≠ τ` using `fun e' => e (hiff.1 e')`. Simplify using `[flatWt, parWt, this, e, hne]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exOf_flatWt_some (τ : Psi H) (σ : E →+* ℂ) (i : Fin (Dw.mult σ)) :
     exOf Dw (flatWt Dw τ) 0 (some ⟨σ, i⟩) = if σ = τ.1 then -1 else if σ = conjEmb τ.1 then 1 else 0 := by
@@ -59,13 +59,13 @@ theorem exOf_flatWt_some (τ : Psi H) (σ : E →+* ℂ) (i : Fin (Dw.mult σ)) 
       simp [flatWt, parWt, this, e, hne]
 
 /- English proof (translation)
-Establish `hne : τ.1 ≠ conjEmb τ.1` using `fun e => conj_not_mem τ (e ▸ τ.2)`. Establish `key : (∏ i, t i ^ exOf Dw (flatWt Dw τ) 0 i) = (∏ i : Fin (Dw.mult τ.1), t (some ⟨τ.1, i⟩))⁻¹ * ∏ j : Fin (Dw.mult (conjEmb τ.1)), t (some ⟨conjEmb τ.1, j⟩)`. Rewrite using `[Fintype.prod_option, Fintype.prod_sigma]`. Establish `h0 : exOf Dw (flatWt Dw τ) 0 none = 0` using `rfl`. Rewrite using `[h0, zpow_zero, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.prod_eq_mul τ.1 (conjEmb τ.1) hne ?_]`. Use `congr 1`. Rewrite using `[← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[exOf_flatWt_some, if_pos rfl, zpow_neg_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[exOf_flatWt_some, if_neg hne.symm, if_pos rfl, zpow_one]`. Introduce and unpack `σ ⟨h1, h2⟩`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[exOf_flatWt_some, if_neg h1, if_neg h2, zpow_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, ← Units.coe_prod, ← Units.coe_prod, ← Units.val_mul]`. Use `congr 1`. Rewrite using `[mul_comm, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem flatWt_char (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (τ : Psi H) (S : Type) [Field S] (t : Ix Dw → Sˣ) :
@@ -93,7 +93,7 @@ theorem flatWt_char (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Reci
   rw [mul_comm, mul_inv_cancel_left]
 
 /- English proof (translation)
-The claim follows from `@flatWt_char`.
+A detailed English derivation is pending.
 -/
 example : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (τ : Psi H) (S : Type) [Field S] (t : Ix Dw → Sˣ), (((∏ i, t i ^ exOf Dw (flatWt Dw τ) 0 i : Sˣ)) : S) * ∏ i : Fin (Dw.mult τ.1), (t (some ⟨τ.1, i⟩) : S) = ∏ j : Fin (Dw.mult (conjEmb τ.1)), (t (some ⟨conjEmb τ.1, j⟩) : S) := @flatWt_char
 

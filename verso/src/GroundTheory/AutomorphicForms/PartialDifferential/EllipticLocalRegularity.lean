@@ -14,7 +14,7 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDim
   [MeasurableSpace E] [BorelSpace E]
 
 /- English proof (translation)
-Rewrite using `[symb0, norm_mul, norm_pow, norm_mul, Complex.norm_I, mul_one, norm_mul, Complex.norm_real, Real.norm_of_nonneg Real.pi_pos.le]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem norm_symb0 {ι : Type*} [Fintype ι] {m : ℕ} (c : ι → ℂ) (w : ι → Fin m → E) (ξ : E) :
     ‖symb0 c w ξ‖ = (2 * Real.pi) ^ m * ‖prinSymb c w ξ‖ := by
@@ -23,9 +23,7 @@ theorem norm_symb0 {ι : Type*} [Fintype ι] {m : ℕ} (c : ι → ℂ) (w : ι 
   norm_num
 
 /- English proof (translation)
-Take `⟨c₀, hc₀, hlow⟩` from `exists_pos_le_norm_prinSymb hm c w hell`. Use `⟨(2 * Real.pi) ^ m * c₀, (2 * Real.pi) ^ m * ∑ i, ‖c i‖ * ∏ j, ‖w i j‖, by positivity, by positivity, fun ξ ↦ ?_, fun ξ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[norm_symb0, mul_assoc]`. Use `gcongr`. Conclude with `hlow ξ`.
-
-Rewrite using `[norm_symb0, mul_assoc]`. Use `gcongr`. Conclude with `norm_prinSymb_le c w ξ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_symb0_bounds {ι : Type*} [Fintype ι] {m : ℕ} (hm : 1 ≤ m) (c : ι → ℂ)
     (w : ι → Fin m → E) (hell : ∀ ξ : E, ξ ≠ 0 → prinSymb c w ξ ≠ 0) :
@@ -53,14 +51,14 @@ theorem bumpG_apply (x₀ : E) {r R : ℝ} (hr : 0 < r) (hrR : r < R) (x : E) :
     bumpG x₀ hr hrR x = ((bumpGR x₀ hr hrR x : ℝ) : ℂ) := rfl
 
 /- English proof (translation)
-Rewrite using `[bumpG_apply, (bumpGR x₀ hr hrR).one_of_mem_closedBall hx, Complex.ofReal_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bumpG_eq_one (x₀ : E) {r R : ℝ} (hr : 0 < r) (hrR : r < R) {x : E}
     (hx : x ∈ Metric.closedBall x₀ r) : bumpG x₀ hr hrR x = 1 := by
   rw [bumpG_apply, (bumpGR x₀ hr hrR).one_of_mem_closedBall hx, Complex.ofReal_one]
 
 /- English proof (translation)
-Establish `: (bumpG x₀ hr hrR : E → ℂ) = Complex.ofRealCLM ∘ (bumpGR x₀ hr hrR : E → ℝ)` using `rfl`. Rewrite using `[this]`. Use `(tsupport_comp_subset (g := Complex.ofRealCLM) (by simp) _).trans ?_` and prove the remaining obligations. Rewrite using `[(bumpGR x₀ hr hrR).tsupport_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tsupport_bumpG (x₀ : E) {r R : ℝ} (hr : 0 < r) (hrR : r < R) :
     tsupport (bumpG x₀ hr hrR : E → ℂ) ⊆ Metric.closedBall x₀ R := by
@@ -70,7 +68,7 @@ theorem tsupport_bumpG (x₀ : E) {r R : ℝ} (hr : 0 < r) (hrR : r < R) :
   rw [(bumpGR x₀ hr hrR).tsupport_eq]; rfl
 
 /- English proof (translation)
-Take `⟨n, a, w, N, hTeq, hN, hNl, hell⟩` from `hT`. Conclude with `⟨n, a, w, N, hTeq, hN, hNl, exists_symb0_bounds hm _ w hell⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsEllipticAt.exists_data {T : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} {m : ℕ} {x₀ : E}
     (hT : IsEllipticAt T m x₀) (hm : 1 ≤ m) :
@@ -82,17 +80,17 @@ theorem IsEllipticAt.exists_data {T : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} {m 
   exact ⟨n, a, w, N, hTeq, hN, hNl, exists_symb0_bounds hm _ w hell⟩
 
 /- English proof (translation)
-Take `⟨n, a, w, N, rfl, hN, hNl, cl, Cu, hcl, hCu, hlow, hup⟩` from `hT.exists_data hm`. Take `⟨δ, hδ, hsmall⟩` from `exists_small a w N x₀ hcl hCu hlow hup hm hN 1`. Use `⟨δ, hδ, fun s u hu ⟨ρ, hρ, hvan⟩ hTu ↦ ?_⟩` and prove the remaining obligations. Take `⟨μ, hμ0, hμ1, hK⟩` from `hsmall {s, s + 1}`. Establish `hKs` using `(hK s (by simp)).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hKs1` using `(hK (s + 1) (by simp)).1`. Use `set K := Qop a w x₀ μ 1 ∘L locM a w N x₀ hδ`. Establish `hTu' : (prinOp a w + N) u = P0 a w x₀ u + locM a w N x₀ hδ u` using `prinOp_add_apply_eq a w N x₀ hNl hδ hρ hvan`. Establish `hid : u + K u = Qop a w x₀ μ 1 ((prinOp a w + N) u) + Rop a w x₀ μ 1 u`. Establish `h1` using `congrArg (fun A : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ) ↦ A u) (parametrix_comp_frozenOperator a w x₀ hμ0.le 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.comp_apply, sub_apply, ContinuousLinearMap.id_apply] at h1`. Rewrite using `[hTu', map_add, h1]`. Simplify using `only [K, ContinuousLinearMap.comp_apply]`. Normalize the expressions using the abelian group laws. Establish `hz : MemSobolev (s + 1) 2 (Qop a w x₀ μ 1 ((prinOp a w + N) u) + Rop a w x₀ μ 1 u)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(opBound_Qop a w x₀ hcl hCu hlow hup hμ0.le hμ1 1 (s + 1)).memSobolev (u := (prinOp a w + N) u) (by convert hTu using 2; ring)`. Establish `h2` using `(opBound_Rop a w x₀ hcl hCu hlow hup hμ0 1 s).memSobolev hu`. Use `h1.add (h2.mono ?_)` and prove the remaining obligations. Establish `: (1 : ℝ) ≤ ((2 * m * 1 : ℕ) : ℝ)`. Establish `: 1 ≤ 2 * m * 1` using `by omega`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `this` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨v, hv, hvK⟩` from `exists_add_eq_of_opBound hKs1 hz`. Establish `hdiff : (u - v) + K (u - v) = 0`. Rewrite using `[map_sub, show u - v + (K u - K v) = (u + K u) - (v + K v) by abel, hid, hvK, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `eq_zero_of_add_eq_zero hKs (hu.sub (hv.mono (by linarith))) hdiff`. Rewrite `h0` using `[sub_eq_zero]`. Rewrite using `[h0]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsEllipticAt.exists_regularity_radius {T : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} {m : ℕ} {x₀ : E}
     (hT : IsEllipticAt T m x₀) (hm : 1 ≤ m) :
@@ -132,13 +130,13 @@ theorem IsEllipticAt.exists_regularity_radius {T : 𝓢'(E, ℂ) →L[ℂ] 𝓢'
   rw [h0]; exact hv
 
 /- English proof (translation)
-Establish `hb : ∀ z : 𝓢'(E, ℂ), Distribution.IsVanishingOn (z - smulLeftCLM ℂ (bump x₀ hδ : E → ℂ) z) (Metric.ball x₀ δ)` using `fun z ↦ by`. Use `isVanishingOn_smulLeftCLM_sub (bump x₀ hδ).hasTemperateGrowth (V := Metric.ball x₀ δ) (fun x hx ↦ bump_eq_one x₀ hδ (Metric.ball_subset_closedBall hx)) z` as an intermediate fact. Establish `h2` using `isVanishingOn_neg this`. Rewrite `h2` using `[neg_sub]`. Then use the resulting hypothesis. Establish `e : (prinOp a w + N) u - (P0 a w x₀ u + locM a w N x₀ hδ u) = ∑ i, ((smulLeftCLM ℂ (a i : E → ℂ) (∂^{w i} u) - smulLeftCLM ℂ (bump x₀ hδ : E → ℂ) (smulLeftCLM ℂ (a i : E → ℂ) (∂^{w i} u))) - a i x₀ • (∂^{w i} u - smulLeftCLM ℂ (bump x₀ hδ : E → ℂ) (∂^{w i} u))) + (N u - smulLeftC …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Simplify using `only [add_apply, locM, P0, prinOp, constOp, sum_apply, ContinuousLinearMap.comp_apply, smul_apply, iteratedLineDerivOpCLM_apply, locCoeff, smulLeftCLM_schwartz_sub_smul, smulLeftCLM_schwartz_mul, smul_sub]`. Simplify using `only [Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Establish `hsum : ∀ S : Finset (Fin n), Distribution.IsVanishingOn ((∑ i ∈ S, ((smulLeftCLM ℂ (a i : E → ℂ) (∂^{w i} u) - smulLeftCLM ℂ (bump x₀ hδ : E → ℂ) (smulLeftCLM ℂ (a i : E → ℂ) (∂^{w i} u))) - a i x₀ • (∂^{w i} u - smulLeftCLM ℂ (bump x₀ hδ : E → ℂ) (∂^{w i} u))) : 𝓢'(E, ℂ))) (Metr …`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using isVanishingOn_zero _`. Consider the case `insert i S hi ih`. Rewrite using `[Finset.sum_insert hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isVanishingOn_add (isVanishingOn_sub (hb _) (isVanishingOn_smul _ (hb _))) ih`. Conclude with `isVanishingOn_add (hsum _) (hb _)`.
+A detailed English derivation is pending.
 -/
 theorem isVanishingOn_prinOp_add_sub {m n : ℕ} (a : Fin n → 𝓢(E, ℂ)) (w : Fin n → Fin m → E)
     (N : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)) (x₀ : E) {δ : ℝ} (hδ : 0 < δ) (u : 𝓢'(E, ℂ)) :
@@ -176,11 +174,11 @@ theorem isVanishingOn_prinOp_add_sub {m n : ℕ} (a : Fin n → 𝓢(E, ℂ)) (w
   exact isVanishingOn_add (hsum _) (hb _)
 
 /- English proof (translation)
-Rewrite using `[memSobolev_iff_fourier]`. Use `⟨fun ξ ↦ ((𝐞 (-inner ℝ ξ x₀) : Circle) : ℂ), ?_, fun φ ↦ ?_⟩` and prove the remaining obligations. Establish `hint` using `integrable_rpow_neg_one_add_norm_sq (E := E) (μ := (volume : Measure E)) (r := -2 * t) (by linarith)`. Establish `hmeas : AEStronglyMeasurable (fun ξ : E ↦ weight t ξ • ((𝐞 (-inner ℝ ξ x₀) : Circle) : ℂ)) volume` using `((weight_hasTemperateGrowth (E := E) t).1.continuous.smul (by fun_prop)).aestronglyMeasurable`. Rewrite using `[memLp_two_iff_integrable_sq_norm hmeas]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hint.congr (ae_of_all _ fun ξ ↦ ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul, norm_mul, Circle.norm_coe, mul_one, norm_weight]`. Rewrite using `[← Real.rpow_natCast ((1 + ‖ξ‖ ^ 2) ^ (t / 2)) 2, ← Real.rpow_mul (by positivity)]`. Use `congr 1`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[TemperedDistribution.fourier_apply, TemperedDistribution.delta_apply, SchwartzMap.fourier_coe, Real.fourier_eq]`. Use `congr 1`. Use extensionality with `v`. Rewrite using `[Circle.smul_def, smul_eq_mul, smul_eq_mul, mul_comm]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem memSobolev_delta (x₀ : E) {t : ℝ} (ht : t < -(Module.finrank ℝ E : ℝ) / 2) :
     MemSobolev t 2 (TemperedDistribution.delta x₀ : 𝓢'(E, ℂ)) := by
@@ -202,13 +200,13 @@ theorem memSobolev_delta (x₀ : E) {t : ℝ} (ht : t < -(Module.finrank ℝ E :
     rw [Circle.smul_def, smul_eq_mul, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Establish `hmem : ∀ v : SobolevSpace E ℂ s, MemSobolev s 2 (z - K (SobolevSpace.toDistribution v))` using `fun v ↦ (SobolevSpace.exists_toDistribution_eq_iff _).1 ⟨SobolevSpace.mk z hz - SobolevSpace.mk _ (hK.memSobolev (SobolevSpace.memSobolev_toDistribution v)), by simp⟩`. Set `f : SobolevSpace E ℂ s → SobolevSpace E ℂ s` to `fun v ↦ SobolevSpace.mk _ (hmem v)`. Establish `hf : ContractingWith c.toNNReal f`. Use `⟨by rw [← NNReal.coe_lt_coe, Real.coe_toNNReal _ hc0]; exact hc1, LipschitzWith.of_dist_le_mul fun v v' ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[dist_eq_norm, dist_eq_norm, Real.coe_toNNReal _ hc0]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : f v - f v' = SobolevSpace.mk (K (SobolevSpace.toDistribution (v' - v))) (hK.memSobolev (SobolevSpace.memSobolev_toDistribution _))`. Apply `SobolevSpace.toDistribution_injective` to reduce the goal to its premises. Simplify using `[f, map_sub]`. Rewrite using `[e]`. Establish `h` using `hK _ (SobolevSpace.memSobolev_toDistribution (v' - v))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[sob_of_mem (hK.memSobolev (SobolevSpace.memSobolev_toDistribution _)), sob_toDistribution, ← ofReal_norm, ← ofReal_norm, ← ENNReal.ofReal_mul hc0]`. Establish `h'` using `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 h`. Rewrite `h'` using `[norm_sub_rev]`. Conclude with `h'`. Take `⟨v, hv⟩ : ∃ v, f v = v` from `⟨_, hf.fixedPoint_isFixedPt (f := f)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨SobolevSpace.toDistribution v, SobolevSpace.memSobolev_toDistribution v, ?_⟩` and prove the remaining obligations. Use `congrArg SobolevSpace.toDistribution hv` as an intermediate fact. Simplify using `only [f, SobolevSpace.toDistribution_mk] at this`. Conclude with `eq_sub_iff_add_eq.1 this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_add_eq_of_opBound_lt {K : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} {s c : ℝ} (hc0 : 0 ≤ c) (hc1 : c < 1)
     (hK : OpBound K s s c) {z : 𝓢'(E, ℂ)} (hz : MemSobolev s 2 z) :
@@ -240,20 +238,20 @@ theorem exists_add_eq_of_opBound_lt {K : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} 
   exact eq_sub_iff_add_eq.1 this.symm
 
 /- English proof (translation)
-The claim follows from `fun u hu ↦ by rw [neg_apply, sob_neg]; exact h u hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem OpBound.neg {A : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} {s t C : ℝ} (h : OpBound A s t C) :
     OpBound (-A) s t C := fun u hu ↦ by rw [neg_apply, sob_neg]; exact h u hu
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `hA.add hB.neg hC hD`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OpBound.sub {A B : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} {s t C D : ℝ} (hA : OpBound A s t C)
     (hB : OpBound B s t D) (hC : 0 ≤ C) (hD : 0 ≤ D) : OpBound (A - B) s t (C + D) := by
   rw [sub_eq_add_neg]; exact hA.add hB.neg hC hD
 
 /- English proof (translation)
-Establish `h` using `L2Kernel.lintegral_mul_sq_le (volume : Measure E) hf hg`. Rewrite `h` using `[← L2Kernel.eLpNorm_two_sq, ← L2Kernel.eLpNorm_two_sq, ← mul_pow]`. Conclude with `(ENNReal.pow_le_pow_left_iff two_ne_zero).1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_mul_le_eLpNorm_mul (f g : E → ℂ) (hf : AEMeasurable (fun x ↦ ‖f x‖ₑ) volume)
     (hg : AEMeasurable (fun x ↦ ‖g x‖ₑ) volume) :
@@ -263,19 +261,15 @@ theorem lintegral_mul_le_eLpNorm_mul (f g : E → ℂ) (hf : AEMeasurable (fun x
   exact (ENNReal.pow_le_pow_left_iff two_ne_zero).1 h
 
 /- English proof (translation)
-Use `set ψ := SchwartzMap.fourierMultiplierCLM ℂ g φ`. Establish `hψ : ∀ η, (𝓕 ψ : 𝓢(E, ℂ)) η = (g η * weight (-t) η) * (weight t η * (𝓕 φ : 𝓢(E, ℂ)) η)`. Introduce `η`. Rewrite using `[show ψ = SchwartzMap.fourierMultiplierCLM ℂ g φ from rfl, SchwartzMap.fourierMultiplierCLM_apply, FourierTransform.fourier_fourierInv_eq, SchwartzMap.smulLeftCLM_apply_apply hg, smul_eq_mul]`. Establish `: weight (-t) η * weight t η = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[weight_mul_weight, neg_add_cancel]`. Simplify using `[weight]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, mul_one]`. Use `_ = _ := by ring`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Cst : ℝ≥0∞ := ENNReal.ofReal (∫ x, ‖χ x‖) * eLpNorm (fun ξ ↦ g ξ * weight (-t) ξ) 2 volume * eLpNorm (fun ξ ↦ weight t ξ * (𝓕 φ : 𝓢(E, ℂ)) ξ) 2 volume`. Establish `hCst : Cst ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hB.eLpNorm_ne_top) (eLpNorm_weight_fourier_lt_top t φ).ne`. Establish `hpt : ∀ ξ, ‖weight t ξ * (𝓕 (SchwartzMap.smulLeftCLM ℂ (χ : E → ℂ) ψ) : 𝓢(E, ℂ)) ξ‖ₑ ≤ ‖(Cst.toReal : ℂ) * weight t ξ‖ₑ`. Introduce `ξ`. Rewrite using `[enorm_mul, enorm_mul, fourier_smulLeftCLM_apply, ← ofReal_norm (Cst.toReal : ℂ), Complex.norm_real, Real.norm_of_nonneg ENNReal.toReal_nonneg, ENNReal.ofReal_toReal hCst, mul_comm Cst]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun η ↦ ?_` and prove the remaining obligations. Rewrite using `[enorm_mul, hψ, enorm_mul]`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (norm_fourier_le_integral χ _)`. Use `_ = ENNReal.ofReal (∫ x, ‖χ x‖) * ∫⁻ η, ‖g η * weight (-t) η‖ₑ * ‖weight t η * (𝓕 φ : 𝓢(E, ℂ)) η‖ₑ := by`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `_ ≤ ENNReal.ofReal (∫ x, ‖χ x‖) * (eLpNorm (fun ξ ↦ g ξ * weight (-t) ξ) 2 volume * eLpNorm (fun ξ ↦ weight t ξ * (𝓕 φ : 𝓢(E, ℂ)) ξ) 2 volume) := by gcongr`.
-
-Conclude with `lintegral_mul_le_eLpNorm_mul _ _ hB.1.enorm (measurable_weight_mul_fourier t φ).enorm.aemeasurable`. Use `_ = Cst := by rw [← mul_assoc]`. Establish `hle` using `eLpNorm_mono_enorm hpt (p := 2) (μ := (volume : Measure E))`. Rewrite `hle` using `[show (fun ξ ↦ (Cst.toReal : ℂ) * weight t ξ) = (Cst.toReal : ℂ) • (weight t : E → ℂ) from rfl, eLpNorm_const_smul, ← ofReal_norm, Complex.norm_real, Real.norm_of_nonneg ENNReal.toReal_nonneg, ENNReal.ofReal_toReal hCst]`. Rewrite using `[norm_ofSchwartz_eq, norm_ofSchwartz_eq]`.
-
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Cst, ENNReal.toReal_mul, ENNReal.toReal_ofReal (integral_nonneg fun x ↦ norm_nonneg _)]`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_ofSchwartz_smulLeft_fourierMultiplier_le (χ : 𝓢(E, ℂ)) {g : E → ℂ}
     (hg : g.HasTemperateGrowth) (t : ℝ) (hA : MemLp (weight t : E → ℂ) 2 volume)
@@ -337,7 +331,7 @@ theorem norm_ofSchwartz_smulLeft_fourierMultiplier_le (χ : 𝓢(E, ℂ)) {g : E
         ring
 
 /- English proof (translation)
-Introduce `u hu`. Use `sob_le_of_schwartz _ (by positivity) (fun φ ↦ ?_) hu` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, fourierMultiplierCLM_toTemperedDistributionCLM_eq hg, smulLeftCLM_coe, sob_ofSchwartz, sob_ofSchwartz, ← ofReal_norm, ← ofReal_norm, ← ENNReal.ofReal_mul (by positivity)]`. Conclude with `ENNReal.ofReal_le_ofReal (norm_ofSchwartz_smulLeft_fourierMultiplier_le χ hg t hA hB φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opBound_smulLeft_fourierMultiplier (χ : 𝓢(E, ℂ)) {g : E → ℂ} (hg : g.HasTemperateGrowth)
     (t : ℝ) (hA : MemLp (weight t : E → ℂ) 2 volume)
@@ -354,9 +348,9 @@ theorem opBound_smulLeft_fourierMultiplier (χ : 𝓢(E, ℂ)) {g : E → ℂ} (
     (norm_ofSchwartz_smulLeft_fourierMultiplier_le χ hg t hA hB φ)
 
 /- English proof (translation)
-Rewrite using `[← integral_indicator_one Metric.isClosed_closedBall.measurableSet]`. Use `integral_mono (bump x₀ hr).integrable.norm ?_ fun x ↦ ?_` and prove the remaining obligations. Conclude with `(integrable_indicator_iff Metric.isClosed_closedBall.measurableSet).2 (integrableOn_const (measure_closedBall_lt_top).ne)`. Distinguish the cases in `hx : x ∈ Metric.closedBall x₀ (2 * r)`. Rewrite using `[Set.indicator_of_mem hx]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_bump_le x₀ hr x`. Rewrite using `[Set.indicator_of_notMem hx, bump_eq_zero x₀ hr hx, norm_zero]`.
+A detailed English derivation is pending.
 -/
 theorem integral_norm_bump_le (x₀ : E) {r : ℝ} (hr : 0 < r) :
     ∫ x, ‖bump x₀ hr x‖ ≤ volume.real (Metric.closedBall x₀ (2 * r)) := by
@@ -369,13 +363,11 @@ theorem integral_norm_bump_le (x₀ : E) {r : ℝ} (hr : 0 < r) :
     · rw [Set.indicator_of_notMem hx, bump_eq_zero x₀ hr hx, norm_zero]
 
 /- English proof (translation)
-Use `set V := volume.real (Metric.ball (0 : E) 1)`. Establish `hV : 0 ≤ V` using `measureReal_nonneg`. Use `set r := min r₀ (min (1 / 2) (1 / (8 * (C + 1) * (V + 1))))`. Establish `hr : 0 < r` using `lt_min hr₀ (lt_min (by norm_num) (by positivity))`. Use `⟨r, hr, min_le_left _ _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr2 : 2 * r ≤ 1`. Establish `: r ≤ 1 / 2` using `(min_le_right _ _).trans (min_le_left _ _)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr3 : r ≤ 1 / (8 * (C + 1) * (V + 1))` using `(min_le_right _ _).trans (min_le_right _ _)`. Establish `hn : 1 ≤ Module.finrank ℝ E` using `Module.finrank_pos`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvol : volume.real (Metric.closedBall x₀ (2 * r)) ≤ 2 * r * V`. Rewrite using `[Measure.addHaar_real_closedBall _ _ (by linarith)]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[div_le_one (by linarith)]; linarith`. Rewrite using `[div_le_one (by linarith)]; linarith`. Use `_ = 1 / 4 := by ring`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bump_small [Nontrivial E] (x₀ : E) {C r₀ : ℝ} (hC : 0 ≤ C) (hr₀ : 0 < r₀) :
     ∃ r, ∃ hr : 0 < r, r ≤ r₀ ∧ (∫ x, ‖bump x₀ hr x‖) * C ≤ 1 / 4 := by
@@ -405,9 +397,9 @@ theorem exists_bump_small [Nontrivial E] (x₀ : E) {C r₀ : ℝ} (hC : 0 ≤ C
     _ = 1 / 4 := by ring
 
 /- English proof (translation)
-Establish `hint` using `integrable_rpow_neg_one_add_norm_sq (E := E) (μ := (volume : Measure E)) (r := -2 * t) (by linarith)`. Establish `hmeas : AEStronglyMeasurable (weight t : E → ℂ) volume` using `(weight_hasTemperateGrowth (E := E) t).1.continuous.aestronglyMeasurable`. Rewrite using `[memLp_two_iff_integrable_sq_norm hmeas]`. Use `hint.congr (ae_of_all _ fun ξ ↦ ?_)` and prove the remaining obligations. Simplify using `only [norm_weight]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Real.rpow_natCast ((1 + ‖ξ‖ ^ 2) ^ (t / 2)) 2, ← Real.rpow_mul (by positivity)]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem memLp_weight {t : ℝ} (ht : t < -(Module.finrank ℝ E : ℝ) / 2) :
     MemLp (weight t : E → ℂ) 2 volume := by
@@ -422,9 +414,9 @@ theorem memLp_weight {t : ℝ} (ht : t < -(Module.finrank ℝ E : ℝ) / 2) :
   congr 1; push_cast; ring
 
 /- English proof (translation)
-Establish `hint` using `(integrable_rpow_neg_one_add_norm_sq (E := E) (μ := (volume : Measure E)) (r := 2 * j + 2 * t) hj).const_mul (K ^ 2)`. Establish `hmeas : AEStronglyMeasurable (fun ξ ↦ g ξ * weight (-t) ξ) volume` using `(hg.1.continuous.mul (weight_hasTemperateGrowth (E := E) (-t)).1.continuous).aestronglyMeasurable`. Rewrite using `[memLp_two_iff_integrable_sq_norm hmeas]`. Use `hint.mono' (hmeas.norm.pow 2) (ae_of_all _ fun ξ ↦ ?_)` and prove the remaining obligations. Establish `hp : (0 : ℝ) < 1 + ‖ξ‖ ^ 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity), norm_mul, norm_weight, mul_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_assoc, ← Real.rpow_natCast ((1 + ‖ξ‖ ^ 2) ^ (-(j : ℝ) / 2)) 2, ← Real.rpow_natCast ((1 + ‖ξ‖ ^ 2) ^ (-t / 2)) 2, ← Real.rpow_mul hp.le, ← Real.rpow_mul hp.le, ← Real.rpow_add hp]`. Use `congr 2`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -450,21 +442,19 @@ theorem memLp_mul_weight {g : E → ℂ} (hg : g.HasTemperateGrowth) {t K : ℝ}
         congr 2; push_cast; ring
 
 /- English proof (translation)
-Take `⟨n, a, w, N, rfl, hN, hNl, cl, Cu, hcl, hCu, hlow, hup⟩` from `hT.exists_data hm`. Use `set k : ℕ := ⌈(Module.finrank ℝ E : ℝ) - 2 * t⌉₊ + 1`. Establish `hk : (Module.finrank ℝ E : ℝ) < 2 * ((2 * m * k : ℕ) : ℝ) + 2 * t`. Establish `h1 : (Module.finrank ℝ E : ℝ) - 2 * t < k`. Use `Nat.le_ceil ((Module.finrank ℝ E : ℝ) - 2 * t)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [k]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (k : ℝ) ≤ ((2 * m * k : ℕ) : ℝ)`. Establish `: k ≤ 2 * m * k` using `by nlinarith`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `this` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨δ₀, hδ₀, hsmall⟩` from `exists_small a w N x₀ hcl hCu hlow hup hm hN k`. Take `⟨μ, hμ0, hμ1, hb⟩` from `hsmall {t}`. Establish `hK'` using `(hb t (by simp)).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g := rNSymb (fun i ↦ a i x₀) w μ k`. Establish `hg : g.HasTemperateGrowth` using `rNSymb_hasTemperateGrowth _ w μ k`. Establish `hA` using `memLp_weight (E := E) ht`. Establish `hB : MemLp (fun ξ ↦ g ξ * weight (-t) ξ) 2 volume` using `memLp_mul_weight hg hk (rNSymb_bound _ w hcl hCu hlow hup hμ0 k)`. Take `⟨r, hr, hrδ, hrsmall⟩` from `exists_bump_small x₀ (C := (eLpNorm (weight t : E → ℂ) 2 volume).toReal * (eLpNorm (fun ξ ↦ g ξ * weight (-t) ξ) 2 volume).toReal) (by positivity) hδ₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hχR : OpBound (smulLeftCLM ℂ (bump x₀ hr : E → ℂ) ∘L Rop a w x₀ μ k) t t (1 / 4)` using `(opBound_smulLeft_fourierMultiplier (bump x₀ hr) hg t hA hB).mono (by rw [mul_assoc]; exact hrsmall)`. Establish `hK''` using `hK'.sub hχR (by norm_num) (by norm_num)`. Take `⟨v, hv, hvK⟩` from `exists_add_eq_of_opBound_lt (by norm_num) (by norm_num) hK'' (memSobolev_delta x₀ ht)`. Use `⟨r, hr, Qop a w x₀ μ k v, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(opBound_Qop a w x₀ hcl hCu hlow hup hμ0.le hμ1 k (t + m)).memSobolev (by convert hv using 2; ring)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hZ` using `isVanishingOn_prinOp_add_sub a w N x₀ hδ₀ (Qop a w x₀ μ k v)`. Establish `hP : P0 a w x₀ (Qop a w x₀ μ k v) = v - Rop a w x₀ μ k v`. Use `congrArg (fun A : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ) ↦ A v) (frozenOperator_comp_parametrix a w x₀ hμ0.le k)` as an intermediate fact. Simplify using `using this`. Establish `hcut : Distribution.IsVanishingOn (smulLeftCLM ℂ (bump x₀ hr : E → ℂ) (Rop a w x₀ μ k v) - Rop a w x₀ μ k v) (Metric.ball x₀ r)` using `isVanishingOn_smulLeftCLM_sub (bump x₀ hr).hasTemperateGrowth (fun x hx ↦ bump_eq_one x₀ hr (Metric.ball_subset_closedBall hx)) _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `e : (prinOp a w + N) (Qop a w x₀ μ k v) - TemperedDistribution.delta x₀ = ((prinOp a w + N) (Qop a w x₀ μ k v) - (P0 a w x₀ (Qop a w x₀ μ k v) + locM a w N x₀ hδ₀ (Qop a w x₀ μ k v))) + (smulLeftCLM ℂ (bump x₀ hr : E → ℂ) (Rop a w x₀ μ k v) - Rop a w x₀ μ k v)`. Rewrite using `[← hvK, hP]`. Simplify using `only [sub_apply, ContinuousLinearMap.comp_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
-
-Conclude with `isVanishingOn_add (hZ.mono (Metric.ball_subset_ball hrδ)) hcut`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsEllipticAt.exists_local_solution [Nontrivial E] {T : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} {m : ℕ}
     {x₀ : E} (hT : IsEllipticAt T m x₀) (hm : 1 ≤ m) {t : ℝ}

@@ -11,26 +11,24 @@ namespace GlobalTheory.GaussModulus
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w z`.
+A detailed English derivation is pending.
 -/
 theorem valued_algebraMap (w : HeightOneSpectrum (𝓞 E)) (z : E) :
     Valued.v (algebraMap E (w.adicCompletion E) z) = w.valuation E z :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w z
 
 /- English proof (translation)
-Use `set c : w.adicCompletion E := algebraMap E _ ((unif w ^ k : Eˣ) : E) with hcdef`. Establish `hvc : Valued.v c = WithZero.exp (-(k : ℤ))`. Rewrite using `[hcdef, valued_algebraMap, valuation_unif_pow]`. Establish `hc0 : c ≠ 0` using `fun h => by`. Rewrite `hvc` using `[h, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `WithZero.exp_ne_zero hvc.symm`. Set `U : Set (w.adicCompletion E)` to `(fun z => c⁻¹ * (z - x)) ⁻¹' ((w.adicCompletionIntegers E) : Set (w.adicCompletion E))`. Establish `hU : IsOpen U` using `(Valued.isOpen_integer (w.adicCompletion E)).preimage (continuous_const.mul (continuous_id.sub continuous_const))`. Establish `hU' : U.Nonempty` using `⟨x, by`. Simplify using `only [U, Set.mem_preimage, sub_self, mul_zero, SetLike.mem_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `zero_mem _⟩`. Take `⟨b, hb⟩` from `(HeightOneSpectrum.denseRange_algebraMap E w).exists_mem_open hU hU'`. Establish `hb' : Valued.v (algebraMap E _ b - x) ≤ WithZero.exp (-(k : ℤ))`. Establish `h1 : Valued.v (c⁻¹ * (algebraMap E _ b - x)) ≤ 1` using `hb`. Rewrite using `[← mul_inv_cancel_left₀ hc0 (algebraMap E _ b - x), map_mul, hvc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `mul_le_of_le_one_right' h1`. Establish `hk1 : WithZero.exp (-(k : ℤ)) ≤ 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hb1 : w.valuation E b ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← valued_algebraMap]`. Establish `e : algebraMap E (w.adicCompletion E) b = (algebraMap E _ b - x) + x` using `by ring`. Rewrite using `[e]`. Conclude with `Valuation.map_add_le _ (hb'.trans hk1) hx`. Take `⟨y, hy⟩` from `w.exists_valuation_sub_lt_of_integer hb1 (Units.mk0 (WithZero.exp (-(k : ℤ))) WithZero.exp_ne_zero)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `e2 : algebraMap E (w.adicCompletion E) (y : E) - x = algebraMap E _ ((y : E) - b) + (algebraMap E _ b - x)`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Valuation.map_sub_swap, e2]`.
-
-Use `Valuation.map_add_le _ ?_ hb'` and prove the remaining obligations. Rewrite using `[valued_algebraMap]`. Conclude with `hy.le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_approx (w : HeightOneSpectrum (𝓞 E)) {x : w.adicCompletion E} (hx : Valued.v x ≤ 1) (k : ℕ) :
     ∃ y : 𝓞 E, Valued.v (x - algebraMap E (w.adicCompletion E) (y : E)) ≤ WithZero.exp (-(k : ℤ)) := by
@@ -72,9 +70,9 @@ theorem exists_int_approx (w : HeightOneSpectrum (𝓞 E)) {x : w.adicCompletion
   exact hy.le
 
 /- English proof (translation)
-Establish `h1 : χ.loc w (atFin w (y * y'⁻¹)) = 1`. Establish `e : ((atFin w (y * y'⁻¹) : (w.adicCompletion E)ˣ) : w.adicCompletion E) = algebraMap E (w.adicCompletion E) ((y : E) / y')`. Simplify using `[atFin, div_eq_mul_inv]`. Use `hχ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[IsUnitAt, e, valued_algebraMap, map_div₀, hy, hy', div_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← map_one (algebraMap E (w.adicCompletion E)), ← map_sub, valued_algebraMap, div_sub_one y'.ne_zero, map_div₀, hy', div_one]`. Conclude with `hd`. Rewrite `h1` using `[map_mul, map_inv, map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locK_congr {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ} (hχ : LevelLe χ w a) {y y' : Eˣ}
     (hy : w.valuation E (y : E) = 1) (hy' : w.valuation E (y' : E) = 1)

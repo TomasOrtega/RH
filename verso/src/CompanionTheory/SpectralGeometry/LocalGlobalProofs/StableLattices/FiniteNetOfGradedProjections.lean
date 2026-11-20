@@ -9,7 +9,7 @@ namespace GlobalTheory.CompanionTheory.UGeo.GradNet
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.REAL.hs`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_entry_sq_le_hs (M : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     ‖M i j‖ ^ 2 ≤ Formalism.REAL.hs M := by
@@ -21,7 +21,7 @@ theorem norm_entry_sq_le_hs (M : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
           (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ i)
 
 /- English proof (translation)
-Establish `h1` using `(norm_entry_sq_le_hs M i j).trans h`. Establish `h0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_entry_le {M : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.REAL.hs M ≤ n) (i j : Fin n) :
     ‖M i j‖ ≤ (n : ℝ) + 1 := by
@@ -32,11 +32,11 @@ theorem norm_entry_le {M : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.REAL.hs M 
   nlinarith
 
 /- English proof (translation)
-Establish `h0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `h1 : Formalism.REAL.hs M ≤ ∑ _a : Fin n, ∑ _b : Fin n, (1 / (2 * ((n : ℝ) + 1))) ^ 2`. Unfold `Formalism.REAL.hs`. Conclude with `Finset.sum_le_sum fun a _ => Finset.sum_le_sum fun b _ => pow_le_pow_left₀ (norm_nonneg _) (h a b).le 2`. Establish `e : ∑ _a : Fin n, ∑ _b : Fin n, (1 / (2 * ((n : ℝ) + 1))) ^ 2 = ((n : ℝ) * (1 / (2 * ((n : ℝ) + 1)))) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (n : ℝ) * (1 / (2 * ((n : ℝ) + 1))) ≤ 1 / 2`. Rewrite using `[mul_one_div, div_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h3 : 0 ≤ (n : ℝ) * (1 / (2 * ((n : ℝ) + 1)))` using `by positivity`. Rewrite `h1` using `[e]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem hs_le_quarter {M : Matrix (Fin n) (Fin n) ℂ}
     (h : ∀ i j, ‖M i j‖ < 1 / (2 * ((n : ℝ) + 1))) : Formalism.REAL.hs M ≤ 1 / 4 := by
@@ -57,21 +57,19 @@ theorem hs_le_quarter {M : Matrix (Fin n) (Fin n) ℂ}
   nlinarith
 
 /- English proof (translation)
-Establish `h0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Set `f : Matrix (Fin n) (Fin n) ℂ → (Fin n → Fin n → ℂ) × (Fin n → Fin n → ℂ)` to `fun A => (fun i j => Pm A i j, fun i j => Pp A i j)`. Establish `hb : Bornology.IsBounded (f '' {A | IsGrad ε A})`. Use `(Metric.isBounded_closedBall (x := (0 : (Fin n → Fin n → ℂ) × (Fin n → Fin n → ℂ))) (r := (n : ℝ) + 1)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨A, hA, rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hA' : IsGrad ε A` using `hA`. Establish `hm` using `hs_proj_le (Pm_conj hA') (Pm_idem hA')`. Establish `hp` using `hs_proj_le (Pp_conj hA') (Pp_idem hA')`. Establish `hn : (0 : ℝ) ≤ (n : ℝ) + 1` using `by positivity`. Rewrite using `[mem_closedBall_zero_iff, Prod.norm_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `max_le ?_ ?_` and prove the remaining obligations. Conclude with `(pi_norm_le_iff_of_nonneg hn).2 fun i => (pi_norm_le_iff_of_nonneg hn).2 fun j => norm_entry_le hm i j`. Conclude with `(pi_norm_le_iff_of_nonneg hn).2 fun i => (pi_norm_le_iff_of_nonneg hn).2 fun j => norm_entry_le hp i j`. Establish `hr : 0 < 1 / (2 * ((n : ℝ) + 1))` using `by positivity`. Take `⟨t, hts, htf, hcov⟩` from `Metric.finite_approx_of_totallyBounded ((Bornology.IsBounded.isCompact_closure hb).totallyBounded.subset subset_closure) _ hr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hch : ∀ y : t, ∃ A, IsGrad ε A ∧ f A = y` using `fun y => by`. Take `⟨A, hA, e⟩` from `hts y.2`. Conclude with `⟨A, hA, e⟩`. Use `choose a ha hfa using hch`. Use `haveI : Fintype t := htf.fintype`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `e` to `Fintype.equivFin t`. Use `⟨Fintype.card t, fun j => a (e.symm j), fun j => ha _, fun A' hA' => ?_⟩` and prove the remaining obligations. Establish `hmem : f A' ∈ ⋃ y ∈ t, Metric.ball y (1 / (2 * ((n : ℝ) + 1)))` using `hcov ⟨A', hA', rfl⟩`. Simplify using `only [Set.mem_iUnion, Metric.mem_ball, exists_prop] at hmem`. Take `⟨y, hy, hd⟩` from `hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd' : dist (f (a (e.symm (e ⟨y, hy⟩)))) (f A') < 1 / (2 * ((n : ℝ) + 1))`. Rewrite using `[Equiv.symm_apply_apply, hfa, dist_comm]`. Conclude with `hd`. Rewrite `hd'` using `[Prod.dist_eq, max_lt_iff]`. Use `⟨e ⟨y, hy⟩, hs_le_quarter fun i j => ?_, hs_le_quarter fun i j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(dist_le_pi_dist (f (a (e.symm (e ⟨y, hy⟩)))).1 (f A').1 i).trans_lt hd'.1`. Establish `h2` using `(dist_le_pi_dist _ _ j).trans_lt h1`. Simplify `h2` using `[f, dist_eq_norm]`. Establish `h1` using `(dist_le_pi_dist (f (a (e.symm (e ⟨y, hy⟩)))).2 (f A').2 i).trans_lt hd'.2`. Establish `h2` using `(dist_le_pi_dist _ _ j).trans_lt h1`.
-
-Simplify `h2` using `[f, dist_eq_norm]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_net (n : ℕ) (ε : Fin n → Bool) :
     ∃ (m : ℕ) (A : Fin m → Matrix (Fin n) (Fin n) ℂ), (∀ j, IsGrad ε (A j)) ∧

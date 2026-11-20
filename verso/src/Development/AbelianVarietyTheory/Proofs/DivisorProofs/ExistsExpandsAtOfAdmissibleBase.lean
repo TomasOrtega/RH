@@ -16,9 +16,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D A G _ _ hG U k hk F f hf`. Establish `: IsNoetherianRing R` using `hR.1`. Use `hG.geomConnected` as an intermediate fact. Take `⟨s, ⟨r, hr, σ₀, f₀, -, hf₀, hE⟩, -⟩` from `(U.expand k hk).2 F`. Establish `h1 : scal (DegPre.BF D.toPre (FractionRing R)).hom (1 : R) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[scal, map_one, map_one]`. Establish `h₁ : ∀ α j, (f₀ α).f j = resTop _ (scal D.toPre.P.A.hom r) * (f α).f j` using `fun α => GlobalTheory.IntegralExpansion.secIsMul_of_secScal D.toPre.P.isLB _ (GlobalTheory.IntegralExpansion.prB_app_injective D.toPre) (h1 ▸ hf α) (by rw [Over.w (DegPre.prB D.toPre (FractionRing R))]; exact hf₀ α)`. Take `⟨σ, hσ⟩` from `GlobalTheory.sec_div_of_expandsAt R _ hR D A G U.toUnifPre k r hr σ₀ f₀ f h₁ hE`. Conclude with `⟨σ, GlobalTheory.expandsAt_cancel_of_ne_zero R _ D A G U.toUnifPre k r hr σ σ₀ f f₀ hσ h₁ hE⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IntFam.exists_expandsAt_of_admissibleBase : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ k : ℕ, 1 ≤ k → ∀ (F : Fam D.toPre (FractionRing R) k) (f : ∀ α : D.toPre.X, D.toPre.SecB k α), (∀ α : D.toPre.X, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing R) α) (DegPre.famε k) (F.s α) (D.toPre.famφB α) (DegPre.famε k) (f α) (DegPre.prB D.toPre (FractionRing R)).left (scal (DegPre.BF D.toPre (FractionRing R)).hom (1 : R))) → ∃ σ : H0 U.LG.L k, ∀ e : ℕ, U.ExpandsAt e k σ f := by
   intro R _ _ _ hR D A G _ _ hG U k hk F f hf

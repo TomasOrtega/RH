@@ -24,7 +24,7 @@ section Mono
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← derivWithin_of_mem_nhds hs]`. Conclude with `hf.derivWithin_nonneg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deriv_nonneg_of_monotoneOn {f : ℝ → ℝ} {s : Set ℝ} {x : ℝ} (hf : MonotoneOn f s) (hs : s ∈ nhds x) :
     0 ≤ deriv f x := by
@@ -32,7 +32,7 @@ theorem deriv_nonneg_of_monotoneOn {f : ℝ → ℝ} {s : Set ℝ} {x : ℝ} (hf
   exact hf.derivWithin_nonneg
 
 /- English proof (translation)
-The claim follows from `h.A_nonneg.trans hA K_nonneg := h.K_nonneg.trans hK δ_pos := hδ smooth c := (h.smooth c).mono (prod_mono subset_rfl fun w hw => ⟨hw.1, hw.2.trans_le hδ'⟩) mono y s hs t ht hst := by have h1 := h.mono y ⟨hs.1, hs.2.trans_le hδ'⟩ ⟨ht.1, ht.2.trans_le hδ'⟩ hst have h2 : (K' - K) * s …`.
+A detailed English derivation is pending.
 -/
 theorem isRegConst_mono {a θ : ChartForm p σ d} {Ψ : CxPts p σ → ℝ → ℝ} {A K δ A' K' δ' : ℝ}
     (ha : ∀ c : AlgChart p σ d, ∀ y ∈ c.e.source, ∀ ξ, 0 ≤ a c y ξ) (h : IsRegConst a θ Ψ A K δ) (hA : A ≤ A')
@@ -88,13 +88,13 @@ section Combine
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} {Φ : s.Flag}
 
 /- English proof (translation)
-Establish `h' : ∀ q : s.Comp × (D.what₂.LL →+* ℂ) × D.what₂.Tau × Fin N, ∃ a K δ : ℝ, 0 ≤ a ∧ 0 ≤ K ∧ 0 < δ ∧ ((q.2.2.2 : ℕ) + 1 < N → IsRegConst (om q.1 q.2.1) (thW h0 q.1 q.2.1 (fund q.2.2.1 q.2.2.2)) (rho (om q.1 q.2.1) (E q.1 q.2.1) (phW hm h0 q.1 q.2.1 (fund q.2.2.1 q.2.2.2))) a K δ)`. Introduce `q`. Distinguish the cases in `hq : (q.2.2.2 : ℕ) + 1 < N`. Take `⟨a, K, δ, hr⟩` from `h q.1 q.2.1 q.2.2.1 q.2.2.2 hq`. Conclude with `⟨a, K, δ, hr.A_nonneg, hr.K_nonneg, hr.δ_pos, fun _ => hr⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, 0, 1, le_rfl, le_rfl, one_pos, fun h => absurd h hq⟩`. Use `choose a K δ ha hK hδ hr using h'`. Establish `hS0 : 0 ≤ ∑ q, (δ q)⁻¹` using `Finset.sum_nonneg fun q _ => (inv_pos.2 (hδ q)).le`. Use `⟨∑ q, a q, ∑ q, K q, (1 + ∑ q, (δ q)⁻¹)⁻¹, Finset.sum_nonneg fun q _ => ha q, Finset.sum_nonneg fun q _ => hK q, by positivity, fun k σ τ i hi => ?_⟩` and prove the remaining obligations. Establish `hS : (δ (k, σ, τ, i))⁻¹ ≤ 1 + ∑ q, (δ q)⁻¹`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.single_le_sum (f := fun q => (δ q)⁻¹) (fun q _ => (inv_pos.2 (hδ q)).le) (Finset.mem_univ (k, σ, τ, i))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `isRegConst_mono (fun c y hy ξ => ?_) (hr (k, σ, τ, i) hi) (Finset.single_le_sum (f := a) (fun q _ => ha q) (Finset.mem_univ _)) (Finset.single_le_sum (f := K) (fun q _ => hK q) (Finset.mem_univ _)) (by positivity) (inv_le_of_inv_le₀ (hδ _) hS)` and prove the remaining obligations. Distinguish the cases in `hξ : ξ = 0`. Substitute `hξ` using the available equality.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `e` using `(continuous_and_smul (hk k σ) hy).2 0 0`. Simplify using `only [zero_smul, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_mul] at e`. Conclude with `e.ge`. Conclude with `((hk k σ).2 c y hy ξ hξ).le`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_commonConst (hm : ∀ k, Mets (Φ.C k) (cxSt D.what₂.LL)) (h0 : RefMets Φ)
     (om : ∀ k σ, ChartForm (Φ.C k).Y.str σ (Φ.C k).Y.dim) (E : ∀ k σ, ChartMap (Φ.C k).Y.str σ (Φ.C k).Y.dim)
@@ -133,9 +133,9 @@ theorem exists_commonConst (hm : ∀ k, Mets (Φ.C k) (cxSt D.what₂.LL)) (h0 :
 end Combine
 
 /- English proof (translation)
-Introduce `D O x P hc hf hr`. Use `P.const (exists_commonConst _ _ _ _ (fun k σ => P.om_kaehler k σ) fun k σ τ i hi => ?_)` and prove the remaining obligations. Take `⟨v, hv, hvψ⟩` from `GlobalTheory.T.theta_form_plurisubharmonic_potential hP2 hPH D O x P hc hf hr k σ τ i hi`. Take `⟨A, K, δ, hreg, -⟩` from `hD _ _ _ σ _ inferInstance inferInstance (P.om k σ) (thW (refMet x O.Φ) k σ (fund τ i)) (P.exph k σ) v (P.om_kaehler k σ) (P.exph_is k σ) (GlobalTheory.T.theta_form_is_closed D O x P hc hf hr k σ _) hv`. Take `⟨δ', h'⟩` from `GlobalTheory.T.kaehler_regularized_potential_bound hK _ _ _ σ _ inferInstance (P.om k σ) _ (P.exph k σ) (phW (metsOf x O.Φ) (refMet x O.Φ) k σ (fund τ i)) (fun y => (v y).toReal) (offBd O.Φ k σ)ᶜ (P.om_kaehler k σ) (P.exph_is k σ) (fun y hy => (hvψ y (not_not.1 hy)).symm) (Global …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨A, K, δ', h'⟩`.
+Supply the required witnesses or components.
 -/
 theorem constSt (hP2 : Hypotheses2) (hPH : HypothesesH) (hD : GlobalTheory.Published.DemaillyRegularisation) (hK : KernelSt) : ConstSt := by
   intro D O x P hc hf hr

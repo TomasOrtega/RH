@@ -14,13 +14,11 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.DiagCoord
 
 /- English proof (translation)
-Set `B : ∀ τ, Module.Basis (Fin (Nat.card {i // ty i = τ})) k (W τ)` to `fun τ => (b τ).some`. Set `e : ∀ τ, {i // ty i = τ} ≃ Fin (Nat.card {i // ty i = τ})` to `fun τ => Finite.equivFin _`. Set `f : ∀ τ, {i // ty i = τ} → V` to `fun τ j => ((B τ (e τ j) : W τ) : V)`. Establish `hmem : ∀ τ j, f τ j ∈ W τ` using `fun τ j => (B τ (e τ j)).2`. Establish `hspan : ∀ τ, Submodule.span k (Set.range (f τ)) ≤ W τ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hmem τ j`. Establish `hsig : LinearIndependent k (fun p : Σ τ, {i // ty i = τ} => f p.1 p.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `linearIndependent_iUnion_finite (fun τ => ?_) (fun τ t _ hτ => ?_)` and prove the remaining obligations. Conclude with `((B τ).linearIndependent.map' (W τ).subtype (Submodule.ker_subtype _)).comp (e τ) (e τ).injective`. Conclude with `(hW.disjoint_biSup hτ).mono (hspan τ) (iSup₂_mono fun σ _ => hspan σ)`. Set `s : I → Σ τ, {i // ty i = τ}` to `fun i => ⟨ty i, ⟨i, rfl⟩⟩`. Establish `hs : Function.Injective s` using `fun i j h => congrArg (fun p : Σ τ, {i // ty i = τ} => (p.2 : I)) h`.
-
-Conclude with `⟨fun i => f (ty i) ⟨i, rfl⟩, hsig.comp s hs, fun i => hmem (ty i) ⟨i, rfl⟩⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_linearIndependent_of_iSupIndep {k V I T : Type} [Field k] [AddCommGroup V] [Module k V] [Finite I]
     (W : T → Submodule k V) (hW : iSupIndep W) (ty : I → T)
@@ -48,15 +46,15 @@ theorem exists_linearIndependent_of_iSupIndep {k V I T : Type} [Field k] [AddCom
 open GlobalTheory.Serre ReciprocityTheory.ChartRestriction.G.Chart in
 
 /- English proof (translation)
-Set `dd : Serre.Lie act → (Fin g → ℂ)` to `fun v => (h₁ v.hom (GlobalTheory.Serre.Lie.isTangent v)).exists.choose`. Establish `hdd : ∀ v : Serre.Lie act, u.IsDiff (dd v) v.hom` using `fun v => (h₁ v.hom (GlobalTheory.Serre.Lie.isTangent v)).exists.choose_spec`. Establish `huniq : ∀ (v : Serre.Lie act) (w : Fin g → ℂ), u.IsDiff w v.hom → dd v = w` using `fun v w hw => (h₁ v.hom (GlobalTheory.Serre.Lie.isTangent v)).unique (hdd v) hw`. Establish `hcomb : ∀ (n : ℕ) (r : Fin n → ℂ) (vs : Fin n → Serre.Lie act), u.IsDiff (∑ i, r i • dd (vs i)) (∑ i, r i • vs i).hom` using `fun n r vs => GlobalTheory.UnifDifferential.isDiff_of_isLieComb A L g n u (fun i => dd (vs i)) (fun i => (vs i).hom) r _ (fun i => GlobalTheory.Serre.Lie.isTangent (vs i)) (fun i => hdd (vs i)) ((GlobalTheory.Serre.Lie.isLieComb_iff r vs _).2 rfl)`. Establish `hadd : ∀ v w : Serre.Lie act, dd (v + w) = dd v + dd w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v w`. Apply `huniq` to reduce the goal to its premises. Establish `h2` using `hcomb 2 ![1, 1] ![v, w]`. Simplify `h2` using `[Fin.sum_univ_two]`. Establish `hsmul : ∀ (c : ℂ) (v : Serre.Lie act), dd (c • v) = c • dd v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `c v`. Apply `huniq` to reduce the goal to its premises. Establish `h1` using `hcomb 1 ![c] ![v]`. Simplify using `using h1`. Use `⟨{ toFun := dd, map_add' := hadd, map_smul' := hsmul }, ?_, hdd⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v w hvw`. Apply `GlobalTheory.Serre.Lie.ext` to reduce the goal to its premises. Establish `hw : u.IsDiff (dd v) w.hom`. Use `hdd w` as an intermediate fact. Establish `hvw' : dd v = dd w` using `hvw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← hvw']`. Then use the resulting hypothesis. Conclude with `(h₂ (dd v)).unique ⟨GlobalTheory.Serre.Lie.isTangent v, hdd v⟩ ⟨GlobalTheory.Serre.Lie.isTangent w, hw⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_diff_linear {O : Type} [CommRing O] {A : Over (Sp ℂ)} [GrpObj A] [IsCommMonObj A] {L : LB A.left} {g : ℕ}
     (u : HolUnif A L g) (act : OAct O A) (h₁ : ∀ v, IsTangent v → ∃! w, u.IsDiff w v)
@@ -97,27 +95,25 @@ end GlobalTheory.DiagCoord
 open GlobalTheory.DiagCoord GlobalTheory.Serre in
 
 /- English proof (translation)
-Introduce `_ _ _ _ E _ _ _ H D P u Hm χ act ty _ hty hdet`. Unfold `DetCond at hdet`. Unfold `IsTypeFn at hty`. Establish `: IsCommMonObj P.A` using `Out.PolAV.isCommMonObj P`. Take `⟨h₁, h₂⟩` from `GlobalTheory.TorusTransfer.tangent_bijective u P.smoothDim`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hdinj, hdd⟩` from `exists_diff_linear u act h₁ h₂`. Set `ty' : Fin P.g → (𝓞 E →+* ℂ)` to `fun i => (ty i).comp (algebraMap (𝓞 E) E)`. Establish `hinj : ∀ τ : 𝓞 E →+* ℂ, Function.Injective τ`. Introduce `τ`. Use `(RingHom.injective_iff_ker_eq_bot τ).2 (Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `n`. Simplify using `[RingHom.mem_ker]`. Establish `hcard : ∀ τ : 𝓞 E →+* ℂ, ∃ σ : E →+* ℂ, σ (H.rt : E) = τ H.rt ∧ Nat.card {i // ty' i = τ} = Nat.card {i // ty i = σ}`. Introduce `τ`. Use `⟨IsFractionRing.lift (hinj τ), IsFractionRing.lift_algebraMap (hinj τ) H.rt, Nat.card_congr (Equiv.subtypeEquivRight fun i => ⟨fun hi => ?_, fun hi => ?_⟩)⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun x => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, IsFractionRing.lift_algebraMap]`. Conclude with `congrArg (fun f : 𝓞 E →+* ℂ => f x) hi`. Use `RingHom.ext fun x => ?_ show ty i (algebraMap (𝓞 E) E x) = τ x` and prove the remaining obligations. Rewrite using `[hi]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `IsFractionRing.lift_algebraMap (hinj τ) x`. Establish `hb : ∀ τ : 𝓞 E →+* ℂ, Nonempty (Module.Basis (Fin (Nat.card {i // ty' i = τ})) ℂ (GlobalTheory.Serre.Lie.eig act τ))`. Introduce `τ`. Take `⟨σ, hσ, hc⟩` from `hcard τ`. Use `(GlobalTheory.Serre.Lie.lieMult_id_iff act τ _).1 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hc]`. Distinguish the cases in `hτ : τ H.rt = H.rt0`. Rewrite using `[(hty σ).1 (hσ.trans hτ)]`. Conclude with `(hdet τ).1 hτ`. Rewrite using `[(hty σ).2 (fun h => hτ (hσ.symm.trans h))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hdet τ).2 hτ`. Take `⟨v, hvli, hvmem⟩` from `exists_linearIndependent_of_iSupIndep (GlobalTheory.Serre.Lie.eig act) (GlobalTheory.Serre.Lie.iSupIndep_eig act) ty' hb`. Use `choose F hF using fun a : 𝓞 E => GlobalTheory.exists_linear_lift_of_isMonHom_polAV P P P.L P.L u u (act.act a) (act.hom a)`. Establish `key : ∀ (a : 𝓞 E) (i : Fin P.g), F a (d (v i)) = ty i (a : E) • d (v i)`. Introduce `a i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `act.hom a` as an intermediate fact. Establish `e1` using `GlobalTheory.HomLinear.isDiff_comp u u (act.act a) (F a) (hF a) (GlobalTheory.Serre.Lie.isTangent (v i)) (hdd (v i))`. Establish `hv : a • v i = ty' i a • v i` using `(GlobalTheory.Serre.Lie.mem_eig_iff.1 (hvmem i)) a`. Establish `e2 : (ty' i a • v i).hom = (v i).hom ≫ act.act a`. Rewrite using `[← hv, GlobalTheory.Serre.Lie.hom_act_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `e1` using `[← e2]`. Establish `e3` using `hdd (ty' i a • v i)`. Rewrite `e3` using `[map_smul]`. Conclude with `(h₁ _ (GlobalTheory.Serre.Lie.isTangent _)).unique e1 e3`. Establish `hli : LinearIndependent ℂ (d ∘ v)` using `hvli.map' d (LinearMap.ker_eq_bot.2 hdinj)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Set `B : Module.Basis (Fin P.g) ℂ (Fin P.g → ℂ)` to `basisOfLinearIndependentOfCardEqFinrank' (d ∘ v) hli (by simp)`. Establish `hB : ∀ i, B i = d (v i)` using `fun i => by simp [B]`. Use `⟨B.equivFun.symm, fun a z => ?_⟩` and prove the remaining obligations. Rewrite using `[← hF a]`. Use `congrArg u.ex ?_` and prove the remaining obligations.
-
-Simplify using `only [Module.Basis.equivFun_symm_apply, map_sum, map_smul, hB, key, smul_smul]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_diagonal_coordinates_of_detCond :
     Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ) (act : OAct (𝓞 E) P.A) (ty : Fin P.g → (E →+* ℂ)), u.IsAH Hm χ → IsTypeFn H D.p D.q ty → DetCond D act (𝟙 (Sp ℂ)) H.rt0 → ∃ h : (Fin P.g → ℂ) ≃ₗ[ℂ] (Fin P.g → ℂ), ∀ (a : 𝓞 E) z, u.ex (h (fun i => ty i (a : E) * z i)) = u.ex (h z) ≫ act.act a := by

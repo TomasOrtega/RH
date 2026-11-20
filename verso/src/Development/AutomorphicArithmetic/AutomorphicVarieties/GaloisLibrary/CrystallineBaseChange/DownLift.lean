@@ -12,14 +12,14 @@ private noncomputable def sc (t : ℝ) : GL (Fin 2) ℝ :=
   Matrix.GeneralLinearGroup.scalar (Fin 2) (Units.mk0 (Real.exp t) (Real.exp_pos t).ne')
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [sc]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sc_val (t : ℝ) : (sc t).val = !![Real.exp t, 0; 0, Real.exp t] := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [sc]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, sc_val, sc_val, sc_val]`. Simplify using `[Real.exp_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sc_add (s t : ℝ) : sc (s + t) = sc s * sc t := by
   refine Units.ext ?_
@@ -27,26 +27,24 @@ private theorem sc_add (s t : ℝ) : sc (s + t) = sc s * sc t := by
   simp [Real.exp_add]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[sc_val, Real.exp_zero, Units.val_one, Matrix.one_fin_two]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sc_zero : sc 0 = 1 := by
   refine Units.ext ?_
   rw [sc_val, Real.exp_zero, Units.val_one, Matrix.one_fin_two]
 
 /- English proof (translation)
-Set `X : TR.Lie ℚ 2` to `TR.toL 1`. Establish `hX : X = TR.toL (Matrix.single 0 0 (Pi.single Rat.infinitePlace 1)) + TR.toL (Matrix.single 1 1 (Pi.single Rat.infinitePlace 1))`. Use extensionality with `i j u`. Rewrite using `[Subsingleton.elim u Rat.infinitePlace]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [X]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hL : TR.lie ℚ 2 X φ = 0`. Rewrite using `[hX, map_add, LinearMap.add_apply, ← h Rat.infinitePlace]`. Simplify using `only [TR.Eop]`. Use `congr!`. Set `c : ℝ → GL (Fin 2) (TR.Rinf ℚ)` to `fun s => Matrix.GeneralLinearGroup.map (algebraMap ℝ (TR.Rinf ℚ)) (sc s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcv : ∀ s i j v, (c s).val i j v = (sc s).val i j` using `fun _ _ _ _ => rfl`. Establish `hc : HasDerivAt (fun s : ℝ => TR.toL (c s).val) X 0`. Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun v => ?_` and prove the remaining obligations. Establish `h1 : HasDerivAt Real.exp 1 0` using `by simpa using Real.hasDerivAt_exp 0`. Use `show HasDerivAt (fun s => (sc s).val i j) _ 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [sc_val]`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify `h1` using `[X]`. Simplify `hasDerivAt_const (0 : ℝ) (0 : ℝ)` using `[X]`. Simplify `hasDerivAt_const (0 : ℝ) (0 : ℝ)` using `[X]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify `h1` using `[X]`. Set `f : ℝ → ℂ` to `fun t => φ.1 (g * upR (sc t))`. Establish `hf : ∀ t, HasDerivAt f 0 t` using `fun t => by`. Establish `h1` using `TR.hasDerivAt_curve φ (g * upR (sc t)) c X (by simp only [c, sc_zero, map_one]) hc`. Rewrite `h1` using `[← TR.lie_apply, hL]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : HasDerivAt (fun s => f (t + s)) 0 0`. Simplify using `only [f, sc_add, map_mul, mul_assoc] using! h1`. Establish `h3` using `HasDerivAt.comp_sub_const t t (f := fun s => f (t + s)) (by rw [sub_self]; exact h2)`. Simplify using `using h3`. Establish `h4` using `is_const_of_deriv_eq_zero (fun t => (hf t).differentiableAt) (fun t => (hf t).deriv) t 0`.
-
-Simplify `h4` using `only [f, sc_zero, map_one, mul_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem sc_inv (φ : TR.Sm ℚ 2) (h : ∀ v, TR.Eop v 0 0 φ + TR.Eop v 1 1 φ = 0) (g : GA ℚ 2) (t : ℝ) :
     φ.1 (g * upR (sc t)) = φ.1 g := by
@@ -94,13 +92,13 @@ Both sides reduce to the same expression.
 private theorem rot_val (θ : ℝ) : (rot θ).val = !![Real.cos θ, Real.sin θ; -Real.sin θ, Real.cos θ] := rfl
 
 /- English proof (translation)
-Rewrite using `[rot_val, Matrix.det_fin_two_of]`. Use polynomial arithmetic with `[Real.sin_sq_add_cos_sq θ]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem rot_det (θ : ℝ) : (rot θ).val.det = 1 := by
   rw [rot_val, Matrix.det_fin_two_of]; nlinarith [Real.sin_sq_add_cos_sq θ]
 
 /- English proof (translation)
-Use `rotEig ℚ φ z h (fun _ => θ) (Matrix.GeneralLinearGroup.map (algebraMap ℝ (TR.Rinf ℚ)) (rot θ)) (by` as an intermediate fact. Use extensionality with `i j v`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> rfl) g`. Simplify using `using! this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem rot_eig (φ : TR.Sm ℚ 2) (z : ℂ) (h : ∀ v, TR.Eop v 0 1 φ - TR.Eop v 1 0 φ = z • φ) (g : GA ℚ 2) (θ : ℝ) :
     φ.1 (g * upR (rot θ)) = Complex.exp (z * θ) * φ.1 g := by
@@ -110,11 +108,11 @@ private theorem rot_eig (φ : TR.Sm ℚ 2) (z : ℂ) (h : ∀ v, TR.Eop v 0 1 φ
   simpa using! this
 
 /- English proof (translation)
-Establish `e : (((rot θ).val 1 0 : ℝ) : ℂ) * (UpperHalfPlane.I : ℍ) + ((rot θ).val 1 1 : ℝ) = Complex.exp (-(θ * Complex.I))`. Rewrite using `[← neg_mul, Complex.exp_mul_I]`. Simplify using `[rot_val]`. Expand and normalize the polynomial expressions, which then agree. Establish `e' : (((rot θ).val 0 0 : ℝ) : ℂ) * (UpperHalfPlane.I : ℍ) + ((rot θ).val 0 1 : ℝ) = Complex.I * Complex.exp (-(θ * Complex.I))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← neg_mul, Complex.exp_mul_I]`. Simplify using `[rot_val]`. Take the linear combination `(Complex.sin θ) * Complex.I_mul_I`. Simplify using `only [nsl]`. Rewrite using `[e, e', rot_det, mul_div_cancel_right₀ _ (Complex.exp_ne_zero _), ← Complex.exp_int_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: ofComplex Complex.I = UpperHalfPlane.I` using `ofComplex_apply UpperHalfPlane.I`. Simplify using `only [abs_one, Real.one_rpow, sign_one, SignType.coe_one, Complex.ofReal_one, one_mul, this]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem nsl_rot (k : ℕ) (f : ℍ → ℂ) (θ : ℝ) :
     nsl k f (rot θ).val UpperHalfPlane.I = Complex.exp (Complex.I * k * θ) * f UpperHalfPlane.I := by
@@ -136,9 +134,9 @@ private theorem nsl_rot (k : ℕ) (f : ℍ → ℂ) (θ : ℝ) :
   ring
 
 /- English proof (translation)
-Establish `hv : (aff (Units.mk0 y hy.ne') x).val = !![y, x; 0, 1]` using `rfl`. Establish `hd : (!![y, x; 0, 1] : Matrix (Fin 2) (Fin 2) ℝ).det = y` using `by simp`. Set `z : ℍ` to `⟨⟨x, y⟩, hy⟩`. Establish `hz : down k φ z = ((y ^ (-((k : ℝ) / 2)) : ℝ) : ℂ) * φ (upR (aff (Units.mk0 y hy.ne') x))` using `rfl`. Establish `e : (y : ℂ) * Complex.I + x = (z : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `apply Complex.ext <;> simp [z]`. Simplify using `only [nsl]`. Rewrite using `[hv, hd, abs_of_pos hy, sign_pos hy]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, Complex.ofReal_zero, Complex.ofReal_one, zero_mul, zero_add, one_zpow, mul_one, div_one, SignType.coe_one, one_mul, coe_I]`. Rewrite using `[e, ofComplex_apply, hz, ← mul_assoc, ← Complex.ofReal_mul, ← Real.rpow_add hy]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -158,19 +156,17 @@ private theorem nsl_aff (k : ℕ) (φ : GA ℚ 2 → ℂ) (y x : ℝ) (hy : 0 < 
   simp
 
 /- English proof (translation)
-Use `set a := h.val 0 0 with ha`. Use `set b := h.val 0 1 with hb`. Use `set c := h.val 1 0 with hc`. Use `set d := h.val 1 1 with hd`. Rewrite `hh` using `[Matrix.det_fin_two, ← ha, ← hb, ← hc, ← hd]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `w : ℂ` to `⟨d, -c⟩`. Establish `hw : w ≠ 0`. Introduce `h0`. Establish `h1 : d = 0` using `congrArg Complex.re h0`. Establish `h2 : -c = 0` using `congrArg Complex.im h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hh` using `[h1, neg_eq_zero.1 h2]`. Simplify using `at hh`. Establish `hr : 0 < ‖w‖` using `norm_pos_iff.2 hw`. Establish `h1 : ‖w‖ * Real.cos w.arg = d` using `Complex.norm_mul_cos_arg w`. Establish `h2 : ‖w‖ * Real.sin w.arg = -c` using `Complex.norm_mul_sin_arg w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h3 : ‖w‖ ^ 2 = c ^ 2 + d ^ 2`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Simplify using `[w]`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : 0 < c ^ 2 + d ^ 2` using `h3 ▸ pow_pos hr 2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(a * d - b * c) / (c ^ 2 + d ^ 2), div_pos hh hn, (a * c + b * d) / (c ^ 2 + d ^ 2), w.arg, Real.log ‖w‖, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, sc_val, rot_val, Real.exp_log hr]`. Express the relevant statement in the definitionally equal form `_ = !![(a * d - b * c) / (c ^ 2 + d ^ 2), (a * c + b * d) / (c ^ 2 + d ^ 2); 0, 1] * _ * _`. Rewrite using `[Matrix.eta_fin_two h.val, ← ha, ← hb, ← hc, ← hd, Matrix.mul_fin_two, Matrix.mul_fin_two]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Clear the denominators using the available nonvanishing facts.
 
-Use `congrArg₂ (fun p q => ![p, q]) (congrArg₂ (fun p q => ![p, q]) ?_ ?_) (congrArg₂ (fun p q => ![p, q]) ?_ ?_)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(a * d - b * c)) * h1 + (a * c + b * d) * h2`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(a * d - b * c)) * h2 - (a * c + b * d) * h1`.
-
-Take the linear combination `h2`. Take the linear combination `-h1`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem iwasawa (h : GL (Fin 2) ℝ) (hh : 0 < h.val.det) :
     ∃ (y : ℝ) (hy : 0 < y) (x θ t : ℝ), h = aff (Units.mk0 y hy.ne') x * rot θ * sc t := by
@@ -206,9 +202,9 @@ private theorem iwasawa (h : GL (Fin 2) ℝ) (hh : 0 < h.val.det) :
   · linear_combination -h1
 
 /- English proof (translation)
-Take `⟨y, hy, x, θ, t, rfl⟩` from `iwasawa h hh`. Establish `e : (aff (Units.mk0 y hy.ne') x * rot θ * sc t).val = Real.exp t • ((aff (Units.mk0 y hy.ne') x).val * (rot θ).val)`. Rewrite using `[Units.val_mul, Units.val_mul, sc_val]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e, (nslMul k _).2.2.1 _ _ (Real.exp_pos t), ← (nslMul k _).1 _ _ (Matrix.isUnits_det_units _).ne_zero (by rw [rot_det]; exact one_pos), nsl_rot, nsl_aff k _ y x hy, map_mul, map_mul, sc_inv φ hφ.one, rot_eig φ _ hφ.wt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pos_case (k : ℕ) (φ : TR.Sm ℚ 2) (hφ : IsLow k φ) (h : GL (Fin 2) ℝ) (hh : 0 < h.val.det) :
     φ.1 (upR h) = nsl k (down k φ.1) h.val UpperHalfPlane.I := by
@@ -224,7 +220,7 @@ private theorem pos_case (k : ℕ) (φ : TR.Sm ℚ 2) (hφ : IsLow k φ) (h : GL
 private def epsQ : GL (Fin 2) ℚ := ⟨!![-1, 0; 0, 1], !![-1, 0; 0, 1], by simp [Matrix.one_fin_two], by simp [Matrix.one_fin_two]⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show Rat.castHom ℝ (epsQ.val i j) = _`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [epsQ, eps]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem toR_epsQ : (toR epsQ).val = eps := by
   ext i j
@@ -232,9 +228,9 @@ private theorem toR_epsQ : (toR epsQ).val = eps := by
   fin_cases i <;> fin_cases j <;> simp [epsQ, eps]
 
 /- English proof (translation)
-Apply the tactic sequence `have h : ∀ a b, (toF epsQ).val a b ∈ Ohat ℚ := fun a b => by show algebraMap ℚ (Af ℚ) (epsQ.val a b) ∈ _ fin_cases a <;> fin_cases b <;> simp [epsQ, one_mem, zero_mem]`. Use `(memK N _).2 ⟨h, ?_, ⟨0, zero_mem _, ?_⟩, 0, zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `h`. Use `show algebraMap ℚ (Af ℚ) (epsQ.val 1 0) = _`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[epsQ]`. Use `show algebraMap ℚ (Af ℚ) (epsQ.val 1 1) - 1 = _`. Simplify using `[epsQ]`.
+A detailed English derivation is pending.
 -/
 private theorem toF_epsQ (N : ℕ) : toF epsQ ∈ K1G N := by
   have h : ∀ a b, (toF epsQ).val a b ∈ Ohat ℚ := fun a b => by
@@ -252,9 +248,9 @@ end UpperTheory.V.Br.DescentLift
 
 open UpperTheory.V.Br.DescentLift in
 /- English proof (translation)
-Introduce `k N _ φ hr hφ hK γ h u hu`. Establish `hfin : ∀ u ∈ K1G N, ∀ g, φ.1 (g * finGL ℚ 2 u) = φ.1 g` using `fun u hu g => congrFun (congrArg Subtype.val (hK u hu)) g`. Rewrite using `[hr, hfin u hu]`. Break down `lt_or_gt_of_ne (Matrix.isUnits_det_units h).ne_zero with hd | hd` into its components or cases. Establish `e : (toR epsQ * h).val = eps * h.val` using `by rw [Units.val_mul, toR_epsQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hd' : 0 < (toR epsQ * h).val.det`. Rewrite using `[e, Matrix.det_mul]`. Simplify `hd` using `[eps, Matrix.det_fin_two_of]`. Rewrite using `[← (nslMul k _).2.1, ← e, ← pos_case k φ hφ _ hd', ← hr epsQ (upR h), ratGL_eq, mul_assoc, ← upR_comm, ← mul_assoc, hfin _ (toF_epsQ N), map_mul]`. Conclude with `pos_case k φ hφ h hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.downLift :
     UpperTheory.V.Br.DownLift := by

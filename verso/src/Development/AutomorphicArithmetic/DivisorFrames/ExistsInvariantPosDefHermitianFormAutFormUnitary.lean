@@ -8,47 +8,41 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open MeasureTheory in
 /- English proof (translation)
-Introduce `D _ V hs hp j hj`. Take `⟨h1, h2, h3, h4, h5, _h6, h7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨μ, hμ⟩ : ∃ μ : Measure (GA D V), μ.IsHaarMeasure` from `⟨Measure.haar, inferInstance⟩`. Take `⟨hR, 𝓕, h𝓕⟩` from `GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D V μ hμ`. Take `⟨C, hC, hcov⟩` from `GlobalTheory.definite_unitary_cocompact V (fun τ => GlobalTheory.RepsObj.gramAt_posDef hp hs τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `N : Submodule ℂ (UA D.host.E V.rank → ℂ)` to `{ carrier := {φ | Continuous φ ∧ ∀ γ ∈ ratU D.host.E V.rank, ∀ g, φ (γ * g) = φ g} add_mem' := fun {a b} ha hb => ⟨ha.1.add hb.1, fun γ hγ g => by simp [ha.2 γ hγ g, hb.2 γ hγ g]⟩ zero_mem' := ⟨continuous_const, fun _ _ _ => rfl⟩ smul_mem' := fun c a ha => ⟨ha.1.const_smul c, fun …`. Establish `hAN : ∀ φ, IsAutFormU φ → φ ∈ N` using `fun φ h => ⟨h.cont, h.left⟩`. Establish `hRN : ∀ k, ∀ φ ∈ N, RU D.host.E V.rank k φ ∈ N`. Introduce `k φ h`. Use `⟨h.1.comp (continuous_mul_const k), fun γ hγ g => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show φ (γ * g * k) = φ (g * k)`. Rewrite using `[mul_assoc, h.2 γ hγ]`. Establish `hLC : ∀ x ∈ N, Continuous (fun g => x (j.symm g)) ∧ ∀ γ ∈ GQ V, ∀ g, x (j.symm (γ * g)) = x (j.symm g)`. Introduce `x hx`. Use `⟨hx.1.comp j.symm.continuous, fun γ hγ g => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Conclude with `hx.2 _ ((hj _).2 (by rwa [j.apply_symm_apply])) _`. Establish `hI : ∀ x ∈ N, ∀ y ∈ N, IntegrableOn (fun g => star (x (j.symm g)) * y (j.symm g)) 𝓕 μ`. Introduce `x hx y hy`. Conclude with `GlobalTheory.MultPetersson.integrableOn_star_mul μ 𝓕 C hμ h𝓕 hC hcov (hLC x hx).1 (hLC y hy).1 (hLC x hx).2 (hLC y hy).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨q, hq⟩` from `Submodule.exists_isCompl N`. Set `P : (UA D.host.E V.rank → ℂ) →ₗ[ℂ] N` to `Submodule.projectionOnto N q hq`. Establish `hPN : ∀ T, ((P T : N) : UA D.host.E V.rank → ℂ) ∈ N` using `fun T => (P T).2`. Establish `hPid : ∀ T ∈ N, ((P T : N) : UA D.host.E V.rank → ℂ) = T` using `fun T hT => congrArg Subtype.val (Submodule.projectionOnto_apply_left hq ⟨T, hT⟩)`. Set `F : (UA D.host.E V.rank → ℂ) → (UA D.host.E V.rank → ℂ) → ℂ` to `fun x y => ∫ g in 𝓕, star ((P x).1 (j.symm g)) * (P y).1 (j.symm g) ∂μ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `B : (UA D.host.E V.rank → ℂ) →ₗ⋆[ℂ] (UA D.host.E V.rank → ℂ) →ₗ[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) F (fun x x' y => by`. Simplify using `only [F, map_add, Submodule.coe_add]`. Rewrite using `[← integral_add (hI _ (hPN x) _ (hPN y)) (hI _ (hPN x') _ (hPN y))]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, star_add, add_mul])`. Use the proof step `(fun c x y => by`. Simplify using `only [F, map_smul, Submodule.coe_smul]`. Rewrite using `[smul_eq_mul, ← integral_const_mul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [Pi.smul_apply, smul_eq_mul, star_mul', starRingEnd_apply]`. Use the proof step `ring)`. Use the proof step `(fun x y y' => by`. Simplify using `only [F, map_add, Submodule.coe_add]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_add (hI _ (hPN x) _ (hPN y)) (hI _ (hPN x) _ (hPN y'))]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [Pi.add_apply, mul_add])`. Use the proof step `(fun c x y => by`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [F, map_smul, Submodule.coe_smul]`. Rewrite using `[smul_eq_mul, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `ring)`. Establish `hB : ∀ x ∈ N, ∀ y ∈ N, B x y = ∫ g in 𝓕, star (x (j.symm g)) * y (j.symm g) ∂μ`. Introduce `x hx y hy`. Use `show F x y = _`. Simplify using `only [F, hPid x hx, hPid y hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `⟨B, ?_, ?_⟩` and prove the remaining obligations. Introduce `T hT' h0`. Establish `hT` using `hAN T hT'`. Rewrite using `[hB _ hT _ hT]`. Establish `hre : ∫ g in 𝓕, star (T (j.symm g)) * T (j.symm g) ∂μ = ((∫ g in 𝓕, ‖T (j.symm g)‖ ^ 2 ∂μ : ℝ) : ℂ)`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hre, Complex.ofReal_re]`. Establish `hnn : 0 ≤ ∫ g in 𝓕, ‖T (j.symm g)‖ ^ 2 ∂μ` using `integral_nonneg fun g => by positivity`. Use `lt_of_le_of_ne hnn fun hz => h0 ?_` and prove the remaining obligations. Establish `hi : IntegrableOn (fun g => ‖T (j.symm g)‖ ^ 2) 𝓕 μ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(hI T hT T hT).norm` as an intermediate fact. Establish `e2 : (fun g => ‖star (T (j.symm g)) * T (j.symm g)‖) = fun g => ‖T (j.symm g)‖ ^ 2`. Use function extensionality and compare the values at `g`. Rewrite using `[norm_mul, norm_star, sq]`. Rewrite `this` using `[e2]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun g => by positivity) hi).1 hz.symm`. Use `GlobalTheory.SchurConst.eq_zero_of_ae μ 𝓕 hμ h𝓕 (fun g => T (j.symm g)) (hLC T hT).1 (hLC T hT).2 (by filter_upwards [hae] with g hg` as an intermediate fact. Simplify using `using hg)`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrFun this (j x)`. Simplify using `using h`. Introduce `k _hk T T' hT0 hT0'`. Establish `hT` using `hAN T hT0`. Establish `hT'` using `hAN T' hT0'`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hB _ (hRN k T hT) _ (hRN k T' hT'), hB _ hT _ hT']`. Use `haveI := h5`. Use `haveI := h4`. Use `haveI := h2`. Use `haveI := h7`.
-
-Use `haveI := hR`. Establish `hmap : Measure.map (fun g => g * j k) μ = μ` using `map_mul_right_eq_self μ (j k)`. Establish `hh : ∀ x : UA D.host.E V.rank → ℂ, ∀ g, RU D.host.E V.rank k x (j.symm g) = x (j.symm (g * j k))`. Introduce `x g`. Rewrite using `[map_mul, j.symm_apply_apply]`.
-
-Both sides reduce to the same expression. Simplify using `only [hh]`. Establish `hinv : ∀ γ ∈ GQ V, ∀ g, (fun g => star (T (j.symm g)) * T' (j.symm g)) (γ * g) = (fun g => star (T (j.symm g)) * T' (j.symm g)) g`. Introduce `γ hγ g`. Simplify using `only [(hLC T hT).2 γ hγ, (hLC T' hT').2 γ hγ]`.
-
-Conclude with `(GlobalTheory.fundamentalDomain_setIntegral_mul_right (GQ V) μ 𝓕 h𝓕 (j k) hmap _ hinv (hI T hT T' hT')).2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_invariant_posDef_hermitian_form_autForm_unitary :
     ∀ (D : D7) [IsCMField D.host.E] (V : HSp D), V.SigOK → V.IsPosDef → ∀ (j : UA D.host.E V.rank ≃ₜ* GA D V),

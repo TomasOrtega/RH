@@ -10,9 +10,9 @@ namespace GlobalTheory.JetOnly
 variable {k : Type} [CommRing k] {d : ℕ}
 
 /- English proof (translation)
-Unfold `Dof`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_mul, coeff_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp' : p.1 + p.2 = mo` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Establish `hd : p.1.degree + p.2.degree = mo.degree` using `by rw [← hp', map_add]`. Rewrite using `[coeff_pderiv, coeff_pderiv, h]`. Rewrite using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem coeff_Dof_congr (F : Fin d → PS k 2 d) (v : Fin d → k) (n : ℕ) (f g : PS k 1 d)
     (h : ∀ mo : Fin 1 × Fin d →₀ ℕ, mo.degree ≤ n + 1 → coeff mo f = coeff mo g)
@@ -31,9 +31,9 @@ theorem coeff_Dof_congr (F : Fin d → PS k 2 d) (v : Fin d → k) (n : ℕ) (f 
   omega
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => intro n f g h mo hmo`. Conclude with `h mo hmo`. Consider the case `succ r ih`. Introduce `n f g h mo hmo`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply]`. Conclude with `ih n _ _ (coeff_Dof_congr F v (n + r) f g h) mo hmo`.
+A detailed English derivation is pending.
 -/
 theorem coeff_iterate_Dof_congr (F : Fin d → PS k 2 d) (v : Fin d → k) (r : ℕ) :
     ∀ (n : ℕ) (f g : PS k 1 d),
@@ -48,9 +48,9 @@ theorem coeff_iterate_Dof_congr (F : Fin d → PS k 2 d) (v : Fin d → k) (r : 
     exact ih n _ _ (coeff_Dof_congr F v (n + r) f g h) mo hmo
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => intro n h mo hmo`. Conclude with `h mo hmo`. Consider the case `cons l L ih`. Introduce `n h mo hmo`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.foldr_cons, List.foldr_cons]`. Use `coeff_iterate_Dof_congr F (u l) (m l) n _ _ (ih (n + m l) fun mo' h' => h mo' ?_) mo hmo` and prove the remaining obligations. Rewrite using `[List.map_cons, List.sum_cons]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem coeff_foldr_Dof_congr (F : Fin d → PS k 2 d) {ι : Type} (u : ι → Fin d → k) (m : ι → ℕ)
     (f g : PS k 1 d) (L : List ι) :
@@ -69,7 +69,7 @@ theorem coeff_foldr_Dof_congr (F : Fin d → PS k 2 d) {ι : Type} (u : ι → F
     omega
 
 /- English proof (translation)
-Unfold `DmonOf`. Use `coeff_foldr_Dof_congr F u m f g _ n (fun mo' h' => h mo' ?_) mo hmo` and prove the remaining obligations. Rewrite `h'` using `[Finset.sum_map_toList, ← Finsupp.degree_eq_sum]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coeff_DmonOf_congr (F : Fin d → PS k 2 d) {ι : Type} [Fintype ι] (u : ι → Fin d → k)
     (m : ι →₀ ℕ) (f g : PS k 1 d) (n : ℕ)
@@ -85,7 +85,7 @@ end GlobalTheory.JetOnly
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ d F ι _ u m f g h`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, ← coeff_zero_eq_constantCoeff_apply]`. Conclude with `JetOnly.coeff_DmonOf_congr F u m f g 0 (fun mo h' => h mo (by simpa using h')) 0 (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_DmonOf_congr_jet :
     ∀ (k : Type) [CommRing k] (d : ℕ) (F : Fin d → PS k 2 d) (ι : Type) [Fintype ι]

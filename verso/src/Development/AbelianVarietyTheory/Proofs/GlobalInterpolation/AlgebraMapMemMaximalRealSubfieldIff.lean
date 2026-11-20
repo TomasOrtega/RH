@@ -6,9 +6,9 @@ open NumberField IsDedekindDomain GlobalTheory.UnitaryBC
 namespace GlobalTheory
 
 /- English proof (translation)
-Simplify using `only [mem_maximalRealSubfield_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hL ψ`. Set `: Algebra K ℂ` to `ψ.toAlgebra`. Set `φ : L →ₐ[K] ℂ` to `IsAlgClosed.lift`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hφ : φ (algebraMap K L x) = ψ x` using `φ.commutes x`. Rewrite using `[← hφ]`. Conclude with `hL φ.toRingHom`. Introduce `hK φ`. Conclude with `hK (φ.comp (algebraMap K L))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_maximalRealSubfield_iff {K L : Type} [Field K] [Field L] [Algebra K L]
     [Algebra.IsAlgebraic K L] (x : K) :
@@ -25,31 +25,29 @@ theorem algebraMap_mem_maximalRealSubfield_iff {K L : Type} [Field K] [Field L] 
     exact hK (φ.comp (algebraMap K L))
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ hKL d t ht2 htK hpos`. Establish `: Module.Finite K L` using `Module.finite_of_finrank_pos (by omega)`. Establish `: Algebra.IsAlgebraic K L` using `Algebra.IsAlgebraic.of_finite K L`. Establish `htR : t ∈ maximalRealSubfield L`. Rewrite using `[mem_maximalRealSubfield_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `φ`. Set `ρ : maximalRealSubfield K →+* ℂ` to `(φ.comp (algebraMap K L)).comp (maximalRealSubfield K).subtype`. Establish `hρ : ComplexEmbedding.IsReal ρ` using `IsTotallyReal.complexEmbedding_isReal ρ`. Establish `hr : (0 : ℝ) < hρ.embedding d` using `hpos _`. Establish `hsq : φ t * φ t = ((hρ.embedding d : ℝ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ComplexEmbedding.IsReal.coe_embedding_apply, ← map_mul, ← pow_two, ht2]`. Both sides reduce to the same expression. Establish `him : (φ t).im = 0`. Establish `h1` using `congrArg Complex.re hsq`. Establish `h2` using `congrArg Complex.im hsq`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im] at h1 h2`. Assume the negation of the conclusion as `hne`. Establish `hre : (φ t).re = 0`. Establish `h3 : (φ t).re * (φ t).im = 0` using `by linarith`. Break down `mul_eq_zero.mp h3 with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. Conclude with `absurd h hne`. Rewrite `h1` using `[hre]`. Use polynomial arithmetic with `[sq_nonneg (φ t).im]`. Conclude with `Complex.conj_eq_iff_im.mpr him`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsScalarTower (maximalRealSubfield K) K L` using `inferInstance`. Establish `hKp : Module.finrank (maximalRealSubfield K) K = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `h4 : Module.finrank (maximalRealSubfield K) L = 4`. Rewrite using `[← Module.finrank_mul_finrank (maximalRealSubfield K) K L, hKp, hKL]`. Establish `: Module.Finite (maximalRealSubfield K) L` using `Module.finite_of_finrank_pos (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : IsIntegral (maximalRealSubfield K) t` using `IsIntegral.of_finite _ t`. Establish `hmin : (minpoly (maximalRealSubfield K) t).natDegree = 2`. Establish `hle : (minpoly (maximalRealSubfield K) t).degree ≤ ((2 : ℕ) : WithBot ℕ)`. Establish `h` using `minpoly.degree_le_of_ne_zero (maximalRealSubfield K) t (Polynomial.X_pow_sub_C_ne_zero (n := 2) (by norm_num) d) (by rw [map_sub, map_pow, Polynomial.aeval_X, Polynomial.aeval_C, ht2]; exact sub_self _)`. Rewrite `h` using `[Polynomial.degree_X_pow_sub_C (by norm_num)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hne1 : (minpoly (maximalRealSubfield K) t).natDegree ≠ 1`. Rewrite using `[Ne, minpoly.natDegree_eq_one_iff]`. Introduce and unpack `⟨y, hy⟩`. Conclude with `htK ⟨(y : K), hy⟩`. Establish `hpos'` using `minpoly.natDegree_pos hint`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Polynomial.natDegree_le_of_degree_le hle`. Use linear arithmetic over natural numbers and integers. Establish `hbase : ∀ y : maximalRealSubfield K, algebraMap (maximalRealSubfield K) L y ∈ maximalRealSubfield L` using `fun y => (algebraMap_mem_maximalRealSubfield_iff (L := L) (y : K)).mpr y.2`. Establish `hFdeg : Module.finrank (maximalRealSubfield K) (IntermediateField.adjoin (maximalRealSubfield K) ({t} : Set L)) = 2`. Rewrite using `[IntermediateField.adjoin.finrank hint, hmin]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hFle' : IntermediateField.adjoin (maximalRealSubfield K) ({t} : Set L) ≤ (maximalRealSubfield L).toIntermediateField hbase` using `IntermediateField.adjoin_simple_le_iff.mpr htR`. Establish `hFle : ∀ y ∈ IntermediateField.adjoin (maximalRealSubfield K) ({t} : Set L), y ∈ maximalRealSubfield L` using `fun y hy => hFle' hy`. Generalize the expression as in `IntermediateField.adjoin (maximalRealSubfield K) ({t} : Set L) = F at hFdeg hFle`. Establish `hFL : Module.finrank F L = 2`. Establish `h` using `Module.finrank_mul_finrank (maximalRealSubfield K) F L`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `h` using `[hFdeg, h4]`. Use linear arithmetic over natural numbers and integers. Establish `: Module.Finite F L` using `Module.finite_of_finrank_pos (by omega)`. Set `ι : F →+* maximalRealSubfield L` to `{ toFun := fun y => ⟨y.1, hFle y.1 y.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Set `: Algebra F (maximalRealSubfield L)` to `ι.toAlgebra`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsScalarTower F (maximalRealSubfield L) L` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `: Algebra.IsAlgebraic F L` using `Algebra.IsAlgebraic.of_finite F L`. Establish `: Algebra.IsAlgebraic F (maximalRealSubfield L)` using `Algebra.IsAlgebraic.tower_bot F (maximalRealSubfield L) L`. Establish `: IsTotallyReal F` using `IsTotallyReal.of_algebra F (maximalRealSubfield L)`. Establish `: Algebra.IsQuadraticExtension F L` using `⟨hFL⟩`.
-
-Establish `: IsTotallyComplex L` using `⟨fun w => InfinitePlace.not_isReal_iff_isComplex.mp fun h => InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex _) (InfinitePlace.IsReal.comap (algebraMap K L) h)⟩`. Conclude with `⟨IsCMField.ofCMExtension F L, htR, fun x => algebraMap_mem_maximalRealSubfield_iff x⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCMField_of_sq_eq_totallyPositive :
     ∀ (K L : Type) [Field K] [NumberField K] [IsCMField K] [Field L] [NumberField L] [Algebra K L], Module.finrank K L = 2 → ∀ (d : maximalRealSubfield K) (t : L), t ^ 2 = algebraMap K L d → t ∉ Set.range (algebraMap K L) → (∀ φ : maximalRealSubfield K →+* ℝ, 0 < φ d) → IsCMField L ∧ t ∈ maximalRealSubfield L ∧ ∀ x : K, algebraMap K L x ∈ maximalRealSubfield L ↔ x ∈ maximalRealSubfield K := by

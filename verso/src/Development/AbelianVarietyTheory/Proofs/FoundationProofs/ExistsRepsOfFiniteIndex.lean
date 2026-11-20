@@ -21,11 +21,11 @@ section Abstract
 variable {G Γ : Type} [Group G] [Group Γ] (ι : Γ →* G)
 
 /- English proof (translation)
-Take `⟨i, ⟨γ, k, rfl⟩, -⟩` from `hy g`. Use `hfin i` as an intermediate fact. Use `Finite.of_injective (β := Bridge.stab ι J (y i)) (fun δ => ⟨γ⁻¹ * δ.1 * γ, ?_⟩) ?_` and prove the remaining obligations. Establish `h` using `hle ((Bridge.mem_stab ι).1 δ.2)`. Rewrite using `[Bridge.mem_stab]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `J.mul_mem (J.mul_mem k.2 h) (J.inv_mem k.2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul, map_inv]`. Use `group`. Introduce `a b h`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : γ⁻¹ * a.1 * γ = γ⁻¹ * b.1 * γ` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (mul_left_cancel (mul_right_cancel h'))`.
+A detailed English derivation is pending.
 -/
 theorem finite_stab_of_reps {J J' : Subgroup G} (hle : J' ≤ J) {I : Type} {y : I → G} (hy : Bridge.IsReps ι J y)
     (hfin : ∀ i, Finite (Bridge.stab ι J (y i))) (g : G) : Finite (Bridge.stab ι J' g) := by
@@ -43,15 +43,15 @@ theorem finite_stab_of_reps {J J' : Subgroup G} (hle : J' ≤ J) {I : Type} {y :
     exact Subtype.ext (mul_left_cancel (mul_right_cancel h'))
 
 /- English proof (translation)
-Set `s : Setoid G` to `⟨fun g g' => ∃ (γ : Γ) (k : J'), g = ι γ * g' * k, ⟨fun g => ⟨1, 1, by simp⟩, by`. Introduce and unpack `g g' ⟨γ, k, rfl⟩`. Conclude with `⟨γ⁻¹, k⁻¹, by simp [mul_assoc]⟩, by`. Introduce and unpack `g g' g'' ⟨γ, k, rfl⟩ ⟨γ', k', rfl⟩`. Conclude with `⟨γ * γ', k' * k, by simp [mul_assoc]⟩⟩⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `: Finite (J ⧸ J'.subgroupOf J)` using `Nat.finite_of_card_ne_zero hidx`. Establish `: Finite (Quotient s)`. Use `Finite.of_surjective (fun p : I × (J ⧸ J'.subgroupOf J) => Quotient.mk s (y p.1 * (p.2.out : J))) ?_` and prove the remaining obligations. Introduce `q`. Take `⟨g, rfl⟩` from `Quotient.exists_rep q`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, ⟨γ, k, rfl⟩, -⟩` from `hy g`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul (J'.subgroupOf J) k`. Use `⟨(i, QuotientGroup.mk k), Quotient.sound ⟨γ⁻¹, ⟨(u : J), u.2⟩, ?_⟩⟩` and prove the remaining obligations. Simplify using `[hu, mul_assoc]`. Use `choose x hx hr using hP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `e` to `Finite.equivFin (Quotient s)`. Establish `hq : ∀ q : Quotient s, Quotient.mk s (f (x q.out)) = q` using `fun q => (Quotient.sound (s := s) (hr q.out)).symm.trans q.out_eq`. Use `⟨_, fun j => x (e.symm j).out, fun j => hx _, fun g => ⟨e (Quotient.mk s g), ?_, fun j hj => ?_⟩⟩` and prove the remaining obligations. Use `Quotient.exact (s := s) ?_` and prove the remaining obligations. Rewrite using `[hq, Equiv.symm_apply_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(Quotient.sound (s := s) hj).trans (hq _)` as an intermediate fact. Rewrite using `[this, Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reps_of_finiteIndex {J J' : Subgroup G} (hidx : J'.relIndex J ≠ 0) {I : Type} [Finite I] {y : I → G}
     (hy : Bridge.IsReps ι J y) {X : Type} (f : X → G) (P : X → Prop)
@@ -91,7 +91,7 @@ open GlobalTheory.IdemModTwo GlobalTheory.SplitIdem
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨e, h1, h2, h3, h4⟩` from `hs`. Take `⟨u, rfl⟩` from `hd`. Use `⟨e, h1, h2, fun v hv => ⟨(h3 v hv).1, fun hm => (h3 v hv).2 ?_⟩, h4⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppSplit_mono {F E : Type} [Field F] [Field E] [Algebra F E] [NumberField F] {c : E ≃ₐ[F] E} {n M N : ℕ}
     (hd : M ∣ N) {h : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F E)} (hs : GlobalTheory.UnRep.SuppSplit c N h) :
@@ -103,7 +103,7 @@ theorem suppSplit_mono {F E : Type} [Field F] [Field E] [Algebra F E] [NumberFie
   exact Ideal.mul_mem_right _ _ hm
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hd`. Introduce `z hz`. Take `⟨y, hy, e⟩` from `hk z hz`. Conclude with `⟨u • y, nsmul_mem hy _, by rw [e, mul_nsmul']⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finCong_mono {V : HSp D} {M N : ℕ} (hd : M ∣ N) {k : GA D V} (hk : GlobalTheory.Member.FinCong V N k) :
     GlobalTheory.Member.FinCong V M k := by
@@ -113,9 +113,9 @@ theorem finCong_mono {V : HSp D} {M N : ℕ} (hd : M ∣ N) {k : GA D V} (hk : G
   exact ⟨u • y, nsmul_mem hy _, by rw [e, mul_nsmul']⟩
 
 /- English proof (translation)
-Use `af_ext _ fun w => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Distinguish the cases in `hw : w ∈ S`. Rewrite using `[Finset.sum_eq_single w (fun v _ hv => evalV_singleV_ne _ v _ hv.symm) (fun h => absurd hw h), evalV_singleV_same]`. Establish `h1` using `congrArg (evalV D.host.F w) he`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul]`. Conclude with `mul_left_cancel₀ ((hS w).1 hw) (h1.trans (mul_one _).symm)`. Rewrite using `[Finset.sum_eq_zero fun v hv => evalV_singleV_ne _ v _ (fun h : w = v => hw (h ▸ hv))]`. Assume the negation of the conclusion as `h`. Conclude with `hw ((hS w).2 h)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem idem_eq_sum (e : Af D.host.F) (he : e * e = e) (S : Finset (HeightOneSpectrum (𝓞 D.host.F)))
     (hS : ∀ v, v ∈ S ↔ evalV D.host.F v e ≠ 0) : e = ∑ v ∈ S, singleV D.host.F v 1 := by
@@ -132,27 +132,23 @@ theorem idem_eq_sum (e : Af D.host.F) (he : e * e = e) (S : Finset (HeightOneSpe
     exact hw ((hS w).2 h)
 
 /- English proof (translation)
-Take `⟨e₀, h1, h2, h3, h4⟩` from `hs`. Establish `hex : ∀ v : h2.toFinset, ∃ (e : AE D) (PP : HeightOneSpectrum (𝓞 D.host.E)), SplitAt D v.1 e ∧ Formalism.L2.NTheta.IsIdemAt e PP ∧ PP.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = v.1.asIdeal`. Introduce `v`. Take `⟨e, he⟩` from `_root_.GlobalTheory.MovedSplit.exists_splitAt D v.1 (h3 v.1 (h2.mem_toFinset.1 v.2)).1`. Take `⟨PP, hP⟩` from `_root_.GlobalTheory.IdemPrime.exists_isIdemAt D v.1 e he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e, PP, he, hP⟩`. Use `choose ev Pv hsp hid hco using hex`. Establish `hinj : Function.Injective Pv` using `fun v w hvw => Subtype.ext (HeightOneSpectrum.ext (by rw [← hco, ← hco, hvw]))`. Establish `hsum : ∑ v, ev v + cA D (∑ v, ev v) = fj D e₀`. Use `Eq.trans ?_ (congrArg (fj D) (idem_eq_sum e₀ h1 h2.toFinset (fun v => h2.mem_toFinset))).symm` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, map_sum, ← Finset.sum_add_distrib, ← Finset.sum_coe_sort h2.toFinset]`. Conclude with `Finset.sum_congr rfl fun v _ => (hsp v).2.2`. Use `⟨hh, ∑ v, ev v, Finset.univ.image Pv, ⟨⟨Function.extend Pv ev 0, ?_, ?_⟩, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `PP hPP`. Take `⟨v, -, rfl⟩` from `Finset.mem_image.1 hPP`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinj.extend_apply]`. Conclude with `hid v`. Rewrite using `[Finset.sum_image fun v _ w _ hvw => hinj hvw]`. Conclude with `Finset.sum_congr rfl fun v _ => (hinj.extend_apply _ _ v).symm`. Rewrite using `[map_sum, Finset.sum_mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_eq_zero fun v _ => Finset.sum_eq_zero fun w _ => ?_` and prove the remaining obligations. Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality. Conclude with `(hsp v).2.1`. Conclude with `(hsp v).orth (hsp w).conj fun e => hvw (Subtype.ext e)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `PP hPP hm`. Take `⟨v, -, rfl⟩` from `Finset.mem_image.1 hPP`. Use `(h3 v.1 (h2.mem_toFinset.1 v.2)).2 ?_` and prove the remaining obligations. Rewrite using `[← hco, Ideal.mem_comap, map_natCast]`. Conclude with `hm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Rewrite using `[hsum]`. Use `GlobalTheory.UnitarySplit.parts_inj D _ _ ?_ ?_` and prove the remaining obligations. Establish `h5 : infPart D ((Formalism.L2.Theta.mt V h - 1) i j) = 0`. Establish `h6 : (Formalism.L2.Theta.mt V h).map (infPart D) = 1` using `congrArg Units.val (show infHom V h = 1 from hh)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h7` using `congrFun (congrFun h6 i) j`. Rewrite using `[Matrix.sub_apply, RingHom.map_sub, sub_eq_zero]`. Use `h7.trans ?_` and prove the remaining obligations. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one]`. Rewrite using `[Matrix.one_apply_ne e, Matrix.one_apply_ne e, RingHom.map_zero]`. Rewrite using `[RingHom.map_mul, h5, mul_zero]`. Establish `h5 : finPart D ((Formalism.L2.Theta.mt V h - 1) i j) = ((finHom V h).1 - 1) i j`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, RingHom.map_sub]`.
-
-Use `congr 1`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one]`. Rewrite using `[Matrix.one_apply_ne e, Matrix.one_apply_ne e, RingHom.map_zero]`.
-
-Rewrite using `[RingHom.map_mul, h5]`. Conclude with `congrFun (congrFun h4 i) j`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitOffBad_of_suppSplit (V : HSp D) (N : ℕ) (h : GA D V) (hh : h ∈ GfC V)
     (hs : GlobalTheory.UnRep.SuppSplit (GlobalTheory.Member.cF D) N (finHom V h).1) : FWT.SplitOffBad V N h := by
@@ -220,11 +216,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.A
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `Bridge.hLat`. Rewrite using `[← Submodule.span_eq Λ, hΛ, ← GlobalTheory.Member.coe_selfDualLatticeInFrameCoordinates_eq]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Use `⟨_, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, Subgroup.coe_inv, Units.mul_inv, Matrix.one_mulVec]`. Both sides reduce to the same expression. Introduce and unpack `⟨z, hz, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `(g.1⁻¹).1 *ᵥ fv D.host.F x ∈ hat D.host.F _`. Rewrite using `[← e, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Conclude with `hz`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hLat_eq (V : HSp D) (g : Bridge.Gf V) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hΛ : (Λ : Set (Fin V.rank → D.host.E)) = GlobalTheory.AdLat.latOf D.host.F g.1.1 (GlobalTheory.Member.latC V)) : Bridge.hLat V g = Λ := by
@@ -243,7 +239,7 @@ theorem hLat_eq (V : HSp D) (g : Bridge.Gf V) (Λ : Submodule (𝓞 D.host.E) (F
     exact hz
 
 /- English proof (translation)
-Take `⟨-, -, hfg, hsp, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Use `hLat_eq V 1 _ ?_` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, ← (hat_rational_points_and_approx D.host.F D.host.E _ _ hfg hsp).1]`. Simplify using `[GlobalTheory.AdLat.latOf]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hLat_one (V : HSp D) : Bridge.hLat V 1 = GlobalTheory.Member.latC V := by
   obtain ⟨-, -, hfg, hsp, -⟩ := GlobalTheory.Member.latHat_eq_hat_and_gram D V
@@ -253,9 +249,9 @@ theorem hLat_one (V : HSp D) : Bridge.hLat V 1 = GlobalTheory.Member.latC V := b
   simp [GlobalTheory.AdLat.latOf]
 
 /- English proof (translation)
-Establish `hc : GlobalTheory.Member.cF D = IsCMField.complexConj D.host.E` using `AlgEquiv.ext fun _ => rfl`. Establish `hu` using `GlobalTheory.UnRep.Space.isUnA_finHom V h`. Rewrite `hu` using `[show (HSpace.gram V)ᵀ = 1 by rw [hg, Matrix.transpose_one], hc]`. Rewrite `hs` using `[hc]`. Take `⟨Λ, N, h1, h3⟩` from `exists_lat H l bad h2 (finHom V h) hu hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hL` using `[hLat_one]`. Rewrite using `[hLat_eq V (FWT.fin V h) Λ (by rw [hL]; exact h1)]`. Conclude with `⟨N, h3⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_conjLat (V : HSp D) (hg : V.gram = 1) (hL : Bridge.hLat V 1 = stdLat D.host.E V.rank)
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (l : Level H) (bad : ℕ) (h2 : 2 ∣ bad) (h : GA D V)
@@ -273,7 +269,7 @@ theorem exists_conjLat (V : HSp D) (hg : V.gram = 1) (hL : Bridge.hLat V 1 = std
   exact ⟨N, h3⟩
 
 /- English proof (translation)
-Take `⟨_, g, rfl⟩` from `g`. Take `⟨γ, hγ, a, ha, h, hh, k, hk, e, hc, hs⟩` from `GlobalTheory.UnRep.Space.exists_rep_suppSplit D V (N * N₀) (Nat.mul_pos hN hN₀) g`. Use `⟨h, ⟨hh, suppSplit_mono (dvd_mul_right _ _) hs⟩, ⟨γ, hγ⟩, ⟨FWT.fin V k, hK k hk (finCong_mono (dvd_mul_left _ _) hc)⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finHom V g = finHom V γ * finHom V h * finHom V k`. Rewrite using `[e, map_mul, map_mul, map_mul, show finHom V a = 1 from ha, mul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_split_rep (V : HSp D) {J' : Subgroup (Bridge.Gf V)} {N₀ : ℕ} (hN₀ : 0 < N₀)
     (hK : ∀ k ∈ GfC V, GlobalTheory.Member.FinCong V N₀ k → FWT.fin V k ∈ J') {N : ℕ} (hN : 0 < N) (g : Bridge.Gf V) :
@@ -297,7 +293,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m)
 
 /- English proof (translation)
-Establish `hy : Bridge.IsReps (Bridge.ratF (Vc D i)) (levJ R i t) (R.B.L i t).pres.y` using `(R.B.L i t).pres.reps`. Establish `hf : ∀ c, Finite (Bridge.stab (Bridge.ratF (Vc D i)) (levJ R i t) ((R.B.L i t).pres.y c))` using `fun c => Finite.of_equiv _ ((R.B.L i t).pres.stabI c).toEquiv`. Take `⟨m, h, h1, h2⟩` from `exists_reps_of_finiteIndex (Bridge.ratF (Vc D i)) hidx hy (fin (Vc D i)) (fun h => h ∈ GfC (Vc D i) ∧ GlobalTheory.UnRep.SuppSplit (GlobalTheory.Member.cF D) N (finHom (Vc D i) h).1) (exists_split_rep (Vc D i) hN₀ hK hN)`. Conclude with `⟨m, h, h1, h2, fun k => finite_stab_of_reps _ hle hy hf _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_split_system (t : T0) {J' : Subgroup (Bridge.Gf (Vc D i))} (hle : J' ≤ levJ R i t)
     (hidx : J'.relIndex (levJ R i t) ≠ 0) {N₀ : ℕ} (hN₀ : 0 < N₀)
@@ -315,7 +311,7 @@ theorem exists_split_system (t : T0) {J' : Subgroup (Bridge.Gf (Vc D i))} (hle :
   exact ⟨m, h, h1, h2, fun k => finite_stab_of_reps _ hle hy hf _⟩
 
 /- English proof (translation)
-Use `⟨b * ∏ PP ∈ R.Pg ∪ R.Q t, Ideal.absNorm PP.asIdeal, Nat.mul_pos hb (Finset.prod_pos fun PP _ => Nat.pos_of_ne_zero fun h => PP.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)), dvd_mul_right _ _, fun PP hPP => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `Finset.dvd_prod_of_mem (fun PP : Pl D.host.E => Ideal.absNorm PP.asIdeal) (Finset.mem_union.2 hPP)`. Rewrite using `[hu, Nat.cast_mul, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bad (t : T0) {b : ℕ} (hb : 0 < b) : ∃ bad : ℕ, 0 < bad ∧ b ∣ bad ∧
     ∀ PP, PP ∈ R.Pg ∨ PP ∈ R.Q t → ((bad : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := by
@@ -327,7 +323,7 @@ theorem exists_bad (t : T0) {b : ℕ} (hb : 0 < b) : ∃ bad : ℕ, 0 < bad ∧ 
   exact Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _))
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.PrincInLevel.finCong_mem_levEnv D (Vc D i) (R.βV i) (R.ΛV i) (R.datVt i t) N k hβ hN hk`.
+A detailed English derivation is pending.
 -/
 theorem fin_mem_levJ (hβ : IsSDFrame (Vc D i) (R.βV i) (R.ΛV i) 1) (t : T0) {N : ℕ}
     (hN : ∀ PP, PP ∈ R.Pg ∨ PP ∈ R.Q t → ((N : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) (k : GA D (Vc D i))
@@ -335,7 +331,7 @@ theorem fin_mem_levJ (hβ : IsSDFrame (Vc D i) (R.βV i) (R.ΛV i) 1) (t : T0) {
   _root_.GlobalTheory.PrincInLevel.finCong_mem_levEnv D (Vc D i) (R.βV i) (R.ΛV i) (R.datVt i t) N k hβ hN hk
 
 /- English proof (translation)
-Take `⟨m, h, h1, h2, h3⟩` from `exists_split_system R i t hle hidx hN₀ hK (Nat.mul_pos hb hM)`. Use `⟨m, h, _, _, ⟨hb.ne', hbad, hle, hidx, rfl, h2, fun k => ⟨?_, rfl, rfl⟩⟩, fun k => ?_, fun k => (h1 k).2⟩` and prove the remaining obligations. Conclude with `splitOffBad_of_suppSplit _ _ _ (h1 k).1 (suppSplit_mono (dvd_mul_right _ _) (h1 k).2)`. Use `h3 k` as an intermediate fact. Conclude with `Nat.card_pos`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_repsR_at (K' : Type) [Field K'] (t : T0) {J' : Subgroup (Bridge.Gf (Vc D i))} (hle : J' ≤ levJ R i t)
     (hidx : J'.relIndex (levJ R i t) ≠ 0) {N₀ : ℕ} (hN₀ : 0 < N₀)
@@ -351,7 +347,7 @@ theorem exists_repsR_at (K' : Type) [Field K'] (t : T0) {J' : Subgroup (Bridge.G
     exact Nat.card_pos
 
 /- English proof (translation)
-Take `⟨bad, h0, h1, h2⟩` from `exists_bad R t hb`. Take `⟨m, h, gam, vol, hr, hg, -⟩` from `exists_repsR_at R i K' t le_rfl (by simp) h0 (fun k _ hk => fin_mem_levJ R i hβ t h2 k hk) h0 h2 one_pos`. Conclude with `⟨Fin m, inferInstance, h, _, bad, _, gam, vol, hr, h1, hg, by rw [hr.2.2.2.2.1]; simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_repsR (hβ : IsSDFrame (Vc D i) (R.βV i) (R.ΛV i) 1) (K' : Type) [Field K'] (t : T0) {b : ℕ} (hb : 0 < b) :
     ∃ (Cl : Type) (_ : Fintype Cl) (h : Cl → GA D (Vc D i)) (J' : Subgroup (Bridge.Gf (Vc D i))) (bad : ℕ)
@@ -363,7 +359,7 @@ theorem exists_repsR (hβ : IsSDFrame (Vc D i) (R.βV i) (R.ΛV i) 1) (K' : Type
   exact ⟨Fin m, inferInstance, h, _, bad, _, gam, vol, hr, h1, hg, by rw [hr.2.2.2.2.1]; simp⟩
 
 /- English proof (translation)
-Take `⟨bad, h0, h1, h2⟩` from `exists_bad R t (Nat.mul_pos two_pos hb)`. Take `⟨m, h, gam, vol, hr, hg, hs⟩` from `exists_repsR_at R i K' t le_rfl (by simp) h0 (fun k _ hk => fin_mem_levJ R i hβ t h2 k hk) h0 h2 (M := l.M) (by have := l.three_le; omega)`. Use `choose Nc c1 c2 c3 c4 c5 using fun k => exists_conjLat (Vc D i) hV.1 hV.2 H l bad (dvd_of_mul_right_dvd h1) (h k) (hs k)`. Conclude with `⟨Fin m, inferInstance, h, _, bad, _, gam, vol, _, Nc, hr, dvd_of_mul_left_dvd h1, by rw [hr.2.2.2.2.1]; simp, fun k => ⟨c1 k, c2 k, c3 k, c4 k, hg k, c5 k⟩, fun _ _ => Iff.rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_repsR_repsOK (hβ : IsSDFrame (Vc D i) (R.βV i) (R.ΛV i) 1) (hV : VStd D i) (K' : Type) [Field K'] (t : T0)
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (l : Level H) {b : ℕ} (hb : 0 < b) :
@@ -380,9 +376,7 @@ theorem exists_repsR_repsOK (hβ : IsSDFrame (Vc D i) (R.βV i) (R.ΛV i) 1) (hV
     by rw [hr.2.2.2.2.1]; simp, fun k => ⟨c1 k, c2 k, c3 k, c4 k, hg k, c5 k⟩, fun _ _ => Iff.rfl⟩
 
 /- English proof (translation)
-Establish `hb : 0 < 2 * (D.host.QS * D.host.q * (D.host.d * (D.host.g 0 * D.host.g 1)))` using `Nat.mul_pos two_pos (Nat.mul_pos (Nat.mul_pos D.host.QS_pos D.host.hyp.1.pos) (Nat.mul_pos D.host.hyp.2.1.pos (Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos)))`. Use `choose Cl fCl h J' bad Lh gam vol La Nc h1 h2 h3 h4 h5 using fun t => exists_repsR_repsOK R i hβ hV K' (tup t) (dδ t).l₂ hb`. Use `⟨Cl, fCl, h, J', bad, Lh, gam, vol, La, Nc, fun t => ⟨h1 t, h3 t⟩, fun t => ⟨Nat.pos_of_ne_zero (h1 t).1, dvd_of_mul_right_dvd (h2 t), ?_, ?_, ?_⟩, fun t => ⟨h4 t, h5 t⟩⟩` and prove the remaining obligations. Conclude with `dvd_of_mul_right_dvd (dvd_of_mul_left_dvd (h2 t))`. Conclude with `dvd_of_mul_right_dvd (dvd_of_mul_left_dvd (dvd_of_mul_left_dvd (h2 t)))`.
-
-Conclude with `dvd_of_mul_left_dvd (dvd_of_mul_left_dvd (dvd_of_mul_left_dvd (h2 t)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_repsR_repsCov (hβ : IsSDFrame (Vc D i) (R.βV i) (R.ΛV i) 1) (hV : VStd D i) (K' : Type) [Field K']
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l) (c : Coeff l)
@@ -406,7 +400,7 @@ theorem exists_repsR_repsCov (hβ : IsSDFrame (Vc D i) (R.βV i) (R.ΛV i) 1) (h
   · exact dvd_of_mul_left_dvd (dvd_of_mul_left_dvd (dvd_of_mul_left_dvd (h2 t)))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun t _ hb => exists_repsR R i (hC.lev.βV i) K' t hb, fun hV _ _ _ Xo c _ tup dδ => exists_repsR_repsCov R i (hC.lev.βV i) hV K' Xo c tup dδ⟩`.
+Supply the required witnesses or components.
 -/
 theorem reps_exist (F : Face D A) (hC : R.Char F) (K' : Type) [Field K'] :
     (∀ (t : T0) (b : ℕ), 0 < b →

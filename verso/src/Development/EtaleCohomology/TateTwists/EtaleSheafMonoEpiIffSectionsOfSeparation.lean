@@ -7,9 +7,9 @@ namespace LateralTheory.EtaleFoundations.MonoEpiPf
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `h`. Establish `key` using `Presheaf.IsSheaf.hom_ext F.property ⟨S, hS⟩ (ModuleCat.ofHom (LinearMap.toSpanSingleton (ULift.{1} R) _ a)) 0 (by`. Introduce `I`. Use `ext`. Use `hP _ I.f I.hf` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Sec.res] at this`. Simplify using `[LinearMap.toSpanSingleton_apply, this])`. Use `congrArg (fun f => f.hom (1 : ULift.{1} R)) key` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sep {F : Shv R} {U : Scheme.{0}} (a : Sec F U)
     (h : Loc U fun _ g => Sec.res g a = 0) : a = 0 := by
@@ -25,11 +25,9 @@ theorem sep {F : Shv R} {U : Scheme.{0}} (a : Sec F U)
   simpa using this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h U`. Establish `: Mono φ.hom` using `(sheafToPresheaf _ _).map_mono φ`. Establish `: Mono (φ.hom.app (op U))` using `(NatTrans.mono_iff_mono_app _).1 this _`. Conclude with `(ModuleCat.mono_iff_injective _).1 this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `: Mono φ.hom`. Rewrite using `[NatTrans.mono_iff_mono_app]`. Introduce `U`. Proceed by induction on `U using Opposite.rec with | op U => ?_`.
-
-Conclude with `(ModuleCat.mono_iff_injective _).2 (h U)`. Conclude with `(sheafToPresheaf _ _).mono_of_mono_map this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. A detailed English derivation is pending.
 -/
 theorem mono_iff_inj {F G : Shv R} (φ : F ⟶ G) :
     Mono φ ↔ ∀ U, Function.Injective (Sec.map φ (U := U)) := by
@@ -47,9 +45,9 @@ theorem mono_iff_inj {F G : Shv R} (φ : F ⟶ G) :
     exact (sheafToPresheaf _ _).mono_of_mono_map this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h U a ha`. Establish `: a = 0` using `h U (by rw [ha]; simp [Sec.map])`. Substitute `this` using the available equality. Conclude with `⟨⊤, Scheme.etaleTopology.top_mem U, fun V g _ => by simp [Sec.res]⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 
-Introduce `h U`. Establish `hk : ∀ a : Sec F U, Sec.map φ a = 0 → a = 0` using `fun a ha => sep a (h U a ha)`. Introduce `a b hab`. Establish `: Sec.map φ (a - b) = 0` using `by simp only [Sec.map] at hab ⊢; rw [map_sub, hab, sub_self]`. Conclude with `sub_eq_zero.1 (hk _ this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inj_iff_loc {F G : Shv R} (φ : F ⟶ G) :
     (∀ U, Function.Injective (Sec.map φ (U := U))) ↔
@@ -66,11 +64,11 @@ theorem inj_iff_loc {F G : Shv R} (φ : F ⟶ G) :
     exact sub_eq_zero.1 (hk _ this)
 
 /- English proof (translation)
-Rewrite using `[← Sheaf.isLocallySurjective_iff_epi' (ModuleCat.{1} (ULift.{1} R))]`. Prove the components needed by the constructor for the conclusion. Introduce `h U b`. Use `⟨Presheaf.imageSieve φ.hom b, h.imageSieve_mem b, fun V g hg => ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[Presheaf.imageSieve_apply]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hg`. Introduce `h`. Use `⟨fun {U} b => ?_⟩` and prove the remaining obligations. Take `⟨S, hS, hP⟩` from `h U b`. Use `Scheme.etaleTopology.superset_covering (fun V g hg => ?_) hS` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Presheaf.imageSieve_apply]`. Conclude with `hP V g hg`.
+A detailed English derivation is pending.
 -/
 theorem epi_iff {F G : Shv R} (φ : F ⟶ G) :
     Epi φ ↔ ∀ U (b : Sec G U), Loc U fun V g => ∃ a : Sec F V, Sec.map φ a = Sec.res g b := by
@@ -88,7 +86,7 @@ theorem epi_iff {F G : Shv R} (φ : F ⟶ G) :
     exact hP V g hg
 
 /- English proof (translation)
-Apply `Sheaf.hom_ext` to reduce the goal to its premises. Use extensionality with `U a`. Proceed by induction on `U using Opposite.rec with | op U => ?_`. Conclude with `h U a`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Proceed by induction. A detailed English derivation is pending.
 -/
 theorem ext_sec {F G : Shv R} (φ ψ : F ⟶ G)
     (h : ∀ U (a : Sec F U), Sec.map φ a = Sec.map ψ a) : φ = ψ := by
@@ -101,7 +99,7 @@ end LateralTheory.EtaleFoundations.MonoEpiPf
 
 open LateralTheory.EtaleFoundations.MonoEpiPf in
 /- English proof (translation)
-Introduce `R _ F G φ`. Conclude with `⟨mono_iff_inj φ, (mono_iff_inj φ).trans (inj_iff_loc φ), epi_iff φ, fun ψ h => ext_sec φ ψ h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem LateralTheory.EtaleFoundations.etale_sheaf_mono_epi_iff_sections_of_separation : LateralTheory.EtaleFoundations.EtaleSheafMonoEpiSectionCriteria := by
   intro R _ F G φ

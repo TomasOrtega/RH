@@ -10,19 +10,17 @@ namespace GlobalTheory.BoundedGL
 variable {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Establish `e : {x : w.adicCompletion E | Valued.v x ≤ c} = {0}`. Use extensionality with `x`. Simplify using `[hc]`. Rewrite using `[e]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isCompact_singleton`. Take `⟨π, hπ⟩` from `w.valuation_exists_uniformizer E set u : w.adicCompletion E := ((π ^ (-WithZero.log c) : E) : w.adicCompletion E) with hu`. Establish `hvu : Valued.v u = c`. Rewrite using `[hu, valuedAdicCompletion_eq_valuation', map_zpow₀, hπ, ← WithZero.exp_zsmul]`. Simplify using `[WithZero.exp_log hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hu0 : u ≠ 0`. Introduce `h`. Rewrite `hvu` using `[h, map_zero]`. Conclude with `hc hvu.symm`. Establish `hO : IsCompact {x : w.adicCompletion E | Valued.v x ≤ 1}`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `PI.IntAdCpctOpenWork.isCompact_adicCompletionIntegers w` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `[mem_adicCompletionIntegers]`. Establish `e : {x : w.adicCompletion E | Valued.v x ≤ c} = (fun y => u * y) '' {x | Valued.v x ≤ 1}`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨u⁻¹ * x, ?_, by simp [hu0]⟩` and prove the remaining obligations. Use `show Valued.v (u⁻¹ * x) ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv₀, hvu]`. Conclude with `inv_mul_le_one_of_le₀ hx zero_le'`. Introduce and unpack `⟨y, hy, rfl⟩ show Valued.v (u * y) ≤ c`. Rewrite using `[map_mul, hvu]`. Conclude with `mul_le_of_le_one_right' hy`.
-
-Rewrite using `[e]`. Conclude with `hO.image (continuous_mul_left u)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_le (c : WithZero (Multiplicative ℤ)) :
     IsCompact {x : w.adicCompletion E | Valued.v x ≤ c} := by
@@ -62,11 +60,11 @@ theorem isCompact_le (c : WithZero (Multiplicative ℤ)) :
     exact hO.image (continuous_mul_left u)
 
 /- English proof (translation)
-Introduce `E _ _ w n c`. Use `set K := w.adicCompletion E`. Use `set S : Set (Matrix (Fin n) (Fin n) K) := {A | ∀ i j, Valued.v (A i j) ≤ c} with hS`. Establish `hK : IsCompact S`. Establish `h : IsCompact (Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => {x : K | Valued.v x ≤ c})` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_le w c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : S = (Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => {x : K | Valued.v x ≤ c})` using `Set.ext fun x => ⟨fun hx i _ j _ => hx i j, fun hx i j => hx i trivial j trivial⟩`. Rewrite using `[e]`. Conclude with `h`. Establish `h` using `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) K)).isCompact_preimage (hK.prod (hK.image MulOpposite.continuous_op))`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use extensionality with `g`. Simplify using `only [hS, Set.mem_setOf_eq, Set.mem_preimage, Units.embedProduct_apply, Set.mem_prod, (MulOpposite.op_injective).mem_set_image]`. Conclude with `⟨fun hg => ⟨fun i j => (hg i j).1, fun i j => (hg i j).2⟩, fun hg i j => ⟨hg.1 i j, hg.2 i j⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_bounded : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ)
     (c : WithZero (Multiplicative ℤ)), IsCompact {g : GL (Fin n) (w.adicCompletion E) | ∀ i j,

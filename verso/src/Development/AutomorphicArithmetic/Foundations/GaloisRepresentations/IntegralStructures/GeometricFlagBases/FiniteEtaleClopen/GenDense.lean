@@ -5,9 +5,9 @@ open CategoryTheory AlgebraicGeometry
 namespace UpperTheory.Gal.Int.Geo.Cut
 
 /- English proof (translation)
-Introduce `O _ _ Y p hp`. Establish `hg : GeneralizingMap p` using `Flat.generalizingMap p`. Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `U hU ⟨y, hy⟩`. Set `η : PrimeSpectrum O` to `⟨⊥, Ideal.isPrime_bot⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Establish `hη : η ⤳ p y` using `(PrimeSpectrum.le_iff_specializes _ _).mp bot_le`. Take `⟨y', hy', hpy'⟩` from `hg hη`. Conclude with `⟨y', hy'.mem_open hU hy, by simp only [Set.mem_setOf_eq, hpy', η]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem genDense : GenDense := by
   intro O _ _ Y p hp

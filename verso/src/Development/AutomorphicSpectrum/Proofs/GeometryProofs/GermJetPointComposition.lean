@@ -13,7 +13,7 @@ section
 variable {X0 : Scheme.{0}} {k : Type} [Field k] (x : Sp k ⟶ X0)
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [homAt, Over.comp_left, Over.homMk_left, spMap]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem homAt_comp_homAt {A B C : Type} [CommRing A] [Algebra k A] [CommRing B] [Algebra k B] [CommRing C] [Algebra k C]
     (g : A →ₐ[k] B) (f : B →ₐ[k] C) : homAt x f ≫ homAt x g = homAt x (f.comp g) := by
@@ -23,7 +23,7 @@ theorem homAt_comp_homAt {A B C : Type} [CommRing A] [Algebra k A] [CommRing B] 
   rfl
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [homAt, Over.homMk_left, spMap]`. Conclude with `Spec.map_id _`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem homAt_id_eq {A : Type} [CommRing A] [Algebra k A] : homAt x (AlgHom.id k A) = 𝟙 _ := by
   apply Over.OverMorphism.ext
@@ -40,11 +40,11 @@ theorem trJ_mk (κ : Type) {n M : ℕ} (h : n ≤ M) (P : MvPolynomial κ k) :
     trJ (k := k) κ h (Ideal.Quotient.mk _ P) = Ideal.Quotient.mk _ P := rfl
 
 /- English proof (translation)
-Proceed by induction on `M, h using Nat.le_induction with`. Consider the case `base`. Establish `e : trJ (k` using `k) κ (le_refl n) = AlgHom.id k _ := by`. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i`. Both sides reduce to the same expression. Rewrite using `[e, homAt_id_eq, Category.id_comp]`. Consider the case `succ M h ih`. Establish `e : (trJ (k` using `k) κ (Nat.le_succ_of_le h)) = (trJ κ h).comp jetTrunc := by`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Both sides reduce to the same expression. Rewrite using `[← ih, ← hz M, e, ← homAt_comp_homAt, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem x_eq_of_trunc {Y : Over X0} {κ : Type} (z : ∀ m, overAt x (Jet k κ m) ⟶ Y)
     (hz : ∀ m, homAt x (jetTrunc : Jet k κ (m + 1) →ₐ[k] Jet k κ m) ≫ z (m + 1) = z m) {n M : ℕ} (h : n ≤ M) :
@@ -84,7 +84,7 @@ theorem jetMap_mk_eq {κ κ' : Type} {n : ℕ} (φ : κ → MvPolynomial κ' k) 
     (jetMap φ hφ : Jet k κ n →ₐ[k] Jet k κ' n) (Ideal.Quotient.mk _ P) = Ideal.Quotient.mk _ (MvPolynomial.aeval φ P) := rfl
 
 /- English proof (translation)
-Rewrite using `[jq, liftJet_mk_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jq_mk_zero (w : Fin d → k) (p m : ℕ) (j : Fin d) :
     jq w p m (Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 2), j))) =
@@ -93,7 +93,7 @@ theorem jq_mk_zero (w : Fin d → k) (p m : ℕ) (j : Fin d) :
   simp
 
 /- English proof (translation)
-Rewrite using `[jq, liftJet_mk_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jq_mk_one (w : Fin d → k) (p m : ℕ) (j : Fin d) :
     jq w p m (Ideal.Quotient.mk _ (MvPolynomial.X ((1 : Fin 2), j))) =
@@ -102,7 +102,7 @@ theorem jq_mk_one (w : Fin d → k) (p m : ℕ) (j : Fin d) :
   simp
 
 /- English proof (translation)
-Rewrite using `[inL, liftJet_mk_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inL_mk (B : Type) [CommRing B] [Algebra k B] (p : ℕ) :
     inL (k := k) B p (Ideal.Quotient.mk _ (MvPolynomial.X ())) = dQ B p := by
@@ -110,11 +110,11 @@ theorem inL_mk (B : Type) [CommRing B] [Algebra k B] (p : ℕ) :
   simp
 
 /- English proof (translation)
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, j⟩`. Establish `ha : a = 0` using `Subsingleton.elim _ _`. Substitute `ha` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `h1 : jetCopy (S` using `k) d (p + m + 1) (0 : Fin 2) (Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), j))) = Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 2), j)) := by`. Rewrite using `[jetCopy, jetMap_mk_eq]`. Simplify using the standard rewrite rules. Establish `h2 : jetSubstP (S` using `k) p (fun q : Fin 1 × Fin d => MvPolynomial.C (w q.2) * MvPolynomial.X ()) (Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), j))) = algebraMap k _ (w j) * Ideal.Quotient.mk _ (MvPolynomial.X ()) := by`. Rewrite using `[jetSubstP, jetMap_mk_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MvPolynomial.aeval_X, map_mul, MvPolynomial.constantCoeff_C, MvPolynomial.constantCoeff_X, mul_zero, map_zero, sub_zero]`. Both sides reduce to the same expression. Simplify using `only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, trJ_mk, h1, h2, jq_mk_zero, map_mul, AlgHom.commutes, inL_mk]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem ring_zero (w : Fin d → k) (p m : ℕ) :
     (jq w p m).comp (jetCopy d (p + m + 1) (0 : Fin 2)) =
@@ -140,9 +140,9 @@ theorem ring_zero (w : Fin d → k) (p m : ℕ) :
   simp only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, trJ_mk, h1, h2, jq_mk_zero, map_mul, AlgHom.commutes, inL_mk]
 
 /- English proof (translation)
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, j⟩`. Establish `ha : a = 0` using `Subsingleton.elim _ _`. Substitute `ha` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `h1 : jetCopy (S` using `k) d (p + m + 1) (1 : Fin 2) (Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), j))) = Ideal.Quotient.mk _ (MvPolynomial.X ((1 : Fin 2), j)) := by`. Rewrite using `[jetCopy, jetMap_mk_eq]`. Simplify using the standard rewrite rules. Simplify using `only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, trJ_mk, h1, jq_mk_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ring_one (w : Fin d → k) (p m : ℕ) :
     (jq w p m).comp (jetCopy d (p + m + 1) (1 : Fin 2)) =
@@ -162,9 +162,9 @@ theorem ring_one (w : Fin d → k) (p m : ℕ) :
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ X0 t k _ p x d g w m`. Prove the components needed by the constructor for the conclusion. Establish `hx` using `x_eq_of_trunc x g.x g.chart.trunc (show p ≤ p + m + 1 by omega) show homAt x (jq w p m) ≫ homAt x (jetCopy d (p + m + 1) (0 : Fin 2)) ≫ g.x (p + m + 1) = _`. Rewrite using `[← hx, ← Category.assoc, homAt_comp_homAt, ring_zero, ← homAt_comp_homAt, ← homAt_comp_homAt]`. Simplify using `only [Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hx` using `x_eq_of_trunc x g.x g.chart.trunc (show m ≤ p + m + 1 by omega) show homAt x (jq w p m) ≫ homAt x (jetCopy d (p + m + 1) (1 : Fin 2)) ≫ g.x (p + m + 1) = _`. Rewrite using `[← hx, ← Category.assoc, homAt_comp_homAt, ring_one, ← homAt_comp_homAt]`. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (X0 : Scheme.{0}) (t : SAB H X0) (k : Type) [Field k] (p : ℕ) (x : Sp k ⟶ X0) (d : ℕ) (g : GermAt t x d) (w : Fin d → k) (m : ℕ), homAt x (jq w p m) ≫ jptG t x d g.x (p + m + 1) (0 : Fin 2) = homAt x (inL (k := k) (Jet k (Fin 1 × Fin d) m) p) ≫ homAt x (jetSubstP p fun q : Fin 1 × Fin d => MvPolynomial.C (w q.2) * MvPolynomial.X ()) ≫ g.x p ∧ homAt x (jq w p m) ≫ jptG t x d g.x (p + m + 1) (1 : Fin 2) = homAt x (inR (k := k) (Jet k (Fin 1 × Fin d) m) p) ≫ g.x m := by
   intro E _ _ _ H _ X0 t k _ p x d g w m

@@ -9,7 +9,7 @@ variable {E : Type} [Field E] [NumberField E]
 namespace ChA
 
 /- English proof (translation)
-Unfold `Hf`. Rewrite using `[PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[RCLike.inner_apply, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma Hf_eq_inner {ι : Type} [Fintype ι] (v w : EuclideanSpace ℂ ι) : Hf v w = inner ℂ w v := by
   unfold Hf
@@ -18,7 +18,7 @@ lemma Hf_eq_inner {ι : Type} [Fintype ι] (v w : EuclideanSpace ℂ ι) : Hf v 
   rw [RCLike.inner_apply, mul_comm]
 
 /- English proof (translation)
-Unfold `Hf`. Rewrite using `[PiLp.inner_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.inner, Complex.mul_re, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma re_Hf {ι : Type} [Fintype ι] (v w : EuclideanSpace ℂ ι) : (Hf v w).re = inner ℝ v w := by
   unfold Hf
@@ -28,14 +28,14 @@ lemma re_Hf {ι : Type} [Fintype ι] (v w : EuclideanSpace ℂ ι) : (Hf v w).re
   ring
 
 /- English proof (translation)
-Simplify using `only [Hf, PiLp.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Hf_add_left {ι : Type} [Fintype ι] (v v' w : EuclideanSpace ℂ ι) :
     Hf (v + v') w = Hf v w + Hf v' w := by
   simp only [Hf, PiLp.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[Hf]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Hf_zero_left {ι : Type} [Fintype ι] (v : EuclideanSpace ℂ ι) : Hf 0 v = 0 := by
   simp [Hf]
@@ -55,16 +55,16 @@ lemma prj_apply {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (v : Vsp dim) (
     prj σ v i = if i.1 = σ then v i else 0 := rfl
 
 /- English proof (translation)
-Introduce `j hj`. Rewrite using `[prj_apply, if_neg hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma prj_inPart {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (v : Vsp dim) : InPart σ (prj σ v) := by
   intro j hj
   rw [prj_apply, if_neg hj]
 
 /- English proof (translation)
-Unfold `Hf`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[prj_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv i h, zero_mul, zero_mul]`.
+A detailed English derivation is pending.
 -/
 lemma Hf_prj_right {dim : (E →+* ℂ) → ℕ} {σ : E →+* ℂ} {v : Vsp dim} (hv : InPart σ v) (x : Vsp dim) :
     Hf v (prj σ x) = Hf v x := by
@@ -76,9 +76,9 @@ lemma Hf_prj_right {dim : (E →+* ℂ) → ℕ} {σ : E →+* ℂ} {v : Vsp dim
   · rw [hv i h, zero_mul, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[prj_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `le_rfl`. Rewrite using `[norm_zero, zero_pow two_ne_zero]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 lemma norm_prj_le {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (v : Vsp dim) : ‖prj σ v‖ ≤ ‖v‖ := by
   rw [EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]
@@ -92,7 +92,7 @@ lemma norm_prj_le {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (v : Vsp dim)
     positivity
 
 /- English proof (translation)
-Introduce `h`. Establish `hc` using `NumberField.IsTotallyComplex.isComplex (NumberField.InfinitePlace.mk σ)`. Rewrite `hc` using `[NumberField.InfinitePlace.isComplex_mk_iff]`. Conclude with `hc (ComplexEmbedding.isReal_iff.mpr h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ne_conj [IsCMField E] (σ : E →+* ℂ) : ComplexEmbedding.conjugate σ ≠ σ := by
   intro h
@@ -117,7 +117,7 @@ lemma Mc_apply {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (c : ℂ) (v : V
       if i.1 = ComplexEmbedding.conjugate σ then (starRingEnd ℂ) c * v i else 0 := rfl
 
 /- English proof (translation)
-Rewrite using `[PiLp.inner_apply, PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Mc_apply, Mc_apply]`. Apply the tactic sequence `split_ifs <;> simp only [Complex.inner, map_mul, Complex.conj_conj, mul_zero, zero_mul, map_zero] <;> ring_nf`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma real_inner_Mc {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (c : ℂ) (v w : Vsp dim) :
     inner ℝ (Mc σ c v) w = inner ℝ v (Mc σ ((starRingEnd ℂ) c) w) := by
@@ -128,7 +128,7 @@ lemma real_inner_Mc {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (c : ℂ) (
     map_zero] <;> ring_nf
 
 /- English proof (translation)
-Use extensionality with `i`. Rewrite using `[prj_apply, PiLp.smul_apply, prj_apply, Mc_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma prj_Mc {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (c : ℂ) (v : Vsp dim) :
     prj σ (Mc σ c v) = c • prj σ v := by
@@ -137,9 +137,9 @@ lemma prj_Mc {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (c : ℂ) (v : Vsp
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [prj_apply, PiLp.smul_apply, PiLp.sub_apply, Mc_apply, smul_eq_mul, map_one, Complex.conj_I]`. Use `split_ifs`. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma prj_eq_Mc [IsCMField E] {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (v : Vsp dim) :
     prj σ v = (1 / 2 : ℂ) • (Mc σ 1 v - Complex.I • Mc σ Complex.I v) := by
@@ -156,7 +156,7 @@ lemma prj_eq_Mc [IsCMField E] {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (
   · ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨add_mem hu.1 hv.1, fun a ha => by rw [inner_add_left, hu.2 a ha, hv.2 a ha, Hf_add_left, Complex.add_im]⟩`.
+Supply the required witnesses or components.
 -/
 lemma isU_add {dim : (E →+* ℂ) → ℕ} {I : Submodule ℤ (Vsp dim)} {x y u v : Vsp dim}
     (hu : IsU I x u) (hv : IsU I y v) : IsU I (x + y) (u + v) :=
@@ -164,7 +164,7 @@ lemma isU_add {dim : (E →+* ℂ) → ℕ} {I : Submodule ℤ (Vsp dim)} {x y u
       rw [inner_add_left, hu.2 a ha, hv.2 a ha, Hf_add_left, Complex.add_im]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨neg_mem hu.1, fun a ha => by have hn : Hf (-x) a = -Hf x a := by simp [Hf, Finset.sum_neg_distrib] rw [inner_neg_left, hu.2 a ha, hn, Complex.neg_im]⟩`.
+Supply the required witnesses or components.
 -/
 lemma isU_neg {dim : (E →+* ℂ) → ℕ} {I : Submodule ℤ (Vsp dim)} {x u : Vsp dim}
     (hu : IsU I x u) : IsU I (-x) (-u) :=
@@ -173,7 +173,7 @@ lemma isU_neg {dim : (E →+* ℂ) → ℕ} {I : Submodule ℤ (Vsp dim)} {x u :
       rw [inner_neg_left, hu.2 a ha, hn, Complex.neg_im]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨zero_mem _, fun a _ => by rw [inner_zero_left, Hf_zero_left, Complex.zero_im]⟩`.
+Supply the required witnesses or components.
 -/
 lemma isU_zero {dim : (E →+* ℂ) → ℕ} (I : Submodule ℤ (Vsp dim)) : IsU I 0 0 :=
     ⟨zero_mem _, fun a _ => by rw [inner_zero_left, Hf_zero_left, Complex.zero_im]⟩

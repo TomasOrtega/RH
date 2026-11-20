@@ -10,9 +10,9 @@ open scoped Matrix NNReal
 namespace UpperTheory.Esk.CentralScalarMap
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Subgroup.mem_center_iff]`. Introduce `δ`. Establish `e` using `h (Matrix.GeneralLinearGroup.map f δ)`. Rewrite `e` using `[← map_mul, ← map_mul]`. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Matrix.map_injective f.injective (congrArg Units.val e)`.
+A detailed English derivation is pending.
 -/
 theorem central_of_map {K L : Type} [Field K] [Field L] (f : K →+* L) {g : GL (Fin 2) K}
     (h : Matrix.GeneralLinearGroup.map f g ∈ Subgroup.center (GL (Fin 2) L)) :
@@ -25,7 +25,7 @@ theorem central_of_map {K L : Type} [Field K] [Field L] (f : K →+* L) {g : GL 
   exact Matrix.map_injective f.injective (congrArg Units.val e)
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_center_iff]`. Introduce `g`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_scalar_center {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (z : Rˣ) :
     Matrix.GeneralLinearGroup.map f (Matrix.GeneralLinearGroup.scalar (Fin 2) z) ∈ Subgroup.center (GL (Fin 2) S) := by
@@ -40,23 +40,21 @@ namespace UpperTheory.Esk
 
 open CentralScalarMap in
 /- English proof (translation)
-Introduce `hA F _ _ _ c χ ⟨u, hu, hu2⟩ ω S hS hfin`. Take `⟨-, -, -, hH, -⟩` from `hA F`. Establish `hc0 : Nat.card S ≠ 0` using `Nat.card_pos.ne'`. Use `⟨_, Nat.eq_prime_pow_of_unique_prime_dvd hc0 (p := 2) ?_⟩` and prove the remaining obligations. Introduce `p hp hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Establish `: Fact p.Prime` using `⟨hp⟩`. Take `⟨γ, hγ⟩` from `exists_prime_orderOf_dvd_card' (G := S) p hd`. Use `set g : GL (Fin 2) F := (γ : PG F).out with hg`. Establish `hmk : ((g : PG F)) = (γ : PG F)` using `QuotientGroup.out_eq' _`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgp : g ^ p ∈ Subgroup.center (GL (Fin 2) F)`. Rewrite using `[← QuotientGroup.eq_one_iff, QuotientGroup.mk_pow, hmk, ← Subgroup.coe_pow, ← hγ, pow_orderOf_eq_one, Subgroup.coe_one]`. Establish `hst : (γ : PG F) • ω = ω` using `hS γ.2`. Take `⟨x, hx⟩ : ∃ x : GF F, ((x : GF F ⧸ Hc c) : (mkDat c χ).Om) = ω` from `QuotientGroup.mk_surjective ω`. Establish `h1 : ((jF F g * x : GF F) : GF F ⧸ Hc c) = (x : GF F ⧸ Hc c)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hst` using `[← hmk, ← hx]`. Conclude with `hst`. Establish `h2 : x⁻¹ * (jF F g * x) ∈ Hc c` using `QuotientGroup.eq.1 h1.symm`. Take `⟨k, hk, z, hkz⟩` from `(hH c _).1 h2`. Take `⟨z0, hz0⟩` from `jF_center hgp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzc : ∀ z, zc F z ∈ Subgroup.center (GF F)` using `zc_center`. Establish `hyp : (x⁻¹ * (jF F g * x)) ^ p = zc F z0`. Use `conj_pow (a := x⁻¹) (b := jF F g) (i := p)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Rewrite using `[← mul_assoc, this, ← map_pow, hz0, Subgroup.mem_center_iff.1 (hzc _) x⁻¹, inv_mul_cancel_right]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkp : k ^ p = zc F (z0 * (z ^ p)⁻¹)`. Establish `e1 : (k * zc F z) ^ p = k ^ p * zc F z ^ p` using `Commute.mul_pow (Subgroup.mem_center_iff.1 (hzc z) k) p`. Rewrite using `[map_mul, map_inv, map_pow, ← hyp, hkz, e1, mul_inv_cancel_right]`. Use `set P := Matrix.GeneralLinearGroup.map (n := Fin 2) (pLoc F u) with hP`. Establish `hPz : ∀ z, P (zc F z) ∈ Subgroup.center _` using `fun z => map_scalar_center _ z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hku : P k ∈ K1 u (c u)` using `Subgroup.mem_iInf.1 hk u`. Establish `hkc` using `locTwo F u (c u) hu hu2 _ hku p (hp.odd_of_ne_two hne) (by rw [← map_pow, hkp]; exact hPz _)`. Establish `hc2 : P (x⁻¹ * (jF F g * x)) ∈ Subgroup.center _`. Rewrite using `[hkz, map_mul]`. Conclude with `mul_mem hkc (hPz z)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc3 : P (jF F g) ∈ Subgroup.center _`. Use `(Subgroup.normal_of_characteristic _).conj_mem _ hc2 (P x)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Establish `hcen : g ∈ Subgroup.center (GL (Fin 2) F)` using `central_of_map ((pLoc F u).comp (algebraMap F (Af F))) hc3`. Establish `h1' : (γ : PG F) = 1`.
-
-Rewrite using `[← hmk]`. Conclude with `(QuotientGroup.eq_one_iff _).2 hcen`. Establish `: γ = 1` using `Subtype.ext h1'`. Rewrite `hγ` using `[this, orderOf_one]`. Conclude with `hp.one_lt.ne hγ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dTwo : AMem → DTwo := by
   intro hA F _ _ _ c χ ⟨u, hu, hu2⟩ ω S hS hfin

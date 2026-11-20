@@ -11,17 +11,15 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hB` using `isIntegral_iff_mem_span_one_tmul_integralClosure R R' F F' hmax hres L`. Take `⟨w', h1, h2, -, -⟩` from `exists_unique_place_baseChange R R' F F' hmax hres L hB`. Establish `hint : IsIntegral R' (x * (1 : F') ⊗ₜ[F] η)`. Rewrite using `[h2]`. Introduce `w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AddValuation.map_mul, h1, hη w.1 w.2]`. Use `hx w.1 w.2 (w' w) (h1 w) fun r => ?_` and prove the remaining obligations. Conclude with `(h2 _).1 (isIntegral_algebraMap (R := R') (A := F' ⊗[F] L) (x := r)) w`. Establish `hmem` using `(hB _).1 hint`. Use `haveI := integralClosure.isDedekindDomain R F L`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := integralClosure.isFractionRing_of_finite_extension (A := R) F L`. Establish `hxe : x = (x * (1 : F') ⊗ₜ[F] η) * (1 : F') ⊗ₜ[F] η⁻¹`. Rewrite using `[mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_inv_cancel₀ hη0, ← Algebra.TensorProduct.one_def, mul_one]`. Rewrite using `[hxe]`. Generalize the expression as in `x * (1 : F') ⊗ₜ[F] η = y at hmem`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hmem using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, rfl⟩` from `hy`. Use `Submodule.subset_span ⟨b * η⁻¹, fun w hw => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hη w hw, ← AddValuation.map_mul, inv_mul_cancel_right₀ hη0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Conclude with `(ReciprocityTheory.ChartRestriction.G.T0.HDiscVal.mem_integralClosure_iff R F b).1 hb w hw`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [add_mul]`. Conclude with `Submodule.add_mem _ ha hb`.
-
-Consider the case `smul a b _ hb => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ _ hb`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_span_one_tmul_of_order_bound (R R' F F' : Type) [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] [CommRing R'] [IsDomain R'] [IsDiscreteValuationRing R']
@@ -68,9 +66,9 @@ theorem mem_span_one_tmul_of_order_bound (R R' F F' : Type) [CommRing R] [IsDoma
   | smul a b _ hb => rw [smul_mul_assoc]; exact Submodule.smul_mem _ _ hb
 
 /- English proof (translation)
-Establish `hc : T.comap M₀.subtype = (B.comap N.subtype).comap (Φ.restrict hN)`. Use extensionality with `a`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, LinearMap.coe_restrict_apply, ← hB]`. Conclude with `⟨fun h => ⟨_, h, rfl⟩, fun ⟨y, hy, h⟩ => hΦ h ▸ hy⟩`. Use `Module.length_le_of_injective (Submodule.mapQ _ (B.comap N.subtype) (Φ.restrict hN) hc.le) ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← LinearMap.ker_eq_bot, Submodule.ker_mapQ, ← hc, Submodule.mkQ_map_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem length_subquot_le_of_injective {A M V : Type} [Ring A] [AddCommGroup M] [Module A M]
     [AddCommGroup V] [Module A V] (Φ : M →ₗ[A] V) (hΦ : Function.Injective Φ)
@@ -85,27 +83,23 @@ theorem length_subquot_le_of_injective {A M V : Type} [Ring A] [AddCommGroup M] 
   rw [← LinearMap.ker_eq_bot, Submodule.ker_mapQ, ← hc, Submodule.mkQ_map_self]
 
 /- English proof (translation)
-Introduce `R R' F F' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hmax hres ι _ L _ _ _ _ _ _ n hη δ δ' e b M _ _ M₀ t Ψ hΨ ht hM₀ S hS`. Set `E : (F' ⊗[F] (∀ c, L c)) ≃ₗ[R'] (∀ c, F' ⊗[F] L c)` to `(TensorProduct.piRight F F' F' L).restrictScalars R'`. Establish `hE : ∀ v : ∀ c, L c, E ((1 : F') ⊗ₜ[F] v) = fun c => (1 : F') ⊗ₜ[F] v c` using `fun v => rfl`. Establish `hspan : ∀ X : Set (∀ c, L c), Submodule.span R' ((fun v : (∀ c, L c) => (1 : F') ⊗ₜ[F] v) '' (Submodule.span R X : Set _)) = Submodule.span R' ((fun v : (∀ c, L c) => (1 : F') ⊗ₜ[F] v) '' X)`. Introduce `X`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono (Set.image_mono Submodule.subset_span))` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv => exact Submodule.subset_span ⟨v, hv, rfl⟩`. Consider the case `zero => simp`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Simplify using `only [TensorProduct.tmul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul r v _ hv`. Establish `: (1 : F') ⊗ₜ[F] (r • v) = algebraMap R R' r • ((1 : F') ⊗ₜ[F] v)`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TensorProduct.smul_tmul', ← IsScalarTower.algebraMap_smul F r v, ← TensorProduct.smul_tmul, Algebra.smul_def, Algebra.smul_def, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Simplify using `only [this]`. Conclude with `Submodule.smul_mem _ _ hv`. Use `le_trans (length_subquot_le_of_injective (E.symm.toLinearMap ∘ₗ Ψ) (E.symm.injective.comp hΨ) M₀ _ (Submodule.span R' ((fun v : (∀ c, L c) => (1 : F') ⊗ₜ[F] v) '' (Submodule.span R S : Set _))) (Submodule.span R' ((fun v : (∀ c, L c) => (1 : F') ⊗ₜ[F] v) '' (Submodule.span R (Set …` and prove the remaining obligations. Introduce `a ha`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hspan, LinearMap.comp_apply, ← Finset.univ_sum_single (Ψ a), map_sum]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Take `⟨η, hη0, hη⟩` from `hη c`. Establish `hx` using `mem_span_one_tmul_of_order_bound R R' F F' hmax hres (L c) (n c) η hη0 hη (Ψ a c) (hM₀ a ha c)`. Generalize the expression as in `Ψ a c = x at hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨Pi.single c l, hS _ fun c' w hw => ?_, ?_⟩` and prove the remaining obligations. Break down `eq_or_ne c' c with rfl | hc` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_same]`. Conclude with `hl w hw`. Rewrite using `[Pi.single_eq_of_ne hc, AddValuation.map_zero, top_add]`. Conclude with `le_top`. Use `(LinearEquiv.eq_symm_apply E).2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[hE]`. Use function extensionality and compare the values at `c'`. Break down `eq_or_ne c' c with rfl | hc` into its components or cases. Simplify using `only [Pi.single_eq_same]`. Simplify using `only [Pi.single_eq_of_ne hc, TensorProduct.tmul_zero]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Pi.single_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx => rw [Pi.single_smul, map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
-
-Rewrite using `[hspan, Submodule.map_span, ← Set.range_comp, ← Set.range_comp, ← e.surjective.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `k`. Use `(LinearEquiv.symm_apply_eq E).2 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `c`.
-
-Conclude with `ht k c`. Conclude with `(spanBaseChangeSubquotEquiv F R' F' (Submodule.span R S) (Submodule.span R (Set.range b))).length_eq.symm.trans (ReciprocityTheory.ChartRestriction.G.T0.length_baseChange_eq hmax _)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem length_quotient_le_of_order_bound :
     ∀ (R R' F F' : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [CommRing R'] [IsDomain R'] [IsDiscreteValuationRing R'] [Algebra R R'] [Module.Flat R R'] [IsLocalHom (algebraMap R R')] [Field F] [Algebra R F] [IsFractionRing R F] [Field F'] [Algebra R' F'] [IsFractionRing R' F'] [Algebra F F'] [Algebra R F'] [IsScalarTower R F F'] [IsScalarTower R R' F'], Ideal.map (algebraMap R R') (IsLocalRing.maximalIdeal R) = IsLocalRing.maximalIdeal R' → Function.Surjective (IsLocalRing.ResidueField.map (algebraMap R R')) → ∀ (ι : Type) [Fintype ι] (L : ι → Type) [∀ c, Field (L c)] [∀ c, Algebra F (L c)] [∀ c, FiniteDimensional F (L c)] [∀ c, Algebra.IsSeparable F (L c)] [∀ c, Algebra R (L c)] [∀ c, IsScalarTower R F (L c)] (n : ∀ c, AddValuation (L c) (WithTop ℤ) → ℤ), (∀ c, ∃ η : L c, η ≠ 0 ∧ ∀ w ∈ ReciprocityTheory.ChartRestriction.G.T0.ValPl.PlacesOver R (L c), w η = ((n c w : ℤ) : WithTop ℤ)) → ∀ (δ δ' : Type) (e : δ ≃ δ') (b : δ → ∀ c, L c) (M : Type) [AddCommGroup M] [Module R' M] (M₀ : Submodule R' M) (t : δ' → M) (Ψ : M →ₗ[R'] ∀ c, F' ⊗[F] L c), Function.Injective Ψ → (∀ k c, Ψ (t (e k)) c = (1 : F') ⊗ₜ[F] b k c) → (∀ a ∈ M₀, ∀ c, ∀ w ∈ ReciprocityTheory.ChartRestriction.G.T0.ValPl.PlacesOver R (L c), ∀ u : AddValuation (F' ⊗[F] L c) (WithTop ℤ), (∀ g : L c, u ((1 : F') ⊗ₜ[F] g) = w g) → (∀ r : R', 0 ≤ u (algebraMap R' F' r ⊗ₜ[F] (1 : L c))) → 0 ≤ u (Ψ a c) + ((n c w : ℤ) : WithTop ℤ)) → ∀ S : Set (∀ c, L c), (∀ y : ∀ c, L c, (∀ c, ∀ w ∈ ReciprocityTheory.ChartRestriction.G.T0.ValPl.PlacesOver R (L c), 0 ≤ w (y c) + ((n c w : ℤ) : WithTop ℤ)) → y ∈ S) → Module.length R' (↥M₀ ⧸ (Submodule.span R' (Set.range t)).comap M₀.subtype) ≤ Module.length R (↥(Submodule.span R S) ⧸ (Submodule.span R (Set.range b)).comap (Submodule.span R S).subtype) := by

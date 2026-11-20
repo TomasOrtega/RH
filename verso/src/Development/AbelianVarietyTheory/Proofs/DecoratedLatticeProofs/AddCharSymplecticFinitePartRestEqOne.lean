@@ -24,7 +24,7 @@ namespace GlobalTheory.FinRestComm
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_sub]`. Conclude with `sub_eq_zero.2 ((GlobalTheory.LatVac.finPart_pair 1 (M i j)).trans (GlobalTheory.LatVac.finPart_incA (M i j)).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_finRat_sub {S T : HSp D} (M : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (i : Fin T.rank)
     (j : Fin S.rank) : finPart D (GlobalTheory.VacUnique.finRat S T M i j - incA D (M i j)) = 0 := by
@@ -32,9 +32,9 @@ theorem finPart_finRat_sub {S T : HSp D} (M : Matrix (Fin T.rank) (Fin S.rank) D
   exact sub_eq_zero.2 ((GlobalTheory.LatVac.finPart_pair 1 (M i j)).trans (GlobalTheory.LatVac.finPart_incA (M i j)).symm)
 
 /- English proof (translation)
-Take `⟨⟨es, hes, he⟩, -⟩` from `hI`. Substitute `he` using the available equality. Proceed by induction on `SS using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, RingHom.map_zero]`. Consider the case `insert a s ha ih`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert ha, RingHom.map_add, GlobalTheory.SplitScalar.infPart_splitIdem (hes a (Finset.mem_insert_self a s)).1, ih fun PP hPP => hes PP (Finset.mem_insert_of_mem hPP), add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infPart_of_idemSum {e : AE D} {SS : Finset (Formalism.L2.DIV.Pl D.host.E)} (hI : IsIdemSum e SS) :
     infPart D e = 0 := by
@@ -47,7 +47,7 @@ theorem infPart_of_idemSum {e : AE D} {SS : Finset (Formalism.L2.DIV.Pl D.host.E
       ih fun PP hPP => hes PP (Finset.mem_insert_of_mem hPP), add_zero]
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Matrix.sub_apply, Matrix.map_apply, Matrix.zero_apply, smul_eq_mul, mul_sub, ← mul_assoc, hee, ← mul_sub]`. Use `GlobalTheory.SplitScalar.adele_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, hinf, zero_mul, RingHom.map_zero]`. Rewrite using `[RingHom.map_mul, finPart_finRat_sub, mul_zero, RingHom.map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_rest_eq_zero {S T : HSp D} {e : AE D} (hee : e * e = e) (hinf : infPart D e = 0)
     (M : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
@@ -60,9 +60,9 @@ theorem smul_rest_eq_zero {S T : HSp D} {e : AE D} (hee : e * e = e) (hinf : inf
   · rw [RingHom.map_mul, finPart_finRat_sub, mul_zero, RingHom.map_zero]
 
 /- English proof (translation)
-Introduce `D ψ θ S T δ sc hP e SS hI h2 N N' hN hN' c hc hcP x' hx' y' hy'`. Establish `hZ` using `GlobalTheory.T.halfA_components_mem_completedLattice_offPrimes D ψ θ S T δ sc hP e SS hI h2 N N' hN hN' c hc hcP x' hx'`. Establish `hY` using `GlobalTheory.T.halfB_components_mem_completedLattice_offConj D ψ θ S T δ sc hP e SS hI h2 N N' hN hN' c hc hcP y' hy'`. Establish `heZ` using `smul_rest_eq_zero (S := S) (T := T) (GlobalTheory.PlaceDatum.idemSum_mul_self hI) (infPart_of_idemSum hI) (LinearMap.toMatrix' x')`. Establish `hsplit : GlobalTheory.VacUnique.finRat S T (LinearMap.toMatrix' y') = (GlobalTheory.VacUnique.finRat S T (LinearMap.toMatrix' y') - (LinearMap.toMatrix' y').map (fun r => cA D e * incA D r)) + cA D e • (LinearMap.toMatrix' y').map (incA D)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (LinearMap.toMatrix' y').map (fun r => cA D e * incA D r) = cA D e • (LinearMap.toMatrix' y').map (incA D)` using `Matrix.ext fun i j => rfl`. Rewrite using `[this, sub_add_cancel]`. Rewrite using `[hsplit, ← GlobalTheory.LatVac.symplHom_apply, map_add, AddChar.map_add_eq_mul, GlobalTheory.LatVac.symplHom_apply, GlobalTheory.LatVac.symplHom_apply, ← GlobalTheory.SplitScalar.symplO_smul, heZ, GlobalTheory.SplitScalar.symplO_zero_left, AddChar.map_zero_eq_one, mul_one]`. Conclude with `GlobalTheory.LatVac.char_sympl_eq_one hP.std hN hN' hZ hY`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_sympl_rest_eq_one : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (e : AE D) (SS : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e SS → (∀ Q ∈ SS, ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal) → ∀ (N : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S N → IsSelfDualC T N' → ∀ (c : ℕ), 0 < c → Odd c → ∀ x' ∈ halfAO SS (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') c, ∀ y' ∈ halfBO SS (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') c, ψ (symplO S T ((GlobalTheory.VacUnique.finRat S T (LinearMap.toMatrix' x')) - ((LinearMap.toMatrix' x').map fun r => e * incA D r)) (GlobalTheory.VacUnique.finRat S T (LinearMap.toMatrix' y'))) = 1 := by
   intro D ψ θ S T δ sc hP e SS hI h2 N N' hN hN' c hc hcP x' hx' y' hy'

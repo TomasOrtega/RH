@@ -14,24 +14,24 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
   {x : (Σ k, ι k) → Ω} {w : (Σ k, ι k) → ℂ}
 
 /- English proof (translation)
-Conclude with `ValRing.exists_isValueAt hw hs`.
+A detailed English derivation is pending.
 -/
 theorem mem_regRing_of_regAt (hw : w ∈ mcPts (mCoordIdeal x)) {s : Ω} (hs : RegAt x (mCoordIdeal w) s) :
     s ∈ regRing x w := by
   exact ValRing.exists_isValueAt hw hs
 
 /- English proof (translation)
-The claim follows from `(regVal hw).map_one`.
+A detailed English derivation is pending.
 -/
 theorem valAt_one_multihomogeneous_squares (hw : w ∈ mcPts (mCoordIdeal x)) : valAt x (1 : Ω) w = 1 := (regVal hw).map_one
 
 /- English proof (translation)
-The claim follows from `(regVal hw).map_zero`.
+A detailed English derivation is pending.
 -/
 theorem valAt_zero_multihomogeneous_squares (hw : w ∈ mcPts (mCoordIdeal x)) : valAt x (0 : Ω) w = 0 := (regVal hw).map_zero
 
 /- English proof (translation)
-Establish `e : (∑ m ∈ S, a m * b m) = ((∑ m ∈ S, (⟨a m, ha m⟩ : regRing x w) * ⟨b m, hb m⟩ : regRing x w) : Ω)` using `by push_cast; rfl`. Rewrite using `[e, ← regVal_apply hw, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, regVal_apply, regVal_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt_sum_mul' (hw : w ∈ mcPts (mCoordIdeal x)) {σ : Type} (S : Finset σ) (a b : σ → Ω)
     (ha : ∀ m, a m ∈ regRing x w) (hb : ∀ m, b m ∈ regRing x w) :
@@ -46,27 +46,25 @@ theorem valAt_sum_mul' (hw : w ∈ mcPts (mCoordIdeal x)) {σ : Type} (S : Finse
 end Val
 
 /- English proof (translation)
-Use `set J := stepCols N j i with hJ`. Use `set k := J.card with hk`. Set `e` to `J.orderEmbOfFin (rfl : J.card = k)`. Set `A : Matrix (Fin N) (Fin k) ℂ` to `fun r c => h r (e c)`. Establish `hu : IsUnit h` using `(Matrix.isUnit_iff_isUnit_det h).2 (isUnit_iff_ne_zero.2 hd)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcol : LinearIndependent ℂ A.col` using `(Matrix.linearIndependent_cols_iff_isUnit.2 hu).comp e e.injective`. Establish `hrank : A.rank = k`. Rewrite using `[Matrix.rank_eq_finrank_span_cols, finrank_span_eq_card hcol, Fintype.card_fin]`. Take `⟨κ, a, ha, hspan, hli⟩` from `exists_linearIndependent' ℂ A.row`. Use `haveI : Finite κ := Finite.of_injective a ha`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `letI : Fintype κ := Fintype.ofFinite κ`. Establish `hcard : Fintype.card κ = k`. Rewrite using `[← hrank, Matrix.rank_eq_finrank_span_row, ← hspan, finrank_span_eq_card hli]`. Set `I : Finset (Fin N)` to `Finset.univ.image a`. Establish `hI : I.card = k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.card_image_of_injective _ ha, Finset.card_univ, hcard]`. Establish `hmemI : ∀ t : Fin k, ∃ c : κ, a c = I.orderEmbOfFin hI t`. Introduce `t`. Take `⟨c, -, hc⟩` from `Finset.mem_image.1 (Finset.orderEmbOfFin_mem I hI t)`. Conclude with `⟨c, hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose f hf using hmemI`. Establish `hfinj : Function.Injective f`. Introduce `s t hst`. Establish `: I.orderEmbOfFin hI s = I.orderEmbOfFin hI t` using `by rw [← hf s, ← hf t, hst]`. Conclude with `(I.orderEmbOfFin hI).injective this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hrows : LinearIndependent ℂ (h.submatrix (I.orderEmbOfFin hI) e).row`. Establish `h2` using `hli.comp f hfinj`. Establish `heq : (h.submatrix (I.orderEmbOfFin hI) e).row = (A.row ∘ a) ∘ f`. Use function extensionality and compare the values at `t c`. Simplify using `[Matrix.row, A, hf]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Conclude with `h2`. Use `⟨I, ⟨hI, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `r hr`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hr`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hne : A.row (a c) ≠ 0`. Use `hli.ne_zero c` as an intermediate fact. Simplify using `using this`. Assume the negation of the conclusion as `hnot`. Apply `hne` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [Matrix.row, A, Pi.zero_apply]`. Apply `hb` to reduce the goal to its premises. Establish `hc` using `MinorCalc.mem_stepCols_block (i := i) (c := e t) hj (Finset.orderEmbOfFin_mem J _ t)`. Use `split_ifs at hc hnot with hij`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[wIdx] at hnot`. Introduce `hiff`. Establish `h3 : (a c : ℕ) < N - j` using `by omega`. Conclude with `absurd (hiff.1 h3) (by omega)`. Simplify using `[omIdx] at hnot`.
-
-Introduce `hiff`. Conclude with `absurd (hiff.2 hc) (by omega)`. Rewrite using `[MinorCalc.minorIJ_eq_det h I J k hI rfl]`. Use `Matrix.linearIndependent_rows_iff_isUnit.1 hrows` as an intermediate fact. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 this).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem block_diag_minor_ne_zero {N j : ℕ} (hj : j ≤ N) (i : Fin N) (h : Matrix (Fin N) (Fin N) ℂ) (hb : IsBlockDiag j h)
     (hd : h.det ≠ 0) : ∃ I, IsStepRows N j i I ∧ minorIJ h I (stepCols N j i) ≠ 0 := by
@@ -129,19 +127,17 @@ theorem block_diag_minor_ne_zero {N j : ℕ} (hj : j ≤ N) (i : Fin N) (h : Mat
     exact ((Matrix.isUnit_iff_isUnit_det _).1 this).ne_zero
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ N j M wb F h p k hw hF hG hb hd hk`. Take `⟨I0, hI0, hne⟩` from `block_diag_minor_ne_zero M.j_le p.2 h hb hd`. Use `set J := stepCols N j p.2 with hJ`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hreg : ∀ (q : (k : K) × ι k) (I : Finset (Fin N)), F.u q I ∈ regRing M.x wb ∧ F.u' I q ∈ regRing M.x wb` using `fun q I => ⟨mem_regRing_of_regAt hw (hG.2.1 q I).1, mem_regRing_of_regAt hw (hG.2.1 q I).2⟩`. Establish `key : ∀ I : Finset (Fin N), IsStepRows N j p.2 I → ∑ m : ι k, valAt M.x (F.u' I0 ⟨k, m⟩) wb * valAt M.x (F.u ⟨k, m⟩ I) wb = if I0 = I then 1 else 0`. Introduce `I hI`. Rewrite using `[← valAt_sum_mul' hw Finset.univ (fun m => F.u' I0 ⟨k, m⟩) (fun m => F.u ⟨k, m⟩ I) (fun m => (hreg _ _).2) (fun m => (hreg _ _).1)]`. Rewrite using `[hF.2.2.1 p k hk I0 I hI0 hI]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs`. Conclude with `valAt_one_multihomogeneous_squares hw`. Conclude with `valAt_zero_multihomogeneous_squares hw`. Establish `hterm : ∀ I : Finset (Fin N), ∑ m : ι k, valAt M.x (F.u' I0 ⟨k, m⟩) wb * (valAt M.x (F.u ⟨k, m⟩ I) wb * minorIJ h I J) = if I0 = I then minorIJ h I J else 0`. Introduce `I`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[← mul_assoc]`. Rewrite using `[← Finset.sum_mul]`. Distinguish the cases in `hI : IsStepRows N j p.2 I`. Apply the tactic sequence `rw [key I hI] split_ifs <;> simp`. Rewrite using `[MinorCalc.minor_stepCols_eq_zero M.j_le h I hb hI] split_ifs with e`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `e` using the available equality. Conclude with `absurd hI0 hI`. Simplify using the standard rewrite rules. Establish `hsum : ∑ m : ι k, valAt M.x (F.u' I0 ⟨k, m⟩) wb * ∑ I : Finset (Fin N), valAt M.x (F.u ⟨k, m⟩ I) wb * minorIJ h I J = minorIJ h I0 J`. Repeatedly rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[hterm]`. Simplify using the standard rewrite rules. Apply `hne` to reduce the goal to its premises. Rewrite using `[← hsum]`.
-
-Simplify using `[hall]`.
+A detailed English derivation is pending.
 -/
 theorem c5 : C5 := by
   intro K _ ι _ Φ _ y Ψ N j M wb F h p k hw hF hG hb hd hk

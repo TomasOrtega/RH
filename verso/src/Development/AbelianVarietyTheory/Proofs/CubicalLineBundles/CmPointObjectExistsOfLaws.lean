@@ -24,11 +24,11 @@ open GlobalTheory GlobalTheory.CM
 namespace GlobalTheory.CM.ExObj
 
 /- English proof (translation)
-Establish `u0 : u 0 = 1` using `by simpa using hu 0 0`. Establish `v0 : v 0 = 1` using `by simpa using hv 0 0`. Establish `key : ∀ c : ℂ, u (c • z) = v (c • z)`. Establish `hz : z ∈ Submodule.span ℝ (Set.range P)` using `hP ▸ Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`. Conclude with `h a`. Consider the case `zero => intro c`. Rewrite using `[smul_zero, u0, v0]`. Consider the case `add x y _ _ hx hy => intro c`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add, hu, hv, hx, hy]`. Consider the case `smul r x _ hx => intro c`. Rewrite using `[← Complex.coe_smul, smul_smul]`. Conclude with `hx _`. Simplify using `using key 1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem additive_ext {V L M : Type} [AddCommGroup V] [Module ℂ V] [Group M] {P : L → V}
     (hP : Submodule.span ℝ (Set.range P) = ⊤) {u v : V → M} (hu : ∀ z w, u (z + w) = u z * u w)
@@ -45,13 +45,13 @@ theorem additive_ext {V L M : Type} [AddCommGroup V] [Module ℂ V] [Group M] {P
   simpa using key 1
 
 /- English proof (translation)
-Establish `hz : z ∈ Submodule.span ℝ (Set.range P)` using `hP ▸ Submodule.mem_top`. Establish `sm : ∀ (c : ℂ) (y : V), (∃ x : ∀ j, W j, y = ∑ j, F j (x j)) → ∃ x : ∀ j, W j, c • y = ∑ j, F j (x j)`. Introduce and unpack `c _ ⟨x, rfl⟩`. Conclude with `⟨fun j => c • x j, by simp [Finset.smul_sum]⟩`. Proceed by induction on `hz using Submodule.span_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Use `sm (n : ℂ)⁻¹ _ (h a)` as an intermediate fact. Rewrite `this` using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hn.ne'), one_smul]`. Then use the resulting hypothesis. Consider the case `zero => exact ⟨0, by simp⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨x, rfl⟩` from `hx`. Take `⟨y, rfl⟩` from `hy`. Conclude with `⟨x + y, by simp [Finset.sum_add_distrib]⟩`. Consider the case `smul r x _ hx => rw [← Complex.coe_smul]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `sm _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_sum {J V L : Type} [Fintype J] [AddCommGroup V] [Module ℂ V] {W : J → Type} [∀ j, AddCommGroup (W j)]
     [∀ j, Module ℂ (W j)] (F : ∀ j, W j →ₗ[ℂ] V) {P : L → V} (hP : Submodule.span ℝ (Set.range P) = ⊤) {n : ℕ}
@@ -75,13 +75,13 @@ theorem exists_sum {J V L : Type} [Fintype J] [AddCommGroup V] [Module ℂ V] {W
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨h, hh, -⟩` from `exists_kForm E H D ε`. Establish `hpos` using `definite_datum_form_pos E H D ε (by`. Break down `hD with ⟨a, b⟩ | ⟨a, b⟩` into its components or cases. Use `Or.inl ⟨a, ?_⟩` and prove the remaining obligations. Use `congrArg Complex.im b` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `at this`. Rewrite using `[← this]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `Or.inr ⟨a, ?_⟩` and prove the remaining obligations. Use `congrArg Complex.im b` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `at this`. Rewrite using `[show H.rt0.im = -(2 * ω'.im) by linarith]; linarith)`. Take `⟨T, ⟨t⟩, -⟩` from `GlobalTheory.T.exists_cm_tensor_lattice_curve_principal_triple hL E H R ω C D ε _ hh hpos`. Take `⟨T', m, -⟩` from `PAT.exists_pullback E H _ _ (spMap σ) T`. Take `⟨t', ht'⟩` from `isTen_baseChange E H R ω C D _ T t ℂ ω' C' σ π T' m hm`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, ty, P, e', hty, he', htie, hF⟩` from `TenExp.exists_isExp_of_isTen hT hL E H ω' C' u₀ c D ε _ T' t' hc hu hε hh hD`. Take `⟨e, he, hee⟩` from `exists_isExp_push E H R σ T T' m D g ty P e' he'`. Use `⟨_, T, t, g, ty, P, e, hh, hty, he, fun a z => ?_, hF⟩` and prove the remaining obligations. Rewrite using `[hee, htie, Over.comp_left, Category.assoc, ht']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ten_exp (hT : ThetaUnifAV) (hL : Out.Laws) {R : Type} [CommRing R] [IsNoetherianRing R] {ω : R}
     (C : Ell H R ω) (σ : R →+* ℂ) {ω' : ℂ} (C' : Ell H ℂ ω') (π : C'.P.A.left ⟶ C.P.A.left)
@@ -114,9 +114,9 @@ theorem exists_ten_exp (hT : ThetaUnifAV) (hL : Out.Laws) {R : Type} [CommRing R
   rw [hee, htie, Over.comp_left, Category.assoc, ht']
 
 /- English proof (translation)
-Use `(hasType_baseChange E H _ _ _ B t₀ m' ρ D.p D.q).2 (fun k _ β hβ => ?_) (fun k _ _ β _ τ => ?_)` and prove the remaining obligations. Conclude with `⟨IsFractionRing.lift hβ, RingHom.ext fun x => IsFractionRing.lift_algebraMap hβ x, RingHom.injective _⟩`. Establish `h` using `(Xo.univ.geom k (spMap β ≫ y) (β.comp (IntermediateField.inclusion hk).toRingHom) (by`. Rewrite using `[Category.assoc, hy]`. Conclude with `(Spec.map_comp _ _).symm)).1 τ`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (β.comp (IntermediateField.inclusion hk).toRingHom) (baseKA l).ρ = β (algebraMap (𝓞 K₁) K₁ ρ)` using `congrArg β (Subtype.ext hρ.symm)`. Rewrite `h` using `[e, ← LiePull.lieMult_pull _ _ _ _ _ y m.cm.F _ t₀.act m.cart m.act, ← LiePull.lieMult_pull _ _ _ _ _ y m.cm.F _ t₀.act m.cart m.act]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasType_of_moduli {D : Datum H} {l : Level H} (Xo : Moduli D l) (K₁ : IntermediateField ℚ ℂ) [NumberField K₁]
     (hk : KA l ≤ K₁) (ρ : 𝓞 K₁) (hρ : ((ρ : K₁) : ℂ) = H.rt0) (B : SAB H (Sp (𝓞 K₁))) (y : Sp K₁ ⟶ Xo.X)
@@ -133,29 +133,25 @@ theorem hasType_of_moduli {D : Datum H} {l : Level H} (Xo : Moduli D l) (K₁ : 
     exact h
 
 /- English proof (translation)
-Introduce `h1 h2 hT hL hL2 hH hK E _ _ _ H D l Xo g ty FU i Pe hP Z k hkf`. Take `⟨⟨k₀, hk₀, hconj⟩, hsplit, -⟩` from `splits_basic E`. Take `⟨K₁, inst, hk, ω, C, ε, h, B, y, t₀, m, m', ψ, ω', C', π, u₀, c, hkK, hy, hyu, hb⟩` from `GlobalTheory.T.exists_goodReduction_model_cmPeriod_fibre h1 h2 hT hL hL2 hH hK E H D l Xo g ty FU i Pe hP _ _ Z (k ⊔ k₀) inferInstance`. Use `choose hω hε hh hψ hm hc hu htie using hb`. Use `set σ : 𝓞 K₁ →+* ℂ := (algebraMap K₁ ℂ).comp (algebraMap (𝓞 K₁) K₁) with hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσi : Function.Injective σ` using `(algebraMap K₁ ℂ).injective.comp (FaithfulSMul.algebraMap_injective _ _)`. Establish `hσω : ∀ b, σ (2 * ω b - 1) = if b then H.rt0 else -H.rt0` using `fun b => by`. Rewrite using `[map_sub, map_mul, map_ofNat, map_one, (hm b).1, hω]`. Use `choose h₁ T t gA tyA PA e hh₁ hty he hee hF using fun b : Bool => exists_ten_exp hT hL (C b) σ (C' b) (π b) (u₀ b) (c b) (Z.D₁ b) (ε b) (hm b) (hc b) (hu b) (hε b) (by`. Consider the cases of `b`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Prove the second alternative. Prove the first alternative. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inr ⟨Z.sigM.1, hω false⟩`. Conclude with `Or.inl ⟨Z.sigP.2, hω true⟩)`. Use `choose Φ hΦl hΦt hΦp using fun j : Fin D.p ⊕ Fin D.q => exists_famLift E H _ _ (C j.isLeft) (Z.D₁ j.isLeft) (FU.Di i) (ε j.isLeft) (h₁ _) (h _) (T _) B (t _) _ (ψ j.isLeft) ((Z.f j).codRestrict _ (Z.pure j)) (Z.hh j) (hh₁ _) (hh _) (Z.form j) (hψ _)`. Use `choose F hFP using fun j : Fin D.p ⊕ Fin D.q => hF j.isLeft (Fin g → ℂ) (Pe.comp (Z.f j).toAddMonoidHom) (fun a => by show Pe (Z.f j (H.w0 • a)) = _ • Pe (Z.f j a)`. Rewrite using `[map_smul, PureType.period_w0_smul hP (Z.pure j a), ← hω]`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use the proof step `ring)`. Use `replace hFP : ∀ j a, F j (PA _ a) = Pe (Z.f j a) := hFP`. Take `⟨κ', hκ'⟩` from `LiePull.exists_pushEquiv m'.cart (Over.mk (spMap (algebraMap K₁ ℂ))) (spMap σ) (Spec.map_comp (CommRingCat.ofHom (algebraMap (𝓞 K₁) K₁)) (CommRingCat.ofHom (algebraMap K₁ ℂ)))`. Take `⟨κ, hκ⟩` from `LiePull.exists_pushEquiv m.cart (Over.mk (spMap (algebraMap K₁ ℂ))) (FU.u i Pe) hyu.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hadd : ∀ (j : Fin D.p ⊕ Fin D.q) z w, e _ (z + w) ≫ Φ j = (e _ z ≫ Φ j) * (e _ w ≫ Φ j)` using `fun j z w => by`. Use `(hΦl j).1` as an intermediate fact. Rewrite using `[(he _).2.2.1, MonObj.mul_comp]`. Establish `tie : ∀ (j : Fin D.p ⊕ Fin D.q) z, κ (κ'.symm (e _ z ≫ Φ j)) = FU.ex i Pe (F j z)` using `fun j z => by`. Use `additive_ext (he j.isLeft).1.2.2.2.1 (u := fun z => κ (κ'.symm (e _ z ≫ Φ j))) (v := fun z => FU.ex i Pe (F j z)) (fun z w => ?_) (fun z w => ?_) (fun a s => ?_) z` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hadd, map_mul]`. Simplify using `only [map_add, FU.ex_add i Pe hP]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [map_smul, hFP, hκ]`. Use `htie j.isLeft ⟨Z.f j a, Z.pure j a⟩ s _ (Over.w _) ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hκ' _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[κ'.apply_symm_apply, Over.comp_left, hee, Category.assoc, Category.assoc, ← Over.comp_left, hΦt]`. Both sides reduce to the same expression. Establish `hρ : σ (2 * ω true - 1) = H.rt0` using `hσω true`. Establish `hsq : (2 * ω true - 1) ^ 2 = -(H.d : 𝓞 K₁)` using `hσi (by rw [map_pow, hρ, H.sqrt_neg_disc_sq, map_neg, map_natCast])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hneg : 2 * ω false - 1 = -(2 * ω true - 1)` using `hσi (by rw [map_neg, hρ, hσω]; rfl)`. Establish `tP` using `hasType_of_isTen hL.polBaseChange E H _ _ (C true) _ _ _ ⟨t true⟩`. Establish `tM` using `hasType_of_isTen hL.polBaseChange E H _ _ (C false) _ _ _ ⟨t false⟩`. Rewrite `tP` using `[Z.sigP.1, Z.sigP.2]`. Rewrite `tM` using `[Z.sigM.1, Z.sigM.2, hneg]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨K₁, inst, hk, 2 * ω true - 1, { split := hsplit K₁ fun τ a => hkK ((le_sup_right : k₀ ≤ k ⊔ k₀) (hconj τ a)) ρ_sq := hsq A := T B := B typeP := tP typeM := (hasType_neg_iff E H _ _ _ _ 0 1 hsq).2 tM typeB := hasType_of_moduli Xo K₁ hk (2 * ω true - 1) hρ B.t y t₀ m m' hy hh := Z …` and prove the remaining obligations. Take `⟨v, hv⟩` from `FU.ex_onto i Pe hP (κ (κ'.symm w))`. Take `⟨n, hn, hs⟩` from `Z.span`. Take `⟨z, rfl⟩` from `exists_sum F hP.2.2.2.1 hn (fun a => by`. Take `⟨x, hx⟩` from `hs a`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨fun j => PA _ (x j), by simp only [hFP, ← map_sum, ← hx, map_nsmul]⟩) v`. Use `⟨fun j => e _ (z j), κ'.symm.injective (κ.injective ?_)⟩` and prove the remaining obligations. Set `ex : Multiplicative (Fin g → ℂ) →* (Over.mk (FU.u i Pe) ⟶ Xo.univ.t.G)` to `MonoidHom.mk' (fun s => FU.ex i Pe s.toAdd) fun a b => FU.ex_add i Pe hP _ _`. Rewrite using `[← hv, map_list_prod, map_list_prod, List.map_ofFn, List.map_ofFn]`. Simplify using `only [Function.comp_def, tie]`.
-
-Use `map_list_prod ex (List.ofFn fun r : Fin (D.p + D.q) => Multiplicative.ofAdd (F (finSumFinEquiv.symm r) (z (finSumFinEquiv.symm r))))` as an intermediate fact. Rewrite `this` using `[List.map_ofFn, List.prod_ofFn, ← ofAdd_sum, Equiv.sum_comp finSumFinEquiv.symm fun j => F j (z j)]`. Conclude with `this`. Conclude with `(PairingFibre.lamEq_weilEq_over_ring hL _ (T j.isLeft).pol (T j.isLeft).pol B.pol (T j.isLeft).pol (Φ j) (Φ j) ((T j.isLeft).t.act.act (Z.hh j)) (𝟙 _) (hΦl j).1 (hΦl j).1 ((T j.isLeft).t.act.hom _) inferInstance ℂ σ).1 (hΦp j)`. Establish `hx' : κ'.symm (e _ z ≫ Φ j) = Over.homMk x hx` using `κ'.symm_apply_eq.2 (Over.OverMorphism.ext (hxe.symm.trans (hκ' (Over.homMk x hx)).symm))`.
-
-Rewrite using `[← tie, hx', hκ]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cmExists : CMCurve → CMPoint → ThetaUnifAV → Out.Laws → Out.Laws2 → HomExtDvr → Published.KernelFiniteFlatSt →
     CMExistsSt := by

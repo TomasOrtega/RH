@@ -7,9 +7,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (PowerSeries K)) y`. Establish `hb0 : (b : PowerSeries K) ≠ 0` using `nonZeroDivisors.coe_ne_zero b`. Take `⟨s, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 PowerSeries.X_irreducible`. Use `choose r hr using hb`. Use `⟨s, fun i => ↑u⁻¹ * r i, fun i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hr i, Algebra.smul_def, hu, map_mul, ← mul_assoc, ← map_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem clr {K : Type} [Field K] {ι : Type} [Finite ι] (y : ι → FractionRing (PowerSeries K)) :
     ∃ (s : ℕ) (a : ι → PowerSeries K), ∀ i, algebraMap _ (FractionRing (PowerSeries K)) (a i) =
@@ -29,7 +29,7 @@ section Mp
 variable {A B : Type} [CommRing A] [CommRing B] {n a : ℕ} (f : A →+* B)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem mp_smul (c : A) (M : Matrix (Fin n) (Fin n) A) : f.mapMatrix (c • M) = f c • f.mapMatrix M := by
   ext i j; simp
@@ -40,7 +40,7 @@ Both sides reduce to the same expression.
 private theorem mp_tr (M : Matrix (Fin n) (Fin n) A) : f.mapMatrix Mᵀ = (f.mapMatrix M)ᵀ := rfl
 
 /- English proof (translation)
-Simplify using `[Matrix.trace]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mp_trace (M : Matrix (Fin n) (Fin n) A) : (f.mapMatrix M).trace = f M.trace := by
   simp [Matrix.trace]
@@ -48,7 +48,7 @@ private theorem mp_trace (M : Matrix (Fin n) (Fin n) A) : (f.mapMatrix M).trace 
 variable {f}
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply `hf` to reduce the goal to its premises. Simplify using `using congrFun (congrFun h i) j`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem mp_inj (hf : Function.Injective f) {M N : Matrix (Fin n) (Fin n) A}
     (h : f.mapMatrix M = f.mapMatrix N) : M = N := by
@@ -57,14 +57,14 @@ private theorem mp_inj (hf : Function.Injective f) {M N : Matrix (Fin n) (Fin n)
   simpa using congrFun (congrFun h i) j
 
 /- English proof (translation)
-Simplify using `[Ev, blkMat, map_eq_zero_iff f hf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mp_ev (hf : Function.Injective f) {M : Matrix (Fin n) (Fin n) A} :
     f.mapMatrix M ∈ Ev B B n a ↔ M ∈ Ev A A n a := by
   simp [Ev, blkMat, map_eq_zero_iff f hf]
 
 /- English proof (translation)
-Simplify using `[Od, blkMat, map_eq_zero_iff f hf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mp_od (hf : Function.Injective f) {M : Matrix (Fin n) (Fin n) A} :
     f.mapMatrix M ∈ Od B B n a ↔ M ∈ Od A A n a := by
@@ -81,7 +81,7 @@ Both sides reduce to the same expression.
 -/
 private theorem eta_neg : etaM (-P) = -etaM P := rfl
 /- English proof (translation)
-The claim follows from `(rfl)`.
+A detailed English derivation is pending.
 -/
 private theorem eta_sub : etaM (P - Q) = etaM P - etaM Q := (rfl)
 /- English proof (translation)
@@ -89,9 +89,9 @@ Both sides reduce to the same expression.
 -/
 private theorem eta_tr : etaM Pᵀ = (etaM P)ᵀ := rfl
 /- English proof (translation)
-Establish `ha : (DD.C c : DD A g).a = c` using `rfl`. Establish `he : (DD.C c : DD A g).eta = 0` using `rfl`. Establish `hp : (DD.C c : DD A g).ep = 0` using `rfl`. Establish `hq : (DD.C c : DD A g).ep' = 0` using `rfl`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[etaM, ha, he, hp, hq]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem eta_C : etaM ((DD.C c : DD A g) • P) = c • etaM P := by
   have ha : (DD.C c : DD A g).a = c := rfl
@@ -101,7 +101,7 @@ private theorem eta_C : etaM ((DD.C c : DD A g) • P) = c • etaM P := by
   ext i j
   simp [etaM, ha, he, hp, hq]
 /- English proof (translation)
-The claim follows from `eta_C P c`.
+A detailed English derivation is pending.
 -/
 private theorem eta_smul : etaM (c • P) = c • etaM P := eta_C P c
 /- English proof (translation)
@@ -113,7 +113,7 @@ Both sides reduce to the same expression.
 -/
 private theorem ep_neg (j) : ep'M j (-P) = -ep'M j P := rfl
 /- English proof (translation)
-The claim follows from `(rfl)`.
+A detailed English derivation is pending.
 -/
 private theorem ep_sub (j) : ep'M j (P - Q) = ep'M j P - ep'M j Q := (rfl)
 /- English proof (translation)
@@ -121,7 +121,7 @@ Both sides reduce to the same expression.
 -/
 private theorem ep_tr (j) : ep'M j Pᵀ = (ep'M j P)ᵀ := rfl
 /- English proof (translation)
-Establish `ha : (DD.C c : DD A g).a = c` using `rfl`. Establish `hq : (DD.C c : DD A g).ep' = 0` using `rfl`. Use extensionality with `i k`. Simplify using `[ep'M, ha, hq]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem ep_C (j) : ep'M j ((DD.C c : DD A g) • P) = c • ep'M j P := by
   have ha : (DD.C c : DD A g).a = c := rfl
@@ -129,20 +129,20 @@ private theorem ep_C (j) : ep'M j ((DD.C c : DD A g) • P) = c • ep'M j P := 
   ext i k
   simp [ep'M, ha, hq]
 /- English proof (translation)
-The claim follows from `ep_C P c j`.
+A detailed English derivation is pending.
 -/
 private theorem ep_smul (j) : ep'M j (c • P) = c • ep'M j P := ep_C P c j
 
 /- English proof (translation)
-Establish `ha : (DD.C c : DD A g).a = c` using `rfl`. Establish `hp : (DD.C c : DD A g).ep = 0` using `rfl`. Establish `hq : (DD.C c : DD A g).ep' = 0` using `rfl`. Simplify using `[pairedDualFirstOrderDualMatrixSpace, blkMat, ddPart] at h ⊢`. Introduce `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hij`. Take `⟨h1, h2, h3⟩` from `(h i j).1 hij`. Use `⟨by simp [h1], ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (P i j).ep k = 0` using `congrFun h2 k`. Simplify using `[ha, hp, h1, e]`. Use function extensionality and compare the values at `k`. Establish `e : (P i j).ep' k = 0` using `congrFun h3 k`. Simplify using `[ha, hq, h1, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `hij`. Take `⟨h1, h2, h3⟩` from `(h i j).2 hij`. Use `⟨by simp [h1], ?_, by simp [h3]⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Establish `e : (P i j).ep k = 0` using `congrFun h2 k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `[ha, hp, h1, e]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem constant_smul_mem_symmetric_deformation (h : P ∈ pairedDualFirstOrderDualMatrixSpace n A A g a) : (DD.C c : DD A g) • P ∈ pairedDualFirstOrderDualMatrixSpace n A A g a := by
   have ha : (DD.C c : DD A g).a = c := rfl
@@ -168,9 +168,9 @@ private theorem constant_smul_mem_symmetric_deformation (h : P ∈ pairedDualFir
     simp [ha, hp, h1, e]
 
 /- English proof (translation)
-Simplify using `[pairedDualFirstOrderDualMatrixSpace, blkMat, ddPart] at h ⊢`. Introduce `i j`. Establish `hji` using `h j i`. Prove the components needed by the constructor for the conclusion. Introduce `hij`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hji.1 hij.symm`. Introduce `hij`. Conclude with `hji.2 (fun e => hij e.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem transpose_mem_symmetric_deformation (h : P ∈ pairedDualFirstOrderDualMatrixSpace n A A g a) : Pᵀ ∈ pairedDualFirstOrderDualMatrixSpace n A A g a := by
   simp [pairedDualFirstOrderDualMatrixSpace, blkMat, ddPart] at h ⊢
@@ -185,23 +185,21 @@ private theorem transpose_mem_symmetric_deformation (h : P ∈ pairedDualFirstOr
 end Mp
 
 /- English proof (translation)
-Use `set φ := algebraMap x.A (FractionRing x.A) with hφ`. Establish `hinj : Function.Injective φ` using `IsFractionRing.injective x.A (FractionRing x.A)`. Establish `hsel` using `k.mem`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j g _ h _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `(hsel j).2.2.1 g h`. Simplify using `only [one_smul]`. Rewrite using `[hr, hr, e, map_add, map_mul, map_mul]`. Introduce `j g`. Rewrite using `[ha, mp_od hinj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hsel j).1 g`. Introduce `j g`. Rewrite using `[hσ, (hsel j).2.2.2.1 g, map_neg, mp_tr]`. Introduce `c Y hY hYt hc`. Rewrite `hY` using `[ha]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, b, hb⟩` from `clr (K := x.K) (Sum.elim c (fun p : Fin n × Fin n => Y p.1 p.2))`. Use `set t : FractionRing x.A := φ ((PowerSeries.X : x.A) ^ s) with ht`. Establish `ht0 : t ≠ 0` using `(map_ne_zero_iff φ hinj).2 (pow_ne_zero _ PowerSeries.X_ne_zero)`. Set `c' : Fin k.g → x.A` to `fun j => b (Sum.inl j)`. Set `Y' : Matrix (Fin n) (Fin n) x.A` to `fun i j => b (Sum.inr (i, j))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hc' : ∀ j, φ (c' j) = t * c j` using `fun j => hb (Sum.inl j)`. Establish `hY' : φ.mapMatrix Y' = t • Y`. Use extensionality with `i j`. Conclude with `hb (Sum.inr (i, j))`. Establish `hY'od : Y' ∈ Od x.A x.A n x.a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mp_od hinj, hY']`. Conclude with `Submodule.smul_mem _ t hY`. Establish `hY't : Y'ᵀ = -Y'`. Apply `mp_inj hinj` to reduce the goal to its premises. Rewrite using `[mp_tr, hY', map_neg, hY', Matrix.transpose_smul, hYt, smul_neg]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hfun : (∑ j, c' j • k.κ j) = dY F (x.ρX x.A) Y'`. Use function extensionality and compare the values at `g`. Apply `mp_inj hinj` to reduce the goal to its premises. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, map_sum, mp_smul, hc', mul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← Finset.smul_sum, hc g]`. Simplify using `only [dTw, dY, one_smul, map_sub, map_mul, hY', hr]`. Simplify using `[smul_sub, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hzero` using `k.indep c' ⟨Y', hY'od, hY't, hfun⟩`. Use function extensionality and compare the values at `j`.
-
-Establish `e` using `hc' j`. Rewrite `e` using `[hzero]`. Simplify using `only [Pi.zero_apply, map_zero] at e`. Conclude with `(mul_eq_zero.1 e.symm).resolve_left ht0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isKap {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {x : NP F n} (k : Kap x)
     (D : DetFr (FractionRing x.A) F.G₀ n) (ha : D.a = x.a) (hσ : D.σ = F.conj)
@@ -254,45 +252,41 @@ private theorem isKap {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {x : NP 
     exact (mul_eq_zero.1 e.symm).resolve_left ht0
 
 /- English proof (translation)
-Introduce `l _ F n x k hl hε`. Use `set φ := algebraMap x.A (FractionRing x.A) with hφ`. Establish `hinj : Function.Injective φ` using `IsFractionRing.injective x.A (FractionRing x.A)`. Take `⟨D, hDa, hDG, hDr, hDσ, hDχ⟩` from `UpperTheory.V.Pa.Det.detFr x hl hε`. Establish `hr : ∀ g, D.r g = φ.mapMatrix (x.ρX x.A g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[hDr]`. Use extensionality with `i j`. Simplify using `[NP.ρX, hφ]`. Establish `hK` using `isKap k D hDa hDσ hr`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmapid : ∀ M : Matrix (Fin n) (Fin n) x.A, M.map (algebraMap x.A x.A) = M`. Introduce `M`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Introduce `z hz hell`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hzW, -, hzc, hzconj⟩` from `hz`. Set `e : F.Γ → x.A` to `fun g => algebraMap ℤ_[l] x.A ↑(F.ε g)`. Establish `heps : ∀ g, epsD k x.A g = (DD.C (e g) : DD x.A k.g)` using `fun g => rfl`. Establish `hχ : ∀ g : F.G₀, D.χF g = φ (e g)` using `hDχ`. Establish `hW` using `UpperTheory.V.Pa.Det.w1sMem (A := x.A) (X := x.A) (g := k.g) (n := n) (a := x.a)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hact` using `UpperTheory.V.Pa.Det.w1sAct k x.A`. Set `ph : F.G₀ → Matrix (Fin n) (Fin n) (FractionRing x.A)` to `fun g => φ.mapMatrix (etaM (z g))`. Set `la : Fin k.g → F.G₀ → Matrix (Fin n) (Fin n) (FractionRing x.A)` to `fun j g => φ.mapMatrix (ep'M j (z g))`. Set `s : FractionRing x.A` to `-φ (e F.c)`. Establish `hee : e F.c * e F.c = 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [e, ← map_mul, ← Units.val_mul, ← map_mul F.ε, F.c_sq, map_one, Units.val_one]`. Establish `hTw : D.IsTw (fun j g => φ.mapMatrix (k.κ j g)) s ph la`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [s, neg_mul_neg, ← map_mul, hee, map_one]`. Introduce `j g _ h _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [la, hzc g h, ep_add, heps, ep_C, (hact (z h) (hzW h) g).2.1 j, map_add, mp_smul, map_mul, hr, hχ]`. Introduce `j g`. Rewrite using `[hDa, mp_od hinj]`. Conclude with `(hW.1 _ (hzW g)).2 j`. Introduce `j g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [la, hDσ, hzconj g, ep_neg, heps, ep_C, ep_tr, map_neg, mp_smul, mp_tr, s, neg_smul]`. Introduce `g`. Rewrite using `[hDa, mp_ev hinj]`. Conclude with `(hW.1 _ (hzW g)).1`. Introduce `g h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [ph, la, hzc g h, eta_add, heps, eta_C, (hact (z h) (hzW h) g).2.2.1, hmapid, map_add, mp_smul, map_sum, map_sub, map_mul, hr, hχ]`. Introduce `g`. Simplify using `only [ph, hDσ, hzconj g, eta_neg, heps, eta_C, eta_tr, map_neg, mp_smul, mp_tr, s, neg_smul]`. Introduce `g hg`. Rewrite `hg` using `[hDG]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h0` using `hell g hg`. Simplify using `only [ell, (hact (z g) (hzW g) g).2.2.2, hmapid] at h0`. Simplify using `only [ph, la, hr, ← map_mul, mp_trace, ← map_sum, ← map_add, h0, map_zero]`. Take `⟨Y₀, Y, hY₀ev, hY₀s, hY, hph⟩` from `UpperTheory.V.Pa.Det.detAlg D _ la s ph hK hTw`. Take `⟨m, b, hb⟩` from `clr (K := x.K) (Sum.elim (fun p : Fin n × Fin n => Y₀ p.1 p.2) (fun q : Fin k.g × Fin n × Fin n => Y q.1 q.2.1 q.2.2))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set t : FractionRing x.A := φ ((PowerSeries.X : x.A) ^ m) with ht`. Set `Y₀' : Matrix (Fin n) (Fin n) x.A` to `fun i j => b (Sum.inl (i, j))`. Set `Y' : Fin k.g → Matrix (Fin n) (Fin n) x.A` to `fun q i j => b (Sum.inr (q, i, j))`. Establish `hY₀' : φ.mapMatrix Y₀' = t • Y₀`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `hb (Sum.inl (i, j))`. Establish `hY' : ∀ q, φ.mapMatrix (Y' q) = t • Y q`. Introduce `q`. Use extensionality with `i j`. Conclude with `hb (Sum.inr (q, i, j))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hY₀'ev : Y₀' ∈ Ev x.A x.A n x.a`. Rewrite using `[← mp_ev hinj, hY₀', ← hDa]`. Conclude with `Submodule.smul_mem _ t hY₀ev`. Establish `hY'od : ∀ q, Y' q ∈ Od x.A x.A n x.a`. Introduce `q`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mp_od hinj, hY', ← hDa]`. Conclude with `Submodule.smul_mem _ t (hY q).1`. Take `⟨Z, hZW, hZeta, hZep⟩` from `hW.2.2 Y₀' Y' hY₀'ev hY'od`. Use `⟨m, Z, hZW, ?_, ?_⟩` and prove the remaining obligations. Apply `hW.2.1` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[heps]`. Conclude with `Submodule.neg_mem _ (constant_smul_mem_symmetric_deformation _ _ (transpose_mem_symmetric_deformation _ hZW))`. Conclude with `hZW`. Apply `mp_inj hinj` to reduce the goal to its premises. Rewrite using `[heps, eta_neg, eta_C, eta_tr, hZeta, map_neg, mp_smul, mp_tr, hY₀']`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `conv_rhs => rw [← hY₀s]`. Simplify using `only [s, Matrix.transpose_smul, smul_smul, neg_smul, smul_neg, mul_neg, mul_comm]`. Introduce `j`. Apply `mp_inj hinj` to reduce the goal to its premises. Rewrite using `[heps, ep_neg, ep_C, ep_tr, hZep, map_neg, mp_smul, mp_tr, hY']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_rhs => rw [← (hY j).2.1]`. Simplify using `only [s, Matrix.transpose_smul, smul_smul, neg_smul, smul_neg, mul_neg, mul_comm]`. Use function extensionality and compare the values at `g`. Apply `hW.2.1` to reduce the goal to its premises. Conclude with `Submodule.smul_mem _ _ (hzW g)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[heps]`. Conclude with `Submodule.sub_mem _ (constant_smul_mem_symmetric_deformation _ _ (hact Z hZW g).1) hZW`. Apply `mp_inj hinj` to reduce the goal to its premises. Establish `h1` using `hph g`. Simplify using `only [ph] at h1`.
-
-Simplify using `only [Pi.smul_apply, eta_smul, heps, eta_sub, eta_C, (hact Z hZW g).2.2.1, hmapid, hZeta, hZep, map_sub, map_add, mp_smul, map_sum, map_mul, ← hr, hY₀', hY', h1, dTw, hχ]`. Simplify using `only [smul_add, smul_sub, Finset.smul_sum, Matrix.mul_smul, Matrix.smul_mul, smul_smul, mul_comm]`. Normalize the expressions using the abelian group laws. Introduce `j`. Apply `mp_inj hinj` to reduce the goal to its premises.
-
-Establish `h1` using `(hY j).2.2 g`. Simplify using `only [la] at h1`. Simplify using `only [Pi.smul_apply, ep_smul, heps, ep_sub, ep_C, (hact Z hZW g).2.1 j, hZep, map_sub, mp_smul, map_mul, ← hr, hY', h1, dTw, hχ]`. Simplify using `only [smul_sub, Matrix.mul_smul, Matrix.smul_mul, smul_smul, mul_comm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.detAsm :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {x : NP F n} (k : Kap x), l ≠ 2 → (∃ g : F.G₀, PadicInt.toZMod ((F.ε g : ℤ_[l]ˣ) : ℤ_[l]) ≠ 1) → Detects k (F.G' : Set F.G₀) := by

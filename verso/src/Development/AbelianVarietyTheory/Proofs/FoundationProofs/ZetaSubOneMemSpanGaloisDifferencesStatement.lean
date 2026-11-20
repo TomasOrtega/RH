@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerTowerQqPow
 open GlobalTheory.K5 GlobalTheory.KumDlog
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.KumIdeal.zeta_sub_one_mem_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FZetaSubOneMemSpanGaloisDifferences.lean&line=28#L28)
 -/

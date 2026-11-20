@@ -12,15 +12,13 @@ namespace GlobalTheory.JSW
 open Finset
 
 /- English proof (translation)
-Use `set G : (Fin m → ℕ) → ℂ := fun l => schurAt (padTo hmn l) α * schurAt l β * T ^ (∑ i, l i) with hGdef`. Establish `hG : Summable fun l : {l : Fin m → ℕ // Antitone l} => ‖G l.1‖`. Use `hs.congr fun l => ?_` and prove the remaining obligations. Simplify using `[G, norm_mul, norm_pow]`. Take `⟨hsum, htrans⟩` from `GlobalTheory.T.hasSum_regroup_antitonePartitions_by_degree G hG`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : (fun d => ∑ l ∈ antiParts m d, G l) = fun d => T ^ d * ∑ k ∈ Finset.Nat.antidiagonalTuple m d, ∏ j, MvPolynomial.eval₂ (Int.castRingHom ℂ) α (MvPolynomial.hsymm (Fin n) ℤ (k j)) * β j ^ (k j)`. Use function extensionality and compare the values at `d`. Rewrite using `[← GlobalTheory.T.cauchy_identity_schur_formal_degree hmn α β d, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Simplify using `only [G]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(mem_antiParts.1 hl).1]`. Expand and normalize the polynomial expressions, which then agree. Establish `h5` using `GlobalTheory.T.mk_sum_hsymm_mul_prod_one_sub_eq_one α β T`. Rewrite `h5` using `[← hc]`. Take `⟨hne, hhas⟩` from `GlobalTheory.T.eulerInverse_powerSeries_eval_one _ hsum (fun p : Fin n × Fin m => α p.1 * β p.2 * T) h5`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hne` using `[Fintype.prod_prod_type]`. Conclude with `Finset.prod_ne_zero_iff.1 (Finset.prod_ne_zero_iff.1 hne i (mem_univ _)) j (mem_univ _)`. Use `htrans _ hhas` as an intermediate fact. Rewrite `this` using `[← Finset.prod_inv_distrib, Fintype.prod_prod_type]`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cauchy_local {m n : ℕ} (hmn : m ≤ n) (α : Fin n → ℂ) (β : Fin m → ℂ) (T : ℂ)
     (hs : Summable fun l : {l : Fin m → ℕ // Antitone l} =>
@@ -51,7 +49,7 @@ theorem cauchy_local {m n : ℕ} (hmn : m ≤ n) (α : Fin n → ℂ) (β : Fin 
     exact this
 
 /- English proof (translation)
-Proceed by induction on `A using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a A ih => simp [Multiset.cons_product, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem multiset_prod_map_product_eq_prod_prod {X Y : Type} (A : Multiset X) (B : Multiset Y) (f : X × Y → ℂ) :
     ((A ×ˢ B).map f).prod = (A.map fun a => (B.map fun b => f (a, b)).prod).prod := by
@@ -60,7 +58,7 @@ theorem multiset_prod_map_product_eq_prod_prod {X Y : Type} (A : Multiset X) (B 
   | cons a A ih => simp [Multiset.cons_product, ih]
 
 /- English proof (translation)
-Rewrite using `[locL, multiset_prod_map_product_eq_prod_prod, Multiset.map_map]`. Simplify using `only [Multiset.map_map, Function.comp_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem locL_univ (q : ℕ) {m n : ℕ} (α : Fin n → ℂˣ) (β : Fin m → ℂˣ) (s : ℂ) :
     locL q (Finset.univ.val.map α) (Finset.univ.val.map β) s =
@@ -70,7 +68,7 @@ theorem locL_univ (q : ℕ) {m n : ℕ} (α : Fin n → ℂˣ) (β : Fin m → �
   rfl
 
 /- English proof (translation)
-Rewrite using `[locL_univ]`. Conclude with `(cauchy_local hmn _ _ _ hs).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cauchy_locL {m n : ℕ} (hmn : m ≤ n) (α : Fin n → ℂˣ) (β : Fin m → ℂˣ) (q : ℕ) (s : ℂ)
     (hs : Summable fun l : {l : Fin m → ℕ // Antitone l} =>

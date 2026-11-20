@@ -30,17 +30,15 @@ noncomputable section
 namespace GlobalTheory.BigConv
 
 /- English proof (translation)
-Take `⟨μs, -, hμ⟩` from `Formalism.FourierDecayAlt.P.SettingConstruction.sectionExists k r L.z L.z' hk L.hz.1 L.hz'.1 L.hz.2 L.hz'.2`. Use `set τ := Formalism.QuantumDeterminants.Tz k r L.z * Formalism.QuantumDeterminants.Tz k r L.z' with hτ`. Establish `hτ0 : 0 < τ` using `mul_pos L.hz.2 L.hz'.2`. Use `set ζ : ℂ := ((τ + 1 : ℝ) : ℂ) with hζ`. Establish `hn : τ < Complex.normSq ζ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hζ, Complex.normSq_ofReal]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨hU, hzz⟩` from `hμ ζ hn`. Use `⟨μs ζ, hU, ?_⟩` and prove the remaining obligations. Establish `hmin` using `Formalism.QuantumDeterminants.big_cell_minors_holds k r L.z L.z' c (μs ζ) L.hz.1 L.hz'.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz` using `hmin.2.2 hc`. Rewrite `hz` using `[Formalism.FourierDecayAlt.P.BigCellHermitian.herm_bigCell _ _ L.hz.1 L.hz'.1, hzz]`. Establish `hr` using `hmin.1 (Fin.last r)`. Use `set P := Formalism.QuantumDeterminants.Dmin k r L.z L.z' (Formalism.QuantumDeterminants.bigCell k r c (μs ζ)) ⟨r, by omega⟩ with hP`. Establish `hP0 : P ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: P = ∏ a : Fin r with a.val < (Fin.last r).val, c a` using `hr`. Rewrite using `[this]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => hc a`. Establish `hlast : Formalism.QuantumDeterminants.Dmin k r L.z L.z' (Formalism.QuantumDeterminants.bigCell k r c (μs ζ)) (Fin.last (r + 1)) = ζ * P`. Unfold `Formalism.QuantumDeterminants.zeta at hz`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `hz` using `[← hP]`. Establish `h2` using `div_mul_cancel₀ (Formalism.QuantumDeterminants.Dmin k r L.z L.z' (Formalism.QuantumDeterminants.bigCell k r c (μs ζ)) (Fin.last (r + 1))) hP0`. Rewrite `h2` using `[hz]`. Conclude with `h2.symm`. Unfold `Formalism.QuantumDeterminants.Gf`.
-
-Rewrite using `[hlast, ← hP, Complex.normSq_mul]`. Establish `h1 : 0 < Complex.normSq P` using `Complex.normSq_pos.2 hP0`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem good_point (k r : ℕ) (L : Formalism.MainNotions.S.LocBessel k r) (hk : 1 ≤ k) (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) :
     ∃ μ₁ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ, μ₁ᴴ * Formalism.QuantumDeterminants.Hb k * μ₁ = Formalism.QuantumDeterminants.Hb k ∧
@@ -75,21 +73,19 @@ theorem good_point (k r : ℕ) (L : Formalism.MainNotions.S.LocBessel k r) (hk :
 open Formalism.FourierDecayAlt in
 
 /- English proof (translation)
-Establish `hg` using `Formalism.QuantumDeterminants.big_cell_mem_holds k r c μ₁ hc hμ₁`. Establish `hu` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hg`. Establish `hinv : (Formalism.QuantumDeterminants.bigCell k r c μ₁)⁻¹ * Formalism.QuantumDeterminants.bigCell k r c μ₁ = 1` using `Matrix.nonsing_inv_mul _ hu`. Establish `hZ` using `Formalism.QuantumDeterminants.bigCellZhat k r L.z L.z' c μ₁ L.hz.1 L.hz'.1`. Use `set ζ := Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) (Formalism.QuantumDeterminants.bigCell k r c μ₁ *ᵥ L.z') L.z with hζ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmono : Formalism.FourierDecayAlt.C2.IsMonomial (Formalism.QuantumDeterminants.Zhat k r L.z L.z' (Formalism.QuantumDeterminants.bigCell k r c μ₁))`. Establish `hζ0 : ζ ≠ 0`. Introduce `h0`. Establish `hmin` using `Formalism.QuantumDeterminants.big_cell_minors_holds k r L.z L.z' c μ₁ L.hz.1 L.hz'.1`. Establish `hz` using `hmin.2.2 hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P := Formalism.QuantumDeterminants.Dmin k r L.z L.z' (Formalism.QuantumDeterminants.bigCell k r c μ₁) ⟨r, by omega⟩ with hP`. Establish `hr` using `hmin.1 (Fin.last r)`. Establish `hP0 : P ≠ 0`. Establish `: P = ∏ a : Fin r with a.val < (Fin.last r).val, c a` using `hr`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => hc a`. Unfold `Formalism.QuantumDeterminants.zeta at hz`. Rewrite `hz` using `[← hP, ← hζ, h0, div_eq_zero_iff]`. Establish `hD : Formalism.QuantumDeterminants.Dmin k r L.z L.z' (Formalism.QuantumDeterminants.bigCell k r c μ₁) (Fin.last (r + 1)) = 0` using `hz.resolve_right hP0`. Unfold `Formalism.QuantumDeterminants.Gf at hG`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hG` using `[hD, ← hP]`. Establish `: 0 ≤ Complex.normSq P` using `Complex.normSq_nonneg _`. Use `mul_pos L.hz.2 L.hz'.2` as an intermediate fact. Simplify using `at hG`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, fun a => if h : a.val < r then c ⟨a.val, h⟩ else ζ, fun a => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs`. Conclude with `hc _`. Conclude with `hζ0`. Use `hZ.trans ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_apply]`. Use `show _ = if i = j then _ else _`. Distinguish the cases in `h : i = j`. Rewrite using `[if_pos h, if_pos h, h]`.
-
-Rewrite using `[if_neg h, if_neg h]`. Establish `hR` using `GlobalTheory.AmpNorm.rStab_bigCell c μ₁ hc hg`. Establish `hcd` using `GlobalTheory.CellAmp.Model.cellData_open L 0 _ hg hinv hG hmono hR`. Conclude with `GlobalTheory.CellMaj.cellConv k r L h 0 _ _ _ _ hκ hok hgap hcd hmono`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conv_good (k r : ℕ) (L : Formalism.MainNotions.S.LocBessel k r) (h : ℝ) (hok : Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h)
     (hgap : GlobalTheory.CellAmp.GapCell k r h) (hκ : L.κN ≠ ⊤) (c : Fin r → ℂ)
@@ -139,11 +135,11 @@ theorem conv_good (k r : ℕ) (L : Formalism.MainNotions.S.LocBessel k r) (h : �
   exact GlobalTheory.CellMaj.cellConv k r L h 0 _ _ _ _ hκ hok hgap hcd hmono
 
 /- English proof (translation)
-Introduce `k r L h hok hgap hκ hκ0 hcL c μ hc hμ`. Take `⟨μ₁, hμ₁, hG⟩` from `good_point k r L hok.1 c hc`. Take `⟨b, hb0, hb1, hint⟩` from `conv_good k r L h hok hgap hκ c μ₁ hc hμ₁ hG`. Establish `hg₁` using `Formalism.QuantumDeterminants.big_cell_mem_holds k r c μ₁ hc hμ₁`. Establish `hg` using `Formalism.QuantumDeterminants.big_cell_mem_holds k r c μ hc hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu₁` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hg₁`. Use `set a := (Formalism.QuantumDeterminants.bigCell k r c μ₁)⁻¹ * Formalism.QuantumDeterminants.bigCell k r c μ with ha`. Establish `haU : a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hg₁) hg`. Establish `hN` using `GlobalTheory.T.bigCell_quotient_normalises_unipotent k r c μ₁ μ hc hμ₁ hμ`. Take `⟨C, hC, hmap⟩` from `GlobalTheory.T.map_conj_unipotentHaar_eq_smul k r L hκ0 hκ a haU hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b, hb0, hb1, ?_⟩` and prove the remaining obligations. Establish `e : Formalism.QuantumDeterminants.bigCell k r c μ₁ * a = Formalism.QuantumDeterminants.bigCell k r c μ`. Rewrite using `[ha, Matrix.mul_nonsing_inv_cancel_left _ _ hu₁]`. Rewrite using `[← e]`. Conclude with `GlobalTheory.T.integrable_besselPairMajorant_mul_right k r L _ a b C hκ0 hκ hb0 hg₁ haU hC hmap hint`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bigConv : ∀ (k r : ℕ) (L : Formalism.MainNotions.S.LocBessel k r) (h : ℝ), Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h → GlobalTheory.CellAmp.GapCell k r h → L.κN ≠ ⊤ → 0 < L.κN → L.c ≠ 0 → ∀ (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ), (∀ a, c a ≠ 0) → μᴴ * Formalism.QuantumDeterminants.Hb k * μ = Formalism.QuantumDeterminants.Hb k → ∃ b : ℝ, 0 ≤ b ∧ Formalism.FourierDecayAlt.ThreeDimData.AG k r + 1 < Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1 - b ∧ MeasureTheory.Integrable (GlobalTheory.CellAmp.pairMaj (Formalism.QuantumDeterminants.bigCell k r c μ) b) (Formalism.MainNotions.S.pairMeas L) := by
   intro k r L h hok hgap hκ hκ0 hcL c μ hc hμ

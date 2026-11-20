@@ -19,7 +19,7 @@ def UnrSplit : Prop :=
         ∀ τ ∈ Ine (F := E) A, Fixes (F := E) X.K τ
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[HeightOneSpectrum.under_asIdeal, Ideal.under, Ideal.mem_comap, ← hA]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem over_under {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (hA : IsPlaceOver A w) :
@@ -29,7 +29,7 @@ private theorem over_under {E Ω : Type} [Field E] [NumberField E] [IsCMField E]
   rfl
 
 /- English proof (translation)
-Conclude with `hg`.
+A detailed English derivation is pending.
 -/
 private theorem dec_res {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω]
     {A : ValuationSubring Ω} {g : G E Ω} (hg : g ∈ Dec (F := E) A) :
@@ -37,7 +37,7 @@ private theorem dec_res {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [F
   exact hg
 
 /- English proof (translation)
-Conclude with `⟨dec_res hg.1, hg.2⟩`.
+Supply the required witnesses or components.
 -/
 private theorem ine_res {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω]
     {A : ValuationSubring Ω} {g : G E Ω} (hg : g ∈ Ine (F := E) A) :
@@ -45,45 +45,37 @@ private theorem ine_res {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [F
   exact ⟨dec_res hg.1, hg.2⟩
 
 /- English proof (translation)
-Unfold `UnrSplit`. Introduce `E Ω _ _ _ _ _ _ w hw f hf S hS`. Use `haveI := isAlgClosure_plus (E := E) (Ω := Ω)`. Use `set v := w.under (𝓞 (maximalRealSubfield E)) with hv`. Take `⟨r, hrG, hrR, hrv⟩` from `unrCharAt_of h2 f hf E Ω v`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm, hrm⟩ : ∃ m, 0 < m ∧ r ^ m = 1` from `by haveI : Finite (G (maximalRealSubfield E) Ω ⧸ r.ker) := Subgroup.quotient_finite_of_isOpen _ hrG.isOpen`. Use `⟨r.ker.index, Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite, ?_⟩` and prove the remaining obligations. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, ← map_pow, MonoidHom.one_apply]`. Conclude with `MonoidHom.mem_ker.mp (r.ker.pow_index_mem g)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `T : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield E)))` to `insert v ((fun s : HeightOneSpectrum (𝓞 E) => s.under (𝓞 (maximalRealSubfield E))) '' S)`. Establish `hTf : T.Finite` using `(hS.image _).insert v`. Establish `mkPl : ∀ (ψ : G (maximalRealSubfield E) Ω →* ℂˣ) (n : ℕ), 2 ≤ n → RamSplit E ψ.ker → ∀ u, u ∉ T → (∀ A : ValuationSubring Ω, IsPlaceOver A u → ∃ τ ∈ Ine (F` using `maximalRealSubfield E) A, orderOf (ψ τ) = n) → (∀ s ∈ S, s.under (𝓞 (maximalRealSubfield E)) ≠ u) ∧ ∀ A : ValuationSubring Ω, IsPlaceOver A u → ∀ g ∈ Dec (F := maximalRealSubfield E) A, Fixes E g := by`. Introduce `ψ n hn hR u huT hu`. Use `⟨fun s hs h => huT (Set.mem_insert_of_mem _ ⟨s, hs, h⟩), fun A hA => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hR'` using `hR`. Unfold `RamSplit at hR'`. Break down `hR' u A hA with h | h` into its components or cases. Take `⟨τ, hτ, ho⟩` from `hu A hA`. Establish `h1' : ψ τ = 1` using `MonoidHom.mem_ker.mp (h hτ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Rewrite `ho` using `[h1', orderOf_one]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Take `⟨r', hr'Gd, hr'D, X, hXc, hXT⟩` from `h1 (G (maximalRealSubfield E) Ω) (fun H => Good H ∧ RamSplit E H) (fun H => ∃ X : Fld E Ω, Cuts X H ∧ Tower S X) {g | ∃ A : ValuationSubring Ω, IsPlaceOver A v ∧ g ∈ Dec (F := maximalRealSubfield E) A} {u : HeightOneSpectrum (𝓞 (maximalRealSubfield E)) // (∀ s ∈ S, s.under (𝓞 (ma …`. Introduce and unpack `u g ⟨A, hA, hg⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨A, hA, Ine_le_Dec A hg⟩)`. Use the proof step `(by`. Introduce and unpack `H H' ⟨hG, hR⟩ ⟨hG', hR'⟩`. Conclude with `⟨hG.inf hG', hR.inf hR'⟩)`. Use the proof step `(by`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `H H' hle ⟨hG, hR⟩`. Conclude with `⟨hG.mono hle, hR.mono hle⟩)`. Use the proof step `(by`. Introduce and unpack `U ⟨hUG, -⟩ n hn`. Take `⟨ψ, hψG, hψR, -, hψT, u, huT, hu⟩` from `h3 E Ω U hUG.isOpen T hTf (max n 2) (by omega)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hPl` using `mkPl ψ (max n 2) (le_max_right _ _) hψR u huT (fun A hA => (hu A hA).2)`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω u`. Break down `Nat.lt_or_ge n 2 with h | h` into its components or cases. Establish `hn1 : n = 1` using `by omega`. Substitute `hn1` using the available equality.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨1, ?_, one_pow _, fun g _ => rfl, ⟨u, hPl⟩, ?_, 1, ⟨A, hA, Subgroup.one_mem _⟩, by simp⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.ker_one]`. Conclude with `⟨Good.top, RamSplit.mono le_top hψR⟩`. Introduce and unpack `g ⟨B, hB, hg⟩`. Conclude with `(hu B hB).1 hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Take `⟨ψ', hψ'G, hψ'R, hψ'n, hψ'T, u', hu'T, hu'⟩` from `h3 E Ω U hUG.isOpen T hTf n hn`. Establish `hPl'` using `mkPl ψ' n h hψ'R u' hu'T (fun B hB => (hu' B hB).2)`. Take `⟨A', hA'⟩` from `exists_isPlaceOver Ω u'`. Take `⟨τ, hτ, ho⟩` from `(hu' A' hA').2`. Use `⟨ψ', ⟨hψ'G, hψ'R⟩, hψ'n, ?_, ⟨u', hPl'⟩, ?_, τ, ⟨A', hA', hτ⟩, ho⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `g ⟨B, hB, hg⟩`. Conclude with `hψ'T v (Set.mem_insert _ _) B hB g hg`. Introduce and unpack `g ⟨B, hB, hg⟩`. Conclude with `(hu' B hB).1 hg)`. Use the proof step `(by`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `H H' u ⟨-, -⟩ ⟨hG', -⟩ ⟨X, hX, hXT⟩ hle hp hDc ⟨τ, ⟨A0, hA0, hτ⟩, hτ'⟩`. Take `⟨Y, hY⟩` from `h4 E Ω H' hG'`. Establish `hL` using `h6 E Ω S H H' hG' hle hp X Y hX hY u.1 u.2.1 (fun A hA g hg => ⟨u.2.2 A hA g hg, by exact hDc ⟨A, hA, hg⟩⟩) ⟨A0, hA0, τ, hτ, hτ'⟩`. Conclude with `⟨Y, hY, hXT.step hL.1⟩)`. Use the proof step `⊤ r ⟨Good.top, RamSplit.mono le_top hrR⟩ ⟨Fld.base E Ω, cuts_base, Tower.base S⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use the proof step `⟨hrG, hrR⟩ m hm hrm`. Take `⟨-, hr'R⟩` from `hr'Gd`. Establish `hc : ∀ g : G E Ω, Fixes X.K g ↔ AlgEquiv.restrictScalarsHom (maximalRealSubfield E) g ∈ ⊤ ⊓ r'.ker`. Unfold `Cuts at hXc`. Conclude with `hXc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ g : G E Ω, Fixes X.K g ↔ r' (AlgEquiv.restrictScalarsHom (maximalRealSubfield E) g) = 1` using `fun g => ⟨fun h => MonoidHom.mem_ker.mp ((hc g).1 h).2, fun h => (hc g).2 ⟨Subgroup.mem_top _, MonoidHom.mem_ker.mpr h⟩⟩`. Establish `hIne : ∀ A : ValuationSubring Ω, IsPlaceOver A w → ∀ τ ∈ Ine (F` using `E) A, Fixes (F := E) X.K τ := by`. Introduce `A hA τ hτ`. Establish `hA' : IsPlaceOver A v` using `over_under hA`. Rewrite using `[key, hr'D _ ⟨A, hA', Ine_le_Dec A (ine_res hτ)⟩]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `MonoidHom.mem_ker.mp ((hrv A hA').1 (ine_res hτ))`. Use `⟨X, hXT, fun A hA => ⟨hIne A hA, fun w' hw' => ?_⟩, ?_⟩` and prove the remaining obligations. Use `haveI := X.tower`. Establish `hA' : IsPlaceOver A v` using `over_under hA`. Establish `hsplit` using `(h8 E Ω A w hA).1 hw`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨φ₀, hφ₀⟩` from `exists_isFrob hA'`. Establish `hvw : normV w = normV v ^ 1` using `h7 (maximalRealSubfield E) E Ω A v w hA' hA (fun τ hτ => hsplit τ (Ine_le_Dec A hτ)) φ₀ 1 one_pos hφ₀ (fun k => ⟨fun _ => one_dvd k, fun _ => hsplit _ (Subgroup.pow_mem _ hφ₀.1 k)⟩)`. Rewrite `hvw` using `[pow_one]`. Take `⟨φ, hφ⟩` from `exists_isFrob hA`. Establish `hφD : AlgEquiv.restrictScalarsHom (maximalRealSubfield E) φ ∈ Dec (F` using `maximalRealSubfield E) A := dec_res hφ.1`.
-
-Establish `hφF : IsFrob A (normV v) (AlgEquiv.restrictScalarsHom (maximalRealSubfield E) φ)`. Use `⟨hφD, fun x hx => ?_⟩` and prove the remaining obligations. Use `hφ.2 x hx` as an intermediate fact. Rewrite `this` using `[hvw]`. Conclude with `this`.
-
-Establish `hord` using `(hrv A hA').2 _ hφF`. Use `h7 E X.K Ω A w w' hA hw' (hIne A hA) φ f hf hφ (fun k => ?_)` and prove the remaining obligations. Rewrite using `[key, map_pow, map_pow, hr'D _ ⟨A, hA', hφD⟩, ← orderOf_dvd_iff_pow_eq_one, hord]`. Introduce `u hu A hA τ hτ`. Establish `hA'` using `over_under hA`.
-
-Rewrite using `[key]`. Establish `hR` using `hr'R`. Unfold `RamSplit at hR`. Break down `hR _ A hA' with h | h` into its components or cases. Conclude with `MonoidHom.mem_ker.mp (h (ine_res hτ))`.
-
-Conclude with `absurd ((h8 E Ω A u hA).2 h) hu`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem unrSplit_of (h1 : GroupStep) (h2 : UnrCharPP) (h3 : FreshSplit) (h4 : ExFld) (h6 : LayerOf) (h7 : DegOf)
     (h8 : SplitIff) : UnrSplit := by

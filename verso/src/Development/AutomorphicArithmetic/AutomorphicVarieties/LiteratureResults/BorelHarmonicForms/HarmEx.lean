@@ -8,19 +8,19 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha n e he U hU π Ξ r hr hC hF`. Take `⟨q, ω, h0, hK, hB, hL⟩` from `levelCo E a U hU π Ξ hC hF`. Take `⟨hd, hδ⟩` from `piHarm E a ha n e he π Ξ r hr hC q ω hK`. Take `⟨hinj, hcmp, hIK, hIL, hIA⟩` from `inclFacts E a π Ξ r`. Establish `hE` using `oneEig E a π Ξ r hr hC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hS` using `cuspSq E a ha π r hE`. Use `⟨q, inclCo π Ξ ω, fun h => h0 (AlternatingMap.ext fun X => hinj ?_), ⟨⟨fun k X => ?_, fun X i hi => ?_, fun X => mem_span_of_cmp fun i => ?_⟩, AlternatingMap.ext fun X => ?_, ?_⟩, fun X => mem_tens.2 fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : incl π Ξ (ω X) = 0` using `DFunLike.congr_fun h X`. Rewrite using `[h1, AlternatingMap.zero_apply, map_zero]`. Rewrite using `[inclCo_apply, inclCo_apply, hK k X, hIK]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inclCo_apply, hB X i hi, map_zero]`. Rewrite using `[inclCo_apply, hcmp]`. Establish `hm` using `(cmp i (ω X)).2`. Use `⟨⟨(hS _ hm).left, fun u hu => congrArg Subtype.val (hL X i u hu), fun m hm' => ?_⟩, (π.cusp _ hm).2, (hS _ hm).sq⟩` and prove the remaining obligations. Establish `h1 : (r : ℂ) • (1 : Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ) = m • 1` using `hr.symm.trans hm'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : (r : ℂ) = m` using `by simpa using congrFun (congrFun h1 i) i`. Rewrite using `[← h2]`. Conclude with `hE _ hm`. Establish `h1` using `congrArg (incl π Ξ) (DFunLike.congr_fun hd X)`. Rewrite `h1` using `[dCo_apply, AlternatingMap.zero_apply, map_zero, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dCo_apply, AlternatingMap.zero_apply, ← h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[inclCo_apply, ← hIL]`. Simplify using `only [map_zsmul, LinearMap.map_smul_of_tower]`. Consider the cases of `q with`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `zero => trivial`. Consider the case `succ q`. Use `AlternatingMap.ext fun X => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (incl π Ξ) (DFunLike.congr_fun (show del _ e ω = 0 from hδ) X)`. Rewrite `h1` using `[del_apply, AlternatingMap.zero_apply, map_zero, map_sum]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[del_apply, AlternatingMap.zero_apply, ← h1]`. Conclude with `Finset.sum_congr rfl fun j _ => (hIA _ _).symm`. Rewrite using `[inclCo_apply, hcmp]`. Conclude with `(cmp i (ω X)).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Bor.harmEx :
     UpperTheory.V.Lit.Bor.HarmEx := by

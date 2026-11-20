@@ -13,35 +13,35 @@ def dd (n : ℕ) (v : ℕ → E) (ψ : E →ₗ[ℂ] ℂ) : ℂ[X] :=
   ∑ j ∈ Finset.range (n + 1), C (ψ (v j)) * X ^ (n - j)
 
 /- English proof (translation)
-Simplify using `[dd, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma dd_add (n : ℕ) (v : ℕ → E) (ψ ψ' : E →ₗ[ℂ] ℂ) : dd n v (ψ + ψ') = dd n v ψ + dd n v ψ' := by
   simp [dd, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[dd, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma dd_smul (n : ℕ) (v : ℕ → E) (a : ℂ) (ψ : E →ₗ[ℂ] ℂ) : dd n v (a • ψ) = C a * dd n v ψ := by
   simp [dd, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[dd]`.
+Simplify using the standard rewrite rules.
 -/
 lemma dd_zero (n : ℕ) (v : ℕ → E) : dd n v (0 : E →ₗ[ℂ] ℂ) = 0 := by
   simp [dd]
 
 /- English proof (translation)
-Establish `key : X * dd n v ψ = (∑ j ∈ Finset.range (n + 1), C (ψ (v (j + 1))) * X ^ (n - j)) + C (ψ x) * X ^ (n + 1)`. Establish `h1` using `Finset.sum_range_succ (fun j => (C (ψ (v j)) : ℂ[X]) * X ^ (n + 1 - j)) (n + 1)`. Establish `h2` using `Finset.sum_range_succ' (fun j => (C (ψ (v j)) : ℂ[X]) * X ^ (n + 1 - j)) (n + 1)`. Rewrite `h2` using `[h1]`. Simplify using `only [hn, map_zero, zero_mul, add_zero, h0, Nat.sub_zero, Nat.add_sub_add_right] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h2, dd, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `: n + 1 - j = (n - j) + 1` using `by have := Finset.mem_range.1 hj; omega`. Rewrite using `[this, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hG : (S.map (fun t => X - C t)).prod = (∑ j ∈ Finset.range (n + 1), C (((-1 : ℂ) ^ (j + 1)) * S.esymm (j + 1)) * X ^ (n - j)) + X ^ (n + 1)`. Rewrite using `[Multiset.prod_X_sub_X_eq_sum_esymm, hS, Finset.sum_range_succ']`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Nat.add_sub_add_right, map_mul, map_pow, map_neg, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[Multiset.esymm]`. Rewrite using `[key, hG, dd, mul_add, Finset.mul_sum, add_sub_right_comm, ← Finset.sum_sub_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `congrArg ψ (hrec j (by have := Finset.mem_range.1 hj; omega))`. Simplify using `only [map_sub, map_smul, smul_eq_mul] at h`. Establish `h' : ψ (v (j + 1)) = ψ (T (v j)) + (-1 : ℂ) ^ (j + 1) * S.esymm (j + 1) * ψ x`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h']`. Simplify using `only [LinearMap.comp_apply, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma dd_step (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1) (T : Module.End ℂ E) (v : ℕ → E) (x : E)
     (h0 : v 0 = x) (hn : v (n + 1) = 0)
@@ -76,11 +76,11 @@ lemma dd_step (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1) (T : M
   ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro ψ`. Simplify using `[Module.End.one_eq_id]`. Consider the case `succ k ih`. Introduce `ψ`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ψ ∘ₗ (T ^ (k + 1)) = (ψ ∘ₗ (T ^ k)) ∘ₗ T`. Rewrite using `[pow_succ]`. Both sides reduce to the same expression. Establish `: X ^ (k + 1) * dd n v ψ - dd n v (ψ ∘ₗ (T ^ (k + 1))) = X * (X ^ k * dd n v ψ - dd n v (ψ ∘ₗ (T ^ k))) + (X * dd n v (ψ ∘ₗ (T ^ k)) - dd n v ((ψ ∘ₗ (T ^ k)) ∘ₗ T))`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, dd_step S n hS T v x h0 hn hrec]`. Conclude with `dvd_add (Dvd.dvd.mul_left (ih ψ) _) (Dvd.intro_left _ rfl)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dd_pow (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1) (T : Module.End ℂ E) (v : ℕ → E) (x : E)
     (h0 : v 0 = x) (hn : v (n + 1) = 0)
@@ -100,13 +100,13 @@ lemma dd_pow (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1) (T : Mo
     exact dvd_add (Dvd.dvd.mul_left (ih ψ) _) (Dvd.intro_left _ rfl)
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p r hp hr`. Establish `: (p + r) * dd n v ψ - dd n v (ψ ∘ₗ (aeval T (p + r))) = (p * dd n v ψ - dd n v (ψ ∘ₗ (aeval T p))) + (r * dd n v ψ - dd n v (ψ ∘ₗ (aeval T r)))`. Rewrite using `[map_add, LinearMap.comp_add, dd_add]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this]`. Conclude with `dvd_add hp hr`. Consider the case `monomial k a`. Establish `e : ψ ∘ₗ (aeval T (monomial k a)) = a • (ψ ∘ₗ (T ^ k))`. Rewrite using `[aeval_monomial]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using `[Algebra.algebraMap_eq_smul_one]`. Establish `: monomial k a * dd n v ψ - dd n v (ψ ∘ₗ (aeval T (monomial k a))) = C a * (X ^ k * dd n v ψ - dd n v (ψ ∘ₗ (T ^ k)))`. Rewrite using `[e, dd_smul, ← C_mul_X_pow_eq_monomial]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Dvd.dvd.mul_left (dd_pow S n hS T v x h0 hn hrec k ψ) _`.
+A detailed English derivation is pending.
 -/
 lemma dd_aeval (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1) (T : Module.End ℂ E) (v : ℕ → E) (x : E)
     (h0 : v 0 = x) (hn : v (n + 1) = 0)
@@ -131,7 +131,7 @@ lemma dd_aeval (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1) (T : 
     exact Dvd.dvd.mul_left (dd_pow S n hS T v x h0 hn hrec k ψ) _
 
 /- English proof (translation)
-Establish `h` using `dd_aeval S n hS T v x h0 hn hrec (minpoly ℂ T) ψ`. Rewrite `h` using `[minpoly.aeval, LinearMap.comp_zero, dd_zero, sub_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma dvd_minpoly_mul [FiniteDimensional ℂ E] (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1)
     (T : Module.End ℂ E) (v : ℕ → E) (x : E)
@@ -143,11 +143,9 @@ lemma dvd_minpoly_mul [FiniteDimensional ℂ E] (S : Multiset ℂ) (n : ℕ) (hS
   rwa [minpoly.aeval, LinearMap.comp_zero, dd_zero, sub_zero] at h
 
 /- English proof (translation)
-Establish `hG : (S.map (fun t => X - C t)).prod.roots = S` using `roots_multiset_prod_X_sub_C S`. Establish `hcount : S.count z = rootMultiplicity z (S.map (fun t => X - C t)).prod`. Rewrite using `[← count_roots, hG]`. Establish `h1 : (X - C z) ^ (S.count z) ∣ (S.map (fun t => X - C t)).prod`. Rewrite using `[hcount]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_rootMultiplicity_dvd _ _`. Establish `h2` using `h1.trans (dvd_minpoly_mul S n hS T v x h0 hn hrec ψ)`. Establish `hcop : IsCoprime (X - C z) (minpoly ℂ T)`. Rewrite using `[(irreducible_X_sub_C z).coprime_iff_not_dvd, dvd_iff_isRoot]`. Conclude with `fun h => hz (Module.End.hasEigenvalue_of_isRoot h)`.
-
-Conclude with `(hcop.pow_left).dvd_of_dvd_mul_left h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 lemma pow_dvd_dd [FiniteDimensional ℂ E] (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1)
     (T : Module.End ℂ E) (v : ℕ → E) (x : E)
@@ -167,17 +165,17 @@ lemma pow_dvd_dd [FiniteDimensional ℂ E] (S : Multiset ℂ) (n : ℕ) (hS : Mu
   exact (hcop.pow_left).dvd_of_dvd_mul_left h2
 
 /- English proof (translation)
-Use `set G := (S.map (fun t => X - C t)).prod with hGdef`. Establish `hGroots : G.roots = S` using `roots_multiset_prod_X_sub_C S`. Establish `hG0 : G ≠ 0` using `(monic_multiset_prod_of_monic _ _ (fun t _ => monic_X_sub_C t)).ne_zero`. Establish `hcount : ∀ w, S.count w = rootMultiplicity w G` using `fun w => by rw [← count_roots, hGroots]`. Establish `h1 : (X - C z) ^ (S.count z) ∣ G`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcount]`. Conclude with `pow_rootMultiplicity_dvd _ _`. Establish `h2 : (X - C z) ^ (S.count z) ∣ C c * G.comp (C q * X)`. Establish `: C c * G.comp (C q * X) = C d * (X * f) + C c * G` using `by rw [hrel]; ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `dvd_add (Dvd.dvd.mul_left (Dvd.dvd.mul_left hf _) _) (Dvd.dvd.mul_left h1 _)`. Establish `h3 : (X - C z) ^ (S.count z) ∣ G.comp (C q * X)` using `((isUnit_C.mpr (isUnit_iff_ne_zero.mpr hc)).dvd_mul_left).1 h2`. Take `⟨H, hH⟩` from `h3`. Establish `h4 : G = (C q⁻¹ * (X - C (q * z))) ^ (S.count z) * H.comp (C q⁻¹ * X)`. Establish `e1 : (G.comp (C q * X)).comp (C q⁻¹ * X) = G`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[comp_assoc]`. Establish `: (C q * X : ℂ[X]).comp (C q⁻¹ * X) = X`. Simplify using `only [mul_comp, C_comp, X_comp]`. Rewrite using `[← mul_assoc, ← C_mul, mul_inv_cancel₀ hq, C_1, one_mul]`. Rewrite using `[this, comp_X]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (X - C z : ℂ[X]).comp (C q⁻¹ * X) = C q⁻¹ * (X - C (q * z))`. Simplify using `only [sub_comp, X_comp, C_comp, mul_sub, ← C_mul]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hq, one_mul]`. Rewrite using `[← e1, hH, mul_comp, pow_comp, e2]`. Establish `h5 : (X - C (q * z)) ^ (S.count z) ∣ G`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[h4, mul_pow, mul_assoc]`. Use `((isUnit_C.mpr (isUnit_iff_ne_zero.mpr (inv_ne_zero hq))).pow _).dvd_mul_left.2 ?_` and prove the remaining obligations. Conclude with `Dvd.intro _ rfl`. Rewrite using `[hcount (q * z)]`. Conclude with `(le_rootMultiplicity_iff hG0).2 h5`.
+A detailed English derivation is pending.
 -/
 lemma count_le_of_dvd (S : Multiset ℂ) (q c d z : ℂ) (hq : q ≠ 0) (hc : c ≠ 0) (f : ℂ[X])
     (hf : (X - C z) ^ (S.count z) ∣ f)
@@ -215,11 +213,11 @@ lemma count_le_of_dvd (S : Multiset ℂ) (q c d z : ℂ) (hq : q ≠ 0) (hc : c 
   exact (le_rootMultiplicity_iff hG0).2 h5
 
 /- English proof (translation)
-Rewrite using `[Multiset.prod_X_sub_X_eq_sum_esymm, hS, ← coe_compRingHom_apply, map_sum, ← Finset.sum_sub_distrib, Finset.sum_range_succ, dd, Finset.mul_sum, Finset.mul_sum]`. Simplify using `only [coe_compRingHom_apply]`. Establish `hlast : ((-1 : ℂ[X]) ^ (n + 1) * (C (S.esymm (n + 1)) * X ^ (n + 1 - (n + 1)))).comp (C q * X) - (-1 : ℂ[X]) ^ (n + 1) * (C (S.esymm (n + 1)) * X ^ (n + 1 - (n + 1))) = 0`. Simplify using the standard rewrite rules. Rewrite using `[hlast, add_zero, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hj' : j ≤ n` using `by have := Finset.mem_range.1 hj; omega`. Establish `e : n + 1 - j = (n - j) + 1` using `by omega`. Establish `h` using `congrArg (C : ℂ → ℂ[X]) (hp j hj')`. Simplify using `only [map_mul, map_sub, map_pow, map_neg, map_one] at h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_comp, pow_comp, neg_comp, one_comp, C_comp, X_comp]`. Rewrite `h`, the goal using `[e]`. Rewrite using `[mul_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma rel_of_pair (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1) (q c d : ℂ) (v : ℕ → E)
     (φ : E →ₗ[ℂ] ℂ)
@@ -245,57 +243,53 @@ lemma rel_of_pair (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1) (q
     _ = _ := by rw [h]; ring
 
 /- English proof (translation)
-Introduce `q n hq V _ _ B W U Z S hpos hcard h0S hZ0 hUW hZW hexp hZtop hrec hpair z hz`. Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast (by omega : q ≠ 0)`. Establish `hqR : (0 : ℝ) < q` using `by exact_mod_cast (by omega : 0 < q)`. Take `⟨s, hsdef⟩ : ∃ s : ℂ, s = (q : ℂ) ^ (((2 : ℕ) : ℂ)⁻¹)` from `⟨_, rfl⟩`. Establish `hs2 : s ^ 2 = q` using `by rw [hsdef]; exact Complex.cpow_nat_inv_pow _ (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs0 : s ≠ 0`. Introduce `h; rw [h] at hs2; exact hq0 (by simpa using hs2.symm)`. Establish `hsn : ‖s‖ ^ 2 = q`. Rewrite using `[← norm_pow, hs2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hpow : ∀ j ≤ n + 1, (q : ℂ) ^ (((j : ℂ) * (((n + 1 : ℕ) : ℂ) - j)) / 2) = s ^ (j * (n + 1 - j))`. Introduce `j hj`. Establish `: ((j : ℂ) * (((n + 1 : ℕ) : ℂ) - j)) / 2 = ((j * (n + 1 - j) : ℕ) : ℂ) * (((2 : ℕ) : ℂ)⁻¹)`. Rewrite using `[Nat.cast_mul, Nat.cast_sub hj]`. Use `push_cast`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.cpow_nat_mul, ← hsdef]`. Take `⟨b, hbdef⟩ : ∃ b : ℕ → ℂ, ∀ j, b j = (-1) ^ j * s ^ (j * (j - 1)) * (s ^ (n * j))⁻¹` from `⟨_, fun _ => rfl⟩`. Establish `hbtop : ∀ j ≤ n + 1, b j * s ^ (j * (n + 1 - j)) = (-1) ^ j`. Introduce `j hj`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : j * (j - 1) + j * (n + 1 - j) = n * j`. Take `⟨i, hi⟩` from `Nat.exists_eq_add_of_le hj`. Consider the cases of `j with`. Consider the case `zero => simp`. Consider the case `succ j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `: n + 1 - (j + 1) = i` using `by omega`. Establish `hn' : n = j + i` using `by omega`. Rewrite using `[this, hn']`. Simplify using `only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hbdef, mul_assoc, mul_assoc, mul_comm (s ^ (n * j))⁻¹, ← mul_assoc (s ^ (j * (j - 1))), ← pow_add, e]`. Rewrite using `[mul_inv_cancel₀ (pow_ne_zero _ hs0), mul_one]`. Establish `hbrec : ∀ j, b (j + 1) = -((s ^ n)⁻¹ * b j * (q : ℂ) ^ j)`. Introduce `j`. Establish `e : (j + 1) * (j + 1 - 1) = j * (j - 1) + 2 * j`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the cases of `j with`. Consider the case `zero => simp`. Consider the case `succ j => simp only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hbdef, hbdef, e, pow_add, ← hs2, ← pow_mul, Nat.mul_succ, pow_add s (n * j) n, mul_inv]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨Ee, hEe⟩ : ∃ Ee : Submodule ℂ V, Ee = Submodule.span ℂ (Z '' (Finset.range (n + 1) : Set ℕ))` from `⟨_, rfl⟩`. Establish `: FiniteDimensional ℂ Ee`. Rewrite using `[hEe]`. Conclude with `FiniteDimensional.span_of_finite ℂ ((Finset.finite_toSet _).image _)`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hEmem : ∀ j ≤ n + 1, Z j ∈ Ee`. Introduce `j hj`. Break down `Nat.lt_or_ge j (n + 1) with h | h` into its components or cases. Rewrite using `[hEe]; exact Submodule.subset_span ⟨j, by simpa using h, rfl⟩`. Establish `: j = n + 1` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hZtop]`. Conclude with `Ee.zero_mem`. Establish `hEW : ∀ y ∈ Ee, y ∈ W`. Introduce `y hy`. Establish `: Ee ≤ W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hEe, Submodule.span_le]`. Introduce and unpack `_ ⟨j, _, rfl⟩`. Conclude with `hZW j`. Conclude with `this hy`. Establish `hEU : ∀ y ∈ Ee, U y ∈ Ee`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: Ee ≤ Ee.comap U` using `by conv_lhs => rw [hEe]`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Establish `hj' : j ≤ n` using `by simpa using hj`. Use `show U (Z j) ∈ Ee`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hrec j hj']`. Conclude with `Ee.smul_mem _ (Ee.sub_mem (Ee.smul_mem _ (hEmem 0 (by omega))) (hEmem _ (by omega)))`. Conclude with `fun y hy => this hy`. Take `⟨T, hT⟩ : ∃ T : Module.End ℂ Ee, ∀ y : Ee, ((T y : Ee) : V) = (s ^ n)⁻¹ • U y` from `⟨(s ^ n)⁻¹ • U.restrict hEU, fun y => rfl⟩`. Take `⟨Zs, hZs⟩ : ∃ Zs : ℕ → Ee, ∀ j ≤ n + 1, ((Zs j : Ee) : V) = Z j` from `⟨fun j => if h : j ≤ n + 1 then ⟨Z j, hEmem j h⟩ else 0, fun j hj => by simp [hj]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨φ, hφ⟩ : ∃ φ : Ee →ₗ[ℂ] ℂ, ∀ y : Ee, φ y = B y (Z 0)` from `⟨{ toFun := fun y => B y (Z 0), map_add' := by simp, map_smul' := by simp }, fun _ => rfl⟩`. Establish `h0 : (fun j => b j • Zs j) 0 = Zs 0` using `by simp [hbdef]`. Establish `hn : (fun j => b j • Zs j) (n + 1) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hZs (n + 1) le_rfl, hZtop]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hrec' : ∀ j ≤ n, (fun j => b j • Zs j) (j + 1) - T ((fun j => b j • Zs j) j) = (((-1 : ℂ) ^ (j + 1)) * S.esymm (j + 1)) • Zs 0`. Introduce `j hj`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `hbtop (j + 1) (by omega)`. Establish `h2` using `hbrec j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_smul, Submodule.coe_sub, Submodule.coe_smul, hT, hZs (j + 1) (by omega), hZs j (by omega), hZs 0 (by omega), hrec j hj, hpow (j + 1) (by omega)]`. Establish `key : ∀ w : V, b j • (s ^ n)⁻¹ • (q : ℂ) ^ j • w = (-b (j + 1)) • w`. Introduce `w`. Rewrite using `[smul_smul, smul_smul, h2]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, ← h1]`. Use `module`. Establish `hzE : ¬ T.HasEigenvalue z`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `h.exists_hasEigenvector`. Establish `hy1` using `congrArg (Subtype.val) hy.apply_eq_smul`. Rewrite `hy1` using `[hT]`. Establish `hy0 : (y : V) ≠ 0` using `fun h => hy.2 (Subtype.ext h)`. Establish `hUy : U y = (s ^ n * z) • (y : V)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, mul_inv_cancel₀ (pow_ne_zero _ hs0), one_smul]`. Use `_ = _ := by rw [hy1, Submodule.coe_smul, smul_smul]`. Establish `hr` using `hpos y hy0`. Establish `h1` using `hexp y (hEW y y.2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (B ((s ^ n * z) • (y : V)) ((s ^ n * z) • (y : V))).re = ‖s ^ n * z‖ ^ 2 * (B y y).re`. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply]`. Rewrite using `[← mul_assoc, mul_comm ((starRingEnd ℂ) _), Complex.mul_conj, Complex.re_ofReal_mul, Complex.normSq_eq_norm_sq]`. Rewrite `h1` using `[hUy, h2]`. Establish `h3` using `le_of_mul_le_mul_right h1 hr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h4 : ‖s ^ n * z‖ ^ 2 = (q : ℝ) ^ n * ‖z‖ ^ 2`. Rewrite using `[norm_mul, norm_pow, mul_pow, ← pow_mul, mul_comm n 2, pow_mul, hsn]`. Establish `hz2 : ‖z‖ ^ 2 < (q : ℝ)⁻¹`. Use `pow_lt_pow_left₀ hz (norm_nonneg z) two_ne_zero` as an intermediate fact. Rewrite `this` using `[← Real.rpow_natCast ((q : ℝ) ^ (-(1 / 2) : ℝ)), ← Real.rpow_mul hqR.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Evaluate the numerical expressions using `at this`. Rewrite `this` using `[Real.rpow_neg_one]`. Simplify using `using this`. Establish `h5 : (q : ℝ) ^ ((n : ℝ) - 1) = (q : ℝ) ^ n * (q : ℝ)⁻¹`. Rewrite using `[Real.rpow_sub_one hqR.ne', Real.rpow_natCast, div_eq_mul_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h3` using `[h4, h5]`. Conclude with `absurd h3 (not_le.2 (mul_lt_mul_of_pos_left hz2 (pow_pos hqR n)))`. Establish `hc : B (Z 0) (Z 0) ≠ 0`. Introduce `h`. Use `hpos _ hZ0` as an intermediate fact.
-
-Rewrite `this` using `[h]`. Simplify using `at this`. Use `count_le_of_dvd S q (B (Z 0) (Z 0)) ((q : ℂ) ^ (n + 1) - 1) z hq0 hc (dd n (fun j => b j • Zs j) φ) (pow_dvd_dd S n hcard T _ (Zs 0) h0 hn hrec' φ z hzE) (rel_of_pair S n hcard q _ _ _ φ ?_)` and prove the remaining obligations. Introduce `j hj`. Establish `hp` using `hpair j (by omega)`.
-
-Rewrite `hp` using `[hpow j (by omega)]`. Use `show _ * φ (b j • Zs j) = _`. Rewrite using `[map_smul, hφ, hZs j (by omega), smul_eq_mul, ← hbtop j (by omega)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gapPoly : PositivityTheory.Rg.Rs.GapPoly := by
   intro q n hq V _ _ B W U Z S hpos hcard h0S hZ0 hUW hZW hexp hZtop hrec hpair z hz

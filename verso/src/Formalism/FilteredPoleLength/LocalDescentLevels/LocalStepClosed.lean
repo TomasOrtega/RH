@@ -4,7 +4,7 @@ import Formalism.FilteredPoleLength.LocalDescentLevels.LeadingTermLength
 namespace Formalism.LatticeBaseChangeAlt
 
 /- English proof (translation)
-The claim follows from `localStepClosed_of leadingTermLength`.
+A detailed English derivation is pending.
 -/
 theorem localStepClosed : LocalStepClosed := localStepClosed_of leadingTermLength
 

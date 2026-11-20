@@ -33,13 +33,13 @@ private noncomputable def p3 (ε : B) (h0 : π ε = 0) (hε : ∀ b, b * ε = π
   commutes' a := by simp [algebraMap_eq_inl]
 
 /- English proof (translation)
-Establish `hn : ∃ k, RingHom.ker π ^ (k + 1) = ⊥`. Take `⟨k, hk⟩` from `(Ideal.FG.isNilpotent_iff_le_nilradical (IsNoetherian.noetherian (RingHom.ker π))).2 fun a ha => hπ a ha`. Conclude with `⟨k, by rw [pow_succ, hk]; simp⟩`. Establish `h1` using `Nat.find_spec hn`. Establish `h2 : Nat.find hn ≠ 0` using `fun h => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h, zero_add, pow_one]`. Conclude with `hx0 (Ideal.mem_bot.1 (h1 ▸ (hx : x ∈ RingHom.ker π)))`. Take `⟨k, hk⟩` from `Nat.exists_eq_succ_of_ne_zero h2`. Take `⟨ε, h3, h4⟩` from `(Submodule.ne_bot_iff _).1 (Nat.find_min hn (hk ▸ Nat.lt_succ_self k))`. Use `⟨ε, h4, Ideal.pow_le_self k.succ_ne_zero h3, fun b => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h5 : ε * (b - algebraMap E B (π b)) ∈ RingHom.ker π ^ (k + 1 + 1)`. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_mul h3 (by simp [RingHom.mem_ker])`. Rewrite `h1` using `[hk]`. Rewrite `h5` using `[h1, Ideal.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[Algebra.smul_def]`. Take the linear combination `h5`.
+A detailed English derivation is pending.
 -/
 private theorem exists_eps [IsNoetherianRing B] (hπ : ∀ a, π a = 0 → IsNilpotent a) (x : B) (hx : π x = 0)
     (hx0 : x ≠ 0) : ∃ ε : B, ε ≠ 0 ∧ π ε = 0 ∧ ∀ b, b * ε = π b • ε := by
@@ -66,35 +66,31 @@ private theorem exists_eps [IsNoetherianRing B] (hπ : ∀ a, π a = 0 → IsNil
 end Fibre
 
 /- English proof (translation)
-Introduce `hP l _ O _ _ _ _ _ _ _ D E _ _ _ _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ r`. Use `⟨fun hr => ?_, dcr_of_dord⟩` and prove the remaining obligations. Proceed by induction on `hn : finrank ℚ_[l] B using Nat.strong_induction_on generalizing B with`. Consider the case `_ N ih`. Distinguish the cases in `hinj : ∀ x, π x = 0 → x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Use `⟨r, 1, ⟨hr, fun g a b h => hinj _ ?_⟩, (congOne_iff _ _).2 (map_one _), fun a b _ => by simp, (conjBy_one r).symm⟩` and prove the remaining obligations. Establish `hab : a ≠ b`. Introduce and unpack `rfl`. Simplify using `[wt] at h`. Express the relevant statement in the definitionally equal form `(((GG.map (π : B →+* E)).comp r) g).mat a b = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hr.red, rz_eq, GG.mat, unitaryThreeReflection_left, tor_val, Matrix.diagonal_apply_ne _ hab]`. Use `push Not at hinj`. Take `⟨x, hx, hx0⟩` from `hinj`. Use `haveI : IsNoetherianRing B := IsNoetherianRing.of_finite ℚ_[l] B`. Take `⟨ε, hε0, h0, hε⟩` from `exists_eps π hπ x hx hx0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `I : Ideal B` to `Ideal.span {ε}`. Set `q : B →ₐ[E] B ⧸ I` to `Ideal.Quotient.mkₐ E I`. Establish `hq : Function.Surjective q` using `Ideal.Quotient.mkₐ_surjective E I`. Set `π' : (B ⧸ I) →ₐ[E] E` to `Ideal.Quotient.liftₐ I π fun a ha => by`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, h0, mul_zero]`. Establish `hπq : π'.comp q = π` using `AlgHom.ext fun _ => rfl`. Establish `hπ' : ∀ a, π' a = 0 → IsNilpotent a` using `fun a ha => by`. Take `⟨b, rfl⟩` from `hq a`. Conclude with `(hπ b ha).map q`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlt : finrank ℚ_[l] (B ⧸ I) < N`. Rewrite using `[← hn, ← (q.restrictScalars ℚ_[l]).toLinearMap.finrank_range_add_finrank_ker, LinearMap.range_eq_top.2 hq, finrank_top]`. Use `Nat.lt_add_of_pos_right (Module.finrank_pos_iff_exists_ne_zero.2 ⟨⟨ε, ?_⟩, fun h => hε0 (congrArg Subtype.val h)⟩)` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self ε)`. Establish `hr'` using `dcr_map (q.restrictScalars ℚ_[l]) hq (π' := (π' : (B ⧸ I) →+* E)) (RingHom.ext fun _ => rfl) hr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u', n', hu', hn1', hn2', e'⟩` from `ih _ hlt (B ⧸ I) π' hπ' _ hr' rfl`. Take `⟨u₁, hu₁, rfl⟩` from `triLift hP D E B π hπ (B ⧸ I) π' hπ' q hq hπq u' hu'`. Take `⟨n₁, hn₁, rfl⟩` from `lift_lower (q : B →+* B ⧸ I) hq n' hn2'`. Establish `hc₁ : Matrix.GeneralLinearGroup.map (π : B →+* E) n₁ = 1` using `((congOne_iff _ _).1 hn1' :)`. Establish `hr₁` using `dcr_conj hu₁.toInDcrAt n₁ hc₁`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Module.Finite ℚ_[l] (DualNumber E) := inferInstanceAs (Module.Finite ℚ_[l] (E × E))`. Use `haveI : Module.Finite ℚ_[l] (fib π) := Module.Finite.of_injective ((fib π).val.restrictScalars ℚ_[l]).toLinearMap Subtype.val_injective`. Set `f₁ : fib π →ₐ[ℚ_[l]] B` to `(p1 π).restrictScalars ℚ_[l]`. Set `f₂ : fib π →ₐ[ℚ_[l]] DualNumber E` to `(p2 π).restrictScalars ℚ_[l]`. Set `f₃ : fib π →ₐ[ℚ_[l]] B` to `(p3 π ε h0 hε).restrictScalars ℚ_[l]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i12 : ∀ c c', f₁ c = f₁ c' → f₂ c = f₂ c' → c = c'` using `fun c c' h h' => Subtype.ext (Prod.ext h h')`. Establish `i13 : ∀ c c', f₁ c = f₁ c' → f₃ c = f₃ c' → c = c'` using `fun c c' h h' => by`. Establish `h1 : c.1.1 = c'.1.1` using `h`. Establish `h2 : c.1.1 + c.1.2.snd • ε = c'.1.1 + c'.1.2.snd • ε` using `h'`. Establish `h3 : π c.1.1 = c.1.2.fst` using `c.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : π c'.1.1 = c'.1.2.fst` using `c'.2`. Rewrite `h2` using `[h1, add_right_inj]`. Conclude with `i12 c c' h (TrivSqZeroExt.ext (by rw [h1, h4] at h3; exact h3.symm) (smul_left_injective E hε0 h2))`. Establish `g12 : ∀ (s : B) (t : DualNumber E), π s = t.fst → ∃ c, f₁ c = s ∧ f₂ c = t` using `fun s t h => ⟨⟨(s, t), h⟩, rfl, rfl⟩`. Establish `g13 : ∀ s t : B, q s = q t → ∃ c, f₁ c = s ∧ f₃ c = t` using `fun s t h => by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 h.symm)`. Use `⟨⟨(s, (π s, π c)), rfl⟩, rfl, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `s + π c • ε = t`. Rewrite using `[← hε, hc, add_sub_cancel]`. Establish `s2 : Function.Surjective f₂` using `fun t => (g12 (algebraMap E B t.fst) t (π.commutes _)).imp fun _ h => h.2`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `s3 : Function.Surjective f₃` using `fun t => (g13 t t rfl).imp fun _ h => h.2`. Establish `k2 : (fstHom E E E : DualNumber E →+* E).comp (f₂ : fib π →+* DualNumber E) = (π : B →+* E).comp (f₁ : fib π →+* B)` using `RingHom.ext fun c => Eq.symm c.2`. Establish `k3 : (π : B →+* E).comp (f₃ : fib π →+* B) = (π : B →+* E).comp (f₁ : fib π →+* B)` using `RingHom.ext fun c => by`. Express the relevant statement in the definitionally equal form `π (c.1.1 + c.1.2.snd • ε) = π c.1.1`. Rewrite using `[map_add, map_smul, h0, smul_zero, add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Take `⟨R, hR1, hR3⟩` from `glue_hom (f₁ : fib π →+* B) (f₃ : fib π →+* B) (q : B →+* B ⧸ I) (q : B →+* B ⧸ I) i13 g13 (conjBy n₁ u₁) r ((map_conjBy _ _ _).trans e'.symm)`. Establish `hR` using `dcr_pair f₁ f₃ i13 (hR1 ▸ hr₁) (hR3 ▸ hr)`. Take `⟨u₂, n₂, hu₂, hn₂, hn₂', e₂⟩` from `dual_ord hP D E _ (dcr_map f₂ s2 k2 hR)`. Take `⟨u, hu1, hu2⟩` from `glue_hom (f₁ : fib π →+* B) (f₂ : fib π →+* DualNumber E) (π : B →+* E) (fstHom E E E : DualNumber E →+* E) i12 g12 u₁ u₂ (hu₁.red.trans hu₂.red.symm)`. Take `⟨n, hn1, hn2⟩` from `glue_GL (f₁ : fib π →+* B) (f₂ : fib π →+* DualNumber E) (π : B →+* E) (fstHom E E E : DualNumber E →+* E) i12 g12 n₁ n₂ (hc₁.trans ((congOne_iff _ _).1 hn₂).symm)`.
-
-Substitute `hu1 hu2 hn1 hn2` using the available equality. Rewrite using `[← hR3]`. Use `dord_map f₃ s3 k3 ⟨u, n, ⟨dcr_pair f₁ f₂ i12 hu₁.toInDcrAt hu₂.toInDcrAt, fun g a b h => ?_⟩, (congOne_iff _ _).2 hc₁, fun a b h => ?_, MonoidHom.ext fun g => ?_⟩` and prove the remaining obligations. Conclude with `i12 _ _ ((hu₁.tri g a b h).trans (map_zero _).symm) ((hu₂.tri g a b h).trans (map_zero _).symm)`. Conclude with `i12 _ _ (((map_sub_one _ n a b).symm.trans (hn₁ a b h)).trans (map_zero _).symm) (((map_sub_one _ n a b).symm.trans (hn₂' a b h)).trans (map_zero _).symm)`.
-
-Conclude with `gg_ext (f₁ : fib π →+* B) (f₂ : fib π →+* DualNumber E) i12 (DFunLike.congr_fun (hR1.trans (map_conjBy _ n u).symm) g) (DFunLike.congr_fun (e₂.trans (map_conjBy _ n u).symm) g)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.ordEq :
     LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] O E] [IsScalarTower ℤ_[l] ℚ_[l] E] [IsFractionRing O E] (B : Type) [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [Algebra O B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] O B] [IsScalarTower ℤ_[l] ℚ_[l] B] [Algebra E B] [IsScalarTower O E B] [IsScalarTower ℚ_[l] E B] (π : B →ₐ[E] E) (hπ : ∀ a, π a = 0 → IsNilpotent a) (r : GQ l →* GG 3 B), D.InDcr (π : B →+* E) r ↔ D.InDord (π : B →+* E) r := by

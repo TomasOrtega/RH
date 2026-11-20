@@ -16,7 +16,7 @@ def Rep (w : ℂ) (f : ℂ⸨X⸩) (x : ℂ) : Prop :=
     ev T w hw s ≠ 0 ∧ (s : ℂ⸨X⸩) * f = a ∧ ev T w hw a = x * ev T w hw s
 
 /- English proof (translation)
-Take `⟨T, hw, a, s, h⟩` from `hf`. Take `⟨T', hw', b, t, h'⟩` from `hg`. Conclude with `⟨max T T', max_lt hw hw', ⟨a, halfRing_mono (le_max_left _ _) a.2⟩, ⟨s, halfRing_mono (le_max_left _ _) s.2⟩, ⟨b, halfRing_mono (le_max_right _ _) b.2⟩, ⟨t, halfRing_mono (le_max_right _ _) t.2⟩, h, h'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Rep.common {w : ℂ} {f g : ℂ⸨X⸩} {x y : ℂ} (hf : Rep w f x) (hg : Rep w g y) :
     ∃ (T : ℝ) (hw : T < w.im) (a s b t : halfRing T),
@@ -29,9 +29,9 @@ theorem Rep.common {w : ℂ} {f g : ℂ⸨X⸩} {x y : ℂ} (hf : Rep w f x) (hg
     ⟨t, halfRing_mono (le_max_right _ _) t.2⟩, h, h'⟩
 
 /- English proof (translation)
-Take `⟨T, hw, a, s, b, t, ⟨h1, h2, h3⟩, k1, k2, k3⟩` from `hx.common hy`. Establish `e : a * t = b * s` using `Subtype.ext (by`. Use `push_cast`. Rewrite using `[← h2, ← k2]`. Use the proof step `ring)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e'` using `congrArg (ev T w hw) e`. Rewrite `e'` using `[map_mul, map_mul, h3, k3]`. Apply `mul_right_cancel₀ (mul_ne_zero h1 k1)` to reduce the goal to its premises. Take the linear combination `e'`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Rep.unique {w : ℂ} {f : ℂ⸨X⸩} {x y : ℂ} (hx : Rep w f x) (hy : Rep w f y) : x = y := by
   obtain ⟨T, hw, a, s, b, t, ⟨h1, h2, h3⟩, k1, k2, k3⟩ := hx.common hy
@@ -44,9 +44,9 @@ theorem Rep.unique {w : ℂ} {f : ℂ⸨X⸩} {x y : ℂ} (hx : Rep w f x) (hy :
   linear_combination e'
 
 /- English proof (translation)
-Take `⟨T, hw, a, s, b, t, ⟨h1, h2, h3⟩, k1, k2, k3⟩` from `hx.common hy`. Use `⟨T, hw, a * t + b * s, s * t, by rw [map_mul]; exact mul_ne_zero h1 k1, ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← h2, ← k2]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_add, map_mul, map_mul, map_mul, h3, k3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Rep.add {w : ℂ} {f g : ℂ⸨X⸩} {x y : ℂ} (hx : Rep w f x) (hy : Rep w g y) :
     Rep w (f + g) (x + y) := by
@@ -57,9 +57,9 @@ theorem Rep.add {w : ℂ} {f g : ℂ⸨X⸩} {x y : ℂ} (hx : Rep w f x) (hy : 
   · rw [map_add, map_mul, map_mul, map_mul, h3, k3]; ring
 
 /- English proof (translation)
-Take `⟨T, hw, a, s, b, t, ⟨h1, h2, h3⟩, k1, k2, k3⟩` from `hx.common hy`. Use `⟨T, hw, a * b, s * t, by rw [map_mul]; exact mul_ne_zero h1 k1, ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← h2, ← k2]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_mul, map_mul, h3, k3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Rep.mul {w : ℂ} {f g : ℂ⸨X⸩} {x y : ℂ} (hx : Rep w f x) (hy : Rep w g y) :
     Rep w (f * g) (x * y) := by
@@ -70,14 +70,14 @@ theorem Rep.mul {w : ℂ} {f g : ℂ⸨X⸩} {x y : ℂ} (hx : Rep w f x) (hy : 
   · rw [map_mul, map_mul, h3, k3]; ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨T, hw, s, 1, by rw [map_one]; exact one_ne_zero, by simp, by rw [map_one, _root_.mul_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem rep_of_mem {T : ℝ} {w : ℂ} (hw : T < w.im) (s : halfRing T) :
     Rep w (s : ℂ⸨X⸩) (ev T w hw s) :=
   ⟨T, hw, s, 1, by rw [map_one]; exact one_ne_zero, by simp, by rw [map_one, _root_.mul_one]⟩
 
 /- English proof (translation)
-Establish `hw : w.im - 1 < w.im` using `sub_one_lt _`. Establish `h` using `rep_of_mem hw (algebraMap ℂ (halfRing (w.im - 1)) c)`. Rewrite `h` using `[AlgHom.commutes]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_algebraMap (w c : ℂ) : Rep w (algebraMap ℂ ℂ⸨X⸩ c) c := by
   have hw : w.im - 1 < w.im := sub_one_lt _
@@ -86,9 +86,9 @@ theorem rep_algebraMap (w c : ℂ) : Rep w (algebraMap ℂ ℂ⸨X⸩ c) c := by
   exact h
 
 /- English proof (translation)
-Take `⟨T, hw, a, s, h1, h2, h3⟩` from `hx`. Establish `ha : ev T w hw a ≠ 0` using `by rw [h3]; exact mul_ne_zero h0 h1`. Establish `ha' : (a : ℂ⸨X⸩) ≠ 0` using `fun h => ha (by rw [show a = 0 from Subtype.ext h, map_zero])`. Establish `hf : f ≠ 0` using `fun h => ha' (by rw [← h2, h, mul_zero])`. Use `⟨f⁻¹, ⟨T, hw, s, a, ha, ?_, ?_⟩, mul_inv_cancel₀ hf⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h2, _root_.mul_assoc, mul_inv_cancel₀ hf, _root_.mul_one]`. Rewrite using `[h3, ← _root_.mul_assoc, inv_mul_cancel₀ h0, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Rep.inv {w : ℂ} {f : ℂ⸨X⸩} {x : ℂ} (hx : Rep w f x) (h0 : x ≠ 0) :
     ∃ g, Rep w g x⁻¹ ∧ f * g = 1 := by
@@ -109,7 +109,7 @@ def ring (w : ℂ) : Subalgebra ℂ ℂ⸨X⸩ where
 def val (w : ℂ) (f : ring w) : ℂ := Classical.choose (show ∃ x, Rep w f x from f.2)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (show ∃ x, Rep w f x from f.2)`.
+A detailed English derivation is pending.
 -/
 theorem rep_val (w : ℂ) (f : ring w) : Rep w f (val w f) := Classical.choose_spec (show ∃ x, Rep w f x from f.2)
 
@@ -134,13 +134,11 @@ def germs : Germs where
     exact ⟨T, hw, a, s, h1, h2⟩
 
 /- English proof (translation)
-Use `⟨⟨germs⟩, fun Γ w => ⟨?_, fun f => ?_, fun f g hf h => ?_⟩⟩` and prove the remaining obligations. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun f => ?_` and prove the remaining obligations. Distinguish the cases in `h : Γ.ev w f = 0`. Conclude with `Or.inr (Γ.unit w _ (by rw [map_sub, map_one, h, sub_zero]; exact one_ne_zero))`. Conclude with `Or.inl (Γ.unit w _ h)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative.
 
-Take `⟨T, hw, a, s, h1, h2⟩` from `Γ.frac w f`. Establish `hs : (s : ℂ⸨X⸩) ≠ 0` using `fun h => h1 (by rw [show s = 0 from Subtype.ext h, map_zero])`. Establish `e : (f : ℂ⸨X⸩) = (s : ℂ⸨X⸩)⁻¹ * a`. Rewrite using `[← h2, ← _root_.mul_assoc, inv_mul_cancel₀ hs, _root_.one_mul]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (convLaurent.inv_mem (halfRing_le_convLaurent T s.2)) (halfRing_le_convLaurent T a.2)`. Take `⟨k, hk⟩` from `(Γ.unit w f hf).exists_left_inv`. Establish `hk' : (k : ℂ⸨X⸩) * f = 1` using `congrArg Subtype.val hk`. Establish `e : g = k * (f * g)` using `by rw [← _root_.mul_assoc, hk', _root_.one_mul]`. Rewrite using `[e]`.
-
-Conclude with `mul_mem k.2 h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germs_spec : Nonempty Germs ∧ ∀ (Γ : Germs) (w : ℂ), IsLocalRing (Γ.R w) ∧ (∀ f : Γ.R w, (f : ℂ⸨X⸩) ∈ Conv.convLaurent) ∧ ∀ (f : Γ.R w) (g : ℂ⸨X⸩), Γ.ev w f ≠ 0 → (f : ℂ⸨X⸩) * g ∈ Γ.R w → g ∈ Γ.R w := by
   refine ⟨⟨germs⟩, fun Γ w => ⟨?_, fun f => ?_, fun f g hf h => ?_⟩⟩

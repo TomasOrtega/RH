@@ -12,11 +12,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 open NumberField IsDedekindDomain MeasureTheory Topology Neutral.B1 Formalism.L2.Host GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd UpperTheory.V.Sd.Eis
 
 /- English proof (translation)
-Set `W : Submodule ℂ V` to `{ carrier := P zero_mem' := h0 add_mem' := fun {x y} hx hy => by simpa using hP x y 1 hx hy smul_mem' := fun z y hy => by simpa using hP 0 y z h0 hy }`. Establish `hW : Submodule.span ℂ P = W` using `Submodule.span_eq W`. Rewrite using `[hW]`. Set `f : W →ₗ[ℂ] (ι → ℂ)` to `{ toFun := fun x => L x.1 map_add' := fun x y => by simpa using hL x.1 y.1 1 x.2 y.2 map_smul' := fun z y => by simpa [hL0] using hL 0 y.1 z h0 y.2 }`. Set `j : LinearMap.ker f →ₗ[ℂ] Submodule.span ℂ Q` to `LinearMap.codRestrict _ (W.subtype.comp (LinearMap.ker f).subtype) fun x => Submodule.subset_span (hk _ x.1.2 x.2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hj : Function.Injective j` using `fun x y h => by`. Establish `e` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (Subtype.ext e)`. Use `haveI : Module.Finite ℂ (LinearMap.ker f) := Module.Finite.of_injective j hj`. Use `haveI : Module.Finite ℂ (W ⧸ LinearMap.ker f) := Module.Finite.equiv f.quotKerEquivRange.symm`.
-
-Conclude with `Module.Finite.of_submodule_quotient (LinearMap.ker f)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fin_of_ker {V ι : Type*} [AddCommGroup V] [Module ℂ V] [Finite ι] (P Q : Set V) (h0 : (0 : V) ∈ P)
     (hP : ∀ x y (z : ℂ), x ∈ P → y ∈ P → x + z • y ∈ P) (hQ : FiniteDimensional ℂ (Submodule.span ℂ Q)) (L : V → ι → ℂ)
@@ -44,11 +42,11 @@ private theorem fin_of_ker {V ι : Type*} [AddCommGroup V] [Module ℂ V] [Finit
   exact Module.Finite.of_submodule_quotient (LinearMap.ker f)
 
 /- English proof (translation)
-Introduce `F _ _ _ k c hc ω hω`. Take `⟨⟨M, hM, hlev⟩, hfin⟩` from `UpperTheory.V.Br.holCuspFin F k c hc ω hω`. Take `⟨S, hS, hgen⟩` from `UpperTheory.V.Br.cuspSet F M hM`. Take `⟨_, _, μ, _, D, hD, hone⟩` from `UpperTheory.V.Br.ctOne F`. Take `⟨h0, -, hadd, -⟩` from `UpperTheory.V.Sd.holLin F k c ω`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hint : ∀ φ : TR.Sm F 2, IsHol k c ω φ → ∀ g, IntegrableOn (fun x : NA F => φ.1 (unip x * g)) D μ` using `fun φ hφ => (UpperTheory.eisenstein_constantTerm_of_periodMean_of_upperBlock UpperTheory.periodic_integral_fundamentalDomain_invariant UpperTheory.eisenstein_constantTerm_upperBlock F μ D hD φ.1 (UpperTheory.eisenstein_smooth_continuous F 2 φ hφ.aut.level) hφ.aut.left).1`. Use `haveI : Finite S := hS`. Use `fin_of_ker _ _ h0 hadd hfin (fun φ (s : S) => cterm μ D φ.1 s.1) ?_ (fun φ ψ z hφ hψ => ?_) fun φ hφ h => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Simplify using `[cterm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `s`. Simplify using `only [cterm, Submodule.coe_add, Submodule.coe_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_add (hint φ hφ s.1) ((hint ψ hψ s.1).const_mul z), integral_const_mul]`. Establish `hu` using `hgen {g | cterm μ D φ.1 g = 0} (fun s hs => congrFun h ⟨s, hs⟩) (UpperTheory.V.Br.ctMoves F μ D hD k c ω hω φ hφ M (hlev φ hφ))`. Conclude with `⟨hφ, hφ.aut, hone φ.1 hφ.aut.left fun g => (hu.ge (Set.mem_univ g) :)⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.holFin0 :
     UpperTheory.V.Sd.HolFin := by

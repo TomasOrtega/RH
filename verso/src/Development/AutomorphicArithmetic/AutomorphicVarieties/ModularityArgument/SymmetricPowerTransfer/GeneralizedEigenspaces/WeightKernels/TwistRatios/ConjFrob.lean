@@ -12,7 +12,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 open scoped Pointwise in
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Establish `key` using `h (g⁻¹ • y)`. Simplify using `only [smul_inv_smul] at key`. Conclude with `key.symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cf_stab {H Ω : Type} [Field Ω] [Group H] [MulSemiringAction H Ω] (g : H) (B : ValuationSubring Ω)
     (h : ∀ y : Ω, g • y ∈ B ↔ y ∈ B) : g • B = B := by
@@ -23,7 +23,7 @@ private theorem cf_stab {H Ω : Type} [Field Ω] [Group H] [MulSemiringAction H 
   exact key.symm
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `hc`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj]`. Conclude with `(IsCMField.complexEmbedding_complexConj L (j.comp (algebraMap L Ω)) x).symm`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cf_on {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     {c : G (maximalRealSubfield L) Ω} (hc : IsConjEl c) (x : L) :
@@ -34,9 +34,9 @@ private theorem cf_on {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Fie
   exact (IsCMField.complexEmbedding_complexConj L (j.comp (algebraMap L Ω)) x).symm
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `hc`. Apply `j.injective` to reduce the goal to its premises. Establish `h` using `IsCMField.complexEmbedding_complexConj L (j.comp (algebraMap L Ω)) x`. Simplify using `only [RingHom.comp_apply] at h`. Establish `h2` using `hj (c.symm (algebraMap L Ω x))`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [AlgEquiv.apply_symm_apply] at h2`. Rewrite using `[h, h2, Complex.conj_conj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cf_on_inv {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     {c : G (maximalRealSubfield L) Ω} (hc : IsConjEl c) (x : L) :
@@ -50,17 +50,17 @@ private theorem cf_on_inv {L Ω : Type} [Field L] [NumberField L] [IsCMField L] 
   rw [h, h2, Complex.conj_conj]
 
 /- English proof (translation)
-Unfold `Plc at w w'`. Unfold `Lp at h`. Establish `h' : w.asIdeal.under (𝓞 (maximalRealSubfield L)) = w'.asIdeal.under (𝓞 (maximalRealSubfield L))`. Rewrite using `[← HeightOneSpectrum.under_asIdeal, ← HeightOneSpectrum.under_asIdeal, h]`. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq (𝓞 (maximalRealSubfield L)) (𝓞 L) (L ≃ₐ[maximalRealSubfield L] L) w.asIdeal w'.asIdeal h'`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hmem : g ∈ Subgroup.zpowers (IsCMField.complexConj L)`. Rewrite using `[IsCMField.zpowers_complexConj_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.mp hmem`. Rewrite `hg` using `[← zpow_mod_orderOf, IsCMField.orderOf_complexConj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Int.emod_two_eq_zero_or_one k with hk | hk` into its components or cases. Use `left`. Rewrite `hg` using `[Nat.cast_ofNat, hk, zpow_zero, one_smul]`. Conclude with `HeightOneSpectrum.ext hg`. Use `right`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite `hg` using `[Nat.cast_ofNat, hk, zpow_one]`. Rewrite using `[hg, Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Establish `hinv : (IsCMField.complexConj L)⁻¹ = IsCMField.complexConj L`. Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `y`. Simplify using the standard rewrite rules. Establish `hx : (IsCMField.complexConj L)⁻¹ • x = IsCMField.ringOfIntegersComplexConj L x`. Rewrite using `[hinv]`. Use `ext`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite using `[hx]`.
+A detailed English derivation is pending.
 -/
 private theorem cf_primes {L : Type} [Field L] [NumberField L] [IsCMField L] (w w' : Plc L)
     (h : w'.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))) :
@@ -97,31 +97,31 @@ private theorem cf_primes {L : Type} [Field L] [NumberField L] [IsCMField L] (w 
 
 open scoped Pointwise in
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ _ c hc w w' hw s hs`. Break down `cf_primes w w' hw with rfl | hx` into its components or cases. Conclude with `Or.inl hs`. Use `right`. Unfold `Ga.FrobAt at hs`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA, hF⟩` from `hs`. Unfold `IsFrob at hF`. Take `⟨hdec, hfr⟩` from `hF`. Set `e : 𝓞 L ≃+* 𝓞 L` to `(IsCMField.ringOfIntegersComplexConj L).toRingEquiv`. Establish `hq : normV w' = normV w`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `normV`. Use `Nat.card_congr (Ideal.quotientEquiv w'.asIdeal w.asIdeal e ?_).toEquiv` and prove the remaining obligations. Rewrite using `[Ideal.map_comap_of_equiv]`. Use extensionality with `y`. Rewrite using `[Ideal.mem_comap, hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[e]`. Establish `hsA : ∀ z : Ω, s z ∈ A ↔ z ∈ A`. Introduce `z`. Establish `hstab : s • A = A` using `MulAction.mem_stabilizer_iff.mp hdec`. Use `nth_rewrite 1 [← hstab]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, AlgEquiv.aut_inv, AlgEquiv.symm_apply_apply]`. Set `A' : ValuationSubring Ω` to `A.comap (c.symm : Ω ≃+* Ω).toRingHom`. Establish `hmem : ∀ y : Ω, (c : Ω ≃+* Ω) y ∈ A' ↔ y ∈ A`. Introduce `y`. Simplify using `[A', ValuationSubring.mem_comap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `t : Ω ≃ₐ[maximalRealSubfield L] Ω` to `c * s.restrictScalars (maximalRealSubfield L) * c⁻¹`. Establish `hfix : ∀ x : L, t.toRingEquiv (algebraMap L Ω x) = algebraMap L Ω x`. Introduce `x`. Express the relevant statement in the definitionally equal form `c (s (c⁻¹ (algebraMap L Ω x))) = algebraMap L Ω x`. Rewrite using `[AlgEquiv.aut_inv, cf_on_inv hc, AlgEquiv.commutes, cf_on hc, IsCMField.complexConj_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `s' : G L Ω` to `AlgEquiv.ofRingEquiv (f := t.toRingEquiv) hfix`. Establish `hs' : ∀ y, s' y = c (s (c.symm y))`. Introduce `y`. Both sides reduce to the same expression. Use `⟨s', ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Ga.FrobAt`. Use `⟨A', ?_, ?_⟩` and prove the remaining obligations. Unfold `IsPlaceOver`. Introduce `x`. Rewrite using `[hx x, ← hA]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hcx : algebraMap L Ω x = (c : Ω ≃+* Ω) (algebraMap L Ω (IsCMField.ringOfIntegersComplexConj L x))`. Express the relevant statement in the definitionally equal form `algebraMap L Ω x = c (algebraMap L Ω (IsCMField.complexConj L x))`. Rewrite using `[cf_on hc, IsCMField.complexConj_apply_apply]`. Rewrite using `[hcx]`. Conclude with `val_lt_one hmem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hq]`. Unfold `IsFrob`. Prove the components needed by the constructor for the conclusion. Apply `MulAction.mem_stabilizer_iff.mpr` to reduce the goal to its premises. Apply `cf_stab` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `y`. Rewrite using `[AlgEquiv.smul_def, hs']`. Express the relevant statement in the definitionally equal form `c.symm (c (s (c.symm y))) ∈ A ↔ c.symm y ∈ A`. Rewrite using `[AlgEquiv.symm_apply_apply, hsA]`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hy` using `[ValuationSubring.valuation_le_one_iff]`. Establish `hz : c.symm y ∈ A` using `hy`. Establish `hd : s' y - y ^ normV w = (c : Ω ≃+* Ω) (s (c.symm y) - (c.symm y) ^ normV w)`. Rewrite using `[hs', map_sub, map_pow]`. Express the relevant statement in the definitionally equal form `c (s (c.symm y)) - y ^ normV w = c (s (c.symm y)) - (c (c.symm y)) ^ normV w`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[AlgEquiv.apply_symm_apply]`. Rewrite using `[hd, val_lt_one hmem]`. Conclude with `hfr _ ((ValuationSubring.valuation_le_one_iff _ _).mpr hz)`. Use extensionality with `y`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Ga.conjFrob :
     ∀ (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (c : G (maximalRealSubfield L) Ω), IsConjEl c → ∀ w w' : Plc L, w'.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L)) → ∀ s, Ga.FrobAt w s → Ga.FrobAt w' s ∨ ∃ s', Ga.FrobAt w' s' ∧ s'.restrictScalars (maximalRealSubfield L) = c * s.restrictScalars (maximalRealSubfield L) * c⁻¹ := by

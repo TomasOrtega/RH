@@ -33,25 +33,25 @@ def TopsOK (X : Inst D L) (Cb : ℝ) (T : Finset (HH D)) : Prop :=
     4 * (Cb * L.sc.x ^ (-2 : ℝ)) * L.sc.delta1 * D.R.n * ∑ p ∈ largeOrderResiduePrimes L, Real.log p / p
 
 /- English proof (translation)
-Unfold `Scale.delta1`. Conclude with `Real.rpow_pos_of_pos (by linarith [s.one_lt_alt]) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem delta1_pos (s : Scale) : 0 < s.delta1 := by
   unfold Scale.delta1
   exact Real.rpow_pos_of_pos (by linarith [s.one_lt_alt]) _
 
 /- English proof (translation)
-Unfold `Scale.delta1`. Conclude with `Real.rpow_le_one_of_one_le_of_nonpos (le_of_lt s.one_lt_alt) (by linarith [s.eps_pos])`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem delta1_le_one (s : Scale) : s.delta1 ≤ 1 := by
   unfold Scale.delta1
   exact Real.rpow_le_one_of_one_le_of_nonpos (le_of_lt s.one_lt_alt) (by linarith [s.eps_pos])
 
 /- English proof (translation)
-Unfold `BadOrb`. Establish `hpos : posOn D h (X.bs h t) T = posOn D h (X.bs h t) T'`. Unfold `posOn`. Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply `hT` to reduce the goal to its premises. Take `⟨i, hi⟩` from `X.bs_orb h t`. Generalize the expression as in `X.bs h t = b at hi ⊢`. Substitute `hi` using the available equality. Simplify using `only [UnusedSlot33.coset, Set.mem_setOf_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `⟨((j : ℕ) : ℤ) - (i : ℤ), ?_⟩` and prove the remaining obligations. Rewrite using `[sub_smul, natCast_zsmul, natCast_zsmul]`. Normalize the expressions using the abelian group laws. Rewrite using `[hpos]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem badOrb_congr (X : Inst D L) (h t : HH D) (T T' : Finset (HH D))
     (hT : ∀ x ∈ UnusedSlot33.coset t h, (x ∈ T ↔ x ∈ T')) : BadOrb X h t T ↔ BadOrb X h t T' := by
@@ -71,9 +71,9 @@ theorem badOrb_congr (X : Inst D L) (h t : HH D) (T T' : Finset (HH D))
   rw [hpos]
 
 /- English proof (translation)
-Establish `hmem : ∀ p ∈ largeOrderResiduePrimes L, L.sc.x ^ (L.sc.eps / 4) ≤ (addOrderOf (hP D p) : ℝ)`. Introduce `p hp`. Unfold `largeOrderResiduePrimes at hp`. Conclude with `(Finset.mem_filter.mp hp).2.2.2`. Take `⟨T, h1, h2, h3⟩` from `h6 L.sc.delta1 (delta1_pos L.sc) (delta1_le_one L.sc) h16 (Cb * L.sc.x ^ (-2 : ℝ)) (fun h t T => BadOrb X h t T) (fun h t T T' hT => badOrb_congr X h t T T' hT) h32 (largeOrderResiduePrimes L) (hP D) (fun p => Real.log p / p) hmem (fun p _ => div_nonneg (Real.log_natCast_nonneg p …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨T, h1, h2, h3⟩`.
+A detailed English derivation is pending.
 -/
 theorem tops_exist_of (X : Inst D L) (Cb : ℝ) (h6 : UnusedSlot33.Conclusion6 D L.sc) (h16 : 16 ≤ L.sc.delta1 * D.R.n)
     (h32 : BadProb X Cb) : ∃ T : Finset (HH D), TopsOK X Cb T := by
@@ -88,13 +88,13 @@ theorem tops_exist_of (X : Inst D L) (Cb : ℝ) (h6 : UnusedSlot33.Conclusion6 D
   exact ⟨T, h1, h2, h3⟩
 
 /- English proof (translation)
-Simplify using `[stepP, IsSg, hp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frobenius_step_large_order {p : ℕ} (hp : IsResidueClassZero D p) : stepP D p = hP D p := by
   simp [stepP, IsSg, hp]
 
 /- English proof (translation)
-Rewrite using `[frobenius_step_large_order hp]`. Apply the tactic sequence `try exact Iff.rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem badOrb_TT (X : Inst D L) {p : ℕ} (hp : IsResidueClassZero D p) (t : HH D) :
     BadOrb X (hP D p) t D.host.TT ↔ ¬ Good X p (X.bs (stepP D p) t) := by
@@ -102,9 +102,9 @@ theorem badOrb_TT (X : Inst D L) {p : ℕ} (hp : IsResidueClassZero D p) (t : HH
   try exact Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `p`. Unfold `largeOrderResiduePrimes AuxBlock8.primesResidueBelow`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2, h3, h4⟩, h5⟩`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h1, h2, h4, h5⟩`. Introduce and unpack `⟨h1, h2, h4, h5⟩`. Conclude with `⟨⟨h1, h2, Nat.lt_ceil.mp h1, h4⟩, h5⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem primes_eq (L : SizeData₂ D) :
     (AuxBlock8.primesResidueBelow D L.sc.X').filter
@@ -119,15 +119,15 @@ theorem primes_eq (L : SizeData₂ D) :
     exact ⟨⟨h1, h2, Nat.lt_ceil.mp h1, h4⟩, h5⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Establish `hx : 0 < L.sc.x` using `by linarith [L.sc.one_lt_alt]`. Establish `hδ` using `delta1_pos L.sc`. Establish `hc0 : ∀ p ∈ largeOrderResiduePrimes L, IsResidueClassZero D p`. Introduce `p hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `largeOrderResiduePrimes at hp`. Conclude with `(Finset.mem_filter.mp hp).2.2.1`. Establish `hS0 : 0 ≤ S` using `le_trans (Finset.sum_nonneg (fun p _ => div_nonneg (Real.log_natCast_nonneg p) (Nat.cast_nonneg p))) hS`. Establish `hx2 : 0 ≤ L.sc.x ^ (-2 : ℝ)` using `Real.rpow_nonneg hx.le _`. Establish `hco : 0 ≤ 4 * (Cb * L.sc.x ^ (-2 : ℝ)) * L.sc.delta1 * D.R.n` using `mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) (mul_nonneg hCb hx2)) hδ.le) (Nat.cast_nonneg _)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨by linarith, by linarith⟩, ?_⟩` and prove the remaining obligations. Unfold `AuxBlock8.BTT`. Rewrite using `[primes_eq L]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Rewrite using `[Finset.filter_congr (fun t _ => (badOrb_TT X (hc0 p hp) t).symm)]`. Use `_ ≤ 4 * (Cb * L.sc.x ^ (-2 : ℝ)) * L.sc.delta1 * D.R.n * ∑ p ∈ largeOrderResiduePrimes L, Real.log p / p := h3`. Use `_ ≤ 4 * (Cb * L.sc.x ^ (-2 : ℝ)) * L.sc.delta1 * D.R.n * S := mul_le_mul_of_nonneg_left hS hco`. Use `_ ≤ (D.host.TT.card : ℝ) * L.sc.x ^ (-2 + L.sc.eps) := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[Real.rpow_add hx]`. Establish `hCS : 0 ≤ Cb * S` using `mul_nonneg hCb hS0`. Establish `hT : L.sc.delta1 * D.R.n ≤ 2 * D.host.TT.card` using `by linarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hT (mul_nonneg hx2 hCS), mul_le_mul_of_nonneg_left hbig (mul_nonneg hx2 (Nat.cast_nonneg D.host.TT.card : (0 : ℝ) ≤ _))]`.
+A detailed English derivation is pending.
 -/
 theorem tops_share_bound (D : D7) (L : SizeData₂ D) (X : Inst D L) (Cb S : ℝ) (hCb : 0 ≤ Cb)
     (h : TopsOK X Cb D.host.TT) (hS : ∑ p ∈ largeOrderResiduePrimes L, Real.log p / p ≤ S)

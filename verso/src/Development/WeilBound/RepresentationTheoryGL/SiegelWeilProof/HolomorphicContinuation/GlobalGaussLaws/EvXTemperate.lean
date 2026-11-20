@@ -9,19 +9,17 @@ open MvPolynomial
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-Establish `hcoord : ∀ (a : Fin m) (i : Fin n), Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => u a i)`. Introduce `a i`. Conclude with `((ContinuousLinearMap.proj i : (Fin n → ℂ) →L[ℝ] ℂ).comp (ContinuousLinearMap.proj a : (Fin m → Fin n → ℂ) →L[ℝ] (Fin n → ℂ))).hasTemperateGrowth`. Establish `hconj : ∀ (a : Fin m) (i : Fin n), Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => star (u a i))`. Introduce `a i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `(Complex.conjCLE.toContinuousLinearMap.comp ((ContinuousLinearMap.proj i : (Fin n → ℂ) →L[ℝ] ℂ).comp (ContinuousLinearMap.proj a : (Fin m → Fin n → ℂ) →L[ℝ] (Fin n → ℂ)))).hasTemperateGrowth`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using `[Complex.conjCLE_apply]`. Use `MvPolynomial.induction_on (motive := fun Q : PX m n => Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => evX Q u)) P ?_ ?_ ?_` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Use `Function.HasTemperateGrowth.const (E := Fin m → Fin n → ℂ) a using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using `[evX]`. Introduce `p q hp hq`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hp.add hq using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using `[evX]`. Introduce `p k hp`. Take `⟨a, i, b⟩` from `k`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `b`. Establish `e : (fun u : Fin m → Fin n → ℂ => evX (p * X (a, i, false)) u) = (fun u => evX p u) * (fun u => u a i)`. Use function extensionality and compare the values at `u`. Simplify using `[evX]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hp.mul (hcoord a i)`. Establish `e : (fun u : Fin m → Fin n → ℂ => evX (p * X (a, i, true)) u) = (fun u => evX p u) * (fun u => star (u a i))`. Use function extensionality and compare the values at `u`. Simplify using `[evX]`. Rewrite using `[e]`.
-
-Conclude with `hp.mul (hconj a i)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evX_temperate {m n : ℕ} (P : PX m n) :
     Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => evX P u) := by
@@ -67,11 +65,11 @@ theorem evX_temperate {m n : ℕ} (P : PX m n) :
       exact hp.mul (hconj a i)
 
 /- English proof (translation)
-Establish `hre : ∀ (a : Fin m) (i : Fin n), Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => (u a i).re)` using `fun a i => (Complex.reCLM.comp ((ContinuousLinearMap.proj i : (Fin n → ℂ) →L[ℝ] ℂ).comp (ContinuousLinearMap.proj a : (Fin m → Fin n → ℂ) →L[ℝ] (Fin n → ℂ)))).hasTemperateGrowth`. Establish `him : ∀ (a : Fin m) (i : Fin n), Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => (u a i).im)` using `fun a i => (Complex.imCLM.comp ((ContinuousLinearMap.proj i : (Fin n → ℂ) →L[ℝ] ℂ).comp (ContinuousLinearMap.proj a : (Fin m → Fin n → ℂ) →L[ℝ] (Fin n → ℂ)))).hasTemperateGrowth`. Establish `hsq : ∀ (a : Fin m) (i : Fin n), Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => ‖u a i‖ ^ 2)`. Introduce `a i`. Establish `e : (fun u : Fin m → Fin n → ℂ => ‖u a i‖ ^ 2) = fun u : Fin m → Fin n → ℂ => (u a i).re * (u a i).re + (u a i).im * (u a i).im`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `u`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Rewrite using `[e]`. Conclude with `((hre a i).mul (hre a i)).add ((him a i).mul (him a i))`. Establish `hin : ∀ a : Fin m, Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => ∑ i : Fin n, ‖u a i‖ ^ 2)` using `fun a => Function.HasTemperateGrowth.sum fun i _ => hsq a i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2)` using `Function.HasTemperateGrowth.sum fun a _ => hin a`. Conclude with `(Function.HasTemperateGrowth.const c).mul hsum`.
+A detailed English derivation is pending.
 -/
 private theorem hasTemperateGrowth_const_mul_sum_norm_sq {m n : ℕ} (c : ℝ) :
     Function.HasTemperateGrowth
@@ -102,13 +100,13 @@ private theorem hasTemperateGrowth_const_mul_sum_norm_sq {m n : ℕ} (c : ℝ) :
   exact (Function.HasTemperateGrowth.const c).mul hsum
 
 /- English proof (translation)
-Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv]`. Establish `hit : iteratedDeriv i (fun s : ℝ => Complex.exp (-(s : ℂ))) = fun s : ℝ => (-1 : ℂ) ^ i * Complex.exp (-(s : ℂ))`. Proceed by induction on `i with`. Consider the case `zero`. Use function extensionality and compare the values at `s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Consider the case `succ i ih`. Rewrite using `[iteratedDeriv_succ, ih]`. Use function extensionality and compare the values at `s`. Establish `h0 : HasDerivAt (fun s : ℝ => (s : ℂ)) 1 s`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `using (hasDerivAt_id s).ofReal_comp`. Establish `hd : HasDerivAt (fun s : ℝ => -(s : ℂ)) (-1) s` using `h0.neg`. Establish `he` using `(hd.cexp).const_mul ((-1 : ℂ) ^ i)`. Rewrite using `[he.deriv]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hit]`. Simplify using `[Complex.norm_exp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem norm_iteratedFDeriv_cexp_neg_eq_exp_neg (i : ℕ) (t : ℝ) :
     ‖iteratedFDeriv ℝ i (fun s : ℝ => Complex.exp (-(s : ℂ))) t‖ = Real.exp (-t) := by
@@ -132,13 +130,13 @@ private theorem norm_iteratedFDeriv_cexp_neg_eq_exp_neg (i : ℕ) (t : ℝ) :
   simp [Complex.norm_exp]
 
 /- English proof (translation)
-Use `⟨2 ^ j * (1 + j.factorial / c ^ j), fun r hr => ?_⟩` and prove the remaining obligations. Establish `hy : 0 ≤ c * r ^ 2` using `by positivity`. Establish `hexp` using `Real.pow_div_factorial_le_exp (c * r ^ 2) hy j`. Establish `hE : 0 < Real.exp (c * r ^ 2)` using `Real.exp_pos _`. Establish `hcj : 0 < c ^ j` using `pow_pos hc j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2j : (0 : ℝ) < 2 ^ j` using `pow_pos two_pos j`. Establish `hr2j : 0 ≤ (r ^ 2) ^ j` using `by positivity`. Establish `h1 : (1 + r) ^ j ≤ 2 ^ j * (1 + (r ^ 2) ^ j)`. Break down `le_total r 1 with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (r ^ 2) ^ j * Real.exp (-(c * r ^ 2)) ≤ j.factorial / c ^ j`. Rewrite `hexp` using `[mul_pow, div_le_iff₀ (by positivity)]`. Rewrite using `[Real.exp_neg, ← div_eq_mul_inv, div_le_div_iff₀ hE hcj]`. Use the polynomial consequences of the given equalities and inequalities.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h3 : Real.exp (-(c * r ^ 2)) ≤ 1`. Rewrite using `[Real.exp_le_one_iff]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 -/
 private theorem exists_bound_one_add_pow_mul_exp_neg_sq (c : ℝ) (hc : 0 < c) (j : ℕ) :
     ∃ M : ℝ, ∀ r : ℝ, 0 ≤ r → (1 + r) ^ j * Real.exp (-(c * r ^ 2)) ≤ M := by
@@ -170,23 +168,21 @@ private theorem exists_bound_one_add_pow_mul_exp_neg_sq (c : ℝ) (hc : 0 < c) (
         mul_le_mul_of_nonneg_left (add_le_add h3 h2) h2j.le
 
 /- English proof (translation)
-Establish `hqT` using `hasTemperateGrowth_const_mul_sum_norm_sq (m := m) (n := n) c`. Establish `hhC : ContDiff ℝ (⊤ : ℕ∞) (fun s : ℝ => Complex.exp (-(s : ℂ)))` using `Complex.contDiff_exp.comp (Complex.ofRealCLM.contDiff.neg)`. Establish `hgs : (gs c : (Fin m → Fin n → ℂ) → ℂ) = (fun s : ℝ => Complex.exp (-(s : ℂ))) ∘ (fun u : Fin m → Fin n → ℂ => c * ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2)`. Use function extensionality and compare the values at `u`. Simplify using `[gs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hlow : ∀ u : Fin m → Fin n → ℂ, ‖u‖ ^ 2 ≤ ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2`. Introduce `u`. Establish `hS0 : 0 ≤ ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2` using `by positivity`. Establish `hb : ‖u‖ ≤ Real.sqrt (∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2)`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Establish `h1 : ‖u a i‖ ^ 2 ≤ ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `Real.abs_le_sqrt h1`. Rewrite `h2` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨gs c, ?_, ?_⟩, fun u => rfl⟩` and prove the remaining obligations. Rewrite using `[hgs]`. Conclude with `hhC.comp hqT.1`. Introduce `k N`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨K, C, hC0, hC⟩` from `hqT.norm_iteratedFDeriv_le_uniform N`. Take `⟨M, hM⟩` from `exists_bound_one_add_pow_mul_exp_neg_sq c hc (k + K * N)`. Use `⟨N.factorial * (C + 1) ^ N * M, fun u => ?_⟩` and prove the remaining obligations. Establish `hu0` using `norm_nonneg u`. Establish `hD1 : 1 ≤ (C + 1) * (1 + ‖u‖) ^ K` using `one_le_mul_of_one_le_of_one_le (by linarith) (one_le_pow₀ (by linarith))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : ∀ i : ℕ, 1 ≤ i → i ≤ N → ‖iteratedFDeriv ℝ i (fun u : Fin m → Fin n → ℂ => c * ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2) u‖ ≤ ((C + 1) * (1 + ‖u‖) ^ K) ^ i`. Introduce `i hi1 hiN`. Combine the equalities or inequalities in the displayed calculation. Establish `key` using `norm_iteratedFDeriv_comp_le (𝕜 := ℝ) (n := N) hhC hqT.1 (by exact_mod_cast le_top) u (C := Real.exp (-(c * ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2))) (fun i _ => (norm_iteratedFDeriv_cexp_neg_eq_exp_neg i _).le) hD`. Establish `hexp_le : Real.exp (-(c * ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2)) ≤ Real.exp (-(c * ‖u‖ ^ 2))`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use `mul_le_mul_of_nonneg_left (hlow u) hc.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpow : ‖u‖ ^ k ≤ (1 + ‖u‖) ^ k` using `pow_le_pow_left₀ hu0 (by linarith) k`. Rewrite using `[hgs]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul hpow (key.trans ?_) (norm_nonneg _) (by positivity)` and prove the remaining obligations. Use `gcongr`. Use `_ = N.factorial * (C + 1) ^ N * ((1 + ‖u‖) ^ (k + K * N) * Real.exp (-(c * ‖u‖ ^ 2))) := by`. Rewrite using `[mul_pow, ← pow_mul, pow_add]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ N.factorial * (C + 1) ^ N * M := by gcongr`. Conclude with `hM _ hu0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gs_sch {m n : ℕ} (c : ℝ) (hc : 0 < c) :
     ∃ S : SchwartzMap (Fin m → Fin n → ℂ) ℂ, ∀ u, S u = gs c u := by
@@ -259,9 +255,9 @@ theorem gs_sch {m n : ℕ} (c : ℝ) (hc : 0 < c) :
           exact hM _ hu0
 
 /- English proof (translation)
-Introduce `m n c hc P`. Take `⟨S, hS⟩` from `gs_sch (m := m) (n := n) c hc`. Use `⟨SchwartzMap.smulLeftCLM ℂ (fun u => evX P u) S, ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.smulLeftCLM_apply (evX_temperate P)]`. Use function extensionality and compare the values at `u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[fP, hS, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem schFP : SchFP := by
   intro m n c hc P

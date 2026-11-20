@@ -17,7 +17,7 @@ open GlobalTheory.Published GlobalTheory.TheRec GlobalTheory.ContraPair
 open GlobalTheory.CuspRep.InfType GlobalTheory.CuspRep.AlgExpo
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.IdeleMapInjective.ideleMap_injective` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FIdeleMapOfAlgebraMaximalRealSubfieldInjective.lean&line=15#L15)
 -/

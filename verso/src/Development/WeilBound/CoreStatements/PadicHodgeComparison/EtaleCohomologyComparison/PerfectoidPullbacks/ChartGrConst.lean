@@ -23,12 +23,12 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace CrystallineSemistableComparison.Pb
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.T.sheaf_filtration_property`.
+A detailed English derivation is pending.
 -/
 theorem isFil : ∀ {b : Base} {L : b.Fun} (Q : ObjectProperty (Thick L)), IsFil (sP Q) (sFil Q) := @GlobalTheory.T.sheaf_filtration_property
 
 /- English proof (translation)
-The claim follows from `@Site.poly_tf'`.
+A detailed English derivation is pending.
 -/
 theorem poly_tf : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (γ : DividedPowers I) {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) (κ : O →+* R ⧸ I) (l s : ℕ) (𝒱 : Set X.Opens),
@@ -36,7 +36,7 @@ theorem poly_tf : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (γ :
       ∀ r : ℤ, r ≤ s → Q.Crit (sFil _) r ∧ ∀ c : R, Q.Crit (fun r => stdI _ (some r) c) r := @Site.poly_tf'
 
 /- English proof (translation)
-The claim follows from `@Site.poly_all'`.
+A detailed English derivation is pending.
 -/
 theorem poly_all : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (γ : DividedPowers I) (p : ℕ) (hp : p ≠ 0) {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) (κ : O →+* R ⧸ I) (Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))) (h : Q₀ = ⊤ ∨ Q₀ = FlatT)
@@ -44,7 +44,7 @@ theorem poly_all : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (γ 
       ∀ c : R, Q.Crit (fun r => stdI _ (some r) c) r ∧ Q.Crit (fun _ => stdI _ none c) r ∧ Q.Crit (fun _ => IdF.span _ c) r := @Site.poly_all'
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.CompanionTheory.NlZar.zariski_descent`.
+A detailed English derivation is pending.
 -/
 theorem zar : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ} {X : Scheme.{0}}
     {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} (Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))) (hQ : Used Q₀)
@@ -54,7 +54,7 @@ theorem zar : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : Div
     Function.Bijective ((incl h).o.pull j) := @GlobalTheory.CompanionTheory.NlZar.zariski_descent
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.CompanionTheory.PDTrunc.pull_incl_bijective`.
+A detailed English derivation is pending.
 -/
 theorem refl : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {X : Scheme.{0}}
     {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} (Q₀ : ObjectProperty (Thick (nlFun γ 0 X q κ))) (l s : ℕ)
@@ -62,13 +62,13 @@ theorem refl : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : Di
     Function.Bijective (((incl h).sq (incl_fil h r) (incl_fil h r')).pull j) := @GlobalTheory.CompanionTheory.PDTrunc.pull_incl_bijective
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.T.exists_smooth_coordinate_cover`.
+A detailed English derivation is pending.
 -/
 theorem cov_ex : ∀ {O : Type} [CommRing O] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) [IsSeparated q] [QuasiCompact q],
     (Smooth q → Nonempty (Cov q)) ∧ ∀ d, SmoothOfRelativeDimension d q → ∃ U : Cov q, ∀ α, U.d α = d := @GlobalTheory.T.exists_smooth_coordinate_cover
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.T.coordinates_restrict_affine_open`.
+A detailed English derivation is pending.
 -/
 theorem coord_res : ∀ {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {V W : X.Opens} {d : ℕ}
     (c : Coord q V d) (h : W ≤ V) (hW : IsAffineOpen W), ∃ c' : Coord q W d, ∀ i, c'.t i = rs h (c.t i) := @GlobalTheory.T.coordinates_restrict_affine_open

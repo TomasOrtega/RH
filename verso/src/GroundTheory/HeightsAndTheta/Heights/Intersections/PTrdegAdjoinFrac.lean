@@ -7,43 +7,35 @@ noncomputable section
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter
 
 /- English proof (translation)
-Introduce `D _ _ _ E _ _ _ _ s hinj`. Use `set A := Algebra.adjoin ℤ (Set.range (fun d : D => algebraMap (FractionRing D) E (algebraMap D (FractionRing D) d)) ∪ s) with hA`. Use `set B := Algebra.adjoin (FractionRing D) s with hB`. Establish `hmem : ∀ c : D, algebraMap (FractionRing D) E (algebraMap D (FractionRing D) c) ∈ A` using `fun c => Algebra.subset_adjoin (Or.inl ⟨c, rfl⟩)`. Establish `hs : ∀ x ∈ s, x ∈ A` using `fun x hx => Algebra.subset_adjoin (Or.inr hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hAB : ∀ x ∈ A, x ∈ B`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Break down `hy with ⟨d, rfl⟩ | hy` into its components or cases.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately.
 
-Conclude with `B.algebraMap_mem _`. Conclude with `Algebra.subset_adjoin hy`. Consider the case `algebraMap n => rw [eq_intCast]`. Conclude with `intCast_mem B n`. Consider the case `add y z _ _ hy hz => exact B.add_mem hy hz`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mul y z _ _ hy hz => exact B.mul_mem hy hz`. Establish `key : ∀ x ∈ B, ∃ d : D, d ≠ 0 ∧ algebraMap (FractionRing D) E (algebraMap D (FractionRing D) d) * x ∈ A`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hs x hx⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `algebraMap r`. Take `⟨⟨a, m⟩, h⟩` from `IsLocalization.surj (nonZeroDivisors D) r`. Use `⟨m, nonZeroDivisors.ne_zero m.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, mul_comm, h]`. Conclude with `hmem a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨d, hd, hdx⟩` from `hx`. Take `⟨e, he, hey⟩` from `hy`. Use `⟨d * e, mul_ne_zero hd he, ?_⟩` and prove the remaining obligations. Establish `: algebraMap (FractionRing D) E (algebraMap D (FractionRing D) (d * e)) * (x + y) = algebraMap (FractionRing D) E (algebraMap D (FractionRing D) e) * (algebraMap (FractionRing D) E (algebraMap D (FractionRing D) d) * x) + algebraMap (FractionRing D) E (algebraMap D (FractionRing …`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `A.add_mem (A.mul_mem (hmem e) hdx) (A.mul_mem (hmem d) hey)`. Consider the case `mul x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, hd, hdx⟩` from `hx`. Take `⟨e, he, hey⟩` from `hy`. Use `⟨d * e, mul_ne_zero hd he, ?_⟩` and prove the remaining obligations. Establish `: algebraMap (FractionRing D) E (algebraMap D (FractionRing D) (d * e)) * (x * y) = (algebraMap (FractionRing D) E (algebraMap D (FractionRing D) d) * x) * (algebraMap (FractionRing D) E (algebraMap D (FractionRing D) e) * y)`. Simplify using `only [map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `A.mul_mem hdx hey`. Establish `hZD : @FaithfulSMul ℤ D Algebra.toSMul` using `(faithfulSMul_iff_algebraMap_injective ℤ D).2 hinj`. Establish `tZDΦ : @IsScalarTower ℤ D (FractionRing D) Algebra.toSMul Algebra.toSMul Algebra.toSMul` using `IsScalarTower.of_algebraMap_eq' (RingHom.ext_int _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Algebra.trdeg ℤ D = Algebra.trdeg ℤ (FractionRing D)`. Establish `e` using `trdeg_add_eq ℤ D (A := FractionRing D)`. Use `IsLocalization.isAlgebraic (FractionRing D) (nonZeroDivisors D)` as an intermediate fact. Rewrite `e` using `[trdeg_eq_zero (R := D) (A := FractionRing D), add_zero]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: FaithfulSMul (FractionRing D) B` using `(faithfulSMul_iff_algebraMap_injective (FractionRing D) B).2 (algebraMap (FractionRing D) B).injective`. Establish `hZΦ : @FaithfulSMul ℤ (FractionRing D) Algebra.toSMul`. Use `(faithfulSMul_iff_algebraMap_injective ℤ (FractionRing D)).2 ?_` and prove the remaining obligations. Establish `: algebraMap ℤ (FractionRing D) = (algebraMap D (FractionRing D)).comp (algebraMap ℤ D)` using `RingHom.ext_int _ _`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(IsFractionRing.injective D (FractionRing D)).comp hinj`. Establish `tZΦB : @IsScalarTower ℤ (FractionRing D) B Algebra.toSMul Algebra.toSMul Algebra.toSMul` using `IsScalarTower.of_algebraMap_eq' (RingHom.ext_int _ _)`. Establish `h2 : Algebra.trdeg ℤ (FractionRing D) + Algebra.trdeg (FractionRing D) B = Algebra.trdeg ℤ B` using `trdeg_add_eq ℤ (FractionRing D) (A := B)`. Set `f : A →+* B` to `{ toFun := fun a => ⟨a, hAB a a.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Set `: Algebra A B` to `f.toAlgebra`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `tZAB : @IsScalarTower ℤ A B Algebra.toSMul Algebra.toSMul Algebra.toSMul` using `IsScalarTower.of_algebraMap_eq' (RingHom.ext_int _ _)`. Establish `hZE : Function.Injective (algebraMap ℤ E)`. Establish `: algebraMap ℤ E = ((algebraMap (FractionRing D) E).comp (algebraMap D (FractionRing D))).comp (algebraMap ℤ D)` using `RingHom.ext_int _ _`. Rewrite using `[this]`. Conclude with `(algebraMap (FractionRing D) E).injective.comp ((IsFractionRing.injective D (FractionRing D)).comp hinj)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hZA : @FaithfulSMul ℤ A Algebra.toSMul`. Use `(faithfulSMul_iff_algebraMap_injective ℤ A).2 ?_` and prove the remaining obligations. Introduce `m n hmn`. Conclude with `hZE (congrArg (fun a : A => (a : E)) hmn)`. Establish `: FaithfulSMul A B` using `(faithfulSMul_iff_algebraMap_injective A B).2 (by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b h`. Conclude with `Subtype.ext (congrArg Subtype.val h :))`. Establish `: Algebra.IsAlgebraic A B`. Use `⟨fun z => ?_⟩` and prove the remaining obligations. Take `⟨d, hd, hdz⟩` from `key z z.2`.
-
-Establish `hne : algebraMap (FractionRing D) E (algebraMap D (FractionRing D) d) ≠ 0`. Rewrite using `[map_ne_zero_iff _ (algebraMap (FractionRing D) E).injective, map_ne_zero_iff _ (IsFractionRing.injective D (FractionRing D))]`. Conclude with `hd`. Establish `hy : algebraMap A B ⟨_, hmem d⟩ ∈ nonZeroDivisors B`. Use `mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations.
-
-Introduce `h0`. Conclude with `hne (congrArg Subtype.val h0 :)`. Use `IsAlgebraic.of_mul hy (isAlgebraic_algebraMap _) ?_` and prove the remaining obligations. Establish `: algebraMap A B ⟨_, hmem d⟩ * z = algebraMap A B ⟨_, hdz⟩` using `Subtype.ext rfl`. Rewrite using `[this]`.
-
-Conclude with `isAlgebraic_algebraMap _`. Establish `h3 : Algebra.trdeg ℤ A = Algebra.trdeg ℤ B`. Establish `e` using `trdeg_add_eq ℤ A (A := B)`. Rewrite `e` using `[trdeg_eq_zero (R := A) (A := B), add_zero]`. Conclude with `e`.
-
-Rewrite using `[h3, ← h2, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TrdegAdjoinFrac.proof : TrdegAdjoinFrac.Statement := by
   intro D _ _ _ E _ _ _ _ s hinj

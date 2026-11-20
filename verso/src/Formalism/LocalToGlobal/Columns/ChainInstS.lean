@@ -12,7 +12,7 @@ namespace Formalism.L2.Col
 open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Ker
 
 /- English proof (translation)
-Unfold `LocE.bd5`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem LocE.symmetric_level_bound_le (k₀ rS s : ℕ) : LocE.bd5 k₀ rS s ≤ s := by
   unfold LocE.bd5
@@ -43,39 +43,37 @@ theorem phiGS_eq (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 
       else 0 := rfl
 
 /- English proof (translation)
-Unfold `LocE.fPos LocE.fIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem symFPos_fIdx {k₀ c n p : ℕ} (hk : k₀ ≤ n) (hp : p < n + c) : LocE.fPos k₀ c n (LocE.fIdx k₀ c n p) = p := by
   unfold LocE.fPos LocE.fIdx
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `LocE.fIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem symFIdx_lt {k₀ c n p : ℕ} (hk : k₀ ≤ n) (hp : p < n + c) : LocE.fIdx k₀ c n p < n + c := by
   unfold LocE.fIdx
   split_ifs <;> omega
 
 /- English proof (translation)
-Establish `hm` using `(hκ.2.2 (symIdx k₀ rS p') (symIdx_lt hr hp')).2`. Unfold `LocE.bvecS LocE.flagS at hm`. Rewrite `hm` using `[symIdxInv_symIdx, ciMem_sclLat]`. Establish `h3` using `hm ⟨LocE.fIdx k₀ c n p, symFIdx_lt hk hp⟩`. Establish `hbd : LocE.bd5 k₀ rS (symIdx k₀ rS p') ≤ symIdx k₀ rS p`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hb with hb | ⟨h1, h2⟩` into its components or cases. Conclude with `le_trans (LocE.symmetric_level_bound_le _ _ _) hb`. Substitute `h1` using the available equality. Unfold `LocE.bd5 symIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [symFPos_fIdx hk hp, if_pos hbd] at h3`. Unfold `LocE.bvecG at h3`. Rewrite `h3` using `[map_smul, Pi.sub_apply, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul]`. Establish `hat : Loc.atN (κ.toLinearMap (Loc.eN E (n + c) (LocE.fIdx k₀ c n p'))) (LocE.fIdx k₀ c n p) = κ (Loc.eN E (n + c) (LocE.fIdx k₀ c n p')) ⟨LocE.fIdx k₀ c n p, symFIdx_lt hk hp⟩`. Unfold `Loc.atN`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos (symFIdx_lt hk hp)]`. Both sides reduce to the same expression. Unfold `LocE.entB`. Rewrite using `[hat]`. Generalize the expression as in `κ (Loc.eN E (n + c) (LocE.fIdx k₀ c n p')) ⟨LocE.fIdx k₀ c n p, symFIdx_lt hk hp⟩ = Xv at h3 ⊢`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `he : Loc.eN E (n + c) (LocE.fIdx k₀ c n p') ⟨LocE.fIdx k₀ c n p, symFIdx_lt hk hp⟩ = if p = p' then 1 else 0`. Unfold `Loc.eN`. Distinguish the cases in `hpp : p = p'`. Substitute `hpp` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hpp, if_neg]`. Introduce `h`. Apply `hpp` to reduce the goal to its premises. Establish `h' : LocE.fIdx k₀ c n p = LocE.fIdx k₀ c n p'` using `h`. Establish `h1` using `symFPos_fIdx (c := c) hk hp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `symFPos_fIdx (c := c) hk hpn`. Rewrite `h1` using `[h']`. Use linear arithmetic over natural numbers and integers. Rewrite `h3` using `[he]`. Establish `e : ((q : E) ^ (LocE.scE n (fun i => i + 1) (LocE.fIdx k₀ c n p) + 1))⁻¹ * ((q : E) ^ LocE.scE n (fun i => i + 1) (LocE.fIdx k₀ c n p') * Xv - (q : E) ^ LocE.scE n (fun i => i + 1) (LocE.fIdx k₀ c n p') * (if p = p' then 1 else 0)) = (Xv * (q : E) ^ (LocE.scE n (fun i => i + 1) ( …`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hpp : p = p'`. Substitute `hpp` using the available equality. Rewrite using `[if_pos rfl, sub_self, zpow_zero, zpow_add₀ hq0, zpow_one]`. Establish `hA` using `zpow_ne_zero (LocE.scE n (fun i => i + 1) (LocE.fIdx k₀ c n p)) hq0`. Clear the denominators using the available nonvanishing facts.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hpp, zpow_sub₀ hq0, zpow_add₀ hq0, zpow_one]`. Establish `hA` using `zpow_ne_zero (LocE.scE n (fun i => i + 1) (LocE.fIdx k₀ c n p)) hq0`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e]`.
-
-Conclude with `h3`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem JGsym_entry (hq0 : (q : E) ≠ 0) {k₀ rS r t n c : ℕ} (hk : k₀ ≤ n) (hr : k₀ + rS ≤ r)
     {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} (hκ : κ ∈ LocE.JGsym P q k₀ rS r t n c) {p p' : ℕ} (hp : p < n + c) (hp' : p' < r) (hpn : p' < n + c)
@@ -134,7 +132,7 @@ theorem JGsym_entry (hq0 : (q : E) ≠ 0) {k₀ rS r t n c : ℕ} (hk : k₀ ≤
   exact h3
 
 /- English proof (translation)
-Apply the tactic sequence `have h := JGsym_entry hq0 hk hr hκ hp hp' hpn (hb.imp le_of_lt id)`. Rewrite `h` using `[if_neg hne, sub_zero]`. Conclude with `(ciRed_of_div hq hq0 h).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem JGsym_red (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) {k₀ rS r t n c : ℕ} (hk : k₀ ≤ n) (hr : k₀ + rS ≤ r)
     {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} (hκ : κ ∈ LocE.JGsym P q k₀ rS r t n c) {p p' : ℕ} (hp : p < n + c) (hp' : p' < r) (hpn : p' < n + c)
@@ -145,13 +143,13 @@ theorem JGsym_red (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0
   exact (ciRed_of_div hq hq0 h).2
 
 /- English proof (translation)
-Rewrite `h` using `[phiGS_eq]`. Establish `hC` using `(ite_ne_right_iff.1 h).1`. Establish `hka : k₀ < r + (j - 1) * t` using `Nat.lt_of_lt_of_le hkr (Nat.le_add_right _ _)`. Use `⟨hC.1 p k₀ hp hka, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hpk : p = k₀`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hpk, hpk]`. Conclude with `(hC.2.2.1 k₀ hkr).1`. Rewrite using `[if_neg hpk]`. Distinguish the cases in `hpa : p < r + (j - 1) * t`. Use `(hC.2.2.1 k₀ hkr).2 p hpa hpk (Or.inr ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `symIdx`. Distinguish the cases in `h0 : rS = 0`. Substitute `h0` using the available equality. Distinguish the cases in `hlt : p < k₀`. Conclude with `Or.inr ⟨rfl, hlt⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Prove the second alternative. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `left split_ifs <;> omega`. Apply the tactic sequence `left split_ifs <;> omega`. Conclude with `(ciRed_of_div hq hq0 (hC.2.1 p k₀ (Nat.le_of_not_lt hpa) hp hka)).2`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem phiGS_col (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ)
     {k₀ rS r t j c' n' c n : ℕ} (hkr : k₀ < r) (x : HomE E (n' + c') (n + c)) (h : LocE.PhiGS (P := P) q ψ₀ χ k₀ rS r t j c' n' c n x ≠ 0)
@@ -181,15 +179,15 @@ theorem phiGS_col (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0
     · exact (ciRed_of_div hq hq0 (hC.2.1 p k₀ (Nat.le_of_not_lt hpa) hp hka)).2
 
 /- English proof (translation)
-Substitute `hc' hc` using the available equality. Establish `f1 : LocE.fIdx k₀ 1 n' k₀ = n'`. Unfold `LocE.fIdx`. Rewrite using `[if_neg (lt_irrefl _), if_pos (by omega)]`. Use linear arithmetic over natural numbers and integers.
+Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `f2 : LocE.fIdx k₀ 0 n p = p` using `ciFIdx (Or.inl rfl) (by omega)`. Unfold `LocE.entB joinCol atNL`. Rewrite using `[f1, f2, ciScE_lt _ hp, dif_pos (show n' < n' + 1 by omega)]`. Simplify using `only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smulRight_apply, LinearMap.proj_apply]`. Rewrite using `[ciAtN_inX hp]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Establish `e1 : (LinearMap.funLeft E E (Fin.castAdd 1)) (Loc.eN E (n' + 1) n') = (0 : Fin n' → E)`. Use function extensionality and compare the values at `i`. Use `show Loc.eN E (n' + 1) n' (Fin.castAdd 1 i) = 0`. Unfold `Loc.eN`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_castAdd]`. Rewrite using `[if_neg (by have := i.2; omega)]`. Establish `e2 : Loc.eN E (n' + 1) n' ⟨n', by omega⟩ = 1`. Unfold `Loc.eN`. Rewrite using `[if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : LocE.scE n' (fun i => i + 1) n' = 1` using `by simp [LocE.scE]`. Rewrite using `[e1, e2, e3, map_zero, Pi.zero_apply, zero_add, one_mul, sub_zero, zpow_one, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symEntB_join_col (q : ℕ) {k₀ n' c' n c : ℕ} (hc' : c' = 1) (hc : c = 0)
     (x₀ : HomE E n' n) (y' : Sp E n) {p : ℕ} (hp : p < n) :
@@ -232,11 +230,11 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
 /- English proof (translation)
-Unfold `PsiAt omPhi at h`. Rewrite `h` using `[ciOm_one]`. Establish `h'` using `right_ne_zero_of_mul h`. Unfold `PhiAt at h'`. Rewrite `h'` using `[if_pos hP, if_pos hs]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hkr : R.k < R.r`. Use `R.two_le_m` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hi : i.1 < R.N (m2 + 1) + cOf R (m2 + 1)` using `Nat.lt_of_lt_of_le i.2 (Nat.le_add_right _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hq0 : ((qOf P.1 : ℕ) : X.E) ≠ 0` using `Nat.cast_ne_zero.2 (qOf_pos P.1).ne'`. Establish `a` using `phiGS_col (xqQ_mem P.1) hq0 _ _ hkr _ h' hi`. Rewrite `a` using `[symEntB_join_col _ hc' hc x₀ y' i.2]`. Conclude with `a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiAt_sym {m2 : ℕ} (hc' : cOf R m2 = 1) (hc : cOf R (m2 + 1) = 0) (hs : cst.sharp = true) (P : rowSG Pr sel mu)
     (hP : P.1 ∈ Pr.vGs) (x₀ : HomE X.E (R.N m2) (R.N (m2 + 1))) (y' : Sp X.E (R.N (m2 + 1)))

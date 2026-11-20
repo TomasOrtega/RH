@@ -14,7 +14,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem theta_cast (j : ℕ) (μ ν : D.what₂.Tup) (h : μ = ν) (x : D.what₂.MtL μ j) :
     D.what₂.thetaP ν j (D.what₂.jMt ν j (h ▸ x)) = D.what₂.thetaP μ j (D.what₂.jMt μ j x) := by
@@ -23,9 +23,9 @@ theorem theta_cast (j : ℕ) (μ ν : D.what₂.Tup) (h : μ = ν) (x : D.what�
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `w i h1 h2 t ht hw c x hx hxT y hy n a f hsum`. Take `⟨jD, hjD, ⟨N⟩⟩` from `hE`. Establish `e1` using `hjD i (p.P.JM.eW i (((p.P.A3.indefDown p.P.S0).θ i t).mulVec ((lPrj D p.P.A3.A p.P.P0 p.P.ψ0 (p.P.A3.fam3.toSub2 p.P.Zs) i t).mulVec c))) y (by rw [LinearEquiv.symm_apply_apply]; exact hy)`. Establish `e2` using `(p.nexp.fi i).e.injective (e1.trans hsum.symm)`. Establish `e3` using `N.eMj_sum w _ h1 h2 _ n a f e2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Eq.trans ?_ e3` and prove the remaining obligations. Use `symm`. Apply `N.eMj_th w _ hw h1 h2 x hxT` to reduce the goal to its premises. Rewrite using `[p.P.mjH.j_eq, ← hD.thTheta, hx]`. Conclude with `(theta_cast _ _ _ ht _).symm`.
+Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pin_of_export (p : PtAt ex Csz) (hE : p.ExportRow)
     (hD : DivRows3 D p.P.A3 p.P.P0 p.P.ψ0 p.P.Ps p.P.ψs p.P.Zs p.P.S0 p.P.S1 ex.p0 p.P.C p.P.NuC p.P.I) :
@@ -44,14 +44,14 @@ theorem pin_of_export (p : PtAt ex Csz) (hE : p.ExportRow)
   exact (theta_cast _ _ _ ht _).symm
 
 /- English proof (translation)
-The claim follows from `pin_of_export p h.export_ h.divRows`.
+A detailed English derivation is pending.
 -/
 theorem pin_of_rows (p : PtAt ex Csz) (h : p.Rows) : ClassSumPin p := pin_of_export p h.export_ h.divRows
 
 /- English proof (translation)
-Establish `hz` using `p.zs`. Establish `hs` using `p.s0`. Establish `key : ∀ (Z : DefSub p.P.A3.fam3.amb3) (S : IndefData (p.P.A3.side3 p.P.P0 p.P.ψ0 Z)), Z = p.P.Zs → HEq S p.P.S0 → p.P.S0.dW i = S.dW i`. Introduce `Z S h1 h2`. Substitute `h1` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Rewrite using `[eq_of_heq h2]`. Conclude with `key _ _ hz hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_eq (p : PtAt ex Csz) (i : Fin D.R.m) :
     (p.P.A3.indefDown p.P.S0).dW i = Module.finrank D.what₂.LL (p.R.toRealDat.WL p.F.lv2 false i) := by
@@ -65,24 +65,22 @@ theorem dim_eq (p : PtAt ex Csz) (i : Fin D.R.m) :
   exact key _ _ hz hs
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨z, HEq.rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_heq_fin {K : Type} {a b : ℕ} (h : a = b) (z : Fin a → K) : ∃ y : Fin b → K, HEq z y := by
   subst h; exact ⟨z, HEq.rfl⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨x, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_cast (j : ℕ) (μ ν : D.what₂.Tup) (h : μ = ν) (x : D.what₂.MtL ν j) :
     ∃ x' : D.what₂.MtL μ j, x = h ▸ x' := by
   subst h; exact ⟨x, rfl⟩
 
 /- English proof (translation)
-Take `⟨n, b, hb, -, -, -, hs⟩` from `p.fw.ks i`. Establish `hv : v ∈ Submodule.span D.what₂.LL (Set.range b)` using `by rw [hs]; trivial`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hv`. Use `⟨n, a, fun k => (⟨(p.nexp.fi i).e.symm (b k), ((p.nexp.fi i).wk _).2 (by` and prove the remaining obligations. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb k)⟩ : ↥(p.Sx.A ((i : ℕ) + 1)).WK), ?_⟩`. Rewrite using `[map_sum, ← ha]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `congr 1`.
-
-Conclude with `(p.nexp.fi i).e.apply_symm_apply _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_sum (p : PtAt ex Csz) (i : Fin D.R.m) (v : Fin (p.R.nW i) → D.what₂.LL) :
     ∃ (n : ℕ) (a : Fin n → D.what₂.LL) (f : Fin n → FmK p.Sx ((i : ℕ) + 1)),
@@ -99,9 +97,9 @@ theorem exists_sum (p : PtAt ex Csz) (i : Fin D.R.m) (v : Fin (p.R.nW i) → D.w
   exact (p.nexp.fi i).e.apply_symm_apply _
 
 /- English proof (translation)
-Establish `h0 : D.what₂.muAt w = D.what₂.muTw w` using `(D.what₂.muAt_or w).resolve_left hw`. Establish `ht : p.P.I.tup (p.tupT (D.what₂.muAt w)) = D.what₂.muTw w` using `(p.tupTie _ (Or.inr ⟨w, rfl⟩)).trans h0`. Take `⟨x', hx'⟩` from `exists_cast ((i : ℕ) + 1) _ _ ht x`. Take `⟨c, rfl⟩` from `(p.P.I.eMt i _).surjective x'`. Take `⟨y, hy⟩` from `exists_heq_fin (dim_eq p i) (((p.P.A3.indefDown p.P.S0).θ i _).mulVec ((lPrj D p.P.A3.A p.P.P0 p.P.ψ0 (p.P.A3.fam3.toSub2 p.P.Zs) i _).mulVec c))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, a, f, hf⟩` from `exists_sum p i (jDL p.R p.F.lv2 i y)`. Conclude with `⟨_, ht, c, y, n, a, f, hx', hy, hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem premises_met (p : PtAt ex Csz) (w : D.what₂.places.Pl) (i : Fin D.R.m) (hw : D.what₂.muAt w ≠ D.what₂.mu0)
     (x : D.what₂.MtL (D.what₂.muTw w) ((i : ℕ) + 1)) :
@@ -124,11 +122,11 @@ theorem premises_met (p : PtAt ex Csz) (w : D.what₂.places.Pl) (i : Fin D.R.m)
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨t, ht, c, y, n, a, f, e1, e2, e3⟩` from `premises_met p w i hw x`. Rewrite using `[hP w i h1 h2 t ht hw c x e1 hx y e2 n a f e3]`. Apply `hsum` to reduce the goal to its premises. Apply `(p.nexp.fi i).e.injective` to reduce the goal to its premises. Rewrite using `[e3]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hjD` to reduce the goal to its premises. Establish `: z = p.P.JM.eW i (((p.P.A3.indefDown p.P.S0).θ i t).mulVec ((lPrj D p.P.A3.A p.P.P0 p.P.ψ0 (p.P.A3.fam3.toSub2 p.P.Zs) i t).mulVec c))`. Apply `Idx.jM_inj Y` to reduce the goal to its premises. Rewrite using `[hz, p.P.mjH.j_eq, ← hD.thTheta, e1]`. Conclude with `theta_cast _ _ _ ht _`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, LinearEquiv.symm_apply_apply]`. Conclude with `e2`.
+A detailed English derivation is pending.
 -/
 theorem classSum_of_pin (p : PtAt ex Csz) (hP : ClassSumPin p)
     (hD : DivRows3 D p.P.A3 p.P.P0 p.P.ψ0 p.P.Ps p.P.ψs p.P.Zs p.P.S0 p.P.S1 ex.p0 p.P.C p.P.NuC p.P.I)

@@ -99,15 +99,13 @@ structure Cp (D : D7) {R : Ranks} {H : Host R} {r : Rows.Data R} [NumberField r.
       ∃ y ∈ IsLocalRing.maximalIdeal (X.O0 i'), algebraMap (X.O0 i') (FractionRing (X.O0 i')) y = X.emb0 i' x
 
 /- English proof (translation)
-Substitute `hR` using the available equality. Substitute `hH` using the available equality. Establish `hP : HEq D.nd.finPlG N.finPlG` using `Subsingleton.helim (congrArg (fun P : Fin 2 → Type => ∀ k, Fintype (P k)) (eq_of_heq h5)) _ _`. Take `@⟨nOm, ninstOm, nalgOm, nacOm, nplOm, nldat, nsha_eq, nLoc, nl, nlPrime, nj, nj_range, nmu, nw, nw_l, nmu_w, nw_tw, nlocs, nlocs_mem, nO, ninstO, ndomO, ndvrO, nalgO, nfinO, ntopO, ntrO, nO_adic, nO_complete, nembK, nembK_w, nX, nfinX, nneX, nT, nT_local, nT_sep, nMt, nacgMt, nmo …` from `N`. Take `rfl : D.nd.Om = nOm` from `eq_of_heq h1`.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : D.nd.instOm = ninstOm` from `eq_of_heq h2`. Take `rfl : D.nd.algOm = nalgOm` from `eq_of_heq h3`. Take `rfl : D.nd.plOm = nplOm` from `eq_of_heq h4`. Take `rfl : D.nd.PlG = nPlG` from `eq_of_heq h5`. Take `rfl : D.nd.finPlG = nfinPlG` from `eq_of_heq hP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `N : NData D.R D.host r` to `@NData.mk _ _ _ D.nd.Om D.nd.instOm D.nd.algOm nacOm D.nd.plOm nldat nsha_eq nLoc nl nlPrime nj nj_range nmu nw nw_l nmu_w nw_tw nlocs nlocs_mem nO ninstO ndomO ndvrO nalgO nfinO ntopO ntrO nO_adic nO_complete nembK nembK_w nX nfinX nneX nT nT_local nT_sep nMt nacgMt nmodMt nfree …`. Establish `hE : IsEmpty N.Loc` using `hE`. Set `X : NTw D.R D.host r L N` to `{ D.ntw with emb0 := fun i => (D.ntw.emb0 i).comp e.toRingHom emb0b := fun i => (D.ntw.emb0b i).comp e.toRingHom restX_coefficientEmbedding_conj := fun i x y h => D.ntw.restX_coefficientEmbedding_conj i _ _ (hs x y h) twOf := fun a => hE.elim a twSide := fun a => hE.elim a twOf_l …`. Set `Y : NExp D.R D.host r L N X` to `{ D.nexp with eLL0 := fun g => e.symm (D.nexp.eLL0 g) eAlg_def := fun i b g => by`. Use `(D.nexp.eAlg_def i b g).trans ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Consider the cases of `b`. Conclude with `congrArg (fun z => IsFractionRing.map (D.ntw.O_inj i) (D.ntw.emb0b i z)) (e.apply_symm_apply _).symm`. Conclude with `congrArg (fun z => IsFractionRing.map (D.ntw.O_inj i) (D.ntw.emb0 i z)) (e.apply_symm_apply _).symm }`. Set `T : NTh D.R D.host r L N X Y` to `{ D.nth with }`. Use `⟨X, Y, T, D.ntwbr, D.ntwbr_ind, HEq.rfl, ?_⟩` and prove the remaining obligations.
-
-Conclude with `{ xcc := HEq.rfl xTw := HEq.rfl xl := HEq.rfl fixedFieldTransport_baseIntegerRing_heq := HEq.rfl fixedFieldTransport_baseIntegerCommRing_heq := HEq.rfl fixedFieldTransport_baseIntegerAlgebra_heq := HEq.rfl fixedFieldTransport_baseIntegerTopology_heq := HEq.rfl xO := HEq.rfl xcrO …`.
+Split into cases according to the possible forms of the given data. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_cp (D : D7) {R : Ranks} {H : Host R} {r : Rows.Data R} [NumberField r.LL] [StarRing r.LL]
     {L : IntermediateField ℚ r.LL} (N : NData R H r) (hR : D.R = R) (hH : HEq D.host H) (h1 : HEq D.nd.Om N.Om)
@@ -248,13 +246,13 @@ theorem exists_cp (D : D7) {R : Ranks} {H : Host R} {r : Rows.Data R} [NumberFie
     int := fun _ _ h _ => by cases h; rfl }
 
 /- English proof (translation)
-Establish `hs : ∀ x y : ↥D'.LL0, (y : D'.what₂.LL) = star (x : D'.what₂.LL) → (e y : D.what₂.LL) = star (e x : D.what₂.LL)` using `fun x y h => D.what₂.embLL.injective (by rw [D.starLL_cx, ← hι, ← hι, he, he, h, D'.starLL_cx])`. Take `⟨X, Y, T, br, hbr, hb, c⟩` from `exists_cp D D'.nd hg.R hg.host hg.Om hg.instOm hg.algOm hg.plOm hg.PlG hE e hs`. Establish `hh : ∀ g : G0g D'.nd, D'.what₂.embLL ((Y.eLL0 g : ↥D'.LL0) : D'.what₂.LL) = D'.ntypes.e0.coeff g` using `fun g => by`. Establish `hg' : HEq (cast c.grp.symm g) g` using `cast_heq _ _`. Rewrite using `[← he, hι, c.eLL0 _ _ hg', D.nStage_trivialCharacter_coeff_eq, h0 _ _ hg']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨X, Y, hh, T, br, hbr⟩, ⟨⟨⟨hg.R, hg.host, hg.loc, hg.Om, hg.instOm, hg.algOm, hg.plOm, hg.PlG⟩, ⟨c.xcc, c.xTw, c.xl, c.fixedFieldTransport_baseIntegerRing_heq, c.fixedFieldTransport_baseIntegerCommRing_heq, c.fixedFieldTransport_baseIntegerAlgebra_heq, c.fixedFieldTransport_base …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `D.ntw.NonzeroIndexPlace i ↔ X.NonzeroIndexPlace i'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, h1, h2⟩`. Take `⟨v, rfl⟩` from `hu v`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨v, (ht v).1 h1, fun x' => (c.int i i' hi x').symm.trans ((h2 (RingOfIntegers.mapRingHom e.toRingHom x')).trans (hv v _ x' rfl))⟩`. Introduce and unpack `⟨v, h1, h2⟩`. Use `⟨u v, (ht v).2 h1, fun x => ?_⟩` and prove the remaining obligations. Establish `hx : e ((RingOfIntegers.mapRingHom e.symm.toRingHom x : 𝓞 ↥D'.LL0) : ↥D'.LL0) = (x : ↥D.LL0)` using `e.apply_symm_apply _`. Establish `h3` using `(c.int i i' hi _).trans ((h2 (RingOfIntegers.mapRingHom e.symm.toRingHom x)).trans (hv v x _ hx).symm)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[hx]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_copyN (D D' : D7) (hg : GlobalTheory.TwistChoice.SameGalois D.nd D'.nd) (hE : IsEmpty D'.nd.Loc)
     (ι : D.what₂.LL →+* D'.what₂.LL) (e : ↥D'.LL0 ≃+* ↥D.LL0) (hι : ∀ x, D'.what₂.embLL (ι x) = D.what₂.embLL x)
@@ -296,13 +294,13 @@ section Types
 open Formalism.BasicNotions NumberField IsDedekindDomain GlobalTheory.Mem.Top
 
 /- English proof (translation)
-Substitute `hR` using the available equality. Substitute `hH` using the available equality. Substitute `hP` using the available equality. Substitute `hW` using the available equality. Rewrite using `[← h.typeIdempotent_coeff_across_layers h' g]`.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `key : ∀ {Q Q' : Fin 2 → Type} (_ : Q = Q') {Z : Type} {Y : Fin 2 → Type} (a : ∀ k, Q k → Z) (a' : ∀ k, Q' k → Z) (_ : HEq a a') (_ : ∀ k, Function.Injective (a k)) (u : ∀ kv : (Σ k, Q k), Y kv.1) (u' : ∀ kv : (Σ k, Q' k), Y kv.1) (_ : HEq u u') (k : Fin 2) (v : Q k) (v' : Q' k), …`. Introduce `Q Q' e Z Y a a' ha hi u u' hu k v v' hv`. Substitute `e` using the available equality. Consider the cases of `ha`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hu`. Rewrite using `[hi k hv]`. Use function extensionality and compare the values at `⟨k, v'⟩`. Rewrite using `[grpEquiv_apply]`. Use `key hG (Y := fun k => GL (Fin R.r) (ZMod (H.g k))) A.plGw A'.plGw hp A.plGw_inj g g' hg k _ v' ?_` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h.plGw_plEquiv h', Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trueTypesIdempotent_coeff_heq {R R' : Ranks} {H : Host R} {H' : Host R'} {r : Rows.Data R} {r' : Rows.Data R'} {N : NData R H r}
     {N' : NData R' H' r'} {A : NAut N} {A' : NAut N'} {T : NTypes A} {T' : NTypes A'} {P : Formalism.L2.Host.PiBar H}
@@ -339,9 +337,9 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 2000000
 
 /- English proof (translation)
-Establish `hm : ∀ x : B.LL0, incl h (x : B.LL) ∈ B'.LL0` using `fun x => by`. Take `⟨y, hy, e⟩ : B.embLL (x : B.LL) ∈ B'.embLL '' (B'.LL0 : Set B'.LL)` from `h.2.2.1 ▸ ⟨x, x.2, rfl⟩`. Rewrite using `[← B'.embLL.injective (e.trans (embLL_incl h _).symm)]` and apply the resulting hypothesis. Set `j : B.LL0 →+* B'.LL0` to `((incl h).comp B.LL0.val.toRingHom).codRestrict B'.LL0 hm`. Establish `hj : Function.Surjective j` using `fun x' => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨y, hy, e⟩ : B'.embLL (x' : B'.LL) ∈ B.embLL '' (B.LL0 : Set B.LL)` from `h.2.2.1 ▸ ⟨x', x'.2, rfl⟩`. Conclude with `⟨⟨y, hy⟩, Subtype.ext (B'.embLL.injective ((embLL_incl h y).trans e))⟩`. Conclude with `⟨(RingEquiv.ofBijective j ⟨j.injective, hj⟩).symm, fun x => congrArg Subtype.val ((RingEquiv.ofBijective j ⟨j.injective, hj⟩).apply_symm_apply x)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_fixedEquiv {B B' : Base} (h : Enl B B') :
     ∃ e : ↥B'.LL0 ≃+* ↥B.LL0, ∀ x : ↥B'.LL0, incl h (e x : B.LL) = (x : B'.LL) := by
@@ -356,9 +354,9 @@ theorem exists_fixedEquiv {B B' : Base} (h : Enl B B') :
     fun x => congrArg Subtype.val ((RingEquiv.ofBijective j ⟨j.injective, hj⟩).apply_symm_apply x)⟩
 
 /- English proof (translation)
-Establish `e1 : (fun u => (X.toD7.mem u).A.T) = X.B.T` using `funext X.C.A_T`. Establish `e2 : (fun u => (X'.toD7.mem u).A.T) = X'.B.T` using `funext X'.C.A_T`. Unfold `avPrimes`. Rewrite using `[e1, e2]`. Use `clear e1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨B', C', W', V', S', N', G'⟩` from `X'`. Consider the cases of `B'`. Simplify using `only at h`. Substitute `h` using the available equality. Conclude with `⟨rfl, HEq.rfl, rfl, HEq.rfl, HEq.rfl⟩`.
+Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem same_pre (X X' : Stages) (h : X'.B.toPre = X.B.toPre) : avPrimes X.toD7 = avPrimes X'.toD7 ∧ HEq X.toD7.sp X'.toD7.sp ∧
     X.toD7.what₂.Tau = X'.toD7.what₂.Tau ∧ HEq X.toD7.eTau X'.toD7.eTau ∧ HEq X.toD7.hc X'.toD7.hc := by
@@ -374,7 +372,7 @@ theorem same_pre (X X' : Stages) (h : X'.B.toPre = X.B.toPre) : avPrimes X.toD7 
   exact ⟨rfl, HEq.rfl, rfl, HEq.rfl, HEq.rfl⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Consider the cases of `hf`. Conclude with `⟨HEq.rfl, HEq.rfl⟩`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem frame_heq {P P' : Pre} (h : P' = P) {f : Top.Fr P} {f' : Top.Fr P'} (hf : HEq f' f) : HEq f.P f'.P ∧ HEq f.W f'.W := by
   subst h
@@ -385,11 +383,11 @@ variable {K : Ctx} {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T 
   {w' : ColW B' f' T'}
 
 /- English proof (translation)
-Establish `hB : Below (w.D P.Z₀) (w'.D P'.Z₀) (plUnder h v') v'` using `fun x x' e => by`. Establish `: x' = RingOfIntegers.mapRingHom (incl h) x` using `RingOfIntegers.ext (B'.embLL.injective (e.symm.trans (embLL_incl h _).symm))`. Substitute `this` using the available equality. Conclude with `mem_plUnder h v' x`. Establish `h0` using `hx.W1 _ v' hB`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a` using `Dat.mem_auxiliaryPlaces_iff_three_parts P.z (fun _ _ => 0) (plUnder h v')`. Establish `b` using `Dat.mem_auxiliaryPlaces_iff_three_parts P'.z (fun _ _ => 0) v'`. Establish `i0 : (plUnder h v' ∈ P.z.IwasawaPlaceIndex ∨ plUnder h v' ∈ P.z.W1jw) ↔ (v' ∈ P'.z.IwasawaPlaceIndex ∨ v' ∈ P'.z.W1jw)` using `⟨fun h => (b.1 (h0.1 (a.2 (Or.inl h)))).resolve_right (Second.not_mem_W1F_zero _ _), fun h => (a.1 (h0.2 (b.2 (Or.inl h)))).resolve_right (Second.not_mem_W1F_zero _ _)⟩`. Establish `c` using `Dat.mem_auxiliaryPlaces_iff_three_parts P.z (F0K K.s (w.D P.Z₀)) (plUnder h v')`. Establish `d` using `Dat.mem_auxiliaryPlaces_iff_three_parts P'.z (F0K K.s (w'.D P'.Z₀)) v'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `nonzeroForcedContentPlaces_agree_over_enlargement K B f T w B' f' T' w' h P.Z₀ P'.Z₀ P.kap P'.kap _ v' hB`. Conclude with `(iff_of_eq (congrArg (plUnder h v' ∈ ·) P.exact)).trans ((c.trans ((or_congr i0 e).trans d.symm)).trans (iff_of_eq (congrArg (v' ∈ ·) P'.exact)).symm)`.
+A detailed English derivation is pending.
 -/
 theorem mem_Wt_iff (h : Enl B B') {P : Pre2 K w} {P' : Pre2 K w'} (hx : Ext P.z P'.z) (v' : B'.places.Pl) :
     plUnder h v' ∈ P.Wt ↔ v' ∈ P'.Wt := by
@@ -411,7 +409,7 @@ theorem mem_Wt_iff (h : Enl B B') {P : Pre2 K w} {P' : Pre2 K w'} (hx : Ext P.z 
     ((c.trans ((or_congr i0 e).trans d.symm)).trans (iff_of_eq (congrArg (v' ∈ ·) P'.exact)).symm)
 
 /- English proof (translation)
-Establish `hmap : RingOfIntegers.mapRingHom (incl h) (algebraMap (𝓞 ↥X.toD7.LL0) (𝓞 X.toD7.what₂.LL) x) = algebraMap (𝓞 ↥X'.toD7.LL0) (𝓞 X'.toD7.what₂.LL) x'` using `RingOfIntegers.ext e`. Use `(TwistChoice.val_pos_iff_mem X.toD7 (plUnder h v') x).trans (Iff.trans ?_ (TwistChoice.val_pos_iff_mem X'.toD7 v' x').symm)` and prove the remaining obligations. Establish `hm` using `mem_plUnder h v' (algebraMap (𝓞 ↥X.toD7.LL0) (𝓞 X.toD7.what₂.LL) x)`. Rewrite `hm` using `[hmap]`. Conclude with `hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_pos_plUnder (X X' : Stages) (h : Enl X.B X'.B) (v' : X'.B.places.Pl) (x : 𝓞 ↥X.toD7.LL0) (x' : 𝓞 ↥X'.toD7.LL0)
     (e : incl h ((x : ↥X.toD7.LL0) : X.toD7.what₂.LL) = ((x' : ↥X'.toD7.LL0) : X'.toD7.what₂.LL)) :
@@ -426,7 +424,7 @@ theorem val_pos_plUnder (X X' : Stages) (h : Enl X.B X'.B) (v' : X'.B.places.Pl)
   exact hm
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_fixedEquiv h`. Take `⟨a1, a2, a3, a4, a5⟩` from `same_pre (w.st x.o.Z) (w'.st x'.o.Z) h.1`. Take `⟨N, hN⟩` from `exists_copyN (Dof x) (Dof x') hg.gal hE (incl h) e (embLL_incl h) he (trueTypesIdempotent_coeff_heq hg.gal.R hg.gal.host (frame_heq h.1 hf).1 (frame_heq h.1 hf).2 x.fits.grp x'.fits.grp (eq_of_heq hg.gal.PlG) hg.pl) a1 a2 a3 a4 a5 (plUnder h) (plUnder_surjective h) (fun v => (Mod …`. Conclude with `⟨N, incl h, e, hN⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_copy_st (h : Enl B B') (hf : HEq f' f) {P : Pre2 K w} (x : St P) {P' : Pre2 K w'} (hx : Ext P.z P'.z) (x' : St P')
     (hE : IsEmpty (Dof x').nd.Loc) (hg : SameGal (Dof x) (Dof x')) :
@@ -442,7 +440,7 @@ theorem exists_copy_st (h : Enl B B') (hf : HEq f' f) {P : Pre2 K w} (x : St P) 
   exact ⟨N, incl h, e, hN⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ h hf _ _ _ _ _ _ x _ _ hx x' l' hg` and use `exists_copy_st h hf x hx x' l'.a.A.bare hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_copy : PrN → SerN → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) {K : Ctx} {B' : Base} {f' : Top.Fr B'.toPre} {T' : TwDat B'} {w' : ColW B' f' T'}, KPx B' f' → Forced K B' T' → Start K B' f' T' w' → ∀ (B : Base) (f : Top.Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl B B' → HEq f' f → Start K B f T w → HEq w'.px w.px → HEq w'.I.sel w.I.sel → HEq w'.I.J w.I.J → HEq w'.δ w.δ → ∀ (P : Pre2 K w) (x : St P) (lb : StrictHenselianAcyclic hL x) (P' : Pre2 K w'), Ext P.z P'.z → ∀ (x' : St P') (l' : LI hL x'), SameGal (Dof x) (Dof x') → ∃ (N : TwNew (Dof x')) (ι : (Dof x).what₂.LL →+* (Dof x').what₂.LL) (e : ↥(Dof x').LL0 ≃+* ↥(Dof x).LL0), CopyN (Dof x) N ι e :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ h hf _ _ _ _ _ _ x _ _ hx x' l' hg => exists_copy_st h hf x hx x' l'.a.A.bare hg

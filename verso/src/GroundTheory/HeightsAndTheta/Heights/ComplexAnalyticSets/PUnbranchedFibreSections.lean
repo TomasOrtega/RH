@@ -7,35 +7,33 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Topology
 
 /- English proof (translation)
-Introduce `σ _ X w B d A D δ N hP y₀ hy₀ hδ₀`. Take `⟨_, _, hD, _, _, hprop, _, hδan, _, hcard, hchart, _⟩` from `hP`. Establish `hF0 : {x | x ∈ X ∩ B ∧ A x = y₀}.encard = N` using `hcard y₀ hy₀ hδ₀`. Establish `hfin : {x | x ∈ X ∩ B ∧ A x = y₀}.Finite` using `Set.finite_of_encard_eq_coe hF0`. Establish `ht : hfin.toFinset.card = N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hfin.encard_eq_coe_toFinset_card`. Rewrite `h` using `[hF0]`. Conclude with `h.symm` after adjusting the coercions. Set `e : Fin N ≃ hfin.toFinset` to `(Finset.equivFinOfCardEq ht).symm`. Establish `he : ∀ i, (e i : σ → ℂ) ∈ X ∩ B ∧ A (e i) = y₀` using `fun i => hfin.mem_toFinset.mp (e i).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ i : Fin N, ∃ (O : Set (Fin d → ℂ)) (V : Set (σ → ℂ)) (g : (Fin d → ℂ) → σ → ℂ), IsOpen O ∧ IsOpen V ∧ (e i : σ → ℂ) ∈ V ∧ AnalyticOnNhd ℂ g O ∧ (∀ y ∈ O, A (g y) = y) ∧ X ∩ B ∩ V = g '' O` using `fun i => hchart _ (he i).1 (by rw [(he i).2]; exact hδ₀)`. Use `choose O V g hO hV hxV hg hAg hXV using hc`. Establish `hy₀O : ∀ i, y₀ ∈ O i`. Introduce `i`. Establish `hm : (e i : σ → ℂ) ∈ X ∩ B ∩ V i` using `⟨(he i).1, hxV i⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hm` using `[hXV i]`. Take `⟨y', hy', hgy'⟩` from `hm`. Establish `h` using `hAg i y' hy'`. Rewrite `h` using `[hgy', (he i).2]`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hy'`. Take `⟨ρ, hρ, hρD⟩` from `Metric.isOpen_iff.mp hD y₀ hy₀`. Establish `hKD : Metric.closedBall y₀ (ρ / 2) ⊆ D` using `(Metric.closedBall_subset_ball (by linarith)).trans hρD`. Use `set C := {x | x ∈ X ∩ B ∧ A x ∈ Metric.closedBall y₀ (ρ / 2)} with hCdef`. Establish `hC : IsCompact C` using `hprop _ hKD (isCompact_closedBall _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hC' : IsCompact (C \ ⋃ i, V i)` using `hC.diff (isOpen_iUnion hV)`. Establish `hE : IsClosed (A '' (C \ ⋃ i, V i))` using `(hC'.image A.continuous).isClosed`. Establish `hy₀E : y₀ ∉ A '' (C \ ⋃ i, V i)`. Introduce and unpack `⟨x, ⟨⟨hxXB, _⟩, hxV'⟩, hAx⟩`. Establish `hxF : x ∈ hfin.toFinset` using `hfin.mem_toFinset.mpr ⟨hxXB, hAx⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `hxV'` to reduce the goal to its premises. Use `Set.mem_iUnion.mpr ⟨e.symm ⟨x, hxF⟩, ?_⟩` and prove the remaining obligations. Simplify using `using hxV (e.symm ⟨x, hxF⟩)`. Establish `hnhds : Metric.ball y₀ (ρ / 2) ∩ (A '' (C \ ⋃ i, V i))ᶜ ∩ (⋂ i, O i) ∩ {y | δ y ≠ 0} ∈ 𝓝 y₀`. Use `Filter.inter_mem (Filter.inter_mem (Filter.inter_mem (Metric.ball_mem_nhds _ (by linarith)) (hE.isOpen_compl.mem_nhds hy₀E)) ?_) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Filter.iInter_mem.mpr fun i => (hO i).mem_nhds (hy₀O i)`. Conclude with `(hδan y₀ hy₀).continuousAt.eventually_ne hδ₀`. Take `⟨r, hr, hrsub⟩` from `Metric.mem_nhds_iff.mp hnhds`. Establish `hrD : Metric.ball y₀ r ⊆ D` using `fun y hy => hρD (Metric.ball_subset_ball (by linarith) (hrsub hy).1.1.1)`. Use `⟨r, g, hr, hrD, fun y hy => (hrsub hy).2, fun i y hy => hg i y (Set.mem_iInter.mp (hrsub hy).1.2 i), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `y hy`. Take `⟨⟨⟨hyb, hyE⟩, hyO⟩, hyδ⟩` from `hrsub hy`. Establish `hyO' : ∀ i, y ∈ O i` using `Set.mem_iInter.mp hyO`. Establish `hrange : {x | x ∈ X ∩ B ∧ A x = y} = Set.range (fun i => g i y)`. Use extensionality with `x`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxXB, hAx⟩`. Establish `hxC : x ∈ C` using `⟨hxXB, by rw [hAx]; exact Metric.ball_subset_closedBall hyb⟩`. Establish `hxU : x ∈ ⋃ i, V i`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hyE ⟨x, ⟨hxC, hn⟩, hAx⟩`. Take `⟨i, hi⟩` from `Set.mem_iUnion.mp hxU`. Establish `hm : x ∈ X ∩ B ∩ V i` using `⟨hxXB, hi⟩`. Rewrite `hm` using `[hXV i]`. Take `⟨y', hy', rfl⟩` from `hm`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Establish `h` using `hAg i y' hy'`. Rewrite `h` using `[hAx]`. Conclude with `⟨i, by rw [h]⟩`. Introduce and unpack `⟨i, rfl⟩`. Establish `hm : g i y ∈ g i '' O i` using `⟨y, hyO' i, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hm` using `[← hXV i]`. Conclude with `⟨hm.1, hAg i y (hyO' i)⟩`. Use `⟨?_, hrange⟩` and prove the remaining obligations. Establish `hN : (Set.range (fun i => g i y)).encard = N`. Rewrite using `[← hrange]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hcard y (hrD hy) hyδ`. Establish `himg : Set.range (fun i => g i y) = ↑(Finset.univ.image (fun i => g i y))`. Simplify using the standard rewrite rules. Rewrite `hN` using `[himg, Set.encard_coe_eq_coe_finsetCard]`. Establish `hcardeq : (Finset.univ.image (fun i => g i y)).card = (Finset.univ : Finset (Fin N)).card`.
-
-Rewrite using `[Finset.card_univ, Fintype.card_fin]`. Conclude with `hN` after adjusting the coercions. Establish `hinj` using `Finset.card_image_iff.mp hcardeq`. Introduce `i j hij`. Conclude with `hinj (Finset.mem_coe.mpr (Finset.mem_univ i)) (Finset.mem_coe.mpr (Finset.mem_univ j)) hij`.
+A detailed English derivation is pending.
 -/
 theorem UnbranchedFibreSections.proof : UnbranchedFibreSections.Statement := by
   intro σ _ X w B d A D δ N hP y₀ hy₀ hδ₀

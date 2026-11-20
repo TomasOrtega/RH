@@ -11,7 +11,7 @@ namespace GlobalTheory.Vert.Model
 open TensorProduct
 
 /- English proof (translation)
-Establish `h : genericPoint (Spec (.of A)) = (⟨⊥, inferInstance⟩ : PrimeSpectrum A)` using `genericPoint_eq_bot_of_affine (.of A)`. Rewrite using `[← h]`. Conclude with `genericPoint_eq_of_isOpenImmersion j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_bot_eq_genericPoint {Y : Scheme.{0}} [IsIntegral Y] {A : Type} [CommRing A] [IsDomain A]
     (j : Spec (.of A) ⟶ Y) [IsOpenImmersion j] :
@@ -22,15 +22,13 @@ theorem map_bot_eq_genericPoint {Y : Scheme.{0}} [IsIntegral Y] {A : Type} [Comm
   exact genericPoint_eq_of_isOpenImmersion j
 
 /- English proof (translation)
-Take `⟨A, _, _, _, _, _, j, _, -, hj, hA⟩` from `exists_affine_chart_trdeg_eq Z.str (genericPoint Z.X)`. Take `⟨d, hd⟩` from `exists_trdeg_eq_natCast O (A := A)`. Establish `h₁` using `topologicalKrullDim_preimage_genericPoint_eq Z.str (hA.symm.trans hd)`. Establish `h₂` using `topologicalKrullDim_eq_of_isEmbedding Z.gen.ι.isOpenEmbedding.isEmbedding (Z := Z.str ⁻¹' {genericPoint (Spec (.of O))}) (by`. Rewrite using `[Scheme.Opens.range_ι, genericPoint_eq_bot_of_affine]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Conclude with `mem_gen_iff_eq_bot.trans ⟨fun h => PrimeSpectrum.ext h, fun h => congrArg PrimeSpectrum.asIdeal h⟩)`. Rewrite `h₂` using `[h₁, topologicalKrullDim_gen]`. Take `rfl : d = Z.relDim` from `by exact_mod_cast h₂`. Take `⟨_, ⟨b, rfl⟩, hb, hbW⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := (⟨⊥, inferInstance⟩ : PrimeSpectrum A)) (u := j ⁻¹' W) ((map_bot_eq_genericPoint j).symm ▸ hη : j (⟨⊥, inferInstance⟩ : PrimeSpectrum A) ∈ W) (hW.preimage j.continuous)`.
+By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb0 : b ≠ 0` using `hb`. Establish `hle` using `powers_le_nonZeroDivisors_of_noZeroDivisors hb0`. Establish `: IsDomain (Localization.Away b)` using `IsLocalization.isDomain_localization hle`. Establish `: FaithfulSMul A (Localization.Away b)` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (IsLocalization.injective _ hle)`. Establish `: Algebra.IsAlgebraic A (Localization.Away b)` using `IsLocalization.isAlgebraic _ (.powers b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap A (Localization.Away b))))` using `.of_isLocalization b`. Use `⟨Localization.Away b, inferInstance, inferInstance, inferInstance, .trans (S := A) inferInstance inferInstance, .trans O A _, Spec.map (CommRingCat.ofHom (algebraMap A _)) ≫ j, inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hbW ((PrimeSpectrum.localization_away_comap_range (Localization.Away b) b).le ⟨x, rfl⟩)`. Rewrite using `[Category.assoc, hj, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`.
-
-Rewrite using `[trdeg_eq_of_isAlgebraic_top O A, hd]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart_trdeg_eq_relDim {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (Z : Model O) (W : Set Z.X) (hW : IsOpen W)
@@ -74,23 +72,21 @@ theorem exists_chart_trdeg_eq_relDim {O : Type} [CommRing O] [IsDomain O]
 attribute [local instance] Algebra.TensorProduct.rightAlgebra in
 
 /- English proof (translation)
-Introduce `O _ _ _ Z Z₁ f`. Use `f.dim_genFibre_le.antisymm ?_` and prove the remaining obligations. Establish `hη : f.f (genericPoint Z₁.X) = genericPoint Z.X`. Use `(genericPoint_spec Z₁.X).image f.f.continuous` as an intermediate fact. Rewrite `this` using `[Set.image_univ, f.f.surjective.range_eq, closure_univ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.eq (genericPoint_spec Z.X)`. Take `⟨A, _, _, _, _, _, j, _, -, hj, hA⟩` from `exists_chart_trdeg_eq_relDim Z Set.univ isOpen_univ trivial`. Take `⟨B, _, _, _, _, _, j₁, _, hr, hj₁, hB⟩` from `exists_chart_trdeg_eq_relDim Z₁ (f.f ⁻¹' Set.range j) (j.isOpenEmbedding.isOpen_range.preimage f.f.continuous) ⟨_, (map_bot_eq_genericPoint j).trans hη.symm⟩`. Establish `hr' : Set.range (j₁ ≫ f.f) ⊆ Set.range j`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Conclude with `hr ⟨x, rfl⟩`. Set `ψ` to `Spec.preimage (IsOpenImmersion.lift j (j₁ ≫ f.f) hr')`. Establish `hψ : Spec.map ψ ≫ j = j₁ ≫ f.f`. Rewrite using `[Spec.map_preimage, IsOpenImmersion.lift_fac]`. Set `: Algebra A B` to `ψ.hom.toAlgebra`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt (p : PrimeSpectrum B) : f.f (j₁ p) = j (PrimeSpectrum.comap (algebraMap A B) p)` using `congr($hψ p).symm`. Establish `hc : CommRingCat.ofHom (algebraMap O A) ≫ ψ = CommRingCat.ofHom (algebraMap O B)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, ← hj, ← hj₁, ← Category.assoc, hψ, Category.assoc, f.comp_str]`. Establish `: IsScalarTower O A B` using `IsScalarTower.of_algebraMap_eq fun a => congr($(hc).hom a).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.FiniteType A B` using `.of_restrictScalars_finiteType O A B`. Establish `: FaithfulSMul A B`. Establish `h` using `hpt ⟨⊥, inferInstance⟩`. Rewrite `h` using `[map_bot_eq_genericPoint, hη, ← map_bot_eq_genericPoint j]`. Rewrite using `[faithfulSMul_iff_algebraMap_injective, RingHom.injective_iff_ker_eq_bot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(congrArg PrimeSpectrum.asIdeal (j.isOpenEmbedding.injective h)).symm`. Take `⟨e, he⟩` from `exists_trdeg_eq_natCast A (A := B)`. Establish `hadd` using `trdeg_add_eq O A (A := B)`. Rewrite `hadd` using `[hA, hB, he]`. Choose the witnesses or unpack the hypotheses as in `rfl : e = f.relDim := by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h₁ : Z.relDim + e = Z₁.relDim` using `by exact_mod_cast hadd`. Establish `h₂` using `f.relDim_add`. Use linear arithmetic over natural numbers and integers. Use `IsLocalization.tensorRight (S := B) (FractionRing A) (nonZeroDivisors A)` as an intermediate fact. Establish `hemb` using `j₁.isOpenEmbedding.isEmbedding.comp (PrimeSpectrum.localization_comap_isEmbedding (FractionRing A ⊗[A] B) (Algebra.algebraMapSubmonoid B (nonZeroDivisors A)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← ringKrullDim_genericFibre_eq A (FractionRing A) he, ← PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim, ← topologicalKrullDim_eq_of_isEmbedding hemb rfl]`. Use `(QCoh.topologicalKrullDim_mono ?_).trans (topologicalKrullDim_eq_of_isEmbedding (f.f.fiberι (genericPoint Z.X)).isEmbedding (f.f.range_fiberι _)).le` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Establish `hp` using `(PrimeSpectrum.localization_comap_range (FractionRing A ⊗[A] B) (Algebra.algebraMapSubmonoid B (nonZeroDivisors A))).le ⟨p, rfl⟩`. Use `(hpt _).trans ((congrArg j (PrimeSpectrum.ext (eq_bot_iff.2 fun a ha => ?_))).trans (map_bot_eq_genericPoint j))` and prove the remaining obligations.
-
-Assume the negation of the conclusion as `h0`. Conclude with `Set.disjoint_left.1 hp ⟨a, mem_nonZeroDivisors_of_ne_zero h0, rfl⟩ ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_genFibre : ∀ (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (Z Z₁ : Model O) (f : Hom Z₁ Z),

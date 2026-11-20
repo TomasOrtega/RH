@@ -22,13 +22,13 @@ def toZl : Coh l →+* ℤ_[l] :=
     (fun a b h => RingHom.ext fun x => x.2 a b h)
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (PadicInt.lift_spec _ m) x`.
+A detailed English derivation is pending.
 -/
 theorem toZModPow_toZl (x : Coh l) (m : ℕ) : PadicInt.toZModPow m (toZl l x) = x.1 m :=
   RingHom.congr_fun (PadicInt.lift_spec _ m) x
 
 /- English proof (translation)
-Introduce `a b hab`. Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base => simp [ZMod.castHom_apply, ZMod.cast_id']`. Consider the case `succ n hn ih => rw [← ih, ← h n, ← RingHom.comp_apply, ZMod.castHom_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem coh_of_succ (x : ∀ m : ℕ, ZMod (l ^ m))
     (h : ∀ m, ZMod.castHom (pow_dvd_pow l (Nat.le_succ m)) (ZMod (l ^ m)) (x (m + 1)) = x m) : x ∈ Coh l := by
@@ -38,13 +38,13 @@ theorem coh_of_succ (x : ∀ m : ℕ, ZMod (l ^ m))
   | succ n hn ih => rw [← ih, ← h n, ← RingHom.comp_apply, ZMod.castHom_comp]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, 0, one_ne_zero, by simp⟩`. Consider the case `tmul q m`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := ℤ_[l]) q`. Use `⟨b, a • m, nonZeroDivisors.ne_zero hb, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← TensorProduct.smul_tmul, Algebra.smul_def]`. Use `congr 1`. Apply the tactic sequence `try simp [div_eq_mul_inv, mul_comm]`. Consider the case `add z z' ih ih'`. Take `⟨b, x, hb, rfl⟩` from `ih`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b', x', hb', rfl⟩` from `ih'`. Establish `h1 : (b : ℚ_[l]) ≠ 0` using `by rwa [Ne, PadicInt.coe_eq_zero]`. Establish `h2 : (b' : ℚ_[l]) ≠ 0` using `by rwa [Ne, PadicInt.coe_eq_zero]`. Use `⟨b * b', b' • x + b • x', mul_ne_zero hb hb', ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_add, ← TensorProduct.smul_tmul, ← TensorProduct.smul_tmul, Algebra.smul_def, Algebra.smul_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `congr 2 <;> simp <;> field_simp`.
+A detailed English derivation is pending.
 -/
 theorem tensor_form {M : Type*} [AddCommGroup M] [Module ℤ_[l] M] (z : ℚ_[l] ⊗[ℤ_[l]] M) :
     ∃ (b : ℤ_[l]) (x : M), b ≠ 0 ∧ z = ((b : ℚ_[l]))⁻¹ ⊗ₜ x := by
@@ -71,21 +71,19 @@ variable {l}
 abbrev lv {E : Spc} {n i : ℤ} (x : Hl l E n i) (j : ℕ) : Ht (l ^ j) E n i := x.1 j
 
 /- English proof (translation)
-Establish `key : ∀ j (s s' : ZMod (l ^ j)), s • lv ω j = s' • lv ω j → s = s'`. Introduce `j s s' h`. Use `haveI : NeZero (l ^ j) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `h0 : (s - s').val • lv ω j = 0`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod (l ^ j)), ZMod.natCast_zmod_val, sub_smul, h, sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `hord j _ h0`. Establish `: (((s - s').val : ℕ) : ZMod (l ^ j)) = 0` using `by rw [ht, Nat.cast_mul, ZMod.natCast_self, zero_mul]`. Rewrite `this` using `[ZMod.natCast_zmod_val]`. Conclude with `sub_eq_zero.1 this`. Establish `gen : ∀ j (z : Ht (l ^ j) E 0 0), ∃ s : ZMod (l ^ j), z = s • lv ω j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `j z`. Take `⟨a, ha⟩` from `hgen j z`. Conclude with `⟨a, by rw [Nat.cast_smul_eq_nsmul]; exact ha⟩`. Establish `redω : ∀ j (s : ZMod (l ^ (j + 1))), red (l ^ (j + 1)) (l ^ j) E 0 0 (s • lv ω (j + 1)) = (ZMod.castHom (pow_dvd_pow l (Nat.le_succ j)) (ZMod (l ^ j)) s) • lv ω j`. Introduce `j s`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : NeZero (l ^ (j + 1)) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `conv_lhs => rw [← ZMod.natCast_zmod_val s, Nat.cast_smul_eq_nsmul]`. Rewrite using `[map_nsmul, ZMod.castHom_apply, ZMod.cast_eq_val, Nat.cast_smul_eq_nsmul]`. Conclude with `congrArg (s.val • ·) (ω.2 j)`. Use `⟨fun x => ?_, fun c hc => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `choose s hs using fun j => gen j (lv x j)`. Establish `hc : s ∈ Coh l` using `coh_of_succ l s fun j => key j _ _ (by`. Rewrite using `[← redω, ← hs (j + 1), ← hs j]`. Conclude with `x.2 j)`. Use `⟨toZl l ⟨s, hc⟩, Subtype.ext (funext fun j => ?_)⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : NeZero (l ^ j) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Express the relevant statement in the definitionally equal form `lv x j = (toZl l ⟨s, hc⟩) • (ω.1 j : HtL l j E 0 0)`. Rewrite using `[HtL.smul_eq l j j le_rfl, toZModPow_toZl]`. Express the relevant statement in the definitionally equal form `lv x j = (s j).val • lv ω j`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod (l ^ j)), ZMod.natCast_zmod_val]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hs j`. Use `PadicInt.ext_of_toZModPow.mp fun j => ?_ haveI : NeZero (l ^ j) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `key j _ _ ?_` and prove the remaining obligations. Establish `h1 : (c • ω).1 j = (0 : Hl l E 0 0).1 j` using `by rw [hc]`.
-
-Express the relevant statement in the definitionally equal form `c • (ω.1 j : HtL l j E 0 0) = 0 at h1`. Rewrite `h1` using `[HtL.smul_eq l j j le_rfl]`. Express the relevant statement in the definitionally equal form `(PadicInt.toZModPow j c).val • lv ω j = 0 at h1`. Rewrite `h1` using `[← Nat.cast_smul_eq_nsmul (ZMod (l ^ j)), ZMod.natCast_zmod_val]`. Rewrite using `[h1, zero_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_of {E : Spc} (ω : Hl l E 0 0)
     (hgen : ∀ j (z : Ht (l ^ j) E 0 0), ∃ a : ℕ, z = a • lv ω j)

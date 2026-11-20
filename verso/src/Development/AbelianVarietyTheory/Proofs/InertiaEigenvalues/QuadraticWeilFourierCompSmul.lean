@@ -10,17 +10,17 @@ noncomputable section
 namespace GlobalTheory.JR.WeilQuad
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ U A ψ x μ ω hH s φ _ y`. Use `U.charZero` as an intermediate fact. Use `U.ultraF` as an intermediate fact. Use `U.lcF` as an intermediate fact. Use `EtMeas.finite_L A` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A.L`. Establish `: IsTopologicalRing A.L` using `IsModuleTopology.isTopologicalRing F A.L`. Establish `hN : distribHaarChar A.L (MeasScale.unitL A s) = distribHaarChar A.K s ^ 2`. Take `⟨⟨b⟩, -, -, -, -⟩` from `GlobalTheory.JR.Et.quadratic_structure F E A`. Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A.K`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: ContinuousStar A.L` using `⟨IsModuleTopology.continuous_of_linearMap (EtMeas.starF A)⟩`. Rewrite using `[← map_pow]`. Use `GlobalTheory.JR.ModuleNorm.distribHaarChar_eq_norm A.K A.L b.equivFun.symm (IsModuleTopology.continuous_of_linearMap (b.equivFun.symm.toLinearMap.restrictScalars F)) (IsModuleTopology.continuous_of_linearMap (b.equivFun.toLinearMap.restrictScalars F)) _ _ ?_` and prove the remaining obligations. Simplify using `[MeasScale.unitL, A.star_K, pow_two]`. Establish `hμ : μ.IsAddHaarMeasure` using `hH.2.2.2.1.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinv : algebraMap A.K A.L (s : A.K) * algebraMap A.K A.L ((s⁻¹ : A.Kˣ) : A.K) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `key : ∀ y', φ ((s : A.K) • y') * A.kerL ψ x y' y = (fun u => φ u * A.kerL ψ x u (((s⁻¹ : A.Kˣ) : A.K) • y)) (MeasScale.unitL A s • y')`. Introduce `y'`. Simplify using `only [MeasScale.unitL_smul, Et.kerL]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, star_mul', A.star_K]`. Use `congr 4`. Take the linear combination `(star y' * y) * hinv.symm`. Simplify using `only [fOp, fourB]`. Rewrite using `[integral_congr_ae (Eventually.of_forall key), MeasScale.integral_units_smul μ (MeasScale.unitL A s) (fun u => φ u * A.kerL ψ x u (((s⁻¹ : A.Kˣ) : A.K) • y)), hN, EtMeas.absK_unit]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem fOp_comp_smul : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (x : A.Kˣ) (μ : Measure A.L) (ω : A.K → ℂ),

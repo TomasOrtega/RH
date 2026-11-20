@@ -10,15 +10,13 @@ open GlobalTheory.CompanionTheory.RgCOBlock
 namespace GlobalTheory.CompanionTheory.RgCOBlock
 
 /- English proof (translation)
-Introduce `R _ _ _ W _ _ _ _ t ht`. Set `J : Ideal R` to `LinearMap.ker (LinearMap.toSpanSingleton R W t)`. Establish `hmemJ : ∀ x : R, x ∈ J ↔ x • t = 0` using `fun x => by`. Simplify using `[J, LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]`. Establish `hJ : J ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1 : (1 : R) ∈ J` using `h ▸ Submodule.mem_top`. Conclude with `ht (by simpa using (hmemJ 1).1 h1)`. Take `⟨m, hm, hJm⟩` from `Ideal.exists_le_maximal J hJ`. Use `letI : Field (R ⧸ m) := Ideal.Quotient.field m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : Algebra.FiniteType ℂ (R ⧸ m) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℂ m) (Ideal.Quotient.mkₐ_surjective ℂ m)`. Use `haveI : Module.Finite ℂ (R ⧸ m) := finite_of_finite_type_of_isJacobsonRing ℂ (R ⧸ m)`. Establish `bij : Function.Bijective (algebraMap ℂ (R ⧸ m))` using `IsAlgClosed.algebraMap_bijective_of_isIntegral`. Set `e : ℂ ≃ₐ[ℂ] R ⧸ m` to `AlgEquiv.ofBijective (Algebra.ofId ℂ (R ⧸ m)) bij`. Use `⟨(e.symm : (R ⧸ m) →ₐ[ℂ] ℂ).comp (Ideal.Quotient.mkₐ ℂ m), fun r c h => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : r - algebraMap ℂ R c ∈ J`. Rewrite using `[hmemJ, sub_smul, algebraMap_smul, h, sub_self]`. Establish `hq : Ideal.Quotient.mkₐ ℂ m r = algebraMap ℂ (R ⧸ m) c`. Establish `h0 : Ideal.Quotient.mk m (r - algebraMap ℂ R c) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (hJm hmem)`. Rewrite `h0` using `[map_sub, sub_eq_zero]`.
-
-Conclude with `h0`. Establish `he : e c = algebraMap ℂ (R ⧸ m) c` using `rfl`. Use `show e.symm (Ideal.Quotient.mkₐ ℂ m r) = c`. Rewrite using `[hq, ← he, AlgEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_character_of_smul_ne_zero :
     ∀ (R : Type) [CommRing R] [Algebra ℂ R] [Algebra.FiniteType ℂ R] (W : Type) [AddCommGroup W]

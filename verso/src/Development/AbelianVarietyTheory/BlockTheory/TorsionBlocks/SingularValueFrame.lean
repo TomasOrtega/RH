@@ -36,14 +36,14 @@ def IsCartan (g X : Matrix (Fin n) (Fin n) ℂ) : Prop :=
   IsInP ε X ∧ ∃ k₁ k₂, IsInK ε k₁ ∧ IsInK ε k₂ ∧ g = k₁ * NormedSpace.exp X * k₂
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction _ (fun r => 1 ≤ r) (fun _ _ => one_le_mul_of_one_le_of_one_le) le_rfl fun _ _ => Real.one_le_cosh _`.
+A detailed English derivation is pending.
 -/
 theorem one_le_coshProd (X : Matrix (Fin n) (Fin n) ℂ) : 1 ≤ coshProd ε X :=
   Finset.prod_induction _ (fun r => 1 ≤ r) (fun _ _ => one_le_mul_of_one_le_of_one_le) le_rfl
     fun _ _ => Real.one_le_cosh _
 
 /- English proof (translation)
-Use `⟨⟨?_, fun i j h => ?_⟩, by decide⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : IsInP ![true, false] !![0, 1; 1, 0] ∧ realRank ![true, false] = 1 := by
   refine ⟨⟨?_, fun i j h => ?_⟩, by decide⟩
@@ -70,7 +70,7 @@ def inFrame (τ : EmbOver E w) (b : GL (Fin n) (w.Completion ⊗[F] E)) (g : GAr
   (b⁻¹ * AdelicU.matHom w.Completion σ J g * b).1.map (infEmb τ)
 
 /- English proof (translation)
-Simplify using `[IsSignFrame, JR, cT_one]`.
+Simplify using the standard rewrite rules.
 -/
 example : IsSignFrame σ (1 : Matrix (Fin n) (Fin n) E) (w := w) (fun _ => true) 1 := by
   simp [IsSignFrame, JR, cT_one]

@@ -13,7 +13,7 @@ namespace FlowLoadBounds
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_annKO {H : Type*} [AddCommGroup H] [Module O H] (S : Submodule O H)
     (φ : H →ₗ[O] KO O) : φ ∈ annKO O S ↔ ∀ x ∈ S, φ x = 0 := Iff.rfl

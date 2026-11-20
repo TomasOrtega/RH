@@ -32,23 +32,23 @@ theorem rC_eq (Z : M2 n) (F : M2 n → ℂ) (x : M2 n) :
       Complex.I * deriv (fun t : ℝ => F (x * NormedSpace.exp ((t : ℂ) • Z2 Z))) 0 := rfl
 
 /- English proof (translation)
-Conclude with `(hF.comp_hasDerivAt_of_eq 0 (hasDerivAt_curve x Y) (curve_zero x Y).symm).deriv`.
+A detailed English derivation is pending.
 -/
 theorem deriv_curve_of_hasFDerivAt {F : M2 n → ℂ} {D : M2 n →L[ℝ] ℂ} {x : M2 n} (hF : HasFDerivAt F D x) (Y : M2 n) :
     deriv (fun t : ℝ => F (x * NormedSpace.exp ((t : ℂ) • Y))) 0 = D (x * Y) := by
   exact (hF.comp_hasDerivAt_of_eq 0 (hasDerivAt_curve x Y) (curve_zero x Y).symm).deriv
 
 /- English proof (translation)
-Rewrite using `[rC_eq, deriv_curve_of_hasFDerivAt hF.hasFDerivAt, deriv_curve_of_hasFDerivAt hF.hasFDerivAt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rC_of_diff {F : M2 n → ℂ} {x : M2 n} (hF : DifferentiableAt ℝ F x) (Z : M2 n) :
     rC Z F x = fderiv ℝ F x (x * Z1 Z) + Complex.I * fderiv ℝ F x (x * Z2 Z) := by
   rw [rC_eq, deriv_curve_of_hasFDerivAt hF.hasFDerivAt, deriv_curve_of_hasFDerivAt hF.hasFDerivAt]
 
 /- English proof (translation)
-Establish `key : ∀ Y : M2 n, deriv (fun t : ℝ => F (x * NormedSpace.exp ((t : ℂ) • Y))) 0 = deriv (fun t : ℝ => F' (x * NormedSpace.exp ((t : ℂ) • Y))) 0`. Introduce `Y`. Apply `Filter.EventuallyEq.deriv_eq` to reduce the goal to its premises. Establish `hc` using `(hasDerivAt_curve x Y).continuousAt`. Establish `hO' : O ∈ 𝓝 (x * NormedSpace.exp (((0 : ℝ) : ℂ) • Y))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[curve_zero]`. Conclude with `hO.mem_nhds hx`. Use `filter_upwards [hc.preimage_mem_nhds hO'] with t ht`. Conclude with `h ht`. Rewrite using `[rC_eq, rC_eq, key, key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rC_congr {F F' : M2 n → ℂ} {O : Set (M2 n)} (hO : IsOpen O) {x : M2 n} (hx : x ∈ O) (h : EqOn F F' O)
     (Z : M2 n) : rC Z F x = rC Z F' x := by

@@ -8,11 +8,11 @@ open AlgebraicGeometry CategoryTheory IsLocalRing ReciprocityTheory.ChartRestric
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Break down `ValuationRing.dvd_total a b with hab | hba` into its components or cases. Conclude with `hab`. Take `⟨c, hc⟩` from `hba`. Take `⟨d, hd⟩` from `h`. Establish `hb : b ≠ 0` using `by rintro rfl; exact ha (by simpa using hc)`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψb : ψ b ≠ 0` using `fun e => hb (hψ (e.trans (map_zero ψ).symm))`. Establish `h1 : ψ b * (ψ c * d) = ψ b * 1`. Rewrite using `[mul_one]`. Use `nth_rewrite 2 [hd]`. Rewrite using `[hc, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcu : IsUnit (ψ c)` using `IsUnit.of_mul_eq_one _ (mul_left_cancel₀ hψb h1)`. Establish `hc' : IsUnit c` using `isUnit_of_map_unit ψ c hcu`. Conclude with `(Units.dvd_mul_right (u := hc'.unit)).mp (by rw [IsUnit.unit_spec, ← hc])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dvd_of_map_dvd_of_valuationRing {V T : Type} [CommRing V] [IsDomain V] [ValuationRing V]
     [CommRing T] [IsDomain T] (ψ : V →+* T) (hψ : Function.Injective ψ) [IsLocalHom ψ] {a b : V}
@@ -30,15 +30,15 @@ theorem dvd_of_map_dvd_of_valuationRing {V T : Type} [CommRing V] [IsDomain V] [
     exact (Units.dvd_mul_right (u := hc'.unit)).mp (by rw [IsUnit.unit_spec, ← hc])
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ _ f g hg H`. Set `K` to `FractionRing R`. Establish `hinj : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Establish `hg' : algebraMap R K g ≠ 0` using `fun e => hg (hinj (e.trans (map_zero _).symm))`. Assume the negation of the conclusion as `hnd`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hx : ¬ ∀ V : ValuationSubring K, IsDiscreteValuationRing V → (∀ r, algebraMap R K r ∈ V) → (∀ r ∈ maximalIdeal R, algebraMap R K r ∈ V.nonunits) → algebraMap R K f / algebraMap R K g ∈ V`. Introduce `hall`. Take `⟨r, hr⟩` from `GlobalTheory.exists_algebraMap_eq_of_forall_discreteValuationSubring hall`. Apply `hnd` to reduce the goal to its premises. Use `⟨r, hinj ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, hr, mul_div_cancel₀ _ hg']`. Use `push_neg at hx`. Take `⟨V, hV, h1, h2, hxV⟩` from `hx`. Establish `hdom : LocalSubring.range (algebraMap R K) ≤ V.toLocalSubring` using `(GlobalTheory.localSubring_range_le_valuationSubring_iff _ _).mpr ⟨h1, h2⟩`. Take `⟨-, hc, -, h, hρi, hρl⟩` from `(GlobalTheory.discreteValuationRing_dominating_noetherian_local R K K).2.2 V hdom`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd` using `H (AdicCompletion (maximalIdeal V) V) hc _ hρi hρl`. Set `a : V` to `⟨algebraMap R K g, h g⟩`. Set `b : V` to `⟨algebraMap R K f, h f⟩`. Establish `ha : a ≠ 0` using `fun e => hg' (congrArg Subtype.val e)`. Take `⟨c, hcab⟩` from `dvd_of_map_dvd_of_valuationRing (algebraMap V (AdicCompletion (maximalIdeal V) V)) (GlobalTheory.algebraMap_adicCompletion_injective_of_dvr V) ha hd`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hxV` to reduce the goal to its premises. Establish `: algebraMap R K f = algebraMap R K g * (c : K)` using `congrArg Subtype.val hcab`. Rewrite using `[this, mul_div_cancel_left₀ _ hg']`. Conclude with `c.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_forall_complete_dvr : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]
     [IsIntegrallyClosed R] [CharZero R] (f g : R), g ≠ 0 →

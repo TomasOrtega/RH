@@ -19,7 +19,7 @@ section SlopeTestRemainingChoices
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `hb : Bd (fun _ : GL (Fin 2) (A E) => (1 : ℂ))` using `⟨continuous_const, fun _ _ => rfl, fun _ _ => ⟨1, fun _ _ _ => by simp⟩⟩`. Establish `h` using `(meanLaws E N _ hb).1 1`. Establish `h' : IntegrableOn (fun _ : G1 E => (1 : ℂ)) N.D N.μ` using `h`. Conclude with `(integrableOn_const_iff (by simp)).1 h' |>.resolve_left (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem vol_lt (N : MeasE E) : N.μ N.D < ⊤ := by
   have hb : Bd (fun _ : GL (Fin 2) (A E) => (1 : ℂ)) :=
@@ -29,11 +29,9 @@ private theorem vol_lt (N : MeasE E) : N.μ N.D < ⊤ := by
   exact (integrableOn_const_iff (by simp)).1 h' |>.resolve_left (by simp)
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `hQ.bdd ((fun u => y * g u) '' Metric.closedBall s 1) ((isCompact_closedBall s 1).image (continuous_const.mul hg))`. Use `haveI : IsFiniteMeasure (N.μ.restrict N.D) := ⟨by simpa using vol_lt N⟩`. Establish `hm : ∀ {P : GL (Fin 2) (A E) → ℂ}, Continuous P → ∀ k, AEStronglyMeasurable (fun h : G1 E => P (gl h * k)) (N.μ.restrict N.D)` using `fun hP k => (hP.comp (Matrix.SpecialLinearGroup.continuous_toGL.mul continuous_const)).aestronglyMeasurable`. Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (𝕜 := ℝ) (μ := N.μ.restrict N.D) (F := fun u h => Ψ (gl h * (y * g u))) (F' := fun u h => Q (gl h * (y * g u))) (x₀ := s) (s := Metric.ball s 1) (bound := fun _ => B) (Metric.ball_mem_nhds _ one_pos) ?_ ?_ ?_ ?_ ?_ ?_).2` and prove the remaining obligations. Conclude with `Eventually.of_forall fun u => hm hΨ.cont _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(meanLaws E N Ψ hΨ).1 _`. Conclude with `hm hQ.cont _`. Conclude with `ae_of_all _ fun h u hu => hB h _ ⟨u, Metric.ball_subset_closedBall hu, rfl⟩`. Conclude with `integrable_const _`. Use `ae_of_all _ fun h u _ => ?_` and prove the remaining obligations.
-
-Use `hd (gl h * y) u` as an intermediate fact. Simplify `this` using `only [mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem inner_der (N : MeasE E) {Ψ Q : GL (Fin 2) (A E) → ℂ} (hΨ : Bd Ψ) (hQ : Bd Q)
     {g : ℝ → GL (Fin 2) (A E)} (hg : Continuous g)
@@ -59,21 +57,17 @@ private theorem inner_der (N : MeasE E) {Ψ Q : GL (Fin 2) (A E) → ℂ} (hΨ :
     simpa only [mul_assoc] using this
 
 /- English proof (translation)
-Use `set Mp : GL (Fin 2) (A E) → ℂ := fun y => mean N fun x => Ψ (x * y) with hMp`. Use `set Mq : GL (Fin 2) (A E) → ℂ := fun y => mean N fun x => Q (x * y) with hMq`. Establish `cp : Continuous Mp` using `(meanLaws E N Ψ hΨ).2.1`. Establish `cq : Continuous Mq` using `(meanLaws E N Q hQ).2.1`. Establish `ip : ∀ γ y, Mp (ratGL E 2 γ * y) = Mp y` using `(meanLaws E N Ψ hΨ).2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `iq : ∀ γ y, Mq (ratGL E 2 γ * y) = Mq y` using `(meanLaws E N Q hQ).2.2.2`. Establish `inv : ∀ (M : GL (Fin 2) (A E) → ℂ), (∀ γ y, M (ratGL E 2 γ * y) = M y) → ∀ k (e : Eˣ) t, M (aE (IdeleGroup.diagonal E e * t) * k) = M (aE t * k)`. Introduce `M hM k e t`. Take `⟨γ, hγ⟩` from `exists_ratGL_aE (F := E) e`. Rewrite using `[aE_mul, ← hγ, mul_assoc, hM]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : IsCompact (Metric.closedBall (0 : ℝ) 1)` using `isCompact_closedBall 0 1`. Use `set b : (A E)ˣ → ℝ := fun t => sSup ((fun s => ‖Mq (aE t * g s)‖) '' Metric.closedBall (0 : ℝ) 1) with hb`. Establish `cb : Continuous b` using `IsCompact.continuous_sSup (f := fun t s => ‖Mq (aE t * g s)‖) hK (cq.comp ((continuous_aE.comp continuous_fst).mul (hg.comp continuous_snd))).norm`. Establish `ib : ∀ (e : Eˣ) t, b (IdeleGroup.diagonal E e * t) = b t` using `fun e t => by`. Simplify using `only [hb, inv Mq iq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, ⟨B, hB⟩, -⟩` from `uiLaws E (fun t => (b t : ℂ)) (Complex.continuous_ofReal.comp cb) (fun e t => by simp only [ib])`. Establish `hbd : ∀ z : IdeleGroup.normOneSubgroup E, ∀ s ∈ Metric.closedBall (0 : ℝ) 1, ‖Mq (aE (z : IdeleGroup E) * g s)‖ ≤ B`. Introduce `z s hs`. Establish `hab : ab (z : IdeleGroup E) = 1` using `congrArg Subtype.val (MonoidHom.mem_ker.1 z.2)`. Establish `h1 : ‖Mq (aE (z : IdeleGroup E) * g s)‖ ≤ b z` using `le_csSup (hK.image (cq.comp (continuous_const.mul hg)).norm).bddAbove ⟨s, hs, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `haveI : IsFiniteMeasure ((normOneMeasure E).restrict (normOneFundamentalDomain E)) := ⟨by simpa using normOneMeasure_normOneFundamentalDomain_lt_top E⟩`. Establish `hint : ∀ (M : GL (Fin 2) (A E) → ℂ), Continuous M → (∀ γ y, M (ratGL E 2 γ * y) = M y) → ∀ k, IntegrableOn (fun z : IdeleGroup.normOneSubgroup E => M (aE (z : IdeleGroup E) * k)) (normOneFundamentalDomain E) (normOneMeasure E)` using `fun M cM iM k => (uiLaws E (fun t => M (aE t * k)) (cM.comp (continuous_aE.mul continuous_const)) (inv M iM k)).1`. Establish `e1 : ∀ s, (II N fun x => Ψ (x * g s)) = ∫ z in normOneFundamentalDomain E, Mp (aE (z : IdeleGroup E) * g s) ∂normOneMeasure E`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [II, UI, hMp, mul_assoc]`. Establish `e2 : II N Q = ∫ z in normOneFundamentalDomain E, Mq (aE (z : IdeleGroup E) * g 0) ∂normOneMeasure E`. Simplify using `only [II, UI, hMq, g0, mul_one]`. Simplify using `only [e1]`. Rewrite using `[e2]`.
-
-Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (𝕜 := ℝ) (μ := (normOneMeasure E).restrict (normOneFundamentalDomain E)) (F := fun s z => Mp (aE (z : IdeleGroup E) * g s)) (F' := fun s z => Mq (aE (z : IdeleGroup E) * g s)) (x₀ := 0) (s := Metric.ball (0 : ℝ) 1) (bound := fun _ …` and prove the remaining obligations. Conclude with `Eventually.of_forall fun s => (hint Mp cp ip (g s)).aestronglyMeasurable`. Conclude with `hint Mp cp ip (g 0)`. Conclude with `(hint Mq cq iq (g 0)).aestronglyMeasurable`. Conclude with `ae_of_all _ fun z s hs => hbd z s (Metric.ball_subset_closedBall hs)`.
-
-Conclude with `integrable_const _`. Conclude with `ae_of_all _ fun z s _ => inner_der N hΨ hQ hg hd _ s`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem outer_der (N : MeasE E) {Ψ Q : GL (Fin 2) (A E) → ℂ} (hΨ : Bd Ψ) (hQ : Bd Q)
     {g : ℝ → GL (Fin 2) (A E)} (hg : Continuous g) (g0 : g 0 = 1)
@@ -136,7 +130,7 @@ private theorem outer_der (N : MeasE E) {Ψ Q : GL (Fin 2) (A E) → ℂ} (hΨ :
 variable [IsTotallyComplex E]
 
 /- English proof (translation)
-Establish `h` using `(exPar E X).1 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ex_zero' (X : Lie E 2) : ex X 0 = 1 := by
   have h := (exPar E X).1 0 0
@@ -144,7 +138,7 @@ private theorem ex_zero' (X : Lie E 2) : ex X 0 = 1 := by
   exact left_eq_mul.1 h
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.CuspRep.hasDerivAt_curve Φ (y * infGL E 2 (ex X s)) (ex X) X (ex_zero' X) (exPar E X).2.2.1`. Establish `h2 : HasDerivAt (fun u => Φ.1 (y * infGL E 2 (ex X s) * infGL E 2 (ex X (u - s)))) ((act (.lie X) Φ).1 (y * infGL E 2 (ex X s))) s` using `HasDerivAt.comp_sub_const s s (by simpa using h1)`. Use `h2.congr_of_eventuallyEq (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Use `show Φ.1 (y * infGL E 2 (ex X u)) = Φ.1 (y * infGL E 2 (ex X s) * infGL E 2 (ex X (u - s)))`. Rewrite using `[mul_assoc, ← map_mul, ← (exPar E X).1, add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem der_curve (Φ : Sm E 2) (X : Lie E 2) (y : GL (Fin 2) (A E)) (s : ℝ) :
     HasDerivAt (fun u => Φ.1 (y * infGL E 2 (ex X u))) ((act (.lie X) Φ).1 (y * infGL E 2 (ex X s))) s := by
@@ -161,15 +155,15 @@ end SlopeTestRemainingChoices
 end UpperTheory.ConvolutionTheory.RankTwoDescent
 
 /- English proof (translation)
-Introduce `E _ _ _ N Φ φ X h0 hP h1 h2`. Establish `hg : Continuous fun s => infGL E 2 (ex X s)` using `(GlobalTheory.CompanionTheory.LieSkew.continuous_infGL_map E 2).comp (exPar E X).2.1`. Establish `g0 : infGL E 2 (ex X 0) = 1` using `by rw [ex_zero', map_one]`. Establish `hQ : Bd fun x => (act (.lie X) Φ).1 x * φ.1 x + (1 : ℂ) * (Φ.1 x * (act (.lie X) φ).1 x)`. Use `⟨h1.cont.add (continuous_const.mul h2.cont), fun γ g => ?_, fun C hC => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg₂ (fun p q => p + (1 : ℂ) * q) (h1.left γ g) (h2.left γ g)`. Take `⟨B₁, hB₁⟩` from `h1.bdd C hC`. Take `⟨B₂, hB₂⟩` from `h2.bdd C hC`. Use `⟨B₁ + B₂, fun h k hk => ?_⟩` and prove the remaining obligations. Establish `a` using `hB₁ h k hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `hB₂ h k hk`. Rewrite using `[one_mul]`. Conclude with `(norm_add_le _ _).trans (add_le_add a b)`. Establish `hd : ∀ y s, HasDerivAt (fun u => Φ.1 (y * infGL E 2 (ex X u)) * φ.1 (y * infGL E 2 (ex X u))) ((act (.lie X) Φ).1 (y * infGL E 2 (ex X s)) * φ.1 (y * infGL E 2 (ex X s)) + (1 : ℂ) * (Φ.1 (y * infGL E 2 (ex X s)) * (act (.lie X) φ).1 (y * infGL E 2 (ex X s)))) s`. Introduce `y s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[one_mul]`. Conclude with `(der_curve Φ X y s).mul (der_curve φ X y s)`. Establish `hD` using `outer_der N h0 hQ hg g0 hd`. Establish `hc : (fun s => II N fun x => Φ.1 (x * infGL E 2 (ex X s)) * φ.1 (x * infGL E 2 (ex X s))) = fun _ => II N fun x => Φ.1 x * φ.1 x`. Use function extensionality and compare the values at `fun s => (iiLaws E N _ h0).2 hP (infGL E 2 (ex X s))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hD` using `[hc]`. Establish `hz` using `hD.unique (hasDerivAt_const (0 : ℝ) _)`. Rewrite `hz` using `[(iiLaws E N _ h1).1 _ h2 1, one_mul]`. Conclude with `hz`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.iiLie :
     IILie := by

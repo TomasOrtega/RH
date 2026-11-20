@@ -10,7 +10,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.PMon
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PMon.RatioTransport.ratio_of_acris`.
+A detailed English derivation is pending.
 -/
 theorem ratio_holds : Ratio := GlobalTheory.PMon.RatioTransport.ratio_of_acris
 

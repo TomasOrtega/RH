@@ -5,7 +5,7 @@ private def UpperTheory.Reformulated.B.Qi50.proj {P : ℕ → Type 1} (t : (j : 
   Nat.leRec (motive := fun j _ => P j → P i) id (fun k _ f => f ∘ t k) h
 
 /- English proof (translation)
-Unfold `UpperTheory.Reformulated.B.Qi50.proj`. Rewrite using `[Nat.leRec_self]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem UpperTheory.Reformulated.B.Qi50.proj_self {P : ℕ → Type 1} (t : (j : ℕ) → P (j + 1) → P j)
     {i : ℕ} (h : i ≤ i) (a : P i) : UpperTheory.Reformulated.B.Qi50.proj t h a = a := by
@@ -14,7 +14,7 @@ private theorem UpperTheory.Reformulated.B.Qi50.proj_self {P : ℕ → Type 1} (
   rfl
 
 /- English proof (translation)
-Unfold `UpperTheory.Reformulated.B.Qi50.proj`. Rewrite using `[Nat.leRec_succ _ _ h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem UpperTheory.Reformulated.B.Qi50.proj_succ {P : ℕ → Type 1} (t : (j : ℕ) → P (j + 1) → P j)
     {i j : ℕ} (h : i ≤ j) (h' : i ≤ j + 1) (a : P (j + 1)) :
@@ -24,7 +24,7 @@ private theorem UpperTheory.Reformulated.B.Qi50.proj_succ {P : ℕ → Type 1} (
   rfl
 
 /- English proof (translation)
-Proceed by induction on `k, hjk using Nat.le_induction with`. Consider the case `base => rw [UpperTheory.Reformulated.B.Qi50.proj_self]`. Consider the case `succ k hk ih`. Rewrite using `[UpperTheory.Reformulated.B.Qi50.proj_succ t hk, UpperTheory.Reformulated.B.Qi50.proj_succ t (hij.trans hk), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.Reformulated.B.Qi50.proj_trans {P : ℕ → Type 1} (t : (j : ℕ) → P (j + 1) → P j)
     {i j k : ℕ} (hij : i ≤ j) (hjk : j ≤ k) (a : P k) :
@@ -36,7 +36,7 @@ private theorem UpperTheory.Reformulated.B.Qi50.proj_trans {P : ℕ → Type 1} 
     rw [UpperTheory.Reformulated.B.Qi50.proj_succ t hk, UpperTheory.Reformulated.B.Qi50.proj_succ t (hij.trans hk), ih]
 
 /- English proof (translation)
-Introduce `P hfin hne t`. Take `⟨s, hs⟩` from `exists_seq_forall_proj_of_forall_finite (α := P) (fun h => UpperTheory.Reformulated.B.Qi50.proj t h) (fun _ a => UpperTheory.Reformulated.B.Qi50.proj_self t _ a) (fun _ _ _ hij hjk a => UpperTheory.Reformulated.B.Qi50.proj_trans t hij hjk a) (fun _ _ => Set.toFinite _)`. Use `⟨s, fun j => ?_⟩` and prove the remaining obligations. Establish `h` using `hs (Nat.le_succ j)`. Rewrite `h` using `[UpperTheory.Reformulated.B.Qi50.proj_succ t le_rfl, UpperTheory.Reformulated.B.Qi50.proj_self]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.Reformulated.B.Qi50.seq_sec :
     ∀ (P : ℕ → Type 1),

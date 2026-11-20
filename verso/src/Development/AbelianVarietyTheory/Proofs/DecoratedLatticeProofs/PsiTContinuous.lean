@@ -13,25 +13,25 @@ namespace GlobalTheory.SeeSaw.KUni
 variable {D : D7} {V : HSp D}
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv hB`.
+A detailed English derivation is pending.
 -/
 theorem inv_eq {G B : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hB : Bᴴ * G * B = 1) : B⁻¹ = Bᴴ * G :=
   Matrix.inv_eq_left_inv hB
 
 /- English proof (translation)
-Rewrite using `[inv_eq hB]`. Conclude with `mul_eq_one_comm.mp hB`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_inv' {G B : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hB : Bᴴ * G * B = 1) : B * B⁻¹ = 1 := by
   rw [inv_eq hB]; exact mul_eq_one_comm.mp hB
 
 /- English proof (translation)
-Rewrite using `[inv_eq hB]`. Conclude with `hB`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mul' {G B : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hB : Bᴴ * G * B = 1) : B⁻¹ * B = 1 := by
   rw [inv_eq hB]; exact hB
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.conjTranspose hB`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_one] at h`. Conclude with `mul_eq_one_comm.mp h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gB {G B : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hB : Bᴴ * G * B = 1) : Gᴴ * B * Bᴴ = 1 := by
   have h := congrArg Matrix.conjTranspose hB
@@ -39,7 +39,7 @@ theorem gB {G B : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hB : Bᴴ * G * B = 1) 
   exact mul_eq_one_comm.mp h
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, inv_eq hB]`. Establish `e : (Bᴴ * G * g * B)ᴴ * (Bᴴ * G * g * B) = Bᴴ * gᴴ * (Gᴴ * B * Bᴴ) * G * g * B`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[e, gB hB, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_unitary {G B g : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hB : Bᴴ * G * B = 1) (hg : gᴴ * G * g = G) :
     B⁻¹ * g * B ∈ Matrix.unitaryGroup (Fin V.rank) ℂ := by
@@ -51,9 +51,9 @@ theorem conj_unitary {G B g : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hB : Bᴴ *
     _ = 1 := by rw [hg, hB]
 
 /- English proof (translation)
-Rewrite `hu` using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Rewrite using `[inv_eq hB]`. Establish `e : (B * u * (Bᴴ * G))ᴴ * G * (B * u * (Bᴴ * G)) = Gᴴ * B * uᴴ * (Bᴴ * G * B) * u * Bᴴ * G`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[e, hB, Matrix.mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem back_unitary {G B u : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hB : Bᴴ * G * B = 1)
     (hu : u ∈ Matrix.unitaryGroup (Fin V.rank) ℂ) : (B * u * B⁻¹)ᴴ * G * (B * u * B⁻¹) = G := by
@@ -69,13 +69,11 @@ theorem back_unitary {G B u : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hB : Bᴴ *
 open Formalism.IndefR.Eqv in
 
 /- English proof (translation)
-Establish `hsum : ∀ x : AE D, psiT D τ x = ∑ c, psiT D τ (algebraMap (AF D.host.F) (AE D) ((basAF D).repr x c)) * psiT D τ (basAF D c)`. Introduce `x`. Use `conv_lhs => rw [← (basAF D).sum_repr x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, map_mul]`. Establish `hc : ∀ c, Continuous fun x : AE D => (basAF D).repr x c` using `fun c => (continuous_apply c).comp (G5.tensCoordH (basE D) (AF D.host.F)).continuous`. Establish `halg : Continuous fun a : AF D.host.F => psiT D τ (algebraMap (AF D.host.F) (AE D) a)`. Establish `e : (fun a : AF D.host.F => psiT D τ (algebraMap (AF D.host.F) (AE D) a)) = fun a => thetaC D τ ((fstA D.host.F a) ⊗ₜ[D.host.F] (1 : D.host.E))`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [psiT, RingHom.comp_apply, Algebra.TensorProduct.algebraMap_apply, infPart, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `((isInfFam_thetaC D) τ).2.comp continuous_fst`. Establish `hfun : (⇑(psiT D τ) : AE D → ℂ) = fun x => ∑ c, psiT D τ (algebraMap (AF D.host.F) (AE D) ((basAF D).repr x c)) * psiT D τ (basAF D c)` using `funext hsum`.
-
-Rewrite using `[hfun]`. Conclude with `continuous_finset_sum _ fun c _ => (halg.comp (hc c)).mul continuous_const`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiT_continuous (τ : D.what₂.Tau) : Continuous (psiT D τ) := by
   have hsum : ∀ x : AE D, psiT D τ x = ∑ c, psiT D τ (algebraMap (AF D.host.F) (AE D) ((basAF D).repr x c)) *
@@ -103,7 +101,7 @@ theorem psiT_continuous (τ : D.what₂.Tau) : Continuous (psiT D τ) := by
 
 open Formalism.IndefR.Eqv in
 /- English proof (translation)
-Rewrite using `[infMat_thetaC]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inB_eq (V : HSp D) (B : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (g : GA D V) (τ : D.what₂.Tau) :
     inB (thetaC D) V B g τ = (B τ)⁻¹ * infMat D.sp.cm.sig V.gram (thetaC D τ) g * B τ := by
@@ -114,15 +112,15 @@ end GlobalTheory.SeeSaw.KUni
 open GlobalTheory.SeeSaw.KUni Formalism.IndefR.Eqv in
 
 /- English proof (translation)
-Introduce `D θ V B hθ hB`. Take `rfl` from `eq_thetaC D hθ`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Establish `hm : Continuous fun g : GA D V => mt V g` using `Units.continuous_val.comp continuous_subtype_val`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Continuous fun k : GinfC V => (mt V k.1).map (psiT D τ)` using `(hm.comp continuous_subtype_val).matrix_map (psiT_continuous τ)`. Conclude with `(continuous_const.matrix_mul h1).matrix_mul continuous_const`. Introduce `k k' τ`. Rewrite using `[inB_eq, inB_eq, inB_eq]`. Simplify using `only [Subgroup.coe_mul, infMat_thetaC, matA_mul, Matrix.map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv' (hB τ)]`. Simplify using `only [Matrix.mul_assoc, Matrix.one_mul]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`. Introduce `k τ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[inB_eq]`. Conclude with `conj_unitary (hB τ) (infMat_unitary' D V k.1 τ)`. Introduce `u hu`. Establish `hgs : IsUnitFam D V fun τ => B τ * u τ * (B τ)⁻¹` using `fun τ => back_unitary (hB τ) (hu τ)`. Use `⟨⟨famH D V _ hgs, famH_mem_GinfC D V _ hgs⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use function extensionality and compare the values at `τ`. Rewrite using `[inB_eq, infMat_famH]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = u τ := by rw [inv_mul' (hB τ), Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SeeSaw.ontoUni_inB : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (B : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ),
     IsInfFam θ → (∀ τ, (B τ)ᴴ * gramAt D V τ * B τ = 1) → OntoUni fun k : GinfC V => inB θ V B k.1 := by

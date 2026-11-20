@@ -79,7 +79,7 @@ def StepBound : Prop :=
 open NumberField Matrix in
 variable (B : _root_.Formalism.MainNotions.S.RowsAut) in
 /- English proof (translation)
-The claim follows from `Submodule.span_mono fun _ ⟨l, u, hl, hu, hy⟩ => ⟨l, u, hl.trans h, hu, hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.stepSpan_mono {P Q : ℕ} (h : P ≤ Q) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.VP B P ≤ _root_.GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.VP B Q :=
@@ -89,13 +89,13 @@ open NumberField Matrix in
 variable (B : _root_.Formalism.MainNotions.S.RowsAut) in
 
 /- English proof (translation)
-Establish `hd` using `h`. Unfold `_root_.GlobalTheory.Count.IsDSData at hd`. Establish `hunit : ∀ v, ‖B.w v‖ = 1 ∧ B.w v ∈ _root_.Formalism.MainNotions.S.lowKSub (B.I.ε v) (B.lam v) (B.σ v)` using `fun v => by`. Establish `hv` using `(hd v).2.2.1`. Unfold `_root_.Formalism.MainNotions.S.IsLowUnit at hv`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hv`. Use `⟨Submodule.subset_span ⟨[], B.w, Nat.zero_le _, fun v => (hunit v).2, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hs` using `B.tens_spec`. Unfold `_root_.Formalism.MainNotions.S.AutInst.IsHilbTensor at hs`. Establish `hinner : inner ℂ (B.tens B.w) (B.tens B.w) = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs.1]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Rewrite using `[inner_self_eq_norm_sq_to_K, (hunit v).1]`. Simplify using the standard rewrite rules. Establish `hsq : ‖B.tens B.w‖ ^ 2 = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), hinner, RCLike.one_re]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 hsq`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.tens_w_mem {d : InfinitePlace B.I.F → ℝ}
     (h : _root_.GlobalTheory.Count.IsDSData B d) (P : ℕ) :
@@ -119,15 +119,13 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.ten
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 hsq
 
 /- English proof (translation)
-Establish `hm : ∀ t : ℝ, Formalism.REAL.inG ε (!![(t : ℂ) * Complex.I])`. Introduce `t`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `by_cases h : ε 0 = true <;> simp [Formalism.REAL.Jm, Matrix.mul_apply, h]`. Use `⟨fun _ => ⟨!![((1 : ℝ) : ℂ) * Complex.I], hm 1⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.trace, Matrix.vecMul, dotProduct]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨X, hX⟩ -`. Establish `h0 : (X 0 0).re = 0`. Use `congrArg Complex.re (congrFun (congrFun hX 0) 0)` as an intermediate fact. Apply the tactic sequence `by_cases h : ε 0 = true <;> simp [Formalism.REAL.Jm, Matrix.mul_apply, h] at this <;> linarith`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨fun _ => (X 0 0).im, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
-
-Simplify using `[Complex.ext_iff, h0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example (ε : Fin 1 → Bool) : ∃ E : Fin 1 → gLie ε, IsONBasis E := by
   have hm : ∀ t : ℝ, Formalism.REAL.inG ε (!![(t : ℂ) * Complex.I]) := by

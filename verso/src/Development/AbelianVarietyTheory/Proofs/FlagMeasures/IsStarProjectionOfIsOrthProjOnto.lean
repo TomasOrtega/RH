@@ -20,18 +20,18 @@ noncomputable section
 namespace GlobalTheory.Dec.ProjCuspGap
 
 /- English proof (translation)
-Use `(min_le_left _ _).trans ((Finset.card_filter_le _ _).trans ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem rank_le_dim {n : ℕ} (ε : Fin n → Bool) : rkR ε ≤ n := by
   refine (min_le_left _ _).trans ((Finset.card_filter_le _ _).trans ?_)
   simp
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos (rkR ε) with h0 | h0` into its components or cases. Conclude with `Or.inl h0`. Use `right`. Establish `hq : (0 : ℝ) < rkR ε` using `by exact_mod_cast h0`. Establish `hn : (0 : ℝ) < n` using `by exact_mod_cast h0.trans_le (rank_le_dim ε)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((rkR ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2) = Real.sqrt (rkR ε) * rkR ε`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_add_one hq.ne']`. Evaluate the numerical expressions. Rewrite `hh` using `[e]`. Establish `hp : 0 < (n : ℝ) * (Real.sqrt (rkR ε) * rkR ε)` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem gap_numeric {n : ℕ} (ε : Fin n → Bool) (h : ℝ)
     (hh : 120 * (n : ℝ) * ((rkR ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h) :
@@ -49,9 +49,9 @@ theorem gap_numeric {n : ℕ} (ε : Fin n → Bool) (h : ℝ)
   nlinarith
 
 /- English proof (translation)
-Unfold `rkR`. Use `lt_min (Finset.card_pos.2 ?_) (Finset.card_pos.2 ?_)` and prove the remaining obligations. Distinguish the cases in `ha : ε a = true`. Conclude with `⟨a, by simp [ha]⟩`. Apply the tactic sequence `exact ⟨b, by revert hab ha; cases ε a <;> cases hb : ε b <;> simp [hb]⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation.
 
-Distinguish the cases in `ha : ε a = true`. Apply the tactic sequence `exact ⟨b, by revert hab ha; cases ε a <;> cases hb : ε b <;> simp [hb]⟩`. Conclude with `⟨a, by simp [ha]⟩`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 -/
 theorem rank_pos_of_ne {n : ℕ} (ε : Fin n → Bool) {a b : Fin n} (hab : ε a ≠ ε b) : 0 < rkR ε := by
   unfold rkR
@@ -64,7 +64,7 @@ theorem rank_pos_of_ne {n : ℕ} (ε : Fin n → Bool) {a b : Fin n} (hab : ε a
     · exact ⟨a, by simp [ha]⟩
 
 /- English proof (translation)
-Establish `hq : (1 : ℝ) ≤ rkR ε` using `by exact_mod_cast h0`. Establish `hn : (0 : ℝ) < n` using `by exact_mod_cast h0.trans_le (rank_le_dim ε)`. Establish `h1 : (1 : ℝ) ≤ ((rkR ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2)` using `Real.one_le_rpow hq (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem two_mul_lt {n : ℕ} (ε : Fin n → Bool) (h : ℝ)
     (hh : 120 * (n : ℝ) * ((rkR ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h) (h0 : 0 < rkR ε) : 2 * (n : ℝ) < h := by
@@ -74,18 +74,18 @@ theorem two_mul_lt {n : ℕ} (ε : Fin n → Bool) (h : ℝ)
   nlinarith
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hT.1, ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.2 fun x y => hT.2.1 x y⟩`.
+Supply the required witnesses or components.
 -/
 theorem isStarProjection_of_isOrthProjOnto {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] {T : H →L[ℂ] H} {S : Submodule ℂ H} (hT : IsOrthProjOnto T S) : IsStarProjection T :=
   ⟨hT.1, ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.2 fun x y => hT.2.1 x y⟩
 
 /- English proof (translation)
-Introduce `B d h hds hgap hh`. Establish `hD : DecGap` using `GlobalTheory.DecGapBound.decGap_of_formulaGap GlobalTheory.Jet.FormGapFree.formulaGap`. Establish `hloc : LocDec B h` using `GlobalTheory.Dec.locDec_of_decGap_gapGe hD B d h hds hgap hh`. Establish `hK : ∀ v, IsKTypeOf (B.I.ε v) (B.σ v) (lowK (B.I.ε v) (B.lam v)) (lowKSub (B.I.ε v) (B.lam v) (B.σ v))` using `fun v => GlobalTheory.Jet.MultGap.isKTypeOf_lowKSub _ _ _ _ _ (hds v).1 (hds v).2.1 fun a b hab => (two_mul_lt _ h (hh v) (rank_pos_of_ne _ hab)).trans_le (hgap v a b hab)`. Take `⟨hc, hle, hint⟩` from `GlobalTheory.Dec.PhMajProof.phMaj B d h hds hloc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hI` using `hint 0 le_rfl fun v => gap_numeric _ h (hh v)`. Establish `hph : Integrable (ph B d) (muInf B.I)`. Use `hI.mono' hc.aestronglyMeasurable (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `using hle g`. Use `⟨hph, fun hb hfin T hT => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, -, -, h4, h5⟩` from `(GlobalTheory.GlobProj.globalProj_holds B d hds hph).2.2.2 T hT`. Use `⟨isStarProjection_of_isOrthProjOnto h1, h4 hfin, h5, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `(GlobalTheory.T.convolution_range_cuspidal_of_lowestKType B d h hds hK hh hloc hb hfin T hT y).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem projector_rank_cuspidal : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ), IsDSData B d → GapGe B h → (∀ v, 120 * (B.I.n : ℝ) * ((rkR (B.I.ε v) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h) → Integrable (ph B d) (muInf B.I) ∧ (HBig B 40 h → FiniteDimensional ℂ (B.I.eHom B.σs B.μf B.fund B.R B.Re) → ∀ T, B.I.IsRConv B.μf B.fund B.R (phe B d) T → IsStarProjection T ∧ FiniteDimensional ℂ (LinearMap.range (T : B.I.L2 B.μf B.fund →ₗ[ℂ] B.I.L2 B.μf B.fund)) ∧ Module.finrank ℂ (LinearMap.range (T : B.I.L2 B.μf B.fund →ₗ[ℂ] B.I.L2 B.μf B.fund)) = B.D ∧ ∀ Fv ∈ LinearMap.range (T : B.I.L2 B.μf B.fund →ₗ[ℂ] B.I.L2 B.μf B.fund), B.I.IsCuspFn (B.I.muA B.μf) (B.I.ext Fv)) := by
   intro B d h hds hgap hh

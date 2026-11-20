@@ -9,7 +9,7 @@ namespace PI.AlgValsFin.W
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Establish `h : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Conclude with `Nat.pos_of_ne_zero h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_pos (v : HeightOneSpectrum (𝓞 L)) : (0 : ℝ) < ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) := by
   have h : Ideal.absNorm v.asIdeal ≠ 0 := by
@@ -18,9 +18,9 @@ theorem absNorm_pos (v : HeightOneSpectrum (𝓞 L)) : (0 : ℝ) < ((Ideal.absNo
   exact_mod_cast Nat.pos_of_ne_zero h
 
 /- English proof (translation)
-Establish `h1 : (N ^ o) ^ s = N ^ ((o : ℝ) * s)`. Rewrite using `[← Real.rpow_intCast, ← Real.rpow_mul hN.le]`. Establish `h2 : (N ^ (-s)) ^ o = N ^ (-s * (o : ℝ))`. Rewrite using `[← Real.rpow_intCast, ← Real.rpow_mul hN.le]`. Establish `h3 : (o : ℝ) * s + -s * (o : ℝ) = 0` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, ← Real.rpow_add hN, h3, Real.rpow_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem factor_one (N : ℝ) (hN : 0 < N) (o : ℤ) (s : ℝ) : (N ^ o) ^ s * (N ^ (-s)) ^ o = 1 := by
   have h1 : (N ^ o) ^ s = N ^ ((o : ℝ) * s) := by
@@ -31,19 +31,17 @@ theorem factor_one (N : ℝ) (hN : 0 < N) (o : ℤ) (s : ℝ) : (N ^ o) ^ s * (N
   rw [h1, h2, ← Real.rpow_add hN, h3, Real.rpow_zero]
 
 /- English proof (translation)
-Introduce `hD hL hP χ s m hχ k T hT hU`. Take `⟨r, hr, hk⟩` from `hD k T hT`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Establish `e : χ.1 (diagUnits L k) = 1` using `χ.2.2 k`. Rewrite `e` using `[hk, map_mul, map_mul, map_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `eloc : ∀ v ∈ T, χ.1 (localIdele L v (atFin v k)) = χ.val v ^ ordF v k`. Introduce `v hv`. Conclude with `hL χ v k (hU v hv)`. Rewrite `e` using `[Finset.prod_congr rfl eloc]`. Establish `einf : χ.1 (infDiag k) = χ.inf k` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[einf]`. Establish `e'` using `congrArg (fun u : ℂˣ => (u : ℂ)) e`. Simplify using `only [Units.val_mul, Units.coe_prod, Units.val_zpow_eq_zpow_val, Units.val_one] at e'`. Establish `hreal : (∏ φ : L →+* ℂ, ‖φ (k : L)‖ ^ s) * ∏ v ∈ T, (((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ (-s)) ^ ordF v k = 1`. Rewrite using `[Real.finset_prod_rpow Finset.univ (fun φ : L →+* ℂ => ‖φ (k : L)‖) (fun φ _ => norm_nonneg _) s, hP k T hT, ← Real.finset_prod_rpow T _ (fun v _ => zpow_nonneg (absNorm_pos v).le _) s, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_eq_one (fun v _ => factor_one _ (absNorm_pos v) _ s)`. Establish `hc1 : ∏ φ : L →+* ℂ, ((‖φ (k : L)‖ : ℝ) : ℂ) ^ (s : ℂ) = ((∏ φ : L →+* ℂ, ‖φ (k : L)‖ ^ s : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_prod]`. Use `Finset.prod_congr rfl (fun φ _ => ?_)` and prove the remaining obligations. Rewrite using `[Complex.ofReal_cpow (norm_nonneg _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc2 : ∏ v ∈ T, (((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ (-(s : ℂ))) ^ ordF v k = ((∏ v ∈ T, (((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ (-s)) ^ ordF v k : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_prod]`. Use `Finset.prod_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Rewrite using `[Complex.ofReal_zpow, Complex.ofReal_cpow (Nat.cast_nonneg _), Complex.ofReal_neg, Complex.ofReal_natCast]`. Rewrite using `[← hχ k]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Formalism.L2.Host.HChar.valTw, mul_zpow, Finset.prod_mul_distrib]`. Rewrite using `[hc1, hc2]`. Use `set A : ℝ := ∏ φ : L →+* ℂ, ‖φ (k : L)‖ ^ s with hA`. Use `set B : ℝ := ∏ v ∈ T, (((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ (-s)) ^ ordF v k with hB`. Establish `hAB : (A : ℂ) * (B : ℂ) = 1`.
-
-Rewrite using `[← Complex.ofReal_mul, hreal, Complex.ofReal_one]`. Take the linear combination `((A : ℂ) * (B : ℂ)) * e' + hAB`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem keyIdOf : KeyIdOf L := by
   intro hD hL hP χ s m hχ k T hT hU

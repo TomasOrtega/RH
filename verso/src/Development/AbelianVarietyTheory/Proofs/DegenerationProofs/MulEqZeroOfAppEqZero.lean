@@ -21,11 +21,11 @@ open TopologicalSpace in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Introduce `A A' _ _ g hg hsq X X' f f' β hpb W x y hx hy`. Apply `TopCat.Presheaf.section_ext X.sheaf W (x * y) 0` to reduce the goal to its premises. Introduce `p hp`. Take `⟨V, hVaff, hpV, hVW⟩` from `(Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) hp`. Establish `hres : ∀ z : Γ(X, W), (β.app W).hom z = 0 → _root_.GlobalTheory.AbLaw.rs X hVW z ∈ Ideal.map (_root_.GlobalTheory.SmallExtLift.cst f V) (RingHom.ker g)` using `fun z hz => _root_.GlobalTheory.SmallExtLift.mem_of_app_eq_zero hg hpb hVaff _ (by rw [_root_.GlobalTheory.SectionKernel.app_rs, hz, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzero : _root_.GlobalTheory.AbLaw.rs X hVW (x * y) = 0`. Rewrite using `[map_mul]`. Establish `hmem` using `Ideal.mul_mem_mul (hres x hx) (hres y hy)`. Rewrite `hmem` using `[← Ideal.map_mul, ← pow_two, hsq, Ideal.map_bot, Ideal.mem_bot]`. Conclude with `hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE hVW) p hpV (x * y)`. Establish `h2` using `TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE hVW) p hpV 0`. Express the relevant statement in the definitionally equal form `X.presheaf.germ W p hp (x * y) = X.presheaf.germ W p hp 0`. Rewrite using `[← h1, ← h2, map_zero]`. Conclude with `congrArg _ hzero`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SquareZero.mul_eq_zero_of_app_eq_zero : ∀ (A A' : Type) [CommRing A] [CommRing A']
     (g : A →+* A'), Function.Surjective g → RingHom.ker g ^ 2 = ⊥ → ∀ (X X' : Scheme.{0})

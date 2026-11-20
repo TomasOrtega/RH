@@ -24,7 +24,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {β : Oz →+* c.F} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β)
 
 /- English proof (translation)
-Rewrite using `[sp_comp]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [epsMul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sp_epsMul_mul {K : Type} [CommRing K] (a b : K) :
     spMap (epsMul a) ≫ spMap (epsMul b) = spMap (epsMul (a * b)) := by
@@ -33,7 +33,7 @@ theorem sp_epsMul_mul {K : Type} [CommRing K] (a b : K) :
   ext r <;> simp [epsMul, mul_comm]
 
 /- English proof (translation)
-Use `⟨?_, fun b => ?_⟩` and prove the remaining obligations. Establish `hu : ∀ k : Fin 1, IsTanAtG Z.t x ((fun _ => w) k)` using `fun _ => hw.1`. Conclude with `comb_tan hu (comb_smul hu (isCombAtG_single Z.t x hu 0) a)`. Rewrite using `[Category.assoc, hw.2 b, ← Category.assoc, ← Category.assoc, sp_epsMul_mul, sp_epsMul_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEigTan_smul {K : Type} [CommRing K] {φ : c.F →+* K} {x : Sp K ⟶ Z.X} {τ : E →+* ℂ}
     {w : Sp (DualNumber K) ⟶ Z.t.G.left} (hw : IsEigTan Z φ x τ w) (a : K) :
@@ -44,11 +44,11 @@ theorem isEigTan_smul {K : Type} [CommRing K] {φ : c.F →+* K} {x : Sp K ⟶ Z
   · rw [Category.assoc, hw.2 b, ← Category.assoc, ← Category.assoc, sp_epsMul_mul, sp_epsMul_mul, mul_comm]
 
 /- English proof (translation)
-Establish `h1 : spMap (epsMul δ') ≫ u' i ∈ Λ`. Use `(h' _ (hu'.1 i)).1 ⟨Pi.single i 1, fun k => ?_, isCombAtG_single Z.t x (fun j => (hu'.1 j).1) i⟩` and prove the remaining obligations. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hk]`. Establish `h2` using `isEigTan_smul Z (hu'.1 i) (δ' / δ)`. Take `⟨a', ha', hc⟩` from `(h _ h2).2 (by`. Rewrite using `[← Category.assoc, sp_epsMul_mul, mul_div_cancel₀ _ h0]`. Conclude with `h1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `(hu.2 _ h2).unique (comb_smul (fun j => (hu.1 j).1) ha (δ' / δ)) hc`. Establish `h4` using `ha' b`. Rewrite `h4` using `[← congrFun h3 b, norm_mul, norm_div, hδ, div_self (norm_ne_zero_iff.2 h0), one_mul]`. Conclude with `h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one {C : Type} [NormedField C] {φ : c.F →+* C} {x : Sp C ⟶ Z.X} {τ : E →+* ℂ} {r : ℕ}
     {u u' : Fin r → (Sp (DualNumber C) ⟶ Z.t.G.left)} (hu : IsEigBasis Z φ x τ u) (hu' : IsEigBasis Z φ x τ u')
@@ -72,7 +72,7 @@ theorem norm_le_one {C : Type} [NormedField C] {φ : c.F →+* C} {x : Sp C ⟶ 
   exact h4
 
 /- English proof (translation)
-Establish `e : (x ≫ j).appLE V ⊤ h = j.app V ≫ x.appLE (j ⁻¹ᵁ V) ⊤ h` using `Scheme.Hom.comp_appLE _ _ _ _ _`. Unfold `evalPt`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalPt_app {K : Type} [CommRing K] {X W : Scheme.{0}} (j : W ⟶ X) (x : Sp K ⟶ W) (V : X.Opens)
     (h : ⊤ ≤ (x ≫ j) ⁻¹ᵁ V) (f : Γ(X, V)) : evalPt (x ≫ j) V h f = evalPt x (j ⁻¹ᵁ V) h (j.app V f) := by
@@ -82,11 +82,11 @@ theorem evalPt_app {K : Type} [CommRing K] {X W : Scheme.{0}} (j : W ⟶ X) (x :
   rfl
 
 /- English proof (translation)
-Set `x₀ : Sp Γ(W, jB ⁻¹ᵁ (U ⊓ U')) ⟶ W` to `hV.fromSpec`. Establish `h₀ : ⊤ ≤ x₀ ⁻¹ᵁ (jB ⁻¹ᵁ (U ⊓ U'))` using `hV.fromSpec_preimage_self.ge`. Establish `h1 : ⊤ ≤ (x₀ ≫ jB) ⁻¹ᵁ U` using `fun p hp => (h₀ hp).1`. Establish `h2 : ⊤ ≤ (x₀ ≫ jB) ⁻¹ᵁ U'` using `fun p hp => (h₀ hp).2`. Establish `hψ : x₀ ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap (Spec.preimage (x₀ ≫ πB ≫ genStr Z ≫ spMap e.toRingHom)).hom` using `(Spec.map_preimage _).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose a ha using fun i => ((hu.1 _ x₀ h1 _ hψ).2 _ ((hu'.1 _ x₀ h2 _ hψ).1 i)).exists`. Use `⟨fun b i => a i b, fun K _ x hx hx' hxx i => ?_⟩` and prove the remaining obligations. Establish `hx0 : x = spMap (evalPt x _ hxx) ≫ x₀` using `eq_spec_fromSpec hV x hxx`. Generalize the expression as in `evalPt x _ hxx = ψ at hx0 ⊢`. Substitute `hx0` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h3` using `GlobalTheory.LatDRFree.comb_map Z.t ψ (ha i)`. Rewrite using `[hu'.2 _ _ ψ x₀ h2 hx' i, show u K (spMap ψ ≫ x₀) hx = _ from funext fun k => hu.2 _ _ ψ x₀ h1 hx k, Category.assoc]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generic {F : Type} [Field F] (e : F ≃+* c.F) {X W : Scheme.{0}} (jB : W ⟶ X) (πB : W ⟶ gen Z) {r : ℕ}
     {τ : E →+* ℂ} {U U' : X.Opens} {u : LocAssign Z r jB U} {u' : LocAssign Z r jB U'}
@@ -118,17 +118,15 @@ namespace GlobalTheory.ArLieBase
 open GlobalTheory.ShFam.Pad.Guard GlobalTheory.TangentOrigin
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W jB πB hj hI r τ kind U U' u u' hV hu hu' hL hL'`. Take `⟨T, hT⟩` from `Trans.exists_generic Z e jB πB (hV.preimage jB) hu hu'`. Establish `key : ∀ b i, ∃ f₀ : Γ(X, U ⊓ U'), jB.app (U ⊓ U') f₀ = T b i` using `fun b i => by`. Use `hI _ hV _ fun v ε xg xt h1 h2 h3 hx => ?_` and prove the remaining obligations. Take `⟨hp, hio, -⟩` from `ioOf_spec F v ε`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : Fact (resP v).Prime := ⟨hp⟩`. Establish `hxU : ⊤ ≤ (xg ≫ jB) ⁻¹ᵁ U` using `fun p hp => (hx hp).1`. Establish `hxU' : ⊤ ≤ (xg ≫ jB) ⁻¹ᵁ U'` using `fun p hp => (hx hp).2`. Take `⟨δ, hδ, hd⟩` from `hL v hp ε xg xt h1 h2 (fun p hp => (h3 hp).1) hxU`. Take `⟨δ', hδ', hd'⟩` from `hL' v hp ε xg xt h1 h2 (fun p hp => (h3 hp).2) hxU'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : δ ≠ 0`. Rewrite using `[← norm_pos_iff, hδ]`. Conclude with `Real.rpow_pos_of_pos (Nat.cast_pos.2 hp.pos) _`. Establish `h4 : (spMap (ioOf (resP v) ε) ≫ xg) ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap ((ioOf (resP v) ε).comp (algebraMap F (AlgebraicClosure F)))`. Rewrite using `[Category.assoc, h1, sp_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : ⊤ ≤ ((spMap (ioOf (resP v) ε) ≫ xg) ≫ jB) ⁻¹ᵁ U` using `fun p _ => hxU (Set.mem_univ _)`. Establish `hy' : ⊤ ≤ ((spMap (ioOf (resP v) ε) ≫ xg) ≫ jB) ⁻¹ᵁ U'` using `fun p _ => hxU' (Set.mem_univ _)`. Establish `b1` using `hu.1 _ _ hy _ h4`. Establish `b2` using `hu'.1 _ _ hy' _ h4`. Rewrite `b1` using `[show u _ _ hy = _ from funext fun k => hu.2 _ _ _ xg hxU hy k, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `b2` using `[show u' _ _ hy' = _ from funext fun k => hu'.2 _ _ _ xg hxU' hy' k, Category.assoc]`. Conclude with `(hio _).1 (Trans.norm_le_one Z b1 b2 h0 (hδ'.trans hδ.symm) hd hd' (GlobalTheory.LatDRFree.comb_map Z.t (ioOf (resP v) ε) (hT _ xg hxU hxU' hx i)) b)`. Use `choose A hA using key`. Use `⟨Matrix.of A, fun K _ x hx hx' hxx i => ?_⟩` and prove the remaining obligations. Establish `h` using `hT K x hx hx' hxx i`.
-
-Simplify using `only [← hA] at h`. Simplify using `only [Matrix.of_apply, Trans.evalPt_app]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isTrans : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (Oz : Type) [CommRing Oz] (β : Oz →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (X W : Scheme.{0}) (jB : W ⟶ X) (πB : W ⟶ gen Z), IsAffineHom jB → IntCrit (πB ≫ genStr Z ≫ spMap e.toRingHom) jB → ∀ (r : ℕ) (τ : E →+* ℂ) (kind : ℕ → Bool) (U U' : X.Opens) (u : LocAssign Z r jB U) (u' : LocAssign Z r jB U'), IsAffineOpen (U ⊓ U') → IsLocFrame Z e jB πB r τ U u → IsLocFrame Z e jB πB r τ U' u' → IsLocLat Z e jB πB r τ kind U u → IsLocLat Z e jB πB r τ kind U' u' → ∃ A : Matrix (Fin r) (Fin r) Γ(X, U ⊓ U'), IsTrans Z jB πB u u' A := by
   intro E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W jB πB hj hI r τ kind U U' u u' hV hu hu' hL hL'

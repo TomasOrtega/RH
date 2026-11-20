@@ -12,25 +12,23 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.SplitCompat
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨e, hne⟩ : ∃ e : L, e ≠ IsCMField.complexConj L e := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `IsCMField.complexConj_ne_one L (AlgEquiv.ext fun x => (hcon x).symm)`. Establish `hli : LinearIndependent (maximalRealSubfield L) ![(1 : L), e]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `a t h`. Establish `h'` using `congrArg (IsCMField.complexConj L) h`. Simplify using `only [Algebra.smul_def, map_add, map_mul, AlgEquiv.commutes, map_one, map_zero] at h h'`. Establish `hd : algebraMap (maximalRealSubfield L) L t * (e - IsCMField.complexConj L e) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `h - h'`. Establish `ht : t = 0`. Break down `mul_eq_zero.1 hd with h0 | h0` into its components or cases. Simplify using `using h0`. Conclude with `absurd (sub_eq_zero.1 h0) hne`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Substitute `ht` using the available equality. Simplify using `using h`. Establish `hcard : Fintype.card (Fin 2) = Module.finrank (maximalRealSubfield L) L`. Rewrite using `[Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield L) L]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b` to `basisOfLinearIndependentOfCardEqFinrank hli hcard`. Establish `hb0 : b 0 = 1` using `by simp [b]`. Establish `hb1 : b 1 = e` using `by simp [b]`. Take `⟨A, B, hAB⟩` from `GlobalTheory.tensor_exists_decomp b z`. Rewrite `hAB` using `[hb0, hb1]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : s.proj z = A s.v + s.i e * B s.v`. Rewrite using `[hAB]`. Simplify using `[ReciprocityTheory.Aut.SplitPlace.proj, Algebra.TensorProduct.lift_tmul]`. Both sides reduce to the same expression. Establish `h2 : s.proj (ReciprocityTheory.Aut.conjAL L z) = A s.v + s.i (IsCMField.complexConj L e) * B s.v`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[hAB]`. Simplify using `[ReciprocityTheory.Aut.SplitPlace.proj, ReciprocityTheory.Aut.conjAL, Algebra.TensorProduct.lift_tmul, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression. Establish `hu : s.i e - s.i (IsCMField.complexConj L e) ≠ 0`. Rewrite using `[sub_ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `fun h => hne (s.i.toRingHom.injective h)`. Establish `hBv : B s.v = 0`. Establish `hm : (s.i e - s.i (IsCMField.complexConj L e)) * B s.v = s.proj z - s.proj (ReciprocityTheory.Aut.conjAL L z)`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[hp, hq, sub_zero]`. Conclude with `(mul_eq_zero.1 hm).resolve_left hu`. Establish `hAv : A s.v = 0`. Rewrite `h1` using `[hp, hBv, mul_zero, add_zero]`. Conclude with `h1.symm`.
-
-Rewrite using `[hAB]`. Establish `hA' : evalAt L s.v A = 0` using `by rw [← hAv]; rfl`. Establish `hB' : evalAt L s.v B = 0` using `by rw [← hBv]; rfl`. Simplify using `[ReciprocityTheory.Aut.compAt, Algebra.TensorProduct.map_tmul, hA', hB']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem compAt_eq_zero_of_proj_eq_zero {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L)
     (z : AL L) (hp : s.proj z = 0) (hq : s.proj (conjAL L z) = 0) : compAt L s.v z = 0 := by
@@ -86,9 +84,9 @@ theorem compAt_eq_zero_of_proj_eq_zero {L : Type} [Field L] [NumberField L] [IsC
   simp [ReciprocityTheory.Aut.compAt, Algebra.TensorProduct.map_tmul, hA', hB']
 
 /- English proof (translation)
-Introduce `L _ _ _ n s x y h`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply]`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Apply `compAt_eq_zero_of_proj_eq_zero s` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_sub, GlobalTheory.SplitLocEq.proj_entry, GlobalTheory.SplitLocEq.proj_entry, h, sub_self]`. Rewrite using `[map_sub, map_sub, GlobalTheory.SplitLocEq.conj_entry, GlobalTheory.SplitLocEq.conj_entry, GlobalTheory.SplitLocEq.proj_entry, GlobalTheory.SplitLocEq.proj_entry, map_inv, map_inv, h, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem compAt_map_eq_of_loc_eq : ∀ {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (s : SplitPlace L)
     (x y : GAf L n), s.loc n x = s.loc n y →

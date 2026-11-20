@@ -19,7 +19,7 @@ def FiniteH (F : X.Modules) : Prop :=
 variable {A}
 
 /- English proof (translation)
-Introduce `p` and use `have := hF p Module.Finite.equiv (H.linearEquivOfIso.{w'} A e p)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FiniteH.of_iso {F G : X.Modules} (e : F ≅ G) (hF : FiniteH.{w'} A F) :
     FiniteH.{w'} A G := fun p =>
@@ -27,7 +27,7 @@ theorem FiniteH.of_iso {F G : X.Modules} (e : F ≅ G) (hF : FiniteH.{w'} A F) :
   Module.Finite.equiv (H.linearEquivOfIso.{w'} A e p)
 
 /- English proof (translation)
-Introduce `x y hxy`. Take `⟨x, rfl⟩` from `(Ext.mk₀_bijective _ _).2 x`. Take `⟨y, rfl⟩` from `(Ext.mk₀_bijective _ _).2 y`. Rewrite `hxy` using `[Sheaf.H.map_apply, Sheaf.H.map_apply, Ext.mk₀_comp_mk₀, Ext.mk₀_comp_mk₀]`. Rewrite using `[(cancel_mono f).1 ((Ext.mk₀_bijective _ _).1 hxy)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma H.map_zero_injective {C : Type*} [Category C] {J : GrothendieckTopology C}
     [HasSheafify J AddCommGrpCat.{u}] [HasExt.{w'} (Sheaf J AddCommGrpCat.{u})]
@@ -42,7 +42,7 @@ lemma H.map_zero_injective {C : Type*} [Category C] {J : GrothendieckTopology C}
 variable [IsNoetherianRing A]
 
 /- English proof (translation)
-Introduce `p` and use `have := h₁ p have := h₃ p finite_of_exact_noetherian (H.linearMap A S.f p) (H.linearMap A S.g p) fun y hy => H.exact₂ (shortExact_abSC hS) y hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FiniteH.of_shortExact₂ {S : ShortComplex X.Modules} (hS : S.ShortExact)
     (h₁ : FiniteH.{w'} A S.X₁) (h₃ : FiniteH.{w'} A S.X₃) : FiniteH.{w'} A S.X₂ := fun p =>
@@ -52,11 +52,11 @@ theorem FiniteH.of_shortExact₂ {S : ShortComplex X.Modules} (hS : S.ShortExact
     fun y hy => H.exact₂ (shortExact_abSC hS) y hy
 
 /- English proof (translation)
-Introduce `p`. Use `h₂ p` as an intermediate fact. Establish `hS'` using `shortExact_abSC hS`. Consider the cases of `p with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `: Mono (abSC S).f` using `hS'.mono_f`. Use `finite_of_exact_noetherian (0 : (Fin 0 → A) →ₗ[A] _) (H.linearMap A S.f 0) ?_` and prove the remaining obligations. Introduce `y hy`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(H.map_zero_injective.{w'} (abSC S).f (hy.trans (map_zero _).symm)).symm`. Consider the case `succ p`. Use `h₃ p` as an intermediate fact. Conclude with `finite_of_exact_noetherian (H.δLinear A hS' p) (H.linearMap A S.f (p + 1)) fun x hx => H.exact₁ hS' rfl x hx`.
+Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem FiniteH.of_shortExact₁ {S : ShortComplex X.Modules} (hS : S.ShortExact)
     (h₂ : FiniteH.{w'} A S.X₂) (h₃ : FiniteH.{w'} A S.X₃) : FiniteH.{w'} A S.X₁ := by
@@ -77,7 +77,7 @@ theorem FiniteH.of_shortExact₁ {S : ShortComplex X.Modules} (hS : S.ShortExact
       fun x hx => H.exact₁ hS' rfl x hx
 
 /- English proof (translation)
-Introduce `p` and use `have := h₂ p have := h₁ (p + 1) finite_H_X₃ A hS p`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FiniteH.of_shortExact₃ {S : ShortComplex X.Modules} (hS : S.ShortExact)
     (h₁ : FiniteH.{w'} A S.X₁) (h₂ : FiniteH.{w'} A S.X₂) : FiniteH.{w'} A S.X₃ := fun p =>

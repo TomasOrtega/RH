@@ -13,14 +13,14 @@ def liftO {m n : Type} (N : Matrix m n F) (h : ∀ i j, N i j ∈ O) : Matrix m 
   Matrix.of fun i j => ⟨N i j, h i j⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem map_liftO {m n : Type} (N : Matrix m n F) (h : ∀ i j, N i j ∈ O) :
     (liftO O N h).map O.subtype = N := by
   ext i j; rfl
 
 /- English proof (translation)
-Use `RingHom.map_det O.subtype (liftO O N h)` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply, map_liftO]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_liftO {n : Type} [Fintype n] [DecidableEq n] (N : Matrix n n F)
     (h : ∀ i j, N i j ∈ O) : ((liftO O N h).det : F) = N.det := by
@@ -31,9 +31,9 @@ theorem det_liftO {n : Type} [Fintype n] [DecidableEq n] (N : Matrix n n F)
 abbrev pI (hϖ : ϖ ∈ O) : Ideal O := Ideal.span {(⟨ϖ, hϖ⟩ : O)}
 
 /- English proof (translation)
-Rewrite using `[Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, c.2, by rw [← hc]; exact mul_comm _ _⟩`. Introduce and unpack `⟨o, ho, e⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨o, ho⟩, Subtype.ext (by show (o * ϖ : F) = x; rw [e, mul_comm])⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_pI {hϖ : ϖ ∈ O} (x : O) : x ∈ pI O ϖ hϖ ↔ ∃ o ∈ O, (x : F) = ϖ * o := by
   rw [Ideal.mem_span_singleton']
@@ -46,13 +46,13 @@ theorem mem_pI {hϖ : ϖ ∈ O} (x : O) : x ∈ pI O ϖ hϖ ↔ ∃ o ∈ O, (x 
 variable {O ϖ}
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hx.exists_right_inv`. Take `⟨y0, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite `hy` using `[← map_mul, ← map_one (Ideal.Quotient.mk (pI O ϖ hϖ)), Ideal.Quotient.eq, mem_pI]`. Take `⟨c, hc, e⟩` from `hy`. Establish `e' : (x : F) * y0 - 1 = ϖ * c` using `by push_cast at e; exact e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz : ∀ o ∈ O, (x : F) * y0 ≠ ϖ * o`. Introduce `o ho h`. Apply `hL.1` to reduce the goal to its premises. Establish `h1 : ϖ * (o - c) = 1` using `by linear_combination e' - h`. Rewrite using `[inv_eq_of_mul_eq_one_right h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `O.sub_mem ho hc`. Establish `hz0 : (x : F) * y0 ≠ 0` using `by simpa using hz 0 O.zero_mem`. Establish `hzi : ((x : F) * y0)⁻¹ ∈ O` using `hL.2 _ (O.mul_mem x.2 y0.2) hz`. Establish `hx0 : (x : F) ≠ 0` using `left_ne_zero_of_mul hz0`. Establish `hy0 : (y0 : F) ≠ 0` using `right_ne_zero_of_mul hz0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hx0, ?_⟩` and prove the remaining obligations. Establish `: (x : F)⁻¹ = y0 * ((x : F) * y0)⁻¹`. Rewrite using `[mul_inv, mul_left_comm, mul_inv_cancel₀ hy0, mul_one]`. Rewrite using `[this]`. Conclude with `O.mul_mem y0.2 hzi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitO (hϖ : ϖ ∈ O) (hL : Formalism.DoubleCosetMeasures.IsLocalAt O ϖ) (x : O)
     (hx : IsUnit (Ideal.Quotient.mk (pI O ϖ hϖ) x)) : (x : F) ≠ 0 ∧ (x : F)⁻¹ ∈ O := by
@@ -80,7 +80,7 @@ theorem unitO (hϖ : ϖ ∈ O) (hL : Formalism.DoubleCosetMeasures.IsLocalAt O �
 variable (O) in
 
 /- English proof (translation)
-Introduce `i j`. Establish `hadj : N.adjugate = (liftO O N hN).adjugate.map O.subtype`. Rewrite using `[← RingHom.mapMatrix_apply, RingHom.map_adjugate, RingHom.mapMatrix_apply, map_liftO]`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, hadj, smul_eq_mul]`. Conclude with `O.mul_mem hdi ((liftO O N hN).adjugate i j).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInt_inv {n : Type} [Fintype n] [DecidableEq n] (N : Matrix n n F)
     (hN : ∀ i j, N i j ∈ O) (hdi : N.det⁻¹ ∈ O) : ∀ i j, N⁻¹ i j ∈ O := by
@@ -91,7 +91,7 @@ theorem isInt_inv {n : Type} [Fintype n] [DecidableEq n] (N : Matrix n n F)
   exact O.mul_mem hdi ((liftO O N hN).adjugate i j).2
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `unitO hϖ hL _ hu`. Rewrite `h0`, `h1` using `[det_liftO]`. Conclude with `⟨h0, isInt_inv O N hN h1⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isInt_inv_of_unit (hϖ : ϖ ∈ O) (hL : Formalism.DoubleCosetMeasures.IsLocalAt O ϖ) {n : Type} [Fintype n]
     [DecidableEq n] (N : Matrix n n F) (hN : ∀ i j, N i j ∈ O)
@@ -104,9 +104,9 @@ theorem isInt_inv_of_unit (hϖ : ϖ ∈ O) (hL : Formalism.DoubleCosetMeasures.I
 variable (O) in
 
 /- English proof (translation)
-Establish `e : liftO O A hA * liftO O B hB = 1`. Establish `h : (liftO O A hA * liftO O B hB).map O.subtype = (1 : Matrix n n O).map O.subtype`. Rewrite using `[Matrix.map_mul, map_liftO, map_liftO, hAB]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `Matrix.map_injective Subtype.val_injective h`. Conclude with `isUnit_iff_exists_inv.mpr ⟨(liftO O B hB).det, by rw [← det_mul, e, det_one]⟩`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_liftO {n : Type} [Fintype n] [DecidableEq n] (A B : Matrix n n F)
     (hA : ∀ i j, A i j ∈ O) (hB : ∀ i j, B i j ∈ O) (hAB : A * B = 1) :
@@ -120,14 +120,14 @@ theorem isUnit_det_liftO {n : Type} [Fintype n] [DecidableEq n] (A B : Matrix n 
   exact isUnit_iff_exists_inv.mpr ⟨(liftO O B hB).det, by rw [← det_mul, e, det_one]⟩
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply]; exact O.sum_mem fun k _ => O.mul_mem (hA i k) (hB k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_mul {l m n : Type} [Fintype m] {A : Matrix l m F} {B : Matrix m n F}
     (hA : ∀ i j, A i j ∈ O) (hB : ∀ i j, B i j ∈ O) : ∀ i j, (A * B) i j ∈ O := fun i j => by
   rw [Matrix.mul_apply]; exact O.sum_mem fun k _ => O.mul_mem (hA i k) (hB k j)
 
 /- English proof (translation)
-Introduce `i j` and use `by obtain ⟨o, ho, e⟩ := hy i j rw [e]; exact O.mul_mem hϖ ho`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem II_int {p q : ℕ} (hϖ : ϖ ∈ O) {y : Matrix (Fin p) (Fin q) F}
     (hy : y ∈ Formalism.DoubleCosetMeasures.IIset O ϖ) : ∀ i j, y i j ∈ O := fun i j => by
@@ -135,7 +135,7 @@ theorem II_int {p q : ℕ} (hϖ : ϖ ∈ O) {y : Matrix (Fin p) (Fin q) F}
   rw [e]; exact O.mul_mem hϖ ho
 
 /- English proof (translation)
-Introduce `i j`. Use `choose o ho he using hy`. Use `⟨∑ k, o i k * g k j, O.sum_mem fun k _ => O.mul_mem (ho i k) (hg k j), ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, he, Finset.mul_sum, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem II_mul_right {p q r : ℕ} {y : Matrix (Fin p) (Fin q) F} (hy : y ∈ Formalism.DoubleCosetMeasures.IIset O ϖ)
     {g : Matrix (Fin q) (Fin r) F} (hg : ∀ i j, g i j ∈ O) : y * g ∈ Formalism.DoubleCosetMeasures.IIset O ϖ := by
@@ -145,7 +145,7 @@ theorem II_mul_right {p q r : ℕ} {y : Matrix (Fin p) (Fin q) F} (hy : y ∈ Fo
   simp only [Matrix.mul_apply, he, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Introduce `i j`. Use `choose o ho he using hy`. Use `⟨∑ k, g i k * o k j, O.sum_mem fun k _ => O.mul_mem (hg i k) (ho k j), ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, he, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem II_mul_left {p q r : ℕ} {y : Matrix (Fin q) (Fin r) F} (hy : y ∈ Formalism.DoubleCosetMeasures.IIset O ϖ)
     {g : Matrix (Fin p) (Fin q) F} (hg : ∀ i j, g i j ∈ O) : g * y ∈ Formalism.DoubleCosetMeasures.IIset O ϖ := by
@@ -156,7 +156,7 @@ theorem II_mul_left {p q r : ℕ} {y : Matrix (Fin q) (Fin r) F} (hy : y ∈ For
   exact Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Introduce `i j`. Take `⟨o, ho, e⟩` from `hy i j`. Take `⟨o', ho', e'⟩` from `hz i j`. Conclude with `⟨o + o', O.add_mem ho ho', by rw [Matrix.add_apply, e, e', mul_add]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem II_add {p q : ℕ} {y z : Matrix (Fin p) (Fin q) F} (hy : y ∈ Formalism.DoubleCosetMeasures.IIset O ϖ)
     (hz : z ∈ Formalism.DoubleCosetMeasures.IIset O ϖ) : y + z ∈ Formalism.DoubleCosetMeasures.IIset O ϖ := by
@@ -166,7 +166,7 @@ theorem II_add {p q : ℕ} {y z : Matrix (Fin p) (Fin q) F} (hy : y ∈ Formalis
   exact ⟨o + o', O.add_mem ho ho', by rw [Matrix.add_apply, e, e', mul_add]⟩
 
 /- English proof (translation)
-Introduce `i j`. Take `⟨o, ho, e⟩` from `hy i j`. Conclude with `⟨-o, O.neg_mem ho, by rw [Matrix.neg_apply, e, mul_neg]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem II_neg {p q : ℕ} {y : Matrix (Fin p) (Fin q) F} (hy : y ∈ Formalism.DoubleCosetMeasures.IIset O ϖ) :
     -y ∈ Formalism.DoubleCosetMeasures.IIset O ϖ := by
@@ -175,11 +175,11 @@ theorem II_neg {p q : ℕ} {y : Matrix (Fin p) (Fin q) F} (hy : y ∈ Formalism.
   exact ⟨-o, O.neg_mem ho, by rw [Matrix.neg_apply, e, mul_neg]⟩
 
 /- English proof (translation)
-Establish `hm : (Ideal.Quotient.mk (pI O ϖ hϖ)).mapMatrix (liftO O u hu) = 1`. Use extensionality with `i j`. Rewrite using `[← map_one (Ideal.Quotient.mk (pI O ϖ hϖ)).mapMatrix, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.map_apply, Ideal.Quotient.eq, mem_pI]`. Use `⟨(ϖ⁻¹ • (u - 1)) i j, h1 i j, ?_⟩` and prove the remaining obligations. Establish `e1 : (((1 : Matrix (Fin a) (Fin a) O) i j : O) : F) = (1 : Matrix (Fin a) (Fin a) F) i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Rewrite using `[AddSubgroupClass.coe_sub, e1, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ hϖ0, one_mul]`. Both sides reduce to the same expression. Establish `hu1 : IsUnit (Ideal.Quotient.mk (pI O ϖ hϖ) (liftO O u hu).det)`. Rewrite using `[RingHom.map_det, hm, det_one]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isUnit_one`. Take `⟨hd, hinv⟩` from `isInt_inv_of_unit hϖ hL u hu hu1`. Conclude with `⟨Matrix.nonsingInvUnit u (isUnit_iff_ne_zero.mpr hd), ⟨⟨hu, hinv⟩, h1⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem congOf (hϖ : ϖ ∈ O) (hϖ0 : ϖ ≠ 0) (hL : Formalism.DoubleCosetMeasures.IsLocalAt O ϖ) {a : ℕ}
     (u : Matrix (Fin a) (Fin a) F) (hu : ∀ i j, u i j ∈ O)
@@ -201,13 +201,13 @@ theorem congOf (hϖ : ϖ ∈ O) (hϖ0 : ϖ ≠ 0) (hL : Formalism.DoubleCosetMea
   exact ⟨Matrix.nonsingInvUnit u (isUnit_iff_ne_zero.mpr hd), ⟨⟨hu, hinv⟩, h1⟩, rfl⟩
 
 /- English proof (translation)
-Use `set gi : Matrix (Fin a) (Fin a) F := (((g : GL (Fin a) F)⁻¹ : GL (Fin a) F) : Matrix (Fin a) (Fin a) F)`. Establish `hgi : ∀ i j, gi i j ∈ O` using `(hJ (J'.inv_mem g.2)).1`. Establish `hyI : ∀ i j, (ϖ⁻¹ • y) i j ∈ O` using `fun i j => by`. Take `⟨o, ho, e⟩` from `hy i j`. Rewrite using `[Matrix.smul_apply, e, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hϖ0, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ho`. Establish `hu : ∀ i j, (1 + gi * y) i j ∈ O` using `fun i j => by`. Rewrite using `[Matrix.add_apply]`. Use `O.add_mem ?_ (int_mul hgi (II_int hϖ hy) i j)` and prove the remaining obligations. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij, O.one_mem, O.zero_mem]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ i j, (ϖ⁻¹ • ((1 + gi * y) - 1)) i j ∈ O`. Rewrite using `[add_sub_cancel_left, ← Matrix.mul_smul]`. Conclude with `int_mul hgi hyI`. Take `⟨U, hU, hUe⟩` from `congOf hϖ hϖ0 hL _ hu h1`. Use `⟨⟨U, hK hU⟩, hU, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_mul, Units.val_mul, hUe, Matrix.mul_add, Matrix.mul_one, ← Matrix.mul_assoc]`. Rewrite using `[show ((g : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) * gi = 1 by`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one], Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem shiftJ (hϖ : ϖ ∈ O) (hϖ0 : ϖ ≠ 0) (hL : Formalism.DoubleCosetMeasures.IsLocalAt O ϖ) {a : ℕ}
     {J' : Subgroup (GL (Fin a) F)} (hK : Formalism.DoubleCosetMeasures.congSub O ϖ a ≤ J')

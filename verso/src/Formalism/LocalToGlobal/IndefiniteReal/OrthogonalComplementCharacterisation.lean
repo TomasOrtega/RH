@@ -24,9 +24,9 @@ def chrLine (η : C) : C := η⁻¹
 def chrLineTop (η : C) : C := η
 
 /- English proof (translation)
-Establish `hr' : r % 2 = 1` using `Nat.odd_iff.mp hr`. Establish `ht' : t % 2 = 1` using `Nat.odd_iff.mp ht`. Establish `e1 : (r + (j - 1) * t) % 2 = (r % 2 + (j - 1) % 2) % 2`. Rewrite using `[Nat.add_mod, Nat.mul_mod, ht', mul_one, Nat.mod_mod]`. Establish `e2 : (r + j * t) % 2 = (r % 2 + j % 2) % 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.add_mod, Nat.mul_mod, ht', mul_one, Nat.mod_mod]`. Simplify using `only [chrStep, attChr, Nat.odd_iff, e1, e2, hr']`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chrStep_eq_att (μ : ℕ → C) (η : C) {r t j : ℕ} (hr : Odd r) (ht : Odd t) (hj : 1 ≤ j) :
     chrStep μ η j = (attChr (μ j) η (r + (j - 1) * t), attChr (μ j) η (r + j * t)) := by
@@ -60,11 +60,11 @@ structure IsIo (ν : Measure H) (𝓕 : Set H) (th : G → H → S → ℂ) (pt 
     liftInt ν 𝓕 th (pt φ) ((F : Ds →ₗ[ℂ] (H → ℂ)) v) g = ((io F : CCt) : Dt →ₗ[ℂ] (G → ℂ)) (T φ v) g
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `F`. Establish `h0 : io F - io' F = 0`. Apply `hT` to reduce the goal to its premises. Introduce `φ v`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `g`. Establish `e1` using `h.eq F φ v g`. Establish `e2` using `h'.eq F φ v g`. Simplify using `only [Submodule.coe_sub, LinearMap.sub_apply, Pi.sub_apply, Pi.zero_apply]`. Rewrite using `[← e1, ← e2, sub_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.mp h0`.
+A detailed English derivation is pending.
 -/
 theorem IsIo.unique {ν : Measure H} {𝓕 : Set H} {th : G → H → S → ℂ} {pt : Sinf → S}
     {T : Sinf →ₗ[ℂ] Ds →ₗ[ℂ] Dt} {CCs : Submodule ℂ (Ds →ₗ[ℂ] (H → ℂ))}
@@ -108,7 +108,7 @@ def IsAdjOf (ipM : M →ₗ[ℂ] M →ₗ⋆[ℂ] ℂ) (ipN : N →ₗ[ℂ] N �
   ∀ x y, ipN (A x) y = ipM x (B y)
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Establish `h0 : B y - B' y = 0` using `hnd _ (fun x => by rw [map_sub, ← h x y, ← h' x y, sub_self])`. Conclude with `sub_eq_zero.mp h0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsAdjOf.unique {ipM : M →ₗ[ℂ] M →ₗ⋆[ℂ] ℂ} {ipN : N →ₗ[ℂ] N →ₗ⋆[ℂ] ℂ} {A : M →ₗ[ℂ] N}
     {B B' : N →ₗ[ℂ] M} (hnd : ∀ z, (∀ x, ipM x z = 0) → z = 0)
@@ -161,7 +161,7 @@ theorem iota_mk (dn : M →ₗ[ℂ] N) (V0 : Submodule ℂ M) (x : V0) :
     iota dn V0 (Submodule.Quotient.mk x) = dn x := rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot]`. Use `first`. Consider the case `exact Submodule.ker_liftQ_eq_bot _ _ _ le_rfl`. Consider the case `exact Submodule.ker_liftQ_eq_bot _ _ le_rfl`. Consider the case `exact Submodule.ker_liftQ_eq_bot' _ _ rfl`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem iota_injective (dn : M →ₗ[ℂ] N) (V0 : Submodule ℂ M) : Function.Injective (iota dn V0) := by
   rw [← LinearMap.ker_eq_bot]
@@ -195,9 +195,9 @@ structure IsThetaP (ν : Measure H') (𝓕 : Set H') (th : G' → H' → S' → 
   eq : ∀ f : A, ∀ e g, thP f e g = thetaPInt ν 𝓕 th pt io f e g
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `e`. Use function extensionality and compare the values at `g`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[h.eq f e g, h'.eq f e g]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsThetaP.unique {ν : Measure H'} {𝓕 : Set H'} {th : G' → H' → S' → ℂ} {pt : Sinf' → S'}
     {io : TK →ₗ[ℂ] Tau →ₗ[ℂ] Sinf'} {A : Submodule ℂ (H' → Tau)}
@@ -223,9 +223,7 @@ def IsLamP {Sig : Type*} (thW : A →ₗ[ℂ] Amb) (adj : Amb →ₗ[ℂ] A) (pa
   ∀ σ, ∀ x ∈ part σ, thW (adj x) = (lam σ : ℂ) • x
 
 /- English proof (translation)
-Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hσ`. Establish `e` using `(h σ x hx).symm.trans (h' σ x hx)`. Establish `e2 : ((lam σ : ℂ) - (lam' σ : ℂ)) • x = 0` using `by rw [sub_smul, e, sub_self]`. Break down `smul_eq_zero.mp e2 with h0 | h0` into its components or cases. Conclude with `sub_eq_zero.mp h0` after adjusting the coercions.
-
-Conclude with `absurd h0 hx0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem IsLamP.unique {Sig : Type*} {thW : A →ₗ[ℂ] Amb} {adj : Amb →ₗ[ℂ] A} {part : Sig → Submodule ℂ Amb}
     {lam lam' : Sig → ℝ} (h : IsLamP thW adj part lam) (h' : IsLamP thW adj part lam') {σ : Sig}
@@ -248,9 +246,9 @@ def IsKap {Tup Sig : Type*} (m : ℕ) (dnup : Tup → N →ₗ[ℂ] N) (partE : 
   ∀ μ σ, ∀ x ∈ partE σ, dnup μ x = ((κ * ∏ j ∈ Finset.Icc 1 m, lam μ j σ : ℝ) : ℂ) • x
 
 /- English proof (translation)
-Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hσ`. Establish `e` using `(h μ σ x hx).symm.trans (h' μ σ x hx)`. Establish `e2 : (((κ * ∏ j ∈ Finset.Icc 1 m, lam μ j σ : ℝ) : ℂ) - ((κ' * ∏ j ∈ Finset.Icc 1 m, lam μ j σ : ℝ) : ℂ)) • x = 0`. Rewrite using `[sub_smul, e, sub_self]`. Break down `smul_eq_zero.mp e2 with h0 | h0` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1 : κ * ∏ j ∈ Finset.Icc 1 m, lam μ j σ = κ' * ∏ j ∈ Finset.Icc 1 m, lam μ j σ`. Conclude with `sub_eq_zero.mp h0` after adjusting the coercions. Conclude with `mul_right_cancel₀ hl h1`. Conclude with `absurd h0 hx0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsKap.unique {Tup Sig : Type*} {m : ℕ} {dnup : Tup → N →ₗ[ℂ] N} {partE : Sig → Submodule ℂ N}
     {lam : Tup → ℕ → Sig → ℝ} {κ κ' : ℝ} (h : IsKap m dnup partE lam κ) (h' : IsKap m dnup partE lam κ')
@@ -276,7 +274,7 @@ def IsBu (dn : M →ₗ[ℂ] N) (V0 : Submodule ℂ M) (Bt : Mu → V0 → ℂ) 
   ∀ φ (x : V0), B φ (iota dn V0 (Submodule.Quotient.mk x)) = Bt φ x
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `LinearMap.mem_range.mp hy`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[h φ x, h' φ x]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsBu.unique {dn : M →ₗ[ℂ] N} {V0 : Submodule ℂ M} {Bt : Mu → V0 → ℂ} {B B' : Mu → N → ℂ}
     (h : IsBu dn V0 Bt B) (h' : IsBu dn V0 Bt B') (φ : Mu) {y : N}

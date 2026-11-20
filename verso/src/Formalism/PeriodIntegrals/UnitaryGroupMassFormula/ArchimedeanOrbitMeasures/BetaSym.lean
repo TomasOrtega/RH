@@ -17,9 +17,9 @@ def sigE (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) : E ≃ₐ[F] E :=
   AlgEquiv.ofAlgHom σ σ (AlgHom.ext hσ) (AlgHom.ext hσ)
 
 /- English proof (translation)
-Establish `h : sigR R σ t = Algebra.TensorProduct.congr (AlgEquiv.refl : R ≃ₐ[R] R) (sigE σ hσ) t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR, sigE]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[h, Algebra.trace_eq_of_algEquiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_sigR (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (t : R ⊗[F] E) :
     Algebra.trace R (R ⊗[F] E) (sigR R σ t) = Algebra.trace R (R ⊗[F] E) t := by
@@ -31,7 +31,7 @@ theorem trace_sigR (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (t : R ⊗[
   rw [h, Algebra.trace_eq_of_algEquiv]
 
 /- English proof (translation)
-Establish `h` using `gramR_memP R σ hσ J hJ ![x, y] 0 1`. Simplify using `only [gramR, Matrix.cons_val_zero, Matrix.cons_val_one] at h`. Rewrite using `[← h, sigR_invP R σ hσ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hR_swap (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin M → R ⊗[F] E) :
@@ -43,7 +43,7 @@ theorem hR_swap (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M : ℕ} (J :
 end Gen
 
 /- English proof (translation)
-Simplify using `only [BR]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hR_swap (Ainf X.B.I.F) X.B.I.cm.sig (sig_invI X) X.B.I.J (J_hermI X) (x a) (y a), trace_sigR (Ainf X.B.I.F) X.B.I.cm.sig (sig_invI X)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem BR_symm {D : D7} (X : HidaSetting D) (x y : TupI X) :
     BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J x y = BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J y x := by
@@ -53,7 +53,7 @@ theorem BR_symm {D : D7} (X : HidaSetting D) (x y : TupI X) :
     trace_sigR (Ainf X.B.I.F) X.B.I.cm.sig (sig_invI X)]
 
 /- English proof (translation)
-Introduce `D X x y`. Simplify using `only [betaI]`. Rewrite using `[BR_symm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem betaSym_holds : BetaSym := by
   intro D X x y

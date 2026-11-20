@@ -21,14 +21,14 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-The claim follows from `intersectionComponents_transformedBoundary_of_isBlowupAlongIdealSheaf strictTransform_components := exists_eq_closure_of_isIrreducibleComponentOf_strictTransform`.
+A detailed English derivation is pending.
 -/
 theorem MonomialStrictTransformComponents.transformedComponentHypotheses : MonomialStrictTransformComponents.TransformedComponentHypotheses.{u} where
   transformed_components := intersectionComponents_transformedBoundary_of_isBlowupAlongIdealSheaf
   strictTransform_components := exists_eq_closure_of_isIrreducibleComponentOf_strictTransform
 
 /- English proof (translation)
-The claim follows from `geometricHypotheses_of_orderReductionHypotheses (OrderReductionHypotheses.of_strictTransformHypotheses (StrictTransformCase.strictTransformHypotheses_of_residualHypotheses (MonomialStrictTransformComponents.strictTransformHypotheses_of_transformedComponents MonomialStrictTransfor …`.
+A detailed English derivation is pending.
 -/
 theorem principalizationGeometryHypotheses : PrincipalizationGeometryHypotheses.{u} :=
   geometricHypotheses_of_orderReductionHypotheses

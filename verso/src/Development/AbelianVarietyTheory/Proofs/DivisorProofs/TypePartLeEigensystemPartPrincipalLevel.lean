@@ -27,29 +27,27 @@ attribute [local instance] Formalism.IndefR.principalLevelFrame.instCMHostI
 namespace GlobalTheory.PartTypeW
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F s _hOk hC SF hSF n hF PY PW _hPY hPW π i0 c hEig i U hU`. Establish `hLev` using `hC.lev`. Establish `hN : ∀ (cc : ℕ) (P : Pl D.host.E), (((1 ^ cc : ℕ) : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Introduce `cc P h`. Rewrite `h` using `[one_pow, Nat.cast_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Establish `LO` using `fun (j : Fin D.R.m) (Lv : LevelP R.Pg D.R.r ℂ) (P : Pl D.host.E) (hG : Good R A.μ0 P) => GlobalTheory.LevOp.level_operators (Wc D j) (R.βW j) (R.ΛW j) _ (R.datWp j Lv) (hLev.βW j).choose_spec P (hN _ P) (fun PP h => hG PP (h.imp id (fun h' => absurd h' (Finset.notMem_empty _))))`. Establish `hGood` using `fun P => (GlobalTheory.GoodPrimes.good_primes R F hLev).2.2.1 SF hSF P`. Establish `hU'` using `hU`. Simplify using `only [principalLevelFrame.isotL, Mult.goodPart, Submodule.mem_inf, LinearMap.mem_ker] at hU'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨hUM, hUe⟩, hUiso⟩` from `hU'`. Establish `hle : ∀ k ∈ levS (Wc D i) (R.βW i) (R.datWp i R.triv), k ∈ levS (Wc D i) (R.βW i) (R.datWp i (R.levL F false (sg0 D A))) ∧ levChi (Wc D i) (R.βW i) (R.datWp i (R.levL F false (sg0 D A))) k = levChi (Wc D i) (R.βW i) (R.datWp i R.triv) k`. Introduce `k hk`. Take `⟨h1, h2⟩` from `GlobalTheory.HeckeParts.triv_le (V := Wc D i) (β := R.βW i) (R.levL F false (sg0 D A)) k hk`. Take `⟨_, h3⟩` from `GlobalTheory.HeckeParts.triv_le (V := Wc D i) (β := R.βW i) R.triv k hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨h1, h2.trans h3.symm⟩`. Establish `hU0 : U ∈ Mult R.θ (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv))` using `GlobalTheory.HeckeParts.mult_mono hle hUM`. Establish `hrange` using `(hC.models.HW i (sg0 D A)).2.1`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : U ∈ LinearMap.range (R.HW i (sg0 D A)).e := by`. Rewrite using `[hrange]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hU0`. Use `⟨x, ?_, hx⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Hk3.Wcc, Submodule.mem_comap, hx]`. Use `Submodule.mem_inf.2 ⟨Submodule.mem_inf.2 ⟨hU0, LinearMap.mem_ker.2 hUe⟩, Submodule.mem_inf.2 ⟨hU0, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `P d B hB`. Take `⟨_, _, _, _, hoff, -⟩` from `id hB`. Establish `hG : Good R A.μ0 P` using `(hGood P).1 hoff`. Establish `hSph : SphOp (Wc D i) P d B` using `(((LO i R.triv P hG).2.1 SF d B).1 hB).2`. Take `⟨B0, hB0⟩ : IsLab (Wc D i0) P d` from `(GlobalTheory.LabEq.isLab_W_iff (s := s) R F hC i0 P d hG).2.2 ((GlobalTheory.LabEq.isLab_W_iff (s := s) R F hC i P d hG).2.1 ⟨B, hSph⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `GlobalTheory.T.sphericalHecke_scalar_on_spherical_vectors hF (PW i0) (hPW i0) π P d B0 hB0`. Take `⟨⟨x0, hx0S, hx0, hx0T⟩, hEigOp, -⟩` from `hEig`. Establish `hB0full` using `((LO i0 (R.levL F false (sg0 D A)) P hG).2.1 SF d B0).2 ⟨hoff, hB0⟩`. Establish `hfix0 : ∀ κ, (PW i0).ψ κ ∈ hyp (Wc D i0) P → Formalism.L2.NG.rt D.host.E n κ x0 = x0`. Introduce `κ hκ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `(LO i0 (R.levL F false (sg0 D A)) P hG).1 _ hκ`. Rewrite using `[hx0T κ h1]`. Simplify using `only [h2, one_smul]`. Establish `hac : a = c P d`. Establish `e2` using `hEigOp P d B0 hB0full x0 hx0S hx0T`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `e2` using `[ha x0 hx0S hfix0]`. Conclude with `smul_left_injective ℂ hx0 e2`. Take `⟨hiff, htr⟩` from `GlobalTheory.T.sphericalEigenvalues_independent_of_standardFrame hF (PW i) (PW i0) (hPW i) (hPW i0) P d`. Establish `hvec : ∀ y ∈ π.S, (∀ κ, (PW i).ψ κ ∈ hyp (Wc D i) P → Formalism.L2.NG.rt D.host.E n κ y = y) → principalLevelFrame.Hecke₃ (PW i) B y = c P d • y`. Introduce `y hy hfy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[htr B B0 hSph hB0 y hfy, ha y hy (fun κ hκ => hfy κ ((hiff κ).2 hκ)), hac]`. Establish `hUfix : ∀ k ∈ hyp (Wc D i) P, postOn (R.MW i (sg0 D A)) (principalLevelFrame.rtA k) U = U`. Introduce `k hk`. Take `⟨h1, h2⟩` from `(LO i (R.levL F false (sg0 D A)) P hG).1 k hk`. Establish `hl` using `principalLevelFrame.mult_lev hUM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `v`. Use function extensionality and compare the values at `g`. Rewrite using `[Mult.postOn_apply]`. Use `show U v (g * k) = U v g`.
-
-Rewrite using `[hl v k h1 g, h2, one_mul]`. Conclude with `GlobalTheory.IsotSph.hecke_eq_smul_of_isot hF (PW i) (hPW i) R.θ (R.MW i (sg0 D A)) π P d B (c P d) hSph hvec U hUiso hUfix`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem part_in_eigenpart : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) {s : ℕ}, A.fam.Ok s → Core R F → ∀ SF, IsSF R SF → ∀ {n : ℕ} (hF : D.host.F = maximalRealSubfield D.host.E) (PY : principalLevelFrame.RowPsi (Yc D 0) n) (PW : ∀ i, principalLevelFrame.RowPsi (Wc D i) n), StdPsi hF PY → (∀ i, StdPsi hF (PW i)) → ∀ π i0 c, principalLevelFrame.IsEigOf (PW i0) (levS _ (R.βW i0) (R.datWp i0 (R.levL F false (sg0 D A)))) (levChi _ (R.βW i0) (R.datWp i0 (R.levL F false (sg0 D A)))) SF π c → ∀ i, ∀ U ∈ principalLevelFrame.isotL R.θ (PW i) (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i (R.levL F false (sg0 D A)))) (levChi _ (R.βW i) (R.datWp i (R.levL F false (sg0 D A)))) (R.eWf i (sg0 D A)) π, ∃ x ∈ Wcc R SF i c, (R.HW i _).e x = U := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F s _hOk hC SF hSF n hF PY PW _hPY hPW π i0 c hEig i U hU

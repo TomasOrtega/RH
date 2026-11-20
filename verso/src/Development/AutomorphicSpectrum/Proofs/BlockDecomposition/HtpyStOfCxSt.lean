@@ -12,25 +12,25 @@ open Simplicial
 namespace GlobalTheory.CompanionTheory.Hodge.Prism
 
 /- English proof (translation)
-Establish `key : ∑ j, ∑ i, T i j = ∑ p ∈ (Finset.univ : Finset (Fin (n + 3) × Fin (n + 2))).filter (fun p ↦ p.1 ≠ p.2.castSucc ∧ p.1 ≠ p.2.succ), T p.1 p.2 + ∑ j : Fin (n + 2), (T j.castSucc j + T j.succ j)`. Rewrite using `[Finset.sum_filter, Fintype.sum_prod_type_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Establish `hne : j.castSucc ≠ j.succ` using `by simp [Fin.ext_iff]`. Establish `e : ∀ i, T i j = (if i ≠ j.castSucc ∧ i ≠ j.succ then T i j else 0) + ((if i = j.castSucc then T i j else 0) + (if i = j.succ then T i j else 0))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Distinguish the cases in `a : i = j.castSucc`. Substitute `a` using the available equality. Simplify using `[hne]`. Distinguish the cases in `b : i = j.succ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `b` using the available equality. Simplify using `[a]`. Simplify using `[a, b]`. Use `conv_lhs => rw [Finset.sum_congr rfl fun i _ ↦ e i]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `key2 : ∑ p ∈ (Finset.univ : Finset (Fin (n + 3) × Fin (n + 2))).filter (fun p ↦ p.1 ≠ p.2.castSucc ∧ p.1 ≠ p.2.succ), T p.1 p.2 = - ∑ i, ∑ j, S i j`. Rewrite using `[← Finset.sum_product', ← Finset.sum_neg_distrib]`. Use `symm`. Use `Finset.sum_bij (fun (p : Fin (n + 2) × Fin (n + 1)) _ ↦ if p.1 ≤ p.2.castSucc then ((p.1.castSucc, p.2.succ) : Fin (n + 3) × Fin (n + 2)) else (p.1.succ, p.2.castSucc)) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨i, j⟩ -`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Apply the tactic sequence `split_ifs with h <;> simp [Fin.ext_iff, Fin.le_def, Fin.lt_def] at h ⊢ <;> omega`. Introduce and unpack `⟨i, j⟩ - ⟨i', j'⟩ - h`. Simplify using `only at h`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs at h with h₁ h₂ h₂ <;>`. Apply the tactic sequence `simp [Prod.ext_iff, Fin.ext_iff, Fin.le_def] at h h₁ h₂ ⊢ <;> omega`. Introduce and unpack `⟨i, j⟩ hp`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.ext_iff, ne_eq, Fin.val_castSucc, Fin.val_succ] at hp`. Break down `lt_or_gt_of_ne hp.1 with h | h` into its components or cases.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(⟨i, by omega⟩, ⟨j - 1, by omega⟩), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[if_pos (by simp [Fin.le_def]; omega)]`. Simplify using `[Prod.ext_iff, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(⟨i - 1, by omega⟩, ⟨j, by omega⟩), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[if_neg (by simp [Fin.le_def]; omega)]`. Simplify using `[Prod.ext_iff, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨i, j⟩ -`. Simplify using `only`. Use `split_ifs with h`. Simplify using `[h1 i j h]`. Simplify using `[h2 i j (not_le.1 h)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[key, key2]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem sum_pairs {M : Type} [AddCommGroup M] (n : ℕ) (T : Fin (n + 3) → Fin (n + 2) → M)
     (S : Fin (n + 2) → Fin (n + 1) → M)
@@ -100,7 +100,7 @@ def P {k n : ℕ} (a : ⦋k⦌ ⟶ ⦋n⦌) (l : Fin (k + 1) →o Bool) : Cn (Cy
   map_smul' r f := funext fun c ↦ map_smul _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Use `(mp_comp G _ _ _).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun t ↦ mp G t _) ((c.map_comp _ _).symm.trans (congrArg c.map (Subsingleton.elim _ _)))`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cof_P {k n : ℕ} (a : ⦋k⦌ ⟶ ⦋n⦌) (l : Fin (k + 1) →o Bool) (i : Fin (n + 2)) (f : Cn (Cyl G) k) :
     cof G n i (P G a l f) = P G (a ≫ SimplexCategory.δ i) l f := by
@@ -109,7 +109,7 @@ theorem cof_P {k n : ℕ} (a : ⦋k⦌ ⟶ ⦋n⦌) (l : Fin (k + 1) →o Bool) 
   exact congrArg (fun t ↦ mp G t _) ((c.map_comp _ _).symm.trans (congrArg c.map (Subsingleton.elim _ _)))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Use `(mp_comp G _ _ _).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun t ↦ mp G t _) ((c.map_comp _ _).symm.trans (congrArg c.map (Subsingleton.elim _ _)))`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem P_cof {k n : ℕ} (a : ⦋k + 1⦌ ⟶ ⦋n⦌) (l : Fin (k + 2) →o Bool) (i : Fin (k + 2)) (f : Cn (Cyl G) k) :
     P G a l (cof (Cyl G) k i f) =
@@ -134,7 +134,7 @@ def lab (m k : ℕ) : Fin m →o Bool where
     · simp [a]
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `decide_eq_decide.2 (h x)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem lab_comp {m : ℕ} (i : Fin (m + 1)) (k k' : ℕ)
     (h : ∀ x : Fin m, k ≤ (i.succAbove x).val ↔ k' ≤ x.val) :
@@ -143,7 +143,7 @@ theorem lab_comp {m : ℕ} (i : Fin (m + 1)) (k k' : ℕ)
   exact decide_eq_decide.2 (h x)
 
 /- English proof (translation)
-Simplify using `only [Fin.succAbove, Fin.lt_def, Fin.val_castSucc]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem val_succAbove {m : ℕ} (i : Fin (m + 1)) (x : Fin m) :
     (i.succAbove x).val = if x.val < i.val then x.val else x.val + 1 := by
@@ -154,27 +154,27 @@ def hop (n : ℕ) : Cn (Cyl G) (n + 1) →ₗ[R] Cn G n :=
   ∑ j : Fin (n + 1), ((-1 : R) ^ (j : ℕ)) • P G (SimplexCategory.σ j) (lab (n + 2) (j + 1))
 
 /- English proof (translation)
-Set `S : Fin (n + 2) → Fin (n + 1) → Cn G (n + 1)` to `fun i j ↦ ((-1 : R) ^ ((i : ℕ) + (j : ℕ))) • P G (SimplexCategory.σ j ≫ SimplexCategory.δ i) (lab (n + 2) (j + 1)) f`. Set `T : Fin (n + 3) → Fin (n + 2) → Cn G (n + 1)` to `fun i j ↦ ((-1 : R) ^ ((i : ℕ) + (j : ℕ))) • P G (SimplexCategory.δ i ≫ SimplexCategory.σ j) ((lab (n + 3) (j + 1)).comp (Fin.succAboveOrderEmb i).toOrderHom) f`. Establish `e1 : dn G n (hop G n f) = ∑ i, ∑ j, S i j`. Simplify using `only [dn, hop, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, cof_P, Finset.smul_sum, smul_smul, S, pow_add]`. Rewrite using `[Finset.sum_comm]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Apply the tactic sequence `first | rfl | exact congrArg₂ (· • ·) (mul_comm _ _) rfl`. Establish `e2 : hop G (n + 1) (dn (Cyl G) (n + 1) f) = ∑ j, ∑ i, T i j`. Simplify using `only [dn, hop, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, P_cof, Finset.smul_sum, smul_smul, T, pow_add]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∀ i j, i ≤ j.castSucc → T i.castSucc j.succ = - S i j`. Introduce `i j h`. Establish `hl : (lab (n + 3) ((j : ℕ) + 1 + 1)).comp (Fin.succAboveOrderEmb i.castSucc).toOrderHom = lab (n + 2) (j + 1)`. Use `lab_comp _ _ _ fun x ↦ ?_` and prove the remaining obligations. Establish `h' : i.val ≤ j.val` using `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[val_succAbove]`. Simplify using `only [Fin.val_castSucc]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `s : ((-1 : R) ^ ((i : ℕ) + ((j : ℕ) + 1))) = -(-1) ^ ((i : ℕ) + (j : ℕ))`. Rewrite using `[← add_assoc, pow_succ]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [T, S, Fin.val_castSucc, Fin.val_succ, hl, SimplexCategory.δ_comp_σ_of_le h, s, neg_smul]`. Establish `h2 : ∀ i j, j.castSucc < i → T i.succ j.castSucc = - S i j`. Introduce `i j h`. Establish `hl : (lab (n + 3) ((j : ℕ) + 1)).comp (Fin.succAboveOrderEmb i.succ).toOrderHom = lab (n + 2) (j + 1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `lab_comp _ _ _ fun x ↦ ?_` and prove the remaining obligations. Establish `h' : j.val < i.val` using `h`. Rewrite using `[val_succAbove]`. Simplify using `only [Fin.val_castSucc, Fin.val_succ]`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `s : ((-1 : R) ^ ((i : ℕ) + 1 + (j : ℕ))) = -(-1) ^ ((i : ℕ) + (j : ℕ))`. Rewrite using `[show (i : ℕ) + 1 + (j : ℕ) = (i : ℕ) + (j : ℕ) + 1 by omega, pow_succ]; simp`. Simplify using `only [T, S, Fin.val_castSucc, Fin.val_succ, hl, SimplexCategory.δ_comp_σ_of_gt h, s, neg_smul]`. Establish `d1 : ∀ j : Fin (n + 2), T j.castSucc j + T j.succ j = P G (𝟙 _) (lab (n + 2) j) f - P G (𝟙 _) (lab (n + 2) (j + 1)) f`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hl1 : (lab (n + 3) ((j : ℕ) + 1)).comp (Fin.succAboveOrderEmb j.castSucc).toOrderHom = lab (n + 2) j`. Use `lab_comp _ _ _ fun x ↦ ?_` and prove the remaining obligations. Rewrite using `[val_succAbove]`. Simplify using `only [Fin.val_castSucc]`. Apply the tactic sequence `split_ifs <;> omega`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hl2 : (lab (n + 3) ((j : ℕ) + 1)).comp (Fin.succAboveOrderEmb j.succ).toOrderHom = lab (n + 2) (j + 1)`. Use `lab_comp _ _ _ fun x ↦ ?_` and prove the remaining obligations. Rewrite using `[val_succAbove]`. Simplify using `only [Fin.val_succ]`. Apply the tactic sequence `split_ifs <;> omega`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [T, hl1, hl2, SimplexCategory.δ_comp_σ_self, SimplexCategory.δ_comp_σ_succ, Fin.val_castSucc, Fin.val_succ]`. Establish `s1 : ((-1 : R) ^ ((j : ℕ) + (j : ℕ))) = 1` using `by rw [← two_mul, pow_mul]; simp`. Establish `s2 : ((-1 : R) ^ ((j : ℕ) + 1 + (j : ℕ))) = -1`. Rewrite using `[show (j : ℕ) + 1 + (j : ℕ) = (j : ℕ) + (j : ℕ) + 1 by omega, pow_succ, s1]; simp`. Rewrite using `[s1, s2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[sub_eq_add_neg]`. Rewrite using `[e1, e2, sum_pairs n T S h1 h2, Finset.sum_congr rfl fun j _ ↦ d1 j, Fin.sum_univ_eq_sum_range (fun k ↦ P G (𝟙 _) (lab (n + 2) k) f - P G (𝟙 _) (lab (n + 2) (k + 1)) f) (n + 2), Finset.sum_range_sub']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homotopy (n : ℕ) (f : Cn (Cyl G) (n + 1)) :
     dn G n (hop G n f) + hop G (n + 1) (dn (Cyl G) (n + 1) f) =
@@ -251,7 +251,7 @@ section Deg0
 variable {R : Type} [CommRing R] {D : Type} [Category.{0} D] (G : D ⥤ CommAlgCat.{0} R)
 
 /- English proof (translation)
-Establish `hl1 : (lab 2 1).comp (Fin.succAboveOrderEmb (0 : Fin 2)).toOrderHom = lab 1 0` using `lab_comp _ _ _ fun x ↦ by rw [val_succAbove]; simp`. Establish `hl2 : (lab 2 1).comp (Fin.succAboveOrderEmb (1 : Fin 2)).toOrderHom = lab 1 1` using `lab_comp _ _ _ fun x ↦ by rw [val_succAbove]; simp`. Establish `e0 : (SimplexCategory.δ (0 : Fin 2) ≫ SimplexCategory.σ (0 : Fin 1)) = 𝟙 _` using `SimplexCategory.δ_comp_σ_self (i := (0 : Fin 1))`. Establish `e1 : (SimplexCategory.δ (1 : Fin 2) ≫ SimplexCategory.σ (0 : Fin 1)) = 𝟙 _` using `SimplexCategory.δ_comp_σ_succ (i := (0 : Fin 1))`. Simplify using `[dn, hop, Fin.sum_univ_two, P_cof, hl1, hl2, e0, e1, sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem homotopy_zero (f : Cn (Cyl G) 0) :
     hop G 0 (dn (Cyl G) 0 f) = P G (𝟙 _) (lab 1 0) f - P G (𝟙 _) (lab 1 1) f := by
@@ -272,7 +272,7 @@ section Cylinder
 variable {C D : Type} [Category.{0} C] [Category.{0} D] {A B : D ⥤ C} (θ : A ⟶ B)
 
 /- English proof (translation)
-Establish `h : true ≤ false` using `leOfHom φ.2`. Conclude with `absurd h (by decide)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem no_back {T T' : D} (φ : ((T, true) : D × Bool) ⟶ (T', false)) : False := by
   have h : true ≤ false := leOfHom φ.2
@@ -333,7 +333,7 @@ def cylCoef (hθ : ∀ T b, m'.α T (mp F (θ.app T) b) = m.α T b) : CoefMap (R
 variable (hθ : ∀ T b, m'.α T (mp F (θ.app T) b) = m.α T b)
 
 /- English proof (translation)
-Use extensionality with `x`. Use `x.2` as an intermediate fact. Simplify using `[lab]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lab_false (k : ℕ) : lab (k + 1) (k + 1) = OrderHom.const _ false := by
   ext x
@@ -341,14 +341,14 @@ theorem lab_false (k : ℕ) : lab (k + 1) (k + 1) = OrderHom.const _ false := by
   simp [lab]; omega
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[lab]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lab_true (k : ℕ) : lab (k + 1) 0 = OrderHom.const _ true := by
   ext x
   simp [lab]
 
 /- English proof (translation)
-Rewrite using `[lab_false]`. Use function extensionality and compare the values at `c`. Use `(congrArg (fun t ↦ mp G t _) (?_ : c.map _ = 𝟙 _)).trans ((mp_id G _ _).trans ?_)` and prove the remaining obligations. Conclude with `(congrArg c.map (Subsingleton.elim _ _)).trans (c.map_id _)`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem P_pull_false (k : ℕ) (z : Cn F k) :
     P G (𝟙 _) (lab (k + 1) (k + 1)) (pulln (cylCoef m m' θ hθ) k z) = pulln m k z := by
@@ -359,7 +359,7 @@ theorem P_pull_false (k : ℕ) (z : Cn F k) :
   · rfl
 
 /- English proof (translation)
-Rewrite using `[lab_true]`. Use function extensionality and compare the values at `c`. Use `(congrArg (fun t ↦ mp G t _) (?_ : c.map _ = 𝟙 _)).trans ((mp_id G _ _).trans ?_)` and prove the remaining obligations. Conclude with `(congrArg c.map (Subsingleton.elim _ _)).trans (c.map_id _)`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem P_pull_true (k : ℕ) (z : Cn F k) :
     P G (𝟙 _) (lab (k + 1) 0) (pulln (cylCoef m m' θ hθ) k z) = pulln m' k z := by
@@ -378,11 +378,11 @@ namespace GlobalTheory.CompanionTheory.Hodge
 open Prism in
 
 /- English proof (translation)
-Introduce `hC R _ C _ F D _ G m m' θ hθ`. Establish `hx` using `fun (k : ℕ) (z : Cn F k) ↦ LinearMap.congr_fun ((hC R C F).2 (D × Bool) (Cyl G) (cylCoef m m' θ hθ) k) z`. Simplify using `only [LinearMap.comp_apply] at hx`. Use `⟨fun z hz ↦ ?_, fun n z hz ↦ ?_⟩` and prove the remaining obligations. Establish `h0` using `homotopy_zero G (pulln (cylCoef m m' θ hθ) 0 z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a : P G (𝟙 _) (lab 1 0) (pulln (cylCoef m m' θ hθ) 0 z) = pulln m' 0 z` using `P_pull_true m m' θ hθ 0 z`. Establish `b : P G (𝟙 _) (lab 1 1) (pulln (cylCoef m m' θ hθ) 0 z) = pulln m 0 z` using `P_pull_false m m' θ hθ 0 z`. Rewrite `h0` using `[← hx, hz, map_zero, map_zero, a, b]`. Conclude with `(sub_eq_zero.1 h0.symm).symm`. Establish `h0` using `homotopy G n (pulln (cylCoef m m' θ hθ) (n + 1) z)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a : P G (𝟙 _) (lab (n + 2) 0) (pulln (cylCoef m m' θ hθ) (n + 1) z) = pulln m' (n + 1) z` using `P_pull_true m m' θ hθ (n + 1) z`. Establish `b : P G (𝟙 _) (lab (n + 2) (n + 2)) (pulln (cylCoef m m' θ hθ) (n + 1) z) = pulln m (n + 1) z` using `P_pull_false m m' θ hθ (n + 1) z`. Rewrite `h0` using `[← hx, hz, map_zero, map_zero, add_zero, a, b]`. Conclude with `⟨-hop G n (pulln (cylCoef m m' θ hθ) (n + 1) z), by rw [map_neg, h0]; abel⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem htpySt_of_cxSt : CxSt → HtpySt := by
   intro hC R _ C _ F D _ G m m' θ hθ

@@ -19,7 +19,7 @@ variable {D : D7}
 section Laws
 
 /- English proof (translation)
-Unfold `MultT Mult`. Use `Submodule.map_mono (Submodule.span_mono fun T hT => ?_)` and prove the remaining obligations. Conclude with `⟨hT.aut, hT.cusp, fun v k hk g => by rw [hχ k hk]; exact hT.lev v k (hJ hk) g, hT.equiv, hT.cont⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem multT_anti {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S) {J J' : Set (GA D V)}
     {χ χ' : GA D V → ℂ} (hJ : J ⊆ J') (hχ : ∀ k ∈ J, χ k = χ' k) : MultT θ M J' χ' ≤ MultT θ M J χ := by
@@ -28,9 +28,9 @@ theorem multT_anti {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M :
   exact ⟨hT.aut, hT.cusp, fun v k hk g => by rw [hχ k hk]; exact hT.lev v k (hJ hk) g, hT.equiv, hT.cont⟩
 
 /- English proof (translation)
-Use `multT_anti θ M (fun k hk => ?_) (fun k hk => ?_)` and prove the remaining obligations. Establish `h1 : rTup β L (finE V k) = 1` using `Subgroup.mem_bot.1 hk.2.2`. Use `⟨hk.1, hk.2.1, ?_⟩` and prove the remaining obligations. Use `show rTup β L (finE V k) ∈ P.H`. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `P.H.one_mem`. Establish `h1 : rTup β L (finE V k) = 1` using `Subgroup.mem_bot.1 hk.2.2`. Unfold `levChi`. Rewrite using `[levFn_withP, levFn_flag1, h1, blockDiagonalExtendByOnePrimeField_one, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multT_withP_le {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S) (β : GL (Fin V.rank) (Lev.EAf D))
     (L : LevDat D.host.E ℂ V.rank) (P : LevelP L.Pg L.r ℂ) :
@@ -47,12 +47,12 @@ theorem multT_withP_le {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) 
 variable (W : Tower D)
 
 /- English proof (translation)
-The claim follows from `multT_withP_le W.θ (W.MY j) (W.βY j) (W.datYt () j W.triv) P`.
+A detailed English derivation is pending.
 -/
 theorem cp_le (P : W.Lv) (j : ℕ) : W.CP P j ≤ W.CC j := multT_withP_le W.θ (W.MY j) (W.βY j) (W.datYt () j W.triv) P
 
 /- English proof (translation)
-The claim follows from `multT_withP_le W.θ W.MX W.βX (W.datXt ()) P`.
+A detailed English derivation is pending.
 -/
 theorem cxp_le (P : W.Lv) : W.CXP P ≤ W.CX := multT_withP_le W.θ W.MX W.βX (W.datXt ()) P
 
@@ -62,13 +62,13 @@ Both sides reduce to the same expression.
 theorem cxp_triv : W.CXP W.triv = W.CX := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, (W.thDn ⟨T, cxp_le W P hT⟩).2, cxp_le W P hT, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isDn (P : W.Lv) {T} (hT : T ∈ W.CXP P) : ∃ T₀ ∈ W.CC 0, W.IsDn T T₀ :=
   ⟨_, (W.thDn ⟨T, cxp_le W P hT⟩).2, cxp_le W P hT, rfl⟩
 
 /- English proof (translation)
-Take `⟨_, rfl⟩` from `h`. Take `⟨_, rfl⟩` from `h'`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem isDn_unique {T T₀ T₁} (h : W.IsDn T T₀) (h' : W.IsDn T T₁) : T₀ = T₁ := by
   obtain ⟨_, rfl⟩ := h
@@ -76,14 +76,14 @@ theorem isDn_unique {T T₀ T₁} (h : W.IsDn T T₀) (h' : W.IsDn T T₁) : T�
   rfl
 
 /- English proof (translation)
-Introduce `_ hT` and use `exists_isDn W _ hT`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dnLev_triv : W.DnLev W.triv := fun _ hT => exists_isDn W _ hT
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h y`. Take `⟨T, _, hT, e⟩` from `h y.1 y.2`. Conclude with `⟨⟨T, hT⟩, Subtype.ext e.symm⟩`. Introduce `h T₀ h₀`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx⟩` from `h ⟨T₀, h₀⟩`. Conclude with `⟨x.1, x.2, x.2, by rw [show (⟨x.1, x.2⟩ : W.CX) = x from rfl, hx]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem onto_triv_iff : W.Onto W.triv ↔ W.Onto1 := by
   constructor
@@ -95,7 +95,7 @@ theorem onto_triv_iff : W.Onto W.triv ↔ W.Onto1 := by
     exact ⟨x.1, x.2, x.2, by rw [show (⟨x.1, x.2⟩ : W.CX) = x from rfl, hx]⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact Function.surjective_id`. Consider the case `succ n ih => exact (ih fun k hk => h k (by omega)).comp (h n (by omega))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem dnFrom_surj (n : ℕ) (h : ∀ k < n, Function.Surjective (W.ioY k)) : Function.Surjective (Lift.dnFrom W.CC W.ioY n) := by
   induction n with
@@ -103,17 +103,17 @@ theorem dnFrom_surj (n : ℕ) (h : ∀ k < n, Function.Surjective (W.ioY k)) : F
   | succ n ih => exact (ih fun k hk => h k (by omega)).comp (h n (by omega))
 
 /- English proof (translation)
-The claim follows from `(dnFrom_surj W (D.R.m - 1) fun k hk => h.1 k (by omega)).comp h.2`.
+A detailed English derivation is pending.
 -/
 theorem onto_of_surjective_descents (h : W.StepsOnto) : W.Onto1 :=
   (dnFrom_surj W (D.R.m - 1) fun k hk => h.1 k (by omega)).comp h.2
 
 /- English proof (translation)
-Establish `h0 : W.thDn = 0` using `by unfold Tower.thDn; rw [h, LinearMap.comp_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `ho`. Rewrite using `[eq_bot_iff]`. Introduce `T₀ h₀`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨T, _, hT, e⟩` from `ho T₀ h₀`. Rewrite `e` using `[h0]`. Conclude with `e`. Introduce `hb T₀ h₀ replace h₀ : T₀ = 0 := (Submodule.eq_bot_iff _).1 hb T₀ h₀`. Use `⟨0, (W.CXP P).zero_mem, W.CX.zero_mem, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : W.thDn ⟨0, W.CX.zero_mem⟩ = 0` using `W.thDn.map_zero`. Conclude with `h₀.trans (congrArg Subtype.val e).symm`.
+A detailed English derivation is pending.
 -/
 theorem onto_iff_bot (h : W.ioX = 0) (P : W.Lv) : W.Onto P ↔ W.CP P 0 = ⊥ := by
   have h0 : W.thDn = 0 := by unfold Tower.thDn; rw [h, LinearMap.comp_zero]
@@ -131,12 +131,12 @@ theorem onto_iff_bot (h : W.ioX = 0) (P : W.Lv) : W.Onto P ↔ W.CP P 0 = ⊥ :=
     exact h₀.trans (congrArg Subtype.val e).symm
 
 /- English proof (translation)
-The claim follows from `h.chars.xi_base`.
+A detailed English derivation is pending.
 -/
 theorem xi_one (h : W.Pre) : W.xiH () = 1 := h.chars.xi_base
 
 /- English proof (translation)
-Use `Finset.eq_empty_of_forall_notMem fun PP hP => ?_` and prove the remaining obligations. Use `(h.chars.Q_ram () PP).2 (Or.inl hP)` as an intermediate fact. Rewrite `this` using `[h.chars.xi_base]`. Conclude with `this (by intro; simp)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Q_empty (h : W.Pre) : W.Q () = ∅ := by
   refine Finset.eq_empty_of_forall_notMem fun PP hP => ?_
@@ -145,15 +145,15 @@ theorem Q_empty (h : W.Pre) : W.Q () = ∅ := by
   exact this (by intro; simp)
 
 /- English proof (translation)
-Introduce `h0`. Establish `hp : ∀ φ, W.ptX φ = 0`. Introduce `φ`. Establish `: pureTensorO W.ψ W.θ (Yc D (D.R.m - 1)) D.sp.X' (cart (W.MY (D.R.m - 1))) (cart W.MX) (onb (W.MY (D.R.m - 1))) (onb W.MX) W.vX = 0`. Rewrite using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `pureTensorO pureTensorL`. Use `(MvPolynomial.basisMonomials _ ℂ).ext fun k => ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.constr_basis, LinearMap.zero_apply]`. Unfold `opPow`. Proceed by induction on `(Multiset.toList (Finsupp.toMultiset k)) with`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Proceed by induction.
 
-Consider the case `nil => rfl`. Consider the case `cons a l ih`. Rewrite using `[List.foldr_cons, ih]`. Use function extensionality and compare the values at `x`. Simplify using `[aPlusAll, aPlus, crea, Datum.dRho, heisO]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Unfold `Tower.ptX`. Rewrite using `[this]`. Both sides reduce to the same expression. Use `h.ItX.ne (LinearMap.ext fun φ => LinearMap.ext fun v => ?_)` and prove the remaining obligations. Establish `e` using `h.ItX.invg τ 0 (by simp [lieAt]) φ φ v 0 (fun z => by simp only [hp, map_zero, Pi.zero_apply]; exact hasDerivAt_const _ _) (fun w => by simp only [smul_zero, map_zero]; exact hasDerivAt_const _ _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using e`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vX_ne (h : W.Pre) (τ : D.what₂.Tau) : W.vX ≠ 0 := by
   intro h0
@@ -180,7 +180,7 @@ theorem vX_ne (h : W.Pre) (τ : D.what₂.Tau) : W.vX ≠ 0 := by
   simpa using e
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => show Lift.dnFrom W.CC io n ∘ₗ io n = Lift.dnFrom W.CC io' n ∘ₗ io' n`. Rewrite using `[ih fun k hk => h k (by omega), h n (by omega)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem dnFrom_congr (io io' : ∀ k, W.CC (k + 1) →ₗ[ℂ] W.CC k) (n : ℕ) (h : ∀ k < n, io k = io' k) :
     Lift.dnFrom W.CC io n = Lift.dnFrom W.CC io' n := by
@@ -193,7 +193,7 @@ theorem dnFrom_congr (io io' : ∀ k, W.CC (k + 1) →ₗ[ℂ] W.CC k) (n : ℕ)
 end Laws
 
 /- English proof (translation)
-Take `⟨MX⟩` from `hX`. Take `⟨⟨θ, hθ⟩, ψ, hψ⟩` from `GlobalTheory.Ker.exists_infFam_and_stdChar D`. Conclude with `⟨{ toLevCh := L, θ := θ, ψ := ψ, MY := fun j => (hY j).some, MX := MX, νY := fun _ => 0, fdY := fun _ => ∅, νX := 0, fdX := ∅, ωY := fun _ => 1, ωX := 1, vac := fun _ => 0, vacX := 0, vY := fun _ => 0, vX := 0, ItY := fun _ => 0, ItX := 0, ioY := fun _ => 0, ioX := 0 }, rfl, hθ, …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_tower (D : D7) (L : LevCh D Unit) (hY : ∀ j, Nonempty (DSModel (Yc D j) (parB (Ptw D) (min j D.R.m))))
     (hX : Nonempty (DSModel D.sp.X' (parB (Ptw D) D.R.m))) :
@@ -213,7 +213,7 @@ def levAt (L : LevCh D T) (t : T) : LevCh D Unit :=
   { L with xiH := fun _ => L.xiH t, xi := fun _ => L.xi t, Q := fun _ => L.Q t, xiR := fun _ => L.xiR t }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.mu0, h.eta, fun _ => h.xi t, fun _ _ _ => rfl, h.xi_base, fun _ => h.xi_fin t, fun _ => h.xi_triv t, fun _ => h.xi_tame t, h.Pg, fun _ => h.Q_pl t, fun _ => h.Q_off t, fun p hp => (h.Q_de p hp).imp fun _ hq _ => hq t, fun _ => h.Q_ram t, h.chi, fun _ => h.xiR t, h.βY, h.βX, h. …`.
+Supply the required witnesses or components.
 -/
 theorem levAt_is {L : LevCh D T} {t : T} (h : L.Is t) : (levAt L t).Is () :=
   ⟨h.mu0, h.eta, fun _ => h.xi t, fun _ _ _ => rfl, h.xi_base, fun _ => h.xi_fin t, fun _ => h.xi_triv t, fun _ => h.xi_tame t,
@@ -244,7 +244,7 @@ def ofReal (R : RealDat D A Ks) (hT : R.TopMult) (t : T) : Tower D where
   ioX := R.ioX t ∘ₗ (LinearEquiv.ofEq _ _ (hT t).symm).toLinearMap
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isIo_ofEq {G H S Sinf Ds Dt : Type} [MeasurableSpace H] [AddCommGroup Sinf] [Module ℂ Sinf] [AddCommGroup Ds] [Module ℂ Ds]
     [AddCommGroup Dt] [Module ℂ Dt] {ν : Measure H} {𝓕 : Set H} {th : G → H → S → ℂ} {pt : Sinf → S}
@@ -256,7 +256,7 @@ theorem isIo_ofEq {G H S Sinf Ds Dt : Type} [MeasurableSpace H] [AddCommGroup Si
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `{ chars := levAt_is hl inf := hm.inf std := (hc.ωX A.μ0).std νY := hm.νY A.μ0 νY' := hm.νY' A.μ0 νX := hm.νX A.μ0 ωY := hc.ωY A.μ0 ωX := hc.ωX A.μ0 vY := hc.vY A.μ0 vX := hc.vX A.μ0 ptY := hc.ptY A.μ0 ptX := hc.ptX A.μ0 ItY := hc.ItY A.μ0 ItX := hc.ItX A.μ0 ioY := hc.ioY A.μ0 ioX …`.
+A detailed English derivation is pending.
 -/
 theorem ofReal_is (R : RealDat D A Ks) (hT : R.TopMult) (hl : R.toLevCh.Is A.μ0) (hm : R.IsModels) (hc : R.IsChain) :
     (ofReal R hT A.μ0).Is :=
@@ -278,7 +278,7 @@ theorem ofReal_is (R : RealDat D A Ks) (hT : R.TopMult) (hl : R.toLevCh.Is A.μ0
     ioX := isIo_ofEq (hT A.μ0).symm (hc.ioX A.μ0) }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, ofReal_is R (fun t => GlobalTheory.DefiniteMult.range_top R h.models.inf h.models.cX h.models.prX h.models.HX t) h.lev h.models h.chain⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_is_of_char (R : RealDat D A Ks) (F : Face D A) (h : R.Char F) : ∃ W : Tower D, W.Is :=
   ⟨_, ofReal_is R (fun t => GlobalTheory.DefiniteMult.range_top R h.models.inf h.models.cX h.models.prX h.models.HX t) h.lev h.models h.chain⟩
@@ -286,7 +286,7 @@ theorem exists_is_of_char (R : RealDat D A Ks) (F : Face D A) (h : R.Char F) : �
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(hT t).le ⟨x, rfl⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem ofReal_isDn (R : RealDat D A Ks) (hT : R.TopMult) (t : T) (x : (R.HX t).H) :
     (ofReal R hT t).IsDn (R.cX.toMap R.prX ((R.HX t).e x)) (R.thDn t x) :=

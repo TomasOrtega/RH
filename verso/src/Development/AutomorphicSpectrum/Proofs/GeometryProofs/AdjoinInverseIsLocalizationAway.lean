@@ -3,23 +3,23 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.Ggeo
 
 /- English proof (translation)
-Use `letI : Algebra A S' := (Subalgebra.inclusion hle).toRingHom.toAlgebra`. Establish `hg0 : (g : Ω) ≠ 0` using `fun h => hg (Subtype.ext h)`. Establish `hinv : (g : Ω)⁻¹ ∈ S'`. Rewrite using `[hS]`. Conclude with `Algebra.subset_adjoin (Set.mem_insert _ _)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ x ∈ S', ∃ (n : ℕ) (a : A), x * (g : Ω) ^ n = (a : Ω)`. Introduce `x hx`. Rewrite `hx` using `[hS]`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Set.mem_insert_iff.1 hx with rfl | hx` into its components or cases. Conclude with `⟨1, 1, by simp [hg0]⟩`. Use `⟨0, ⟨x, ?_⟩, by simp⟩` and prove the remaining obligations. Rewrite using `[hA]`. Conclude with `Algebra.subset_adjoin hx`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `algebraMap r => exact ⟨0, algebraMap ℚ A r, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨n, a, ha⟩` from `hx`. Take `⟨m, b, hb⟩` from `hy`. Use `⟨n + m, a * g ^ m + b * g ^ n, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[← ha, ← hb]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`. Take `⟨n, a, ha⟩` from `hx`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, b, hb⟩` from `hy`. Use `⟨n + m, a * b, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← ha, ← hb]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsLocalization.Away.mk g ?_ ?_ ?_` and prove the remaining obligations. Use `IsUnit.of_mul_eq_one (⟨(g : Ω)⁻¹, hinv⟩ : S') ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(g : Ω) * (g : Ω)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ hg0`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s`. Take `⟨n, a, ha⟩` from `key s s.2`. Use `⟨n, a, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(s : Ω) * (g : Ω) ^ n = (a : Ω)`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `ha`. Introduce `a b hab`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `: (a : Ω) = (b : Ω)` using `congrArg (fun x : S' => (x : Ω)) hab`. Rewrite using `[Subtype.ext this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_inv_isLocalization_away (Ω : Type) [Field Ω] [CharZero Ω] (A S' : Subalgebra ℚ Ω)
     (G : Set Ω) (hA : A = Algebra.adjoin ℚ G) (g : A) (hg : g ≠ 0)

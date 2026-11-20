@@ -9,7 +9,7 @@ open scoped ContDiff nonZeroDivisors
 namespace GlobalTheory.WeightTwoSum
 
 /- English proof (translation)
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Rewrite using `[sq, Complex.mul_cpow_ofReal_nonneg (norm_nonneg _) (norm_nonneg _)]`. Rewrite using `[show -2 * s = ((2:ℕ):ℂ) * (-s) by push_cast; ring, Complex.cpow_nat_mul, sq]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem norm_cpow_eq_mul_conj_cpow (u s : ℂ) :
     ((‖u‖ : ℝ) : ℂ) ^ (-2 * s) = (u * starRingEnd ℂ u) ^ (-s) := by
@@ -19,17 +19,15 @@ theorem norm_cpow_eq_mul_conj_cpow (u s : ℂ) :
   rw [show -2 * s = ((2:ℕ):ℂ) * (-s) by push_cast; ring, Complex.cpow_nat_mul, sq]
 
 /- English proof (translation)
-Repeatedly rewrite using `[norm_cpow_eq_mul_conj_cpow]`. Use `set u := a + z j * c with hu_def`. Establish `hU : HasFDerivAt (𝕜` using `ℝ) (fun w : I → ℂ => a + w j * c) (c • dz j) z := ((dz j).hasFDerivAt.mul_const c).const_add a`. Establish `hC : HasFDerivAt (𝕜` using `ℝ) (fun w : I → ℂ => starRingEnd ℂ (a + w j * c)) ((Complex.conjCLE : ℂ →L[ℝ] ℂ).comp (c • dz j)) z := (Complex.conjCLE : ℂ →L[ℝ] ℂ).hasFDerivAt.comp z hU`. Establish `hP` using `hU.mul hC`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcu : starRingEnd ℂ u ≠ 0` using `(map_ne_zero _).2 hu`. Establish `hne : u * starRingEnd ℂ u ≠ 0` using `mul_ne_zero hu hcu`. Establish `hslit : u * starRingEnd ℂ u ∈ Complex.slitPlane`. Rewrite using `[Complex.mul_conj]`. Conclude with `Complex.ofReal_mem_slitPlane.2 (Complex.normSq_pos.2 hu)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow` using `((hasDerivAt_id (u * starRingEnd ℂ u)).cpow_const (c := -σ) hslit).comp_hasFDerivAt z hP`. Establish `hinv` using `(((hasDerivAt_id u).inv hu).pow n).comp_hasFDerivAt z hU`. Establish `h` using `(hinv.const_mul K).mul hpow`. Use `h.congr_fderiv ?_` and prove the remaining obligations. Use extensionality with `v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `clear h hinv hpow hP hC hU hslit`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, dz_apply, dzbar_apply, smul_eq_mul, ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, map_mul, Function.comp_apply, id, Pi.inv_apply, Pi.pow_apply, Pi.mul_apply, ← hu_def]`. Rewrite using `[Complex.cpow_sub _ _ hne, Complex.cpow_one]`. Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Nat.add_sub_cancel, inv_pow]`. Clear the denominators using the available nonvanishing facts. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_factor_norm_cpow {I : Type} [Fintype I] (j : I) (a c K σ : ℂ) (n : ℕ) (z : I → ℂ)
     (hu : a + z j * c ≠ 0) :
@@ -70,19 +68,19 @@ theorem hasFDerivAt_factor_norm_cpow {I : Type} [Fintype I] (j : I) (a c K σ : 
     ring
 
 /- English proof (translation)
-Introduce `E _ _ I _ _ φ m σ x hx z hz`. Set `C : ℕ → ℂ` to `fun n => (-1 : ℂ) ^ n * ∏ j ∈ Finset.range n, (2 + σ + j)`. Set `c : I → ℂ` to `fun i => starRingEnd ℂ (φ i x)`. Set `F : I → (I → ℂ) → ℂ` to `fun i w => C (m i) * c i ^ m i * (φ i x + w i * c i)⁻¹ ^ (2 + m i) * ((‖φ i x + w i * c i‖ : ℝ) : ℂ) ^ (-2 * σ)`. Set `α : I → ℂ` to `fun i => -(((2 + m i : ℕ) : ℂ) + σ) * c i / (φ i x + z i * c i)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `β : I → ℂ` to `fun i => -σ * starRingEnd ℂ (c i) / starRingEnd ℂ (φ i x + z i * c i)`. Establish `hF : ∀ i, HasFDerivAt (𝕜` using `ℝ) (F i) ((F i z * α i) • dz i + (F i z * β i) • dzbar i) z := fun i => hasFDerivAt_factor_norm_cpow i (φ i x) (c i) (C (m i) * c i ^ m i) σ (2 + m i) z (GlobalTheory.DeformedSum.defCoord_ne_zero φ z hz x hx i)`. Establish `hprod` using `HasFDerivAt.finset_prod (u := Finset.univ) (g := F) (x := z) (fun i _ => hF i)`. Establish `hfun : (fun w : I → ℂ => eTerm φ m σ w x) = fun w => ∏ i ∈ Finset.univ, F i w` using `rfl`. Establish `hval : eTerm φ m σ z x = ∏ i ∈ Finset.univ, F i z` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfun]`. Use `hprod.congr_fderiv ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `key : ∀ (f g : I → ℂ), (∀ i, i ≠ j → g i = f i) → ∏ i, g i = (∏ i ∈ Finset.univ.erase j, f i) * g j`. Introduce `f g h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Finset.prod_erase_mul Finset.univ g (Finset.mem_univ j)]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i hi => h i (Finset.ne_of_mem_erase hi)`. Rewrite using `[smul_add, smul_smul, smul_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Unfold `eTerm`. Rewrite using `[key (fun i => F i z) _ ?_]`. Use `congr 1`. Simplify using `only [Pi.add_apply, Pi.single_eq_same, F, α, C, c, defCoord, Finset.prod_range_succ, pow_succ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `i hij`. Simplify using `only [Pi.add_apply, Pi.single_eq_of_ne hij, add_zero]`. Both sides reduce to the same expression.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[hval, ← Finset.prod_erase_mul Finset.univ (fun i => F i z) (Finset.mem_univ j)]`. Simplify using `only [β, c, defCoord, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_eTerm : ∀ (E : Type) [Field E] [NumberField E] (I : Type) [Fintype I] [DecidableEq I]
     (φ : I → E →+* ℂ) (m : I → ℕ) (σ : ℂ) (x : E), x ≠ 0 → ∀ z ∈ polydisc I,
@@ -131,7 +129,7 @@ theorem hasFDerivAt_eTerm : ∀ (E : Type) [Field E] [NumberField E] (I : Type) 
 end GlobalTheory.WeightTwoSum
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.WeightTwoSum.hasFDerivAt_eTerm`.
+A detailed English derivation is pending.
 -/
 example : ∀ (E : Type) [Field E] [NumberField E] (I : Type) [Fintype I] [DecidableEq I] (φ : I → E →+* ℂ) (m : I → ℕ) (σ : ℂ) (x : E), x ≠ 0 → ∀ z ∈ polydisc I, HasFDerivAt (𝕜 := ℝ) (fun w : I → ℂ => eTerm φ m σ w x) (∑ j, (eTerm φ (m + Pi.single j 1) σ z x • dz j + (eTerm φ m σ z x * (-σ * φ j x / starRingEnd ℂ (defCoord φ z x j))) • dzbar j)) z :=
   GlobalTheory.WeightTwoSum.hasFDerivAt_eTerm

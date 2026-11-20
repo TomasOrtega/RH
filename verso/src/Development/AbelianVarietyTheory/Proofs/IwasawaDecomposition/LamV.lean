@@ -6,11 +6,11 @@ open Formalism.BasicNotions
 namespace GlobalTheory.PadicPlaceExt
 
 /- English proof (translation)
-Establish `hmem : ∀ z : L, e z ∈ algebraicClosure ℚ ℂ` using `fun z => mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) z).algHom e.toRatAlgHom)`. Set `e' : L →+* algebraicClosure ℚ ℂ` to `e.codRestrict (algebraicClosure ℚ ℂ) hmem`. Set `: Algebra L (algebraicClosure ℚ ℂ)` to `e'.toAlgebra`. Set `: Algebra L ℂ_[p]` to `φ.toAlgebra`. Establish `: IsScalarTower ℚ L (algebraicClosure ℚ ℂ)` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Algebra.IsAlgebraic ℚ (algebraicClosure ℚ ℂ)` using `algebraicClosure.isAlgebraic ℚ ℂ`. Establish `: Algebra.IsAlgebraic L (algebraicClosure ℚ ℂ)` using `Algebra.IsAlgebraic.tower_top (K := ℚ) L`. Set `f : algebraicClosure ℚ ℂ →ₐ[L] ℂ_[p]` to `IsAlgClosed.lift`. Use `⟨f.toRingHom, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[lamV, dif_pos (hmem z)]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(f.commutes z).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_lam {p : ℕ} [Fact p.Prime] {L : Type} [Field L] [NumberField L] (e : L →+* ℂ) (φ : L →+* ℂ_[p]) :
     ∃ lam : (algebraicClosure ℚ ℂ) →+* ℂ_[p], ∀ z : L, φ z = lamV lam (e z) := by

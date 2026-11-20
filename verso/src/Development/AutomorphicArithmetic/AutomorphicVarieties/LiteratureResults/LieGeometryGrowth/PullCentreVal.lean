@@ -5,9 +5,9 @@ open UpperTheory.V.Lit.Geo
 open scoped TensorProduct
 
 /- English proof (translation)
-Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨φ, v, hφ, rfl⟩` from `hz`. Rewrite using `[ev_tmul, ev_tmul, h φ hφ, mul_smul]`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add z w _ _ hz hw => simp only [map_add, Pi.add_apply, hz, hw, smul_add]`. Consider the case `smul s z _ hz => simp only [map_smul, Pi.smul_apply, hz, smul_comm s c]`.
+Treat this case separately. Treat this case separately.
 -/
 private theorem span_val {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a d : ℕ} (P : Sm E a → Prop)
     (x y : GA E a) (c : ℂ) (h : ∀ φ, P φ → φ.1 x = c * φ.1 y) (m : Sm E a ⊗[ℂ] (Fin d → ℂ))
@@ -21,7 +21,7 @@ private theorem span_val {E : Type} [Field E] [NumberField E] [IsTotallyComplex 
   | smul s z _ hz => simp only [map_smul, Pi.smul_apply, hz, smul_comm s c]
 
 /- English proof (translation)
-Introduce `E _ _ _ a U Ξ r hr q α hα X γ t g`. Use `span_val (IsLevelFn U Ξ) _ _ _ (fun φ hφ => ?_) _ (hα.3 X)` and prove the remaining obligations. Rewrite using `[mul_assoc, hφ.1, aInv E a φ _ (hφ.2.2 r hr), neg_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Lit.Geo.centreVal :
     CentreVal := by

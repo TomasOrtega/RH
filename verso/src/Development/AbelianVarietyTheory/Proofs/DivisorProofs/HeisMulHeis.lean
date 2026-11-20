@@ -7,7 +7,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullH
 namespace GlobalTheory.QhtUnip
 
 /- English proof (translation)
-Introduce `R _ m a w a' w' α α'`. Apply the tactic sequence `ext ((i | i) | i) ((j | j) | j) <;>`. Apply the tactic sequence `simp [Heisenberg₂, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, Matrix.fromBlocks, Fin.fin_one_eq_zero] <;> ring`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem heis_mul : ∀ (R : Type) [CommRing R] (m : ℕ) (a w a' w' : Fin m → R) (α α' : R),
     Heisenberg₂ a w α * Heisenberg₂ a' w' α' = Heisenberg₂ (a + a') (w + w') (α + α' + ∑ k, a k * w' k) := by

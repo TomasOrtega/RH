@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RealMult
 
 /- English proof (translation)
-Use `haveI := Obj.invertible_detOmega X`. Use `FaithfulSMul.eq_of_smul_eq_smul (α := X.DetOmega) fun m ↦ ?_` and prove the remaining obligations. Establish `hm : m ∈ Submodule.span R {δ.1}` using `by rw [δ.2]; exact Submodule.mem_top`. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hm`. Rewrite using `[smul_comm r t, smul_comm s t, h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DetGen.smul_cancel {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R : Type} [CommRing R]
     (X : Obj F 𝔠 (Sp R)) (δ : X.DetGen) {r s : R} (h : r • δ.1 = s • δ.1) : r = s := by
@@ -28,15 +28,15 @@ theorem DetGen.smul_cancel {F : Type} [Field F] [NumberField F] {𝔠 : FracId F
   rw [smul_comm r t, smul_comm s t, h]
 
 /- English proof (translation)
-Introduce `F _ _ 𝔠 R₀ _ k r₀ M U R _ _ X δ δ' c v hδ hv`. Introduce `R' _ _ σ X' φ' δ'' hX' hδ'' W hW Y φY hY δY h hh ψ χ hχ δY' u hY' hu`. Establish `hδm : δ.1 ∈ Submodule.span R {δ'.1}` using `by rw [δ'.2]; exact Submodule.mem_top`. Take `⟨d, hd⟩` from `Submodule.mem_span_singleton.1 hδm`. Establish `hdc : d * c = 1` using `DetGen.smul_cancel X δ (by rw [mul_smul, ← hδ, hd, one_smul])`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgen : Submodule.span R' {((σ : R →+* R') c) • δ''.1} = ⊤`. Use `eq_top_iff.2 fun m _ ↦ ?_` and prove the remaining obligations. Establish `hm : m ∈ Submodule.span R' {δ''.1}` using `by rw [δ''.2]; exact Submodule.mem_top`. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hm`. Use `Submodule.mem_span_singleton.2 ⟨t * (σ : R →+* R') d, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_smul, _root_.mul_assoc, ← map_mul, hdc, map_one, _root_.mul_one]`. Establish `hcorr : Obj.DetCorr (σ : R →+* R') φ' δ'.1 (((σ : R →+* R') c) • δ''.1)`. Introduce `w w' hw`. Rewrite using `[hδ, AlternatingMap.smul_apply, AlternatingMap.smul_apply, smul_eq_mul, smul_eq_mul, hδ'' w w' hw, map_mul]`. Take `⟨δ''', hδ''', huniq⟩` from `hX'.existsUnique_detGen (σ : R →+* R') δ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `heq : δ'''.1 = ((σ : R →+* R') c) • δ''.1` using `(congrArg Subtype.val (huniq ⟨_, hgen⟩ hcorr)).symm`. Establish `hYm : δY'.1 ∈ Submodule.span R' {δ'''.1}` using `by rw [δ'''.2]; exact Submodule.mem_top`. Take `⟨u', hu'⟩` from `Submodule.mem_span_singleton.1 hYm`. Establish `hval` using `hv R' σ X' φ' δ''' hX' hδ''' W hW Y φY hY δY h hh ψ χ hχ δY' u' hY' hu'.symm`. Establish `huu : u = u' * (σ : R →+* R') c` using `DetGen.smul_cancel X' δ'' (by rw [← hu, ← hu', heq, smul_smul])`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[huu, mul_pow, map_mul, map_pow, hval]`. Simplify using `only [RingHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isModelVal_homog : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (R₀ : Type) [CommRing R₀] (k : ℕ)
   (r₀ : Rule (rapObj 𝔠) R₀ k) (M : Scheme.{0}) (U : Obj F 𝔠 M) (R : Type) [CommRing R] [Algebra R₀ R]

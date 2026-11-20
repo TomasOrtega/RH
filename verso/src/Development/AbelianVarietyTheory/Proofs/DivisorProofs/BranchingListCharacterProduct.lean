@@ -10,9 +10,9 @@ namespace GlobalTheory.BrCompare.Shift
 variable {n : ℕ} {lam : DomWeight (n + 1)} {sg : DomWeight n}
 
 /- English proof (translation)
-Establish `h1 : lam.detShift = lam.w (Fin.last n)`. Unfold `DomWeight.detShift`. Rewrite using `[dif_pos (Nat.succ_pos n)]`. Both sides reduce to the same expression. Establish `h2` using `lam.anti (Fin.le_last a)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `DomWeight.natW`. Rewrite using `[h1]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem natW_top (lam : DomWeight (n + 1)) (a : Fin (n + 1)) :
     (lam.natW a : ℤ) = lam.w a - lam.w (Fin.last n) := by
@@ -26,7 +26,7 @@ theorem natW_top (lam : DomWeight (n + 1)) (a : Fin (n + 1)) :
   omega
 
 /- English proof (translation)
-Unfold `lamZ`. Use `split_ifs with h`. Conclude with `natW_top lam a`. Establish `: a = Fin.last n` using `Fin.ext (by have := a.2; simp; omega)`. Simplify using `[this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lamZ_lamN (lam : DomWeight (n + 1)) (a : Fin (n + 1)) :
     lamZ (lamN lam) a = lam.w a - lam.w (Fin.last n) := by
@@ -37,13 +37,13 @@ theorem lamZ_lamN (lam : DomWeight (n + 1)) (a : Fin (n + 1)) :
     simp [this]
 
 /- English proof (translation)
-The claim follows from `natW_top lam _`.
+A detailed English derivation is pending.
 -/
 theorem lamN_cast (lam : DomWeight (n + 1)) (i : Fin n) :
     (lamN lam i : ℤ) = lam.w i.castSucc - lam.w (Fin.last n) := natW_top lam _
 
 /- English proof (translation)
-Rewrite using `[← lamZ_lamN]`. Unfold `nuNext lamZ`. Simplify using `only [Fin.val_succ]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nuNext_cast (lam : DomWeight (n + 1)) (i : Fin n) :
     (nuNext (lamN lam) i : ℤ) = lam.w i.succ - lam.w (Fin.last n) := by
@@ -53,11 +53,11 @@ theorem nuNext_cast (lam : DomWeight (n + 1)) (i : Fin n) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Establish `h0 : 0 < n` using `by omega`. Establish `h1 : sg.detShift = lam.w (Fin.last n)`. Unfold `DomWeight.detShift`. Rewrite using `[dif_pos h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hE _ (by simp only; omega)`. Establish `h2 : sg.w ⟨n - 1, by omega⟩ ≤ sg.w i` using `sg.anti (by rw [Fin.le_def]; simp only; omega)`. Rewrite `h2` using `[hE ⟨n - 1, by omega⟩ (by simp only; omega)]`. Unfold `DomWeight.natW`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem natW_low (hE : GlobalTheory.IndefiniteRowSideFullHecke.InterlacingNumerators.EqualLast lam sg) (i : Fin n) :
     (sg.natW i : ℤ) = sg.w i - lam.w (Fin.last n) := by
@@ -74,7 +74,7 @@ theorem natW_low (hE : GlobalTheory.IndefiniteRowSideFullHecke.InterlacingNumera
   omega
 
 /- English proof (translation)
-Unfold `Formalism.BranchingDeterminantCap.d0 GlobalTheory.IndefiniteRowSideFullHecke.InterlacingNumerators.dZero`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [lamZ_lamN, natW_low hE]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem d0_eq (hE : GlobalTheory.IndefiniteRowSideFullHecke.InterlacingNumerators.EqualLast lam sg) :
     Formalism.BranchingDeterminantCap.d0 (lamZ (lamN lam)) (fun i => (sg.natW i : ℤ)) = GlobalTheory.IndefiniteRowSideFullHecke.InterlacingNumerators.dZero lam sg := by
@@ -84,7 +84,7 @@ theorem d0_eq (hE : GlobalTheory.IndefiniteRowSideFullHecke.InterlacingNumerator
   ring
 
 /- English proof (translation)
-Unfold `initMinor incl`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `p q`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rename_initMinor (K : Type) [Field K] {s : ℕ} (I : Fin s → Fin (n + 1)) (hs : s ≤ n) :
     incl K n (initMinor K I hs) = initMinor K I (hs.trans (Nat.le_succ n)) := by
@@ -99,25 +99,25 @@ end GlobalTheory.BrCompare.Shift
 open GlobalTheory.BrCompare.Shift in
 
 /- English proof (translation)
-Introduce `n lam sg hI hE`. Establish `hb : ∀ s, (Formalism.L2.Col.Br.bBr rfl lam sg s).toNat = lamN lam s - sg.natW s`. Introduce `s`. Establish `h1` using `lamN_cast lam s`. Establish `h2` using `natW_low hE s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Formalism.L2.Col.Br.bBr rfl lam sg s = lam.w s.castSucc - sg.w s` using `rfl`. Rewrite using `[h3]`. Use linear arithmetic over natural numbers and integers. Establish `ha : ∀ s, (Formalism.L2.Col.Br.aBr rfl lam sg s).toNat = sg.natW s - nuNext (lamN lam) s`. Introduce `s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `nuNext_cast lam s`. Establish `h2` using `natW_low hE s`. Establish `h3 : Formalism.L2.Col.Br.aBr rfl lam sg s = sg.w s - lam.w s.succ` using `rfl`. Rewrite using `[h3]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `⟨?_, ?_, ?_, hb, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `hI i` as an intermediate fact. Simplify using `only [lamZ_lamN, natW_low hE]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `u hu`. Simplify using `only [bmList, List.mem_flatMap, List.mem_map, Finset.mem_toList, Finset.mem_erase, rset, d0_eq hE, Finset.mem_Icc] at hu`. Simplify using `only [lamZ_lamN, natW_low hE] at hu`. Take `⟨i, -, v, ⟨h1, h2, h3⟩, rfl⟩` from `hu`. Simplify using `only [zList, List.mem_flatten, List.mem_ofFn]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `⟨_, ⟨i, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [List.mem_map, Finset.mem_toList, Finset.mem_erase, GlobalTheory.IndefiniteRowSideFullHecke.InterlacingNumerators.rangeSet, Finset.mem_Icc]`. Conclude with `⟨v + lam.w (Fin.last n), ⟨by omega, by omega, by omega⟩, by ring⟩`. Unfold `zList Formalism.L2.Col.Br.cBr`. Rewrite using `[List.map_flatten, List.prod_flatten, List.map_map, List.map_ofFn, List.prod_ofFn]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_def, List.map_map, Finset.prod_map_toList]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Unfold `bmChi`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `lamN_cast lam j`. Establish `h2` using `natW_low hE j`. Establish `h3` using `hI j`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `K _`. Unfold `Formalism.L2.Col.Br.xiBr xiB`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_pow, rename_initMinor, rename_initMinor, ha, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments.
 -/
 theorem GlobalTheory.BrCompare.shifted_branching_list_character : ∀ (n : ℕ) (lam : DomWeight (n + 1)) (sg : DomWeight n), GlobalTheory.IndefiniteRowSideFullHecke.InterlacingNumerators.Interlace lam sg → GlobalTheory.IndefiniteRowSideFullHecke.InterlacingNumerators.EqualLast lam sg → Formalism.BranchingDeterminantCap.Interlace (lamZ (lamN lam)) (fun i => (sg.natW i : ℤ)) ∧ (∀ u ∈ bmList (lamN lam) sg.natW, u ∈ zList lam sg) ∧ ((zList lam sg).map (bmChi (lamN lam) fun s => ((lamN lam s - sg.natW s : ℕ) : ℤ))).prod = Formalism.L2.Col.Br.cBr rfl lam sg ∧ (∀ s, (Formalism.L2.Col.Br.bBr rfl lam sg s).toNat = lamN lam s - sg.natW s) ∧ ∀ (K : Type) [Field K], Formalism.L2.Col.Br.xiBr K rfl lam sg = incl K n (xiB K (lamN lam) sg.natW) := by
   intro n lam sg hI hE

@@ -5,37 +5,33 @@ open ReciprocityTheory.ChartRestriction.G.Geo
 namespace GlobalTheory.CompanionTheory.Ar.ChartVal
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hna`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `hna isIntegral_zero`. Use `set B : Subring Ω := (Algebra.adjoin R {a⁻¹}).toSubring with hB`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbA : a⁻¹ ∈ B` using `Algebra.subset_adjoin rfl`. Establish `hnu : ¬ IsUnit (⟨a⁻¹, hbA⟩ : B)`. Introduce `hu`. Take `⟨w, hw⟩` from `hu.exists_right_inv`. Establish `h1 : a⁻¹ * (w : Ω) = 1` using `congrArg Subtype.val hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hwa : (w : Ω) = a`. Combine the equalities or inequalities in the displayed calculation. Establish `haA : a ∈ Algebra.adjoin R {a⁻¹}`. Establish `hw2` using `w.2`. Rewrite `hw2` using `[hwa]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hw2`. Apply `hna` to reduce the goal to its premises. Rewrite `haA` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p, hp⟩` from `(AlgHom.mem_range _).mp haA`. Rewrite `hp` using `[Polynomial.aeval_def]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `letI : Invertible a⁻¹ := invertibleOfNonzero (inv_ne_zero ha0)`. Establish `key` using `Polynomial.eval₂_reverse_mul_pow (algebraMap R Ω) a⁻¹ p`. Rewrite `key` using `[invOf_eq_inv, inv_inv, hp]`. Establish `hdeg : p.reverse.degree < ↑(p.natDegree + 1)`. Use `lt_of_le_of_lt Polynomial.degree_le_natDegree ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `Nat.lt_succ_of_le (Polynomial.reverse_natDegree_le p)` after adjusting the coercions. Use `(show ∃ q : Polynomial R, q.Monic ∧ Polynomial.eval₂ (algebraMap R Ω) a q = 0 from ⟨Polynomial.X ^ (p.natDegree + 1) - p.reverse, Polynomial.monic_X_pow_sub hdeg, ?_⟩)` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, sub_eq_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = Polynomial.eval₂ (algebraMap R Ω) a p.reverse := by`. Rewrite using `[mul_assoc, ← mul_pow, inv_mul_cancel₀ ha0, one_pow, mul_one]`. Take `⟨P, hP, hxP⟩` from `Ideal.exists_le_maximal (Ideal.span {(⟨a⁻¹, hbA⟩ : B)}) (by rw [Ne, Ideal.span_singleton_eq_top]; exact hnu)`. Use `haveI := hP.isPrime`. Establish `hx : (⟨a⁻¹, hbA⟩ : B) ∈ P` using `hxP (Ideal.mem_span_singleton_self _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hg : ∀ y : P.primeCompl, IsUnit (B.subtype (y : B))`. Introduce `y`. Use `isUnit_iff_ne_zero.mpr fun h => (show (y : B) ∉ P from y.2) ?_` and prove the remaining obligations. Establish `hy0 : (y : B) = 0` using `Subtype.ext h`. Rewrite using `[hy0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `P.zero_mem`. Set `f` to `IsLocalization.lift (M := P.primeCompl) (S := Localization.AtPrime P) hg`. Establish `hfl : ∀ z : B, f (algebraMap B (Localization.AtPrime P) z) = z` using `fun z => IsLocalization.lift_eq hg z`. Establish `hfinj : Function.Injective f`. Rewrite using `[IsLocalization.lift_injective_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `congrArg f h`. Rewrite `h'` using `[hfl, hfl]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h'`. Introduce `h`. Establish `hxy : x = y` using `Subtype.ext h`. Rewrite using `[hxy]`. Take `⟨V, hV⟩` from `LocalSubring.exists_le_valuationSubring (LocalSubring.range f)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨hle, hloc⟩` from `LocalSubring.le_def.mp hV`. Establish `hmemL : ∀ z : B, (z : Ω) ∈ (LocalSubring.range f).toSubring`. Introduce `z`. Use `first`. Consider the case `exact (show (z : Ω) ∈ Set.range f from ⟨_, hfl z⟩)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `(rw [LocalSubring.range_toSubring]; exact ⟨_, hfl z⟩)`. Establish `haV : a ∈ V` using `H V fun r => hle (hmemL ⟨algebraMap R Ω r, Subalgebra.algebraMap_mem _ r⟩)`. Set `xL : (LocalSubring.range f).toSubring` to `⟨a⁻¹, hmemL ⟨a⁻¹, hbA⟩⟩`. Establish `hunitV : IsUnit (Subring.inclusion hle xL)` using `isUnit_iff_exists_inv.mpr ⟨⟨a, haV⟩, Subtype.ext (inv_mul_cancel₀ ha0)⟩`. Establish `hunitL : IsUnit xL` using `by first`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `exact isUnit_of_map_unit (Subring.inclusion hle) xL hunitV`. Consider the case `exact IsUnit.of_map (Subring.inclusion hle) xL hunitV`. Take `⟨w, hw⟩` from `hunitL.exists_right_inv`. Establish `hw2 : (w : Ω) ∈ Set.range f` using `w.2`. Take `⟨s, hs⟩` from `hw2`.
-
-Establish `h1 : f (algebraMap B (Localization.AtPrime P) ⟨a⁻¹, hbA⟩ * s) = f 1`. Rewrite using `[map_mul, hfl, hs, map_one]`. Conclude with `congrArg Subtype.val hw`. Establish `hu : IsUnit (algebraMap B (Localization.AtPrime P) ⟨a⁻¹, hbA⟩)` using `isUnit_iff_exists_inv.mpr ⟨s, hfinj h1⟩`. Rewrite `hu` using `[IsLocalization.AtPrime.isUnit_to_map_iff (Localization.AtPrime P) P]`.
-
-Conclude with `hu hx`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_forall_valuationSubring {R Ω : Type} [CommRing R] [Field Ω] [Algebra R Ω]
     (hf : Function.Injective (algebraMap R Ω)) (a : Ω)
@@ -127,11 +123,11 @@ theorem isIntegral_of_forall_valuationSubring {R Ω : Type} [CommRing R] [Field 
   exact hu hx
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y a u q x H c hc`. Establish `e : x * u ^ q * ∏ k, y ⟨k, c k⟩ ^ (-((q : ℤ) * a k)) = x * (u * ∏ k, y ⟨k, c k⟩ ^ (-a k)) ^ q`. Rewrite using `[mul_pow, ← Finset.prod_pow, mul_assoc]`. Use `congr 2`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `show x * u ^ q * ∏ k, y ⟨k, c k⟩ ^ (-((q : ℤ) * a k)) ∈ integralClosure (chartRingZ y c) Ω`. Rewrite using `[e, mem_integralClosure_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `isIntegral_of_forall_valuationSubring Subtype.val_injective _ fun V hV => H c hc V fun p => ?_` and prove the remaining obligations. Conclude with `hV ⟨_, Algebra.subset_adjoin ⟨p, rfl⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_chartLatNm_of_forall_valuationSubring : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (a : K → ℤ) (u : Ω) (q : ℕ) (x : Ω),

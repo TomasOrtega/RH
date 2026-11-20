@@ -121,9 +121,9 @@ def Adm1 (X : ThetaX D) (A : TH.ProvA) : Prop := ArthurRepresentationUpDown A �
 def IntegralityFromMetric (X : ThetaX D) (A : TH.ProvA) : Prop := Adm1 X A → Conclusion1 D X
 
 /- English proof (translation)
-Introduce `hA P hP μ hμ`. Take `⟨ha, hb, hc, hd⟩` from `hA`. Use `And.intro ?_ ?_` and prove the remaining obligations. Introduce `j hj Φ F hF hcu`. Conclude with `hc P hP μ hμ j hj (fun τ => (ha.1 P.t _ _ _ _ (hC P hP j hj τ).1).2.1) Φ F hF hcu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj i hi1 hi2 Φ F hF`. Assume the negation of the conclusion as `hne`. Take `⟨τ, MM, f, hf, hf0⟩` from `hd P hP μ hμ j hj i hi1 hi2 Φ F hF hne`. Take `⟨hD, hN, hq, hqp, -⟩` from `hC P hP j hj τ`. Conclude with `hf0 (hb.1 P.t _ _ _ _ hD (Or.inl hN) i hi1 (hi2.trans hqp) (hi2.trans_eq hq.symm) MM f hf)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integralityFromMetric_of_comb (X : ThetaX D) (A : TH.ProvA) (hC : Comb1 X) : IntegralityFromMetric X A := by
   intro hA P hP μ hμ
@@ -152,7 +152,7 @@ theorem car_muOf (T : ThetaX D) (μ : D.what₂.Tup) (s i : ℕ) : car T (muOf T
   rfl
 
 /- English proof (translation)
-Introduce `j τ`. Use `show T.infTy (T.chrOf μ (j.1 + 1)) τ = -(D.hcW D.u₀ τ).e j`. Rewrite using `[D.hcW_e D.u₀ τ]`. Conclude with `T.chrOf_inf μ j τ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMu_muOf (T : ThetaX D) (μ : D.what₂.Tup) : IsMu T (Formalism.MainNotions.ZetaProductPairs.parD T) (muOf T μ) := by
   intro j τ
@@ -161,9 +161,9 @@ theorem isMu_muOf (T : ThetaX D) (μ : D.what₂.Tup) : IsMu T (Formalism.MainNo
   exact T.chrOf_inf μ j τ
 
 /- English proof (translation)
-Take `⟨hI, hC, hG⟩` from `h`. Use `And.intro hI (And.intro ?_ (And.intro hC (And.intro ?_ (fun τ => rfl))))` and prove the remaining obligations. Introduce `τ`. Conclude with `⟨(D.hcW D.u₀ τ).u_half, (D.hcW D.u₀ τ).v_int, (D.hcW D.u₀ τ).b_int, (D.hcW D.u₀ τ).e_int⟩`. Introduce `j hj τ x hx y hy hxy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ((D.R.rankY D.R.m : ℕ) : ℚ) ^ 3 < |x.1 - y.1|`. Conclude with `(hG j hj τ x hx y hy hxy).1` after adjusting the coercions. Conclude with `h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem towerHyp_of_weightHyp (T : ThetaX D) (h : Formalism.MainNotions.ZetaProductPairs.WtHyp T) : Hyp3 T (Formalism.MainNotions.ZetaProductPairs.parD T) := by
   obtain ⟨hI, hC, hG⟩ := h
@@ -183,13 +183,13 @@ def VanCl (T : ThetaX D) (W V : TH.HSp D) (χ χ' : T.Chr) (d' : D.what₂.Tau �
   ∀ (Φ : T.Sch W V) (F : T.cusp W), T.conjAF _ (F : T.AF W) ∈ T.typ _ d' → T.th _ _ χ χ' Φ F = 0
 
 /- English proof (translation)
-Introduce `hW`. Establish `hH` using `towerHyp_of_weightHyp T hW`. Establish `key : ∀ μ : D.what₂.Tup, ThetaDescentTowerConditions T (Formalism.MainNotions.ZetaProductPairs.parD T) (muOf T μ)` using `fun μ => h _ hH _ (isMu_muOf T μ)`. Establish `c1 : ∀ (μ : D.what₂.Tup) (j : ℕ), j < D.R.m → ∀ (W V : TH.HSp D), T.Ys D.R.t (j + 1) = W → T.Ys D.R.t j = V → ∀ (Φ : T.Sch W V) (F : T.cusp W), T.conjAF W (F : T.AF W) ∈ T.typ W ((Formalism.MainNotions.ZetaProductPairs.parD T).Dpar (j + 1)) → T.th W V (T.carY μ (j + 1) (j + 1)) ( …`. Introduce and unpack `μ j hj W V rfl rfl Φ F hF hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(key μ).1 j hj Φ F hF hc`. Establish `c2 : ∀ (μ : D.what₂.Tup) (j : ℕ), j < D.R.m → ∀ i, 1 ≤ i → i ≤ (sigYD D.R j).2 → ∀ (W : TH.HSp D), T.Ys D.R.t (j + 1) = W → ∀ (Φ : T.Sch W (T.YsLow D.R.t j i)) (F : T.cusp W), T.conjAF W (F : T.AF W) ∈ T.typ W ((Formalism.MainNotions.ZetaProductPairs.parD T).Dpar (j + 1)) → T.th …`. Introduce and unpack `μ j hj i hi1 hi2 W rfl Φ F hF`. Conclude with `(key μ).2 j hj i hi1 hi2 Φ F hF`. Use `And.intro ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `μ j hj Φ F hF hcu`. Establish `hty : ∀ (k : ℕ) (x : T.AF (D.sp.Y k)), Formalism.MainNotions.ZetaProductPairs.InChain T μ k x → x ∈ T.cusp (D.sp.Y k) → Formalism.MainNotions.ZetaProductPairs.IsTypeDv T k x`. Introduce `k x hx`. Proceed by induction on `hx with`. Consider the case `top x0 h0 => exact fun _ => h0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Consider the case `step j' hj' Φ' F' _ ih`. Conclude with `fun hc' => c1 μ j' hj' _ _ (T.Ys_rec (j' + 1) (by omega)) (T.Ys_rec j' hj'.le) Φ' F' (ih F'.2) hc'`. Conclude with `c1 μ j hj _ _ (T.Ys_rec (j + 1) (by omega)) (T.Ys_rec j hj.le) Φ F (hty (j + 1) _ hF F.2) hcu`. Introduce `μ j hj i hi1 hi2 Φ F hF`. Conclude with `c2 μ j hj i hi1 hi2 _ (T.Ys_rec (j + 1) (by omega)) Φ F hF`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaCuspidalChain_of_aux1 (T : ThetaX D) (h : Conclusion1 D T) : Formalism.MainNotions.ZetaProductPairs.ThetaCuspidalChain T := by
   intro hW
@@ -328,11 +328,11 @@ def adm2c (U : Loc2 D X) : Prop :=
 def NonvanishingFromUnfolding (U : Loc2 D X) : Prop := Conclusion2 D X U → ThetaPositivityCondition D X → adm2b U → adm2c U → kernel_index_full_lattice D X
 
 /- English proof (translation)
-Introduce `h2 hpos hb hc P hP μ hμ j hj φ' Φ' hf hk hty F hF hper`. Take `⟨hU, hS⟩` from `h2 P hP μ hμ`. Break down `hper with ⟨hj1, p, s', hne⟩ | ⟨hm, hne⟩` into its components or cases. Take `⟨Φ, hΦf, hΦk, s, hs⟩` from `hb P hP μ hμ j hj1 φ' Φ' hf hk hty F hF p s' hne`. Use `⟨Φ, hΦf, hΦk, fun G hG => Or.inl ⟨hj, U.posDn P.t j P.t_odd P.t_ge hj1 p, s, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(hU j hj1 p s Φ φ' F G hG).2]`. Conclude with `hs`. Take `⟨Φ, hΦf, hΦk, s, hs⟩` from `hc P hP μ hμ j hm φ' Φ' hf hk hty F hF hne`. Take `⟨p⟩` from `hpos P j hm`. Use `⟨Φ, hΦf, hΦk, fun G hG => Or.inl ⟨hj, p, s, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS j hm p s Φ φ' F G hG]`. Conclude with `hs`.
+A detailed English derivation is pending.
 -/
 theorem stmt2c (U : Loc2 D X) : NonvanishingFromUnfolding U := by
   intro h2 hpos hb hc P hP μ hμ j hj φ' Φ' hf hk hty F hF hper
@@ -496,9 +496,9 @@ def FunctionModelRallisFromInputs (D : D7) (X : ThetaX D) (R : Loc3 D X) : Prop 
 def TowerRallisLemma (D : D7) (X : ThetaX D) (R : Loc3 D X) : Prop := Adm3 D X R → TripleInnerProductCondition D X R → PointsLemma D X R
 
 /- English proof (translation)
-Introduce `A B t' hR`. Use `⟨R.cPair A B, R.cPair_pos A B, ?_⟩` and prove the remaining obligations. Introduce `χ χ' hs π S f₁ f₂ φ₁ φ₂ g hV hD hL G₁ hG`. Establish `hD'` using `hD`. Take `⟨hg₁, hg₂, -⟩` from `hD'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ht A B χ χ' hs π f₁ f₂ φ₁ φ₂ hg₁ hg₂ G₁ hG, h A B χ χ' t' hR hs π S f₁ f₂ φ₁ φ₂ g hV hD hL]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem points_of_functionModelRallis (R : Loc3 D X) (h : FunctionModelRallis D X R) (ht : TripleInnerProductCondition D X R) : PointsLemma D X R := by
   intro A B t' hR
@@ -509,13 +509,13 @@ theorem points_of_functionModelRallis (R : Loc3 D X) (h : FunctionModelRallis D 
   rw [ht A B χ χ' hs π f₁ f₂ φ₁ φ₂ hg₁ hg₂ G₁ hG, h A B χ χ' t' hR hs π S f₁ f₂ φ₁ φ₂ g hV hD hL]
 
 /- English proof (translation)
-Introduce `hA ht` and use `points_of_functionModelRallis R (h hA) ht`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem towerRallis_of_functionModel (R : Loc3 D X) (h : FunctionModelRallisFromInputs D X R) : TowerRallisLemma D X R :=
   fun hA ht => points_of_functionModelRallis R (h hA) ht
 
 /- English proof (translation)
-Break down `hc with h0 | hlt` into its components or cases. Conclude with `ha A B χ χ' t' h hs h0`. Conclude with `hb A B χ χ' t' h hs hlt`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sw_12 (R : Loc3 D X) (ha : adm3a D X R) (hb : adm3b D X R)
     (A B : TH.HSp D) (χ χ' : X.Chr) (t' : ℕ) (h : Range3 A B t') (hs : R.spl A B χ χ')
@@ -525,7 +525,7 @@ theorem sw_12 (R : Loc3 D X) (ha : adm3a D X R) (hb : adm3b D X R)
   · exact hb A B χ χ' t' h hs hlt
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos (Formalism.MainNotions.SchurIrreducible.wittIdx B) with h | h` into its components or cases. Conclude with `Or.inl h`. Break down `Nat.lt_or_ge A.rank t' with h' | h'` into its components or cases. Conclude with `Or.inr (Or.inl h')`. Conclude with `Or.inr (Or.inr ⟨h, h'⟩)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the second alternative.
 -/
 theorem range3_cases (A B : TH.HSp D) (t' : ℕ) :
     Formalism.MainNotions.SchurIrreducible.wittIdx B = 0 ∨ A.rank < t' ∨ (0 < Formalism.MainNotions.SchurIrreducible.wittIdx B ∧ t' ≤ A.rank) := by
@@ -567,7 +567,7 @@ def IsChain (X : ThetaX D) (P : TH.TPar D) (μ : ℕ → X.Chr) : ∀ j, Submodu
   | j + 1, π' => IsLink X P (j + 1) π' ∧ ∃ π, IsChain X P μ j π ∧ SumLifts X P μ j π π'
 
 /- English proof (translation)
-The claim follows from `| 0, _, h => h | _ + 1, _, h => h.1`.
+A detailed English derivation is pending.
 -/
 theorem IsChain.link {P : TH.TPar D} {μ : ℕ → X.Chr} : ∀ {j} {π}, IsChain X P μ j π → IsLink X P j π
   | 0, _, h => h
@@ -610,33 +610,31 @@ def DefiniteChainFromRallis (D : D7) (X : ThetaX D) (R : Loc3 D X) : Prop :=
   PointsLemma D X R → ThetaCuspidalityCondition D X → WittIndexCondition D X → AuxiliaryCharactersExist D X R → ChainPeriodExistence D X R → ChainLinkExistence D X R → DefiniteLiftChain D X
 
 /- English proof (translation)
-Simplify using `using X.pet_smul_left V 0 0 G`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pet_zero_left (V : TH.HSp D) (G : X.cusp V) : X.pet V 0 G = 0 := by
   simpa using X.pet_smul_left V 0 0 G
 
 /- English proof (translation)
-Introduce `hp3 hcu hw hg hh hi P hP`. Take `⟨⟨μ, hμ, hAux⟩, π0, h0⟩` from `hg P hP`. Establish `step : ∀ (j : ℕ) (π : Submodule ℂ (X.AF (X.Xs P.t j))), j < D.R.m → IsChain X P μ j π → ∃ π' : Submodule ℂ (X.AF (X.Xs P.t (j + 1))), IsLink X P (j + 1) π' ∧ SumLifts X P μ j π π'`. Introduce `j π hj hc`. Take `⟨p, S, f₁, f₂, φ₁, φ₂, g, -, hf₂, hD, hL, hne, S', hS', hsph⟩` from `hh P hP μ hμ hAux j hj π hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hj1 : j + 1 ≤ D.R.m` using `hj`. Establish `hR : Range3 (X.Xs P.t j) (X.Xs P.t (j + 1)) (P.t + 1)`. Unfold `Range3`. Use `⟨?_, ?_, by omega, Or.inl (hw P.t (j + 1) hj1)⟩` and prove the remaining obligations. Rewrite using `[X.Xs_rank P.t j hj.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hk` using `D.R.m_add_three_le_k`. Conclude with `le_trans (by omega) (Nat.le_add_right D.R.k _)`. Rewrite using `[X.Xs_rank P.t (j + 1) hj1, X.Xs_rank P.t j hj.le]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc0, hcid⟩` from `hp3 _ _ _ hR`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcusp : X.cusp (X.Xs P.t (j + 1)) = ⊤` using `hcu _ (X.40 P.t (j + 1) hj1).1 (X.40 P.t (j + 1) hj1).2`. Set `G₁ : X.cusp (X.Xs P.t (j + 1))` to `⟨lift3 R _ _ (μ (j + 1)) (μ (j + 1)) f₁ φ₁, by rw [hcusp]; exact Submodule.mem_top⟩`. Establish `hV : V3 R _ _ (μ (j + 1)) (μ (j + 1)) (P.t + 1) p` using `fun hpos _ => absurd (hw P.t (j + 1) hj1) (Nat.pos_iff_ne_zero.mp hpos)`. Establish `key` using `hcid (μ (j + 1)) (μ (j + 1)) (hAux j hj).2 p S f₁ f₂ φ₁ φ₂ g hV hD hL G₁ rfl`. Establish `hlift : lift3 R _ _ (μ (j + 1)) (μ (j + 1)) f₂ φ₂ ≠ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hz`. Rewrite `key` using `[hz, pet_zero_left]`. Establish `hc' : (c : ℂ) ≠ 0` using `by exact_mod_cast hc0.ne'`. Conclude with `hne ((mul_eq_zero.mp key.symm).resolve_left hc')`. Establish `hD'` using `hD`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hg₂, -⟩` from `hD'`. Take `⟨hfa, hka⟩` from `R.sc_good _ _ _ _ φ₂ hg₂`. Conclude with `hi P hP μ hμ hAux j hj π (IsChain.link hc) ⟨R.sc _ _ _ _ φ₂, cfc R _ _ _ _ f₂, S', hS', hfa, hka, hf₂, hlift, hsph⟩`. Set `nx : ∀ j, Submodule ℂ (X.AF (X.Xs P.t j)) → Submodule ℂ (X.AF (X.Xs P.t (j + 1)))` to `fun j π => if h : j < D.R.m ∧ IsChain X P μ j π then Classical.choose (step j π h.1 h.2) else ⊥`. Set `sq : ∀ j, Submodule ℂ (X.AF (X.Xs P.t j))` to `fun j => Nat.rec (motive := fun j => Submodule ℂ (X.AF (X.Xs P.t j))) π0 (fun j π => nx j π) j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hnext : ∀ j (h : j < D.R.m ∧ IsChain X P μ j (sq j)), sq (j + 1) = Classical.choose (step j (sq j) h.1 h.2)`. Introduce `j h`. Use `show nx j (sq j) = _`. Conclude with `dif_pos h`. Establish `hsq : ∀ j, j ≤ D.R.m → IsChain X P μ j (sq j)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro _`. Conclude with `h0`. Consider the case `succ n ih`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove both required implications or components.
 
-Introduce `hn`. Establish `hc : IsChain X P μ n (sq n)` using `ih (by omega)`. Establish `hn' : n < D.R.m ∧ IsChain X P μ n (sq n)` using `⟨by omega, hc⟩`. Establish `hs` using `Classical.choose_spec (step n (sq n) hn'.1 hn'.2)`. Rewrite using `[hnext n hn']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `And.intro hs.1 ⟨sq n, hc, hs.2⟩`. Establish `hsum : ∀ j, j < D.R.m → SumLifts X P μ j (sq j) (sq (j + 1))`. Introduce `j hj`. Establish `hn' : j < D.R.m ∧ IsChain X P μ j (sq j)` using `⟨hj, hsq j hj.le⟩`. Rewrite using `[hnext j hn']`.
-
-Conclude with `(Classical.choose_spec (step j (sq j) hn'.1 hn'.2)).2`. Use `⟨μ, sq, hμ, fun j hj => ?_, fun j hj => hsum j hj⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, -⟩` from `IsChain.link (hsq j hj)`. Conclude with `⟨h1, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stmt3c (R : Loc3 D X) : DefiniteChainFromRallis D X R := by
   intro hp3 hcu hw hg hh hi P hP
@@ -718,7 +716,7 @@ def Conclusion2Family (UF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Loc2 (Fm.D x i
 def familyNonvanishing : Prop := ∀ (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), kernel_index_full_lattice (Fm.D x i) (Fm.ex x hx i).th
 
 /- English proof (translation)
-Introduce `x hx i` and use `stmt2c (UF x hx i) (h x hx i) (hp x hx i) (hb x hx i) (hc x hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem familyNonvanishing_of (UF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Loc2 (Fm.D x i) (Fm.ex x hx i).th) (h : Conclusion2Family Fm UF)
     (hp : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), ThetaPositivityCondition (Fm.D x i) (Fm.ex x hx i).th)

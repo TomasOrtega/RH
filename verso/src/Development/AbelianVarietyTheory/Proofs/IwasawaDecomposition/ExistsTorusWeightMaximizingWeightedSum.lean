@@ -21,12 +21,12 @@ noncomputable def twoDiag (n : ℕ) : GL (Fin n) ℂ :=
       exact inv_mul_cancel₀ (zpow_ne_zero _ two_ne_zero)⟩
 
 /- English proof (translation)
-The claim follows from `Matrix.isDiag_diagonal _`.
+A detailed English derivation is pending.
 -/
 lemma twoDiag_isDiag (n : ℕ) : (twoDiag n).val.IsDiag := Matrix.isDiag_diagonal _
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ two_ne_zero, ← _root_.zpow_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma prod_two_zpow {n : ℕ} (ν : Fin n → ℤ) (s : Finset (Fin n)) :
     ∏ i ∈ s, ((2 : ℂ) ^ ((n : ℤ) - ((i : ℕ) : ℤ))) ^ (ν i) =
@@ -38,9 +38,7 @@ lemma prod_two_zpow {n : ℕ} (ν : Fin n → ℤ) (s : Finset (Fin n)) :
     rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ two_ne_zero, ← _root_.zpow_mul]
 
 /- English proof (translation)
-Establish `h' : ((2 : ℝ) ^ a : ℝ) = (2 : ℝ) ^ b`. Establish `ha : ((2 : ℂ) ^ a) = (((2 : ℝ) ^ a : ℝ) : ℂ)` using `by push_cast; rfl`. Establish `hb : ((2 : ℂ) ^ b) = (((2 : ℝ) ^ b : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite `h` using `[ha, hb]`. Conclude with `h` after adjusting the coercions.
-
-Conclude with `zpow_right_injective₀ (by norm_num : (0:ℝ) < 2) (by norm_num : (2:ℝ) ≠ 1) h'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma two_zpow_inj {a b : ℤ} (h : (2 : ℂ) ^ a = (2 : ℂ) ^ b) : a = b := by
   have h' : ((2 : ℝ) ^ a : ℝ) = (2 : ℝ) ^ b := by
@@ -51,15 +49,15 @@ lemma two_zpow_inj {a b : ℤ} (h : (2 : ℂ) ^ a = (2 : ℂ) ^ b) : a = b := by
   exact zpow_right_injective₀ (by norm_num : (0:ℝ) < 2) (by norm_num : (2:ℝ) ≠ 1) h'
 
 /- English proof (translation)
-Introduce `n ι _ _ Φ μ₀ h₀`. Set `f : (Fin n → ℤ) → ℤ` to `fun ν => ∑ i : Fin n, ((n : ℤ) - ((i : ℕ) : ℤ)) * ν i`. Set `A : Module.End ℂ (ι → ℂ)` to `Matrix.toLin' (Φ (twoDiag n))`. Establish `heig : ∀ ν, IsWt Φ ν → A.HasEigenvalue ((2 : ℂ) ^ f ν)`. Introduce and unpack `ν ⟨w, hw0, hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `Module.End.hasEigenvalue_of_hasEigenvector (x := w)` to reduce the goal to its premises. Use `⟨?_, hw0⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`. Simplify using `only [A, Matrix.toLin'_apply]`. Rewrite using `[hw _ (twoDiag_isDiag n)]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← prod_two_zpow ν Finset.univ]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[twoDiag, Matrix.diagonal_apply_eq]`. Set `S : Set ℤ` to `{k | ∃ ν, IsWt Φ ν ∧ f ν = k}`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hfin : S.Finite`. Establish `hF` using `Module.End.finite_hasEigenvalue A`. Use `(hF.preimage (f := fun k : ℤ => (2 : ℂ) ^ k) (fun a _ b _ h => two_zpow_inj h)).subset ?_` and prove the remaining obligations. Introduce and unpack `k ⟨ν, hν, rfl⟩`. Conclude with `heig ν hν`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `hfin.bddAbove`. Take `⟨m, ⟨μ, hμ, rfl⟩, hmax⟩` from `Int.exists_greatest_of_bdd (P := fun k => k ∈ S) ⟨B, fun z hz => hB hz⟩ ⟨f μ₀, μ₀, h₀, rfl⟩`. Conclude with `⟨μ, hμ, fun ν hν => hmax _ ⟨ν, hν, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_max_weight : ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι]
     (Φ : GL (Fin n) ℂ → Matrix ι ι ℂ) (μ₀ : Fin n → ℤ), IsWt Φ μ₀ →

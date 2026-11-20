@@ -5,35 +5,33 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 namespace GlobalTheory.CompanionTheory.Ar.BT
 
 /- English proof (translation)
-Take `⟨i', hi'⟩ : ∃ i' : Γ.G.left ⟶ pullback G.hom x, i' = pullback.lift i Γ.G.hom h.isOver` from `⟨_, rfl⟩`. Rewrite using `[← hi']`. Establish `i'fst : i' ≫ pullback.fst G.hom x = i` using `by rw [hi']; exact pullback.lift_fst _ _ _`. Establish `i'snd : i' ≫ pullback.snd G.hom x = Γ.G.hom` using `by rw [hi']; exact pullback.lift_snd _ _ _`. Set `PO : Over X` to `Over.mk (pullback.snd G.hom x ≫ x)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `u : PO ⟶ G` to `Over.homMk (pullback.fst G.hom x) pullback.condition`. Take `⟨f, hfdef⟩ : ∃ f : pullback G.hom x ⟶ G.left, f = (u ^ N).left` from `⟨_, rfl⟩`. Take `⟨g, hgdef⟩ : ∃ g : pullback G.hom x ⟶ G.left, g = (1 : PO ⟶ G).left` from `⟨_, rfl⟩`. Establish `hf : f ≫ G.hom = pullback.snd G.hom x ≫ x` using `by rw [hfdef]; exact Over.w (u ^ N)`. Establish `hg : g ≫ G.hom = pullback.snd G.hom x ≫ x` using `by rw [hgdef]; exact Over.w (1 : PO ⟶ G)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfg : f ≫ G.hom = g ≫ G.hom` using `hf.trans hg.symm`. Set `jq : pullback (pullback.diagonal G.hom) (pullback.lift f g hfg) ⟶ pullback G.hom x` to `pullback.snd _ _`. Use `haveI : IsClosedImmersion jq := inferInstance`. Establish `l1 : pullback.lift f g hfg ≫ pullback.fst G.hom G.hom = f` using `pullback.lift_fst _ _ _`. Establish `l2 : pullback.lift f g hfg ≫ pullback.snd G.hom G.hom = g` using `pullback.lift_snd _ _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cond` using `pullback.condition (f := pullback.diagonal G.hom) (g := pullback.lift f g hfg)`. Establish `jqf : jq ≫ f = pullback.fst _ _`. Use `congrArg (· ≫ pullback.fst G.hom G.hom) cond` as an intermediate fact. Simplify `this.symm` using `[jq, l1]`. Establish `jqg : jq ≫ g = pullback.fst _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (· ≫ pullback.snd G.hom G.hom) cond` as an intermediate fact. Simplify `this.symm` using `[jq, l2]`. Establish `jqeq : jq ≫ f = jq ≫ g` using `jqf.trans jqg.symm`. Establish `key : i' ≫ f = i' ≫ g`. Set `g₀ : Over.mk (Γ.G.hom ≫ x) ⟶ G` to `Over.homMk i h.isOver`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h0 : g₀ ^ N = 1` using `(h.kernel Γ.G g₀).2 ⟨𝟙 _, by simp [g₀]⟩`. Set `ψ : Over.mk (Γ.G.hom ≫ x) ⟶ PO` to `Over.homMk i' (by simp [PO, reassoc_of% i'snd])`. Establish `h1 : ψ ≫ u = g₀` using `by ext1`. Simplify `i'fst` using `[ψ, u, g₀]`. Establish `h2 : ψ ≫ u ^ N = ψ ≫ 1` using `by rw [MonObj.comp_pow, h1, h0, MonObj.comp_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : i' ≫ (u ^ N).left = i' ≫ (1 : PO ⟶ G).left` using `congrArg (fun m => m.left) h2`. Rewrite using `[hfdef, hgdef]`. Conclude with `h3`. Set `b : Γ.G.left ⟶ pullback (pullback.diagonal G.hom) (pullback.lift f g hfg)` to `pullback.lift (i' ≫ f) i' (by`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[l1]`. Simplify using `[l2, key])`. Establish `bjq : b ≫ jq = i'` using `pullback.lift_snd _ _ _`. Set `Qs : Over (Spec (CommRingCat.of R))` to `Over.mk (jq ≫ pullback.snd G.hom x)`. Set `g' : Over.mk (Qs.hom ≫ x) ⟶ G` to `Over.homMk (jq ≫ pullback.fst G.hom x) (by simp [Qs, pullback.condition])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg' : g' ^ N = 1`. Set `φ : Over.mk (Qs.hom ≫ x) ⟶ PO` to `Over.homMk jq (by simp [PO, Qs])`. Establish `h1 : φ ≫ u = g'` using `by ext1`. Simplify using `[φ, u, g']`. Establish `h2 : φ ≫ u ^ N = φ ≫ 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `jq ≫ (u ^ N).left = jq ≫ (1 : PO ⟶ G).left`. Rewrite using `[← hfdef, ← hgdef]`. Conclude with `jqeq`. Rewrite using `[← h1, ← MonObj.comp_pow, h2, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `(h.kernel Qs g').1 hg'`. Establish `hyl : y.left ≫ i = jq ≫ pullback.fst G.hom x` using `hy`. Establish `hys : y.left ≫ Γ.G.hom = jq ≫ pullback.snd G.hom x` using `Over.w y`. Establish `yi' : y.left ≫ i' = jq`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[i'fst, hyl]`. Simplify using `[i'snd, hys]`. Establish `ab : y.left ≫ b = 𝟙 _`. Rewrite using `[← cancel_mono jq]`. Simplify using `[bjq, yi']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `ba : b ≫ y.left = 𝟙 _`. Establish `e : (Over.homMk (b ≫ y.left) (by`. Express the relevant statement in the definitionally equal form `(b ≫ y.left) ≫ Γ.G.hom = Γ.G.hom`. Rewrite using `[Category.assoc, hys, ← Category.assoc, bjq, i'snd]) : Γ.G ⟶ Γ.G) = 𝟙 Γ.G := by`. Apply `h.inj Γ.G` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(b ≫ y.left) ≫ i = 𝟙 _ ≫ i`. Rewrite using `[Category.assoc, hyl, ← Category.assoc, bjq, i'fst, Category.id_comp]`. Conclude with `congrArg (fun m => m.left) e`. Use `haveI : IsIso b := ⟨y.left, ba, ab⟩`. Rewrite using `[← bjq]`.
-
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_torsion_lift {X : Scheme.{0}} (G : Over X) [GrpObj G] [IsSeparated G.hom]
     (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] (Γ : QFGroup R T)

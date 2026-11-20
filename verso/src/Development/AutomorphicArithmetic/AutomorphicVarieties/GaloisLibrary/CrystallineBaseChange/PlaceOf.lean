@@ -5,11 +5,11 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 open Filter Topology
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Establish `hx' : 1 ≤ (Valued.v x : Γ)` using `not_lt.1 hx`. Establish `ho : {y : R | (Valued.v y : Γ) < 1} ∈ 𝓝 (0 : R)`. Rewrite using `[Valued.mem_nhds_zero]`. Use `⟨1, fun y hy => ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_setOf_eq] at hy ⊢`. Rewrite `hy` using `[Valuation.restrict_lt_iff_lt_embedding]`. Simplify using `using hy`. Take `⟨n, hn⟩` from `(h.eventually ho).exists`. Rewrite `hn` using `[map_pow]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hn (not_lt.2 (one_le_pow₀ hx'))`.
+A detailed English derivation is pending.
 -/
 private theorem lt_one_of_tendsto {R Γ : Type*} [Ring R] [LinearOrderedCommGroupWithZero Γ] [Valued R Γ] {x : R}
     (h : Tendsto (fun n : ℕ => x ^ n) atTop (𝓝 0)) : (Valued.v x : Γ) < 1 := by
@@ -26,15 +26,15 @@ private theorem lt_one_of_tendsto {R Γ : Type*} [Ring R] [LinearOrderedCommGrou
   exact absurd hn (not_lt.2 (one_le_pow₀ hx'))
 
 /- English proof (translation)
-Introduce `F K Ω _ _ _ _ _ _ _ _ _ _ _ v w i hi hx`. Establish `hle : v.asIdeal ≤ (w.under (𝓞 F)).asIdeal`. Introduce `y hy`. Establish `h1 : (Valued.v (algebraMap F (v.adicCompletion F) (y : F)) : WithZero (Multiplicative ℤ)) < 1`. Establish `h3 : (Valued.v (algebraMap F (v.adicCompletion F) (y : F)) : WithZero (Multiplicative ℤ)) = v.valuation F (y : F)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Conclude with `(v.valuation_lt_one_iff_mem y).2 hy`. Establish `h2 : Tendsto (fun n : ℕ => (algebraMap F (v.adicCompletion F) (y : F)) ^ n) atTop (𝓝 0)` using `Valued.tendsto_zero_pow_of_v_lt_one h1`. Establish `h4 : Tendsto (fun n : ℕ => (i (algebraMap F (v.adicCompletion F) (y : F))) ^ n) atTop (𝓝 0)`. Use `(hi.tendsto 0).comp h2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_zero]`. Use `this.congr fun n => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `h5` using `lt_one_of_tendsto (Γ := WithZero (Multiplicative ℤ)) h4`. Rewrite `h5` using `[hx]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h6 : (Valued.v (algebraMap K (w.adicCompletion K) (algebraMap F K y)) : WithZero (Multiplicative ℤ)) = w.valuation K (algebraMap F K y)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`. Rewrite `h5` using `[h6]`. Conclude with `(w.valuation_lt_one_iff_mem (K := K) (algebraMap (𝓞 F) (𝓞 K) y)).1 h5`. Establish `hv : w.under (𝓞 F) = v` using `HeightOneSpectrum.ext (v.isMaximal.eq_of_le (w.under (𝓞 F)).isPrime.ne_top hle).symm`. Take `⟨A, hA⟩ : ∃ A : ValuationSubring Ω, IsPlaceOver A w` from `exists_isPlaceOver Ω w`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hv, A, fun y => ?_, hA, fun _ => Iff.rfl, fun x => IsScalarTower.algebraMap_apply F K Ω x, hi, hx⟩` and prove the remaining obligations. Rewrite using `[← hv, IsScalarTower.algebraMap_apply F K Ω]`. Conclude with `hA (algebraMap (𝓞 F) (𝓞 K) y)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.placeOf :
     UpperTheory.V.Br.PlaceOf := by

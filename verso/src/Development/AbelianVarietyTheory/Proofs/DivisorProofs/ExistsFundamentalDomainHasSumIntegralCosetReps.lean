@@ -5,33 +5,27 @@ open scoped Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G _ _ μ _ hm Γ Q hΓ hQΓ D₀ hD₀ ι _ γ hγ hbij`. Establish `hmp : ∀ g : G, MeasurePreserving (fun x => g * x) μ μ` using `fun g => ⟨hm g, Measure.IsMulLeftInvariant.map_mul_left_eq_self g⟩`. Use `haveI : MeasurableConstSMul G G := ⟨fun g => hm g⟩`. Establish `hemb : ∀ g : G, MeasurableEmbedding (fun x => g * x)` using `fun g => measurableEmbedding_const_smul (α := G) g`. Establish `hI1 : ∀ H : Subgroup G, MeasurableConstSMul H G` using `fun H => ⟨fun g => hm (g : G)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI2 : ∀ H : Subgroup G, SMulInvariantMeasure H G μ` using `fun H => ⟨fun g s hs => (hmp (g : G)).measure_preimage hs.nullMeasurableSet⟩`. Use `haveI := hI1 Γ`. Use `haveI := hI1 Q`. Use `haveI := hI2 Γ`. Use `haveI := hI2 Q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set s : ι → Set G := fun i => (⟨γ i, hγ i⟩ : Γ) • D₀ with hs`. Establish `hsim : ∀ i, s i = (fun x => γ i * x) '' D₀` using `fun i => rfl`. Establish `hnull : ∀ i, NullMeasurableSet (s i) μ` using `fun i => hD₀.nullMeasurableSet_smul _`. Establish `hkey : ∀ (q q' : Q) (i j : ι), (q : G) * γ i = q' * γ j → q = q' ∧ i = j`. Introduce `q q' i j h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hij : i = j`. Take `⟨k, -, hk⟩` from `hbij (γ i) (hγ i)`. Establish `h1` using `hk i (by simp)`. Establish `h2` using `hk j (by`. Establish `: γ i * (γ j)⁻¹ = (q : G)⁻¹ * q'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[mul_inv_eq_iff_eq_mul, mul_assoc, ← h, inv_mul_cancel_left]`. Use `show γ i * (γ j)⁻¹ ∈ Q`. Rewrite using `[this]`. Conclude with `Q.mul_mem (Q.inv_mem q.2) q'.2)`. Rewrite using `[h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hij` using the available equality. Conclude with `⟨Subtype.ext (mul_right_cancel h), rfl⟩`. Establish `hsm : ∀ (q : Q) (i : ι), q • s i = (⟨(q : G) * γ i, Γ.mul_mem (hQΓ q.2) (hγ i)⟩ : Γ) • D₀`. Introduce `q i`. Use `show (fun x => (q : G) * x) '' ((fun x => γ i * x) '' D₀) = (fun x => ((q : G) * γ i) * x) '' D₀`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Set.image_image]`. Simplify using `only [mul_assoc]`. Establish `hdisj : Pairwise (Function.onFun (AEDisjoint μ) s)`. Introduce `i j hij`. Use `hD₀.aedisjoint (fun h => hij ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hkey 1 1 i j (by simpa using congrArg Subtype.val h)).2`. Establish `hD₁ : IsFundamentalDomain Q (⋃ i, s i) μ`. Use `⟨NullMeasurableSet.iUnion hnull, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hD₀.ae_covers] with x hx`. Take `⟨δ, hδ⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, hi, -⟩` from `hbij (δ : G)⁻¹ (Γ.inv_mem δ.2)`. Use `⟨⟨_, Q.inv_mem hi⟩, Set.mem_iUnion.2 ⟨i, ⟨δ • x, hδ, ?_⟩⟩⟩` and prove the remaining obligations. Use `show γ i * ((δ : G) * x) = ((δ : G)⁻¹ * (γ i)⁻¹)⁻¹ * x`. Simplify using `[mul_assoc]`. Introduce `q q' hqq show AEDisjoint μ (q • ⋃ i, s i) (q' • ⋃ i, s i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.smul_set_iUnion, Set.smul_set_iUnion, AEDisjoint.iUnion_left_iff]`. Introduce `i`. Rewrite using `[AEDisjoint.iUnion_right_iff]`. Introduce `j`. Rewrite using `[hsm, hsm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hD₀.aedisjoint (fun h => hqq ?_)` and prove the remaining obligations. Conclude with `(hkey q q' i j (congrArg Subtype.val h)).1`. Use `⟨⋃ i, s i, hD₁, ?_⟩` and prove the remaining obligations. Introduce `f hf hint hsum`. Establish `hnorm_i : ∀ i, IntegrableOn (fun x => ‖f x‖) (s i) μ` using `fun i => by`.
-
-Rewrite using `[hsim]`. Conclude with `((hmp (γ i)).integrableOn_image (hemb (γ i))).2 (hint i)`. Establish `hfi : ∀ i, IntegrableOn f (s i) μ` using `fun i => (integrable_norm_iff hf.restrict).1 (hnorm_i i)`. Establish `heq : ∀ i, ∫ x in s i, f x ∂μ = ∫ g in D₀, f (γ i * g) ∂μ` using `fun i => by`. Rewrite using `[hsim, (hmp (γ i)).setIntegral_image_emb (hemb (γ i))]`.
-
-Establish `heqn : ∀ i, ∫ x in s i, ‖f x‖ ∂μ = ∫ g in D₀, ‖f (γ i * g)‖ ∂μ` using `fun i => by`. Rewrite using `[hsim, (hmp (γ i)).setIntegral_image_emb (hemb (γ i))]`. Establish `hfU : IntegrableOn f (⋃ i, s i) μ` using `integrableOn_iUnion_of_summable_integral_norm hfi (by simpa only [heqn] using hsum)`. Use `⟨hfU, ?_⟩` and prove the remaining obligations. Use `hasSum_integral_iUnion_ae hnull hdisj hfU` as an intermediate fact.
-
-Simplify `this` using `only [heq]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_fundamentalDomain_hasSum_integral_cosetReps :
     ∀ {G : Type} [Group G] [MeasurableSpace G] (μ : Measure G) [μ.IsMulLeftInvariant], (∀ g : G, Measurable (fun x => g * x)) →

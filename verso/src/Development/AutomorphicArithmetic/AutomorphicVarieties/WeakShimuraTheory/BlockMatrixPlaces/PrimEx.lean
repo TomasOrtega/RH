@@ -5,19 +5,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Bl
 
 /- English proof (translation)
-Introduce `A _ _ _ T _ _ _ _ Γ _ _ ρ c N H P hL hfin hcard n hn`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Establish `hA : ∀ k, ∀ z ∈ Zn ρ c N H P (n + k), ¬Prim z`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact hne`. Consider the case `succ k ih`. Introduce `z hz hpz`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hz`. Establish `hr` using `redMem A T Γ ρ c N H P (n + k) z y hy`. Conclude with `ih _ ⟨_, hr.1⟩ (hr.2.1 hpz (by omega))`. Establish `hB : ∀ k, Nat.card (Zn ρ c N H P (n + k + 1)) ≤ Nat.card (Zn ρ c N H P (n + k))`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := (hfin (n + k)).to_subtype`. Establish `key : ∀ z : Zn ρ c N H P (n + k + 1), ∃ z' : Zn ρ c N H P (n + k), ∀ g x, (lev A T (n + k)).mkQ x = z'.1 g → (lev A T (n + k + 1)).mkQ (t • x) = z.1 g`. Introduce `z`. Take `⟨z', hz', h⟩` from `divStep A T Γ ρ c N H P hL t ht (n + k) z.1 z.2 (hA (k + 1) z.1 z.2)`. Conclude with `⟨⟨z', hz'⟩, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `choose f hf using key`. Use `Nat.card_le_card_of_injective f ?_` and prove the remaining obligations. Introduce `z1 z2 h12`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx⟩` from `Submodule.mkQ_surjective (lev A T (n + k)) ((f z1).1 g)`. Rewrite using `[← hf z1 g x hx, hf z2 g x (by rw [hx, h12])]`. Establish `hC : ∀ k, Nat.card (Zn ρ c N H P (n + k)) ≤ Nat.card (Zn ρ c N H P n)`. Introduce `k`. Proceed by induction on `k with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `zero => exact le_rfl`. Consider the case `succ k ih => exact (hB k).trans ih`. Establish `h1` using `hcard (n + (Nat.card (Zn ρ c N H P n) + 1))`. Establish `h2` using `hC (Nat.card (Zn ρ c N H P n) + 1)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Bl.primEx :
     ∀ (A : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] (T : Type) [AddCommGroup T] [Module A T] [Module.Finite A T] [Module.Free A T] (Γ : Type) [Group Γ] [TopologicalSpace Γ] (ρ : Representation A Γ T) (c : Γ) (N : Set Γ) (H : Subgroup Γ) (P : Submodule A T), Lat ρ H P → (∀ n, (Zn ρ c N H P n).Finite) → (∀ n, n ≤ Nat.card (Zn ρ c N H P n)) → ∀ n, 0 < n → ∃ z ∈ Zn ρ c N H P n, Prim z := by

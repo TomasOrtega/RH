@@ -22,17 +22,17 @@ noncomputable section
 namespace GlobalTheory.ParPt
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.tangent_value_pullback_crystalline_form_dual_numbers`.
+A detailed English derivation is pending.
 -/
 theorem t4 : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (A : Over (Sp R)) (A' : Over (Sp R')) (φ : A'.left ⟶ A.left) (m : IsMor (dp0 R) (A.hom ≫ 𝟙 (Sp R)) (dp0 R') (A'.hom ≫ 𝟙 (Sp R')) (algebraMap R R') φ) (v : epsR R' ⟶ A') (hy : (v.left ≫ φ) ≫ A.hom ≫ 𝟙 (Sp R) = spMap (algebraMap R (DualNumber R'))) (f : Form (A.hom ≫ 𝟙 (Sp R))), tanVal v (m.pullForm f) = TrivSqZeroExt.snd ((SqExt.ofModule R R' R').val (v.left ≫ φ) hy f.1) := GlobalTheory.T.tangent_value_pullback_crystalline_form_dual_numbers
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.existsUnique_forms_functional_abelian_base_change`.
+A detailed English derivation is pending.
 -/
 theorem t5 : CrystallineSmoothLift → AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (R' : Type) [CommRing R'] [Algebra R R'] (A' : Over (Sp R')) (φ : A'.left ⟶ A.left), IsPullback φ A'.hom A.hom (spMap (algebraMap R R')) → ∀ (m : IsMor (dp0 R) (A.hom ≫ 𝟙 (Sp R)) (dp0 R') (A'.hom ≫ 𝟙 (Sp R')) (algebraMap R R') φ) (l : GlobForm (A.hom ≫ 𝟙 (Sp R)) →ₗ[R] R'), ∃! ψ : Form (A'.hom ≫ 𝟙 (Sp R')) →ₗ[R'] R', (∀ f, cmpForm (A'.hom ≫ 𝟙 (Sp R')) f = 0 → ψ f = 0) ∧ ∀ f, ψ (m.pullForm f) = l (GlobalTheory.LieDual.glob (A.hom ≫ 𝟙 (Sp R)) f) := GlobalTheory.T.existsUnique_forms_functional_abelian_base_change
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.translate_dual_number_point_inverse_constant_tangent`.
+A detailed English derivation is pending.
 -/
 theorem t6 : CrystallineSmoothLift → AbelianHodgeDeRham → ∀ (S : Type) [CommRing S] (A : Over (Sp S)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (c : epsR S ⟶ A) (p : Sp S ⟶ A.left), c.left = spMap (algebraMap S (DualNumber S)) ≫ p → ∀ y : epsR S ⟶ A, (spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ y.left = spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ c.left ↔ IsTangent (y * c⁻¹)) ∧ ∀ f, tanVal y f = tanVal (y * c⁻¹) f := GlobalTheory.T.translate_dual_number_point_inverse_constant_tangent
 
@@ -47,13 +47,13 @@ local notation "𝔄" => (Over.pullback (spMap (algebraMap R (Sec (A.hom ≫ �
 local notation "𝔣" => pullback.fst A.hom (spMap (algebraMap R (Sec (A.hom ≫ 𝟙 (Sp R)) (Subtype.val V))))
 
 /- English proof (translation)
-The claim follows from `(congrArg (affPt (𝔰) V ≫ ·) (Category.comp_id A.hom).symm).trans (affPt_w _ V)`.
+A detailed English derivation is pending.
 -/
 theorem affPt_hom : affPt (𝔰) V ≫ A.hom = spMap (algebraMap R 𝔅) :=
   (congrArg (affPt (𝔰) V ≫ ·) (Category.comp_id A.hom).symm).trans (affPt_w _ V)
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, affPt_hom, ← Cris.spMap_comp, ← Cris.spMap_comp, AlgHom.comp_algebraMap, ← IsScalarTower.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem derHom_hom (δ : Ω[𝔅⁄R] →ₗ[𝔅] 𝔅) :
     (spMap (derHom δ : 𝔅 →+* DualNumber 𝔅) ≫ affPt (𝔰) V) ≫ A.hom =
@@ -66,14 +66,14 @@ def ptOf (δ : Ω[𝔅⁄R] →ₗ[𝔅] 𝔅) : epsR 𝔅 ⟶ 𝔄 :=
     (spMap (algebraMap 𝔅 (DualNumber 𝔅))) (derHom_hom A V δ)) (pullback.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ptOf_fst (δ : Ω[𝔅⁄R] →ₗ[𝔅] 𝔅) :
     (ptOf A V δ).left ≫ 𝔣 = spMap (derHom δ : 𝔅 →+* DualNumber 𝔅) ≫ affPt (𝔰) V :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ptOf_snd (δ : Ω[𝔅⁄R] →ₗ[𝔅] 𝔅) :
     (ptOf A V δ).left ≫ pullback.snd A.hom (spMap (algebraMap R 𝔅)) = spMap (algebraMap 𝔅 (DualNumber 𝔅)) :=
@@ -83,9 +83,9 @@ def basePt : Sp 𝔅 ⟶ (𝔄).left :=
   pullback.lift (affPt (𝔰) V) (𝟙 _) (by rw [affPt_hom, Category.id_comp])
 
 /- English proof (translation)
-Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[ptOf_fst, basePt, Category.assoc, pullback.lift_fst]`. Use `congr 2`. Apply the tactic sequence `ext b <;> simp [derHom, TrivSqZeroExt.algebraMap_eq_inl']`. Rewrite using `[ptOf_snd, basePt, Category.assoc, pullback.lift_snd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Category.comp_id _).symm`.
+A detailed English derivation is pending.
 -/
 theorem ptOf_zero : (ptOf A V 0).left = spMap (algebraMap 𝔅 (DualNumber 𝔅)) ≫ basePt A V := by
   refine pullback.hom_ext ?_ ?_
@@ -96,7 +96,7 @@ theorem ptOf_zero : (ptOf A V 0).left = spMap (algebraMap 𝔅 (DualNumber 𝔅)
     exact (Category.comp_id _).symm
 
 /- English proof (translation)
-Use `(Cris.spMap_comp _ _).symm.trans ((congrArg spMap ?_).trans (Cris.spMap_id _))` and prove the remaining obligations. Use extensionality with `b`. Conclude with `fst_derHom δ b`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem fst_derHom_spMap (δ : Ω[𝔅⁄R] →ₗ[𝔅] 𝔅) : spMap (TrivSqZeroExt.fstHom 𝔅 𝔅 𝔅).toRingHom ≫
     spMap (derHom δ : 𝔅 →+* DualNumber 𝔅) = 𝟙 _ := by
@@ -105,7 +105,7 @@ theorem fst_derHom_spMap (δ : Ω[𝔅⁄R] →ₗ[𝔅] 𝔅) : spMap (TrivSqZe
   exact fst_derHom δ b
 
 /- English proof (translation)
-Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ptOf_fst, ptOf_fst, ← Category.assoc, ← Category.assoc, fst_derHom_spMap, fst_derHom_spMap]`. Rewrite using `[Category.assoc, Category.assoc, ptOf_snd, ptOf_snd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptOf_red (δ : Ω[𝔅⁄R] →ₗ[𝔅] 𝔅) : spMap (TrivSqZeroExt.fstHom 𝔅 𝔅 𝔅).toRingHom ≫ (ptOf A V δ).left =
     spMap (TrivSqZeroExt.fstHom 𝔅 𝔅 𝔅).toRingHom ≫ (ptOf A V 0).left := by
@@ -115,9 +115,9 @@ theorem ptOf_red (δ : Ω[𝔅⁄R] →ₗ[𝔅] 𝔅) : spMap (TrivSqZeroExt.fs
   · rw [Category.assoc, Category.assoc, ptOf_snd, ptOf_snd]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc]`. Use `(Category.comp_id _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Use `erw [Over.w y]`. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Cris.spMap_comp, ← IsScalarTower.algebraMap_eq]`.
+A detailed English derivation is pending.
 -/
 theorem over_fst (y : epsR 𝔅 ⟶ 𝔄) : (y.left ≫ 𝔣) ≫ 𝔰 = spMap (algebraMap R (DualNumber 𝔅)) := by
   rw [← Category.assoc]
@@ -128,13 +128,13 @@ theorem over_fst (y : epsR 𝔅 ⟶ 𝔄) : (y.left ≫ 𝔣) ≫ 𝔰 = spMap (
   rw [← Cris.spMap_comp, ← IsScalarTower.algebraMap_eq]
 
 /- English proof (translation)
-The claim follows from `IsMor.of_dividedPowersZeroIdeal _ (by rw [Category.comp_id, Category.comp_id]; exact pullback.condition)`.
+A detailed English derivation is pending.
 -/
 theorem isMor_fst : IsMor (dp0 R) (𝔰) (dp0 𝔅) ((𝔄).hom ≫ 𝟙 (Sp 𝔅)) (algebraMap R 𝔅) 𝔣 :=
   IsMor.of_dividedPowersZeroIdeal _ (by rw [Category.comp_id, Category.comp_id]; exact pullback.condition)
 
 /- English proof (translation)
-The claim follows from `(t4 R 𝔅 A 𝔄 𝔣 (isMor_fst A V) (ptOf A V δ) (over_fst A V _) f).trans (snd_val_derHom (𝔰) V δ _ (over_fst A V _) (ptOf_fst A V δ).symm f)`.
+A detailed English derivation is pending.
 -/
 theorem tanVal_ptOf (δ : Ω[𝔅⁄R] →ₗ[𝔅] 𝔅) (f : Form (𝔰)) :
     tanVal (ptOf A V δ) ((isMor_fst A V).pullForm f) = δ ((GlobalTheory.LieDual.glob (𝔰) f).1 (Opposite.op V)) :=
@@ -146,19 +146,19 @@ variable (hC : CrystallineSmoothLift) (hH : AbelianHodgeDeRham) [GrpObj A] (g : 
 
 include hC hH hab hdim in
 /- English proof (translation)
-Establish `hφ : IsGrpPullback (𝔄) A (spMap (algebraMap R 𝔅)) (𝔣)` using `isGrpPullback_pullback A _`. Establish `habB` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hab hφ`. Establish `hdimB : SmoothOfRelativeDimension g (𝔄).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange (n := g)).of_isPullback hφ.1 hdim`. Establish `hglob` using `GlobalTheory.LieDual.glob_surjective hC hH A g hab hdim`. Establish `uniq : ∀ δ₁ δ₂ : Ω[𝔅⁄R] →ₗ[𝔅] 𝔅, (∀ w : GlobForm 𝔰, δ₁ (w.1 (Opposite.op V)) = l w) → (∀ w : GlobForm 𝔰, δ₂ (w.1 (Opposite.op V)) = l w) → δ₁ = δ₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `δ₁ δ₂ h₁ h₂`. Establish `T₁` using `t6 hC hH 𝔅 𝔄 g habB hdimB (ptOf A V 0) (basePt A V) (ptOf_zero A V) (ptOf A V δ₁)`. Establish `T₂` using `t6 hC hH 𝔅 𝔄 g habB hdimB (ptOf A V 0) (basePt A V) (ptOf_zero A V) (ptOf A V δ₂)`. Establish `ht₁` using `T₁.1.1 (ptOf_red A V δ₁)`. Establish `ht₂` using `T₂.1.1 (ptOf_red A V δ₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k₁ : ∀ f, tanVal (ptOf A V δ₁ * (ptOf A V 0)⁻¹) ((isMor_fst A V).pullForm f) = l (GlobalTheory.LieDual.glob (𝔰) f)` using `fun f ↦ (T₁.2 _).symm.trans ((tanVal_ptOf A V δ₁ f).trans (h₁ _))`. Establish `k₂ : ∀ f, tanVal (ptOf A V δ₂ * (ptOf A V 0)⁻¹) ((isMor_fst A V).pullForm f) = l (GlobalTheory.LieDual.glob (𝔰) f)` using `fun f ↦ (T₂.2 _).symm.trans ((tanVal_ptOf A V δ₂ f).trans (h₂ _))`. Establish `hψ` using `(t5 hC hH R A g hab hdim 𝔅 𝔄 𝔣 hφ.1 (isMor_fst A V) l).unique ⟨fun f hf ↦ GlobalTheory.TanVanish.tanVal_eq_zero_of_cmpForm_eq_zero 𝔅 𝔄 _ f hf, k₁⟩ ⟨fun f hf ↦ GlobalTheory.TanVanish.tanVal_eq_zero_of_cmpForm_eq_zero 𝔅 𝔄 _ f hf, k₂⟩`. Establish `hv` using `GlobalTheory.LieInj.tangent_eq_of_tanVal_eq hC hH 𝔅 𝔄 g habB hdimB _ _ ht₁ ht₂ fun f ↦ LinearMap.congr_fun hψ f`. Establish `hy : ptOf A V δ₁ = ptOf A V δ₂` using `mul_right_cancel hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `eq_of_affPt_eq (𝔰) V` to reduce the goal to its premises. Rewrite using `[← ptOf_fst, ← ptOf_fst, hy]`. Take `⟨ψ, ⟨hψ0, hψ⟩, -⟩` from `t5 hC hH R A g hab hdim 𝔅 𝔄 𝔣 hφ.1 (isMor_fst A V) l`. Take `⟨v, hv, hvψ⟩` from `GlobalTheory.LieDual.exists_tangent_of_functional hC hH 𝔅 𝔄 g habB hdimB ψ hψ0`. Establish `T` using `t6 hC hH 𝔅 𝔄 g habB hdimB (ptOf A V 0) (basePt A V) (ptOf_zero A V) (v * ptOf A V 0)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvc : v * ptOf A V 0 * (ptOf A V 0)⁻¹ = v` using `mul_inv_cancel_right v _`. Establish `hr` using `T.1.2 (hvc.symm ▸ hv)`. Establish `hred' : spMap (TrivSqZeroExt.fstHom 𝔅 𝔅 𝔅).toRingHom ≫ ((v * ptOf A V 0).left ≫ 𝔣) = affPt (𝔰) V`. Rewrite using `[← Category.assoc, hr, Category.assoc, ptOf_fst, ← Category.assoc, fst_derHom_spMap, Category.id_comp]`. Take `⟨δ, hδ⟩` from `exists_derHom (𝔰) V _ (over_fst A V _) hred'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hmain : ∀ w : GlobForm 𝔰, δ (w.1 (Opposite.op V)) = l w`. Introduce `w`. Take `⟨f, rfl⟩` from `hglob w`. Establish `e1` using `snd_val_derHom (𝔰) V δ _ (over_fst A V (v * ptOf A V 0)) hδ f`. Establish `e2` using `t4 R 𝔅 A 𝔄 𝔣 (isMor_fst A V) (v * ptOf A V 0) (over_fst A V _) f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : tanVal (v * ptOf A V 0) ((isMor_fst A V).pullForm f) = l (GlobalTheory.LieDual.glob (𝔰) f)` using `(T.2 _).trans ((congrArg (fun z ↦ tanVal z ((isMor_fst A V).pullForm f)) hvc).trans ((hvψ _).trans (hψ f)))`. Conclude with `e1.symm.trans (e2.symm.trans e3)`. Conclude with `⟨δ, hmain, fun δ' h' ↦ uniq δ' δ h' hmain⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem key (l : GlobForm 𝔰 →ₗ[R] 𝔅) :
     ∃! δ : Ω[𝔅⁄R] →ₗ[𝔅] 𝔅, ∀ w : GlobForm 𝔰, δ (w.1 (Opposite.op V)) = l w := by
@@ -207,7 +207,7 @@ theorem key (l : GlobForm 𝔰 →ₗ[R] 𝔅) :
 end Main
 
 /- English proof (translation)
-Introduce `hC hH R _ A _ g hab hdim U l`. Establish `k` using `fun l ↦ key A U.unop hC hH g hab hdim l`. Rewrite `k` using `[Category.comp_id]`. Conclude with `k l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unique_of_globForm : CrystallineSmoothLift → AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (U : AffOp A.left) (l : GlobForm A.hom →ₗ[R] Sec A.hom U.unop.1), ∃! δ : Ω[Sec A.hom U.unop.1⁄R] →ₗ[Sec A.hom U.unop.1] Sec A.hom U.unop.1, ∀ w : GlobForm A.hom, δ (w.1 U) = l w := by
   intro hC hH R _ A _ g hab hdim U l

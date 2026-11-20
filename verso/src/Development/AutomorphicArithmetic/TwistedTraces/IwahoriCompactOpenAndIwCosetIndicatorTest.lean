@@ -5,9 +5,9 @@ open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFul
 open scoped Pointwise
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `Set.mul_mem_mul (Set.mul_mem_mul ha rfl) hb`. Introduce and unpack `⟨x, ⟨a, ha, d, rfl, rfl⟩, b, hb, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨a, ha, b, hb, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem iwCoset_eq_mul {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl K) (ν : Fin n → ℤ) :
     iwCoset w ν = ((GLnLocal.iwahori (w.adicCompletion K) n : Set (Gw n w)) *
@@ -21,7 +21,7 @@ private theorem iwCoset_eq_mul {K : Type} [Field K] [NumberField K] {n : ℕ} (w
     exact ⟨a, ha, b, hb, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[iwCoset_eq_mul]`. Conclude with `(GLnLocal.isOpen_iwahori (w.adicCompletion K) n).mul_left`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isOpen_iwCoset {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl K) (ν : Fin n → ℤ) :
     IsOpen (iwCoset w ν) := by
@@ -29,7 +29,7 @@ private theorem isOpen_iwCoset {K : Type} [Field K] [NumberField K] {n : ℕ} (w
   exact (GLnLocal.isOpen_iwahori (w.adicCompletion K) n).mul_left
 
 /- English proof (translation)
-Rewrite using `[iwCoset_eq_mul]`. Establish `hI` using `GLnLocal.isCompact_iwahori (w.adicCompletion K) n`. Conclude with `(hI.mul isCompact_singleton).mul hI`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isCompact_iwCoset {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl K) (ν : Fin n → ℤ) :
     IsCompact (iwCoset w ν) := by
@@ -38,17 +38,17 @@ private theorem isCompact_iwCoset {K : Type} [Field K] [NumberField K] {n : ℕ}
   exact (hI.mul isCompact_singleton).mul hI
 
 /- English proof (translation)
-Introduce `K _ _ n w`. Use `⟨⟨GLnLocal.isCompact_iwahori _ n, GLnLocal.isOpen_iwahori _ n⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `U ho hle`. Conclude with `⟨(GLnLocal.isCompact_integralGL _ n).of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) hle, ho⟩`. Introduce `ν`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc` using `isCompact_iwCoset w ν`. Establish `hclopen : IsClopen (iwCoset w ν)` using `⟨hc.isClosed, isOpen_iwCoset w ν⟩`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hx : x ∈ iwCoset w ν`. Use `filter_upwards [hclopen.isOpen.mem_nhds hx] with y hy`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]`. Both sides reduce to the same expression. Use `filter_upwards [hclopen.compl.isOpen.mem_nhds hx] with y hy`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`. Conclude with `HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _`. Introduce `u hu g`. Establish `hiff : u * g ∈ iwCoset w ν ↔ g ∈ iwCoset w ν`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Introduce and unpack `⟨a, ha, b, hb, h⟩`. Use `⟨u⁻¹ * a, mul_mem (inv_mem hu) ha, b, hb, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨u * a, mul_mem hu ha, b, hb, by simp only [mul_assoc]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Distinguish the cases in `hg : g ∈ iwCoset w ν`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem (hiff.2 hg)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem (fun h => hg (hiff.1 h))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.iwahori_compactOpen_and_iwCoset_indicator_test :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (w : Pl K),

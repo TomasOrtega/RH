@@ -7,7 +7,7 @@ open scoped Classical ENNReal NNReal
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
 /- English proof (translation)
-Rewrite using `[iy, dif_neg h]`. Express the relevant statement in the definitionally equal form `(1 : InfiniteAdeleRing ℚ) - TR.infEq ℚ 1 + TR.infEq ℚ (fun _ => y) = _`. Rewrite using `[map_one, sub_self, zero_add]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private lemma iy_fst {y : ℝ} (h : y ≠ 0) : ((iy y : (A ℚ)ˣ) : A ℚ).1 = TR.infEq ℚ fun _ => y := by
   rw [iy, dif_neg h]
@@ -15,7 +15,7 @@ private lemma iy_fst {y : ℝ} (h : y ≠ 0) : ((iy y : (A ℚ)ˣ) : A ℚ).1 = 
   rw [map_one, sub_self, zero_add]
 
 /- English proof (translation)
-Rewrite using `[iy, dif_neg h]`. Express the relevant statement in the definitionally equal form `(1 : FiniteAdeleRing (𝓞 ℚ) ℚ) - 0 + 0 = 1`. Rewrite using `[sub_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private lemma iy_snd {y : ℝ} (h : y ≠ 0) : ((iy y : (A ℚ)ˣ) : A ℚ).2 = 1 := by
   rw [iy, dif_neg h]
@@ -23,15 +23,15 @@ private lemma iy_snd {y : ℝ} (h : y ≠ 0) : ((iy y : (A ℚ)ˣ) : A ℚ).2 = 
   rw [sub_zero, add_zero]
 
 /- English proof (translation)
-The claim follows from `(InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal default)).apply_symm_apply y`.
+A detailed English derivation is pending.
 -/
 private lemma real_infEq (y : ℝ) : RationalIdeles.realEquiv (TR.infEq ℚ fun _ => y) = y :=
   (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal default)).apply_symm_apply y
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(IdeleGroup.mem_standardOpenSubgroup ℚ).1 hw v`. Establish `a1` using `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 ℚ) ℚ v).1 h1`. Establish `a2` using `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 ℚ) ℚ v).1 h2`. Establish `hm : Valued.v (((w : A ℚ)).2 v) * Valued.v ((((w⁻¹ : IdeleGroup ℚ) : A ℚ)).2 v) = 1`. Rewrite using `[← map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((w : A ℚ)).2 v * (((w⁻¹ : IdeleGroup ℚ) : A ℚ)).2 v = 1` using `congrArg (fun z : A ℚ => z.2 v) (Units.mul_inv w)`. Rewrite using `[e, map_one]`. Use `le_antisymm a1 ?_` and prove the remaining obligations. Use `mul_le_mul' (le_refl (Valued.v (((w : A ℚ)).2 v))) a2` as an intermediate fact. Rewrite `this` using `[hm, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private lemma val_eq_one {w : IdeleGroup ℚ} (hw : w ∈ IdeleGroup.standardOpenSubgroup ℚ) (v : H.P ℚ) :
     Valued.v (((w : A ℚ)).2 v) = 1 := by
@@ -48,21 +48,19 @@ private lemma val_eq_one {w : IdeleGroup ℚ} (hw : w ∈ IdeleGroup.standardOpe
   rwa [hm, mul_one] at this
 
 /- English proof (translation)
-Introduce `x`. Establish `hx : x ∈ RationalIdeles.positiveSubgroup ⊔ (IdeleGroup.diagonal ℚ).range`. Rewrite using `[RationalIdeles.positiveSubgroup_sup_diagonal_range]`. Conclude with `Subgroup.mem_top x`. Take `⟨w, hw, _, ⟨a, rfl⟩, rfl⟩` from `Subgroup.mem_sup.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hw1, hw2⟩` from `RationalIdeles.mem_positiveSubgroup.1 hw`. Establish `het : Real.exp (Real.log (RationalIdeles.realPart w : ℝ) / 2) * Real.exp (Real.log (RationalIdeles.realPart w : ℝ) / 2) = (RationalIdeles.realPart w : ℝ)`. Rewrite using `[← Real.exp_add, add_halves, Real.exp_log hw2]`. Take `⟨t, ht⟩ : ∃ t : ℝ, Real.exp t * Real.exp t = (RationalIdeles.realPart w : ℝ)` from `⟨_, het⟩`. Establish `hy : Real.exp t ≠ 0` using `(Real.exp_pos t).ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP⟩ : ∃ P : IdeleGroup ℚ, P = iy (Real.exp t) * iy (Real.exp t)` from `⟨_, rfl⟩`. Establish `hP1 : ((P : A ℚ)).1 = ((w : A ℚ)).1`. Apply `RationalIdeles.realEquiv.injective` to reduce the goal to its premises. Establish `e : ((P : A ℚ)).1 = ((iy (Real.exp t) : A ℚ)).1 * ((iy (Real.exp t) : A ℚ)).1`. Rewrite using `[hP]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e, iy_fst hy, map_mul, real_infEq, ht]`. Conclude with `RationalIdeles.coe_realPart w`. Establish `hP2 : ((P : A ℚ)).2 = 1`. Establish `e : ((P : A ℚ)).2 = ((iy (Real.exp t) : A ℚ)).2 * ((iy (Real.exp t) : A ℚ)).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hP]`. Both sides reduce to the same expression. Rewrite using `[e, iy_snd hy, one_mul]`. Establish `hPi : (((P⁻¹ : IdeleGroup ℚ) : A ℚ)).2 = 1`. Establish `e : (((P⁻¹ : IdeleGroup ℚ) : A ℚ)).2 * ((P : A ℚ)).2 = 1` using `congrArg (fun z : A ℚ => z.2) (Units.inv_mul P)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e` using `[hP2, mul_one]`. Then use the resulting hypothesis. Use `⟨t, P⁻¹ * w, a, ⟨?_, fun v => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e : (((P⁻¹ : IdeleGroup ℚ) : A ℚ)).1 * ((P : A ℚ)).1 = 1` using `congrArg (fun z : A ℚ => z.1) (Units.inv_mul P)`. Rewrite `e` using `[hP1]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e : H.cp v (((P⁻¹ * w : IdeleGroup ℚ) : A ℚ)) = (((P⁻¹ : IdeleGroup ℚ) : A ℚ)).2 v * ((w : A ℚ)).2 v` using `rfl`. Rewrite using `[e, hPi]`. Express the relevant statement in the definitionally equal form `Valued.v ((1 : v.adicCompletion ℚ) * ((w : A ℚ)).2 v) = 1`. Rewrite using `[one_mul]`. Conclude with `val_eq_one hw1 v`.
-
-Rewrite using `[Un.cov, ← hP, mul_assoc, mul_inv_cancel_left, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_rat_idele_eq_exp_unit_principal :
     ∀ x : IdeleGroup ℚ, ∃ (t : ℝ) (u : IdeleGroup ℚ) (α : ℚˣ), u ∈ UU ∧ x = Un.cov t u α := by

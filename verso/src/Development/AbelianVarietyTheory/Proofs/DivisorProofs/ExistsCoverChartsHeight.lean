@@ -44,7 +44,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 omit [NumberField F] in
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Conclude with `isFlagFrame_concat C`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isFlagFrame_cast {g : ℕ} (hg : (letters Dw).length = g) :
     IsFlagFrame Z.t (C.π ≫ GlobalTheory.Toroidal.genι Z)
@@ -55,13 +55,11 @@ theorem isFlagFrame_cast {g : ℕ} (hg : (letters Dw).length = g) :
   exact isFlagFrame_concat C
 
 /- English proof (translation)
-Use `haveI := Z.jQ_open`. Set `W : C.Y.X.Opens` to `C.π ⁻¹ᵁ Z.jQ.opensRange`. Establish `hW : genericPoint C.Y.X ∈ W`. Use `letI := (GlobalTheory.ShFam.constF ε C.Y).toAlgebra`. Use `⟨GlobalTheory.AllWt.ptF C.y0 (IsLocalRing.closedPoint _), ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun q : Sp C.Y.Fn ⟶ _ => q (IsLocalRing.closedPoint _)) C.y0_x).trans ?_)` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg C.π Scheme.fromSpecStalk_closedPoint)`. Establish `hrange (x : V.G) (hx : V.π x ∈ W) : ρ' (V.j x) ∈ Set.range Z.j`. Take `⟨q, hq⟩` from `hx`. Use `⟨q, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Scheme.Hom.comp_apply, e₄, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, ← hq]`. Both sides reduce to the same expression. Use `⟨W, hW, hrange, ?_⟩` and prove the remaining obligations. Establish `h₁ : V.j (genericPoint V.G) = genericPoint V.X` using `((GlobalTheory.HtGen.SplitCover.j_gen_specializes V).antisymm (genericPoint_specializes _)).eq`. Establish `h₂ : V.π (genericPoint V.G) = genericPoint C.Y.X` using `(V.φ_eq_fnMap.1.antisymm (genericPoint_specializes _)).eq`.
-
-Rewrite using `[← h₁]`. Conclude with `hrange _ (h₂ ▸ hW)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_open (V : Cover C.Y) (ρ' : V.X ⟶ Z.X) (e₄ : V.j ≫ ρ' = V.π ≫ C.π ≫ GlobalTheory.Toroidal.genι Z) :
     ∃ W : C.Y.X.Opens, genericPoint C.Y.X ∈ W ∧ (∀ x : V.G, V.π x ∈ W → ρ' (V.j x) ∈ Set.range Z.j) ∧
@@ -89,11 +87,11 @@ theorem exists_open (V : Cover C.Y) (ρ' : V.X ⟶ Z.X) (e₄ : V.j ≫ ρ' = V.
 end Flags
 
 /- English proof (translation)
-Use `choose cf hc₁ hc₂ hc₃ using hf.tri`. Set `T : Y.X → Matrix (Fin g) (Fin g) Y.Fn` to `fun y => Matrix.of fun k i => cf y i k`. Establish `hT (y : Y.X) : (T y).BlockTriangular id` using `fun k i h => hc₂ y i k h`. Establish `hTu (y : Y.X) : IsUnit (T y).det`. Rewrite using `[Matrix.det_of_isUpperTriangular (hT y), isUnit_iff_ne_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun i _ h => (d y i).ne_zero ((hc₁ y i).symm.trans h)`. Establish `hch : ∀ x : V.X, ∃ (U : V.X.Opens) (hU : IsAffineOpen U) (n : ℕ) (e : Fin n → (Sp (DualNumber Γ(V.X, U)) ⟶ t.G.left)) (h : Fin N → Fin n → Γ(V.X, U)) (M : Matrix (Fin N) (Fin g) V.G.functionField), x ∈ U ∧ IsTanBasis t (hU.fromSpec ≫ ρ') e ∧ P U hU n e h ∧ ChartVal V ρ' f T hU e …`. Introduce `x`. Take `⟨⟨U, hU⟩, n, e, hx, he⟩` from `GlobalTheory.T.exists_affine_tangent_basis_locally E H X t V.X ρ' x`. Take `⟨h, hh⟩` from `hD U hU n e he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨M, hM⟩` from `chartSt_holds E H X t F Y V ρ' ρ hρ g u₀ f T hf.tan hTu hc₃ U hU n e he _ h`. Conclude with `⟨U, hU, n, e, h, M, hx, he, hh, hM⟩`. Use `choose U hU n e h M hx he hd hM using hch`. Conclude with `⟨T, U, hU, n, e, h, M, fun y => ⟨hT y, hc₁ y⟩, hx, he, hd, hM⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_charts {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
     {t : SAB H X} {F : Type} [Field F] [NumberField F] {Y : Var F} {g N : ℕ} (V : Cover Y) (ρ' : V.X ⟶ X) (ρ : Y.X ⟶ X)
@@ -134,7 +132,7 @@ section Setup
 variable {D : D7} (O : Setup D) (c : O.s.Comp)
 
 /- English proof (translation)
-The claim follows from `isFlagFrame_cast (O.Φ.C c) (length_letters O)`.
+A detailed English derivation is pending.
 -/
 theorem isFlagFrame_frAt : IsFlagFrame O.s.T.Z.t ((O.Φ.C c).π ≫ GlobalTheory.Toroidal.genι O.s.T.Z)
     (fun i => (O.Φ.C c).f0.v (letterAt O i).1 (letterAt O i).2)
@@ -144,14 +142,14 @@ theorem isFlagFrame_frAt : IsFlagFrame O.s.T.Z.t ((O.Φ.C c).π ≫ GlobalTheory
 variable {v : HeightOneSpectrum (𝓞 D.what₂.LL)} [hp : Fact (resP v).Prime] (e : GlobalTheory.TrueGeo.Ext v) (y : AlgPt (O.Φ.C c).Y)
 
 /- English proof (translation)
-The claim follows from `funext fun l => uAt.eq_1 O c e y l`.
+A detailed English derivation is pending.
 -/
 theorem uAt_eq : uAt O c e y =
     fun l => spMap (dualMap (psiAt O c e y)) ≫ (frAt O c (below y.1)).v (letterAt O l).1 (letterAt O l).2 :=
   funext fun l => uAt.eq_1 O c e y l
 
 /- English proof (translation)
-Establish `e₀ : hp = PtData._proof_1 hp'` using `rfl`. Substitute `e₀` using the available equality. Rewrite using `[PtData.eq_1]`. Conclude with `⟨xO, χ, h₁, h₂, h₃, h₄, h₅⟩`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ptData_intro (hp' : (resP v).Prime) (b : Module.Basis (Fin (D.R.f * O.N + D.R.f * O.N)) ℤ O.S.Dw.La) (n : ℕ)
     {Ch : Type} (inC : Ch → Prop)
@@ -172,21 +170,19 @@ end Setup
 open GlobalTheory.Mean4 GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Published in
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ D O _ T R _ p hp _ c b n _`. Use `haveI := Fact.mk hp`. Take `⟨hX, hN, M₀, ρ₀, hM, hρ⟩` from `GlobalTheory.T.exists_normal_model_over_projective D.what₂.LL (O.Φ.C c).Y (𝓞 O.κ.c.F) (RingOfIntegers.mapRingEquiv O.κ.e) O.s.T.Z.X O.s.T.Z.s ((O.Φ.C c).π ≫ GlobalTheory.Toroidal.genι O.s.T.Z) O.s.T.Z.proj (by`. Rewrite using `[← (O.Φ.C c).π_str]`. Simplify using `only [Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Limits.pullback.condition_assoc, ← Spec.map_comp, ← Spec.map_comp]`. Use the proof step `rfl)`. Establish `hpq : O.S.Dw.p + O.S.Dw.q = O.N` using `O.S.rank_eq`. Establish `hj` using `O.indef`. Take `⟨V₀, hV₀⟩` from `GlobalTheory.EqHalf.LineCover.exists_cover D O T R p c`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨V, a, a', ρ', e₀, e₁, e₂, e₃, e₄, hz, hζ, hs⟩` from `GlobalTheory.T.cover_refinement_exists _ _ _ O.s.T.Z.t _ _ M₀ ρ₀ V₀ (p ^ n) (pow_ne_zero _ hp.ne_zero)`. Rewrite `e₄` using `[hρ]`. Take `⟨hL₁, hL₂⟩` from `hV₀ V a a' e₀ e₁ e₂ e₃`. Take `⟨W, hW, hrange, hgp⟩` from `exists_open (O.Φ.C c) V ρ' e₄`. Take `⟨ch, hG, hE, hD, hI⟩` from `GlobalTheory.EqFamily.exists_family _ _ _ _ _ _ O.s.T.Z (by omega) V.X ρ' p n V.normal hz hζ hs hgp _ b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hf` using `isFlagFrame_frAt O c`. Take `⟨T', U, hU, k, e, h, M, hT, hx, he, hd, hM⟩` from `exists_charts V ρ' _ e₄ hf (fun U hU k e h => ∀ (x : Γ(V.X, U) →+* ↥(intO ℂ_[p])) (y : Sp ↥(intO ℂ_[p]) ⟶ V.X), spMap x ≫ hU.fromSpec = y → ∀ j, DlogIs O.s.T.Z.t p n (ch j y) (fun i => spMap (dualMap x) ≫ e i) (fun i => x (h j i))) hD`. Use `⟨V, W, V.X, U, M, T', hW, fun x _ => ⟨x, hx x⟩, hT, hL₁, hL₂, fun a z hz k l => ?_, fun v hv ε y hy z yt hz hyt hp' => ?_⟩` and prove the remaining obligations. Take `⟨α, b, -, -, hb⟩` from `hM a z hz`. Conclude with `⟨_, (hb k l).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `hv` using the available equality. Take `⟨yO, h₁, h₂, h₃⟩` from `GlobalTheory.HalfGeo.DlogFrame.dlogVals_valMat _ _ _ O.s.T.Z.t _ _ V ρ' _ e₄ _ (fun y i => (frAt O c y).v (letterAt O i).1 (letterAt O i).2) T' v n ε y z yt hz hyt (psiAt O c ε y) (psiAt.eq_1 O c ε y)`. Use `ptData_intro O c ε y hp' b n _ _ (yO ≫ ρ') (fun m => ch m yO) (h₂.trans (ptAt.eq_1 O c ε y).symm) (hG yO) ?_ (hE yO) fun a ha => ?_` and prove the remaining obligations. Use `swap`. Rewrite using `[uAt_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Conclude with `h₃ _ (U a) (hU a) _ (e a) (h a) (M a) (he a) (hM a) ha fun x hx => hd a x yO hx`. Rewrite using `[WeilData.eq_1]`. Take `⟨z₀, hz₀⟩` from `GlobalTheory.DetHT.exists_lift_int O.s.T.Z (z ≫ V.j ≫ ρ') (by`. Introduce and unpack `_ ⟨q, rfl⟩`. Take `rfl : q = IsLocalRing.closedPoint _` from `Subsingleton.elim (α := PrimeSpectrum (AlgebraicClosure D.what₂.LL)) _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hrange (below z) ?_` and prove the remaining obligations. Rewrite `hy` using `[← hz]`. Conclude with `hy)`. Use `haveI : Algebra.IsAlgebraic ℚ (AlgebraicClosure D.what₂.LL) := Algebra.IsAlgebraic.trans ℚ D.what₂.LL _`. Use `hI yO _ (ioOf (resP v) ε) z₀ (fun x => (IsFractionRing.isAlgebraic_iff ℤ ℚ _).2 (Algebra.IsAlgebraic.isAlgebraic x)) ?_` and prove the remaining obligations.
-
-Rewrite using `[← Category.assoc, h₁, hz₀, Category.assoc, Category.assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_frame : Hypotheses2 → HypothesesH → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.PrismaticDieudonnePerfd →
     ∀ (D : D7) (O : Setup D), O.Core → ∀ (T : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → p ∈ T → ∀ (c : O.s.Comp)

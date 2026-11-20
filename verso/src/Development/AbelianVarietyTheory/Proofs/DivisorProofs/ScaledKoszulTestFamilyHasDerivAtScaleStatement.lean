@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.TCoefMInMMul
 open MvPolynomial GlobalTheory.PsCo.Pc1 GlobalTheory.PsCo.Pc1.A
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PsCo.HomotDeriv.famF_hasDerivAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FScaledKoszulTestFamilyHasDerivAtScale.lean&line=62#L62)
 -/

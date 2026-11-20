@@ -7,7 +7,7 @@ namespace GlobalTheory.EtC.ResBasic
 variable {C : Type*} [Category C] [Abelian C] {X : C} (I : InjectiveResolution X)
 
 /- English proof (translation)
-Rewrite using `[InjectiveResolution.ι'_f_zero]`. Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc, Iso.inv_hom_id, Category.comp_id]`. Use `erw [Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Simplify using `[HomologicalComplex.singleObjXSelf, HomologicalComplex.singleObjXIsoOfEq]`. Use `erw [Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 theorem aug_comm : ((HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 X).inv ≫ I.ι'.f 0) ≫
     (I.cochainComplexXIso 0 0 rfl).hom =
@@ -22,15 +22,13 @@ end GlobalTheory.EtC.ResBasic
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct in
 /- English proof (translation)
-Use `⟨fun n => inferInstance, fun n hn => ?_, ?_, ?_, fun n hn => ?_⟩` and prove the remaining obligations. Conclude with `HomologicalComplex.isZero_extend_X _ _ _ (fun i hi => by`. Establish `h : (ComplexShape.embeddingUpNat.f i : ℤ) = i` using `rfl`. Use the proof step `omega)`. Rewrite using `[I.ι'_f_zero] erw [Iso.inv_hom_id_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mono_comp (I.ι.f 0) _`. Establish `hw : ((HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 X).inv ≫ I.ι'.f 0) ≫ I.cochainComplex.d 0 1 = 0`. Rewrite using `[I.ι'_f_zero, I.cochainComplex_d 0 1 0 1 rfl rfl]`. Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc]`. Use `erw [Category.assoc, Iso.inv_hom_id_assoc, I.ι_f_zero_comp_complex_d_assoc, zero_comp]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `⟨hw, ?_⟩` and prove the remaining obligations. Use `(ShortComplex.exact_iff_of_iso ?_).mpr I.exact₀` and prove the remaining obligations. Use `ShortComplex.isoMk (Iso.refl _) (I.cochainComplexXIso 0 0 rfl) (I.cochainComplexXIso 1 1 rfl) ?_ ?_` and prove the remaining obligations. Simplify using `only`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[I.ι'_f_zero]`. Use `erw [Category.id_comp, Category.assoc, Category.assoc, Category.assoc, Iso.inv_hom_id, Category.comp_id, Iso.inv_hom_id_assoc]`. Simplify using `only`. Rewrite using `[I.cochainComplex_d 0 1 0 1 rfl rfl]`. Simplify using the standard rewrite rules.
-
-Conclude with `(quasiIsoAt_iff_exactAt I.ι' n (HomologicalComplex.exactAt_single_obj _ _ _ _ hn)).mp inferInstance`.
+A detailed English derivation is pending.
 -/
 private theorem injectiveResolution_cochainComplex_exact_and_exactAt {C : Type*} [Category C] [Abelian C]
     {X : C} (I : InjectiveResolution X) :
@@ -70,9 +68,9 @@ private theorem injectiveResolution_cochainComplex_exact_and_exactAt {C : Type*}
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct in
 
 /- English proof (translation)
-Introduce `R _ F`. Unfold `_root_.GlobalTheory.EtC.res _root_.GlobalTheory.EtC.resι _root_.GlobalTheory.EtC.chains`. Take `⟨h₁, h₂, h₃, h₄, h₅⟩` from `injectiveResolution_cochainComplex_exact_and_exactAt (injectiveResolution F)`. Use `⟨h₁, h₂, h₃, h₄, h₅, fun E n hn => ?_⟩` and prove the remaining obligations. Conclude with `HomologicalComplex.isZero_extend_X _ _ _ (fun i hi => by`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h : (ComplexShape.embeddingDownNat.f i : ℤ) = -i` using `rfl`. Use the proof step `omega)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.EtC.res_basic : ∀ (R : Type) [CommRing R] (F : _root_.GlobalTheory.EtC.Shv R), (∀ n : ℤ, Injective ((_root_.GlobalTheory.EtC.res R F).X n)) ∧
     (∀ n : ℤ, n < 0 → IsZero ((_root_.GlobalTheory.EtC.res R F).X n)) ∧ Mono (_root_.GlobalTheory.EtC.resι R F) ∧

@@ -9,7 +9,7 @@ open Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `choose c hc using fun l => (Submodule.mem_span_range_iff_exists_fun R).1 (hf l)`. Establish `h : (∏ l, f l) * y = ∑ u : Fin m → J, (∏ l, c l (u l)) • ((∏ l, g (u l)) * y)`. Repeatedly rewrite using `[← hc, Fintype.prod_sum, Finset.sum_mul, Algebra.smul_def, Finset.prod_mul_distrib, map_prod, mul_assoc]`. Rewrite using `[h]`. Conclude with `Submodule.sum_mem _ fun u _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨u, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_mem_span_range_prod_mul {R A : Type*} [CommRing R] [CommRing A] [Algebra R A]
     {J : Type*} [Fintype J] (g : J → A) (m : ℕ) (f : Fin m → A)
@@ -24,33 +24,27 @@ theorem prod_mem_span_range_prod_mul {R A : Type*} [CommRing R] [CommRing A] [Al
   exact Submodule.sum_mem _ fun u _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨u, rfl⟩)
 
 /- English proof (translation)
-Introduce `K _ _ D x hx J _ e he m hm`. Use `haveI : Algebra.IsAlgebraic ℤ ℚ := IsLocalization.isAlgebraic ℚ (nonZeroDivisors ℤ)`. Establish `hxQ : IsTranscendenceBasis ℚ x` using `(Algebra.IsAlgebraic.isTranscendenceBasis_iff ℤ ℚ).1 hx`. Establish `heQ : LinearIndependent ℚ e` using `(LinearIndependent.iff_fractionRing ℤ ℚ).1 he`. Take `⟨P, ψ, g, c, hPm, hψ, hψx, hg, hge, hsep⟩` from `GlobalTheory.T.exists_primitive_monic_separable_specialization' K D x hxQ J e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose e' he' using fun j => (AlgHom.mem_range ψ).1 (hge j)`. Establish `he'Q : LinearIndependent ℚ e'`. Establish `h1 : LinearIndependent ℚ (fun j => g * e j)`. Use `heQ.map' (LinearMap.mulLeft ℚ g) (LinearMap.ker_eq_bot.2 ?_)` and prove the remaining obligations. Conclude with `mul_right_injective₀ hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : (ψ.toLinearMap ∘ e') = fun j => g * e j` using `funext he'`. Conclude with `LinearIndependent.of_comp ψ.toLinearMap (h2 ▸ h1)`. Take `⟨τ, hτX, hτq, hτind⟩` from `GlobalTheory.T.adjoinRoot_complex_map_linearIndependent D P hPm`. Establish `hPCm : (P.map (MvPolynomial.map (algebraMap ℚ ℂ))).Monic` using `hPm.map _`. Establish `hsepC : ((P.map (MvPolynomial.map (algebraMap ℚ ℂ))).map (MvPolynomial.eval (fun i => (c i : ℂ)))).Separable`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h : (P.map (MvPolynomial.map (algebraMap ℚ ℂ))).map (MvPolynomial.eval (fun i => (c i : ℂ))) = (P.map (MvPolynomial.eval c)).map (algebraMap ℚ ℂ)`. Rewrite using `[Polynomial.map_map, Polynomial.map_map]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `hsep.map`. Set `PC` to `P.map (MvPolynomial.map (algebraMap ℚ ℂ))`. Take `⟨n, φ, hφinj, hφX⟩` from `GlobalTheory.T.exists_formal_branches_of_separable_reduction D PC (fun i => (c i : ℂ)) hPCm hsepC`. Set `w : (Fin m → J) × (Fin D → Fin m) → AdjoinRoot P` to `fun ub => (∏ l, e' (ub.1 l)) * ∏ i, AdjoinRoot.of P (MvPolynomial.X i) ^ (ub.2 i : ℕ)`. Take `⟨κ, a, ha, hspan, hind⟩` from `exists_linearIndependent' ℚ w`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Finite κ := Finite.of_injective a ha`. Use `haveI : Fintype κ := Fintype.ofFinite κ`. Set `xC : Fin D → AdjoinRoot PC` to `fun i => AdjoinRoot.of PC (MvPolynomial.X i)`. Set `F : Submodule ℂ (AdjoinRoot PC)` to `Submodule.span ℂ (Set.range fun j => τ (e' j))`. Set `G : Submodule ℂ (AdjoinRoot PC)` to `Submodule.span ℂ (Set.range fun k => τ (w (a k)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `haveI : Module.Finite ℂ F := FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Use `haveI : Module.Finite ℂ G := FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Establish `hτspan : ∀ u ∈ Submodule.span ℚ (Set.range (w ∘ a)), τ u ∈ G`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Consider the case `mem y hy => obtain ⟨k, rfl⟩ := hy`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `G.add_mem hy hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Consider the case `smul q y _ hy => rw [hτq]`. Conclude with `G.smul_mem _ hy`. Establish `key` using `GlobalTheory.T.finrank_mul_pow_le_finrank_of_prod_mem D n (AdjoinRoot PC) φ xC (fun i => (c i : ℂ)) hφinj hφX F G m hm (by`. Introduce `f b hf hb`. Establish `h1` using `prod_mem_span_range_prod_mul (R := ℂ) (fun j => τ (e' j)) m f hf (∏ i, xC i ^ b i)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Submodule.span_le.2 ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Establish `hw : w (u, fun i => ⟨b i, hb i⟩) ∈ Submodule.span ℚ (Set.range (w ∘ a))`. Rewrite using `[hspan]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `hτspan _ hw`. Simplify `h2)` using `[w, map_prod, map_mul, map_pow, hτX, xC]`. Establish `hFr : Module.finrank ℂ F = Fintype.card J` using `finrank_span_eq_card (hτind J e' he'Q)`. Establish `hGr : Module.finrank ℂ G ≤ Fintype.card κ` using `finrank_range_le_card _`. Set `L : AdjoinRoot P →ₗ[ℚ] K` to `(LinearMap.mulLeft ℚ ((g ^ m)⁻¹)).comp ψ.toLinearMap`.
-
-Establish `hL : LinearMap.ker L = ⊥`. Use `LinearMap.ker_eq_bot.2 ?_` and prove the remaining obligations. Use `show Function.Injective (fun u => (g ^ m)⁻¹ * ψ u)`. Conclude with `(mul_right_injective₀ (inv_ne_zero (pow_ne_zero _ hg))).comp hψ`. Establish `hindK : LinearIndependent ℚ (L ∘ (w ∘ a))` using `hind.map' L hL`.
-
-Establish `hcard : Fintype.card J * m ^ D ≤ Fintype.card κ` using `hFr ▸ (key.trans hGr)`. Set `emb : Fin (Fintype.card J * m ^ D) ↪ κ` to `(Fin.castLEEmb hcard).trans (Fintype.equivFin κ).symm.toEmbedding`. Use `⟨L ∘ (w ∘ a) ∘ emb, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hindK.comp emb emb.injective).restrict_scalars' ℤ`. Introduce `s`.
-
-Use `⟨(a (emb s)).1, fun i => ((a (emb s)).2 i : ℕ), fun i => ((a (emb s)).2 i).isLt, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp_apply, L, w, LinearMap.comp_apply, AlgHom.toLinearMap_apply, LinearMap.mulLeft_apply, map_mul, map_prod, map_pow, hψx, he', Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem many_independent_products_in_function_field : ∀ (K : Type) [Field K] [CharZero K] (D : ℕ)
     (x : Fin D → K), IsTranscendenceBasis ℤ x → ∀ (J : Type) [Fintype J] (e : J → K),

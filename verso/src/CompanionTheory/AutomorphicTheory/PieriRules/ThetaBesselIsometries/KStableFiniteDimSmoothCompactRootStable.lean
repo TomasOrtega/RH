@@ -21,7 +21,7 @@ namespace GlobalTheory.CompactStable
 open PI.UpqRep
 
 /- English proof (translation)
-Establish `h` using `hasDerivAt_iff_tendsto_slope.1 hf`. Use `S.closed_of_finiteDimensional.mem_of_tendsto h (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Rewrite using `[slope_def_module]`. Conclude with `S.smul_of_tower_mem _ (S.sub_mem (hS t) (hS 0))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deriv_mem {H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H] (S : Submodule ℂ H) [FiniteDimensional ℂ S]
     {f : ℝ → H} {f' : H} (hf : HasDerivAt f f' 0) (hS : ∀ t, f t ∈ S) : f' ∈ S := by
@@ -33,9 +33,9 @@ theorem deriv_mem {H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H] (S : Sub
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hL : InLieHpk k r X` using `by show Xᴴ * Hpk k r + Hpk k r * X = 0`. Rewrite using `[hX, hc]`. Simplify using the standard rewrite rules. Use `deriv_mem S (GlobalTheory.DerivedAction.hasDerivAt_dsig hL hsm) fun t => hS _ ⟨GlobalTheory.DerivedAction.exp_mem hL t, ?_⟩ v hv` and prove the remaining obligations. Establish `h` using `CCRuleCW.exp_mem_UH 1 ((t : ℂ) • X) (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, hX]`. Use the proof step `simp)`. Establish `h' : (NormedSpace.exp ((t : ℂ) • X))ᴴ * 1 * NormedSpace.exp ((t : ℂ) • X) = 1` using `h`. Rewrite `h'` using `[Matrix.mul_one]`. Conclude with `Matrix.mem_unitaryGroup_iff'.2 h'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dsig_mem (R : Rep k r) (S : Submodule ℂ R.H) [FiniteDimensional ℂ S]
     (hS : ∀ g ∈ UH (Hpk k r) ∩ (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set _), ∀ x ∈ S, R.σ g x ∈ S)
@@ -52,13 +52,13 @@ theorem dsig_mem (R : Rep k r) (S : Submodule ℂ R.H) [FiniteDimensional ℂ S]
   exact Matrix.mem_unitaryGroup_iff'.2 h'
 
 /- English proof (translation)
-Establish `hc' : Hpk k r * Yᴴ = Yᴴ * Hpk k r`. Use `congrArg Matrix.conjTranspose hc` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, h1]`. Conclude with `this.symm`. Establish `e : Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r = Yᴴ` using `by show Hpk k r * Yᴴ * Hpk k r = Yᴴ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc', Matrix.mul_assoc, h2, Matrix.mul_one]`. Unfold `Rep.dC`. Rewrite using `[e]`. Use `S.add_mem (dsig_mem R S hS ?_ ?_ hv hsm) (S.smul_mem _ (dsig_mem R S hS ?_ ?_ hv hsm))` and prove the remaining obligations. Rewrite using `[conjTranspose_smul, conjTranspose_add, conjTranspose_neg, conjTranspose_conjTranspose, ← smul_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_neg, Matrix.neg_mul, hc, hc']`. Rewrite using `[conjTranspose_smul, conjTranspose_sub, conjTranspose_neg, conjTranspose_conjTranspose, ← neg_smul]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_neg, Matrix.neg_mul, hc, hc']`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dC_mem (R : Rep k r) (S : Submodule ℂ R.H) [FiniteDimensional ℂ S]
     (hS : ∀ g ∈ UH (Hpk k r) ∩ (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set _), ∀ x ∈ S, R.σ g x ∈ S)
@@ -87,9 +87,9 @@ theorem dC_mem (R : Rep k r) (S : Submodule ℂ R.H) [FiniteDimensional ℂ S]
   · rw [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_neg, Matrix.neg_mul, hc, hc']
 
 /- English proof (translation)
-Use extensionality with `i j`. Unfold `Jm`. Rewrite using `[diagonal_mul, mul_diagonal]`. Distinguish the cases in `hij : a = i ∧ b = j`. Take `⟨rfl, rfl⟩` from `hij`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Simplify using `[h]`. Simplify using `[Matrix.single, hij]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Jm_single {n : ℕ} (ε : Fin n → Bool) {a b : Fin n} (h : ε a = ε b) :
     Jm ε * Matrix.single a b (1 : ℂ) = Matrix.single a b 1 * Jm ε := by
@@ -102,19 +102,19 @@ theorem Jm_single {n : ℕ} (ε : Fin n → Bool) {a b : Fin n} (h : ε a = ε b
   · simp [Matrix.single, hij]
 
 /- English proof (translation)
-Introduce `hK k r ε mu R hR Q hQ S hfd hst`. Establish `hS : ∀ g ∈ UH (Hpk k r) ∩ (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set _), ∀ x ∈ S, R.σ g x ∈ S`. Introduce `g hg x hx`. Take `⟨hk, hback⟩` from `PI.UnitaryGroupMassFormula.LowSmooth.conj_mem_Kset hQ hg`. Establish `h` using `hst _ hk x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [hback] at h`. Conclude with `h`. Establish `hA : ∀ v ∈ S, R.KFin v ∧ v ∈ R.sm` using `fun v hv => ⟨⟨S, hfd, hv, hS⟩, hK k r ε mu R.H R.σ hR.1 hR.2 v ⟨S, hfd, hv, hS⟩⟩`. Use `⟨hA, fun a b hab v hv => ?_⟩` and prove the remaining obligations. Establish `hsP : Qᴴ * Q = 1` using `Matrix.mem_unitaryGroup_iff'.mp hQ.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPs : Q * Qᴴ = 1` using `Matrix.mem_unitaryGroup_iff.mp hQ.2`. Establish `hinv : Q⁻¹ = Qᴴ` using `Matrix.inv_eq_left_inv hsP`. Establish `hH : Qᴴ * Jm ε * Q = Hpk k r` using `hQ.1.2`. Establish `hJ1 : (Jm ε)ᴴ = Jm ε`. Unfold `Jm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `c`. Apply the tactic sequence `by_cases hc : ε c = true <;> simp [hc]`. Establish `hJ2 : Jm ε * Jm ε = 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Jm`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `c`. Apply the tactic sequence `by_cases hc : ε c = true <;> simp [hc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hm : ∀ A B : Mx k r, Qᴴ * A * Q * (Qᴴ * B * Q) = Qᴴ * (A * B) * Q`. Introduce `A B`. Combine the equalities or inequalities in the displayed calculation. Use `dC_mem R S hS ?_ ?_ ?_ hv (hA v hv).2` and prove the remaining obligations. Rewrite using `[← hH, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hJ1, Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hH, hm, hJ2, Matrix.mul_one, hsP]`. Rewrite using `[← hH, hinv, hm, hm, Jm_single ε hab]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kStable_smooth_and_stable : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r), R.IsDG ε mu → ∀ (Q : Mx k r), PI.UpqRep.IsCayleyU k r ε Q → ∀ S : Submodule ℂ R.H, FiniteDimensional ℂ S → PI.UpqRep.IsKStableOn ε (fun g => R.σ (Q⁻¹ * g * Q)) S → (∀ v ∈ S, R.KFin v ∧ v ∈ R.sm) ∧ ∀ a b, ε a = ε b → ∀ v ∈ S, R.dC (Q⁻¹ * Matrix.single a b 1 * Q) v ∈ S := by
   intro hK k r ε mu R hR Q hQ S hfd hst

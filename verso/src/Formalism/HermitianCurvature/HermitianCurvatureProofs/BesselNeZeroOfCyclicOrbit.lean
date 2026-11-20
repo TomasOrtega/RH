@@ -17,7 +17,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ}
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [hh, hg]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uh_mul {g h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : hᴴ * Hpk k r * h = Hpk k r) (hg : gᴴ * Hpk k r * g = Hpk k r) :
@@ -28,19 +28,17 @@ theorem uh_mul {g h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     _ = Hpk k r := by rw [hh, hg]
 
 /- English proof (translation)
-Take `⟨P, hP, hDS⟩` from `hds`. Establish `hmul` using `hDS.2.2.1.1.2`. Establish `hPu : P ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ` using `hP.2`. Establish `hsP : star P * P = 1` using `Matrix.mem_unitaryGroup_iff'.mp hPu`. Establish `hPs : P * star P = 1` using `Matrix.mem_unitaryGroup_iff.mp hPu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : P⁻¹ = star P` using `Matrix.inv_eq_left_inv hsP`. Establish `hJ : Jm ε = P * Hpk k r * star P`. Rewrite using `[← hP.1.2, ← Matrix.star_eq_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Establish `memJ : ∀ x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, xᴴ * Hpk k r * x = Hpk k r → P * x * P⁻¹ ∈ UJset ε`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hx' : star x * Hpk k r * x = Hpk k r` using `by rw [Matrix.star_eq_conjTranspose]; exact hx`. Use `show (P * x * P⁻¹)ᴴ * Jm ε * (P * x * P⁻¹) = Jm ε`. Rewrite using `[hinv, hJ, ← Matrix.star_eq_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [star_mul, star_star, Matrix.mul_assoc]`. Use `_ = P * (star x * Hpk k r * x) * star P := by simp only [hsP, Matrix.mul_one]`. Use `_ = P * Hpk k r * star P := by rw [hx']`. Establish `key : ∀ x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, P⁻¹ * (P * x * P⁻¹) * P = x`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[hinv]`. Combine the equalities or inequalities in the displayed calculation. Establish `hprod : (P * h * P⁻¹) * (P * g * P⁻¹) = P * (h * g) * P⁻¹`. Rewrite using `[hinv]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = P * (h * g) * star P := by rw [hsP, Matrix.mul_one]; simp only [Matrix.mul_assoc]`. Establish `h1` using `hmul (P * h * P⁻¹) (memJ h hh) (P * g * P⁻¹) (memJ g hg)`. Simplify using `only at h1`. Rewrite `h1` using `[hprod, key, key, key]`.
-
-Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigma_mul {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -85,9 +83,9 @@ theorem sigma_mul {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1)
   exact h1
 
 /- English proof (translation)
-Use `show SmoothOnH (Hpk k r) (fun g => σ g (x + y))`. Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hFe⟩` from `(show SmoothOnH (Hpk k r) (fun g => σ g x) from hx) g₀ hg₀`. Take `⟨V, G, hV, hgV, hG, hGe⟩` from `(show SmoothOnH (Hpk k r) (fun g => σ g y) from hy) g₀ hg₀`. Use `⟨U ∩ V, fun g => F g + G g, hU.inter hV, ⟨hgU, hgV⟩, (hF.mono Set.inter_subset_left).add (hG.mono Set.inter_subset_right), fun g hg hgl => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, hFe g hg.1 hgl, hGe g hg.2 hgl]`.
+A detailed English derivation is pending.
 -/
 theorem smooth_add {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)} {x y : H}
@@ -102,7 +100,7 @@ theorem smooth_add {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   simp only [map_add, hFe g hg.1 hgl, hGe g hg.2 hgl]
 
 /- English proof (translation)
-Use `show SmoothOnH (Hpk k r) (fun g => σ g (c • x))`. Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hFe⟩` from `(show SmoothOnH (Hpk k r) (fun g => σ g x) from hx) g₀ hg₀`. Use `⟨U, fun g => c • F g, hU, hgU, hF.const_smul c, fun g hg hgl => ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul, hFe g hg hgl]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smooth_smul {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)} (c : ℂ) {x : H}
@@ -114,7 +112,7 @@ theorem smooth_smul {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   simp only [map_smul, hFe g hg hgl]
 
 /- English proof (translation)
-Use `show SmoothOnH (Hpk k r) (fun g => σ g 0)`. Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun g _ _ => by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smooth_zero {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)} :
@@ -132,9 +130,9 @@ def mulRightCLM (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
       map_smul' := fun c a => by simp [Matrix.smul_mul] }
 
 /- English proof (translation)
-Introduce `h0 hh0`. Take `⟨U, F, hU, hmem, hF, hEq⟩` from `hv (h0 * g) (uh_mul hh0 hg)`. Use `⟨(mulRightCLM g) ⁻¹' U, fun h => F (h * g), hU.preimage (mulRightCLM g).continuous, hmem, hF.comp (mulRightCLM g).contDiff.contDiffOn (fun h hh => hh), ?_⟩` and prove the remaining obligations. Introduce `h hhU hh`. Establish `e` using `(hEq (h * g) hhU (uh_mul hh hg)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show σ h (σ g v) = F (h * g)`. Rewrite using `[e]`. Use `show σ h (σ g v) = σ (h * g) v`. Rewrite using `[sigma_mul hds hh hg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem smooth_translate {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -159,17 +157,15 @@ end TranslationBesselVanishing
 open TranslationBesselVanishing in
 
 /- English proof (translation)
-Introduce `hCyc hKF k r ε lam H _ _ _ σ w0 Wp _ _ z c π hlam hds hlow Bm hB hzero x hx`. Take `⟨hadd, -, -, C, Ws, hWs, hbd⟩` from `hB`. Establish `hw0 : w0 ∈ smoothVecs (k` using `k) (r := r) σ := PI.UnitaryGroupMassFormula.LowSmooth.lowSmooth_of_kFinSmooth hKF k r ε lam H σ w0 hlam hds hlow`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖Bm x‖` using `norm_pos_iff.mpr hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : 0 < 2 * (|C| + 1)` using `by positivity`. Use `set δ : ℝ := ‖Bm x‖ / (2 * (|C| + 1)) with hδdef`. Establish `hδ : 0 < δ` using `div_pos hpos h2`. Take `⟨N, cc, g, hg, hsum⟩` from `hCyc k r ε lam H σ w0 hlam hds hlow x hx Ws hWs δ hδ`. Use `set y : H := ∑ i, cc i • σ (g i) w0 with hy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hysm : y ∈ smoothVecs (k` using `k) (r := r) σ := Finset.sum_induction _ (· ∈ smoothVecs (k := k) (r := r) σ) (fun a b ha hb => smooth_add ha hb) smooth_zero (fun i _ => smooth_smul _ (smooth_translate hds hw0 (hg i)))`. Establish `hyDD : y ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp σ w0` using `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨g i, hg i, rfl⟩))`. Establish `hxy : x - y ∈ smoothVecs (k` using `k) (r := r) σ := by`. Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ y]`. Conclude with `smooth_add hx (smooth_smul _ hysm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit : Bm x = Bm (x - y) + Bm y`. Rewrite using `[← hadd _ hxy _ hysm, sub_add_cancel]`. Establish `hBy : Bm y = 0` using `hzero y hyDD`. Establish `hb` using `hbd (x - y) hxy`. Establish `hS0 : 0 ≤ (Ws.map fun w => ‖dsigW σ w (x - y)‖).sum`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `List.sum_nonneg` to reduce the goal to its premises. Introduce `a ha`. Take `⟨w, -, rfl⟩` from `List.mem_map.mp ha`. Conclude with `norm_nonneg _`. Establish `hlt : ‖Bm x‖ < ‖Bm x‖`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hδdef, ← mul_div_assoc, div_lt_iff₀ h2]`. Use polynomial arithmetic with `[abs_nonneg C, hpos]`. Conclude with `lt_irrefl _ hlt`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem bessel_ne_zero_of_cyclic_orbit : Formalism.FourierDecayAlt.ThreeDimData.DDNzOfCyc := by
   intro hCyc hKF k r ε lam H _ _ _ σ w0 Wp _ _ z c π hlam hds hlow Bm hB hzero x hx

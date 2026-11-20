@@ -13,15 +13,13 @@ namespace GlobalTheory.Chain.IoLift
 open Formalism.REAL in
 
 /- English proof (translation)
-Establish `hds` using `M.ds τ`. Establish `: CompleteSpace (M.H τ)` using `hds.1`. Take `⟨⟨-, hmul⟩, -, hcont⟩` from `hds.2.2.1`. Establish `hmem : ∀ k : KG (M.ε τ), toMK k ∈ Formalism.MainNotions.S.UJset (M.ε τ)` using `fun k => (k : UJ (M.ε τ)).2`. Establish `hcK : Continuous fun k : KG (M.ε τ) => M.σ τ (toMK k) w` using `(hcont w).comp_continuous (Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)) hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ j, Integrable (fun k => c j k • M.σ τ (toMK k) w) (muK (M.ε τ))` using `fun j => ((hc.1 j).smul hcK).integrable_of_hasCompactSupport (isCompact_univ.of_isClosed_subset (isClosed_tsupport _) (Set.subset_univ _))`. Establish `hm : ∀ k : KG (M.ε τ), M.σ τ (toMK (k₀ * k)) = (M.σ τ (toMK k₀)).comp (M.σ τ (toMK k))` using `fun k => hmul _ (hmem k₀) _ (hmem k)`. Take `⟨d, hd⟩` from `hc.2 k₀⁻¹ i`. Use `⟨d, ?_⟩` and prove the remaining obligations. Unfold `kMean`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [inv_mul_cancel_left, ContinuousLinearMap.map_smul, hm k]`. Both sides reduce to the same expression.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `_ = ∫ k, c i (k₀⁻¹ * k) • M.σ τ (toMK k) w ∂muK (M.ε τ) := integral_mul_left_eq_self (μ := muK (M.ε τ)) (fun x => c i (k₀⁻¹ * x) • M.σ τ (toMK x) w) k₀`. Use `_ = ∑ j, d j • ∫ k, c j k • M.σ τ (toMK k) w ∂muK (M.ε τ) := by`. Simplify using `only [hd, Finset.sum_smul, mul_smul]`. Establish `hs : ∀ j ∈ (Finset.univ : Finset (Fin n)), Integrable (fun k => d j • c j k • M.σ τ (toMK k) w) (muK (M.ε τ))` using `fun j _ => (hint j).smul (d j)`. Rewrite using `[integral_finsetSum _ hs]`.
-
-Simplify using `only [integral_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kMean_translate {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) {n : ℕ}
     (c : Fin n → KG (M.ε τ) → ℂ) (hc : IsCoefFam c) (w : M.H τ) (i : Fin n) (k₀ : KG (M.ε τ)) :
@@ -58,11 +56,11 @@ theorem kMean_translate {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : D
         simp only [integral_smul]
 
 /- English proof (translation)
-Introduce `D V S M τ n c hc w i`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin`. Rewrite using `[GlobalTheory.KFiniteVectors.mem_kFiniteVectors]`. Use `⟨Submodule.span ℂ (Set.range fun j => kMean M τ (c j) w), FiniteDimensional.span_of_finite ℂ (Set.finite_range _), Submodule.subset_span ⟨i, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `g hg x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hg` using `[← Formalism.REAL.range_toMK]`. Take `⟨k₀, rfl⟩` from `hg`. Establish `hle : Submodule.span ℂ (Set.range fun j => kMean M τ (c j) w) ≤ (Submodule.span ℂ (Set.range fun j => kMean M τ (c j) w)).comap (M.σ τ (Formalism.REAL.toMK k₀) : M.H τ →ₗ[ℂ] M.H τ)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨d, hd⟩` from `kMean_translate M τ c hc w j k₀`. Express the relevant statement in the definitionally equal form `M.σ τ (Formalism.REAL.toMK k₀) (kMean M τ (c j) w) ∈ Submodule.span ℂ (Set.range fun j => kMean M τ (c j) w)`. Rewrite using `[hd]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`. Conclude with `hle hx`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kMean_mem_kFin_of_coefFam : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau)
     (n : ℕ) (c : Fin n → Formalism.REAL.KG (M.ε τ) → ℂ), IsCoefFam c → ∀ (w : M.H τ) (i : Fin n),

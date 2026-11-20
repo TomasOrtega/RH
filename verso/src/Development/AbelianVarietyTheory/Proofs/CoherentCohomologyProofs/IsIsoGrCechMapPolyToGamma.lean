@@ -32,7 +32,7 @@ def polyToGamma : MvPolynomial ι R →ₗ[MvPolynomial ι R] GammaStar R x (str
   LinearMap.toSpanSingleton _ _ (gammaOf R x _ ⊤ 0 (oneSection hL))
 
 /- English proof (translation)
-Introduce `_ _ hp` and use `by have := grSMul_mem (gammaGrading R x _ ⊤) hp (GrSum.of_mem_grading _ 0 (oneSection hL)) rwa [zero_add] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGradedMap_polyToGamma :
     IsGradedMap (polyGrading ι R) (gammaGrading R x _ ⊤) (polyToGamma R x hL) := fun _ _ hp => by
@@ -44,14 +44,14 @@ def formSection (n : ℤ) :
   (GrSum.pieceEquiv _ n).symm.toLinearMap ∘ₗ (isGradedMap_polyToGamma R x hL).piece n
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val ((GrSum.pieceEquiv _ n).apply_symm_apply _)`.
+A detailed English derivation is pending.
 -/
 theorem gammaOf_formSection (p : polyGrading ι R n) :
     gammaOf R x _ ⊤ n (formSection R x hL n p) = polyToGamma R x hL p :=
   congrArg Subtype.val ((GrSum.pieceEquiv _ n).apply_symm_apply _)
 
 /- English proof (translation)
-Rewrite using `[polyToGamma, LinearMap.toSpanSingleton_apply, map_smul, gammaCoord_smul, gammaRes_gammaOf, gammaCoord_gammaOf]`. Use `(congrArg (_ • ·) ((zcoord_resM le_top _ i).trans (congrArg _ (zcoord_twistZZeroIso_hom_app (F := structureModule X) hL (1 : Γ(X, ⊤)) i)))).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * resG X _ (resG X _ 1) = _`. Rewrite using `[map_one, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem gammaCoord_polyToGamma (i : L.ι) {V : X.Opens} (p : MvPolynomial ι R) :
     (sectionsOn.toΓ _ _ (gammaCoord R x _ V i (gammaRes R x _ le_top (polyToGamma R x hL p))) :
@@ -64,7 +64,7 @@ theorem gammaCoord_polyToGamma (i : L.ι) {V : X.Opens} (p : MvPolynomial ι R) 
   rw [map_one, map_one, mul_one]
 
 /- English proof (translation)
-Rewrite using `[← gammaCoord_polyToGamma R x hL, ← gammaOf_formSection, gammaRes_gammaOf, gammaCoord_gammaOf, sectionsOn.res_refl, LinearMap.id_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zcoord_formSection (p : polyGrading ι R n) (i : L.ι) :
     (zcoord (sectionsOn.toΓ _ ⊤ (formSection R x hL n p)) i : Γ(X, ⊤ ⊓ L.U i)) =
@@ -73,7 +73,7 @@ theorem zcoord_formSection (p : polyGrading ι R n) (i : L.ι) :
     gammaCoord_gammaOf, sectionsOn.res_refl, LinearMap.id_apply]
 
 /- English proof (translation)
-Use `zglobal_ext fun i => ?_` and prove the remaining obligations. Rewrite using `[zfun_formSec, ← resG_chartEval R x i (inf_le_right : ⊤ ⊓ L.U i ≤ _) (le_inf le_top le_rfl), ← zcoord_formSection R x hL]`. Conclude with `(resG_resG _ _ _).trans (resG_resG _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem globalEquiv_formSection (p : polyGrading ι R n) :
     LB.globalEquiv _ ((unitTwistIso (lbZPow L n)).hom.app ⊤
@@ -86,7 +86,7 @@ theorem globalEquiv_formSection (p : polyGrading ι R n) :
 include hL in
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hy`. Rewrite `h0` using `[gammaCoord_gammaOf]`. Establish `: sectionsOn.toΓ _ V a = 0` using `(zchartEquiv hL n i h).injective (by`. Rewrite using `[zchartEquiv_apply, h0, map_zero, map_zero])`. Rewrite using `[(map_eq_zero_iff _ (sectionsOn.toΓ _ V).injective).1 this, map_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_gammaCoord {F : X.Modules} {V : X.Opens} {i : L.ι} (h : V ≤ L.U i)
     {y : GammaStar R x F V} (hy : y ∈ gammaGrading R x F V n)
@@ -98,7 +98,7 @@ theorem eq_zero_of_gammaCoord {F : X.Modules} {V : X.Opens} {i : L.ι} (h : V �
   rw [(map_eq_zero_iff _ (sectionsOn.toΓ _ V).injective).1 this, map_zero]
 
 /- English proof (translation)
-Use `eq_zero_of_gammaCoord R x hL h (isGradedMap_gammaRes R _ _ _ (sub_mem h₁ (isGradedMap_polyToGamma R x hL h₂))) ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, map_sub, map_smul, gammaCoord_smul, sub_eq_zero, ← hu]`. Conclude with `e.trans (gammaCoord_polyToGamma R x hL i _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gammaRes_smul_sub_eq_zero {V : X.Opens} {i : L.ι} (h : V ≤ L.U i) {p q : MvPolynomial ι R}
     {y : GammaStar R x (structureModule X) ⊤} (h₁ : q • y ∈ gammaGrading R x _ ⊤ n)
@@ -116,14 +116,14 @@ def formSecAdd (n : ℤ) : polyGrading ι R n →+ LB.Sec (lbZPow L n) :=
     simp only [zfun_add, zfun_formSec, Submodule.coe_add, map_add]
 
 /- English proof (translation)
-The claim follows from `zglobal_ext fun i => by rw [zfun_formSec, map_one, zfun_zone]`.
+A detailed English derivation is pending.
 -/
 theorem formSec_one (h : (1 : MvPolynomial ι R) ∈ polyGrading ι R 0) :
     Twist.formSec x h = zone L :=
   zglobal_ext fun i => by rw [zfun_formSec, map_one, zfun_zone]
 
 /- English proof (translation)
-The claim follows from `zglobal_ext fun i => by simp only [zfun_zmul, zfun_formSec, map_mul]`.
+A detailed English derivation is pending.
 -/
 theorem formSec_mul {p q : MvPolynomial ι R} (hp : p ∈ polyGrading ι R n)
     (hq : q ∈ polyGrading ι R m) (h : p * q ∈ polyGrading ι R (n + m)) :
@@ -131,7 +131,7 @@ theorem formSec_mul {p q : MvPolynomial ι R} (hp : p ∈ polyGrading ι R n)
   zglobal_ext fun i => by simp only [zfun_zmul, zfun_formSec, map_mul]
 
 /- English proof (translation)
-The claim follows from `zglobal_ext fun i => by rw [zfun_smul, zfun_formSec, zfun_formSec, smul_eq_C_mul, map_mul, chartEval_C]`.
+A detailed English derivation is pending.
 -/
 theorem formSec_smul (r : R) {p : MvPolynomial ι R} (hp : p ∈ polyGrading ι R n)
     (h : r • p ∈ polyGrading ι R n) :
@@ -150,7 +150,7 @@ def polyToSecRing : MvPolynomial ι R →+* SecRing L :=
   (formsToSecRing R x).comp (DirectSum.decomposeRingEquiv (polyGrading ι R)).toRingHom
 
 /- English proof (translation)
-The claim follows from `(congrArg (formsToSecRing R x) (DirectSum.decompose_of_mem _ hp)).trans (DirectSum.toSemiring_of _ _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem polyToSecRing_of_mem {p : MvPolynomial ι R} (hp : p ∈ polyGrading ι R n) :
     polyToSecRing R x p = SecRing.of n (Twist.formSec x hp) :=
@@ -158,9 +158,9 @@ theorem polyToSecRing_of_mem {p : MvPolynomial ι R} (hp : p ∈ polyGrading ι 
     (DirectSum.toSemiring_of _ _ _ _ _)
 
 /- English proof (translation)
-Establish `e : ⇑(polyToSecRing R x) = DirectSum.map (β` using `RingPiece L) (formSecAdd R x) ∘ DirectSum.decompose (polyGrading ι R) := funext fun p => by`. Proceed by induction on `p using Decomposition.inductionOn (polyGrading ι R) with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb, Function.comp_apply, decompose_add]`. Consider the case `homogeneous a`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[polyToSecRing_of_mem R x a.2, Function.comp_apply, decompose_coe]`. Conclude with `(DirectSum.map_of (β := RingPiece L) (formSecAdd R x) _ a).symm`. Rewrite using `[e]`. Conclude with `Function.Bijective.comp ⟨(DirectSum.map_injective _).2 fun n => (h n).1, (DirectSum.map_surjective _).2 fun n => (h n).2⟩ (DirectSum.decompose _).bijective`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyToSecRing_bijective (h : ∀ n, Function.Bijective (formSecAdd R x n)) :
     Function.Bijective (polyToSecRing R x) := by
@@ -195,20 +195,20 @@ instance isQuasicoherent_sheafO (n : ℤ) : (sheafO R N n).IsQuasicoherent :=
 def sheafOIso (n : ℤ) : sheafO R N n ≅ LB.toMod (On R N n) := unitTwistIso _
 
 /- English proof (translation)
-Rewrite using `[← iSup_chart, Opens.coe_iSup]`. Conclude with `isCompact_iUnion fun i => (isAffineOpen_chart R N i).isCompact`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_top : IsCompact ((⊤ : (PSpace R N).Opens) : Set (PSpace R N)) := by
   rw [← iSup_chart, Opens.coe_iSup]
   exact isCompact_iUnion fun i => (isAffineOpen_chart R N i).isCompact
 
 /- English proof (translation)
-The claim follows from `isQuasiSeparated_univ`.
+A detailed English derivation is pending.
 -/
 theorem isQuasiSeparated_top :
     IsQuasiSeparated ((⊤ : (PSpace R N).Opens) : Set (PSpace R N)) := isQuasiSeparated_univ
 
 /- English proof (translation)
-The claim follows from `isAffineOpen_finset_biInf (fun i => by rw [nonzeroLocus_coord]; exact isAffineOpen_chart R N i) s hs`.
+A detailed English derivation is pending.
 -/
 theorem isAffineOpen_biInf_coord (s : Finset (Fin (N + 1))) (hs : s.Nonempty) :
     IsAffineOpen (⨅ i ∈ s, Out.nonzeroLocus (ProjSpace.coord R N i)) :=
@@ -218,9 +218,9 @@ theorem isAffineOpen_biInf_coord (s : Finset (Fin (N + 1))) (hs : s.Nonempty) :
 variable {R N} in
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C r => exact (chartEval_C _ _ _ _ r).trans ((resG_algebraMap _ r).trans (algHom_C _ r).symm)`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p j hp`. Rewrite using `[map_mul, map_mul, hp, aeval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (_ * ·) (chartEval_X _ _ _ _ j)`.
+A detailed English derivation is pending.
 -/
 theorem chartEval_coord (i : Fin (N + 1)) {U : (PSpace R N).Opens} (h : U ≤ chart R N i)
     (p : MvPolynomial (Fin (N + 1)) R) :
@@ -233,11 +233,9 @@ theorem chartEval_coord (i : Fin (N + 1)) {U : (PSpace R N).Opens} (h : U ≤ ch
     exact congrArg (_ * ·) (chartEval_X _ _ _ _ j)
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun p hp => Subtype.ext ?_` and prove the remaining obligations. Break down `lt_or_ge n 0 with h | h` into its components or cases. Conclude with `(Submodule.eq_bot_iff _).1 (polyGrading_of_neg _ R h) _ p.2`. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le h`. Establish `hf` using `mem_polyGrading_natCast.1 p.2`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `zcoord_formSection R (ProjSpace.coord R N) (O1_isLB R N) p (0 : Fin (N + 1))`. Rewrite `e` using `[hp, map_zero]`. Use `replace e := (zcoord_zero _).symm.trans e`. Establish `e'` using `congrArg (resG _ (le_inf le_top le_rfl : chart R N 0 ≤ ⊤ ⊓ chart R N 0)) e`. Use `(formOn_chart_inj R N 0 hf (isHomogeneous_zero _ R n)).1 ?_` and prove the remaining obligations.
-
-Rewrite using `[formOn_zero, formOn_eq_aeval, ← chartEval_coord]`. Conclude with `((resG_chartEval _ _ _ _ _ _).symm.trans e'.symm).trans (map_zero _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formSection_injective (n : ℤ) :
     Function.Injective (formSection R (ProjSpace.coord R N) (O1_isLB R N) n) := by
@@ -255,7 +253,7 @@ theorem formSection_injective (n : ℤ) :
     exact ((resG_chartEval _ _ _ _ _ _).symm.trans e'.symm).trans (map_zero _)
 
 /- English proof (translation)
-The claim follows from `(isGradedMap_polyToGamma R _ _).injective_iff.2 fun n _ _ h => formSection_injective R N n (congrArg (GrSum.pieceEquiv _ n).symm h)`.
+A detailed English derivation is pending.
 -/
 theorem polyToGamma_injective :
     Function.Injective (polyToGamma R (ProjSpace.coord R N) (O1_isLB R N)) :=
@@ -263,17 +261,17 @@ theorem polyToGamma_injective :
     formSection_injective R N n (congrArg (GrSum.pieceEquiv _ n).symm h)
 
 /- English proof (translation)
-Proceed by induction on `y using Decomposition.inductionOn (gammaGrading R (ProjSpace.coord R N) (structureModule _) ⊤) with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add y z hy hz`. Take `⟨k, hk⟩` from `hy`. Take `⟨l, hl⟩` from `hz`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨k + l, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[add_comm k, pow_add, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hk`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_add, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hl`. Consider the case `@homogeneous n y`. Take `⟨y, hy⟩` from `y`. Set `V` to `chart R N i`.
+Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `u : Γ(PSpace R N, V ⊓ V)` to `sectionsOn.toΓ _ _ (gammaCoord R (ProjSpace.coord R N) _ V i (gammaRes R _ _ le_top y))`. Take `⟨d, f, hf, hu⟩` from `Model.exists_formOn i (resG _ (le_inf le_rfl le_rfl) u)`. Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le (a := d + n.natAbs - n) (by omega)`. Establish `h₁ : (X i : MvPolynomial (Fin (N + 1)) R) ^ k • y ∈ gammaGrading R (ProjSpace.coord R N) _ ⊤ (d + n.natAbs : ℕ)`. Use `grSMul_mem _ (mem_polyGrading_natCast.2 (isHomogeneous_X_pow (R := R) i k)) hy` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[show n + k = (d + n.natAbs : ℕ) by omega]`. Then use the resulting hypothesis. Establish `h₃` using `gammaRes_smul_sub_eq_zero R _ (O1_isLB R N) (V := V) (i := i) le_rfl h₁ (mem_polyGrading_natCast.2 (hf.mul (isHomogeneous_X_pow i n.natAbs))) u rfl (by`. Establish `e : u = formOn (V ⊓ V) i inf_le_right d f hf` using `((resG_resG _ _ _).trans (resG_self _ _)).symm.trans (congrArg (resG _ (inf_le_right : V ⊓ V ≤ V)) hu)`. Rewrite using `[e, formOn_eq_aeval]`. Use `(congrArg (· * _) (chartEval_coord i inf_le_right _)).trans (Eq.trans ?_ (chartEval_coord i inf_le_right _).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[V])`. Take `⟨l, hl⟩` from `(eventually_xProd_pow_smul_eq_zero R (ProjSpace.coord R N) _ (O1_isLB R N) (isCompact_top R N) (I := {i}) le_top (by simp [nonzeroLocus_coord, V]) _ h₃).exists`. Rewrite `hl` using `[xProd, Finset.prod_singleton, smul_sub, sub_eq_zero, ← map_smul, ← mul_smul, ← pow_add]`. Conclude with `⟨l + k, _, hl.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem_range (i : Fin (N + 1))
     (y : GammaStar R (ProjSpace.coord R N) (structureModule _) ⊤) :
@@ -335,9 +333,9 @@ def grHEquiv (n : ℤ) (p : ℕ) :
 variable {N} in
 
 /- English proof (translation)
-Establish `hφ` using `isGradedMap_polyToGamma R (ProjSpace.coord R N) (O1_isLB R N)`. Establish `e` using `(cubeFunctor _ R).mapIso (gammaCubeIso R (ProjSpace.coord R N) (structureModule _) (O1_isLB R N) (isCompact_top R N) (isQuasiSeparated_top R N) n)`. Establish `hc` using `cechCube_exactAt_zero_one R (sheafO R N n) (iSup_nonzeroLocus_coord R N).ge`. Establish `h₁` using `(grAug_bijective_iff _ n).2 ⟨hc.1.of_iso e.symm, hc.2.of_iso e.symm⟩`. Establish `h₂ : Function.Bijective (grHMap hφ n 0).hom` using `ConcreteCategory.bijective_of_isIso _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃` using `h₂.comp (grAug_bijective R N n hN)`. Rewrite using `[show (grHMap hφ n 0).hom ∘ grAug _ _ n = grAug _ _ n ∘ hφ.piece n from`. Use function extensionality and compare the values at `(grHMap_grAug hφ n), h₁.of_comp_iff'] at h₃`. Conclude with `(GrSum.pieceEquiv _ n).symm.bijective.comp h₃`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem formSection_bijective (hN : 1 ≤ N) (n : ℤ) :
     Function.Bijective (formSection R (ProjSpace.coord R N) (O1_isLB R N) n) := by
@@ -367,7 +365,7 @@ def formsEquivCohZero (hN : 1 ≤ N) (n : ℤ) :
 variable {N} in
 
 /- English proof (translation)
-Use `(LB.globalEquiv _).bijective.comp ((ConcreteCategory.bijective_of_isIso ((unitTwistIso (lbZPow (O1 R N) n)).hom.app ⊤)).comp ((sectionsOn.toΓ _ ⊤).bijective.comp (formSection_bijective R hN n)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Conclude with `funext fun p => (globalEquiv_formSection R _ (O1_isLB R N) p).symm`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem formSecAdd_bijective (hN : 1 ≤ N) (n : ℤ) :
     Function.Bijective (formSecAdd R (ProjSpace.coord R N) n) := by
@@ -385,7 +383,7 @@ def polyEquivSecRing (hN : 1 ≤ N) : MvPolynomial (Fin (N + 1)) R ≃+* SecRing
 variable {R N} in
 
 /- English proof (translation)
-The claim follows from `zglobal_ext (L := O1 R N) (m := n) fun i => by rw [zfun_formSec] exact (formOn_eq_aeval (U := chart R N i) (hi := le_rfl) hf).trans (chartEval_coord i le_rfl f).symm`.
+A detailed English derivation is pending.
 -/
 theorem formSec_eq {n : ℕ} {f : MvPolynomial (Fin (N + 1)) R} (hf : f.IsHomogeneous n) :
     ProjSpace.formSec n f hf =
@@ -396,7 +394,7 @@ theorem formSec_eq {n : ℕ} {f : MvPolynomial (Fin (N + 1)) R} (hf : f.IsHomoge
       (chartEval_coord i le_rfl f).symm
 
 /- English proof (translation)
-The claim follows from `have := ModuleCat.subsingleton_of_isZero (isZero_grH_poly R N n h0 hp) (grHEquiv R N n p).symm.injective.subsingleton`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_coh (n : ℤ) {p : ℕ} (h0 : p ≠ 0) (hp : p ≠ N) :
     Subsingleton (coh (sheafO R N n) p) :=
@@ -406,7 +404,7 @@ theorem subsingleton_coh (n : ℤ) {p : ℕ} (h0 : p ≠ 0) (hp : p ≠ N) :
 variable {N} in
 
 /- English proof (translation)
-The claim follows from `(nonempty_basis_grH_top R N n hN).map fun b => b.map (grHEquiv R N n N)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_basis_coh_top (hN : 1 ≤ N) (n : ℤ) :
     Nonempty (Module.Basis (NegExp N n) R (coh (sheafO R N n) N)) :=
@@ -415,7 +413,7 @@ theorem nonempty_basis_coh_top (hN : 1 ≤ N) (n : ℤ) :
 variable {N} in
 
 /- English proof (translation)
-The claim follows from `have ⟨b⟩ := nonempty_basis_coh_top R hN n have := isEmpty_negExp N hn b.repr.injective.subsingleton`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_coh_top (hN : 1 ≤ N) {n : ℤ} (hn : -(N : ℤ) ≤ n) :
     Subsingleton (coh (sheafO R N n) N) :=
@@ -424,7 +422,7 @@ theorem subsingleton_coh_top (hN : 1 ≤ N) {n : ℤ} (hn : -(N : ℤ) ≤ n) :
   b.repr.injective.subsingleton
 
 /- English proof (translation)
-Distinguish the cases in `h : p = N`. Substitute `h` using the available equality. Conclude with `subsingleton_coh_top R hp hn`. Conclude with `subsingleton_coh R N n hp.ne' h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem subsingleton_coh_of_neg_le {n : ℤ} (hn : -(N : ℤ) ≤ n) {p : ℕ} (hp : 0 < p) :
     Subsingleton (coh (sheafO R N n) p) := by
@@ -436,7 +434,7 @@ theorem subsingleton_coh_of_neg_le {n : ℤ} (hn : -(N : ℤ) ≤ n) {p : ℕ} (
 variable {N} in
 
 /- English proof (translation)
-The claim follows from `have : Subsingleton (polyGrading (Fin (N + 1)) R n) := by rw [polyGrading_of_neg _ R hn]; infer_instance (formsEquivCohZero R hN n).symm.injective.subsingleton`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_coh_zero (hN : 1 ≤ N) {n : ℤ} (hn : n < 0) :
     Subsingleton (coh (sheafO R N n) 0) :=
@@ -445,17 +443,17 @@ theorem subsingleton_coh_zero (hN : 1 ≤ N) {n : ℤ} (hn : n < 0) :
   (formsEquivCohZero R hN n).symm.injective.subsingleton
 
 /- English proof (translation)
-The claim follows from `(nonempty_grH_zero_equiv R n).map (grHEquiv R 0 n 0).symm.trans`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_coh_zero_equiv (n : ℤ) : Nonempty (coh (sheafO R 0 n) 0 ≃ₗ[R] R) :=
   (nonempty_grH_zero_equiv R n).map (grHEquiv R 0 n 0).symm.trans
 
 /- English proof (translation)
-Distinguish the cases in `hp : p ≠ 0 ∧ p ≠ N`. Use `subsingleton_coh R N n hp.1 hp.2` as an intermediate fact. Conclude with `⟨inferInstance, inferInstance⟩`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Take `rfl : p = 0` from `by tauto`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨e⟩` from `nonempty_coh_zero_equiv R n`. Conclude with `⟨.equiv e.symm, .of_equiv e.symm⟩`. Distinguish the cases in `h0 : p = 0`. Substitute `h0` using the available equality. Take `⟨b⟩` from `nonempty_basis_polyGrading R N n`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨.of_basis (b.map (formsEquivCohZero R hN n)), .of_basis (b.map (formsEquivCohZero R hN n))⟩`. Take `rfl : p = N` from `by tauto`. Take `⟨b⟩` from `nonempty_basis_coh_top R hN n`. Conclude with `⟨.of_basis b, .of_basis b⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finite_free_coh (n : ℤ) (p : ℕ) :
     Module.Finite R (coh (sheafO R N n) p) ∧ Module.Free R (coh (sheafO R N n) p) := by
@@ -484,7 +482,7 @@ instance free_coh (n : ℤ) (p : ℕ) : Module.Free R (coh (sheafO R N n) p) :=
 variable {N} in
 
 /- English proof (translation)
-Take `⟨b⟩` from `nonempty_basis_polyGrading R N n`. Rewrite using `[Module.finrank_eq_nat_card_basis (b.map (formsEquivCohZero R hN n)), card_natVec N hN]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_coh_zero [Nontrivial R] (hN : 1 ≤ N) (n : ℤ) :
     Module.finrank R (coh (sheafO R N n) 0) = (n + N).toNat.choose N := by
@@ -494,7 +492,7 @@ theorem finrank_coh_zero [Nontrivial R] (hN : 1 ≤ N) (n : ℤ) :
 variable {N} in
 
 /- English proof (translation)
-Take `⟨b⟩` from `nonempty_basis_coh_top R hN n`. Rewrite using `[Module.finrank_eq_nat_card_basis b, card_negExp N hN]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_coh_top [Nontrivial R] (hN : 1 ≤ N) (n : ℤ) :
     Module.finrank R (coh (sheafO R N n) N) = (-n - 1).toNat.choose N := by
@@ -510,9 +508,9 @@ open GlobalTheory.ProjSpace
 variable (k : Type) [Field k] (N : ℕ)
 
 /- English proof (translation)
-Break down `N with _ | N` into its components or cases. Take `⟨e⟩` from `nonempty_coh_zero_equiv k n`. Rewrite using `[chi_eq_hdim_zero k fun p hp => subsingleton_coh k 0 n hp.ne' hp.ne', hdim_def, e.finrank_eq, Ring.choose_zero_right]`. Simplify using the standard rewrite rules. Rewrite using `[chi_eq_sum_range k (N + 1 + 1) fun _ hp => subsingleton_coh k _ n (by omega) (by omega), Finset.sum_range_succ, Finset.sum_range_succ', Finset.sum_eq_zero fun p hp => ?_, hdim_def, hdim_def, finrank_coh_zero k (by omega), finrank_coh_top k (by omega), choose_eq_add _ (by omega)]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `subsingleton_coh k (N + 1) n (p := p + 1) (by omega) (by have := Finset.mem_range.1 hp; omega)` as an intermediate fact. Simplify using `[hdim_eq_zero_of_subsingleton]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem chi_sheafO (n : ℤ) : chi k (sheafO k N n) = Ring.choose (n + N) N := by
   rcases N with _ | N
@@ -530,9 +528,9 @@ theorem chi_sheafO (n : ℤ) : chi k (sheafO k N n) = Ring.choose (n + N) N := b
       simp [hdim_eq_zero_of_subsingleton]
 
 /- English proof (translation)
-Establish `e` using `congrArg (Int.cast : ℤ → ℚ) (Ring.factorial_nsmul_multichoose_eq_ascPochhammer (n + 1) N)`. Rewrite `e` using `[Polynomial.ascPochhammer_smeval_eq_eval, nsmul_eq_mul]`. Establish `e' : (((ascPochhammer ℤ N).eval (n + 1) : ℤ) : ℚ) = (ascPochhammer ℚ N).eval ((n : ℚ) + 1)`. Rewrite using `[← ascPochhammer_map (Int.castRingHom ℚ), show (n : ℚ) + 1 = ((n + 1 : ℤ) : ℚ) by simp]`. Conclude with `(Polynomial.eval_map_apply (Int.castRingHom ℚ) _).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chi_sheafO, Ring.choose, add_sub_cancel_right, Polynomial.preHilbertPoly, Polynomial.eval_smul, Polynomial.eval_comp]`. Establish `h : (N.factorial : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 N.factorial_ne_zero`. Simplify using `only [Nat.cast_zero, map_zero, sub_zero, Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_one, smul_eq_mul, ← e', ← e]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem chi_sheafO_eq_eval (n : ℤ) :
     (chi k (sheafO k N n) : ℚ) = (Polynomial.preHilbertPoly ℚ N 0).eval (n : ℚ) := by

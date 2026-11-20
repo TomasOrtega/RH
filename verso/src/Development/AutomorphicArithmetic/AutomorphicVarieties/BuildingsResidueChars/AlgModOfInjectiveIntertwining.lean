@@ -4,7 +4,7 @@ open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.qdet, Formalism.REAL.qminor, Formalism.REAL.Tm, map_sum, map_mul, map_intCast, map_list_prod, List.map_ofFn, Function.comp_def, map_add, apply_ite f, AlgHom.commutes, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.quantum_determinant_map {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (f : A →ₐ[ℂ] B) {n : ℕ}
     (X : Fin n → Fin n → A) (u : ℂ) : f (Formalism.REAL.qdet X u) = Formalism.REAL.qdet (fun i j => f (X i j)) u := by
@@ -12,9 +12,9 @@ private theorem UpperTheory.quantum_determinant_map {A B : Type} [Ring A] [Algeb
     Function.comp_def, map_add, apply_ite f, AlgHom.commutes, map_zero]
 
 /- English proof (translation)
-Introduce `M _ _ N _ _ n f E E' h u x`. Set `S : Subalgebra ℂ (Module.End ℂ M × Module.End ℂ N)` to `{ carrier := {p | ∀ y, f (p.1 y) = p.2 (f y)} mul_mem' := fun {a b} ha hb y => (ha _).trans (congrArg a.2 (hb y)) add_mem' := fun {a b} ha hb y => by`. Simplify using `only [Prod.fst_add, Prod.snd_add, LinearMap.add_apply, map_add, ha y, hb y]`. Use the proof step `algebraMap_mem' := fun c y => map_smul f c y }`. Set `Z : Fin n → Fin n → S` to `fun i j => ⟨(E i j, E' i j), h i j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : (Formalism.REAL.qdet Z u).1.1 = Formalism.REAL.qdet E u` using `UpperTheory.quantum_determinant_map ((AlgHom.fst ℂ _ _).comp S.val) Z u`. Establish `h2 : (Formalism.REAL.qdet Z u).1.2 = Formalism.REAL.qdet E' u` using `UpperTheory.quantum_determinant_map ((AlgHom.snd ℂ _ _).comp S.val) Z u`. Rewrite using `[← h1, ← h2]`. Conclude with `(Formalism.REAL.qdet Z u).2 x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.algMod_of_injective_intertwining :
     ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (N : Type) [AddCommGroup N] [Module ℂ N] (n : ℕ) (f : M →ₗ[ℂ] N) (E : Fin n → Fin n → Module.End ℂ M) (E' : Fin n → Fin n → Module.End ℂ N), (∀ i j x, f (E i j x) = E' i j (f x)) → ∀ u x, f (Formalism.REAL.qdet E u x) = Formalism.REAL.qdet E' u (f x) := by

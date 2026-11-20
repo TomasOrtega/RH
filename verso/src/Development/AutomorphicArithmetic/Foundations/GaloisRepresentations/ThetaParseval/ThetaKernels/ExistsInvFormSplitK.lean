@@ -14,9 +14,9 @@ open MeasureTheory
 noncomputable section
 namespace GlobalTheory.SplitInvFormF
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ e he f₀ hf₀ hf₀0`. Take `⟨φ, hφ, hφ0, hd⟩` from `_root_.GlobalTheory.T.exists_eigenvector_split_idempotent F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ e he f₀ hf₀ hf₀0`. Take `⟨ℓ, h1, h2⟩` from `GlobalTheory.HalfCoinv.exists_form (Y := conjHalf σ e nS nT) (ρ := heisL σ JS JT ξ₀ B.ψ) (B := commF σ JS JT ξ₀ B.ψ) (Θ := {g | IsThetaFunOF σ JS JT ξ₀ B.ψ g}) (fun x hx x' hx' f => by show heisOF σ JS JT ξ₀ B.ψ x (heisOF σ JS JT ξ₀ B.ψ x' f) = heisOF σ JS JT ξ₀ B.ψ (x + x') f`. Rewrite using `[heisOF_heisOF, symplOHF_half he hx hx', AddChar.map_zero_eq_one, one_smul])`. Use the proof step `(fun f => heisOF_zero f) (fun u y f => heisOF_comm u y f)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use the proof step `(fun u hu g hg => exists_nsmul_fix he hu hg) hφ0 hd`. Conclude with `⟨ℓ, fun u hu f hf => h1 u hu f hf, φ, hφ, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_invForm_split_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

@@ -8,9 +8,9 @@ open scoped LaurentSeries PowerSeries
 namespace GlobalTheory.Models
 
 /- English proof (translation)
-Take `⟨C, Nb, A₁, j, q, hb, hj, hji, hq, hqs, rfl⟩` from `hN`. Establish `hC : F.Obj C` using `M.base_obj C Nb hb`. Establish `h1 : F.Obj A₁` using `F.obj_sub A₁ C j hj hji hC`. Establish `hA : F.Obj A` using `F.obj_quot A₁ A q hq hqs h1`. Establish `hB : F.Obj B` using `F.obj_quot A B p hp hs hA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨C, Nb, A₁, j, p ∘ₗ q, hb, hj, hji, fun g x => ?_, hs.comp hqs, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hq g x, hp g]`. Use function extensionality and compare the values at `i`. Simplify using `only [DFun.push]`. Rewrite using `[F.map_comp A₁ A B q p h1 hA hB hq hp i, ← Submodule.map_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

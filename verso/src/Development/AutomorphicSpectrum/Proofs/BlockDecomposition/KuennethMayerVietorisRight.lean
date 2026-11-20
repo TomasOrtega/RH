@@ -15,7 +15,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct DirectSum GlobalTheory.LogCr
 namespace GlobalTheory.CompanionTheory.KunGlue
 
 /- English proof (translation)
-Establish `h : ∀ x : C.H n, (Cx.Hom.id C).mapH n x = x`. Introduce `x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression. Conclude with `⟨fun x y e => by simpa only [h] using e, fun y => ⟨y, h y⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Supply the required witnesses or components.
 -/
 theorem mapH_id_bij {K : Type} [Field K] (C : Cx.{1} K) (n : ℕ) :
     Function.Bijective ((Cx.Hom.id C).mapH n) := by
@@ -26,7 +26,7 @@ theorem mapH_id_bij {K : Type} [Field K] (C : Cx.{1} K) (n : ℕ) :
   exact ⟨fun x y e => by simpa only [h] using e, fun y => ⟨y, h y⟩⟩
 
 /- English proof (translation)
-Simplify using `only [swapPr, LinearMap.smul_apply, LinearMap.flip_apply, smul_smul]`. Establish `s : ((-1 : ℤ) ^ (i * j) * (-1) ^ (j * i)) = 1`. Rewrite using `[mul_comm j i, ← mul_pow]`. Simplify using the standard rewrite rules. Rewrite using `[s, one_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem swapPr_swapPr_apply {K : Type} [Field K] {P Q T : ℕ → Cx.{1} K}
     (pr : ∀ {a a' c : ℕ}, a + a' = c → CxPairing (P a) (Q a') (T c)) {a a' c : ℕ} (ha : a + a' = c)
@@ -39,11 +39,11 @@ theorem swapPr_swapPr_apply {K : Type} [Field K] {P Q T : ℕ → Cx.{1} K}
   rw [s, one_smul]
 
 /- English proof (translation)
-Introduce `hMV hCD K _ E U₂ ι _ _ V W hV hW h₁ h₂ hK`. Set `Rel : ObjectProperty E.C₁ → ObjectProperty E.D → Prop` to `fun U U' => (∀ T, U' T → U (E.L₁.obj T)) ∧ (∀ T, U' T → U₂ (E.L₂.obj T))`. Set `prr : ∀ (U : ObjectProperty E.C₁) (U' : ObjectProperty E.D), Rel U U' → ∀ {a a' c : ℕ}, a + a' = c → CxPairing (CH.cx (U₂.ι ⋙ E.F₂ a)) (CH.cx (U.ι ⋙ E.F₁ a')) (CH.cx (U'.ι ⋙ E.F₃ c))` to `fun U U' r {a a' c} ha => swapPr (P := fun a => CH.cx (U.ι ⋙ E.F₁ a)) (Q := fun a => CH.cx (U₂.ι ⋙ E.F₂ a)) (T := fun c => CH.cx (U'.ι ⋙ E.F₃ c)) (fun {a a' c} ha => E.pr U U₂ U' r.1 r.2 ha) ha`. Establish `hnat : ∀ {U₁ U₂' : ObjectProperty E.C₁} {U₁' U₂'' : ObjectProperty E.D} (r₁ : Rel U₁ U₁') (r₂ : Rel U₂' U₂'') (k : U₂' ≤ U₁) (k' : U₂'' ≤ U₁') {a a' c : ℕ} (ha : a + a' = c) {i j n : ℕ} (hn : i + j = n) (x : (CH.cx (U₂.ι ⋙ E.F₂ a)).X i) (y : CH.Cn (U₁.ι ⋙ E.F₁ a') j), (resU (E.F₃ …`. Introduce `U₁ U₂' U₁' U₂'' r₁ r₂ k k' a a' c ha i j n hn x y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [prr, swapPr, LinearMap.smul_apply, LinearMap.flip_apply, map_zsmul]`. Rewrite using `[GlobalTheory.T.pairing_restrict_compat E r₁.1 r₁.2 r₂.1 r₂.2 k (le_refl U₂) k' (show a' + a = c by omega) (show j + i = n by omega) y x, GlobalTheory.T.restrict_self_pullC_eq (E.F₂ a) U₂ (le_refl U₂) i x]`. Establish `key` using `GlobalTheory.T.cosieve_pairing_family_compat hMV hCD E.F₁ E.F₃ (fun a => CH.cx (U₂.ι ⋙ E.F₂ a)) Rel prr hnat V W hV hW (fun S => ⟨h₁ S, h₂ S⟩) (fun S hS => GlobalTheory.T.kuenneth_swap _ (hK S hS))`. Establish `k2` using `GlobalTheory.T.kuenneth_swap _ key`. Use `(GlobalTheory.T.pairing_iso_of_component_isos _ _ (fun a => Cx.Hom.id _) (fun a => Cx.Hom.id _) (fun a => Cx.Hom.id _) (fun a n => mapH_id_bij _ n) (fun a n => mapH_id_bij _ n) (fun a n => mapH_id_bij _ n) ?_).1 k2` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a a' c ha i j n h x y`. Conclude with `swapPr_swapPr_apply (P := fun a => CH.cx ((capU V ∅).ι ⋙ E.F₁ a)) (Q := fun a => CH.cx (U₂.ι ⋙ E.F₂ a)) (T := fun c => CH.cx ((capU W ∅).ι ⋙ E.F₃ c)) (fun {a a' c} ha => E.pr (capU V ∅) U₂ (capU W ∅) (h₁ ∅) (h₂ ∅) ha) ha h x y`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem glue_l : MVBij → CovDesc → ∀ {K : Type} [Field K] (E : XD K) (U₂ : ObjectProperty E.C₂) {ι : Type} [DecidableEq ι] [Fintype ι] (V : ι → ObjectProperty E.C₁) (W : ι → ObjectProperty E.D), (∀ α, Cosieve (V α)) → (∀ α, Cosieve (W α)) → ∀ (h₁ : ∀ S : Finset ι, ∀ T, capU W S T → capU V S (E.L₁.obj T)) (h₂ : ∀ S : Finset ι, ∀ T, capU W S T → U₂ (E.L₂.obj T)), (∀ S : Finset ι, S.Nonempty → E.Kun (capU V S) U₂ (capU W S) (h₁ S) (h₂ S)) → E.Kun (capU V ∅) U₂ (capU W ∅) (h₁ ∅) (h₂ ∅) := by
   intro hMV hCD K _ E U₂ ι _ _ V W hV hW h₁ h₂ hK

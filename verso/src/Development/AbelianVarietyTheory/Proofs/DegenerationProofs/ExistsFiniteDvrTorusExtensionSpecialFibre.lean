@@ -14,9 +14,9 @@ namespace GlobalTheory
 open IsLocalRing
 
 /- English proof (translation)
-Take `⟨T⟩` from `h`. Use `haveI : IsMonHom (pullCompIso b a G).symm.hom := inferInstanceAs (IsMonHom (pullCompIso b a G).inv)`. Establish `h₁ : Nonempty (TorusExtension ((Over.pullback (b ≫ a)).obj G))` using `⟨torusExtOfIso (pullCompIso b a G).symm T⟩`. Rewrite `h₁` using `[e]`. Take `⟨T₁⟩` from `h₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨torusExtOfIso (pullCompIso d c G) T₁⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_torusExtension_of_comp_eq {K : Type} [Field K] {S S₁ S₂ : Scheme.{0}} {a : S₁ ⟶ S}
     {b : Spec (CommRingCat.of K) ⟶ S₁} {c : S₂ ⟶ S} {d : Spec (CommRingCat.of K) ⟶ S₂} (e : b ≫ a = d ≫ c)
@@ -30,15 +30,13 @@ theorem nonempty_torusExtension_of_comp_eq {K : Type} [Field K] {S S₁ S₂ : S
   exact ⟨torusExtOfIso (pullCompIso d c G) T₁⟩
 
 /- English proof (translation)
-Introduce `V' _ _ _ _ G _ hG`. Establish `h₀ : IsSemiAbelian ((Over.pullback (spMap (residue V'))).obj G)` using `IsSemiAbelian.pullback _ G hG`. Use `haveI := h₀.smooth`. Use `haveI := h₀.quasiCompact`. Use `haveI := h₀.separated`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `k` to `ResidueField V'`. Set `Ω` to `AlgebraicClosure k`. Take `⟨T⟩` from `h₀.fibres Ω (spMap (algebraMap k Ω))`. Take `⟨s, hs, H⟩` from `FieldModel.exists_finite_torusExtension_range (algebraMap k Ω) _ T`. Use `haveI : Finite s := hs.to_subtype`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : FiniteDimensional k (IntermediateField.adjoin k s) := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Take `⟨V'', i1, i2, i3, i4, i5, hf, hi, hl, e, he⟩` from `nb V' (IntermediateField.adjoin k s)`. Use `⟨V'', i1, i2, i3, i4, i5, hf, hi, hl, IsSemiAbelian.pullback _ G hG, ?_⟩` and prove the remaining obligations. Establish `hT` using `H _ (ResidueField.map (algebraMap V' V'')) ((algebraMap (IntermediateField.adjoin k s) Ω).comp e.symm.toRingHom) (by`. Rewrite using `[← he]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use extensionality with `x`. Simplify using `[k])`. Use the proof step `(fun x hx => ⟨e ⟨x, IntermediateField.subset_adjoin _ _ hx⟩, by simp⟩)`. Use `nonempty_torusExtension_of_comp_eq ?_ G hT` and prove the remaining obligations. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, ResidueField.map_comp_residue]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_finite_dvr_torusExtension_specialFibre : ∀ (V' : Type) [CommRing V'] [IsDomain V'] [IsDiscreteValuationRing V'] [IsAdicComplete (IsLocalRing.maximalIdeal V') V'] (G : Over (Spec (CommRingCat.of V'))) [GrpObj G], IsSemiAbelian G → ∃ (V'' : Type) (_ : CommRing V'') (_ : IsDomain V'') (_ : IsDiscreteValuationRing V'') (_ : IsAdicComplete (IsLocalRing.maximalIdeal V'') V'') (_ : Algebra V' V''), Module.Finite V' V'' ∧ Function.Injective (algebraMap V' V'') ∧ IsLocalHom (algebraMap V' V'') ∧ IsSemiAbelian (baseChange V' V'' G) ∧ Nonempty (TorusExtension (specialFibre V'' (baseChange V' V'' G))) := by
   intro V' _ _ _ _ G _ hG

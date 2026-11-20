@@ -14,16 +14,16 @@ open GlobalTheory.TorRef
 namespace GlobalTheory.TorRef
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, inferInstance, h.2.1, h.2.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem admissibleBase_of_completeNormalLocalCharZero {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (h : IsCN R) :
     AdmBase R (maximalIdeal R) :=
   ⟨h.1, inferInstance, h.2.1, h.2.2.1⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H R R' _ _ _ _ _ _ φ t P hR hR' hφ hloc _`. Take `⟨h1, -, h3, h4, h5, -⟩` from `GlobalTheory.allSixLaws`. Establish `aR` using `admissibleBase_of_completeNormalLocalCharZero hR`. Establish `aR'` using `admissibleBase_of_completeNormalLocalCharZero hR'`. Establish `: CharZero R'` using `hR'.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : (maximalIdeal R).map φ ≤ maximalIdeal R'` using `Ideal.map_le_iff_le_comap.2 fun a ha => (map_mem_nonunits_iff φ a).2 ha`. Take `⟨t', m₀, P', hD, -, -, -, -, xl, -⟩` from `GlobalTheory.ArcDataDescent.exists_pelUnif_pull h3.cubePull h1.polBaseChange h4.unifBaseChange h5 aR aR' t P φ hφ hI`. Set `e : P'.D.toPre.X ≃ₗ[𝓞 E] P.D.toPre.X` to `{ hD.xe with map_smul' := xl }`. Conclude with `⟨t', m₀, P', e, GlobalTheory.FlatTors.torsionIso_holds E H R' _ aR' t' P', fun y r hr => GlobalTheory.PelCoordPull.psiCoord_pull hD y r hr⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem pullSt : PullSt := by
   intro E _ _ _ H R R' _ _ _ _ _ _ φ t P hR hR' hφ hloc _

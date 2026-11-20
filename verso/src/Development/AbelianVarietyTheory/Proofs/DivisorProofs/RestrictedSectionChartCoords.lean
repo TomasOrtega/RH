@@ -23,14 +23,14 @@ section Dictionary
 variable {Y : Scheme.{0}} {M N : LB Y} {O W : Y.Opens}
 
 /- English proof (translation)
-The claim follows from `LB.coord_map h s i`.
+A detailed English derivation is pending.
 -/
 theorem coord_resM (h : W ≤ O) (s : Γ(LB.toMod M, O)) (i : M.ι) :
     LB.coord (Twist.resM (LB.toMod M) h s) i = resG Y (inf_le_inf_right _ h) (LB.coord s i) :=
   LB.coord_map h s i
 
 /- English proof (translation)
-Introduce `_ hy` and use `⟨⟨hy.1, hy.2.2⟩, hy.2.1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_tens (O : Y.Opens) (q : (tens M N).ι) : O ⊓ (tens M N).U q ≤ O ⊓ N.U q.2 ⊓ M.U q.1 :=
   fun _ hy => ⟨⟨hy.1, hy.2.2⟩, hy.2.1⟩
@@ -65,13 +65,13 @@ def ofTwist : Γ(twist (LB.toMod M) N, O) →+ Γ(LB.toMod (tens M N), O) where
     rw [LB.coord_add, coord_ofTwistFun, coord_ofTwistFun, coord_ofTwistFun, Twist.coord_add, LB.coord_add, map_add]
 
 /- English proof (translation)
-Introduce `_ hy` and use `⟨hy.1.1, hy.2, hy.1.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem tens_le (O : Y.Opens) (i : M.ι) (j : N.ι) : O ⊓ N.U j ⊓ M.U i ≤ O ⊓ (tens M N).U (i, j) :=
   fun _ hy => ⟨hy.1.1, hy.2, hy.1.2⟩
 
 /- English proof (translation)
-Use `(LB.coord_rel f (i, j) (i', j') h h' (le_inf (h.trans inf_le_right) (h'.trans inf_le_right))).trans ?_` and prove the remaining obligations. Use `congrArg (· * _) ?_` and prove the remaining obligations. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) (LB.resG_resG _ _ _) (LB.resG_resG _ _ _))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tens_rel (f : Γ(LB.toMod (tens M N), O)) (i i' : M.ι) (j j' : N.ι) (h : W ≤ O ⊓ (tens M N).U (i, j))
     (h' : W ≤ O ⊓ (tens M N).U (i', j')) (hM : W ≤ M.U i ⊓ M.U i') (hN : W ≤ N.U j ⊓ N.U j') :
@@ -82,7 +82,7 @@ theorem tens_rel (f : Γ(LB.toMod (tens M N), O)) (i i' : M.ι) (j j' : N.ι) (h
   exact (map_mul _ _ _).trans (congrArg₂ (· * ·) (LB.resG_resG _ _ _) (LB.resG_resG _ _ _))
 
 /- English proof (translation)
-Introduce `f` and use `by let a : ∀ j : N.ι, Γ(LB.toMod M, O ⊓ N.U j) := fun j => LB.mkSec (fun i => resG Y (tens_le O i j) (LB.coord f (i, j))) fun i i' => by simp only [LB.resG_resG] refine (tens_rel f i i' j j _ (by exact fun _ hy => ⟨hy.1.1.1, hy.2, hy.1.1.2⟩) (by exact fun _ hy => ⟨hy.1.2, hy.2⟩) …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem surjective_ofTwist (hM : M.IsLB) (hN : N.IsLB) :
     Function.Surjective (ofTwist : Γ(twist (LB.toMod M) N, O) → Γ(LB.toMod (tens M N), O)) := fun f => by
@@ -106,7 +106,7 @@ variable {k : Type} [CommRing k] (p : Y ⟶ Sp k) {L : LB Y} {n l : ℤ}
 def toH0 : Γ(twistZ (LB.toMod M) L n, O) →+ Vanishing.H0 p (tw M L n) O := ofTwist
 
 /- English proof (translation)
-Rewrite using `[Twist.zcoord, coord_resM, LB.resG_resG]`. Conclude with `LB.resG_resG _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restricted_section_chart_coords (s : Γ(twistZ (LB.toMod M) L n, O)) (i : M.ι) (j : L.ι)
     (h : W ≤ O ⊓ (tw M L n).U (twIdx n i j)) (h' : W ≤ O ⊓ L.U j ⊓ M.U i) :
@@ -115,7 +115,7 @@ theorem restricted_section_chart_coords (s : Γ(twistZ (LB.toMod M) L n, O)) (i 
   exact LB.resG_resG _ _ _
 
 /- English proof (translation)
-Establish `h : O ⊓ L.U j ⊓ M.U i ≤ O ⊓ (tw M L n).U (twIdx n i j)` using `fun _ hz => ⟨hz.1.1, mem_tw_U.2 ⟨hz.2, hz.1.2⟩⟩`. Establish `e` using `congrArg (ger y (memInf (memInf hy hj) hi)) (restricted_section_chart_coords p s i j h le_rfl)`. Rewrite `e` using `[ger_resG, ger_resG]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem germ_of_global_section (s : Γ(twistZ (LB.toMod M) L n, O)) (i : M.ι) (j : L.ι) (y : Y) (hy : y ∈ O)
     (hi : y ∈ M.U i) (hj : y ∈ L.U j) :
@@ -126,7 +126,7 @@ theorem germ_of_global_section (s : Γ(twistZ (LB.toMod M) L n, O)) (i : M.ι) (
   rwa [ger_resG, ger_resG] at e
 
 /- English proof (translation)
-The claim follows from `tw_ext hM hL fun i j y hy hi hj => by rw [germ_mulSec _ _ _ _ _ _ _ _ _ hi hj, germ_of_global_section p _ i j y hy hi hj, germ_of_global_section p _ i j y hy hi hj, Twist.zcoord_mulSecOfEq_app, LB.coord_smul, map_mul, ger_resG, ger_resG, Twist.zfun_zofSec]`.
+A detailed English derivation is pending.
 -/
 theorem global_section_mul (hM : M.IsLB) (hL : L.IsLB) (w : L.Sec) (h : n + 1 = l) (s : Γ(twistZ (LB.toMod M) L n, O)) :
     toH0 p ((Twist.mulSecOfEq (LB.toMod M) (Twist.zofSec w) h).app O s) = mulSec hM hL w h (toH0 p s) :=
@@ -135,13 +135,13 @@ theorem global_section_mul (hM : M.IsLB) (hL : L.IsLB) (w : L.Sec) (h : n + 1 = 
       Twist.zcoord_mulSecOfEq_app, LB.coord_smul, map_mul, ger_resG, ger_resG, Twist.zfun_zofSec]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `exists_chart hM y`. Take `⟨j, hj⟩` from `exists_chart hL y`. Take `⟨V, hV, e⟩` from `exists_affine (memInf hi hj)`. Establish `hVi : V.1 ≤ M.U i` using `e.trans inf_le_left`. Establish `hVj : V.1 ≤ L.U j` using `e.trans inf_le_right`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁ : V.1 ≤ ⊤ ⊓ (tw M L l).U (twIdx l i j)` using `fun _ hz => ⟨trivial, mem_tw_U.2 ⟨hVi hz, hVj hz⟩⟩`. Establish `h₂` using `vanishesTo_iff_affine.1 hs V _ h₁`. Rewrite `h₂` using `[pow_one, ideal_cutIdeal hL t V j hVj, restricted_section_chart_coords p s i j h₁ (le_inf (le_inf le_top hVj) hVi)]`. Take `⟨c, hc⟩` from `Ideal.mem_span_range_iff_exists_fun.1 h₂`. Use `⟨V.1, hV, fun a => (Twist.zchartEquiv hL n j hVj).symm ((LB.chartEquiv hM i hVi).symm (c a)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Twist.zchartEquiv hL l j hVj).injective ((LB.chartEquiv hM i hVi).injective ?_)` and prove the remaining obligations. Simplify using `only [map_sum, Twist.zchartEquiv_mulSecOfEq_app, map_smul, LinearEquiv.apply_symm_apply, Twist.zfun_zofSec, smul_eq_mul]`. Rewrite using `[LB.chartEquiv_apply, Twist.zchartEquiv_apply]`. Use `Eq.trans ?_ (hc.symm.trans (Finset.sum_congr rfl fun a _ => mul_comm _ _))` and prove the remaining obligations. Rewrite using `[coord_resM]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `erw [Twist.zcoord_resM]`. Rewrite using `[coord_resM, LB.resG_resG, LB.resG_resG]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local (hM : M.IsLB) (hL : L.IsLB) {d : ℕ} (t : Fin d → L.Sec) (h : n + 1 = l)
     (s : Γ(twistZ (LB.toMod M) L l, ⊤)) (hs : VanishesTo (cutIdeal hL t) 1 (toH0 p s)) (y : Y) :
@@ -174,7 +174,7 @@ section Main
 variable {K : Type} [Field K] [NumberField K] (G : Geo K)
 
 /- English proof (translation)
-Establish `key (v : Fin G.N → K) : H0.ofSec G.str ⊤ (G.comb v) = Fintype.linearCombination K (fun c => H0.ofSec G.str ⊤ (G.b c)) v` using `G.ofSec_comb ⊤ v`. Rewrite using `[← H0.germ_ofSec (p := G.str) j y (TopologicalSpace.Opens.mem_top y) hj, key, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, H0.germ_smul, ← key, H0.germ_ofSec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ger_comb_sum {ι : Type} [Fintype ι] (a : ι → K) (u : ι → Fin G.N → K) (j : G.L.ι) (y : G.Y) (hj : y ∈ G.L.U j) :
     ger y hj ((G.comb (∑ i, a i • u i)).f j) = ∑ i, H0.const G.str y (a i) * ger y hj ((G.comb (u i)).f j) := by
@@ -185,7 +185,7 @@ theorem ger_comb_sum {ι : Type} [Fintype ι] (a : ι → K) (u : ι → Fin G.N
   rw [map_smul, H0.germ_smul, ← key, H0.germ_ofSec]
 
 /- English proof (translation)
-Introduce `y _ hy c hc` and use `by have h := vanishesTo_iff_forall.1 hf y hy c hc obtain ⟨j, hj⟩ := exists_chart G.isLB y rw [pow_one, stalkId_cutIdeal G.isLB _ j y hj] at h ⊢ refine Ideal.span_le.2 (Set.range_subset_iff.2 fun a => ?_) h have e : s a = ∑ i, g⁻¹ a i • ∑ j, g i j • s j := by simp only [Finset.smu …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vanishesTo_of_isUnit (s : Fin G.D → Fin G.N → K) (g : Matrix (Fin G.D) (Fin G.D) K) (hg : IsUnit g.det)
     {B : LB G.Y} {O : G.Y.Opens} {f : Vanishing.H0 G.str B O} (hf : VanishesTo (G.ideal s) 1 f) :
@@ -206,9 +206,9 @@ theorem vanishesTo_of_isUnit (s : Fin G.D → Fin G.N → K) (g : Matrix (Fin G.
 end Main
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `⟨σ, rfl⟩ : ∃ σ : Γ(twistZ (LB.toMod M) L (n + 1), ⊤), toH0 p σ = f` from `surjective_ofTwist hM (Twist.isLB_lbZPow hL _) f`. Use `(VB.isVB_toMod hM).isFiniteQC` as an intermediate fact. Take `⟨m, hm⟩` from `GlobalTheory.T.exists_global_combination_of_local_regular_ideal k Y hY L hL d t (LB.toMod M) 0 n hreg hvan ((zero_add _).trans_le hd) σ (exists_local p hM hL t rfl σ hf)`. Use `⟨fun i => toH0 p (m i), (congrArg (toH0 p) hm).trans ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(map_sum (toH0 p) _ _).trans (Finset.sum_congr rfl fun i _ => global_section_mul p hM hL _ rfl (m i))`.
+A detailed English derivation is pending.
 -/
 theorem exists_global {k : Type} [Field k] {Y : Scheme.{0}} [Algebra k Γ(Y, ⊤)] (hY : IsProjOver (GlobalTheory.strHom k Y))
     (p : Y ⟶ Sp k) {M L : LB Y} (hM : M.IsLB) (hL : L.IsLB) {d : ℕ} (t : Fin d → L.Sec) {n l : ℤ} (h : n + 1 = l)
@@ -225,11 +225,11 @@ theorem exists_global {k : Type} [Field k] {Y : Scheme.{0}} [Algebra k Γ(Y, ⊤
   exact (map_sum (toH0 p) _ _).trans (Finset.sum_congr rfl fun i _ => global_section_mul p hM hL _ rfl (m i))
 
 /- English proof (translation)
-Introduce `Q K _ _ G hnef hbig s hs l hl f hf`. Take `⟨⟨f, rfl⟩, hv⟩` from `mem_Fil.1 hf`. Establish `hB : (tens G.K.bundle G.LA).IsLB` using `isLB_tens G.K.isLB G.isLBA`. Take `⟨g, hg, hreg⟩` from `GlobalTheory.T.exists_basis_regular_sequence_of_common_zeros K G s hs _ hB`. Establish `hv'` using `vanishesTo_of_isUnit G s g hg ((vanishesTo_restr_iff hs.inU le_top).1 hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hproj : IsProjOver (GlobalTheory.strHom K G.Y)`. Rewrite using `[GlobalTheory.strHom_eq (f := G.str) fun _ => rfl]`. Conclude with `G.geom.alg.variety.proj`. Take `⟨μ, e⟩` from `exists_global hproj G.str hB G.isLB _ (Nat.cast_succ l).symm hreg (GlobalTheory.T.kawamataViehweg_vanishing_numberField_twist Q K G hnef hbig) (by exact_mod_cast hl) f hv'`. Use `⟨fun j => H0.restr le_top (∑ i, g i j • μ i), fun j => ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e' (i) : H0.restr (le_top : G.U ≤ ⊤) (mulSec hB G.isLB (G.comb (∑ j, g i j • s j)) (Nat.cast_succ l).symm (μ i)) = G.mulW l (∑ j, g i j • s j) (H0.restr le_top (μ i))`. Rewrite using `[G.mulW_apply, mulSec, mulSec, ProdChart.restr_mul, H0.restr_ofSec]`. Rewrite using `[e, map_sum]`. Simplify using `only [e', map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kerRes : Quoted → KerRes := by
   intro Q K _ _ G hnef hbig s hs l hl f hf

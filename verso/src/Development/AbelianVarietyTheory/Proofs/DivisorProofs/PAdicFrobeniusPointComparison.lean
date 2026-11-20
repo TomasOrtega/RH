@@ -18,11 +18,11 @@ open GlobalTheory.ShFam.Descent
 namespace GlobalTheory.DetHT
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Z p _ _ P z yb hz Q π ψ hP σ j xx h`. Take `⟨xG, u', h1, h2, h3⟩` from `h`. Use `⟨xG, u', h1, ?_, h3⟩` and prove the remaining obligations. Take `⟨w, a1, a2, a3⟩` from `(tie_frameOf Z z).2.2 σ j`. Establish `hw` using `Over.w u'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hψ` using `hP.2.2.2.1.1.w`. Establish `h5` using `hP.2.2.2.2`. Establish `hb : w ≫ Z.oF.t.G.hom = (Over.Hom.left u' ≫ ψ) ≫ Z.oF.t.G.hom`. Rewrite using `[a1, Category.assoc, hψ, ← Category.assoc, hw, hz]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hm : w ≫ Z.m0.φ = (Over.Hom.left u' ≫ ψ) ≫ Z.m0.φ`. Rewrite using `[a2, Category.assoc, h2]`. Establish `hwe` using `Z.m0.toSABMap.cart.1.hom_ext hm hb`. Rewrite using `[← h5, ← Category.assoc, ← hwe, a3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lieTie_frameOf_of_ptAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F))

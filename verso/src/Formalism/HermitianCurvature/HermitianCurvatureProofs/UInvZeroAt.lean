@@ -14,7 +14,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-The claim follows from `| [], x, hx, e => hx e | l :: w, x, hx, e => by have h0 := uInv_zero_at s g w (fun e' => x (Fin.cons (0 : Fin 2) e')) (fun e' => hx _) have h1 := uInv_zero_at s g w (fun e' => x (Fin.cons (1 : Fin 2) e')) (fun e' => hx _) show (if e (0 : Fin (w.length + 1)) = 0 then KB.uInv s w ( …`.
+A detailed English derivation is pending.
 -/
 theorem uInv_zero_at (s : ℂ) (g : B.Mat k r) :
     ∀ (w : List C.Letter) (x : Wd.Ix (Fin w.length) → B.Mat k r → (Wq →L[ℂ] Wp)),
@@ -29,9 +29,9 @@ theorem uInv_zero_at (s : ℂ) (g : B.Mat k r) :
     split_ifs <;> simp only [Pi.add_apply, Pi.smul_apply, h0, h1, smul_zero, add_zero]
 
 /- English proof (translation)
-Introduce `e g hg hne`. Assume the negation of the conclusion as `hR`. Apply `hne` to reduce the goal to its premises. Establish `hz : ∀ e', x e' g = 0` using `fun e' => by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hR (hx e' g hg h)`. Use `show P5.fsv s _ • KB.uInv s w x e g = 0`. Rewrite using `[uInv_zero_at s g w x hz e, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem waveG_bs (Bs : B.RealPlaceData k r Wp Wq) (s : ℂ) (w : List C.Letter)
     (x : Wd.Ix (Fin w.length) → B.Mat k r → (Wq →L[ℂ] Wp)) (R : ℝ)
@@ -47,14 +47,14 @@ theorem waveG_bs (Bs : B.RealPlaceData k r Wp Wq) (s : ℂ) (w : List C.Letter)
   rw [uInv_zero_at s g w x hz e, smul_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hF.1, hF.2.1, fun g hg hne => h.trans (hF.2.2 g hg hne)⟩`.
+Supply the required witnesses or components.
 -/
 theorem nice_mono {Bs : B.RealPlaceData k r Wp Wq} {F : B.Mat k r → (Wq →L[ℂ] Wp)} {ε ε' : ℝ} (h : ε' ≤ ε)
     (hF : JC.NiceCoef Bs ε F) : JC.NiceCoef Bs ε' F :=
   ⟨hF.1, hF.2.1, fun g hg hne => h.trans (hF.2.2 g hg hne)⟩
 
 /- English proof (translation)
-Use `choose R hR using h`. Use `⟨∑ i, |R i|, fun i g hg hne => (hR i g hg hne).trans ?_⟩` and prove the remaining obligations. Conclude with `(le_abs_self _).trans (Finset.single_le_sum (f := fun i => |R i|) (fun i _ => abs_nonneg _) (Finset.mem_univ i))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem common_R {ι : Type*} [Fintype ι] (F : ι → B.Mat k r → (Wq →L[ℂ] Wp))
     (h : ∀ i, ∃ R : ℝ, ∀ g ∈ B.GV k r, F i g ≠ 0 → B.gN g ≤ R) :

@@ -25,7 +25,7 @@ def tailU {n : ℕ} (u : Up (n + 1) → K) : Up n → K :=
   fun p => u ⟨(p.1.1.succ, p.1.2.succ), Fin.succ_lt_succ_iff.2 p.2⟩
 
 /- English proof (translation)
-Introduce `h` and use `Fin.not_lt_zero _ (h ▸ p.2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem up_snd_ne {n : ℕ} (p : Up (n + 1)) : p.1.2 ≠ 0 := fun h => Fin.not_lt_zero _ (h ▸ p.2)
 
@@ -34,9 +34,9 @@ def joinU {n : ℕ} (c : Fin n → K) (v : Up n → K) : Up (n + 1) → K := fun
   else v ⟨(p.1.1.pred h, p.1.2.pred (up_snd_ne p)), (Fin.pred_lt_pred_iff (ha := h) (hb := up_snd_ne p)).2 p.2⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨⟨i, j⟩, h⟩` from `p`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => exact absurd h (Fin.not_lt_zero _)`. Consider the case `succ j`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp [joinU, headU]`. Consider the case `succ i => simp [joinU, tailU, Fin.succ_ne_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem joinU_head_tail {n : ℕ} (u : Up (n + 1) → K) : joinU (headU u) (tailU u) = u := by
   funext p
@@ -49,38 +49,38 @@ theorem joinU_head_tail {n : ℕ} (u : Up (n + 1) → K) : joinU (headU u) (tail
     | succ i => simp [joinU, tailU, Fin.succ_ne_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[headU, joinU]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem headU_join {n : ℕ} (c : Fin n → K) (v : Up n → K) : headU (joinU c v) = c := by
   funext j
   simp [headU, joinU]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `[tailU, joinU, Fin.succ_ne_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tailU_join {n : ℕ} (c : Fin n → K) (v : Up n → K) : tailU (joinU c v) = v := by
   funext p
   simp [tailU, joinU, Fin.succ_ne_zero]
 
 /- English proof (translation)
-Simplify using `[unip]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unip_zero_zero {n : ℕ} (u : Up (n + 1) → K) : unip u 0 0 = 1 := by simp [unip]
 
 /- English proof (translation)
-Simplify using `[unip, Fin.succ_ne_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unip_succ_zero {n : ℕ} (u : Up (n + 1) → K) (k : Fin n) : unip u k.succ 0 = 0 := by
   simp [unip, Fin.succ_ne_zero]
 
 /- English proof (translation)
-Simplify using `[unip, headU, (Fin.succ_ne_zero j).symm, Fin.succ_pos]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unip_zero_succ {n : ℕ} (u : Up (n + 1) → K) (j : Fin n) : unip u 0 j.succ = headU u j := by
   simp [unip, headU, (Fin.succ_ne_zero j).symm, Fin.succ_pos]
 
 /- English proof (translation)
-Distinguish the cases in `h : i = j`. Simplify using `[unip, h]`. Distinguish the cases in `h' : i < j`. Simplify using `[unip, h, h', tailU]`. Simplify using `[unip, h, h']`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem unip_succ_succ {n : ℕ} (u : Up (n + 1) → K) (i j : Fin n) :
     unip u i.succ j.succ = unip (tailU u) i j := by
@@ -102,28 +102,28 @@ def blk {n : ℕ} (A : K) (c : Fin n → K) (S : Matrix (Fin n) (Fin n) K) :
   fun i j => Fin.cases (Fin.cases A c j) (fun a => Fin.cases (τ (c a)) (S a) j) i
 
 /- English proof (translation)
-Simplify using `[gram, Fin.sum_univ_succ, unip_zero_zero, unip_succ_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gram_zero_zero {n : ℕ} (d : Fin (n + 1) → Rˣ) (u : Up (n + 1) → K) :
     gram ι τ d u 0 0 = ι (d 0) := by
   simp [gram, Fin.sum_univ_succ, unip_zero_zero, unip_succ_zero]
 
 /- English proof (translation)
-Simplify using `[gram, Fin.sum_univ_succ, unip_zero_zero, unip_succ_zero, unip_zero_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gram_zero_succ {n : ℕ} (d : Fin (n + 1) → Rˣ) (u : Up (n + 1) → K) (j : Fin n) :
     gram ι τ d u 0 j.succ = ι (d 0) * headU u j := by
   simp [gram, Fin.sum_univ_succ, unip_zero_zero, unip_succ_zero, unip_zero_succ]
 
 /- English proof (translation)
-Simplify using `[gram, Fin.sum_univ_succ, unip_zero_zero, unip_succ_zero, unip_zero_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gram_succ_zero {n : ℕ} (d : Fin (n + 1) → Rˣ) (u : Up (n + 1) → K) (i : Fin n) :
     gram ι τ d u i.succ 0 = τ (headU u i) * ι (d 0) := by
   simp [gram, Fin.sum_univ_succ, unip_zero_zero, unip_succ_zero, unip_zero_succ]
 
 /- English proof (translation)
-Simplify using `[gram, Fin.sum_univ_succ, unip_zero_succ, unip_succ_succ, Fin.tail, add_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gram_succ_succ {n : ℕ} (d : Fin (n + 1) → Rˣ) (u : Up (n + 1) → K) (i j : Fin n) :
     gram ι τ d u i.succ j.succ =
@@ -133,11 +133,11 @@ theorem gram_succ_succ {n : ℕ} (d : Fin (n + 1) → Rˣ) (u : Up (n + 1) → K
 variable {ι τ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simpa [blk] using gram_zero_zero ι τ d u`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j => simpa [blk] using gram_zero_succ ι τ d u j`. Consider the case `succ i`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero`. Simplify `gram_succ_zero ι τ d u i` using `[blk, hτι, mul_comm]`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ j => simpa [blk] using gram_succ_succ ι τ d u i j`.
+Treat this case separately.
 -/
 theorem gram_split (hτι : ∀ r, τ (ι r) = ι r) {n : ℕ} (d : Fin (n + 1) → Rˣ) (u : Up (n + 1) → K) :
     gram ι τ d u = blk τ (ι (d 0)) (fun j => ι (d 0) * headU u j)
@@ -155,7 +155,7 @@ theorem gram_split (hτι : ∀ r, τ (ι r) = ι r) {n : ℕ} (d : Fin (n + 1) 
     | succ j => simpa [blk] using gram_succ_succ ι τ d u i j
 
 /- English proof (translation)
-Introduce `a b`. Simplify using `only [gram, map_sum, map_mul, hττ, hτι]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_mem (hττ : ∀ x, τ (τ x) = x) (hτι : ∀ r, τ (ι r) = ι r) {n : ℕ} (d : Fin n → Rˣ)
     (u : Up n → K) : gram ι τ d u ∈ Hm τ n := by
@@ -164,9 +164,9 @@ theorem gram_mem (hττ : ∀ x, τ (τ x) = x) (hτι : ∀ r, τ (ι r) = ι r
   exact Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Introduce `i j`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simpa [blk] using hA`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j => simp [blk, hττ]`. Consider the case `succ i`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp [blk]`. Consider the case `succ j => simpa [blk] using hS i j`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem blk_mem (hττ : ∀ x, τ (τ x) = x) {n : ℕ} {A : K} (hA : τ A = A) (c : Fin n → K)
     {S : Matrix (Fin n) (Fin n) K} (hS : S ∈ Hm τ n) : blk τ A c S ∈ Hm τ (n + 1) := by
@@ -182,7 +182,7 @@ theorem blk_mem (hττ : ∀ x, τ (τ x) = x) {n : ℕ} {A : K} (hA : τ A = A)
     | succ j => simpa [blk] using hS i j
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gram_eq (ι : R →+* K) (τ : K →+* K) {n : ℕ} (d : Fin n → Rˣ) (u : Up n → K) :
     gram ι τ d u = cT τ (unip u) * Matrix.diagonal (fun i => ι (d i)) * unip u := by
@@ -339,11 +339,9 @@ def oH (ι : R →+* K) (τ : K →+* K) (hττ : ∀ x, τ (τ x) = x) (hτι :
   ⟨gram ι τ x.1 x.2, gram_mem hττ hτι x.1 x.2⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => haveI : IsEmpty (Up 0) := ⟨fun p => (p.1.1).elim0⟩ haveI : Unique ((Fin 0 → Rˣ) × (Up 0 → K)) := ⟨⟨(fun i => i.elim0, fun p => isEmptyElim p)⟩, fun x => Prod.ext (funext fun i => i.elim0) (funext fun p => isEmptyElim p)⟩ haveI : Unique (Hm τ 0) := ⟨⟨⟨0, fun a => a.elim0⟩⟩ …`. Establish `h : oH ι τ hττ hτι 0 = Homeomorph.homeomorphOfUnique _ _` using `Subsingleton.elim _ _`. Rewrite using `[h]`. Conclude with `(Homeomorph.homeomorphOfUnique _ _).isOpenEmbedding`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Establish `h : oH ι τ hττ hτι (n + 1) = (eH hι hτ hlev hττ hτι hlι hfix n) ∘ (Prod.map Units.val id) ∘ (shear hι hτ hττ hτι n) ∘ (Prod.map id (Prod.map id (oH ι τ hττ hτι n))) ∘ (eD n)`. Use function extensionality and compare the values at `x`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `gram_split hτι x.1 x.2`.
-
-Rewrite using `[h]`. Conclude with `(eH hι hτ hlev hττ hτι hlι hfix n).isOpenEmbedding.comp ((hU.prodMap .id).comp ((shear hι hτ hττ hτι n).isOpenEmbedding.comp ((IsOpenEmbedding.id.prodMap (IsOpenEmbedding.id.prodMap ih)).comp (eD n).isOpenEmbedding)))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oH_isOpenEmbedding {lev : K → R} (hι : Continuous ι) (hτ : Continuous τ) (hlev : Continuous lev)
     (hττ : ∀ x, τ (τ x) = x) (hτι : ∀ r, τ (ι r) = ι r) (hlι : ∀ r, lev (ι r) = r)
@@ -377,21 +375,19 @@ end Top
 end Abstract
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm R _ _ _ _ _ hloc n`. Take `⟨hTR, hLC, hSC, hT2, hAr, hRed, hU, -⟩` from `hloc`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hT2`. Use `haveI := hAr`. Use `haveI := hRed`. Take `⟨-, -, -, hinv, -, hfix, -⟩` from `GlobalTheory.T.tensor_involution_algebra_properties F E σ hcm R`. Take `⟨hKT, -, -, -, hsc, htr, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `haveI := hKT`. Establish `hfr : Module.finrank F E = 2` using `hcm.2.2.1`. Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Establish `hιt : ∀ r : R, algebraMap R (R ⊗[F] E) r = r ⊗ₜ[F] (1 : E)` using `fun r => by`. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hι : Continuous (algebraMap R (R ⊗[F] E))`. Establish `e : (algebraMap R (R ⊗[F] E) : R → R ⊗[F] E) = fun r => r • (1 : R ⊗[F] E)`. Use function extensionality and compare the values at `fun r => Algebra.algebraMap_eq_smul_one r`. Rewrite using `[e]`. Conclude with `(continuous_id (X := R)).smul (continuous_const (y := (1 : R ⊗[F] E)))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hτι : ∀ r : R, sigR R σ (algebraMap R (R ⊗[F] E) r) = algebraMap R (R ⊗[F] E) r` using `fun r => by`. Rewrite using `[hιt]`. Simplify using `[sigR]`. Establish `hfix' : ∀ y : R ⊗[F] E, sigR R σ y = y → ∃ r : R, y = algebraMap R (R ⊗[F] E) r` using `fun y hy => by`. Take `⟨r, hr⟩` from `hfix y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `⟨r, hr.trans (hιt r).symm⟩`. Establish `h2 : algebraMap F R (1 / 2) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap F R) 2, ← map_mul]`. Evaluate the numerical expressions. Establish `hlι : ∀ r : R, algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (algebraMap R (R ⊗[F] E) r) = r` using `fun r => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `Algebra.trace_algebraMap_of_basis (Algebra.TensorProduct.basis R (Module.finBasisOfFinrankEq F E hfr)) r`. Rewrite using `[h]`. Simplify using `only [Fintype.card_fin, two_nsmul]`. Take the linear combination `r * h2`. Establish `hlev : Continuous fun y : R ⊗[F] E => algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) y` using `continuous_const.mul htr`.
-
-Use `⟨oH (algebraMap R (R ⊗[F] E)) (sigR R σ) hinv hτι n, oH_isOpenEmbedding hι hsc hlev hinv hτι hlι hfix' hU n, ?_⟩` and prove the remaining obligations. Introduce and unpack `d u N rfl`. Establish `hd : (fun i => ((d i : R) ⊗ₜ[F] (1 : E) : R ⊗[F] E)) = fun i => algebraMap R (R ⊗[F] E) (d i)` using `funext fun i => (hιt _).symm`. Rewrite using `[hd]`. Conclude with `gram_eq _ _ d u`.
+A detailed English derivation is pending.
 -/
 theorem ldl_isOpenEmbedding : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ n : ℕ, ∃ o : (Fin n → Rˣ) × ({p : Fin n × Fin n // p.1 < p.2} → R ⊗[F] E) → HermR R σ n, IsOpenEmbedding o ∧ ∀ d u, ∀ N : Matrix (Fin n) (Fin n) (R ⊗[F] E), (N = Matrix.of fun i j => if i = j then 1 else if h : i < j then u ⟨(i, j), h⟩ else 0) → (o (d, u) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = cT (sigR R σ) N * Matrix.diagonal (fun i => ((d i : R) ⊗ₜ[F] (1 : E) : R ⊗[F] E)) * N := by
   intro F E _ _ _ _ _ σ hcm R _ _ _ _ _ hloc n

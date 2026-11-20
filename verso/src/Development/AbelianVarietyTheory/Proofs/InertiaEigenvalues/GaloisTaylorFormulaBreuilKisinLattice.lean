@@ -14,7 +14,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.TaylorBasis
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.cauchy_product_partial_sums_dvd_pow x α β A B hA hB r`.
+A detailed English derivation is pending.
 -/
 theorem cauchy_dvd {R : Type} [CommRing R] (x : R) (α β : ℕ → R) (A B : R)
     (hA : ∀ r, ∃ n₀, ∀ n ≥ n₀, x ^ r ∣ A - ∑ p ∈ Finset.range n, α p)
@@ -23,7 +23,7 @@ theorem cauchy_dvd {R : Type} [CommRing R] (x : R) (α β : ℕ → R) (A B : R)
   GlobalTheory.T.cauchy_product_partial_sums_dvd_pow x α β A B hA hB r
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.desc_eq_X_pow_smul_nabla_pow' C k v`.
+A detailed English derivation is pending.
 -/
 theorem desc_eq {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]
     {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] {P : PhiMod O K l e a ι} (C : Conn P) (k : ℕ)
@@ -31,7 +31,7 @@ theorem desc_eq {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] 
   GlobalTheory.T.desc_eq_X_pow_smul_nabla_pow' C k v
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.nabla_pow_apply_smul_leibniz C k f v`.
+A detailed English derivation is pending.
 -/
 theorem nabla_pow_smul {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]
     {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] {P : PhiMod O K l e a ι} (C : Conn P) (k : ℕ)
@@ -40,18 +40,18 @@ theorem nabla_pow_smul {O K : Type} [CommRing O] [NormedField K] [IsUltrametricD
   GlobalTheory.T.nabla_pow_apply_smul_leibniz C k f v
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.descN_eq_X_pow_mul_iterate_derivative' K p f`.
+A detailed English derivation is pending.
 -/
 theorem descN_eq (K : Type) [NormedField K] (p : ℕ) (f : K⟦X⟧) :
     descN K p f = X ^ p * (⇑(derivative K))^[p] f :=
   GlobalTheory.T.descN_eq_X_pow_mul_iterate_derivative' K p f
 
 /- English proof (translation)
-Establish `hx` using `ϖ.theta_mu (ϖ.gal_pi a g)`. Establish `key : dpow (ϖ.mu g) hx k * (k.choose p : Per.Acris l) = dpow (ϖ.mu g) hx p * dpow (ϖ.mu g) hx (k - p)`. Apply `sub_eq_zero.1` to reduce the goal to its premises. Use `acris_nat_cancel (Nat.factorial_ne_zero k) ?_` and prove the remaining obligations. Establish `hf : (k.factorial : Per.Acris l) = (k.choose p : Per.Acris l) * p.factorial * (k - p).factorial`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Nat.cast_mul, ← Nat.cast_mul, Nat.choose_mul_factorial_mul_factorial h]`. Rewrite using `[show (k.factorial : Per.Acris l) * (dpow (ϖ.mu g) hx k * (k.choose p : Per.Acris l) - dpow (ϖ.mu g) hx p * dpow (ϖ.mu g) hx (k - p)) = (k.choose p : Per.Acris l) * ((k.factorial : Per.Acris l) * dpow (ϖ.mu g) hx k) - (k.choose p : Per.Acris l) * (((p.factorial : Per.Acris l) * d …`. Take the linear combination `(-(dpow (ϖ.mu g) hx p * dpow (ϖ.mu g) hx (k - p))) * hf]`. Rewrite using `[factorial_mul_dpow, factorial_mul_dpow, factorial_mul_dpow, ← pow_add, Nat.add_sub_cancel' h, sub_self]`. Establish `hm : ∀ n, ϖ.muDiv a O g n = (Algebra.TensorProduct.includeRight : Per.Acris l →ₐ[ℤ_[l]] OCr l O) (dpow (ϖ.mu g) hx n)` using `fun n => rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hm, hm, hm, ← map_natCast (Algebra.TensorProduct.includeRight : Per.Acris l →ₐ[ℤ_[l]] OCr l O), ← map_mul, ← map_mul, key]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem muDiv_mul_choose {l : ℕ} [Fact l.Prime] (a : ℕ) [NeZero a] {e : ℕ} [NeZero e] (O : Type) [CommRing O]
     [Algebra ℤ_[l] O] (ϖ : PiSys l e) (g : ↥(GK (ϖ.field a))) {k p : ℕ} (h : p ≤ k) :
@@ -74,9 +74,9 @@ theorem muDiv_mul_choose {l : ℕ} [Fact l.Prime] (a : ℕ) [NeZero a] {e : ℕ}
     ← map_mul, key]
 
 /- English proof (translation)
-Use `choose N hN using fun τ : ZMod a => ϖ.taylor_S a O K g (c τ) r`. Use `⟨Finset.univ.sup N, fun n hn => ?_⟩` and prove the remaining obligations. Use `choose z hz using fun τ => hN τ n ((Finset.le_sup (Finset.mem_univ τ)).trans hn)`. Use `⟨∑ τ, idem (constC t) τ * z τ, ?_⟩` and prove the remaining obligations. Simplify using `only [PiSys.iC, glue_apply, map_sum, map_mul, galOCr_idem, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← hz τ, mul_sub, Finset.mul_sum]`. Simplify using `only [mul_left_comm (idem (constC t) τ)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem galOCr_iC_taylor {l : ℕ} [Fact l.Prime] {a : ℕ} [NeZero a] {e : ℕ} [NeZero e] {O K : Type} [CommRing O]
     [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K]
@@ -95,13 +95,13 @@ theorem galOCr_iC_taylor {l : ℕ} [Fact l.Prime] {a : ℕ} [NeZero a] {e : ℕ}
   simp only [mul_left_comm (idem (constC t) τ)]
 
 /- English proof (translation)
-Establish `hΦ : ∀ (f : ZMod a → K⟦X⟧) (w : Vec K a ι), (P.mxInv τ *ᵥ (f • w) τ) i = f τ * (P.mxInv τ *ᵥ w τ) i` using `fun f w => by`. Rewrite using `[Pi.smul_apply', Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`. Establish `hΦs : ∀ (s : K⟦X⟧) (w : Vec K a ι), (P.mxInv τ *ᵥ (s • w) τ) i = s * (P.mxInv τ *ᵥ w τ) i` using `fun s w => by`. Rewrite using `[Pi.smul_apply, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`. Establish `hΦsum : ∀ {J : Type} (s : Finset J) (w : J → Vec K a ι), (P.mxInv τ *ᵥ (∑ x ∈ s, w x) τ) i = ∑ x ∈ s, (P.mxInv τ *ᵥ w x τ) i` using `fun s w => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_apply, Matrix.mulVec_sum, Finset.sum_apply]`. Use `conv_lhs => rw [desc_eq, P.eq_sum_phi_bas m]`. Rewrite using `[hΦs, map_sum, hΦsum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[nabla_pow_smul, hΦsum, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hpk : p ≤ k` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hp)`. Rewrite using `[hΦs, hΦ, descN_eq]`. Establish `hX : (X : K⟦X⟧) ^ k = X ^ p * X ^ (k - p)` using `by rw [← pow_add, Nat.add_sub_cancel' hpk]`. Rewrite using `[hX]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem coord_desc {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]
     {l e a : ℕ} [Fact l.Prime] {ι : Type} [Fintype ι] [DecidableEq ι] {P : PhiMod O K l e a ι} (C : Conn P)
@@ -129,19 +129,17 @@ theorem coord_desc {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist 
   ring
 
 /- English proof (translation)
-Introduce `g`. Take `⟨Γ, hΓL, hconv⟩` from `hΓ g`. Use `⟨Γ, hΓL, fun m r => ?_⟩` and prove the remaining obligations. Set `c : ι → ZMod a → ↥(S O K e)` to `coordL P (S O K e) m`. Establish `hcj : ∀ j τ, (c j τ : K⟦X⟧) = (P.mxInv τ *ᵥ (m : Vec K a ι) τ) j` using `fun j τ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcm : ∀ j, toCris t ϖ P m j = ϖ.iC t K (c j)` using `fun j => rfl`. Establish `F3 : ∀ k i, toCris t ϖ P ⟨C.desc k m, C.desc_mem k m.2⟩ i = ∑ j, ∑ p ∈ Finset.range (k + 1), (k.choose p : OCr l O) * (ϖ.iC t K (fun τ => ⟨descN K p (c j τ), descN_mem_S e p (c j τ).2⟩) * ϖ.iC t K (fun τ => ⟨_, hS τ j (k - p) i⟩))`. Introduce `k i`. Establish `h1 : coordL P (S O K e) ⟨C.desc k m, C.desc_mem k m.2⟩ i = ∑ j, ∑ p ∈ Finset.range (k + 1), ((k.choose p : ℕ) : ZMod a → ↥(S O K e)) * ((fun τ => ⟨descN K p (c j τ), descN_mem_S e p (c j τ).2⟩) * (fun τ => ⟨_, hS τ j (k - p) i⟩))`. Use function extensionality and compare the values at `τ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `(coord_desc C m k τ i).trans ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_apply, Pi.mul_apply, Pi.natCast_apply, AddSubmonoidClass.coe_finset_sum, MulMemClass.coe_mul, SubringClass.coe_natCast, hcj]`. Rewrite using `[toCris_apply, h1]`. Simplify using `only [map_sum, map_mul, map_natCast]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ p : ι × ι, ∃ n₀, ∀ n ≥ n₀, (l : OCr l O) ^ r ∣ galOCr O (g : GQ l) (ϖ.iC t K (c p.2)) * toOCr l O (Γ p.1 p.2) - ∑ k ∈ Finset.range n, ∑ q ∈ Finset.range (k + 1), (ϖ.muDiv a O g q * ϖ.iC t K (fun τ => ⟨descN K q (c p.2 τ), descN_mem_S e q (c p.2 τ).2⟩)) * (ϖ.muDiv a O g (k …` using `fun p => cauchy_dvd _ _ (fun k => ϖ.muDiv a O g k * ϖ.iC t K (fun τ => ⟨_, hS τ p.2 k p.1⟩)) _ _ (fun r => galOCr_iC_taylor t ϖ g (c p.2) r) (fun r => hconv p.1 p.2 r) r`. Use `choose N hN using key`. Use `⟨Finset.univ.sup N, fun n hn => ?_⟩` and prove the remaining obligations. Use `choose z hz using fun p : ι × ι => hN p n ((Finset.le_sup (Finset.mem_univ p)).trans hn)`. Use `⟨fun i => ∑ j, z (i, j), funext fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : (Γ.map (toOCr l O) *ᵥ fun j => galOCr O (g : GQ l) (toCris t ϖ P m j)) i = ∑ j, galOCr O (g : GQ l) (ϖ.iC t K (c j)) * toOCr l O (Γ i j)`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, hcm]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `e2 : (∑ k ∈ Finset.range n, ϖ.muDiv a O g k • toCris t ϖ P ⟨C.desc k m, C.desc_mem k m.2⟩) i = ∑ j, ∑ k ∈ Finset.range n, ∑ q ∈ Finset.range (k + 1), (ϖ.muDiv a O g q * ϖ.iC t K (fun τ => ⟨descN K q (c j τ), descN_mem_S e q (c j τ).2⟩)) * (ϖ.muDiv a O g (k - q) * ϖ.iC t K (fun τ …`. Rewrite using `[Finset.sum_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, F3, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, muDiv_mul_choose a O ϖ g (Nat.lt_succ_iff.1 (Finset.mem_range.1 hq))]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[Pi.sub_apply, e1, e2, ← Finset.sum_sub_distrib, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => hz (i, j)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem taylor_of_basis {l : ℕ} [Fact l.Prime] {a e : ℕ} [NeZero a] [NeZero e] {O K : Type} [CommRing O]
     [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K]
@@ -203,7 +201,7 @@ theorem taylor_of_basis {l : ℕ} [Fact l.Prime] {a e : ℕ} [NeZero a] [NeZero 
   exact Finset.sum_congr rfl fun j _ => hz (i, j)
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ ϖ LL _ _ _ _ _ _ _ _ I C hS hΓ` and use `taylor_of_basis (thetaW _ LL) ϖ I C hS hΓ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a], l ≠ 2 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : Lat a ↥(OL LL) ↥LL.1 ϖ) (I : Ident (thetaW a LL) ϖ P T) (C : Conn P) (hS : ∀ (τ : ZMod a) (j : ι) (k : ℕ) (i : ι), (X : (↥LL.1)⟦X⟧) ^ k * (P.mxInv τ *ᵥ (C.nabla ^ k) (P.phi (bas j)) τ) i ∈ S (↥(OL LL)) (↥LL.1) e), (∀ g : ↥(GK (ϖ.field a)), ∃ Γ, I.IsLMat (g : GQ l) g Γ ∧ ∀ (i j : ι) (r : ℕ), ∃ n₀ : ℕ, ∀ n ≥ n₀, (l : OCr l ↥(OL LL)) ^ r ∣ toOCr l ↥(OL LL) (Γ i j) - ∑ k ∈ Finset.range n, ϖ.muDiv a ↥(OL LL) g k * ϖ.iC (thetaW a LL) ↥LL.1 (fun τ => ⟨_, hS τ j k i⟩)) → I.Taylor C :=
   fun _ _ _ _ _ _ ϖ LL _ _ _ _ _ _ _ _ I C hS hΓ => taylor_of_basis (thetaW _ LL) ϖ I C hS hΓ

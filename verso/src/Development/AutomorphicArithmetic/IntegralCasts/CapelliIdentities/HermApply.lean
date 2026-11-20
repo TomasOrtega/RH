@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yoa6.aux1 :
     SMulCommClass ℂ ℂ ℂ := by
@@ -40,15 +40,15 @@ end UpperTheory.Reformulated.B.Yoa6.Helpers
 
 open UpperTheory.Reformulated.B.Yoa6.Helpers in
 /- English proof (translation)
-Introduce `G V _ _ _ ρ h`. Take `⟨B, hB0, hBinv⟩` from `h`. Establish `hherm : ∀ (c : ℂ) (v w : V), herm B c w v = starRingEnd ℂ (herm B c v w)`. Introduce `c v w`. Simplify using `only [herm_apply, map_add, map_mul, Complex.conj_conj]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hinv : ∀ (c : ℂ) (g : G) (v w : V), herm B c (ρ g v) (ρ g w) = herm B c v w`. Introduce `c g v w`. Simplify using `only [herm_apply, hBinv]`. Distinguish the cases in `h1 : herm B 1 = 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use `⟨herm B Complex.I, ?_, hherm Complex.I, hinv Complex.I⟩` and prove the remaining obligations. Introduce `hI`. Apply `hB0` to reduce the goal to its premises. Use extensionality with `v w`. Establish `e1` using `congrArg (fun f => f v w) h1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (fun f => f v w) hI`. Simplify using `only [herm_apply, LinearMap.zero_apply, map_one, one_mul, Complex.conj_I] at e1 e2`. Simplify using `only [LinearMap.zero_apply]`. Establish `: (2 * Complex.I) * B v w = 0`. Take the linear combination `Complex.I * e1 + e2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Break down `mul_eq_zero.mp this with h | h` into its components or cases. It suffices to derive a contradiction. Simplify using `[Complex.ext_iff] at h`. Conclude with `h`. Conclude with `⟨herm B 1, h1, hherm 1, hinv 1⟩`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yoa6.main :
     ∀ {G V : Type} [inst : Group G] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module ℂ V] {ρ : Representation ℂ G V},

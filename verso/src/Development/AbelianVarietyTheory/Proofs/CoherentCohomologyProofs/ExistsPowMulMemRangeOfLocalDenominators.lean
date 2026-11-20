@@ -11,9 +11,9 @@ open GlobalTheory GlobalTheory.AbLaw
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `UniqueFactorizationMonoid.induction_on_prime y ?_ ?_ ?_` and prove the remaining obligations. Introduce `h`. Conclude with `absurd rfl h`. Introduce `u hu _ _`. Conclude with `⟨0, hu.dvd⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z p hz hp ih _ h`. Take `⟨n, hn⟩` from `ih hz fun q hq hqz => h q hq (hqz.mul_left p)`. Conclude with `⟨n + 1, by rw [pow_succ']; exact mul_dvd_mul (h p hp (dvd_mul_right _ _)) hn⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dvd_pow_of_forall_prime_dvd {A : Type} [CommRing A] [IsDomain A]
     [UniqueFactorizationMonoid A] (a y : A) :
@@ -26,13 +26,13 @@ theorem exists_dvd_pow_of_forall_prime_dvd {A : Type} [CommRing A] [IsDomain A]
     exact ⟨n + 1, by rw [pow_succ']; exact mul_dvd_mul (h p hp (dvd_mul_right _ _)) hn⟩
 
 /- English proof (translation)
-Take `⟨p₀, hp₀⟩` from `hW`. Take `⟨s, hs, x, e⟩` from `hv p₀ hp₀`. Establish `hs0 : s ≠ 0` using `fun h => hs (h ▸ p₀.asIdeal.zero_mem)`. Take `⟨y, x', c, hrel, rfl, rfl⟩` from `UniqueFactorizationMonoid.exists_reduced_factors s hs0 x`. Establish `hc : c ≠ 0` using `left_ne_zero_of_mul hs0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy : y ≠ 0` using `right_ne_zero_of_mul hs0`. Establish `e' : φ x' = φ y * v`. Rewrite `e` using `[map_mul, map_mul, _root_.mul_assoc]`. Conclude with `mul_left_cancel₀ ((map_ne_zero_iff _ hφ).mpr hc) e`. Take `⟨n, z, hz⟩` from `exists_dvd_pow_of_forall_prime_dvd a y hy fun q hq hqy => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `ha q ⟨Ideal.span {q}, (Ideal.span_singleton_prime hq.ne_zero).2 hq⟩ hq rfl fun hm => ?_` and prove the remaining obligations. Take `⟨t, ht, w, ew⟩` from `hv _ hm`. Use `ht (Ideal.mem_span_singleton.2 (hqy.trans (hrel.dvd_of_dvd_mul_right ⟨w, hφ ?_⟩)))` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, e', ew, mul_left_comm]`. Use `⟨n, z * x', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, hz, map_mul, map_mul, e']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem_range_of_local_denominators {A B : Type} [CommRing A] [IsDomain A]
     [UniqueFactorizationMonoid A] [CommRing B] [IsDomain B] (φ : A →+* B)
@@ -59,39 +59,35 @@ theorem exists_pow_mul_mem_range_of_local_denominators {A B : Type} [CommRing A]
   ring
 
 /- English proof (translation)
-Introduce `A _ _ _ _ U hU hne`. Establish `hloc : ∀ p : PrimeSpectrum A, p ∈ U → ∃ f : A, p ∈ PrimeSpectrum.basicOpen f ∧ PrimeSpectrum.basicOpen f ≤ U`. Introduce `p hp`. Take `⟨_, ⟨f, rfl⟩, h1, h2⟩` from `(PrimeSpectrum.isTopologicalBasis_basic_opens (R := A)).exists_subset_of_mem_open hp U.isOpen`. Conclude with `⟨f, h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨p₀, hp₀⟩` from `hne`. Take `⟨f, hf, hfU⟩` from `hloc p₀ hp₀`. Establish `hf0 : f ≠ 0` using `fun h => hf (h ▸ p₀.asIdeal.zero_mem)`. Set `a : A` to `((UniqueFactorizationMonoid.factors f).filter fun q => ∃ p : PrimeSpectrum A, p.asIdeal = Ideal.span {q} ∧ p ∉ U).prod`. Establish `ha : ∀ (q : A) (p : PrimeSpectrum A), Prime q → p.asIdeal = Ideal.span {q} → p ∉ U → q ∣ a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `q p hq hp hpU`. Establish `hqf : q ∣ f`. Rewrite using `[← Ideal.mem_span_singleton, ← hp]`. Assume the negation of the conclusion as `h`. Conclude with `hpU (hfU h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hqr⟩` from `UniqueFactorizationMonoid.exists_mem_factors_of_dvd hf0 hq.irreducible hqf`. Use `hqr.dvd.trans (Multiset.dvd_prod (Multiset.mem_filter.2 ⟨hr, p, ?_, hpU⟩))` and prove the remaining obligations. Rewrite using `[hp]`. Conclude with `Ideal.span_singleton_eq_span_singleton.2 hqr`. Use `⟨a, le_antisymm ?_ ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p hp hpa`. Use `p.isPrime` as an intermediate fact. Take `⟨q, hq, hqp⟩` from `(Ideal.IsPrime.multiset_prod_mem_iff_exists_mem p.isPrime _).1 hpa`. Take `⟨-, p', hp', hp'U⟩` from `Multiset.mem_filter.1 hq`. Take `⟨g, hg, hgU⟩` from `hloc p hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hp'U (hgU fun h => hg ?_)` and prove the remaining obligations. Establish `h' : g ∈ p'.asIdeal` using `h`. Rewrite `h'` using `[hp']`. Conclude with `(Ideal.span_singleton_le_iff_mem _).2 hqp h'`. Establish `: Nonempty U` using `⟨⟨_, hp₀⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj` using `map_injective_of_isIntegral (Spec (CommRingCat.of A)) (homOfLE (le_top : U ≤ ⊤))`. Set `φ : CommRingCat.of A ⟶ Γ(Spec (CommRingCat.of A), U)` to `(Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (Spec (CommRingCat.of A)).presheaf.map (homOfLE (le_top : U ≤ ⊤)).op`. Establish `hφ : Function.Injective φ` using `hinj.comp (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).inv).1`. Establish `key : ∀ (v : Γ(Spec (CommRingCat.of A), U)) (p : PrimeSpectrum A), p ∈ U → ∃ s, s ∉ p.asIdeal ∧ ∃ a, φ a = φ s * v`. Introduce `v p hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `x : Spec (CommRingCat.of A)` to `p`. Take `⟨⟨a, s⟩, e⟩` from `IsLocalization.surj (S := (Spec.structureSheaf A).presheaf.stalk p) p.asIdeal.primeCompl ((Spec (CommRingCat.of A)).presheaf.germ U x hp v)`. Use `⟨s, s.2, a, germ_injective_of_isIntegral _ x hp ?_⟩` and prove the remaining obligations. Establish `hg : ∀ a : A, (Spec (CommRingCat.of A)).presheaf.germ U x hp (φ a) = algebraMap A ((Spec.structureSheaf A).presheaf.stalk p) a`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((Spec (CommRingCat.of A)).presheaf.germ_res_apply (homOfLE (le_top : U ≤ ⊤)) x hp ((Scheme.ΓSpecIso (CommRingCat.of A)).inv a)).trans rfl`. Rewrite using `[map_mul, hg, hg]`. Conclude with `e.symm.trans (mul_comm _ _)`. Establish `key2 : ∀ v : Γ(Spec (CommRingCat.of A), U), ∃ (n : ℕ) (x : A), φ x = φ a ^ n * v` using `fun v => exists_pow_mul_mem_range_of_local_denominators φ.hom hφ (U : Set (Spec (CommRingCat.of A))) ⟨p₀, hp₀⟩ a ha v (key v)`. Introduce `p hpa`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hpU`. Establish `hspan : Ideal.span (φ '' {g : A | PrimeSpectrum.basicOpen g ≤ U}) = ⊤`. Rewrite using `[← hU.self_le_iSup_basicOpen_iff]`. Introduce `x hx`. Take `⟨g, hg, hgU⟩` from `hloc x hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨φ g, g, hgU, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e : (Spec (CommRingCat.of A)).basicOpen (φ g) = U ⊓ PrimeSpectrum.basicOpen g`. Rewrite using `[← basicOpen_eq_of_affine (R := CommRingCat.of A) g]`. Conclude with `Scheme.basicOpen_res _ _ (homOfLE (le_top : U ≤ ⊤)).op`. Use `show x ∈ (Spec (CommRingCat.of A)).basicOpen (φ g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `⟨hx, hg⟩`. Establish `hall : ∀ v ∈ Ideal.span (φ '' {g : A | PrimeSpectrum.basicOpen g ≤ U}), ∃ (n : ℕ) (x : A), x ∈ p.asIdeal ∧ φ x = φ a ^ n * v`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem v hv`. Take `⟨g, hg, rfl⟩` from `hv`. Use `⟨0, g, ?_, by simp⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hpU (hg h)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, 0, p.asIdeal.zero_mem, by simp⟩`. Consider the case `add v w _ _ hv hw`. Take `⟨n, x, hx, e⟩` from `hv`. Take `⟨m, y, hy, e'⟩` from `hw`. Use `⟨n + m, a ^ m * x + a ^ n * y, p.asIdeal.add_mem (p.asIdeal.mul_mem_left _ hx) (p.asIdeal.mul_mem_left _ hy), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_add, map_mul, map_mul, map_pow, map_pow, e, e']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul c v _ hv`. Take `⟨n, x, hx, e⟩` from `hv`. Take `⟨m, y, e'⟩` from `key2 c`.
-
-Use `⟨n + m, y * x, p.asIdeal.mul_mem_left _ hx, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, e, e', smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨n, x, hx, e⟩` from `hall 1 (hspan ▸ Submodule.mem_top)`. Rewrite `e` using `[_root_.mul_one, ← map_pow]`.
-
-Rewrite `hx` using `[hφ e]`. Conclude with `hpa (p.isPrime.mem_of_pow_mem n hx)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_basicOpen_of_isAffineOpen_of_uniqueFactorization :
     ∀ (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [UniqueFactorizationMonoid A] (U : (Spec (CommRingCat.of A)).Opens), IsAffineOpen U → (U : Set (Spec (CommRingCat.of A))).Nonempty → ∃ a : A, U = PrimeSpectrum.basicOpen a := by

@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.NormExact.ReadEx
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_nonzero_standardThetaLine_read_adelic`.
+A detailed English derivation is pending.
 -/
 theorem exists_vac_reads : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (r : D.host.E), Setup ψ θ S T cc δ r →
@@ -31,15 +31,15 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
   {hT : T.rank = d} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {r : D.host.E}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(GlobalTheory.FinWeilO.thetaSub ψ S T).zero_mem, fun w _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem reads_zero : Reads ψ θ hS hT cc δ r 0 0 :=
   ⟨(GlobalTheory.FinWeilO.thetaSub ψ S T).zero_mem, fun w _ => by simp⟩
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset (Fin k), Reads ψ θ hS hT cc δ r (∑ i ∈ s, G i) (∑ i ∈ s, f i)`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `using (reads_zero : Reads ψ θ hS hT cc δ r 0 0)`. Introduce `i s hi ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `(h i).add ih`. Conclude with `key Finset.univ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reads_sum {k : ℕ} (G : Fin k → VC D a d → ℂ) (f : Fin k → WO S T → ℂ)
     (h : ∀ i, Reads ψ θ hS hT cc δ r (G i) (f i)) : Reads ψ θ hS hT cc δ r (∑ i, G i) (∑ i, f i) := by
@@ -53,9 +53,9 @@ theorem reads_sum {k : ℕ} (G : Fin k → VC D a d → ℂ) (f : Fin k → WO S
   exact key Finset.univ
 
 /- English proof (translation)
-Introduce `D ψ θ S T a d hS hT cc δ r hP G hG`. Take `⟨e0, he0, hne, f₀, hf₀⟩` from `exists_vac_reads ψ θ S T hS hT cc δ r hP`. Take `⟨k, c, z, rfl⟩` from `GlobalTheory.ThetaSpan.theta_span D cc δ hP.crv a d e0 he0 hne G hG`. Use `⟨∑ i, c i • (Formalism.MainNotions.StandardLatticesGL3.wdPh D (tor0 D cc δ) (pt D (tor0 D cc δ) δ (z i)) • heisO ψ S T (finPt hS hT r (z i)) f₀), reads_sum _ _ fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `((GlobalTheory.T.heisenbergFinitePoint_reads_classicalTranslation ψ θ S T hS hT cc δ r hP e0 f₀ hf₀ (z i)).smul (Formalism.MainNotions.StandardLatticesGL3.wdPh D (tor0 D cc δ) (pt D (tor0 D cc δ) δ (z i)))).smul (c i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `Y`. Simplify using `only [Formalism.MainNotions.StandardLatticesGL3.Wd, Pi.smul_apply, smul_eq_mul]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem exists_reads : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (r : D.host.E), Setup ψ θ S T cc δ r →

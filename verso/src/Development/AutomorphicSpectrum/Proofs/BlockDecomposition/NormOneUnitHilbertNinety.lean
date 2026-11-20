@@ -14,33 +14,29 @@ namespace GlobalTheory.CompanionTheory.UnitNormLocal
 open IsLocalRing
 
 /- English proof (translation)
-Establish `hmax : ∀ y ∈ maximalIdeal R, σ y ∈ maximalIdeal R`. Introduce `y hy`. Rewrite `hy`, the goal using `[mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun h => hy (by simpa [hσ] using h.map σ)`. Establish `hres : ∀ y, y - 1 ∈ maximalIdeal R → IsUnit y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Introduce `y hy`. Assume the negation of the conclusion as `h`. Establish `h1 : y ∈ maximalIdeal R` using `(mem_maximalIdeal _).2 h`. Establish `h2 : (1 : R) ∈ maximalIdeal R` using `by simpa using sub_mem h1 hy`. Conclude with `(Ideal.ne_top_iff_one _).1 (maximalIdeal.isMaximal R).ne_top h2`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `hx`. Use `set di : R := ((d⁻¹ : Rˣ) : R) with hdi`. Establish `hddi : (σ x₀ - x₀) * di = 1` using `by rw [← hd, hdi]; exact d.mul_inv`. Use `set e : R := -x₀ * di with he`. Use `set f : R := σ e with hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hσdi : σ di = -di`. Establish `h1 : σ ((σ x₀ - x₀) * di) = 1` using `by rw [hddi, map_one]`. Rewrite `h1` using `[map_mul, map_sub, hσ]`. Take the linear combination `(-di) * h1 + (-σ di) * hddi`. Establish `hef : e + f = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hf, he, map_mul, map_neg, hσdi]`. Take the linear combination `hddi`. Establish `hfe : σ f = e` using `by rw [hf, hσ]`. Use `set n : R := e * f with hn`. Establish `hσn : σ n = n` using `by rw [hn, map_mul, hfe, ← hf]; ring`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `P : R[X]` to `X ^ 2 - X - C (n * a)`. Establish `hP : P.Monic` using `by simp only [P]; monicity!`. Establish `hP1 : P.eval 1 ∈ maximalIdeal R`. Establish `: P.eval 1 = -(n * a)` using `by simp [P]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `neg_mem (Ideal.mul_mem_left _ _ ha)`. Establish `hP2 : IsUnit (Ideal.Quotient.mk (maximalIdeal R) (P.derivative.eval 1))`. Establish `: P.derivative.eval 1 = 1`. Simplify using `[P, derivative_X_pow]`. Rewrite using `[this, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `isUnit_one`. Take `⟨u, hu, hu1⟩` from `HenselianRing.is_henselian (I := maximalIdeal R) P hP 1 hP1 (by exact hP2)`. Establish `hroot : u ^ 2 - u = n * a`. Establish `: P.eval u = 0` using `hu`. Simplify using `only [P, eval_sub, eval_pow, eval_X, eval_C] at this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `this`. Establish `hroot' : (σ u) ^ 2 - σ u = n * a`. Use `congrArg σ hroot` as an intermediate fact. Simplify `this` using `only [map_sub, map_pow, map_mul, hσn, hfix]`. Establish `hv1 : σ u - 1 ∈ maximalIdeal R` using `by simpa using hmax _ hu1`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw : IsUnit (u + σ u - 1)` using `hres _ (by`. Use `add_mem hu1 hv1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use the proof step `ring)`. Establish `huu : σ u = u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h0 : (u - σ u) * (u + σ u - 1) = 0` using `by linear_combination hroot - hroot'`. Use `hw.mul_left_eq_zero.1 h0` as an intermediate fact. Conclude with `(sub_eq_zero.1 this).symm`. Take `⟨U, hU⟩` from `hres u hu1`. Use `set ui : R := ((U⁻¹ : Rˣ) : R) with hui`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `huui : u * ui = 1` using `by rw [← hU, hui]; exact U.mul_inv`. Establish `hσui : σ ui = ui`. Establish `h1 : σ (u * ui) = 1` using `by rw [huui, map_one]`. Rewrite `h1` using `[map_mul, huu]`. Take the linear combination `ui * h1 - σ ui * huui`.
-
-Establish `h2 : a * ui + n * (a * ui) ^ 2 = a`. Take the linear combination `(-a * ui ^ 2) * hroot + (a * (ui * u + 1) - a * ui) * huui`. Use `⟨1 + e * (a * ui), ?_⟩` and prove the remaining obligations. Establish `hσt : σ (a * ui) = a * ui` using `by rw [map_mul, hfix, hσui]`. Rewrite using `[map_add, map_one, map_mul σ e, hσt, ← hf]`.
-
-Take the linear combination `(a * ui) * hef + h2 - (a * ui) ^ 2 * hn`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_conj_mul_eq_of_residue_one {R : Type} [CommRing R] [HenselianLocalRing R]
     (σ : R →+* R) (hσ : ∀ x, σ (σ x) = x) (x₀ : R) (hx : IsUnit (σ x₀ - x₀)) (a : R)
@@ -113,21 +109,19 @@ theorem exists_conj_mul_eq_of_residue_one {R : Type} [CommRing R] [HenselianLoca
   linear_combination (a * ui) * hef + h2 - (a * ui) ^ 2 * hn
 
 /- English proof (translation)
-Use `haveI : IsLocalHom σ := ⟨fun a h => by simpa [hσ] using h.map σ⟩`. Set `τ : ResidueField R →+* ResidueField R` to `ResidueField.map σ`. Establish `hτ : ∀ y, τ (residue R y) = residue R (σ y)` using `fun y => ResidueField.map_residue σ y`. Establish `hτ2 : ∀ x, τ (τ x) = x`. Introduce `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `residue_surjective x`. Rewrite using `[hτ, hτ, hσ]`. Establish `hne : ∃ x, τ x ≠ x`. Use `⟨residue R x₀, fun h => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hτ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : residue R (σ x₀ - x₀) = 0` using `by rw [map_sub, h, sub_self]`. Conclude with `(residue_ne_zero_iff_isUnit _).2 hx h0`. Take `⟨sb, hsb⟩` from `GlobalTheory.CompanionTheory.FFNorm.exists_conj_mul_eq (ResidueField R) τ hτ2 hne (residue R c) (by rw [hτ, hfix])`. Take `⟨s₀, rfl⟩` from `residue_surjective sb`. Rewrite `hsb` using `[hτ, ← map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs₀ : IsUnit s₀`. Rewrite using `[← residue_ne_zero_iff_isUnit]`. Introduce `h0`. Rewrite `hsb` using `[map_mul, h0, mul_zero]`. Conclude with `(residue_ne_zero_iff_isUnit _).2 hc hsb.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨D, hD⟩` from `(hs₀.map σ).mul hs₀`. Use `set Di : R := ((D⁻¹ : Rˣ) : R) with hDi`. Establish `hDDi : σ s₀ * s₀ * Di = 1` using `by rw [← hD, hDi]; exact D.mul_inv`. Establish `hσD : σ (σ s₀ * s₀) = σ s₀ * s₀` using `by rw [map_mul, hσ, mul_comm]`. Establish `hσDi : σ Di = Di`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h1 : σ (σ s₀ * s₀ * Di) = 1` using `by rw [hDDi, map_one]`. Rewrite `h1` using `[map_mul, hσD]`. Take the linear combination `Di * h1 - σ Di * hDDi`. Establish `ha : c * Di - 1 ∈ maximalIdeal R`. Rewrite using `[← residue_eq_zero_iff, map_sub, map_mul, ← hsb, ← map_mul, hDDi, map_one, sub_self]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨s₁, hs₁⟩` from `exists_conj_mul_eq_of_residue_one σ hσ x₀ hx _ ha (by rw [map_sub, map_mul, hfix, hσDi, map_one])`. Establish `hmul : σ (s₀ * s₁) * (s₀ * s₁) = c`. Rewrite using `[map_mul]`. Take the linear combination `(σ s₀ * s₀) * hs₁ + c * hDDi`. Use `⟨s₀ * s₁, ?_, hmul⟩` and prove the remaining obligations.
-
-Conclude with `isUnit_of_mul_isUnit_right (hmul ▸ hc)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isUnit_conj_mul_eq {R : Type} [CommRing R] [HenselianLocalRing R]
     [Finite (ResidueField R)] (σ : R →+* R) (hσ : ∀ x, σ (σ x) = x) (x₀ : R)
@@ -173,17 +167,17 @@ theorem exists_isUnit_conj_mul_eq {R : Type} [CommRing R] [HenselianLocalRing R]
   exact isUnit_of_mul_isUnit_right (hmul ▸ hc)
 
 /- English proof (translation)
-Introduce `E _ _ _ hU w hw c hcj hcv`. Take `⟨-, hinv, hval, hns, -⟩` from `GlobalTheory.T.placeConjugation_properties_cmField E hU w`. Take `⟨-, ⟨ϖ, q, hI, -⟩, -, -⟩` from `hns hw`. Take `⟨-, -, -, -, ⟨x₀, hx₀, hx⟩, hq, hcard⟩` from `hI`. Use `haveI := Formalism.BasicNotions.Examples₂.adicInt_henselian (K := E) w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfin : Finite (IsLocalRing.ResidueField (w.adicCompletionIntegers E))`. Use `Nat.finite_of_card_ne_zero ?_` and prove the remaining obligations. Establish `h` using `hcard`. Establish `h2 : q ^ 2 ≠ 0` using `pow_ne_zero _ (by omega)`. Rewrite `h2` using `[← h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `hmem : ∀ x : w.adicCompletionIntegers E, cj w x ∈ w.adicCompletionIntegers E`. Introduce `x`. Establish `hx2` using `x.2`. Rewrite `hx2`, the goal using `[HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Rewrite using `[hval]` and apply the resulting hypothesis. Set `σ : w.adicCompletionIntegers E →+* w.adicCompletionIntegers E` to `((cj w).comp (w.adicCompletionIntegers E).subtype).codRestrict _ hmem`. Establish `hσc : ∀ x, ((σ x : w.adicCompletionIntegers E) : w.adicCompletion E) = cj w x` using `fun _ => rfl`. Establish `hunit : ∀ x : w.adicCompletionIntegers E, IsUnit x ↔ Valued.v (x : w.adicCompletion E) = 1` using `fun x => (Formalism.BasicNotions.Examples₂.adicInt_integers w).isUnit_iff_valuation_eq_one`. Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => Subtype.ext (hinv _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `y₀ : w.adicCompletionIntegers E` to `⟨x₀, by`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `hx₀⟩`. Establish `hy : IsUnit (σ y₀ - y₀)` using `(hunit _).2 hx`. Set `c₀ : w.adicCompletionIntegers E` to `⟨c, by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `hcv.le⟩`. Establish `hc₀ : IsUnit c₀` using `(hunit _).2 hcv`. Take `⟨s, hs, hsc⟩` from `exists_isUnit_conj_mul_eq σ hσ y₀ hy c₀ hc₀ (Subtype.ext hcj)`. Conclude with `⟨s, (hunit s).1 hs, congrArg Subtype.val hsc⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_norm_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ c : w.adicCompletion E, cj w c = c → Valued.v c = 1 → ∃ s : w.adicCompletion E, Valued.v s = 1 ∧ cj w s * s = c := by
   intro E _ _ _ hU w hw c hcj hcv

@@ -13,7 +13,7 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.AbLaw.CubeAffine
 
 /- English proof (translation)
-Introduce `hL R _ A _ _ hA hp M hM` and use `CubeProj.exists_gen_theta_of_isProjBy hL.globalFns R A hA hp M hM`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem triv_theta_of_isProjBy :
     Out.Laws → ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → IsProjBy A.hom → ∀ M : LB A.left, M.IsLB → Triv (Theta A M) :=

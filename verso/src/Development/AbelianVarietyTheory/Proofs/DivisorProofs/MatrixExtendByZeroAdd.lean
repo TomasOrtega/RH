@@ -23,26 +23,26 @@ theorem restrL_apply {κ ι κ₁ R : Type} [Zero R] (eq : κ ≃ ι ⊕ κ₁) 
     restrL eq Φ y = Φ (ext0 eq y) := rfl
 
 /- English proof (translation)
-Simplify using `[ext0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ext0_inl {κ ι κ₁ R : Type} [Zero R] (eq : κ ≃ ι ⊕ κ₁) (a : κ₁ → R) (i : ι) :
     ext0 eq a (eq.symm (Sum.inl i)) = 0 := by simp [ext0]
 
 /- English proof (translation)
-Simplify using `[ext0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ext0_inr {κ ι κ₁ R : Type} [Zero R] (eq : κ ≃ ι ⊕ κ₁) (a : κ₁ → R) (j : κ₁) :
     ext0 eq a (eq.symm (Sum.inr j)) = a j := by simp [ext0]
 
 /- English proof (translation)
-Simplify using `only [prodVac, ext0_inl, ext0_inr]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem prodVac_ext0 {κ ι κ₁ R : Type} [Zero R] (eq : κ ≃ ι ⊕ κ₁) (A : (ι → R) → ℂ) (φ : (κ₁ → R) → ℂ)
     (y : κ₁ → R) : prodVac eq A φ (ext0 eq y) = A 0 * φ y := by
   simp only [prodVac, ext0_inl, ext0_inr]; rfl
 
 /- English proof (translation)
-Simplify using `only [dotProduct]`. Rewrite using `[← eq.symm.sum_comp, Fintype.sum_sum_type]`. Simplify using `[ext0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dotProduct_ext0 {κ ι κ₁ R : Type} [Fintype κ] [Fintype ι] [Fintype κ₁] [CommRing R]
     (eq : κ ≃ ι ⊕ κ₁) (a b : κ₁ → R) : ext0 eq a ⬝ᵥ ext0 eq b = a ⬝ᵥ b := by
@@ -51,14 +51,14 @@ theorem dotProduct_ext0 {κ ι κ₁ R : Type} [Fintype κ] [Fintype ι] [Fintyp
   simp [ext0]
 
 /- English proof (translation)
-Apply the tactic sequence `funext k; simp only [ext0, Pi.add_apply]; cases eq k <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem matrixExtendByZero_add {κ ι κ₁ R : Type} [AddZeroClass R] (eq : κ ≃ ι ⊕ κ₁) (a b : κ₁ → R) :
     ext0 eq (a + b) = ext0 eq a + ext0 eq b := by
   funext k; simp only [ext0, Pi.add_apply]; cases eq k <;> simp
 
 /- English proof (translation)
-Simplify using `only [dotProduct]`. Rewrite using `[← eq.symm.sum_comp, Fintype.sum_sum_type]`. Simplify using `[ext0, hb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ext0_dotProduct_of {κ ι κ₁ R : Type} [Fintype κ] [Fintype ι] [Fintype κ₁] [CommRing R]
     (eq : κ ≃ ι ⊕ κ₁) (a : κ₁ → R) (b : κ → R) (hb : ∀ j, b (eq.symm (Sum.inr j)) = 0) : ext0 eq a ⬝ᵥ b = 0 := by
@@ -79,11 +79,11 @@ end GlobalTheory.ThK.AdaptEv
 
 namespace GlobalTheory.ThK.AdaptEv
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `key : (∀ k, x k ∈ S) ↔ (∀ i, x (eq.symm (Sum.inl i)) ∈ S) ∧ ∀ j, x (eq.symm (Sum.inr j)) ∈ S`. Use `⟨fun h => ⟨fun i => h _, fun j => h _⟩, fun ⟨ha, hb⟩ k => ?_⟩` and prove the remaining obligations. Break down `h : eq k with i | j` into its components or cases. Simplify `ha i` using `[← h]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hb j` using `[← h]`. Simplify using `only [prodVac]`. Distinguish the cases in `ha : ∀ i, x (eq.symm (Sum.inl i)) ∈ S`. Distinguish the cases in `hb : ∀ j, x (eq.symm (Sum.inr j)) ∈ S`. Rewrite using `[Set.indicator_of_mem (s := {x : ι → R | ∀ i, x i ∈ S}) ha, Set.indicator_of_mem (s := {x : κ₁ → R | ∀ i, x i ∈ S}) hb, Set.indicator_of_mem (s := {x : κ → R | ∀ k, x k ∈ S}) (key.2 ⟨ha, hb⟩)]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (s := {x : κ₁ → R | ∀ i, x i ∈ S}) hb, Set.indicator_of_notMem (s := {x : κ → R | ∀ k, x k ∈ S}) fun h => hb (key.1 h).2]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (s := {x : ι → R | ∀ i, x i ∈ S}) ha, Set.indicator_of_notMem (s := {x : κ → R | ∀ k, x k ∈ S}) fun h => ha (key.1 h).1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prodVac_indicator {κ ι κ₁ R : Type} (eq : κ ≃ ι ⊕ κ₁) (S : Set R) :
     prodVac eq (Set.indicator {x : ι → R | ∀ i, x i ∈ S} 1) (Set.indicator {x : κ₁ → R | ∀ i, x i ∈ S} 1) =

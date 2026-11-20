@@ -11,7 +11,7 @@ namespace PI.WwMainW
 open PI.WwMain PI.WwMain.KM
 
 /- English proof (translation)
-Unfold `Lfun`. Conclude with `Finset.sum_subset hs (fun α _ h => by`. Rewrite `h` using `[MvPolynomial.mem_support_iff, not_not]`. Rewrite using `[h, zero_mul])`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lfun_eq_of_subset {Lt : Type} (l : ℕ) [Fact l.Prime] (N0 N1 : ℕ)
     (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (P : MvPolynomial (Lt × Fin N0 × Fin N1) ℂ_[l])
@@ -23,11 +23,11 @@ theorem Lfun_eq_of_subset {Lt : Type} (l : ℕ) [Fact l.Prime] (N0 N1 : ℕ)
     rw [h, zero_mul])
 
 /- English proof (translation)
-Unfold `LLin`. Introduce `Lt l _ N0 N1 Th`. Use `⟨fun p q => ?_, ?_, fun c p => ?_⟩` and prove the remaining obligations. Rewrite using `[Lfun_eq_of_subset l N0 N1 Th (p + q) (p.support ∪ q.support) MvPolynomial.support_add, Lfun_eq_of_subset l N0 N1 Th p (p.support ∪ q.support) Finset.subset_union_left, Lfun_eq_of_subset l N0 N1 Th q (p.support ∪ q.support) Finset.subset_union_right]`. Rewrite using `[← Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MvPolynomial.coeff_add, add_mul]`. Rewrite using `[Lfun_eq_of_subset l N0 N1 Th 0 ∅ (by simp)]`. Simplify using the standard rewrite rules. Establish `hsub : (MvPolynomial.C c * p).support ⊆ p.support` using `fun x hx => by`. Rewrite `hx` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_C_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `MvPolynomial.mem_support_iff.mpr (right_ne_zero_of_mul hx)`. Rewrite using `[Lfun_eq_of_subset l N0 N1 Th (MvPolynomial.C c * p) p.support hsub, Lfun_eq_of_subset l N0 N1 Th p p.support subset_rfl, Finset.mul_sum]`. Simplify using `only [MvPolynomial.coeff_C_mul, mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lLin : LLin := by
   unfold LLin
@@ -49,7 +49,7 @@ theorem lLin : LLin := by
     simp only [MvPolynomial.coeff_C_mul, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[Lfun_eq_of_subset l N0 N1 Th _ {α} MvPolynomial.support_monomial_subset]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Lfun_monomial {Lt : Type} (l : ℕ) [Fact l.Prime] (N0 N1 : ℕ)
     (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (α : (Lt × Fin N0 × Fin N1) →₀ ℕ) (c : ℂ_[l]) :
@@ -59,7 +59,7 @@ theorem Lfun_monomial {Lt : Type} (l : ℕ) [Fact l.Prime] (N0 N1 : ℕ)
   simp
 
 /- English proof (translation)
-Rewrite using `[Lfun_eq_of_subset l N0 N1 Th _ (s.biUnion fun i => (f i).support) MvPolynomial.support_sum]`. Rewrite using `[Finset.sum_congr rfl (fun i hi => Lfun_eq_of_subset l N0 N1 Th (f i) (s.biUnion fun i => (f i).support) (Finset.subset_biUnion_of_mem (fun i => (f i).support) hi))]`. Simplify using `only [MvPolynomial.coeff_sum, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Lfun_sum' {Lt : Type} (l : ℕ) [Fact l.Prime] (N0 N1 : ℕ)
     (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) {ι : Type} (s : Finset ι)
@@ -73,11 +73,11 @@ theorem Lfun_sum' {Lt : Type} (l : ℕ) [Fact l.Prime] (N0 N1 : ℕ)
   exact Finset.sum_comm
 
 /- English proof (translation)
-Unfold `LH Hpol`. Introduce `Lt _ _ l _ N0 N1 Th ph G`. Rewrite using `[Lfun_sum']`. Simplify using `only [Lfun_monomial]`. Unfold `applyAt0`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Establish `hm : ∀ (a : Lt × ℕ × Fin N0 →₀ ℕ) (c : ℂ_[l]), ph (MvPolynomial.monomial a c) = c * ph (MvPolynomial.monomial a 1)` using `fun a c => by`. Rewrite using `[← smul_eq_mul, ← map_smul, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl (fun μ _ => ?_)` and prove the remaining obligations. Use `conv_rhs => rw [hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `wt`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lH : LH := by
   unfold LH Hpol
@@ -95,7 +95,7 @@ theorem lH : LH := by
   ring
 
 /- English proof (translation)
-Use extensionality with `x`. Apply the tactic sequence `rcases x with x | x <;> simp`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sumElim_split {α β : Type} (μ : (α ⊕ β) →₀ ℕ) :
     μ = Finsupp.sumElim (Finsupp.sumFinsuppEquivProdFinsupp μ).1
@@ -104,9 +104,9 @@ theorem sumElim_split {α β : Type} (μ : (α ⊕ β) →₀ ℕ) :
   rcases x with x | x <;> simp
 
 /- English proof (translation)
-Unfold `chi`. Use `set p := Finsupp.sumFinsuppEquivProdFinsupp μ with hp`. Establish `hμ : μ = Finsupp.sumElim p.1 p.2` using `sumElim_split μ`. Rewrite using `[hμ, MvPolynomial.eval₂Hom_monomial, Finsupp.prod_sumElim]`. Simplify using `only [Function.comp_def, Sum.elim_inl, Sum.elim_inr, RingHom.coe_comp, Function.comp_apply, MvPolynomial.monomial_eq, map_one, one_mul, map_mul, Finsupp.prod, map_prod, map_pow, eq_intCast]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chi_monomial {Lt : Type} (l : ℕ) [Fact l.Prime] (N0 N1 : ℕ) (z : Lt × Fin N0 × Fin N1 → ℂ_[l])
     (μ : (XZ Lt N0 N1) →₀ ℕ) (n : ℤ) :
@@ -123,9 +123,9 @@ theorem chi_monomial {Lt : Type} (l : ℕ) [Fact l.Prime] (N0 N1 : ℕ) (z : Lt 
   ring
 
 /- English proof (translation)
-Unfold `EvalH Hpol`. Introduce `Lt _ _ l _ N0 N1 ph G z`. Use `conv_rhs => rw [G.as_sum]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl (fun μ _ => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chi_monomial, MvPolynomial.eval_monomial, MvPolynomial.C_mul', map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem evalH : EvalH := by
   unfold EvalH Hpol

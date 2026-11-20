@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.WeylC UpperTheory.V.Cj.R
 
 /- English proof (translation)
-Introduce `E _ _ a D hD ρ hreg s hs`. Take `⟨d, A, B, σ, hd, -, hBA, hσ, hint, hirr⟩` from `UpperTheory.V.Weyl.irrSub _ D ρ hD`. Establish `hσreg : IsReg σ` using `by simpa only [← hσ] using isReg_conj hreg B A`. Use `⟨⟨d, σ, hσreg, hd, hirr⟩, fun τ u => ?_⟩` and prove the remaining obligations. Establish `hlie : ∀ i j, eOf ρ τ i j * A = A * eOf σ τ i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `i j`. Establish `l` using `eOf_conj hreg (1 : Matrix (Fin D) (Fin D) ℂ) A τ i j`. Establish `r` using `eOf_conj hσreg A (1 : Matrix (Fin d) (Fin d) ℂ) τ i j`. Simplify using `only [Matrix.one_mul, Matrix.mul_one, hint] at l r`. Conclude with `l.symm.trans r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hq` using `UpperTheory.V.Weyl.qdetRect a D d _ _ A hlie u`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, hBA, Matrix.one_mul]`. Use `_ = s τ u • 1 := by`. Rewrite using `[← hq, hs, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, hBA]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_algRep_qdet_eq_smul_one_of_isReg :
     ∀ (E : Type) [Field E] [NumberField E] (a D : ℕ), 0 < D → ∀ (ρ : GL (Fin a) (Cinf E) →* Matrix (Fin D) (Fin D) ℂ), IsReg ρ → ∀ s : (E →+* ℂ) → ℂ → ℂ, (∀ τ u, Formalism.REAL.qdet (eOf ρ τ) u = s τ u • 1) → ∃ Ξ : AlgRep E a, ∀ τ u, Formalism.REAL.qdet (eOf Ξ.mat τ) u = s τ u • 1 := by

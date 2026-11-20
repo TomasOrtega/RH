@@ -6,9 +6,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT.CtLevel
 
 /- English proof (translation)
-Introduce `E _ _ _ a b n h w m k X`. Prove the components needed by the constructor for the conclusion. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, blk_val, blk_val, dgM_val, dgMat, reindex_apply, reindex_apply, reindex_apply, submatrix_mul_equiv, fromBlocks_multiply]`. Simplify using `[Prod.fst_mul, Prod.snd_mul, Units.val_mul, Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, blk_val, blk_val, dgM_val, dgMat, reindex_apply, reindex_apply, reindex_apply, submatrix_mul_equiv, fromBlocks_multiply]`. Establish `hk : (k.2⁻¹).val * k.2.val = 1` using `Units.inv_mul k.2`. Simplify using `[Prod.fst_mul, Prod.snd_mul, Units.val_mul, Matrix.mul_assoc, hk]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blk_mul_dgM : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b n : ℕ) (h : a + b = n) (w : Pl E)
     (m k : GLw a w × GLw b w) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)),

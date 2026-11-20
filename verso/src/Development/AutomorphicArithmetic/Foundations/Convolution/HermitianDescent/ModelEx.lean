@@ -8,15 +8,15 @@ open scoped TensorProduct
 namespace UpperTheory.ConvolutionTheory.D
 
 /- English proof (translation)
-Set `A : Subalgebra k L` to `AlgHom.equalizer s (AlgHom.id k L)`. Set `f : R ⊗[k] A →ₐ[R] L` to `Algebra.TensorProduct.lift (Algebra.ofId R L) A.val fun _ _ => Commute.all _ _`. Establish `hf : ∀ (r : R) (a : A), f (r ⊗ₜ a) = algebraMap R L r * a` using `fun r a => rfl`. Establish `hb` using `descent k R c 2 hG L s.toLinearMap (fun r m => by simp [Algebra.smul_def, hs]) (LinearMap.ext fun z => by simp [pow_two, hss])`. Set `j : A ≃ₗ[k] LinearMap.eqLocus s.toLinearMap LinearMap.id` to `{ toFun := fun a => ⟨a.1, a.2⟩ invFun := fun a => ⟨a.1, a.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hbij : Function.Bijective f`. Establish `h2` using `hb.comp (j.lTensor R).bijective`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Proceed by induction on `z with`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [Function.comp_apply, map_add] at ha hb ⊢`. Rewrite using `[ha, hb]`. Consider the case `tmul r a => rw [hf, ← Algebra.smul_def]`. Both sides reduce to the same expression.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Both sides reduce to the same expression.
 
-Use `⟨A, inferInstance, inferInstance, AlgEquiv.ofBijective f hbij, fun z => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f _ = s (f z)`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul r a`. Establish `h1 : io c A (r ⊗ₜ a) = c r ⊗ₜ a` using `by simp [io]`. Establish `h2 : s a = a` using `a.2`. Rewrite using `[h1, hf, hf, map_mul, hs, h2]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem desc_alg {k R : Type} [CommRing k] [CommRing R] [Algebra k R] (c : R ≃ₐ[k] R) (hG : IsGal c 2)
     (L : Type) [CommRing L] [Algebra k L] [Algebra R L] [IsScalarTower k R L] (s : L →ₐ[k] L)
@@ -53,19 +53,19 @@ private theorem desc_alg {k R : Type} [CommRing k] [CommRing R] [Algebra k R] (c
     rw [h1, hf, hf, map_mul, hs, h2]
 
 /- English proof (translation)
-Take `⟨hm, hn, hu, hr⟩` from `hP`. Establish `hcc : ∀ r, c (c r) = r` using `fun r => by`. Rewrite using `[← AlgEquiv.mul_apply, ← pow_two, hc]`. Both sides reduce to the same expression. Establish `hx : IsUnit (AdjoinRoot.root P)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h1 : AdjoinRoot.mk P (X * P.divX + C (P.coeff 0)) = 0`. Rewrite using `[X_mul_divX_add, AdjoinRoot.mk_self]`. Rewrite `h1` using `[map_add, map_mul, AdjoinRoot.mk_X, AdjoinRoot.mk_C]`. Establish `h2` using `(hu.map (AdjoinRoot.of P)).neg`. Rewrite `h2` using `[← eq_neg_of_add_eq_zero_left h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_of_mul_isUnit_left h2`. Take `⟨y, hy⟩` from `hx.exists_right_inv`. Use `letI : Invertible y := ⟨AdjoinRoot.root P, hy, by rw [mul_comm, hy]⟩`. Establish `h0 : P.eval₂ ((AdjoinRoot.of P).comp (c : R →+* R)) y = 0`. Rewrite using `[← eval₂_map, ← eval₂_reflect_eq_zero_iff _ y n _ (natDegree_map_le.trans hn.le), hr, eval₂_mul]`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `mul_eq_zero_of_right _ (AdjoinRoot.eval₂_root P)`. Set `s0 : AdjoinRoot P →+* AdjoinRoot P` to `AdjoinRoot.lift _ y h0`. Establish `h1 : ∀ r, s0 (AdjoinRoot.of P r) = AdjoinRoot.of P (c r)` using `fun r => AdjoinRoot.lift_of h0`. Establish `h2 : s0 (AdjoinRoot.root P) = y` using `AdjoinRoot.lift_root h0`. Establish `h3 : s0 y = AdjoinRoot.root P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg s0 hy` as an intermediate fact. Rewrite `this` using `[map_mul, map_one, h2]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨s0, fun a => ?_⟩, h1, fun z => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply k R (AdjoinRoot P)]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Conclude with `(h1 _).trans (by rw [c.commutes]; rfl)`. Express the relevant statement in the definitionally equal form `s0 (s0 z) = z`. Take `⟨p, rfl⟩` from `AdjoinRoot.mk_surjective z`. Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a => rw [AdjoinRoot.mk_C, h1, h1, hcc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `monomial m a ih`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, map_mul, map_mul, ih, AdjoinRoot.mk_X, h2, h3]`. Express the relevant statement in the definitionally equal form `_ * s0 _ = 1`. Rewrite using `[h2, hy]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inv_ex {k R : Type} [CommRing k] [CommRing R] [Algebra k R] (c : R ≃ₐ[k] R) (hc : c ^ 2 = 1)
     {n : ℕ} {P : R[X]} (hP : IsCsr c n P) :
@@ -110,17 +110,15 @@ private theorem inv_ex {k R : Type} [CommRing k] [CommRing R] [Algebra k R] (c :
 end UpperTheory.ConvolutionTheory.D
 
 /- English proof (translation)
-Introduce `k R _ _ _ _ c hG n P hP hsep`. Take `⟨s, hs, hss, hx⟩` from `inv_ex c hG.pow hP`. Take `⟨A, _, _, e, he⟩` from `desc_alg c hG (AdjoinRoot P) s hs hss`. Take `⟨-, -, hff, -⟩` from `galBase k R k c 2 hG`. Take `⟨hm, hn, -, -⟩` from `hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Nontrivial R := hG.inj.nontrivial`. Set `B` to `(AdjoinRoot.powerBasis' hm).basis.map e.symm.toLinearEquiv`. Use `haveI : Module.Finite R (R ⊗[k] A) := Module.Finite.of_basis B`. Use `haveI : Module.Free R (R ⊗[k] A) := Module.Free.of_basis B`. Use `haveI : Module.Finite k A := Module.Finite.of_finite_tensorProduct_of_faithfullyFlat R`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Use `haveI : Module.Flat k A := Module.Flat.of_flat_tensorProduct k A R`. Use `haveI : Module.Free k A := Module.free_of_flat_of_isLocalRing`. Establish `hr : Module.finrank k A = n`. Rewrite using `[← Module.finrank_baseChange (R := R), Module.finrank_eq_card_basis B, Fintype.card_fin, ← hn]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b` to `Module.finBasisOfFinrankEq k A hr`. Establish `h1 : e.symm (AdjoinRoot.root P) * io c A (e.symm (AdjoinRoot.root P)) = 1`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, he, e.apply_symm_apply, hx, map_one]`. Set `g : (R ⊗[k] A)ˣ` to `Units.mkOfMulEqOne _ _ h1`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : cp (matU b g) = P` using `by set M := Algebra.leftMulMatrix (Algebra.TensorProduct.basis R b) (e.symm (AdjoinRoot.root P)) with hM`. Express the relevant statement in the definitionally equal form `M.charpoly = P`. Establish `h3 : aeval (AdjoinRoot.root P) M.charpoly = 0`. Establish `h4` using `Matrix.aeval_self_charpoly M`. Rewrite `h4` using `[hM, aeval_algHom_apply, ← hM, map_eq_zero_iff _ (Algebra.leftMulMatrix_injective _), aeval_algHom_apply]`.
-
-Conclude with `(map_eq_zero_iff _ e.symm.injective).1 h4`. Rewrite `h3` using `[AdjoinRoot.aeval_eq, AdjoinRoot.mk_eq_zero]`. Conclude with `eq_of_monic_of_dvd_of_natDegree_le hm M.charpoly_monic h3 (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, hn])`. Conclude with `⟨A, _, _, b, g, ⟨h1, h2 ▸ hsep⟩, h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.D.modelEx :
     UpperTheory.ConvolutionTheory.D.ModelEx := by

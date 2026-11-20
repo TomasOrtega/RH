@@ -3,17 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConvexNerveComplex
 open Set UpperTheory.V.ConeExtensionAcyclic
 
 /- English proof (translation)
-Introduce `E Y _ _ q T`. Use `⟨?_, fun h => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `x hx y hy a b ha hb hab`. Simplify using `only [posDual, Set.mem_setOf_eq] at hx hy ⊢`. Introduce `k hk hk0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hx k hk hk0`. Establish `h2` using `hy k hk hk0`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Break down `eq_or_lt_of_le ha with ha0 | ha'` into its components or cases. Substitute `ha0` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Establish `hb1 : b = 1` using `by linarith`. Substitute `hb1` using the available equality. Simplify using `using h2`. Use polynomial arithmetic with `[mul_pos ha' h1, mul_nonneg hb h2.le]`. Establish `e : normalCone q h = ⋂ h' ∈ poly q, {x : E →L[ℝ] ℝ | x h ≤ x h'}`.
+Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[normalCone]`. Rewrite using `[e]`. Conclude with `isClosed_biInter fun h' _ => isClosed_le (ContinuousLinearMap.apply ℝ ℝ h).continuous (ContinuousLinearMap.apply ℝ ℝ h').continuous`. Introduce `x hx y hy a b ha hb hab`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [normalCone, Set.mem_setOf_eq] at hx hy ⊢`. Introduce `h' hh'`. Establish `h1` using `hx h' hh'`. Establish `h2` using `hy h' hh'`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`.
-
-Conclude with `add_le_add (mul_le_mul_of_nonneg_left h1 ha) (mul_le_mul_of_nonneg_left h2 hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ConeExtensionAcyclic.dual_convex : ∀ {E Y : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (q : Y → E →L[ℝ] ℝ) (T : Set E), Convex ℝ (posDual T) ∧ ∀ h : E, IsClosed (normalCone q h) ∧ Convex ℝ (normalCone q h) := by
   intro E Y _ _ q T

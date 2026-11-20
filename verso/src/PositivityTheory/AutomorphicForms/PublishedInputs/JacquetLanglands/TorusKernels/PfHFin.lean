@@ -20,14 +20,14 @@ def Gm (h : HRel) (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : In
     exact (h F k).2.1 _ _ _ (Classical.choose_spec ((h F k).1 (s • f))) e
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec ((h F k).1 f)`.
+A detailed English derivation is pending.
 -/
 theorem rel (h : HRel) (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : InfinitePlace F → ℕ)
     (f : X (InfinitePlace F) × GF F → ℂ) : Rel k f (Gm h F k f) :=
   Classical.choose_spec ((h F k).1 f)
 
 /- English proof (translation)
-Introduce `f f' e`. Establish `h2` using `rel h F k f'`. Rewrite `h2` using `[← e]`. Conclude with `(h F k).2.2.1 f f' _ (rel h F k f) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inj (h : HRel) (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : InfinitePlace F → ℕ) :
     Function.Injective (Gm h F k) := by
@@ -39,13 +39,13 @@ theorem inj (h : HRel) (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k
 end UpperTheory.Esk.FiniteLevelGroupLemmas
 
 /- English proof (translation)
-Introduce `hR h2a h2d h2e hC F _ _ _ k c hc ω χ hω hχ hS hk`. Set `S : Set (TR.Sm F 2)` to `{φ | IsHolV k c ω φ ∧ TR.IsCuspForm φ}`. Establish `: FiniteDimensional ℂ (Submodule.span ℂ S)` using `hC F k c hc ω hω`. Set `W : Submodule ℂ (GA F 2 → ℂ)` to `(Submodule.span ℂ S).map (TR.Sm F 2).subtype`. Establish `: FiniteDimensional ℂ W` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `p` to `Submodule.span ℂ {f | (mkDat c χ).IsForm k f}`. Establish `hle : p.map (FiniteLevelGroupLemmas.Gm hR F k) ≤ W`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Establish `hrel` using `FiniteLevelGroupLemmas.rel hR F k f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨hs, hhol⟩` from `h2d F k c hc ω χ hω hχ hS hk f _ hf hrel`. Establish `hb` using `(h2a F k c hc ω χ hω hχ hS hk f _ hf hrel).2.2.2`. Establish `hcusp` using `h2e F k c ω ⟨_, hs⟩ hω hk hhol hb`. Conclude with `⟨⟨_, hs⟩, Submodule.subset_span ⟨hhol, hcusp⟩, rfl⟩`. Establish `: FiniteDimensional ℂ (p.map (FiniteLevelGroupLemmas.Gm hR F k))` using `Submodule.finiteDimensional_of_le hle`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective _ (FiniteLevelGroupLemmas.inj hR F k) p).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.pf_HFin : UpperTheory.Esk.HRel → UpperTheory.Esk.H2a → UpperTheory.Esk.H2d → UpperTheory.Esk.H2e → UpperTheory.Esk.HFinC → UpperTheory.Esk.HFin := by
   intro hR h2a h2d h2e hC F _ _ _ k c hc ω χ hω hχ hS hk

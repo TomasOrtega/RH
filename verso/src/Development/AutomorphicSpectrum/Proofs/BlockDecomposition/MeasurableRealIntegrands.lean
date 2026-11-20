@@ -12,20 +12,20 @@ variable {α : Type*} [MeasurableSpace α]
 def MM (A : α → Mt) : Prop := ∀ i j, Measurable fun a => A a i j
 
 /- English proof (translation)
-The claim follows from `Complex.measurable_ofReal.comp hf`.
+A detailed English derivation is pending.
 -/
 theorem cR {f : α → ℝ} (hf : Measurable f) : Measurable fun a => (f a : ℂ) :=
   Complex.measurable_ofReal.comp hf
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_fin_two]`. Conclude with `((hA 0 0).mul (hA 1 1)).sub ((hA 0 1).mul (hA 1 0))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_m {A : α → Mt} (hA : MM A) : Measurable fun a => (A a).det := by
   simp only [Matrix.det_fin_two]
   exact ((hA 0 0).mul (hA 1 1)).sub ((hA 0 1).mul (hA 1 0))
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two]`. Conclude with `((hA i 0).mul (hB 0 j)).add ((hA i 1).mul (hB 1 j))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_m {A B : α → Mt} (hA : MM A) (hB : MM B) : MM fun a => A a * B a := by
   intro i j
@@ -33,9 +33,7 @@ theorem mul_m {A B : α → Mt} (hA : MM A) (hB : MM B) : MM fun a => A a * B a 
   exact ((hA i 0).mul (hB 0 j)).add ((hA i 1).mul (hB 1 j))
 
 /- English proof (translation)
-Introduce `i j`. Establish `hd : Measurable fun a => ((A a).det)⁻¹` using `(det_m hA).inv`. Simplify using `only [Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Matrix.adjugate_fin_two]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Conclude with `hd.mul (hA 1 1)`.
-
-Conclude with `hd.mul (hA 0 1)`. Conclude with `hd.mul (hA 1 0)`. Conclude with `hd.mul (hA 0 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem inv_m {A : α → Mt} (hA : MM A) : MM fun a => (A a)⁻¹ := by
   intro i j
@@ -48,16 +46,16 @@ theorem inv_m {A : α → Mt} (hA : MM A) : MM fun a => (A a)⁻¹ := by
   · exact hd.mul (hA 0 0)
 
 /- English proof (translation)
-Unfold `glOf`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glOf_val (h : Mt) : (glOf h).val = if h.det ≠ 0 then h else 1 := by
   unfold glOf
   split_ifs <;> rfl
 
 /- English proof (translation)
-Introduce `i j`. Establish `hs : MeasurableSet {a | (A a).det ≠ 0}` using `(measurableSet_singleton (0 : ℝ)).compl.preimage (det_m hA)`. Establish `: (fun a => (glOf (A a)).val i j) = fun a => if (A a).det ≠ 0 then A a i j else (1 : Mt) i j`. Use function extensionality and compare the values at `a`. Rewrite using `[glOf_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[this]`. Conclude with `Measurable.ite hs (hA i j) measurable_const`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glOf_m {A : α → Mt} (hA : MM A) : MM fun a => (glOf (A a)).val := by
   intro i j
@@ -72,16 +70,16 @@ theorem glOf_m {A : α → Mt} (hA : MM A) : MM fun a => (glOf (A a)).val := by
   exact Measurable.ite hs (hA i j) measurable_const
 
 /- English proof (translation)
-Unfold `sg`. Conclude with `Measurable.ite (measurableSet_lt ht measurable_const) measurable_const measurable_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sg_m {t : α → ℝ} (ht : Measurable t) : Measurable fun a => sg (t a) := by
   unfold sg
   exact Measurable.ite (measurableSet_lt ht measurable_const) measurable_const measurable_const
 
 /- English proof (translation)
-Unfold `Wm`. Establish `hd` using `det_m hA`. Establish `hq : Measurable fun a => ((A a 1 1 : ℂ) - (A a 1 0 : ℂ) * Complex.I)` using `(cR (hA 1 1)).sub ((cR (hA 1 0)).mul_const _)`. Establish `hp : Measurable fun a => ((A a 0 1 : ℂ) - (A a 0 0 : ℂ) * Complex.I)` using `(cR (hA 0 1)).sub ((cR (hA 0 0)).mul_const _)`. Use `Measurable.ite (measurableSet_lt measurable_const hd) ?_ measurable_const` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((cR (hd.pow_const _)).mul (hq.pow_const _)).mul ?_` and prove the remaining obligations. Conclude with `Complex.measurable_exp.comp ((hp.div hq).const_mul _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Wm_m (k : ℕ) {A : α → Mt} (hA : MM A) : Measurable fun a => Wm k (A a) := by
   unfold Wm
@@ -95,9 +93,9 @@ theorem Wm_m (k : ℕ) {A : α → Mt} (hA : MM A) : Measurable fun a => Wm k (A
   exact Complex.measurable_exp.comp ((hp.div hq).const_mul _)
 
 /- English proof (translation)
-Unfold `WthR`. Establish `hd : Measurable fun a => ((G a).val).det` using `det_m hG`. Establish `hq : Measurable fun a => (((G a).val 1 1 : ℂ) + Complex.I * ((G a).val 1 0 : ℂ))` using `(cR (hG 1 1)).add ((cR (hG 1 0)).const_mul _)`. Establish `hp : Measurable fun a => (((G a).val 0 1 : ℂ) + Complex.I * ((G a).val 0 0 : ℂ))` using `(cR (hG 0 1)).add ((cR (hG 0 0)).const_mul _)`. Use `Measurable.ite (measurableSet_lt measurable_const hd) ?_ measurable_const` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(((cR hd).pow_const _).mul (hq.pow_const _)).mul ?_` and prove the remaining obligations. Conclude with `Complex.measurable_exp.comp ((hp.div hq).const_mul _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem WthR_m (n : ℤ) {G : α → GL (Fin 2) ℝ} (hG : MM fun a => (G a).val) :
     Measurable fun a => WthR n (G a) := by
@@ -112,9 +110,7 @@ theorem WthR_m (n : ℤ) {G : α → GL (Fin 2) ℝ} (hG : MM fun a => (G a).val
   exact Complex.measurable_exp.comp ((hp.div hq).const_mul _)
 
 /- English proof (translation)
-Unfold `phi1 zR nrm`. Establish `hz : Measurable fun a => (((A a 0 0 + A a 1 1 : ℝ) : ℂ) + Complex.I * ((A a 1 0 - A a 0 1 : ℝ) : ℂ))` using `(cR ((hA 0 0).add (hA 1 1))).add ((cR ((hA 1 0).sub (hA 0 1))).const_mul _)`. Establish `hn : Measurable fun a => ∑ i, ∑ j, A a i j ^ 2`. Simplify using `only [Fin.sum_univ_two]`. Conclude with `(((hA 0 0).pow_const 2).add ((hA 0 1).pow_const 2)).add (((hA 1 0).pow_const 2).add ((hA 1 1).pow_const 2))`.
-
-Conclude with `(hz.pow_const _).mul (cR (Real.measurable_exp.comp (hn.const_mul _)))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_first_gaussian_matrix (n : ℤ) {A : α → Mt} (hA : MM A) : Measurable fun a => phi1 n (A a) := by
   unfold phi1 zR nrm
@@ -127,7 +123,7 @@ theorem measurable_first_gaussian_matrix (n : ℤ) {A : α → Mt} (hA : MM A) :
   exact (hz.pow_const _).mul (cR (Real.measurable_exp.comp (hn.const_mul _)))
 
 /- English proof (translation)
-Unfold `phi2h`. Use `((((cR (h 1)).add ((cR (h 0)).const_mul _)).pow_const _)).mul ?_` and prove the remaining obligations. Conclude with `cR (Real.measurable_exp.comp ((((h 0).pow_const 2).add ((h 1).pow_const 2)).const_mul _))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_second_gaussian_vector (k : ℕ) (n : ℤ) {ξ : α → Fin 2 → ℝ} (h : ∀ i, Measurable fun a => ξ a i) :
     Measurable fun a => phi2h k n (ξ a) := by
@@ -137,18 +133,16 @@ theorem measurable_second_gaussian_vector (k : ℕ) (n : ℤ) {ξ : α → Fin 2
     ((((h 0).pow_const 2).add ((h 1).pow_const 2)).const_mul _))
 
 /- English proof (translation)
-The claim follows from `(cR (det_m hA).abs).pow_const c`.
+A detailed English derivation is pending.
 -/
 theorem absc_m {A : α → Mt} (hA : MM A) (c : ℂ) :
     Measurable fun a => ((|(A a).det| : ℝ) : ℂ) ^ c :=
   (cR (det_m hA).abs).pow_const c
 
 /- English proof (translation)
-Establish `h0 : Measurable fun q : M22 × Yc => q.2.1 0` using `(measurable_pi_apply 0).comp (measurable_fst.comp measurable_snd)`. Establish `h1 : Measurable fun q : M22 × Yc => q.2.1 1` using `(measurable_pi_apply 1).comp (measurable_fst.comp measurable_snd)`. Establish `hd : Measurable fun q : M22 × Yc => q.2.2` using `measurable_snd.comp measurable_snd`. Establish `hn : Measurable fun q : M22 × Yc => nv q.2.1`. Unfold `nv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `(h0.pow_const 2).add (h1.pow_const 2)`. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [sec2]`. Conclude with `(hd.mul h1).div hn`. Conclude with `(hd.mul h0).neg.div hn`.
-
-Conclude with `h0`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem measurable_section_matrix : MM fun q : M22 × Yc => sec2 q.2 := by
   have h0 : Measurable fun q : M22 × Yc => q.2.1 0 := (measurable_pi_apply 0).comp (measurable_fst.comp measurable_snd)
@@ -165,18 +159,16 @@ theorem measurable_section_matrix : MM fun q : M22 × Yc => sec2 q.2 := by
   · exact h1
 
 /- English proof (translation)
-Introduce `i j`. Conclude with `(measurable_pi_apply j).comp ((measurable_pi_apply i).comp measurable_fst)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem of_m : MM fun q : M22 × Yc => (Matrix.of q.1 : Mt) := by
   intro i j
   exact (measurable_pi_apply j).comp ((measurable_pi_apply i).comp measurable_fst)
 
 /- English proof (translation)
-Establish `hh` using `measurable_section_matrix`. Establish `hg` using `of_m`. Establish `hk` using `mul_m hh (inv_m hg)`. Establish `hgd : Measurable fun q : M22 × Yc => sg (Matrix.of q.1 : Mt).det` using `sg_m (det_m hg)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Unfold `Uf`. Conclude with `(((absc_m hh s).mul (Wm_m k hk)).mul (measurable_second_gaussian_vector k n (fun i => hk 1 i))).mul (WthR_m n (glOf_m hh)) |>.mul (((measurable_first_gaussian_matrix n hg).mul hgd).mul (absc_m hg _))`. Unfold `Vf`. Establish `hv : MM fun q : M22 × Yc => (glOf (sec2 q.2) * glOf (Matrix.of q.1 : Mt)).val`. Simplify using `using mul_m (glOf_m hh) (glOf_m hg)`.
-
-Conclude with `(((absc_m hh s).mul (Wm_m k hh)).mul (measurable_second_gaussian_vector k n (fun i => hh 1 i))).mul ((((measurable_first_gaussian_matrix n hg).mul hgd).mul (absc_m hg _)).mul (WthR_m n hv))`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem main (k : ℕ) (n : ℤ) (s : ℂ) :
     Measurable (fun q : M22 × Yc => Uf k n s (sec2 q.2) (Matrix.of q.1)) ∧

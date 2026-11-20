@@ -62,7 +62,7 @@ def UnivStep : Prop :=
     (CA CB CK : ℝ), Adm1 D HW F Cm CA CB CK → univR D HW
 
 /- English proof (translation)
-Introduce `D HW F Cm CA CB CK hFont hA` and use `killR_of_steps D HW hd (hq D hA.2.2.2.2.2.2.2.2.2.2.1 hA.2.2.2.2.2.2.2.2.2.2.2.1) (hn D) (h9 D HW F Cm hA.1) (splitR_of_steps D HW F hA.2.1 hA.2.2.2.2.1 (he D HW F Cm CA CB CK hA) (hw D HW F Cm CA CB CK hA) (hk D HW F Cm CA CB CK hA hFont) (hl D HW F Cm CA CB CK hA) (hg D HW F Cm …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem killR_of_stepProps (hd : DvdStep) (hq : QuotStep) (hn : NormStep) (h9 : DeltaInvariantUniformizer)
     (he : ExtStep) (hw : WStep) (hk : KerLamStep) (hl : NinLamStep) (hg : GradNStep)
@@ -78,7 +78,7 @@ theorem killR_of_stepProps (hd : DvdStep) (hq : QuotStep) (hn : NormStep) (h9 : 
       (hu D HW F Cm CA CB CK hA)
 
 /- English proof (translation)
-Introduce `D HW F Cm CA CB CK C hC hFont` and use `local_theorem_of_three_inputs D HW F Cm CA CB CK C hC (hG D HW F Cm CA CB CK) (hL D HW F Cm CA CB CK) (killR_of_stepProps hd hq hn h9 he hw hk hl hg hf hγ ho hu D HW F Cm CA CB CK hFont)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem local_theorem_of_lemma_properties (hG : GenStep) (hL : LiftStep) (hd : DvdStep) (hq : QuotStep)
     (hn : NormStep) (h9 : DeltaInvariantUniformizer) (he : ExtStep) (hw : WStep) (hk : KerLamStep) (hl : NinLamStep)

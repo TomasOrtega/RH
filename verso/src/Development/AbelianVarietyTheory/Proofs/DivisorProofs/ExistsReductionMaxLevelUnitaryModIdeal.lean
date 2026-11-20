@@ -16,11 +16,11 @@ open GlobalTheory.BotPairSmall.BlockIdx
 variable (D : D7) (𝔪 : Ideal (𝓞 D.host.E))
 
 /- English proof (translation)
-Establish `e : inc D (r : D.host.E) - inc D (b : D.host.E) = inc D ((r - b : 𝓞 D.host.E) : D.host.E)`. Use `push_cast`. Rewrite using `[map_sub]`. Rewrite using `[Ideal.Quotient.eq, e]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Simplify using `using gen_mem_hatId D 𝔪 h (one_mem (OhE D))`. Introduce `h`. Take `⟨c, hc, e'⟩` from `(FractionalIdeal.mem_coeIdeal _).1 (GlobalTheory.HeisTranslate.mem_of_inc_mem_hatId h𝔪 h)`. Establish `: c = r - b` using `RingOfIntegers.coe_injective e'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this ▸ hc`.
+A detailed English derivation is pending.
 -/
 theorem mk_eq_iff (h𝔪 : 𝔪 ≠ ⊥) (r b : 𝓞 D.host.E) :
     Ideal.Quotient.mk 𝔪 r = Ideal.Quotient.mk 𝔪 b ↔
@@ -38,17 +38,17 @@ theorem mk_eq_iff (h𝔪 : 𝔪 ≠ ⊥) (r b : 𝓞 D.host.E) :
     exact this ▸ hc
 
 /- English proof (translation)
-Use `choose r hr using fun x : OhE D => exists_red D 𝔪 h𝔪 (x : AE D) x.2`. Establish `key : ∀ (x : OhE D) (b : 𝓞 D.host.E), Ideal.Quotient.mk 𝔪 (r x) = Ideal.Quotient.mk 𝔪 b ↔ (x : AE D) - inc D (b : D.host.E) ∈ hatId D 𝔪`. Introduce `x b`. Rewrite using `[mk_eq_iff D 𝔪 h𝔪]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `add_mem (hr x) h` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Introduce `h`. Use `sub_mem h (hr x)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis. Use `⟨{ toFun := fun x => Ideal.Quotient.mk 𝔪 (r x) map_one' := ?_ map_mul' := fun x y => ?_ map_zero' := ?_ map_add' := fun x y => ?_ }, key⟩` and prove the remaining obligations. Rewrite using `[← map_one (Ideal.Quotient.mk 𝔪), key]`. Simplify using the standard rewrite rules. Rewrite using `[← map_mul, key]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `add_mem (mul_mem_hatId D 𝔪 y.2 (hr x)) (mul_mem_hatId D 𝔪 (VacMove.inc_int D (r x)) (hr y))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_zero (Ideal.Quotient.mk 𝔪), key]`. Simplify using the standard rewrite rules. Rewrite using `[← map_add, key]`. Use `add_mem (hr x) (hr y)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_redHom (h𝔪 : 𝔪 ≠ ⊥) : ∃ red : OhE D →+* 𝓞 D.host.E ⧸ 𝔪, ∀ (x : OhE D) (b : 𝓞 D.host.E),
     red x = Ideal.Quotient.mk 𝔪 b ↔ (x : AE D) - inc D (b : D.host.E) ∈ hatId D 𝔪 := by
@@ -100,7 +100,7 @@ def intMat (N : ℕ) : ↥(intG D N) →* Matrix (Fin N) (Fin N) (OhE D) where
     simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Introduce `D 𝔪 h𝔪 N`. Take `⟨red, hred⟩` from `exists_redHom D 𝔪 h𝔪`. Conclude with `⟨((red.mapMatrix (m := Fin N)).toMonoidHom.comp (intMat D N)).toHomUnits, fun k i j b => hred (intMat D N k i j) b⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_levelRed : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → ∀ N : ℕ,
     ∃ ρ : ↥(intG D N) →* GL (Fin N) (𝓞 D.host.E ⧸ 𝔪), ∀ (k : ↥(intG D N)) (i j : Fin N) (b : 𝓞 D.host.E),

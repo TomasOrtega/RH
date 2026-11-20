@@ -12,29 +12,25 @@ namespace GlobalTheory.ExpandCoeff
 open Polynomial
 
 /- English proof (translation)
-Introduce `l hl a _ E hE hirr z hz hroot i hi`. Establish `hl0 : 0 < l` using `hl.out.pos`. Use `set K := ↥(Kunr l a)`. Establish `hzi : IsIntegral K z` using `Algebra.IsIntegral.isIntegral z`. Use `set m := minpoly K z with hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set φ := algebraMap K (Om l)`. Use `set EK := E.map (GlobalTheory.TameFrob.iota l a) with hEKdef`. Use `set Q := E.map (GlobalTheory.TameFrob.iotaO l a) with hQdef`. Establish `hcomp : φ.comp (GlobalTheory.TameFrob.iota l a) = GlobalTheory.TameFrob.iotaO l a` using `RingHom.ext fun w => rfl`. Establish `hmapQ : EK.map φ = Q` using `by rw [hEKdef, Polynomial.map_map, hcomp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ y : Om l, Polynomial.aeval y EK = Q.eval y` using `fun y => by`. Rewrite using `[Polynomial.aeval_def, ← Polynomial.eval_map, hmapQ]`. Take `⟨y0, hy0⟩` from `IsAlgClosed.exists_pow_nat_eq z hl0`. Establish `hQ0 : Q.IsRoot y0` using `hroot z (minpoly.aeval K z) y0 hy0`. Establish `hEK : EK.Monic` using `hE.map _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hEKmin : EK = minpoly K y0` using `minpoly.eq_of_irreducible_of_monic hirr (by rw [hev]; exact hQ0) hEK`. Use `set P := Polynomial.expand K l m with hPdef`. Establish `hPmon : P.Monic` using `(minpoly.monic hzi).expand hl0`. Establish `hPy0 : Polynomial.aeval y0 P = 0`. Rewrite using `[hPdef, Polynomial.expand_aeval, hy0, minpoly.aeval]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hdvd : EK ∣ P` using `hEKmin ▸ minpoly.dvd K y0 hPy0`. Establish `hmsep : m.Separable` using `Algebra.IsSeparable.isSeparable K z`. Establish `hc0 : m.coeff 0 ≠ 0` using `minpoly.coeff_zero_ne_zero hzi hz`. Establish `hPsep : P.Separable`. Unfold `Polynomial.Separable`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.derivative_expand]`. Establish `h1 : IsCoprime P (Polynomial.expand K l (Polynomial.derivative m))` using `IsCoprime.map hmsep (Polynomial.expand K l).toRingHom`. Establish `h2 : IsCoprime P (Polynomial.X ^ (l - 1))`. Use `IsCoprime.pow_right ?_` and prove the remaining obligations. Use `IsCoprime.symm ((Polynomial.irreducible_X.coprime_iff_not_dvd).2 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.X_dvd_iff, hPdef, Polynomial.coeff_expand hl0, if_pos (dvd_zero l), Nat.zero_div]`. Conclude with `hc0`. Establish `h3 : IsCoprime P ((l : K[X]))`. Establish `hu : IsUnit ((l : K[X]))`. Rewrite using `[← Polynomial.C_eq_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Polynomial.isUnit_C.2 (IsUnit.mk0 _ (Nat.cast_ne_zero.2 hl.out.ne_zero))`. Conclude with `⟨0, ↑(hu.unit⁻¹), by rw [zero_mul, zero_add, IsUnit.val_inv_mul]⟩`. Conclude with `h1.mul_right (h3.mul_right h2)`. Use `set P' := P.map φ with hP'def`. Establish `hP'sep : P'.Separable` using `hPsep.map`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP'0 : P' ≠ 0` using `(hPmon.map φ).ne_zero`. Establish `hQne : Q ≠ 0` using `(hE.map _).ne_zero`. Establish `hnod : P'.roots.Nodup` using `Polynomial.nodup_roots hP'sep`. Establish `hcard : Multiset.card P'.roots = P'.natDegree` using `(Polynomial.splits_iff_card_roots).1 (IsAlgClosed.splits P')`. Establish `hle : P'.roots ≤ Q.roots`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Multiset.le_iff_subset hnod).2 fun y hy => ?_` and prove the remaining obligations. Rewrite `hy` using `[Polynomial.mem_roots hP'0, Polynomial.IsRoot, hP'def, Polynomial.eval_map, ← Polynomial.aeval_def, hPdef, Polynomial.expand_aeval]`. Conclude with `(Polynomial.mem_roots hQne).2 (hroot _ hy y rfl)`. Establish `hdeg : P.natDegree ≤ EK.natDegree`. Establish `e1 : P'.natDegree = P.natDegree` using `Polynomial.natDegree_map φ`.
-
-Establish `e2 : EK.natDegree = Q.natDegree`. Rewrite using `[hEKdef, hQdef, Polynomial.natDegree_map_eq_of_injective (GlobalTheory.TameFrob.iota_injective l a), Polynomial.natDegree_map_eq_of_injective (GlobalTheory.TameFrob.iotaO_injective l a)]`. Rewrite using `[← e1, e2, ← hcard]`. Conclude with `(Multiset.card_le_card hle).trans (Polynomial.card_roots' Q)`. Establish `hEq : P = EK` using `Polynomial.eq_of_monic_of_dvd_of_natDegree_le hEK hPmon hdvd hdeg`.
-
-Establish `hci : GlobalTheory.TameFrob.iota l a (E.coeff i) = 0`. Rewrite using `[← Polynomial.coeff_map, ← hEKdef, ← hEq, hPdef, Polynomial.coeff_expand hl0, if_neg hi]`. Conclude with `GlobalTheory.TameFrob.iota_injective l a (hci.trans (map_zero _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero_of_roots : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (E : Polynomial (Wq l a)), E.Monic →
     Irreducible (E.map (GlobalTheory.TameFrob.iota l a)) → ∀ z : Om l, z ≠ 0 →

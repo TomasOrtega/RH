@@ -35,13 +35,13 @@ open PI PI.QuotInvW
 variable {m : ℕ} {G S : Set (Matrix (Fin m) (Fin m) ℂ)} {μG μS ν ν' : Measure (MtM m)}
 
 /- English proof (translation)
-Establish `: SigmaFinite μS` using `h.2.2.2.2.1.1`. Establish `hcm : Measurable (avgS μS ρ)` using `measurable_avgS hρm`. Establish `hH : Measurable (fun x => F x * (avgS μS ρ x)⁻¹)` using `hF.mul hcm.inv`. Establish `hHi : ∀ s ∈ S, ∀ x : MtM m, Matrix.of x ∈ G → F (mm s x) * (avgS μS ρ (mm s x))⁻¹ = F x * (avgS μS ρ x)⁻¹`. Introduce `s hs x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hFi s hs x hx, avgS_mm h hρm (t := s) hs x]`. Establish `hw` using `weil_inv h hH hρm hHi`. Establish `hint : ∫⁻ x, avgS μS ρ x ∂ν ≠ ⊤`. Use `weil h hρm` as an intermediate fact. Rewrite `hρi` using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hρi`. Establish `hfin : ∀ᵐ x ∂ν, avgS μS ρ x < ⊤` using `ae_lt_top hcm hint`. Rewrite using `[hw]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hfin] with x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `F x = F x * (avgS μS ρ x)⁻¹ * avgS μS ρ x`. Rewrite using `[mul_assoc, ENNReal.inv_mul_cancel (avgS_ne_zero h hρm hρ0 x) hx.ne, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_eq_weight (h : QuotientSetting G S μG μS ν) {ρ : MtM m → ℝ≥0∞} (hρm : Measurable ρ)
     (hρ0 : ∀ x, ρ x ≠ 0) (hρi : ∫⁻ x, ρ x ∂μG ≠ ⊤) {F : MtM m → ℝ≥0∞} (hF : Measurable F)
@@ -67,9 +67,9 @@ theorem lintegral_eq_weight (h : QuotientSetting G S μG μS ν) {ρ : MtM m →
   rw [mul_assoc, ENNReal.inv_mul_cancel (avgS_ne_zero h hρm hρ0 x) hx.ne, mul_one]
 
 /- English proof (translation)
-Establish `: SigmaFinite μG` using `h.2.2.2.1.1`. Take `⟨w, hw0, hwm, hwi⟩` from `exists_pos_lintegral_lt_of_sigmaFinite μG (ε := 1) one_ne_zero`. Establish `hρm : Measurable (fun x => (w x : ℝ≥0∞))` using `hwm.coe_nnreal_ennreal`. Establish `hρ0 : ∀ x, (w x : ℝ≥0∞) ≠ 0` using `fun x => by simp [(hw0 x).ne']`. Establish `hρi : ∫⁻ x, (w x : ℝ≥0∞) ∂μG ≠ ⊤` using `(hwi.trans ENNReal.one_lt_top).ne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[lintegral_eq_weight h hρm hρ0 hρi hF hFi, lintegral_eq_weight h' hρm hρ0 hρi hF hFi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_eq_of_quot (h : QuotientSetting G S μG μS ν) (h' : QuotientSetting G S μG μS ν')
     {F : MtM m → ℝ≥0∞} (hF : Measurable F)
@@ -83,15 +83,13 @@ theorem lintegral_eq_of_quot (h : QuotientSetting G S μG μS ν) (h' : Quotient
   rw [lintegral_eq_weight h hρm hρ0 hρi hF hFi, lintegral_eq_weight h' hρm hρ0 hρi hF hFi]
 
 /- English proof (translation)
-Introduce `f hf`. Establish `: SigmaFinite μS` using `h.2.2.2.2.1.1`. Use `set L : MtM m → MtM m := fun x => fun i j => (t * Matrix.of x) i j with hLdef`. Use `set C : MtM m → MtM m := fun x => fun i j => (t * Matrix.of x * t⁻¹) i j with hCdef`. Establish `hL : Measurable L` using `measurable_mm_right (m := m) t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : Measurable C` using `(measurable_mm_left (m := m) (t⁻¹ : Matrix (Fin m) (Fin m) ℂ)).comp (measurable_mm_right (m := m) t)`. Establish `hG' : μG.map L = μG` using `h.2.2.2.1.2.2.2 t ht`. Establish `hinv : t⁻¹ * t = 1` using `inv_mul_of h.1 ht`. Establish `hA : Measurable (fun y : MtM m => ∫⁻ s, f (mm s y) ∂μS)` using `measurable_avgS hf`. Establish `key : ∀ s x : MtM m, L (mm s x) = mm (C s) (L x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s x`. Establish `e : t * Matrix.of s * t⁻¹ * (t * Matrix.of x) = t * (Matrix.of s * Matrix.of x)`. Rewrite using `[Matrix.mul_assoc (t * Matrix.of s) t⁻¹, ← Matrix.mul_assoc t⁻¹ t, hinv, Matrix.one_mul, Matrix.mul_assoc]`. Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `(t * (Matrix.of s * Matrix.of x)) i j = (t * Matrix.of s * t⁻¹ * (t * Matrix.of x)) i j`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun s => ?_` and prove the remaining obligations.
-
-Rewrite using `[key s x]`. Use `_ = ∫⁻ s, f (mm s (L x)) ∂(μS.map C) := (lintegral_map (hf.comp (measurable_mm_left (L x))) hC).symm`. Use `_ = ∫⁻ s, f (mm s (L x)) ∂μS := by rw [hμ]`. Use `_ = ∫⁻ y, (∫⁻ s, f (mm s y) ∂μS) ∂(ν.map L) := (lintegral_map hA hL).symm`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isQuotM_map_left (h : QuotientSetting G S μG μS ν) {t : Matrix (Fin m) (Fin m) ℂ} (ht : t ∈ G)
     (hμ : μS.map (fun x : MtM m => fun i j => (t * Matrix.of x * t⁻¹) i j) = μS) :
@@ -130,9 +128,9 @@ theorem isQuotM_map_left (h : QuotientSetting G S μG μS ν) {t : Matrix (Fin m
 end General
 
 /- English proof (translation)
-Introduce `k r z μG μS ν hz hT hG hS hq t ht hN hμS F hF hFS`. Take `⟨h1, h2, h3, h4, h5⟩` from `quotient_measure_unitary_group k r z hz hT`. Establish `hset : PI.QuotientSetting (UH (Hpk k r)) (Sset k r z) μG μS ν` using `⟨h1, h2, h3, hG, hS, h4 μG hG, h5 μS hS, hq⟩`. Establish `hq1` using `isQuotM_map_left hset ht hμS`. Establish `hL : Measurable (fun x : Mt k r => (fun i j => (t * Matrix.of x) i j : Mt k r))` using `PI.QuotInvW.measurable_mm_right (m := 2 * r + k + 1) t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `lintegral_eq_of_quot ⟨h1, h2, h3, hG, hS, h4 μG hG, h5 μS hS, hq1⟩ hset hF (fun s hs x hx => hFS s hs x hx)`. Rewrite `e` using `[lintegral_map hF hL]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotLeftNorm : QuotLeftNorm := by
   intro k r z μG μS ν hz hT hG hS hq t ht hN hμS F hF hFS

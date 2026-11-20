@@ -23,7 +23,7 @@ namespace GlobalTheory.ShFam.Pad
 namespace GenId
 
 /- English proof (translation)
-Establish `hc` using `irreducibleComponent_mem_irreducibleComponents z`. Establish `hg` using `hc.1.isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ hc)`. Use `⟨_, hg.specializes mem_irreducibleComponent, fun y hy => (hy.antisymm (hg.specializes ?_)).eq⟩` and prove the remaining obligations. Use `hc.2 isIrreducible_singleton.closure ?_ (subset_closure rfl)` and prove the remaining obligations. Conclude with `hg.def.ge.trans (closure_minimal (Set.singleton_subset_iff.2 hy.mem_closure) isClosed_closure)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_maximal {X : Scheme.{0}} (z : X) : ∃ η : X, η ⤳ z ∧ ∀ y : X, y ⤳ η → y = η := by
   have hc := irreducibleComponent_mem_irreducibleComponents z
@@ -33,9 +33,9 @@ theorem exists_maximal {X : Scheme.{0}} (z : X) : ∃ η : X, η ⤳ z ∧ ∀ y
   exact hg.def.ge.trans (closure_minimal (Set.singleton_subset_iff.2 hy.mem_closure) isClosed_closure)
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_basicOpen_eq_bot _ (eq_bot_iff.2 fun z hz => ?_)` and prove the remaining obligations. Take `⟨η, hη, hm⟩` from `exists_maximal z`. Establish `hb : η ∈ X.basicOpen (a - b)` using `hη.mem_open (X.basicOpen _).isOpen hz`. Take `⟨k, _, w, rfl, e⟩` from `h η (X.basicOpen_le _ hb) hm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hU : ⊤ ≤ w ⁻¹ᵁ U` using `(le_preimage_iff U).2 (X.basicOpen_le _ hb)`. Conclude with `absurd (by rw [valF_sub hU, e, sub_self]) ((valF_ne_zero_iff hU (a - b)).2 ((le_preimage_iff _).2 hb))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ext_maximal {X : Scheme.{0}} [IsReduced X] {U : X.Opens} {a b : Γ(X, U)}
     (h : ∀ η ∈ U, (∀ y : X, y ⤳ η → y = η) → ∃ (k : Type) (_ : Field k) (w : Sp k ⟶ X),
@@ -49,7 +49,7 @@ theorem ext_maximal {X : Scheme.{0}} [IsReduced X] {U : X.Opens} {a b : Γ(X, U)
   exact absurd (by rw [valF_sub hU, e, sub_self]) ((valF_ne_zero_iff hU (a - b)).2 ((le_preimage_iff _).2 hb))
 
 /- English proof (translation)
-Take `⟨V, hV, hz, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := X) ((le_preimage_iff U).1 h)`. Take `⟨χ, rfl⟩` from `exists_fromSpec hV w ((le_preimage_iff V).2 hz)`. Rewrite using `[← Category.assoc, ModelRelProbe.spMap_comp, ← valF_restrict hle (le_of_fromSpec hV rfl), ← valF_restrict hle (le_of_fromSpec hV rfl), valF_fromSpec, valF_fromSpec]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valF_map {F F' : Type} [Field F] [Field F'] (f : F →+* F') {X : Scheme.{0}} {w : Sp F ⟶ X} {U : X.Opens}
     (h : ⊤ ≤ w ⁻¹ᵁ U) (a : Γ(X, U)) : valF (spMap f ≫ w) U a = f (valF w U a) := by
@@ -60,23 +60,23 @@ theorem valF_map {F F' : Type} [Field F] [Field F'] (f : F →+* F') {X : Scheme
   rfl
 
 /- English proof (translation)
-Rewrite using `[valF, dif_pos h, map_natCast, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valF_natCast {F : Type} [Field F] {X : Scheme.{0}} {w : Sp F ⟶ X} {U : X.Opens} (h : ⊤ ≤ w ⁻¹ᵁ U) (n : ℕ) :
     valF w U (n : Γ(X, U)) = n := by
   rw [valF, dif_pos h, map_natCast, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[valF, dif_pos h, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valF_one {F : Type} [Field F] {X : Scheme.{0}} {w : Sp F ⟶ X} {U : X.Opens} (h : ⊤ ≤ w ⁻¹ᵁ U) :
     valF w U 1 = 1 := by
   rw [valF, dif_pos h, map_one, map_one]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `y ⤳ X.fromSpecStalk x (spMap f (closedPoint K)) at hy`. Express the relevant statement in the definitionally equal form `y = X.fromSpecStalk x (spMap f (closedPoint K))`. Take `⟨q, rfl⟩` from `(X.range_fromSpecStalk (x := x)).ge (hy.trans ((X.range_fromSpecStalk (x := x)).le ⟨_, rfl⟩))`. Establish `h : spMap f (closedPoint K) ⤳ q` using `(PrimeSpectrum.le_iff_specializes _ q).1 fun r hr => by`. Establish `: f r ∈ maximalIdeal K` using `hr`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[maximalIdeal_eq_bot, Ideal.mem_bot, map_eq_zero_iff _ hf]`. Conclude with `this ▸ q.asIdeal.zero_mem`. Conclude with `(hy.antisymm (h.map (X.fromSpecStalk x).continuous)).eq`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maximal_of_stalk {X : Scheme.{0}} {x : X} {K : Type} [Field K] {f : X.presheaf.stalk x →+* K}
     (hf : Function.Injective f) (y : X) (hy : y ⤳ (spMap f ≫ X.fromSpecStalk x) (closedPoint K)) :
@@ -91,13 +91,13 @@ theorem maximal_of_stalk {X : Scheme.{0}} {x : X} {K : Type} [Field K] {f : X.pr
   exact (hy.antisymm (h.map (X.fromSpecStalk x).continuous)).eq
 
 /- English proof (translation)
-Use `IsIntegrallyClosed.algebraMap_eq_of_integral (by_contra fun hn => ?_)` and prove the remaining obligations. Establish `: Algebra.EssFiniteType R K` using `.of_isLocalization K (nonZeroDivisors R)`. Take `⟨V, hV, hd, hκ⟩` from `exists_discreteValuationSubring_dominating_notMem hn`. Take `⟨h₁, h₂⟩` from `(localSubring_range_le_valuationSubring_iff _ V).1 hd`. Establish `hpV : (p : V) ∈ maximalIdeal V`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← ValuationSubring.coe_mem_nonunits_iff]`. Simplify using `using h₂ _ hR`. Take `⟨C, φ, φi, hφ⟩` from `exists_scf_embedding_dvd p V hp hpV ((Cardinal.mk_subtype_le _).trans ((IsLocalization.cardinalMk_le (nonZeroDivisors R)).trans hc))`. Set `θ : K →+* ↥C.S` to `IsFractionRing.lift (A := V) (g := (intO ↥C.S).subtype.comp φ) ((intO ↥C.S).subtype_injective.comp φi)`. Establish `hθ (v : V) : θ v = φ v` using `IsFractionRing.lift_algebraMap _ v`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h₃` using `h C (φ.comp ((algebraMap R K).codRestrict V h₁)) θ (RingHom.ext fun r => hθ ⟨_, h₁ r⟩)`. Establish `h0 : κ ≠ 0` using `fun e => hκ (e ▸ V.zero_mem)`. Establish `hi : κ⁻¹ ∈ V` using `(V.mem_or_inv_mem κ).resolve_left hκ`. Take `⟨c, hc⟩` from `hφ 1 ⟨_, hi⟩ (by`. Rewrite using `[← hθ, ← hθ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [OneMemClass.coe_one, map_one, norm_one, map_inv₀, norm_inv]`. Conclude with `(one_le_inv₀ (norm_pos_iff.2 ((map_ne_zero θ).2 h0))).2 h₃)`. Establish `: κ⁻¹ * c = 1` using `(congrArg Subtype.val hc).symm`. Conclude with `hκ ((inv_mul_eq_one₀ h0).1 this ▸ c.2)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_range_of_norm_le {p : ℕ} (hp : p.Prime) {R K : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     [IsNoetherianRing R] [IsIntegrallyClosed R] [Field K] [Algebra R K] [IsFractionRing R K] [CharZero K]
@@ -133,13 +133,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 include hp hW
 
 /- English proof (translation)
-The claim follows from `Set.mem_iUnion.1 (Z.cover.ge (HTLine.Dvd.mem_opn hp hW Z h))`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart_of_maximal {η : Z.X} (h : ∀ y : Z.X, y ⤳ η → y = η) : ∃ a, η ∈ (Z.U a).1 :=
   Set.mem_iUnion.1 (Z.cover.ge (HTLine.Dvd.mem_opn hp hW Z h))
 
 /- English proof (translation)
-Use `isReduced_model Z` as an intermediate fact. Use `ext_maximal fun η hη hm => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_chart_of_maximal hp hW hm`. Conclude with `⟨_, _, resPt Z.X η, Scheme.fromSpecResidueField_apply η _, h _ _ a ((resPt_le_iff _ _ _).2 ha) ((resPt_le_iff _ _ _).2 hη)⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ext_chart {U : Z.X.Opens} {s t : Γ(Z.X, U)} (h : ∀ (k : Type) [Field k] (w : Sp k ⟶ Z.X) a,
     ⊤ ≤ w ⁻¹ᵁ (Z.U a).1 → ⊤ ≤ w ⁻¹ᵁ U → valF w U s = valF w U t) : s = t := by
@@ -150,9 +150,9 @@ theorem ext_chart {U : Z.X.Opens} {s t : Γ(Z.X, U)} (h : ∀ (k : Type) [Field 
     h _ _ a ((resPt_le_iff _ _ _).2 ha) ((resPt_le_iff _ _ _).2 hη)⟩
 
 /- English proof (translation)
-Use `isProper_str (Z.i.c.V W) Z.n` as an intermediate fact. Establish `: IsProper Z.s` using `inferInstanceAs (IsProper (_ ≫ _))`. Establish `hc : IsClosed (Z.s '' closure {z})` using `Z.s.isClosedMap _ isClosed_closure`. Take `⟨x, hx, e⟩ : closedPoint (Z.i.c.V W) ∈ Z.s '' closure {z}` from `(IsLocalRing.specializes_closedPoint (Z.s z)).mem_closed hc ⟨z, subset_closure rfl, rfl⟩`. Use `⟨x, specializes_iff_mem_closure.2 hx, (natCast_eq_zero_iff hp hW Z x).2 fun hq => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mem_gen_iff_inQ hp hW (Z := Z)).2 hq e`.
+A detailed English derivation is pending.
 -/
 theorem exists_special (z : Z.X) : ∃ x : Z.X, z ⤳ x ∧ (p : Z.X.residueField x) = 0 := by
   have := isProper_str (Z.i.c.V W) Z.n
@@ -164,29 +164,27 @@ theorem exists_special (z : Z.X) : ∃ x : Z.X, z ⤳ x ∧ (p : Z.X.residueFiel
   exact (mem_gen_iff_inQ hp hW (Z := Z)).2 hq e
 
 /- English proof (translation)
-Use `isDiscreteValuationRing_V Z.i.c hp hW` as an intermediate fact. Establish `hN : GlobalTheory.IsNormalScheme Z.X` using `Z.normal`. Use `isProper_str (Z.i.c.V W) Z.n` as an intermediate fact. Establish `: IsProper Z.s` using `inferInstanceAs (IsProper (_ ≫ _))`. Establish `: IsLocallyNoetherian Z.X` using `LocallyOfFiniteType.isLocallyNoetherian Z.s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `R : Type` to `Z.X.presheaf.stalk x`. Take `⟨_, _⟩ : IsDomain R ∧ IsIntegrallyClosed R` from `(GlobalTheory.isNormalScheme_iff _).1 hN x`. Set `K` to `FractionRing R`. Set `ι : Sp R ⟶ Z.X` to `Z.X.fromSpecStalk x`. Establish `hι (q : Sp R) : ι q ⤳ x` using `(Z.X.range_fromSpecStalk (x := x)).le ⟨q, rfl⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `w₀ : Sp K ⟶ Z.X` to `spMap (algebraMap R K) ≫ ι`. Establish `hη : w₀ (closedPoint K) ⤳ x` using `hι _`. Establish `hm : ∀ y : Z.X, y ⤳ w₀ (closedPoint K) → y = w₀ (closedPoint K)` using `maximal_of_stalk (IsFractionRing.injective R K)`. Take `⟨a₀, ha₀⟩` from `exists_chart_of_maximal hp hW hm`. Establish `w₀a` using `(le_preimage_iff _).2 ha₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `w₀U : ⊤ ≤ w₀ ⁻¹ᵁ U` using `(le_preimage_iff _).2 (hη.mem_open U.isOpen hx)`. Take `⟨φ₀, -⟩` from `exists_fromSpec (Z.U a₀).2 w₀ w₀a`. Establish `: CharZero K` using `(φ₀.comp (Z.alg a₀)).charZero_iff (RingHom.injective _) |>.1 inferInstance`. Establish `hc : Cardinal.mk R ≤ Cardinal.continuum`. Take `⟨V, hV, hxV, -⟩` from `exists_isAffineOpen_mem_and_subset (X := Z.X) hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, -, hσ⟩` from `HTLine.Dvd.exists_base hp hW Z hV`. Use `letI := Z.X.presheaf.algebra_section_stalk (⟨x, hxV⟩ : V)`. Use `hV.isLocalization_stalk ⟨x, hxV⟩` as an intermediate fact. Conclude with `(IsLocalization.cardinalMk_le (hV.primeIdealOf ⟨x, hxV⟩).asIdeal.primeCompl).trans (HTLine.Dvd.mk_le_of_finiteType σ hσ ((Cardinal.mk_subtype_le _).trans ((Cardinal.mk_subtype_le _).trans Cardinal.mk_complex.le)))`. Take `⟨ρ, hρ⟩` from `mem_range_of_norm_le (R := R) (K := K) hp ((residue_eq_zero_iff _).1 ((map_natCast _ p).trans hpx)) hc (κ := valF w₀ _ (f a₀)) fun C ψ θ e => by`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `g : spMap (intO ↥C.S).subtype ≫ spMap ψ ≫ ι = spMap θ ≫ w₀`. Rewrite using `[← Category.assoc, ← Category.assoc, ModelRelProbe.spMap_comp, ModelRelProbe.spMap_comp, e]`. Take `⟨Q, hQ⟩` from `ModelPt.exists_ptC E H Dw Xo p W Y i₀ hp hW Z C (spMap ψ ≫ ι) (by`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[g, ← Z.cover]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Set.mem_iUnion.2 ⟨a₀, w₀a (Set.mem_univ (spMap θ q))⟩)`. Set `y : Z.Pt` to `⟨C, Q, spMap ψ ≫ ι, hQ⟩`. Establish `hy : y.gen = spMap θ ≫ w₀` using `g`. Use `hb y a₀ (hy ▸ fun q _ => w₀a (Set.mem_univ (spMap θ q))) fun q _ => (hι (spMap ψ q)).mem_open U.isOpen hx` as an intermediate fact. Rewrite `this` using `[hy, valF_map θ (U := (Z.U a₀).1 ⊓ U) fun q hq => ⟨w₀a hq, w₀U hq⟩]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨V₁, hx₁, t₁, rfl⟩` from `Z.X.presheaf.germ_exist ρ`. Establish `hC` using `irreducibleComponent_mem_irreducibleComponents x`. Establish `hg` using `hC.1.isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ hC)`. Take `⟨V, hV, hxV, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := Z.X) (x := x) (U := V₁ ⊓ (U ⊓ IsNormalScheme.component ⟨_, hC⟩)) ⟨hx₁, hx, mem_irreducibleComponent⟩`. Establish `l₁ : V ≤ V₁` using `fun q hq => (hle hq).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l₂ : V ≤ U` using `fun q hq => (hle hq).2.1`. Establish `hηV : w₀ (closedPoint K) ∈ V` using `hη.mem_open V.isOpen hxV`. Establish `v : valF w₀ V (resG Z.X l₁ t₁) = valF w₀ _ (f a₀)`. Establish `e : w₀ = spMap ((algebraMap R K).comp (Z.X.presheaf.germ V x hxV).hom) ≫ hV.fromSpec`. Rewrite using `[← ModelRelProbe.spMap_comp, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (spMap (algebraMap R K) ≫ ·) (hV.fromSpecStalk_eq_fromSpecStalk hxV).symm`. Rewrite using `[← hρ, e, valF_fromSpec]`. Conclude with `congrArg (algebraMap R K) (Z.X.presheaf.germ_res_apply (homOfLE l₁) x hxV t₁)`. Use `⟨V, resG Z.X l₁ t₁, hxV, l₂, fun k _ w a ha hw => ?_⟩` and prove the remaining obligations. Establish `e : resG Z.X (inf_le_right : (Z.U a).1 ⊓ V ≤ V) (resG Z.X l₁ t₁) = resG Z.X (inf_le_inf_left _ l₂) (f a)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext_maximal fun η hη' hm' => ?_` and prove the remaining obligations. Take `rfl : η = w₀ (closedPoint K)` from `(hm' _ (hg.specializes (hle hη'.2).2.2)).symm.trans (hm _ (hg.specializes (hle hηV).2.2))`. Establish `h'` using `(le_preimage_iff (x := w₀) _).2 hη'`. Use `⟨K, inferInstance, w₀, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[valF_restrict _ h', valF_restrict _ h', v]`.
-
-Conclude with `hf K w₀ a₀ a w₀a (fun q hq => (h' hq).1) w₀U`. Establish `h' : ⊤ ≤ w ⁻¹ᵁ ((Z.U a).1 ⊓ V)` using `fun q hq => ⟨ha hq, hw hq⟩`. Rewrite using `[← valF_restrict inf_le_right h', ← valF_restrict (inf_le_inf_left _ l₂) h']`. Conclude with `congrArg _ e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extension {U : Z.X.Opens} (f : ∀ a, Γ(Z.X, (Z.U a).1 ⊓ U))
     (hf : ∀ (k : Type) [Field k] (w : Sp k ⟶ Z.X) a a', ⊤ ≤ w ⁻¹ᵁ (Z.U a).1 → ⊤ ≤ w ⁻¹ᵁ (Z.U a').1 → ⊤ ≤ w ⁻¹ᵁ U →
@@ -266,7 +264,7 @@ variable {b b' : Bool} {st st' : ((E →+* ℂ) × ℕ) ⊕ ℕ} {x : Letter Dw}
 omit hp hW in
 
 /- English proof (translation)
-The claim follows from `left_ne_zero_of_mul_eq_one (valF_mul_inv (U := (Z.U a).1 ⊓ M.L.U i) (fun _ hq => ⟨ha hq, hi hq⟩) _)`.
+A detailed English derivation is pending.
 -/
 theorem val_ne_zero (M : LineModel Z b st x) {k : Type} [Field k] {w : Sp k ⟶ Z.X} {a : Fin Z.m} {i : Fin M.L.n}
     (ha : ⊤ ≤ w ⁻¹ᵁ (Z.U a).1) (hi : ⊤ ≤ w ⁻¹ᵁ M.L.U i) : valF w _ (M.r a i).val ≠ 0 :=
@@ -275,9 +273,9 @@ theorem val_ne_zero (M : LineModel Z b st x) {k : Type} [Field k] {w : Sp k ⟶ 
 omit hp hW in
 
 /- English proof (translation)
-Take `⟨φ, h⟩` from `exists_fromSpec (Z.U a).2 w ha`. Take `⟨φ', h'⟩` from `exists_fromSpec (Z.U a').2 w ha'`. Use `replace h : spMap φ ≫ Z.chart a = w := h`. Use `replace h' : spMap φ' ≫ Z.chart a' = w := h'`. Take `⟨d, d1, d2⟩` from `chart_tri Z hty h h' x.1 x.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `M.chart k a a' i φ φ' d (h.trans h'.symm) (h ▸ hi) d1 (by rwa [← Category.assoc, h])`. Establish `e'` using `M'.chart k a a' j φ φ' d (h.trans h'.symm) (h ▸ hj) d1 (by rwa [← Category.assoc, h])`. Rewrite `e`, `e'` using `[h]`. Rewrite using `[e, e']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cross_eq (hty : ∀ τ k, k ≤ Dw.mult τ → k ∈ Z.ty τ) (M : LineModel Z b st x) (M' : LineModel Z b' st' x)
     {k : Type} [Field k] {w : Sp k ⟶ Z.X} {a a' : Fin Z.m} {i : Fin M.L.n} {j : Fin M'.L.n}
@@ -308,7 +306,7 @@ def Bdd : Prop := ∃ m : ℕ, ∀ (y : Z.Pt) a (φ : Γ(Z.X, (Z.U a).1) →+* �
 omit hp hW in
 
 /- English proof (translation)
-The claim follows from `h.imp fun _ h y a φ e => (abs_sub_comm _ _).trans_le (h y a φ e)`.
+A detailed English derivation is pending.
 -/
 theorem Bdd.symm (h : Bdd Z b b' st st') : Bdd Z b' b st' st :=
   h.imp fun _ h y a φ e => (abs_sub_comm _ _).trans_le (h y a φ e)
@@ -316,19 +314,17 @@ theorem Bdd.symm (h : Bdd Z b b' st st') : Bdd Z b' b st' st :=
 omit hW in
 
 /- English proof (translation)
-Use `Fact.mk hp` as an intermediate fact. Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.two_le`. Establish `hl : 0 ≤ Real.log p` using `Real.log_natCast_nonneg p`. Establish `hv : 0 ≤ vDiff E p` using `by unfold vDiff; positivity`. Use `⟨1 + ⌈vDiff E p⌉₊, fun y a φ _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv'` using `mul_le_mul_of_nonneg_right (Nat.le_ceil (vDiff E p)) hl`. Establish `hv''` using `mul_nonneg hv hl`. Establish `g : y.gen ≫ Z.π = spMap (intO ↥y.C.S).subtype ≫ y.z ≫ Z.π` using `Category.assoc _ _ _`. Establish `key {m : ℕ} (u : Fin m → _) (i : Fin m) : |Real.log (grNorm (Y Z.i).t (y.gen ≫ Z.π) (latDR _ (y.gen ≫ Z.π)) u i) - Real.log (grNorm (Y Z.i).t (y.gen ≫ Z.π) (latHT _ p (y.gen ≫ Z.π)) u i)| ≤ Real.log p`. Use `(HTFrame.abs_log_grNorm_sub_le _ _ (a := (p : ↥y.C.S)) (Nat.cast_ne_zero.2 hp.ne_zero) ?_ (latDR_subset_latHT E H _ _ _ p _) (fun v hv => ?_) u i).trans_eq (by rw [y.C.norm_p, inv_inv])` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[y.C.norm_p]`. Conclude with `inv_le_one_of_one_le₀ (by linarith)`. Rewrite `hv`, the goal using `[g]`. Use `HTBound.htBound E H _ _ p _ y.C.norm_p _ (ext_unique _ _) v hv _ ?_` and prove the remaining obligations. Rewrite using `[y.C.norm_p, ← Real.rpow_neg_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Real.rpow_le_rpow_of_exponent_le (by linarith) (neg_le_neg ?_)` and prove the remaining obligations. Rewrite using `[div_le_one (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Nat.cast_add, Nat.cast_one, add_mul, one_mul]`. Break down `st with ⟨τ, k⟩ | k` into its components or cases.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [lnStep, lat, Bool.false_eq_true, false_and, if_false, true_and, sub_zero] split_ifs with h h'`. Use `abs_le.1 (key ((Z.fr a).bc φ τ) ⟨k, h⟩)` as an intermediate fact. Conclude with `abs_le.2 ⟨by linarith, by linarith⟩`. Use `abs_le.1 (key ((Z.fr a).bc φ τ) ⟨k, h⟩)` as an intermediate fact. Conclude with `abs_le.2 ⟨by linarith, by linarith⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite using `[sub_self, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [lnStep, lat] split_ifs with h`. Conclude with `(key _ _).trans (by linarith)`. Rewrite using `[sub_self, abs_zero]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bdd_step (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) : Bdd Z false true st st := by
   have := Fact.mk hp
@@ -370,11 +366,11 @@ theorem bdd_step (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) : Bdd Z false true st st 
 variable (hty : ∀ τ k, k ≤ Dw.mult τ → k ∈ Z.ty τ) {M : LineModel Z b st x} {M' : LineModel Z b' st' x}
 
 /- English proof (translation)
-Establish `e : resG Z.X (inf_le_left : V ⊓ V' ≤ V) s * resG Z.X (inf_le_right : V ⊓ V' ≤ V') s' = 1`. Use `ext_chart hp hW fun k _ w a ha hw => ?_` and prove the remaining obligations. Establish `e₁` using `h k w a ha fun q hq => (hw hq).1`. Establish `e₂` using `h' k w a ha fun q hq => (hw hq).2`. Rewrite using `[valF_mul hw, valF_restrict _ hw, valF_restrict _ hw, valF_one hw]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_right_cancel₀ (val_ne_zero M ha fun q hq => hi (hw hq).1) ?_` and prove the remaining obligations. Rewrite `e₁`, `e₂` using `[Nat.cast_one, one_mul]`. Rewrite using `[mul_right_comm, e₁, mul_comm, e₂, one_mul]`. Establish `hw₂ : ⊤ ≤ w ⁻¹ᵁ (V ⊓ V')` using `fun q hq => ⟨hw hq, hw' hq⟩`. Use `congrArg (valF w _) e` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[valF_mul hw₂, valF_restrict _ hw₂, valF_restrict _ hw₂, valF_one hw₂]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsQuot.mul_eq_one {i : Fin M.L.n} {j : Fin M'.L.n} {V V' : Z.X.Opens} {s : Γ(Z.X, V)} {s' : Γ(Z.X, V')}
     (h : IsQuot M M' i j 1 s) (h' : IsQuot M' M j i 1 s') (hi : V ≤ M.L.U i) {k : Type} [Field k] {w : Sp k ⟶ Z.X}
@@ -394,15 +390,15 @@ theorem IsQuot.mul_eq_one {i : Fin M.L.n} {j : Fin M'.L.n} {V V' : Z.X.Opens} {s
 include hty
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `hB`. Set `f (a) : Γ(Z.X, (Z.U a).1 ⊓ (M.L.U i ⊓ M'.L.U j))` to `Nat.cast (p ^ m) * (resG Z.X (inf_le_inf_left _ inf_le_right) (M'.r a j).val * resG Z.X (inf_le_inf_left _ inf_le_left) (M.r a i)⁻¹.val)`. Establish `hf (k : Type) [Field k] (w : Sp k ⟶ Z.X) (a) (ha : ⊤ ≤ w ⁻¹ᵁ (Z.U a).1) (hw : ⊤ ≤ w ⁻¹ᵁ (M.L.U i ⊓ M'.L.U j)) : valF w _ (f a) * valF w _ (M.r a i).val = (p ^ m : ℕ) * valF w _ (M'.r a j).val`. Establish `h' : ⊤ ≤ w ⁻¹ᵁ ((Z.U a).1 ⊓ (M.L.U i ⊓ M'.L.U j))` using `fun q hq => ⟨ha hq, hw hq⟩`. Establish `v` using `valF_mul_inv (x := w) (U := (Z.U a).1 ⊓ M.L.U i) (fun q hq => ⟨ha hq, (hw hq).1⟩) (M.r a i)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[valF_mul h', valF_mul h', valF_restrict _ h', valF_restrict _ h', valF_natCast h']`. Take the linear combination `((p ^ m : ℕ) : k) * valF w _ (M'.r a j).val * v`. Use `⟨m, (exists_extension hp hW f (fun k _ w a a' ha ha' hw => ?_) (fun y a ha hy => ?_) hz hpz).imp fun V => Exists.imp fun t ⟨hzV, hle, ht⟩ => ⟨hzV, hle, fun k _ w a ha hw => by` and prove the remaining obligations. Rewrite using `[ht k w a ha hw, hf k w a ha fun q hq => hle (hw hq)]⟩⟩`. Establish `hi : ⊤ ≤ w ⁻¹ᵁ M.L.U i` using `fun q hq => (hw hq).1`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mul_right_cancel₀ (mul_ne_zero (val_ne_zero M ha hi) (val_ne_zero M ha' hi)) ?_` and prove the remaining obligations. Take the linear combination `valF w _ (M.r a' i).val * hf k w a ha hw - valF w _ (M.r a i).val * hf k w a' ha' hw + ((p ^ m : ℕ) : k) * cross_eq hty M M' ha ha' hi fun q hq => (hw hq).2`. Establish `hw : ⊤ ≤ y.gen ⁻¹ᵁ (M.L.U i ⊓ M'.L.U j)` using `fun q _ => hy (Set.mem_univ (spMap (intO ↥y.C.S).subtype q))`. Take `⟨φ, hφ⟩` from `exists_fromSpec (Z.U a).2 y.gen ha`. Establish `n` using `M.norm y a i φ hφ fun q hq => (hy hq).1`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `n'` using `M'.norm y a j φ hφ fun q hq => (hy hq).2`. Establish `r` using `norm_pos_iff.2 (val_ne_zero M ha fun q hq => (hw hq).1)`. Establish `r'` using `norm_pos_iff.2 (val_ne_zero M' ha fun q hq => (hw hq).2)`. Establish `hp0 : (0 : ℝ) < p` using `Nat.cast_pos.2 hp.pos`. Establish `e` using `congrArg norm (hf _ y.gen a ha hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[norm_mul, norm_mul, Nat.cast_pow, norm_pow, y.C.norm_p]`. Use `le_of_mul_le_mul_right ?_ r` and prove the remaining obligations. Rewrite using `[e, one_mul, ← Real.log_le_log_iff (by positivity) r, Real.log_mul (by positivity) r'.ne', Real.log_pow, Real.log_inv]`. Combine the linear relations using `[(abs_le.1 (hm y a φ hφ)).2]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_isQuot_special (hB : Bdd Z b b' st st') (i : Fin M.L.n) (j : Fin M'.L.n) {z : Z.X}
     (hz : z ∈ M.L.U i ⊓ M'.L.U j) (hpz : (p : Z.X.residueField z) = 0) :
@@ -438,15 +434,15 @@ theorem exists_isQuot_special (hB : Bdd Z b b' st st') (i : Fin M.L.n) (j : Fin 
     linarith [(abs_le.1 (hm y a φ hφ)).2]
 
 /- English proof (translation)
-Take `⟨z₀, hz₀, hpz⟩` from `exists_special hp hW z`. Take `⟨i₁, hi₁⟩` from `LB.mem_of_cover M.L.isLB z₀`. Take `⟨j₁, hj₁⟩` from `LB.mem_of_cover M'.L.isLB z₀`. Take `⟨m, V, t, hV, hle, ht⟩` from `exists_isQuot_special hp hW hty hB i₁ j₁ ⟨hi₁, hj₁⟩ hpz`. Set `T` to `V ⊓ ((nmodel Z).gen ⊓ (M.L.U i ⊓ M'.L.U j))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `l : T ≤ M.L.U i ⊓ M.L.U i₁` using `fun q hq => ⟨hq.2.2.1, (hle hq.1).1⟩`. Establish `l' : T ≤ M'.L.U j ⊓ M'.L.U j₁` using `fun q hq => ⟨hq.2.2.2, (hle hq.1).2⟩`. Establish `hu : IsUnit ((p ^ m : ℕ) : Γ(Z.X, T))`. Establish `h : IsUnit (resG Z.X (Z.X.basicOpen_le (p : Γ(Z.X, ⊤))) p)` using `Z.X.toRingedSpace.isUnit_res_basicOpen _`. Use `h.map (resG Z.X (U := Z.X.basicOpen (p : Γ(Z.X, ⊤))) (V := T) fun q hq => (gen_eq_basicOpen hp hW (Z := Z)).le hq.2.1)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast, map_natCast]`. Simplify using `using this.pow m`. Use `⟨T, resG Z.X inf_le_left t * resG Z.X l (M.L.g i i₁).val * resG Z.X l' (M'.L.g j j₁)⁻¹.val * hu.unit⁻¹.val, ⟨hz₀.mem_open V.isOpen hV, hz⟩, inf_le_right, fun k _ w a ha hw => ?_⟩` and prove the remaining obligations. Establish `e₁` using `ht k w a ha fun q hq => (hw hq).1`. Establish `e₂` using `M.trans k w a i i₁ fun q hq => ⟨ha hq, l (hw hq)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃` using `M'.trans k w a j j₁ fun q hq => ⟨ha hq, l' (hw hq)⟩`. Establish `e₄` using `valF_mul_inv (x := w) (U := M'.L.U j ⊓ M'.L.U j₁) (fun q hq => l' (hw hq)) (M'.L.g j j₁)`. Establish `e₅` using `valF_mul_inv hw hu.unit`. Rewrite `e₅` using `[IsUnit.unit_spec, valF_natCast hw]`. Rewrite `e₁` using `[e₂, e₃]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[valF_mul hw, valF_mul hw, valF_mul hw, valF_restrict _ hw, valF_restrict _ hw, valF_restrict _ hw, Nat.cast_one]`. Take the linear combination `valF w _ (M'.L.g j j₁)⁻¹.val * valF w _ hu.unit⁻¹.val * e₁ + ((p ^ m : ℕ) : k) * valF w _ hu.unit⁻¹.val * valF w _ (M'.r a j).val * e₄ + valF w _ (M'.r a j).val * e₅`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_isQuot (hB : Bdd Z b b' st st') (i : Fin M.L.n) (j : Fin M'.L.n) {z : Z.X}
     (hz : z ∈ (nmodel Z).gen ⊓ (M.L.U i ⊓ M'.L.U j)) : ∃ (V : Z.X.Opens) (s : Γ(Z.X, V)), z ∈ V ∧
@@ -478,13 +474,11 @@ theorem exists_isQuot (hB : Bdd Z b b' st st') (i : Fin M.L.n) (j : Fin M'.L.n) 
     ((p ^ m : ℕ) : k) * valF w _ hu.unit⁻¹.val * valF w _ (M'.r a j).val * e₄ + valF w _ (M'.r a j).val * e₅
 
 /- English proof (translation)
-Use `isReduced_model Z` as an intermediate fact. Set `P (k : Type) [Field k] (w : Sp k ⟶ Z.X) (c : k) : Prop` to `∃ (V : Z.X.Opens) (s : Γ(Z.X, V)), V ≤ M.L.U i ∧ IsQuot M M' i j 1 s ∧ ⊤ ≤ w ⁻¹ᵁ V ∧ valF w V s = c`. Establish `key (k : Type) [Field k] (w : Sp k ⟶ Z.X) (hw : ⊤ ≤ w ⁻¹ᵁ ((nmodel Z).gen ⊓ (M.L.U i ⊓ M'.L.U j))) : ∃ d : k, ∀ c, P k w c → c * d = 1`. Establish `hz` using `(le_preimage_iff _).1 hw`. Take `⟨V', s', h₁, -, h₂⟩` from `exists_isQuot hp hW hty (M := M') (M' := M) hB.symm j i ⟨hz.1, hz.2.2, hz.2.1⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, fun c ⟨V, s, a₁, a₂, a₃, a₄⟩ => a₄ ▸ a₂.mul_eq_one hp hW h₂ a₁ a₃ ((le_preimage_iff _).2 h₁)⟩`. Take `⟨u, hu⟩` from `exists_unit_of_locally Z.X ((nmodel Z).gen ⊓ (M.L.U i ⊓ M'.L.U j)) P (fun k _ w c c' hw h h' => by`. Take `⟨d, hd⟩` from `key k w hw`. Conclude with `(eq_inv_of_mul_eq_one_left (hd c h)).trans (eq_inv_of_mul_eq_one_left (hd c' h')).symm)`. Use the proof step `(fun k _ w hw h => by`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨d, hd⟩` from `key k w hw`. Simplify using `using hd 0 h)`. Use `fun z hz => by`. Take `⟨V, s, h₁, h₂, h₃⟩` from `exists_isQuot hp hW hty hB i j hz`. Conclude with `⟨V, s, h₁, h₂, fun k _ w hw => ⟨V, s, fun q hq => (h₂ hq).2.1, h₃, hw, rfl⟩⟩`.
-
-Use `⟨u, fun k _ w a ha hw => ?_⟩` and prove the remaining obligations. Take `⟨V, s, -, h₁, h₂, h₃⟩` from `hu k w hw`. Conclude with `h₃ ▸ h₁ k w a ha h₂`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_unit (hB : Bdd Z b b' st st') (i : Fin M.L.n) (j : Fin M'.L.n) :
     ∃ u : Γ(Z.X, (nmodel Z).gen ⊓ (M.L.U i ⊓ M'.L.U j))ˣ, IsQuot M M' i j 1 u.val := by
@@ -525,7 +519,7 @@ variable (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) {M : LineModel Z b st x}
 include hp hW
 
 /- English proof (translation)
-Use `NModel.GenIso.ext (funext₂ fun i j => Units.ext (GenId.ext_chart hp hW fun k _ w a ha hw => ?_))` and prove the remaining obligations. Conclude with `mul_right_cancel₀ (GenId.val_ne_zero M ha fun q hq => (hw hq).2.1) ((h k w a i j fun q hq => ⟨ha hq, (hw hq).2⟩).trans (h' k w a i j fun q hq => ⟨ha hq, (hw hq).2⟩).symm)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsGenId.unique {u u' : GenIso Z M.L M'.L} (h : IsGenId M M' u) (h' : IsGenId M M' u') : u = u' := by
   refine NModel.GenIso.ext (funext₂ fun i j => Units.ext (GenId.ext_chart hp hW fun k _ w a ha hw => ?_))
@@ -533,11 +527,11 @@ theorem IsGenId.unique {u u' : GenIso Z M.L M'.L} (h : IsGenId M M' u) (h' : IsG
     ((h k w a i j fun q hq => ⟨ha hq, (hw hq).2⟩).trans (h' k w a i j fun q hq => ⟨ha hq, (hw hq).2⟩).symm)
 
 /- English proof (translation)
-Use `choose u hu using GenId.exists_unit hp hW hty (M := M) (M' := M') hB`. Establish `hu' (k : Type) [Field k] (w : Sp k ⟶ Z.X) (a i j) (h : ⊤ ≤ w ⁻¹ᵁ ((Z.U a).1 ⊓ (M.L.U i ⊓ M'.L.U j))) : valF w _ (u i j).val * valF w _ (M.r a i).val = valF w _ (M'.r a j).val`. Simplify using `using hu i j k w a (fun q hq => (h hq).1) fun q hq => ⟨chart_le_gen hp hW a (h hq).1, (h hq).2⟩`. Use `⟨⟨u, fun i i₁ j j₁ => Units.ext (GenId.ext_chart hp hW fun k _ w a ha hw => ?_)⟩, hu'⟩` and prove the remaining obligations. Establish `e₁` using `hu' k w a i j fun q hq => ⟨ha hq, (hw hq).1.2⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂` using `hu' k w a i₁ j₁ fun q hq => ⟨ha hq, (hw hq).2⟩`. Establish `e₃` using `M.trans k w a i i₁ fun q hq => ⟨ha hq, (hw hq).1.2.1, (hw hq).2.1⟩`. Establish `e₄` using `M'.trans k w a j j₁ fun q hq => ⟨ha hq, (hw hq).1.2.2, (hw hq).2.2⟩`. Rewrite `e₂` using `[e₃, e₄]`. Use `((valF_mul hw _ _).trans (congrArg₂ (· * ·) (valF_restrict _ hw _) (valF_restrict _ hw _))).trans (Eq.trans ?_ ((valF_mul hw _ _).trans (congrArg₂ (· * ·) (valF_restrict _ hw _) (valF_restrict _ hw _))).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_right_cancel₀ (GenId.val_ne_zero M ha fun q hq => (hw hq).1.2.1) ?_` and prove the remaining obligations. Take the linear combination `valF w _ (M'.L.g j j₁).val * e₁ - e₂`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_isGenId (hty : ∀ τ k, k ≤ Dw.mult τ → k ∈ Z.ty τ) (hB : GenId.Bdd Z b b' st st')
     (M : LineModel Z b st x) (M' : LineModel Z b' st' x) : ∃ u, IsGenId M M' u := by

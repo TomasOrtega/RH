@@ -12,9 +12,9 @@ instance instWEqLBEtRings (R : Type) [CommRing R] : (Scheme.etaleTopology.{0}).W
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Take `⟨𝒰, hle⟩` from `Scheme.mem_grothendieckTopology_iff.1 hS`. Take `⟨i, y, hy⟩` from `𝒰.exists_eq u`. Take `⟨k, w, hw⟩` from `(𝒰.X i).affineCover.exists_eq y`. Establish `hi : S (𝒰.f i)` using `hle _ _ (Presieve.ofArrows.mk i)`. Establish `he : Etale (𝒰.f i)` using `𝒰.map_prop i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨_, (𝒰.X i).affineCover.f k ≫ 𝒰.f i, w, inferInstance, inferInstance, ?_, S.downward_closed hi _⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply, hw, hy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem etale_affine_of_mem {U : Scheme.{0}} {S : Sieve U} (hS : S ∈ Scheme.etaleTopology U) (u : U) :
     ∃ (V : Scheme.{0}) (j : V ⟶ U) (v : V), IsAffine V ∧ Etale j ∧ j v = u ∧ S j := by
@@ -28,11 +28,11 @@ theorem etale_affine_of_mem {U : Scheme.{0}} {S : Sieve U} (hS : S ∈ Scheme.et
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Introduce `R _ M U`. Use `⟨fun x u => ?_, fun m hm u => ?_, fun V j m => ?_⟩` and prove the remaining obligations. Establish `hS` using `Presheaf.imageSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)) (U := op U) x`. Take `⟨V, j, v, hV, hj, hv, ⟨m, hm⟩⟩` from `etale_affine_of_mem hS u`. Conclude with `⟨V, j, v, m, hV, hj, hv, hm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hS` using `Presheaf.equalizerSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)) (X := op U) m 0 (hm.trans (map_zero _).symm)`. Take `⟨V, j, v, hV, hj, hv, h⟩` from `etale_affine_of_mem hS u`. Use `⟨V, j, v, hV, hj, hv, ?_⟩` and prove the remaining obligations. Establish `h' : ((Scheme.Γ ⋙ M).map j.op).hom m = ((Scheme.Γ ⋙ M).map j.op).hom 0` using `h`. Rewrite `h'` using `[map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h'`. Use `congrArg (fun f => f.hom m) ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)).naturality j.op)` as an intermediate fact. Conclude with `this.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ofRings_loc : ∀ (R : Type) [CommRing R] (M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R)) (U : Scheme.{0}), (∀ (x : Sec (ofRings R M) U) (u : U), ∃ (V : Scheme.{0}) (j : V ⟶ U) (v : V) (m : M.obj Γ(V, ⊤)), IsAffine V ∧ Etale j ∧ j v = u ∧ ofRings.sec M V m = Sec.res j x) ∧ (∀ m : M.obj Γ(U, ⊤), ofRings.sec M U m = 0 → ∀ u : U, ∃ (V : Scheme.{0}) (j : V ⟶ U) (v : V), IsAffine V ∧ Etale j ∧ j v = u ∧ (M.map j.appTop).hom m = 0) ∧ ∀ (V : Scheme.{0}) (j : V ⟶ U) (m : M.obj Γ(U, ⊤)), Sec.res j (ofRings.sec M U m) = ofRings.sec M V ((M.map j.appTop).hom m) := by
   intro R _ M U

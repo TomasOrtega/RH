@@ -10,38 +10,32 @@ open scoped ComplexConjugate
 namespace Pin2
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem star_real_smul {g : ℕ} (t : ℝ) (v : Fin g → ℂ) : star ((t : ℂ) • v) = (t : ℂ) • star v := by
   ext i
   simp
 
 /- English proof (translation)
-Establish `hrs : ∀ (t : ℝ) (u : Fin g → ℂ), t • u = (t : ℂ) • u` using `fun t u => by`. Use extensionality with `i`. Simplify using `[Complex.real_smul]`. Establish `hstar_smul : ∀ (t : ℝ) (u : Fin g → ℂ), star (t • u) = t • star u` using `fun t u => by`. Rewrite using `[hrs, hrs, star_real_smul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hD0 : ∀ u, D 0 u = 0` using `fun u => by simpa using smulL 0 0 u`. Establish `hD0' : ∀ u, D u 0 = 0` using `fun u => by simpa using smulR 0 u 0`. Set `N1 : Submodule ℝ (Fin g → ℂ)` to `{ carrier := {u | ∀ q ∈ S, (D (star u) (star q)).im = 0} add_mem' := by`. Introduce `a b ha hb q hq`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[star_add, addL, Complex.add_im, ha q hq, hb q hq, add_zero]`. Use the proof step `zero_mem' := by`. Introduce `q _`. Rewrite using `[star_zero, hD0, Complex.zero_im]`. Use the proof step `smul_mem' := by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `t a ha q hq`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Rewrite using `[hstar_smul, hrs, smulL, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, ha q hq, mul_zero, zero_mul, add_zero] }`. Establish `hN1 : ∀ u, u ∈ N1`. Introduce `u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : (⊤ : Submodule ℝ (Fin g → ℂ)) ≤ N1`. Rewrite using `[← hS]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce `p hp`. Use `show ∀ q ∈ S, _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h0 p hp`. Conclude with `h Submodule.mem_top`. Establish `h1 : ∀ u, ∀ q ∈ S, (D u (star q)).im = 0`. Introduce `u`. Establish `hm : ∀ q ∈ S, (D (star (star u)) (star q)).im = 0` using `hN1 (star u)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[star_star]`. Conclude with `hm`. Set `N2 : Submodule ℝ (Fin g → ℂ)` to `{ carrier := {q | ∀ u, (D u (star q)).im = 0} add_mem' := by`. Introduce `a b ha hb u`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[star_add, addR, Complex.add_im, ha u, hb u, add_zero]`. Use the proof step `zero_mem' := by`. Introduce `u`. Rewrite using `[star_zero, hD0', Complex.zero_im]`. Use the proof step `smul_mem' := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t a ha u`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Rewrite using `[hstar_smul, hrs, smulR, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, ha u, mul_zero, zero_mul, add_zero] }`. Establish `hN2 : ∀ q, q ∈ N2`. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h : (⊤ : Submodule ℝ (Fin g → ℂ)) ≤ N2`. Rewrite using `[← hS]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce `p hp`. Use `show ∀ u, _`.
-
-Conclude with `fun u => h1 u p hp`. Conclude with `h Submodule.mem_top`. Establish `h2 : ∀ u q, (D u q).im = 0`. Introduce `u q`. Establish `hm : ∀ u, (D u (star (star q))).im = 0` using `hN2 (star q)`.
-
-Rewrite `hm` using `[star_star]`. Conclude with `hm u`. Establish `hre : (D z w).re = 0`. Establish `h` using `h2 (Complex.I • z) w`. Rewrite `h` using `[smulL, Complex.mul_im, Complex.I_re, Complex.I_im, zero_mul, one_mul, zero_add]`.
-
-Conclude with `h`. Conclude with `Complex.ext_iff.2 ⟨by simp [hre], by simp [h2 z w]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_zero {g : ℕ} (D : (Fin g → ℂ) → (Fin g → ℂ) → ℂ) (S : Set (Fin g → ℂ))
     (hS : Submodule.span ℝ S = ⊤)
@@ -124,35 +118,35 @@ section Hf
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Unfold `Hf`. Simplify using `[add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, mul_left_comm, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hf_add_left (v v' w : EuclideanSpace ℂ ι) : Hf (v + v') w = Hf v w + Hf v' w := by
   unfold Hf
   simp [add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, mul_left_comm, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]
 
 /- English proof (translation)
-Unfold `Hf`. Simplify using `[add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, mul_left_comm, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hf_add_right (v w w' : EuclideanSpace ℂ ι) : Hf v (w + w') = Hf v w + Hf v w' := by
   unfold Hf
   simp [add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, mul_left_comm, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]
 
 /- English proof (translation)
-Unfold `Hf`. Simplify using `[add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, mul_left_comm, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hf_smul_left (t : ℂ) (v w : EuclideanSpace ℂ ι) : Hf (t • v) w = t * Hf v w := by
   unfold Hf
   simp [add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, mul_left_comm, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]
 
 /- English proof (translation)
-Unfold `Hf`. Simplify using `[add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, mul_left_comm, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hf_real_smul_right (t : ℝ) (v w : EuclideanSpace ℂ ι) : Hf v ((t : ℂ) • w) = t * Hf v w := by
   unfold Hf
   simp [add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, mul_left_comm, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]
 
 /- English proof (translation)
-Unfold `Hf`. Simplify using `[inner_self_nonneg]`. Conclude with `Finset.sum_nonneg fun x _ => add_nonneg (mul_self_nonneg _) (mul_self_nonneg _)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hf_re_nonneg (v : EuclideanSpace ℂ ι) : 0 ≤ (Hf v v).re := by
   unfold Hf
@@ -166,7 +160,7 @@ section HermForm
 variable {g : ℕ}
 
 /- English proof (translation)
-Unfold `hermForm`. Simplify using `[add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, mul_left_comm, Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add, add_dotProduct, smul_dotProduct, dotProduct_smul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hm_add_left (Hm : Matrix (Fin g) (Fin g) ℂ) (z z' w : Fin g → ℂ) :
     hermForm Hm (z + z') w = hermForm Hm z w + hermForm Hm z' w := by
@@ -174,7 +168,7 @@ theorem hm_add_left (Hm : Matrix (Fin g) (Fin g) ℂ) (z z' w : Fin g → ℂ) :
   simp [add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, mul_left_comm, Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add, add_dotProduct, smul_dotProduct, dotProduct_smul]
 
 /- English proof (translation)
-Unfold `hermForm`. Simplify using `[add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, mul_left_comm, Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add, add_dotProduct, smul_dotProduct, dotProduct_smul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hm_add_right (Hm : Matrix (Fin g) (Fin g) ℂ) (z w w' : Fin g → ℂ) :
     hermForm Hm z (w + w') = hermForm Hm z w + hermForm Hm z w' := by
@@ -182,7 +176,7 @@ theorem hm_add_right (Hm : Matrix (Fin g) (Fin g) ℂ) (z w w' : Fin g → ℂ) 
   simp [add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, mul_left_comm, Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add, add_dotProduct, smul_dotProduct, dotProduct_smul]
 
 /- English proof (translation)
-Unfold `hermForm`. Simplify using `[add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, mul_left_comm, Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add, add_dotProduct, smul_dotProduct, dotProduct_smul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hm_smul_left (Hm : Matrix (Fin g) (Fin g) ℂ) (t : ℂ) (z w : Fin g → ℂ) :
     hermForm Hm (t • z) w = t * hermForm Hm z w := by
@@ -190,7 +184,7 @@ theorem hm_smul_left (Hm : Matrix (Fin g) (Fin g) ℂ) (t : ℂ) (z w : Fin g �
   simp [add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, mul_left_comm, Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add, add_dotProduct, smul_dotProduct, dotProduct_smul]
 
 /- English proof (translation)
-Unfold `hermForm`. Simplify using `[add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, mul_left_comm, Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add, add_dotProduct, smul_dotProduct, dotProduct_smul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hm_real_smul_right (Hm : Matrix (Fin g) (Fin g) ℂ) (t : ℝ) (z w : Fin g → ℂ) :
     hermForm Hm z ((t : ℂ) • w) = t * hermForm Hm z w := by
@@ -211,9 +205,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   (W : UnfAt U k x) (A : ReciprocityTheory.ChartRestriction.G.I2.TorusAt (U.X k) x.1)
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← pin1 hU hσ W A hx a, ← pin1 hU hσ W A hx b]`. Conclude with `A.im_eq _ (W.φ k a).2 _ (W.φ k b).2`. Rewrite using `[star_star, star_star, Complex.star_def, Complex.conj_im, Wu.c1]`. Establish `hi` using `W.isom k a b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi` using `[neg_mul, map_neg]`. Establish `hr` using `congrArg (fun q : ℚ => (q : ℝ)) hi`. Move the coercions through the operations in `at hr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lattice_trace_imaginary_part (hx : (U.X k).IsOrtho x.1) (Wu : UnitAt W) (a b : (W.F.Di (W.ik k)).La) :
     (Hf (Lmap hU hσ W A (star (W.Pm a))) (Lmap hU hσ W A (star (W.Pm b)))).im =
@@ -233,21 +227,21 @@ theorem lattice_trace_imaginary_part (hx : (U.X k).IsOrtho x.1) (Wu : UnitAt W) 
     linarith
 
 /- English proof (translation)
-Establish `key : ∀ z z', Hf (Lmap hU hσ W A z) (Lmap hU hσ W A z') - (A.sg : ℂ) * star (hermForm Wu.Hm (star z) (star z')) = 0`. Introduce `z z'`. Use `Pin2.form_zero (fun z z' => Hf (Lmap hU hσ W A z) (Lmap hU hσ W A z') - (A.sg : ℂ) * star (hermForm Wu.Hm (star z) (star z'))) (Set.range W.Pm) W.per.2.2.2.1 ?_ ?_ ?_ ?_ ?_ z z'` and prove the remaining obligations. Introduce `z z' w`. Simplify using `only [map_add, Pin2.hf_add_left, star_add, Pin2.hm_add_left]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `t z w`. Simplify using `only [map_smul, Pin2.hf_smul_left, star_smul, Pin2.hm_smul_left, star_mul', star_star]`. Expand and normalize the polynomial expressions, which then agree. Introduce `z w w'`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_add, Pin2.hf_add_right, star_add, Pin2.hm_add_right]`. Expand and normalize the polynomial expressions, which then agree. Introduce `t z w`. Simplify using `only [map_smul, Pin2.hf_real_smul_right, Pin2.star_real_smul, Pin2.hm_real_smul_right, star_mul', Complex.star_def, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨b, rfl⟩`. Take `⟨h1, h2⟩` from `lattice_trace_imaginary_part hU hσ W A hx Wu a b`. Use `show (Hf (Lmap hU hσ W A (star (W.Pm a))) (Lmap hU hσ W A (star (W.Pm b))) - (A.sg : ℂ) * star (hermForm Wu.Hm (star (star (W.Pm a))) (star (star (W.Pm b))))).im = 0`. Rewrite using `[Complex.sub_im, Complex.im_ofReal_mul, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `A.sg_pm with h | h` into its components or cases. Use `key z z'` as an intermediate fact. Rewrite `this` using `[h, Complex.ofReal_one, _root_.one_mul, sub_eq_zero]`. Conclude with `this`. Break down `Nat.eq_zero_or_pos W.g with hg | hg` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ∀ v : Fin W.g → ℂ, v = 0` using `fun v => funext fun i => absurd i.2 (by omega)`. Rewrite using `[hz z, hz z', map_zero]`. Simplify using `[Hf, hermForm]`. It suffices to derive a contradiction. Take `⟨v, hv⟩ : ∃ v : Fin W.g → ℂ, v = Pi.single (⟨0, hg⟩ : Fin W.g) 1` from `⟨_, rfl⟩`.
+Simplify using the standard rewrite rules. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv0 : star v ≠ 0`. Introduce `h0`. Use `congrFun h0 ⟨0, hg⟩` as an intermediate fact. Simplify using `[hv] at this`. Establish `hpos` using `Wu.pos (star v) hv0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hk` using `key v v`. Rewrite `hk` using `[h, Complex.ofReal_neg, Complex.ofReal_one, neg_one_mul, sub_neg_eq_add]`. Establish `hre` using `congrArg Complex.re hk`. Rewrite `hre` using `[Complex.add_re, Complex.star_def, Complex.conj_re, Complex.zero_re]`. Combine the linear relations using `[Pin2.hf_re_nonneg (Lmap hU hσ W A v)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pin2 (hx : (U.X k).IsOrtho x.1) (Wu : UnitAt W) (z z' : Fin W.g → ℂ) :
     Hf (Lmap hU hσ W A z) (Lmap hU hσ W A z') = star (hermForm Wu.Hm (star z) (star z')) := by

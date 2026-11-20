@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TensorHomCubes.Sta
 open CategoryTheory Simplicial UpperTheory.V.KL
 
 /- English proof (translation)
-Use `⟨fun G _ n => groupHomology.map_id n, fun G H K _ _ _ f g n => ?_⟩` and prove the remaining obligations. Unfold `grpHMap`. Rewrite using `[← groupHomology.map_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.V.KL.grpHComp :
     (∀ (G : Type) [Group G] (n : ℕ), grpHMap (MonoidHom.id G) n = 𝟙 _) ∧

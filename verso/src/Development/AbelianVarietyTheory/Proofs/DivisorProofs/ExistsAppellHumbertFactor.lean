@@ -23,22 +23,20 @@ namespace GlobalTheory.AHBundle
 variable {A : Over (Sp ℂ)} [GrpObj A] {g : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← u'.ker, hex, u.ker]`. Conclude with `hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_ex_eq {L L' : LB A.left} (u : HolUnif A L g) (u' : HolUnif A L' g) (hex : u'.ex = u.ex)
     {z : Fin g → ℂ} (hz : z ∈ u.Λ) : z ∈ u'.Λ := by
   rw [← u'.ker, hex, u.ker]; exact hz
 
 /- English proof (translation)
-Use `⟨h'.1.sub h.1, fun l => ?_, fun l p z hz => ?_⟩` and prove the remaining obligations. Use `h.2.1 l` as an intermediate fact. Rewrite using `[norm_div, h'.2.1]`. Conclude with `(by rw [this]; norm_num : (1 : ℝ) / ‖χ l‖ = 1)`. Take `⟨h1, h2⟩` from `(top_le_preimage_inf _ _ _).1 hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl : u.ex (z + l) = u.ex z`. Rewrite using `[u.ex_add, (u.ker _).2 l.2, _root_.mul_one]`. Establish `e'` using `h'.2.2 ⟨l.1, mem_of_ex_eq u u' hex l.2⟩ p.1 z (by rw [hex]; exact h1)`. Establish `e` using `h.2.2 l p.2 z h2`. Establish `n1` using `u.fr_ne p.2 z h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2` using `u.fr_ne p.2 (z + l) (by rw [hl]; exact h2)`. Establish `nχ : χ l ≠ 0`. Introduce `h0`. Use `h.2.1 l` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_ne_one this`. Use `show u'.fr p.1 z * (u.fr p.2 z)⁻¹ = _ * _ * (u'.fr p.1 (z + l) * (u.fr p.2 (z + l))⁻¹)`. Rewrite using `[e', e]`. Simplify using `only [Matrix.sub_mulVec, dotProduct_sub, mul_sub]`. Rewrite using `[show ∀ a b c d : ℂ, a - b + (c - d) = (a + c) - (b + d) from fun _ _ _ _ => by ring, Complex.exp_sub]`.
-
-Establish `ne` using `Complex.exp_ne_zero (↑Real.pi * (z ⬝ᵥ H.mulVec (star (l : Fin g → ℂ))) + ↑Real.pi / 2 * ((l : Fin g → ℂ) ⬝ᵥ H.mulVec (star (l : Fin g → ℂ))))`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem isFactorAH_divUnif {M M' : LB A.left} (u : HolUnif A M g) (u' : HolUnif A M' g) (hex : u'.ex = u.ex)
     {H H' : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} {χ' : u'.Λ → ℂ}
@@ -69,9 +67,9 @@ theorem isFactorAH_divUnif {M M' : LB A.left} (u : HolUnif A M g) (u' : HolUnif 
 end GlobalTheory.AHBundle
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨M₁, u₁, χ₁, hM₁, hex₁, by simpa using h₁⟩`. Consider the case `succ k ih`. Take `⟨M, u, χ, hM, hex, h⟩` from `ih`. Establish `hd` using `GlobalTheory.AHBundle.isFactorAH_divUnif u₀ u hex h₀ h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : H' - (k + 1) • H₀ = (H' - k • H₀) - H₀` using `by rw [succ_nsmul, sub_add_eq_sub_sub]`. Rewrite `hd` using `[← e]`. Conclude with `⟨_, _, _, LB.isLB_div hM hL₀, rfl, hd⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.AHBundle.exists_lb_of_factor_chain {g : ℕ} {A : Over (Sp ℂ)} [GrpObj A]
     (L₀ : LB A.left) (u₀ : HolUnif A L₀ g) (H₀ : Matrix (Fin g) (Fin g) ℂ) (χ₀ : u₀.Λ → ℂ) (hL₀ : L₀.IsLB)
@@ -89,13 +87,13 @@ theorem GlobalTheory.AHBundle.exists_lb_of_factor_chain {g : ℕ} {A : Over (Sp 
     exact ⟨_, _, _, LB.isLB_div hM hL₀, rfl, hd⟩
 
 /- English proof (translation)
-Introduce `g A _ hA L₀ u₀ H₀ χ₀ hL₀ hAH Hm hHm hint`. Take `⟨n, hn⟩` from `(GlobalTheory.T.exists_nat_posDef_add_nsmul_posDef_hermitian) g H₀ Hm hAH.2.1`. Establish `hint0` using `(GlobalTheory.T.appellHumbertFactor_imForm_integral_on_lattice) g A L₀ u₀ H₀ χ₀ hL₀ (isFactorAH_of_isAH hAH)`. Establish `hint' : ∀ l ∈ u₀.Λ, ∀ l' ∈ u₀.Λ, ∃ m : ℤ, (l ⬝ᵥ (Hm + n • H₀).mulVec (star l')).im = m`. Introduce `l hl l' hl'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m₁, e₁⟩` from `hint l hl l' hl'`. Take `⟨m₂, e₂⟩` from `hint0 l hl l' hl'`. Use `⟨m₁ + n * m₂, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_mulVec, dotProduct_add, Matrix.smul_mulVec, dotProduct_smul, Complex.add_im, nsmul_eq_mul, Complex.mul_im, e₁, e₂]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using the standard rewrite rules. Establish `hH' : (Hm + n • H₀).IsHermitian` using `hHm.add (by`. Unfold `Matrix.IsHermitian`. Rewrite using `[Matrix.conjTranspose_nsmul, hAH.1.eq])`. Take `⟨M₁, u₁, χ₁, hM₁, hex₁, h₁⟩` from `(GlobalTheory.T.appellHumbert_exists_lineBundle_posDef_hermitian) g A hA L₀ u₀ H₀ χ₀ hL₀ hAH (Hm + n • H₀) hH' hn hint'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨M, u, χ, hM, hex, h⟩` from `GlobalTheory.AHBundle.exists_lb_of_factor_chain L₀ u₀ H₀ χ₀ hL₀ (isFactorAH_of_isAH hAH) _ M₁ u₁ χ₁ hM₁ hex₁ (isFactorAH_of_isAH h₁) n`. Use `⟨M, u, χ, hM, hex, ?_⟩` and prove the remaining obligations. Simplify using `using h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem GlobalTheory.AHBundle.exists_lb_of_hermitian_int : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A →
     ∀ (L₀ : LB A.left) (u₀ : HolUnif A L₀ g) (H₀ : Matrix (Fin g) (Fin g) ℂ) (χ₀ : u₀.Λ → ℂ), L₀.IsLB → u₀.IsAH H₀ χ₀ →

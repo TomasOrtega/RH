@@ -9,23 +9,23 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace GlobalTheory.EtAlgCD
 
 /- English proof (translation)
-Rewrite using `[← Functor.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Functor.map_comp, ← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `sch.map (Spec.map (𝟙 _)) = _`. Rewrite using `[Spec.map_id, CategoryTheory.Functor.map_id]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 (sp A) := by
   change sch.map (Spec.map (𝟙 _)) = _
   rw [Spec.map_id, CategoryTheory.Functor.map_id]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y`. Establish `h : ∀ z : Ht q (sp B) d i, pull _ (spMap (e : A →+* B)) _ _ (pull _ (spMap (e.symm : B →+* A)) _ _ z) = z`. Introduce `z`. Rewrite using `[← pull_comp, spMap_comp]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `: (e : A →+* B).comp (e.symm : B →+* A) = RingHom.id B` using `by ext; simp`. Rewrite using `[this, spMap_id, pull_id]`. Rewrite using `[← h x, ← h y, Subsingleton.elim (pull _ (spMap (e.symm : B →+* A)) _ _ x) (pull _ _ _ _ y)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem subsingleton_of_ringEquiv (q : ℕ) (d i : ℤ) {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B)
     [Subsingleton (Ht q (sp A) d i)] : Subsingleton (Ht q (sp B) d i) := by
@@ -40,7 +40,7 @@ theorem subsingleton_of_ringEquiv (q : ℕ) (d i : ℤ) {A B : Type} [CommRing A
   rw [← h x, ← h y, Subsingleton.elim (pull _ (spMap (e.symm : B →+* A)) _ _ x) (pull _ _ _ _ y)]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y`. Conclude with `(GlobalTheory.T.etaleCohomology_prod_ring_projections_bijective q A B d i).1 (Prod.ext (Subsingleton.elim _ _) (Subsingleton.elim _ _))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem subsingleton_prod (q : ℕ) (d i : ℤ) (A B : Type) [CommRing A] [CommRing B]
     [Subsingleton (Ht q (sp A) d i)] [Subsingleton (Ht q (sp B) d i)] :
@@ -50,9 +50,9 @@ theorem subsingleton_prod (q : ℕ) (d i : ℤ) (A B : Type) [CommRing A] [CommR
   exact (GlobalTheory.T.etaleCohomology_prod_ring_projections_bijective q A B d i).1 (Prod.ext (Subsingleton.elim _ _) (Subsingleton.elim _ _))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a b`. Take `⟨x, hx⟩` from `(GlobalTheory.T.etaleCohomology_prod_ring_projections_bijective q A A d i).2 (a, b)`. Establish `hfs : RingHom.fst A A = RingHom.snd A A` using `RingHom.ext fun _ => Subsingleton.elim _ _`. Establish `h1` using `congrArg Prod.fst hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Prod.snd hx`. Simplify using `only at h1 h2`. Rewrite using `[← h1, ← h2, hfs]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem subsingleton_of_subsingleton_ring (q : ℕ) (d i : ℤ) (A : Type) [CommRing A] [Subsingleton A] :
     Subsingleton (Ht q (sp A) d i) := by
@@ -75,11 +75,9 @@ def piFinSuccRingEquiv (n : ℕ) (B : Fin (n + 1) → Type) [∀ j, CommRing (B 
   map_add' f g := rfl
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `B _ _`. Conclude with `subsingleton_of_subsingleton_ring q d i _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `B _ hB`. Use `ih (fun j => B j.succ) (fun j => hB j.succ)` as an intermediate fact. Use `hB 0` as an intermediate fact. Use `subsingleton_prod q d i (B 0) (∀ j : Fin n, B j.succ)` as an intermediate fact.
-
-Conclude with `subsingleton_of_ringEquiv q d i (piFinSuccRingEquiv n B).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subsingleton_pi (q : ℕ) (d i : ℤ) : ∀ (n : ℕ) (B : Fin n → Type) [∀ j, CommRing (B j)],
     (∀ j, Subsingleton (Ht q (sp (B j)) d i)) → Subsingleton (Ht q (sp (∀ j, B j)) d i) := by
@@ -102,11 +100,11 @@ namespace GlobalTheory.EtAlgCD
 open Polynomial in
 
 /- English proof (translation)
-Establish `h1 : ringKrullDim E ≤ 1`. Use `(GlobalTheory.AffineCover.ringKrullDim_le_of_quasiFinite K[X] E).trans ?_` and prove the remaining obligations. Rewrite using `[Polynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Both sides reduce to the same expression. Use `⟨fun {p} hp0 hp => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `Order.krullDim_le_one_iff.1 h1 ⟨p, hp⟩`. Break down `h2 with h | h` into its components or cases. It suffices to derive a contradiction. Use `h (show (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum E) ≤ ⟨p, hp⟩ from bot_le)` as an intermediate fact. Conclude with `hp0 (le_bot_iff.1 this)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, hpm⟩` from `Ideal.exists_le_maximal p hp.ne_top`. Use `h (show (⟨p, hp⟩ : PrimeSpectrum E) ≤ ⟨m, hm.isPrime⟩ from hpm)` as an intermediate fact. Establish `hmp : m ≤ p` using `this`. Conclude with `(le_antisymm hpm hmp) ▸ hm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dimensionLEOne_of_etale (K E : Type) [Field K] [CommRing E] [IsDomain E] [Algebra K[X] E]
     [Algebra.Etale K[X] E] : Ring.DimensionLEOne E := by
@@ -132,9 +130,7 @@ namespace GlobalTheory.EtAlgCD
 open Polynomial in
 
 /- English proof (translation)
-Use `letI : Algebra K E := ((algebraMap K[X] E).comp (algebraMap K K[X])).toAlgebra`. Use `haveI : IsScalarTower K K[X] E := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Algebra.FiniteType K E := Algebra.FiniteType.trans (S := K[X]) inferInstance inferInstance`. Use `haveI : IsNoetherianRing E := Algebra.FiniteType.isNoetherianRing K[X] E`. Use `haveI : IsIntegrallyClosed E := GlobalTheory.isIntegrallyClosed_of_smooth K[X] E`.
-
-Use `haveI : Ring.DimensionLEOne E := dimensionLEOne_of_etale K E`. Use `haveI : IsDedekindDomain E := {}`. Conclude with `hcurve q K E hq n i hn`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_domain (hcurve : GlobalTheory.EtC.C2) (q : ℕ) [NeZero q] (K E : Type) [Field K] [IsAlgClosed K]
     [CommRing E] [IsDomain E] [Algebra K[X] E] [Algebra.Etale K[X] E] (hq : IsUnit (q : K))
@@ -153,13 +149,11 @@ end GlobalTheory.EtAlgCD
 namespace GlobalTheory.EtAlgCD
 
 /- English proof (translation)
-Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Use `haveI := hloc m`. Set `P0 : Ideal E` to `(⊥ : Ideal (Localization.AtPrime m)).comap (algebraMap E (Localization.AtPrime m))`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : P0.IsPrime := Ideal.comap_isPrime _ _`. Establish `key : ∀ r : Ideal E, r ∈ minimalPrimes E → r ≤ m → r = P0`. Introduce `r hr hrm`. Establish `hsub : P0 ≤ r`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx0 : algebraMap E (Localization.AtPrime m) x = 0` using `hx`. Take `⟨⟨s, hs⟩, hsx⟩` from `(IsLocalization.map_eq_zero_iff m.primeCompl _ x).1 hx0`. Establish `hsr : s ∉ r` using `fun h => hs (hrm h)`. Establish `: s * x ∈ r` using `by rw [hsx]; exact r.zero_mem`. Conclude with `(hr.1.1.mem_or_mem this).resolve_left hsr`.
-
-Conclude with `le_antisymm (hr.2 ⟨inferInstance, bot_le⟩ hsub) hsub`. Conclude with `hpq ((key p hp (le_sup_left.trans hle)).trans (key q hq (le_sup_right.trans hle)).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCoprime_of_minimalPrimes {E : Type} [CommRing E]
     (hloc : ∀ (p : Ideal E) [p.IsPrime], IsDomain (Localization.AtPrime p))
@@ -184,17 +178,17 @@ theorem isCoprime_of_minimalPrimes {E : Type} [CommRing E]
   exact hpq ((key p hp (le_sup_left.trans hle)).trans (key q hq (le_sup_right.trans hle)).symm)
 
 /- English proof (translation)
-Use `set e := Φ.symm (Pi.single j 1) with he`. Establish `hΦe : Φ e = Pi.single j 1` using `by simp [e]`. Establish `hid : IsIdempotentElem e`. Apply `Φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, hΦe]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hk]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsLocalization.away_of_isIdempotentElem hid ?_ Ideal.Quotient.mk_surjective` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `RingHom.ker (Ideal.Quotient.mk (f j)) = _`. Rewrite using `[Ideal.mk_ker]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: x = x * (1 - e)`. Apply `Φ.injective` to reduce the goal to its premises. Use extensionality with `k`. Rewrite using `[map_mul, map_sub, map_one, hΦe]`. Distinguish the cases in `hk : k = j`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hk` using the available equality. Establish `h0 : Φ x k = 0` using `by rw [hΦ]; exact Ideal.Quotient.eq_zero_iff_mem.2 hx`. Simplify using `[h0]`. Simplify using `[Pi.single_eq_of_ne hk]`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Express the relevant statement in the definitionally equal form `1 - e ∈ f j`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← hΦ, map_sub, map_one, hΦe]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLocalizationAway_of_pi {E ι : Type} [CommRing E] [DecidableEq ι] (f : ι → Ideal E)
     (Φ : E ≃+* ∀ j, E ⧸ f j) (hΦ : ∀ x j, Φ x j = Ideal.Quotient.mk (f j) x) (j : ι) :
@@ -236,21 +230,17 @@ namespace GlobalTheory.EtAlgCD
 open Polynomial in
 
 /- English proof (translation)
-Introduce `q _ K E _ _ _ _ _ hq n i hn`. Use `haveI : IsNoetherianRing E := Algebra.FiniteType.isNoetherianRing K[X] E`. Use `haveI : IsReduced E := GlobalTheory.isReduced_of_smooth_of_isIntegrallyClosed K[X] E`. Establish `hloc : ∀ (p : Ideal E) [p.IsPrime], IsDomain (Localization.AtPrime p)` using `fun p _ => (GlobalTheory.isDomain_and_isIntegrallyClosed_atPrime_of_etale K[X] p _).1`. Set `ι` to `{p : Ideal E // p ∈ minimalPrimes E}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : Finite ι := (minimalPrimes.finite_of_isNoetherianRing E).to_subtype`. Use `letI : Fintype ι := Fintype.ofFinite ι`. Set `f : ι → Ideal E` to `Subtype.val`. Establish `hcop : Pairwise (Function.onFun IsCoprime f)` using `fun a b hab => isCoprime_of_minimalPrimes hloc a.2 b.2 (fun h => hab (Subtype.ext h))`. Establish `hinf : ⨅ j, f j = ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : ⨅ j, f j = sInf (minimalPrimes E)` using `(sInf_eq_iInf' (minimalPrimes E)).symm`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `sInf (Ideal.minimalPrimes ⊥) = ⊥`. Rewrite using `[Ideal.sInf_minimalPrimes]`. Conclude with `nilradical_eq_zero E`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ψ : E →+* ∀ j, E ⧸ f j` to `RingHom.pi fun j => Ideal.Quotient.mk (f j)`. Establish `hinj : Function.Injective ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `: x ∈ ⨅ j, f j` using `Ideal.mem_iInf.2 fun j => Ideal.Quotient.eq_zero_iff_mem.1 (congrFun hx j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[hinf, Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `hsurj : Function.Surjective ψ`. Introduce `y`. Take `⟨z, rfl⟩` from `(Ideal.quotientInfRingEquivPiQuotient f hcop).surjective y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective z`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `exact ⟨x, by ext j; first | rfl | simp [ψ, Ideal.quotientInfRingEquivPiQuotient, Ideal.quotientInfToPiQuotient]⟩`. Set `Φ : E ≃+* ∀ j, E ⧸ f j` to `RingEquiv.ofBijective ψ ⟨hinj, hsurj⟩`. Establish `hfac : ∀ j, Subsingleton (Ht q (sp (E ⧸ f j)) n i)`. Introduce `j`. Use `haveI : (f j).IsPrime := j.2.1.1`.
-
-Use `haveI : IsLocalization.Away (Φ.symm (Pi.single j 1)) (E ⧸ f j) := isLocalizationAway_of_pi f Φ (fun x j => rfl) j`. Use `haveI : Algebra.Etale E (E ⧸ f j) := Algebra.Etale.of_isLocalizationAway (Φ.symm (Pi.single j 1))`. Use `haveI : Algebra.Etale K[X] (E ⧸ f j) := Algebra.Etale.comp K[X] E _`. Conclude with `subsingleton_of_domain GlobalTheory.T.smooth_affine_curve_etale_cohomologicalDimension_le_one q K (E ⧸ f j) hq n i hn`. Set `σ` to `(Fintype.equivFin ι).symm`.
-
-Use `haveI := subsingleton_pi q n i (Fintype.card ι) (fun k => E ⧸ f (σ k)) (fun k => hfac (σ k))`. Use `haveI := subsingleton_of_ringEquiv q n i (RingEquiv.piCongrLeft (fun j => E ⧸ f j) σ)`. Conclude with `subsingleton_of_ringEquiv q n i Φ.symm`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem etale_polynomial_cd_le_one : ∀ (q : ℕ) [NeZero q] (K E : Type) [Field K] [IsAlgClosed K]
     [CommRing E] [Algebra (Polynomial K) E] [Algebra.Etale (Polynomial K) E], IsUnit (q : K) →

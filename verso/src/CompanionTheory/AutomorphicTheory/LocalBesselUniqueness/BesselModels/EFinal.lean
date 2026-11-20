@@ -13,14 +13,14 @@ namespace Formalism.L2.SG.RealObj.EnergyFinal
 namespace BM
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.RealObj.EnergyIntLoc.BM.stepIntG_of hI Formalism.L2.SG.Pf.WuBL.reproduction_translation Formalism.L2.SG.Pf.WuBL.l2RightTranslation_thm Formalism.L2.SG.Pf.WuBL.parameter_gap_of_hypothesis (fun _ hG _ _ C => Formalism.L2.SG.Pf.LocF.locFactor_holds hG C)`.
+A detailed English derivation is pending.
 -/
 theorem stepIntG_holds (hI : CompanionTheory.Lime.BM.Inputs2) : Formalism.L2.SG.RealObj.EnergyInt.StepIntG :=
   Formalism.L2.SG.RealObj.EnergyIntLoc.BM.stepIntG_of hI Formalism.L2.SG.Pf.WuBL.reproduction_translation Formalism.L2.SG.Pf.WuBL.l2RightTranslation_thm
     Formalism.L2.SG.Pf.WuBL.parameter_gap_of_hypothesis (fun _ hG _ _ C => Formalism.L2.SG.Pf.LocF.locFactor_holds hG C)
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.RealObj.EnergyConvJ.BM.weilPairJ hI Formalism.L2.SG.Pf.WuBL.reproduction_translation Formalism.L2.SG.Pf.WuBL.l2RightTranslation_thm Formalism.L2.SG.Pf.WuBL.parameter_gap_of_hypothesis (fun _ hG _ _ C => Formalism.L2.SG.Pf.LocF.locFactor_holds hG C) hG X τ`.
+A detailed English derivation is pending.
 -/
 theorem weilPairJ_holds (hI : CompanionTheory.Lime.BM.Inputs2) {D : D7} (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D)
     (X : HidaSetting D) (τ : D.what₂.Tau) :

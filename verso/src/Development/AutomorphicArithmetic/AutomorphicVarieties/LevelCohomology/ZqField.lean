@@ -16,7 +16,7 @@ import Formalism.DirichletDensity.DirichletDensityProofs.QuadDiscr
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Odd UpperTheory.V.ML UpperTheory.V.X
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Apply `h` to reduce the goal to its premises. Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod]`. Conclude with `hx`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zq_unit {l : ℕ} [Fact l.Prime] (x : ℤ_[l]) (h : PadicInt.toZMod x ≠ 0) : IsUnit x := by
   by_contra hx
@@ -25,14 +25,14 @@ private theorem zq_unit {l : ℕ} [Fact l.Prime] (x : ℤ_[l]) (h : PadicInt.toZ
   exact hx
 
 /- English proof (translation)
-Rewrite `h` using `[← RingHom.mem_ker, PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zq_dvd {l : ℕ} [Fact l.Prime] (x : ℤ_[l]) (h : PadicInt.toZMod x = 0) : (l : ℤ_[l]) ∣ x := by
   rw [← RingHom.mem_ker, PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton] at h
   exact h
 
 /- English proof (translation)
-Establish `h : PadicInt.toZModPow 1 (x - (((PadicInt.toZModPow 1 x).val : ℕ) : ℤ_[l])) = 0`. Rewrite using `[map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Rewrite `h` using `[← RingHom.mem_ker, PadicInt.ker_toZModPow, pow_one, ← PadicInt.maximalIdeal_eq_span_p, ← PadicInt.ker_toZMod, RingHom.mem_ker, map_sub, map_natCast, sub_eq_zero]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zq_cast {l : ℕ} [Fact l.Prime] (x : ℤ_[l]) :
     (((PadicInt.toZModPow 1 x).val : ℕ) : ZMod l) = PadicInt.toZMod x := by
@@ -43,9 +43,9 @@ private theorem zq_cast {l : ℕ} [Fact l.Prime] (x : ℤ_[l]) :
   exact h.symm
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, l = 2 * n + 1` from `⟨l / 2, by omega⟩`. Establish `e1 : 2 * n + 1 - 1 = 2 * n` using `by omega`. Establish `e2 : (2 * n + 1) / 2 = n` using `by omega`. Rewrite `h1`, `h2` using `[e1]`. Rewrite using `[e2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, rfl⟩ : n ∣ e` from `Nat.dvd_of_mul_dvd_mul_left two_pos h1`. Use `⟨?_, dvd_mul_right _ _⟩` and prove the remaining obligations. Break down `Nat.even_mul.1 he with ⟨j, hj⟩ | ⟨j, hj⟩` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `absurd ⟨j, by rw [hj]; ring⟩ h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem zq_four {l e : ℕ} (hl : 5 ≤ l) (he : Even e) (h1 : l - 1 ∣ 2 * e) (h2 : ¬ l - 1 ∣ e) (ho : l % 2 = 1) :
     l % 4 = 1 ∧ l / 2 ∣ e := by
@@ -61,9 +61,9 @@ private theorem zq_four {l e : ℕ} (hl : 5 ≤ l) (he : Even e) (h1 : l - 1 ∣
   · exact absurd ⟨j, by rw [hj]; ring⟩ h2
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `IsCyclic.exists_generator (α := (ZMod l)ˣ)`. Establish `ho : orderOf b = l - 1`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hb, Nat.card_eq_fintype_card, ZMod.card_units]`. Establish `h0 : PadicInt.toZMod (((b : ZMod l).val : ℕ) : ℤ_[l]) = b`. Rewrite using `[map_natCast, ZMod.natCast_zmod_val]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩` from `zq_unit _ (h0 ▸ b.ne_zero)`. Use `⟨u, fun h => h2 ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hu, h0]`. Rewrite using `[← ho, orderOf_dvd_iff_pow_eq_one]`. Conclude with `Units.ext (by simpa using h)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zq_gen {l e : ℕ} [Fact l.Prime] (h2 : ¬ l - 1 ∣ e) :
     ∃ u : ℤ_[l]ˣ, PadicInt.toZMod (u : ℤ_[l]) ^ e ≠ 1 := by
@@ -79,15 +79,13 @@ private theorem zq_gen {l e : ℕ} [Fact l.Prime] (h2 : ¬ l - 1 ∣ e) :
   exact Units.ext (by simpa using h)
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : NeZero l := ⟨hp.out.ne_zero⟩`. Use `haveI hE : ∀ i, HasEnoughRootsOfUnity Ω (l ^ i) := fun i => inferInstance`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω l`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨⟨s, hs⟩, h⟩` from `CF.gauss Ω l ζ (by omega) hζ`. Establish `hs2 : s ^ 2 = (l : Ω)`. Rewrite using `[hs, CF.pStar, Even.neg_one_pow ⟨l / 4, by omega⟩]`. Simplify using the standard rewrite rules. Establish `hs0 : s ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `hp.out.ne_zero (by exact_mod_cast (hs2.symm.trans (by simp) : (l : Ω) = 0))`. Use `⟨s, hs2, fun g => ⟨?_, fun hg => ?_⟩⟩` and prove the remaining obligations. Use `sq_eq_sq_iff_eq_or_eq_neg.1 ?_` and prove the remaining obligations. Rewrite using `[← map_pow, hs2, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `cyclotomicCharacter.spec l (n := 1) g.toRingEquiv ζ (by rw [pow_one, hζ.pow_eq_one])`. Establish `h2` using `(h s hs).2 g.toRingEquiv.toRingHom _ h1`. Establish `h3 : s = _` using `hg.symm.trans h2`. Establish `h5 : legendreSym l ((PadicInt.toZModPow 1 (cycZ ℚ Ω l g : ℤ_[l])).val : ℕ) = 1`. Establish `: (1 : Ω) * s = _` using `(one_mul s).trans h3`.
-
-Conclude with `(mul_right_cancel₀ hs0 this).symm` after adjusting the coercions. Establish `h6` using `legendreSym.eq_pow l (((PadicInt.toZModPow 1 (cycZ ℚ Ω l g : ℤ_[l])).val : ℕ) : ℤ)`. Rewrite `h6` using `[h5, Int.cast_natCast, zq_cast, Int.cast_one]`. Conclude with `h6.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zq_root (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [hp : Fact l.Prime]
     (h4 : l % 4 = 1) : ∃ s : Ω, s ^ 2 = (l : Ω) ∧ ∀ g : G ℚ Ω, (g s = s ∨ g s = -s) ∧
@@ -118,11 +116,11 @@ private theorem zq_root (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
     exact h6.symm
 
 /- English proof (translation)
-Rewrite `hφ` using `[← Kum.pullOnto ℚ Ω K _ le_rfl l R M hp.ne_zero le_rfl (Or.inr h2)]`. Take `⟨θ, hθ, rfl⟩` from `hφ`. Rewrite `hu`, the goal using `[Kum.clPull_apply]`. Generalize the expression as in `Kum.artCl K Ω (Kum.toGal K le_rfl u) = c at hu ⊢`. Set `θ' : ClassGroup (𝓞 K) →* Multiplicative M` to `MonoidHom.mk' (fun c => Multiplicative.ofAdd (θ c)) fun a b => by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression.
 
-Rewrite using `[hθ.1, ofAdd_add]`. Establish `h1 : classNumber K • θ c = 0`. Establish `: θ' (c ^ classNumber K) = 1` using `by rw [classNumber, pow_card_eq_one, map_one]`. Rewrite `this` using `[map_pow]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : l.Coprime (classNumber K)` using `(Nat.coprime_of_lt_prime (classNumber_pos K).ne' (hQuad K l hp hl hK hd) hp)`. Use `Nat.dvd_gcd (addOrderOf_dvd_of_nsmul_eq_zero hu) (addOrderOf_dvd_of_nsmul_eq_zero h1)` as an intermediate fact. Rewrite `this` using `[hc.gcd_eq_one, Nat.dvd_one, AddMonoid.addOrderOf_eq_one_iff]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zq_hom (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K : Type) [Field K] [NumberField K]
     [Algebra K Ω] [IsAlgClosure K Ω] (l : ℕ) (hp : l.Prime) (hl : 5 ≤ l) (hK : Module.finrank ℚ K = 2) (hd : discr K = l)
@@ -146,13 +144,11 @@ private theorem zq_hom (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
 
 open IntermediateField in
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ s` using `Algebra.IsIntegral.isIntegral s`. Use `haveI : FiniteDimensional ℚ ℚ⟮s⟯ := adjoin.finiteDimensional hi`. Use `haveI : NumberField ℚ⟮s⟯ := NumberField.of_module_finite ℚ _`. Use `⟨ℚ⟮s⟯, inferInstance, inferInstance, inferInstance, inferInstance, ?_, ?_, fun g => ⟨fun h => ?_, fun h x => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[adjoin.finrank hi]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_antisymm ?_ ((minpoly.two_le_natDegree_iff hi).2 ?_)` and prove the remaining obligations. Use `minpoly.min ℚ s (Polynomial.monic_X_pow_sub_C (l : ℚ) two_ne_zero) (by simp [hs])` as an intermediate fact. Rewrite `this` using `[Polynomial.degree_X_pow_sub_C two_pos]`. Conclude with `Polynomial.natDegree_le_of_degree_le this`. Introduce and unpack `⟨q, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hδ (δ.commutes q)`. Use `Formalism.HF.quadDiscr _ l (AdjoinSimple.gen ℚ s) (Subtype.ext (by simpa using hs)) ?_ (Int.squarefree_natCast.2 hp.squarefree) (by omega)` and prove the remaining obligations. Conclude with `lift_injective _ ((lift_adjoin_simple ℚ ℚ⟮s⟯ (AdjoinSimple.gen ℚ s)).trans (lift_top ℚ ℚ⟮s⟯).symm)`. Conclude with `h (AdjoinSimple.gen ℚ s)`. Establish `: ℚ⟮s⟯ ≤ fixedField (Subgroup.zpowers g)`.
-
-Rewrite using `[adjoin_simple_le_iff, mem_fixedField_iff]`. Introduce `f hf`. Conclude with `(Subgroup.zpowers_le.2 (show g ∈ MulAction.stabilizer (G ℚ Ω) s from h)) hf`. Conclude with `(mem_fixedField_iff _ _).1 (this x.2) g (Subgroup.mem_zpowers g)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem zq_field (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) (hp : l.Prime) (h4 : l % 4 = 1)
     (s : Ω) (hs : s ^ 2 = (l : Ω)) (δ : G ℚ Ω) (hδ : δ s ≠ s) :
@@ -180,41 +176,35 @@ private theorem zq_field (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ 
     exact (mem_fixedField_iff _ _).1 (this x.2) g (Subgroup.mem_zpowers g)
 
 /- English proof (translation)
-Take `⟨h4, hdv⟩` from `zq_four hl he h1 h2 (hp.out.eq_two_or_odd.resolve_left (by omega))`. Take `⟨u, hu⟩` from `zq_gen h2`. Take `⟨s, hs, hG⟩` from `zq_root Ω l h4`. Take `⟨A₀, hA₀⟩` from `(B3.placesQ Ω).1 l hp.out`. Take `⟨δ, -, hδ⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω l A₀ hA₀ u`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hpow : ∀ g : G ℚ Ω, g s = s → PadicInt.toZMod (cycZ ℚ Ω l g : ℤ_[l]) ^ e = 1` using `fun g hg => by`. Take `⟨k, rfl⟩` from `hdv`. Rewrite using `[pow_mul, (hG g).2 hg, one_pow]`. Establish `hδs : δ s ≠ s` using `fun h => hu (hδ ▸ hpow δ h)`. Take `⟨K, _, _, _, _, hK, hd, hU⟩` from `zq_field Ω l hp.out h4 s hs δ hδs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set α : G ℚ Ω →* Oˣ := (1 : G ℚ Ω →* Oˣ)⁻¹ * chiO ℚ Ω l O ^ (-(e : ℤ)) with hα`. Establish `hαg : ∀ g, α g = Units.map (algebraMap ℤ_[l] O).toMonoidHom (cycZ ℚ Ω l g ^ e)⁻¹` using `fun g => by`. Simplify using `[hα, chiO]`. Establish `hαs : ∀ g, (α g : O) - 1 = algebraMap ℤ_[l] O (-((cycZ ℚ Ω l g ^ e)⁻¹ : ℤ_[l]ˣ) * ((cycZ ℚ Ω l g : ℤ_[l]) ^ e - 1))` using `fun g => by`. Rewrite using `[hαg, ← Units.val_pow_eq_pow_val, mul_sub, neg_mul, Units.inv_mul, map_sub]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[sub_eq_neg_add, add_comm]`. Establish `hun : ∀ g, cycZ ℚ Ω l g = u → IsUnit ((α g : O) - 1)` using `fun g hg => by`. Rewrite using `[hαs, hg]`. Use `IsUnit.map _ ((Units.isUnit _).neg.mul (zq_unit _ ?_))` and prove the remaining obligations. Rewrite using `[map_sub, map_pow, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_ne_zero.2 hu`. Establish `htr : ∀ g : G ℚ Ω, g s = s → ∀ m : QO l O, l • m = 0 → (α g : O) • m = m` using `fun g hg m hm => by`. Take `⟨y, hy⟩` from `zq_dvd ((cycZ ℚ Ω l g : ℤ_[l]) ^ e - 1) (by rw [map_sub, map_pow, map_one, hpow g hg, sub_self])`. Establish `: ((α g : O) - 1) • m = 0`. Rewrite using `[hαs, hy, mul_left_comm, map_mul, map_natCast, mul_comm, mul_smul, Nat.cast_smul_eq_nsmul, hm, smul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_smul, one_smul, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hin : ∀ A : ValuationSubring Ω, ¬ Over A l → ∀ g ∈ Ine (F` using `ℚ) A, α g = 1 := fun A hA g hg => by`. Establish `: cycZ ℚ Ω l g = 1` using `(places ℚ Ω l A).2.2.2 hA hg`. Rewrite using `[hαg, this, one_pow, inv_one, map_one]`. Establish `htwo : ∀ m : QO l O, 2 • m = 0 → m = 0` using `fun m hm => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : IsUnit ((2 : ℕ) : O)`. Rewrite using `[← map_natCast (algebraMap ℤ_[l] O)]`. Use `IsUnit.map _ (zq_unit _ ?_)` and prove the remaining obligations. Rewrite using `[map_natCast, Ne, ZMod.natCast_eq_zero_iff]`. Conclude with `fun h => absurd (Nat.le_of_dvd two_pos h) (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `h.smul_eq_zero.1 ((Nat.cast_smul_eq_nsmul _ _ _).trans hm)`. Establish `key : ∀ a : O, ∀ c ∈ ShT (QO l O) α δ l a, l • c = 0 → c = 0`. Introduce and unpack `a c ⟨⟨hlc, hc⟩, hcδ, -, hI, hD⟩ hcl`. Establish `hcl' : ∀ g, l • c g = 0` using `fun g => congrFun hcl g`. Establish `hdec : ∀ A : ValuationSubring Ω, Over A l → ∀ g ∈ Dec (F` using `ℚ) A, g s = s → c g = 0 := fun A hA g hg hgs => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, -, hm⟩` from `hD A hA`. Take `⟨t, ht, htu⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω l A hA u`. Establish `hlm : l • m = 0`. Use `(hun t htu).smul_eq_zero.1 ?_` and prove the remaining obligations. Rewrite using `[smul_comm, sub_smul, one_smul, ← hm t (Ine_le_Dec (F := ℚ) A ht), hcl']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hm g hg, htr g hgs m hlm, sub_self]`. Establish `hX : (fun v : galOf ℚ K Ω => c v) ∈ Kum.XDual l (galOf ℚ K Ω) O (QO l O)`. Use `⟨hlc.comp_continuous continuous_subtype_val, fun v w => ?_, fun A v hv => ?_, fun A hA v hv => ?_⟩` and prove the remaining obligations. Use `show c (v * w) = c v + c w`. Rewrite using `[hc, htr v ((hU _).1 v.2) _ (hcl' _)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Distinguish the cases in `hA : Over A l`. Conclude with `hdec A hA v (Ine_le_Dec (F := ℚ) A hv) ((hU _).1 v.2)`. Conclude with `hI A hA v hv`. Conclude with `hdec A hA v hv ((hU _).1 v.2)`. Establish `h0 : ∀ g : G ℚ Ω, g s = s → c g = 0` using `fun g hg => zq_hom Ω K l hp.out hl hK hd O (QO l O) htwo _ hX ⟨g, (hU g).2 hg⟩ (hcl' g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Break down `(hG g).1 with hg | hg` into its components or cases. Conclude with `h0 g hg`. Establish `: (δ⁻¹ * g) s = s`. Rewrite using `[AlgEquiv.mul_apply, hg]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `δ.symm_apply_eq.2 ((hG δ).1.resolve_left hδs).symm`. Rewrite using `[← mul_inv_cancel_left δ g, hc, hcδ, h0 _ this, smul_zero, add_zero, Pi.zero_apply]`. Use `nonpos_iff_eq_zero.1 (shaToShT Ω l O α δ (hun δ hδ) l hp.out.ne_zero hin (fun A h h' => absurd h h') 0 fun a ha => ?_)` and prove the remaining obligations. Establish `hnu : ¬ IsUnit (l : O)` using `fun h => by haveI := (dvrFacts l O).2.2.1`. Rewrite `h` using `[← map_natCast (algebraMap ℤ_[l] O), isUnit_map_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `PadicInt.irreducible_p.not_isUnit h`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n : ℕ, a ∣ (l : O) ^ n := by`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible ha hπ`. Use `⟨n, hn.dvd.trans (pow_dvd_pow_of_dvd ?_ n)⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Ideal.mem_span_singleton, ← hπ.maximalIdeal_eq]`. Conclude with `hnu`. Establish `hall : ∀ n : ℕ, ∀ c ∈ ShT (QO l O) α δ l a, l ^ n • c = 0 → c = 0`. Introduce `n`. Proceed by induction on `n with`.
-
-Consider the case `zero => intro c _ h`. Simplify using `using h`. Consider the case `succ n ih`. Introduce `c hc h`. Conclude with `ih c hc (key a _ (nsmul_mem hc _) (by rw [smul_smul, ← pow_succ', h]))`.
-
-Establish `: ShT (QO l O) α δ l a = ⊥`. Use `eq_bot_iff.2 fun c hc => hall n c hc (funext fun g => ?_)` and prove the remaining obligations. Take `⟨y, hy⟩` from `hn`. Rewrite using `[Pi.smul_apply, ← Nat.cast_smul_eq_nsmul O, Nat.cast_pow, hy, mul_comm, mul_smul, hc.2.2.1 g, smul_zero, Pi.zero_apply]`. Rewrite using `[this]`.
-
-Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem zq_main (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [hp : Fact l.Prime] (O : Type) [CommRing O]
     [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (hl : 5 ≤ l) (e : ℕ) (he : Even e)
@@ -309,7 +299,7 @@ private theorem zq_main (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
   simp
 
 /- English proof (translation)
-Introduce `Ω _ inst _ l _ O _ _ _ _ _ hl e he h1 h2`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Take `rfl : inst = DivisionRing.toRatAlgebra` from `Subsingleton.elim _ _`. Conclude with `zq_main Ω l O hl e he h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.zQuad :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O], 5 ≤ l → ∀ e : ℕ, Even e → l - 1 ∣ 2 * e → ¬ l - 1 ∣ e → Chr.V l e (1 : G ℚ Ω →* Oˣ) = 0 := by

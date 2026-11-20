@@ -56,7 +56,7 @@ def IsSmoothInf (V : HSp D) (e : LieInf V → GA D V) (φ : GA D V → ℂ) : Pr
     (fun X : (∀ τ : D.what₂.Tau, (lieU (gramAt D V τ)).toSubmodule) => φ (g * e fun τ => ⟨(X τ).1, (X τ).2⟩))
 
 /- English proof (translation)
-Introduce `_` and use `contDiff_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmoothInf_const (V : HSp D) (e : LieInf V → GA D V) (c : ℂ) : IsSmoothInf V e fun _ => c :=
   fun _ => contDiff_const
@@ -101,9 +101,7 @@ def infHt (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* �
   max 1 (max (infNorm θ V τ g) (infNorm θ V τ g⁻¹))
 
 /- English proof (translation)
-Establish `h : ∀ p : Fin V.rank × Fin V.rank × Fin (Module.finrank D.host.F D.host.E), ∀ᶠ v in Filter.cofinite, ‖evalV D.host.F v (finCoord D (finMat D.sp.cm.sig V.gram g p.1 p.2.1) p.2.2)‖₊ ≤ 1`. Introduce `p`. Use `(finCoord D (finMat D.sp.cm.sig V.gram g p.1 p.2.1) p.2.2).2.mono fun v hv => ?_` and prove the remaining obligations. Conclude with `Valued.toNormedField.norm_le_one_iff.2 hv` after adjusting the coercions. Use `(Filter.eventually_all.2 h).mono fun v hv => ?_` and prove the remaining obligations.
-
-Conclude with `Finset.sup_le fun p _ => hv p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eventually_finNorm_le_one (V : HSp D) (g : GA D V) : ∀ᶠ v in Filter.cofinite, finNorm V v g ≤ 1 := by
   have h : ∀ p : Fin V.rank × Fin V.rank × Fin (Module.finrank D.host.F D.host.E), ∀ᶠ v in Filter.cofinite,
@@ -115,7 +113,7 @@ theorem eventually_finNorm_le_one (V : HSp D) (g : GA D V) : ∀ᶠ v in Filter.
   exact Finset.sup_le fun p _ => hv p
 
 /- English proof (translation)
-Establish `h` using `(eventually_finNorm_le_one V g).and (eventually_finNorm_le_one V g⁻¹)`. Use `(Filter.eventually_cofinite.1 h).subset fun v hv hv' => hv ?_` and prove the remaining obligations. Conclude with `max_eq_left (max_le hv'.1 hv'.2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finHt_mulSupport_finite (V : HSp D) (g : GA D V) : (Function.mulSupport fun v => finHt V v g).Finite := by
   have h := (eventually_finNorm_le_one V g).and (eventually_finNorm_le_one V g⁻¹)
@@ -126,7 +124,7 @@ def height (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* �
   (∏ τ, infHt θ V τ g) * ∏ᶠ v, finHt V v g
 
 /- English proof (translation)
-The claim follows from `one_le_mul_of_one_le_of_one_le (Finset.one_le_prod' fun _ _ => le_max_left _ _) (one_le_finprod' fun _ => le_max_left _ _)`.
+A detailed English derivation is pending.
 -/
 theorem one_le_height (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D) (g : GA D V) :
     1 ≤ height θ V g :=
@@ -146,9 +144,9 @@ def FormsTied {X : ThetaX D} (T : ThetaTied D X) : Prop :=
   ∀ (V : HSp D) (φ : GA D V → ℂ), (∃ F : X.AF V, T.ev V F = φ) ↔ IsSmoothAutForm V φ
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨c, rfl⟩`. Consider the case `cons X l ih`. Take `⟨c', h⟩` from `ih`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `lieDer V e X (wordDer V e l fun _ => c) = _`. Rewrite using `[h]`. Use function extensionality and compare the values at `g`. Simplify using `[lieDer]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem wordDer_const (V : HSp D) (e : LieInf V → GA D V) (l : List (LieInf V)) (c : ℂ) :
     ∃ c' : ℂ, wordDer V e l (fun _ => c) = fun _ => c' := by

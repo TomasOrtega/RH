@@ -15,14 +15,14 @@ noncomputable section
 namespace GlobalTheory.HeightCounting.Up.OPinAt
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.prod, h.para, h.uni, h.hyp, h.wt, h.rat, h.int, h.full⟩`.
+Supply the required witnesses or components.
 -/
 theorem mtInput_mtL {D : D7} (L : LocAll (lay0 D)) (M : MtFam D) (tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E)
     (Q : D.what₂.places.Pl → Finset (PlE D.host)) (h : MtInput D M tup Q) : MtInput (withLoc L) (mtL L M) tup Q :=
   ⟨h.prod, h.para, h.uni, h.hyp, h.wt, h.rat, h.int, h.full⟩
 
 /- English proof (translation)
-Establish `e` using `D.nd.mu_w i`. Establish `hs` using `h (D.nd.w i) (D.nd.w_tw i) (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2`. Unfold `MtFam.loc`. Rewrite using `[e]`. Conclude with `hs`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classSum_loc_of_sumTw {D : D7} {M : MtFam D} (h : SumTw D M) (i : D.nd.Loc) :
     GlobalTheory.CoefDuty.ClassSum (M.loc i) := by
@@ -33,7 +33,7 @@ theorem classSum_loc_of_sumTw {D : D7} {M : MtFam D} (h : SumTw D M) (i : D.nd.L
   exact hs
 
 /- English proof (translation)
-Establish `key : ∀ (D' : D7), D' = withLoc a.nt.L → ∀ M' : MtFam D', HEq (mtL a.nt.L a.nt.M) M' → ∃ tup Q, MtInput D' M' tup Q`. Introduce and unpack `_ rfl M' hM`. Take `rfl` from `eq_of_heq hM`. Conclude with `⟨_, _, mtInput_mtL a.nt.L a.nt.M _ _ a.nt.mt⟩`. Conclude with `key D a.nt.eq _ a.mt_eq`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mtInput_at {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch}
     (a : NAt hL D cf nch tp) : ∃ tup Q, MtInput D a.all.gal.mt tup Q := by
@@ -45,7 +45,7 @@ theorem mtInput_at {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {cf :
   exact key D a.nt.eq _ a.mt_eq
 
 /- English proof (translation)
-Establish `key : ∀ (D' : D7), D' = withLoc a.nt.L → (GlobalTheory.SerSys.LabTie D' fun k => @GlobalTheory.Mem.TypePl.labDat (D'.host.g k) ⟨D'.host.g_prime k⟩) → GlobalTheory.SerSys.LabTie a.nt.D fun k => @GlobalTheory.Mem.TypePl.labDat (a.nt.D.host.g k) ⟨a.nt.D.host.g_prime k⟩`. Introduce and unpack `_ rfl h'`. Conclude with `fun k => ⟨(h' k).1, (h' k).2⟩`. Conclude with `key D a.nt.eq h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem labTie_at {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch}
     (a : NAt hL D cf nch tp)
@@ -63,9 +63,9 @@ end GlobalTheory.HeightCounting.Up.OPinAt
 open GlobalTheory.HeightCounting.Up.OPinAt in
 
 /- English proof (translation)
-Introduce `hL`. Use `EvG.imp GlobalTheory.T.twistedPlace_innerProduct_classSum_rows fun K _ _ _ _ hK => large₂.imp hK fun B f T _ H kp w Z Wt p0 t nch n xd c hne _ hcp => ?_` and prove the remaining obligations. Take `⟨m⟩` from `hne`. Establish `hs` using `H kp w hcp Z Wt t.hX t.r.z p0 t.r.Y t.r.intersectionNumber_baseChange t.exAt t.inGeo t.grp t.grpAt`. Take `⟨tup, Q, hin⟩` from `mtInput_at c.a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsum` using `hs c.a.all.gal.mt tup Q m.ad hin`. Establish `hlab : GlobalTheory.SerSys.LabTie (w.D Z) fun k => @GlobalTheory.Mem.TypePl.labDat ((w.D Z).host.g k) ⟨(w.D Z).host.g_prime k⟩` using `fun k => ⟨(t.grp.teich k).symm, t.grp.ser k⟩`. Conclude with `{ large := m.large inner := classSum_loc_of_sumTw hsum lab := labTie_at c.a hlab gen := fun k => m.zeta k }`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeightCounting.Up.opin_atMem : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t nch n c => GlobalTheory.CoefDuty.OPin c.a := by
   intro hL

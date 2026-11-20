@@ -36,7 +36,7 @@ def hspOf {k : ℕ} (G : Matrix (Fin k) (Fin k) D.host.E) (herm : (sesq D G).IsS
 variable {D}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Establish `e : ∀ m : Fin k, Pi.basisFun D.host.E (Fin k) m = Pi.single m 1` using `fun m => Pi.basisFun_apply _ _ m`. Simplify using `only [HSpace.gram, hspOf, sesq]`. Use `erw [e i, e j]`. Conclude with `Matrix.toLinearMapₛₗ₂'_single (R := D.host.E) (starRingEnd D.host.E) (RingHom.id D.host.E) G i j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_hspOf {k : ℕ} (G : Matrix (Fin k) (Fin k) D.host.E) (herm : (sesq D G).IsSymm)
     (nd : (sesq D G).Nondegenerate) (L : Submodule (𝓞 D.host.E) (Fin k → D.host.E)) (hL : L.IsLattice D.host.E)

@@ -7,13 +7,11 @@ namespace GlobalTheory
 open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct in
 
 /- English proof (translation)
-Introduce `ι _ _ R _ M _ _ _ _ ℳ _ _ hT`. Use `choose T hT using hT`. Use `choose S hS using fun m : M => _root_.GlobalTheory.exists_sum_grProj ℳ m`. Set `G : Finset (ℤ × M)` to `(Finset.univ.biUnion T).biUnion fun t => (S t).image fun j => (j, _root_.GlobalTheory.GradedHilbert.proj ℳ j t)`. Use `⟨G.card, fun l => (G.equivFin.symm l).1.1, fun l => (G.equivFin.symm l).1.2, fun l => ?_, fun i y => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmem` using `(G.equivFin.symm l).2`. Take `⟨t, -, hj⟩` from `Finset.mem_biUnion.1 hmem`. Take `⟨j, -, hjeq⟩` from `Finset.mem_image.1 hj`. Use `show (G.equivFin.symm l : ℤ × M).2 ∈ ℳ (G.equivFin.symm l : ℤ × M).1`. Rewrite using `[← hjeq]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `_root_.GlobalTheory.GradedHilbert.proj_mem ℳ j t`. Take `⟨k, hk⟩` from `hT i y`. Use `⟨k, Submodule.span_le.2 ?_ hk⟩` and prove the remaining obligations. Introduce `t ht`. Rewrite using `[← hS t]`.
-
-Use `Submodule.sum_mem _ fun j hj => Submodule.subset_span ?_` and prove the remaining obligations. Establish `hG : (j, _root_.GlobalTheory.GradedHilbert.proj ℳ j t) ∈ G` using `Finset.mem_biUnion.2 ⟨t, Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, ht⟩, Finset.mem_image.2 ⟨j, hj, rfl⟩⟩`. Conclude with `⟨G.equivFin ⟨_, hG⟩, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_homogeneous_family_saturating : ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type) [CommRing R] (M : Type) [AddCommGroup M] [Module R M] [Module (MvPolynomial ι R) M] [IsScalarTower R (MvPolynomial ι R) M] (ℳ : ℤ → Submodule R M) [_root_.GlobalTheory.PolyGradedSMul ι ℳ] [Decomposition ℳ], (∀ i : ι, ∃ T : Finset M, ∀ y : M, ∃ k : ℕ, (X i : MvPolynomial ι R) ^ k • y ∈ Submodule.span (MvPolynomial ι R) (T : Set M)) → ∃ (r : ℕ) (d : Fin r → ℤ) (g : Fin r → M), (∀ l, g l ∈ ℳ (d l)) ∧ ∀ (i : ι) (y : M), ∃ k : ℕ, (X i : MvPolynomial ι R) ^ k • y ∈ Submodule.span (MvPolynomial ι R) (Set.range g) := by
   intro ι _ _ R _ M _ _ _ _ ℳ _ _ hT

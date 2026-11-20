@@ -13,9 +13,9 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.CompanionTheory.PartialZeta
 
 /- English proof (translation)
-Establish `nz : ∀ t : ℂ, (∀ n : ℕ, t ≠ -2 * n) → Complex.Gammaℝ t ≠ 0`. Introduce `t ht h0`. Take `⟨n, hn⟩` from `Complex.Gammaℝ_eq_zero_iff.1 h0`. Conclude with `ht n (by rw [hn]; ring)`. Establish `key` using `χ.continuedLFunction_functional_equation (s := s) (by rw [hG]; exact pow_ne_zero _ (nz s h1)) (by rw [hG']; exact pow_ne_zero _ (nz _ h2))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hG, hG', hD, hR]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem fe_of_parts (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (χ : HeckeCharacter F)
     (hD : χ.discrNormConductor = GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF F)
@@ -37,7 +37,7 @@ theorem fe_of_parts (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (χ :
   exact key
 
 /- English proof (translation)
-Introduce `F _ _ _ χ hχ s h1 h2`. Conclude with `fe_of_parts F χ (discrNormConductor_eq_dF_of_unramified F χ hχ) (gammaFactor_eq_of_unramified F χ hχ) (gammaFactor_eq_of_unramified F χ⁻¹ (standardOpenSubgroup_le_ker_inv F χ hχ)) (GlobalTheory.T.root_number_eq_different_coeff F χ hχ) s h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem functional_equation_of_unramified :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (χ : HeckeCharacter F),

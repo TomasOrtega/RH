@@ -27,139 +27,139 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `SymplOmegaMem.proof`.
+A detailed English derivation is pending.
 -/
 theorem SymplOmegaMem.full : SymplOmegaMem.Statement :=
   SymplOmegaMem.proof
 
 /- English proof (translation)
-The claim follows from `SymplCons.proof`.
+A detailed English derivation is pending.
 -/
 theorem SymplCons.full : SymplCons.Statement :=
   SymplCons.proof
 
 /- English proof (translation)
-The claim follows from `SymplExtVecMul.proof`.
+A detailed English derivation is pending.
 -/
 theorem SymplExtVecMul.full : SymplExtVecMul.Statement :=
   SymplExtVecMul.proof
 
 /- English proof (translation)
-The claim follows from `SymplTwoRow.proof`.
+A detailed English derivation is pending.
 -/
 theorem SymplTwoRow.full : SymplTwoRow.Statement :=
   SymplTwoRow.proof
 
 /- English proof (translation)
-The claim follows from `SymplGcd.proof`.
+A detailed English derivation is pending.
 -/
 theorem SymplGcd.full : SymplGcd.Statement :=
   SymplGcd.proof
 
 /- English proof (translation)
-The claim follows from `SymplQuadDiag.proof`.
+A detailed English derivation is pending.
 -/
 theorem SymplQuadDiag.full : SymplQuadDiag.Statement :=
   SymplQuadDiag.proof
 
 /- English proof (translation)
-The claim follows from `SymplBoxVolume.proof`.
+A detailed English derivation is pending.
 -/
 theorem SymplBoxVolume.full : SymplBoxVolume.Statement :=
   SymplBoxVolume.proof
 
 /- English proof (translation)
-The claim follows from `SymplShortPrim.proof`.
+A detailed English derivation is pending.
 -/
 theorem SymplShortPrim.full : SymplShortPrim.Statement :=
   SymplShortPrim.proof
 
 /- English proof (translation)
-The claim follows from `SymplGramMem.proof`.
+A detailed English derivation is pending.
 -/
 theorem SymplGramMem.full : SymplGramMem.Statement :=
   SymplGramMem.proof
 
 /- English proof (translation)
-The claim follows from `SymplReducePosDef.proof`.
+A detailed English derivation is pending.
 -/
 theorem SymplReducePosDef.full : SymplReducePosDef.Statement :=
   SymplReducePosDef.proof
 
 /- English proof (translation)
-The claim follows from `SymplReduceConj.proof`.
+A detailed English derivation is pending.
 -/
 theorem SymplReduceConj.full : SymplReduceConj.Statement :=
   SymplReduceConj.proof
 
 /- English proof (translation)
-The claim follows from `SymplDetSchur.proof`.
+A detailed English derivation is pending.
 -/
 theorem SymplDetSchur.full : SymplDetSchur.Statement :=
   SymplDetSchur.proof
 
 /- English proof (translation)
-The claim follows from `SymplExtMem.proof SymplOmegaMem.full SymplCons.full`.
+A detailed English derivation is pending.
 -/
 theorem SymplExtMem.full : SymplExtMem.Statement :=
   SymplExtMem.proof SymplOmegaMem.full SymplCons.full
 
 /- English proof (translation)
-The claim follows from `SymplMinkowskiBox.proof SymplBoxVolume.full`.
+A detailed English derivation is pending.
 -/
 theorem SymplMinkowskiBox.full : SymplMinkowskiBox.Statement :=
   SymplMinkowskiBox.proof SymplBoxVolume.full
 
 /- English proof (translation)
-The claim follows from `SymplMinExists.proof SymplQuadDiag.full`.
+A detailed English derivation is pending.
 -/
 theorem SymplMinExists.full : SymplMinExists.Statement :=
   SymplMinExists.proof SymplQuadDiag.full
 
 /- English proof (translation)
-The claim follows from `SymplReduceMem.proof SymplOmegaMem.full SymplCons.full`.
+A detailed English derivation is pending.
 -/
 theorem SymplReduceMem.full : SymplReduceMem.Statement :=
   SymplReduceMem.proof SymplOmegaMem.full SymplCons.full
 
 /- English proof (translation)
-The claim follows from `SymplOrbit.proof SymplExtMem.full SymplExtVecMul.full SymplTwoRow.full SymplGcd.full SymplCons.full`.
+A detailed English derivation is pending.
 -/
 theorem SymplOrbit.full : SymplOrbit.Statement :=
   SymplOrbit.proof SymplExtMem.full SymplExtVecMul.full SymplTwoRow.full SymplGcd.full SymplCons.full
 
 /- English proof (translation)
-The claim follows from `SymplMinBound.proof SymplQuadDiag.full SymplMinkowskiBox.full`.
+A detailed English derivation is pending.
 -/
 theorem SymplMinBound.full : SymplMinBound.Statement :=
   SymplMinBound.proof SymplQuadDiag.full SymplMinkowskiBox.full
 
 /- English proof (translation)
-The claim follows from `SymplReduceStep.proof SymplExtMem.full SymplReduceConj.full SymplDetSchur.full`.
+A detailed English derivation is pending.
 -/
 theorem SymplReduceStep.full : SymplReduceStep.Statement :=
   SymplReduceStep.proof SymplExtMem.full SymplReduceConj.full SymplDetSchur.full
 
 /- English proof (translation)
-The claim follows from `SymplFirstRow.proof SymplMinExists.full SymplMinBound.full SymplOrbit.full SymplShortPrim.full SymplGramMem.full`.
+A detailed English derivation is pending.
 -/
 theorem SymplFirstRow.full : SymplFirstRow.Statement :=
   SymplFirstRow.proof SymplMinExists.full SymplMinBound.full SymplOrbit.full SymplShortPrim.full SymplGramMem.full
 
 /- English proof (translation)
-The claim follows from `SymplStep.proof SymplFirstRow.full SymplGramMem.full SymplReduceMem.full SymplReducePosDef.full SymplReduceStep.full`.
+A detailed English derivation is pending.
 -/
 theorem SymplStep.full : SymplStep.Statement :=
   SymplStep.proof SymplFirstRow.full SymplGramMem.full SymplReduceMem.full SymplReducePosDef.full SymplReduceStep.full
 
 /- English proof (translation)
-The claim follows from `SymplDetBound.proof SymplStep.full`.
+A detailed English derivation is pending.
 -/
 theorem SymplDetBound.full : SymplDetBound.Statement :=
   SymplDetBound.proof SymplStep.full
 
 /- English proof (translation)
-The claim follows from `SymplecticReduction.proof SymplStep.full SymplDetBound.full`.
+A detailed English derivation is pending.
 -/
 theorem SymplecticReduction.full : SymplecticReduction.Statement :=
   SymplecticReduction.proof SymplStep.full SymplDetBound.full

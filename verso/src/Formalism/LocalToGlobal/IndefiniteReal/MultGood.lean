@@ -10,7 +10,7 @@ namespace Formalism.IndefR.Mult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => (L a : ℝ), s, ⟨fun _ _ h => by dsimp only; exact_mod_cast hL h, L, fun _ => rfl, rfl⟩, ⟨fun _ _ h => by dsimp only; exact_mod_cast hL h, hi⟩, hp, hq⟩`.
+Supply the required witnesses or components.
 -/
 theorem goodPar_of_enum {n p q : ℕ} (L : Fin n → ℚ) (s : Fin n → Bool) (hL : StrictAnti L)
     (hi : ∀ a, ∃ z : ℤ, (L a : ℝ) - ((n : ℝ) - 1) / 2 = z)
@@ -21,13 +21,13 @@ theorem goodPar_of_enum {n p q : ℕ} (L : Fin n → ℚ) (s : Fin n → Bool) (
     ⟨fun _ _ h => by dsimp only; exact_mod_cast hL h, hi⟩, hp, hq⟩
 
 /- English proof (translation)
-Take `⟨lam, ε, ⟨hanti, Q, hQ, rfl⟩, ⟨_, hint⟩, hp, hq⟩` from `h`. Use `⟨fun a => -lam (Fin.rev a), fun a => ε (Fin.rev a), ⟨fun a b hab => neg_lt_neg (hanti (Fin.rev_lt_rev.mpr hab)), fun a => -Q (Fin.rev a), fun a => by simp [hQ], ?_⟩, ⟨fun a b hab => neg_lt_neg (hanti (Fin.rev_lt_rev.mpr hab)), fun a => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Unfold `dualPar`. Rewrite using `[Finset.image_image]`. Use extensionality with `⟨x, s⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, Function.comp_apply, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Conclude with `⟨Fin.rev a, by simpa using ha⟩`. Introduce and unpack `⟨a, ha⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, ha⟩`. Take `⟨z, hz⟩` from `hint (Fin.rev a)`. Use `⟨-z - ((n : ℤ) - 1), ?_⟩` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[← hp]`. Conclude with `Finset.card_equiv Fin.revPerm (by intro i; simp)`. Rewrite using `[← hq]`. Conclude with `Finset.card_equiv Fin.revPerm (by intro i; simp)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodPar_dualPar {n p q : ℕ} {S : SPar} (h : GoodPar n p q S) : GoodPar n p q (dualPar S) := by
   obtain ⟨lam, ε, ⟨hanti, Q, hQ, rfl⟩, ⟨_, hint⟩, hp, hq⟩ := h
@@ -53,7 +53,7 @@ theorem goodPar_dualPar {n p q : ℕ} {S : SPar} (h : GoodPar n p q S) : GoodPar
     exact Finset.card_equiv Fin.revPerm (by intro i; simp)
 
 /- English proof (translation)
-Use `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin n))) (fun a => s a = true)` as an intermediate fact. Simplify using `only [Bool.not_eq_true, Finset.card_univ, Fintype.card_fin] at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_false_eq {n : ℕ} (s : Fin n → Bool) :
     (Finset.univ.filter fun a => s a = false).card = n - (Finset.univ.filter fun a => s a = true).card := by
@@ -62,9 +62,9 @@ theorem card_false_eq {n : ℕ} (s : Fin n → Bool) :
   omega
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero`. Simplify using `only [mul_zero, add_zero]`. Rewrite using `[Finset.sum_congr rfl (fun i hi => if_pos (Or.inl (Finset.mem_range.mp hi)))]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ c ih`. Apply the tactic sequence `rw [show K + 2 * (c + 1) = K + 2 * c + 1 + 1 by ring, Finset.sum_range_succ, Finset.sum_range_succ, ih, if_pos (Or.inr ⟨c, by omega⟩), if_neg (by rintro (h | ⟨d, hd⟩) <;> omega)]`. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_first_or_even (K c : ℕ) :
     ∑ i ∈ Finset.range (K + 2 * c), (if i < K ∨ Even (i - K) then 1 else 0) = K + c := by
@@ -79,9 +79,9 @@ theorem sum_first_or_even (K c : ℕ) :
     omega
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, smul_eq_mul, mul_one]`. Establish `: (Finset.range (p + q)).filter (fun i => i < p) = Finset.range p`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[this, Finset.card_range]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_first (p q : ℕ) : ∑ i ∈ Finset.range (p + q), (if i < p then 1 else 0) = p := by
   rw [Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, smul_eq_mul, mul_one]
@@ -90,9 +90,9 @@ theorem sum_first (p q : ℕ) : ∑ i ∈ Finset.range (p + q), (if i < p then 1
   rw [this, Finset.card_range]
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `hab' : (a : ℕ) < b` using `hab`. Use `lamAt_add_add_le h ((b : ℕ) - a) a (by omega)` as an intermediate fact. Rewrite `this` using `[show (a : ℕ) + ((b : ℕ) - a) = b by omega]`. Establish `h1 : (1 : ℚ) ≤ (((b : ℕ) - a : ℕ) : ℚ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: 1 ≤ (b : ℕ) - a` using `by omega`. Conclude with `this` after adjusting the coercions. Use `show lamAt h b < lamAt h a`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lamAt_strictAnti {R : Ranks} (h : HCParam R) : StrictAnti fun a : Fin R.r => lamAt h a := by
   intro a b hab
@@ -106,7 +106,7 @@ theorem lamAt_strictAnti {R : Ranks} (h : HCParam R) : StrictAnti fun a : Fin R.
   linarith
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `lamAt_int h a`. Take `⟨s, hs⟩` from `odd_r R`. Use `⟨z - s, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, hs]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -122,21 +122,21 @@ theorem lamAt_half {R : Ranks} (h : HCParam R) (a : Fin R.r) :
 def sgA (R : Ranks) (a : ℕ) : Bool := decide (a < R.k - 1 ∨ Even (a - (R.k - 1)))
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hrr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Unfold `parA TPar.Dpar`. Use extensionality with `⟨x, s⟩`. Simplify using `only [tparHC, Finset.mem_image, Finset.mem_union, Finset.mem_univ, true_and, Prod.mk.injEq, Finset.mem_biUnion, Finset.mem_filter, Nat.not_lt_zero, false_and, exists_false, or_false, Nat.not_odd_zero, if_false, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨y, s'⟩, (⟨i, hi⟩ | ⟨i, hi⟩), rfl, rfl⟩`. Simplify using `only [Prod.mk.injEq] at hi`. Take `⟨rfl, rfl⟩` from `hi`. Use `⟨⟨i, by have := i.2; omega⟩, ?_, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `lamAt`. Rewrite using `[dif_pos i.2]`. Unfold `sgA`. Simplify using `[i.2]`. Simplify using `only [Prod.mk.injEq] at hi`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take `⟨rfl, rfl⟩` from `hi`. Use `⟨⟨D.R.k - 1 + i, by have := i.2; omega⟩, ?_, ?_⟩` and prove the remaining obligations. Unfold `lamAt`. Rewrite using `[dif_neg (show ¬ (D.R.k - 1 + (i : ℕ) < D.R.k - 1) by omega), dif_pos (show D.R.k - 1 + (i : ℕ) - (D.R.k - 1) < D.R.m by have := i.2; omega)]`. Simplify using `only [Nat.add_sub_cancel_left]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `sgA`. Simplify using `only [Nat.even_iff]`. Conclude with `decide_eq_decide.mpr (by omega)`. Introduce and unpack `⟨a, rfl, rfl⟩`. Establish `ha` using `a.2`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `c : (a : ℕ) < D.R.k - 1`. Use `⟨_, Or.inl ⟨⟨a, c⟩, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(D.hc τ).v ⟨a, c⟩ = lamAt (D.hc τ) a`. Unfold `lamAt`. Rewrite using `[dif_pos c]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `true = sgA D.R a`. Unfold `sgA`. Simplify using `[c]`. Use `⟨_, Or.inr ⟨⟨(a : ℕ) - (D.R.k - 1), by omega⟩, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-(D.hc τ).b _ = lamAt (D.hc τ) a`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Unfold `lamAt; rw [dif_neg c, dif_pos (by omega)]`. Express the relevant statement in the definitionally equal form `decide _ = sgA D.R a`. Unfold `sgA`. Simplify using `only [Nat.even_iff]`. Conclude with `decide_eq_decide.mpr (by omega)`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem parA_eq (D : D7) (eta : D.what₂.Tau → ℚ) (h : ∀ τ, eta τ = 1 / 2 ∨ eta τ = -(1 / 2)) (τ : D.what₂.Tau) :
     parA (tparHC D eta h) 0 τ = Finset.univ.image fun a : Fin D.R.r => (lamAt (D.hc τ) a, sgA D.R a) := by
@@ -181,9 +181,9 @@ theorem parA_eq (D : D7) (eta : D.what₂.Tau → ℚ) (h : ∀ τ, eta τ = 1 /
         exact decide_eq_decide.mpr (by omega)
 
 /- English proof (translation)
-Rewrite using `[Finset.card_filter, Fin.sum_univ_eq_sum_range (fun i => if sgA R i = true then 1 else 0) R.r]`. Establish `hr : R.r = (R.k - 1) + 2 * (R.m / 2)`. Use `R.m_add_three_le_k` as an intermediate fact. Take `⟨c, hc⟩` from `R.m_even`. Unfold `Ranks.r`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hr]`. Simplify using `only [sgA, decide_eq_true_eq]`. Conclude with `sum_first_or_even _ _`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_sgA (R : Ranks) :
     (Finset.univ.filter fun a : Fin R.r => sgA R a = true).card = R.k - 1 + R.m / 2 := by
@@ -197,9 +197,9 @@ theorem card_sgA (R : Ranks) :
   exact sum_first_or_even _ _
 
 /- English proof (translation)
-Rewrite using `[parA_eq]`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Take `⟨c, hc⟩` from `D.R.m_even`. Use `goodPar_of_enum _ _ (lamAt_strictAnti _) (lamAt_half _) ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[card_sgA]`. Simplify using `only [Ranks.sigY0, Ranks.rS]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[card_false_eq, card_sgA]`. Simplify using `only [Ranks.sigY0, Ranks.rS, Ranks.r]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -214,7 +214,7 @@ theorem goodPar_parA (D : D7) (eta : D.what₂.Tau → ℚ) (h : ∀ τ, eta τ 
   · rw [card_false_eq, card_sgA]; simp only [Ranks.sigY0, Ranks.rS, Ranks.r]; omega
 
 /- English proof (translation)
-Rewrite using `[D.sp.baseSpace_signature_eq, D.sp.Y_rank 0 (Nat.zero_le _)]`. Establish `: D.R.rankY 0 = D.R.r` using `by simp [Ranks.rankY]`. Rewrite using `[this]`. Conclude with `goodPar_parA D eta h τ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_parameter_first_base_space (D : D7) (eta : D.what₂.Tau → ℚ) (h : ∀ τ, eta τ = 1 / 2 ∨ eta τ = -(1 / 2))
     (τ : D.what₂.Tau) :
@@ -226,7 +226,7 @@ theorem good_parameter_first_base_space (D : D7) (eta : D.what₂.Tau → ℚ) (
   exact goodPar_parA D eta h τ
 
 /- English proof (translation)
-The claim follows from `goodPar_dualPar (good_parameter_first_base_space D eta h τ)`.
+A detailed English derivation is pending.
 -/
 theorem good_parameter_second_base_space (D : D7) (eta : D.what₂.Tau → ℚ) (h : ∀ τ, eta τ = 1 / 2 ∨ eta τ = -(1 / 2))
     (τ : D.what₂.Tau) :
@@ -235,25 +235,25 @@ theorem good_parameter_second_base_space (D : D7) (eta : D.what₂.Tau → ℚ) 
   goodPar_dualPar (good_parameter_first_base_space D eta h τ)
 
 /- English proof (translation)
-The claim follows from `good_parameter_first_base_space D _ _`.
+A detailed English derivation is pending.
 -/
 theorem goodPar_parA_rec (D : D7) : ∀ τ, GoodPar (D.sp.Y 0).rank ((D.sp.Y 0).sig (tauE D τ)).1
     ((D.sp.Y 0).sig (tauE D τ)).2 (parA (tparRec D) 0 τ) :=
   good_parameter_first_base_space D _ _
 
 /- English proof (translation)
-The claim follows from `good_parameter_second_base_space D _ _`.
+A detailed English derivation is pending.
 -/
 theorem goodPar_parB_rec (D : D7) : ∀ τ, GoodPar (D.sp.Y 0).rank ((D.sp.Y 0).sig (tauE D τ)).1
     ((D.sp.Y 0).sig (tauE D τ)).2 (parB (tparRec D) 0 τ) :=
   good_parameter_second_base_space D _ _
 
 /- English proof (translation)
-Establish `ho : Odd (p + q)` using `hpq ▸ odd_r R`. Use extensionality with `⟨x, s⟩`. Simplify using `only [holPar, Finset.mem_image, Finset.mem_univ, true_and, Prod.mk.injEq, holEnt_kapW h p q ho]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Consider the cases of `a with`. Consider the case `inl i => exact ⟨⟨i, by have := i.2; omega⟩, rfl, by simp⟩`. Consider the case `inr c => exact ⟨⟨p + c, by have := c.2; omega⟩, rfl, by simp⟩`. Introduce and unpack `⟨a, rfl, rfl⟩`. Distinguish the cases in `hc : (a : ℕ) < p`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨Sum.inl ⟨a, hc⟩, rfl, by simp [hc]⟩`. Use `⟨Sum.inr ⟨a - p, by have := a.2; omega⟩, ?_, by simp [hc]⟩` and prove the remaining obligations. Simplify using `only [Sum.elim_inr]`. Rewrite using `[show p + ((a : ℕ) - p) = a by omega]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem holPar_kapW_eq {R : Ranks} (h : HCParam R) (p q : ℕ) (hpq : p + q = R.r) :
     holPar p q (kapW h p q) = Finset.univ.image fun a : Fin R.r => (lamAt h a, decide ((a : ℕ) < p)) := by
@@ -273,7 +273,7 @@ theorem holPar_kapW_eq {R : Ranks} (h : HCParam R) (p q : ℕ) (hpq : p + q = R.
       rw [show p + ((a : ℕ) - p) = a by omega]
 
 /- English proof (translation)
-Rewrite using `[Finset.card_filter, Fin.sum_univ_eq_sum_range (fun i => if decide (i < p) = true then 1 else 0) n, ← hpq]`. Simplify using `only [decide_eq_true_eq]`. Conclude with `sum_first p q`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_lt_first {n : ℕ} (p q : ℕ) (hpq : p + q = n) :
     (Finset.univ.filter fun a : Fin n => decide ((a : ℕ) < p) = true).card = p := by
@@ -282,7 +282,7 @@ theorem card_lt_first {n : ℕ} (p q : ℕ) (hpq : p + q = n) :
   exact sum_first p q
 
 /- English proof (translation)
-Use `show GoodPar D.R.r _ _ (holPar _ _ (kapW (D.hc τ) _ _))`. Rewrite using `[holPar_kapW_eq _ _ _ hr]`. Use `goodPar_of_enum _ _ (lamAt_strictAnti _) (lamAt_half _) (card_lt_first _ _ hr) ?_` and prove the remaining obligations. Rewrite using `[card_false_eq, card_lt_first _ _ hr]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem goodPar_parW (D : D7) (W : HSp D) (τ : D.what₂.Tau)
     (hr : (W.sig (tauE D τ)).1 + (W.sig (tauE D τ)).2 = D.R.r) :
@@ -294,7 +294,7 @@ theorem goodPar_parW (D : D7) (W : HSp D) (τ : D.what₂.Tau)
   omega
 
 /- English proof (translation)
-Introduce `τ`. Rewrite using `[D.sp.W_rank j hj1 hjm]`. Use `goodPar_parW D _ τ ?_` and prove the remaining obligations. Rewrite using `[D.sp.W_sigval j hj1 hjm]`. Simplify using `only [Ranks.sigW, Ranks.r]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/

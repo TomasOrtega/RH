@@ -14,16 +14,16 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable {L : LocE F E} {r k : ℕ} (S : Frames L r k)
 
 /- English proof (translation)
-Simplify using `only [Submodule.mem_smul_pointwise_iff_exists, LinearEquiv.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_smul_iff (g : S.GLV) (P : Submodule L.O S.V) (x : S.V) :
     x ∈ g • P ↔ ∃ b ∈ P, g b = x := by
   simp only [Submodule.mem_smul_pointwise_iff_exists, LinearEquiv.smul_def]
 
 /- English proof (translation)
-Use `sup_le ?_ le_sup_right` and prove the remaining obligations. Introduce and unpack `z ⟨hz1, hz2⟩`. Take `⟨y, hy, rfl⟩` from `(mem_smul_iff S n Λ z).1 hz1`. Establish `hyP : y ∈ perp L S.Hm Y` using `(hn.1 y).1 hz2`. Establish `e : n y = y + (n y - y)` using `by abel`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup ⟨hy, hyP⟩ (hn.2 y hyP)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_le_of_unip (Y : Submodule E S.V) (n : S.GLV) (hn : n ∈ unipOn (perp L S.Hm Y) Y)
     (Λ : Submodule L.O S.V) :
@@ -38,7 +38,7 @@ theorem inner_le_of_unip (Y : Submodule E S.V) (n : S.GLV) (hn : n ∈ unipOn (p
   exact Submodule.add_mem_sup ⟨hy, hyP⟩ (hn.2 y hyP)
 
 /- English proof (translation)
-Use `le_antisymm (inner_le_of_unip S Y n hn Λ) ?_` and prove the remaining obligations. Establish `h1` using `inner_le_of_unip S Y n⁻¹ (inv_mem hn) (n • Λ)`. Rewrite `h1` using `[inv_smul_smul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem inner_eq_of_unip (Y : Submodule E S.V) (n : S.GLV) (hn : n ∈ unipOn (perp L S.Hm Y) Y)
     (Λ : Submodule L.O S.V) :
@@ -49,13 +49,13 @@ theorem inner_eq_of_unip (Y : Submodule E S.V) (n : S.GLV) (hn : n ∈ unipOn (p
   rwa [inv_smul_smul] at h1
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.1 ((Submodule.mem_bot E).1 (hg.2.2 x hx))`.
+A detailed English derivation is pending.
 -/
 theorem complementGroup_fixes_frameSpan {g : S.GLV} (hg : g ∈ S.H0) {x : S.V} (hx : x ∈ S.ME) : g x = x :=
   sub_eq_zero.1 ((Submodule.mem_bot E).1 (hg.2.2 x hx))
 
 /- English proof (translation)
-Use `le_trans (Submodule.span_mono (Set.image_mono fun i hi => ?_)) le_sup_left` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hi ⊢`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem X_le : S.X ≤ S.ME := by
   refine le_trans (Submodule.span_mono (Set.image_mono fun i hi => ?_)) le_sup_left
@@ -63,7 +63,7 @@ theorem X_le : S.X ≤ S.ME := by
   omega
 
 /- English proof (translation)
-Use `le_trans (Submodule.span_mono (Set.image_mono fun i hi => ?_)) le_sup_right` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hi ⊢`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem X'_le : S.X' ≤ S.ME := by
   refine le_trans (Submodule.span_mono (Set.image_mono fun i hi => ?_)) le_sup_right
@@ -71,7 +71,7 @@ theorem X'_le : S.X' ≤ S.ME := by
   omega
 
 /- English proof (translation)
-Introduce `w hw`. Establish `e` using `hg.1 y w`. Rewrite `e` using `[complementGroup_fixes_frameSpan S hg (hY hw)]`. Rewrite using `[e]`. Conclude with `hy w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermitianOrthogonalComplement_mapsTo_of_mem_stabilizer (Y : Submodule E S.V) (hY : Y ≤ S.ME) {g : S.GLV} (hg : g ∈ S.H0) {y : S.V}
     (hy : y ∈ perp L S.Hm Y) : g y ∈ perp L S.Hm Y := by
@@ -82,7 +82,7 @@ theorem hermitianOrthogonalComplement_mapsTo_of_mem_stabilizer (Y : Submodule E 
   exact hy w hw
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hv`. Conclude with `⟨g y, (mem_smul_iff S g Λ _).2 ⟨y, hy, rfl⟩, map_smul g _ y⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inTh_smul (g : S.GLV) (Λ : Submodule L.O S.V) {v : S.V} (hv : S.InTh Λ v) :
     S.InTh (g • Λ) (g v) := by
@@ -90,7 +90,7 @@ theorem inTh_smul (g : S.GLV) (Λ : Submodule L.O S.V) {v : S.V} (hv : S.InTh Λ
   exact ⟨g y, (mem_smul_iff S g Λ _).2 ⟨y, hy, rfl⟩, map_smul g _ y⟩
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨b, hb, rfl⟩` from `(mem_smul_iff S g _ z).1 hz`. Take `⟨y, ⟨hy1, hy2⟩, x, hx, rfl⟩` from `Submodule.mem_sup.1 hb`. Rewrite using `[map_add, complementGroup_fixes_frameSpan S hg (hY hx)]`. Conclude with `Submodule.add_mem_sup ⟨(mem_smul_iff S g Λ _).2 ⟨y, hy1, rfl⟩, hermitianOrthogonalComplement_mapsTo_of_mem_stabilizer S Y hY hg hy2⟩ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_inner_lattice_le_of_mem_hermitianStabilizer (Y : Submodule E S.V) (hY : Y ≤ S.ME) {g : S.GLV} (hg : g ∈ S.H0)
     (Λ : Submodule L.O S.V) :
@@ -103,9 +103,9 @@ theorem smul_inner_lattice_le_of_mem_hermitianStabilizer (Y : Submodule E S.V) (
   exact Submodule.add_mem_sup ⟨(mem_smul_iff S g Λ _).2 ⟨y, hy1, rfl⟩, hermitianOrthogonalComplement_mapsTo_of_mem_stabilizer S Y hY hg hy2⟩ hx
 
 /- English proof (translation)
-Use `le_antisymm ?_ (smul_inner_lattice_le_of_mem_hermitianStabilizer S Y hY hg Λ)` and prove the remaining obligations. Establish `h1` using `smul_inner_lattice_le_of_mem_hermitianStabilizer S Y hY (inv_mem hg) (g • Λ)`. Rewrite `h1` using `[inv_smul_smul]`. Introduce `z hz`. Establish `h2` using `Submodule.smul_mem_pointwise_smul _ g _ (h1 (Submodule.smul_mem_pointwise_smul z g⁻¹ _ hz))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h2` using `[smul_inv_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem smul_inner_lattice_eq_of_mem_hermitianStabilizer (Y : Submodule E S.V) (hY : Y ≤ S.ME) {g : S.GLV} (hg : g ∈ S.H0)
     (Λ : Submodule L.O S.V) :
@@ -119,9 +119,9 @@ theorem smul_inner_lattice_eq_of_mem_hermitianStabilizer (Y : Submodule E S.V) (
   rwa [smul_inv_smul] at h2
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨p, ⟨y', hy', y, hy, h1, h2, h3, h4, h5⟩, rfl⟩`. Use `⟨g y', (mem_smul_iff S g Λ _).2 ⟨y', hy', rfl⟩, g y, (mem_smul_iff S g Λ _).2 ⟨y, hy, rfl⟩, hermitianOrthogonalComplement_mapsTo_of_mem_stabilizer S _ (X'_le S) hg h1, hermitianOrthogonalComplement_mapsTo_of_mem_stabilizer S _ (X_le S) hg h2, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show g y' - g p.1 ∈ S.X'`. Rewrite using `[← map_sub, complementGroup_fixes_frameSpan S hg (X'_le S h3)]`. Conclude with `h3`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show g y - g p.2 ∈ S.X`. Rewrite using `[← map_sub, complementGroup_fixes_frameSpan S hg (X_le S h4)]`. Conclude with `h4`. Rewrite using `[← map_sub]`. Conclude with `inTh_smul S g Λ h5`.
+A detailed English derivation is pending.
 -/
 theorem smul_graphOf_subset_of_mem_hermitianStabilizer {g : S.GLV} (hg : g ∈ S.H0) (Λ : Submodule L.O S.V) :
     g • S.graphOf Λ ⊆ S.graphOf (g • Λ) := by
@@ -138,7 +138,7 @@ theorem smul_graphOf_subset_of_mem_hermitianStabilizer {g : S.GLV} (hg : g ∈ S
     exact inTh_smul S g Λ h5
 
 /- English proof (translation)
-Use `subset_antisymm ?_ (smul_graphOf_subset_of_mem_hermitianStabilizer S hg Λ)` and prove the remaining obligations. Introduce `p hp`. Establish `h1` using `smul_graphOf_subset_of_mem_hermitianStabilizer S (inv_mem hg) (g • Λ) ⟨p, hp, rfl⟩`. Rewrite `h1` using `[inv_smul_smul]`. Conclude with `⟨g⁻¹ • p, h1, smul_inv_smul g p⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem graphOf_smul_eq_of_mem_hermitianStabilizer {g : S.GLV} (hg : g ∈ S.H0) (Λ : Submodule L.O S.V) :
     S.graphOf (g • Λ) = g • S.graphOf Λ := by
@@ -149,7 +149,7 @@ theorem graphOf_smul_eq_of_mem_hermitianStabilizer {g : S.GLV} (hg : g ∈ S.H0)
   exact ⟨g⁻¹ • p, h1, smul_inv_smul g p⟩
 
 /- English proof (translation)
-The claim follows from `Prod.ext (smul_inner_lattice_eq_of_mem_hermitianStabilizer S S.X (X_le S) hg Λ) (Prod.ext (smul_inner_lattice_eq_of_mem_hermitianStabilizer S S.X' (X'_le S) hg Λ) (graphOf_smul_eq_of_mem_hermitianStabilizer S hg Λ))`.
+A detailed English derivation is pending.
 -/
 theorem datOf_smul_eq_of_mem_hermitianStabilizer {g : S.GLV} (hg : g ∈ S.H0) (Λ : Submodule L.O S.V) :
     S.datOf (g • Λ) = g • S.datOf Λ :=
@@ -157,11 +157,9 @@ theorem datOf_smul_eq_of_mem_hermitianStabilizer {g : S.GLV} (hg : g ∈ S.H0) (
     (Prod.ext (smul_inner_lattice_eq_of_mem_hermitianStabilizer S S.X' (X'_le S) hg Λ) (graphOf_smul_eq_of_mem_hermitianStabilizer S hg Λ))
 
 /- English proof (translation)
-Establish `h3` using `(StdLat.stdLat_spec L r k S g gs hgs A hA).2.2`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hy1, hy2⟩`. Conclude with `(h3 y).2 ⟨y, hy1, hy2, by simp⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Conclude with `hA.1 x hx`. Introduce `x hx`. Take `⟨y, hy, hyp, hyx⟩` from `(h3 x).1 hx`. Establish `e : x = y - (y - x)` using `by abel`.
-
-Rewrite using `[e]`. Conclude with `Submodule.sub_mem_sup ⟨hy, hyp⟩ hyx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem std_inner [IsNonarchimedeanLocalField F] [CharZero F] (g : Fin (r + 1) → S.V) (gs : Fin r → S.V)
     (hgs : (g = S.f ∧ gs = S.es) ∨ (g = S.f' ∧ gs = S.es')) (A : Submodule L.O S.V) (hA : S.IsInner g gs A) :
@@ -181,9 +179,7 @@ theorem std_inner [IsNonarchimedeanLocalField F] [CharZero F] (g : Fin (r + 1) �
     exact Submodule.sub_mem_sup ⟨hy, hyp⟩ hyx
 
 /- English proof (translation)
-Take `⟨⟨n, n'⟩, hA, hA', hn, hn', hΛ, hΛ', -, hg⟩` from `h`. Use `Prod.ext ?_ (Prod.ext ?_ hg)` and prove the remaining obligations. Use `show d.1 = (Λ ⊓ (perp L S.Hm S.X).restrictScalars L.O) ⊔ S.X.restrictScalars L.O`. Rewrite using `[hΛ, inner_eq_of_unip S S.X n hn.2]`. Conclude with `(std_inner S S.f S.es (Or.inl ⟨rfl, rfl⟩) _ hA).symm`.
-
-Use `show d.2.1 = (Λ ⊓ (perp L S.Hm S.X').restrictScalars L.O) ⊔ S.X'.restrictScalars L.O`. Rewrite using `[hΛ', inner_eq_of_unip S S.X' n' hn'.2]`. Conclude with `(std_inner S S.f' S.es' (Or.inr ⟨rfl, rfl⟩) _ hA').symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem datOf_term [IsNonarchimedeanLocalField F] [CharZero F] {d : S.Datum} {Λ : Submodule L.O S.V}
     (h : S.IsTerm d Λ) : d = S.datOf Λ := by
@@ -197,11 +193,11 @@ theorem datOf_term [IsNonarchimedeanLocalField F] [CharZero F] {d : S.Datum} {Λ
     exact (std_inner S S.f' S.es' (Or.inr ⟨rfl, rfl⟩) _ hA').symm
 
 /- English proof (translation)
-Use `choose c hc0 hc using fun b : Fin (r + 1) => StdLat.exists_coef g {i | (i : ℕ) < b} (h b)`. Use `⟨fun i j => c j i + if i = j then 1 else 0, ⟨fun i j hij => ?_, fun i => ?_⟩, fun j => ?_⟩` and prove the remaining obligations. Establish `hne : i ≠ j` using `(ne_of_lt hij).symm`. Establish `h0 : c j i = 0` using `hc0 j i fun hi => by`. Use `Fin.lt_def.1 hij` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq] at hi`. Use linear arithmetic over natural numbers and integers. Simplify using `[h0, hne]`. Establish `h0 : c i i = 0` using `hc0 i i fun hi => lt_irrefl (i : ℕ) hi`. Simplify using `[h0]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : ∑ i, (c j i + if i = j then (1 : E) else 0) • g i = ∑ i, c j i • g i + g j`. Simplify using `[add_smul, Finset.sum_add_distrib, ite_smul]`. Rewrite using `[e1, ← hc j]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_unitri (g : Fin (r + 1) → S.V) (φ : S.GLV) (h : ∀ b : Fin (r + 1), φ (g b) - g b ∈ S.spanTo g b) :
     ∃ s : Matrix (Fin (r + 1)) (Fin (r + 1)) E, ((∀ i j, j < i → s i j = 0) ∧ (∀ i, s i i = 1)) ∧
@@ -222,17 +218,15 @@ theorem exists_unitri (g : Fin (r + 1) → S.V) (φ : S.GLV) (h : ∀ b : Fin (r
     abel
 
 /- English proof (translation)
-Use `L.free` as an intermediate fact. Establish `: Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [L.rank]; norm_num)`. Establish `: IsArtinianRing E` using `IsArtinianRing.of_finite F E`. Take `⟨s, hs, hsφ⟩` from `exists_unitri S S.f φ h1`. Take `⟨s', hs', hsφ'⟩` from `exists_unitri S S.f' φ h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz : cT L s * S.Zh * s' = S.Zh`. Use extensionality with `a b`. Rewrite using `[← FrameStab.pair_eq S s s' a b, ← hsφ, ← hsφ']`. Conclude with `hφ _ _`. Take `⟨h, hh, hf, hf'⟩` from `((FrameStab.stab_eq L r k S).2 s s' hs hs').1 hz`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `k1 : ∀ (g : Fin (r + 1) → S.V) (m : ℕ), (∀ i, φ (g i) = h (g i)) → ∀ v ∈ S.spanTo g m, φ v = h v`. Introduce `g m hg v hv`. Establish `hle : S.spanTo g m ≤ LinearMap.eqLocus (φ : S.V →ₗ[E] S.V) (h : S.V →ₗ[E] S.V)`. Rewrite using `[Frames.spanTo, Submodule.span_le]`. Introduce and unpack `_ ⟨i, -, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hg i`. Conclude with `hle hv`. Establish `hfix : ∀ v ∈ S.ME, φ v = h v`. Introduce `v hv`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, map_add, k1 S.f _ (fun i => by rw [hsφ, hf]) a ha, k1 S.f' _ (fun i => by rw [hsφ', hf']) b hb]`. Establish `hiso : h ∈ isomG L S.Hm` using `hh.1.1.1`. Use `⟨h, hh, h⁻¹ * φ, Subgroup.mem_inf.2 ⟨mul_mem (inv_mem hiso) hφ, ?_⟩, (mul_inv_cancel_left h φ).symm⟩` and prove the remaining obligations. Use `FrameStab.mem_unipOn' bot_le _ fun v hv => ?_` and prove the remaining obligations. Use `show h.symm (φ v) - v ∈ (⊥ : Submodule E S.V)`.
-
-Rewrite using `[hfix v hv, LinearEquiv.symm_apply_apply, sub_self]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_hermitianStabilizer_of_preserves_both_flags [IsNonarchimedeanLocalField F] [CharZero F] (φ : S.GLV) (hφ : φ ∈ isomG L S.Hm)
     (h1 : ∀ b : Fin (r + 1), φ (S.f b) - S.f b ∈ S.spanTo S.f b)
@@ -270,7 +264,7 @@ theorem mem_hermitianStabilizer_of_preserves_both_flags [IsNonarchimedeanLocalFi
 end
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S`. Conclude with `⟨fun d Λ h => datOf_term S h, fun g hg Λ => datOf_smul_eq_of_mem_hermitianStabilizer S hg Λ, fun n hn Λ => inner_eq_of_unip S S.X n hn.2 Λ, fun n hn Λ => inner_eq_of_unip S S.X' n hn.2 Λ, fun φ hφ h1 h2 => mem_hermitianStabilizer_of_preserves_both_flags S φ hφ h1 h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), (∀ d Λ, S.IsTerm d Λ → d = S.datOf Λ) ∧ (∀ h ∈ S.H0, ∀ Λ, S.datOf (h • Λ) = h • S.datOf Λ) ∧ (∀ n ∈ S.N, ∀ Λ, (S.datOf (n • Λ)).1 = (S.datOf Λ).1) ∧ (∀ n ∈ S.N', ∀ Λ, (S.datOf (n • Λ)).2.1 = (S.datOf Λ).2.1) ∧ ∀ φ ∈ isomG L S.Hm, (∀ b : Fin (r + 1), φ (S.f b) - S.f b ∈ S.spanTo S.f b) → (∀ b : Fin (r + 1), φ (S.f' b) - S.f' b ∈ S.spanTo S.f' b) → ∃ s ∈ S.St, ∃ h ∈ S.H0, φ = s * h := by
   intro F _ _ _ _ _ E _ _ _ L r k S

@@ -18,23 +18,19 @@ open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D large₂ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hI hD S δ hL t p hp k d hk hc hz hP x y hR w l hl hw hsp hx hy b i j`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Take `⟨Ls, Lt, κ, n, r, s, hLs, hLt, hκ, hs, hr, -, hq, htab⟩` from `hD t p hp k d hk hc hz hP x y`. Take `⟨hEs, hEt, hκ1⟩` from `hq l hx hy`. Establish `hcc : D.host.ccK = ⊤` using `hS.size.2.2.2.2.2.2.2.2.2.2.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkk` using `UpperTheory.WildA.kkTab ch.S.Z hp d x y _ htab`. Take `⟨c, hcJ⟩` from `UpperTheory.WildA.jetInt _ _ _ (wtOK_of_defPair ch.G p hp).2 j i`. Establish `hB` using `UpperTheory.WildA.tabBd D hI S δ hL D.host.ccK hcc ch.S.Z.δ ch.S.Z.t0 ch.S.Z.crv ch.S.Z.4 _ _ (ch.S.Z.e0 p) (ch.S.Z.e0_is p hp) Ls Lt hLs hLt l hEs hEt k hk hsp κ n _ r s hκ hκ1 hs hr`. Establish `hl1 : (1 : ℝ) ≤ l` using `by exact_mod_cast hl.one_le`. Establish `hopp : ∀ (z : ℂ) (C : ℝ), (∀ lam : Formalism.MainNotions.TaylorLogMetric.Qbar →+* ℂ_[l], GlobalTheory.NormSum.Term.Bd lam C z) → ∀ lam : Formalism.MainNotions.TaylorLogMetric.Qbar →+* ℂ_[l], GlobalTheory.NormSum.Term.Bd lam C (opp p z)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z C h lam`. Establish `hcj : GlobalTheory.NormSum.Term.Bd lam C ((starRingEnd ℂ) z)` using `⟨(GlobalTheory.NormSum.conjQbar ⟨z, (h lam).1⟩).2, GlobalTheory.NormSum.conj_bound (h lam).1 (fun lam => (h lam).2) lam⟩`. Consider the cases of `p`. Apply the tactic sequence `all_goals first | exact h lam | exact hcj`. Establish `hrk : ((ch.G.pS p).rank : ℝ) * (ch.G.pT p).rank = ((ch.G.V p.small).rank : ℝ) * (ch.G.V p.big).rank`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations.
 
-Consider the cases of `p`. Apply the tactic sequence `all_goals first | rfl | exact mul_comm _ _`. Use `UpperTheory.WildA.bdLoss D w l hw _ _ ?_ fun lam => ?_` and prove the remaining obligations. Use `hR i j` as an intermediate fact. Rewrite `this` using `[Normal.kkIn, LinearMap.toMatrix_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hkk, hcJ, Finsupp.sum]`. Use `GlobalTheory.NormSum.Term.Bd.sum (by positivity) _ _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← one_mul ((l : ℝ) ^ _)]`. Use `(GlobalTheory.NormSum.Term.Bd.intCast _).mul ?_` and prove the remaining obligations. Use `split_ifs with hm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `(hopp _ _ (fun lam => hB lam _) lam).mono (Real.rpow_le_rpow_of_exponent_le hl1 ?_)` and prove the remaining obligations. Rewrite using `[Finsupp.degree_mapDomain, hm]`. Unfold `GlobalTheory.SumSize.TopInt.kerLoss`. Establish `h0` using `hL.2.1 l`. Establish `h2 : 0 ≤ (if (l : ℝ) ≤ 1 * b then Real.logb l (1 * b) else 0)` using `by split_ifs with h`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `Real.logb_nonneg (by exact_mod_cast hl.one_lt) (hl1.trans h)`. Conclude with `le_rfl`. Apply the tactic sequence `have h3 : (0 : ℝ) ≤ (if l = D.host.d then 1 else 0) := by split_ifs <;> norm_num`. Apply the tactic sequence `have h4 : (if l = D.host.d then (1 : ℝ) / 4 else 0) ≤ (if l = D.host.d then 1 else 0) := by split_ifs <;> norm_num`. Establish `h5 : ((D.R.f * (ch.G.pS p).rank * (ch.G.pT p).rank : ℕ) : ℝ) = (D.R.f : ℝ) * (ch.G.V p.small).rank * (ch.G.V p.big).rank`.
-
-Use `push_cast`. Rewrite using `[mul_assoc, mul_assoc, hrk]`. Rewrite using `[h5, add_mul]`. Use `le_add_of_le_of_nonneg (add_le_add ?_ ?_) (by positivity)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (by linarith) (Nat.cast_nonneg _)`.
-
-Conclude with `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`. Conclude with `GlobalTheory.NormSum.Term.Bd.zero (by positivity)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.WildA.kerStd :
     ∀ (D : D7) (large₂ : SizeData₂ D) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 T : Type) (A : FamIn D.what₂.LL Γ Pl0 T D.R.m)

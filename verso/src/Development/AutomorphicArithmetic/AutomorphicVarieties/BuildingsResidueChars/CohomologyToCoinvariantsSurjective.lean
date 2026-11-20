@@ -2,17 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.H
 
 open scoped Matrix in
 /- English proof (translation)
-Introduce `Γ X Y _ _ _ p hp y h d ξ F`. Use `choose c hc using h`. Establish `hm : ∀ x, c x • x ∈ UpperTheory.V.Af.CohB.fib p hp y` using `fun x => by`. Express the relevant statement in the definitionally equal form `p (c x • x) = y`. Rewrite using `[hp, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ (g g' : Γ) (z z' : ↥(UpperTheory.V.Af.CohB.fib p hp y)), g⁻¹ • z.1 = g'⁻¹ • z'.1 → ξ g *ᵥ (ξ g'⁻¹ *ᵥ F.1 g' z') = F.1 g z`. Introduce `g g' z z' hz`. Establish `hz' : z.1 = (g * g'⁻¹) • z'.1` using `by rw [mul_smul, ← hz, smul_inv_smul]`. Establish `hs : g * g'⁻¹ ∈ MulAction.stabilizer Γ y`. Establish `h1 : p z.1 = y` using `z.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : p z'.1 = y` using `z'.2`. Rewrite `h1` using `[hz', hp, h2]`. Conclude with `h1`. Establish `h3` using `congrFun (F.2 ⟨_, hs⟩ g') z`. Establish `h4 : (⟨_, hs⟩ : ↥(MulAction.stabilizer Γ y))⁻¹ • z = z'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(g * g'⁻¹)⁻¹ • z.1 = z'.1`. Rewrite using `[hz', inv_smul_smul]`. Express the relevant statement in the definitionally equal form `F.1 (g * g'⁻¹ * g') z = ξ (g * g'⁻¹) *ᵥ F.1 g' ((⟨_, hs⟩ : ↥(MulAction.stabilizer Γ y))⁻¹ • z) at h3`. Rewrite `h3` using `[h4, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h3, map_mul, Matrix.mulVec_mulVec]`. Use `⟨fun x => ξ (c x)⁻¹ *ᵥ F.1 (c x) ⟨c x • x, hm x⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g z`. Rewrite using `[UpperTheory.V.Af.CohB.toCo_apply]`.
-
-Conclude with `key g _ z _ (by simp)`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cohomology_to_coinvariants_surjective :
     UpperTheory.V.Af.CohB.ToCoSurj := by

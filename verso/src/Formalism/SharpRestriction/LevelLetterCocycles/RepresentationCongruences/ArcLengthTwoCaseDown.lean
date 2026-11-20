@@ -22,45 +22,43 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 variable [FiniteDimensional Qp LL]
 
 /- English proof (translation)
-Establish `hB'` using `hB`. Take `⟨hp11, hSet, hwb, hηb, hSb, -⟩` from `hB`. Take `⟨-, hSur, hηs, -, -, hnt, -⟩` from `hSet`. Establish `hl5 : 5 ≤ PD.p` using `by omega`. Take `⟨hct, hcm⟩` from `ArcLengthTwo.arc_len_two_thick_letters c hlen`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc1 : ¬ Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c + 1)`. Establish `h` using `hc`. Simplify using `only [arcOf, Finset.mem_filter, Finset.mem_univ, true_and] at h`. Conclude with `h`. Establish `hupm : up (c - 1) = true`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `h : up (c - 1)`. Conclude with `absurd (h.trans hup.symm) hdiff`. Both sides reduce to the same expression. Establish `hty0 : (arcOf b w S η up size).ty c = Formalism.MainNotions.LocalTheoryWindows.LT.down (size c)`. Simplify using `[arcOf, hup]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hty1 : (arcOf b w S η up size).ty (c - 1) = Formalism.MainNotions.LocalTheoryWindows.LT.up (size (c - 1))`. Simplify using `[arcOf, hupm]`. Establish `hnn : nnDen W (arcOf b w S η up size) c = ps W 1 ^ size (c - 1)`. Unfold `nnDen prodTy`. Rewrite using `[hlen, Finset.prod_range_succ, Finset.prod_range_succ, Finset.prod_range_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hty0, hty1]`. Establish `hthick : ∀ s < (arcOf b w S η up size).len c, ((arcOf b w S η up size).ty (c - (s : ZMod n))).thick`. Introduce `s _`. Simplify using `only [arcOf]`. Apply the tactic sequence `split <;> rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, x, hx⟩` from `hf.2 0 (by rw [hlen]; norm_num) (size c) (by simpa using hty0)`. Take `⟨Br⟩` from `exists_phiBridge W hcase hP9 T₁ hW₁.1 hO hinj`. Establish `hy1 : 1 ≤ size (c - 1)` using `by have := hηs (c - 1); omega`. Take `⟨de, x', hde, hde0, hg1, hg2⟩` from `ArcLengthTwo.den_step W Br c (size (c - 1)) (size c + S) κ hy1 (by have := hηs c; omega) f x (by rw [← hnn]; exact hf.1) (by rw [← hnn]; exact hx)`. Use `set g := lE W de * f - algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE x' with hgdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdown : ∀ s < (arcOf b w S η up size).len c, ∀ bs, (arcOf b w S η up size).ty (c - (s : ZMod n)) = Formalism.MainNotions.LocalTheoryWindows.LT.down bs → InFr W c (ps W s ^ (bs + (arcOf b w S η up size).S)) (nnDen W (arcOf b w S η up size) c) g`. Introduce `s hs bs hbs`. Rewrite `hs` using `[hlen]`. Use `interval_cases s`. Simplify using `only [Nat.cast_zero, sub_zero, hty0, Formalism.MainNotions.LocalTheoryWindows.LT.down.injEq] at hbs`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `hbs` using the available equality. Rewrite using `[hnn]`. Conclude with `hg2`. Simplify using `[hty1] at hbs`. Establish `hgl : LiftsAt W (arcOf b w S η up size) F c bb sol k₀ g (rr + (arcOf b w S η up size).σ PD.p)` using `liftsAt_thick_letter_type W (arcOf b w S η up size) F c bb sol k₀ hOK hc hthick hcase hl5 hP2 hP9 hpi0 hSec hGL hFL hO hOv hinj hArc hArcL hNN hW₁ hW₂ hSur rr hkill hbb hk₀ g (by rw [hnn]; exact hg1) hdown`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d₁, b₁, sol₁, c₁, hb₁, hpr⟩` from `constants_pre W (arcOf b w S η up size) F c bb sol k₀ hOK hc hcase hl5 hHF hArcL hW₁ hSur rr hkill hbb`. Establish `hcst : LiftsAt W (arcOf b w S η up size) F c bb sol k₀ (algebraMap O W.EE x') (rr + (arcOf b w S η up size).σ PD.p)` using `liftsAt_constants_type W (arcOf b w S η up size) F c bb sol k₀ hOK hc hthick hcase hl5 hP2 hP9 hpi0 hSec hGL hFL hO hOv hinj hArc hArcL hW₁ hW₂ hSur rr hkill hbb hk₀ b₁ sol₁ hb₁ c₁ hpr x'`. Establish `hcst' : LiftsAt W (arcOf b w S η up size) F c bb sol k₀ (algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE x') (rr + (arcOf b w S η up size).σ PD.p)` using `LiftsAtT.letter W (arcOf b w S η up size) F c bb sol k₀ hbb hcst`. Establish `hsum` using `LiftsAt.add_proof W (arcOf b w S η up size) F c bb sol k₀ hcst' hgl`. Establish `esum : algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE x' + g = lE W de * f`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hgdef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hsum` using `[esum]`. Establish `hfin` using `ArcLengthTwo.lifts_scale W (arcOf b w S η up size) F c bb sol k₀ hsum`. Use `⟨rr + (arcOf b w S η up size).σ PD.p + de, ?_, hfin⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hhB : Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size = b + η + S`. Unfold `Formalism.MainNotions.TruncatedSeriesCountingBounds.hB`. Rewrite using `[if_pos ⟨c, hct⟩]`. Establish `hSgeq : Formalism.MainNotions.N.Ln17.Sg PD.p b w S η size = Formalism.MainNotions.N.FrobeniusPowerSeries.Sg PD.p (b + η + S) w S η`. Unfold `Formalism.MainNotions.N.Ln17.Sg Formalism.MainNotions.N.FrobeniusPowerSeries.Sg`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hhB]`. Rewrite `hrr`, `hσ`, the goal using `[hSgeq]`. Use `set Sg' := Formalism.MainNotions.N.FrobeniusPowerSeries.Sg PD.p (b + η + S) w S η with hSg'`. Establish `hx11 : (11 : ℝ) ≤ PD.p` using `by exact_mod_cast hp11`. Establish `hSg1 : 1 ≤ Sg'`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hSg']`. Unfold `Formalism.MainNotions.N.FrobeniusPowerSeries.Sg`. Establish `hh1 : (1 : ℝ) ≤ ((b + η + S : ℕ) : ℝ)`. Use `hηs c; have := hct.2; exact_mod_cast (by omega : 1 ≤ b + η + S)` as an intermediate fact. Establish `h1 : 0 ≤ ((b + η + S : ℕ) : ℝ) / (PD.p : ℝ) ^ 2` using `by positivity`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 0 ≤ ((w : ℝ) + S + η) / PD.p` using `by positivity`. Establish `h3 : 0 ≤ Real.logb PD.p (2 * ((b + η + S : ℕ) : ℝ))` using `Real.logb_nonneg (by linarith) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Apply the tactic sequence `have hband0 : 0 ≤ bandI PD.p b w S η size Cb := by unfold bandI; split_ifs <;> norm_num`. Establish `hη0 : (0 : ℝ) ≤ η` using `Nat.cast_nonneg _`.
+Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hηb0 : 0 ≤ (η : ℝ) * bandI PD.p b w S η size Cb` using `mul_nonneg hη0 hband0`. Use `push_cast`. Break down `lt_or_ge (PD.p * size (c - 1)) (size c + S) with hlt | hge` into its components or cases. Rewrite using `[hde0 hlt]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb1 : 1 ≤ b` using `by have := hηs c; have := hct.2; omega`. Establish `hw' : size (c - 1) ≤ w` using `hnt (c - 1) hcm`. Establish `hAI` using `ArcLengthTwo.aI_le W F hB' CR hWR c hct hc1`. Establish `hwA : (size (c - 1) : ℝ) ≤ (Formalism.MainNotions.LiftingTheory.AI W F (c - 1) : ℝ) + η` using `by exact_mod_cast h2b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k1, k2⟩` from `case2b PD.p hp11 b w (size (c - 1)) S η (size c) hb1 hηb hSb hwb hw' hy1 hct.1 hct.2 _ hAI hwA`. Establish `hDle : (de : ℝ) ≤ η + 5 * Sg'`. Establish `hm0 : 0 ≤ max 0 (((size (c - 1) : ℕ) : ℝ) - ((size c + S : ℕ) : ℝ) / PD.p + 2 + Real.logb PD.p ((size (c - 1) : ℕ) : ℝ))` using `le_max_left _ _`. Establish `hc'` using `Nat.ceil_lt_add_one hm0`. Establish `hde' : (de : ℝ) ≤ (⌈max 0 (((size (c - 1) : ℕ) : ℝ) - ((size c + S : ℕ) : ℝ) / PD.p + 2 + Real.logb PD.p ((size (c - 1) : ℕ) : ℝ))⌉₊ : ℝ)` using `by exact_mod_cast hde`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails.
 
-Establish `hmax : max 0 (((size (c - 1) : ℕ) : ℝ) - ((size c + S : ℕ) : ℝ) / PD.p + 2 + Real.logb PD.p ((size (c - 1) : ℕ) : ℝ)) ≤ η + 5 * Sg' - 1`. Apply `max_le (by linarith)` to reduce the goal to its premises. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hband : Formalism.MainNotions.TruncatedSeriesCountingBounds.Band PD.p b S η size (Real.logb PD.p (2 * (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ))) Cb`. Establish `h1 : bandI PD.p b w S η size Cb = 1` using `by unfold bandI; rw [if_pos hband]`. Rewrite using `[h1]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : bandI PD.p b w S η size Cb = 0` using `by unfold bandI; rw [if_neg hband]`.
-
-Rewrite `hband` using `[hhB]`. Establish `hnb` using `fun hle => hband ⟨c - 1, hcm, Or.inl (by rw [sub_add_cancel]; exact hct), hle⟩`. Establish `hη4` using `k2 Cb hCb hge hnb`. Rewrite using `[h0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem arc_length_two_case_down [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}

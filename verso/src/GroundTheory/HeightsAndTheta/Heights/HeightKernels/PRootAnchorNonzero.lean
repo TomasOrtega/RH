@@ -11,11 +11,11 @@ noncomputable section
 namespace RootAnchorNonzeroAlt
 
 /- English proof (translation)
-Establish `he : (plAnchor j m).1.orderEmbOfFin (plAnchor j m).2 = Fin.castLEOrderEmb (Nat.le_add_right j m)`. Use `symm`. Apply `Finset.orderEmbOfFin_unique'` to reduce the goal to its premises. Introduce `x`. Simplify using `only [plAnchor, Finset.mem_map, Finset.mem_univ, true_and]`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `⟨x, rfl⟩`. Establish `: colsOf (onePipe Z) (plAnchor j m) = 1`. Use extensionality with `a b`. Simplify using `only [colsOf, Matrix.submatrix_apply, id, he, onePipe, Matrix.of_apply]`. Establish `: (Fin.castLEOrderEmb (Nat.le_add_right j m)) b = Fin.castAdd m b` using `rfl`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this, Fin.append_left]`. Rewrite using `[this, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem anchorMinor_eq_one {R : Type*} [CommRing R] (j m : ℕ) (Z : Matrix (Fin j) (Fin m) R) :
     (colsOf (onePipe Z) (plAnchor j m)).det = 1 := by
@@ -34,11 +34,11 @@ theorem anchorMinor_eq_one {R : Type*} [CommRing R] (j m : ℕ) (Z : Matrix (Fin
   rw [this, Matrix.det_one]
 
 /- English proof (translation)
-Apply `IsIntegral.det` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [colsOf, Matrix.submatrix_apply, id, onePipe, Matrix.of_apply]`. Generalize the expression as in `p.2.1.orderEmbOfFin p.2.2 b = c`. Use `Fin.addCases (fun c => ?_) (fun c => ?_) c` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.append_left]`. Distinguish the cases in `h : a = c`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq]`. Conclude with `isIntegral_one`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_ne h]`. Conclude with `isIntegral_zero`. Rewrite using `[Fin.append_right]`. Take `⟨k, hk, hpow⟩` from `hζ p.1 a c`. Conclude with `IsIntegral.of_pow hk (by rw [hpow]; exact isIntegral_one)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rootCoord_isIntegral {f j m : ℕ} {ζ : Fin f → Matrix (Fin j) (Fin m) ℂ} (hζ : IsRootMatrix ζ)
     (p : Σ _ : Fin f, PlIdx j m) : IsIntegral ℤ (rootCoord ζ p) := by
@@ -61,9 +61,9 @@ def homForm {f j m : ℕ} (q : Polynomial ℤ) (τ : Fin f) (I : PlIdx j m) : MR
     C (q.coeff k) * X ⟨τ, I⟩ ^ k * X ⟨τ, plAnchor j m⟩ ^ (q.natDegree - k)
 
 /- English proof (translation)
-Use `show mConeMap (rootCoord ζ) (homForm q τ I) = 0`. Establish `hA : rootCoord ζ ⟨τ, plAnchor j m⟩ = 1` using `anchorMinor_eq_one j m (ζ τ)`. Simplify using `only [homForm, mConeMap, map_sum, map_mul, map_pow, aeval_X, aeval_C, hA, map_one, one_mul]`. Rewrite `hq` using `[Polynomial.aeval_eq_sum_range]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hk' : k ≤ q.natDegree` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)`. Rewrite using `[← pow_mul_pow_sub (X τ : MvPolynomial (Fin f) ℂ) hk', zsmul_eq_mul, map_mul, map_pow, eq_intCast, map_intCast, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [← Finset.sum_mul, ← map_sum, hq, map_zero, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem homForm_mem {f j m : ℕ} (ζ : Fin f → Matrix (Fin j) (Fin m) ℂ) (q : Polynomial ℤ) (τ : Fin f)
     (I : PlIdx j m) (hq : Polynomial.aeval (rootCoord ζ ⟨τ, I⟩) q = 0) :
@@ -82,9 +82,9 @@ theorem homForm_mem {f j m : ℕ} (ζ : Fin f → Matrix (Fin j) (Fin m) ℂ) (q
     _ = 0 := by rw [← Finset.sum_mul, ← map_sum, hq, map_zero, zero_mul]
 
 /- English proof (translation)
-Simplify using `only [homForm, map_sum, map_mul, map_pow, map_C, map_X, eval_C, eval_X, hz]`. Rewrite using `[Finset.sum_range_succ, Finset.sum_eq_zero]`. Simplify using `[hq.coeff_natDegree]`. Introduce `k hk`. Establish `: q.natDegree - k ≠ 0` using `by have := Finset.mem_range.mp hk; omega`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[zero_pow this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_homForm {f j m : ℕ} {q : Polynomial ℤ} (hq : q.Monic) {τ : Fin f} {I : PlIdx j m}
     {z : (Σ _ : Fin f, PlIdx j m) → ℂ} (hz : z ⟨τ, plAnchor j m⟩ = 0) :
@@ -99,9 +99,9 @@ theorem eval_homForm {f j m : ℕ} {q : Polynomial ℤ} (hq : q.Monic) {τ : Fin
 end RootAnchorNonzeroAlt
 
 /- English proof (translation)
-Introduce `f j m ζ hζ z hz τ h0`. Take `⟨I, hI⟩` from `hz.1 τ`. Take `⟨q, hqm, hq⟩` from `RootAnchorNonzeroAlt.rootCoord_isIntegral hζ ⟨τ, I⟩`. Establish `hmem` using `RootAnchorNonzeroAlt.homForm_mem ζ q τ I (by rwa [Polynomial.aeval_def])`. Establish `h` using `hz.2 _ hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[RootAnchorNonzeroAlt.eval_homForm hqm h0]`. Conclude with `hI (pow_eq_zero_iff'.mp h).1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RootAnchorNonzero.proof : RootAnchorNonzero.Statement := by
   intro f j m ζ hζ z hz τ h0

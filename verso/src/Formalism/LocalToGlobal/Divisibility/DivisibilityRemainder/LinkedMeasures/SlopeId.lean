@@ -10,18 +10,18 @@ namespace Formalism.SlopeId
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Formalism.MainNotions.Lnk Formalism.MainNotions.GlobalTheoryTheory Formalism.L2.GlobalTheoryTheory
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.DIV.Wire.za_of Fm`.
+A detailed English derivation is pending.
 -/
 theorem muZero_free {eps : ℝ} (Fm : FamP eps) : J.MuZero Fm := Formalism.L2.DIV.Wire.za_of Fm
 
 /- English proof (translation)
-Take `⟨x0, h⟩` from `h`. Use `⟨2 * |Fm.CTu|, x0, fun x hx i u => ?_⟩` and prove the remaining obligations. Use `((h x hx i).2 u).trans ?_` and prove the remaining obligations. Establish `hb` using `J.th_bounds (Fm.L x i)`. Establish `hL1 : (Fm.L x i).sc.L ≤ (Fm.L x i).sc.x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Scale.L`. Conclude with `J.scale_rpow_le_self_of_le_one _ (by linarith [hb.1, hb.2.1])`. Establish `hL0 : 0 ≤ (Fm.L x i).sc.L` using `Real.rpow_nonneg (zero_lt_one.trans (Fm.L x i).sc.one_lt_alt).le _`. Establish `hm : ((Fm.D x i).R.m : ℝ) ≤ 2 * (Fm.D x i).R.n`. Use `(Fm.D x i).R.m_le_f` as an intermediate fact.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Ranks.n`. Conclude with `this` after adjusting the coercions. Establish `hm0 : (0 : ℝ) ≤ (Fm.D x i).R.m` using `Nat.cast_nonneg _`. Establish `hn0 : (0 : ℝ) ≤ (Fm.D x i).R.n` using `Nat.cast_nonneg _`. Establish `hX` using `J.xn_le_Xpp (Fm.L x i).sc (Fm.D x i).R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hmL : ((Fm.D x i).R.m : ℝ) * (Fm.L x i).sc.L ≤ 2 * (Fm.L x i).sc.X'' (Fm.D x i).R.n`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem muTu_of_size {eps : ℝ} (Fm : FamP eps) (h : Formalism.MainNotions.TuSize Fm) : J.MuTu Fm := by
   obtain ⟨x0, h⟩ := h
@@ -51,26 +51,26 @@ theorem muTu_of_size {eps : ℝ} (Fm : FamP eps) (h : Formalism.MainNotions.TuSi
     _ = 2 * |Fm.CTu| * (Fm.L x i).sc.X'' (Fm.D x i).R.n := by ring
 
 /- English proof (translation)
-The claim follows from `J.muDGam_of_fact Fm h`.
+A detailed English derivation is pending.
 -/
 theorem muDGam_of_size {eps : ℝ} (Fm : FamP eps) (h : Formalism.MainNotions.DGamSize Fm) : J.MuDGam Fm := J.muDGam_of_fact Fm h
 
 /- English proof (translation)
-Take `⟨x0, h⟩` from `h`. Conclude with `⟨x0, fun x hx i u => (h x hx i u).1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem muFG_of_full {eps : ℝ} (Fm : FamP eps) (h : NuFullF Fm) : J.MuFG Fm := by
   obtain ⟨x0, h⟩ := h
   exact ⟨x0, fun x hx i u => (h x hx i u).1⟩
 
 /- English proof (translation)
-The claim follows from `J.linkMu Fm (muZero_free Fm) hF hR (muTu_of_size Fm hT) (muDGam_of_size Fm hG)`.
+A detailed English derivation is pending.
 -/
 theorem linkMu_of_sizes {eps : ℝ} (Fm : FamP eps) (hT : Formalism.MainNotions.TuSize Fm) (hG : Formalism.MainNotions.DGamSize Fm) (hF : J.MuFG Fm)
     (hR : J.MuRank Fm) : LinkMu Fm :=
   J.linkMu Fm (muZero_free Fm) hF hR (muTu_of_size Fm hT) (muDGam_of_size Fm hG)
 
 /- English proof (translation)
-The claim follows from `linkMu_of_sizes Fm hT hG (muFG_of_full Fm hNF) hR`.
+A detailed English derivation is pending.
 -/
 theorem linkMu_of_full {eps : ℝ} (Fm : FamP eps) (hT : Formalism.MainNotions.TuSize Fm) (hG : Formalism.MainNotions.DGamSize Fm) (hNF : NuFullF Fm)
     (hR : J.MuRank Fm) : LinkMu Fm :=

@@ -16,14 +16,14 @@ namespace BergmanDensIntegrable
 variable {D : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X}
 
 /- English proof (translation)
-The claim follows from `(W.smooth j j).mono fun _ hy => ⟨hy, (A.chart j).map_target hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem weight_contDiffOn {L : HolLineBundle A} (W : Weight L) (j : Fin A.n) :
     ContDiffOn ℝ ∞ (W.φ j ∘ (A.chart j).symm) (A.chart j).target :=
   (W.smooth j j).mono fun _ hy => ⟨hy, (A.chart j).map_target hy⟩
 
 /- English proof (translation)
-Rewrite using `[OpenPartialHomeomorph.trans_source, OpenPartialHomeomorph.symm_source]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trans_source_eq (j k : Fin A.n) :
     ((A.chart j).symm.trans (A.chart k)).source =
@@ -31,7 +31,7 @@ theorem trans_source_eq (j k : Fin A.n) :
   rw [OpenPartialHomeomorph.trans_source, OpenPartialHomeomorph.symm_source]
 
 /- English proof (translation)
-Rewrite using `[OpenPartialHomeomorph.trans_target, OpenPartialHomeomorph.symm_target]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trans_target_eq (j k : Fin A.n) :
     ((A.chart j).symm.trans (A.chart k)).target =
@@ -39,7 +39,7 @@ theorem trans_target_eq (j k : Fin A.n) :
   rw [OpenPartialHomeomorph.trans_target, OpenPartialHomeomorph.symm_target]
 
 /- English proof (translation)
-Rewrite using `[trans_source_eq, OpenPartialHomeomorph.coe_trans]`. Conclude with `A.holo j k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trans_analytic (j k : Fin A.n) :
     AnalyticOnNhd ℂ ((A.chart j).symm.trans (A.chart k))
@@ -48,13 +48,13 @@ theorem trans_analytic (j k : Fin A.n) :
   exact A.holo j k
 
 /- English proof (translation)
-Use `set T := (A.chart j).symm.trans (A.chart k) with hT`. Establish `hy' : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart k).source`. Rewrite using `[← trans_source_eq]` and apply the resulting hypothesis. Establish `hyS : (A.chart j).symm y ∈ (A.chart j).source ∩ (A.chart k).source` using `⟨(A.chart j).map_target hy'.1, hy'.2⟩`. Establish `hTan : AnalyticAt ℂ T y` using `trans_analytic j k y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTy : T y ∈ (A.chart k).target` using `T.map_source hy |> fun h => by`. Rewrite `h` using `[trans_target_eq]`. Conclude with `h.1`. Apply the tactic sequence `have hψ : ContDiffAt ℝ 2 (W.φ k ∘ (A.chart k).symm) (T y) := ((weight_contDiffOn W k).contDiffAt ((A.chart k).open_target.mem_nhds hTy)).of_le (by first | exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤) | simp | exact WithTop.coe_le_coe.2 le_top)`. Establish `hTc : ContDiffAt ℝ 2 T y` using `(hTan.contDiffAt (n := 2)).restrict_scalars ℝ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : ContDiffAt ℝ 2 ((W.φ k ∘ (A.chart k).symm) ∘ T) y` using `hψ.comp y hTc`. Use `set g : (Fin D → ℂ) → ℂ := fun w => L.g j k ((A.chart j).symm w) ^ 2 with hg`. Establish `hgan : AnalyticAt ℂ g y` using `(L.holo j k j y ⟨hy'.1, hyS⟩).pow 2`. Establish `hg0 : g y ≠ 0` using `pow_ne_zero 2 (L.ne_zero j k _ hyS)`. Establish `hev : (W.φ j ∘ (A.chart j).symm) =ᶠ[𝓝 y] fun w => ((W.φ k ∘ (A.chart k).symm) ∘ T) w + Real.log ‖g w‖` using `by filter_upwards [T.open_source.mem_nhds hy] with w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hw` using `[trans_source_eq]`. Establish `hwS : (A.chart j).symm w ∈ (A.chart j).source ∩ (A.chart k).source` using `⟨(A.chart j).map_target hw.1, hw.2⟩`. Simplify using `only [Function.comp_apply, hT, OpenPartialHomeomorph.coe_trans, hg, norm_pow, (A.chart k).left_inv hw.2]`. Conclude with `W.compat j k _ hwS`. Rewrite using `[hessCGerm _ _ y hev, hessC_add_log_norm _ g y hφ hgan hg0, hessC_comp _ _ y hTan hψ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hessC_weight_trans {L : HolLineBundle A} (W : Weight L) (j k : Fin A.n) {y : Fin D → ℂ}
     (hy : y ∈ ((A.chart j).symm.trans (A.chart k)).source) :
@@ -90,11 +90,9 @@ theorem hessC_weight_trans {L : HolLineBundle A} (W : Weight L) (j k : Fin A.n) 
   rw [hessCGerm _ _ y hev, hessC_add_log_norm _ g y hφ hgan hg0, hessC_comp _ _ y hTan hψ]
 
 /- English proof (translation)
-Unfold `chernTopDens`. Rewrite using `[hessC_weight_trans W j k hy]`. Use `set J := jacC ((A.chart j).symm.trans (A.chart k)) y`. Use `set H := hessC (W.φ k ∘ (A.chart k).symm) (((A.chart j).symm.trans (A.chart k)) y)`. Use `set c : ℂ := ((1 / Real.pi : ℝ) : ℂ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : c • (Jᵀ * H * J.map (starRingEnd ℂ)) = Jᵀ * (c • H) * J.map (starRingEnd ℂ)`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Establish `h2 : (J.map (starRingEnd ℂ)).det = starRingEnd ℂ J.det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Rewrite using `[h1, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h2, show J.det * (c • H).det * starRingEnd ℂ J.det = ((Complex.normSq J.det : ℝ) : ℂ) * (c • H).det by`.
-
-Rewrite using `[← Complex.mul_conj]`. Use the proof step `ring,`. Use the proof step `Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chernTopDens_trans {L : HolLineBundle A} (W : Weight L) (j k : Fin A.n) {y : Fin D → ℂ}
     (hy : y ∈ ((A.chart j).symm.trans (A.chart k)).source) :
@@ -118,23 +116,21 @@ theorem chernTopDens_trans {L : HolLineBundle A} (W : Weight L) (j k : Fin A.n) 
 variable [MeasurableSpace X] [BorelSpace X]
 
 /- English proof (translation)
-Use `set T := (A.chart j).symm.trans (A.chart k) with hT`. Use `set S := (A.chart j).source ∩ (A.chart k).source with hS`. Establish `hSo : IsOpen S` using `(A.chart j).open_source.inter (A.chart k).open_source`. Establish `hSm : MeasurableSet S` using `hSo.measurableSet`. Use `set p : X → Fin D → ℂ := S.piecewise (A.chart j) (fun _ => 0) with hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpm : Measurable p` using `ContinuousOn.measurable_piecewise ((A.chart j).continuousOn.mono inter_subset_left) continuousOn_const hSm`. Use `set g : X → ℝ≥0∞ := S.indicator (fun x => f (p x)) with hg`. Establish `hgm : Measurable g` using `(hf.comp hpm).indicator hSm`. Establish `hsame : ∀ i, (A.chart i).source ∩ S = S → ∫⁻ x in (A.chart i).source, g x ∂dV.μ = ∫⁻ x in S, f (p x) ∂dV.μ`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hg, lintegral_indicator hSm, Measure.restrict_restrict hSm, inter_comm, hi]`. Establish `hL` using `dV.chart_lintegral j g hgm`. Establish `hR` using `dV.chart_lintegral k g hgm`. Rewrite `hL` using `[hsame j (inter_eq_right.2 inter_subset_left)]`. Rewrite `hR` using `[hsame k (inter_eq_right.2 inter_subset_right)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTsrc` using `trans_source_eq (A := A) j k`. Establish `hTtgt` using `trans_target_eq (A := A) j k`. Establish `hLe : ∫⁻ y in (A.chart j).target, g ((A.chart j).symm y) * ENNReal.ofReal (dV.dens j y) = ∫⁻ y in T.source, f y * ENNReal.ofReal (dV.dens j y)`. Establish `hsub : T.source ⊆ (A.chart j).target` using `hTsrc ▸ inter_subset_left`. Use `conv_rhs => rw [← inter_eq_left.2 hsub, ← Measure.restrict_restrict T.open_source.measurableSet, ← lintegral_indicator T.open_source.measurableSet]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `setLIntegral_congr_fun (A.chart j).open_target.measurableSet fun y hy => ?_` and prove the remaining obligations. Establish `hyj : (A.chart j).symm y ∈ (A.chart j).source` using `(A.chart j).map_target hy`. Distinguish the cases in `hk : (A.chart j).symm y ∈ (A.chart k).source`. Establish `hyT : y ∈ T.source` using `by rw [hTsrc]; exact ⟨hy, hk⟩`. Simplify using `[hg, hp, Set.indicator_of_mem hyT, Set.indicator_of_mem (show (A.chart j).symm y ∈ S from ⟨hyj, hk⟩), Set.piecewise_eq_of_mem _ _ _ (show (A.chart j).symm y ∈ S from ⟨hyj, hk⟩), (A.chart j).right_inv hy]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hyT : y ∉ T.source` using `by rw [hTsrc]; exact fun h => hk h.2`. Simplify using `[hg, Set.indicator_of_notMem hyT, Set.indicator_of_notMem (show (A.chart j).symm y ∉ S from fun h => hk h.2)]`. Establish `hRe : ∫⁻ z in (A.chart k).target, g ((A.chart k).symm z) * ENNReal.ofReal (dV.dens k z) = ∫⁻ z in T.target, f (T.symm z) * ENNReal.ofReal (dV.dens k z)`. Establish `hsub : T.target ⊆ (A.chart k).target` using `hTtgt ▸ inter_subset_left`. Use `conv_rhs => rw [← inter_eq_left.2 hsub, ← Measure.restrict_restrict T.open_target.measurableSet, ← lintegral_indicator T.open_target.measurableSet]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `setLIntegral_congr_fun (A.chart k).open_target.measurableSet fun z hz => ?_` and prove the remaining obligations. Establish `hzk : (A.chart k).symm z ∈ (A.chart k).source` using `(A.chart k).map_target hz`. Distinguish the cases in `hj : (A.chart k).symm z ∈ (A.chart j).source`. Establish `hzT : z ∈ T.target` using `by rw [hTtgt]; exact ⟨hz, hj⟩`. Rewrite using `[Set.indicator_of_mem hzT]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hg, hp, hT, Set.indicator_of_mem (show (A.chart k).symm z ∈ S from ⟨hj, hzk⟩), Set.piecewise_eq_of_mem _ _ _ (show (A.chart k).symm z ∈ S from ⟨hj, hzk⟩), OpenPartialHomeomorph.coe_trans_symm]`. Establish `hzT : z ∉ T.target` using `by rw [hTtgt]; exact fun h => hj h.2`. Simplify using `[hg, Set.indicator_of_notMem hzT, Set.indicator_of_notMem (show (A.chart k).symm z ∉ S from fun h => hj h.1)]`. Rewrite using `[← hLe, ← hL, hR, hRe, ← T.image_source_eq_target, lintegral_image_eq_lintegral_normSq_det_mul T T.source T.open_source (trans_analytic j k) T.injOn]`. Use `setLIntegral_congr_fun T.open_source.measurableSet fun y hy => ?_` and prove the remaining obligations.
-
-Simplify using `only [T.left_inv hy]`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_dens_trans (dV : SmoothVolume A) (j k : Fin A.n)
     (f : (Fin D → ℂ) → ℝ≥0∞) (hf : Measurable f) :
@@ -203,7 +199,7 @@ theorem lintegral_dens_trans (dV : SmoothVolume A) (j k : Fin A.n)
 omit [MeasurableSpace X] [BorelSpace X] in
 
 /- English proof (translation)
-Establish `h` using `(trans_analytic (A := A) j k).fderiv.continuousOn`. Use `continuousOn_pi.2 fun a => continuousOn_pi.2 fun b => ?_` and prove the remaining obligations. Conclude with `(continuous_apply a).comp_continuousOn ((ContinuousLinearMap.apply ℂ _ (Pi.single b 1)).continuous.comp_continuousOn h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jacC_trans_continuousOn (j k : Fin A.n) :
     ContinuousOn (jacC ((A.chart j).symm.trans (A.chart k)))
@@ -214,19 +210,17 @@ theorem jacC_trans_continuousOn (j k : Fin A.n) :
     ((ContinuousLinearMap.apply ℂ _ (Pi.single b 1)).continuous.comp_continuousOn h)
 
 /- English proof (translation)
-Use `set T := (A.chart j).symm.trans (A.chart k) with hT`. Establish `hU` using `T.open_source`. Establish `hsub : T.source ⊆ (A.chart j).target` using `trans_source_eq (A := A) j k ▸ inter_subset_left`. Establish `hc1 : ContinuousOn (dV.dens j) T.source` using `(dV.smooth j).continuousOn.mono hsub`. Establish `hc2 : ContinuousOn (fun y => Complex.normSq (jacC T y).det * dV.dens k (T y)) T.source`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContinuousOn.mul ?_ ?_` and prove the remaining obligations. Conclude with `Complex.continuous_normSq.comp_continuousOn ((continuous_id.matrix_det).comp_continuousOn (jacC_trans_continuousOn j k))`. Use `(dV.smooth k).continuousOn.comp T.continuousOn fun z hz => ?_` and prove the remaining obligations. Use `T.map_source hz` as an intermediate fact. Rewrite `this` using `[trans_target_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this.1`. Establish `hae : (fun y => ENNReal.ofReal (dV.dens j y)) =ᵐ[volume.restrict T.source] fun y => ENNReal.ofReal (Complex.normSq (jacC T y).det * dV.dens k (T y))`. Use `ae_eq_of_forall_setLIntegral_eq_of_sigmaFinite₀ (ENNReal.measurable_ofReal.comp_aemeasurable (hc1.aemeasurable hU.measurableSet)) (ENNReal.measurable_ofReal.comp_aemeasurable (hc2.aemeasurable hU.measurableSet)) fun s hs _ => ?_` and prove the remaining obligations. Rewrite using `[← lintegral_indicator hs, ← lintegral_indicator hs]`. Establish `h` using `lintegral_dens_trans dV j k (s.indicator 1) (measurable_one.indicator hs)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `e1 : (fun z => s.indicator (fun y => ENNReal.ofReal (dV.dens j y)) z) = fun z => s.indicator 1 z * ENNReal.ofReal (dV.dens j z)`. Apply the tactic sequence `funext z; by_cases hz : z ∈ s <;> simp [hz]`. Establish `e2 : (fun z => s.indicator (fun y => ENNReal.ofReal (Complex.normSq (jacC T y).det * dV.dens k (T y))) z) = fun z => ENNReal.ofReal (Complex.normSq (jacC T z).det) * (s.indicator 1 z * ENNReal.ofReal (dV.dens k (T z)))`. Use function extensionality and compare the values at `z`. Apply the tactic sequence `by_cases hz : z ∈ s <;> simp [hz, ENNReal.ofReal_mul (Complex.normSq_nonneg _)]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Conclude with `h`. Establish `hcont1 : ContinuousOn (fun y => ENNReal.ofReal (dV.dens j y)) T.source` using `ENNReal.continuous_ofReal.comp_continuousOn hc1`. Establish `hcont2 : ContinuousOn (fun y => ENNReal.ofReal (Complex.normSq (jacC T y).det * dV.dens k (T y))) T.source` using `ENNReal.continuous_ofReal.comp_continuousOn hc2`. Establish `heq` using `Measure.eqOn_open_of_ae_eq hae hU hcont1 hcont2 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hp1 : 0 ≤ dV.dens j y` using `(dV.pos j y (hsub hy)).le`. Establish `hp2 : 0 ≤ Complex.normSq (jacC T y).det * dV.dens k (T y)`. Use `T.map_source hy` as an intermediate fact. Rewrite `this` using `[trans_target_eq]`. Conclude with `mul_nonneg (Complex.normSq_nonneg _) (dV.pos k _ this.1).le`.
-
-Conclude with `(ENNReal.ofReal_eq_ofReal_iff hp1 hp2).1 heq`.
+A detailed English derivation is pending.
 -/
 theorem dens_trans (dV : SmoothVolume A) (j k : Fin A.n) {y : Fin D → ℂ}
     (hy : y ∈ ((A.chart j).symm.trans (A.chart k)).source) :
@@ -282,13 +276,11 @@ def densIn (W : Weight L) (dV : SmoothVolume A) (j : Fin A.n) (x : X) : ℝ :=
   chernTopDens W j (A.chart j x) / ((D.factorial : ℝ) * dV.dens j (A.chart j x))
 
 /- English proof (translation)
-Establish `hy : A.chart j x ∈ ((A.chart j).symm.trans (A.chart k)).source`. Rewrite using `[trans_source_eq]`. Conclude with `⟨(A.chart j).map_source hx.1, Set.mem_preimage.2 (by rw [(A.chart j).left_inv hx.1]; exact hx.2)⟩`. Establish `hT : ((A.chart j).symm.trans (A.chart k)) (A.chart j x) = A.chart k x`. Rewrite using `[OpenPartialHomeomorph.coe_trans, Function.comp_apply, (A.chart j).left_inv hx.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc` using `chernTopDens_trans W j k hy`. Establish `hd` using `dens_trans dV j k hy`. Rewrite `hc`, `hd` using `[hT]`. Use `set n := Complex.normSq (jacC ((A.chart j).symm.trans (A.chart k)) (A.chart j x)).det`. Establish `hpos : 0 < dV.dens j (A.chart j x)` using `dV.pos j _ ((A.chart j).map_source hx.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : n ≠ 0`. Introduce `h0`. Rewrite `hpos` using `[hd, h0, zero_mul]`. Conclude with `lt_irrefl 0 hpos`. Unfold `densIn`.
-
-Rewrite using `[hc, hd, show (D.factorial : ℝ) * (n * dV.dens k (A.chart k x)) = n * ((D.factorial : ℝ) * dV.dens k (A.chart k x)) by ring, mul_div_mul_left _ _ hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem densIn_eq (W : Weight L) (dV : SmoothVolume A) (j k : Fin A.n) {x : X}
     (hx : x ∈ (A.chart j).source ∩ (A.chart k).source) :
@@ -313,9 +305,9 @@ theorem densIn_eq (W : Weight L) (dV : SmoothVolume A) (j k : Fin A.n) {x : X}
 omit [BorelSpace X] in
 
 /- English proof (translation)
-Establish `hy : A.chart j x ∈ (A.chart j).target` using `(A.chart j).map_source hx`. Establish `hnhds : (A.chart j).target ∈ 𝓝 (A.chart j x)` using `(A.chart j).open_target.mem_nhds hy`. Apply the tactic sequence `have hH : ContinuousAt (hessC (W.φ j ∘ (A.chart j).symm)) (A.chart j x) := (hessC_continuousOn _ _ (A.chart j).open_target ((weight_contDiffOn W j).of_le (by first | exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤) | simp |`. Conclude with `WithTop.coe_le_coe.2 le_top))).continuousAt hnhds`. Establish `hdet : Continuous fun M : Matrix (Fin D) (Fin D) ℂ => (D.factorial : ℝ) * ((((1 / Real.pi : ℝ) : ℂ) • M).det).re` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ContinuousAt (chernTopDens W j) (A.chart j x)` using `hdet.continuousAt.comp hH`. Establish `hdens : ContinuousAt (dV.dens j) (A.chart j x)` using `(dV.smooth j).continuousOn.continuousAt hnhds`. Establish `hc` using `(A.chart j).continuousAt hx`. Use `(hC.comp hc).div (continuousAt_const.mul (hdens.comp hc)) ?_` and prove the remaining obligations. Conclude with `mul_ne_zero (by exact_mod_cast (Nat.factorial_pos D).ne') (dV.pos j _ hy).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem densIn_continuousAt (W : Weight L) (dV : SmoothVolume A) (j : Fin A.n) {x : X}
     (hx : x ∈ (A.chart j).source) : ContinuousAt (densIn W dV j) x := by
@@ -335,7 +327,7 @@ theorem densIn_continuousAt (W : Weight L) (dV : SmoothVolume A) (j : Fin A.n) {
   exact mul_ne_zero (by exact_mod_cast (Nat.factorial_pos D).ne') (dV.pos j _ hy).ne'
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Establish `hx : x ∈ (A.chart (chartIdx A x)).source` using `Classical.choose_spec (A.cover x)`. Establish `hev : densIn W dV (chartIdx A x) =ᶠ[𝓝 x] bergmanDens W dV` using `by filter_upwards [(A.chart (chartIdx A x)).open_source.mem_nhds hx] with x' hx'`. Conclude with `densIn_eq W dV _ _ ⟨hx', Classical.choose_spec (A.cover x')⟩`. Conclude with `(densIn_continuousAt W dV _ hx).congr hev`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bergmanDens_continuous (W : Weight L) (dV : SmoothVolume A) :
     Continuous (bergmanDens W dV) := by
@@ -349,7 +341,7 @@ theorem bergmanDens_continuous (W : Weight L) (dV : SmoothVolume A) :
 end BergmanDensIntegrable
 
 /- English proof (translation)
-Introduce `D X _ _ _ _ _ A L W dV`. Use `dV.isProb` as an intermediate fact. Conclude with `integrableOn_univ.1 ((BergmanDensIntegrable.bergmanDens_continuous W dV).continuousOn.integrableOn_compact isCompact_univ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem BergmanDensIntegrable.proof : BergmanDensIntegrable.Statement := by
   intro D X _ _ _ _ _ A L W dV

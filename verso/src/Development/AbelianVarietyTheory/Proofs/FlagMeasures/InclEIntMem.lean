@@ -17,7 +17,7 @@ def vecIncl (x : Fin n → E) : Fin n → E ⊗[F] Formalism.MainNotions.S.Af F 
   fun i => Formalism.UG.inclE (F := F) (Formalism.MainNotions.S.Af F) (x i)
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.IntAf Formalism.UG.tensInt`. Apply `Subring.subset_closure` to reduce the goal to its premises. Use `left`. Use `⟨⟨(c : E), ⟨c, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inclE_int_mem (c : 𝓞 E) :
     Formalism.UG.inclE (F := F) (Formalism.MainNotions.S.Af F) (c : E) ∈ Formalism.MainNotions.S.IntAf F E := by
@@ -28,20 +28,20 @@ theorem inclE_int_mem (c : 𝓞 E) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[vecIncl, map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vecIncl_add (x y : Fin n → E) :
     vecIncl (F := F) (x + y) = vecIncl (F := F) x + vecIncl (F := F) y := by
   funext i; simp [vecIncl, map_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[vecIncl]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vecIncl_zero : vecIncl (F := F) (0 : Fin n → E) = 0 := by
   funext i; simp [vecIncl]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [vecIncl, Pi.smul_apply]`. Rewrite using `[Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem vecIncl_smul (c : 𝓞 E) (x : Fin n → E) :
     vecIncl (F := F) (c • x) =
@@ -53,17 +53,15 @@ theorem vecIncl_smul (c : 𝓞 E) (x : Fin n → E) :
   rfl
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hL`. Use `⟨s.image (vecIncl (F := F)), ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.coe_image, Set.mem_image] at hy`. Take `⟨x, hx, rfl⟩` from `hy`. Apply `Submodule.subset_span` to reduce the goal to its premises. Establish `hxL : x ∈ L` using `hs ▸ Submodule.subset_span hx`. Conclude with `⟨⟨x, hxL⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Unfold `Formalism.MainNotions.S.lamAf`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨⟨x, hx⟩, rfl⟩`. Establish `key : ∀ z ∈ Submodule.span (𝓞 E) (s : Set (Fin n → E)), vecIncl (F` using `F) z ∈ Submodule.span (Formalism.MainNotions.S.IntAf F E) ((s.image (vecIncl (F := F)) : Finset _) : Set (Fin n → E ⊗[F] Formalism.MainNotions.S.Af F)) := by`. Introduce `z hz`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Apply `Submodule.subset_span` to reduce the goal to its premises. Simplify using `only [Finset.coe_image]`. Conclude with `⟨z, hz, rfl⟩`.
+Proceed by induction. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Consider the case `zero => rw [vecIncl_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [vecIncl_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [vecIncl_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ ha`. Rewrite `hx` using `[← hs]`. Conclude with `key x hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamAf_fg (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) :
     Submodule.FG (R := ↥(Formalism.MainNotions.S.IntAf F E)) (Formalism.MainNotions.S.lamAf L) := by
@@ -96,7 +94,7 @@ theorem lamAf_fg (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) :
     exact key x hx
 
 /- English proof (translation)
-Introduce `L hL` and use `lamAf_fg L hL`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {F E : Type} [inst : Field F] [inst_1 : NumberField F] [inst_2 : Field E] [inst_3 : NumberField E] [inst_4 : Algebra F E] {n : ℕ} (L : Submodule (NumberField.RingOfIntegers E) (Fin n → E)), Submodule.FG L → Submodule.FG (R := ↥(Formalism.MainNotions.S.IntAf F E)) (Formalism.MainNotions.S.lamAf L) :=
   fun L hL => lamAf_fg L hL

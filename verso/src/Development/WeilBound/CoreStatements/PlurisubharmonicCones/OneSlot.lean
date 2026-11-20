@@ -8,25 +8,25 @@ open MvPolynomial MeasureTheory Filter Topology Set
 open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 ReciprocityTheory.AnForm.M GlobalTheory.CompanionTheory.Ar.Cmp GlobalTheory.CompanionTheory.Ar.Cmp.OneSlot
 
 /- English proof (translation)
-Take `⟨⟨α, γ, hfα, hgγ, hdeg⟩, hU⟩` from `hIso`. Establish `hfP : f ∉ P` using `hU.1`. Establish `hgP : g ∉ P` using `hU.2.1`. Use `set M' : HermLine ι := fsOfDeg γ with hM'def`. Use `set M : HermLine ι := twist M' A B with hMdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM' : IsSmoothHerm M'` using `isSmoothHerm_fsOfDeg γ`. Establish `hM : IsSmoothHerm M` using `isSmoothHerm_twist hM' hA hB`. Establish `hMa : ∀ k, M.a k = α k`. Introduce `k`. Establish `h` using `hdeg k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : M.a k = (γ k : ℤ) + A.a k + -B.a k` using `rfl`. Rewrite using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hM'a : ∀ k, M'.a k = γ k` using `fun _ => rfl`. Establish `a1` using `hI.2.1 P e L M B hP hL hM hB`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `hI.2.1 P e L M' A hP hL hM' hA`. Establish `ht : M.tensor B = M'.tensor A` using `twist_tensor (fun z hz => fsOfDeg_h_of_notMem γ hz) A B`. Rewrite `a1` using `[ht]`. Establish `r1` using `hI.2.2 P e L M f α hP hL hM hMa hfα hfP`. Establish `r2` using `hI.2.2 P e L M' g γ hP hL hM' hM'a hgγ hgP`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `r1`, `r2` using `[recR_eq]`. Establish `hc` using `GlobalTheory.T.unit_ratio_same_divisor_multiplicities K ι P f g hU`. Establish `hcyc : cycR I P L f = cycR I P L g`. Unfold `cycR`. Use `finsum_mem_congr hc.1 fun W hW => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc.2 W (hc.1 ▸ hW)]`. Establish `hsf : IsSectionOn P M f` using `⟨α, hMa, hfα, hfP⟩`. Establish `hsg : IsSectionOn P M' g` using `⟨γ, hM'a, hgγ, hgP⟩`. Rewrite `r1` using `[arInt_eq_mInt hBr hG R hP hL hM hsf]`. Rewrite `r2` using `[arInt_eq_mInt hBr hG R hP hL hM' hsg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpot : ∀ i, IsPotential R.A (potOf R (L i))` using `fun i => potOf_isPotential R (L i) (hL i)`. Establish `hlin` using `mIntLinear R.A (fun j => potOf R (L j)) hpot (-1) (fun x => logNorm M' g (R.lift x x)) (fun x => logNorm M f (R.lift x x)) (brIntegrable R L M' g hP hL hM' hsg) (brIntegrable R L M f hP hL hM hsf)`. Take `⟨Ψ, hΨ⟩` from `hG K ι P e hP`. Establish `hw' : mInt R.A (fun j => potOf R (L j)) (fun x => w (R.lift x x)) = mInt R.A (fun j => potOf R (L j)) (fun x => -1 * logNorm M' g (R.lift x x) + logNorm M f (R.lift x x))`. Use `mInt_congr_null _ _ fun j => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `measure_mono_null ?_ (measure_union_null (zeros_null R Ψ hP hΨ hfα hfP j) (zeros_null R Ψ hP hΨ hgγ hgP j))` and prove the remaining obligations. Introduce and unpack `y ⟨hyt, hy⟩`. Assume the negation of the conclusion as `hcon`. Establish `hnf : evC (R.lift ((R.A.chart j).symm y) ((R.A.chart j).symm y)) f ≠ 0` using `fun h => hcon (Or.inl ⟨hyt, h⟩)`. Establish `hng : evC (R.lift ((R.A.chart j).symm y) ((R.A.chart j).symm y)) g ≠ 0` using `fun h => hcon (Or.inr ⟨hyt, h⟩)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmem` using `R.mem ((R.A.chart j).symm y) _ (R.mem_U ((R.A.chart j).symm y))`. Apply `hy` to reduce the goal to its premises. Establish `hd` using `hw _ hmem g f (by rw [mul_comm, sub_self]; exact P.zero_mem) hng`. Use `logNorm_sub_eq (M := M') (A := A) (B := B) (show _ ∈ blockSet ι from hmem.1) hnf hng` as an intermediate fact. Use `show w _ = -1 * logNorm M' g _ + logNorm M f _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, ← this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hw', hlin]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem one_coord₂ (hBr : ResBridgeStatement) (hG : GoodProjExistsStatement) {K : Type} [Fintype K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ} (hI : IsIntersectionFamily I)

@@ -22,7 +22,7 @@ section Abstract
 variable {G Y : Type} [AddCommGroup G] [AddCommGroup Y] (χ : Y → G → ℂ)
 
 /- English proof (translation)
-The claim follows from `| 0 => by rw [zero_nsmul, hzero, pow_zero] | m + 1 => by rw [succ_nsmul, hadd, chi_nsmul hadd hzero y ξ m, pow_succ]`.
+A detailed English derivation is pending.
 -/
 theorem chi_nsmul (hadd : ∀ y y' ξ, χ (y + y') ξ = χ y ξ * χ y' ξ) (hzero : ∀ ξ, χ 0 ξ = 1) (y : Y) (ξ : G) :
     ∀ m : ℕ, χ (m • y) ξ = χ y ξ ^ m
@@ -30,7 +30,7 @@ theorem chi_nsmul (hadd : ∀ y y' ξ, χ (y + y') ξ = χ y ξ * χ y' ξ) (hze
   | m + 1 => by rw [succ_nsmul, hadd, chi_nsmul hadd hzero y ξ m, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[norm_mul, norm_inv, Complex.norm_natCast]`. Establish `hMpos : (0 : ℝ) < M` using `by exact_mod_cast hM`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_avg_le_one (f : ℕ → ℂ) (hf : ∀ m, ‖f m‖ = 1) {M : ℕ} (hM : 0 < M) :
     ‖(M : ℂ)⁻¹ * ∑ m ∈ Finset.range M, f m‖ ≤ 1 := by
@@ -41,9 +41,9 @@ theorem norm_avg_le_one (f : ℕ → ℂ) (hf : ∀ m, ‖f m‖ = 1) {M : ℕ} 
     _ = 1 := by simp only [hf, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]; field_simp
 
 /- English proof (translation)
-Establish `hpos : 0 < ‖z - 1‖` using `norm_pos_iff.2 (sub_ne_zero.2 hz1)`. Establish `hMpos : (0 : ℝ) < M` using `by exact_mod_cast hM`. Establish `h1 : ‖z ^ M - 1‖ ≤ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[geom_sum_eq hz1, norm_mul, norm_div, norm_inv, Complex.norm_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_avg_pow_le {z : ℂ} (hz : ‖z‖ = 1) (hz1 : z ≠ 1) {M : ℕ} (hM : 0 < M) :
     ‖(M : ℂ)⁻¹ * ∑ m ∈ Finset.range M, z ^ m‖ ≤ 2 / (M * ‖z - 1‖) := by
@@ -63,15 +63,13 @@ def Good (a : G → ℂ) : Prop := (∀ ξ, ‖a ξ‖ ≤ 1) ∧ a 0 = 1 ∧ �
 variable {χ c}
 
 /- English proof (translation)
-Use `⟨fun ξ => ?_, ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [ha.2.1, h0, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, one_mul]`. Conclude with `inv_mul_cancel₀ (by exact_mod_cast hM.ne')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : ∀ m ∈ Finset.range M, Summable fun ξ => c ξ * χ y ξ * a ξ * χ (m • y') ξ` using `fun m _ => Summable.of_norm_bounded hc fun ξ => by`. Rewrite using `[norm_mul, norm_mul, norm_mul, hnorm, hnorm, mul_one, mul_one]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (ha.1 ξ)`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `ξ`. Simplify using `only [Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => by ring`. Use `_ = (M : ℂ)⁻¹ * ∑ m ∈ Finset.range M, ∑' ξ, c ξ * χ y ξ * a ξ * χ (m • y') ξ := by`. Rewrite using `[tsum_mul_left, Summable.tsum_finsetSum hs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `_ = 0 := by`. Rewrite using `[Finset.sum_eq_zero fun m _ => ?_, mul_zero]`. Rewrite using `[← ha.2.2 (y + m • y')]`. Use `congr 1`. Use function extensionality and compare the values at `ξ`.
-
-Rewrite using `[hadd]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem good_avg (hnorm : ∀ y ξ, ‖χ y ξ‖ = 1) (hadd : ∀ y y' ξ, χ (y + y') ξ = χ y ξ * χ y' ξ)
     (h0 : ∀ y, χ y 0 = 1) (hc : Summable fun ξ => ‖c ξ‖) {a : G → ℂ} (ha : Good χ c a) (y' : Y) {M : ℕ}
@@ -100,15 +98,15 @@ theorem good_avg (hnorm : ∀ y ξ, ‖χ y ξ‖ = 1) (hadd : ∀ y y' ξ, χ (
           congr 1; funext ξ; rw [hadd]; ring
 
 /- English proof (translation)
-Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => intro _ ε _; exact ⟨fun _ => 1, h1, by simp⟩`. Consider the case `insert ξ T hξT ih`. Introduce `h0T ε hε`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hξ0 : ξ ≠ 0` using `fun e => h0T (by rw [← e]; exact Finset.mem_insert_self ξ T)`. Take `⟨a, ha, haT⟩` from `ih (fun e => h0T (Finset.mem_insert_of_mem e)) ε hε`. Take `⟨y', hy'⟩` from `hsep ξ hξ0`. Establish `hd : 0 < ‖χ y' ξ - 1‖` using `norm_pos_iff.2 (sub_ne_zero.2 hy')`. Take `⟨M, hM⟩` from `exists_nat_gt (2 / (ε * ‖χ y' ξ - 1‖))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hM0 : 0 < M`. Establish `: (0 : ℝ) < M` using `lt_trans (by positivity) hM`. Conclude with `this` after adjusting the coercions. Use `⟨_, good_avg hnorm hadd h0 hc ha y' hM0, fun η hη => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_insert.1 hη with rfl | hη` into its components or cases. Repeatedly rewrite using `[chi_nsmul χ hadd hzero]`. Establish `hMpos : (0 : ℝ) < M` using `by exact_mod_cast hM0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul, div_le_iff₀ (by positivity)]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hM` using `[div_lt_iff₀ (by positivity)]`. Establish `: ε * (M * ‖χ y' η - 1‖) = M * (ε * ‖χ y' η - 1‖)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_good_small (hnorm : ∀ y ξ, ‖χ y ξ‖ = 1) (hadd : ∀ y y' ξ, χ (y + y') ξ = χ y ξ * χ y' ξ)
     (hzero : ∀ ξ, χ 0 ξ = 1) (h0 : ∀ y, χ y 0 = 1) (hsep : ∀ ξ, ξ ≠ 0 → ∃ y, χ y ξ ≠ 1)
@@ -144,17 +142,15 @@ theorem exists_good_small (hnorm : ∀ y ξ, ‖χ y ξ‖ = 1) (hadd : ∀ y y'
         _ = ε := mul_one ε
 
 /- English proof (translation)
-Establish `h1 : Good χ c fun _ => 1` using `⟨fun _ => by simp, rfl, fun y => by simpa using h y⟩`. Use `norm_le_zero_iff.1 (le_of_forall_pos_le_add fun δ hδ => ?_)` and prove the remaining obligations. Use `set S := ∑' ξ, ‖c ξ‖`. Establish `hS : 0 ≤ S` using `tsum_nonneg fun _ => norm_nonneg _`. Take `⟨s₀, hs₀⟩` from `Filter.eventually_atTop.1 ((tendsto_tsum_compl_atTop_zero fun ξ => ‖c ξ‖).eventually (gt_mem_nhds (half_pos hδ)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set s := insert (0 : G) s₀`. Establish `htail` using `hs₀ s (Finset.subset_insert _ _)`. Establish `hε : 0 < δ / (2 * (S + 1))` using `by positivity`. Take `⟨a, ha, haT⟩` from `exists_good_small hnorm hadd hzero h0 hsep hc h1 (s.erase 0) (Finset.notMem_erase 0 s) _ hε`. Establish `hsumm : Summable fun ξ => c ξ * a ξ` using `Summable.of_norm_bounded hc fun ξ => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (ha.1 ξ)`. Establish `hsum : ∑' ξ, c ξ * a ξ = 0` using `by simpa [hzero] using ha.2.2 0`. Establish `hsplit` using `hsumm.sum_add_tsum_compl (s := s)`. Rewrite `hsplit` using `[hsum, ← Finset.add_sum_erase s _ (Finset.mem_insert_self 0 s₀), ha.2.1, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hc0 : c 0 = -(∑ x ∈ s.erase 0, c x * a x + ∑' x : ↑((s : Set G)ᶜ), c x * a x)`. Take the linear combination `hsplit`. Establish `hA : ‖∑ x ∈ s.erase 0, c x * a x‖ ≤ δ / (2 * (S + 1)) * S`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, mul_comm]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right (haT x hx) (norm_nonneg _)`. Use `_ = δ / (2 * (S + 1)) * ∑ x ∈ s.erase 0, ‖c x‖ := (Finset.mul_sum _ _ _).symm`. Use `_ ≤ δ / (2 * (S + 1)) * S := by gcongr; exact hc.sum_le_tsum _ fun _ _ => norm_nonneg _`. Establish `hB : ‖∑' x : ↑((s : Set G)ᶜ), c x * a x‖ ≤ ∑' x : {x // x ∉ s}, ‖c x‖`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hSS : δ / (2 * (S + 1)) * S ≤ δ / 2`. Rewrite using `[div_mul_eq_mul_div, div_le_div_iff₀ (by positivity) two_pos]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hc0, norm_neg, zero_add]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coeff_zero_eq_zero (hnorm : ∀ y ξ, ‖χ y ξ‖ = 1) (hadd : ∀ y y' ξ, χ (y + y') ξ = χ y ξ * χ y' ξ)
     (hzero : ∀ ξ, χ 0 ξ = 1) (h0 : ∀ y, χ y 0 = 1) (hsep : ∀ ξ, ξ ≠ 0 → ∃ y, χ y ξ ≠ 1)
@@ -202,23 +198,21 @@ theorem coeff_zero_eq_zero (hnorm : ∀ y ξ, ‖χ y ξ‖ = 1) (hadd : ∀ y y
 end Abstract
 
 /- English proof (translation)
-Introduce `D ψ hψ κ _ φ hφ φ' hφ' h`. Establish `hn : ∀ a, ‖ψ a‖ = 1` using `hψ.1.2.1`. Take `⟨a₀, ha₀⟩` from `hψ.1.2.2.2`. Set `ι : (κ → D.host.F) → (κ → AF D.host.F)` to `fun ξ i => algebraMap D.host.F (AF D.host.F) (ξ i)`. Establish `hι0 : ι 0 = 0` using `by funext i; simp [ι]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[← sub_eq_zero]`. Establish `hΦ : (fun z => (φ - φ') (z + x)) ∈ GlobalTheory.WeilM.schA D.host.F κ` using `GlobalTheory.SchwartzTranslate.schA_translate D.host.F x (sub_mem hφ hφ')`. Establish `hc : Summable fun ξ => ‖(φ - φ') (ι ξ + x)‖`. Use `GlobalTheory.WeilM.summable_norm_of_mem_schA D.host.F hΦ using 1` and compare the differences between its conclusion and the goal.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `sφ : Summable fun ξ => ‖φ (ι ξ + x)‖`. Use `GlobalTheory.WeilM.summable_norm_of_mem_schA D.host.F (GlobalTheory.SchwartzTranslate.schA_translate D.host.F x hφ) using 1` and compare the differences between its conclusion and the goal. Establish `sφ' : Summable fun ξ => ‖φ' (ι ξ + x)‖`. Use `GlobalTheory.WeilM.summable_norm_of_mem_schA D.host.F (GlobalTheory.SchwartzTranslate.schA_translate D.host.F x hφ') using 1` and compare the differences between its conclusion and the goal. Establish `key` using `coeff_zero_eq_zero (χ := fun (y : κ → AF D.host.F) (ξ : κ → D.host.F) => ψ (ι ξ ⬝ᵥ y)) (c := fun ξ => (φ - φ') (ι ξ + x)) (fun y ξ => hn _) (fun y y' ξ => by simp only [dotProduct_add, AddChar.map_add_eq_mul]) (fun ξ => by simp only [dotProduct_zero, AddChar.map_zero_eq_one]) (fu …`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `Function.ne_iff.1 hξ`. Establish `hi' : ξ i ≠ 0` using `hi`. Use `⟨Pi.single i (algebraMap D.host.F (AF D.host.F) (ξ i)⁻¹ * a₀), ?_⟩` and prove the remaining obligations. Use `show ψ (ι ξ ⬝ᵥ Pi.single i (algebraMap D.host.F (AF D.host.F) (ξ i)⁻¹ * a₀)) ≠ 1`. Rewrite using `[dotProduct_single]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ψ (algebraMap D.host.F (AF D.host.F) (ξ i) * (algebraMap D.host.F (AF D.host.F) (ξ i)⁻¹ * a₀)) ≠ 1`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hi', map_one, one_mul]`. Conclude with `ha₀)`. Use `hc (fun y => ?_)`. Simplify `key` using `[hι0]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h'` using `h (x, y)`. Simplify using `only [GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.schr, AddChar.map_add_eq_mul] at h'`. Use `set b := ψ (⅟(2 : AF D.host.F) * (x ⬝ᵥ y))`. Establish `hb : b ≠ 0`. Introduce `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖b‖ = 1` using `hn _`. Rewrite `h1` using `[e, norm_zero]`. Conclude with `zero_ne_one h1`. Establish `s1 : Summable fun ξ : κ → D.host.F => ψ (ι ξ ⬝ᵥ y) * b * φ (ι ξ + x)` using `Summable.of_norm_bounded sφ fun ξ => by rw [norm_mul, norm_mul, hn, hn, one_mul, one_mul]`. Establish `s2 : Summable fun ξ : κ → D.host.F => ψ (ι ξ ⬝ᵥ y) * b * φ' (ι ξ + x)` using `Summable.of_norm_bounded sφ' fun ξ => by rw [norm_mul, norm_mul, hn, hn, one_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : ∑' ξ : κ → D.host.F, (ψ (ι ξ ⬝ᵥ y) * b * φ (ι ξ + x) - ψ (ι ξ ⬝ᵥ y) * b * φ' (ι ξ + x)) = 0`. Rewrite using `[s1.tsum_sub s2, sub_eq_zero]`. Conclude with `h'`. Establish `e2 : ∑' ξ : κ → D.host.F, (φ - φ') (ι ξ + x) * ψ (ι ξ ⬝ᵥ y) = b⁻¹ * ∑' ξ : κ → D.host.F, (ψ (ι ξ ⬝ᵥ y) * b * φ (ι ξ + x) - ψ (ι ξ ⬝ᵥ y) * b * φ' (ι ξ + x))`. Rewrite using `[← tsum_mul_left]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `ξ`. Simplify using `only [Pi.sub_apply]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e2, e, mul_zero]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (κ : Type) [Fintype κ],
     ∀ φ ∈ GlobalTheory.WeilM.schA D.host.F κ, ∀ φ' ∈ GlobalTheory.WeilM.schA D.host.F κ,

@@ -7,9 +7,9 @@ open UpperTheory.V.Af.Bc (cPl)
 open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm UpperTheory.V.Z.Tf.GaloisFromTraceFormula
 
 /- English proof (translation)
-Proceed by induction on `hab generalizing c with`. Consider the case `zero`. Introduce `h0`. Rewrite `h0` using `[Multiset.rel_zero_left]`. Substitute `h0` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `Multiset.Rel.zero`. Consider the case `cons hxy _ ih`. Introduce `hc`. Take `⟨z, zs, hz, hzs, rfl⟩` from `Multiset.rel_cons_left.1 hc`. Conclude with `Multiset.Rel.cons (h _ _ _ hxy hz) (ih hzs)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem rel_comp {r s t : ℂ → ℂ → Prop} (h : ∀ x y z, r x y → s y z → t x z)
     {a b c : Multiset ℂ} (hab : Multiset.Rel r a b) :
@@ -26,11 +26,11 @@ private theorem rel_comp {r s t : ℂ → ℂ → Prop} (h : ∀ x y z, r x y �
     exact Multiset.Rel.cons (h _ _ _ hxy hz) (ih hzs)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_pos, by simp⟩`. Consider the case `insert p S _ ih`. Take `⟨ε, h0, hε⟩` from `ih`. Distinguish the cases in `hp : p.1 = p.2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `⟨ε, h0, fun q hq hne => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hq with rfl | hq` into its components or cases. Conclude with `absurd hp hne`. Conclude with `hε q hq hne`. Establish `hpos : 0 < ‖p.1 - p.2‖` using `norm_pos_iff.2 (sub_ne_zero.2 hp)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨min ε (‖p.1 - p.2‖ / 2), lt_min h0 (half_pos hpos), fun q hq hne => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hq with rfl | hq` into its components or cases. Conclude with `(min_le_right _ _).trans_lt (half_lt_self hpos)`. Conclude with `(min_le_left _ _).trans_lt (hε q hq hne)`.
+A detailed English derivation is pending.
 -/
 private theorem exists_sep (S : Finset (ℂ × ℂ)) :
     ∃ ε : ℝ, 0 < ε ∧ ∀ p ∈ S, p.1 ≠ p.2 → ε < ‖p.1 - p.2‖ := by
@@ -51,7 +51,7 @@ private theorem exists_sep (S : Finset (ℂ × ℂ)) :
       · exact (min_le_left _ _).trans_lt (hε q hq hne)
 
 /- English proof (translation)
-Take `⟨ε, h0, hε⟩` from `exists_sep (a.toFinset ×ˢ b.toFinset)`. Use `Multiset.rel_eq.1 ((h ε h0).mono fun x hx y hy hxy => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `absurd hxy (not_le.2 (hε (x, y) (by simp [hx, hy]) hne))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem eq_of_rel {a b : Multiset ℂ}
     (h : ∀ ε : ℝ, 0 < ε → Multiset.Rel (fun x y => ‖x - y‖ ≤ ε) a b) : a = b := by
@@ -62,11 +62,11 @@ private theorem eq_of_rel {a b : Multiset ℂ}
   exact absurd hxy (not_le.2 (hε (x, y) (by simp [hx, hy]) hne))
 
 /- English proof (translation)
-Introduce `E _ _ _`. Use `⟨fun m x y hx hy => ?_, fun m x z z₀ hx hz τ ε hε => ?_, fun m m' x x' hx hx' τ ε hε => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Use `eq_of_rel fun ε hε => ?_` and prove the remaining obligations. Take `⟨k, h1, h2⟩` from `((hx τ (ε / 2) (half_pos hε)).and (hy τ (ε / 2) (half_pos hε))).exists`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `rel_comp (fun p q w (hpq : ‖q - p‖ ≤ ε / 2) (hqw : ‖q - w‖ ≤ ε / 2) => ?_) (Multiset.rel_flip.2 h1) h2` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hz' : ∀ᶠ k in atTop, ‖z k - z₀‖ ≤ ε / 2` using `(Metric.tendsto_nhds.1 hz (ε / 2) (half_pos hε)).mono fun k hk => by`. Rewrite `hk` using `[dist_eq_norm]`. Conclude with `hk.le`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hx τ (ε / 2) (half_pos hε), hz'] with k h1 h2`. Use `Multiset.rel_map.2 (h1.mono fun p _ q _ hpq => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `filter_upwards [hx τ ε hε, hx' τ ε hε] with k h1 h2`. Conclude with `h1.add h2`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GaloisFromTraceFormula.mtoLaws :
     MToLaws := by

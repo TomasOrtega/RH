@@ -8,7 +8,7 @@ open MvPolynomial GlobalTheory.ChowHt GlobalTheory.CompHt Filter
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Chow.exists_prime_saturation_generic_section` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPrimeSaturationGenericHyperplaneSection.lean&line=60#L60)
 -/

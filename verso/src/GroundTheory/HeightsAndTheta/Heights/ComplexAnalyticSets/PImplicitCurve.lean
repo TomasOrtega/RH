@@ -12,9 +12,9 @@ noncomputable section
 namespace ImplicitCurve
 
 /- English proof (translation)
-Use `analyticOnNhd_pi_iff.2 fun j => ?_` and prove the remaining obligations. Establish `hj : DifferentiableOn ℂ (fun t => Φ t j) U` using `differentiableOn_pi.1 hΦ j`. Use `IndefiniteRowSideFullHecke.ComplexSets.analyticOnNhd_of_continuousOn_of_separately hU hj.continuousOn fun w hw i => ?_` and prove the remaining obligations. Establish `hw : DifferentiableAt ℂ (fun t => Φ t j) (Function.update w i (w i))`. Rewrite using `[Function.update_eq_self]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hj w hw).differentiableAt (hU.mem_nhds hw)`. Conclude with `hw.comp (w i) (hasFDerivAt_update w (w i)).differentiableAt`.
+A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_of_differentiableOn {m p : ℕ} {U : Set (Fin m → ℂ)}
     {Φ : (Fin m → ℂ) → Fin p → ℂ} (hU : IsOpen U) (hΦ : DifferentiableOn ℂ Φ U) :
@@ -28,25 +28,21 @@ theorem analyticOnNhd_of_differentiableOn {m p : ℕ} {U : Set (Fin m → ℂ)}
   exact hw.comp (w i) (hasFDerivAt_update w (w i)).differentiableAt
 
 /- English proof (translation)
-Introduce `n k γ R L s hγ hs hbij`. Use `set F : (Fin (k + 1) → ℂ) → Fin (k + 1) → ℂ := fun t => vecCons (t 0) (L *ᵥ γ t) with hF`. Establish `hFd : DifferentiableOn ℂ F (ball 0 R)`. Use `differentiableOn_pi.2 fun i => Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify `(differentiableOn_pi.1 (differentiableOn_id (s := ball (0 : Fin (k + 1) → ℂ) R)) 0)` using `[hF]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `only [hF, cons_val_succ, mulVec, dotProduct]`. Conclude with `DifferentiableOn.fun_sum fun l _ => (differentiableOn_pi.1 hγ l).const_mul _`. Establish `hFa` using `analyticOnNhd_of_differentiableOn isOpen_ball hFd`. Use `set e := (LinearEquiv.ofBijective (fderiv ℂ F s : (Fin (k + 1) → ℂ) →ₗ[ℂ] Fin (k + 1) → ℂ) hbij).toContinuousLinearEquiv`. Establish `he : (e : (Fin (k + 1) → ℂ) →L[ℂ] Fin (k + 1) → ℂ) = fderiv ℂ F s` using `by ext1 x; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hst : HasStrictFDerivAt F (e : (Fin (k + 1) → ℂ) →L[ℂ] Fin (k + 1) → ℂ) s`. Rewrite using `[he]`. Conclude with `(hFa s hs).hasStrictFDerivAt`. Establish `hV : ∀ᶠ t in 𝓝 s, (t ∈ ball (0 : Fin (k + 1) → ℂ) R ∧ fderiv ℂ F t ∈ Set.range ((↑) : ((Fin (k + 1) → ℂ) ≃L[ℂ] (Fin (k + 1) → ℂ)) → _)) ∧ t ∈ (hst.toOpenPartialHomeomorph F).source` using `(Filter.Eventually.and (isOpen_ball.mem_nhds hs) ((hFa s hs).fderiv.continuousAt.preimage_mem_nhds (ContinuousLinearEquiv.isOpen.mem_nhds ⟨e, he⟩))).and ((hst.toOpenPartialHomeomorph F).open_source.mem_nhds hst.mem_toOpenPartialHomeomorph_source)`. Take `⟨ε, hε, hεV⟩` from `Metric.mem_nhds_iff.1 hV`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Ψ := (hst.toOpenPartialHomeomorph F).restrOpen (ball s ε) isOpen_ball`. Establish `hΨs : Ψ.source = (hst.toOpenPartialHomeomorph F).source ∩ ball s ε` using `OpenPartialHomeomorph.restrOpen_source _ _ _`. Establish `hsΨ : s ∈ Ψ.source` using `hΨs ▸ ⟨hst.mem_toOpenPartialHomeomorph_source, mem_ball_self hε⟩`. Establish `hsrc : ∀ t ∈ Ψ.source, t ∈ ball 0 R ∧ ∃ e' : (Fin (k + 1) → ℂ) ≃L[ℂ] (Fin (k + 1) → ℂ), HasFDerivAt Ψ (e' : _ →L[ℂ] _) t`. Introduce `t ht`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨htR, e', he'⟩, -⟩` from `hεV (hΨs ▸ ht).2`. Use `⟨htR, e', ?_⟩` and prove the remaining obligations. Rewrite using `[he']`. Conclude with `(hFa t htR).differentiableAt.hasFDerivAt`. Take `⟨r, hr, hrT⟩` from `Metric.isOpen_iff.1 Ψ.open_target (F s) (Ψ.map_source hsΨ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `set p : (Fin 1 → ℂ) → Fin (k + 1) → ℂ := fun τ => vecCons (s 0 + τ 0) (L *ᵥ γ s) with hp`. Establish `hpT : ∀ τ ∈ ball (0 : Fin 1 → ℂ) r, p τ ∈ Ψ.target`. Introduce `τ hτ`. Use `hrT ((dist_pi_lt_iff hr).2 fun i => Fin.cases ?_ (fun j => ?_) i)` and prove the remaining obligations. Simplify `(norm_le_pi_norm τ 0).trans_lt (mem_ball_zero_iff.1 hτ)` using `[hp, hF, dist_eq_norm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `hr` using `[hp, hF]`. Use `⟨r, hr, fun τ => Ψ.symm (p τ), fun τ hτ => ?_, ?_, fun τ hτ => ?_, ?_⟩` and prove the remaining obligations. Establish `hpd : Differentiable ℂ p` using `differentiable_pi.2 fun i => Fin.cases (by simpa [hp] using (differentiable_const (s 0)).add (differentiable_pi.1 differentiable_id 0)) (fun j => by simp [hp]) i`. Take `⟨-, e', he'⟩` from `hsrc _ (Ψ.map_target (hpT τ hτ))`. Conclude with `((Ψ.hasFDerivAt_symm (hpT τ hτ) he').differentiableAt.comp τ (hpd τ)).differentiableWithinAt`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h0 : p 0 = F s` using `by simp [hp, hF] show Ψ.symm (p 0) = s`. Rewrite using `[h0]`. Conclude with `Ψ.left_inv hsΨ`. Establish `h2 : F (Ψ.symm (p τ)) = p τ` using `Ψ.right_inv (hpT τ hτ)`. Use `⟨(hsrc _ (Ψ.map_target (hpT τ hτ))).1, ?_, ?_⟩` and prove the remaining obligations.
-
-Simplify `congrFun h2 0` using `[hF, hp]`. Simplify `congrArg Fin.tail h2` using `[hF, hp]`. Use `⟨Ψ.source ∩ {t | ‖t 0 - s 0‖ < r}, Filter.inter_mem (Ψ.open_source.mem_nhds hsΨ) ((isOpen_lt ((continuous_apply 0).sub continuous_const).norm continuous_const).mem_nhds (by simpa using hr)), ?_⟩` and prove the remaining obligations. Introduce and unpack `t ⟨ht, htr⟩ hL`. Use `⟨fun _ => t 0 - s 0, by simpa [pi_norm_const] using htr, ?_⟩` and prove the remaining obligations.
-
-Establish `hpt : p (fun _ => t 0 - s 0) = F t` using `by simp [hp, hF, hL]`. Simplify using `only`. Rewrite using `[hpt]`. Conclude with `Ψ.left_inv ht`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof : ImplicitCurve.Statement := by
   intro n k γ R L s hγ hs hbij

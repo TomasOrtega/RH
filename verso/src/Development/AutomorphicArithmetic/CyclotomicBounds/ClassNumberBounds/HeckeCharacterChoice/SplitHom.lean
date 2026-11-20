@@ -14,7 +14,7 @@ def conjHom (φ : 𝓞 E →+* ZMod p) (σ : E ≃ₐ[K] E) : 𝓞 E →+* ZMod 
   φ.comp (RingOfIntegers.mapRingHom (σ : E →+* E))
 
 /- English proof (translation)
-Use `Fact.mk hp` as an intermediate fact. Conclude with `RingHom.ker_isPrime f`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ker_isPrime {R : Type*} [CommRing R] (hp : p.Prime) (f : R →+* ZMod p) :
     (RingHom.ker f).IsPrime := by

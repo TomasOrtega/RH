@@ -14,9 +14,9 @@ namespace GlobalTheory.ValuationAlmostSeparation
 variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
 /- English proof (translation)
-Take `⟨P, hP0, hPs⟩` from `(h.alg.isAlgebraic s)`. Establish `hQ : P.map (algebraMap (O0 p) Ω) ≠ 0` using `(Polynomial.map_ne_zero_iff h.inj).2 hP0`. Use `(P.map (algebraMap (O0 p) Ω)).roots.toFinset.finite_toSet.subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Simplify using `only [Finset.mem_coe, Multiset.mem_toFinset]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Polynomial.mem_roots hQ, Polynomial.IsRoot, Polynomial.eval_map_algebraMap]`. Use `show Polynomial.aeval ((g : Gal p Ω) s) P = 0`. Rewrite using `[Polynomial.aeval_algEquiv, AlgHom.comp_apply]`. Simplify using `[hPs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orbit_finite (h : IsClo p Ω) (H : Subgroup (Gal p Ω)) (s : Ω) :
     (MulAction.orbit H s).Finite := by
@@ -33,9 +33,7 @@ theorem orbit_finite (h : IsClo p Ω) (H : Subgroup (Gal p Ω)) (s : Ω) :
   simp [hPs]
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx g`. Conclude with `hx ⟨g, Subgroup.mem_top g⟩`. Introduce `hx g`.
-
-Conclude with `hx g.1`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fix_top (H : Subgroup (Gal p Ω)) :
     Fix Ω (⊤ : Subgroup H) = Fix Ω H := by
@@ -51,9 +49,9 @@ end GlobalTheory.ValuationAlmostSeparation
 open GlobalTheory.ValuationAlmostSeparation
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ hp2 hclo T`. Take `⟨v, hint, hinv, hp0, hp1⟩` from `GlobalTheory.T.exists_galoisInvariant_valuation_integers_eq_integral p Ω hclo`. Use `⟨v, hint, hinv, hp0, hp1, fun S => ?_⟩` and prove the remaining obligations. Take `⟨U, hUn, hUf, hUS, hUsep⟩` from `GlobalTheory.T.exists_normal_finiteIndex_fixing_finite_orbits Ω (↥(⨅ n, Gn T n)) S (fun s _ => orbit_finite hclo _ s)`. Use `⟨U, hUn, hUf, hUS, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hR` using `GlobalTheory.T.approxPthRoot_fixedField_cyclotomic_tower p Ω hp2 hclo T v hint hp0 hp1`. Use `GlobalTheory.T.almostPurity_of_normal_finiteIndex_subgroup Ω v p (Fact.out) hp0 hp1 (↥(⨅ n, Gn T n)) (fun g x => hinv g.1 x) (T.ζ 1) (by simpa using T.prim 1) ?_ (by rw [fix_top]; exact hR) U hUn hUf hUsep` and prove the remaining obligations. Introduce `g`. Establish `hg : (g : Gal p Ω) ∈ Gn T 1` using `(iInf_le (fun n => Gn T n) 1) g.2`. Conclude with `hg.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ValuationAlmostSeparation.exists_valuation_almostSep : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], p ≠ 2 → IsClo p Ω → ∀ (T : Tower p Ω), ∃ v : Valuation Ω ℝ≥0, (∀ x : Ω, v x ≤ 1 ↔ IsInt p x) ∧ (∀ (g : Gal p Ω) (x : Ω), v (g x) = v x) ∧ 0 < v (p : Ω) ∧ v (p : Ω) < 1 ∧ ∀ S : Finset Ω, ∃ U : Subgroup ↥(⨅ n, Gn T n), U.Normal ∧ U.FiniteIndex ∧ (∀ s ∈ S, s ∈ Fix Ω U) ∧ AlmostSep v U := by
   intro p _ Ω _ _ hp2 hclo T

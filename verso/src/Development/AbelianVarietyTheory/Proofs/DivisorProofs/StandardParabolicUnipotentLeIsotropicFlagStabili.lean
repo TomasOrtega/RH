@@ -14,25 +14,25 @@ namespace GlobalTheory.StdParFlag
 open Matrix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ n J _ r X Y _ S T m _ _ _`. Establish `key : ∀ p ∈ GlobalTheory.StdPar.unip σ J X S, ∃ B : Matrix (Fin (m.val + 1)) (Fin (m.val + 1)) (AF F ⊗[F] E), B.BlockTriangular (fun i => (T.filter fun k => k.val < i.val).card) ∧ (matHom _ σ J p).1 * adMat F (GlobalTheory.StdPar.initCols X m) = adMat F (GlobalTheory.StdPar.initC …`. Introduce `p hp`. Establish `span_lemma : ∀ (i : Fin (m.val + 1)) (I : Set (Fin r)), (∀ l ∈ I, l.val < i.val) → ∀ y ∈ GlobalTheory.StdPar.colSpan F X I, ∃ a : Fin (m.val + 1) → AF F ⊗[F] E, (∀ j, i.val ≤ j.val → a j = 0) ∧ adMat F (GlobalTheory.StdPar.initCols X m) *ᵥ a = y`. Introduce `i I hI y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Establish `hl' : l.val < m.val + 1` using `by have := hI l hl; have := i.2; omega`. Use `⟨Pi.single ⟨l.val, hl'⟩ 1, fun j hj => Pi.single_eq_of_ne (fun e => ?_) _, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hI l hl` as an intermediate fact. Rewrite `hj` using `[e]`. Simplify using `at hj`. Use linear arithmetic over natural numbers and integers. Rewrite using `[mulVec_single_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, fun _ _ => rfl, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a + b, fun j hj => by simp [ha j hj, hb j hj], by rw [mulVec_add]⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `⟨c • a, fun j hj => by simp [ha j hj], by rw [mulVec_smul]⟩`. Establish `hcol : ∀ i : Fin (m.val + 1), ∃ a : Fin (m.val + 1) → AF F ⊗[F] E, (∀ j, (fun k : Fin (m.val + 1) => k.val) i ≤ (fun k : Fin (m.val + 1) => k.val) j → a j = 0) ∧ ((matHom _ σ J p).1 - 1) *ᵥ (fun k => inclR (F` using `F) (AF F) (GlobalTheory.StdPar.initCols X m k i)) = adMat F (GlobalTheory.StdPar.initCols X m) *ᵥ a := by`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `i`. Establish `h` using `(Subgroup.mem_iInf.1 hp.1 (Fin.castLE m.2 i)).2 _ (Submodule.subset_span ⟨_, rfl, rfl⟩)`. Establish `hv : (fun k => inclR (F` using `F) (AF F) (GlobalTheory.StdPar.initCols X m k i)) = (adMat F X)ᵀ (Fin.castLE m.2 i) := rfl`. Rewrite using `[hv, sub_mulVec, one_mulVec]`. Take `⟨a, ha, e⟩` from `span_lemma i _ (fun l hl => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, _, hlk, hki⟩` from `hl`. Use `Fin.lt_def.1 (lt_of_le_of_lt hlk hki)` as an intermediate fact. Simplify using `using this) _ h`. Conclude with `⟨a, ha, e.symm⟩`. Take `⟨A, hA, e⟩` from `lower_iff.1 hcol`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨1 + A, fun l j hlt => ?_, ?_⟩` and prove the remaining obligations. Establish `hjl : j.val ≤ l.val`. Assume the negation of the conclusion as `hc`. Use `absurd hlt (not_lt.2 (Finset.card_le_card fun k hk => ?_))` and prove the remaining obligations. Simplify using `only [Finset.mem_filter] at hk ⊢`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `⟨hk.1, by omega⟩`. Establish `hne : l ≠ j` using `fun h => by subst h; exact lt_irrefl _ hlt`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne hne, hA l j hjl, add_zero]`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, ← e, Matrix.sub_mul, Matrix.one_mul, add_sub_cancel]`. Introduce `p hp`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨key p hp, key p⁻¹ (inv_mem hp)⟩`.
+Supply the required witnesses or components.
 -/
 theorem unip_le_parFlag : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y →

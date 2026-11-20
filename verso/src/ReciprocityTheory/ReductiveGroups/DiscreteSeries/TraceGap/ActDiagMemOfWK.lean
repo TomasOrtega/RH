@@ -16,7 +16,7 @@ section T
 variable {N : Type*} [AddCommGroup N] [Module ℂ N]
 
 /- English proof (translation)
-Establish `e : ∀ f : Module.End ℂ (Fock n), LinearMap.lTensor N f = Module.End.lTensorAlgHom ℂ (Fock n) N f` using `fun f => rfl`. Unfold `sgE`. Apply the tactic sequence `split_ifs <;> rw [e] <;> simp only [map_sum, map_mul, map_neg, map_zero] <;> rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgE_cpT (a b : Fin n) :
     sgE ε (cpT (N := N)) cmT a b = LinearMap.lTensor N (sgE ε (cpFock (n := n)) cmFock a b) := by
@@ -26,7 +26,7 @@ theorem sgE_cpT (a b : Fin n) :
   split_ifs <;> rw [e] <;> simp only [map_sum, map_mul, map_neg, map_zero] <;> rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [tcoef_expand y]`. Simplify using `only [map_sum, tcoef_tmul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tcoef_eq_sum (φ : Module.Dual ℂ (Fock n)) (y : TensorProduct ℂ N (Fock n)) :
     tcoef φ y = ∑ s : Finset (Fin (n * n)), φ (fockBasis n s) • tcoef ((fockBasis n).coord s) y := by
@@ -34,13 +34,13 @@ theorem tcoef_eq_sum (φ : Module.Dual ℂ (Fock n)) (y : TensorProduct ℂ N (F
   simp only [map_sum, tcoef_tmul]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m f`. Simplify using `only [actM, diagE, sgE_cpT, eT, sgX, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.add_apply, TensorProduct.map_tmul, LinearMap.lTensor_tmul, LinearMap.id_apply, map_sum, map_smul, map_add, tcoef_tmul, LinearMap.coe_comp, Function.comp_apply, smul_add, Finset.sum_add_distr …`. Rewrite using `[Finset.smul_sum, Finset.sum_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Consider the case `add y y' hy hy'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_add, map_add, hy, hy', map_add, map_add, map_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem tco_actDiag (E : Fin n → Fin n → Module.End ℂ N) (X : Matrix (Fin n) (Fin n) ℂ)
     (y : TensorProduct ℂ N (Fock n)) (s : Finset (Fin (n * n))) :
@@ -72,7 +72,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Use `conv_lhs => rw [tcoef_expand y]`. Simplify using `only [map_sum, wK, TensorProduct.map_tmul, tcoef_tmul, AlgHom.toLinearMap_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tco_wK (hD : IsDerivedOn ε σ D E) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε)
     (y : TensorProduct ℂ D (Fock n)) (s : Finset (Fin (n * n))) :
@@ -82,13 +82,13 @@ theorem tco_wK (hD : IsDerivedOn ε σ D E) {k : Matrix (Fin n) (Fin n) ℂ} (hk
   simp only [map_sum, wK, TensorProduct.map_tmul, tcoef_tmul, AlgHom.toLinearMap_apply]
 
 /- English proof (translation)
-Establish `hXh : Xᴴ = -X` using `((HW.inK_iff' ε X).1 hX).1`. Establish `hfun : (fun t : ℝ => ((tcoef ((fockBasis n).coord s) (wK hD (exp_mem_Kset (USum.inK_real_smul hX t)) y) : D) : H)) = fun t : ℝ => ∑ s', (fockBasis n).coord s (ff ε (NormedSpace.exp ((t : ℂ) • X)) (fockBasis n s')) • σ (NormedSpace.exp ((t : ℂ) • X)) ((tcoef ((fockBasis n).coord s …`. Use function extensionality and compare the values at `t`. Rewrite using `[tco_wK, Submodule.coe_sum]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hfun]`. Establish `hc : ∀ s', HasDerivAt (fun t : ℝ => (fockBasis n).coord s (ff ε (NormedSpace.exp ((t : ℂ) • X)) (fockBasis n s'))) ((fockBasis n).coord s (sgX ε X (fockBasis n s'))) 0`. Introduce `s'`. Use `hasDerivAt_pi.1 (ff_exp_hasDeriv (ε := ε) hXh (fockBasis n s')) s` as an intermediate fact. Simplify `this` using `only [Module.Basis.equivFun_apply, Module.Basis.coord_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `HasDerivAt.fun_sum (u := Finset.univ) fun s' _ => (hc s').fun_smul (hD.deriv X hX.1 (tcoef ((fockBasis n).coord s') y))`. Use `h using 1` and compare the differences between its conclusion and the goal. Establish `h0 : NormedSpace.exp (((0 : ℝ) : ℂ) • X) = 1` using `by simp`. Simplify using `only [h0, ff_one, AlgHom.id_apply, hσ.1.1, ContinuousLinearMap.one_apply, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Rewrite using `[tco_actDiag, Submodule.coe_add, tcoef_eq_sum ((fockBasis n).coord s ∘ₗ sgX ε X) y, Submodule.coe_sum, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Finset.sum_eq_single s (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tco_wK_hasDeriv (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : inK ε X) (y : TensorProduct ℂ D (Fock n)) (s : Finset (Fin (n * n))) :
@@ -131,9 +131,9 @@ theorem coordH_apply (y : TensorProduct ℂ D (Fock n)) (s : Finset (Fin (n * n)
     coordH y s = ((tcoef ((fockBasis n).coord s) y : D) : H) := rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `y hy`. Rewrite `hy` using `[LinearMap.mem_ker]`. Rewrite using `[Submodule.mem_bot, tcoef_expand y]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ((tcoef ((fockBasis n).coord s) y : D) : H) = 0` using `congrFun hy s`. Rewrite using `[show tcoef ((fockBasis n).coord s) y = 0 from Subtype.ext this, TensorProduct.zero_tmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordH_injective : Function.Injective (coordH (D := D) (n := n)) := by
   rw [← LinearMap.ker_eq_bot, eq_bot_iff]
@@ -145,9 +145,9 @@ theorem coordH_injective : Function.Injective (coordH (D := D) (n := n)) := by
   rw [show tcoef ((fockBasis n).coord s) y = 0 from Subtype.ext this, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Set `T` to `S'.map (coordH (D := D) (n := n))`. Establish `: FiniteDimensional ℂ T` using `Module.Finite.map S' coordH`. Establish `hTc : IsClosed (T : Set (Finset (Fin (n * n)) → H))` using `Submodule.closed_of_finiteDimensional T`. Establish `hder : HasDerivAt (fun t : ℝ => coordH (wK hD (exp_mem_Kset (USum.inK_real_smul hX t)) y)) (coordH (actM (diagE ε (eT E) cpT cmT) X y)) 0` using `hasDerivAt_pi.2 fun s => tco_wK_hasDeriv hσ hD hX y s`. Establish `h1 : ∀ t : ℝ, coordH (wK hD (exp_mem_Kset (USum.inK_real_smul hX t)) y) ∈ T` using `fun t => Submodule.mem_map_of_mem (hK _ _ y hy)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : coordH (actM (diagE ε (eT E) cpT cmT) X y) ∈ T` using `hTc.mem_of_tendsto hder.tendsto_slope_zero (Filter.Eventually.of_forall fun t => Submodule.smul_of_tower_mem _ _ (Submodule.sub_mem _ (h1 _) (h1 _)))`. Take `⟨w, hw, hweq⟩` from `Submodule.mem_map.1 hmem`. Rewrite `hw` using `[coordH_injective hweq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem actDiag_mem_of_wK (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (S' : Submodule ℂ (TensorProduct ℂ D (Fock n))) (hS : FiniteDimensional ℂ S')
@@ -169,11 +169,11 @@ theorem actDiag_mem_of_wK (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ
   rwa [coordH_injective hweq] at hw
 
 /- English proof (translation)
-Establish `h1` using `actDiag_mem_of_wK hσ hD S' hS hK (USum.inK_zM hab 1) hy`. Establish `h2` using `actDiag_mem_of_wK hσ hD S' hS hK (USum.inK_zM hab Complex.I) hy`. Rewrite `h1`, `h2` using `[USum.actM_zM]`. Establish `gen : ∀ x y : TensorProduct ℂ D (Fock n), x = (1 / 2 : ℂ) • ((x - y) - Complex.I • (Complex.I • x - (-Complex.I) • y))`. Introduce `x y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_sub Complex.I, smul_smul, smul_smul, show Complex.I * Complex.I = -1 from Complex.I_mul_I, show Complex.I * -Complex.I = 1 by rw [mul_neg, Complex.I_mul_I, neg_neg]]`. Use `module`. Establish `key : diagE ε (eT E) cpT cmT a b y = (1 / 2 : ℂ) • ((((1 : ℂ) • diagE ε (eT E) cpT cmT a b - star (1 : ℂ) • diagE ε (eT E) cpT cmT b a) y) - Complex.I • (((Complex.I • diagE ε (eT E) cpT cmT a b - star Complex.I • diagE ε (eT E) cpT cmT b a)) y))`. Simplify using `only [Complex.star_def, Complex.conj_I, map_one]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, one_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `gen _ _`. Rewrite using `[key]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ h1 (Submodule.smul_mem _ _ h2))`.
+A detailed English derivation is pending.
 -/
 theorem diagE_mem_of_wK (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (S' : Submodule ℂ (TensorProduct ℂ D (Fock n))) (hS : FiniteDimensional ℂ S')

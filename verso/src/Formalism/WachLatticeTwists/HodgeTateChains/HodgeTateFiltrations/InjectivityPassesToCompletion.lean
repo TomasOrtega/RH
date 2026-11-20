@@ -5,31 +5,29 @@ noncomputable section
 namespace Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic
 
 /- English proof (translation)
-Introduce `R _ Xm _ _ ϖ z hc hz X0 g hdense hsat hstab hinj0 hsur0`. Establish `huniq : ∀ p ∈ X0, ∀ q ∈ X0, g p - p = g q - q → p = q`. Introduce `p hp q hq h`. Establish `h1 : g (p - q) = p - q`. Rewrite using `[map_sub, sub_eq_sub_iff_add_eq_add, add_comm (p) (g q)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `sub_eq_sub_iff_add_eq_add.1 h` as an intermediate fact. Rewrite using `[this]`. Conclude with `sub_eq_zero.1 (hinj0 _ (X0.sub_mem hp hq) h1)`. Establish `key : ∀ (n : ℕ) (v' : Xm) (y : Xm), (ϖ ^ n) • v' ∈ X0 → y ∈ X0 → z • ((ϖ ^ n) • v') = g y - y → ∃ t, y = (ϖ ^ n) • t`. Introduce `n v' y hv hy hzy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, hvt⟩` from `hsat n v' hv`. Take `⟨yt, hyt, hzt⟩` from `hsur0 t ht`. Use `⟨yt, huniq _ hy _ (X0.smul_mem _ hyt) ?_⟩` and prove the remaining obligations. Rewrite using `[← hzy, hvt, map_smul, ← smul_sub, ← hzt, smul_comm]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Apply `hz` to reduce the goal to its premises. Apply `haus_of ϖ hc` to reduce the goal to its premises. Introduce `n`. Take `⟨x0, hx0, x', hxx⟩` from `hdense x n`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : g x0 - x0 = (ϖ ^ n) • (x' - g x')`. Establish `h2 : g x - x = 0` using `sub_eq_zero.2 hx`. Rewrite `h2` using `[hxx, map_add, map_smul]`. Rewrite using `[smul_sub]`. Establish `h3 : g x0 - x0 = (g x0 + ϖ ^ n • g x' - (x0 + ϖ ^ n • x')) + (ϖ ^ n • x' - ϖ ^ n • g x')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[h3, h2, zero_add]`. Establish `hmem : (ϖ ^ n) • (x' - g x') ∈ X0`. Rewrite using `[← h1]`. Conclude with `X0.sub_mem (hstab _ hx0) hx0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht⟩` from `key n (x' - g x') (z • x0) hmem (X0.smul_mem _ hx0) (by rw [← h1, map_smul, smul_sub])`. Use `⟨t + z • x', ?_⟩` and prove the remaining obligations. Rewrite using `[hxx, smul_add, ht, smul_add, smul_comm z (ϖ ^ n)]`. Introduce `x choose a ha b hab using hdense x choose y hy hzy using fun n => hsur0 (a n) (ha n)`. Establish `hcau : ∀ {m n : ℕ}, m ≤ n → y m ≡ y n [SMOD ((Ideal.span {ϖ}) ^ m • (⊤ : Submodule R Xm))]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem, mem_pow_smul_top]`. Establish `h1 : a m - a n = (ϖ ^ m) • ((ϖ ^ (n - m)) • b n - b m)`. Rewrite using `[smul_sub, smul_smul, ← pow_add, Nat.add_sub_cancel' hmn]`. Establish `e1` using `hab m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hab n`. Establish `e3 : a m + ϖ ^ m • b m = a n + ϖ ^ n • b n` using `by rw [← e1, ← e2]`. Rewrite using `[sub_eq_sub_iff_add_eq_add, e3, add_comm]`. Establish `hmem : (ϖ ^ m) • ((ϖ ^ (n - m)) • b n - b m) ∈ X0`. Rewrite using `[← h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `X0.sub_mem (ha m) (ha n)`. Conclude with `key m _ (y m - y n) hmem (X0.sub_mem (hy m) (hy n)) (by rw [← h1, smul_sub, hzy m, hzy n, map_sub]; abel)`. Take `⟨L, hL⟩` from `hc.toIsPrecomplete.prec hcau`. Use `⟨L, ?_⟩` and prove the remaining obligations. Apply `sub_eq_zero.1` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `haus_of ϖ hc` to reduce the goal to its premises. Introduce `n`. Establish `h1` using `hL n`. Rewrite `h1` using `[SModEq.sub_mem, mem_pow_smul_top]`. Take `⟨t, ht⟩` from `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hLy : L = y n - ϖ ^ n • t` using `by rw [← ht]; abel`. Use `⟨z • b n + (g t - t), ?_⟩` and prove the remaining obligations. Rewrite using `[hLy, map_sub, map_smul]`. Use `conv_lhs => rw [hab n]`. Rewrite using `[smul_add, hzy n, smul_add, smul_sub, smul_comm z (ϖ ^ n)]`.
-
-Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem injectivity_passes_to_completion : InjectivityPassesToCompletion := by
   intro R _ Xm _ _ ϖ z hc hz X0 g hdense hsat hstab hinj0 hsur0

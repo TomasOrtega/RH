@@ -20,17 +20,17 @@ namespace GlobalTheory.InertHeckeAdd
 
 open Classical in
 /- English proof (translation)
-Introduce `L _ _ _ n v w Dv U hU W _ _ h h' hh hh' c f`. Establish `hfin : ∀ k ∈ Hecke ℂ (KU Dv.σw n), Set.Finite {c : GAf L n ⧸ U | ∃ x : GAf L n, (x : GAf L n ⧸ U) = c ∧ TrivOutside {v} x ∧ Dv.hval k (Dv.loc x) ≠ 0}` using `fun k hk => GlobalTheory.SatInd.CosetFin.finite_inert_support L n v w Dv (GlobalTheory.SatInd.DCoset.finite_dcoset Dv.ϖ Dv.σw _ n Dv.unram) (GlobalTheory.InertUmax.mem_Umax_of_trivOutside_of_loc_integral L n v w Dv) U hU k hk`. Establish `hsupp : ∀ k ∈ Hecke ℂ (KU Dv.σw n), ∀ (φ : GAf L n → W) (g : GAf L n), (Function.support (fun c : GAf L n ⧸ U => if hc : ∃ x : GAf L n, (x : GAf L n ⧸ U) = c ∧ TrivOutside {v} x then Dv.hval k (Dv.loc hc.choose) • φ (g * hc.choose) else 0)).Finite`. Introduce `k hk φ g`. Use `(hfin k hk).subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c hc`. Simplify using `only [Function.mem_support] at hc`. Use `split_ifs at hc with h1`. Use `⟨h1.choose, h1.choose_spec.1, h1.choose_spec.2, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[h0, zero_smul]`. Conclude with `hc rfl`. Conclude with `absurd rfl hc`. Establish `hadd : ∀ y, Dv.hval (h + h') y = Dv.hval h y + Dv.hval h' y`. Apply the tactic sequence `intro y; unfold InertDatum.hval; split_ifs <;> simp`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsmul : ∀ y, Dv.hval (c • h) y = c * Dv.hval h y`. Apply the tactic sequence `intro y; unfold InertDatum.hval; split_ifs <;> simp`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `only [heckeFunI, Pi.add_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← finsum_add_distrib (hsupp h hh f g) (hsupp h' hh' f g)]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [hadd, add_smul]`. Use function extensionality and compare the values at `g`. Simplify using `only [heckeFunI, Pi.smul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[_root_.smul_finsum' c (hsupp h hh f g)]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [hsmul, mul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem heckeFunI_add_smul : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w) (U : Subgroup (GAf L n)), (∀ κ, TrivOutside {v} κ → (κ ∈ U ↔ κ ∈ Umax L n)) → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (h₁ h₂ : Formalism.UG.GU Dv.σw n → ℂ), h₁ ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw n) → h₂ ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw n) → ∀ (c : ℂ) (f : GAf L n → W), heckeFunI L n U Dv (h₁ + h₂) f = heckeFunI L n U Dv h₁ f + heckeFunI L n U Dv h₂ f ∧ heckeFunI L n U Dv (c • h₁) f = c • heckeFunI L n U Dv h₁ f := by
   intro L _ _ _ n v w Dv U hU W _ _ h h' hh hh' c f

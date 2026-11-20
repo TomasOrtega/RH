@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.HeightCounting.RowRhoInt
 
 /- English proof (translation)
-Establish `hcoe : ∀ g, ((ρ' g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)) = ((P⁻¹ : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)) * ((ρ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)) * (P : Matrix (Fin a) (Fin a) (Qbar l))`. Introduce `g`. Rewrite using `[hρ g, Units.val_mul, Units.val_mul]`. Use `⟨?_, Formalism.MainNotions.SumRepresentations.isSSRep_conj ρ ρ' P hρ h.2.1, ?_⟩` and prove the remaining obligations. Simplify using `only [hcoe]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(continuous_const.matrix_mul h.1).matrix_mul continuous_const`. Use `filter_upwards [h.2.2] with w hw B σ hB hσ`. Rewrite using `[hcoe, Matrix.coe_units_inv, Matrix.charpoly_units_conj']`. Conclude with `hw B σ hB hσ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRepOf_conj (D : D7) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a : ℕ} (π : D.naut.CG a) (s : ℝ)
     (ρ ρ' : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l)) (P : GL (Fin a) (Qbar l)) (hρ : ∀ g, ρ' g = P⁻¹ * ρ g * P)
@@ -34,9 +34,9 @@ theorem isRepOf_conj (D : D7) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {
     exact hw B σ hB hσ
 
 /- English proof (translation)
-Establish `hcoe : ∀ g, ((mapRep τ.toRingEquiv.toRingHom ρ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)) = ((ρ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).map τ.toRingEquiv.toRingHom` using `fun _ => rfl`. Establish `hnorm : ∀ x : Qbar l, ‖τ x‖ = ‖x‖` using `fun x => (spectralNorm_eq_of_equiv τ x).symm`. Establish `hcont : Continuous (τ : Qbar l → Qbar l)` using `(AddMonoidHomClass.isometry_of_norm τ hnorm).continuous`. Use `⟨?_, GlobalTheory.TraceSemisimple.isSSRep_mapRep _ _ _ _ _ ρ h.2.1, ?_⟩` and prove the remaining obligations. Simplify using `only [hcoe]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `h.1.matrix_map hcont`. Use `filter_upwards [h.2.2] with w hw B σ hB hσ`. Rewrite using `[hcoe, Matrix.charpoly_map, Polynomial.map_map, ← hw B σ hB hσ]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isRepOf_map (D : D7) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a : ℕ} (π : D.naut.CG a) (s : ℝ)
     (ρ : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l)) (τ : Qbar l ≃ₐ[ℚ_[l]] Qbar l)
@@ -53,9 +53,9 @@ theorem isRepOf_map (D : D7) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a
     congr 1
 
 /- English proof (translation)
-Establish `e0 : ι₀.toRingHom.comp j = embLL0 D` using `RingHom.ext h0`. Establish `e1 : ι₁.toRingHom.comp j = embLL0 D` using `RingHom.ext h1`. Use `⟨h.1, h.2.1, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h.2.2, hp] with w hw hpw B σ hB hσ`. Take `⟨p, hp⟩` from `hpw`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `hw B σ hB hσ`. Establish `hc : ((ρ σ : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly = p.map j`. Apply `Polynomial.map_injective ι₀.toRingHom ι₀.injective` to reduce the goal to its premises. Rewrite using `[e, Polynomial.map_map, e0, hp]`. Rewrite using `[hc, Polynomial.map_map, e1, hp]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRepOf_of_read (D : D7) (l : ℕ) [Fact l.Prime] (ι₀ ι₁ : Qbar l ≃+* ℂ) (j : ↥D.LL0 →+* Qbar l)
     (h0 : ∀ x, ι₀ (j x) = embLL0 D x) (h1 : ∀ x, ι₁ (j x) = embLL0 D x) {a : ℕ} (π : D.naut.CG a) (s : ℝ)
@@ -75,11 +75,11 @@ theorem isRepOf_of_read (D : D7) (l : ℕ) [Fact l.Prime] (ι₀ ι₁ : Qbar l 
   rw [hc, Polynomial.map_map, e1, hp]
 
 /- English proof (translation)
-Take `⟨c₁, s₁, f₁⟩` from `h`. Take `⟨c₂, s₂, f₂⟩` from `h'`. Establish `hfin` using `(Filter.eventually_cofinite.mp f₁).union (Filter.eventually_cofinite.mp f₂)`. Establish `hcp` using `GlobalTheory.TwistLG.charpoly_eq_of_dense ρ ρ' c₁ c₂ _ (hC hfin.toFinset).closure_eq (by`. Introduce and unpack `g ⟨w, hw, hsp, B, hB, hg⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hw` using `[Set.Finite.mem_toFinset]`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hw`. Apply `Polynomial.map_injective ι.toRingHom ι.injective` to reduce the goal to its premises. Rewrite using `[hw.1 B g hB hg, hw.2 B g hB hg, hs w hsp])`. Use `⟨c₁, s₁, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [f₂] with w hw B σ hB hσ`. Rewrite using `[hcp σ]`. Conclude with `hw B σ hB hσ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRepOf_of_split (D : D7) (hC : GlobalTheory.RowTie.ChebSplit D.nd) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a : ℕ}
     (π π' : D.naut.CG a) (s : ℝ) (ρ ρ' : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l))
@@ -100,7 +100,7 @@ theorem isRepOf_of_split (D : D7) (hC : GlobalTheory.RowTie.ChebSplit D.nd) (l :
   exact hw B σ hB hσ
 
 /- English proof (translation)
-Introduce `M N h` and use `Matrix.ext fun i k => Subtype.ext (congrFun (congrFun h i) k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem subtype_mapMatrix_injective {K : Type} [CommRing K] (S : Subring K) {a : ℕ} :
     Function.Injective (S.subtype.mapMatrix : Matrix (Fin a) (Fin a) S →+* Matrix (Fin a) (Fin a) K) :=
@@ -130,7 +130,7 @@ def restrictRep {K : Type} [CommRing K] (S : Subring K) {Γ : Type} [Group Γ] {
     simp
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨h hx.1, hx.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem intOf_mono {l : ℕ} [Fact l.Prime] {K K' : IntermediateField ℚ_[l] (PadicAlgCl l)} (h : K ≤ K') :
     Formalism.L2.TwC.intOf l K ≤ Formalism.L2.TwC.intOf l K' := fun _ hx => ⟨h hx.1, hx.2⟩
@@ -140,7 +140,7 @@ end GlobalTheory.HeightCounting.RowRhoInt
 namespace GlobalTheory.HeightCounting.RowRhoInt
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_galois_rep_of_cuspidal`.
+A detailed English derivation is pending.
 -/
 theorem twistEx : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE),
     GalEx D → ∀ (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (π : D.naut.CG D.R.r), D.naut.csd π → D.naut.ralg π →
@@ -148,7 +148,7 @@ theorem twistEx : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7)
         IsRepOf D l ι (D.naut.tw π D.naut.etaTinv) ((1 - (D.R.nV : ℝ)) / 2) ρ := GlobalTheory.T.exists_galois_rep_of_cuspidal
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_finExt_conj_entries_mem_intOf`.
+A detailed English derivation is pending.
 -/
 theorem conjIntegral : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     [CompactSpace Γ] [T2Space Γ] (a : ℕ) (ρ : Γ →* GL (Fin a) (PadicAlgCl l)),
@@ -161,11 +161,11 @@ end GlobalTheory.HeightCounting.RowRhoInt
 namespace GlobalTheory.HeightCounting.RowRhoInt
 
 /- English proof (translation)
-Take `⟨k, hk1, hk2, hk⟩` from `hσ`. Take `⟨π₀, hc₀, hr₀, hl₀, hp₀⟩` from `hR k hk1 hk2 σ hk hg`. Take `⟨ι₀, hι₀⟩` from `GlobalTheory.exists_padicAlgCl_ringEquiv_complex_comp_eq l ↥D.LL0 j (embLL0 D)`. Establish `h0 : ∀ x, ι₀ (j x) = embLL0 D x` using `fun x => RingHom.congr_fun hι₀ x`. Take `⟨ρG, hρG⟩` from `twistEx hA D cf jE A hG l ι₀ π₀ hc₀ hr₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨L, P, hP⟩` from `conjIntegral l (G D.host.E D.nd.Om) D.R.r ρG hρG.1`. Set `ρ : G D.host.E D.nd.Om →* GL (Fin D.R.r) (PadicAlgCl l)` to `(MulAut.conj P⁻¹).toMonoidHom.comp ρG`. Establish `hρ : ∀ g, ρ g = P⁻¹ * ρG g * P` using `fun g => by simp [ρ, MulAut.conj_apply]`. Establish `hρ0 : IsRepOf D l ι₀ (D.naut.tw π₀ D.naut.etaTinv) ((1 - (D.R.nV : ℝ)) / 2) ρ` using `isRepOf_conj D l ι₀ _ _ ρG ρ P hρ hρG`. Use `⟨L, ρ, hρ0.1, fun g i k => by rw [hρ]; exact hP g i k, fun π hc hr hl ι hι => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `isRepOf_of_read D l ι₀ ι j h0 hι _ _ ρ hρ0 hp₀`. Take `⟨ρ', hρ'⟩` from `twistEx hA D cf jE A hG l ι π hc hr`. Use `isRepOf_of_split D hC l ι _ _ _ ρ ρ' h1 hρ' (fun w hw => ?_)` and prove the remaining obligations. Rewrite using `[D.naut.locG_tw, D.naut.locG_tw, hl₀ w hw, hl w hw]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem core (hA : GlobalTheory.Published.GlobalArtinReciprocity) (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb)
     (A : SideA D cf jE) (hG : GalEx D) (hR : RowCusp D A.row) (hC : GlobalTheory.RowTie.ChebSplit D.nd)
@@ -218,7 +218,7 @@ def pickRho (l : ℕ) [Fact l.Prime] (j : ↥D.LL0 →+* PadicAlgCl l) (σ : D.w
   if h : GoodOcc D σ then (core hA D cf jE A hG hR hC l j σ h.1 h.2).choose_spec.choose else 1
 
 /- English proof (translation)
-Simplify using `only [pickL, pickRho, dif_pos h]`. Conclude with `(core hA D cf jE A hG hR hC l j σ h.1 h.2).choose_spec.choose_spec`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pick_spec (l : ℕ) [Fact l.Prime] (j : ↥D.LL0 →+* PadicAlgCl l) (σ : D.what₂.FT) (h : GoodOcc D σ) :
     Continuous (fun g => ((pickRho hA D cf jE A hG hR hC l j σ g : GL (Fin D.R.r) (PadicAlgCl l)) :
@@ -252,7 +252,7 @@ def cBig (hstar : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) : Big D := f
     exact IntermediateField.finiteDimensional_iSup_of_finite⟩
 
 /- English proof (translation)
-The claim follows from `(le_iSup (fun b : Bool => (pickL hA D cf jE A hG hR hC l (jSide D hstar l j b) σ).1) b).trans (le_iSup (fun σ : D.what₂.FT => ⨆ b : Bool, (pickL hA D cf jE A hG hR hC l (jSide D hstar l j b) σ).1) σ)`.
+A detailed English derivation is pending.
 -/
 theorem pickL_le (hstar : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) (l : ℕ) [Fact l.Prime]
     (j : ↥D.LL0 →+* PadicAlgCl l) (σ : D.what₂.FT) (b : Bool) :
@@ -275,14 +275,14 @@ def kap (Sp : RingSpec D cf b0 b1 Sx T) (i : T.Tw) : FractionRing (T.O0 i) →+*
     (Subtype.val_injective.comp (Sp.eO0 i).injective)
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.lift_algebraMap _ _`.
+A detailed English derivation is pending.
 -/
 theorem kap_alg (Sp : RingSpec D cf b0 b1 Sx T) (i : T.Tw) (y : T.O0 i) :
     kap Sp i (algebraMap (T.O0 i) (FractionRing (T.O0 i)) y) = (Sp.eO0 i y : PadicAlgCl (T.l i)) :=
   IsFractionRing.lift_algebraMap _ _
 
 /- English proof (translation)
-Rewrite using `[kap_alg]`. Conclude with `Sp.ringSpec_baseIntegersEquiv_algebraMap i z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twistFractionFieldToPadicAlgebraicClosure_padicInt (Sp : RingSpec D cf b0 b1 Sx T) (i : T.Tw) (z : ℤ_[T.l i]) :
     kap Sp i (algebraMap (T.O0 i) (FractionRing (T.O0 i)) (algebraMap ℤ_[T.l i] (T.O0 i) z)) =
@@ -290,11 +290,11 @@ theorem twistFractionFieldToPadicAlgebraicClosure_padicInt (Sp : RingSpec D cf b
   rw [kap_alg]; exact Sp.ringSpec_baseIntegersEquiv_algebraMap i z
 
 /- English proof (translation)
-Take `⟨y, z, hz, e⟩` from `IsFractionRing.div_surjective (A := T.O0 i) (T.emb0 i x)`. Establish `hz0 : z ≠ 0` using `nonZeroDivisors.ne_zero hz`. Establish `hz1 : algebraMap (T.O0 i) (FractionRing (T.O0 i)) z ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 hz0`. Establish `h1 : T.emb0 i x * algebraMap (T.O0 i) (FractionRing (T.O0 i)) z = algebraMap (T.O0 i) (FractionRing (T.O0 i)) y`. Rewrite using `[← e, div_mul_cancel₀ _ hz1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `(Sp.ringSpec_baseEmbedding_compatible i x y z hz0).mp h1`. Establish `hz2 : ((Sp.eO0 i z : _) : PadicAlgCl (T.l i)) ≠ 0`. Introduce `h`. Apply `hz0` to reduce the goal to its premises. Apply `(map_eq_zero_iff (Sp.eO0 i) (Sp.eO0 i).injective).1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Subtype.ext h`. Rewrite using `[← e, map_div₀, kap_alg, kap_alg, ← h2, mul_div_cancel_right₀ _ hz2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_emb0 (Sp : RingSpec D cf b0 b1 Sx T) (i : T.Tw) (x : ↥D.LL0) : kap Sp i (T.emb0 i x) = Sp.j0 i x := by
   obtain ⟨y, z, hz, e⟩ := IsFractionRing.div_surjective (A := T.O0 i) (T.emb0 i x)
@@ -314,29 +314,27 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hA D cf jE A hG hR hC hstar`. Use `⟨cBig hA D cf jE A hG hR hC hstar, fun b0 b1 Sx T Sp hc => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ (i : T.Tw) (σ : D.what₂.FT) (b : Bool) (h : GoodOcc D σ) g k k', ((pickRho hA D cf jE A hG hR hC (T.l i) (jSide D hstar (T.l i) (Sp.j0 i) b) σ g : GL (Fin D.R.r) (PadicAlgCl (T.l i))) : Matrix (Fin D.R.r) (Fin D.R.r) (PadicAlgCl (T.l i))) k k' ∈ Formalism.L2.TwC.intOf (T …`. Introduce `i σ b h g k k'`. Conclude with `intOf_mono (((pickL_le hA D cf jE A hG hR hC hstar (T.l i) (Sp.j0 i) σ b).trans (hc (T.l i) (Sp.j0 i))).trans (Sp.ringSpec_baseExtension_lowerBound i)) ((pick_spec hA D cf jE A hG hR hC (T.l i) _ σ h).2.1 g k k')`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `rho : RhoFam D T` to `fun i σ b => if h : GoodOcc D σ then mapRep (Sp.eO0 i).symm.toRingHom (restrictRep (Formalism.L2.TwC.intOf (T.l i) (Sp.K0 i).1) (pickRho hA D cf jE A hG hR hC (T.l i) (jSide D hstar (T.l i) (Sp.j0 i) b) σ) (hmem i σ b h)) else 1`. Establish `hemb : ∀ i, Topology.IsEmbedding (fun x : T.O0 i => kap Sp i (algebraMap (T.O0 i) (FractionRing (T.O0 i)) x))` using `fun i => (GlobalTheory.CoefEmbed.embedding_closed_integral (T.l i) (T.O0 i) (T.twistBaseCoefficientRing_isAdic i) (kap Sp i) (twistFractionFieldToPadicAlgebraicClosure_padicInt Sp i)).1`. Establish `hks : ∀ i (y : Formalism.L2.TwC.intOf (T.l i) (Sp.K0 i).1), kap Sp i (algebraMap (T.O0 i) (FractionRing (T.O0 i)) ((Sp.eO0 i).symm y)) = (y : PadicAlgCl (T.l i))`. Introduce `i y`. Rewrite using `[kap_alg, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨rho, fun i σ b => ?_, fun i σ b hocc hgood π hc hr hloc φ ι hφ hι => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : GoodOcc D σ`. Establish `e : rho i σ b = mapRep (Sp.eO0 i).symm.toRingHom (restrictRep (Formalism.L2.TwC.intOf (T.l i) (Sp.K0 i).1) (pickRho hA D cf jE A hG hR hC (T.l i) (jSide D hstar (T.l i) (Sp.j0 i) b) σ) (hmem i σ b h))` using `dif_pos h`. Rewrite using `[e]`. Use `continuous_pi fun k => continuous_pi fun k' => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hemb i).continuous_iff.mpr ?_` and prove the remaining obligations. Establish `hc0` using `(pick_spec hA D cf jE A hG hR hC (T.l i) (jSide D hstar (T.l i) (Sp.j0 i) b) σ h).1.matrix_elem k k'`. Use `hc0.congr fun g => ?_` and prove the remaining obligations. Conclude with `(hks i ⟨_, hmem i σ b h g k k'⟩).symm`. Establish `e : rho i σ b = 1` using `dif_neg h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Simplify using `only [MonoidHom.one_apply, Units.val_one]`. Conclude with `continuous_const`. Establish `h : GoodOcc D σ` using `⟨hocc, hgood⟩`. Establish `e : rho i σ b = mapRep (Sp.eO0 i).symm.toRingHom (restrictRep (Formalism.L2.TwC.intOf (T.l i) (Sp.K0 i).1) (pickRho hA D cf jE A hG hR hC (T.l i) (jSide D hstar (T.l i) (Sp.j0 i) b) σ) (hmem i σ b h))` using `dif_pos h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `hstd : ∀ z : ℤ_[T.l i], algebraMap ℤ_[T.l i] (PadicAlgCl (T.l i)) z = algebraMap ℚ_[T.l i] (PadicAlgCl (T.l i)) (z : ℚ_[T.l i])` using `fun z => IsScalarTower.algebraMap_apply ℤ_[T.l i] ℚ_[T.l i] (PadicAlgCl (T.l i)) z`. Use `haveI : FaithfulSMul ℤ_[T.l i] (T.O0 i) := by`. Rewrite using `[faithfulSMul_iff_algebraMap_injective]`. Introduce `z z' hzz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun y => kap Sp i (algebraMap (T.O0 i) (FractionRing (T.O0 i)) y)) hzz`. Simplify using `only [twistFractionFieldToPadicAlgebraicClosure_padicInt] at h3`. Conclude with `Subtype.ext ((algebraMap ℚ_[T.l i] (PadicAlgCl (T.l i))).injective h3)`. Establish `h₀ : ((kap Sp i).comp (algebraMap (T.O0 i) (FractionRing (T.O0 i)))).comp (algebraMap ℤ_[T.l i] (T.O0 i)) = algebraMap ℤ_[T.l i] (PadicAlgCl (T.l i))` using `RingHom.ext fun z => (twistFractionFieldToPadicAlgebraicClosure_padicInt Sp i z).trans (hstd z).symm`. Establish `h₁ : (φ.comp (algebraMap (T.O0 i) (FractionRing (T.O0 i)))).comp (algebraMap ℤ_[T.l i] (T.O0 i)) = algebraMap ℤ_[T.l i] (PadicAlgCl (T.l i))` using `RingHom.ext fun z => (hφ z).trans (hstd z).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨τ, hτ⟩` from `GlobalTheory.EmbConj.exists_algEquiv _ _ h₀ h₁`. Establish `hφτ : ∀ q, φ q = τ (kap Sp i q)`. Establish `: φ = (τ.toRingEquiv.toRingHom).comp (kap Sp i)` using `IsLocalization.ringHom_ext (nonZeroDivisors (T.O0 i)) (RingHom.ext fun y => (hτ y).symm)`. Introduce `q`. Rewrite using `[this]`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hrep : mapRep (φ.comp (algebraMap (T.O0 i) (FractionRing (T.O0 i)))) (mapRep (Sp.eO0 i).symm.toRingHom (restrictRep (Formalism.L2.TwC.intOf (T.l i) (Sp.K0 i).1) (pickRho hA D cf jE A hG hR hC (T.l i) (jSide D hstar (T.l i) (Sp.j0 i) b) σ) (hmem i σ b h))) = mapRep τ.toRingEquiv.t …`. Use extensionality with `g k k'`. Express the relevant statement in the definitionally equal form `φ (algebraMap (T.O0 i) (FractionRing (T.O0 i)) ((Sp.eO0 i).symm ⟨_, hmem i σ b h g k k'⟩)) = τ _`. Rewrite using `[hφτ, hks]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Rewrite using `[hrep]`. Apply `isRepOf_map D (T.l i) ι _ _ _ τ` to reduce the goal to its premises. Use `(pick_spec hA D cf jE A hG hR hC (T.l i) (jSide D hstar (T.l i) (Sp.j0 i) b) σ h).2.2 π hc hr hloc _ (fun x => ?_)` and prove the remaining obligations. Establish `hx` using `hι x`. Consider the cases of `b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : T.emb0b i x = T.emb0 i (starRestrictSubfield D hstar x)` using `T.restX_coefficientEmbedding_conj i x _ rfl`. Simplify using `only [Bool.false_eq_true, if_false] at hx`. Rewrite `hx` using `[e1, hφτ, kap_emb0]`. Conclude with `hx`. Simplify using `only [if_true] at hx`.
-
-Rewrite `hx` using `[hφτ, kap_emb0]`. Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem rho_rows : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE),
     GalEx D → RowCusp D A.row → GlobalTheory.RowTie.ChebSplit D.nd → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) →

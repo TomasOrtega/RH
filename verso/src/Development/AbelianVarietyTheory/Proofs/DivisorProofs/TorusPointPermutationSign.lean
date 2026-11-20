@@ -58,9 +58,9 @@ def pre (u : HolUnif A L g) (T : (Fin g → ℂ) ≃L[ℂ] (Fin g → ℂ)) : Ho
   fr_compat i j z h := u.fr_compat i j (T z) h
 
 /- English proof (translation)
-Establish `key : ∀ (U : A.left.Opens) (f : Γ(A.left, U)), fderiv ℂ (fun z ↦ valAt' ((pre u T).ex z).left U f) 0 w = fderiv ℂ (fun z ↦ valAt' (u.ex z).left U f) 0 (T w)`. Introduce `U f`. Establish `: (fun z ↦ valAt' ((pre u T).ex z).left U f) = (fun z ↦ valAt' (u.ex z).left U f) ∘ T` using `rfl`. Rewrite using `[this, ContinuousLinearEquiv.comp_right_fderiv, map_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `HolUnif.IsDiff`. Simplify using `only [key]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pre_isDiff (u : HolUnif A L g) (T : (Fin g → ℂ) ≃L[ℂ] (Fin g → ℂ)) (w : Fin g → ℂ)
     (v : epsR ℂ ⟶ A) : (pre u T).IsDiff w v ↔ u.IsDiff (T w) v := by
@@ -81,9 +81,9 @@ namespace GlobalTheory.TorusRenumber
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ}
 
 /- English proof (translation)
-Take `⟨-, hpos, hχ, hfr⟩` from `h`. Use `⟨hH, fun z hz ↦ ?_, fun l ↦ hχ _, fun l i z hz ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← hT]`. Conclude with `hpos _ (fun h0 ↦ hz (T.injective (by rw [h0, map_zero])))`. Use `hfr ⟨T l, l.2⟩ i (T z) hz` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `u.fr i (T z) = _ * _ * u.fr i (T (z + l))`. Rewrite using `[this, hT, hT, map_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre_isAH (u : HolUnif A L g) (T : (Fin g → ℂ) ≃L[ℂ] (Fin g → ℂ))
     (Hm Hm' : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ) (h : u.IsAH Hm χ) (hH : Hm'.IsHermitian)
@@ -98,7 +98,7 @@ theorem pre_isAH (u : HolUnif A L g) (T : (Fin g → ℂ) ≃L[ℂ] (Fin g → �
     rw [this, hT, hT, map_add]
 
 /- English proof (translation)
-Simplify using `only [permCLE_apply, Matrix.mulVec_diagonal, dotProduct, Function.comp_apply, Pi.star_apply]`. Conclude with `Equiv.sum_comp σ (fun i ↦ z i * (d (σ.symm i) * star (l i))) |>.symm.trans (by simp) |>.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perm_dot_diagonal (σ : Equiv.Perm (Fin g)) (d : Fin g → ℂ) (z l : Fin g → ℂ) :
     permCLE σ z ⬝ᵥ (Matrix.diagonal d).mulVec (star (permCLE σ l)) =
@@ -111,19 +111,17 @@ end GlobalTheory.TorusRenumber
 namespace GlobalTheory.TorusRenumber
 
 /- English proof (translation)
-Take `⟨c, u, hc, hlat, hact, ⟨χ, hAH⟩, hdet⟩` from `h`. Use `set T := permCLE π.symm with hTdef`. Use `⟨c, pre u T, hc, ?_, ?_, ⟨_, pre_isAH u T _ _ χ hAH ?_ ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `w`. Express the relevant statement in the definitionally equal form `T w ∈ u.Λ ↔ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlat]`. Simplify using `only [hTdef, permCLE_apply, Equiv.trans_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, β, hβ, hw⟩`. Use `⟨m, hm, β, hβ, funext fun i ↦ ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using congrFun hw (π i)`. Introduce and unpack `⟨m, hm, β, hβ, rfl⟩`. Conclude with `⟨m, hm, β, hβ, funext fun i ↦ by simp⟩`. Introduce `a w`. Express the relevant statement in the definitionally equal form `u.ex (T _) = u.ex (T w) ≫ _`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hact a (T w)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[hTdef]`. Rewrite using `[show (Matrix.diagonal fun i ↦ ((2 * (π.trans e) i (c : F) / (4 * Real.pi ^ 2 * (z ((π.trans e) i)).im) : ℝ) : ℂ)) = (Matrix.diagonal fun i ↦ ((2 * e i (c : F) / (4 * Real.pi ^ 2 * (z (e i)).im) : ℝ) : ℂ)).submatrix π π by`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.submatrix_diagonal_equiv]`. Use the proof step `rfl]`. Conclude with `hAH.1.submatrix π`. Introduce `w l`. Rewrite using `[hTdef, perm_dot_diagonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Introduce `v W' hW'`. Establish `hW : ∀ i, u.IsDiff ((W'.submatrix id π.symm) i) (v i).hom` using `fun i ↦ by`. Conclude with `(pre_isDiff u T (W' i) (v i).hom).1 (hW' i)`. Rewrite using `[AlternatingMap.smul_apply, hdet v _ hW, Matrix.det_permute', Equiv.Perm.sign_symm, smul_eq_mul]`.
-
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign π) with hs | hs <;> simp [hs]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isTorusPoint_perm  (F : Type) [Field F] [NumberField F] (e : Fin (Module.finrank ℚ F) ≃ (F →+* ℝ))
     (π : Equiv.Perm (Fin (Module.finrank ℚ F))) (𝔞 𝔟 : FracId F) (z : (F →+* ℝ) → ℂ)

@@ -10,7 +10,7 @@ namespace PositivityTheory.RgUd.AB.Pf
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Conclude with `⟨⟨h1, h2⟩, h3⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Conclude with `⟨⟨h1, h2⟩, h3⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_supportedIn_iff {X : Type*} [TopologicalSpace X] {U : Set X} {f : X → ℂ} :
     f ∈ supportedIn U ↔ f ∈ SB X ∧ Function.support f ⊆ U := by
@@ -21,7 +21,7 @@ theorem mem_supportedIn_iff {X : Type*} [TopologicalSpace X] {U : Set X} {f : X 
     exact ⟨⟨h1, h2⟩, h3⟩
 
 /- English proof (translation)
-Rewrite using `[mem_supportedIn_iff]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, Set.subset_univ _⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_supportedIn_univ_iff {X : Type*} [TopologicalSpace X] {f : X → ℂ} :
     f ∈ supportedIn (Set.univ : Set X) ↔ f ∈ SB X := by
@@ -56,20 +56,20 @@ def mvHomeo {n : ℕ} (A B : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (hAB : A * B 
   continuous_invFun := continuous_const.matrix_mulVec continuous_id
 
 /- English proof (translation)
-The claim follows from `(bijOn_comp e).mapsTo hf`.
+A detailed English derivation is pending.
 -/
 theorem comp_mem_SB {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y) {f : Y → ℂ}
     (hf : f ∈ SB Y) : f ∘ e ∈ SB X :=
   (bijOn_comp e).mapsTo hf
 
 /- English proof (translation)
-The claim follows from `comp_mem_SB (recCjHomeo g) hf`.
+A detailed English derivation is pending.
 -/
 theorem cj_comp_mem {n : ℕ} (g : GL (Fin (n + 1)) k) {f : Mx k n → ℂ} (hf : f ∈ SB (Mx k n)) : f ∘ cj g ∈ SB (Mx k n) :=
   comp_mem_SB (recCjHomeo g) hf
 
 /- English proof (translation)
-The claim follows from `comp_mem_SB ((recCjHomeo g).prodCongr (mvHomeo (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) ((g⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Units.mul_inv g) (Units.inv_mul g))) hF`.
+A detailed English derivation is pending.
 -/
 theorem act_mem {n : ℕ} (g : GL (Fin (n + 1)) k) {F : Mx k n × Vc k n → ℂ} (hF : F ∈ SB (Mx k n × Vc k n)) :
     (fun p : Mx k n × Vc k n => F ((g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) * p.1 *
@@ -79,7 +79,7 @@ theorem act_mem {n : ℕ} (g : GL (Fin (n + 1)) k) {F : Mx k n × Vc k n → ℂ
     ((g⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Units.mul_inv g) (Units.inv_mul g))) hF
 
 /- English proof (translation)
-The claim follows from `comp_mem_SB ((recCjHomeo h⁻¹).prodCongr (mvHomeo (h : Matrix (Fin (n + 1)) (Fin (n + 1)) k)ᵀ ((h⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)ᵀ (by rw [← transpose_mul, Units.inv_mul, transpose_one]) (by rw [← transpose_mul, Units.mul_inv, transpose_one]))) hF`.
+A detailed English derivation is pending.
 -/
 theorem tw_mem {n : ℕ} (h : GL (Fin (n + 1)) k) {F : Mx k n × Vc k n → ℂ} (hF : F ∈ SB (Mx k n × Vc k n)) :
     (fun q : Mx k n × Vc k n => F (cj h⁻¹ q.1, (h : Matrix (Fin (n + 1)) (Fin (n + 1)) k)ᵀ *ᵥ q.2)) ∈
@@ -89,9 +89,9 @@ theorem tw_mem {n : ℕ} (h : GL (Fin (n + 1)) k) {F : Mx k n × Vc k n → ℂ}
     (by rw [← transpose_mul, Units.inv_mul, transpose_one]) (by rw [← transpose_mul, Units.mul_inv, transpose_one]))) hF
 
 /- English proof (translation)
-Use `(IsLocallyConstant.iff_eventually_eq _).2 fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ E`. Use `filter_upwards [hE.isOpen.mem_nhds hy] with z hz`. Rewrite using `[Set.indicator_of_mem hz, Set.indicator_of_mem hy]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hE.isClosed.isOpen_compl.mem_nhds hy] with z hz`. Rewrite using `[Set.indicator_of_notMem hz, Set.indicator_of_notMem hy]`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_indicator_one {Y : Type*} [TopologicalSpace Y] {E : Set Y} (hE : IsClopen E) :
     IsLocallyConstant (E.indicator (1 : Y → ℂ)) := by
@@ -104,7 +104,7 @@ theorem isLocallyConstant_indicator_one {Y : Type*} [TopologicalSpace Y] {E : Se
     rw [Set.indicator_of_notMem hz, Set.indicator_of_notMem hy]
 
 /- English proof (translation)
-Use `⟨(hf.1.comp_continuous continuous_fst).mul ((isLocallyConstant_indicator_one ⟨hEc.isClosed, hEo⟩).comp_continuous continuous_snd), HasCompactSupport.intro (hf.2.isCompact.prod hEc) fun q hq => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : q.1 ∈ tsupport f`. Establish `h2 : q.2 ∉ E` using `fun h2 => hq ⟨h1, h2⟩`. Simplify using `[Set.indicator_of_notMem h2]`. Simplify using `[image_eq_zero_of_notMem_tsupport h1]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tens_mem {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] [T2Space X] [T2Space Y] {f : X → ℂ}
     (hf : f ∈ SB X) {E : Set Y} (hEo : IsOpen E) (hEc : IsCompact E) :
@@ -118,7 +118,7 @@ theorem tens_mem {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] [T2Spac
   · simp [image_eq_zero_of_notMem_tsupport h1]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hg.1.comp_continuous (by fun_prop), HasCompactSupport.intro (hg.2.isCompact.image continuous_fst) fun x hx => image_eq_zero_of_notMem_tsupport fun h => hx ⟨_, h, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem slice_fst_mem {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] [T2Space X] {g : X × Y → ℂ}
     (hg : g ∈ SB (X × Y)) (y : Y) : (fun x => g (x, y)) ∈ SB X :=
@@ -126,7 +126,7 @@ theorem slice_fst_mem {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] [T
     image_eq_zero_of_notMem_tsupport fun h => hx ⟨_, h, rfl⟩⟩
 
 /- English proof (translation)
-Introduce `i _`. Simplify using `[cball]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem zero_mem_box {m : Type*} (s : kˣ) : (0 : m → k) ∈ box m s := by
   intro i _
@@ -137,7 +137,7 @@ section Meas
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Establish `hs` using `slice_mem_SB hF z.1`. Establish `h2 : IsLocallyConstant fun x : n → k => ((ψ (x ⬝ᵥ z.2) : Circle) : ℂ)` using `(hψ.isLocallyConstant.comp_continuous (continuous_id.dotProduct continuous_const)).comp _`. Conclude with `(hs.1.mul h2).continuous.integrable_of_hasCompactSupport hs.2.mul_right`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_slice (ν : Measure k) [ν.IsAddHaarMeasure] {T : Type} [TopologicalSpace T] {n : Type} [Fintype n]
     {ψ : AddChar k Circle} {c : kˣ} (hψ : HasConductor ψ c) {F : T × (n → k) → ℂ} (hF : F ∈ SB (T × (n → k)))
@@ -150,7 +150,7 @@ theorem integrable_slice (ν : Measure k) [ν.IsAddHaarMeasure] {T : Type} [Topo
   exact (hs.1.mul h2).continuous.integrable_of_hasCompactSupport hs.2.mul_right
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [pf, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul, ← integral_const_mul, ← integral_add ((integrable_slice ν hψ hF z).const_mul a) ((integrable_slice ν hψ hG z).const_mul b)]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -169,67 +169,61 @@ theorem pf_lin (ν : Measure k) [ν.IsAddHaarMeasure] {T : Type} [TopologicalSpa
 end Meas
 
 /- English proof (translation)
-Introduce `_ hLin hInt hNear hPf hLt hT n Λ hP`. Use `borelize k`. Use `secondCountable k` as an intermediate fact. Use `t2Space k` as an intermediate fact. Take `⟨-, ⟨ψ, -, -, hψ⟩, ν, hν⟩` from `conductor_exists k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hν.1` as an intermediate fact. Use `set μ : Measure (Vc k n) := Measure.pi fun _ => ν with hμ`. Establish `hb` using `pf_bijOn (T := Mx k n) (n := Fin (n + 1)) ν hψ`. Use `set Fi := Function.invFunOn (pf ψ μ) {f | f ∈ SB (Mx k n × Vc k n)} with hFi`. Establish `Fi_mem : ∀ f ∈ SB (Mx k n × Vc k n), Fi f ∈ SB (Mx k n × Vc k n)` using `fun f hf => hb.surjOn.mapsTo_invFunOn hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pf_Fi : ∀ f ∈ SB (Mx k n × Vc k n), pf ψ μ (Fi f) = f` using `fun f hf => hb.surjOn.rightInvOn_invFunOn hf`. Establish `Fi_pf : ∀ F ∈ SB (Mx k n × Vc k n), Fi (pf ψ μ F) = F` using `fun F hF => hb.injOn.leftInvOn_invFunOn hF`. Establish `pfL` using `fun {F G : Mx k n × Vc k n → ℂ} (hF : F ∈ SB _) (hG : G ∈ SB _) (a b : ℂ) => pf_lin ν hψ hF hG a b`. Establish `pfS : ∀ F ∈ SB (Mx k n × Vc k n), ∀ a : ℂ, pf ψ μ (a • F) = a • pf ψ μ F` using `fun F hF a => by`. Use `pfL hF hF a 0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using this`. Establish `FiL : ∀ f ∈ SB (Mx k n × Vc k n), ∀ g ∈ SB (Mx k n × Vc k n), ∀ a b : ℂ, Fi (a • f + b • g) = a • Fi f + b • Fi g`. Introduce `f hf g hg a b`. Establish `h1 : a • Fi f + b • Fi g ∈ SB (Mx k n × Vc k n)` using `add_mem (Submodule.smul_mem _ _ (Fi_mem f hf)) (Submodule.smul_mem _ _ (Fi_mem g hg))`. Use `Fi_pf _ h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[pfL (Fi_mem f hf) (Fi_mem g hg), pf_Fi f hf, pf_Fi g hg]`. Conclude with `this`. Establish `ltL : ∀ F ∈ SB (Mx k n × Vc k n), ∀ G ∈ SB (Mx k n × Vc k n), ∀ a b : ℂ, lt ν Λ (a • F + b • G) = a * lt ν Λ F + b * lt ν Λ G`. Introduce `F hF G hG a b`. Unfold `lt`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hLin n Λ F hF G hG a b]`. Simplify using `only [Pi.add_apply]`. Rewrite using `[integral_add ((hInt ν n Λ hP F hF).smul a) ((hInt ν n Λ hP G hG).smul b)]`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[integral_smul, integral_smul, smul_eq_mul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `ltS : ∀ F ∈ SB (Mx k n × Vc k n), ∀ a : ℂ, lt ν Λ (a • F) = a * lt ν Λ F` using `fun F hF a => by`. Use `ltL F hF F hF a 0` as an intermediate fact. Simplify using `using this`. Set `Ξ₀ : SB (Mx k n × Vc k n) →ₗ[ℂ] ℂ` to `{ toFun := fun f => lt ν Λ (Fi f) map_add' := fun f g => by`. Establish `e` using `FiL f f.2 g g.2 1 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [one_smul] at e`. Establish `e2` using `ltL _ (Fi_mem f f.2) _ (Fi_mem g g.2) 1 1`. Simplify using `only [one_smul, one_mul] at e2`. Simplify using `only [Submodule.coe_add, e, e2]`. Use the proof step `map_smul' := fun c f => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `FiL f f.2 f f.2 c 0`. Simplify using `only [zero_smul, add_zero] at e`. Simplify using `only [SetLike.val_smul, RingHom.id_apply, smul_eq_mul, e, ltS _ (Fi_mem f f.2)] }`. Take `⟨ξ, hξ⟩` from `LinearMap.exists_extend Ξ₀`. Establish `hξf : ∀ f ∈ SB (Mx k n × Vc k n), ξ f = lt ν Λ (Fi f)` using `fun f hf => LinearMap.congr_fun hξ ⟨f, hf⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ (g : GL (Fin (n + 1)) k), ∀ f ∈ SB (Mx k n × Vc k n), ξ (fun p : Mx k n × Vc k n => f ((g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) * p.1 * ((g⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k), (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ p.2)) = ξ f`. Introduce `g f hf`. Establish `hF` using `Fi_mem f hf`. Establish `hF'` using `tw_mem g⁻¹ hF`. Establish `e1` using `hPf ν ψ 1 hψ n (Fi f) hF g⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set c : ℂ := (((nabs k (Matrix.GeneralLinearGroup.det g⁻¹))⁻¹ : ℝ) : ℂ) with hc`. Establish `hc0 : c ≠ 0`. Rewrite using `[hc]`. Conclude with `Complex.ofReal_ne_zero.2 (inv_ne_zero (nabs_pos k _).ne')`. Establish `e2 : (fun p : Mx k n × Vc k n => f ((g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) * p.1 * ((g⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k), (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ p.2)) = pf ψ μ (c⁻¹ • fun q : Mx k n × Vc k n => Fi f (cj g⁻¹⁻¹ q.1, ((g⁻¹ : G …`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pfS _ hF', e1, pf_Fi f hf]`. Use function extensionality and compare the values at `p`. Simplify using `only [Pi.smul_apply, smul_eq_mul, cj, inv_inv]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hc0, one_mul]`. Rewrite using `[e2, hξf _ (pf_mem_SB μ hψ (Submodule.smul_mem _ _ hF')), Fi_pf _ (Submodule.smul_mem _ _ hF'), ltS _ hF', hLt ν n Λ hP (Fi f) hF g⁻¹, hξf f hf, ← hc, ← mul_assoc, inv_mul_cancel₀ hc0, one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hzero : ∀ f ∈ SB (Mx k n × Vc k n), (∀ x : Mx k n, f (x, 0) = 0) → ξ f = 0`. Introduce `f hf h0`. Establish `hsupp : Function.support f ⊆ {p : Mx k n × Vc k n | p.2 ≠ 0}`. Introduce `p hp h2`. Apply `hp` to reduce the goal to its premises.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, w⟩` from `p`. Simplify using `only at h2`. Substitute `h2` using the available equality. Conclude with `h0 x`. Use `hT (n + 1) ⊥ ?_ ?_ ξ ?_ ?_ f (mem_supportedIn_iff.2 ⟨hf, hsupp⟩)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `a ha b _`. Take `⟨r, rfl⟩` from `Algebra.mem_bot.1 ha`. Conclude with `Algebra.commutes r b`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, hr⟩` from `Algebra.mem_bot.1 x.2`. Establish `h1 : ((x : Matrix (Fin (n + 1)) (Fin (n + 1)) k)) ^ m = 0`. Simplify using `using congrArg Subtype.val hm`. Establish `h2 : (algebraMap k (Matrix (Fin (n + 1)) (Fin (n + 1)) k)) (r ^ m) = 0`. Rewrite using `[map_pow, hr, h1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3 : r ^ m = 0` using `(algebraMap k (Matrix (Fin (n + 1)) (Fin (n + 1)) k)).injective (h2.trans (map_zero _).symm)`. Establish `h4 : r = 0`. Assume the negation of the conclusion as `hr0`. Conclude with `pow_ne_zero m hr0 h3`. Conclude with `Subtype.ext (by rw [← hr, h4, map_zero]; rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `f' _ hz`. Establish `: f' = 0` using `funext fun p => hz p fun a ha => by`. Take `⟨r, rfl⟩` from `Algebra.mem_bot.1 ha`. Conclude with `Algebra.commutes r p.1`. Rewrite using `[this, map_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `g _ f' hf'`. Conclude with `hinv g f' (mem_supportedIn_univ_iff.1 hf')`. Use `set B : Set (Vc k n) := box (Fin (n + 1)) (1 : kˣ) with hB`. Establish `hBo : IsOpen B` using `isOpen_box _`. Establish `hBc : IsCompact B` using `isCompact_box _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0 : (0 : Vc k n) ∈ B` using `zero_mem_box _`. Set `T : (Mx k n → ℂ) →ₗ[ℂ] (Mx k n × Vc k n → ℂ)` to `{ toFun := fun f q => f q.1 * B.indicator 1 q.2 map_add' := fun f g => by`. Use function extensionality and compare the values at `q`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := fun c f => by`. Use function extensionality and compare the values at `q`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Use `ring }`. Establish `hT_apply : ∀ f q, T f q = f q.1 * B.indicator 1 q.2` using `fun _ _ => rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨ξ ∘ₗ T, ?_, ?_⟩` and prove the remaining obligations. Introduce `g f hf`. Establish `h1 : T (f ∘ cj g) ∈ SB (Mx k n × Vc k n)` using `tens_mem (cj_comp_mem g hf) hBo hBc`. Establish `h2 : T f ∈ SB (Mx k n × Vc k n)` using `tens_mem hf hBo hBc`. Establish `h3` using `act_mem g h2`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hd` using `hzero _ (sub_mem h1 h3) fun x => by`. Simplify using `only [Pi.sub_apply, hT_apply, Function.comp_apply, mulVec_zero, Set.indicator_of_mem hB0, cj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hd` using `[map_sub, sub_eq_zero]`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hd, hinv g _ h2]`. Introduce `f₀ hf₀`. Take `⟨t, ht⟩` from `hNear n Λ hP f₀ hf₀`. Establish `hφ` using `ht t subset_rfl`. Use `set E : Set (Vc k n) := {w : Vc k n | w - eN k n ∈ box (Fin (n + 1)) t} with hE`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set F : Mx k n × Vc k n → ℂ := fun q => f₀ q.1 * E.indicator 1 q.2 with hFdef`. Establish `hEo : IsOpen E` using `(isOpen_box t).preimage (continuous_id.sub continuous_const)`. Establish `hEc : IsCompact E`. Establish `: E = (fun w => w + eN k n) '' box (Fin (n + 1)) t`. Use extensionality with `w`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [hE, Set.mem_ofPred_eq, Set.mem_image]`. Conclude with `⟨fun h => ⟨w - eN k n, h, by abel⟩, fun ⟨u, hu, e⟩ => by rw [← e]; simpa using hu⟩`. Rewrite using `[this]`. Conclude with `(isCompact_box t).image (continuous_id.add continuous_const)`. Establish `hE0 : eN k n ∈ E`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hE, Set.mem_ofPred_eq, sub_self]`. Conclude with `zero_mem_box _`. Establish `hF : F ∈ SB (Mx k n × Vc k n)` using `tens_mem hf₀ hEo hEc`. Establish `hlt : lt ν Λ F = μ.real E * Λ f₀`. Unfold `lt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hφ, integral_indicator_const _ hEo.measurableSet, Complex.real_smul]`. Establish `hg` using `pf_mem_SB μ hψ hF`. Establish `hg0 : ∀ x, pf ψ μ F (x, 0) = μ.real E * f₀ x`. Introduce `x`. Simplify using `only [pf, hFdef, dotProduct_zero, AddChar.map_zero_eq_one, Circle.coe_one, mul_one]`.
-
-Rewrite using `[integral_const_mul, show (E.indicator (1 : Vc k n → ℂ)) = E.indicator (fun _ => (1 : ℂ)) from rfl, integral_indicator_const _ hEo.measurableSet, Complex.real_smul, mul_one, mul_comm]`. Establish `h1 : ξ (pf ψ μ F) = lt ν Λ F` using `by rw [hξf _ hg, Fi_pf F hF]`. Establish `h2 : (fun q : Mx k n × Vc k n => pf ψ μ F (q.1, 0) * B.indicator 1 q.2) = (μ.real E : ℂ) • T f₀`. Use function extensionality and compare the values at `q`. Simplify using `only [hg0, Pi.smul_apply, smul_eq_mul, hT_apply]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `hzero _ (sub_mem hg (tens_mem (slice_fst_mem hg 0) hBo hBc)) fun x => by`. Simplify using `only [Pi.sub_apply, Set.indicator_of_mem hB0, Pi.one_apply, mul_one, sub_self]`. Rewrite `h3` using `[map_sub, sub_eq_zero, h2, map_smul, h1, hlt, smul_eq_mul]`. Establish `hpos : μ.real E ≠ 0`.
-
-Rewrite using `[Measure.real, ENNReal.toReal_ne_zero]`. Conclude with `⟨(hEo.measure_pos μ ⟨_, hE0⟩).ne', hEc.measure_lt_top.ne⟩`. Establish `hpos' : (μ.real E : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hpos`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply]`. Conclude with `mul_left_cancel₀ hpos' h3`.
+A detailed English derivation is pending.
 -/
 theorem recover (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     PhiIndep k → PhiLin k → PhiInt k → PhiNear k → PfAct k → LtEquiv k → Recover k := by
@@ -406,7 +400,7 @@ theorem recover (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNo
     exact mul_left_cancel₀ hpos' h3
 
 /- English proof (translation)
-Introduce `hR hT n Λ hP g f hf`. Take `⟨L, hL, hΛ⟩` from `hR hT n Λ hP`. Rewrite using `[hΛ _ (cj_comp_mem g hf), hΛ f hf, hL g f hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem coreX (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     Recover k → CoreX k := by

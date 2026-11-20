@@ -46,9 +46,9 @@ def absA (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   open Classical in if h : IsUnit z then Doubling.absE F E h.unit else 0
 
 /- English proof (translation)
-Unfold `absA`. Apply the tactic sequence `by_cases hz : IsUnit z <;> by_cases hw : IsUnit w`. Rewrite using `[dif_pos (hz.mul hw), dif_pos hz, dif_pos hw, ← map_mul]`. Use `congr 1`. Use `ext`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Rewrite using `[dif_neg (fun h => hw (isUnit_of_mul_isUnit_right h)), dif_neg hw, mul_zero]`. Rewrite using `[dif_neg (fun h => hz (isUnit_of_mul_isUnit_left h)), dif_neg hz, zero_mul]`. Rewrite using `[dif_neg (fun h => hz (isUnit_of_mul_isUnit_left h)), dif_neg hz, zero_mul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem absA_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (z w : AF F ⊗[F] E) :
     absA F E (z * w) = absA F E z * absA F E w := by
@@ -61,7 +61,7 @@ theorem absA_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   · rw [dif_neg (fun h => hz (isUnit_of_mul_isUnit_left h)), dif_neg hz, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[absA, dif_pos z.isUnit]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem absA_unit {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (z : (AF F ⊗[F] E)ˣ) :
     absA F E z = Doubling.absE F E z := by

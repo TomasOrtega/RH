@@ -18,21 +18,21 @@ noncomputable def baseChangeMap {X P T B : Scheme.{0}} (i : X ⟶ P) (q : P ⟶ 
     (by rw [Category.assoc, pullback.condition])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem baseChangeMap_snd {X P T B : Scheme.{0}} (i : X ⟶ P) (q : P ⟶ B) (g : T ⟶ B) :
     baseChangeMap i q g ≫ pullback.snd q g = pullback.snd (i ≫ q) g :=
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem baseChangeMap_fst {X P T B : Scheme.{0}} (i : X ⟶ P) (q : P ⟶ B) (g : T ⟶ B) :
     baseChangeMap i q g ≫ pullback.fst q g = pullback.fst (i ≫ q) g ≫ i :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Use `IsPullback.of_right (h₁₂ := pullback.snd q g) (h₂₂ := q) (v₁₃ := g) ?_ (baseChangeMap_fst i q g) (IsPullback.of_hasPullback q g).flip` and prove the remaining obligations. Rewrite using `[baseChangeMap_snd]`. Conclude with `(IsPullback.of_hasPullback (i ≫ q) g).flip`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_baseChangeMap {X P T B : Scheme.{0}} (i : X ⟶ P) (q : P ⟶ B) (g : T ⟶ B) :
     IsPullback (baseChangeMap i q g) (pullback.fst (i ≫ q) g) (pullback.fst q g) i := by
@@ -42,7 +42,7 @@ theorem isPullback_baseChangeMap {X P T B : Scheme.{0}} (i : X ⟶ P) (q : P ⟶
   exact (IsPullback.of_hasPullback (i ≫ q) g).flip
 
 /- English proof (translation)
-Establish `h` using `isPullback_baseChangeMap i q g`. Rewrite using `[← Scheme.Pullback.range_fst, ← h.isoPullback_hom_fst, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, h.isoPullback.hom.surjective.range_eq, Set.image_univ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_baseChangeMap {X P T B : Scheme.{0}} (i : X ⟶ P) (q : P ⟶ B) (g : T ⟶ B) :
     Set.range (baseChangeMap i q g) = pullback.fst q g ⁻¹' Set.range i := by
@@ -51,13 +51,11 @@ theorem range_baseChangeMap {X P T B : Scheme.{0}} (i : X ⟶ P) (q : P ⟶ B) (
     Set.range_comp, h.isoPullback.hom.surjective.range_eq, Set.image_univ]
 
 /- English proof (translation)
-Take `⟨N, i, hi, -, rfl⟩` from `hp`. Establish `hq : IsProper (PSpace.str k N)` using `isProper_str k N`. Establish `hcl : IsClosed (pullback.fst (PSpace.str k N) (spMap (algebraMap k V)) ⁻¹' Set.range i)`. Rewrite using `[← range_baseChangeMap]`. Establish `h1 : IsProper (baseChangeMap i (PSpace.str k N) (spMap (algebraMap k V)) ≫ pullback.snd (PSpace.str k N) (spMap (algebraMap k V)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[baseChangeMap_snd]`. Conclude with `hV`. Establish `h2 : IsProper (baseChangeMap i (PSpace.str k N) (spMap (algebraMap k V)))` using `IsProper.of_comp _ (pullback.snd (PSpace.str k N) (spMap (algebraMap k V)))`. Conclude with `(baseChangeMap i (PSpace.str k N) (spMap (algebraMap k V))).isClosedMap.isClosed_range`. Take `⟨R, hR, hclR⟩` from `exists_fg_isClosed_preimage_range k V X (PSpace k N) i (PSpace.str k N) hi inferInstance inferInstance hcl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨R, hR, ?_⟩` and prove the remaining obligations. Rewrite `hclR` using `[← range_baseChangeMap]`. Establish `hb : IsImmersion (baseChangeMap i (PSpace.str k N) (spMap (algebraMap k R)))` using `MorphismProperty.of_isPullback (P := @IsImmersion) (isPullback_baseChangeMap i (PSpace.str k N) (spMap (algebraMap k R))).flip hi`. Establish `hc : IsClosedImmersion (baseChangeMap i (PSpace.str k N) (spMap (algebraMap k R)))` using `IsClosedImmersion.of_isPreimmersion _ hclR`. Rewrite using `[← baseChangeMap_snd]`.
-
-Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fg_isProper_of_isQProjOver (k V : Type) [CommRing k] [IsNoetherianRing k] [CommRing V] [Algebra k V]
     (X : Scheme.{0}) (p : X ⟶ Sp k) (hp : IsQProjOver p)

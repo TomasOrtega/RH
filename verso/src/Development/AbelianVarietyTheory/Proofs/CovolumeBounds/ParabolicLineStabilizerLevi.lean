@@ -23,7 +23,7 @@ Both sides reduce to the same expression.
 theorem e0_eq : e0 k r' = Pi.single (fst k r') 1 := rfl
 
 /- English proof (translation)
-Use extensionality with `i`. Establish `hi` using `i.isLt`. Rewrite using `[e0_eq, mulVec_single_one, Matrix.col_apply, Pi.single_apply]`. Simplify using `only [Hpk, fst, lst, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gram_mulVec_e0 : Hpk k (1 + r') *ᵥ e0 k r' = Pi.single (lst k r') 1 := by
   ext i
@@ -33,9 +33,9 @@ theorem gram_mulVec_e0 : Hpk k (1 + r') *ᵥ e0 k r' = Pi.single (lst k r') 1 :=
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Use extensionality with `i`. Establish `hi` using `i.isLt`. Establish `h : star (e0 k r') = Pi.single (fst k r') 1`. Rewrite using `[e0_eq, ← Pi.single_star, star_one]`. Rewrite using `[h, single_one_vecMul, Matrix.row_apply, Pi.single_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Hpk, fst, lst, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_e0_vecMul_hpk_eq_single_lst : star (e0 k r') ᵥ* Hpk k (1 + r') = Pi.single (lst k r') 1 := by
   ext i
@@ -47,14 +47,14 @@ theorem star_e0_vecMul_hpk_eq_single_lst : star (e0 k r') ᵥ* Hpk k (1 + r') = 
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Rewrite using `[dotProduct_mulVec, star_e0_vecMul_hpk_eq_single_lst, single_one_dotProduct]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_e0_left (v : Fin (2 * (1 + r') + k + 1) → ℂ) :
     star (e0 k r') ⬝ᵥ (Hpk k (1 + r') *ᵥ v) = v (lst k r') := by
   rw [dotProduct_mulVec, star_e0_vecMul_hpk_eq_single_lst, single_one_dotProduct]
 
 /- English proof (translation)
-Unfold `liftVec`. Rewrite using `[dif_neg]`. Simplify using `only [lst]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lift_lst (w : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' w (lst k r') = 0 := by
   unfold liftVec
@@ -63,7 +63,7 @@ theorem lift_lst (w : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' w (lst k r'
   omega
 
 /- English proof (translation)
-Rewrite using `[e0_eq, Pi.single_apply, if_neg]`. Simplify using `only [lst, fst, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem e0_lst_eq_zero : e0 k r' (lst k r') = 0 := by
   rw [e0_eq, Pi.single_apply, if_neg]
@@ -71,13 +71,13 @@ theorem e0_lst_eq_zero : e0 k r' (lst k r') = 0 := by
   omega
 
 /- English proof (translation)
-Establish `hc : ∀ j, ((incl k 1 r')ᴴ *ᵥ u) j = u (levPos k 1 r' j)` using `fun j => inclH_mul k 1 r' (Matrix.of fun a _ => u a) j j`. Use extensionality with `i`. Establish `hi` using `i.isLt`. Rewrite using `[Pi.add_apply, Pi.smul_apply, e0_eq, Pi.single_apply, smul_eq_mul]`. Unfold `liftVec`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `h : 1 ≤ i.val ∧ i.val < 2 * r' + k + 1 + 1`. Rewrite using `[dif_pos h, hc, if_neg (by simp only [fst, Fin.ext_iff]; omega), mul_zero, add_zero]`. Use `congr 1`. Simplify using `only [levPos, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[dif_neg h, zero_add]`. Distinguish the cases in `h0 : i = fst k r'`. Rewrite using `[if_pos h0, mul_one, h0]`. Rewrite using `[if_neg h0, mul_zero, ← hu]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [fst, lst, Fin.ext_iff] at h0 ⊢`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem decomp (u : Fin (2 * (1 + r') + k + 1) → ℂ) (hu : u (lst k r') = 0) :
     u = liftVec k 1 r' ((incl k 1 r')ᴴ *ᵥ u) + u (fst k r') • e0 k r' := by
@@ -101,21 +101,21 @@ theorem decomp (u : Fin (2 * (1 + r') + k + 1) → ℂ) (hu : u (lst k r') = 0) 
       omega
 
 /- English proof (translation)
-Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_unitary {n : ℕ} (H p : Matrix (Fin n) (Fin n) ℂ) (hp : pᴴ * H * p = H) (v w : Fin n → ℂ) :
     star (p *ᵥ w) ⬝ᵥ (H *ᵥ (p *ᵥ v)) = star w ⬝ᵥ (H *ᵥ v) := by
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hp]
 
 /- English proof (translation)
-Rewrite using `[liftVec_eq, liftVec_eq, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, gram_inner]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_lift (v w : Fin (2 * r' + k + 1) → ℂ) :
     star (liftVec k 1 r' w) ⬝ᵥ (Hpk k (1 + r') *ᵥ liftVec k 1 r' v) = star w ⬝ᵥ (Hpk k r' *ᵥ v) := by
   rw [liftVec_eq, liftVec_eq, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, gram_inner]
 
 /- English proof (translation)
-Rewrite using `[star_add, add_dotProduct, star_smul, smul_dotProduct, pair_e0_left, mulVec_add, dotProduct_add, pair_lift, mulVec_smul, gram_mulVec_e0, dotProduct_smul, dotProduct_single_one]`. Simplify using `[lift_lst, e0_lst_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pair_shift (v w : Fin (2 * r' + k + 1) → ℂ) (c d : ℂ) :
     star (liftVec k 1 r' w + d • e0 k r') ⬝ᵥ (Hpk k (1 + r') *ᵥ (liftVec k 1 r' v + c • e0 k r')) =
@@ -125,15 +125,13 @@ theorem pair_shift (v w : Fin (2 * r' + k + 1) → ℂ) (c d : ℂ) :
   simp [lift_lst, e0_lst_eq_zero]
 
 /- English proof (translation)
-Introduce `k r' a p hp he`. Establish `hp' : pᴴ * Hpk k (1 + r') * p = Hpk k (1 + r')` using `hp`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Establish `h` using `pair_unitary _ p hp' (Pi.single (lst k r') 1) (e0 k r')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h` using `[he, zero_smul, star_zero, zero_dotProduct, pair_e0_left]`. Simplify using `at h`. Establish `hl : ∀ w, (p *ᵥ liftVec k 1 r' w) (lst k r') = 0`. Introduce `w`. Establish `h` using `pair_unitary _ p hp' (liftVec k 1 r' w) (e0 k r')`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[he, star_smul, smul_dotProduct, pair_e0_left, pair_e0_left, lift_lst, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h).resolve_left (star_ne_zero.2 ha)`. Establish `hd : ∀ w, p *ᵥ liftVec k 1 r' w = liftVec k 1 r' (((incl k 1 r')ᴴ * p * incl k 1 r') *ᵥ w) + (p *ᵥ liftVec k 1 r' w) (fst k r') • e0 k r'`. Introduce `w`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, ← liftVec_eq k 1 r' w]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `decomp k r' _ (hl w)`. Use `⟨ha, (incl k 1 r')ᴴ * p * incl k 1 r', ?_, fun w => ⟨_, hd w⟩⟩` and prove the remaining obligations. Generalize the expression as in `(incl k 1 r')ᴴ * p * incl k 1 r' = g at hd`. Use `show gᴴ * Hpk k r' * g = Hpk k r'`. Use extensionality with `i j`.
-
-Establish `h` using `pair_unitary _ p hp' (liftVec k 1 r' (Pi.single j 1)) (liftVec k 1 r' (Pi.single i 1))`. Rewrite `h` using `[hd (Pi.single j 1), hd (Pi.single i 1), pair_shift, pair_lift, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, ← Pi.single_star, star_one, single_one_dotProduct, single_one_dotProduct, mulVec_single_one, mulVec_single_one]`. Conclude with `h`.
+Replace the chosen expression with an arbitrary variable. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acts_through_level_one : ∀ (k r' : ℕ) (a : ℂ), ∀ p ∈ GV k (1 + r'), p *ᵥ e0 k r' = a • e0 k r' → a ≠ 0 ∧ ∃ g₁ ∈ GV k r', ∀ w : Fin (2 * r' + k + 1) → ℂ, ∃ c : ℂ, p *ᵥ liftVec k 1 r' w = liftVec k 1 r' (g₁ *ᵥ w) + c • e0 k r' := by
   intro k r' a p hp he

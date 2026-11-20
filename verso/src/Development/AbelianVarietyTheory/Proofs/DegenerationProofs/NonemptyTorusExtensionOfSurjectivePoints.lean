@@ -16,19 +16,19 @@ open GlobalTheory.SS
 namespace GlobalTheory.SS
 
 /- English proof (translation)
-Introduce `k _ _ G G₁ _ _ hG₁ ⟨E⟩ r hr hsurj`. Take `⟨X, _, _, _, B₁, _, i₁, q₁, ⟨hi, hq, hfl, hsu, haf, hker, hc, hsm, hsep, hqc, hgc⟩, hno⟩` from `MaxTorus.exists_quot_no_cocharacter k G₁ hG₁`. Set `_` to `E.addCommGroup`. Set `_` to `E.free`. Set `_` to `E.finite`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_` to `E.grpB`. Use `E.i_hom` as an intermediate fact. Use `E.q_hom` as an intermediate fact. Establish `hkill : E.i ≫ r ≫ q₁ = 1` using `GlobalTheory.T.splitTorus_hom_eq_one_of_no_cocharacter' _ B₁ E.X hno _ inferInstance`. Take `⟨⟨ψ, -, hψ⟩, -⟩` from `GlobalTheory.exists_monHom_factor_of_flat_surjective _ G E.B B₁ E.q (r ≫ q₁) E.q_hom inferInstance E.q_flat E.q_surjective E.q_quasiCompact (fun T x hx => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h` using `E.isKernel.lift_fst x (toUnit T) hx`. Rewrite using `[← h, Category.assoc, hkill, MonObj.comp_one])`. Use `E.isAbelian.proper` as an intermediate fact. Establish `: UniversallyClosed (ψ.left ≫ B₁.hom)` using `by rw [Over.w]; infer_instance`. Establish `: UniversallyClosed ψ.left` using `.of_comp_of_isSeparated _ B₁.hom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hG₁.2.1` as an intermediate fact. Establish `: JacobsonSpace G₁.left` using `LocallyOfFiniteType.jacobsonSpace G₁.hom`. Establish `hZ : IsClosed (q₁.left ⁻¹' Set.range ψ.left)` using `ψ.left.isClosedMap.isClosed_range.preimage q₁.left.continuous`. Set `pt : Spec (CommRingCat.of k)` to `IsLocalRing.closedPoint k`. Establish `hsub : closedPoints G₁.left ⊆ q₁.left ⁻¹' Set.range ψ.left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨x, hx⟩` from `hsurj (Over.homMk (pointOfClosedPoint (K := k) G₁.hom y hy) (pointOfClosedPoint_comp (K := k) G₁.hom y hy))`. Establish `hy' : r.left (x.left pt) = y`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, hx]`. Conclude with `pointOfClosedPoint_apply (K := k) G₁.hom y hy pt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨E.q.left (x.left pt), ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, hψ, Over.comp_left, Scheme.Hom.comp_apply, hy']`. Establish `hall` using `closure_minimal hsub hZ`. Rewrite `hall` using `[closure_closedPoints]`. Establish `: Surjective ψ.left` using `⟨fun b => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `q₁.left.surjective b`. Conclude with `hall (Set.mem_univ g)⟩`. Establish `: UniversallyClosed B₁.hom` using `.of_comp_surjective ψ.left _`. Establish `: IsProper B₁.hom` using `{}`. Conclude with `⟨{ X := X, B := B₁, isAbelian := ⟨hc, hsm, this, hgc⟩, q := q₁, q_hom := hq, q_flat := hfl, q_surjective := hsu, q_quasiCompact := inferInstance, i := i₁, i_hom := hi, isKernel := hker }⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_torusExtension_of_surjective_points : ∀ (k : Type) [Field k] [IsAlgClosed k] (G G₁ : Over (Sp k)) [GrpObj G] [GrpObj G₁], SmConn G₁ → Nonempty (TorusExtension G) → ∀ r : G ⟶ G₁, IsMonHom r → (∀ y : (𝟙_ (Over (Sp k)) ⟶ G₁), ∃ x : (𝟙_ (Over (Sp k)) ⟶ G), x ≫ r = y) → Nonempty (TorusExtension G₁) := by
   intro k _ _ G G₁ _ _ hG₁ ⟨E⟩ r hr hsurj

@@ -17,20 +17,20 @@ noncomputable section
 namespace GlobalTheory.TanForms
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Simplify using `only [spMap]`. Conclude with `Spec.map_id _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sp_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 (Sp A) := by
   simp only [spMap]; exact Spec.map_id _
 
 /- English proof (translation)
-Use `Spec.map_injective h` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sp_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g := by
   have := Spec.map_injective h
@@ -51,16 +51,16 @@ def derHom (d : Derivation R B M) : B →+* TrivSqZeroExt B M where
   map_add' a b := by ext <;> simp
 
 /- English proof (translation)
-Simplify using `[derHom]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem derHom_fst (d : Derivation R B M) (b : B) : (derHom d b).fst = b := by simp [derHom]
 /- English proof (translation)
-Simplify using `[derHom]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem derHom_snd (d : Derivation R B M) (b : B) : (derHom d b).snd = d b := by simp [derHom]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem derHom_alg (d : Derivation R B M) (r : R) :
     derHom d (algebraMap R B r) = TrivSqZeroExt.inl (algebraMap R B r) := by
@@ -82,7 +82,7 @@ def derOf (c : B →+* TrivSqZeroExt B M) (h1 : ∀ b, (c b).fst = b)
     rw [map_mul, TrivSqZeroExt.snd_mul, h1, h1, op_smul_eq_smul]
 
 /- English proof (translation)
-Use extensionality with `b`. Simplify using `[h1]`. Simplify using `[derOf]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem derHom_derOf (c : B →+* TrivSqZeroExt B M) (h1 : ∀ b, (c b).fst = b)
     (h2 : ∀ r, c (algebraMap R B r) = TrivSqZeroExt.inl (algebraMap R B r)) : derHom (derOf c h1 h2) = c := by
@@ -108,20 +108,20 @@ def sumHom (α : B →+* B') (f : M →+ M') (hf : ∀ (b : B) (m : M), f (b •
   map_add' x y := by ext <;> simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun b ↦ by ext <;> simp [sumHom], fun m ↦ by ext <;> simp [sumHom]⟩`.
+Supply the required witnesses or components.
 -/
 theorem sumHom_isSum (α : B →+* B') (f : M →+ M') (hf : ∀ (b : B) (m : M), f (b • m) = α b • f m) :
     IsSum (sumHom α f hf) α f :=
   ⟨fun b ↦ by ext <;> simp [sumHom], fun m ↦ by ext <;> simp [sumHom]⟩
 
 /- English proof (translation)
-Simplify using `[sumHom]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem sumHom_fst (α : B →+* B') (f : M →+ M') (hf : ∀ (b : B) (m : M), f (b • m) = α b • f m)
     (x : TrivSqZeroExt B M) : (sumHom α f hf x).fst = α x.fst := by simp [sumHom]
 
 /- English proof (translation)
-Simplify using `[sumHom]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem sumHom_snd (α : B →+* B') (f : M →+ M') (hf : ∀ (b : B) (m : M), f (b • m) = α b • f m)
     (x : TrivSqZeroExt B M) : (sumHom α f hf x).snd = f x.snd := by simp [sumHom]
@@ -154,11 +154,11 @@ def pt (d : Derivation R (Sec A.hom U.1) M) : Sp (TrivSqZeroExt (Sec A.hom U.1) 
   spMap (derHom d) ≫ affPt A.hom U
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[pt, Category.assoc, affPt_w, sp_comp]`. Use `congr 1`. Use `RingHom.ext fun r ↦ ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, derHom_alg]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[pt, ← Category.assoc, sp_comp]`. Establish `: (TrivSqZeroExt.fstHom (Sec A.hom U.1) (Sec A.hom U.1) M).toRingHom.comp (derHom d) = RingHom.id _`. Use extensionality with `b`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, sp_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_lifts (d : Derivation R (Sec A.hom U.1) M) : Lifts A.hom (affPt A.hom U) (pt A U d) := by
   constructor
@@ -172,9 +172,9 @@ theorem pt_lifts (d : Derivation R (Sec A.hom U.1) M) : Lifts A.hom (affPt A.hom
     rw [this, sp_id, Category.id_comp]
 
 /- English proof (translation)
-Take `⟨c, ⟨hc1, hc2⟩, -⟩` from `GlobalTheory.T.existsUnique_ringHom_of_sqZeroExt_point_affine R A.left A.hom U (Sec A.hom U.1) M (RingHom.id _) z (by rw [sp_id, Category.id_comp]; exact hz.2)`. Establish `h2 : c.comp (algebraMap R (Sec A.hom U.1)) = (TrivSqZeroExt.inlHom (Sec A.hom U.1) M).comp (algebraMap R (Sec A.hom U.1))`. Apply `sp_inj` to reduce the goal to its premises. Rewrite using `[← sp_comp, ← affPt_w, ← Category.assoc, hc1]`. Conclude with `hz.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc2' : ∀ b, (c b).fst = b` using `hc2`. Establish `h2' : ∀ r, c (algebraMap R (Sec A.hom U.1) r) = TrivSqZeroExt.inl (algebraMap R (Sec A.hom U.1) r)` using `fun r ↦ RingHom.congr_fun h2 r`. Use `⟨derOf c hc2' h2', ?_⟩` and prove the remaining obligations. Rewrite using `[pt, derHom_derOf, hc1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lifts_pt (z : Sp (TrivSqZeroExt (Sec A.hom U.1) M) ⟶ A.left) (hz : Lifts A.hom (affPt A.hom U) z) :
     ∃ d : Derivation R (Sec A.hom U.1) M, pt A U d = z := by
@@ -192,9 +192,9 @@ theorem lifts_pt (z : Sp (TrivSqZeroExt (Sec A.hom U.1) M) ⟶ A.left) (hz : Lif
   rw [pt, derHom_derOf, hc1]
 
 /- English proof (translation)
-Take `⟨c, -, hc⟩` from `GlobalTheory.T.existsUnique_ringHom_of_sqZeroExt_point_affine R A.left A.hom U (Sec A.hom U.1) M (RingHom.id _) (pt A U d) (by rw [sp_id, Category.id_comp]; exact (pt_lifts A U d).2)`. Establish `e1` using `hc (derHom d) ⟨rfl, fun b ↦ derHom_fst d b⟩`. Establish `e2` using `hc (derHom d') ⟨h.symm, fun b ↦ derHom_fst d' b⟩`. Use extensionality with `b`. Use `congrArg TrivSqZeroExt.snd (RingHom.congr_fun (e1.trans e2.symm) b)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pt_inj (d d' : Derivation R (Sec A.hom U.1) M) (h : pt A U d = pt A U d') : d = d' := by
   obtain ⟨c, -, hc⟩ := GlobalTheory.T.existsUnique_ringHom_of_sqZeroExt_point_affine R A.left A.hom U (Sec A.hom U.1) M (RingHom.id _) (pt A U d)
@@ -213,7 +213,7 @@ def back (y : Sp (TrivSqZeroExt (Sec A.hom U.1) M) ⟶ A.left) : Sp (TrivSqZeroE
 variable {A τ}
 
 /- English proof (translation)
-Use `haveI : Nonempty (Sp (TrivSqZeroExt (Sec A.hom U.1) M) ⟶ A.left) := ⟨y⟩`. Establish `h` using `(hb (Sec A.hom U.1) M (affPt A.hom U) (affPt_w A.hom U)).surjOn hy`. Conclude with `⟨Function.invFunOn_mem h, Function.invFunOn_eq h⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem back_spec (hb : TrBij A τ) (y : Sp (TrivSqZeroExt (Sec A.hom U.1) M) ⟶ A.left)
     (hy : Lifts A.hom (affPt A.hom U) y) :
@@ -223,7 +223,7 @@ theorem back_spec (hb : TrBij A τ) (y : Sp (TrivSqZeroExt (Sec A.hom U.1) M) �
   exact ⟨Function.invFunOn_mem h, Function.invFunOn_eq h⟩
 
 /- English proof (translation)
-Establish `H` using `hb (Sec A.hom U.1) M (affPt A.hom U) (affPt_w A.hom U)`. Establish `hy : Lifts A.hom (affPt A.hom U) y` using `h ▸ H.mapsTo hz`. Conclude with `H.injOn (back_spec U hb y hy).1 hz ((back_spec U hb y hy).2.trans h.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem back_eq (hb : TrBij A τ) (z : Sp (TrivSqZeroExt (Sec A.hom U.1) M) ⟶ A.left)
     (hz : Lifts A.hom (unitPt A (Sec A.hom U.1)) z) (y : Sp (TrivSqZeroExt (Sec A.hom U.1) M) ⟶ A.left)
@@ -248,13 +248,13 @@ variable (tr : TanRep A W) {τ : TrTy A} (hb : TrBij A τ) (hn : TrNat A τ) (U 
 include hb hn
 
 /- English proof (translation)
-Use `letI := opMod (Sec A.hom U.1) Ω[Sec A.hom U.1⁄R]`. Use `haveI : IsCentralScalar (Sec A.hom U.1) Ω[Sec A.hom U.1⁄R] := ⟨fun _ _ ↦ rfl⟩`. Take `⟨hz0, hτz0⟩` from `back_spec (τ := τ) U hb (pt A U (D R (Sec A.hom U.1))) (pt_lifts A U _)`. Set `β` to `sumHom (RingHom.id (Sec A.hom U.1)) ψ.toAddMonoidHom (fun b m ↦ ψ.map_smul b m)`. Establish `hβ : IsSum β (AlgHom.id R (Sec A.hom U.1)) ψ` using `sumHom_isSum (RingHom.id (Sec A.hom U.1)) ψ.toAddMonoidHom (fun b m ↦ ψ.map_smul b m)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hl, hnat⟩` from `hn (Sec A.hom U.1) Ω[Sec A.hom U.1⁄R] (Sec A.hom U.1) M (AlgHom.id R _) ψ β hβ (affPt A.hom U) (affPt_w A.hom U) _ hz0`. Establish `hpt : spMap β ≫ pt A U (D R (Sec A.hom U.1)) = pt A U (ψ.compDer (D R (Sec A.hom U.1)))`. Rewrite using `[pt, pt, ← Category.assoc, sp_comp]`. Use `congr 2`. Use `RingHom.ext fun b ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_apply, show derHom (D R (Sec A.hom U.1)) b = TrivSqZeroExt.inl b + TrivSqZeroExt.inr (D R (Sec A.hom U.1) b) from rfl, map_add, hβ.1, hβ.2]`. Both sides reduce to the same expression. Establish `hb' : back A U τ (pt A U (ψ.compDer (D R (Sec A.hom U.1)))) = spMap β ≫ back A U τ (pt A U (D R (Sec A.hom U.1)))`. Apply `back_eq U hb _ hl` to reduce the goal to its premises. Establish `hid : spMap ((AlgHom.id R (Sec A.hom U.1) : Sec A.hom U.1 →+* Sec A.hom U.1)) ≫ affPt A.hom U = affPt A.hom U`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show ((AlgHom.id R (Sec A.hom U.1) : Sec A.hom U.1 →+* Sec A.hom U.1)) = RingHom.id _ from rfl, sp_id, Category.id_comp]`. Rewrite `hnat` using `[hid]`. Rewrite using `[hnat, hτz0, hpt]`. Rewrite using `[hb']`. Conclude with `tr.nat (AlgHom.id R _) (ψ.restrictScalars R) β hβ _ hz0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key (ψ : Ω[Sec A.hom U.1⁄R] →ₗ[Sec A.hom U.1] M) :
     tr.Φ (back A U τ (pt A U (ψ.compDer (D R (Sec A.hom U.1))))) = (ψ.restrictScalars R) ∘ₗ eU tr τ U := by
@@ -286,7 +286,7 @@ theorem key (ψ : Ω[Sec A.hom U.1⁄R] →ₗ[Sec A.hom U.1] M) :
   exact tr.nat (AlgHom.id R _) (ψ.restrictScalars R) β hβ _ hz0
 
 /- English proof (translation)
-Take `⟨z, ⟨hz, hzg⟩, -⟩` from `tr.bij (B := Sec A.hom U.1) (M := M) g`. Establish `hy` using `(hb (Sec A.hom U.1) M (affPt A.hom U) (affPt_w A.hom U)).mapsTo hz`. Take `⟨d, hd⟩` from `lifts_pt A U _ hy`. Use `⟨d.liftKaehlerDifferential, ?_⟩` and prove the remaining obligations. Rewrite using `[← key tr hb hn U, Derivation.liftKaehlerDifferential_comp, hd, back_eq U hb z hz _ rfl, hzg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift (g : W →ₗ[R] M) :
     ∃ ψ : Ω[Sec A.hom U.1⁄R] →ₗ[Sec A.hom U.1] M, (ψ.restrictScalars R) ∘ₗ eU tr τ U = g := by
@@ -297,9 +297,9 @@ theorem exists_lift (g : W →ₗ[R] M) :
   rw [← key tr hb hn U, Derivation.liftKaehlerDifferential_comp, hd, back_eq U hb z hz _ rfl, hzg]
 
 /- English proof (translation)
-Rewrite `h` using `[← key tr hb hn U, ← key tr hb hn U]`. Establish `s1` using `back_spec U hb _ (pt_lifts A U (ψ.compDer (D R (Sec A.hom U.1))))`. Establish `s2` using `back_spec U hb _ (pt_lifts A U (ψ'.compDer (D R (Sec A.hom U.1))))`. Take `⟨_, _, hu⟩` from `tr.bij (B := Sec A.hom U.1) (M := M) (tr.Φ (back A U τ (pt A U (ψ.compDer (D R (Sec A.hom U.1))))))`. Establish `e` using `(hu _ ⟨s1.1, rfl⟩).trans (hu _ ⟨s2.1, h.symm⟩).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e' : pt A U (ψ.compDer (D R (Sec A.hom U.1))) = pt A U (ψ'.compDer (D R (Sec A.hom U.1)))`. Rewrite using `[← s1.2, ← s2.2, e]`. Conclude with `Derivation.liftKaehlerDifferential_unique _ _ (pt_inj A U _ _ e')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_unique (ψ ψ' : Ω[Sec A.hom U.1⁄R] →ₗ[Sec A.hom U.1] M)
     (h : (ψ.restrictScalars R) ∘ₗ eU tr τ U = (ψ'.restrictScalars R) ∘ₗ eU tr τ U) : ψ = ψ' := by
@@ -314,9 +314,9 @@ theorem lift_unique (ψ ψ' : Ω[Sec A.hom U.1⁄R] →ₗ[Sec A.hom U.1] M)
   exact Derivation.liftKaehlerDifferential_unique _ _ (pt_inj A U _ _ e')
 
 /- English proof (translation)
-Use `IsBaseChange.of_lift_unique _ fun Q _ _ _ _ g ↦ ?_` and prove the remaining obligations. Use `letI : AddCommGroup Q := Module.addCommMonoidToAddCommGroup (Sec A.hom U.1)`. Use `letI := opMod (Sec A.hom U.1) Q`. Use `haveI : IsCentralScalar (Sec A.hom U.1) Q := ⟨fun _ _ ↦ rfl⟩`. Take `⟨ψ, hψ⟩` from `exists_lift tr hb hn U g`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨ψ, hψ, fun ψ' h ↦ lift_unique tr hb hn U ψ' ψ (h.trans hψ.symm)⟩`.
+A detailed English derivation is pending.
 -/
 theorem eU_isBaseChange : IsBaseChange (Sec A.hom U.1) (eU tr τ U) := by
   refine IsBaseChange.of_lift_unique _ fun Q _ _ _ _ g ↦ ?_
@@ -327,17 +327,15 @@ theorem eU_isBaseChange : IsBaseChange (Sec A.hom U.1) (eU tr τ U) := by
   exact ⟨ψ, hψ, fun ψ' h ↦ lift_unique tr hb hn U ψ' ψ (h.trans hψ.symm)⟩
 
 /- English proof (translation)
-Use `letI := opMod (Sec A.hom T.unop.1) Ω[Sec A.hom T.unop.1⁄R]`. Use `haveI : IsCentralScalar (Sec A.hom T.unop.1) Ω[Sec A.hom T.unop.1⁄R] := ⟨fun _ _ ↦ rfl⟩`. Use `letI := opMod (Sec A.hom T'.unop.1) Ω[Sec A.hom T'.unop.1⁄R]`. Use `haveI : IsCentralScalar (Sec A.hom T'.unop.1) Ω[Sec A.hom T'.unop.1⁄R] := ⟨fun _ _ ↦ rfl⟩`. Establish `hle : T'.unop.1 ≤ T.unop.1` using `leOfHom a.unop`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `α : Sec A.hom T.unop.1 →ₐ[R] Sec A.hom T'.unop.1` to `Sec.res A.hom hle`. Set `f : Ω[Sec A.hom T.unop.1⁄R] →ₗ[R] Ω[Sec A.hom T'.unop.1⁄R]` to `p1 (OAff A.hom) a`. Establish `hf : ∀ (b : Sec A.hom T.unop.1) (m : Ω[Sec A.hom T.unop.1⁄R]), f.toAddMonoidHom (b • m) = (α : Sec A.hom T.unop.1 →+* Sec A.hom T'.unop.1) b • f.toAddMonoidHom m` using `fun b m ↦ oneFormsMapOfFunctorMorphism_smul (OAff A.hom) a b m`. Establish `hfD : ∀ b : Sec A.hom T.unop.1, f (D R _ b) = D R _ (α b)` using `fun b ↦ p1_D (OAff A.hom) a b`. Set `β` to `sumHom (α : Sec A.hom T.unop.1 →+* Sec A.hom T'.unop.1) f.toAddMonoidHom hf`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hβ : IsSum β α f` using `sumHom_isSum _ f.toAddMonoidHom hf`. Take `⟨hz0, hτz0⟩` from `back_spec (τ := τ) T.unop hb (pt A T.unop (D R (Sec A.hom T.unop.1))) (pt_lifts A T.unop _)`. Take `⟨hl, hnat⟩` from `hn (Sec A.hom T.unop.1) Ω[Sec A.hom T.unop.1⁄R] (Sec A.hom T'.unop.1) Ω[Sec A.hom T'.unop.1⁄R] α f β hβ (affPt A.hom T.unop) (affPt_w A.hom T.unop) _ hz0`. Establish `hres : spMap (α : Sec A.hom T.unop.1 →+* Sec A.hom T'.unop.1) ≫ affPt A.hom T.unop = affPt A.hom T'.unop` using `affPt_res A.hom hle`. Establish `hpt : spMap β ≫ pt A T.unop (D R (Sec A.hom T.unop.1)) = pt A T'.unop (D R (Sec A.hom T'.unop.1))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : β.comp (derHom (D R (Sec A.hom T.unop.1))) = (derHom (D R (Sec A.hom T'.unop.1))).comp (α : Sec A.hom T.unop.1 →+* Sec A.hom T'.unop.1)`. Use `RingHom.ext fun b ↦ ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, show derHom (D R (Sec A.hom T.unop.1)) b = TrivSqZeroExt.inl b + TrivSqZeroExt.inr (D R (Sec A.hom T.unop.1) b) from rfl, map_add, hβ.1, hβ.2, hfD]`. Both sides reduce to the same expression. Rewrite using `[pt, pt, ← Category.assoc, sp_comp, hc, ← sp_comp, Category.assoc, hres]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hnat` using `[hres]`. Establish `hb' : back A T'.unop τ (pt A T'.unop (D R (Sec A.hom T'.unop.1))) = spMap β ≫ back A T.unop τ (pt A T.unop (D R (Sec A.hom T.unop.1)))`. Apply `back_eq T'.unop hb _ hl` to reduce the goal to its premises. Rewrite using `[hnat, hτz0, hpt]`. Use `show tr.Φ (back A T'.unop τ (pt A T'.unop (D R (Sec A.hom T'.unop.1)))) w = f (tr.Φ (back A T.unop τ (pt A T.unop (D R (Sec A.hom T.unop.1)))) w)`.
-
-Rewrite using `[hb', tr.nat α f β hβ _ hz0]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eU_nat {T T' : AffOp A.left} (a : T ⟶ T') (w : W) :
     eU tr τ T'.unop w = p1 (OAff A.hom) a (eU tr τ T.unop w) := by
@@ -380,7 +378,7 @@ theorem eU_nat {T T' : AffOp A.left} (a : T ⟶ T') (w : W) :
 end Forms
 
 /- English proof (translation)
-Introduce `R _ A _ W _ _ tr`. Take `⟨τ, hb, hn⟩` from `GlobalTheory.T.exists_translation_sqZeroPoints_unit_to_point R A`. Set `j : W →ₗ[R] GlobForm A.hom` to `{ toFun := fun w ↦ ⟨fun T ↦ eU tr τ T.unop w, fun T T' a ↦ eU_nat tr hb hn a w⟩ map_add' := fun w w' ↦ Subtype.ext (funext fun T ↦ map_add (eU tr τ T.unop) w w') map_smul' := fun r w ↦ Subtype.ext (funext fun T ↦ map_smul (eU tr τ T.unop) r w) }`. Conclude with `⟨j, fun T ↦ ⟨eU tr τ T.unop, fun w ↦ rfl, eU_isBaseChange tr hb hn T.unop⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_globForm_isBaseChange : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A], ∀ (W : Type)
     [AddCommGroup W] [Module R W], TanRep A W → ∃ j : W →ₗ[R] GlobForm A.hom, ∀ T : AffOp A.left,

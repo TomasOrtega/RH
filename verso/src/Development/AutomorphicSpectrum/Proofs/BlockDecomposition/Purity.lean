@@ -17,23 +17,21 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL MeasureT
 namespace GlobalTheory.CompanionTheory.ClozelPurity
 
 /- English proof (translation)
-Introduce `hB E _ _ _ a ha π hinf hint`. Take `⟨μ, h1, h2⟩` from `GlobalTheory.T.exists_right_haar_measure E a`. Use `haveI := h1`. Use `haveI := h2`. Take `⟨s, hs⟩` from `GlobalTheory.T.aux_statement_20 E a ha π hinf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨B, hH⟩` from `GlobalTheory.T.exists_invariant_hermitian_form hB E a μ (π.twist (GlobalTheory.CuspRep.Model.absC E s)) hs`. Establish `hm : ∀ τ, π.HasInfChar τ ((CG.mk π).infChar τ)` using `fun τ => by`. Take `⟨m, h⟩` from `hinf τ`. Establish `e : (CG.mk π).infChar τ = m` using `CG.HasInfChar.infChar_eq (π := CG.mk π) h`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Establish `hreal : ∀ τ, ∀ z ∈ (CG.mk π).infChar τ, (starRingEnd ℂ) z = z` using `fun τ z hz => by`. Take `⟨n, rfl⟩` from `hint τ z hz`. Establish `c2 : (starRingEnd ℂ) (2 : ℂ) = 2` using `map_ofNat _ 2`. Simplify using `[c2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ τ : E →+* ℂ, (CG.mk π).infChar (NumberField.ComplexEmbedding.conjugate τ) = ((CG.mk π).infChar τ).map fun z => (-(starRingEnd ℂ) s - s) - z` using `fun τ => by`. Establish `t1` using `(hm τ).twist (GlobalTheory.CuspRep.Model.absC E s)`. Establish `t2` using `(hm (NumberField.ComplexEmbedding.conjugate τ)).twist (GlobalTheory.CuspRep.Model.absC E s)`. Rewrite `t1`, `t2` using `[GlobalTheory.CuspRep.Model.expo_absC]`. Establish `e` using `GlobalTheory.T.infinitesimal_character_conjugate E a _ B hH τ _ _ t1 t2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `congrArg (Multiset.map fun z => z - s) e`. Simplify using `only [Multiset.map_map, Function.comp_def, add_sub_cancel_right, Multiset.map_id'] at e2`. Rewrite using `[e2]`. Use `Multiset.map_congr rfl fun z hz => ?_` and prove the remaining obligations. Rewrite using `[map_add, hreal τ z hz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨τ₀⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, z ∈ (CG.mk π).infChar τ₀ := by`. Apply `Multiset.card_pos_iff_exists_mem.1` to reduce the goal to its premises. Rewrite using `[CG.card_infChar]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `ha`. Establish `hz' : (-(starRingEnd ℂ) s - s) - z ∈ (CG.mk π).infChar (NumberField.ComplexEmbedding.conjugate τ₀)`. Rewrite using `[key]`. Conclude with `Multiset.mem_map_of_mem _ hz`. Take `⟨n, hn⟩` from `hint _ z hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨n', hn'⟩` from `hint _ _ hz'`. Use `⟨n + n' + (a : ℤ) - 1, fun τ => ?_⟩` and prove the remaining obligations. Establish `e : (-(starRingEnd ℂ) s - s) = (((n + n' + (a : ℤ) - 1 : ℤ)) : ℂ)`. Use `push_cast`. Take the linear combination `hn' + hn`.
-
-Establish `e2 : (starRingEnd ℂ).comp τ = NumberField.ComplexEmbedding.conjugate τ` using `RingHom.ext fun _ => rfl`. Rewrite using `[e2, key, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem purity : GlobalTheory.Published.CuspFormsBoundedGL → ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 1 ≤ a → ∀ π : CuspSub E a, (∀ τ : E →+* ℂ, ∃ m, π.HasInfChar τ m) → (∀ τ, ∀ z ∈ (CG.mk π).infChar τ, ∃ n : ℤ, z = (n : ℂ) + ((a : ℂ) - 1) / 2) → ∃ w₀ : ℤ, ∀ τ : E →+* ℂ, (CG.mk π).infChar ((starRingEnd ℂ).comp τ) = ((CG.mk π).infChar τ).map fun z => (w₀ : ℂ) - z := by
   intro hB E _ _ _ a ha π hinf hint

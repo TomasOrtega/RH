@@ -12,9 +12,9 @@ open PositivityTheory.PfSWUS.Loc GlobalTheory.CompanionTheory.SiegLoc
 namespace GlobalTheory.CompanionTheory.GunrNu
 
 /- English proof (translation)
-Break down `Scaled.fixed_decomp hR k d hd with h0 | ⟨a₀, e, c, rfl, hc, hc1, rfl⟩` into its components or cases. Establish `hz : Ideal.Quotient.mk (lev ϖ k) d = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 h0`. Establish `hr : (Set.range fun w : R ⧸ lev ϖ k => w * Ideal.Quotient.mk (lev ϖ k) d) = {0}`. Use extensionality with `z`. Simplify using `[hz]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨0, by rw [hr]; simp⟩`. Conclude with `⟨e, by`. Rewrite using `[Scaled.card_range_mul hR.reg (hR.fixLocal c hc hc1) e a₀, GlobalTheory.T.unramified_quotient_card R σ ϖ q ε hR e, pow_mul]⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_range_pow {R : Type} [CommRing R] {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ}
     (hR : IsUnrQuad R σ ϖ q ε) (k : ℕ) (d : R) (hd : σ d = d) :
@@ -31,11 +31,11 @@ theorem card_range_pow {R : Type} [CommRing R] {σ : R →+* R} {ϖ : R} {q : �
         GlobalTheory.T.unramified_quotient_card R σ ϖ q ε hR e, pow_mul]⟩
 
 /- English proof (translation)
-Introduce `R _ σ ϖ q ε hR n k B hB`. Take `⟨h, hh, rfl⟩` from `hB`. Establish `hq` using `hR.one_lt`. Establish `hfin : Finite (R ⧸ lev ϖ k)` using `Nat.finite_of_card_ne_zero (by`. Rewrite using `[GlobalTheory.T.unramified_quotient_card R σ ϖ q ε hR k]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_ne_zero _ (by omega))`. Set `_ : Fintype (R ⧸ lev ϖ k)` to `Fintype.ofFinite _`. Take `⟨g, g', d, hgg, hgg', hd, hgd⟩` from `GlobalTheory.T.hermitian_matrix_diagonalizable R σ ϖ q ε hR n h hh`. Use `choose eI hcard using fun i => card_range_pow hR k (d i) (hd i)`. Establish `hnu : nuAt ϖ (red ϖ k h) = (q ^ 2) ^ (∑ i, eI i)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.multiplicity_reduction_diagonal_prod R σ ϖ hR.fix_ϖ hR.inv k n h g g' d hgg hgg' hgd, Finset.prod_congr rfl (fun i _ => hcard i), Finset.prod_pow_eq_pow_sum]`. Rewrite using `[hnu, Nat.log_pow (Nat.one_lt_pow (by norm_num) hq)]`.
+A detailed English derivation is pending.
 -/
 theorem nuPow : PositivityTheory.SiegelWeilFormula.Gunr.NuPow := by
   intro R _ σ ϖ q ε hR n k B hB

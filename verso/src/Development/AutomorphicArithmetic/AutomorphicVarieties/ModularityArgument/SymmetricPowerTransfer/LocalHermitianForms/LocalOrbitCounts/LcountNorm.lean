@@ -3,39 +3,37 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [ofE.eq_1] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ofE_mul_local_orbit_counts {K : Type} [Field K] (Δ τ : K) (z w : Etau K τ) :
     ofE Δ (z * w) = ofE Δ z * ofE Δ w := by
   ext <;> simp [ofE.eq_1] <;> ring
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [ofE.eq_1]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ofE_one' {K : Type} [Field K] (Δ τ : K) : ofE Δ (1 : Etau K τ) = 1 := by
   ext <;> simp [ofE.eq_1]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [ofE.eq_1, sigL.eq_1]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sigL_ofE_local_orbit_counts {K : Type} [Field K] (Δ τ : K) (z : Etau K τ) : sigL (ofE Δ z) = ofE Δ z := by
   ext <;> simp [ofE.eq_1, sigL.eq_1]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [ofE.eq_1, sigL.eq_1, QuadraticAlgebra.norm_def] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem mul_ofE_mul_star_sigL_eq_norm_smul {K : Type} [Field K] (Δ τ : K) (m : EL Δ τ) (z : Etau K τ) :
     m * ofE Δ z * star (sigL (ofE Δ z)) = (QuadraticAlgebra.norm z : K) • m := by
   ext <;> simp [ofE.eq_1, sigL.eq_1, QuadraticAlgebra.norm_def] <;> ring
 
 /- English proof (translation)
-Unfold `LcountNorm`. Introduce `O K _ _ _ _ _ Δ τ _ c d m _ t ht`. Rewrite `ht` using `[NE.eq_1]`. Take `⟨u, rfl⟩` from `ht`. Set `y : (EL Δ τ)ˣ` to `⟨ofE Δ (u : Etau K τ), ofE Δ (↑u⁻¹ : Etau K τ), by rw [← ofE_mul_local_orbit_counts, u.mul_inv, ofE_one'], by rw [← ofE_mul_local_orbit_counts, u.inv_mul, ofE_one']⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hI : DatIso` using `datIso`. Unfold `DatIso at hI`. Establish `h` using `(hI O K Δ τ c d m y).1`. Establish `hy : (y : EL Δ τ) = ofE Δ (u : Etau K τ)` using `rfl`. Establish `e1 : d * sigL (y : EL Δ τ) * ↑y⁻¹ = d`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show sigL (y : EL Δ τ) = (y : EL Δ τ) by rw [hy, sigL_ofE_local_orbit_counts]]`. Conclude with `Units.mul_inv_cancel_right d y`. Establish `e2 : m * ↑y * star (sigL (y : EL Δ τ)) = ((Units.map QuadraticAlgebra.norm u : Kˣ) : K) • m`. Rewrite using `[hy, Units.coe_map, mul_ofE_mul_star_sigL_eq_norm_smul]`. Rewrite `h` using `[e1, e2]`.
-
-Conclude with `h.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.lcountNorm : UpperTheory.V.Z.Sym.Loc.LcountNorm := by
   unfold LcountNorm

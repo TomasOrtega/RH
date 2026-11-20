@@ -9,7 +9,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LocalUniformizerReal
 
 /- English proof (translation)
-Introduce `h1 D L hT Gi Gl K Y cX ex Rc P Dcf Spf Zscf S B hn`. Conclude with `GlobalTheory.TiedUnif.uniformisation_every_embedding_thirdKind h1 GlobalTheory.Mem.VolFin.finVol B.T B.Q.Rl _ B.κ B.v₀ B.fw B.O B.Q.charW B.bar B.pins B.rhoGeo B.equivAll hn`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lUnif_realTB : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (K : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (Rc : Formalism.L2.RecT ex) (P : RowSideFamily ex) (Dcf : ∀ Zs : DefSub P.A3.fam3.amb3, DefCols (P.A3.side3 P.Ps P.ψs Zs)) (Spf : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (Dcf Zs)) (Zscf : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3) (S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc) (B : RealTB Rc P Dcf Spf Zscf S), 8 * D.R.f * D.R.r + 4 ≤ D.R.nV → B.Q.Rl.toRealDat.LUnif := by
   intro h1 D L hT Gi Gl K Y cX ex Rc P Dcf Spf Zscf S B hn

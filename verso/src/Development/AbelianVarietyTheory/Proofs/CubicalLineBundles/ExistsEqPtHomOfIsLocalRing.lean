@@ -10,15 +10,15 @@ open GlobalTheory GlobalTheory.WeierstrassCurve GlobalTheory.AddLaw
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ W A _ _ ρ x hx`. Establish `key : ∀ i : Fin 3, x (IsLocalRing.closedPoint A) ∈ coordOpen W i → ∃ (P : Fin 3 → A) (h : IsUnimodularSol (W.map ρ) P), x = ptHom W ρ P h`. Introduce `i hi`. Establish `htop : x ⁻¹ᵁ coordOpen W i = ⊤` using `(IsLocalRing.closedPoint_mem_iff (R := A) (x ⁻¹ᵁ coordOpen W i)).mp hi`. Establish `hr : Set.range x ⊆ Set.range (awayChart W i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Establish `hy : y ∈ x ⁻¹ᵁ coordOpen W i` using `htop.ge trivial`. Rewrite `hy` using `[← opensRange_awayChart]`. Conclude with `hy`. Take `⟨g, hg⟩` from `Spec.map_surjective (IsOpenImmersion.lift (awayChart W i) x hr)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx' : x = Spec.map (CommRingCat.ofHom g.hom) ≫ awayChart W i`. Rewrite using `[CommRingCat.ofHom_hom, hg, IsOpenImmersion.lift_fac]`. Rewrite `hx'` using `[SpecMap_awayChart]`. Establish `hρ : g.hom.comp (awayConst W i) = ρ`. Rewrite `hx` using `[hx', ptHom_toSpec]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective hx)`. Substitute `hρ` using the available equality. Conclude with `⟨_, _, hx'⟩`. Establish `h : x (IsLocalRing.closedPoint A) ∈ coordOpen W 1 ⊔ coordOpen W 2`. Rewrite using `[coordOpen_one_sup_coordOpen_two]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Separate the alternatives or extract the components of the hypothesis.
 
-Discharge the goal by the elementary cases of `trivial`. Break down `h with h | h` into its components or cases. Conclude with `key 1 h`. Conclude with `key 2 h`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_ptHom_of_isLocalRing : ∀ (R : Type) [CommRing R] (W : WeierstrassCurve R) (A : Type) [CommRing A] [IsLocalRing A] (ρ : R →+* A) (x : Sp A ⟶ scheme W), x ≫ toSpec W = spMap ρ → ∃ (P : Fin 3 → A) (h : IsUnimodularSol (W.map ρ) P), x = ptHom W ρ P h := by
   intro R _ W A _ _ ρ x hx

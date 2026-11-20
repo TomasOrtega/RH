@@ -20,7 +20,7 @@ def StageAt {D : D7} {G' : Type} [Group G'] [Fintype G'] {Pl0 T : Type} {A : Fam
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨h.1.fin, h.1.conj, h.1.mat⟩, h.2.1, h.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem stageAt_upd {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
@@ -35,9 +35,9 @@ theorem stageAt_upd {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `K B f T w Z Wt L hT Gi Gl Kc Yd cX ex t a F0 s`. Establish `h : StageAt (D` using `(w.st Z).toD7) t.r.z.R.toRealDat t.r.z.F.lv2 t.r.Y.eE s.P s.S s.t s.c := ⟨s.see, s.ev, s.rowJ⟩`. Establish `e` using `congrArg (fun p => match p with`. Consider the case `⟨_, _, _, _, _, _, _, _, _, R, F, _⟩ => ∀ eE : (w.st Z).toD7.what₂.EE →ₗ[ℂ] R.HE.H, HEq eE t.r.Y.eE → StageAt R.toRealDat F.lv2 eE s.P s.S s.t s.c) a.pack`. Establish `key : StageAt a.x.R.toRealDat a.x.F.lv2 a.x.Y.eE s.P s.S s.t s.c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact.
 
-Use `e.mpr (fun eE he => ?_) _ a.eE` and prove the remaining obligations. Take `rfl : eE = t.r.Y.eE` from `eq_of_heq he`. Conclude with `stageAt_upd _ _ _ _ _ _ _ _ _ _ _ _ _ h`. Conclude with `key`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem spectralStage_point_rowPlacement_transfer : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl) (L : SizeData₂ (w.st Z).toD7) (hT : GatTies (w.st Z).toD7) (Gi : Formalism.MainNotions.G.Inst (w.st Z).toD7 L) (Gl : Formalism.MainNotions.G.LatInst (w.st Z).toD7) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX (w.st Z).toD7) (cX : ExtraC) (ex : Extra (w.st Z).toD7 L hT Gi Gl Kc Yd cX) (t : RowsT K w Z Wt ex.p0) (a : TwArgs ex t) (F0 : ∀ u, Formalism.L2.Forms.Forms0 (w.st Z).toD7 u) (s : SAt (D := (w.st Z).toD7) t.r.z.R.toRealDat t.r.z.F.lv2 t.r.Y.eE F0), SeeAt a.x.R.toRealDat a.x.F.lv2 s.P.X s.P.inst s.t ∧ EvalTieT (MP a.x.R.toRealDat) a.x.R.toRealDat.ν0 a.x.R.toRealDat.fd0 (EP a.x.R.toRealDat a.x.F.lv2) s.P.X s.P.G (iotaX s.P.X s.P.inst).toMulEquiv s.t s.c ∧ RowJ a.x.R.toRealDat a.x.Y.eE s.P.X s.P.inst s.P.G s.t s.S.j := by
   intro K B f T w Z Wt L hT Gi Gl Kc Yd cX ex t a F0 s

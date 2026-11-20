@@ -13,7 +13,7 @@ open ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Jm_mul_selfDiscreteSeriesExistence (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   unfold Jm
@@ -23,9 +23,9 @@ private theorem Jm_mul_selfDiscreteSeriesExistence (ε : Fin n → Bool) : Jm ε
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.star_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Jm_conjTransposeDiscreteSeriesExistence (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   unfold Jm
@@ -36,14 +36,14 @@ private theorem Jm_conjTransposeDiscreteSeriesExistence (ε : Fin n → Bool) : 
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, Jm_mul_selfDiscreteSeriesExistence, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem Jm_mul_Jm_mul_eq (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) :
     Jm ε * (Jm ε * Y) = Y := by
   rw [← Matrix.mul_assoc, Jm_mul_selfDiscreteSeriesExistence, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h : gᴴ * Jm ε * g = Jm ε` using `hg`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, Jm_mul_selfDiscreteSeriesExistence]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_eq_signature_conjTranspose_conj {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
     g⁻¹ = Jm ε * gᴴ * Jm ε := by
@@ -52,7 +52,7 @@ theorem inv_eq_signature_conjTranspose_conj {ε : Fin n → Bool} {g : Matrix (F
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, Jm_mul_selfDiscreteSeriesExistence]
 
 /- English proof (translation)
-Establish `h : gᴴ * Jm ε * g = Jm ε` using `hg`. Rewrite using `[inv_eq_signature_conjTranspose_conj hg, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, Jm_mul_selfDiscreteSeriesExistence]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mul_self_of_mem_indefiniteUnitary {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
     g⁻¹ * g = 1 := by
@@ -60,23 +60,23 @@ theorem inv_mul_self_of_mem_indefiniteUnitary {ε : Fin n → Bool} {g : Matrix 
   rw [inv_eq_signature_conjTranspose_conj hg, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, Jm_mul_selfDiscreteSeriesExistence]
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse (inv_mul_self_of_mem_indefiniteUnitary hg))`.
+A detailed English derivation is pending.
 -/
 theorem mul_inv_self_of_mem_indefiniteUnitary {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
     g * g⁻¹ = 1 := Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse (inv_mul_self_of_mem_indefiniteUnitary hg))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨g, g⁻¹, mul_inv_self_of_mem_indefiniteUnitary hg, inv_mul_self_of_mem_indefiniteUnitary hg⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnit_of_mem_indefiniteUnitary {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) : IsUnit g :=
   ⟨⟨g, g⁻¹, mul_inv_self_of_mem_indefiniteUnitary hg, inv_mul_self_of_mem_indefiniteUnitary hg⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hJ : Jm ε * Jm ε = 1` using `Jm_mul_selfDiscreteSeriesExistence ε`. Establish `hJh : (Jm ε)ᴴ = Jm ε` using `Jm_conjTransposeDiscreteSeriesExistence ε`. Establish `hX0 : Xᴴ * Jm ε + Jm ε * X = 0` using `hX`. Establish `hX' : Jm ε * Xᴴ + X * Jm ε = 0`. Establish `e : Jm ε * Xᴴ + X * Jm ε = Jm ε * (Xᴴ * Jm ε + Jm ε * X) * Jm ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, hJ, Matrix.mul_one, Jm_mul_Jm_mul_eq]`. Rewrite using `[e, hX0, Matrix.mul_zero, Matrix.zero_mul]`. Establish `key : (g * X * g⁻¹)ᴴ * Jm ε + Jm ε * (g * X * g⁻¹) = Jm ε * g * (Jm ε * Xᴴ + X * Jm ε) * gᴴ * Jm ε`. Rewrite using `[inv_eq_signature_conjTranspose_conj hg]`. Simplify using `only [Matrix.conjTranspose_mul, hJh, Matrix.conjTranspose_conjTranspose, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show (g * X * g⁻¹)ᴴ * Jm ε + Jm ε * (g * X * g⁻¹) = 0`. Rewrite using `[key, hX', Matrix.mul_zero, Matrix.zero_mul, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inG_conj_unitary {ε : Fin n → Bool} {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε)
     (hX : inG ε X) : inG ε (g * X * g⁻¹) := by
@@ -97,7 +97,7 @@ theorem inG_conj_unitary {ε : Fin n → Bool} {g X : Matrix (Fin n) (Fin n) ℂ
   rw [key, hX', Matrix.mul_zero, Matrix.zero_mul, Matrix.zero_mul]
 
 /- English proof (translation)
-Establish `h0 : Xᴴ * Jm ε + Jm ε * X = 0` using `hX`. Establish `h1 : Xᴴ * Jm ε = -(Jm ε * X)` using `eq_neg_of_add_eq_zero_left h0`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_neg, Jm_mul_Jm_mul_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem Jm_conjTranspose_Jm_eq_neg_of_inG {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) :
     Jm ε * Xᴴ * Jm ε = -X := by
@@ -106,7 +106,7 @@ private theorem Jm_conjTranspose_Jm_eq_neg_of_inG {ε : Fin n → Bool} {X : Mat
   rw [Matrix.mul_assoc, h1, Matrix.mul_neg, Jm_mul_Jm_mul_eq]
 
 /- English proof (translation)
-Unfold `stJ`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Jm_conjTranspose_Jm_eq_neg_of_inG hA, Jm_conjTranspose_Jm_eq_neg_of_inG hB]`. Simplify using `[Complex.star_def, Complex.conj_I]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_involution_complex_comb {ε : Fin n → Bool} {A B : Matrix (Fin n) (Fin n) ℂ} (hA : inG ε A) (hB : inG ε B) :
     stJ ε (A + Complex.I • B) = -A + Complex.I • B := by
@@ -116,7 +116,7 @@ theorem conj_involution_complex_comb {ε : Fin n → Bool} {A B : Matrix (Fin n)
   simp [Complex.star_def, Complex.conj_I]
 
 /- English proof (translation)
-Simplify using `only [actM, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_smul, mul_smul, Finset.sum_add_distrib, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actM_add_smul {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     (X Y : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) :
@@ -125,7 +125,7 @@ theorem actM_add_smul {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n →
     Finset.sum_add_distrib, Finset.smul_sum]
 
 /- English proof (translation)
-Simplify using `only [actM, Matrix.neg_apply, neg_smul, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actM_neg {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     (X : Matrix (Fin n) (Fin n) ℂ) : actM E (-X) = -actM E X := by
@@ -136,7 +136,7 @@ section Rep
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Conclude with `LinearIsometry.inner_map_map ({ toLinearMap := (σ h : H →ₗ[ℂ] H), norm_map' := hn } : H →ₗᵢ[ℂ] H) a b`.
+A detailed English derivation is pending.
 -/
 theorem isometry_inner_eq {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {h : Matrix (Fin n) (Fin n) ℂ}
     (hn : ∀ v : H, ‖σ h v‖ = ‖v‖) (a b : H) : ⟪σ h a, σ h b⟫_ℂ = ⟪a, b⟫_ℂ := by
@@ -144,9 +144,9 @@ theorem isometry_inner_eq {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} 
     ({ toLinearMap := (σ h : H →ₗ[ℂ] H), norm_map' := hn } : H →ₗᵢ[ℂ] H) a b
 
 /- English proof (translation)
-Establish `hd` using `(isDerivedOn_smE hσ).deriv Y hY ⟨w, hw⟩`. Establish `h3 : HasDerivAt (fun t : ℝ => ⟪σ (NormedSpace.exp ((t : ℂ) • Y)) w, σ (NormedSpace.exp ((t : ℂ) • Y)) u⟫_ℂ) (⟪σ (NormedSpace.exp (((0 : ℝ) : ℂ) • Y)) w, u'⟫_ℂ + ⟪((actM (smE ε σ) Y ⟨w, hw⟩ : smD ε σ) : H), σ (NormedSpace.exp (((0 : ℝ) : ℂ) • Y)) u⟫_ℂ) 0` using `hd.inner ℂ hu`. Establish `h4 : (fun t : ℝ => ⟪σ (NormedSpace.exp ((t : ℂ) • Y)) w, σ (NormedSpace.exp ((t : ℂ) • Y)) u⟫_ℂ) = fun _ => ⟪w, u⟫_ℂ`. Use function extensionality and compare the values at `fun t => isometry_inner_eq (hσ.2.1 _ (exp_smul_mem_UJset hY t)) w u`. Rewrite `h3` using `[h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5` using `h3.unique (hasDerivAt_const (0 : ℝ) ⟪w, u⟫_ℂ)`. Establish `h0 : NormedSpace.exp (((0 : ℝ) : ℂ) • Y) = 1` using `by simp`. Rewrite `h5` using `[h0, hσ.1.1]`. Simplify using `only [ContinuousLinearMap.one_apply] at h5`. Conclude with `eq_neg_of_add_eq_zero_left h5`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem derived_action_skew_adjoint {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hσ : IsURepOn (UJset ε) σ) {w : H} (hw : w ∈ smD ε σ) {Y : Matrix (Fin n) (Fin n) ℂ}
@@ -171,11 +171,11 @@ theorem derived_action_skew_adjoint {ε : Fin n → Bool} {σ : Matrix (Fin n) (
   exact eq_neg_of_add_eq_zero_left h5
 
 /- English proof (translation)
-Establish `hgX : inG ε (g * X * g⁻¹)` using `inG_conj_unitary hg hX`. Establish `hd` using `(isDerivedOn_smE hσ).deriv X hX ⟨w, hw⟩`. Establish `hfun : (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • (g * X * g⁻¹))) (σ g w)) = fun t : ℝ => σ g (σ (NormedSpace.exp ((t : ℂ) • X)) w)`. Use function extensionality and compare the values at `t`. Establish `hm : NormedSpace.exp ((t : ℂ) • (g * X * g⁻¹)) * g = g * NormedSpace.exp ((t : ℂ) • X)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[show (t : ℂ) • (g * X * g⁻¹) = g * ((t : ℂ) • X) * g⁻¹ by`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul],`. Use the proof step `Matrix.exp_conj g _ (isUnit_of_mem_indefiniteUnitary hg), Matrix.mul_assoc, inv_mul_self_of_mem_indefiniteUnitary hg, Matrix.mul_one]`. Establish `h1` using `hσ.1.2 _ (exp_smul_mem_UJset hgX t) g hg`. Establish `h2` using `hσ.1.2 g hg _ (exp_smul_mem_UJset hX t)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hm]`. Conclude with `congrArg (fun L : H →L[ℂ] H => L w) (h1.symm.trans h2)`. Rewrite using `[hfun]`. Conclude with `((σ g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_conj_exp_action {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hσ : IsURepOn (UJset ε) σ) {w : H} (hw : w ∈ smD ε σ) {g X : Matrix (Fin n) (Fin n) ℂ}
@@ -201,7 +201,7 @@ theorem hasDerivAt_conj_exp_action {ε : Fin n → Bool} {σ : Matrix (Fin n) (F
 end Rep
 
 /- English proof (translation)
-Use `show Yᴴ * Jm ε + Jm ε * Y = 0`. Establish `e : Yᴴ * Jm ε = Jm ε * (Jm ε * Yᴴ * Jm ε)`. Rewrite using `[Matrix.mul_assoc (Jm ε) Yᴴ, Jm_mul_Jm_mul_eq]`. Rewrite using `[e, h, Matrix.mul_neg, neg_add_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inG_of_Jm_conj_eq_neg {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ}
     (h : Jm ε * Yᴴ * Jm ε = -Y) : inG ε Y := by
@@ -211,13 +211,13 @@ private theorem inG_of_Jm_conj_eq_neg {ε : Fin n → Bool} {Y : Matrix (Fin n) 
   rw [e, h, Matrix.mul_neg, neg_add_cancel]
 
 /- English proof (translation)
-Establish `hJ : Jm ε * Jm ε = 1` using `Jm_mul_selfDiscreteSeriesExistence ε`. Establish `hJh : (Jm ε)ᴴ = Jm ε` using `Jm_conjTransposeDiscreteSeriesExistence ε`. Use `⟨(1 / 2 : ℂ) • (X - Jm ε * Xᴴ * Jm ε), (1 / (2 * Complex.I)) • (X + Jm ε * Xᴴ * Jm ε), ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `inG_of_Jm_conj_eq_neg` to reduce the goal to its premises. Simplify using `only [Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, hJh, Matrix.conjTranspose_conjTranspose, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, hJ, Matrix.mul_one, Jm_mul_Jm_mul_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[show star (1 / 2 : ℂ) = 1 / 2 by simp, ← smul_neg, neg_sub]`. Apply `inG_of_Jm_conj_eq_neg` to reduce the goal to its premises. Simplify using `only [Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_mul, hJh, Matrix.conjTranspose_conjTranspose, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, hJ, Matrix.mul_one, Jm_mul_Jm_mul_eq]`. Establish `hc : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I))`. Simplify using `[Complex.star_def, Complex.conj_I]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, neg_smul, add_comm (Jm ε * (Xᴴ * Jm ε)) X]`. Establish `hI : Complex.I * (1 / (2 * Complex.I)) = 1 / 2`. Rewrite using `[mul_one_div, mul_comm 2 Complex.I, ← div_div, div_self Complex.I_ne_zero]`. Establish `h2 : X - Jm ε * Xᴴ * Jm ε + (X + Jm ε * Xᴴ * Jm ε) = (2 : ℂ) • X`. Rewrite using `[two_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[smul_smul, hI, ← smul_add, h2, smul_smul]`. Evaluate the numerical expressions.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 private theorem exists_inG_add_I_smul_inG (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) :
     ∃ A B : Matrix (Fin n) (Fin n) ℂ, inG ε A ∧ inG ε B ∧ X = A + Complex.I • B := by
@@ -245,13 +245,13 @@ private theorem exists_inG_add_I_smul_inG (ε : Fin n → Bool) (X : Matrix (Fin
     norm_num
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ w hσ hw g hg X`. Establish `hφ : ∀ Y, phiW ε σ w Y = ((actM (smE ε σ) Y ⟨w, hw⟩ : smD ε σ) : H)` using `fun Y => by`. Simplify using `only [phiW, dif_pos hw]`. Establish `hlin : ∀ (Y Z : Matrix (Fin n) (Fin n) ℂ) (c : ℂ), ((actM (smE ε σ) (Y + c • Z) ⟨w, hw⟩ : smD ε σ) : H) = ((actM (smE ε σ) Y ⟨w, hw⟩ : smD ε σ) : H) + c • ((actM (smE ε σ) Z ⟨w, hw⟩ : smD ε σ) : H)`. Introduce `Y Z c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[actM_add_smul]`. Simplify using the standard rewrite rules. Establish `hneg : ∀ Y, ((actM (smE ε σ) (-Y) ⟨w, hw⟩ : smD ε σ) : H) = -((actM (smE ε σ) Y ⟨w, hw⟩ : smD ε σ) : H)`. Introduce `Y`. Rewrite using `[actM_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `key : ∀ Y, inG ε Y → ⟪w, σ g ((actM (smE ε σ) Y ⟨w, hw⟩ : smD ε σ) : H)⟫_ℂ = -⟪((actM (smE ε σ) (g * Y * g⁻¹) ⟨w, hw⟩ : smD ε σ) : H), σ g w⟫_ℂ` using `fun Y hY => derived_action_skew_adjoint hσ hw (inG_conj_unitary hg hY) (hasDerivAt_conj_exp_action hσ hw hg hY)`. Take `⟨A, B, hA, hB, rfl⟩` from `exists_inG_add_I_smul_inG ε X`. Establish `hconj : g * (A + Complex.I • B) * g⁻¹ = g * A * g⁻¹ + Complex.I • (g * B * g⁻¹)`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hconj, conj_involution_complex_comb (inG_conj_unitary hg hA) (inG_conj_unitary hg hB), hφ, hφ, hlin, hlin, hneg, map_add, map_smul, inner_add_right, inner_smul_right, inner_add_left, inner_smul_left, inner_neg_left, key A hA, key B hB]`. Simplify using `only [Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem b3a : MatrixCoeffConjugationMove := by
   intro n ε H _ _ σ w hσ hw g hg X

@@ -12,7 +12,7 @@ noncomputable section
 namespace TopDualBasisChange
 
 /- English proof (translation)
-Consider the cases of `A`. Consider the cases of `B`. Consider the cases of `ha`. Consider the cases of `hh`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem hermLine_ext {ι : Unit → Type} [∀ k, Fintype (ι k)] {A B : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι}
     (ha : A.a = B.a) (hh : A.h = B.h) : A = B := by
@@ -27,13 +27,13 @@ variable {T T₂ : Type} [Fintype T] [DecidableEq T] [Fintype T₂] [DecidableEq
 omit [DecidableEq T₂] in
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => show intCoordSubst A (intCoordSubst B (algebraMap ℤ _ a)) = algebraMap ℤ _ a`. Rewrite using `[AlgHom.commutes, AlgHom.commutes]`. Consider the case `add f g hf hg => rw [map_add, map_add, hf, hg]`. Consider the case `mul_X f p hf`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[map_mul, map_mul, hf]`. Use `congr 1`. Take `⟨⟨⟩, t⟩` from `p`. Establish `hC : ∀ a : ℤ, (C a : MRing (dualBlocks T)) = (a : MRing (dualBlocks T))` using `fun a => map_intCast C a`. Simplify using `only [intCoordSubst, aeval_X, map_sum, map_mul, eq_intCast, hC, map_intCast, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← mul_assoc, ← Int.cast_mul, ← Finset.sum_mul, ← Int.cast_sum]`. Establish `h1 : ∀ x : T, ∑ s, B s t * A x s = (A * B) x t`. Introduce `x`. Simplify using `[Matrix.mul_apply, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[h1, hAB, Matrix.one_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem subst_subst {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B = 1) (f : MRing (dualBlocks T)) :
     intCoordSubst A (intCoordSubst B f) = f := by
@@ -61,7 +61,7 @@ variable {K : Type} [Field K] [NumberField K] {i : ℕ} {F : HermLattice K i}
 omit [DecidableEq T] [Fintype T₂] [DecidableEq T₂] in
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun φ : dualLattice F => (φ : Fin i → K) j) (b.sum_toMatrix_smul_self b₂ s)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, zsmul_eq_mul] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem basis_coe (b : Module.Basis T ℤ (dualLattice F)) (b₂ : Module.Basis T₂ ℤ (dualLattice F))
     (s : T₂) (j : Fin i) :
@@ -73,9 +73,9 @@ theorem basis_coe (b : Module.Basis T ℤ (dualLattice F)) (b₂ : Module.Basis 
 omit [DecidableEq T] [Fintype T₂] [DecidableEq T₂] in
 
 /- English proof (translation)
-Establish `h : (∑ j, C ((b₂ s : Fin i → K) j) * X j : MvPolynomial (Fin i) K) = ∑ t, (A t s : MvPolynomial (Fin i) K) * ∑ j, C ((b t : Fin i → K) j) * X j`. Simplify using `only [hA, map_sum, map_mul, map_intCast, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [dualLatticeCoord]`. Rewrite using `[h, map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_change {A : Matrix T T₂ ℤ} {b : Module.Basis T ℤ (dualLattice F)}
     {b₂ : Module.Basis T₂ ℤ (dualLattice F)}
@@ -95,11 +95,11 @@ theorem coord_change {A : Matrix T T₂ ℤ} {b : Module.Basis T ℤ (dualLattic
 omit [DecidableEq T] [Fintype T₂] [DecidableEq T₂] in
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `hC₂ : ∀ a : ℤ, (C a : MRing (dualBlocks T₂)) = (a : MRing (dualBlocks T₂))` using `fun a => map_intCast C a`. Rewrite using `[hC₂, map_intCast, map_intCast, map_intCast]`. Consider the case `add f g hf hg => rw [map_add, map_add, map_add, hf, hg]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mul_X f p hf`. Rewrite using `[map_mul, map_mul, map_mul, hf]`. Use `congr 1`. Take `⟨⟨⟩, s⟩` from `p`. Establish `hC : ∀ a : ℤ, (C a : MRing (dualBlocks T)) = (a : MRing (dualBlocks T))` using `fun a => map_intCast C a`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [intCoordSubst, aeval_X, map_sum, map_mul, hC, map_intCast, mConeMap, coord_change hA s, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coneMap_subst {A : Matrix T T₂ ℤ} {b : Module.Basis T ℤ (dualLattice F)}
     {b₂ : Module.Basis T₂ ℤ (dualLattice F)}
@@ -124,7 +124,7 @@ theorem coneMap_subst {A : Matrix T T₂ ℤ} {b : Module.Basis T ℤ (dualLatti
 omit [DecidableEq T₂] in
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective (intCoordSubst A)` using `fun f => ⟨intCoordSubst B f, subst_subst hAB f⟩`. Establish `hker : dualIdeal b₂ = (dualIdeal b).comap (intCoordSubst A)`. Use extensionality with `f`. Simplify using `only [dualIdeal, mCoordIdeal, Ideal.mem_comap, RingHom.mem_ker, coneMap_subst hA]`. Rewrite using `[hker, Ideal.map_comap_of_surjective _ hsurj]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ideal_map {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B = 1)
     {b : Module.Basis T ℤ (dualLattice F)} {b₂ : Module.Basis T₂ ℤ (dualLattice F)}
@@ -139,7 +139,7 @@ theorem ideal_map {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B =
 omit [DecidableEq T] [Fintype T₂] [DecidableEq T₂] in
 
 /- English proof (translation)
-Simplify using `only [dualEmbMatrix, hA, map_sum, map_mul, map_intCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem embMatrix_apply {A : Matrix T T₂ ℤ} {b : Module.Basis T ℤ (dualLattice F)}
     {b₂ : Module.Basis T₂ ℤ (dualLattice F)}
@@ -151,13 +151,11 @@ theorem embMatrix_apply {A : Matrix T T₂ ℤ} {b : Module.Basis T ℤ (dualLat
 omit [DecidableEq T] [Fintype T₂] [DecidableEq T₂] in
 
 /- English proof (translation)
-Rewrite using `[dualRecover, LinearEquiv.symm_apply_eq]`. Use `set w := dualRecover b hb (fun t => z ⟨(), t⟩)`. Establish `hw : Matrix.mulVecLin (dualEmbMatrix b) w = fun t => z ⟨(), t⟩`. Simplify using `only [w, dualRecover]`. Conclude with `LinearEquiv.apply_symm_apply (LinearEquiv.ofBijective _ hb) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `s`. Rewrite using `[LinearEquiv.ofBijective_apply, Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct]`. Simplify using `only [embMatrix_apply hA, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [intCoordPt]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `ht` using `congrFun hw t`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct] at ht`. Rewrite using `[← ht, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem recover_eq {A : Matrix T T₂ ℤ} {b : Module.Basis T ℤ (dualLattice F)}
     (hb : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b)))
@@ -186,7 +184,7 @@ theorem recover_eq {A : Matrix T T₂ ℤ} {b : Module.Basis T ℤ (dualLattice 
 omit [DecidableEq T₂] in
 
 /- English proof (translation)
-Use `hermLine_ext rfl (funext fun z => ?_)` and prove the remaining obligations. Use `show Real.sqrt (dualNormSq b₂ hb₂ fun s => intCoordPt A z ⟨(), s⟩) = Real.sqrt (dualNormSq b hb fun t => z ⟨(), t⟩)`. Simplify using `only [dualNormSq, recover_eq hb hb₂ hA z]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem line_eq {A : Matrix T T₂ ℤ} {b : Module.Basis T ℤ (dualLattice F)}
     (hb : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b)))
@@ -205,9 +203,9 @@ end TopDualBasisChange
 open TopDualBasisChange in
 
 /- English proof (translation)
-Introduce `K _ _ i F T T₂ _ _ _ _ b hb b₂ hb₂ II hi hII`. Establish `hAB : b.toMatrix b₂ * b₂.toMatrix b = 1` using `Module.Basis.toMatrix_mul_toMatrix_flip b b₂`. Establish `hBA : b₂.toMatrix b * b.toMatrix b₂ = 1` using `Module.Basis.toMatrix_mul_toMatrix_flip b₂ b`. Establish `h` using `hChange T T₂ (b.toMatrix b₂) (b₂.toMatrix b) hAB hBA II hII (dualIdeal b₂) i (fun _ => dualLine F b₂ hb₂) hi (DualArithVar.full K i F T₂ b₂ hi) (fun _ => (DualLineSemipositive.proof K i F T₂ b₂ hb₂).1)`. Rewrite `h` using `[ideal_map hAB (basis_coe b b₂), line_eq hb hb₂ (basis_coe b b₂)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem DualTopBasisChange.proof (hChange : IntCoordChange.Statement) : DualTopBasisChange.Statement := by
   intro K _ _ i F T T₂ _ _ _ _ b hb b₂ hb₂ II hi hII

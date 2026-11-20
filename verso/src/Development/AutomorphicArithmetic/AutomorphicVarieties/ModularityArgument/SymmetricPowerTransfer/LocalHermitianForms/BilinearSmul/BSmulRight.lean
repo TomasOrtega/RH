@@ -9,22 +9,20 @@ open IsLocalRing QuadraticAlgebra Matrix UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym
 variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] {Δ : K}
 
 /- English proof (translation)
-Take `⟨ε, s, hs0, hΔ⟩` from `L.even`. Conclude with `(descent O K Δ L s⁻¹ ε (by rw [hΔ]; field_simp) x).2 h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem int_star (L : IsLoc O Δ) {x : Lsq K Δ} (h : IsInt O x) : IsInt O (star x) := by
   obtain ⟨ε, s, hs0, hΔ⟩ := L.even
   exact (descent O K Δ L s⁻¹ ε (by rw [hΔ]; field_simp) x).2 h
 
 /- English proof (translation)
-Take `⟨u, s, hs0, hΔ⟩` from `L.even`. Establish `hs2 : Δ * s⁻¹ ^ 2 = algebraMap O K ↑u`. Rewrite using `[hΔ]`. Clear the denominators using the available nonvanishing facts. Establish `hdes` using `descent O K Δ L s⁻¹ u hs2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `haveI := L.frac`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors O) (t ×ˢ (Finset.univ : Finset Bool)) (fun p : I × Bool => if p.2 then (f p.1).im * s else (f p.1).re)`. Use `⟨b, nonZeroDivisors.coe_ne_zero b, fun i hi => ?_⟩` and prove the remaining obligations. Use `(hdes _).1.2 ⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `hb (i, false) (Finset.mem_product.2 ⟨hi, Finset.mem_univ _⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r, ?_⟩` and prove the remaining obligations. Simplify using `only [Bool.false_eq_true, if_false] at hr`. Rewrite using `[re_smul]`. Conclude with `hr`. Take `⟨r, hr⟩` from `hb (i, true) (Finset.mem_product.2 ⟨hi, Finset.mem_univ _⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨r, ?_⟩` and prove the remaining obligations. Simplify using `only [if_true] at hr`. Rewrite using `[im_smul]`. Express the relevant statement in the definitionally equal form `algebraMap O K r = (b : O) • ((f i).im * s) at hr`. Rewrite using `[hr, Algebra.smul_def, Algebra.smul_def]`.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem multiple (L : IsLoc O Δ) {I : Type} (t : Finset I) (f : I → Lsq K Δ) : ∃ a : O, a ≠ 0 ∧ ∀ i ∈ t, IsInt O (a • f i) := by
   obtain ⟨u, s, hs0, hΔ⟩ := L.even
@@ -53,17 +51,17 @@ theorem multiple (L : IsLoc O Δ) {I : Type} (t : Finset I) (f : I → Lsq K Δ)
 def B (x y : Fin 3 → Lsq K Δ) : Lsq K Δ := ∑ i, x i * star (y i)
 
 /- English proof (translation)
-Simplify using `[B, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem B_star (x y : Fin 3 → Lsq K Δ) : star (B x y) = B y x := by simp [B, mul_comm]
 
 /- English proof (translation)
-Simplify using `[B, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem B_smul_left (r : Lsq K Δ) (x y : Fin 3 → Lsq K Δ) : B (r • x) y = r * B x y := by simp [B, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [B, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem B_smul_right (r : Lsq K Δ) (x y : Fin 3 → Lsq K Δ) : B x (r • y) = star r * B x y := by
   simp only [B, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
@@ -72,28 +70,28 @@ theorem B_smul_right (r : Lsq K Δ) (x y : Fin 3 → Lsq K Δ) : B x (r • y) =
   ring
 
 /- English proof (translation)
-Simplify using `[B, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem B_add_left (x x' y : Fin 3 → Lsq K Δ) : B (x + x') y = B x y + B x' y := by simp [B, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[B, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem B_add_right (x y y' : Fin 3 → Lsq K Δ) : B x (y + y') = B x y + B x y' := by simp [B, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[B, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem B_sub_left (x x' y : Fin 3 → Lsq K Δ) : B (x - x') y = B x y - B x' y := by simp [B, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[B]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem eventually_abs_le_half_add_of_doubling_bounds (x : Fin 3 → Lsq K Δ) : B x 0 = 0 := by
   simp [B]
 
 /- English proof (translation)
-The claim follows from `(hd _).2 fun x hx => by rw [B_smul_right] exact IsIntegral.mul (int_star L hc) ((hd y).1 hy x hx)`.
+A detailed English derivation is pending.
 -/
 private theorem v_sub_one_add_le_v_pow_l_sub_one (L : IsLoc O Δ) (M : Submodule O (Fin 3 → Lsq K Δ))
     (hd : ∀ y, y ∈ M ↔ ∀ x ∈ M, IsInt O (B x y)) {c : Lsq K Δ} (hc : IsInt O c)
@@ -103,15 +101,15 @@ private theorem v_sub_one_add_le_v_pow_l_sub_one (L : IsLoc O Δ) (M : Submodule
     exact IsIntegral.mul (int_star L hc) ((hd y).1 hy x hx)
 
 /- English proof (translation)
-Take `⟨u, t, ht0, hΔ⟩` from `L.even`. Establish `hs2 : Δ * t⁻¹ ^ 2 = algebraMap O K ↑u`. Rewrite using `[hΔ]`. Clear the denominators using the available nonvanishing facts. Take `⟨⟨r, hr⟩, -⟩` from `(descent O K Δ L t⁻¹ u hs2 z).1.1 hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `L.two`. Establish `h2 : (2 : K) ≠ 0`. Establish `: algebraMap O K (v : O) ≠ 0`. Simplify using `using (Units.map (algebraMap O K).toMonoidHom v).ne_zero`. Rewrite `this` using `[hv, map_ofNat]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e0 : (star z).im = z.im` using `by rw [hs]`. Establish `e1 : (star z).im = -z.im` using `by simp`. Establish `h' : (2 : K) * z.im = 0`. Use `e1.symm.trans e0` as an intermediate fact. Take the linear combination `-this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `him : z.im = 0` using `(mul_eq_zero.1 h').resolve_left h2`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply O K (Lsq K Δ)]`. Use `ext`. Rewrite using `[QuadraticAlgebra.algebraMap_re, hr]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QuadraticAlgebra.algebraMap_im, him]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem step_lemma_3 (L : IsLoc O Δ) (z : Lsq K Δ) (hz : IsInt O z) (hs : star z = z) :
     ∃ r : O, z = algebraMap O (Lsq K Δ) r := by
@@ -138,11 +136,11 @@ private theorem step_lemma_3 (L : IsLoc O Δ) (z : Lsq K Δ) (hz : IsInt O z) (h
   · rw [QuadraticAlgebra.algebraMap_im, him]
 
 /- English proof (translation)
-Use `haveI := L.frac`. Establish `hinj` using `IsFractionRing.injective O K`. Establish `hϖ0 : algebraMap O K ϖ ≠ 0` using `fun h0 => hϖ.ne_zero (hinj (by rw [h0, map_zero]))`. Take `⟨r, hr⟩` from `h 0`. Simplify using `only [pow_zero, one_mul] at hr`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmem : ∀ k : ℕ, r ∈ (maximalIdeal O) ^ k`. Introduce `k`. Take `⟨rk, hrk⟩` from `h k`. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Use `⟨rk, hinj ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_pow, hrk, hr, inv_pow, mul_comm _ x, mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hϖ0), mul_one]`. Establish `hr0 : r ∈ ⨅ k : ℕ, (maximalIdeal O) ^ k` using `(Submodule.mem_iInf _).2 hmem`. Rewrite `hr0` using `[Ideal.iInf_pow_eq_bot_of_isLocalRing _ (maximalIdeal.isMaximal O).ne_top, Ideal.mem_bot]`. Rewrite using `[← hr, hr0, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sq_enorm_le_two_lintegral_add_two_lintegral_fderiv (L : IsLoc O Δ) {ϖ : O} (hϖ : Irreducible ϖ) (x : K)
     (h : ∀ k : ℕ, (algebraMap O K ϖ)⁻¹ ^ k * x ∈ (algebraMap O K).range) : x = 0 := by
@@ -162,13 +160,13 @@ private theorem sq_enorm_le_two_lintegral_add_two_lintegral_fderiv (L : IsLoc O 
   rw [← hr, hr0, map_zero]
 
 /- English proof (translation)
-Take `⟨u, t, ht0, hΔ⟩` from `L.even`. Establish `hs2 : Δ * t⁻¹ ^ 2 = algebraMap O K ↑u`. Rewrite using `[hΔ]`. Clear the denominators using the available nonvanishing facts. Establish `hdes` using `descent O K Δ L t⁻¹ u hs2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hre : z.re = 0` using `sq_enorm_le_two_lintegral_add_two_lintegral_fderiv L hϖ z.re fun k => by`. Use `((hdes _).1.1 (h k)).1` as an intermediate fact. Simplify using `using this`. Establish `him : z.im * t = 0`. Use `sq_enorm_le_two_lintegral_add_two_lintegral_fderiv L hϖ (z.im * t) fun k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hb⟩` from `((hdes _).1.1 (h k)).2`. Use `⟨b, ?_⟩` and prove the remaining obligations. Simplify using `only [QuadraticAlgebra.im_mul, QuadraticAlgebra.algebraMap_re, QuadraticAlgebra.algebraMap_im, zero_mul, mul_zero, add_zero, zero_add] at hb`. Rewrite using `[← mul_assoc, hb]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `ext`. Simplify using `using hre`. Simplify `him` using `[ht0]`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem vv_pow_smul_mem_of_sen_eq_zero (L : IsLoc O Δ) {ϖ : O} (hϖ : Irreducible ϖ) (z : Lsq K Δ)
     (h : ∀ k : ℕ, IsInt O (algebraMap K (Lsq K Δ) ((algebraMap O K ϖ)⁻¹ ^ k) * z)) : z = 0 := by
@@ -193,13 +191,13 @@ private theorem vv_pow_smul_mem_of_sen_eq_zero (L : IsLoc O Δ) {ϖ : O} (hϖ : 
   · simpa [ht0] using him
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hfg`. Take `⟨α, hα, hαS⟩` from `multiple L (S ×ˢ (Finset.univ : Finset (Fin 3))) (fun p => p.1 p.2)`. Use `⟨α, hα, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[← hS]`. Proceed by induction on `hm using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Consider the case `mem x hx => exact fun j => hαS (x, j) (Finset.mem_product.2 ⟨Finset.mem_coe.1 hx, Finset.mem_univ _⟩)`. Consider the case `zero`. Introduce `j`. Simplify using `only [Pi.zero_apply, smul_zero]`. Conclude with `isIntegral_zero`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Introduce `j`. Simplify using `only [Pi.add_apply, smul_add]`. Conclude with `IsIntegral.add (hx j) (hy j)`. Consider the case `smul r x _ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `j`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[smul_comm, Algebra.smul_def]`. Conclude with `IsIntegral.mul isIntegral_algebraMap (hx j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_smul_isInt_of_fg (L : IsLoc O Δ) (M : Submodule O (Fin 3 → Lsq K Δ)) (hfg : M.FG) :
     ∃ α : O, α ≠ 0 ∧ ∀ m ∈ M, ∀ j, IsInt O (α • m j) := by
@@ -225,9 +223,9 @@ private theorem exists_smul_isInt_of_fg (L : IsLoc O Δ) (M : Submodule O (Fin 3
     exact IsIntegral.mul isIntegral_algebraMap (hx j)
 
 /- English proof (translation)
-Set `A : Matrix (Fin 3) (Fin 3) (Lsq K Δ)` to `Matrix.of fun j i => ![star (a j), star (b j), 0] i`. Set `C : Matrix (Fin 3) (Fin 3) (Lsq K Δ)` to `Matrix.of fun i k => ![a k, b k, 0] i`. Establish `hAC : (1 : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = A * C`. Use `Matrix.ext fun j k => ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply, h j k]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[A, C, Matrix.mul_apply, Fin.sum_univ_three]`. Establish `hA : A.det = 0` using `Matrix.det_eq_zero_of_column_eq_zero 2 fun j => by simp [A]`. Use `congrArg Matrix.det hAC` as an intermediate fact. Rewrite `this` using `[Matrix.det_one, Matrix.det_mul, hA, zero_mul]`. Conclude with `one_ne_zero this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_basis_size_reduce_column (a b : Fin 3 → Lsq K Δ)
     (h : ∀ j k : Fin 3, (if j = k then (1 : Lsq K Δ) else 0) = star (a j) * a k + star (b j) * b k) :
@@ -244,77 +242,71 @@ private theorem exists_basis_size_reduce_column (a b : Fin 3 → Lsq K Δ)
   exact one_ne_zero this
 
 /- English proof (translation)
-Take `⟨u, t, ht0, hΔ⟩` from `L.even`. Establish `hs2 : Δ * t⁻¹ ^ 2 = algebraMap O K ↑u`. Rewrite using `[hΔ]`. Clear the denominators using the available nonvanishing facts. Establish `hdes` using `descent O K Δ L t⁻¹ u hs2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `L.two`. Use `haveI := L.frac`. Establish `hinj` using `IsFractionRing.injective O K`. Take `⟨w, hwdef⟩ : ∃ w : Lsq K Δ, w = ⟨0, t⁻¹⟩` from `⟨_, rfl⟩`. Take `⟨U, hUdef⟩ : ∃ U : Lsq K Δ, U = algebraMap O (Lsq K Δ) ↑u` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hh, hhdef⟩ : ∃ hh : Lsq K Δ, hh = algebraMap O (Lsq K Δ) ↑v⁻¹` from `⟨_, rfl⟩`. Take `⟨e, edef⟩ : ∃ e : Lsq K Δ, e = algebraMap O (Lsq K Δ) ↑u⁻¹` from `⟨_, rfl⟩`. Establish `hww : w * w = U`. Rewrite using `[hUdef, IsScalarTower.algebraMap_apply O K (Lsq K Δ), ← hs2]`. Establish `: algebraMap K (Lsq K Δ) (Δ * t⁻¹ ^ 2) = ⟨Δ * t⁻¹ ^ 2, 0⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `ext`. Conclude with `QuadraticAlgebra.algebraMap_re _`. Conclude with `QuadraticAlgebra.algebraMap_im _`. Rewrite using `[this, hwdef]`. Apply the tactic sequence `ext <;> simp <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hsw : star w = -w`. Rewrite using `[hwdef]`. Apply the tactic sequence `ext <;> simp`. Establish `hh2 : hh * 2 = 1`. Rewrite using `[hhdef, ← map_ofNat (algebraMap O (Lsq K Δ)) 2, ← hv, ← map_mul, Units.inv_mul, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heu : e * U = 1`. Rewrite using `[edef, hUdef, ← map_mul, Units.inv_mul, map_one]`. Establish `iw : IsIntegral O w`. Use `(hdes w).1.2 ⟨?_, 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hwdef]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨0, map_zero _⟩`. Rewrite using `[hwdef]`. Simplify using the standard rewrite rules. Establish `ih : IsIntegral O hh`. Rewrite using `[hhdef]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `isIntegral_algebraMap`. Establish `ie : IsIntegral O e`. Rewrite using `[edef]`. Conclude with `isIntegral_algebraMap`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hϖ0 : algebraMap O K ϖ ≠ 0` using `fun h0 => hϖ.ne_zero (hinj (by rw [h0, map_zero]))`. Take `⟨c, hcdef⟩ : ∃ c : Lsq K Δ, c = algebraMap K (Lsq K Δ) (algebraMap O K ϖ)⁻¹` from `⟨_, rfl⟩`. Establish `hcs : star c = c`. Rewrite using `[hcdef]`. Apply the tactic sequence `ext <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcϖ : c * algebraMap O (Lsq K Δ) ϖ = 1`. Rewrite using `[hcdef, IsScalarTower.algebraMap_apply O K (Lsq K Δ), ← map_mul, inv_mul_cancel₀ hϖ0, map_one]`. Establish `hstarO : ∀ r : O, star (algebraMap O (Lsq K Δ) r) = algebraMap O (Lsq K Δ) r`. Introduce `r`. Rewrite using `[IsScalarTower.algebraMap_apply O K (Lsq K Δ)]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp`. Establish `hBba : B b a = 0` using `by rw [← B_star, hab, star_zero]`. Establish `hPa : ∀ x, B (x - B x a • a - B x b • b) a = 0`. Introduce `x`. Rewrite using `[B_sub_left, B_sub_left, B_smul_left, B_smul_left, hBba, mul_zero, sub_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `ha' with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `[eventually_abs_le_half_add_of_doubling_bounds]`. Rewrite using `[h, mul_one, sub_self]`. Establish `hPb : ∀ x, B (x - B x a • a - B x b • b) b = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Introduce `x`. Rewrite using `[B_sub_left, B_sub_left, B_smul_left, B_smul_left, hab, mul_zero, sub_zero]`. Break down `hb' with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `[eventually_abs_le_half_add_of_doubling_bounds]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, mul_one, sub_self]`. Establish `hPM : ∀ x ∈ M, x - B x a • a - B x b • b ∈ M` using `fun x hx => M.sub_mem (M.sub_mem hx (v_sub_one_add_le_v_pow_l_sub_one L M hd ((hd a).1 ha x hx) ha)) (v_sub_one_add_le_v_pow_l_sub_one L M hd ((hd b).1 hb x hx) hb)`. Establish `hBP : ∀ x y, B y a = 0 → B y b = 0 → B (x - B x a • a - B x b • b) y = B x y`. Introduce `x y hya hyb`. Rewrite using `[B_sub_left, B_sub_left, B_smul_left, B_smul_left, ← B_star y a, ← B_star y b, hya, hyb, star_zero, mul_zero, mul_zero, sub_zero, sub_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hq : ∀ y ∈ M, B y a = 0 → B y b = 0 → IsInt O (c * B y y)`. Introduce `y hy hya hyb`. Take `⟨r, hr⟩` from `step_lemma_3 L (B y y) ((hd y).1 hy y hy) (B_star y y)`.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Distinguish the cases in `hru : IsUnit r`. It suffices to derive a contradiction. Take `⟨ν, hνi, hνn⟩` from `normEx O K Δ L hru.unit⁻¹`. Establish `hνν : ν * star ν = algebraMap O (Lsq K Δ) ↑hru.unit⁻¹`. Establish `: ν * star ν = algebraMap K (Lsq K Δ) (QuadraticAlgebra.norm ν)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.norm] <;> ring`. Rewrite using `[this, hνn, ← IsScalarTower.algebraMap_apply]`. Use `hcon (ν • y) (v_sub_one_add_le_v_pow_l_sub_one L M hd hνi hy) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[B_smul_left, B_smul_right, hr, ← mul_assoc, hνν, ← map_mul, hru.val_inv_mul, map_one]`. Rewrite using `[B_smul_left, hya, mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[B_smul_left, hyb, mul_zero]`. Establish `hrm : r ∈ maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal r).2 hru`. Rewrite `hrm` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton']`. Take `⟨r', hr'⟩` from `hrm`. Establish `: c * B y y = algebraMap O (Lsq K Δ) r'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hr, ← hr', map_mul, mul_left_comm, hcϖ, mul_one]`. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap`. Establish `hpol : ∀ y ∈ M, ∀ z ∈ M, B y a = 0 → B y b = 0 → B z a = 0 → B z b = 0 → IsInt O (c * B y z)`. Introduce `y hy z hz hya hyb hza hzb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ : ∀ γ : Lsq K Δ, IsInt O γ → IsInt O (c * (star γ * B y z + γ * star (B y z)))`. Introduce `γ hγ`. Establish `hm : y + γ • z ∈ M` using `M.add_mem hy (v_sub_one_add_le_v_pow_l_sub_one L M hd hγ hz)`. Establish `h1` using `hq (y + γ • z) hm (by rw [B_add_left, B_smul_left, hya, hza, mul_zero, add_zero]) (by rw [B_add_left, B_smul_left, hyb, hzb, mul_zero, add_zero])`. Establish `h2` using `hq y hy hya hyb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `hq z hz hza hzb`. Establish `hexp : B (y + γ • z) (y + γ • z) = B y y + (star γ * B y z + γ * star (B y z)) + γ * star γ * B z z`. Simplify using `only [B_add_left, B_add_right, B_smul_left, B_smul_right]`. Rewrite using `[← B_star y z]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hid : c * (star γ * B y z + γ * star (B y z)) = c * B (y + γ • z) (y + γ • z) - c * B y y - γ * star γ * (c * B z z)`. Rewrite using `[hexp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hid]`. Conclude with `IsIntegral.sub (IsIntegral.sub h1 h2) (IsIntegral.mul (IsIntegral.mul hγ (int_star L hγ)) h3)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `hγ 1 isIntegral_one`. Establish `e2` using `hγ w iw`. Rewrite `e1` using `[star_one, one_mul, one_mul]`. Rewrite `e2` using `[hsw]`. Establish `hid : c * B y z = hh * (c * (B y z + star (B y z))) - hh * e * w * (c * (-w * B y z + w * star (B y z)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take the linear combination `-(c * B y z) * hh2 - hh * e * c * (B y z - star (B y z)) * hww - hh * c * (B y z - star (B y z)) * heu`. Rewrite using `[hid]`. Conclude with `IsIntegral.sub (IsIntegral.mul ih e1) (IsIntegral.mul (IsIntegral.mul (IsIntegral.mul ih ie) iw) e2)`. Establish `hcN : ∀ y ∈ M, B y a = 0 → B y b = 0 → c • y ∈ M`. Introduce `y hy hya hyb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(hd _).2 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[B_smul_right, hcs, ← hBP x y hya hyb]`. Conclude with `hpol _ (hPM x hx) y hy (hPa x) (hPb x) hya hyb`. Establish `hpow : ∀ y ∈ M, B y a = 0 → B y b = 0 → ∀ k : ℕ, c ^ k • y ∈ M`. Introduce `y hy hya hyb k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero => simpa using hy`. Consider the case `succ k ihk`. Rewrite using `[pow_succ', mul_smul]`. Conclude with `hcN _ ihk (by rw [B_smul_left, hya, mul_zero]) (by rw [B_smul_left, hyb, mul_zero])`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Take `⟨α, hα0, hαM⟩` from `exists_smul_isInt_of_fg L M hfg`. Establish `hαK : algebraMap O K α ≠ 0` using `fun h0 => hα0 (hinj (by rw [h0, map_zero]))`. Establish `hαL : IsUnit (algebraMap O (Lsq K Δ) α)`. Rewrite using `[IsScalarTower.algebraMap_apply O K (Lsq K Δ)]`. Conclude with `(isUnit_iff_ne_zero.2 hαK).map _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hzero : ∀ y ∈ M, B y a = 0 → B y b = 0 → y = 0`. Introduce `y hy hya hyb`. Use function extensionality and compare the values at `j`. Establish `key` using `vv_pow_smul_mem_of_sen_eq_zero L hϖ (α • y j) fun k => by`. Establish `h1` using `hαM _ (hpow y hy hya hyb k) j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_pow, ← hcdef]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Algebra.smul_def, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `key` using `[Algebra.smul_def]`. Conclude with `hαL.mul_right_eq_zero.1 key`. Establish `hE : ∀ j : Fin 3, Pi.single j (algebraMap O (Lsq K Δ) α) ∈ M`. Introduce `j`. Use `(hd _).2 fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hB : B x (Pi.single j (algebraMap O (Lsq K Δ) α)) = α • x j`. Establish `h1 : B x (Pi.single j (algebraMap O (Lsq K Δ) α)) = x j * star (algebraMap O (Lsq K Δ) α)`. Unfold `B`. Rewrite using `[Finset.sum_eq_single j (fun i _ hij => by rw [Pi.single_eq_of_ne hij, star_zero, mul_zero]) (fun h => absurd (Finset.mem_univ j) h), Pi.single_eq_same]`. Rewrite using `[h1, hstarO, Algebra.smul_def, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hB]`. Conclude with `hαM x hx j`. Establish `hrel : ∀ j k : Fin 3, (if j = k then (1 : Lsq K Δ) else 0) = star (a j) * a k + star (b j) * b k`. Introduce `j k`. Establish `h0` using `hzero _ (hPM _ (hE j)) (hPa _) (hPb _)`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hk` using `congrFun h0 k`. Establish `hBEa : B (Pi.single j (algebraMap O (Lsq K Δ) α)) a = algebraMap O (Lsq K Δ) α * star (a j)`. Simplify using `[B, Pi.single_apply]`. Establish `hBEb : B (Pi.single j (algebraMap O (Lsq K Δ) α)) b = algebraMap O (Lsq K Δ) α * star (b j)`. Simplify using `[B, Pi.single_apply]`.
-
-Rewrite `hk` using `[hBEa, hBEb]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at hk`. Apply `hαL.mul_left_cancel` to reduce the goal to its premises. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality.
-
-Rewrite `hk` using `[Pi.single_eq_same]`. Rewrite using `[if_pos rfl]`. Take the linear combination `hk`. Rewrite `hk` using `[Pi.single_eq_of_ne (Ne.symm hjk)]`. Rewrite using `[if_neg hjk]`.
-
-Take the linear combination `hk`. Conclude with `exists_basis_size_reduce_column a b hrel`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem step (L : IsLoc O Δ) (M : Submodule O (Fin 3 → Lsq K Δ)) (hfg : M.FG) (hd : ∀ y, y ∈ M ↔ ∀ x ∈ M, IsInt O (B x y))
     {a b : Fin 3 → Lsq K Δ} (ha : a ∈ M) (hb : b ∈ M) (ha' : a = 0 ∨ B a a = 1) (hb' : b = 0 ∨ B b b = 1) (hab : B a b = 0) :
@@ -507,25 +499,21 @@ theorem step (L : IsLoc O Δ) (M : Submodule O (Fin 3 → Lsq K Δ)) (hfg : M.FG
   exact exists_basis_size_reduce_column a b hrel
 
 /- English proof (translation)
-Take `⟨e1, h1M, h11, -, -⟩` from `step L M hfg hd M.zero_mem M.zero_mem (Or.inl rfl) (Or.inl rfl) (eventually_abs_le_half_add_of_doubling_bounds 0)`. Take `⟨e2, h2M, h22, h21, -⟩` from `step L M hfg hd h1M M.zero_mem (Or.inr h11) (Or.inl rfl) (eventually_abs_le_half_add_of_doubling_bounds e1)`. Establish `h12 : B e1 e2 = 0` using `by rw [← B_star, h21, star_zero]`. Take `⟨e3, h3M, h33, h31, h32⟩` from `step L M hfg hd h1M h2M (Or.inr h11) (Or.inr h22) h12`. Establish `h13 : B e1 e3 = 0` using `by rw [← B_star, h31, star_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h23 : B e2 e3 = 0` using `by rw [← B_star, h32, star_zero]`. Set `E : Fin 3 → (Fin 3 → Lsq K Δ)` to `![e1, e2, e3]`. Establish `hEM : ∀ j, E j ∈ M`. Introduce `j`. Use `fin_cases j`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h1M`. Conclude with `h2M`. Conclude with `h3M`. Establish `hEB : ∀ j k, B (E k) (E j) = if j = k then 1 else 0`. Introduce `j k`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `fin_cases j <;> fin_cases k <;> simp [E, h11, h22, h33, h12, h13, h23, h21, h31, h32]`. Set `G : Matrix (Fin 3) (Fin 3) (Lsq K Δ)` to `Matrix.of fun i j => E j i`. Establish `hGG : star G * G = 1`. Use `Matrix.ext fun j k => ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply, ← hEB j k]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.mul_apply, Matrix.star_apply, G, Matrix.of_apply, B]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `hmem : G ∈ unitaryGroup (Fin 3) (Lsq K Δ)` using `Matrix.mem_unitaryGroup_iff'.2 hGG`. Set `g : U3 Δ` to `⟨G, hmem⟩`. Use `⟨g, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ((g⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = star G`. Both sides reduce to the same expression. Establish `hcoord : ∀ i, (((g⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) *ᵥ x) i = B x (E i)`. Introduce `i`. Rewrite using `[hinv]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.star_apply, G, Matrix.of_apply, B]`. Conclude with `Finset.sum_congr rfl fun l _ => mul_comm _ _`. Simplify using `only [hcoord]`. Prove the components needed by the constructor for the conclusion. Introduce `hx i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `(hd (E i)).1 (hEM i) x hx`. Introduce `hx`. Establish `hGG' : G * star G = 1` using `mul_eq_one_comm.1 hGG`. Establish `hx' : x = ∑ j, B x (E j) • E j`. Establish `h0 : x = G *ᵥ (star G *ᵥ x)` using `by rw [Matrix.mulVec_mulVec, hGG', Matrix.one_mulVec]`.
-
-Use `conv_lhs => rw [h0]`. Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, G, Matrix.of_apply, Matrix.star_apply, B]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
-
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun l _ => mul_comm _ _`. Rewrite using `[hx']`. Conclude with `M.sum_mem fun j _ => v_sub_one_add_le_v_pow_l_sub_one L M hd (hx j) (hEM j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ortho (L : IsLoc O Δ) (M : Submodule O (Fin 3 → Lsq K Δ)) (hfg : M.FG) (hd : ∀ y, y ∈ M ↔ ∀ x ∈ M, IsInt O (B x y)) :
     ∃ g : U3 Δ, ∀ x, x ∈ M ↔ ∀ i, IsInt O ((((g⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) *ᵥ x) i) := by

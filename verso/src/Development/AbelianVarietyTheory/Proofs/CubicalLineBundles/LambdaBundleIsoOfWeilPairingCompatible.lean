@@ -24,7 +24,7 @@ abbrev sqφ (a b : T ⟶ A) : ULift.{0} (Finset (Fin 2)) → (T.left ⟶ A.left)
 abbrev sqε : ULift.{0} (Finset (Fin 2)) → ℤ := fun I => (-1) ^ (2 - I.down.card)
 
 /- English proof (translation)
-Establish `p` using `NormRos.prod_square a b (fun q => h (ρ.left ≫ q))`. Simplify using `only [← Over.comp_left, MonObj.comp_mul, MonObj.comp_one] at p`. Conclude with `p`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_sq (ρ : T' ⟶ T) (a b : T ⟶ A) {U : Type} [CommGroup U] (h : (T'.left ⟶ A.left) → U) :
     ∏ I, h (ρ.left ≫ sqφ a b I) ^ sqε I =
@@ -34,7 +34,7 @@ theorem prod_sq (ρ : T' ⟶ T) (a b : T ⟶ A) {U : Type} [CommGroup U] (h : (T
   exact p
 
 /- English proof (translation)
-The claim follows from `AdjointOfPairing.exists_gen_of_formEq_zero hL fun U _ h => by rw [prod_sq] rcases H with H | H · rw [H, _root_.one_mul] apply Additive.ofMul.injective simp only [ofMul_mul, ofMul_inv, ofMul_one] abel · rw [H, _root_.mul_one] apply Additive.ofMul.injective simp only [ofMul_mul, of …`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen_axis {L : LB A.left} (hL : L.IsLB) (ρ : T' ⟶ T) (a b : T ⟶ A) (H : ρ ≫ a = 1 ∨ ρ ≫ b = 1) :
     ∃ t : LB.Gen (LB.LinComb L (fun I => ρ.left ≫ sqφ a b I) sqε), t.IsGen :=
@@ -53,7 +53,7 @@ theorem exists_gen_axis {L : LB A.left} (hL : L.IsLB) (ρ : T' ⟶ T) (a b : T �
 end
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `H.chartPull (chartPullOut L φ ε f _ fun _ => rfl) (chartPullOut L' φ' ε' f _ fun _ => rfl)`. Conclude with `gen_chartPull (IsoDescent.chartPullDiv _ _ f) w hw`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_gen_div {X X' Y Y' : Scheme.{0}} {K K' : Type} [Fintype K] [Fintype K'] (L : LB X) (L' : LB X')
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X')) (ε' : K' → ℤ) (f : Y' ⟶ Y)
@@ -65,19 +65,19 @@ theorem exists_gen_div {X X' Y Y' : Scheme.{0}} {K K' : Type} [Fintype K] [Finty
 variable {k : Type} [Field k] {X Y : Over (Sp k)} [GrpObj X] [GrpObj Y]
 
 /- English proof (translation)
-Use `P.isAb.comm` as an intermediate fact. Take `⟨rig, hrig⟩` from `P.rigid`. Set `L : RigLB P.A` to `⟨P.L, rig, P.isLB, hrig⟩`. Take `⟨⟨cb⟩, -⟩` from `hC _ P L rfl`. Set `T` to `𝟙_ (Over (Sp k))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `p₀ : T.left` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum k)`. Establish `hT : ∀ p : T.left, p = p₀` using `fun p => Subsingleton.elim (α := PrimeSpectrum k) p p₀`. Establish `hx₁ : (x ≫ f₁) ^ n = 1` using `by rw [← MonObj.pow_comp, hx, MonObj.one_comp]`. Take `⟨u₀, hu₀, v₀⟩` from `PairingDetermines.exists_gen_transl hG P.isAb cb p₀ hT n (x ≫ f₁) hx₁`. Take `⟨σ, hσ⟩` from `exists_frame P.isLB (K := Fin 2) ![(x ≫ f₁).left, (1 : T ⟶ P.A).left] ![-1, 1] p₀ hT`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, v⟩` from `exists_gen P.isLB (φ' := fun I => (mulA Y n).left ≫ (lift (toUnit Y ≫ x) (𝟙 Y)).left ≫ sqφ (fst X Y ≫ f₁) (snd X Y ≫ f₂) I) (ε' := sqε) (fun U _ h => by`. Establish `e₀ : mulA Y n ≫ lift (toUnit Y ≫ x) (𝟙 Y) = lift (toUnit Y ≫ x) (𝟙 Y ^ n)`. Rewrite using `[comp_lift, comp_toUnit_assoc, Category.comp_id]`. Establish `e₁ : lift (toUnit Y) f₂ ≫ mulT P.A T n ≫ translPt P.A (x ≫ f₁) = (toUnit Y ≫ x ≫ f₁) * ((𝟙 Y ^ n) ≫ f₂)`. Rewrite using `[← Category.assoc, mulT, comp_lift, lift_translPt, lift_fst, MonObj.comp_pow, lift_snd, MonObj.pow_comp, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : lift (toUnit Y) f₂ ≫ snd T P.A ^ n = (𝟙 Y ^ n) ≫ f₂`. Rewrite using `[MonObj.comp_pow, lift_snd, MonObj.pow_comp, Category.id_comp]`. Establish `e₃ : toUnit Y ≫ (1 : T ⟶ P.A) = 1` using `MonObj.comp_one _`. Establish `e` using `prod_sq (lift (toUnit Y ≫ x) (𝟙 Y ^ n)) (fst X Y ≫ f₁) (snd X Y ≫ f₂) h`. Rewrite `e` using `[lift_fst_assoc, lift_snd_assoc, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Eq.trans ?_ (e.symm.trans (Finset.prod_congr rfl fun I _ => by` and prove the remaining obligations. Rewrite using `[← e₀, Over.comp_left, Category.assoc]))`. Use `(Fintype.prod_sum_type _).trans ?_` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, ← Over.comp_left, e₁, e₂, e₃, Category.assoc, zpow_neg, zpow_one, _root_.mul_one]`. Use the proof step `ac_rfl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(LB.mulGen P.L _ _ _ _ (LB.pullGen P.L _ _ u₀ (lift (toUnit Y) f₂).left) (LB.pullGen P.L _ _ σ (toUnit Y).left))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hu₀ _) (DVR.pullGen_isGen _ _ _ _ hσ _))`. Use `⟨u, hu, fun y c hy hc z J hJ => ?_⟩` and prove the remaining obligations. Establish `hy₂ : (y ≫ f₂) ^ n = 1` using `by rw [← MonObj.pow_comp, hy, MonObj.one_comp]`. Establish `w : ∀ a : Y ⟶ Y, val u a.left z J = val u₀ (lift (toUnit Y) (a ≫ f₂)).left z J * val σ (toUnit Y).left z J` using `fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[v _ _ z J hJ, val_mul hJ, val_pull hJ, val_pull hJ, ← Over.comp_left, ← Over.comp_left, comp_lift, comp_toUnit]`. Establish `w₀` using `v₀ (y ≫ f₂) c hy₂ hc Y (toUnit Y) (𝟙 Y ≫ f₂) z J hJ`. Use `(w _).trans (Eq.trans ?_ (congrArg (· * _) (w (𝟙 Y))).symm)` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, Category.assoc, mul_right_comm]`. Conclude with `congrArg (fun q => q * _) w₀`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen_fibre (hG : GlobalFnsSt) (hC : CubeSt) (P : PolAV (Sp k)) (f₁ : X ⟶ P.A) (f₂ : Y ⟶ P.A)
     [IsMonHom f₁] [IsMonHom f₂] (n : ℕ) (x : 𝟙_ (Over (Sp k)) ⟶ X) (hx : x ^ n = 1) :
@@ -137,17 +137,15 @@ namespace GlobalTheory.CM
 open LamOfWeil IsoDescent
 
 /- English proof (translation)
-Introduce `hL k _ _ _ X Y A B f₁ f₂ g₁ g₂ hf₁ hf₂ hg₁ hg₂ hW`. Use `haveI : IsCommMonObj A.A := A.isAb.comm`. Use `haveI : IsCommMonObj B.A := B.isAb.comm`. Use `haveI : IsCommMonObj Y.A := Y.isAb.comm`. Establish `axis : ∀ {Z : Over (Sp k)} (ρ : Z ⟶ X.A ⊗ Y.A), ρ ≫ fst _ _ = 1 ∨ ρ ≫ snd _ _ = 1 → ∃ t : LB.Gen ((LB.div (LB.LinComb B.L (sqφ (fst X.A Y.A ≫ g₁) (snd X.A Y.A ≫ g₂)) sqε) (LB.LinComb A.L (sqφ (fst X.A Y.A ≫ f₁) (snd X.A Y.A ≫ f₂)) sqε)).pull ρ.left), t.IsGen`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `Z ρ H`. Take `⟨u, hu⟩` from `exists_gen_axis A.isLB ρ (fst X.A Y.A ≫ f₁) (snd X.A Y.A ≫ f₂) (H.imp (fun h => by rw [reassoc_of% h, MonObj.one_comp]) (fun h => by rw [reassoc_of% h, MonObj.one_comp]))`. Take `⟨u', hu'⟩` from `exists_gen_axis B.isLB ρ (fst X.A Y.A ≫ g₁) (snd X.A Y.A ≫ g₂) (H.imp (fun h => by rw [reassoc_of% h, MonObj.one_comp]) (fun h => by rw [reassoc_of% h, MonObj.one_comp]))`. Conclude with `exists_gen_div _ _ _ _ _ _ _ (lbIso_of_gens A.isLB B.isLB _ _ _ _ u hu u' hu')`. Use `T.seesaw_triviality_on_dense_fibres_product_abelian hL.globalFns k X.A Y.A (LB.div (LB.LinComb B.L (sqφ (fst X.A Y.A ≫ g₁) (snd X.A Y.A ≫ g₂)) sqε) (LB.LinComb A.L (sqφ (fst X.A Y.A ≫ f₁) (snd X.A Y.A ≫ f₂)) sqε)) Y.L X.isAb Y.isAb Y.isLB Y.ample (LB.isLB_div (DVR.linComb_isLB _ …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `(TorsionDense.dense_torsion X hL.irred hL.kerPow).mono (Set.biUnion_subset_biUnion_left ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨n, hn, hx⟩`. Take `⟨u, hu, v⟩` from `exists_gen_fibre hL.globalFns hL.cube A f₁ f₂ n x hx`. Take `⟨u', hu', v'⟩` from `exists_gen_fibre hL.globalFns hL.cube B g₁ g₂ n x hx`. Use `exists_gen_div _ _ _ _ _ _ _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `lbIso_of_invariant A.isLB B.isLB _ _ _ _ (Out.mulA Y.A n).left (I := {y : 𝟙_ (Over (Sp k)) ⟶ Y.A // y ^ n = 1}) (fun y => ((toUnit Y.A ≫ y.1) * 𝟙 Y.A).left) (fun y => ?_) (fun U f hf => torsion_invariant_descends (fun S _ P n hn => by` and prove the remaining obligations. Take `⟨a, b, c, e, -⟩` from `hL.mulN S P n hn`. Conclude with `⟨a, b, c, e⟩) k Y n (Nat.cast_ne_zero.2 hn.ne') U f fun y hy => hf ⟨y, hy⟩) u hu u' hu'`. Use the proof step `(fun y z J J' hJ hJ' => ?_)`. Rewrite using `[← Over.comp_left, Out.mulA, MonObj.comp_pow, Category.comp_id, mul_pow, ← MonObj.comp_pow, y.2, MonObj.comp_one, _root_.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx₁ : (x ≫ f₁) ^ n = 1` using `by rw [← MonObj.pow_comp, hx, MonObj.one_comp]`. Establish `hy₂ : (y.1 ≫ f₂) ^ n = 1` using `by rw [← MonObj.pow_comp, y.2, MonObj.one_comp]`. Take `⟨c, hc, -⟩` from `(hL.weil _ A n _).1 (x ≫ f₁) (y.1 ≫ f₂) hx₁ hy₂`. Take `⟨c, rfl⟩ : ∃ c₀ : kˣ, unitOn c₀ = c` from `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom.toMonoidHom c, Units.ext ((Scheme.ΓSpecIso (CommRingCat.of k)).hom_inv_id_apply c.val)⟩`. Establish `h₁` using `v y.1 (unitOn c) y.2 hc z J hJ`.
-
-Establish `h₂` using `v' y.1 (unitOn c) y.2 ((hW n x y.1 c hn hx y.2).1 hc) z J' hJ'`. Use `(congrArg₂ (fun a b => a * b⁻¹) h₂ h₁).trans ?_` and prove the remaining obligations. Conclude with `mul_div_mul_right_eq_div _ _ _ |> fun h => by simpa only [div_eq_mul_inv] using h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lamEq_of_weilEq : Out.Laws → ∀ (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (X Y A B : Out.PolAV (Sp k)) (f₁ : X.A ⟶ A.A) (f₂ : Y.A ⟶ A.A) (g₁ : X.A ⟶ B.A) (g₂ : Y.A ⟶ B.A), IsMonHom f₁ → IsMonHom f₂ → IsMonHom g₁ → IsMonHom g₂ → WeilEq A.L f₁ f₂ B.L g₁ g₂ (𝟙 (Sp k)) → LamEq A.L f₁ f₂ B.L g₁ g₂ := by
   intro hL k _ _ _ X Y A B f₁ f₂ g₁ g₂ hf₁ hf₂ hg₁ hg₂ hW

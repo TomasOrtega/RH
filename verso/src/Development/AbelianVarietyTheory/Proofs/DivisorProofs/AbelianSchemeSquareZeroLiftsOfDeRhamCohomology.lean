@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LiftSys
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.abelianSchemeSquareZeroLifts_of_hodgeDeRham GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations`.
+A detailed English derivation is pending.
 -/
 theorem abelianSchemeLifts_of_abelianHodgeDeRham : AbelianHodgeDeRham → AbelianSchemeLifts :=
   GlobalTheory.T.abelianSchemeSquareZeroLifts_of_hodgeDeRham GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations

@@ -24,35 +24,33 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSNef
 
 /- English proof (translation)
-Introduce `hPr k _ X _ p D hX P a hA hS ha`. Establish `hC` using `GlobalTheory.MixHt.arCalc_of_principalisation hPr`. Take `⟨e, x, hx⟩` from `GlobalTheory.T.exists_basepointFreeSectionTuple_ample_arith k X p D hX P hA`. Take `⟨B, hB0, hB⟩` from `GlobalTheory.T.exists_fubiniStudyWeights_bounded_difference k X p D hX P e x hx`. Establish `hG` using `GlobalTheory.T.isGoodSectionGroupFamily_ampleMultiples hC k X p D hX P hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t₀, ht₀⟩` from `GlobalTheory.T.arithHilbertSamuel_smallSections_change_of_metric hPr k X p D hX P a hS ha hG`. Take `⟨C, hCb⟩` from `GlobalTheory.T.selfIntersection_canonicalWeights_tendsto_zero hC k X p D hX P hA e x hx`. Use `⟨max (t₀ + B) 1, fun t ht => ?_⟩` and prove the remaining obligations. Establish `ht1 : t₀ + B ≤ t` using `le_trans (le_max_left _ _) ht`. Establish `ht2 : 0 < t` using `lt_of_lt_of_le one_pos (le_trans (le_max_right _ _) ht)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hball : ∀ (u : SmFn p) (m : ℕ) (R : ℝ), ballIn (upperParabolic P u) (P.H m 1) m 1 R = (upperParabolic P u).Bl m 1 R` using `fun _ _ _ => rfl`. Establish `hball' : ∀ (m : ℕ) (R : ℝ), ballIn P (P.H m 1) m 1 R = P.Bl m 1 R` using `fun _ _ => rfl`. Establish `hF : (0 : ℝ) < D.factorial` using `by exact_mod_cast Nat.factorial_pos D`. Establish `hF1 : (0 : ℝ) < (D + 1).factorial` using `by exact_mod_cast Nat.factorial_pos _`. Establish `he : (0 : ℝ) < e` using `by exact_mod_cast hx.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLg : 0 ≤ Real.log ((D : ℝ) + 1)` using `Real.log_nonneg (by linarith [(Nat.cast_nonneg D : (0 : ℝ) ≤ D)])`. Use `set g := gdeg P.L D with hg`. Establish `hc : (a + ((D : ℝ) + 1) * t * g) / ((D + 1).factorial : ℝ) = g / D.factorial * t + a / (D + 1).factorial`. Rewrite using `[Nat.factorial_succ]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ n : ℕ, 1 ≤ n → ∀ ε : ℝ, 0 < ε → ∀ᶠ m : ℕ in atTop, |P.lc m 1 (Real.exp (t * m)) / (m : ℝ) ^ (D + 1) - (g / D.factorial * t + a / (D + 1).factorial)| ≤ |g| / D.factorial * (Real.log ((D : ℝ) + 1) / (2 * n) / e) + |C| / n / (D + 1).factorial + 2 * ε`. Introduce `n hn ε hε`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, huB⟩` from `hB n hn`. Establish `hsemi` using `GlobalTheory.T.fubiniStudyWeightIncrement_semiPositive_curvature k X p D hX P e x hx n u hn hu`. Take `⟨h, hh⟩` from `(hC.arExists k X p D hX).1 (up P.L u)`. Establish `hsi : (up P.L u).IsSelfInter (h (genericPoint X))` using `⟨h, hh, rfl⟩`. Establish `han` using `hCb n u _ hn hu hsi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiff` using `ht₀ u B _ hB0 huB hsemi hsi t ht1`. Take `⟨hnu1, hnu2, hgu, -, -⟩` from `GlobalTheory.T.norm_basepointFree_sections_le_one_fubiniStudy k X p D hX P e x hx n u hn hu`. Establish `hκ1 : Real.exp (-(Real.log ((D : ℝ) + 1) / (2 * n))) ≤ 1` using `Real.exp_le_one_iff.2 (neg_nonpos.2 (div_nonneg hLg (by positivity)))`. Establish `hcnt` using `GlobalTheory.T.sectionCount_growth_metric_near_generatorMax hC k X p D hX (upperParabolic P u) hA e x hgu _ t (Real.exp_pos _) hκ1 ht2 hnu1 hnu2 ε hε`. Rewrite `hcnt` using `[show (upperParabolic P u).L = up P.L u from rfl, GlobalTheory.T.hermLineBundleGeometricDegree_raiseWeight hC k X p D hX P.L u, Real.log_exp, ← hg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hball, hball'] at hdiff`. Establish `hd` using `hdiff.eventually (Metric.ball_mem_nhds _ hε)`. Use `set an := h (genericPoint X)`. Use `set T := Real.log ((D : ℝ) + 1) / (2 * n) / e with hT`. Establish `hT0 : 0 ≤ T` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hup : g / D.factorial * (t - -(Real.log ((D : ℝ) + 1) / (2 * n)) / e) ≤ g / D.factorial * t + |g| / D.factorial * T`. Rewrite using `[show t - -(Real.log ((D : ℝ) + 1) / (2 * n)) / e = t + T by rw [hT]; ring, mul_add]`. Use `gcongr`. Conclude with `le_abs_self g`. Establish `han1 : an / (D + 1).factorial ≤ |C| / n / (D + 1).factorial` using `div_le_div_of_nonneg_right ((le_abs_self an).trans (han.trans (div_le_div_of_nonneg_right (le_abs_self C) hn0.le))) hF1.le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hgT : 0 ≤ |g| / D.factorial * T` using `by positivity`. Establish `han2 : -(an / (D + 1).factorial) ≤ |C| / n / (D + 1).factorial`. Rewrite using `[← neg_div]`. Conclude with `div_le_div_of_nonneg_right ((neg_le_abs an).trans (han.trans (div_le_div_of_nonneg_right (le_abs_self C) hn0.le))) hF1.le`. Use `filter_upwards [hd, hcnt] with m hm1 hm2`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `hm1` using `[Real.dist_eq, abs_sub_lt_iff]`. Establish `hsplit : P.lc m 1 (Real.exp (t * m)) / (m : ℝ) ^ (D + 1) = (upperParabolic P u).lc m 1 (Real.exp (t * m)) / (m : ℝ) ^ (D + 1) - (Real.log ((upperParabolic P u).Bl m 1 (Real.exp (t * m))).ncard - Real.log (P.Bl m 1 (Real.exp (t * m))).ncard) / (m : ℝ) ^ (D + 1)`. Simplify using `only [Pair.lc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hq : (an - a) / ((D + 1).factorial : ℝ) = an / (D + 1).factorial - a / (D + 1).factorial` using `sub_div _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hsplit, abs_le]`. Apply the tactic sequence `constructor <;> linarith [hm2.1, hm2.2]`. Rewrite using `[hc]`. Use `Metric.tendsto_nhds.2 fun δ hδ => ?_` and prove the remaining obligations. Use `set K := |g| / D.factorial * (Real.log ((D : ℝ) + 1) / 2 / e) + |C| / (D + 1).factorial with hK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK0 : 0 ≤ K` using `by positivity`. Take `⟨n, hn⟩` from `exists_nat_gt (2 * K / δ)`. Establish `hn1 : (0 : ℝ) < ((n + 1 : ℕ) : ℝ)` using `by positivity`. Establish `hKn : |g| / D.factorial * (Real.log ((D : ℝ) + 1) / (2 * ((n + 1 : ℕ) : ℝ)) / e) + |C| / ((n + 1 : ℕ) : ℝ) / (D + 1).factorial = K / ((n + 1 : ℕ) : ℝ)`. Rewrite using `[hK]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `hKlt : K / ((n + 1 : ℕ) : ℝ) < δ / 2`. Establish `h1 : 2 * K / δ < ((n + 1 : ℕ) : ℝ)` using `hn.trans (by exact_mod_cast Nat.lt_succ_self n)`. Rewrite `h1` using `[div_lt_iff₀ hδ]`. Rewrite using `[div_lt_iff₀ hn1]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use `filter_upwards [key (n + 1) (Nat.le_add_left 1 n) (δ / 8) (by positivity)] with m hm`. Rewrite `hm` using `[hKn]`. Rewrite using `[Real.dist_eq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ampleHS_of_principalisation : GlobalTheory.Published.Principalisation → AmpleHS := by
   intro hPr k _ X _ p D hX P a hA hS ha

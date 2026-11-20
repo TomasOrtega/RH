@@ -11,7 +11,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Fo
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.MainNotions.BridgeLemma GlobalTheory.Core.Deg
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Core.Deg.elementary_size_bounds_of_size_hypotheses` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FElementarySizeBoundsOfSizeHypotheses.lean&line=17#L17)
 -/

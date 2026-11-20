@@ -18,9 +18,9 @@ open scoped SchwartzMap FourierTransform Real Classical
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Rewrite using `[Submonoid.mem_units_iff]`. Establish `hx' : Valued.v (x : w.adicCompletion F) = 1` using `hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x : w.adicCompletion F) ∈ w.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hx']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((x⁻¹ : (w.adicCompletion F)ˣ) : w.adicCompletion F) ∈ w.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, Units.val_inv_eq_inv_val, map_inv₀, hx', inv_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_units_of_isUnitAt (w : HeightOneSpectrum (𝓞 F)) (x : (w.adicCompletion F)ˣ) (hx : IsUnitAt w x) :
     x ∈ (Submonoid.ofClass (w.adicCompletionIntegers F)).units := by
@@ -33,19 +33,19 @@ theorem mem_units_of_isUnitAt (w : HeightOneSpectrum (𝓞 F)) (x : (w.adicCompl
     rw [HeightOneSpectrum.mem_adicCompletionIntegers, Units.val_inv_eq_inv_val, map_inv₀, hx', inv_one]
 
 /- English proof (translation)
-Use `set c1 : ℂ := (a : ℂ) * Complex.exp (-(π : ℂ) * (a : ℂ) ^ 2)`. Use `set c2 : ℂ := Complex.I * Complex.exp (-(π : ℂ) * (a : ℂ) ^ 2)`. Establish `hpt : ∀ t : ℝ, ((𝐞 (-(t * y)) : Circle) : ℂ) * (((a : ℂ) + Complex.I * (t : ℂ)) * Complex.exp (-(π : ℂ) * ((a : ℂ) ^ 2 + (t : ℂ) ^ 2))) = c1 * (((𝐞 (-(t * y)) : Circle) : ℂ) * realGaussian t) + c2 * (((𝐞 (-(t * y)) : Circle) : ℂ) * realGaussianOdd t)`. Introduce `t`. Simplify using `only [c1, c2, realGaussian, realGaussianOdd]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Complex.exp (-(π : ℂ) * ((a : ℂ) ^ 2 + (t : ℂ) ^ 2)) = Complex.exp (-(π : ℂ) * (a : ℂ) ^ 2) * Complex.exp (-(π : ℂ) * (t : ℂ) ^ 2)`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hce : Continuous fun t : ℝ => ((𝐞 (-(t * y)) : Circle) : ℂ)` using `continuous_subtype_val.comp (Real.continuous_fourierChar.comp (by fun_prop))`. Establish `hg : Continuous realGaussian` using `by unfold realGaussian; fun_prop`. Establish `hgo : Continuous realGaussianOdd` using `by unfold realGaussianOdd; fun_prop`. Establish `hi1 : Integrable fun t : ℝ => ((𝐞 (-(t * y)) : Circle) : ℂ) * realGaussian t` using `integrable_realGaussian.norm.mono' (hce.mul hg).aestronglyMeasurable (Filter.Eventually.of_forall fun t => by rw [norm_mul, Circle.norm_coe, one_mul])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi2 : Integrable fun t : ℝ => ((𝐞 (-(t * y)) : Circle) : ℂ) * realGaussianOdd t` using `integrable_realGaussianOdd.norm.mono' (hce.mul hgo).aestronglyMeasurable (Filter.Eventually.of_forall fun t => by rw [norm_mul, Circle.norm_coe, one_mul])`. Establish `hf1 : 𝓕 realGaussian y = ∫ t : ℝ, ((𝐞 (-(t * y)) : Circle) : ℂ) * realGaussian t`. Rewrite using `[Real.fourier_real_eq]`. Simplify using `only [Circle.smul_def, smul_eq_mul]`. Establish `hf2 : 𝓕 realGaussianOdd y = ∫ t : ℝ, ((𝐞 (-(t * y)) : Circle) : ℂ) * realGaussianOdd t`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Real.fourier_real_eq]`. Simplify using `only [Circle.smul_def, smul_eq_mul]`. Simplify using `only [hpt]`. Rewrite using `[integral_add (hi1.const_mul c1) (hi2.const_mul c2), integral_const_mul, integral_const_mul, ← hf1, ← hf2, fourier_realGaussian, fourier_realGaussianOdd]`. Simplify using `only [c1, c2, realGaussian, realGaussianOdd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Complex.exp (-(π : ℂ) * ((a : ℂ) ^ 2 + (y : ℂ) ^ 2)) = Complex.exp (-(π : ℂ) * (a : ℂ) ^ 2) * Complex.exp (-(π : ℂ) * (y : ℂ) ^ 2)`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_arch_one (a y : ℝ) :
     ∫ t : ℝ, ((𝐞 (-(t * y)) : Circle) : ℂ) *
@@ -91,11 +91,9 @@ theorem integral_arch_one (a y : ℝ) :
   ring
 
 /- English proof (translation)
-Use `haveI := isEmpty_complex (F := F)`. Use `set m := homeomorphMixedSpace F Z.1`. Use `set A : ∀ w : {w : InfinitePlace F // IsReal w}, ℝ → ℂ := fun w t => ((𝐞 (-(t * m.1 w)) : Circle) : ℂ) * ((((a w.1 : ℝ) : ℂ) + Complex.I * (t : ℂ)) * Complex.exp (-(π : ℂ) * (((a w.1 : ℝ) : ℂ) ^ 2 + (t : ℂ) ^ 2)))`. Use `set B : ∀ w : {w : InfinitePlace F // IsComplex w}, ℂ → ℂ := fun _ _ => 1`. Establish `hint : ∀ x : mixedSpace F, 𝐞 (-mixedTraceForm F x m) • archSchwartz a x = (∏ w, A w (x.1 w)) * ∏ w, B w (x.2 w)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[Circle.smul_def, smul_eq_mul, HeckeCharacter.fourierChar_neg_mixedTraceForm, archSchwartz_eq_prod]`. Simplify using `only [A, B, Finset.univ_eq_empty (α := {w : InfinitePlace F // IsComplex w}), Finset.prod_empty, mul_one, Finset.prod_mul_distrib]`. Establish `hA : ∀ w : {w : InfinitePlace F // IsReal w}, ∫ t, A w t = (((a w.1 : ℝ) : ℂ) + ((UpperTheory.V.TR.pInf F Z w.1 : ℝ) : ℂ)) * Complex.exp (-(π : ℂ) * (((a w.1 : ℝ) : ℂ) ^ 2 + ((UpperTheory.V.TR.pInf F Z w.1 : ℝ) : ℂ) ^ 2))` using `fun w => integral_arch_one (a w.1) (m.1 w)`. Rewrite using `[mixedFourier_apply, selfDualMeasure, integral_smul_measure, Measure.volume_eq_prod]`.
-
-Simplify using `only [hint]`. Rewrite using `[integral_prod_mul (f := fun x : {w : InfinitePlace F // IsReal w} → ℝ ↦ ∏ w, A w (x w)) (g := fun z : {w : InfinitePlace F // IsComplex w} → ℂ ↦ ∏ w, B w (z w)), integral_fintype_prod_volume_eq_prod, integral_fintype_prod_volume_eq_prod]`. Simplify using `only [hA, Finset.univ_eq_empty (α := {w : InfinitePlace F // IsComplex w}), Finset.prod_empty, mul_one, IsTotallyReal.nrComplexPlaces_eq_zero, pow_zero, ENNReal.toReal_one, one_smul]`. Conclude with `prod_real (fun v => (((a v : ℝ) : ℂ) + ((UpperTheory.V.TR.pInf F Z v : ℝ) : ℂ)) * Complex.exp (-(π : ℂ) * (((a v : ℝ) : ℂ) ^ 2 + ((UpperTheory.V.TR.pInf F Z v : ℝ) : ℂ) ^ 2)))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mixedFourier_archSchwartz (a : InfinitePlace F → ℝ) (Z : Ad F) :
     mixedFourier F (archSchwartz a) (homeomorphMixedSpace F Z.1) =
@@ -127,11 +125,11 @@ theorem mixedFourier_archSchwartz (a : InfinitePlace F → ℝ) (Z : Ad F) :
         Complex.exp (-(π : ℂ) * (((a v : ℝ) : ℂ) ^ 2 + ((UpperTheory.V.TR.pInf F Z v : ℝ) : ℂ) ^ 2)))
 
 /- English proof (translation)
-Rewrite using `[slice_eq hc A, adelicFourier_smul, Pi.smul_apply, adelicFourier_schwartzBruhatTensor, schwartzBruhatTensor, mixedFourierSchwartz_apply, finiteFourier_cosetIndicator, mixedFourier_archSchwartz, smul_eq_mul, one_mul]`. Unfold `kernF`. Rewrite using `[Set.indicator_apply]`. Simplify using `only [SetLike.mem_coe, Pi.one_apply]`. Rewrite using `[mem_dual_iff hc]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ : Z.2 = pFin F Z` using `rfl`. Rewrite using `[hZ]`. Distinguish the cases in `h1 : ∀ w, Valued.v (pLoc F w (pFin F A)) ≤ WithZero.exp (-(c w : ℤ))`. Distinguish the cases in `h2 : ∀ w, Valued.v (pLoc F w (pFin F Z)) ≤ WithZero.exp ((c w : ℤ) + dd w)`. Simplify using `only [h1, h2, and_self, implies_true, ↓reduceIte]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1, h2, implies_true, true_and, ↓reduceIte]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1, false_and, ↓reduceIte]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem adelicFourier_slice {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠ 0}.Finite) (A Z : Ad F) :
     adelicFourier F (slice c A) Z =
@@ -158,11 +156,11 @@ namespace UpperTheory.HilbertEisensteinWeightOne.FourierExpansionEisenstein
 open UpperTheory.HilbertEisensteinWeightOne.FourierExpansionEisenstein.L1
 
 /- English proof (translation)
-Introduce `F _ _ _ ω c H`. Use `set χ : (FiniteAdeleRing (𝓞 F) F)ˣ →* ℂˣ := ω.1.comp IdeleGroup.ofFinite with hχdef`. Establish `hχ : Continuous χ` using `ω.2.1.comp IdeleGroup.continuous_ofFinite`. Use `(IdeleGroup.finite_support_conductorExponentAt Complex.units_noSmallSubgroups χ hχ).subset ?_` and prove the remaining obligations. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.mem_support]`. Introduce `h0`. Apply `hw` to reduce the goal to its premises. Establish `hk` using `(IdeleGroup.conductorExponentAt_eq_zero_iff Complex.units_noSmallSubgroups χ hχ w).1 h0`. Establish `hmem : (0 : ℕ) ∈ {n : ℕ | ∀ x : (w.adicCompletion F)ˣ, IsUnitAt w x → Valued.v ((x : w.adicCompletion F) - 1) ≤ WithZero.exp (-(n : ℤ)) → ω.loc w x = 1}`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx _`. Establish `h1` using `hk (mem_units_of_isUnitAt w x hx)`. Rewrite `h1` using `[MonoidHom.mem_ker]`. Conclude with `h1`. Conclude with `Nat.le_zero.1 ((H.cond w).2 hmem)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_expansion_holds : SFin := by
   intro F _ _ _ ω c H
@@ -183,9 +181,9 @@ theorem finite_expansion_holds : SFin := by
   exact Nat.le_zero.1 ((H.cond w).2 hmem)
 
 /- English proof (translation)
-Introduce `F _ _ _ c hc`. Use `⟨((finiteAdeleMeasure F (idealFiniteAdeles (levelIdeal c))).toReal : ℂ), ?_, fun A Z => adelicFourier_slice hc A Z⟩` and prove the remaining obligations. Rewrite using `[Complex.ofReal_ne_zero, finiteAdeleMeasure_idealFiniteAdeles_toReal]`. Use `mul_ne_zero (inv_ne_zero ?_) (inv_ne_zero ?_)` and prove the remaining obligations. Rewrite using `[Rat.cast_ne_zero, Ne, FractionalIdeal.absNorm_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(levelIdeal c).ne_zero`. Rewrite using `[NNReal.coe_ne_zero, Ne, NNReal.sqrt_eq_zero, nnnorm_eq_zero]`. Conclude with `NumberField.discr_ne_zero F` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kernel_expansion_holds : SKern := by
   intro F _ _ _ c hc

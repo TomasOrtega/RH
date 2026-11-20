@@ -21,7 +21,7 @@ variable {X : Tower Ω ε} {A : ValuationSubring Ω} {N w : ℕ} {χ : ℕ → �
   {pr : X.Fn l → Fin 2 → Qbar l} {c : Coef l} {lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l}
 
 /- English proof (translation)
-The claim follows from `h.1 d hd b hb`.
+A detailed English derivation is pending.
 -/
 theorem IsLamFR2.diam (h : IsLamFR2 X A N w χ j pr c lam) {d : ℕ} (hd : Nat.Coprime d N) {b : X.Fn l}
     (hb : b ∈ X.B N l w) : pr (X.diam N l d b) = ((χ d : ℤ_[l]) : Qbar l) • pr b := h.1 d hd b hb

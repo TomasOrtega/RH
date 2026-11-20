@@ -43,48 +43,48 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen)
 namespace UpperTheory.Gal.crystallineComparison.Br
 
 /- English proof (translation)
-The claim follows from `pSplitsBasic (pSplitsPts pIsoPts) pPtsOfSplits`.
+A detailed English derivation is pending.
 -/
 private theorem splitsBasic : SplitsBasic := pSplitsBasic (pSplitsPts pIsoPts) pPtsOfSplits
 
 /- English proof (translation)
-The claim follows from `pBcSplits splitsBasic`.
+A detailed English derivation is pending.
 -/
 private theorem bcSplits : BcSplits := pBcSplits splitsBasic
 
 /- English proof (translation)
-The claim follows from `pFEtBasic pPtsOfSplits`.
+A detailed English derivation is pending.
 -/
 private theorem fEtBasic : FEtBasic := pFEtBasic pPtsOfSplits
 
 /- English proof (translation)
-The claim follows from `pEtnGood fEtBasic pEtTr`.
+A detailed English derivation is pending.
 -/
 private theorem etnGood : EtnGood := pEtnGood fEtBasic pEtTr
 
 /- English proof (translation)
-The claim follows from `pEtGood etnGood`.
+A detailed English derivation is pending.
 -/
 private theorem etGood : EtGood := pEtGood etnGood
 
 /- English proof (translation)
-The claim follows from `pBcGood bcSplits (pBcGal bcSplits)`.
+A detailed English derivation is pending.
 -/
 private theorem bcGood : BcGood.{1} := pBcGood bcSplits (pBcGal bcSplits)
 
 /- English proof (translation)
-The claim follows from `pGalClosD (pSplitsPts pIsoPts) (pOrdEx pOrdStep)`.
+A detailed English derivation is pending.
 -/
 private theorem galClosD : GalClosD := pGalClosD (pSplitsPts pIsoPts) (pOrdEx pOrdStep)
 
 /- English proof (translation)
-The claim follows from `pHopSpec etGood bcGood (pGalClos galClosD) (pOpEx pOpTr) pOpTr pOpEt (pOpBc bcSplits (pBcGal bcSplits)) bcSplits`.
+A detailed English derivation is pending.
 -/
 private theorem hopSpec : HopSpec :=
   pHopSpec etGood bcGood (pGalClos galClosD) (pOpEx pOpTr) pOpTr pOpEt (pOpBc bcSplits (pBcGal bcSplits)) bcSplits
 
 /- English proof (translation)
-The claim follows from `pLiesOp pLiesGen (pLiesAbs fEtBasic (pTrBase fEtBasic splitsBasic galClosD) (pTrPushM fEtBasic splitsBasic (pSplitsComp (pSplitsPts pIsoPts) pPtsOfSplits) (pMultiSplit fEtBasic splitsBasic galClosD) (pFEtInj galClosD)))`.
+A detailed English derivation is pending.
 -/
 private theorem liesOp : LiesOp.{1} :=
   pLiesOp pLiesGen (pLiesAbs fEtBasic (pTrBase fEtBasic splitsBasic galClosD)
@@ -92,14 +92,14 @@ private theorem liesOp : LiesOp.{1} :=
       (pMultiSplit fEtBasic splitsBasic galClosD) (pFEtInj galClosD)))
 
 /- English proof (translation)
-Establish `h : IsUnit (l : PadicAlgCl l)` using `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero).isUnit`. Simplify using `using h.map (Scheme.ΓSpecIso (CommRingCat.of (PadicAlgCl l))).inv.hom`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem l_unit (l : ℕ) [Fact l.Prime] : IsUnit (l : Γ(G3.sp (PadicAlgCl l), ⊤)) := by
   have h : IsUnit (l : PadicAlgCl l) := (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero).isUnit
   simpa using h.map (Scheme.ΓSpecIso (CommRingCat.of (PadicAlgCl l))).inv.hom
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `congrArg (algebraMap K (PadicAlgCl l)) h`. Rewrite `h2` using `[map_natCast, map_zero]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem l_ne (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) : (l : K) ≠ 0 := by
   intro h
@@ -108,7 +108,7 @@ private theorem l_ne (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (Pa
   exact (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) h2
 
 /- English proof (translation)
-Unfold `pullTot`. Rewrite using `[DirectSum.lmap_lof, DirectSum.lmap_lof]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lmap_pull {l : ℕ} [Fact l.Prime] {E E' E'' : Spc} (f : E ⟶ E')
     (tr : ∀ n : ℤ, HQ l E n 0 →ₗ[ℚ_[l]] HQ l E'' n 0) (j : ℤ) (v : HQ l E' j 0) :
@@ -118,17 +118,17 @@ private theorem lmap_pull {l : ℕ} [Fact l.Prime] {E E' E'' : Spc} (f : E ⟶ E
   rw [DirectSum.lmap_lof, DirectSum.lmap_lof]
 
 /- English proof (translation)
-Introduce `l _ K L _ H θ C T hr γ m d hfet hlies`. Establish `hl` using `l_ne l K`. Establish `hu` using `l_unit l`. Establish `hgood : (etG l K (PadicAlgCl l)).Good` using `bcGood _ _ (etGood l _ hu)`. Establish `hs` using `genFEt l (OK l K) K hl C.p T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hsF, hsE, -⟩` from `id hs`. Take `⟨hcF, hcE, -⟩` from `bcSplits (Spec.map (CommRingCat.ofHom (algebraMap K (PadicAlgCl l)))) (pullback.snd C.p (gen (OK l K) K)) (pullback.snd (T.p ≫ C.p) (gen (OK l K) K)) (pullback.snd C.p (gen (OK l K) K)) (G3.bcMap (gen (OK l K) K) T.p rfl) (bcMap_snd _ _ _) (𝟙 _) (Category.id_comp _) PEmpty (fun j …`. Establish `htrn : ∀ n : ℤ, ∃ tr, (etn l (G3.sp (PadicAlgCl l)) n 0).IsTr (pullback.snd (pullback.snd C.p (gen (OK l K) K)) (Spec.map (CommRingCat.ofHom (algebraMap K (PadicAlgCl l))))) (pullback.snd (pullback.snd (T.p ≫ C.p) (gen (OK l K) K)) (Spec.map (CommRingCat.ofHom (algebraMap K (Padi …` using `fun n ↦ (etnGood l _ hu n 0).tr _ _ _ (bcMap_snd _ _ _)`. Use `choose trn htrn using htrn`. Establish `htot` using `trTot l _ _ _ trn htrn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbc` using `trBc (et l (G3.sp (PadicAlgCl l))) (Spec.map (CommRingCat.ofHom (algebraMap K (PadicAlgCl l)))) (pullback.snd C.p (gen (OK l K) K)) (pullback.snd (T.p ≫ C.p) (gen (OK l K) K)) (G3.bcMap (gen (OK l K) K) T.p rfl) (bcMap_snd _ _ _) (DirectSum.lmap trn) htot`. Establish `hF` using `hfet.1`. Establish `hE` using `hfet.2.1`. Take `⟨trg, htrg⟩` from `hgood.tr H.q (H.s γ ≫ H.q) (H.s γ) rfl`. Establish `hop_eq` using `(hopSpec l hl H (PadicAlgCl l) γ d hfet).2 trg htrg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∀ j : ℕ, LateralTheory.EtaleTrace.IsPush l (G3.bcMap (Spec.map (CommRingCat.ofHom (algebraMap K (PadicAlgCl l)))) (G3.bcMap (gen (OK l K) K) T.p rfl) (bcMap_snd _ _ _)) j (trn j)` using `fun j ↦ trPush l _ _ _ (bcMap_snd _ _ _) j (trn j) (htrn j)`. Establish `hc : corrP (mdl C) T = G3.bcMap (Spec.map (CommRingCat.ofHom (algebraMap K (PadicAlgCl l)))) (G3.bcMap (gen (OK l K) K) T.p rfl) (bcMap_snd _ _ _)`. Unfold `corrP GlobalTheory.Et.geomMap Model.genMap`. Both sides reduce to the same expression. Establish `hp2 : ∀ j : ℕ, LateralTheory.EtaleTrace.IsPush l (corrP (mdl C) T) j (trn j)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[hc]`. Conclude with `hp j`. Establish `hk` using `fun j : ℕ ↦ hkOfPush l K (mdl C) T hr j _ (hp2 j)`. Use `⟨_, fun j ↦ ⟨hk j, fun v ↦ ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `liesOp C γ T.p T.r hr m T.d hlies hs (etG l K (PadicAlgCl l)) hgood (DirectSum.lmap trn) trg hbc htrg (DirectSum.lof ℚ_[l] ℤ (fun n : ℤ ↦ HQ l (mdl C).spc n 0) j v)`. Rewrite using `[hop_eq, LinearMap.comp_apply]`. Use `key.trans ?_` and prove the remaining obligations. Use `congr 2`. Conclude with `lmap_pull _ trn j v`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem heckeCl : HeckeCl := by
   intro l _ K L _ H θ C T hr γ m d hfet hlies

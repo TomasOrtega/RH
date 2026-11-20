@@ -13,7 +13,7 @@ def ptp (p : ℝ × Y1) : P := pt p.1 p.2.1 p.2.2
 def large₂ {I : Type} [Fintype I] (y : I → Y1) : ℝ := ∑ v, Real.log |(y v).1|
 
 /- English proof (translation)
-Unfold `large₂`. Conclude with `Finset.measurable_sum _ fun v _ => Real.measurable_log.comp (continuous_abs.measurable.comp (measurable_subtype_coe.comp (measurable_pi_apply v)))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_Lg {I : Type} [Fintype I] : Measurable (large₂ (I := I)) := by
   unfold large₂
@@ -21,7 +21,7 @@ theorem measurable_Lg {I : Type} [Fintype I] : Measurable (large₂ (I := I)) :=
     Real.measurable_log.comp (continuous_abs.measurable.comp (measurable_subtype_coe.comp (measurable_pi_apply v)))
 
 /- English proof (translation)
-Substitute `h1` using the available equality. Substitute `h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pt_congr {a a' c c' : ℝ} (h1 : a = a') (h2 : c = c') (hc : c ≠ 0) (hc' : c' ≠ 0) :
     pt a c hc = pt a' c' hc' := by
@@ -30,7 +30,7 @@ theorem pt_congr {a a' c c' : ℝ} (h1 : a = a') (h2 : c = c') (hc : c ≠ 0) (h
   rfl
 
 /- English proof (translation)
-Establish `h : ∀ v, Real.log |t * (y v).1| = Real.log t + Real.log |(y v).1|`. Introduce `v`. Rewrite using `[abs_mul, abs_of_pos ht, Real.log_mul ht.ne' (abs_ne_zero.mpr (y v).2)]`. Unfold `large₂`. Simplify using `only [scl, h, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem Lg_scl {I : Type} [Fintype I] (t : ℝ) (ht : 0 < t) (y : I → Y1) :
     large₂ (fun v => scl t ht.ne' (y v)) = Fintype.card I * Real.log t + large₂ y := by
@@ -44,63 +44,57 @@ end UpperTheory.Esk.UnipotentIntegrandLemmas
 
 open UpperTheory.Esk.UnipotentIntegrandLemmas in
 /- English proof (translation)
-Unfold `B1a UpperHalfPlaneMeasureCoordinates ConstantTermVanishingAlt`. Introduce `hB1 hB5`. Take `⟨hσ, -, -⟩` from `hB1`. Take `⟨hmp, -, hcont⟩` from `hB5`. Use `hσ` as an intermediate fact.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `I _ _ φ hφ β hβ hβ0 hβinv A B hA hAB u hu hint`. Establish `hval : Measurable (fun z : P => z.1)` using `measurable_subtype_coe`. Establish `hgm : Measurable (fun z : P => ((z.1.re / z.1.im, (⟨z.1.im, z.2⟩ : Y1)) : ℝ × Y1))` using `((Complex.measurable_re.comp hval).div (Complex.measurable_im.comp hval)).prodMk (Complex.measurable_im.comp hval).subtype_mk`. Set `eP : ℝ × Y1 ≃ᵐ P` to `{ toFun := fun p => pt p.1 p.2.1 p.2.2 invFun := fun z => (z.1.re / z.1.im, ⟨z.1.im, z.2⟩) left_inv := by`. Introduce and unpack `⟨x, y, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Establish `h1 : ((y : ℂ) * ((x : ℂ) + Complex.I)).re = y * x` using `by simp`. Establish `h2 : ((y : ℂ) * ((x : ℂ) + Complex.I)).im = y` using `by simp`. Use `Prod.ext ?_ (Subtype.ext ?_)` and prove the remaining obligations. Use `show ((y : ℂ) * ((x : ℂ) + Complex.I)).re / ((y : ℂ) * ((x : ℂ) + Complex.I)).im = x`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Use `show ((y : ℂ) * ((x : ℂ) + Complex.I)).im = y`. Conclude with `h2`. Use `right_inv := by`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((z.1.im : ℂ) * (((z.1.re / z.1.im : ℝ) : ℂ) + Complex.I)) = z.1`. Establish `hz : z.1.im ≠ 0` using `z.2`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.add_re, Complex.add_im, Complex.I_re, Complex.I_im, mul_zero, zero_mul, add_zero, sub_zero, zero_add, mul_one]`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Simplify using `only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.add_re, Complex.add_im, Complex.I_re, Complex.I_im, mul_zero, zero_mul, add_zero, sub_zero, zero_add, mul_one]`. Use `measurable_toFun := hcont.measurable`. Use `measurable_invFun := hgm }`. Establish `hmpP : MeasurePreserving eP ((volume : Measure ℝ).prod nu1) (volume : Measure P)` using `hmp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmpX : MeasurePreserving (MeasurableEquiv.piCongrRight fun _ : I => eP) (Measure.pi fun _ : I => (volume : Measure ℝ).prod nu1) (Measure.pi fun _ : I => (volume : Measure P))` using `measurePreserving_pi _ _ fun _ => hmpP`. Establish `hmpA : MeasurePreserving (MeasurableEquiv.arrowProdEquivProdArrow ℝ Y1 I).symm ((volume : Measure (I → ℝ)).prod (Measure.pi fun _ : I => nu1)) (Measure.pi fun _ : I => (volume : Measure ℝ).prod nu1)` using `MeasurePreserving.symm _ (measurePreserving_arrowProdEquivProdArrow ℝ Y1 I (fun _ => volume) (fun _ => nu1))`. Set `Φ : (I → ℝ) × (I → Y1) ≃ᵐ X I` to `(MeasurableEquiv.arrowProdEquivProdArrow ℝ Y1 I).symm.trans (MeasurableEquiv.piCongrRight fun _ : I => eP)`. Establish `hΦ : MeasurePreserving Φ ((volume : Measure (I → ℝ)).prod (Measure.pi fun _ : I => nu1)) (volume : Measure (X I))` using `hmpX.comp hmpA`. Establish `hΦapp : ∀ (x : I → ℝ) (y : I → Y1), Φ (x, y) = fun v => pt (x v) (y v).1 (y v).2` using `fun x y => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Take `⟨b, hbdef⟩ : ∃ b : (I → Y1) → ℝ, b = fun y => β (Φ (0, y))` from `⟨_, rfl⟩`. Establish `hb : Measurable b`. Rewrite using `[hbdef]`. Conclude with `hβ.comp (Φ.measurable.comp (measurable_const.prodMk measurable_id))`. Establish `hb0 : ∀ y, 0 ≤ b y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hbdef]`. Conclude with `fun y => hβ0 _`. Establish `hβΦ : ∀ (x : I → ℝ) (y : I → Y1), β (Φ (x, y)) = b y`. Introduce `x y`. Rewrite using `[hbdef]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show β (Φ (x, y)) = β (Φ (0, y))`. Rewrite using `[hΦapp, hΦapp]`. Use `(hβinv x 0 (fun v => (y v).1) (fun v => (y v).2) 1 one_pos).trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pt_congr rfl (one_mul _) _ _`. Establish `huΦ : ∀ (x : I → ℝ) (y : I → Y1), u (Φ (x, y)) = (if A / ∏ v, (1 + x v ^ 2) ≤ ∏ v, |(y v).1| ∧ ∏ v, |(y v).1| ≤ B then ∏ v, φ v (x v) else 0)`. Introduce `x y`. Rewrite using `[hΦapp]`. Conclude with `hu x (fun v => (y v).1) (fun v => (y v).2)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hint' : Integrable (fun p : (I → ℝ) × (I → Y1) => b p.2 • (if A / ∏ v, (1 + p.1 v ^ 2) ≤ ∏ v, |(p.2 v).1| ∧ ∏ v, |(p.2 v).1| ≤ B then ∏ v, φ v (p.1 v) else 0)) ((volume : Measure (I → ℝ)).prod (Measure.pi fun _ : I => nu1))`. Use `((hΦ.integrable_comp_emb Φ.measurableEmbedding).mpr hint).congr (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Take `⟨x, y⟩` from `p`. Use `show β (Φ (x, y)) • u (Φ (x, y)) = _`. Rewrite using `[hβΦ, huΦ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hI : ∫ z, β z • u z = ∫ p : (I → ℝ) × (I → Y1), b p.2 • (if A / ∏ v, (1 + p.1 v ^ 2) ≤ ∏ v, |(p.2 v).1| ∧ ∏ v, |(p.2 v).1| ≤ B then ∏ v, φ v (p.1 v) else 0) ∂((volume : Measure (I → ℝ)).prod (Measure.pi fun _ : I => nu1))`. Use `(hΦ.integral_comp' (fun z => β z • u z)).symm.trans ?_` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Take `⟨x, y⟩` from `p`. Use `show β (Φ (x, y)) • u (Φ (x, y)) = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hβΦ, huΦ]`. Establish `hcond : ∀ (x : I → ℝ) (y : I → Y1), (A / ∏ v, (1 + x v ^ 2) ≤ ∏ v, |(y v).1| ∧ ∏ v, |(y v).1| ≤ B) ↔ large₂ y ∈ Set.Icc (Real.log A - ∑ v, Real.log (1 + x v ^ 2)) (Real.log B)`. Introduce `x y`. Establish `hp : 0 < ∏ v, |(y v).1|` using `Finset.prod_pos fun v _ => abs_pos.mpr (y v).2`. Establish `hq : 0 < ∏ v, (1 + x v ^ 2)` using `Finset.prod_pos fun v _ => by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : large₂ y = Real.log (∏ v, |(y v).1|)` using `by show ∑ v, Real.log |(y v).1| = _`. Rewrite using `[Real.log_prod (s := Finset.univ) (f := fun v => |(y v).1|) fun v _ => abs_ne_zero.mpr (y v).2]`. Establish `hM : Real.log (A / ∏ v, (1 + x v ^ 2)) = (Real.log A - ∑ v, Real.log (1 + x v ^ 2))`. Rewrite using `[Real.log_div hA.ne' hq.ne', Real.log_prod (s := Finset.univ) (f := fun v => 1 + x v ^ 2) fun v _ => by positivity]`. Rewrite using `[Set.mem_Icc, hL, ← hM, Real.log_le_log_iff (div_pos hA hq) hp, Real.log_le_log_iff hp (hA.trans hAB)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm⟩ : ∃ m : Measure ℝ, m = Measure.map (large₂ (I` from `I)) ((Measure.pi fun _ : I => nu1).withDensity fun y => ENNReal.ofReal (b y)) := ⟨_, rfl⟩`. Establish `hinner : ∀ x : I → ℝ, ∫ y, b y • (if A / ∏ v, (1 + x v ^ 2) ≤ ∏ v, |(y v).1| ∧ ∏ v, |(y v).1| ≤ B then ∏ v, φ v (x v) else 0) ∂(Measure.pi fun _ : I => nu1) = (∏ v, φ v (x v)) * (((m (Set.Icc (Real.log A - ∑ v, Real.log (1 + x v ^ 2)) (Real.log B))).toReal : ℝ) : ℂ)`. Introduce `x`. Establish `hS : MeasurableSet ((large₂ (I` using `I)) ⁻¹' Set.Icc (Real.log A - ∑ v, Real.log (1 + x v ^ 2)) (Real.log B)) := measurable_Lg measurableSet_Icc`. Establish `e1 : (fun y : I → Y1 => b y • (if A / ∏ v, (1 + x v ^ 2) ≤ ∏ v, |(y v).1| ∧ ∏ v, |(y v).1| ≤ B then ∏ v, φ v (x v) else 0)) = fun y => ((((large₂ (I` using `I)) ⁻¹' Set.Icc (Real.log A - ∑ v, Real.log (1 + x v ^ 2)) (Real.log B)).indicator b y : ℝ) : ℂ) * ∏ v, φ v (x v) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Distinguish the cases in `h : large₂ y ∈ Set.Icc (Real.log A - ∑ v, Real.log (1 + x v ^ 2)) (Real.log B)`. Rewrite using `[if_pos ((hcond x y).mpr h), Set.indicator_of_mem (show y ∈ (large₂ (I := I)) ⁻¹' Set.Icc (Real.log A - ∑ v, Real.log (1 + x v ^ 2)) (Real.log B) from h), Complex.real_smul]`. Rewrite using `[if_neg (fun h' => h ((hcond x y).mp h')), Set.indicator_of_notMem (show y ∉ (large₂ (I := I)) ⁻¹' Set.Icc (Real.log A - ∑ v, Real.log (1 + x v ^ 2)) (Real.log B) from h), smul_zero]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e1, integral_mul_const, integral_complex_ofReal, integral_indicator hS, mul_comm]`. Use `congr 2`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (ae_of_all _ fun y => hb0 y) hb.aestronglyMeasurable, hm, Measure.map_apply measurable_Lg measurableSet_Icc, withDensity_apply _ hS]`. Establish `hscl : ∀ (t : ℝ) (ht : 0 < t), MeasurePreserving (fun y : I → Y1 => fun v => scl t ht.ne' (y v)) (Measure.pi fun _ : I => nu1) (Measure.pi fun _ : I => nu1)` using `fun t ht => measurePreserving_pi (fun _ : I => nu1) (fun _ : I => nu1) fun _ => measurePreserving_scl t ht.ne'`. Establish `hbscl : ∀ (t : ℝ) (ht : 0 < t) (y : I → Y1), b (fun v => scl t ht.ne' (y v)) = b y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t ht y`. Rewrite using `[hbdef]`. Conclude with `(hβinv 0 0 (fun v => (y v).1) (fun v => (y v).2) t ht).symm`. Establish `hminv : ∀ c : ℝ, ∀ S : Set ℝ, MeasurableSet S → m ((fun x => c + x) ⁻¹' S) = m S`. Introduce `c S hS`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcard : (0 : ℝ) < Fintype.card I` using `by exact_mod_cast Fintype.card_pos`. Establish `hcard' : (Fintype.card I : ℝ) ≠ 0` using `hcard.ne'`. Take `⟨t, ht_def⟩ : ∃ t : ℝ, t = Real.exp (c / Fintype.card I)` from `⟨_, rfl⟩`. Establish `ht : 0 < t` using `by rw [ht_def]; exact Real.exp_pos _`. Establish `hlog : (Fintype.card I : ℝ) * Real.log t = c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[ht_def, Real.log_exp]`. Clear the denominators using the available nonvanishing facts. Establish `hS' : MeasurableSet ((large₂ (I` using `I)) ⁻¹' S) := measurable_Lg hS`. Establish `hadd : Measurable (fun x : ℝ => c + x)` using `(continuous_add_left c).measurable`. Establish `hpre : (large₂ (I` using `I)) ⁻¹' ((fun x => c + x) ⁻¹' S) = (fun y : I → Y1 => fun v => scl t ht.ne' (y v)) ⁻¹' ((large₂ (I := I)) ⁻¹' S) := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_preimage]`. Rewrite using `[Lg_scl t ht y, hlog]`. Establish `hpm : MeasurableSet ((fun y : I → Y1 => fun v => scl t ht.ne' (y v)) ⁻¹' ((large₂ (I` using `I)) ⁻¹' S)) := (hscl t ht).measurable hS'`. Establish `hmi : Measurable (((large₂ (I` using `I)) ⁻¹' S).indicator fun y => ENNReal.ofReal (b y)) := (ENNReal.measurable_ofReal.comp hb).indicator hS'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hm, Measure.map_apply measurable_Lg (hadd hS), Measure.map_apply measurable_Lg hS, hpre, withDensity_apply _ hpm, withDensity_apply _ hS', ← lintegral_indicator hpm, ← lintegral_indicator hS', ← (hscl t ht).lintegral_comp hmi]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : (fun v => scl t ht.ne' (y v)) ∈ (large₂ (I := I)) ⁻¹' S`. Rewrite using `[Set.indicator_of_mem (show y ∈ (fun y : I → Y1 => fun v => scl t ht.ne' (y v)) ⁻¹' ((large₂ (I := I)) ⁻¹' S) from hy), Set.indicator_of_mem hy, hbscl t ht y]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_notMem (show y ∉ (fun y : I → Y1 => fun v => scl t ht.ne' (y v)) ⁻¹' ((large₂ (I := I)) ⁻¹' S) from hy), Set.indicator_of_notMem hy]`. Establish `hlogAB : Real.log A < Real.log B` using `Real.log_lt_log hA hAB`. Establish `hsum0 : ∀ x : I → ℝ, 0 ≤ ∑ v, Real.log (1 + x v ^ 2)` using `fun x => Finset.sum_nonneg fun v _ => Real.log_nonneg (by linarith [sq_nonneg (x v)])`. Establish `hlt : ∀ x : I → ℝ, (Real.log A - ∑ v, Real.log (1 + x v ^ 2)) < Real.log B` using `fun x => by linarith [hsum0 x]`. Establish `hP0 : ∀ x : I → ℝ, (∏ v, φ v (x v)) ≠ 0` using `fun x => Finset.prod_ne_zero_iff.mpr fun v _ => (hφ v).2.2.2.2 (x v)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `: (ae (volume : Measure (I → ℝ))).NeBot` using `ae_neBot.mpr (NeZero.ne _)`. Take `⟨x0, hx0⟩` from `hint'.prod_right_ae.exists`. Establish `hS0 : MeasurableSet ((large₂ (I` using `I)) ⁻¹' Set.Icc (Real.log A - ∑ v, Real.log (1 + x0 v ^ 2)) (Real.log B)) := measurable_Lg measurableSet_Icc`. Establish `hTint : Integrable (((large₂ (I` using `I)) ⁻¹' Set.Icc (Real.log A - ∑ v, Real.log (1 + x0 v ^ 2)) (Real.log B)).indicator b) (Measure.pi fun _ : I => nu1) := by`. Use `(hx0.norm.div_const ‖∏ v, φ v (x0 v)‖).congr (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show ‖b y • (if A / ∏ v, (1 + x0 v ^ 2) ≤ ∏ v, |(y v).1| ∧ ∏ v, |(y v).1| ≤ B then ∏ v, φ v (x0 v) else 0)‖ / ‖∏ v, φ v (x0 v)‖ = _`. Distinguish the cases in `h : large₂ y ∈ Set.Icc (Real.log A - ∑ v, Real.log (1 + x0 v ^ 2)) (Real.log B)`. Rewrite using `[if_pos ((hcond x0 y).mpr h), Set.indicator_of_mem (show y ∈ (large₂ (I := I)) ⁻¹' Set.Icc (Real.log A - ∑ v, Real.log (1 + x0 v ^ 2)) (Real.log B) from h), norm_smul, Real.norm_of_nonneg (hb0 y), mul_div_assoc, div_self (norm_ne_zero_iff.mpr (hP0 x0)), mul_one]`. Rewrite using `[if_neg (fun h' => h ((hcond x0 y).mp h')), Set.indicator_of_notMem (show y ∉ (large₂ (I := I)) ⁻¹' Set.Icc (Real.log A - ∑ v, Real.log (1 + x0 v ^ 2)) (Real.log B) from h), smul_zero, norm_zero, zero_div]`. Establish `hfin : m (Set.Icc (Real.log A - ∑ v, Real.log (1 + x0 v ^ 2)) (Real.log B)) ≠ ⊤`.
-
-Rewrite using `[hm, Measure.map_apply measurable_Lg measurableSet_Icc, withDensity_apply _ hS0, ← lintegral_indicator hS0]`. Use `ne_of_lt (lt_of_le_of_lt (le_of_eq ?_) hTint.lintegral_lt_top)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only [Set.indicator]`.
-
-Apply the tactic sequence `split_ifs <;> simp`. Take `⟨R, hR⟩` from `haar_Icc m hminv (Real.log A - ∑ v, Real.log (1 + x0 v ^ 2)) (Real.log B - (Real.log A - ∑ v, Real.log (1 + x0 v ^ 2))) (by linarith [hlt x0]) (by rwa [show (Real.log A - ∑ v, Real.log (1 + x0 v ^ 2)) + (Real.log B - (Real.log A - ∑ v, Real.log (1 + x0 v ^ 2))) = Real.log B by ri …`. Establish `hR' : ∀ x : I → ℝ, ∫ y, b y • (if A / ∏ v, (1 + x v ^ 2) ≤ ∏ v, |(y v).1| ∧ ∏ v, |(y v).1| ≤ B then ∏ v, φ v (x v) else 0) ∂(Measure.pi fun _ : I => nu1) = (∏ v, φ v (x v)) * ((R * ((Real.log B - Real.log A) + ∑ v, Real.log (1 + x v ^ 2)) : ℝ) : ℂ)`. Introduce `x`. Rewrite using `[hinner x, hR _ _ (hlt x).le, show Real.log B - (Real.log A - ∑ v, Real.log (1 + x v ^ 2)) = (Real.log B - Real.log A) + ∑ v, Real.log (1 + x v ^ 2) by ring]`.
-
-Rewrite using `[hI, integral_prod _ hint']`. Use `(integral_congr_ae (Filter.Eventually.of_forall fun x => hR' x)).trans ?_` and prove the remaining obligations. Conclude with `integral_prod_log φ (fun v => ⟨(hφ v).2.1, (hφ v).2.2.1, (hφ v).2.2.2.1⟩) R (Real.log B - Real.log A)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.unipotent_integrand_vanishes_proof : UpperTheory.Esk.B1a → UpperTheory.Esk.UpperHalfPlaneMeasureCoordinates → UpperTheory.Esk.ConstantTermVanishingAlt := by
   unfold B1a UpperHalfPlaneMeasureCoordinates ConstantTermVanishingAlt

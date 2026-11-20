@@ -23,36 +23,36 @@ variable {n : ℕ}
 def idxSum (v : Fin n → ℝ) : ℝ := ∑ i : Fin n, ((i : ℕ) : ℝ) * v i
 
 /- English proof (translation)
-Simplify using `[idxSum, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem idxSum_sub (u v : Fin n → ℝ) : idxSum (u - v) = idxSum u - idxSum v := by
   simp [idxSum, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[idxSum, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem idxSum_add (u v : Fin n → ℝ) : idxSum (u + v) = idxSum u + idxSum v := by
   simp [idxSum, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[idxSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem idxSum_zero : idxSum (0 : Fin n → ℝ) = 0 := by simp [idxSum]
 
 /- English proof (translation)
-Simplify using `[idxSum, Formalism.REAL.root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem idxSum_root (a b : Fin n) : idxSum (Formalism.REAL.root a b) = (a : ℕ) - (b : ℕ) := by
   simp [idxSum, Formalism.REAL.root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `[idxSum, Finset.mul_sum]; refine Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules.
 -/
 theorem idxSum_smul (c : ℝ) (v : Fin n → ℝ) : idxSum (c • v) = c * idxSum v := by
   simp [idxSum, Finset.mul_sum]; refine Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [idxSum_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, idxSum_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem idxSum_sum {ι : Type} (s : Finset ι) (f : ι → Fin n → ℝ) : idxSum (∑ i ∈ s, f i) = ∑ i ∈ s, idxSum (f i) := by
   classical
@@ -61,11 +61,11 @@ theorem idxSum_sum {ι : Type} (s : Finset ι) (f : ι → Fin n → ℝ) : idxS
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, idxSum_add, ih]
 
 /- English proof (translation)
-Take `⟨c, hc, heq⟩` from `h`. Rewrite using `[heq, idxSum_sum]`. Use `Finset.sum_nonpos fun a _ => ?_` and prove the remaining obligations. Rewrite using `[idxSum_sum]`. Use `Finset.sum_nonpos fun b _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[idxSum_smul, idxSum_root]`. Distinguish the cases in `h0 : c a b = 0`. Simplify using `[h0]`. Establish `hab` using `(hc a b h0).1`. Establish `: ((a : ℕ) : ℝ) < (b : ℕ)` using `by exact_mod_cast hab`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_nonpos_of_nonneg_of_nonpos (by positivity) (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem idxSum_nonpos_of_cdom {ε : Fin n → Bool} {μ Λ : Fin n → ℝ} (h : Formalism.MainNotions.S.CDom ε μ Λ) :
     idxSum (Λ - μ) ≤ 0 := by
@@ -82,7 +82,7 @@ theorem idxSum_nonpos_of_cdom {ε : Fin n → Bool} {μ Λ : Fin n → ℝ} (h :
     exact mul_nonpos_of_nonneg_of_nonpos (by positivity) (by linarith)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `idxSum_nonpos_of_cdom h`. Rewrite `h1` using `[show Λ - (Λ + Formalism.REAL.root a b) = 0 - Formalism.REAL.root a b by abel, idxSum_sub, idxSum_root, idxSum_zero]`. Establish `: ((a : ℕ) : ℝ) < (b : ℕ)` using `by exact_mod_cast hab`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem not_cdom_add_root (ε : Fin n → Bool) (Λ : Fin n → ℝ) {a b : Fin n} (hab : a < b) :
     ¬ Formalism.MainNotions.S.CDom ε (Λ + Formalism.REAL.root a b) Λ := by
@@ -94,7 +94,7 @@ theorem not_cdom_add_root (ε : Fin n → Bool) (Λ : Fin n → ℝ) {a b : Fin 
   linarith
 
 /- English proof (translation)
-Use `⟨Submonoid.mul_mem _ hk.1 hk'.1, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, hk'.2, ← mul_assoc, hk.2, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem kset_mul {ε : Fin n → Bool} {k k' : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Formalism.REAL.Kset ε)
     (hk' : k' ∈ Formalism.REAL.Kset ε) : k * k' ∈ Formalism.REAL.Kset ε := by
@@ -102,13 +102,13 @@ theorem kset_mul {ε : Fin n → Bool} {k k' : Matrix (Fin n) (Fin n) ℂ} (hk :
   rw [mul_assoc, hk'.2, ← mul_assoc, hk.2, mul_assoc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Submonoid.one_mem _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_kset (ε : Fin n → Bool) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Formalism.REAL.Kset ε :=
   ⟨Submonoid.one_mem _, by simp⟩
 
 /- English proof (translation)
-Use `show Formalism.REAL.inUJ ε k`. Unfold `Formalism.REAL.inUJ`. Establish `hu : star k * k = 1` using `Matrix.mem_unitaryGroup_iff'.1 hk.1`. Rewrite using `[mul_assoc, ← hk.2, ← mul_assoc, ← Matrix.star_eq_conjTranspose, hu, one_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kset_sub_ujset {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Formalism.REAL.Kset ε) :
     k ∈ Formalism.MainNotions.S.UJset ε := by
@@ -126,22 +126,22 @@ def orbSpan (ε : Fin n → Bool) (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[�
   Submodule.span ℂ ((fun k => ρ k w) '' Formalism.REAL.Kset ε)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨1, one_mem_kset ε, by simp [h1]⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_orbSpan (h1 : ρ 1 = 1) (w : H) : w ∈ orbSpan ε ρ w :=
   Submodule.subset_span ⟨1, one_mem_kset ε, by simp [h1]⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 (by rintro _ ⟨k, hk, rfl⟩; exact hKS k hk w hw)`.
+A detailed English derivation is pending.
 -/
 theorem orbSpan_le {S : Submodule ℂ H} (hKS : Formalism.MainNotions.S.IsKStableOn ε ρ S) {w : H} (hw : w ∈ S) :
     orbSpan ε ρ w ≤ S :=
   Submodule.span_le.2 (by rintro _ ⟨k, hk, rfl⟩; exact hKS k hk w hw)
 
 /- English proof (translation)
-Introduce `k hk v hv`. Establish `h : orbSpan ε ρ w ≤ (orbSpan ε ρ w).comap ((ρ k : H →L[ℂ] H) : H →ₗ[ℂ] H)`. Rewrite using `[orbSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨k', hk', rfl⟩`. Use `Submodule.subset_span ⟨k * k', kset_mul hk hk', ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ρ (k * k') w = ρ k (ρ k' w)`. Rewrite using `[hrep.2 k (kset_sub_ujset hk) k' (kset_sub_ujset hk')]`. Both sides reduce to the same expression. Conclude with `h hv`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem orbSpan_kstable (hrep : Formalism.QuantumDeterminants.IsCRepOn (Formalism.MainNotions.S.UJset ε) ρ) (w : H) :
     Formalism.MainNotions.S.IsKStableOn ε ρ (orbSpan ε ρ w) := by
@@ -155,7 +155,7 @@ theorem orbSpan_kstable (hrep : Formalism.QuantumDeterminants.IsCRepOn (Formalis
   exact h hv
 
 /- English proof (translation)
-Introduce `θ hθ`. Rewrite using `[map_add, hx θ hθ, hy θ hθ, smul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isWtOn_add {μ : Fin n → ℝ} {x y : H} (hx : Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) ρ μ x)
     (hy : Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) ρ μ y) : Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) ρ μ (x + y) := by
@@ -163,13 +163,13 @@ theorem isWtOn_add {μ : Fin n → ℝ} {x y : H} (hx : Formalism.MainNotions.S.
   rw [map_add, hx θ hθ, hy θ hθ, smul_add]
 
 /- English proof (translation)
-Establish `key : ∀ θ : Fin n → ℝ, Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) ∈ Formalism.REAL.Kset ε → ρ (Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I))) s - Complex.exp (((∑ a, μ a * θ a : ℝ) : ℂ) * Complex.I) • s = 0 ∧ ρ (Matrix.diagonal (fun a => Compl …`. Introduce `θ hθ`. Use `set D := Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I))`. Use `set c := Complex.exp (((∑ a, μ a * θ a : ℝ) : ℂ) * Complex.I)`. Establish `h` using `hw θ hθ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[map_add, smul_add]`. Establish `e1 : ρ D s - c • s = c • s' - ρ D s'`. Rewrite using `[sub_eq_sub_iff_add_eq_add, h, add_comm]`. Establish `hm1 : ρ D s - c • s ∈ S` using `S.sub_mem (hKS D hθ s hs) (S.smul_mem c hs)`. Establish `hm2 : ρ D s - c • s ∈ S'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `S'.sub_mem (S'.smul_mem c hs') (hKS' D hθ s' hs')`. Establish `h0 : ρ D s - c • s = 0`. Use `Submodule.mem_inf.2 ⟨hm1, hm2⟩` as an intermediate fact. Rewrite `this` using `[hbot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.mem_bot ℂ).1 this`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[e1]`. Rewrite using `[← neg_sub, h0, neg_zero]`. Conclude with `⟨fun θ hθ => sub_eq_zero.1 (key θ hθ).1, fun θ hθ => sub_eq_zero.1 (key θ hθ).2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isWtOn_comp {S S' : Submodule ℂ H} (hKS : Formalism.MainNotions.S.IsKStableOn ε ρ S)
     (hKS' : Formalism.MainNotions.S.IsKStableOn ε ρ S') (hbot : S ⊓ S' = ⊥) {μ : Fin n → ℝ} {s s' : H} (hs : s ∈ S)
@@ -202,7 +202,7 @@ theorem isWtOn_comp {S S' : Submodule ℂ H} (hKS : Formalism.MainNotions.S.IsKS
 end Orbit
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs with h <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jm_star (ε : Fin n → Bool) : star (Formalism.REAL.Jm ε) = Formalism.REAL.Jm ε := by
   unfold Formalism.REAL.Jm
@@ -212,7 +212,7 @@ theorem jm_star (ε : Fin n → Bool) : star (Formalism.REAL.Jm ε) = Formalism.
   split_ifs with h <;> simp [h]
 
 /- English proof (translation)
-Use `⟨Unitary.star_mem hk.1, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg star hk.2`. Rewrite `h` using `[star_mul, star_mul, jm_star]`. Conclude with `h.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_mem_kset {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Formalism.REAL.Kset ε) :
     star k ∈ Formalism.REAL.Kset ε := by
@@ -222,11 +222,11 @@ theorem star_mem_kset {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ} (hk
   exact h.symm
 
 /- English proof (translation)
-Introduce `n ε H _ _ ρ hrep _ hiso S hKS k hk y hy`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `s hs`. Establish `hk'` using `star_mem_kset hk`. Establish `h1 : ρ k (ρ (star k) s) = s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : k * star k = 1` using `Matrix.mem_unitaryGroup_iff.1 hk.1`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hrep.2 k (kset_sub_ujset hk) (star k) (kset_sub_ujset hk'), hm, hrep.1]`. Both sides reduce to the same expression. Set `Lk : H →ₗᵢ[ℂ] H` to `⟨(ρ k : H →ₗ[ℂ] H), hiso k hk⟩`. Establish `h2 : inner ℂ (ρ k (ρ (star k) s)) (ρ k y) = inner ℂ (ρ (star k) s) y` using `Lk.inner_map_map _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← h1, h2]`. Conclude with `Submodule.inner_right_of_mem_orthogonal (hKS _ hk' s hs) hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orth_kstable : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), Formalism.QuantumDeterminants.IsCRepOn (Formalism.MainNotions.S.UJset ε) ρ → (∀ v, ContinuousOn (fun g => ρ g v) (Formalism.MainNotions.S.UJset ε)) → (∀ k ∈ Formalism.REAL.Kset ε, ∀ v, ‖ρ k v‖ = ‖v‖) → ∀ S : Submodule ℂ H, Formalism.MainNotions.S.IsKStableOn ε ρ S → Formalism.MainNotions.S.IsKStableOn ε ρ Sᗮ := by
   intro n ε H _ _ ρ hrep _ hiso S hKS k hk y hy
@@ -243,59 +243,51 @@ theorem orth_kstable : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAdd
   exact Submodule.inner_right_of_mem_orthogonal (hKS _ hk' s hs) hy
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ ρ hrep hcont hiso`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `S hfin hne hKS hirr classical`. Take `⟨F, hF⟩` from `GlobalTheory.T.finite_torusWeights_finiteDimensional_subspace n ε H ρ S hfin`. Set `Wt : Finset (Fin n → ℝ)` to `F.filter (fun μ => ∃ v ∈ S, v ≠ 0 ∧ IsWtOn (Formalism.REAL.Kset ε) ρ μ v)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨μ0, v0, hv0S, hv00, hv0w⟩` from `GlobalTheory.T.K_stable_subspace_has_weight_vector n ε H ρ hrep hcont hiso S hfin hKS hne`. Establish `hWne : Wt.Nonempty` using `⟨μ0, Finset.mem_filter.2 ⟨hF μ0 v0 hv0S hv00 hv0w, v0, hv0S, hv00, hv0w⟩⟩`. Take `⟨Λ, hΛW, hΛmin⟩` from `Finset.exists_min_image Wt idxSum hWne`. Take `⟨-, w, hwS, hw0, hww⟩` from `Finset.mem_filter.1 hΛW`. Establish `hraise : ∀ a b : Fin n, a < b → ε a = ε b → ∀ x ∈ S, IsWtOn (Formalism.REAL.Kset ε) ρ (Λ + Formalism.REAL.root a b) x → x = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a b hab _ x hxS hxw`. Assume the negation of the conclusion as `hx0`. Establish `hmem : Λ + Formalism.REAL.root a b ∈ Wt` using `Finset.mem_filter.2 ⟨hF _ x hxS hx0 hxw, x, hxS, hx0, hxw⟩`. Establish `h1` using `hΛmin _ hmem`. Rewrite `h1` using `[idxSum_add, idxSum_root]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: ((a : ℕ) : ℝ) < (b : ℕ)` using `by exact_mod_cast hab`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hdom, -⟩` from `GlobalTheory.T.maxCompactSpan_highestWeight_line n ε H ρ hrep hcont hiso S hfin hKS Λ w hwS hw0 hww hraise`. Establish `hUS : orbSpan ε ρ w ≤ S` using `orbSpan_le hKS hwS`. Establish `hwU : w ∈ orbSpan ε ρ w` using `mem_orbSpan hrep.1 w`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUeq : orbSpan ε ρ w = S`. Break down `hirr _ hUS (orbSpan_kstable hrep w) with h | h` into its components or cases. Rewrite `hwU` using `[h]`. Conclude with `absurd ((Submodule.mem_bot ℂ).1 hwU) hw0`. Conclude with `h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Λ, hfin, hKS, hirr, ⟨w, hwS, hw0, hww⟩, ?_⟩` and prove the remaining obligations. Introduce `μ v hvS hv0 hvw`. Conclude with `hdom μ v (by rw [orbSpan] at hUeq; rw [hUeq]; exact hvS) hv0 hvw`. Introduce `Λ S S' hS hS'`. Take `⟨hfin, hKS, hirr, ⟨w, hwS, hw0, hww⟩, hdom⟩` from `hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Take `⟨hfin', hKS', hirr', ⟨w', hwS', hw0', hww'⟩, hdom'⟩` from `hS'`. Distinguish the cases in `hSS : S = S'`. Substitute `hSS` using the available equality. Conclude with `⟨ContinuousLinearMap.id ℂ H, fun k _ u => rfl, by simp⟩`. Establish `hbot : S ⊓ S' = ⊥`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Establish `hK : IsKStableOn ε ρ (S ⊓ S')` using `fun k hk v hv => ⟨hKS k hk v hv.1, hKS' k hk v hv.2⟩`. Break down `hirr (S ⊓ S') inf_le_left hK with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Establish `hle : S ≤ S'` using `by rw [← h]; exact inf_le_right`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hirr' S hle hKS with h2 | h2` into its components or cases. Rewrite `hwS` using `[h2]`. Conclude with `hw0 ((Submodule.mem_bot ℂ).1 hwS)`. Conclude with `hSS h2`. Establish `hfinT : FiniteDimensional ℂ (S ⊔ S' : Submodule ℂ H)` using `Submodule.finiteDimensional_sup S S'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hKT : IsKStableOn ε ρ (S ⊔ S')`. Introduce `k hk v hv`. Take `⟨s, hs, s', hs', rfl⟩` from `Submodule.mem_sup.1 hv`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hKS k hk s hs) (hKS' k hk s' hs')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum0 : w + w' ≠ 0`. Introduce `h`. Establish `h1 : w = -w'` using `eq_neg_of_add_eq_zero_left h`. Establish `: w ∈ S ⊓ S'` using `⟨hwS, by rw [h1]; exact S'.neg_mem hwS'⟩`. Rewrite `this` using `[hbot]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hw0 ((Submodule.mem_bot ℂ).1 this)`. Establish `hsumT : w + w' ∈ S ⊔ S'` using `Submodule.add_mem_sup hwS hwS'`. Establish `hraise : ∀ a b : Fin n, a < b → ε a = ε b → ∀ x ∈ S ⊔ S', IsWtOn (Formalism.REAL.Kset ε) ρ (Λ + Formalism.REAL.root a b) x → x = 0`. Introduce `a b hab _ x hx hxw`. Take `⟨s, hs, s', hs', rfl⟩` from `Submodule.mem_sup.1 hx`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `isWtOn_comp hKS hKS' hbot hs hs' hxw`. Establish `e1 : s = 0`. Assume the negation of the conclusion as `h0`. Conclude with `not_cdom_add_root ε Λ hab (hdom _ s hs h0 h1)`. Establish `e2 : s' = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Assume the negation of the conclusion as `h0`. Conclude with `not_cdom_add_root ε Λ hab (hdom' _ s' hs' h0 h2)`. Rewrite using `[e1, e2, add_zero]`. Take `⟨-, huniq⟩` from `GlobalTheory.T.maxCompactSpan_highestWeight_line n ε H ρ hrep hcont hiso (S ⊔ S') hfinT hKT Λ (w + w') hsumT hsum0 (isWtOn_add hww hww') hraise`. Establish `hUT : orbSpan ε ρ (w + w') ≤ S ⊔ S'` using `orbSpan_le hKT hsumT`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hUK` using `orbSpan_kstable hrep (w + w')`. Establish `hwU : w + w' ∈ orbSpan ε ρ (w + w')` using `mem_orbSpan hrep.1 (w + w')`. Establish `hUS : orbSpan ε ρ (w + w') ⊓ S = ⊥`. Establish `hK : IsKStableOn ε ρ (orbSpan ε ρ (w + w') ⊓ S)` using `fun k hk v hv => ⟨hUK k hk v hv.1, hKS k hk v hv.2⟩`. Break down `hirr _ inf_le_right hK with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. It suffices to derive a contradiction. Establish `hw1 : w ∈ orbSpan ε ρ (w + w')`. Establish `: w ∈ orbSpan ε ρ (w + w') ⊓ S` using `by rw [h]; exact hwS`. Conclude with `this.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Take `⟨c, hc⟩` from `huniq w hw1 hww`. Establish `e : c • w' = w - c • w`. Rewrite `hc` using `[smul_add]`. Rewrite using `[eq_sub_iff_add_eq, add_comm]`. Conclude with `hc.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : c • w' ∈ S ⊓ S'` using `⟨by rw [e]; exact S.sub_mem hwS (S.smul_mem c hwS), S'.smul_mem c hwS'⟩`. Rewrite `hm` using `[hbot]`. Break down `smul_eq_zero.1 ((Submodule.mem_bot ℂ).1 hm) with h0 | h0` into its components or cases. Rewrite `hc` using `[h0, zero_smul]`. Conclude with `hw0 hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hw0' h0`. Establish `hUS' : orbSpan ε ρ (w + w') ⊓ S' = ⊥`. Establish `hK : IsKStableOn ε ρ (orbSpan ε ρ (w + w') ⊓ S')` using `fun k hk v hv => ⟨hUK k hk v hv.1, hKS' k hk v hv.2⟩`. Break down `hirr' _ inf_le_right hK with h | h` into its components or cases. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `hw1 : w' ∈ orbSpan ε ρ (w + w')`. Establish `: w' ∈ orbSpan ε ρ (w + w') ⊓ S'` using `by rw [h]; exact hwS'`. Conclude with `this.1`. Take `⟨c, hc⟩` from `huniq w' hw1 hww'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : c • w = w' - c • w'`. Rewrite `hc` using `[smul_add]`. Rewrite using `[eq_sub_iff_add_eq]`. Conclude with `hc.symm`. Establish `hm : c • w ∈ S ⊓ S'` using `⟨S.smul_mem c hwS, by rw [e]; exact S'.sub_mem hwS' (S'.smul_mem c hwS')⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[hbot]`. Break down `smul_eq_zero.1 ((Submodule.mem_bot ℂ).1 hm) with h0 | h0` into its components or cases. Rewrite `hc` using `[h0, zero_smul]`. Conclude with `hw0' hc`. Conclude with `hw0 h0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hUne : orbSpan ε ρ (w + w') ≠ ⊥`. Introduce `h`. Rewrite `hwU` using `[h]`. Conclude with `hsum0 ((Submodule.mem_bot ℂ).1 hwU)`. Take `⟨φ, hφK, hφS⟩` from `GlobalTheory.T.exists_kEquivariant_graph_goursat n ε H ρ S S' (orbSpan ε ρ (w + w')) hKS hKS' hUK hirr hirr' hbot hUT hUS hUS' hUne`.
-
-Establish `hperp : IsKStableOn ε ρ Sᗮ` using `orth_kstable n ε H ρ hrep hcont hiso S hKS`. Use `haveI : CompleteSpace S := FiniteDimensional.complete ℂ S`. Set `B : H →L[ℂ] H` to `(LinearMap.toContinuousLinearMap (φ ∘ₗ S.subtype)).comp S.orthogonalProjection`. Establish `hB : ∀ u, B u = φ (S.orthogonalProjection u : H)` using `fun u => rfl`. Establish `hPself : ∀ s ∈ S, (S.orthogonalProjection s : H) = s` using `fun s hs => congrArg Subtype.val (Submodule.orthogonalProjection_mem_subspace_eq_self (⟨s, hs⟩ : S))`.
-
-Establish `hPcomm : ∀ k ∈ Formalism.REAL.Kset ε, ∀ u, (S.orthogonalProjection (ρ k u) : H) = ρ k (S.orthogonalProjection u)`. Introduce `k hk u`. Establish `hsplit : u = (S.orthogonalProjection u : H) + (u - S.orthogonalProjection u)` using `by abel`. Establish `hperpm : u - (S.orthogonalProjection u : H) ∈ Sᗮ` using `Submodule.sub_starProjection_mem_orthogonal (K := S) u`. Use `conv_lhs => rw [hsplit, map_add, map_add]`.
-
-Rewrite using `[Submodule.orthogonalProjection_mem_subspace_orthogonalComplement_eq_zero (hperp k hk _ hperpm), add_zero, hPself _ (hKS k hk _ (S.orthogonalProjection u).2)]`. Use `⟨B, fun k hk u => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hB, hB, hPcomm k hk u, hφK k hk _ (S.orthogonalProjection u).2]`. Establish `: S.map (B : H →ₗ[ℂ] H) = S.map φ`. Use extensionality with `x`.
-
-Simplify using `only [Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩; exact ⟨y, hy, by rw [ContinuousLinearMap.coe_coe, hB, hPself y hy]⟩`. Introduce and unpack `⟨y, hy, rfl⟩; exact ⟨y, hy, by rw [ContinuousLinearMap.coe_coe, hB, hPself y hy]⟩`. Rewrite using `[this, hφS]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ktype_highest_weight : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ → (∀ v, ContinuousOn (fun g => ρ g v) (UJset ε)) → (∀ k ∈ Kset ε, ∀ v, ‖ρ k v‖ = ‖v‖) → (∀ S : Submodule ℂ H, FiniteDimensional ℂ S → S ≠ ⊥ → IsKStableOn ε ρ S → (∀ S' : Submodule ℂ H, S' ≤ S → IsKStableOn ε ρ S' → S' = ⊥ ∨ S' = S) → ∃ Λ, IsKTypeOf ε ρ Λ S) ∧ ∀ (Λ : Fin n → ℝ) (S S' : Submodule ℂ H), IsKTypeOf ε ρ Λ S → IsKTypeOf ε ρ Λ S' → ∃ B : H →L[ℂ] H, (∀ k ∈ Kset ε, ∀ u, B (ρ k u) = ρ k (B u)) ∧ S.map (B : H →ₗ[ℂ] H) = S' := by
   intro n ε H _ _ _ ρ hrep hcont hiso

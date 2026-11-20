@@ -20,13 +20,11 @@ namespace RawChart
 variable {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] {κ : Type} [Fintype κ] (X : RawChart C d I κ)
 
 /- English proof (translation)
-Take `⟨γ, lam, hγ, hlam, h1, h2⟩` from `hL`. Establish `key : ∀ k, tyS V.l (fun s => L (V.l ^ s) k) = PowerSeries.mk (fun n => L n k)`. Introduce `k`. Apply `tyS_eq V.l_prime.two_le` to reduce the goal to its premises. Introduce `s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[PowerSeries.coeff_mk]`. Introduce `m hm`. Rewrite using `[PowerSeries.coeff_mk]`. Conclude with `h0 m k (fun ⟨s, hs⟩ => hm s hs)`. Use `⟨γ, lam, hγ, hlam, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Simplify using `only [key]`. Conclude with `h1 i`. Introduce `q`. Simplify using `only [key]`.
-
-Conclude with `h2 q`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem typ_link (V : VF C) (g : Fin 2) {L : ℕ → I g ⊕ JJ I g → C} (hL : L ∈ X.AllSet V g)
     (h0 : ∀ n k, (¬ ∃ s, V.l ^ s = n) → L n k = 0) :
@@ -50,17 +48,15 @@ def AllStartFBSt : Prop :=
     ∃ L ∈ X.AllSet V g, ∀ c, L 1 (Sum.inl c) = w c
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I _ p g a w hw _`. Take `⟨L0, hL0, hL01⟩` from `hS C V O dd Y d I p g w hw`. Use `set X := Y.raw p with hX`. Set `M : Set (ℕ → I g ⊕ JJ I g → C)` to `{m | ∀ L ∈ X.AllSet V g, m * L ∈ X.AllSet V g}`. Establish `hAdd` using `addCvFB_of germIAll_holds C V O dd Y d I p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : ℕ → I g ⊕ JJ I g → C) ∈ M` using `fun L hL => by rwa [one_mul]`. Establish `hadd : ∀ m m', m ∈ M → m' ∈ M → m + m' ∈ M` using `fun m m' hm hm' L hL => by`. Rewrite using `[add_mul]`. Conclude with `X.allSet_add V g hAdd p.u_int (hm L hL) (hm' L hL)`. Establish `hmul : ∀ m m', m ∈ M → m' ∈ M → m * m' ∈ M` using `fun m m' hm hm' L hL => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc]`. Conclude with `hm _ (hm' L hL)`. Establish `hteich : ∀ c : C, V.Ge 0 c → (fun n (_ : I g ⊕ JJ I g) => c ^ n) ∈ M` using `fun c hc L hL => X.allSet_teich V g c hc hL`. Establish `hlim : ∀ (m : ℕ → ℕ → I g ⊕ JJ I g → C) (m' : ℕ → I g ⊕ JJ I g → C), (∀ k, m k ∈ M) → VLim V m m' → m' ∈ M` using `fun m m' hm hmm' L hL => X.allSet_lim (Y.chart_log_constantCoeff p) (Y.chart_exp_constantCoeff p) (Y.raw_lgex p) (Y.raw_exlg p) (fun k => hm k L hL) (hmm'.mul_right L)`. Establish `hroot : ∀ q : ℕ, q.Prime → q ≠ V.l → ∃ ζ : C, IsPrimitiveRoot ζ q`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q hq _`. Use `Y.algClosed` as an intermediate fact. Establish `: NeZero (q : C)` using `⟨Nat.cast_ne_zero.mpr hq.ne_zero⟩`. Conclude with `HasEnoughRootsOfUnity.exists_primitiveRoot C q`. Establish `hind` using `TypAr.typ_gen M hroot h1 hadd hmul hteich hlim`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hL` using `hind L0 hL0`. Use `⟨_, X.typ_link V g hL ?_, ?_⟩` and prove the remaining obligations. Introduce `n k hn`. Simplify using `only [Pi.mul_apply]`. Rewrite using `[if_neg hn, zero_mul]`.
-
-Introduce `c`. Simplify using `only [Pi.mul_apply, pow_zero]`. Rewrite using `[if_pos ⟨0, pow_zero _⟩, one_mul, hL01 c]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptEx_of_start (hS : AllStartFBSt) : PTExFBSt := by
   intro C _ _ V O _ _ dd Y d _ I _ p g a w hw _
@@ -94,13 +90,13 @@ theorem ptEx_of_start (hS : AllStartFBSt) : PTExFBSt := by
     rw [if_pos ⟨0, pow_zero _⟩, one_mul, hL01 c]
 
 /- English proof (translation)
-The claim follows from `ptFB_of_act (ptEx_of_start hS) hAct hLim indSt_holds hStab`.
+A detailed English derivation is pending.
 -/
 theorem ptFB_of_start (hS : AllStartFBSt) (hAct : OActTySt) (hLim : LimTySt) (hStab : HStabFBSt) : PTFBSt :=
   ptFB_of_act (ptEx_of_start hS) hAct hLim indSt_holds hStab
 
 /- English proof (translation)
-The claim follows from `ptFB_of_start hS hAct limTy_holds hStab`.
+A detailed English derivation is pending.
 -/
 theorem ptFB_of_start2 (hS : AllStartFBSt) (hAct : OActTySt) (hStab : HStabFBSt) : PTFBSt :=
   ptFB_of_start hS hAct limTy_holds hStab

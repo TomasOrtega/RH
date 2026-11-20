@@ -79,7 +79,7 @@ def SiegelWeilUnitary : Prop :=
         meanC μ 𝓕 (theta σ J T Φ) = cinf * ∏' v, cv v
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Set.univ, 0, isOpen_univ, trivial, ⟨continuousOn_const, fun S _ _ => by simp⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example {F E : Type} [Field F] [Field E] [Algebra F E]
     (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]

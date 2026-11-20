@@ -11,9 +11,9 @@ namespace GlobalTheory.DegVal
 open IsDedekindDomain IsLocalRing
 
 /- English proof (translation)
-Establish `hne : maximalIdeal V ≠ ⊥` using `IsDiscreteValuationRing.not_a_field V`. Set `v : HeightOneSpectrum V` to `⟨maximalIdeal V, inferInstance, hne⟩`. Set `hmono` to `(WithZeroMulInt.toNNReal_strictMono (e := 2) (by norm_num))`. Use `⟨(v.valuation Ω).map (WithZeroMulInt.toNNReal (e := 2) (by norm_num)) hmono.monotone, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `v.valuation_le_one (K := Ω) x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hmono.monotone h` as an intermediate fact. Simplify using `using this`. Establish `h` using `(v.valuation_lt_one_iff_mem (K := Ω) x).mpr hx`. Use `hmono h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_realValuation_of_discreteValuationSubring {Ω : Type} [Field Ω]
     (V : ValuationSubring Ω) [IsDiscreteValuationRing V] :
@@ -31,15 +31,15 @@ theorem exists_realValuation_of_discreteValuationSubring {Ω : Type} [Field Ω]
     simpa using this
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ hfg A hA t ht`. Assume the negation of the conclusion as `hn`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`. Conclude with `hn isIntegral_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: Algebra.EssFiniteType K Ω` using `IntermediateField.fg_top_iff.mp hfg`. Establish `: Algebra.EssFiniteType A Ω` using `.of_comp K A Ω`. Establish `: Algebra.FiniteType K A` using `(Subalgebra.fg_iff_finiteType A).mp hA`. Establish `: IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing K A`. Establish `hic : IsIntegrallyClosedIn (integralClosure A Ω).toSubring Ω` using `inferInstanceAs (IsIntegrallyClosedIn (integralClosure A Ω) Ω)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, htW⟩` from `Subring.exists_le_valuationSubring_of_isIntegrallyClosedIn (R := (integralClosure A Ω).toSubring) (x := t) hn`. Establish `hinv : t⁻¹ ∈ W.nonunits` using `W.inv_mem_nonunits_iff.mpr (Or.inr htW)`. Take `⟨V, h1, h2, -, h3⟩` from `GlobalTheory.exists_discreteValuationSubring_of_valuationSubring (R := A) W (fun r => hW ((integralClosure A Ω).algebraMap_mem r)) Set.finite_empty (Set.finite_singleton t⁻¹) (by simp) (by simpa using hinv) ⟨_, rfl, inv_ne_zero ht0⟩`. Take `⟨ν, hν1, hνm⟩` from `exists_realValuation_of_discreteValuationSubring V`. Establish `hle : ν t ≤ 1` using `ht ν fun a ha => hν1 ⟨a, h2 ⟨a, ha⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn3 : t⁻¹ ∈ V.nonunits` using `h3 _ rfl`. Establish `htV : t⁻¹ ∈ V` using `(V.valuation_le_one_iff _).mp (le_of_lt ((V.mem_nonunits_iff).mp hn3))`. Establish `hm : (⟨t⁻¹, htV⟩ : V) ∈ maximalIdeal V` using `(ValuationSubring.coe_mem_nonunits_iff (a := ⟨t⁻¹, htV⟩)).mp hn3`. Establish `hlt : ν t⁻¹ < 1` using `hνm _ hm`. Establish `h1' : ν (t * t⁻¹) = 1` using `by rw [mul_inv_cancel₀ ht0, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1'` using `[map_mul]`. Establish `: ν t * ν t⁻¹ < 1` using `lt_of_le_of_lt (mul_le_of_le_one_left zero_le hle) hlt`. Conclude with `absurd h1' this.ne`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_forall_realValuation_le_one : ∀ (K Ω : Type) [Field K] [CharZero K] [Field Ω] [Algebra K Ω], (⊤ : IntermediateField K Ω).FG → ∀ (A : Subalgebra K Ω), A.FG → ∀ t : Ω, (∀ ν : Valuation Ω ℝ≥0, (∀ a ∈ A, ν a ≤ 1) → ν t ≤ 1) → IsIntegral A t := by
   intro K Ω _ _ _ _ hfg A hA t ht

@@ -37,9 +37,9 @@ Both sides reduce to the same expression.
 def GKModule.IsIrreducible (M : h.GKModule K V) : Prop := M.rep.IsIrreducible
 
 /- English proof (translation)
-Proceed by induction on `a using FreeMonoid.inductionOn' with`. Consider the case `one => simp`. Consider the case `of_mul x a ih`. Rewrite using `[map_mul, mul_assoc, ih, ← mul_assoc, ← mul_assoc]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Break down `x with X | k` into its components or cases. Conclude with `hρ X`. Conclude with `hσ k`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem GKModule.rep_comm (M : h.GKModule K V) {T : End ℂ V} (hρ : ∀ X, M.ρ X * T = T * M.ρ X)
     (hσ : ∀ k, M.σ k * T = T * M.σ k) (a : FreeMonoid (h.lieSubalgebra ⊕ K)) :
@@ -54,14 +54,14 @@ theorem GKModule.rep_comm (M : h.GKModule K V) {T : End ℂ V} (hρ : ∀ X, M.�
     · exact hσ k
 
 /- English proof (translation)
-The claim follows from `Y.apply_mem_toSubmodule (FreeMonoid.of (Sum.inr k)) hy`.
+A detailed English derivation is pending.
 -/
 theorem GKModule.apply_σ_mem (M : h.GKModule K V) (Y : Subrepresentation M.rep) (k : K) {y : V}
     (hy : y ∈ Y.toSubmodule) : M.σ k y ∈ Y.toSubmodule :=
   Y.apply_mem_toSubmodule (FreeMonoid.of (Sum.inr k)) hy
 
 /- English proof (translation)
-The claim follows from `Y.apply_mem_toSubmodule (FreeMonoid.of (Sum.inl X)) hy`.
+A detailed English derivation is pending.
 -/
 theorem GKModule.apply_ρ_mem (M : h.GKModule K V) (Y : Subrepresentation M.rep)
     (X : h.lieSubalgebra) {y : V} (hy : y ∈ Y.toSubmodule) : M.ρ X y ∈ Y.toSubmodule :=
@@ -84,7 +84,7 @@ theorem quotRep_mk (a : FreeMonoid (h.lieSubalgebra ⊕ K)) (u : U.toSubmodule) 
   rfl
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `LinearMap.exists_extend (φ ∘ₗ U₀.mkQ)`. Conclude with `⟨ψ, fun u => (LinearMap.congr_fun hψ u).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_form_extend (φ : Dual ℂ (U.toSubmodule ⧸ U₀)) :
     ∃ ψ : Dual ℂ V, ∀ u : U.toSubmodule, φ (Submodule.Quotient.mk u) = ψ u := by
@@ -159,11 +159,11 @@ theorem subQuotσ_mk (k : K) (u : U.toSubmodule) :
   rfl
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `hfin` using `M.locallyFinite u`. Use `set S : Submodule ℂ U.toSubmodule := Submodule.span ℂ (range fun k : K => U.toRepresentation (FreeMonoid.of (Sum.inr k)) u)`. Establish `hS : FiniteDimensional ℂ S`. Establish `hle : S.map U.toSubmodule.subtype ≤ Submodule.span ℂ (range fun k : K => M.σ k u)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Establish `: FiniteDimensional ℂ (S.map U.toSubmodule.subtype)` using `Submodule.finiteDimensional_of_le hle`. Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective _ U.toSubmodule.injective_subtype S).symm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hle : Submodule.span ℂ (range fun k : K => subQuotσ M U U₀ hU₀ k (Submodule.Quotient.mk u)) ≤ S.map U₀.mkQ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨k, rfl⟩, rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem subQuot_locallyFinite (q : U.toSubmodule ⧸ U₀) :
     FiniteDimensional ℂ (Submodule.span ℂ (range fun k : K => subQuotσ M U U₀ hU₀ k q)) := by
@@ -188,9 +188,9 @@ theorem subQuot_locallyFinite (q : U.toSubmodule ⧸ U₀) :
   exact Submodule.finiteDimensional_of_le hle
 
 /- English proof (translation)
-Introduce `φ q`. Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨ψ, hψ⟩` from `exists_form_extend M U U₀ φ`. Establish `: (fun k : K => φ (subQuotσ M U U₀ hU₀ k (Submodule.Quotient.mk u))) = fun k => ψ (M.σ k u)`. Use function extensionality and compare the values at `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[subQuotσ_mk, hψ]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `M.hasContinuousCoeff ψ u`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subQuot_hasContinuousCoeff : Representation.HasContinuousCoeff (subQuotσ M U U₀ hU₀) := by
   intro φ q
@@ -205,11 +205,11 @@ theorem subQuot_hasContinuousCoeff : Representation.HasContinuousCoeff (subQuot�
   exact M.hasContinuousCoeff ψ u
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨ψ, hψ⟩` from `exists_form_extend M U U₀ φ`. Establish `h1 : (fun t : ℝ => φ (subQuotσ M U U₀ hU₀ ⟨h.expG (t • X), hX t⟩ (Submodule.Quotient.mk u))) = fun t => ψ (M.σ ⟨h.expG (t • X), hX t⟩ u)`. Use function extensionality and compare the values at `t`. Rewrite using `[subQuotσ_mk, hψ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : φ (subQuotρ M U U₀ hU₀ (h.toLie X) (Submodule.Quotient.mk u)) = ψ (M.ρ (h.toLie X) u)`. Rewrite using `[subQuotρ_mk, hψ]`. Both sides reduce to the same expression. Rewrite using `[h1, h2]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.hasDerivAt_coeff X hX ψ u`.
+A detailed English derivation is pending.
 -/
 theorem subQuot_hasDerivAt (X : 𝔤) (hX : ∀ t : ℝ, h.expG (t • X) ∈ K)
     (φ : Dual ℂ (U.toSubmodule ⧸ U₀)) (q : U.toSubmodule ⧸ U₀) :
@@ -230,7 +230,7 @@ theorem subQuot_hasDerivAt (X : 𝔤) (hX : ∀ t : ℝ, h.expG (t • X) ∈ K)
   exact M.hasDerivAt_coeff X hX ψ u
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[subQuotρ_mk, subQuotσ_mk, subQuotσ_mk, subQuotρ_mk]`. Use `congr 1`. Conclude with `Subtype.ext (M.map_ρ k X u)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem subQuot_map_ρ (k : K) (X : 𝔤) (q : U.toSubmodule ⧸ U₀) :
     subQuotσ M U U₀ hU₀ k (subQuotρ M U U₀ hU₀ (h.toLie X) q) =
@@ -249,7 +249,7 @@ def GKModule.subQuot : h.GKModule K (U.toSubmodule ⧸ U₀) where
   map_ρ := subQuot_map_ρ M U U₀ hU₀
 
 /- English proof (translation)
-The claim follows from `FreeMonoid.hom_eq fun x => by rcases x with X | k <;> rfl`.
+A detailed English derivation is pending.
 -/
 theorem GKModule.subQuot_rep : (M.subQuot U U₀ hU₀).rep = quotRep M U U₀ hU₀ :=
   FreeMonoid.hom_eq fun x => by

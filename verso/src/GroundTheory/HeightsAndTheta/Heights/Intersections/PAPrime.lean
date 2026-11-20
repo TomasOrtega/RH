@@ -9,9 +9,9 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-Introduce `ι ν κ j`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro a b h fin_cases j <;> cases a <;> cases b <;> simp_all [diagonalBlockIndex]`. Apply the tactic sequence `rintro ⟨a, x⟩ ⟨b, y⟩ h fin_cases j <;> cases a <;> cases b <;> simp [T.yyEmb] at h <;> injection h with h1 h2 <;> first | (cases h2; rfl) | cases h1`. Apply the tactic sequence `rintro ⟨a, x⟩ fin_cases j <;> cases a <;> rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rintro ⟨b, y⟩ ⟨a, ha⟩ fin_cases j <;> cases a <;> cases b <;> first`. Consider the case `(refine ⟨⟨.base, y⟩, ?_⟩; simp [T.yyEmb]; done)`. Consider the case `(refine ⟨⟨.det, y⟩, ?_⟩; simp [T.yyEmb]; done)`. Consider the case `(refine ⟨⟨.line, y⟩, ?_⟩; simp [T.yyEmb]; done)`. Consider the case `simp [diagonalBlockIndex] at ha`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem yyBlockMap_thm : YYBlockMapStatement := by
   intro ι ν κ j
@@ -32,9 +32,9 @@ theorem yyBlockMap_thm : YYBlockMapStatement := by
         | simp [diagonalBlockIndex] at ha
 
 /- English proof (translation)
-Introduce `I hI D S X A hX hAs hAb k hk hkD`. Establish `hb` using `yyBlockMap_thm S.ι S.ν S.κ`. Establish `p0` using `IndefiniteRowSideFullHecke.Inter.isPullHerm_pullHerm (hb 0) X`. Establish `p1` using `IndefiniteRowSideFullHecke.Inter.isPullHerm_pullHerm (hb 1) X`. Establish `pA` using `IndefiniteRowSideFullHecke.Inter.isPullHerm_pullHerm (hb 0) A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨F, hFI, hFΦ⟩` from `h₁ I hI D S X A _ _ _ hX hAs hAb p0 p1 pA`. Establish `hfib` using `h₂ D S X A _ _ _ hX hAs hAb p0 p1 pA k hk hkD`. Establish `hF` using `aPrime_thm D F k hk hkD`. Rewrite `hF` using `[hFI (2 * k) (by omega), Finset.sum_congr rfl (fun i hi => hFΦ k i hk hkD (Finset.mem_range.1 hi)), ← Finset.mul_sum, hfib, ← mul_neg]`. Conclude with `mul_left_cancel₀ (by positivity) hF`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PropAPrime.proof (h₁ : ToFibreSquare.Statement) (h₂ : FibreInt.Statement) : PropAPrime.Statement := by
   intro I hI D S X A hX hAs hAb k hk hkD

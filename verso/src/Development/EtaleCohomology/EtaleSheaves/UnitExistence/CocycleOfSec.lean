@@ -17,7 +17,7 @@ def eta (R : Type) [CommRing R] (F : Shv R) (E : Spc)
     exact (hs V.unop U.unop g.unop _ _).symm
 
 /- English proof (translation)
-Use `erw [ModuleCat.freeDesc_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eta_freeMk (R : Type) [CommRing R] (F : Shv R) (E : Spc)
     (s : ∀ (U : Scheme.{0}), Nonempty (Sx E 0 U) → Sec F U)
@@ -27,9 +27,7 @@ theorem eta_freeMk (R : Type) [CommRing R] (F : Shv R) (E : Spc)
   rfl
 
 /- English proof (translation)
-Use `NatTrans.ext (funext fun U => ?_)` and prove the remaining obligations. Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce `x`. Use `erw [ModuleCat.comp_apply, ModuleCat.comp_apply]`. Use `erw [ModuleCat.free_map_apply, ModuleCat.free_map_apply, ModuleCat.freeDesc_apply, ModuleCat.freeDesc_apply]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eta_face (R : Type) [CommRing R] (F : Shv R) (E : Spc)
     (s : ∀ (U : Scheme.{0}), Nonempty (Sx E 0 U) → Sec F U)
@@ -48,7 +46,7 @@ def phi (R : Type) [CommRing R] (F : Shv R) (E : Spc)
   ⟨sheafifyLift Scheme.etaleTopology (eta R F E s hs) F.property⟩
 
 /- English proof (translation)
-Establish `h` using `toSheafify_sheafifyLift Scheme.etaleTopology (eta R F E s hs) F.property`. Establish `h2` using `congrArg (fun t => (t.app (op U)).hom (ModuleCat.freeMk (ULift.up x))) h`. Use `erw [eta_freeMk R F E s hs] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem phi_freeGen (R : Type) [CommRing R] (F : Shv R) (E : Spc)
     (s : ∀ (U : Scheme.{0}), Nonempty (Sx E 0 U) → Sec F U)
@@ -60,7 +58,7 @@ theorem phi_freeGen (R : Type) [CommRing R] (F : Shv R) (E : Spc)
   exact h2
 
 /- English proof (translation)
-Apply `Sheaf.hom_ext` to reduce the goal to its premises. Apply `sheafify_hom_ext _ _ _ F.property` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `toSheafify _ _ ≫ sheafifyMap _ ((freeP R).map (E.δ i)) ≫ sheafifyLift _ (eta R F E s hs) F.property = toSheafify _ _ ≫ sheafifyMap _ ((freeP R).map (E.δ j)) ≫ sheafifyLift _ (eta R F E s hs) F.property`. Rewrite using `[← Category.assoc, ← toSheafify_naturality, Category.assoc, toSheafify_sheafifyLift, ← Category.assoc, ← toSheafify_naturality, Category.assoc, toSheafify_sheafifyLift, eta_face R F E s hs i j]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_face (R : Type) [CommRing R] (F : Shv R) (E : Spc)
     (s : ∀ (U : Scheme.{0}), Nonempty (Sx E 0 U) → Sec F U)
@@ -74,7 +72,7 @@ theorem phi_face (R : Type) [CommRing R] (F : Shv R) (E : Spc)
     ← Category.assoc, ← toSheafify_naturality, Category.assoc, toSheafify_sheafifyLift, eta_face R F E s hs i j]
 
 /- English proof (translation)
-Unfold `resι`. Use `erw [Category.assoc, HomologicalComplex.Hom.comm]`. Use `erw [show ((singleFunctor (Shv R) 0).obj F).d 0 1 = 0 from (HomologicalComplex.isZero_single_obj_X (ComplexShape.up ℤ) 0 F 1 (by norm_num)).eq_of_tgt _ _, zero_comp]`. Conclude with `Limits.comp_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem resι_d (R : Type) [CommRing R] (F : Shv R) : resι R F ≫ (res R F).d 0 1 = 0 := by
   unfold resι
@@ -89,9 +87,7 @@ def gmap (R : Type) [CommRing R] (F : Shv R) (E : Spc)
   (chainsXIso R E 0).hom ≫ phi R F E s hs ≫ resι R F
 
 /- English proof (translation)
-Use `erw [AlgebraicTopology.AlternatingFaceMapComplex.obj_d_eq]`. Rewrite using `[Fin.sum_univ_two]`. Use `erw [Preadditive.add_comp]`. Simplify using `only [Fin.val_zero, Fin.val_one, pow_zero, pow_one, one_smul, neg_smul, Preadditive.neg_comp]`. Use `erw [phi_face R F E s hs 0 1]`.
-
-Use `erw [Preadditive.neg_comp]`. Conclude with `add_neg_cancel _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem key (R : Type) [CommRing R] (F : Shv R) (E : Spc)
     (s : ∀ (U : Scheme.{0}), Nonempty (Sx E 0 U) → Sec F U)
@@ -105,9 +101,7 @@ theorem key (R : Type) [CommRing R] (F : Shv R) (E : Spc)
   exact add_neg_cancel _
 
 /- English proof (translation)
-Rewrite using `[show ((chains R).obj E).d (-1) 0 = (chainsXIso R E 1).hom ≫ ((chainsN R).obj E).d 1 0 ≫ (chainsXIso R E 0).inv from HomologicalComplex.extend_d_eq ((chainsN R).obj E) ComplexShape.embeddingDownNat (i := 1) (j := 0) rfl rfl]`. Establish `k` using `key R F E s hs`. Unfold `gmap`. Use `erw [Category.assoc, Category.assoc, Iso.inv_hom_id_assoc]`. Establish `k2 : ((chainsN R).obj E).d 1 0 ≫ phi R F E s hs ≫ resι R F = 0` using `(Category.assoc _ _ _).symm.trans ((congrArg (fun t => t ≫ resι R F) k).trans zero_comp)`.
-
-Conclude with `(congrArg (fun t => (chainsXIso R E 1).hom ≫ t) k2).trans Limits.comp_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chains_d (R : Type) [CommRing R] (F : Shv R) (E : Spc)
     (s : ∀ (U : Scheme.{0}), Nonempty (Sx E 0 U) → Sec F U)
@@ -130,7 +124,7 @@ def alpha (R : Type) [CommRing R] (F : Shv R) (E : Spc)
     rw [h1, chains_d R F E s hs, Cochain.single_zero, Cochain.single_zero, smul_zero, add_zero])
 
 /- English proof (translation)
-Unfold `ev`. Use `erw [Cochain.single_v]`. Rewrite using `[gmap, Iso.inv_hom_id_assoc]`. Express the relevant statement in the definitionally equal form `((resι R F).hom.app (op U)).hom (((phi R F E s hs).hom.app (op U)).hom (freeGen R _ U x)) = _`. Rewrite using `[phi_freeGen R F E s hs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alpha_ev (R : Type) [CommRing R] (F : Shv R) (E : Spc)
     (s : ∀ (U : Scheme.{0}), Nonempty (Sx E 0 U) → Sec F U)
@@ -143,13 +137,13 @@ theorem alpha_ev (R : Type) [CommRing R] (F : Shv R) (E : Spc)
   rw [phi_freeGen R F E s hs]
 
 /- English proof (translation)
-Introduce `R _ F E s hs` and use `⟨alpha R F E s hs, fun U x => alpha_ev R F E s hs U x⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem leafCocycleOfSec_pf : LeafCocycleOfSec := fun R _ F E s hs =>
   ⟨alpha R F E s hs, fun U x => alpha_ev R F E s hs U x⟩
 
 /- English proof (translation)
-The claim follows from `LeafOneExists_of hU leafCocycleOfSec_pf`.
+A detailed English derivation is pending.
 -/
 theorem LeafOneExists_of_unit (hU : LeafUnitSec) : LateralTheory.E.LeafOneSpecPf.LeafOneExists :=
   LeafOneExists_of hU leafCocycleOfSec_pf

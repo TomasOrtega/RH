@@ -11,23 +11,23 @@ open scoped TensorProduct
 open NumberField IsDedekindDomain MeasureTheory Topology Filter Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes SdUniqW
 
 /- English proof (translation)
-Establish `hsq : ∀ w : ℂ, ‖w‖ = 1 → w.re ^ 2 + w.im ^ 2 = 1`. Introduce `w hw`. Establish `h1` using `Complex.sq_norm w`. Rewrite `h1` using `[hw, Complex.normSq_apply]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hre : ∀ w : ℂ, ‖w‖ = 1 → (w ^ 2).re = 2 * w.re ^ 2 - 1`. Introduce `w hw`. Use `hsq w hw` as an intermediate fact. Rewrite using `[sq, Complex.mul_re]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hn : ∀ k : ℕ, ‖z ^ (2 ^ k)‖ = 1` using `fun k => by rw [norm_pow, hz, one_pow]`. Establish `hle : ∀ k : ℕ, (z ^ (2 ^ k)).re ≤ 1` using `fun k => (Complex.re_le_norm _).trans (hn k).le`. Establish `key : ∀ k : ℕ, (3 : ℝ) ^ k * (1 - z.re) ≤ 1 - (z ^ (2 ^ k)).re`. Introduce `k`. Proceed by induction on `k with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `e : z ^ (2 ^ (k + 1)) = (z ^ (2 ^ k)) ^ 2` using `by rw [pow_succ, pow_mul]`. Rewrite using `[e, hre _ (hn k)]`. Establish `h1` using `h k`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hle k`. Rewrite using `[pow_succ]`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 h2) (by linarith : (0 : ℝ) ≤ 2 * (z ^ 2 ^ k).re - 1)]`. Establish `hz1 : z.re ≤ 1` using `by simpa using hle 0`. Establish `hre1 : z.re = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hε : 0 < 1 - z.re`. Break down `lt_or_eq_of_le hz1 with h' | h'` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `absurd h' hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (1 / (1 - z.re)) (by norm_num : (1 : ℝ) < 3)`. Establish `h1` using `key k`. Establish `h2` using `h k`. Establish `h3 : 1 < (3 : ℝ) ^ k * (1 - z.re)`. Rewrite `hk` using `[div_lt_iff₀ hε]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `him : z.im = 0`. Use `hsq z hz` as an intermediate fact. Rewrite `this` using `[hre1]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Conclude with `Complex.ext (by simp [hre1]) (by simp [him])`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow (z : ℂ) (hz : ‖z‖ = 1) (h : ∀ k : ℕ, 1 / 2 < (z ^ (2 ^ k)).re) : z = 1 := by
   have hsq : ∀ w : ℂ, ‖w‖ = 1 → w.re ^ 2 + w.im ^ 2 = 1 := by
@@ -76,11 +76,11 @@ theorem eq_one_of_pow (z : ℂ) (hz : ‖z‖ = 1) (h : ∀ k : ℕ, 1 / 2 < (z 
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Simplify using `only [zero_smul, pow_zero, psiV]`. Establish `: pairA F 0 (singleV F v 0) = 0`. Establish `h` using `singleV_add (F := F) v 0 0`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[add_zero]`. Establish `h0 : singleV F v 0 = 0`. Use `congrArg (fun x => x - singleV F v 0) h` as an intermediate fact. Conclude with `(by simpa using this : (0 : Af F) = singleV F v 0).symm`. Rewrite using `[h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this, AddChar.map_zero_eq_one]`. Consider the case `succ n ih => rw [succ_nsmul, psiV_add, ih, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem psiV_nsmul (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) (y : Fv F v) :
     psiV F ψ v (n • y) = psiV F ψ v y ^ n := by
@@ -99,23 +99,21 @@ theorem psiV_nsmul (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (n
   | succ n ih => rw [succ_nsmul, psiV_add, ih, pow_succ]
 
 /- English proof (translation)
-Use `set U : Set (AF F) := {x | 1 / 2 < (ψ x).re} with hUdef`. Establish `hU : IsOpen U` using `isOpen_lt continuous_const (Complex.continuous_re.comp hψ.1)`. Set `Φ : (∀ v : HeightOneSpectrum (𝓞 F), ((v.adicCompletionIntegers F : Set (v.adicCompletion F)))) → AF F` to `fun x => pairA F 0 (RestrictedProduct.structureMap _ _ Filter.cofinite x)`. Establish `hΦ : Continuous Φ` using `continuous_const.prodMk RestrictedProduct.isEmbedding_structureMap.continuous`. Set `x0 : ∀ v : HeightOneSpectrum (𝓞 F), ((v.adicCompletionIntegers F : Set (v.adicCompletion F)))` to `fun v => ⟨0, zero_mem _⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx0 : Φ x0 = 0` using `by show pairA F 0 _ = 0`. Establish `: (RestrictedProduct.structureMap _ _ Filter.cofinite x0 : Af F) = 0`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `j`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hx0U : x0 ∈ Φ ⁻¹' U`. Simplify using `only [Set.mem_preimage, hx0, hUdef, Set.mem_setOf_eq, AddChar.map_zero_eq_one, Complex.one_re]`. Evaluate the numerical expressions.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Extract witnesses or component facts from the available result.
 
-Take `⟨I, u, hu, hsub⟩` from `isOpen_pi_iff.1 (hU.preimage hΦ) x0 hx0U`. Use `filter_upwards [(I.finite_toSet).eventually_cofinite_notMem] with v hv`. Establish `hbig : ∀ y ∈ v.adicCompletionIntegers F, 1 / 2 < (psiV F ψ v y).re`. Introduce `y hy`. Establish `hmem : Function.update x0 v ⟨y, hy⟩ ∈ (I : Set _).pi u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `hwv : w ≠ v` using `fun h => hv (h ▸ hw)`. Rewrite using `[Function.update_of_ne hwv]`. Conclude with `(hu w hw).2`. Establish `e : Φ (Function.update x0 v ⟨y, hy⟩) = pairA F 0 (singleV F v y)` using `by show pairA F 0 _ = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `j`. Use `show ((Function.update x0 v ⟨y, hy⟩ j : _) : Fv F j) = (Pi.single v y : ∀ w : HeightOneSpectrum (𝓞 F), Fv F w) j`. Distinguish the cases in `hj : j = v`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hj, Pi.single_eq_of_ne hj]`. Use `hsub hmem` as an intermediate fact. Simplify using `only [Set.mem_preimage, e, hUdef, Set.mem_setOf_eq] at this`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Introduce `y hy`. Use `eq_one_of_pow (psiV F ψ v y) (hψ.2.1 _) ?_` and prove the remaining obligations. Introduce `k`. Rewrite using `[← psiV_nsmul]`.
-
-Apply `hbig` to reduce the goal to its premises. Rewrite using `[nsmul_eq_mul]`. Conclude with `mul_mem (by exact_mod_cast (natCast_mem (v.adicCompletionIntegers F) (2 ^ k))) hy`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_triv (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) :
     ∀ᶠ v in cofinite, ∀ y ∈ v.adicCompletionIntegers F, psiV F ψ v y = 1 := by
@@ -178,7 +176,7 @@ def CondExact : Prop :=
       (∀ s ∈ v.adicCompletionIntegers F, psiV F ψ v (s * t) = 1) → t ∈ v.adicCompletionIntegers F
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ`. Use `filter_upwards [hE F ψ hψ, ev_triv ψ hψ] with v h1 h2`. Introduce `t`. Use `⟨h1 t, fun ht s hs => h2 _ (mul_mem hs ht)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem condAA_of (hE : CondExact) : CondAA := by
   intro F _ _ ψ hψ

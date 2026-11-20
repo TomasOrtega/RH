@@ -23,9 +23,9 @@ variable {D : D7} {X : Fields} (s : Seam D X) {i : ℕ} {hi : i ≤ D.R.m} {T : 
   (Rel : SB → (Sp X.E (D.R.N i) ≃ₗ[X.E] Sp X.E (D.R.N i)) → X.K → Prop)
 
 /- English proof (translation)
-Use `⟨⟨Q.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)), Ideal.comap_isPrime _ _, ?_⟩, rfl⟩` and prove the remaining obligations. Introduce `h`. Establish `hN : ((Ideal.absNorm Q.asIdeal : ℕ) : 𝓞 D.host.F) ∈ Q.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.absNorm_mem _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hN` using `[h, Ideal.mem_bot]`. Establish `: Ideal.absNorm Q.asIdeal = 0` using `by exact_mod_cast hN`. Conclude with `Q.ne_bot (Ideal.absNorm_eq_zero_iff.1 this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isOver (Q : HeightOneSpectrum (𝓞 D.host.E)) : ∃ v : HeightOneSpectrum (𝓞 D.host.F), IsOver v Q := by
   refine ⟨⟨Q.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)), Ideal.comap_isPrime _ _, ?_⟩, rfl⟩
@@ -37,11 +37,9 @@ theorem exists_isOver (Q : HeightOneSpectrum (𝓞 D.host.E)) : ∃ v : HeightOn
   exact Q.ne_bot (Ideal.absNorm_eq_zero_iff.1 this)
 
 /- English proof (translation)
-Introduce `κ`. Establish `hv : ∀ P : SB, ∃ v : HeightOneSpectrum (𝓞 D.host.F), IsOver v (seamP s P.1)` using `fun P => exists_isOver (seamP s P.1)`. Use `choose v hv using hv`. Establish `hU` using `(lev.U_eq κ.1).1 κ.2`. Establish `hgz : ∀ P : SB, ∃ g z, Rel P g z ∧ InFrame s fb dep P κ.1 g` using `fun P => hLe P (v P) (hv P) κ.1 hU.1 (hU.2 (v P))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose g z hgz using hgz`. Establish `h1` using `hChi κ g z hgz`. Take `⟨k, hk⟩` from `hK (∏ P, z P)`. Use `⟨k⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, hk]`.
-
-Conclude with `(eq_inv_of_mul_eq_one_left h1).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiRatAll_of_le (hLe : LocLe s lev fb dep Rel) (hChi : ChiIs s lev fb dep Rel)
     (hK : ∀ y : X.K, ∃ k : D.what₂.LL, D.what₂.embLL k = s.σ₀ y) : ChiRatAll lev D.what₂.embLL := by
@@ -61,9 +59,9 @@ theorem chiRatAll_of_le (hLe : LocLe s lev fb dep Rel) (hChi : ChiIs s lev fb de
 end Gen
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex t u μ St A dtU a H hK i hi β`. Establish `hm` using `m_eq t μ`. Break down `Nat.lt_or_ge t.m2 i with h | h` into its components or cases. Break down `Nat.lt_or_ge (t.m2 + 1) i with h' | h'` into its components or cases. Take `rfl : i = t.m2 + 1 + 1` from `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `chiRatAll_of_le t.seam _ _ _ _ (H.levTop β).1 (H.levTop β).2 hK`. Take `rfl : i = t.m2 + 1` from `by omega`. Conclude with `chiRatAll_of_le t.seam _ _ _ _ (H.levCpl β).1 (H.levCpl β).2.2 hK`. Establish `hlt : i < D.R.m` using `by omega`. Conclude with `chiRatAll_of_le t.seam _ _ _ _ (H.levMid i hlt h β).1 (H.levMid i hlt h β).2.2 hK`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chiRatAll_of_adTie : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Dx cX} (t : KerEntTied ex) (u : D.what₂.Word) (μ : D.what₂.Tup) (St : GlobalTheory.TwU.ChainCharts D u μ) (A : GlobalTheory.TwU.AdData t u μ St) (dtU : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm →* D.Dt) (a : 𝓞 D.host.E), GlobalTheory.TwU.AdTie A dtU a → (∀ y : t.X.K, ∃ k : D.what₂.LL, D.what₂.embLL k = t.seam.σ₀ y) → ∀ i hi β, ChiRatAll ((St i hi).K β).lev D.what₂.embLL := by
   intro D L hT Gi Gl Kc Dx cX ex t u μ St A dtU a H hK i hi β

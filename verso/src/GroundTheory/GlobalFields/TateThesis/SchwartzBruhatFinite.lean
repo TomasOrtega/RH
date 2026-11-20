@@ -12,7 +12,7 @@ noncomputable section
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Rewrite using `[idealFiniteAdeles_eq_smul]`. Conclude with `isOpen_integralFiniteAdeles.smul _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_idealFiniteAdeles (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     IsOpen (idealFiniteAdeles I : Set 𝔸ᶠ[K]) := by
@@ -20,7 +20,7 @@ theorem isOpen_idealFiniteAdeles (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
   exact isOpen_integralFiniteAdeles.smul _
 
 /- English proof (translation)
-Rewrite using `[idealFiniteAdeles_eq_smul]`. Conclude with `(isCompact_integralFiniteAdeles K).smul _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_idealFiniteAdeles (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     IsCompact (idealFiniteAdeles I : Set 𝔸ᶠ[K]) := by
@@ -28,22 +28,22 @@ theorem isCompact_idealFiniteAdeles (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
   exact (isCompact_integralFiniteAdeles K).smul _
 
 /- English proof (translation)
-The claim follows from `(isOpen_idealFiniteAdeles I).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_idealFiniteAdeles (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     MeasurableSet (idealFiniteAdeles I : Set 𝔸ᶠ[K]) :=
   (isOpen_idealFiniteAdeles I).measurableSet
 
 /- English proof (translation)
-Take `⟨d, hd0, hd⟩` from `exists_forall_mul_mem_of_mem_nhds hW`. Establish `h𝔞 : Ideal.span {d} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Establish `hI : ((Ideal.span {d} : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `⟨Units.mk0 _ hI, fun x hx ↦ ?_⟩` and prove the remaining obligations. Establish `hdK : (algebraMap (𝓞 K) K d) ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 K) K)]` and apply the resulting hypothesis. Use `set y : 𝔸ᶠ[K] := algebraMap K 𝔸ᶠ[K] (algebraMap (𝓞 K) K d)⁻¹ * x with hy`. Establish `hxy : x = algebraMap K 𝔸ᶠ[K] (algebraMap (𝓞 K) K d) * y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hdK, map_one, one_mul]`. Rewrite using `[hxy]`. Use `hd y fun v ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((algebraMap (𝓞 K) K d)⁻¹ : K) : v.adicCompletion K) * x v ∈ v.adicCompletionIntegers K`. Take `⟨z, hz, hzv⟩` from `exists_mem_ideal_intValuation_eq v h𝔞`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.mp hz`. Establish `hle : exp (-FractionalIdeal.count K v ((Ideal.span {d} : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K)) ≤ v.intValuation d`. Rewrite using `[← hzv, map_mul]`. Conclude with `mul_le_of_le_one_left' (v.intValuation_le_one r)`. Establish `hxv` using `hx v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_adicCompletionIntegers, Valuation.map_mul, valuedAdicCompletion_eq_valuation', map_inv₀, valuation_of_algebraMap]`. Use `(inv_mul_le_one_iff_withZero ?_).mpr (hxv.trans hle)` and prove the remaining obligations. Rewrite using `[Ne, ← valuation_of_algebraMap (K := K), map_eq_zero]`. Conclude with `hdK`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_idealFiniteAdeles_subset {W : Set 𝔸ᶠ[K]} (hW : W ∈ 𝓝 (0 : 𝔸ᶠ[K])) :
     ∃ I : (FractionalIdeal (𝓞 K)⁰ K)ˣ, (idealFiniteAdeles I : Set 𝔸ᶠ[K]) ⊆ W := by
@@ -83,7 +83,7 @@ def finiteSchwartzBruhat : Submodule ℂ (𝔸ᶠ[K] → ℂ) where
   smul_mem' c _ hf := ⟨hf.1.comp (c • ·), hf.2.comp_left (smul_zero c)⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_finiteSchwartzBruhat {f : 𝔸ᶠ[K] → ℂ} :
     f ∈ finiteSchwartzBruhat K ↔ IsLocallyConstant f ∧ HasCompactSupport f :=
@@ -93,7 +93,7 @@ def cosetIndicator (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (a : 𝔸ᶠ[K]) : �
   (a +ᵥ (idealFiniteAdeles I : Set 𝔸ᶠ[K])).indicator 1
 
 /- English proof (translation)
-Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem, vadd_eq_add, neg_add_eq_sub, SetLike.mem_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_vadd_idealFiniteAdeles {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {a x : 𝔸ᶠ[K]} :
     x ∈ a +ᵥ (idealFiniteAdeles I : Set 𝔸ᶠ[K]) ↔ x - a ∈ idealFiniteAdeles I := by
@@ -101,7 +101,7 @@ theorem mem_vadd_idealFiniteAdeles {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {a x 
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[cosetIndicator, Set.indicator_apply]`. Simplify using `only [mem_vadd_idealFiniteAdeles, Pi.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cosetIndicator_apply (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (a x : 𝔸ᶠ[K]) :
     cosetIndicator I a x = if x - a ∈ idealFiniteAdeles I then 1 else 0 := by
@@ -109,16 +109,16 @@ theorem cosetIndicator_apply (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (a x : 𝔸
   simp only [mem_vadd_idealFiniteAdeles, Pi.one_apply]
 
 /- English proof (translation)
-Rewrite using `[cosetIndicator, zero_vadd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cosetIndicator_zero_eq (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     cosetIndicator I 0 = (idealFiniteAdeles I : Set 𝔸ᶠ[K]).indicator 1 := by
   rw [cosetIndicator, zero_vadd]
 
 /- English proof (translation)
-Use `⟨(IsLocallyConstant.iff_eventually_eq _).mpr fun x₀ ↦ ?_, ?_⟩` and prove the remaining obligations. Establish `hW : {x : 𝔸ᶠ[K] | x - x₀ ∈ idealFiniteAdeles I} ∈ 𝓝 x₀` using `((isOpen_idealFiniteAdeles I).preimage (continuous_id.sub continuous_const)).mem_nhds (by simp) filter_upwards [hW] with x hx`. Rewrite using `[cosetIndicator_apply, cosetIndicator_apply]`. Establish `: x - a = (x - x₀) + (x₀ - a)` using `by abel`. Rewrite using `[this, AddSubgroup.add_mem_cancel_left _ hx]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `HasCompactSupport.intro ((isCompact_idealFiniteAdeles I).vadd a) fun x hx ↦ ?_` and prove the remaining obligations. Conclude with `Set.indicator_of_notMem hx _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cosetIndicator_mem_finiteSchwartzBruhat (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (a : 𝔸ᶠ[K]) :
     cosetIndicator I a ∈ finiteSchwartzBruhat K := by
@@ -135,17 +135,17 @@ theorem cosetIndicator_mem_finiteSchwartzBruhat (I : (FractionalIdeal (𝓞 K)�
     exact Set.indicator_of_notMem hx _
 
 /- English proof (translation)
-Establish `hloc : ∀ x : 𝔸ᶠ[K], ∃ J : (FractionalIdeal (𝓞 K)⁰ K)ˣ, ∀ h ∈ idealFiniteAdeles J, f (x + h) = f x`. Introduce `x`. Establish `h1 : ∀ᶠ h in 𝓝 (0 : 𝔸ᶠ[K]), f (x + h) = f x` using `((continuous_const_add x).tendsto' 0 x (add_zero x)).eventually (hf.1.eventually_eq x)`. Take `⟨J, hJ⟩` from `exists_idealFiniteAdeles_subset h1`. Conclude with `⟨J, fun h hh ↦ hJ hh⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose J hJ using hloc`. Take `⟨t, ht⟩` from `hf.2.isCompact.elim_finite_subcover (fun x ↦ x +ᵥ (idealFiniteAdeles (J x) : Set 𝔸ᶠ[K])) (fun x ↦ (isOpen_idealFiniteAdeles (J x)).vadd x) (fun x _ ↦ Set.mem_iUnion.mpr ⟨x, mem_vadd_idealFiniteAdeles.mpr (by simp)⟩)`. Establish `hW : (⋂ x ∈ t, (idealFiniteAdeles (J x) : Set 𝔸ᶠ[K])) ∈ 𝓝 (0 : 𝔸ᶠ[K])` using `(biInter_finset_mem t).mpr fun x _ ↦ (isOpen_idealFiniteAdeles (J x)).mem_nhds (zero_mem _)`. Take `⟨I, hI⟩` from `exists_idealFiniteAdeles_subset hW`. Establish `hmain : ∀ x ∈ tsupport f, ∀ h ∈ idealFiniteAdeles I, f (x + h) = f x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx h hh`. Take `⟨x₀, hx₀t, hxx₀⟩` from `Set.mem_iUnion₂.mp (ht hx)`. Rewrite `hxx₀` using `[mem_vadd_idealFiniteAdeles]`. Establish `hh' : h ∈ idealFiniteAdeles (J x₀)` using `Set.mem_iInter₂.mp (hI hh) x₀ hx₀t`. Establish `e1` using `hJ x₀ (x - x₀) hxx₀`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hJ x₀ (x + h - x₀) (by`. Establish `: x + h - x₀ = (x - x₀) + h` using `by abel`. Rewrite using `[this]`. Conclude with `add_mem hxx₀ hh')`. Rewrite `e1`, `e2` using `[add_sub_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, e2]`. Use `⟨I, fun x h hh ↦ ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ tsupport f`. Conclude with `hmain x hx h hh`. Distinguish the cases in `hxh : x + h ∈ tsupport f`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hmain (x + h) hxh (-h) (neg_mem hh)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_right]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxh]`.
+A detailed English derivation is pending.
 -/
 theorem exists_forall_add_eq_of_mem_finiteSchwartzBruhat {f : 𝔸ᶠ[K] → ℂ}
     (hf : f ∈ finiteSchwartzBruhat K) :
@@ -188,15 +188,13 @@ theorem exists_forall_add_eq_of_mem_finiteSchwartzBruhat {f : 𝔸ᶠ[K] → ℂ
     · rw [image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxh]
 
 /- English proof (translation)
-Take `⟨I, hI⟩` from `exists_forall_add_eq_of_mem_finiteSchwartzBruhat hf`. Set `H` to `idealFiniteAdeles I`. Establish `: DiscreteTopology (𝔸ᶠ[K] ⧸ H)` using `QuotientAddGroup.discreteTopology (isOpen_idealFiniteAdeles I)`. Establish `hS : ((QuotientAddGroup.mk : 𝔸ᶠ[K] → 𝔸ᶠ[K] ⧸ H) '' tsupport f).Finite` using `(hf.2.isCompact.image continuous_quotient_mk').finite_of_discrete`. Establish `hmk : ∀ a x : 𝔸ᶠ[K], x - a ∈ idealFiniteAdeles I ↔ (QuotientAddGroup.mk x : 𝔸ᶠ[K] ⧸ H) = QuotientAddGroup.mk a`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a x`. Rewrite using `[QuotientAddGroup.eq, ← neg_mem_iff, neg_sub, sub_eq_neg_add]`. Establish `hinj : Set.InjOn (fun q : 𝔸ᶠ[K] ⧸ H ↦ q.out) ↑hS.toFinset` using `fun q _ q' _ h ↦ by simpa using congrArg (QuotientAddGroup.mk (s := H)) h`. Use `⟨I, hS.toFinset.image fun q ↦ q.out, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_image hinj]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, cosetIndicator_apply, mul_ite, mul_one, mul_zero, hmk, QuotientAddGroup.out_eq']`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hx`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq` using `QuotientAddGroup.out_eq' (s := H) (QuotientAddGroup.mk x)`. Rewrite `hq` using `[← hmk]`. Use `hI x (Quotient.out (QuotientAddGroup.mk x : 𝔸ᶠ[K] ⧸ H) - x) hq` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Conclude with `this.symm`.
-
-Conclude with `image_eq_zero_of_notMem_tsupport fun hx' ↦ hx ((Set.Finite.mem_toFinset hS).mpr ⟨x, hx', rfl⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_sum_cosetIndicator {f : 𝔸ᶠ[K] → ℂ} (hf : f ∈ finiteSchwartzBruhat K) :
     ∃ (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (s : Finset 𝔸ᶠ[K]),
@@ -230,9 +228,7 @@ theorem exists_eq_sum_cosetIndicator {f : 𝔸ᶠ[K] → ℂ} (hf : f ∈ finite
       ⟨x, hx', rfl⟩)
 
 /- English proof (translation)
-Use `le_antisymm (fun f hf ↦ ?_) (Submodule.span_le.mpr ?_)` and prove the remaining obligations. Take `⟨I, s, hs⟩` from `exists_eq_sum_cosetIndicator hf`. Rewrite using `[hs]`. Conclude with `Submodule.sum_mem _ fun a _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ⟨(I, a), rfl⟩)`. Introduce and unpack `_ ⟨p, rfl⟩`.
-
-Conclude with `cosetIndicator_mem_finiteSchwartzBruhat p.1 p.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem finiteSchwartzBruhat_eq_span :
     finiteSchwartzBruhat K = Submodule.span ℂ
@@ -246,7 +242,7 @@ theorem finiteSchwartzBruhat_eq_span :
     exact cosetIndicator_mem_finiteSchwartzBruhat p.1 p.2
 
 /- English proof (translation)
-The claim follows from `hf.1.continuous.integrable_of_hasCompactSupport hf.2`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_mem_finiteSchwartzBruhat {f : 𝔸ᶠ[K] → ℂ} (hf : f ∈ finiteSchwartzBruhat K) :
     Integrable f (finiteAdeleMeasure K) :=
@@ -258,14 +254,14 @@ def finiteFourier (f : 𝔸ᶠ[K] → ℂ) (y : 𝔸ᶠ[K]) : ℂ :=
   ∫ x, f x * (finiteAdelicChar K (x * y) : ℂ) ∂finiteAdeleMeasure K
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp (continuous_finiteAdelicChar.comp (continuous_mul_const y))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finiteAdelicChar_mul (y : 𝔸ᶠ[K]) :
     Continuous fun x : 𝔸ᶠ[K] ↦ (finiteAdelicChar K (x * y) : ℂ) :=
   continuous_subtype_val.comp (continuous_finiteAdelicChar.comp (continuous_mul_const y))
 
 /- English proof (translation)
-The claim follows from `hf.mono (hf.1.mul (continuous_finiteAdelicChar_mul y).aestronglyMeasurable) (Eventually.of_forall fun x ↦ by rw [norm_mul, Circle.norm_coe, mul_one])`.
+A detailed English derivation is pending.
 -/
 theorem integrable_mul_finiteAdelicChar {f : 𝔸ᶠ[K] → ℂ} (hf : Integrable f (finiteAdeleMeasure K))
     (y : 𝔸ᶠ[K]) :
@@ -274,7 +270,7 @@ theorem integrable_mul_finiteAdelicChar {f : 𝔸ᶠ[K] → ℂ} (hf : Integrabl
     (Eventually.of_forall fun x ↦ by rw [norm_mul, Circle.norm_coe, mul_one])
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [finiteFourier, Pi.add_apply, add_mul]`. Conclude with `integral_add (integrable_mul_finiteAdelicChar hf y) (integrable_mul_finiteAdelicChar hg y)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finiteFourier_add {f g : 𝔸ᶠ[K] → ℂ} (hf : Integrable f (finiteAdeleMeasure K))
     (hg : Integrable g (finiteAdeleMeasure K)) :
@@ -284,7 +280,7 @@ theorem finiteFourier_add {f g : 𝔸ᶠ[K] → ℂ} (hf : Integrable f (finiteA
   exact integral_add (integrable_mul_finiteAdelicChar hf y) (integrable_mul_finiteAdelicChar hg y)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [finiteFourier, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul c _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finiteFourier_smul (c : ℂ) (f : 𝔸ᶠ[K] → ℂ) :
     finiteFourier K (c • f) = c • finiteFourier K f := by
@@ -293,26 +289,24 @@ theorem finiteFourier_smul (c : ℂ) (f : 𝔸ᶠ[K] → ℂ) :
   exact integral_const_mul c _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[finiteFourier]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem finiteFourier_zero : finiteFourier K (0 : 𝔸ᶠ[K] → ℂ) = 0 := by
   funext y
   simp [finiteFourier]
 
 /- English proof (translation)
-Use `set H : Set 𝔸ᶠ[K] := ((idealFiniteAdeles I : AddSubgroup 𝔸ᶠ[K]) : Set 𝔸ᶠ[K]) with hH`. Distinguish the cases in `hw : w ∈ idealFiniteAdeles (traceDualIdeal K I)`. Establish `h1` using `(forall_finiteAdelicChar_mul_eq_one_iff I w).mpr hw`. Establish `: (fun x ↦ H.indicator (1 : 𝔸ᶠ[K] → ℂ) x * (finiteAdelicChar K (x * w) : ℂ)) = H.indicator 1`. Use function extensionality and compare the values at `x`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ H`. Rewrite using `[Set.indicator_of_mem hx, h1 x hx]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hx, zero_mul]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(integral_indicator_const (μ := finiteAdeleMeasure K) (1 : ℂ) (by rw [hH]; exact measurableSet_idealFiniteAdeles I)).trans ?_` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem (SetLike.mem_coe.mpr hw), Pi.one_apply, mul_one, measureReal_def, Complex.real_smul, mul_one]`. Choose the witnesses or unpack the hypotheses as in `⟨h₀, hh₀, hne⟩ : ∃ h₀ ∈ idealFiniteAdeles I, finiteAdelicChar K (h₀ * w) ≠ 1 := by`. Assume the negation of the conclusion as `hcon`. Conclude with `hw ((forall_finiteAdelicChar_mul_eq_one_iff I w).mp fun x hx ↦`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `fun h ↦ hcon ⟨x, hx, h⟩)`. Use `set F : 𝔸ᶠ[K] → ℂ := fun x ↦ H.indicator 1 x * (finiteAdelicChar K (x * w) : ℂ)`. Establish `hshift : ∀ x, F (x + h₀) = (finiteAdelicChar K (h₀ * w) : ℂ) * F x`. Introduce `x`. Establish `hmem : x + h₀ ∈ H ↔ x ∈ H` using `AddSubgroup.add_mem_cancel_right _ hh₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [F, Set.indicator_apply, hmem, add_mul, AddChar.map_add_eq_mul, Circle.coe_mul, Pi.one_apply]`. Apply the tactic sequence `split_ifs <;> ring`. Establish `hint : ∫ x, F x ∂finiteAdeleMeasure K = (finiteAdelicChar K (h₀ * w) : ℂ) * ∫ x, F x ∂finiteAdeleMeasure K`. Rewrite using `[← integral_const_mul, ← integral_add_right_eq_self F h₀]`. Simplify using `only [hshift]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hne' : (finiteAdelicChar K (h₀ * w) : ℂ) ≠ 1`. Rewrite using `[Ne, Circle.coe_eq_one]` and apply the resulting hypothesis. Establish `h0 : ∫ x, F x ∂finiteAdeleMeasure K = 0`. Establish `: ((finiteAdelicChar K (h₀ * w) : ℂ) - 1) * ∫ x, F x ∂finiteAdeleMeasure K = 0`. Rewrite using `[sub_mul, ← hint, one_mul, sub_self]`.
-
-Conclude with `(mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr hne')`. Rewrite using `[show (∫ x, H.indicator (1 : 𝔸ᶠ[K] → ℂ) x * (finiteAdelicChar K (x * w) : ℂ) ∂finiteAdeleMeasure K) = ∫ x, F x ∂finiteAdeleMeasure K from rfl, h0, Set.indicator_of_notMem (by simpa using hw), mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_indicator_mul_finiteAdelicChar (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (w : 𝔸ᶠ[K]) :
     ∫ x, (idealFiniteAdeles I : Set 𝔸ᶠ[K]).indicator (1 : 𝔸ᶠ[K] → ℂ) x *
@@ -361,9 +355,9 @@ theorem integral_indicator_mul_finiteAdelicChar (I : (FractionalIdeal (𝓞 K)�
       Set.indicator_of_notMem (by simpa using hw), mul_zero]
 
 /- English proof (translation)
-Rewrite using `[finiteFourier, ← integral_add_left_eq_self _ a]`. Establish `: (fun x ↦ cosetIndicator I a (a + x) * (finiteAdelicChar K ((a + x) * y) : ℂ)) = fun x ↦ (finiteAdelicChar K (a * y) : ℂ) * ((idealFiniteAdeles I : Set 𝔸ᶠ[K]).indicator (1 : 𝔸ᶠ[K] → ℂ) x * (finiteAdelicChar K (x * y) : ℂ))`. Use function extensionality and compare the values at `x`. Rewrite using `[cosetIndicator_apply, add_sub_cancel_left, Set.indicator_apply, add_mul, AddChar.map_add_eq_mul, Circle.coe_mul]`. Simplify using `only [SetLike.mem_coe, Pi.one_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, integral_const_mul, integral_indicator_mul_finiteAdelicChar]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finiteFourier_cosetIndicator (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (a y : 𝔸ᶠ[K]) :
     finiteFourier K (cosetIndicator I a) y =
@@ -385,7 +379,7 @@ theorem finiteFourier_cosetIndicator (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (a 
   ring
 
 /- English proof (translation)
-Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun y₀ ↦ ?_` and prove the remaining obligations. Establish `hW : {y : 𝔸ᶠ[K] | a * (y - y₀) ∈ finiteInvDifferent K} ∈ 𝓝 y₀` using `((isOpen_finiteInvDifferent K).preimage (continuous_const.mul (continuous_id.sub continuous_const))).mem_nhds (by simp)`. Use `filter_upwards [hW] with y hy`. Establish `: a * y = a * y₀ + a * (y - y₀)` using `by ring`. Rewrite using `[this, AddChar.map_add_eq_mul, finiteAdelicChar_eq_one_of_mem hy, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_finiteAdelicChar_mul (a : 𝔸ᶠ[K]) :
     IsLocallyConstant fun y : 𝔸ᶠ[K] ↦ (finiteAdelicChar K (a * y) : ℂ) := by
@@ -398,7 +392,7 @@ theorem isLocallyConstant_finiteAdelicChar_mul (a : 𝔸ᶠ[K]) :
   rw [this, AddChar.map_add_eq_mul, finiteAdelicChar_eq_one_of_mem hy, mul_one]
 
 /- English proof (translation)
-Establish `h` using `cosetIndicator_mem_finiteSchwartzBruhat J 0`. Rewrite `h` using `[cosetIndicator_zero_eq]`. Conclude with `⟨(isLocallyConstant_finiteAdelicChar_mul a).mul h.1, h.2.mul_left⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem finiteAdelicChar_mul_indicator_mem (a : 𝔸ᶠ[K]) (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     (fun y ↦ (finiteAdelicChar K (a * y) : ℂ) *
@@ -408,7 +402,7 @@ theorem finiteAdelicChar_mul_indicator_mem (a : 𝔸ᶠ[K]) (J : (FractionalIdea
   exact ⟨(isLocallyConstant_finiteAdelicChar_mul a).mul h.1, h.2.mul_left⟩
 
 /- English proof (translation)
-Rewrite using `[finiteFourier, ← integral_indicator_mul_finiteAdelicChar]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Establish `: y * (a + z) = a * y + y * z` using `by ring`. Rewrite using `[this, AddChar.map_add_eq_mul, Circle.coe_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -426,13 +420,11 @@ theorem finiteFourier_finiteAdelicChar_mul_indicator (a : 𝔸ᶠ[K])
   ring
 
 /- English proof (translation)
-Rewrite `hf` using `[finiteSchwartzBruhat_eq_span]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨⟨I, a⟩, rfl⟩` from `hg`. Establish `: finiteFourier K (cosetIndicator I a) = ((finiteAdeleMeasure K (idealFiniteAdeles I)).toReal : ℂ) • fun y ↦ (finiteAdelicChar K (a * y) : ℂ) * (idealFiniteAdeles (traceDualIdeal K I) : Set 𝔸ᶠ[K]).indicator 1 y`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[finiteFourier_cosetIndicator, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (finiteAdelicChar_mul_indicator_mem a _)`. Consider the case `zero => rw [finiteFourier_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add g h hg hh ihg ihh`. Rewrite `hg`, `hh` using `[← finiteSchwartzBruhat_eq_span]`. Rewrite using `[finiteFourier_add (integrable_of_mem_finiteSchwartzBruhat hg) (integrable_of_mem_finiteSchwartzBruhat hh)]`. Conclude with `add_mem ihg ihh`.
-
-Consider the case `smul c g _ ih`. Rewrite using `[finiteFourier_smul]`. Conclude with `Submodule.smul_mem _ c ih`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteFourier_mem_finiteSchwartzBruhat {f : 𝔸ᶠ[K] → ℂ}
     (hf : f ∈ finiteSchwartzBruhat K) : finiteFourier K f ∈ finiteSchwartzBruhat K := by
@@ -459,15 +451,15 @@ theorem finiteFourier_mem_finiteSchwartzBruhat {f : 𝔸ᶠ[K] → ℂ}
     exact Submodule.smul_mem _ c ih
 
 /- English proof (translation)
-Establish `key : ∀ f ∈ finiteSchwartzBruhat K, finiteFourier K (finiteFourier K f) = fun x ↦ f (-x)`. Introduce `f hf`. Rewrite `hf` using `[finiteSchwartzBruhat_eq_span]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Take `⟨⟨I, a⟩, rfl⟩` from `hg`. Establish `hF : finiteFourier K (cosetIndicator I a) = ((finiteAdeleMeasure K (idealFiniteAdeles I)).toReal : ℂ) • fun y ↦ (finiteAdelicChar K (a * y) : ℂ) * (idealFiniteAdeles (traceDualIdeal K I) : Set 𝔸ᶠ[K]).indicator 1 y`. Use function extensionality and compare the values at `y`. Rewrite using `[finiteFourier_cosetIndicator, Pi.smul_apply, smul_eq_mul]`. Use function extensionality and compare the values at `z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hF, finiteFourier_smul, Pi.smul_apply, finiteFourier_finiteAdelicChar_mul_indicator, traceDualIdeal_traceDualIdeal, smul_eq_mul, ← mul_assoc, ← Complex.ofReal_mul, finiteAdeleMeasure_idealFiniteAdeles_mul_traceDual, Complex.ofReal_one, one_mul]`. Use `show _ = cosetIndicator I a (-z)`. Rewrite using `[cosetIndicator_apply, Set.indicator_apply]`. Establish `: -z - a = -(a + z)` using `by abel`. Simplify using `only [SetLike.mem_coe, Pi.one_apply, this, neg_mem_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `zero => funext x`. Simplify using `[finiteFourier_zero]`. Consider the case `add g h hg hh ihg ihh`. Rewrite `hg`, `hh` using `[← finiteSchwartzBruhat_eq_span]`. Rewrite using `[finiteFourier_add (integrable_of_mem_finiteSchwartzBruhat hg) (integrable_of_mem_finiteSchwartzBruhat hh), finiteFourier_add (integrable_of_mem_finiteSchwartzBruhat (finiteFourier_mem_finiteSchwartzBruhat hg)) (integrable_of_mem_finiteSchwartzBruhat (finiteFourier_mem_finiteSchw …`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Consider the case `smul c g _ ih`. Rewrite using `[finiteFourier_smul, finiteFourier_smul, ih]`. Both sides reduce to the same expression. Conclude with `key f hf`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finiteFourier_finiteFourier {f : 𝔸ᶠ[K] → ℂ} (hf : f ∈ finiteSchwartzBruhat K) :
     finiteFourier K (finiteFourier K f) = fun x ↦ f (-x) := by

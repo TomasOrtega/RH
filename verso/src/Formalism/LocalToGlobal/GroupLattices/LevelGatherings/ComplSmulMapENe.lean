@@ -13,9 +13,9 @@ variable (F : Type) [Field F] [NumberField F] (E : Type) [Field E] [Algebra F E]
   {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Apply `adele_ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[map_mul (evalV F v), map_zero]`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[sgl_apply_ne F w' b h, mul_zero]`. Rewrite using `[sgl_apply_ne F w a hv, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sgl_mul_ne {w w' : HeightOneSpectrum (𝓞 F)} (h : w ≠ w') (a : w.adicCompletion F) (b : w'.adicCompletion F) :
     sgl F w a * sgl F w' b = 0 := by
@@ -27,9 +27,9 @@ theorem sgl_mul_ne {w w' : HeightOneSpectrum (𝓞 F)} (h : w ≠ w') (a : w.adi
   · rw [sgl_apply_ne F w a hv, zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x₁ x₂ h₁ h₂ => rw [map_add, add_mul, h₁, h₂, add_zero]`. Consider the case `tmul e a`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add y₁ y₂ h₁ h₂ => rw [map_add, mul_add, h₁, h₂, add_zero]`. Consider the case `tmul e' a'`. Rewrite using `[iE_tmul, iE_tmul, Algebra.TensorProduct.tmul_mul_tmul, sgl_mul_ne F h, TensorProduct.tmul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem iE_mul_ne {w w' : HeightOneSpectrum (𝓞 F)} (h : w ≠ w') (x : E ⊗[F] w.adicCompletion F)
     (y : E ⊗[F] w'.adicCompletion F) : iE F E w x * iE F E w' y = 0 := by
@@ -44,7 +44,7 @@ theorem iE_mul_ne {w w' : HeightOneSpectrum (𝓞 F)} (h : w ≠ w') (x : E ⊗[
       rw [iE_tmul, iE_tmul, Algebra.TensorProduct.tmul_mul_tmul, sgl_mul_ne F h, TensorProduct.tmul_zero]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [mapE, Matrix.mul_apply, Matrix.map_apply, iE_mul_ne F E h, Finset.sum_const_zero, Matrix.zero_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapE_mul_ne {w w' : HeightOneSpectrum (𝓞 F)} (h : w ≠ w') (X : Matrix n n (E ⊗[F] w.adicCompletion F))
     (Y : Matrix n n (E ⊗[F] w'.adicCompletion F)) : mapE F E w X * mapE F E w' Y = 0 := by
@@ -52,7 +52,7 @@ theorem mapE_mul_ne {w w' : HeightOneSpectrum (𝓞 F)} (h : w ≠ w') (X : Matr
   simp only [mapE, Matrix.mul_apply, Matrix.map_apply, iE_mul_ne F E h, Finset.sum_const_zero, Matrix.zero_apply]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [mapE, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, epsW, iE_mul_ne F E h, Matrix.zero_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eps_smul_mapE_ne {w w' : HeightOneSpectrum (𝓞 F)} (h : w ≠ w') (Y : Matrix n n (E ⊗[F] w'.adicCompletion F)) :
     epsW F E w • mapE F E w' Y = 0 := by
@@ -60,16 +60,16 @@ theorem eps_smul_mapE_ne {w w' : HeightOneSpectrum (𝓞 F)} (h : w ≠ w') (Y :
   simp only [mapE, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, epsW, iE_mul_ne F E h, Matrix.zero_apply]
 
 /- English proof (translation)
-Rewrite using `[sub_smul, one_smul, eps_smul_mapE_ne F E h, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compl_smul_mapE_ne {w w' : HeightOneSpectrum (𝓞 F)} (h : w ≠ w') (Y : Matrix n n (E ⊗[F] w'.adicCompletion F)) :
     (1 - epsW F E w) • mapE F E w' Y = mapE F E w' Y := by
   rw [sub_smul, one_smul, eps_smul_mapE_ne F E h, sub_zero]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show (sec F E w X : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) * (sec F E w' Y : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) = (sec F E w' Y : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) * (sec F E w X : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F))`. Rewrite using `[sec_val, sec_val]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, smul_add, smul_smul, mapE_mul_ne F E h, mapE_mul_ne F E h.symm, compl_smul_mapE_ne F E h, compl_smul_mapE_ne F E h.symm, add_zero]`. Rewrite using `[mul_comm (1 - epsW F E w) (1 - epsW F E w')]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem sec_comm {w w' : HeightOneSpectrum (𝓞 F)} (h : w ≠ w') (X : GL n (E ⊗[F] w.adicCompletion F))
     (Y : GL n (E ⊗[F] w'.adicCompletion F)) : Commute (sec F E w X) (sec F E w' Y) := by
@@ -107,16 +107,16 @@ def secAll : (∀ v : κ, UPts σE J ((S v).adicCompletion F)) →* UPts σE J (
     exact sec_comm F E (fun h => hab (hS h)) _ _)
 
 /- English proof (translation)
-The claim follows from `MonoidHom.noncommPiCoprod_mulSingle _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem secAll_single (v : κ) (X : UPts σE J ((S v).adicCompletion F)) :
     secAll F E σE J S hS (Pi.mulSingle v X) = secU F E σE J (S v) X :=
   MonoidHom.noncommPiCoprod_mulSingle _ _ _
 
 /- English proof (translation)
-Establish `key : ((bc (prV (E` using `E) (S v))).comp ((UPts σE J (FiniteAdeleRing (𝓞 F) F)).subtype.comp (secAll F E σE J S hS))) = (UPts σE J ((S v).adicCompletion F)).subtype.comp (Pi.evalMonoidHom _ v) := by`. Apply `MonoidHom.pi_ext` to reduce the goal to its premises. Introduce `i x`. Simplify using `only [MonoidHom.comp_apply, secAll_single, Pi.evalMonoidHom_apply, Subgroup.subtype_apply, secU_val]`. Distinguish the cases in `h : i = v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[bc_sec_same, Pi.mulSingle_eq_same]`. Rewrite using `[bc_sec_ne F E (S i) _ (fun hh => h (hS hh).symm), Pi.mulSingle_eq_of_ne (Ne.symm h)]`. Both sides reduce to the same expression. Conclude with `DFunLike.congr_fun key X`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bc_secAll_same (v : κ) (X : ∀ v : κ, UPts σE J ((S v).adicCompletion F)) :
     bc (prV (E := E) (S v)) (secAll F E σE J S hS X : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) =
@@ -134,9 +134,7 @@ theorem bc_secAll_same (v : κ) (X : ∀ v : κ, UPts σE J ((S v).adicCompletio
   exact DFunLike.congr_fun key X
 
 /- English proof (translation)
-Establish `key : ((bc (prV (E` using `E) w')).comp ((UPts σE J (FiniteAdeleRing (𝓞 F) F)).subtype.comp (secAll F E σE J S hS))) = 1 := by`. Apply `MonoidHom.pi_ext` to reduce the goal to its premises. Introduce `i x`. Simplify using `only [MonoidHom.comp_apply, secAll_single, Subgroup.subtype_apply, secU_val, MonoidHom.one_apply]`. Conclude with `bc_sec_ne F E (S i) _ (hw i)`.
-
-Conclude with `DFunLike.congr_fun key X`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bc_secAll_off (w' : HeightOneSpectrum (𝓞 F)) (hw : ∀ v, w' ≠ S v) (X : ∀ v : κ, UPts σE J ((S v).adicCompletion F)) :
     bc (prV (E := E) w') (secAll F E σE J S hS X : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) = 1 := by

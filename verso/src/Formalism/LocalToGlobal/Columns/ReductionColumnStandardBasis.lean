@@ -17,7 +17,7 @@ open Classical
 variable {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-The claim follows from `| 0, y, hy => ⟨0, by simp, by simpa using hy⟩ | D + 1, y, hy => by have hq0 : (q : E) ≠ 0 := ciQ_ne_zero hu obtain ⟨i, hi, hz⟩ := cq_rep_int hq hu hp hcard D y hy obtain ⟨d, hd, hdr⟩ := ocbS_natCast_surj hq hp hcard (redP P ((y - i) / (q : E) ^ D)) have hzd : IntAt P (((y - i) / …`.
+A detailed English derivation is pending.
 -/
 theorem cq_rep_int (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (hp : q.Prime)
     (hcard : Nat.card (𝓞 E ⧸ P.asIdeal) = q) :
@@ -43,9 +43,9 @@ theorem cq_rep_int (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 
       exact hzd
 
 /- English proof (translation)
-Establish `hq0 : (q : E) ≠ 0` using `ciQ_ne_zero hu`. Take `⟨i, hi, hz⟩` from `cq_rep_int hq hu hp hcard (A + B) _ hx`. Use `⟨(i : E) / (q : E) ^ A, Finset.mem_image.2 ⟨i, Finset.mem_range.2 hi, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e : (x - (i : E) / (q : E) ^ A) / (q : E) ^ B = ((q : E) ^ A * x - i) / (q : E) ^ (A + B)`. Rewrite using `[pow_add]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `hz`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cq_rep (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (hp : q.Prime)
     (hcard : Nat.card (𝓞 E ⧸ P.asIdeal) = q) (A B : ℕ) (x : E) (hx : IntAt P ((q : E) ^ A * x)) :
@@ -60,13 +60,13 @@ theorem cq_rep (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞
   exact hz
 
 /- English proof (translation)
-Establish `hq0 : (q : E) ≠ 0` using `ciQ_ne_zero hu`. Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 hv`. Take `⟨i', hi', rfl⟩` from `Finset.mem_image.1 hv'`. Rewrite `hi`, `hi'` using `[Finset.mem_range]`. Establish `key : ∀ j j' : ℕ, j < q ^ (A + B) → j' < q ^ (A + B) → j' ≤ j → IntAt P (((j : E) / (q : E) ^ A - (j' : E) / (q : E) ^ A) / (q : E) ^ B) → j = j'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `j j' hj hj' hle hI`. Establish `e : ((j : E) / (q : E) ^ A - (j' : E) / (q : E) ^ A) / (q : E) ^ B = ((j - j' : ℕ) : E) / (q : E) ^ (A + B)`. Rewrite using `[Nat.cast_sub hle, pow_add]`. Clear the denominators using the available nonvanishing facts. Rewrite `hI` using `[e, ocbS_intAt_div_pow hq hu hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Nat.eq_zero_of_dvd_of_lt hI (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Break down `le_total i' i with hle | hle` into its components or cases. Rewrite using `[key i i' hi hi' hle h]`. Establish `h' : IntAt P (((i' : E) / (q : E) ^ A - (i : E) / (q : E) ^ A) / (q : E) ^ B)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ((i' : E) / (q : E) ^ A - (i : E) / (q : E) ^ A) / (q : E) ^ B = -(((i : E) / (q : E) ^ A - (i' : E) / (q : E) ^ A) / (q : E) ^ B)` using `by ring`. Rewrite using `[e]`. Conclude with `ciIntAt_neg h`. Rewrite using `[key i' i hi' hi hle h']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cq_rep_unique (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (hp : q.Prime)
     {A B : ℕ} {v v' : E} (hv : v ∈ LocE.valsQ E q A B) (hv' : v' ∈ LocE.valsQ E q A B) (h : IntAt P ((v - v') / (q : E) ^ B)) :
@@ -94,7 +94,7 @@ theorem cq_rep_unique (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ)
     rw [key i' i hi' hi hle h']
 
 /- English proof (translation)
-Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hv`. Rewrite using `[mul_div_cancel₀ _ (pow_ne_zero _ hq0)]`. Conclude with `ocbS_intAt_natCast i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cq_vals_int {A B : ℕ} {v : E} (hv : v ∈ LocE.valsQ E q A B) (hq0 : (q : E) ≠ 0) : IntAt P ((q : E) ^ A * v) := by
   obtain ⟨i, -, rfl⟩ := Finset.mem_image.1 hv
@@ -106,9 +106,9 @@ end Reps
 section Perm
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_subset hWV (fun t ht htW => by by_contra h; exact htW (h1 t ht h)), ← Finset.sum_subset hWV (fun u hu huW => by by_contra h; exact huW (h2 u hu h))]`. Rewrite using `[← Finset.sum_congr rfl h5]`. Establish `himg : W.image σ = W`. Use `Finset.eq_of_subset_of_card_le (fun x hx => ?_) ?_` and prove the remaining obligations. Take `⟨t, ht, rfl⟩` from `Finset.mem_image.1 hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `h3 t ht`. Rewrite using `[Finset.card_image_of_injOn h4]`. Use `conv_rhs => rw [← himg]`. Rewrite using `[Finset.sum_image (fun x hx y hy hxy => h4 hx hy hxy)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cq_sum_perm {α M : Type} [DecidableEq α] [AddCommMonoid M] (V W : Finset α) (hWV : W ⊆ V) (T σ : α → α) (F : α → M)
     (h1 : ∀ t ∈ V, F (T t) ≠ 0 → t ∈ W) (h2 : ∀ u ∈ V, F u ≠ 0 → u ∈ W) (h3 : ∀ t ∈ W, σ t ∈ W) (h4 : Set.InjOn σ W)
@@ -132,14 +132,14 @@ section R1
 variable {k : Type} [CommRing k] {n c : ℕ}
 
 /- English proof (translation)
-Unfold `Loc.inX`. Apply the tactic sequence `by_cases h : l.1 < n <;> simp [LinearMap.pi_apply, h]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cq_inX_apply (x : Fin n → k) (l : Fin (n + c)) : Loc.inX k n c x l = if h : l.1 < n then x ⟨l.1, h⟩ else 0 := by
   unfold Loc.inX
   by_cases h : l.1 < n <;> simp [LinearMap.pi_apply, h]
 
 /- English proof (translation)
-Establish `h` using `hr.2.2 i l (show ¬ (l.1 < n + i) by omega)`. Rewrite `h` using `[Pi.sub_apply, sub_eq_zero]`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem reduction_column_standard_basis {r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hr : Loc.R1cond k n c r) {i : ℕ} (l : Fin (n + c))
     (hl : n + i ≤ l.1) : r (Loc.eN k (n + c) (n + i)) l = if l.1 = n + i then 1 else 0 := by
@@ -149,13 +149,13 @@ theorem reduction_column_standard_basis {r : (Fin (n + c) → k) ≃ₗ[k] (Fin 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Rewrite using `[Pi.add_apply, Finset.sum_apply, cq_inX_apply]`. Distinguish the cases in `hl : l.1 < n`. Rewrite using `[dif_pos hl, Finset.sum_eq_zero (fun i _ => by`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show z (Fin.natAdd n i) * (if l.1 = n + i.1 then 1 else 0) = 0`. Rewrite using `[if_neg (by omega), mul_zero]), add_zero]`. Both sides reduce to the same expression. Rewrite using `[dif_neg hl, zero_add]`. Take `⟨j, rfl⟩ : ∃ j : Fin c, l = Fin.natAdd n j` from `⟨⟨l.1 - n, by omega⟩, Fin.ext (by simp; omega)⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[Pi.smul_apply, smul_eq_mul] show z (Fin.natAdd n j) = z (Fin.natAdd n j) * (if (Fin.natAdd n j).1 = n + j.1 then 1 else 0)`. Rewrite using `[if_pos (by simp), mul_one]`. Introduce `i _ hij`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show z (Fin.natAdd n i) * (if (Fin.natAdd n j).1 = n + i.1 then 1 else 0) = 0`. Rewrite using `[if_neg (fun h => hij (Fin.ext (by simp at h; omega))), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cq_decomp (z : Fin (n + c) → k) :
     z = Loc.inX k n c (fun j => z (Fin.castAdd c j)) + ∑ i : Fin c, z (Fin.natAdd n i) • Loc.eN k (n + c) (n + i.1) := by
@@ -181,7 +181,7 @@ theorem cq_decomp (z : Fin (n + c) → k) :
       exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use `conv_lhs => rw [cq_decomp z]`. Rewrite using `[map_add, hg, map_sum]`. Simplify using `only [map_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cq_r_apply {r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} {g : (Fin n → k) ≃ₗ[k] (Fin n → k)}
     (hg : ∀ x, r (Loc.inX k n c x) = Loc.inX k n c (g x)) (z : Fin (n + c) → k) :
@@ -191,11 +191,11 @@ theorem cq_r_apply {r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} {g : 
   simp only [map_smul]
 
 /- English proof (translation)
-Rewrite using `[cq_r_apply hg z, Pi.add_apply, cq_inX_apply, dif_neg (by simp), zero_add, Finset.sum_apply]`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ v), ← Finset.add_sum_erase _ _ (Finset.mem_univ v), if_neg (lt_irrefl _), zero_add]`. Use `congr 1`. Rewrite using `[Pi.smul_apply, smul_eq_mul, reduction_column_standard_basis hr _ (by simp), if_pos (by simp), mul_one]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hvi : v.1 < i.1`. Rewrite using `[if_pos hvi]`. Rewrite using `[if_neg hvi, reduction_column_standard_basis hr _ (by simp; omega), if_neg (fun h => by`. Use `Finset.ne_of_mem_erase hi` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `this` to reduce the goal to its premises. Conclude with `Fin.ext (by simp at h; omega)), mul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem reduction_entry_lower_block {r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} {g : (Fin n → k) ≃ₗ[k] (Fin n → k)}
     (hr : Loc.R1cond k n c r) (hg : ∀ x, r (Loc.inX k n c x) = Loc.inX k n c (g x)) (z : Fin (n + c) → k) (v : Fin c) :
@@ -216,7 +216,7 @@ theorem reduction_entry_lower_block {r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n +
         exact Fin.ext (by simp at h; omega)), mul_zero]
 
 /- English proof (translation)
-Rewrite using `[cq_r_apply hg z, Pi.add_apply, cq_inX_apply, dif_pos (by simp), Finset.sum_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem cq_r_XRow {r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} {g : (Fin n → k) ≃ₗ[k] (Fin n → k)}
     (hg : ∀ x, r (Loc.inX k n c x) = Loc.inX k n c (g x)) (z : Fin (n + c) → k) (l : Fin n) :
@@ -234,9 +234,9 @@ open Classical
 variable {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Establish `e : (q : E) ^ m' * x = (q : E) ^ (m' - m) * ((q : E) ^ m * x)`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel h]`. Rewrite using `[e]`. Establish `hp : IntAt P ((q : E) ^ (m' - m))`. Establish `h` using `IntAt.coe P (((q : ℕ) : 𝓞 E) ^ (m' - m))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_pow, map_natCast]`. Then use the resulting hypothesis. Conclude with `hp.mul hx`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cq_bd_mono {m m' : ℕ} {x : E} (hx : IntAt P ((q : E) ^ m * x)) (h : m ≤ m') : IntAt P ((q : E) ^ m' * x) := by
   have e : (q : E) ^ m' * x = (q : E) ^ (m' - m) * ((q : E) ^ m * x) := by
@@ -248,7 +248,7 @@ theorem cq_bd_mono {m m' : ℕ} {x : E} (hx : IntAt P ((q : E) ^ m * x)) (h : m 
   exact hp.mul hx
 
 /- English proof (translation)
-The claim follows from `PI.UnfoldEquiv.UnitaryGroupMassFormula.fillMatrix_single y t l s`.
+A detailed English derivation is pending.
 -/
 theorem free_point_column_entry {n' n c : ℕ} (y : (Fin n' → E) →ₗ[E] (Fin n → E)) (t : Loc.FC n' (c + 1) n c → E) (l : Fin (n + c))
     (s : Fin (n' + (c + 1))) : Loc.xx1 y t (Pi.single s 1) l =
@@ -264,7 +264,7 @@ open Classical
 variable {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Establish `e : (q : E) ^ (m1 + m2) * (x * y) = ((q : E) ^ m1 * x) * ((q : E) ^ m2 * y)` using `by rw [pow_add]; ring`. Rewrite using `[e]`. Conclude with `hx.mul hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cq_bd_mul {m1 m2 : ℕ} {x y : E} (hx : IntAt P ((q : E) ^ m1 * x)) (hy : IntAt P ((q : E) ^ m2 * y)) :
     IntAt P ((q : E) ^ (m1 + m2) * (x * y)) := by
@@ -273,7 +273,7 @@ theorem cq_bd_mul {m1 m2 : ℕ} {x y : E} (hx : IntAt P ((q : E) ^ m1 * x)) (hy 
   exact hx.mul hy
 
 /- English proof (translation)
-Rewrite using `[mul_add]`. Conclude with `hx.add hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cq_bd_add {m : ℕ} {x y : E} (hx : IntAt P ((q : E) ^ m * x)) (hy : IntAt P ((q : E) ^ m * y)) :
     IntAt P ((q : E) ^ m * (x + y)) := by
@@ -281,7 +281,7 @@ theorem cq_bd_add {m : ℕ} {x y : E} (hx : IntAt P ((q : E) ^ m * x)) (hy : Int
   exact hx.add hy
 
 /- English proof (translation)
-Rewrite using `[mul_sub]`. Conclude with `ciIntAt_sub hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cq_bd_sub {m : ℕ} {x y : E} (hx : IntAt P ((q : E) ^ m * x)) (hy : IntAt P ((q : E) ^ m * y)) :
     IntAt P ((q : E) ^ m * (x - y)) := by
@@ -289,7 +289,7 @@ theorem cq_bd_sub {m : ℕ} {x y : E} (hx : IntAt P ((q : E) ^ m * x)) (hy : Int
   exact ciIntAt_sub hx hy
 
 /- English proof (translation)
-Establish `hp : IntAt P ((q : E) ^ m)`. Establish `h` using `IntAt.coe P (((q : ℕ) : 𝓞 E) ^ m)`. Rewrite `h` using `[map_pow, map_natCast]`. Then use the resulting hypothesis. Conclude with `hp.mul hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cq_bd_int (m : ℕ) {x : E} (hx : IntAt P x) : IntAt P ((q : E) ^ m * x) := by
   have hp : IntAt P ((q : E) ^ m) := by
@@ -298,7 +298,7 @@ theorem cq_bd_int (m : ℕ) {x : E} (hx : IntAt P x) : IntAt P ((q : E) ^ m * x)
   exact hp.mul hx
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum]`. Conclude with `ciIntAt_sum _ _ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cq_bd_sum {ι : Type} (s : Finset ι) {m : ℕ} (f : ι → E) (h : ∀ i ∈ s, IntAt P ((q : E) ^ m * f i)) :
     IntAt P ((q : E) ^ m * ∑ i ∈ s, f i) := by
@@ -306,7 +306,7 @@ theorem cq_bd_sum {ι : Type} (s : Finset ι) {m : ℕ} (f : ι → E) (h : ∀ 
   exact ciIntAt_sum _ _ h
 
 /- English proof (translation)
-Establish `h1 : (c - (i + 1)) * e + e = (c - i) * e`. Rewrite using `[show c - i = (c - (i + 1)) + 1 by omega, Nat.succ_mul]`. Establish `h2 : (c - i) * e ≤ (c - (v + 1)) * e` using `Nat.mul_le_mul_right e (by omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cq_ar {a c e i v : ℕ} (hv : v < i) (hi : i < c) : a + (c - (i + 1)) * e + e ≤ a + (c - (v + 1)) * e := by
   have h1 : (c - (i + 1)) * e + e = (c - i) * e := by
@@ -315,7 +315,7 @@ theorem cq_ar {a c e i v : ℕ} (hv : v < i) (hi : i < c) : a + (c - (i + 1)) * 
   omega
 
 /- English proof (translation)
-Establish `h1 : (c - (i + 1)) * e + e = (c - i) * e`. Rewrite using `[show c - i = (c - (i + 1)) + 1 by omega, Nat.succ_mul]`. Establish `h2 : (c - i) * e ≤ c * e` using `Nat.mul_le_mul_right e (by omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem arithmetic_index_inequality {a c e i : ℕ} (hi : i < c) : a + (c - (i + 1)) * e + e ≤ a + c * e := by
   have h1 : (c - (i + 1)) * e + e = (c - i) * e := by
@@ -324,7 +324,7 @@ theorem arithmetic_index_inequality {a c e i : ℕ} (hi : i < c) : a + (c - (i +
   omega
 
 /- English proof (translation)
-Establish `: 1 * e ≤ (c - (v + 1)) * e` using `Nat.mul_le_mul_right e (by omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem arithmetic_exponent_inequality {a c e v : ℕ} (hv : v + 1 < c) : e ≤ a + (c - (v + 1)) * e := by
   have : 1 * e ≤ (c - (v + 1)) * e := Nat.mul_le_mul_right e (by omega)
@@ -343,141 +343,119 @@ def cqLev (n l : ℕ) : ℕ := if l < n then 0 else l - n + 1
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `hq0 : (q : E) ≠ 0` using `ciQ_ne_zero hu`. Set `ι` to `Loc.FC n' (c + 1) n c`. Set `V : Finset (ι → E)` to `Fintype.piFinset fun _ : ι => LocE.valsQ E q A B`. Set `Z : (ι → E) → Fin (n' + (c + 1)) → Fin (n + c) → E` to `fun t s => Loc.xx1 y t (Pi.single s 1)`. Set `T : (ι → E) → (ι → E)` to `fun t p => r (Z t p.1.2) p.1.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `y'` to `g.toLinearMap ∘ₗ y`. Set `G : (ι → E) → K` to `fun u => Ψ (Loc.xx1 y' u) * psi (-Loc.chArg (n' := n') (c' := c + 1) (n := n) (c := c) (Loc.xx1 y' u))`. Set `bnd : Fin (n + c) → ℕ` to `fun m => a + (c - cqLev n m.1) * e`. Set `box : (ι → E) → Prop` to `fun t => ∀ p : ι, IntAt P ((q : E) ^ bnd p.1.1 * t p)`. Establish `hxx : ∀ t, r.toLinearMap ∘ₗ Loc.xx1 y t = Loc.xx1 y' (T t)` using `fun t => (PI.UnfoldEquiv.UnitaryGroupMassFormula.fillMatrix_extractFree (PI.UnfoldEquiv.UnitaryGroupMassFormula.Q_map hr.1 hg (PI.UnfoldEquiv.UnitaryGroupMassFormula.isFillOf_fillMatrix y t))).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hch : ∀ t, Loc.chArg (n'` using `n') (c' := c + 1) (n := n) (c := c) (r.toLinearMap ∘ₗ Loc.xx1 y t) = Loc.chArg (n' := n') (c' := c + 1) (n := n) (c := c) (Loc.xx1 y t) + Loc.n1Arg r := fun t => PI.UnfoldEquiv.UnitaryGroupMassFormula.chArg_map hr.1 (PI.UnfoldEquiv.UnitaryGroupMassFormula.isFillOf_fillMatrix y t)`. Establish `hlevA : ∀ i : Fin c, cqLev n (Fin.natAdd n i).1 = i.1 + 1` using `fun i => by`. Unfold `cqLev; rw [if_neg (by simp)]; simp`. Establish `hlevX : ∀ j : Fin n, cqLev n (Fin.castAdd c j).1 = 0` using `fun j => by`. Unfold `cqLev; rw [if_pos (by simp)]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hre' : ∀ (i : ℕ) (hi : n + i < n + c) (l : Fin (n + c)), IntAt P ((q : E) ^ e * r (Loc.eN E (n + c) (n + i)) l)`. Introduce `i hi l`. Rewrite using `[ocbS_eN_single hi]`. Conclude with `hre _ _`. Establish `hcol : ∀ t (p : ι), Z t p.1.2 p.1.1 = t p` using `fun t p => by show Loc.xx1 y t (Pi.single p.1.2 1) p.1.1 = t p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[free_point_column_entry, dif_pos p.2]`. Establish `hfreeS : ∀ p : ι, n' ≤ p.1.2.1` using `fun p => p.2.1`. Establish `hXfree : ∀ (p : ι) (j : Fin n), Loc.IsFree n' n c (Fin.castAdd c j).1 p.1.2.1` using `fun p j => by`. Establish `h` using `p.2`. Unfold `Loc.IsFree at h ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.coe_castAdd]`. Use `j.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hbase : ∀ (s : Fin (n' + (c + 1))) (m : Fin (n + c)), n' ≤ s.1 → IntAt P (PI.UnfoldEquiv.UnitaryGroupMassFormula.base y m s)`. Introduce `s m hs`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `PI.UnfoldEquiv.UnitaryGroupMassFormula.base`. Rewrite using `[dif_neg (by omega)]`. Use `split_ifs`. Conclude with `ciIntAt_one`. Conclude with `ciIntAt_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hZbd : ∀ t, box t → ∀ (p : ι) (m : Fin (n + c)), IntAt P ((q : E) ^ bnd m * Z t p.1.2 m)`. Introduce `t ht p m`. Use `show IntAt P ((q : E) ^ bnd m * Loc.xx1 y t (Pi.single p.1.2 1) m)`. Rewrite using `[free_point_column_entry]`. Use `split_ifs with hf`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ht ⟨(m, p.1.2), hf⟩`. Conclude with `cq_bd_int _ (hbase _ _ (hfreeS p))`. Establish `hgE : ∀ (j l : Fin n), IntAt P (g (Pi.single j 1) l)` using `fun j l => (ciMem_stdAt P _).1 ((hgI _).2 (ciSingle_mem j)) l`. Establish `hgE' : ∀ (j l : Fin n), IntAt P (g.symm (Pi.single j 1) l)` using `fun j l => (ciMem_stdAt P _).1 (((Subgroup.inv_mem _ hgI : g⁻¹ ∈ GLint E n P) _).2 (ciSingle_mem j)) l`. Establish `hTaux : ∀ t (p : ι) (v : Fin c), p.1.1 = Fin.natAdd n v → T t p = t p + ∑ i : Fin c, if v.1 < i.1 then Z t p.1.2 (Fin.natAdd n i) * r (Loc.eN E (n + c) (n + i.1)) (Fin.natAdd n v) else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `t p v hv`. Use `show r (Z t p.1.2) p.1.1 = _`. Rewrite using `[hv, reduction_entry_lower_block hr.1 hg, ← hv, hcol]`. Establish `hTX : ∀ t (p : ι) (l0 : Fin n), p.1.1 = Fin.castAdd c l0 → T t p = g (fun j => Z t p.1.2 (Fin.castAdd c j)) l0 + ∑ i : Fin c, Z t p.1.2 (Fin.natAdd n i) * r (Loc.eN E (n + c) (n + i.1)) (Fin.castAdd c l0)`. Introduce `t p l0 hl0`.
+Prove the second alternative. Prove the first alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `show r (Z t p.1.2) p.1.1 = _`. Rewrite using `[hl0, cq_r_XRow hg]`. Establish `hrow : ∀ p : ι, (∃ v : Fin c, p.1.1 = Fin.natAdd n v) ∨ ∃ l0 : Fin n, p.1.1 = Fin.castAdd c l0`. Introduce `p`. Distinguish the cases in `hl : p.1.1.1 < n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Or.inr ⟨⟨p.1.1.1, hl⟩, Fin.ext rfl⟩`. Conclude with `Or.inl ⟨⟨p.1.1.1 - n, by have := p.1.1.2; omega⟩, Fin.ext (by simp; omega)⟩`. Establish `hTbd : ∀ t, box t → ∀ p, IntAt P ((q : E) ^ bnd p.1.1 * T t p)`. Introduce `t ht p`. Break down `hrow p with ⟨v, hv⟩ | ⟨l0, hl0⟩` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb : bnd p.1.1 = a + (c - (v.1 + 1)) * e` using `by show a + (c - cqLev n p.1.1.1) * e = _`. Rewrite using `[hv, hlevA]`. Rewrite using `[hTaux t p v hv, hb]`. Use `cq_bd_add ?_ (cq_bd_sum _ _ fun i _ => ?_)` and prove the remaining obligations. Use `ht p` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[hb]`. Then use the resulting hypothesis. Use `split_ifs with hvi`. Establish `h1` using `hZbd t ht p (Fin.natAdd n i)`. Establish `hbi : bnd (Fin.natAdd n i) = a + (c - (i.1 + 1)) * e` using `by show a + (c - cqLev n (Fin.natAdd n i).1) * e = _`. Rewrite using `[hlevA]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hbi]`. Conclude with `cq_bd_mono (cq_bd_mul h1 (hre' i.1 (by omega) _)) (cq_ar hvi i.2)`. Rewrite using `[mul_zero]`. Conclude with `ciIntAt_zero`. Establish `hb : bnd p.1.1 = a + c * e` using `by show a + (c - cqLev n p.1.1.1) * e = _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hl0, hlevX, Nat.sub_zero]`. Rewrite using `[hTX t p l0 hl0, hb]`. Use `cq_bd_add ?_ (cq_bd_sum _ _ fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[residue_linearEquiv_apply_eq_sum g]`. Use `cq_bd_sum _ _ fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hZbd t ht p (Fin.castAdd c j)`. Establish `hbj : bnd (Fin.castAdd c j) = a + c * e` using `by show a + (c - cqLev n (Fin.castAdd c j).1) * e = _`. Rewrite using `[hlevX, Nat.sub_zero]`. Rewrite `h1` using `[hbj]`. Establish `h2` using `cq_bd_mul (cq_bd_int 0 (hgE j l0)) h1`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[zero_add]`. Then use the resulting hypothesis. Establish `h1` using `hZbd t ht p (Fin.natAdd n i)`. Establish `hbi : bnd (Fin.natAdd n i) = a + (c - (i.1 + 1)) * e` using `by show a + (c - cqLev n (Fin.natAdd n i).1) * e = _`. Rewrite using `[hlevA]`. Rewrite `h1` using `[hbi]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `cq_bd_mono (cq_bd_mul h1 (hre' i.1 (by omega) _)) (arithmetic_index_inequality i.2)`. Establish `hbA : ∀ m : Fin (n + c), bnd m ≤ A`. Introduce `m`. Establish `: (c - cqLev n m.1) * e ≤ (c + 1) * e` using `Nat.mul_le_mul_right e (by omega)`. Use `show a + (c - cqLev n m.1) * e ≤ A`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Set `ρ : E → E` to `fun x => if h : IntAt P ((q : E) ^ A * x) then Classical.choose (cq_rep hq hu hp hcard A B x h) else x`. Establish `hρ : ∀ x, IntAt P ((q : E) ^ A * x) → ρ x ∈ LocE.valsQ E q A B ∧ IntAt P ((x - ρ x) / (q : E) ^ B)`. Introduce `x h`. Simplify using `only [ρ, dif_pos h]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Classical.choose_spec (cq_rep hq hu hp hcard A B x h)`. Set `σ : (ι → E) → (ι → E)` to `fun t p => ρ (T t p)`. Set `W : Finset (ι → E)` to `V.filter box`. Establish `hσW : ∀ t ∈ W, σ t ∈ W`. Introduce `t ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, htb⟩` from `Finset.mem_filter.1 ht`. Establish `hT` using `hTbd t htb`. Use `Finset.mem_filter.2 ⟨Fintype.mem_piFinset.2 fun p => (hρ _ (cq_bd_mono (hT p) (hbA _))).1, fun p => ?_⟩` and prove the remaining obligations. Establish `h2` using `(hρ _ (cq_bd_mono (hT p) (hbA _))).2`. Use `show IntAt P ((q : E) ^ bnd p.1.1 * ρ (T t p))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (q : E) ^ bnd p.1.1 * ρ (T t p) = (q : E) ^ bnd p.1.1 * T t p - (q : E) ^ (bnd p.1.1 + B) * ((T t p - ρ (T t p)) / (q : E) ^ B)`. Rewrite using `[pow_add]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `ciIntAt_sub (hT p) (cq_bd_int _ h2)`. Establish `hinj : Set.InjOn σ W`. Introduce `t ht t' ht' hσ`. Take `⟨htV, htb⟩` from `Finset.mem_filter.1 ht`. Take `⟨htV', htb'⟩` from `Finset.mem_filter.1 ht'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd : ∀ p, IntAt P ((T t p - T t' p) / (q : E) ^ B)` using `fun p => by`. Establish `h1` using `(hρ _ (cq_bd_mono (hTbd t htb p) (hbA _))).2`. Establish `h2` using `(hρ _ (cq_bd_mono (hTbd t' htb' p) (hbA _))).2`. Establish `he : ρ (T t p) = ρ (T t' p)` using `congrFun hσ p`. Establish `e1 : (T t p - T t' p) / (q : E) ^ B = (T t p - ρ (T t p)) / (q : E) ^ B - (T t' p - ρ (T t' p)) / (q : E) ^ B`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `ciIntAt_sub h1 h2`. Establish `hvals : ∀ p, t p ∈ LocE.valsQ E q A B ∧ t' p ∈ LocE.valsQ E q A B` using `fun p => ⟨Fintype.mem_piFinset.1 htV p, Fintype.mem_piFinset.1 htV' p⟩`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hA' : ∀ k, ∀ p : ι, ∀ v : Fin c, p.1.1 = Fin.natAdd n v → c - v.1 = k → t p = t' p`. Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `p v hv hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : T t p - T t' p = t p - t' p`. Rewrite using `[hTaux t p v hv, hTaux t' p v hv]`. Establish `hs : ∀ i : Fin c, (if v.1 < i.1 then Z t p.1.2 (Fin.natAdd n i) * r (Loc.eN E (n + c) (n + i.1)) (Fin.natAdd n v) else 0) = (if v.1 < i.1 then Z t' p.1.2 (Fin.natAdd n i) * r (Loc.eN E (n + c) (n + i.1)) (Fin.natAdd n v) else 0)`. Introduce `i`. Use `split_ifs with hvi`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1 show Loc.xx1 y t (Pi.single p.1.2 1) (Fin.natAdd n i) = Loc.xx1 y t' (Pi.single p.1.2 1) (Fin.natAdd n i)`. Rewrite using `[free_point_column_entry, free_point_column_entry]`. Use `split_ifs with hf`. Conclude with `ih (c - i.1) (by omega) ⟨(Fin.natAdd n i, p.1.2), hf⟩ i rfl rfl`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl (fun i _ => hs i)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `hd p`. Rewrite `h3` using `[e2]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cq_rep_unique hq hu hp (hvals p).1 (hvals p).2 h3`. Use function extensionality and compare the values at `p`. Break down `hrow p with ⟨v, hv⟩ | ⟨l0, hl0⟩` into its components or cases. Conclude with `hA' _ p v hv rfl`. Establish `hZaux : ∀ i : Fin c, Z t p.1.2 (Fin.natAdd n i) = Z t' p.1.2 (Fin.natAdd n i)` using `fun i => by show Loc.xx1 y t (Pi.single p.1.2 1) (Fin.natAdd n i) = Loc.xx1 y t' (Pi.single p.1.2 1) (Fin.natAdd n i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[free_point_column_entry, free_point_column_entry]`. Use `split_ifs with hf`. Conclude with `hA' _ ⟨(Fin.natAdd n i, p.1.2), hf⟩ i rfl rfl`. Both sides reduce to the same expression. Establish `hgΔ : ∀ l1 : Fin n, IntAt P ((g (fun j => Z t p.1.2 (Fin.castAdd c j)) l1 - g (fun j => Z t' p.1.2 (Fin.castAdd c j)) l1) / (q : E) ^ B)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `l1`. Set `p1 : ι` to `⟨(Fin.castAdd c l1, p.1.2), hXfree p l1⟩`. Establish `e3 : T t p1 - T t' p1 = g (fun j => Z t p.1.2 (Fin.castAdd c j)) l1 - g (fun j => Z t' p.1.2 (Fin.castAdd c j)) l1`. Rewrite using `[hTX t p1 l1 rfl, hTX t' p1 l1 rfl]`. Use `show g (fun j => Z t p.1.2 (Fin.castAdd c j)) l1 + ∑ i : Fin c, Z t p.1.2 (Fin.natAdd n i) * r (Loc.eN E (n + c) (n + i.1)) (Fin.castAdd c l1) - (g (fun j => Z t' p.1.2 (Fin.castAdd c j)) l1 + ∑ i : Fin c, Z t' p.1.2 (Fin.natAdd n i) * r (Loc.eN E (n + c) (n + i.1)) (Fin.castAdd …`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[Finset.sum_congr rfl (fun i _ => by rw [hZaux i])]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `hd p1`. Rewrite `h3` using `[e3]`. Then use the resulting hypothesis. Establish `hΔ : ∀ j : Fin n, IntAt P ((Z t p.1.2 (Fin.castAdd c j) - Z t' p.1.2 (Fin.castAdd c j)) / (q : E) ^ B)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Establish `e4 : Z t p.1.2 (Fin.castAdd c j) - Z t' p.1.2 (Fin.castAdd c j) = g.symm (g (fun j => Z t p.1.2 (Fin.castAdd c j)) - g (fun j => Z t' p.1.2 (Fin.castAdd c j))) j`. Rewrite using `[← map_sub, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Rewrite using `[e4, residue_linearEquiv_apply_eq_sum g.symm, Finset.sum_div]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ciIntAt_sum _ _ fun l1 _ => ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc, Pi.sub_apply]`. Conclude with `(hgE' l1 j).mul (hgΔ l1)`. Establish `e5 : t p - t' p = Z t p.1.2 (Fin.castAdd c l0) - Z t' p.1.2 (Fin.castAdd c l0)`. Rewrite using `[← hl0, hcol, hcol]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h3` using `hΔ l0`. Rewrite `h3` using `[← e5]`. Conclude with `cq_rep_unique hq hu hp (hvals p).1 (hvals p).2 h3`. Establish `hT_W : ∀ t ∈ V, G (T t) ≠ 0 → t ∈ W`. Introduce `t htV hG`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hΨ : Ψ (Loc.xx1 y' (T t)) ≠ 0` using `fun h => hG (by show Ψ _ * _ = 0; rw [h, zero_mul])`. Establish `hS` using `hsupp _ hΨ`. Establish `hTa : ∀ p : ι, IntAt P ((q : E) ^ a * T t p)` using `fun p => by`. Establish `h1` using `hS p.1.2 p.1.1`. Rewrite `h1` using `[free_point_column_entry, dif_pos p.2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA' : ∀ k, ∀ p : ι, ∀ v : Fin c, p.1.1 = Fin.natAdd n v → c - v.1 = k → IntAt P ((q : E) ^ (a + (c - (v.1 + 1)) * e) * t p)`. Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `p v hv hk`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : t p = T t p - ∑ i : Fin c, (if v.1 < i.1 then Z t p.1.2 (Fin.natAdd n i) * r (Loc.eN E (n + c) (n + i.1)) (Fin.natAdd n v) else 0)`. Rewrite using `[hTaux t p v hv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Use `cq_bd_sub (cq_bd_mono (hTa p) (by omega)) (cq_bd_sum _ _ fun i _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with hvi`. Establish `hZi : IntAt P ((q : E) ^ (a + (c - (i.1 + 1)) * e) * Z t p.1.2 (Fin.natAdd n i))` using `by show IntAt P (_ * Loc.xx1 y t (Pi.single p.1.2 1) (Fin.natAdd n i))`. Rewrite using `[free_point_column_entry]`. Use `split_ifs with hf`. Conclude with `ih (c - i.1) (by omega) ⟨(Fin.natAdd n i, p.1.2), hf⟩ i rfl rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `cq_bd_int _ (hbase _ _ (hfreeS p))`. Conclude with `cq_bd_mono (cq_bd_mul hZi (hre' i.1 (by omega) _)) (cq_ar hvi i.2)`. Rewrite using `[mul_zero]`. Conclude with `ciIntAt_zero`. Establish `hZaux : ∀ (p : ι) (i : Fin c), IntAt P ((q : E) ^ (a + (c - (i.1 + 1)) * e) * Z t p.1.2 (Fin.natAdd n i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Introduce `p i`. Use `show IntAt P (_ * Loc.xx1 y t (Pi.single p.1.2 1) (Fin.natAdd n i))`. Rewrite using `[free_point_column_entry]`. Use `split_ifs with hf`. Conclude with `hA' _ ⟨(Fin.natAdd n i, p.1.2), hf⟩ i rfl rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `cq_bd_int _ (hbase _ _ (hfreeS p))`. Use `Finset.mem_filter.2 ⟨htV, fun p => ?_⟩` and prove the remaining obligations. Break down `hrow p with ⟨v, hv⟩ | ⟨l0, hl0⟩` into its components or cases. Establish `hb : bnd p.1.1 = a + (c - (v.1 + 1)) * e` using `by show a + (c - cqLev n p.1.1.1) * e = _`. Rewrite using `[hv, hlevA]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hb]`. Conclude with `hA' _ p v hv rfl`. Establish `hb : bnd p.1.1 = a + c * e` using `by show a + (c - cqLev n p.1.1.1) * e = _`. Rewrite using `[hl0, hlevX, Nat.sub_zero]`. Rewrite using `[hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hgX : ∀ l1 : Fin n, IntAt P ((q : E) ^ (a + c * e) * g (fun j => Z t p.1.2 (Fin.castAdd c j)) l1)`. Introduce `l1`. Set `p1 : ι` to `⟨(Fin.castAdd c l1, p.1.2), hXfree p l1⟩`. Establish `e3 : g (fun j => Z t p.1.2 (Fin.castAdd c j)) l1 = T t p1 - ∑ i : Fin c, Z t p.1.2 (Fin.natAdd n i) * r (Loc.eN E (n + c) (n + i.1)) (Fin.castAdd c l1)`. Rewrite using `[hTX t p1 l1 rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3]`. Conclude with `cq_bd_sub (cq_bd_mono (hTa p1) (by omega)) (cq_bd_sum _ _ fun i _ => cq_bd_mono (cq_bd_mul (hZaux p i) (hre' i.1 (by omega) _)) (arithmetic_index_inequality i.2))`. Establish `e4 : t p = g.symm (g (fun j => Z t p.1.2 (Fin.castAdd c j))) l0`. Rewrite using `[LinearEquiv.symm_apply_apply, ← hl0, hcol]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e4, residue_linearEquiv_apply_eq_sum g.symm]`. Use `cq_bd_sum _ _ fun l1 _ => ?_` and prove the remaining obligations. Establish `h2` using `cq_bd_mul (cq_bd_int 0 (hgE' l1 l0)) (hgX l1)`. Rewrite `h2` using `[zero_add]`. Then use the resulting hypothesis. Establish `hG_W : ∀ u ∈ V, G u ≠ 0 → u ∈ W`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `u huV hG`. Establish `hΨ : Ψ (Loc.xx1 y' u) ≠ 0` using `fun h => hG (by show Ψ _ * _ = 0; rw [h, zero_mul])`. Establish `hS` using `hsupp _ hΨ`. Use `Finset.mem_filter.2 ⟨huV, fun p => ?_⟩` and prove the remaining obligations. Establish `h1` using `hS p.1.2 p.1.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h1` using `[free_point_column_entry, dif_pos p.2]`. Conclude with `cq_bd_mono h1 (by show a ≤ a + (c - cqLev n p.1.1.1) * e; omega)`. Establish `hatN_add : ∀ (v w : Fin (n + c) → E) (i : ℕ), Loc.atN (v + w) i = Loc.atN v i + Loc.atN w i`. Introduce `v w i`. Unfold `Loc.atN`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[add_zero]`. Establish `hchA : ∀ X Y : (Fin (n' + (c + 1)) → E) →ₗ[E] (Fin (n + c) → E), Loc.chArg (n'` using `n') (c' := c + 1) (n := n) (c := c) (X + Y) = Loc.chArg (n' := n') (c' := c + 1) (n := n) (c := c) X + Loc.chArg (n' := n') (c' := c + 1) (n := n) (c := c) Y := by`. Introduce `X Y`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Unfold `Loc.chArg`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, hatN_add]`. Establish `hchBd : ∀ (m : ℕ) (X : (Fin (n' + (c + 1)) → E) →ₗ[E] (Fin (n + c) → E)), (∀ s l, IntAt P ((q : E) ^ m * X (Pi.single s 1) l)) → IntAt P ((q : E) ^ m * Loc.chArg (n'` using `n') (c' := c + 1) (n := n) (c := c) X) := by`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m X hX`. Unfold `Loc.chArg`. Use `cq_bd_sum _ _ fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.1 hi`. Rewrite using `[ocbS_eN_single (show n' + i + 1 < n' + (c + 1) by omega), ocbS_atN_of_lt _ (show n + i < n + c by omega)]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hX _ _`. Establish `hGσ : ∀ t ∈ W, G (σ t) = G (T t)`. Introduce `t ht`. Take `⟨-, htb⟩` from `Finset.mem_filter.1 ht`. Establish `hT` using `hTbd t htb`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : ∀ p, IntAt P ((σ t p - T t p) / (q : E) ^ B)` using `fun p => by`. Establish `h2` using `(hρ _ (cq_bd_mono (hT p) (hbA _))).2`. Establish `e1 : (σ t p - T t p) / (q : E) ^ B = -((T t p - ρ (T t p)) / (q : E) ^ B)` using `by show (ρ (T t p) - T t p) / (q : E) ^ B = _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ciIntAt_neg h2`. Set `z` to `Loc.xx1 y' (σ t) - Loc.xx1 y' (T t)`. Establish `hz : ∀ s l, z (Pi.single s 1) l = if hf : Loc.IsFree n' n c l.1 s.1 then σ t ⟨(l, s), hf⟩ - T t ⟨(l, s), hf⟩ else 0`. Introduce `s l`. Use `show (Loc.xx1 y' (σ t) - Loc.xx1 y' (T t)) (Pi.single s 1) l = _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[LinearMap.sub_apply, Pi.sub_apply, free_point_column_entry, free_point_column_entry]`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[sub_self]`. Establish `hzB : ∀ s l, IntAt P (z (Pi.single s 1) l / (q : E) ^ B)`.
-
-Introduce `s l`. Rewrite using `[hz]`. Use `split_ifs with hf`. Conclude with `hd ⟨(l, s), hf⟩`. Rewrite using `[zero_div]`.
-
-Conclude with `ciIntAt_zero`. Establish `hzb : ∀ s l, IntAt P (((q : E) ^ b)⁻¹ * z (Pi.single s 1) l)`. Introduce `s l`. Establish `e1 : ((q : E) ^ b)⁻¹ * z (Pi.single s 1) l = (q : E) ^ (B - b) * (z (Pi.single s 1) l / (q : E) ^ B)`. Rewrite using `[show (q : E) ^ B = (q : E) ^ (B - b) * (q : E) ^ b by rw [← pow_add, Nat.sub_add_cancel hbB]]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e1]`. Conclude with `cq_bd_int _ (hzB s l)`. Establish `hzI : ∀ s l, IntAt P (z (Pi.single s 1) l)`. Introduce `s l`.
-
-Establish `e1 : z (Pi.single s 1) l = (q : E) ^ B * (z (Pi.single s 1) l / (q : E) ^ B)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1]`. Conclude with `cq_bd_int _ (hzB s l)`. Establish `hxz : Loc.xx1 y' (σ t) = Loc.xx1 y' (T t) + z` using `by show _ = Loc.xx1 y' (T t) + (Loc.xx1 y' (σ t) - Loc.xx1 y' (T t))`.
-
-Normalize the expressions using the abelian group laws. Use `show Ψ (Loc.xx1 y' (σ t)) * psi (-Loc.chArg (n' := n') (c' := c + 1) (n := n) (c := c) (Loc.xx1 y' (σ t))) = Ψ (Loc.xx1 y' (T t)) * psi (-Loc.chArg (n' := n') (c' := c + 1) (n := n) (c := c) (Loc.xx1 y' (T t)))`. Rewrite using `[hxz, hinv _ z hzb]`. Distinguish the cases in `h0 : Ψ (Loc.xx1 y' (T t)) = 0`. Rewrite using `[h0, zero_mul, zero_mul]`.
-
-Use `congr 1`. Establish `hcz : IntAt P (Loc.chArg (n'` using `n') (c' := c + 1) (n := n) (c := c) z) := by`. Establish `h1` using `hchBd 0 z (fun s l => cq_bd_int 0 (hzI s l))`. Rewrite `h1` using `[pow_zero, one_mul]`. Then use the resulting hypothesis. Establish `hcX` using `hchBd a _ (hsupp _ h0)`.
-
-Rewrite using `[hchA, neg_add, hadd _ _ (by rw [mul_neg]; exact ciIntAt_neg (cq_bd_mono hcX haD)) (cq_bd_int D (ciIntAt_neg hcz)), hint _ (ciIntAt_neg hcz), mul_one]`. Establish `hsum : ∑ t ∈ V, G (T t) = ∑ u ∈ V, G u` using `cq_sum_perm V W (Finset.filter_subset _ _) T σ G hT_W hG_W hσW hinj hGσ`. Establish `hn1Bd : IntAt P ((q : E) ^ e * Loc.n1Arg r)`. Unfold `Loc.n1Arg`. Use `cq_bd_sum _ _ fun i hi => ?_` and prove the remaining obligations.
-
-Establish `hi'` using `Finset.mem_range.1 hi`. Rewrite using `[ocbS_atN_of_lt _ (show n + i < n + c by omega)]`. Conclude with `hre' (i + 1) (by omega) _`. Establish `hterm : ∀ t, Ψ (r.toLinearMap ∘ₗ Loc.xx1 y t) * psi (-Loc.chArg (n'` using `n') (c' := c + 1) (n := n) (c := c) (Loc.xx1 y t)) = psi (Loc.n1Arg r) * G (T t) := by`. Introduce `t`.
-
-Establish `e1 : Loc.chArg (n'` using `n') (c' := c + 1) (n := n) (c := c) (Loc.xx1 y t) = Loc.chArg (n' := n') (c' := c + 1) (n := n) (c := c) (Loc.xx1 y' (T t)) - Loc.n1Arg r := by`. Rewrite using `[← hxx t, hch t]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, hxx t]`. Use `show _ = psi (Loc.n1Arg r) * (Ψ (Loc.xx1 y' (T t)) * psi (-Loc.chArg (n' := n') (c' := c + 1) (n := n) (c := c) (Loc.xx1 y' (T t))))`.
-
-Distinguish the cases in `h0 : Ψ (Loc.xx1 y' (T t)) = 0`. Rewrite using `[h0, zero_mul, zero_mul, mul_zero]`. Establish `hcX` using `hchBd a _ (hsupp _ h0)`. Rewrite using `[show -(Loc.chArg (n' := n') (c' := c + 1) (n := n) (c := c) (Loc.xx1 y' (T t)) - Loc.n1Arg r) = -Loc.chArg (n' := n') (c' := c + 1) (n := n) (c := c) (Loc.xx1 y' (T t)) + Loc.n1Arg r by ring, hadd _ _ (by rw [mul_neg]; exact ciIntAt_neg (cq_bd_mono hcX haD)) (cq_bd_mono hn1Bd he …`. Expand and normalize the polynomial expressions, which then agree.
-
-Unfold `Loc.E1`. Simplify using `only []`. Rewrite using `[Finset.sum_congr rfl (fun t _ => hterm t), ← Finset.mul_sum, hsum]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem finite_sum_target_equality (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (hp : q.Prime)
     (hcard : Nat.card (𝓞 E ⧸ P.asIdeal) = q) {K : Type} [Field K] {n' n c : ℕ} (psi : E → K) {D a b e A B : ℕ}

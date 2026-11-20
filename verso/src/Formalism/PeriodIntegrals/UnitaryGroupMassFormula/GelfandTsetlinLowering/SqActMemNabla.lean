@@ -20,7 +20,7 @@ theorem gStar_val {N : ℕ} (g : GL (Fin N) ℂ) :
     ((gStar g : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) = Matrix.conjTranspose (g : Matrix (Fin N) (Fin N) ℂ) := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[gStar_val]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gStar_gStar {N : ℕ} (g : GL (Fin N) ℂ) : gStar (gStar g) = g := by
   ext i j; simp [gStar_val]
@@ -28,7 +28,7 @@ theorem gStar_gStar {N : ℕ} (g : GL (Fin N) ℂ) : gStar (gStar g) = g := by
 def cU (a : ℂˣ) : ℂˣ := Units.map (starRingEnd ℂ : ℂ →* ℂ) a
 
 /- English proof (translation)
-Unfold `cU`. Rewrite using `[← map_zpow, Units.coe_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cU_zpow_val (a : ℂˣ) (e : ℤ) : ((cU a ^ e : ℂˣ) : ℂ) = star ((a ^ e : ℂˣ) : ℂ) := by
   unfold cU
@@ -36,11 +36,11 @@ theorem cU_zpow_val (a : ℂˣ) (e : ℤ) : ((cU a ^ e : ℂˣ) : ℂ) = star ((
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ p q : Fin n ⊕ Fin 1, Matrix.fromBlocks (Matrix.conjTranspose (g : Matrix (Fin n) (Fin n) ℂ)) 0 0 1 p q = (starRingEnd ℂ) (Matrix.fromBlocks (g : Matrix (Fin n) (Fin n) ℂ) 0 0 1 q p)`. Introduce and unpack `(p | p) (q | q)`. Simplify using `[Matrix.conjTranspose_apply]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hp : p = q` using `Subsingleton.elim _ _`. Substitute `hp` using the available equality. Simplify using the standard rewrite rules. Use extensionality with `i j`. Simplify using `only [embGL, blkHom, gStar_val, Matrix.conjTranspose_apply]`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `key _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem embGL_gStar {n N : ℕ} (h : n + 1 = N) (g : GL (Fin n) ℂ) :
     embGL ℂ n N h (gStar g) = gStar (embGL ℂ n N h g) := by
@@ -59,9 +59,9 @@ theorem embGL_gStar {n N : ℕ} (h : n + 1 = N) (g : GL (Fin n) ℂ) :
   exact key _ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [lastGL, diagGL, gStar_val, Matrix.conjTranspose_apply, Matrix.diagonal_apply]`. Distinguish the cases in `hij : i = j`. Apply the tactic sequence `subst hij; split_ifs <;> simp [cU]`. Establish `hji : j ≠ i` using `fun e => hij e.symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `[hij, hji]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lastGL_cU (N : ℕ) (a : ℂˣ) : lastGL ℂ N (cU a) = gStar (lastGL ℂ N a) := by
   ext i j
@@ -72,7 +72,7 @@ theorem lastGL_cU (N : ℕ) (a : ℂˣ) : lastGL ℂ N (cU a) = gStar (lastGL �
     simp [hij, hji]
 
 /- English proof (translation)
-Unfold `detPow`. Rewrite using `[Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, star_zpow₀]`. Use `congr 1`. Simplify using `[gStar_val, Matrix.det_conjTranspose]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem detPow_gStar {N : ℕ} (g : GL (Fin N) ℂ) (k : ℤ) :
     detPow ℂ N (gStar g) k = star (detPow ℂ N g k) := by
@@ -82,7 +82,7 @@ theorem detPow_gStar {N : ℕ} (g : GL (Fin N) ℂ) (k : ℤ) :
   simp [gStar_val, Matrix.det_conjTranspose]
 
 /- English proof (translation)
-Unfold `sqAct`. Conclude with `Submodule.smul_mem _ _ (Formalism.GradedWeylDivisibility.dualWeylRowStable ℂ N N lam.natW _ f hf)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sqAct_mem_nabla {N : ℕ} (lam : DomWeight N) (g : GL (Fin N) ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ)
     (hf : f ∈ nablaSq ℂ N lam) : sqAct ℂ N lam g f ∈ nablaSq ℂ N lam := by
@@ -90,7 +90,7 @@ theorem sqAct_mem_nabla {N : ℕ} (lam : DomWeight N) (g : GL (Fin N) ℂ) (f : 
   exact Submodule.smul_mem _ _ (Formalism.GradedWeylDivisibility.dualWeylRowStable ℂ N N lam.natW _ f hf)
 
 /- English proof (translation)
-Unfold `sqAct`. Rewrite using `[map_smul, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sqAct_smul {N : ℕ} (lam : DomWeight N) (g : GL (Fin N) ℂ) (c : ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ) :
     sqAct ℂ N lam g (c • f) = c • sqAct ℂ N lam g f := by
@@ -98,9 +98,9 @@ theorem sqAct_smul {N : ℕ} (lam : DomWeight N) (g : GL (Fin N) ℂ) (c : ℂ) 
   rw [map_smul, smul_comm]
 
 /- English proof (translation)
-Establish `hm : Matrix.conjTranspose (Matrix.transpose (g : Matrix (Fin N) (Fin N) ℂ)) = Matrix.transpose ((gStar g : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)`. Use extensionality with `i j`. Simplify using `[gStar_val, Matrix.conjTranspose_apply]`. Establish `hf : Formalism.REAL.fockF (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `N) (Matrix.transpose (g : Matrix (Fin N) (Fin N) ℂ)) x) y = Formalism.REAL.fockF x (Formalism.GradedWeylDivisibility.rowAct ℂ (n := N) (Matrix.transpose ((gStar g : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)) y) := by`. Rewrite using `[Formalism.GradedWeylDivisibility.fockRowAdj, hm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `sqAct`. Rewrite using `[nf_smul_left, nf_smul_right, detPow_gStar, star_star]`. Unfold `normFock`. Rewrite using `[hf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nf_sqAct_adj {N : ℕ} (lam : DomWeight N) (g : GL (Fin N) ℂ) (x y : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam (sqAct ℂ N lam g x) y = normFock lam x (sqAct ℂ N lam (gStar g) y) := by
@@ -117,14 +117,14 @@ theorem nf_sqAct_adj {N : ℕ} (lam : DomWeight N) (g : GL (Fin N) ℂ) (x y : M
   rw [hf]
 
 /- English proof (translation)
-Rewrite using `[nf_sqAct_adj, gStar_gStar]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nf_sqAct_adj' {N : ℕ} (lam : DomWeight N) (g : GL (Fin N) ℂ) (x y : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam x (sqAct ℂ N lam g y) = normFock lam (sqAct ℂ N lam (gStar g) x) y := by
   rw [nf_sqAct_adj, gStar_gStar]
 
 /- English proof (translation)
-Introduce `i j hij`. Unfold `DomWeight.natW`. Conclude with `Int.toNat_le_toNat (by have := lam.anti hij; linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem natW_anti {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   intro i j hij
@@ -132,13 +132,13 @@ theorem natW_anti {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   exact Int.toNat_le_toNat (by have := lam.anti hij; linarith)
 
 /- English proof (translation)
-The claim follows from `Formalism.GradedWeylDivisibility.hwMem ℂ N N le_rfl lam.natW (natW_anti lam)`.
+A detailed English derivation is pending.
 -/
 theorem extremal_mem {N : ℕ} (lam : DomWeight N) : extremal ℂ N lam ∈ nablaSq ℂ N lam :=
   Formalism.GradedWeylDivisibility.hwMem ℂ N N le_rfl lam.natW (natW_anti lam)
 
 /- English proof (translation)
-The claim follows from `Formalism.GradedWeylDivisibility.hwNe ℂ N N le_rfl lam.natW`.
+A detailed English derivation is pending.
 -/
 theorem extremal_ne {N : ℕ} (lam : DomWeight N) : extremal ℂ N lam ≠ 0 :=
   Formalism.GradedWeylDivisibility.hwNe ℂ N N le_rfl lam.natW

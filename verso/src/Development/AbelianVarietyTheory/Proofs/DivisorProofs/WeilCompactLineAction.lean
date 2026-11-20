@@ -17,9 +17,9 @@ namespace GlobalTheory.AdCompactLine
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h0 : u • (mat g - 1) = 0` using `hg u hu`. Establish `h1 : mat k * mat k⁻¹ = 1` using `by show ((k * k⁻¹ : UA σ W.J) : GL (Fin d) (AE F E)).1 = 1`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : mat (k * g * k⁻¹) - 1 = mat k * (mat g - 1) * mat k⁻¹`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, h1]`. Both sides reduce to the same expression. Use `show u • (mat (k * g * k⁻¹) - 1) = 0`. Rewrite using `[h2, ← Matrix.smul_mul, ← Matrix.mul_smul, h0, Matrix.mul_zero, Matrix.zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_UAt {d : ℕ} {W : Spc F E d} (k g : UA σ W.J) (hg : g ∈ UAt σ W (evI F)) :
     k * g * k⁻¹ ∈ UAt σ W (evI F) := by
@@ -36,7 +36,7 @@ theorem conj_mem_UAt {d : ℕ} {W : Spc F E d} (k g : UA σ W.J) (hg : g ∈ UAt
   rw [h2, ← Matrix.smul_mul, ← Matrix.mul_smul, h0, Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-The claim follows from `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _ haveI : IsTopologicalRing (Matrix (Fin d) (Fin d) (AE F E)) := Matrix.topologicalRing haveI : IsTopologicalGroup (GL (F …`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_lines {d : ℕ} {W : Spc F E d} (k : UA σ W.J) (δ : Multiplicative ℝ →* UA σ W.J) (hδ : δ ∈ Lines σ W) :
     (MulAut.conj k).toMonoidHom.comp δ ∈ Lines σ W :=
@@ -49,9 +49,9 @@ theorem conj_mem_lines {d : ℕ} {W : Spc F E d} (k : UA σ W.J) (δ : Multiplic
     fun t => conj_mem_UAt k (δ t) (hδ.2 t)⟩
 
 /- English proof (translation)
-Introduce `g hg`. Establish `hrest : Rest (evI F) (⇑f) (fun x => g fun i => (x i).2)` using `⟨fun x z hz => by show g (fun i => (x i + z i).2) = g (fun i => (x i).2)`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `show (x i).2 + (z i).2 = (x i).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.RealLift.fin_eq_zero_of_at hz i, add_zero], Submodule.subset_span ⟨f, g, hg, rfl⟩⟩`. Conclude with `h _ hrest`.
+A detailed English derivation is pending.
 -/
 theorem sa_of_acts {κ : Type} [Fintype κ] {T : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ} {f f₁ : SInf F κ}
     (h : Acts (evI F) T f f₁) : SA T f f₁ := by
@@ -66,23 +66,21 @@ theorem sa_of_acts {κ : Type} [Fintype κ] {T : ((κ → AF F) → ℂ) → (κ
   exact h _ hrest
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp k _hk γ hγ`. Use `⟨_, conj_mem_lines k γ hγ, fun f hf f₁ f₂ f₃ h₁ h₂ h₃ => ?_⟩` and prove the remaining obligations. Establish `hb` using `hp.base`. Establish `hX` using `hp.herm`. Establish `hW` using `hp.skew`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hder` using `GlobalTheory.RealLift.Main.i_derex`. Establish `hvl` using `GlobalTheory.RealLift.Main.i_vacline hder`. Establish `hfe` using `GlobalTheory.RealLift.Main.i_fockex hder`. Use `choose A hA hAθ using fun w => GlobalTheory.RealLift.Main.i_frameex _ _ _ _ _ (hX.sig w) (hX.cartan w)`. Use `choose C hC hCθ using fun w => GlobalTheory.RealLift.Main.i_frameex _ _ _ _ _ (hW.sig w) (hW.cartan w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F X.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[GlobalTheory.RealLift.Main.incM_map_piInf, one_smul]`. Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[GlobalTheory.RealLift.Main.incM_map_piInf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hC w`. Establish `fr : Framed B.emb (incM F X.J) (incM F W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`. Take `⟨Φ, hΦ⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C hb.cm hb.std fr`. Establish `hr` using `GlobalTheory.RealLift.Main.i_polrange GlobalTheory.RealLift.actsLaws hder hvl F E σ _ _ _ _ _ _ X W M B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`. Establish `hsp : IsUSplitting (adeleClass F) B.ψ M.co (actAB (cA σ)) om` using `IsUWeilPair.isUSplitting hp.weil`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsp2` using `GlobalTheory.WeilSchrodinger.isUSplitting_inr hsp`. Take `⟨c, hc⟩` from `GlobalTheory.RealLift.Main.i_liescalar hP hder hvl F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C Φ _ hb.cm hb.std fr hΦ hsp2`. Take `⟨Yg, -, hY⟩` from `GlobalTheory.RealLift.Main.i_genex F E σ (Fin d) _ _ B.emb (incM F W.J) Complex.I C hb.cm hC1 γ hγ`. Take `⟨T0, rfl⟩` from `GlobalTheory.RealLift.Main.pol_eq B M Φ hr hf`. Take `⟨D, hSD⟩ : ∃ D, SD (fun t => om (1, γ (Multiplicative.ofAdd t))) (Φ T0) D` from `⟨_, hc γ hγ Yg hY T0⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hAD : ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) (Φ T0) D` using `(GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) (Φ T0) D D).1 _ (fun t => map_zero _) hSD`. Establish `e0 : f₂ = D` using `(GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) (Φ T0) f₂ D).2.2.1 _ h₂ hAD`. Substitute `e0` using the available equality. Establish `hSD2 : SD (fun t => om (1, k * γ (Multiplicative.ofAdd t) * k⁻¹)) f₁ f₃`. Introduce `g hg l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl' : l ∘ₗ om (1, k) ∈ (adeleClass F).adm (Fin n × Fin d)` using `hsp.adm (1, k) l hl`. Establish `e1` using `sa_of_acts h₁ g hg`. Establish `e2` using `sa_of_acts h₃ g hg`. Establish `e3 : ∀ t : ℝ, om (1, k * γ (Multiplicative.ofAdd t) * k⁻¹) (pureA F (⇑f₁) g) = om (1, k) (om (1, γ (Multiplicative.ofAdd t)) (pureA F (⇑(Φ T0)) g))`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hq : ((1 : UA σ X.J), k * γ (Multiplicative.ofAdd t) * k⁻¹) * (1, k) = (1, k) * (1, γ (Multiplicative.ofAdd t))` using `Prod.ext (by simp) (by simp)`. Rewrite using `[← e1, ← Module.End.mul_apply, ← map_mul, hq, map_mul, Module.End.mul_apply]`. Simplify using `only [e3]`. Use `hSD g hg _ hl'` as an intermediate fact. Simplify `this` using `only [LinearMap.comp_apply, e2]`.
-
-Conclude with `(GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) f₁ f₃ f₃).1 _ (fun t => map_zero _) hSD2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem actsD_conj : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),

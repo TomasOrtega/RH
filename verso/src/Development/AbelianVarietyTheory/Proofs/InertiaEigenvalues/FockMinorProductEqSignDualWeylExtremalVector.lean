@@ -12,23 +12,23 @@ noncomputable def lead {n : ℕ} (y : Matrix (Fin n) (Fin n) ℂ) (k : ℕ) : �
   if h : k ≤ n then (y.submatrix (Fin.castLE h) (Fin.castLE h)).det else 1
 
 /- English proof (translation)
-Simplify using `[lead]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lead_zero {n : ℕ} (y : Matrix (Fin n) (Fin n) ℂ) : lead y 0 = 1 := by
   simp [lead]
 
 /- English proof (translation)
-Simplify using `[lead]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lead_self {n : ℕ} (y : Matrix (Fin n) (Fin n) ℂ) : lead y n = y.det := by
   simp [lead]
 
 /- English proof (translation)
-Take `⟨e, hl, hr⟩` from `GlobalTheory.ValCmp.exists_equiv_castLE_rev hk`. Establish `hj` using `GlobalTheory.ValCmp.jacobi_blocks_of_mul (y.val.submatrix e e) ((y⁻¹).val.submatrix e e) 1 (by`. Rewrite using `[Matrix.submatrix_mul_equiv, Units.mul_inv, one_smul, Matrix.submatrix_one_equiv])`. Establish `e1 : (y.val.submatrix e e).toBlocks₁₁ = y.val.submatrix (Fin.castLE (Nat.sub_le n k)) (Fin.castLE (Nat.sub_le n k))`. Use extensionality with `a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.toBlocks₁₁, hl]`. Establish `e2 : ((y⁻¹).val.submatrix e e).toBlocks₂₂ = Matrix.of fun a b : Fin k => (y⁻¹).val (Fin.rev (Fin.castLE hk a)) (Fin.rev (Fin.castLE hk b))`. Use extensionality with `a b`. Simplify using `only [Matrix.toBlocks₂₂, hr, Matrix.of_apply, Matrix.submatrix_apply]`. Rewrite `hj` using `[e1, e2, one_pow, one_mul, Matrix.det_submatrix_equiv_self]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hj, lead, dif_pos (Nat.sub_le n k), Matrix.coe_units_inv, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_inv_rev {n k : ℕ} (hk : k ≤ n) (y : GL (Fin n) ℂ) :
     (Matrix.of fun a b : Fin k => (y⁻¹).val (Fin.rev (Fin.castLE hk a)) (Fin.rev (Fin.castLE hk b))).det =
@@ -50,9 +50,9 @@ theorem det_inv_rev {n k : ℕ} (hk : k ≤ n) (y : GL (Fin n) ℂ) :
 variable {D : D7} {m n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[minorPlus, AlgHom.map_det, lead, dif_pos hn]`. Use `congr 1`. Use extensionality with `a b`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : b.val < m ∧ a.val < n` using `⟨by omega, by omega⟩`. Establish `h2 : b.val < p τ` using `by omega`. Establish `h3 : b.val < n` using `by omega`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, varF, dif_pos h1, MvPolynomial.aeval_X, fockPt, if_pos h2, dif_pos h3, Matrix.submatrix_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem aeval_minorPlus (p : D.what₂.Tau → ℕ) (y : GLR D n) (τ : D.what₂.Tau) {k : ℕ} (hk : k ≤ p τ) (hm : k ≤ m) (hn : k ≤ n) :
     MvPolynomial.aeval (fockPt p y) (minorPlus τ k : PolF D m n) = lead (y τ).val k := by
@@ -69,11 +69,11 @@ theorem aeval_minorPlus (p : D.what₂.Tau → ℕ) (y : GLR D n) (τ : D.what�
   rfl
 
 /- English proof (translation)
-Rewrite using `[minorMinus, AlgHom.map_det, ← det_inv_rev hn, ← Matrix.det_permute', ← Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `b a`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : p τ + b.val < m ∧ n - k + a.val < n` using `⟨by omega, by omega⟩`. Establish `h2 : ¬ p τ + b.val < p τ` using `by omega`. Establish `h3 : p τ + b.val - p τ < n` using `by omega`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, varF, dif_pos h1, MvPolynomial.aeval_X, fockPt, if_neg h2, dif_pos h3, Matrix.submatrix_apply, Matrix.transpose_apply, id]`. Use `congrArg₂ _ (congrArg Fin.rev (Fin.ext ?_)) (Fin.ext ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Simplify using `only [Fin.revPerm_apply, Fin.val_rev, Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem aeval_minorMinus (p : D.what₂.Tau → ℕ) (y : GLR D n) (τ : D.what₂.Tau) {k : ℕ} (hm : p τ + k ≤ m) (hn : k ≤ n) :
     MvPolynomial.aeval (fockPt p y) (minorMinus τ (p τ) k : PolF D m n) =
@@ -94,9 +94,9 @@ theorem aeval_minorMinus (p : D.what₂.Tau → ℕ) (y : GLR D n) (τ : D.what�
     omega
 
 /- English proof (translation)
-Use `Finset.sum_range_sub' (fun i => if i < q then (a i : ℤ) else 0) q` as an intermediate fact. Simplify using `only [lt_irrefl, if_false, sub_zero] at this`. Use `Nat.cast_injective (R := ℤ) ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_sum, Nat.cast_ite, Nat.cast_zero, ← this]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.mem_range.1 hi` as an intermediate fact. Use `h i` as an intermediate fact. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_drops (q : ℕ) (a : ℕ → ℕ) (h : ∀ i, i + 1 < q → a (i + 1) ≤ a i) :
     ∑ i ∈ Finset.range q, (a i - if i + 1 < q then a (i + 1) else 0) = if 0 < q then a 0 else 0 := by
@@ -110,31 +110,29 @@ theorem sum_drops (q : ℕ) (a : ℕ → ℕ) (h : ∀ i, i + 1 < q → a (i + 1
   split_ifs <;> omega
 
 /- English proof (translation)
-Break down `n with _ | k` into its components or cases. Take `rfl : p = 0` from `by omega`. Take `rfl : q = 0` from `by omega`. Simplify using `[h0]`. Establish `hanti : ∀ i j (hi : i < k + 1) (hj : j < k + 1), i ≤ j → lam.w ⟨j, hj⟩ ≤ lam.w ⟨i, hi⟩` using `fun i j hi hj h => lam.anti (show (⟨i, hi⟩ : Fin (k + 1)) ≤ ⟨j, hj⟩ from h)`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ham : ∀ i, i + 1 < q → am (i + 1) ≤ am i`. Introduce `i hi`. Use `hanti (k - (i + 1)) (k - i) (by omega) (by omega) (by omega)` as an intermediate fact. Rewrite `this` using `[hl, hl]`. Simplify using `only at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite `this` using `[show k + 1 - 1 - (k - i) = i by omega, show k + 1 - 1 - (k - (i + 1)) = i + 1 by omega]`. Apply the tactic sequence `split_ifs at this <;> omega`. Establish `hshift : lam.detShift = lam.w ⟨k, Nat.lt_succ_self k⟩`. Simplify using `[DomWeight.detShift]`. Use `set A : ℕ → ℕ := fun i => if i < p then ap i - if i + 1 < p then ap (i + 1) else 0 else 0 with hA`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set B : ℕ → ℕ := fun i => if i < q then am i - if i + 1 < q then am (i + 1) else 0 else 0 with hB`. Establish `eA : (∏ i ∈ Finset.range p, L (i + 1) ^ (ap i - if i + 1 < p then ap (i + 1) else 0)) = (∏ i ∈ Finset.range k, L (i + 1) ^ A i) * L (k + 1) ^ A k`. Rewrite using `[← Finset.prod_range_succ (fun i => L (i + 1) ^ A i), ← Finset.prod_subset (Finset.range_subset_range.2 (show p ≤ k + 1 by omega)) (fun i _ hi => by rw [hA]; dsimp only; rw [if_neg (fun h => hi (Finset.mem_range.2 h)), pow_zero])]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[hA]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[if_pos (Finset.mem_range.1 hi)]`. Establish `eB : (∏ i ∈ Finset.range q, L (k + 1 - (i + 1)) ^ (am i - if i + 1 < q then am (i + 1) else 0)) = ∏ i ∈ Finset.range k, L (i + 1) ^ B (k - 1 - i)`. Establish `: ∏ i ∈ Finset.range (k + 1), L (k + 1 - (i + 1)) ^ B i = ∏ i ∈ Finset.range k, L (i + 1) ^ B (k - 1 - i)`. Rewrite using `[Finset.prod_range_succ, Nat.sub_self, h0, one_pow, mul_one, ← Finset.prod_range_reflect]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Use `Finset.mem_range.1 hi` as an intermediate fact. Rewrite using `[show k + 1 - (k - 1 - i + 1) = i + 1 by omega]`. Rewrite using `[← this, ← Finset.prod_subset (Finset.range_subset_range.2 (show q ≤ k + 1 by omega)) (fun i _ hi => by rw [hB]; dsimp only; rw [if_neg (fun h => hi (Finset.mem_range.2 h)), pow_zero])]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite using `[hB]`. Simplify using `only`. Rewrite using `[if_pos (Finset.mem_range.1 hi)]`. Establish `eR : ∏ s : Fin (k + 1), L (s + 1) ^ (lam.natW s - Formalism.GradedWeylDivisibility.nuNext lam.natW s) = ∏ i ∈ Finset.range k, L (i + 1) ^ (A i + B (k - 1 - i))`. Rewrite using `[Fin.prod_univ_castSucc, show lam.natW (Fin.last k) = 0 by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[DomWeight.natW, hshift]`. Simplify using `[Fin.last], Nat.zero_sub, pow_zero, mul_one,`. Use the proof step `← Fin.prod_univ_eq_prod_range (fun i => L (i + 1) ^ (A i + B (k - 1 - i)))]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `s`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hs' : s + 1 < k + 1` using `by omega`. Simplify using `only [Fin.castSucc_mk, Formalism.GradedWeylDivisibility.nuNext, dif_pos hs', DomWeight.natW, hshift]`. Use `congr 1`. Establish `a1` using `hanti s (s + 1) (by omega) hs' (by omega)`. Establish `a2` using `hanti (s + 1) k hs' (by omega) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Establish `b1` using `hl ⟨s, by omega⟩`. Establish `b2` using `hl ⟨s + 1, hs'⟩`. Simplify using `only at b1 b2`. Rewrite `b1` using `[show k + 1 - 1 - s = k - 1 - s + 1 by omega]`. Rewrite `b2` using `[show k + 1 - 1 - (s + 1) = k - 1 - s by omega]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hA, hB]`. Simplify using `only`. Apply the tactic sequence `split_ifs at b1 b2 ⊢ <;> omega`. Establish `eS : lam.detShift = c + (A k : ℤ) - ((if 0 < q then am 0 else 0 : ℕ) : ℤ)`. Rewrite using `[hshift, hl, hA]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only`. Rewrite using `[show k + 1 - 1 - k = 0 by omega]`. Apply the tactic sequence `split_ifs <;> omega`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[eA, eB, eR, eS, sum_drops q am ham, zpow_sub₀ hd, zpow_add₀ hd, zpow_natCast, zpow_natCast]`.
-
-Simplify using `only [pow_add, Finset.prod_mul_distrib, inv_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem prod_exponents {n p q : ℕ} (ap am : ℕ → ℕ) (c : ℤ) (lam : DomWeight n) (hle : p + q ≤ n)
     (hl : ∀ i : Fin n, lam.w i = (if i.val < p then (ap i : ℤ) else if n - q ≤ i.val then -(am (n - 1 - i) : ℤ) else 0) + c)
@@ -208,9 +206,9 @@ theorem prod_exponents {n p q : ℕ} (ap am : ℕ → ℕ) (c : ℤ) (lam : DomW
   ring
 
 /- English proof (translation)
-Rewrite using `[extremal, Formalism.GradedWeylDivisibility.hw, map_prod, map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_pow, Formalism.GradedWeylDivisibility.lpMinor, AlgHom.map_det, RingHom.map_det, lead, dif_pos (Nat.succ_le_of_lt s.isLt)]`. Use `congr 2`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[Formalism.GradedWeylDivisibility.blockEmb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_extremal (lam : D.what₂.Tau → DomWeight n) (y : GLR D n) (τ : D.what₂.Tau) :
     MvPolynomial.eval₂Hom (RingHom.id ℂ) (fun v : D.what₂.Tau × Fin n × Fin n => (y v.1).val v.2.1 v.2.2)
@@ -224,13 +222,13 @@ theorem eval_extremal (lam : D.what₂.Tau → DomWeight n) (y : GLR D n) (τ : 
   simp [Formalism.GradedWeylDivisibility.blockEmb]
 
 /- English proof (translation)
-Introduce `D m n w B hw hm`. Use `⟨∏ τ, ∏ i ∈ Finset.range (w.q τ), Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin (i + 1))) ^ (w.am τ i - if i + 1 < w.q τ then w.am τ (i + 1) else 0), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[harmFn_apply, coefFn, ten]`. Generalize the expression as in `B⁻¹ * x = y`. Rewrite using `[Weight.delta, Datum.delta, map_prod, map_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [detFam, MonoidHom.coe_mk, OneHom.coe_mk, Units.coe_prod, Units.val_zpow_eq_zpow_val, GeneralLinearGroup.val_det_apply, Int.cast_prod, Units.val_pow_eq_pow_val, Int.cast_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h1` using `hw.le τ`. Establish `h2` using `hm τ`. Establish `hd : lead (y τ).val n ≠ 0`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[lead_self]`. Conclude with `(GeneralLinearGroup.det (y τ)).ne_zero`. Rewrite using `[eval_extremal, ← lead_self, ← prod_exponents (w.ap τ) (w.am τ) (w.c τ) (w.lam τ) h1 (hw.lam_eq τ) _ (lead_zero _) hd, deltaAt, map_mul, map_prod, map_prod, Finset.prod_congr rfl fun i hi => by`. Use `Finset.mem_range.1 hi` as an intermediate fact. Rewrite using `[map_pow, aeval_minorPlus w.p y τ (by omega) (by omega) (by omega)],`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `Finset.prod_congr (s₁ := Finset.range (w.q τ)) rfl fun i hi => by`. Use `Finset.mem_range.1 hi` as an intermediate fact. Rewrite using `[map_pow, aeval_minorMinus w.p y τ (by omega) (by omega), mul_pow, ← lead_self],`. Use the proof step `Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem harmFn_delta : ∀ (D : D7) (m n : ℕ) (w : Weight D n) (B : GLR D n), w.Good → (∀ τ, w.p τ + w.q τ ≤ m) → ∃ s : ℤˣ, ∀ x, harmFn m w B (w.delta m) x = ((s : ℤ) : ℂ) * coefFn (RingHom.id ℂ) w.lam (ten fun τ => extremal ℂ n (w.lam τ)) (B⁻¹ * x) := by
   intro D m n w B hw hm

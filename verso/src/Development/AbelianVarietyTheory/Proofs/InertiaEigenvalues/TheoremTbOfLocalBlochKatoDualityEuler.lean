@@ -10,7 +10,7 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 namespace GlobalTheory.TheoremTBRecords
 
 /- English proof (translation)
-Introduce `hBK hTD hEC D HW F _Cm`. Take `⟨_J, hA⟩` from `GlobalTheory.LocInputs.ties_and_inputs_of_duality_euler hTD hEC D HW F`. Conclude with `GlobalTheory.T.twistedTorsionClassTheorem_goodCase D HW F hA (GlobalTheory.T.blochKatoLocal_all_of_tateDuality_eulerChar hBK hTD hEC D)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem aux_of_blochKato_tateDuality_eulerChar :
     GlobalTheory.Published.BlochKatoLocal → Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK →

@@ -9,7 +9,7 @@ open Matrix
 namespace PSymplReducePosDef
 
 /- English proof (translation)
-Simplify using `[Fintype.sum_sum_type, Fin.sum_univ_succ, symplCons]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_mul_symplCons {n : ℕ} (c : ℝ) (x : Fin n ⊕ Fin n → ℝ)
     (F : Fin (n + 1) ⊕ Fin (n + 1) → ℝ) :
@@ -23,31 +23,29 @@ end PSymplReducePosDef
 open PSymplReducePosDef in
 
 /- English proof (translation)
-Introduce `n H hH`. Establish `hsymm : ∀ i j, H j i = H i j` using `fun i j => by`. Simplify using `using hH.isHermitian.apply i j`. Establish `hpos : 0 < H (Sum.inl 0) (Sum.inl 0)` using `hH.diag_pos`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.IsHermitian.ext fun a b => ?_` and prove the remaining obligations. Simplify using `only [symplReduce, star_trivial]`. Rewrite using `[hsymm (Sum.map Fin.succ Fin.succ a), hsymm (Sum.map Fin.succ Fin.succ a) (Sum.inl 0), hsymm (Sum.inl 0) (Sum.map Fin.succ Fin.succ b)]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [star_trivial]`. Use `set h := H (Sum.inl 0) (Sum.inl 0) with hh`. Use `set S := ∑ b, H (Sum.inl 0) (Sum.map Fin.succ Fin.succ b) * x b with hS`. Use `set Q := ∑ a, (∑ b, H (Sum.map Fin.succ Fin.succ a) (Sum.map Fin.succ Fin.succ b) * x b) * x a with hQ`. Establish `hT : ∑ a, x a * H (Sum.map Fin.succ Fin.succ a) (Sum.inl 0) = S`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hsymm]`. Expand and normalize the polynomial expressions, which then agree. Establish `hy : symplCons (-(S / h)) 0 x ≠ 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `hz`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `q`. Use `congrFun hz (Sum.map Fin.succ Fin.succ q)` as an intermediate fact. Apply the tactic sequence `cases q <;> simpa [symplCons] using this`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `hH.dotProduct_mulVec_pos hy`. Simplify using `only [star_trivial] at h1`. Establish `hL : symplCons (-(S / h)) 0 x ⬝ᵥ (H *ᵥ symplCons (-(S / h)) 0 x) = (h * (-(S / h)) + S) * (-(S / h)) + (-(S / h)) * S + Q`. Rewrite using `[dotProduct_comm]`. Simplify using `only [dotProduct, mulVec, sum_mul_symplCons]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hh, ← hS]`. Simplify using `only [add_mul, Finset.sum_add_distrib]`. Rewrite using `[← hQ]`. Establish `hc : ∑ q, H (Sum.map Fin.succ Fin.succ q) (Sum.inl 0) * (-(S / h)) * x q = (-(S / h)) * S`. Rewrite using `[← hT, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hRa : ∀ a, ∑ b, (H (Sum.map Fin.succ Fin.succ a) (Sum.map Fin.succ Fin.succ b) - H (Sum.map Fin.succ Fin.succ a) (Sum.inl 0) * H (Sum.inl 0) (Sum.map Fin.succ Fin.succ b) / h) * x b = ∑ b, H (Sum.map Fin.succ Fin.succ a) (Sum.map Fin.succ Fin.succ b) * x b - H (Sum.map Fin.succ F …`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a`. Rewrite using `[hS, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hR : x ⬝ᵥ (symplReduce H *ᵥ x) = Q - S / h * S`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [dotProduct, mulVec, symplReduce]`. Rewrite using `[← hh]`. Simplify using `only [hRa, mul_sub, Finset.sum_sub_distrib]`. Rewrite using `[hQ, ← hT, Finset.sum_div, Finset.sum_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hne : h ≠ 0` using `hpos.ne'`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `key : symplCons (-(S / h)) 0 x ⬝ᵥ (H *ᵥ symplCons (-(S / h)) 0 x) = x ⬝ᵥ (symplReduce H *ᵥ x)`. Rewrite using `[hL, hR]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← key]`.
-
-Conclude with `h1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SymplReducePosDef.proof : SymplReducePosDef.Statement := by
   intro n H hH

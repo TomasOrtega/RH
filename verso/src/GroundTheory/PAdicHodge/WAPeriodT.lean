@@ -22,7 +22,7 @@ local notation "𝔹" => BDeRhamPlus (normInteger ℂ_[p]) p
 local notation "𝔪" => IsLocalRing.maximalIdeal (BDeRhamPlus (normInteger ℂ_[p]) p)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, (𝓣).extNorm_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, (𝓣).extNorm_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem extNorm_pow' {ρ : Set.Ioo (0 : ℝ) 1} (σ : Set.Ioc (0 : ℝ) ρ) (x : (𝓣).RobbaExt ρ) (n : ℕ) :
     (𝓣).extNorm ρ σ (x ^ n) = (𝓣).extNorm ρ σ x ^ n := by
@@ -31,7 +31,7 @@ theorem extNorm_pow' {ρ : Set.Ioo (0 : ℝ) 1} (σ : Set.Ioc (0 : ℝ) ρ) (x :
   | succ n ih => rw [pow_succ, pow_succ, (𝓣).extNorm_mul, ih]
 
 /- English proof (translation)
-Rewrite using `[awayToExt_apply, extNorm_coe]`. Use `show gaussNorm ((𝓣).coeffB (toB ℂ_[p] p (algebraMap _ 𝔸 y))) σ ≤ 1`. Rewrite using `[toB_algebraMap, coeffB_algebraMap]`. Conclude with `(𝓣).gaussNorm_le_one_of_mem_int (incl_mem_int y) (rad_pos ρ σ) (rad_lt_one ρ σ).le`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extNorm_awayToExt_algebraMap_le' (ρ : Set.Ioo (0 : ℝ) 1) (σ : Set.Ioc (0 : ℝ) ρ)
     (y : AInf ℂ_[p] p) : (𝓣).extNorm ρ σ (awayToExt p ρ (algebraMap _ 𝔸 y)) ≤ 1 := by
@@ -41,7 +41,7 @@ theorem extNorm_awayToExt_algebraMap_le' (ρ : Set.Ioo (0 : ℝ) 1) (σ : Set.Io
   exact (𝓣).gaussNorm_le_one_of_mem_int (incl_mem_int y) (rad_pos ρ σ) (rad_lt_one ρ σ).le
 
 /- English proof (translation)
-Rewrite using `[← awayToExt_natCast, awayToExt_apply, extNorm_coe]`. Use `show gaussNorm ((𝓣).coeffB (toB ℂ_[p] p (algebraMap _ 𝔸 (p : AInf ℂ_[p] p)))) σ = _`. Rewrite using `[toB_algebraMap, coeffB_algebraMap, map_natCast (incl ℂ_[p] p)]`. Conclude with `(𝓣).gaussNorm_π (rad_pos ρ σ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extNorm_natCast_p' (ρ : Set.Ioo (0 : ℝ) 1) (σ : Set.Ioc (0 : ℝ) ρ) :
     (𝓣).extNorm ρ σ (p : (𝓣).RobbaExt ρ) = σ := by
@@ -51,7 +51,7 @@ theorem extNorm_natCast_p' (ρ : Set.Ioo (0 : ℝ) 1) (σ : Set.Ioc (0 : ℝ) ρ
   exact (𝓣).gaussNorm_π (rad_pos ρ σ)
 
 /- English proof (translation)
-Establish `h : (𝓣).extNorm ρ σ (p : (𝓣).RobbaExt ρ) * (𝓣).extNorm ρ σ (awayToExt p ρ (IsLocalization.Away.invSelf (p : AInf ℂ_[p] p))) = 1`. Rewrite using `[← (𝓣).extNorm_mul, ← awayToExt_natCast, ← map_mul, IsLocalization.Away.mul_invSelf, map_one, (𝓣).extNorm_one]`. Rewrite `h` using `[extNorm_natCast_p']`. Conclude with `eq_inv_of_mul_eq_one_right h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extNorm_awayToExt_invSelf (ρ : Set.Ioo (0 : ℝ) 1) (σ : Set.Ioc (0 : ℝ) ρ) :
     (𝓣).extNorm ρ σ (awayToExt p ρ (IsLocalization.Away.invSelf (p : AInf ℂ_[p] p))) = (σ : ℝ)⁻¹ := by
@@ -67,7 +67,7 @@ variable (p) in
 def unitInv (n : ℕ) : ℤ_[p] := ((n / p ^ n.factorization p : ℕ) : ℤ_[p]).inv
 
 /- English proof (translation)
-The claim follows from `PadicInt.mul_inv (PadicInt.norm_natCast_eq_one_iff.2 (Nat.coprime_ordCompl hp.out hn))`.
+A detailed English derivation is pending.
 -/
 theorem natCast_mul_unitInv {n : ℕ} (hn : n ≠ 0) :
     ((n / p ^ n.factorization p : ℕ) : ℤ_[p]) * unitInv p n = 1 :=
@@ -80,11 +80,9 @@ def logCoeff (n : ℕ) : 𝔸 :=
     IsLocalization.Away.invSelf (p : AInf ℂ_[p] p) ^ n.factorization p
 
 /- English proof (translation)
-Use `set X := algebraMap (AInf ℂ_[p] p) 𝔸 (IsPerfectoidField.padicIntToWitt p ((n / p ^ n.factorization p : ℕ) : ℤ_[p])) with hX`. Use `set Y := algebraMap (AInf ℂ_[p] p) 𝔸 (IsPerfectoidField.padicIntToWitt p (unitInv p n)) with hY`. Use `set P := algebraMap (AInf ℂ_[p] p) 𝔸 (p : AInf ℂ_[p] p) with hP`. Use `set I := IsLocalization.Away.invSelf (S := 𝔸) (p : AInf ℂ_[p] p) with hI`. Establish `e1 : (n : 𝔸) = P ^ n.factorization p * X`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hP, hX, map_natCast, map_natCast, map_natCast, ← Nat.cast_pow, ← Nat.cast_mul, Nat.ordProj_mul_ordCompl_eq_self]`. Establish `e2 : X * Y = 1`. Rewrite using `[hX, hY, ← map_mul, ← map_mul, natCast_mul_unitInv hn, map_one, map_one]`. Establish `e3 : P ^ n.factorization p * I ^ n.factorization p = 1`. Rewrite using `[← mul_pow, hP, hI, IsLocalization.Away.mul_invSelf (S := 𝔸) (p : AInf ℂ_[p] p), one_pow]`.
-
-Rewrite using `[e1, logCoeff, ← hY, ← hI]`. Take the linear combination `(-1 : 𝔸) ^ (n + 1) * (X * Y) * e3 + (-1 : 𝔸) ^ (n + 1) * e2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem natCast_mul_logCoeff {n : ℕ} (hn : n ≠ 0) : (n : 𝔸) * logCoeff p n = (-1) ^ (n + 1) := by
   set X := algebraMap (AInf ℂ_[p] p) 𝔸
@@ -103,9 +101,9 @@ theorem natCast_mul_logCoeff {n : ℕ} (hn : n ≠ 0) : (n : 𝔸) * logCoeff p 
   linear_combination (-1 : 𝔸) ^ (n + 1) * (X * Y) * e3 + (-1 : 𝔸) ^ (n + 1) * e2
 
 /- English proof (translation)
-Establish `h` using `congrArg f (natCast_mul_logCoeff (p := p) hn)`. Rewrite `h` using `[map_mul, map_natCast, map_pow, map_neg, map_one]`. Establish `hn' : (n : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `hu : IsUnit (n : 𝔹)`. Use `(isUnit_iff_ne_zero.2 hn').map (algebraMap ℚ 𝔹)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[h, ← map_natCast (algebraMap ℚ 𝔹), ← map_mul, mul_div_cancel₀ _ hn', map_pow, map_neg, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_logCoeff (f : 𝔸 →+* 𝔹) {n : ℕ} (hn : n ≠ 0) :
     f (logCoeff p n) = algebraMap ℚ 𝔹 ((-1) ^ (n + 1) / n) := by
@@ -119,7 +117,7 @@ theorem map_logCoeff (f : 𝔸 →+* 𝔹) {n : ℕ} (hn : n ≠ 0) :
   rw [h, ← map_natCast (algebraMap ℚ 𝔹), ← map_mul, mul_div_cancel₀ _ hn', map_pow, map_neg, map_one]
 
 /- English proof (translation)
-Rewrite using `[logCoeff, map_mul, map_mul, map_pow, map_pow, map_neg, map_one, (𝓣).extNorm_mul, (𝓣).extNorm_mul, extNorm_pow', extNorm_pow', (𝓣).extNorm_neg, (𝓣).extNorm_one, one_pow, one_mul, extNorm_awayToExt_invSelf]`. Conclude with `mul_le_of_le_one_left (by have := rad_pos ρ σ; positivity) (extNorm_awayToExt_algebraMap_le' ρ σ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extNorm_awayToExt_logCoeff_le (ρ : Set.Ioo (0 : ℝ) 1) (σ : Set.Ioc (0 : ℝ) ρ) (n : ℕ) :
     (𝓣).extNorm ρ σ (awayToExt p ρ (logCoeff p n)) ≤ (σ : ℝ)⁻¹ ^ n.factorization p := by
@@ -130,13 +128,13 @@ theorem extNorm_awayToExt_logCoeff_le (ρ : Set.Ioo (0 : ℝ) 1) (σ : Set.Ioc (
     (extNorm_awayToExt_algebraMap_le' ρ σ _)
 
 /- English proof (translation)
-Establish `hp1 : (1 : ℝ) < p` using `Nat.one_lt_cast.2 hp.out.one_lt`. Take `⟨K, hK⟩` from `pow_unbounded_of_one_lt σ⁻¹ hp1`. Establish `hg` using `(tendsto_pow_const_mul_const_pow_of_abs_lt_one K (show |a| < 1 by rw [abs_of_pos ha0]; exact ha)).comp (tendsto_add_atTop_nat (k + 1))`. Establish `hg2` using `hg.div_const (a ^ (k + 1))`. Rewrite `hg2` using `[zero_div]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `squeeze_zero (fun N => by positivity) (fun N => ?_) hg2` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Establish `hak : 0 < a ^ (k + 1)` using `pow_pos ha0 _`. Rewrite using `[pow_add, ← mul_assoc, mul_div_assoc, div_self hak.ne', mul_one]`. Use `mul_le_mul_of_nonneg_right ?_ (pow_nonneg ha0.le N)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : ((p ^ (N + k).factorization p : ℕ) : ℝ) ≤ ((N + (k + 1) : ℕ) : ℝ)`. Use `Nat.cast_le.2 ?_` and prove the remaining obligations. Distinguish the cases in `h0 : N + k = 0`. Rewrite using `[h0, Nat.factorization_zero, Finsupp.zero_apply, pow_zero]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `(Nat.ordProj_le p h0).trans (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tendsto_inv_pow_factorization_mul_pow {σ a : ℝ} (hσ0 : 0 < σ) (ha0 : 0 < a) (ha : a < 1)
     (k : ℕ) : Tendsto (fun N : ℕ => σ⁻¹ ^ (N + k).factorization p * a ^ N) atTop (𝓝 0) := by
@@ -173,9 +171,7 @@ def logTail (ρ : Set.Ioo (0 : ℝ) 1) (z : 𝔸) (k : ℕ) : (𝓣).RobbaExt ρ
 section Series
 
 /- English proof (translation)
-Use `(𝓣).cauchySeq_of_increments fun σ => ?_` and prove the remaining obligations. Establish `hbd : ∀ N, (𝓣).extNorm ρ σ (awayToExt p ρ (logPSum p z k (N + 1)) - awayToExt p ρ (logPSum p z k N)) ≤ (σ : ℝ)⁻¹ ^ (N + k).factorization p * a ^ N`. Introduce `N`. Rewrite using `[← map_sub, logPSum, logPSum, Finset.sum_range_succ, add_sub_cancel_left, map_mul, (𝓣).extNorm_mul, map_pow, extNorm_pow']`. Conclude with `mul_le_mul (extNorm_awayToExt_logCoeff_le ρ σ (N + k)) (pow_le_pow_left₀ ((𝓣).extNorm_nonneg σ _) (hz σ) N) (pow_nonneg ((𝓣).extNorm_nonneg σ _) N) (by have := rad_pos ρ σ; positivity)`.
-
-Conclude with `squeeze_zero (fun N => (𝓣).extNorm_nonneg σ _) hbd (tendsto_inv_pow_factorization_mul_pow (rad_pos ρ σ) ha0 ha1 k)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cauchySeq_logPSum {ρ : Set.Ioo (0 : ℝ) 1} {z : 𝔸} {a : ℝ} (ha0 : 0 < a) (ha1 : a < 1)
     (hz : ∀ σ : Set.Ioc (0 : ℝ) ρ, (𝓣).extNorm ρ σ (awayToExt p ρ z) ≤ a) (k : ℕ) :
@@ -193,7 +189,7 @@ theorem cauchySeq_logPSum {ρ : Set.Ioo (0 : ℝ) 1} {z : 𝔸} {a : ℝ} (ha0 :
     (tendsto_inv_pow_factorization_mul_pow (rad_pos ρ σ) ha0 ha1 k)
 
 /- English proof (translation)
-The claim follows from `(cauchySeq_logPSum ha0 ha1 hz k).tendsto_limUnder`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_logTail {ρ : Set.Ioo (0 : ℝ) 1} {z : 𝔸} {a : ℝ} (ha0 : 0 < a) (ha1 : a < 1)
     (hz : ∀ σ : Set.Ioc (0 : ℝ) ρ, (𝓣).extNorm ρ σ (awayToExt p ρ z) ≤ a) (k : ℕ) :
@@ -201,7 +197,7 @@ theorem tendsto_logTail {ρ : Set.Ioo (0 : ℝ) 1} {z : 𝔸} {a : ℝ} (ha0 : 0
   (cauchySeq_logPSum ha0 ha1 hz k).tendsto_limUnder
 
 /- English proof (translation)
-Rewrite using `[logPSum, Finset.sum_range_succ', logPSum, Finset.mul_sum, add_comm]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show i + 1 + k = i + (k + 1) by omega, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -215,7 +211,7 @@ theorem logPSum_succ (z : 𝔸) (k N : ℕ) :
     ring
 
 /- English proof (translation)
-Establish `h1` using `(tendsto_logTail ha0 ha1 hz k).comp (tendsto_add_atTop_nat 1)`. Establish `h2` using `(tendsto_const_nhds (x := awayToExt p ρ (logCoeff p k))).add ((tendsto_const_nhds (x := awayToExt p ρ z)).mul (tendsto_logTail ha0 ha1 hz (k + 1)))`. Use `tendsto_nhds_unique h1 (h2.congr fun N => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, logPSum_succ, map_add, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem logTail_succ {ρ : Set.Ioo (0 : ℝ) 1} {z : 𝔸} {a : ℝ} (ha0 : 0 < a) (ha1 : a < 1)
     (hz : ∀ σ : Set.Ioc (0 : ℝ) ρ, (𝓣).extNorm ρ σ (awayToExt p ρ z) ≤ a) (k : ℕ) :
@@ -227,7 +223,7 @@ theorem logTail_succ {ρ : Set.Ioo (0 : ℝ) 1} {z : 𝔸} {a : ℝ} (ha0 : 0 < 
   simp only [Function.comp_apply, logPSum_succ, map_add, map_mul]
 
 /- English proof (translation)
-Establish `h1` using `(((𝓣).continuous_res h).tendsto _).comp (tendsto_logTail ha0 ha1 hz k)`. Use `tendsto_nhds_unique (h1.congr fun N => ?_) (tendsto_logTail hb0 hb1 hz' k)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, res_awayToExt]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem res_logTail {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1} {z : 𝔸} (h : (ρ1 : ℝ) ≤ ρ0) {a b : ℝ} (ha0 : 0 < a) (ha1 : a < 1)
     (hz : ∀ σ : Set.Ioc (0 : ℝ) ρ0, (𝓣).extNorm ρ0 σ (awayToExt p ρ0 z) ≤ a)
@@ -239,7 +235,7 @@ theorem res_logTail {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1} {z : 𝔸} (h : (ρ1 : ℝ) 
   simp only [Function.comp_apply, res_awayToExt]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[ih, logTail_succ ha0 ha1 hz (m + 1), Finset.sum_range_succ, map_add, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem logTail_eq_sum {ρ : Set.Ioo (0 : ℝ) 1} {z : 𝔸} {a : ℝ} (ha0 : 0 < a) (ha1 : a < 1)
     (hz : ∀ σ : Set.Ioc (0 : ℝ) ρ, (𝓣).extNorm ρ σ (awayToExt p ρ z) ≤ a) (m : ℕ) :
@@ -259,9 +255,9 @@ variable (p) in
 def muA (ε : 𝒪♭) : 𝔸 := algebraMap (AInf ℂ_[p] p) 𝔸 (AInf.mu ε)
 
 /- English proof (translation)
-Establish `h` using `AInf.norm_sub_one_pow (K := ℂ_[p]) hε hζ`. Establish `hp1 : p - 1 ≠ 0` using `Nat.sub_ne_zero_of_lt hp.out.one_lt`. Assume the negation of the conclusion as `hge`. Use `push Not at hge`. Establish `h1 : 1 ≤ ‖ε - 1‖ ^ (p - 1)` using `one_le_pow₀ hge`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ‖(p : ℂ_[p])‖ ^ p < 1` using `pow_lt_one₀ (norm_nonneg _) (by rw [norm_natCast_p]; exact inv_p_lt_one) hp.out.ne_zero`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_sub_one_lt_one {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) : ‖ε - 1‖ < 1 := by
@@ -275,13 +271,13 @@ theorem norm_sub_one_lt_one {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
   linarith
 
 /- English proof (translation)
-Rewrite using `[muA, awayToExt_apply, extNorm_coe]`. Use `show gaussNorm ((𝓣).coeffB (toB ℂ_[p] p (algebraMap _ 𝔸 (AInf.mu ε)))) σ ≤ _`. Rewrite using `[toB_algebraMap, coeffB_algebraMap]`. Establish `hσ0` using `rad_pos ρ σ`. Establish `hσ1` using `rad_lt_one ρ σ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `gaussNorm_le fun n => ?_` and prove the remaining obligations. Break down `lt_or_ge n 0 with hn | hn` into its components or cases. Rewrite using `[(𝓣).zcoeff_of_neg _ hn, norm_zero, zero_mul]`. Check the signs of the components of the expression. Use `lift n to ℕ using hn`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[zcoeff_natCast, zpow_natCast]`. Break down `n with _ | n` into its components or cases. Establish `h0 : (AInf.mu ε).coeff 0 = ε - 1`. Rewrite using `[AInf.mu, ← WittVector.constantCoeff_apply, map_sub, map_one, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`. Rewrite using `[pow_zero, mul_one, coeff_zero, teichLift_red, incl_coeff, h0, norm_algebraMap_preTilt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Conclude with `le_max_left _ _`. Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem extNorm_muA_le (ε : 𝒪♭) (ρ : Set.Ioo (0 : ℝ) 1) (σ : Set.Ioc (0 : ℝ) ρ) :
     (𝓣).extNorm ρ σ (awayToExt p ρ (muA p ε)) ≤ max ‖ε - 1‖ σ := by
@@ -308,7 +304,7 @@ theorem extNorm_muA_le (ε : 𝒪♭) (ρ : Set.Ioo (0 : ℝ) 1) (σ : Set.Ioc (
         _ = σ := by rw [one_mul, pow_one]
 
 /- English proof (translation)
-The claim follows from `max_lt (norm_sub_one_lt_one hε hζ) ρ.2.2`.
+A detailed English derivation is pending.
 -/
 theorem muBound_lt_one {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) (ρ : Set.Ioo (0 : ℝ) 1) :
@@ -316,13 +312,13 @@ theorem muBound_lt_one {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
   max_lt (norm_sub_one_lt_one hε hζ) ρ.2.2
 
 /- English proof (translation)
-The claim follows from `lt_max_of_lt_right ρ.2.1`.
+A detailed English derivation is pending.
 -/
 theorem muBound_pos (ε : 𝒪♭) (ρ : Set.Ioo (0 : ℝ) 1) : 0 < max ‖ε - 1‖ (ρ : ℝ) :=
   lt_max_of_lt_right ρ.2.1
 
 /- English proof (translation)
-The claim follows from `(extNorm_muA_le ε ρ σ).trans (max_le_max le_rfl σ.2.2)`.
+A detailed English derivation is pending.
 -/
 theorem extNorm_muA_le_bound (ε : 𝒪♭) (ρ : Set.Ioo (0 : ℝ) 1) (σ : Set.Ioc (0 : ℝ) ρ) :
     (𝓣).extNorm ρ σ (awayToExt p ρ (muA p ε)) ≤ max ‖ε - 1‖ (ρ : ℝ) :=
@@ -338,7 +334,7 @@ variable (p) in
 def tTilde (ε : 𝒪♭) : (𝓣).RobbaTilde := (𝓣).ofRad (rhoMid p) (tTildeExt p ε (rhoMid p))
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem logOnePlus_congr {w w' : 𝔹} (h : w = w') (hw : w ∈ 𝔪) (hw' : w' ∈ 𝔪) :
     logOnePlus 𝔪 w hw = logOnePlus 𝔪 w' hw' := by
@@ -351,7 +347,7 @@ theorem toBDeRhamPlus_muA (ε : 𝒪♭) : toBDeRhamPlus (normInteger ℂ_[p]) p
   rfl
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `sub_dvd_pow_sub_pow (1 + w) 1 k`. Rewrite `hc` using `[one_pow]`. Rewrite using `[hc, add_sub_cancel_left]`. Conclude with `Ideal.mul_mem_right _ _ hw`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_add_pow_sub_one_mem {w : 𝔹} (hw : w ∈ 𝔪) (k : ℕ) : (1 + w) ^ k - 1 ∈ 𝔪 := by
   obtain ⟨c, hc⟩ := sub_dvd_pow_sub_pow (1 + w) 1 k
@@ -360,7 +356,7 @@ theorem one_add_pow_sub_one_mem {w : 𝔹} (hw : w ∈ 𝔪) (k : ℕ) : (1 + w)
   exact Ideal.mul_mem_right _ _ hw
 
 /- English proof (translation)
-Establish `: (toB ℂ_[p] p).comp (ACris.phiAway ℂ_[p] p) = ((frob ℂ_[p] p).toB : (𝓣).B →+* (𝓣).B).comp (toB ℂ_[p] p)` using `IsLocalization.ringHom_ext (Submonoid.powers (p : AInf ℂ_[p] p)) (RingHom.ext fun y => by`. Simplify using `only [RingHom.comp_apply, RingEquiv.coe_toRingHom]`. Rewrite using `[ACris.phiAway_algebraMap, toB_algebraMap, toB_algebraMap, TeichLift.TeichFrob.toB_algebraMap, frob_φ_incl])`. Conclude with `RingHom.congr_fun this a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toB_phiAway (a : 𝔸) :
     toB ℂ_[p] p (ACris.phiAway ℂ_[p] p a) = (frob ℂ_[p] p).toB (toB ℂ_[p] p a) := by
@@ -373,7 +369,7 @@ theorem toB_phiAway (a : 𝔸) :
   exact RingHom.congr_fun this a
 
 /- English proof (translation)
-Rewrite using `[awayToExt_apply, TeichLift.TeichFrob.extFrob_coe, awayToExt_apply]`. Use `congr 1`. Conclude with `Subtype.ext (by rw [TeichLift.TeichFrob.coe_econFrob]; exact (toB_phiAway a).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem extFrob_awayToExt (ρ : Set.Ioo (0 : ℝ) 1) (a : 𝔸) :
     (frob ℂ_[p] p).extFrob ρ (awayToExt p ρ a) =
@@ -383,7 +379,7 @@ theorem extFrob_awayToExt (ρ : Set.Ioo (0 : ℝ) 1) (a : 𝔸) :
   exact Subtype.ext (by rw [TeichLift.TeichFrob.coe_econFrob]; exact (toB_phiAway a).symm)
 
 /- English proof (translation)
-Rewrite using `[muA, ACris.phiAway_algebraMap, AInf.mu, map_sub, map_one, WittVector.frobeniusEquiv_teichmuller, map_pow, muBdR_eq]`. Use `show wittToBDeRhamPlus (normInteger ℂ_[p]) p (teichmuller p ε ^ p - 1) = _`. Rewrite using `[map_sub, map_pow, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem toBDeRhamPlus_phiAway_muA (ε : 𝒪♭) :
     toBDeRhamPlus (normInteger ℂ_[p]) p (ACris.phiAway ℂ_[p] p (muA p ε)) = (1 + muBdR p ε) ^ p - 1 := by
@@ -394,7 +390,7 @@ theorem toBDeRhamPlus_phiAway_muA (ε : 𝒪♭) :
   ring
 
 /- English proof (translation)
-Rewrite using `[padicToTilde, RingHom.comp_apply, wittFpbarToTilde_eq_tildeOf, TeichLift.tildeOf_eq _ _ ρ, awayToExt_eq_ofAll]`. Use `congr 1`. Conclude with `(𝓣).ofAll_congr _ _ (toB_wittFpbarToAway _).symm ρ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem padicToTilde_eq_ofRad (q : ℚ_[p]) (ρ : Set.Ioo (0 : ℝ) 1) :
     padicToTilde p q = (𝓣).ofRad ρ (awayToExt p ρ (wittFpbarToAway p (padicToWFrac p q))) := by
@@ -404,7 +400,7 @@ theorem padicToTilde_eq_ofRad (q : ℚ_[p]) (ρ : Set.Ioo (0 : ℝ) 1) :
   exact (𝓣).ofAll_congr _ _ (toB_wittFpbarToAway _).symm ρ
 
 /- English proof (translation)
-Rewrite using `[iota_awayToExt, toBDeRhamPlus_wittFpbarToAway, wittFpbarToBCrisPlus_padicToWFrac, ACris.iotaPlus_algebraMap_padic]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iota_awayToExt_padic {ρ : Set.Ioo (0 : ℝ) 1} (hρ : (p : ℝ)⁻¹ < ρ) (q : ℚ_[p]) :
     iota p hρ (awayToExt p ρ (wittFpbarToAway p (padicToWFrac p q))) = algebraMap ℚ_[p] 𝔹 q := by
@@ -418,9 +414,9 @@ variable {ε : PreTilt (normInteger ℂ_[p]) p} (hε : PreTilt.untilt ε = 1)
 include hε hζ
 
 /- English proof (translation)
-Establish `h` using `(tendsto_const_nhds (x := awayToExt p ρ (muA p ε))).mul (tendsto_logTail (muBound_pos ε ρ) (muBound_lt_one hε hζ ρ) (extNorm_muA_le_bound ε ρ) 1)`. Use `h.congr fun N => ?_` and prove the remaining obligations. Rewrite using `[← map_mul, logPSum, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tendsto_tTildeExt (ρ : Set.Ioo (0 : ℝ) 1) :
     Tendsto (fun N => awayToExt p ρ (∑ i ∈ Finset.range N, logCoeff p (i + 1) * muA p ε ^ (i + 1)))
@@ -435,7 +431,7 @@ theorem tendsto_tTildeExt (ρ : Set.Ioo (0 : ℝ) 1) :
   ring
 
 /- English proof (translation)
-The claim follows from `logTail_eq_sum (muBound_pos ε ρ) (muBound_lt_one hε hζ ρ) (extNorm_muA_le_bound ε ρ) m`.
+A detailed English derivation is pending.
 -/
 theorem tTildeExt_eq_sum (ρ : Set.Ioo (0 : ℝ) 1) (m : ℕ) :
     tTildeExt p ε ρ = awayToExt p ρ (∑ i ∈ Finset.range m, logCoeff p (i + 1) * muA p ε ^ (i + 1)) +
@@ -443,7 +439,7 @@ theorem tTildeExt_eq_sum (ρ : Set.Ioo (0 : ℝ) 1) (m : ℕ) :
   logTail_eq_sum (muBound_pos ε ρ) (muBound_lt_one hε hζ ρ) (extNorm_muA_le_bound ε ρ) m
 
 /- English proof (translation)
-Rewrite using `[tTildeExt, map_mul, res_awayToExt, res_logTail h (muBound_pos ε ρ0) (muBound_lt_one hε hζ ρ0) (extNorm_muA_le_bound ε ρ0) (muBound_pos ε ρ1) (muBound_lt_one hε hζ ρ1) (extNorm_muA_le_bound ε ρ1)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_tTildeExt {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) :
     (𝓣).res h (tTildeExt p ε ρ0) = tTildeExt p ε ρ1 := by
@@ -453,7 +449,7 @@ theorem res_tTildeExt {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) 
   rfl
 
 /- English proof (translation)
-Set `ρ3 : Set.Ioo (0 : ℝ) 1` to `⟨min ρ (rhoMid p), lt_min ρ.2.1 (rhoMid p).2.1, min_lt_of_left_lt ρ.2.2⟩`. Rewrite using `[tTilde, ← (𝓣).ofRad_res (ρ1 := ρ3) (min_le_left _ _), ← (𝓣).ofRad_res (ρ1 := ρ3) (min_le_right _ _), res_tTildeExt hε hζ, res_tTildeExt hε hζ]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofRad_tTildeExt (ρ : Set.Ioo (0 : ℝ) 1) : (𝓣).ofRad ρ (tTildeExt p ε ρ) = tTilde p ε := by
   let ρ3 : Set.Ioo (0 : ℝ) 1 := ⟨min ρ (rhoMid p), lt_min ρ.2.1 (rhoMid p).2.1,
@@ -462,13 +458,11 @@ theorem ofRad_tTildeExt (ρ : Set.Ioo (0 : ℝ) 1) : (𝓣).ofRad ρ (tTildeExt 
     res_tTildeExt hε hζ, res_tTildeExt hε hζ]
 
 /- English proof (translation)
-Use `set w := toBDeRhamPlus (normInteger ℂ_[p]) p (ψ (muA p ε)) with hwdef`. Rewrite using `[← sub_eq_zero]`. Use `IsPerfectoidField.eq_zero_of_forall_mem_maximalIdeal_pow fun n => ?_` and prove the remaining obligations. Use `Ideal.pow_le_pow_right (Nat.le_succ n) ?_` and prove the remaining obligations. Establish `hsum : g (awayToExt p ρ (∑ i ∈ Finset.range n, logCoeff p (i + 1) * muA p ε ^ (i + 1))) = ∑ i ∈ Finset.Ico 1 (n + 1), algebraMap ℚ 𝔹 ((-1) ^ (i + 1) / i) * w ^ i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, map_sum, map_sum, Finset.sum_Ico_eq_sum_range, Nat.add_sub_cancel]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_pow, map_pow, ← RingHom.comp_apply (toBDeRhamPlus (normInteger ℂ_[p]) p) ψ, map_logCoeff _ (Nat.succ_ne_zero i), add_comm 1 i]`. Establish `h1` using `logOnePlus_sub_sum_mem hw (n + 1)`. Establish `h2 : g (awayToExt p ρ (muA p ε)) ^ (n + 1) * g (logTail p ρ (muA p ε) (n + 1)) ∈ 𝔪 ^ (n + 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hw _)`. Establish `e : g (tTildeExt p ε ρ) - logOnePlus 𝔪 w hw = g (awayToExt p ρ (muA p ε)) ^ (n + 1) * g (logTail p ρ (muA p ε) (n + 1)) - (logOnePlus 𝔪 w hw - ∑ i ∈ Finset.Ico 1 (n + 1), algebraMap ℚ 𝔹 ((-1) ^ (i + 1) / i) * w ^ i)`. Rewrite using `[tTildeExt_eq_sum hε hζ ρ n, map_add, map_mul, map_pow, hsum]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Conclude with `sub_mem h2 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_tTildeExt (ρ : Set.Ioo (0 : ℝ) 1) (g : (𝓣).RobbaExt ρ →+* 𝔹) (ψ : 𝔸 →+* 𝔸)
     (hg : ∀ a, g (awayToExt p ρ a) = toBDeRhamPlus (normInteger ℂ_[p]) p (ψ a))
@@ -497,7 +491,7 @@ theorem map_tTildeExt (ρ : Set.Ioo (0 : ℝ) 1) (g : (𝓣).RobbaExt ρ →+* �
   exact sub_mem h2 h1
 
 /- English proof (translation)
-Establish `hw : toBDeRhamPlus (normInteger ℂ_[p]) p ((RingHom.id 𝔸) (muA p ε)) ∈ 𝔪` using `muBdR_mem hε`. Rewrite using `[map_tTildeExt hε hζ ρ (iota p hρ) (RingHom.id 𝔸) (fun a => iota_awayToExt hρ a) hw]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iota_tTildeExt {ρ : Set.Ioo (0 : ℝ) 1} (hρ : (p : ℝ)⁻¹ < ρ) :
     iota p hρ (tTildeExt p ε ρ) = fontaineT ε hε := by
@@ -507,9 +501,9 @@ theorem iota_tTildeExt {ρ : Set.Ioo (0 : ℝ) 1} (hρ : (p : ℝ)⁻¹ < ρ) :
   rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `iota_tTildeExt hε hζ (ρ := rhoMid p) inv_p_lt_rhoMid`. Establish `h2 : tTildeExt p ε (rhoMid p) = 0`. Apply `(𝓣).ofRad_injective (rhoMid p)` to reduce the goal to its premises. Rewrite using `[ofRad_tTildeExt hε hζ, ← ofRad_tTildeExt hε hζ ρ, h, map_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[h2, map_zero]`. Conclude with `fontaineT_ne_zero hε hζ h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tTildeExt_ne_zero (ρ : Set.Ioo (0 : ℝ) 1) : tTildeExt p ε ρ ≠ 0 := by
   intro h
@@ -521,7 +515,7 @@ theorem tTildeExt_ne_zero (ρ : Set.Ioo (0 : ℝ) 1) : tTildeExt p ε ρ ≠ 0 :
   exact fontaineT_ne_zero hε hζ h1.symm
 
 /- English proof (translation)
-Rewrite using `[← ofRad_tTildeExt hε hζ (rhoMid p)]`. Conclude with `fun h => tTildeExt_ne_zero hε hζ (rhoMid p) ((𝓣).ofRad_injective _ (by rw [h, map_zero]))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tTilde_ne_zero : tTilde p ε ≠ 0 := by
   rw [← ofRad_tTildeExt hε hζ (rhoMid p)]
@@ -529,21 +523,21 @@ theorem tTilde_ne_zero : tTilde p ε ≠ 0 := by
     ((𝓣).ofRad_injective _ (by rw [h, map_zero]))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rhoMid p, inv_p_lt_rhoMid, _, ofRad_tTildeExt hε hζ (rhoMid p)⟩`.
+Supply the required witnesses or components.
 -/
 theorem tTilde_mem_tildeDom : tTilde p ε ∈ tildeDom p :=
   ⟨rhoMid p, inv_p_lt_rhoMid, _, ofRad_tTildeExt hε hζ (rhoMid p)⟩
 
 /- English proof (translation)
-Rewrite using `[← ofRad_tTildeExt hε hζ (rhoMid p), iotaTildeFun_ofRad inv_p_lt_rhoMid, iota_tTildeExt hε hζ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaTildeFun_tTilde : iotaTildeFun p (tTilde p ε) = fontaineT ε hε := by
   rw [← ofRad_tTildeExt hε hζ (rhoMid p), iotaTildeFun_ofRad inv_p_lt_rhoMid, iota_tTildeExt hε hζ]
 
 /- English proof (translation)
-Establish `hk` using `one_add_pow_sub_one_mem (muBdR_mem hε) p`. Establish `hw : toBDeRhamPlus (normInteger ℂ_[p]) p (ACris.phiAway ℂ_[p] p (muA p ε)) ∈ 𝔪`. Rewrite using `[toBDeRhamPlus_phiAway_muA]`. Conclude with `hk`. Establish `h` using `map_tTildeExt hε hζ ρ ((iota p hρ).comp ((frob ℂ_[p] p).extFrob ρ)) (ACris.phiAway ℂ_[p] p) (fun a => by rw [RingHom.comp_apply, extFrob_awayToExt, iota_awayToExt]) hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[RingHom.comp_apply]`. Rewrite using `[h, logOnePlus_congr (toBDeRhamPlus_phiAway_muA ε) hw hk, logOnePlus_pow (muBdR_mem hε) p hk]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem iota_extFrob_tTildeExt {ρ : Set.Ioo (0 : ℝ) 1}
     (hρ : (p : ℝ)⁻¹ < ((frob ℂ_[p] p).powRadius ρ : ℝ)) :
@@ -558,9 +552,9 @@ theorem iota_extFrob_tTildeExt {ρ : Set.Ioo (0 : ℝ) 1}
   rfl
 
 /- English proof (translation)
-Use `set ρ := (frob ℂ_[p] p).rootRadius (rhoMid p) with hρdef`. Establish `hρ : (p : ℝ)⁻¹ < ((frob ℂ_[p] p).powRadius ρ : ℝ)`. Rewrite using `[hρdef, (frob ℂ_[p] p).powRadius_rootRadius]`. Conclude with `inv_p_lt_rhoMid`. Establish `h : (frob ℂ_[p] p).extFrob ρ (tTildeExt p ε ρ) = p * tTildeExt p ε ((frob ℂ_[p] p).powRadius ρ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `iota_injective hρ` to reduce the goal to its premises. Rewrite using `[iota_extFrob_tTildeExt hε hζ hρ, map_mul, map_natCast, iota_tTildeExt hε hζ hρ]`. Rewrite using `[← ofRad_tTildeExt hε hζ ρ, TeichLift.TeichFrob.tildeFrob_ofRad, h, map_mul, map_natCast, ofRad_tTildeExt hε hζ, ofRad_tTildeExt hε hζ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tildeFrob_tTilde : (frob ℂ_[p] p).tildeFrob (tTilde p ε) = p * tTilde p ε := by
   set ρ := (frob ℂ_[p] p).rootRadius (rhoMid p) with hρdef
@@ -574,7 +568,7 @@ theorem tildeFrob_tTilde : (frob ℂ_[p] p).tildeFrob (tTilde p ε) = p * tTilde
     ofRad_tTildeExt hε hζ, ofRad_tTildeExt hε hζ]
 
 /- English proof (translation)
-Apply `(𝓣).ofRad_injective` to reduce the goal to its premises. Rewrite using `[← TeichLift.TeichFrob.tildeFrob_ofRad, ofRad_tTildeExt hε hζ, tildeFrob_tTilde hε hζ, map_mul, map_natCast, ofRad_tTildeExt hε hζ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem extFrob_tTildeExt (ρ : Set.Ioo (0 : ℝ) 1) :
     (frob ℂ_[p] p).extFrob ρ (tTildeExt p ε ρ) = p * tTildeExt p ε ((frob ℂ_[p] p).powRadius ρ) := by
@@ -583,7 +577,7 @@ theorem extFrob_tTildeExt (ρ : Set.Ioo (0 : ℝ) 1) :
     map_natCast, ofRad_tTildeExt hε hζ]
 
 /- English proof (translation)
-Establish `h` using `congrArg (frob ℂ_[p] p).tildeFrobSymm (tildeFrob_tTilde hε hζ)`. Rewrite `h` using `[TeichLift.TeichFrob.tildeFrobSymm_tildeFrob, map_mul, map_natCast]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mul_tildeFrobSymm_tTilde :
     (p : (𝓣).RobbaTilde) * (frob ℂ_[p] p).tildeFrobSymm (tTilde p ε) = tTilde p ε := by
@@ -592,9 +586,9 @@ theorem natCast_mul_tildeFrobSymm_tTilde :
   exact h.symm
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [phiNeg_apply]`. Consider the case `succ n ih`. Establish `h1` using `congrArg (frob ℂ_[p] p).tildeFrobSymm ih`. Rewrite `h1` using `[map_mul, map_pow, map_natCast]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[phiNeg_succ, pow_succ, mul_comm ((p : (𝓣).RobbaTilde) ^ n) p, mul_assoc, h1, natCast_mul_tildeFrobSymm_tTilde hε hζ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_mul_phiNeg_tTilde (n : ℕ) :
     (p : (𝓣).RobbaTilde) ^ n * phiNeg p n (tTilde p ε) = tTilde p ε := by
@@ -607,7 +601,7 @@ theorem pow_mul_phiNeg_tTilde (n : ℕ) :
       natCast_mul_tildeFrobSymm_tTilde hε hζ]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa [phiNeg_apply] using tTilde_mem_tildeDom hε hζ`. Consider the case `succ n ih => rw [phiNeg_succ]`. Conclude with `tildeFrobSymm_mem_tildeDom ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem phiNeg_tTilde_mem (n : ℕ) : phiNeg p n (tTilde p ε) ∈ tildeDom p := by
   induction n with
@@ -615,9 +609,9 @@ theorem phiNeg_tTilde_mem (n : ℕ) : phiNeg p n (tTilde p ε) ∈ tildeDom p :=
   | succ n ih => rw [phiNeg_succ]; exact tildeFrobSymm_mem_tildeDom ih
 
 /- English proof (translation)
-Establish `hm` using `phiNeg_tTilde_mem hε hζ n`. Establish `hpn : ((p : (𝓣).RobbaTilde) ^ n) ∈ tildeDom p` using `pow_mem (natCast_mem _ p) n`. Establish `h` using `iotaTildeFun_mul hpn hm`. Rewrite `h` using `[pow_mul_phiNeg_tTilde hε hζ n, iotaTildeFun_tTilde hε hζ]`. Establish `e : iotaTildeFun p ((p : (𝓣).RobbaTilde) ^ n) = (p : 𝔹) ^ n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `map_pow (iotaTilde p) (p : tildeDom p) n` as an intermediate fact. Rewrite `this` using `[map_natCast, iotaTilde_apply]`. Simplify using `using this`. Rewrite using `[iotaN, ← e, ← h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_mul_iotaN_tTilde (n : ℕ) : (p : 𝔹) ^ n * iotaN p n (tTilde p ε) = fontaineT ε hε := by
   have hm := phiNeg_tTilde_mem hε hζ n
@@ -632,9 +626,9 @@ theorem pow_mul_iotaN_tTilde (n : ℕ) : (p : 𝔹) ^ n * iotaN p n (tTilde p ε
   rw [iotaN, ← e, ← h]
 
 /- English proof (translation)
-Establish `h` using `congrArg (IsPerfectoidField.thetaBDeRhamPlusField p) (pow_mul_iotaN_tTilde hε hζ n)`. Rewrite `h` using `[map_mul, map_pow, map_natCast]`. Establish `h0 : IsPerfectoidField.thetaBDeRhamPlusField p (fontaineT ε hε) = 0`. Use `fontaineT_mem hε` as an intermediate fact. Rewrite `this` using `[IsPerfectoidField.maximalIdeal_bDeRhamPlus, RingHom.mem_ker]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Rewrite `h` using `[h0]`. Establish `hp0 : (p : ℂ_[p]) ^ n ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hp.out.ne_zero)`. Conclude with `(mul_eq_zero.1 h).resolve_left hp0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thetaN_tTilde (n : ℕ) : thetaN p n (tTilde p ε) = 0 := by
   have h := congrArg (IsPerfectoidField.thetaBDeRhamPlusField p) (pow_mul_iotaN_tTilde hε hζ n)
@@ -648,9 +642,7 @@ theorem thetaN_tTilde (n : ℕ) : thetaN p n (tTilde p ε) = 0 := by
   exact (mul_eq_zero.1 h).resolve_left hp0
 
 /- English proof (translation)
-Use `set ρ := rhoMid p`. Use `set c := awayToExt p ρ (wittFpbarToAway p (padicToWFrac p ((cycloChar K σ : ℤ_[p]) : ℚ_[p]))) with hc`. Establish `h : (galIso σ).extMap ρ (tTildeExt p ε ρ) = c * tTildeExt p ε ρ`. Apply `iota_injective inv_p_lt_rhoMid` to reduce the goal to its premises. Rewrite using `[iota_extMap, iota_tTildeExt hε hζ, gal_smul_fontaineT, map_mul, hc, iota_awayToExt_padic, iota_tTildeExt hε hζ]`.
-
-Rewrite using `[← ofRad_tTildeExt hε hζ ρ, TeichLift.TeichIso.tildeMap_ofRad, h, map_mul, hc, ← padicToTilde_eq_ofRad]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galIso_tildeMap_tTilde {K : IntermediateField ℚ_[p] (PadicAlgCl p)} (σ : Gal(PadicAlgCl p/K)) :
     (galIso σ).tildeMap (tTilde p ε) = padicToTilde p ((cycloChar K σ : ℤ_[p]) : ℚ_[p]) * tTilde p ε := by

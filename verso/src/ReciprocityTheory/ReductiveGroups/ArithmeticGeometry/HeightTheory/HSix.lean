@@ -19,41 +19,41 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Use `set sb : ∀ c, A c := fun c => d.w (d.jc c) c with hsbdef`. Establish `hsb : ∀ c, sb c ∈ 𝒜 c d.wL ∧ sb c ≠ 0` using `fun c => ⟨hd.w_mem _ c, hd.w_base c⟩`. Establish `hwx : ∀ c, d.wx x c ∈ 𝒜 c d.wL ∧ d.wx x c ≠ 0` using `fun c => ⟨d.wx_mem hd x c, hx c⟩`. Establish `het : ∀ c, d.et c ∈ 𝒜 c (d.n1 • d.wde) ∧ d.et c ≠ 0` using `fun c => ⟨hd.et_mem c, hd.et_ne c⟩`. Establish `hta1 : ∀ c, d.ta1 c ∈ 𝒜 c ((2 : ℕ) • d.G1) ∧ d.ta1 c ≠ 0` using `fun c => ⟨hd.firstSectionMem c, hd.firstSectionNeZero c⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hta2 : ∀ c, d.ta2 c ∈ 𝒜 c d.G2 ∧ d.ta2 c ≠ 0` using `fun c => ⟨hd.secondSectionMem c, hd.secondSectionNeZero c⟩`. Rewrite using `[d.aG_wx hd h x hx]`. Use `set aL := d.aG h d.wL sb with haL`. Establish `hde0 : 0 ≤ d.aG h (d.n1 • d.wde) d.et` using `d.aG_nonneg hd h _ _ fun c v hv => hd.ord_nonneg_et c v hv`. Establish `hG10 : 0 ≤ d.aG h ((2 : ℕ) • d.G1) d.ta1` using `d.aG_nonneg hd h _ _ fun c v hv => hd.ordDoubleFirstSection_nonneg c v hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG20 : 0 ≤ d.aG h d.G2 d.ta2` using `d.aG_nonneg hd h _ _ fun c v hv => hd.ordSecondSectionNonneg c v hv`. Establish `hF0 : 0 ≤ d.aG h d.wF ta'` using `by choose k hk using d.thp_ne hd`. Establish `hth : ∀ c, d.thp (k c) c ∈ 𝒜 c d.wF ∧ d.thp (k c) c ≠ 0` using `fun c => ⟨hd.thp_mem _ c, hk c⟩`. Rewrite using `[(d.norm_factorization hd h).2.1 d.wF ta' (fun c => d.thp (k c) c) hta' hth]`. Use `d.aG_nonneg hd h _ _ fun c v hv => hd.ord_nonneg_Thp c v hv (d.thp (k c)) ?_ (hk c)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hd.Thp_span]`. Conclude with `Submodule.subset_span ⟨k c, rfl⟩`. Take `⟨a, ha⟩ : ∃ a, d.n1 = a + 1` from `⟨d.n1 - 1, by`. Establish `: 1 ≤ d.n1` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by have := hd.i_ge; omega) (by have := hd.g_zero_ge_ask_sum; omega))`. Use the proof step `omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hadd1 : (2 * d.n1 : ℤ) * aL = d.n1 * d.aG h ((2 : ℕ) • d.G1) d.ta1 + 2 * d.aG h (d.n1 • d.wde) d.et`. Establish `hW : (2 * a + 1 + 1) • d.wL = (a + 1) • ((2 : ℕ) • d.G1) + (1 + 1) • (d.n1 • d.wde)`. Unfold `G1`. Rewrite using `[ha]`. Simplify using `only [smul_sub, ← mul_nsmul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show (2 * a + 1 + 1) = (a + 1) * 2 by ring, show (1 + 1) * (a + 1) = (a + 1) * 2 by ring]`. Normalize the expressions using the abelian group laws. Establish `m1` using `d.pow_mem_ne hd hsb (2 * a + 1)`. Establish `m2` using `d.pow_mem_ne hd hta1 a`. Establish `m3` using `d.pow_mem_ne hd het 1`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m23 : ∀ c, (d.ta1 ^ (a + 1) * d.et ^ (1 + 1)) c ∈ 𝒜 c ((a + 1) • ((2 : ℕ) • d.G1) + (1 + 1) • (d.n1 • d.wde)) ∧ (d.ta1 ^ (a + 1) * d.et ^ (1 + 1)) c ≠ 0` using `fun c => by haveI := hd.graded c`. Conclude with `⟨SetLike.mul_mem_graded (m2 c).1 (m3 c).1, hd.mul_ne_zero c (m2 c).1 (m3 c).1 (m2 c).2 (m3 c).2⟩`. Establish `m1' : ∀ c, (sb ^ (2 * a + 1 + 1)) c ∈ 𝒜 c ((a + 1) • ((2 : ℕ) • d.G1) + (1 + 1) • (d.n1 • d.wde)) ∧ (sb ^ (2 * a + 1 + 1)) c ≠ 0` using `fun c => by rw [← hW]; exact m1 c`. Establish `e1` using `(d.norm_factorization hd h).2.1 _ _ _ m1' m23`. Rewrite `e1` using `[(d.norm_factorization hd h).2.2 _ _ _ _ m2 m3, d.aG_pow hd h hta1, d.aG_pow hd h het, ← hW, d.aG_pow hd h hsb]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `e1` using `[← haL]`. Establish `hn : (d.n1 : ℤ) = a + 1` using `by rw [ha]; push_cast; ring`. Rewrite using `[hn]`. Move the coercions through the operations in `at e1 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hadd2 : ((d.D : ℤ) + 4) * aL = d.aG h d.wF ta' + d.aG h d.G2 d.ta2`. Establish `hW : (d.D + 3 + 1) • d.wL = d.wF + d.G2`. Unfold `G2`. Rewrite using `[add_sub_cancel]`. Establish `m1` using `d.pow_mem_ne hd hsb (d.D + 3)`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m23 : ∀ c, (ta' * d.ta2) c ∈ 𝒜 c (d.wF + d.G2) ∧ (ta' * d.ta2) c ≠ 0` using `fun c => by haveI := hd.graded c`. Conclude with `⟨SetLike.mul_mem_graded (hta' c).1 (hta2 c).1, hd.mul_ne_zero c (hta' c).1 (hta2 c).1 (hta' c).2 (hta2 c).2⟩`. Establish `m1' : ∀ c, (sb ^ (d.D + 3 + 1)) c ∈ 𝒜 c (d.wF + d.G2) ∧ (sb ^ (d.D + 3 + 1)) c ≠ 0` using `fun c => by rw [← hW]; exact m1 c`. Establish `e1` using `(d.norm_factorization hd h).2.1 _ _ _ m1' m23`. Rewrite `e1` using `[(d.norm_factorization hd h).2.2 _ _ _ _ hta' hta2, ← hW, d.aG_pow hd h hsb]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `e1` using `[← haL]`. Move the coercions through the operations in `at e1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hEsum0 : 0 ≤ ∑ c, ∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), d.Ep h c p * (d.dg (d.gen p) : ℤ)` using `Finset.sum_nonneg fun c _ => finsum_nonneg fun p => finsum_nonneg fun hp => mul_nonneg (d.Ep_nonneg hd h c hp) (Nat.cast_nonneg _)`. Establish `hE : ((∑ c, ∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), d.Ep h c p * (d.dg (d.gen p) : ℤ) : ℤ) : ℝ) ≤ d.cc / (2 * d.i) * (d.aG h (d.n1 • d.wde) d.et : ℝ)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `aG`. Use `push_cast`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun c _ => ?_` and prove the remaining obligations. Use `fsum_le_of _ _ _ ((d.Ep_ne hd h c _ (hsb c).1 (hsb c).2).subset fun p ⟨hp, hs⟩ => ⟨hp, fun h0 => hs (by simp [h0])⟩) (((d.good_primes_properties hd h c).2.2.1 _ _ (het c).1 (het c).2).subset fun p ⟨hp, hs⟩ => ⟨hp, fun h0 => hs (by simp [h0])⟩) _ fun p hp => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation.
 
-Establish `e` using `d.Ep_le hd h hF1d c hp`. Establish `hdg : (0 : ℝ) ≤ d.dg (d.gen p)` using `Nat.cast_nonneg _`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Establish `haLeq` using `d.aG_sb hd h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `haLeq` using `[← haL]`. Establish `hi : (1 : ℝ) ≤ d.i` using `by exact_mod_cast hd.i_ge`. Establish `hn1 : (d.n1 : ℝ) = d.i * d.g0` using `by unfold n1; push_cast; ring`. Establish `hcc` using `hd.cc_nonneg`. Establish `hccg0` using `hd.ccg0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haL0 : (0 : ℝ) ≤ aL` using `by rw [haLeq]; exact_mod_cast (by positivity : (0:ℤ) ≤ d.del + _ )`. Establish `e3 : (d.aG h (d.n1 • d.wde) d.et : ℝ) ≤ d.n1 * aL`. Establish `: (2 * d.n1 : ℝ) * aL = d.n1 * d.aG h ((2 : ℕ) • d.G1) d.ta1 + 2 * d.aG h (d.n1 • d.wde) d.et`. Conclude with `hadd1` after adjusting the coercions. Establish `h2 : (0 : ℝ) ≤ d.n1 * d.aG h ((2 : ℕ) • d.G1) d.ta1` using `mul_nonneg (Nat.cast_nonneg _) (by exact_mod_cast hG10)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, hde0, ?_, hG10, ?_, hF0, ?_, hG20, ?_⟩` and prove the remaining obligations. Establish `k1 : d.cc / (2 * d.i) * (d.aG h (d.n1 • d.wde) d.et : ℝ) ≤ d.cc / (2 * d.i) * (d.n1 * aL)` using `mul_le_mul_of_nonneg_left e3 (by positivity)`. Establish `k2 : d.cc / (2 * d.i) * (d.n1 * aL) = d.cc * d.g0 * aL / 2`. Rewrite using `[hn1]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `k3 : d.cc * d.g0 * (aL : ℝ) ≤ 1 / 2 * aL` using `mul_le_mul_of_nonneg_right hccg0 haL0`. Establish `k4 : (aL : ℝ) = d.del + ((∑ c, ∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), d.Ep h c p * (d.dg (d.gen p) : ℤ) : ℤ) : ℝ)` using `by rw [haLeq]; push_cast; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (2 * d.n1 : ℤ) * aL = d.n1 * d.aG h ((2 : ℕ) • d.G1) d.ta1 + 2 * d.aG h (d.n1 • d.wde) d.et` using `hadd1`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use polynomial arithmetic with `[Int.natCast_nonneg d.n1]`. Establish `h1 : (1 : ℤ) ≤ d.n1` using `by rw [ha]; push_cast; omega`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem h_six (hd : d.AxH 𝒜) (h : d.S1) (hF1d : d.TrivialPlaceHyp) (x : Fin (d.N + 1) → K)
     (hx : ∀ c, d.wx x c ≠ 0) (ta' : ∀ c, A c) (hta' : ∀ c, ta' c ∈ 𝒜 c d.wF ∧ ta' c ≠ 0) :

@@ -13,7 +13,7 @@ open Matrix FockH1Action MvPolynomial
 namespace PI.FJM
 
 /- English proof (translation)
-Take `⟨⟨d1, hd1, hP1⟩, ⟨d2, hd2, hP2⟩⟩` from `PI.FJMF.minimal_degree_joint p q r s μ μ' P hP h0`. Establish `h12 : d1 = d2` using `((mem_homogeneousSubmodule _ _).1 hP1).inj_right ((mem_homogeneousSubmodule _ _).1 hP2) h0`. Substitute `h12` using the available equality. Conclude with `⟨hP, h0, d1, hd1, hd2, hP1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem minHyp_of_mem {p q r s : ℕ} {μ : Ix p q → ℚ} {μ' : Ix r s → ℚ} {P : Pol p q r s}
     (hP : P ∈ JH p q r s μ μ') (h0 : P ≠ 0) : MinHyp p q r s μ μ' P := by
@@ -24,7 +24,7 @@ theorem minHyp_of_mem {p q r s : ℕ} {μ : Ix p q → ℚ} {μ' : Ix r s → �
   exact ⟨hP, h0, d1, hd1, hd2, hP1⟩
 
 /- English proof (translation)
-Introduce `p q r s μ μ' P hP h0`. Establish `hM` using `minHyp_of_mem hP h0`. Conclude with `shape_from_facts p q r s μ μ' (PI.FJMA.line_of hC PI.FJMS.hypothesis_first_cover PI.FJMS.hypothesis_second_cover PI.FJMS.hypothesis_third_cover PI.FJMS.hypothesis_fourth_cover PI.FJMS.cover_by_blocks p q r s μ μ' P hM).1 (PI.FJMS.segs_of hM) (PI.FJMS.intFacts_of hM)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem shapeOf_of_cauchy (hC : CauchyHW) : ShapeOf := by
   intro p q r s μ μ' P hP h0
@@ -35,9 +35,9 @@ theorem shapeOf_of_cauchy (hC : CauchyHW) : ShapeOf := by
     (PI.FJMS.segs_of hM) (PI.FJMS.intFacts_of hM)
 
 /- English proof (translation)
-Introduce `p q r s μ μ' _`. Use `⟨vLine p q r s μ μ', fun P hP => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : P = 0`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(PI.FJMA.line_of hC PI.FJMS.hypothesis_first_cover PI.FJMS.hypothesis_second_cover PI.FJMS.hypothesis_third_cover PI.FJMS.hypothesis_fourth_cover PI.FJMS.cover_by_blocks p q r s μ μ' P (minHyp_of_mem hP h0)).2`. Rewrite using `[Submodule.mem_span_singleton]`. Conclude with `⟨c, by rw [hc, C_mul']⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rankLe_of_cauchy (hC : CauchyHW) : RankLe := by
   intro p q r s μ μ' _
@@ -50,7 +50,7 @@ theorem rankLe_of_cauchy (hC : CauchyHW) : RankLe := by
     exact ⟨c, by rw [hc, C_mul']⟩
 
 /- English proof (translation)
-The claim follows from `jointMult_of (exist_of PI.FJMD.shapeVector_ne_zero (PI.FJMD.vecJ_of jointHarmonicsIffLaplacians) (PI.FJMX.vecHW1_of leftDiagonalActionFormula leftOffDiagonalActionFormula) (PI.FJMX.vecHW2_of rightDiagonalActionFormula rightOffDiagonalActionFormula)) (shapeOf_of_cauchy hC) (rankLe …`.
+A detailed English derivation is pending.
 -/
 theorem fockJointMult_of_cauchy (hC : CauchyHW) : PI.FockDegreeTwoParts.JointMult := jointMult_of
     (exist_of PI.FJMD.shapeVector_ne_zero (PI.FJMD.vecJ_of jointHarmonicsIffLaplacians) (PI.FJMX.vecHW1_of leftDiagonalActionFormula leftOffDiagonalActionFormula)

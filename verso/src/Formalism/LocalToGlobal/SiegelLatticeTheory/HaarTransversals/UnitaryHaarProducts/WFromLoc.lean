@@ -18,9 +18,9 @@ section Main
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Apply `UJ_ext` to reduce the goal to its premises. Rewrite using `[uMat_mul, uMat_toUJ, uMat_toUJ]`. Establish `: Qm e f wf z0 * hB * Qi ε e f wf z0 * (Qm e f wf z0 * mB * Qi ε e f wf z0) = Qm e f wf z0 * (hB * mB) * Qi ε e f wf z0`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc _ (Qi ε e f wf z0) (Qm e f wf z0), Qi_mul_Qm hF, Matrix.mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← hsm]`. Simplify using `only [← Matrix.mul_assoc, Qm_mul_Qi hF, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Qm_mul_Qi hF, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem split_S {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
     {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {z0 : Fin (2 * r + k + 1) → ℂ} (hF : IsFrameJ ε e f wf z0)
@@ -40,79 +40,69 @@ theorem split_S {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r 
   rw [Matrix.mul_assoc, Qm_mul_Qi hF, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hJc : ∀ v (p q : (VS D).V), hJ (I.ε v) (rv I v (crdOf I ιE bas p)) (rv I v (crdOf I ιE bas q)) = I.φ v (ιE.symm ((VS D).hT p q))` using `fun v p q => hJ_crdA (⟨I, ιE, ιE_conj, ιE_F, bas, J_eq, L_eq, pl, φ_eq, n_eq, eps_eq⟩ : UnitaryGroupInstance D) v p q`. Consider the cases of `I with`. Consider the case `mk F E cm n J J_herm J_det L0 L_span L_fg L_dual ε φ φ_over P P_unit P_spec topf_open topf_basis`. Establish `hn : n = 2 * D.R.rS + D.R.k + 1` using `n_eq.trans (dimS_eq D.R).symm`. Substitute `hn` using the available equality.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Substitute using the available equality.
 
-Use `set eV : InfinitePlace F → Fin D.R.rS → Fin (2 * D.R.rS + D.R.k + 1) → ℂ := fun v a => rv _ v (crdOf _ ιE bas (L.eX a)) with heV`. Use `set fV : InfinitePlace F → Fin D.R.rS → Fin (2 * D.R.rS + D.R.k + 1) → ℂ := fun v a => rv _ v (crdOf _ ιE bas (L.fY a)) with hfV`. Use `set zV : D.what₂.Word → InfinitePlace F → Fin (2 * D.R.rS + D.R.k + 1) → ℂ := fun u v => rv _ v (crdOf _ ιE bas (L.zu u)) with hzV`. Use `set TV : D.what₂.Word → ℝ := fun u => (((D.mem u).A.T : ℕ) : ℝ) with hTV`. Establish `hT : ∀ u, 0 < TV u` using `fun u => Nat.cast_pos.mpr (D.mem u).A.T_prime.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hFr : ∀ u v, IsFrameJ (ε v) (eV v) (fV v) (Pi.wfr u v) (z0v (TV u) (zV u v))`. Introduce `u v`. Use `isFrameJ_of (eV v) (fV v) (zV u v) (Pi.wfr u v) (hT u) (fun a b => ?_) (fun a b => ?_) (fun a b => ?_) (fun a => ?_) (fun a => ?_) ?_ (Pi.wfr_on u v) (fun c a => ((Pi.wfr_perp u v a).1 c).1) (fun c a => ((Pi.wfr_perp u v a).1 c).2) (fun a => (Pi.wfr_perp u v a).2)` and prove the remaining obligations. Rewrite using `[heV]`. Simplify using `only`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hJc, L.ee]`. Simplify using the standard rewrite rules. Rewrite using `[hfV]`. Simplify using `only`. Rewrite using `[hJc, L.ff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Apply the tactic sequence `rw [heV, hfV]; simp only; rw [hJc, L.ef]; split_ifs <;> simp`. Rewrite using `[heV, hzV]`. Simplify using `only`. Rewrite using `[hJc, (L.zu_orth u a).1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hfV, hzV]`. Simplify using `only`. Rewrite using `[hJc, (L.zu_orth u a).2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hzV]`. Simplify using `only`. Rewrite using `[hJc, L.zu_norm]`. Simplify using `[hTV]`. Establish `hk : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hke : Even D.R.k` using `D.R.k_even`. Establish `hg : 0 < gD D` using `Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos`. Establish `hε : ∀ v, ε v = eps48 D.R.k D.R.rS` using `fun v => funext fun i => (eps_eq v i).trans (by simp [epsS, eps48])`. Establish `hlamE : ∀ v, (fun i => lamS D.R (D.hc (pl v)) (Fin.cast n_eq i)) = lam48 D.R.k D.R.rS (fun i => ((D.hc (pl v)).v i : ℝ)) (fun j => ((D.hc (pl v)).b (Fin.cast (mEqR D.R) j) : ℝ))` using `fun v => funext fun i => lam_matchR D.R (D.hc (pl v)) i n_eq`. Establish `hDS : ∀ v, IsDS (ε v) (lam48 D.R.k D.R.rS (fun i => ((D.hc (pl v)).v i : ℝ)) (fun j => ((D.hc (pl v)).b (Fin.cast (mEqR D.R) j) : ℝ))) (Bu.σ v)` using `fun v => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hlamE v]`. Conclude with `Bu.ds v`. Establish `hwL : ∀ v, IsLowUnit (ε v) (lam48 D.R.k D.R.rS (fun i => ((D.hc (pl v)).v i : ℝ)) (fun j => ((D.hc (pl v)).b (Fin.cast (mEqR D.R) j) : ℝ))) (Bu.σ v) (Bu.w v)` using `fun v => by`. Rewrite using `[← hlamE v]`. Conclude with `Bu.low v`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hl : ∀ v, Formalism.QuantumDeterminants.IsHCParam (lam48 D.R.k D.R.rS (fun i => ((D.hc (pl v)).v i : ℝ)) (fun j => ((D.hc (pl v)).b (Fin.cast (mEqR D.R) j) : ℝ)))` using `fun v => by`. Establish `h` using `Formalism.MainNotions.S.Inh.obj_isHCParam_lamSH D.R (D.hc (pl v))`. Establish `e : lamSH D.R (D.hc (pl v)) = lam48 D.R.k D.R.rS (fun i => ((D.hc (pl v)).v i : ℝ)) (fun j => ((D.hc (pl v)).b (Fin.cast (mEqR D.R) j) : ℝ))`. Use function extensionality and compare the values at `fun i => lam_matchR D.R (D.hc (pl v)) i (dimS_eq D.R)`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `hGap : ∀ v, GapBig D.R.k D.R.rS (fun j => ((D.hc (pl v)).b (Fin.cast (mEqR D.R) j) : ℝ))` using `fun v => hGB (mEqR D.R).symm hG (pl v)`. Establish `hHset : ∀ u, Hset _ (Set.range (eC ⟨_, ιE, ιE_conj, ιE_F, bas, J_eq, L_eq, pl, φ_eq, n_eq, eps_eq⟩ L) ∪ Set.range (fC ⟨_, ιE, ιE_conj, ιE_F, bas, J_eq, L_eq, pl, φ_eq, n_eq, eps_eq⟩ L) ∪ {zC ⟨_, ιE, ιE_conj, ιE_F, bas, J_eq, L_eq, pl, φ_eq, n_eq, eps_eq⟩ L u}) = {s : ∀ v, Formali …`. Introduce `u`. Use extensionality with `s`. Simplify using `only [Hset, Set.mem_setOf_eq, Set.mem_union, Set.mem_range, Set.mem_singleton_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h v`. Conclude with `⟨fun a => h v _ (Or.inl (Or.inl ⟨a, rfl⟩)), fun a => h v _ (Or.inl (Or.inr ⟨a, rfl⟩)), h v _ (Or.inr rfl)⟩`. Introduce and unpack `h v x ((⟨a, rfl⟩ | ⟨a, rfl⟩) | rfl)`. Conclude with `(h v).1 a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(h v).2.1 a`. Conclude with `(h v).2.2`. Establish `hQ` using `fun u => quotRaw hQK hHN hNU eV fV (zV u) (Pi.wfr u) (hT u) (hFr u) (Mu.muN u) (Mu.muH u) (Mu.nuQ u) (Mu.muN_haar u) (by have h := Mu.muH_haar u; rw [hHset u] at h; exact h) (Mu.nuQ_weil u)`. Use `choose μS νl C hC0 hCt hloc hK using hQ`. Establish `hP` using `fun u v => locPack hB hCW hWl (hε v) hk hke (hT u) hg (Formalism.MainNotions.S.Inh.obj_isHCParam_u D.R (D.hcW u (pl v))) (hl v) (interlace_of D.R (D.hc (pl v)) (D.hcW u (pl v)) (D.hcW_v u (pl v)) (D.hcW_b u (pl v))) (halfInt_of D.R (D.hc (pl v)) (D.hcW u (pl v))) (hGap v) (z := z …`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `choose Wl hWc hWe hWr hW1 hW2 hWw hWα using hP`. Establish `hne : Nonempty (InfinitePlace F)` using `⟨pl.symm (D.eTau.symm (Classical.arbitrary _))⟩`. Set `v0 : InfinitePlace F` to `Classical.arbitrary _`. Set `cU : D.what₂.Word → ℂ` to `fun u => (((C u).toReal ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ)`. Set `cv : D.what₂.Word → InfinitePlace F → ℂ` to `fun u v => if v = v0 then cU u else 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcv : ∀ u, ∏ v, cv u v = cU u` using `fun u => by simp [cv, Finset.prod_ite_eq']`. Set `Wloc : ∀ u v, Formalism.REAL.UJ (ε v) → Pi.Vloc u v` to `fun u v y => cv u v • Wl u v y`. Establish `hWlc : ∀ u v, Continuous (Wloc u v)` using `fun u v => (hWc u v).const_smul (cv u v)`. Establish `hinv : ∀ u v, ∀ s ∈ HNset (ε v) (eV v) (fV v) (Pi.wfr u v) (z0v (TV u) (zV u v)) (zBv D.R.k D.R.rS (TV u)), ∀ y, ‖Wloc u v (s * y)‖ₑ = ‖Wloc u v y‖ₑ`. Introduce `u v s hs y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Wloc, enorm_smul]`. Rewrite using `[show ‖Wl u v (s * y)‖ₑ = ‖Wl u v y‖ₑ by`. Simplify using `only [enorm_eq_nnnorm]`. Use `congr 1`. Conclude with `NNReal.eq (loc_norm_inv (hT u) (hFr u v) (Pi.piLoc_type u v) (hWe u v) hs y)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hnorm : ∀ u (x : ∀ v, Formalism.REAL.UJ (ε v)), ‖Pi.tensU u (fun v => Wloc u v (x v))‖ₑ = ∏ v, ‖Wloc u v (x v)‖ₑ`. Introduce `u x`. Simplify using `only [enorm_eq_nnnorm]`. Rewrite using `[← ENNReal.coe_finset_prod]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `NNReal.eq (by push_cast; exact Formalism.L2.SG.Pf.WuDec.norm_tens (Pi.tensU_inner u) _)`. Use `⟨⟨fun u x => Pi.tensU u (fun v => Wloc u v (x v)), fun u => ?_, Wloc, hWlc, fun u x => rfl⟩⟩` and prove the remaining obligations. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs x`. Establish `hsv : ∀ v, ∃ h ∈ UWset D.R.k D.R.rS (zBv D.R.k D.R.rS (TV u)), ∃ m ∈ Nset D.R.k D.R.rS, Qi (ε v) (eV v) (fV v) (Pi.wfr u v) (z0v (TV u) (zV u v)) * uMat (s v) * Qm (eV v) (fV v) (Pi.wfr u v) (z0v (TV u) (zV u v)) = h * m` using `fun v => HNset_of_inS (fun k r T hT s hs h1 h2 => bessel_levi_formula k r T hT s hs h1 h2) (hFr u v) (hT u) (Qm_zB (hT u) _) (hs v)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose hB hhB mB hmB hsm using hsv`. Set `gH : ∀ v, Formalism.REAL.UJ (ε v)` to `fun v => toUJ _ (conjQ_UJ (hFr u v) (hhB v).1)`. Set `gN : ∀ v, Formalism.REAL.UJ (ε v)` to `fun v => toUJ _ (conjQ_UJ (hFr u v) (hmB v).1)`. Establish `hsplit : s = gH * gN` using `funext fun v => split_S (hFr u v) (s v) (hsm v) _ _`. Establish `hfixv : ∀ v, (∀ a, uMat (gH v) *ᵥ eV v a = eV v a) ∧ (∀ a, uMat (gH v) *ᵥ fV v a = fV v a) ∧ uMat (gH v) *ᵥ zV u v = zV u v` using `fun v => rev_UW (hFr u v) (Qm_zB (hT u) _) (hhB v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgH : gH ∈ Hset _ (Set.range (eC ⟨_, ιE, ιE_conj, ιE_F, bas, J_eq, L_eq, pl, φ_eq, n_eq, eps_eq⟩ L) ∪ Set.range (fC ⟨_, ιE, ιE_conj, ιE_F, bas, J_eq, L_eq, pl, φ_eq, n_eq, eps_eq⟩ L) ∪ {zC ⟨_, ιE, ιE_conj, ιE_F, bas, J_eq, L_eq, pl, φ_eq, n_eq, eps_eq⟩ L u})`. Introduce `v y hy`. Break down `hy with ((⟨a, rfl⟩ | ⟨a, rfl⟩) | hy)` into its components or cases. Conclude with `(hfixv v).1 a`. Conclude with `(hfixv v).2.1 a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality. Conclude with `(hfixv v).2.2`. Establish `hgN : ∀ v, InN (ε v) (eV v) (zV u v) (uMat (gN v))` using `fun v => rev_N (hFr u v) (Qm_zB (hT u) _) (inWb_zB _) (hmB v)`. Establish `hgHS : gH ∈ Sinf _ (eC ⟨_, ιE, ιE_conj, ιE_F, bas, J_eq, L_eq, pl, φ_eq, n_eq, eps_eq⟩ L) (zC ⟨_, ιE, ιE_conj, ιE_F, bas, J_eq, L_eq, pl, φ_eq, n_eq, eps_eq⟩ L u)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `v`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `: (uMat (gH v) - 1) *ᵥ eV v a = 0`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, (hfixv v).1 a, sub_self]`. Conclude with `this ▸ Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (uMat (gH v) - 1) *ᵥ zV u v = 0`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, (hfixv v).2.2, sub_self]`. Conclude with `this ▸ Submodule.zero_mem _`. Establish `hgNS : gN ∈ Sinf _ (eC ⟨_, ιE, ιE_conj, ιE_F, bas, J_eq, L_eq, pl, φ_eq, n_eq, eps_eq⟩ L) (zC ⟨_, ιE, ιE_conj, ιE_F, bas, J_eq, L_eq, pl, φ_eq, n_eq, eps_eq⟩ L u)` using `fun v => (hgN v).1`. Take `⟨-, hmul, -, hNtriv, -⟩` from `Pi.piU_rep u`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpiU : Pi.piU u s = Pi.piU u gH`. Rewrite using `[hsplit, hmul gH hgHS gN hgNS, hNtriv gN hgN, mul_one]`. Establish `hL : (fun v => Wloc u v ((s * x) v)) = fun v => (cv u v * psiR (ε v) (gD D) (eV v) (fV v) (zV u v) (uMat (s v))) • piB (ε v) (eV v) (fV v) (Pi.wfr u v) (z0v (TV u) (zV u v)) (Pi.piLoc u v) (hB v) (Wl u v (x v))`. Use function extensionality and compare the values at `v`. Use `show cv u v • Wl u v (s v * x v) = _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hWe u v (s v) (x v) (hB v) (hhB v) (mB v) (hmB v) (hsm v), smul_smul]`. Establish `hR : Pi.piU u s (Pi.tensU u (fun v => Wloc u v (x v))) = Pi.tensU u (fun v => cv u v • piB (ε v) (eV v) (fV v) (Pi.wfr u v) (z0v (TV u) (zV u v)) (Pi.piLoc u v) (hB v) (Wl u v (x v)))`. Rewrite using `[hpiU, Pi.tensU_equiv u gH hgH]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show Pi.piLoc u v _ (cv u v • Wl u v (x v)) = _`. Rewrite using `[map_smul]`. Both sides reduce to the same expression. Use `show Pi.tensU u (fun v => Wloc u v ((s * x) v)) = _ • Pi.piU u s (Pi.tensU u (fun v => Wloc u v (x v)))`. Rewrite using `[hL, hR, Formalism.L2.SG.Pf.WuDec.tens_smul (Pi.tensU_inner u), Formalism.L2.SG.Pf.WuDec.tens_smul (Pi.tensU_inner u), smul_smul, Finset.prod_mul_distrib, mul_comm (∏ v, cv u v)]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `x`. Set `G : ∀ v, Formalism.REAL.UJ (ε v) → Pi.Vloc u v` to `fun v t => cv u v • ((((fdegOf (Formalism.REAL.muG (ε v)) (Bu.σ v) (Bu.w v) : ℝ) : ℂ) * star ⟪Bu.w v, Bu.σ v (uMat t) (Bu.w v)⟫_ℂ) • Wl u v (x v * t))`. Establish `hGi : ∀ v, Integrable (G v) (Formalism.REAL.muG (ε v))` using `fun v => ((hWr u v (x v)).1).smul (cv u v)`. Take `⟨hint, hval⟩` from `hTens (InfinitePlace F) (fun v => Formalism.REAL.UJ (ε v)) (fun v => Formalism.REAL.muG (ε v)) (Pi.Vloc u) (Pi.Vpi u) (Pi.tensU u) (Pi.tensU_inner u) (Pi.tensU_span u) G hGi`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hpt : ∀ y : ∀ v, Formalism.REAL.UJ (ε v), Formalism.L2.SG.ProjRows.phInf _ Bu.σ Bu.w (fun v => fdegOf (Formalism.REAL.muG (ε v)) (Bu.σ v) (Bu.w v)) y • Pi.tensU u (fun v => Wloc u v ((x * y) v)) = Pi.tensU u (fun v => G v (y v))`. Introduce `y`. Establish `hG : (fun v => G v (y v)) = fun v => (cv u v * ((((fdegOf (Formalism.REAL.muG (ε v)) (Bu.σ v) (Bu.w v) : ℝ) : ℂ) * star ⟪Bu.w v, Bu.σ v (uMat (y v)) (Bu.w v)⟫_ℂ))) • Wl u v (x v * y v)`. Use function extensionality and compare the values at `v`. Simplify using `only [G]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul]`. Establish `hW' : (fun v => Wloc u v ((x * y) v)) = fun v => cv u v • Wl u v (x v * y v)` using `rfl`. Rewrite using `[hG, hW', Formalism.L2.SG.Pf.WuDec.tens_smul (Pi.tensU_inner u), Formalism.L2.SG.Pf.WuDec.tens_smul (Pi.tensU_inner u), smul_smul, Finset.prod_mul_distrib]`. Use `congr 1`. Simplify using `only [Formalism.L2.SG.ProjRows.phInf, Formalism.L2.SG.ProjRows.mInf, Complex.ofReal_prod, star_prod, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Finset.prod_congr rfl fun v _ => by rw [mul_comm _ (cv u v)]`. Use `⟨hint.congr (ae_of_all _ fun y => (hpt y).symm), ?_⟩` and prove the remaining obligations. Rewrite using `[integral_congr_ae (ae_of_all _ hpt), hval]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [G]`. Rewrite using `[integral_smul, (hWr u v (x v)).2]`. Conclude with `(Formalism.L2.SG.Pf.WuDec.continuous_tens (Pi.tensU_inner u)).comp (continuous_pi fun v => (hWlc u v).comp (continuous_apply v))`. Rewrite using `[lintegral_congr (fun x => hnorm u x), hK u (fun v y => ‖Wloc u v y‖ₑ) (fun v => (hWlc u v).enorm.measurable) (fun v s hs y => hinv u v s hs y)]`. Use `ENNReal.mul_lt_top (lt_top_iff_ne_top.2 (hCt u)) (ENNReal.prod_lt_top fun v _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Wloc, enorm_smul]`. Rewrite using `[lintegral_const_mul' _ _ enorm_ne_top]`. Conclude with `ENNReal.mul_lt_top enorm_lt_top (hW1 u v)`. Establish `h2 : ∀ x : ∀ v, Formalism.REAL.UJ (ε v), ‖Pi.tensU u (fun v => Wloc u v (x v))‖ₑ ^ 2 = ∏ v, ‖Wloc u v (x v)‖ₑ ^ 2` using `fun x => by rw [hnorm u x, Finset.prod_pow]`. Rewrite using `[lintegral_congr h2, hK u (fun v y => ‖Wloc u v y‖ₑ ^ 2) (fun v => ((hWlc u v).enorm.measurable.pow_const 2)) (fun v s hs y => by show ‖Wloc u v (s * y)‖ₑ ^ 2 = ‖Wloc u v y‖ₑ ^ 2; rw [hinv u v s hs y])]`.
-
-Establish `hloc2 : ∀ v, ∫⁻ y, ‖Wloc u v y‖ₑ ^ 2 ∂(νl u v) = ‖cv u v‖ₑ ^ 2` using `fun v => by`. Simplify using `only [Wloc, enorm_smul, mul_pow]`. Rewrite using `[lintegral_const_mul' _ _ (ENNReal.pow_ne_top enorm_ne_top), hW2 u v, mul_one]`. Simplify using `only [hloc2]`. Rewrite using `[Finset.prod_pow]`.
-
-Establish `hcU : ∏ v, ‖cv u v‖ₑ = ‖cU u‖ₑ`. Rewrite using `[← hcv u]`. Simplify using `only [enorm_eq_nnnorm]`. Rewrite using `[← ENNReal.coe_finset_prod]`. Use `congr 1`.
-
-Rewrite using `[nnnorm_prod]`. Rewrite using `[hcU]`. Establish `ht : 0 < (C u).toReal` using `ENNReal.toReal_pos (hC0 u) (hCt u)`. Establish `he : ‖cU u‖ₑ ^ 2 = (C u)⁻¹`. Establish `hnn : 0 ≤ (C u).toReal ^ (-(1 / 2 : ℝ))` using `Real.rpow_nonneg ht.le _`.
-
-Rewrite using `[show ‖cU u‖ₑ = ENNReal.ofReal ((C u).toReal ^ (-(1 / 2 : ℝ))) by`. Rewrite using `[← ofReal_norm_eq_enorm]`. Simplify using `only [cU]`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg hnn]]`. Rewrite using `[← ENNReal.ofReal_pow hnn, ← Real.rpow_natCast, ← Real.rpow_mul ht.le]`.
-
-Evaluate the numerical expressions. Rewrite using `[Real.rpow_neg_one, ENNReal.ofReal_inv_of_pos ht, ENNReal.ofReal_toReal (hCt u)]`. Rewrite using `[he, ENNReal.mul_inv_cancel (hC0 u) (hCt u)]`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wblk_core (hQK : QuotProdK) (hHN : LocHNProps) (hNU : NUnimodLoc) (hTens : TensInt) {D : D7}
     (hB : BesselNVGap) (hCW : CoefWeightedLoc) (hWl : WlocExists) (hGB : GapBigOfGapHyp D) (hG : GapHyp D)
@@ -350,7 +340,7 @@ end Main
 section Final
 
 /- English proof (translation)
-Introduce `hG A L Ps Rf Bu Pi Mu`. Take `⟨I, ιE, ιE_conj, ιE_F, bas, J_eq, L_eq, pl, φ_eq, n_eq, eps_eq⟩` from `A`. Conclude with `wblk_core hQK hHN hNU Formalism.L2.SG.Pf.WuDec.integrable_and_integral_pi_apply hB hCW hWl hGB hG I ιE ιE_conj ιE_F bas J_eq L_eq pl φ_eq n_eq eps_eq L Ps Rf Bu Pi Mu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem weighted_block_exists_of_local_data (hQK : QuotProdK) (hHN : LocHNProps) (hNU : NUnimodLoc) (D : D7)
     (hB : BesselNVGap) (hCW : CoefWeightedLoc) (hWl : WlocExists) (hGB : GapBigOfGapHyp D) :

@@ -12,7 +12,7 @@ open IsLocalRing
 namespace GlobalTheory.BranchPurity
 
 /- English proof (translation)
-Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height p, ← maximalIdeal_height_eq_ringKrullDim]`. Conclude with `WithBot.coe_lt_coe.mpr (Ideal.height_strict_mono_of_isPrime_of_isPrime (lt_of_le_of_ne (le_maximalIdeal (Ideal.IsPrime.ne_top ‹_›)) hp))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_lt (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (p : Ideal R) [p.IsPrime]
     (hp : p ≠ maximalIdeal R) : ringKrullDim (Localization.AtPrime p) < ringKrullDim R := by
@@ -21,7 +21,7 @@ theorem dim_lt (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (p :
     (lt_of_le_of_ne (le_maximalIdeal (Ideal.IsPrime.ne_top ‹_›)) hp))
 
 /- English proof (translation)
-Use `haveI : IsRegularLocalRing R := (isRegularLocalRing_iff R).mpr hR`. Use `haveI : IsRegularRing R := GlobalTheory.isRegularRing_of_isRegularLocalRing R`. Conclude with `(IsRegularRing.isRegularLocalRing_localization p).spanFinrank_maximalIdeal`.
+A detailed English derivation is pending.
 -/
 theorem regular_localization (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     (hR : ((maximalIdeal R).spanFinrank : WithBot ℕ∞) = ringKrullDim R) (p : Ideal R) [p.IsPrime] :
@@ -32,7 +32,7 @@ theorem regular_localization (R : Type) [CommRing R] [IsLocalRing R] [IsNoetheri
   exact (IsRegularRing.isRegularLocalRing_localization p).spanFinrank_maximalIdeal
 
 /- English proof (translation)
-Use `haveI : IsRegularLocalRing R := (isRegularLocalRing_iff R).mpr hR`. Conclude with `(GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing R).2`.
+A detailed English derivation is pending.
 -/
 theorem integrallyClosed (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     (hR : ((maximalIdeal R).spanFinrank : WithBot ℕ∞) = ringKrullDim R) : IsIntegrallyClosed R := by
@@ -40,7 +40,7 @@ theorem integrallyClosed (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRi
   exact (GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing R).2
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.isField_iff_maximalIdeal_eq, ← Localization.AtPrime.map_eq_maximalIdeal]`. Introduce `h`. Apply `hp` to reduce the goal to its premises. Establish `hinj : Function.Injective (algebraMap R (Localization.AtPrime p))` using `IsLocalization.injective (Localization.AtPrime p) p.primeCompl_le_nonZeroDivisors`. Conclude with `(Ideal.map_eq_bot_iff_of_injective hinj).mp h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_isField_localization (R : Type) [CommRing R] [IsDomain R] (p : Ideal R) [p.IsPrime]
     (hp : p ≠ ⊥) : ¬ IsField (Localization.AtPrime p) := by
@@ -52,15 +52,13 @@ theorem not_isField_localization (R : Type) [CommRing R] [IsDomain R] (p : Ideal
   exact (Ideal.map_eq_bot_iff_of_injective hinj).mp h
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n IH`. Introduce `R A _ _ _ _ _ _ _ _ _ _ hn hR hF hA`. Use `haveI : IsIntegrallyClosed R := integrallyClosed R hR`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfree : Module.Free R A`. Distinguish the cases in `h2 : ringKrullDim R ≤ 2`. Conclude with `GlobalTheory.PurFree.free_of_isIntegrallyClosed R A hR h2`. Use `GlobalTheory.T.free_of_etale_on_punctured_spectrum R A hR ?_ ?_` and prove the remaining obligations. Rewrite `h2` using `[not_le]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h2' : ((2 : ℕ) : WithBot ℕ∞) < ringKrullDim R` using `by exact_mod_cast h2`. Rewrite `h2'`, the goal using `[← hR]`. Establish `: 2 < (maximalIdeal R).spanFinrank` using `by exact_mod_cast h2'`. Conclude with `this` after adjusting the coercions. Introduce `p _ hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hb : p = ⊥`. Substitute `hb` using the available equality. Conclude with `GlobalTheory.etale_fractionField_of_etale_height_one R A hF hA`. Take `⟨hdom, hic, hfs⟩` from `GlobalTheory.atPrime_tensor_isDomain_isIntegrallyClosed_faithfulSMul R A p`. Establish `hlt` using `dim_lt R p hp`.
-
-Establish `hreg` using `regular_localization R hR p`. Use `IH (maximalIdeal (Localization.AtPrime p)).spanFinrank ?_ (Localization.AtPrime p) (TensorProduct R (Localization.AtPrime p) A) rfl hreg (not_isField_localization R p hb) (GlobalTheory.etale_localization_atPrime_of_height_one R A p hA)` and prove the remaining obligations. Rewrite `hlt` using `[← hreg, ← hR, hn]`. Conclude with `hlt` after adjusting the coercions. Conclude with `GlobalTheory.PurityDisc.etale_of_etale_height_one R A hF hA`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteRing_sq_sub_mul_sq_eq_of_card : ∀ (n : ℕ) (R A : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [IsDomain R] [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [Algebra R A] [Module.Finite R A] [FaithfulSMul R A], (maximalIdeal R).spanFinrank = n → (((maximalIdeal R).spanFinrank : WithBot ℕ∞) = ringKrullDim R) → ¬ IsField R → (∀ (p : Ideal R) [p.IsPrime], p.height = 1 → Algebra.Etale (Localization.AtPrime p) (TensorProduct R (Localization.AtPrime p) A)) → Algebra.Etale R A := by
   intro n
@@ -92,7 +90,7 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card : ∀ (n : ℕ) (R A : Type) [CommRi
   exact GlobalTheory.PurityDisc.etale_of_etale_height_one R A hF hA
 
 /- English proof (translation)
-Introduce `R A _ _ _ _ _ _ _ _ _ _ hR _ hF hA`. Conclude with `finiteRing_sq_sub_mul_sq_eq_of_card _ R A rfl hR hF hA`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem etale_of_etale_height_one : ∀ (R A : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [IsDomain R] [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [Algebra R A] [Module.Finite R A] [FaithfulSMul R A], (((maximalIdeal R).spanFinrank : WithBot ℕ∞) = ringKrullDim R) → 1 ≤ ringKrullDim R → ¬ IsField R → (∀ (p : Ideal R) [p.IsPrime], p.height = 1 → Algebra.Etale (Localization.AtPrime p) (TensorProduct R (Localization.AtPrime p) A)) → Algebra.Etale R A := by
   intro R A _ _ _ _ _ _ _ _ _ _ hR _ hF hA

@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.R
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published
 
 /- English proof (translation)
-Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Use `show Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ w.asIdeal.inertiaDeg (𝓞 K)`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     (w : HeightOneSpectrum (𝓞 K')) : normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
@@ -17,14 +17,14 @@ private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [
     Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc _ w)`.
+A detailed English derivation is pending.
 -/
 private theorem cPl_asIdeal {E : Type} [Field E] [NumberField E] [IsCMField E] (w : HeightOneSpectrum (𝓞 E)) :
     (cPl w).asIdeal = w.asIdeal.comap (RingOfIntegers.mapRingEquiv (IsCMField.complexConj E).toRingEquiv) :=
   (GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc _ w)
 
 /- English proof (translation)
-Use `show Ideal.absNorm (cPl w).asIdeal = Ideal.absNorm w.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Use `(Nat.card_congr (Ideal.quotientEquiv _ _ (RingOfIntegers.mapRingEquiv (IsCMField.complexConj E).toRingEquiv).symm ?_).toEquiv).symm` and prove the remaining obligations. Rewrite using `[cPl_asIdeal]`. Conclude with `(Ideal.map_symm _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem normV_cPl {E : Type} [Field E] [NumberField E] [IsCMField E] (w : HeightOneSpectrum (𝓞 E)) :
     normV (cPl w) = normV w := by
@@ -36,7 +36,7 @@ private theorem normV_cPl {E : Type} [Field E] [NumberField E] [IsCMField E] (w 
   exact (Ideal.map_symm _).symm
 
 /- English proof (translation)
-Rewrite using `[IsCMField.complexConj_eq_self_iff, mem_maximalRealSubfield_iff]`. Introduce `φ`. Establish `h` using `IsTotallyReal.complexEmbedding_isReal (φ.comp (algebraMap F E))`. Conclude with `RingHom.congr_fun h x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem conj_algebraMap {F E : Type} [Field F] [NumberField F] [IsTotallyReal F] [Field E] [NumberField E] [IsCMField E]
     [Algebra F E] (x : F) : IsCMField.complexConj E (algebraMap F E x) = algebraMap F E x := by
@@ -46,11 +46,11 @@ private theorem conj_algebraMap {F E : Type} [Field F] [NumberField F] [IsTotall
   exact RingHom.congr_fun h x
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ n π P h`. Establish `h1` using `h.unr`. Establish `h2` using `(conjSrc_injective (IsCMField.complexConj E).toRingEquiv).tendsto_cofinite.eventually h1`. Use `filter_upwards [h1, h2] with w a b`. Take `⟨B, hB, hP⟩` from `a (w.under (𝓞 F)) rfl _ (normV_under w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B', hB', hP'⟩` from `b (w.under (𝓞 F)) (by`. Establish `e` using `cPl_asIdeal w`. Express the relevant statement in the definitionally equal form `_ = (cPl w).asIdeal.comap _`. Rewrite using `[e]`. Use extensionality with `x`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e2 : RingOfIntegers.mapRingEquiv (IsCMField.complexConj E).toRingEquiv (algebraMap (𝓞 F) (𝓞 E) x) = algebraMap (𝓞 F) (𝓞 E) x` using `RingOfIntegers.ext (conj_algebraMap (x : F))`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, e2]`. Use the proof step `rfl) _ ((normV_cPl w).trans (normV_under w))`. Take `rfl` from `TR.CuspSub.HasSat.unique hB hB'`. Conclude with `⟨_, hP, hP'⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.bcConj0 :
     UpperTheory.V.Br.BcConj0 := by

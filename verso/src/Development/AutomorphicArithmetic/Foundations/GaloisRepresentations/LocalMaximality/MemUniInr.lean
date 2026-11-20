@@ -11,20 +11,20 @@ private def cT {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup
   app (fun _ => 1) (fun l : Fin d => (T.X l.succ : S))
 
 /- English proof (translation)
-Apply the tactic sequence `rcases t with i | l <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma rowT_eq {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E] (T : Sys d S E)
     (t : Fin (d + 1) ⊕ₗ Fin d) : T.rowT t = Pi.single (phiT t) (cT T t) := by
   rcases t with i | l <;> rfl
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_transpose, Matrix.det_apply]`. Simplify using `only [Matrix.transpose_apply, Matrix.of_apply, Pi.single_apply]`. Rewrite using `[Finset.sum_congr rfl fun σ _ => by rw [Fintype.prod_ite_zero]]`. Distinguish the cases in `hg : Function.Bijective g`. Use `right`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hg, Equiv.Perm.sign (Equiv.ofBijective g hg), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (Equiv.ofBijective g hg)]`. Rewrite using `[if_pos (show ∀ i, (Equiv.ofBijective g hg) i = g i from fun i => rfl)]`. Introduce `σ _ hσ`. Rewrite using `[if_neg, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `hσ (Equiv.ext fun i => h i)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Use `left`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg, smul_zero]`. Introduce `h`. Establish `hgσ : g = σ` using `funext fun i => (h i).symm`. Conclude with `hg (hgσ ▸ σ.bijective)`.
+A detailed English derivation is pending.
 -/
 private lemma det_single {S : Type} [CommRing S] {n : ℕ} (g : Fin n → Fin n) (v : Fin n → S) :
     (Matrix.of fun a b => (Pi.single (g a) (v a) : Fin n → S) b).det = 0 ∨
@@ -53,7 +53,7 @@ private lemma det_single {S : Type} [CommRing S] {n : ℕ} (g : Fin n → Fin n)
     exact hg (hgσ ▸ σ.bijective)
 
 /- English proof (translation)
-Simplify using `only [detC, dif_pos h, rowT_eq]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma detC_eq {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E] (T : Sys d S E)
     (s : Finset (Fin (d + 1) ⊕ₗ Fin d)) (h : s.card = d + 1) :
@@ -62,9 +62,9 @@ private lemma detC_eq {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCo
   simp only [detC, dif_pos h, rowT_eq]
 
 /- English proof (translation)
-Establish `hf' : ∀ a, s.orderEmbOfFin h a = f a` using `fun a => (congrFun (Finset.orderEmbOfFin_unique h hfs hf) a).symm`. Rewrite using `[detC_eq T s h]`. Simplify using `only [hf', hφ]`. Rewrite using `[show (Matrix.of fun a b => (Pi.single a (cT T (f a)) : Fin (d + 1) → S) b) = Matrix.diagonal (fun a => cT T (f a)) from ?_]`. Conclude with `Matrix.det_diagonal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.diagonal_apply_ne _ hab, Pi.single_apply, Ne.symm hab]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma detC_id {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E] (T : Sys d S E)
     (s : Finset (Fin (d + 1) ⊕ₗ Fin d)) (h : s.card = d + 1) (f : Fin (d + 1) → Fin (d + 1) ⊕ₗ Fin d)
@@ -84,28 +84,28 @@ private lemma detC_id {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCo
     · simp [Matrix.diagonal_apply_ne _ hab, Pi.single_apply, Ne.symm hab]
 
 /- English proof (translation)
-Simplify using `[uni]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma mem_uni_inl {d : ℕ} (I : Finset (Fin (d + 1))) (L : Finset (Fin d)) (i : Fin (d + 1)) :
     toLex (Sum.inl i) ∈ uni I L ↔ i ∈ I := by
   simp [uni]
 
 /- English proof (translation)
-Simplify using `[uni]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma mem_uni_inr {d : ℕ} (I : Finset (Fin (d + 1))) (L : Finset (Fin d)) (l : Fin d) :
     toLex (Sum.inr l) ∈ uni I L ↔ l ∈ L := by
   simp [uni]
 
 /- English proof (translation)
-Simplify using `[uni]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma card_uni' {d : ℕ} (I : Finset (Fin (d + 1))) (L : Finset (Fin d)) :
     (uni I L).card = I.card + L.card := by
   simp [uni]
 
 /- English proof (translation)
-Rewrite using `[uni, Finset.prod_map, Finset.prod_disjSum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma prod_uni' {d : ℕ} {S : Type} [CommMonoid S] (I : Finset (Fin (d + 1))) (L : Finset (Fin d))
     (c : Fin (d + 1) ⊕ₗ Fin d → S) :
@@ -114,7 +114,7 @@ private lemma prod_uni' {d : ℕ} {S : Type} [CommMonoid S] (I : Finset (Fin (d 
   rfl
 
 /- English proof (translation)
-Use `conv_rhs => rw [← Finset.map_orderEmbOfFin_univ s h]`. Rewrite using `[Finset.prod_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma prod_emb {α M : Type} [LinearOrder α] [CommMonoid M] (s : Finset α) {k : ℕ} (h : s.card = k) (c : α → M) :
     ∏ a, c (s.orderEmbOfFin h a) = ∏ t ∈ s, c t := by
@@ -123,9 +123,9 @@ private lemma prod_emb {α M : Type} [LinearOrder α] [CommMonoid M] (s : Finset
   rfl
 
 /- English proof (translation)
-Establish `key` using `hD S S (Algebra.lmul ℂ S) (Fin (d + 1) ⊕ₗ Fin d) (d + 1) T.rowT (fun _ => 1) 1`. Establish `h1 : (fun l => Algebra.lmul ℂ S (∑ b, T.rowT l b * 1)) = fun t => Algebra.lmul ℂ S (app (fun _ => (1 : S)) (fun l : Fin d => (T.X l.succ : S)) t)`. Use function extensionality and compare the values at `t`. Rewrite using `[show (∑ b, T.rowT t b * 1) = cT T t by simp [rowT_eq]]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : (fun s => Algebra.lmul ℂ S (detC T.rowT s) 1) = detC T.rowT`. Use function extensionality and compare the values at `s`. Simplify using the standard rewrite rules. Rewrite `key` using `[h1, h2]`. Conclude with `key`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wd_lmul_app_detC_eq_zero_of_det (hD : Det) {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E]
     [Module ℂ E] (T : Sys d S E) :
@@ -144,7 +144,7 @@ private theorem wd_lmul_app_detC_eq_zero_of_det (hD : Det) {d : ℕ} {S E : Type
   exact key
 
 /- English proof (translation)
-Rewrite using `[detC_id T (uni Finset.univ ∅) (by simp [card_uni']) (fun a => toLex (Sum.inl a)) (fun a => (mem_uni_inl _ _ a).2 (Finset.mem_univ a)) Sum.Lex.inl_strictMono (fun a => rfl)]`. Simplify using `[cT, app]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem detC_uni_univ_empty {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E]
     (T : Sys d S E) : detC T.rowT (uni Finset.univ ∅) = 1 := by
@@ -153,15 +153,15 @@ private theorem detC_uni_univ_empty {d : ℕ} {S E : Type} [CommRing S] [Algebra
   simp [cT, app]
 
 /- English proof (translation)
-Set `f : Fin (d + 1) → Fin (d + 1) ⊕ₗ Fin d` to `fun a => Fin.cases (motive := fun _ => Fin (d + 1) ⊕ₗ Fin d) (toLex (Sum.inl 0)) (fun l => toLex (Sum.inr l)) a`. Establish `hfs : ∀ a, f a ∈ uni {0} Finset.univ`. Introduce `a`. Consider the cases of `a using Fin.cases with`. Consider the case `zero => exact (mem_uni_inl _ _ 0).2 (Finset.mem_singleton_self 0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ l => exact (mem_uni_inr _ _ l).2 (Finset.mem_univ l)`. Establish `hf : StrictMono f`. Introduce `a b hab`. Consider the cases of `a using Fin.cases with`. Consider the case `zero`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `b using Fin.cases with`. Consider the case `zero => exact absurd hab (lt_irrefl _)`. Consider the case `succ l => exact Sum.Lex.inl_lt_inr _ _`. Consider the case `succ i`. Consider the cases of `b using Fin.cases with`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => exact absurd hab (Fin.not_lt_zero _)`. Consider the case `succ l => exact Sum.Lex.inr_strictMono (Fin.succ_lt_succ_iff.1 hab)`. Establish `hφ : ∀ a, phiT (f a) = a`. Introduce `a`. Apply the tactic sequence `cases a using Fin.cases <;> rfl`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hcard : (uni ({0} : Finset (Fin (d + 1))) (Finset.univ : Finset (Fin d))).card = d + 1`. Rewrite using `[card_uni', Finset.card_singleton, Finset.card_univ, Fintype.card_fin, add_comm]`. Rewrite using `[detC_id T _ hcard f hfs hf hφ, Fin.prod_univ_succ]`. Simplify using `[f, cT, app]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem detC_uni_singleton_zero_univ {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E]
     (T : Sys d S E) : detC T.rowT (uni {0} Finset.univ) = ∏ l : Fin d, (T.X l.succ : S) := by
@@ -192,27 +192,21 @@ private theorem detC_uni_singleton_zero_univ {d : ℕ} {S E : Type} [CommRing S]
   simp [f, cT, app]
 
 /- English proof (translation)
-Distinguish the cases in `hc : (uni I L).card = d + 1`. Use `swap`. Use `left`. Simplify using `only [detC, dif_neg hc]`. Break down `det_single (fun a => phiT ((uni I L).orderEmbOfFin hc a)) (fun a => cT T ((uni I L).orderEmbOfFin hc a)) with h0 | ⟨hbij, ε, hε⟩` into its components or cases.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `left`. Rewrite using `[detC_eq T _ hc]`. Conclude with `h0`. Use `right`. Establish `hdet` using `(detC_eq T _ hc).trans hε`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ∀ t, t ∈ uni I L ↔ ∃ a, (uni I L).orderEmbOfFin hc a = t`. Introduce `t`. Rewrite using `[← Finset.mem_coe, ← Finset.range_orderEmbOfFin (uni I L) hc, Set.mem_range]`. Establish `h0I : 0 ∈ I`. Take `⟨a, ha⟩` from `hbij.2 0`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality.
 
-Use `replace ha : phiT ((uni I L).orderEmbOfFin hc a) = 0 := ha`. Establish `hA : (uni I L).orderEmbOfFin hc a ∈ uni I L` using `Finset.orderEmbOfFin_mem _ hc a`. Generalize the expression as in `(uni I L).orderEmbOfFin hc a = t at ha hA`. Break down `t with i | l` into its components or cases. Express the relevant statement in the definitionally equal form `i = 0 at ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Substitute `ha` using the available equality. Conclude with `(mem_uni_inl I L _).1 hA`. Conclude with `absurd ha (Fin.succ_ne_zero l)`. Establish `hcard : I.card + L.card = d + 1`. Rewrite using `[← card_uni']`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Conclude with `hc`. Establish `hcompl : Iᶜ = L.map (Fin.succEmb d)`. Use extensionality with `m`. Simplify using `only [Finset.mem_compl, Finset.mem_map, Fin.coe_succEmb]`. Prove the components needed by the constructor for the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce `hm`. Take `⟨a, ha⟩` from `hbij.2 m`. Use `replace ha : phiT ((uni I L).orderEmbOfFin hc a) = m := ha`. Establish `hA : (uni I L).orderEmbOfFin hc a ∈ uni I L` using `Finset.orderEmbOfFin_mem _ hc a`. Generalize the expression as in `(uni I L).orderEmbOfFin hc a = t at ha hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `t with i | l` into its components or cases. Express the relevant statement in the definitionally equal form `i = m at ha`. Substitute `ha` using the available equality. Conclude with `absurd ((mem_uni_inl I L _).1 hA) hm`. Conclude with `⟨l, (mem_uni_inr I L l).1 hA, ha⟩`.
-
-Introduce and unpack `⟨l, hl, rfl⟩ hI`. Take `⟨a, ha⟩` from `(hmem (toLex (Sum.inl l.succ))).1 ((mem_uni_inl I L _).2 hI)`. Take `⟨b, hb⟩` from `(hmem (toLex (Sum.inr l))).1 ((mem_uni_inr I L _).2 hl)`. Establish `hab : a = b` using `hbij.1 (by show phiT ((uni I L).orderEmbOfFin hc a) = phiT ((uni I L).orderEmbOfFin hc b)`. Rewrite using `[ha, hb]`.
-
-Use the proof step `rfl)`. Rewrite `ha` using `[hab, hb]`. Conclude with `Sum.inl_ne_inr (toLex.injective ha.symm)`. Use `⟨h0I, hcard, ε, ?_⟩` and prove the remaining obligations. Rewrite using `[hdet, prod_emb (uni I L) hc (cT T), prod_uni', hcompl, Finset.prod_map]`.
-
-Simplify using `[cT, app]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem detC_uni_eq_zero_or_eq_unit_smul_prod_compl {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E]
     (T : Sys d S E) (I : Finset (Fin (d + 1))) (L : Finset (Fin d)) :
@@ -273,7 +267,7 @@ private theorem detC_uni_eq_zero_or_eq_unit_smul_prod_compl {d : ℕ} {S E : Typ
     simp [cT, app]
 
 /- English proof (translation)
-Introduce `hD d S E _ _ _ _ T`. Conclude with `⟨wd_lmul_app_detC_eq_zero_of_det hD T, detC_uni_univ_empty T, detC_uni_singleton_zero_univ T, detC_uni_eq_zero_or_eq_unit_smul_prod_compl T⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.productCup_of_system.thT_of :
     Det → ThT := by

@@ -12,11 +12,11 @@ open C2x5 C2x7
 variable {k r : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨b, hb⟩, rfl⟩` from `hx`. Establish `hbr : b.val < r` using `by have := a.isLt; rw [Fin.lt_def] at hb; omega`. Simplify using `only [fvec, dif_pos hbr, bvec, Pi.single_apply, eI]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg]`. Introduce `e`. Rewrite `hb` using `[Fin.lt_def]`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul c x _ hx => simp [hx]`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma flagSpan_vanish (z : Fin (2 * r + k + 1) → ℂ) (a : Fin (r + 1)) (v : Fin (2 * r + k + 1) → ℂ)
     (hv : v ∈ C2.flagSpan k r z a) (i : Fin (2 * r + k + 1)) (hi : a.val ≤ i.val) : v i = 0 := by
@@ -32,7 +32,7 @@ lemma flagSpan_vanish (z : Fin (2 * r + k + 1) → ℂ) (a : Fin (r + 1)) (v : F
   | smul c x _ hx => simp [hx]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma mulVec_bvec (M : B.Mat k r) (x : Fin (2 * r + k + 1)) : M *ᵥ bvec x = fun i => M i x := by
   funext i; simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply]
@@ -41,19 +41,19 @@ def wpart (s : B.Mat k r) : B.Mat k r := fun i j =>
   if r ≤ i.val ∧ i.val ≤ r + k ∧ r ≤ j.val ∧ j.val ≤ r + k then s i j else if i = j then 1 else 0
 
 /- English proof (translation)
-Establish `hU : sᴴ * Hpk k r * s = Hpk k r` using `hs`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `congrFun (congrFun hU (eI k r a)) j`. Rewrite `e` using `[Matrix.mul_assoc, Matrix.mul_apply]`. Simplify using `only [C2x6.Hpk_mul_apply, Matrix.conjTranspose_apply] at e`. Establish `hH : Hpk k r (eI k r a) j = 0`. Rewrite using `[GBasic.Hpk_eq, if_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h'`. Use `congrArg Fin.val h'` as an intermediate fact. Rewrite using `[GBasic.sig_lo _ _ _ (by simp [eI])] at this; simp [eI] at this; omega`. Rewrite `e` using `[hH, Finset.sum_eq_single (eI k r a)]`. Rewrite `e` using `[hcol a _ (by simp [eI]), if_pos rfl, star_one, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsig : GBasic.sig k r (eI k r a) = esI k r a`. Apply `Fin.ext; rw [GBasic.sig_lo _ _ _ (by simp [eI])]; simp [eI, esI]` to reduce the goal to its premises. Establish `hsg : GBasic.sgn k r (eI k r a) = 1`. Unfold `GBasic.sgn`. Rewrite using `[if_neg]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[eI]`. Use linear arithmetic over natural numbers and integers. Rewrite `e` using `[hsig, hsg, one_mul]`. Conclude with `e`. Introduce `p _ hp`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hpa : a.val ≤ p.val`. Rewrite using `[hcol a p hpa, if_neg hp, star_zero, zero_mul]`. Use `push_neg at hpa`. Establish `hpr : p.val < r` using `by omega`. Establish `hsig : GBasic.sig k r p = esI k r ⟨p.val, hpr⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[GBasic.sig_lo _ _ _ hpr]`. Simplify using `[esI]`. Rewrite using `[hsig, ih p.val (by omega) ⟨p.val, hpr⟩ rfl, mul_zero, mul_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma zero_block (s : B.Mat k r) (hs : s ∈ B.GV k r)
     (hcol : ∀ (a : Fin r) (i : Fin (2 * r + k + 1)), a.val ≤ i.val → s i (eI k r a) = if i = eI k r a then 1 else 0)
@@ -98,7 +98,7 @@ open C2x5 C2x7
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `GBasic.sig_val k r x` as an intermediate fact. Establish `hx'` using `x.isLt`. Apply the tactic sequence `split_ifs at this <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sig_notW (x : Fin (2 * r + k + 1)) (hx : ¬ (r ≤ x.val ∧ x.val ≤ r + k)) :
     ¬ (r ≤ (GBasic.sig k r x).val ∧ (GBasic.sig k r x).val ≤ r + k) := by
@@ -107,39 +107,37 @@ lemma sig_notW (x : Fin (2 * r + k + 1)) (hx : ¬ (r ≤ x.val ∧ x.val ≤ r +
   split_ifs at this <;> omega
 
 /- English proof (translation)
-The claim follows from `GBasic.sig_mid k r x hx.1 hx.2`.
+A detailed English derivation is pending.
 -/
 lemma sig_fixes_middle_block (x : Fin (2 * r + k + 1)) (hx : r ≤ x.val ∧ x.val ≤ r + k) : GBasic.sig k r x = x :=
   GBasic.sig_mid k r x hx.1 hx.2
 
 /- English proof (translation)
-Establish `hU : sᴴ * Hpk k r * s = Hpk k r` using `hs`. Use `show (wpart s)ᴴ * Hpk k r * wpart s = Hpk k r`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_apply]`. Simplify using `only [C2x6.Hpk_mul_apply, Matrix.conjTranspose_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`. Distinguish the cases in `hj : r ≤ j.val ∧ j.val ≤ r + k`. Establish `e` using `congrFun (congrFun hU i) j`. Rewrite `e` using `[Matrix.mul_assoc, Matrix.mul_apply]`. Simplify using `only [C2x6.Hpk_mul_apply, Matrix.conjTranspose_apply] at e`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Use `Finset.sum_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hp : r ≤ p.val ∧ p.val ≤ r + k`. Rewrite using `[sig_fixes_middle_block p hp]`. Simplify using `only [wpart, if_pos (And.intro hp.1 (And.intro hp.2 (And.intro hi.1 hi.2))), if_pos (And.intro hp.1 (And.intro hp.2 (And.intro hj.1 hj.2)))]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : wpart s p i = 0`. Simplify using `only [wpart]`. Rewrite using `[if_neg (fun h => hp ⟨h.1, h.2.1⟩), if_neg]`. Introduce `e`. Rewrite `hp` using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp hi`. Rewrite using `[h1, star_zero, zero_mul]`. Distinguish the cases in `hpr : p.val < r`. Establish `: r + k < (GBasic.sig k r p).val` using `by rw [GBasic.sig_lo _ _ _ hpr]; omega`. Rewrite using `[hA _ j this hj.1 hj.2, mul_zero, mul_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: r + k < p.val` using `by omega`. Rewrite using `[hA p i this hi.1 hi.2, star_zero, zero_mul]`. Rewrite using `[Finset.sum_eq_single (GBasic.sig k r j)]`. Establish `h1 : wpart s (GBasic.sig k r j) i = 0`. Simplify using `only [wpart]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (fun h => sig_notW j hj ⟨h.1, h.2.1⟩), if_neg]`. Introduce `e`. Rewrite `hi` using `[← e]`. Conclude with `sig_notW j hj hi`. Rewrite using `[h1, star_zero, zero_mul, GBasic.Hpk_eq, if_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `e`. Rewrite `e` using `[sig_fixes_middle_block i hi]`. Rewrite `hj` using `[e]`. Conclude with `hj hi`. Introduce `p _ hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: wpart s (GBasic.sig k r p) j = 0`. Simplify using `only [wpart]`. Rewrite using `[if_neg (fun h => hj ⟨h.2.2.1, h.2.2.2⟩), if_neg]`. Introduce `e`. Apply `hp` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, GBasic.sig_sig]`. Rewrite using `[this, mul_zero, mul_zero]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_single i]`. Establish `h1 : wpart s i i = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [wpart]`. Rewrite using `[if_neg (fun h => hi ⟨h.1, h.2.1⟩)]`. Simplify using the standard rewrite rules. Establish `h2 : wpart s (GBasic.sig k r i) j = if GBasic.sig k r i = j then 1 else 0`. Simplify using `only [wpart]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h => sig_notW i hi ⟨h.1, h.2.1⟩)]`. Rewrite using `[h1, star_one, one_mul, h2, GBasic.Hpk_eq]`. Distinguish the cases in `e : GBasic.sig k r i = j`. Rewrite using `[if_pos e, if_pos e.symm, mul_one]`. Rewrite using `[if_neg e, if_neg (fun h => e h.symm), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `p _ hp`. Establish `: wpart s p i = 0`. Simplify using `only [wpart]`. Rewrite using `[if_neg (fun h => hi ⟨h.2.2.1, h.2.2.2⟩), if_neg hp]`. Rewrite using `[this, star_zero, zero_mul]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma wpart_uh (s : B.Mat k r) (hs : s ∈ B.GV k r)
     (hA : ∀ p j : Fin (2 * r + k + 1), r + k < p.val → r ≤ j.val → j.val ≤ r + k → s p j = 0) :
@@ -202,47 +200,45 @@ end FlagSpanVanishing
 open C2x5 C2x7 FlagSpanVanishing
 
 /- English proof (translation)
-Introduce `k r z hz`. Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hs, hfl⟩`. Establish `hcol : ∀ (a : Fin r) (i : Fin (2 * r + k + 1)), a.val ≤ i.val → s i (eI k r a) = if i = eI k r a then 1 else 0`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `a i hi`. Establish `h` using `flagSpan_vanish z (Fin.castSucc a) _ (hfl (Fin.castSucc a)) i (by simpa using hi)`. Establish `hf : fvec k r z (Fin.castSucc a) = bvec (eI k r a)` using `by rw [fvec, dif_pos (by simp)]; rfl`. Rewrite `h` using `[hf, mulVec_bvec, Pi.sub_apply, sub_eq_zero]`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[bvec, Pi.single_apply]`. Establish `hzc : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → (s *ᵥ z) i = z i`. Introduce `i hi`. Establish `h` using `flagSpan_vanish z (Fin.last r) _ (hfl (Fin.last r)) i (by simpa using hi)`. Establish `hf : fvec k r z (Fin.last r) = z` using `by rw [fvec, dif_neg (by simp)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hf, Pi.sub_apply, sub_eq_zero]`. Conclude with `h`. Establish `hA : ∀ p j : Fin (2 * r + k + 1), r + k < p.val → r ≤ j.val → j.val ≤ r + k → s p j = 0`. Introduce `p j hp hj1 hj2`. Establish `hpa : 2 * r + k - p.val < r` using `by omega`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : esI k r ⟨2 * r + k - p.val, hpa⟩ = p` using `Fin.ext (by simp [esI]; omega)`. Rewrite using `[← e]`. Conclude with `zero_block s hs hcol j hj1 hj2 _ _ rfl`. Establish `hhU` using `wpart_uh s hs hA`. Use `set h := wpart s with hh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hhW : h ∈ UWset k r z`. Use `⟨hhU, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mulVec_bvec]`. Use function extensionality and compare the values at `i`. Simplify using `only [hh, wpart, bvec, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[if_neg (by intro h'; have := h'.2.2.1; simp only [eI] at this; omega)]`. Rewrite using `[mulVec_bvec]`. Use function extensionality and compare the values at `i`. Simplify using `only [hh, wpart, bvec, Pi.single_apply]`. Rewrite using `[if_neg (by intro h'; have := h'.2.2.2; simp only [esI] at this; omega)]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`. Rewrite using `[← hzc i hi.1]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hj : r ≤ j.val ∧ j.val ≤ r + k`. Simplify using `only [hh, wpart, if_pos (And.intro hi.1 (And.intro hi.2 hj))]`. Establish `hzj : z j = 0` using `hz.1 j (by omega)`. Rewrite using `[hzj, mul_zero, mul_zero]`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i]`. Simplify using `only [hh, wpart]`. Rewrite using `[if_neg (fun h' => hi ⟨h'.1, h'.2.1⟩)]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hh, wpart]`. Rewrite using `[if_neg (fun h' => hi ⟨h'.1, h'.2.1⟩), if_neg (Ne.symm hj), zero_mul]`. Simplify using the standard rewrite rules. Establish `hhu : IsUnit h.det` using `WeylGroupFacts.isUnit_of_uh hhU`. Establish `hblk` using `WeylGroupFacts.uw_block (WeylGroupFacts.uw_inv hhW)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h, hhW, h⁻¹ * s, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[WeylGroupFacts.nset_iff]`. Use `⟨WeylGroupFacts.uh_mul (WeylGroupFacts.uh_inv hhU) hs, fun i j hj hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hjr : j.val < r`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : eI k r ⟨j.val, hjr⟩ = j` using `Fin.ext rfl`. Establish `hterm : ∀ p, h⁻¹ i p * s p j = (if i = p then 1 else 0) * s p j`. Introduce `p`. Distinguish the cases in `hpr : p.val < r`. Rewrite using `[hblk.1 i p (Or.inl hpr)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hcol ⟨j.val, hjr⟩ p (by simp; omega)` as an intermediate fact. Rewrite `this` using `[e, if_neg (fun e' => hpr (by rw [e']; exact hjr))]`. Rewrite using `[this, mul_zero, mul_zero]`. Simplify using `only [hterm, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `hcol ⟨j.val, hjr⟩ i (by simp; omega)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Conclude with `this`. Establish `hir : r ≤ i.val` using `by omega`. Establish `hterm : ∀ p, h⁻¹ i p * s p j = h⁻¹ i p * h p j`. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hpr : p.val < r`. Rewrite using `[hblk.1 i p (Or.inl hpr), if_neg (fun e' => by rw [e'] at hir; omega), zero_mul, zero_mul]`. Distinguish the cases in `hpk : p.val ≤ r + k`. Simplify using `only [hh, wpart]`. Rewrite using `[if_pos ⟨by omega, hpk, by omega, hj⟩]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hA p j (by omega) (by omega) hj]`. Simplify using `only [hh, wpart]`. Rewrite using `[if_neg (fun h' => hpk h'.2.1), if_neg (fun e' => by rw [e'] at hpk; exact hpk hj)]`. Simplify using `only [hterm]`. Rewrite using `[← Matrix.mul_apply, Matrix.nonsing_inv_mul _ hhu, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hhu, Matrix.one_mul]`. Introduce `hs`. Use `⟨Sset_UH hs, fun a => ?_⟩` and prove the remaining obligations. Take `⟨U, hU1, hU2, hsF⟩` from `S_F hz.1 hs`. Rewrite using `[colEq hsF a]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hfa : fvec k r z a = ∑ c, (if c = a then (1 : ℂ) else 0) • fvec k r z c`. Simplify using `[ite_smul]`. Rewrite using `[hfa, ← Finset.sum_sub_distrib]`. Apply `Submodule.sum_mem` to reduce the goal to its premises. Introduce `c _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← sub_smul]`. Distinguish the cases in `hca : c < a`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨c, hca⟩, rfl⟩)`. Establish `: U c a - (if c = a then 1 else 0) = 0`. Break down `eq_or_lt_of_le (not_lt.mp hca) with e | e` into its components or cases.
-
-Rewrite using `[← e, hU2, if_pos rfl, sub_self]`. Rewrite using `[hU1 c a e, if_neg (ne_of_gt e), sub_self]`. Rewrite using `[this, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem standard_flag_property : C2.SFlag := by
   intro k r z hz

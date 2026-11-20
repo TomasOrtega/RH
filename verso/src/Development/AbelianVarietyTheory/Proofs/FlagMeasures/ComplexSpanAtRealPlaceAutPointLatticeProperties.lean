@@ -18,13 +18,11 @@ section General
 variable {E A : Type} [Field E] [CommRing A] {n : ℕ}
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_mono (Set.image_mono Submodule.subset_span)) ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Establish `: (fun i => ι ((0 : Fin n → E) i)) = 0` using `by funext i; simp`. Simplify using `only [this]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `: (fun i => ι ((y + z) i)) = (fun i => ι (y i)) + fun i => ι (z i)` using `by funext i; simp`. Simplify using `only [this]`. Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy`. Establish `: (fun i => ι ((c • y) i)) = ι c • fun i => ι (y i)` using `by funext i; simp`.
-
-Simplify using `only [this]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_image_span (ι : E →+* A) (S : Set (Fin n → E)) :
     Submodule.span A ((fun w : Fin n → E => fun i => ι (w i)) '' S) =
@@ -49,9 +47,9 @@ theorem span_image_span (ι : E →+* A) (S : Set (Fin n → E)) :
     exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← (Pi.basisFun A (Fin n)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `Submodule.subset_span ⟨Pi.single j 1, trivial, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = j`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem span_image_univ (ι : E →+* A) :
     Submodule.span A ((fun w : Fin n → E => fun i => ι (w i)) '' Set.univ) = ⊤ := by
@@ -64,7 +62,7 @@ theorem span_image_univ (ι : E →+* A) :
   · simp [h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem map_mulVec_image (ι : E →+* A) (Y : Matrix (Fin n) (Fin n) E) (w : Fin n → E) :
     Y.map ι *ᵥ (fun i => ι (w i)) = fun i => ι ((Y *ᵥ w) i) := by
@@ -72,9 +70,9 @@ theorem map_mulVec_image (ι : E →+* A) (Y : Matrix (Fin n) (Fin n) E) (w : Fi
   simp [Matrix.mulVec, dotProduct, map_sum]
 
 /- English proof (translation)
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨w, hw, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨Y *ᵥ w, h w hw, (map_mulVec_image ι Y w).symm⟩`. Consider the case `zero => rw [Matrix.mulVec_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [Matrix.mulVec_add]`. Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy => rw [Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_mulVec_mem (ι : E →+* A) (Y : Matrix (Fin n) (Fin n) E) (S T : Set (Fin n → E))
     (h : ∀ u ∈ S, Y *ᵥ u ∈ T) (u : Fin n → A)
@@ -89,9 +87,9 @@ theorem map_mulVec_mem (ι : E →+* A) (Y : Matrix (Fin n) (Fin n) E) (S T : Se
   | smul c y _ hy => rw [Matrix.mulVec_smul]; exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨w, hw, rfl⟩` from `hy`. Rewrite using `[map_mulVec_image, h w hw]`. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Consider the case `zero => rw [Matrix.mulVec_zero]`. Consider the case `add y z _ _ hy hz => rw [Matrix.mulVec_add, hy, hz, add_zero]`. Consider the case `smul c y _ hy => rw [Matrix.mulVec_smul, hy, smul_zero]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_mulVec_eq_zero (ι : E →+* A) (Y : Matrix (Fin n) (Fin n) E) (S : Set (Fin n → E))
     (h : ∀ u ∈ S, Y *ᵥ u = 0) (u : Fin n → A)
@@ -112,7 +110,7 @@ variable (σ : E →+* E) (s : A →+* A) (ι : E →+* A) (hc : ∀ e, s (ι e)
 include hc
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[← GlobalTheory.CoverRadiiEq.skew_iff]`. Establish `h1 : Formalism.UG.cT s (Y.map ι) = (Formalism.UG.cT σ Y).map ι`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hc]`. Rewrite using `[h1, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_add _ (map_add ι), h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -125,9 +123,7 @@ theorem isSkew_map (Y : Matrix (Fin n) (Fin n) E) (h : IsSkew σ J Y) :
   simp
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Use `⟨isSkew_map σ s ι hc J Y h1, fun u => ?_, fun u hu => ?_, map_mulVec_eq_zero ι Y _ h4⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.PerpBaseChange.perpSet_baseChange E A σ s ι n J W hc]`. Conclude with `map_mulVec_mem ι Y Set.univ _ (fun u _ => h2 u) u (by rw [span_image_univ]; trivial)`. Rewrite `hu` using `[GlobalTheory.PerpBaseChange.perpSet_baseChange E A σ s ι n J W hc]`.
-
-Conclude with `map_mulVec_mem ι Y _ _ h3 u hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inNil_map (W : Submodule E (Fin n → E)) (Y : Matrix (Fin n) (Fin n) E) (h : InNil σ J W Y) :
     InNil s (J.map ι) (Submodule.span A ((fun w : Fin n → E => fun i => ι (w i)) '' (W : Set (Fin n → E))))
@@ -140,7 +136,7 @@ theorem inNil_map (W : Submodule E (Fin n → E)) (Y : Matrix (Fin n) (Fin n) E)
     exact map_mulVec_mem ι Y _ _ h3 u hu
 
 /- English proof (translation)
-Use `⟨inNil_map σ s ι hc J W Y h.1, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[GlobalTheory.PerpBaseChange.perpSet_baseChange E A σ s ι n J W hc]`. Conclude with `map_mulVec_eq_zero ι Y _ h.2 u hu`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inCen_map (W : Submodule E (Fin n → E)) (Y : Matrix (Fin n) (Fin n) E) (h : InCen σ J W Y) :
     InCen s (J.map ι) (Submodule.span A ((fun w : Fin n → E => fun i => ι (w i)) '' (W : Set (Fin n → E))))
@@ -156,9 +152,9 @@ section Lattice
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegralBoundFlagMeasures.main`. Consider the case `exact _root_.GlobalTheory.IntegralBoundFlagMeasures.main`. Consider the case `(apply _root_.GlobalTheory.IntegralBoundFlagMeasures.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegralBoundFlagMeasures.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntegralBoundFlagMeasures.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegralBoundFlagMeasures.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem (Λ : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → E)
     (hy : y ∈ Submodule.span E (Λ : Set (Fin n → E))) :
@@ -173,9 +169,9 @@ theorem exists_smul_mem (Λ : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → E
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `⟨fun h w hw => h w (Submodule.subset_span hw), fun h w hw => ?_⟩` and prove the remaining obligations. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => exact h w hw`. Consider the case `zero => simp [Formalism.UG.hform]`. Consider the case `add u v _ _ hu hv => rw [Formalism.UG.P.csScale_hform_add_left, hu, hv, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c u _ hu => rw [Formalism.UG.P.csScale_hform_smul_left, hu, mul_zero]`.
+Treat this case separately.
 -/
 theorem mem_perpSet_span (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (S : Set (Fin n → E))
     (y : Fin n → E) :
@@ -188,13 +184,13 @@ theorem mem_perpSet_span (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (S : Se
   | smul c u _ hu => rw [Formalism.UG.P.csScale_hform_smul_left, hu, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_span_of_tower]`. Use extensionality with `y`. Rewrite using `[mem_perpSet_span]`. Prove the components needed by the constructor for the conclusion. Introduce `hy w hw`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem u hu => exact hu.2 w hw`. Consider the case `zero => simp [Formalism.UG.hform]`. Consider the case `add u v _ _ hu hv => rw [Formalism.UG.P.csScale_hform_add_right, hu, hv, add_zero]`. Consider the case `smul c u _ hu => rw [Formalism.UG.P.csScale_hform_smul_right, hu, mul_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Introduce `hy`. Take `⟨c, hc, hcy⟩` from `exists_smul_mem Λ y (by rw [hΛ]; trivial)`. Establish `hc1 : algebraMap (𝓞 E) E c ≠ 0` using `by simpa using hc`. Rewrite `hcy` using `[← algebraMap_smul E c]`. Establish `: y = (algebraMap (𝓞 E) E c)⁻¹ • algebraMap (𝓞 E) E c • y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, inv_mul_cancel₀ hc1, one_smul]`. Rewrite using `[this]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨hcy, fun w hw => ?_⟩)` and prove the remaining obligations. Rewrite using `[Formalism.UG.P.csScale_hform_smul_right, hy w hw, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem span_perp (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (Λ R : Submodule (𝓞 E) (Fin n → E))
     (hΛ : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) :
@@ -223,18 +219,16 @@ theorem span_perp (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (Λ R : Submod
 end Lattice
 
 /- English proof (translation)
-The claim follows from `(I.cm.cmUnram.2.1 (I.φ v) e).symm`.
+A detailed English derivation is pending.
 -/
 theorem conj_emb (I : AutInst) (v : InfinitePlace I.F) (e : I.E) :
     starRingEnd ℂ (I.φ v e) = I.φ v (starRingEnd I.E e) :=
   (I.cm.cmUnram.2.1 (I.φ v) e).symm
 
 /- English proof (translation)
-Introduce `I x R`. Establish `h1 : ∀ (R : Submodule (𝓞 I.E) (Fin I.n → I.E)) v, spanAt I R v = Submodule.span ℂ ((fun w : Fin I.n → I.E => fun i => I.φ v (w i)) '' (Submodule.span I.E (R : Set (Fin I.n → I.E)) : Set (Fin I.n → I.E)))` using `fun R v => span_image_span (I.φ v) _`. Establish `hΛ` using `(GlobalTheory.PointLattice.lamX_selfDual I x).2.2.1`. Use `⟨h1 R, fun v => ?_, fun v => ?_, fun Y hY v => ?_, fun Y hY v => ?_⟩` and prove the remaining obligations. Rewrite using `[h1, hΛ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `span_image_univ _`. Rewrite using `[h1, h1, GlobalTheory.PerpBaseChange.perpSet_baseChange _ _ (starRingEnd I.E) _ _ _ _ _ (conj_emb I v), perpIn, span_perp _ _ _ _ hΛ]`. Rewrite using `[h1]`. Conclude with `inNil_map _ _ _ (conj_emb I v) _ _ Y hY`. Rewrite using `[h1]`.
-
-Conclude with `inCen_map _ _ _ (conj_emb I v) _ _ Y hY`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanAt_properties : ∀ (I : AutInst) (x : I.GA) (R : Submodule (𝓞 I.E) (Fin I.n → I.E)), (∀ v, spanAt I R v = Submodule.span ℂ ((fun w : Fin I.n → I.E => fun i => I.φ v (w i)) '' (Submodule.span I.E (R : Set (Fin I.n → I.E)) : Set (Fin I.n → I.E)))) ∧ (∀ v, spanAt I (lamX I x) v = ⊤) ∧ (∀ v, (spanAt I (perpIn I x R) v : Set (Fin I.n → ℂ)) = perpSet (starRingEnd ℂ) (I.J.map (I.φ v)) (spanAt I R v)) ∧ (∀ Y : Matrix (Fin I.n) (Fin I.n) I.E, InNil (starRingEnd I.E) I.J (Submodule.span I.E (R : Set (Fin I.n → I.E))) Y → diagEmb I Y ∈ nilReal I R) ∧ ∀ Y : Matrix (Fin I.n) (Fin I.n) I.E, InCen (starRingEnd I.E) I.J (Submodule.span I.E (R : Set (Fin I.n → I.E))) Y → diagEmb I Y ∈ cenReal I R := by
   intro I x R

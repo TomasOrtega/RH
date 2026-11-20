@@ -9,7 +9,7 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `h` using `Algebra.norm_eq_prod_embeddings ℚ ℂ x`. Rewrite using `[Fintype.prod_equiv (RingHom.equivRatAlgHom E ℂ) (fun σ => ‖σ x‖) (fun τ => ‖τ x‖) (fun σ => rfl), ← norm_prod, ← h, eq_ratCast, Complex.norm_ratCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem so_prod_norm (x : E) : ∏ σ : E →+* ℂ, ‖σ x‖ = |(Algebra.norm ℚ x : ℝ)| := by
   have h := Algebra.norm_eq_prod_embeddings ℚ ℂ x
@@ -17,17 +17,13 @@ theorem so_prod_norm (x : E) : ∏ σ : E →+* ℂ, ‖σ x‖ = |(Algebra.norm
     ← norm_prod, ← h, eq_ratCast, Complex.norm_ratCast]
 
 /- English proof (translation)
-Use `set B := RingOfIntegers.basis E`. Use `set b := NumberField.integralBasis E`. Establish `hb : ∀ i, b i = (B i : E)` using `fun i => NumberField.integralBasis_apply E i`. Use `choose N0 hN using fun i j => hw (B i * B j)`. Use `set N : Matrix _ _ ℤ := Matrix.of N0 with hNdef`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hTA : Algebra.traceMatrix ℚ b * Algebra.leftMulMatrix b w = (N.map (Int.cast : ℤ → ℚ))`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.map_apply, hNdef, Matrix.of_apply, ← hN i j]`. Simplify using `only [Algebra.traceMatrix_apply, Algebra.traceForm_apply, Algebra.leftMulMatrix_eq_repr_mul]`. Establish `e : w * (b i * b j) = b i * (w * b j)` using `by ring`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ((B i * B j : 𝓞 E) : E) = b i * b j by rw [hb, hb]; push_cast; ring, e]`. Use `conv_rhs => rw [← b.sum_repr (w * b j)]`. Rewrite using `[Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdet` using `congrArg Matrix.det hTA`. Rewrite `hdet` using `[Matrix.det_mul, ← Algebra.discr_def, ← Algebra.norm_eq_matrix_det, ← NumberField.coe_discr, ← Int.cast_det]`. Establish `hne : N.det ≠ 0`. Introduce `h0`. Rewrite `hdet` using `[h0, Int.cast_zero]`.
-
-Break down `mul_eq_zero.1 hdet with h1 | h1` into its components or cases. Conclude with `NumberField.discr_ne_zero E (by exact_mod_cast h1)`. Conclude with `hw0 ((Algebra.norm_eq_zero_iff).1 h1)`. Establish `h1 : (1 : ℚ) ≤ |(N.det : ℚ)|` using `by exact_mod_cast Int.one_le_abs hne`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← hdet, abs_mul, mul_comm]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem so_norm_ge (w : E) (hw0 : w ≠ 0)
     (hw : ∀ y : 𝓞 E, ∃ n : ℤ, Algebra.trace ℚ E (w * y) = n) :
@@ -63,17 +59,17 @@ theorem so_norm_ge (w : E) (hw0 : w ≠ 0)
       rw [← hdet, abs_mul, mul_comm]
 
 /- English proof (translation)
-Use `haveI := NumberField.IsCMField.isTotallyComplex E`. Establish `hcard : (Finset.univ : Finset (E →+* ℂ)).card = Module.finrank ℚ E`. Rewrite using `[Finset.card_univ, NumberField.Embeddings.card]`. Establish `hn2 : 2 ≤ Module.finrank ℚ E`. Establish `h1` using `NumberField.IsTotallyComplex.finrank E`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers. Establish `hnR : (0 : ℝ) < Module.finrank ℚ E` using `by exact_mod_cast (by omega : 0 < Module.finrank ℚ E)`. Establish `hwt : ∑ _σ ∈ (Finset.univ : Finset (E →+* ℂ)), (1 / (Module.finrank ℚ E : ℝ)) = 1`. Rewrite using `[Finset.sum_const, hcard, nsmul_eq_mul]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `amgm` using `Real.geom_mean_le_arith_mean_weighted Finset.univ (fun _ => 1 / (Module.finrank ℚ E : ℝ)) (fun σ : E →+* ℂ => ‖σ w‖ ^ 2) (fun _ _ => by positivity) hwt (fun _ _ => by positivity)`. Rewrite `amgm` using `[Real.finset_prod_rpow Finset.univ (fun σ : E →+* ℂ => ‖σ w‖ ^ 2) (fun _ _ => by positivity), Finset.prod_pow, so_prod_norm, ← Finset.mul_sum]`. Establish `hX : 0 ≤ |(Algebra.norm ℚ w : ℝ)|` using `abs_nonneg _`. Establish `hY : 0 ≤ |(discr E : ℝ)|` using `abs_nonneg _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (1 : ℝ) ≤ |(Algebra.norm ℚ w : ℝ)| * |(discr E : ℝ)|`. Establish `h` using `so_norm_ge w hw0 hw`. Conclude with `h` after adjusting the coercions. Establish `hrd : PT.rd E ^ 2 = (|(discr E : ℝ)| ^ 2) ^ (1 / (Module.finrank ℚ E : ℝ))`. Unfold `PT.rd`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_natCast (|(discr E : ℝ)|) 2, ← Real.rpow_mul hY, ← Real.rpow_mul hY, mul_comm]`. Establish `hprodge : 1 ≤ (|(discr E : ℝ)| ^ 2) ^ (1 / (Module.finrank ℚ E : ℝ)) * (|(Algebra.norm ℚ w : ℝ)| ^ 2) ^ (1 / (Module.finrank ℚ E : ℝ))`. Rewrite using `[← Real.mul_rpow (by positivity) (by positivity)]`. Apply `Real.one_le_rpow _ (by positivity)` to reduce the goal to its premises. Use polynomial arithmetic with `[key, mul_nonneg hX hY]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : (Module.finrank ℚ E : ℝ) * (|(Algebra.norm ℚ w : ℝ)| ^ 2) ^ (1 / (Module.finrank ℚ E : ℝ)) ≤ ∑ σ : E →+* ℂ, ‖σ w‖ ^ 2`. Establish `h` using `mul_le_mul_of_nonneg_left amgm hnR.le`. Rewrite `h` using `[← mul_assoc, mul_one_div_cancel hnR.ne', one_mul]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem so_sum_sq_ge [IsCMField E] (w : E) (hw0 : w ≠ 0)
     (hw : ∀ y : 𝓞 E, ∃ n : ℤ, Algebra.trace ℚ E (w * y) = n) :
@@ -119,11 +115,11 @@ theorem so_sum_sq_ge [IsCMField E] (w : E) (hw0 : w ≠ 0)
     _ ≤ PT.rd E ^ 2 * ∑ σ : E →+* ℂ, ‖σ w‖ ^ 2 := mul_le_mul_of_nonneg_left hS (sq_nonneg _)
 
 /- English proof (translation)
-Establish `hM : (NumberField.basisMatrix E).mulVec v = 0`. Use extensionality with `i`. Rewrite using `[NumberField.basisMatrix_eq_embeddingsMatrixReindex]`. Simplify using `only [Matrix.mulVec, dotProduct, Algebra.embeddingsMatrixReindex, Algebra.embeddingsMatrix, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply, Function.comp_apply, NumberField.integralBasis_apply, Pi.zero_apply, Equiv.refl_symm, Equiv.refl_apply, Equiv.symm_symm]`. Rewrite using `[← h (NumberField.equivReindex E i)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Establish `h2` using `congrArg (fun u => (⅟(NumberField.basisMatrix E)).mulVec u) hM`. Simplify using `only [Matrix.mulVec_mulVec, invOf_mul_self, Matrix.one_mulVec, Matrix.mulVec_zero] at h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem so_emb_inj (v : (E →+* ℂ) → ℂ)
     (h : ∀ i, ∑ σ : E →+* ℂ, v σ * σ (RingOfIntegers.basis E i : E) = 0) : v = 0 := by

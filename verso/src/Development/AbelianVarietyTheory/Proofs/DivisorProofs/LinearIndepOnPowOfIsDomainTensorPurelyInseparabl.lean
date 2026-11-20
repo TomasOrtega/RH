@@ -4,29 +4,25 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : ExpChar k p := ExpChar.prime hp`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors B) s`. Establish `hb : ∀ x : (s : Set (FractionRing B)), ∃ b : B, algebraMap B (FractionRing B) b = (d : B) • (x : FractionRing B)` using `fun x => hd x x.2`. Use `choose b hb using hb`. Establish `hinj` using `IsFractionRing.injective B (FractionRing B)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hd0 : algebraMap B (FractionRing B) (d : B) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors d.2`. Set `φ` to `IsScalarTower.toAlgHom k B (FractionRing B)`. Establish `hφ : ∀ x, φ x = algebraMap B (FractionRing B) x` using `fun _ => rfl`. Establish `hb' : ∀ x, φ (b x) = algebraMap B (FractionRing B) (d : B) * (x : FractionRing B)`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hφ, hb, Algebra.smul_def]`. Establish `hbli : LinearIndependent k b`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Use `Fintype.linearIndependent_iff.1 hs g ?_ i` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : φ (∑ j, g j • b j) = 0` using `by rw [hg, map_zero]`. Simplify using `only [map_sum, map_smul, hb'] at h2`. Rewrite `h2` using `[Finset.sum_congr rfl fun j _ => (mul_smul_comm (g j) _ _).symm, ← Finset.mul_sum]`. Conclude with `(mul_eq_zero.1 h2).resolve_left hd0`. Unfold `LinearIndepOn`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`. Establish `hcB : ∑ j, c j • b j ^ p = 0`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, ← hφ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_smul, map_pow, hb', mul_pow]`. Rewrite using `[Finset.sum_congr rfl fun j _ => (mul_smul_comm (c j) _ _).symm, ← Finset.mul_sum]`. Simplify using `only [] at hc`. Rewrite using `[hc, mul_zero]`. Establish `hroot : ∀ j, ∃ y : AlgebraicClosure k, y ^ p = algebraMap k (AlgebraicClosure k) (c j)` using `fun j => IsAlgClosed.exists_pow_nat_eq _ hp.pos`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose y hy using hroot`. Set `K` to `IntermediateField.adjoin k (Set.range y)`. Use `haveI hfin : FiniteDimensional k K := IntermediateField.finiteDimensional_adjoin fun z _ => Algebra.IsIntegral.isIntegral z`. Establish `hpi : IsPurelyInseparable k K`. Use `(IntermediateField.isPurelyInseparable_adjoin_iff_pow_mem k (AlgebraicClosure k) p).2 ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `z ⟨j, rfl⟩`. Conclude with `⟨1, by rw [pow_one, hy]; exact ⟨c j, rfl⟩⟩`. Use `haveI := hdom K hfin hpi`. Use `haveI : CharP (K ⊗[k] B) p := charP_of_injective_algebraMap (algebraMap k (K ⊗[k] B)).injective p`. Use `haveI : ExpChar (K ⊗[k] B) p := ExpChar.prime hp`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `y'` to `fun j => (⟨y j, IntermediateField.subset_adjoin _ _ ⟨j, rfl⟩⟩ : K)`. Establish `hy' : ∀ j, y' j ^ p = algebraMap k K (c j)`. Introduce `j`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[y', hy]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : (∑ j, y' j ⊗ₜ[k] b j) ^ p = 0`. Rewrite using `[sum_pow_char]`. Simplify using `only [Algebra.TensorProduct.tmul_pow, hy', Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← TensorProduct.tmul_sum, hcB, TensorProduct.tmul_zero]`. Establish `hz0 : ∑ j, y' j • ((1 : K) ⊗ₜ[k] b j) = 0`. Simplify using `only [TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
-
-Conclude with `pow_eq_zero_iff hp.ne_zero |>.1 hz`. Establish `hli` using `Module.Flat.linearIndependent_one_tmul (S := K) hbli`. Establish `hyi : y' i = 0` using `Fintype.linearIndependent_iff.1 hli y' hz0 i`. Establish `: algebraMap k (AlgebraicClosure k) (c i) = 0`. Rewrite using `[← hy]`.
-
-Establish `: y i = 0` using `congrArg Subtype.val hyi`. Rewrite using `[this, zero_pow hp.ne_zero]`. Conclude with `(map_eq_zero_iff _ (algebraMap k (AlgebraicClosure k)).injective).1 this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndepOn_pow_of_isDomain_tensor_purelyInseparable (k B : Type) [Field k] [CommRing B]
     [IsDomain B] [Algebra k B] (p : ℕ) (hp : p.Prime) (hk : CharP k p)

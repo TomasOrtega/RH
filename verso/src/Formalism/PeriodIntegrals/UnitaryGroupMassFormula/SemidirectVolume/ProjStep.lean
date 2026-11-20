@@ -10,7 +10,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem HA_ext {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] [Algebra F R]
     {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} {g g' : HA R σ J}
@@ -19,7 +19,7 @@ theorem HA_ext {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRi
   Subtype.ext (Units.ext h)
 
 /- English proof (translation)
-Rewrite using `[lin, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lin_eq_toLin' {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R]
     [Algebra F R] {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (g : HA R σ J) :
@@ -28,27 +28,27 @@ theorem lin_eq_toLin' {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} 
   rw [lin, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin']
 
 /- English proof (translation)
-Simplify using `[tupH, F0, Fin.append_left, Fin.snoc_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tupH_alt {E : Type} {M r : ℕ} (P : Frame E M r) : tupH P (Fin.castAdd r (Fin.last r)) = P.z := by
   simp [tupH, F0, Fin.append_left, Fin.snoc_last]
 
 /- English proof (translation)
-Simplify using `[tupH, F0, Fin.append_left, Fin.snoc_castSucc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tupH_e {E : Type} {M r : ℕ} (P : Frame E M r) (a : Fin r) :
     tupH P (Fin.castAdd r (Fin.castSucc a)) = P.e a := by
   simp [tupH, F0, Fin.append_left, Fin.snoc_castSucc]
 
 /- English proof (translation)
-Simplify using `[tupH, Fin.append_right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tupH_f {E : Type} {M r : ℕ} (P : Frame E M r) (b : Fin r) :
     tupH P (Fin.natAdd (r + 1) b) = P.f b := by
   simp [tupH, Fin.append_right]
 
 /- English proof (translation)
-Set `τ : E →+* ℂ` to `Classical.choice (inferInstance : Nonempty (E →+* ℂ))`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hCM.2.2.2 τ (σ x), hCM.2.2.2 τ x, star_star]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_invol {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
@@ -64,7 +64,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] 
 include hσσ hJ hP
 
 /- English proof (translation)
-Rewrite `hg` using `[Hsub, mem_stabT]`. Use `hg (Fin.natAdd (r + 1) b)` as an intermediate fact. Rewrite `this` using `[tupH_f]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fix_f_of_H {g : HA R σ J} (hg : g ∈ Hsub R σ J P) (b : Fin r) :
     lin R σ J g (ratV (F := F) R (P.f b)) = ratV (F := F) R (P.f b) := by
@@ -73,11 +73,9 @@ theorem fix_f_of_H {g : HA R σ J} (hg : g ∈ Hsub R σ J P) (b : Fin r) :
   rwa [tupH_f] at this
 
 /- English proof (translation)
-Rewrite using `[Hsub, mem_stabT]`. Introduce `b`. Rewrite using `[lin_piG]`. Establish `H` using `datR_hyp (R := R) hσσ hJ hP`. Use `Fin.addCases (fun b0 => ?_) (fun b1 => ?_) b` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.lastCases ?_ (fun a => ?_) b0` and prove the remaining obligations. Rewrite using `[tupH_alt]`. Conclude with `PG.Dat.unipotent_proj_fixes_normal H _`. Rewrite using `[tupH_e]`. Conclude with `PG.Dat.Pi_e H _ a`.
-
-Rewrite using `[tupH_f]`. Conclude with `PG.Dat.Pi_f H _ b1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piG_mem_H (g : HA R σ J) (hg : g ∈ S0 R σ J P) :
     piG hσσ hJ hP g hg ∈ Hsub R σ J P := by
@@ -113,14 +111,14 @@ theorem piG_mat (g : HA R σ J) (hg : g ∈ S0 R σ J P) :
     Matrix (Fin M) (Fin M) (R ⊗[F] E)) = piMat (P := P) (T := T) g := rfl
 
 /- English proof (translation)
-Apply `HA_ext` to reduce the goal to its premises. Rewrite using `[piG_mat, mat_one hσσ hJ hP, piMat, Pi_lin_one hσσ hJ hP, LinearMap.toMatrix'_id]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem piG_one : piG hσσ hJ hP (1 : HA R σ J) (S0 R σ J P).one_mem = 1 := by
   apply HA_ext
   rw [piG_mat, mat_one hσσ hJ hP, piMat, Pi_lin_one hσσ hJ hP, LinearMap.toMatrix'_id]
 
 /- English proof (translation)
-Apply `HA_ext` to reduce the goal to its premises. Rewrite using `[mat_mul hσσ hJ hP, piG_mat, piG_mat, piG_mat, piMat, piMat, piMat, Pi_lin_mul hσσ hJ hP hg hg', LinearMap.toMatrix'_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem piG_mul {g g' : HA R σ J} (hg : g ∈ S0 R σ J P) (hg' : g' ∈ S0 R σ J P) :
     piG hσσ hJ hP (g * g') ((S0 R σ J P).mul_mem hg hg') =
@@ -141,7 +139,7 @@ theorem piHom_coe (s : S0 R σ J P) :
     ((piHom hσσ hJ hP s : Hsub R σ J P) : HA R σ J) = piG hσσ hJ hP s s.2 := rfl
 
 /- English proof (translation)
-Rewrite using `[piHom_coe]`. Apply `HA_ext` to reduce the goal to its premises. Use `show piMat (P := P) (T := T) (s : HA R σ J) = _`. Establish `e : (datR R σ J P T).Pi (lin R σ J s) = lin R σ J s` using `LinearMap.ext fun v => PG.Dat.Pi_of_fix (datR_hyp hσσ hJ hP) (stabilizer_fixes_frame_and_normal s.2) (fix_f_of_H hσσ hJ hP hs) (uni_lin _) v`. Rewrite using `[piMat, e, lin_eq_toLin']`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piHom_H (s : S0 R σ J P) (hs : (s : HA R σ J) ∈ Hsub R σ J P) :
     ((piHom hσσ hJ hP s : Hsub R σ J P) : HA R σ J) = s := by
@@ -154,16 +152,16 @@ theorem piHom_H (s : S0 R σ J P) (hs : (s : HA R σ J) ∈ Hsub R σ J P) :
   rw [piMat, e, lin_eq_toLin']
 
 /- English proof (translation)
-Rewrite using `[spanR, Set.image_univ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spanR_eq {m : ℕ} (Y : Fin m → Fin M → E) :
     spanR (F := F) R Y Set.univ = Submodule.span (R ⊗[F] E) (Set.range fun a => ratV (F := F) R (Y a)) := by
   rw [spanR, Set.image_univ]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[piHom_coe]`. Apply `HA_ext` to reduce the goal to its premises. Use `show piMat (P := P) (T := T) (s : HA R σ J) = 1`. Establish `hN` using `(Subgroup.mem_inf.1 hs).1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (datR R σ J P T).Pi (lin R σ J s) = LinearMap.id` using `LinearMap.ext fun v => PG.Dat.Pi_of_N (datR_hyp hσσ hJ hP) (fun w hw => by`. Use `hN.2 w hw` as an intermediate fact. Rewrite using `[spanR_eq hσσ hJ hP] at this) v` and apply the resulting hypothesis. Rewrite using `[piMat, e, LinearMap.toMatrix'_id]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piHom_N (s : S0 R σ J P) (hs : (s : HA R σ J) ∈ FrameUnipotentSubgroup R σ J P) : piHom hσσ hJ hP s = 1 := by
   apply Subtype.ext
@@ -178,11 +176,11 @@ theorem piHom_N (s : S0 R σ J P) (hs : (s : HA R σ J) ∈ FrameUnipotentSubgro
   rw [piMat, e, LinearMap.toMatrix'_id]
 
 /- English proof (translation)
-Establish `hinv : ((piHom hσσ hJ hP s : Hsub R σ J P) : HA R σ J)⁻¹ = ((piHom hσσ hJ hP s⁻¹ : Hsub R σ J P) : HA R σ J)`. Rewrite using `[map_inv]`. Both sides reduce to the same expression. Rewrite using `[hinv, piHom_coe]`. Establish `hS0 : (s : HA R σ J) * piG hσσ hJ hP (s⁻¹ : S0 R σ J P) (s⁻¹ : S0 R σ J P).2 ∈ S0 R σ J P` using `(S0 R σ J P).mul_mem s.2 (heisenberg_le_stabilizer R σ J P (piG_mem_H hσσ hJ hP _ _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[FrameUnipotentSubgroup, Subgroup.mem_inf]`. Use `⟨?_, hS0⟩` and prove the remaining obligations. Use `show UniC R σ J P.e _ ∧ ∀ v, InXperp R σ J P v → _`. Use `⟨fun b => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[stabilizer_fixes_frame_vector R σ J P hS0 b, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Rewrite using `[lin_mul, lin_piG, spanR_eq hσσ hJ hP]`. Establish `hsi : ((s⁻¹ : S0 R σ J P) : HA R σ J) = (s : HA R σ J)⁻¹` using `rfl`. Use `PG.Dat.Pi_N_part (datR_hyp hσσ hJ hP) (stabilizer_fixes_frame_and_normal s.2) (stabilizer_fixes_frame_and_normal (s⁻¹ : S0 R σ J P).2) (uni_lin _) (fun w => by rw [hsi, lin_lin_inv]) v hv` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem piHom_S (s : S0 R σ J P) :
     (s : HA R σ J) * ((piHom hσσ hJ hP s : Hsub R σ J P) : HA R σ J)⁻¹ ∈ FrameUnipotentSubgroup R σ J P := by
@@ -220,7 +218,7 @@ def PiRat : Prop :=
     g ∈ HFinIn (AF F) σ J → piG hσσ hJ hP g hg ∈ HFinIn (AF F) σ J
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ r P T hr hP`. Establish `hσσ` using `sigma_invol hCM`. Use `⟨piHom hσσ hJ hP, ?_, fun s hs => piHom_H hσσ hJ hP s hs, fun s hs => piHom_N hσσ hJ hP s hs, fun s => piHom_S hσσ hJ hP s, fun s hs => hR F E σ M J r P T hσσ hJ hP s s.2 hs⟩` and prove the remaining obligations. Conclude with `(hC F E σ M J r P T hσσ hJ hP).subtype_mk _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem projStep_of (hC : PiCont) (hR : PiRat) : ProjStep := by
   intro F E _ _ _ _ _ σ hCM M J hJ r P T hr hP

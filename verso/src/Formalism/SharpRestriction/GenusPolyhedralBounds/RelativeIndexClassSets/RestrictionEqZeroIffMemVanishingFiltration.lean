@@ -21,13 +21,13 @@ theorem frMap_apply (k : ℕ) (g : R) :
     frMap (K := K) s L k g = algebraMap R L g * (IsLocalization.Away.invSelf s : L) ^ k := rfl
 
 /- English proof (translation)
-Rewrite using `[frMap_apply, pow_zero, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frMap_zero (g : R) : frMap (K := K) s L 0 g = algebraMap R L g := by
   rw [frMap_apply, pow_zero, mul_one]
 
 /- English proof (translation)
-Establish `h : algebraMap R L s * (IsLocalization.Away.invSelf s : L) = 1` using `IsLocalization.Away.mul_invSelf s`. Rewrite using `[frMap_apply, frMap_apply, map_mul, map_pow, pow_add]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem frMap_pow_mul (k m : ℕ) (g : R) : frMap (K := K) s L (k + m) (s ^ m * g) = frMap (K := K) s L k g := by
   have h : algebraMap R L s * (IsLocalization.Away.invSelf s : L) = 1 := IsLocalization.Away.mul_invSelf s
@@ -39,16 +39,16 @@ theorem frMap_pow_mul (k m : ℕ) (g : R) : frMap (K := K) s L (k + m) (s ^ m * 
     _ = _ := by rw [h, one_pow, one_mul]
 
 /- English proof (translation)
-Simplify using `only [frMap_apply, map_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frMap_mul (k l : ℕ) (g g' : R) :
     frMap (K := K) s L k g * frMap (K := K) s L l g' = frMap (K := K) s L (k + l) (g * g') := by
   simp only [frMap_apply, map_mul, pow_add]; ring
 
 /- English proof (translation)
-Establish `h : algebraMap R L s * (IsLocalization.Away.invSelf s : L) = 1` using `IsLocalization.Away.mul_invSelf s`. Establish `hu : IsUnit ((IsLocalization.Away.invSelf s : L) ^ k)` using `(IsUnit.of_mul_eq_one _ (by rwa [mul_comm] at h)).pow k`. Rewrite using `[frMap_apply, hu.mul_left_eq_zero, IsLocalization.map_eq_zero_iff (Submonoid.powers s)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, m, rfl⟩, hm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨m, hm⟩`. Introduce and unpack `⟨m, hm⟩`. Conclude with `⟨⟨_, m, rfl⟩, hm⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem frMap_eq_zero_iff (k : ℕ) (g : R) : frMap (K := K) s L k g = 0 ↔ ∃ m : ℕ, s ^ m * g = 0 := by
   have h : algebraMap R L s * (IsLocalization.Away.invSelf s : L) = 1 := IsLocalization.Away.mul_invSelf s
@@ -66,24 +66,22 @@ def frSpan (V : ℕ → Submodule K R) : Submodule K L :=
 variable {s}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨k, g, hg, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem frMap_mem_frSpan {V : ℕ → Submodule K R} {k : ℕ} {g : R} (hg : g ∈ V k) :
     frMap (K := K) s L k g ∈ frSpan s L V :=
   Submodule.subset_span ⟨k, g, hg, rfl⟩
 
 /- English proof (translation)
-Establish `hV' : ∀ m k, ∀ g ∈ V k, s ^ m * g ∈ V (k + m)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro k g hg`. Simplify using `using hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ m ih`. Introduce `k g hg`. Rewrite using `[pow_succ', mul_assoc, ← add_assoc]`. Conclude with `hV _ _ (ih k g hg)`. Prove the components needed by the constructor for the conclusion.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨0, 0, Submodule.zero_mem _, (map_zero _).symm⟩`. Consider the case `add x y _ _ hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨k, g, hg, rfl⟩` from `hx`. Take `⟨l, g', hg', rfl⟩` from `hy`. Use `⟨k + l, s ^ l * g + s ^ k * g', Submodule.add_mem _ (hV' l k g hg) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[add_comm k l]`. Conclude with `hV' k l g' hg'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_add, frMap_pow_mul, add_comm k l, frMap_pow_mul]`. Consider the case `smul a x _ hx`. Take `⟨k, g, hg, rfl⟩` from `hx`. Conclude with `⟨k, a • g, Submodule.smul_mem _ _ hg, (map_smul _ _ _).symm⟩`. Introduce and unpack `⟨k, g, hg, rfl⟩`.
-
-Conclude with `frMap_mem_frSpan L hg`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_frSpan {V : ℕ → Submodule K R} (hV : ∀ k, ∀ g ∈ V k, s * g ∈ V (k + 1)) {x : L} :
     x ∈ frSpan s L V ↔ ∃ k : ℕ, ∃ g ∈ V k, x = frMap (K := K) s L k g := by
@@ -113,7 +111,7 @@ theorem mem_frSpan {V : ℕ → Submodule K R} (hV : ∀ k, ∀ g ∈ V k, s * g
     exact frMap_mem_frSpan L hg
 
 /- English proof (translation)
-Unfold `frSpan`. Rewrite using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨k, g, hg, rfl⟩, _, ⟨l, g', hg', rfl⟩, rfl⟩`. Conclude with `⟨k + l, g * g', h k l g hg g' hg', frMap_mul (K := K) s L k l g g'⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem frSpan_mul_le {V V' V'' : ℕ → Submodule K R} (h : ∀ k l, ∀ g ∈ V k, ∀ g' ∈ V' l, g * g' ∈ V'' (k + l)) :
     frSpan s L V * frSpan s L V' ≤ frSpan s L V'' := by
@@ -124,7 +122,7 @@ theorem frSpan_mul_le {V V' V'' : ℕ → Submodule K R} (h : ∀ k l, ∀ g ∈
   exact ⟨k + l, g * g', h k l g hg g' hg', frMap_mul (K := K) s L k l g g'⟩
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem quot_isScalarTower {A M : Type*} [CommRing A] [AddCommGroup M] [Module A M] (I : Ideal A) :
     IsScalarTower A (A ⧸ I) (M ⧸ I • (⊤ : Submodule A M)) := inferInstance
@@ -136,23 +134,23 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
 def wt0 (D : D7) (j : ℕ) : WeightFamilies.Wt D j := wscalar D j 0 ⟨0, rfl⟩
 
 /- English proof (translation)
-Take `⟨a, b, _, _, n, _⟩` from `u`. Simplify using `[addL, wadd, wsmul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem addL_zero (u wL : WeightFamilies.Wt D j) : addL u wL 0 = u := by
   obtain ⟨a, b, _, _, n, _⟩ := u
   simp [addL, wadd, wsmul]
 
 /- English proof (translation)
-Take `⟨a, b, _, _, n, _⟩` from `wL`. Simplify using `[addL, wadd, wsmul, wt0, wscalar]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem add_zero_weight_one_eq (wL : WeightFamilies.Wt D j) : addL (wt0 D j) wL 1 = wL := by
   obtain ⟨a, b, _, _, n, _⟩ := wL
   simp [addL, wadd, wsmul, wt0, wscalar]
 
 /- English proof (translation)
-Unfold `addL wadd wsmul`. Simplify using `only [WeightFamilies.Wt.mk.injEq]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ i`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `τ i`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wadd_addL_addL (u u' wL : WeightFamilies.Wt D j) (k l : ℕ) :
     wadd (addL u wL k) (addL u' wL l) = addL (wadd u u') wL (k + l) := by
@@ -164,7 +162,7 @@ theorem wadd_addL_addL (u u' wL : WeightFamilies.Wt D j) (k l : ℕ) :
   · ring
 
 /- English proof (translation)
-Take `⟨a, b, _, _, n, _⟩` from `u`. Simplify using `[wadd, wt0, wscalar]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem zero_weight_add (u : WeightFamilies.Wt D j) : wadd (wt0 D j) u = u := by
   obtain ⟨a, b, _, _, n, _⟩ := u
@@ -197,7 +195,7 @@ instance Lw.towOpKp : IsScalarTower (Op X la N) (Kp X la N) (Lw X la w) :=
 def w0inv : Lw X la w := IsLocalization.Away.invSelf (sec X la w 0)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.mul_invSelf _`.
+A detailed English derivation is pending.
 -/
 theorem section_mul_inverse_eq_one : algebraMap (Rp X la N) (Lw X la w) (sec X la w 0) * w0inv X la w = 1 :=
   IsLocalization.Away.mul_invSelf _
@@ -211,24 +209,24 @@ theorem frac_apply (k : ℕ) (g : Rp X la N) :
     frac X la w k g = algebraMap (Rp X la N) (Lw X la w) g * w0inv X la w ^ k := rfl
 
 /- English proof (translation)
-The claim follows from `frMap_zero _ _ g`.
+A detailed English derivation is pending.
 -/
 theorem frac_zero (g : Rp X la N) : frac X la w 0 g = algebraMap (Rp X la N) (Lw X la w) g := frMap_zero _ _ g
 
 /- English proof (translation)
-The claim follows from `frMap_pow_mul _ _ k m g`.
+A detailed English derivation is pending.
 -/
 theorem frac_pow_mul (k m : ℕ) (g : Rp X la N) : frac X la w (k + m) (sec X la w 0 ^ m * g) = frac X la w k g :=
   frMap_pow_mul _ _ k m g
 
 /- English proof (translation)
-The claim follows from `frMap_mul _ _ k l g g'`.
+A detailed English derivation is pending.
 -/
 theorem frac_mul (k l : ℕ) (g g' : Rp X la N) : frac X la w k g * frac X la w l g' = frac X la w (k + l) (g * g') :=
   frMap_mul _ _ k l g g'
 
 /- English proof (translation)
-The claim follows from `frMap_eq_zero_iff _ _ k g`.
+A detailed English derivation is pending.
 -/
 theorem frac_eq_zero_iff (k : ℕ) (g : Rp X la N) : frac X la w k g = 0 ↔ ∃ m : ℕ, sec X la w 0 ^ m * g = 0 :=
   frMap_eq_zero_iff _ _ k g
@@ -244,21 +242,21 @@ theorem Hfr_eq_frSpan (u : WeightFamilies.Wt D j) :
     Hfr X la w u = frSpan (sec X la w 0) (Lw X la w) fun k => Vw X la N (addL u wL k) := rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨k, g, hg, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem frac_mem_Hfr {u : WeightFamilies.Wt D j} {k : ℕ} {g : Rp X la N} (hg : g ∈ Vw X la N (addL u wL k)) :
     frac X la w k g ∈ Hfr X la w u :=
   Submodule.subset_span ⟨k, g, hg, rfl⟩
 
 /- English proof (translation)
-The claim follows from `mem_frSpan (Lw X la w) fun k g hg => by simpa using sec_pow_mul_mem X la w 0 u k 1 hg`.
+A detailed English derivation is pending.
 -/
 theorem mem_Hfr {u : WeightFamilies.Wt D j} {x : Lw X la w} :
     x ∈ Hfr X la w u ↔ ∃ k : ℕ, ∃ g ∈ Vw X la N (addL u wL k), x = frac X la w k g :=
   mem_frSpan (Lw X la w) fun k g hg => by simpa using sec_pow_mul_mem X la w 0 u k 1 hg
 
 /- English proof (translation)
-Rewrite using `[← frac_zero]`. Conclude with `frac_mem_Hfr X la w (by rwa [addL_zero])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_Hfr {u : WeightFamilies.Wt D j} {g : Rp X la N} (hg : g ∈ Vw X la N u) :
     algebraMap (Rp X la N) (Lw X la w) g ∈ Hfr X la w u := by
@@ -266,7 +264,7 @@ theorem algebraMap_mem_Hfr {u : WeightFamilies.Wt D j} {g : Rp X la N} (hg : g �
   exact frac_mem_Hfr X la w (by rwa [addL_zero])
 
 /- English proof (translation)
-The claim follows from `frSpan_mul_le (Lw X la w) fun k l g hg g' hg' => by rw [← wadd_addL_addL] exact mul_mem_Vw X la N hg hg'`.
+A detailed English derivation is pending.
 -/
 theorem Hfr_mul_le (u u' : WeightFamilies.Wt D j) : Hfr X la w u * Hfr X la w u' ≤ Hfr X la w (wadd u u') :=
   frSpan_mul_le (Lw X la w) fun k l g hg g' hg' => by
@@ -274,20 +272,20 @@ theorem Hfr_mul_le (u u' : WeightFamilies.Wt D j) : Hfr X la w u * Hfr X la w u'
     exact mul_mem_Vw X la N hg hg'
 
 /- English proof (translation)
-The claim follows from `Hfr_mul_le X la w u u' (Submodule.mul_mem_mul hx hy)`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_Hfr {u u' : WeightFamilies.Wt D j} {x y : Lw X la w} (hx : x ∈ Hfr X la w u) (hy : y ∈ Hfr X la w u') :
     x * y ∈ Hfr X la w (wadd u u') :=
   Hfr_mul_le X la w u u' (Submodule.mul_mem_mul hx hy)
 
 /- English proof (translation)
-The claim follows from `frac_mem_Hfr X la w (by rw [add_zero_weight_one_eq]; exact sec_mem_Vw X la w i)`.
+A detailed English derivation is pending.
 -/
 theorem frac_sec_mem_Hfr (i : Fin (WeightFamilies.dimY D j + 1)) : frac X la w 1 (sec X la w i) ∈ Hfr X la w (wt0 D j) :=
   frac_mem_Hfr X la w (by rw [add_zero_weight_one_eq]; exact sec_mem_Vw X la w i)
 
 /- English proof (translation)
-Establish `h` using `frac_sec_mem_Hfr X la w 0`. Rewrite `h` using `[frac_apply, pow_one, section_mul_inverse_eq_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem one_mem_Hfr : (1 : Lw X la w) ∈ Hfr X la w (wt0 D j) := by
   have h := frac_sec_mem_Hfr X la w 0
@@ -302,11 +300,11 @@ instance Frac0.modLw : Module ↥(Frac0 X la w) (Lw X la w) := inferInstance
 instance Frac0.towLw : IsScalarTower (Kp X la N) ↥(Frac0 X la w) (Lw X la w) := inferInstance
 
 /- English proof (translation)
-Use `le_antisymm ?_ fun x hx => Algebra.subset_adjoin hx` and prove the remaining obligations. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `algebraMap r`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ (one_mem_Hfr X la w)`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `mul x y _ _ hx hy`. Use `mul_mem_Hfr X la w hx hy` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[zero_weight_add]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem Frac0_toSubmodule : Subalgebra.toSubmodule (Frac0 X la w) = Hfr X la w (wt0 D j) := by
   refine le_antisymm ?_ fun x hx => Algebra.subset_adjoin hx
@@ -322,7 +320,7 @@ theorem Frac0_toSubmodule : Subalgebra.toSubmodule (Frac0 X la w) = Hfr X la w (
     rwa [zero_weight_add] at this
 
 /- English proof (translation)
-Rewrite using `[← Frac0_toSubmodule]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_Frac0 {x : Lw X la w} : x ∈ Frac0 X la w ↔ x ∈ Hfr X la w (wt0 D j) := by
   rw [← Frac0_toSubmodule]; rfl
@@ -338,7 +336,7 @@ theorem coe_sfr (i : Fin (WeightFamilies.dimY D j + 1)) : (sfr X la w i : Lw X l
 def Jid : Ideal ↥(Frac0 X la w) := Ideal.span (Set.range fun i : Fin (WeightFamilies.dimY D j) => sfr X la w i.succ)
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span ⟨i, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem sfr_succ_mem_Jid (i : Fin (WeightFamilies.dimY D j)) : sfr X la w i.succ ∈ Jid X la w :=
   Ideal.subset_span ⟨i, rfl⟩
@@ -360,12 +358,12 @@ instance OsK.towOp : IsScalarTower (Op X la N) (Kp X la N) (OsK X la w) :=
 def toOsK : ↥(Frac0 X la w) →ₐ[Kp X la N] OsK X la w := Ideal.Quotient.mkₐ (Kp X la N) (Jid X la w)
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.mkₐ_surjective _ _`.
+A detailed English derivation is pending.
 -/
 theorem toOsK_surjective : Function.Surjective (toOsK X la w) := Ideal.Quotient.mkₐ_surjective _ _
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.eq_zero_iff_mem`.
+A detailed English derivation is pending.
 -/
 theorem toOsK_eq_zero_iff (x : ↥(Frac0 X la w)) : toOsK X la w x = 0 ↔ x ∈ Jid X la w :=
   Ideal.Quotient.eq_zero_iff_mem
@@ -379,9 +377,9 @@ instance HK.modKp (u : WeightFamilies.Wt D j) : Module (Kp X la N) ↥(HK X la w
 instance HK.towKp (u : WeightFamilies.Wt D j) : IsScalarTower (Kp X la N) ↥(Frac0 X la w) ↥(HK X la w u) := inferInstance
 
 /- English proof (translation)
-Use `⟨fun hx => ?_, fun hx => Submodule.subset_span hx⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx`. Use `mul_mem_Hfr X la w ((mem_Frac0 X la w).1 a.2) hx` as an intermediate fact. Rewrite `this` using `[zero_weight_add]`. Then use the resulting hypothesis.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_HK {u : WeightFamilies.Wt D j} {x : Lw X la w} : x ∈ HK X la w u ↔ x ∈ Hfr X la w u := by
   refine ⟨fun hx => ?_, fun hx => Submodule.subset_span hx⟩
@@ -394,13 +392,13 @@ theorem mem_HK {u : WeightFamilies.Wt D j} {x : Lw X la w} : x ∈ HK X la w u �
     rwa [zero_weight_add] at this
 
 /- English proof (translation)
-The claim follows from `Submodule.ext fun _ => mem_HK X la w`.
+A detailed English derivation is pending.
 -/
 theorem HK_restrictScalars (u : WeightFamilies.Wt D j) : (HK X la w u).restrictScalars (Kp X la N) = Hfr X la w u :=
   Submodule.ext fun _ => mem_HK X la w
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span (frac_mem_Hfr X la w hg)`.
+A detailed English derivation is pending.
 -/
 theorem frac_mem_HK {u : WeightFamilies.Wt D j} {k : ℕ} {g : Rp X la N} (hg : g ∈ Vw X la N (addL u wL k)) :
     frac X la w k g ∈ HK X la w u :=
@@ -436,13 +434,13 @@ def toWK (u : WeightFamilies.Wt D j) (a : ℕ) : ↥(HK X la w u) →ₗ[↥(Fra
   (Jid X la w ^ a • (⊤ : Submodule ↥(Frac0 X la w) ↥(HK X la w u))).mkQ
 
 /- English proof (translation)
-The claim follows from `Submodule.mkQ_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem toWK_surjective (u : WeightFamilies.Wt D j) (a : ℕ) : Function.Surjective (toWK X la w u a) :=
   Submodule.mkQ_surjective _
 
 /- English proof (translation)
-The claim follows from `Submodule.Quotient.mk_eq_zero _`.
+A detailed English derivation is pending.
 -/
 theorem toWK_eq_zero_iff (u : WeightFamilies.Wt D j) (a : ℕ) (x : ↥(HK X la w u)) : toWK X la w u a x = 0 ↔
     x ∈ Jid X la w ^ a • (⊤ : Submodule ↥(Frac0 X la w) ↥(HK X la w u)) :=
@@ -485,13 +483,13 @@ def toA0K (u : WeightFamilies.Wt D j) : ↥(HK X la w u) →ₗ[↥(Frac0 X la w
   (Jid X la w • (⊤ : Submodule ↥(Frac0 X la w) ↥(HK X la w u))).mkQ
 
 /- English proof (translation)
-The claim follows from `Submodule.mkQ_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem reductionMap_surjective (u : WeightFamilies.Wt D j) : Function.Surjective (toA0K X la w u) :=
   Submodule.mkQ_surjective _
 
 /- English proof (translation)
-The claim follows from `Submodule.Quotient.mk_eq_zero _`.
+A detailed English derivation is pending.
 -/
 theorem reduction_eq_zero_iff_mem_ideal_smul (u : WeightFamilies.Wt D j) (x : ↥(HK X la w u)) : toA0K X la w u x = 0 ↔
     x ∈ Jid X la w • (⊤ : Submodule ↥(Frac0 X la w) ↥(HK X la w u)) :=
@@ -508,7 +506,7 @@ theorem coe_toHK (u : WeightFamilies.Wt D j) (T : ℕ) (f : ↥(Vw X la N (addL 
     (toHK X la w u T f : Lw X la w) = frac X la w T f := rfl
 
 /- English proof (translation)
-Take `⟨T, g, hg, hx⟩` from `(mem_Hfr X la w).1 ((mem_HK X la w).1 x.2)`. Conclude with `⟨T, ⟨g, hg⟩, Subtype.ext hx.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_toHK_eq (u : WeightFamilies.Wt D j) (x : ↥(HK X la w u)) :
     ∃ (T : ℕ) (f : ↥(Vw X la N (addL u wL T))), toHK X la w u T f = x := by
@@ -525,7 +523,7 @@ theorem rhoK_apply (u : WeightFamilies.Wt D j) (a T : ℕ) (f : ↥(Vw X la N (a
     rhoK X la w u a T f = toWK X la w u a (toHK X la w u T f) := rfl
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `toWK_surjective X la w u a x`. Take `⟨T, f, rfl⟩` from `exists_toHK_eq X la w u y`. Conclude with `⟨T, f, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rhoK_eq (u : WeightFamilies.Wt D j) (a : ℕ) (x : WK X la w u a) :
     ∃ (T : ℕ) (f : ↥(Vw X la N (addL u wL T))), rhoK X la w u a T f = x := by
@@ -538,7 +536,7 @@ def toHK0 (u : WeightFamilies.Wt D j) : ↥(Vw X la N u) →ₗ[Kp X la N] ↥(H
     fun f => frac_mem_HK X la w (by rw [addL_zero]; exact f.2)
 
 /- English proof (translation)
-The claim follows from `frac_zero X la w f`.
+A detailed English derivation is pending.
 -/
 theorem coe_toHK0 (u : WeightFamilies.Wt D j) (f : ↥(Vw X la N u)) :
     (toHK0 X la w u f : Lw X la w) = algebraMap (Rp X la N) (Lw X la w) f := frac_zero X la w f
@@ -553,7 +551,7 @@ theorem restriction_apply_eq_reduction (u : WeightFamilies.Wt D j) (f : ↥(Vw X
     rho0 X la w u f = toA0K X la w u (toHK0 X la w u f) := rfl
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `reductionMap_surjective X la w u x`. Take `⟨T, f, rfl⟩` from `exists_toHK_eq X la w u y`. Conclude with `⟨T, f, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_reduction_fraction_eq (u : WeightFamilies.Wt D j) (x : SectionSheafQuotient X la w u) :
     ∃ (T : ℕ) (f : ↥(Vw X la N (addL u wL T))), toA0K X la w u (toHK X la w u T f) = x := by
@@ -571,7 +569,7 @@ theorem rhoW_apply (u : WeightFamilies.Wt D j) (a : ℕ) (f : ↥(Vw X la N u)) 
     rhoW X la w u a f = toWK X la w u a (toHK0 X la w u f) := rfl
 
 /- English proof (translation)
-Rewrite using `[rhoK_apply, rhoK_apply]`. Use `congr 1`. Conclude with `Subtype.ext (frac_pow_mul X la w T m f)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem rhoK_pow_mul (u : WeightFamilies.Wt D j) (a T m : ℕ) (f : ↥(Vw X la N (addL u wL T))) :
     rhoK X la w u a (T + m) ⟨sec X la w 0 ^ m * f, sec_pow_mul_mem X la w 0 u T m f.2⟩ = rhoK X la w u a T f := by
@@ -589,7 +587,7 @@ theorem coe_weightZeroFraction (k : ℕ) (g : ↥(Vw X la N (addL (wt0 D j) wL k
     (fr0 X la w k g : Lw X la w) = frac X la w k g := rfl
 
 /- English proof (translation)
-Take `⟨k, g, hg, hc⟩` from `(mem_Hfr X la w).1 ((mem_Frac0 X la w).1 c.2)`. Conclude with `⟨k, ⟨g, hg⟩, Subtype.ext hc.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_weightZero_fraction_eq (c : ↥(Frac0 X la w)) :
     ∃ (k : ℕ) (g : ↥(Vw X la N (addL (wt0 D j) wL k))), fr0 X la w k g = c := by
@@ -597,7 +595,7 @@ theorem exists_weightZero_fraction_eq (c : ↥(Frac0 X la w)) :
   exact ⟨k, ⟨g, hg⟩, Subtype.ext hc.symm⟩
 
 /- English proof (translation)
-Use `mul_mem_Vw X la N hg hf` as an intermediate fact. Rewrite `this` using `[wadd_addL_addL, zero_weight_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mul_mem_Vw_addL {u : WeightFamilies.Wt D j} {k T : ℕ} {g f : Rp X la N} (hg : g ∈ Vw X la N (addL (wt0 D j) wL k))
     (hf : f ∈ Vw X la N (addL u wL T)) : g * f ∈ Vw X la N (addL u wL (k + T)) := by
@@ -605,7 +603,7 @@ theorem mul_mem_Vw_addL {u : WeightFamilies.Wt D j} {k T : ℕ} {g f : Rp X la N
   rwa [wadd_addL_addL, zero_weight_add] at this
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (frac_mul X la w k T g f)`.
+A detailed English derivation is pending.
 -/
 theorem fraction_smul_toLocalized (u : WeightFamilies.Wt D j) (k T : ℕ) (g : ↥(Vw X la N (addL (wt0 D j) wL k)))
     (f : ↥(Vw X la N (addL u wL T))) : fr0 X la w k g • toHK X la w u T f =
@@ -613,7 +611,7 @@ theorem fraction_smul_toLocalized (u : WeightFamilies.Wt D j) (k T : ℕ) (g : �
   Subtype.ext (frac_mul X la w k T g f)
 
 /- English proof (translation)
-Rewrite using `[rhoK_apply, rhoK_apply, ← map_smul, fraction_smul_toLocalized]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fraction_smul_restriction (u : WeightFamilies.Wt D j) (a k T : ℕ) (g : ↥(Vw X la N (addL (wt0 D j) wL k)))
     (f : ↥(Vw X la N (addL u wL T))) : fr0 X la w k g • rhoK X la w u a T f =
@@ -621,9 +619,9 @@ theorem fraction_smul_restriction (u : WeightFamilies.Wt D j) (a k T : ℕ) (g :
   rw [rhoK_apply, rhoK_apply, ← map_smul, fraction_smul_toLocalized]
 
 /- English proof (translation)
-Unfold `addL wadd wsmul`. Simplify using `only [WeightFamilies.Wt.mk.injEq]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ i`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `τ i`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem addL_addL (u wL : WeightFamilies.Wt D j) (T n : ℕ) : addL (addL u wL T) wL n = addL u wL (T + n) := by
   unfold addL wadd wsmul
@@ -634,14 +632,14 @@ theorem addL_addL (u wL : WeightFamilies.Wt D j) (T n : ℕ) : addL (addL u wL T
   · ring
 
 /- English proof (translation)
-Unfold `Mon`. Rewrite using `[addL_addL]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Mon_addL (u : WeightFamilies.Wt D j) (a T n : ℕ) : Mon X la w (addL u wL T) a n = Mon X la w u a (T + n) := by
   unfold Mon
   rw [addL_addL]
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_iSup_of_mem α (Submodule.mem_iSup_of_mem hα (Submodule.mem_map_of_mem (f := LinearMap.mulLeft (Kp X la N) (secPow X la w α)) hv))`.
+A detailed English derivation is pending.
 -/
 theorem secPow_mul_mem_Mon {u : WeightFamilies.Wt D j} {a n : ℕ} {α : Fin (WeightFamilies.dimY D j) → ℕ} (hα : ∑ i, α i = a)
     {v : Rp X la N} (hv : v ∈ Vw X la N (addL u wL n)) : secPow X la w α * v ∈ Mon X la w u a n :=
@@ -649,7 +647,7 @@ theorem secPow_mul_mem_Mon {u : WeightFamilies.Wt D j} {a n : ℕ} {α : Fin (We
     (Submodule.mem_map_of_mem (f := LinearMap.mulLeft (Kp X la N) (secPow X la w α)) hv))
 
 /- English proof (translation)
-Establish `h` using `secPow_mul_mem_Mon X la w (α := fun _ => 0) (a := 0) (by simp) hv`. Simplify `h` using `[secPow]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_Mon_zero {u : WeightFamilies.Wt D j} {n : ℕ} {v : Rp X la N} (hv : v ∈ Vw X la N (addL u wL n)) :
     v ∈ Mon X la w u 0 n := by
@@ -657,9 +655,9 @@ theorem mem_Mon_zero {u : WeightFamilies.Wt D j} {n : ℕ} {v : Rp X la N} (hv :
   simpa [secPow] using h
 
 /- English proof (translation)
-Establish `h : Mon X la w u a n ≤ (Mon X la w u a (k + n)).comap (LinearMap.mulLeft (Kp X la N) g)`. Use `iSup₂_le fun α hα => ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `v hv`. Use `show g * (secPow X la w α * v) ∈ Mon X la w u a (k + n)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_left_comm]`. Use `secPow_mul_mem_Mon X la w hα ?_` and prove the remaining obligations. Use `mul_mem_Vw X la N hg hv` as an intermediate fact. Rewrite `this` using `[wadd_addL_addL, zero_weight_add]`. Then use the resulting hypothesis. Conclude with `h hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mul_mem_Mon (u : WeightFamilies.Wt D j) (a n k : ℕ) {g x : Rp X la N} (hg : g ∈ Vw X la N (addL (wt0 D j) wL k))
     (hx : x ∈ Mon X la w u a n) : g * x ∈ Mon X la w u a (k + n) := by
@@ -675,11 +673,11 @@ theorem mul_mem_Mon (u : WeightFamilies.Wt D j) (a n k : ℕ) {g x : Rp X la N} 
   exact h hx
 
 /- English proof (translation)
-Establish `h : Mon X la w u a n ≤ (Mon X la w u (a + 1) n).comap (LinearMap.mulLeft (Kp X la N) (sec X la w i.succ))`. Use `iSup₂_le fun α hα => ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `v hv`. Use `show sec X la w i.succ * (secPow X la w α * v) ∈ Mon X la w u (a + 1) n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : sec X la w i.succ * secPow X la w α = secPow X la w (α + Pi.single i 1)`. Simplify using `only [secPow, Pi.add_apply, pow_add, Finset.prod_mul_distrib, Pi.single_apply, pow_ite, pow_one, pow_zero, Finset.prod_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← mul_assoc, e]`. Use `secPow_mul_mem_Mon X la w ?_ hv` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_add_distrib, hα]`. Conclude with `h hx`.
+A detailed English derivation is pending.
 -/
 theorem sec_succ_mul_mem_Mon (u : WeightFamilies.Wt D j) (a n : ℕ) (i : Fin (WeightFamilies.dimY D j)) {x : Rp X la N}
     (hx : x ∈ Mon X la w u a n) : sec X la w i.succ * x ∈ Mon X la w u (a + 1) n := by
@@ -702,11 +700,11 @@ def JHfr (u : WeightFamilies.Wt D j) (a : ℕ) : Submodule (Kp X la N) (Lw X la 
     (LinearMap.mulRight (Kp X la N) (w0inv X la w ^ a))
 
 /- English proof (translation)
-Establish `hV : ∀ k, ∀ g ∈ Mon X la w u a k, sec X la w 0 * g ∈ Mon X la w u a (k + 1)` using `fun k g hg => by`. Simplify using `using sec_pow_mul_mem_Mon X la w u a k 1 hg`. Establish `e : ∀ (n : ℕ) (m : Rp X la N), frac X la w (n + a) m = frac X la w n m * w0inv X la w ^ a` using `fun n m => by`. Rewrite using `[frac_apply, frac_apply, pow_add, mul_assoc]`. Unfold `JHfr`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨n, m, hm, rfl⟩` from `(mem_frSpan (Lw X la w) hV).1 hy`. Conclude with `⟨n, m, hm, (e n m).symm⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨n, m, hm, rfl⟩`. Conclude with `⟨frac X la w n m, frMap_mem_frSpan (Lw X la w) (V := fun n => Mon X la w u a n) hm, (e n m).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_JHfr {u : WeightFamilies.Wt D j} {a : ℕ} {x : Lw X la w} :
     x ∈ JHfr X la w u a ↔ ∃ n : ℕ, ∃ m ∈ Mon X la w u a n, x = frac X la w (n + a) m := by
@@ -736,17 +734,17 @@ def JHs (u : WeightFamilies.Wt D j) (a : ℕ) : Submodule ↥(Frac0 X la w) (Lw 
     rw [hc, frac_mul, add_assoc]
 
 /- English proof (translation)
-The claim follows from `mem_JHfr X la w`.
+A detailed English derivation is pending.
 -/
 theorem mem_JHs {u : WeightFamilies.Wt D j} {a : ℕ} {x : Lw X la w} :
     x ∈ JHs X la w u a ↔ ∃ n : ℕ, ∃ m ∈ Mon X la w u a n, x = frac X la w (n + a) m := mem_JHfr X la w
 
 /- English proof (translation)
-Rewrite using `[Submodule.smul_le]`. Introduce `r hr x hx`. Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem r hr`. Take `⟨i, rfl⟩` from `hr`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨n, m, hm, rfl⟩` from `(mem_JHs X la w).1 hx`. Use `(mem_JHs X la w).2 ⟨n, sec X la w i.succ * m, sec_succ_mul_mem_Mon X la w u a n i hm, ?_⟩` and prove the remaining obligations. Use `show frac X la w 1 (sec X la w i.succ) * _ = _`. Rewrite using `[frac_mul, add_comm 1, add_assoc]`. Consider the case `zero => rw [zero_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add r r' _ _ h h' => rw [add_smul]`. Conclude with `Submodule.add_mem _ h h'`. Consider the case `smul c r _ h => rw [smul_assoc]`. Conclude with `Submodule.smul_mem _ c h`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Jid_smul_JHs_le (u : WeightFamilies.Wt D j) (a : ℕ) : Jid X la w • JHs X la w u a ≤ JHs X la w u (a + 1) := by
   rw [Submodule.smul_le]
@@ -763,9 +761,7 @@ theorem Jid_smul_JHs_le (u : WeightFamilies.Wt D j) (a : ℕ) : Jid X la w • J
   | smul c r _ h => rw [smul_assoc]; exact Submodule.smul_mem _ c h
 
 /- English proof (translation)
-Use `show (Frac0 X la w).val (∏ i, sfr X la w i.succ ^ α i) = _`. Rewrite using `[frac_apply, secPow, map_prod, map_prod, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_pow, ← mul_pow]`. Use `show frac X la w 1 (sec X la w i.succ) ^ α i = _`.
-
-Rewrite using `[frac_apply, pow_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_prod_sfr (α : Fin (WeightFamilies.dimY D j) → ℕ) :
     ((∏ i, sfr X la w i.succ ^ α i : ↥(Frac0 X la w)) : Lw X la w) = frac X la w (∑ i, α i) (secPow X la w α) := by
@@ -777,22 +773,20 @@ theorem coe_prod_sfr (α : Fin (WeightFamilies.dimY D j) → ℕ) :
   rw [frac_apply, pow_one]
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Conclude with `Ideal.prod_mem_prod fun i _ => Ideal.pow_mem_pow (sfr_succ_mem_Jid X la w i) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_sfr_mem (α : Fin (WeightFamilies.dimY D j) → ℕ) : ∏ i, sfr X la w i.succ ^ α i ∈ Jid X la w ^ ∑ i, α i := by
   rw [← Finset.prod_pow_eq_pow_sum]
   exact Ideal.prod_mem_prod fun i _ => Ideal.pow_mem_pow (sfr_succ_mem_Jid X la w i) _
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Proceed by induction on `a with`. Consider the case `zero`. Rewrite using `[pow_zero, Ideal.one_eq_top, Submodule.top_smul]`. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, g, hg, rfl⟩` from `(mem_Hfr X la w).1 ((mem_HK X la w).1 hx)`. Conclude with `(mem_JHs X la w).2 ⟨k, g, mem_Mon_zero X la w hg, rfl⟩`. Consider the case `succ a ih`. Rewrite using `[pow_succ', Submodule.mul_smul]`. Conclude with `(Submodule.smul_mono le_rfl ih).trans (Jid_smul_JHs_le X la w u a)`.
+Extract witnesses or component facts from the available result. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨n, m, hm, rfl⟩` from `(mem_JHs X la w).1 hx`. Establish `h : Mon X la w u a n ≤ ((Jid X la w ^ a • HK X la w u).restrictScalars (Kp X la N)).comap (frac X la w (n + a))`. Use `iSup₂_le fun α hα => ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v hv`. Use `show frac X la w (n + a) (secPow X la w α * v) ∈ Jid X la w ^ a • HK X la w u`. Establish `e : frac X la w (n + a) (secPow X la w α * v) = (∏ i, sfr X la w i.succ ^ α i : ↥(Frac0 X la w)) • frac X la w n v` using `by show _ = ((∏ i, sfr X la w i.succ ^ α i : ↥(Frac0 X la w)) : Lw X la w) * _`. Rewrite using `[coe_prod_sfr, frac_mul, hα, add_comm]`. Rewrite using `[e]`.
-
-Conclude with `Submodule.smul_mem_smul (hα ▸ prod_sfr_mem X la w α) (frac_mem_HK X la w hv)`. Conclude with `h hm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Jid_pow_smul_HK (u : WeightFamilies.Wt D j) (a : ℕ) : Jid X la w ^ a • HK X la w u = JHs X la w u a := by
   apply le_antisymm
@@ -822,7 +816,7 @@ theorem Jid_pow_smul_HK (u : WeightFamilies.Wt D j) (a : ℕ) : Jid X la w ^ a �
     exact h hm
 
 /- English proof (translation)
-Rewrite using `[← mem_JHs, ← Jid_pow_smul_HK]`. Establish `h : (Jid X la w ^ a • (⊤ : Submodule ↥(Frac0 X la w) ↥(HK X la w u))).map (HK X la w u).subtype = Jid X la w ^ a • HK X la w u`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_subtype]`. Rewrite using `[← h]`. Conclude with `⟨fun hx => ⟨x, hx, rfl⟩, fun ⟨y, hy, hxy⟩ => (Subtype.ext hxy : y = x) ▸ hy⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_Jid_pow_smul_top {u : WeightFamilies.Wt D j} {a : ℕ} {x : ↥(HK X la w u)} :
     x ∈ Jid X la w ^ a • (⊤ : Submodule ↥(Frac0 X la w) ↥(HK X la w u)) ↔
@@ -835,11 +829,11 @@ theorem mem_Jid_pow_smul_top {u : WeightFamilies.Wt D j} {a : ℕ} {x : ↥(HK X
   exact ⟨fun hx => ⟨x, hx, rfl⟩, fun ⟨y, hy, hxy⟩ => (Subtype.ext hxy : y = x) ▸ hy⟩
 
 /- English proof (translation)
-Rewrite using `[rhoK_apply, toWK_eq_zero_iff, mem_Jid_pow_smul_top, coe_toHK, mem_Fil]`. Simplify using `only [Mon_addL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, m, hm, h⟩`. Rewrite `h` using `[← frac_pow_mul X la w T (n + a), ← frac_pow_mul X la w (n + a) T, add_comm (n + a) T, ← sub_eq_zero, ← map_sub, frac_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨p, hp⟩` from `h`. Use `⟨f.2, p + (n + a), by omega, ?_⟩` and prove the remaining obligations. Rewrite `hp` using `[mul_sub, sub_eq_zero, ← mul_assoc, ← pow_add, ← mul_assoc, ← pow_add]`. Rewrite using `[hp, show T + (p + (n + a) - a) = n + (p + T) by omega]`. Conclude with `sec_pow_mul_mem_Mon X la w u a n (p + T) hm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, k, hk, h⟩`. Use `⟨T + (k - a), _, h, ?_⟩` and prove the remaining obligations. Rewrite using `[show T + (k - a) + a = T + k by omega, frac_pow_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rhoK_eq_zero_iff (u : WeightFamilies.Wt D j) (a T : ℕ) (f : ↥(Vw X la N (addL u wL T))) :
     rhoK X la w u a T f = 0 ↔ (f : Rp X la N) ∈ Fil X la w (addL u wL T) a := by
@@ -859,7 +853,7 @@ theorem rhoK_eq_zero_iff (u : WeightFamilies.Wt D j) (a T : ℕ) (f : ↥(Vw X l
     rw [show T + (k - a) + a = T + k by omega, frac_pow_mul]
 
 /- English proof (translation)
-Establish `hf : (f : Rp X la N) ∈ Vw X la N (addL u wL 0)` using `by rw [addL_zero]; exact f.2`. Establish `h` using `rhoK_eq_zero_iff X la w u a 0 ⟨f, hf⟩`. Establish `e : Fil X la w (addL u wL 0) a = Fil X la w u a` using `by rw [addL_zero]`. Rewrite `h` using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rhoW_eq_zero_iff (u : WeightFamilies.Wt D j) (a : ℕ) (f : ↥(Vw X la N u)) :
     rhoW X la w u a f = 0 ↔ (f : Rp X la N) ∈ Fil X la w u a := by
@@ -885,7 +879,7 @@ theorem WKoneEquiv_rhoW (u : WeightFamilies.Wt D j) (f : ↥(Vw X la N u)) :
     WKoneEquiv X la w u (rhoW X la w u 1 f) = rho0 X la w u f := rfl
 
 /- English proof (translation)
-Rewrite using `[← rhoW_eq_zero_iff, ← WKoneEquiv_rhoW, LinearEquiv.map_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem restriction_eq_zero_iff_mem_vanishingFiltration (u : WeightFamilies.Wt D j) (f : ↥(Vw X la N u)) :
     rho0 X la w u f = 0 ↔ (f : Rp X la N) ∈ Fil X la w u 1 := by

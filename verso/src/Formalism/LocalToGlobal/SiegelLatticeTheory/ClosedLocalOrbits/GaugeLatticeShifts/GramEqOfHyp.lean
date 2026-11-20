@@ -24,7 +24,7 @@ structure Hyp (e f : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (T : ℂ) : Pr
   zz : hJ ε z z = -T
 
 /- English proof (translation)
-Rewrite using `[hJ_conj, h.ef]`. Distinguish the cases in `hab : b = a`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hab, if_neg (Ne.symm hab), map_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Hyp.fe {e f : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {T : ℂ} (h : Hyp ε e f z T) (a b : Fin r) :
     hJ ε (f a) (e b) = if a = b then 1 else 0 := by
@@ -33,19 +33,19 @@ theorem Hyp.fe {e f : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {T : ℂ} (h 
   · rw [if_neg hab, if_neg (Ne.symm hab), map_zero]
 
 /- English proof (translation)
-Rewrite using `[hJ_conj, h.ez, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Hyp.ze {e f : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {T : ℂ} (h : Hyp ε e f z T) (a : Fin r) :
     hJ ε z (e a) = 0 := by rw [hJ_conj, h.ez, map_zero]
 
 /- English proof (translation)
-Rewrite using `[hJ_conj, h.fz, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Hyp.zf {e f : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {T : ℂ} (h : Hyp ε e f z T) (a : Fin r) :
     hJ ε z (f a) = 0 := by rw [hJ_conj, h.fz, map_zero]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases i with a | a | _ <;> rcases j with b | b | _ <;>`. Simplify using `only [frm3, Sum.elim_inl, Sum.elim_inr, h.ee, h'.ee, h.ef, h'.ef, h.ff, h'.ff, h.ez, h'.ez, h.fz, h'.fz, h.zz, h'.zz, h.fe, h'.fe, h.ze, h'.ze, h.zf, h'.zf]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem gram_eq_of_hyp {e f e' f' : Fin r → Fin n → ℂ} {z z' : Fin n → ℂ} {T : ℂ}
     (h : Hyp ε e f z T) (h' : Hyp ε e' f' z' T) (i j : Fin r ⊕ (Fin r ⊕ Unit)) :
@@ -55,13 +55,13 @@ theorem gram_eq_of_hyp {e f e' f' : Fin r → Fin n → ℂ} {z z' : Fin n → �
       h.zz, h'.zz, h.fe, h'.fe, h.ze, h'.ze, h.zf, h'.zf]
 
 /- English proof (translation)
-Introduce `hdet`. Take `⟨w, hw0, hw⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Apply `hw0` to reduce the goal to its premises. Establish `row : ∀ i, ∑ j, hJ ε (frm3 e f z i) (frm3 e f z j) * w j = 0` using `fun i => by`. Use `congrFun hw i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[mulVec, dotProduct]`. Use function extensionality and compare the values at `i`. Break down `i with a | a | u` into its components or cases. Use `row (Sum.inr (Sum.inl a))` as an intermediate fact. Simplify `this` using `[Fintype.sum_sum_type, frm3, h.fe, h.ff, h.fz]`.
+Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `row (Sum.inl a)` as an intermediate fact. Simplify `this` using `[Fintype.sum_sum_type, frm3, h.ee, h.ef, h.ez]`. Use `row (Sum.inr (Sum.inr u))` as an intermediate fact. Simplify using `[Fintype.sum_sum_type, frm3, h.ze, h.zf, h.zz] at this`. Break down `this with h1 | h1` into its components or cases.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h1 hT`. Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gram_nd_of_hyp {e f : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {T : ℂ} (hT : T ≠ 0) (h : Hyp ε e f z T) :
     (Matrix.of fun i j => hJ ε (frm3 e f z i) (frm3 e f z j)).det ≠ 0 := by
@@ -84,11 +84,9 @@ theorem gram_nd_of_hyp {e f : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {T : 
     · simpa using h1
 
 /- English proof (translation)
-Use `set sN := Finset.univ.filter (fun i : Fin n => ε i = false) with hsN`. Use `set sP := Finset.univ.filter (fun i : Fin n => ε i = true) with hsP`. Establish `hcard : sP.card + sN.card = n`. Use `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin n))) (fun i : Fin n => ε i = true)` as an intermediate fact. Simplify using `only [Finset.card_univ, Fintype.card_fin, Bool.not_eq_true] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `this`. Establish `hP : sP.card = r + k` using `by omega`. Set `eN` to `sN.equivFinOfCardEq hsig`. Set `eP` to `sP.equivFinOfCardEq hP`. Use `⟨fun y => (eN.symm y).1, fun x => (eP.symm x).1, ?_, ?_, fun y => ?_, fun x => ?_⟩` and prove the remaining obligations.
-
-Conclude with `Subtype.val_injective.comp eN.symm.injective`. Conclude with `Subtype.val_injective.comp eP.symm.injective`. Conclude with `(Finset.mem_filter.1 (eN.symm y).2).2`. Conclude with `(Finset.mem_filter.1 (eP.symm x).2).2`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coord_inj {k : ℕ} (hdim : n = 2 * r + 1 + k)
     (hsig : (Finset.univ.filter (fun i => ε i = false)).card = r + 1) :
@@ -111,39 +109,39 @@ theorem coord_inj {k : ℕ} (hdim : n = 2 * r + 1 + k)
   · exact (Finset.mem_filter.1 (eP.symm x).2).2
 
 /- English proof (translation)
-Take `⟨N, P, hN, hP, hNs, hPs⟩` from `coord_inj ε hdim hsig`. Establish `hNP : ∀ y x, N y ≠ P x` using `fun y x h => by have := hNs y; rw [h, hPs x] at this; exact Bool.noConfusion this`. Use `set sq : ℂ := (((Real.sqrt 2)⁻¹ : ℝ) : ℂ) with hsq`. Establish `hsqc : conj sq = sq` using `Complex.conj_ofReal _`. Establish `hsq2 : sq * sq = 1 / 2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsq, ← Complex.ofReal_mul, ← mul_inv, Real.mul_self_sqrt (by norm_num : (0 : ℝ) ≤ 2)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Set `p : Fin r → Fin n` to `fun c => P (Fin.castAdd k c)`. Set `q : Fin r → Fin n` to `fun c => N (Fin.castSucc c)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `qz : Fin n` to `N (Fin.last r)`. Set `wi : Fin k → Fin n` to `fun j => P (Fin.natAdd r j)`. Set `e0 : Fin r → Fin n → ℂ` to `fun c => sq • (dl (p c) + dl (q c))`. Set `f0 : Fin r → Fin n → ℂ` to `fun c => sq • (dl (p c) - dl (q c))`. Set `z0 : Fin n → ℂ` to `((Real.sqrt T : ℝ) : ℂ) • dl qz`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `w0 : Fin k → Fin n → ℂ` to `fun j => dl (wi j)`. Establish `hp : Function.Injective p` using `hP.comp (Fin.castAdd_injective r k)`. Establish `hq : Function.Injective q` using `hN.comp (Fin.castSucc_injective r)`. Establish `hqz : ∀ c, q c ≠ qz` using `fun c h => Fin.castSucc_ne_last c (hN h)`. Establish `hwi : Function.Injective wi` using `hP.comp (Fin.natAdd_injective k r)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpw : ∀ c j, p c ≠ wi j` using `fun c j h => by`. Establish `h1` using `congrArg Fin.val (hP h)`. Simplify using `only [Fin.coe_castAdd, Fin.coe_natAdd] at h1`. Use linear arithmetic over natural numbers and integers. Establish `hd : ∀ i j, hJ ε (dl i) (dl j) = if i = j then (if ε i then 1 else -1) else 0` using `hJ_dl ε`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pp : ∀ a b, hJ ε (dl (p a)) (dl (p b)) = if a = b then 1 else 0` using `fun a b => by`. Rewrite using `[hd]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[p, hPs]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (hp.ne hab), if_neg hab]`. Establish `qq : ∀ a b, hJ ε (dl (q a)) (dl (q b)) = if a = b then -1 else 0` using `fun a b => by`. Rewrite using `[hd]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[q, hNs]`. Rewrite using `[if_neg (hq.ne hab), if_neg hab]`. Establish `pq : ∀ a b, hJ ε (dl (p a)) (dl (q b)) = 0` using `fun a b => by rw [hd, if_neg (hNP _ _).symm]`. Establish `qp : ∀ a b, hJ ε (dl (q a)) (dl (p b)) = 0` using `fun a b => by rw [hd, if_neg (hNP _ _)]`. Establish `h0 : Hyp ε e0 f0 z0 (T : ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a b => ?_, fun a b => ?_, fun a b => ?_, fun a => ?_, fun a => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `simp only [e0, hJ_smul_left, hJ_smul_right, hJ_add_left, hJ_add_right, pp, qq, pq, qp, hsqc] split_ifs <;> ring`. Simplify using `only [e0, f0, hJ_smul_left, hJ_smul_right, hJ_add_left, hJ_sub_right, pp, qq, pq, qp, hsqc] split_ifs`. Take the linear combination `2 * hsq2`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [f0, hJ_smul_left, hJ_smul_right, hJ_sub_left, hJ_sub_right, pp, qq, pq, qp, hsqc] split_ifs <;> ring`. Establish `h1 : p a ≠ qz` using `(hNP _ _).symm`. Simplify using `only [e0, z0, hJ_smul_left, hJ_smul_right, hJ_add_left, hd, if_neg h1, if_neg (hqz a)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : p a ≠ qz` using `(hNP _ _).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [f0, z0, hJ_smul_left, hJ_smul_right, hJ_sub_left, hd, if_neg h1, if_neg (hqz a)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : ((Real.sqrt T : ℝ) : ℂ) * ((Real.sqrt T : ℝ) : ℂ) = (T : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt hT.le]`. Establish `hq0 : ε qz = false` using `hNs _`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [z0, hJ_smul_left, hJ_smul_right, hd, if_true, Complex.conj_ofReal, hq0, Bool.false_eq_true, if_false]`. Take the linear combination `(-1 : ℂ) * hs`. Take `⟨g, hg⟩` from `witt_of_gram' ε (frm3 e0 f0 z0) (frm3 e f z) (gram_eq_of_hyp ε h0 h) (gram_nd_of_hyp ε (by exact_mod_cast hT.ne') h0)`. Establish `hiso` using `isIsom_uMat ε g`. Establish `he : ∀ c, Formalism.MainNotions.S.uMat g *ᵥ e0 c = e c` using `fun c => hg (Sum.inl c)`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : ∀ c, Formalism.MainNotions.S.uMat g *ᵥ f0 c = f c` using `fun c => hg (Sum.inr (Sum.inl c))`. Establish `hz : Formalism.MainNotions.S.uMat g *ᵥ z0 = z` using `hg (Sum.inr (Sum.inr ()))`. Establish `ww : ∀ a b, hJ ε (w0 a) (w0 b) = if a = b then 1 else 0` using `fun a b => by`. Simplify using `only [w0]`. Rewrite using `[hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[wi, hPs]`. Rewrite using `[if_neg (hwi.ne hab), if_neg hab]`. Establish `pw : ∀ c j, hJ ε (dl (p c)) (w0 j) = 0` using `fun c j => by simp only [w0]; rw [hd, if_neg (hpw c j)]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `qw : ∀ c j, hJ ε (dl (q c)) (w0 j) = 0` using `fun c j => by simp only [w0]; rw [hd, if_neg (hNP _ _)]`. Establish `zw : ∀ j, hJ ε (dl qz) (w0 j) = 0` using `fun j => by simp only [w0]; rw [hd, if_neg (hNP _ _)]`. Use `⟨fun j => Formalism.MainNotions.S.uMat g *ᵥ w0 j, fun a b => by rw [hiso, ww], fun c a => ?_, fun c a => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← he, hiso]`. Simplify using `only [e0, hJ_smul_left, hJ_add_left, pw, qw]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hf, hiso]`. Simplify using `only [f0, hJ_smul_left, hJ_sub_left, pw, qw]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hz, hiso]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [z0, hJ_smul_left, zw]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem complement {k : ℕ} (hdim : n = 2 * r + 1 + k)
     (hsig : (Finset.univ.filter (fun i => ε i = false)).card = r + 1)

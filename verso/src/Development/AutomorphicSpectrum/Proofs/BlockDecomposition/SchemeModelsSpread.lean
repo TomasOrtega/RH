@@ -7,7 +7,7 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GlobalTheory.Spreadi
 namespace GlobalTheory.CompanionTheory.NoethApprox
 
 /- English proof (translation)
-Introduce `R _ Y f h₁ h₂ h₃`. Take `⟨R₀, i, φ, Y₀, f₀, π, a, b, c, d, e⟩` from `GlobalTheory.SpreadScheme.hasModel (V := R) f`. Conclude with `⟨R₀, i, φ, Y₀, f₀, π, a, b, d, c, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem schemeModels : GlobalTheory.SpreadingModels.SchemeModels := by
   intro R _ Y f h₁ h₂ h₃

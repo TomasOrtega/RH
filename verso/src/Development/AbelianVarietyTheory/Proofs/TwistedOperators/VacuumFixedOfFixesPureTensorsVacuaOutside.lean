@@ -16,33 +16,29 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d Y Wd M om v k S hvac hstd hfix ψ hψ`. Set `ind : ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (Fin n × Fin d → Fv F w) → ℂ` to `fun w => Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1`. Set `φ` to `Function.update ind v (M.vac v)`. Establish `hφv : φ v = M.vac v` using `by simp [φ]`. Establish `hφw : ∀ w, w ≠ v → φ w = ind w` using `fun w h => by simp [φ, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφev : ∀ᶠ w in Filter.cofinite, φ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1`. Rewrite using `[Filter.eventually_cofinite]`. Use `(Set.finite_singleton v).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hw (hφw w hne)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hSB : ∀ w, φ w ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F w)`. Introduce `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[hφv]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hvac`. Rewrite using `[hφw w h]`. Conclude with `GlobalTheory.StdVacuum.indicator_mem_SB w`. Take `⟨f, hf⟩` from `GlobalTheory.TensUniq.exists_sInf_ne_zero F (Fin n × Fin d)`. Take `⟨r, hrinv, hrt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ hφev`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hupd : ∀ ψ₀, Function.update φ v ψ₀ = Function.update ind v ψ₀` using `fun ψ₀ => Function.update_idem _ _ _`. Establish `hfixφ : om (1, k) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ`. Use `hfix f φ hSB fun w hw => ?_` and prove the remaining obligations. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hφv`. Rewrite using `[hφw w h, hstd w hw]`. Establish `hpv : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.AdelicU.evFin F v) (M.vac v) r = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ`. Rewrite using `[hrt, hupd]`. Establish `hRest : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (GlobalTheory.AdelicU.evFin F v) (M.vac v) r`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest`. Use `⟨hrinv, ?_⟩` and prove the remaining obligations. Rewrite using `[hpv]`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB hφev`. Establish `key : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.AdelicU.evFin F v) ψ r = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.AdelicU.evFin F v) (M.vac v) r`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hψ r hRest, hpv, hfixφ]`. Establish `hr0 : r 0 ≠ 0`. Establish `h1` using `congrFun (hrt (fun _ => 1)) 0`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, one_mul] at h1`. Rewrite using `[h1, hupd]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure`. Establish `e1 : (fun i : Fin n × Fin d => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F ((0 : Fin n × Fin d → AF F) i)) = 0`. Use function extensionality and compare the values at `i`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((0 : Fin n × Fin d → AF F) i).1 = 0`. Conclude with `map_zero _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, Function.update ind v (fun _ => 1) w (fun i => GlobalTheory.AdelicU.evFin F w ((0 : Fin n × Fin d → AF F) i)) = 1`. Introduce `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Function.update_of_ne h] show Set.indicator {x : Fin n × Fin d → Fv F w | ∀ i, x i ∈ w.adicCompletionIntegers F} 1 (fun i => GlobalTheory.AdelicU.evFin F w ((0 : Fin n × Fin d → AF F) i)) = 1`. Rewrite using `[Set.indicator_of_mem]`. Both sides reduce to the same expression. Simplify using `only [Set.mem_setOf_eq, Pi.zero_apply, map_zero]`. Conclude with `fun _ => zero_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, finprod_congr e2, finprod_one, mul_one]`. Conclude with `hf`. Use function extensionality and compare the values at `y`. Establish `hz : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F v) (fun i => GlobalTheory.EmbChart.atPlace v (y i))`. Introduce `u hu`.
-
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Rewrite using `[mul_comm, GlobalTheory.EmbChart.atPlace_mul_right, hu, mul_zero, map_zero]`. Establish `hrz : r (fun i => GlobalTheory.EmbChart.atPlace v (y i)) = r 0`. Simplify using `using hrinv 0 _ hz`.
-
-Establish `h2` using `congrFun key (fun i => GlobalTheory.EmbChart.atPlace v (y i))`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, GlobalTheory.EmbChart.evFin_atPlace, hrz] at h2`. Conclude with `mul_right_cancel₀ hr0 h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TripleAssembly.vac_fixed_of_pure_fixed : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {n d : ℕ} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd)

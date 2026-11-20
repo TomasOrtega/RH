@@ -15,45 +15,39 @@ namespace GlobalTheory.DualOpen
 open IsLocalRing in
 
 /- English proof (translation)
-Introduce `C _ _ e he hm hne`. Establish `hee : e * e = 0` using `hm e he`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : ResidueField C →+ C, ∀ c, φ (residue C c) = c * e := by`. Use `⟨(Submodule.liftQ (maximalIdeal C) (LinearMap.toSpanSingleton C C e) ?_).toAddMonoidHom, fun c ↦ ?_⟩` and prove the remaining obligations. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hm a ha`. Both sides reduce to the same expression. Establish `hφ0 : ∀ x, φ x = 0 → x = 0`. Introduce `x hx`. Take `⟨c, rfl⟩` from `residue_surjective x`.
+Simplify to obtain the desired conclusion from the available facts. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[hφ]`. Rewrite using `[residue_eq_zero_iff]`. Assume the negation of the conclusion as `hc`. Establish `hu : IsUnit c` using `by simpa using hc`. Conclude with `hne (hu.mul_right_eq_zero.mp hx)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `P : Subring (C × DualNumber (ResidueField C))` to `RingHom.eqLocus ((residue C).comp (RingHom.fst _ _)) ((dnFst _).comp (RingHom.snd _ _))`. Establish `hP : ∀ x : C × DualNumber (ResidueField C), x ∈ P ↔ residue C x.1 = x.2.fst` using `fun x ↦ Iff.rfl`. Set `p : P →+* C` to `(RingHom.fst _ _).comp P.subtype`. Set `q : P →+* DualNumber (ResidueField C)` to `(RingHom.snd _ _).comp P.subtype`. Set `i : C →+* P` to `RingHom.codRestrict ((RingHom.id C).prod ((dnInl _).comp (residue C))) P (fun c ↦ (hP _).2 rfl)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `σ : P →+* C` to `{ toFun := fun x ↦ x.1.1 + φ x.1.2.snd map_one' := by simp map_zero' := by simp map_add' := by`. Introduce `x y`. Simplify using `only [Subring.coe_add, Prod.fst_add, Prod.snd_add, TrivSqZeroExt.snd_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_mul' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨a, x⟩, hx⟩ ⟨⟨b, y⟩, hy⟩`. Establish `hx' : residue C a = x.fst` using `hx`. Establish `hy' : residue C b = y.fst` using `hy`. Take `⟨c, hc⟩` from `residue_surjective (R := C) x.snd`. Take `⟨d, hd⟩` from `residue_surjective (R := C) y.snd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `show a * b + φ (x * y).snd = (a + φ x.snd) * (b + φ y.snd)`. Rewrite using `[DualNumber.snd_mul, ← hx', ← hy', ← hc, ← hd, ← map_mul, ← map_mul, ← map_add, hφ, hφ, hφ]`. Take the linear combination `(-(c * d)) * hee }`. Establish `hσ : ∀ x : P, σ x = x.1.1 + φ x.1.2.snd` using `fun _ ↦ rfl`. Establish `hσi : σ.comp i = RingHom.id C`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `c`. Use `show c + φ (TrivSqZeroExt.inl (residue C c) : DualNumber _).snd = c`. Simplify using the standard rewrite rules. Establish `hsurj : Function.Surjective σ` using `fun c ↦ ⟨i c, RingHom.congr_fun hσi c⟩`. Establish `hφmem : ∀ x, φ x ∈ Ideal.span {e}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨c, rfl⟩` from `residue_surjective x`. Rewrite using `[hφ]`. Conclude with `Ideal.mem_span_singleton'.2 ⟨c, rfl⟩`. Establish `hker : RingHom.ker σ ≤ nilradical P`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨⟨a, x⟩, hx⟩ h`. Establish `hx' : residue C a = x.fst` using `hx`. Establish `h' : a + φ x.snd = 0` using `h`. Take `⟨c, hc⟩` from `residue_surjective (R := C) x.snd`. Rewrite `h'` using `[← hc, hφ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : a = -c * e` using `by linear_combination h'`. Establish `h0 : x.fst = 0`. Rewrite using `[← hx', residue_eq_zero_iff, ha]`. Conclude with `Ideal.mul_mem_left _ _ he`. Use `mem_nilradical.2 ⟨2, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[pow_two]`. Use `Subtype.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Use `show a * a = 0`. Rewrite using `[ha]`. Take the linear combination `(c * c) * hee`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show x * x = 0`. Use `ext`. Simplify using `[h0]`. Simplify using `[DualNumber.snd_mul, h0]`. Use `⟨P, inferInstance, i, p, σ, q, rfl, hσi, rfl, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `IsClosedImmersion.spec_of_surjective _ hsurj`. Use `⟨fun x ↦ ?_⟩` and prove the remaining obligations. Use `range_comap_of_surjective _ σ hsurj` as an intermediate fact. Establish `hx : x ∈ PrimeSpectrum.zeroLocus (RingHom.ker σ : Set P)` using `fun a ha ↦ @nilradical_le_prime _ _ x.asIdeal x.isPrime _ (hker ha)`. Rewrite `hx` using `[← this]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `hx`. Use `GlobalTheory.T.affineMilnorSquare_of_cartesian_ring_square _ _ _ _ _ _ _ _ ?_ ?_ ?_ Ideal.Quotient.mk_surjective` and prove the remaining obligations. Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations. Use `(Ideal.Quotient.eq.2 ?_).symm` and prove the remaining obligations. Use `show x.1.1 + φ x.1.2.snd - x.1.1 ∈ _`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hφmem _`. Introduce and unpack `⟨⟨a, x⟩, hx⟩ h1 h2`. Establish `hx' : residue C a = x.fst` using `hx`. Establish `h1' : a = 0` using `h1`. Establish `h2' : a + φ x.snd = 0` using `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Substitute `h1'` using the available equality. Rewrite `h2'` using `[zero_add]`. Use `Subtype.ext (Prod.ext rfl ?_)` and prove the remaining obligations. Use `show x = 0`. Use `ext`.
-
-Simplify using `[← hx']`. Simplify using `using hφ0 _ h2'`. Introduce `a b hab`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 hab.symm)`. Use `⟨⟨(a, ⟨residue C a, residue C c⟩), rfl⟩, rfl, ?_⟩` and prove the remaining obligations.
-
-Use `show a + φ (residue C c) = b`. Rewrite using `[hφ, hc]`. Expand and normalize the polynomial expressions, which then agree. Use `GlobalTheory.T.affineMilnorSquare_of_cartesian_ring_square _ _ _ _ _ _ _ _ ?_ ?_ ?_ (fun x ↦ ⟨TrivSqZeroExt.inl x, rfl⟩)` and prove the remaining obligations. Conclude with `RingHom.ext fun x ↦ x.2`.
-
-Introduce `x h1 h2`. Conclude with `Subtype.ext (Prod.ext h1 h2)`. Introduce `a b hab`. Conclude with `⟨⟨(a, b), hab⟩, rfl, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smallExt_fibre_ring : ∀ (C : Type) [CommRing C] [IsLocalRing C] (e : C), e ∈ IsLocalRing.maximalIdeal C → (∀ a ∈ IsLocalRing.maximalIdeal C, a * e = 0) → e ≠ 0 → ∃ (P : Type) (_ : CommRing P) (i : C →+* P) (p σ : P →+* C) (q : P →+* DualNumber (IsLocalRing.ResidueField C)), p.comp i = RingHom.id C ∧ σ.comp i = RingHom.id C ∧ q.comp i = (dnInl _).comp (IsLocalRing.residue C) ∧ IsClosedImmersion (spMap σ) ∧ Surjective (spMap σ) ∧ Milnor (spMap p) (spMap σ) (spMap (Ideal.Quotient.mk (Ideal.span {e}))) (spMap (Ideal.Quotient.mk (Ideal.span {e}))) ∧ Milnor (spMap p) (spMap q) (spMap (IsLocalRing.residue C)) (spMap (dnFst _)) := by
   intro C _ _ e he hm hne

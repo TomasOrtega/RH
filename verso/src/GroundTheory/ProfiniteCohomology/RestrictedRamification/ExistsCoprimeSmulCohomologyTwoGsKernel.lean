@@ -17,7 +17,7 @@ variable (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
 abbrev gsKernel : Subgroup K.1.fixingSubgroup := (gsRestrict K S).ker
 
 /- English proof (translation)
-Establish `ht2 : T2Space (galUnramifiedOutside K.1 ℚ̄ S)` using `galois_t2Space K.1 (maxUnramifiedOutside K.1 ℚ̄ S)`. Establish `: T1Space (galUnramifiedOutside K.1 ℚ̄ S)` using `@T2Space.t1Space _ _ ht2`. Conclude with `(isClosed_singleton (x := (1 : galUnramifiedOutside K.1 ℚ̄ S))).preimage (continuous_gsRestrict K S)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_gsKernel : IsClosed (gsKernel K S : Set K.1.fixingSubgroup) := by
   have ht2 : T2Space (galUnramifiedOutside K.1 ℚ̄ S) :=
@@ -26,9 +26,9 @@ theorem isClosed_gsKernel : IsClosed (gsKernel K S : Set K.1.fixingSubgroup) := 
   exact (isClosed_singleton (x := (1 : galUnramifiedOutside K.1 ℚ̄ S))).preimage (continuous_gsRestrict K S)
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Use `congrArg (fun τ : galUnramifiedOutside K.1 ℚ̄ S => ((τ ⟨x, hx⟩ : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄)) h` as an intermediate fact. Rewrite `this` using `[gsRestrict_apply]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Introduce `h`. Use `AlgEquiv.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[gsRestrict_apply]`. Conclude with `h x x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_gsKernel_iff (σ : K.1.fixingSubgroup) :
     σ ∈ gsKernel K S ↔ ∀ x ∈ maxUnramifiedOutside K.1 ℚ̄ S, (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) x = x := by
@@ -45,21 +45,19 @@ theorem mem_gsKernel_iff (σ : K.1.fixingSubgroup) :
     exact h x x.2
 
 /- English proof (translation)
-Establish `: IsGalois ℚ ℚ̄` using `IsAlgClosure.isGalois ℚ ℚ̄`. Set `U' : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)` to `U.map K.1.fixingSubgroup.subtype`. Establish `hKo : IsOpen (K.1.fixingSubgroup : Set (ℚ̄ ≃ₐ[ℚ] ℚ̄))` using `K.1.fixingSubgroup_isOpen`. Establish `hU'o : IsOpen (U' : Set (ℚ̄ ≃ₐ[ℚ] ℚ̄))`. Establish `e : (U' : Set (ℚ̄ ≃ₐ[ℚ] ℚ̄)) = Subtype.val '' (U : Set K.1.fixingSubgroup)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `σ`. Simplify using `[U', Subgroup.coe_map]`. Rewrite using `[e]`. Conclude with `hKo.isOpenMap_subtype_val _ hU`. Establish `hU'c : IsClosed (U' : Set (ℚ̄ ≃ₐ[ℚ] ℚ̄))` using `Subgroup.isClosed_of_isOpen _ hU'o`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `L' : IntermediateField ℚ ℚ̄` to `IntermediateField.fixedField U'`. Establish `hfix : L'.fixingSubgroup = U'` using `InfiniteGalois.fixingSubgroup_fixedField ⟨U', hU'c⟩`. Establish `hfin : FiniteDimensional ℚ L'` using `(InfiniteGalois.isOpen_iff_finite L').1 (hfix ▸ hU'o)`. Set `L : FiniteSubfield` to `⟨L', hfin⟩`. Establish `hmemU' : ∀ τ : K.1.fixingSubgroup, (τ : ℚ̄ ≃ₐ[ℚ] ℚ̄) ∈ U' ↔ τ ∈ U` using `fun τ => Subgroup.mem_map_iff_mem K.1.fixingSubgroup.subtype_injective`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKL : K ≤ L`. Introduce `x hx`. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Introduce `σ hσ`. Take `⟨τ, -, rfl⟩` from `Subgroup.mem_map.1 hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 τ.2 x hx`. Use `⟨L, ⟨hKL⟩, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Set `KS' : IntermediateField ℚ ℚ̄` to `(maxUnramifiedOutside K.1 ℚ̄ S).restrictScalars ℚ`. Establish `hx' : x ∈ IntermediateField.fixedField KS'.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixedField_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `σ hσ`. Establish `hσK : σ ∈ K.1.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ _ ((maxUnramifiedOutside K.1 ℚ̄ S).algebraMap_mem (⟨y, hy⟩ : K.1))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hσN : (⟨σ, hσK⟩ : K.1.fixingSubgroup) ∈ gsKernel K S` using `(mem_gsKernel_iff K S _).2 fun y hy => (IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ y hy`. Establish `hσU' : σ ∈ U'` using `(hmemU' ⟨σ, hσK⟩).2 (hNU hσN)`. Conclude with `(IntermediateField.mem_fixedField_iff _ _).1 hx σ hσU'`. Rewrite `hx'` using `[InfiniteGalois.fixedField_fixingSubgroup KS']`. Conclude with `hx'`.
-
-Use extensionality with `τ`. Rewrite using `[Subgroup.mem_subgroupOf, ← hmemU', ← hfix]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finiteSubfield_of_isOpen (U : Subgroup K.1.fixingSubgroup)
     (hU : IsOpen (U : Set K.1.fixingSubgroup)) (hNU : gsKernel K S ≤ U) :
@@ -108,9 +106,9 @@ theorem exists_finiteSubfield_of_isOpen (U : Subgroup K.1.fixingSubgroup)
     rw [Subgroup.mem_subgroupOf, ← hmemU', ← hfix]
 
 /- English proof (translation)
-Use `@ModuleCat.isZero_of_subsingleton _ _ _ ⟨fun a b => ?_⟩` and prove the remaining obligations. It suffices to establish `h : ∀ y : cohomology (Rep.res (gsKernel K S).subtype (unitsLimitRep K)) 1, y = 0 by`. Rewrite using `[h a, h b]`. Introduce `y`. Take `⟨U, hU, hNU, y', rfl⟩` from `exists_isOpen_cohomologyResLE_eq (unitsLimitRep K) (gsKernel K S) (isClosed_gsKernel K S) 1 y`.
+Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL, -, rfl⟩` from `exists_finiteSubfield_of_isOpen K S U hU hNU`. Establish `hz : Subsingleton (cohomology (Rep.res (L.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).subtype (unitsLimitRep K)) 1)` using `ModuleCat.subsingleton_of_isZero (isZero_cohomology_one_res_subgroupOf (K := K) (E := L))`. Rewrite using `[Subsingleton.elim y' 0, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isZero_cohomology_one_gsKernel :
     IsZero (cohomology (Rep.res (gsKernel K S).subtype (unitsLimitRep K)) 1) := by
@@ -127,23 +125,21 @@ theorem isZero_cohomology_one_gsKernel :
   rw [Subsingleton.elim y' 0, map_zero]
 
 /- English proof (translation)
-Establish `hℓ2 : 2 < ℓ ^ 2` using `by nlinarith [hℓ.two_le]`. Establish `: NeZero (ℓ ^ 2)` using `⟨pow_ne_zero _ hℓ.ne_zero⟩`. Set `F₂ : FiniteSubfield` to `⟨Cyclotomic.rootsOfUnityField (ℓ ^ 2), inferInstance⟩`. Set `K' : FiniteSubfield` to `CyclotomicSymbol.compositum L F₂`. Establish `: Fact ℓ.Prime` using `⟨hℓ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Fact (F₂ ≤ K')` using `CyclotomicSymbol.fact_le_compositum_right L F₂`. Establish `: IsTotallyComplex F₂.1` using `IsCyclotomicExtension.Rat.isTotallyComplex (n := ℓ ^ 2) F₂.1 hℓ2`. Set `_ : Algebra F₂.1 K'.1` to `FiniteSubfield.algebraOfLE (Fact.out : F₂ ≤ K')`. Establish `: IsTotallyComplex K'.1` using `NumberField.isTotallyComplex_of_algebra (F := F₂.1) K'.1`. Take `⟨ι'⟩` from `nonempty_localEmbeddings K'`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set x' := (unitsResField L K' 2).hom x with hx'`. Establish `hm : (ℓ ^ k) • x' = 0` using `by rw [hx', ← map_nsmul, hx, map_zero]`. Set `T : Finset (HeightOneSpectrum (𝓞 K'.1))` to `(brauerLocal ι' x').support.preimage Sum.inr Sum.inr_injective.injOn`. Take `⟨r, ⟨N, hr⟩, hdeg⟩` from `CyclotomicLayer.exists_pow_dvd_finrank_cyclotomicLayer K' T (pow_ne_zero k hℓ.ne_zero)`. Set `E' : FiniteSubfield` to `CyclotomicLayer.cyclotomicLayer K' r`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsplit : (unitsResField K' E' 2).hom x' = 0`. Use `unitsResField_eq_zero_of_dvd_finrank ι' x' (ℓ ^ k) hm (fun v => ?_) fun v hv w => ?_` and prove the remaining obligations. Use `subsingleton_cohomology_two_of_isComplex v (IsTotallyComplex.isComplex v)` as an intermediate fact. Conclude with `Subsingleton.elim (α := cohomology (galUnitsZ v.Completion (AlgebraicClosure v.Completion)) 2) _ _`. Conclude with `hdeg v (by rw [Finset.mem_preimage, DFinsupp.mem_support_iff]; exact hv) w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `a` to `k * (N + 1)`. Set `b` to `a + Cyclotomic.unitsLevel ℓ + 2`. Establish `: NeZero (ℓ ^ b)` using `⟨pow_ne_zero _ hℓ.ne_zero⟩`. Set `F : FiniteSubfield` to `⟨Cyclotomic.rootsOfUnityField (ℓ ^ b), inferInstance⟩`. Set `E : FiniteSubfield` to `CyclotomicSymbol.compositum L F`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hrq : r = Cyclotomic.primePowPNat ℓ a`. Apply `PNat.eq` to reduce the goal to its premises. Rewrite using `[hr, Cyclotomic.coe_primePowPNat, ← pow_mul]`. Establish `hF₂F : F₂.1 ≤ F.1` using `rootsOfUnityField_pow_le (by omega)`. Establish `hZF : (CyclotomicLayer.zhatLayer r).1 ≤ F.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hrq, CyclotomicLayer.zhatLayer_coe]`. Conclude with `(CyclotomicLayer.zhatLayerField_le_rootsOfUnityField ⟨ℓ, hℓ⟩ a).trans (rootsOfUnityField_pow_le (a := a + Cyclotomic.unitsLevel ℓ) (b := b) (by omega))`. Establish `hE'E : E' ≤ E`. Express the relevant statement in the definitionally equal form `(L.1 ⊔ F₂.1) ⊔ (CyclotomicLayer.zhatLayer r).1 ≤ L.1 ⊔ F.1`. Conclude with `sup_le (sup_le le_sup_left (hF₂F.trans le_sup_right)) (hZF.trans le_sup_right)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Fact (E' ≤ E)` using `⟨hE'E⟩`. Establish `hres : (unitsResField L E 2).hom x = 0`. Establish `hKE' : Fact (L ≤ E')` using `⟨(Fact.out : L ≤ K').trans (Fact.out : K' ≤ E')⟩`. Establish `h1` using `unitsResField_comp_unitsResField (K := L) (E := E') (M := E) 2`. Establish `h2` using `unitsResField_comp_unitsResField (K := L) (E := K') (M := E') 2`.
-
-Rewrite using `[← h1, ConcreteCategory.comp_apply, ← h2, ConcreteCategory.comp_apply]`. Express the relevant statement in the definitionally equal form `(unitsResField E' E 2).hom ((unitsResField K' E' 2).hom x') = 0`. Rewrite using `[hsplit, map_zero]`. Conclude with `⟨E, inferInstance, b, rfl, hres⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unitsResField_eq_zero_of_pow_nsmul (L : FiniteSubfield) {ℓ : ℕ} (hℓ : ℓ.Prime)
     (x : cohomology (unitsLimitRep L) 2) (k : ℕ) (hx : ℓ ^ k • x = 0) :
@@ -213,21 +209,21 @@ abbrev unitsSubgroupOfMap (L : FiniteSubfield) [Fact (K ≤ L)] (n : ℕ) :
     (continuous_subgroupOfEquivOfLe_symm _) (resSubgroupOfHom _ unitsRep) n
 
 /- English proof (translation)
-The claim follows from `(ModuleCat.mono_iff_injective _).1 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem unitsSubgroupOfMap_injective (L : FiniteSubfield) [Fact (K ≤ L)] (n : ℕ) :
     Function.Injective (unitsSubgroupOfMap (K := K) L n).hom :=
   (ModuleCat.mono_iff_injective _).1 inferInstance
 
 /- English proof (translation)
-Introduce `_ hσ` and use `IntermediateField.fixingSubgroup_le h hσ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fixingSubgroup_subgroupOf_mono {L E : FiniteSubfield} (h : L ≤ E) :
     E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup ≤ L.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup :=
   fun _ hσ => IntermediateField.fixingSubgroup_le h hσ
 
 /- English proof (translation)
-Rewrite using `[cohomologyResLE_eq, ← cohomologyMapAlong_comp, unitsResField, ← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_congr _ _ _ _ (by ext; rfl) (fun _ => rfl) n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyResLE_comp_unitsSubgroupOfMap {L E : FiniteSubfield} [Fact (K ≤ L)] [Fact (K ≤ E)]
     [Fact (L ≤ E)] (n : ℕ) :
@@ -239,19 +235,17 @@ theorem cohomologyResLE_comp_unitsSubgroupOfMap {L E : FiniteSubfield} [Fact (K 
 end SubgroupOf
 
 /- English proof (translation)
-Take `⟨U, hU, hNU, y', rfl⟩` from `exists_isOpen_cohomologyResLE_eq (unitsLimitRep K) (gsKernel K S) (isClosed_gsKernel K S) 2 y`. Take `⟨L, hL, hLS, rfl⟩` from `exists_finiteSubfield_of_isOpen K S U hU hNU`. Use `set yL := (unitsSubgroupOfMap L 2).hom y'`. Establish `htor` using `isTorsion_cohomology (unitsLimitRep L) (by norm_num : 1 ≤ 2) yL`. Use `set M := addOrderOf yL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : M ≠ 0` using `(IsOfFinAddOrder.addOrderOf_pos htor).ne'`. Use `set a := M.factorization ℓ`. Use `set M' := M / ℓ ^ a`. Establish `hMN : ℓ ^ a * M' = M` using `Nat.ordProj_mul_ordCompl_eq_self M ℓ`. Establish `hcop : Nat.Coprime M' ℓ` using `(Nat.coprime_ordCompl hℓ hM).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz : ℓ ^ a • (M' • yL) = 0`. Rewrite using `[smul_smul, hMN]`. Conclude with `addOrderOf_nsmul_eq_zero yL`. Take `⟨E, hE, b, hEb, hres⟩` from `exists_unitsResField_eq_zero_of_pow_nsmul L hℓ (M' • yL) a hz`. Establish `hES : ∀ x ∈ E.1, x ∈ maxUnramifiedOutside K.1 ℚ̄ S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hle : E.1 ≤ (maxUnramifiedOutside K.1 ℚ̄ S).restrictScalars ℚ`. Rewrite using `[hEb]`. Use `sup_le (fun x hx => hLS x hx) fun x hx => ?_` and prove the remaining obligations. Conclude with `mem_maxUnramifiedOutside_of_mem_rootsOfUnityField hℓ hS b x hx`. Conclude with `fun x hx => hle hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: Fact (K ≤ E)` using `⟨hL.out.trans hE.out⟩`. Establish `hNE : gsKernel K S ≤ E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup` using `fun σ hσ => (IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx => (mem_gsKernel_iff K S σ).1 hσ x (hES x hx)`. Establish `hEL` using `fixingSubgroup_subgroupOf_mono (K := K) hE.out`. Establish `hr : (cohomologyResLE (unitsLimitRep K) hEL 2).hom (M' • y') = 0`. Apply `unitsSubgroupOfMap_injective E 2` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `congrArg (fun φ => ModuleCat.Hom.hom φ (M' • y')) (cohomologyResLE_comp_unitsSubgroupOfMap (K := K) (L := L) (E := E) 2)`. Use `e.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(unitsResField L E 2).hom ((unitsSubgroupOfMap L 2).hom (M' • y')) = _`. Rewrite using `[map_nsmul, hres, map_zero]`. Use `⟨M', hcop, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← map_nsmul, ← cohomologyResLE_comp (unitsLimitRep K) hEL hNE 2, ConcreteCategory.comp_apply, hr, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_coprime_smul_cohomology_two_gsKernel {ℓ : ℕ} (hℓ : ℓ.Prime)
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)

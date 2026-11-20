@@ -5,7 +5,7 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Apply `HasRingHomProperty.Spec_iff.mpr` to reduce the goal to its premises. Conclude with `RingHom.etale_algebraMap.mpr ‹_›`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private lemma etale_specMap (D E : Type) [CommRing D] [CommRing E] [Algebra D E] [Algebra.Etale D E] :
     Etale (Spec.map (CommRingCat.ofHom (algebraMap D E))) := by
@@ -13,19 +13,17 @@ private lemma etale_specMap (D E : Type) [CommRing D] [CommRing E] [Algebra D E]
   exact RingHom.etale_algebraMap.mpr ‹_›
 
 /- English proof (translation)
-Introduce `hI D E _ _ _ _ hpts`. Set `φ : CommRingCat.of D ⟶ CommRingCat.of E` to `CommRingCat.ofHom (algebraMap D E)`. Establish `: Etale (Spec.map φ)` using `etale_specMap D E`. Establish `hiso : IsIso (Spec.map φ)`. Use `hI (Spec.map φ) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Ω _ _ z`. Take `⟨y, hy, hyu⟩` from `hpts Ω (Spec.preimage z).hom`. Use `⟨Spec.map (CommRingCat.ofHom y), ?_, ?_⟩` and prove the remaining obligations. Use `show Spec.map (CommRingCat.ofHom y) ≫ Spec.map φ = z`. Rewrite using `[← Spec.map_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `conv_rhs => rw [← Spec.map_preimage z]`. Use `congr 1`. Use extensionality with `d`. Conclude with `congrArg (fun f : D →+* Ω => f d) hy`. Introduce `w hw`.
+By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[← Spec.map_preimage w]`. Use `congr 1`. Use extensionality with `e`. Establish `hx : (Spec.preimage w).hom.comp (algebraMap D E) = (Spec.preimage z).hom`. Establish `h2 : Spec.map (φ ≫ Spec.preimage w) = Spec.map (Spec.preimage z)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Spec.map_comp, Spec.map_preimage, Spec.map_preimage]`. Conclude with `hw`. Establish `h3` using `Spec.map_injective h2`. Use extensionality with `d`. Conclude with `congrArg (fun f => (CommRingCat.Hom.hom f) d) h3`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg (fun f : E →+* Ω => f e) (hyu _ hx)`. Establish `hφ : IsIso φ`. Use `⟨⟨Spec.preimage (inv (Spec.map φ)), ?_, ?_⟩⟩` and prove the remaining obligations. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, Spec.map_preimage, Spec.map_id, IsIso.inv_hom_id]`.
-
-Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, Spec.map_preimage, Spec.map_id, IsIso.hom_inv_id]`. Conclude with `ConcreteCategory.bijective_of_isIso φ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pAlgIsoPts :
     IsoPts → AlgIsoPts := by

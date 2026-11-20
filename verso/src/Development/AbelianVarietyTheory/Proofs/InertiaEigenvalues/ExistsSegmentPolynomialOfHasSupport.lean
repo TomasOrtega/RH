@@ -17,7 +17,7 @@ namespace GlobalTheory.LocGL.ZelevinskyExpansion
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨h, y, hd, ⟨D, ⟨hD, -⟩, hz⟩, hcos⟩` from `h𝔫`. Establish `hsy : HasSupport π (∑ i, (D i).ms)` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_of_isSubquotient_prodIrr (fun i => (hz i).hasSupport) hπ hcos.isSubquotient`. Establish `heq` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_unique CompanionTheory.Exh.geometricLemmaGL GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness hsy hs`. Rewrite using `[← heq, msupp, ← hD, Multiset.bind_map]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem msupp_eq_of_isL {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin N) k) V}
     (hπ : π.IsIrreducible) {𝔫 : Multiset (Segment k)} (h𝔫 : IsL 𝔫 π) {s : Multiset (IrrGL k)}

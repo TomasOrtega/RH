@@ -10,11 +10,9 @@ open CompanionTheory.RgExh CompanionTheory.RgExh.Dec.J
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `r s hrs h`. Distinguish the cases in `hr : r = t`. Substitute `hr` using the available equality. Establish `hs : s ≠ r` using `hrs.symm`. Simplify using `only [Pi.add_apply, Pi.single_eq_same, Pi.single_eq_of_ne hs, add_zero] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `absurd h.symm (hg s)`. Distinguish the cases in `hs : s = t`. Substitute `hs` using the available equality. Simplify using `only [Pi.add_apply, Pi.single_eq_same, Pi.single_eq_of_ne hr, add_zero] at h`. Conclude with `absurd h (hg r)`.
-
-Simplify using `only [Pi.add_apply, Pi.single_eq_of_ne hr, Pi.single_eq_of_ne hs, add_zero] at h ⊢`. Conclude with `hT r s hrs h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tie_step {χ₀ χ : Fin n → ℂ} {t : Fin n}
     (hT : ∀ r s, r ≠ s → χ r = χ s → χ r = χ₀ r ∧ χ s = χ₀ s) (hg : ∀ r, χ r ≠ χ t + 1) :
@@ -34,9 +32,9 @@ theorem tie_step {χ₀ χ : Fin n → ℂ} {t : Fin n}
   exact hT r s hrs h
 
 /- English proof (translation)
-Distinguish the cases in `h1 : i = r`. Substitute `h1` using the available equality. Simplify using `[h]`. Distinguish the cases in `h2 : i = s`. Substitute `h2` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[h]`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne h1 h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_swap_of_eq (χ : Fin n → ℂ) {r s : Fin n} (h : χ r = χ s) (i : Fin n) :
     χ i = χ (Equiv.swap r s i) := by
@@ -47,21 +45,21 @@ theorem apply_swap_of_eq (χ : Fin n → ℂ) {r s : Fin n} (h : χ r = χ s) (i
   rw [Equiv.swap_apply_of_ne_of_ne h1 h2]
 
 /- English proof (translation)
-The claim follows from `Finset.sum_equiv (Equiv.swap r s) (by simp) fun i _ => apply_swap_of_eq χ h i`.
+A detailed English derivation is pending.
 -/
 theorem sum_filter_swap (χ : Fin n → ℂ) (L : Fin n → Fin 3) {r s : Fin n} (h : χ r = χ s) (a : Fin 3) :
     ∑ i ∈ univ.filter (fun i => (L ∘ Equiv.swap r s) i = a), χ i = ∑ i ∈ univ.filter (fun i => L i = a), χ i :=
   Finset.sum_equiv (Equiv.swap r s) (by simp) fun i _ => apply_swap_of_eq χ h i
 
 /- English proof (translation)
-Simplify using `only [deg, sum_filter_swap χ L h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem deg_swap (χ : Fin n → ℂ) (L : Fin n → Fin 3) {r s : Fin n} (h : χ r = χ s) :
     deg χ (L ∘ Equiv.swap r s) = deg χ L := by
   simp only [deg, sum_filter_swap χ L h]
 
 /- English proof (translation)
-Introduce `a`. Rewrite using `[← h a]`. Conclude with `Finset.card_equiv (Equiv.swap r s) (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLabel_swap {j : ℕ} {L : Fin n → Fin 3} (h : IsLabel j L) (r s : Fin n) :
     IsLabel j (L ∘ Equiv.swap r s) := by
@@ -70,13 +68,13 @@ theorem isLabel_swap {j : ℕ} {L : Fin n → Fin 3} (h : IsLabel j L) (r s : Fi
   exact Finset.card_equiv (Equiv.swap r s) (by simp)
 
 /- English proof (translation)
-Introduce `ss`. Proceed by induction on `ss with`. Consider the case `nil`. Introduce `χ Λ _ _ hΛ L hL`. Conclude with `hΛ L hL`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `cons t ss ih`. Introduce `χ Λ hg hT hΛ L hL`. Use `ih (χ + Pi.single t 1) (move χ Λ t) hg.2 (tie_step hT hg.1) ?_ L hL` and prove the remaining obligations. Introduce and unpack `_ ⟨L₀, hL₀, r, hr, rfl⟩`. Take `⟨hl, hd⟩` from `hΛ L₀ hL₀`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨isLabel_swap hl r t, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hrt : r = t`. Substitute `hrt` using the available equality. Simplify using `using hd`. Take `⟨h1, h2⟩` from `hT r t hrt hr`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[deg_swap χ₀ L₀ (h1.symm.trans (hr.trans h2))]`. Conclude with `hd`.
+A detailed English derivation is pending.
 -/
 theorem moved_labels (χ₀ : Fin n → ℂ) (j : ℕ) : ∀ (ss : List (Fin n)) (χ : Fin n → ℂ) (Λ : Set (Fin n → Fin 3)),
     GoodPath χ ss → (∀ r s, r ≠ s → χ r = χ s → χ r = χ₀ r ∧ χ s = χ₀ s) →
@@ -101,9 +99,9 @@ theorem moved_labels (χ₀ : Fin n → ℂ) (j : ℕ) : ∀ (ss : List (Fin n))
       exact hd
 
 /- English proof (translation)
-Introduce `n χ ss B j hg hf L hL`. Take `⟨hl, hd⟩` from `moved_labels χ j ss χ _ hg (fun _ _ _ _ => ⟨rfl, rfl⟩) (fun _ h => h) L hL`. Use `hf (univ.filter fun s => L s = 2) (univ.filter fun s => L s = 0) ?_ ?_ hd` and prove the remaining obligations. Use `Finset.disjoint_filter.2 fun x _ h1 h2 => ?_` and prove the remaining obligations. Rewrite `h2` using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h2 (by decide)`. Rewrite using `[hl 2, hl 0]`. Simplify using `[dims]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem labelTrack : LabelTrack := by
   intro n χ ss B j hg hf L hL

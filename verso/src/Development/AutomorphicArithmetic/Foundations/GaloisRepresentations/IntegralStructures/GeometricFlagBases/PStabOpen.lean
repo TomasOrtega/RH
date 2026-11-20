@@ -8,15 +8,13 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N
 open UpperTheory.Gal UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Introduce `h l _ k Ω _ _ _ _ X p hqc hqs n i x m`. Take `⟨L, hL, z, hz⟩` from `h (l ^ m) k Ω p hqc hqs n i (x.1 m)`. Establish `fix : ∀ τ ∈ L.fixingSubgroup, GlobalTheory.EtC.pull (ZMod (l ^ m)) (sch.map (galMap Ω p τ)) (tw (l ^ m) i) n (x.1 m) = x.1 m`. Introduce `τ hτ`. Rewrite using `[← hz, ← GlobalTheory.EtC.pull_comp, ← Functor.map_comp, LateralTheory.EWeil.StabPf.galMap_proj L p τ hτ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `σ hσ`. Use `⟨(fun g => g * σ⁻¹) ⁻¹' (L.fixingSubgroup : Set _), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Establish `hg' : g * σ⁻¹ ∈ L.fixingSubgroup` using `hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : g = (g * σ⁻¹) * σ` using `by group`. Use `show ((galHl l Ω p n i g) x).1 m = x.1 m`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Express the relevant statement in the definitionally equal form `GlobalTheory.EtC.pull (ZMod (l ^ m)) (sch.map (galMap Ω p (g * σ⁻¹))) (tw (l ^ m) i) n (((galHl l Ω p n i σ) x).1 m) = x.1 m`. Establish `hσ' : ((galHl l Ω p n i σ) x).1 m = x.1 m` using `hσ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hσ']`. Conclude with `fix _ hg'`. Conclude with `(IntermediateField.fixingSubgroup_isOpen L).preimage (continuous_mul_right σ⁻¹)`. Use `show σ * σ⁻¹ ∈ L.fixingSubgroup`. Rewrite using `[mul_inv_cancel]`.
-
-Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.stabOpen_of :
     HtDesc → StabOpen := by

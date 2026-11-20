@@ -4,15 +4,13 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X _ μ 𝓕 hμ ι κ _ _ Φ hm C hC`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.mpr hμ`. Establish `hmeas : ∀ i, Measurable (fun u => ∑' k, Φ i k u)` using `fun i => Measurable.tsum (fun k => hm i k)`. Establish `hrow : ∀ u i, Summable (fun k => ‖Φ i k u‖)` using `fun u i => (hC u).1.prod_factor i`. Establish `hle : ∀ u i, ‖∑' k, Φ i k u‖ ≤ ∑' k, ‖Φ i k u‖` using `fun u i => norm_tsum_le_tsum_norm (hrow u i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : ∀ u (s : Finset ι), ∑ i ∈ s, ‖∑' k, Φ i k u‖ ≤ C`. Introduce `u s`. Establish `h1 : Summable (fun i => ∑' k, ‖Φ i k u‖)` using `(hC u).1.prod`. Combine the equalities or inequalities in the displayed calculation. Establish `hint : ∀ i, Integrable (fun u => ∑' k, Φ i k u) (μ.restrict 𝓕)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `Integrable.of_bound (hmeas i).aestronglyMeasurable C (ae_of_all _ fun u => ?_)` and prove the remaining obligations. Simplify using `using hfin u {i}`. Establish `hsum : Summable (fun i => ∫ u in 𝓕, ‖∑' k, Φ i k u‖ ∂μ)`. Use `summable_of_sum_le (c := ∫ _u in 𝓕, C ∂μ) (fun i => integral_nonneg fun u => norm_nonneg _) fun s => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_finset_sum s fun i _ => (hint i).norm]`. Conclude with `integral_mono (integrable_finset_sum s fun i _ => (hint i).norm) (integrable_const C) fun u => hfin u s`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_tsum_of_summable_integral_norm hint hsum]`. Use `integral_congr_ae (ae_of_all _ fun u => ?_)` and prove the remaining obligations.
-
-Conclude with `(Summable.of_norm (hC u).1).tsum_prod`. Conclude with `Summable.of_nonneg_of_le (fun i => norm_nonneg _) (fun i => norm_integral_le_integral_norm _) hsum`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integral_tsum_prod_of_bounded : ∀ (X : Type) [MeasurableSpace X] (μ : Measure X) (𝓕 : Set X), μ 𝓕 ≠ ⊤ → ∀ (ι κ : Type) [Countable ι] [Countable κ]
     (Φ : ι → κ → X → ℂ), (∀ i k, Measurable (Φ i k)) → ∀ C : ℝ,

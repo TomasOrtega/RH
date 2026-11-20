@@ -18,7 +18,7 @@ namespace GlobalTheory.GLq.GenericConstituent
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Unfold `wh tr`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wh_const_mul' (ψ : AddChar (ZMod g) ℂ) {n : ℕ} (c : ℂ) (f : Gn g n → ℂ) :
     wh ψ (fun x => c * f x) = c * wh ψ f := by
@@ -28,7 +28,7 @@ theorem wh_const_mul' (ψ : AddChar (ZMod g) ℂ) {n : ℕ} (c : ℂ) (f : Gn g 
   ring
 
 /- English proof (translation)
-Unfold `wh tr`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wh_mul_const' (ψ : AddChar (ZMod g) ℂ) {n : ℕ} (c : ℂ) (f : Gn g n → ℂ) :
     wh ψ (fun x => f x * c) = wh ψ f * c := by
@@ -38,9 +38,9 @@ theorem wh_mul_const' (ψ : AddChar (ZMod g) ℂ) {n : ℕ} (c : ℂ) (f : Gn g 
   ring
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [wh, tr]`. Consider the case `cons a L ih`. Rewrite using `[List.sum_cons, List.map_cons, List.sum_cons, ← ih]`. Unfold `wh tr`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wh_list_sum (ψ : AddChar (ZMod g) ℂ) {n : ℕ} (L : List (Gn g n → ℂ)) :
     wh ψ L.sum = (L.map (wh ψ)).sum := by
@@ -52,9 +52,9 @@ theorem wh_list_sum (ψ : AddChar (ZMod g) ℂ) {n : ℕ} (L : List (Gn g n → 
     simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [ip]`. Consider the case `cons a L ih`. Rewrite using `[List.sum_cons, List.map_cons, List.sum_cons, ← ih]`. Unfold `ip`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ip_list_sum_right {G : Type} [Group G] [Fintype G] (ρ : G → ℂ) (L : List (G → ℂ)) :
     ip ρ L.sum = (L.map (ip ρ)).sum := by
@@ -66,9 +66,9 @@ theorem ip_list_sum_right {G : Type} [Group G] [Fintype G] (ρ : G → ℂ) (L :
     simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih`. Rewrite using `[List.map_cons, List.sum_cons, ih (fun σ hσ => hL σ (List.mem_cons_of_mem a hσ)), List.count_cons, (GlobalTheory.GLq.ZOrth.zorth G ρ a hρ (hL a List.mem_cons_self)).2.2]`. Distinguish the cases in `h : ρ = a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h, Ne.symm h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem ip_sum_count {G : Type} [Group G] [Fintype G] (ρ : G → ℂ) (hρ : IsIrr ρ) (L : List (G → ℂ))
     (hL : ∀ σ ∈ L, IsIrr σ) : (L.map (ip ρ)).sum = (L.count ρ : ℂ) := by
@@ -82,28 +82,28 @@ theorem ip_sum_count {G : Type} [Group G] [Fintype G] (ρ : G → ℂ) (hρ : Is
     · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Take `⟨V, -, hV⟩` from `h`. Conclude with `⟨V, hV⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isChar_of_isIrr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsChar χ := by
   obtain ⟨V, -, hV⟩ := h
   exact ⟨V, hV⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.charDec (Gn g n) χ).2.2.1 h`.
+A detailed English derivation is pending.
 -/
 theorem isClass_of_isChar {n : ℕ} {χ : Gn g n → ℂ} (h : IsChar χ) : IsClass χ :=
   (GlobalTheory.charDec (Gn g n) χ).2.2.1 h
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `_`. Conclude with `GlobalTheory.GLq.Leibniz.wh_gl_zero ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `cons p L ih`. Introduce `hL`. Establish `hp` using `hL p List.mem_cons_self`. Establish `hL' : ∀ q ∈ L, IsCusp q.2` using `fun q hq => hL q (List.mem_cons_of_mem p hq)`. Establish `hβ : IsClass (hcL L (degL L))` using `isClass_of_isChar (GlobalTheory.gl_list_product_perm_char g L L (degL L) rfl (fun q hq => isChar_of_isIrr (hL' q hq).2.1)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hα : IsClass p.2` using `isClass_of_isChar (isChar_of_isIrr hp.2.1)`. Establish `hdeg : degL (p :: L) = p.1 + degL L` using `by simp [degL]`. Rewrite using `[hcL_cons]`. Unfold `hc`. Rewrite using `[GlobalTheory.GLq.WhMul.wh_hcT g ψ hψ p.1 (degL L) (degL (p :: L)) hdeg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[wh_const_mul']`. Rewrite using `[wh_mul_const', ih hL', List.map_cons, List.prod_cons]`. Introduce `y x z`. Simplify using `only`. Rewrite using `[hα]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y z`. Simplify using `only`. Rewrite using `[hβ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wh_hcL_prod (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) :
     ∀ L : List (Pc g), (∀ p ∈ L, IsCusp p.2) → wh ψ (hcL L (degL L)) = (L.map fun p => wh ψ p.2).prod := by
@@ -134,15 +134,15 @@ theorem wh_hcL_prod (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) :
       rw [hβ]
 
 /- English proof (translation)
-Introduce `g _ ψ hψ L n hn hL`. Substitute `hn` using the available equality. Establish `hwh : wh ψ (hcL L (degL L)) ≠ 0`. Rewrite using `[wh_hcL_prod ψ hψ L hL]`. Use `List.prod_ne_zero fun h0 => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, hp, h1⟩` from `List.mem_map.1 h0`. Take `⟨m, hm, hm'⟩` from `GlobalTheory.T.whittakerDimension_pos_of_cuspidal_character g ψ hψ p.1 p.2 (hL p hp)`. Rewrite `h1` using `[hm']`. Establish `: m = 0` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hch : IsChar (hcL L (degL L))` using `(GlobalTheory.gl_list_product_perm_char g L L (degL L) rfl (fun q hq => isChar_of_isIrr (hL q hq).2.1)).1`. Take `⟨Lρ, hirr, hsum⟩` from `(GlobalTheory.charDec _ (hcL L (degL L))).1 hch`. Establish `hex : ∃ ρ ∈ Lρ, wh ψ ρ ≠ 0`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hwh` to reduce the goal to its premises. Rewrite using `[hsum, wh_list_sum]`. Conclude with `List.sum_eq_zero fun x hx => by`. Take `⟨ρ, hρ, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hno ρ hρ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ρ, hρ, hwρ⟩` from `hex`. Use `⟨ρ, hirr ρ hρ, hwρ, ?_⟩` and prove the remaining obligations. Rewrite using `[hsum, ip_list_sum_right, ip_sum_count ρ (hirr ρ hρ) Lρ hirr]`. Conclude with `Nat.cast_ne_zero.2 (List.count_pos_iff.2 hρ).ne'`.
+A detailed English derivation is pending.
 -/
 theorem exists_generic_constituent : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ), ψ ≠ 1 →
     ∀ (L : List (Pc g)) (n : ℕ), degL L = n → (∀ p ∈ L, IsCusp p.2) →

@@ -13,9 +13,9 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.PDiv
 
 /- English proof (translation)
-Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Establish `ha' : counit (R` using `R) a = 0 := ha`. Establish `hb : (frobProj h G).app n a ∈ augIdeal R ((frobTwist h G).A n)`. Express the relevant statement in the definitionally equal form `counit (R := R) ((frobProj h G).app n a) = 0`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[SemiBialgHom.counit_map, ha', map_zero]`. Use `show a ^ p ∈ _`. Rewrite using `[← relFrob_app_frobProj h n a]`. Conclude with `Ideal.mem_map_of_mem _ hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobKerIdeal_le_kerIdeal_relFrob (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R]
     (h : (p : R) = 0) (G : PDivGroup p R) (n : ℕ) :
@@ -31,7 +31,7 @@ theorem frobKerIdeal_le_kerIdeal_relFrob (p : ℕ) [Fact p.Prime] (R : Type) [Co
   exact Ideal.mem_map_of_mem _ hb
 
 /- English proof (translation)
-The claim follows from `le_antisymm (frobKerIdeal_le_kerIdeal_relFrob p R h G n) (kerIdeal_relFrob_le_frobKerIdeal p R h G n)`.
+A detailed English derivation is pending.
 -/
 theorem frobKerIdeal_eq_kerIdeal_relFrob (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R]
     (h : (p : R) = 0) (G : PDivGroup p R) (n : ℕ) :

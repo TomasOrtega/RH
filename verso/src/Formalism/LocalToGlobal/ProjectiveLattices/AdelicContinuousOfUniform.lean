@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 section BC
 
 /- English proof (translation)
-Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bcSp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
@@ -32,7 +32,7 @@ def bcPm {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (x : Sp S ⟶ X
     (by rw [Category.assoc]; exact pullback.condition)
 
 /- English proof (translation)
-Rewrite using `[Over.snd_left, Over.snd_left]`. Conclude with `pullback.lift_snd _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcPm_snd {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (x : Sp S ⟶ Xo.X) :
     bcPm ψ x ≫ (snd (Over.mk x) Xo.univ.t.G).left = (snd (Over.mk (spMap ψ ≫ x)) Xo.univ.t.G).left := by
@@ -40,7 +40,7 @@ theorem bcPm_snd {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (x : Sp
   exact pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Rewrite using `[Over.fst_left, Over.fst_left]`. Conclude with `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcPm_fst {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (x : Sp S ⟶ Xo.X) :
     bcPm ψ x ≫ (fst (Over.mk x) Xo.univ.t.G).left = (fst (Over.mk (spMap ψ ≫ x)) Xo.univ.t.G).left ≫ spMap ψ := by
@@ -48,7 +48,7 @@ theorem bcPm_fst {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (x : Sp
   exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Rewrite using `[← CommRingCat.comp_apply]`. Use `first`. Consider the case `rw [Scheme.Hom.appLE_comp_appLE]`. Consider the case `rw [Scheme.appLE_comp_appLE]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem appLE_comp_pullback {A B C : Scheme.{0}} (P : A ⟶ B) (q : B ⟶ C) (q' : A ⟶ C) (hq : P ≫ q = q') (W : C.Opens)
     (V1 : B.Opens) (V2 : A.Opens) (h1 : V1 ≤ q ⁻¹ᵁ W) (h2 : V2 ≤ P ⁻¹ᵁ V1) (h3 : V2 ≤ q' ⁻¹ᵁ W) (u : Γ(C, W)) :
@@ -60,7 +60,7 @@ theorem appLE_comp_pullback {A B C : Scheme.{0}} (P : A ⟶ B) (q : B ⟶ C) (q'
     | rw [Scheme.appLE_comp_appLE]
 
 /- English proof (translation)
-Simplify using `only [PPx, ReciprocityTheory.ChartRestriction.G.Out.LPow, LB.LinComb, Fin.prod_univ_one, zpow_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ppxG {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (i j : Fin 1 → Xo.univ.t.PP.L.ι) :
     (((PPx x).g i j : Γ(Gx x, (PPx x).U i ⊓ (PPx x).U j))) =
@@ -91,11 +91,11 @@ def bcS {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (x : Sp S ⟶ Xo
     exact appLE_comp_pullback _ _ _ (bcPm_snd ψ x) _ _ _ _ _ _ _
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h1, ← Category.assoc, ← Category.assoc, bcSp, bcSp]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← Category.assoc, bcSp]`. Establish `e : (TrivSqZeroExt.fstHom T T T).toRingHom.comp (dualMap ψ) = ψ.comp (TrivSqZeroExt.fstHom S S S).toRingHom` using `RingHom.ext fun a => by simp [dualMap]`. Rewrite using `[e, ← bcSp, Category.assoc, h2]`. Use `first`. Consider the case `exact congrArg CommaMorphism.left (comp_one (Over.homMk (U := Over.mk (spMap ψ ≫ x)) (V := Over.mk x) (spMap ψ) rfl) : _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact congrArg CommaMorphism.left (Hom.comp_one (Over.homMk (U := Over.mk (spMap ψ ≫ x)) (V := Over.mk x) (spMap ψ) rfl) : _)`. Consider the case `exact congrArg CommaMorphism.left (MonObj.comp_one (Over.homMk (U := Over.mk (spMap ψ ≫ x)) (V := Over.mk x) (spMap ψ) rfl) : _)`. Consider the case `exact congrArg CommaMorphism.left (Mon_Class.comp_one (Over.homMk (U := Over.mk (spMap ψ ≫ x)) (V := Over.mk x) (spMap ψ) rfl) : _)`. Consider the case `simp [Hom.one_def]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bcTan {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) {x : Sp S ⟶ Xo.X}
     {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (h : IsTanAt x v) :
@@ -118,7 +118,7 @@ theorem bcTan {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) {x : Sp S 
       | simp [Hom.one_def]
 
 /- English proof (translation)
-Introduce `a`. Rewrite using `[Category.assoc, h a, ← Category.assoc, ← Category.assoc, bcSp, bcSp]`. Use `congr 2`. Apply the tactic sequence `refine RingHom.ext fun d => TrivSqZeroExt.ext ?_ ?_ <;>`. Simplify using `[dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl, smul_eq_mul, map_mul, AlgHom.commutes]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem bcEig {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (ψ : S →ₐ[c.F] T)
     (τ : E →+* ℂ) {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (h : IsEigAt c τ v) :
@@ -130,7 +130,7 @@ theorem bcEig {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.
     simp [dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl, smul_eq_mul, map_mul, AlgHom.commutes]
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, h]`. Unfold `sOf`. Rewrite using `[bcSp]`. Use `congr 1`. Use extensionality with `a`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/

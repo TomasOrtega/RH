@@ -10,11 +10,11 @@ set_option autoImplicit false
 namespace GlobalTheory.CompanionTheory.GE
 
 /- English proof (translation)
-Introduce `X L hL k P Q K f ι w hS hK`. Establish `hsurj` using `GlobalTheory.cohOn.app_surjective (GlobalTheory.Twist.shortExact_map hL hS) ⊤ hK`. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hsurj y`. Establish `hg : (ShortComplex.map (ShortComplex.mk ι (biproduct.desc f) w) (GlobalTheory.twistFunctor L)).g = ∑ i, GlobalTheory.Twist.map L (biproduct.π P i) ≫ GlobalTheory.Twist.map L (f i)` using `by show (GlobalTheory.twistFunctor L).map (biproduct.desc f) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[biproduct.desc_eq, Functor.map_sum]`. Both sides reduce to the same expression. Set `e : (GlobalTheory.twist (⨁ P) L ⟶ GlobalTheory.twist Q L) →+ Γ(GlobalTheory.twist Q L, ⊤)` to `{ toFun := fun φ => (φ.app ⊤) x map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `key : ((ShortComplex.map (ShortComplex.mk ι (biproduct.desc f) w) (GlobalTheory.twistFunctor L)).g.app ⊤) x = ∑ i, ((GlobalTheory.Twist.map L (f i)).app ⊤) (((GlobalTheory.Twist.map L (biproduct.π P i)).app ⊤) x)`. Rewrite using `[hg]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_sum e _ _`. Rewrite using `[key]`. Use `Submodule.sum_mem _ fun i _ => Submodule.subset_span (Set.mem_iUnion.2 ⟨i, ?_⟩)` and prove the remaining obligations. Conclude with `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem span_range_twist_eq_top : ∀ {X : Scheme.{0}} (L : ReciprocityTheory.ChartRestriction.G.Semi.LB X), L.IsLB →
     ∀ {k : ℕ} {P : Fin k → X.Modules} {Q K : X.Modules} (f : ∀ i, P i ⟶ Q) (ι : K ⟶ ⨁ P)

@@ -15,9 +15,9 @@ namespace UpperTheory.Gal.InertialTypesAlt
 
 open UpperTheory.Zero.LLC in
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.WeilDeligne.charPol_lpTw_lpChar_lpSp E Ω A w h (rc Δ.first)).2 Δ.len σ, Segment.ms, Multiset.map_map]`. Establish `h1 : ∀ j : Fin Δ.len, (rc (Δ.term j)).charPol σ = ((rc Δ.first).lpTw ((j : ℕ) : ℝ)).charPol σ`. Introduce `j`. Rewrite using `[Segment.term, show (((j : ℕ) : ℂ)) = ((((j : ℕ) : ℝ)) : ℂ) by push_cast; rfl, L.nu]`. Express the relevant statement in the definitionally equal form `_ = ∏ j : Fin Δ.len, (fun y => (rc y).charPol σ) (Δ.term j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [h1]`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun j => ((rc Δ.first).lpTw (j : ℝ)).charPol σ) Δ.len]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem charPol_seg' {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
@@ -36,9 +36,9 @@ private theorem charPol_seg' {E Ω : Type} [Field E] [NumberField E] [Field Ω] 
 
 open UpperTheory.Zero.LLC in
 /- English proof (translation)
-Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨𝔪, hm⟩` from `Pr.exh (w.adicCompletion E) x`. Establish `hs : HasSupport x.rep (msupp 𝔪)` using `GlobalTheory.LocGL.hasSupport_msupp_of_isL Pr.zel _ 𝔪 x hm`. Take `rfl` from `(goodSeg (w.adicCompletion E)).2.2 x _ _ hS hs`. Rewrite using `[L.langlands 𝔪.toList x (by rw [Multiset.coe_toList]; exact hm), segSum, CuspExt.charPol_sumList, List.map_map, msupp, Multiset.map_bind, Multiset.prod_bind]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hl : ∀ (l : List (Segment (w.adicCompletion E))) (F : Segment (w.adicCompletion E) → ℂ[X]), (l.map F).prod = ((l : Multiset _).map F).prod` using `fun l F => by rw [Multiset.map_coe, Multiset.prod_coe]`. Rewrite using `[hl, Multiset.coe_toList]`. Conclude with `congrArg Multiset.prod (Multiset.map_congr rfl fun Δ _ => charPol_seg' L Δ σ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem charPol_supp {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
@@ -60,7 +60,7 @@ private theorem charPol_supp {E Ω : Type} [Field E] [NumberField E] [Field Ω] 
 end UpperTheory.Gal.InertialTypesAlt
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A v h rc hrc x S hS t`. Take `⟨a, ha, L⟩` from `hrc`. Rewrite using `[WD.inePol_of_mem_Ine _ t.2, Multiset.map_congr rfl fun y _ => WD.inePol_of_mem_Ine (rc y) t.2]`. Conclude with `UpperTheory.Gal.InertialTypesAlt.charPol_supp L x S hS _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.suppIne :
     SuppIne := by

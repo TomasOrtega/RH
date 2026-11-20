@@ -7,7 +7,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.SegTerm
 
 /- English proof (translation)
-The claim follows from `Segment.term_injective Δ`.
+A detailed English derivation is pending.
 -/
 theorem term_injective {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) : Function.Injective Δ.term :=

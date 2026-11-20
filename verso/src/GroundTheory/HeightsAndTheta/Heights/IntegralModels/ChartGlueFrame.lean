@@ -16,11 +16,11 @@ def IsFrameAt (A : Subalgebra ℤ Ω) (r : ℕ) (M : AddSubgroup E) (h : Ω) : P
       ∃ a : Fin r → Ω, (∀ q, ∃ n : ℕ, h ^ n * a q ∈ A) ∧ e = ∑ q, a q • b q
 
 /- English proof (translation)
-Set `H : Set A` to `{h | IsFrameAt A r M h}`. Establish `htop : Ideal.span H = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨Q, hQ, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨h, hh, hQh, hfr⟩` from `hloc Q hQ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hQh (hle (Ideal.subset_span (show (⟨h, hh⟩ : A) ∈ H from hfr)))`. Establish `h1 : (1 : A) ∈ Ideal.span H` using `by rw [htop]; exact Submodule.mem_top`. Take `⟨k, c, g, hcg⟩` from `Submodule.mem_span_set'.1 h1`. Use `⟨k, fun l => ((g l : A) : Ω), fun l => (c l : Ω), fun l => (g l : A).2, fun l => (c l).2, ?_, fun l => (g l).2⟩` and prove the remaining obligations. Use `congrArg Subtype.val hcg` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem exists_frame_cover (A : Subalgebra ℤ Ω) (r : ℕ) (M : AddSubgroup E)
     (hloc : ∀ Q : Ideal A, Q.IsMaximal →
@@ -41,7 +41,7 @@ theorem exists_frame_cover (A : Subalgebra ℤ Ω) (r : ℕ) (M : AddSubgroup E)
   simpa using this
 
 /- English proof (translation)
-Establish `: (⟨z, hz⟩ : A) = ∑ l, (⟨a l, ha l⟩ : A) * ⟨y l, hy l⟩` using `Subtype.ext (by simp [← hsum])`. Rewrite using `[this]`. Conclude with `Q.sum_mem fun l _ => Q.mul_mem_left _ (hyQ l)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_ideal_of_sum {A : Subalgebra ℤ Ω} (Q : Ideal A) {k : ℕ} (a y : Fin k → Ω)
     (ha : ∀ l, a l ∈ A) (hy : ∀ l, y l ∈ A) (hyQ : ∀ l, (⟨y l, hy l⟩ : A) ∈ Q) {z : Ω}
@@ -51,18 +51,18 @@ theorem mem_ideal_of_sum {A : Subalgebra ℤ Ω} (Q : Ideal A) {k : ℕ} (a y : 
   exact Q.sum_mem fun l _ => Q.mul_mem_left _ (hyQ l)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem intCast_subtype (A : Subalgebra ℤ Ω) (z : ℤ) :
     (⟨(z : Ω), intCast_mem A z⟩ : A) = (z : A) :=
   Subtype.ext (by simp)
 
 /- English proof (translation)
-Establish `hcop : IsCoprime ((p : ℤ) ^ N) s`. Establish `: IsCoprime (p : ℤ) s`. Rewrite using `[Int.isCoprime_iff_gcd_eq_one]`. Establish `: ¬ p ∣ s.natAbs` using `fun h => hs (Int.natCast_dvd.mpr h)`. Simplify `(Nat.Prime.coprime_iff_not_dvd hp).mpr this` using `[Int.gcd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `this.pow_left`. Take `⟨u, v, huv⟩` from `hcop`. Establish `: y = (u : Ω) * ((((p : ℤ) : Ω)) ^ N * y) + (v : Ω) * ((s : Ω) * y)`. Establish `h` using `congrArg (Int.cast : ℤ → Ω) huv`. Move the coercions through the operations in `at h ⊢`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-y) * h`. Rewrite using `[this]`. Conclude with `add_mem (mul_mem (intCast_mem A u) h1) (mul_mem (intCast_mem A v) h2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_prime_pow_mul_mem {A : Subalgebra ℤ Ω} {p : ℕ} (hp : p.Prime) {s : ℤ}
     (hs : ¬ (p : ℤ) ∣ s) (N : ℕ) {y : Ω} (h1 : (((p : ℤ) : Ω)) ^ N * y ∈ A)
@@ -94,21 +94,19 @@ variable {Ω : Type} [Field Ω] {τ : Type} {x : τ → Ω} {r : ℕ}
   {B₀ : ChartBundle o₀ x r E} {Bp : ∀ p, ChartBundle (o p) x r E}
 
 /- English proof (translation)
-Use `set m : ℤ := primeProd S with hm`. Take `⟨hm0, hminv⟩` from `inv_prod_mem_chartRing x o₀ (S := S) i`. Take `⟨k, f, c, hf, hc, hsum, hb⟩` from `B₀.frame i hi`. Take `⟨t, ht, htf⟩` from `exists_mul_mem_chartRing_int_fin x i o₀ (Submonoid.powers m) f hf`. Take `⟨t', ht', htc⟩` from `exists_mul_mem_chartRing_int_fin x i o₀ (Submonoid.powers m) c hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨J, rfl⟩` from `(Submonoid.mem_powers_iff _ _).1 ht`. Take `⟨J', rfl⟩` from `(Submonoid.mem_powers_iff _ _).1 ht'`. Establish `hmA : (m : Ω) ∈ chartRing ℤ x i` using `intCast_mem (chartRing ℤ x i) m`. Establish `hJ : ∀ l, (m : Ω) ^ J * f l ∈ chartRing ℤ x i` using `fun l => by simpa using htf l`. Establish `hφ : ∀ l, (m : Ω) ^ (J + 1) * f l ∈ chartRing ℤ x i` using `fun l => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (m : Ω) ^ (J + 1) * f l = (m : Ω) * ((m : Ω) ^ J * f l)` using `by ring`. Rewrite using `[this]`. Conclude with `mul_mem hmA (hJ l)`. Establish `hex : ∃ l, (⟨(m : Ω) ^ (J + 1) * f l, hφ l⟩ : chartRing ℤ x i) ∉ Q`. Assume the negation of the conclusion as `hall`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push Not at hall`. Establish `hmem` using `mem_ideal_of_sum Q (fun l => ((m ^ J' : ℤ) : Ω) * c l) (fun l => (m : Ω) ^ (J + 1) * f l) htc hφ hall (z := ((m ^ (J + 1 + J') : ℤ) : Ω)) (intCast_mem (chartRing ℤ x i) _) (by`. Establish `: ∑ l, ((m ^ J' : ℤ) : Ω) * c l * ((m : Ω) ^ (J + 1) * f l) = ((m : Ω) ^ J' * (m : Ω) ^ (J + 1)) * ∑ l, c l * f l`. Rewrite using `[Finset.mul_sum]; push_cast; exact Finset.sum_congr rfl fun l _ => by ring`. Rewrite using `[this, hsum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use the proof step `ring)`. Rewrite `hmem` using `[intCast_subtype]`. Move the coercions through the operations in `at hmem`. Conclude with `hmQ (hQ.mem_of_pow_mem _ hmem)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl⟩` from `hex`. Take `⟨b, hli, hsp, hiff⟩` from `hb l`. Use `⟨_, hφ l, hl, b, hli, hsp, fun e => ?_⟩` and prove the remaining obligations. Establish `hYX : ∀ v ∈ B₀.lat i, ∃ k : ℕ, (m : Ω) ^ k • v ∈ glueLat B₀ Bp i` using `fun v hv => by`. Take `⟨n, hn⟩` from `(mem_B₀_iff hSR v).1 hv`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hn` using `[← Int.cast_smul_eq_zsmul Ω, Int.cast_pow]`. Conclude with `⟨n, hn⟩`. Rewrite using `[exists_pow_smul_mem_iff_of_loc (chartRing ℤ x i) (glueLat B₀ Bp i) (B₀.lat i) J hm0 hmA (hJ l) (glueLat_stable i) (fun e he => ((mem_glueLat B₀ Bp).1 he).1) (fun e he => smul_mem_of_chart B₀ hminv he) hYX e, hiff e]`. Use `exists_congr fun a => and_congr (forall_congr' fun q => ?_) Iff.rfl` and prove the remaining obligations. Establish `key` using `exists_pow_smul_mem_iff_of_loc (E := Ω) (chartRing ℤ x i) (chartRing ℤ x i).toSubring.toAddSubgroup (chartRing o₀ x i).toSubring.toAddSubgroup J hm0 hmA (hJ l) (fun a ha e he => show a * e ∈ chartRing ℤ x i from mul_mem ha he) (fun y hy => mem_chartRing_of_int x i o₀ hy) (fun y h …`.
-
-Take `⟨t, ht, hty⟩` from `exists_mul_mem_chartRing_int x i o₀ (Submonoid.powers m) hy`. Take `⟨K, rfl⟩` from `(Submonoid.mem_powers_iff _ _).1 ht`. Conclude with `⟨K, by simpa using hty⟩) (a q)`. Simplify `key.symm` using `[smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem frame_away {i : τ} (hi : x i ≠ 0)
     (hSR : ∀ p, SameRationalSpan (B₀.lat i) ((Bp p).lat i)) (Q : Ideal (chartRing ℤ x i))

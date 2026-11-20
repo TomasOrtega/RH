@@ -49,7 +49,7 @@ def GenFrEx : Prop := ∀ Z : Comp Xo c, ∃ y : FrPt Xo c (Om Z), IsGenFr Z y
 def genFr (h : GenFrEx Xo c) (Z : Comp Xo c) : FrPt Xo c (Om Z) := (h Z).choose
 
 /- English proof (translation)
-The claim follows from `(h Z).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem isGenFr_genFr (h : GenFrEx Xo c) (Z : Comp Xo c) : IsGenFr Z (genFr h Z) := (h Z).choose_spec
 

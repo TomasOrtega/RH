@@ -17,15 +17,13 @@ section ClaimLemmas
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun y _ => y ∈ chartRing k x I) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨m, s, a, e, hs, hse, hm, hae, rfl⟩`. Establish `hm' : m ∈ Submodule.span k {z | ∃ (f : Poly k N) (e' : ℕ), f.IsHomogeneous e' ∧ (e' : ℤ) = a ∧ z = aeval x f}` using `hm`. Use `Submodule.span_induction (p := fun m _ => (aeval x s)⁻¹ • m ∈ chartRing k x I) ?_ ?_ ?_ ?_ hm'` and prove the remaining obligations. Introduce and unpack `_ ⟨f, e', hf, he', rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hee : e' = e` using `by omega`. Substitute `hee` using the available equality. Conclude with `⟨f, s, e', hs, hf, hse, by rw [smul_eq_mul, div_eq_inv_mul]⟩`. Rewrite using `[smul_zero]`. Conclude with `(chartRing k x I).zero_mem`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b _ _ ha hb`. Rewrite using `[smul_add]`. Conclude with `(chartRing k x I).add_mem ha hb`. Introduce `r a _ ha`. Rewrite using `[smul_comm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(chartRing k x I).smul_mem ha r`. Conclude with `(chartRing k x I).zero_mem`. Introduce `a b _ _ ha hb`. Conclude with `(chartRing k x I).add_mem ha hb`. Introduce `a y _ hy`.
-
-Rewrite using `[chartRing_smul_def]`. Conclude with `(chartRing k x I).mul_mem a.2 hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordGraded_tilde_mem_chartRing {I : Chart x} {y : Ω}
     (hy : y ∈ (coordGraded k x).tilde 0 I) : y ∈ chartRing k x I := by
@@ -47,11 +45,9 @@ theorem coordGraded_tilde_mem_chartRing {I : Chart x} {y : Ω}
   · intro a y _ hy; rw [chartRing_smul_def]; exact (chartRing k x I).mul_mem a.2 hy
 
 /- English proof (translation)
-Use `SubSystem.ext_sub fun I => le_antisymm ?_ ?_` and prove the remaining obligations. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`. Establish `hyA` using `coordGraded_tilde_mem_chartRing hy`. Establish `hqy : q • y = (⟨y, hyA⟩ : chartRing k x I) • q`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_eq_mul, chartRing_smul_def, mul_comm]`. Rewrite using `[SetLike.mem_coe, hqy]`. Conclude with `(X.sub I).smul_mem _ hq`. Introduce `q hq`. Use `Submodule.subset_span ⟨q, hq, 1, ?_, by rw [smul_eq_mul, mul_one]⟩` and prove the remaining obligations.
-
-Conclude with `Submodule.subset_span ⟨1, 1, 0, 0, one_mem _, isHomogeneous_one _ _, Submodule.subset_span ⟨1, 0, isHomogeneous_one _ _, by simp, by simp⟩, by simp, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coordGraded_tildeSys_twist (X : SubSystem k x Ω) :
     ((coordGraded k x).tildeSys 0).twist X = X := by
@@ -69,9 +65,9 @@ theorem coordGraded_tildeSys_twist (X : SubSystem k x Ω) :
       Submodule.subset_span ⟨1, 0, isHomogeneous_one _ _, by simp, by simp⟩, by simp, by simp⟩
 
 /- English proof (translation)
-Introduce `y hy`. Use `Submodule.span_mono ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, z, hz, rfl⟩`. Use `⟨q, hq, z, Submodule.span_mono ?_ hz, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨m, s, a, e, hs, hse, hm, hae, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨m, s, a, e, hs, hse, h a hm, hae, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem twist_tildeSys_mono {M₁ M₂ : FinGradedSub (S := k) (x := x) Ω}
     (h : ∀ c, M₂.piece c ≤ M₁.piece c) (X : SubSystem k x Ω) (I : Chart x) :
@@ -90,7 +86,7 @@ variable (T : StepData k x) (Jg : FinGradedSub (S := k) (x := x) Ω)
 include hJg in
 
 /- English proof (translation)
-Introduce `c`. Rewrite using `[hJg]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, e, -, hf, he, rfl⟩`. Conclude with `⟨f, e, hf, he, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem claim_le : ∀ c, Jg.piece c ≤ (coordGraded k x).piece c := by
   intro c
@@ -102,11 +98,11 @@ theorem claim_le : ∀ c, Jg.piece c ≤ (coordGraded k x).piece c := by
 include hJg in
 
 /- English proof (translation)
-Introduce `f e hf hfe a z hz`. Establish `hz' : z ∈ Submodule.span k {z | ∃ (g : Poly k N) (e' : ℕ), g.IsHomogeneous e' ∧ (e' : ℤ) = a ∧ z = aeval x g}` using `hz`. Use `Submodule.span_induction (p := fun z _ => aeval x f • z ∈ Jg.piece (a + e)) ?_ ?_ ?_ ?_ hz'` and prove the remaining obligations. Introduce and unpack `_ ⟨g, e', hg, he', rfl⟩`. Rewrite using `[hJg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨f * g, e + e', T.J.mul_mem_right g hf, hfe.mul hg, by push_cast; omega, by rw [map_mul, smul_eq_mul]⟩`. Rewrite using `[smul_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`. Rewrite using `[smul_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ ha hb`. Introduce `r a _ ha`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ r ha`.
+A detailed English derivation is pending.
 -/
 theorem claim_kill : ∀ (f : Poly k N) (e : ℕ), f ∈ T.J → f.IsHomogeneous e → ∀ (a : ℤ),
     ∀ z ∈ (coordGraded k x).piece a, aeval x f • z ∈ Jg.piece (a + e) := by
@@ -125,15 +121,15 @@ theorem claim_kill : ∀ (f : Poly k N) (e : ℕ), f ∈ T.J → f.IsHomogeneous
 end ClaimLemmas
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x T hK`. Take `⟨Jg, hJg, hseq⟩` from `h₃ k Ω N x T`. Take `⟨cS, hS⟩` from `h₁ k Ω N x T hK Ω (coordGraded k x) Jg (claim_le T Jg hJg) (claim_kill T Jg hJg)`. Take `⟨cB, hB⟩` from `h₂ k Ω N x (twistBundle k x 0) (twistBundle k x 1) N x (twist_hyps k N x).1 (twist_hyps k N x).2`. Use `⟨max cS cB, fun b => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `b with`. Consider the case `zero`. Introduce `c hc`. Establish `h0` using `hB 0 c (le_trans (le_max_right _ _) hc)`. Establish `e : ((twistBundle k x 0).twist ((twistBundle k x 1).pow 0)).twist (twistSys k x c) = (T.L.pow 0).twist (twistSys k x c)` using `by show ((twistSys k x 0).twist (twistSys k x 0)).twist (twistSys k x c) = (twistSys k x 0).twist (twistSys k x c)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[twistSys_zero_twist]`. Rewrite `h0` using `[e]`. Conclude with `h0`. Consider the case `succ b ih`. Introduce `c hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hq` using `hS (b + 1) c (le_trans (le_max_left _ _) hc)`. Rewrite `hq` using `[coordGraded_tildeSys_twist]`. Use `SubSystem.subsingleton_H_one_of_quot _ ((Jg.tildeSys 0).twist ((T.L.pow (b + 1)).twist (twistSys k x c))) ?_ ?_ hq` and prove the remaining obligations. Introduce `I y hy`. Establish `hy'` using `twist_tildeSys_mono (claim_le T Jg hJg) _ I y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hy'` using `[coordGraded_tildeSys_twist]`. Then use the resulting hypothesis. Conclude with `SubSystem.subsingleton_H_one_of_smul _ _ T.si T.si_ne (hseq b c) (ih (c + T.c₁) (le_trans hc (by linarith [T.c₁_pos])))`.
+A detailed English derivation is pending.
 -/
 theorem ClaimVanish.proof (h₁ : StepTwo.Statement.{u, w, w}) (h₂ : TwistVanish.Statement.{u, w})
     (h₃ : ClaimSeq.Statement.{u, w}) : ClaimVanish.Statement.{u, w} := by

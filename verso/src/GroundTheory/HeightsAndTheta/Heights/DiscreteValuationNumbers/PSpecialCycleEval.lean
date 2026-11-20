@@ -9,27 +9,25 @@ open MvPolynomial
 universe u
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P n`. Set `s : Set (Ideal (MRing ι O))` to `{W | W ∈ (P ⊔ Ideal.span {C ϖ}).minimalPrimes ∧ IsRelevant W}`. Set `t : Set (Ideal (MRing ι (IsLocalRing.ResidueField O)))` to `{V | V ∈ (specialIdeal P).minimalPrimes ∧ IsRelevant V}`. Establish `hsupp1 : Function.support (fun W => divCycle P (C ϖ) W * n (specialIdeal W)) ⊆ s`. Introduce `W hW`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Apply `hW` to reduce the goal to its premises. Use `show divCycle P (C ϖ) W * n (specialIdeal W) = 0`. Establish `h' : ¬ (W ∈ (P ⊔ Ideal.span {C ϖ}).minimalPrimes ∧ IsRelevant W)` using `h`. Unfold `divCycle`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h', zero_mul]`. Establish `hsupp2 : Function.support (fun V => idealCycle (specialIdeal P) V * n V) ⊆ t`. Introduce `V hV`. Assume the negation of the conclusion as `h`. Apply `hV` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `show idealCycle (specialIdeal P) V * n V = 0`. Establish `h' : ¬ (V ∈ (specialIdeal P).minimalPrimes ∧ IsRelevant V)` using `h`. Unfold `idealCycle`. Rewrite using `[dif_neg h', zero_mul]`. Establish `hmem : ∀ W ∈ s, W.IsPrime ∧ (C ϖ : MRing ι O) ∈ W` using `fun W hW => ⟨hW.1.1.1, hW.1.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl))⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmaps : ∀ W ∈ s, specialIdeal W ∈ t`. Introduce `W hW`. Take `⟨hp, hc⟩` from `hmem W hW`. Take `⟨-, hmin, hrel, -⟩` from `h1 O ϖ hϖ K ι P W hp hc`. Conclude with `⟨hmin.mp hW.1, hrel.mp hW.2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (∑ᶠ W, divCycle P (C ϖ) W * n (specialIdeal W)) = ∑ᶠ W ∈ s, divCycle P (C ϖ) W * n (specialIdeal W)`. Rewrite using `[finsum_mem_def, Set.indicator_eq_self.mpr hsupp1]`. Establish `e2 : (∑ᶠ V, idealCycle (specialIdeal P) V * n V) = ∑ᶠ V ∈ t, idealCycle (specialIdeal P) V * n V`. Rewrite using `[finsum_mem_def, Set.indicator_eq_self.mpr hsupp2]`. Use `show (∑ᶠ W, divCycle P (C ϖ) W * n (specialIdeal W)) = ∑ᶠ V, idealCycle (specialIdeal P) V * n V`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e1, e2]`. Use `finsum_mem_eq_of_bijOn specialIdeal ⟨hmaps, ?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `W hW W' hW' heq`. Take `⟨hp, hc⟩` from `hmem W hW`. Take `⟨hp', hc'⟩` from `hmem W' hW'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `((h1 O ϖ hϖ K ι P W hp hc).2.2.2 W' hp' hc' heq.symm).symm`. Introduce `V hV`. Establish `hVp : V.IsPrime` using `hV.1.1.1`. Take `⟨W, hWp, hc, rfl⟩` from `h2 O ϖ hϖ K ι V hVp`. Take `⟨-, hmin, hrel, -⟩` from `h1 O ϖ hϖ K ι P W hWp hc`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨W, ⟨hmin.mpr hV.1, hrel.mpr hV.2⟩, rfl⟩`. Introduce `W hW`. Take `⟨hp, hc⟩` from `hmem W hW`. Use `hp` as an intermediate fact. Use `(h1 O ϖ hϖ K ι P W hp hc).1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hm` using `h3 O ϖ hϖ K ι P W hc`. Use `congr 1`. Unfold `divCycle idealCycle`. Establish `hW' : W ∈ (P ⊔ Ideal.span {C ϖ}).minimalPrimes ∧ IsRelevant W` using `hW`. Establish `hV' : specialIdeal W ∈ (specialIdeal P).minimalPrimes ∧ IsRelevant (specialIdeal W)` using `hmaps W hW`.
-
-Rewrite using `[dif_pos hW', dif_pos hV']`. Conclude with `congrArg (fun x : ℕ∞ => ((x.toNat : ℕ) : ℤ)) hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SpecialCycleEval.proof (h1 : SpecialIdealCorresp.Statement.{u})
     (h2 : SpecialIdealSurj.Statement.{u}) (h3 : SpecialMultAt.Statement.{u}) :

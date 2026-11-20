@@ -22,9 +22,9 @@ def localLength (J Q : Ideal R) [Q.IsPrime] : ℕ∞ :=
     (Localization.AtPrime Q ⧸ J.map (algebraMap R (Localization.AtPrime Q)))
 
 /- English proof (translation)
-Establish `hrad` using `IsLocalization.AtPrime.radical_map_of_mem_minimalPrimes (A := Localization.AtPrime Q) Q J h`. Rewrite `hrad` using `[Localization.AtPrime.map_eq_maximalIdeal]`. Establish `hmin : IsLocalRing.maximalIdeal (Localization.AtPrime Q) ∈ (J.map (algebraMap R (Localization.AtPrime Q))).minimalPrimes`. Rewrite using `[← Ideal.radical_minimalPrimes, hrad, Ideal.minimalPrimes_eq_subsingleton_self]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `haveI := IsLocalRing.quotient_artinian_of_mem_minimalPrimes_of_isLocalRing _ hmin`. Rewrite using `[localLength, Module.length_eq_of_surjective (R := Localization.AtPrime Q ⧸ J.map (algebraMap R (Localization.AtPrime Q))) Ideal.Quotient.mk_surjective]`. Conclude with `Module.length_ne_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localLength_ne_top [IsNoetherianRing R] {J Q : Ideal R} [Q.IsPrime]
     (h : Q ∈ J.minimalPrimes) : localLength J Q ≠ ⊤ := by
@@ -42,7 +42,7 @@ theorem localLength_ne_top [IsNoetherianRing R] {J Q : Ideal R} [Q.IsPrime]
   exact Module.length_ne_top
 
 /- English proof (translation)
-Rewrite using `[localLength, Ne, Module.length_eq_zero_iff, Ideal.Quotient.subsingleton_iff]`. Use `ne_top_of_le_ne_top (IsLocalRing.maximalIdeal.isMaximal _).ne_top ?_` and prove the remaining obligations. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Conclude with `Ideal.map_mono h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localLength_ne_zero {J Q : Ideal R} [Q.IsPrime] (h : J ≤ Q) : localLength J Q ≠ 0 := by
   rw [localLength, Ne, Module.length_eq_zero_iff, Ideal.Quotient.subsingleton_iff]
@@ -51,7 +51,7 @@ theorem localLength_ne_zero {J Q : Ideal R} [Q.IsPrime] (h : J ≤ Q) : localLen
   exact Ideal.map_mono h
 
 /- English proof (translation)
-Rewrite using `[localLength, Localization.AtPrime.map_eq_maximalIdeal, Module.length_eq_one_iff, isSimpleModule_iff_isCoatom, ← Ideal.isMaximal_def]`. Conclude with `IsLocalRing.maximalIdeal.isMaximal _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localLength_self (Q : Ideal R) [Q.IsPrime] : localLength Q Q = 1 := by
   rw [localLength, Localization.AtPrime.map_eq_maximalIdeal, Module.length_eq_one_iff,
@@ -73,7 +73,7 @@ def projCycle (J : Ideal (MvPolynomial (Fin N) k)) : Ideal (MvPolynomial (Fin N)
       exact hQ (dif_neg h))
 
 /- English proof (translation)
-Rewrite using `[projCycle, Finsupp.ofSupportFinite_coe]`. Simplify using `only [dif_pos h]`. Conclude with `ENat.coe_toNat (localLength_ne_top h.1)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cast_projCycle_apply {J Q : Ideal (MvPolynomial (Fin N) k)} [Q.IsPrime]
     (h : Q ∈ projComponents J) : (projCycle J Q : ℕ∞) = localLength J Q := by
@@ -82,7 +82,7 @@ theorem cast_projCycle_apply {J Q : Ideal (MvPolynomial (Fin N) k)} [Q.IsPrime]
   exact ENat.coe_toNat (localLength_ne_top h.1)
 
 /- English proof (translation)
-Rewrite using `[projCycle, Finsupp.ofSupportFinite_coe]`. Conclude with `dif_neg h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projCycle_apply_of_notMem {J Q : Ideal (MvPolynomial (Fin N) k)}
     (h : Q ∉ projComponents J) : projCycle J Q = 0 := by
@@ -90,7 +90,7 @@ theorem projCycle_apply_of_notMem {J Q : Ideal (MvPolynomial (Fin N) k)}
   exact dif_neg h
 
 /- English proof (translation)
-Rewrite using `[Finsupp.mem_support_iff]`. Use `⟨fun h => by_contra fun h' => h (projCycle_apply_of_notMem h'), fun h h0 => ?_⟩` and prove the remaining obligations. Use `haveI : Q.IsPrime := h.1.1.1`. Use `localLength_ne_zero h.1.1.2 ?_` and prove the remaining obligations. Rewrite using `[← cast_projCycle_apply h, h0, Nat.cast_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_support_projCycle {J Q : Ideal (MvPolynomial (Fin N) k)} :
     Q ∈ (projCycle J).support ↔ Q ∈ projComponents J := by
@@ -103,7 +103,7 @@ theorem mem_support_projCycle {J Q : Ideal (MvPolynomial (Fin N) k)} :
 def hyperplaneForm (u : Fin N → k) : MvPolynomial (Fin N) k := ∑ j, C (u j) * X j
 
 /- English proof (translation)
-The claim follows from `IsHomogeneous.sum _ _ _ fun j _ => (isHomogeneous_X k j).C_mul _`.
+A detailed English derivation is pending.
 -/
 theorem isHomogeneous_hyperplaneForm (u : Fin N → k) : (hyperplaneForm u).IsHomogeneous 1 :=
   IsHomogeneous.sum _ _ _ fun j _ => (isHomogeneous_X k j).C_mul _
@@ -155,7 +155,7 @@ def ChowFormHyperplaneSection : Prop :=
         fixFirstBlock u f = C c * (hyperplaneSection P u).prod (fun Q m => g Q ^ m)
 
 /- English proof (translation)
-Use `⟨fun h k _ _ N D I h1 h2 h3 => (h k N D I h1 h2 h3).imp fun _ => And.left, fun h k _ _ N D I h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `h k N D I h1 h2 h3`. Conclude with `⟨f, hf, fun g hg => (hf.isChowFormInt.unique hg.isChowFormInt).2⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem chowFormExists_iff : ChowFormExists ↔
     ∀ (k : Type) [Field k] [CharZero k] (N D : ℕ) (I : Ideal (MvPolynomial (Fin N) k)),
@@ -170,7 +170,7 @@ theorem chowFormExists_iff : ChowFormExists ↔
   exact ⟨f, hf, fun g hg => (hf.isChowFormInt.unique hg.isChowFormInt).2⟩
 
 /- English proof (translation)
-Use `⟨fun h k _ _ N D I h1 h2 h3 => (h k N D I h1 h2 h3).imp fun _ => And.left, fun h k _ _ N D I h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `h k N D I h1 h2 h3`. Conclude with `⟨f, hf, fun g hg => (hf.unique hg).2⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem chowFormIntExists_iff : ChowFormIntExists ↔
     ∀ (k : Type) [Field k] [CharZero k] (N e : ℕ) (P : Ideal (MvPolynomial (Fin N) k)),

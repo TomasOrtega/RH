@@ -8,9 +8,9 @@ namespace Formalism.MainNotions.ElementDenominator.CongruenceModules
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module Formalism.MainNotions.ElementDenominator
 
 /- English proof (translation)
-Establish `: Fact l.Prime` using `⟨hp⟩`. Establish `h3 : 3 ≤ l` using `by have := hp.two_le; omega`. Establish `h1` using `sub_one_mul_padicValNat_factorial (p := l) n`. Establish `h2 : 2 * padicValNat l n.factorial ≤ (l - 1) * padicValNat l n.factorial` using `Nat.mul_le_mul_right _ (by omega)`. Establish `h4 : 2 * padicValNat l n.factorial ≤ n` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (2 : ℝ) * (padicValNat l n.factorial : ℝ) ≤ n` using `by exact_mod_cast h4`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem leg (l n : ℕ) (hp : l.Prime) (hl : l ≠ 2) :
     ((n + padicValNat l n.factorial : ℕ) : ℝ) ≤ 3 / 2 * n := by
@@ -25,13 +25,13 @@ theorem leg (l n : ℕ) (hp : l.Prime) (hl : l ≠ 2) :
   linarith
 
 /- English proof (translation)
-Establish `hL : (1 : ℝ) < l` using `by exact_mod_cast (by omega : 1 < l)`. Establish `hpow : S + 1 < l ^ (S + 1)` using `Nat.lt_pow_self (by omega)`. Establish `hp : Real.logb l ((l : ℝ) ^ (S + 1)) = S + 1`. Rewrite using `[Real.logb_pow, Real.logb_self_eq_one hL]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hh' : (0 : ℝ) < h'` using `by exact_mod_cast h1`. Break down `Nat.eq_zero_or_pos h with rfl | h0` into its components or cases. Establish `: (h' : ℝ) ≤ (l : ℝ) ^ (S + 1)` using `by exact_mod_cast (by omega : h' ≤ l ^ (S + 1))`. Use `Real.logb_le_logb_of_le hL hh' this` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Nat.cast_zero, Real.logb_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : h' ≤ h * l ^ (S + 1)` using `by nlinarith`. Establish `: (h' : ℝ) ≤ (h : ℝ) * (l : ℝ) ^ (S + 1)` using `by exact_mod_cast e1`. Establish `h4` using `Real.logb_le_logb_of_le hL hh' this`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0' : (h : ℝ) ≠ 0` using `by exact_mod_cast h0.ne'`. Rewrite `h4` using `[Real.logb_mul h0' (by positivity), hp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem logA (l h h' S : ℕ) (h3 : 3 ≤ l) (h1 : 1 ≤ h') (h2 : h' ≤ h + S + 1) :
     Real.logb l h' ≤ Real.logb l h + S + 1 := by
@@ -54,45 +54,43 @@ theorem logA (l h h' S : ℕ) (h3 : 3 ≤ l) (h1 : 1 ≤ h') (h2 : h' ≤ h + S 
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `l e s h h' S η hp hl hes hh1 hh2`. Establish `hl3 : 3 ≤ l` using `by have := hp.two_le; omega`. Establish `he : 1 ≤ e`. Break down `Nat.eq_zero_or_pos e with rfl | h0` into its components or cases. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `h0`. Establish `hs : 1 ≤ s`. Break down `Nat.eq_zero_or_pos s with rfl | h0` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `h0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hel : e ≤ l` using `by nlinarith [Nat.sub_le l 1]`. Establish `hL : (3 : ℝ) ≤ l` using `by exact_mod_cast hl3`. Establish `hE : (1 : ℝ) ≤ e` using `by exact_mod_cast he`. Establish `hEl : (e : ℝ) ≤ l` using `by exact_mod_cast hel`. Establish `hS : (1 : ℝ) ≤ s` using `by exact_mod_cast hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : (1 : ℝ) ≤ h'` using `by exact_mod_cast hh1`. Establish `hH2 : (h' : ℝ) ≤ h + S + 1` using `by exact_mod_cast hh2`. Establish `hS0 : (0 : ℝ) ≤ S` using `Nat.cast_nonneg S`. Establish `hh0 : (0 : ℝ) ≤ h` using `Nat.cast_nonneg h`. Establish `hη0 : (0 : ℝ) ≤ η` using `Nat.cast_nonneg η`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hES : (e : ℝ) * s = l - 1`. Establish `: ((e * s : ℕ) : ℝ) = ((l - 1 : ℕ) : ℝ)` using `by rw [hes]`. Move the coercions through the operations in `[Nat.cast_sub (show 1 ≤ l by omega)] at this`. Conclude with `this`. Take `⟨x, hx⟩ : ∃ x : ℝ, x = h' / s` from `⟨_, rfl⟩`.
+Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : 0 < x` using `by rw [hx]; positivity`. Establish `hxs : x * s = h'` using `by rw [hx]; field_simp`. Establish `hxp : x * (l - 1) = e * h'` using `by rw [← hES, ← hxs]; ring`. Establish `h1 : (2 * e * h' : ℝ) / (l - 1) = 2 * x`. Rewrite using `[div_eq_iff (by linarith)]; linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (4 * h' : ℝ) / s = 4 * x` using `by rw [hx]; ring`. Rewrite using `[h1, h2]`. Establish `ha1 : 1 ≤ ⌈2 * x⌉₊` using `Nat.ceil_pos.mpr (by positivity)`. Establish `hb1 : 1 ≤ ⌈4 * x⌉₊` using `Nat.ceil_pos.mpr (by positivity)`. Establish `ha2 : (⌈2 * x⌉₊ : ℝ) < 2 * x + 1` using `Nat.ceil_lt_add_one (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb2 : (⌈4 * x⌉₊ : ℝ) < 4 * x + 1` using `Nat.ceil_lt_add_one (by positivity)`. Establish `hρ` using `leg l (2 * ⌈2 * x⌉₊ - 1) hp hl`. Establish `hσ` using `leg l (⌈4 * x⌉₊ - 1) hp hl`. Establish `hκ` using `leg l S hp hl`. Establish `ca : ((2 * ⌈2 * x⌉₊ - 1 : ℕ) : ℝ) = 2 * (⌈2 * x⌉₊ : ℝ) - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`. Establish `cb : ((⌈4 * x⌉₊ - 1 : ℕ) : ℝ) = (⌈4 * x⌉₊ : ℝ) - 1`. Rewrite using `[Nat.cast_sub hb1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hρ` using `[ca]`. Rewrite `hσ` using `[cb]`. Establish `hA` using `logA l h h' S hl3 hh1 hh2`. Establish `hL1 : (1 : ℝ) < l` using `by linarith`. Establish `hLh : 0 ≤ Real.logb l h`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos h with rfl | h0` into its components or cases. Simplify using the standard rewrite rules. Conclude with `Real.logb_nonneg hL1 (by exact_mod_cast h0)`. Establish `hLh' : 0 ≤ Real.logb l h'` using `Real.logb_nonneg hL1 hH`. Take `⟨u, hu⟩ : ∃ u : ℝ, u = (h : ℝ) / l` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hu0 : 0 ≤ u` using `by rw [hu]; positivity`. Establish `hul : u * l = h` using `by rw [hu]; field_simp`. Establish `hN : ((Nat.log l h' : ℕ) : ℝ) ≤ Real.logb l h + 3 / 2 * S + 3 / 2 * u`. Distinguish the cases in `hlt : h' < l`. Rewrite using `[Nat.log_of_lt hlt]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Check the signs of the components of the expression. Establish `h5 : (l : ℝ) ≤ h'` using `by exact_mod_cast (not_lt.1 hlt)`. Establish `h6` using `Real.natLog_le_logb h' l`. Establish `h7 : 1 ≤ 3 / 2 * u + S / 2`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use polynomial arithmetic with `[mul_nonneg hS0 (sub_nonneg.2 hL)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hy : (⌈(η : ℝ) + 1 / 2 + Real.logb l h'⌉₊ : ℝ) < (η : ℝ) + 1 / 2 + Real.logb l h' + 1` using `Nat.ceil_lt_add_one (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : x ≤ 3 / 2 * (e * u + e * S / 3 + 1)`. Establish `e1 : (e : ℝ) * h' ≤ (e * u + e * S / 3 + 1) * l`. Establish `: (e : ℝ) * h' ≤ e * (h + S + 1)` using `mul_le_mul_of_nonneg_left hH2 (by linarith)`. Establish `e2 : (e : ℝ) * S * 3 ≤ e * S * l` using `mul_le_mul_of_nonneg_left hL (by positivity)`. Establish `e3 : (e : ℝ) * u * l = e * h` using `by rw [mul_assoc, hul]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e4 : x * (2 / 3 * l) ≤ x * (l - 1)` using `mul_le_mul_of_nonneg_left (by linarith) hx0.le`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Establish `e5 : x * l ≤ 3 / 2 * (e * u + e * S / 3 + 1) * l` using `by linarith`. Conclude with `le_of_mul_le_mul_right e5 hl0`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `eu : (e : ℝ) * h / l = e * u` using `by rw [hu]; ring`. Rewrite using `[eu]`. Generalize the expression as in `2 * ⌈2 * x⌉₊ - 1 + padicValNat l (2 * ⌈2 * x⌉₊ - 1).factorial = ρ at hρ ⊢`. Generalize the expression as in `⌈4 * x⌉₊ - 1 + padicValNat l (⌈4 * x⌉₊ - 1).factorial = σ at hσ ⊢`. Generalize the expression as in `S + padicValNat l S.factorial = κ at hκ ⊢`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `⌈(η : ℝ) + 1 / 2 + Real.logb l h'⌉₊ = y at hy ⊢`. Generalize the expression as in `Nat.log l h' = N at hN ⊢`. Establish `hm : max (2 * σ) y ≤ 2 * σ + y` using `by omega`. Establish `hm' : ((max (2 * σ) y : ℕ) : ℝ) ≤ 2 * σ + y` using `by exact_mod_cast hm`. Establish `k1 : (e : ℝ) * κ ≤ e * (3 / 2 * S)` using `mul_le_mul_of_nonneg_left hκ (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `k2 : (e : ℝ) * N ≤ e * (Real.logb l h + 3 / 2 * S + 3 / 2 * u)` using `mul_le_mul_of_nonneg_left hN (by linarith)`. Establish `k3 : (S : ℝ) ≤ e * S` using `le_mul_of_one_le_left hS0 hE`. Establish `k4 : Real.logb l h ≤ e * Real.logb l h` using `le_mul_of_one_le_left hLh hE`. Establish `k5 : 0 ≤ (e : ℝ) * u` using `by positivity`. Rewrite using `[Nat.cast_add, Nat.cast_add, Nat.cast_add, Nat.cast_mul, Nat.cast_mul, Nat.cast_mul, Nat.cast_add]`.
-
-Simplify using `only [Nat.cast_ofNat]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Ynum : ∀ (l e s h h' S η : ℕ), l.Prime → l ≠ 2 → e * s = l - 1 → 1 ≤ h' → h' ≤ h + S + 1 → (((2 * (2 * ⌈(2 * e * h' : ℝ) / ((l : ℝ) - 1)⌉₊ - 1 + padicValNat l (2 * ⌈(2 * e * h' : ℝ) / ((l : ℝ) - 1)⌉₊ - 1).factorial) + 4 * (⌈(4 * h' : ℝ) / (s : ℝ)⌉₊ - 1 + padicValNat l (⌈(4 * h' : ℝ) / (s : ℝ)⌉₊ - 1).factorial) + e * (S + padicValNat l S.factorial + Nat.log l h') + max (2 * (⌈(4 * h' : ℝ) / (s : ℝ)⌉₊ - 1 + padicValNat l (⌈(4 * h' : ℝ) / (s : ℝ)⌉₊ - 1).factorial)) ⌈(η : ℝ) + 1 / 2 + Real.logb l h'⌉₊ : ℕ) : ℝ)) ≤ 80 * ((e : ℝ) * h / l + (e : ℝ) * S + (e : ℝ) * Real.logb l h + 1 + η) := by
   intro l e s h h' S η hp hl hes hh1 hh2
@@ -224,15 +222,15 @@ def LocalTheoremAtGoodExtensions (D : D7) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ K LL : FinExt l, Good K 1 LL → claimA (D.loc l) K LL
 
 /- English proof (translation)
-Introduce `T₁ T₂ F r S η m h up b h1 h2 h3 h4 h5 h6 h7 h8 h9`. Take `⟨s, h', g, J, hes, hh1, hh2, hJ, h0, hg, hT⟩` from `H T₁ T₂ F r S η m h up b ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩`. Use `colLe_mono P K LL F ?_ (colLe_of_twoStep P K LL F _ _ _ _ hT)` and prove the remaining obligations. Generalize the expression as in `finrank ℚ_[l] ↥(K0 K) = n at hg ⊢`. Generalize the expression as in `finrank ↥(K0 K) ↥K.1 = e at hg hes ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hY : ((YA l e s h' S η : ℕ) : ℝ) ≤ 80 * ((e : ℝ) * h / l + (e : ℝ) * S + (e : ℝ) * Real.logb l h + 1 + η)` using `Ynum l e s h h' S η hp.out hl hes hh1 hh2`. Establish `hE : expLift l h J ≤ 18 * h` using `Formalism.IrreducibleCountingLemmas.WindowSums.valuationSumBound l h J hp.out hl hJ h0`. Establish `hE' : ((expLift l h J : ℕ) : ℝ) ≤ C * ((h : ℝ) + 1)`. Establish `: ((expLift l h J : ℕ) : ℝ) ≤ 18 * (h : ℝ)` using `by exact_mod_cast hE`. Establish `h0' : (0 : ℝ) ≤ h` using `Nat.cast_nonneg h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hg' : (g : ℝ) ≤ 2 * (((n : ℝ) * e + 1) * r)` using `by exact_mod_cast hg`. Establish `hY0 : (0 : ℝ) ≤ ((YA l e s h' S η : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Unfold `boundA`. Use `set B : ℝ := (e : ℝ) * h / l + (e : ℝ) * S + (e : ℝ) * Real.logb l h + 1 + η with hB`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hB0 : 0 ≤ B` using `by linarith`. Establish `hA0 : (0 : ℝ) ≤ ((n : ℝ) * e + 1) * r` using `by positivity`. Establish `e1 : (g : ℝ) * ((YA l e s h' S η : ℕ) : ℝ) ≤ 2 * (((n : ℝ) * e + 1) * r) * (80 * B)` using `mul_le_mul hg' hY hY0 (by positivity)`. Establish `e2 : 160 * ((((n : ℝ) * e + 1) * r) * B) ≤ C * ((((n : ℝ) * e + 1) * r) * B)` using `mul_le_mul_of_nonneg_right hC (mul_nonneg hA0 hB0)`. Establish `e3 : ((n * e * (e + 1) * m : ℕ) : ℝ) * ((expLift l h J : ℕ) : ℝ) ≤ ((n * e * (e + 1) * m : ℕ) : ℝ) * (C * ((h : ℝ) + 1))` using `mul_le_mul_of_nonneg_left hE' (Nat.cast_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at e3 ⊢`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem thmA_of_claim {l : ℕ} [hp : Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) (hl : l ≠ 2) (C : ℝ)
     (hC : 160 ≤ C) (H : claimA P K LL) : thmA P K LL C := by
@@ -267,7 +265,7 @@ theorem thmA_of_claim {l : ℕ} [hp : Fact l.Prime] (P : LocPrime l) (K LL : Fin
   nlinarith
 
 /- English proof (translation)
-Introduce `l _ hl K LL hg` and use `thmA_of_claim (D.loc l) K LL hl C hC (H l hl K LL hg)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem local_theorem_of_good_extensions (D : D7) (C : ℝ) (hC : 160 ≤ C) (H : LocalTheoremAtGoodExtensions D) : Conclusion1 D C :=
   fun l _ hl K LL hg => thmA_of_claim (D.loc l) K LL hl C hC (H l hl K LL hg)

@@ -15,7 +15,7 @@ open GlobalTheory.JR.WeilQuad.FourierTest
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
 /- English proof (translation)
-Apply `algMap_inj A hK hL` to reduce the goal to its premises. Rewrite using `[map_add, map_add, (GlobalTheory.T.etaleHermitianPair_structure_facts F E A).1, (GlobalTheory.T.etaleHermitianPair_structure_facts F E A).1, (GlobalTheory.T.etaleHermitianPair_structure_facts F E A).1, (GlobalTheory.T.etaleHermitianPair_structure_facts F E A).2.1, star_add, star_ …`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem NL_add [Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A.L) (t u : A.L) :
     A.NL (t + u) = A.NL t + A.NL u + Algebra.trace A.K A.L (star t * u) := by
@@ -25,9 +25,9 @@ theorem NL_add [Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A.L) (t
   ring
 
 /- English proof (translation)
-Rewrite using `[beta_apply]`. Establish `h : Algebra.trace A.K A.L (star y * y) = A.NL y + A.NL y`. Apply `algMap_inj A hK hL` to reduce the goal to its premises. Rewrite using `[(GlobalTheory.T.etaleHermitianPair_structure_facts F E A).2.1, map_add, (GlobalTheory.T.etaleHermitianPair_structure_facts F E A).1, star_mul, star_star]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h, mul_add, map_add, two_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem two_trace_NL [Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A.L) (x : A.K) (y : A.L) :
     2 * Algebra.trace F A.K (x * A.NL y) = beta A x y y := by
@@ -39,7 +39,7 @@ theorem two_trace_NL [Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A
   rw [h, mul_add, map_add, two_mul]
 
 /- English proof (translation)
-Rewrite using `[NL_add A hK hL, mul_add, mul_add, map_add, map_add, beta_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_NL_add [Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A.L) (x : A.K) (t u : A.L) :
     Algebra.trace F A.K (x * A.NL (t + u)) =
@@ -47,9 +47,9 @@ theorem trace_NL_add [Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A
   rw [NL_add A hK hL, mul_add, mul_add, map_add, map_add, beta_apply]
 
 /- English proof (translation)
-Use `haveI := finite_F_L A`. Use `haveI : CharZero F := Unram.charZero (F := F) (E := E)`. Establish `h2 : (2 : F) ≠ 0` using `two_ne_zero`. Establish `hβc : Continuous (fun p : A.L × A.L => beta A x p.1 p.2)` using `IsModuleTopology.continuous_bilinear_of_finite_left (beta A x)`. Establish `hdiag : Continuous (fun y : A.L => (y, y))` using `continuous_id.prodMk continuous_id`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : Continuous ((fun p : A.L × A.L => beta A x p.1 p.2) ∘ (fun y : A.L => (y, y)))` using `hβc.comp hdiag`. Establish `hd : Continuous (fun y : A.L => (2 : F)⁻¹ * beta A x y y)` using `continuous_const.mul hcomp`. Use `hd.congr (fun y => ?_)` and prove the remaining obligations. Use `show (2 : F)⁻¹ * beta A x y y = Algebra.trace F A.K (x * A.NL y)`. Rewrite using `[← two_trace_NL A hK hL x y, ← mul_assoc, inv_mul_cancel₀ h2, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_trace_NL [Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A.L) (x : A.K) :
     Continuous fun y : A.L => Algebra.trace F A.K (x * A.NL y) := by
@@ -71,39 +71,31 @@ end GlobalTheory.JR.WeilQuad.GaussProd
 open GlobalTheory.JR.WeilQuad.FourierTest GlobalTheory.JR.WeilQuad.GaussProd in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ x μ ω h Λ hΛo hΛc hPS hQ`. Take `⟨hK, hL, hψ, hsd, -⟩` from `h`. Use `haveI := hsd.1`. Use `haveI := finite_F_L A`. Take `⟨hLC, hSC, hT2, hTG⟩` from `GlobalTheory.JR.SelfDualLat.topo F E A.L`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`. Use `haveI := hTG`. Establish `hψ'` using `(GlobalTheory.T.unramifiedStandardAddChar_conductor_properties F E).2 ψ hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψc : Continuous (fun t : F => ψ t)` using `cont_psi hψ`. Use `set β := beta A (x : A.K) with hβdef`. Establish `hβc : Continuous (fun p : A.L × A.L => β p.1 p.2)` using `IsModuleTopology.continuous_bilinear_of_finite_left β`. Use `set q : A.L → F := fun y => Algebra.trace F A.K ((x : A.K) * A.NL y) with hqdef`. Establish `hqc : Continuous q` using `continuous_trace_NL A hK hL (x : A.K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqa : ∀ t u, q (t + u) = q t + q u + β t u` using `fun t u => trace_NL_add A hK hL (x : A.K) t u`. Use `set S : Set A.L := (Λ : Set A.L) with hSdef`. Use `set P : Set A.L := {y : A.L | ∀ w ∈ S, ψ (β w y) = 1} with hPdef`. Establish `hSm : MeasurableSet S` using `hΛo.measurableSet`. Establish `hPc : IsClosed P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `: P = ⋂ w ∈ S, (fun y => ψ (β w y)) ⁻¹' {1}` using `by ext y; simp [hPdef]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun w _ => isClosed_singleton.preimage (hψc.comp (hβc.comp (continuous_const.prodMk continuous_id)))`. Establish `hPm : MeasurableSet P` using `hPc.measurableSet`. Establish `hI` using `GlobalTheory.T.selfDual_iff_lattice_volume_and_plancherel_alt F E ψ hψ A.L β (beta_isSymm A hK hL (x : A.K)) (beta_nondeg A hK hL x) μ hsd.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hvol : μ S * μ P = 1` using `((hI.1 Λ hΛo hΛc).1).1 hsd`. Establish `horth : ∀ u, ∫ t in S, ψ (β t u) ∂μ = P.indicator (fun _ => ((μ S).toReal : ℂ)) u` using `(hI.1 Λ hΛo hΛc).2`. Establish `hPS' : P ⊆ S` using `hPS`. Establish `hQ' : ∀ y ∈ P, ψ (q y) = 1` using `hQ`. Establish `hG1 : gaussInt A ψ x μ 1 Λ = ∫ y in S, ψ (q y) ∂μ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `gaussInt`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show ψ (Algebra.trace F A.K (1 * (x : A.K) * A.NL y)) = ψ (Algebra.trace F A.K ((x : A.K) * A.NL y))`. Rewrite using `[one_mul]`. Establish `hG2 : gaussInt A ψ x μ (-1) Λ = ∫ y in S, ψ (-q y) ∂μ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Unfold `gaussInt`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show ψ (Algebra.trace F A.K (-1 * (x : A.K) * A.NL y)) = ψ (-Algebra.trace F A.K ((x : A.K) * A.NL y))`. Rewrite using `[neg_one_mul, neg_mul, map_neg]`. Establish `hne : ∀ a : F, ψ (-a) * ψ a = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]`. Establish `htr : ∀ t ∈ S, (∫ u in S, ψ (q u) ∂μ) = ψ (q t) * ∫ u in S, ψ (q u) * ψ (β t u) ∂μ`. Introduce `t ht`. Rewrite using `[← integral_indicator hSm, ← integral_add_left_eq_self (S.indicator fun u => ψ (q u)) t, ← integral_const_mul, ← integral_indicator hSm]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use extensionality with `u`. Distinguish the cases in `hu : u ∈ S`. Establish `htu : t + u ∈ S` using `Λ.add_mem ht hu`. Rewrite using `[Set.indicator_of_mem htu, Set.indicator_of_mem hu, hqa, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `htu : t + u ∉ S` using `fun h' => hu (by`. Use `Λ.sub_mem h' ht` as an intermediate fact. Rewrite using `[add_sub_cancel_left] at this)` and apply the resulting hypothesis. Simplify using `[Set.indicator_of_notMem htu, Set.indicator_of_notMem hu]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `haveI : IsFiniteMeasure (μ.restrict S) := isFiniteMeasure_restrict.2 hΛc.measure_lt_top.ne`. Establish `hint : Integrable (Function.uncurry fun t u => ψ (q u) * ψ (β t u)) ((μ.restrict S).prod (μ.restrict S))`. Use `Integrable.mono' (integrable_const (1 : ℝ)) ?_ ?_` and prove the remaining obligations. Conclude with `((hψc.comp (hqc.comp continuous_snd)).mul (hψc.comp hβc)).aestronglyMeasurable`. Use `Filter.Eventually.of_forall (fun z => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Function.uncurry, norm_mul, hψ'.2.1, mul_one, le_refl]`. Rewrite using `[hG1, hG2]`. Combine the equalities or inequalities in the displayed calculation. Use `setIntegral_congr_fun hSm (fun t ht => ?_)` and prove the remaining obligations. Rewrite using `[htr t ht, mul_comm, ← mul_assoc, hne, one_mul]`.
-
-Use `_ = ∫ u in S, ∫ t in S, ψ (q u) * ψ (β t u) ∂μ ∂μ := integral_integral_swap hint`. Use `_ = ∫ u in S, ψ (q u) * P.indicator (fun _ => ((μ S).toReal : ℂ)) u ∂μ := by`. Use `congr 1`. Use extensionality with `u`. Rewrite using `[integral_const_mul, horth u]`.
-
-Use `_ = ∫ u in S, P.indicator (fun _ => ((μ S).toReal : ℂ)) u ∂μ := by`. Use `setIntegral_congr_fun hSm (fun u _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hp : u ∈ P`. Simplify using `only [Set.indicator_of_mem hp, hQ' u hp, one_mul]`. Simplify using `only [Set.indicator_of_notMem hp, mul_zero]`.
-
-Use `_ = (μ P).toReal * (μ S).toReal := by`. Rewrite using `[setIntegral_indicator hPm, Set.inter_eq_right.2 hPS', setIntegral_const]`. Simplify using `[Measure.real]`. Use `_ = 1 := by`. Establish `h1 : (μ S).toReal * (μ P).toReal = 1`.
-
-Rewrite using `[← ENNReal.toReal_mul, hvol, ENNReal.toReal_one]`. Rewrite using `[mul_comm]`. Conclude with `h1` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.JR.WeilQuad.gaussInt_one_mul_neg_one : ∀ (F E : Type) [NontriviallyNormedField F]
     [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ)

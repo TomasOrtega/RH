@@ -53,7 +53,7 @@ def DV.RhoUnit (D : D7) (ρ : D.what₂.Tup → ℝ) : Prop :=
     vAdd (D.plEq w) (r : D.what₂.LL) = 0 ∧ vAdd (D.plEq (D.what₂.places.conj w)) (r : D.what₂.LL) = 0
 
 /- English proof (translation)
-Introduce `_` and use `⟨1, by norm_num, by simp [vAdd], by simp [vAdd]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem DV.rhoUnit_one (D : D7) : DV.RhoUnit D (fun _ => 1) :=
   fun _ => ⟨1, by norm_num, by simp [vAdd], by simp [vAdd]⟩

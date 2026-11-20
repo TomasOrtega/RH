@@ -9,7 +9,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 namespace GlobalTheory.FinPl.SelfDualConj
 
 /- English proof (translation)
-Introduce `D V L M hL hM x`. Take `⟨γ, hγ, h⟩` from `GlobalTheory.T.selfDualLattices_single_orbit_tamePlace D V x (latV V L (· = x)) (latV V M (· = x)) (GlobalTheory.FinPl.TamePlaces.tame D x) (GlobalTheory.IwaPlace.LocSD.isSDAt_latV D V L x hL) (GlobalTheory.IwaPlace.LocSD.isSDAt_latV D V M x hM)`. Conclude with `⟨γ, hγ, fun y hy => h y hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem conj_at_place : ∀ (D : D7) (V : HSp D) (L M : Lat V), IsSelfDualC V L → IsSelfDualC V M →
     ∀ x : Pl D, ∃ g ∈ grpAt V (· = x), Moves V g L M (· = x) := by

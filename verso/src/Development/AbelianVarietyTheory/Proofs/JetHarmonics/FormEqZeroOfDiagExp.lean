@@ -27,17 +27,17 @@ variable {S : Type} [CommRing S] {σ : Type}
 def Flat (f : MvPowerSeries σ S) : Prop := constantCoeff f = 1 ∧ ∀ v, lin v f = 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨map_one _, fun v => by simp [lin]⟩`.
+Supply the required witnesses or components.
 -/
 theorem flat_one : Flat (1 : MvPowerSeries σ S) := ⟨map_one _, fun v => by simp [lin]⟩
 
 /- English proof (translation)
-Simplify using `[quad]`.
+Simplify using the standard rewrite rules.
 -/
 theorem quad_one (v w : σ) : quad v w (1 : MvPowerSeries σ S) = 0 := by simp [quad]
 
 /- English proof (translation)
-Use `⟨by rw [map_mul, hf.1, hg.1, _root_.mul_one], fun v => ?_⟩` and prove the remaining obligations. Establish `h1` using `hf.2 v`. Establish `h2` using `hg.2 v`. Unfold `lin at h1 h2 ⊢`. Simplify using `[Derivation.leibniz, h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem Flat.mul {f g : MvPowerSeries σ S} (hf : Flat f) (hg : Flat g) : Flat (f * g) := by
   refine ⟨by rw [map_mul, hf.1, hg.1, _root_.mul_one], fun v => ?_⟩
@@ -47,9 +47,9 @@ theorem Flat.mul {f g : MvPowerSeries σ S} (hf : Flat f) (hg : Flat g) : Flat (
   simp [Derivation.leibniz, h1, h2]
 
 /- English proof (translation)
-Establish `h1` using `hf.2 v`. Establish `h2` using `hg.2 v`. Establish `h3` using `hf.2 w`. Establish `h4` using `hg.2 w`. Unfold `lin at h1 h2 h3 h4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `[quad, Derivation.leibniz, h1, h2, h3, h4, hf.1, hg.1, add_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Flat.quad_mul {f g : MvPowerSeries σ S} (hf : Flat f) (hg : Flat g) (v w : σ) :
     quad v w (f * g) = quad v w f + quad v w g := by
@@ -61,9 +61,9 @@ theorem Flat.quad_mul {f g : MvPowerSeries σ S} (hf : Flat f) (hg : Flat g) (v 
   simp [quad, Derivation.leibniz, h1, h2, h3, h4, hf.1, hg.1, add_comm]
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => exact ⟨by simpa using flat_one, fun v w => by simp [quad_one]⟩`. Consider the case `succ q ih`. Use `⟨by rw [pow_succ]; exact ih.1.mul hf, fun v w => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, ih.1.quad_mul hf, ih.2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Flat.pow {f : MvPowerSeries σ S} (hf : Flat f) (q : ℕ) :
     Flat (f ^ q) ∧ ∀ v w, quad v w (f ^ q) = q * quad v w f := by
@@ -76,7 +76,7 @@ theorem Flat.pow {f : MvPowerSeries σ S} (hf : Flat f) (q : ℕ) :
     ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨by simpa using flat_one, fun v w => by simp [quad_one]⟩`. Consider the case `insert a s ha ih`. Use `⟨by rw [Finset.prod_insert ha]; exact (hf a).mul ih.1, fun v w => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, (hf a).quad_mul ih.1, ih.2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem flat_finprod {J : Type} (s : Finset J) {f : J → MvPowerSeries σ S} (hf : ∀ i, Flat (f i)) :
     Flat (∏ i ∈ s, f i) ∧ ∀ v w, quad v w (∏ i ∈ s, f i) = ∑ i ∈ s, quad v w (f i) := by
@@ -88,7 +88,7 @@ theorem flat_finprod {J : Type} (s : Finset J) {f : J → MvPowerSeries σ S} (h
     rw [Finset.prod_insert ha, Finset.sum_insert ha, (hf a).quad_mul ih.1, ih.2]
 
 /- English proof (translation)
-Establish `h1 : quad v w (f - 1) = 0`. Simplify using `only [quad, ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_pderiv]`. Rewrite using `[h _ (by simp)]`. Simplify using the standard rewrite rules. Simplify `h1` using `[quad]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem quad_eq_zero {f : MvPowerSeries σ S}
     (h : ∀ e : σ →₀ ℕ, e.degree ≤ 2 → MvPowerSeries.coeff e (f - 1) = 0) (v w : σ) : quad v w f = 0 := by
@@ -102,9 +102,9 @@ end Flat
 
 open GlobalTheory.FrameTwistCompare in
 /- English proof (translation)
-Use `⟨cc_ev_twist G c ha, fun v => ?_⟩` and prove the remaining obligations. Establish `h0` using `cc_comp1_log G (ha 0)`. Establish `h1` using `cc_comp1_log G (ha 1)`. Rewrite using `[ev_expP G c ha, ev_bilL_eq G c ha, bilLog_eq_bil, lin_exp]`. Use `lin_bil (c := c) h0 h1 v` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `lin at this ⊢`. Rewrite using `[map_neg, map_neg, this, neg_zero]`. Rewrite using `[map_neg, cc_bil h0, neg_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem flat_ev_twist {S : Type} [CommRing S] [Algebra ℚ S] {n d : ℕ} (G : FGLaw S d) (c : Fin d → Fin d → S)
     {a : Fin 2 → Pt S n d} (ha : TB.LogPf.CZ a) : Flat (ev a (expP (-bilL G c))) := by
@@ -118,19 +118,17 @@ theorem flat_ev_twist {S : Type} [CommRing S] [Algebra ℚ S] {n d : ℕ} (G : F
   · rw [map_neg, cc_bil h0, neg_zero]
 
 /- English proof (translation)
-Introduce `S _ _ d G w w' hw hsum c hsym hbal n q hn hq h`. Establish `hz : ∀ i : Fin n, TB.LogPf.CZ (![pt S d i, comp1 w (pt S d i)] : Fin 2 → Pt S n d)`. Introduce `i j k`. Use `fin_cases j`. Conclude with `FrameTwistCompare.cc_pt i k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `TB.WickVanishing.cc_comp1 _ _ hw (FrameTwistCompare.cc_pt i) k`. Establish `hfl` using `fun i => flat_ev_twist G c (hz i)`. Take `⟨i₀⟩ : Nonempty (Fin n)` from `⟨⟨0, hn⟩⟩`. Establish `hu : IsUnit (q : S)`. Use `(IsUnit.mk0 (q : ℚ) (by exact_mod_cast (by omega : q ≠ 0))).map (algebraMap ℚ S)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `key : ∀ a b, (Matrix.of c * dLin w) a b + (Matrix.of c * dLin w) b a = 0`. Introduce `a b`. Establish `h2` using `quad_eq_zero h (i₀, a) (i₀, b)`. Rewrite `h2` using `[(flat_finprod _ fun i => ((hfl i).pow q).1).2, Finset.sum_eq_single i₀, ((hfl i₀).pow q).2, hu.mul_right_eq_zero, FrameTwistCompare.quad_ev_twist G c (hz i₀), neg_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, FrameTwistCompare.lin_comp1 _ (FrameTwistCompare.cc_pt _), FrameTwistCompare.lin_pt] at h2`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Simplify `h2` using `[mul_add, Finset.sum_add_distrib]`. Introduce `i _ hi`. Rewrite using `[((hfl i).pow q).2, FrameTwistCompare.quad_ev_twist G c (hz i)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[FrameTwistCompare.lin_pt, hi.symm]`. Simplify using the standard rewrite rules. Establish `ht : (Matrix.of c).transpose = Matrix.of c` using `Matrix.ext fun i j => hsym j i`. Establish `h3 : Matrix.of c * dLin w + Matrix.of c * dLin w' = 0`. Rewrite using `[← hbal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (dLin w).transpose * Matrix.of c = (Matrix.of c * dLin w).transpose`. Rewrite using `[Matrix.transpose_mul, ht]`. Rewrite using `[e]`. Conclude with `Matrix.ext fun a b => key a b`. Rewrite `h3` using `[← Matrix.mul_add, hsum, Matrix.mul_one]`.
-
-Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_eq_zero_of_diag_exp : ∀ (S : Type) [CommRing S] [Algebra ℚ S] (d : ℕ) (G : FGLaw S d) (w w' : Pt S 1 d), (∀ i, MvPowerSeries.constantCoeff (w i) = 0) → dLin w + dLin w' = 1 → ∀ c : Fin d → Fin d → S, (∀ i j, c i j = c j i) → Matrix.transpose (dLin w) * Matrix.of c = Matrix.of c * dLin w' → ∀ (n q : ℕ), 1 ≤ n → 1 ≤ q → (∀ e : Fin n × Fin d →₀ ℕ, e.degree ≤ 2 → MvPowerSeries.coeff e ((∏ i : Fin n, ev (n := n) ![pt S d i, comp1 w (pt S d i)] (expP (-bilL G c)) ^ q) - 1) = 0) → c = 0 := by
   intro S _ _ d G w w' hw hsum c hsym hbal n q hn hq h

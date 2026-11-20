@@ -13,9 +13,9 @@ open Polynomial in
 variable {l : ℕ} [Fact l.Prime] in
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `hc` using `minpoly.coeff_zero_ne_zero hi hx`. Establish `hn : (minpoly ℚ_[l] x).natDegree ≠ 0` using `(minpoly.natDegree_pos hi).ne'`. Use `⟨((minpoly ℚ_[l] x).coeff 0).valuation / (minpoly ℚ_[l] x).natDegree, ?_⟩` and prove the remaining obligations. Establish `h1 : ‖x‖ = ‖(minpoly ℚ_[l] x).coeff 0‖ ^ (1 / ((minpoly ℚ_[l] x).natDegree : ℝ))` using `spectralNorm.spectralNorm_eq_norm_coeff_zero_rpow ℚ_[l] (_root_.Formalism.BasicNotions.Loc.Om l) x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h1, Padic.norm_eq_zpow_neg_valuation hc, ← Real.rpow_intCast, ← Real.rpow_mul (Nat.cast_nonneg l)]`. Use `congr 1`. Establish `hn' : ((minpoly ℚ_[l] x).natDegree : ℝ) ≠ 0` using `by exact_mod_cast hn`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem _root_.GlobalTheory.Per.Val.exists_norm_eq (x : _root_.Formalism.BasicNotions.Loc.Om l) (hx : x ≠ 0) :
     ∃ q : ℚ, ‖x‖ = (l : ℝ) ^ (-(q : ℝ)) := by
@@ -35,15 +35,13 @@ theorem _root_.GlobalTheory.Per.Val.exists_norm_eq (x : _root_.Formalism.BasicNo
 open Polynomial in
 variable {l : ℕ} [Fact l.Prime] in
 /- English proof (translation)
-Use `haveI := LL.2`. Unfold `_root_.Formalism.BasicNotions.Loc.OL`. Rewrite using `[mem_integralClosure_iff]`. Establish `hK : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `hnorm : ‖(x : _root_.Formalism.BasicNotions.Loc.Om l)‖ = spectralValue (minpoly ℚ_[l] x)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IntermediateField.minpoly_eq x]`. Both sides reduce to the same expression. Rewrite using `[hnorm, spectralValue_le_one_iff (minpoly.monic hK)]`. Prove the components needed by the constructor for the conclusion. Introduce `hi n`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] hi, coeff_map]`. Simplify using `using PadicInt.norm_le_one ((minpoly ℤ_[l] x).coeff n)`. Introduce `h`. Establish `hl : minpoly ℚ_[l] x ∈ lifts (algebraMap ℤ_[l] ℚ_[l])`. Rewrite using `[lifts_iff_coeff_lifts]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Conclude with `⟨⟨_, h n⟩, rfl⟩`. Take `⟨q, hq, -, hm⟩` from `lifts_and_natDegree_eq_and_monic hl (minpoly.monic hK)`. Use `⟨q, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] ↥LL.1, ← eval₂_map, hq]`.
-
-Conclude with `minpoly.aeval ℚ_[l] x`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Per.Val.mem_OL_iff (LL : _root_.Formalism.BasicNotions.Loc.FinExt l) (x : ↥LL.1) :
     x ∈ _root_.Formalism.BasicNotions.Loc.OL LL ↔ ‖(x : _root_.Formalism.BasicNotions.Loc.Om l)‖ ≤ 1 := by
@@ -75,7 +73,7 @@ def vf (x : Om l) : WithTop ℚ := if h : x = 0 then ⊤ else ((exists_norm_eq x
 open Polynomial in
 variable {l : ℕ} [Fact l.Prime] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, by simp [_root_.GlobalTheory.Per.Val.vf, hx], (_root_.GlobalTheory.Per.Val.exists_norm_eq x hx).choose_spec⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_rat_vf_eq_norm_eq_rpow_of_ne_zero {x : _root_.Formalism.BasicNotions.Loc.Om l} (hx : x ≠ 0) :
     ∃ q : ℚ, _root_.GlobalTheory.Per.Val.vf x = q ∧ ‖x‖ = (l : ℝ) ^ (-(q : ℝ)) :=
@@ -85,7 +83,7 @@ private theorem exists_rat_vf_eq_norm_eq_rpow_of_ne_zero {x : _root_.Formalism.B
 open Polynomial in
 variable {l : ℕ} [Fact l.Prime] in
 /- English proof (translation)
-Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Rewrite using `[Real.rpow_le_rpow_left_iff hl, neg_le_neg_iff]`. Conclude with `Iff.rfl` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prime_rpow_neg_le_iff (a b : ℚ) :
     (l : ℝ) ^ (-(a : ℝ)) ≤ (l : ℝ) ^ (-(b : ℝ)) ↔ b ≤ a := by
@@ -96,7 +94,7 @@ private theorem prime_rpow_neg_le_iff (a b : ℚ) :
 open Polynomial in
 variable {l : ℕ} [Fact l.Prime] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `le_antisymm ((prime_rpow_neg_le_iff b a).1 h.ge) ((prime_rpow_neg_le_iff a b).1 h.le)`. Introduce and unpack `rfl`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem prime_rpow_neg_inj (a b : ℚ) :
     (l : ℝ) ^ (-(a : ℝ)) = (l : ℝ) ^ (-(b : ℝ)) ↔ a = b := by
@@ -108,9 +106,9 @@ private theorem prime_rpow_neg_inj (a b : ℚ) :
 open Polynomial in
 variable {l : ℕ} [Fact l.Prime] in
 /- English proof (translation)
-Establish `hl : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using `only [_root_.GlobalTheory.Per.Val.vf, dif_pos, norm_zero, WithTop.top_ne_coe, false_iff]`. Conclude with `(Real.rpow_pos_of_pos hl _).ne`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hn⟩` from `exists_rat_vf_eq_norm_eq_rpow_of_ne_zero hx`. Rewrite using `[ha, hn, WithTop.coe_eq_coe, prime_rpow_neg_inj]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Per.Val.vf_eq_iff (x : _root_.Formalism.BasicNotions.Loc.Om l) (q : ℚ) :
     _root_.GlobalTheory.Per.Val.vf x = (q : WithTop ℚ) ↔ ‖x‖ = (l : ℝ) ^ (-(q : ℝ)) := by
@@ -125,7 +123,7 @@ theorem _root_.GlobalTheory.Per.Val.vf_eq_iff (x : _root_.Formalism.BasicNotions
 open Polynomial in
 variable {l : ℕ} [Fact l.Prime] in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.Per.Val.vf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.Per.Val.vf_zero : _root_.GlobalTheory.Per.Val.vf (0 : _root_.Formalism.BasicNotions.Loc.Om l) = ⊤ := by
   simp [_root_.GlobalTheory.Per.Val.vf]
@@ -133,9 +131,9 @@ theorem _root_.GlobalTheory.Per.Val.vf_zero : _root_.GlobalTheory.Per.Val.vf (0 
 open Polynomial in
 variable {l : ℕ} [Fact l.Prime] in
 /- English proof (translation)
-Establish `hl : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using `only [_root_.GlobalTheory.Per.Val.vf_zero, le_top, norm_zero, true_iff]`. Conclude with `(Real.rpow_pos_of_pos hl _).le`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hn⟩` from `exists_rat_vf_eq_norm_eq_rpow_of_ne_zero hx`. Rewrite using `[ha, hn, WithTop.coe_le_coe, prime_rpow_neg_le_iff]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Per.Val.le_vf_iff (x : _root_.Formalism.BasicNotions.Loc.Om l) (q : ℚ) :
     (q : WithTop ℚ) ≤ _root_.GlobalTheory.Per.Val.vf x ↔ ‖x‖ ≤ (l : ℝ) ^ (-(q : ℝ)) := by
@@ -150,9 +148,9 @@ theorem _root_.GlobalTheory.Per.Val.le_vf_iff (x : _root_.Formalism.BasicNotions
 open Polynomial in
 variable {l : ℕ} [Fact l.Prime] in
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx, _root_.GlobalTheory.Per.Val.vf_zero]`. Distinguish the cases in `hy : y = 0`. Simplify using `[hy, _root_.GlobalTheory.Per.Val.vf_zero]`. Take `⟨a, ha, hna⟩` from `exists_rat_vf_eq_norm_eq_rpow_of_ne_zero hx`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hnb⟩` from `exists_rat_vf_eq_norm_eq_rpow_of_ne_zero hy`. Establish `hl : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Rewrite using `[ha, hb, ← WithTop.coe_add, _root_.GlobalTheory.Per.Val.vf_eq_iff, norm_mul, hna, hnb, ← Real.rpow_add hl]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 theorem _root_.GlobalTheory.Per.Val.vf_mul (x y : _root_.Formalism.BasicNotions.Loc.Om l) :
     _root_.GlobalTheory.Per.Val.vf (x * y) =
@@ -172,13 +170,13 @@ theorem _root_.GlobalTheory.Per.Val.vf_mul (x y : _root_.Formalism.BasicNotions.
 open Polynomial in
 variable {l : ℕ} [Fact l.Prime] in
 /- English proof (translation)
-Distinguish the cases in `hxy : x + y = 0`. Simplify using `[hxy, _root_.GlobalTheory.Per.Val.vf_zero]`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Distinguish the cases in `hy : y = 0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hy]`. Take `⟨a, ha, hna⟩` from `exists_rat_vf_eq_norm_eq_rpow_of_ne_zero hx`. Take `⟨b, hb, hnb⟩` from `exists_rat_vf_eq_norm_eq_rpow_of_ne_zero hy`. Take `⟨c, hc, hnc⟩` from `exists_rat_vf_eq_norm_eq_rpow_of_ne_zero hxy`. Rewrite using `[ha, hb, hc, ← WithTop.coe_min, WithTop.coe_le_coe]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hmax : ‖x + y‖ ≤ max ‖x‖ ‖y‖` using `IsUltrametricDist.norm_add_le_max x y`. Rewrite `hmax` using `[hna, hnb, hnc]`. Break down `le_total a b with h | h` into its components or cases. Rewrite using `[min_eq_left h]`. Rewrite `hmax` using `[max_eq_left ((prime_rpow_neg_le_iff b a).2 h), prime_rpow_neg_le_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hmax`. Rewrite using `[min_eq_right h]`. Rewrite `hmax` using `[max_eq_right ((prime_rpow_neg_le_iff a b).2 h), prime_rpow_neg_le_iff]`. Conclude with `hmax`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Per.Val.vf_add (x y : _root_.Formalism.BasicNotions.Loc.Om l) :
     min (_root_.GlobalTheory.Per.Val.vf x) (_root_.GlobalTheory.Per.Val.vf y) ≤
@@ -206,7 +204,7 @@ theorem _root_.GlobalTheory.Per.Val.vf_add (x y : _root_.Formalism.BasicNotions.
 open Polynomial in
 variable {l : ℕ} [Fact l.Prime] in
 /- English proof (translation)
-Use `(_root_.GlobalTheory.Per.Val.vf_eq_iff (1 : _root_.Formalism.BasicNotions.Loc.Om l) 0).2 (by simp)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Per.Val.vf_one : _root_.GlobalTheory.Per.Val.vf (1 : _root_.Formalism.BasicNotions.Loc.Om l) = 0 := by
   have := (_root_.GlobalTheory.Per.Val.vf_eq_iff (1 : _root_.Formalism.BasicNotions.Loc.Om l) 0).2 (by simp)
@@ -215,7 +213,7 @@ theorem _root_.GlobalTheory.Per.Val.vf_one : _root_.GlobalTheory.Per.Val.vf (1 :
 open Polynomial in
 variable {l : ℕ} [Fact l.Prime] in
 /- English proof (translation)
-Establish `h : ‖((l : ℕ) : _root_.Formalism.BasicNotions.Loc.Om l)‖ = (l : ℝ) ^ (-((1 : ℚ) : ℝ))`. Establish `: ((l : ℕ) : _root_.Formalism.BasicNotions.Loc.Om l) = algebraMap ℚ_[l] (_root_.Formalism.BasicNotions.Loc.Om l) (l : ℚ_[l])` using `by simp`. Rewrite using `[this, PadicAlgCl.norm_extends, Padic.norm_p]`. Simplify using `[Real.rpow_neg_one]`. Conclude with `(_root_.GlobalTheory.Per.Val.vf_eq_iff _ 1).2 h` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Per.Val.vf_l : _root_.GlobalTheory.Per.Val.vf ((l : ℕ) : _root_.Formalism.BasicNotions.Loc.Om l) = 1 := by
   have h : ‖((l : ℕ) : _root_.Formalism.BasicNotions.Loc.Om l)‖ = (l : ℝ) ^ (-((1 : ℚ) : ℝ)) := by

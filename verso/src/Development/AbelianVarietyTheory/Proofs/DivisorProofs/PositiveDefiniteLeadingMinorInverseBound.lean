@@ -8,25 +8,23 @@ set_option autoImplicit false
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set e : Fin k → Fin m := Fin.castLE (Nat.le_of_lt_succ k.isLt) with he`. Use `set A := M.submatrix e e with hA`. Use `set y := A⁻¹ *ᵥ z with hy`. Establish `hAy : A *ᵥ y = z`. Rewrite using `[hy, mulVec_mulVec, mul_nonsing_inv _ hdet, one_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he_inj : Function.Injective e` using `Fin.castLE_injective _`. Use `set v : Fin m → ℂ := Function.extend e y 0 with hvdef`. Establish `hv_e : ∀ a, v (e a) = y a` using `fun a => he_inj.extend_apply y 0 a`. Establish `hv_out : ∀ x ∉ Set.range e, v x = 0`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hvdef, Function.extend_apply' _ _ _ (by simpa [Set.mem_range] using hx)]`. Both sides reduce to the same expression. Establish `hMv : ∀ i, (M *ᵥ v) i = ∑ a, M i (e a) * y a`. Introduce `i`. Simplify using `only [mulVec, dotProduct]`.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `symm`. Apply `Fintype.sum_of_injective e he_inj` to reduce the goal to its premises. Introduce `x hx`. Simplify using `[hv_out x hx]`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use symmetry to reverse the relation.
 
-Simplify using `[hv_e]`. Establish `key : star v ⬝ᵥ M *ᵥ v = star y ⬝ᵥ A *ᵥ y`. Simplify using `only [dotProduct]`. Use `symm`. Apply `Fintype.sum_of_injective e he_inj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Simplify using `[hv_out x hx]`. Introduce `a`. Rewrite using `[Pi.star_apply, Pi.star_apply, hv_e, hMv]`. Simplify using `[hA, mulVec, dotProduct]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hyv : ‖y‖ ≤ ‖v‖`. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun a => ?_` and prove the remaining obligations. Rewrite using `[← hv_e a]`. Conclude with `norm_le_pi_norm v (e a)`. Establish `h1 : c * ‖y‖ ^ 2 ≤ (star y ⬝ᵥ z).re`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (star y ⬝ᵥ z).re ≤ (k : ℕ) * (‖y‖ * ‖z‖)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, Pi.star_apply, norm_star]`. Conclude with `mul_le_mul (norm_le_pi_norm y i) (norm_le_pi_norm z i) (norm_nonneg _) (norm_nonneg _)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (k : ℕ) * (‖y‖ * ‖z‖) := by simp`. Establish `hkm : ((k : ℕ) : ℝ) ≤ m` using `by exact_mod_cast Nat.le_of_lt_succ k.isLt`. Establish `h3 : c * ‖y‖ ^ 2 ≤ m * (‖y‖ * ‖z‖)` using `h1.trans (h2.trans (mul_le_mul_of_nonneg_right hkm (by positivity)))`. Break down `(norm_nonneg y).eq_or_lt with h0 | hpos` into its components or cases. Rewrite using `[← h0]`.
-
-Check the signs of the components of the expression. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hc]`. Establish `h4 : ‖y‖ * (‖y‖ * c) ≤ ‖y‖ * (m * ‖z‖)` using `by nlinarith`. Conclude with `le_of_mul_le_mul_left h4 hpos`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem leadingBlock_inv_mulVec_norm_le {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (k : Fin (m + 1)) (c : ℝ)
     (hc : 0 < c)

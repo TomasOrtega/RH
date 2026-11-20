@@ -20,7 +20,7 @@ section Geo
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Out
 
 /- English proof (translation)
-Introduce `i j` and use `by refine ((map_pow _ _ _).trans ((congrArg (· ^ n) (ht i j)).trans (mul_pow _ _ _))).trans (congrArg₂ (· * ·) ?_ (map_pow _ _ _).symm) exact (Finset.prod_pow _ _ _).symm.trans (Finset.prod_congr rfl fun k _ => (zpow_natCast _ n).symm.trans ((zpow_mul _ _ _).symm.trans (congrArg …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem powGen_isGen {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (n : ℕ) : (GeneratorPullback.powGen L φ ε t n).IsGen := fun i j => by
@@ -30,14 +30,14 @@ theorem powGen_isGen {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : 
     (zpow_natCast _ n).symm.trans ((zpow_mul _ _ _).symm.trans (congrArg _ (mul_comm _ _))))
 
 /- English proof (translation)
-The claim follows from `map_pow _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem val_powGen {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (n : ℕ) (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι) :
     val (GeneratorPullback.powGen L φ ε t n) r z J = val t r z J ^ n := map_pow _ _ _
 
 /- English proof (translation)
-Rewrite using `[← h, ← Finset.prod_pow]`. Conclude with `Finset.prod_congr rfl fun _ _ => by rw [mul_comm, zpow_mul, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_nmul {K U : Type} [Fintype K] [CommGroup U] (f : K → U) (e : K → ℤ) (n : ℕ) {c : U}
     (h : ∏ i, f i ^ e i = c) : ∏ i, f i ^ ((n : ℤ) * e i) = c ^ n := by
@@ -45,13 +45,11 @@ theorem prod_nmul {K U : Type} [Fintype K] [CommGroup U] (f : K → U) (e : K �
   exact Finset.prod_congr rfl fun _ _ => by rw [mul_comm, zpow_mul, zpow_natCast]
 
 /- English proof (translation)
-Take `⟨t, -, hv⟩` from `exists_gen hM (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => by`. Use `(Fintype.prod_sum_type _).trans (Eq.trans ?_ (Fintype.prod_empty _).symm)` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel])`. Use the proof step `(LB.mulGen M _ _ _ _ u (LB.invGen M _ _ u')) (DVR.mulGen_isGen _ _ _ _ _ _ _ hu (DVR.invGen_isGen _ _ _ _ hu'))`. Establish `le : (⊤ : Y.Opens) ≤ LB.wchart M (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hp (res le (t.s PEmpty.elim)).val`. Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J), Good M z J → (val u r z J * (val u' r z J)⁻¹).val = gs (r ≫ p) z ⊤ a`. Introduce `Z r z J hJ`. Rewrite using `[← val_inv, ← val_mul hJ, ← hv Z r z J hJ, val_of t r z J PEmpty.elim (fun k => k.elim)]`. Conclude with `(congrArg Units.val (gm_res r z le trivial _)).symm.trans ((gs_unit r z ⊤ trivial _).symm.trans ((congrArg (gs r z ⊤) ha.symm).trans (gs_pull r p z ⊤ trivial a)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨a, S₀.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => ?_, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Use `choose I hI using fun χ : S₀ ⟶ X => exists_chart hM (χ y)`. Use `key _ e y I hI` as an intermediate fact. Rewrite `this` using `[he]`. Conclude with `(congrArg IsUnit ((gs_eq (𝟙 S₀) y ⊤ hy _).symm.trans this.symm)).mpr (Units.isUnit _)`.
-
-Rewrite using `[← key Z r z J hJ, ← Units.val_mul, inv_mul_cancel_right]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratio {X Y S₀ : Scheme.{0}} {M : LB X} (hM : M.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} (p : Y ⟶ S₀) (e : S₀ ⟶ Y) (he : e ≫ p = 𝟙 _) (hp : Function.Surjective p.appTop.hom)
@@ -82,9 +80,9 @@ variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
 
 omit [IsCommMonObj G] in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `act.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Rewrite using `[Nat.cast_zero, zero_mul, pow_zero]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_eq_left.1 this.symm`. Consider the case `succ n ih => rw [Nat.cast_succ, add_mul, _root_.one_mul, act.add, ih, pow_succ]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem act_natCast_mul {O : Type} [CommRing O] (act : Geo.Tor.OAct O G) (w : O) (n : ℕ) :
     act.act ((n : O) * w) = act.act w ^ n := by
@@ -96,19 +94,17 @@ theorem act_natCast_mul {O : Type} [CommRing O] (act : Geo.Tor.OAct O G) (w : O)
   | succ n ih => rw [Nat.cast_succ, add_mul, _root_.one_mul, act.add, ih, pow_succ]
 
 /- English proof (translation)
-Take `⟨t, ht, vt⟩` from `exists_cubN c (1 : G ⟶ G) (act.act w0) (𝟙 G) N`. Take `⟨mu, hmu, hv⟩` from `exists_gen Lr.isLB (K' := Fin 2) (φ' := ![𝟙 G.left, (act.act a).left]) (ε' := ![(N : ℤ), -1]) (fun U _ h => by`. Establish `p₁` using `prod_prim (act.act w0) (𝟙 G) h`. Establish `p₂` using `prod_prim (act.act w0) (act.act a) h`. Establish `p₃` using `prod_ros (act.act a) (act.act (star a)) (𝟙 G) (act.act (w0 * a)) h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : act.act (w0 * a) ≫ act.act (star a) = act.act w0 ^ N`. Rewrite using `[← act.mul, _root_.mul_assoc, hN, mul_comm, act_natCast_mul]`. Establish `e₂ : act.act a ≫ act.act w0 = act.act (w0 * a)` using `by rw [← act.mul, mul_comm]`. Rewrite `p₃` using `[e₁]`. Rewrite `p₂` using `[e₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Over.id_left, Category.id_comp] at p₁ p₃`. Use `(DVR.prod_sum₂ (K := Fin 5) (K' := Fin 5 ⊕ Fin 6 ⊕ Fin 8) (U := U) _ (prod_nmul _ _ N p₁) (DVR.prod_neg _ _ (DVR.prod_sum₂ (K := Fin 5) (K' := Fin 6 ⊕ Fin 8) (U := U) _ p₂ (DVR.prod_sum₂ (K := Fin 6) (K' := Fin 8) (U := U) _ p₃ (Fin.prod_univ_eight _))))).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_two]`. Simplify using `only [Sum.elim_inr, Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[_root_.one_mul (act.act w0 ^ N), _root_.one_mul (𝟙 G), mul_comm (act.act w0 ^ N) (𝟙 G), mul_comm (act.act w0) (𝟙 G)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, Over.id_left]`. Use the proof step `module)`. Use the proof step `(LB.mulGen Lr.L _ _ _ _ (GeneratorPullback.powGen Lr.L _ _ ρ N) (LB.invGen Lr.L _ _ (LB.mulGen Lr.L _ _ _ _ (LB.pullGen Lr.L _ _ ρ (act.act a).left) (LB.mulGen Lr.L _ _ _ _ (LB.pullGen Lr.L _ _ u (lift (𝟙 G) (act.act (w0 * a))).left) t))))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (powGen_isGen _ _ _ _ hρ N) (DVR.invGen_isGen _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hρ _) (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hu _) ht))))`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨mu, hmu, fun T y z J hJ => ?_⟩` and prove the remaining obligations. Establish `C` using `isCub_cubV c hJ`. Establish `e₁ : cubN (cubV c z J) N (y ≫ 1) (y ≫ act.act w0) (y ≫ 𝟙 G) = ∏ i ∈ Finset.range N, cubV c z J y (y ≫ act.act ((i : O) * w0)) (y ≫ act.act w0)`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MonObj.comp_one, _root_.one_mul, Category.comp_id, act_natCast_mul, MonObj.comp_pow, C.s12, C.s01]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e₂ : val u (y.left ≫ (lift (𝟙 G) (act.act (w0 * a))).left) z J = val₂ u z J y (y ≫ act.act (w0 * a))`. Rewrite using `[← Over.comp_left, comp_lift, Category.comp_id]`. Both sides reduce to the same expression. Rewrite using `[hv _ _ z J hJ, val_mul hJ, val_inv, val_mul hJ, val_mul hJ, val_powGen, val_pull hJ, val_pull hJ, vt T y z J hJ, e₁, e₂, Over.comp_left]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
-
-Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_gen_pull (Lr : RigLB G) (c : CubicalStr G Lr) {O : Type} [CommRing O] [StarRing O]
     (act : Geo.Tor.OAct O G) (a w0 : O) (N : ℕ) (hN : a * star a = (N : O))
@@ -172,7 +168,7 @@ variable {R : Type} [CommRing R] {d : ℕ} {k : Type} [CommRing k] [Algebra ℚ 
 def IsExpOf (w : PS R 1 d) (f : PS k 1 d) : Prop := constantCoeff f = 0 ∧ FB.toK k w = FB.expS k f
 
 /- English proof (translation)
-Use `⟨by simp [hf.1, hg.1], ?_⟩` and prove the remaining obligations. Rewrite using `[FB.toK, map_mul]`. Unfold `FB.expS`. Rewrite using `[WickVanishing.exp_add hf.1 hg.1]`. Conclude with `congrArg₂ (· * ·) hf.2 hg.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsExpOf.mul {v w : PS R 1 d} {f g : PS k 1 d} (hf : IsExpOf v f) (hg : IsExpOf w g) :
     IsExpOf (v * w) (f + g) := by
@@ -183,7 +179,7 @@ theorem IsExpOf.mul {v w : PS R 1 d} {f g : PS k 1 d} (hf : IsExpOf v f) (hg : I
   exact congrArg₂ (· * ·) hf.2 hg.2
 
 /- English proof (translation)
-Use `⟨map_zero _, ?_⟩` and prove the remaining obligations. Unfold `FB.expS`. Rewrite using `[FB.toK, map_one, WickVanishing.exp_zero]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsExpOf.one : IsExpOf (1 : PS R 1 d) (0 : PS k 1 d) := by
   refine ⟨map_zero _, ?_⟩
@@ -191,9 +187,9 @@ theorem IsExpOf.one : IsExpOf (1 : PS R 1 d) (0 : PS k 1 d) := by
   rw [FB.toK, map_one, WickVanishing.exp_zero]
 
 /- English proof (translation)
-Establish `n0 : constantCoeff (-f) = 0` using `by simp [hf.1]`. Use `⟨n0, ?_⟩` and prove the remaining obligations. Establish `h1 : FB.toK k v * FB.toK k w = 1` using `by rw [FB.toK, FB.toK, ← map_mul, hw, map_one]`. Establish `h2 : FB.expS k (-f) * FB.expS k f = 1`. Unfold `FB.expS`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← WickVanishing.exp_add n0 hf.1, neg_add_cancel, WickVanishing.exp_zero]`. Rewrite `h1` using `[hf.2]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem IsExpOf.neg {v w : PS R 1 d} {f : PS k 1 d} (hf : IsExpOf v f) (hw : v * w = 1) : IsExpOf w (-f) := by
   have n0 : constantCoeff (-f) = 0 := by simp [hf.1]
@@ -207,9 +203,9 @@ theorem IsExpOf.neg {v w : PS R 1 d} {f : PS k 1 d} (hf : IsExpOf v f) (hw : v *
     _ = FB.expS k (-f) := by rw [_root_.mul_assoc, h1, _root_.mul_one]
 
 /- English proof (translation)
-Establish `ha' : ∀ j i, constantCoeff (FB.toK k (a j i)) = 0` using `fun j i => by simp [FB.toK, ha]`. Use `⟨by rw [constantCoeff_ev_eq ha', f0], ?_⟩` and prove the remaining obligations. Establish `e1 : FB.toK k (ev a w) = ev (fun j i => FB.toK k (a j i)) (FB.toK k w)` using `map_ev_eq _ ha w`. Rewrite using `[e1, hw]`. Unfold `ev FB.expS`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `WickVanishing.subst_exp (fun p : Fin m × Fin d => FB.toK k (a p.1 p.2)) (fun p => ha' p.1 p.2) f0`.
+A detailed English derivation is pending.
 -/
 theorem isExpOf_ev {m : ℕ} {a : Fin m → Pt R 1 d} (ha : ∀ j i, constantCoeff (a j i) = 0)
     {w : PS R m d} {f : PS k m d} (f0 : constantCoeff f = 0) (hw : FB.toK k w = FB.expS k f) :
@@ -224,9 +220,9 @@ theorem isExpOf_ev {m : ℕ} {a : Fin m → Pt R 1 d} (ha : ∀ j i, constantCoe
 variable {O : Type} [CommRing O] [StarRing O] {B : FB R d O} {h : PS k 2 d}
 
 /- English proof (translation)
-Establish `p0 : ∀ {n : ℕ} (j : Fin n) (i : Fin d), constantCoeff (pt k d j i) = 0` using `constantCoeff_point`. Establish `c0 : ∀ (e : O) (j : Fin 2) (i : Fin d), constantCoeff (comp1 (B.actK k e) (pt k d j) i) = 0` using `fun e j => constantCoeff_comp1 (constantCoeff_actK B e) (p0 j)`. Establish `key` using `isExpOf_ev (cz2 (B.A.const b) (B.A.const c)) (by`. Rewrite using `[map_sub, constantCoeff_ev_eq (cz2 (c0 a 0) (p0 1)), constantCoeff_ev_eq (cz2 (p0 0) (c0 _ 1)), sub_self]) (hh.ad a)`. Establish `e : (fun j i => FB.toK k ((![B.A.act b, B.A.act c] : Fin 2 → Pt R 1 d) j i)) = ![B.actK k b, B.actK k c]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `funext j; fin_cases j <;> rfl`. Establish `hb` using `cz2 (constantCoeff_actK (k := k) B b) (constantCoeff_actK (k := k) B c)`. Rewrite `key` using `[e, ev_minus hb, germEv_germEv_two_points (c0 a 0) (p0 1) hb, germEv_germEv_two_points (p0 0) (c0 _ 1) hb, ev_comp1 _ (p0 0) hb, ev_comp1 _ (p0 1) hb, ev_point_fun hb, ev_point_fun hb]`. Rewrite using `[actK_mul, actK_mul]`. Conclude with `key`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isExpOf_ad (hh : B.IsCanonGauge k h) (a b c : O) :
     IsExpOf (ev ![B.A.act b, B.A.act c] (B.ad a))
@@ -247,11 +243,11 @@ theorem isExpOf_ad (hh : B.IsCanonGauge k h) (a b c : O) :
   exact key
 
 /- English proof (translation)
-Establish `p0 : ∀ {n : ℕ} (j : Fin n) (i : Fin d), constantCoeff (pt k d j i) = 0` using `constantCoeff_point`. Establish `c0 : ∀ (i : Fin d), constantCoeff (addOf (B.FK k) (pt k (n` using `3) d 1) (pt k d 2) i) = 0 := constantCoeff_addOf (constantCoeff_FK B) (p0 1) (p0 2)`. Establish `h0 : constantCoeff h = 0`. Rewrite using `[← constantCoeff_ev_eq (cz2 (x := (0 : Pt k 1 d)) (fun _ => by simp) (constantCoeff_point 0)), hh.ax0, map_zero]`. Establish `key` using `isExpOf_ev (cz3 (B.A.const b) (B.A.const c) (B.A.const c')) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_add, constantCoeff_ev_eq (cz2 (p0 0) (p0 1)), constantCoeff_ev_eq (cz2 (p0 0) (p0 2)), constantCoeff_ev_eq (cz2 (p0 0) c0), h0]`. Use the proof step `simp) hh.ph2`. Establish `e : (fun j i => FB.toK k ((![B.A.act b, B.A.act c, B.A.act c'] : Fin 3 → Pt R 1 d) j i)) = ![B.actK k b, B.actK k c, B.actK k c']`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`. Establish `hb` using `cz3 (constantCoeff_actK (k := k) B b) (constantCoeff_actK (k := k) B c) (constantCoeff_actK (k := k) B c')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[e, ev_minus hb, ev_plus hb, germEv_germEv_two_points (p0 0) (p0 1) hb, germEv_germEv_two_points (p0 0) (p0 2) hb, germEv_germEv_two_points (p0 0) c0 hb, ev_addOf _ (p0 1) (p0 2) hb, ev_point_fun hb, ev_point_fun hb, ev_point_fun hb]`. Rewrite using `[actK_add]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isExpOf_canonical_gauge (hh : B.IsCanonGauge k h) (b c c' : O) :
     IsExpOf (ev ![B.A.act b, B.A.act c, B.A.act c'] B.ph2)
@@ -278,11 +274,11 @@ theorem isExpOf_canonical_gauge (hh : B.IsCanonGauge k h) (b c c' : O) :
   exact key
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h0` using `isExpOf_canonical_gauge hh b 0 0`. Rewrite `h0` using `[hQ, add_zero, add_sub_cancel_right]`. Establish `e : ev ![B.actK k b, B.actK k 0] h = 0` using `WickVanishing.eq_zero_of_exp_eq_one h0.1 (h0.2.symm.trans (map_one _))`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_range_zero, Nat.cast_zero, Nat.cast_zero, zero_smul, zero_mul, e, sub_zero]`. Conclude with `IsExpOf.one`. Consider the case `succ j ih`. Use `ih.mul (isExpOf_canonical_gauge hh b ((j : O) * c) c)` as an intermediate fact. Rewrite using `[Finset.prod_range_succ]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Nat.cast_succ, Nat.cast_succ, add_smul, one_smul, add_mul, _root_.one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isExpOf_prod (hh : B.IsCanonGauge k h) (b c : O)
     (hQ : ev ![B.A.act b, B.A.act 0, B.A.act 0] B.ph2 = 1) (n : ℕ) :
@@ -312,17 +308,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 variable {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Take `⟨j1, -, j3, -⟩` from `hJet R (Fin 1 × Fin d)`. Take `⟨r1, -⟩` from `hRep R G d x hx (Fin 1 × Fin d)`. Take `⟨Y, hY, -⟩` from `r1 (pt R (n := 1) d 0) (gp_pt 0)`. Establish `hA : ∀ a, Rep x (B.A.act a) (fun m => Y m ≫ act.act a)` using `fun a => by`. Use `(hB.map a).2 1 _ _ hY` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[gt_comp1_pt_right]`. Then use the resulting hypothesis. Use `j3 g g' fun m => ?_` and prove the remaining obligations. Take `⟨τ, hτ, -⟩` from `j1 m`. Use `eq_of_germ fun z => ?_` and prove the remaining obligations. Take `⟨J, hJ, hJ'⟩` from `exists_good_const Lr.L Lr.isLB j z`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hτ, ← hτ]`. Use `H (sp (R₀ := R) (JetR R (Fin 1 × Fin d) m)) z J hJ ((((Spec (CommRingCat.of (JetR R (Fin 1 × Fin d) m))).presheaf.germ ⊤ z trivial).hom.comp (Scheme.ΓSpecIso (CommRingCat.of (JetR R (Fin 1 × Fin d) m))).inv.hom).comp τ.toRingHom) (Y m) (fun r => ?_) (fun K _ φ ε t s hs a => ?_) ( …` and prove the remaining obligations. Rewrite using `[gs_eq _ z ⊤ trivial]`. Establish `e₁ : τ (C r) = algebraMap R _ r` using `τ.commutes r`. Establish `e₂` using `congrArg (fun q => q.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (JetR R (Fin 1 × Fin d) m))))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg _ ((congrArg _ e₁).trans e₂)`. Take `⟨h1, h2⟩` from `hs 1 _ _ (hA a) m`. Use `Eq.trans ?_ (congrArg Units.val (val_const hJ' t _ h1)).symm` and prove the remaining obligations. Use `Eq.trans ?_ (gm_eq_germ_fnVal _ _ h1 _ z).symm` and prove the remaining obligations. Conclude with `congrArg _ (congrArg _ ((hτ _).trans h2.symm))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `hB.ph1 1 _ _ _ _ _ _ (hA a) (hA b) (hA e) m`. Rewrite using `[hB.ph2]`. Use `Eq.trans ?_ (congrArg Units.val (val_const (L := Lr.L) (φ := thφ G (x3 G)) (ε := thε) hJ' c.t _ h1)).symm` and prove the remaining obligations. Use `Eq.trans ?_ (gm_eq_germ_fnVal _ _ h1 _ z).symm` and prove the remaining obligations. Conclude with `congrArg _ (congrArg _ ((hτ _).trans h2.symm))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2⟩` from `hB.ad o 1 _ _ _ _ (hA a) (hA b) m`. Use `Eq.trans ?_ (congrArg (fun q => q⁻¹.val) (val_const hJ' (u o) _ h1)).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg Units.val (map_inv _ _))` and prove the remaining obligations. Use `Eq.trans ?_ (gm_eq_germ_fnVal _ _ h1 _ z).symm` and prove the remaining obligations. Conclude with `congrArg _ (congrArg _ ((hτ _).trans h2.symm))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem series_ext_one (hJet : JetAlgSt) (hRep : RepSt) (Lr : RigLB G) (c : CubicalStr G Lr) {O : Type} [CommRing O]
     [StarRing O] (act : ReciprocityTheory.ChartRestriction.G.Geo.Tor.OAct O G)
@@ -381,23 +377,23 @@ end Key
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (isCub_cubV cubV val₂) in
 
 /- English proof (translation)
-Introduce `hJet hRep _ _ _ R _ G _ _ s1 _ _ Lr c O _ _ act u hu d x hx j _ B hB w0 ρ hρ a N hN`. Take `⟨mu₀, h₀, v₀⟩` from `exists_gen_pull Lr c act a w0 N hN (u a) (hu a).1 ρ hρ`. Use `⟨⟨mu₀, h₀⟩, fun mu hmu M r hM hr => ?_⟩` and prove the remaining obligations. Take `⟨α, hα, vα⟩` from `exists_ratio Lr.isLB G.hom η[G].left (Over.w η[G]) s1 h₀ hmu`. Establish `E` using `series_ext_one hJet hRep Lr c act u x hx j B hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hκ : IsUnit ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom α)` using `hα.map _`. Establish `e1 : ∀ s : PS R 1 d, ev ![B.A.act 1] s = s` using `fun s => by`. Rewrite using `[B.A.one_act]`. Establish `: (![pt R d 0] : Fin 1 → Pt R 1 d) = fun j => pt R d j`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases j`. Both sides reduce to the same expression. Rewrite using `[this, FBOf.ev_self]`. Establish `a0 : act.act 0 = 1` using `by simpa using act_natCast_mul act 0 0`. Establish `hQ : ev ![B.A.act 1, B.A.act 0, B.A.act 0] B.ph2 = 1` using `E _ _ fun T z J hJ Φ y _ _ p _ => by`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[p, a0, MonObj.comp_one, (isCub_cubV c hJ).face₂, map_one, Units.val_one]`. Establish `w1 : constantCoeff B.ph2 = 1`. Rewrite using `[← FramePull.constantCoeff_ev_eq (FramePull.cz3 (x := (0 : Pt R 2 d)) (fun _ => by simp) (FramePull.constantCoeff_point 0) (FramePull.constantCoeff_point 1)), B.cocycleRight_zero_fst, map_one]`. Take `⟨P, hP⟩ : ∃ P : PS R 1 d, P = ∏ i ∈ Finset.range N, ev ![B.A.act 1, B.A.act ((i : O) * w0), B.A.act w0] B.ph2` from `⟨_, rfl⟩`. Establish `P1 : constantCoeff P = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, map_prod]`. Conclude with `Finset.prod_eq_one fun i _ => by`. Rewrite using `[FramePull.constantCoeff_ev_eq (FramePull.cz3 (B.A.const _) (B.A.const _) (B.A.const _)), w1]`. Establish `PQ : P * invOfUnit P 1 = 1` using `mul_invOfUnit P 1 (by simpa using P1)`. Establish `main : ev ![B.A.act 1, B.A.act (w0 * a)] (B.ad a) * r ^ N = C (hκ.unit : R) * M * ev (n` using `1) ![B.A.act a] r * P := E _ _ fun T z J hJ Φ y q₀ q₁ q₃ q₂ => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m₁` using `q₁ _ _ _ mu M hM 1`. Establish `m₂` using `q₁ _ _ _ ρ r hr 1`. Rewrite `m₁`, `m₂` using `[e1, act.one, Category.comp_id]`. Establish `eα : (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (hκ.unit : R) = α` using `(Scheme.ΓSpecIso (CommRingCat.of R)).hom_inv_id_apply α`. Establish `v` using `congrArg Units.val (v₀ T y z J hJ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `v` using `[Units.val_mul, Units.val_mul, Units.val_mul, vα _ _ z J hJ, Over.w, Units.val_pow_eq_pow_val, Units.coe_prod]`. Rewrite using `[map_mul, map_mul, map_mul, map_mul, map_pow, hP, map_prod, q₀, q₂, q₁ _ _ _ ρ r hr, m₁, m₂, eα, act.one, Category.comp_id, ← v]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [q₃, act.one, Category.comp_id]`. Use `⟨ev ![B.A.act 1, B.A.act (w0 * a)] (B.ad a) * invOfUnit P 1, hκ.unit, ?_, fun k _ _ _ h hh => ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_right_comm, main, _root_.mul_assoc _ P, PQ, _root_.mul_one]`. Establish `h1` using `isExpOf_ad hh a 1 (w0 * a)`. Establish `h2` using `isExpOf_prod hh 1 w0 hQ N`. Rewrite `h2` using `[← hP]`. Establish `e : star a * (w0 * a) = (N : O) * w0` using `by rw [← hN]; ring`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[e, _root_.mul_one]`. Establish `h3` using `(h1.mul (h2.neg PQ)).2`. Rewrite using `[FramePull.ev_actK_hL, FramePull.hL_eq, h3]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem frame_pullback_geo : JetAlgSt → RepSt → SerSt → SerExSt → RosIdSt → ∀ (R : Type) [CommRing R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G], Function.Surjective G.hom.appTop.hom → Function.Surjective (G ⊗ G).hom.appTop.hom → Function.Surjective (G ⊗ G ⊗ G).hom.appTop.hom → ∀ (Lr : RigLB G) (c : CubicalStr G Lr) (O : Type) [CommRing O] [StarRing O] (act : ReciprocityTheory.ChartRestriction.G.Geo.Tor.OAct O G) (u : ∀ a : O, LB.Gen (LB.LinComb Lr.L (rosatiφ G (act.act a) (act.act (star a))) rosatiε)), (∀ a, IsNormRos Lr.L _ _ (u a)) → ∀ (d : ℕ) (x : Fam G (Fin d)), IsUnivChart G d x → ∀ j : Lr.L.ι, ⊤ ≤ η[G].left ⁻¹ᵁ Lr.L.U j → ∀ B : FB R d O, IsFBOf Lr c act u x j B → ∀ (w0 : O) (ρ : LB.Gen (LB.LinComb Lr.L (primφ (act.act w0)) primε)), ρ.IsGen → ∀ (a : O) (N : ℕ), a * star a = (N : O) → (∃ mu : LB.Gen (LB.LinComb Lr.L (K := Fin 2) ![𝟙 G.left, (act.act a).left] ![(N : ℤ), -1]), mu.IsGen) ∧ ∀ mu : LB.Gen (LB.LinComb Lr.L (K := Fin 2) ![𝟙 G.left, (act.act a).left] ![(N : ℤ), -1]), mu.IsGen → ∀ M r : PS R 1 d, IsSer1 x _ (mu.s (fun _ => j)).val M → IsSer1 x _ (ρ.s (fun _ => j)).val r → ∃ (w : PS R 1 d) (κ : Rˣ), w * r ^ N = C (κ : R) * M * ev (n := 1) ![B.A.act a] r ∧ ∀ (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (h : PS k 2 d), B.IsCanonGauge k h → FB.toK k w = FB.expS k (ev (n := 1) ![B.actK k a] (B.hL k h w0) - (N : k) • B.hL k h w0) := by
   intro hJet hRep _ _ _ R _ G _ _ s1 _ _ Lr c O _ _ act u hu d x hx j _ B hB w0 ρ hρ a N hN

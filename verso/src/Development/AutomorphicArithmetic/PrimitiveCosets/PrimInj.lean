@@ -4,13 +4,13 @@ open UpperTheory.Comparison₂ Deduction.CH Formalism Formalism.HC Formalism.D5 
   Formalism.LFunctionChainParameters.LChain Formalism.LFunctionChainParameters.LHost
 
 /- English proof (translation)
-Introduce `φ H`. Prove the components needed by the constructor for the conclusion. Introduce `θ θ' h`. Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, rfl⟩` from `HostDer.art_surj H.der g`. Establish `h1` using `(H.toHostRaw.isPrimOf_prim θ).2`. Establish `h2` using `(H.toHostRaw.isPrimOf_prim θ').2`. Rewrite `h2` using `[← h]`. Establish `hc` using `ZMod.val_coe_unit_coprime u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `(h1 _ hc).symm.trans (h2 _ hc)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← HostRaw.dir_unit, ← HostRaw.dir_unit]`. Simplify `e` using `[HostRaw.dirAt, ZMod.natCast_zmod_val]`. Establish `hd : H.toHostRaw.dir 1 = 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `MulChar.ext` to reduce the goal to its premises. Introduce `u`. Rewrite using `[HostRaw.dir_unit]`. Simplify using the standard rewrite rules. Rewrite using `[HostRaw.prim, hd, PChar.of_one]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Comparison₂.prim_inj :
     ∀ (φ : Frame) (H : HostAx φ), Function.Injective H.toHostRaw.prim ∧ H.toHostRaw.prim 1 = PChar.one := by

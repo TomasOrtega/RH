@@ -3,19 +3,17 @@ import Mathlib
 open Polynomial Matrix
 
 /- English proof (translation)
-Introduce `R _ _ _ p _ _ x n hn hx hxn`. Establish `hp : p.Prime` using `Fact.out`. Take `⟨k, m, hpm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn p hp.ne_one`. Establish `hy1 : x ^ p ^ k - 1 = (x - 1) ^ p ^ k` using `by rw [sub_pow_char_pow, one_pow]`. Establish `hym : (x ^ p ^ k) ^ m = 1` using `by rw [← pow_mul]; exact hxn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyM : x ^ p ^ k - 1 ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[hy1]`. Conclude with `Ideal.pow_mem_of_mem _ hx _ (pow_pos hp.pos _)`. Establish `hmu : IsUnit (m : R)`. Establish `h0 : (m : ZMod p) ≠ 0` using `by rwa [Ne, ZMod.natCast_eq_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(Ne.isUnit h0).map (ZMod.castHom (dvd_refl p) R)`. Simplify using `using h`. Establish `hs : (∑ i ∈ Finset.range m, (x ^ p ^ k) ^ i) - m ∈ IsLocalRing.maximalIdeal R`. Establish `h : (∑ i ∈ Finset.range m, (x ^ p ^ k) ^ i) - m = ∑ i ∈ Finset.range m, ((x ^ p ^ k) ^ i - 1)`. Simplify using `[Finset.sum_sub_distrib]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `sub_dvd_pow_sub_pow (x ^ p ^ k) 1 i`. Rewrite `hc` using `[one_pow]`. Rewrite using `[hc]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_right _ _ hyM`. Establish `hsu : IsUnit (∑ i ∈ Finset.range m, (x ^ p ^ k) ^ i)`. Assume the negation of the conclusion as `h`. Establish `h'` using `(IsLocalRing.mem_maximalIdeal _).2 h`. Establish `h2` using `Ideal.sub_mem _ h' hs`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[sub_sub_cancel]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 h2 hmu`. Establish `hy0 : x ^ p ^ k - 1 = 0`. Establish `h` using `geom_sum_mul (x ^ p ^ k) m`. Rewrite `h` using `[hym, sub_self]`.
-
-Conclude with `hsu.mul_right_eq_zero.1 h`. Rewrite `hy0` using `[hy1]`. Conclude with `sub_eq_zero.1 ((pow_eq_zero_iff (pow_ne_zero _ hp.ne_zero)).1 hy0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.T.oneUnitTF :
     ∀ {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (p : ℕ) [Fact p.Prime] [CharP R p] (x : R) (n : ℕ),

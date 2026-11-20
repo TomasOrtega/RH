@@ -16,7 +16,7 @@ def RestOpen6E (D : Formalism.BasicNotions.D7) : Prop :=
     ∀ X : flipOneThree.Inst, AdmNoK D C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs X → RestOpen6 C0 CYb Cde Ck CD Cb CE1 CE2 Cc CM X
 
 /- English proof (translation)
-The claim follows from `thr_mono (fun C0 CYb Cde Ck CD Cb CE1 CE2 Cc hP Ckap Cs CM hCM X hA hH => by obtain ⟨a, b, c⟩ := hP Ckap Cs CM hCM X hA hH exact ⟨a, b, restDir_of c (restDimBC_proved C0 CE1 CE2 X)⟩) h`.
+A detailed English derivation is pending.
 -/
 theorem positive_of_dimension_change (D : Formalism.BasicNotions.D7) (h : RestOpen6E D) : RestOpen5E D :=
   thr_mono (fun C0 CYb Cde Ck CD Cb CE1 CE2 Cc hP Ckap Cs CM hCM X hA hH => by
@@ -24,7 +24,7 @@ theorem positive_of_dimension_change (D : Formalism.BasicNotions.D7) (h : RestOp
     exact ⟨a, b, restDir_of c (restDimBC_proved C0 CE1 CE2 X)⟩) h
 
 /- English proof (translation)
-The claim follows from `closed_of_open_positive D (positive_of_dimension_change D h)`.
+A detailed English derivation is pending.
 -/
 theorem closed_of_open_dimensions (D : Formalism.BasicNotions.D7) (h : RestOpen6E D) : IntegralityFromMetricForLargeConstants D :=
   closed_of_open_positive D (positive_of_dimension_change D h)

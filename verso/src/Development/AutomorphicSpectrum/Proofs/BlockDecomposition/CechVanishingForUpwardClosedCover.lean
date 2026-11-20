@@ -13,9 +13,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Crystal
 namespace GlobalTheory.CompanionTheory.GlobRel
 
 /- English proof (translation)
-Establish `key : ∀ a : K.H n, ψ.mapH n (φ.mapH n a) = a`. Introduce `a`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (ψ.mapZ n (φ.mapZ n z)) = Submodule.Quotient.mk z`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Subtype.ext (h n z.1)`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[← key a, ← key b, Subsingleton.elim (φ.mapH n a) (φ.mapH n b)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_H_of_retract {R : Type} [CommRing R] {K L : Cx R}
     (φ : Cx.Hom K L (RingHom.id R)) (ψ : Cx.Hom L K (RingHom.id R))
@@ -30,7 +30,7 @@ theorem subsingleton_H_of_retract {R : Type} [CommRing R] {K L : Cx R}
   rw [← key a, ← key b, Subsingleton.elim (φ.mapH n a) (φ.mapH n b)]
 
 /- English proof (translation)
-Set `G : B.FullSubcategory ⥤ P.FullSubcategory` to `P.lift (A.lift B.ι fun T => hBA _ T.property) fun T => (hP _).2 T.property`. Set `G' : P.FullSubcategory ⥤ B.FullSubcategory` to `B.lift (P.ι ⋙ A.ι) fun T => (hP _).1 T.property`. Set `m : CH.Mor (P.ι ⋙ A.ι ⋙ F) (B.ι ⋙ F) (RingHom.id R)` to `⟨G, fun _ => LinearMap.id, fun _ _ => rfl⟩`. Set `m' : CH.Mor (B.ι ⋙ F) (P.ι ⋙ A.ι ⋙ F) (RingHom.id R)` to `⟨G', fun _ => LinearMap.id, fun _ _ => rfl⟩`. Conclude with `subsingleton_H_of_retract m.hom m'.hom (fun n x => funext fun s => rfl) j hB`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem subsingleton_HU_iter {R : Type} [CommRing R] {C : Type 1} [Category.{0} C]
     (F : C ⥤ ModuleCat.{0} R) (A B : ObjectProperty C) (P : ObjectProperty A.FullSubcategory)
@@ -45,9 +45,9 @@ theorem subsingleton_HU_iter {R : Type} [CommRing R] {C : Type 1} [Category.{0} 
   exact subsingleton_H_of_retract m.hom m'.hom (fun n x => funext fun s => rfl) j hB
 
 /- English proof (translation)
-Introduce `R _ C _ F ι _ W hW s`. Set `U' : ι → ObjectProperty (ObjectProperty.FullSubcategory fun T : C => ∃ α, W α T)` to `fun α T => W α T.obj`. Establish `hU : ∀ α, Cosieve (U' α)` using `fun α T T' f h => hW α f.hom h T'.property`. Establish `hc : ∀ T, ∃ α, U' α T` using `fun T => T.property`. Establish `tr : ∀ S : Finset ι, S.Nonempty → ∀ j, Subsingleton (HU F (capS W S) j) → Subsingleton (HU ((ObjectProperty.ι fun T : C => ∃ α, W α T) ⋙ F) (capS U' S) j)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `S hS j h`. Take `⟨a, ha⟩` from `hS`. Conclude with `subsingleton_HU_iter F _ (capS W S) (capS U' S) (fun T hT => ⟨a, hT a ha⟩) (fun T => Iff.rfl) j h`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.cech_vanishing_from_cover ((ObjectProperty.ι fun T : C => ∃ α, W α T) ⋙ F) U' hU hc s`. Conclude with `⟨fun h j hj => h1 (fun S hS j hj => tr S hS j (h S hS j hj)) j hj, fun h j => h2 (fun S hS j => tr S hS j (h S hS j)) j, fun h j hj => h3 (fun S hS j hj => tr S hS j (h S hS j hj)) j hj⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem glob_van_rel : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R) {ι : Type} [Fintype ι]
     (W : ι → ObjectProperty C) (hW : ∀ α ⦃T T' : C⦄, (T ⟶ T') → W α T → (∃ β, W β T') → W α T') (s : ℕ),

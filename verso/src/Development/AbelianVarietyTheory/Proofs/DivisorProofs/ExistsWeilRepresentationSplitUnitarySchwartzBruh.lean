@@ -22,47 +22,39 @@ noncomputable section
 namespace GlobalTheory.KSp.Exist
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ _ c δ hE α _ _ ν _ _ Q hQ ψ hψ hψn hψ1 χ hχ hη _ _ μ _`. Take `⟨hFD, -, -, -, -, -, -, hM⟩` from `GlobalTheory.T.quadExt_topological_properties F E c δ hE`. Use `haveI := hFD`. Take `⟨hMT, hGood⟩` from `hM α ν`. Use `haveI := hMT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hGood.grp`. Take `⟨β, hβ, hβs, hβn, -, -⟩` from `GlobalTheory.T.hermitianMatrixColumnPairing_algebraic_properties F E c δ hE α ν Q hQ`. Establish `hpair : IsPair (fun x y : Matrix α ν E => ψ (pr c Q x y))`. Establish `h` using `GlobalTheory.T.isSelfDualBicharacterPairing_of_symmBilinForm F (Matrix α ν E) ψ hψ hψn hψ1 β hβs hβn`. Simplify `h` using `only [hβ]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfm : ∀ φ ∈ SB (Matrix α ν E), fou c ψ Q μ φ ∈ SB (Matrix α ν E)` using `fun φ hφ => GlobalTheory.T.bicharacterFourierTransform_mem_schwartzBruhat (Matrix α ν E) hGood μ _ hpair φ hφ`. Establish `hpm` using `GlobalTheory.T.siegelParabolic_preserves_schwartzBruhat F E c δ hE α ν Q hQ ψ hψ hψn hψ1 χ hχ hη`. Take `⟨hp1, hpmul⟩` from `GlobalTheory.T.parFun_sieg_mul' F E c δ hE α ν Q hQ ψ hψ hψn hψ1 χ hχ hη`. Take `⟨κ, hκ, hrel⟩` from `GlobalTheory.T.exists_weilRepresentation_bigCell_relation_fourier F E c δ hE α ν Q hQ ψ hψ hψn hψ1 χ hχ hη μ`. Take `⟨C, hC, hff⟩` from `GlobalTheory.T.bicharacterFourierTransform_twice_eq_pos_smul_reflect (Matrix α ν E) hGood μ _ hpair`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Set `parL : sieg c ν → Module.End ℂ (SB (Matrix α ν E))` to `fun p => { toFun := fun φ => ⟨parFun c ψ χ Q (mat c p) φ, hpm p p.2 φ φ.2⟩ map_add' := fun φ φ' => Subtype.ext (funext fun x => by`. Simplify using `only [parFun, Submodule.coe_add, Pi.add_apply]`. Use the proof step `ring)`. Use the proof step `map_smul' := fun z φ => Subtype.ext (funext fun x => by`. Simplify using `only [parFun, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `ring) }`. Set `ρ₀ : sieg c ν →* Module.End ℂ (SB (Matrix α ν E))` to `{ toFun := parL map_one' := LinearMap.ext fun φ => Subtype.ext (hp1 φ) map_mul' := fun p q => LinearMap.ext fun φ => Subtype.ext (hpmul p p.2 q q.2 φ) }`. Establish `hint : ∀ φ : Matrix α ν E → ℂ, φ ∈ SB (Matrix α ν E) → ∀ x, Integrable (fun y => ψ (pr c Q x y) * φ y) μ`. Introduce `φ hφ x`. Establish `hlc : IsLocallyConstant (fun y => ψ (pr c Q x y) * φ y)` using `(hpair.lc.comp_continuous (continuous_const.prodMk continuous_id)).mul hφ.1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hlc.continuous.integrable_of_hasCompactSupport hφ.2.mul_left`. Establish `fou_smul : ∀ (k : ℂ) (f : Matrix α ν E → ℂ) x, fou c ψ Q μ (k • f) x = k * fou c ψ Q μ f x`. Introduce `k f x`. Simplify using `only [fou, four, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Set `Fo : Module.End ℂ (SB (Matrix α ν E))` to `{ toFun := fun φ => ⟨fou c ψ Q μ φ, hfm φ φ.2⟩ map_add' := fun φ φ' => Subtype.ext (funext fun x => by`. Simplify using `only [fou, four, Submodule.coe_add, Pi.add_apply, mul_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `integral_add (hint _ φ.2 x) (hint _ φ'.2 x))`. Use the proof step `map_smul' := fun z φ => Subtype.ext (funext fun x => by`. Simplify using `only [Submodule.coe_smul, RingHom.id_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `fou_smul z _ x) }`. Establish `hne : (κ ^ 2 * (C : ℂ)) ≠ 0` using `mul_ne_zero (pow_ne_zero _ hκ) (by exact_mod_cast hC.ne')`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ φ : SB (Matrix α ν E), (((κ • Fo) ((κ • Fo) φ) : SB (Matrix α ν E)) : Matrix α ν E → ℂ) = fun x => (κ ^ 2 * (C : ℂ)) * (φ : Matrix α ν E → ℂ) (-x)`. Introduce `φ`. Use function extensionality and compare the values at `x`. Use `show κ * fou c ψ Q μ (κ • fou c ψ Q μ φ) x = _`. Rewrite using `[fou_smul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h` using `hff φ φ.2 x`. Express the relevant statement in the definitionally equal form `fou c ψ Q μ (fou c ψ Q μ φ) x = _ at h`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hW : IsUnit (κ • Fo)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Module.End.isUnit_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `h2` using `congrArg (fun φ => (((κ • Fo) φ : SB (Matrix α ν E)) : Matrix α ν E → ℂ)) hab`. Simplify using `only [key] at h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Establish `h3` using `congrFun h2 (-x)`. Simplify using `only [neg_neg] at h3`. Conclude with `mul_left_cancel₀ hne h3`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `φ`. Establish `hr : (fun x => (φ : Matrix α ν E → ℂ) (-x)) ∈ SB (Matrix α ν E)` using `⟨φ.2.1.comp_continuous continuous_neg, φ.2.2.comp_homeomorph (Homeomorph.neg _)⟩`. Use `⟨(κ ^ 2 * (C : ℂ))⁻¹ • (κ • Fo) ⟨_, hr⟩, Subtype.ext (funext fun x => ?_)⟩` and prove the remaining obligations. Rewrite using `[map_smul, Submodule.coe_smul, Pi.smul_apply, key]`. Simplify using `only [neg_neg, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `inv_mul_cancel_left₀ hne _`. Take `⟨Φ, hΦp, hΦw⟩` from `GlobalTheory.T.exists_hom_of_bigCell_generic_relations (UG c (stdJ ν E)) (Module.End ℂ (SB (Matrix α ν E)))ˣ (sieg c ν) (weyl c ν) ρ₀.toHomUnits hW.unit (by`. Introduce `p q hpq`. Apply `Units.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Establish `h` using `GlobalTheory.T.fourier_intertwines_siegelLeviOperator F E c δ hE α ν Q hQ ψ hψ hψn hψ1 χ hχ hη μ p p.2 q q.2 hpq φ`. Use `show κ * fou c ψ Q μ (parFun c ψ χ Q (mat c p) φ) x = parFun c ψ χ Q (mat c q) (κ • fou c ψ Q μ φ) x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[h]`. Simplify using `only [parFun, Pi.smul_apply, smul_eq_mul]`. Use the proof step `ring)`. Use the proof step `(by`. Introduce and unpack `p ⟨p₁, p₂, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨q₁, hq₁, q₂, hq₂, he, hop⟩` from `hrel p p.2 ⟨p₁, p₁.2, p₂, p₂.2, h⟩`. Use `⟨⟨q₁, hq₁⟩, ⟨q₂, hq₂⟩, he, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hop φ φ.2)`. Use the proof step `(by`. Introduce `s`. Take `⟨u, hu⟩` from `GlobalTheory.T.exists_translate_inCell' F E c δ hE ν s`.
-
-Use `⟨u, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, q, hq, h⟩` from `hu g hg`. Conclude with `⟨⟨p, hp⟩, ⟨q, hq⟩, h⟩)`. Use `⟨κ, (Units.coeHom _).comp Φ, ⟨fun p hp φ => ?_, fun φ => ?_⟩⟩` and prove the remaining obligations. Establish `h` using `hΦp ⟨p, hp⟩`.
-
-Express the relevant statement in the definitionally equal form `((Φ ((⟨p, hp⟩ : sieg c ν) : UG c (stdJ ν E)) : Module.End ℂ (SB (Matrix α ν E))) φ : Matrix α ν E → ℂ) = _`. Rewrite using `[h]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((Φ (weyl c ν) : Module.End ℂ (SB (Matrix α ν E))) φ : Matrix α ν E → ℂ) = _`. Rewrite using `[hΦw, IsUnit.unit_spec]`.
-
-Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isKW : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E] (c : E →ₐ[F] E) (δ : E) (hE : IsQuad c δ) (α : Type) [Fintype α] [DecidableEq α] (ν : Type) [Fintype ν] [DecidableEq ν] (Q : Matrix α α E) (_ : IsHerm c Q) (ψ : AddChar F ℂ) (hψ : Continuous ψ) (_ : ∀ t, ‖ψ t‖ = 1) (_ : ψ ≠ 1) (χ : Eˣ →* Circle) (_ : Continuous χ) (_ : ResEtaPow (R := F) ⊥ χ (Fintype.card α)) [MeasurableSpace (Matrix α ν E)] [BorelSpace (Matrix α ν E)] (μ : Measure (Matrix α ν E)) [μ.IsAddHaarMeasure], ∃ (κ : ℂ) (ω : Representation ℂ (UG c (stdJ ν E)) (SB (Matrix α ν E))), IsKW c ψ χ Q μ κ ω := by
   intro F _ _ _ _ _ E _ _ _ _ c δ hE α _ _ ν _ _ Q hQ ψ hψ hψn hψ1 χ hχ hη _ _ μ _

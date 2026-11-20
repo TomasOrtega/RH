@@ -22,9 +22,9 @@ section Abstract
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => classical`. Introduce `m hm k`. Rewrite `hm` using `[pow_zero, show (1 : MRing ι) = MvPolynomial.monomial 0 1 from rfl, MvPolynomial.support_monomial]`. Simplify using `at hm`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hm` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `Small.Fund.isMultiHomog_mul ih hf`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_pow' {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (n : ℕ) :
     IsMultiHomog (f ^ n) (n • a) := by
@@ -41,15 +41,15 @@ theorem isMultiHomog_pow' {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a)
     exact Small.Fund.isMultiHomog_mul ih hf
 
 /- English proof (translation)
-Take `⟨dg₀, dh₀, g₀, h₀, mg₀, mh₀, d₀, y₀, n₀, v₀⟩` from `hx`. Take `⟨dg, dh, g, h, mg, mh, d, yy, nz, v⟩` from `hW`. Establish `key` using `hS (dg + N • dh₀) (N • dg₀ + dh) (g * h₀ ^ N) (g₀ ^ N * h) z (Small.Fund.isMultiHomog_mul mg (isMultiHomog_pow' mh₀ N)) (Small.Fund.isMultiHomog_mul (isMultiHomog_pow' mg₀ N) mh) (fun k => by`. Establish `e1` using `d k`. Establish `e2` using `d₀ k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `hD k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Rewrite using `[e1, e2, e3]`. Use the proof step `ring)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `(by`. Simplify using `only [map_mul, map_pow]`. Rewrite using `[yy, y₀]`. Use the proof step `ring)`. Use `hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ev : ∀ f : MRing ι, MvPolynomial.eval z (MvPolynomial.map (Int.castRingHom ℂ) f) = MvPolynomial.aeval z f`. Introduce `f`. Rewrite using `[MvPolynomial.eval_map, MvPolynomial.aeval_def, algebraMap_int_eq]`. Rewrite `key` using `[ev, ev]`. Simplify using `only [map_mul, map_pow, norm_mul, norm_pow, v, v₀, mul_pow] at key`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `p1 : 0 < ‖MvPolynomial.aeval z h‖` using `norm_pos_iff.2 nz`. Establish `p2 : 0 < ‖MvPolynomial.aeval z h₀‖ ^ N` using `pow_pos (norm_pos_iff.2 n₀) N`. Establish `h3 : ‖W‖ * (‖MvPolynomial.aeval z h‖ * ‖MvPolynomial.aeval z h₀‖ ^ N) ≤ (‖x‖ ^ N * A.h z ^ τ) * (‖MvPolynomial.aeval z h‖ * ‖MvPolynomial.aeval z h₀‖ ^ N)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_right h3 (mul_pos p1 p2)`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_of_small (y : (Σ k, ι k) → Ω) (A : HermLine ι) (a₀ D : K → ℤ) (ε σ : Ω) (τ N : ℕ)
     (hD : ∀ k, D k = τ * A.a k + N * a₀ k) (hS : IsSmallH (mCoordIdeal y) y A τ σ)
@@ -89,11 +89,11 @@ theorem norm_le_of_small (y : (Σ k, ι k) → Ω) (A : HermLine ι) (a₀ D : K
   exact le_of_mul_le_mul_right h3 (mul_pos p1 p2)
 
 /- English proof (translation)
-Introduce `c hc`. Establish `h3` using `mul_mem (hσ c hc) (pow_mem (hε c hc) N)`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Establish `h4 : ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * D k)) = (∏ k, y ⟨k, c k⟩ ^ (-((τ : ℤ) * a k))) * (∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * a₀ k))) ^ N`. Rewrite using `[← Finset.prod_pow, ← Finset.prod_mul_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast (y ⟨k, c k⟩ ^ _) N, ← zpow_mul, ← zpow_add₀ (hc k), hD k]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h4, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mem_chartLatNm_mul (y : (Σ k, ι k) → Ω) (a a₀ D : K → ℤ) (τ N : ℕ) {σ ε : Ω}
     (hD : ∀ k, D k = τ * a k + N * a₀ k) (hσ : σ ∈ chartLatNm y a τ) (hε : ε ∈ chartLatNm y a₀ 1) :
@@ -113,15 +113,15 @@ theorem mem_chartLatNm_mul (y : (Σ k, ι k) → Ω) (a a₀ D : K → ℤ) (τ 
   ring
 
 /- English proof (translation)
-Establish `hpos : 0 < Real.exp (((τ * q : ℕ) : ℝ) * (t + d)) * S ^ (τ * q)` using `by positivity`. Break down `hX.eq_or_lt with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Break down `Nat.eq_zero_or_pos τ with h1 | h1` into its components or cases. Substitute `h1` using the available equality.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Simplify using `using hW`. Establish `: (0 : ℝ) ^ (8 * τ) = 0` using `zero_pow (by omega)`. Rewrite `hW` using `[this, zero_mul]`. Conclude with `hW.trans hpos.le`. Establish `h2` using `pow_le_pow_left₀ (by positivity) (hb h0.ne') τ`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : X ^ (8 * τ) * (Real.exp (q * t) * Hh) ^ τ = (X ^ 8 * Hh) ^ τ * Real.exp (q * t) ^ τ`. Rewrite using `[pow_mul, mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : Real.exp (((τ * q : ℕ) : ℝ) * (t + d)) * S ^ (τ * q) = (Real.exp (q * d) * S ^ q) ^ τ * Real.exp (q * t) ^ τ`. Rewrite using `[mul_pow, ← Real.exp_nat_mul, ← Real.exp_nat_mul, pow_mul' S]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((τ * q : ℕ) : ℝ) * (t + d) = τ * (q * d) + τ * (q * t)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Rewrite `hW` using `[e1]`. Conclude with `hW.trans (mul_le_mul_of_nonneg_right h2 (by positivity))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonzeroDefect_height_power_absorbs_constants {X Hh S t d W : ℝ} {τ q : ℕ} (hX : 0 ≤ X) (hH : 0 < Hh) (hS : 0 < S)
     (hb : X ≠ 0 → X ^ 8 * Hh ≤ Real.exp (q * d) * S ^ q)
@@ -159,9 +159,9 @@ section Model
 variable {Ψ : Type} [Fintype Ψ] {Nn : ℕ}
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `none`. Simplify using `only [Top.RootModel.coef]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `some r`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Simplify using `only [Top.RootModel.coef, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coef_split (RM : Top.RootModel Ψ Nn) (lam nu : Top.Wt Ψ Nn) (s : ℝ) (j : Option (Ψ × Fin Nn)) :
     RM.coef (lam - s • nu) s j = RM.coef lam 0 j - s * RM.coef nu (-1) j := by
@@ -174,7 +174,7 @@ theorem coef_split (RM : Top.RootModel Ψ Nn) (lam nu : Top.Wt Ψ Nn) (s : ℝ) 
     ring
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `none => rfl`. Consider the case `some r => exact (RM.x_deg t r).trans (RM.x_deg t' r).symm`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem line_a (RM : Top.RootModel Ψ Nn) (t t' : ℝ) (j : Option (Ψ × Fin Nn)) : (RM.line t j).a = (RM.line t' j).a := by
   cases j with
@@ -182,13 +182,13 @@ theorem line_a (RM : Top.RootModel Ψ Nn) (t t' : ℝ) (j : Option (Ψ × Fin Nn
   | some r => exact (RM.x_deg t r).trans (RM.x_deg t' r).symm
 
 /- English proof (translation)
-Establish `hq₀R : (q₀ : ℝ) ≠ 0` using `by exact_mod_cast hq₀.ne'`. Establish `hxn : 0 < ‖x‖` using `norm_pos_iff.2 hx`. Establish `hH : 0 < (Top.combLine (RM.line t) m).h z` using `(Top.combLine (RM.line t) m).pos z hz`. Establish `hl : Real.log ((Top.combLine (RM.line t) m).h z) = ∑ j, (m j : ℝ) * Real.log ((RM.line t j).h z)` using `by show Real.log (∏ j, (RM.line t j).h z ^ m j) = _`. Rewrite using `[Real.log_prod (fun j _ => zpow_ne_zero _ ((RM.line t j).pos z hz).ne')]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Real.log_zpow]`. Establish `e1 : Real.log (‖x‖ ^ 8 * (Top.combLine (RM.line t) m).h z) = q * (s / q₀ * Real.log ‖x‖ + RM.weight t (lam - s • nu) s z)`. Rewrite using `[Real.log_mul (by positivity) hH.ne', Real.log_pow, hl]`. Simplify using `only [hm, Top.RootModel.weight, mul_add, Finset.mul_sum, mul_assoc]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: (q : ℝ) * (s / q₀ * Real.log ‖x‖) = (q * s) / q₀ * Real.log ‖x‖` using `by ring`. Rewrite using `[this, hq]`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : Real.exp (q * (C * s)) * S ^ q = Real.exp (q * (C * s + Real.log S))`. Rewrite using `[mul_add, Real.exp_add, Real.exp_nat_mul (Real.log S), Real.exp_log hS]`. Rewrite using `[e2, ← Real.exp_log (show 0 < ‖x‖ ^ 8 * (Top.combLine (RM.line t) m).h z by positivity), e1]`. Conclude with `Real.exp_le_exp.2 (mul_le_mul_of_nonneg_left hI (Nat.cast_nonneg q))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scaled_bound (RM : Top.RootModel Ψ Nn) (lam nu : Top.Wt Ψ Nn) {z : (Σ k, RM.ι k) → ℂ}
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (q q₀ : ℕ) (hq₀ : 0 < q₀) (s C S t : ℝ) (hS : 0 < S) (x : ℂ) (hx : x ≠ 0)
@@ -228,7 +228,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))} {Fx : FixedData Y Sys}
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `none => simp [nOf]`. Consider the case `some r => simp [nOf]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem nOf_smul (u : GlobalTheory.AllWt.Weight Dw) (k : ℕ) (j : Option (RootIx Dw)) : nOf (k • u) j = k * nOf u j := by
   cases j with
@@ -236,14 +236,14 @@ theorem nOf_smul (u : GlobalTheory.AllWt.Weight Dw) (k : ℕ) (j : Option (RootI
   | some r => simp [nOf]
 
 /- English proof (translation)
-Simplify using `[Top.combLine, Finset.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem combLine_a_apply {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {J : Type} [Fintype J]
     (ℓ : J → HermLine ι) (n : J → ℤ) (k : K) : (Top.combLine ℓ n).a k = ∑ j, n j * (ℓ j).a k := by
   simp [Top.combLine, Finset.sum_apply]
 
 /- English proof (translation)
-Simplify using `only [degOf, combLine_a_apply, nOf_smul, hm, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[line_a RM t 1 j]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem deg_eq (u : GlobalTheory.AllWt.Weight Dw) (n₀ m : Option (RootIx Dw) → ℤ) (q τ : ℕ) (t : ℝ)
     (hm : ∀ j, m j = q * nOf u j - 8 * n₀ j) (k : RM.K) :
@@ -255,13 +255,13 @@ theorem deg_eq (u : GlobalTheory.AllWt.Weight Dw) (n₀ m : Option (RootIx Dw) �
   ring
 
 /- English proof (translation)
-Establish `hD : ∀ k, degOf RM ((τ * q) • u) k = τ * (Top.combLine (RM.line (Top.scale s)) m).a k + ((8 * τ : ℕ) : ℤ) * (Top.combLine (RM.line 1) n₀).a k` using `deg_eq u n₀ m q τ _ hmZ`. Rewrite using `[← pow_mul]`. Use `⟨mem_chartLatNm_mul RM.y _ _ _ τ (8 * τ) hD hσ hεm, ?_⟩` and prove the remaining obligations. Use `show HodgeLe Or _ _ _`. Unfold `HodgeLe`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨w * e, hform, fun z hz hne W hW => ?_⟩` and prove the remaining obligations. Rewrite `hne` using `[map_mul]`. Take `⟨x, hx⟩` from `hev z (right_ne_zero_of_mul hne)`. Establish `hb` using `norm_le_of_small RM.y (Small.shiftH (Top.combLine (RM.line (Top.scale s)) m) (q * t)) _ _ ε σ τ (8 * τ) hD hS hz hx hW`. Establish `hSv : 0 < ∏ r, (Or.sing r).h z ^ nOf u (some r)` using `Finset.prod_pos fun r _ => zpow_pos ((Or.sing r).pos z hz.1) _`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `nonzeroDefect_height_power_absorbs_constants (X := ‖x‖) (Hh := (Top.combLine (RM.line (Top.scale s)) m).h z) (S := ∏ r, (Or.sing r).h z ^ nOf u (some r)) (t := t) (d := C * s) (W := ‖W‖) (τ := τ) (q := q) (norm_nonneg _) ((Top.combLine (RM.line (Top.scale s)) m).pos z hz.1) hSv ( …`. Establish `hprod : ∏ r, (Or.sing r).h z ^ nOf ((τ * q) • u) (some r) = (∏ r, (Or.sing r).h z ^ nOf u (some r)) ^ (τ * q)`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[nOf_smul, mul_comm, zpow_mul, zpow_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hprod]`. Conclude with `hfin`.
+A detailed English derivation is pending.
 -/
 theorem step (Or : RootOrigin Y S RM Fx) (u : GlobalTheory.AllWt.Weight Dw) (nu : Top.Wt (CMType H) (Dw.p + Dw.q))
     {q₀ : ℕ} (hq₀ : 0 < q₀) {n₀ : Option (RootIx Dw) → ℤ} {ε : RM.Ω}
@@ -308,25 +308,23 @@ theorem step (Or : RootOrigin Y S RM Fx) (u : GlobalTheory.AllWt.Weight Dw) (nu 
 end Step
 
 /- English proof (translation)
-Introduce `_ E _ _ _ H Dw l Xo c Y _ T o B b u hu`. Establish `hn' : ∀ j, (nOf u j : ℝ) = (T.M B b).coef (reW u) 0 j`. Introduce `j`. Consider the cases of `j with`. Consider the case `none => simp [nOf, Top.RootModel.coef]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `some r => simp [nOf, Top.RootModel.coef, reW]`. Establish `hreg : Top.RegDominant (reW u)` using `fun τ a b' h => by`. Use `hu τ h` as an intermediate fact. Simplify `this` using `[reW]`. Take `⟨q₀, n₀, ε, w, C, s₀, hq₀, hn₀, hε0, hεm, hw, hC, hs₀, hI⟩` from `GlobalTheory.T.good_origin_root_weight_bound E H Dw l Xo c Y T o B b (reW u) (nOf u) hn' hreg`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, hev⟩` from `GlobalTheory.T.exists_form_defining_value _ _ _ (T.M B b).y (T.M B b).birational (T.M B b).arith.2.1.2.2 (Top.combLine ((T.M B b).line 1) n₀).a ε`. Take `⟨N₀, hN₀⟩` from `exists_nat_gt (1 / s₀)`. Establish `hform : Small.IsFormOff (mCoordIdeal (T.M B b).y) (w * e)`. Take `⟨d₁, h₁⟩` from `hw.1`. Take `⟨d₂, h₂⟩` from `he.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨_, Small.Fund.isMultiHomog_mul h₁ h₂⟩, fun h => ?_⟩` and prove the remaining obligations. Establish `hp : (mCoordIdeal (T.M B b).y).IsPrime` using `RingHom.ker_isPrime _`. Break down `hp.mem_or_mem h with h | h` into its components or cases. Conclude with `hw.2 h`. Conclude with `he.2 h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `sq : ℕ → ℝ` to `fun n => 1 / (((n + N₀ : ℕ) : ℝ) + 1)`. Set `qq : ℕ → ℕ` to `fun n => 8 * q₀ * (n + N₀ + 1)`. Establish `hsq : ∀ n, 0 < sq n` using `fun n => by positivity`. Establish `hqs : ∀ n, (qq n : ℝ) * sq n = 8 * q₀`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [qq, sq]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hsle : ∀ n, sq n ≤ s₀`. Introduce `n`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h1 : 1 / s₀ < ((n + N₀ : ℕ) : ℝ) + 1`. Use `push_cast`. Establish `: (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `(div_lt_iff₀ hs₀).1 h1`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((div_le_iff₀ (by positivity)).2 (by linarith))`. Establish `hmR : ∀ n j, (((qq n : ℤ) * nOf u j - 8 * n₀ j : ℤ) : ℝ) = qq n * (T.M B b).coef (reW u - sq n • T.nu) (sq n) j`. Introduce `n j`. Rewrite using `[coef_split, ← hn', mul_sub, ← mul_assoc, hqs]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hn₀ j]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨C, sq, qq, fun n j => (qq n : ℤ) * nOf u j - 8 * n₀ j, fun _ => ε ^ 8, hC, hsq, ?_, ?_, hmR, ?_⟩` and prove the remaining obligations. Conclude with `(tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)).comp (tendsto_add_atTop_nat N₀)`. Introduce `n`.
-
-Use `⟨by simp only [qq]; positivity, ⟨q₀ * (n + N₀ + 1), by simp only [qq]; ring⟩, pow_ne_zero _ hε0⟩` and prove the remaining obligations. Introduce `n τ t σ hσ hS`. Conclude with `step (o.toTowerOrigin.Or B b) u T.nu hq₀ hεm hform (fun z hz => hev ℂ z hz) (qq n) (hqs n) _ (fun _ => rfl) (hmR n) (fun z hz hwz x hx hx0 => hI (sq n) (hsq n) (hsle n) z hz hwz x hx hx0) τ σ hσ hS`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vs_mult : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : Top.RootTower (CMType H) (Dw.p + Dw.q)) (o : Top.GoodOrigin Y T) (B : ℕ) (b : T.Comp) (u : GlobalTheory.AllWt.Weight Dw), (∀ τ, StrictAnti (u τ)) → ∃ (C : ℝ) (s : ℕ → ℝ) (q : ℕ → ℕ) (m : ℕ → Option (RootIx Dw) → ℤ) (θ : ℕ → (T.M B b).Ω), 0 ≤ C ∧ (∀ n, 0 < s n) ∧ Tendsto s atTop (𝓝 0) ∧ (∀ n, 0 < q n ∧ 8 ∣ q n ∧ θ n ≠ 0) ∧ (∀ n j, (m n j : ℝ) = q n * (T.M B b).coef (T.lamS (reW u) (s n)) (s n) j) ∧ ∀ (n τ : ℕ) (t : ℝ), ∀ σ ∈ chartLatNm (T.M B b).y (Top.combLine ((T.M B b).line (Top.scale (s n))) (m n)).a τ, IsSmallH (mCoordIdeal (T.M B b).y) (T.M B b).y (Small.shiftH (Top.combLine ((T.M B b).line (Top.scale (s n))) (m n)) (q n * t)) τ σ → σ * θ n ^ τ ∈ modelSmall (o.toTowerOrigin.Or B b) ((τ * q n) • u) (Real.exp (((τ * q n : ℕ) : ℝ) * (t + C * s n))) := by
   intro _ E _ _ _ H Dw l Xo c Y _ T o B b u hu

@@ -15,7 +15,7 @@ namespace GlobalTheory.CompanionTheory.ConeHaar
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hU : IsUnit (star g)` using `((Matrix.isUnit_iff_isUnit_det g).2 (isUnit_iff_ne_zero.2 hg)).star`. Establish `h` using `Matrix.IsUnit.posDef_star_left_conjugate_iff (x := H) hU`. Rewrite `h` using `[star_star, Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem posDef_congr_iff (g H : Mat n) (hg : g.det ≠ 0) : (g * H * gᴴ).PosDef ↔ H.PosDef := by
   have hU : IsUnit (star g) := ((Matrix.isUnit_iff_isUnit_det g).2 (isUnit_iff_ne_zero.2 hg)).star
@@ -23,7 +23,7 @@ theorem posDef_congr_iff (g H : Mat n) (hg : g.det ≠ 0) : (g * H * gᴴ).PosDe
   rwa [star_star, Matrix.star_eq_conjTranspose] at h
 
 /- English proof (translation)
-Establish `h1 : (g * H * gᴴ).det = ((‖g.det‖ ^ 2 : ℝ) : ℂ) * H.det`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, Complex.star_def, ← Complex.normSq_eq_norm_sq, ← Complex.mul_conj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, Complex.re_ofReal_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_congr_re (g H : Mat n) : (g * H * gᴴ).det.re = ‖g.det‖ ^ 2 * H.det.re := by
   have h1 : (g * H * gᴴ).det = ((‖g.det‖ ^ 2 : ℝ) : ℂ) * H.det := by
@@ -33,7 +33,7 @@ theorem det_congr_re (g H : Mat n) : (g * H * gᴴ).det.re = ‖g.det‖ ^ 2 * H
   rw [h1, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Unfold `coneW`. Rewrite using `[h, det_congr_re, ← ENNReal.ofReal_mul (inv_nonneg.2 (pow_nonneg (norm_nonneg g.det) (2 * n))), mul_pow, ← pow_mul, mul_inv]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem coneW_congr (g : Mat n) (v w : Fin n × Fin n → ℝ) (h : hOf w = g * hOf v * gᴴ) :
     coneW n w = ENNReal.ofReal ((‖g.det‖ ^ (2 * n))⁻¹) * coneW n v := by
@@ -42,19 +42,17 @@ theorem coneW_congr (g : Mat n) (v w : Fin n × Fin n → ℝ) (h : hOf w = g * 
     mul_pow, ← pow_mul, mul_inv]
 
 /- English proof (translation)
-Establish `hd : 0 < LinearMap.det T`. Rewrite using `[hdet]`. Conclude with `pow_pos (norm_pos_iff.2 hg) _`. Establish `hdT : LinearMap.det T ≠ 0` using `hd.ne'`. Set `e : (Fin n × Fin n → ℝ) ≃ᵐ (Fin n × Fin n → ℝ)` to `(LinearMap.equivOfDetNeZero T hdT).toContinuousLinearEquiv.toHomeomorph.toMeasurableEquiv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : (e : (Fin n × Fin n → ℝ) → (Fin n × Fin n → ℝ)) = T` using `rfl`. Establish `hC : e ⁻¹' cone n = cone n`. Use extensionality with `v`. Use `show (hOf (T v)).PosDef ↔ (hOf v).PosDef`. Rewrite using `[hT v]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `posDef_congr_iff g (hOf v) hg`. Establish `hW : ∀ v, coneW n (e v) = ENNReal.ofReal (LinearMap.det T)⁻¹ * coneW n v`. Introduce `v`. Rewrite using `[hdet]`. Conclude with `coneW_congr g v (T v) (hT v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvol : Measure.map e volume = ENNReal.ofReal (LinearMap.det T)⁻¹ • (volume : Measure (Fin n × Fin n → ℝ))`. Rewrite using `[he, Real.map_linearMap_volume_pi_eq_smul_volume_pi hdT, abs_of_pos (inv_pos.2 hd)]`. Establish `hmap : Measure.map e ((volume : Measure (Fin n × Fin n → ℝ)).restrict (cone n)) = ENNReal.ofReal (LinearMap.det T)⁻¹ • (volume : Measure (Fin n × Fin n → ℝ)).restrict (cone n)` using `by conv_lhs => rw [← hC]`. Rewrite using `[← MeasurableEquiv.restrict_map, hvol, Measure.restrict_smul]`. Establish `ha0 : ENNReal.ofReal (LinearMap.det T)⁻¹ ≠ 0` using `(ENNReal.ofReal_pos.2 (inv_pos.2 hd)).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hatop : ENNReal.ofReal (LinearMap.det T)⁻¹ ≠ ⊤` using `ENNReal.ofReal_ne_top`. Rewrite using `[← he]`. Use extensionality with `s hs`. Rewrite using `[MeasurableEquiv.map_apply]`. Unfold `coneMeas`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[withDensity_apply _ (e.measurable hs), withDensity_apply _ hs, ← ENNReal.mul_right_inj ha0 hatop]`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[hW]`. Rewrite using `[lintegral_const_mul' _ _ hatop]`. Use `_ = ∫⁻ w in s, coneW n w ∂Measure.map e ((volume : Measure (Fin n × Fin n → ℝ)).restrict (cone n)) := by`.
-
-Rewrite using `[MeasurableEquiv.restrict_map, lintegral_map_equiv]`. Use `_ = ENNReal.ofReal (LinearMap.det T)⁻¹ * ∫⁻ w in s, coneW n w ∂(volume : Measure (Fin n × Fin n → ℝ)).restrict (cone n) := by`. Rewrite using `[hmap, Measure.restrict_smul, lintegral_smul_measure, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_coneMeas_eq (n : ℕ) (g : Mat n) (hg : g.det ≠ 0)
     (T : (Fin n × Fin n → ℝ) →ₗ[ℝ] (Fin n × Fin n → ℝ)) (hT : ∀ v, hOf (T v) = g * hOf v * gᴴ)

@@ -7,7 +7,7 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JfS.Sym
 noncomputable section
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Conclude with `NormedSpace.expSeries_summable' X`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 lemma expS_summable {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
     Summable (fun m : ℕ => ((m.factorial : ℂ))⁻¹ • X ^ m) := by
@@ -29,11 +29,11 @@ Both sides reduce to the same expression.
 lemma mvL_apply {n : ℕ} (y : Fin n → ℂ) (M : Matrix (Fin n) (Fin n) ℂ) : mvL y M = M *ᵥ y := rfl
 
 /- English proof (translation)
-Establish `hs` using `expS_summable X`. Rewrite using `[NormedSpace.exp_eq_tsum (𝕂 := ℂ)]`. Use `show (∑' m : ℕ, ((m.factorial : ℂ))⁻¹ • X ^ m) *ᵥ y = y + X *ᵥ y`. Rewrite using `[← mvL_apply y, ContinuousLinearMap.map_tsum (mvL y) hs]`. Rewrite using `[tsum_eq_sum (s := Finset.range 2) ?_]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_range_succ, mvL_apply, Matrix.smul_mulVec]`. Introduce `m hm`. Simplify using `only [Finset.mem_range, not_lt] at hm`. Rewrite using `[mvL_apply, Matrix.smul_mulVec]`. Take `⟨j, rfl⟩ : ∃ j, m = j + 2` from `⟨m - 2, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_add, ← Matrix.mulVec_mulVec, pow_two, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_zero, smul_zero]`.
+A detailed English derivation is pending.
 -/
 lemma exp_mulVec_sq {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (y : Fin n → ℂ) (h : X *ᵥ (X *ᵥ y) = 0) :
     NormedSpace.exp X *ᵥ y = y + X *ᵥ y := by
@@ -50,7 +50,7 @@ lemma exp_mulVec_sq {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (y : Fin n → �
     rw [pow_add, ← Matrix.mulVec_mulVec, pow_two, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_zero, smul_zero]
 
 /- English proof (translation)
-Establish `h' : (c • X) *ᵥ ((c • X) *ᵥ y) = 0`. Rewrite using `[Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.mulVec_smul, h, smul_zero, smul_zero]`. Rewrite using `[exp_mulVec_sq (c • X) y h', Matrix.smul_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma exp_smul_mulVec_sq {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (y : Fin n → ℂ) (h : X *ᵥ (X *ᵥ y) = 0)
     (c : ℂ) : NormedSpace.exp (c • X) *ᵥ y = y + c • (X *ᵥ y) := by
@@ -59,7 +59,7 @@ lemma exp_smul_mulVec_sq {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (y : Fin n �
   rw [exp_mulVec_sq (c • X) y h', Matrix.smul_mulVec]
 
 /- English proof (translation)
-Establish `h2 : X *ᵥ (X *ᵥ y) = 0` using `by rw [h, Matrix.mulVec_zero]`. Rewrite using `[exp_smul_mulVec_sq X y h2 c, h, smul_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma exp_smul_mulVec_fix {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (y : Fin n → ℂ) (h : X *ᵥ y = 0)
     (c : ℂ) : NormedSpace.exp (c • X) *ᵥ y = y := by
@@ -69,16 +69,16 @@ lemma exp_smul_mulVec_fix {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (y : Fin n 
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `Hpk`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hpk_star (i j : Fin (2 * r + k + 1)) : star (Hpk k r i j) = Hpk k r i j := by
   unfold Hpk
   split_ifs <;> simp
 
 /- English proof (translation)
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Both sides reduce to the same expression. Establish `hji : ¬ j = i` using `fun h => hij h.symm`. Unfold `Hpk`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [hij, hji, and_false, if_false]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hpk_symm (i j : Fin (2 * r + k + 1)) : Hpk k r i j = Hpk k r j i := by
   by_cases hij : i = j
@@ -90,7 +90,7 @@ lemma hpk_symm (i j : Fin (2 * r + k + 1)) : Hpk k r i j = Hpk k r j i := by
     split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `only [herm, dotProduct, mulVec, star_sum, star_mul', star_star, Pi.star_apply, hpk_star, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hpk_symm j i]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma herm_conj (y w : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) y w = star (herm (Hpk k r) w y) := by
   simp only [herm, dotProduct, mulVec, star_sum, star_mul', star_star, Pi.star_apply, hpk_star,
@@ -101,7 +101,7 @@ lemma herm_conj (y w : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) y w = star 
   ring
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [vecMulVec, mulVec, dotProduct, Matrix.of_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma vmv_mulVec {n : ℕ} (u w y : Fin n → ℂ) : vecMulVec u w *ᵥ y = (w ⬝ᵥ y) • u := by
   ext i
@@ -111,7 +111,7 @@ lemma vmv_mulVec {n : ℕ} (u w y : Fin n → ℂ) : vecMulVec u w *ᵥ y = (w �
   ring
 
 /- English proof (translation)
-Simplify using `only [herm, dotProduct, mulVec, star_sum, star_mul', Pi.star_apply, hpk_star, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hpk_symm j i]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma star_hpk_dot (v y : Fin (2 * r + k + 1) → ℂ) : star (Hpk k r *ᵥ v) ⬝ᵥ y = herm (Hpk k r) y v := by
   simp only [herm, dotProduct, mulVec, star_sum, star_mul', Pi.star_apply, hpk_star, Finset.sum_mul,
@@ -122,7 +122,7 @@ lemma star_hpk_dot (v y : Fin (2 * r + k + 1) → ℂ) : star (Hpk k r *ᵥ v) �
   ring
 
 /- English proof (translation)
-Unfold `Xuv`. Rewrite using `[Matrix.sub_mulVec, vmv_mulVec, vmv_mulVec, star_hpk_dot, star_hpk_dot]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem xuv_mulVec (u v y : Fin (2 * r + k + 1) → ℂ) :
     Xuv k r u v *ᵥ y = herm (Hpk k r) y v • u - herm (Hpk k r) y u • v := by
@@ -130,7 +130,7 @@ theorem xuv_mulVec (u v y : Fin (2 * r + k + 1) → ℂ) :
   rw [Matrix.sub_mulVec, vmv_mulVec, vmv_mulVec, star_hpk_dot, star_hpk_dot]
 
 /- English proof (translation)
-Establish `hH : (Hpk k r)ᴴ = Hpk k r` using `(hpkFacts k r).1`. Establish `e1 : star (Hpk k r *ᵥ u) = star u ᵥ* Hpk k r` using `by rw [Matrix.star_mulVec, hH]`. Establish `e2 : star (Hpk k r *ᵥ v) = star v ᵥ* Hpk k r` using `by rw [Matrix.star_mulVec, hH]`. Unfold `B.inLie Xuv`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_vecMulVec, Matrix.conjTranspose_vecMulVec, star_star, star_star, Matrix.sub_mul, Matrix.mul_sub, Matrix.vecMulVec_mul, Matrix.vecMulVec_mul, Matrix.mul_vecMulVec, Matrix.mul_vecMulVec, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -145,27 +145,27 @@ theorem xuv_inLie (u v : Fin (2 * r + k + 1) → ℂ) : B.inLie k r (Xuv k r u v
   abel
 
 /- English proof (translation)
-Simplify using `[bvec, Matrix.mulVec_single]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mat_eq_mulVec_bvec {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : M i j = (M *ᵥ bvec j) i := by
   simp [bvec, Matrix.mulVec_single]
 
 /- English proof (translation)
-Simplify using `[herm, bvec, dotProduct, Matrix.mulVec_single]`.
+Simplify using the standard rewrite rules.
 -/
 lemma herm_bvec_left (p : Fin (2 * r + k + 1)) (w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (bvec p) w = ∑ i, star (w i) * Hpk k r i p := by
   simp [herm, bvec, dotProduct, Matrix.mulVec_single]
 
 /- English proof (translation)
-Rewrite using `[herm_bvec_left]`. Simplify using `[bvec, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma herm_bvec_bvec (p q : Fin (2 * r + k + 1)) : herm (Hpk k r) (bvec p) (bvec q) = Hpk k r q p := by
   rw [herm_bvec_left]
   simp [bvec, Pi.single_apply]
 
 /- English proof (translation)
-Establish `hc` using `c.isLt`. Establish `hi` using `i.isLt`. Unfold `Hpk`. Simplify using `only [eI, esI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hpk_col_eI (c : Fin r) (i : Fin (2 * r + k + 1)) :
     Hpk k r i (eI k r c) = if i = esI k r c then 1 else 0 := by
@@ -176,7 +176,7 @@ lemma hpk_col_eI (c : Fin r) (i : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `hc` using `c.isLt`. Establish `hi` using `i.isLt`. Unfold `Hpk`. Simplify using `only [eI, esI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hpk_col_esI (c : Fin r) (i : Fin (2 * r + k + 1)) :
     Hpk k r i (esI k r c) = if i = eI k r c then 1 else 0 := by
@@ -187,7 +187,7 @@ lemma hpk_col_esI (c : Fin r) (i : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Rewrite using `[herm_bvec_left]`. Simplify using `[hpk_col_eI]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma herm_eI_left (c : Fin r) (w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (bvec (eI k r c)) w = star (w (esI k r c)) := by
@@ -195,7 +195,7 @@ lemma herm_eI_left (c : Fin r) (w : Fin (2 * r + k + 1) → ℂ) :
   simp [hpk_col_eI]
 
 /- English proof (translation)
-Rewrite using `[herm_bvec_left]`. Simplify using `[hpk_col_esI]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma herm_esI_left (c : Fin r) (w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (bvec (esI k r c)) w = star (w (eI k r c)) := by
@@ -203,7 +203,7 @@ lemma herm_esI_left (c : Fin r) (w : Fin (2 * r + k + 1) → ℂ) :
   simp [hpk_col_esI]
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Unfold `Hpk`. Simplify using `only [eI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hpk_eI_row_block (a : Fin r) (j : Fin (2 * r + k + 1)) (hj : r ≤ j.val) (hj' : j.val ≤ r + k) :
     Hpk k r (eI k r a) j = 0 := by
@@ -213,7 +213,7 @@ lemma hpk_eI_row_block (a : Fin r) (j : Fin (2 * r + k + 1)) (hj : r ≤ j.val) 
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Establish `hc` using `c.isLt`. Unfold `Hpk`. Simplify using `only [eI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hpk_eI_eI (a c : Fin r) : Hpk k r (eI k r a) (eI k r c) = 0 := by
   have ha := a.isLt
@@ -223,7 +223,7 @@ lemma hpk_eI_eI (a c : Fin r) : Hpk k r (eI k r a) (eI k r c) = 0 := by
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Use `⟨?_, fun a => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩` and prove the remaining obligations. Use `show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ᴴ * Hpk k r * 1 = Hpk k r`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma one_mem_UWset (z : Fin (2 * r + k + 1) → ℂ) : (1 : B.Mat k r) ∈ UWset k r z := by
   refine ⟨?_, fun a => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩
@@ -231,21 +231,21 @@ lemma one_mem_UWset (z : Fin (2 * r + k + 1) → ℂ) : (1 : B.Mat k r) ∈ UWse
   simp
 
 /- English proof (translation)
-Introduce `t`. Use `set X := Xuv k r (bvec (eI k r a)) v with hX`. Establish `hXa : X *ᵥ bvec (eI k r a) = 0`. Rewrite using `[hX, xuv_mulVec, herm_eI_left, hv a le_rfl, herm_bvec_bvec, hpk_eI_eI]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hXc : ∀ c : Fin r, X *ᵥ bvec (eI k r c) = star (v (esI k r c)) • bvec (eI k r a)`. Introduce `c`. Rewrite using `[hX, xuv_mulVec, herm_eI_left, herm_bvec_bvec, hpk_eI_eI]`. Simplify using the standard rewrite rules. Establish `hXj : ∀ j : Fin (2 * r + k + 1), r ≤ j.val → j.val ≤ r + k → X *ᵥ bvec j = herm (Hpk k r) (bvec j) v • bvec (eI k r a)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj hj'`. Rewrite using `[hX, xuv_mulVec, herm_bvec_bvec, hpk_eI_row_block a j hj hj']`. Simplify using the standard rewrite rules. Use `⟨1, one_mem_UWset z, NormedSpace.exp ((t : ℂ) • X), ⟨Formalism.FourierDecayAlt.P.B5.exp_mem (xuv_inLie _ _) t, ?_, ?_⟩, (Matrix.one_mul _).symm⟩` and prove the remaining obligations. Introduce `c i hci`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `exp_smul_mulVec_sq X (bvec (eI k r c)) (by rw [hXc, Matrix.mulVec_smul, hXa, smul_zero]) (t : ℂ)`. Rewrite using `[show NormedSpace.exp ((t : ℂ) • X) i (eI k r c) = (NormedSpace.exp ((t : ℂ) • X) *ᵥ bvec (eI k r c)) i from mat_eq_mulVec_bvec _ _ _, e, hXc]`. Establish `hz : star (v (esI k r c)) * bvec (eI k r a) i = 0`. Distinguish the cases in `hca : c.val ≤ a.val`. Rewrite using `[hv c hca]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `: i ≠ eI k r a`. Introduce `h`. Rewrite `hci` using `[h]`. Simplify using `only [eI] at hci`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[bvec, Pi.single_apply, this]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hz, mul_zero, add_zero]`. Simplify using `[bvec, Pi.single_apply]`. Introduce `i j hj hj' hi`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `exp_smul_mulVec_sq X (bvec j) (by rw [hXj j hj hj', Matrix.mulVec_smul, hXa, smul_zero]) (t : ℂ)`. Rewrite using `[show NormedSpace.exp ((t : ℂ) • X) i j = (NormedSpace.exp ((t : ℂ) • X) *ᵥ bvec j) i from mat_eq_mulVec_bvec _ _ _, e, hXj j hj hj']`. Establish `: i ≠ eI k r a`. Introduce `h`. Rewrite `hi` using `[h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [eI] at hi`. Use linear arithmetic over natural numbers and integers. Simplify using `[bvec, Pi.single_apply, this]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xuv_lieN (z : Fin (2 * r + k + 1) → ℂ) (a : Fin r) (v : Fin (2 * r + k + 1) → ℂ)
     (hv : ∀ b : Fin r, b.val ≤ a.val → v (esI k r b) = 0) :
@@ -287,13 +287,13 @@ theorem xuv_lieN (z : Fin (2 * r + k + 1) → ℂ) (a : Fin r) (v : Fin (2 * r +
     simp [bvec, Pi.single_apply, this]
 
 /- English proof (translation)
-Introduce `t`. Use `set X := Xuv k r u v with hX`. Establish `hes : ∀ (w : Fin (2 * r + k + 1) → ℂ), inWb k r w → ∀ c : Fin r, w (esI k r c) = 0`. Introduce `w hw c; exact hw _ (Or.inr (by simp only [esI]; omega))`. Establish `hei : ∀ (w : Fin (2 * r + k + 1) → ℂ), inWb k r w → ∀ c : Fin r, w (eI k r c) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw c; exact hw _ (Or.inl (by simp only [eI]; omega))`. Use `⟨Formalism.FourierDecayAlt.P.B5.exp_mem (xuv_inLie _ _) t, fun c => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `exp_smul_mulVec_fix X _ ?_ _` and prove the remaining obligations. Rewrite using `[hX, xuv_mulVec, herm_eI_left, herm_eI_left, hes v hv, hes u hu]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `exp_smul_mulVec_fix X _ ?_ _` and prove the remaining obligations. Rewrite using `[hX, xuv_mulVec, herm_esI_left, herm_esI_left, hei v hv, hei u hu]`. Simplify using the standard rewrite rules. Use `exp_smul_mulVec_fix X _ ?_ _` and prove the remaining obligations. Rewrite using `[hX, xuv_mulVec, herm_conj z v, herm_conj z u, hvz, huz]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem xuv_lieW (z u v : Fin (2 * r + k + 1) → ℂ) (hu : inWb k r u) (hv : inWb k r v)
     (huz : herm (Hpk k r) u z = 0) (hvz : herm (Hpk k r) v z = 0) :

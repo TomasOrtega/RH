@@ -12,7 +12,7 @@ namespace GlobalTheory.LvCover
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
 
 /- English proof (translation)
-Consider the cases of `o`. Consider the cases of `o'`. Consider the cases of `ht`. Consider the cases of `he`. Consider the cases of `heA`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
 Both sides reduce to the same expression.
 -/
@@ -25,13 +25,13 @@ theorem obj_ext {l : Level H} {B : Type} [CommRing B] {b : Base l B} {S : Scheme
   rfl
 
 /- English proof (translation)
-Use `o.proper` as an intermediate fact. Establish `: IsReduced (𝟙_ (Over S)).left` using `‹IsReduced S›`. Establish `ea : o.eta a = o.eta (vOf l • a)` using `by conv_lhs => rw [← one_smul (𝓞 E) a, ← uOf_add_vOf l, add_smul, o.eta_add, o.eta_ker _ (Submodule.smul_mem_smul (uOf_mem l) Submodule.mem_top), _root_.one_mul]`. Rewrite using `[ea]`. Use `Over.OverMorphism.ext (ext_of_fromSpecResidueField_eq _ _ o.t.G.hom Set.univ dense_univ (fun x _ => ?_) ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `k` to `AlgebraicClosure (S.residueField x)`. Set `i : Sp k ⟶ Spec (S.residueField x)` to `Spec.map (CommRingCat.ofHom (algebraMap (S.residueField x) k))`. Establish `: Flat i` using `(HasRingHomProperty.Spec_iff (P := @Flat)).2 (RingHom.flat_algebraMap_iff.2 inferInstance)`. Establish `: Surjective i` using `⟨fun z => ⟨⟨⊥, Ideal.isPrime_bot⟩, Subsingleton.elim (α := PrimeSpectrum _) _ _⟩⟩`. Establish `: Epi i` using `Flat.epi_of_flat_of_surjective _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, I, -, hA, hη⟩` from `o.geom k (i ≫ S.fromSpecResidueField x) (Spec.preimage ((i ≫ S.fromSpecResidueField x) ≫ s)).hom (Spec.map_preimage _).symm`. Establish `hM0 : 0 < l.M` using `by have := l.three_le; omega`. Establish `hq : 0 < l.A / l.M` using `Nat.div_pos (Nat.le_of_dvd l.A_pos hM) hM0`. Establish `e : toUnit (Over.mk (i ≫ S.fromSpecResidueField x)) ≫ o.etaA ((l.A / l.M) • (vOf l • a)) = toUnit _ ≫ o.eta (vOf l • a)`. Rewrite using `[hA, hη _ (Submodule.smul_mem_smul (vOf_mem l) Submodule.mem_top), GlobalTheory.ObjLower.map_nsmul_of_add _ (I.add _), ← I.tower l.M _ hM0 hq, Nat.mul_div_cancel' hM]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi i, ← Category.assoc, ← Category.assoc]`. Conclude with `congrArg (fun q => q.left) e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etaA_eq_eta {l : Level H} {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}} [IsReduced S]
     {s : S ⟶ Sp B} (o : Obj D l b s) (hM : l.M ∣ l.A) (a : D.La) :
@@ -61,9 +61,7 @@ theorem etaA_eq_eta {l : Level H} {B : Type} [CommRing B] {b : Base l B} {S : Sc
   exact congrArg (fun q => q.left) e
 
 /- English proof (translation)
-Use `obj_ext rfl (heq_of_eq (funext fun a => ?_)) (heq_of_eq (funext fun a => ?_))` and prove the remaining obligations. Use `show o.etaA ((l.A / l'.A) • ((l'.A / l.M) • (vOf l • a))) = o.eta a`. Rewrite using `[hAA, Nat.div_self l.A_pos, one_smul]`. Conclude with `etaA_eq_eta o hM a`. Use `show o.etaA ((l.A / l'.A) • ((l'.A / l.A) • a)) = o.etaA a`.
-
-Rewrite using `[hAA, Nat.div_self l.A_pos, one_smul, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reM_reM {l l' : Level H} {B : Type} [CommRing B] {b : Base l B} {b' : Base l' B} {S : Scheme.{0}} [IsReduced S]
     {s : S ⟶ Sp B} (o : Obj D l b s) (hAA : l'.A = l.A) (hM : l.M ∣ l.A) (hM' : l'.M ∣ l.A) (hA : l'.A ∣ l.A)
@@ -78,21 +76,19 @@ theorem reM_reM {l l' : Level H} {B : Type} [CommRing B] {b : Base l B} {b' : Ba
     rw [hAA, Nat.div_self l.A_pos, one_smul, one_smul]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l₁ l₂ Xo Xs c₁ c₂ Y Ys`. Establish `: IsReduced Xo.X`. Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim _`. Conclude with `isReduced_of_smooth Xo.s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsReduced Xs.X`. Use `Xs.smooth` as an intermediate fact. Establish `: Smooth Xs.s` using `SmoothOfRelativeDimension.smooth D.dim _`. Conclude with `isReduced_of_smooth Xs.s`. Establish `hζs : (baseKA (side l₁ l₂)).ζ = (baseKA (top l₁ l₂)).ζ ^ ((top l₁ l₂).A / (side l₁ l₂).A)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[show (top l₁ l₂).A / (side l₁ l₂).A = 1 from Nat.div_self (top l₁ l₂).A_pos, pow_one]`. Both sides reduce to the same expression. Establish `hζt : (baseKA (top l₁ l₂)).ζ = (baseKA (side l₁ l₂)).ζ ^ ((side l₁ l₂).A / (top l₁ l₂).A)`. Rewrite using `[show (side l₁ l₂).A / (top l₁ l₂).A = 1 from Nat.div_self (top l₁ l₂).A_pos, pow_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨α, ⟨hα, ⟨mα⟩⟩, -⟩` from `Xs.rep Xo.X Xo.s ‹_› (reM Xo.univ (l' := side l₁ l₂) (b' := baseKA (side l₁ l₂)) (M_dvd_side l₁ l₂) dvd_rfl rfl hζs)`. Take `⟨β, ⟨hβ, ⟨mβ⟩⟩, -⟩` from `Xo.rep Xs.X Xs.s ‹_› (reM Xs.univ (l' := top l₁ l₂) (b' := baseKA (top l₁ l₂)) (M_dvd_top l₁ l₂) dvd_rfl rfl hζt)`. Establish `hαβ : α ≫ β = 𝟙 _`. Take `⟨f, -, hf⟩` from `Xo.rep Xo.X Xo.s ‹_› Xo.univ`. Take `⟨u⟩` from `GlobalTheory.LevelQuotRep.obj_comp (reMap mα (l' := top l₁ l₂) (b' := baseKA (top l₁ l₂)) (b₀' := baseKA (top l₁ l₂)) (M_dvd_top l₁ l₂) dvd_rfl rfl hζt rfl hζt) mβ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `u' : ObjMap Xo.univ Xo.univ (α ≫ β)` using `cast (congrArg (fun z => ObjMap z Xo.univ (α ≫ β)) (reM_reM Xo.univ (l' := side l₁ l₂) (b' := baseKA (side l₁ l₂)) rfl (M_dvd_top l₁ l₂) (M_dvd_side l₁ l₂) dvd_rfl rfl hζs (M_dvd_top l₁ l₂) dvd_rfl rfl hζt)) u`. Take `⟨v⟩` from `GlobalTheory.LevelQuotRep.obj_cancel u' u' (𝟙 _) (Category.id_comp _)`. Rewrite using `[hf _ ⟨by rw [Category.assoc, hβ]; exact hα, ⟨u'⟩⟩, hf _ ⟨Category.id_comp _, ⟨v⟩⟩]`. Establish `hβα : β ≫ α = 𝟙 _`. Take `⟨f, -, hf⟩` from `Xs.rep Xs.X Xs.s ‹_› Xs.univ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u⟩` from `GlobalTheory.LevelQuotRep.obj_comp (reMap mβ (l' := side l₁ l₂) (b' := baseKA (side l₁ l₂)) (b₀' := baseKA (side l₁ l₂)) (M_dvd_side l₁ l₂) dvd_rfl rfl hζs rfl hζs) mα`. Establish `u' : ObjMap Xs.univ Xs.univ (β ≫ α)` using `cast (congrArg (fun z => ObjMap z Xs.univ (β ≫ α)) (reM_reM Xs.univ (l' := top l₁ l₂) (b' := baseKA (top l₁ l₂)) rfl (M_dvd_side l₁ l₂) (M_dvd_top l₁ l₂) dvd_rfl rfl hζt (M_dvd_side l₁ l₂) dvd_rfl rfl hζs)) u`. Take `⟨v⟩` from `GlobalTheory.LevelQuotRep.obj_cancel u' u' (𝟙 _) (Category.id_comp _)`. Rewrite using `[hf _ ⟨by rw [Category.assoc, hα]; exact hβ, ⟨u'⟩⟩, hf _ ⟨Category.id_comp _, ⟨v⟩⟩]`. Take `⟨r, hr1, hr2⟩ : ∃ r : Xo.XF (coeffTop c₁ c₂) ⟶ Xs.XF (coeffSide c₁ c₂), r ≫ pullback.fst _ _ = pullback.fst _ _ ≫ α ∧ r ≫ pullback.snd _ _ = pullback.snd _ _` from `⟨pullback.lift (pullback.fst _ _ ≫ α) (pullback.snd _ _) (by rw [Category.assoc, hα]; exact pullback.condition), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r', hr'1, hr'2⟩ : ∃ r' : Xs.XF (coeffSide c₁ c₂) ⟶ Xo.XF (coeffTop c₁ c₂), r' ≫ pullback.fst _ _ = pullback.fst _ _ ≫ β ∧ r' ≫ pullback.snd _ _ = pullback.snd _ _` from `⟨pullback.lift (pullback.fst _ _ ≫ β) (pullback.snd _ _) (by rw [Category.assoc, hβ]; exact pullback.condition), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Establish `: IsIso r` using `⟨r', pullback.hom_ext (by rw [Category.assoc, hr'1, ← Category.assoc, hr1, Category.assoc, hαβ, Category.comp_id, Category.id_comp]) (by rw [Category.assoc, hr'2]; exact hr2.trans (Category.id_comp _).symm), pullback.hom_ext (by rw [Category.assoc, hr1, ← Category.assoc, hr'1, Ca …`. Take `⟨n, -⟩` from `GlobalTheory.LevelCover.sab_comp Y.m0.toSABMap mα.toSABMap hr1.symm`. Take `⟨m', -⟩` from `GlobalTheory.LevelCover.sab_cancel Ys.m0.toSABMap n r rfl`. Use `⟨r, ⟨(GlobalTheory.ShFam.TwMap.reflEquiv _ _ _).symm m'⟩, r.surjective, ?_⟩` and prove the remaining obligations.
-
-Conclude with `hr2.trans ((Category.comp_id _).symm.trans (congrArg (fun g => pullback.snd _ _ ≫ g) (GlobalTheory.LevelCover.spMap_inclusion_self (le_refl (coeffF c₁ c₂))).symm))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem side_goodMap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l₁ l₂ : Level H)
     (Xo : Moduli D (GlobalTheory.LvCover.top l₁ l₂)) (Xs : Moduli D (GlobalTheory.LvCover.side l₁ l₂)) (c₁ : Coeff l₁) (c₂ : Coeff l₂)

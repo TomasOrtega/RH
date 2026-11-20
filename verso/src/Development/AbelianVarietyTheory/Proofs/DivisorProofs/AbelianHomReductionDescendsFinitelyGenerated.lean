@@ -24,9 +24,9 @@ noncomputable section
 namespace GlobalTheory.AbHomDesc
 
 /- English proof (translation)
-Introduce `R _ S S' h g A _ AS _ φ hab hsm hφ`. Establish `e : spMap S.subtype = spMap S'.subtype ≫ spMap (Subring.inclusion h)`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Establish `hf` using `ReciprocityTheory.ChartRestriction.G.Chart.isGrpPullback_factor (spMap (Subring.inclusion h)) (spMap S'.subtype) (hφ.congr e rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hs : SmoothOfRelativeDimension g ((Over.pullback (spMap (Subring.inclusion h))).obj AS).hom`. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback _ _) hsm`. Conclude with `⟨_, inferInstance, _, pullback.fst _ _, isAbelianScheme_overPullback _ AS hab, hs, hf, isGrpPullback_pullback _ _, pullback.lift_fst _ _ _⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_baseChange_subring : ∀ (R : Type) [CommRing R] (S S' : Subring R) (h : S ≤ S') (g : ℕ) (A : Over (Sp R)) [GrpObj A] (AS : Over (Sp S)) [GrpObj AS] (φ : A.left ⟶ AS.left), IsAbelianScheme AS → SmoothOfRelativeDimension g AS.hom → IsGrpPullback A AS (spMap S.subtype) φ → ∃ (AS' : Over (Sp S')) (_ : GrpObj AS') (φ' : A.left ⟶ AS'.left) (ρ : AS'.left ⟶ AS.left), IsAbelianScheme AS' ∧ SmoothOfRelativeDimension g AS'.hom ∧ IsGrpPullback A AS' (spMap S'.subtype) φ' ∧ IsGrpPullback AS' AS (spMap (Subring.inclusion h)) ρ ∧ φ' ≫ ρ = φ := by
   intro R _ S S' h g A _ AS _ φ hab hsm hφ
@@ -40,11 +40,11 @@ theorem exists_baseChange_subring : ∀ (R : Type) [CommRing R] (S S' : Subring 
     isGrpPullback_pullback _ _, pullback.lift_fst _ _ _⟩
 
 /- English proof (translation)
-Introduce `R _ S hS`. Take `⟨s, hs⟩` from `hS.out`. Use `⟨s.image Subtype.val, fun T hT x hx => ?_⟩` and prove the remaining obligations. It suffices to establish `key : ∀ y : S, y ∈ Algebra.adjoin ℤ (s : Set S) → (y : R) ∈ T from key ⟨x, hx⟩ (hs ▸ Algebra.mem_top)`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy => exact hT (Finset.mem_coe.2 (Finset.mem_image_of_mem _ hy))`. Consider the case `algebraMap n`. Rewrite using `[eq_intCast]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `intCast_mem T n`. Consider the case `add y z _ _ hy hz => exact T.add_mem hy hz`. Consider the case `mul y z _ _ hy hz => exact T.mul_mem hy hz`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_finset_le_of_finiteType : ∀ (R : Type) [CommRing R] (S : Subring R), Algebra.FiniteType ℤ S → ∃ F : Finset R, ∀ T : Subring R, (F : Set R) ⊆ T → S ≤ T := by
   intro R _ S hS
@@ -64,9 +64,9 @@ theorem exists_finset_le_of_finiteType : ∀ (R : Type) [CommRing R] (S : Subrin
   | mul y z _ _ hy hz => exact T.mul_mem hy hz
 
 /- English proof (translation)
-Introduce `R _ I S S' h AS AS' ρ hρ`. Establish `e : spMap (Ideal.Quotient.mk (I.comap S'.subtype)) ≫ spMap (Subring.inclusion h) = spMap (trans I h) ≫ spMap (Ideal.Quotient.mk (I.comap S.subtype))`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, trans_comp_mk]`. Establish `big` using `(IsPullback.of_hasPullback AS'.hom (spMap (Ideal.Quotient.mk (I.comap S'.subtype)))).paste_horiz hρ`. Rewrite `big` using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨pullback.lift (pullback.fst _ _ ≫ ρ) (pullback.snd _ _ ≫ spMap (trans I h)) (by simp only [Category.assoc]; rw [hρ.w, pullback.condition_assoc, e]), ?_, pullback.lift_fst _ _ _⟩` and prove the remaining obligations. Use `IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[pullback.lift_fst]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_isPullback_reductions : ∀ (R : Type) [CommRing R] (I : Ideal R) (S S' : Subring R) (h : S ≤ S') (AS : Over (Sp S)) (AS' : Over (Sp S')) (ρ : AS'.left ⟶ AS.left), IsPullback ρ AS'.hom AS.hom (spMap (Subring.inclusion h)) → ∃ p : pullback AS'.hom (spMap (Ideal.Quotient.mk (I.comap S'.subtype))) ⟶ pullback AS.hom (spMap (Ideal.Quotient.mk (I.comap S.subtype))), IsPullback p (pullback.snd _ _) (pullback.snd _ _) (spMap (GlobalTheory.AbHomDesc.trans I h)) ∧ p ≫ pullback.fst _ _ = pullback.fst _ _ ≫ ρ := by
   intro R _ I S S' h AS AS' ρ hρ
@@ -81,14 +81,14 @@ theorem exists_isPullback_reductions : ∀ (R : Type) [CommRing R] (I : Ideal R)
   rwa [pullback.lift_fst]
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : A →+* B) (f : B →+* C) :
     spMap f ≫ spMap g = spMap (f.comp g) := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Establish `: IsIso (CommRingCat.ofHom (f : A →+* B))` using `f.toCommRingCatIso.isIso_hom`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_spMap {A B : Type} [CommRing A] [CommRing B] (f : A ≃+* B) : IsIso (spMap (f : A →+* B)) := by
   have : IsIso (CommRingCat.ofHom (f : A →+* B)) := f.toCommRingCatIso.isIso_hom
@@ -100,7 +100,7 @@ noncomputable def redEquiv {R R₀ : Type} [CommRing R] [CommRing R₀] (I : Ide
     ⟨fun x y hxy => iota_injective I π hI S (congrArg Subtype.val hxy), (iota I π hI S).rangeRestrict_surjective⟩
 
 /- English proof (translation)
-Use extensionality with `t`. Conclude with `congrArg Subtype.val ((redEquiv I π hI S).apply_symm_apply t)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem iota_redEquiv_symm {R R₀ : Type} [CommRing R] [CommRing R₀] (I : Ideal R) (π : R →+* R₀)
     (hI : RingHom.ker π = I) (S : Subring R) :
@@ -117,7 +117,7 @@ instance isIso_spMap_redInv {R R₀ : Type} [CommRing R] [CommRing R₀] (I : Id
   isIso_spMap (redEquiv I π hI S).symm
 
 /- English proof (translation)
-The claim follows from `iota_redEquiv_symm I π hI S`.
+A detailed English derivation is pending.
 -/
 theorem iota_redInv {R R₀ : Type} [CommRing R] [CommRing R₀] (I : Ideal R) (π : R →+* R₀)
     (hI : RingHom.ker π = I) (S : Subring R) :
@@ -125,19 +125,17 @@ theorem iota_redInv {R R₀ : Type} [CommRing R] [CommRing R₀] (I : Ideal R) (
   iota_redEquiv_symm I π hI S
 
 /- English proof (translation)
-Introduce `R _ I R₀ _ π hπ hI S X X₀ Y₀ p a b π' _ _ _ φ hpb hφ`. Establish `hpb' : IsPullback π' p (a ≫ spMap (redInv I π hI S)) (spMap (iota I π hI S).range.subtype)`. Use `IsPullback.of_iso hpb (Iso.refl _) (Iso.refl _) (Iso.refl _) (asIso (spMap (redInv I π hI S))) (by simp) (by simp) (by simp) ?_` and prove the remaining obligations. Rewrite using `[Iso.refl_hom, Category.id_comp, asIso_hom, spMap_comp_spMap, iota_redInv]`. Take `⟨F₀, hF₀⟩` from `GlobalTheory.morphism_descends_to_subring R₀ (iota I π hI S).range X X₀ Y₀ p (a ≫ spMap (redInv I π hI S)) (b ≫ spMap (redInv I π hI S)) π' φ hpb' (by rw [← Category.assoc, hφ, Category.assoc])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨F₀.image (Function.surjInv hπ), fun S' h hF X₁ a₁ π₁ k hpb₁ hk₁ hk₂ => ?_⟩` and prove the remaining obligations. Establish `hT : (iota I π hI S).range ≤ (iota I π hI S').range`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨trans I h x, by rw [← RingHom.comp_apply, iota_comp_trans]⟩`. Establish `hFT : (F₀ : Set R₀) ⊆ (iota I π hI S').range`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `hm : Function.surjInv hπ y ∈ S'` using `hF (Finset.mem_coe.2 (Finset.mem_image_of_mem _ hy))`. Conclude with `⟨Ideal.Quotient.mk _ ⟨_, hm⟩, Function.surjInv_eq hπ y⟩`. Establish `hring : (trans I h).comp (redInv I π hI S) = (redInv I π hI S').comp (Subring.inclusion hT)`. Use extensionality with `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply `(redEquiv I π hI S').injective` to reduce the goal to its premises. Use `show redEquiv I π hI S' (trans I h (redInv I π hI S t)) = redEquiv I π hI S' ((redEquiv I π hI S').symm (Subring.inclusion hT t))`. Rewrite using `[RingEquiv.apply_symm_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show iota I π hI S' (trans I h (redInv I π hI S t)) = (t : R₀)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← RingHom.comp_apply, iota_comp_trans, ← RingHom.comp_apply, iota_redInv]`. Both sides reduce to the same expression. Establish `hpb₁' : IsPullback π₁ (a₁ ≫ spMap (redInv I π hI S')) (a ≫ spMap (redInv I π hI S)) (spMap (Subring.inclusion hT))`. Use `IsPullback.of_iso hpb₁ (Iso.refl _) (Iso.refl _) (asIso (spMap (redInv I π hI S'))) (asIso (spMap (redInv I π hI S))) (by simp) (by simp) (by simp) ?_` and prove the remaining obligations. Rewrite using `[asIso_hom, asIso_hom, spMap_comp_spMap, spMap_comp_spMap, hring]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk₂' : k ≫ a₁ ≫ spMap (redInv I π hI S') = p ≫ spMap (iota I π hI S').range.subtype`. Rewrite using `[← Category.assoc, hk₂, Category.assoc, spMap_comp_spMap, iota_redInv]`. Take `⟨ψ, hψ₁, hψ₂⟩` from `hF₀ _ hT hFT X₁ _ π₁ k hpb₁' hk₁ hk₂'`. Use `⟨ψ, hψ₁, ?_⟩` and prove the remaining obligations. Rewrite `hψ₂` using `[← Category.assoc, ← Category.assoc]`.
-
-Conclude with `(cancel_mono _).1 hψ₂`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem morphism_descends_to_reduction : ∀ (R : Type) [CommRing R] (I : Ideal R) (R₀ : Type) [CommRing R₀] (π : R →+* R₀) (hπ : Function.Surjective π) (hI : RingHom.ker π = I) (S : Subring R) (X X₀ Y₀ : Scheme.{0}) (p : X ⟶ Sp R₀) (a : X₀ ⟶ Sp (S ⧸ I.comap S.subtype)) (b : Y₀ ⟶ Sp (S ⧸ I.comap S.subtype)) (π' : X ⟶ X₀) [QuasiCompact a] [QuasiSeparated a] [LocallyOfFinitePresentation b] (φ : X ⟶ Y₀), IsPullback π' p a (spMap (GlobalTheory.AbHomDesc.iota I π hI S)) → φ ≫ b = π' ≫ a → ∃ F : Finset R, ∀ (S' : Subring R) (h : S ≤ S'), (F : Set R) ⊆ S' → ∀ (X₁ : Scheme.{0}) (a₁ : X₁ ⟶ Sp (S' ⧸ I.comap S'.subtype)) (π₁ : X₁ ⟶ X₀) (k : X ⟶ X₁), IsPullback π₁ a₁ a (spMap (GlobalTheory.AbHomDesc.trans I h)) → k ≫ π₁ = π' → k ≫ a₁ = p ≫ spMap (GlobalTheory.AbHomDesc.iota I π hI S') → ∃ ψ : X₁ ⟶ Y₀, k ≫ ψ = φ ∧ ψ ≫ b = π₁ ≫ a := by
   intro R _ I R₀ _ π hπ hI S X X₀ Y₀ p a b π' _ _ _ φ hpb hφ
@@ -180,7 +178,7 @@ theorem morphism_descends_to_reduction : ∀ (R : Type) [CommRing R] (I : Ideal 
   exact (cancel_mono _).1 hψ₂
 
 /- English proof (translation)
-Introduce `R _ I R₀ _ π hI S A₀ _ A _ i AS _ φ hA hφ`. Establish `e : spMap π ≫ spMap S.subtype = spMap (iota I π hI S) ≫ spMap (Ideal.Quotient.mk (I.comap S.subtype))`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, iota_comp_mk]`. Establish `h` using `(hA.comp hφ).congr e rfl`. Conclude with `⟨_, ReciprocityTheory.ChartRestriction.G.Chart.isGrpPullback_factor _ _ h, (pullback.lift_fst _ _ _).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_isGrpPullback_reduction : ∀ (R : Type) [CommRing R] (I : Ideal R) (R₀ : Type) [CommRing R₀] (π : R →+* R₀) (hI : RingHom.ker π = I) (S : Subring R) (A₀ : Over (Sp R₀)) [GrpObj A₀] (A : Over (Sp R)) [GrpObj A] (i : A₀.left ⟶ A.left) (AS : Over (Sp S)) [GrpObj AS] (φ : A.left ⟶ AS.left), IsGrpPullback A₀ A (spMap π) i → IsGrpPullback A AS (spMap S.subtype) φ → ∃ ψ : A₀.left ⟶ ((Over.pullback (spMap (Ideal.Quotient.mk (I.comap S.subtype)))).obj AS).left, IsGrpPullback A₀ ((Over.pullback (spMap (Ideal.Quotient.mk (I.comap S.subtype)))).obj AS) (spMap (GlobalTheory.AbHomDesc.iota I π hI S)) ψ ∧ i ≫ φ = ψ ≫ pullback.fst AS.hom (spMap (Ideal.Quotient.mk (I.comap S.subtype))) := by
   intro R _ I R₀ _ π hI S A₀ _ A _ i AS _ φ hA hφ
@@ -191,25 +189,25 @@ theorem exists_isGrpPullback_reduction : ∀ (R : Type) [CommRing R] (I : Ideal 
   exact ⟨_, ReciprocityTheory.ChartRestriction.G.Chart.isGrpPullback_factor _ _ h, (pullback.lift_fst _ _ _).symm⟩
 
 /- English proof (translation)
-Introduce `R _ I R₀ _ π hπ hI g A₀ _ A _ i hA hAab hAsm g' B₀ _ B _ j hB hBab hBsm f₀ _`. Take `⟨S₀, AS₀, _, φA₀, -, hfg₀, hAS₀ab, hAS₀sm, hφA₀⟩` from `GlobalTheory.T.abelianScheme_descends_to_finitelyGenerated_subring R g A ∅ hAab hAsm`. Take `⟨F₀, hF₀⟩` from `exists_finset_le_of_finiteType R S₀ hfg₀`. Take `⟨S₁, BS₁, _, φB₁, hF₀S₁, hfg₁, hBS₁ab, hBS₁sm, hφB₁⟩` from `GlobalTheory.T.abelianScheme_descends_to_finitelyGenerated_subring R g' B F₀ hBab hBsm`. Take `⟨AS₁, _, φA₁, -, hAS₁ab, hAS₁sm, hφA₁, -, -⟩` from `exists_baseChange_subring R S₀ S₁ (hF₀ S₁ hF₀S₁) g A AS₀ φA₀ hAS₀ab hAS₀sm hφA₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψA, hψA, hiA⟩` from `exists_isGrpPullback_reduction R I R₀ π hI S₁ A₀ A i AS₁ φA₁ hA hφA₁`. Take `⟨ψB, hψB, hiB⟩` from `exists_isGrpPullback_reduction R I R₀ π hI S₁ B₀ B j BS₁ φB₁ hB hφB₁`. Establish `wA : ψA ≫ pullback.snd AS₁.hom (spMap (Ideal.Quotient.mk (I.comap S₁.subtype))) = A₀.hom ≫ spMap (iota I π hI S₁)` using `hψA.1.w`. Establish `wB : ψB ≫ pullback.snd BS₁.hom (spMap (Ideal.Quotient.mk (I.comap S₁.subtype))) = B₀.hom ≫ spMap (iota I π hI S₁)` using `hψB.1.w`. Use `hAS₁ab.proper` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hBS₁ab.smooth` as an intermediate fact. Establish `hw : (f₀.left ≫ ψB) ≫ pullback.snd BS₁.hom (spMap (Ideal.Quotient.mk (I.comap S₁.subtype))) = ψA ≫ pullback.snd AS₁.hom (spMap (Ideal.Quotient.mk (I.comap S₁.subtype)))`. Rewrite using `[Category.assoc, wB, wA, ← Category.assoc, Over.w f₀]`. Take `⟨F, hF⟩` from `morphism_descends_to_reduction R I R₀ π hπ hI S₁ A₀.left _ _ A₀.hom (pullback.snd AS₁.hom (spMap (Ideal.Quotient.mk (I.comap S₁.subtype)))) (pullback.snd BS₁.hom (spMap (Ideal.Quotient.mk (I.comap S₁.subtype)))) ψA (f₀.left ≫ ψB) hψA.1 hw`. Take `⟨S', h, hFS, hfg'⟩` from `GlobalTheory.KeyTf.exists_finiteType_subring_adjoin R S₁ F hfg₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨AS', _, φA', ρA, hAS'ab, hAS'sm, hφA', hρA, hφρA⟩` from `exists_baseChange_subring R S₁ S' h g A AS₁ φA₁ hAS₁ab hAS₁sm hφA₁`. Take `⟨BS', _, φB', ρB, hBS'ab, hBS'sm, hφB', hρB, hφρB⟩` from `exists_baseChange_subring R S₁ S' h g' B BS₁ φB₁ hBS₁ab hBS₁sm hφB₁`. Take `⟨ψA', hψA', hiA'⟩` from `exists_isGrpPullback_reduction R I R₀ π hI S' A₀ A i AS' φA' hA hφA'`. Take `⟨ψB', hψB', hiB'⟩` from `exists_isGrpPullback_reduction R I R₀ π hI S' B₀ B j BS' φB' hB hφB'`. Establish `wA' : ψA' ≫ pullback.snd AS'.hom (spMap (Ideal.Quotient.mk (I.comap S'.subtype))) = A₀.hom ≫ spMap (iota I π hI S')` using `hψA'.1.w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `wB' : ψB' ≫ pullback.snd BS'.hom (spMap (Ideal.Quotient.mk (I.comap S'.subtype))) = B₀.hom ≫ spMap (iota I π hI S')` using `hψB'.1.w`. Take `⟨pA, hpA, hpAf⟩` from `exists_isPullback_reductions R I S₁ S' h AS₁ AS' ρA hρA.1`. Take `⟨pB, hpB, hpBf⟩` from `exists_isPullback_reductions R I S₁ S' h BS₁ BS' ρB hρB.1`. Establish `eι : spMap (iota I π hI S') ≫ spMap (trans I h) = spMap (iota I π hI S₁)`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, iota_comp_trans]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `cA : ψA' ≫ pA = ψA`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hpAf, ← Category.assoc, ← hiA', Category.assoc, hφρA, hiA]`. Rewrite using `[Category.assoc, hpA.w, ← Category.assoc, wA', Category.assoc, eι, wA]`. Establish `cB : ψB' ≫ pB = ψB`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hpBf, ← Category.assoc, ← hiB', Category.assoc, hφρB, hiB]`. Rewrite using `[Category.assoc, hpB.w, ← Category.assoc, wB', Category.assoc, eι, wB]`. Take `⟨ψ, hψ₁, hψ₂⟩` from `hF S' h hFS _ (pullback.snd AS'.hom _) pA ψA' hpA cA wA'`. Set `fl` to `hpB.lift ψ (pullback.snd AS'.hom (spMap (Ideal.Quotient.mk (I.comap S'.subtype)))) (by rw [hψ₂, hpA.w])`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `fS : (Over.pullback (spMap (Ideal.Quotient.mk (I.comap S'.subtype)))).obj AS' ⟶ (Over.pullback (spMap (Ideal.Quotient.mk (I.comap S'.subtype)))).obj BS'` to `Over.homMk fl (hpB.lift_snd _ _ _)`. Establish `key : f₀.left ≫ ψB' = ψA' ≫ fS.left`. Apply `hpB.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, cB] show _ = ψA' ≫ fl ≫ pB`. Rewrite using `[hpB.lift_fst, hψ₁]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, wB', ← Category.assoc, Over.w f₀] show _ = ψA' ≫ fl ≫ _`. Rewrite using `[hpB.lift_snd, wA']`. Establish `: IsSchemeTheoreticallyDominant (spMap (iota I π hI S'))` using `GlobalTheory.ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective _ (iota_injective I π hI S')`. Use `hAS'ab.smooth` as an intermediate fact. Use `hBS'ab.proper` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Flat ((Over.pullback (spMap (Ideal.Quotient.mk (I.comap S'.subtype)))).obj AS').hom` using `by show Flat (pullback.snd _ _); infer_instance`. Establish `: IsSeparated ((Over.pullback (spMap (Ideal.Quotient.mk (I.comap S'.subtype)))).obj BS').hom` using `by show IsSeparated (pullback.snd _ _); infer_instance`. Establish `hmon : IsMonHom fS` using `GlobalTheory.ExtUnique.isMonHom_of_isGrpPullback hψA' hψB' f₀ fS key`. Conclude with `⟨S', iota I π hI S', _, inferInstance, AS', inferInstance, pullback.fst _ _, _, inferInstance, BS', inferInstance, pullback.fst _ _, fS, φA', φB', ψA', ψB', hfg', iota_comp_mk I π hI S', hmon, isGrpPullback_pullback _ _, isGrpPullback_pullback _ _, hAS'ab, hAS'sm, hBS'ab, hBS'sm, …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem abelian_hom_reduction_descends : ∀ (R : Type) [CommRing R] (I : Ideal R) (R₀ : Type) [CommRing R₀] (π : R →+* R₀),
     Function.Surjective π → RingHom.ker π = I →

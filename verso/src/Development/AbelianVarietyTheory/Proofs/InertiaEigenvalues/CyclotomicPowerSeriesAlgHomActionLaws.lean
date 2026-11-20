@@ -11,57 +11,57 @@ namespace GlobalTheory.Cyc
 variable (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O]
 
 /- English proof (translation)
-Rewrite using `[cyc, GlobalTheory.Fon.map_binomialSeries _ (fun _ => rfl)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cyc_eq_binomialSeries (c : ℤ_[l]) : cyc l O c = PowerSeries.binomialSeries O c - 1 := by
   rw [cyc, GlobalTheory.Fon.map_binomialSeries _ (fun _ => rfl)]
 
 /- English proof (translation)
-The claim follows from `PowerSeries.substAlgHom_X _`.
+A detailed English derivation is pending.
 -/
 theorem act_X (c : ℤ_[l]) : act l O c PowerSeries.X = cyc l O c := PowerSeries.substAlgHom_X _
 
 /- English proof (translation)
-The claim follows from `congrFun (PowerSeries.coe_substAlgHom _) a`.
+A detailed English derivation is pending.
 -/
 theorem act_apply (c : ℤ_[l]) (a : PowerSeries O) :
     act l O c a = PowerSeries.subst (cyc l O c) a :=
   congrFun (PowerSeries.coe_substAlgHom _) a
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Fon.algHom_ext_X (by rw [act_X, GlobalTheory.Fon.gam_X, cyc_eq_binomialSeries]) (by rw [act_X, cyc_const])`.
+A detailed English derivation is pending.
 -/
 theorem act_eq_gam (c : ℤ_[l]) : act l O c = GlobalTheory.Fon.gam O c :=
   GlobalTheory.Fon.algHom_ext_X (by rw [act_X, GlobalTheory.Fon.gam_X, cyc_eq_binomialSeries])
     (by rw [act_X, cyc_const])
 
 /- English proof (translation)
-Simplify using `only [act_eq_gam, GlobalTheory.Fon.gam_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_act (c c' : ℤ_[l]) (a : PowerSeries O) :
     act l O c (act l O c' a) = act l O (c * c') a := by
   simp only [act_eq_gam, GlobalTheory.Fon.gam_mul]
 
 /- English proof (translation)
-Rewrite using `[act_eq_gam, GlobalTheory.Fon.gam_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_one (a : PowerSeries O) : act l O 1 a = a := by
   rw [act_eq_gam, GlobalTheory.Fon.gam_one]
 
 /- English proof (translation)
-Rewrite using `[cyc_eq_binomialSeries, PowerSeries.binomialSeries_nat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cyc_natCast (k : ℕ) : cyc l O (k : ℤ_[l]) = (1 + PowerSeries.X) ^ k - 1 := by
   rw [cyc_eq_binomialSeries, PowerSeries.binomialSeries_nat]
 
 /- English proof (translation)
-Rewrite using `[cyc_eq_binomialSeries, ← GlobalTheory.Fon.gam_X, GlobalTheory.Fon.coeff_one_gam_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_one_cyc (c : ℤ_[l]) : PowerSeries.coeff 1 (cyc l O c) = algebraMap ℤ_[l] O c := by
   rw [cyc_eq_binomialSeries, ← GlobalTheory.Fon.gam_X, GlobalTheory.Fon.coeff_one_gam_X]
 
 /- English proof (translation)
-Rewrite using `[← cyc_natCast l O k, ← act_apply, ← act_X l O c, ← act_X l O (k : ℤ_[l]), act_act, act_act, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_pow_sub_one (c : ℤ_[l]) (k : ℕ) :
     act l O c ((1 + PowerSeries.X) ^ k - 1) =
@@ -70,7 +70,7 @@ theorem act_pow_sub_one (c : ℤ_[l]) (k : ℕ) :
     mul_comm]
 
 /- English proof (translation)
-Introduce `l _ O _ _` and use `⟨act_X l O, act_act l O, act_one l O, cyc_natCast l O, coeff_one_cyc l O, act_pow_sub_one l O⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem act_laws : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O], (∀ c, act l O c PowerSeries.X = cyc l O c) ∧ (∀ c c' a, act l O c (act l O c' a) = act l O (c * c') a) ∧ (∀ a, act l O 1 a = a) ∧ (∀ k : ℕ, cyc l O (k : ℤ_[l]) = (1 + PowerSeries.X) ^ k - 1) ∧ (∀ c, PowerSeries.coeff 1 (cyc l O c) = algebraMap ℤ_[l] O c) ∧ ∀ (c : ℤ_[l]) (k : ℕ), act l O c ((1 + PowerSeries.X) ^ k - 1) = PowerSeries.subst ((1 + PowerSeries.X) ^ k - 1 : PowerSeries O) (cyc l O c) :=
   fun l _ O _ _ => ⟨act_X l O, act_act l O, act_one l O, cyc_natCast l O, coeff_one_cyc l O,

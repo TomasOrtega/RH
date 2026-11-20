@@ -8,17 +8,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `T r n V K C _ _ _ _ _ _ _ e R hR cc isX a P hP`. Set `_ : Algebra K C` to `e.toAlgebra`. Take `⟨hH, hO⟩` from `hP`. Take `⟨s, c, φ, hc, hφ⟩` from `GlobalTheory.exists_integral_basis_linear_coordinates V K C R hR (P.support.image fun μ => P.coeff μ) (by`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨μ, -, rfl⟩` from `Finset.mem_image.mp hx`. Conclude with `hO μ)`. Set `Q : Fin s → MvPolynomial (Letter T r n) K` to `fun j => ∑ μ ∈ P.support, MvPolynomial.monomial μ (φ j (P.coeff μ))`. Establish `hQ : ∀ j μ, (Q j).coeff μ = φ j (P.coeff μ)`. Introduce `j μ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Q, MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial, Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[MvPolynomial.notMem_support_iff.mp h, map_zero]`. Use `⟨s, c, Q, hc, fun j => ⟨GlobalTheory.CoeffFunctional.mem_HHa_of_coeff_functional T r n K C (φ j) cc isX a P (Q j) (hQ j) hH, ?_⟩, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `μ`. Rewrite using `[hQ]`. Distinguish the cases in `h : μ ∈ P.support`. Conclude with `(hφ _ (Finset.mem_image_of_mem _ h)).1 j`. Rewrite using `[MvPolynomial.notMem_support_iff.mp h, map_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Conclude with `zero_mem _`. Use extensionality with `μ`. Simplify using `only [MvPolynomial.coeff_sum, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_map, hQ]`. Distinguish the cases in `h : μ ∈ P.support`. Use `(hφ _ (Finset.mem_image_of_mem _ h)).2.trans ?_` and prove the remaining obligations.
-
-Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[MvPolynomial.notMem_support_iff.mp h]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_integral_combination_of_mem_HaO :
     ∀ (T : Type) (r : T → ℕ) (n : ℕ) (V K C : Type) [CommRing V] [IsDomain V] [IsPrincipalIdealRing V] [Field K] [Algebra V K] [IsFractionRing V K] [Field C] (e : K →+* C) (R : Subring C), (∀ x : V, e (algebraMap V K x) ∈ R) → ∀ (cc : T → T) (isX : T → Prop) (a : T → ℕ → ℕ) (P : MvPolynomial (Letter T r n) C), P ∈ HaO r n C R cc isX a → ∃ (s : ℕ) (c : Fin s → C) (Q : Fin s → MvPolynomial (Letter T r n) K), (∀ j, c j ∈ R) ∧ (∀ j, Q j ∈ HaO r n K (algebraMap V K).range cc isX a) ∧ P = ∑ j, MvPolynomial.C (c j) * MvPolynomial.map e (Q j) := by

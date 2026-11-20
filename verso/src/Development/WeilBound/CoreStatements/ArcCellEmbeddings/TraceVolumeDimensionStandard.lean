@@ -11,26 +11,26 @@ variable {ι : Type} {r : ℕ}
 def ww (p q : ℂ) : ℂ := by classical exact if p = q then 1 else Complex.I
 
 /- English proof (translation)
-The claim follows from `if_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem ww_self (p : ℂ) : ww p p = 1 := if_pos rfl
 /- English proof (translation)
-The claim follows from `if_neg (by norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem ww_pm : ww 1 (-1) = Complex.I := if_neg (by norm_num)
 /- English proof (translation)
-The claim follows from `if_neg (by norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem ww_mp : ww (-1) 1 = Complex.I := if_neg (by norm_num)
 
 /- English proof (translation)
-Apply the tactic sequence `unfold ww; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_ww (p q : ℂ) : ‖ww p q‖ = 1 := by
   unfold ww; split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `h` and use `by have := norm_ww p q rw [h, norm_zero] at this exact zero_ne_one this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ww_ne (p q : ℂ) : ww p q ≠ 0 := fun h => by
   have := norm_ww p q
@@ -38,13 +38,13 @@ theorem ww_ne (p q : ℂ) : ww p q ≠ 0 := fun h => by
   exact zero_ne_one this
 
 /- English proof (translation)
-Apply the tactic sequence `rcases hp with rfl | rfl <;> rcases hq with rfl | rfl <;> simp [ww_self, ww_pm, ww_mp]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ww_mul {p q : ℂ} (hp : p = 1 ∨ p = -1) (hq : q = 1 ∨ q = -1) : ww p q * ww q p = q * p := by
   rcases hp with rfl | rfl <;> rcases hq with rfl | rfl <;> simp [ww_self, ww_pm, ww_mp]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases hp with rfl | rfl <;> rcases hq with rfl | rfl <;>`. Apply the tactic sequence `simp only [ww_self, ww_pm, ww_mp, map_mul, map_one, Complex.conj_I] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ww_eq {p q : ℂ} (hp : p = 1 ∨ p = -1) (hq : q = 1 ∨ q = -1) (x y : ℂ) :
     ww q p * x + starRingEnd ℂ (ww p q * y) = (ww q p * q) * (x * q + p * starRingEnd ℂ y) := by
@@ -64,7 +64,7 @@ theorem sc_apply (v : ι → Fin r → Fin r → ℂ) (X : ι → Matrix (Fin r)
     sc v X i a c = v i a c * X i a c := rfl
 
 /- English proof (translation)
-Use `forall_congr' fun i => and_congr ?_ Iff.rfl` and prove the remaining obligations. Rewrite using `[← Matrix.ext_iff]`. Simplify using `only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.transpose_apply, Matrix.map_apply, Matrix.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_diag (e : ι → Fin r → ℂ) (X : ι → Matrix (Fin r) (Fin r) ℂ) :
     X ∈ suLie (fun i => Matrix.diagonal (e i)) ↔
@@ -75,7 +75,7 @@ theorem mem_diag (e : ι → Fin r → ℂ) (X : ι → Matrix (Fin r) (Fin r) �
     Matrix.map_apply, Matrix.zero_apply]
 
 /- English proof (translation)
-Use `forall_congr' fun i => and_congr ?_ Iff.rfl` and prove the remaining obligations. Rewrite using `[← Matrix.ext_iff]`. Simplify using `only [Matrix.add_apply, Matrix.mul_one, Matrix.one_mul, Matrix.transpose_apply, Matrix.map_apply, Matrix.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_one (X : ι → Matrix (Fin r) (Fin r) ℂ) :
     X ∈ suLie (fun _ : ι => (1 : Matrix (Fin r) (Fin r) ℂ)) ↔
@@ -88,7 +88,7 @@ theorem mem_one (X : ι → Matrix (Fin r) (Fin r) ℂ) :
 variable {e : ι → Fin r → ℂ}
 
 /- English proof (translation)
-Rewrite using `[mem_diag, mem_one]`. Use `forall_congr' fun i => and_congr (forall_congr' fun a => forall_congr' fun c => ?_) ?_` and prove the remaining obligations. Rewrite using `[sc_apply, sc_apply, ww_eq (he i a) (he i c), mul_eq_zero, or_iff_right]`. Apply the tactic sequence `exact mul_ne_zero (ww_ne _ _) (by rcases he i c with h | h <;> simp [h])`. Simplify using `only [sc_apply, ww_self, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem mem_iff (he : ∀ i a, e i a = 1 ∨ e i a = -1) (X : ι → Matrix (Fin r) (Fin r) ℂ) :
     X ∈ suLie (fun i => Matrix.diagonal (e i)) ↔
@@ -100,9 +100,9 @@ theorem mem_iff (he : ∀ i a, e i a = 1 ∨ e i a = -1) (X : ι → Matrix (Fin
   · simp only [sc_apply, ww_self, one_mul]
 
 /- English proof (translation)
-Rewrite `hX`, the goal using `[mem_diag]`. Introduce `i`. Apply the tactic sequence `have hc : ∀ a, starRingEnd ℂ (e i a) = e i a := fun a => by rcases he i a with h | h <;> simp [h]`. Apply the tactic sequence `have h2 : ∀ a, e i a * e i a = 1 := fun a => by rcases he i a with h | h <;> simp [h]`. Use `⟨fun a c => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sc_apply, sc_apply, map_mul, map_mul, hc, hc]`. Take the linear combination `(e i a * e i c) * (hX i).1 a c`. Simplify using `only [sc_apply, h2, one_mul]`. Conclude with `(hX i).2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_theta (he : ∀ i a, e i a = 1 ∨ e i a = -1) (X : ι → Matrix (Fin r) (Fin r) ℂ)
     (hX : X ∈ suLie (fun i => Matrix.diagonal (e i))) :
@@ -147,7 +147,7 @@ theorem theta_apply (he : ∀ i a, e i a = 1 ∨ e i a = -1) (X : suLie (fun i =
     (a c : Fin r) : (theta he X).1 i a c = e i a * e i c * X.1 i a c := rfl
 
 /- English proof (translation)
-Use extensionality with `X i a c`. Rewrite using `[LinearMap.comp_apply, theta_apply, theta_apply, LinearMap.id_apply]`. Apply the tactic sequence `rcases he i a with h | h <;> rcases he i c with h' | h' <;> simp [h, h']`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem theta_theta (he : ∀ i a, e i a = 1 ∨ e i a = -1) : theta he ∘ₗ theta he = LinearMap.id := by
   ext X i a c
@@ -155,7 +155,7 @@ theorem theta_theta (he : ∀ i a, e i a = 1 ∨ e i a = -1) : theta he ∘ₗ t
   rcases he i a with h | h <;> rcases he i c with h' | h' <;> simp [h, h']
 
 /- English proof (translation)
-Unfold `trForm`. Use `Finset.sum_congr rfl fun i _ => congrArg Complex.re ?_` and prove the remaining obligations. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[TT_apply, TT_apply, theta_apply, ← ww_mul (he i a) (he i c)]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -172,19 +172,19 @@ end UnitaryFrameBall.Iso
 
 open UnitaryFrameBall.Iso UnitaryFrameBall.Tr in
 /- English proof (translation)
-Introduce `ι _ r H hH n b`. Prove the components needed by the constructor for the conclusion. Establish `h1` using `Module.finrank_eq_card_basis b`. Establish `h2` using `Submodule.finrank_le (suLie H)`. Rewrite `h2` using `[h1, Fintype.card_fin, Module.finrank_pi_fintype, Module.finrank_matrix, Complex.finrank_real_complex, Fintype.card_fin, Finset.sum_const, Finset.card_univ, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2.trans_eq (by ring)`. Use `choose e he hHe using hH`. Take `rfl : H = fun i => Matrix.diagonal (e i)` from `funext hHe`. Use `⟨b.map (TT he), fun ρ => ?_⟩` and prove the remaining obligations. Unfold `trVol`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `h1 : (Matrix.of fun k l => trForm ((b.map (TT he)) k).1 ((b.map (TT he)) l).1) = LinearMap.BilinForm.toMatrix b ((trB _).compRight (theta he))`. Use extensionality with `k l`. Rewrite using `[LinearMap.BilinForm.toMatrix_apply, Matrix.of_apply, Module.Basis.map_apply, Module.Basis.map_apply, trForm_TT]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : |LinearMap.det (theta he)| = 1`. Use `congrArg LinearMap.det (theta_theta he)` as an intermediate fact. Rewrite `this` using `[LinearMap.det_comp, LinearMap.det_id]`. Apply the tactic sequence `rcases mul_self_eq_one_iff.1 this with h | h <;> simp [h]`. Rewrite using `[h1, gram_eq, LinearMap.BilinForm.toMatrix_compRight, Matrix.det_mul, LinearMap.det_toMatrix, abs_mul, h2, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hn : ∀ X i a c, ‖(TT he X).1 i a c‖ = ‖X.1 i a c‖` using `fun X i a c => by`. Rewrite using `[TT_apply, norm_mul, norm_ww, one_mul]`. Establish `hm : ∀ X, (b.map (TT he)).equivFun (TT he X) = b.equivFun X` using `fun X => by`. Use extensionality with `k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, hX, rfl⟩`. Conclude with `⟨TT he X, fun i a c => (hn X i a c).trans_le (hX i a c), hm X⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨Y, hY, rfl⟩`. Take `⟨X, rfl⟩` from `(TT he).surjective Y`. Conclude with `⟨X, fun i a c => (hn X i a c).symm.trans_le (hY i a c), (hm X).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UnitaryFrameBall.trace_volume_dimension_standard : ∀ (ι : Type) [Fintype ι] (r : ℕ) (H : ι → Matrix (Fin r) (Fin r) ℂ), (∀ i, IsSignMat (H i)) → ∀ (n : ℕ) (b : Module.Basis (Fin n) ℝ (suLie H)), n ≤ 2 * r ^ 2 * Fintype.card ι ∧ ∃ b₀ : Module.Basis (Fin n) ℝ (suLie (fun _ : ι => (1 : Matrix (Fin r) (Fin r) ℂ))), ∀ ρ : ℝ, trVol b (lieBall H ρ) = trVol b₀ (lieBall (fun _ : ι => (1 : Matrix (Fin r) (Fin r) ℂ)) ρ) := by
   intro ι _ r H hH n b

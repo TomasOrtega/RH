@@ -31,14 +31,14 @@ def coprimeNat (p : ℕ) (A : Type) [CommRing A] : Submonoid A where
     exact ⟨a * b, Nat.Coprime.mul_left ha hb, by simp⟩
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `hp.ne_one (by simpa using hm)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_coprime {p m : ℕ} (hp : p.Prime) (hm : m.Coprime p) : m ≠ 0 := by
   rintro rfl
   exact hp.ne_one (by simpa using hm)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `mem_nonZeroDivisors_of_ne_zero (Nat.cast_ne_zero.mpr (ne_zero_of_coprime hp hm))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem coprimeNat_le {p : ℕ} (hp : p.Prime) (A : Type) [CommRing A] [IsDomain A] [CharZero A] :
     coprimeNat p A ≤ nonZeroDivisors A := by
@@ -46,25 +46,25 @@ theorem coprimeNat_le {p : ℕ} (hp : p.Prime) (A : Type) [CommRing A] [IsDomain
   exact mem_nonZeroDivisors_of_ne_zero (Nat.cast_ne_zero.mpr (ne_zero_of_coprime hp hm))
 
 /- English proof (translation)
-Establish `h0 : ∀ m : ℕ, m.Coprime p → (m : ℂ) ≠ 0` using `fun m hm => Nat.cast_ne_zero.mpr (ne_zero_of_coprime hp hm)`. Establish `key : ∀ z ∈ Subring.closure ({x | ∃ a, x = (algebraMap A T a : ℂ)} ∪ {x | ∃ n : ℕ, n.Coprime p ∧ x = (n : ℂ)⁻¹}), ∃ m : ℕ, m.Coprime p ∧ ∃ a, z * m = (algebraMap A T a : ℂ)`. Introduce `z hz`. Proceed by induction on `hz using Subring.closure_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Break down `hx with ⟨a, rfl⟩ | ⟨m, hm, rfl⟩` into its components or cases. Conclude with `⟨1, by simp, a, by simp⟩`. Conclude with `⟨m, hm, 1, by simp [h0 m hm]⟩`. Consider the case `zero => exact ⟨1, by simp, 0, by simp⟩`. Consider the case `one => exact ⟨1, by simp, 1, by simp⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨m, hm, a, ha⟩` from `hx`. Take `⟨k, hk, b, hb⟩` from `hy`. Use `⟨m * k, Nat.Coprime.mul_left hm hk, a * k + b * m, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_natCast]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Rewrite using `[← ha, ← hb]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `neg x _ hx`. Take `⟨m, hm, a, ha⟩` from `hx`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨m, hm, -a, ?_⟩` and prove the remaining obligations. Simplify using `only [map_neg]`. Use `push_cast`. Rewrite using `[← ha]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `mul x y _ _ hx hy`. Take `⟨m, hm, a, ha⟩` from `hx`. Take `⟨k, hk, b, hb⟩` from `hy`. Use `⟨m * k, Nat.Coprime.mul_left hm hk, a * b, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Rewrite using `[← ha, ← hb]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, m, hm, rfl⟩`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [map_natCast]`. Use `IsUnit.of_mul_eq_one ⟨_, hinv m hm⟩ (Subtype.ext ?_)` and prove the remaining obligations. Simplify using `[h0 m hm]`. Introduce `z`. Take `⟨m, hm, a, ha⟩` from `key z (hT z.2)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨(a, ⟨m, m, hm, rfl⟩), Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [map_natCast]`. Use `push_cast`. Conclude with `ha`. Introduce `x y h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨1, by rw [hinj h]⟩`.
+A detailed English derivation is pending.
 -/
 theorem isLocalization_of_le_closure {p : ℕ} (hp : p.Prime) (A : Type) [CommRing A] (T : Subring ℂ) [Algebra A T]
     (hinj : Function.Injective (algebraMap A T)) (hinv : ∀ m : ℕ, m.Coprime p → (m : ℂ)⁻¹ ∈ T)
@@ -116,7 +116,7 @@ theorem isLocalization_of_le_closure {p : ℕ} (hp : p.Prime) (A : Type) [CommRi
     exact ⟨1, by rw [hinj h]⟩
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inr ⟨m, hm, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem inv_mem_ZP {p m : ℕ} (k : ℕ) (hm : m.Coprime p) : (m : ℂ)⁻¹ ∈ ZP p k :=
   Subring.subset_closure (Or.inr ⟨m, hm, rfl⟩)
@@ -124,11 +124,9 @@ theorem inv_mem_ZP {p m : ℕ} (k : ℕ) (hm : m.Coprime p) : (m : ℂ)⁻¹ ∈
 open CycBase in
 
 /- English proof (translation)
-Use `haveI := Fact.mk hn`. Establish `hk : n ^ e ≠ 0` using `NeZero.ne _`. Use `haveI : IsCyclotomicExtension {n ^ e} ℚ (CF (n ^ e)) := cyc`. Use `haveI : NumberField (CF (n ^ e)) := IsCyclotomicExtension.numberField {n ^ e} ℚ _`. Set `io : 𝓞 (CF (n ^ e)) →+* ℂ` to `(CF (n ^ e)).val.toRingHom.comp (algebraMap _ (CF (n ^ e)))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hio : Function.Injective io` using `Subtype.val_injective.comp (RingOfIntegers.coe_injective)`. Use `letI : Algebra (𝓞 (CF (n ^ e))) (ZP p (n ^ e)) := (io.codRestrict _ (mem_ZP p n e hn)).toAlgebra`. Establish `: IsLocalization (coprimeNat p (𝓞 (CF (n ^ e)))) (ZP p (n ^ e))`. Use `isLocalization_of_le_closure hp _ _ (fun x y h => hio (congrArg (fun z : ZP p (n ^ e) => (z : ℂ)) h)) (fun m hm => inv_mem_ZP _ hm) (Subring.closure_mono ?_)` and prove the remaining obligations. Introduce and unpack `x (rfl | h)`.
-
-Conclude with `Or.inl ⟨(zF_prim hk).toInteger, rfl⟩`. Conclude with `Or.inr h`. Conclude with `IsLocalization.isDedekindDomain _ (coprimeNat_le hp (𝓞 (CF (n ^ e)))) _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem isDedekindDomain_ZP {n p : ℕ} (e : ℕ) (hn : n.Prime) (hp : p.Prime) : IsDedekindDomain (ZP p (n ^ e)) := by
   haveI := Fact.mk hn
@@ -147,7 +145,7 @@ theorem isDedekindDomain_ZP {n p : ℕ} (e : ℕ) (hn : n.Prime) (hp : p.Prime) 
   exact IsLocalization.isDedekindDomain _ (coprimeNat_le hp (𝓞 (CF (n ^ e)))) _
 
 /- English proof (translation)
-Take `⟨l, rfl⟩ : ∃ l : Level H, l.A = A` from `⟨GlobalTheory.HostModel.level H A hA, rfl⟩`. Conclude with `GlobalTheory.BaseRing.isDedekindDomain_RZ l hS h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isDedekindDomain_RZ_of_dvd {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {S A e : ℕ}
     (hS : 0 < S) (hA : 0 < A) (h : A ∣ S ^ e) : IsDedekindDomain (RZ H S A) := by
@@ -155,7 +153,7 @@ theorem isDedekindDomain_RZ_of_dvd {E : Type} [Field E] [NumberField E] [IsCMFie
   exact GlobalTheory.BaseRing.isDedekindDomain_RZ l hS h
 
 /- English proof (translation)
-Use `letI : Algebra S T := (Subring.inclusion h).toAlgebra`. Establish `htf : Module.IsTorsionFree S T`. Rewrite using `[Module.isTorsionFree_iff_algebraMap_injective]`. Conclude with `fun x y h => Subtype.ext (congrArg (fun z : T => (z : ℂ)) h)`. Conclude with `Flat.SpecMap_iff.mpr (RingHom.flat_algebraMap_iff.mpr (inferInstance : Module.Flat S T))`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem flat_inclusion {S T : Subring ℂ} (h : S ≤ T) [IsDedekindDomain S] : Flat (spMap (Subring.inclusion h)) := by
   letI : Algebra S T := (Subring.inclusion h).toAlgebra
@@ -165,9 +163,9 @@ theorem flat_inclusion {S T : Subring ℂ} (h : S ≤ T) [IsDedekindDomain S] : 
   exact Flat.SpecMap_iff.mpr (RingHom.flat_algebraMap_iff.mpr (inferInstance : Module.Flat S T))
 
 /- English proof (translation)
-Use `letI : Algebra S T := (Subring.inclusion h).toAlgebra`. Establish `hL : IsLocalization (coprimeNat p S) T`. Use `isLocalization_of_le_closure hp _ _ (fun x y h => Subtype.ext (congrArg (fun z : T => (z : ℂ)) h)) hinv (hT.trans (Subring.closure_mono ?_))` and prove the remaining obligations. Introduce and unpack `x (hx | hx)`. Conclude with `Or.inl ⟨⟨x, hx⟩, rfl⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Conclude with `Or.inr hx`. Conclude with `⟨IsLocalization.isNoetherianRing (coprimeNat p S) _ inferInstance, IsPreimmersion.of_isLocalization (R := S) (S := T) (coprimeNat p S)⟩`.
+Prove the second alternative. Supply the required witnesses or components.
 -/
 theorem noetherian_preimmersion {p : ℕ} (hp : p.Prime) {S T : Subring ℂ} (h : S ≤ T) [IsNoetherianRing S]
     (hinv : ∀ m : ℕ, m.Coprime p → (m : ℂ)⁻¹ ∈ T)
@@ -184,9 +182,9 @@ theorem noetherian_preimmersion {p : ℕ} (hp : p.Prime) {S T : Subring ℂ} (h 
     IsPreimmersion.of_isLocalization (R := S) (S := T) (coprimeNat p S)⟩
 
 /- English proof (translation)
-Introduce and unpack `E _ _ _ H n N p hn ⟨j, -, hN⟩ hp -`. Establish `hD : IsDedekindDomain (RZ H n N)` using `isDedekindDomain_RZ_of_dvd H (e := j) hn.pos (hN ▸ pow_pos hn.pos j) (hN ▸ dvd_rfl)`. Establish `hZ : IsDedekindDomain (ZP p N)` using `hN ▸ isDedekindDomain_ZP j hn hp`. Establish `h` using `noetherian_preimmersion hp (le_sup_left : RZ H n N ≤ RZ H n N ⊔ ZP p N) (fun m hm => (le_sup_right : ZP p N ≤ _) (inv_mem_ZP _ hm)) (sup_le (fun x hx => Subring.subset_closure (Or.inl hx)) (Subring.closure_mono (by`. Introduce and unpack `x (rfl | h)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `Or.inl (RZ.ze H n N).2`. Conclude with `Or.inr h)))`. Conclude with `⟨hD, h.1, flat_inclusion _, h.2, flat_inclusion _⟩`.
+Prove the first alternative. Prove the second alternative. Supply the required witnesses or components.
 -/
 theorem join_rings : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (n N p : ℕ), n.Prime → (∃ j, 1 ≤ j ∧ N = n ^ j) → p.Prime → p ≠ n → IsDedekindDomain (RZ H n N) ∧ IsNoetherianRing ↥(RZ H n N ⊔ ZP p N) ∧ Flat (spMap (Subring.inclusion (le_sup_left : RZ H n N ≤ RZ H n N ⊔ ZP p N))) ∧ IsPreimmersion (spMap (Subring.inclusion (le_sup_left : RZ H n N ≤ RZ H n N ⊔ ZP p N))) ∧ Flat (spMap (Subring.inclusion (le_sup_right : ZP p N ≤ RZ H n N ⊔ ZP p N))) := by
   rintro E _ _ _ H n N p hn ⟨j, -, hN⟩ hp -

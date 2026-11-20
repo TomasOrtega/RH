@@ -16,9 +16,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n] {W : LocWach PD LL O v n}
 
 /- English proof (translation)
-Use extensionality with `k ζ`. Establish `hC : (PowerSeries.C a : PowerSeries O) = algebraMap O (PowerSeries O) a`. Rewrite using `[PowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Establish `h1 : PowerSeries.coeff k (rhoL hR c s (PowerSeries.C a)) ζ = PowerSeries.coeff k (rhoZ W c ζ ((baseIdOf hR).ι (PowerSeries.C a)))`. Establish `h` using `congrArg (PowerSeries.coeff k) (map_eval_rhoL hR c s (PowerSeries.C a) ζ)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[PowerSeries.coeff_map]`. Conclude with `h`. Rewrite using `[h1, hC, AlgHom.commutes, AlgHom.commutes, PowerSeries.algebraMap_apply, PowerSeries.coeff_C, PowerSeries.coeff_C]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem rhoC_holds (hR : Ring9 W) (c : ZMod n) (s : ℕ) (a : O) :
     rhoL hR c s (PowerSeries.C a) =

@@ -18,16 +18,16 @@ theorem tens_coeff (x : ∀ i, MonoidAlgebra k (G i)) (g : ∀ i, G i) :
     (tens x).coeff g = ∏ i, (x i).coeff (g i) := rfl
 
 /- English proof (translation)
-Rewrite using `[coeff_mul_apply_left, Finsupp.sum_fintype _ _ (fun _ => zero_mul _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_mul_fintype {Γ : Type} [Group Γ] [Fintype Γ] (x y : MonoidAlgebra k Γ) (g : Γ) :
     (x * y).coeff g = ∑ h, x.coeff h * y.coeff (h⁻¹ * g) := by
   rw [coeff_mul_apply_left, Finsupp.sum_fintype _ _ (fun _ => zero_mul _)]
 
 /- English proof (translation)
-Establish `: ∀ i, Fintype (G i)` using `fun i => Fintype.ofFinite _`. Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises. Use extensionality with `g`. Rewrite using `[coeff_mul_fintype, tens_coeff]`. Simplify using `only [tens_coeff, coeff_mul_fintype, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tens_mul (x y : ∀ i, MonoidAlgebra k (G i)) : tens x * tens y = tens fun i => x i * y i := by
   classical
@@ -40,7 +40,7 @@ theorem tens_mul (x y : ∀ i, MonoidAlgebra k (G i)) : tens x * tens y = tens f
   rfl
 
 /- English proof (translation)
-Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises. Use extensionality with `g`. Rewrite using `[tens_coeff]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by rw [h]; rfl)`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_eq_zero (x : ∀ i, MonoidAlgebra k (G i)) (i : I) (h : x i = 0) : tens x = 0 := by
   apply MonoidAlgebra.coeff_injective
@@ -49,9 +49,9 @@ theorem tens_eq_zero (x : ∀ i, MonoidAlgebra k (G i)) (i : I) (h : x i = 0) : 
   exact Finset.prod_eq_zero (Finset.mem_univ i) (by rw [h]; rfl)
 
 /- English proof (translation)
-Establish `h1 : ∀ i, ∃ g : G i, (x i).coeff g ≠ 0` using `fun i => by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h i (MonoidAlgebra.coeff_injective (Finsupp.ext hc))`. Use `choose g hg using h1`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Use `congrArg (fun z => z.coeff g) h0` as an intermediate fact. Simplify using `only [tens_coeff] at this`. Conclude with `(Finset.prod_ne_zero_iff.mpr fun i _ => hg i) this`.
+A detailed English derivation is pending.
 -/
 theorem tens_ne_zero (x : ∀ i, MonoidAlgebra k (G i)) (h : ∀ i, x i ≠ 0) : tens x ≠ 0 := by
   have h1 : ∀ i, ∃ g : G i, (x i).coeff g ≠ 0 := fun i => by
@@ -65,9 +65,9 @@ theorem tens_ne_zero (x : ∀ i, MonoidAlgebra k (G i)) (h : ∀ i, x i ≠ 0) :
   exact (Finset.prod_ne_zero_iff.mpr fun i _ => hg i) this
 
 /- English proof (translation)
-Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises. Use extensionality with `h`. Rewrite using `[tens_coeff, MonoidAlgebra.coeff_single_apply]`. Simplify using `only [MonoidAlgebra.coeff_single_apply]`. Distinguish the cases in `e : g = h`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg e]`. Take `⟨i, hi⟩` from `Function.ne_iff.mp e`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (if_neg hi)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tens_single [DecidableEq I] (g : ∀ i, G i) : tens (fun i => (single (g i) 1 : MonoidAlgebra k (G i))) = single g 1 := by
   classical
@@ -82,9 +82,9 @@ theorem tens_single [DecidableEq I] (g : ∀ i, G i) : tens (fun i => (single (g
     exact Finset.prod_eq_zero (Finset.mem_univ i) (if_neg hi)
 
 /- English proof (translation)
-Proceed by induction on `a using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [mul_add, add_mul, hx, hy]`. Consider the case `single g r`. Establish `e : (single g r : MonoidAlgebra k Γ) = r • single g 1` using `by rw [smul_single', mul_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[e, mul_smul_comm, smul_mul_assoc, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem commute_of_single {Γ : Type} [Group Γ] (z : MonoidAlgebra k Γ)
     (h : ∀ g : Γ, z * single g 1 = single g 1 * z) (a : MonoidAlgebra k Γ) : z * a = a * z := by
@@ -96,7 +96,7 @@ theorem commute_of_single {Γ : Type} [Group Γ] (z : MonoidAlgebra k Γ)
     rw [e, mul_smul_comm, smul_mul_assoc, h]
 
 /- English proof (translation)
-Use `commute_of_single _ (fun g => ?_) a` and prove the remaining obligations. Rewrite using `[← tens_single, tens_mul, tens_mul]`. Conclude with `congrArg tens (funext fun i => h i _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_central (x : ∀ i, MonoidAlgebra k (G i)) (h : ∀ i a, x i * a = a * x i)
     (a : MonoidAlgebra k (∀ i, G i)) : tens x * a = a * tens x := by
@@ -117,9 +117,7 @@ variable (hidem : ∀ i l, E i l * E i l = E i l) (hcen : ∀ i l a, E i l * a =
 
 include hcen in
 /- English proof (translation)
-Unfold `eSum`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `tens_central _ (fun i => hcen i _) a`.
-
-Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eSum_central (a : MonoidAlgebra k (∀ i, G i)) : eSum E S * a = a * eSum E S := by
   classical
@@ -132,9 +130,7 @@ theorem eSum_central (a : MonoidAlgebra k (∀ i, G i)) : eSum E S * a = a * eSu
 
 include hidem horth in
 /- English proof (translation)
-Rewrite using `[tens_mul]`. Use `split_ifs with e`. Substitute `e` using the available equality. Conclude with `congrArg tens (funext fun i => hidem i _)`. Take `⟨i, hi⟩` from `Function.ne_iff.mp e`.
-
-Conclude with `tens_eq_zero _ i (horth i _ _ hi)`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tens_mul_tens (a b : ∀ i, L i) : tens (fun i => E i (a i)) * tens (fun i => E i (b i)) =
     open Classical in if a = b then tens (fun i => E i (a i)) else 0 := by
@@ -146,9 +142,9 @@ theorem tens_mul_tens (a b : ∀ i, L i) : tens (fun i => E i (a i)) * tens (fun
 
 include hidem horth in
 /- English proof (translation)
-Unfold `eSum`. Rewrite using `[Finset.sum_mul, Finset.sum_eq_single b]`. Use `split_ifs`. Rewrite using `[tens_mul_tens E hidem horth, if_pos rfl]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a _ hab split_ifs`. Rewrite using `[tens_mul_tens E hidem horth, if_neg hab]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eSum_mul_tens (b : ∀ i, L i) : eSum E S * tens (fun i => E i (b i)) =
     open Classical in if S b then tens (fun i => E i (b i)) else 0 := by
@@ -166,9 +162,9 @@ theorem eSum_mul_tens (b : ∀ i, L i) : eSum E S * tens (fun i => E i (b i)) =
 
 include hidem horth in
 /- English proof (translation)
-Use `conv_lhs => rhs`. Unfold `eSum`. Rewrite using `[Finset.mul_sum]`. Unfold `eSum`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `split_ifs with hb`. Use `eSum_mul_tens E S hidem horth b` as an intermediate fact. Rewrite `this` using `[if_pos hb]`. Conclude with `this`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eSum_idem : eSum E S * eSum E S = eSum E S := by
   classical
@@ -184,7 +180,7 @@ theorem eSum_idem : eSum E S * eSum E S = eSum E S := by
 
 include hidem horth in
 /- English proof (translation)
-Introduce `h0`. Use `eSum_mul_tens E S hidem horth b` as an intermediate fact. Rewrite `this` using `[if_pos hb, h0, zero_mul]`. Conclude with `tens_ne_zero _ hne this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eSum_ne_zero (b : ∀ i, L i) (hb : S b) (hne : ∀ i, E i (b i) ≠ 0) : eSum E S ≠ 0 := by
   intro h0
@@ -193,9 +189,9 @@ theorem eSum_ne_zero (b : ∀ i, L i) (hb : S b) (hne : ∀ i, E i (b i) ≠ 0) 
   exact tens_ne_zero _ hne this.symm
 
 /- English proof (translation)
-Unfold `eSum`. Rewrite using `[MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem eSum_coeff (g : ∀ i, G i) : (eSum E S).coeff g =
     open Classical in ∑ a : (∀ i, L i), if S a then ∏ i, (E i (a i)).coeff (g i) else 0 := by
@@ -208,13 +204,13 @@ theorem eSum_coeff (g : ∀ i, G i) : (eSum E S).coeff g =
   · rfl
 
 /- English proof (translation)
-Establish `hne : Ideal.span {1 - e} ≠ ⊤`. Introduce `h`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp ((Ideal.eq_top_iff_one _).mp h)`. Apply `h0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Set `_ : Field (Z ⧸ m)` to `Ideal.Quotient.field m`. Establish `: FiniteDimensional ℂ (Z ⧸ m)` using `Module.Finite.of_surjective (Ideal.Quotient.mkₐ ℂ m).toLinearMap (Ideal.Quotient.mkₐ_surjective ℂ m)`. Establish `hb` using `IsAlgClosed.algebraMap_bijective_of_isIntegral (k := ℂ) (K := Z ⧸ m)`. Set `φ : ℂ ≃ₐ[ℂ] (Z ⧸ m)` to `AlgEquiv.ofBijective (Algebra.ofId ℂ (Z ⧸ m)) hb`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨φ.symm.toAlgHom.comp (Ideal.Quotient.mkₐ ℂ m), ?_⟩` and prove the remaining obligations. Establish `h1 : Ideal.Quotient.mkₐ ℂ m e = 1`. Establish `: Ideal.Quotient.mk m (1 - e) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (hle (Ideal.mem_span_singleton_self _))`. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show φ.symm (Ideal.Quotient.mkₐ ℂ m e) = 1`. Rewrite using `[h1, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_char_comm (Z : Type) [CommRing Z] [Algebra ℂ Z] [FiniteDimensional ℂ Z] (e : Z)
     (hi : e * e = e) (h0 : e ≠ 0) : ∃ ω : Z →ₐ[ℂ] ℂ, ω e = 1 := by
@@ -241,7 +237,7 @@ theorem exists_char_comm (Z : Type) [CommRing Z] [Algebra ℂ Z] [FiniteDimensio
   rw [h1, map_one]
 
 /- English proof (translation)
-Establish `hfd : FiniteDimensional ℂ (MonoidAlgebra ℂ Γ)` using `Module.Finite.equiv (MonoidAlgebra.coeffLinearEquiv ℂ).symm`. Conclude with `exists_char_comm _ ⟨e, hc⟩ (Subtype.ext hi) (fun h => h0 (congrArg Subtype.val h))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_char {Γ : Type} [Group Γ] [Finite Γ] (e : MonoidAlgebra ℂ Γ)
     (hc : e ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ Γ)) (hi : e * e = e) (h0 : e ≠ 0) :

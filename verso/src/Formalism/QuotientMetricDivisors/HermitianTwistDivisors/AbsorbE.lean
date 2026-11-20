@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.DivisionValues
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma absE_ssum_le {J : Type} [Fintype J] (g : J → ℝ) (c m : ℝ)
     (hJ : (Fintype.card J : ℝ) = m) (hg : ∀ j, g j ≤ c) : ∑ j, g j ≤ m * c := by
@@ -16,7 +16,7 @@ lemma absE_ssum_le {J : Type} [Fintype J] (g : J → ℝ) (c m : ℝ)
     _ = m * c := by rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hJ]
 
 /- English proof (translation)
-Apply `absE_ssum_le (fun j => ∑ ρ, g j ρ) (f * c) m hJ` to reduce the goal to its premises. Introduce `j`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 -/
 lemma absE_dsum_le {J Pl : Type} [Fintype J] [Fintype Pl] (g : J → Pl → ℝ) (c m f : ℝ)
     (hc : 0 ≤ c) (hJ : (Fintype.card J : ℝ) = m) (hP : (Fintype.card Pl : ℝ) ≤ f)
@@ -30,65 +30,65 @@ lemma absE_dsum_le {J Pl : Type} [Fintype J] [Fintype Pl] (g : J → Pl → ℝ)
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `J Pl _ _ TT _ x eps L b a rd La B0 Nc xe m f k N S t η w'' b' dC lam0 C0 Lpass Eb e6 eP logOm kk eK pq w eE δ hx heps hL hb ha hrd hrdL hxL hLa hB0 hNc hxe hJ hPl hm hf hk hN hS ht hη hdC hw hpq hOm hlam0 hNd hmNL hmηNL hkN hkS hmtη hNw hb'N hmkb' hC0 hLpass hEb heK he6 heP heE h …`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hL1 : 1 ≤ L` using `by rw [hL]; exact Real.one_le_rpow hx heps.le`. Establish `hb1 : 1 ≤ b` using `by rw [hb]; exact Real.one_le_exp (by linarith)`. Establish `hb0 : 0 < b` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrd0 : 0 < rd` using `by linarith`. Establish `ha0 : 0 < a` using `by rw [ha]; exact mul_pos hx0 hb0`. Establish `hLa_eq : La = Real.log x + L + Real.log rd`. Rewrite using `[hLa, Real.log_mul ha0.ne' hrd0.ne', ha, Real.log_mul hx0.ne' hb0.ne', hb, Real.log_exp]`. Establish `hlx : 0 ≤ Real.log x` using `Real.log_nonneg hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlrd : 0 ≤ Real.log rd` using `Real.log_nonneg hrd`. Establish `hLa0 : 0 ≤ La` using `by rw [hLa_eq]; linarith`. Establish `hLa3 : La ≤ 3 * L` using `by rw [hLa_eq]; linarith`. Rewrite `hxe`, `hB0` using `[← hL]`. Establish `hm0 : (0 : ℝ) ≤ m` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hf0 : (0 : ℝ) ≤ f` using `by linarith`. Establish `hL0 : (0 : ℝ) ≤ L` using `by linarith`. Establish `hN0 : (0 : ℝ) ≤ N` using `by linarith`. Establish `hk0 : (0 : ℝ) ≤ k` using `by linarith`. Establish `hfmbL : 0 ≤ f * m * b * L` using `mul_nonneg (mul_nonneg (mul_nonneg hf0 hm0) hb0.le) hL0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0n : 0 ≤ B0` using `by rw [hB0]; exact hfmbL`. Establish `hT2n : 0 ≤ m * (B0 + Nc) * xe` using `mul_nonneg (mul_nonneg hm0 (by linarith)) (by linarith)`. Establish `hFM2 : m * (f * m * b * L) ≤ m * (B0 + Nc) * xe`. Establish `h1 : m * B0 ≤ m * (B0 + Nc)` using `mul_le_mul_of_nonneg_left (by linarith) hm0`. Establish `h2 : m * (B0 + Nc) * 1 ≤ m * (B0 + Nc) * xe` using `mul_le_mul_of_nonneg_left (by linarith) (mul_nonneg hm0 (by linarith))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : m * B0 = m * (f * m * b * L)` using `by rw [hB0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hFM : f * m * b * L ≤ m * (B0 + Nc) * xe`. Establish `h4` using `mul_le_mul_of_nonneg_right hm hfmbL`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hfbL : f * b ≤ f * b * L`. Use `mul_le_mul_of_nonneg_left hL1 (mul_nonneg hf0 hb0.le)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfb_fmb : f * b * L ≤ f * m * b * L`. Use `mul_le_mul_of_nonneg_right hm (mul_nonneg (mul_nonneg hf0 hb0.le) hL0)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb_T : b ≤ m * (B0 + Nc) * xe`. Establish `h1 : 1 * b ≤ f * b` using `mul_le_mul_of_nonneg_right hf hb0.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hone_T : 1 ≤ m * (B0 + Nc) * xe` using `by linarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hN2 : N ^ 2 ≤ b`. Use `mul_le_mul_of_nonneg_left hdC (sq_nonneg N)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN2La : N ^ 2 * La ≤ b * (3 * L)` using `mul_le_mul hN2 hLa3 hLa0 hb0.le`. Establish `hw''0 : 0 ≤ w''` using `by have := mul_nonneg hk0 hS; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSw : S ≤ w''` using `by have := mul_le_mul_of_nonneg_right hk hS; linarith`. Establish `hSN : S * N ≤ b` using `by have := mul_le_mul_of_nonneg_right hSw hN0; linarith`. Establish `hw''b : w'' ≤ b` using `by have := mul_le_mul_of_nonneg_right hN hw''0; linarith`. Establish `hLp : Lpass ≤ (1 + C0) * (m * (B0 + Nc) * xe)`. Establish `h1` using `mul_le_mul_of_nonneg_left hlam0 hC0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `mul_le_mul_of_nonneg_left hb_T hC0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hEb' : Eb ≤ C0 * (m * (B0 + Nc) * xe)` using `by linarith`. Establish `heKs : ∑ j, eK j ≤ 5 * C0 * (m * (B0 + Nc) * xe)`. Establish `hs` using `absE_ssum_le eK _ m hJ heK`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `mul_le_mul_of_nonneg_left hN2La hf0`. Establish `e2` using `mul_le_mul_of_nonneg_left hNd hf0`. Establish `e3` using `mul_le_mul_of_nonneg_left hmNL hf0`. Establish `hX : f * N ^ 2 * (La + dC) + f * m ^ 3 * N ^ 2 * L ≤ 3 * (f * b * L) + 2 * (f * b)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hX'` using `mul_le_mul_of_nonneg_left hX hm0`. Establish `hY : m * (3 * (f * b * L) + 2 * (f * b)) ≤ 5 * (m * (B0 + Nc) * xe)`. Use `mul_le_mul_of_nonneg_left hfbL hm0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hZ` using `mul_le_mul_of_nonneg_left (hX'.trans hY) hC0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `he6' : e6 ≤ 3 * C0 * (m * (B0 + Nc) * xe)`. Establish `h1` using `mul_le_mul_of_nonneg_left hN2La (mul_nonneg (mul_nonneg hC0 hm0) hf0)`. Establish `h2` using `mul_le_mul_of_nonneg_left hFM hC0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hTTa : (TT.card : ℝ) * b' * N * La ≤ (TT.card : ℝ) * a * La`. Establish `hc : (0 : ℝ) ≤ TT.card` using `Nat.cast_nonneg _`. Use `mul_le_mul_of_nonneg_left hb'N (mul_nonneg hc hLa0)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmηN : m * η * N * La ≤ 3 * b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ m * η * N` using `mul_nonneg (mul_nonneg hm0 hη) hN0`. Use `mul_le_mul_of_nonneg_left hLa3 h0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hSNLa : S * N * La ≤ b * (3 * L)` using `mul_le_mul hSN hLa3 hLa0 hb0.le`. Establish `heP' : eP ≤ C0 * ((TT.card : ℝ) * a * La) + 9 * C0 * (m * (B0 + Nc) * xe)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY : ((TT.card : ℝ) * b' * N + f * (m * η + S) * N + f * N ^ 2) * La ≤ (TT.card : ℝ) * a * La + 9 * (f * b * L)`. Establish `e1` using `mul_le_mul_of_nonneg_left hmηN hf0`. Establish `e2` using `mul_le_mul_of_nonneg_left hSNLa hf0`. Establish `e3` using `mul_le_mul_of_nonneg_left hN2La hf0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1` using `mul_le_mul_of_nonneg_left hY hC0`. Establish `h2` using `mul_le_mul_of_nonneg_left (hfb_fmb.trans hFM) hC0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `heEs : ∑ j, ∑ ρ, eE j ρ ≤ 15 * C0 * (m * (B0 + Nc) * xe)`. Establish `hc : 0 ≤ C0 * (15 * (b * L))` using `mul_nonneg hC0 (mul_nonneg (by norm_num) (mul_nonneg hb0.le hL0))`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `absE_dsum_le eE (C0 * (15 * (b * L))) m f hc hJ hPl (fun j ρ => by`. Establish `hwj` using `hw j ρ`. Establish `hin : w j ρ + S + N ^ 2 + m * (t + 1) * η ≤ 5 * b` using `by linarith [hwj.2]`. Establish `h1 : (w j ρ + S + N ^ 2 + m * (t + 1) * η) * La ≤ (5 * b) * (3 * L)` using `mul_le_mul hin hLa3 hLa0 (by linarith)`. Establish `h2` using `mul_le_mul_of_nonneg_left h1 hC0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `heE j ρ`. Use the proof step `linarith)`. Establish `h4` using `mul_le_mul_of_nonneg_left hFM hC0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpqs : ∑ j, ∑ ρ, |pq j - kk| * |w j ρ| * |logOm| ≤ 6 * (m * (B0 + Nc) * xe)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : 0 ≤ 6 * (m * b * L)`. Use `mul_nonneg (mul_nonneg hm0 hb0.le) hL0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : ∑ j, ∑ ρ, |pq j - kk| * |w j ρ| * |logOm| ≤ m * (f * (6 * (m * b * L)))` using `absE_dsum_le _ _ m f hc hJ hPl (fun j ρ => by`. Establish `hwj` using `hw j ρ`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `habs : |w j ρ| ≤ 2 * b` using `by rw [abs_of_nonneg hwj.1]; exact hwj.2`. Establish `h1 : |pq j - kk| * |w j ρ| ≤ m * (2 * b)` using `mul_le_mul (hpq j) habs (abs_nonneg _) hm0`. Establish `h2 : |pq j - kk| * |w j ρ| * |logOm| ≤ m * (2 * b) * La` using `mul_le_mul h1 hOm (abs_nonneg _) (mul_nonneg hm0 (by linarith))`. Establish `h3 : m * (2 * b) * La ≤ m * (2 * b) * (3 * L)` using `mul_le_mul_of_nonneg_left hLa3 (mul_nonneg hm0 (by linarith))`. Use the proof step `linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h4 : m * (f * (6 * (m * b * L))) = 6 * (m * (f * m * b * L))` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hite : ∀ c : ℝ, ∑ ρ : Pl, (if ρ ∈ TT then c else 0) = (TT.card : ℝ) * c`. Introduce `c`. Establish `hfl : Finset.univ.filter (· ∈ TT) = TT` using `by ext ρ; simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_filter, hfl, Finset.sum_const, nsmul_eq_mul]`. Establish `hδs : ∑ j, ∑ ρ, |δ j ρ| * |logOm| ≤ C0 * ((TT.card : ℝ) * a * La) + 15 * C0 * (m * (B0 + Nc) * xe)`. Establish `hpt : ∀ j ρ, |δ j ρ| * |logOm| ≤ C0 * (5 * b) * La + (if ρ ∈ TT then C0 * (k * b') * La else 0)`. Introduce `j ρ`. Establish `hwj` using `hw j ρ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hδ j ρ`. Establish `h2 : |δ j ρ| * |logOm| ≤ C0 * (w j ρ + k * (N + S) + m * (t + 1) * η + (if ρ ∈ TT then k * b' else 0)) * La` using `mul_le_mul h1 hOm (abs_nonneg _) ((abs_nonneg _).trans h1)`. Distinguish the cases in `hρ : ρ ∈ TT`. Rewrite `h2`, the goal using `[if_pos hρ]`. Establish `h3 : w j ρ + k * (N + S) + m * (t + 1) * η + k * b' ≤ 5 * b + k * b'`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear relations using `[hwj.2]`. Establish `h4` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left h3 hC0) hLa0`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h2`, the goal using `[if_neg hρ]`. Establish `h3 : w j ρ + k * (N + S) + m * (t + 1) * η + 0 ≤ 5 * b` using `by linarith [hwj.2]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h4` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left h3 hC0) hLa0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : ∑ j, ∑ ρ, |δ j ρ| * |logOm| ≤ ∑ j : J, ∑ ρ : Pl, (C0 * (5 * b) * La + (if ρ ∈ TT then C0 * (k * b') * La else 0))` using `Finset.sum_le_sum (fun j _ => Finset.sum_le_sum (fun ρ _ => hpt j ρ))`. Establish `hinner : ∀ j : J, ∑ ρ : Pl, (C0 * (5 * b) * La + (if ρ ∈ TT then C0 * (k * b') * La else 0)) = (Fintype.card Pl : ℝ) * (C0 * (5 * b) * La) + (TT.card : ℝ) * (C0 * (k * b') * La)`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_add_distrib, hite, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Establish `hR : ∑ j : J, ∑ ρ : Pl, (C0 * (5 * b) * La + (if ρ ∈ TT then C0 * (k * b') * La else 0)) = m * ((Fintype.card Pl : ℝ) * (C0 * (5 * b) * La) + (TT.card : ℝ) * (C0 * (k * b') * La))`. Rewrite using `[Finset.sum_congr rfl (fun j _ => hinner j), Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hJ]`. Rewrite `hsum` using `[hR]`. Establish `hA : 0 ≤ C0 * (5 * b) * La` using `mul_nonneg (mul_nonneg hC0 (by linarith)) hLa0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hPl hA) hm0`. Establish `e2 : C0 * (5 * b) * La ≤ C0 * (5 * b) * (3 * L)` using `mul_le_mul_of_nonneg_left hLa3 (mul_nonneg hC0 (by linarith))`. Establish `e2'` using `mul_le_mul_of_nonneg_left e2 (mul_nonneg hm0 hf0)`. Establish `e3` using `mul_le_mul_of_nonneg_left hmkb' (mul_nonneg (mul_nonneg hC0 (Nat.cast_nonneg TT.card)) hLa0)`. Establish `h4` using `mul_le_mul_of_nonneg_left hFM hC0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT1n : 0 ≤ (TT.card : ℝ) * a * La` using `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) ha0.le) hLa0`. Establish `hC1` using `mul_nonneg hC0 hT1n`. Establish `hC2` using `mul_nonneg hC0 hT2n`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem error_absorption : AbsorbE := by
   intro J Pl _ _ TT _ x eps L b a rd La B0 Nc xe m f k N S t η w'' b' dC lam0 C0 Lpass Eb e6 eP

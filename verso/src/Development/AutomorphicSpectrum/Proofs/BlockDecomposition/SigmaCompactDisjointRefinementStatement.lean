@@ -6,7 +6,7 @@ open MeasureTheory ReciprocityTheory.L2DbarEstimates GlobalTheory.CompanionTheor
 open scoped ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.CroftonPartition.exists_sigmaCompact_partition` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSigmaCompactDisjointRefinement.lean&line=20#L20)
 -/

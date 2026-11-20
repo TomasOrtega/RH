@@ -19,11 +19,11 @@ namespace GlobalTheory.FamGerm
 section Inhabitant
 
 /- English proof (translation)
-Establish `hG` using `GlobalTheory.globalFns_holds`. Use `U.smooth` as an intermediate fact. Establish `: IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))).le.trans bot_le)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant (jK R)` as an intermediate fact. Establish `hg : IsPullback (U.gen.inv.left ≫ pullback.fst G.hom (jK R)) A.A.hom G.hom (jK R)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso U.gen.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map U.gen.inv))`. Establish `s : IsPullback U.gen.inv.left A.A.hom (pullback.snd G.hom (jK R)) (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨(Over.w U.gen.inv).trans (Category.comp_id _).symm⟩`. Simplify using `using s.paste_horiz (IsPullback.of_hasPullback G.hom (jK R))`. Establish `s₁ : Function.Surjective G.hom.appTop.hom` using `RigidIsoCube.surjective_appTop_of_baseChange hg (eSec G) (Over.w η[G]) (hG _ _ A.isAb).2`. Establish `: Flat (G ⊗ G).hom` using `by rw [Over.tensorObj_hom]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s₂` using `surj_comp (RigidIsoCube.surjective_snd_of_generic hG (jK R) G A.isAb hg G) s₁`. Rewrite `s₂` using `[Over.w (snd G G)]`. Establish `s₃` using `surj_comp (RigidIsoCube.surjective_snd_of_generic hG (jK R) G A.isAb hg (G ⊗ G)) s₂`. Rewrite `s₃` using `[Over.w (snd G (G ⊗ G))]`. Conclude with `⟨s₂, s₃⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem surjective_appTop_sq_cube {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
@@ -52,15 +52,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {V : Ty
   [IsDiscreteValuationRing V] {F : Type} [Field F] [Algebra (FractionRing V) F] (y : Pt1 E H V F)
 
 /- English proof (translation)
-Use `((JetRoad.jetRoad.2.2.2.2.2.2.2.2.1 V y.t.G y.d y.x y.hx).1 _ ?_ _).exists` and prove the remaining obligations. Use `y.t.act.hom H.w0` as an intermediate fact. Introduce `z hz`. Establish `hj` using `y.hj hz`. Use `Set.mem_iInter.2 fun i => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ i, η[y.t.G].left ≫ JetSer.primφ (y.t.act.act H.w0) i = η[y.t.G].left`. Introduce `i`. Use `fin_cases i`. Conclude with `Category.comp_id _`. Use `show η[y.t.G].left ≫ (𝟙 y.t.G * y.t.act.act H.w0 : y.t.G ⟶ y.t.G).left = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, MonObj.comp_mul, Category.comp_id, IsMonHom.one_hom]`. Establish `e : η[y.t.G] = (1 : 𝟙_ _ ⟶ y.t.G)` using `by simp [Hom.one_def]`. Rewrite using `[e, _root_.mul_one]`. Conclude with `Category.comp_id _`. Use `show η[y.t.G].left ≫ (y.t.act.act H.w0).left = _`.
-
-Rewrite using `[← Over.comp_left, IsMonHom.one_hom]`. Use `show η[y.t.G].left ≫ (1 : y.t.G ⟶ y.t.G).left = _`. Rewrite using `[← Over.comp_left, MonObj.comp_one]`. Simplify using `[Hom.one_def]`. Establish `: (η[y.t.G].left ≫ JetSer.primφ (y.t.act.act H.w0) i) z ∈ y.P.U.LG.L.U y.j` using `by rw [key]; exact hj`.
-
-Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Pt1.exists_frameSer : ∃ r : PS V 1 y.d, JetSer.IsSer1 y.x _ (y.ρ.s (fun _ => y.j)).val r := by
   refine ((JetRoad.jetRoad.2.2.2.2.2.2.2.2.1 V y.t.G y.d y.x y.hx).1 _ ?_ _).exists
@@ -86,11 +82,11 @@ theorem Pt1.exists_frameSer : ∃ r : PS V 1 y.d, JetSer.IsSer1 y.x _ (y.ρ.s (f
   exact this
 
 /- English proof (translation)
-Take `⟨p, x, w, ζ, t', h₁, h₂, hw, hζ, hf, hΦ', hs⟩` from `ht`. Take `⟨Φ, hΦ⟩` from `phiFun_of_globalFns GlobalTheory.globalFns_holds V _ y.P.D F q hq p w hw`. Take `⟨M, hM, hU⟩` from `(ThetaFinOrd.finOrd_iff p w ζ Φ hΦ).1 hf`. Establish `hξ0 : ξ ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hξ` using `[zero_pow (by omega)]`. Conclude with `zero_ne_one hξ`. Use `⟨p, x, w, ξ * ζ, t', h₁, h₂, hw, mul_ne_zero hξ0 hζ, (ThetaFinOrd.finOrd_iff p w _ Φ hΦ).2 ⟨M * n, Nat.mul_pos hM hn, ?_⟩, hΦ', ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, smul_pow, pow_mul' ξ, hξ, pow_mul _ M n, hU, one_pow, one_pow, one_smul]`. Rewrite `hs`, the goal using `[isSmul_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, mul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem Pt1.Transl.smul {y : Pt1 E H V F} {q : ℕ} (hq : 1 ≤ q) {c : 𝓞 E} {s h : Fam y.P.D.toPre F q}
     (ht : y.Transl q c s h) {ξ : F} {n : ℕ} (hn : 1 ≤ n) (hξ : ξ ^ n = 1) : y.Transl q c s (ξ • h) := by

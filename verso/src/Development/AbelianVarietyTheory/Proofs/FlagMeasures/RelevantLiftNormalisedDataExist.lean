@@ -8,7 +8,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `_ _ _ u u'` and use `Formalism.L2.SG.Pf.LoopBPin.pinAll_holds u u'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pinAll_all : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), PinAll (Y := Y) u u' :=
   fun _ _ _ u u' => Formalism.L2.SG.Pf.LoopBPin.pinAll_holds u u'

@@ -23,13 +23,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} (X : D
   (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r)
 
 /- English proof (translation)
-Establish `hP : ∀ s, perMat X bas idx s x' = M * perMat X bas idx s x`. Introduce `s`. Use extensionality with `i k`. Conclude with `congrFun (h fun τ => Data.emb τ.1 (bas (Pi.single (s k) 1))) i`. Establish `hH : hMat X bas idx x' = hMat X bas idx x * M⁻¹`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMat, hP, Matrix.mul_inv_rev, hMat]`. Establish `hT : tauMat X bas idx x' = tauMat X bas idx x`. Rewrite using `[tauMat, hH, hP, Matrix.mul_assoc, ← Matrix.mul_assoc M⁻¹, nonsing_inv_mul _ hM, Matrix.one_mul, tauMat]`. Establish `hI : imInv X bas idx x' = imInv X bas idx x` using `by rw [imInv, imInv, hT]`. Establish `hz : ∀ b, hMat X bas idx x' *ᵥ zR X idx x' v b = hMat X bas idx x *ᵥ zR X idx x v b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Establish `: zR X idx x' v b = M *ᵥ zR X idx x v b` using `h fun τ => v τ b`. Rewrite using `[this, hH, mulVec_mulVec, Matrix.mul_assoc, nonsing_inv_mul _ hM, Matrix.mul_one]`. Simplify using `only [thR, gaussR, GlobalTheory.Dict.hx, thA, hz, hT, hI]`. Rewrite using `[hH, det_mul, det_nonsing_inv, Ring.inverse_eq_inv', mul_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem thR_of_perC (x x' : Frame X.Ψ r) (M : Matrix (Fin g) (Fin g) ℂ) (hM : IsUnit M.det)
     (h : ∀ u, (fun j => perC X x' u (idx j)) = M *ᵥ fun j => perC X x u (idx j))
@@ -53,15 +53,15 @@ theorem thR_of_perC (x x' : Frame X.Ψ r) (M : Matrix (Fin g) (Fin g) ℂ) (hM :
   ring
 
 /- English proof (translation)
-Use `set P := prFst r X.p0 with hP`. Set `N : X.Ψ → Matrix (Fin r) (Fin r) ℂ` to `fun τ => P * (b τ)ᵀ + (1 - P) * (b τ)⁻¹`. Establish `hN : ∀ τ, (N τ).det ≠ 0 ∧ (N τ).det = (P * b τ + (1 - P)).det / ((1 - P) * b τ + P).det` using `fun τ => det_tr_inv_block P (1 - P) (b τ) (hb τ) (by abel) (by`. Apply the tactic sequence `rw [hP, prFst, diagonal_mul_diagonal]; congr 1; funext a; split_ifs <;> simp) (hc τ) (by`. Rewrite using `[hP, prFst, diagonal_transpose])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `e : Fin g ≃ Fin r × X.Ψ` to `idx.trans (Equiv.prodComm _ _)`. Establish `hdet : ((blockDiagonal N).submatrix e e).det = ∏ τ, (N τ).det`. Rewrite using `[det_submatrix_equiv_self, det_blockDiagonal]`. Establish `main` using `thR_of_perC X bas idx x x' ((blockDiagonal N).submatrix e e) (by rw [hdet]; exact isUnit_iff_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun τ _ => (hN τ).1)) (fun u => by`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1 : ((blockDiagonal N).submatrix e e *ᵥ fun j => perC X x u (idx j)) j = ∑ p : Fin r × X.Ψ, blockDiagonal N (e j) p * perC X x u p.swap`. Rewrite using `[← e.sum_comp]`. Both sides reduce to the same expression. Rewrite using `[h1, Fintype.sum_prod_type]`. Use `(perC_block X x x' (idx j).1 (b _) (hb _) (hxb _) (hc _) u (idx j).2).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (idx j).1]`. Conclude with `congrArg (· * _) (blockDiagonal_apply_eq N (idx j).2 c (idx j).1).symm`. Introduce `τ _ hτ`. Establish `: blockDiagonal N (e j) (c, τ) = 0` using `blockDiagonal_apply_ne N (idx j).2 c hτ.symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, zero_mul]`. Use the proof step `simp) φ v`. Rewrite using `[main, hdet, Finset.prod_pow, ← Finset.prod_inv_distrib]`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun τ _ => by rw [(hN τ).2, inv_div]`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem thR_block (x x' : Frame X.Ψ r) (b : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (hb : ∀ τ, IsUnit (b τ).det)
     (hxb : ∀ τ, mat x' τ = mat x τ * b τ) (hc : ∀ τ, b τ * prFst r X.p0 = prFst r X.p0 * b τ)
@@ -101,11 +101,11 @@ theorem thR_block (x x' : Frame X.Ψ r) (b : X.Ψ → Matrix (Fin r) (Fin r) ℂ
 end Classical
 
 /- English proof (translation)
-Establish `h1 : (P * m + (1 - P))ᴴ * (P * m + (1 - P)) = 1`. Establish `a1 : mᴴ * (P * m) = P` using `by rw [← hc, ← Matrix.mul_assoc, hm, Matrix.one_mul]`. Establish `a2 : ∀ y : Matrix (Fin r) (Fin r) ℂ, P * (P * y) = P * y` using `fun y => by rw [← Matrix.mul_assoc, hPP]`. Simplify using `only [conjTranspose_add, conjTranspose_mul, conjTranspose_sub, conjTranspose_one, hP, Matrix.add_mul, Matrix.mul_add, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc, a1, a2, hPP]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `h2 : P * m.map conj + (1 - P) = (starRingEnd ℂ).mapMatrix (P * m + (1 - P))`. Rewrite using `[map_add, map_mul, map_sub, map_one, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, hP']`. Establish `h3` using `congrArg det h1`. Rewrite `h3` using `[det_mul, det_conjTranspose, det_one]`. Rewrite using `[h2, ← RingHom.map_det]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_inv_of_mul_eq_one_left h3`.
+A detailed English derivation is pending.
 -/
 theorem det_block_conj {r : ℕ} (P m : Matrix (Fin r) (Fin r) ℂ) (hPP : P * P = P) (hP : Pᴴ = P)
     (hP' : P.map conj = P) (hc : m * P = P * m) (hm : mᴴ * m = 1) :
@@ -125,21 +125,21 @@ theorem det_block_conj {r : ℕ} (P m : Matrix (Fin r) (Fin r) ℂ) (hPP : P * P
   exact eq_inv_of_mul_eq_one_left h3
 
 /- English proof (translation)
-Establish `hu` using `GlobalTheory.Ker.ONBasis.isUnit_det hSS hB`. Establish `hPP : prFst r p * prFst r p = prFst r p`. Apply the tactic sequence `rw [prFst, diagonal_mul_diagonal]; congr 1; funext a; split_ifs <;> simp`. Establish `hPc : (prFst r p).map conj = prFst r p`. Use extensionality with `a c`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [prFst, map_apply, diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hPH : (prFst r p)ᴴ = prFst r p`. Apply the tactic sequence `rw [prFst, diagonal_conjTranspose]; congr 1; funext a; simp only [Pi.star_apply]; split_ifs <;> simp`. Generalize the expression as in `prFst r p = P at *`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the chosen expression with an arbitrary variable.
 
-Establish `e0 : B * S * B⁻¹ * B = B * S` using `by rw [Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.mul_one]`. Generalize the expression as in `B * S * B⁻¹ = s at *`. Take `⟨h1, h2, h3⟩` from `block_of_inv P B k (-s) hu (by rw [Matrix.neg_mul, e0, hS]) (by rw [Matrix.neg_mul, ← Matrix.mul_assoc, ← hc, Matrix.mul_assoc, e0, hS, Matrix.mul_assoc])`. Establish `hkB : k * B = B * (B⁻¹ * (k * B))` using `(mul_nonsing_inv_cancel_left _ _ hu).symm`. Generalize the expression as in `B⁻¹ * (k * B) = m at *`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hmS : m * S = S * m`. Rewrite using `[hS, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, h1, Matrix.mul_one, Matrix.one_mul]`. Establish `hm1 : mᴴ * S * m = S`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hB, conjTranspose_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Bᴴ * (kᴴ * G * k) * B := by rw [← hkB, conjTranspose_mul]; simp only [Matrix.mul_assoc]`. Use `_ = S := by rw [hk, hB]`. Establish `hm : mᴴ * m = 1`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, hmS, Matrix.mul_assoc, ← Matrix.mul_assoc S, hSS, Matrix.one_mul]`. Use `_ = 1 := by rw [hm1, hSS]`. Establish `d1` using `det_block_conj P m hPP hPH hPc h1 hm`. Establish `d2` using `det_block_conj (1 - P) m (by rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_one, Matrix.one_mul, hPP]; abel) (by rw [conjTranspose_sub, conjTranspose_one, hPH]) (by`. Express the relevant statement in the definitionally equal form `(starRingEnd ℂ).mapMatrix (1 - P) = _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, map_one, RingHom.mapMatrix_apply, hPc])`. Use the proof step `(by rw [Matrix.mul_sub, Matrix.sub_mul, h1, Matrix.mul_one, Matrix.one_mul]) hm`. Rewrite `d2` using `[sub_sub_cancel]`. Use `⟨m, ?_, hkB, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Matrix.isUnit_det_of_left_inverse hm).map _`. Rewrite using `[← hPc, ← Matrix.map_mul, ← Matrix.map_mul, h1]`. Rewrite using `[d1, d2, ← h2, ← h3, detNeg, detPos, detPos]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_one, Matrix.one_mul, hc, sub_neg_eq_add, ← sub_eq_add_neg]`. Rewrite using `[div_eq_mul_inv, inv_inv, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem blocks {r p : ℕ} (G B k : Matrix (Fin r) (Fin r) ℂ) (S : Matrix (Fin r) (Fin r) ℂ)
     (hS : S = (2 : ℂ) • prFst r p - 1) (hSS : S * S = 1) (hB : Bᴴ * G * B = S) (hk : kᴴ * G * k = G)
@@ -194,11 +194,11 @@ theorem blocks {r p : ℕ} (G B k : Matrix (Fin r) (Fin r) ℂ) (S : Matrix (Fin
     rw [div_eq_mul_inv, inv_inv, mul_comm]
 
 /- English proof (translation)
-Establish `hdom : ∀ A, C.IsB A → C.xB A ∈ C.X.dom` using `fun A hA => GlobalTheory.Ker.ONBasis.mem_dom C.X (GlobalTheory.Ker.ONBasis.isONFr_xB C hA)`. Establish `z1` using `(GlobalTheory.Ker.ZakEx.isZak_Th D S T C _ (hdom _ hB) φ hφ).1`. Establish `z2` using `(GlobalTheory.Ker.ZakEx.isZak_Th D S T C _ (hdom _ (GlobalTheory.Ker.ONBasis.isB_mvB C hB k)) φ hφ).1`. Take `⟨-, l1, l2⟩` from `GlobalTheory.ThetaSpace.theta_space_laws D S T C`. Use `(l1 _ _ z2.1 ((l2 _ z1.1).1 _)).2 fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose m m1 m2 m3 m4 using fun τ => blocks (p := C.X.p0) (gramAt D T τ) (B τ) (compAt C.θ τ (Formalism.L2.Theta.mt T k)) (sgnM C.X) (sgnM_eq C.X) (GlobalTheory.Ker.ONBasis.sgnM_sq C.X) (hB τ) (GlobalTheory.Ker.ONBasis.compAt_unitary C τ k) (hc τ)`. Rewrite using `[z2.2 w hw, Pi.smul_apply, z1.2 w hw, smul_eq_mul, thR_block C.X C.bas C.idx (C.xB B) (C.xB (C.mvB k B)) (fun σ => (m (C.m.e.symm σ)).map conj) (fun σ => m1 _) (fun σ => ?_) (fun σ => m3 _)]`. Use `congr 1`. Rewrite using `[← C.m.e.prod_comp, vacChar]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.symm_apply_apply, m4, zero_add, zero_sub, _root_.zpow_neg, zpow_natCast, zpow_natCast, mul_pow, inv_pow]`. Both sides reduce to the same expression. Take `⟨τ, rfl⟩` from `C.m.e.surjective σ`. Rewrite using `[GlobalTheory.Ker.ONBasis.mat_xB, GlobalTheory.Ker.ONBasis.mat_xB, Equiv.symm_apply_apply, ← Matrix.map_mul, ← m2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Th_mvB (D : D7) (S T : HSp D) (C : GlobalTheory.Ker.Ctx S T) (B : C.Bas) (hB : C.IsB B) (k : GA D T)
     (_hk : k ∈ GinfC T)

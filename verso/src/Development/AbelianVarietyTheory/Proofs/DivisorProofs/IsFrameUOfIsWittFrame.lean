@@ -18,7 +18,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem form_eq (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (u v : Fin n → E) :
     form σ J u v = ∑ k, ∑ l, u k * J k l * σ (v l) := by
@@ -26,7 +26,7 @@ private theorem form_eq (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin 
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `only [form_eq, map_sum, map_mul, hσ, hJ]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem form_swap {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = J i j) (u v : Fin n → E) : form σ J u v = σ (form σ J v u) := by
@@ -36,7 +36,7 @@ private theorem form_swap {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n :
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `only [form_eq, one_smul, Formalism.UG.cT, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, RingHom.coe_coe, Finset.sum_mul, map_sum, map_mul, hσ]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem witt_entry {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n q : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (U V : Matrix (Fin n) (Fin q) E) (i j : Fin q) :
@@ -47,9 +47,9 @@ private theorem witt_entry {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n 
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Use `⟨fun i j => ?_, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [witt_entry hσ, h.xx]`. Simplify using the standard rewrite rules. Apply the tactic sequence `rw [witt_entry hσ, h.yy]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rw [witt_entry hσ, h.xy, Matrix.one_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem isFrameU_of_isWittFrame {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n q : ℕ} {J : Matrix (Fin n) (Fin n) E}
     {U V : Matrix (Fin n) (Fin q) E} (h : GlobalTheory.SiegelSet.IsWittFrame σ ((1 : E) • J.map σ) U V) :
@@ -60,17 +60,17 @@ private theorem isFrameU_of_isWittFrame {σ : E →ₐ[F] E} (hσ : ∀ x, σ (�
   · rw [witt_entry hσ, h.xy, Matrix.one_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hD : ∀ v, (mat a - mat a') *ᵥ v = (mat a - 1) *ᵥ v - (mat a' - 1) *ᵥ v` using `fun v => by`. Rewrite using `[← Matrix.sub_mulVec, sub_sub_sub_cancel_right]`. Establish `hyx : ∀ i j, form σ J (y i) (x j) = if i = j then 1 else 0` using `fun i j => by`. Rewrite using `[form_swap hσ hJ, hF.2.2]`. Distinguish the cases in `h : i = j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Establish `hall : ∀ z : Fin n → E, (mat a - mat a') *ᵥ incV F z = 0` using `fun z => by set z0 : Fin n → E := z - ∑ i, form σ J z (y i) • x i - ∑ i, form σ J z (x i) • y i with hz0`. Establish `hf : ∀ w, form σ J z0 w = form σ J z w - ∑ i, form σ J z (y i) * form σ J (x i) w - ∑ i, form σ J z (x i) * form σ J (y i) w` using `fun w => by`. Rewrite using `[hz0]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [form.eq_1 σ J _ w, sub_dotProduct, sum_dotProduct, smul_dotProduct, smul_eq_mul]`. Establish `hx0 : ∀ j, form σ J z0 (x j) = 0` using `fun j => by simp [hf, hF.1, hyx]`. Establish `hy0 : ∀ j, form σ J z0 (y j) = 0` using `fun j => by simp [hf, hF.2.1, hF.2.2]`. Establish `hdec : incV F z = incV F z0 + ∑ i, inclR (F` using `F) (AF F) (form σ J z (y i)) • incV F (x i) + ∑ i, inclR (F := F) (AF F) (form σ J z (x i)) • incV F (y i) := by`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [hz0, incV, Pi.add_apply, Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sub, map_sum, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdec]`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_sum, Matrix.mulVec_smul]`. Simplify using `only [hD, ha.1, ha'.1, ha.2.1, ha'.2.1, ha.2.2 z0 hx0 hy0, ha'.2.2 z0 hx0 hy0, sub_self, smul_zero, Finset.sum_const_zero, add_zero]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `sub_eq_zero.1 (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h1 : incV F (Pi.single j (1 : E) : Fin n → E) = Pi.single j 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[incV]`. Simplify using `[incV, h]`. Use `congrFun (hall (Pi.single j 1)) i` as an intermediate fact. Rewrite `this` using `[h1, Matrix.mulVec_single_one]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mat_eq_of_isTorusU {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n q : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = J i j) {x y : Fin q → Fin n → E} (hF : IsFrameU σ J x y) {t : Fin q → ℝ} {a a' : UA σ J}
@@ -111,9 +111,7 @@ private theorem mat_eq_of_isTorusU {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) 
   exact this
 
 /- English proof (translation)
-Unfold `tAd realAd GlobalTheory.TorusTheta.infScale`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show 1 + (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ (s - 1)) = _`. Rewrite using `[map_sub, map_sub, map_one, map_one]`. Conclude with `add_sub_cancel _ _`.
-
-Conclude with `add_zero _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tAd_eq (s : ℝ) : tAd F s = GlobalTheory.TorusTheta.infScale F s := by
   unfold tAd realAd GlobalTheory.TorusTheta.infScale
@@ -124,7 +122,7 @@ private theorem tAd_eq (s : ℝ) : tAd F s = GlobalTheory.TorusTheta.infScale F 
   · exact add_zero _
 
 /- English proof (translation)
-Unfold `GlobalTheory.TorusTheta.infScale`. Rewrite using `[map_one, map_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem infScale_one : GlobalTheory.TorusTheta.infScale F 1 = 1 := by
   unfold GlobalTheory.TorusTheta.infScale
@@ -132,7 +130,7 @@ private theorem infScale_one : GlobalTheory.TorusTheta.infScale F 1 = 1 := by
   rfl
 
 /- English proof (translation)
-Unfold `blkScale`. Use `congr 1`. Break down `h : blk j with _ | i₀` into its components or cases. Simplify using `[h, infScale_one]`. Simplify using `[h, tAd_eq]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem blkScale_eq {κ : Type} [Fintype κ] [DecidableEq κ] {q : ℕ} (blk : κ → Option (Fin q)) (s : Fin q → ℝ)
     (z : κ → AF F) (j : κ) :
@@ -147,15 +145,13 @@ private theorem blkScale_eq {κ : Type} [Fintype κ] [DecidableEq κ] {q : ℕ} 
 end GlobalTheory.WittSupport
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP r₀ Xf Yf hW co blk _ _ hact M₁ e hco hG hev Φ _ hΦ g h ξ hξ`. Establish `hcm` using `hP.base.cm`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Establish `hJ' : IsHermND σ ((1 : E) • X.J.map σ)`. Rewrite using `[one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.UnitaryVol.isHermND_map hσ hP.herm`. Establish `hF` using `GlobalTheory.WittSupport.isFrameU_of_isWittFrame hσ hW`. Use `GlobalTheory.ThKTorus.vanish_of_block_zero hKP F E σ B n d X W M χX χW om r s r' s' hP r₀ _ _ hF M₁ (fun i => Finset.univ.filter (fun j => blk j = some i)) e hG ⟨fun i j hij => ?_, fun t a ht ha z => ?_⟩ hev Φ hΦ g h ξ ?_` and prove the remaining obligations. Use `Finset.disjoint_left.2 fun k hi hj => hij ?_` and prove the remaining obligations. Conclude with `Option.some_injective _ ((Finset.mem_filter.1 hi).2.symm.trans (Finset.mem_filter.1 hj).2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨a₀, ha₀⟩` from `GlobalTheory.SiegelSet.exists_isTorusElt hcm hJ' hW (t := t) fun i => (ht i).ne'`. Set `φ : UA σ X.J ≃* GAd σ ((1 : E) • X.J.map σ)` to `MulEquiv.subgroupCongr (GlobalTheory.SiegelSet.ug_eq_hr (F := F) (J := X.J) hσ (one_ne_zero : (1 : E) ≠ 0))`. Establish `he : ((φ.symm a₀ : UA σ X.J) : GL (Fin n) (AE F E)) = HA.mat (AF F) σ ((1 : E) • X.J.map σ) a₀` using `rfl`. Establish `ha'` using `GlobalTheory.TorusTranslate.isTorusU_of_isTorusElt F E σ hcm n X.J hP.herm.herm r₀ Xf Yf t a₀ ha₀ _ he`. Rewrite using `[GlobalTheory.WittSupport.mat_eq_of_isTorusU hσ hP.herm.herm hF ha ha', hco, hact t ht a₀ ha₀ _ he, hact t ht a₀ ha₀ _ he, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Prod.ext (funext fun j => ?_) (funext fun j => mul_zero _), Prod.ext (funext fun j => mul_zero _) (funext fun j => (GlobalTheory.WittSupport.blkScale_eq blk t z j).symm)⟩` and prove the remaining obligations. Use `Eq.trans ?_ (GlobalTheory.WittSupport.blkScale_eq blk (fun i => (t i)⁻¹) z j).symm` and prove the remaining obligations. Use `show GlobalTheory.TorusTheta.infScale F ((blk j).elim 1 t)⁻¹ * z j = _`. Apply the tactic sequence `rcases blk j with _ | i₀ <;> simp`. Take `⟨i, hi⟩` from `hξ`.
-
-Conclude with `⟨i, fun j hj => hi j (Finset.mem_filter.1 hj).2⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.darboux_witt_frame_pair : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)

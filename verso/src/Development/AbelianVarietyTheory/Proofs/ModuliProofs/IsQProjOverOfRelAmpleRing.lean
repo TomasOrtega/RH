@@ -20,13 +20,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 
 /- English proof (translation)
-Use `haveI : Smooth t.G.hom := t.semi.smooth`. Use `haveI : GeometricallyIntegral t.G.hom := _root_.GlobalTheory.geometricallyIntegral_of_isSemiAbelian (h := t.semi) _`. Set `e : S ⟶ t.G.left` to `(η[t.G]).left`. Establish `he : e ≫ t.G.hom = 𝟙 S` using `Over.w (η[t.G])`. Establish `hes : ∀ s, t.G.hom (e s) = s` using `fun s => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Scheme.Hom.comp_apply, he]`. Both sides reduce to the same expression. Establish `hfib : ∀ s : S, _root_.IsPreconnected (t.G.hom ⁻¹' {s})` using `fun s => by`. Rewrite using `[← Scheme.Hom.range_fiberι]`. Conclude with `isPreconnected_range (Scheme.Hom.continuous _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsec : _root_.IsPreconnected (Set.range e)` using `isPreconnected_range (Scheme.Hom.continuous _)`. Take `⟨s₀⟩` from `(inferInstance : Nonempty S)`. Use `haveI : PreconnectedSpace t.G.left := by`. Use `⟨isPreconnected_of_forall (e s₀) fun x _ => ?_⟩` and prove the remaining obligations. Use `⟨Set.range e ∪ t.G.hom ⁻¹' {t.G.hom x}, Set.subset_univ _, Or.inl ⟨s₀, rfl⟩, Or.inr rfl, ?_⟩` and prove the remaining obligations.
-
-Conclude with `hsec.union (e (t.G.hom x)) ⟨_, rfl⟩ (hes _) (hfib _)`. Conclude with `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_dim_of_preconnected t.G.hom (e s₀)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Models.InhabZOn.exists_dim_triple {E : Type} [Field E] [NumberField E]
     [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {S : Scheme.{0}}

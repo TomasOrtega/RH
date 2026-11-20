@@ -12,9 +12,9 @@ namespace Formalism.L2.SG.Pf.CarrierT
 open Formalism.L2.SG.Pf.Carrier Formalism.L2.SG.Pf.BaseOf Formalism.L2.SG.Pf.Built
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `ha`. Take `⟨n, rfl⟩` from `hb`. Establish `: z < n`. Establish `: (z : ℚ) < n` using `by linarith`. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (z : ℚ) + 1 ≤ n` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem half_lt_int {a b : ℚ} (ha : ∃ z : ℤ, a = z + 1 / 2) (hb : ∃ z : ℤ, b = z) (h : a < b) : a + 1 / 2 ≤ b := by
   obtain ⟨z, rfl⟩ := ha
@@ -26,9 +26,9 @@ theorem half_lt_int {a b : ℚ} (ha : ∃ z : ℤ, a = z + 1 / 2) (hb : ∃ z : 
   linarith
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `ha`. Take `⟨n, rfl⟩` from `hb`. Establish `: n ≤ z`. Establish `: (n : ℚ) < z + 1` using `by linarith`. Establish `: n < z + 1` using `by exact_mod_cast this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `: (n : ℚ) ≤ z` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem int_lt_half {a b : ℚ} (ha : ∃ z : ℤ, a = z + 1 / 2) (hb : ∃ z : ℤ, b = z) (h : b < a) : b + 1 / 2 ≤ a := by
   obtain ⟨z, rfl⟩ := ha

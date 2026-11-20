@@ -13,13 +13,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.AdjPairing
 
 /- English proof (translation)
-Introduce `S A _ _ P hA hP α β hα hβ hiso n T a b c c' h h'`. Set `ψ₁ : G2 A ⟶ G2 A` to `lift (fst A A ≫ α) (snd A A)`. Set `ψ₂ : G2 A ⟶ G2 A` to `lift (fst A A) (snd A A ≫ β)`. Use `haveI : IsMonHom ψ₁ := inferInstanceAs (IsMonHom (lift (fst A A ≫ α) (snd A A)))`. Use `haveI : IsMonHom ψ₂ := inferInstanceAs (IsMonHom (lift (fst A A) (snd A A ≫ β)))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAA : IsAbelianScheme (G2 A)` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Establish `hL : (P.pull ψ₁.left).IsLB` using `pull_isLB hP _`. Apply the tactic sequence `have hx₁ : lift a 1 ≫ ψ₁ = lift (a ≫ α) 1 := by ext <;> simp [ψ₁]`. Apply the tactic sequence `have hy₁ : lift 1 b ≫ ψ₁ = lift 1 b := by ext <;> simp [ψ₁]`. Apply the tactic sequence `have hx₂ : lift a 1 ≫ ψ₂ = lift a 1 := by ext <;> simp [ψ₂]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `have hy₂ : lift 1 b ≫ ψ₂ = lift 1 (b ≫ β) := by ext <;> simp [ψ₂]`. Establish `hw₁ : LBIso (lbPow (P.pull ψ₁.left) 1) (P.pull ψ₁.left)` using `lbIso_lbPow_one hL`. Establish `hw₂ : LBIso (lbPow (P.pull ψ₁.left) 1) (P.pull ψ₂.left)` using `LBIso.trans (isLB_lbPow hL 1) hL (pull_isLB hP _) (lbIso_lbPow_one hL) hiso`. Establish `h1` using `WeilIsogeny.weilIs_pull_hom (d := 1) (x := lift a 1) (y := lift 1 b) globalFns_holds hAA hL hP ψ₁ hw₁ (by rw [hx₁, hy₁]; exact h)`. Establish `h2` using `WeilIsogeny.weilIs_pull_hom (d := 1) (x := lift a 1) (y := lift 1 b) globalFns_holds hAA hL hP ψ₂ hw₂ (by rw [hx₂, hy₂]; exact h')`.
-
-Rewrite `h1`, `h2` using `[Nat.cast_one, _root_.mul_one]`. Conclude with `CommutatorPairing.weilIs_unique globalFns_holds hAA hL h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilIs_adj_eq : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (P : LB (G2 A).left), IsAbelianScheme A → P.IsLB → ∀ α β : A ⟶ A, IsMonHom α → IsMonHom β → LBIso (P.pull (lift (fst A A ≫ α) (snd A A)).left) (P.pull (lift (fst A A) (snd A A ≫ β)).left) → ∀ (n : ℤ) (T : Over S) (a b : T ⟶ A) (c c' : Γ(T.left, ⊤)ˣ), Out.WeilIs (G2 A) P n (lift (a ≫ α) 1) (lift 1 b) c → Out.WeilIs (G2 A) P n (lift a 1) (lift 1 (b ≫ β)) c' → c = c' := by
   intro S A _ _ P hA hP α β hα hβ hiso n T a b c c' h h'

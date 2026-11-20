@@ -26,14 +26,14 @@ Both sides reduce to the same expression.
 theorem backwardDifference_apply (g : ℤ → ℤ) (t : ℤ) : diff1 g t = g t - g (t - 1) := rfl
 
 /- English proof (translation)
-The claim follows from `(Function.Embedding.some (α := K)).injective.extend_apply c 0 k`.
+A detailed English derivation is pending.
 -/
 theorem pullDeg_some (c : K → ℤ) (k : K) :
     pullDeg Function.Embedding.some c (some k) = c k :=
   (Function.Embedding.some (α := K)).injective.extend_apply c 0 k
 
 /- English proof (translation)
-Unfold `pullDeg`. Rewrite using `[Function.extend_apply']`. Both sides reduce to the same expression. Introduce and unpack `⟨a, h⟩`. Conclude with `Option.some_ne_none a h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem pullDeg_none (c : K → ℤ) : pullDeg Function.Embedding.some c none = 0 := by
   unfold pullDeg
@@ -43,9 +43,9 @@ theorem pullDeg_none (c : K → ℤ) : pullDeg Function.Embedding.some c none = 
     exact Option.some_ne_none a h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Establish `h1 : (fun k => (m - pullDeg Function.Embedding.some c) (some k)) = (fun k => m (some k)) - c`. Use function extensionality and compare the values at `k`. Simplify using `[pullDeg_some]`. Establish `h2 : (m - pullDeg Function.Embedding.some c) none = m none`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[pullDeg_none]`. Unfold `diffStep prodFn`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diffStep_pull (c : K → ℤ) (A : (K → ℤ) → ℤ) (B : ℤ → ℤ) :
     diffStep (pullDeg Function.Embedding.some c) (prodFn A B) = prodFn (diffStep c A) B := by
@@ -61,9 +61,9 @@ theorem diffStep_pull (c : K → ℤ) (A : (K → ℤ) → ℤ) (B : ℤ → ℤ
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Establish `h1 : (fun k => (m - (newBlockDeg : Option K → ℤ)) (some k)) = fun k => m (some k)`. Use function extensionality and compare the values at `k`. Simplify using `[newBlockDeg]`. Establish `h2 : (m - (newBlockDeg : Option K → ℤ)) none = m none - 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[newBlockDeg]`. Unfold `diffStep prodFn diff1`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diffStep_newBlock (A : (K → ℤ) → ℤ) (B : ℤ → ℤ) :
     diffStep (newBlockDeg : Option K → ℤ) (prodFn A B) = prodFn A (diff1 B) := by
@@ -78,7 +78,7 @@ theorem diffStep_newBlock (A : (K → ℤ) → ℤ) (B : ℤ → ℤ) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons c L ih => simp only [List.map_cons, List.foldr_cons, ih, diffStep_pull]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_pull (L : List (K → ℤ)) (A : (K → ℤ) → ℤ) (B : ℤ → ℤ) :
     (L.map (pullDeg Function.Embedding.some)).foldr diffStep (prodFn A B) =
@@ -88,7 +88,7 @@ theorem foldr_pull (L : List (K → ℤ)) (A : (K → ℤ) → ℤ) (B : ℤ →
   | cons c L ih => simp only [List.map_cons, List.foldr_cons, ih, diffStep_pull]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[List.replicate_succ, List.foldr_cons, ih, diffStep_newBlock, Function.iterate_succ_apply']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_newBlock (j : ℕ) (A : (K → ℤ) → ℤ) (B : ℤ → ℤ) :
     (List.replicate j (newBlockDeg : Option K → ℤ)).foldr diffStep (prodFn A B) =
@@ -100,7 +100,7 @@ theorem foldr_newBlock (j : ℕ) (A : (K → ℤ) → ℤ) (B : ℤ → ℤ) :
       Function.iterate_succ_apply']
 
 /- English proof (translation)
-Establish `h : List.ofFn (fun i => pullDeg Function.Embedding.some (cs i)) = (List.ofFn cs).map (pullDeg Function.Embedding.some)`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Unfold `mixedDiff`. Rewrite using `[List.ofFn_fin_append, List.foldr_append, List.ofFn_const, h, foldr_pull, foldr_newBlock]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mixedDiff_prodFn {m r : ℕ} (cs : Fin r → K → ℤ) (A : (K → ℤ) → ℤ) (B : ℤ → ℤ) :
     mixedDiff (Fin.append (fun _ : Fin m => (newBlockDeg : Option K → ℤ))
@@ -114,20 +114,20 @@ theorem mixedDiff_prodFn {m r : ℕ} (cs : Fin r → K → ℤ) (A : (K → ℤ)
   rw [List.ofFn_fin_append, List.foldr_append, List.ofFn_const, h, foldr_pull, foldr_newBlock]
 
 /- English proof (translation)
-The claim follows from `tendsto_atTop_atTop.mpr fun b => ⟨fun o => Option.elim o 0 b, fun _ ha k => ha (some k)⟩`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_restrict :
     Tendsto (fun m : Option K → ℤ => fun k => m (some k)) atTop atTop :=
   tendsto_atTop_atTop.mpr fun b => ⟨fun o => Option.elim o 0 b, fun _ ha k => ha (some k)⟩
 
 /- English proof (translation)
-The claim follows from `(eventually_ge_atTop (fun _ : Option K => a)).mono fun _ hm => hm none`.
+A detailed English derivation is pending.
 -/
 theorem eventually_none_ge (a : ℤ) : ∀ᶠ m : Option K → ℤ in atTop, a ≤ m none :=
   (eventually_ge_atTop (fun _ : Option K => a)).mono fun _ hm => hm none
 
 /- English proof (translation)
-Establish `h : ∃ c, ∀ᶠ m in atTop, f m = c` using `⟨c, hf⟩`. Unfold `eventualValue`. Rewrite using `[dif_pos h]`. Take `⟨m, h1, h2⟩` from `(h.choose_spec.and hf).exists`. Conclude with `h1.symm.trans h2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventualValue_eq {f : (Option K → ℤ) → ℤ} {c : ℤ} (hf : ∀ᶠ m in atTop, f m = c) :
     eventualValue f = c := by
@@ -142,11 +142,11 @@ end Product
 section Binomial
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ s`. Simplify using `[projSpaceHilb]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `succ j ih`. Introduce `hj s`. Establish `e1 : (s : ℤ) + ((j + 1 : ℕ) : ℤ) = ((s + 1 : ℕ) : ℤ) + j` using `by push_cast; ring`. Establish `e2 : (s : ℤ) + ((j + 1 : ℕ) : ℤ) - 1 = (s : ℤ) + j` using `by push_cast; ring`. Rewrite using `[Function.iterate_succ_apply', backwardDifference_apply, e2, e1, ih (by omega), ih (by omega)]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩ : ∃ k, N - j = k + 1` from `⟨N - (j + 1), by omega⟩`. Establish `hk' : N - (j + 1) = k` using `by omega`. Rewrite using `[hk, hk', show s + 1 + N = (s + N) + 1 by omega, Nat.choose_succ_succ']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem iter_projSpaceHilb (N : ℕ) : ∀ j : ℕ, j ≤ N → ∀ s : ℕ,
     diff1^[j] (projSpaceHilb N) ((s : ℤ) + j) = (((s + N).choose (N - j) : ℕ) : ℤ) := by
@@ -167,7 +167,7 @@ theorem iter_projSpaceHilb (N : ℕ) : ∀ j : ℕ, j ≤ N → ∀ s : ℕ,
     ring
 
 /- English proof (translation)
-Rewrite using `[backwardDifference_apply, show (s : ℤ) + (a + 1) = ((s + 1 : ℕ) : ℤ) + a by push_cast; ring, show ((s + 1 : ℕ) : ℤ) + a - 1 = (s : ℤ) + a by push_cast; ring, h, h, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem backwardDifference_eq_zero_of_eventually_const {g : ℤ → ℤ} {a c : ℤ} (h : ∀ s : ℕ, g (s + a) = c) (s : ℕ) :
     diff1 g (s + (a + 1)) = 0 := by
@@ -175,7 +175,7 @@ theorem backwardDifference_eq_zero_of_eventually_const {g : ℤ → ℤ} {a c : 
     show ((s + 1 : ℕ) : ℤ) + a - 1 = (s : ℤ) + a by push_cast; ring, h, h, sub_self]
 
 /- English proof (translation)
-Take `⟨s, rfl⟩ : ∃ s : ℕ, t = s + N` from `⟨(t - N).toNat, by omega⟩`. Rewrite using `[iter_projSpaceHilb N N le_rfl s, Nat.sub_self, Nat.choose_zero_right, Nat.cast_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem iter_projSpaceHilb_top (N : ℕ) (t : ℤ) (ht : (N : ℤ) ≤ t) :
     diff1^[N] (projSpaceHilb N) t = 1 := by
@@ -183,11 +183,11 @@ theorem iter_projSpaceHilb_top (N : ℕ) (t : ℤ) (ht : (N : ℤ) ≤ t) :
   rw [iter_projSpaceHilb N N le_rfl s, Nat.sub_self, Nat.choose_zero_right, Nat.cast_one]
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `s`. Establish `hN : ∀ s : ℕ, diff1^[N] (projSpaceHilb N) ((s : ℤ) + (N : ℤ)) = 1` using `fun s => iter_projSpaceHilb_top N _ (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (s : ℤ) + ((N + 1 + 0 : ℕ) : ℤ) = s + ((N : ℤ) + 1)` using `by push_cast; ring`. Rewrite using `[e, show N + 1 + 0 = N + 1 from rfl, Function.iterate_succ_apply']`. Conclude with `backwardDifference_eq_zero_of_eventually_const hN s`. Consider the case `succ i ih`. Introduce `s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show N + 1 + (i + 1) = (N + 1 + i) + 1 by omega, Function.iterate_succ_apply', Nat.cast_add_one]`. Conclude with `backwardDifference_eq_zero_of_eventually_const ih s`.
+A detailed English derivation is pending.
 -/
 theorem iter_projSpaceHilb_high (N : ℕ) : ∀ i s : ℕ,
     diff1^[N + 1 + i] (projSpaceHilb N) ((s : ℤ) + ((N + 1 + i : ℕ) : ℤ)) = 0 := by
@@ -207,7 +207,7 @@ theorem iter_projSpaceHilb_high (N : ℕ) : ∀ i s : ℕ,
     exact backwardDifference_eq_zero_of_eventually_const ih s
 
 /- English proof (translation)
-Take `⟨i, rfl⟩ : ∃ i, j = N + 1 + i` from `⟨j - (N + 1), by omega⟩`. Take `⟨s, rfl⟩ : ∃ s : ℕ, t = s + ((N + 1 + i : ℕ) : ℤ)` from `⟨(t - ((N + 1 + i : ℕ) : ℤ)).toNat, by omega⟩`. Conclude with `iter_projSpaceHilb_high N i s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem iter_projSpaceHilb_above (N j : ℕ) (hj : N < j) (t : ℤ) (ht : (j : ℤ) ≤ t) :
     diff1^[j] (projSpaceHilb N) t = 0 := by
@@ -219,17 +219,15 @@ theorem iter_projSpaceHilb_above (N j : ℕ) (hj : N < j) (t : ℤ) (ht : (j : �
 end Binomial
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ P hP e N r m he hrm cs`. Establish `hH : hilbFn (addBlockPrime N P) = prodFn (hilbFn P) (projSpaceHilb N)`. Use function extensionality and compare the values at `x`. Conclude with `h2 F K ι P N x`. Unfold `intNum`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hH, mixedDiff_prodFn]`. Establish `hlim` using `tendsto_restrict (K := K)`. Break down `lt_trichotomy m N with hmN | hmN | hmN` into its components or cases. Rewrite using `[if_neg hmN.ne]`. Apply `eventualValue_eq` to reduce the goal to its premises.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hz` using `(h1 F K ι P hP.multiHomog hP.relevant e he).2 r (by omega) cs`. Use `filter_upwards [hlim.eventually hz] with x hx`. Simplify using `only [prodFn]`. Rewrite using `[hx, zero_mul]`. Substitute `hmN` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_pos rfl]`. Take `rfl : r = e` from `by omega`. Apply `eventualValue_eq` to reduce the goal to its premises. Establish `hc` using `(h1 F K ι P hP.multiHomog hP.relevant r he).1 cs`. Use `filter_upwards [hlim.eventually hc, eventually_none_ge (m : ℤ)] with x hx hn`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [prodFn]`. Rewrite using `[hx, iter_projSpaceHilb_top m _ hn, mul_one]`. Both sides reduce to the same expression. Rewrite using `[if_neg hmN.ne']`. Apply `eventualValue_eq` to reduce the goal to its premises.
-
-Use `filter_upwards [eventually_none_ge (m : ℤ)] with x hn`. Simplify using `only [prodFn]`. Rewrite using `[iter_projSpaceHilb_above N m hmN _ hn, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ProductWithProjectiveSpace.proof (h1 : MixedDiffConst.Statement.{u})
     (h2 : HilbAddBlock.Statement.{u}) : ProductWithProjectiveSpace.Statement.{u} := by

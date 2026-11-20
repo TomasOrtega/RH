@@ -29,7 +29,7 @@ Both sides reduce to the same expression.
 theorem jK_star (z : 𝓞 K) : jK (star z) = star (jK z) := rfl
 
 /- English proof (translation)
-Take `⟨t, ht, z, hz⟩` from `HU.mem_SP.1 hr`. Use `HU.mem_SP.2 ⟨t, ht, conjO K z, ?_⟩` and prove the remaining obligations. Rewrite using `[jK_conjO, hz, star_mul', star_jK_ι hF, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem star_mem_SP {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] (hF : IsFixF K F) {r : K}
     (hr : r ∈ HU.SP K 𝔭) : star r ∈ HU.SP K 𝔭 := by
@@ -38,17 +38,17 @@ theorem star_mem_SP {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] (hF : IsFixF K F) {r 
   rw [jK_conjO, hz, star_mul', star_jK_ι hF, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[extP, Ideal.map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extP_pow (𝔭 : Ideal (𝓞 F)) (k : ℕ) : extP K 𝔭 ^ k = (𝔭 ^ k).map ι := by
   rw [extP, Ideal.map_pow]
 
 /- English proof (translation)
-Use `h𝔭.isPrime` as an intermediate fact. Take `⟨t, ht, w, hw⟩` from `HU.mem_SP.1 hz`. Take `⟨u, hu⟩` from `exists_inv_mod h𝔭 ht k`. Use `⟨ι u * w, ?_⟩` and prove the remaining obligations. Establish `e : w * ι d = ι t * z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `FaithfulSMul.algebraMap_injective (𝓞 K) K` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, hw, mul_assoc, div_mul_cancel₀ _ (jK_ι_ne_zero hd)]`. Establish `e2 : z - ι u * w * ι d = ι (1 - t * u) * z`. Rewrite using `[mul_assoc, e, map_sub, map_one, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e2, extP_pow]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hu)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sub_mul_mem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d : 𝓞 F} (hd : d ≠ 0) {z : 𝓞 K}
     (hz : haveI := h𝔭.isPrime; jK z / jK (ι d) ∈ HU.SP K 𝔭) (k : ℕ) :
@@ -66,7 +66,7 @@ theorem exists_sub_mul_mem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d :
   exact Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hu)
 
 /- English proof (translation)
-The claim follows from `h𝔭.isPrime; jK x / jK (ι d) ∈ HU.SP K 𝔭 := (div_mem_SP_iff h𝔭 hd _).2 (Ideal.pow_le_pow_right hk hx)`.
+A detailed English derivation is pending.
 -/
 theorem div_mem_SP_of_mem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d : 𝓞 F} (hd : d ≠ 0) {x : 𝓞 K}
     {k : ℕ} (hk : vF 𝔭 d ≤ k) (hx : x ∈ extP K 𝔭 ^ k) :
@@ -74,7 +74,7 @@ theorem div_mem_SP_of_mem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d : 
   (div_mem_SP_iff h𝔭 hd _).2 (Ideal.pow_le_pow_right hk hx)
 
 /- English proof (translation)
-The claim follows from `h𝔭.isPrime; jK x / (jK (ι d) * jK (ι d')) ∈ HU.SP K 𝔭 := by have := h𝔭.isPrime have hx' : x ∈ extP K 𝔭 ^ vF 𝔭 d * extP K 𝔭 ^ vF 𝔭 d' := by rw [← pow_add]; exact Ideal.pow_le_pow_right hk hx refine Submodule.mul_induction_on hx' (fun y hy y' hy' => ?_) (fun u v hu hv => ?_) · rw [ …`.
+A detailed English derivation is pending.
 -/
 theorem div_mul_mem_SP_of_mem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d d' : 𝓞 F} (hd : d ≠ 0)
     (hd' : d' ≠ 0) {x : 𝓞 K} {k : ℕ} (hk : vF 𝔭 d + vF 𝔭 d' ≤ k) (hx : x ∈ extP K 𝔭 ^ k) :
@@ -88,7 +88,7 @@ theorem div_mul_mem_SP_of_mem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {
   · rw [map_add, add_div]; exact add_mem hu hv
 
 /- English proof (translation)
-The claim follows from `h𝔭.isPrime; jK z / jK (ι d) ∈ HU.SP K 𝔭 := by have := h𝔭.isPrime have e : jK z / jK (ι d) = jK (z - w * ι d) / jK (ι d) + jK w := by rw [map_sub, map_mul, sub_div, mul_div_cancel_right₀ _ (jK_ι_ne_zero hd)]; ring rw [e] exact add_mem (div_mem_SP_of_mem h𝔭 hd hk h) (HU.jK_mem_SP w …`.
+A detailed English derivation is pending.
 -/
 theorem div_mem_SP_of_sub {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d : 𝓞 F} (hd : d ≠ 0) {z w : 𝓞 K}
     {k : ℕ} (hk : vF 𝔭 d ≤ k) (h : z - w * ι d ∈ extP K 𝔭 ^ k) :
@@ -100,7 +100,7 @@ theorem div_mem_SP_of_sub {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d : 
   exact add_mem (div_mem_SP_of_mem h𝔭 hd hk h) (HU.jK_mem_SP w)
 
 /- English proof (translation)
-The claim follows from `h𝔭.isPrime; jK z / (jK (ι d) * jK (ι d')) ∈ HU.SP K 𝔭 := by have := h𝔭.isPrime have e : jK z / (jK (ι d) * jK (ι d')) = jK (z - w * (ι d * ι d')) / (jK (ι d) * jK (ι d')) + jK w := by rw [map_sub, map_mul, map_mul, sub_div, mul_div_cancel_right₀ _ (mul_ne_zero (jK_ι_ne_zero hd) ( …`.
+A detailed English derivation is pending.
 -/
 theorem div_mul_mem_SP_of_sub {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d d' : 𝓞 F} (hd : d ≠ 0)
     (hd' : d' ≠ 0) {z w : 𝓞 K} {k : ℕ} (hk : vF 𝔭 d + vF 𝔭 d' ≤ k)

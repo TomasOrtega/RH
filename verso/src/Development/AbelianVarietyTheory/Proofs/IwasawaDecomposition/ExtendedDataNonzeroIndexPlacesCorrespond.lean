@@ -30,7 +30,7 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Me
 namespace GlobalTheory.Mem.R3.TwistedPlaceExtensions
 
 /- English proof (translation)
-Use `choose g hg using fun x => h ⟨x, rfl⟩`. Conclude with `⟨{ toFun := g map_one' := σ'.injective (by rw [hg, map_one, map_one]) map_mul' := fun a b => σ'.injective (by rw [map_mul σ', hg, hg, hg, map_mul]) map_zero' := σ'.injective (by rw [hg, map_zero, map_zero]) map_add' := fun a b => σ'.injective (by rw [map_add σ', hg, hg, hg, map_a …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_range {K K' : Type} [Field K] [Field K'] (σ : K →+* ℂ) (σ' : K' →+* ℂ) (h : Set.range σ ⊆ Set.range σ') :
     ∃ φ : K →+* K', ∀ x, σ' (φ x) = σ x := by
@@ -44,13 +44,13 @@ theorem exists_hom_of_range {K K' : Type} [Field K] [Field K'] (σ : K →+* ℂ
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 h7`. Use `StepW.trans (StepW.and (GlobalTheory.T.liftFormsLattice_definiteLattice_baseChange_extended h1 h2 h3 h4 h5 h6 h7) (GlobalTheory.T.extendedData_definiteLiftLattice_baseChange h1 h2 h3 h4 h5 h6 h7)) (StepW.of_all ?_)` and prove the remaining obligations. Introduce `K B' f' T' w' _ _ hIJ B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt v v' hB`. Establish `hm : (w.st Z).toD7.R.m = (w'.st Z').toD7.R.m` using `congrArg (fun P : Pre => P.R.m) hE.1.symm`. Take `⟨φ, hφ⟩` from `exists_hom_of_range (w.st Z).toD7.what₂.embLL (w'.st Z').toD7.what₂.embLL hE.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hok` using `hHL.ok.ok2`. Use `mem_zeroContentPlaces_iff_over_of_nonvanishing z z' hm (fun j j' hj P P' hPP => ?_) v v' hB` and prove the remaining obligations. Establish `hP : ∀ (x : 𝓞 (w.st Z).toD7.what₂.LL) (x' : 𝓞 (w'.st Z').toD7.what₂.LL), φ (x : (w.st Z).toD7.what₂.LL) = (x' : (w'.st Z').toD7.what₂.LL) → (x ∈ P.asIdeal ↔ x' ∈ P'.asIdeal)` using `fun x x' e => hPP x x' (by rw [← e, hφ])`. Establish `hT : Submodule.IsLattice (w.st Z).toD7.what₂.LL (((famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).side3 z.F.P0 z.F.ψ0 (zsOf z.R z.F)).Tl j (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A.μ0)` using `Formalism.L2.DIV.BlockDat.Tl_lat hok.conj (hok.lifts j _) hok.irr`. Establish `hH : IsUnit (((famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).side3 z.F.P0 z.F.ψ0 (zsOf z.R z.F)).HT j (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A.μ0).det` using `Formalism.L2.DIV.BlockDat.HZ_det hok.conj (hok.lifts j _) hok.irr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨G, hG1, hG2, hG3⟩` from `hIJ.1 B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt j j' hj φ hφ`. Take `⟨N, hN1, hN2, hN3⟩` from `hIJ.2 B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt j j' hj φ hφ`. Use `nzAt_iff_of z z' j j' P P' ?_ ?_` and prove the remaining obligations. Establish `k` using `GlobalTheory.T.lattice_index_nonzero_iff_under_field_map _ _ φ _ _ G hG1 P P' hP ((s0Of z.R z.F).M j) (Formalism.DivisionValues.matLat ((s0Of z.R z.F).θ j (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A.μ0) (((famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).side3 z.F.P0 z. …`. Rewrite `k` using `[← hG2, ← hG3]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `k`. Establish `k` using `GlobalTheory.T.lattice_index_nonzero_iff_under_field_map _ _ φ _ _ N hN1 P P' hP _ _ hT.fg (GlobalTheory.Mem.NonzeroPlacesOverPrimes.dual_fg _ hH _ hT)`. Rewrite `k` using `[← GlobalTheory.T.hermitianDualLattice_baseChange _ _ φ _ _ N hN1 _ _ hN3 hH _ hT, ← hN2]`. Conclude with `k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extendedData_nonzero_index_places_correspond : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.MixZ.ArchEq
 
 /- English proof (translation)
-Establish `hE` using `Real.exp_pos (φ / 2)`. Establish `key : F / G / h = ρ / Real.exp (φ / 2)`. Establish `hF' : F = a * ρ * (G / Pb) * Pa`. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hh, hF']`. Clear the denominators using the available nonvanishing facts. Rewrite using `[key, Real.log_div hρ.ne' hE.ne', Real.log_exp]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_eq_of_frame {a ρ F G Pa Pb φ h : ℝ} (ha : 0 < a) (hρ : 0 < ρ) (hF : 0 < F) (hG : 0 < G)
     (hPa : 0 < Pa) (hPb : 0 < Pb) (hh : h = Pa / Pb * a * Real.exp (φ / 2))
@@ -32,37 +32,35 @@ theorem log_eq_of_frame {a ρ F G Pa Pb φ h : ℝ} (ha : 0 < a) (hρ : 0 < ρ) 
   rw [key, Real.log_div hρ.ne' hE.ne', Real.log_exp]
 
 /- English proof (translation)
-Introduce `m n M A X _ i _ r hr f g hfg hrat y z hz hf0 hg0`. Take `⟨α, β, hf, hg, -, -, hdeg⟩` from `hfg`. Take `⟨u, hu, hcl⟩` from `hrat`. Take `⟨w, hw⟩ : ∃ w, w = PtsOver.map i rfl _ y` from `⟨_, rfl⟩`. Establish `hz' : IsUnder w z` using `hw ▸ hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwb` using `mem_pick (M.φ σ₀).isLB w`. Take `⟨b, hb⟩ : ∃ b, b = pick (M.φ σ₀).isLB w` from `⟨_, rfl⟩`. Rewrite `hwb` using `[← hb]`. Take `⟨c, hc⟩ : ∃ c : ∀ k, Bk n k, c = fun k => ptChart (w.1 (IsLocalRing.closedPoint ℂ)) k` from `⟨_, rfl⟩`. Establish `hwc : w ∈ ptsIn (mpStr ℤ m n) σ₀ (mchart c)` using `CxPts.mem_ptsIn.2 (Set.mem_iInter.2 fun k => hc ▸ mem_ptChart _ k)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwbc : w ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U b ⊓ mchart c)` using `mem_ptsIn_inf.2 ⟨hwb, hwc⟩`. Establish `pre : ∀ V : (MP ℤ m n).Opens, w ∈ ptsIn (mpStr ℤ m n) σ₀ V → y ∈ ptsIn (i ≫ mpStr ℤ m n) σ₀ (i ⁻¹ᵁ V)`. Introduce `V hV`. Substitute `hw` using the available equality. Conclude with `CxPts.mem_ptsIn.2 (CxPts.mem_ptsIn.1 hV)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hyc` using `pre _ hwc`. Establish `hybc` using `pre _ hwbc`. Establish `hyb` using `pre _ hwb`. Establish `hgc : genericPoint X ∈ i ⁻¹ᵁ mchart c` using `gen_mem (CxPts.mem_ptsIn.1 hyc)`. Establish `hgb : genericPoint X ∈ i ⁻¹ᵁ (M.B.U b ⊓ mchart c)` using `gen_mem (CxPts.mem_ptsIn.1 hybc)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `hcl b c hgc hgb`. Establish `hne : ∀ a : Fin (m + 1) → ℕ, ∏ k, z ⟨k, c k⟩ ^ a k ≠ 0` using `fun a => Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ ((hz' k (c k)).1.1 (CxPts.ptsIn_mono (mchart_le c k) hwc))`. Establish `val : ∀ (s : Pol n) (a : Fin (m + 1) → ℕ), IsMultiHomog s a → ratVal (fnAt i c hgc s) y = eval z (map (Int.castRingHom ℂ) s) / ∏ k, z ⟨k, c k⟩ ^ a k`. Introduce `s a hs`. Use `(ratVal_fnOf hyc hgc _).trans ((CxPts.ev_app i rfl _ _ y).trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hw]`. Conclude with `ev_dehomog_of_isUnder m n c s a hs w z hz' hwc`. Establish `unit : ∀ (s : Pol n) (a : Fin (m + 1) → ℕ), IsMultiHomog s a → eval z (map (Int.castRingHom ℂ) s) ≠ 0 → UnitAt (under y) (fnAt i c hgc s)`. Introduce `s a hs h0`. Use `(unitAt_fnOf_iff (CxPts.mem_ptsIn.1 hyc) hgc _).2 (CxPts.mem_ptsIn.1 ((mem_ptsIn_basicOpen hyc _).2 ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← ratVal_fnOf hyc hgc]`. Express the relevant statement in the definitionally equal form `ratVal (fnAt i c hgc s) y ≠ 0`. Rewrite using `[val s a hs]`. Conclude with `div_ne_zero h0 (hne a)`. Establish `hF` using `unit f α hf hf0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hG` using `unit g β hg hg0`. Establish `hU : UnitAt (under y) (fnOf _ hgb (i.app _ (u b c).val))`. Take `⟨v, hv⟩` from `(u b c).isUnit.map (i.app (M.B.U b ⊓ mchart c)).hom`. Establish `hv' : (v : Γ(X, i ⁻¹ᵁ (M.B.U b ⊓ mchart c))) = i.app _ (u b c).val` using `hv`. Rewrite using `[← hv']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `unitAt_fnOf (CxPts.mem_ptsIn.1 hybc) hgb v`. Establish `hR : UnitAt (under y) (r fun _ => b : X.functionField)`. Establish `e' : (r fun _ => b : X.functionField) = fnAt i c hgc f * (fnOf _ hgb (i.app _ (u b c).val) * fnAt i c hgc g)⁻¹`. Rewrite using `[← e]`. Establish `h1` using `hU.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hG.ne_zero`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e']`. Conclude with `hF.mul (hU.mul hG).inv`. Establish `hxb : under y ∈ (M.restr i).B.U (fun _ => b)`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Substitute `hw` using the available equality. Conclude with `CxPts.mem_ptsIn.1 hwb`. Establish `hyb' : y ∈ ptsIn (i ≫ mpStr ℤ m n) σ₀ ((M.restr i).B.U (fun _ => b))` using `CxPts.mem_ptsIn.2 hxb`. Establish `ho : y ∈ offSupp (i ≫ mpStr ℤ m n) σ₀ ((M.restr i).div hr)` using `mem_offSupp.2 fun hs => ((presents_divOfRatSec (M.restr i).isLB hr).isEqn (fun _ => b) _ hxb).mem_supp_iff.1 hs hR`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ho, ?_⟩` and prove the remaining obligations. Establish `hφ : ((M.restr i).φ σ₀).φ (fun _ => b) y = (M.φ σ₀).φ b w`. Rewrite using `[hw]`. Conclude with `GlobalTheory.Weight.pull_φ (M.φ σ₀) i rfl _ y`. Establish `hvU : ratVal (fnOf _ hgb (i.app _ (u b c).val)) y = CxPts.ev (mpStr ℤ m n) σ₀ (M.B.U b ⊓ mchart c) (u b c : Γ(MP ℤ m n, M.B.U b ⊓ mchart c)) w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(ratVal_fnOf hybc hgb _).trans ((CxPts.ev_app i rfl _ _ y).trans ?_)` and prove the remaining obligations. Rewrite using `[← hw]`. Establish `ev'` using `congrArg (ratVal · y) e`. Simplify using `only at ev'`. Rewrite `ev'` using `[ratVal_mul (hU.mul hR).regAt hG.regAt, ratVal_mul hU.regAt hR.regAt, hvU, val g β hg, val f α hf]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hP : ∀ a : Fin (m + 1) → ℕ, 0 < ∏ k, ‖z ⟨k, c k⟩‖ ^ a k` using `fun a => by`. Use `norm_pos_iff.2 (hne a)` as an intermediate fact. Simplify `this` using `only [norm_prod, norm_pow]`. Establish `hh` using `hu.2.2 b c w z hz' hwbc`. Establish `hzp : ∏ k, ‖z ⟨k, c k⟩‖ ^ A.a k = (∏ k, ‖z ⟨k, c k⟩‖ ^ α k) / ∏ k, ‖z ⟨k, c k⟩‖ ^ β k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h0 : ‖z ⟨k, c k⟩‖ ≠ 0` using `norm_ne_zero_iff.2 ((hz' k (c k)).1.1 (CxPts.ptsIn_mono (mchart_le c k) hwc))`. Rewrite using `[← hdeg k, zpow_sub₀ h0, zpow_natCast, zpow_natCast]`. Rewrite `hh` using `[hzp]`.
-
-Rewrite using `[logNorm_eq _ hr ho hyb', hφ, logNormRat]`. Establish `evn` using `congrArg norm ev'`. Simplify using `only [norm_mul, norm_div, norm_prod, norm_pow] at evn`. Conclude with `log_eq_of_frame (norm_pos_iff.2 (ev_ne_zero hwbc (u b c).isUnit)) (norm_pos_iff.2 (ratVal_ne_zero hR)) (norm_pos_iff.2 hf0) (norm_pos_iff.2 hg0) (hP α) (hP β) hh evn`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem value_of_ne_zero : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (M : GlobalTheory.HermLB (mpStr ℤ m n)) (A : HermLine (Bk n)) (X : Scheme.{0}) [IsIntegral X]
     (i : X ⟶ MP ℤ m n) [IsClosedImmersion i] (r : (M.restr i).B.ι → X.functionFieldˣ) (hr : IsRatSec (M.restr i).B r)

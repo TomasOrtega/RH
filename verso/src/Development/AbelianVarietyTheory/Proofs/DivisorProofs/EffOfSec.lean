@@ -19,16 +19,16 @@ def Eff {X : Scheme.{0}} (c : Pic X) : Prop :=
   ∃ (N : LB X) (hN : N.IsLB), cls N hN = c ∧ ∃ (σ : LB.Sec N) (j : N.ι), σ.f j ≠ 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨N, hN, rfl, σ, j, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem eff_of_sec {X : Scheme.{0}} (N : LB X) (hN : N.IsLB) (σ : LB.Sec N) (j : N.ι) (h : σ.f j ≠ 0) :
     Eff (cls N hN) :=
   ⟨N, hN, rfl, σ, j, h⟩
 
 /- English proof (translation)
-Establish `hL` using `LB.isLB_linComb hH (fun _ : PUnit => 𝟙 X) (fun _ => t)`. Establish `e : LBIso (LB.LinComb H (fun _ : PUnit => 𝟙 X) (fun _ => t)) (pw H t)` using `iso_of_chart (isLB_pw hH t) { idx := fun j => j PUnit.unit le := fun j y hy => Set.mem_iInter.1 hy PUnit.unit g := fun y j j' hj hj' => by`. Use `(gm_linComb H (fun _ : PUnit => 𝟙 X) (fun _ => t) (𝟙 X) y j j' hj hj').trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique]`. Express the relevant statement in the definitionally equal form `_ = gm (𝟙 X) y _ (H.g (j PUnit.unit) (j' PUnit.unit) ^ t)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_zpow, Category.comp_id] }`. Rewrite using `[← (cls_eq_iff hL (isLB_pw hH t)).2 e, cls_linComb hH, Fintype.sum_unique, pull_id]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cls_pw {X : Scheme.{0}} {H : LB X} (hH : H.IsLB) (t : ℤ) :
     cls (pw H t) (isLB_pw hH t) = t • cls H hH := by

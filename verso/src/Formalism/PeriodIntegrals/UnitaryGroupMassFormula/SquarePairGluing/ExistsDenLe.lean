@@ -11,24 +11,22 @@ open Formalism.L2.PairingIndexBounds.Eq.SqG
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {N : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem ringInt_smul (β : 𝓞 E) (w : Fin N → E) : β • w = (β : E) • w := by
   ext i
   rfl
 
 /- English proof (translation)
-Set `T : Submodule E (Fin N → E)` to `{ carrier := {v | ∃ k : ℕ, 0 < k ∧ (k : ℤ) • v ∈ L} add_mem' := by`. Introduce and unpack `a b ⟨k1, hk1, ha⟩ ⟨k2, hk2, hb⟩`. Use `⟨k1 * k2, Nat.mul_pos hk1 hk2, ?_⟩` and prove the remaining obligations. Establish `e1 : ((k1 * k2 : ℕ) : ℤ) • (a + b) = (k2 : ℤ) • ((k1 : ℤ) • a) + (k1 : ℤ) • ((k2 : ℤ) • b)`. Use `push_cast`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `module`. Rewrite using `[e1]`. Conclude with `L.add_mem (L.toAddSubgroup.zsmul_mem ha _) (L.toAddSubgroup.zsmul_mem hb _)`. Use the proof step `zero_mem' := ⟨1, one_pos, by simp⟩`. Use the proof step `smul_mem' := by`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `c v ⟨k2, hk2, hv⟩`. Take `⟨k1, hk1, β, hβ⟩` from `exists_nat_mul_int c`. Use `⟨k1 * k2, Nat.mul_pos hk1 hk2, ?_⟩` and prove the remaining obligations. Establish `e1 : ((k1 * k2 : ℕ) : ℤ) • (c • v) = β • ((k2 : ℤ) • v)`. Rewrite using `[ringInt_smul, hβ, ← Int.cast_smul_eq_zsmul E, ← Int.cast_smul_eq_zsmul E, smul_smul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `L.smul_mem β hv }`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hLT : L ≤ T.restrictScalars (𝓞 E)` using `fun v hv => ⟨1, one_pos, by simpa using hv⟩`. Establish `hT : T = ⊤`. Rewrite using `[eq_top_iff, ← hL, Submodule.span_le]`. Conclude with `fun v hv => hLT hv`. Establish `hv : v ∈ T` using `hT ▸ Submodule.mem_top`.
-
-Conclude with `hv`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_smul_mem {L : Submodule (𝓞 E) (Fin N → E)}
     (hL : Submodule.span E (L : Set (Fin N → E)) = ⊤) (v : Fin N → E) :
@@ -64,13 +62,11 @@ theorem exists_nat_smul_mem {L : Submodule (𝓞 E) (Fin N → E)}
   exact hv
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hfg`. Establish `hk : ∀ x : s, ∃ k : ℕ, 0 < k ∧ (k : ℤ) • (x : Fin N → E) ∈ L''` using `fun x => exists_nat_smul_mem hspan x`. Use `choose k hk0 hkL using hk`. Use `⟨∏ x, k x, Finset.prod_pos (fun x _ => hk0 x), ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, hm⟩ : k ⟨x, hx⟩ ∣ ∏ y, k y` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ _)`. Rewrite using `[hm, Nat.cast_mul, mul_comm, mul_smul]`. Conclude with `zsmul_mem (hkL ⟨x, hx⟩) _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`.
-
-Rewrite using `[smul_comm]`. Conclude with `L''.smul_mem c hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den_le {L' L'' : Submodule (𝓞 E) (Fin N → E)} (hfg : L'.FG)
     (hspan : Submodule.span E (L'' : Set (Fin N → E)) = ⊤) :
@@ -95,17 +91,15 @@ theorem exists_den_le {L' L'' : Submodule (𝓞 E) (Fin N → E)} (hfg : L'.FG)
     exact L''.smul_mem c hx
 
 /- English proof (translation)
-Take `⟨D1, hD1, h1⟩` from `exists_den_le hL'.1 hL''.2.1`. Take `⟨D2, hD2, h2⟩` from `exists_den_le hL''.1 hL'.2.1`. Establish `hnE : (n : E) ≠ 0` using `by exact_mod_cast hn`. Take `⟨k, hk, β, hβ⟩` from `exists_nat_mul_int (n : E)⁻¹`. Establish `hkY : ∀ u, u ∈ L' → u ∈ L'' → (k : ℤ) • u ∈ yg L' L'' n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `u hu hu'`. Use `⟨β • u, L'.smul_mem β hu, L''.smul_mem β hu', ?_⟩` and prove the remaining obligations. Rewrite using `[ringInt_smul, smul_smul, hβ, ← Int.cast_smul_eq_zsmul E]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨k * D1 * D2, Nat.mul_pos (Nat.mul_pos hk hD1) hD2, ?_⟩` and prove the remaining obligations. Introduce and unpack `w (hw | hw)`. Establish `hu : (D1 : ℤ) • w ∈ L''` using `h1 w hw`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hu' : (D1 : ℤ) • w ∈ L'` using `L'.toAddSubgroup.zsmul_mem hw _`. Establish `e1 : ((k * D1 * D2 : ℕ) : ℤ) • w = (k : ℤ) • ((D2 : ℤ) • ((D1 : ℤ) • w))`. Use `push_cast`. Use `module`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hkY _ (L'.toAddSubgroup.zsmul_mem hu' _) (L''.toAddSubgroup.zsmul_mem hu _)`. Establish `hu : (D2 : ℤ) • w ∈ L'` using `h2 w hw`. Establish `hu' : (D2 : ℤ) • w ∈ L''` using `L''.toAddSubgroup.zsmul_mem hw _`. Establish `e1 : ((k * D1 * D2 : ℕ) : ℤ) • w = (k : ℤ) • ((D1 : ℤ) • ((D2 : ℤ) • w))`. Use `push_cast`.
-
-Use `module`. Rewrite using `[e1]`. Conclude with `hkY _ (L'.toAddSubgroup.zsmul_mem hu _) (L''.toAddSubgroup.zsmul_mem hu' _)`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den {L' L'' : Submodule (𝓞 E) (Fin N → E)} (hL' : IsSDG E N L') (hL'' : IsSDG E N L'')
     {n : 𝓞 E} (hn : n ≠ 0) :

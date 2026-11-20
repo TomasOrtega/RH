@@ -4,6 +4,6 @@ import Formalism.PeriodIntegrals.AreaLat
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeArea.ImConjMulCombo
 
 /- English proof (translation)
-The claim follows from `PI.AreaLatWork.areaLat`.
+A detailed English derivation is pending.
 -/
 theorem area_lattice_formula : PI.AreaLat := PI.AreaLatWork.areaLat

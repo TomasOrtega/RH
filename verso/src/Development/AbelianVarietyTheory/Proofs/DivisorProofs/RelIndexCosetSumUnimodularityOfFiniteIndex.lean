@@ -7,15 +7,15 @@ open Formalism.UG GlobalTheory.SatakeWeyl
 namespace GlobalTheory.SatakeWeyl
 
 /- English proof (translation)
-Establish `hout : ∀ a : A, F (QuotientGroup.mk a : A ⧸ W).out = F a`. Introduce `a`. Take `⟨w, hw⟩` from `QuotientGroup.mk_out_eq_mul W a`. Rewrite using `[hw, hF w w.2]`. Set `e : Γ ⧸ W.subgroupOf Γ → A ⧸ W` to `fun y => QuotientGroup.mk ((y.out : Γ) : A)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hinj : Function.Injective e`. Introduce `y z h`. Establish `h1 : ((y.out : Γ) : A)⁻¹ * ((z.out : Γ) : A) ∈ W` using `QuotientGroup.eq.1 h`. Establish `h2 : (QuotientGroup.mk y.out : Γ ⧸ W.subgroupOf Γ) = QuotientGroup.mk z.out` using `QuotientGroup.eq.2 (Subgroup.mem_subgroupOf.2 (by simpa using h1))`. Simplify using `using h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hsupp : (Function.support fun y : A ⧸ W => F y.out) ⊆ Set.range e`. Introduce `y hy`. Establish `hm : y.out ∈ Γ` using `hΓ _ hy`. Use `⟨QuotientGroup.mk ⟨y.out, hm⟩, ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `QuotientGroup.mk_out_eq_mul (W.subgroupOf Γ) ⟨y.out, hm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hw' : ((w : Γ) : A) ∈ W` using `Subgroup.mem_subgroupOf.1 w.2`. Use `show (QuotientGroup.mk _ : A ⧸ W) = y`. Rewrite using `[hw, Subgroup.coe_mul, QuotientGroup.mk_mul_of_mem _ hw']`. Conclude with `QuotientGroup.out_eq' y`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← finsum_mem_univ]`. Apply `finsum_mem_inter_support_eq` to reduce the goal to its premises. Rewrite using `[Set.univ_inter, Set.inter_eq_right.2 hsupp]`. Use `_ = ∑ᶠ y, F (e y).out := finsum_mem_range hinj`. Use `_ = _ := finsum_congr fun y => hout _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_quotient_subgroupOf {A : Type} [Group A] (Γ W : Subgroup A) (F : A → ℂ)
     (hΓ : ∀ a, F a ≠ 0 → a ∈ Γ) (hF : ∀ w ∈ W, ∀ a, F (a * w) = F a) :
@@ -48,7 +48,7 @@ theorem finsum_quotient_subgroupOf {A : Type} [Group A] (Γ W : Subgroup A) (F :
     _ = _ := finsum_congr fun y => hout _
 
 /- English proof (translation)
-Introduce `H A _ Γ U V f _ _ hUi hVi hΓ hfV hfU`. Establish `h` using `H Γ (U.subgroupOf Γ) (V.subgroupOf Γ) (fun a => f a) hUi hVi (fun v hv a => hfV _ (Subgroup.mem_subgroupOf.1 hv) _) (fun u hu a => hfU _ (Subgroup.mem_subgroupOf.1 hu) _)`. Rewrite using `[finsum_quotient_subgroupOf Γ U f hΓ hfU, finsum_quotient_subgroupOf Γ V (fun a => f a⁻¹) (fun a ha => (inv_mem_iff.1 (hΓ _ ha))) (fun w hw a => by rw [mul_inv_rev, hfV _ (inv_mem hw)])]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unimod_of_unimodFin : UnimodFin → Unimod := by
   intro H A _ Γ U V f _ _ hUi hVi hΓ hfV hfU

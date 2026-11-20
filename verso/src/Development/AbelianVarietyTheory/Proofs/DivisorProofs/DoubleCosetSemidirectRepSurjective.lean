@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `P M N _ _ _ s π u hs _ hker KP KM L hKs _ _ TM CM TP CP _ hTP _ _ d`. Take `⟨t, ht, k, hk, hm⟩` from `(DoubleCoset.eq TM KM (Quotient.out (DoubleCoset.mk TM KM (π (Quotient.out d)))) (π (Quotient.out d))).1 (DoubleCoset.out_eq' TM KM _)`. Generalize the expression as in `Quotient.out (DoubleCoset.mk TM KM (π (Quotient.out d))) = q at hm ⊢`. Take `⟨X, hX⟩` from `(hker ((s q)⁻¹ * (s t)⁻¹ * Quotient.out d * (s k)⁻¹)).1 (by`. Simplify using `only [map_mul, map_inv, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[hm]`. Use the proof step `group)`. Use `⟨X, ?_⟩` and prove the remaining obligations. Rewrite using `[hX]`. Use `conv_rhs => rw [← DoubleCoset.out_eq' TP KP d]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[DoubleCoset.eq]`. Conclude with `⟨s t, (hTP _).2 ⟨t, ht, rfl⟩, s k, hKs k hk, by group⟩`.
+A detailed English derivation is pending.
 -/
 theorem doubleCoset_semidirect_surj :
     ∀ (P M N : Type) [Group P] [Group M] [Group N] (s : M →* P) (π : P →* M) (u : N →* P),

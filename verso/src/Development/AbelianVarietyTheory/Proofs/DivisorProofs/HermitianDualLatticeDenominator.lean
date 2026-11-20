@@ -14,15 +14,15 @@ noncomputable section
 namespace GlobalTheory.TraceDenom
 
 /- English proof (translation)
-Establish `h : ∀ i, ∃ m : ℕ, 0 < m ∧ IsIntegral ℤ ((m : E) * f i)`. Introduce `i`. Establish `hal : IsAlgebraic ℤ (f i)` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic (f i))`. Take `⟨y, hy0, hy⟩` from `hal.exists_integral_multiple`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Int.natAbs_eq y with h | h` into its components or cases. Establish `e : ((y.natAbs : ℕ) : E) = (y : E)`. Rewrite using `[← Int.cast_natCast]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[e, ← zsmul_eq_mul]`. Conclude with `hy`. Establish `e : ((y.natAbs : ℕ) : E) = -(y : E)`. Rewrite using `[← Int.cast_natCast, ← Int.cast_neg]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[e, neg_mul, ← zsmul_eq_mul]`. Conclude with `hy.neg`. Use `choose m hm0 hm using h`. Use `⟨∏ i, m i, Finset.prod_pos (fun i _ => hm0 i), fun i => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem m (Finset.mem_univ i)`. Rewrite using `[hk, Nat.cast_mul, mul_comm ((m i : ℕ) : E), mul_assoc]`. Establish `hk' : IsIntegral ℤ ((k : ℕ) : E)`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := E) (x := (k : ℤ)))`. Conclude with `hk'.mul (hm i)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_isIntegral {E : Type} [Field E] [NumberField E] {ι : Type} [Fintype ι]
     (f : ι → E) : ∃ m : ℕ, 0 < m ∧ ∀ i, IsIntegral ℤ ((m : E) * f i) := by
@@ -48,9 +48,9 @@ theorem exists_nat_mul_isIntegral {E : Type} [Field E] [NumberField E] {ι : Typ
   exact hk'.mul (hm i)
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `σ.bijective.2 (b : E)`. Establish `h1 : IsIntegral ℤ (σ.toRingHom.toIntAlgHom x)`. Express the relevant statement in the definitionally equal form `IsIntegral ℤ (σ x)`. Rewrite using `[hx]`. Conclude with `b.isIntegral_coe`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : IsIntegral ℤ x` using `(isIntegral_algHom_iff (σ.toRingHom.toIntAlgHom) σ.injective).1 h1`. Conclude with `⟨⟨x, hint⟩, hx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_preimage_ringOfIntegers {F E : Type} [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (b : 𝓞 E) : ∃ a : 𝓞 E, σ (a : E) = b := by
@@ -62,21 +62,21 @@ theorem exists_preimage_ringOfIntegers {F E : Type} [Field F] [NumberField F] [F
   exact ⟨⟨x, hint⟩, hx⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J hJ c hc`. Take `⟨D, hD, hDual⟩` from `GlobalTheory.exists_den_traceDual_ringOfIntegers (F := E)`. Take `⟨M, hM, hMint⟩` from `exists_nat_mul_isIntegral (fun p : Fin n × Fin n => c⁻¹ * J⁻¹ p.1 p.2)`. Use `⟨D * M, Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero hD.ne' hM.ne'), fun ξ hξ i => ?_⟩` and prove the remaining obligations. Establish `hv : ∀ k, ∃ o : 𝓞 E, (D : E) * (c * (ξ ᵥ* J) k) = o`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `k`. Apply `hDual` to reduce the goal to its premises. Introduce `b`. Take `⟨a, ha⟩` from `exists_preimage_ringOfIntegers σ b`. Take `⟨z, hz⟩` from `hξ (Pi.single k a)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz]`. Use `congr 1`. Establish `hs : (fun j => σ (((Pi.single k a : Fin n → 𝓞 E) j : E))) = Pi.single k (σ (a : E))`. Use function extensionality and compare the values at `j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`. Simplify using `only [form, Matrix.dotProduct_mulVec, hs]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[dotProduct, Pi.single_apply, ha, mul_assoc]`. Use `choose o ho using hv`. Establish `hunit : IsUnit J.det` using `hJ.isUnit`. Establish `hξeq : ξ = (ξ ᵥ* J) ᵥ* J⁻¹`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv J hunit, Matrix.vecMul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `ξ ᵥ* J = v at ho hξeq`. Establish `hexp : ((D * M : ℕ) : E) * ξ i = ∑ k, (D : E) * (c * v k) * ((M : E) * (c⁻¹ * J⁻¹ k i))`. Rewrite using `[hξeq]`. Simplify using `only [Matrix.vecMul, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hint : IsIntegral ℤ (((D * M : ℕ) : E) * ξ i)`. Rewrite using `[hexp]`. Use `IsIntegral.sum _ fun k _ => ?_` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ho k]`. Conclude with `(o k).isIntegral_coe.mul (hMint (k, i))`. Conclude with `⟨⟨_, hint⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nat_mul_integral_of_trace_form_int : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (hJ : J.det ≠ 0) (c : E) (hc : c ≠ 0),
     ∃ N : ℕ, 1 ≤ N ∧ ∀ ξ : Fin n → E, (∀ β : Fin n → 𝓞 E, ∃ z : ℤ, Algebra.trace ℚ E (c * form σ J ξ (fun i => (β i : E))) = z) →

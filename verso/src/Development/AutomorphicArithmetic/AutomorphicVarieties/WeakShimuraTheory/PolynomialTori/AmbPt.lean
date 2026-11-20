@@ -12,21 +12,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `l _ c B _ _ _ hB`. Use `haveI : IsAdicComplete (maximalIdeal c.O) c.O := (dvrFacts l c.O).2.2.2.1`. Take `⟨P, t, n, hP, hmP, ht, htP, hn⟩` from `Po.dimOne c.O B hB`. Use `haveI : IsDomain (B ⧸ P) := Ideal.Quotient.isDomain P`. Use `haveI : IsCO c.O (B ⧸ P) := co_quot c.O B _ (Ideal.Quotient.mkₐ c.O P) (Ideal.Quotient.mkₐ_surjective c.O P)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : Function.Surjective (Ideal.Quotient.mk P)` using `Ideal.Quotient.mk_surjective`. Establish `hm : (maximalIdeal B).map (Ideal.Quotient.mk P) = maximalIdeal (B ⧸ P)` using `IsLocalRing.map_maximalIdeal_of_surjective _ hq`. Establish `h0 : ∀ a ∈ maximalIdeal c.O, algebraMap c.O (B ⧸ P) a = 0` using `fun a ha => (Ideal.Quotient.eq_zero_iff_mem (a := algebraMap c.O B a)).2 (hmP (Ideal.mem_map_of_mem _ ha))`. Establish `hn' : maximalIdeal (B ⧸ P) ^ n ≤ Ideal.span {Ideal.Quotient.mk P t}`. Rewrite using `[← hm, ← Ideal.map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(Ideal.map_mono hn).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_sup, Ideal.map_quotient_self, bot_sup_eq, Ideal.map_span, Set.image_singleton]`. Take `⟨φ, hφi, hφf, hφX, hφC⟩` from `Po.psFin c.O (B ⧸ P) h0 (Ideal.Quotient.mk P t) (hm ▸ Ideal.mem_map_of_mem _ ht) (fun h => htP (Ideal.Quotient.eq_zero_iff_mem.1 h)) n hn'`. Take `⟨hfin, hch⟩` from `Po.fin_res c`. Use `haveI : IsAdicComplete (maximalIdeal (PowerSeries (ResidueField c.O))) (PowerSeries (ResidueField c.O)) := by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[PowerSeries.maximalIdeal_eq_span_X]`. Use `infer_instance`. Use `haveI : Finite (ResidueField (PowerSeries (ResidueField c.O))) := Finite.of_equiv _ (PowerSeries.residueFieldOfPowerSeries (k := ResidueField c.O)).symm.toEquiv`. Use `haveI : CharP (PowerSeries (ResidueField c.O)) l := charP_of_injective_ringHom (PowerSeries.C_injective (R := ResidueField c.O)) l`. Take `⟨𝔞, f, hK, hf, hfa⟩` from `ambL c (PowerSeries (ResidueField c.O)) (PowerSeries.C.comp (residue c.O))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, s, hy, hs⟩` from `Po.finExt 𝔞.K 𝔞.V _ _ φ f hφi hφf hf.inj`. Establish `hyφ : ∀ x, y (φ x) = f x` using `fun x => RingHom.congr_fun hy x`. Establish `hya : ∀ a, y (algebraMap c.O (B ⧸ P) a) = 𝔞.a c a` using `fun a => by`. Rewrite using `[← hφC, hyφ, ← hfa]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hX : f PowerSeries.X ∈ maximalIdeal 𝔞.V` using `by haveI := hf.loc`. Use `map_nonunit f _ ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.maximalIdeal_eq_span_X]`. Conclude with `Ideal.mem_span_singleton_self _`. Use `⟨𝔞, _, inferInstance, inferInstance, inferInstance, f, s, y.comp (Ideal.Quotient.mk P), hK, hf, RingHom.ext hya, fun b hb => ?_, ⟨t, ht, ?_⟩, fun a ha => ?_, fun b => hs _⟩` and prove the remaining obligations.
-
-Establish `hb' : Ideal.Quotient.mk P b ∈ maximalIdeal (B ⧸ P)` using `hm ▸ Ideal.mem_map_of_mem _ hb`. Take `⟨u, hu⟩` from `Ideal.mem_span_singleton'.1 (hn' (Ideal.pow_mem_pow hb' n))`. Use `(maximalIdeal.isMaximal 𝔞.V).isPrime.mem_of_pow_mem n ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, ← map_pow, ← hu, map_mul, ← hφX, hyφ]`. Conclude with `Ideal.mul_mem_left _ _ hX`.
-
-Rewrite using `[RingHom.comp_apply, ← hφX, hyφ]`. Conclude with `fun h => PowerSeries.X_ne_zero (hf.inj (h.trans (map_zero f).symm))`. Rewrite using `[← hya, h0 a ha, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Po.ambPt :
     ∀ {l : ℕ} [Fact l.Prime] (c : Coef l) (B : Type) [CommRing B] [Algebra c.O B] [IsCO c.O B], ¬ Module.Finite c.O B →

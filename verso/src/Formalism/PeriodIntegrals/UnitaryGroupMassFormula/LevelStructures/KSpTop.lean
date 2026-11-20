@@ -10,14 +10,14 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
   IsDedekindDomain Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_restrictScalars_finite ℚ F E`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_of_numberField (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] : FiniteDimensional F E :=
   Module.Finite.of_restrictScalars_finite ℚ F E
 
 /- English proof (translation)
-Introduce `D X w p`. Use `finiteDimensional_of_numberField X.B.I.F X.B.I.E` as an intermediate fact. Conclude with `(LatTop.isClosed_Ssub p.1 X.B.I.cm.sig X.B.I.J (frameOf X w)).isClosedEmbedding_subtypeVal.isCompact_preimage (LatTop.isCompact_Kv p.1 X.B.I.L X.B.I.L_span X.B.I.L_fg X.B.I.cm.sig X.B.I.J)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kSpCompact_holds : KSpCompact := by
   intro D X w p
@@ -26,7 +26,7 @@ theorem kSpCompact_holds : KSpCompact := by
     (LatTop.isCompact_Kv p.1 X.B.I.L X.B.I.L_span X.B.I.L_fg X.B.I.cm.sig X.B.I.J)
 
 /- English proof (translation)
-Introduce `D X w p`. Use `finiteDimensional_of_numberField X.B.I.F X.B.I.E` as an intermediate fact. Conclude with `(LatTop.isOpen_Kv p.1 X.B.I.L X.B.I.L_span X.B.I.L_fg X.B.I.cm.sig X.B.I.J).preimage continuous_subtype_val`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kSpOpen_holds : KSpOpen := by
   intro D X w p
@@ -35,7 +35,7 @@ theorem kSpOpen_holds : KSpOpen := by
     continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `typedNe_of kSpCompact_holds kSpOpen_holds`.
+A detailed English derivation is pending.
 -/
 theorem typedNe_holds : TypedNe := typedNe_of kSpCompact_holds kSpOpen_holds
 

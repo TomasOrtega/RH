@@ -18,7 +18,7 @@ namespace AbelianPartIso
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsMonHom.one_hom q', Category.assoc, hβ, IsMonHom.one_hom]`. Use `FlatQuotient.epi_tensorHom q' q'` as an intermediate fact. Rewrite using `[← cancel_epi (q' ⊗ₘ q'), ← IsMonHom.mul_hom_assoc, hβ, tensorHom_comp_tensorHom_assoc, hβ, IsMonHom.mul_hom]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMonHom_of_comp {S : Scheme.{0}} {G B B' : Over S} [GrpObj G] [GrpObj B] [GrpObj B']
     (q' : G ⟶ B') (q : G ⟶ B) (β : B' ⟶ B) [IsMonHom q'] [IsMonHom q] [Flat q'.left]
@@ -30,7 +30,7 @@ theorem isMonHom_of_comp {S : Scheme.{0}} {G B B' : Over S} [GrpObj G] [GrpObj B
       IsMonHom.mul_hom]
 
 /- English proof (translation)
-Use `(sec_eq_zero_and_hom_eq_of_thickenings R I hI H).2 Y f g fun n => ?_` and prove the remaining obligations. Establish `k : ∀ f : H ⟶ Y, ((Over.pullback (thick R I n)).map f).left ≫ pullback.fst Y.hom (thick R I n) = pullback.fst H.hom (thick R I n) ≫ f.left` using `fun f => pullback.lift_fst _ _ _`. Conclude with `(k f).symm.trans ((congrArg (fun φ => φ.left ≫ pullback.fst Y.hom (thick R I n)) (h n)).trans (k g))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hom_eq_of_map_eq {R : Type} [CommRing R] [IsNoetherianRing R] {I : Ideal R}
     (hI : I ≤ Ideal.jacobson ⊥) (H : Over (Spec (CommRingCat.of R))) [GrpObj H] [Smooth H.hom]
@@ -43,13 +43,13 @@ theorem hom_eq_of_map_eq {R : Type} [CommRing R] [IsNoetherianRing R] {I : Ideal
   exact (k f).symm.trans ((congrArg (fun φ => φ.left ≫ pullback.fst Y.hom (thick R I n)) (h n)).trans (k g))
 
 /- English proof (translation)
-Use `hB.proper` as an intermediate fact. Use `hB'.smooth` as an intermediate fact. Use `hB'.geomConnected` as an intermediate fact. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: Smooth (𝟙_ (Over (Spec (CommRingCat.of R)))).hom` using `inferInstanceAs (Smooth (𝟙 _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: GeometricallyConnected (𝟙_ (Over (Spec (CommRingCat.of R)))).hom` using `inferInstanceAs (GeometricallyConnected (𝟙 _))`. Use `hom_eq_of_map_eq hI _ _ _ fun n => ?_` and prove the remaining obligations. Establish `e` using `(h n).one_hom`. Rewrite `e` using `[Functor.obj.η_def, Functor.obj.η_def, Category.assoc, cancel_epi, ← Functor.map_comp]`. Conclude with `e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: Smooth (B' ⊗ B').hom` using `inferInstanceAs (Smooth (pullback.fst B'.hom B'.hom ≫ B'.hom))`. Establish `: GeometricallyConnected (B' ⊗ B').hom`. Express the relevant statement in the definitionally equal form `GeometricallyConnected (pullback.fst B'.hom B'.hom ≫ B'.hom)`. Conclude with `GeometricallyConnected.comp _ _`. Use `hom_eq_of_map_eq hI _ _ _ fun n => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `(h n).mul_hom`. Rewrite `e` using `[Functor.obj.μ_def, Functor.obj.μ_def, Category.assoc, Functor.LaxMonoidal.μ_natural_assoc, cancel_epi, ← Functor.map_comp, ← Functor.map_comp]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem isMonHom_of_thickenings {R : Type} [CommRing R] [IsNoetherianRing R] {I : Ideal R}
     (hI : I ≤ Ideal.jacobson ⊥) {B B' : Over (Spec (CommRingCat.of R))} [GrpObj B] [GrpObj B']
@@ -77,11 +77,11 @@ theorem isMonHom_of_thickenings {R : Type} [CommRing R] [IsNoetherianRing R] {I 
     exact e
 
 /- English proof (translation)
-Substitute `hW` using the available equality. Establish `hinj : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).hom).1`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero, ← Ideal.mem_bot, ← Ideal.iInf_pow_eq_bot_of_isLocalRing I hI, Ideal.mem_iInf]`. Introduce `e`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Ideal.pow_le_pow_right (Nat.le_succ e) (Ideal.Quotient.eq.1 ?_)` and prove the remaining obligations. Establish `key : ((thick R I e).app ⊤).hom a = ((thick R I e).app ⊤).hom b`. Use `fn_ext fun z hz => ?_` and prove the remaining obligations. Rewrite using `[gs_pull _ _ z ⊤ trivial, gs_pull _ _ z ⊤ trivial, Category.id_comp]`. Conclude with `h e z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `nat` using `fun x => congrArg (fun φ => φ.hom x) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (Ideal.Quotient.mk (I ^ (e + 1)))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at nat`. Conclude with `(nat a).symm.trans ((congrArg _ key).trans (nat b))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fn_eq_of_thickenings {R : Type} [CommRing R] [IsNoetherianRing R] [IsLocalRing R]
     {I : Ideal R} (hI : I ≠ ⊤)
@@ -104,15 +104,15 @@ theorem fn_eq_of_thickenings {R : Type} [CommRing R] [IsNoetherianRing R] [IsLoc
   exact (nat a).symm.trans ((congrArg _ key).trans (nat b))
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Take `⟨p₀, hp₀⟩` from `exists_chart hL ((s' ≫ F) (IsLocalRing.closedPoint R))`. Take `⟨q₀, hq₀⟩` from `exists_chart hL' (s' (IsLocalRing.closedPoint R))`. Establish `hp : ∀ x, (s' ≫ F) x ∈ L.U p₀` using `fun x => ((IsLocalRing.specializes_closedPoint (R := R) x).map (s' ≫ F).continuous).mem_open (L.U p₀).isOpen hp₀`. Establish `hq : ∀ x, s' x ∈ L'.U q₀` using `fun x => ((IsLocalRing.specializes_closedPoint (R := R) x).map s'.continuous).mem_open (L'.U q₀).isOpen hq₀`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l₁ : (⊤ : (Spec (CommRingCat.of R)).Opens) ≤ (L.pull (s' ≫ F)).U (fun _ => p₀)` using `fun x _ => mem_pull.2 (hp x)`. Establish `l₂ : (⊤ : (Spec (CommRingCat.of R)).Opens) ≤ (L'.pull s').U (fun _ => q₀)` using `fun x _ => mem_pull.2 (hq x)`. Establish `l₃ : (⊤ : (Spec (CommRingCat.of R)).Opens) ≤ s' ⁻¹ᵁ ((L.pull F).U (fun _ => p₀) ⊓ L'.U q₀)` using `fun x _ => ⟨mem_pull.2 (hp x), hq x⟩`. Establish `ev₁ : ∀ (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of R)) (z : Z), gm r z ⊤ (res l₁ (t.s (fun _ => p₀))) = gm r z ((L.pull (s' ≫ F)).U (fun _ => p₀)) (t.s (fun _ => p₀))` using `fun Z r z => gm_res r z l₁ trivial _`. Establish `ev₂ : ∀ (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of R)) (z : Z), gm r z ⊤ (res l₃ (pullU s' _ (w.s (fun _ => p₀, q₀))) * res l₂ (a.s (fun _ => q₀))) = gw w (r ≫ s') z p₀ q₀ * gm r z ((L'.pull s').U (fun _ => q₀)) (a.s (fun _ => q₀))` using `fun Z r z => (map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res r z l₃ trivial _).trans (gm_pull r s' z _ (l₃ (Set.mem_univ (r z))) _)) (gm_res r z l₂ trivial _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : res l₁ (t.s (fun _ => p₀)) = res l₃ (pullU s' _ (w.s (fun _ => p₀, q₀))) * res l₂ (a.s (fun _ => q₀))`. Use `Units.ext (fn_eq_of_thickenings hI ⊤ rfl _ _ fun e z => ?_)` and prove the remaining obligations. Rewrite using `[gs_unit _ z ⊤ trivial, gs_unit _ z ⊤ trivial, ev₁, ev₂, h e z p₀ q₀ (hp _) (hq _)]`. Introduce `Z r z p q hpz hqz`. Establish `E` using `(ev₁ Z r z).symm.trans ((congrArg (gm r z ⊤) key).trans (ev₂ Z r z))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `a₁` using `gen_trans ht r z (j := p) (j' := fun _ => p₀) (Set.mem_iInter.2 hpz) (l₁ (Set.mem_univ _))`. Establish `a₂` using `gen_trans ha r z (j := q) (j' := fun _ => q₀) (Set.mem_iInter.2 hqz) (l₂ (Set.mem_univ _))`. Establish `a₃` using `(isGen_iff w).1 hw Z (r ≫ s') z (p PUnit.unit) p₀ (q PUnit.unit) q₀ (hpz _) (hp _) (hqz _) (hq _)`. Rewrite using `[Category.comp_id, a₁, a₂, Fintype.prod_unique, zpow_one, a₃]`. Use `(congrArg _ E).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [trF, Fintype.prod_unique, zpow_one, Category.assoc, PUnit.default_eq_unit]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem pmaps_of_thickenings {R : Type} [CommRing R] [IsNoetherianRing R] [IsLocalRing R]
     {I : Ideal R} (hI : I ≠ ⊤) {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} (hL : L.IsLB)
@@ -173,17 +173,15 @@ end AbelianPartIso
 open AbelianPartIso ReciprocityTheory.ChartRestriction.G.DVR in
 
 /- English proof (translation)
-Introduce `R _ _ _ I hR D D' A A' G _ _ _ U U' wL he hwL hrig Φ w ⟨hw, H⟩`. Take `⟨_, -, -, _⟩` from `hR`. Establish `hI : I ≤ Ideal.jacobson ⊥` using `IsAdicComplete.le_jacobson_bot I`. Establish `hI' : I ≠ ⊤` using `fun h => (IsLocalRing.maximalIdeal.isMaximal R).ne_top (top_le_iff.1 (h.ge.trans (hI.trans (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).le)))`. Establish `hΦ : IsMonHom Φ.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isMonHom_of_thickenings hI D.toPre.P.isAb D'.toPre.P.isAb Φ.hom fun e => ?_` and prove the remaining obligations. Use `(U.gt e).q_hom` as an intermediate fact. Use `(U'.gt e).q_hom` as an intermediate fact. Use `(U'.gt e).q_flat` as an intermediate fact. Use `(U'.gt e).q_surj` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isMonHom_of_comp (U'.gt e).q (U.gt e).q _ (Over.OverMorphism.ext ?_)` and prove the remaining obligations. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Establish `k : ((Over.pullback (thick R I e)).map Φ.hom).left ≫ pullback.fst D.toPre.P.A.hom (thick R I e) = pullback.fst D'.toPre.P.A.hom (thick R I e) ≫ Φ.hom.left` using `pullback.lift_fst _ _ _`. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((U'.gt e).q.left ≫ ·) k).trans ((Category.assoc _ _ _).symm.trans (H e).1))`. Conclude with `(Over.w _).trans (Over.w (U.gt e).q).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨hΦ, pmaps_of_thickenings hI' D.toPre.P.isLB D'.toPre.P.isLB w hw _ _ (congrArg Over.Hom.left hΦ.one_hom) _ D'.toPre.rig_gen _ D.toPre.rig_gen fun e z p q hp hq => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `Geo.Tor.exists_chart U.LG.isLB ((UnitValue.thU R I e ≫ eSec G) z)`. Take `⟨j', hj'⟩` from `Geo.Tor.exists_chart U'.LG.isLB ((UnitValue.thU R I e ≫ eSec G) z)`. Establish `e₁` using `UnitValue.wv_rig U e z p j hp hj`. Establish `e₂` using `UnitValue.wv_rig U' e z q j' hq hj'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃` using `(Geo.Tor.maps_iff wL _ (fun _ => eSec G) _ U'.LG.rig U.LG.rig (𝟙 _) _ (rigPull_le (𝟙 G.left) (𝟙 _) he U.LG.L) (fun _ => rfl)).1 hrig _ (UnitValue.thU R I e) z (fun _ => j) (fun _ => j') (fun _ => hj) (fun _ => hj')`. Establish `e₄` using `(H e).2 _ (eSec (thickObj R I e G)) z p q j j' ((congrArg (fun g => g z ∈ D.toPre.P.L.U p) (UnitValue.eSec_pGl U e)).mpr hp) ((congrArg (fun g => g z ∈ D'.toPre.P.L.U q) (UnitValue.eSec_pGl U' e)).mpr hq) ((congrArg (fun g => g z ∈ U.LG.L.U j) (UnitValue.eSec_fGl (G := G) e)).mpr …`. Rewrite `e₄` using `[UnitValue.eSec_pGl U' e, UnitValue.eSec_fGl (G := G) e]`. Rewrite `e₃` using `[Category.comp_id, Fintype.prod_unique, zpow_one]`. Use `e₁.symm.trans ((congrArg _ e₃).trans ((mul_assoc _ _ _).symm.trans ?_))` and prove the remaining obligations.
-
-Conclude with `(congrArg (· * _) e₄.symm).trans ((mul_assoc _ _ _).trans (congrArg _ e₂))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem abelianPartIso_isMonHom_and_rigidified : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), AdmBase R I → ∀ (D D' : DegData R I) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : UnifPre I D A G) (U' : UnifPre I D' A' G) (wL : LB.Iso U'.LG.L (U.LG.L.pull (𝟙 G.left))) (he : eSec G ≫ 𝟙 G.left = 𝟙 _ ≫ eSec G), wL.IsGen → LB.Gen.Maps (LB.linCombIso wL (K := PUnit) (fun _ => eSec G) (fun _ => 1)) U'.LG.rig (rigPullOf (𝟙 G.left) (𝟙 _) he U.LG.L U.LG.rig) → ∀ (Φ : D'.toPre.P.A ≅ D.toPre.P.A) (w : LB.Iso D'.toPre.P.L (D.toPre.P.L.pull Φ.hom.left)), (w.IsGen ∧ ∀ e : ℕ, (U'.gt e).pG.left ≫ Φ.hom.left = (U.gt e).pG.left ∧ (∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G).left) (z : Z) (jM : D.toPre.P.L.ι) (jM' : D'.toPre.P.L.ι) (jL : U.LG.L.ι) (jL' : U'.LG.L.ι), (U.gt e).pG.left (r z) ∈ D.toPre.P.L.U jM → (U'.gt e).pG.left (r z) ∈ D'.toPre.P.L.U jM' → (fstG I e G).left (r z) ∈ U.LG.L.U jL → (fstG I e G).left (r z) ∈ U'.LG.L.U jL' → Geo.Tor.gw w (r ≫ (U'.gt e).pG.left) z jM jM' * Geo.Tor.gw (U'.w e) r z jM' (fun _ => jL') = Geo.Tor.gw (U.w e) r z jM (fun _ => jL) * Geo.Tor.gw wL (r ≫ (fstG I e G).left) z jL jL')) → (IsMonHom Φ.hom ∧ Geo.Tor.PMaps w (K := PUnit) (fun _ => eSec D'.toPre.P.A) (fun _ => eSec D.toPre.P.A) (fun _ => 1) D'.toPre.rig D.toPre.rig (𝟙 _)) := by
   intro R _ _ _ I hR D D' A A' G _ _ _ U U' wL he hwL hrig Φ w ⟨hw, H⟩

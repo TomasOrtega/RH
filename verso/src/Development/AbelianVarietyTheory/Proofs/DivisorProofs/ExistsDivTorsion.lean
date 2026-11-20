@@ -24,23 +24,21 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 namespace GlobalTheory.GSep
 
 /- English proof (translation)
-Introduce `X z₀ k hk hd`. Use `haveI := X.M.qc`. Use `haveI : CompactSpace X.M.Z := QuasiCompact.compactSpace_of_compactSpace X.M.s`. Take `⟨z, hz', hcl⟩` from `(isClosed_closure (s := {z₀})).exists_closed_singleton ⟨z₀, subset_closure rfl⟩`. Establish `hsp : z₀ ⤳ z` using `specializes_iff_mem_closure.2 hz'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hne, hU⟩` from `GlobalTheory.T.exists_nonempty_open_thetaRing_regular X`. Take `⟨p, _, y, hy, hyU⟩` from `exists_cen_main _ _ X.M z hcl U hne`. Take `⟨hL, hL2⟩` from `GlobalTheory.abelianSchemeLaws_all`. Take `⟨hTU, hUT⟩` from `GlobalTheory.ZH.thmU_and_uTors`. Establish `hle : X.S.R ≤ X.M.O ((gPt p ≫ y) (closedPoint (PadicAlgCl p)))` using `hU _ (hyU ⟨_, rfl⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsw : ∀ w, (gPt p ≫ y) w ⤳ (gPt p ≫ y) (closedPoint (PadicAlgCl p))` using `fun w => by`. Rewrite using `[Subsingleton.elim w (closedPoint (PadicAlgCl p))]`. Set `y₀ : X.S.R →+* PadicAlgCl p` to `(RatModel.valHomOf (gPt p ≫ y) _ hsw).comp (Subalgebra.inclusion hle).toRingHom`. Establish `hy₀ : ∀ a : X.S.R, y₀ a = X.M.val (gPt p ≫ y) a` using `fun _ => rfl`. Establish `hint : ∀ a : X.o₁, ‖y₀ (algebraMap X.o₁ X.S.R a)‖ ≤ 1` using `fun a => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hy₀]`. Conclude with `RatModel.norm_val_le_one hy ((X.M.O z).algebraMap_mem a)`. Take `⟨u, l, τ, hτ, -⟩` from `(hasTests_of_real GlobalTheory.SS.semistableReductionSt hTU hL hL2 hUT X.o₁ X.Ω₁ X.S X.ρ).2 p y₀ ∅ hint`. Establish `hq : ∀ w, 0 ≤ l.q w` using `fun w => by`. Take `⟨e, he, -⟩` from `hτ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `h` using `τ.q_nonneg (e.symm w)`. Rewrite `h` using `[he, AddEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Take `⟨sc, h0, h₁, -, h₃⟩` from `TestVal.exists_scale hL hL2 u l hint`. Establish `hδ` using `(GlobalTheory.UnitTheta.closure_unit_theta hL hL2 hUT _ _ _ X.ρ p y₀ u l hint).1`. Establish `hle' : ∀ a, ‖y₀ ⟨X.S.th a, X.S.th_mem a⟩‖ ≤ sc` using `fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, -, hw⟩` from `h₁ a`. Conclude with `hw.trans (mul_le_of_le_one_right h0 (Real.exp_le_one_iff.2 (neg_nonpos.2 (div_nonneg (hq w) (by positivity)))))`. Establish `hsc : 0 < sc` using `hδ.trans_le (Real.iSup_le hle' h0)`. Take `⟨a, -, ha, hn⟩` from `h₃ k hk hd 0 (zero_mem _)`. Use `⟨a, by simpa using ha, RatModel.Div.of_specializes ?_ hsp⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d, hdv⟩` from `X.div z`. Use `(hdv.div_iff_isUnit a).2 ((RatModel.norm_val_eq_one_iff hy (hdv.2 a)).1 ?_)` and prove the remaining obligations. Establish `hs` using `RatModel.gPt_specializes hy`. Establish `e : ‖y₀ ⟨X.S.th a, X.S.th_mem a⟩‖ = ‖y₀ ⟨X.S.th d, X.S.th_mem d⟩‖ * ‖X.M.val (gPt p ≫ y) (X.S.th a / X.S.th d)‖`. Rewrite using `[hy₀, hy₀, ← norm_mul, ← RatModel.val_mul hsw (hle (X.S.th_mem d)) (RatModel.O_le_of_specializes (hs _) (hdv.2 a))]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `congr 2`. Use `hdv.1` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `b₁` using `RatModel.norm_val_le_one hy (hdv.2 a)`. Establish `b₂` using `hle' d`.
-
-Use `le_antisymm b₁ (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right b₂ (norm_nonneg (X.M.val (gPt p ≫ y) (X.S.th a / X.S.th d)))` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_div_torsion : ∀ (X₁ : GlobalTheory.GSep.GSet) (z : X₁.M.Z) (k : ℕ), 2 ≤ k → k ∣ X₁.S.r * X₁.S.N →
     ∃ a : X₁.S.Gam, k • a = 0 ∧ X₁.M.Div X₁.S.th a z := by

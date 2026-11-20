@@ -7,13 +7,13 @@ namespace FunctorialResolution.Blowup
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[pow_one]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem mem_pow_one (I : Ideal R) {a : R} (ha : a ∈ I) : a ∈ I ^ 1 := by
   rwa [pow_one]
 
 /- English proof (translation)
-Rewrite using `[pow_zero, Ideal.one_eq_top]`. Conclude with `Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_pow_zero (I : Ideal R) (r : R) : r ∈ I ^ 0 := by
   rw [pow_zero, Ideal.one_eq_top]
@@ -24,9 +24,9 @@ noncomputable def reesGrading (I : Ideal R) (n : ℕ) : Submodule R ↥(reesAlge
     (LinearMap.range (Polynomial.monomial (R := R) n))
 
 /- English proof (translation)
-Establish `hmem : p ∈ reesGrading I n ↔ ∃ r : R, Polynomial.monomial n r = (p : R[X])` using `Iff.rfl`. Rewrite using `[hmem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr⟩`. Establish `hp : (p : R[X]).coeff n ∈ I ^ n` using `(mem_reesAlgebra_iff I _).mp p.2 n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hcoef : (Polynomial.monomial n r : R[X]).coeff n = r` using `by simp`. Rewrite `hp` using `[← hr, hcoef]`. Conclude with `⟨r, hp, hr.symm⟩`. Introduce and unpack `⟨r, -, hpr⟩`. Conclude with `⟨r, hpr.symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_reesGrading_iff_monomial (I : Ideal R) (n : ℕ) (p : ↥(reesAlgebra I)) :
     p ∈ reesGrading I n ↔ ∃ r ∈ I ^ n, (p : R[X]) = Polynomial.monomial n r := by
@@ -42,11 +42,11 @@ theorem mem_reesGrading_iff_monomial (I : Ideal R) (n : ℕ) (p : ↥(reesAlgebr
     exact ⟨r, hpr.symm⟩
 
 /- English proof (translation)
-Establish `key : p ∈ reesGrading I n ↔ ∃ r : R, Polynomial.monomial n r = (p : R[X])` using `Iff.rfl`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr⟩ i hi`. Rewrite using `[← hr, Polynomial.coeff_monomial, if_neg (Ne.symm hi)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `⟨(p : R[X]).coeff n, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Break down `eq_or_ne i n with rfl | hi` into its components or cases. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[Polynomial.coeff_monomial, Ne.symm hi, h i hi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_reesGrading_iff_coeff (I : Ideal R) (n : ℕ) (p : ↥(reesAlgebra I)) :
     p ∈ reesGrading I n ↔ ∀ i, i ≠ n → (p : R[X]).coeff i = 0 := by
@@ -63,7 +63,7 @@ theorem mem_reesGrading_iff_coeff (I : Ideal R) (n : ℕ) (p : ↥(reesAlgebra I
     · simp [Polynomial.coeff_monomial, Ne.symm hi, h i hi]
 
 /- English proof (translation)
-Use `show ((1 : ↥(reesAlgebra I)) : R[X]) ∈ LinearMap.range (Polynomial.monomial (R := R) 0)`. Use `LinearMap.mem_range.2 ⟨1, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem reesGrading_one_mem (I : Ideal R) : (1 : ↥(reesAlgebra I)) ∈ reesGrading I 0 := by
   show ((1 : ↥(reesAlgebra I)) : R[X]) ∈ LinearMap.range (Polynomial.monomial (R := R) 0)
@@ -71,9 +71,9 @@ theorem reesGrading_one_mem (I : Ideal R) : (1 : ↥(reesAlgebra I)) ∈ reesGra
   simp
 
 /- English proof (translation)
-Establish `key : ∀ (k : ℕ) (x : ↥(reesAlgebra I)), x ∈ reesGrading I k ↔ ∃ r : R, Polynomial.monomial k r = (x : R[X])` using `fun _ _ => Iff.rfl`. Take `⟨a, ha⟩` from `(key m p).1 hp`. Take `⟨b, hb⟩` from `(key n q).1 hq`. Use `(key (m + n) (p * q)).2 ⟨a * b, ?_⟩` and prove the remaining obligations. Establish `hpq : ((p * q : ↥(reesAlgebra I)) : R[X]) = (p : R[X]) * (q : R[X])` using `rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hpq, ← ha, ← hb, Polynomial.monomial_mul_monomial]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reesGrading_mul_mem (I : Ideal R) {m n : ℕ} {p q : ↥(reesAlgebra I)}
     (hp : p ∈ reesGrading I m) (hq : q ∈ reesGrading I n) :
@@ -92,13 +92,13 @@ instance instGradedMonoidReesGrading (I : Ideal R) : SetLike.GradedMonoid (reesG
   mul_mem := @fun _ _ _ _ hp hq => reesGrading_mul_mem I hp hq
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[Submodule.disjoint_def]`. Introduce `p hp hp'`. Establish `hcoeff : ∀ i, i ≠ n → (p : R[X]).coeff i = 0` using `(mem_reesGrading_iff_coeff I n p).1 hp`. Establish `hker : (⨆ (j : ℕ) (_ : j ≠ n), reesGrading I j) ≤ LinearMap.ker ((Polynomial.lcoeff R n).comp ((reesAlgebra I).val.toLinearMap))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `iSup_le fun j => iSup_le fun hj => ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hx'` using `(mem_reesGrading_iff_coeff I j x).1 hx n (Ne.symm hj)`. Simplify `hx'` using `[LinearMap.mem_ker, Polynomial.lcoeff_apply]`. Establish `hpn : (p : R[X]).coeff n = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `hker hp'`. Simplify `h` using `[LinearMap.mem_ker, Polynomial.lcoeff_apply]`. Establish `hp0 : (p : R[X]) = 0`. Use extensionality with `i`. Break down `eq_or_ne i n with rfl | hi` into its components or cases.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `using hpn`. Simplify using `using hcoeff i hi`. Conclude with `Subtype.ext (by simpa using hp0)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem reesGrading_iSupIndep (I : Ideal R) : iSupIndep (reesGrading I) := by
   intro n
@@ -123,13 +123,13 @@ theorem reesGrading_iSupIndep (I : Ideal R) : iSupIndep (reesGrading I) := by
   exact Subtype.ext (by simpa using hp0)
 
 /- English proof (translation)
-The claim follows from `p.2 i`.
+A detailed English derivation is pending.
 -/
 private theorem coeff_mem_pow (I : Ideal R) (p : ↥(reesAlgebra I)) (i : ℕ) :
     ((p : R[X])).coeff i ∈ I ^ i := p.2 i
 
 /- English proof (translation)
-Use `(mem_reesGrading_iff_coeff I n _).2 fun i hi => ?_` and prove the remaining obligations. Use `show (Polynomial.monomial n r : R[X]).coeff i = 0`. Rewrite using `[Polynomial.coeff_monomial, if_neg (Ne.symm hi)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem monomial_mem_reesGrading (I : Ideal R) {n : ℕ} {r : R} (hr : r ∈ I ^ n) :
     (⟨Polynomial.monomial n r, reesAlgebra.monomial_mem.mpr hr⟩ : ↥(reesAlgebra I))
@@ -139,7 +139,7 @@ private theorem monomial_mem_reesGrading (I : Ideal R) {n : ℕ} {r : R} (hr : r
   rw [Polynomial.coeff_monomial, if_neg (Ne.symm hi)]
 
 /- English proof (translation)
-Use `Submodule.eq_top_iff'.2 fun p => ?_` and prove the remaining obligations. Establish `hval : ∀ x y : ↥(reesAlgebra I), (reesAlgebra I).val x = (reesAlgebra I).val y → x = y` using `fun _ _ h => Subtype.ext h`. Establish `hsum : p = ∑ i ∈ (p : R[X]).support, (⟨Polynomial.monomial i ((p : R[X]).coeff i), reesAlgebra.monomial_mem.mpr (coeff_mem_pow I p i)⟩ : ↥(reesAlgebra I))` using `hval _ _ (by rw [map_sum]; exact Polynomial.as_sum_support _)`. Rewrite using `[hsum]`. Conclude with `sum_mem fun i _ => Submodule.mem_iSup_of_mem i (monomial_mem_reesGrading I (coeff_mem_pow I p i))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reesGrading_iSup_eq_top (I : Ideal R) : (⨆ n : ℕ, reesGrading I n) = ⊤ := by
   refine Submodule.eq_top_iff'.2 fun p => ?_
@@ -154,7 +154,7 @@ theorem reesGrading_iSup_eq_top (I : Ideal R) : (⨆ n : ℕ, reesGrading I n) =
     (monomial_mem_reesGrading I (coeff_mem_pow I p i))
 
 /- English proof (translation)
-Conclude with `(DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top (reesGrading I)).2 ⟨reesGrading_iSupIndep I, reesGrading_iSup_eq_top I⟩`.
+A detailed English derivation is pending.
 -/
 theorem reesGrading_isInternal (I : Ideal R) : DirectSum.IsInternal (reesGrading I) := by
   exact (DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top (reesGrading I)).2
@@ -165,7 +165,7 @@ private noncomputable def directSumReesGradingEquiv (I : Ideal R) :
   Equiv.ofBijective (DirectSum.coeAddMonoidHom (reesGrading I)) (reesGrading_isInternal I)
 
 /- English proof (translation)
-Introduce `x` and use `(directSumReesGradingEquiv I).apply_symm_apply x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem leftInverse_coeAddMonoidHom_reesGrading (I : Ideal R) :
     Function.LeftInverse (DirectSum.coeAddMonoidHom (reesGrading I))
@@ -173,7 +173,7 @@ private theorem leftInverse_coeAddMonoidHom_reesGrading (I : Ideal R) :
   fun x => (directSumReesGradingEquiv I).apply_symm_apply x
 
 /- English proof (translation)
-Introduce `x` and use `(directSumReesGradingEquiv I).symm_apply_apply x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem rightInverse_coeAddMonoidHom_reesGrading (I : Ideal R) :
     Function.RightInverse (DirectSum.coeAddMonoidHom (reesGrading I))
@@ -188,7 +188,7 @@ noncomputable instance instGradedAlgebraReesGrading (I : Ideal R) :
   right_inv := rightInverse_coeAddMonoidHom_reesGrading I
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ r (reesGrading_one_mem I)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_reesGrading_zero (I : Ideal R) (r : R) :
     algebraMap R ↥(reesAlgebra I) r ∈ reesGrading I 0 := by
@@ -206,7 +206,7 @@ Both sides reduce to the same expression.
     ((reesMonomial I n r hr : ↥(reesAlgebra I)) : R[X]) = Polynomial.monomial n r := rfl
 
 /- English proof (translation)
-Rewrite using `[mem_reesGrading_iff_monomial]`. Conclude with `⟨r, hr, reesMonomial_coe I n r hr⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem reesMonomial_mem_reesGrading (I : Ideal R) {n : ℕ} {r : R} (hr : r ∈ I ^ n) :
     reesMonomial I n r hr ∈ reesGrading I n := by
@@ -223,7 +223,7 @@ Both sides reduce to the same expression.
     ((reesDegreeOneMonomial I a ha : ↥(reesAlgebra I)) : R[X]) = Polynomial.monomial 1 a := rfl
 
 /- English proof (translation)
-The claim follows from `reesMonomial_mem_reesGrading I (mem_pow_one I ha)`.
+A detailed English derivation is pending.
 -/
 theorem reesDegreeOneMonomial_mem_reesGrading (I : Ideal R) {a : R} (ha : a ∈ I) :
     reesDegreeOneMonomial I a ha ∈ reesGrading I 1 :=
@@ -239,7 +239,7 @@ Both sides reduce to the same expression.
     ((reesGenerator I a : ↥(reesAlgebra I)) : R[X]) = Polynomial.monomial 1 (a : R) := rfl
 
 /- English proof (translation)
-The claim follows from `reesDegreeOneMonomial_mem_reesGrading I a.2`.
+A detailed English derivation is pending.
 -/
 theorem reesGenerator_mem_reesGrading (I : Ideal R) (a : ↥I) : reesGenerator I a ∈ reesGrading I 1 :=
   reesDegreeOneMonomial_mem_reesGrading I a.2
@@ -256,7 +256,7 @@ private theorem reesComponent_coe (I : Ideal R) (p : ↥(reesAlgebra I)) (i : �
       = Polynomial.monomial i ((p : R[X]).coeff i) := rfl
 
 /- English proof (translation)
-Use `(mem_reesGrading_iff_coeff I i _).2 fun j hj => ?_` and prove the remaining obligations. Rewrite using `[reesComponent_coe, Polynomial.coeff_monomial, if_neg (Ne.symm hj)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem reesComponent_mem_reesGrading (I : Ideal R) (p : ↥(reesAlgebra I)) (i : ℕ) :
     reesMonomialOfCoeff I p i ∈ reesGrading I i := by
@@ -264,7 +264,7 @@ private theorem reesComponent_mem_reesGrading (I : Ideal R) (p : ↥(reesAlgebra
   rw [reesComponent_coe, Polynomial.coeff_monomial, if_neg (Ne.symm hj)]
 
 /- English proof (translation)
-Establish `hval : ∀ x y : ↥(reesAlgebra I), (reesAlgebra I).val x = (reesAlgebra I).val y → x = y` using `fun _ _ h => Subtype.ext h`. Conclude with `hval _ _ (by rw [map_sum]; exact Polynomial.as_sum_support _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem eq_sum_reesComponent (I : Ideal R) (p : ↥(reesAlgebra I)) :
     p = ∑ i ∈ (p : R[X]).support, reesMonomialOfCoeff I p i := by
@@ -273,17 +273,15 @@ private theorem eq_sum_reesComponent (I : Ideal R) (p : ↥(reesAlgebra I)) :
   exact hval _ _ (by rw [map_sum]; exact Polynomial.as_sum_support _)
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `r hr x hx`. Establish `hr' : r ∈ I` using `by simpa using hr`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hxe : x = reesGenerator I ⟨r, hr'⟩` using `Subtype.ext (hx.trans rfl)`. Rewrite using `[hxe]`. Conclude with `Ideal.subset_span (Set.mem_range_self _)`. Consider the case `succ n ih`. Introduce `r hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hr` using `[pow_succ]`. Use `Submodule.mul_induction_on' (C := fun s _ => ∀ x : ↥(reesAlgebra I), (x : R[X]) = Polynomial.monomial (n + 1 + 1) s → x ∈ Ideal.span (Set.range (reesGenerator I))) ?_ ?_ hr` and prove the remaining obligations. Introduce `m hm a ha x hx`. Establish `hy : reesMonomial I (n + 1) m hm ∈ Ideal.span (Set.range (reesGenerator I))` using `ih m hm (reesMonomial I (n + 1) m hm) rfl`. Establish `hco : ((reesMonomial I (n + 1) m hm * reesGenerator I ⟨a, ha⟩ : ↥(reesAlgebra I)) : R[X]) = Polynomial.monomial (n + 1 + 1) (m * a)` using `by show (Polynomial.monomial (n + 1) m : R[X]) * Polynomial.monomial 1 a = Polynomial.monomial (n + 1 + 1) (m * a)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.monomial_mul_monomial]`. Establish `hxe : x = reesMonomial I (n + 1) m hm * reesGenerator I ⟨a, ha⟩` using `Subtype.ext (hx.trans hco.symm)`. Rewrite using `[hxe]`. Conclude with `Ideal.mul_mem_right _ _ hy`. Introduce `s hs t ht hs' ht' x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : s ∈ I ^ (n + 1 + 1)` using `by rw [pow_succ]; exact hs`. Establish `htm : t ∈ I ^ (n + 1 + 1)` using `by rw [pow_succ]; exact ht`. Establish `hxe : x = reesMonomial I (n + 1 + 1) s hsm + reesMonomial I (n + 1 + 1) t htm`. Use `Subtype.ext ?_` and prove the remaining obligations. Use `show (x : R[X]) = Polynomial.monomial (n + 1 + 1) s + Polynomial.monomial (n + 1 + 1) t`.
-
-Rewrite using `[hx]`. Conclude with `map_add (Polynomial.monomial (R := R) (n + 1 + 1)) s t`. Rewrite using `[hxe]`. Conclude with `add_mem (hs' _ rfl) (ht' _ rfl)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_span_reesGenerator_of_eq_monomial_succ (I : Ideal R) :
     ∀ (n : ℕ) (r : R), r ∈ I ^ (n + 1) →
@@ -329,19 +327,15 @@ private theorem mem_span_reesGenerator_of_eq_monomial_succ (I : Ideal R) :
       exact add_mem (hs' _ rfl) (ht' _ rfl)
 
 /- English proof (translation)
-Introduce `p hp`. Establish `hp1 : p ∈ HomogeneousIdeal.irrelevant (reesGrading I)` using `hp`. Rewrite `hp1` using `[HomogeneousIdeal.mem_irrelevant_iff]`. Establish `hsum : p = ∑ i ∈ (p : R[X]).support, reesMonomialOfCoeff I p i` using `eq_sum_reesComponent I p`. Establish `hmapsum : (GradedRing.proj (reesGrading I) 0) (∑ i ∈ (p : R[X]).support, reesMonomialOfCoeff I p i) = ∑ i ∈ (p : R[X]).support, (GradedRing.proj (reesGrading I) 0) (reesMonomialOfCoeff I p i)` using `map_sum (GradedRing.proj (reesGrading I) 0) (fun i => reesMonomialOfCoeff I p i) ((p : R[X]).support)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprojsum : ∑ i ∈ (p : R[X]).support, (GradedRing.proj (reesGrading I) 0) (reesMonomialOfCoeff I p i) = 0`. Rewrite using `[← hmapsum, ← hsum]`. Conclude with `hp1`. Establish `hsingle : ∑ i ∈ (p : R[X]).support, (GradedRing.proj (reesGrading I) 0) (reesMonomialOfCoeff I p i) = (GradedRing.proj (reesGrading I) 0) (reesMonomialOfCoeff I p 0)`. Use `Finset.sum_eq_single 0 (fun i _ hi => ?_) (fun h0 => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GradedRing.proj_apply]`. Conclude with `DirectSum.decompose_of_mem_ne (reesGrading I) (reesComponent_mem_reesGrading I p i) hi`. Establish `hc : (p : R[X]).coeff 0 = 0` using `not_not.mp (fun h => h0 (Polynomial.mem_support_iff.mpr h))`. Establish `hz : reesMonomialOfCoeff I p 0 = 0`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Polynomial.monomial 0 ((p : R[X]).coeff 0) = (0 : R[X])`. Rewrite using `[hc, map_zero]`. Rewrite using `[hz, map_zero]`. Establish `hz0 : reesMonomialOfCoeff I p 0 = 0`. Establish `h1 : (GradedRing.proj (reesGrading I) 0) (reesMonomialOfCoeff I p 0) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsingle]`. Conclude with `hprojsum`. Rewrite `h1` using `[GradedRing.proj_apply, DirectSum.decompose_of_mem_same (reesGrading I) (reesComponent_mem_reesGrading I p 0)]`. Conclude with `h1`. Rewrite using `[hsum]`.
-
-Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos i with rfl | hi` into its components or cases. Rewrite using `[hz0]`. Conclude with `zero_mem _`. Take `⟨k, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hi.ne'`.
-
-Conclude with `mem_span_reesGenerator_of_eq_monomial_succ I k ((p : R[X]).coeff (k + 1)) (coeff_mem_pow I p (k + 1)) (reesMonomialOfCoeff I p (k + 1)) (reesComponent_coe I p (k + 1))`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem reesGrading_irrelevant_le_span (I : Ideal R) :
     (HomogeneousIdeal.irrelevant (reesGrading I)).toIdeal ≤
@@ -394,7 +388,7 @@ noncomputable def reesDegreeZeroMonomial (I : Ideal R) (r : R) : ↥(reesGrading
     reesMonomial_mem_reesGrading I (mem_pow_zero I r)⟩
 
 /- English proof (translation)
-Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Use `show (Polynomial.monomial 0 (1 : R) : R[X]) = _`. Conclude with `Polynomial.monomial_zero_one`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem reesDegreeZeroMonomial_one (I : Ideal R) : reesDegreeZeroMonomial I 1 = 1 := by
   refine Subtype.ext (Subtype.ext ?_)
@@ -402,7 +396,7 @@ private theorem reesDegreeZeroMonomial_one (I : Ideal R) : reesDegreeZeroMonomia
   exact Polynomial.monomial_zero_one
 
 /- English proof (translation)
-Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Use `show (Polynomial.monomial 0 (r * s) : R[X]) = (Polynomial.monomial 0 r : R[X]) * (Polynomial.monomial 0 s : R[X])`. Conclude with `(Polynomial.monomial_mul_monomial 0 0 r s).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem reesDegreeZeroMonomial_mul (I : Ideal R) (r s : R) :
     reesDegreeZeroMonomial I (r * s) = reesDegreeZeroMonomial I r * reesDegreeZeroMonomial I s := by
@@ -412,7 +406,7 @@ private theorem reesDegreeZeroMonomial_mul (I : Ideal R) (r s : R) :
   exact (Polynomial.monomial_mul_monomial 0 0 r s).symm
 
 /- English proof (translation)
-Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Use `show (Polynomial.monomial 0 (0 : R) : R[X]) = 0`. Rewrite using `[map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem reesDegreeZeroMonomial_zero (I : Ideal R) : reesDegreeZeroMonomial I 0 = 0 := by
   refine Subtype.ext (Subtype.ext ?_)
@@ -420,7 +414,7 @@ private theorem reesDegreeZeroMonomial_zero (I : Ideal R) : reesDegreeZeroMonomi
   rw [map_zero]
 
 /- English proof (translation)
-Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Use `show (Polynomial.monomial 0 (r + s) : R[X]) = (Polynomial.monomial 0 r : R[X]) + (Polynomial.monomial 0 s : R[X])`. Conclude with `map_add (Polynomial.monomial (R := R) 0) r s`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem reesDegreeZeroMonomial_add (I : Ideal R) (r s : R) :
     reesDegreeZeroMonomial I (r + s) = reesDegreeZeroMonomial I r + reesDegreeZeroMonomial I s := by
@@ -437,7 +431,7 @@ noncomputable def reesDegreeZeroRingHom (I : Ideal R) : R →+* ↥(reesGrading 
   map_add' := reesDegreeZeroMonomial_add I
 
 /- English proof (translation)
-Use `show (Polynomial.monomial 0 r : R[X]) = Polynomial.C r`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 @[simp] theorem reesDegreeZeroRingHom_coe_coe (I : Ideal R) (r : R) :
     ((reesDegreeZeroRingHom I r : ↥(reesAlgebra I)) : R[X]) = Polynomial.C r := by
@@ -445,7 +439,7 @@ Use `show (Polynomial.monomial 0 r : R[X]) = Polynomial.C r`. Simplify using the
   simp
 
 /- English proof (translation)
-Introduce `r s h`. Establish `h1` using `congrArg (fun x : ↥(reesGrading I 0) => ((x : ↥(reesAlgebra I)) : R[X])) h`. Establish `h2 : (Polynomial.monomial 0 r : R[X]) = Polynomial.monomial 0 s` using `h1`. Establish `h3 : (Polynomial.monomial 0 r : R[X]).coeff 0 = (Polynomial.monomial 0 s : R[X]).coeff 0` using `congrArg (fun p : R[X] => p.coeff 0) h2`. Simplify using `using h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem reesDegreeZeroRingHom_injective (I : Ideal R) :
     Function.Injective (reesDegreeZeroRingHom I) := by
@@ -457,9 +451,9 @@ theorem reesDegreeZeroRingHom_injective (I : Ideal R) :
   simpa using h3
 
 /- English proof (translation)
-Introduce and unpack `⟨x, hx⟩`. Establish `hco : ∀ i, i ≠ 0 → ((x : ↥(reesAlgebra I)) : R[X]).coeff i = 0` using `(mem_reesGrading_iff_coeff I 0 x).1 hx`. Use `⟨((x : ↥(reesAlgebra I)) : R[X]).coeff 0, Subtype.ext (Subtype.ext ?_)⟩` and prove the remaining obligations. Use `show (Polynomial.monomial 0 (((x : ↥(reesAlgebra I)) : R[X]).coeff 0) : R[X]) = ((x : ↥(reesAlgebra I)) : R[X])`. Use extensionality with `i`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne i 0 with rfl | hi` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[Polynomial.coeff_monomial, if_neg (Ne.symm hi)]`. Conclude with `(hco i hi).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reesDegreeZeroRingHom_surjective (I : Ideal R) :
     Function.Surjective (reesDegreeZeroRingHom I) := by
@@ -476,7 +470,7 @@ theorem reesDegreeZeroRingHom_surjective (I : Ideal R) :
     exact (hco i hi).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨reesDegreeZeroRingHom_injective I, reesDegreeZeroRingHom_surjective I⟩`.
+Supply the required witnesses or components.
 -/
 theorem reesDegreeZeroRingHom_bijective (I : Ideal R) :
     Function.Bijective (reesDegreeZeroRingHom I) :=
@@ -492,7 +486,7 @@ Both sides reduce to the same expression.
     reesDegreeZeroEquiv I r = reesDegreeZeroRingHom I r := rfl
 
 /- English proof (translation)
-Simplify using `only [reesDegreeZeroEquiv_apply, reesDegreeZeroRingHom_coe_coe]`.
+Simplify using the standard rewrite rules.
 -/
 theorem reesDegreeZeroEquiv_coe_coe (I : Ideal R) (r : R) :
     ((reesDegreeZeroEquiv I r : ↥(reesAlgebra I)) : R[X]) = Polynomial.C r := by

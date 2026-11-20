@@ -26,7 +26,7 @@ def overHom {S X Y : Scheme.{0}} (a : X ⟶ S) (b : Y ⟶ S) (h : X ⟶ Y) (w : 
 
 omit [IsDomain R] in
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma specMap_algebraMap_self (K : Type) [CommRing K] :
     Spec.map (CommRingCat.ofHom (algebraMap K K)) = 𝟙 _ := by
@@ -42,15 +42,15 @@ def specFK : TF (R := R) F ⟶ TF (R := R) (FractionRing R) :=
 def bcB : DegPre.BF D F ⟶ DegPre.BF D (FractionRing R) := specFK (R := R) F ▷ D.P.A
 
 /- English proof (translation)
-Simplify using `[bcB]`.
+Simplify using the standard rewrite rules.
 -/
 lemma bcB_prB : bcB D F ≫ DegPre.prB D (FractionRing R) = DegPre.prB D F := by
   simp [bcB]
 
 /- English proof (translation)
-Establish `hu : ∀ x : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D.P.A, bcB D F ≫ toUnit _ ≫ x = toUnit _ ≫ x` using `fun x => by`. Rewrite using `[← Category.assoc, comp_toUnit]`. Use `fin_cases i`. Conclude with `congrArg (·.left) (bcB_prB D F)`. Establish `: bcB D F ≫ padd D.P.A (DegPre.prB D (FractionRing R)) (toUnit _ ≫ D.c α) = padd D.P.A (DegPre.prB D F) (toUnit _ ≫ D.c α)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `padd`. Rewrite using `[← Category.assoc, comp_lift, bcB_prB, hu]`. Conclude with `congrArg (·.left) this`. Conclude with `congrArg (·.left) (hu (D.c α))`. Conclude with `congrArg (·.left) (hu η[D.P.A])`.
+A detailed English derivation is pending.
 -/
 lemma bcB_famφ (α : D.X) (i : Fin 4) :
     (bcB D F).left ≫ DegPre.famφ D (FractionRing R) α i = DegPre.famφ D F α i := by
@@ -68,7 +68,7 @@ lemma bcB_famφ (α : D.X) (i : Fin 4) :
   · exact congrArg (·.left) (hu η[D.P.A])
 
 /- English proof (translation)
-Introduce `y hy`. Use `Set.mem_iInter.2 fun i => ?_` and prove the remaining obligations. Establish `h1 : (DegPre.famφ D F α i).base y ∈ (D.P.L.U (j i) : Set D.P.A.left)` using `Set.mem_iInter.1 hy i`. Rewrite `h1` using `[← bcB_famφ D F α i]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma chart_le_bcB (α : D.X) (j : Fin 4 → D.P.L.ι) :
     LB.wchart D.P.L (DegPre.famφ D F α) j ≤
@@ -116,7 +116,7 @@ def toGK (U : UnifPre I D A G) : AF F A ⟶ pullback G.hom (jK R) :=
   (snd (TFK (R := R) F) A.A ≫ U.gen.inv).left
 
 /- English proof (translation)
-Establish `: (snd (TFK (R` using `R) F) A.A ≫ U.gen.inv) ≫ U.gen.hom = snd (TFK (R := R) F) A.A := by`. Simplify using the standard rewrite rules. Conclude with `congrArg (·.left) this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma toGK_gen (U : UnifPre I D A G) :
     toGK F U ≫ U.gen.hom.left = (snd (TFK (R := R) F) A.A).left := by
@@ -129,7 +129,7 @@ abbrev cmpW (U : UnifPre I D A G) (a : U.LG.L.ι) (b : A.L.ι) : (AF F A).Opens 
     (A.L.pull U.gen.hom.left).U (fun _ => b))
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h1 : (toGK F U ≫ U.gen.hom.left).base y ∈ (A.L.U b : Set A.A.left)` using `Set.mem_iInter.1 hy.2 PUnit.unit`. Rewrite `h1` using `[toGK_gen]`. Conclude with `Set.mem_iInter.2 fun _ => h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma cmpW_le_L (U : UnifPre I D A G) (k : ℕ) (a : U.LG.L.ι) (b : A.L.ι) :
     cmpW F U a b ≤ (LPow A.A A.L (k : ℤ) (TFK (R := R) F)).U (fun _ => b) := by
@@ -140,7 +140,7 @@ lemma cmpW_le_L (U : UnifPre I D A G) (k : ℕ) (a : U.LG.L.ι) (b : A.L.ι) :
   exact Set.mem_iInter.2 fun _ => h1
 
 /- English proof (translation)
-Introduce `y hy`. Conclude with `Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy.1 PUnit.unit`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma cmpW_le_LG (U : UnifPre I D A G) (a : U.LG.L.ι) (b : A.L.ι) :
     cmpW F U a b ≤ toGK F U ⁻¹ᵁ
@@ -170,7 +170,7 @@ def IsTheImage (U : Unif I D A G) (k : ℕ) (p : QkPt D.toPre F k)
     QkToAk D.toPre F A k (ExpandsF F U.toUnifPre w k) p x
 
 /- English proof (translation)
-The claim follows from `let ⟨_, _, h⟩ := h h.1`.
+A detailed English derivation is pending.
 -/
 theorem IsTheImage.torsion {U : Unif I D A G} {k : ℕ} {p : QkPt D.toPre F k}
     {x : TFK (R := R) F ⟶ A.A} (h : IsTheImage F U k p x) : x ^ k = 1 :=
@@ -178,7 +178,7 @@ theorem IsTheImage.torsion {U : Unif I D A G} {k : ℕ} {p : QkPt D.toPre F k}
   h.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hk, Classical.arbitrary _, h _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTheImage_of_forall {U : Unif I D A G} {k : ℕ} (hk : 1 ≤ k) {p : QkPt D.toPre F k}
     {x : TFK (R := R) F ⟶ A.A}

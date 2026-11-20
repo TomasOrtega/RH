@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base
 
 /- English proof (translation)
-Introduce `k E Ω _ _ _ _ _ _ _ _ _ _ _ _`. Establish `hN : Normal k Ω` using `IsAlgClosure.normal k Ω`. Establish `hc : ∀ (σ : G k Ω) (x : E), σ (algebraMap E Ω x) = algebraMap E Ω (AlgEquiv.restrictNormalHom E σ x)`. Introduce `σ x`. Conclude with `(AlgEquiv.restrictNormal_commutes σ E x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨AlgEquiv.restrictNormalHom_surjective Ω, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `σ`. Rewrite using `[MonoidHom.mem_ker]`. Express the relevant statement in the definitionally equal form `_ ↔ ∀ x : E, σ (algebraMap E Ω x) = algebraMap E Ω x`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h x`. Rewrite using `[hc, h]`. Both sides reduce to the same expression. Introduce `h`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(algebraMap E Ω).injective` to reduce the goal to its premises. Rewrite using `[← hc, h]`. Both sides reduce to the same expression. Introduce `σ x`. Conclude with `hc σ x`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.galQuot :
     ∀ (k E Ω : Type) [Field k] [NumberField k] [Field E] [NumberField E] [Field Ω] [Algebra k E] [Algebra k Ω] [Algebra E Ω]

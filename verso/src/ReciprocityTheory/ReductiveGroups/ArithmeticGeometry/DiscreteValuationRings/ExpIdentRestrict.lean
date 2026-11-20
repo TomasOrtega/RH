@@ -43,11 +43,9 @@ def ExpIdent (U : UnifPre I D A G) (e k : ℕ)
           (res (U.expWeight_le_chart_weight e p j₁ jf jt α.2) (((U.gt e).t α.1).s (jt α.1))).val
 
 /- English proof (translation)
-Use `set g : X → β := fun α => if h : α ∈ S' then T ⟨α, h⟩ else 0 with hg`. Establish `h1 : ∑ α ∈ S'.attach, T α = ∑ α ∈ S', g α`. Rewrite using `[← Finset.sum_attach S' g]`. Conclude with `Finset.sum_congr rfl fun α _ => by simp only [hg, dif_pos α.2]`. Establish `h2 : ∑ α ∈ S.attach, T ⟨α.1, hSS α.2⟩ = ∑ α ∈ S, g α`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_attach S g]`. Conclude with `Finset.sum_congr rfl fun α _ => by simp only [hg, dif_pos (hSS α.2)]`. Rewrite using `[h1, h2]`. Conclude with `(Finset.sum_subset hSS fun α hα' hα => by`. Simplify using `only [hg, dif_pos hα']`.
-
-Conclude with `h0 ⟨α, hα'⟩ hα).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma sum_attach_mono {X β : Type} [AddCommMonoid β] {S S' : Finset X} (hSS : S ⊆ S')
     (T : S' → β) (h0 : ∀ α : S', α.1 ∉ S → T α = 0) :
@@ -66,13 +64,13 @@ lemma sum_attach_mono {X β : Type} [AddCommMonoid β] {S S' : Finset X} (hSS : 
     exact h0 ⟨α, hα'⟩ hα).symm
 
 /- English proof (translation)
-Introduce `p j₁ jf jt hj hcoh'`. Use `set m : PUnit.{1} ⊕ ((S × Fin 4) ⊕ (S × Fin 4)) → PUnit.{1} ⊕ ((S' × Fin 4) ⊕ (S' × Fin 4)) := Sum.map id (Sum.map (fun a => (⟨a.1.1, hSS a.1.2⟩, a.2)) (fun a => (⟨a.1.1, hSS a.1.2⟩, a.2))) with hm`. Establish `hcoh : CohAll D.toPre.P.L (Sum.elim (fun _ : PUnit.{1} => (U.gt e).pG.left) (Sum.elim (fun a : S × Fin 4 => (U.gt e).pG.left ≫ D.toPre.famφB a.1.1 a.2) (fun a : S × Fin 4 => D.toPre.Oφ (U.gt e).pG a.1.1 a.2))) (Sum.elim (fun _ => p.1 PUnit.unit) (Sum.elim (fun a : S × Fin 4 => jf …`. Introduce `a b hab`. Establish `h1` using `hcoh' (m a) (m b) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases a with a | a | a <;> rcases b with b | b | b <;> exact hab)`. Apply the tactic sequence `rcases a with a | a | a <;> rcases b with b | b | b <;> exact h1`. Establish `hS` using `h p j₁ jf jt hj hcoh`. Establish `hle : U.expW e p j₁ S' jf jt ≤ U.expW e p j₁ S jf jt` using `inf_le_inf_left _ (Finset.inf_mono hSS)`. Establish `key` using `congrArg (rs hle) hS`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [rs, res, Units.coe_map, MonoidHom.coe_coe, map_mul, map_pow, map_sum] at key`. Rewrite using `[sum_attach_mono hSS _ (fun α hα => by`. Establish `h0` using `hvan α.1 hα (jf α.1)`. Use `erw [h0, map_zero, zero_mul])]`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [← CommRingCat.comp_apply, ← Functor.map_comp] at key`. Use `key using 4` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first | rfl | exact Subsingleton.elim _ _ | skip`. Apply the tactic sequence `all_goals (erw [Units.coe_map, Units.coe_map]; exact (rs_rs _ hle _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem expIdent_mono (U : UnifPre I D A G) (e k : ℕ)
     (σ : LB.Sec (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (k : ℤ))))
@@ -109,14 +107,14 @@ theorem expIdent_mono (U : UnifPre I D A G) (e k : ℕ)
   all_goals (erw [Units.coe_map, Units.coe_map]; exact (rs_rs _ hle _).symm)
 
 /- English proof (translation)
-The claim follows from `rs_rs h h' x`.
+A detailed English derivation is pending.
 -/
 lemma map_map_hom {Z : Scheme.{0}} {U W V : Z.Opens} (h : W ≤ U) (h' : V ≤ W) (x : Γ(Z, U)) :
     (Z.presheaf.map (homOfLE h').op).hom ((Z.presheaf.map (homOfLE h).op).hom x) =
       (Z.presheaf.map (homOfLE (h'.trans h)).op).hom x := rs_rs h h' x
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_attach S (fun x => if h : x ∈ S then g ⟨x, h⟩ else 0)]`. Conclude with `Finset.sum_congr rfl fun x _ => by simp only [dif_pos x.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sum_attach_dite {X β : Type} [DecidableEq X] [AddCommMonoid β] (S : Finset X) (g : S → β) :
     ∑ x ∈ S.attach, g x = ∑ x ∈ S, (if h : x ∈ S then g ⟨x, h⟩ else 0) := by
@@ -124,9 +122,9 @@ lemma sum_attach_dite {X β : Type} [DecidableEq X] [AddCommMonoid β] (S : Fins
   exact Finset.sum_congr rfl fun x _ => by simp only [dif_pos x.2]
 
 /- English proof (translation)
-Establish `key` using `congrArg (rs hO) (h p j₁ jf jt hj hcoh)`. Simplify using `only [rs, res, Units.coe_map, MonoidHom.coe_coe, map_mul, map_pow, map_sum, map_map_hom] at key`. Rewrite `key` using `[sum_attach_dite]`. Use `key.trans (Finset.sum_congr rfl fun α hα => ?_)` and prove the remaining obligations. Simplify using `only [dif_pos hα]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `erw [Units.coe_map, map_map_hom]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem expIdent_restrict [DecidableEq D.toPre.X] (U : UnifPre I D A G) (e k : ℕ)
     (σ : LB.Sec (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (k : ℤ))))
@@ -155,7 +153,7 @@ theorem expIdent_restrict [DecidableEq D.toPre.X] (U : UnifPre I D A G) (e k : �
   rfl
 
 /- English proof (translation)
-Establish `key` using `expIdent_restrict U e k σ f S h p j₁ jf jt hj hcoh (le_refl _)`. Establish `key2` using `congrArg (fun x => rs hO ((hh.app _).hom x)) key`. Simplify using `only [map_mul, map_pow, map_sum] at key2`. Use `key2.trans (Finset.sum_congr rfl fun α hα => ?_)` and prove the remaining obligations. Simplify using `only [dif_pos hα, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem expIdent_pull [DecidableEq D.toPre.X] (U : UnifPre I D A G) (e k : ℕ)
     (σ : LB.Sec (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (k : ℤ))))

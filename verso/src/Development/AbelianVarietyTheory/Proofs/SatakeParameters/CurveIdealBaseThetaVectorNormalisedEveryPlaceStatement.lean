@@ -10,7 +10,7 @@ open Formalism.L2.Th1.E (IntCurve curveL Unif)
 open Formalism.DworkPowerSeriesWeights (JetsIntegral)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ThLoc.LocMM.locNormMM` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FCurveIdealBaseThetaVectorNormalisedEveryPlace.lean&line=114#L114)
 -/

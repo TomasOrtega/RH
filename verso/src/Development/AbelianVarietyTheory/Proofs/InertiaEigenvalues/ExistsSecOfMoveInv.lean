@@ -21,33 +21,29 @@ def MoveInv (d : DeltaDat Xo c n) (G : Rul d.Xo₂ d.c₂) : Prop :=
       evR d.Xo₂ d.c₂ G y' = evR d.Xo₂ d.c₂ G y
 
 /- English proof (translation)
-Establish `hL : Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `hN` using `GlobalTheory.LevelMapsAnyRank.levelMaps Dw`. Establish `hWD` using `(GlobalTheory.Frames.algebraic_laws hL.secBaseChange E H Dw d.l₂ d.Xo₂ d.c₂).2.2.1`. Establish `hAT` using `GlobalTheory.Frames.allTest_of_secBaseChange hL.secBaseChange E H Dw d.l₂ d.Xo₂ d.c₂`. Use `haveI : _root_.IsReduced p.R := (Ideal.isRadical_iff_quotient_reduced p.I).1 p.rad`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbc` using `GlobalTheory.FramedBaseChange.exists_frMap hL E H Dw l Xo c`. Establish `hbc₂` using `GlobalTheory.FramedBaseChange.exists_frMap hL E H Dw d.l₂ d.Xo₂ d.c₂`. Establish `hcomp` using `(GlobalTheory.framedPoint_baseChange_laws E H Dw l Xo c).2.1`. Take `⟨hdvd, hM, -, -, -, hE, hlift, -, -⟩` from `id hlev`. Take `⟨r, jK, m, -, -, he, heA, -, hF⟩` from `hN l d.l₂ Xo d.Xo₂ hdvd`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨rF, h1, h2, _, _, _, -⟩` from `hF c d.c₂ d.hF.symm`. Establish `hEta : DeltaDat.EtaOK { d with r` using `r, m := m } := by`. Use `⟨fun b => ?_, heA⟩` and prove the remaining obligations. Use `he b` as an intermediate fact. Rewrite `this` using `[hM, Nat.mul_div_cancel_left _ (by have := l.three_le; omega)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨hov1, hov2, -⟩` from `GlobalTheory.T.framedPoints_lift_to_levelCover hL E H Dw l Xo c n { d with r := r, m := m }`. Take `⟨S, _, φ, j, x₂, f1, f2, f3, hj, hx, hx'⟩` from `exists_cover_point d.hF.symm r rF h1 h2 p.R y.x y.x_over`. Use `letI : Algebra p.R S := φ.toAlgebra`. Use `letI : Algebra c.F S := (φ.comp (algebraMap c.F p.R)).toAlgebra`. Use `letI : Algebra d.c₂.F S := j.toAlgebra`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : Module.Finite p.R S := f1`. Use `haveI : Algebra.Smooth p.R S := f2`. Use `haveI : Module.FaithfullyFlat p.R S := f3`. Use `haveI := isReduced_of_smooth_algebra p.R S`. Establish `hS : ∀ a : c.F, algebraMap d.c₂.F S (d.eF a) = algebraMap c.F S a` using `fun a => RingHom.congr_fun hj a`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `φa : p.R →ₐ[c.F] S` to `{ φ with commutes' := fun _ => rfl }`. Take `⟨y', hy'⟩` from `hbc p.R S φa y`. Take `⟨y₂, -, hy₂⟩` from `hov1 S hS y' x₂ (hx.trans hy'.1.symm) hx'`. Establish `core : ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra c.F k] [Algebra d.c₂.F k], (∀ a : c.F, algebraMap d.c₂.F k (d.eF a) = algebraMap c.F k a) → ∀ (χ : p.R →ₐ[c.F] k) (χ' : S →+* k), χ'.comp φ = χ.toRingHom → ∀ (z : FrPt Xo c k) (z₂ : FrPt d.Xo₂ d.c₂ k), FrMap χ y z → FrOver d …`. Introduce `k _ _ _ _ hk χ χ' hχ z z₂ hz hz₂`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `c1 : ∀ a : c.F, χ' (algebraMap c.F S a) = algebraMap c.F k a` using `fun a => (RingHom.congr_fun hχ (algebraMap c.F p.R a)).trans (χ.commutes a)`. Set `ψ : S →ₐ[c.F] k` to `{ χ' with commutes' := c1 }`. Set `ψ₂ : S →ₐ[d.c₂.F] k` to `{ χ' with commutes' := fun b => by`. Take `⟨a, rfl⟩` from `d.eF.surjective b`. Conclude with `(congrArg χ' (hS a)).trans ((c1 a).trans (hk a).symm) }`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hψ : ψ.comp φa = χ` using `AlgHom.ext fun x => RingHom.congr_fun hχ x`. Establish `hz' : FrMap ψ y' z` using `(hcomp _ _ _ φa ψ y y' z hy').2 (by rw [hψ]; exact hz)`. Take `⟨w₂, hw₂⟩` from `hbc₂ S k ψ₂ y₂`. Establish `hw'` using `hov2 S hS k hk ψ ψ₂ rfl y' y₂ z w₂ hy₂ hz' hw₂`. Take `⟨g, ρ, ν, hg, hρ, hmv, hfr⟩` from `GlobalTheory.exists_levMove_of_frOver hL E H Dw l Xo c n d hN hdvd hM hE r m hEta k hk z z₂ w₂ hz₂ hw'`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Rewrite using `[← hinv g ρ ν hg hρ hmv k z₂ w₂ hfr, evR_baseChange hWD hAT G hG ψ₂ y₂ w₂ hw₂]`. Both sides reduce to the same expression. Establish `pts : ∀ (k : Type) [Field k] [IsAlgClosed k] (χ : p.R →+* k), ∃ (_ : Algebra c.F k) (_ : Algebra d.c₂.F k) (χa : p.R →ₐ[c.F] k) (z : FrPt Xo c k) (z₂ : FrPt d.Xo₂ d.c₂ k), (∀ a : c.F, algebraMap d.c₂.F k (d.eF a) = algebraMap c.F k a) ∧ χa.toRingHom = χ ∧ FrMap χa y z ∧ FrOver d …`. Introduce `k _ _ χ`. Use `letI i1 : Algebra c.F k := (χ.comp (algebraMap c.F p.R)).toAlgebra`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `letI i2 : Algebra d.c₂.F k := ((algebraMap c.F k).comp d.eF.symm.toRingEquiv.toRingHom).toAlgebra`. Establish `hk : ∀ a : c.F, algebraMap d.c₂.F k (d.eF a) = algebraMap c.F k a` using `fun a => congrArg (algebraMap c.F k) (d.eF.symm_apply_apply a)`. Set `χa : p.R →ₐ[c.F] k` to `{ χ with commutes' := fun _ => rfl }`. Take `⟨z, hz⟩` from `hbc p.R k χa y`. Take `⟨z₂, hz₂⟩` from `hlift k hk z`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨i1, i2, χa, z, z₂, hk, rfl, hz, hz₂⟩`. Take `⟨u, hu⟩` from `exists_preimage_of_geometric p.R S (evR d.Xo₂ d.c₂ G y₂) (by`. Introduce `k _ _ χ₁ χ₂ h12`. Take `⟨_, _, χa, z, z₂, hk, hχ, hz, hz₂⟩` from `pts k (χ₁.comp φ)`. Conclude with `(core k hk χa χ₁ hχ.symm z z₂ hz hz₂).trans (core k hk χa χ₂ (h12.symm.trans hχ.symm) z z₂ hz hz₂).symm)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `ExistsUnique.intro u ?_ ?_` and prove the remaining obligations. Introduce `k _ _ _ _ hk χ z z₂ hz hz₂`. Take `⟨χ', hχ'⟩` from `exists_lift_geometric p.R S k χ.toRingHom`. Rewrite using `[← core k hk χ χ' hχ' z z₂ hz hz₂, ← hu]`. Conclude with `(RingHom.congr_fun hχ' u).symm`.
-
-Introduce `u' hu'`. Use `eq_of_geometric_points _ _ fun k _ _ χ => ?_` and prove the remaining obligations. Take `⟨_, _, χa, z, z₂, hk, hχ, hz, hz₂⟩` from `pts k χ`. Take `⟨χ', hχ'⟩` from `exists_lift_geometric p.R S k χ`. Substitute `hχ` using the available equality.
-
-Establish `e` using `core k hk χa χ' hχ' z z₂ hz hz₂`. Rewrite `e` using `[← hu]`. Conclude with `(hu' k hk χa z z₂ hz hz₂).trans (e.symm.trans (RingHom.congr_fun hχ' u))`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value_descends (d : DeltaDat Xo c n) (hlev : d.IsLev) (G : Rul d.Xo₂ d.c₂)
     (hG : IsNatural (K := d.c₂.F) (fun S _ _ => FrPt d.Xo₂ d.c₂ S) (fun φ y z => FrMap φ y z) G) (hinv : MoveInv d G)
@@ -141,7 +137,7 @@ theorem value_descends (d : DeltaDat Xo c n) (hlev : d.IsLev) (G : Rul d.Xo₂ d
     exact (hu' k hk χa z z₂ hz hz₂).trans (e.symm.trans (RingHom.congr_fun hχ' u))
 
 /- English proof (translation)
-Establish `hAT` using `GlobalTheory.Frames.allTest_of_secBaseChange GlobalTheory.firstFiveLaws.1.secBaseChange E H Dw l Xo c`. Conclude with `(GlobalTheory.borDesc_and_wtField E H Dw l Xo c).2 a n f hf k t y y' (hAT k y) (hAT k y') h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem evR_frBor {a : (E →+* ℂ) × ℕ → ℕ} {f : Rul Xo c} (hf : f ∈ sec Xo c a n) {k : Type} [Field k] [Algebra c.F k]
     {t : Ix Dw → kˣ} {y y' : FrPt Xo c k} (h : FrBor t y y') :
@@ -152,15 +148,13 @@ theorem evR_frBor {a : (E →+* ℂ) × ℕ → ℕ} {f : Rul Xo c} (hf : f ∈ 
 open GlobalTheory.ShortDescent in
 
 /- English proof (translation)
-Establish `hL : Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `hAll` using `GlobalTheory.Frames.allTest_of_secBaseChange hL.secBaseChange E H Dw l Xo c`. Establish `hd` using `value_descends d hlev G hG.1 hinv`. Take `⟨hlift, -, hbor⟩` from `GlobalTheory.T.framedPoints_lift_to_levelCover hL E H Dw l Xo c n d`. Use `⟨fun p y => (hd p y).exists.choose, ⟨fun p q φ y z h => ?_, fun p t y y' h => ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hd q z).unique (hd q z).exists.choose_spec ?_` and prove the remaining obligations. Introduce `k _ _ _ _ hk χ w w₂ hw ho`. Conclude with `(hd p y).exists.choose_spec k hk (χ.comp φ) w w₂ (GlobalTheory.FramedBaseChange.trans φ χ h hw) ho`. Use `(hd p y').unique (hd p y').exists.choose_spec ?_` and prove the remaining obligations. Introduce `k _ _ _ _ hk χ w' w₂' hw' ho'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `GlobalTheory.FramedBaseChange.exists_frMap hL E H Dw l Xo c p.R k χ y`. Establish `hb` using `frBorBC _ _ χ t y y' w w' h hw hw'`. Take `⟨w₂, hx₂, ho⟩` from `hlift k hk w w₂'.x (ho'.1.trans hb.1) w₂'.x_over`. Establish `hb₂` using `hbor k hk _ w w' w₂ w₂' ho ho' hx₂.symm hb`. Establish `e` using `(hd p y).exists.choose_spec k hk χ w w₂ hw ho`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[evR_frBor hG hb₂, map_mul, map_wchar]`. Conclude with `congrArg (_ * ·) e`. Introduce `k _ _ _ _ hk y y₂ ho`. Establish `hy` using `hAll k y`. Use `conv_lhs => unfold evR evalAt`.
-
-Rewrite using `[dif_pos hy]`. Conclude with `(hd _ _).exists.choose_spec k hk _ y y₂ hy.choose_spec.choose_spec.choose_spec ho`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_of_moveInv (d : DeltaDat Xo c n) (hlev : d.IsLev) {a : (E →+* ℂ) × ℕ → ℕ} {n' : ℕ}
     (G : Rul d.Xo₂ d.c₂) (hG : G ∈ sec d.Xo₂ d.c₂ a n') (hinv : MoveInv d G) :
@@ -191,11 +185,9 @@ theorem exists_sec_of_moveInv (d : DeltaDat Xo c n) (hlev : d.IsLev) {a : (E →
     exact (hd _ _).exists.choose_spec k hk _ y y₂ hy.choose_spec.choose_spec.choose_spec ho
 
 /- English proof (translation)
-Establish `hL : Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `hC` using `GlobalTheory.chartIndependence_unconditional`. Establish `hAll` using `GlobalTheory.Frames.allTest_of_secBaseChange hL.secBaseChange E H Dw l Xo c`. Take `⟨hex, hnat⟩` from `GlobalTheory.shortThetaValue_existsUnique_natural hL hC E H Dw l Xo c nab hnab n Λ N hU hT hO a P hP w β`. Use `⟨fun p y => (hex p.R y).exists.choose, ⟨fun p q φ y z h => ?_, fun p t y y' h => ?_⟩, fun k _ _ y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hnat _ _ φ y z h _ _ (hex p.R y).exists.choose_spec (hex q.R z).exists.choose_spec).symm`. Conclude with `(hex p.R y').unique (hex p.R y').exists.choose_spec ((GlobalTheory.thetaValue_weight hL hC E H Dw l Xo c nab hnab p.R y y' t h n a P).2 hP _ Λ _ N _ (hex p.R y).exists.choose_spec)`. Establish `hy` using `hAll k y`. Take `⟨v, hv, -⟩` from `hex k y`. Unfold `evR evalAt`.
-
-Rewrite using `[dif_pos hy, hnat _ _ _ _ y hy.choose_spec.choose_spec.choose_spec _ v (hex _ _).exists.choose_spec hv]`. Conclude with `hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_theta [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo c nab) (Λ : GenLat E n) (N : ℕ)
     (hU : Λ.Unimod) (hT : Λ.TrivAt l.M) (hO : Λ.LevOK N l.M) (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F)
@@ -219,9 +211,9 @@ theorem exists_sec_theta [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo 
     exact hv
 
 /- English proof (translation)
-Distinguish the cases in `h0 : P = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[hP.totalDegree h0, finsum_eq_sum_of_fintype, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm, ← Finset.sum_subset hs fun mo _ hmo => by simp [MvPolynomial.notMem_support_iff.1 hmo], Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun mo _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, map_mul _ (w q)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem formula_eq {V F S Qt J : Type} [Field F] [CommRing S] [Algebra F S] [Fintype Qt] [Fintype J]
     (k N : F) (w : Qt → F) (G : Qt → J → (V →₀ ℕ) → S) (d : ℕ) (P : MvPolynomial V F) (hP : P.IsHomogeneous d)
@@ -241,13 +233,13 @@ theorem formula_eq {V F S Qt J : Type} [Field F] [CommRing S] [Algebra F S] [Fin
   ring
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty T with hT0 | ⟨⟨t₀⟩⟩` into its components or cases. Simplify using the standard rewrite rules. Use `haveI := ShortValue.finite_levelQuotient Dw l`. Use `haveI := Fintype.ofFinite (Fin n → LevQ Dw l)`. Take `⟨S', _, _, φ, y', z, tp, F, hf, hm, hz, hg, ht, hF, -⟩` from `hv t₀`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hid : (AlgHom.id c.F S').toRingHom.FaithfullyFlat` using `RingHom.FaithfullyFlat.of_bijective Function.bijective_id`. Establish `hu` using `fun t w₀ v₀ hv₀ => ((shortThetaValue_existsUnique_natural GlobalTheory.firstFiveLaws.1 GlobalTheory.chartIndependence_unconditional E H Dw l Xo c nab hnab n Λ N hU hT hO a (P t) (hP t) w₀ β).2 S S' φ y y' hm v₀ _ hv₀ ⟨S', _, _, AlgHom.id c.F S', y', z, tp, F, hid, Frames.frMapUni …`. Apply `hf.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ _ = φ _`. Simplify using `only [map_sum, map_mul φ, hu _ _ _ (hv _), hu _ _ _ (hv' _), Finset.mul_sum _ _ (φ _)]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm, Finset.sum_comm (s := (Finset.univ : Finset T))]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, Finset.sum_comm (s := (Finset.univ : Finset T))]`. Use `Finset.sum_congr rfl fun mo _ => ?_` and prove the remaining obligations. Establish `e` using `congrArg φ (h q mo)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_mul φ, φ.commutes] at e`. Simplify using `only [← _root_.mul_assoc (φ _), ← Finset.sum_mul, e]`.
+A detailed English derivation is pending.
 -/
 theorem sum_values_eq [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo c nab) (Λ : GenLat E n) (N : ℕ)
     (hU : Λ.Unimod) (hT : Λ.TrivAt l.M) (hO : Λ.LevOK N l.M) (a : (E →+* ℂ) × ℕ → ℕ) {T : Type} [Fintype T]
@@ -295,7 +287,7 @@ def SumInv (d : DeltaDat Xo c n) {T : Type} [Fintype T] (cs : T → Rul d.Xo₂ 
       ∑ t, evR d.Xo₂ d.c₂ (cs t) y * algebraMap d.c₂.F k (d.eF (w t q * (P t).coeff mo))
 
 /- English proof (translation)
-Set `ev : Rul Xo c →+ S` to `{ toFun := fun f => evR Xo c f y map_zero' := evalAt_zero _ _ y map_add' := fun f f' => evalAt_add _ _ f f' y }`. Conclude with `(map_sum ev _ _).trans (Finset.sum_congr rfl fun t _ => evalAt_mul _ _ _ _ y)`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem evR_sum_mul {T : Type} [Fintype T] (f g : T → Rul Xo c) {S : Type} [CommRing S] [Algebra c.F S]
     (y : FrPt Xo c S) : evR Xo c (∑ t, f t * g t) y = ∑ t, evR Xo c (f t) y * evR Xo c (g t) y := by
@@ -306,13 +298,13 @@ theorem evR_sum_mul {T : Type} [Fintype T] (f g : T → Rul Xo c) {S : Type} [Co
   exact (map_sum ev _ _).trans (Finset.sum_congr rfl fun t _ => evalAt_mul _ _ _ _ y)
 
 /- English proof (translation)
-Establish `hP₂` using `fun t => (GlobalTheory.admissible_columns_le_and_harmonic_map_cover E H Dw l Xo c n d).2 a _ (hP t)`. Use `choose th hth hval using fun t => exists_sec_theta d.nab₂ hnab Λ N hU hT hO a _ (hP₂ t) (fun q => d.eF (w t q)) 1`. Establish `hG : ∑ t, cs t * th t ∈ sec d.Xo₂ d.c₂ a n` using `Submodule.sum_mem _ fun t _ => by`. Simplify using `using sec_mul d.Xo₂ d.c₂ 0 a 0 n (hcs t) (hth t)`. Take `⟨f, hf, hev⟩` from `exists_sec_of_moveInv d hlev _ hG (by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s ρ ν hs hρ hmv k _ _ _ y y' hfr`. Establish `hM₂ : 0 < d.l₂.M` using `by have := d.l₂.three_le; omega`. Establish `hmb : ((d.l₂.M : ℕ) : 𝓞 E) ∈ d.l₂.Mb`. Use `(Ideal.mul_le_inf.trans inf_le_left : d.l₂.Mb * d.l₂.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) ≤ _) ?_` and prove the remaining obligations. Rewrite using `[d.l₂.prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mem_span_singleton_self _`. Take `⟨g', hg'⟩` from `s.inv d.l₂.M hM₂`. Take `⟨σ, hσ⟩` from `GlobalTheory.DatumInverseCharacter.exists_quot_equiv Dw hmb _ g' hg'`. Rewrite using `[evR_sum_mul, evR_sum_mul]`. Use `sum_values_eq d.nab₂ hnab Λ N hU hT hO a _ hP₂ (fun t q => d.eF (w t q)) (fun t q => d.eF (w t fun b => σ.toEquiv.symm (q b))) 1 y _ _ _ _ (fun t => hval t k y) (fun t => GlobalTheory.ShortValMove.shortValAt_move GlobalTheory.firstFiveLaws.1 GlobalTheory.chartIndependence_uncondi …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `hinv s ρ hs hρ σ.toEquiv hσ k y y' hfr.1 q mo`. Simplify using `only [map_mul d.eF] at e`. Simplify using `only [MvPolynomial.coeff_map]`. Conclude with `e)`. Conclude with `⟨f, hf, fun k _ _ _ _ hk y y₂ ho => ⟨_, fun t => hval t k y₂, (hev k hk y y₂ ho).trans (evR_sum_mul _ _ _)⟩⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sec_thetaSum (d : DeltaDat Xo c n) (hlev : d.IsLev) [StarRing (𝓞 E)] (hnab : IsNab d.Xo₂ d.c₂ d.nab₂)
     (Λ : GenLat E n) (N : ℕ) (hU : Λ.Unimod) (hT : Λ.TrivAt d.l₂.M) (hO : Λ.LevOK N d.l₂.M) (a : (E →+* ℂ) × ℕ → ℕ)

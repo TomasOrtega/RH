@@ -10,11 +10,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.projective_def'.1 (inferInstance : Module.Projective O P)`. Establish `hs' : ∀ x, Finsupp.linearCombination O (id : P → P) (s x) = x` using `fun x => LinearMap.congr_fun hs x`. Establish `h0 : s z = 0`. Use extensionality with `i`. Establish `h1 : n • s z = 0` using `by rw [← map_zsmul, h, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h2 : (n : O) * s z i = 0`. Use `DFunLike.congr_fun h1 i` as an intermediate fact. Simplify `this` using `[zsmul_eq_mul]`. Establish `h3 : (n : O) ≠ 0` using `by exact_mod_cast hn`. Simplify using `using (mul_eq_zero.1 h2).resolve_left h3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← hs' z, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_zsmul_eq_zero_of_projective {O : Type} [CommRing O] [IsDomain O] [CharZero O] {P : Type}
     [AddCommGroup P] [Module O P] [Module.Projective O P] {n : ℤ} (hn : n ≠ 0) {z : P} (h : n • z = 0) : z = 0 := by
@@ -31,9 +31,9 @@ theorem eq_zero_of_zsmul_eq_zero_of_projective {O : Type} [CommRing O] [IsDomain
   rw [← hs' z, h0, map_zero]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hli : LinearIndependent ℤ ![z]`. Use `Fintype.linearIndependent_iff.2 fun g hg i => ?_` and prove the remaining obligations. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Assume the negation of the conclusion as `hi`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hne (eq_zero_of_zsmul_eq_zero_of_projective (O := O) hi (by simpa using hg))`. Use `h 1 _ hli ![1] (by simp)` as an intermediate fact. Simplify using `[hz] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsPosDef.eq_zero_of_apply_self {O : Type} [CommRing O] [IsDomain O] [CharZero O] {P : Type}
     [AddCommGroup P] [Module O P] [Module.Projective O P] {B : P →ₗ[ℤ] P →ₗ[ℤ] ℝ} (h : IsPosDef B) {z : P}
@@ -48,11 +48,11 @@ theorem IsPosDef.eq_zero_of_apply_self {O : Type} [CommRing O] [IsDomain O] [Cha
   simp [hz] at this
 
 /- English proof (translation)
-Take `⟨X', _, _, _, r', B', hr', h1, h2, h3⟩` from `hB`. Establish `hker : LinearMap.ker r ≤ LinearMap.ker r'` using `fun y hy => IsPosDef.eq_zero_of_apply_self (O := O) h2 (by rw [← h3]; exact hk y hy)`. Set `s : X₁ →ₗ[O] X'` to `((LinearMap.ker r).liftQ r' hker) ∘ₗ (r.quotKerEquivOfSurjective hr).symm.toLinearMap`. Establish `hs : ∀ x, s (r x) = r' x` using `fun x => by`. Establish `: (r.quotKerEquivOfSurjective hr).symm (r x) = (LinearMap.ker r).mkQ x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [s, LinearMap.comp_apply, LinearEquiv.coe_coe, this]`. Both sides reduce to the same expression. Establish `hsurj : Function.Surjective s` using `fun z => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨x, rfl⟩` from `hr' z`. Conclude with `⟨r x, hs x⟩`. Use `⟨pullR s B', ⟨X', _, _, inferInstance, s, B', hsurj, h1, h2, fun _ _ => rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `[h3, hs]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_psdCone_descend (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O)
     (X X₁ : Type) [AddCommGroup X] [Module O X] [AddCommGroup X₁] [Module O X₁] (r : X →ₗ[O] X₁)

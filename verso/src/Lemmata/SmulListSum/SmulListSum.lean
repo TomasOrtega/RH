@@ -5,7 +5,7 @@ universe u_1
 namespace Bl.SmulListSum
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp only [List.sum_nil, List.map_nil, smul_zero]`. Consider the case `cons a t ih => simp only [List.sum_cons, List.map_cons, smul_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem smul_list_sum {U : Type u_1} [AddCommGroup U] [Module Complex U]
     (c : Complex) (l : List U) : c • l.sum = (l.map (fun w => c • w)).sum := by
@@ -14,15 +14,15 @@ private theorem smul_list_sum {U : Type u_1} [AddCommGroup U] [Module Complex U]
   | cons a t ih => simp only [List.sum_cons, List.map_cons, smul_add, ih]
 
 /- English proof (translation)
-Introduce `U _ _ G hG y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Use `⟨[x], ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hw` using `[List.mem_singleton]`. Rewrite using `[hw]`. Conclude with `hx`. Simplify using `only [List.sum_cons, List.sum_nil, add_zero]`. Consider the case `zero => exact ⟨[], fun w hw => absurd hw (List.not_mem_nil), by simp only [List.sum_nil]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ iha ihb`. Take `⟨la, hla, rfl⟩` from `iha`. Take `⟨lb, hlb, rfl⟩` from `ihb`. Use `⟨la ++ lb, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `List.mem_append.mp hw with h | h` into its components or cases. Conclude with `hla w h`. Conclude with `hlb w h`. Rewrite using `[List.sum_append]`. Consider the case `smul c a _ iha`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨la, hla, rfl⟩` from `iha`. Use `⟨la.map (fun w => c • w), ?_, smul_list_sum c la⟩` and prove the remaining obligations. Introduce `w hw`. Take `⟨v, hv, rfl⟩` from `List.mem_map.mp hw`. Conclude with `hG v (hla v hv) c`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {U : Type u_1} [inst : AddCommGroup.{u_1} U] [inst_1 : Module.{0, u_1} Complex U] {G : Set.{u_1} U},

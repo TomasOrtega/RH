@@ -11,9 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.JointHarm
 
 /- English proof (translation)
-Establish `: (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `n) g).comp (Formalism.GradedWeylDivisibility.rowAct ℂ h) = Formalism.GradedWeylDivisibility.rowAct ℂ (h * g) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [AlgHom.comp_apply, Formalism.GradedWeylDivisibility.rowAct, MvPolynomial.aeval_X, map_sum, map_mul, MvPolynomial.algHom_C, Matrix.mul_apply]`. Simplify using `only [MvPolynomial.algebraMap_eq, Finset.mul_sum, Finset.sum_mul, ← MvPolynomial.C_mul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `[MvPolynomial.C_mul, mul_assoc]`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cyc_rowAct_rowAct {k n : ℕ} (g h : Matrix (Fin k) (Fin k) ℂ) (F : MvPolynomial (Fin k × Fin n) ℂ) :
     Formalism.GradedWeylDivisibility.rowAct ℂ g (Formalism.GradedWeylDivisibility.rowAct ℂ h F) = Formalism.GradedWeylDivisibility.rowAct ℂ (h * g) F := by
@@ -28,9 +28,9 @@ theorem cyc_rowAct_rowAct {k n : ℕ} (g h : Matrix (Fin k) (Fin k) ℂ) (F : Mv
   rw [← this]; rfl
 
 /- English proof (translation)
-Establish `: Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `n) (1 : Matrix (Fin k) (Fin k) ℂ) = AlgHom.id ℂ _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [Formalism.GradedWeylDivisibility.rowAct, MvPolynomial.aeval_X, Matrix.one_apply, AlgHom.id_apply]`. Rewrite using `[Finset.sum_eq_single v.1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -48,17 +48,13 @@ theorem cyc_rowAct_one {k n : ℕ} (F : MvPolynomial (Fin k × Fin n) ℂ) :
   rw [this]; rfl
 
 /- English proof (translation)
-Establish `hν : Antitone mu.natW` using `(factNatW n mu).1`. Establish `hmem : extremal ℂ n mu ∈ nablaSq ℂ n mu` using `Formalism.GradedWeylDivisibility.hwMem ℂ n n le_rfl mu.natW hν`. Use `set M := Submodule.span ℂ {F | ∃ u ∈ Matrix.unitaryGroup (Fin n) ℂ, F = Formalism.GradedWeylDivisibility.rowAct ℂ u (extremal ℂ n mu)} with hM`. Establish `hle : M ≤ nablaSq ℂ n mu`. Rewrite using `[hM, Submodule.span_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨u, -, rfl⟩`. Conclude with `Formalism.GradedWeylDivisibility.dualWeylRowStable ℂ n n _ _ _ hmem`. Establish `hU : ∀ u ∈ Matrix.unitaryGroup (Fin n) ℂ, ∀ f ∈ M, Formalism.GradedWeylDivisibility.rowAct ℂ u f ∈ M`. Introduce `u hu f hf`. Proceed by induction on `hf using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨v, hv, rfl⟩` from `hx`. Rewrite using `[cyc_rowAct_rowAct]`. Conclude with `Submodule.subset_span ⟨v * u, mul_mem hv hu, rfl⟩`. Consider the case `zero => rw [map_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `M.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `M.add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `M.smul_mem c hx`.
-
-Establish `hne : M ≠ ⊥`. Introduce `e`. Establish `h1 : extremal ℂ n mu ∈ M` using `Submodule.subset_span ⟨1, one_mem _, (cyc_rowAct_one _).symm⟩`. Rewrite `h1` using `[e, Submodule.mem_bot]`. Conclude with `Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl mu.natW h1`.
-
-Conclude with `GlobalTheory.Branching.dualWeyl_le_of_rowDivClosed le_rfl mu.natW hν M hle (GlobalTheory.Branching.rowDivClosed_of_rowAct_stable M (GlobalTheory.Branching.rowAct_mem_of_unitary_stable M hU)) hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nablaSq_le_span_unitary (n : ℕ) (mu : DomWeight n) :
     nablaSq ℂ n mu ≤ Submodule.span ℂ
@@ -90,17 +86,15 @@ theorem nablaSq_le_span_unitary (n : ℕ) (mu : DomWeight n) :
     (GlobalTheory.Branching.rowDivClosed_of_rowAct_stable M (GlobalTheory.Branching.rowAct_mem_of_unitary_stable M hU)) hne
 
 /- English proof (translation)
-Introduce `ι _ n lam`. Unfold `VV Formalism.GradedWeylDivisibility.tensorLat`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Use `choose m c g hg using fun τ => Submodule.mem_span_set'.1 (nablaSq_le_span_unitary n (lam τ) (hf τ))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `choose v hv hgv using fun τ i => (g τ i).2`. Establish `e : ∏ τ, Formalism.GradedWeylDivisibility.blockEmb ℂ τ (f τ) = ∑ p ∈ Fintype.piFinset (fun τ => (Finset.univ : Finset (Fin (m τ)))), (∏ τ, c τ (p τ)) • ∏ τ, Formalism.GradedWeylDivisibility.blockEmb ℂ τ (g τ (p τ) : MvPolynomial (Fin n × Fin n) ℂ)`. Simplify using `only [← hg, map_sum, map_smul]`. Rewrite using `[Finset.prod_univ_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_smul]`. Rewrite using `[e, SetLike.mem_coe]`. Use `Submodule.sum_mem _ fun p _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Use `set u : ι → Matrix (Fin n) (Fin n) ℂ := fun τ => star (v τ (p τ)) with hu`. Establish `huU : ∀ τ, u τ ∈ Matrix.unitaryGroup (Fin n) ℂ` using `fun τ => Unitary.star_mem (hv τ (p τ))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinv : ∀ τ, (u τ)⁻¹ = v τ (p τ)` using `fun τ => Matrix.inv_eq_right_inv (Matrix.mem_unitaryGroup_iff'.1 (hv τ (p τ)))`. Establish `hdet : (∏ τ, (u τ).det ^ (-(lam τ).detShift)) ≠ 0`. Use `Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ ?_` and prove the remaining obligations. Conclude with `(Matrix.UnitaryGroup.det_isUnit ⟨u τ, huU τ⟩).ne_zero`. Rewrite using `[← Submodule.smul_mem_iff _ hdet]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.subset_span ⟨u, fun τ => ⟨huU τ, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: Formalism.REAL.Jm (allPos n) = 1`. Simplify using `[Formalism.REAL.Jm, allPos]`. Rewrite using `[this, mul_one, one_mul]`. Simplify using `only [vact, ten, LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_prod]`.
-
-Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[(Formalism.GradedWeylDivisibility.blockActTensor ℂ ℂ ι n n _).1, hinv, hgv]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VV_le_span_vact_extremal : ∀ (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n), VV ℂ lam ≤ Submodule.span ℂ {F | ∃ u : ι → Matrix (Fin n) (Fin n) ℂ, (∀ τ, u τ ∈ Formalism.REAL.Kset (allPos n)) ∧ F = vact lam u (ten fun τ => extremal ℂ n (lam τ))} := by
   intro ι _ n lam

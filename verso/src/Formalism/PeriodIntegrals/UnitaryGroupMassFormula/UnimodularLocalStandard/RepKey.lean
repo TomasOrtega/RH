@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnimodularLocalStandard
 namespace PI.UnitaryGroupMassFormula.UnimodLocStd
 
 /- English proof (translation)
-The claim follows from `keyRep_of hS keyNewton keyExact`.
+A detailed English derivation is pending.
 -/
 theorem keyRep_of_start (hS : KeyStart) : KeyRep := keyRep_of hS keyNewton keyExact
 

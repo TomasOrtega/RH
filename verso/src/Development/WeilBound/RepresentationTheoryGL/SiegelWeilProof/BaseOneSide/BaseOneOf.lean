@@ -21,7 +21,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilRankO
 namespace PositivityTheory.Rg.Base1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.siegel_weil_rank_one_base_case (GlobalTheory.T.length_formula_of_total_mass_one hM) (GlobalTheory.T.similitude_of_scalar_formula GlobalTheory.T.scalar_fibration_formula) GlobalTheory.T.hasse_principle_hermitian (GlobalTheory.T.counting_formula_of_components GlobalT …`.
+A detailed English derivation is pending.
 -/
 theorem baseOne_of (hM : PositivityTheory.SiegelWeilFormula.Densx.MassOne) : PositivityTheory.SiegelWeilFormula.Densx.BaseOne :=
   GlobalTheory.T.siegel_weil_rank_one_base_case (GlobalTheory.T.length_formula_of_total_mass_one hM) (GlobalTheory.T.similitude_of_scalar_formula GlobalTheory.T.scalar_fibration_formula) GlobalTheory.T.hasse_principle_hermitian
@@ -29,12 +29,12 @@ theorem baseOne_of (hM : PositivityTheory.SiegelWeilFormula.Densx.MassOne) : Pos
       (GlobalTheory.T.l_function_side_equidistribution GlobalTheory.T.equidistribution) (GlobalTheory.T.theta_identity_of_local_densities GlobalTheory.T.scalar_fibration_formula (GlobalTheory.T.local_density_of_mass_one GlobalTheory.T.scalar_fibration_formula hM)))
 
 /- English proof (translation)
-The claim follows from `baseOne_of PositivityTheory.SiegelWeilFormula.BaseOne.massOne`.
+A detailed English derivation is pending.
 -/
 theorem baseOne : PositivityTheory.SiegelWeilFormula.Densx.BaseOne := baseOne_of PositivityTheory.SiegelWeilFormula.BaseOne.massOne
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.SiegelWeilFormula.Densx.densEq_of_one baseOne PositivityTheory.SiegelWeilFormula.BaseOne.massOne`.
+A detailed English derivation is pending.
 -/
 theorem densEq : PositivityTheory.SiegelWeilFormula.Gen.DensEq := PositivityTheory.SiegelWeilFormula.Densx.densEq_of_one baseOne PositivityTheory.SiegelWeilFormula.BaseOne.massOne
 

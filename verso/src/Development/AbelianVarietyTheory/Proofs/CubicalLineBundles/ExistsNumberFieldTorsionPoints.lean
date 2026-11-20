@@ -10,17 +10,15 @@ open GlobalTheory GlobalTheory.CM
 namespace GlobalTheory.TorsionField
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := k) (M := B)`. Set `S : Set ℂ` to `⋃ b ∈ s, (minpoly k b).rootSet ℂ`. Establish `hS : S.Finite` using `s.finite_toSet.biUnion fun b _ => Polynomial.rootSet_finite _ _`. Establish `hint : ∀ b : B, _root_.IsIntegral k b` using `fun b => Algebra.IsIntegral.isIntegral b`. Establish `hI : ∀ x ∈ S, _root_.IsIntegral k x` using `fun x hx => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [S, Set.mem_iUnion] at hx`. Take `⟨b, -, hb⟩` from `hx`. Conclude with `⟨minpoly k b, minpoly.monic (hint b), (Polynomial.mem_rootSet.1 hb).2⟩`. Establish `: Finite S` using `hS`. Establish `hfd : FiniteDimensional k (IntermediateField.adjoin k S)` using `IntermediateField.finiteDimensional_adjoin hI`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfd' : FiniteDimensional ℚ (IntermediateField.adjoin k S)` using `Module.Finite.trans k _`. Use `⟨(IntermediateField.adjoin k S).restrictScalars ℚ, hfd', fun x hx => ?_, fun φ b => ?_⟩` and prove the remaining obligations. Conclude with `(IntermediateField.adjoin k S).algebraMap_mem ⟨x, hx⟩`. Express the relevant statement in the definitionally equal form `φ b ∈ IntermediateField.adjoin k S`. Establish `hb : b ∈ Submodule.span k (s : Set B)` using `hs ▸ Submodule.mem_top`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem b hb`. Use `IntermediateField.subset_adjoin _ _ ?_` and prove the remaining obligations. Simplify using `only [S, Set.mem_iUnion]`. Use `⟨b, hb, Polynomial.mem_rootSet.2 ⟨minpoly.ne_zero (hint b), ?_⟩⟩` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
-
-Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `IntermediateField.smul_mem _ ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_field_alg (k : IntermediateField ℚ ℂ) [FiniteDimensional ℚ k] (B : Type) [CommRing B] [Algebra k B]
     [Module.Finite k B] : ∃ k₁ : IntermediateField ℚ ℂ, FiniteDimensional ℚ k₁ ∧ k ≤ k₁ ∧
@@ -51,17 +49,17 @@ theorem exists_field_alg (k : IntermediateField ℚ ℂ) [FiniteDimensional ℚ 
     | smul c a _ ha => rw [map_smul]; exact IntermediateField.smul_mem _ ha
 
 /- English proof (translation)
-Establish `: IsAffine Z.left` using `isAffine_of_isAffineHom Z.hom`. Set `φ : CommRingCat.of k ⟶ Γ(Z.left, ⊤)` to `Spec.preimage (Z.left.isoSpec.inv ≫ Z.hom)`. Establish `hφ : Spec.map φ = Z.left.isoSpec.inv ≫ Z.hom` using `Spec.map_preimage _`. Establish `h₁ : φ.hom.Finite` using `by rw [← IsFinite.SpecMap_iff, hφ]; infer_instance`. Set `` to `φ.hom.toAlgebra`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: Module.Finite k Γ(Z.left, ⊤)` using `h₁`. Take `⟨k₁, hfd, hk, H⟩` from `exists_field_alg k Γ(Z.left, ⊤)`. Use `⟨k₁, hfd, hk, fun k₂ h₂ h₁₂ y => ?_⟩` and prove the remaining obligations. Set `y' : Sp ℂ ⟶ Z.left` to `y.left`. Establish `hy : y' ≫ Z.hom = spMap (algebraMap k ℂ)` using `Over.w y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : Γ(Z.left, ⊤) ⟶ CommRingCat.of ℂ` to `Spec.preimage (y' ≫ Z.left.isoSpec.hom)`. Establish `hψ : Spec.map ψ = y' ≫ Z.left.isoSpec.hom` using `Spec.map_preimage _`. Establish `hc : φ ≫ ψ = CommRingCat.ofHom (algebraMap k ℂ)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hφ, hψ, Category.assoc, Iso.hom_inv_id_assoc, hy]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : ∀ c : k, ψ.hom (φ.hom c) = (c : ℂ)` using `fun c => congrArg (fun f => f.hom c) hc`. Set `ψa : Γ(Z.left, ⊤) →ₐ[k] ℂ` to `{ ψ.hom with commutes' := hc' }`. Set `ψ₂ : Γ(Z.left, ⊤) →+* k₂` to `ψ.hom.codRestrict k₂ fun b => h₁₂ (H ψa b)`. Use `⟨Over.homMk (spMap ψ₂ ≫ Z.left.isoSpec.inv) ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Spec.map (CommRingCat.ofHom ψ₂) ≫ Z.left.isoSpec.inv) ≫ Z.hom = Spec.map (CommRingCat.ofHom (IntermediateField.inclusion h₂).toRingHom)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Category.assoc, ← hφ, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `c`. Conclude with `hc' c`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (algebraMap k₂ ℂ)) ≫ Spec.map (CommRingCat.ofHom ψ₂) ≫ Z.left.isoSpec.inv = y'`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, ← Spec.map_comp, Iso.comp_inv_eq, ← hψ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_field_finite (k : IntermediateField ℚ ℂ) [FiniteDimensional ℚ k] (Z : Over (Sp k)) [IsFinite Z.hom] :
     ∃ k₁ : IntermediateField ℚ ℂ, FiniteDimensional ℚ k₁ ∧ k ≤ k₁ ∧
@@ -102,13 +100,11 @@ end GlobalTheory.TorsionField
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `_ k _ P n hn`. Establish `hu : IsUnit (n : Γ(Sp k, ⊤))`. Establish `h : IsUnit (n : k)` using `(Nat.cast_ne_zero.2 hn.ne').isUnit`. Simplify using `using h.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom`. Take `⟨-, hfin, -⟩` from `GrpTangent.finiteEtale_mulN_torsion P.A (hG := P.isAb) hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨k₁, hfd, hk, H⟩` from `TorsionField.exists_field_finite k (torsion P.A n)`. Use `⟨k₁, hfd, hk, fun k₂ h₂ h₁₂ x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, -⟩` from `LatticeTorsion.existsUnique_torsion P.A n x hx`. Take `⟨y₂, hy₂⟩` from `H k₂ h₂ h₁₂ y`. Establish `: Flat (spMap (algebraMap k₂ ℂ))` using `inferInstance`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Surjective (spMap (algebraMap k₂ ℂ))` using `⟨fun y => ⟨default, Subsingleton.elim _ _⟩⟩`. Establish `: Epi (spMap (algebraMap k₂ ℂ))` using `Flat.epi_of_flat_of_surjective _`. Use `existsUnique_of_exists_of_unique ⟨y₂ ≫ torsion.ι P.A n, ?_⟩ fun a b ha hb => ?_` and prove the remaining obligations. Rewrite using `[← hy, Over.comp_left, Over.comp_left, ← hy₂]`. Conclude with `(Category.assoc _ _ _).symm`.
-
-Conclude with `Over.OverMorphism.ext ((cancel_epi (spMap (algebraMap k₂ ℂ))).1 (ha.trans hb.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_numberField_torsion_points : Out.Laws → ∀ (k : IntermediateField ℚ ℂ) [FiniteDimensional ℚ k] (P : Out.PolAV (Sp k)) (n : ℕ), 0 < n → ∃ k₁ : IntermediateField ℚ ℂ, FiniteDimensional ℚ k₁ ∧ k ≤ k₁ ∧ ∀ (k₂ : IntermediateField ℚ ℂ) (h₂ : k ≤ k₂), k₁ ≤ k₂ → ∀ x : Over.mk (spMap (algebraMap k ℂ)) ⟶ P.A, x ^ n = 1 → ∃! x₂ : Over.mk (spMap (IntermediateField.inclusion h₂).toRingHom) ⟶ P.A, spMap (algebraMap k₂ ℂ) ≫ x₂.left = x.left := by
   intro _ k _ P n hn

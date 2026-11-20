@@ -15,7 +15,7 @@ variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [S
 namespace VP
 
 /- English proof (translation)
-Unfold `Aterm`. Rewrite using `[eval_two_points_eq_subst _ _ _ rfl, compose_one_action_eq_actAt]`. Conclude with `expS_eq _ (cc_smul _ (cc_hAt Y (hπ0 _ _) (cc_actAt Y _ (hπ0 _ _))))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Aterm_eq (Y : FBChart C V O dd) (π : Orb → Fin 2 → Fin dd → PS C 1 dd)
     (hπ0 : ∀ o g i, MvPowerSeries.constantCoeff (π o g i) = 0) (s s' : Orb × Fin 2) :
@@ -25,7 +25,7 @@ theorem Aterm_eq (Y : FBChart C V O dd) (π : Orb → Fin 2 → Fin dd → PS C 
   exact expS_eq _ (cc_smul _ (cc_hAt Y (hπ0 _ _) (cc_actAt Y _ (hπ0 _ _))))
 
 /- English proof (translation)
-Unfold `RawChart.hRow hAt`. Use `congr 2`. Use function extensionality and compare the values at `x`. Take `⟨g, i⟩` from `x`. Apply the tactic sequence `fin_cases g <;> rfl`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hRow_eq (Y : FBChart C V O dd) {J : Fin 2 → Type} [∀ g, Fintype (J g)] (q : PairData Y d J) :
     (Y.raw q).hRow = (Y.k : C) • hAt Y ((Y.raw q).expPt 0) ((Y.raw q).expPt 1) := by
@@ -38,19 +38,17 @@ theorem hRow_eq (Y : FBChart C V O dd) {J : Fin 2 → Type} [∀ g, Fintype (J g
 end VP
 
 /- English proof (translation)
-Introduce `_ π hπ o`. Establish `hX` using `hπ.cc o 0`. Establish `hZ` using `hπ.cc o 1`. Establish `hwX` using `VP.cc_actAt Y Y.w0 hX`. Establish `hwZ` using `VP.cc_actAt Y Y.w0 hZ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbZ` using `VP.cc_actAt Y (star Y.w0) hZ`. Establish `hid` using `VP.pair_id Y hX hZ`. Use `set W : PS C 1 dd := MvPowerSeries.subst (VP.P2 (VP.actAt Y Y.w0 (π o 0)) (π o 1)) Y.B.sy * MvPowerSeries.subst (VP.P2 (π o 0) (π o 1)) (Y.B.ad Y.w0) * MvPowerSeries.subst (VP.P3 (π o 0) (VP.actAt Y Y.w0 (π o 1)) (VP.actAt Y (star Y.w0) (π o 1))) Y.B.ph2 with hW`. Establish `hWi : IntS V W` using `((IntS.subst (VP.constantCoeff_pair_substitution hwX hZ) (VP.integral_pair_substitution (VP.int_actAt Y _ hX (hπ.int o 0)) (hπ.int o 1)) Y.intSy).mul (IntS.subst (VP.constantCoeff_pair_substitution hX hZ) (VP.integral_pair_substitution (hπ.int o 0) (hπ.int o 1)) (Y.intAd _))).mul …`. Establish `hW1 : MvPowerSeries.constantCoeff W = 1` using `by rw [← hid, VP.cc_mvExp']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨W ^ Y.k, ⟨hWi.pow _, by rw [map_pow, hW1, one_pow, V.v.map_one]⟩, ?_⟩` and prove the remaining obligations. Establish `c1` using `VP.cc_hAt Y hX hwZ`. Establish `c2` using `VP.cc_hAt Y hZ hwX`. Establish `c3` using `VP.cc_hAt Y hX hZ`. Establish `hprod : Aterm Y π (o, 0) (o, 1) * Aterm Y π (o, 1) (o, 0) = W ^ Y.k * mvExp ((Y.k : C) • VP.hAt Y (π o 0) (π o 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[VP.Aterm_eq Y π hπ.cc, VP.Aterm_eq Y π hπ.cc, ← VP.exp_add (VP.cc_smul _ c1) (VP.cc_smul _ c2), ← hid, ← VP.exp_nsmul (by rw [map_sub, map_add, c1, c2, c3]; simp), ← VP.exp_add (VP.cc_smul _ (by rw [map_sub, map_add, c1, c2, c3]; simp)) (VP.cc_smul _ c3)]`. Use `congr 1`. Rewrite using `[← smul_add, ← smul_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hE : ∀ g i, MvPowerSeries.constantCoeff ((Y.raw (p o)).expPt g i) = 0` using `fun g i => by`. Rewrite using `[← VP.cc_toAllS o, ← hπ.pull o g i]`. Conclude with `(VP.cc_subst_eq (VP.cc_pull1Pt Y p) _).trans (hπ.cc o g i)`. Establish `hpull : pull1 Y p (mvExp ((Y.k : C) • VP.hAt Y (π o 0) (π o 1))) = toAllS o (mvExp (Y.raw (p o)).hRow)`. Unfold `pull1 toAllS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[VP.subst_exp (VP.cc_pull1Pt Y p) (VP.cc_smul _ c3), VP.subst_smul (VP.cc_pull1Pt Y p), VP.hAt_subst Y (VP.cc_pull1Pt Y p) hX hZ, VP.hRow_eq, VP.subst_exp (fun _ => VP.cc_X _) (VP.cc_smul _ (VP.cc_hAt Y (hE 0) (hE 1))), VP.subst_smul (fun _ => VP.cc_X _), VP.hAt_subst Y (fun _ => …`. Use `congr 3`. Use function extensionality and compare the values at `i`. Conclude with `hπ.pull o 0 i`. Use function extensionality and compare the values at `i`.
-
-Conclude with `hπ.pull o 1 i`. Rewrite using `[← VP.pullback_one_var_mul, hprod, VP.pullback_one_var_mul, hpull]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_holds (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) : PairSt Y p := by
   intro _ π hπ o
@@ -97,7 +95,7 @@ theorem pair_holds (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) : Pair
   rw [← VP.pullback_one_var_mul, hprod, VP.pullback_one_var_mul, hpull]
 
 /- English proof (translation)
-The claim follows from `valuation_eq_pair_of_pairing Y p H Ls n hP hT h1 h2 (pair_holds Y p)`.
+A detailed English derivation is pending.
 -/
 theorem valuation_eq_pair_of_biadditive_cross (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (H : ∀ o, (Y.raw (p o)).Hyps V)
     (Ls : LetSys C dd) (n : ℕ) (hP : ProjPullSt Y p) (hT : ∀ o, RawChart.TCoordSt (H o).cartH)

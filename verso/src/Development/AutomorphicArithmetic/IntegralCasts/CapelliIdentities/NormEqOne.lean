@@ -5,9 +5,9 @@ import Mathlib
     fun (l : ℕ) [Fact (Nat.Prime l)] ↦ PadicAlgCl l
 
 /- English proof (translation)
-Introduce `l _ x h`. Establish `hne : ‖x - 1‖ ≠ ‖(1 : UpperTheory.Reformulated.B.Qk14.Qbar l)‖`. Rewrite using `[norm_one]`. Conclude with `h.ne`. Establish `key` using `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[sub_add_cancel, norm_one]`. Rewrite using `[key]`. Conclude with `max_eq_right h.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk14.norm_eq_one :
     ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] {x : UpperTheory.Reformulated.B.Qk14.Qbar l},

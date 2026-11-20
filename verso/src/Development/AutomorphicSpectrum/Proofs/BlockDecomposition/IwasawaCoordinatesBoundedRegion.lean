@@ -15,11 +15,11 @@ section
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Break down `le_total (ord x) (ord y) with h | h` into its components or cases.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hmem : x + y ∈ valBall F (ord x)` using `add_mem mem_valBall_ord (valBall_antitone h mem_valBall_ord)`. Establish `h1` using `modulus_le_of_mem_valBall hmem`. Rewrite `h1` using `[← modulus_of_ne_zero hx]`. Establish `h1' : (modulus (x + y) : ℝ) ≤ modulus x` using `by exact_mod_cast h1`. Conclude with `h1'.trans (le_max_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : x + y ∈ valBall F (ord y)` using `add_mem (valBall_antitone h mem_valBall_ord) mem_valBall_ord`. Establish `h1` using `modulus_le_of_mem_valBall hmem`. Rewrite `h1` using `[← modulus_of_ne_zero hy]`. Establish `h1' : (modulus (x + y) : ℝ) ≤ modulus y` using `by exact_mod_cast h1`. Conclude with `h1'.trans (le_max_right _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem modulus_add_le_max (x y : F) :
     (modulus (x + y) : ℝ) ≤ max (modulus x : ℝ) (modulus y : ℝ) := by
@@ -42,7 +42,7 @@ theorem modulus_add_le_max (x y : F) :
     exact h1'.trans (le_max_right _ _)
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Rewrite using `[modulus_of_ne_zero hx, modulus_of_ne_zero (neg_ne_zero.mpr hx)]`. Simplify using `[ord, Valuation.map_neg]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem modulus_neg_self (x : F) : modulus (-x) = modulus x := by
   by_cases hx : x = 0
@@ -51,13 +51,13 @@ theorem modulus_neg_self (x : F) : modulus (-x) = modulus x := by
   simp [ord, Valuation.map_neg]
 
 /- English proof (translation)
-Conclude with `modulus_le_one_iff.2 hx` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem modulus_le_one_real {x : F} (hx : x ∈ 𝒪[F]) : (modulus x : ℝ) ≤ 1 := by
   exact_mod_cast modulus_le_one_iff.2 hx
 
 /- English proof (translation)
-Establish `term : ∀ j, (modulus (κ i j * k j l) : ℝ) ≤ B` using `fun j => by`. Rewrite using `[modulus_mul, NNReal.coe_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_two]`. Conclude with `(modulus_add_le_max _ _).trans (max_le (term 0) (term 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modulus_mul_entry_le {κ k : Matrix (Fin 2) (Fin 2) F} (hκ : ∀ i j, κ i j ∈ 𝒪[F]) {B : ℝ}
     (hk : ∀ i j, (modulus (k i j) : ℝ) ≤ B) (i l : Fin 2) : (modulus ((κ * k) i l) : ℝ) ≤ B := by
@@ -70,11 +70,11 @@ theorem modulus_mul_entry_le {κ k : Matrix (Fin 2) (Fin 2) F} (hκ : ∀ i j, �
   exact (modulus_add_le_max _ _).trans (max_le (term 0) (term 1))
 
 /- English proof (translation)
-Establish `hinv` using `((GLnLocal.mem_integralGL_iff F 2).1 hκ).2`. Establish `e : (κ : Matrix (Fin 2) (Fin 2) F) * ((κ⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `e11` using `congrFun (congrFun e 1) 1`. Rewrite `e11` using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `term : ∀ j, (modulus ((κ : Matrix (Fin 2) (Fin 2) F) 1 j * ((κ⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) j 1) : ℝ) < 1` using `fun j => by`. Rewrite using `[modulus_mul, NNReal.coe_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h` using `modulus_add_le_max ((κ : Matrix (Fin 2) (Fin 2) F) 1 0 * ((κ⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) 0 1) ((κ : Matrix (Fin 2) (Fin 2) F) 1 1 * ((κ⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) 1 1)`. Rewrite `h` using `[e11, modulus_one, NNReal.coe_one]`. Conclude with `absurd h (not_le.2 (max_lt (term 0) (term 1)))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_one_le_modulus {κ : GL (Fin 2) F} (hκ : κ ∈ GLnLocal.integralGL F 2) :
     ∃ j, 1 ≤ (modulus ((κ : Matrix (Fin 2) (Fin 2) F) 1 j) : ℝ) := by
@@ -100,23 +100,23 @@ theorem exists_one_le_modulus {κ : GL (Fin 2) F} (hκ : κ ∈ GLnLocal.integra
   exact absurd h (not_le.2 (max_lt (term 0) (term 1)))
 
 /- English proof (translation)
-Rewrite using `[modulus_of_ne_zero (Units.ne_zero _), ord_unifUnit_zpow, NNReal.coe_zpow, NNReal.coe_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem modulus_unif_zpow (m : ℤ) :
     (modulus ((unifUnit F ^ m : Fˣ) : F) : ℝ) = (residueCard F : ℝ) ^ (-m) := by
   rw [modulus_of_ne_zero (Units.ne_zero _), ord_unifUnit_zpow, NNReal.coe_zpow, NNReal.coe_natCast]
 
 /- English proof (translation)
-Rewrite using `[Units.val_inv_eq_inv_val, modulus_inv, NNReal.coe_inv, modulus_unif_zpow, _root_.zpow_neg, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem modulus_unif_zpow_inv (m : ℤ) :
     (modulus (((unifUnit F ^ m)⁻¹ : Fˣ) : F) : ℝ) = (residueCard F : ℝ) ^ m := by
   rw [Units.val_inv_eq_inv_val, modulus_inv, NNReal.coe_inv, modulus_unif_zpow, _root_.zpow_neg, inv_inv]
 
 /- English proof (translation)
-Establish `h : (((uni2 x * dg2 a b)⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = !![((a⁻¹ : Fˣ) : F), 0; 0, ((b⁻¹ : Fˣ) : F)] * !![1, -x; 0, 1]`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul]`. Both sides reduce to the same expression. Rewrite using `[h]`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem val_inv_uni_dg (x : F) (a b : Fˣ) :
     (((uni2 x * dg2 a b)⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) =
@@ -130,7 +130,7 @@ theorem val_inv_uni_dg (x : F) (a b : Fˣ) :
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `h : ((uni2 x * dg2 a b * κ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = (!![1, x; 0, 1] * !![(a : F), 0; 0, (b : F)]) * (κ : Matrix (Fin 2) (Fin 2) F)`. Rewrite using `[Units.val_mul, Units.val_mul]`. Both sides reduce to the same expression. Rewrite using `[h]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem val_uni_dg_mul_last (x : F) (a b : Fˣ) (κ : GL (Fin 2) F) (j : Fin 2) :
     ((uni2 x * dg2 a b * κ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) 1 j =
@@ -145,17 +145,15 @@ theorem val_uni_dg_mul_last (x : F) (a b : Fˣ) (κ : GL (Fin 2) F) (j : Fin 2) 
 end
 
 /- English proof (translation)
-Introduce `F _ _ _ _ x m n L κ R t hκ hR hk`. Take `⟨h1, h2⟩` from `hk`. Establish `hq : (1 : ℝ) < residueCard F` using `by exact_mod_cast one_lt_residueCard (K := F)`. Establish `hq0 : (0 : ℝ) < residueCard F` using `zero_lt_one.trans hq`. Use `set a : GL (Fin 2) F := uni2 x * dg2 (unifUnit F ^ m) (unifUnit F ^ n) with ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hent` using `((GLnLocal.mem_integralGL_iff F 2).1 hκ).1`. Establish `hmul : (κ : Matrix (Fin 2) (Fin 2) F) * (((a * κ)⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = ((a⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F)`. Rewrite using `[← Units.val_mul, _root_.mul_inv_rev, mul_inv_cancel_left]`. Establish `hb : ∀ i l, (modulus (((a⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) i l) : ℝ) ≤ (residueCard F : ℝ) ^ L` using `fun i l => by`. Rewrite using `[← hmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `modulus_mul_entry_le hent (fun i j => (h1 i j).trans hR) i l`. Establish `hval : ((a⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = _` using `val_inv_uni_dg x _ _`. Establish `b00` using `hb 0 0`. Establish `b01` using `hb 0 1`. Establish `b11` using `hb 1 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `b00`, `b01`, `b11` using `[hval]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one] at b00 b01 b11`. Rewrite `b00`, `b11` using `[modulus_unif_zpow_inv]`. Rewrite `b01` using `[modulus_mul, NNReal.coe_mul, modulus_unif_zpow_inv, modulus_neg_self]`. Use `⟨(zpow_le_zpow_iff_right₀ hq).1 b00, (zpow_le_zpow_iff_right₀ hq).1 b11, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[zpow_sub₀ hq0.ne', le_div_iff₀ (zpow_pos hq0 m), mul_comm]`. Conclude with `b01`. Take `⟨j, hj⟩` from `exists_one_le_modulus hκ`. Establish `h3` using `h2 j`. Rewrite `h3` using `[inv_inv, ha, val_uni_dg_mul_last, modulus_mul, modulus_mul, NNReal.coe_mul, NNReal.coe_mul, modulus_unif_zpow]`.
-
-Establish `hnn : 0 ≤ (modulus (t : F) : ℝ) * (residueCard F : ℝ) ^ (-n)` using `mul_nonneg (NNReal.coe_nonneg _) (zpow_pos hq0 _).le`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coords : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (x : F) (m n L : ℤ) (κ : GL (Fin 2) F) (R : ℝ) (t : Fˣ), κ ∈ GLnLocal.integralGL F 2 → R ≤ (residueCard F : ℝ) ^ L → (Ad3.uni2 x * Ad3.dg2 (unifUnit F ^ m) (unifUnit F ^ n) * κ)⁻¹ ∈ Ad3.LFS.om R t → m ≤ L ∧ n ≤ L ∧ (modulus x : ℝ) ≤ (residueCard F : ℝ) ^ (L - m) ∧ (modulus (t : F) : ℝ) * (residueCard F : ℝ) ^ (-n) ≤ (residueCard F : ℝ) ^ L := by
   intro F _ _ _ _ x m n L κ R t hκ hR hk

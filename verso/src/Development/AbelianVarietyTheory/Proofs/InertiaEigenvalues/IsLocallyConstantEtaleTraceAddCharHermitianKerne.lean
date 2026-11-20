@@ -6,9 +6,9 @@ noncomputable section
 namespace GlobalTheory.JR.Hyp
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `filter_upwards [Metric.closedBall_mem_nhds x one_pos] with y hy`. Establish `hs : ‖y - x‖ ≤ 1` using `by simpa [dist_eq_norm] using hy`. Establish `: y = x + (y - x)` using `by abel`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, AddChar.map_add_eq_mul, hψ.1 _ hs, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_of_isStdChar {F : Type} [NontriviallyNormedField F] (ψ : AddChar F ℂ)
     (hψ : IsStdChar ψ) : IsLocallyConstant (fun t : F => ψ t) := by
@@ -32,9 +32,7 @@ def kerLinF {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E]
     rfl
 
 /- English proof (translation)
-Establish `hl` using `isLocallyConstant_of_isStdChar ψ hψ`. Use `⟨?_, fun x y' => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous (Algebra.trace F A.K)` using `IsModuleTopology.continuous_of_linearMap (Algebra.trace F A.K)`. Conclude with `hl.comp_continuous hc`. Establish `hc : Continuous (kerLinF A x y')` using `IsModuleTopology.continuous_of_linearMap _`.
-
-Conclude with `hl.comp_continuous hc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_psiK_kerL (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
     [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) :

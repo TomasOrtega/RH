@@ -30,9 +30,9 @@ def trivParGL : Fin n → ℂˣ := fun i =>
       exact fun h => qV_ne_zero w (by exact_mod_cast h.1))
 
 /- English proof (translation)
-Unfold `Formalism.UG.chiDelta`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Establish `hq : (Formalism.UG.qV E w : ℂ) ≠ 0` using `by exact_mod_cast qV_ne_zero w`. Simplify using `only [trivParGL, Units.val_mk0]`. Rewrite using `[← Complex.cpow_int_mul, ← Complex.cpow_add _ _ hq]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Complex.cpow_zero _ using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chiDelta_trivParGL (b : GL (Fin n) (w.adicCompletion E)) :
     Formalism.UG.chiDelta E w (fun i => (trivParGL w n i : ℂ)) b = 1 := by
@@ -45,7 +45,7 @@ theorem chiDelta_trivParGL (b : GL (Fin n) (w.adicCompletion E)) :
   ring
 
 /- English proof (translation)
-Establish `hs : Formalism.UG.IsSpherical E w (fun i => (trivParGL w n i : ℂ)) (fun _ : GL (Fin n) (w.adicCompletion E) => (1 : ℂ))` using `fun b g k _ _ => by`. Rewrite using `[chiDelta_trivParGL, one_mul]`. Establish `h` using `isSatVecGL_of_isSpherical hs (fun h0 => one_ne_zero (congrFun h0 1))`. Conclude with `IsSatVecGL.of_map (LinearMap.pi fun _ => LinearMap.id) (fun g y => rfl) (fun a b hab => congrFun hab 1) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSatVecGL_one :
     IsSatVecGL w (1 : Representation ℂ (GL (Fin n) (w.adicCompletion E)) ℂ) 1

@@ -17,13 +17,11 @@ def compHom {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host
     AF D.host.F ⊗[D.host.F] D.host.E →+* ℂ := (θ τ).comp (infPart D)
 
 /- English proof (translation)
-Take `⟨w, -, hw⟩` from `Formalism.IndefR.Mi.realPtEx_holds (D := D) θ 1 1 hθ (fun _ _ _ => 0)`. Establish `h0 : ∀ c : AF D.host.F ⊗[D.host.F] D.host.E, finPart D c = 0 → (∀ τ, compHom θ τ c = 0) → c = 0`. Introduce `c h1 h2`. Establish `e1 : (Matrix.of fun _ _ => c : Matrix (Fin 1) (Fin 1) _) = w` using `hw _ ⟨by`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `h1, fun τ => by`. Use extensionality with `i j`. Conclude with `h2 τ⟩`. Establish `e2 : (0 : Matrix (Fin 1) (Fin 1) (AF D.host.F ⊗[D.host.F] D.host.E)) = w` using `hw _ ⟨by`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `map_zero (finPart D), fun τ => by`. Use extensionality with `i j`. Conclude with `map_zero (compHom θ τ)⟩`. Conclude with `congrFun (congrFun (e1.trans e2.symm) 0) 0`. Use `sub_eq_zero.1 (h0 _ ?_ fun τ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[map_sub, hf, sub_self]`. Rewrite using `[map_sub, hc, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adele_ext {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} (hθ : IsInfFam θ)
     {a b : AF D.host.F ⊗[D.host.F] D.host.E} (hf : finPart D a = finPart D b)
@@ -47,9 +45,9 @@ theorem adele_ext {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] 
   · rw [map_sub, hc, sub_self]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `: infPart D ((1 : AF D.host.F) ⊗ₜ[D.host.F] Y i j) = (1 : Ainf D.host.F) ⊗ₜ[D.host.F] Y i j`. Simplify using `[infPart]`. Simplify using `only [Matrix.map_apply, adMat, compHom, RingHom.comp_apply]`. Use `show θ τ (infPart D ((1 : AF D.host.F) ⊗ₜ[D.host.F] Y i j)) = _`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(hθ τ).1 _`.
+A detailed English derivation is pending.
 -/
 theorem compHom_adMat {D : D7} {a b : ℕ} (τ : D.what₂.Tau) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
     (hθ : IsInfFam θ) (Y : Matrix (Fin a) (Fin b) D.host.E) :
@@ -63,7 +61,7 @@ theorem compHom_adMat {D : D7} {a b : ℕ} (τ : D.what₂.Tau) (θ : D.what₂.
   exact (hθ τ).1 _
 
 /- English proof (translation)
-Substitute `hp hq hr hs` using the available equality. Rewrite using `[Matrix.map_add _ (map_add φ), Matrix.map_add _ (map_add φ), Matrix.map_one _ (map_zero φ) (map_one φ), Matrix.map_mul, Matrix.map_mul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_one_add_of {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {n a b : ℕ}
     (P : Matrix (Fin n) (Fin a) A) (Q : Matrix (Fin a) (Fin n) A) (R : Matrix (Fin n) (Fin b) A) (S : Matrix (Fin b) (Fin n) A)
@@ -74,7 +72,7 @@ theorem map_one_add_of {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {
   rw [Matrix.map_add _ (map_add φ), Matrix.map_add _ (map_add φ), Matrix.map_one _ (map_zero φ) (map_one φ), Matrix.map_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Rewrite using `[map_one_add_of φ P Q R S rfl hq hr rfl, Matrix.mul_zero, Matrix.zero_mul, add_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_one_add_of_zero {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {n a b : ℕ}
     (P : Matrix (Fin n) (Fin a) A) (Q : Matrix (Fin a) (Fin n) A) (R : Matrix (Fin n) (Fin b) A) (S : Matrix (Fin b) (Fin n) A)
@@ -82,7 +80,7 @@ theorem map_one_add_of_zero {A B : Type} [CommRing A] [CommRing B] (φ : A →+*
   rw [map_one_add_of φ P Q R S rfl hq hr rfl, Matrix.mul_zero, Matrix.zero_mul, add_zero, add_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `adele_ext hθ (congrFun (congrFun hf i) j) fun τ => congrFun (congrFun (hc τ) i) j`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem matrix_ext_parts {D : D7} {n : ℕ} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} (hθ : IsInfFam θ)
     (M N : Matrix (Fin n) (Fin n) (AF D.host.F ⊗[D.host.F] D.host.E))
@@ -91,21 +89,21 @@ theorem matrix_ext_parts {D : D7} {n : ℕ} {θ : D.what₂.Tau → (Ainf D.host
   exact adele_ext hθ (congrFun (congrFun hf i) j) fun τ => congrFun (congrFun (hc τ) i) j
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem map_compHom_mul {D : D7} {a b c : ℕ} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (τ : D.what₂.Tau)
     (A : Matrix (Fin a) (Fin b) (AF D.host.F ⊗[D.host.F] D.host.E)) (B : Matrix (Fin b) (Fin c) (AF D.host.F ⊗[D.host.F] D.host.E)) :
     (A * B).map (compHom θ τ) = A.map (compHom θ τ) * B.map (compHom θ τ) := Matrix.map_mul
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem map_finPart_mul {D : D7} {a b c : ℕ}
     (A : Matrix (Fin a) (Fin b) (AF D.host.F ⊗[D.host.F] D.host.E)) (B : Matrix (Fin b) (Fin c) (AF D.host.F ⊗[D.host.F] D.host.E)) :
     (A * B).map (finPart D) = A.map (finPart D) * B.map (finPart D) := Matrix.map_mul
 
 /- English proof (translation)
-Rewrite using `[compHom_adMat τ θ hθ, Matrix.map_mul]`. Use `congr 1`. Use extensionality with `i j`. Conclude with `GlobalTheory.Mem.Isom.tauE_sig D τ (X j i)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem compHom_adMat_adj {D : D7} {m : ℕ} (τ : D.what₂.Tau) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
     (hθ : IsInfFam θ) (V : HSp D) (X : Matrix (Fin V.rank) (Fin m) D.host.E) :
@@ -117,19 +115,19 @@ theorem compHom_adMat_adj {D : D7} {m : ℕ} (τ : D.what₂.Tau) (θ : D.what�
   exact GlobalTheory.Mem.Isom.tauE_sig D τ (X j i)
 
 /- English proof (translation)
-Introduce `D θ hθ V m X u w hU`. Take `⟨-, h2⟩` from `GlobalTheory.SmoothForms.RealPts.glue θ hθ V`. Take `⟨g, hg, hgτ⟩` from `h2 _ hU`. Take `⟨U, ⟨hUf, hUc⟩, -⟩` from `Formalism.IndefR.Mi.realPtEx_holds (D := D) θ m V.rank hθ (fun τ i j => u τ i j)`. Take `⟨W, ⟨hWf, hWc⟩, -⟩` from `Formalism.IndefR.Mi.realPtEx_holds (D := D) θ V.rank m hθ (fun τ i j => w τ i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hUc' : ∀ τ, U.map (compHom θ τ) = u τ` using `hUc`. Establish `hWc' : ∀ τ, W.map (compHom θ τ) = w τ` using `hWc`. Establish `hUf' : U.map (finPart D) = 0` using `hUf`. Establish `hWf' : W.map (finPart D) = 0` using `hWf`. Establish `hzero : ∀ c : AF D.host.F ⊗[D.host.F] D.host.E, finPart D c = 0 → (∀ τ, compHom θ τ c = 0) → c = 0` using `fun c h1 h2 => adele_ext hθ (by rw [h1, map_zero]) fun τ => by rw [h2, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨g, hgτ, U, W, fun i v h => ?_, fun v i h => ?_, fun i j h => ?_, ?_⟩` and prove the remaining obligations. Use `hzero _ (congrFun (congrFun hUf' i) v) fun τ => ?_` and prove the remaining obligations. Rewrite using `[← h τ, ← hUc' τ]`. Both sides reduce to the same expression. Use `hzero _ (congrFun (congrFun hWf' v) i) fun τ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h τ, ← hWc' τ]`. Both sides reduce to the same expression. Use `hzero _ ?_ fun τ => ?_` and prove the remaining obligations. Establish `e` using `map_finPart_mul U (adMat D.host.F X)`. Rewrite `e` using `[hUf', Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrFun (congrFun e i) j`. Establish `e` using `map_compHom_mul θ τ U (adMat D.host.F X)`. Rewrite `e` using `[hUc', compHom_adMat τ θ hθ]`. Rewrite using `[← h τ, ← e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hf : (matHom V g).1.map (finPart D) = 1`. Establish `hg' : finHom V g = 1` using `hg`. Establish `e : (finHom V g).1 = (matHom V g).1.map (finPart D)` using `rfl`. Rewrite using `[← e, hg', Units.val_one]`. Use `matrix_ext_parts hθ _ _ ?_ fun τ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hf.trans (map_one_add_of_zero (finPart D) _ _ _ _ hUf' hWf').symm`. Establish `e` using `map_one_add_of (compHom θ τ) (adMat D.host.F X) U W (adMat D.host.F (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) X * V.gram)) (compHom_adMat τ θ hθ X) (hUc' τ) (hWc' τ) (compHom_adMat_adj τ θ hθ V X)`. Use `(hgτ τ).trans (Eq.trans ?_ e.symm)` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc (w τ)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adelic_of_real_comps : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) {m : ℕ}
     (X : Matrix (Fin V.rank) (Fin m) D.host.E) (u : D.what₂.Tau → Matrix (Fin m) (Fin V.rank) ℂ)

@@ -12,9 +12,9 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Establish `: ltr (g * h) = (ltr h).comp (ltr g)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Simplify using `only [ltr, MvPolynomial.aeval_X, AlgHom.comp_apply, map_sum, map_mul, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ltr_mul_left {ι : Type} [Fintype ι] [DecidableEq ι] (g h : Matrix ι ι ℂ) (f : MvPolynomial (ι × ι) ℂ) :
     ltr (g * h) f = ltr h (ltr g f) := by
@@ -27,9 +27,9 @@ theorem ltr_mul_left {ι : Type} [Fintype ι] [DecidableEq ι] (g h : Matrix ι 
   rw [this]; rfl
 
 /- English proof (translation)
-Establish `: ltr (1 : Matrix ι ι ℂ) = AlgHom.id ℂ _`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Simplify using `only [ltr, MvPolynomial.aeval_X, AlgHom.id_apply]`. Rewrite using `[Finset.sum_eq_single i]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Matrix.one_apply_ne hb.symm]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -65,23 +65,23 @@ noncomputable def dualPowRep {ι G : Type} [Fintype ι] [DecidableEq ι] [Group 
     rw [_root_.mul_inv_rev, map_mul, ((GlobalTheory.T.matrixKroneckerPower_tensorAction_algebra ι ℂ).1 n).2.1, transpose_mul, Matrix.toLin'_mul]; rfl
 
 /- English proof (translation)
-Introduce `ι _ _ Γ hΓ hss U hU`. Take `⟨G, _, ρ, hρ⟩` from `GlobalTheory.T.exists_group_hom_range_eq_of_isPre ι Γ hΓ`. Establish `hs : ∀ n, (dualPowRep ρ n).IsSemisimpleRepresentation`. Introduce `n`. Rewrite using `[← GlobalTheory.T.completelyReducible_toMatrix_iff_isSemisimpleRepresentation (Fin n → ι) G _ (dualPowRep ρ n) (Pi.basisFun ℂ _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `GlobalTheory.T.completelyReducible_kroneckerPower_transpose ι Γ hΓ hss n`. Use `h using 1` and compare the differences between its conclusion and the goal. Substitute `hρ` using the available equality. Use extensionality with `M`. Simplify using `only [Set.mem_range, Set.mem_image, LinearMap.toMatrix_eq_toMatrix']`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨ρ g⁻¹, ⟨_, rfl⟩, (LinearMap.toMatrix'_toLin' _).symm⟩`. Introduce and unpack `⟨_, ⟨g, rfl⟩, rfl⟩`. Use `⟨g⁻¹, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `LinearMap.toMatrix' (Matrix.toLin' (tpow n (ρ g⁻¹⁻¹))ᵀ) = _`. Rewrite using `[inv_inv, LinearMap.toMatrix'_toLin']`. Use `choose p _ hp2 hp3 using (GlobalTheory.T.leftTranslateMatrixPoly_tensorForm_properties ι).2.2.2`. Establish `hsemi : (ltrRep ρ).IsSemisimpleRepresentation`. Use `GlobalTheory.T.isSemisimpleRepresentation_of_iSup_range_equivariant G _ (ltrRep ρ) (Σ n : ℕ, (Fin n → ι)) (fun j => (Fin j.1 → ι) → ℂ) (fun j => dualPowRep ρ j.1) (fun j => p j.1 j.2) (fun j => hs j.1) ?_ ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨n, b⟩ g v`. Express the relevant statement in the definitionally equal form `p n b (Matrix.toLin' (tpow n (ρ g⁻¹))ᵀ v) = ltr (ρ g⁻¹) (p n b v)`. Rewrite using `[hp2, Matrix.toLin'_apply, Matrix.mulVec_transpose]`. Rewrite using `[eq_top_iff]`. Introduce `f _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MvPolynomial.sum_homogeneousComponent f]`. Use `Submodule.sum_mem _ fun n _ => ?_` and prove the remaining obligations. Take `⟨l, hl⟩` from `hp3 n _ (MvPolynomial.homogeneousComponent_isHomogeneous n f)`. Rewrite using `[hl]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `Submodule.mem_iSup_of_mem (⟨n, b⟩ : Σ n : ℕ, (Fin n → ι)) ⟨l b, rfl⟩`. Set `S : Subrepresentation (ltrRep ρ)` to `⟨U, fun g v hv => hU _ (hρ ▸ ⟨g⁻¹, rfl⟩) v hv⟩`. Take `⟨S', hS'⟩` from `hsemi.exists_isCompl S`. Use `⟨S'.toSubmodule, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg f hf`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hg` using `[← hρ]`. Take `⟨g, rfl⟩` from `hg`. Use `S'.apply_mem_toSubmodule g⁻¹ hf` as an intermediate fact. Express the relevant statement in the definitionally equal form `ltr (ρ g⁻¹⁻¹) f ∈ _ at this`. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[disjoint_iff]`. Conclude with `congrArg Subrepresentation.toSubmodule (disjoint_iff.1 hS'.1)`. Rewrite using `[codisjoint_iff]`. Conclude with `congrArg Subrepresentation.toSubmodule (codisjoint_iff.1 hS'.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ltr_completely_reducible : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), IsPre Γ → SS Γ → ∀ U : Submodule ℂ (MvPolynomial (ι × ι) ℂ), (∀ g ∈ Γ, ∀ f ∈ U, ltr g f ∈ U) → ∃ U' : Submodule ℂ (MvPolynomial (ι × ι) ℂ), (∀ g ∈ Γ, ∀ f ∈ U', ltr g f ∈ U') ∧ IsCompl U U' := by
   intro ι _ _ Γ hΓ hss U hU

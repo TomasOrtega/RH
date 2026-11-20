@@ -18,7 +18,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 namespace SrPerm
 
 /- English proof (translation)
-The claim follows from `h.trans (IsSubquotient.of_surjective E.symm.toIntertwiningMap E.symm.surjective)`.
+A detailed English derivation is pending.
 -/
 theorem sq_right {G V W U : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup U] [Module ℂ U] {σ : Representation ℂ G W} {ρ : Representation ℂ G V} {ρ' : Representation ℂ G U}
@@ -26,7 +26,7 @@ theorem sq_right {G V W U : Type} [Group G] [AddCommGroup V] [Module ℂ V] [Add
   h.trans (IsSubquotient.of_surjective E.symm.toIntertwiningMap E.symm.surjective)
 
 /- English proof (translation)
-The claim follows from `(IsSubquotient.of_surjective E.toIntertwiningMap E.surjective).trans h`.
+A detailed English derivation is pending.
 -/
 theorem sq_left {G V W U : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] [AddCommGroup U] [Module ℂ U] {σ : Representation ℂ G W} {τ : Representation ℂ G U}
@@ -34,13 +34,13 @@ theorem sq_left {G V W U : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddC
   (IsSubquotient.of_surjective E.toIntertwiningMap E.surjective).trans h
 
 /- English proof (translation)
-Establish `hU : ∀ u ∈ unipRad k f, u = 1` using `fun u hu => GlobalTheory.OneBlockCell.eq_one_of_mem_unipRad_single f j₀ h0 hu`. Establish `hK : twKer ρ (unipRad k f) 1 = ⊥`. Use `le_bot_iff.1 (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨n, v, rfl⟩`. Rewrite using `[hU n n.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Set `L : V ≃ₗ[ℂ] Jacquet ρ (unipRad k f)` to `(Submodule.quotEquivOfEqBot _ hK).symm`. Establish `hP : ∀ g : GL (Fin (c j₀)) k, g ∈ parab k f` using `fun g => GlobalTheory.OneBlockCell.mem_parab_of_single f j₀ h0 g`. Use `GlobalTheory.CompanionTheory.WordProd.OneBlockProd.nonempty_equiv_parInd f hρ hP (GlobalTheory.OneBlockCell.deltaHalf_eq_one_of_single j₀ h0) L (fun p v => ?_)` and prove the remaining obligations. Take `⟨u, hu, hp⟩` from `exists_levi_mul_unip k f p`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hp` using `[hU u hu, mul_one]`. Establish `hd : deltaHalf k (fun j => Fin (c j)) (leviProj k f p) = 1` using `GlobalTheory.OneBlockCell.deltaHalf_eq_one_of_single j₀ h0 _`. Use `show (twist (jacU f ρ) (deltaHalf k fun j => Fin (c j))⁻¹) (leviProj k f p) (Submodule.Quotient.mk v) = Submodule.Quotient.mk (ρ p v)`. Rewrite using `[twist_apply, MonoidHom.inv_apply, hd, inv_one, Units.val_one, one_smul]`. Simplify using `only [jacU, jacquet, MonoidHom.coe_mk, OneHom.coe_mk, Submodule.mapQ_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp]`.
+A detailed English derivation is pending.
 -/
 theorem equiv_parInd_jac {β : Type} [Fintype β] [LinearOrder β] (c : β → ℕ) (j₀ : β)
     (h0 : ∀ j, j ≠ j₀ → c j = 0) (f : (Σ j, Fin (c j)) ≃ Fin (c j₀)) {V : Type} [AddCommGroup V] [Module ℂ V]
@@ -67,9 +67,9 @@ theorem equiv_parInd_jac {β : Type} [Fintype β] [LinearOrder β] (c : β → �
   rw [← hp]
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Take `⟨e1⟩` from `GlobalTheory.CompanionTheory.WordProd.OneBlockProd.multiProd_single c j₀ h0 s f`. Take `⟨e2⟩` from `equiv_parInd_jac c j₀ h0 f ρ.ρ ρ.smooth`. Establish `h3 : IsSubquotient (multiProd f fun j => (s j).ρ) (parInd f (jac f ρ.ρ))` using `GlobalTheory.ParIndSubquot.parInd_isSubquotient k β (Fin (c j₀)) (fun j => Fin (c j)) f _ _ _ _ (isSmooth_jac f ρ.smooth) hs`. Establish `h4 : IsSubquotient (s j₀).ρ ρ.ρ` using `sq_right (sq_left e1 h3) e2.symm`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ⟩` from `h4.nonempty_equiv (s j₀).irr ρ.irr`. Conclude with `congrArg (Sigma.mk (c j₀)) (IrrRep.cl_eq_iff.2 ⟨φ.symm⟩)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem row_class {β : Type} [Fintype β] [LinearOrder β] {N : ℕ} (c : β → ℕ) (j₀ : β) (hN : c j₀ = N)
     (h0 : ∀ j, j ≠ j₀ → c j = 0) (f : (Σ j, Fin (c j)) ≃ Fin N) (ρ : IrrRep (GL (Fin N) k))
@@ -86,7 +86,7 @@ theorem row_class {β : Type} [Fintype β] [LinearOrder β] {N : ℕ} (c : β �
   exact congrArg (Sigma.mk (c j₀)) (IrrRep.cl_eq_iff.2 ⟨φ.symm⟩)
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Conclude with `⟨σ i₀, GlobalTheory.CompanionTheory.WordProd.OneBlockProd.multiProd_single b i₀ h0 σ g, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem col_class {α : Type} [Fintype α] [LinearOrder α] {N : ℕ} (b : α → ℕ) (i₀ : α) (hN : b i₀ = N)
     (h0 : ∀ i, i ≠ i₀ → b i = 0) (σ : ∀ i, IrrRep (GL (Fin (b i)) k)) (g : (Σ i, Fin (b i)) ≃ Fin N) :
@@ -100,19 +100,17 @@ def segIrr {d : ℕ} (σ : IrrRep (GL (Fin d) k)) (l : ℕ) (a : Fin l) : IrrRep
     PositivityTheory.Pf1.SegRepC.MultOne.isIrreducible_segTerm σ a⟩
 
 /- English proof (translation)
-Establish `hr : ∀ i, ∑ j, b.1 i j = d` using `fun i => by simpa using b.2.1 i`. Establish `hc : ∀ j, ∑ i, b.1 i j = d` using `fun j => by simpa using b.2.2 j`. Establish `two : ∀ (F : Fin l → ℕ), ∑ j, F j = d → ∀ j j', F j = d → F j' = d → j = j'`. Introduce `F hF j j' h1 h2`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `: F j + F j' ≤ ∑ x, F x`. Rewrite using `[← Finset.sum_pair hne]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) (fun _ _ _ => Nat.zero_le _)`. Use linear arithmetic over natural numbers and integers. Establish `one : ∀ (F : Fin l → ℕ), (∀ j, F j = 0 ∨ F j = d) → ∑ j, F j = d → ∃ j, F j = d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F h0 hF`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `: ∑ j, F j = 0` using `Finset.sum_eq_zero fun j _ => (h0 j).resolve_right (hne j)`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `zero : ∀ (F : Fin l → ℕ), (∀ j, F j = 0 ∨ F j = d) → ∑ j, F j = d → ∀ j, F j = d → ∀ j', j' ≠ j → F j' = 0` using `fun F h0 hF j hj j' hj' => (h0 j').resolve_right fun e => hj' (two F hF j' j e hj)`. Use `choose q hq using fun j => one (fun i => b.1 i j) (fun i => h01 i j) (hc j)`. Establish `qinj : Function.Injective q` using `fun j j' e => two (fun x => b.1 (q j) x) (hr (q j)) j j' (hq j) (e ▸ hq j')`. Set `w : Equiv.Perm (Fin l)` to `Equiv.ofBijective q (Finite.injective_iff_bijective.1 qinj)`. Establish `hcol : ∀ j, Nonempty ((multiProd (g j) fun i => (s i j).ρ).Equiv (segTerm σ.ρ l (w j)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `j`. Take `⟨τ, ⟨E⟩, hτ⟩` from `col_class (fun i => b.1 i j) (q j) (hq j) (zero (fun i => b.1 i j) (fun i => h01 i j) (hc j) (q j) (hq j)) (fun i => s i j) (g j)`. Establish `hrow` using `row_class (fun x => b.1 (q j) x) j (hq j) (zero (fun x => b.1 (q j) x) (fun x => h01 (q j) x) (hr (q j)) j (hq j)) (f (q j)) (segIrr σ l (q j)) (s (q j)) (hs (q j))`. Establish `e` using `hτ.trans hrow`. Establish `e' : τ.cl = (segIrr σ l (q j)).cl` using `eq_of_heq (Sigma.mk.inj_iff.1 e).2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨φ⟩` from `IrrRep.cl_eq_iff.1 e'`. Conclude with `⟨E.trans φ⟩`. Establish `hT : (piTensor fun a => segTerm σ.ρ l (w a)).IsIrreducible` using `GlobalTheory.ProdFiniteLength.piTensor_isIrreducible_of_schur _ (fun a => PositivityTheory.Pf1.SegRepC.MultOne.isIrreducible_segTerm σ (w a)) fun a φ hφ => GlobalTheory.CompanionTheory.SocleFrob.exists_eq_smul_id _ (PositivityTheory.Pf1.SegRepC.MultOne.isSmooth_segTerm σ (w a)) ( …`. Establish `h2 : IsSubquotient π (piTensor fun a => segTerm σ.ρ l (w a))` using `sq_right h (GlobalTheory.LocGL.piTensorEquiv fun j => (hcol j).some)`. Take `⟨φ⟩` from `h2.nonempty_equiv hπ hT`.
-
-Conclude with `⟨w, ⟨φ.symm⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_perm_of_cell {d l : ℕ} (hd : 0 < d) (σ : IrrRep (GL (Fin d) k))
     (b : SizeMatrix (fun _ : Fin l => Fin d) (fun _ : Fin l => Fin d))
@@ -173,7 +171,7 @@ end SrPerm
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨b, f, g, s, hs, hπs⟩` from `exists_cell_of_isSubquotient (hG k).1 (hG k).2 (consecBlocks l d) (consecBlocks l d) (PositivityTheory.Pf1.SegRepC.MultOne.isSmooth_segTerm σ) (PositivityTheory.Pf1.SegRepC.MultOne.hasFiniteLength_segTerm σ) hπ h`. Conclude with `SrPerm.exists_perm_of_cell hd σ b (PositivityTheory.Pf1.SegRepC.Perm.entries_zero_or_d hd σ hσ b f s hs) f g s hs π hπ hπs`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_perm_of_isSubquotient_jac (hG : GeometricLemma) {d l : ℕ} (hd : 0 < d) (hl : 0 < l)
     (σ : IrrRep (GL (Fin d) k)) (hσ : IsCuspidal σ.ρ)
@@ -190,17 +188,15 @@ theorem exists_perm_of_isSubquotient_jac (hG : GeometricLemma) {d l : ℕ} (hd :
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨w, ⟨φ⟩⟩` from `exists_perm_of_isSubquotient_jac hG hd (by decide) σ hσ ρ hρ (PositivityTheory.Pf1.SegRepC.Lift.isSubquotient_jac_multiProd_of_sub σ S hs)`. Establish `hne : w 1 ≠ w 0` using `fun e => absurd (w.injective e) (by decide)`. Break down `Fin.exists_fin_two.1 ⟨w 0, rfl⟩ with h0 | h0` into its components or cases. Establish `h1 : w 1 = 1`. Rewrite `hne` using `[h0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Fin.exists_fin_two.1 ⟨w 1, rfl⟩ with h | h` into its components or cases. Conclude with `absurd h hne`. Conclude with `h`. Establish `e : (fun a => segTerm σ.ρ 2 (w a)) = segTerm σ.ρ 2`. Use function extensionality and compare the values at `a`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `fin_cases a`. Simplify using `[h0]`. Simplify using `[h1]`. Rewrite `φ` using `[e]`. Conclude with `Or.inl ⟨φ⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the first alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1 : w 1 = 0`. Rewrite `hne` using `[h0]`. Break down `Fin.exists_fin_two.1 ⟨w 1, rfl⟩ with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hne`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (fun a => segTerm σ.ρ 2 (w a)) = fun a : Fin 2 => segTerm σ.ρ 2 a.rev`. Use function extensionality and compare the values at `a`. Use `fin_cases a`. Simplify using `[h0]`. Simplify using `[h1]`.
-
-Rewrite `φ` using `[e]`. Conclude with `Or.inr ⟨φ⟩`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem constituents_jac_sub (hG : GeometricLemma) {d : ℕ} (hd : 0 < d)
     (σ : IrrRep (GL (Fin d) k)) (hσ : IsCuspidal σ.ρ)

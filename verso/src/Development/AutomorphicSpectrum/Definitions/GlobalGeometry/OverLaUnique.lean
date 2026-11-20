@@ -132,12 +132,12 @@ section Basic
 omit [StarRing (𝓞 E)]
 
 /- English proof (translation)
-The claim follows from `(H.bar_eq a).symm`.
+A detailed English derivation is pending.
 -/
 theorem cjE_coe (H : Host E) (a : 𝓞 E) : cjE E (a : E) = (H.bar a : E) := (H.bar_eq a).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Function.injective_id, inferInstance, RingHom.Finite.id _, rfl, one_pos, fun x => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFinExt_id (T : CDVR) : IsFinExt (RingHom.id T.V) (RingHom.id T.Fr) 1 :=
   ⟨Function.injective_id, inferInstance, RingHom.Finite.id _, rfl, one_pos, fun x => by simp⟩
@@ -145,7 +145,7 @@ theorem isFinExt_id (T : CDVR) : IsFinExt (RingHom.id T.V) (RingHom.id T.Fr) 1 :
 variable {c} in
 
 /- English proof (translation)
-The claim follows from `ho.bc φ h.2.2.2.2.1 h.2.2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem IsFinExt.overLa {T T' : CDVR} {φV : T.V →+* T'.V} {φ : T.Fr →+* T'.Fr} {r : ℕ} (h : IsFinExt φV φ r)
     {la : HeightOneSpectrum (𝓞 c.F)} {io : c.F →+* T.Fr} {e : ℕ} (ho : OverLa la T.V io e) :
@@ -153,7 +153,7 @@ theorem IsFinExt.overLa {T T' : CDVR} {φV : T.V →+* T'.V} {φ : T.Fr →+* T'
   ho.bc φ h.2.2.2.2.1 h.2.2.2.2.2
 
 /- English proof (translation)
-The claim follows from `nval_bc φ h.2.2.2.2.1 h.2.2.2.2.2 e x`.
+A detailed English derivation is pending.
 -/
 theorem IsFinExt.nval_eq {T T' : CDVR} {φV : T.V →+* T'.V} {φ : T.Fr →+* T'.Fr} {r : ℕ} (h : IsFinExt φV φ r)
     (e : ℕ) (x : T.Fr) : nval T'.V (r * e) (φ x) = nval T.V e x :=
@@ -162,7 +162,7 @@ theorem IsFinExt.nval_eq {T T' : CDVR} {φV : T.V →+* T'.V} {φ : T.Fr →+* T
 variable {c} in
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `la.valuation_exists_uniformizer c.F`. Establish `h1 : vLa la π = 1` using `by simp [vLa, hπ]`. Use `(h.2 π).symm.trans (h'.2 π)` as an intermediate fact. Rewrite `this` using `[h1]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem overLa_unique {la : HeightOneSpectrum (𝓞 c.F)} {T : CDVR} {io : c.F →+* T.Fr} {e e' : ℕ}
     (h : OverLa la T.V io e) (h' : OverLa la T.V io e') : e = e' := by
@@ -188,7 +188,7 @@ theorem phU_mk (la : HeightOneSpectrum (𝓞 c.F)) {T : CDVR} {io : c.F →+* T.
     phU Xo c la (show PtU Xo c la from PtV.mk la ho y hy t ht) = t := rfl
 
 /- English proof (translation)
-Use `Real.sInf_nonneg ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, -, h, rfl⟩`. Distinguish the cases in `h0 : b = 0`. Simplify using `[h0]`. Conclude with `(h b hb h0).le`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phiC_nonneg {E : Type} [Field E] [NumberField E] (cj : E → E) {Y : Type} [AddCommGroup Y] [Module (𝓞 E) Y]
     (b : SymB cj Y) (hb : ∀ a, 0 ≤ (b : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a a) : 0 ≤ phiC cj b := by
@@ -201,7 +201,7 @@ theorem phiC_nonneg {E : Type} [Field E] [NumberField E] (cj : E → E) {Y : Typ
 variable {Xo c} in
 
 /- English proof (translation)
-Take `⟨e, ho, I, P, ϖ, Q, β, -, -, -, -, -, hpos, ht⟩` from `h`. Establish `he : (0 : ℝ) < e` using `by exact_mod_cast ho.1`. Use `phiC_nonneg _ β hpos` as an intermediate fact. Rewrite `this` using `[ht]`. Conclude with `nonneg_of_mul_nonneg_right this he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsPhiAt.nonneg {la : HeightOneSpectrum (𝓞 c.F)} {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {t : ℝ}
     (h : IsPhiAt Xo c la T io y t) : 0 ≤ t := by
@@ -212,9 +212,9 @@ theorem IsPhiAt.nonneg {la : HeightOneSpectrum (𝓞 c.F)} {T : CDVR} {io : c.F 
   exact nonneg_of_mul_nonneg_right this he
 
 /- English proof (translation)
-Establish `hb : b = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a b'`. Rewrite using `[show a = 0 from rfl, map_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `le_antisymm (Real.sInf_nonpos ?_) (phiC_nonneg _ _ fun a => by simp [hb])` and prove the remaining obligations. Introduce and unpack `_ ⟨l, -, -, rfl⟩`. Simplify using `[hb]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 example (cj : E → E) (b : SymB cj PUnit.{1}) : phiC cj b = 0 := by
   have hb : b = 0 := by
@@ -225,7 +225,7 @@ example (cj : E → E) (b : SymB cj PUnit.{1}) : phiC cj b = 0 := by
   simp [hb]
 
 /- English proof (translation)
-Establish `: Real.sqrt ((4 : ℕ) : ℝ) = 2`. Rewrite using `[show ((4 : ℕ) : ℝ) = 2 ^ 2 by norm_num]; exact Real.sqrt_sq (by norm_num)`. Rewrite using `[this]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 example : (2 * (1 : ℝ) * Real.sqrt ((4 : ℕ) : ℝ) < (11 : ℕ) ∧ 4 * 1 + 4 ≤ 11) ∧ ¬ 4 * 1 + 4 ≤ 7 := by
   have : Real.sqrt ((4 : ℕ) : ℝ) = 2 := by

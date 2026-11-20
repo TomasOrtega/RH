@@ -26,9 +26,9 @@ private abbrev Cs (J : Subgroup G) (x : G) : Set (G ⧸ J) :=
 variable {J B : Subgroup G} {L : Set G} {x y : G}
 
 /- English proof (translation)
-Take `⟨b, hb, hbB, z, hz, rfl⟩` from `hF k hk`. Use `⟨b, hb, hbB, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientGroup.eq]`. Use `J.inv_mem (hx.low z hz)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `group`.
+A detailed English derivation is pending.
 -/
 private theorem rep (hF : Fac J B L) (hx : Dom J B L x) {k : G} (hk : k ∈ J) :
     ∃ b ∈ J, b ∈ B ∧ (QuotientGroup.mk (k * x) : G ⧸ J) = QuotientGroup.mk (b * x) := by
@@ -40,7 +40,7 @@ private theorem rep (hF : Fac J B L) (hx : Dom J B L x) {k : G} (hk : k ∈ J) :
   group
 
 /- English proof (translation)
-Take `⟨b, hb, hbB, z, hz, rfl⟩` from `hF l hl`. Conclude with `⟨x * b * x⁻¹, hx.up b hb hbB, y⁻¹ * z * y, hy.low z hz, by group⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem swap (hF : Fac J B L) (hx : Dom J B L x) (hy : Dom J B L y) {l : G} (hl : l ∈ J) :
     ∃ a ∈ J, ∃ c ∈ J, x * l * y = a * (x * y) * c := by
@@ -48,7 +48,7 @@ private theorem swap (hF : Fac J B L) (hx : Dom J B L x) (hy : Dom J B L y) {l :
   exact ⟨x * b * x⁻¹, hx.up b hb hbB, y⁻¹ * z * y, hy.low z hz, by group⟩
 
 /- English proof (translation)
-Use `⟨g⁻¹ * (QuotientGroup.mk g : G ⧸ J).out, ?_, by group⟩` and prove the remaining obligations. Conclude with `QuotientGroup.eq.1 (QuotientGroup.out_eq' _).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem out_mk (J : Subgroup G) (g : G) :
     ∃ j ∈ J, (QuotientGroup.mk g : G ⧸ J).out = g * j := by
@@ -56,11 +56,11 @@ private theorem out_mk (J : Subgroup G) (g : G) :
   exact QuotientGroup.eq.1 (QuotientGroup.out_eq' _).symm
 
 /- English proof (translation)
-Take `⟨k, hk, rfl⟩` from `hc`. Take `⟨l, hl, rfl⟩` from `hd`. Take `⟨b, hb, hbB, e⟩` from `rep hF hx hk`. Rewrite using `[e]`. Take `⟨j, hj, ej⟩` from `out_mk J (b * x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, ei⟩` from `out_mk J (l * y)`. Take `⟨m, hm, hmB, em⟩` from `rep hF hy (J.mul_mem hj hl)`. Use `⟨b, hb, hbB, m, hm, hmB, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[ej, ei, QuotientGroup.eq]`. Use `J.mul_mem (J.inv_mem hi) (QuotientGroup.eq.1 em)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 private theorem cos_key (hF : Fac J B L) (hx : Dom J B L x) (hy : Dom J B L y) {c d : G ⧸ J}
     (hc : c ∈ Cs J x) (hd : d ∈ Cs J y) :
@@ -80,13 +80,13 @@ private theorem cos_key (hF : Fac J B L) (hx : Dom J B L x) (hy : Dom J B L y) {
   group
 
 /- English proof (translation)
-Take `⟨b, hb, hbB, m, hm, hmB, ec, e⟩` from `cos_key hF hx hy hc hd`. Take `⟨b', hb', hbB', m', hm', hmB', ec', e'⟩` from `cos_key hF hx hy hc' hd'`. Establish `h2 : (QuotientGroup.mk (b * x * (m * y)) : G ⧸ J) = QuotientGroup.mk (b' * x * (m' * y))`. Rewrite using `[← e, ← e', h]`. Establish `ht` using `QuotientGroup.eq.1 h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htB : (b * x * (m * y))⁻¹ * (b' * x * (m' * y)) ∈ B` using `B.mul_mem (B.inv_mem (B.mul_mem (B.mul_mem hbB hx.inB) (B.mul_mem hmB hy.inB))) (B.mul_mem (B.mul_mem hbB' hx.inB) (B.mul_mem hmB' hy.inB))`. Establish `hp` using `J.mul_mem (J.mul_mem hm (hy.up _ ht htB)) (J.inv_mem hm')`. Establish `hcc : c = c'`. Rewrite using `[ec, ec', QuotientGroup.eq]`. Use `hp using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `group`. Substitute `hcc` using the available equality. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Establish `h3` using `QuotientGroup.eq.1 h`. Establish `h4 : d.out⁻¹ * d'.out ∈ J`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Use `group`. Rewrite using `[← QuotientGroup.out_eq' d, ← QuotientGroup.out_eq' d']`. Conclude with `QuotientGroup.eq.2 h4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cos_inj (hF : Fac J B L) (hx : Dom J B L x) (hy : Dom J B L y) {c c' d d' : G ⧸ J}
     (hc : c ∈ Cs J x) (hc' : c' ∈ Cs J x) (hd : d ∈ Cs J y) (hd' : d' ∈ Cs J y)
@@ -115,13 +115,13 @@ private theorem cos_inj (hF : Fac J B L) (hx : Dom J B L x) (hy : Dom J B L y) {
   exact QuotientGroup.eq.2 h4
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, ⟨k, hk, rfl⟩, d, ⟨l, hl, rfl⟩, rfl⟩`. Take `⟨j, hj, ej⟩` from `out_mk J (k * x)`. Take `⟨i, hi, ei⟩` from `out_mk J (l * y)`. Take `⟨a, ha, e, he, hs⟩` from `swap hF hx hy (J.mul_mem hj hl)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨k * a, J.mul_mem hk ha, ?_⟩` and prove the remaining obligations. Rewrite using `[ej, ei, QuotientGroup.eq]`. Establish `hmul : k * x * j * (l * y * i) = k * a * (x * y) * (e * i)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `J.inv_mem (J.mul_mem he hi)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`. Introduce and unpack `⟨k, hk, rfl⟩`. Take `⟨j, hj, ej⟩` from `out_mk J (k * x)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, ⟨k, hk, rfl⟩, _, ⟨j⁻¹, J.inv_mem hj, rfl⟩, ?_⟩` and prove the remaining obligations. Take `⟨i, hi, ei⟩` from `out_mk J (j⁻¹ * y)`. Rewrite using `[ej, ei, QuotientGroup.eq]`. Use `hi using 1` and compare the differences between its conclusion and the goal. Use `group`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 private theorem cos_rng (hF : Fac J B L) (hx : Dom J B L x) (hy : Dom J B L y) (g : G ⧸ J) :
     (∃ c ∈ Cs J x, ∃ d ∈ Cs J y, g = QuotientGroup.mk (c.out * d.out)) ↔ g ∈ Cs J (x * y) := by
@@ -157,13 +157,13 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   {n : ℕ}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `(mem_iwahori_iff F n).1 hg`. Establish `hle : ∀ i j, i ≠ j → g i j ≠ 0 → valuation F ((uniformizer F : F) ^ (c i - c j) * g i j) ≤ valuation F (g i j)`. Introduce `i j e z`. Use `valuation_zpow_mul_le_pow_mul (F := F) (x := g i j) (e := 0) (z := c i - c j) (by have := h i j e z; push_cast; omega)` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[mem_iwahori_iff F n]`. Use `⟨fun i j => ?_, fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[diagPow_conj_apply]`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[h3]`. Distinguish the cases in `z : g i j = 0`. Simplify using `[z]`. Conclude with `(hle i j e z).trans (h1 i j)`. Rewrite using `[diagPow_conj_apply]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `z : g i j = 0`. Simplify using `[z]`. Conclude with `(hle i j hij.ne' z).trans_lt (h2 i j hij)`. Rewrite using `[diagPow_conj_apply]`. Simplify using `[h3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conj_mem (c : Fin n → ℤ) {g : GL (Fin n) F} (hg : g ∈ iwahori F n)
     (h : ∀ i j, i ≠ j → g i j ≠ 0 → c j ≤ c i) :
@@ -196,7 +196,7 @@ private abbrev Lw (F : Type*) [Field F] [ValuativeRel F] [TopologicalSpace F]
   ((iwahori F n ⊓ oppositeUnipotentRadical F n (id : Fin n → Fin n) : Subgroup _) : Set _)
 
 /- English proof (translation)
-Introduce `k hk`. Take `⟨x, hx, y, hy, z, hz, rfl⟩` from `iwahori_iwahoriFactorization' (F := F) (n := n) (β := (id : Fin n → Fin n)) monotone_id k hk`. Take `⟨hxI, hxN⟩` from `Subgroup.mem_inf.1 hx`. Take `⟨hyI, hyM⟩` from `Subgroup.mem_inf.1 hy`. Conclude with `⟨x * y, Subgroup.mul_mem _ hxI hyI, Subgroup.mul_mem _ (unipotentRadical_le_blockUpper hxN) (levi_le_blockUpper hyM), z, hz, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem iw_fac :
     Fac (iwahori F n) (blockUpper F n (id : Fin n → Fin n)) (Lw F n) := by
@@ -209,11 +209,9 @@ private theorem iw_fac :
     Subgroup.mul_mem _ (unipotentRadical_le_blockUpper hxN) (levi_le_blockUpper hyM), z, hz, rfl⟩
 
 /- English proof (translation)
-Use `⟨levi_le_blockUpper (diagPow_mem_levi ν), fun b hb hbB => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `conj_mem ν hb fun i j e nz => hν ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `nz ((mem_blockUpper F n).1 hbB (not_le.1 hlt))`. Take `⟨hzI, hzN⟩` from `Subgroup.mem_inf.1 hz`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `conj_mem (-ν) hzI fun i j e nz => ?_` as an intermediate fact. Rewrite `this` using `[diagPow_neg, inv_inv]`. Then use the resulting hypothesis. Establish `hji : j ≤ i`. Assume the negation of the conclusion as `hlt`. Conclude with `nz ((mem_oppositeUnipotentRadical.1 hzN).1 i j (not_le.1 hlt))`.
-
-Simplify using `using hν hji`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem iw_dom {ν : Fin n → ℤ} (hν : Antitone ν) :
     Dom (iwahori F n) (blockUpper F n (id : Fin n → Fin n)) (Lw F n) (Cartan.diagPow F n ν) := by
@@ -237,23 +235,23 @@ variable {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL
   (w : Pl K)
 
 /- English proof (translation)
-Take `⟨fx, -, -, sx, -, -⟩` from `UpperTheory.ConvolutionTheory.Tf.hopBasic K n μ w J x hO hC`. Take `⟨fy, my, py, sy, -, -⟩` from `UpperTheory.ConvolutionTheory.Tf.hopBasic K n μ w J y hO hC`. Take `⟨-, -, pxy, sxy, -, -⟩` from `UpperTheory.ConvolutionTheory.Tf.hopBasic K n μ w J (x * y) hO hC`. Take `⟨-, -, a1, -, -, hmul, -, -, -⟩` from `UpperTheory.ConvolutionTheory.Tf.commPrj K n μ (J.map (AdelicGLn.localEmbedding w))`. Use `letI : Fintype (Cs J x) := fx.fintype`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI : Fintype (Cs J y) := fy.fintype`. Establish `rmul : ∀ g h, rhoL μ w (g * h) = rhoL μ w g ∘L rhoL μ w h` using `fun g h => by`. Simplify using `only [rhoL, map_mul, hmul]`. Establish `single : ∀ (z : GL (Fin n) (w.adicCompletion K)) (T : LL μ →L[ℂ] LL μ), (∀ (ι : Type) [Fintype ι] (f : ι → GL (Fin n) (w.adicCompletion K)), Function.Injective (fun i => (QuotientGroup.mk (f i) : GL (Fin n) (w.adicCompletion K) ⧸ J)) → Set.range (fun i => (QuotientGroup.mk (f i) …`. Introduce `z T hT _ v hv`.
+Equip the data with the indicated structure. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hT (Cs J z) (fun d => d.1.out) (fun a b e => Subtype.ext ?_) ?_ v hv` and prove the remaining obligations. Simplify using `using e`. Use extensionality with `g`. Simplify using `only [QuotientGroup.out_eq', Set.mem_range, Subtype.exists, exists_prop, exists_eq_right]`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : prj (fixL μ w J) v ∈ fixL μ w J` using `a1 v`. Establish `e1 : Hop μ w J y v = ∑ d : Cs J y, rhoL μ w d.1.out (prj (fixL μ w J) v)`. Use `congrArg (fun T : LL μ →L[ℂ] LL μ => T v) py` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply] at this`. Rewrite using `[← this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `single y _ sy _ hu`. Establish `e2 : Hop μ w J x (Hop μ w J y v) = ∑ c : Cs J x, rhoL μ w c.1.out (Hop μ w J y v)` using `single x _ sx _ (my v)`. Establish `e3 : Hop μ w J (x * y) v = ∑ i : Cs J x × Cs J y, rhoL μ w (i.1.1.out * i.2.1.out) (prj (fixL μ w J) v)`. Use `congrArg (fun T : LL μ →L[ℂ] LL μ => T v) pxy` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Use `sxy (Cs J x × Cs J y) (fun i => i.1.1.out * i.2.1.out) ?_ ?_ _ hu` and prove the remaining obligations. Introduce and unpack `⟨⟨c, hc⟩, ⟨d, hd⟩⟩ ⟨⟨c', hc'⟩, ⟨d', hd'⟩⟩ e`. Take `⟨rfl, rfl⟩` from `hinj c c' d d' hc hc' hd hd' e`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. By extensionality, compare the relevant components.
 
-Use extensionality with `g`. Rewrite using `[← show _ ↔ g ∈ Cs J (x * y) from hrng g]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨c, hc⟩, ⟨d, hd⟩⟩, rfl⟩`. Conclude with `⟨c, hc, d, hd, rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨c, hc, d, hd, rfl⟩`. Conclude with `⟨⟨⟨c, hc⟩, ⟨d, hd⟩⟩, rfl⟩`. Rewrite using `[ContinuousLinearMap.comp_apply, e2, e1, e3, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[rmul, ContinuousLinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hop_mul (J : Subgroup (GL (Fin n) (w.adicCompletion K)))
     (hO : IsOpen (J : Set (GL (Fin n) (w.adicCompletion K))))
@@ -318,7 +316,7 @@ private theorem hop_mul (J : Subgroup (GL (Fin n) (w.adicCompletion K)))
   rw [rmul, ContinuousLinearMap.comp_apply]
 
 /- English proof (translation)
-Unfold `Uiw`. Rewrite using `[GroundTheory.Automorphic.Parabolic.diagPow_add]`. Conclude with `hop_mul μ w _ (GLnLocal.isOpen_iwahori _ n) (GLnLocal.isCompact_iwahori _ n) _ _ (fun _ _ _ _ h1 h2 h3 h4 e => cos_inj iw_fac (iw_dom ha) (iw_dom hb) h1 h2 h3 h4 e) (cos_rng iw_fac (iw_dom ha) (iw_dom hb))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem uiw_mul (a b : Fin n → ℤ) (ha : Antitone a) (hb : Antitone b) :
     Uiw μ w a ∘L Uiw μ w b = Uiw μ w (a + b) := by
@@ -331,15 +329,13 @@ private theorem uiw_mul (a b : Fin n → ℤ) (ha : Antitone a) (hb : Antitone b
 end Op
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ w ν ν' hν hν'`. Establish `hanti : ∀ j : ℕ, Antitone (j • ν)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[zero_nsmul]`. Conclude with `fun _ _ _ => le_rfl`. Consider the case `succ j ih`. Rewrite using `[succ_nsmul]`. Conclude with `ih.add hν`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨uiw_mul μ w ν ν' hν hν', fun j hj => ?_, GLnLocal.isOpen_iwahori _ n, GLnLocal.isCompact_iwahori _ n, ‖Uiw μ w ν‖, fun j => ?_⟩` and prove the remaining obligations. Proceed by induction on `j, hj using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ j hj ih`. Rewrite using `[pow_succ, ih, succ_nsmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Conclude with `uiw_mul μ w _ _ (hanti j) hν`. Consider the cases of `j with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero]`. Conclude with `ContinuousLinearMap.norm_id_le`.
-
-Consider the case `succ j => exact norm_pow_le' _ (Nat.succ_pos j)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.uiwPow :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K) (ν ν' : Fin n → ℤ), Antitone ν → Antitone ν' →

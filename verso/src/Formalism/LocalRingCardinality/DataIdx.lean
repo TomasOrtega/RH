@@ -108,7 +108,7 @@ def hLL (μ : D.what₂.Tup) (j : ℕ) (x y : D.what₂.MtL μ j) : D.what₂.LL
   if h : ∃ c : D.what₂.LL, D.what₂.embLL c = inner ℂ (D.what₂.jMt μ j x) (D.what₂.jMt μ j y) then h.choose else 0
 
 /- English proof (translation)
-Unfold `hLL`. Rewrite using `[dif_pos (h μ j h1 h2 x y)]`. Conclude with `(h μ j h1 h2 x y).choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hLL_spec (h : HermRat D) (μ : D.what₂.Tup) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (x y : D.what₂.MtL μ j) :
@@ -146,7 +146,7 @@ def FullRank : Prop :=
     Submodule.span D.what₂.LL (thTj X μ j : Set (X.MjH j).V) = ⊤
 
 /- English proof (translation)
-The claim follows from `inj_of_li D.what₂.embLL (X.jM j) (X.MjH j).b (X.jM_basis j).1`.
+A detailed English derivation is pending.
 -/
 theorem jM_inj (j : ℕ) : Function.Injective (X.jM j) :=
   inj_of_li D.what₂.embLL (X.jM j) (X.MjH j).b (X.jM_basis j).1
@@ -157,7 +157,7 @@ def thetaL (μ : D.what₂.Tup) (j : ℕ)
   descend (D.what₂.jMt μ j) (X.jM j) (jM_inj X j) (D.what₂.thetaP μ j) h
 
 /- English proof (translation)
-The claim follows from `descend_spec (D.what₂.jMt μ j) (X.jM j) (jM_inj X j) (D.what₂.thetaP μ j) h x`.
+A detailed English derivation is pending.
 -/
 theorem thetaL_spec (μ : D.what₂.Tup) (j : ℕ)
     (h : ∀ x : D.what₂.MtL μ j, ∃ y, X.jM j y = D.what₂.thetaP μ j (D.what₂.jMt μ j x)) (x : D.what₂.MtL μ j) :
@@ -165,9 +165,9 @@ theorem thetaL_spec (μ : D.what₂.Tup) (j : ℕ)
   descend_spec (D.what₂.jMt μ j) (X.jM j) (jM_inj X j) (D.what₂.thetaP μ j) h x
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hy⟩`. Conclude with `⟨x, hx, jM_inj X j (by rw [hy]; exact thetaL_spec X μ j h x)⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x, hx, thetaL_spec X μ j h x⟩`.
+Supply the required witnesses or components.
 -/
 theorem thImg_eq_map (μ : D.what₂.Tup) (j : ℕ)
     (h : ∀ x : D.what₂.MtL μ j, ∃ y, X.jM j y = D.what₂.thetaP μ j (D.what₂.jMt μ j x))
@@ -212,9 +212,9 @@ namespace Formalism.BasicNotions.Idx
 open NumberField IsDedekindDomain Formalism.BasicNotions
 
 /- English proof (translation)
-Establish `h : (X.MjH j).L = thTj X μ j` using `SetLike.ext fun x => by`. Rewrite using `[Subsingleton.elim x 0]`. Conclude with `⟨fun _ => zero_mem _, fun _ => zero_mem _⟩`. Unfold `IjIdx Formalism.HermitianLatticesTheory.lidx`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_self _`.
+A detailed English derivation is pending.
 -/
 theorem IjIdx_of_subsingleton {D : D7} (X : DivX D) (μ : D.what₂.Tup) (j : ℕ) (w : D.what₂.places.Pl)
     [Subsingleton (X.MjH j).V] : IjIdx X μ j w = 0 := by
@@ -224,9 +224,9 @@ theorem IjIdx_of_subsingleton {D : D7} (X : DivX D) (μ : D.what₂.Tup) (j : �
   rw [h]; exact sub_self _
 
 /- English proof (translation)
-Establish `h : TjL D μ j = TjDual D μ j` using `SetLike.ext fun x => by`. Rewrite using `[Subsingleton.elim x 0]`. Conclude with `⟨fun _ => zero_mem _, fun _ => zero_mem _⟩`. Unfold `jwIdx Formalism.HermitianLatticesTheory.lidx`. Rewrite using `[← h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_self _`.
+A detailed English derivation is pending.
 -/
 theorem jwIdx_of_subsingleton (D : D7) (μ : D.what₂.Tup) (j : ℕ) (w : D.what₂.places.Pl)
     [Subsingleton (D.what₂.MtL μ j)] : jwIdx D μ j w = 0 := by
@@ -283,9 +283,9 @@ def NChoice.toFracE (D : D7) (c : NChoice D) (w : D.what₂.places.Pl) (j : ℕ)
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Simplify using `only [NChoice.thPe, LinearMap.coe_comp, Function.comp_apply, LinearMap.baseChange_tmul, LinearEquiv.coe_coe]`. Proceed by induction on `(D.nexp.thP (c.twI w) j (c.sd w) (c.k' w) (c.Q w) ((c.psi' w).comp (D.ntw.art (c.twI w) (c.Q w))) m) using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a f`. Rewrite using `[TensorProduct.AlgebraTensorModule.cancelBaseChange_tmul, LinearMap.rTensor_tmul]`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Algebra.smul_def]`. Consider the case `add x y hx hy => rw [TensorProduct.tmul_add, map_add, hx, hy, map_add]`.
+Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem NChoice.thPe_one (D : D7) (c : NChoice D) (w : D.what₂.places.Pl) (j : ℕ)
     (m : D.nexp.MtV (c.twI w) j (c.sd w) (c.k' w) (c.Q w) ((c.psi' w).comp (D.ntw.art (c.twI w) (c.Q w)))) :

@@ -16,13 +16,13 @@ variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Number
   [Algebra F K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Introduce `x hx` and use `hL.2 ▸ Submodule.subset_span hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_of_isLatIn {X : Submodule K V} {L : Submodule (𝓞 K) V} (hL : IsLatIn X L) :
     ∀ x ∈ L, x ∈ X := fun x hx => hL.2 ▸ Submodule.subset_span hx
 
 /- English proof (translation)
-The claim follows from `hA.1.sup hB.1 span_eq_top := by rw [eq_top_iff, ← hc.sup_eq_top] refine sup_le ?_ ?_ · rw [← hA.2] exact Submodule.span_mono (SetLike.coe_subset_coe.mpr le_sup_left) · rw [← hB.2] exact Submodule.span_mono (SetLike.coe_subset_coe.mpr le_sup_right)`.
+A detailed English derivation is pending.
 -/
 theorem isLattice_sup {X Y : Submodule K V} (hc : IsCompl X Y) {A B : Submodule (𝓞 K) V}
     (hA : IsLatIn X A) (hB : IsLatIn Y B) : Submodule.IsLattice K (A ⊔ B) where
@@ -36,7 +36,7 @@ theorem isLattice_sup {X Y : Submodule K V} (hc : IsCompl X Y) {A B : Submodule 
       exact Submodule.span_mono (SetLike.coe_subset_coe.mpr le_sup_right)
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hz`. Rewrite using `[map_add, prO_apply, prO_apply, Submodule.projection_apply_of_mem_left hc (hA a ha), (Submodule.projection_apply_eq_zero_iff hc).2 (hB b hb), add_zero]`. Conclude with `ha`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prO_sup {X Y : Submodule K V} (hc : IsCompl X Y) {A B : Submodule (𝓞 K) V}
     (hA : ∀ x ∈ A, x ∈ X) (hB : ∀ y ∈ B, y ∈ Y) {z : V} (hz : z ∈ A ⊔ B) : prO hc z ∈ A := by
@@ -46,7 +46,7 @@ theorem prO_sup {X Y : Submodule K V} (hc : IsCompl X Y) {A B : Submodule (𝓞 
   exact ha
 
 /- English proof (translation)
-Take `⟨t, ht, htz⟩` from `(LocF.mem_locF_iff hp _ z).1 hz`. Use `(LocF.mem_locF_iff hp _ _).2 ⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.map_smul]`. Conclude with `prO_sup hc hA hB htz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prO_locF {X Y : Submodule K V} (hc : IsCompl X Y) {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime)
     {A B : Submodule (𝓞 K) V} (hA : ∀ x ∈ A, x ∈ X) (hB : ∀ y ∈ B, y ∈ Y) {z : V}
@@ -57,11 +57,11 @@ theorem prO_locF {X Y : Submodule K V} (hc : IsCompl X Y) {𝔭 : Ideal (𝓞 F)
   exact prO_sup hc hA hB htz
 
 /- English proof (translation)
-Substitute `hΛ₀` using the available equality. Establish `hp` using `h𝔭.isPrime`. Take `⟨r, hr⟩` from `LIOrb.exists_pow_smul_le hN₀ (isLattice_sup hc.symm hT hM) h𝔭`. Establish `hsurj` using `toDisc_surj h hc.symm T (locF 𝔭 N₀) 𝔭 hiW hpr`. Establish `hker : ((extP K 𝔭) ^ r • ⊤ : Submodule (𝓞 K) ↥(locF 𝔭 N₀)) ≤ LinearMap.ker (toDisc h hc.symm T (locF 𝔭 N₀) 𝔭 hiW)`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Submodule.smul_le]`. Introduce `a ha y _`. Rewrite using `[mem_ker_toDisc]`. Establish `h1 : a • (y : V) ∈ locF 𝔭 (T ⊔ M)` using `hr (Submodule.smul_mem_smul ha y.2)`. Conclude with `prO_locF hc.symm hp (mem_of_isLatIn hT) (mem_of_isLatIn hM) h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := LIOrb.finite_quot hN₀ h𝔭 r`. Use `Finite.of_surjective (((extP K 𝔭) ^ r • ⊤ : Submodule (𝓞 K) ↥(locF 𝔭 N₀)).liftQ (toDisc h hc.symm T (locF 𝔭 N₀) 𝔭 hiW) hker) ?_` and prove the remaining obligations. Introduce `d`. Take `⟨y, rfl⟩` from `hsurj d`. Conclude with `⟨Submodule.Quotient.mk y, Submodule.liftQ_apply _ _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem discMod_finite [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V}
     (hc : IsCompl U (orthK h U)) {M T Λ₀ N₀ : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)}
@@ -90,9 +90,9 @@ theorem discMod_finite [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K
   exact ⟨Submodule.Quotient.mk y, Submodule.liftQ_apply _ _ _⟩
 
 /- English proof (translation)
-Use `⟨(L₁ ⊔ L₂) ⊓ Λ, ⟨(hL₁.fg.sup hL₂).of_le inf_le_left, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hL₁.span_eq_top]`. Conclude with `Submodule.span_mono (fun x hx => ⟨Submodule.mem_sup_left hx, h1 hx⟩)`. Establish `e` using `LIOrb.IA.locF_inf 𝔭 h𝔭.isPrime (L₁ ⊔ L₂) Λ`. Rewrite `e` using `[hΛ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `le_antisymm inf_le_right (le_inf (h2.trans (LocF.locF_mono 𝔭 le_sup_right)) le_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem exists_lattice_locF {Λ L₁ L₂ : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     (hL₁ : Submodule.IsLattice K L₁) (hL₂ : L₂.FG) (hΛ : locF 𝔭 Λ = Λ) (h1 : L₁ ≤ Λ)

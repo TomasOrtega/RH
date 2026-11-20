@@ -24,11 +24,11 @@ open IsDedekindDomain NumberField
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `set P : Ideal ℤ := v.asIdeal.under ℤ with hP`. Establish `hn : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Establish `hfin : (P.primesOver (𝓞 E)).Finite` using `Set.finite_of_ncard_pos (by rw [h]; exact hn)`. Use `letI : Fintype (P.primesOver (𝓞 E)) := hfin.fintype`. Establish `hcard : Fintype.card (P.primesOver (𝓞 E)) = Module.finrank ℚ E`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.card_eq_nat_card, Nat.card_coe_set_eq]`. Conclude with `h`. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank P (𝓞 E)`. Rewrite `hsum` using `[RingOfIntegers.rank]`. Establish `hpos : ∀ r ∈ (Finset.univ : Finset (P.primesOver (𝓞 E))), (fun _ => 1) r ≤ r.1.ramificationIdx ℤ * r.1.inertiaDeg ℤ` using `fun r _ => Nat.mul_pos (Ideal.ramificationIdx_pos r.1 ℤ) (Ideal.inertiaDeg_pos r.1 ℤ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall` using `(Finset.sum_eq_sum_iff_of_le hpos).1 (by rw [← Fintype.card_eq_sum_ones, hcard, hsum])`. Establish `hm` using `(hall ⟨q, hq⟩ (Finset.mem_univ _)).symm`. Conclude with `Nat.eq_one_of_mul_eq_one_right hm`.
+A detailed English derivation is pending.
 -/
 theorem ramificationIdx_eq_one_of_splitsFully (v : HeightOneSpectrum (𝓞 F))
     (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SplitsFully E v) (q : Ideal (𝓞 E)) (hq : q ∈ (v.asIdeal.under ℤ).primesOver (𝓞 E)) :
@@ -50,9 +50,9 @@ theorem ramificationIdx_eq_one_of_splitsFully (v : HeightOneSpectrum (𝓞 F))
   exact Nat.eq_one_of_mul_eq_one_right hm
 
 /- English proof (translation)
-Establish `: NeZero w.asIdeal` using `⟨w.ne_bot⟩`. Establish `hq` using `Nat.absNorm_under_prime w.asIdeal`. Establish `hd : (Ideal.absNorm (w.asIdeal.under ℤ) : ℤ) ∣ (p : ℤ)`. Rewrite using `[← Int.cast_mem_ideal_iff]`. Simplify using `using hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `he : Ideal.absNorm (w.asIdeal.under ℤ) = p` using `(Nat.prime_dvd_prime_iff_eq hq hp).1 (Int.natCast_dvd_natCast.1 hd)`. Rewrite using `[← Int.ideal_span_absNorm_eq_self (w.asIdeal.under ℤ), he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem under_eq_span_of_mem (w : HeightOneSpectrum (𝓞 E)) {p : ℕ} (hp : p.Prime)
     (hw : ((p : ℕ) : 𝓞 E) ∈ w.asIdeal) : w.asIdeal.under ℤ = Ideal.span {(p : ℤ)} := by
@@ -65,13 +65,13 @@ theorem under_eq_span_of_mem (w : HeightOneSpectrum (𝓞 E)) {p : ℕ} (hp : p.
   rw [← Int.ideal_span_absNorm_eq_self (w.asIdeal.under ℤ), he]
 
 /- English proof (translation)
-Establish `hp : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hl`. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible hp.irreducible`. Establish `hmap : Ideal.map (algebraMap ℤ (𝓞 E)) (Ideal.span {(p : ℤ)}) = Ideal.span {((p : ℕ) : 𝓞 E)}`. Rewrite using `[Ideal.map_span]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hle : Ideal.map (algebraMap ℤ (𝓞 E)) (Ideal.span {(p : ℤ)}) ≤ w.asIdeal`. Rewrite using `[hmap, Ideal.span_le]`. Simplify using `using hv`. Use `w.isPrime` as an intermediate fact. Establish `: w.asIdeal.LiesOver (Ideal.span {(p : ℤ)})` using `⟨hmax.eq_of_le (Ideal.comap_ne_top _ w.isPrime.ne_top) (Ideal.map_le_iff_le_comap.mp hle)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : Ideal.span {(p : ℤ)} ≠ ⊥` using `by simpa using hl.ne_zero`. Rewrite `he` using `[← Ideal.ramificationIdx'_eq_ramificationIdx (Ideal.span {(p : ℤ)}) w.asIdeal hb]`. Introduce `hsq`. Establish `hne : Ideal.ramificationIdx' (Ideal.span {(p : ℤ)}) w.asIdeal ≠ 1`. Rewrite using `[Ideal.ramificationIdx'_ne_one_iff hle, hmap, Ideal.span_le]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hsq`. Conclude with `hne he`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem not_mem_sq_of_ramificationIdx {p : ℕ} (hl : p.Prime) (w : HeightOneSpectrum (𝓞 E))
     (hv : ((p : ℕ) : 𝓞 E) ∈ w.asIdeal) (he : w.asIdeal.ramificationIdx ℤ = 1) :
@@ -94,11 +94,9 @@ theorem not_mem_sq_of_ramificationIdx {p : ℕ} (hl : p.Prime) (w : HeightOneSpe
   exact hne he
 
 /- English proof (translation)
-Establish `: NeZero v.asIdeal` using `⟨v.ne_bot⟩`. Use `set p := Ideal.absNorm (v.asIdeal.under ℤ) with hpdef`. Establish `hp : p.Prime` using `Nat.absNorm_under_prime v.asIdeal`. Establish `hpv : ((p : ℕ) : 𝓞 F) ∈ v.asIdeal` using `Int.absNorm_under_mem v.asIdeal`. Establish `hP : v.asIdeal.under ℤ = Ideal.span {(p : ℤ)}` using `(Int.ideal_span_absNorm_eq_self _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : ∀ w : HeightOneSpectrum (𝓞 E), ((p : ℕ) : 𝓞 E) ∈ w.asIdeal → ((p : ℕ) : 𝓞 E) ∉ w.asIdeal ^ 2`. Introduce `w hw`. Establish `hmem : w.asIdeal ∈ (v.asIdeal.under ℤ).primesOver (𝓞 E)` using `⟨w.isPrime, ⟨by rw [hP, under_eq_span_of_mem w hp hw]⟩⟩`. Conclude with `not_mem_sq_of_ramificationIdx hp w hw (ramificationIdx_eq_one_of_splitsFully v h _ hmem)`. Establish `hnd` using `GlobalTheory.SplitUnram.not_dvd_different hp v hpv (GlobalTheory.SplitUnram.not_mem_sq_of_ext hE v)`.
-
-Conclude with `fun hle => hnd (Ideal.dvd_iff_le.2 hle)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem not_le_differentIdeal (v : HeightOneSpectrum (𝓞 F)) (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SplitsFully E v) :
     ¬ differentIdeal ℤ (𝓞 F) ≤ v.asIdeal := by
@@ -118,7 +116,7 @@ theorem not_le_differentIdeal (v : HeightOneSpectrum (𝓞 F)) (h : GlobalTheory
 end GlobalTheory.SplitFullyUnr
 
 /- English proof (translation)
-Introduce `D T L sc G W v hv`. Conclude with `GlobalTheory.BaseGoodPlace.psiUnr_of_not_le W.ψ_std v (GlobalTheory.SplitFullyUnr.not_le_differentIdeal v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SplitFullyUnr.psiUnr_of_splitsFully : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F),
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SplitsFully D.host.E v → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PsiUnr W.ψ v := by

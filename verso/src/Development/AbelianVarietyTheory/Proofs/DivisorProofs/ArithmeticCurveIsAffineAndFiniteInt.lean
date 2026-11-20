@@ -14,7 +14,7 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier G
 namespace GlobalTheory.ArithCurve
 
 /- English proof (translation)
-Take `⟨m, i, hi, rfl⟩` from `h`. Use `isProper_str R m` as an intermediate fact. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isProper_of_projOver {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R}
     (h : IsProjOver f) : IsProper f := by
@@ -23,9 +23,9 @@ theorem isProper_of_projOver {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶
   infer_instance
 
 /- English proof (translation)
-Introduce `hc`. Establish `hu : ∀ x : Sp ℤ, x = genericPoint (Sp ℤ)` using `fun x => by`. Establish `hx : x ∈ closure ({genericPoint (Sp ℤ)} : Set (Sp ℤ))` using `(genericPoint_spec (Sp ℤ)).def ▸ Set.mem_univ x`. Rewrite `hx` using `[hc.closure_eq]`. Then use the resulting hypothesis. Set `a : PrimeSpectrum ℤ` to `⟨⊥, Ideal.bot_prime⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Set `b : PrimeSpectrum ℤ` to `⟨Ideal.span {(2 : ℤ)}, (Ideal.span_singleton_prime (by norm_num)).2 Int.prime_two⟩`. Establish `hab : a = b` using `(hu (show Sp ℤ from a)).trans (hu (show Sp ℤ from b)).symm`. Establish `h2 : (2 : ℤ) ∈ b.asIdeal` using `Ideal.subset_span rfl`. Rewrite `h2` using `[← hab]`. Conclude with `absurd ((Submodule.mem_bot ℤ).1 h2) (by norm_num)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_isClosed_genericPoint_int : ¬ IsClosed ({genericPoint (Sp ℤ)} : Set (Sp ℤ)) := by
   intro hc
@@ -42,21 +42,19 @@ theorem not_isClosed_genericPoint_int : ¬ IsClosed ({genericPoint (Sp ℤ)} : S
   exact absurd ((Submodule.mem_bot ℤ).1 h2) (by norm_num)
 
 /- English proof (translation)
-Introduce `k _ Y q h`. Use `h.isIntegral` as an intermediate fact. Use `h.isNoetherian` as an intermediate fact. Establish `hd : topologicalKrullDim Y = 1` using `by simpa using h.dim_eq`. Establish `: IsProper q` using `isProper_of_projOver h.isProjOver`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsFinite (spMap (Int.castRingHom k))`. Use `h.finite` as an intermediate fact. Rewrite using `[IsFinite.SpecMap_iff]`. Express the relevant statement in the definitionally equal form `(Int.castRingHom k).Finite`. Rewrite using `[← algebraMap_int_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.finite_algebraMap.2 ‹_›`. Use `set f : Y ⟶ Sp ℤ := q ≫ spMap (Int.castRingHom k) with hf`. Establish `: Flat f` using `h.flat`. Establish `: IsProper f` using `inferInstance`. Establish `hη : f (genericPoint Y) = genericPoint (Sp ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨y, hy, e⟩` from `Flat.generalizingMap f (genericPoint_specializes (f (genericPoint Y)))`. Rewrite `e` using `[(hy.antisymm (genericPoint_specializes y)).eq]`. Then use the resulting hypothesis. Establish `hfib : ∀ z, (f ⁻¹' {z}).Finite`. Introduce `z`. Distinguish the cases in `hz : z = genericPoint (Sp ℤ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `(Set.finite_singleton (genericPoint Y)).subset fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hc` using `f.isClosedMap _ (ProperCurve.isClosed_singleton hd hne)`. Rewrite `hc` using `[Set.image_singleton, show f y = z from hy, hz]`. Conclude with `not_isClosed_genericPoint_int hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(ProperCurve.finite_of_isClosed hd (isClosed_closure.preimage f.continuous) ?_).subset (Set.preimage_mono subset_closure)` and prove the remaining obligations. Introduce `hmem`. Rewrite `hmem` using `[Set.mem_preimage, hη, ← specializes_iff_mem_closure]`. Conclude with `hz (hmem.antisymm (genericPoint_specializes z)).eq`. Establish `: LocallyQuasiFinite f` using `.of_finite_preimage_singleton f hfib`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: IsFinite f` using `.of_isProper_of_locallyQuasiFinite f`. Establish `: IsAffine Y` using `isAffine_of_isAffineHom f`. Use `⟨this, ?_⟩` and prove the remaining obligations. Establish `h1` using `IsFinite.finite_app f ⊤ (isAffineOpen_top _)`. Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv.hom.Finite` using `RingHom.Finite.of_surjective _ fun x => ⟨(Scheme.ΓSpecIso (CommRingCat.of ℤ)).hom x, by simp⟩`.
-
-Establish `e : (f.app ⊤).hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv.hom = algebraMap ℤ Γ(Y, ⊤)` using `RingHom.ext_int _ _`. Conclude with `RingHom.finite_algebraMap.1 (e ▸ h1.comp h2)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAffine_and_finite : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (q : Y ⟶ Sp k),
     IsArithVar q 0 → IsAffine Y ∧ Module.Finite ℤ Γ(Y, ⊤) := by

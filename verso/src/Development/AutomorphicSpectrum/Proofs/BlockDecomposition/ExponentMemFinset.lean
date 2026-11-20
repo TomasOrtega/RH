@@ -9,7 +9,7 @@ namespace GlobalTheory.CompanionTheory.Latexp
 
 open GroundTheory.Automorphic.Reduction in
 /- English proof (translation)
-Unfold `PositivityTheory.Rg.Rs.An.tor`. Rewrite using `[CuspidalSpectrum.detModule_diagUnits_posIdele]`. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul, ← Real.exp_nat_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem detModule_tor_one (K : Type) [Field K] [NumberField K] (n : ℕ) :
     (detModule K n (PositivityTheory.Rg.Rs.An.tor K fun _ : Fin n => (1 : ℝ)) : ℝ)
@@ -21,13 +21,13 @@ theorem detModule_tor_one (K : Type) [Field K] [NumberField K] (n : ℕ) :
 
 open GroundTheory.Automorphic.Reduction in
 /- English proof (translation)
-Establish `h1 : detModule K n (AdelicGLn.diagonal K n γ₀) = 1` using `mem_normOneGL_iff_detModule.1 (rationalGL_le_normOneGL ⟨γ₀, rfl⟩)`. Rewrite using `[map_mul, h1, one_mul, map_zpow]`. Establish `hv : ∀ (s : {r : ℝ // 0 < r}) (k : ℤ), ((s ^ k : {r : ℝ // 0 < r}) : ℝ) = (s : ℝ) ^ k`. Introduce `s k`. Establish `hinv : ∀ u : {r : ℝ // 0 < r}, ((u⁻¹ : {r : ℝ // 0 < r}) : ℝ) = (u : ℝ)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u`. Establish `h` using `congrArg Subtype.val (mul_inv_cancel u)`. Rewrite `h` using `[Positive.val_mul, Positive.val_one]`. Conclude with `eq_inv_of_mul_eq_one_right h`. Establish `hpow : ∀ (u : {r : ℝ // 0 < r}) (j : ℕ), ((u ^ j : {r : ℝ // 0 < r}) : ℝ) = (u : ℝ) ^ j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ, pow_succ, Positive.val_mul, ih]`. Consider the cases of `k with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `ofNat j => simp only [Int.ofNat_eq_natCast, zpow_natCast, hpow]`. Consider the case `negSucc j => rw [zpow_negSucc, zpow_negSucc, hinv, hpow]`. Rewrite using `[hv, detModule_tor_one, ← Real.rpow_intCast, ← Real.exp_mul, mul_comm]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detModule_lhs (K : Type) [Field K] [NumberField K] (n : ℕ) (γ₀ : GL (Fin n) K) (m : ℤ) :
     (detModule K n (AdelicGLn.diagonal K n γ₀ * (PositivityTheory.Rg.Rs.An.tor K fun _ : Fin n => (1 : ℝ)) ^ m) : ℝ)
@@ -54,7 +54,7 @@ theorem detModule_lhs (K : Type) [Field K] [NumberField K] (n : ℕ) (γ₀ : GL
 
 open GroundTheory.Automorphic.Reduction in
 /- English proof (translation)
-Establish `h1 : detModule K n (unipGL X) = 1` using `mem_normOneGL_iff_detModule.1 (CuspidalSpectrum.unipGL_mem_normOneGL X)`. Establish `h2 : detModule K n (unipGL Y) = 1` using `mem_normOneGL_iff_detModule.1 (CuspidalSpectrum.unipGL_mem_normOneGL Y)`. Simplify using `only [map_mul, map_inv, h1, h2, inv_one, one_mul, mul_one]`. Rewrite using `[mul_comm (detModule K n a), mul_assoc, mul_inv_cancel, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem detModule_rhs (K : Type) [Field K] [NumberField K] (n r : ℕ) (X Y : UPos n r → 𝔸[K])
     (a q : AdelicGLn.AdelicGL K n) :
@@ -72,15 +72,13 @@ namespace GlobalTheory.CompanionTheory.Latexp
 open GroundTheory.Automorphic.Reduction in
 
 /- English proof (translation)
-Introduce `K _ _ n r hn Q hQ`. Establish `hdc : Continuous fun g : AdelicGLn.AdelicGL K n => (detModule K n g : ℝ)` using `continuous_subtype_val.comp continuous_detModule`. Take `⟨a, b, ha, -, hab⟩` from `Reduction.exists_pos_bounds hQ hdc (fun g _ => (detModule K n g).2)`. Establish `hN : 0 < (n : ℝ) * (Module.finrank ℚ K : ℝ)` using `mul_pos (Nat.cast_pos.2 hn) (Nat.cast_pos.2 Module.finrank_pos)`. Use `set N : ℝ := (n : ℝ) * (Module.finrank ℚ K : ℝ) with hNdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Finset.Icc ⌊Real.log a / N⌋ ⌈Real.log b / N⌉, ?_⟩` and prove the remaining obligations. Introduce `t X Y q hq γ₀ m h`. Establish `h1` using `congrArg (fun g => (detModule K n g : ℝ)) h`. Use `beta_reduce at h1`. Rewrite `h1` using `[detModule_lhs, detModule_rhs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h2, h3⟩` from `hab q hq`. Rewrite `h2`, `h3` using `[← h1]`. Establish `h4 : Real.log a ≤ (m : ℝ) * N` using `(Real.log_le_iff_le_exp ha).2 h2`. Establish `h5 : (m : ℝ) * N ≤ Real.log b`. Establish `hb : 0 < b` using `lt_of_lt_of_le (Real.exp_pos _) h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `(Real.le_log_iff_exp_le hb).2 h3`. Rewrite using `[Finset.mem_Icc]`. Prove the components needed by the constructor for the conclusion. Establish `: Real.log a / N ≤ (m : ℝ)` using `(div_le_iff₀ hN).2 h4`. Conclude with `Int.cast_le.1 ((Int.floor_le _).trans this)`.
-
-Establish `: (m : ℝ) ≤ Real.log b / N` using `(le_div_iff₀ hN).2 h5`. Conclude with `Int.cast_le.1 (this.trans (Int.le_ceil _))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exponent_mem_finset : ∀ (K : Type) [Field K] [NumberField K] (n r : ℕ), 0 < n → ∀ (Q : Set (AdelicGLn.AdelicGL K n)), IsCompact Q → ∃ M : Finset ℤ, ∀ (t : ℝ) (X Y : UPos n r → 𝔸[K]), ∀ q ∈ Q, ∀ (γ₀ : GL (Fin n) K) (m : ℤ), AdelicGLn.diagonal K n γ₀ * (PositivityTheory.Rg.Rs.An.tor K fun _ : Fin n => (1 : ℝ)) ^ m = unipGL X * PositivityTheory.Rg.Rs.An.aR K n r t * q * (PositivityTheory.Rg.Rs.An.aR K n r t)⁻¹ * (unipGL Y)⁻¹ → m ∈ M := by
   intro K _ _ n r hn Q hQ

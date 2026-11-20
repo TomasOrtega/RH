@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Integ
 namespace UpperTheory.Gal.Int
 
 /- English proof (translation)
-The claim follows from `galoisRepresentations_of_thetaLift UpperTheory.TP.K.tLiftK`.
+A detailed English derivation is pending.
 -/
 theorem galoisLocalGlobalStrong_recParameter : UpperTheory.GalStar.Row0b recT := galoisRepresentations_of_thetaLift UpperTheory.TP.K.tLiftK
 

@@ -11,11 +11,9 @@ open scoped RealInnerProductSpace ContDiff Real ComplexOrder Topology
 namespace GlobalTheory.Mem.Lift
 
 /- English proof (translation)
-Establish `e : (fun t : ℝ => ρ (t • v) f) = fun t : ℝ => ρ (s • v) (ρ ((t - s) • v) f)`. Use function extensionality and compare the values at `t`. Rewrite using `[h.2.1, ← add_smul]`. Simplify using `[h0]`. Establish `h1 : HasDerivAt (fun t : ℝ => ρ ((t - s) • v) f) (dH ρ v f) s`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : HasDerivAt (fun t : ℝ => ρ (t • v) f) (dH ρ v f) (s - s)`. Rewrite using `[sub_self]`. Conclude with `hasDerivAt_dH v hf`. Conclude with `h2.comp_sub_const s s`. Rewrite using `[e]`.
-
-Conclude with `((ρ (s • v)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_line_dH {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {B : Type} [NormedAddCommGroup B]
     [NormedSpace ℂ B] (om : V →L[ℝ] V →L[ℝ] ℝ) {ρ : V → B →L[ℂ] B} (h0 : ∀ x, om x x = 0)
@@ -33,7 +31,7 @@ theorem hasDerivAt_line_dH {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
   exact ((ρ (s • v)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s h1
 
 /- English proof (translation)
-Introduce `V _ _ B _ _ _ om ρ h0 h Y _ ν F hF hFi hS v hd`. Establish `key` using `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := ν) (𝕜 := ℝ) (x₀ := (0 : ℝ)) (s := Set.univ) (F := fun (t : ℝ) y => ρ (t • v) (F y)) (F' := fun (t : ℝ) y => ρ (t • v) (dH ρ v (F y))) (bound := fun y => ‖dH ρ v (F y)‖) Filter.univ_mem (Filter.Eventually.of_forall fun t => ( …`. Simplify using `only [zero_smul, h.1, ContinuousLinearMap.integral_comp_comm _ hFi] at key`. Conclude with `(hasDerivAt_dH v hS).unique key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dH_integral : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] (B : Type) [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] (om : V →L[ℝ] V →L[ℝ] ℝ) (ρ : V → B →L[ℂ] B), (∀ x, om x x = 0) → IsHeis (fun x y => om x y) ρ → ∀ (Y : Type) [MeasurableSpace Y] (ν : Measure Y) (F : Y → B), (∀ y, Sm ρ (F y)) → Integrable F ν → Sm ρ (∫ y, F y ∂ν) → ∀ v, Integrable (fun y => dH ρ v (F y)) ν → dH ρ v (∫ y, F y ∂ν) = ∫ y, dH ρ v (F y) ∂ν := by
   intro V _ _ B _ _ _ om ρ h0 h Y _ ν F hF hFi hS v hd

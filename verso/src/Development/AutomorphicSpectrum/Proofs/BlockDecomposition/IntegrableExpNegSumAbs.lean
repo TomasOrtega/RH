@@ -10,9 +10,9 @@ noncomputable def ker {ι : Type} [Fintype ι] (z : ι → ℂ) (t : ι → ℝ)
   Complex.exp (2 * (Real.pi : ℂ) * ∑ i, z i * t i)
 
 /- English proof (translation)
-Establish `h1 : Integrable (fun x : ℝ => Real.exp (-c * |x|))`. Establish `h1 : IntegrableOn (fun x : ℝ => Real.exp (-c * |x|)) (Set.Ioi 0)` using `(exp_neg_integrableOn_Ioi 0 hc).congr_fun (fun x hx => by rw [abs_of_pos hx]) measurableSet_Ioi`. Establish `h2 : IntegrableOn (fun x : ℝ => Real.exp (-c * |x|)) (Set.Iic 0)` using `(integrableOn_exp_mul_Iic hc 0).congr_fun (fun x hx => by rw [abs_of_nonpos hx, neg_mul_neg]) measurableSet_Iic`. Establish `h3` using `h2.union h1`. Rewrite `h3` using `[Set.Iic_union_Ioi, integrableOn_univ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3`. Establish `hI : Integrable (fun t : ι → ℝ => ∏ i, Real.exp (-c * |t i|)) (Measure.pi fun _ => volume)` using `Integrable.fintype_prod (f := fun _ x => Real.exp (-c * |x|)) fun _ => h1`. Rewrite using `[volume_pi]`. Use `hI.congr (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [← Real.exp_sum, neg_mul, Finset.sum_neg_distrib, ← Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_exp_neg_sum_abs {ι : Type} [Fintype ι] {c : ℝ} (hc : 0 < c) :
     Integrable (fun t : ι → ℝ => Real.exp (-(c * ∑ i, |t i|))) := by
@@ -32,13 +32,13 @@ theorem integrable_exp_neg_sum_abs {ι : Type} [Fintype ι] {c : ℝ} (hc : 0 < 
   simp only [← Real.exp_sum, neg_mul, Finset.sum_neg_distrib, ← Finset.mul_sum]
 
 /- English proof (translation)
-Use `choose Cf hCf using hψ`. Set `vec : (ι → Bool) → ι → ℝ` to `fun σ i => R * (if σ i then 1 else -1)`. Use `⟨∑ σ : ι → Bool, |Cf (vec σ)|, Finset.sum_nonneg fun _ _ => abs_nonneg _, fun p t => ?_⟩` and prove the remaining obligations. Set `σ : ι → Bool` to `fun i => decide (0 ≤ t i)`. Establish `hs : ∑ i, vec σ i * t i = R * ∑ i, |t i|`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : 0 ≤ t i`. Simplify using `[vec, σ, hi, abs_of_nonneg hi]`. Establish `hi' : t i < 0` using `not_le.mp hi`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[vec, σ, hi, abs_of_neg hi']`. Establish `h1` using `hCf (vec σ) p t`. Rewrite `h1` using `[hs]`. Use `h1.trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (Real.exp_pos _).le` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_right ?_ (hh p)` and prove the remaining obligations. Conclude with `(le_abs_self _).trans (Finset.single_le_sum (f := fun σ : ι → Bool => |Cf (vec σ)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ σ))`.
+A detailed English derivation is pending.
 -/
 theorem uniform_bound {ι : Type} [Fintype ι] {P : Type u} {h : P → ℝ} (hh : ∀ p, 0 ≤ h p)
     {ψ : P → (ι → ℝ) → ℂ}
@@ -67,11 +67,11 @@ theorem uniform_bound {ι : Type} [Fintype ι] {P : Type u} {h : P → ℝ} (hh 
       (Finset.mem_univ σ))
 
 /- English proof (translation)
-Rewrite using `[ker, Complex.norm_exp]`. Use `Real.exp_le_exp.mpr ?_` and prove the remaining obligations. Establish `h1 : (2 * (Real.pi : ℂ) * ∑ i, z i * t i).re = 2 * Real.pi * ∑ i, (z i).re * t i`. Establish `: (2 * (Real.pi : ℂ) * ∑ i, z i * t i) = ((2 * Real.pi : ℝ) : ℂ) * ∑ i, z i * t i` using `by push_cast; ring`. Rewrite using `[this, Complex.re_ofReal_mul, Complex.re_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_ker_le {ι : Type} [Fintype ι] {z : ι → ℂ} {B : ℝ} (hz : ∀ i, |(z i).re| ≤ B)
     (t : ι → ℝ) : ‖ker z t‖ ≤ Real.exp (2 * Real.pi * (B * ∑ i, |t i|)) := by
@@ -91,7 +91,7 @@ theorem norm_ker_le {ι : Type} [Fintype ι] {z : ι → ℂ} {B : ℝ} (hz : �
     _ ≤ B * |t i| := mul_le_mul_of_nonneg_right (hz i) (abs_nonneg _)
 
 /- English proof (translation)
-Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Real.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dom_bound {ι : Type} [Fintype ι] {P : Type u} {h : P → ℝ} (hh : ∀ p, 0 ≤ h p)
     {ψ : P → (ι → ℝ) → ℂ} {C B : ℝ} (hC0 : 0 ≤ C)
@@ -110,14 +110,14 @@ theorem dom_bound {ι : Type} [Fintype ι] {P : Type u} {h : P → ℝ} (hh : �
         ring
 
 /- English proof (translation)
-Unfold `ker`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_ker_right {ι : Type} [Fintype ι] (z : ι → ℂ) : Continuous (ker z) := by
   unfold ker
   fun_prop
 
 /- English proof (translation)
-Unfold `ker`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_ker_left {ι : Type} [Fintype ι] (t : ι → ℝ) :
     Continuous (fun z : ι → ℂ => ker z t) := by
@@ -125,7 +125,7 @@ theorem continuous_ker_left {ι : Type} [Fintype ι] (t : ι → ℝ) :
   fun_prop
 
 /- English proof (translation)
-The claim follows from `|(z i).re| ≤ (∑ j, |(z₀ j).re|) + 1 := by have h1 : ‖z i - z₀ i‖ ≤ ‖z - z₀‖ := norm_le_pi_norm (z - z₀) i have h2 : ‖z - z₀‖ < 1 := by rwa [← dist_eq_norm] have h3 : |(z i - z₀ i).re| ≤ ‖z i - z₀ i‖ := Complex.abs_re_le_norm _ have h4 : |(z₀ i).re| ≤ ∑ j, |(z₀ j).re| := Finset.si …`.
+A detailed English derivation is pending.
 -/
 theorem re_le_of_dist {ι : Type} [Fintype ι] {z z₀ : ι → ℂ} (hz : dist z z₀ < 1) (i : ι) :
     |(z i).re| ≤ (∑ j, |(z₀ j).re|) + 1 := by
@@ -144,25 +144,25 @@ noncomputable def lin {ι : Type} [Fintype ι] (t : ι → ℝ) : (ι → ℂ) �
   (2 * (Real.pi : ℂ)) • ∑ i, (t i : ℂ) • ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : ι => ℂ) i
 
 /- English proof (translation)
-Simplify using `[lin, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lin_apply {ι : Type} [Fintype ι] (t : ι → ℝ) (z : ι → ℂ) :
     lin t z = 2 * (Real.pi : ℂ) * ∑ i, z i * t i := by
   simp [lin, mul_comm]
 
 /- English proof (translation)
-Unfold `lin`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_lin {ι : Type} [Fintype ι] : Continuous (lin (ι := ι)) := by
   unfold lin
   fun_prop
 
 /- English proof (translation)
-Establish `h00 : 0 ≤ 2 * Real.pi * ∑ i, |t i|` using `by positivity`. Use `ContinuousLinearMap.opNorm_le_bound _ h00 fun z => ?_` and prove the remaining obligations. Rewrite using `[lin_apply, norm_mul]`. Establish `h0 : ‖(2 * (Real.pi : ℂ))‖ = 2 * Real.pi`. Simplify using `[abs_of_pos Real.pi_pos]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2pi : (0 : ℝ) ≤ 2 * Real.pi` using `by positivity`. Rewrite using `[h0, mul_assoc (2 * Real.pi)]`. Use `mul_le_mul_of_nonneg_left ?_ h2pi` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul, mul_comm, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `mul_le_mul_of_nonneg_left (norm_le_pi_norm z i) (abs_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_lin_le {ι : Type} [Fintype ι] (t : ι → ℝ) :
     ‖lin t‖ ≤ 2 * Real.pi * ∑ i, |t i| := by
@@ -180,9 +180,9 @@ theorem norm_lin_le {ι : Type} [Fintype ι] (t : ι → ℝ) :
   exact mul_le_mul_of_nonneg_left (norm_le_pi_norm z i) (abs_nonneg _)
 
 /- English proof (translation)
-Establish `h1 : HasFDerivAt (fun z : ι → ℂ => lin t z) (lin t) z` using `(lin t).hasFDerivAt`. Establish `h2` using `(h1.cexp).const_mul w`. Establish `e : (fun z : ι → ℂ => w * ker z t) = fun z => w * Complex.exp (lin t z)`. Use function extensionality and compare the values at `z`. Simplify using `only [ker, lin_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `e2 : (w * ker z t) • lin t = w • Complex.exp (lin t z) • lin t`. Rewrite using `[smul_smul, ker, lin_apply]`. Rewrite using `[e, e2]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_ker {ι : Type} [Fintype ι] (w : ℂ) (t : ι → ℝ) (z : ι → ℂ) :
     HasFDerivAt (fun z : ι → ℂ => w * ker z t) ((w * ker z t) • lin t) z := by
@@ -196,7 +196,7 @@ theorem hasFDerivAt_ker {ι : Type} [Fintype ι] (w : ℂ) (t : ι → ℝ) (z :
   exact h2
 
 /- English proof (translation)
-Establish `h1 : S ≤ Real.exp S` using `by linarith [Real.add_one_le_exp S]`. Combine the equalities or inequalities in the displayed calculation. Use `Real.exp_le_exp.mpr ?_` and prove the remaining obligations. Use polynomial arithmetic with `[Real.pi_gt_three]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem mul_exp_le {S : ℝ} (hS : 0 ≤ S) :
     S * Real.exp (-(2 * Real.pi * S)) ≤ Real.exp (-S) := by
@@ -210,21 +210,19 @@ theorem mul_exp_le {S : ℝ} (hS : 0 ≤ S) :
         nlinarith [Real.pi_gt_three]
 
 /- English proof (translation)
-Establish `h2pi : (0 : ℝ) < 2 * Real.pi` using `by positivity`. Establish `hG : Integrable (fun t : ι → ℝ => Real.exp (-(2 * Real.pi * ∑ i, |t i|)))` using `integrable_exp_neg_sum_abs h2pi`. Establish `hmeas : ∀ p (z : ι → ℂ), AEStronglyMeasurable (fun t => ψ p t * ker z t)` using `fun p z => (hm p).mul (continuous_ker_right z).aestronglyMeasurable`. Establish `hI : ∀ p (z : ι → ℂ), Integrable (fun t => ψ p t * ker z t)`. Introduce `p z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨C, hC0, hC⟩` from `uniform_bound hh hv ((∑ j, |(z j).re|) + 1 + 1)`. Establish `hz : ∀ i, |(z i).re| ≤ (∑ j, |(z j).re|) + 1` using `fun i => re_le_of_dist (by simp) i`. Conclude with `Integrable.mono' (hG.const_mul (C * h p)) (hmeas p z) (Filter.Eventually.of_forall fun t => dom_bound hh hC0 hC hz p t)`. Use `⟨hI, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p z₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `DifferentiableAt ℂ (fun z : ι → ℂ => ∫ t : ι → ℝ, ψ p t * ker z t) z₀`. Take `⟨C, hC0, hC⟩` from `uniform_bound hh hv ((∑ j, |(z₀ j).re|) + 1 + 1)`. Establish `hb : ∀ t : ι → ℝ, ∀ z ∈ Metric.ball z₀ 1, ‖(ψ p t * ker z t) • lin t‖ ≤ C * h p * (2 * Real.pi) * Real.exp (-(1 * ∑ i, |t i|))`. Introduce `t z hz`. Establish `hS : 0 ≤ ∑ i, |t i|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCh : 0 ≤ C * h p` using `mul_nonneg hC0 (hh p)`. Rewrite using `[norm_smul, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `key` using `hasFDerivAt_integral_of_dominated_of_fderiv_le (𝕜 := ℂ) (μ := volume) (F := fun (z : ι → ℂ) (t : ι → ℝ) => ψ p t * ker z t) (F' := fun (z : ι → ℂ) (t : ι → ℝ) => (ψ p t * ker z t) • lin t) (x₀ := z₀) (s := Metric.ball z₀ 1) (bound := fun t => C * h p * (2 * Real.pi) * Real.exp (- …`. Conclude with `key.differentiableAt`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Continuous (fun q : (ι → ℂ) × P => ∫ t : ι → ℝ, ψ q.2 t * ker q.1 t)`. Rewrite using `[continuous_iff_continuousAt]`. Introduce and unpack `⟨z₀, p₀⟩`. Take `⟨U, hU, M, hM⟩` from `hloc p₀`. Take `⟨C, hC0, hC⟩` from `uniform_bound hh hv ((∑ j, |(z₀ j).re|) + 1 + 1)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hev : ∀ᶠ q : (ι → ℂ) × P in 𝓝 (z₀, p₀), dist q.1 z₀ < 1 ∧ q.2 ∈ U` using `((continuous_fst.tendsto (z₀, p₀)).eventually (Metric.ball_mem_nhds z₀ one_pos)).and ((continuous_snd.tendsto (z₀, p₀)).eventually hU)`. Use `continuousAt_of_dominated (bound := fun t => C * M * Real.exp (-(2 * Real.pi * ∑ i, |t i|))) (Filter.Eventually.of_forall fun q => hmeas q.2 q.1) (hev.mono fun q hq => Filter.Eventually.of_forall fun t => ?_) (hG.const_mul (C * M)) (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Conclude with `(dom_bound hh hC0 hC (re_le_of_dist hq.1) q.2 t).trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (hM ⟨_, hq.2, rfl⟩) hC0) (Real.exp_pos _).le)`. Conclude with `(((hc t).comp continuous_snd).mul ((continuous_ker_left t).comp continuous_fst)).continuousAt`. Introduce `K hK`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨R, hR⟩` from `hK.isBounded.exists_norm_le`. Establish `hz : ∀ z ∈ K, ∀ i, |(z i).re| ≤ R` using `fun z hzK i => (Complex.abs_re_le_norm _).trans ((norm_le_pi_norm z i).trans (hR z hzK))`. Take `⟨C, hC0, hC⟩` from `uniform_bound hh hv (R + 1)`. Use `⟨C * ∫ t : ι → ℝ, Real.exp (-(2 * Real.pi * ∑ i, |t i|)), fun z hzK p => ?_⟩` and prove the remaining obligations. Establish `key` using `norm_integral_le_of_norm_le (hG.const_mul (C * h p)) (Filter.Eventually.of_forall fun t => dom_bound hh hC0 hC (hz z hzK) p t)`.
-
-Rewrite `key` using `[integral_const_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem laplaceEntire (ι : Type) [Fintype ι] (P : Type u) [TopologicalSpace P]
     [FirstCountableTopology P] (h : P → ℝ) (hh : ∀ p, 0 ≤ h p)

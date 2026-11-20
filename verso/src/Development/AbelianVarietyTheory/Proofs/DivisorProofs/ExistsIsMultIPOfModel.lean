@@ -12,13 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LiftLower
 
 /- English proof (translation)
-Establish `h1 : ∀ x y : H.H, inner ℂ x y ≠ 0 → ∃ c, IsMultIP M μ 𝓕 (H.e x) (H.e y) c` using `fun x y hxy => by`. Assume the negation of the conclusion as `hc`. Apply `hxy` to reduce the goal to its premises. Rewrite using `[h, ipM, dif_neg hc, mul_zero]`. Distinguish the cases in `hx : x = 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hx` using the available equality. Conclude with `⟨0, fun v v' => by simp⟩`. Distinguish the cases in `hxy : inner ℂ x y = 0`. Take `⟨c, hc⟩` from `h1 x (x + y) (by rw [inner_add_right, hxy, add_zero]; exact inner_self_ne_zero.2 hx)`. Take `⟨c', hc'⟩` from `h1 x x (inner_self_ne_zero.2 hx)`.
+Substitute using the available equality. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c - c', fun v v' => ?_⟩` and prove the remaining obligations. Establish `e : (fun g => star (H.e x v g) * H.e y v' g) = fun g => star (H.e x v g) * H.e (x + y) v' g - star (H.e x v g) * H.e x v' g`. Use function extensionality and compare the values at `g`. Simplify using `[mul_add]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(hc v v').1.sub (hc' v v').1, by rw [integral_sub (hc v v').1 (hc' v v').1, (hc v v').2, (hc' v v').2, sub_mul]⟩`. Conclude with `h1 x y hxy`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsMultIP₂ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {μ : Measure (GA D V)}
     {𝓕 : Set (GA D V)} (H : HMod (MMap M)) {N : ℂ} (h : ∀ x y, inner ℂ x y = N * ipM M μ 𝓕 (H.e x) (H.e y)) (x y : H.H) :
@@ -42,9 +42,9 @@ theorem IsMultIP₂ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSMod
   · exact h1 x y hxy
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R h i σ _ _ _ T hT T' hT'`. Take `⟨-, hr, hip⟩` from `h i σ`. Establish `hT1 : T ∈ LinearMap.range (R.HW i σ).e` using `by rw [hr]; exact hT`. Establish `hT2 : T' ∈ LinearMap.range (R.HW i σ).e` using `by rw [hr]; exact hT'`. Take `⟨x, rfl⟩` from `hT1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `hT2`. Conclude with `IsMultIP₂ (R.HW i σ) hip x y`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem schurMult_of_models : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.models_HW → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), SchurMult R.θ (R.MW i σ) (levSW R i) (chiW R i) (R.νW i) (R.fdW i) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R h i σ _ _ _ T hT T' hT'

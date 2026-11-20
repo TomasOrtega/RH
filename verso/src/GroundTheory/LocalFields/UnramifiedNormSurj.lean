@@ -27,7 +27,7 @@ theorem coe_normIntegerUnits_eq (u : 𝒪[L]ˣ) :
   rfl
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis 𝒪[K] 𝒪[L]`. Use `⟨(Matrix.det (1 + (X : 𝒪[K][X]) • (Algebra.leftMulMatrix b a).map C)).divX.divX.eval r, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.norm_eq_matrix_det b, map_add, map_one, map_smul, Matrix.det_one_add_smul, Algebra.trace_eq_matrix_trace b]`. Expand and normalize the polynomial expressions, which then agree.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_norm_one_add_smul (r : 𝒪[K]) (a : 𝒪[L]) :
     ∃ c : 𝒪[K], Algebra.norm 𝒪[K] (1 + r • a) =
@@ -41,7 +41,7 @@ theorem exists_norm_one_add_smul (r : 𝒪[K]) (a : 𝒪[L]) :
   ring
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (Module.Free.chooseBasis 𝒪[K] 𝒪[L]).sum_repr y]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem residue_eq_sum_repr (y : 𝒪[L]) :
     residue 𝒪[L] y = ∑ i, residue 𝒪[K] ((Module.Free.chooseBasis 𝒪[K] 𝒪[L]).repr y i) •
@@ -70,14 +70,14 @@ def residueBasis : Module.Basis (Module.Free.ChooseBasisIndex 𝒪[K] 𝒪[L]) �
         IsUnramified.finrank_residueField K L])
 
 /- English proof (translation)
-Simplify using `[residueBasis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem residueBasis_apply (i : Module.Free.ChooseBasisIndex 𝒪[K] 𝒪[L]) :
     residueBasis K L i = residue 𝒪[L] (Module.Free.chooseBasis 𝒪[K] 𝒪[L] i) := by
   simp [residueBasis]
 
 /- English proof (translation)
-Establish `h : residue 𝒪[L] y = ∑ j, residue 𝒪[K] ((Module.Free.chooseBasis 𝒪[K] 𝒪[L]).repr y j) • residueBasis K L j`. Simplify using `only [residueBasis_apply]`. Conclude with `residue_eq_sum_repr y`. Rewrite using `[h, (residueBasis K L).repr_sum_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residueBasis_repr (y : 𝒪[L]) (i : Module.Free.ChooseBasisIndex 𝒪[K] 𝒪[L]) :
     (residueBasis K L).repr (residue 𝒪[L] y) i =
@@ -89,7 +89,7 @@ theorem residueBasis_repr (y : 𝒪[L]) (i : Module.Free.ChooseBasisIndex 𝒪[K
   rw [h, (residueBasis K L).repr_sum_self]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul, residueBasis_apply, ← map_mul, residueBasis_repr]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem leftMulMatrix_residueBasis (y : 𝒪[L]) :
     Algebra.leftMulMatrix (residueBasis K L) (residue 𝒪[L] y) =
@@ -99,7 +99,7 @@ theorem leftMulMatrix_residueBasis (y : 𝒪[L]) :
     residueBasis_apply, ← map_mul, residueBasis_repr]
 
 /- English proof (translation)
-Rewrite using `[Algebra.norm_eq_matrix_det (Module.Free.chooseBasis 𝒪[K] 𝒪[L]), Algebra.norm_eq_matrix_det (residueBasis K L), leftMulMatrix_residueBasis, RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem residue_norm (y : 𝒪[L]) :
     residue 𝒪[K] (Algebra.norm 𝒪[K] y) = Algebra.norm 𝓀[K] (residue 𝒪[L] y) := by
@@ -109,7 +109,7 @@ theorem residue_norm (y : 𝒪[L]) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_eq_matrix_trace (Module.Free.chooseBasis 𝒪[K] 𝒪[L]), Algebra.trace_eq_matrix_trace (residueBasis K L), leftMulMatrix_residueBasis]`. Conclude with `AddMonoidHom.map_trace (residue 𝒪[K]).toAddMonoidHom _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_trace (y : 𝒪[L]) :
     residue 𝒪[K] (Algebra.trace 𝒪[K] 𝒪[L] y) = Algebra.trace 𝓀[K] 𝓀[L] (residue 𝒪[L] y) := by
@@ -118,7 +118,7 @@ theorem residue_trace (y : 𝒪[L]) :
   exact AddMonoidHom.map_trace (residue 𝒪[K]).toAddMonoidHom _
 
 /- English proof (translation)
-Rewrite using `[IsDiscreteValuationRing.irreducible_iff_uniformizer]`. Establish `h` using `map_maximalIdeal K L`. Rewrite `h` using `[IsUnramified.ramificationIndex_eq_one, pow_one, hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`. Conclude with `h.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irreducible_algebraMap_of_isUnramified {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
     Irreducible (algebraMap 𝒪[K] 𝒪[L] ϖ) := by
@@ -129,9 +129,9 @@ theorem irreducible_algebraMap_of_isUnramified {ϖ : 𝒪[K]} (hϖ : Irreducible
   exact h.symm
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `Algebra.trace_surjective 𝓀[K] 𝓀[L] 1`. Take `⟨a, rfl⟩` from `residue_surjective t`. Establish `hu : IsUnit (Algebra.trace 𝒪[K] 𝒪[L] a)`. Rewrite using `[← residue_ne_zero_iff_isUnit, residue_trace, ht]`. Conclude with `one_ne_zero`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Use `⟨(((hu.unit⁻¹ : 𝒪[K]ˣ) : 𝒪[K]) * c) • a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Take the linear combination `c * Units.inv_mul hu.unit - (((hu.unit⁻¹ : 𝒪[K]ˣ) : 𝒪[K]) * c) * hu.unit_spec`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem trace_integer_surjective : Function.Surjective (Algebra.trace 𝒪[K] 𝒪[L]) := by
   obtain ⟨t, ht⟩ := Algebra.trace_surjective 𝓀[K] 𝓀[L] 1
@@ -145,11 +145,11 @@ theorem trace_integer_surjective : Function.Surjective (Algebra.trace 𝒪[K] �
   linear_combination c * Units.inv_mul hu.unit - (((hu.unit⁻¹ : 𝒪[K]ˣ) : 𝒪[K]) * c) * hu.unit_spec
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Establish `hϖL` using `irreducible_algebraMap_of_isUnramified (L := L) hϖ`. Take `⟨a, ha⟩` from `(mem_maximalIdeal_pow_iff hϖL).mp (mem_unitFiltration.mp hu)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu' : (u : 𝒪[L]) = 1 + ϖ ^ n • a`. Rewrite using `[Algebra.smul_def, map_pow, ← ha]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc⟩` from `exists_norm_one_add_smul (ϖ ^ n) a`. Rewrite using `[mem_unitFiltration, mem_maximalIdeal_pow_iff hϖ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Algebra.trace 𝒪[K] 𝒪[L] a + ϖ ^ n * c, ?_⟩` and prove the remaining obligations. Rewrite using `[coe_normIntegerUnits_eq, hu', hc]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem normIntegerUnits_mem_unitFiltration {n : ℕ} {u : 𝒪[L]ˣ} (hu : u ∈ unitFiltration L n) :
     normIntegerUnits K L u ∈ unitFiltration K n := by
@@ -168,9 +168,9 @@ theorem normIntegerUnits_mem_unitFiltration {n : ℕ} {u : 𝒪[L]ˣ} (hu : u �
   ring
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `FiniteField.unitsMap_norm_surjective 𝓀[K] 𝓀[L] (unitsToResidue K h)`. Take `⟨g, rfl⟩` from `unitsToResidue_surjective L ζ`. Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[← ker_unitsToResidue, MonoidHom.mem_ker, _root_.map_div, div_eq_one, ← hζ]`. Use `ext`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[coe_normIntegerUnits_eq, residue_norm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_normIntegerUnits_div_mem_one (h : 𝒪[K]ˣ) :
     ∃ g : 𝒪[L]ˣ, h / normIntegerUnits K L g ∈ unitFiltration K 1 := by
@@ -182,15 +182,15 @@ theorem exists_normIntegerUnits_div_mem_one (h : 𝒪[K]ˣ) :
   simp [coe_normIntegerUnits_eq, residue_norm]
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Establish `hϖL` using `irreducible_algebraMap_of_isUnramified (L := L) hϖ`. Take `⟨c, hc⟩` from `(mem_maximalIdeal_pow_iff hϖ).mp (mem_unitFiltration.mp hh)`. Take `⟨t, ht⟩` from `Algebra.trace_surjective 𝓀[K] 𝓀[L] (residue 𝒪[K] c)`. Take `⟨a, rfl⟩` from `residue_surjective t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hu` using `isUnit_one_add_mul hϖL hn a`. Use `⟨hu.unit, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_unitFiltration, IsUnit.unit_spec, add_sub_cancel_left, mem_maximalIdeal_pow_iff hϖL]`. Conclude with `dvd_mul_right _ _`. Rewrite using `[div_mem_unitFiltration_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `exists_norm_one_add_smul (ϖ ^ n) a`. Establish `e1 : ((normIntegerUnits K L hu.unit : 𝒪[K]ˣ) : 𝒪[K]) = 1 + ϖ ^ n * Algebra.trace 𝒪[K] 𝒪[L] a + (ϖ ^ n) ^ 2 * d`. Rewrite using `[coe_normIntegerUnits_eq, IsUnit.unit_spec, ← hd, Algebra.smul_def, map_pow]`. Establish `e2 : c - Algebra.trace 𝒪[K] 𝒪[L] a ∈ 𝓂[K]`. Rewrite using `[← residue_eq_zero_iff, map_sub, residue_trace, ht, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `(mem_maximalIdeal_iff_dvd hϖ).mp e2`. Establish `hh' : (h : 𝒪[K]) = 1 + ϖ ^ n * c`. Rewrite using `[← hc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mem_maximalIdeal_pow_iff hϖ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e - ϖ ^ (n - 1) * d, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, hh']`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Take the linear combination `(ϖ ^ (m + 1)) * he`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_normIntegerUnits_div_mem_succ {n : ℕ} (hn : 1 ≤ n) {h : 𝒪[K]ˣ}
     (hh : h ∈ unitFiltration K n) :
@@ -223,7 +223,7 @@ theorem exists_normIntegerUnits_div_mem_succ {n : ℕ} (hn : 1 ≤ n) {h : 𝒪[
     linear_combination (ϖ ^ (m + 1)) * he
 
 /- English proof (translation)
-The claim follows from `map_eq_of_graded_surjective (unitFiltration_antitone L) (unitFiltration_antitone K) filtrationComplete_unitFiltration filtrationSeparated_unitFiltration (normIntegerUnits K L) (φ := id) tendsto_id n (fun _ _ _ hg ↦ normIntegerUnits_mem_unitFiltration hg) (fun m _ h hh ↦ by rcases …`.
+A detailed English derivation is pending.
 -/
 theorem map_normIntegerUnits_unitFiltration (n : ℕ) :
     (unitFiltration L n).map (normIntegerUnits K L) = unitFiltration K n :=
@@ -238,9 +238,9 @@ theorem map_normIntegerUnits_unitFiltration (n : ℕ) :
       · exact exists_normIntegerUnits_div_mem_succ hm hh)
 
 /- English proof (translation)
-Introduce `h`. Establish `e` using `map_normIntegerUnits_unitFiltration (K := K) (L := L) 0`. Rewrite `e` using `[unitFiltration_zero, unitFiltration_zero]`. Establish `hh : h ∈ (⊤ : Subgroup 𝒪[L]ˣ).map (normIntegerUnits K L)`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.mem_top h`. Take `⟨g, -, rfl⟩` from `hh`. Conclude with `⟨g, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem normIntegerUnits_surjective : Function.Surjective (normIntegerUnits K L) := by
   intro h
@@ -253,7 +253,7 @@ theorem normIntegerUnits_surjective : Function.Surjective (normIntegerUnits K L)
   exact ⟨g, rfl⟩
 
 /- English proof (translation)
-Establish `h : (normUnits K L).comp (unitsIncl L) = (unitsIncl K).comp (normIntegerUnits K L)`. Use extensionality with `u`. Simplify using `[normUnits_unitsIncl]`. Rewrite using `[unitFiltrationUnits, unitFiltrationUnits, Subgroup.map_map, h, ← Subgroup.map_map, map_normIntegerUnits_unitFiltration]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_normUnits_unitFiltrationUnits (n : ℕ) :
     (unitFiltrationUnits L n).map (normUnits K L) = unitFiltrationUnits K n := by
@@ -264,7 +264,7 @@ theorem map_normUnits_unitFiltrationUnits (n : ℕ) :
     map_normIntegerUnits_unitFiltration]
 
 /- English proof (translation)
-Rewrite using `[← map_normUnits_unitFiltrationUnits (L := L) 0]`. Conclude with `Subgroup.map_le_range _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitFiltrationUnits_zero_le_range_normUnits :
     unitFiltrationUnits K 0 ≤ (normUnits K L).range := by
@@ -293,9 +293,9 @@ theorem ordModFinrank_apply (x : Kˣ) :
   rfl
 
 /- English proof (translation)
-Introduce `z`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Take `⟨k, hk⟩` from `ZMod.intCast_surjective (Multiplicative.toAdd z)`. Use `⟨uniformizerUnit hϖ ^ k, ?_⟩` and prove the remaining obligations. Establish `hϖ0 : (ϖ : K) ≠ 0` using `by exact_mod_cast hϖ.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[ordModFinrank_apply, Units.val_zpow_eq_zpow_val, coe_uniformizerUnit, ord_zpow hϖ0, ord_uniformizer hϖ, mul_one, hk]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ordModFinrank_surjective : Function.Surjective (ordModFinrank K L) := by
   intro z
@@ -310,11 +310,11 @@ theorem ordModFinrank_surjective : Function.Surjective (ordModFinrank K L) := by
 variable [IsUnramified K L]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[coe_normUnits, ord_norm, IsUnramified.residueDegree_eq_finrank K L]`. Conclude with `dvd_mul_right _ _`. Introduce and unpack `⟨k, hk⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Take `⟨⟨m, u⟩, hx⟩` from `(unitsOfIntProd_bijective hϖ).2 x`. Establish `hm : m.toAdd = Module.finrank K L * k`. Rewrite using `[← hk, ← hx, ord_unitsOfIntProd]`. Take `⟨v, hv⟩` from `normIntegerUnits_surjective (K := K) (L := L) u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Units.map (algebraMap K L : K →* L) (uniformizerUnit hϖ) ^ k * unitsIncl L v, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx, unitsOfIntProd_eq, map_mul, map_zpow, normUnits_unitsIncl, hv, hm, zpow_mul]`. Use `congr 2`. Use `ext`. Simplify using `[Algebra.norm_algebraMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_range_normUnits_iff (x : Kˣ) :
     x ∈ (normUnits K L).range ↔ (Module.finrank K L : ℤ) ∣ ord (x : K) := by
@@ -335,7 +335,7 @@ theorem mem_range_normUnits_iff (x : Kˣ) :
     simp [Algebra.norm_algebraMap]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, mem_range_normUnits_iff, ordModFinrank_apply, ofAdd_eq_one, ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_ordModFinrank : (ordModFinrank K L).ker = (normUnits K L).range := by
   ext x
@@ -357,16 +357,16 @@ theorem quotientRangeNormUnitsEquiv_mk (x : Kˣ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Subgroup.index, Nat.card_congr (quotientRangeNormUnitsEquiv K L).toEquiv]`. Conclude with `Nat.card_zmod _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_range_normUnits : (normUnits K L).range.index = Module.finrank K L := by
   rw [Subgroup.index, Nat.card_congr (quotientRangeNormUnitsEquiv K L).toEquiv]
   exact Nat.card_zmod _
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce and unpack `q -`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H x`. Use `⟨ord (x : K), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hϖ0 : (ϖ : K) ≠ 0` using `by exact_mod_cast hϖ.ne_zero`. Simplify using `only`. Rewrite using `[← QuotientGroup.mk_zpow, QuotientGroup.eq, mem_range_normUnits_iff, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, coe_uniformizerUnit, ord_mul (inv_ne_zero (zpow_ne_zero _ hϖ0)) x.ne_zero, ← zpow_neg, ord_zpow hϖ0, ord_uniformizer hϖ]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem zpowers_mk_uniformizerUnit {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
     Subgroup.zpowers (QuotientGroup.mk (uniformizerUnit hϖ) : Kˣ ⧸ (normUnits K L).range) = ⊤ := by
@@ -384,7 +384,7 @@ theorem zpowers_mk_uniformizerUnit {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
     simp
 
 /- English proof (translation)
-Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers (fun q ↦ by`. Rewrite using `[zpowers_mk_uniformizerUnit hϖ]`. Conclude with `Subgroup.mem_top q)]`. Conclude with `index_range_normUnits`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderOf_mk_uniformizerUnit {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
     orderOf (QuotientGroup.mk (uniformizerUnit hϖ) : Kˣ ⧸ (normUnits K L).range) =
@@ -394,7 +394,7 @@ theorem orderOf_mk_uniformizerUnit {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
   exact index_range_normUnits
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Conclude with `isCyclic_iff_exists_zpowers_eq_top.2 ⟨_, zpowers_mk_uniformizerUnit hϖ⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCyclic_quotient_range_normUnits : IsCyclic (Kˣ ⧸ (normUnits K L).range) := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]

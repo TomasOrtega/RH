@@ -28,7 +28,7 @@ open ValuativeRel MeasureTheory in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] in
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
 /- English proof (translation)
-Establish `h` using `_root_.GlobalTheory.HL.DualInter.sub_l L Hm (a + b) b y`. Rewrite `h` using `[add_sub_cancel_right]`. Take the linear combination `-h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem _root_.GlobalTheory.HL.KernelWeight.hf_add_left (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E)
     (a b y : Fin n → E) :
@@ -43,7 +43,7 @@ open ValuativeRel MeasureTheory in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] in
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.HL.DualInter.smul_l L Hm c a y`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HL.KernelWeight.hf_smul_left (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E)
     (c : E) (a y : Fin n → E) :
@@ -57,19 +57,17 @@ def hfLin (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (y : Fin n �
   map_smul' c a := hf_smul_left L Hm c a y
 
 /- English proof (translation)
-Establish `hu : n⁻¹ ∈ unipOn (S.spanTo g (j + 1)) (S.spanTo g j)`. Apply `Subgroup.inv_mem` to reduce the goal to its premises. Conclude with `Subgroup.mem_iInf.1 hn.1.2 j`. Establish `h1 : n⁻¹ x ∈ S.spanTo g (j + 1)` using `(hu.1 x).2 hx`. Establish `h2 : n⁻¹ x - x ∈ S.spanTo g j` using `hu.2 x hx`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : n⁻¹ x ∈ Submodule.span E (Set.range g)` using `Submodule.span_mono (Set.image_subset_range _ _) h1`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 h3`. Establish `h4 : S.spanTo g j ≤ LinearMap.ker (hfLin L S.Hm (gs j))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hi' : (i : ℕ) < j` using `hi`. Establish `: i ≠ j.castSucc`. Introduce and unpack `rfl`. Simplify using `at hi'`. Use `show hf L S.Hm (g i) (gs j) = 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hd, if_neg this]`. Establish `h5 : hfLin L S.Hm (gs j) (n⁻¹ x) = hfLin L S.Hm (gs j) x`. Use `h4 h2` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: x = n (n⁻¹ x)` using `(n.apply_symm_apply x).symm`. Rewrite using `[this, ← hc, map_sum]`. Simplify using the standard rewrite rules. Use `show _ = hfLin L S.Hm (gs j) x`. Rewrite using `[← h5, ← hc, map_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ i, hfLin L S.Hm (gs j) (c i • g i) = if i = j.castSucc then c i else 0`. Introduce `i`. Rewrite using `[map_smul]`. Use `show c i * hf L S.Hm (g i) (gs j) = _`. Apply the tactic sequence `rw [hd]; split_ifs <;> simp`.
-
-Simplify using `[this]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coord {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g : Fin (r + 1) → S.V)
     (gs : Fin r → S.V)
@@ -112,31 +110,29 @@ theorem exists_coord {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g : Fin (r +
 end
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S hk j β βJ d Λ hT hF`. Establish `hW` using `(GlobalTheory.T.hermitian_double_coset_term_basic_facts L r k S d Λ hT).2.1`. Establish `hom : ‖S.om d Λ‖ = 1` using `(GlobalTheory.T.term_invariants_independent_of_witnesses L r k S d Λ _ _ hW).2.2.2.2`. Establish `hchi : ∀ b u, ‖S.chiM j d Λ b u‖ = 1` using `fun b u => (GlobalTheory.FramePsi.psi_unitary_character L r k S).2.2.2 _`. Establish `hmove : ∀ w, S.Mv (j + 1) d Λ w → ∃ Λ₁, S.MvTo (j + 1) d Λ Λ₁ w ∧ S.IsTerm d Λ₁ ∧ S.om d Λ₁ = S.om d Λ * S.chiM j d Λ w.1 w.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Take `⟨Λ₁, h1, h2, -, -, h5⟩` from `GlobalTheory.T.hermitianDoubleCoset_move_term_weight_character L r k S j β βJ d Λ hT hF _ _ _ _ hw`. Use `⟨Λ₁, ⟨hw, h1⟩, h2, ?_⟩` and prove the remaining obligations. Take `⟨al, hal, hal1⟩` from `exists_coord S S.f S.es S.dual _ hW.2.2.1 j _ hw.1`. Take `⟨al', hal', hal1'⟩` from `exists_coord S S.f' S.es' S.dual' _ hW.2.2.2.1 j _ hw.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h5 al al' hal hal', hal1, hal1']`. Both sides reduce to the same expression. Establish `huniq : ∀ w Λ₁ Λ₂, S.MvTo (j + 1) d Λ Λ₁ w → S.MvTo (j + 1) d Λ Λ₂ w → Λ₁ = Λ₂` using `fun w Λ₁ Λ₂ h1 h2 => SetLike.coe_injective (h1.2.trans h2.2.symm)`. Set `P : Submodule L.O S.V → Prop` to `fun y => S.IsTerm d y ∧ S.InFF β (j + 1) βJ d y`. Set `G : S.MW → ℂ` to `fun w => if ∃ Λ₁, S.MvTo (j + 1) d Λ Λ₁ w ∧ P Λ₁ then S.om d Λ * S.chiM j d Λ w.1 w.2.1 else 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨hGn, hGs⟩` from `(GlobalTheory.T.hermDoubleCosetMoves_finite_targets_split L r k S j β βJ d Λ hT hF).2.2.2.2 P (S.om d) G (by`. Introduce `w Λ₁ hw`. Distinguish the cases in `hP : P Λ₁`. Take `⟨Λ₂, h1, -, h3⟩` from `hmove w hw.1`. Rewrite using `[if_pos hP, huniq w Λ₁ Λ₂ hw h1, h3]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `if_pos ⟨Λ₁, hw, hP⟩`. Rewrite using `[if_neg hP]`. Use `if_neg ?_` and prove the remaining obligations. Introduce and unpack `⟨Λ₂, h1, h2⟩`. Conclude with `hP (huniq w Λ₂ Λ₁ h1 hw ▸ h2))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(by`. Introduce `w hw`. Use `if_neg ?_` and prove the remaining obligations. Introduce and unpack `⟨Λ₂, h1, -⟩`. Conclude with `hw h1.1)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hLn, hHn, -, hLb, hHb⟩` from `GlobalTheory.T.hermitianMoves_total_measure_estimates L r k S hk j β βJ d Λ hT hF`. Take `⟨hadd, hsm, -, -⟩` from `GlobalTheory.T.indexMeasureIntegral_linear_positive_norm_bound (S.refA (j + 1) Λ)`. Use `set H : S.MW → ℂ := fun w => ind (S.Mv (j + 1) d Λ) w * S.chiM j d Λ w.1 w.2.1 with hH`. Take `⟨hn2, hc2⟩` from `hsm (-S.om d Λ) H hHn`. Take `⟨hn3, hc3, -⟩` from `hadd G _ hGn hn2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Establish `hb` using `(hadd _ _ hn3 hLn).2.2 (by`. Introduce `w`. Simplify using `only [Pi.add_apply, hH, ind, G]`. Distinguish the cases in `hw : S.Mv (j + 1) d Λ w`. Distinguish the cases in `hex : ∃ Λ₁, S.MvTo (j + 1) d Λ Λ₁ w ∧ P Λ₁`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rw [if_pos hex, if_pos hw] split_ifs <;> simp`. Establish `hl : ¬ S.NoLeak Λ w.2.1`. Introduce `hl`. Take `⟨Λ₁, h1, h2, -⟩` from `hmove w hw`. Conclude with `hex ⟨Λ₁, h1, h2, GlobalTheory.T.hermitianDoubleCoset_inFamily_moved_of_not_leak L r k S j β βJ d Λ hT hF _ _ _ _ hw hl Λ₁ h1.2⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[if_neg hex, if_pos hw, if_pos ⟨hw, hl⟩]`. Simplify using `[hom, hchi]`. Establish `hex : ¬ ∃ Λ₁, S.MvTo (j + 1) d Λ Λ₁ w ∧ P Λ₁`. Introduce and unpack `⟨Λ₂, h1, -⟩`. Conclude with `hw h1.1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_neg hex, if_neg hw, if_neg (fun h => hw h.1)]`. Use the proof step `simp)`. Rewrite `hb` using `[hc3, hc2]`. Establish `hcK : 0 ≤ S.cK β βJ`. Unfold `Frames.cK`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Check the signs of the components of the expression. Establish `hG : ‖cint (S.refA (j + 1) Λ) G‖ ≤ (cint (S.refA (j + 1) Λ) (ind fun w => S.Mv (j + 1) d Λ w ∧ ¬ S.NoLeak Λ w.2.1)).re + ‖cint (S.refA (j + 1) Λ) H‖`. Establish `e : cint (S.refA (j + 1) Λ) G = (cint (S.refA (j + 1) Λ) G + -S.om d Λ * cint (S.refA (j + 1) Λ) H) + S.om d Λ * cint (S.refA (j + 1) Λ) H` using `by ring`. Rewrite using `[e]`. Use `(norm_add_le _ _).trans (add_le_add hb ?_)` and prove the remaining obligations.
-
-Rewrite using `[norm_mul, hom, one_mul]`. Use `mul_le_mul_of_nonneg_left hG hcK` as an intermediate fact. Use `show ‖∑ᶠ y : {y // P y}, (S.kern β (j + 1) βJ d Λ y : ℂ) * S.om d y‖ ≤ _`. Rewrite using `[hGs, norm_mul, Complex.norm_real, Real.norm_of_nonneg hcK]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem kernel_weight : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), 4 * r + 7 ≤ k → ∀ (j : Fin r) (β βJ : ℕ) (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → S.InFF β (j + 1) βJ d Λ → ‖∑ᶠ y : {y // S.IsTerm d y ∧ S.InFF β (j + 1) βJ d y}, (S.kern β (j + 1) βJ d Λ y : ℂ) * S.om d y‖ ≤ 24 / 7 * (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3)) := by
   intro F _ _ _ _ _ E _ _ _ L r k S hk j β βJ d Λ hT hF

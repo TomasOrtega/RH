@@ -27,13 +27,11 @@ def BlockBound (β : ∀ s, H s →L[ℂ] H s) (m : ℕ) (a : Prod' H d) (t : ι
   ∀ s, ∃ (C : ℝ) (N : ℕ), ∀ᶠ k : ℕ in atTop, ‖t s k‖ ≤ C * (1 + k) ^ N * ‖(β s ^ m * a.1 s) ^ (k - j)‖
 
 /- English proof (translation)
-Use `choose C N hC using h2`. Establish `hall` using `Filter.eventually_all.2 hC`. Use `⟨∑ s, |C s|, Finset.univ.sup N, j, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h1, hall] with k hk hks`. Rewrite using `[hk]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1 : (1 : ℝ) ≤ 1 + (k : ℝ)`. Establish `: (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s _`. Establish `hP : (1 + (k : ℝ)) ^ (N s) ≤ (1 + (k : ℝ)) ^ (Finset.univ.sup N)` using `pow_le_pow_right₀ hk1 (Finset.le_sup (Finset.mem_univ s))`. Establish `hX : ‖(β s ^ m * a.1 s) ^ (k - j)‖ ≤ Finset.univ.sup' Finset.univ_nonempty (fun s => ‖(β s ^ m * a.1 s) ^ (k - j)‖)` using `Finset.le_sup' (fun s => ‖(β s ^ m * a.1 s) ^ (k - j)‖) (Finset.mem_univ s)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_abs_self _`.
-
-Use `_ ≤ _ := mul_le_mul (mul_le_mul_of_nonneg_left hP (abs_nonneg _)) hX (norm_nonneg _) (by positivity)`. Use `_ = _ := by rw [Finset.sum_mul, Finset.sum_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem boundAt_of (β : ∀ s, H s →L[ℂ] H s) (m : ℕ) (u : Vd →L[ℂ] Vd) (a : Prod' H d) (t : ι → ℕ → ℂ) (j : ℕ)
     (h1 : TraceSplit u a t) (h2 : BlockBound β m a t j) : BoundAt β m u a := by
@@ -64,7 +62,7 @@ theorem boundAt_of (β : ∀ s, H s →L[ℂ] H s) (m : ℕ) (u : Vd →L[ℂ] V
     _ = _ := by rw [Finset.sum_mul, Finset.sum_mul]
 
 /- English proof (translation)
-Introduce `a ha hb`. Take `⟨t, j, h1, h2⟩` from `h a ha hb`. Conclude with `boundAt_of β m u a t j h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bound_of {Γ : Type} (gen : Γ → Prod' H d) (a₀ : Γ) (β : ∀ s, H s →L[ℂ] H s) (m : ℕ) (u : Vd →L[ℂ] Vd)
     (h : ∀ a ∈ StarAlgebra.adjoin ℂ (Set.range gen), (∃ b ∈ StarAlgebra.adjoin ℂ (Set.range gen), a = b * gen a₀) →

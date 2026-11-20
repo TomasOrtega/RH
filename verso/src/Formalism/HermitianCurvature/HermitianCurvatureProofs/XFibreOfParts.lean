@@ -21,9 +21,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hH : ∀ i j : Fin (2 * r + k + 1), star (Hpk k r i j) = Hpk k r j i`. Introduce `i j`. Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | norm_num`. Simplify using `only [herm, dotProduct, mulVec, Pi.star_apply, star_sum, star_mul', star_star, Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hH]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem herm_swap_eq_zero_of_eq_zero {k r : ℕ} (v w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) w v = star (herm (Hpk k r) v w) := by
@@ -38,9 +38,9 @@ private theorem herm_swap_eq_zero_of_eq_zero {k r : ℕ} (v w : Fin (2 * r + k +
   ring
 
 /- English proof (translation)
-Establish `hdec` using `HermitianFormSums.complete0 hz' (HermitianFormSums.hzz hT') hB0 hu huz`. Establish `h1 : herm (Hpk k r) u y = ∑ j, herm (Hpk k r) u (B0 j) * herm (Hpk k r) (B0 j) y` using `by conv_lhs => rw [hdec]`. Conclude with `HermitianFormSums.herm_lsum _ _ _ _ _`. Rewrite using `[h1, HermitianFormSums.herm_rsum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[herm_swap_eq_zero_of_eq_zero y (B0 j), star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem herm_Hpk_frame_sum_of_orthogonal {z' y u : Fin (2 * r + k + 1) → ℂ} {B0 : Fin k → Fin (2 * r + k + 1) → ℂ}
     (hz' : inWb k r z') (hT' : 0 < Tz k r z') (hB0 : IsFrameOf k r [z'] B0) (a : ℂ) (hu : inWb k r u)
@@ -56,7 +56,7 @@ private theorem herm_Hpk_frame_sum_of_orthogonal {z' y u : Fin (2 * r + k + 1) �
   ring
 
 /- English proof (translation)
-Rewrite using `[show (∑ j, β j • B0 j) = ∑ j, (a * herm (Hpk k r) y (B0 j)) • B0 j from Finset.sum_congr rfl fun j _ => by rw [hβ j], herm_Hpk_frame_sum_of_orthogonal hz' hT' hB0 a hu huz, huy, mul_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem xf_perp {z' y u : Fin (2 * r + k + 1) → ℂ} {B0 : Fin k → Fin (2 * r + k + 1) → ℂ} (hz' : inWb k r z')
     (hT' : 0 < Tz k r z') (hB0 : IsFrameOf k r [z'] B0) (β : Fin k → ℂ) (a : ℂ)
@@ -66,15 +66,15 @@ theorem xf_perp {z' y u : Fin (2 * r + k + 1) → ℂ} {B0 : Fin k → Fin (2 * 
     Finset.sum_congr rfl fun j _ => by rw [hβ j], herm_Hpk_frame_sum_of_orthogonal hz' hT' hB0 a hu huz, huy, mul_zero]
 
 /- English proof (translation)
-Establish `hx'` using `hx`. Take `⟨-, hgl, hGG⟩` from `hx'`. Take `⟨hbig, -⟩` from `hCell k r Wp Wq Bs x hx`. Take `⟨-, hsq, -, hcell⟩` from `hOm k r Wp Wq Bs B0 hB0`. Take `⟨Bs', -, -, hF, -⟩` from `Q.LieAlgebraWeightVectors.geom_package Bs.z_mem Bs.z'_mem Bs.T_pos Bs.T'_pos hgl hGG.ne'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hν1 : C6.sq2 (C6.unitOf (Tz k r Bs.z') (Gf k r Bs.z Bs.z' (wCell k r (Fin.last r) x.1 * x.2)) (omC Bs B0 (wCell k r (Fin.last r) x.1 * x.2))) = 1` using `AdmissibleLieWords.sq2_unitOf_eq_one_of_sq2_eq_div Bs.T'_pos hbig.2.1 (hsq _ hbig.1)`. Establish `hF2 : IsFrameOf k r [Bs.z', ∑ j, C6.unitOf (Tz k r Bs.z') (Gf k r Bs.z Bs.z' (wCell k r (Fin.last r) x.1 * x.2)) (omC Bs B0 (wCell k r (Fin.last r) x.1 * x.2)) j • B0 j] Bs'`. Use `⟨hF.1, hF.2.1, fun i v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`. Break down `hv with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hF.2.2 i _ (by simp)`. Use `xf_perp Bs.z'_mem Bs.T'_pos hB0 _ (((Real.sqrt (Tz k r Bs.z' / Gf k r Bs.z Bs.z' (wCell k r (Fin.last r) x.1 * x.2)) : ℝ) : ℂ) * conj (∏ a, x.1 a)) (fun j => ?_) (hF.1 i) (hF.2.2 i Bs.z' (by simp)) (hF.2.2 i (x.2⁻¹ *ᵥ Bs.z) (by simp))` and prove the remaining obligations. Simplify using `only [C6.unitOf, Pi.smul_apply, smul_eq_mul, hcell x hx j, mul_assoc]`. Establish `hcap` using `hCapF Wq k r Bs.z' Bs.π' B0 Bs' _ Bs.k_pos Bs.z'_mem Bs.T'_pos ⟨Bs.π'_rep, Bs.π'_cont⟩ hB0 hν1 hF2`. Establish `hgl2` using `(frame_general_linear Wq k r (k - 1) Bs.z' Bs.π' Bs' ⟨Bs.π'_rep, Bs.π'_cont⟩ (HermitianFormSums.frame_sub hF2)).2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ((GGl k r Bs.z Bs.z' x.2 : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hGG.ne'`. Use extensionality with `v`. Establish `hfn` using `congrArg (fun T : Wq →L[ℂ] Wp => T v) (X.fn_apply 5 (X.t Y 1 1 Φ) x hx)`. Establish `ht` using `P5.Kfp.diagonal_transfer_action X Bs.z_mem Bs.z'_mem Bs.π'_rep Bs.π'_cont (c := x.1) (g := x.2) hx Bs' hF Y Φ v`. Simplify using `only [Module.End.mul_apply] at ht`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [_root_.smul_apply, fnVal] at hfn`. Rewrite `hfn` using `[ht]`. Simplify using `only [xFib, _root_.smul_apply, ContinuousLinearMap.flip_apply, ContinuousLinearMap.compL_apply, ContinuousLinearMap.comp_apply, hcap, hgl2]`. Rewrite using `[hfn, smul_smul, mul_inv_cancel₀ hne, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xf_rad (hCell : CellVals) (hOm : OmFacts) (hCapF : CapVFrame) {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
@@ -121,7 +121,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Simplify using `only [capV, Q.chatA, map_sum, map_smul, Pi.star_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xf_capV_sum (π' : Mx k r → (Wq →L[ℂ] Wq)) (B0 : Fin k → Fin (2 * r + k + 1) → ℂ) (w : ℂ) (ν : Fin k → ℂ) :
     capV π' B0 w ν = ∑ i : Fin k, ∑ j : Fin k, ((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * star (ν i) * ν j) •
@@ -129,7 +129,7 @@ theorem xf_capV_sum (π' : Mx k r → (Wq →L[ℂ] Wq)) (B0 : Fin k → Fin (2 
   simp only [capV, Q.chatA, map_sum, map_smul, Pi.star_apply]
 
 /- English proof (translation)
-Rewrite using `[show (fun ν : Fin k → ℂ => capV π' B0 w ν) = fun ν => ∑ i : Fin k, ∑ j : Fin k, ((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * star (ν i) * ν j) • LinearMap.toContinuousLinearMap (qminor (EB π' B0) (skip1 i) (skip1 j) w : Module.End ℂ Wq) from`. Use function extensionality and compare the values at `(xf_capV_sum π' B0 w)]`. Use `ContDiff.sum fun i _ => ContDiff.sum fun j _ => ?_` and prove the remaining obligations. Establish `hs : ContDiff ℝ ∞ (fun ν : Fin k → ℂ => star (ν i))` using `Complex.conjCLE.contDiff.comp (contDiff_apply ℝ ℂ i)`. Conclude with `((contDiff_const.mul hs).mul (contDiff_apply ℝ ℂ j)).smul contDiff_const`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem xf_capV_cd (π' : Mx k r → (Wq →L[ℂ] Wq)) (B0 : Fin k → Fin (2 * r + k + 1) → ℂ) (w : ℂ) :
     ContDiff ℝ ∞ (fun ν : Fin k → ℂ => capV π' B0 w ν) := by
@@ -147,20 +147,16 @@ def xfPi (π' : Mx k r → (Wq →L[ℂ] Wq)) (B0 : Fin k → Fin (2 * r + k + 1
   (ContinuousLinearMap.compL ℂ Wq Wq Wp).flip (capV π' B0 w ν)
 
 /- English proof (translation)
-Conclude with `(((ContinuousLinearMap.compL ℂ Wq Wq Wp).flip).restrictScalars ℝ).contDiff.comp (xf_capV_cd π' B0 w)`.
+A detailed English derivation is pending.
 -/
 theorem xf_Pi_cd (π' : Mx k r → (Wq →L[ℂ] Wq)) (B0 : Fin k → Fin (2 * r + k + 1) → ℂ) (w : ℂ) :
     ContDiff ℝ ∞ (xfPi (Wp := Wp) π' B0 w) := by
   exact (((ContinuousLinearMap.compL ℂ Wq Wq Wp).flip).restrictScalars ℝ).contDiff.comp (xf_capV_cd π' B0 w)
 
 /- English proof (translation)
-Take `⟨q, -, hq⟩` from `h`. Establish `hP : P = fun g => MvPolynomial.eval (Sum.elim (fun x => g x.1 x.2) (fun x => star (g x.1 x.2))) q` using `funext hq`. Substitute `hP` using the available equality. Use `clear hq`. Proceed by induction on `q using MvPolynomial.induction_on`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Proceed by induction. Simplify using the standard rewrite rules.
 
-Use `next a =>`. Simplify using `only [MvPolynomial.eval_C]`. Conclude with `contDiff_const`. Use `next p q hp hq =>`. Simplify using `only [map_add]`.
-
-Conclude with `hp.add hq`. Use `next p i hp =>`. Simplify using `only [map_mul, MvPolynomial.eval_X]`. Use `hp.mul ?_` and prove the remaining obligations. Break down `i with ⟨a, b⟩ | ⟨a, b⟩` into its components or cases.
-
-Apply the tactic sequence `exact JCx1.contDiff_entry a b`. Apply the tactic sequence `exact Complex.conjCLE.contDiff.comp (JCx1.contDiff_entry a b)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem contDiff_of_isPolyDeg' {k r κ : ℕ} {P : B.Mat k r → ℂ} (h : U.IsPolyDeg κ P) : ContDiff ℝ ∞ P := by
   obtain ⟨q, -, hq⟩ := h
@@ -182,9 +178,9 @@ private theorem contDiff_of_isPolyDeg' {k r κ : ℕ} {P : B.Mat k r → ℂ} (h
     · exact Complex.conjCLE.contDiff.comp (JCx1.contDiff_entry a b)
 
 /- English proof (translation)
-Take `⟨hom, hsq, -, -⟩` from `hOm k r Wp Wq Bs B0 hB0`. Establish `hGc : ContDiff ℝ ∞ (fun g : B.Mat k r => ((Gf k r Bs.z Bs.z' g : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp (JCx1.contDiff_Gf Bs.z Bs.z')`. Establish `hoc : ∀ a, ContDiff ℝ ∞ (fun g => omC Bs B0 g a)` using `fun a => contDiff_of_isPolyDeg' (hom a)`. Use `⟨fun g₀ hg₀ => ?_, fun ε hε i => ?_⟩` and prove the remaining obligations. Use `⟨{g | Gf k r Bs.z Bs.z' g₀ / 2 < Gf k r Bs.z Bs.z' g}, fun g => xfPi Bs.π' B0 w (AdmissibleLieWords.utv (Gf k r Bs.z Bs.z' g₀) (Tz k r Bs.z') (Gf k r Bs.z Bs.z') (omC Bs B0) g), isOpen_lt continuous_const (JCx1.contDiff_Gf Bs.z Bs.z').continuous, half_lt_self hg₀.2, ?_, fun g hg …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((xf_Pi_cd Bs.π' B0 w).comp (AdmissibleLieWords.utv_cd (T := Tz k r Bs.z') hg₀.2 hGc hoc)).contDiffOn`. Conclude with `congrArg (xfPi (Wp := Wp) Bs.π' B0 w) (AdmissibleLieWords.utv_eq hg₀.2 Bs.T'_pos _ _ hg)`. Conclude with `fibre_cost_estimate k r k k (omC Bs B0) (omC Bs B0) (Gf k r Bs.z Bs.z') (Tz k r Bs.z') (Tz k r Bs.z') (C6.EndH Wp Wq) (fun p => xfPi Bs.π' B0 w p.1) Set.univ hom hom (gram_function_polynomial k r Bs.z Bs.z') Bs.T'_pos Bs.T'_pos hsq hsq isOpen_univ (Set.subset_univ _) ((xf_Pi_cd B …`.
+A detailed English derivation is pending.
 -/
 theorem xf_bound (hOm : OmFacts) (Bs : B.RealPlaceData k r Wp Wq) {B0 : Fin k → Fin (2 * r + k + 1) → ℂ}
     (hB0 : IsFrameOf k r [Bs.z'] B0) (w : ℂ) : C6.FibBound Bs (xFib Bs B0 w) := by
@@ -204,11 +200,11 @@ theorem xf_bound (hOm : OmFacts) (Bs : B.RealPlaceData k r Wp Wq) {B0 : Fin k �
       ((xf_Pi_cd Bs.π' B0 w).comp contDiff_fst).contDiffOn ε hε i
 
 /- English proof (translation)
-Take `⟨-, hsq, hcov, -⟩` from `hOm k r Wp Wq Bs B0 hB0`. Introduce `p hp g hg J`. Establish `hGf : Gf k r Bs.z Bs.z' (B.sgs p g) = Gf k r Bs.z Bs.z' g` using `JCx1.needs.gf_sgs Bs hp g`. Establish `hsum : ∀ (c : ℂ) (v : Fin k → ℂ), ∑ j, (c • v) j • B0 j = c • ∑ j, v j • B0 j`. Introduce `c v`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]`. Establish `hE` using `hCapE Wq k r Bs.z' Bs.π' B0 (C6.unitOf (Tz k r Bs.z') (Gf k r Bs.z Bs.z' g) (omC Bs B0 g)) (C6.unitOf (Tz k r Bs.z') (Gf k r Bs.z Bs.z' (B.sgs p g)) (omC Bs B0 (B.sgs p g))) (Matrix.of p.2.1) Bs.k_pos Bs.z'_mem Bs.T'_pos ⟨Bs.π'_rep, Bs.π'_cont⟩ hB0 (AdmissibleLieWords.sq2_unitOf_ …`. Use extensionality with `v`. Establish `hv` using `congrArg (fun T : Wq →L[ℂ] Wq => T v) hE`. Simplify using `only [ContinuousLinearMap.comp_apply] at hv`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [xFib, ContinuousLinearMap.flip_apply, ContinuousLinearMap.compL_apply, ContinuousLinearMap.comp_apply, hv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xf_equiv (hOm : OmFacts) (hCapE : CapVEquiv) (Bs : B.RealPlaceData k r Wp Wq) {B0 : Fin k → Fin (2 * r + k + 1) → ℂ}
     (hB0 : IsFrameOf k r [Bs.z'] B0) (w : ℂ) :
@@ -236,9 +232,9 @@ end fib
 end TLC
 
 /- English proof (translation)
-Establish `hH : ∀ i j : Fin (2 * r + k + 1), star (Hpk k r i j) = Hpk k r j i`. Introduce `i j`. Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | norm_num`. Simplify using `only [herm, dotProduct, mulVec, Pi.star_apply, star_sum, star_mul', star_star, Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hH]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem herm_Hpk_swap {k r : ℕ} (v w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) w v = star (herm (Hpk k r) v w) := by
@@ -253,23 +249,23 @@ private theorem herm_Hpk_swap {k r : ℕ} (v w : Fin (2 * r + k + 1) → ℂ) :
   ring
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`. Establish `hbw : ∀ i : Fin (2 * r + (n + 1) + 1), r ≤ i.val → i.val ≤ r + (n + 1) → inWb (n + 1) r (bvec i)`. Introduce `i h1 h2 j hj`. Simplify using `only [bvec, Pi.single_apply]`. Use `split_ifs with h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨a, ha, hind⟩ : ∃ a, inWb (n + 1) r a ∧ ∀ c : ℂ, a ≠ c • z' := by`. Take `⟨i0, hi0⟩ : ∃ i : Fin (2 * r + (n + 1) + 1), i.val = r` from `⟨⟨r, by omega⟩, rfl⟩`.
+Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i1, hi1⟩ : ∃ i : Fin (2 * r + (n + 1) + 1), i.val = r + 1` from `⟨⟨r + 1, by omega⟩, rfl⟩`. Establish `hne : i0 ≠ i1` using `fun h => by rw [h] at hi0; omega`. Distinguish the cases in `h : ∀ c : ℂ, bvec i0 ≠ c • z'`. Conclude with `⟨_, hbw i0 (by omega) (by omega), h⟩`. Simplify using `only [ne_eq, not_forall, not_not] at h`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨c0, h0⟩` from `h`. Use `⟨_, hbw i1 (by omega) (by omega), fun c hc => ?_⟩` and prove the remaining obligations. Establish `e0` using `congrFun h0 i0`. Establish `e1` using `congrFun hc i0`. Establish `e2` using `congrFun hc i1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [bvec, Pi.single_apply, Pi.smul_apply, smul_eq_mul, if_neg hne] at e0 e1 e2`. Establish `hz0 : z' i0 ≠ 0` using `fun h => by rw [h, mul_zero] at e0; exact one_ne_zero e0`. Establish `hc0 : c = 0` using `(mul_eq_zero.mp e1.symm).resolve_right hz0`. Rewrite `e2` using `[hc0, zero_mul]`. Conclude with `one_ne_zero e2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, hez, hee, -⟩` from `Q.LieAlgebraWeightVectors.exists_unit hz' hT' ha hind`. Take `⟨Bs, hBs⟩` from `Q.LieAlgebraWeightVectors.exists_frame he hz' hT'`. Use `⟨Fin.cons e (fun i => Bs (Fin.cast (by omega) i)), fun i => ?_, fun i j => ?_, fun i v hv => ?_⟩` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using he`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `using hBs.1 _`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Simplify using `using hee`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[herm_Hpk_swap _ e, hBs.2.2 _ e (by simp), star_zero, if_neg (Fin.succ_ne_zero j).symm]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[hBs.2.2 _ e (by simp), if_neg (Fin.succ_ne_zero i)]`. Simplify using `only [Fin.cons_succ]`. Rewrite using `[hBs.2.1]`. Simplify using `[Fin.ext_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`. Substitute `hv` using the available equality. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hez`. Simplify using `using hBs.2.2 _ _ (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem exists_isFrameOf_singleton_of_Tz_pos {k r : ℕ} {z' : Fin (2 * r + k + 1) → ℂ} (hk : 1 ≤ k) (hz' : inWb k r z')
     (hT' : 0 < Tz k r z') : ∃ B0 : Fin k → Fin (2 * r + k + 1) → ℂ, IsFrameOf k r [z'] B0 := by
@@ -320,7 +316,7 @@ private theorem exists_isFrameOf_singleton_of_Tz_pos {k r : ℕ} {z' : Fin (2 * 
     · simpa using hBs.2.2 _ _ (by simp)
 
 /- English proof (translation)
-Introduce `hCell hOm hCapF hCapE Wp Wq _ _ _ _ _ _ P Bs X`. Take `⟨B0, hB0⟩` from `exists_isFrameOf_singleton_of_Tz_pos Bs.k_pos Bs.z'_mem Bs.T'_pos`. Conclude with `⟨B0, hB0, fun Y => ⟨TLC.xf_bound hOm Bs hB0 _, TLC.xf_equiv hOm hCapE Bs hB0 _, fun Φ x hx => TLC.xf_rad hCell hOm hCapF Bs X hB0 Y Φ x hx⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem x_fibre_of_parts : TL.XFibOfParts := by
   intro hCell hOm hCapF hCapE Wp Wq _ _ _ _ _ _ P Bs X

@@ -21,9 +21,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped TensorProduct
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ Pf, φ y ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hy ((Module.forall_dual_apply_eq_zero_iff ℂ y).1 hc)`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg ((TensorProduct.rid ℂ Pr).toLinearMap ∘ₗ LinearMap.lTensor Pr φ) h0` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.lTensor_tmul, LinearEquiv.coe_coe, TensorProduct.rid_tmul, map_zero] at this`. Conclude with `hx ((smul_eq_zero.1 this).resolve_left hφ)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RealQuotBot.tmul_ne_zero {Pr Pf : Type} [AddCommGroup Pr] [Module ℂ Pr] [AddCommGroup Pf] [Module ℂ Pf] {x : Pr} {y : Pf}
     (hx : x ≠ 0) (hy : y ≠ 0) : x ⊗ₜ[ℂ] y ≠ 0 := by
@@ -37,7 +37,7 @@ theorem GlobalTheory.RealQuotBot.tmul_ne_zero {Pr Pf : Type} [AddCommGroup Pr] [
   exact hx ((smul_eq_zero.1 this).resolve_left hφ)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg Matrix.det (Matrix.mem_unitaryGroup_iff'.1 g.2)`. Rewrite `h1` using `[Matrix.det_mul, h, mul_zero, Matrix.det_one]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RealQuotBot.det_unitary_ne_zero {n : ℕ} (g : Matrix.unitaryGroup (Fin n) ℂ) :
     (g : Matrix (Fin n) (Fin n) ℂ).det ≠ 0 := by
@@ -49,43 +49,39 @@ theorem GlobalTheory.RealQuotBot.det_unitary_ne_zero {n : ℕ} (g : Matrix.unita
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hH hP hK hLM D ψ θ hψ hθ A A' WW FA FA' FW a b had hsA hsA' hsW hex Pr q q' hq hq' hfac`. Take `⟨α, β, hT, hE⟩` from `hex`. Take `⟨⟨ωA, ωB, Pi, rf, rl, p, p', hm⟩, hfac2⟩` from `hfac α β hT hE`. Take `⟨Pf, r, r', e, hr, hr', hpA, hpB⟩` from `hfac2 _ _ _ _ _ _ _ hm`. Establish `hPi : Nontrivial Pi` using `hm.irred.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hall : ¬ ∀ z : Pr ⊗[ℂ] Pf, z = 0`. Introduce `h`. Take `⟨z, hz⟩` from `exists_ne (0 : Pi)`. Conclude with `hz (by rw [← e.apply_symm_apply z, h (e.symm z), map_zero])`. Establish `hPr : Nontrivial Pr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hall fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul x y => rw [Subsingleton.elim x 0, TensorProduct.zero_tmul]`. Consider the case `add u v hu hv => rw [hu, hv, add_zero]`. Establish `hPf : Nontrivial Pf`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_nontrivial_iff_subsingleton]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Conclude with `hall fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul x y => rw [Subsingleton.elim y 0, TensorProduct.tmul_zero]`. Consider the case `add u v hu hv => rw [hu, hv, add_zero]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `exists_ne (0 : Pf)`. Take `⟨f, hf, hfy⟩` from `hr y`. Take `⟨f', hf', hfy'⟩` from `hr' y`. Establish `hf0 : f ≠ 0` using `by rintro rfl; exact hy (by rw [← hfy, map_zero])`. Establish `canc : ∀ x x' : Pr, e (x ⊗ₜ y) = e (x' ⊗ₜ y) → x = x'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `x x' h`. Assume the negation of the conclusion as `hne`. Establish `h2 : (x - x') ⊗ₜ[ℂ] y = 0`. Rewrite using `[TensorProduct.sub_tmul]`. Conclude with `sub_eq_zero.2 (e.injective h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.RealQuotBot.tmul_ne_zero (sub_ne_zero.2 hne) hy h2`. Establish `sA` using `fun τ => GlobalTheory.T.diagonalHermitianFrame_signs_pos_of_definite D A FA τ (hsA τ)`. Establish `sA'` using `fun τ => GlobalTheory.T.diagonalHermitianFrame_signs_pos_of_definite D A' FA' τ (hsA' τ)`. Establish `sW` using `fun τ => GlobalTheory.T.diagonalHermitianFrame_signs_pos_of_definite D WW FW τ (hsW τ)`. Take `⟨hTA, hcoA, -⟩` from `GlobalTheory.RealQuot.oriented_maps D ψ θ hθ true A WW FA FW β (β / α) ωA b (fun τ => b τ - a τ) hm.weilA (fun τ => ⟨(hE τ).2, GlobalTheory.RealQuot.hasInfExp_div D α β τ (a τ) (b τ) (hE τ).1 (hE τ).2⟩) Pi rf rl p hm.mapA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨hTB, hcoB, -⟩` from `GlobalTheory.RealQuot.oriented_maps D ψ θ hθ false A' WW FA' FW α (α / β) ωB a (fun τ => a τ - b τ) hm.weilB (fun τ => ⟨(hE τ).1, GlobalTheory.RealQuot.hasInfExp_div D β α τ (b τ) (a τ) (hE τ).2 (hE τ).1⟩) Pi rf rl p' hm.mapB`. Take `⟨n₀, hn₀⟩` from `GlobalTheory.T.definiteBottomTriple_weight_natural D ψ θ A A' WW FA FW a b α β ωA hθ hsA hsW hT hE hm.weilA ⟨f, hf, hf0⟩`. Establish `kA : GlobalTheory.RealQuot.coinv true FA FW (fun τ => b τ - a τ) ≤ LinearMap.ker q`. Introduce `P hP`. Establish `h` using `hcoA f hf P hP`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hpA f hf P, hfy]`. Rewrite using `[LinearMap.mem_ker]`. Use `canc _ _ ?_` and prove the remaining obligations. Rewrite using `[h, TensorProduct.zero_tmul, map_zero]`. Establish `kB : GlobalTheory.RealQuot.coinv false FA' FW (fun τ => a τ - b τ) ≤ LinearMap.ker q'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `P hP`. Establish `h` using `hcoB f' hf' P hP`. Rewrite `h` using `[hpB f' hf' P, hfy']`. Rewrite using `[LinearMap.mem_ker]`. Use `canc _ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h, TensorProduct.zero_tmul, map_zero]`. Establish `hrel : ∀ P P', q P = q' P' → ∀ τ, ∀ Y ∈ lieAt WW τ, q (GlobalTheory.RealQuot.actT true FA FW b τ Y P) = q' (GlobalTheory.RealQuot.actT false FA' FW a τ Y P')`. Introduce `P P' hPP τ Y hY`. Establish `h1` using `hTA f hf τ Y hY P`. Establish `h2` using `hTB f' hf' τ Y hY P'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hpA f hf, hpA f hf, hfy]`. Rewrite `h2` using `[hpB f' hf', hpB f' hf', hfy']`. Use `canc _ _ ?_` and prove the remaining obligations. Rewrite using `[h1, h2, hPP]`. Establish `hrow` using `GlobalTheory.T.definite_bottom_row_transport_contragredient D A A' WW FA FA' FW b a n₀ Pr q q' sA sA' sW (fun τ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `hc : ((A.rank : ℚ) + (A'.rank : ℚ)) = (WW.rank : ℚ)` using `by exact_mod_cast had`. Rewrite using `[hn₀ τ, hc]) hrel`. Establish `hdet : ∀ κ : D.what₂.Tau → Matrix.unitaryGroup (Fin WW.rank) ℂ, GlobalTheory.MinorFrame.detChar n₀ (fun τ => (κ τ : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) ≠ 0`. Introduce `κ`. Unfold `GlobalTheory.MinorFrame.detChar`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun τ _ => pow_ne_zero _ (GlobalTheory.RealQuotBot.det_unitary_ne_zero (κ τ))`. Set `σ : (D.what₂.Tau → Matrix (Fin WW.rank) (Fin WW.rank) ℂ) → Module.End ℂ Pr` to `fun κ => if h : LinearMap.ker q ≤ LinearMap.ker (q ∘ₗ (GlobalTheory.MinorFrame.rowSub (fun τ => (κ τ).map (starRingEnd ℂ))).toLinearMap) then (LinearMap.ker q).liftQ _ h ∘ₗ (q.quotKerEquivOfSurjective hq).symm.toLinearMap else 0`. Establish `hσ : ∀ (κ : D.what₂.Tau → Matrix.unitaryGroup (Fin WW.rank) ℂ) P, σ (fun τ => (κ τ : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) (q P) = q (GlobalTheory.MinorFrame.rowSub (fun τ => (κ τ : Matrix (Fin WW.rank) (Fin WW.rank) ℂ).map (starRingEnd ℂ)) P)`. Introduce `κ P`. Establish `hk : LinearMap.ker q ≤ LinearMap.ker (q ∘ₗ (GlobalTheory.MinorFrame.rowSub (fun τ => (κ τ : Matrix (Fin WW.rank) (Fin WW.rank) ℂ).map (starRingEnd ℂ))).toLinearMap)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `P₀ hP₀`. Rewrite `hP₀`, the goal using `[LinearMap.mem_ker]`. Establish `h` using `hrow κ P₀ 0 (by rw [hP₀, map_zero])`. Rewrite `h` using `[map_zero, map_zero]`. Conclude with `(smul_eq_zero.1 h.symm).resolve_left (hdet κ)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : (q.quotKerEquivOfSurjective hq).symm (q P) = Submodule.Quotient.mk P`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearMap.quotKerEquivOfSurjective_apply_mk]`. Simplify using `only [σ, dif_pos hk, LinearMap.comp_apply, LinearEquiv.coe_coe, e1, Submodule.liftQ_apply, AlgHom.toLinearMap_apply]`. Use `⟨hPr, n₀, σ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.columnSubstitution_unitary_of_kills_lieCoinvariants D true A WW FA FW (fun τ => b τ - a τ) n₀ Pr q sA sW (fun τ => by simp only [if_true]; exact hn₀ τ) kA`.
-
-Conclude with `GlobalTheory.T.columnSubstitution_unitary_of_kills_lieCoinvariants D false A' WW FA' FW (fun τ => a τ - b τ) n₀ Pr q' sA' sW (fun τ => by simp only [Bool.false_eq_true, if_false]; rw [hn₀ τ]; ring) kB`. Introduce `κ P _`. Rewrite using `[hσ]`. Introduce `κ P' _`. Take `⟨P, hP⟩` from `hq (q' P')`.
-
-Rewrite using `[hrow κ P P' hP, ← hP, hσ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RealQuotBot.real_quot_inv_equiv : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

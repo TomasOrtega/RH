@@ -17,25 +17,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 def TraceOne (D : D7) : Prop := ∃ ω : 𝓞 D.host.E, (ω : D.host.E) + star (ω : D.host.E) = 1
 
 /- English proof (translation)
-Introduce `hP F0 Λ hΛ a t`. Establish `hU : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ` using `hΛ.2.1.2.1`. Establish `hint : IntLat Λ` using `intLat_of_unimod Λ hU`. Establish `hz : F0.z ∈ Λ` using `hΛ.2.1.2.2.1.1`. Establish `he : ∀ i, F0.e i ∈ Λ` using `fun i => e_mem_lam D F0 Λ hΛ i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlocg : ∀ P : HeightOneSpectrum (𝓞 D.host.E), ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → ∀ x ∈ Λ, x ∈ Submodule.span D.host.E (Set.range F0.e) → ∃ s : 𝓞 D.host.E, s ∉ P.asIdeal ∧ s • x ∈ Submodule.span (𝓞 D.host.E) (Set.range F0.e)`. Introduce `P hg x hx hxE`. Use `haveI := P.isPrime`. Take `⟨c, _, hc1, hceq⟩` from `hΛ.2.1.2.2.2.1 P`. Establish `hxX : x ∈ XLam Λ (lf D F0)` using `Submodule.mem_inf.mpr ⟨hx, hxE⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxl : x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (XLam Λ (lf D F0))` using `⟨1, (Ideal.primeCompl P.asIdeal).one_mem, by simpa using hxX⟩`. Rewrite `hxl` using `[hceq]`. Take `⟨s, hs, hsx⟩` from `hxl`. Establish `hfun : (fun a => c a • (lf D F0).fl.e a) = F0.e`. Use function extensionality and compare the values at `a`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc1 hg a, one_smul]`. Rewrite `hsx` using `[hfun]`. Conclude with `⟨s, hs, hsx⟩`. Establish `hdual` using `fun c => global_dual Λ hU hint F0.e F0.e_indep he ((gS D : ℕ) : 𝓞 D.host.E) hlocg c`. Establish `hcop : Nat.Coprime (Tu D u) (gS D)` using `(Nat.Coprime.coprime_mul_right_right hP.2.2.2.2.2.2.2.1).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTg : ∃ x y : 𝓞 D.host.E, x * ((Tu D u : ℕ) : 𝓞 D.host.E) + y * ((gS D : ℕ) : 𝓞 D.host.E) = 1`. Use `⟨((Nat.gcdA (Tu D u) (gS D) : ℤ) : 𝓞 D.host.E), ((Nat.gcdB (Tu D u) (gS D) : ℤ) : 𝓞 D.host.E), ?_⟩` and prove the remaining obligations. Establish `h` using `Nat.gcd_eq_gcd_ab (Tu D u) (gS D)`. Rewrite `h` using `[hcop.gcd_eq_one]`. Use `congrArg (Int.cast : ℤ → 𝓞 D.host.E) h` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at this`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨v, hv, hv0, hvc⟩` from `pre_rowvec Λ hint (Tu D u) (lf D F0) hz ((gS D : ℕ) : 𝓞 D.host.E) hdual hTg a t`. Establish `htr' : (∃ k : ℕ, (((gS D : ℕ) : 𝓞 D.host.E) : D.host.E) = 2 * (k : D.host.E) + 1) ∨ ∃ ω : 𝓞 D.host.E, (ω : D.host.E) + star (ω : D.host.E) = 1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `htr with ⟨k, hk⟩ | h` into its components or cases. Conclude with `Or.inl ⟨k, by rw [coe_nat, hk]; push_cast; ring⟩`. Conclude with `Or.inr h`. Establish `hframe_e : ∀ i : Fin D.R.rS, frame (lf D F0) (Fin.castSucc i) = F0.e i`. Introduce `i`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[frame, FlagG.fvec]`. Take `⟨v', hv', l, hl, hZ, hc⟩` from `trace_fix Λ hint (frame (lf D F0)) ((gS D : ℕ) : 𝓞 D.host.E) htr' {c | c ≤ Fin.castSucc a} t v hv (by`. Introduce `c hc`. Establish `hcl : c ≠ Fin.last _` using `fun h => by`. Rewrite `hc` using `[h]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd hc (not_le.mpr (Fin.castSucc_lt_last a))`. Take `⟨i, rfl⟩` from `Fin.exists_castSucc_eq.mpr hcl`. Rewrite using `[hframe_e]`. Conclude with `hv0 i (Fin.castSucc_le_castSucc_iff.mp hc))`. Use the proof step `(fun c hc => hvc c (not_le.mp hc))`.
-
-Use `⟨v', hv', l, hl, fun i hi => ?_, fun c hc' => hc c (not_le.mpr hc')⟩` and prove the remaining obligations. Rewrite using `[← hframe_e]`. Conclude with `hZ _ (Fin.castSucc_le_castSucc_iff.mpr hi)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowVec_of (D : D7) (u : D.what₂.Word) (T' : ℕ) (htr : Odd (gS D) ∨ TraceOne D) :
     RowVec D u T' := by
@@ -93,7 +91,7 @@ theorem rowVec_of (D : D7) (u : D.what₂.Word) (T' : ℕ) (htr : Odd (gS D) ∨
   exact hZ _ (Fin.castSucc_le_castSucc_iff.mpr hi)
 
 /- English proof (translation)
-The claim follows from `normRepStep_of D u u' hS hP (rowVec_of D u (Tu D u') htr)`.
+A detailed English derivation is pending.
 -/
 theorem normRepStep_of_trace (D : D7) (u u' : D.what₂.Word) (hS : TermStable D u u')
     (hP : PrimeHyp D u (Tu D u')) (htr : Odd (gS D) ∨ TraceOne D) : PI.NormRepLift.NormRepStep D u u' :=

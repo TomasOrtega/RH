@@ -12,34 +12,34 @@ variable {E : Type} [Field E]
 local notation:70 A:70 " ⬝ " B:71 => @HMul.hMul _ _ _ Matrix.instHMulOfFintypeOfMulOfAddCommMonoid A B
 
 /- English proof (translation)
-Simplify using `only [cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_mul (σ : E →+* E) {n : ℕ} (A B : Matrix (Fin n) (Fin n) E) :
     cT σ (A * B) = cT σ B * cT σ A := by
   simp only [cT, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Simplify using `only [cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_mul' (σ : E →+* E) {n a : ℕ} (A : Matrix (Fin n) (Fin n) E) (B : Matrix (Fin n) (Fin a) E) :
     cT σ (A ⬝ B) = cT σ B ⬝ cT σ A := by
   simp only [cT, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Simplify using `only [cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_mul'' (σ : E →+* E) {n a : ℕ} (A : Matrix (Fin n) (Fin a) E) (B : Matrix (Fin a) (Fin a) E) :
     cT σ (A ⬝ B) = cT σ B ⬝ cT σ A := by
   simp only [cT, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Simplify using `[cT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_one (σ : E →+* E) {n : ℕ} : cT σ (1 : Matrix (Fin n) (Fin n) E) = 1 := by
   simp [cT]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun i j hij => (h i j).1 hij, fun i => (h i i).2 rfl⟩`. Introduce and unpack `⟨h1, h2⟩ i j`. Conclude with `⟨fun hij => h1 hij, fun hij => hij ▸ h2 i⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isUp_iff_bt {m : ℕ} (u : Matrix (Fin m) (Fin m) E) :
     IsUp u ↔ u.BlockTriangular id ∧ ∀ i, u i i = 1 := by
@@ -50,9 +50,9 @@ theorem isUp_iff_bt {m : ℕ} (u : Matrix (Fin m) (Fin m) E) :
     exact ⟨fun hij => h1 hij, fun hij => hij ▸ h2 i⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with hl | hl` into its components or cases. Rewrite using `[hA hl, zero_mul]`. Rewrite using `[hB hl, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem diag_mul_of_bt {m : ℕ} {A B : Matrix (Fin m) (Fin m) E} (hA : A.BlockTriangular id)
     (hB : B.BlockTriangular id) (i : Fin m) : (A * B) i i = A i i * B i i := by
@@ -64,7 +64,7 @@ theorem diag_mul_of_bt {m : ℕ} {A B : Matrix (Fin m) (Fin m) E} (hA : A.BlockT
   · intro h; exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Rewrite `h`, `h'`, the goal using `[isUp_iff_bt]`. Use `⟨h.1.mul h'.1, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[diag_mul_of_bt h.1 h'.1, h.2, h'.2, one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUp_mul {m : ℕ} {u u' : Matrix (Fin m) (Fin m) E} (h : IsUp u) (h' : IsUp u') : IsUp (u * u') := by
   rw [isUp_iff_bt] at h h' ⊢
@@ -72,11 +72,11 @@ theorem isUp_mul {m : ℕ} {u u' : Matrix (Fin m) (Fin m) E} (h : IsUp u) (h' : 
   rw [diag_mul_of_bt h.1 h'.1, h.2, h'.2, one_mul]
 
 /- English proof (translation)
-Rewrite `h` using `[isUp_iff_bt]`. Establish `hdet : u.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular h.1]`. Conclude with `Finset.prod_eq_one fun i _ => h.2 i`. Use `letI : Invertible u.det := { invOf := 1, invOf_mul_self := by simp [hdet], mul_invOf_self := by simp [hdet] }`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Invertible u := Matrix.invertibleOfDetInvertible u`. Establish `hbt : u⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular h.1`. Establish `hui : u⁻¹ * u = 1` using `Matrix.nonsing_inv_mul u (by rw [hdet]; exact isUnit_one)`. Use `⟨(isUp_iff_bt _).2 ⟨hbt, fun i => ?_⟩, Matrix.mul_nonsing_inv u (by rw [hdet]; exact isUnit_one)⟩` and prove the remaining obligations. Use `congrFun (congrFun hui i) i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[diag_mul_of_bt hbt h.1, h.2, mul_one]`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isUp_inv {m : ℕ} {u : Matrix (Fin m) (Fin m) E} (h : IsUp u) : IsUp u⁻¹ ∧ u * u⁻¹ = 1 := by
   rw [isUp_iff_bt] at h
@@ -95,9 +95,9 @@ theorem isUp_inv {m : ℕ} {u : Matrix (Fin m) (Fin m) E} (h : IsUp u) : IsUp u�
 variable [NumberField E]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [latMap, Submodule.mem_map, LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨g' *ᵥ y, ⟨y, hy, rfl⟩, by rw [Matrix.mulVec_mulVec]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨y, hy, by rw [Matrix.mulVec_mulVec]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem latMap_mul {n : ℕ} (g g' : Matrix (Fin n) (Fin n) E) (Λ : Submodule (𝓞 E) (Fin n → E)) :
     latMap (g * g') Λ = latMap g (latMap g' Λ) := by
@@ -110,7 +110,7 @@ theorem latMap_mul {n : ℕ} (g g' : Matrix (Fin n) (Fin n) E) (Λ : Submodule (
     exact ⟨y, hy, by rw [Matrix.mulVec_mulVec]⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[latMap, Submodule.mem_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem latMap_one {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) : latMap 1 Λ = Λ := by
   ext x
@@ -118,9 +118,9 @@ theorem latMap_one {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) : latMap 1 
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Use `congrArg Matrix.det h` as an intermediate fact. Rewrite `this` using `[cT, Matrix.det_mul, Matrix.det_mul]`. Use `isUnit_iff_ne_zero.2 fun h0 => hJ ?_` and prove the remaining obligations. Rewrite `this` using `[h0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_isUn (σ : E →+* E) {n : ℕ} {J g : Matrix (Fin n) (Fin n) E} (hJ : J.det ≠ 0)
     (h : IsUn σ J g) : IsUnit g := by
@@ -133,7 +133,7 @@ theorem isUnit_of_isUn (σ : E →+* E) {n : ℕ} {J g : Matrix (Fin n) (Fin n) 
 
 omit [NumberField E] in
 /- English proof (translation)
-Unfold `IsUn at *`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [h, h']`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUn_mul (σ : E →+* E) {n : ℕ} {J g g' : Matrix (Fin n) (Fin n) E} (h : IsUn σ J g)
     (h' : IsUn σ J g') : IsUn σ J (g * g') := by
@@ -144,7 +144,7 @@ theorem isUn_mul (σ : E →+* E) {n : ℕ} {J g g' : Matrix (Fin n) (Fin n) E} 
 
 omit [NumberField E] in
 /- English proof (translation)
-Unfold `IsUn at *`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem isUn_inv (σ : E →+* E) {n : ℕ} {J a b : Matrix (Fin n) (Fin n) E} (h : IsUn σ J a)
     (hab : a * b = 1) : IsUn σ J b := by
@@ -155,9 +155,9 @@ theorem isUn_inv (σ : E →+* E) {n : ℕ} {J a b : Matrix (Fin n) (Fin n) E} (
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `⟨by simp [IsUn, cT_one], ⟨1, ?_, ?_⟩, fun v _ => ⟨0, by simp⟩⟩` and prove the remaining obligations. Introduce `i j`. Conclude with `⟨fun h => Matrix.one_apply_ne (ne_of_lt h).symm, fun h => by subst h; exact Matrix.one_apply_eq i⟩`. Establish `key : (1 : Matrix (Fin n) (Fin n) E) ⬝ eOf P = eOf P ⬝ (1 : Matrix (Fin r) (Fin r) E)`. Rewrite using `[Matrix.one_mul, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem inN_one (σ : E →+* E) {n r : ℕ} (J : Matrix (Fin n) (Fin n) E) (P : Matrix (Fin n) (Fin (r + 1)) E) :
     InN σ J P 1 := by
@@ -170,11 +170,11 @@ theorem inN_one (σ : E →+* E) {n r : ℕ} (J : Matrix (Fin n) (Fin n) E) (P :
 
 omit [NumberField E] in
 /- English proof (translation)
-Take `⟨hu, ⟨ν, hν, he⟩, hp⟩` from `h`. Take `⟨hu', ⟨ν', hν', he'⟩, hp'⟩` from `h'`. Use `replace he : g ⬝ eOf P = eOf P ⬝ ν := he`. Use `replace he' : g' ⬝ eOf P = eOf P ⬝ ν' := he'`. Use `⟨isUn_mul σ hu hu', ⟨ν * ν', isUp_mul hν hν', ?_⟩, fun v hv => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (g * g') ⬝ eOf P = eOf P ⬝ (ν * ν')`. Rewrite using `[Matrix.mul_assoc, he', ← Matrix.mul_assoc, he, Matrix.mul_assoc]`. Conclude with `key`. Take `⟨c, hc⟩` from `hp v hv`. Take `⟨c', hc'⟩` from `hp' v hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ν *ᵥ c' + c, ?_⟩` and prove the remaining obligations. Establish `e1 : (g * g') *ᵥ v - v = g *ᵥ (g' *ᵥ v - v) + (g *ᵥ v - v)`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.mulVec_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1, hc', hc, Matrix.mulVec_mulVec, he, ← Matrix.mulVec_mulVec, Matrix.mulVec_add]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inN_mul (σ : E →+* E) {n r : ℕ} {J : Matrix (Fin n) (Fin n) E} {P : Matrix (Fin n) (Fin (r + 1)) E}
     {g g' : Matrix (Fin n) (Fin n) E} (h : InN σ J P g) (h' : InN σ J P g') : InN σ J P (g * g') := by
@@ -195,15 +195,13 @@ theorem inN_mul (σ : E →+* E) {n r : ℕ} {J : Matrix (Fin n) (Fin n) E} {P :
 
 omit [NumberField E] in
 /- English proof (translation)
-Take `⟨hu, ⟨ν, hν, he⟩, hp⟩` from `h`. Use `replace he : a ⬝ eOf P = eOf P ⬝ ν := he`. Take `⟨hνi, hνν⟩` from `isUp_inv hν`. Establish `hJ : cT σ a * J = J * b`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨isUn_inv σ hu hab, ⟨ν⁻¹, hνi, ?_⟩, fun v hv => ?_⟩` and prove the remaining obligations. Establish `key : b ⬝ eOf P = eOf P ⬝ ν⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc b, Matrix.mul_assoc, hνν, Matrix.mul_one]`. Use `_ = (b ⬝ (a ⬝ eOf P)) ⬝ ν⁻¹ := by rw [he]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = eOf P ⬝ ν⁻¹ := by rw [← Matrix.mul_assoc b, hba, Matrix.one_mul]`. Conclude with `key`. Establish `e2 : cT σ (eOf P) ⬝ J ⬝ b = cT σ ν ⬝ (cT σ (eOf P) ⬝ J)`. Rewrite using `[Matrix.mul_assoc, ← hJ, ← Matrix.mul_assoc, ← cT_mul', he, cT_mul'', Matrix.mul_assoc]`. Establish `hw : (cT σ (eOf P) ⬝ J) *ᵥ (b *ᵥ v) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Matrix.mulVec_mulVec, e2, ← Matrix.mulVec_mulVec]`. Establish `hv' : (cT σ (eOf P) ⬝ J) *ᵥ v = 0` using `hv`. Rewrite using `[hv', Matrix.mulVec_zero]`. Take `⟨c, hc⟩` from `hp _ hw`. Use `⟨-c, ?_⟩` and prove the remaining obligations.
-
-Rewrite `hc` using `[Matrix.mulVec_mulVec, hab, Matrix.one_mulVec]`. Rewrite using `[Matrix.mulVec_neg, ← hc]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem inN_inv (σ : E →+* E) {n r : ℕ} {J : Matrix (Fin n) (Fin n) E} {P : Matrix (Fin n) (Fin (r + 1)) E}
     {a b : Matrix (Fin n) (Fin n) E} (h : InN σ J P a) (hab : a * b = 1) (hba : b * a = 1) :
@@ -261,7 +259,7 @@ def gNUnits (σ : E →+* E) {n r : ℕ} (J : Matrix (Fin n) (Fin n) E) (Λ : Su
       _ = Λ := by rw [← GNGroup.latMap_mul, a.inv_mul, GNGroup.latMap_one]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ k r J Λ P f T A s hV`. Establish `hJ : J.det ≠ 0` using `hV.2.2.1.2`. Conclude with `⟨⟨gNUnits (σ : E →+* E) J Λ P, fun u => Iff.rfl⟩, fun γ hγ => GNGroup.isUnit_of_isUn (σ : E →+* E) hJ hγ.1.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem gN_subgroup : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (k r : ℕ) (J : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E) (Λ : Submodule (𝓞 E) (Fin (2 * r + k + 1) → E)) (P : Matrix (Fin (2 * r + k + 1)) (Fin (r + 1)) E) (f : Matrix (Fin (2 * r + k + 1)) (Fin r) E) (T : F) (A : InfinitePlace E → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (s : Fin r → ℝ), IsVolData σ J Λ P f T A s → (∃ G : Subgroup (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E)ˣ, ∀ u : (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E)ˣ, u ∈ G ↔ (u : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E) ∈ GN (σ : E →+* E) J Λ P) ∧ ∀ γ ∈ GN (σ : E →+* E) J Λ P, IsUnit γ := by
   intro F E _ _ _ _ _ σ k r J Λ P f T A s hV

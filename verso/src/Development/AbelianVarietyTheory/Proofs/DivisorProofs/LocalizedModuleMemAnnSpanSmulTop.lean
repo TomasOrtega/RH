@@ -5,17 +5,15 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n hn`. Use `set J : Ideal (Localization S) := Ideal.span {a : Localization S | algebraMap D (Localization S) x * a = 0} with hJ`. Establish `hIJ : Ideal.span {a : D | x * a = 0} ≤ J.comap (algebraMap D (Localization S))`. Rewrite using `[Ideal.span_le]`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show algebraMap D (Localization S) a ∈ J`. Apply `Ideal.subset_span` to reduce the goal to its premises. Use `show algebraMap D (Localization S) x * algebraMap D (Localization S) a = 0`. Rewrite using `[← map_mul, show x * a = 0 from ha, map_zero]`. Establish `key : Ideal.span {a : D | x * a = 0} • (⊤ : Submodule D N) ≤ ((J • (⊤ : Submodule (Localization S) (LocalizedModule S N))).restrictScalars D).comap (LocalizedModule.mkLinearMap S N)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.smul_le]`. Introduce `r hr m _`. Use `show LocalizedModule.mk (r • m) 1 ∈ J • (⊤ : Submodule (Localization S) (LocalizedModule S N))`. Rewrite using `[← LocalizedModule.smul'_mk, ← algebraMap_smul (Localization S) r]`. Conclude with `Submodule.smul_mem_smul (hIJ hr) trivial`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Proceed by induction on `n using LocalizedModule.induction_on with`. Consider the case `_ m s`. Rewrite `hn` using `[algebraMap_smul (Localization S) x, LocalizedModule.smul'_mk, ← LocalizedModule.zero_mk (1 : S), LocalizedModule.mk_eq]`. Take `⟨u, hu⟩` from `hn`. Simplify using `only [one_smul, smul_zero] at hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hxu : x • (u • m) = 0` using `by rw [smul_comm]; exact hu`. Establish `hmem` using `key (h _ hxu)`. Establish `he : LocalizedModule.mk m s = (Localization.mk 1 (u * s) : Localization S) • LocalizedModule.mk (u • m) 1`. Rewrite using `[LocalizedModule.mk_smul_mk, one_smul, mul_one, LocalizedModule.mk_cancel_common_left]`. Rewrite using `[he]`.
-
-Conclude with `Submodule.smul_mem _ _ hmem`.
+A detailed English derivation is pending.
 -/
 theorem localizedModule_mem_annSpan_smul_top (D : Type) [CommRing D] (S : Submonoid D) (x : D)
     (N : Type 1) [AddCommGroup N] [Module D N]

@@ -10,11 +10,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.BdDim
 
 /- English proof (translation)
-Use `haveI := IsScalarTower.of_algebraMap_eq' hR`. Use `haveI : FaithfulSMul R (⊥ : Subfield K) := (faithfulSMul_iff_algebraMap_injective _ _).mpr (Function.Injective.of_comp (f := algebraMap (⊥ : Subfield K) K) (by`. Use `FaithfulSMul.algebraMap_injective R K` as an intermediate fact. Rewrite using `[IsScalarTower.algebraMap_eq R (⊥ : Subfield K) K] at this))` and apply the resulting hypothesis. Set `F : Subfield K` to `{ (Subalgebra.algebraicClosure R K).toSubring with inv_mem' := fun x hx => IsAlgebraic.inv hx }`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Algebra.IsAlgebraic R (⊥ : Subfield K) := ⟨fun x => by`. Establish `hx : IsAlgebraic R (x : K)` using `(bot_le (a := F)) x.2`. Conclude with `(isAlgebraic_algHom_iff (IsScalarTower.toAlgHom R (⊥ : Subfield K) K) (algebraMap (⊥ : Subfield K) K).injective).mp hx⟩`. Use `(_root_.trdeg_le_of_injective f hf).trans ?_` and prove the remaining obligations. Rewrite using `[← trdeg_add_eq R (⊥ : Subfield K) (A := K), trdeg_eq_zero (R := R) (A := (⊥ : Subfield K)), zero_add]`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TrLe.trdeg_le_of_injective {R A K : Type} [CommRing R] [IsDomain R] [CommRing A] [Field K] [Algebra R A]
     [Algebra R K] [Algebra R (⊥ : Subfield K)] [FaithfulSMul R K]
@@ -36,15 +34,13 @@ theorem TrLe.trdeg_le_of_injective {R A K : Type} [CommRing R] [IsDomain R] [Com
   exact h
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `CharP.exists A`. Use `haveI : CharP K p := charP_of_injective_ringHom hf p`. Break down `CharP.char_is_prime_or_zero A p with hq | hq` into its components or cases. Use `haveI := Fact.mk hq`. Use `letI := ZMod.algebra A p`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI := ZMod.algebra K p`. Use `letI := ZMod.algebra (⊥ : Subfield K) p`. Use `haveI : IsScalarTower ℤ (ZMod p) A := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Use `haveI : Algebra.FiniteType (ZMod p) A := Algebra.FiniteType.of_restrictScalars_finiteType ℤ _ _`. Take `⟨s, h1, h2⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := ZMod p) (A := A)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h.trdeg_le_of_injective (R := ZMod p) (Subsingleton.elim _ _) { f with commutes' := fun r => RingHom.congr_fun (Subsingleton.elim (f.comp (algebraMap _ A)) (algebraMap _ K)) r } hf` as an intermediate fact. Rewrite `this` using `[h2]`. Rewrite using `[h1]`. Establish `h3 : s ≤ n` using `by exact_mod_cast this`. Conclude with `h3.trans (Nat.le_succ n)` after adjusting the coercions.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `hq haveI : CharZero A := CharP.charP_to_charZero _ haveI : CharZero K := CharP.charP_to_charZero _` using the available equality. Use `h.trdeg_le_of_injective (R := ℤ) (Subsingleton.elim _ _) f.toIntAlgHom hf` as an intermediate fact. Rewrite using `[IntFiniteTypeDim.ringKrullDim_eq_trdeg_add_one A (RingHom.injective_int _)]`. Establish `h2 : Cardinal.toENat (Algebra.trdeg ℤ A) ≤ n`. Simplify using `using Cardinal.toENat.monotone' this`.
-
-Establish `h3 : Cardinal.toENat (Algebra.trdeg ℤ A) + 1 ≤ ((n + 1 : ℕ) : ℕ∞)`. Use `push_cast`. Use `gcongr`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem TrLe.ringKrullDim_le {A K : Type} [CommRing A] [IsDomain A] [Algebra.FiniteType ℤ A] [Field K]
     (f : A →+* K) (hf : Function.Injective f) {n : ℕ} (h : TrLe K n) : ringKrullDim A ≤ (n + 1 : ℕ) := by
@@ -77,9 +73,7 @@ theorem TrLe.ringKrullDim_le {A K : Type} [CommRing A] [IsDomain A] [Algebra.Fin
     exact_mod_cast h3
 
 /- English proof (translation)
-Take `⟨I, rfl⟩` from `(PrimeSpectrum.isClosed_iff_zeroLocus_ideal S).mp hS`. Rewrite using `[topologicalKrullDim_eq_of_isEmbedding (PrimeSpectrum.isClosedEmbedding_comap_of_surjective _ (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective).isEmbedding (Z := PrimeSpectrum.zeroLocus (I : Set A)) (by rw [range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective, Ideal.mk_ke …`. Use `IntFiniteTypeDim.ringKrullDim_quotient_le_of_minimalPrimes I _ fun P hP => ?_` and prove the remaining obligations. Use `haveI := hP.1.1`. Use `haveI : @Algebra.FiniteType ℤ (A ⧸ P) _ _ (Ring.toIntAlgebra _) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mk P).toIntAlgHom Ideal.Quotient.mk_surjective`.
-
-Conclude with `(h ⟨P, hP.1.1⟩ hP.1.2).ringKrullDim_le (algebraMap (A ⧸ P) P.ResidueField) (IsFractionRing.injective _ _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_le_of_trLe_affine {A : Type} [CommRing A] [Algebra.FiniteType ℤ A]
     {S : Set (PrimeSpectrum A)} (hS : IsClosed S) {n : ℕ} (h : ∀ y ∈ S, TrLe y.asIdeal.ResidueField n) :
@@ -98,13 +92,11 @@ theorem topologicalKrullDim_le_of_trLe_affine {A : Type} [CommRing A] [Algebra.F
     (IsFractionRing.injective _ _)
 
 /- English proof (translation)
-Introduce `X p S n hp hS h`. Use `topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_` and prove the remaining obligations. Take `⟨R, j, hj, hx, -⟩` from `X.exists_affine_mem_range_and_range_subset (x := x.1) (U := ⊤) trivial`. Use `⟨Subtype.val ⁻¹' Set.range j, j.isOpenEmbedding.isOpen_range.preimage continuous_subtype_val, hx, ?_⟩` and prove the remaining obligations. Use `haveI : Algebra.FiniteType ℤ R := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : LocallyOfFiniteType (j ≫ p)` using `inferInstance`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (j ≫ p)`. Rewrite `h1` using `[← hφ, HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Rewrite using `[← RingHom.finiteType_algebraMap]`. Rewrite using `[Subsingleton.elim (algebraMap ℤ R) φ.hom]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `e1` using `topologicalKrullDim_eq_of_isEmbedding (W := (Subtype.val ⁻¹' Set.range j : Set S)) (Z := Set.range j ∩ S) (IsEmbedding.subtypeVal.comp IsEmbedding.subtypeVal) (by rw [Set.range_comp, Subtype.range_coe, Subtype.image_preimage_coe, Set.inter_comm])`. Establish `e2` using `topologicalKrullDim_eq_of_isEmbedding (W := (j ⁻¹' S : Set (Spec R))) (Z := Set.range j ∩ S) (j.isOpenEmbedding.isEmbedding.comp IsEmbedding.subtypeVal) (by rw [Set.range_comp, Subtype.range_coe, Set.image_preimage_eq_range_inter])`. Rewrite using `[← e1, e2]`. Use `topologicalKrullDim_le_of_trLe_affine (A := R) (hS.preimage j.continuous) fun (y : Spec R) hy => ?_` and prove the remaining obligations.
-
-Conclude with `(h _ hy).of_ringHom ((Scheme.Spec.residueFieldIso R y).inv ≫ inv (j.residueFieldMap y)).hom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_le_of_trLe : ∀ (X : Scheme.{0}) (p : X ⟶ Sp ℤ) (S : Set X) (n : ℕ), LocallyOfFiniteType p →
     IsClosed S → (∀ y ∈ S, TrLe (X.residueField y) n) → topologicalKrullDim S ≤ (n + 1 : ℕ) := by

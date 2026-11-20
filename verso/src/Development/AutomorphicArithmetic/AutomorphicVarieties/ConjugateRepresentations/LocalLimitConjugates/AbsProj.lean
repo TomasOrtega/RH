@@ -9,13 +9,11 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Establish `hperp : (Submodule.span ℂ (Set.range e))ᗮ = ⊥`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `u hu`. Apply `hd u` to reduce the goal to its premises. Introduce `v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[inner_eq_zero_symm]`. Conclude with `(Submodule.mem_orthogonal _ u).1 hu (e v) (Submodule.subset_span ⟨v, rfl⟩)`. Establish `hcl : (Submodule.span ℂ (Set.range e)).topologicalClosure = ⊤`. Rewrite using `[← Submodule.orthogonal_orthogonal_eq_closure, hperp, Submodule.bot_orthogonal_eq_top]`. Establish `hle : Submodule.span ℂ (Set.range e) ≤ LinearMap.ker (L : H →ₗ[ℂ] H)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `hL v`. Establish `hle' : (Submodule.span ℂ (Set.range e)).topologicalClosure ≤ LinearMap.ker (L : H →ₗ[ℂ] H)` using `Submodule.topologicalClosure_minimal _ hle L.isClosed_ker`. Establish `hw : w ∈ LinearMap.ker (L : H →ₗ[ℂ] H)` using `hle' (hcl ▸ Submodule.mem_top)`.
-
-Conclude with `hw`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem absProj_ext {H D : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (e : D → H) (hd : ∀ w : H, (∀ v : D, inner ℂ w (e v) = 0) → w = 0) (L : H →L[ℂ] H)
@@ -39,29 +37,25 @@ private theorem absProj_ext {H D : Type} [NormedAddCommGroup H] [InnerProductSpa
   exact hw
 
 /- English proof (translation)
-Introduce `G H _ _ _ _ R D A hD hiso hAR hsym hirr`. Use `set s : ℕ → ℝ := fun k ↦ 1 / ((k : ℝ) + 1) with hsdef`. Establish `hs : ∀ k : ℕ, s k ≠ 0` using `fun k ↦ by`. Simplify using `only [hsdef]`. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hs0 : Filter.Tendsto s Filter.atTop (𝓝 0)` using `tendsto_one_div_add_atTop_nhds_zero_nat`. Establish `hdense : ∀ (t : ℝ), t ≠ 0 → ∀ (w : H), (∀ (v : ↥D), inner ℂ w (↑(A v) + (Complex.I * ↑t) • ↑v) = 0) → w = 0` using `absDense G H R D A hD hiso hAR hsym hirr`. Establish `hdense' : ∀ (k : ℕ) (w : H), (∀ v : ↥D, inner ℂ w (↑(A v) - (Complex.I * ↑(s k)) • ↑v) = 0) → w = 0`. Introduce `k w hw`. Use `hdense (-(s k)) (neg_ne_zero.2 (hs k)) w fun v ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h : (↑(A v) : H) + (Complex.I * ((-(s k) : ℝ) : ℂ)) • (↑v : H) = ↑(A v) - (Complex.I * ↑(s k)) • ↑v`. Use `push_cast`. Rewrite using `[mul_neg, neg_smul, ← sub_eq_add_neg]`. Rewrite using `[h]`. Conclude with `hw v`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∀ k : ℕ, ∃ T : H →L[ℂ] H, (∀ v : ↥D, T (↑(A v) + (Complex.I * ↑(s k)) • ↑v) = ↑v) ∧ ∀ w : H, |s k| * ‖T w‖ ≤ ‖w‖` using `fun k ↦ absInv H D A hsym (s k) (hs k) (hdense (s k) (hs k))`. Use `choose T hTinv hTbd using hT`. Establish `hTR : ∀ (k : ℕ) (g : G) (w : H), T k (R g w) = R g (T k w)`. Introduce `k g w`. Establish `key` using `absProj_ext (fun v : ↥D ↦ (↑(A v) + (Complex.I * ↑(s k)) • ↑v : H)) (hdense (s k) (hs k)) ((T k).comp (R g) - (R g).comp (T k)) ?_ w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `key` using `[sub_eq_zero]`. Introduce `v`. Establish `hv : (R g) ↑v ∈ D` using `hD g v v.2`. Establish `h1 : (R g) (↑(A v) + (Complex.I * ↑(s k)) • ↑v) = ↑(A ⟨(R g) ↑v, hv⟩) + (Complex.I * ↑(s k)) • ↑(⟨(R g) ↑v, hv⟩ : ↥D)`. Rewrite using `[map_add, map_smul, hAR g v]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.comp_apply]`. Rewrite using `[h1, hTinv k ⟨(R g) ↑v, hv⟩, hTinv k v]`. Simplify using the standard rewrite rules. Use `set K : Submodule ℂ H := (D.subtype ∘ₗ A).range.topologicalClosure with hKdef`. Use `set P : H →L[ℂ] H := ContinuousLinearMap.id ℂ H - K.starProjection with hPdef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hPperp : ∀ (w : H) (v : ↥D), inner ℂ (P w) ↑(A v) = 0`. Introduce `w v`. Establish `hAv : (↑(A v) : H) ∈ K` using `Submodule.le_topologicalClosure _ (LinearMap.mem_range_self (D.subtype ∘ₗ A) v)`. Simplify using `only [hPdef, ContinuousLinearMap.sub_apply, ContinuousLinearMap.id_apply]`. Conclude with `Submodule.inner_left_of_mem_orthogonal hAv (K.sub_starProjection_mem_orthogonal w)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hclose : ∀ w : H, w - P w ∈ (D.subtype ∘ₗ A).range.topologicalClosure`. Introduce `w`. Simplify using `only [hPdef, ContinuousLinearMap.sub_apply, ContinuousLinearMap.id_apply, sub_sub_cancel]`. Conclude with `K.starProjection_apply_mem w`. Establish `hlim` using `absLim H D A hsym s hs0 (fun k ↦ hdense (s k) (hs k)) hdense' T hTinv hTbd P hPperp hclose`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨P, fun k ↦ (Complex.I * ↑(s k)) • T k, T, ?_, ?_, ?_, ?_, hPperp, ?_⟩` and prove the remaining obligations. Introduce `g w`. Establish `h2 : Filter.Tendsto (fun k ↦ (Complex.I * ↑(s k)) • T k (R g w)) Filter.atTop (𝓝 (R g (P w)))`. Use `(((R g).continuous.tendsto _).comp (hlim w)).congr fun k ↦ ?_` and prove the remaining obligations. Simplify using `[Function.comp_apply, map_smul, hTR k g w]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `tendsto_nhds_unique (hlim (R g w)) h2`. Introduce `k g w`. Simplify using `[ContinuousLinearMap.smul_apply, map_smul, hTR k g w]`. Introduce `k g w`. Conclude with `hTR k g w`.
-
-Introduce `k v`. Establish `h` using `hTinv k v`. Rewrite `h` using `[map_add, map_smul]`. Rewrite using `[ContinuousLinearMap.smul_apply]`. Conclude with `(eq_sub_of_add_eq h).symm`.
-
-Introduce `w`. Simplify `hlim w` using `only [ContinuousLinearMap.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.absProj :
     UpperTheory.V.Cj.H.AbsProj := by

@@ -7,25 +7,23 @@ namespace UpperTheory.V.Pr
 open Matrix
 
 /- English proof (translation)
-Set `T : G → Finset (Bool × ι × ι)` to `fun g => Finset.univ.filter fun s => if s.1 then R g s.2.1 s.2.2 else R g⁻¹ s.2.1 s.2.2`. Set `P : G → Prop` to `fun g => (∀ i, R g i i) ∧ ∀ i, R g⁻¹ i i`. Establish `hP1 : P 1` using `⟨h1, by rw [inv_one]; exact h1⟩`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb, hmax⟩ : ∃ b, P b ∧ ∀ c, P c → (T c).card ≤ (T b).card := by`. Establish `hfin : ((fun g => (T g).card) '' {g | P g}).Finite` using `(Set.finite_Iic (Fintype.card (Bool × ι × ι))).subset (by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨g, _, rfl⟩`. Conclude with `Finset.card_le_univ _)`. Take `⟨_, ⟨b, hb, rfl⟩, hm⟩` from `Set.exists_max_image _ id hfin ⟨_, 1, hP1, rfl⟩`. Conclude with `⟨b, hb, fun c hc => hm _ ⟨c, hc, rfl⟩⟩`. Establish `key : ∀ c, P c → (∀ i j, R c i j → R b i j) ∧ ∀ i j, R c⁻¹ i j → R b⁻¹ i j`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hcP`. Take `⟨x, hx1, hx2⟩` from `hc b c`. Establish `hPx : P x` using `⟨fun i => hx1 i i i (hb.1 i) (hcP.1 i), fun i => hx2 i i i (hcP.2 i) (hb.2 i)⟩`. Establish `hsub : T b ⊆ T x`. Introduce and unpack `⟨t, i, j⟩ hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `t`. Simplify using `only [T, Finset.mem_filter, Finset.mem_univ, true_and, Bool.false_eq_true, if_false] at hs ⊢`. Conclude with `hx2 i i j (hcP.2 i) hs`. Simplify using `only [T, Finset.mem_filter, Finset.mem_univ, true_and, if_true] at hs ⊢`. Conclude with `hx1 i j j hs (hcP.1 j)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `heq : T b = T x` using `Finset.eq_of_subset_of_card_le hsub (hmax x hPx)`. Prove the components needed by the constructor for the conclusion. Introduce `i j hij`. Establish `: ((true, i, j) : Bool × ι × ι) ∈ T x`. Simplify using `only [T, Finset.mem_filter, Finset.mem_univ, true_and, if_true]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx1 i i j (hb.1 i) hij`. Rewrite `this` using `[← heq]`. Simplify `this` using `only [T, Finset.mem_filter, Finset.mem_univ, true_and, if_true]`. Introduce `i j hij`. Establish `: ((false, i, j) : Bool × ι × ι) ∈ T x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [T, Finset.mem_filter, Finset.mem_univ, true_and, Bool.false_eq_true, if_false]`. Conclude with `hx2 i j j hij (hb.2 j)`. Rewrite `this` using `[← heq]`. Simplify `this` using `only [T, Finset.mem_filter, Finset.mem_univ, true_and, Bool.false_eq_true, if_false]`. Use `⟨b, hb.1, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `(key b⁻¹ ⟨hb.2, by rw [inv_inv]; exact hb.1⟩).2` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Introduce `g i k l j hik hkl hlj`. Take `⟨x, hx1, hx2⟩` from `hc g b`. Take `⟨y, hy1, hy2⟩` from `hc x g⁻¹`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hy2` using `[inv_inv]`. Establish `hPy : P y`. Prove the components needed by the constructor for the conclusion. Introduce `t`. Take `⟨s, hs1, hs2⟩` from `hinv g t`.
-
-Conclude with `hy1 t s t (hx1 t s s hs1 (hb.1 s)) hs2`. Introduce `t`. Take `⟨s, hs1, hs2⟩` from `hinv g t`. Conclude with `hy2 t s t hs1 (hx2 s s t (hb.2 s) hs2)`. Conclude with `(key y hPy).1 i j (hy1 i l j (hx1 i k l hik hkl) hlj)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem comb {G ι : Type} [Group G] [Fintype ι] (R : G → ι → ι → Prop)
     (h1 : ∀ i, R 1 i i) (hinv : ∀ g i, ∃ k, R g i k ∧ R g⁻¹ k i)
@@ -88,15 +86,15 @@ private theorem comb {G ι : Type} [Group G] [Fintype ι] (R : G → ι → ι �
     exact (key y hPy).1 i j (hy1 i l j (hx1 i k l hik hkl) hlj)
 
 /- English proof (translation)
-Set `c0 : Bool × Fin n × Fin n → Fin n → κ` to `fun s k => if s.1 then A s.2.1 k * B k s.2.2 else C s.2.1 k * D k s.2.2`. Set `a0 : Bool → Fin n → κˣ` to `fun t k => if t then α k else (α k)⁻¹`. Establish `ha0 : ∀ t, FreeRatios (a0 t)`. Introduce `t`. Consider the cases of `t`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Introduce `i j hij m hm h`. Apply `hα i j hij m hm` to reduce the goal to its premises. Simplify `h` using `[a0]`. Simplify `hα` using `[a0]`. Take `⟨m, hm⟩` from `expSums κ (Fin n) {s : Bool × Fin n × Fin n // ∃ k, c0 s k ≠ 0} (fun s => a0 s.1.1) (fun s => c0 s.1) (fun s => ha0 _) (fun s => s.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `⟨m, ?_, ?_⟩` and prove the remaining obligations. Introduce `i k j h1 h2`. Use `hm ⟨(true, i, j), k, by simpa [c0] using ⟨h1, h2⟩⟩` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[diagonal_pow, mul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [mul_diagonal, c0, a0, if_true, Pi.pow_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i k j h1 h2`. Use `hm ⟨(false, i, j), k, by simpa [c0] using ⟨h1, h2⟩⟩` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[diagonal_pow, mul_apply]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [mul_diagonal, c0, a0, Bool.false_eq_true, if_false, Pi.pow_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem expProd {κ : Type} [Field κ] {n : ℕ} (α : Fin n → κˣ) (hα : FreeRatios α)
     (A B C D : Matrix (Fin n) (Fin n) κ) : ∃ m : ℕ,
@@ -131,17 +129,17 @@ private theorem expProd {κ : Type} [Field κ] {n : ℕ} (α : Fin n → κˣ) (
     ring
 
 /- English proof (translation)
-Use `letI : MulAction G (Submodule κ (Fin n → κ)) := { smul := fun g W => W.map (Matrix.toLin' (gm r g)) one_smul := fun W => by`. Express the relevant statement in the definitionally equal form `W.map (Matrix.toLin' (gm r 1)) = W`. Simplify using `[gm]`. Use `mul_smul := fun g h W => by`. Express the relevant statement in the definitionally equal form `W.map (Matrix.toLin' (gm r (g * h))) = (W.map (Matrix.toLin' (gm r h))).map (Matrix.toLin' (gm r g))`.
+Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.map_comp, ← Matrix.toLin'_mul]`. Simplify using `[gm] }`. Establish `hfin : (MulAction.orbit G W).Finite` using `hF.subset (by`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `hW g)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Finite (MulAction.orbit G W) := hfin`. Use `haveI : Finite (G ⧸ MulAction.stabilizer G W) := Finite.of_equiv _ (MulAction.orbitEquivQuotientStabilizer G W)`. Use `hr W (MulAction.stabilizer G W) Subgroup.finiteIndex_of_finite_quotient fun g => ?_` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff]`. Express the relevant statement in the definitionally equal form `W.map (Matrix.toLin' (gm r g)) = W ↔ _`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h v hv`. Rewrite using `[← h]`. Conclude with `⟨v, hv, by simp⟩`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (Matrix.toLin' (gm r g))`. Introduce `v w hvw`. Use `congrArg (fun x => gm r g⁻¹ *ᵥ x) hvw` as an intermediate fact. Establish `h1 : gm r g⁻¹ * gm r g = 1`. Rewrite using `[gm, gm, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [toLin'_apply, mulVec_mulVec, h1, one_mulVec]`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Simplify using `using h v hv`. Conclude with `(Submodule.equivMapOfInjective _ hinj W).finrank_eq.symm`.
+A detailed English derivation is pending.
 -/
 private theorem finOrbit {G κ : Type} [Group G] [Field κ] {n : ℕ} (r : G →* GL (Fin n) κ) (hr : StrongIrr r)
     (W : Submodule κ (Fin n → κ)) (F : Set (Submodule κ (Fin n → κ))) (hF : F.Finite)
@@ -185,7 +183,7 @@ end UpperTheory.V.Pr
 
 open Matrix in
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.StronglyIrreducibleFreeRatios.fullEx`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.fullEx :
     UpperTheory.V.Pr.FullEx :=

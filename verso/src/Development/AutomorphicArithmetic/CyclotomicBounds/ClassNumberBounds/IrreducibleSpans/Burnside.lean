@@ -8,7 +8,7 @@ open Matrix
 variable {n : Type*} [Fintype n] [DecidableEq n] {G : Type*} [Group G]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qj3.burnside_end S hirr f`.
+A detailed English derivation is pending.
 -/
 private theorem burnside_end {K V : Type*} [Field K] [IsAlgClosed K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (S : Subalgebra K (Module.End K V))
@@ -17,13 +17,11 @@ private theorem burnside_end {K V : Type*} [Field K] [IsAlgClosed K] [AddCommGro
   _root_.UpperTheory.Reformulated.B.Qj3.burnside_end S hirr f
 
 /- English proof (translation)
-Set `T : Subalgebra K (Matrix n n K)` to `Algebra.adjoin K (Set.range ρ)`. Establish `hT : Subalgebra.toSubmodule T = Submodule.span K (Set.range ρ)`. Apply `Algebra.adjoin_eq_span_of_subset` to reduce the goal to its premises. Introduce `x hx`. Establish `: x ∈ MonoidHom.mrange ρ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(Submonoid.closure_le.mpr ?_ : Submonoid.closure (Set.range ρ) ≤ MonoidHom.mrange ρ) hx` and prove the remaining obligations. Introduce `y hy`. Conclude with `hy`. Conclude with `Submodule.subset_span this`. Set `e : Matrix n n K ≃ₐ[K] Module.End K (n → K)` to `Matrix.toLinAlgEquiv'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff, ← hT]`. Introduce `m _`. Establish `h` using `burnside_end (T.map e.toAlgHom) (fun N hN => hirr N fun g v hv => hN (e (ρ g)) ⟨ρ g, Algebra.subset_adjoin ⟨g, rfl⟩, rfl⟩ v hv) (e m)`. Take `⟨m', hm', h'⟩` from `h`. Establish `: m' = m` using `e.injective h'`.
-
-Rewrite using `[← this]`. Conclude with `hm'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_irreducible {K : Type*} [Field K] [IsAlgClosed K] (ρ : G →* Matrix n n K)
     (hirr : ∀ N : Submodule K (n → K), (∀ g, ∀ v ∈ N, ρ g *ᵥ v ∈ N) → N = ⊥ ∨ N = ⊤) :
@@ -57,17 +55,15 @@ private noncomputable def entryBasis (n : Type*) [Fintype n] (R : Type*) [CommRi
       right_inv := fun _ => rfl }
 
 /- English proof (translation)
-Take `⟨b, hb, hsp, hli⟩` from `exists_linearIndependent K ((fun m : Matrix n n A => m.map π) '' s)`. Rewrite `hsp` using `[hs]`. Set `B : Module.Basis b K (Matrix n n K)` to `Module.Basis.mk hli (by`. Rewrite using `[Subtype.range_coe, hsp])`. Set `B'` to `B.reindex (B.indexEquiv (entryBasis n K))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hmem : ∀ p, ∃ w ∈ s, w.map π = B' p` using `fun p => by`. Apply `hb` to reduce the goal to its premises. Simplify using `only [B', B, Module.Basis.reindex_apply, Module.Basis.mk_apply]`. Conclude with `Subtype.property _`. Use `choose w hw hwπ using hmem`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit ((entryBasis n K).det B')` using `(entryBasis n K).isUnit_det B'`. Establish `hdet : π ((entryBasis n A).det w) = (entryBasis n K).det B'`. Rewrite using `[Module.Basis.det_apply, Module.Basis.det_apply, RingHom.map_det]`. Use `congr 1`. Use extensionality with `p q`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Module.Basis.toMatrix_apply, Module.Basis.toMatrix_apply, ← hwπ]`. Both sides reduce to the same expression. Establish `hu' : IsUnit ((entryBasis n A).det w)`. Assume the negation of the conclusion as `hn`. Establish `: (entryBasis n A).det w ∈ RingHom.ker π`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hπ]`. Conclude with `hn`. Rewrite `this` using `[RingHom.mem_ker, hdet]`. Conclude with `hu.ne_zero this`. Establish `h2` using `((entryBasis n A).is_basis_iff_det.mpr hu').2`.
-
-Rewrite using `[eq_top_iff, ← h2]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `hw p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_residue {A K : Type*} [CommRing A] [IsLocalRing A] [Field K]
     (π : A →+* K) (hπ : RingHom.ker π = IsLocalRing.maximalIdeal A) (s : Set (Matrix n n A))

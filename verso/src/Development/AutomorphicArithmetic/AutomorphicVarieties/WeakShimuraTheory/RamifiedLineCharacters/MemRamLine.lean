@@ -14,21 +14,21 @@ variable {R : Type} [CommRing R]
 def uQ (x y t : R) : M4 R := !![1, 0, 0, 0; x, 1, 0, 0; y, 0, 1, 0; t, y, -x, 1]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uQ, Matrix.mul_apply, Fin.sum_univ_succ] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem uQ_mul (x y t x' y' t' : R) : uQ x y t * uQ x' y' t' = uQ (x + x') (y + y') (t + y * x' - x * y' + t') := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [uQ, Matrix.mul_apply, Fin.sum_univ_succ] <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uQ]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem uQ_zero : uQ (0 : R) 0 0 = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [uQ]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[adj_apply]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uQ, sgn, Fin.rev] <;> ring`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adj_uQ (x y t : R) : adj (uQ x y t) = uQ (-x) (-y) (-t) := by
   ext i j
@@ -36,7 +36,7 @@ theorem adj_uQ (x y t : R) : adj (uQ x y t) = uQ (-x) (-y) (-t) := by
   fin_cases i <;> fin_cases j <;> simp [uQ, sgn, Fin.rev] <;> ring
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, fun i => by fin_cases i <;> rfl, fun i j hij => ?_⟩`. Rewrite using `[IsGSp, adj_uQ, uQ_mul, one_smul]`. Apply the tactic sequence `convert uQ_zero (R := R) using 2 <;> ring`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | rfl | exact absurd hij (by decide)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isLow_uQ (x y t : R) : IsLow (uQ x y t) := by
   refine ⟨?_, fun i => by fin_cases i <;> rfl, fun i j hij => ?_⟩
@@ -45,14 +45,14 @@ theorem isLow_uQ (x y t : R) : IsLow (uQ x y t) := by
   · fin_cases i <;> fin_cases j <;> first | rfl | exact absurd hij (by decide)
 
 /- English proof (translation)
-Introduce `i j h1 h2`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | rfl | exact absurd rfl h1 | exact absurd (by decide) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem suppM_uQ (x y t : R) : SuppM qQ (uQ x y t) := by
   intro i j h1 h2
   fin_cases i <;> fin_cases j <;> first | rfl | exact absurd rfl h1 | exact absurd (by decide) h2
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uQ, h1, h2, h3] <;> ring`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diag_mul_uQ (d : Fin 4 → R) (ρ σ : R) (h1 : d 1 = ρ * d 0) (h2 : d 2 = σ * d 0) (h3 : d 3 = ρ * σ * d 0) (x y t : R) :
     Matrix.diagonal d * uQ x y t = uQ (ρ * x) (σ * y) (ρ * σ * t) * Matrix.diagonal d := by
@@ -69,7 +69,7 @@ variable {O Γ : Type} [CommRing O] [Group Γ] (Φ : Fr O Γ) {R : Type} [CommRi
 abbrev wN (N : Set Γ) : Fr O Γ := { Φ with N := N }
 
 /- English proof (translation)
-Simplify using `only [rt, MonoidHom.coe_mk, OneHom.coe_mk, Prod.fst_add, Prod.snd_add, zpow_add]`. The two sides agree by associativity and commutativity.
+Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity.
 -/
 theorem rt_add (w w' : ℤ × ℤ) (g : Γ) : Φ.rt (w + w') g = Φ.rt w g * Φ.rt w' g := by
   simp only [rt, MonoidHom.coe_mk, OneHom.coe_mk, Prod.fst_add, Prod.snd_add, zpow_add]
@@ -89,7 +89,7 @@ structure Cup (w w' : ℤ × ℤ) (x y z : Γ → R) (m : Φ.ι → R) : Prop wh
   loc : ∀ v, ∃ o, ∀ s ∈ Φ.Gv v, z s = o - a (Φ.rt (w + w') s) * o - y s * a (Φ.rt w s) * m v
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsLocallyConstant.const 0, by simp, by simp, fun _ => ⟨0, by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 example (w w' : ℤ × ℤ) : Φ.Cup a w w' 0 0 0 0 :=
   ⟨IsLocallyConstant.const 0, by simp, by simp, fun _ => ⟨0, by simp⟩⟩
@@ -107,7 +107,7 @@ def ramLine {R D M : Type} [CommRing R] [Group D] [TopologicalSpace D] [AddCommG
   (⨅ g ∈ I, (Submodule.span R {m0}).comap ((LinearMap.proj g : (D → M) →ₗ[R] M).comp (Z1 ρ).subtype)).map (Submodule.mkQ _)
 
 /- English proof (translation)
-Unfold `ramLine`. Rewrite using `[Submodule.mem_map]`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.proj_apply, Submodule.mkQ_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_ramLine {R D M : Type} [CommRing R] [Group D] [TopologicalSpace D] [AddCommGroup M] [Module R M] [TopologicalSpace M]
     [DiscreteTopology M] (ρ : Representation R D M) (I : Subgroup D) (m0 : M) (x : H1 ρ) :
@@ -149,7 +149,7 @@ def Tower.Next {D : Raw Ω c} (T : Tower D) (W : Finset ℕ) (N : Set (G T.F Ω)
   ∃ W' : Finset ℕ, W ⊆ W' ∧ (∀ w ∈ W', w.Prime ∧ T.Splits w) ∧ N = (T.fr W').N
 
 /- English proof (translation)
-Take `⟨W', h1, -, rfl⟩` from `h`. Introduce and unpack `g ⟨A, hA, hg⟩`. Conclude with `⟨A, fun p hp => hA p (Finset.insert_subset_insert _ h1 hp), hg⟩`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem Tower.Next.sub {D : Raw Ω c} {T : Tower D} {W : Finset ℕ} {N : Set (G T.F Ω)} (h : T.Next W N) : N ⊆ (T.fr W).N := by
   obtain ⟨W', h1, -, rfl⟩ := h

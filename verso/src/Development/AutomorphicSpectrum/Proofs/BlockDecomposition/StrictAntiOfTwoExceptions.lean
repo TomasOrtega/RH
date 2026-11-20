@@ -3,21 +3,17 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.Segments
 
 /- English proof (translation)
-Establish `hij : i ≠ j`. Introduce `h`. Rewrite `hi` using `[h]`. Use linear arithmetic over natural numbers and integers. Introduce `a b hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hbi : b = i`. Distinguish the cases in `haj : a = j`. Rewrite using `[hbi, haj, hi, hj]`. Use linear arithmetic over natural numbers and integers. Conclude with `h2 a b hab haj (by rw [hbi]; exact hij)`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hai : a = i`. Distinguish the cases in `hbj : b = j`. It suffices to derive a contradiction. Establish `hij' : i < j`. Rewrite using `[← hai, ← hbj]`.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hab`. Choose the witnesses or unpack the hypotheses as in `⟨c, hci, hcj⟩ : ∃ c : Fin l, c ≠ i ∧ c ≠ j := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `key : ∀ k : ℕ, ∀ hk : k < l, k = i.val ∨ k = j.val`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `k hk`. Distinguish the cases in `h : (⟨k, hk⟩ : Fin l) = i`. Use `left`. Conclude with `congrArg Fin.val h`. Use `right`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `congrArg Fin.val (hc ⟨k, hk⟩ h)`. Establish `k0` using `key 0 (by omega)`. Establish `k1` using `key 1 (by omega)`. Establish `k2` using `key 2 (by omega)`. Use linear arithmetic over natural numbers and integers.
-
-Break down `lt_or_gt_of_ne hci with hc | hc` into its components or cases. Establish `h3` using `h1 c j (lt_trans hc hij') hci (Ne.symm hij)`. Establish `h4` using `hw c`. Use linear arithmetic over natural numbers and integers. Establish `h3` using `h2 i c hc hij hcj`.
-
-Use linear arithmetic over natural numbers and integers. Conclude with `h2 a b hab (by rw [hai]; exact hij) hbj`. Conclude with `h1 a b hab hai hbi`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem shufcomb (l : ℕ) (hl : 3 ≤ l) (w : Fin l → ℕ) (hw : ∀ a, w a < l) (i j : Fin l)
     (hi : w i = 0) (hj : w j = l - 1)

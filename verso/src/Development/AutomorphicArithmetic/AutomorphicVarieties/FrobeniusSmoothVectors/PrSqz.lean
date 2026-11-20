@@ -3,31 +3,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `O _ _ C _ _ _ n μ hμ`. Establish `hsq : ∀ c d, μ c * μ d = 0`. Introduce `c d`. Establish `h` using `hμ.mul (μ c) d`. Rewrite `h` using `[(res_eq_zero_iff O C _).2 (hμ.mem c), zero_mul, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.symm`. Establish `hL : ∀ (A : Matrix (Fin n) (Fin n) C) (X : Matrix (Fin n) (Fin n) (ResidueField O)), A * X.map μ = (A.map (res O C) * X).map μ`. Introduce `A X`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, hμ.mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hR : ∀ (A : Matrix (Fin n) (Fin n) C) (X : Matrix (Fin n) (Fin n) (ResidueField O)), X.map μ * A = (X * A.map (res O C)).map μ`. Introduce `A X`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm (X i k), hμ.mul, mul_comm]`. Establish `hsqM : ∀ X Y : Matrix (Fin n) (Fin n) (ResidueField O), X.map μ * Y.map μ = 0`. Introduce `X Y`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, hsq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hadd : ∀ X Y : Matrix (Fin n) (Fin n) (ResidueField O), (X + Y).map μ = X.map μ + Y.map μ`. Introduce `X Y`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hzero : (0 : Matrix (Fin n) (Fin n) (ResidueField O)).map μ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hu : ∀ X Y : Matrix (Fin n) (Fin n) (ResidueField O), (1 + X.map μ) * (1 + Y.map μ) = 1 + (X + Y).map μ`. Introduce `X Y`. Rewrite using `[hadd, show (1 + X.map μ) * (1 + Y.map μ) = 1 + (X.map μ + Y.map μ) + X.map μ * Y.map μ by noncomm_ring, hsqM, add_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `e : Matrix (Fin n) (Fin n) (ResidueField O) → GL (Fin n) C` to `fun X => ⟨1 + X.map μ, 1 + (-X).map μ, by rw [hu, add_neg_cancel, hzero, add_zero], by rw [hu, neg_add_cancel, hzero, add_zero]⟩`. Establish `he : ∀ X, (e X : Matrix (Fin n) (Fin n) C) = 1 + X.map μ` using `fun X => rfl`. Establish `hemul : ∀ X Y, e (X + Y) = e X * e Y`. Introduce `X Y`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, he, he, he, hu]`. Establish `heinv : ∀ X, (e X)⁻¹ = e (-X)` using `fun X => Units.ext rfl`. Establish `hconj : ∀ (g : GL (Fin n) C) (h : GL (Fin n) (ResidueField O)) (Y : Matrix (Fin n) (Fin n) (ResidueField O)), (g : Matrix (Fin n) (Fin n) C).map (res O C) = (h : Matrix (Fin n) (Fin n) (ResidueField O)) → g * e Y = e ((h : Matrix (Fin n) (Fin n) (ResidueField O)) * Y * (↑h⁻¹ : Ma …`. Introduce `g h Y hh`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Units.val_mul, he, he, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, hL, hR, hh, Matrix.mul_assoc ((h : Matrix (Fin n) (Fin n) (ResidueField O)) * Y), Units.inv_mul, Matrix.mul_one]`. Establish `hJ : (Jmat C n).map (res O C) = Jmat (ResidueField O) n` using `Jmat_map (res O C : C →+* ResidueField O) n`. Establish `htheta : ∀ Y, theta (e Y) = e (thetaLie Y)`. Introduce `Y`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[theta_val, heinv, he, he, Matrix.transpose_add, Matrix.transpose_one, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Jmat_mul_Jmat, ← Matrix.transpose_map, hL, hJ, hR, hJ]`. Rewrite using `[show thetaLie Y = Jmat (ResidueField O) n * (-Y)ᵀ * Jmat (ResidueField O) n by`. Simplify using `[thetaLie, Matrix.transpose_neg]]`. Use `⟨e, he, hemul, heinv, fun A X => ⟨hL A X, hR A X⟩, ?_⟩` and prove the remaining obligations. Introduce `x X`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, s⟩` from `x`. Establish `hh : (g : Matrix (Fin n) (Fin n) C).map (res O C) = ((GG.map (res O C : C →+* ResidueField O) (⟨g, s⟩ : GG n C)).left : Matrix (Fin n) (Fin n) (ResidueField O))` using `rfl`. Establish `had : GG.adFun (GG.map (res O C : C →+* ResidueField O) (⟨g, s⟩ : GG n C)) X = ((GG.map (res O C : C →+* ResidueField O) (⟨g, s⟩ : GG n C)).left : Matrix (Fin n) (Fin n) (ResidueField O)) * (if s = 1 then X else thetaLie X) * (↑(GG.map (res O C : C →+* ResidueField O) (⟨g, s⟩ : G …` using `rfl`. Rewrite using `[had]`. Use `SemidirectProduct.ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [GG.ofGL, SemidirectProduct.mul_left, SemidirectProduct.left_inl, SemidirectProduct.right_inl, map_one, MulAut.one_apply]`. Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases. Rewrite using `[sgnAct_one, if_pos rfl]`. Conclude with `hconj _ _ X hh`. Rewrite using `[sgnAct_neg_one, if_neg (by decide), htheta]`.
-
-Conclude with `hconj _ _ _ hh`. Simplify using `only [GG.ofGL, SemidirectProduct.mul_right, SemidirectProduct.right_inl, mul_one, one_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.pr_sqz :
     ∀ (O : Type) [CommRing O] [IsLocalRing O], ∀ (C : Type) [CommRing C] [Algebra O C] [IsCO O C] (n : ℕ) (μ : ResidueField O →+ C), IsSq O μ → ∃ e : Matrix (Fin n) (Fin n) (ResidueField O) → GL (Fin n) C, (∀ X, (e X : Matrix (Fin n) (Fin n) C) = 1 + X.map μ) ∧ (∀ X Y, e (X + Y) = e X * e Y) ∧ (∀ X, (e X)⁻¹ = e (-X)) ∧ (∀ (A : Matrix (Fin n) (Fin n) C) (X : Matrix (Fin n) (Fin n) (ResidueField O)), A * X.map μ = (A.map (res O C) * X).map μ ∧ X.map μ * A = (X * A.map (res O C)).map μ) ∧ ∀ (x : GG n C) (X : Matrix (Fin n) (Fin n) (ResidueField O)), x * GG.ofGL (e X) = GG.ofGL (e ((GG.map (res O C : C →+* ResidueField O) x).adFun X)) * x := by

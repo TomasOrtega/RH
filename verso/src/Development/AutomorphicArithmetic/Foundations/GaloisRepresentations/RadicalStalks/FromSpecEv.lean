@@ -9,9 +9,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.appLE_comp_appLE (spMap g) f U ⊤ ⊤ h (by simp), Category.assoc, Category.assoc]`. Use `congr 1`. Establish `hh : (spMap g).appLE ⊤ ⊤ (by simp) = (spMap g).appTop`. Simplify using `[Scheme.Hom.appLE]`. Conclude with `Category.comp_id _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh]`. Conclude with `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom g)`.
+A detailed English derivation is pending.
 -/
 private lemma ev_comp {T T' : Type} [CommRing T] [CommRing T'] (g : T →+* T') {Y : Scheme.{0}} (U : Y.Opens)
     (f : Sp T ⟶ Y) (h : ⊤ ≤ f ⁻¹ᵁ U) (h' : ⊤ ≤ (spMap g ≫ f) ⁻¹ᵁ U) :
@@ -26,9 +26,9 @@ private lemma ev_comp {T T' : Type} [CommRing T] [CommRing T'] (g : T →+* T') 
   exact Scheme.ΓSpecIso_naturality (CommRingCat.ofHom g)
 
 /- English proof (translation)
-Establish `e' : ⊤ ≤ hV.fromSpec ⁻¹ᵁ V` using `hV.fromSpec_preimage_self.ge`. Rewrite using `[← Scheme.Hom.map_appLE hV.fromSpec e' (homOfLE hVW).op, Category.assoc]`. Establish `key : hV.fromSpec.appLE V ⊤ e' ≫ (Scheme.ΓSpecIso Γ(X, V)).hom = 𝟙 _`. Simplify using `only [Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc]`. Rewrite using `[← Functor.map_comp_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hid : ∀ i : Opposite.op (⊤ : (Spec Γ(X, V)).Opens) ⟶ Opposite.op ⊤, i = 𝟙 _` using `fun i => Quiver.Hom.unop_inj (Subsingleton.elim _ _)`. Rewrite using `[hid (_ ≫ _), CategoryTheory.Functor.map_id, Category.id_comp, Iso.inv_hom_id]`. Rewrite using `[key, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private lemma fromSpec_ev {X : Scheme.{0}} {V W : X.Opens} (hV : IsAffineOpen V) (hVW : V ≤ W)
     (e : ⊤ ≤ hV.fromSpec ⁻¹ᵁ W) :
@@ -44,13 +44,13 @@ private lemma fromSpec_ev {X : Scheme.{0}} {V W : X.Opens} (hV : IsAffineOpen V)
   rw [key, Category.comp_id]
 
 /- English proof (translation)
-Establish `h0 : ⊤ ≤ hA.fromSpec ⁻¹ᵁ (ψ ⁻¹ᵁ U)` using `hA.fromSpec_preimage_self.ge.trans ((TopologicalSpace.Opens.map hA.fromSpec.base).map (homOfLE hV)).le`. Establish `h1 : ⊤ ≤ (hA.fromSpec ≫ ψ) ⁻¹ᵁ U` using `h0`. Establish `h2 : ⊤ ≤ (spMap φ ≫ hA.fromSpec ≫ ψ) ⁻¹ᵁ U` using `fun x _ => h1 (Set.mem_univ _)`. Establish `hc' : spMap ((algebraMap k (DualNumber k)).comp (TrivSqZeroExt.fstHom k k k).toRingHom) ≫ spMap φ ≫ hA.fromSpec ≫ ψ = spMap φ ≫ hA.fromSpec ≫ ψ` using `hc`. Establish `hcongr : ∀ (w₁ w₂ : Sp (DualNumber k) ⟶ Y), w₁ = w₂ → ∀ (e₁ : ⊤ ≤ w₁ ⁻¹ᵁ U) (e₂ : ⊤ ≤ w₂ ⁻¹ᵁ U), w₁.appLE U ⊤ e₁ = w₂.appLE U ⊤ e₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ _ rfl _ _`. Both sides reduce to the same expression. Establish `A` using `ev_comp ((algebraMap k (DualNumber k)).comp (TrivSqZeroExt.fstHom k k k).toRingHom) U (spMap φ ≫ hA.fromSpec ≫ ψ) h2 (hc'.symm ▸ h2)`. Rewrite `A` using `[hcongr _ _ hc' _ h2]`. Establish `B` using `ev_comp φ U (hA.fromSpec ≫ ψ) h1 h2`.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `C` using `fromSpec_ev hA hV h0`. Establish `B' : (spMap φ ≫ hA.fromSpec ≫ ψ).appLE U ⊤ h2 ≫ (Scheme.ΓSpecIso (CommRingCat.of (DualNumber k))).hom = ψ.app U ≫ X.presheaf.map (homOfLE hV).op ≫ CommRingCat.ofHom φ`. Rewrite using `[B, Scheme.Hom.comp_appLE, Category.assoc, Category.assoc]`. Use `erw [← Category.assoc (hA.fromSpec.appLE _ _ _), C]`. Establish `A'` using `ConcreteCategory.congr_hom A t`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `A'` using `[B']`. Establish `hxx : φ (X.presheaf.map (homOfLE hV).op (ψ.app U t)) = ((algebraMap k (DualNumber k)).comp (TrivSqZeroExt.fstHom k k k).toRingHom) (φ (X.presheaf.map (homOfLE hV).op (ψ.app U t)))`. Simplify using `using A'`. Rewrite using `[hxx, RingHom.comp_apply, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.snd_inl]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma snd_zero {k : Type} [Field k] {X Y : Scheme.{0}} (ψ : X ⟶ Y) {U : Y.Opens} {V : X.Opens}
     (hV : V ≤ ψ ⁻¹ᵁ U) (hA : IsAffineOpen V) (φ : Γ(X, V) →+* DualNumber k)
@@ -86,15 +86,13 @@ private lemma snd_zero {k : Type} [Field k] {X Y : Scheme.{0}} (ψ : X ⟶ Y) {U
   rw [hxx, RingHom.comp_apply, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.snd_inl]
 
 /- English proof (translation)
-Introduce `p _ k _ _ hk X Y _ s _ ψ hψ U t`. Establish `hp : (p : Γ(X, ⊤)) = 0`. Establish `h` using `congrArg (GlobalTheory.CechDR.secMap s ⊤).hom hk`. Rewrite `h` using `[map_natCast, map_zero]`. Then use the resulting hypothesis. Use `rootGlue p X hp (ψ ⁻¹ᵁ U) (ψ.app U t) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `V hV hA`. Set `V' : X.affineOpens` to `⟨V, hA⟩`. Use `haveI hsm : Algebra.Smooth k (GlobalTheory.CechDR.Sec s V) := by`. Establish `hi : Smooth hA.fromSpec` using `inferInstance`. Establish `h0 : Smooth (hA.fromSpec ≫ s)` using `MorphismProperty.comp_mem _ _ _ hi ‹Smooth s›`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Smooth (GlobalTheory.CechDR.affPt s V' ≫ s)` using `h0`. Rewrite `h1` using `[GlobalTheory.CechDR.affPt_w]`. Conclude with `RingHom.smooth_algebraMap.mp (HasRingHomProperty.Spec_iff.mp h1)`. Use `haveI : _root_.IsReduced (GlobalTheory.CechDR.Sec s V) := IsReduced.component_reduced V`. Establish `hD` using `dz1 k (GlobalTheory.CechDR.Sec s V) (X.presheaf.map (homOfLE hV).op (ψ.app U t)) ?_`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `GlobalTheory.T.exists_pow_eq_of_kaehlerD_eq_zero_smooth_affineOpen p k hk X s V' _ hD`. Introduce `v`. Establish `hw : (spMap v.toRingHom ≫ hA.fromSpec) ≫ s = spMap (algebraMap k (DualNumber k))`. Express the relevant statement in the definitionally equal form `spMap v.toRingHom ≫ GlobalTheory.CechDR.affPt s V' ≫ s = _`. Rewrite using `[GlobalTheory.CechDR.affPt_w, ← Geo.Tor.spMap_comp]`.
-
-Conclude with `congrArg spMap v.comp_algebraMap`. Establish `hc : IsConst (spMap v.toRingHom ≫ hA.fromSpec ≫ ψ)`. Use `hψ _ hw using 1` and compare the differences between its conclusion and the goal. Conclude with `(Category.assoc _ _ _).symm`. Conclude with `snd_zero ψ hV hA v.toRingHom hc t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Ord.dzero :
     ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [IsAlgClosed k] (hk : (p : k) = 0) (X Y : Scheme.{0}) [IsIntegral X] (s : X ⟶ Sp k) [Smooth s] (ψ : X ⟶ Y),

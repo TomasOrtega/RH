@@ -8,17 +8,15 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `B _ τ _ x y c _ _ _ p`. Apply `lcdeg_degreeOf_aeval_le` to reduce the goal to its premises. Introduce `m hm`. Establish `hf : ∀ v, degreeOf c ((fun v : τ => if v = x then (1 : MvPolynomial τ B) else if v = y then -X c else X v) v) ≤ (if v = y then 1 else 0) + (if v = c then 1 else 0)`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hvx : v = x`. Substitute `hvx` using the available equality. Simplify using `only [if_true]`. Establish `h1 : degreeOf c (1 : MvPolynomial τ B) = 0` using `by rw [← C_1, degreeOf_C]`. Rewrite using `[h1]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.zero_le _`. Distinguish the cases in `hvy : v = y`. Substitute `hvy` using the available equality. Simplify using `only [hvx, if_false, if_true, degreeOf_neg]`. Establish `h2` using `lcdeg_degreeOf_X_le (R := B) c c`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_true] at h2`. Use linear arithmetic over natural numbers and integers. Simplify using `only [hvx, hvy, if_false, zero_add]`. Conclude with `lcdeg_degreeOf_X_le (R := B) c v`. Use `le_trans (Finset.sum_le_sum (g := fun v => m v * (if v = y then 1 else 0) + m v * (if v = c then 1 else 0)) fun v _ => ?_) ?_` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.mul_add]`. Conclude with `Nat.mul_le_mul_left _ (hf v)`. Rewrite using `[Finset.sum_add_distrib]`. Simplify using `only [mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq]`. Establish `hy` using `monomial_le_degreeOf y hm`.
-
-Establish `hc` using `monomial_le_degreeOf c hm`. Apply the tactic sequence `split_ifs <;> omega`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem evalDegree : EvalDeg := by
   intro B _ τ _ x y c _ _ _ p

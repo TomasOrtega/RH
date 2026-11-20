@@ -21,15 +21,13 @@ open private place_under pow_eq_one_of_kills charpoly_of_flag from Development.A
 namespace UpperTheory.V.Z.Win.RR
 
 /- English proof (translation)
-Introduce `B hB`. Take `⟨g, rfl⟩` from `exists_smul_eq_of_isPlaceOver (F := F) h hB`. Establish `m1 : ∀ s : ↥(Dec (F` using `F) (g • A)), g⁻¹ * (s : G F Ω) * g ∈ Dec (F := F) A := fun s => by`. Establish `h1 : (s : G F Ω) • g • A = g • A` using `s.2`. Use `show (g⁻¹ * (s : G F Ω) * g) • A = A`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul, mul_smul, h1, inv_smul_smul]`. Establish `m2 : ∀ s : ↥(Dec (F` using `F) A), g * (s : G F Ω) * g⁻¹ ∈ Dec (F := F) (g • A) := fun s => by`. Establish `h1 : (s : G F Ω) • A = A` using `s.2`. Use `show (g * (s : G F Ω) * g⁻¹) • g • A = g • A`. Rewrite using `[mul_smul, mul_smul, inv_smul_smul, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `c : ↥(Dec (F` to `F) (g • A)) →* ↥(Dec (F := F) A) := MonoidHom.mk' (fun s => ⟨_, m1 s⟩) fun s t => Subtype.ext (by simp only [Subgroup.coe_mul]; group)`. Take `⟨p, hp⟩` from `hf`. Use `⟨fun i => (ψ i).comp c, ⟨p * (r g)⁻¹, fun s => ?_⟩, fun i j e => hg i j (MonoidHom.ext fun s => ?_)⟩` and prove the remaining obligations. Establish `e1 : p * (r g)⁻¹ * r s * (p * (r g)⁻¹)⁻¹ = p * r (g⁻¹ * (s : G F Ω) * g) * p⁻¹`. Rewrite using `[map_mul, map_mul, map_inv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `group`. Rewrite using `[e1]`. Conclude with `hp (c s)`. Establish `e2` using `DFunLike.congr_fun e ⟨_, m2 s⟩`. Establish `e3 : c ⟨_, m2 s⟩ = s` using `Subtype.ext (by show g⁻¹ * (g * (s : G F Ω) * g⁻¹) * g = s group)`.
-
-Express the relevant statement in the definitionally equal form `ψ i (c ⟨_, m2 s⟩) = ψ j (c ⟨_, m2 s⟩) * cycBar F Ω l (g * (s : G F Ω) * g⁻¹) at e2`. Rewrite `e2` using `[e3, map_mul (cycBar F Ω l), map_mul (cycBar F Ω l), map_inv, mul_inv_cancel_comm]`. Conclude with `e2`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_condition_of_flag_of_characters_not_cyclotomic_shift {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
     {r : G F Ω →* GL (Fin n) (Qbar l)} {w : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω} (h : IsPlaceOver A w)

@@ -11,9 +11,9 @@ section
 variable {A G : Type} [CommRing A] [Group G] {I : Subgroup G}
 
 /- English proof (translation)
-Establish `hx : FinOrb I I x` using `hI x`. Establish `e` using `(hkApply A G _ (permRep A I) I I x hx).1 v`. Express the relevant statement in the definitionally equal form `((hk2 (permRep A I) I I x v : fixd (permRep A I) I) : MonoidAlgebra A (G ⧸ I)) = _`. Rewrite using `[e]`. Use `haveI : Fintype (MulAction.orbit I (x : G ⧸ I)) := Set.Finite.fintype hx`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `dc`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unitHk_apply (hI : HeckePair I) (x : G) (v : fixd (permRep A I) I) :
     (hk (permRep A I) I x v : MonoidAlgebra A (G ⧸ I)) =
@@ -38,7 +38,7 @@ private noncomputable def unitHk_phi (v : fixd (permRep A I) I) :
   (MonoidAlgebra.basis (G ⧸ I) A).constr A fun q => permRep A I q.out v
 
 /- English proof (translation)
-Unfold `unitHk_phi`. Establish `hb : MonoidAlgebra.single (g : G ⧸ I) (1 : A) = MonoidAlgebra.basis (G ⧸ I) A (g : G ⧸ I)` using `by simp`. Rewrite using `[hb, Module.Basis.constr_basis]`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul I g`. Rewrite using `[hh, map_mul, Module.End.mul_apply, v.2 h h.2]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem unitHk_phi_single (v : fixd (permRep A I) I) (g : G) :
     unitHk_phi v (MonoidAlgebra.single (g : G ⧸ I) 1) = permRep A I g v := by
@@ -49,9 +49,9 @@ private theorem unitHk_phi_single (v : fixd (permRep A I) I) (g : G) :
   rw [hh, map_mul, Module.End.mul_apply, v.2 h h.2]
 
 /- English proof (translation)
-Establish `key : unitHk_phi v ∘ₗ permRep A I g = permRep A I g ∘ₗ unitHk_phi v`. Use `(MonoidAlgebra.basis (G ⧸ I) A).ext fun q => ?_` and prove the remaining obligations. Take `⟨h, rfl⟩` from `QuotientGroup.mk_surjective q`. Establish `hb : MonoidAlgebra.basis (G ⧸ I) A (h : G ⧸ I) = MonoidAlgebra.single (h : G ⧸ I) 1` using `by simp`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hb]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : permRep A I g (MonoidAlgebra.single (h : G ⧸ I) 1) = MonoidAlgebra.single ((g * h : G) : G ⧸ I) 1` using `Representation.ofMulAction_single _ _ _`. Rewrite using `[hs, unitHk_phi_single, unitHk_phi_single, map_mul, Module.End.mul_apply]`. Conclude with `LinearMap.congr_fun key w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unitHk_phi_comm (v : fixd (permRep A I) I) (g : G) (w : MonoidAlgebra A (G ⧸ I)) :
     unitHk_phi v (permRep A I g w) = permRep A I g (unitHk_phi v w) := by
@@ -66,13 +66,13 @@ private theorem unitHk_phi_comm (v : fixd (permRep A I) I) (g : G) (w : MonoidAl
   exact LinearMap.congr_fun key w
 
 /- English proof (translation)
-Unfold `HkAlg at hT`. Proceed by induction on `hT using Algebra.adjoin_induction with`. Consider the case `mem T hT`. Take `⟨x, rfl⟩` from `hT`. Introduce `w w' hw`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Fintype (MulAction.orbit I (x : G ⧸ I)) := Set.Finite.fintype (hI x)`. Rewrite using `[unitHk_apply hI, unitHk_apply hI, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, map_sum, ← hw]`. Simplify using `only [unitHk_phi_comm]`. Consider the case `algebraMap r`. Introduce `w w' hw`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one, LinearMap.smul_apply, LinearMap.smul_apply, Module.End.one_apply, Module.End.one_apply, Submodule.coe_smul, Submodule.coe_smul, map_smul, hw]`. Consider the case `add T1 T2 _ _ h1 h2`. Introduce `w w' hw`. Rewrite using `[LinearMap.add_apply, LinearMap.add_apply, Submodule.coe_add, Submodule.coe_add, map_add, h1 w w' hw, h2 w w' hw]`. Consider the case `mul T1 T2 _ _ h1 h2`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w w' hw`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply]`. Conclude with `h1 _ _ (h2 w w' hw)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unitHk_alg_comm (hI : HeckePair I) (v : fixd (permRep A I) I) (T : Module.End A (fixd (permRep A I) I))
     (hT : T ∈ HkAlg A I) : ∀ w w' : fixd (permRep A I) I, unitHk_phi v w = w' → unitHk_phi v (T w) = T w' := by
@@ -97,9 +97,9 @@ private theorem unitHk_alg_comm (hI : HeckePair I) (v : fixd (permRep A I) I) (T
     exact h1 _ _ (h2 w w' hw)
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Establish `he : unitHk_phi v (unitHk_e A I : MonoidAlgebra A (G ⧸ I)) = v` using `by show unitHk_phi v (MonoidAlgebra.single ((1 : G) : G ⧸ I) 1) = v`. Rewrite using `[unitHk_phi_single, map_one, Module.End.one_apply]`. Establish `key` using `unitHk_alg_comm hI v T hT (unitHk_e A I) v he`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[h, he]`. Rewrite using `[Module.End.one_apply]`. Conclude with `Subtype.ext key.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unitHk_inj (hI : HeckePair I) (T : Module.End A (fixd (permRep A I) I))
     (hT : T ∈ HkAlg A I) (h : T (unitHk_e A I) = unitHk_e A I) : T = 1 := by
@@ -115,15 +115,13 @@ private theorem unitHk_inj (hI : HeckePair I) (T : Module.End A (fixd (permRep A
 
 open Classical in
 /- English proof (translation)
-Use `haveI : Fintype (MulAction.orbit I (x : G ⧸ I)) := Set.Finite.fintype (hI x)`. Rewrite using `[unitHk_apply hI, finsum_eq_sum_of_fintype]`. Establish `hs : ∀ q : MulAction.orbit I (x : G ⧸ I), permRep A I (q : G ⧸ I).out (unitHk_e A I : MonoidAlgebra A (G ⧸ I)) = MonoidAlgebra.single (q : G ⧸ I) 1`. Introduce `q`. Establish `h1 : permRep A I (q : G ⧸ I).out (MonoidAlgebra.single ((1 : G) : G ⧸ I) (1 : A)) = MonoidAlgebra.single ((q : G ⧸ I).out • ((1 : G) : G ⧸ I)) 1` using `Representation.ofMulAction_single _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[MulAction.Quotient.smul_mk, smul_eq_mul, mul_one, QuotientGroup.out_eq']`. Simplify using `only [hs, MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_single, Finsupp.finset_sum_apply, Finsupp.single_apply]`. Distinguish the cases in `hp : p ∈ MulAction.orbit I (x : G ⧸ I)`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hp, Finset.sum_eq_single ⟨p, hp⟩]`. Simplify using the standard rewrite rules. Introduce `q _ hq`. Rewrite using `[if_neg]`. Introduce `e`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hq (Subtype.ext e)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[if_neg hp]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[if_neg]`. Introduce `e`. Conclude with `hp (e ▸ q.2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem unitHk_coeff (hI : HeckePair I) (x : G) (p : G ⧸ I) :
     (hk (permRep A I) I x (unitHk_e A I) : MonoidAlgebra A (G ⧸ I)).coeff p =
@@ -155,23 +153,21 @@ private theorem unitHk_coeff (hI : HeckePair I) (x : G) (p : G ⧸ I) :
     exact hp (e ▸ q.2)
 
 /- English proof (translation)
-It suffices to establish `H : ∀ n (v : fixd (permRep A I) I), ((v : MonoidAlgebra A (G ⧸ I)).coeff.support.card = n) → ∃ T ∈ HkAlg A I, T (unitHk_e A I) = v from H _ v rfl`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `v hv`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h0 : (v : MonoidAlgebra A (G ⧸ I)).coeff.support = ∅`. Use `⟨0, Subalgebra.zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `MonoidAlgebra.ext` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h0` using `[Finsupp.support_eq_empty]`. Rewrite using `[h0, Submodule.coe_zero, MonoidAlgebra.coeff_zero]`. Take `⟨p, hp⟩` from `Finset.nonempty_iff_ne_empty.2 h0`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective p`. Use `set c := (v : MonoidAlgebra A (G ⧸ I)).coeff (x : G ⧸ I) with hc`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hT1 : c • hk (permRep A I) I x ∈ HkAlg A I` using `Subalgebra.smul_mem _ (show hk (permRep A I) I x ∈ HkAlg A I from Algebra.subset_adjoin (Set.mem_range_self x)) c`. Establish `inv : ∀ q ∈ MulAction.orbit I (x : G ⧸ I), (v : MonoidAlgebra A (G ⧸ I)).coeff q = c`. Introduce and unpack `q ⟨u, rfl⟩`. Establish `hv' : permRep A I (u : G) (v : MonoidAlgebra A (G ⧸ I)) = v` using `v.2 u u.2`. Use `show (v : MonoidAlgebra A (G ⧸ I)).coeff ((u : G) • (x : G ⧸ I)) = c`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `set v' : fixd (permRep A I) I := v - c • hk (permRep A I) I x (unitHk_e A I) with hv'`. Establish `hco : ∀ q, (v' : MonoidAlgebra A (G ⧸ I)).coeff q = (v : MonoidAlgebra A (G ⧸ I)).coeff q - c * (if q ∈ MulAction.orbit I (x : G ⧸ I) then 1 else 0)`. Introduce `q`. Rewrite using `[← unitHk_coeff hI x q, hv']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Establish `hsub : (v' : MonoidAlgebra A (G ⧸ I)).coeff.support ⊂ (v : MonoidAlgebra A (G ⧸ I)).coeff.support`. Use `Finset.ssubset_iff_of_subset ?_ |>.2 ⟨(x : G ⧸ I), hp, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Rewrite `hq`, the goal using `[Finsupp.mem_support_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `hq0`. Apply `hq` to reduce the goal to its premises. Rewrite using `[hco]`. Distinguish the cases in `ho : q ∈ MulAction.orbit I (x : G ⧸ I)`. Rewrite `hq0` using `[inv q ho]`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd hq0 (Finsupp.mem_support_iff.1 hp)`. Rewrite using `[if_neg ho, hq0]`. Simplify using the standard rewrite rules. Rewrite using `[Finsupp.mem_support_iff, not_not, hco, if_pos (MulAction.mem_orbit_self _)]`. Simplify using `[hc]`.
-
-Take `⟨T', hT', hTe⟩` from `ih _ (hv ▸ Finset.card_lt_card hsub) v' rfl`. Use `⟨T' + c • hk (permRep A I) I x, Subalgebra.add_mem _ hT' hT1, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, hTe, hv', LinearMap.smul_apply, sub_add_cancel]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unitHk_surj (hI : HeckePair I) (v : fixd (permRep A I) I) :
     ∃ T ∈ HkAlg A I, T (unitHk_e A I) = v := by
@@ -230,9 +226,9 @@ private theorem unitHk_surj (hI : HeckePair I) (v : fixd (permRep A I) I) :
     rw [LinearMap.add_apply, hTe, hv', LinearMap.smul_apply, sub_add_cancel]
 
 /- English proof (translation)
-Take `⟨U, hU⟩` from `h`. Take `⟨T', hT', hT'e⟩` from `unitHk_surj hI (((U⁻¹ : (Module.End A (fixd (permRep A I) I))ˣ) : Module.End A (fixd (permRep A I) I)) (unitHk_e A I))`. Establish `h1 : (T : Module.End A (fixd (permRep A I) I)) * T' = 1`. Use `unitHk_inj hI _ (Subalgebra.mul_mem _ T.2 hT') ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, hT'e, ← hU, ← Module.End.mul_apply, Units.mul_inv, Module.End.one_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : T' = ((U⁻¹ : (Module.End A (fixd (permRep A I) I))ˣ) : Module.End A (fixd (permRep A I) I))`. Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨T, ⟨T', hT'⟩, Subtype.ext h1, Subtype.ext ?_⟩, rfl⟩` and prove the remaining obligations. Use `show T' * (T : Module.End A (fixd (permRep A I) I)) = 1`. Rewrite using `[h2, ← hU, Units.inv_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unitHk_unit (hI : HeckePair I) (T : HkAlg A I)
     (h : IsUnit (T : Module.End A (fixd (permRep A I) I))) : IsUnit T := by
@@ -253,7 +249,7 @@ private theorem unitHk_unit (hI : HeckePair I) (T : HkAlg A I)
 end
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n A _ hq`. Establish `hI` using `(heckePairIwC k n ⊤).1`. Conclude with `⟨fun w => unitHk_unit hI _ (permUnit k n ⊤ A _ _ w hq), fun t ht => unitHk_unit hI _ ((domMul k n ⊤ A _ _).2.1 hq t ht)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.AlgebraTools.unitHk :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (A : Type) [CommRing A], IsUnit (resCard k : A) → (∀ w : Equiv.Perm (Fin n), IsUnit (hT A (iwC k n ⊤) (pm k n w))) ∧ ∀ t : Fin n → kˣ, Dom t → IsUnit (hT A (iwC k n ⊤) (diagT k (Fin n) t)) := by

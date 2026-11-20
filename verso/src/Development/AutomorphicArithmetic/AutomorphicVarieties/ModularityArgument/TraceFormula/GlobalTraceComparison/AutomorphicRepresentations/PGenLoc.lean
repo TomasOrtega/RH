@@ -10,15 +10,15 @@ namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.two_block_test_function_re
 private def dcs {H : Type} [Group H] (N : Subgroup H) (q : H) : Set H := {x | ∃ a ∈ N, ∃ b ∈ N, x = a * q * b}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, N.one_mem, 1, N.one_mem, by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem dcs_self {H : Type} [Group H] (N : Subgroup H) (q : H) : q ∈ dcs N q :=
   ⟨1, N.one_mem, 1, N.one_mem, by simp⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Conclude with `⟨k⁻¹ * a, N.mul_mem (N.inv_mem hk) ha, b, hb, by`. Establish `h1 : x = k⁻¹ * (k * x)` using `by simp`. Rewrite using `[h1, e]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_assoc]⟩`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨k * a, N.mul_mem hk ha, b, hb, by simp [mul_assoc]⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem dcs_left {H : Type} [Group H] {N : Subgroup H} {q k x : H} (hk : k ∈ N) :
     k * x ∈ dcs N q ↔ x ∈ dcs N q := by
@@ -31,7 +31,7 @@ private theorem dcs_left {H : Type} [Group H] {N : Subgroup H} {q k x : H} (hk :
     exact ⟨k * a, N.mul_mem hk ha, b, hb, by simp [mul_assoc]⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Conclude with `⟨a, ha, b * k⁻¹, N.mul_mem hb (N.inv_mem hk), by rw [← mul_assoc, ← e]; simp⟩`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨a, ha, b * k, N.mul_mem hb hk, by simp [mul_assoc]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem dcs_right {H : Type} [Group H] {N : Subgroup H} {q k x : H} (hk : k ∈ N) :
     x * k ∈ dcs N q ↔ x ∈ dcs N q := by
@@ -42,9 +42,9 @@ private theorem dcs_right {H : Type} [Group H] {N : Subgroup H} {q k x : H} (hk 
     exact ⟨a, ha, b * k, N.mul_mem hb hk, by simp [mul_assoc]⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `N.mul_mem (N.mul_mem ha hq) hb`. Introduce `hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨x * q⁻¹, N.mul_mem hx (N.inv_mem hq), 1, N.one_mem, by simp⟩`.
+A detailed English derivation is pending.
 -/
 private theorem dcs_eq_of_mem {H : Type} [Group H] {N : Subgroup H} {q : H} (hq : q ∈ N) :
     dcs N q = (N : Set H) := by
@@ -56,9 +56,9 @@ private theorem dcs_eq_of_mem {H : Type} [Group H] {N : Subgroup H} {q : H} (hq 
     exact ⟨x * q⁻¹, N.mul_mem hx (N.inv_mem hq), 1, N.one_mem, by simp⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Distinguish the cases in `h : x ∈ dcs N q`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem ((dcs_left hk).2 h)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h ((dcs_left hk).1 h'))]`.
+Prove the components needed by the constructor for the conclusion. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : x ∈ dcs N q`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem ((dcs_right hk).2 h)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h ((dcs_right hk).1 h'))]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ind_inv {H : Type} [Group H] {N : Subgroup H} (q : H) {k : H} (hk : k ∈ N) (x : H) :
     (dcs N q).indicator (1 : H → ℂ) (k * x) = (dcs N q).indicator 1 x ∧
@@ -72,11 +72,11 @@ private theorem ind_inv {H : Type} [Group H] {N : Subgroup H} (q : H) {k : H} (h
     · rw [Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h ((dcs_right hk).1 h'))]
 
 /- English proof (translation)
-Use `⟨?_, fun k hk x => ind_inv q hk x⟩` and prove the remaining obligations. Establish `hcomp : IsCompact (dcs N q)`. Establish `: dcs N q = (fun p : H × H => p.1 * q * p.2) '' ((N : Set H) ×ˢ (N : Set H))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨(a, b), ⟨ha, hb⟩, rfl⟩`. Introduce and unpack `⟨⟨a, b⟩, ⟨ha, hb⟩, rfl⟩`. Conclude with `⟨a, ha, b, hb, rfl⟩`. Rewrite using `[this]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hc.prod hc).image (by fun_prop)`. Conclude with `HasCompactSupport.intro hcomp fun x hx => Set.indicator_of_notMem hx _`.
+A detailed English derivation is pending.
 -/
 private theorem dcs_hecke {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] {N : Subgroup H}
     (hc : IsCompact (N : Set H)) (q : H) : IsHecke N ((dcs N q).indicator (1 : H → ℂ)) := by
@@ -100,13 +100,13 @@ variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representa
 private def cs (f : G → ℂ) : Set (G ⧸ K) := {q | f q.out ≠ 0}
 
 /- English proof (translation)
-Simplify using `[Lv, levOp, Subgroup.relIndex_self]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem Lv_eq (f : G → ℂ) : Lv ρ K f = ∑ᶠ q : G ⧸ K, f q.out • ρ q.out := by
   simp [Lv, levOp, Subgroup.relIndex_self]
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (G ⧸ K) := QuotientGroup.discreteTopology hK`. Establish `h1 : IsCompact ((QuotientGroup.mk : G → G ⧸ K) '' tsupport f)` using `IsCompact.image hf QuotientGroup.continuous_mk`. Use `h1.finite_of_discrete.subset fun q hq => ?_` and prove the remaining obligations. Conclude with `⟨q.out, subset_tsupport f hq, QuotientGroup.out_eq' q⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem cs_finite [TopologicalSpace G] [IsTopologicalGroup G] (hK : IsOpen (K : Set G)) {f : G → ℂ}
     (hf : HasCompactSupport f) : (cs K f).Finite := by
@@ -117,9 +117,9 @@ private theorem cs_finite [TopologicalSpace G] [IsTopologicalGroup G] (hK : IsOp
   exact ⟨q.out, subset_tsupport f hq, QuotientGroup.out_eq' q⟩
 
 /- English proof (translation)
-Establish `s1 : (Function.support fun q : G ⧸ K => f q.out • ρ q.out).Finite` using `h1.subset fun q hq h0 => hq (by simp [show f q.out = 0 from by simpa [cs] using h0])`. Establish `s2 : (Function.support fun q : G ⧸ K => f' q.out • ρ q.out).Finite` using `h2.subset fun q hq h0 => hq (by simp [show f' q.out = 0 from by simpa [cs] using h0])`. Establish `s3 : (Function.support fun q : G ⧸ K => c • (f' q.out • ρ q.out)).Finite` using `s2.subset fun q hq h0 => hq (by simp [show f' q.out • ρ q.out = 0 from h0])`. Rewrite using `[Lv_eq, Lv_eq, Lv_eq, smul_finsum' c s2, ← finsum_add_distrib s1 s3]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[add_smul, mul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem Lv_add {f f' : G → ℂ} (c : ℂ) (h1 : (cs K f).Finite) (h2 : (cs K f').Finite) :
     Lv ρ K (fun x => f x + c * f' x) = Lv ρ K f + c • Lv ρ K f' := by
@@ -140,31 +140,29 @@ section Gen
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (K : Subgroup G)
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `h hinv hfin hm y hy`. Distinguish the cases in `hemp : cs K h = ∅`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `h0 : Lv ρ K h = 0`. Rewrite using `[Lv_eq]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `q`. Establish `h1 : h q.out = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h0`. Conclude with `(Set.eq_empty_iff_forall_notMem.1 hemp q) h0`. Simplify using `[h1]`. Rewrite using `[h0]`. Conclude with `Wm.zero_mem`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `Set.nonempty_iff_ne_empty.2 hemp`. Take `⟨g, hg⟩ : ∃ g, g = q.out` from `⟨_, rfl⟩`. Take `⟨c, hc⟩ : ∃ c, c = h g` from `⟨_, rfl⟩`. Take `⟨e, he⟩ : ∃ e, e = (dcs K g).indicator (1 : G → ℂ)` from `⟨_, rfl⟩`. Establish `hconst : ∀ x ∈ dcs K g, h x = c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x ⟨a, ha, b, hb, rfl⟩`. Rewrite using `[(hinv b hb _).2, (hinv a ha _).1, hc]`. Establish `he1 : ∀ x ∈ dcs K g, e x = 1` using `fun x hx => by rw [he, Set.indicator_of_mem hx]; rfl`. Establish `he0 : ∀ x, x ∉ dcs K g → e x = 0` using `fun x hx => by rw [he, Set.indicator_of_notMem hx]`. Establish `hcs : (cs K e).Finite`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[he]`. Conclude with `cs_finite K hK (Hg g).1.1`. Set `h' : G → ℂ` to `fun x => h x + (-c) * e x`. Establish `hsub : cs K h' ⊆ cs K h`. Introduce `q' hq' h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hq' ?_` and prove the remaining obligations. Establish `hn : q'.out ∉ dcs K g` using `fun hx => by`. Use `hconst _ hx` as an intermediate fact. Establish `hc0 : c ≠ 0` using `by rw [hc, hg]; exact hq`. Conclude with `hc0 (this.symm.trans h0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[h', h0, he0 _ hn]`. Establish `hq' : q ∉ cs K h'`. Introduce `h0`. Use `h0 ?_` and prove the remaining obligations. Rewrite using `[← hg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [h']`. Rewrite using `[he1 g (dcs_self K g), ← hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfin' : (cs K h').Finite` using `hfin.subset hsub`. Establish `hlt : (cs K h').ncard < m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hm]`. Conclude with `Set.ncard_lt_ncard ⟨hsub, fun hh => hq' (hh hq)⟩ hfin`. Establish `hinv' : ∀ k ∈ K, ∀ x, h' (k * x) = h' x ∧ h' (x * k) = h' x`. Introduce `k hk x`. Establish `h2` using `ind_inv (N := K) g hk x`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `h2` using `[← he]`. Simplify using `only [h']`. Rewrite using `[(hinv k hk x).1, (hinv k hk x).2, h2.1, h2.2]`. Conclude with `⟨rfl, rfl⟩`. Establish `hsplit : h = fun x => h' x + c * e x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Simplify using `[h']`. Rewrite using `[hsplit, Lv_add ρ K c hfin' hcs]`. Use `Wm.add_mem (ih _ hlt h' hinv' hfin' rfl y hy) (Wm.smul_mem c ?_)` and prove the remaining obligations. Rewrite using `[he]`.
-
-Conclude with `(Hg g).2 y hy`.
+A detailed English derivation is pending.
 -/
 private theorem gen_ind [TopologicalSpace G] [IsTopologicalGroup G] (hK : IsOpen (K : Set G)) (Wm : Submodule ℂ V)
     (Hg : ∀ g, IsHecke K ((dcs K g).indicator (1 : G → ℂ)) ∧
@@ -234,7 +232,7 @@ private theorem gen_ind [TopologicalSpace G] [IsTopologicalGroup G] (hK : IsOpen
     exact (Hg g).2 y hy
 
 /- English proof (translation)
-The claim follows from `gen_ind ρ K hK Wm Hg _ h hh.2 (cs_finite K hK hh.1) rfl`.
+A detailed English derivation is pending.
 -/
 private theorem gen_abs [TopologicalSpace G] [IsTopologicalGroup G] (hK : IsOpen (K : Set G)) (Wm : Submodule ℂ V)
     (Hg : ∀ g, IsHecke K ((dcs K g).indicator (1 : G → ℂ)) ∧
@@ -249,18 +247,18 @@ section Slots
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Lev, Subgroup.mem_iInf, Subgroup.mem_comap, Subtype.forall]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_Lev {S : Set (Pl E)} {M : ∀ w : Pl E, Subgroup (GLw n w)} {x : GF E n} :
     x ∈ Lev S M ↔ ∀ i : Pl E × Bool, Sl S i → qw n i.1 i.2 x ∈ M i.1 := by
   simp only [Lev, Subgroup.mem_iInf, Subgroup.mem_comap, Subtype.forall]
 
 /- English proof (translation)
-Proceed by induction on `J using Finset.induction_on with`. Consider the case `empty => exact ⟨1, fun k _ => by simp⟩`. Consider the case `insert i J hi ih`. Take `⟨c, hc⟩` from `ih fun k hk => hJ k (Finset.mem_insert_of_mem hk)`. Establish `hSi` using `hJ i (Finset.mem_insert_self i J)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨jw n i.1 i.2 (A i) * c, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hc k hk]`. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Simplify using `[hi, hqj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsep i k hSi hk (Ne.symm hki)]`. Simplify using `[hki]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem exists_elt {S : Set (Pl E)}
     (hqj : ∀ (w : Pl E) b a, qw n w b (jw n w b a) = a)
@@ -281,19 +279,15 @@ private theorem exists_elt {S : Set (Pl E)}
       simp [hki]
 
 /- English proof (translation)
-Establish `hch : ∀ i : Pl E × Bool, ∃ a b : GLw n i.1, Sl S i → a ∈ N i.1 ∧ b ∈ N i.1 ∧ qw n i.1 i.2 x = a * qw n i.1 i.2 g * b`. Introduce `i`. Distinguish the cases in `hi : Sl S i`. Take `⟨a, ha, b, hb, e⟩` from `hx i hi`. Conclude with `⟨a, b, fun _ => ⟨ha, hb, e⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨1, 1, fun h => absurd h hi⟩`. Use `choose A B hAB using hch`. Establish `hJ : ∀ i ∈ hfin.toFinset, Sl S i` using `fun i hi => ((hfin.mem_toFinset).1 hi).1`. Take `⟨c, hc⟩` from `exists_elt hqj hsep A hfin.toFinset hJ`. Take `⟨d, hd⟩` from `exists_elt hqj hsep B hfin.toFinset hJ`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcL : c ∈ Lev S N` using `mem_Lev.2 fun i hi => by`. Rewrite using `[hc i hi]`. Use `split_ifs`. Conclude with `(hAB i hi).1`. Conclude with `(N i.1).one_mem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hdL : d ∈ Lev S N` using `mem_Lev.2 fun i hi => by`. Rewrite using `[hd i hi]`. Use `split_ifs`. Conclude with `(hAB i hi).2.1`. Conclude with `(N i.1).one_mem`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hkL : g⁻¹ * c⁻¹ * x * d⁻¹ ∈ Lev S N` using `mem_Lev.2 fun i hi => by`. Simplify using `only [map_mul, map_inv]`. Rewrite using `[hc i hi, hd i hi]`. Distinguish the cases in `hiJ : i ∈ hfin.toFinset`. Rewrite using `[if_pos hiJ, if_pos hiJ, (hAB i hi).2.2]`.
-
-Simplify using `[mul_assoc, (N i.1).one_mem]`. Rewrite using `[if_neg hiJ, if_neg hiJ]`. Establish `hn : ¬ (qw n i.1 i.2 x ∉ N i.1 ∨ qw n i.1 i.2 g ∉ N i.1)` using `fun h => hiJ ((hfin.mem_toFinset).2 ⟨hi, h⟩)`. Use `push_neg at hn`. Simplify using `using (N i.1).mul_mem ((N i.1).inv_mem hn.2) hn.1`.
-
-Conclude with `⟨c, hcL, (g⁻¹ * c⁻¹ * x * d⁻¹) * d, (Lev S N).mul_mem hkL hdL, by simp [mul_assoc]⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem mem_dcs_of_positions {S : Set (Pl E)} {N : ∀ w : Pl E, Subgroup (GLw n w)}
     (hqj : ∀ (w : Pl E) b a, qw n w b (jw n w b a) = a)
@@ -336,9 +330,9 @@ private theorem mem_dcs_of_positions {S : Set (Pl E)} {N : ∀ w : Pl E, Subgrou
   exact ⟨c, hcL, (g⁻¹ * c⁻¹ * x * d⁻¹) * d, (Lev S N).mul_mem hkL hdL, by simp [mul_assoc]⟩
 
 /- English proof (translation)
-Use `(((Z.finite_toSet).prod (Set.finite_univ (α := Bool))).union ((hbad x).union (hbad g))).subset ?_` and prove the remaining obligations. Introduce and unpack `i ⟨-, hi⟩`. Distinguish the cases in `hz : i.1 ∈ Z`. Conclude with `Or.inl ⟨hz, trivial⟩`. Rewrite `hi` using `[(hG i.1).2.2.2 hz]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Prove the first alternative. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Or.inr hi`.
+Prove the second alternative.
 -/
 private theorem bad_finite {Z : Finset (Pl E)} {S : Set (Pl E)} {N : ∀ w : Pl E, Subgroup (GLw n w)} (hG : Good Z N)
     (hbad : ∀ g : GF E n, {i : Pl E × Bool | qw n i.1 i.2 g ∉ KGL i.1 n}.Finite) (x g : GF E n) :
@@ -351,29 +345,27 @@ private theorem bad_finite {Z : Finset (Pl E)} {S : Set (Pl E)} {N : ∀ w : Pl 
     exact Or.inr hi
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ dcs (Lev S N) g`. Rewrite using `[Set.indicator_of_mem hx]`. Take `⟨a, ha, b, hb, rfl⟩` from `hx`. Establish `hs : ∀ i : Pl E × Bool, Sl S i → qw n i.1 i.2 (a * g * b) ∈ dcs (N i.1) (qw n i.1 i.2 g)` using `fun i hi => ⟨_, mem_Lev.1 ha i hi, _, mem_Lev.1 hb i hi, by simp⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `pf`. Use `finprod_mem_of_eqOn_one fun w hw => ?_` and prove the remaining obligations. Establish `h1` using `hs (w, false) ⟨hw, by simp⟩`. Simplify using `only [Pi.one_apply]`. Rewrite using `[Set.indicator_of_mem h1]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hsp`. Rewrite using `[Set.indicator_of_mem (hs (w, true) ⟨hw, fun _ => hsp⟩)]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi, hix⟩ : ∃ i : Pl E × Bool, Sl S i ∧ qw n i.1 i.2 x ∉ dcs (N i.1) (qw n i.1 i.2 g) := by`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Conclude with `hx (mem_dcs_of_positions hqj hsep g x hn (bad_finite hG hbad x g))`. Unfold `pf`.
+Assume the negation of the conclusion and derive a contradiction. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finprod_mem_def]`. Use `finprod_eq_zero _ i.1 ?_ ?_` and prove the remaining obligations. Rewrite using `[Set.mulIndicator_of_mem hi.1]`. Take `⟨w, b⟩` from `i`. Consider the cases of `b with`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Consider the case `false`. Simplify using `only at hix`. Simplify using `only`. Rewrite using `[Set.indicator_of_notMem hix, zero_mul]`. Consider the case `true`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hsp : GlobalTheory.UnitaryBC.IsSplitAt w` using `hi.2 rfl`. Simplify using `only at hix`. Simplify using `only`. Rewrite using `[if_pos hsp, Set.indicator_of_notMem hix, mul_zero]`. Use `((Z.finite_toSet).union (((hbad x).union (hbad g)).image fun i : Pl E × Bool => i.1)).subset ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw`. Assume the negation of the conclusion as `hT`. Use `hw ?_` and prove the remaining obligations. Establish `hwZ : w ∉ Z` using `fun h => hT (Or.inl h)`. Establish `hK : ∀ b, qw n w b x ∈ N w ∧ qw n w b g ∈ N w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `b`. Rewrite using `[(hG w).2.2.2 hwZ]`. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `h`. Conclude with `hT (Or.inr ⟨(w, b), Or.inl h, rfl⟩)`.
+Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hT (Or.inr ⟨(w, b), Or.inr h, rfl⟩)`. Distinguish the cases in `hwS : w ∈ S`. Rewrite using `[Set.mulIndicator_of_mem hwS]`. Establish `hv : ∀ b, (dcs (N w) (qw n w b g)).indicator (1 : GLw n w → ℂ) (qw n w b x) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `b`. Rewrite using `[dcs_eq_of_mem (hK b).2, Set.indicator_of_mem (hK b).1]`. Both sides reduce to the same expression. Simplify using `only [hv]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[Set.mulIndicator_of_notMem hwS]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pf_eq {Z : Finset (Pl E)} {S : Set (Pl E)} {N : ∀ w : Pl E, Subgroup (GLw n w)} (hG : Good Z N)
     (hqj : ∀ (w : Pl E) b a, qw n w b (jw n w b a) = a)
@@ -441,9 +433,9 @@ private theorem pf_eq {Z : Finset (Pl E)} {S : Set (Pl E)} {N : ∀ w : Pl E, Su
       · rw [Set.mulIndicator_of_notMem hwS]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => intro y hy`. Simplify using `using hy`. Consider the case `cons T L ih`. Introduce `y hy`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[List.prod_cons, Module.End.mul_apply]`. Conclude with `hL T (by simp) _ (ih (fun T' hT' => hL T' (List.mem_cons_of_mem _ hT')) y hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem list_mem {V : Type} [AddCommGroup V] [Module ℂ V] (Wm : Submodule ℂ V) (L : List (Module.End ℂ V))
     (hL : ∀ T ∈ L, ∀ y ∈ Wm, T y ∈ Wm) : ∀ y ∈ Wm, L.prod y ∈ Wm := by
@@ -460,21 +452,19 @@ end UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.two_block_test_function_reduce
 
 open UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.two_block_test_function_reduce in
 /- English proof (translation)
-Introduce `hS hT hP hO E _ _ _ n S Z N hSec hZ hG W hW hloc h hh y hy`. Take `⟨-, -, hl, hsep, hbad, -, -⟩` from `hS E n S hSec`. Take `⟨hop, hcp, -, -⟩` from `hT E n S Z N hSec hZ hG`. Establish `hqj : ∀ (w : Pl E) b a, qw n w b (jw n w b a) = a` using `fun w b a => (hl w b).2.2.1 a`. Establish `hNc : ∀ i : Pl E × Bool, Sl S i → IsCompact (N i.1 : Set (GLw n i.1))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `hset : (N i.1 : Set (GLw n i.1)) = qw n i.1 i.2 '' (Lev S N : Set (GF E n))`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨jw n i.1 i.2 a, mem_Lev.2 fun k hk => ?_, hqj _ _ a⟩` and prove the remaining obligations. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Rewrite using `[hqj]`. Conclude with `ha`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsep i k hi hk (Ne.symm hki)]`. Conclude with `(N k.1).one_mem`. Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `mem_Lev.1 hk i hi`. Rewrite using `[hset]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hcp.image (hl i.1 i.2).2.1`. Use `gen_abs (finRep E n) (Lev S N) hop W (fun g => ?_) hh y hy` and prove the remaining obligations. Establish `hfin : {i : Pl E × Bool | Sl S i ∧ qw n i.1 i.2 g ∉ N i.1}.Finite` using `(bad_finite hG hbad g g).subset fun i hi => ⟨hi.1, Or.inl hi.2⟩`. Establish `hFam : Fam S N hfin.toFinset (fun w b => (dcs (N w) (qw n w b g)).indicator (1 : GLw n w → ℂ))`. Use `⟨fun i hi => ?_, fun i hi hnI => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hi'` using `((hfin.mem_toFinset).1 hi).1`. Conclude with `⟨hi', dcs_hecke (hNc i hi') _⟩`. Establish `hq : qw n i.1 i.2 g ∈ N i.1`. Assume the negation of the conclusion as `h0`. Conclude with `hnI ((hfin.mem_toFinset).2 ⟨hi, h0⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[dcs_eq_of_mem hq]`. Establish `hpf` using `pf_eq (S := S) hG hqj hsep hbad g`. Use `⟨hpf ▸ hP E n S Z N hSec hZ hG _ _ hFam, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← hpf, hO E n S Z N hSec hZ hG _ _ hFam y (hW hy)]`.
-
-Use `list_mem W _ ?_ y hy` and prove the remaining obligations. Introduce `T hT`. Take `⟨i, hi, rfl⟩` from `List.mem_map.1 hT`. Establish `hi'` using `(Finset.mem_toList).1 hi`. Conclude with `hloc i (hFam.1 i hi').1 _ (hFam.1 i hi').2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.genLoc_pf :
     SlotBasic → LevTop → PfHecke → ProdOp → GenLoc := by

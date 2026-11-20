@@ -8,14 +8,14 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.EdgeRed
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_res {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (h : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
     Sec.res h (Sec.res g x) = Sec.res (h ≫ g) x := by
   simp [Sec.res]
 
 /- English proof (translation)
-Establish `h` using `φ.hom.naturality g.op`. Conclude with `(congrArg (fun t => t.hom x) h).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem res_map {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) := by
@@ -52,9 +52,9 @@ def redResMor (hS : KapSpec) (hK : KapRed) (hR : InRed) {Q q : ℕ} [NeZero Q] [
     rw [← (redMap Q q i).comm, res_map]
 
 /- English proof (translation)
-Introduce `hSpec hEdge hRep hOpR hS hK hGen hR hOp Q q _ _ h C C' _ _ P P' X Y Y' m g hg hτ hy hζ i j x`. Take `⟨a, ha⟩` from `(hRep _ _ X (j : ℤ)).1 x`. Establish `hE` using `(hSpec hGen Q C P X Y i j x).1 a ha`. Establish `hE'` using `hEdge ℤ ℤ (RingHom.id ℤ) C C' P.L P'.L (P.res i) (P'.res i) m (redResMor hS hK hR h P P' m g hg hτ hζ i) j _ _ hE`. Establish `hr : Rep (red Q q _ (j : ℤ) i x) ((redMap Q q i).app X (j : ℤ) a)` using `hOpR hOp _ _ _ _ (redMap Q q i) X (j : ℤ) x a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hSpec hGen q C' P' X Y' i j (red Q q _ (j : ℤ) i x)).2 _ ⟨_, hr, ?_⟩` and prove the remaining obligations. Use `hE' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `Sec.res (Y'.y _) ((redMap Q q i).app X (j : ℤ) a) = Sec.res (g _) ((redMap Q q i).app _ (j : ℤ) (Sec.res (Y.y _) a))`. Rewrite using `[← (redMap Q q i).nat, res_res, hy]`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem etRed : CrystallineSemistableComparison.E.EtSpec → CrystallineSemistableComparison.E.EdgeMap → CrystallineSemistableComparison.E.RepBasic → CrystallineSemistableComparison.E.RepOp → CrystallineSemistableComparison.E.KapSpec →
     CrystallineSemistableComparison.E.KapRed → CrystallineSemistableComparison.E.EtRed := by

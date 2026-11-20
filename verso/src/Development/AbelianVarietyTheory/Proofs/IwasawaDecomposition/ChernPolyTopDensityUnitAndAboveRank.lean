@@ -7,7 +7,7 @@ namespace GlobalTheory.GoodMetric
 
 open Polynomial in
 /- English proof (translation)
-Rewrite using `[chernPoly, Polynomial.coeff_zero_eq_eval_zero, Matrix.eval_charpolyRev]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chernPoly_zero' {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ)
     (v : ReciprocityTheory.L2DbarEstimates.V n) : chernPoly G v 0 = 1 := by
@@ -15,7 +15,7 @@ theorem chernPoly_zero' {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : Re
 
 open Polynomial in
 /- English proof (translation)
-Rewrite using `[chernPoly]`. Apply `Polynomial.coeff_eq_zero_of_natDegree_lt` to reduce the goal to its premises. Rewrite using `[← Matrix.reverse_charpoly]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem chernPoly_above {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ)
     (v : ReciprocityTheory.L2DbarEstimates.V n) (k : ℕ) (hk : Fintype.card r < k) : chernPoly G v k = 0 := by
@@ -27,7 +27,7 @@ theorem chernPoly_above {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : Re
     _ < k := hk
 
 /- English proof (translation)
-Introduce `n ι m G v τ Q`. Use `⟨?_, fun k hk => ?_⟩` and prove the remaining obligations. Simplify using `only [chernTop, map_mul, map_sub, map_one, MvPolynomial.aeval_X, chernPoly_zero', sub_self, zero_mul, topCoeff, MvPolynomial.coeff_zero, mul_zero, Finset.sum_const_zero, Complex.zero_re]`. Establish `h` using `chernPoly_above (fun u => G u τ) v k (by simpa using hk)`. Simplify using `only [chernTop, map_mul, MvPolynomial.aeval_X, h, zero_mul, topCoeff, MvPolynomial.coeff_zero, mul_zero, Finset.sum_const_zero, Complex.zero_re]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem chernTop_unit : ∀ (n : ℕ) (ι : Type) (m : ι → ℕ) (G : ReciprocityTheory.L2DbarEstimates.V n → FlagBundle.Mat m ℂ) (v : ReciprocityTheory.L2DbarEstimates.V n) (τ : ι) (Q : MvPolynomial (ι × ℕ) ℝ), chernTop ((MvPolynomial.X (τ, 0) - 1) * Q) G v = 0 ∧ ∀ k : ℕ, m τ < k → chernTop (MvPolynomial.X (τ, k) * Q) G v = 0 := by
   intro n ι m G v τ Q

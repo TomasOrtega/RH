@@ -14,7 +14,7 @@ namespace ReciprocityTheory.ChartRestriction.DS.G2
 variable {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [ob2PsiCoef, inner_sum, inner_smul_right, oa1Phi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_coef_expand (dual : Bool) {ε : Fin n → Bool} {Λ : Fin n → ℝ} {T : S7.KType ε Λ}
     (Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)) (ξ ζ : Fin n → T.V) (g : Matrix (Fin n) (Fin n) ℂ) :
@@ -27,16 +27,14 @@ variable {ε : Fin n → Bool} {lam lam' : Fin n → ℝ} {T : S7.KType ε (lowK
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {Ψ' : Matrix (Fin n) (Fin n) ℂ → (T'.V →L[ℂ] T'.V)}
 
 /- English proof (translation)
-The claim follows from `(ffa_continuousOn hP.2.2.1).comp_continuous continuous_umat' (fun g => g.2)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_spherical_psi (hP : IsPsiFor ε lam T Ψ) :
     Continuous (fun g : Formalism.REAL.UJ ε => Ψ (Formalism.MainNotions.S.umat g)) :=
   (ffa_continuousOn hP.2.2.1).comp_continuous continuous_umat' (fun g => g.2)
 
 /- English proof (translation)
-Repeatedly rewrite using `[psi_coef_expand]`. Use `memLp_finsetSum _ fun c _ => memLp_finsetSum _ fun d _ => ?_` and prove the remaining obligations. Use `(hWT (ζ d) (ξ c)).of_le ?_ (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `((continuous_tensor_phi dual c d).mul (continuous_const.inner ((continuous_spherical_psi hP).clm_apply continuous_const))).aestronglyMeasurable`. Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _)]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (norm_tensor_phi_le_sqrt_hs g.2 dual c d) (norm_nonneg _)`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_twist_coef_memLp (dual : Bool) (hP : IsPsiFor ε lam T Ψ)
     (hWT : ∀ v w : T.V, MemLp (fun g : Formalism.REAL.UJ ε => ((Real.sqrt (S7.hs (Formalism.MainNotions.S.umat g)) : ℝ) : ℂ) *
@@ -51,7 +49,7 @@ theorem psi_twist_coef_memLp (dual : Bool) (hP : IsPsiFor ε lam T Ψ)
     exact mul_le_mul_of_nonneg_right (norm_tensor_phi_le_sqrt_hs g.2 dual c d) (norm_nonneg _)
 
 /- English proof (translation)
-Establish `h1` using `(psi_twist_coef_memLp dual hP hWT ξ ζ).star`. Establish `h2 : MemLp (fun g : Formalism.REAL.UJ ε => inner ℂ u (Ψ' (Formalism.MainNotions.S.umat g) v)) 2 (Formalism.REAL.muG ε)` using `memLp_muG_of_haar ε (fun x => inner ℂ u (Ψ' x v)) 2 (fun μ hμ => (pdA_coef u v).comp_memLp' (hP'.2.2.2.2 μ hμ))`. Conclude with `h1.integrable_mul h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psi_term_integrable (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (hP' : IsPsiFor ε lam' T' Ψ')
     (hWT : ∀ v w : T.V, MemLp (fun g : Formalism.REAL.UJ ε => ((Real.sqrt (S7.hs (Formalism.MainNotions.S.umat g)) : ℝ) : ℂ) *
@@ -67,9 +65,9 @@ theorem psi_term_integrable (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (hP' : IsP
 end Psi
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Establish `hφ : ∀ d, oa1Phi dual 1 c d = if c = d then 1 else 0`. Introduce `d`. Consider the cases of `dual`. Simplify using `[oa1Phi, Matrix.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Simplify using `[oa1Phi, Matrix.one_apply, eq_comm]`. Simplify using `[ob2B, hφ, hΨ, ite_smul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem psi_twist_at_one (dual : Bool) {ε : Fin n → Bool} {Λ : Fin n → ℝ} {T : S7.KType ε Λ}
     (Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)) (hΨ : Ψ 1 = 1) (u : Fin n → T.V) :
@@ -95,11 +93,9 @@ def ob2Fij (dual : Bool) (Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V
   inner ℂ (stdOrthonormalBasis ℂ T'.V i) (Ψ' (Formalism.MainNotions.S.umat g) (stdOrthonormalBasis ℂ T'.V j))
 
 /- English proof (translation)
-Use `set b := stdOrthonormalBasis ℂ T'.V`. Establish `e : (∑ i, ∑ j, ob2Fij (ε` using `ε) dual Ψ Ψ' ι₀ i j 1) = ∑ j, ob2SI (ob2B dual Ψ 1 (ι₀ (b j))) (ι₀ (Ψ' 1 (b j))) := psi_pairing_eq_inner dual Ψ Ψ' ι₀ (1 : Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[e]`. Simplify using `only [psi_twist_at_one dual Ψ hP.2.1, hP'.2.1, ContinuousLinearMap.one_apply]`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, ι₀ (b j) ≠ 0 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hι₀ (b.toBasis.ext fun j => by simpa using h j)`. Take `⟨c, hc⟩` from `Function.ne_iff.mp hj`. Establish `key : ∀ x : T.V, (inner ℂ x x).re = ‖x‖ ^ 2` using `fun x => inner_self_eq_norm_sq (𝕜 := ℂ) x`.
-
-Simplify using `only [ob2SI, Complex.re_sum, key]`. Establish `hc' : ι₀ (b j) c ≠ 0` using `by simpa using hc`. Conclude with `Finset.sum_pos' (fun j _ => Finset.sum_nonneg fun c _ => by positivity) ⟨j, Finset.mem_univ _, Finset.sum_pos' (fun c _ => by positivity) ⟨c, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hc') 2⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psi_pairing_at_one_re_pos (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (hP' : IsPsiFor ε lam' T' Ψ')
     (ι₀ : T'.V →ₗ[ℂ] (Fin n → T.V)) (hι₀ : ι₀ ≠ 0) :
@@ -123,7 +119,7 @@ theorem psi_pairing_at_one_re_pos (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (hP'
       ⟨c, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hc') 2⟩⟩
 
 /- English proof (translation)
-Establish `h1` using `continuous_spherical_psi hP`. Establish `h2` using `continuous_spherical_psi hP'`. Establish `h3` using `continuous_tensor_phi (ε := ε) dual`. Simplify using `only [ob2Fij, psi_coef_expand]`. Conclude with `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => (Complex.continuous_conj.comp (continuous_finsetSum _ fun c _ => continuous_finsetSum _ fun d _ => (h3 c d).mul (continuous_const.inner (h1.clm_apply continuous_const)))).mul (continuous_const.inner (h2.clm_apply …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_psi_pairing_sum (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (hP' : IsPsiFor ε lam' T' Ψ')
     (ι₀ : T'.V →ₗ[ℂ] (Fin n → T.V)) :
@@ -138,13 +134,11 @@ theorem continuous_psi_pairing_sum (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (hP
       (continuous_const.inner (h2.clm_apply continuous_const))
 
 /- English proof (translation)
-Use `show 0 < (∑ i, ∑ j, ∫ g, ob2Fij dual Ψ Ψ' ι₀ i j g ∂(Formalism.REAL.muG ε)).re`. Establish `hint : ∀ i j, Integrable (ob2Fij dual Ψ Ψ' ι₀ i j) (Formalism.REAL.muG ε)` using `fun i j => psi_term_integrable dual hP hP' hWT _ _ _ _`. Establish `hFi : Integrable (fun g => ∑ i, ∑ j, ob2Fij dual Ψ Ψ' ι₀ i j g) (Formalism.REAL.muG ε)` using `integrable_finsetSum _ fun i _ => integrable_finsetSum _ fun j _ => hint i j`. Establish `hsum : ∫ g, (∑ i, ∑ j, ob2Fij dual Ψ Ψ' ι₀ i j g) ∂(Formalism.REAL.muG ε) = ∑ i, ∑ j, ∫ g, ob2Fij dual Ψ Ψ' ι₀ i j g ∂(Formalism.REAL.muG ε)`. Rewrite using `[integral_finsetSum _ fun i _ => integrable_finsetSum _ fun j _ => hint i j]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => integral_finsetSum _ fun j _ => hint i j`. Rewrite using `[← hsum]`. Establish `hre : (∫ g, (∑ i, ∑ j, ob2Fij dual Ψ Ψ' ι₀ i j g) ∂(Formalism.REAL.muG ε)).re = ∫ g, (∑ i, ∑ j, ob2Fij dual Ψ Ψ' ι₀ i j g).re ∂(Formalism.REAL.muG ε)` using `(integral_re hFi).symm`. Rewrite using `[hre]`. Establish `hG0 : 0 ≤ fun g : Formalism.REAL.UJ ε => (∑ i, ∑ j, ob2Fij dual Ψ Ψ' ι₀ i j g).re`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g`. Establish `h` using `psi_pairing_nonneg dual hP hP' hpos hpos' ι₀ hK (g := Formalism.MainNotions.S.umat g) g.2`. Establish `h'` using `(Complex.le_def.mp h).1`. Rewrite `h'` using `[Complex.zero_re]`. Conclude with `h'`.
-
-Establish `hGc : Continuous fun g : Formalism.REAL.UJ ε => (∑ i, ∑ j, ob2Fij dual Ψ Ψ' ι₀ i j g).re` using `Complex.continuous_re.comp (continuous_psi_pairing_sum dual hP hP' ι₀)`. Rewrite using `[integral_pos_iff_support_of_nonneg hG0 hFi.re]`. Conclude with `hGc.isOpen_support.measure_pos _ ⟨1, Function.mem_support.mpr (psi_pairing_at_one_re_pos dual hP hP' ι₀ hι₀).ne'⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_pairing_trace_pos (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (hP' : IsPsiFor ε lam' T' Ψ')
     (hpos : ∀ X, inP ε X → (Ψ (NormedSpace.exp X)).IsPositive)

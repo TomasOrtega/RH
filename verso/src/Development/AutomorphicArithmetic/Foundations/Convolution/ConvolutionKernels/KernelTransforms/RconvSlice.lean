@@ -14,7 +14,7 @@ section SlopeTestRemainingChoices
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Use `⟨(detModule K n (infEmb K n a))⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← retract_infEmb, coe_retractOne, map_mul, infPart_infEmb, ← map_inv, map_inv (zInf K n)]`. Rewrite using `[map_inv (centralSection K n), map_inv (infPart K n)]`. Both sides reduce to the same expression. Rewrite using `[← retract_infEmb, coe_retractOne, map_mul, finPart_infEmb, map_inv, finPart_centralSection]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -29,7 +29,7 @@ private theorem parts_archP (a : archGroup K n) :
     simp
 
 /- English proof (translation)
-Take `⟨s, h1, h2⟩` from `parts_archP a`. Rewrite using `[tensFun, Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_mul, map_inv, map_inv, h1, h2, inv_one, one_mul, mul_inv_rev, ← map_inv, mul_assoc, zInf_mul_comm, kbar_mul_zInf]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tensFun_shift (β : TI K n) (e : TF K n) (a : archGroup K n) (g : normOneGL K n) :
     tensFun β e ((archP K n a)⁻¹ * g) =
@@ -40,15 +40,15 @@ private theorem tensFun_shift (β : TI K n) (e : TF K n) (a : archGroup K n) (g 
     mul_inv_rev, ← map_inv, mul_assoc, zInf_mul_comm, kbar_mul_zInf]
 
 /- English proof (translation)
-Establish `hc : Continuous (Function.uncurry fun (s : {r : ℝ // 0 < r}) (a : archGroup K n) => β₁ a * β₂ (a⁻¹ * (x * zInf K n s)))`. Use `(β₁.continuous.comp continuous_snd).mul (β₂.continuous.comp ?_)` and prove the remaining obligations. Conclude with `(continuous_snd.inv).mul (continuous_const.mul (continuous_zInf.comp continuous_fst))`. Establish `hs : HasCompactSupport (Function.uncurry fun (s : {r : ℝ // 0 < r}) (a : archGroup K n) => β₁ a * β₂ (a⁻¹ * (x * zInf K n s)))`. Establish `hC : IsCompact ((fun p : {r : ℝ // 0 < r} × archGroup K n => (p.1 * detA K n (x⁻¹ * p.2), p.2)) '' ((detA K n '' tsupport β₂) ×ˢ tsupport β₁))` using `((β₂.hasCompactSupport.isCompact.image continuous_detA).prod β₁.hasCompactSupport.isCompact).image ((continuous_fst.mul (continuous_detA.comp (continuous_const.mul continuous_snd))).prodMk continuous_snd)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasCompactSupport.intro hC fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Apply `hp` to reduce the goal to its premises. Take `⟨s, a⟩` from `p`. Establish `h1 : β₁ a ≠ 0` using `left_ne_zero_of_mul hne`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : β₂ (a⁻¹ * (x * zInf K n s)) ≠ 0` using `right_ne_zero_of_mul hne`. Establish `h3` using `mem_of_kernel_ne_zero hn (κ := β₂) (a := a⁻¹ * x) (s := s) (by rwa [mul_assoc])`. Use `⟨(s * detA K n (a⁻¹ * x), a), ⟨h3, subset_tsupport _ h1⟩, ?_⟩` and prove the remaining obligations. Establish `h4 : detA K n (a⁻¹ * x) * detA K n (x⁻¹ * a) = 1`. Rewrite using `[← map_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_assoc]`. Simplify using `only [mul_assoc, h4, mul_one]`. Establish `hsw` using `integral_integral_swap_of_hasCompactSupport hc hs (μ := GroundTheory.Global.posRealMeasure) (ν := ν)`. Simplify using `only [kbar, conv_apply]`. Rewrite using `[hsw]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc]`. Conclude with `integral_const_mul _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem kbar_conv (hn : 0 < n) (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (β₁ β₂ : TI K n)
     (x : archGroup K n) :
@@ -83,7 +83,7 @@ private theorem kbar_conv (hn : 0 < n) (ν : Measure (archGroup K n)) [ν.IsHaar
   exact integral_const_mul _ _
 
 /- English proof (translation)
-Simplify using `only [(UpperTheory.ConvolutionTheory.Tf.tensApply K n hn _ e).1, tensFun_shift]`. Rewrite using `[tensFun, kbar_conv hn, ← integral_mul_const]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem tens_conv (hn : 0 < n) (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (β₁ β₂ : TI K n) (e : TF K n)
     (g : normOneGL K n) :
@@ -94,25 +94,23 @@ private theorem tens_conv (hn : 0 < n) (ν : Measure (archGroup K n)) [ν.IsHaar
   simp only [mul_assoc]
 
 /- English proof (translation)
-Use `haveI hσ : SigmaFinite μ := Measure.IsHaarMeasure.sigmaFinite μ`. Use `haveI : SFinite μ := @instSFiniteOfSigmaFinite _ _ μ hσ`. Take `⟨T, hT⟩ : ∃ T, T = tens β₂ e` from `⟨_, rfl⟩`. Take `⟨A, hA⟩ : ∃ A, A = tsupport β₁` from `⟨_, rfl⟩`. Establish `hAc : IsCompact A` using `hA ▸ β₁.hasCompactSupport.isCompact`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨D, hD⟩ : ∃ D, D = (fun q : archGroup K n × normOneGL K n => x * archP K n q.1 * q.2) '' (A ×ˢ tsupport (T : normOneGL K n → ℂ))` from `⟨_, rfl⟩`. Establish `hDc : IsCompact D`. Rewrite using `[hD]`. Conclude with `(hAc.prod T.hasCompactSupport.isCompact).image ((continuous_const.mul (continuous_archP.comp continuous_fst)).mul continuous_snd)`. Take `⟨ψ, hψ⟩ : ∃ ψ, ψ = D.indicator fun y => φ (mk (rationalGLOne K n) y)` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hψi : Integrable ψ μ`. Rewrite using `[hψ]`. Conclude with `(integrableOn_lift (rationalGLOne K n) μ φ hDc).integrable_indicator hDc.measurableSet`. Establish `hβi : Integrable (β₁ : archGroup K n → ℂ) ν` using `β₁.continuous.integrable_of_hasCompactSupport β₁.hasCompactSupport`. Take `⟨M, hM⟩` from `T.continuous.bounded_above_of_compact_support T.hasCompactSupport`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : Integrable (Function.uncurry fun (a : archGroup K n) (y : normOneGL K n) => β₁ a * (T ((archP K n a)⁻¹ * (x⁻¹ * y)) * φ (mk (rationalGLOne K n) y))) (ν.prod μ)`. Establish `h1 : Integrable (fun z : archGroup K n × normOneGL K n => β₁ z.1 * ψ z.2) (ν.prod μ)` using `hβi.mul_prod hψi`. Establish `hcT : Continuous fun z : archGroup K n × normOneGL K n => T ((archP K n z.1)⁻¹ * (x⁻¹ * z.2))` using `T.continuous.comp ((continuous_archP.comp continuous_fst).inv.mul (continuous_const.mul continuous_snd))`. Establish `h2` using `h1.bdd_mul hcT.aestronglyMeasurable (Filter.Eventually.of_forall fun z => hM _)`. Use `h2.congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, y⟩` from `z`. Simplify using `only [Function.uncurry]`. Distinguish the cases in `hy : y ∈ D`. Rewrite using `[hψ, Set.indicator_of_mem hy]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hψ, Set.indicator_of_notMem hy, mul_zero, mul_zero]`. Distinguish the cases in `ha : a ∈ A`. Establish `h0 : T ((archP K n a)⁻¹ * (x⁻¹ * y)) = 0`. Assume the negation of the conclusion as `hne`. Use `hy ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD]`. Use `⟨(a, (archP K n a)⁻¹ * (x⁻¹ * y)), ⟨ha, subset_tsupport _ hne⟩, ?_⟩` and prove the remaining obligations. Simplify using `[mul_assoc]`. Rewrite using `[h0, zero_mul, mul_zero]`. Establish `h0 : β₁ a = 0` using `image_eq_zero_of_notMem_tsupport (by rwa [← hA])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h0, zero_mul]`. Establish `hsw` using `integral_integral_swap hint`. Establish `hr : ∀ a : archGroup K n, β₁ a * rconv (rationalGLOne K n) μ (tens β₂ e) φ (x * archP K n a) = ∫ y, β₁ a * (T ((archP K n a)⁻¹ * (x⁻¹ * y)) * φ (mk (rationalGLOne K n) y)) ∂μ`. Introduce `a`. Rewrite using `[rconv, integral_const_mul, hT]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mul_inv_rev, mul_assoc]`. Simplify using `only [hr]`. Rewrite using `[hsw, rconv]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`.
-
-Rewrite using `[tens_conv hn, ← integral_mul_const, hT]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem rconv_conv (hn : 0 < n) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (β₁ β₂ : TI K n) (e : TF K n) (φ : LL μ) (x : normOneGL K n) :
@@ -174,7 +172,7 @@ private theorem rconv_conv (hn : 0 < n) (μ : Measure (normOneGL K n)) [μ.IsHaa
   simp only [mul_assoc]
 
 /- English proof (translation)
-Conclude with `congrArg (fun T : Module.End ℂ (archSmooth K n) => T f) (Algebra.TensorProduct.lift_tmul (Algebra.ofId ℂ (Module.End ℂ (archSmooth K n))) (uAction : UEnv K n →ₐ[ℝ] Module.End ℂ (archSmooth K n)) (fun c _ => Algebra.commute_algebraMap_left c _) c a)`.
+A detailed English derivation is pending.
 -/
 private theorem uAct_tmul (c : ℂ) (a : UEnv K n) (f : archSmooth K n) :
     (uAct (c ⊗ₜ[ℝ] a) f : archSmooth K n) = c • (uAction a f : archSmooth K n) := by
@@ -186,23 +184,23 @@ private theorem uAct_tmul (c : ℂ) (a : UEnv K n) (f : archSmooth K n) :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `K _ _ n hn μ _ ν _ m _ _ β₁ β₂ e φ hβ₁`. Use `⟨rconv_conv hn μ ν β₁ β₂ e φ, ?_⟩` and prove the remaining obligations. Take `⟨h, -, h2, -, h4, h5, -, h7⟩` from `UpperTheory.ConvolutionTheory.Tf.lactSpec K n β₁ hβ₁`. Take `⟨Φ, hΦe⟩ : ∃ Φ, Φ = rconv (rationalGLOne K n) μ (tens β₂ e) φ` from `⟨_, rfl⟩`. Establish `hΦ : Continuous Φ` using `hΦe ▸ continuous_rconv (rationalGLOne K n) μ (tens β₂ e) φ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ (γ : TI K n) x, rconv (rationalGLOne K n) μ (tens (conv ν γ β₂) e) φ x = ∫ a, γ a * Φ (x * archP K n a) ∂ν` using `fun γ x => by`. Rewrite using `[hΦe]`. Conclude with `rconv_conv hn μ ν γ β₂ e φ x`. Take `⟨hF, hU⟩` from `UpperTheory.ConvolutionTheory.Tf.sliceAct K n ν β₁ h Φ hΦ`. Establish `e0 : rconv (rationalGLOne K n) μ (tens (conv ν β₁ β₂) e) φ = fun x => ∫ a, β₁ a * Φ (x * archP K n a) ∂ν` using `funext (key β₁)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF' : liftOne (rconv (rationalGLOne K n) μ (tens (conv ν β₁ β₂) e) φ) ∈ archSmooth K n`. Rewrite using `[e0]`. Conclude with `hF`. Establish `hi : ∀ (γ : TI K n) (g : AdelicGLn.AdelicGL K n), Integrable (fun a => γ a * Φ (retractOne g * archP K n a)) ν` using `fun γ g => (γ.continuous.mul (hΦ.comp (continuous_const.mul continuous_archP))).integrable_of_hasCompactSupport γ.hasCompactSupport.mul_right`. Establish `P : ∀ (u : UC K n) (g : AdelicGLn.AdelicGL K n), (uAct u ⟨_, hF⟩ : AdelicGLn.AdelicGL K n → ℂ) g = ∫ a, lact u β₁ a * Φ (retractOne g * archP K n a) ∂ν`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `u`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero`. Introduce `g`. Establish `l0 : lact (0 : UC K n) β₁ = 0`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(h5 0 0).1` as an intermediate fact. Simplify using `using this`. Rewrite using `[l0, map_zero]`. Simplify using the standard rewrite rules. Consider the case `tmul c a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g`. Establish `l1 : lact (c ⊗ₜ[ℝ] a) β₁ = c • lact ((1 : ℂ) ⊗ₜ[ℝ] a) β₁`. Rewrite using `[← (h5 c _).1, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[uAct_tmul, Submodule.coe_smul, Pi.smul_apply, hU a g, l1]`. Simplify using `only [CompactlySupportedContinuousMap.smul_apply, smul_eq_mul, h7, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[integral_const_mul]`. Consider the case `add u v hu hv`. Introduce `g`. Rewrite using `[map_add, LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, hu g, hv g, (h4 u v).2, ← integral_add (hi _ g) (hi _ g)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [CompactlySupportedContinuousMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hF', fun u => ?_⟩` and prove the remaining obligations. Establish `hsub : (⟨_, hF'⟩ : archSmooth K n) = ⟨_, hF⟩` using `Subtype.ext (congrArg liftOne e0)`. Rewrite using `[hsub]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[P, liftOne, key]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.rconvSlice :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure], Compat μ ν m →

@@ -8,7 +8,7 @@ open UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit Upper
 open scoped TensorProduct
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_inf]`. Conclude with `⟨h1.inter h3, h2.inter_right (U'.isClosed_of_isOpen h3)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem oc_inf {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {U U' : Subgroup G}
     (h1 : IsOpen (U : Set G)) (h2 : IsCompact (U : Set G)) (h3 : IsOpen (U' : Set G)) :
@@ -17,11 +17,11 @@ private theorem oc_inf {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalG
   exact ⟨h1.inter h3, h2.inter_right (U'.isClosed_of_isOpen h3)⟩
 
 /- English proof (translation)
-Use `⟨U.comap (MulAut.conj x⁻¹).toMonoidHom, ?_, ?_, fun u hu => by simpa using hu⟩` and prove the remaining obligations. Establish `: ((U.comap (MulAut.conj x⁻¹).toMonoidHom : Subgroup G) : Set G) = (fun u => x⁻¹ * u * x) ⁻¹' U`. Use extensionality with `u`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.preimage (by fun_prop)`. Establish `: ((U.comap (MulAut.conj x⁻¹).toMonoidHom : Subgroup G) : Set G) = (fun u => x * u * x⁻¹) '' U`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨x⁻¹ * u * x, by simpa using hu, by group⟩`. Introduce and unpack `⟨v, hv, rfl⟩`. Simplify `hv` using `[mul_assoc]`. Rewrite using `[this]`. Conclude with `h2.image (by fun_prop)`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem oc_conj {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {U : Subgroup G}
     (h1 : IsOpen (U : Set G)) (h2 : IsCompact (U : Set G)) (x : G) :
@@ -42,17 +42,17 @@ private theorem oc_conj {G : Type} [Group G] [TopologicalSpace G] [IsTopological
     exact h2.image (by fun_prop)
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha σ Ξ Ξ' h hσ q`. Establish `mono : ∀ U U' : Subgroup (GL (Fin a) (Af E)), U' ≤ U → ∀ (α : Co Ξ q) (β : Co Ξ' q), RelAt U σ h α β → RelAt U' σ h α β` using `fun U U' hU α β hr => by`. Use `relPull E a U U' 1 (fun u hu => by simpa using hU hu) σ Ξ Ξ' h q α β hr` as an intermediate fact. Rewrite `this` using `[trans_one, trans_one]`. Then use the resulting hypothesis. Establish `L` using `(levSub E a Ξ q).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `L'` using `(levSub E a Ξ' q).2.1`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `s α α' β β' ⟨U, u1, u2, u3⟩ ⟨V, v1, -, v3⟩`. Take `⟨w1, w2⟩` from `oc_inf u1 u2 v1`. Conclude with `⟨U ⊓ V, w1, w2, relLin E a _ σ Ξ Ξ' h q s α α' β β' (mono _ _ inf_le_left _ _ u3) (mono _ _ inf_le_right _ _ v3)⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `x α β ⟨U, u1, u2, u3⟩`. Take `⟨V, v1, v2, v3⟩` from `oc_conj u1 u2 x`. Conclude with `⟨V, v1, v2, relPull E a U V x v3 σ Ξ Ξ' h q α β u3⟩`. Introduce and unpack `α β ⟨U, u1, u2, u3⟩`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨V, v1, -, v3⟩`. Take `⟨w1, w2⟩` from `oc_inf u1 u2 v1`. Conclude with `⟨U ⊓ V, w1, w2, ((relKer E a ha _ w2 σ Ξ Ξ' h hσ q α β).1 (mono _ _ inf_le_left _ _ u3)).1 ((L _ _ inf_le_right α).2 v3)⟩`. Introduce and unpack `⟨V, v1, -, v3⟩`. Take `⟨w1, w2⟩` from `oc_inf u1 u2 v1`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U ⊓ V, w1, w2, ((relKer E a ha _ w2 σ Ξ Ξ' h hσ q α β).1 (mono _ _ inf_le_left _ _ u3)).2 ((L' _ _ inf_le_right β).2 v3)⟩`. Introduce and unpack `α β ⟨U, u1, u2, u3⟩ ⟨V, v1, -, v3⟩ d1 d2 ⟨X, x1, -, x3⟩ ⟨Y, y1, -, y3⟩`. Take `⟨w1, w2⟩` from `oc_inf u1 u2 v1`. Take `⟨w3, w4⟩` from `oc_inf w1 w2 x1`. Take `⟨w5, w6⟩` from `oc_inf w3 w4 y1`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, w5, w6, (relKer E a ha _ w6 σ Ξ Ξ' h hσ q α β).2 ((L _ _ (inf_le_left.trans (inf_le_left.trans inf_le_left)) α).1 u3) ((L' _ _ (inf_le_left.trans (inf_le_left.trans inf_le_right)) β).1 v3) d1 d2 ((L _ _ (inf_le_left.trans inf_le_right) α).2 x3) ((L' _ _ inf_le_right β).2 y3)⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Cj.relFacts :
     UpperTheory.V.Cj.RelFacts := by

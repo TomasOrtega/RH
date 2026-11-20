@@ -13,29 +13,27 @@ open GlobalTheory.PsCo.PcEG
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `n ε H _ _ σ D E hσ hD Y _ hY hG hK`. Set `Z : Submodule ℂ (TensorProduct ℂ D (Fock n))` to `Y ⊓ LinearMap.ker (dD ε E)`. Establish `hZY : Z ≤ Y` using `inf_le_left`. Use `haveI hZf : FiniteDimensional ℂ Z := Submodule.finiteDimensional_of_le hZY`. Establish `hZK : ∀ (k : Mat n) (hk : k ∈ Kset ε), ∀ y ∈ Z, wK hD hk y ∈ Z`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk y hy`. Use `⟨hK k hk y hy.1, ?_⟩` and prove the remaining obligations. Establish `h0 : dD ε E y = 0` using `hy.2`. Use `show dD ε E (wK hD hk y) = 0`. Rewrite using `[← wK_D hσ hD hk, h0, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hZG : ∀ y ∈ Z, gradT y ∈ Z`. Introduce `y hy`. Use `⟨hG y hy.1, ?_⟩` and prove the remaining obligations. Establish `h0 : dD ε E y = 0` using `hy.2`. Use `show dD ε E (gradT y) = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use `gradT_D (ε := ε) E y` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `neg_eq_zero.1 this.symm`. Set `Γ : TSub Z →ₗ[ℂ] TSub Z` to `((gradT.restrict hZG : Z →ₗ[ℂ] Z) : TSub Z →ₗ[ℂ] TSub Z)`. Use `⟨Z, hZf, hZK, Γ, hZY, fun y hy => hy.2, fun k hk => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hU : IsInfUnitary ε E` using `isInfUnitary_of_isDerivedOn hσ hD`. Set `Dl : TSub Y →ₗ[ℂ] TSub Y` to `(((dD ε E).restrict hY : Y →ₗ[ℂ] Y) : TSub Y →ₗ[ℂ] TSub Y)`. Set `Γy : TSub Y →ₗ[ℂ] TSub Y` to `((gradT.restrict hG : Y →ₗ[ℂ] Y) : TSub Y →ₗ[ℂ] TSub Y)`. Set `B : TSub Y →ₗ[ℂ] TSub Y` to `(((wK hD hk).restrict (hK k hk) : Y →ₗ[ℂ] Y) : TSub Y →ₗ[ℂ] TSub Y)`. Take `⟨hker, htr⟩` from `str_eq_str_ker Dl Γy B (fun x y => by rw [tsub_inner, tsub_inner]; exact tform_D hU _ _) (fun x => Subtype.ext (gradT_D E _)) (fun x => Subtype.ext (wK_D hσ hD hk _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : LinearMap.trace ℂ Y ((gradT ∘ₗ wK hD hk).restrict (fun y hy => hG _ (hK k hk y hy))) = LinearMap.trace ℂ (TSub Y) (Γy ∘ₗ B)` using `rfl`. Rewrite using `[h1, htr]`. Establish `hmemZ : ∀ x : LinearMap.ker Dl, tsubVal Y (x : TSub Y) ∈ Z`. Introduce `x`. Establish `hx : Dl (x : TSub Y) = 0` using `x.2`.
+Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `⟨tsubVal_mem (x : TSub Y), congrArg (tsubVal Y) hx⟩`. Set `f : LinearMap.ker Dl →ₗ[ℂ] TSub Z` to `{ toFun := fun x => ((⟨tsubVal Y (x : TSub Y), hmemZ x⟩ : Z) : TSub Z) map_add' := fun x y => rfl map_smul' := fun c x => rfl }`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: tsubVal Y (x : TSub Y) = tsubVal Y (y : TSub Y)` using `congrArg (tsubVal Z) hxy`. Conclude with `Subtype.ext (tsubVal_injective this)`. Introduce `z`. Establish `hzY : tsubVal Z z ∈ Y` using `hZY (tsubVal_mem z)`. Set `x : TSub Y` to `((⟨tsubVal Z z, hzY⟩ : Y) : TSub Y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hx : x ∈ LinearMap.ker Dl`. Rewrite using `[LinearMap.mem_ker]`. Apply `tsubVal_injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `(tsubVal_mem z).2`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨x, hx⟩, rfl⟩`. Set `e` to `LinearEquiv.ofBijective f hf`. Rewrite using `[← LinearMap.trace_conj' _ e]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z`. Rewrite using `[LinearEquiv.conj_apply_apply]`. Apply `tsubVal_injective` to reduce the goal to its premises. Take `⟨x, rfl⟩` from `e.surjective z`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
-
-Use `show tsubVal Z (f ((Γy ∘ₗ B).restrict hker x)) = tsubVal Z (Γ (tOp hD hZK k (f x)))`. Establish `hΓ : ∀ w : TSub Z, tsubVal Z (Γ w) = gradT (tsubVal Z w)` using `fun w => rfl`. Rewrite using `[hΓ, tOp_apply hD hZK hk]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem supertrace_carriedBy_diracKernel : StrKer := by
   intro n ε H _ _ σ D E hσ hD Y _ hY hG hK

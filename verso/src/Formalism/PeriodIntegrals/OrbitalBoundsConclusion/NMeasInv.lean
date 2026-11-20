@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MeasureInverseContracti
 namespace PI
 
 /- English proof (translation)
-The claim follows from `PI.NMeasInv.UnitaryGroupMassFormula.nMeasInv_of PI.NMeasInv.UnitaryGroupMassFormula.measure_contraction_formula`.
+A detailed English derivation is pending.
 -/
 theorem n_measure_invariant : PI.NMeasInv.Target :=
   PI.NMeasInv.UnitaryGroupMassFormula.nMeasInv_of PI.NMeasInv.UnitaryGroupMassFormula.measure_contraction_formula

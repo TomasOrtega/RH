@@ -15,7 +15,7 @@ structure Cover (l : ℕ) {W W' : Type} (q : W → ℕ) (q' : W' → ℕ) (u : W
     (Nat.card {w // u w = v} = 1 ∧ (∀ w, u w = v → f w = l) ∧ IsPrimitiveRoot (c v) l)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => (pow_one _).symm, fun v => Or.inl ⟨by simp, fun _ _ => rfl, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem Cover.triv {W : Type} (q : W → ℕ) : Cover 1 q q id (fun _ => 1) (fun _ => 1) :=
   ⟨fun _ => (pow_one _).symm, fun v => Or.inl ⟨by simp, fun _ _ => rfl, rfl⟩⟩

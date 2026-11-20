@@ -12,13 +12,11 @@ namespace GlobalTheory.CongIndex
 open scoped TensorProduct in
 
 /- English proof (translation)
-Establish `: IsArtinianRing (R ⧸ I)` using `isArtinian_of_finite`. Take `⟨b⟩` from `Module.nonempty_basis_of_flat_of_finrank_eq (R ⧸ I) ((R ⧸ I) ⊗[R] N) (Module.finrank R N) (fun P => by`. Use `P.isMaximal` as an intermediate fact. Set `: Field ((R ⧸ I) ⧸ P.asIdeal)` to `Ideal.Quotient.field _`. Rewrite using `[(TensorProduct.AlgebraTensorModule.cancelBaseChange R (R ⧸ I) ((R ⧸ I) ⧸ P.asIdeal) ((R ⧸ I) ⧸ P.asIdeal) N).finrank_eq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Module.rankAtStalk_baseChange (R := R) (M := N) (S := (R ⧸ I) ⧸ P.asIdeal) ⊥`. Rewrite `h1` using `[Module.rankAtStalk_eq_finrank_of_free, Module.rankAtStalk_eq, Ideal.finrank_fiber_eq_finrank]`. Conclude with `h1)`. Use `⟨⟨(TensorProduct.quotTensorEquivQuotSMul N I) ∘ b, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : Submodule.span R (Set.range b) = ⊤`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.restrictScalars_span R (R ⧸ I) Ideal.Quotient.mk_surjective, b.span_eq, Submodule.restrictScalars_top]`. Establish `h2` using `congrArg (Submodule.map (TensorProduct.quotTensorEquivQuotSMul N I).toLinearMap) h1`. Rewrite `h2` using `[Submodule.map_span, Submodule.map_top, LinearEquiv.range]`. Rewrite using `[Set.range_comp]`. Conclude with `h2`.
-
-Rewrite using `[← Nat.card_congr (TensorProduct.quotTensorEquivQuotSMul N I).toEquiv, Nat.card_congr b.equivFun.toEquiv, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot_smul_top_span_card {R N : Type} [CommRing R] [IsDomain R] [AddCommGroup N] [Module R N]
     [Module.Finite R N] [Module.Projective R N] (I : Ideal R) [Finite (R ⧸ I)] :
@@ -46,13 +44,13 @@ theorem quot_smul_top_span_card {R N : Type} [CommRing R] [IsDomain R] [AddCommG
       Nat.card_congr b.equivFun.toEquiv, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin]
 
 /- English proof (translation)
-Take `⟨⟨v, hv⟩, hc⟩` from `quot_smul_top_span_card (R := R) (N := N) I`. Establish `: Finite (N ⧸ (I • ⊤ : Submodule R N))` using `Submodule.finite_quotient_smul I Module.Finite.fg_top`. Establish `hk : ∀ f : N →ₗ[R] N ⧸ (I • ⊤ : Submodule R N), (I • ⊤ : Submodule R N) ≤ LinearMap.ker f`. Introduce `f`. Use `Submodule.smul_le.2 fun a ha x _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (f x)`. Rewrite using `[LinearMap.mem_ker, map_smul, ← hy, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_mem_smul ha Submodule.mem_top`. Set `Φ : (N →ₗ[R] N ⧸ (I • ⊤ : Submodule R N)) → (Fin (Module.finrank R N) → N ⧸ (I • ⊤ : Submodule R N))` to `fun f i => Submodule.liftQ _ f (hk f) (v i)`. Establish `hΦ : Function.Injective Φ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f g hfg`. Establish `: Submodule.liftQ _ f (hk f) = Submodule.liftQ _ g (hk g)` using `LinearMap.ext_on_range hv fun i => congrFun hfg i`. Use extensionality with `x`. Simplify using `using LinearMap.congr_fun this (Submodule.Quotient.mk x)`. Use `⟨Finite.of_injective Φ hΦ, (Nat.card_le_card_of_injective Φ hΦ).trans_eq ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_fun, hc, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin, ← pow_mul, sq]`.
+A detailed English derivation is pending.
 -/
 theorem card_hom_quot_smul_top {R N : Type} [CommRing R] [IsDomain R] [AddCommGroup N] [Module R N]
     [Module.Finite R N] [Module.Projective R N] (I : Ideal R) [Finite (R ⧸ I)] :
@@ -78,9 +76,9 @@ theorem card_hom_quot_smul_top {R N : Type} [CommRing R] [IsDomain R] [AddCommGr
   rw [Nat.card_fun, hc, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin, ← pow_mul, sq]
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_linearIndependent_of_le_finrank (R := 𝓞 K) (M := M) le_rfl`. Establish `h1 : LinearIndependent (𝓞 K) (M.subtype ∘ f)` using `hf.map' _ (Submodule.ker_subtype M)`. Establish `h2 : LinearIndependent K (M.subtype ∘ f)` using `(LinearIndependent.iff_fractionRing (𝓞 K) K).1 h1`. Set `g : Fin (Module.finrank (𝓞 K) M) → Submodule.span K (M : Set V)` to `fun i => ⟨f i, Submodule.subset_span (f i).2⟩`. Establish `h3 : LinearIndependent K g` using `LinearIndependent.of_comp (Submodule.span K (M : Set V)).subtype h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `using h3.fintype_card_le_finrank`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finrank_le_finrank_span {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (M : Submodule (𝓞 K) V) :
@@ -95,23 +93,21 @@ theorem finrank_le_finrank_span {K V : Type} [Field K] [NumberField K] [AddCommG
   simpa using h3.fintype_card_le_finrank
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ G M 𝔪 B hM h𝔪 hG hB`. Establish `: Module.Finite (𝓞 K) M` using `Module.Finite.iff_fg.2 hM`. Establish `: Module.IsTorsionFree (𝓞 K) V` using `Module.IsTorsionFree.trans_faithfulSMul (𝓞 K) K V`. Establish `: Module.Flat (𝓞 K) M` using `inferInstance`. Establish `: Module.FinitePresentation (𝓞 K) M` using `Module.finitePresentation_of_finite _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Projective (𝓞 K) M` using `Module.Flat.projective_of_finitePresentation`. Establish `: Finite (𝓞 K ⧸ 𝔪)` using `Ideal.finiteQuotientOfFreeOfNeBot 𝔪 h𝔪`. Take `⟨hfin, hcard⟩` from `card_hom_quot_smul_top (R := 𝓞 K) (N := M) 𝔪`. Establish `hmem : ∀ s ∈ G, ∀ x ∈ M, s x ∈ M`. Introduce `s hs x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hG s hs]`. Conclude with `Submodule.smul_mem_pointwise_smul x s M hx`. Establish `hmem' : ∀ s ∈ G, ∀ x ∈ 𝔪 • M, s x ∈ 𝔪 • M`. Introduce `s hs x hx`. Use `Submodule.smul_induction_on hx (fun a ha y hy => ?_) (fun y z hy hz => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMapClass.map_smul_of_tower]`. Conclude with `Submodule.smul_mem_smul ha (hmem s hs y hy)`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Set `ρ : G → (M →ₗ[𝓞 K] M)` to `fun s => (((s : V ≃ₗ[K] V) : V →ₗ[K] V).restrictScalars (𝓞 K)).restrict (hmem s s.2)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `Φ : G → (M →ₗ[𝓞 K] M ⧸ (𝔪 • ⊤ : Submodule (𝓞 K) M))` to `fun s => (Submodule.mkQ _).comp (ρ s)`. Establish `hΦ : ∀ s t : G, Φ s = Φ t → s⁻¹ * t ∈ B.subgroupOf G`. Introduce `s t hst`. Use `hB _ (s⁻¹ * t).2 fun x hx => ?_` and prove the remaining obligations. Establish `h1 : ρ t ⟨x, hx⟩ - ρ s ⟨x, hx⟩ ∈ (𝔪 • ⊤ : Submodule (𝓞 K) M)` using `(Submodule.Quotient.eq _).1 (LinearMap.congr_fun hst ⟨x, hx⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (t : V ≃ₗ[K] V) x - (s : V ≃ₗ[K] V) x ∈ 𝔪 • M`. Use `Submodule.mem_map_of_mem (f := M.subtype) h1` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_subtype]`. Conclude with `this`. Establish `h3` using `hmem' _ (s⁻¹).2 _ h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using h3`. Set `Ψ : G ⧸ B.subgroupOf G → _` to `fun q => Φ q.out`. Establish `hΨ : Function.Injective Ψ`. Introduce `q q' h`. Rewrite using `[← q.out_eq, ← q'.out_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `QuotientGroup.eq.2 (hΦ _ _ h)`. Establish `: Finite (G ⧸ B.subgroupOf G)` using `Finite.of_injective Ψ hΨ`. Use `⟨Subgroup.index_ne_zero_of_finite, ?_⟩` and prove the remaining obligations. Use `(Nat.card_le_card_of_injective Ψ hΨ).trans (hcard.trans ?_)` and prove the remaining obligations. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
-
-Conclude with `Nat.pow_le_pow_right Nat.card_pos (Nat.pow_le_pow_left (finrank_le_finrank_span M) 2)`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_le : ∀ (K V : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (G : Subgroup (V ≃ₗ[K] V)) (M : Submodule (𝓞 K) V) (𝔪 : Ideal (𝓞 K)) (B : Subgroup (V ≃ₗ[K] V)), M.FG → 𝔪 ≠ ⊥ → (∀ s ∈ G, s • M = M) → (∀ s ∈ G, (∀ x ∈ M, s x - x ∈ 𝔪 • M) → s ∈ B) → B.relIndex G ≠ 0 ∧ B.relIndex G ≤ Ideal.absNorm 𝔪 ^ (Module.finrank K (Submodule.span K (M : Set V)) ^ 2) := by
   intro K V _ _ _ _ _ _ _ G M 𝔪 B hM h𝔪 hG hB

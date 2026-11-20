@@ -9,9 +9,9 @@ open scoped ContDiff BoundedContinuousFunction
 namespace GlobalTheory.HCA
 
 /- English proof (translation)
-Establish `hc : Continuous (fun x => f x * g x)`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Distinguish the cases in `hx : x ∈ U`. Conclude with `(hf.continuousAt (hU.mem_nhds hx)).mul hg.continuousAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hx' : x ∉ tsupport g` using `fun h => hx (hs h)`. Establish `h0 : (fun x => f x * g x) =ᶠ[nhds x] fun _ => (0 : ℂ)` using `by filter_upwards [(notMem_tsupport_iff_eventuallyEq).1 hx'] with y hy`. Simplify using `[hy]`. Conclude with `(continuousAt_congr h0).2 continuousAt_const`. Conclude with `hc.integrable_of_hasCompactSupport hgc.mul_left`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_mul_of_tsupport_subset {d : ℕ} {U : Set (E d)} (hU : IsOpen U)
     {f g : E d → ℂ} (hf : ContinuousOn f U) (hg : Continuous g) (hgc : HasCompactSupport g)
@@ -29,13 +29,11 @@ theorem integrable_mul_of_tsupport_subset {d : ℕ} {U : Set (E d)} (hU : IsOpen
   exact hc.integrable_of_hasCompactSupport hgc.mul_left
 
 /- English proof (translation)
-Establish `hu1 : ContDiffOn ℝ ∞ (fun x => fderiv ℝ u x (ev j)) U` using `contDiffOn_dw_of_isOpen hU [j] u hu`. Establish `hψ1 : Continuous (fun x => fderiv ℝ ψ x (ev j))` using `(hψ.continuous_fderiv (by simp)).clm_apply continuous_const`. Establish `hsub : tsupport (fun x => fderiv ℝ ψ x (ev j)) ⊆ tsupport ψ`. Use `(closure_mono ?_).trans (tsupport_fderiv_subset (𝕜 := ℝ) (f := ψ))` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.mem_support] at hx ⊢`. Introduce `h; exact hx (by simp [h])`. Establish `hψ1c : HasCompactSupport (fun x => fderiv ℝ ψ x (ev j))` using `(hψc.fderiv (𝕜 := ℝ)).comp_left (g := fun L : E d →L[ℝ] ℂ => L (ev j)) (by simp)`. Apply `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable` to reduce the goal to its premises. Conclude with `integrable_mul_of_tsupport_subset hU hu1.continuousOn hψ.continuous hψc hψs`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `integrable_mul_of_tsupport_subset hU hu.continuousOn hψ1 hψ1c (hsub.trans hψs)`. Conclude with `integrable_mul_of_tsupport_subset hU hu.continuousOn hψ.continuous hψc hψs`. Introduce `x hx`. Conclude with `(hu.contDiffAt (hU.mem_nhds (hψs hx))).differentiableAt (by simp)`. Introduce `x _`.
-
-Conclude with `hψ.differentiable (by simp) x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem integral_mul_partial_eq_neg {d : ℕ} {U : Set (E d)} (hU : IsOpen U) (j : Fin d)
     {u ψ : E d → ℂ} (hu : ContDiffOn ℝ ∞ u U) (hψ : ContDiff ℝ ∞ ψ) (hψc : HasCompactSupport ψ)
@@ -62,11 +60,11 @@ theorem integral_mul_partial_eq_neg {d : ℕ} {U : Set (E d)} (hU : IsOpen U) (j
     exact hψ.differentiable (by simp) x
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact ⟨hφ, subset_rfl⟩`. Consider the case `cons j w ih`. Use `⟨(ih.1.fderiv_right (m := ∞) le_rfl).clm_apply contDiff_const, ?_⟩` and prove the remaining obligations. Use `(closure_mono ?_).trans ((tsupport_fderiv_subset (𝕜 := ℝ) (f := dw w φ)).trans ih.2)` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Simplify using `only [Function.mem_support] at hx ⊢`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Use `show fderiv ℝ (dw w φ) x (ev j) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`.
+A detailed English derivation is pending.
 -/
 theorem dw_contDiff_tsupport {d : ℕ} (w : List (Fin d)) {φ : E d → ℂ} (hφ : ContDiff ℝ ∞ φ) :
     ContDiff ℝ ∞ (dw w φ) ∧ tsupport (dw w φ) ⊆ tsupport φ := by
@@ -80,9 +78,9 @@ theorem dw_contDiff_tsupport {d : ℕ} (w : List (Fin d)) {φ : E d → ℂ} (h�
     intro h; apply hx; show fderiv ℝ (dw w φ) x (ev j) = 0; simp [h]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons j w ih => funext x`. Use `show fderiv ℝ (dw (w ++ v) f) x (ev j) = _`. Rewrite using `[ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem dw_append {d : ℕ} (w v : List (Fin d)) (f : E d → ℂ) : dw (w ++ v) f = dw w (dw v f) := by
   induction w with
@@ -90,11 +88,11 @@ theorem dw_append {d : ℕ} (w v : List (Fin d)) (f : E d → ℂ) : dw (w ++ v)
   | cons j w ih => funext x; show fderiv ℝ (dw (w ++ v) f) x (ev j) = _; rw [ih]; rfl
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx'` using `hU.mem_nhds hx`. Establish `hga : ContDiffAt ℝ ∞ g x` using `hg.contDiffAt hx'`. Establish `hsym` using `hga.isSymmSndFDerivAt (by simpa using (WithTop.coe_le_coe.2 le_top : (2 : WithTop ℕ∞) ≤ ∞))`. Establish `hd1 : ∀ᶠ y in nhds x, DifferentiableAt ℝ g y` using `by filter_upwards [hU.mem_nhds hx] with y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hg.contDiffAt (hU.mem_nhds hy)).differentiableAt (by simp)`. Establish `hdf : DifferentiableAt ℝ (fderiv ℝ g) x`. Use `(contDiffOn_infty_iff_fderiv_of_isOpen hU).1 hg` as an intermediate fact. Conclude with `(this.2.contDiffAt hx').differentiableAt (by simp)`. Use `show fderiv ℝ (fun y => fderiv ℝ g y (ev b)) x (ev a) = fderiv ℝ (fun y => fderiv ℝ g y (ev a)) x (ev b)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[fderiv_clm_apply hdf (differentiableAt_const _), fderiv_clm_apply hdf (differentiableAt_const _)]`. Establish `h0 : ∀ c : E d, fderiv ℝ (fun _ : E d => c) x = 0` using `fun c => fderiv_const_apply c`. Simplify using `only [h0, ContinuousLinearMap.comp_zero, zero_add, ContinuousLinearMap.flip_apply]`. Conclude with `hsym _ _`.
+A detailed English derivation is pending.
 -/
 theorem dw_swap {d : ℕ} {U : Set (E d)} (hU : IsOpen U) (a b : Fin d) {g : E d → ℂ}
     (hg : ContDiffOn ℝ ∞ g U) : Set.EqOn (dw [a, b] g) (dw [b, a] g) U := by
@@ -119,13 +117,11 @@ end GlobalTheory.HCA
 namespace GlobalTheory.HCA
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => intro u _`. Conclude with `fun _ _ => rfl`. Consider the case `cons j _ ih`. Introduce `u hu z hz`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show fderiv ℝ _ z (ev j) = fderiv ℝ _ z (ev j)`. Rewrite using `[((ih u hu).eventuallyEq_of_mem (hU.mem_nhds hz)).fderiv_eq]`. Consider the case `swap x y l`. Introduce `u hu`. Establish `e1` using `dw_append [y, x] l u`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `dw_append [x, y] l u`. Simplify using `only [List.cons_append, List.nil_append] at e1 e2`. Rewrite using `[e1, e2]`. Conclude with `dw_swap hU y x (contDiffOn_dw_of_isOpen hU l u hu)`. Consider the case `trans _ _ ih₁ ih₂ => intro u hu`.
-
-Conclude with `(ih₁ u hu).trans (ih₂ u hu)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dw_perm {d : ℕ} {U : Set (E d)} (hU : IsOpen U) {w₁ w₂ : List (Fin d)} (h : w₁.Perm w₂) :
     ∀ u : E d → ℂ, ContDiffOn ℝ ∞ u U → Set.EqOn (dw w₁ u) (dw w₂ u) U := by
@@ -145,13 +141,13 @@ theorem dw_perm {d : ℕ} {U : Set (E d)} (hU : IsOpen U) {w₁ w₂ : List (Fin
   | trans _ _ ih₁ ih₂ => intro u hu; exact (ih₁ u hu).trans (ih₂ u hu)
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => intro u φ _ _ _ _`. Simplify using `[dw]`. Consider the case `cons j w ih`. Introduce `u φ hu hφ hφc hφs`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hψ, hψs⟩` from `dw_contDiff_tsupport w hφ`. Establish `hψc : HasCompactSupport (dw w φ)` using `IsCompact.of_isClosed_subset hφc (isClosed_tsupport _) hψs`. Establish `step` using `integral_mul_partial_eq_neg hU j hu hψ hψc (hψs.trans hφs)`. Establish `hu1 : ContDiffOn ℝ ∞ (dw [j] u) U` using `contDiffOn_dw_of_isOpen hU [j] u hu`. Establish `ih'` using `ih (dw [j] u) φ hu1 hφ hφc hφs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : dw w.reverse (dw [j] u) = dw (j :: w).reverse u`. Rewrite using `[List.reverse_cons, dw_append]`. Use `show ∫ x, u x * fderiv ℝ (dw w φ) x (ev j) = _`. Rewrite using `[step]`. Express the relevant statement in the definitionally equal form `-∫ x, dw [j] u x * dw w φ x = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih', e, List.length_cons, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_mul_dw_eq_reverse {d : ℕ} {U : Set (E d)} (hU : IsOpen U) (w : List (Fin d)) :
     ∀ (u φ : E d → ℂ), ContDiffOn ℝ ∞ u U → ContDiff ℝ ∞ φ → HasCompactSupport φ →
@@ -175,9 +171,9 @@ theorem integral_mul_dw_eq_reverse {d : ℕ} {U : Set (E d)} (hU : IsOpen U) (w 
     ring
 
 /- English proof (translation)
-Introduce `d U hU w u φ hu hφ hφc hφs`. Rewrite using `[integral_mul_dw_eq_reverse hU w u φ hu hφ hφc hφs]`. Use `congr 2`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ U`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dw_perm hU (List.reverse_perm w) u hu hx]`. Establish `: φ x = 0` using `image_eq_zero_of_notMem_tsupport (fun h => hx (hφs h))`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem integral_mul_dw_eq_neg_pow : ∀ (d : ℕ) (U : Set (E d)), IsOpen U → ∀ (w : List (Fin d))
     (u φ : E d → ℂ), ContDiffOn ℝ ∞ u U → ContDiff ℝ ∞ φ → HasCompactSupport φ →

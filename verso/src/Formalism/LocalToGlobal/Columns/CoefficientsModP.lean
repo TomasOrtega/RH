@@ -14,83 +14,83 @@ import Formalism.LocalToGlobal.Columns.CoefficientsModP.NabDual
 namespace Formalism.L2.DIV
 
 /- English proof (translation)
-The claim follows from `fockSymTensor_holds`.
+A detailed English derivation is pending.
 -/
 theorem fockSTen : FockSTen := fockSymTensor_holds
 /- English proof (translation)
-The claim follows from `pairingRational_holds`.
+A detailed English derivation is pending.
 -/
 theorem pairRat : PairRat := pairingRational_holds
 /- English proof (translation)
-The claim follows from `actionRational_holds`.
+A detailed English derivation is pending.
 -/
 theorem actRat : ActRat := actionRational_holds
 /- English proof (translation)
-The claim follows from `pairingNondegenerate_holds`.
+A detailed English derivation is pending.
 -/
 theorem pairNondeg : PairNondeg := pairingNondegenerate_holds
 /- English proof (translation)
-The claim follows from `pairingPositive_holds`.
+A detailed English derivation is pending.
 -/
 theorem pairPos : PairPos := pairingPositive_holds
 /- English proof (translation)
-The claim follows from `latticeBasisExists_holds`.
+A detailed English derivation is pending.
 -/
 theorem basisAtEx : BasisAtEx := latticeBasisExists_holds
 /- English proof (translation)
-The claim follows from `deltaIndependence_holds`.
+A detailed English derivation is pending.
 -/
 theorem delIndep : DelIndep := deltaIndependence_holds
 /- English proof (translation)
-The claim follows from `nablaDeltaFree_holds`.
+A detailed English derivation is pending.
 -/
 theorem nabDelFree : NabDelFree := nablaDeltaFree_holds
 /- English proof (translation)
-The claim follows from `nablaDeltaLocal_holds`.
+A detailed English derivation is pending.
 -/
 theorem nabDelLoc : NabDelLoc := nablaDeltaLocal_holds
 /- English proof (translation)
-The claim follows from `nablaDeltaLattice_holds`.
+A detailed English derivation is pending.
 -/
 theorem nabDelLattice : NabDelLattice := nablaDeltaLattice_holds
 /- English proof (translation)
-The claim follows from `tauLatticeLattice_holds`.
+A detailed English derivation is pending.
 -/
 theorem tauLatLattice : TauLatLattice := tauLatticeLattice_holds
 /- English proof (translation)
-The claim follows from `dualFrameLattice_holds`.
+A detailed English derivation is pending.
 -/
 theorem dualFrLattice : DualFrLattice := dualFrameLattice_holds
 /- English proof (translation)
-The claim follows from `dualFrameHdual_holds`.
+A detailed English derivation is pending.
 -/
 theorem dualFrHdual : DualFrHdual := dualFrameHdual_holds
 /- English proof (translation)
-The claim follows from `tauLatticeDual_holds`.
+A detailed English derivation is pending.
 -/
 theorem tauLatDual : TauLatDual := tauLatticeDual_holds
 /- English proof (translation)
-The claim follows from `roundLattice_holds`.
+A detailed English derivation is pending.
 -/
 theorem roundLat : RoundLat := roundLattice_holds
 /- English proof (translation)
-The claim follows from `weyl_eq_dual_nabla_holds`.
+A detailed English derivation is pending.
 -/
 theorem weylEqDualNabla : Formalism.GradedWeylDivisibility.WeylEqDualNabla := weyl_eq_dual_nabla_holds
 /- English proof (translation)
-The claim follows from `pairBDualStd_of weyl_eq_dual_nabla_holds`.
+A detailed English derivation is pending.
 -/
 theorem pairBDualStd : PairBDualStd := pairBDualStd_of weyl_eq_dual_nabla_holds
 /- English proof (translation)
-The claim follows from `pairBDualK_of pairBDualStd`.
+A detailed English derivation is pending.
 -/
 theorem pairBDualK : PairBDualK := pairBDualK_of pairBDualStd
 /- English proof (translation)
-The claim follows from `pairBDual_of pairBDualStd`.
+A detailed English derivation is pending.
 -/
 theorem pairBDual : PairBDual := pairBDual_of pairBDualStd
 /- English proof (translation)
-The claim follows from `nabDelDual_of nablaDeltaDescent_holds pairBDualK`.
+A detailed English derivation is pending.
 -/
 theorem nabDelDual : NabDelDual := nabDelDual_of nablaDeltaDescent_holds pairBDualK
 

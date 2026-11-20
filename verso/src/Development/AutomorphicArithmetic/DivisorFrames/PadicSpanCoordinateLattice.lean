@@ -4,13 +4,13 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingKr
 open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam.Pad
 
 /- English proof (translation)
-Introduce `I f`. Distinguish the cases in `hI : I = ⊥`. Use `⟨0, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx0 : x = 0` using `by simpa [hI] using hx`. Substitute `hx0` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `: (⟨0, hx⟩ : I) = 0` using `rfl`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Establish `hy1 : (y : K) ≠ 0` using `by exact_mod_cast hy0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨LinearMap.toSpanSingleton (𝓞 K) _ ((y : K)⁻¹ • f ⟨y, hy⟩), fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : x • f ⟨y, hy⟩ = y • f ⟨x, hx⟩`. Rewrite using `[← map_smul, ← map_smul]`. Use `congr 1`. Use `ext1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_comm]`. Rewrite using `[LinearMap.toSpanSingleton_apply, smul_comm, h1]`. Establish `: y • f ⟨x, hx⟩ = (y : K) • f ⟨x, hx⟩` using `rfl`. Rewrite using `[this, smul_smul, inv_mul_cancel₀ hy1, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ringOfIntegers_baer_vectors (K : Type) [Field K] [NumberField K] (g : ℕ) :
     Module.Baer (𝓞 K) (Fin g → K) := by
@@ -34,11 +34,9 @@ private theorem ringOfIntegers_baer_vectors (K : Type) [Field K] [NumberField K]
     rw [this, smul_smul, inv_mul_cancel₀ hy1, one_smul]
 
 /- English proof (translation)
-Establish `hP : (L.map π).FG` using `hL.map π`. Use `haveI : Module.Finite (𝓞 K) (L.map π) := Module.Finite.iff_fg.mpr hP`. Use `haveI : Module.Flat (𝓞 K) (L.map π) := inferInstance`. Use `haveI : Module.FinitePresentation (𝓞 K) (L.map π) := Module.finitePresentation_of_finite _ _`. Use `haveI : Module.Projective (𝓞 K) (L.map π) := Module.Flat.projective_of_finitePresentation`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `Module.projective_lifting_property (π.submoduleMap L) LinearMap.id (π.submoduleMap_surjective L)`. Take `⟨T, hT⟩` from `(ringOfIntegers_baer_vectors K g).extension_property (L.map π).subtype (L.map π).injective_subtype (L.subtype ∘ₗ s)`. Use `⟨T.extendScalarsOfIsLocalization (nonZeroDivisors (𝓞 K)) K, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1 : T (π v) = (s ⟨π v, Submodule.mem_map_of_mem hv⟩ : Fin g → K)` using `LinearMap.congr_fun hT ⟨π v, Submodule.mem_map_of_mem hv⟩`. Establish `h2` using `congrArg Subtype.val (LinearMap.congr_fun hs ⟨π v, Submodule.mem_map_of_mem hv⟩)`.
-
-Express the relevant statement in the definitionally equal form `T (π v) ∈ L ∧ π (T (π v)) = π v`. Rewrite using `[h1]`. Conclude with `⟨(s _).2, h2⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_section (K : Type) [Field K] [NumberField K] (g : ℕ)
     (L : Submodule (𝓞 K) (Fin g → K)) (hL : L.FG) (π : (Fin g → K) →ₗ[𝓞 K] (Fin g → K)) :
@@ -61,21 +59,21 @@ private theorem exists_section (K : Type) [Field K] [NumberField K] (g : ℕ)
   exact ⟨(s _).2, h2⟩
 
 /- English proof (translation)
-Introduce `p _ K _ _ g j L S c hL hc h`. Take `⟨n, a, v, ha, hv, hcv⟩` from `h`. Set `π : (Fin g → K) →ₗ[𝓞 K] (Fin g → K)` to `LinearMap.pi fun k => if k ∈ S then 0 else LinearMap.proj k`. Establish `hπ : ∀ w k, π w k = if k ∈ S then 0 else w k`. Introduce `w k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `by_cases hk : k ∈ S <;> simp [π, hk]`. Take `⟨T, hT⟩` from `exists_section K g L hL π`. Use `⟨n, a, fun m => v m - T (π (v m)), ha, fun m => ⟨L.sub_mem (hv m) (hT _ (hv m)).1, fun k hk => ?_⟩, ?_⟩` and prove the remaining obligations. Use `congrFun (hT _ (hv m)).2 k` as an intermediate fact. Rewrite `this` using `[hπ, hπ (v m), if_neg hk, if_neg hk]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[this]`. Establish `h0 : ∀ k, ∑ m, a m * j (π (v m) k) = 0`. Introduce `k`. Distinguish the cases in `hk : k ∈ S`. Simplify using `[hπ, hk]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `congrFun hcv k` as an intermediate fact. Rewrite `this` using `[hc k hk]`. Simplify `this.symm` using `[hπ, hk, Finset.sum_apply]`. Establish `hTw : ∀ w i, T w i = ∑ k, w k * T (Pi.single k 1) i`. Introduce `w i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `LinearMap.pi_apply_eq_sum_univ T w` as an intermediate fact. Rewrite using `[this, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e : (fun j => if k = j then (1 : K) else 0) = Pi.single k 1`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Pi.single_apply, eq_comm]`. Rewrite using `[e]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Establish `h1 : ∑ m, a m * j (T (π (v m)) i) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [hTw (π _), map_sum, map_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Simplify using `only [← mul_assoc]`. Rewrite using `[← Finset.sum_mul, h0, zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcv]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Pi.sub_apply, map_sub, smul_eq_mul, mul_sub, Finset.sum_sub_distrib, h1, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.padic_span_coordinate_lattice :
     ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K] [NumberField K] (g : ℕ) (j : K →+* ℂ_[p]) (L : Submodule (𝓞 K) (Fin g → K)) (S : Set (Fin g)) (c : Fin g → ℂ_[p]), L.FG → (∀ k, k ∉ S → c k = 0) → (∃ (n : ℕ) (a : Fin n → ℂ_[p]) (v : Fin n → Fin g → K), (∀ m, ‖a m‖ ≤ 1) ∧ (∀ m, v m ∈ L) ∧ c = ∑ m, a m • fun i => j (v m i)) → (∃ (n : ℕ) (a : Fin n → ℂ_[p]) (v : Fin n → Fin g → K), (∀ m, ‖a m‖ ≤ 1) ∧ (∀ m, v m ∈ L ∧ ∀ k, k ∉ S → v m k = 0) ∧ c = ∑ m, a m • fun i => j (v m i)) := by

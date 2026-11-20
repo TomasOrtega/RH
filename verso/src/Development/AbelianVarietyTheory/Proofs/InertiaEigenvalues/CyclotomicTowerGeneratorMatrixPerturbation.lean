@@ -15,7 +15,7 @@ section Abstract
 variable {C : Type} [NormedField C] [IsUltrametricDist C]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun b _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hB a b) (norm_le_pi_norm v b) (norm_nonneg _) hc`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mulVec_le {r : ℕ} (B : Matrix (Fin r) (Fin r) C) {c : ℝ} (hc : 0 ≤ c)
     (hB : ∀ a b, ‖B a b‖ ≤ c) (v : Fin r → C) (a : Fin r) : ‖B.mulVec v a‖ ≤ c * ‖v‖ := by
@@ -26,7 +26,7 @@ theorem norm_mulVec_le {r : ℕ} (B : Matrix (Fin r) (Fin r) C) {c : ℝ} (hc : 
 
 omit [IsUltrametricDist C] in
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `X.sum_mem fun b _ => hB a b _ (hv b)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_mem {r : ℕ} (X : AddSubgroup C) (B : Matrix (Fin r) (Fin r) C)
     (hB : ∀ a b, ∀ x ∈ X, B a b * x ∈ X) (v : Fin r → C) (hv : ∀ a, v a ∈ X) (a : Fin r) :
@@ -35,15 +35,13 @@ theorem mulVec_mem {r : ℕ} (X : AddSubgroup C) (B : Matrix (Fin r) (Fin r) C)
   exact X.sum_mem fun b _ => hB a b _ (hv b)
 
 /- English proof (translation)
-Establish `key : ∀ k : ℕ, ∃ z : Fin r → C, (∀ a, z a ∈ X) ∧ ∀ a, y a = (-π) ^ k * z a`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨y, hy, fun a => by simp⟩`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨z, hz, hyz⟩` from `ih`. Establish `hm : ∀ a, B.mulVec (fun b => g (z b)) a ∈ X` using `mulVec_mem X B hBX _ (fun b => hgX _ (hz b))`. Use `⟨fun a => S (B.mulVec (fun b => g (z b)) a), fun a => (hS _ (hm a)).1, fun a => ?_⟩` and prove the remaining obligations. Establish `e : g (y a) - y a = p * (-π) ^ (k + 1) * B.mulVec (fun b => g (z b)) a`. Rewrite using `[eq_neg_of_add_eq_zero_left (h a)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, hyz, map_mul, map_pow, map_neg, hgπ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`. Establish `h1` using `(hS _ (hy a)).2`. Rewrite `h1` using `[e, hlin _ _ (hm a), mul_assoc]`. Conclude with `(mul_left_cancel₀ hp h1).symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Establish `hle : ∀ k : ℕ, ‖y a‖ ≤ ‖π‖ ^ k`. Introduce `k`. Take `⟨z, hz, hyz⟩` from `key k`. Rewrite using `[hyz, norm_mul, norm_pow, norm_neg]`.
-
-Conclude with `mul_le_of_le_one_right (by positivity) (hX1 _ (hz a))`. Use `ge_of_tendsto' (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg π) hπ) hle` as an intermediate fact. Conclude with `norm_le_zero_iff.1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inj_of_lattice {r : ℕ} (X : AddSubgroup C) (hX1 : ∀ x ∈ X, ‖x‖ ≤ 1) (g : C ≃+* C)
     (hgX : ∀ x ∈ X, g x ∈ X) (p : C) (hp : p ≠ 0) (π : C) (hπ : ‖π‖ < 1) (hgπ : g π = π)
@@ -79,27 +77,27 @@ theorem inj_of_lattice {r : ℕ} (X : AddSubgroup C) (hX1 : ∀ x ∈ X, ‖x‖
   exact norm_le_zero_iff.1 this
 
 /- English proof (translation)
-Set `T : (Fin r → C) → (Fin r → C)` to `fun v => B.mulVec (fun b => g (S (v b)))`. Set `u : ℕ → Fin r → C` to `fun k => T^[k] w`. Establish `hu0 : u 0 = w` using `rfl`. Establish `hus : ∀ k, u (k + 1) = B.mulVec (fun b => g (S (u k b)))` using `fun k => Function.iterate_succ_apply' T k w`. Establish `huX : ∀ k a, u k a ∈ X`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact hw`. Consider the case `succ k ih => rw [hus]`. Conclude with `mulVec_mem X B hBX _ (fun b => hgX _ (hS _ (ih b)).1)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hpow : ∀ (k : ℕ), ∀ x ∈ X, (-π) ^ k * x ∈ X`. Introduce `k x hx`. Proceed by induction on `k with`. Consider the case `zero => simpa using hx`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `: (-π) ^ (k + 1) * x = -(π * ((-π) ^ k * x))` using `by ring`. Rewrite using `[this]`. Conclude with `X.neg_mem (hπX _ ih)`. Establish `hbd : ∀ (k : ℕ), ∀ x ∈ X, ‖(-π) ^ k * x‖ ≤ ‖π‖ ^ k`. Introduce `k x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_pow, norm_neg]`. Conclude with `mul_le_of_le_one_right (by positivity) (hX1 _ hx)`. Establish `hsum : ∀ a, Summable fun k : ℕ => (-π) ^ k * S (u k a)` using `fun a => Summable.of_norm_bounded (summable_geometric_of_lt_one (norm_nonneg π) hπ) fun k => hbd k _ (hS _ (huX k a)).1`. Set `P : ℕ → Fin r → C` to `fun n a => ∑ k ∈ Finset.range n, (-π) ^ k * S (u k a)`. Set `y : Fin r → C` to `fun a => ∑' k : ℕ, (-π) ^ k * S (u k a)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : ∀ a, Filter.Tendsto (fun n => P n a) Filter.atTop (nhds (y a))` using `fun a => (hsum a).hasSum.tendsto_sum_nat`. Establish `hgc : Continuous g` using `(AddMonoidHomClass.isometry_of_norm g hg).continuous`. Establish `hL : ∀ n a, g (P n a) - P n a + p * ∑ b, π * B a b * g (P n b) = p * w a - p * ((-π) ^ n * u n a)`. Introduce `n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `zero => intro a`. Simplify using `[P, hu0]`. Consider the case `succ n ih`. Introduce `a`. Establish `e : ∀ b, P (n + 1) b = P n b + (-π) ^ n * S (u n b)` using `fun b => Finset.sum_range_succ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hS _ (huX n a)).2`. Establish `h2 : u (n + 1) a = ∑ b, B a b * g (S (u n b))` using `by rw [hus]; rfl`. Establish `h3 : ∑ b, π * B a b * g (P (n + 1) b) = ∑ b, π * B a b * g (P n b) + π * (-π) ^ n * u (n + 1) a`. Rewrite using `[h2, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_add, map_mul, map_pow, map_neg, hgπ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, e, map_add, map_mul, map_pow, map_neg, hgπ]`. Take the linear combination `ih a + (-π) ^ n * h1`. Use `⟨y, fun a => hX.mem_of_tendsto (hP a) (Filter.Eventually.of_forall fun n => X.sum_mem fun k _ => hpow k _ (hS _ (huX k a)).1), fun a => ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1 : Filter.Tendsto (fun n => g (P n a) - P n a + p * ∑ b, π * B a b * g (P n b)) Filter.atTop (nhds (g (y a) - y a + p * ∑ b, π * B a b * g (y b)))` using `(((hgc.tendsto _).comp (hP a)).sub (hP a)).add ((tendsto_finset_sum _ fun b _ => ((hgc.tendsto _).comp (hP b)).const_mul _).const_mul p)`. Establish `t0 : Filter.Tendsto (fun n : ℕ => (-π) ^ n * u n a) Filter.atTop (nhds 0)` using `squeeze_zero_norm (fun n => hbd n _ (huX n a)) (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg π) hπ)`. Establish `t2 : Filter.Tendsto (fun n : ℕ => p * w a - p * ((-π) ^ n * u n a)) Filter.atTop (nhds (p * w a - p * 0))` using `(t0.const_mul p).const_sub _`. Simplify using `only [hL] at t1`. Use `tendsto_nhds_unique t1 t2` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `this` using `[mul_zero, sub_zero]`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem surj_of_lattice [CompleteSpace C] {r : ℕ} (X : AddSubgroup C) (hX : IsClosed (X : Set C))
     (hX1 : ∀ x ∈ X, ‖x‖ ≤ 1) (g : C ≃+* C) (hg : ∀ x, ‖g x‖ = ‖x‖) (hgX : ∀ x ∈ X, g x ∈ X)
@@ -173,9 +171,9 @@ theorem surj_of_lattice [CompleteSpace C] {r : ℕ} (X : AddSubgroup C) (hX : Is
   rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.CloseToUnitNorm.norm_zpow_sub_one_le`. Consider the case `exact _root_.GlobalTheory.CloseToUnitNorm.norm_zpow_sub_one_le`. Consider the case `(apply _root_.GlobalTheory.CloseToUnitNorm.norm_zpow_sub_one_le <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CloseToUnitNorm.norm_zpow_sub_one_le <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.CloseToUnitNorm.norm_zpow_sub_one_le <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CloseToUnitNorm.norm_zpow_sub_one_le ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_zpow_sub_one_le (u : C) (hu : ‖u - 1‖ < 1) (i : ℤ) : ‖u ^ i - 1‖ ≤ ‖u - 1‖ := by
   first
@@ -191,11 +189,11 @@ end Abstract
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Establish `h2 : 2 ≤ l` using `hl.1.two_le`. Establish `h1 : (1 : ℝ) < l` using `by exact_mod_cast hl.1.one_lt`. Rewrite using `[rho1, ← Real.rpow_intCast]`. Apply `Real.rpow_lt_rpow_of_exponent_lt h1` to reduce the goal to its premises. Rewrite using `[lt_div_iff₀ (by linarith)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Establish `hj1 : (1 : ℝ) ≤ j` using `by exact_mod_cast hj.1`. Break down `h2.eq_or_lt with h | h` into its components or cases. Establish `hj2 : (2 : ℝ) ≤ j` using `by exact_mod_cast hj.2 h.symm`. Establish `: (l : ℝ) = 2` using `by exact_mod_cast h.symm`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (3 : ℝ) ≤ l` using `by exact_mod_cast h`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem pow_lt_rho {j : ℕ} (hj : Lev l j) : (l : ℝ) ^ (-(j : ℤ)) < rho1 l := by
   have h2 : 2 ≤ l := hl.1.two_le
@@ -213,7 +211,7 @@ theorem pow_lt_rho {j : ℕ} (hj : Lev l j) : (l : ℝ) ^ (-(j : ℤ)) < rho1 l 
     nlinarith
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) < l` using `by exact_mod_cast hl.1.one_lt`. Rewrite using `[rho1]`. Apply `Real.rpow_lt_one_of_one_lt_of_neg h1` to reduce the goal to its premises. Conclude with `div_neg_of_neg_of_pos (by norm_num) (by linarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem rho_lt_one : rho1 l < 1 := by
   have h1 : (1 : ℝ) < l := by exact_mod_cast hl.1.one_lt
@@ -222,23 +220,23 @@ theorem rho_lt_one : rho1 l < 1 := by
   exact div_neg_of_neg_of_pos (by norm_num) (by linarith)
 
 /- English proof (translation)
-Use `GlobalTheory.Cyc.norm_primitiveRoot_sub_one l 1 le_rfl ζ (by rwa [pow_one])` as an intermediate fact. Simplify `this` using `[rho1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_root_sub_one {ζ : PadicComplex l} (h : IsPrimitiveRoot ζ l) : ‖ζ - 1‖ = rho1 l := by
   have := GlobalTheory.Cyc.norm_primitiveRoot_sub_one l 1 le_rfl ζ (by rwa [pow_one])
   simpa [rho1] using this
 
 /- English proof (translation)
-Simplify using `[inC, PadicComplex.coe_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_inC_iff (F : IntermediateField ℚ_[l] (Om l)) (y : PadicComplex l) :
     y ∈ inC F ↔ y ∈ F.toSubfield.map (algebraMap (Om l) (PadicComplex l)) := by
   simp [inC, PadicComplex.coe_eq]
 
 /- English proof (translation)
-Use `haveI : NeZero l := ⟨hl.1.ne_zero⟩`. Take `⟨η, hη⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (Om l) l`. Establish `hη'` using `hη.map_of_injective (algebraMap (Om l) (PadicComplex l)).injective`. Take `⟨k, -, hk⟩` from `hη'.eq_pow_of_pow_eq_one h.pow_eq_one`. Use `⟨η ^ k, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `pow_mem (?_ : η ∈ Ks K j) k` and prove the remaining obligations. Use `(le_sup_right : _ ≤ Ks K j) (IntermediateField.subset_adjoin _ _ ?_)` and prove the remaining obligations. Conclude with `(hη.pow_eq_one_iff_dvd _).2 (dvd_pow_self l (by omega))`. Simplify using `only [PadicComplex.coe_eq, map_pow]`. Conclude with `hk`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem root_mem_inC (K : FinExt l) {j : ℕ} (hj : 1 ≤ j) {ζ : PadicComplex l}
     (h : IsPrimitiveRoot ζ l) : ζ ∈ inC (Ks K j) := by
@@ -254,16 +252,16 @@ theorem root_mem_inC (K : FinExt l) {j : ℕ} (hj : 1 ≤ j) {ζ : PadicComplex 
     exact hk
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨algebraMap ℚ_[l] (Om l) _, F.algebraMap_mem _, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem chiC_mem_inC (χ : GQ l →* ℚ_[l]ˣ) (i : ℤ) (g : GQ l)
     (F : IntermediateField ℚ_[l] (Om l)) : chiC χ i g ∈ inC F :=
   ⟨algebraMap ℚ_[l] (Om l) _, F.algebraMap_mem _, rfl⟩
 
 /- English proof (translation)
-Establish `h1 : ‖(χ g : ℚ_[l]) - 1‖ < rho1 l` using `hg.2 ▸ pow_lt_rho hj`. Establish `h2` using `norm_zpow_sub_one_le _ (h1.trans rho_lt_one) i`. Establish `e : chiC χ i g - 1 = algebraMap ℚ_[l] (PadicComplex l) ((χ g : ℚ_[l]) ^ i - 1)`. Simplify using `[chiC]`. Rewrite using `[e, norm_algebraMap']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.trans_lt h1`.
+A detailed English derivation is pending.
 -/
 theorem norm_chiC_sub_one {χ : GQ l →* ℚ_[l]ˣ} {K : FinExt l} {j : ℕ} (hj : Lev l j) {g : GQ l}
     (hg : IsGen χ K j g) (i : ℤ) : ‖chiC χ i g - 1‖ < rho1 l := by
@@ -275,19 +273,17 @@ theorem norm_chiC_sub_one {χ : GQ l →* ℚ_[l]ˣ} {K : FinExt l} {j : ℕ} (h
   exact h2.trans_lt h1
 
 /- English proof (translation)
-Establish `hz` using `norm_root_sub_one h`. Establish `hz0 : ζ - 1 ≠ 0` using `sub_ne_zero.2 (h.ne_one hl.1.one_lt)`. Establish `hzp : 0 < ‖ζ - 1‖` using `norm_pos_iff.2 hz0`. Establish `hc` using `norm_chiC_sub_one hj hg i`. Establish `hc1 : ‖chiC χ i g‖ ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsUltrametricDist.norm_add_le_max (chiC χ i g - 1) 1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, norm_one]`. Conclude with `this.trans (max_le (hc.trans rho_lt_one).le le_rfl)`. Set `B : Matrix (Fin r) (Fin r) (PadicComplex l)` to `(ζ - 1)⁻¹ • (chiC χ i g • U - 1)`. Establish `hB : ∀ a b, ‖B a b‖ < 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Establish `e : B a b = (ζ - 1)⁻¹ * (chiC χ i g * (U - 1) a b + (chiC χ i g - 1) * (1 : Matrix (Fin r) (Fin r) (PadicComplex l)) a b)`. Simplify using `only [B, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, norm_inv, inv_mul_lt_iff₀ hzp, mul_one, hz]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hc1).trans_lt (hU1 a b)`. Rewrite using `[norm_mul]`. Use `(mul_le_of_le_one_right (norm_nonneg _) ?_).trans_lt hc` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`. Use `⟨B, ‖fun p : Fin r × Fin r => B p.1 p.2‖, norm_nonneg _, (pi_norm_lt_iff one_pos).2 fun p => hB _ _, fun a b => norm_le_pi_norm (fun p : Fin r × Fin r => B p.1 p.2) (a, b), fun a b => ⟨?_, (hB a b).le⟩, ?_⟩` and prove the remaining obligations. Establish `m1` using `(mem_inC_iff _ _).1 (root_mem_inC K hj.1 h)`. Establish `m2` using `(mem_inC_iff _ _).1 (chiC_mem_inC χ i g (Ks K j))`. Establish `m3` using `(mem_inC_iff _ _).1 (hU a b).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mem_inC_iff]`. Simplify using `only [B, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Use `mul_mem (inv_mem (sub_mem m1 (one_mem _))) (sub_mem (mul_mem m2 m3) ?_)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
-
-Conclude with `one_mem _`. Conclude with `zero_mem _`. Simplify using `only [B, smul_smul, mul_inv_cancel₀ hz0, one_smul]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_quot {χ : GQ l →* ℚ_[l]ˣ} {K : FinExt l} {j : ℕ} (hj : Lev l j) {g : GQ l}
     (hg : IsGen χ K j g) {r : ℕ} (U : Matrix (Fin r) (Fin r) (PadicComplex l))
@@ -333,7 +329,7 @@ theorem exists_quot {χ : GQ l →* ℚ_[l]ˣ} {K : FinExt l} {j : ℕ} (hj : Le
   · simp only [B, smul_smul, mul_inv_cancel₀ hz0, one_smul]; abel
 
 /- English proof (translation)
-Rewrite using `[twAct, ← Matrix.smul_mulVec, h, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec]`. Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem twAct_sub {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} {χ : GQ l →* ℚ_[l]ˣ} {i : ℤ}
     {r : ℕ} {U : GQ l → Matrix (Fin r) (Fin r) (PadicComplex l)} {g : GQ l} {p : PadicComplex l}
@@ -346,7 +342,7 @@ theorem twAct_sub {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} {χ : 
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(mem_inC_iff _ _).2 (mul_mem ((mem_inC_iff _ _).1 hx.1) ((mem_inC_iff _ _).1 hy.1)), by rw [norm_mul]; exact mul_le_one₀ hx.2 (norm_nonneg _) hy.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mul_mem_intC {F : IntermediateField ℚ_[l] (Om l)} {x y : PadicComplex l}
     (hx : x ∈ intC F) (hy : y ∈ intC F) : x * y ∈ intC F :=
@@ -354,7 +350,7 @@ theorem mul_mem_intC {F : IntermediateField ℚ_[l] (Om l)} {x y : PadicComplex 
     rw [norm_mul]; exact mul_le_one₀ hx.2 (norm_nonneg _) hy.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(mem_inC_iff _ _).2 (pow_mem (neg_mem ((mem_inC_iff _ _).1 hx.1)) k), by rw [norm_pow, norm_neg]; exact pow_le_one₀ (norm_nonneg _) hx.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem neg_pow_mem_intC {F : IntermediateField ℚ_[l] (Om l)} {x : PadicComplex l}
     (hx : x ∈ intC F) (k : ℕ) : (-x) ^ k ∈ intC F :=
@@ -362,13 +358,11 @@ theorem neg_pow_mem_intC {F : IntermediateField ℚ_[l] (Om l)} {x : PadicComple
     rw [norm_pow, norm_neg]; exact pow_le_one₀ (norm_nonneg _) hx.2⟩
 
 /- English proof (translation)
-Establish `h0 : (0 : PadicComplex l) ∈ intC F` using `⟨(mem_inC_iff _ _).2 (zero_mem _), by simp⟩`. Distinguish the cases in `hz : B = 0`. Conclude with `⟨0, 0, h0, by simp, fun a b => h0, by simp [hz]⟩`. Choose the witnesses or unpack the hypotheses as in `⟨a₀, b₀, hne⟩ : ∃ a b, B a b ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hcon`. Conclude with `hz (Matrix.ext hcon)`. Use `haveI : Nonempty (Fin r × Fin r) := ⟨(a₀, b₀)⟩`. Take `⟨q, hq⟩` from `Finite.exists_max fun q : Fin r × Fin r => ‖B q.1 q.2‖`. Establish `hpos : 0 < ‖B q.1 q.2‖` using `(norm_pos_iff.2 hne).trans_le (hq (a₀, b₀))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hq0 : B q.1 q.2 ≠ 0` using `norm_pos_iff.1 hpos`. Use `⟨B q.1 q.2, (B q.1 q.2)⁻¹ • B, hBO _ _, hB _ _, fun a b => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, mem_inC_iff]`. Conclude with `mul_mem (inv_mem ((mem_inC_iff _ _).1 (hBO _ _).1)) ((mem_inC_iff _ _).1 (hBO _ _).1)`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, norm_mul, norm_inv, inv_mul_le_iff₀ hpos, mul_one]`.
-
-Conclude with `hq (a, b)`. Rewrite using `[smul_smul, mul_inv_cancel₀ hq0, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor {F : IntermediateField ℚ_[l] (Om l)} {r : ℕ}
     (B : Matrix (Fin r) (Fin r) (PadicComplex l)) (hB : ∀ a b, ‖B a b‖ < 1)
@@ -394,7 +388,7 @@ theorem exists_factor {F : IntermediateField ℚ_[l] (Om l)} {r : ℕ}
   · rw [smul_smul, mul_inv_cancel₀ hq0, one_smul]
 
 /- English proof (translation)
-Take `⟨x, hx, rfl⟩` from `hy`. Use `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hg x hx` as an intermediate fact. Express the relevant statement in the definitionally equal form `act g (x : PadicComplex l) = (x : PadicComplex l)`. Rewrite using `[hact.1, this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_fix {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} (hact : IsActC act)
     {K : FinExt l} {j : ℕ} {g : GQ l} (hg : g ∈ Gj K j) {y : PadicComplex l}
@@ -405,7 +399,7 @@ theorem act_fix {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} (hact : 
   rw [hact.1, this]
 
 /- English proof (translation)
-The claim follows from `closure_minimal (t := {y : PadicComplex l | ‖y‖ ≤ 1}) (fun _ h => h.2) (isClosed_le continuous_norm continuous_const) hx`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_mem_Ohat {K : FinExt l} {x : PadicComplex l} (hx : x ∈ Ohat K) :
     ‖x‖ ≤ 1 :=
@@ -413,15 +407,15 @@ theorem norm_le_one_of_mem_Ohat {K : FinExt l} {x : PadicComplex l} (hx : x ∈ 
     (isClosed_le continuous_norm continuous_const) hx
 
 /- English proof (translation)
-Introduce `l hl act χ hact hχ K j hj g hg r U hU hU1 i`. Take `⟨-, -, hO, hmul, hstab, -⟩` from `GlobalTheory.TateDecomp.tate_decomposition l act χ hact hχ K j hj.1`. Establish `hg0 : g ∈ (K0 K).fixingSubgroup` using `IntermediateField.fixingSubgroup_antitone (le_sup_left : K0 K ≤ Ks K j) hg.1`. Establish `hgX` using `hstab g hg0`. Establish `hX1 : ∀ x ∈ Xj K j, ‖x‖ ≤ 1` using `fun x hx => norm_le_one_of_mem_Ohat (hO x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `y hy hfix haveI : NeZero l := ⟨hl.1.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (PadicComplex l) l`. Take `⟨S, hS, -, hlin⟩` from `GlobalTheory.Cyc.exists_tate_operator l act χ hact hχ K j hj g hg ζ hζ`. Take `⟨B, c, -, hc1, hB, hBO, hBe⟩` from `exists_quot hj hg (U g) hU hU1 i hζ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨π, B', hπO, hπ, hB'O, rfl⟩` from `exists_factor B (fun a b => (hB a b).trans_lt hc1) hBO`. Establish `hp : ζ - 1 ∈ intC (Ks K j)` using `⟨(mem_inC_iff _ _).2 (sub_mem ((mem_inC_iff _ _).1 (root_mem_inC K hj.1 hζ)) (one_mem _)), ((norm_root_sub_one hζ).trans_lt rho_lt_one).le⟩`. Use `inj_of_lattice (Xj K j) hX1 (act g) hgX (ζ - 1) (sub_ne_zero.2 (hζ.ne_one hl.1.one_lt)) π hπ (act_fix hact hg.1 hπO.1) S (fun x hx => ⟨(hS x hx).1, (hS x hx).2.2⟩) (fun k x hx => hlin _ (mul_mem_intC hp (neg_pow_mem_intC hπO k)) x hx) B' (fun a b => hmul _ (hB'O a b)) y hy fun a …` and prove the remaining obligations. Rewrite using `[← twAct_sub hBe, hfix, sub_self, Pi.zero_apply]`. Introduce `ζ hζ w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨S, hS, -, -⟩` from `GlobalTheory.Cyc.exists_tate_operator l act χ hact hχ K j hj g hg ζ hζ`. Take `⟨B, c, -, hc1, hB, hBO, hBe⟩` from `exists_quot hj hg (U g) hU hU1 i hζ`. Take `⟨π, B', hπO, hπ, hB'O, rfl⟩` from `exists_factor B (fun a b => (hB a b).trans_lt hc1) hBO`. Take `⟨y, hy, he⟩` from `surj_of_lattice (Xj K j) (AddSubgroup.isClosed_topologicalClosure _) hX1 (act g) (hact.2 g) hgX (ζ - 1) π hπ (act_fix hact hg.1 hπO.1) (hmul _ hπO) S (fun x hx => ⟨(hS x hx).1, (hS x hx).2.1⟩) B' (fun a b => hmul _ (hB'O a b)) w hw`. Use `⟨y, hy, funext fun a => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[twAct_sub hBe, he, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem perturbation : ∀ (l : ℕ) [Fact l.Prime] (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)) (χ : GQ l →* ℚ_[l]ˣ), IsActC act → IsCyc χ → ∀ (K : FinExt l), ∀ j : ℕ, Lev l j → ∀ g, IsGen χ K j g → ∀ (r : ℕ) (U : GQ l → Matrix (Fin r) (Fin r) (PadicComplex l)), (∀ a b, U g a b ∈ intC (Ks K j)) → (∀ a b, ‖(U g - 1) a b‖ < rho1 l) → ∀ i : ℤ, (∀ y : Fin r → PadicComplex l, (∀ a, y a ∈ Xj K j) → twAct act χ i U g y = y → y = 0) ∧ ∀ ζ : PadicComplex l, IsPrimitiveRoot ζ l → ∀ w : Fin r → PadicComplex l, (∀ a, w a ∈ Xj K j) → ∃ y : Fin r → PadicComplex l, (∀ a, y a ∈ Xj K j) ∧ twAct act χ i U g y - y = (ζ - 1) • w := by
   intro l hl act χ hact hχ K j hj g hg r U hU hU1 i

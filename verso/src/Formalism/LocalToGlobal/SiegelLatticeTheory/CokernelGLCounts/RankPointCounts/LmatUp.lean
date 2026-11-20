@@ -18,7 +18,7 @@ section ModeG3
 variable {D : D7} (Z : LocDat D) (p : PlF D) (g : Formalism.MainNotions.S.Loc.SplitG (Z.M p).L)
 
 /- English proof (translation)
-Use `⟨fun a b h => ?_, fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [lmat, Matrix.of_apply, hρ0 a b h, hl0 b a h, map_zero, Prod.fst_zero, Prod.snd_zero]`. Rewrite using `[show ((0 : (D.s.atP p).Fp), (0 : (D.s.atP p).Fp)) = 0 from rfl, map_zero]`. Simplify using `only [lmat, Matrix.of_apply, hl1 a, hρ1 a, map_one, Prod.fst_one, Prod.snd_one]`. Rewrite using `[show ((1 : (D.s.atP p).Fp), (1 : (D.s.atP p).Fp)) = 1 from rfl, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lmat_up {l ρ : Formalism.L2.SG.LsDatumB.MatP D p} (hl0 : ∀ a b, a < b → l a b = 0) (hl1 : ∀ a, l a a = 1)
     (hρ0 : ∀ a b, b < a → ρ a b = 0) (hρ1 : ∀ a, ρ a a = 1) :
@@ -30,37 +30,35 @@ theorem lmat_up {l ρ : Formalism.L2.SG.LsDatumB.MatP D p} (hl0 : ∀ a b, a < b
     rw [show ((1 : (D.s.atP p).Fp), (1 : (D.s.atP p).Fp)) = 1 from rfl, map_one]
 
 /- English proof (translation)
-Take `⟨hN1, hN0, hNO⟩` from `locU_int Z p N hNU hNd hNb`. Take `⟨hM1, hM0, hMO⟩` from `locU_int Z p M hMU hMd hMb`. Use `set Nl := locU Z p N with hNl`. Use `set Ml := locU Z p M with hMl`. Use `set K := (Nl.map (Z.M p).L.cj)ᵀ with hKdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hK0 : ∀ a b, a < b → K a b = 0` using `fun a b h => by`. Simplify using `only [hKdef, Matrix.transpose_apply, Matrix.map_apply, hN0 b a h, map_zero]`. Establish `hK1 : ∀ a, K a a = 1` using `fun a => by`. Simplify using `only [hKdef, Matrix.transpose_apply, Matrix.map_apply, hN1 a, map_one]`. Establish `hKO : IntM Z p K` using `fun i j => PI.LocCntLat.GC.cj_mem_O _ (hNO j i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKdet : K.det = 1` using `det_lower p hK0 hK1`. Establish `hKu : IsUnit K.det` using `by rw [hKdet]; exact isUnit_one`. Establish `hNdet : Nl.det = 1` using `det_upper p hN0 hN1`. Establish `hNu : IsUnit Nl.det` using `by rw [hNdet]; exact isUnit_one`. Establish `hl0O : IntM Z p K⁻¹` using `Formalism.L2.SG.Pf.LocOrbCut.inv_int (Z.M p).L.O K hKO hKdet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNiO : IntM Z p Nl⁻¹` using `Formalism.L2.SG.Pf.LocOrbCut.inv_int (Z.M p).L.O Nl hNO hNdet`. Establish `hl0low : (∀ a b, a < b → K⁻¹ a b = 0) ∧ ∀ a, K⁻¹ a a = 1`. Establish `h` using `Formalism.L2.SG.TermLoc.inv_unitri Kᵀ (fun a b h => by rw [Matrix.transpose_apply]; exact hK0 b a h) (fun a => by rw [Matrix.transpose_apply]; exact hK1 a)`. Rewrite `h` using `[← Matrix.transpose_nonsing_inv]`. Conclude with `⟨fun a b hab => by have := h.1 b a hab; rwa [Matrix.transpose_apply] at this, fun a => by have := h.2 a; rwa [Matrix.transpose_apply] at this⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK` using `key_rel Z p N M Z₁ Z₂ hrel`. Establish `hY : Formalism.L2.SG.CntLocal.ZhatLoc Z.M Z.δ p Z₂ = K⁻¹ * Formalism.L2.SG.CntLocal.ZhatLoc Z.M Z.δ p Z₁ * Ml`. Rewrite using `[Matrix.mul_assoc, ← hK, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul K hKu, Matrix.one_mul]`. Use `set Cm : Formalism.L2.SG.LsDatumB.MatP D p := Matrix.of fun a b => if a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS then g.e.symm (-(((D.mem u).A.T : ℕ) : (D.s.atP p).Fp) / (g.q : (D.s.atP p).Fp), (((D.mem u').A.T : ℕ) : (D.s.atP p).Fp) / (g.q : (D.s.atP p).Fp)) else 0 with hCm`. Establish `hZZ : ∀ X, Formalism.L2.SG.CntLocal.ZZP (M` using `Z.M) Z.δ u u' p X = emap Z p g (Formalism.L2.SG.CntLocal.ZhatLoc Z.M Z.δ p X) - Cm := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `X`. Use extensionality with `a b`. Simplify using `only [Formalism.L2.SG.CntLocal.ZZP, Formalism.MainNotions.S.Loc.HermSp.ZZplusOf, hs, emap, hCm, Matrix.sub_apply, Matrix.of_apply]`. Take `⟨hL0, hL1⟩` from `lmat_low Z p g hl0low.1 hl0low.2 hM0 hM1`. Take `⟨hR0, hR1⟩` from `lmat_up Z p g hl0low.1 hl0low.2 hM0 hM1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcorner` using `corner_fix p hL0 hL1 hR0 hR1 (C := Cm) (fun a b h => by`. Simplify using `only [hCm, Matrix.of_apply]`. Rewrite using `[if_neg h])`. Establish `hmain : Formalism.L2.SG.CntLocal.ZZP (M` using `Z.M) Z.δ u u' p Z₂ = lmat Z p g K⁻¹ Ml * Formalism.L2.SG.CntLocal.ZZP (M := Z.M) Z.δ u u' p Z₁ * lmat Z p g Ml K⁻¹ := by`. Rewrite using `[hZZ, hZZ, hY, emap_mul, Matrix.mul_sub, Matrix.sub_mul, hcorner]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hKc : K.map (Z.M p).L.cj = Nlᵀ`. Use extensionality with `i j`. Simplify using `[hKdef, (Z.M p).L.cj_cj]`. Establish `hA : Cq Z p g (Ml - ((K⁻¹).map (Z.M p).L.cj)ᵀ)`. Establish `e1 : ((K⁻¹).map (Z.M p).L.cj)ᵀ = Nl⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_cj_inv Z p K hKu, hKc, Matrix.transpose_nonsing_inv, Matrix.transpose_transpose]`. Establish `e2 : Ml - Nl⁻¹ = Nl⁻¹ * (Nl * Ml - 1)`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul Nl hNu, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[e1, e2]`. Conclude with `cq_mul_left Z p g hNiO hcong`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hB : Cq Z p g (K⁻¹ - (Ml.map (Z.M p).L.cj)ᵀ)`. Establish `e1 : Ml * Nl - 1 = Nl⁻¹ * (Nl * Ml - 1) * Nl`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul Nl hNu, Matrix.one_mul, Matrix.mul_one, Matrix.nonsing_inv_mul Nl hNu]`. Establish `h1 : Cq Z p g (Ml * Nl - 1)`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `cq_mul_right Z p g (cq_mul_left Z p g hNiO hcong) hNO`. Establish `e2 : ((Ml * Nl - 1).map (Z.M p).L.cj)ᵀ = K * (Ml.map (Z.M p).L.cj)ᵀ - 1`. Establish `m1 : (Ml * Nl - 1).map (Z.M p).L.cj = (Ml * Nl).map (Z.M p).L.cj - 1`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.sub_apply, Matrix.sub_apply, Matrix.map_apply, map_sub]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[m1, map_cj_mul, Matrix.transpose_sub, Matrix.transpose_one, Matrix.transpose_mul, hKdef]`. Establish `e3 : K⁻¹ - (Ml.map (Z.M p).L.cj)ᵀ = -(K⁻¹ * ((Ml * Nl - 1).map (Z.M p).L.cj)ᵀ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, Matrix.mul_sub, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul K hKu, Matrix.one_mul, Matrix.mul_one, neg_sub]`. Rewrite using `[e3]`. Conclude with `cq_neg Z p g (cq_mul_left Z p g hl0O (cq_transpose Z p g (cq_map_cj Z p g h1)))`. Establish `hLint : Formalism.MainNotions.S.TieN.IntLow (Z.M p) (lmat Z p g K⁻¹ Ml)`. Use `⟨hL1, hL0, fun a b => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨o, ho, he⟩` from `hB a b`. Conclude with `lmat_mem_R Z p g hs (hl0O a b) (hMO b a) ⟨o, ho, by`. Rewrite using `[← he]`. Simplify using `[Matrix.sub_apply, Matrix.transpose_apply, Matrix.map_apply]⟩`. Establish `hRint : Formalism.MainNotions.S.TieN.IntUp (Z.M p) (lmat Z p g Ml K⁻¹)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hR1, hR0, fun a b => ?_⟩` and prove the remaining obligations. Take `⟨o, ho, he⟩` from `hA a b`. Conclude with `lmat_mem_R Z p g hs (hMO a b) (hl0O b a) ⟨o, ho, by`. Rewrite using `[← he]`. Simplify using `[Matrix.sub_apply, Matrix.transpose_apply, Matrix.map_apply]⟩`.
-
-Use `⟨lmat Z p g K⁻¹ Ml, Formalism.L2.SG.LsDatumB.sgnP p * lmat Z p g Ml K⁻¹ * Formalism.L2.SG.LsDatumB.sgnP p, hLint, sgn_conj_intUp Z p hRint, ?_⟩` and prove the remaining obligations. Rewrite using `[hmain]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Formalism.L2.SG.LsDatumB.sgnP p) (Formalism.L2.SG.LsDatumB.sgnP p), permSign_mul_self₂, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem modeG (hs : (Z.M p).split = some g) (u u' : D.what₂.Word)
     (N M Z₁ Z₂ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E)

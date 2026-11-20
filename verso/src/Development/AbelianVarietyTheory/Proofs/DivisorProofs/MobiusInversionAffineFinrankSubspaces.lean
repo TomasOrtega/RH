@@ -4,9 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspace
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Use `haveI : Finite A := Module.finite_of_finite K`. Use `haveI : Fintype (Submodule K A) := Fintype.ofFinite _`. Rewrite using `[← sum_oneValue_finrank K A, ← finsum_eq_sum_of_fintype, ← finsum_comp_equiv (Submodule.MapSubtype.orderIso A).toEquiv]`. Use `finsum_congr fun W => ?_` and prove the remaining obligations. Use `congr 1`.
-
-Conclude with `Submodule.finrank_map_subtype_eq A W`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem finsum_le_oneValue_finrank (K : Type) [Field K] [Finite K] (U : Type) [AddCommGroup U] [Module K U]
     [FiniteDimensional K U] (A : Submodule K U) :
@@ -22,9 +20,9 @@ theorem finsum_le_oneValue_finrank (K : Type) [Field K] [Finite K] (U : Type) [A
   exact Submodule.finrank_map_subtype_eq A W
 
 /- English proof (translation)
-Proceed by induction on `A using WellFoundedLT.induction with`. Consider the case `ind A ih => haveI : Fintype {B : α // B ≤ A} := Fintype.ofFinite _`. Establish `h1` using `h A`. Rewrite `h1` using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, ← Finset.add_sum_erase _ _ (Finset.mem_univ (⟨A, le_rfl⟩ : {B : α // B ≤ A})), ← Finset.add_sum_erase _ (fun B : {B : α // B ≤ A} => H B.1) (Finset.mem_univ (⟨A, le_rfl⟩ : {B : α // B ≤ A}))]`. Establish `h2 : ∑ B ∈ Finset.univ.erase (⟨A, le_rfl⟩ : {B : α // B ≤ A}), G B.1 = ∑ B ∈ Finset.univ.erase (⟨A, le_rfl⟩ : {B : α // B ≤ A}), H B.1`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun B hB => ih B.1 (lt_of_le_of_ne B.2 fun e => ?_)` and prove the remaining obligations. Conclude with `(Finset.mem_erase.1 hB).1 (Subtype.ext e)`. Rewrite `h1` using `[h2]`. Conclude with `add_right_cancel h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_finsum_le_eq {α : Type} [PartialOrder α] [Finite α] (G H : α → ℂ)
     (h : ∀ A : α, ∑ᶠ B : {B : α // B ≤ A}, G B.1 = ∑ᶠ B : {B : α // B ≤ A}, H B.1) (A : α) :
@@ -46,11 +44,9 @@ theorem eq_of_finsum_le_eq {α : Type} [PartialOrder α] [Finite α] (G H : α �
     exact add_right_cancel h1
 
 /- English proof (translation)
-Use `haveI : Finite U := Module.finite_of_finite K`. Establish `key` using `eq_of_finsum_le_eq G (fun B => (if B = ⊥ then c₀ else 0) + c * oneValue (Nat.card K) (Module.finrank K B)) (fun A => by haveI : Fintype {B : Submodule K U // B ≤ A} := Fintype.ofFinite _`. Rewrite using `[hG A, ← finsum_le_oneValue_finrank K U A, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.sum_add_distrib, Finset.mul_sum]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single (⟨⊥, bot_le⟩ : {B : Submodule K U // B ≤ A})]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `B _ hB`. Conclude with `if_neg fun e => hB (Subtype.ext e)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h) ⊤`.
-
-Use `haveI : Nontrivial U := Module.nontrivial_of_finrank_pos hU`. Rewrite using `[key, if_neg top_ne_bot, zero_add, finrank_top, oneValue, if_neg hU.ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moebius_affine_finrank (K : Type) [Field K] [Finite K] (U : Type) [AddCommGroup U] [Module K U]
     [FiniteDimensional K U] (G : Submodule K U → ℂ) (c₀ c : ℂ) (hU : 0 < Module.finrank K U)

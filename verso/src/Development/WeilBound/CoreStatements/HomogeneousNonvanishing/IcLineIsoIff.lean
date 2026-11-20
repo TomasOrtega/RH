@@ -28,30 +28,30 @@ def IcGood (P : Ideal (MRing ι)) (Xo : Set ((Σ k, ι k) → ℂ)) (d : K → �
     icEv z v ≠ 0 ∧ ‖icEv z v‖ * r z = ‖icEv z u‖
 
 /- English proof (translation)
-Simplify using `[IsLineIso]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ic_lineIso_iff (P : Ideal (MRing ι)) (a b : K → ℤ) (f g : MRing ι) :
     IsLineIso P a b f g ↔ IsLineIso P (a - b) 0 f g := by
   simp [IsLineIso]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, g, h, hd⟩`. Use `⟨f, g, (ic_lineIso_iff _ _ _ _ _).1 h, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz'` using `hX hz`. Take `⟨u, v, hu, hv, huv⟩` from `h.2.2.2 (RingHom.ker (icEv z)) (RingHom.ker_isPrime _) (fun s hs => hz'.2 s hs) (fun k => by`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hz'.1 k`. Use `⟨i, fun hh => hi ?_⟩` and prove the remaining obligations. Simplify `hh)` using `[icEv, RingHom.mem_ker]`. Rewrite `hu`, `hv` using `[RingHom.mem_ker]`. Use `⟨u, v, huv, hu, hv, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `hd z hz u v huv hu`. Simplify using `only [icEv_eq] at h0`. Establish `hA` using `A.pos z hz'.1`. Establish `hB` using `B.pos z hz'.1`. Establish `hu' : 0 < ‖icEv z u‖` using `norm_pos_iff.2 hu`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' : 0 < ‖icEv z v‖` using `norm_pos_iff.2 hv`. Establish `h1` using `Real.eq_one_of_pos_of_log_eq_zero (by positivity) h0.symm`. Clear denominators, using `at h1 ⊢` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion. Introduce and unpack `⟨f, g, h, hd⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨f, g, (ic_lineIso_iff _ _ _ _ _).2 h, fun z hz u' v' huv' hu' => ?_⟩` and prove the remaining obligations. Establish `hz'` using `hX hz`. Take `⟨u, v, huv, hu, hv, he⟩` from `hd z hz`. Establish `h1 : (u * v' - u' * v) * g ∈ P`. Use `P.sub_mem (P.mul_mem_left u' huv) (P.mul_mem_left u huv')` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : u * v' - u' * v ∈ P` using `(hP.1.mem_or_mem h1).resolve_right h.2.2.1`. Establish `h3 : icEv z (u * v' - u' * v) = 0` using `hz'.2 _ h2`. Rewrite `h3` using `[map_sub, map_mul, map_mul, sub_eq_zero]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : ‖icEv z u‖ * ‖icEv z v'‖ = ‖icEv z u'‖ * ‖icEv z v‖`. Rewrite using `[← norm_mul, ← norm_mul, h3]`. Simplify using `only [icEv_eq] at hu' ⊢`. Establish `hA` using `A.pos z hz'.1`. Establish `hB` using `B.pos z hz'.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu1 : 0 < ‖icEv z u‖` using `norm_pos_iff.2 hu`. Establish `hu2 : 0 < ‖icEv z u'‖` using `norm_pos_iff.2 hu'`. Establish `hv1 : 0 < ‖icEv z v‖` using `norm_pos_iff.2 hv`. Establish `h5 : ‖icEv z v'‖ / ‖icEv z u'‖ = ‖icEv z v‖ / ‖icEv z u‖`. Rewrite using `[div_eq_div_iff hu2.ne' hu1.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h6 : ‖icEv z v'‖ / ‖icEv z u'‖ * B.h z / A.h z = 1`. Rewrite using `[h5, ← he]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h6, Real.log_one]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem ic_iff {P : Ideal (MRing ι)} {Xo : Set ((Σ k, ι k) → ℂ)} (hP : IsMultiProjPrime P) (hX : Xo ⊆ mcPts P)
     (A B : HermLine ι) : IsoLineOn P Xo A B ↔ IcGood P Xo (A.a - B.a) (fun z => B.h z / A.h z) := by
@@ -103,16 +103,16 @@ theorem ic_iff {P : Ideal (MRing ι)} {Xo : Set ((Σ k, ι k) → ℂ)} (hP : Is
     rw [h6, Real.log_one]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, 1, (i_algebra K ι P hP).1 0, fun z _ => ⟨1, 1, by simp, by simp, by simp, by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ic_one {P : Ideal (MRing ι)} (Xo : Set ((Σ k, ι k) → ℂ)) (hP : IsMultiProjPrime P) :
     IcGood P Xo 0 1 :=
   ⟨1, 1, (i_algebra K ι P hP).1 0, fun z _ => ⟨1, 1, by simp, by simp, by simp, by simp⟩⟩
 
 /- English proof (translation)
-Take `⟨f, g, h, hd⟩` from `h`. Take `⟨f', g', h', hd'⟩` from `h'`. Use `⟨f * f', g * g', by simpa using (i_algebra K ι P hP).2.2.2.1 _ _ _ _ _ _ _ _ h h', fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨u, v, huv, hu, hv, he⟩` from `hd z hz`. Take `⟨u', v', huv', hu', hv', he'⟩` from `hd' z hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨u * u', v * v', ?_, by simp [hu, hu'], by simp [hv, hv'], ?_⟩` and prove the remaining obligations. Use `P.add_mem (P.mul_mem_left (u' * f') huv) (P.mul_mem_left (v * g) huv')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_mul, norm_mul, norm_mul, ← he, ← he', Pi.mul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -132,11 +132,11 @@ theorem ic_mul {P : Ideal (MRing ι)} {Xo : Set ((Σ k, ι k) → ℂ)} (hP : Is
     ring
 
 /- English proof (translation)
-Take `⟨f, g, h, hd⟩` from `h`. Use `⟨g, f, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `(ic_lineIso_iff _ _ _ _ _).1 ((i_algebra K ι P hP).2.1 _ _ _ _ h)` as an intermediate fact. Simplify using `using this`. Take `⟨u, v, huv, hu, hv, he⟩` from `hd z hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `⟨v, u, by simpa using P.neg_mem huv, hv, hu, ?_⟩` and prove the remaining obligations. Establish `hr : r z ≠ 0`. Introduce `h0`. Rewrite `he` using `[h0, mul_zero]`. Conclude with `hu (norm_eq_zero.1 he.symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he, Pi.inv_apply]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem ic_inv {P : Ideal (MRing ι)} {Xo : Set ((Σ k, ι k) → ℂ)} (hP : IsMultiProjPrime P) {d : K → ℤ}
     {r : ((Σ k, ι k) → ℂ) → ℝ} (h : IcGood P Xo d r) : IcGood P Xo (-d) r⁻¹ := by
@@ -154,7 +154,7 @@ theorem ic_inv {P : Ideal (MRing ι)} {Xo : Set ((Σ k, ι k) → ℂ)} (hP : Is
   field_simp
 
 /- English proof (translation)
-Substitute `hd` using the available equality. Take `⟨f, g, h, hd⟩` from `h`. Use `⟨f, g, h, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← hr z hz]`. Conclude with `hd z hz`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ic_congr {P : Ideal (MRing ι)} {Xo : Set ((Σ k, ι k) → ℂ)} {d d' : K → ℤ}
     {r r' : ((Σ k, ι k) → ℂ) → ℝ} (h : IcGood P Xo d r) (hd : d = d') (hr : ∀ z ∈ Xo, r z = r' z) :
@@ -166,7 +166,7 @@ theorem ic_congr {P : Ideal (MRing ι)} {Xo : Set ((Σ k, ι k) → ℂ)} {d d' 
   exact hd z hz
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using ic_one Xo hP`. Consider the case `succ n ih`. Rewrite using `[succ_nsmul, pow_succ]`. Conclude with `ic_mul hP ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ic_pow {P : Ideal (MRing ι)} {Xo : Set ((Σ k, ι k) → ℂ)} (hP : IsMultiProjPrime P) {d : K → ℤ}
     {r : ((Σ k, ι k) → ℂ) → ℝ} (h : IcGood P Xo d r) (n : ℕ) : IcGood P Xo (n • d) (r ^ n) := by
@@ -177,7 +177,7 @@ theorem ic_pow {P : Ideal (MRing ι)} {Xo : Set ((Σ k, ι k) → ℂ)} (hP : Is
     exact ic_mul hP ih h
 
 /- English proof (translation)
-Take `⟨m, rfl | rfl⟩` from `n.eq_nat_or_neg`. Simplify using `using ic_pow hP h m`. Simplify using `using ic_inv hP (ic_pow hP h m)`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ic_zpow {P : Ideal (MRing ι)} {Xo : Set ((Σ k, ι k) → ℂ)} (hP : IsMultiProjPrime P) {d : K → ℤ}
     {r : ((Σ k, ι k) → ℂ) → ℝ} (h : IcGood P Xo d r) (n : ℤ) : IcGood P Xo (n • d) (r ^ n) := by
@@ -186,7 +186,7 @@ theorem ic_zpow {P : Ideal (MRing ι)} {Xo : Set ((Σ k, ι k) → ℂ)} (hP : I
   · simpa using ic_inv hP (ic_pow hP h m)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ic_one Xo hP`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.prod_insert hj]`. Conclude with `ic_mul hP (h j) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ic_prod {P : Ideal (MRing ι)} {Xo : Set ((Σ k, ι k) → ℂ)} (hP : IsMultiProjPrime P) {J : Type}
     (s : Finset J) (d : J → K → ℤ) (r : J → ((Σ k, ι k) → ℂ) → ℝ) (h : ∀ j, IcGood P Xo (d j) (r j)) :
@@ -201,15 +201,15 @@ theorem ic_prod {P : Ideal (MRing ι)} {Xo : Set ((Σ k, ι k) → ℂ)} (hP : I
 end
 
 /- English proof (translation)
-Introduce `K _ ι _ P Xo hP hX`. Use `⟨fun J _ ℓ ℓ' n h => ?_, fun A B C h h' => ?_, fun A B h => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ic_iff hP hX]`. Use `ic_congr (ic_prod hP Finset.univ _ _ fun j => ic_zpow hP ((ic_iff hP hX _ _).1 (h j)) (n j)) ?_ ?_` and prove the remaining obligations. Simplify using `[Top.combLine, smul_sub, Finset.sum_sub_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `z _`. Simplify using `[Top.combLine, div_zpow, Finset.prod_div_distrib]`. Rewrite `h`, `h'`, the goal using `[ic_iff hP hX]`. Use `ic_congr (ic_mul hP h h') (by abel) fun z hz => ?_` and prove the remaining obligations. Establish `hB` using `(B.pos z (hX hz).1).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hA` using `(A.pos z (hX hz).1).ne'`. Simplify using `only [Pi.mul_apply]`. Clear the denominators using the available nonvanishing facts. Rewrite `h`, the goal using `[ic_iff hP hX]`. Use `ic_congr (ic_inv hP h) (by abel) fun z _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Introduce `K₁ _ ι₁ _ κ v J _ ℓ ℓ' n hv h`. Use `⟨?_, fun z' => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using `only [Top.combLine, Finset.sum_apply, Pi.smul_apply, fun j => (h j).1, pullDeg]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hk : ∃ k₁, κ k₁ = k`. Take `⟨k₁, rfl⟩` from `hk`. Simplify using `only [hv.1.extend_apply, Finset.sum_apply, Pi.smul_apply]`. Simplify using `[Function.extend_apply' _ _ _ hk]`. Simplify using `only [Top.combLine, fun j => (h j).2 z']`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem i_comb : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (Xo : Set ((Σ k, ι k) → ℂ)), IsMultiProjPrime P → Xo ⊆ mcPts P → (∀ (J : Type) [Fintype J] (ℓ ℓ' : J → HermLine ι) (n : J → ℤ), (∀ j, IsoLineOn P Xo (ℓ j) (ℓ' j)) → IsoLineOn P Xo (Top.combLine ℓ n) (Top.combLine ℓ' n)) ∧ (∀ A B C : HermLine ι, IsoLineOn P Xo A B → IsoLineOn P Xo B C → IsoLineOn P Xo A C) ∧ (∀ A B : HermLine ι, IsoLineOn P Xo A B → IsoLineOn P Xo B A) ∧ ∀ (K₁ : Type) [Fintype K₁] (ι₁ : K₁ → Type) [∀ k, Fintype (ι₁ k)] (κ : K₁ → K) (v : (Σ k, ι₁ k) → Σ k, ι k) (J : Type) [Fintype J] (ℓ : J → HermLine ι₁) (ℓ' : J → HermLine ι) (n : J → ℤ), IsBlockMap κ v → (∀ j, IsPullHerm κ v (ℓ j) (ℓ' j)) → IsPullHerm κ v (Top.combLine ℓ n) (Top.combLine ℓ' n) := by
   intro K _ ι _ P Xo hP hX

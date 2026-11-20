@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.CM
 
 /- English proof (translation)
-Unfold `psum`. Proceed by induction on `(List.finRange n).filter (· ∈ I) with`. Consider the case `nil => exact map_one ρ`. Consider the case `cons k l ih => exact (map_mul ρ _ _).trans (congrArg (ρ (x k) * ·) ih)`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem lamBC_psum_hom {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {T : Over S}
     {T' : Over S'} (ρ : (T' ⟶ G') →* (T ⟶ G)) {n : ℕ} (x : Fin n → (T' ⟶ G'))
@@ -23,7 +23,7 @@ theorem lamBC_psum_hom {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G
   | cons k l ih => exact (map_mul ρ _ _).trans (congrArg (ρ (x k) * ·) ih)
 
 /- English proof (translation)
-Establish `e : pushPt h.1.w (psum G' x' I) = U ≫ psum G x I` using `(lamBC_psum_hom (pushHom h T') x' I).trans ((congrArg (fun z => psum G z I) (funext hx)).trans (lamBC_psum_hom (preHom U) x I).symm)`. Conclude with `congrArg (fun z => z.left) e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lamBC_psum_push {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {T' : Over S'} {T : Over S} {n : ℕ}
@@ -36,15 +36,13 @@ theorem lamBC_psum_push {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj 
   exact congrArg (fun z => z.left) e
 
 /- English proof (translation)
-Introduce `S S' s X Y A B X' Y' A' B' _ _ _ _ x y a b hx hy hA hB L M L' M' hL hM hL' hM' iL iM f₁ f₂ g₁ g₂ f₁' f₂' g₁' g₂' e₁ e₂ e₃ e₄ H`. Set `p : Over.mk ((X' ⊗ Y').hom ≫ s) ⟶ X` to `Over.homMk ((fst X' Y').left ≫ x) (by show ((fst X' Y').left ≫ x) ≫ X.hom = (X' ⊗ Y').hom ≫ s`. Rewrite using `[Category.assoc, hx, ← Category.assoc, Over.w])`. Set `q : Over.mk ((X' ⊗ Y').hom ≫ s) ⟶ Y` to `Over.homMk ((snd X' Y').left ≫ y) (by show ((snd X' Y').left ≫ y) ≫ Y.hom = (X' ⊗ Y').hom ≫ s`. Rewrite using `[Category.assoc, hy, ← Category.assoc, Over.w])`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `U : Over.mk ((X' ⊗ Y').hom ≫ s) ⟶ X ⊗ Y` to `lift p q`. Establish `key : ∀ {C : Over S} {C' : Over S'} [GrpObj C] [GrpObj C'] {c : C'.left ⟶ C.left} (hC : IsGrpPullback C' C s c) (u : X ⟶ C) (v : Y ⟶ C) (u' : X' ⟶ C') (v' : Y' ⟶ C'), u'.left ≫ c = x ≫ u.left → v'.left ≫ c = y ≫ v.left → ∀ I : Finset (Fin 2), (psum C' ![fst X' Y' ≫ u', snd X' Y' …`. Introduce `C C' _ _ c hC u v u' v' hu hv I`. Use `lamBC_psum_push hC _ _ U (fun i => ?_) I` and prove the remaining obligations. Use `fin_cases i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show pushPt hC.1.w (fst X' Y' ≫ u') = lift p q ≫ fst X Y ≫ u`. Rewrite using `[lift_fst_assoc]`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Use `show ((fst X' Y').left ≫ u'.left) ≫ c = ((fst X' Y').left ≫ x) ≫ u.left`. Rewrite using `[Category.assoc, hu, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show pushPt hC.1.w (snd X' Y' ≫ v') = lift p q ≫ snd X Y ≫ v`. Rewrite using `[lift_snd_assoc]`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Use `show ((snd X' Y').left ≫ v'.left) ≫ c = ((snd X' Y').left ≫ y) ≫ v.left`. Rewrite using `[Category.assoc, hv, Category.assoc]`.
-
-Establish `H₁ : LBIso (cubeLB A' ![fst X' Y' ≫ f₁', snd X' Y' ≫ f₂'] (L.pull a)) (cubeLB B' ![fst X' Y' ≫ g₁', snd X' Y' ≫ g₂'] (M.pull b))` using `LBIso.chartPull (chartPullLinComb L a _ _ _ U.left fun I => key hA f₁ f₂ f₁' f₂' e₁ e₂ I.down) (chartPullLinComb M b _ _ _ U.left fun I => key hB g₁ g₂ g₁' g₂' e₃ e₄ I.down) H`. Establish `hLa : (L.pull a).IsLB` using `DVR.linComb_isLB _ hL _ _`. Establish `hMb : (M.pull b).IsLB` using `DVR.linComb_isLB _ hM _ _`. Conclude with `LBIso.trans (DVR.linComb_isLB _ hL' _ _) (DVR.linComb_isLB _ hLa _ _) (DVR.linComb_isLB _ hM' _ _) (PowPrimitive.lbIso_linComb iL.symm _ _) (LBIso.trans (DVR.linComb_isLB _ hLa _ _) (DVR.linComb_isLB _ hMb _ _) (DVR.linComb_isLB _ hM' _ _) H₁ (PowPrimitive.lbIso_linComb iM _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lamEq_baseChange : ∀ (S S' : Scheme.{0}) (s : S' ⟶ S) (X Y A B : Over S) (X' Y' A' B' : Over S') [GrpObj A] [GrpObj B] [GrpObj A'] [GrpObj B'] (x : X'.left ⟶ X.left) (y : Y'.left ⟶ Y.left) (a : A'.left ⟶ A.left) (b : B'.left ⟶ B.left),
   x ≫ X.hom = X'.hom ≫ s → y ≫ Y.hom = Y'.hom ≫ s → IsGrpPullback A' A s a → IsGrpPullback B' B s b → ∀ (L : LB A.left) (M : LB B.left) (L' : LB A'.left) (M' : LB B'.left), L.IsLB → M.IsLB → L'.IsLB → M'.IsLB → LBIso (L.pull a) L' → LBIso (M.pull b) M' →

@@ -21,7 +21,7 @@ section IntPS
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Introduce `n`. Establish `e : n = Finsupp.single () (n ())` using `Finsupp.ext fun u => by rcases u with ⟨⟩; simp`. Rewrite using `[e]`. Conclude with `h (n ())`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_ps' {K : Type} [NormedField K] {f : PowerSeries K}
     (h : ∀ k, ‖PowerSeries.coeff k f‖ ≤ 1) : Integral (f : MvPowerSeries Unit K) := by
@@ -31,13 +31,13 @@ theorem integral_ps' {K : Type} [NormedField K] {f : PowerSeries K}
   exact h (n ())
 
 /- English proof (translation)
-The claim follows from `hf _`.
+A detailed English derivation is pending.
 -/
 theorem ips' {f : PowerSeries K} (hf : Integral (f : MvPowerSeries Unit K)) (k : ℕ) :
     ‖PowerSeries.coeff k f‖ ≤ 1 := hf _
 
 /- English proof (translation)
-Apply `integral_ps'` to reduce the goal to its premises. Introduce `k`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ips' hf k) (ips' hg k))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ips_add' {f g : PowerSeries K} (hf : Integral (f : MvPowerSeries Unit K))
     (hg : Integral (g : MvPowerSeries Unit K)) : Integral ((f + g : PowerSeries K) : MvPowerSeries Unit K) := by
@@ -46,7 +46,7 @@ theorem ips_add' {f g : PowerSeries K} (hf : Integral (f : MvPowerSeries Unit K)
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ips' hf k) (ips' hg k))
 
 /- English proof (translation)
-Apply `integral_ps'` to reduce the goal to its premises. Introduce `k`. Rewrite using `[map_sub, sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ips' hf k) (by rw [norm_neg]; exact ips' hg k))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ips_sub' {f g : PowerSeries K} (hf : Integral (f : MvPowerSeries Unit K))
     (hg : Integral (g : MvPowerSeries Unit K)) : Integral ((f - g : PowerSeries K) : MvPowerSeries Unit K) := by
@@ -55,7 +55,7 @@ theorem ips_sub' {f g : PowerSeries K} (hf : Integral (f : MvPowerSeries Unit K)
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ips' hf k) (by rw [norm_neg]; exact ips' hg k))
 
 /- English proof (translation)
-Apply `integral_ps'` to reduce the goal to its premises. Introduce `k`. Rewrite using `[PowerSeries.coeff_C_mul, norm_mul]`. Conclude with `mul_le_one₀ hc (norm_nonneg _) (ips' hf k)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ips_Cmul' {c : K} (hc : ‖c‖ ≤ 1) {f : PowerSeries K} (hf : Integral (f : MvPowerSeries Unit K)) :
     Integral ((PowerSeries.C c * f : PowerSeries K) : MvPowerSeries Unit K) := by
@@ -64,7 +64,7 @@ theorem ips_Cmul' {c : K} (hc : ‖c‖ ≤ 1) {f : PowerSeries K} (hf : Integra
   exact mul_le_one₀ hc (norm_nonneg _) (ips' hf k)
 
 /- English proof (translation)
-Apply `integral_ps'` to reduce the goal to its premises. Introduce `k`. Rewrite using `[PowerSeries.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ips_X' : Integral ((PowerSeries.X : PowerSeries K) : MvPowerSeries Unit K) := by
   apply integral_ps'; intro k
@@ -72,7 +72,7 @@ theorem ips_X' : Integral ((PowerSeries.X : PowerSeries K) : MvPowerSeries Unit 
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_mul' hf hg`.
+A detailed English derivation is pending.
 -/
 theorem ips_mul' {f g : PowerSeries K} (hf : Integral (f : MvPowerSeries Unit K))
     (hg : Integral (g : MvPowerSeries Unit K)) : Integral ((f * g : PowerSeries K) : MvPowerSeries Unit K) :=
@@ -81,39 +81,35 @@ theorem ips_mul' {f g : PowerSeries K} (hf : Integral (f : MvPowerSeries Unit K)
 end IntPS
 
 /- English proof (translation)
-Introduce `K _ _ _ h2 h3 W hW`. Take `⟨hxI, hx1, hA, -⟩` from `Formalism.L2.Th1.A.bridgeCurve K W hW`. Take `⟨hB, -⟩` from `Formalism.L2.Th1.A.bridgeCurve3 K W hW`. Take `⟨hnum, hden⟩` from `Formalism.L2.Th1.A.wpNumEq K W`. Rewrite using `[← Formalism.L2.Th1.A.uSerEq K _ _]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hl0, hl1, -, -⟩` from `Formalism.L2.Th1.A.logSpec K W`. Establish `hlS : PowerSeries.HasSubst (Formalism.L2.Th1.A.logSer W)` using `PowerSeries.HasSubst.of_constantCoeff_zero' hl0`. Establish `hl_ne : Formalism.L2.Th1.A.logSer W ≠ 0`. Introduce `h`. Rewrite `hl1` using `[h, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hl1`. Use `set lW := Formalism.L2.Th1.A.logSer W with hlW`. Use `set P := Formalism.L2.Th1.A.wpReg W with hP`. Use `set xs := Formalism.L2.Th1.A.xS W with hxs`. Use `set N : PowerSeries K := xs + PowerSeries.C (W.b₂ / 12) * PowerSeries.X ^ 2 with hN`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set D : PowerSeries K := xs - PowerSeries.C (W.a₁ / 2) * PowerSeries.X * xs - PowerSeries.C (W.a₃ / 2) * PowerSeries.X ^ 3 with hD`. Establish `hD1 : PowerSeries.constantCoeff D = 1`. Rewrite using `[hD]`. Simplify using `[hx1]`. Establish `hden1 : PowerSeries.constantCoeff (Formalism.L2.Th1.CM.wpDen (Formalism.L2.Th1.A.g₂ W) (Formalism.L2.Th1.A.g₃ W)) ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hden]`. Simplify using the standard rewrite rules. Establish `hsn : PowerSeries.subst lW (Formalism.L2.Th1.CM.wpNum (Formalism.L2.Th1.A.g₂ W) (Formalism.L2.Th1.A.g₃ W)) = 1 + lW ^ 2 * PowerSeries.subst lW P`. Rewrite using `[hnum, PowerSeries.subst_add hlS, PowerSeries.subst_mul hlS, PowerSeries.subst_pow hlS, PowerSeries.subst_X hlS, ← PowerSeries.coe_substAlgHom hlS, map_one]`. Establish `hsd : PowerSeries.subst lW (Formalism.L2.Th1.CM.wpDen (Formalism.L2.Th1.A.g₂ W) (Formalism.L2.Th1.A.g₃ W)) = 1 - PowerSeries.C (1 / 2 : K) * lW ^ 3 * PowerSeries.subst lW (PowerSeries.derivative K P)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hden, PowerSeries.subst_sub hlS, PowerSeries.subst_mul hlS, PowerSeries.subst_mul hlS, PowerSeries.subst_pow hlS, PowerSeries.subst_X hlS, PowerSeries.subst_C, ← PowerSeries.coe_substAlgHom hlS, map_one]`. Both sides reduce to the same expression. Use `set I := PowerSeries.subst lW (Formalism.L2.Th1.CM.uSer (Formalism.L2.Th1.A.g₂ W) (Formalism.L2.Th1.A.g₃ W)) with hI`. Establish `hIB : I * PowerSeries.subst lW (Formalism.L2.Th1.CM.wpDen (Formalism.L2.Th1.A.g₂ W) (Formalism.L2.Th1.A.g₃ W)) = lW * PowerSeries.subst lW (Formalism.L2.Th1.CM.wpNum (Formalism.L2.Th1.A.g₂ W) (Formalism.L2.Th1.A.g₃ W))`. Rewrite using `[hI, ← PowerSeries.subst_mul hlS]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Unfold `Formalism.L2.Th1.CM.uSer`. Rewrite using `[mul_assoc, PowerSeries.inv_mul_cancel _ hden1, mul_one, PowerSeries.subst_mul hlS, PowerSeries.subst_X hlS]`. Rewrite `hIB` using `[hsn, hsd]`. Establish `hID : I * D = PowerSeries.X * N`. Establish `h3ne : lW ^ 3 ≠ 0` using `pow_ne_zero 3 hl_ne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_left_cancel₀ h3ne` to reduce the goal to its premises. Establish `e2 : (2 : K) ≠ 0` using `two_ne_zero`. Establish `hB' : PowerSeries.X ^ 3 * (1 - PowerSeries.C (1 / 2 : K) * lW ^ 3 * PowerSeries.subst lW (PowerSeries.derivative K P)) = lW ^ 3 * D`. Establish `hh : (PowerSeries.C (1 / 2 : K) : PowerSeries K) * (2 : PowerSeries K) = 1`. Rewrite using `[show (2 : PowerSeries K) = PowerSeries.C (2 : K) from (map_ofNat _ 2).symm, ← map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[hD]`. Establish `ha1 : (PowerSeries.C (W.a₁ / 2) : PowerSeries K) = PowerSeries.C (1 / 2 : K) * PowerSeries.C W.a₁`. Rewrite using `[← map_mul]`. Put the polynomial expressions in normal form.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `ha3 : (PowerSeries.C (W.a₃ / 2) : PowerSeries K) = PowerSeries.C (1 / 2 : K) * PowerSeries.C W.a₃`. Rewrite using `[← map_mul]`. Put the polynomial expressions in normal form. Rewrite using `[ha1, ha3]`. Take the linear combination `(-(PowerSeries.C (1 / 2 : K) : PowerSeries K)) * hB - (PowerSeries.X ^ 3 - lW ^ 3 * xs) * hh`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take the linear combination `PowerSeries.X ^ 3 * hIB - I * hB' + lW * PowerSeries.X * hA`. Establish `hDinv : D⁻¹ * D = 1` using `PowerSeries.inv_mul_cancel _ (by rw [hD1]; exact one_ne_zero)`. Establish `hIe : I = PowerSeries.X * N * D⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hIe]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h12 : ‖(12 : K)‖ = 1`. Rewrite using `[show (12 : K) = 2 * 2 * 3 by norm_num, norm_mul, norm_mul, h2, h3]; norm_num`. Establish `hi1 : ‖W.a₁‖ ≤ 1` using `hW.1`. Establish `hi2 : ‖W.a₂‖ ≤ 1` using `hW.2.1`. Establish `hi3 : ‖W.a₃‖ ≤ 1` using `hW.2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hb2 : ‖W.b₂ / 12‖ ≤ 1`. Rewrite using `[norm_div, h12, div_one, WeierstrassCurve.b₂]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) hi1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_mul]`. Use `mul_le_one₀ ?_ (norm_nonneg _) hi2` and prove the remaining obligations. Rewrite using `[show (4 : K) = 2 * 2 by norm_num, norm_mul, h2]; norm_num`. Establish `ha12 : ‖W.a₁ / 2‖ ≤ 1` using `by rw [norm_div, h2, div_one]; exact hi1`. Establish `ha32 : ‖W.a₃ / 2‖ ≤ 1` using `by rw [norm_div, h2, div_one]; exact hi3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hX2 : Integral (((PowerSeries.X : PowerSeries K) ^ 2 : PowerSeries K) : MvPowerSeries Unit K)`. Rewrite using `[pow_two]`. Conclude with `ips_mul' ips_X' ips_X'`. Establish `hX3 : Integral (((PowerSeries.X : PowerSeries K) ^ 3 : PowerSeries K) : MvPowerSeries Unit K)`. Rewrite using `[pow_succ]`.
-
-Conclude with `ips_mul' hX2 ips_X'`. Establish `hNI : Integral ((N : PowerSeries K) : MvPowerSeries Unit K)`. Rewrite using `[hN]`. Conclude with `ips_add' hxI (ips_Cmul' hb2 hX2)`. Establish `hDI : Integral ((D : PowerSeries K) : MvPowerSeries Unit K)`.
-
-Rewrite using `[hD]`. Conclude with `ips_sub' (ips_sub' hxI (ips_mul' (ips_Cmul' ha12 ips_X') hxI)) (ips_Cmul' ha32 hX3)`. Establish `hDiI : Integral ((D⁻¹ : PowerSeries K) : MvPowerSeries Unit K)` using `Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_of_mul_eq_one hDI hD1 hDinv`. Conclude with `ips_mul' (ips_mul' ips_X' hNI) hDiI`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem shortIso_holds : ShortIso := by
   intro K _ _ _ h2 h3 W hW
@@ -202,21 +198,19 @@ theorem shortIso_holds : ShortIso := by
   exact ips_mul' (ips_mul' ips_X' hNI) hDiI
 
 /- English proof (translation)
-Establish `hex` using `hOk.2.2.1`. Establish `hinv` using `hOk.2.2.2`. Use `set e := eLT hLT with he`. Establish `he1 : ‖e‖ = 1` using `Formalism.L2.G.Pend.norm_wToC_unit l _`. Establish `hene : e ≠ 0` using `by intro h; rw [h, norm_zero] at he1; exact zero_ne_one he1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set th0 := Formalism.L2.G.Pend.thOf hLT with hth0`. Establish `h00 : PowerSeries.constantCoeff th0 = 0` using `Formalism.L2.G.Pend.thOf_zero hLT`. Establish `hu : IsUnit (PowerSeries.coeff 1 th0)` using `Formalism.L2.G.Pend.thOf_unit hLT`. Use `set i0 := th0.substInvOfIsUnit hu with hi0`. Establish `hi00 : PowerSeries.constantCoeff i0 = 0` using `PowerSeries.constantCoeff_substInvOfIsUnit _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : PowerSeries.subst i0 th0 = PowerSeries.X` using `PowerSeries.subst_substInvOfIsUnit_right _ h00 hu`. Use `set thC := PowerSeries.map (wToC l) th0 with hthC`. Use `set iC := PowerSeries.map (wToC l) i0 with hiC`. Establish `hthC0 : PowerSeries.constantCoeff thC = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, hthC, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, h00, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hiC0 : PowerSeries.constantCoeff iC = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, hiC, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, hi00, map_zero]`. Establish `hRC : PowerSeries.subst iC thC = PowerSeries.X`. Establish `h` using `congrArg (MvPowerSeries.map (wToC l)) hR`. Rewrite `h` using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero' hi00)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.trans (MvPowerSeries.map_X _ _)`. Establish `hv0 : PowerSeries.constantCoeff (PowerSeries.C e⁻¹ * lgF ℂ_[l] l) = 0`. Rewrite using `[map_mul, cc_lgF', mul_zero]`. Establish `hlog : PowerSeries.subst thC (lgF ℂ_[l] l) = PowerSeries.C e * g.l`. Establish `h` using `Formalism.L2.G.Pend.thOf_log hLT`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[lgF_eq_logF]`. Conclude with `h`. Establish `hVT : PowerSeries.subst thC (vLT hLT) = PowerSeries.X`. Unfold `vLT`. Rewrite using `[PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hv0) (PowerSeries.HasSubst.of_constantCoeff_zero' hthC0), PowerSeries.subst_mul (PowerSeries.HasSubst.of_constantCoeff_zero' hthC0), PowerSeries.subst_C, hlog]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation.
 
-Establish `e1 : (MvPowerSeries.C e⁻¹ : PowerSeries ℂ_[l]) * (PowerSeries.C e * g.l) = g.l`. Rewrite using `[← mul_assoc]`. Use `show PowerSeries.C e⁻¹ * PowerSeries.C e * g.l = g.l`. Rewrite using `[← map_mul, inv_mul_cancel₀ hene, map_one, one_mul]`. Rewrite using `[e1]`.
-
-Conclude with `Formalism.L2.G.Pend.ex_l g hex hinv`. Use `⟨i0, ?_⟩` and prove the remaining obligations. Use `show iC = vLT hLT`. Use `symm`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem exists_witt_series_inverse_formalGroup_iso_short {l : ℕ} [Fact l.Prime] {g : G1 l} (hOk : g.Ok) (hLT : LTIso g) :
     ∃ w : PowerSeries (WW l), PowerSeries.map (wToC l) w = vLT hLT := by
@@ -272,7 +266,7 @@ theorem exists_witt_series_inverse_formalGroup_iso_short {l : ℕ} [Fact l.Prime
     _ = iC := PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero' hiC0)
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `exists_witt_series_inverse_formalGroup_iso_short hOk hLT`. Rewrite using `[← hw, PowerSeries.coeff_map]`. Use `Formalism.L2.G.Pend.norm_wToC_pow_mul l 0 (PowerSeries.coeff n w)` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem v_integral' {l : ℕ} [Fact l.Prime] {g : G1 l} (hOk : g.Ok) (hLT : LTIso g) (n : ℕ) :
     ‖PowerSeries.coeff n (vLT hLT)‖ ≤ 1 := by
@@ -282,7 +276,7 @@ theorem v_integral' {l : ℕ} [Fact l.Prime] {g : G1 l} (hOk : g.Ok) (hLT : LTIs
   simpa using this
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Use `Formalism.DworkPowerSeriesWeights.norm_natCast_eq_one_of_not_dvd hp (Formalism.L2.Th1.D.UnramifiedCompletion.normL_lt_one l) ?_` and prove the remaining obligations. Introduce `h`. Use `Nat.le_of_dvd hm1 h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem norm_nat_one' {l : ℕ} [Fact l.Prime] (h5 : 5 ≤ l) (m : ℕ) (hm1 : 0 < m) (hm : m < 5) :
     ‖(m : ℂ_[l])‖ = 1 := by
@@ -293,13 +287,13 @@ theorem norm_nat_one' {l : ℕ} [Fact l.Prime] (h5 : 5 ≤ l) (m : ℕ) (hm1 : 0
   omega
 
 /- English proof (translation)
-Introduce `l _ h5 g hLT hOk n`. Establish `hex` using `hOk.2.2.1`. Establish `hinv` using `hOk.2.2.2`. Establish `hv0 : PowerSeries.constantCoeff (PowerSeries.C (eLT hLT)⁻¹ * lgF ℂ_[l] l) = 0`. Rewrite using `[map_mul, cc_lgF', mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvcc : PowerSeries.constantCoeff (vLT hLT) = 0` using `PowerSeries.constantCoeff_subst_eq_zero hv0 _ hex`. Establish `hvS : PowerSeries.HasSubst (vLT hLT)` using `PowerSeries.HasSubst.of_constantCoeff_zero' hvcc`. Establish `hgl : g.l = Formalism.L2.Th1.A.logSer g.W` using `Formalism.L2.KerInert.Dict.formal_logarithm_agree l g.W g.wq hOk.2.1`. Establish `hlW0 : PowerSeries.constantCoeff (Formalism.L2.Th1.A.logSer g.W) = 0` using `by rw [← hgl]; exact Formalism.MainNotions.J.cc_l g`. Establish `hvl : PowerSeries.subst (vLT hLT) (Formalism.L2.Th1.A.logSer g.W) = PowerSeries.C (eLT hLT)⁻¹ * lgF ℂ_[l] l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hgl]`. Conclude with `Formalism.L2.G.Pend.lg_pt g hex hinv hv0`. Establish `h2 : ‖(2 : ℂ_[l])‖ = 1` using `by exact_mod_cast norm_nat_one' h5 2 (by norm_num) (by norm_num)`. Establish `h3 : ‖(3 : ℂ_[l])‖ = 1` using `by exact_mod_cast norm_nat_one' h5 3 (by norm_num) (by norm_num)`. Establish `hiso` using `shortIso_holds ℂ_[l] h2 h3 g.W (Formalism.L2.KerInert.Dict.intModel_of_ok hOk)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ : thetaS l (Formalism.L2.Th1.A.g₂ g.W) (Formalism.L2.Th1.A.g₃ g.W) (eLT hLT)⁻¹ = MvPowerSeries.subst (fun _ => vLT hLT) (PowerSeries.subst (Formalism.L2.Th1.A.logSer g.W) (Formalism.L2.Th1.A.expSer (Formalism.L2.Th1.A.shortW (Formalism.L2.Th1.A.g₂ g.W) (Formalism.L2.Th1.A.g₃ g …`. Unfold `thetaS`. Rewrite using `[Formalism.L2.Th1.A.uSerEq ℂ_[l] _ _, ← PowerSeries.subst_def, PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hlW0) hvS, hvl]`. Rewrite using `[hθ]`. Conclude with `Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_subst' (fun _ => hvcc) (fun _ => integral_ps' (v_integral' hOk hLT)) hiso (Finsupp.single () n)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaTie_holds : ThetaTie := by
   intro l _ h5 g hLT hOk n

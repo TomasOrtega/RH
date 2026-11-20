@@ -10,19 +10,19 @@ open scoped BigOperators
 namespace GlobalTheory.CurveLattice
 
 /- English proof (translation)
-Establish `hr : Module.finrank ℤ I = 2` using `(Ideal.finrank_eq_finrank (RingOfIntegers.basis K) I hI).trans ((RingOfIntegers.rank K).trans hK)`. Set `b : Module.Basis (Fin 2) ℤ I` to `Module.finBasisOfFinrankEq ℤ _ hr`. Establish `hs : ∀ x : I, σ ((x : 𝓞 K) : K) = b.repr x 0 * σ ((b 0 : 𝓞 K) : K) + b.repr x 1 * σ ((b 1 : 𝓞 K) : K)`. Introduce `x`. Use `congrArg (fun x : I => σ ((x : 𝓞 K) : K)) (b.sum_repr x)` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Fin.sum_univ_two]`. Simplify using `using this.symm`. Establish `hb0 : σ ((b 0 : 𝓞 K) : K) ≠ 0`. Rewrite using `[map_ne_zero]`. Establish `: (b 0 : 𝓞 K) ≠ 0` using `fun h => b.ne_zero 0 (Subtype.ext h)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `h0 : (σ ((b 1 : 𝓞 K) : K) * starRingEnd ℂ (σ ((b 0 : 𝓞 K) : K))).im ≠ 0`. Introduce `h0`. Establish `e` using `hs ⟨a * b 0, I.mul_mem_left a (b 0).2⟩`. Establish `e'` using `congrArg (fun z => (z * starRingEnd ℂ (σ ((b 0 : 𝓞 K) : K))).im) e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingOfIntegers.coe_eq_algebraMap, map_mul] at e' h0 ha hb0`. Rewrite `e'` using `[add_mul, _root_.mul_assoc, _root_.mul_assoc, _root_.mul_assoc, Complex.mul_conj, Complex.add_im, Complex.mul_im, Complex.mul_im, Complex.mul_im, h0]`. Simplify using `[ha, hb0] at e'`. Use `⟨⟨σ ((b 0 : 𝓞 K) : K), σ ((b 1 : 𝓞 K) : K), ?_⟩, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearIndependent.pair_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y e`. Establish `e1` using `congrArg Complex.re e`. Establish `e2` using `congrArg Complex.im e`. Simplify using `at e1 e2 h0`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_right_cancel₀ h0 ?_` and prove the remaining obligations. Take the linear combination `(σ ((b 1 : 𝓞 K) : K)).im * e1 - (σ ((b 1 : 𝓞 K) : K)).re * e2`. Use `mul_right_cancel₀ h0 ?_` and prove the remaining obligations. Take the linear combination `(σ ((b 0 : 𝓞 K) : K)).re * e2 - (σ ((b 0 : 𝓞 K) : K)).im * e1`. Rewrite using `[PeriodPair.mem_lattice]`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨_, (m • b 0 + n • b 1).2, by simp⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨_, _, (hs ⟨x, hx⟩).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_periodPair_of_im_ne_zero {K : Type} [Field K] [NumberField K] (hK : Module.finrank ℚ K = 2)
     (σ : K →+* ℂ) (a : 𝓞 K) (ha : (σ (a : K)).im ≠ 0) {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) :
@@ -67,9 +67,9 @@ theorem exists_periodPair_of_im_ne_zero {K : Type} [Field K] [NumberField K] (hK
       exact ⟨_, _, (hs ⟨x, hx⟩).symm⟩
 
 /- English proof (translation)
-Establish `e1` using `tsum_subtype {w : ℂ | w ∈ Λ ∧ w ≠ 0} (fun w : ℂ => 1 / w ^ (2 * k))`. Establish `e2` using `tsum_subtype (L.lattice : Set ℂ) (fun w : ℂ => (w ^ (2 * k))⁻¹)`. Use `e1.trans (Eq.trans (tsum_congr fun w => ?_) e2.symm)` and prove the remaining obligations. Distinguish the cases in `hw : w = 0`. Substitute `hw` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Set.indicator, hk]`. Simplify using `[Set.indicator, hw, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eisG_eq_periodPair_G (Λ : AddSubgroup ℂ) (L : PeriodPair) (h : ∀ z, z ∈ Λ ↔ z ∈ L.lattice) {k : ℕ} (hk : k ≠ 0) :
     eisG Λ k = L.G (2 * k) := by
@@ -82,7 +82,7 @@ theorem eisG_eq_periodPair_G (Λ : AddSubgroup ℂ) (L : PeriodPair) (h : ∀ z,
   · simp [Set.indicator, hw, h]
 
 /- English proof (translation)
-Use `g₂_cube_sub_g₃_sq_ne_zero L` as an intermediate fact. Rewrite using `[TaylorLogMetric.discr, g2, g3, eisG_eq_periodPair_G Λ L h two_ne_zero, eisG_eq_periodPair_G Λ L h three_ne_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discr_ne_zero (Λ : AddSubgroup ℂ) (L : PeriodPair) (h : ∀ z, z ∈ Λ ↔ z ∈ L.lattice) : TaylorLogMetric.discr Λ ≠ 0 := by
   have := g₂_cube_sub_g₃_sq_ne_zero L
@@ -90,11 +90,11 @@ theorem discr_ne_zero (Λ : AddSubgroup ℂ) (L : PeriodPair) (h : ∀ z, z ∈ 
   exact this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨0, cc.zero_mem, by simp⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨c, hc, rfl⟩` from `hx`. Take `⟨c', hc', rfl⟩` from `hy`. Conclude with `⟨c + c', cc.add_mem hc hc', by simp [mul_add]⟩`. Consider the case `neg x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨c, hc, rfl⟩` from `hx`. Conclude with `⟨-c, cc.neg_mem hc, by simp⟩`. Introduce `hz`. Conclude with `AddSubgroup.subset_closure hz`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_lamOf_iff (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ z : ℂ) :
     z ∈ lamOf D cc δ ↔ ∃ c ∈ cc, z = δ * D.host.φ₀ (((c : D.host.K) : D.host.E)) := by
@@ -114,15 +114,15 @@ theorem mem_lamOf_iff (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ z : ℂ) :
     exact AddSubgroup.subset_closure hz
 
 /- English proof (translation)
-Establish `hb : D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E)` using `D.host.sqd_sq`. Establish `hd : 0 < D.host.d` using `D.host.hyp.2.1.pos`. Establish `hK : Module.finrank ℚ D.host.K = 2` using `Formalism.FrobeniusOrbits.SplitK.finrank_K hd hb`. Set `s : D.host.K` to `⟨D.host.sqrtMinusD, IntermediateField.mem_adjoin_simple_self ℚ _⟩`. Establish `hs : s ^ 2 = -(D.host.d : D.host.K)` using `Subtype.ext (by simpa [s] using hb)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hint : IsIntegral ℤ s`. Use `IsIntegral.of_pow (n := 2) two_pos ?_` and prove the remaining obligations. Rewrite using `[hs]`. Conclude with `(isIntegral_natCast _).neg`. Set `σ : D.host.K →+* ℂ` to `D.host.φ₀.comp (algebraMap D.host.K D.host.E)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `him : (σ (((⟨s, hint⟩ : 𝓞 D.host.K) : 𝓞 D.host.K) : D.host.K)).im ≠ 0`. Introduce `h0`. Express the relevant statement in the definitionally equal form `(σ s).im = 0 at h0`. Establish `e : σ s ^ 2 = -(D.host.d : ℂ)` using `by rw [← map_pow, hs]; simp`. Establish `e'` using `congrArg Complex.re e`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [pow_two, Complex.mul_re, h0, Complex.neg_re, Complex.natCast_re] at e'`. Establish `: (0 : ℝ) < D.host.d` using `by exact_mod_cast hd`. Use polynomial arithmetic with `[mul_self_nonneg (σ s).re]`. Take `⟨L, hL⟩` from `exists_periodPair_of_im_ne_zero hK σ (⟨s, hint⟩ : 𝓞 D.host.K) him hc`. Use `⟨L, fun z => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, mem_lamOf_iff]`. Simplify using `only [one_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_periodPair_one (D : D7) {cc : Ideal (𝓞 D.host.K)} (hc : cc ≠ ⊥) :
     ∃ L : PeriodPair, ∀ z : ℂ, z ∈ lamOf D cc 1 ↔ z ∈ L.lattice := by
@@ -151,15 +151,15 @@ theorem exists_periodPair_one (D : D7) {cc : Ideal (𝓞 D.host.K)} (hc : cc ≠
   rfl
 
 /- English proof (translation)
-Introduce `D cc δ h`. Take `⟨L, hL⟩` from `exists_periodPair_one D h.1.1`. Establish `hδ : δ ≠ 0`. Introduce and unpack `rfl`. Establish `e : (0 : ℂ) ^ 12 = TaylorLogMetric.discr (lamOf D cc 1)` using `h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `discr_ne_zero _ L hL (by rw [← e]; simp)`. Establish `hind : LinearIndependent ℝ ![δ * L.ω₁, δ * L.ω₂]`. Establish `h1` using `LinearIndependent.pair_iff.1 L.indep`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `x y e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1 x y (mul_left_cancel₀ hδ ?_)` and prove the remaining obligations. Simplify using `only [Complex.real_smul] at e ⊢`. Take the linear combination `e`. Use `⟨⟨δ * L.ω₁, δ * L.ω₂, hind⟩, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_lamOf_iff, PeriodPair.mem_lattice]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Take `⟨m, n, e⟩` from `PeriodPair.mem_lattice.1 ((hL _).1 ((mem_lamOf_iff D cc 1 _).2 ⟨c, hc, rfl⟩))`. Conclude with `⟨m, n, by linear_combination δ * e⟩`. Introduce and unpack `⟨m, n, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, e⟩` from `(mem_lamOf_iff D cc 1 _).1 ((hL _).2 (PeriodPair.mem_lattice.2 ⟨m, n, rfl⟩))`. Conclude with `⟨c, hc, by linear_combination δ * e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_periodPair_lamOf : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ →
     ∃ L : PeriodPair, ∀ z : ℂ, z ∈ lamOf D cc δ ↔ z ∈ L.lattice := by

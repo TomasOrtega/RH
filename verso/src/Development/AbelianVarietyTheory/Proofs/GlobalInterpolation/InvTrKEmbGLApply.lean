@@ -18,11 +18,9 @@ variable {E K ι : Type} [Field E] [NumberField E] [Field K] [NumberField K] [Fi
 omit [Fintype ι] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Conclude with `h _ (Submodule.subset_span ⟨y, hy, rfl⟩)`. Introduce `h x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem z hz => obtain ⟨y, hy, rfl⟩ := hz`. Conclude with `h y hy`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [dotProduct_add]`. Conclude with `Submodule.add_mem _ hy hz`.
-
-Consider the case `smul c y _ hy => rw [dotProduct_smul]`. Conclude with `Submodule.smul_mem _ c hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_dualFr_tauLat {n : ℕ} (τ : ι) (L : Submodule (𝓞 E) (Fin n → E)) (φ : Fin n → K) :
     φ ∈ dualFr (tauLat emb τ L) ↔ ∀ y ∈ L, φ ⬝ᵥ (fun a => emb τ (y a)) ∈ (1 : Submodule (𝓞 K) K) := by
@@ -39,19 +37,19 @@ theorem mem_dualFr_tauLat {n : ℕ} (τ : ι) (L : Submodule (𝓞 E) (Fin n →
 omit [Fintype ι] in
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Use extensionality with `φ`. Rewrite using `[mem_dualFr_tauLat]`. Express the relevant statement in the definitionally equal form `_ ↔ (fun a : Fin n => φ a.castSucc) ∈ dualFr (tauLat emb τ L') ∧ ∃ c : 𝓞 K, φ (Fin.last n) = (c : K) * emb τ t`. Use `replace hL : ∀ x, x ∈ L ↔ (fun a : Fin n => x a.castSucc) ∈ L' ∧ t * x (Fin.last n) ∈ (1 : Submodule (𝓞 E) E) := hL`.
+Substitute using the available equality. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_dualFr_tauLat]`. Establish `e : ∀ y : Fin (n + 1) → E, φ ⬝ᵥ (fun a => emb τ (y a)) = (fun a : Fin n => φ a.castSucc) ⬝ᵥ (fun a => emb τ (y a.castSucc)) + φ (Fin.last n) * emb τ (y (Fin.last n))`. Introduce `y`. Simplify using `only [dotProduct, Fin.sum_univ_castSucc]`. Establish `ht' : emb τ t ≠ 0` using `(map_ne_zero _).2 ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun y hy => ?_, ?_⟩` and prove the remaining obligations. Use `h (Fin.snoc y 0) ((hL _).2 ⟨by simpa using hy, by simp⟩)` as an intermediate fact. Rewrite `this` using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Use `h (Fin.snoc (0 : Fin n → E) t⁻¹) ((hL _).2 ⟨by simp only [Fin.snoc_castSucc]; exact L'.zero_mem, by` as an intermediate fact. Rewrite using `[Fin.snoc_last, mul_inv_cancel₀ ht]`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩⟩)`. Rewrite `this` using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last, Pi.zero_apply, map_zero] at this`. Establish `h0 : (fun a : Fin n => φ a.castSucc) ⬝ᵥ (fun _ => (0 : K)) = 0` using `dotProduct_zero _`. Rewrite `this` using `[h0, zero_add, map_inv₀]`. Take `⟨c, hc⟩` from `Submodule.mem_one.1 this`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = algebraMap (𝓞 K) K c * _`. Rewrite using `[hc, inv_mul_cancel_right₀ ht']`. Introduce and unpack `⟨h1, c, hc⟩ y hy`. Take `⟨h2, h3⟩` from `(hL y).1 hy`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 h3`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `Submodule.add_mem _ (h1 _ h2) ?_` and prove the remaining obligations. Rewrite using `[hc, mul_assoc, ← map_mul, ← hr]`. Conclude with `Submodule.mem_one.2 ⟨c * RingOfIntegers.mapRingHom (emb τ) r, by rw [map_mul]; rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualFr_tauLat_sum {N n : ℕ} (hN : N = n + 1) (τ : ι) {t : E} (ht : t ≠ 0) (L : Submodule (𝓞 E) (Fin N → E))
     (L' : Submodule (𝓞 E) (Fin n → E))
@@ -95,7 +93,7 @@ theorem dualFr_tauLat_sum {N n : ℕ} (hN : N = n + 1) (τ : ι) {t : E} (ht : t
 omit [NumberField E] [NumberField K] [Fintype ι] in
 
 /- English proof (translation)
-Simplify using `only [invTrK, inside₂, embGL, Formalism.UG.bc, MonoidHom.coe_mk, OneHom.coe_mk, MonoidHom.pi_apply, transpose_apply, ← map_inv]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem invTrK_embGL_apply {n : ℕ} (γ : GL (Fin n) E) (τ : ι) (a b : Fin n) :
     ((invTrK (embGL emb γ) τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a b =
@@ -107,15 +105,13 @@ theorem invTrK_embGL_apply {n : ℕ} (γ : GL (Fin n) E) (τ : ι) (a b : Fin n)
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `hne : ∀ a : Fin n, Br.iC hN a ≠ Br.iL hN` using `fun a h => absurd (congrArg Fin.val h) a.2.ne`. Establish `key` using `GlobalTheory.BranchFormula.equivariance K ι N n hN lam sg hI hS (invTrK (embGL emb γ)) (invTrK (embGL emb γ')) (fun τ => by`. Simplify using `only [invTrK_embGL_apply]`. Use `⟨fun a b => ?_, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (h1 (Pi.single (Br.iC hN a) 1)) b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : iniH hN (Pi.single (Br.iC hN a) (1 : E)) = Pi.single a 1`. Use function extensionality and compare the values at `i`. Simplify using `only [iniH, Pi.single_apply, (Br.iC_inj hN).eq_iff]`. Rewrite `h` using `[e, mulVec_single_one, mulVec_single_one]`. Conclude with `congrArg _ h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `h2 (Pi.single (Br.iC hN a) 1)`. Rewrite `h` using `[mulVec_single_one, Pi.single_eq_of_ne (hne a).symm]`. Conclude with `(congrArg _ h).trans (map_zero _)`. Establish `h` using `congrFun (h1 (Pi.single (Br.iL hN) 1)) a`. Establish `e : iniH hN (Pi.single (Br.iL hN) (1 : E)) = 0` using `funext fun i => Pi.single_eq_of_ne (hne i) _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[e, mulVec_zero, mulVec_single_one]`. Conclude with `(congrArg _ h).trans (map_zero _)`. Establish `h` using `h2 (Pi.single (Br.iL hN) 1)`. Rewrite `h` using `[mulVec_single_one, Pi.single_eq_same]`. Conclude with `(congrArg _ h).trans (map_one _)) G`.
-
-Rewrite using `[Br.brAt, LinearMap.smul_apply, LinearMap.smul_apply, map_smul]`. Conclude with `congrArg _ key`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brAt_rhoVr {N n : ℕ} (hN : N = n + 1) {lam : ι → DomWeight N} {sg : ι → DomWeight n}
     (hI : ∀ τ, Br.Interlace hN (lam τ) (sg τ)) (hS : ∀ τ, Br.SameShift (lam τ) (sg τ)) (t : ι → K)
@@ -151,9 +147,9 @@ theorem brAt_rhoVr {N n : ℕ} (hN : N = n + 1) {lam : ι → DomWeight N} {sg :
 variable [StarRing E] [StarRing K] (σ : K →+* ℂ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `h : S.rho emb lam b g v = ((S.chr b g : Kˣ) : K) • rhoVr emb lam (S.gam b g) v` using `rfl`. Rewrite using `[h, LinearMap.map_smulₛₗ, GStep.tr, trFr_apply, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Use `evV_rhoVr_tr emb 1 lam σ _ v y _ ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg Subtype.val ((frEquiv emb σ (S.gam b g)).apply_symm_apply y)` as an intermediate fact. Introduce `τ`. Conclude with `(congrFun this τ).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem evV_rho {n : ℕ} (S : GStep E K n) (lam : ι → DomWeight n) (b : S.β) (g : S.G b) (v : Formalism.L2.DIV.VV K lam) :
     evV emb (1 : Matrix (Fin n) (Fin n) E) lam σ (S.rho emb lam b g v) =
@@ -170,7 +166,7 @@ theorem evV_rho {n : ℕ} (S : GStep E K n) (lam : ι → DomWeight n) (b : S.β
 omit [NumberField E] [NumberField K] [StarRing E] [StarRing K] in
 
 /- English proof (translation)
-Establish `h` using `polOf_fnOf (Gr emb σ n) (shiftOf lam) (fr0 emb σ n) (MvPolynomial.map σ v.1)`. Establish `e : (fun τ => ((fr0 emb σ n).1 τ)⁻¹) = 1` using `funext fun τ => inv_one`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem polOf_evV {n : ℕ} (lam : ι → DomWeight n) (v : Formalism.L2.DIV.VV K lam) :
     polOf (Gr emb σ n) (shiftOf lam) (fr0 emb σ n) (evV emb (1 : Matrix (Fin n) (Fin n) E) lam σ v) =
@@ -184,7 +180,7 @@ variable {R : Ranks} {I : ChainIn E K ι R} (Q : PerIn I) (hc : ι → HCParam R
 omit [StarRing E] [StarRing K] in
 
 /- English proof (translation)
-Simplify using `only [PerIn.br, Br.brAt, Br.brStd, LinearMap.smul_apply, LinearMap.comp_apply, Submodule.subtype_apply, Submodule.coe_smul, GlobalTheory.Proof.TensorMapDescent.branchingProjection_map]`. Rewrite using `[MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, map_prod σ]`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun τ _ => (map_zpow₀ σ _ _).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem br_map (v : Formalism.L2.DIV.VV K (lamT hc R.m)) :
     Q.br emb σ hc (MvPolynomial.map σ v.1) =
@@ -196,7 +192,7 @@ theorem br_map (v : Formalism.L2.DIV.VV K (lamT hc R.m)) :
   exact Finset.prod_congr rfl fun τ _ => (map_zpow₀ σ _ _).symm
 
 /- English proof (translation)
-Establish `h1 : delAtr emb lam (S.Lsh b (S.mv b d • S.rep (S.cl b d))) = (delAtr emb lam (S.Lsh b (S.rep (S.cl b d)))).map ((S.rho emb lam b (S.mv b d)).restrictScalars (𝓞 K))` using `(h b).del_smul (S.mv b d) (S.rep (S.cl b d))`. Rewrite `h1` using `[S.mv_smul]`. Rewrite using `[h1]`. Conclude with `Submodule.mem_map_of_mem (hx (S.cl b d))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_mv_mem {n : ℕ} (S : GStep E K n) (lam : ι → DomWeight n) (h : (S.fam emb lam).Ok) (x : S.FormsK emb lam h)
     (hx : x ∈ (S.hlat emb lam h).L) (b : S.β) (d : S.D b) :
@@ -209,13 +205,11 @@ theorem rho_mv_mem {n : ℕ} (S : GStep E K n) (lam : ι → DomWeight n) (h : (
   exact Submodule.mem_map_of_mem (hx (S.cl b d))
 
 /- English proof (translation)
-Set `v : Q.S'.Cl → Formalism.L2.DIV.VV K (lamT hc R.m)` to `fun c => (I.S R.m).rho emb (lamT hc R.m) Q.b0 ((I.S R.m).mv Q.b0 (Q.tilPt c)) (x.1 (Q.tilC c))`. Set `B` to `Br.brAt (N_m_succ R) (lamT hc R.m) Q.sgT (fun τ => emb τ Q.tz)`. Use `⟨⟨fun c => B (v c), fun c g => ?_⟩, fun c => ?_, funext fun c => ?_⟩` and prove the remaining obligations. Establish `h1 : (I.S R.m).rho emb (lamT hc R.m) Q.b0 (((I.S R.m).mv Q.b0 (Q.tilPt c))⁻¹ * Q.ext c.1 g.1 * (I.S R.m).mv Q.b0 (Q.tilPt c)) (x.1 (Q.tilC c)) = x.1 (Q.tilC c)` using `x.2 (Q.tilC c) (Q.stabMap hQ c g)`. Establish `h2 : (I.S R.m).rho emb (lamT hc R.m) Q.b0 (Q.ext c.1 g.1) (v c) = v c`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg ((I.S R.m).rho emb (lamT hc R.m) Q.b0 ((I.S R.m).mv Q.b0 (Q.tilPt c))) h1`. Rewrite `h3` using `[← Module.End.mul_apply, ← map_mul, ← mul_assoc, mul_inv_cancel_left, map_mul, Module.End.mul_apply]`. Conclude with `h3`. Use `show ((Q.S'.chr c.1 g.1 : Kˣ) : K) • rhoVr emb Q.sgT (Q.S'.gam c.1 g.1) (B (v c)) = B (v c)`. Rewrite using `[← brAt_rhoVr emb (N_m_succ R) hW hS _ (Q.S'.gam c.1 g.1) ((I.S R.m).gam Q.b0 (Q.ext c.1 g.1)) (fun z => by rw [← map_inv, ← map_inv, ← map_inv]; exact hQ.gam_ini _ _ z) (fun z => by rw [← map_inv, ← map_inv]; exact hQ.gam_last _ _ z), ← map_smul, ← hQ.chr_ext]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg B h2`. Establish `h2 : v c ∈ delAtr emb (lamT hc R.m) ((I.S R.m).Lsh Q.b0 (Q.til c.1 (Q.S'.rep c)))` using `rho_mv_mem emb (I.S R.m) (lamT hc R.m) hF x hx Q.b0 (Q.tilPt c)`. Use `GlobalTheory.BranchFormula.integrality h6 K ι _ _ (N_m_succ R) _ _ hW hS _ _ (fun τ => (map_ne_zero _).2 hQ.tz_ne) _ ?_` and prove the remaining obligations. Unfold `delAtr at h2`. Rewrite `h2` using `[funext fun τ => dualFr_tauLat_sum emb (N_m_succ R) τ hQ.tz_ne _ _ (hQ.Lsh_til c.1 (Q.S'.rep c))]`. Then use the resulting hypothesis.
-
-Use `show _ = fnOf (Gr emb σ (R.N R.m - 1)) (shiftOf Q.sgT) 1 (Q.br emb σ hc (polOf (Gr emb σ (R.N R.m)) (shiftOf (lamT hc R.m)) (fr0 emb σ (R.N R.m)) ((I.S R.m).tr emb σ Q.b0 ((I.S R.m).mv Q.b0 (Q.tilPt c)) (evV emb (1 : Matrix (Fin (R.N R.m)) (Fin (R.N R.m)) E) (lamT hc R.m) σ (x.1 …`. Rewrite using `[← evV_rho, polOf_evV, br_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_image (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6) (hI : I.Ok) (hQ : Q.Ok)
     (hW : ∀ τ, Br.Interlace (N_m_succ R) (lamT hc R.m τ) (Q.sgT τ)) (hS : ∀ τ, Br.SameShift (lamT hc R.m τ) (Q.sgT τ))
@@ -253,9 +247,9 @@ theorem exists_image (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6)
 omit [StarRing K] in
 
 /- English proof (translation)
-Set `X : Fields` to `{ F := ℚ, E := E, K := K, Tau := ι, emb := emb }`. Set `W : Wts X Unit R` to `⟨fun τ => RowPar.of (hc τ), fun _ => hc, ∅⟩`. Use `GlobalTheory.BranchMembers.members X Unit R W ⟨fun τ => ⟨hc τ, rfl⟩, fun _ _ => rfl, fun _ _ _ _ => rfl, fun _ _ _ _ => rfl⟩ () τ` as an intermediate fact. Unfold `PerIn.sgT`. Rewrite using `[h τ]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem weights_ok (emb : ι → E →+* K) [StarRing K] (h : ∀ τ, Q.sg τ = (RowPar.of (hc τ)).sg) (τ : ι) :
     Br.Interlace (N_m_succ R) (lamT hc R.m τ) (Q.sgT τ) ∧ Br.SameShift (lamT hc R.m τ) (Q.sgT τ) := by
@@ -281,7 +275,7 @@ def IsBuilt (X : Ch D u) : Prop :=
       X = ⟨_, _, _, forms J Q emb D.what₂.embLL (D.hcW u) Z hI hJ hQ l lf hT⟩
 
 /- English proof (translation)
-Take `⟨E, _, _, _, emb, I, J, Q, Z, hI, hJ, hQ, l, lf, hT, hsg, rfl⟩` from `hX`. Use `(PtIntTest.ptInt_iff _).2 fun x hx => ?_` and prove the remaining obligations. Conclude with `exists_image emb D.what₂.embLL Q (D.hcW u) h6 hI hQ (fun τ => (weights_ok Q _ emb hsg τ).1) (fun τ => (weights_ok Q _ emb hsg τ).2) (lf.fam _) lf.famP x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ptInt_of_isBuilt (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6) {X : Ch D u} (hX : IsBuilt X) : PtInt X := by
   obtain ⟨E, _, _, _, emb, I, J, Q, Z, hI, hJ, hQ, l, lf, hT, hsg, rfl⟩ := hX
@@ -290,7 +284,7 @@ theorem ptInt_of_isBuilt (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusi
     (fun τ => (weights_ok Q _ emb hsg τ).2) (lf.fam _) lf.famP x hx
 
 /- English proof (translation)
-The claim follows from `ptInt_of_isBuilt h6 hX`.
+A detailed English derivation is pending.
 -/
 theorem ptInt_tw (D : D7) (Tw : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) (hX : IsBuilt (tw Tw u μ))
     (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6) : PtInt (tw Tw u μ) :=

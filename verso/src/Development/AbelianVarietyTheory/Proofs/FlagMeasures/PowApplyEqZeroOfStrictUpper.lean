@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.StrictUpperNilpotentFlagMeasures
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `i j h`. Rewrite using `[pow_zero]`. Apply `Matrix.one_apply_ne` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Introduce `i j h`. Rewrite using `[pow_succ, Matrix.mul_apply]`.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : (k : ℕ) < (i : ℕ) + n`. Rewrite using `[ih i k hk, zero_mul]`. Rewrite using `[hX k j (by omega), mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_apply_eq_zero_of_strictUpper {m : ℕ} {X : Matrix (Fin m) (Fin m) ℂ}
     (hX : ∀ i j : Fin m, (j : ℕ) ≤ (i : ℕ) → X i j = 0) (n : ℕ) :

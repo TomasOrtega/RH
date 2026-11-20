@@ -11,19 +11,17 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p _ k k' _ _ _ _ _ _ σ G' G'₀ G'₁ C i₀ q₀ i₁ q₁ hEt hConn hsplit x n a`. Establish `h1 : ∀ c : C.A n, i₁.app n (x.app n c) = algebraMap k' (G'₁.A n) (σ (counit (R` using `k) c)) := by`. Introduce `c`. Use `haveI := hEt n`. Establish `hmem : c - algebraMap k (C.A n) (counit (R` using `k) c) ∈ augIdeal k (C.A n) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_augIdeal_iff', map_sub, ← Bialgebra.counitAlgHom_apply (R := k), ← Bialgebra.counitAlgHom_apply (R := k), AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. Establish `h` using `(((hConn n _ hmem).map (x.app n).toRingHom).map (i₁.app n)).eq_zero`. Express the relevant statement in the definitionally equal form `i₁.app n (x.app n (c - _)) = 0 at h`. Rewrite `h` using `[map_sub, SemiBialgHom.map_algebraMap, map_sub, AlgHomClass.commutes, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP₁ : ∀ c : C.A n, (q₁ ≫ i₁).app n (x.app n c) = algebraMap k' (G'.A n) (σ (counit (R` using `k) c)) := by`. Introduce `c`. Rewrite using `[comp_app, BialgHom.comp_apply, h1, AlgHomClass.commutes]`. Establish `hid : ∀ b : G'.A n, ((q₀ ≫ i₀).conv n * (q₁ ≫ i₁).conv n).ofConv b = b`. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun f : G' ⟶ G' => f.app n b) hsplit`. Conclude with `h`. Establish `key : ∀ c : C.A n ⊗[k] C.A n, Algebra.TensorProduct.lift ((q₀ ≫ i₀).app n : G'.A n →ₐ[k'] G'.A n) ((q₁ ≫ i₁).app n : G'.A n →ₐ[k'] G'.A n) (fun _ _ => .all _ _) ((x.app n).two c) = (q₀ ≫ i₀).app n (x.app n (TensorProduct.rid k (C.A n) (LinearMap.lTensor (C.A n) (counit (R` using `k)) c))) := by`. Introduce `c`. Proceed by induction on `c with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add c d hc hd => simp only [map_add, hc, hd]`. Consider the case `tmul b c`. Rewrite using `[TensorProduct.map_tmul, Algebra.TensorProduct.lift_tmul, LinearMap.lTensor_tmul, TensorProduct.rid_tmul, SemiBialgHom.lin_apply, SemiBialgHom.lin_apply]`. Express the relevant statement in the definitionally equal form `_ * (q₁ ≫ i₁).app n (x.app n c) = _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hP₁, (x.app n).smul_map, map_smul, Algebra.smul_def, mul_comm]`. Both sides reduce to the same expression. Establish `e : (toPts ((q₀ ≫ i₀).conv n * (q₁ ≫ i₁).conv n)).ofConv (x.app n a) = x.app n a` using `hid (x.app n a)`. Rewrite `e` using `[map_mul, AlgHom.convMul_apply, toPts_ofConv, toPts_ofConv, ← (x.app n).two_comul]`. Establish `e2` using `key (comul (R := k) a)`.
-
-Rewrite `e2` using `[Coalgebra.lTensor_counit_comul, TensorProduct.rid_tmul, one_smul]`. Conclude with `e2.symm.trans e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PDivGroup.semiHom_app_eq_conn_part :
     ∀ (p : ℕ) [Fact p.Prime] (k k' : Type) [Field k] [CharP k p] [PerfectRing k p]

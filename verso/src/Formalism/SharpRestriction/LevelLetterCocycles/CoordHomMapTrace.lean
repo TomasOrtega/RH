@@ -17,7 +17,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Use `show W.φD T (a • x) = (letφ W.φ₀ a) • W.φD T x`. Rewrite using `[← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem φD_smulA (T : LocLat G Qp LL O) (a : LetA O n) (x : W.DD T) :
     W.φD T (a • x) = W.φA a • W.φD T x := by
@@ -25,7 +25,7 @@ theorem φD_smulA (T : LocLat G Qp LL O) (a : LetA O n) (x : W.DD T) :
   rw [← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul]
 
 /- English proof (translation)
-Use `show W.γD T g (a • x) = (letγ (W.γ₀ g) a) • W.γD T g x`. Rewrite using `[← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem γD_smulA (T : LocLat G Qp LL O) (g : W.Gam) (a : LetA O n) (x : W.DD T) :
     W.γD T g (a • x) = W.γA g a • W.γD T g x := by
@@ -33,14 +33,14 @@ theorem γD_smulA (T : LocLat G Qp LL O) (g : W.Gam) (a : LetA O n) (x : W.DD T)
   rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE a x, map_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smulA {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (a : LetA O n) (x : W.DD T) :
     W.map f (a • x) = a • W.map f x := by
   rw [← algebraMap_smul W.EE a x, map_smul, algebraMap_smul]
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.LocWach.φA letφ letE`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `by_cases h : j = i <;> simp [Pi.single_apply, h, sub_left_inj]`.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem φA_letE (i : ZMod n) : W.φA (letE (i - 1) : LetA O n) = letE i := by
   unfold Formalism.BasicNotions.LocWach.φA letφ letE
@@ -48,7 +48,7 @@ theorem φA_letE (i : ZMod n) : W.φA (letE (i - 1) : LetA O n) = letE i := by
   by_cases h : j = i <;> simp [Pi.single_apply, h, sub_left_inj]
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.LocWach.γA letγ letE`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `by_cases h : j = i <;> simp [Pi.single_apply, h]`.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem γA_letE (g : W.Gam) (i : ZMod n) : W.γA g (letE i : LetA O n) = letE i := by
   unfold Formalism.BasicNotions.LocWach.γA letγ letE
@@ -56,7 +56,7 @@ theorem γA_letE (g : W.Gam) (i : ZMod n) : W.γA g (letE i : LetA O n) = letE i
   by_cases h : j = i <;> simp [Pi.single_apply, h]
 
 /- English proof (translation)
-Unfold `letE LetA`. Use extensionality with `j`. Apply the tactic sequence `by_cases h : j = i <;> simp [Pi.single_apply, h]`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem letE_mul_self (i : ZMod n) : (letE i : LetA O n) * letE i = letE i := by
   unfold letE LetA
@@ -64,9 +64,9 @@ theorem letE_mul_self (i : ZMod n) : (letE i : LetA O n) * letE i = letE i := by
   by_cases h : j = i <;> simp [Pi.single_apply, h]
 
 /- English proof (translation)
-Unfold `letE LetA`. Use extensionality with `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[Pi.single_apply, h]`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem letE_mul_ne {i k : ZMod n} (h : i ≠ k) : (letE i : LetA O n) * letE k = 0 := by
   unfold letE LetA
@@ -76,7 +76,7 @@ theorem letE_mul_ne {i k : ZMod n} (h : i ≠ k) : (letE i : LetA O n) * letE k 
   · simp [Pi.single_apply, hj]
 
 /- English proof (translation)
-Unfold `letE LetA`. Conclude with `Finset.univ_sum_single (fun _ => (1 : PowerSeries O))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sum_letE [NeZero n] : ∑ i : ZMod n, (letE i : LetA O n) = 1 := by
   unfold letE LetA
@@ -101,7 +101,7 @@ Both sides reduce to the same expression.
 @[simp] theorem BaseId.d_apply (I : BaseId W) (a : PowerSeries O) (i : ZMod n) : I.d a i = I.ι a := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show W.φ₀ (I.d a (i - 1)) = I.d (I.Bs.φ a) i`. Rewrite using `[BaseId.d_apply, BaseId.d_apply, I.ι_φ]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BaseId.φA_d (I : BaseId W) (a : PowerSeries O) : W.φA (I.d a) = I.d (I.Bs.φ a) := by
   funext i
@@ -109,7 +109,7 @@ theorem BaseId.φA_d (I : BaseId W) (a : PowerSeries O) : W.φA (I.d a) = I.d (I
   rw [BaseId.d_apply, BaseId.d_apply, I.ι_φ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show W.γ₀ W.gamK (I.d a i) = I.d (I.Bs.γ a) i`. Rewrite using `[BaseId.d_apply, BaseId.d_apply, I.ι_γ]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BaseId.γA_d (I : BaseId W) (a : PowerSeries O) : W.γA W.gamK (I.d a) = I.d (I.Bs.γ a) := by
   funext i
@@ -117,7 +117,7 @@ theorem BaseId.γA_d (I : BaseId W) (a : PowerSeries O) : W.γA W.gamK (I.d a) =
   rw [BaseId.d_apply, BaseId.d_apply, I.ι_γ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show W.γ₀ δ (I.d a i) = I.d a i`. Rewrite using `[BaseId.d_apply, I.ι_Δ δ hδ]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BaseId.γA_Δ (I : BaseId W) (δ : W.Gam) (hδ : δ ∈ W.DelF) (a : PowerSeries O) :
     W.γA δ (I.d a) = I.d a := by
@@ -126,7 +126,7 @@ theorem BaseId.γA_Δ (I : BaseId W) (δ : W.Gam) (hδ : δ ∈ W.DelF) (a : Pow
   rw [BaseId.d_apply, I.ι_Δ δ hδ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[BaseId.d_apply, I.ι_X]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem BaseId.d_X (I : BaseId W) : I.d PowerSeries.X = W.π₀ := by
   funext i
@@ -134,21 +134,21 @@ theorem BaseId.d_X (I : BaseId W) : I.d PowerSeries.X = W.π₀ := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[show PowerSeries.C m = algebraMap O (PowerSeries O) m from rfl]`. Conclude with `I.d.commutes m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BaseId.d_C (I : BaseId W) (m : O) : I.d (PowerSeries.C m) = algebraMap O (LetA O n) m := by
   rw [show PowerSeries.C m = algebraMap O (PowerSeries O) m from rfl]
   exact I.d.commutes m
 
 /- English proof (translation)
-Unfold `Formalism.ExponentWindows.E.Base.q qP`. Rewrite using `[map_add, I.d_X, I.d_C, I.ℓ_eq, map_natCast]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem BaseId.d_q (I : BaseId W) : I.d I.Bs.q = qP W := by
   unfold Formalism.ExponentWindows.E.Base.q qP
   rw [map_add, I.d_X, I.d_C, I.ℓ_eq, map_natCast]
 
 /- English proof (translation)
-Unfold `Formalism.ExponentWindows.E.Base.p pS`. Proceed by induction on `s with`. Consider the case `zero => simpa using I.d_q`. Consider the case `succ s ih => rw [Function.iterate_succ_apply', ← I.φA_d, ih, pow_succ', AlgHom.mul_apply]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem BaseId.d_p (I : BaseId W) (s : ℕ) : I.d (I.Bs.p s) = pS W s := by
   unfold Formalism.ExponentWindows.E.Base.p pS
@@ -200,49 +200,49 @@ variable {I : BaseId W} {T : LocLat G Qp LL O}
 def Coord.t (C : Coord W I T) (i : ZMod n) (x : C.V) : W.DD T := ((C.θ i x : ↥(DDl W T i)) : W.DD T)
 
 /- English proof (translation)
-Simplify using `only [Coord.t, map_add, AddSubgroup.coe_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Coord.t_add (C : Coord W I T) (i : ZMod n) (x y : C.V) : C.t i (x + y) = C.t i x + C.t i y := by
   simp only [Coord.t, map_add, AddSubgroup.coe_add]
 
 /- English proof (translation)
-Simplify using `only [Coord.t, map_sub, AddSubgroup.coe_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Coord.t_sub (C : Coord W I T) (i : ZMod n) (x y : C.V) : C.t i (x - y) = C.t i x - C.t i y := by
   simp only [Coord.t, map_sub, AddSubgroup.coe_sub]
 
 /- English proof (translation)
-Simplify using `only [Coord.t, map_zero, ZeroMemClass.coe_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Coord.t_zero (C : Coord W I T) (i : ZMod n) : C.t i 0 = 0 := by
   simp only [Coord.t, map_zero, ZeroMemClass.coe_zero]
 
 /- English proof (translation)
-The claim follows from `C.θ_smul i a x`.
+A detailed English derivation is pending.
 -/
 theorem Coord.t_smul (C : Coord W I T) (i : ZMod n) (a : PowerSeries O) (x : C.V) :
     C.t i (a • x) = I.d a • C.t i x := C.θ_smul i a x
 
 /- English proof (translation)
-The claim follows from `(C.θ i).injective (Subtype.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem Coord.t_inj (C : Coord W I T) (i : ZMod n) {x y : C.V} (h : C.t i x = C.t i y) : x = y :=
   (C.θ i).injective (Subtype.ext h)
 
 /- English proof (translation)
-The claim follows from `(C.θ i x).2.1`.
+A detailed English derivation is pending.
 -/
 theorem Coord.t_letter (C : Coord W I T) (i : ZMod n) (x : C.V) :
     (letE i : LetA O n) • C.t i x = C.t i x := (C.θ i x).2.1
 
 /- English proof (translation)
-The claim follows from `(C.θ i x).2.2 δ hδ`.
+A detailed English derivation is pending.
 -/
 theorem Coord.t_Δ (C : Coord W I T) (i : ZMod n) (x : C.V) (δ : W.Gam) (hδ : δ ∈ W.DelF) :
     W.γD T δ (C.t i x) = C.t i x := (C.θ i x).2.2 δ hδ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(C.θ i).symm ⟨x, h1, h2⟩, by simp only [Coord.t, AddEquiv.apply_symm_apply]⟩`.
+Supply the required witnesses or components.
 -/
 theorem Coord.t_surj (C : Coord W I T) (i : ZMod n) (x : W.DD T) (h1 : (letE i : LetA O n) • x = x)
     (h2 : ∀ δ ∈ W.DelF, W.γD T δ x = x) : ∃ y : C.V, C.t i y = x :=
@@ -281,7 +281,7 @@ def latOf (C : Coord W I T) : Formalism.ExponentWindows.E.Lat I.Bs n C.V where
         exact (W.N T).smul_mem _ hx }
 
 /- English proof (translation)
-Simplify using `only [Coord.t, latOf, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, AddEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem t_φ (C : Coord W I T) (i : ZMod n) (x : C.V) :
     C.t i ((latOf C).φ i x) = W.φD T (C.t (i - 1) x) := by
@@ -289,7 +289,7 @@ theorem t_φ (C : Coord W I T) (i : ZMod n) (x : C.V) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [Coord.t, latOf, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, AddEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem t_γ (C : Coord W I T) (i : ZMod n) (x : C.V) :
     C.t i ((latOf C).γ i x) = W.γD T W.gamK (C.t i x) := by
@@ -297,7 +297,7 @@ theorem t_γ (C : Coord W I T) (i : ZMod n) (x : C.V) :
   rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_N (C : Coord W I T) (i : ZMod n) (x : C.V) : x ∈ (latOf C).N i ↔ C.t i x ∈ W.N T := Iff.rfl
 
@@ -306,39 +306,39 @@ variable [NeZero n]
 def tot (C : Coord W I T) (y : ZMod n → C.V) : W.DD T := ∑ i, C.t i (y i)
 
 /- English proof (translation)
-Simplify using `only [tot, Pi.add_apply, Coord.t_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tot_add (C : Coord W I T) (y z : ZMod n → C.V) : tot C (y + z) = tot C y + tot C z := by
   simp only [tot, Pi.add_apply, Coord.t_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [tot, Pi.sub_apply, Coord.t_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tot_sub (C : Coord W I T) (y z : ZMod n → C.V) : tot C (y - z) = tot C y - tot C z := by
   simp only [tot, Pi.sub_apply, Coord.t_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [tot, Pi.zero_apply, Coord.t_zero, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tot_zero (C : Coord W I T) : tot C 0 = 0 := by
   simp only [tot, Pi.zero_apply, Coord.t_zero, Finset.sum_const_zero]
 
 /- English proof (translation)
-Simplify using `only [tot, Pi.smul_apply, Coord.t_smul, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tot_smul (C : Coord W I T) (a : PowerSeries O) (y : ZMod n → C.V) :
     tot C (a • y) = I.d a • tot C y := by
   simp only [tot, Pi.smul_apply, Coord.t_smul, Finset.smul_sum]
 
 /- English proof (translation)
-Rewrite using `[tot_smul, BaseId.d_C, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tot_smulC (C : Coord W I T) (m : O) (y : ZMod n → C.V) :
     tot C (PowerSeries.C m • y) = m • tot C y := by
   rw [tot_smul, BaseId.d_C, algebraMap_smul]
 
 /- English proof (translation)
-Rewrite using `[tot, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => C.t_Δ i (y i) δ hδ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tot_Δ (C : Coord W I T) (y : ZMod n → C.V) (δ : W.Gam) (hδ : δ ∈ W.DelF) :
     W.γD T δ (tot C y) = tot C y := by
@@ -346,9 +346,7 @@ theorem tot_Δ (C : Coord W I T) (y : ZMod n → C.V) (δ : W.Gam) (hδ : δ ∈
   exact Finset.sum_congr rfl fun i _ => C.t_Δ i (y i) δ hδ
 
 /- English proof (translation)
-Rewrite using `[tot, Finset.smul_sum, Finset.sum_eq_single i]`. Conclude with `C.t_letter i (y i)`. Introduce `j _ hji`. Rewrite using `[← C.t_letter j (y j), smul_smul, letE_mul_ne hji.symm, zero_smul]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem letE_tot (C : Coord W I T) (y : ZMod n → C.V) (i : ZMod n) :
     (letE i : LetA O n) • tot C y = C.t i (y i) := by
@@ -360,7 +358,7 @@ theorem letE_tot (C : Coord W I T) (y : ZMod n → C.V) (i : ZMod n) :
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply `C.t_inj i` to reduce the goal to its premises. Rewrite using `[← letE_tot, h, letE_tot]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tot_inj (C : Coord W I T) {y z : ZMod n → C.V} (h : tot C y = tot C z) : y = z := by
   funext i
@@ -368,7 +366,7 @@ theorem tot_inj (C : Coord W I T) {y z : ZMod n → C.V} (h : tot C y = tot C z)
   rw [← letE_tot, h, letE_tot]
 
 /- English proof (translation)
-Use `choose y hy using fun i => C.t_surj i ((letE i : LetA O n) • x) (by rw [smul_smul, letE_mul_self]) (fun δ hδ => by rw [γD_smulA, γA_letE, hx δ hδ])`. Use `⟨y, ?_⟩` and prove the remaining obligations. Simplify using `only [tot, hy]`. Rewrite using `[← Finset.sum_smul, sum_letE, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tot_surj (C : Coord W I T) (x : W.DD T) (hx : ∀ δ ∈ W.DelF, W.γD T δ x = x) :
     ∃ y : ZMod n → C.V, tot C y = x := by
@@ -380,7 +378,7 @@ theorem tot_surj (C : Coord W I T) (x : W.DD T) (hx : ∀ δ ∈ W.DelF, W.γD T
   rw [← Finset.sum_smul, sum_letE, one_smul]
 
 /- English proof (translation)
-Simplify using `only [tot, Formalism.ExponentWindows.E.Lat.dφ, Coord.t_sub, t_φ, Finset.sum_sub_distrib, map_sum]`. Use `congr 1`. Conclude with `Fintype.sum_equiv (Equiv.subRight 1) _ _ (fun i => rfl)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem tot_dφ (C : Coord W I T) (z : ZMod n → C.V) :
     tot C ((latOf C).dφ z) = W.φD T (tot C z) - tot C z := by
@@ -389,16 +387,16 @@ theorem tot_dφ (C : Coord W I T) (z : ZMod n → C.V) :
   exact Fintype.sum_equiv (Equiv.subRight 1) _ _ (fun i => rfl)
 
 /- English proof (translation)
-Simplify using `only [tot, Formalism.ExponentWindows.E.Lat.dγ, Coord.t_sub, t_γ, Finset.sum_sub_distrib, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tot_dγ (C : Coord W I T) (z : ZMod n → C.V) :
     tot C ((latOf C).dγ z) = W.γD T W.gamK (tot C z) - tot C z := by
   simp only [tot, Formalism.ExponentWindows.E.Lat.dγ, Coord.t_sub, t_γ, Finset.sum_sub_distrib, map_sum]
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.LocWach.wachCocyclesDelta herrZ1Δ herrCocycles`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.coprod_apply, LinearMap.sub_apply, LinearMap.neg_apply, LinearMap.id_apply, LinearMap.prodMap_apply, Prod.mk_sub_mk, Prod.mk_eq_zero, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, fun δ hδ => (h2 δ hδ).1, fun δ hδ => (h2 δ hδ).2⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[← sub_eq_add_neg, sub_eq_zero]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨?_, fun δ hδ => ⟨h2 δ hδ, h3 δ hδ⟩⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_add_neg, sub_eq_zero]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Z1DΔ (a b : W.DD T) : (a, b) ∈ W.wachCocyclesDelta T ↔
     W.γD T W.gamK a - a = W.φD T b - b ∧ (∀ δ ∈ W.DelF, W.γD T δ a = a) ∧
@@ -417,9 +415,9 @@ theorem mem_Z1DΔ (a b : W.DD T) : (a, b) ∈ W.wachCocyclesDelta T ↔
     exact h1
 
 /- English proof (translation)
-Rewrite using `[mem_Z1DΔ]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, fun δ hδ => tot_Δ C y δ hδ, fun δ hδ => tot_Δ C z δ hδ⟩` and prove the remaining obligations. Rewrite using `[← tot_dγ, ← tot_dφ]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (tot C) h`. Introduce and unpack `⟨h, -, -⟩`. Conclude with `tot_inj C (by rw [tot_dγ, tot_dφ]; exact h)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem cocycle_iff (C : Coord W I T) (y z : ZMod n → C.V) :
     (latOf C).IsCocycle y z ↔ (tot C y, tot C z) ∈ W.wachCocyclesDelta T := by
@@ -444,7 +442,7 @@ def Zf (C : Coord W I T) : AddSubgroup ((ZMod n → C.V) × (ZMod n → C.V)) :=
   (ZfD W T).toAddSubgroup.comap (totP C)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, he⟩`. Conclude with `⟨w, hw, he⟩`. Introduce and unpack `⟨w, hw, he⟩`. Conclude with `⟨w, hw, he⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_Zf (C : Coord W I T) (κ : (ZMod n → C.V) × (ZMod n → C.V)) :
     κ ∈ Zf C ↔ ∃ w : ↥(W.wachCocyclesDelta T), W.clK T w ∈ latticeFiniteCohomology PD T.L ∧
@@ -456,9 +454,9 @@ theorem mem_Zf (C : Coord W I T) (κ : (ZMod n → C.V) × (ZMod n → C.V)) :
     exact ⟨w, hw, he⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_Zf]`. Take `⟨w, hw, he⟩` from `h`. Use `⟨m • w, ?_, ?_⟩` and prove the remaining obligations. Establish `e : W.clK T (m • w) = m • W.clK T w` using `(W.clK T).map_smul m w`. Rewrite using `[e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ m hw`. Simplify using `only [tot_smulC]`. Rewrite using `[Submodule.coe_smul, he, Prod.smul_mk]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Zf_smul (C : Coord W I T) (m : O) (κ : (ZMod n → C.V) × (ZMod n → C.V)) (h : κ ∈ Zf C) :
     (PowerSeries.C m • κ.1, PowerSeries.C m • κ.2) ∈ Zf C := by
@@ -492,7 +490,7 @@ def latHomOf {T T' : LocLat G Qp LL O} {C : Coord W I T} {C' : Coord W I T'} {F 
     exact W.map_N F h.crys h.crys' _ hx
 
 /- English proof (translation)
-Simplify using `only [tot]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => h.coord_hom_map_trace i (y i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tot_map {T T' : LocLat G Qp LL O} {C : Coord W I T} {C' : Coord W I T'} {F : LatHom T.L T'.L}
     (h : CoordHom C C' F) (y : ZMod n → C.V) :

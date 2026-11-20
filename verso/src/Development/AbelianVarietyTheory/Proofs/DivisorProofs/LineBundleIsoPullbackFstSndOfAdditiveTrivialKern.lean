@@ -9,29 +9,29 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.DescIsoExists
 
 /- English proof (translation)
-Introduce `K _ _ A A' B _ _ _ q P _ _ _ hq hP hadd hker`. Set `f` to `(q ▷ B).left`. Establish `hw : f ≫ (A' ⊗ B).hom = (A ⊗ B).hom` using `Over.w (q ▷ B)`. Set `Z : Over (Sp K)` to `Over.mk (pullback.fst f f ≫ (A ⊗ B).hom)`. Establish `hsnd : pullback.snd f f ≫ (A ⊗ B).hom = pullback.fst f f ≫ (A ⊗ B).hom`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← hw, ← Category.assoc, ← pullback.condition, Category.assoc]`. Establish `hB : (q ▷ B) ≫ snd A' B = snd A B` using `whiskerRight_snd q B`. Establish `hA : (q ▷ B) ≫ fst A' B = fst A B ≫ q` using `whiskerRight_fst q B`. Establish `hBl : f ≫ (snd A' B).left = (snd A B).left` using `by rw [← Over.comp_left, hB]`. Establish `hAl : f ≫ (fst A' B).left = (fst A B).left ≫ q.left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, hA, Over.comp_left]`. Set `a : Z ⟶ A` to `Over.homMk (pullback.fst f f ≫ (fst A B).left) (by`. Simplify using `only [Z, Over.mk_hom, Category.assoc, Over.w])`. Set `a' : Z ⟶ A` to `Over.homMk (pullback.snd f f ≫ (fst A B).left) (by`. Simplify using `only [Z, Over.mk_hom, Category.assoc, Over.w]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Conclude with `hsnd)`. Set `b : Z ⟶ B` to `Over.homMk (pullback.fst f f ≫ (snd A B).left) (by`. Simplify using `only [Z, Over.mk_hom, Category.assoc, Over.w])`. Set `u : Z ⟶ A ⊗ B` to `Over.homMk (pullback.fst f f) rfl`. Set `u' : Z ⟶ A ⊗ B` to `Over.homMk (pullback.snd f f) hsnd`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu : lift a b = u` using `by ext1`. Use `ext`. Simplify using `[a, u]`. Use `ext`. Simplify using `[b, u]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hu' : lift a' b = u'` using `by ext1`. Use `ext`. Simplify using `[a', u']`. Use `ext`. Simplify using `only [b, u', lift_snd, Over.homMk_left, Over.comp_left]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hBl, ← Category.assoc, pullback.condition, Category.assoc]`. Establish `hq' : a ≫ q = a' ≫ q`. Use `ext`. Simplify using `only [a, a', Over.comp_left, Over.homMk_left, Category.assoc]`. Rewrite using `[← hAl, ← Category.assoc, pullback.condition, Category.assoc]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (pullback.fst f f : pullback f f ⟶ _) = (lift a b).left` using `by rw [hu]; rfl`. Establish `e2 : (pullback.snd f f : pullback f f ⟶ _) = (lift a' b).left` using `by rw [hu']; rfl`. Use `(cls_eq_iff (pull_isLB hP _) (pull_isLB hP _)).1 ?_` and prove the remaining obligations. Establish `c1 : cls _ (pull_isLB hP (pullback.fst f f)) = evc hP a b`. Rewrite using `[cls_pull hP]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [evc]`. Rewrite using `[e1]`. Establish `c2 : cls _ (pull_isLB hP (pullback.snd f f)) = evc hP a' b`. Rewrite using `[cls_pull hP]`. Simplify using `only [evc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Rewrite using `[c1, c2]`. Set `k : Z ⟶ A` to `a' * a⁻¹`. Establish `hinv : a⁻¹ ≫ q = (a ≫ q)⁻¹`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MonObj.mul_comp, inv_mul_cancel, MonObj.one_comp]`. Establish `hk : k ≫ q = 1`. Simplify using `only [k]`. Rewrite using `[MonObj.mul_comp, hinv, ← hq', mul_inv_cancel]`. Establish `h0 : evc hP k b = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg (CechPic.pull (lift (𝟙 Z) b).left) ((triv_ev_iff hP _ _).1 (hker Z k hk))`. Rewrite `e` using `[pull_evc, map_zero, lift_fst_assoc, Category.id_comp, lift_snd]`. Then use the resulting hypothesis. Establish `ha : a' = k * a` using `by simp only [k, inv_mul_cancel_right]`. Rewrite using `[ha, (isAdditive_iff hP).1 hadd, h0, zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_pull_fst_snd : ∀ (K : Type) [Field K] [IsAlgClosed K] (A A' B : Over (Sp K)) [GrpObj A] [GrpObj A'] [GrpObj B] (q : A ⟶ A') (P : LB (A ⊗ B).left), IsAbelianScheme A → IsAbelianScheme A' → IsAbelianScheme B → IsMonHom q → P.IsLB → IsAdditive P → (∀ (T : Over (Sp K)) (x : T ⟶ A), x ≫ q = 1 → Triv (ev P (fst T B ≫ x) (snd T B))) → LBIso (P.pull (pullback.fst (q ▷ B).left (q ▷ B).left)) (P.pull (pullback.snd (q ▷ B).left (q ▷ B).left)) := by
   intro K _ _ A A' B _ _ _ q P _ _ _ hq hP hadd hker

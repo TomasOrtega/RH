@@ -34,7 +34,7 @@ instance mono_thickι (e : ℕ) (T : Over (Spec (CommRingCat.of R))) : Mono (thi
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _) @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem thickMap_ι (e : ℕ) (T : Over (Spec (CommRingCat.of R))) :
     thickMap R I e T ≫ thickι I (e + 1) T = thickι I e T :=
@@ -42,7 +42,7 @@ theorem thickMap_ι (e : ℕ) (T : Over (Spec (CommRingCat.of R))) :
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _ @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem thickHom_ι (e : ℕ) {T' T : Over (Spec (CommRingCat.of R))} (r : T' ⟶ T) :
     thickHom I e r ≫ thickι I e T = thickι I e T' ≫ r.left :=
@@ -50,7 +50,7 @@ theorem thickHom_ι (e : ℕ) {T' T : Over (Spec (CommRingCat.of R))} (r : T' �
 
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[← cancel_mono (thickι I (e + 1) T), Category.assoc, Category.assoc, thickHom_ι, thickMap_ι, thickMap_ι_assoc, thickHom_ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thickMap_thickHom (e : ℕ) {T' T : Over (Spec (CommRingCat.of R))} (r : T' ⟶ T) :
     thickMap R I e T' ≫ thickHom I (e + 1) r = thickHom I e r ≫ thickMap R I e T := by
@@ -60,16 +60,16 @@ theorem thickMap_thickHom (e : ℕ) {T' T : Over (Spec (CommRingCat.of R))} (r :
 variable {I}
 
 /- English proof (translation)
-The claim follows from `(h X (fun e => thickι I e T ≫ g') fun e => thickMap_ι_assoc I e T g').unique e fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem IsAdicColimit.hom_ext {T : Over (Spec (CommRingCat.of R))} (h : IsAdicColimit I T) {X : Scheme.{0}}
     {g g' : T.left ⟶ X} (e : ∀ e, thickι I e T ≫ g = thickι I e T ≫ g') : g = g' :=
   (h X (fun e => thickι I e T ≫ g') fun e => thickMap_ι_assoc I e T g').unique e fun _ => rfl
 
 /- English proof (translation)
-Introduce `X f hf`. Take `⟨g, hg, hu⟩` from `h X (fun e => thickHom I e r.hom ≫ f e) fun e => by`. Rewrite using `[thickMap_thickHom_assoc, hf]`. Use `⟨r.inv.left ≫ g, fun e => ?_, fun g' hg' => ?_⟩` and prove the remaining obligations. Rewrite using `[← thickHom_ι_assoc, hg, ← Over.comp_left_assoc, ← Functor.map_comp, Iso.inv_hom_id, CategoryTheory.Functor.map_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Category.id_comp _`. Rewrite using `[← hu (r.hom.left ≫ g') fun e => by rw [← thickHom_ι_assoc, hg'], ← Over.comp_left_assoc, Iso.inv_hom_id]`. Conclude with `(Category.id_comp _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsAdicColimit.of_iso {T' T : Over (Spec (CommRingCat.of R))} (r : T' ≅ T) (h : IsAdicColimit I T') :
     IsAdicColimit I T := by
@@ -84,15 +84,15 @@ theorem IsAdicColimit.of_iso {T' T : Over (Spec (CommRingCat.of R))} (r : T' ≅
     exact (Category.id_comp _).symm
 
 /- English proof (translation)
-Introduce `X f hf`. Set `s : T.left ⟶ (thickObj R I n T).left` to `pullback.lift (𝟙 _) σ ((Category.id_comp _).trans hσ.symm)`. Establish `hs : s ≫ thickι I n T = 𝟙 _` using `pullback.lift_fst _ _ _`. Establish `key : ∀ (m k : ℕ) (W : Scheme.{0}) (a : W ⟶ (thickObj R I m T).left) (b : W ⟶ (thickObj R I (m + k) T).left), a ≫ thickι I m T = b ≫ thickι I (m + k) T → a ≫ f m = b ≫ f (m + k)`. Introduce `m k`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k generalizing m with`. Consider the case `zero => intro W a b h`. Rewrite using `[(cancel_mono _).1 h]`. Both sides reduce to the same expression. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `W a b h`. Use `ih (m + 1) W (a ≫ thickMap R I m T)` as an intermediate fact. Rewrite `this` using `[show m + 1 + k = m + (k + 1) by omega]`. Rewrite using `[← this b (by rw [Category.assoc, thickMap_ι, h]), Category.assoc, hf]`. Use `⟨s ≫ f n, fun e => ?_, fun g hg => by rw [← hg n, reassoc_of% hs]⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Category.assoc]`. Break down `le_total e n with h | h` into its components or cases. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le h`. Rewrite using `[← key e k _ (𝟙 _) _ (by rw [Category.assoc, hs, Category.id_comp, Category.comp_id]), Category.id_comp]`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le h`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[key n k _ _ (𝟙 _) (by rw [Category.assoc, hs, Category.id_comp, Category.comp_id]), Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isAdicColimit_of_factor {T : Over (Spec (CommRingCat.of R))} (n : ℕ)
     (σ : T.left ⟶ Spec (CommRingCat.of (R ⧸ I ^ (n + 1)))) (hσ : σ ≫ thick R I n = T.hom) : IsAdicColimit I T := by

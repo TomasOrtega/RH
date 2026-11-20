@@ -2,7 +2,7 @@ import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.NormLtOne
 
 /- English proof (translation)
-Introduce `l _ R _ _ _ y a ha`. Conclude with `UpperTheory.Reformulated.B.NormLtOne.norm_lt_one (O := ℤ_[l]) y a ha`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.MonicNormLtOne.mc_norm_lt :
     ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] {R : Type}

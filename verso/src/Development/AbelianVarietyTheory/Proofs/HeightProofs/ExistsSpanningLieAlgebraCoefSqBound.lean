@@ -20,7 +20,7 @@ open GlobalTheory.KFourier MeasureTheory
 namespace GlobalTheory.KGap
 
 /- English proof (translation)
-Unfold `Formalism.REAL.hs`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem entry_sq_le_hs {n : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖Y i j‖ ^ 2 ≤ Formalism.REAL.hs Y := by
   unfold Formalism.REAL.hs
@@ -30,13 +30,13 @@ theorem entry_sq_le_hs {n : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) 
         Finset.single_le_sum (f := fun i' => ∑ j', ‖Y i' j'‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)
 
 /- English proof (translation)
-Unfold `Formalism.REAL.hs`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem hs_nonneg' {n : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ Formalism.REAL.hs Y := by
   unfold Formalism.REAL.hs; positivity
 
 /- English proof (translation)
-Establish `h : ‖(Matrix.of.symm Y : Fin n → Fin n → ℂ)‖ ≤ Real.sqrt (Formalism.REAL.hs Y)`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun j => ?_` and prove the remaining obligations. Conclude with `Real.le_sqrt_of_sq_le (entry_sq_le_hs Y i j)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sup_norm_sq_le_hs {n : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) :
     ‖(Matrix.of.symm Y : Fin n → Fin n → ℂ)‖ ^ 2 ≤ Formalism.REAL.hs Y := by
@@ -49,21 +49,21 @@ theorem sup_norm_sq_le_hs {n : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) :
     _ = Formalism.REAL.hs Y := Real.sq_sqrt (hs_nonneg' Y)
 
 /- English proof (translation)
-Introduce `n ε r X hX`. Set `Tm : (Fin r → ℝ) →ₗ[ℝ] (Fin n → Fin n → ℂ)` to `{ toFun := fun c => Matrix.of.symm (∑ j, (c j : ℂ) • X j) map_add' := by`. Introduce `a b`. Use function extensionality and compare the values at `i k`. Simplify using `[add_smul, Finset.sum_add_distrib, Matrix.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := by`. Introduce `t a`. Use function extensionality and compare the values at `i k`. Simplify using `[Matrix.sum_apply, Finset.mul_sum, mul_assoc] }`. Take `⟨g, hg⟩` from `LinearMap.exists_rightInverse_of_surjective Tm.rangeRestrict (LinearMap.range_rangeRestrict Tm)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP⟩` from `LinearMap.exists_leftInverse_of_injective (LinearMap.range Tm).subtype (Submodule.ker_subtype _)`. Set `L : (Fin n → Fin n → ℂ) →ₗ[ℝ] (Fin r → ℝ)` to `g ∘ₗ P`. Set `Lc` to `LinearMap.toContinuousLinearMap L`. Use `⟨r * ‖Lc‖ ^ 2, by positivity, ?_⟩` and prove the remaining obligations. Introduce `Y hY`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c0, hc0⟩` from `hX Y hY`. Establish `hYW : Matrix.of.symm Y ∈ LinearMap.range Tm` using `⟨c0, by simp [Tm, hc0]⟩`. Establish `hPY : P (Matrix.of.symm Y) = ⟨_, hYW⟩`. Use `LinearMap.congr_fun hP ⟨_, hYW⟩` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L (Matrix.of.symm Y), ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun hg (P (Matrix.of.symm Y))`. Establish `h2 : Tm (L (Matrix.of.symm Y)) = Matrix.of.symm Y`. Use `congrArg Subtype.val h1` as an intermediate fact. Simplify `this` using `[L, hPY]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h3` using `congrArg Matrix.of h2`. Simplify `h3.symm` using `[Tm]`. Use `set v := Matrix.of.symm Y with hv`. Establish `hb : ∀ j, (L v) j ^ 2 ≤ ‖Lc‖ ^ 2 * ‖v‖ ^ 2`. Introduce `j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖(L v) j‖ ≤ ‖L v‖` using `norm_le_pi_norm (L v) j`. Establish `h2 : ‖L v‖ ≤ ‖Lc‖ * ‖v‖` using `Lc.le_opNorm v`. Establish `h3 : |(L v) j| ≤ ‖Lc‖ * ‖v‖`. Rewrite using `[← Real.norm_eq_abs]`. Conclude with `h1.trans h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← mul_pow]`. Conclude with `sq_le_sq' (by linarith [abs_le.mp h3]) (abs_le.mp h3).2`. Establish `hv2 : ‖v‖ ^ 2 ≤ Formalism.REAL.hs Y` using `sup_norm_sq_le_hs Y`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem spanning_coef_bound : ∀ {n : ℕ} (ε : Fin n → Bool) {r : ℕ} (X : Fin r → Mx n), (∀ Y, inK ε Y → ∃ c : Fin r → ℝ, Y = ∑ j, (c j : ℂ) • X j) → ∃ C : ℝ, 0 ≤ C ∧ ∀ Y, inK ε Y → ∃ c : Fin r → ℝ, Y = ∑ j, (c j : ℂ) • X j ∧ ∑ j, c j ^ 2 ≤ C * Formalism.REAL.hs Y := by
   intro n ε r X hX

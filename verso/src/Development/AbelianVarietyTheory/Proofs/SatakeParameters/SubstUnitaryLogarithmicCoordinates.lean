@@ -18,7 +18,7 @@ open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog cob)
 namespace GlobalTheory.KerStd
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.C.flin`. Use `congr 1`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `[hl]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem flin_pad {K : Type} [Field K] {σ n m : Type} [Fintype n] [Fintype m] {l linv : PowerSeries K}
     (hl : PowerSeries.constantCoeff l = 0) (c : n ⊕ m → K) (u : m → MvPowerSeries σ K) :
@@ -32,17 +32,17 @@ theorem flin_pad {K : Type} [Field K] {σ n m : Type} [Fintype n] [Fintype m] {l
 open Formalism.L2.Th1.C in
 
 /- English proof (translation)
-Use `set P : Matrix n n O := 1 - γ * γ.conjTranspose with hP`. Establish `hPh : P.conjTranspose = P`. Rewrite using `[hP, Matrix.conjTranspose_sub, Matrix.conjTranspose_one, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Establish `hPγ : P * γ = 0`. Rewrite using `[hP, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hγ, Matrix.mul_one, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hγP : γ.conjTranspose * P = 0`. Rewrite using `[hP, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hγ, Matrix.one_mul, sub_self]`. Establish `hPP : P * P = P` using `by conv_lhs => rw [show P * P = P * (1 - γ * γ.conjTranspose) from rfl]`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hPγ, Matrix.zero_mul, sub_zero]`. Establish `hΔ : (Matrix.fromBlocks P γ γ.conjTranspose 0).conjTranspose * Matrix.fromBlocks P γ γ.conjTranspose 0 = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.fromBlocks_conjTranspose, Matrix.conjTranspose_conjTranspose, hPh, Matrix.conjTranspose_zero, Matrix.fromBlocks_multiply, hPP, hPγ, hγP, hγ, ← Matrix.fromBlocks_one]`. Use `congr 1`. Rewrite using `[hP]`. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `hu' : ∀ c : n ⊕ m, IsPt R (Sum.elim (fun _ : n => (0 : MvPowerSeries σ K)) u c)`. Introduce and unpack `(c | c)`. Conclude with `⟨by simp, fun k => by simp⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `hu c`. Establish `key` using `unitaryInv K R l linv ph hFr O τ hE hB hF1 hN hA (n ⊕ m) (Matrix.fromBlocks P γ γ.conjTranspose 0) hΔ σ (Sum.elim (fun _ : n => 0) u) hu'`. Establish `hph : PowerSeries.constantCoeff ph = 0` using `hFr.2.2`. Establish `hl : PowerSeries.constantCoeff l = 0` using `hFr.1.1`. Establish `hli : PowerSeries.constantCoeff linv = 0` using `hFr.1.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Fintype.sum_sum_type, flin_pad hl, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₂, Sum.elim_inl, Sum.elim_inr, Matrix.zero_apply, map_zero] at key`. Establish `h0 : PowerSeries.subst (flin l linv (fun _ : m => (0 : K)) u) ph = 0`. Unfold `flin`. Simplify using `[hli, hph]`. Simplify `key` using `[hph, h0]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unitaryInv_rect {K : Type} [Field K] [CharZero K] (R : Subring K) (l linv ph : PowerSeries K)
     (hFr : Frame R l linv ph) (O : Type) [CommRing O] [StarRing O] (τ : O →+* K)
@@ -89,31 +89,29 @@ theorem unitaryInv_rect {K : Type} [Field K] [CharZero K] (R : Subring K) (l lin
   simpa [hph, h0] using key
 
 /- English proof (translation)
-Introduce `p _ g2 g3 s2 ε σ F hD n m _ _ _ γ hγ hγo Θ hΘ`. Take `⟨h5, hg2, hg3, hε, hθ, hU, hF, hN⟩` from `hD`. Take `⟨hFr, hF1, hall, hbin⟩` from `Formalism.L2.Th1.Top.CalcC_proof p h5 g2 g3 ε s2 hg2 hg3 hε hθ σ hU F hF hN`. Establish `hσ : ∀ a : MaximalUnramifiedExtension p, ‖a‖ ≤ 1 → ‖σ a‖ ≤ 1` using `(Formalism.L2.Th1.D.frobSq (MaximalUnramifiedExtension p) p σ hU).2`. Set `_ : StarRing (Formalism.L2.Th1.D.BrC.Osub σ)` to `Formalism.L2.Th1.D.BrC.starO hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `τ : Formalism.L2.Th1.D.BrC.Osub σ →+* ℂ_[p]` to `(MaximalUnramifiedExtension p).subtype.comp (Formalism.L2.Th1.D.BrC.Osub σ).subtype`. Set `γO : Matrix n m (Formalism.L2.Th1.D.BrC.Osub σ)` to `Matrix.of fun i j => ⟨γ i j, Formalism.L2.Th1.D.BrC.mem_Osub.2 (hγ i j)⟩`. Establish `hun : γO.conjTranspose * γO = 1`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, AddSubmonoidClass.coe_finsetSum, Matrix.one_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hγo a b`. Apply the tactic sequence `have e : ((if a = b then (1 : Formalism.L2.Th1.D.BrC.Osub σ) else 0 : Formalism.L2.Th1.D.BrC.Osub σ) : MaximalUnramifiedExtension p) = if a = b then 1 else 0 := by split_ifs <;> rfl`. Rewrite using `[e, ← h]`. Both sides reduce to the same expression. Use `set l := Formalism.InvariantFactorPaths.G7.lgF ℂ_[p] p with hl_def`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Use `set linv := Formalism.L2.Th1.D.expF ℂ_[p] p with hlinv_def`. Use `set ph := PowerSeries.map (MaximalUnramifiedExtension p).subtype (phFF p g2 g3 s2 ε) with hph_def`. Set `t : n → MvPowerSeries m ℂ_[p]` to `fun i => Formalism.L2.Th1.C.flin l linv (fun j => τ (γO i j)) MvPowerSeries.X`. Establish `hpt : ∀ i, Formalism.L2.Th1.C.IsPt (Formalism.G.unitBall ℂ_[p]) (t i)` using `fun i => Formalism.L2.Th1.C.Pts.isPt_flin hFr.1 hFr.2.1 (fun j => (hall _ (hγ i j).1 (hγ i j).2).1) (fun j => Formalism.L2.Th1.E.CompatibleChartOperations.isPt_X j)`. Establish `hcc : ∀ i, MvPowerSeries.constantCoeff (t i) = 0` using `fun i => (hpt i).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcong` using `unitaryInv_rect (Formalism.G.unitBall ℂ_[p]) l linv ph hFr (Formalism.L2.Th1.D.BrC.Osub σ) τ (fun α => (hall α.1 α.2.1 α.2.2).1) (fun z hz => hbin z.1 z.2.1 (congrArg Subtype.val hz)) hF1 (fun α => (hall α.1 α.2.1 α.2.2).2.1) (fun α => (hall α.1 α.2.1 α.2.2).2.2) γO hun (MvPowerS …`. Establish `hph0 : PowerSeries.constantCoeff ph = 0` using `hFr.2.2`. Establish `hPh0 : MvPowerSeries.constantCoeff (Formalism.L2.Th1.E.phSum ph : MvPowerSeries n ℂ_[p]) = 0` using `Formalism.L2.Th1.E.CompatibleChartOperations.cc_phSum hph0`. Establish `hb0 : ∀ (k : Type) (i : k), MvPowerSeries.constantCoeff (Formalism.InvariantFactorPaths.G7.at1 i l : MvPowerSeries k ℂ_[p]) = 0` using `fun k i => Formalism.L2.Th1.C.Pts.constantCoeff_subst_l hFr.1 (MvPowerSeries.constantCoeff_X i)`. Use `set Θt : MvPowerSeries n ℂ_[p] := MvPowerSeries.subst (fun i : n => (Formalism.InvariantFactorPaths.G7.at1 i l : MvPowerSeries n ℂ_[p])) Θ with hΘt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΘ' : Formalism.DworkPowerSeriesWeights.Integral (Formalism.DworkPowerSeriesWeights.mvExp (Formalism.L2.Th1.E.phSum ph : MvPowerSeries n ℂ_[p]) * Θt)` using `hΘ`. Establish `hΘe : Formalism.DworkPowerSeriesWeights.mvExp (-(Formalism.L2.Th1.E.phSum ph : MvPowerSeries n ℂ_[p])) * (Formalism.DworkPowerSeriesWeights.mvExp (Formalism.L2.Th1.E.phSum ph : MvPowerSeries n ℂ_[p]) * Θt) = Θt`. Rewrite using `[← mul_assoc]`. Use `Formalism.L2.Th1.C.mvExp_neg hPh0` as an intermediate fact. Rewrite `this` using `[← Formalism.L2.Th1.E.CompatibleChartOperations.mvExp_eq, ← Formalism.L2.Th1.E.CompatibleChartOperations.mvExp_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, one_mul]`. Take `⟨h3, h4, h5'⟩` from `Formalism.L2.Th1.E.substExpInt ℂ_[p] n m t hcc (fun i k => (hpt i).2 k) (Formalism.L2.Th1.E.phSum ph) _ hPh0 hΘ'`. Rewrite `h3` using `[hΘe, Formalism.L2.Th1.E.CompatibleChartOperations.subst_phSum _ hcc]`. Rewrite `h5'` using `[Formalism.L2.Th1.E.CompatibleChartOperations.subst_phSum _ hcc]`. Establish `hid : MvPowerSeries.subst (fun j : m => (Formalism.InvariantFactorPaths.G7.at1 j l : MvPowerSeries m ℂ_[p])) (MvPowerSeries.subst (fun i => (∑ j, MvPowerSeries.C (γ i j : ℂ_[p]) * MvPowerSeries.X j : MvPowerSeries m ℂ_[p])) Θ) = MvPowerSeries.subst t Θt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : MvPowerSeries.HasSubst (fun j : m => (Formalism.InvariantFactorPaths.G7.at1 j l : MvPowerSeries m ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (hb0 m)`. Establish `hb' : MvPowerSeries.HasSubst (fun i : n => (Formalism.InvariantFactorPaths.G7.at1 i l : MvPowerSeries n ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (hb0 n)`. Establish `hlin : MvPowerSeries.HasSubst (fun i => (∑ j, MvPowerSeries.C (γ i j : ℂ_[p]) * MvPowerSeries.X j : MvPowerSeries m ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by simp`. Establish `ht : MvPowerSeries.HasSubst t` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hcc`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hlin hb, hΘt, MvPowerSeries.subst_comp_subst_apply hb' ht]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Formalism.InvariantFactorPaths.G7.at1, Formalism.L2.Th1.C.Pts.substMv_subst (MvPowerSeries.constantCoeff_X i) hcc, MvPowerSeries.subst_X ht]`. Simplify using `only [t, Formalism.L2.Th1.C.flin]`. Rewrite using `[Formalism.L2.Th1.C.Pts.subst_l_linv hFr.1 (by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun j _ => by`. Rewrite using `[map_mul, show PowerSeries.subst (MvPowerSeries.X j : MvPowerSeries m ℂ_[p]) l = Formalism.InvariantFactorPaths.G7.at1 j l from rfl, hb0, mul_zero])]`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hb, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, MvPowerSeries.coe_substAlgHom hb, MvPowerSeries.subst_X hb]`. Rewrite using `[MvPowerSeries.subst_C]`. Both sides reduce to the same expression. Unfold `HostLog`. Rewrite using `[hid, h3, ← mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_mul' ?_ h4` and prove the remaining obligations. Take `⟨hc0, hcI⟩` from `Formalism.L2.Th1.C.Calc.cong_symm hcong`. Establish `hA0 : MvPowerSeries.constantCoeff (∑ i : m, Formalism.InvariantFactorPaths.G7.at1 i ph : MvPowerSeries m ℂ_[p]) = 0` using `Formalism.L2.Th1.E.CompatibleChartOperations.cc_phSum hph0`. Establish `hB0 : MvPowerSeries.constantCoeff (-(∑ i, PowerSeries.subst (t i) ph) : MvPowerSeries m ℂ_[p]) = 0`. Rewrite using `[map_neg, h5', neg_zero]`.
-
-Rewrite using `[Formalism.L2.Th1.E.CompatibleChartOperations.mvExp_eq, Formalism.L2.Th1.E.CompatibleChartOperations.mvExp_eq, ← Formalism.L2.Th1.C.mvExp_add hA0 hB0, ← sub_eq_add_neg]`. Conclude with `fun k => hcI k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem HostLog.subst_unitary : ∀ (p : ℕ) [Fact p.Prime] (g2 g3 s2 ε : MaximalUnramifiedExtension p) (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (F : MvPowerSeries (Fin 2) (MaximalUnramifiedExtension p)), CurveData p g2 g3 s2 ε σ F → ∀ (n m : Type) [Fintype n] [Fintype m] [DecidableEq m] (γ : n → m → MaximalUnramifiedExtension p), (∀ i j, ‖γ i j‖ ≤ 1 ∧ σ (σ (γ i j)) = γ i j) → (∀ j j', ∑ i, σ (γ i j) * γ i j' = if j = j' then 1 else 0) → ∀ Θ : MvPowerSeries n ℂ_[p], HostLog p g2 g3 s2 ε Θ → HostLog p g2 g3 s2 ε (MvPowerSeries.subst (fun i => (∑ j, MvPowerSeries.C (γ i j : ℂ_[p]) * MvPowerSeries.X j : MvPowerSeries m ℂ_[p])) Θ) := by
   intro p _ g2 g3 s2 ε σ F hD n m _ _ _ γ hγ hγo Θ hΘ

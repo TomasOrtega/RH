@@ -6,7 +6,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitKronecker.EqZeroOfM
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitKronecker.IntRootProp
 
 /- English proof (translation)
-The claim follows from `PI.UnitKronW.unitKron_of PI.UnitKronW.stepA PI.UnitKronW.stepB PI.UnitKronW.stepC`.
+A detailed English derivation is pending.
 -/
 theorem unit_kronecker : PI.UnitKron :=
   PI.UnitKronW.unitKron_of PI.UnitKronW.stepA PI.UnitKronW.stepB PI.UnitKronW.stepC

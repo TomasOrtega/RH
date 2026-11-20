@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.WeilDeligne GlobalTheory.Cong UpperTheory.Gal.NearKilling
 
 /- English proof (translation)
-Establish `e : LinearMap.toMatrix (Module.finBasis ℂ V) (Module.finBasis ℂ V) f = Matrix.diagonal fun _ => c`. Use extensionality with `i j`. Simplify using `[LinearMap.toMatrix_apply, hf, Matrix.diagonal_apply, Finsupp.single_apply, eq_comm]`. Rewrite using `[← LinearMap.charpoly_toMatrix f (Module.finBasis ℂ V), e, Matrix.charpoly_diagonal]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem charpoly_of_scalar {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (f : Module.End ℂ V) (c : ℂ) (hf : ∀ v, f v = c • v) :
@@ -18,41 +18,35 @@ private theorem charpoly_of_scalar {V : Type} [AddCommGroup V] [Module ℂ V] [F
   simp
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h V _ _ _ z c γ q hq hcj h1 h2 h3`. Use `set f := z.ρ (ineIncl h γ) with hf`. Set `U : Submodule ℂ V` to `Module.End.eigenspace f (c γ)`. Set `R : Submodule ℂ V` to `LinearMap.range (f - c γ • (1 : Module.End ℂ V))`. Set `Q : Submodule ℂ V` to `LinearMap.ker (aeval f q)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hUq : ∀ v ∈ U, aeval f q v = q.eval (c γ) • v` using `fun v hv => by`. Distinguish the cases in `h0 : v = 0`. Simplify using `[h0]`. Conclude with `Module.End.aeval_apply_of_hasEigenvector ⟨hv, h0⟩`. Establish `hUs : ∀ v ∈ U, ∀ s : ↥(Ine (F` using `E) A), z.ρ (ineIncl h s) v = c s • v := fun v hv s => by`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k` using `LinearMap.congr_fun (h1 s) v`. Rewrite `k` using `[Module.End.mul_apply, hUq v hv, map_smul]`. Establish `k2` using `(smul_eq_zero.1 k).resolve_left hq`. Simplify `k2` using `[sub_eq_zero]`. Establish `hUQ : ∀ v, v ∈ U → v ∈ Q → v = 0` using `fun v hv hv' => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k : aeval f q v = 0` using `hv'`. Rewrite `k` using `[hUq v hv]`. Conclude with `(smul_eq_zero.1 k).resolve_left hq`. Establish `hRQ : R ≤ Q`. Introduce and unpack `_ ⟨u, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `LinearMap.congr_fun (h2 γ) u`. Establish `hUR : IsCompl U R`. Use `(Submodule.isCompl_iff_disjoint _ _ ?_).2 ?_` and prove the remaining obligations. Use `LinearMap.finrank_range_add_finrank_ker (f - c γ • (1 : Module.End ℂ V))` as an intermediate fact. Rewrite `this` using `[← Module.End.eigenspace_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Module.finrank ℂ R + Module.finrank ℂ U = _ at this`. Use linear arithmetic over natural numbers and integers. Conclude with `Submodule.disjoint_def.2 fun v hv hv' => hUQ v hv (hRQ hv')`. Establish `hQR : Q ≤ R` using `fun v hv => by`. Establish `: v ∈ U ⊔ R` using `by rw [hUR.sup_eq_top]; trivial`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu, r, hr, rfl⟩` from `Submodule.mem_sup.1 this`. Establish `hu' : u ∈ Q`. Use `Q.sub_mem hv (hRQ hr)` as an intermediate fact. Simplify using `using this`. Rewrite using `[hUQ u hu hu', zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hr`. Establish `hc : IsCompl Q U`. Rewrite using `[le_antisymm hQR hRQ]`. Conclude with `hUR.symm`. Establish `hU : ∀ σ, ∀ v ∈ U, z.ρ σ v ∈ U` using `fun g v hv => by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e : f (z.ρ g v) = z.ρ g (z.ρ (ineIncl h (ineConj g⁻¹ γ)) v)`. Rewrite using `[hf, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, ineIncl_ineConj]`. Simplify using `[mul_assoc]`. Use `Module.End.mem_eigenspace_iff.2 ?_` and prove the remaining obligations. Rewrite using `[e, hUs v hv, hcj, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hQ : ∀ σ, ∀ v ∈ Q, z.ρ σ v ∈ Q` using `fun g v hv => by`. Take `⟨u, rfl⟩` from `hQR hv`. Establish `e : z.ρ g ((f - c γ • (1 : Module.End ℂ V)) u) = (z.ρ (ineIncl h (ineConj g γ)) - c (ineConj g γ) • (1 : Module.End ℂ V)) (z.ρ g u)`. Establish `e1 : z.ρ (ineIncl h (ineConj g γ)) (z.ρ g u) = z.ρ g (f u)`. Rewrite using `[hf, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, ineIncl_ineConj]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[mul_assoc]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_smul, e1, hcj]`. Use `show aeval f q _ = 0`. Rewrite using `[e]`. Conclude with `LinearMap.congr_fun (h2 (ineConj g γ)) (z.ρ g u)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Set `a` to `z.resZero Q hQ`. Set `b` to `z.resZero U hU`. Set `e` to `Submodule.prodEquivOfIsCompl Q U hc`. Establish `hb : ∀ (s : ↥(Ine (F` using `E) A)) (v : U), b.ρ (ineIncl h s) v = c s • v := fun s v => Subtype.ext (hUs v v.2 s)`. Establish `ha : ∀ v, a.ρ (ineIncl h γ) v = c γ • v → v = 0` using `fun v hv => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `k : z.ρ (ineIncl h γ) (v : V) = c γ • (v : V)` using `congrArg Subtype.val hv`. Conclude with `Subtype.ext (hUQ v (Module.End.mem_eigenspace_iff.2 k) v.2)`. Establish `hg : ∀ σ v, e.symm (z.ρ σ v) = (a.sum b).ρ σ (e.symm v)` using `fun σ v => by`. Take `⟨p, rfl⟩` from `e.surjective v`. Rewrite using `[e.symm_apply_apply, LinearEquiv.symm_apply_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[e, a, b, Submodule.coe_prodEquivOfIsCompl', WDRep.resZero]`. Establish `h0 : ∀ v, z.N (e.symm.symm (0, v)) = 0` using `fun v => by`. Establish `k : e.symm.symm (0, v) = (v : V)` using `by simp [e, Submodule.coe_prodEquivOfIsCompl']`. Rewrite using `[k]`. Conclude with `h3 v (hUs v v.2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a', ea⟩` from `UpperTheory.GalN.exists_sum z a b e.symm hg rfl (ineIncl h γ) (deg_ineIncl _) (c γ) (hb γ) ha h0`. Establish `hbc : ∀ s : ↥(Ine (F` using `E) A), (b.ρ (ineIncl h s)).charpoly = (X - C (c s)) ^ Module.finrank ℂ U := fun s => charpoly_of_scalar _ _ (hb s)`. Establish `hm : f.charpoly.rootMultiplicity (c γ) = Module.finrank ℂ U`. Establish `k` using `z.charpoly_eq_mul_of_isCompl Q U hQ hU hc (ineIncl h γ)`. Establish `hne` using `(LinearMap.charpoly_monic (a.ρ (ineIncl h γ))).ne_zero`.
-
-Establish `hroot : ¬ (a.ρ (ineIncl h γ)).charpoly.IsRoot (c γ)` using `fun hr => by`. Establish `hev` using `(Module.End.hasEigenvalue_iff_isRoot_charpoly _ _).2 hr`. Take `⟨v, hv, hv0⟩` from `hev.exists_hasEigenvector`. Conclude with `hv0 (ha v (Module.End.mem_eigenspace_iff.1 hv))`. Rewrite using `[hf, k]`.
-
-Use `show ((a.ρ (ineIncl h γ)).charpoly * (b.ρ (ineIncl h γ)).charpoly).rootMultiplicity (c γ) = _`. Rewrite using `[hbc γ, rootMultiplicity_mul (mul_ne_zero hne ((monic_X_sub_C _).pow _).ne_zero), rootMultiplicity_X_sub_C_pow, rootMultiplicity_eq_zero hroot, zero_add]`. Rewrite using `[hm]`. Use `⟨WD.mk a', WD.mk b, by rw [WD.lpSum_mk]; exact ea, WD.lpDim_mk b, (WD.monodromyZero_ofWeilDeligneRepClass_iff b).2 rfl, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[WD.inePol_of_mem_Ine _ hσ, WD.charPol_mk]`.
-
-Conclude with `hbc ⟨σ, hσ⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.NearKilling.splitOff :
     SplitOff := by

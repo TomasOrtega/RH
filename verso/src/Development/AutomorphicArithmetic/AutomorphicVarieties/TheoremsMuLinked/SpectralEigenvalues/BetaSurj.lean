@@ -6,7 +6,7 @@ open IsLocalRing Matrix Filter UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W U
 open scoped TensorProduct
 
 /- English proof (translation)
-Rewrite using `[← res_eq_zero_iff O, res_map, res_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mem_iff {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R]
     [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') (y : R) :
@@ -14,13 +14,11 @@ private theorem mem_iff {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [C
   rw [← res_eq_zero_iff O, res_map, res_eq_zero_iff]
 
 /- English proof (translation)
-Apply `co_surj O R C f` to reduce the goal to its premises. Introduce `x hx`. Take `⟨a, ha, hxa⟩` from `hS 2 x`. Establish `hrange : Algebra.adjoin O S ≤ f.range` using `Algebra.adjoin_le (fun b hb => h1 b hb)`. Take `⟨y, hy⟩` from `hrange ha`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hy' : f y = a` using `hy`. Establish `hsq : maximalIdeal C ^ 2 ≤ maximalIdeal C` using `Ideal.pow_le_self (by norm_num)`. Establish `haM : a ∈ maximalIdeal C`. Establish `h2 : a = x - (x - a)` using `by ring`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_mem hx (hsq hxa)`. Establish `hyM : y ∈ maximalIdeal R`. Rewrite using `[← mem_iff f y, hy']`. Conclude with `haM`. Establish `hx' : x = f y + (x - a)` using `by rw [hy']; ring`.
-
-Rewrite using `[hx']`. Conclude with `add_mem (Ideal.mem_sup_left (Ideal.mem_map_of_mem f hyM)) (Ideal.mem_sup_right hxa)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem surj_of_gen {O : Type} [CommRing O] [IsLocalRing O] {R C : Type} [CommRing R] [Algebra O R] [IsCO O R]
     [CommRing C] [Algebra O C] [IsCO O C] (f : R →ₐ[O] C) (S : Set C) (hS : GenBy O S)
@@ -44,7 +42,7 @@ private theorem surj_of_gen {O : Type} [CommRing O] [IsLocalRing O] {R C : Type}
   exact add_mem (Ideal.mem_sup_left (Ideal.mem_map_of_mem f hyM)) (Ideal.mem_sup_right hxa)
 
 /- English proof (translation)
-Simplify using `[GDet.lam, GDet.chi, GDet.comap, Finsupp.mapDomain_sub, MonoidAlgebra.mapDomain, Finsupp.mapDomain_single]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem lam_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (D : GDet n A G) (φ : H →* G)
     (i : ℕ) (g : H) : (D.comap φ).lam i (MonoidAlgebra.single g 1) = D.lam i (MonoidAlgebra.single (φ g) 1) := by
@@ -52,7 +50,7 @@ private theorem lam_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group
     Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Establish `h` using `(CA.d_gmap D).2.2.1 f (MonoidAlgebra.single g 1)`. Simplify using `using h.2 i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem lam_map {n : ℕ} {A B G : Type} [CommRing A] [CommRing B] [Group G] (D : GDet n A G) (f : A →+* B)
     (i : ℕ) (g : G) : (D.map f).lam i (MonoidAlgebra.single g 1) = f (D.lam i (MonoidAlgebra.single g 1)) := by
@@ -60,7 +58,7 @@ private theorem lam_map {n : ℕ} {A B G : Type} [CommRing A] [CommRing B] [Grou
   simpa using h.2 i
 
 /- English proof (translation)
-Introduce and unpack `⟨x, hx⟩`. Take `⟨y, rfl⟩` from `h.surj x`. Use `⟨⟨y, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, ← h.η y]`. Conclude with `hx`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem surjective_levelChangeBaseGroupHom {l : ℕ} [Fact l.Prime] {L : Loc} {G G0 : Glob l L} (h : G.Hom G0) :
     Function.Surjective h.p₀ := by
@@ -71,9 +69,9 @@ private theorem surjective_levelChangeBaseGroupHom {l : ℕ} [Fact l.Prime] {L :
   exact hx
 
 /- English proof (translation)
-Introduce `l _ L G0 G h n O _ _ _ _ _ r B _ _ _ u J D b q N A hgen`. Take `⟨hD, hψ⟩` from `A.β_pair`. Use `surj_of_gen A.β _ hgen ?_` and prove the remaining obligations. Introduce and unpack `b (⟨i, g, rfl⟩ | ⟨v, i, g, rfl⟩)`. Take `⟨g, rfl⟩` from `surjective_levelChangeBaseGroupHom h g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨A.p.D.lam i (MonoidAlgebra.single g 1), ?_⟩` and prove the remaining obligations. Establish `h` using `lam_map A.p.D A.β.toRingHom i g`. Rewrite `h` using `[hD, lam_comap]`. Conclude with `h.symm`. Conclude with `⟨(A.p.ψ v i g : A.R), congrArg (fun χ => ((χ g : _ˣ) : B)) (hψ v i)⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Sp.betaSurj :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 G : Glob l L) (h : G.Hom G0) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (b : TWBase u J Empty D) (q N : ℕ) (A : OpMod b h q N), GenBy O (pairVals u) → Function.Surjective A.β := by

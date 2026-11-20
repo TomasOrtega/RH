@@ -10,14 +10,14 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactSupportInCla
 namespace Formalism.FourierDecayAlt.P.CutMP.JA
 
 /- English proof (translation)
-The claim follows from `SA.sAPairL_of_parts smooth_forms_stability_holds SA.self_adjoint_locality_holds (SA.sAExh_of_smooth SA.averaging_smoothness_holds) SA.self_adjoint_commutation_compact SA.compact_support_lemma_three`.
+A detailed English derivation is pending.
 -/
 theorem self_adjoint_pairing_list_holds : SA.SAPairL :=
   SA.sAPairL_of_parts smooth_forms_stability_holds SA.self_adjoint_locality_holds (SA.sAExh_of_smooth SA.averaging_smoothness_holds) SA.self_adjoint_commutation_compact
     SA.compact_support_lemma_three
 
 /- English proof (translation)
-The claim follows from `jAStarOp_of_pairL self_adjoint_pairing_list_holds`.
+A detailed English derivation is pending.
 -/
 theorem star_operator_transfer_holds : JAStarOp := jAStarOp_of_pairL self_adjoint_pairing_list_holds
 

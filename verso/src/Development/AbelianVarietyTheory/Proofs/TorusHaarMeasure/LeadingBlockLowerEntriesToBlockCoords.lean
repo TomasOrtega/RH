@@ -13,7 +13,7 @@ open scoped Matrix ComplexOrder ContDiff
 noncomputable section
 
 /- English proof (translation)
-Establish `h` using `(hK.neg).charpoly_eq_X_pow_finrank`. Establish `h2` using `LinearMap.eval_charpoly (-K) 1`. Rewrite `h2` using `[h]`. Simplify using `using h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_one_add_of_isNilpotent {W : Type} [AddCommGroup W] [Module ℝ W] [Module.Finite ℝ W]
     {K : W →ₗ[ℝ] W} (hK : IsNilpotent K) : LinearMap.det (1 + K) = 1 := by
@@ -23,21 +23,19 @@ theorem det_one_add_of_isNilpotent {W : Type} [AddCommGroup W] [Module ℝ W] [M
   simpa using h2.symm
 
 /- English proof (translation)
-Establish `hdet : ∀ z, (fderiv ℝ F z).det = 1`. Introduce `z`. Use `set K : V n →ₗ[ℝ] V n := (fderiv ℝ F z : V n →ₗ[ℝ] V n) - 1 with hK`. Establish `hstep : ∀ (i : Fin n) (h : V n), (∀ j, ρ j < ρ i → h j = 0) → K h i = 0`. Introduce `i h hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : HasDerivAt (fun t : ℝ => z + t • h) h 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const h).const_add z`. Establish `h2 : HasDerivAt (fun t : ℝ => F (z + t • h)) (fderiv ℝ F z h) 0`. Conclude with `(hF z).hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) h1 (by simp)`. Establish `h3` using `(PiLp.proj 2 (𝕜 := ℝ) (fun _ : Fin n => ℂ) i).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (h2.sub h1)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h4 : (fun t : ℝ => F (z + t • h) i - (z + t • h) i) = fun _ => F z i - z i`. Use function extensionality and compare the values at `t`. Conclude with `htri i _ _ fun j hj => by simp [hh j hj]`. Establish `h5 : HasDerivAt (fun t : ℝ => F (z + t • h) i - (z + t • h) i) (fderiv ℝ F z h i - h i) 0` using `h3`. Rewrite `h5` using `[h4]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `h5.unique (hasDerivAt_const _ _)` as an intermediate fact. Simplify `this` using `[hK]`. Establish `hpow : ∀ (m : ℕ) (h : V n) (i : Fin n), ρ i < m → (K ^ m) h i = 0`. Introduce `m`. Proceed by induction on `m with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Consider the case `zero => intro h i hi`. Use linear arithmetic over natural numbers and integers. Consider the case `succ m ih`. Introduce `h i hi`. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Conclude with `hstep i _ fun j hj => ih h j (by omega)`. Establish `hnil : IsNilpotent K`. Use `⟨Finset.univ.sup ρ + 1, ?_⟩` and prove the remaining obligations. Use extensionality with `h i`. Establish `: ρ i ≤ Finset.univ.sup ρ` using `Finset.le_sup (Finset.mem_univ i)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hpow _ h i (by omega)`. Use `det_one_add_of_isNilpotent hnil` as an intermediate fact. Rewrite `this` using `[hK, add_sub_cancel]`. Conclude with `this`. Use `⟨hF.continuous.measurable, ?_⟩` and prove the remaining obligations.
-
-Use `map_withDensity_abs_det_fderiv_eq_addHaar (volume : Measure (V n)) (s := Set.univ) (f := F) (f' := fderiv ℝ F) MeasurableSet.univ.nullMeasurableSet (fun x _ => (hF x).hasFDerivAt.hasFDerivWithinAt) hb.1.injOn` as an intermediate fact. Simplify `this` using `[hdet, hb.2.range_eq]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem measurePreserving_of_triangular {n : ℕ} (F : V n → V n) (hF : Differentiable ℝ F)
     (hb : Function.Bijective F) (ρ : Fin n → ℕ)
@@ -85,25 +83,23 @@ theorem measurePreserving_of_triangular {n : ℕ} (F : V n → V n) (hF : Differ
   simpa [hdet, hb.2.range_eq] using this
 
 /- English proof (translation)
-Establish `key : ∀ v : EuclideanSpace ℂ n, star v.ofLp ⬝ᵥ ((1 - Zᴴ * Z) *ᵥ v.ofLp) = ((‖v‖ ^ 2 - ‖Matrix.toEuclideanLin Z v‖ ^ 2 : ℝ) : ℂ)`. Introduce `v`. Establish `e1 : star v.ofLp ⬝ᵥ v.ofLp = ((‖v‖ ^ 2 : ℝ) : ℂ)`. Use `EuclideanSpace.inner_eq_star_dotProduct v v` as an intermediate fact. Rewrite `this` using `[inner_self_eq_norm_sq_to_K]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[dotProduct_comm]`. Use `push_cast`. Conclude with `this.symm`. Establish `e2 : star (Z *ᵥ v.ofLp) ⬝ᵥ (Z *ᵥ v.ofLp) = ((‖Matrix.toEuclideanLin Z v‖ ^ 2 : ℝ) : ℂ)`. Use `EuclideanSpace.inner_eq_star_dotProduct (Matrix.toEuclideanLin Z v) (Matrix.toEuclideanLin Z v)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[inner_self_eq_norm_sq_to_K]`. Rewrite using `[dotProduct_comm]`. Use `push_cast`. Conclude with `this.symm`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, dotProduct_sub, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec, e1, e2, ← Complex.ofReal_sub]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set T := LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin Z) with hT`. Prove the components needed by the constructor for the conclusion. Introduce `hn`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos (Matrix.isHermitian_one.sub (Matrix.isHermitian_conjTranspose_mul_self Z)) ?_` and prove the remaining obligations. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set v : EuclideanSpace ℂ _ := WithLp.toLp 2 x with hv`. Establish `hv0 : 0 < ‖v‖`. Rewrite using `[norm_pos_iff]`. Introduce `h`. Apply `hx` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `congrArg WithLp.ofLp h` using `[hv]`. Establish `h1 : ‖Matrix.toEuclideanLin Z v‖ ≤ _` using `T.le_opNorm v`. Establish `h2 : ‖Matrix.toEuclideanLin Z v‖ < ‖v‖` using `by nlinarith`. Establish `h3 : 0 ≤ ‖Matrix.toEuclideanLin Z v‖` using `norm_nonneg _`. Use `key v` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[show v.ofLp = x from rfl]`. Rewrite using `[this]`. Conclude with `Complex.zero_lt_real.2 (by nlinarith)`. Introduce `hpd`. Take `⟨v0, hv0, hmax⟩` from `(isCompact_closedBall (0 : EuclideanSpace ℂ n) 1).exists_isMaxOn ⟨0, Metric.mem_closedBall_self zero_le_one⟩ (T.continuous.norm.continuousOn)`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hv1 : ‖v0‖ ≤ 1` using `by simpa using hv0`. Establish `hlt : ‖T v0‖ < 1`. Distinguish the cases in `h0 : v0 = 0`. Simplify using `[h0]`. Establish `hne : v0.ofLp ≠ 0` using `fun h => h0 (by ext i; simpa using congrFun h i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hpd.dotProduct_mulVec_pos hne` as an intermediate fact. Rewrite `this` using `[key, Complex.zero_lt_real]`. Establish `h3 : 0 ≤ ‖Matrix.toEuclideanLin Z v0‖` using `norm_nonneg _`. Establish `h4 : ‖T v0‖ = ‖Matrix.toEuclideanLin Z v0‖` using `rfl`. Rewrite using `[h4]`.
-
-Use polynomial arithmetic with `[norm_nonneg v0]`. Use `lt_of_le_of_lt ?_ hlt` and prove the remaining obligations. Use `ContinuousLinearMap.opNorm_le_of_unit_norm (norm_nonneg _) fun x hx => ?_` and prove the remaining obligations. Conclude with `hmax (by simp [hx] : x ∈ Metric.closedBall (0 : EuclideanSpace ℂ n) 1)`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem opNorm_lt_one_iff {m n : Type} [Fintype m] [Fintype n] [DecidableEq n] (Z : Matrix m n ℂ) :
     ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin Z)‖ < 1 ↔ (1 - Zᴴ * Z).PosDef := by
@@ -163,21 +159,21 @@ def coordOf (x : Frame X.Ψ r) : V (nd X) := WithLp.toLp 2 fun i =>
     ((Fintype.equivFin (Ent X)).symm i).2.1.2
 
 /- English proof (translation)
-Simplify using `[nmat, h, coordOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nmat_coordOf_of_lt (x : Frame X.Ψ r) (τ : X.Ψ) {a b : Fin r} (h : b < a) :
     nmat X (coordOf X x) τ a b = x τ a b := by
   simp [nmat, h, coordOf]
 
 /- English proof (translation)
-Simplify using `[nmat, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nmat_of_not_lt (z w : V (nd X)) (τ : X.Ψ) {a b : Fin r} (h : ¬ b < a) :
     nmat X z τ a b = nmat X w τ a b := by
   simp [nmat, h]
 
 /- English proof (translation)
-Establish `h` using `((Fintype.equivFin (Ent X)).symm i).2.2`. Simplify using `only [nmat, dif_pos h]`. Conclude with `congrArg (fun j => z j) ((Fintype.equivFin (Ent X)).apply_symm_apply i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nmat_apply_idx (z : V (nd X)) (i : Fin (nd X)) :
     nmat X z ((Fintype.equivFin (Ent X)).symm i).1 ((Fintype.equivFin (Ent X)).symm i).2.1.1
@@ -187,24 +183,24 @@ theorem nmat_apply_idx (z : V (nd X)) (i : Fin (nd X)) :
   exact congrArg (fun j => z j) ((Fintype.equivFin (Ent X)).apply_symm_apply i)
 
 /- English proof (translation)
-Use extensionality with `i`. Conclude with `nmat_apply_idx X z i`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem coordOf_nmat (z : V (nd X)) : coordOf X (nmat X z) = z := by
   ext i
   exact nmat_apply_idx X z i
 
 /- English proof (translation)
-Use `show ∑ c, zFrame X z τ a c * leviFrame X z τ c b = _`. Simplify using `only [zFrame, leviFrame]`. Distinguish the cases in `ha : X.p0 ≤ (a : ℕ)`. Distinguish the cases in `hb : (b : ℕ) < X.p0`. Rewrite using `[if_pos ⟨ha, hb⟩]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : (c : ℕ) < X.p0`. Establish `: ¬ X.p0 ≤ (c : ℕ)` using `by omega`. Simplify using `[ha, hb, hc, this]`. Establish `: X.p0 ≤ (c : ℕ)` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[ha, hb, hc, this]`. Rewrite using `[if_neg (fun h => hb h.2), Finset.sum_eq_single a]`. Establish `: ¬ (a : ℕ) < X.p0` using `by omega`. Simplify using `[hb, this]`. Introduce `c _ hca`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc : (c : ℕ) < X.p0`. Establish `h1 : c < b` using `Fin.lt_def.2 (by omega)`. Establish `h2 : nmat X z τ c b = 0` using `ExF.nM_upper X z τ h1`. Simplify using `[hb, h2]`. Simplify using `[hc, hca.symm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h => ha h.1), Finset.sum_eq_single a]`. Simplify using `[ha]`. Introduce `c _ hca`. Simplify using `[ha, hca.symm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem nFrame_apply (z : V (nd X)) (τ : X.Ψ) (a b : Fin r) :
     nFrame X z τ a b = if X.p0 ≤ (a : ℕ) ∧ (b : ℕ) < X.p0 then
@@ -245,9 +241,7 @@ def ofEntries (w : V (nd X)) : V (nd X) := coordOf X fun τ a b =>
   else nmat X w τ a b
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ a b`. Distinguish the cases in `h : b < a`. Conclude with `nmat_coordOf_of_lt X _ τ h`. Establish `: ¬ (X.p0 ≤ (a : ℕ) ∧ (b : ℕ) < X.p0)` using `fun h' => h (Fin.lt_def.2 (by omega))`. Rewrite using `[nFrame_apply, if_neg this]`.
-
-Conclude with `nmat_of_not_lt X _ _ τ h`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nmat_toEntries (z : V (nd X)) : nmat X (toEntries X z) = nFrame X z := by
   funext τ a b
@@ -258,14 +252,14 @@ theorem nmat_toEntries (z : V (nd X)) : nmat X (toEntries X z) = nFrame X z := b
     exact nmat_of_not_lt X _ _ τ h
 
 /- English proof (translation)
-Rewrite using `[nmat_toEntries, nFrame_apply, if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nmat_toEntries_of_not (z : V (nd X)) (τ : X.Ψ) {a b : Fin r}
     (h : ¬ (X.p0 ≤ (a : ℕ) ∧ (b : ℕ) < X.p0)) : nmat X (toEntries X z) τ a b = nmat X z τ a b := by
   rw [nmat_toEntries, nFrame_apply, if_neg h]
 
 /- English proof (translation)
-Distinguish the cases in `h' : b < a`. Rewrite using `[ofEntries, nmat_coordOf_of_lt X _ τ h', dif_neg h]`. Conclude with `nmat_of_not_lt X _ _ τ h'`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nmat_ofEntries_of_not (w : V (nd X)) (τ : X.Ψ) {a b : Fin r}
     (h : ¬ (X.p0 ≤ (a : ℕ) ∧ (b : ℕ) < X.p0)) : nmat X (ofEntries X w) τ a b = nmat X w τ a b := by
@@ -274,7 +268,7 @@ theorem nmat_ofEntries_of_not (w : V (nd X)) (τ : X.Ψ) {a b : Fin r}
   · exact nmat_of_not_lt X _ _ τ h'
 
 /- English proof (translation)
-Use extensionality with `a b`. Use `nmat_toEntries_of_not X z τ fun h => ?_` and prove the remaining obligations. Use `a.isLt` as an intermediate fact. Establish `h1 : X.p0 ≤ (a : ℕ)` using `h.1`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem leadingBlock_blockCoordsToLowerEntries (z : V (nd X)) (τ : X.Ψ) : ExF.n1 X (toEntries X z) τ = ExF.n1 X z τ := by
   ext a b
@@ -282,7 +276,7 @@ theorem leadingBlock_blockCoordsToLowerEntries (z : V (nd X)) (τ : X.Ψ) : ExF.
   have := a.isLt; have h1 : X.p0 ≤ (a : ℕ) := h.1; omega
 
 /- English proof (translation)
-Use extensionality with `a b`. Use `nmat_ofEntries_of_not X z τ fun h => ?_` and prove the remaining obligations. Use `a.isLt` as an intermediate fact. Establish `h1 : X.p0 ≤ (a : ℕ)` using `h.1`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem leadingBlock_lowerEntriesToBlockCoords (z : V (nd X)) (τ : X.Ψ) : ExF.n1 X (ofEntries X z) τ = ExF.n1 X z τ := by
   ext a b
@@ -290,9 +284,9 @@ theorem leadingBlock_lowerEntriesToBlockCoords (z : V (nd X)) (τ : X.Ψ) : ExF.
   have := a.isLt; have h1 : X.p0 ≤ (a : ℕ) := h.1; omega
 
 /- English proof (translation)
-Use extensionality with `m b`. Use `show nmat X (toEntries X z) τ (ExF.qI X m) (Fin.castLE X.p0_le b) = _`. Establish `h : X.p0 ≤ ((ExF.qI X m : Fin r) : ℕ) ∧ ((Fin.castLE X.p0_le b : Fin r) : ℕ) < X.p0` using `⟨Nat.le_add_right _ _, b.isLt⟩`. Rewrite using `[nmat_toEntries, nFrame_apply, if_pos h, ExF.sum_split X, Matrix.mul_apply]`. Establish `h2 : ∀ k : Fin (r - X.p0), ¬ ((ExF.qI X k : Fin r) : ℕ) < X.p0` using `fun k => not_lt.2 (Nat.le_add_right _ _)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [h2, if_false, Finset.sum_const_zero, add_zero]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[if_pos (show ((Fin.castLE X.p0_le c : Fin r) : ℕ) < X.p0 from c.isLt)]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Wm_toEntries (z : V (nd X)) (τ : X.Ψ) :
     ExF.Wm X (toEntries X z) τ = ExF.Wm X z τ * ExF.n1 X z τ := by
@@ -309,9 +303,9 @@ theorem Wm_toEntries (z : V (nd X)) (τ : X.Ψ) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `m b`. Use `show nmat X (ofEntries X w) τ (ExF.qI X m) (Fin.castLE X.p0_le b) = _`. Establish `h : X.p0 ≤ ((ExF.qI X m : Fin r) : ℕ) ∧ ((Fin.castLE X.p0_le b : Fin r) : ℕ) < X.p0` using `⟨Nat.le_add_right _ _, b.isLt⟩`. Rewrite using `[ofEntries, nmat_coordOf_of_lt X _ τ (Fin.lt_def.2 (by omega)), dif_pos h]`. Establish `: (⟨(ExF.qI X m : ℕ) - X.p0, by have` using `(ExF.qI X m).isLt; omega⟩ : Fin (r - X.p0)) = m := Fin.ext (by simp [ExF.qI])`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Wm_ofEntries (w : V (nd X)) (τ : X.Ψ) :
     ExF.Wm X (ofEntries X w) τ = ExF.Wm X w τ * (ExF.n1 X w τ)⁻¹ := by
@@ -326,9 +320,9 @@ theorem Wm_ofEntries (w : V (nd X)) (τ : X.Ψ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← coordOf_nmat X z, ← coordOf_nmat X w]`. Use `congr 1`. Use function extensionality and compare the values at `τ a b`. Distinguish the cases in `h : X.p0 ≤ (a : ℕ) ∧ (b : ℕ) < X.p0`. Use `congrFun (congrFun (h2 τ) ⟨a - X.p0, by have := a.isLt; omega⟩) ⟨b, h.2⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e : ExF.qI X ⟨a - X.p0, by have` using `a.isLt; omega⟩ = a := Fin.ext (by simp [ExF.qI]; omega)`. Simplify using `only [ExF.Wm, Matrix.submatrix_apply, e] at this`. Conclude with `this`. Conclude with `h1 τ a b h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ext_blocks {z w : V (nd X)}
     (h1 : ∀ τ (a b : Fin r), ¬ (X.p0 ≤ (a : ℕ) ∧ (b : ℕ) < X.p0) → nmat X z τ a b = nmat X w τ a b)
@@ -344,7 +338,7 @@ theorem ext_blocks {z w : V (nd X)}
   · exact h1 τ a b h
 
 /- English proof (translation)
-Rewrite using `[ExF.det_unipotentFrame_eq_one]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_leadingBlock_lowerEntries (z : V (nd X)) (τ : X.Ψ) : IsUnit (ExF.n1 X z τ).det := by
   rw [ExF.det_unipotentFrame_eq_one]; exact isUnit_one
@@ -362,7 +356,7 @@ def coordEquiv : V (nd X) ≃ V (nd X) where
       rw [Wm_toEntries, Wm_ofEntries, leadingBlock_lowerEntriesToBlockCoords, Matrix.nonsing_inv_mul_cancel_right _ _ (isUnit_det_leadingBlock_lowerEntries X z τ)])
 
 /- English proof (translation)
-Rewrite using `[contDiff_piLp]`. Introduce `i`. Conclude with `hf _ _ _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem contDiff_coordOf {f : V (nd X) → Frame X.Ψ r}
     (hf : ∀ τ a b, ContDiff ℂ ∞ fun z => f z τ a b) : ContDiff ℂ ∞ fun z => coordOf X (f z) := by
@@ -371,9 +365,7 @@ theorem contDiff_coordOf {f : V (nd X) → Frame X.Ψ r}
   exact hf _ _ _
 
 /- English proof (translation)
-Use `contDiff_coordOf X fun τ a b => ?_` and prove the remaining obligations. Simplify using `only [nFrame_apply]`. Use `split_ifs`. Use `ContDiff.sum fun c _ => ?_ split_ifs` and prove the remaining obligations. Conclude with `(ExF.cd_nM X τ a c).mul (ExF.cd_nM X τ c b)`.
-
-Conclude with `contDiff_const`. Conclude with `ExF.cd_nM X τ a b`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiff_toEntries : ContDiff ℂ ∞ (toEntries X) := by
   refine contDiff_coordOf X fun τ a b => ?_
@@ -386,7 +378,7 @@ theorem contDiff_toEntries : ContDiff ℂ ∞ (toEntries X) := by
   · exact ExF.cd_nM X τ a b
 
 /- English proof (translation)
-Use `contDiff_coordOf X fun τ a b => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `ExF.cd_Zt X τ _ _`. Conclude with `ExF.cd_nM X τ a b`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiff_ofEntries : ContDiff ℂ ∞ (ofEntries X) := by
   refine contDiff_coordOf X fun τ a b => ?_
@@ -395,17 +387,17 @@ theorem contDiff_ofEntries : ContDiff ℂ ∞ (ofEntries X) := by
   · exact ExF.cd_nM X τ a b
 
 /- English proof (translation)
-Use `measurePreserving_of_triangular _ (((contDiff_toEntries X).restrict_scalars ℝ).differentiable (by simp)) (coordEquiv X).bijective (fun i => (((Fintype.equivFin (Ent X)).symm i).2.1.1 : ℕ) - (((Fintype.equivFin (Ent X)).symm i).2.1.2 : ℕ)) ?_` and prove the remaining obligations. Introduce `i z w h`. Rewrite using `[← nmat_apply_idx X z i, ← nmat_apply_idx X w i]`. Simplify using `only [toEntries, coordOf, nFrame_apply]`. Generalize the expression as in `(Fintype.equivFin (Ent X)).symm i = e at h ⊢`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨τ, ⟨a, b⟩, hab⟩` from `e`. Establish `hab' : (b : ℕ) < a` using `hab`. Establish `h' : ∀ c d : Fin r, (c : ℕ) - d < (a : ℕ) - b → nmat X z τ c d = nmat X w τ c d`. Introduce `c d hcd`. Distinguish the cases in `hl : d < c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [nmat, dif_pos hl]`. Apply `h` to reduce the goal to its premises. Simplify using `using hcd`. Conclude with `nmat_of_not_lt X _ _ τ hl`. Simplify using `only`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Use `split_ifs with hW`. Establish `hs : ∀ y : V (nd X), (∑ c : Fin r, if (c : ℕ) < X.p0 then nmat X y τ a c * nmat X y τ c b else 0) - nmat X y τ a b = ∑ c ∈ Finset.univ.erase b, if (c : ℕ) < X.p0 then nmat X y τ a c * nmat X y τ c b else 0`. Introduce `y`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ b), if_pos hW.2, show nmat X y τ b b = 1 from ExF.nM_diag X y τ b]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs, hs]`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations. Use `split_ifs with hcp`. Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase hc) with hcb | hcb` into its components or cases. Rewrite using `[show nmat X z τ c b = 0 from ExF.nM_upper X z τ hcb, show nmat X w τ c b = 0 from ExF.nM_upper X w τ hcb, mul_zero, mul_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hcb' : (b : ℕ) < c` using `hcb`. Rewrite using `[h' a c (by omega), h' c b (by omega)]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurePreserving_toEntries : MeasurePreserving (toEntries X) volume volume := by
   refine measurePreserving_of_triangular _
@@ -446,7 +438,7 @@ theorem measurePreserving_toEntries : MeasurePreserving (toEntries X) volume vol
   · simp
 
 /- English proof (translation)
-Rewrite using `[cpt, nmat_toEntries, point]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cpt_toEntries (x0 : Base X) (z : V (nd X)) :
     cpt X x0.1 (toEntries X z) = point X x0 z := by
@@ -465,7 +457,7 @@ def highEquiv : Fin (r - X.p0) ≃ {a : Fin r // X.p0 ≤ (a : ℕ)} where
   right_inv a := Subtype.ext (Fin.ext (by have := a.2; simp [ExF.qI]; omega))
 
 /- English proof (translation)
-Establish `hW : ExF.Wm X z τ = (zBlock X z τ).submatrix (highEquiv X) (lowEquiv X)` using `rfl`. Establish `h1 : ((zBlock X z τ)ᴴ * zBlock X z τ).submatrix (lowEquiv X) (lowEquiv X) = (ExF.Wm X z τ)ᴴ * ExF.Wm X z τ`. Rewrite using `[hW, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv]`. Rewrite using `[ExF.Am, ExF.Zt, Wm_toEntries, leadingBlock_blockCoordsToLowerEntries, Matrix.mul_nonsing_inv_cancel_right _ _ (isUnit_det_leadingBlock_lowerEntries X z τ), Matrix.submatrix_sub]`. Simplify using `only [Pi.sub_apply, Matrix.submatrix_one_equiv, h1, Matrix.transpose_sub, Matrix.transpose_one, Matrix.transpose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -483,9 +475,9 @@ theorem Am_toEntries (z : V (nd X)) (τ : X.Ψ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[ExF.mem_OmF_iff X x0.1 x0.2]`. Use `forall_congr' fun τ => ?_` and prove the remaining obligations. Rewrite using `[Am_toEntries, zNorm, opNorm_lt_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using h.transpose.submatrix (e := (lowEquiv X).symm) (lowEquiv X).symm.injective`. Introduce `h`. Conclude with `(h.submatrix (lowEquiv X).injective).transpose`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem toEntries_mem_OmF_iff (x0 : Base X) (z : V (nd X)) :
     toEntries X z ∈ OmF X x0.1 ↔ z ∈ Om X := by
@@ -499,7 +491,7 @@ theorem toEntries_mem_OmF_iff (x0 : Base X) (z : V (nd X)) :
     exact (h.submatrix (lowEquiv X).injective).transpose
 
 /- English proof (translation)
-Rewrite using `[ExF.rhF_eq_sum X x0.1 x0.2, rho, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h` using `(ExF.mem_OmF_iff X x0.1 x0.2 _).1 ((toEntries_mem_OmF_iff X x0 z).2 hz) τ`. Rewrite using `[ExF.norm_of_pos h.det_pos, Am_toEntries, Matrix.det_transpose, Matrix.det_submatrix_equiv_self, zDet]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rhF_toEntries (x0 : Base X) {z : V (nd X)} (hz : z ∈ Om X) :
     rhF X x0.1 (toEntries X z) = rho X z := by
@@ -510,18 +502,18 @@ theorem rhF_toEntries (x0 : Base X) {z : V (nd X)} (hz : z ∈ Om X) :
     zDet]
 
 /- English proof (translation)
-Simplify using `only [densF, density, cpt_toEntries, zpow_neg, zpow_ofNat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem densF_toEntries (x0 : Base X) (z : V (nd X)) :
     densF X x0.1 (toEntries X z) = density X x0 z := by
   simp only [densF, density, cpt_toEntries, zpow_neg, zpow_ofNat]
 
 /- English proof (translation)
-Set `e : V (nd X) ≃ᵐ V (nd X)` to `{ coordEquiv X with measurable_toFun := (contDiff_toEntries X).continuous.measurable measurable_invFun := (contDiff_ofEntries X).continuous.measurable }`. Establish `hpre : Om X = toEntries X ⁻¹' OmF X x0.1`. Use extensionality with `z`. Conclude with `(toEntries_mem_OmF_iff X x0 z).symm`. Establish `hmp : MeasurePreserving e (volume.restrict (Om X)) (volume.restrict (OmF X x0.1))`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpre]`. Conclude with `(measurePreserving_toEntries X).restrict_preimage (ExF.isOpen_OmF X x0.1).measurableSet`. Use `show Measure.map e (mu X x0) = _`. Use extensionality with `s hs`. Rewrite using `[e.map_apply, mu, muF, withDensity_apply _ hs, withDensity_apply _ (e.measurable hs), ← (hmp.restrict_preimage hs).lintegral_comp_emb e.measurableEmbedding]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Rewrite using `[← densF_toEntries]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem map_mu (x0 : Base X) : Measure.map (toEntries X) (mu X x0) = muF X x0.1 := by
   let e : V (nd X) ≃ᵐ V (nd X) :=

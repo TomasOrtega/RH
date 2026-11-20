@@ -47,9 +47,9 @@ structure HypothesesB : Prop where
   lift2 : QuadBC2
 
 /- English proof (translation)
-Introduce `F E _ _ hF _ _ hE _ _ hp π hr`. Break down `(h F E hp hF 2 one_le_two).1 _ _ (Or.inl ⟨hF, π, rfl, rfl⟩) (fun τ => ⟨_, GlobalTheory.CuspRep.ParLaws.hasInfChar_infChar (GlobalTheory.CuspRep.CG.mk π) τ, hr τ⟩) with h1 | ⟨sat', inf', hc, hw, hi⟩` into its components or cases. Conclude with `Or.inl h1`. Break down `hc with ⟨_, P, rfl, rfl⟩ | ⟨hR, -⟩` into its components or cases. Conclude with `Or.inr ⟨P, hi, hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative.
 
-Take `⟨v⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Conclude with `absurd (hR.isReal v) (InfinitePlace.not_isReal_iff_isComplex.2 (hE.isComplex v))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cyclicLiftRankTwo_of_cyclic_base_change (h : CycC) : CyclicBaseChangeLiftRankTwo := by
   intro F E _ _ hF _ _ hE _ _ hp π hr

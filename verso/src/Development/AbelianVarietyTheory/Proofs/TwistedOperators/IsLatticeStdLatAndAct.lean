@@ -8,17 +8,15 @@ open GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.IndefiniteRowSideFu
 namespace GlobalTheory.RootEx.UnfoldShape
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ι _ _`. Use `⟨⟨?_, ?_⟩, fun g L hL => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Unfold `stdLat`. Use `Submodule.fg_pi fun _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.one_eq_span]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.fg_span_singleton _`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `hv : v = ∑ i, v i • (Pi.single i (1 : k) : ι → k)`. Use extensionality with `j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply]`. Rewrite using `[hv]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Use `mem_stdLat.2 fun j => ?_` and prove the remaining obligations. Rewrite using `[Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Conclude with `hL.fg.map _`. Establish `himg : ((act g L : Submodule 𝒪[k] (ι → k)) : Set (ι → k)) = (g : Matrix ι ι k).mulVecLin '' (L : Set (ι → k))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `v`. Conclude with `mem_act`. Rewrite using `[himg, ← Submodule.map_span, hL.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`. Introduce `w`. Use `⟨((g⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ w, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem isLattice_stdLat_and_act : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) [Fintype ι] [DecidableEq ι], Submodule.IsLattice k (stdLat k ι) ∧ ∀ (g : GL ι k) (L : Submodule 𝒪[k] (ι → k)), Submodule.IsLattice k L → Submodule.IsLattice k (act g L) := by
   intro k _ _ _ _ ι _ _

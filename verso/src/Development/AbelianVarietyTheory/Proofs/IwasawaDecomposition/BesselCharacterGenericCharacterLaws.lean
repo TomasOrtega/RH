@@ -22,9 +22,9 @@ def Unip (E : Matrix (Fin n) (Fin ρ) R) (K : Matrix (Fin ρ) (Fin n) R) (M : Ma
   (∃ T : Matrix (Fin ρ) (Fin ρ) R, StrictUp T ∧ M * E = E + E * T) ∧ ∀ y, K *ᵥ y = 0 → ∃ a, M *ᵥ y = y + E *ᵥ a
 
 /- English proof (translation)
-Introduce `j i hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `lt_or_ge k j with h | h` into its components or cases. Rewrite using `[hU (show id k < id j from h), zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT k i (hij.trans h), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem StrictUp.mul_left {U T : Matrix (Fin ρ) (Fin ρ) R} (hU : U.BlockTriangular id) (hT : StrictUp T) :
     StrictUp (U * T) := by
@@ -36,19 +36,19 @@ theorem StrictUp.mul_left {U T : Matrix (Fin ρ) (Fin ρ) R} (hU : U.BlockTriang
   · rw [hT k i (hij.trans h), mul_zero]
 
 /- English proof (translation)
-Introduce `_ _ h` and use `hT _ _ (le_of_lt h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem StrictUp.tri {T : Matrix (Fin ρ) (Fin ρ) R} (hT : StrictUp T) : T.BlockTriangular id :=
   fun _ _ h => hT _ _ (le_of_lt h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨0, fun _ _ _ => rfl, by simp⟩, fun y _ => ⟨0, by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem unip_one (E : Matrix (Fin n) (Fin ρ) R) (K : Matrix (Fin ρ) (Fin n) R) : Unip E K 1 :=
   ⟨⟨0, fun _ _ _ => rfl, by simp⟩, fun y _ => ⟨0, by simp⟩⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc, h', Matrix.mul_add, ← Matrix.mul_assoc, h, Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem mul_cols {E : Matrix (Fin n) (Fin ρ) R} {M M' : Matrix (Fin n) (Fin n) R} {T T' : Matrix (Fin ρ) (Fin ρ) R}
     (h : M * E = E + E * T) (h' : M' * E = E + E * T') : M * M' * E = E + E * (T + T' + T * T') := by
@@ -57,7 +57,7 @@ theorem mul_cols {E : Matrix (Fin n) (Fin ρ) R} {M M' : Matrix (Fin n) (Fin n) 
   abel
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_mulVec, ha', Matrix.mulVec_add, ha, Matrix.mulVec_mulVec, h, Matrix.add_mulVec, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_mulVec]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem mul_vec {E : Matrix (Fin n) (Fin ρ) R} {M M' : Matrix (Fin n) (Fin n) R} {T : Matrix (Fin ρ) (Fin ρ) R}
     {y : Fin n → R} {a a' : Fin ρ → R}
@@ -68,9 +68,9 @@ theorem mul_vec {E : Matrix (Fin n) (Fin ρ) R} {M M' : Matrix (Fin n) (Fin n) R
   abel
 
 /- English proof (translation)
-Take `⟨⟨T, hT, e⟩, h2⟩` from `h`. Take `⟨⟨T', hT', e'⟩, h2'⟩` from `h'`. Use `⟨⟨_, ?_, mul_cols e e'⟩, fun y hy => ?_⟩` and prove the remaining obligations. Introduce `j i hij`. Rewrite using `[Matrix.add_apply, Matrix.add_apply, hT j i hij, hT' j i hij, hT'.mul_left hT.tri j i hij]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take `⟨a, ha⟩` from `h2 y hy`. Take `⟨a', ha'⟩` from `h2' y hy`. Conclude with `⟨_, mul_vec e ha ha'⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Unip.mul {E : Matrix (Fin n) (Fin ρ) R} {K : Matrix (Fin ρ) (Fin n) R} {M M' : Matrix (Fin n) (Fin n) R}
     (h : Unip E K M) (h' : Unip E K M') : Unip E K (M * M') := by
@@ -85,17 +85,17 @@ theorem Unip.mul {E : Matrix (Fin n) (Fin ρ) R} {K : Matrix (Fin ρ) (Fin n) R}
     exact ⟨_, mul_vec e ha ha'⟩
 
 /- English proof (translation)
-Take `⟨⟨T, hT, e⟩, h2⟩` from `h`. Establish `hU : (1 + T).BlockTriangular id` using `Matrix.blockTriangular_one.add hT.tri`. Establish `hdet : (1 + T).det = 1`. Rewrite using `[Matrix.det_of_isUpperTriangular hU]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.add_apply, hT i i le_rfl]`. Simplify using the standard rewrite rules. Establish `hu : IsUnit (1 + T).det` using `by rw [hdet]; exact isUnit_one`. Establish `: Invertible (1 + T)` using `Matrix.invertibleOfIsUnitDet _ hu`. Establish `hV : (1 + T)⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hU`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : M' * E = E * (1 + T)⁻¹`. Establish `: M' * E * (1 + T) = E`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_add, Matrix.mul_one, ← e, ← Matrix.mul_assoc, hM, Matrix.one_mul]`. Use `conv_rhs => rw [← this]`. Rewrite using `[Matrix.mul_assoc _ (1 + T), Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (1 + T)⁻¹ = 1 + -((1 + T)⁻¹ * T)`. Use `Matrix.nonsing_inv_mul _ hu` as an intermediate fact. Rewrite `this` using `[Matrix.mul_add, Matrix.mul_one]`. Rewrite using `[← sub_eq_add_neg, eq_sub_iff_add_eq, this]`. Use `⟨⟨-((1 + T)⁻¹ * T), ?_, ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j i hij`. Rewrite using `[Matrix.neg_apply, hT.mul_left hV j i hij, neg_zero]`. Rewrite using `[e1] conv_lhs => rw [e2]`. Rewrite using `[Matrix.mul_add, Matrix.mul_one]`. Take `⟨a, ha⟩` from `h2 y hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨-((1 + T)⁻¹ *ᵥ a), ?_⟩` and prove the remaining obligations. Establish `: M' *ᵥ (M *ᵥ y) = y` using `by rw [Matrix.mulVec_mulVec, hM, Matrix.one_mulVec]`. Rewrite `this` using `[ha, Matrix.mulVec_add, Matrix.mulVec_mulVec, e1, ← Matrix.mulVec_mulVec]`. Rewrite using `[Matrix.mulVec_neg, ← sub_eq_add_neg, eq_sub_iff_add_eq, this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Unip.inv {E : Matrix (Fin n) (Fin ρ) R} {K : Matrix (Fin ρ) (Fin n) R} {M M' : Matrix (Fin n) (Fin n) R}
     (h : Unip E K M) (hM : M' * M = 1) : Unip E K M' := by
@@ -130,14 +130,14 @@ theorem Unip.inv {E : Matrix (Fin n) (Fin ρ) R} {K : Matrix (Fin ρ) (Fin n) R}
     rw [Matrix.mulVec_neg, ← sub_eq_add_neg, eq_sub_iff_add_eq, this]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc, hG', Matrix.mul_assoc, h, Matrix.mul_add, ← Matrix.mul_assoc, hG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_cols {E : Matrix (Fin n) (Fin ρ) R} {M G G' : Matrix (Fin n) (Fin n) R} {T : Matrix (Fin ρ) (Fin ρ) R}
     (hG : G * E = E) (hG' : G' * E = E) (h : M * E = E + E * T) : G * M * G' * E = E + E * T := by
   rw [Matrix.mul_assoc, hG', Matrix.mul_assoc, h, Matrix.mul_add, ← Matrix.mul_assoc, hG]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hG, hGG, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_vec {E : Matrix (Fin n) (Fin ρ) R} {M G G' : Matrix (Fin n) (Fin n) R} {y : Fin n → R} {a : Fin ρ → R}
     (hG : G * E = E) (hGG : G * G' = 1) (h : M *ᵥ (G' *ᵥ y) = G' *ᵥ y + E *ᵥ a) :
@@ -146,7 +146,7 @@ theorem conj_vec {E : Matrix (Fin n) (Fin ρ) R} {M G G' : Matrix (Fin n) (Fin n
     Matrix.mulVec_mulVec, hG, hGG, Matrix.one_mulVec]
 
 /- English proof (translation)
-Take `⟨⟨T, hT, e⟩, h2⟩` from `h`. Use `⟨⟨T, hT, conj_cols hG hG' e⟩, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `h2 (G' *ᵥ y) (by rw [Matrix.mulVec_mulVec, hK, hy])`. Conclude with `⟨a, conj_vec hG hGG ha⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Unip.conj {E : Matrix (Fin n) (Fin ρ) R} {K : Matrix (Fin ρ) (Fin n) R} {M G G' : Matrix (Fin n) (Fin n) R}
     (h : Unip E K M) (hG : G * E = E) (hG' : G' * E = E) (hGG : G * G' = 1) (hK : K * G' = K) :
@@ -161,17 +161,17 @@ def superSum (c : Fin ρ → R) (T : Matrix (Fin ρ) (Fin ρ) R) (b : Fin ρ →
     ∑ i : Fin ρ, if i.1 + 1 = ρ then c i * b i else 0
 
 /- English proof (translation)
-Unfold `superSum`. Rewrite using `[add_add_add_comm]`. Use `congr 1`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Establish `: (T * T') i j = 0`. Rewrite using `[Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `le_or_gt k i with hk | hk` into its components or cases. Rewrite using `[hT i k hk, zero_mul]`. Rewrite using `[hT' k j (by rw [Fin.le_def]; rw [Fin.lt_def] at hk; omega), mul_zero]`. Rewrite using `[Matrix.add_apply, Matrix.add_apply, this]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (T *ᵥ b') i = 0` using `by show ∑ k, T i k * b' k = 0`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Use `k.2` as an intermediate fact. Rewrite using `[hT i k (by rw [Fin.le_def]; omega), zero_mul]`. Rewrite using `[Pi.add_apply, Pi.add_apply, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem superSum_mul (c : Fin ρ → R) {T T' : Matrix (Fin ρ) (Fin ρ) R} (hT : StrictUp T) (hT' : StrictUp T')
     (b b' : Fin ρ → R) :
@@ -204,16 +204,14 @@ theorem superSum_mul (c : Fin ρ → R) {T T' : Matrix (Fin ρ) (Fin ρ) R} (hT 
     · simp
 
 /- English proof (translation)
-Simplify using `only [superSum, map_add, map_sum, apply_ite φ, map_mul, map_zero, Matrix.map_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem superSum_map {S : Type} [CommRing S] (φ : R →+* S) (c : Fin ρ → R) (T : Matrix (Fin ρ) (Fin ρ) R)
     (b : Fin ρ → R) : superSum (fun i => φ (c i)) (T.map φ) (fun i => φ (b i)) = φ (superSum c T b) := by
   simp only [superSum, map_add, map_sum, apply_ite φ, map_mul, map_zero, Matrix.map_apply]
 
 /- English proof (translation)
-Unfold `superSum`. Use `Continuous.add (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ?_) (continuous_finsetSum _ fun i _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `continuous_const.mul (hT.matrix_elem i j)`. Conclude with `continuous_const`.
-
-Use `split_ifs`. Conclude with `continuous_const.mul ((continuous_apply i).comp hb)`. Conclude with `continuous_const`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_superSum [TopologicalSpace R] [IsTopologicalRing R] {X : Type} [TopologicalSpace X]
     (c : Fin ρ → R) {T : X → Matrix (Fin ρ) (Fin ρ) R} {b : X → Fin ρ → R} (hT : Continuous T) (hb : Continuous b) :
@@ -229,7 +227,7 @@ theorem continuous_superSum [TopologicalSpace R] [IsTopologicalRing R] {X : Type
     · exact continuous_const
 
 /- English proof (translation)
-Establish `hi : Function.Injective e.mulVec` using `Matrix.mulVec_injective_iff.2 h`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' e) (LinearMap.ker_eq_bot.2 hi)`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_leftInv {E : Type} [Field E] (e : Matrix (Fin n) (Fin ρ) E) (h : LinearIndependent E e.transpose) :
     ∃ L : Matrix (Fin ρ) (Fin n) E, L * e = 1 := by
@@ -240,7 +238,7 @@ theorem exists_leftInv {E : Type} [Field E] (e : Matrix (Fin n) (Fin ρ) E) (h :
   rwa [LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id] at this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec φ P x i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mulVec_map {E : Type} [CommRing E] (φ : E →+* R) {m : ℕ} (P : Matrix (Fin m) (Fin n) E) (x : Fin n → E) :
     P.map φ *ᵥ (fun i => φ (x i)) = fun i => φ ((P *ᵥ x) i) := by
@@ -248,9 +246,9 @@ theorem mulVec_map {E : Type} [CommRing E] (φ : E →+* R) {m : ℕ} (P : Matri
   exact (RingHom.map_mulVec φ P x i).symm
 
 /- English proof (translation)
-Establish `hP : K * (1 - G * K) = 0`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hG, Matrix.one_mul, sub_self]`. Use `choose a ha using fun j => h (fun k => (1 - G * K : Matrix (Fin n) (Fin n) E) k j) (by funext k; exact congr_fun (congr_fun hP k) j)`. Establish `e1 : M * (1 - G * K).map φ = X * (Matrix.of a)ᵀ`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `congr_fun (ha j) i`. Establish `e2 : (1 - G * K).map φ *ᵥ y = y`. Rewrite using `[Matrix.map_sub _ (map_sub φ), Matrix.map_one _ (map_zero φ) (map_one φ), Matrix.map_mul, Matrix.sub_mulVec, ← Matrix.mulVec_mulVec, hy, Matrix.mulVec_zero, Matrix.one_mulVec, sub_zero]`. Use `⟨(Matrix.of a)ᵀ *ᵥ y, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← e1, ← Matrix.mulVec_mulVec, e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_baseChange {E : Type} [CommRing E] (φ : E →+* R) (K : Matrix (Fin ρ) (Fin n) E) (G : Matrix (Fin n) (Fin ρ) E)
     (hG : K * G = 1) (X : Matrix (Fin n) (Fin ρ) R) (M : Matrix (Fin n) (Fin n) R)
@@ -274,7 +272,7 @@ def coordSum (c : Fin ρ → R) (L : Matrix (Fin ρ) (Fin n) R) (E : Matrix (Fin
   superSum c (L * (M - 1) * E) ((L * (M - 1)) *ᵥ z)
 
 /- English proof (translation)
-Establish `e1 : L * (M - 1) * E = T`. Rewrite using `[Matrix.mul_assoc, Matrix.sub_mul, h1, Matrix.one_mul, add_sub_cancel_left, ← Matrix.mul_assoc, hL, Matrix.one_mul]`. Establish `e2 : (L * (M - 1)) *ᵥ z = b`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.sub_mulVec, h2, Matrix.one_mulVec, add_sub_cancel_left, Matrix.mulVec_mulVec, hL, Matrix.one_mulVec]`. Rewrite using `[coordSum, e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordSum_eq (c : Fin ρ → R) {L : Matrix (Fin ρ) (Fin n) R} {E : Matrix (Fin n) (Fin ρ) R} {z : Fin n → R}
     {M : Matrix (Fin n) (Fin n) R} {T : Matrix (Fin ρ) (Fin ρ) R} {b : Fin ρ → R} (hL : L * E = 1)
@@ -288,7 +286,7 @@ theorem coordSum_eq (c : Fin ρ → R) {L : Matrix (Fin ρ) (Fin n) R} {E : Matr
   rw [coordSum, e1, e2]
 
 /- English proof (translation)
-Establish `hm : M.map φ - 1 = (M - 1).map φ`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _)]`. Unfold `coordSum`. Rewrite using `[hm, ← Matrix.map_mul, ← Matrix.map_mul, mulVec_map, superSum_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordSum_map {S : Type} [CommRing S] (φ : R →+* S) (c : Fin ρ → R) (L : Matrix (Fin ρ) (Fin n) R)
     (E : Matrix (Fin n) (Fin ρ) R) (z : Fin n → R) (M : Matrix (Fin n) (Fin n) R) :
@@ -299,7 +297,7 @@ theorem coordSum_map {S : Type} [CommRing S] (φ : R →+* S) (c : Fin ρ → R)
   rw [hm, ← Matrix.map_mul, ← Matrix.map_mul, mulVec_map, superSum_map]
 
 /- English proof (translation)
-Establish `hm : Continuous fun M : Matrix (Fin n) (Fin n) R => L * (M - 1)` using `continuous_const.matrix_mul (continuous_id.sub continuous_const)`. Conclude with `continuous_superSum c (hm.matrix_mul continuous_const) (hm.matrix_mulVec continuous_const)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_coordSum [TopologicalSpace R] [IsTopologicalRing R] (c : Fin ρ → R) (L : Matrix (Fin ρ) (Fin n) R)
     (E : Matrix (Fin n) (Fin ρ) R) (z : Fin n → R) : Continuous (coordSum c L E z) := by
@@ -308,14 +306,14 @@ theorem continuous_coordSum [TopologicalSpace R] [IsTopologicalRing R] (c : Fin 
   exact continuous_superSum c (hm.matrix_mul continuous_const) (hm.matrix_mulVec continuous_const)
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, hL, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_leftInv {S : Type} [CommRing S] (φ : R →+* S) {e : Matrix (Fin n) (Fin ρ) R} {L : Matrix (Fin ρ) (Fin n) R}
     (hL : L * e = 1) : L.map φ * e.map φ = 1 := by
   rw [← Matrix.map_mul, hL, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `h1` using `congrArg (Formalism.UG.cT σ) h`. Rewrite `h1` using `[Formalism.UG.cT_mul]`. Use `conv_lhs => rw [← h1]`. Rewrite using `[Matrix.mul_assoc (Formalism.UG.cT σ E), Matrix.mul_assoc, hu]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perp_fixed_gen (σ : R →+* R) {E : Matrix (Fin n) (Fin ρ) R} {J M : Matrix (Fin n) (Fin n) R}
     (hu : Formalism.UG.cT σ M * J * M = J) (h : M * E = E) : Formalism.UG.cT σ E * J * M = Formalism.UG.cT σ E * J := by
@@ -325,7 +323,7 @@ theorem perp_fixed_gen (σ : R →+* R) {E : Matrix (Fin n) (Fin ρ) R} {J M : M
   rw [Matrix.mul_assoc (Formalism.UG.cT σ E), Matrix.mul_assoc, hu]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← h]`. Rewrite using `[← Matrix.mul_assoc, hM, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_fix_cols {E : Matrix (Fin n) (Fin ρ) R} {M M' : Matrix (Fin n) (Fin n) R} (hM : M' * M = 1)
     (h : M * E = E) : M' * E = E := by
@@ -333,7 +331,7 @@ theorem inv_fix_cols {E : Matrix (Fin n) (Fin ρ) R} {M M' : Matrix (Fin n) (Fin
   rw [← Matrix.mul_assoc, hM, Matrix.one_mul]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← h]`. Rewrite using `[Matrix.mulVec_mulVec, hM, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_fix_vec {z : Fin n → R} {M M' : Matrix (Fin n) (Fin n) R} (hM : M' * M = 1)
     (h : M *ᵥ z = z) : M' *ᵥ z = z := by
@@ -349,30 +347,30 @@ variable {D : D7}
 local infixl:70 " *ₘ " => HMul.hMul
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Theta.mt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_mul (B : HSp D) (g h : GA D B) : Formalism.L2.Theta.mt B (g * h) = Formalism.L2.Theta.mt B g * Formalism.L2.Theta.mt B h := by
   simp [Formalism.L2.Theta.mt]
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Theta.mt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_one (B : HSp D) : Formalism.L2.Theta.mt B 1 = 1 := by simp [Formalism.L2.Theta.mt]
 
 /- English proof (translation)
-Rewrite using `[← mt_mul, inv_mul_cancel, mt_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_inv_mul (B : HSp D) (g : GA D B) : Formalism.L2.Theta.mt B g⁻¹ * Formalism.L2.Theta.mt B g = 1 := by
   rw [← mt_mul, inv_mul_cancel, mt_one]
 
 /- English proof (translation)
-Rewrite using `[← mt_mul, mul_inv_cancel, mt_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_mul_inv (B : HSp D) (g : GA D B) : Formalism.L2.Theta.mt B g * Formalism.L2.Theta.mt B g⁻¹ = 1 := by
   rw [← mt_mul, mul_inv_cancel, mt_one]
 
 /- English proof (translation)
-Unfold `subOne`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_iff_eq_add']`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem subOne_vec (B : HSp D) (g : GA D B) (y w : Fin B.rank → AE D) :
     subOne B g *ᵥ y = w ↔ Formalism.L2.Theta.mt B g *ᵥ y = y + w := by
@@ -381,9 +379,9 @@ theorem subOne_vec (B : HSp D) (g : GA D B) (y w : Fin B.rank → AE D) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [subOne_vec]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `k i`. Conclude with `congr_fun (h i) k`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h i`. Use function extensionality and compare the values at `k`. Conclude with `congr_fun (congr_fun h k) i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem subOne_cols (B : HSp D) {ρ : ℕ} (e : Matrix (Fin B.rank) (Fin ρ) D.host.E) (g : GA D B)
     (a : Fin ρ → Fin ρ → AE D) :
@@ -402,7 +400,7 @@ abbrev perpMat (B : HSp D) {ρ : ℕ} (e : Matrix (Fin B.rank) (Fin ρ) D.host.E
   Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) e * B.gram
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `exists_leftInv e he`. Establish `hu : IsUnit B.gram.det` using `(GlobalTheory.AutFunCounterexample.gram_det_ne B).isUnit`. Use `⟨B.gram⁻¹ * Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) L, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc B.gram, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul, ← Formalism.UG.cT_mul, hL, Formalism.UG.cT_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem perpMat_rightInv (B : HSp D) {ρ : ℕ} (e : Matrix (Fin B.rank) (Fin ρ) D.host.E)
     (he : LinearIndependent D.host.E e.transpose) :
@@ -414,17 +412,15 @@ theorem perpMat_rightInv (B : HSp D) {ρ : ℕ} (e : Matrix (Fin B.rank) (Fin ρ
     Formalism.UG.cT_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Unfold `NFlag at hg`. Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem g hg`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨h1, h2⟩` from `hg`. Use `choose a ha0 ha using h1`. Take `⟨G, hG⟩` from `perpMat_rightInv B e he`. Use `⟨⟨(Matrix.of a)ᵀ, fun j i hij => ha0 i j hij, (subOne_cols B e g a).1 ha⟩, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `ker_baseChange (incA D) (perpMat B e) G hG (e.map (incA D)) (subOne B g) h2 y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c, (subOne_vec B g y _).1 hc⟩`. Consider the case `one => rw [mt_one]`. Conclude with `unip_one _ _`. Consider the case `mul g h _ _ hg hh => rw [mt_mul]`. Conclude with `hg.mul hh`.
+Treat this case separately. Treat this case separately. Treat this case separately. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `inv g _ hg => exact hg.inv (mt_inv_mul B g)`. Introduce and unpack `⟨⟨T, hT, h1⟩, h2⟩`. Use `Subgroup.subset_closure ⟨fun i => ⟨fun j => T j i, fun j hij => hT j i hij, ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `(subOne_cols B e g (fun i j => T j i)).2 h1 i`. Take `⟨a, ha⟩` from `h2 (ratV x) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `mulVec_map (incA D) (perpMat B e) x` as an intermediate fact. Rewrite `this` using `[hx]`. Use `this.trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `map_zero _)`.
-
-Conclude with `⟨a, (subOne_vec B g _ _).2 ha⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_NFlag_iff (B : HSp D) {ρ : ℕ} (e : Matrix (Fin B.rank) (Fin ρ) D.host.E)
     (he : LinearIndependent D.host.E e.transpose) (g : GA D B) :
@@ -457,9 +453,9 @@ theorem mem_NFlag_iff (B : HSp D) {ρ : ℕ} (e : Matrix (Fin B.rank) (Fin ρ) D
 variable {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V}
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `exists_leftInv d.e d.e_iso.1`. Establish `hL'` using `map_leftInv (incA D) hL`. Establish `hex : ∃ v, IsBesVal ψ d g v` using `⟨_, fun i j => T j i, b, (subOne_cols B d.e g (fun i j => T j i)).2 hT, (subOne_vec B g _ _).2 hb, rfl⟩`. Unfold `besChar`. Rewrite using `[dif_pos hex]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b', h1, h2, h3⟩` from `hex.choose_spec`. Establish `e1` using `(subOne_cols B d.e g a).1 h1`. Establish `e2` using `(subOne_vec B g _ _).1 h2`. Rewrite using `[h3, ← coordSum_eq _ hL' hT hb, coordSum_eq _ hL' e1 e2]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem besChar_eq (ψ : AddChar (AF D.host.F) ℂ) (d : BesDat A B ι) (g : GA D B)
     (T : Matrix (Fin d.ρ) (Fin d.ρ) (AE D)) (b : Fin d.ρ → AE D)
@@ -479,7 +475,7 @@ theorem besChar_eq (ψ : AddChar (AF D.host.F) ℂ) (d : BesDat A B ι) (g : GA 
   rfl
 
 /- English proof (translation)
-Use `mulVec_map (incA D) (perpMat B d.e) d.z` as an intermediate fact. Rewrite `this` using `[d.z_perpE]`. Use `this.trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `map_zero _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem flagOrthogonalComplementEquations_mulVec_bessel_eq_zero (d : BesDat A B ι) : (perpMat B d.e).map (incA D) *ᵥ ratV d.z = 0 := by
   have := mulVec_map (incA D) (perpMat B d.e) d.z
@@ -489,7 +485,7 @@ theorem flagOrthogonalComplementEquations_mulVec_bessel_eq_zero (d : BesDat A B 
   exact map_zero _
 
 /- English proof (translation)
-Take `⟨⟨T, hT, h1⟩, h2⟩` from `(mem_NFlag_iff B d.e d.e_iso.1 g).1 hg`. Take `⟨b, hb⟩` from `h2 _ (flagOrthogonalComplementEquations_mulVec_bessel_eq_zero d)`. Conclude with `⟨T, b, hT, h1, hb⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_coords (d : BesDat A B ι) (g : GA D B) (hg : g ∈ NFlag B d.e) :
     ∃ (T : Matrix (Fin d.ρ) (Fin d.ρ) (AE D)) (b : Fin d.ρ → AE D), StrictUp T ∧
@@ -500,7 +496,7 @@ theorem exists_coords (d : BesDat A B ι) (g : GA D B) (hg : g ∈ NFlag B d.e) 
   exact ⟨T, b, hT, h1, hb⟩
 
 /- English proof (translation)
-Take `⟨T, b, -, h1, h2⟩` from `exists_coords d g hg`. Rewrite using `[coordSum_eq _ (map_leftInv (incA D) hL) h1 h2]`. Conclude with `besChar_eq ψ d g T b h1 h2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem besChar_formula (ψ : AddChar (AF D.host.F) ℂ) (d : BesDat A B ι) (L : Matrix (Fin d.ρ) (Fin B.rank) D.host.E)
     (hL : L * d.e = 1) (g : GA D B) (hg : g ∈ NFlag B d.e) :
@@ -511,7 +507,7 @@ theorem besChar_formula (ψ : AddChar (AF D.host.F) ℂ) (d : BesDat A B ι) (L 
   exact besChar_eq ψ d g T b h1 h2
 
 /- English proof (translation)
-Take `⟨T, b, hT, h1, h2⟩` from `exists_coords d g hg`. Take `⟨T', b', hT', h1', h2'⟩` from `exists_coords d h hh`. Rewrite using `[besChar_eq ψ d g T b h1 h2, besChar_eq ψ d h T' b' h1' h2', besChar_eq ψ d (g * h) (T + T' + T * T') (b + b' + T *ᵥ b') (by rw [mt_mul]; exact mul_cols h1 h1') (by rw [mt_mul]; exact mul_vec h1 h2 h2'), superSum_mul _ hT hT', map_add, AddChar.map_add_eq_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem besChar_mul (ψ : AddChar (AF D.host.F) ℂ) (d : BesDat A B ι) (g h : GA D B) (hg : g ∈ NFlag B d.e)
     (hh : h ∈ NFlag B d.e) : besChar ψ d (g * h) = besChar ψ d g * besChar ψ d h := by
@@ -523,7 +519,7 @@ theorem besChar_mul (ψ : AddChar (AF D.host.F) ℂ) (d : BesDat A B ι) (g h : 
     superSum_mul _ hT hT', map_add, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Use `show Algebra.trace (AF D.host.F) (AE D) ((1 : AF D.host.F) ⊗ₜ[D.host.F] x) = _`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_incA (x : D.host.E) : Algebra.trace (AF D.host.F) (AE D) (incA D x) =
     algebraMap D.host.F (AF D.host.F) (Algebra.trace D.host.F D.host.E x) := by
@@ -531,9 +527,9 @@ theorem trace_incA (x : D.host.E) : Algebra.trace (AF D.host.F) (AE D) (incA D x
   rw [Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `exists_leftInv d.e d.e_iso.1`. Take `⟨γ, -, hγ⟩` from `hq`. Establish `hm : Formalism.L2.Theta.mt B g = (γ : Matrix (Fin B.rank) (Fin B.rank) D.host.E).map (incA D)` using `(congrArg Units.val hγ).symm`. Rewrite using `[besChar_formula ψ d L hL g hg, hm]`. Unfold `ratV`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[coordSum_map, trace_incA]`. Conclude with `hψ.2.2.1 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem besChar_rat (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (d : BesDat A B ι) (g : GA D B)
     (hg : g ∈ NFlag B d.e) (hq : g ∈ GQ B) : besChar ψ d g = 1 := by
@@ -547,9 +543,9 @@ theorem besChar_rat (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ
   exact hψ.2.2.1 _
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `exists_leftInv d.e d.e_iso.1`. Establish `: IsTopologicalRing (AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`. Establish `ht : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `hm0 : Continuous (fun k : GA D B => Formalism.L2.Theta.mt B k)` using `Units.continuous_val.comp continuous_subtype_val`. Use `hψ.1.comp (ht.comp ((continuous_coordSum (fun i => incA D (d.c i)) (L.map (incA D)) (d.e.map (incA D)) (ratV d.z)).comp (hm0.comp (continuous_subtype_val (p := (· ∈ NFlag B d.e))))))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.congr fun n => (besChar_formula ψ d L hL n n.2).symm`.
+A detailed English derivation is pending.
 -/
 theorem besChar_continuous (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (d : BesDat A B ι) :
     Continuous fun n : NFlag B d.e => besChar ψ d (n : GA D B) := by
@@ -562,7 +558,7 @@ theorem besChar_continuous (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.ho
   exact this.congr fun n => (besChar_formula ψ d L hL n n.2).symm
 
 /- English proof (translation)
-Establish `h2 : (perpMat B e).map (incA D) = Formalism.UG.cT (cA D) (e.map (incA D)) *ₘ B.gram.map (incA D)`. Rewrite using `[Matrix.map_mul, GlobalTheory.AutFunCounterexample.cT_map_gen]`. Rewrite using `[h2]`. Conclude with `perp_fixed_gen (cA D) g.2 hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perp_fixed {ρ : ℕ} (e : Matrix (Fin B.rank) (Fin ρ) D.host.E) (g : GA D B)
     (hg : Formalism.L2.Theta.mt B g *ₘ e.map (incA D) = e.map (incA D)) :
@@ -573,13 +569,11 @@ theorem perp_fixed {ρ : ℕ} (e : Matrix (Fin B.rank) (Fin ρ) D.host.E) (g : G
   exact perp_fixed_gen (cA D) g.2 hg
 
 /- English proof (translation)
-Establish `he : Formalism.L2.Theta.mt B g *ₘ d.e.map (incA D) = d.e.map (incA D)`. Use extensionality with `k i`. Conclude with `congr_fun (hg.2 (fun k => d.e k i) (by funext k; exact congr_fun (congr_fun d.e_perp k) i)) k`. Establish `hz : Formalism.L2.Theta.mt B g *ᵥ ratV d.z = ratV d.z` using `hg.2 d.z d.z_perpA`. Establish `he'` using `inv_fix_cols (mt_inv_mul B g) he`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz'` using `inv_fix_vec (mt_inv_mul B g) hz`. Prove the components needed by the constructor for the conclusion. Rewrite `hn`, the goal using `[mem_NFlag_iff B d.e d.e_iso.1]`. Rewrite using `[mt_mul, mt_mul]`. Conclude with `hn.conj he he' (mt_mul_inv B g) (perp_fixed d.e g⁻¹ he')`.
+Prove the components needed by the constructor for the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨T, b, -, h1, h2⟩` from `exists_coords d n hn`. Rewrite using `[besChar_eq ψ d n T b h1 h2]`. Use `besChar_eq ψ d _ T b ?_ ?_` and prove the remaining obligations. Rewrite using `[mt_mul, mt_mul]`. Conclude with `conj_cols he he' h1`.
-
-Rewrite using `[mt_mul, mt_mul]; exact conj_vec he (mt_mul_inv B g) (by rw [hz', h2])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem besChar_conj (ψ : AddChar (AF D.host.F) ℂ) (d : BesDat A B ι) (g : GA D B) (h : GA D A)
     (hg : EmbRel B A ι g h) (n : GA D B) (hn : n ∈ NFlag B d.e) :
@@ -603,7 +597,7 @@ theorem besChar_conj (ψ : AddChar (AF D.host.F) ℂ) (d : BesDat A B ι) (g : G
 end Adelic
 
 /- English proof (translation)
-Introduce `_ ψ hψ _ _ _ _ d` and use `⟨fun n n' => besChar_mul ψ d n n' n.2 n'.2, fun γ hγ => besChar_rat ψ hψ.1 d γ γ.2 hγ, besChar_continuous ψ hψ.1 d, fun g h hg n hn => besChar_conj ψ d g h hg n hn⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem besChar_laws : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V), HSpace.IsIsomEmb A B ι → ∀ d : BesDat A B ι, (∀ n n' : NFlag B d.e, besChar ψ d ((n * n' : NFlag B d.e) : GA D B) = besChar ψ d (n : GA D B) * besChar ψ d (n' : GA D B)) ∧ (∀ γ ∈ NFlagQ B d.e, besChar ψ d (γ : GA D B) = 1) ∧ (Continuous fun n : NFlag B d.e => besChar ψ d (n : GA D B)) ∧ ∀ g h, EmbRel B A ι g h → ∀ n ∈ NFlag B d.e, g * n * g⁻¹ ∈ NFlag B d.e ∧ besChar ψ d (g * n * g⁻¹) = besChar ψ d n :=
   fun _ ψ hψ _ _ _ _ d =>

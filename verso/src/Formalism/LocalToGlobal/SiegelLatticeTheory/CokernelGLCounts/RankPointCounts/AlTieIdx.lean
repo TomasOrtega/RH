@@ -16,7 +16,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions.S
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun j hj => by have h1 : 1 < q ^ j := one_lt_pow₀ hq (by have := hs j hj; omega) have h2 : 1 / q ^ j < 1 := by rw [div_lt_one (by linarith)]; exact h1 linarith`.
+A detailed English derivation is pending.
 -/
 theorem prod_one_sub_inv_pow_pos (q : ℝ) (hq : 1 < q) (s : Finset ℕ) (hs : ∀ j ∈ s, 1 ≤ j) :
     0 < ∏ j ∈ s, (1 - 1 / q ^ j) :=
@@ -26,13 +26,13 @@ theorem prod_one_sub_inv_pow_pos (q : ℝ) (hq : 1 < q) (s : Finset ℕ) (hs : �
     linarith
 
 /- English proof (translation)
-Establish `hq0 : (g : ℝ) ≠ 0` using `by exact_mod_cast hg.out.ne_zero`. Rewrite using `[Matrix.card_GL_field, ZMod.card, Nat.cast_prod]`. Establish `hterm : ∀ i : Fin m, (((g ^ m - g ^ (i : ℕ) : ℕ)) : ℝ) = (g : ℝ) ^ m * (1 - 1 / (g : ℝ) ^ (m - i))`. Introduce `i`. Rewrite using `[Nat.cast_sub (Nat.pow_le_pow_right hg.out.pos i.2.le), Nat.cast_pow, Nat.cast_pow, mul_sub, mul_one, mul_one_div, div_eq_mul_inv, ← pow_sub₀ _ hq0 (Nat.sub_le m i), Nat.sub_sub_self i.2.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_congr rfl (fun i _ => hterm i), Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul]`. Use `congr 1`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => 1 - 1 / (g : ℝ) ^ (m - i)) m]`. Establish `h1 : ∏ i ∈ Finset.range m, (1 - 1 / (g : ℝ) ^ (m - i)) = ∏ i ∈ Finset.range m, (fun j => 1 - 1 / (g : ℝ) ^ (j + 1)) (m - 1 - i)`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.mem_range.1 hi` as an intermediate fact. Use `show _ = 1 - 1 / (g : ℝ) ^ (m - 1 - i + 1)`. Rewrite using `[show m - 1 - i + 1 = m - i by omega]`. Rewrite using `[h1, Finset.prod_range_reflect (fun j => 1 - 1 / (g : ℝ) ^ (j + 1)) m, Finset.range_eq_Ico, Finset.prod_Ico_add' (fun j => 1 - 1 / (g : ℝ) ^ j) 0 m 1]`. Establish `h2 : Finset.Ico (0 + 1) (m + 1) = Finset.Ioc 0 m` using `by ext; simp; omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`.
+A detailed English derivation is pending.
 -/
 theorem cardGL_A (g m : ℕ) [hg : Fact g.Prime] :
     (Nat.card (GL (Fin m) (ZMod g)) : ℝ) = (g : ℝ) ^ (m * m) * ∏ j ∈ Finset.Ioc 0 m, (1 - 1 / (g : ℝ) ^ j) := by
@@ -58,21 +58,19 @@ theorem cardGL_A (g m : ℕ) [hg : Fact g.Prime] :
   rw [h2]
 
 /- English proof (translation)
-Establish `: Fact g.Prime` using `⟨hg⟩`. Establish `hq : (1 : ℝ) < g` using `by exact_mod_cast hg.one_lt`. Establish `hq0 : (g : ℝ) ≠ 0` using `by linarith`. Establish `hc : Fintype.card (Formalism.FourierDecayAlt.S3.Idx r k) = 2 * r + k + 1`. Simplify using `only [Formalism.FourierDecayAlt.S3.Idx, Formalism.FourierDecayAlt.S3.Mid, Fintype.card_sum, Fintype.card_fin, Fintype.card_unit]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hG : (ggC r k g : ℝ) = (Nat.card (GL (Fin (2 * r + k + 1)) (ZMod g)) : ℝ)`. Unfold `ggC`. Conclude with `Nat.card_congr (Units.mapEquiv (Matrix.reindexAlgEquiv (ZMod g) (ZMod g) (Fintype.equivFinOfCardEq hc)).toMulEquiv)` after adjusting the coercions. Establish `hN : (nnC r k g : ℝ) = (g : ℝ) ^ (r * (r - 1) + 2 * r * (k + 1) + r ^ 2)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `nnC`. Rewrite using `[MassDataIdxStIm.card_isN, ZMod.card]`. Use `push_cast`. Apply the tactic sequence `try rfl`. Unfold `glkC`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hG, hN, cardGL_A, cardGL_A]`. Establish `hIcc : Finset.Icc (k + 1) (2 * r + k + 1) = Finset.Ioc k (2 * r + k + 1)` using `by ext; simp only [Finset.mem_Icc, Finset.mem_Ioc]; omega`. Rewrite using `[hIcc, ← Finset.prod_Ioc_consecutive _ (Nat.zero_le k) (by omega : k ≤ 2 * r + k + 1)]`. Establish `hA : 0 < ∏ j ∈ Finset.Ioc 0 k, (1 - 1 / (g : ℝ) ^ j)` using `prod_one_sub_inv_pow_pos _ hq _ (fun j hj => (Finset.mem_Ioc.1 hj).1)`. Establish `hB : 0 < ∏ j ∈ Finset.Ioc k (2 * r + k + 1), (1 - 1 / (g : ℝ) ^ j)` using `prod_one_sub_inv_pow_pos _ hq _ (fun j hj => by have := (Finset.mem_Ioc.1 hj).1; omega)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpow : (g : ℝ) ^ (k * k) * (g : ℝ) ^ (r * (r - 1) + 2 * r * (k + 1) + r ^ 2) / (g : ℝ) ^ ((2 * r + k + 1) * (2 * r + k + 1)) = (g : ℝ) ^ (-(((r + 1) * (2 * k + 2 * r + 1) : ℕ) : ℤ))`. Rewrite using `[← pow_add, ← zpow_natCast, ← zpow_natCast, ← zpow_sub₀ hq0]`. Use `congr 1`. Break down `r with _ | s` into its components or cases. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Nat.add_sub_cancel]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hpow]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(∏ j ∈ Finset.Ioc 0 k, (1 - 1 / (g : ℝ) ^ j)) = A at hA ⊢`. Generalize the expression as in `(∏ j ∈ Finset.Ioc k (2 * r + k + 1), (1 - 1 / (g : ℝ) ^ j)) = B at hB ⊢`. Establish `hA'` using `hA.ne'`. Establish `hB'` using `hB.ne'`. Establish `hgn : (g : ℝ) ^ ((2 * r + k + 1) * (2 * r + k + 1)) ≠ 0` using `pow_ne_zero _ hq0`.
-
-Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem idx_arith (g r k : ℕ) (hg : g.Prime) :
     (glkC k g : ℝ) * (nnC r k g : ℝ) / (ggC r k g : ℝ) =
@@ -121,9 +119,9 @@ theorem idx_arith (g r k : ℕ) (hg : g.Prime) :
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Take `⟨j, hj, hj0, hμj, hB0, hBt⟩` from `MassDataIdxSteps.measB_of X MassDataIdxSteps.haarIdx MassDataIdxSteps.redIdx u p (MassDataIdxSteps.stTop X p) (Formalism.L2.SG.Pf.MassDataX.stK_holds X p) (Formalism.L2.SG.Pf.MassDataX.stRed_holds X p) (Formalism.L2.SG.Pf.MassDataX.stImB_holds X hb u p)`. Establish `h1 : (MassDataIdxSteps.muP X p (MassDataIdxSteps.KvX X p)).toReal = (j : ℝ) * (MassDataIdxSteps.muP X p (MassDataIdxSteps.KnatX X u p)).toReal`. Rewrite using `[hμj, ENNReal.toReal_mul, ENNReal.toReal_natCast]`. Establish `hpos : (MassDataIdxSteps.muP X p (MassDataIdxSteps.KnatX X u p)).toReal ≠ 0` using `ENNReal.toReal_ne_zero.mpr ⟨hB0, hBt⟩`. Rewrite using `[h1, ← hj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `eq_or_ne (j : ℝ) 0 with h0 | h0` into its components or cases. Simplify using `[h0]`. Rewrite using `[mul_comm (j : ℝ) (MassDataIdxSteps.muP X p (MassDataIdxSteps.KnatX X u p)).toReal, mul_comm (j : ℝ), div_mul_eq_div_div, div_self hpos, div_mul_eq_div_div, div_self hj0]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratio_eq (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X) :
     (MassDataIdxSteps.muP X p (MassDataIdxSteps.KnatX X u p)).toReal / (MassDataIdxSteps.muP X p (MassDataIdxSteps.KvX X p)).toReal =
@@ -142,14 +140,14 @@ theorem ratio_eq (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X) :
       div_mul_eq_div_div, div_self hpos, div_mul_eq_div_div, div_self hj0]
 
 /- English proof (translation)
-Unfold `gAt gOf`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gAt_eq (p : TypX X) : gAt X p.1 = gOf p := by
   unfold gAt gOf
   split_ifs <;> rfl
 
 /- English proof (translation)
-Take `⟨hN, hη⟩` from `Formalism.L2.SG.Pf.gSplitX_holds X p`. Establish `hT` using `Formalism.L2.SG.Pf.AlTieFD.T_not_mem X u p`. Unfold `aP`. Rewrite using `[if_neg (by unfold Tw; exact hT), X.n_eq, ← Formalism.MainNotions.S.dimS_eq D.R, hη, hN, gAt_eq X p]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Simplify using the standard rewrite rules.
 -/
@@ -164,7 +162,7 @@ theorem aP_typed (u : D.what₂.Word) (p : TypX X) :
   simp
 
 /- English proof (translation)
-Introduce `p`. Use `(ratio_eq X hb u p).trans ?_` and prove the remaining obligations. Rewrite using `[idx_arith (gOf p) D.R.rS D.R.k (MassDataIdxSteps.gOf_prime X p), aP_typed X u p, gAt_eq X p]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem indexTypC_holds (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf)
     (u u' : D.what₂.Word) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E)

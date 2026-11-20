@@ -15,13 +15,13 @@ def SF (S : Set G) (Ω : Set G) : Prop :=
   MeasurableSet Ω ∧ (∀ x, ∃ s ∈ S, s * x ∈ Ω) ∧ ∀ x ∈ Ω, ∀ s ∈ S, s * x ∈ Ω → s = 1
 
 /- English proof (translation)
-Establish `key : ∀ x : G, ∃! g : Γ, g • x ∈ Ω`. Introduce `x`. Take `⟨s, hs, hsx⟩` from `hΩ.2.1 x`. Use `⟨⟨s, hs⟩, hsx, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨t, ht⟩ htx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `htx' : t * x ∈ Ω` using `htx`. Establish `h1 : (t * s⁻¹) * (s * x) ∈ Ω` using `by simpa [mul_assoc] using htx'`. Establish `h2 : t * s⁻¹ = 1` using `hΩ.2.2 (s * x) hsx (t * s⁻¹) (Γ.mul_mem ht (Γ.inv_mem hs)) h1`. Conclude with `Subtype.ext (mul_inv_eq_one.1 h2)`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact IsFundamentalDomain.mk' hΩ.1.nullMeasurableSet key`. Consider the case `exact { nullMeasurableSet := hΩ.1.nullMeasurableSet ae_covers := ae_of_all _ fun x => (key x).exists aedisjoint := fun a b hab => Disjoint.aedisjoint (Set.disjoint_left.2 fun y hya hyb => by`. Take `⟨u, hu, rfl⟩` from `Set.mem_smul_set.1 hya`. Take `⟨v, hv, hvu⟩` from `Set.mem_smul_set.1 hyb`. Establish `e1 : (b⁻¹ * a) • u ∈ Ω` using `by rw [mul_smul, ← hvu, inv_smul_smul]; exact hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (1 : Γ) • u ∈ Ω` using `by rw [one_smul]; exact hu`. Use `(key u).unique e1 e2` as an intermediate fact. Conclude with `hab (by rw [inv_mul_eq_one] at this; exact this.symm)) }`.
+A detailed English derivation is pending.
 -/
 theorem isFD_of_SF (Γ : Subgroup G) [Countable Γ] {Ω : Set G} (hΩ : SF (Γ : Set G) Ω) (μ : Measure G) :
     IsFundamentalDomain Γ Ω μ := by
@@ -48,9 +48,9 @@ theorem isFD_of_SF (Γ : Subgroup G) [Countable Γ] {Ω : Set G} (hΩ : SF (Γ :
           exact hab (by rw [inv_mul_eq_one] at this; exact this.symm)) }
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `infer_instance`. Consider the case `exact ⟨fun c => measurable_const_mul (c : G), fun x => (measurable_mul_const x).comp measurable_subtype_coe⟩`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c s hs`. Establish `hc` using `hν (c : G) c.2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem measurableSMul_and_smulInvariantMeasure_subgroup (Γ : Subgroup G) (ν : Measure G)
     (hν : ∀ s ∈ Γ, ν.map (fun x => s * x) = ν) :
@@ -67,7 +67,7 @@ private theorem measurableSMul_and_smulInvariantMeasure_subgroup (Γ : Subgroup 
       _ = ν s := by rw [hc]
 
 /- English proof (translation)
-Take `⟨i1, i2⟩` from `measurableSMul_and_smulInvariantMeasure_subgroup Γ ν hν`. Conclude with `(isFD_of_SF Γ h1 ν).measure_eq (isFD_of_SF Γ h2 ν)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem measure_SF_eq (Γ : Subgroup G) [Countable Γ] (ν : Measure G)
     (hν : ∀ s ∈ Γ, ν.map (fun x => s * x) = ν) {Ω Ω' : Set G} (h1 : SF (Γ : Set G) Ω)
@@ -77,7 +77,7 @@ theorem measure_SF_eq (Γ : Subgroup G) [Countable Γ] (ν : Measure G)
     (isFD_of_SF Γ h2 ν)
 
 /- English proof (translation)
-Use `⟨h.1.preimage (measurable_mul_const y), fun x => ?_, fun x hx s hs hsx => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hsx⟩` from `h.2.1 (x * y)`. Conclude with `⟨s, hs, by simpa [Set.mem_setOf_eq, mul_assoc] using hsx⟩`. Conclude with `h.2.2 (x * y) hx s hs (by simpa [Set.mem_setOf_eq, mul_assoc] using hsx)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem SF_mul_right {S : Set G} {Ω : Set G} (h : SF S Ω) (y : G) : SF S {r | r * y ∈ Ω} := by
   refine ⟨h.1.preimage (measurable_mul_const y), fun x => ?_, fun x hx s hs hsx => ?_⟩
@@ -90,9 +90,9 @@ variable (h : G)
 def conjSub (Γ : Subgroup G) : Subgroup G := Γ.map (MulAut.conj h⁻¹).toMonoidHom
 
 /- English proof (translation)
-Unfold `conjSub`. Rewrite using `[Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Simplify `hg` using `[mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hs`. Conclude with `⟨h * s * h⁻¹, hs, by simp [mul_assoc]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_conjSub {Γ : Subgroup G} {s : G} : s ∈ conjSub h Γ ↔ h * s * h⁻¹ ∈ Γ := by
   unfold conjSub
@@ -108,11 +108,11 @@ instance countable_conjSub (Γ : Subgroup G) [Countable Γ] : Countable (conjSub
   exact Countable.of_equiv _ (Γ.equivMapOfInjective _ (MulAut.conj h⁻¹).injective).toEquiv
 
 /- English proof (translation)
-Use `⟨hΩ.1.preimage ((measurable_const_mul h).mul_const h⁻¹), fun x => ?_, fun x hx t ht htx => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hsx⟩` from `hΩ.2.1 (h * x * h⁻¹)`. Use `⟨h⁻¹ * s * h, ?_, ?_⟩` and prove the remaining obligations. Use `show h⁻¹ * s * h ∈ conjSub h Γ`. Rewrite using `[mem_conjSub]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hs` using `[mul_assoc]`. Use `show h * (h⁻¹ * s * h * x) * h⁻¹ ∈ Ω`. Simplify `hsx` using `[mul_assoc]`. Establish `ht' : h * t * h⁻¹ ∈ Γ` using `(mem_conjSub h).1 ht`. Establish `h1 : (h * t * h⁻¹) * (h * x * h⁻¹) ∈ Ω` using `by simpa [mul_assoc] using htx`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : h * t * h⁻¹ = 1` using `hΩ.2.2 (h * x * h⁻¹) hx (h * t * h⁻¹) ht' h1`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem SF_conj {Γ : Subgroup G} {Ω : Set G} (hΩ : SF (Γ : Set G) Ω) :
     SF (conjSub h Γ : Set G) {r | h * r * h⁻¹ ∈ Ω} := by
@@ -131,9 +131,9 @@ theorem SF_conj {Γ : Subgroup G} {Ω : Set G} (hΩ : SF (Γ : Set G) Ω) :
       _ = 1 := by rw [h2]; group
 
 /- English proof (translation)
-Establish `H` using `SF_mul_right (SF_conj h hΩ) (y * h)`. Establish `hset : {r | h * (r * y) ∈ Ω} = {r | r * (y * h) ∈ {r | h * r * h⁻¹ ∈ Ω}}`. Use extensionality with `r`. Simplify using `[mul_assoc]`. Rewrite using `[hset]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `H`.
+A detailed English derivation is pending.
 -/
 theorem SF_transl {Γ : Subgroup G} {Ω : Set G} (hΩ : SF (Γ : Set G) Ω) (y : G) :
     SF (conjSub h Γ : Set G) {r | h * (r * y) ∈ Ω} := by
@@ -152,7 +152,7 @@ variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [Measura
   {μ : Measure G} [SFinite μ] [μ.IsMulLeftInvariant] (ν : Measure G) [SFinite ν]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Use `first`. Consider the case `rfl`. Consider the case `simp only [Set.indicator_apply, Set.mem_setOf_eq, Pi.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ind_mul_right {M : Type*} [Zero M] [One M] {B : Set G} (x : G) :
     (fun r => B.indicator (1 : G → M) (r * x)) = {r | r * x ∈ B}.indicator 1 := by
@@ -162,7 +162,7 @@ theorem ind_mul_right {M : Type*} [Zero M] [One M] {B : Set G} (x : G) :
   | simp only [Set.indicator_apply, Set.mem_setOf_eq, Pi.one_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Use `first`. Consider the case `rfl`. Consider the case `simp only [Set.indicator_apply, Set.mem_setOf_eq, Pi.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ind_inv_mul {M : Type*} [Zero M] [One M] {A : Set G} (y : G) :
     (fun r => A.indicator (1 : G → M) (r⁻¹ * y)) = {r | r⁻¹ * y ∈ A}.indicator 1 := by
@@ -172,7 +172,7 @@ theorem ind_inv_mul {M : Type*} [Zero M] [One M] {A : Set G} (y : G) :
   | simp only [Set.indicator_apply, Set.mem_setOf_eq, Pi.one_apply]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact measurable_one`. Consider the case `exact measurable_const`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem measurable_one_ennreal : Measurable (1 : G → ℝ≥0∞) := by
   first
@@ -180,29 +180,27 @@ private theorem measurable_one_ennreal : Measurable (1 : G → ℝ≥0∞) := by
   | exact measurable_const
 
 /- English proof (translation)
-Establish `h1m` using `(measurable_one_ennreal (G := G))`. Establish `hL : c * ∫⁻ x in A, g x ∂μ = ∫⁻ x, ∫⁻ r, A.indicator (1 : G → ℝ≥0∞) x * B.indicator (1 : G → ℝ≥0∞) (r * x) * g x ∂ν ∂μ` using `by first`. Consider the case `rw [← lintegral_indicator hA]`. Consider the case `rw [← lintegral_indicator _ hA]`. Rewrite using `[← lintegral_const_mul'' c (hg.indicator hA)]`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `hm : Measurable fun r : G => B.indicator (1 : G → ℝ≥0∞) (r * x)` using `(h1m.indicator hB).comp (measurable_mul_const x)`. Establish `h2 : ∫⁻ r, B.indicator (1 : G → ℝ≥0∞) (r * x) ∂ν = c`. Rewrite using `[← hcB x]`. Use `first`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact lintegral_indicator_one (hB.preimage (measurable_mul_const x))`. Consider the case `(rw [ind_mul_right x]; exact lintegral_indicator_one (hB.preimage (measurable_mul_const x)))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2]`. Apply the tactic sequence `by_cases hx : x ∈ A <;> simp [Set.indicator_apply, hx] <;> ring`.
+Treat this case separately. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∫⁻ r, A.indicator (1 : G → ℝ≥0∞) x * B.indicator (1 : G → ℝ≥0∞) (r * x) * g x ∂ν := by`. Rewrite using `[← lintegral_const_mul _ hm]`. Use `lintegral_congr fun r => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hR : c * ∫⁻ y in B, g y ∂μ = ∫⁻ y, ∫⁻ r, A.indicator (1 : G → ℝ≥0∞) (r⁻¹ * y) * B.indicator (1 : G → ℝ≥0∞) y * g y ∂ν ∂μ` using `by first`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [← lintegral_indicator hB]`. Consider the case `rw [← lintegral_indicator _ hB]`. Rewrite using `[← lintegral_const_mul'' c (hg.indicator hB)]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Establish `hm : Measurable fun r : G => A.indicator (1 : G → ℝ≥0∞) (r⁻¹ * y)` using `(h1m.indicator hA).comp (measurable_inv.mul_const y)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∫⁻ r, A.indicator (1 : G → ℝ≥0∞) (r⁻¹ * y) ∂ν = c`. Rewrite using `[← hcA y]`. Use `first`. Consider the case `exact lintegral_indicator_one (hA.preimage (measurable_inv.mul_const y))`. Consider the case `(rw [ind_inv_mul y]; exact lintegral_indicator_one (hA.preimage (measurable_inv.mul_const y)))`.
+Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2]`. Apply the tactic sequence `by_cases hy : y ∈ B <;> simp [Set.indicator_apply, hy] <;> ring`. Use `_ = ∫⁻ r, A.indicator (1 : G → ℝ≥0∞) (r⁻¹ * y) * B.indicator (1 : G → ℝ≥0∞) y * g y ∂ν := by`. Rewrite using `[← lintegral_const_mul _ hm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Treat this case separately.
 
-Use `lintegral_congr fun r => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : AEMeasurable (fun p : G × G => g p.1) (μ.prod ν)` using `by first`. Consider the case `exact hg.comp_quasiMeasurePreserving Measure.quasiMeasurePreserving_fst`. Consider the case `exact hg.comp_quasiMeasurePreserving (Measure.quasiMeasurePreserving_fst (μ := μ) (ν := ν))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact hg.comp_fst`. Consider the case `exact hg.fst_prod`. Consider the case `exact hg.fst`. Establish `hF : AEMeasurable (Function.uncurry fun (x r : G) => A.indicator (1 : G → ℝ≥0∞) x * B.indicator (1 : G → ℝ≥0∞) (r * x) * g x) (μ.prod ν)`. Establish `k1 : Measurable fun p : G × G => A.indicator (1 : G → ℝ≥0∞) p.1` using `(h1m.indicator hA).comp measurable_fst`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2 : Measurable fun p : G × G => B.indicator (1 : G → ℝ≥0∞) (p.2 * p.1)` using `(h1m.indicator hB).comp (measurable_snd.mul measurable_fst)`. Conclude with `(k1.aemeasurable.mul k2.aemeasurable).mul h3`. Establish `hG : AEMeasurable (Function.uncurry fun (y r : G) => A.indicator (1 : G → ℝ≥0∞) (r⁻¹ * y) * B.indicator (1 : G → ℝ≥0∞) y * g y) (μ.prod ν)`. Establish `k1 : Measurable fun p : G × G => A.indicator (1 : G → ℝ≥0∞) (p.2⁻¹ * p.1)` using `(h1m.indicator hA).comp (measurable_snd.inv.mul measurable_fst)`. Establish `k2 : Measurable fun p : G × G => B.indicator (1 : G → ℝ≥0∞) p.1` using `(h1m.indicator hB).comp measurable_fst`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Conclude with `(k1.aemeasurable.mul k2.aemeasurable).mul h3`. Rewrite using `[hL, hR, lintegral_lintegral_swap hF, lintegral_lintegral_swap hG]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hinv] with r hr`. Apply the tactic sequence `try dsimp only`.
-
-Rewrite using `[← lintegral_mul_left_eq_self (fun x => A.indicator (1 : G → ℝ≥0∞) x * B.indicator (1 : G → ℝ≥0∞) (r * x) * g x) r⁻¹]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Use `first`. Consider the case `simp only [mul_inv_cancel_left, hr]`. Consider the case `simp [hr]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lint_eq {A B : Set G} (hA : MeasurableSet A) (hB : MeasurableSet B) (c : ℝ≥0∞)
     (hcB : ∀ x, ν {r | r * x ∈ B} = c) (hcA : ∀ y, ν {r | r⁻¹ * y ∈ A} = c)
@@ -291,7 +289,7 @@ variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [Measura
   {μ : Measure G} [SFinite μ] [μ.IsMulLeftInvariant] (ν : Measure G) [SFinite ν]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (ENNReal.mul_right_inj h0 ht).1 h`. Consider the case `(calc a = c⁻¹ * (c * a) := by rw [← mul_assoc, ENNReal.inv_mul_cancel h0 ht, one_mul] _ = c⁻¹ * (c * b) := by rw [h] _ = b := by rw [← mul_assoc, ENNReal.inv_mul_cancel h0 ht, one_mul])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem ennreal_eq_of_mul_left_eq {c a b : ℝ≥0∞} (h0 : c ≠ 0) (ht : c ≠ ⊤) (h : c * a = c * b) : a = b := by
   first
@@ -301,7 +299,7 @@ private theorem ennreal_eq_of_mul_left_eq {c a b : ℝ≥0∞} (h0 : c ≠ 0) (h
       _ = b := by rw [← mul_assoc, ENNReal.inv_mul_cancel h0 ht, one_mul])
 
 /- English proof (translation)
-Establish `e1` using `lint_eq (μ := μ) ν hA hB c hcB hcA (fun x => ENNReal.ofReal (f x)) hf.aemeasurable.ennreal_ofReal (by filter_upwards [hinv] with r hr x; simp only [hr])`. Establish `e2` using `lint_eq (μ := μ) ν hA hB c hcB hcA (fun x => ENNReal.ofReal (-f x)) hf.aemeasurable.neg.ennreal_ofReal (by filter_upwards [hinv] with r hr x; simp only [hr])`. Rewrite using `[integral_eq_lintegral_pos_part_sub_lintegral_neg_part hfA, integral_eq_lintegral_pos_part_sub_lintegral_neg_part hfB, ennreal_eq_of_mul_left_eq hc0 hct e1, ennreal_eq_of_mul_left_eq hc0 hct e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem setIntegral_eq_of_fiber_measure_eq {A B : Set G} (hA : MeasurableSet A) (hB : MeasurableSet B)
     (c : ℝ≥0∞) (hc0 : c ≠ 0) (hct : c ≠ ⊤)
@@ -320,15 +318,13 @@ private theorem setIntegral_eq_of_fiber_measure_eq {A B : Set G} (hA : Measurabl
     ennreal_eq_of_mul_left_eq hc0 hct e1, ennreal_eq_of_mul_left_eq hc0 hct e2]
 
 /- English proof (translation)
-Establish `hfB : IntegrableOn f B μ`. Establish `hg : AEMeasurable (fun x => ‖f x‖ₑ) μ` using `by first`. Consider the case `exact hf.enorm`. Consider the case `exact (continuous_enorm.comp_aestronglyMeasurable hf).aemeasurable`. Establish `e` using `lint_eq (μ := μ) ν hA hB c hcB hcA (fun x => ‖f x‖ₑ) hg (by filter_upwards [hinv] with r hr x; simp only [hr])`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `e'` using `ennreal_eq_of_mul_left_eq hc0 hct e`. Establish `hA' : ∫⁻ x in A, ‖f x‖ₑ ∂μ < ⊤` using `by first`. Consider the case `exact hfA.2`. Consider the case `exact hfA.hasFiniteIntegral`. Consider the case `exact hasFiniteIntegral_iff_enorm.1 hfA.2`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `⟨hf.restrict, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `(show ∫⁻ x in B, ‖f x‖ₑ ∂μ < ⊤; rw [← e']; exact hA')`. Consider the case `(rw [hasFiniteIntegral_iff_enorm, ← e']; exact hA')`. Establish `key : ∀ L : E →L[ℝ] ℝ, L (∫ x in A, f x ∂μ) = L (∫ x in B, f x ∂μ)`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `L`. Rewrite using `[← L.integral_comp_comm hfA, ← L.integral_comp_comm hfB]`. Conclude with `setIntegral_eq_of_fiber_measure_eq (μ := μ) ν hA hB c hc0 hct hcB hcA (fun x => L (f x)) (L.continuous.comp_aestronglyMeasurable hf) (by filter_upwards [hinv] with r hr x; simp only [hr]) (L.integrable_comp hfA) (L.integrable_comp hfB)`. Assume the negation of the conclusion as `hne`. Use `first`.
-
-Consider the case `(obtain ⟨L, hL⟩ : ∃ L : E →L[ℝ] ℝ, L (∫ x in A, f x ∂μ) ≠ L (∫ x in B, f x ∂μ) := SeparatingDual.exists_separating_of_ne hne`. Conclude with `hL (key L))`. Consider the case `exact hne ((NormedSpace.eq_iff_forall_dual_eq ℝ).2 key)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem int_eq {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E] {A B : Set G}
     (hA : MeasurableSet A) (hB : MeasurableSet B) (c : ℝ≥0∞) (hc0 : c ≠ 0) (hct : c ≠ ⊤)
@@ -373,13 +369,13 @@ section Shift
 variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
 
 /- English proof (translation)
-The claim follows from `measurableSMul_and_smulInvariantMeasure_subgroup Γ ν hν`.
+A detailed English derivation is pending.
 -/
 theorem fd_instances (Γ : Subgroup G) (ν : Measure G) (hν : ∀ s ∈ Γ, ν.map (fun x => s * x) = ν) :
     MeasurableSMul Γ G ∧ SMulInvariantMeasure Γ G ν := measurableSMul_and_smulInvariantMeasure_subgroup Γ ν hν
 
 /- English proof (translation)
-Take `⟨i1, i2⟩` from `fd_instances Γ ν hν`. Establish `hfd` using `isFD_of_SF Γ hΩ ν`. Use `first`. Consider the case `(rw [hfd.measure_eq_tsum Set.univ]; simp [Set.smul_set_univ])`. Consider the case `(rw [hfd.measure_eq_tsum' Set.univ]; simp [measure_smul])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem SF_measure_univ (Γ : Subgroup G) [Countable Γ] (ν : Measure G)
     (hν : ∀ s ∈ Γ, ν.map (fun x => s * x) = ν) {Ω : Set G} (hΩ : SF (Γ : Set G) Ω) :
@@ -391,11 +387,11 @@ theorem SF_measure_univ (Γ : Subgroup G) [Countable Γ] (ν : Measure G)
   | (rw [hfd.measure_eq_tsum' Set.univ]; simp [measure_smul])
 
 /- English proof (translation)
-Take `⟨i1, i2⟩` from `fd_instances Γ ν hν`. Establish `hfd` using `isFD_of_SF Γ hΩ ν`. Combine the equalities or inequalities in the displayed calculation. Use `measure_mono ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hxΩ, hxT⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨s, hs, hsx⟩` from `hT x hxT`. Use `Set.mem_iUnion.2 ⟨⟨s, hs⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, inv_inv]`. Conclude with `⟨hsx, Set.smul_mem_smul_set hxΩ⟩`. Use `_ ≤ ∑' g : Γ, ν (g⁻¹ • (K ∩ g • Ω)) := measure_iUnion_le _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Use `_ = ∑' g : Γ, ν (K ∩ g • Ω) := by first`. Consider the case `simp only [measure_smul]`. Consider the case `(congr 1; funext g; exact measure_smul _ _)`. Use `_ = ν K := (hfd.measure_eq_tsum' K).symm`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem SF_measure_cover (Γ : Subgroup G) [Countable Γ] (ν : Measure G)
     (hν : ∀ s ∈ Γ, ν.map (fun x => s * x) = ν) {Ω T K : Set G} (hΩ : SF (Γ : Set G) Ω)
@@ -424,29 +420,27 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Seco
   [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Establish `hνΓ : ∀ s ∈ Γ, ν.map (fun x => s * x) = ν` using `fun s hs => hleft s (hΓR hs)`. Take `⟨K, hKc, hKR⟩` from `hK`. Establish `hlt : ν Ω < ⊤`. Establish `h1 : ν Ω ≤ ν (Ω ∩ (R : Set G)) + ν (R : Set G)ᶜ`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `measure_mono fun x hx => ?_` and prove the remaining obligations. Distinguish the cases in `hxR : x ∈ (R : Set G)`. Conclude with `Or.inl ⟨hx, hxR⟩`. Conclude with `Or.inr hxR`. Use `_ ≤ ν (Ω ∩ (R : Set G)) + ν (R : Set G)ᶜ := measure_union_le _ _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Establish `h2 : ν (Ω ∩ (R : Set G)) ≤ ν K` using `SF_measure_cover Γ ν hνΓ hΩ (fun x hx => hKR x hx)`. Combine the equalities or inequalities in the displayed calculation. Establish `hne0 : ν Ω ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hu` using `SF_measure_univ Γ ν hνΓ hΩ`. Use `first`. Consider the case `(rw [h0, tsum_zero] at hu; exact Measure.measure_univ_eq_zero.1 hu)`. Consider the case `simpa [h0] using hu`. Establish `hcB : ∀ x, ν {r | r * x ∈ {y | h * y ∈ Ω}} = ν Ω`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Establish `hm : Measurable fun y : G => h⁻¹ * y * h` using `(measurable_const_mul h⁻¹).mul_const h`. Establish `hS : MeasurableSet {r | r * x ∈ {y | h * y ∈ Ω}}` using `hΩ.1.preimage ((measurable_mul_const x).const_mul h)`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `r`. Simplify using `[mul_assoc]`. Use `_ = ν Ω := measure_SF_eq Γ ν hνΓ (SF_mul_right hΩ (h * x)) hΩ`. Establish `hcA : ∀ y, ν {r | r⁻¹ * y ∈ Ω} = ν Ω`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hS : MeasurableSet {r | r⁻¹ * y ∈ Ω}` using `hΩ.1.preimage (measurable_inv.mul_const y)`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use extensionality with `r`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = ν Ω := measure_SF_eq Γ ν hνΓ (SF_mul_right hΩ y) hΩ`. Establish `hinvf : ∀ᵐ r ∂ν, ∀ x, f (r⁻¹ * x) = f x`. Apply the tactic sequence `have hR : ∀ᵐ r ∂ν, r ∈ (R : Set G) := ae_iff.2 (by first | exact hcon | simpa using hcon)`. Use `filter_upwards [hR] with r hr x`. Conclude with `hf r⁻¹ (R.inv_mem hr) x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfm : AEStronglyMeasurable f μ`. Establish `hcov : (⋃ g : Γ, (fun x => (g : G) * x) ⁻¹' Ω) = Set.univ`. Use `Set.eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Take `⟨s, hs, hsx⟩` from `hΩ.2.1 x`. Conclude with `Set.mem_iUnion.2 ⟨⟨s, hs⟩, hsx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `H : AEStronglyMeasurable f (μ.restrict (⋃ g : Γ, (fun x => (g : G) * x) ⁻¹' Ω))`. Use `aestronglyMeasurable_iUnion_iff.2 fun g => ?_` and prove the remaining obligations. Establish `hmp` using `(measurePreserving_mul_left μ (g : G)).restrict_preimage hΩ.1`. Establish `k1 : AEStronglyMeasurable (fun x => f ((g : G) * x)) (μ.restrict ((fun x => (g : G) * x) ⁻¹' Ω))` using `hfi.aestronglyMeasurable.comp_measurePreserving hmp`. Conclude with `k1.congr (ae_of_all _ fun x => hf (g : G) (hΓR g.2) x)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite `H` using `[hcov, Measure.restrict_univ]`. Then use the resulting hypothesis. Establish `hBset : (fun x => h⁻¹ * x) '' Ω = {x | h * x ∈ Ω}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ show h * (h⁻¹ * y) ∈ Ω`.
-
-Simplify using `using hy`. Introduce `hx`. Conclude with `⟨h * x, hx, by simp⟩`. Rewrite using `[hBset]`. Conclude with `int_eq ν hΩ.1 (hΩ.1.preimage (measurable_const_mul h)) (ν Ω) hne0 hlt.ne hcB hcA f hfm hinvf hfi`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shift_general (μ : Measure G) [SigmaFinite μ] [μ.IsMulLeftInvariant]
     (R Γ : Subgroup G) [Countable Γ] {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]

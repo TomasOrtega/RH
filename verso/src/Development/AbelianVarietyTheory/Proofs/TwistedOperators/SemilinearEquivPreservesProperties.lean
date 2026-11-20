@@ -8,11 +8,11 @@ variable {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup 
   {ρ : Representation ℂ G V} {ρ' : Representation ℂ G W}
 
 /- English proof (translation)
-Use extensionality with `w`. Take `⟨v, rfl⟩` from `e.surjective w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hxe⟩`. Establish `hxe' : e x = e v` using `hxe`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← hxe', GlobalTheory.LGrp.mem_fixed]`. Introduce `k hk`. Rewrite using `[← he, GlobalTheory.LGrp.mem_fixed.1 hx k hk]`. Introduce `h`. Use `⟨v, GlobalTheory.LGrp.mem_fixed.2 fun k hk => e.injective ?_, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he, GlobalTheory.LGrp.mem_fixed.1 h k hk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_fixed (e : V ≃ₛₗ[starRingEnd ℂ] W) (he : ∀ g x, e (ρ g x) = ρ' g (e x)) (U : Subgroup G) :
     (fixed ρ U).map (e : V →ₛₗ[starRingEnd ℂ] W) = fixed ρ' U := by
@@ -37,7 +37,7 @@ def comapSub (φ : V →ₛₗ[starRingEnd ℂ] W) (he : ∀ g x, φ (ρ g x) = 
     exact S.apply_mem_toSubmodule g hv
 
 /- English proof (translation)
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem symm_equivariant (e : V ≃ₛₗ[starRingEnd ℂ] W) (he : ∀ g x, e (ρ g x) = ρ' g (e x)) (g : G) (y : W) :
     e.symm (ρ' g y) = ρ g (e.symm y) := by
@@ -67,13 +67,11 @@ def subOrderIso (e : V ≃ₛₗ[starRingEnd ℂ] W) (he : ∀ g x, e (ρ g x) =
       exact @h (e v) hv
 
 /- English proof (translation)
-Take `⟨B, h1, h2, h3⟩` from `h`. Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun x y => B (e.symm y) (e.symm x)) ?_ ?_ ?_ ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b c`. Simplify using the standard rewrite rules. Introduce `a b c`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[LinearEquiv.map_smulₛₗ]`. Introduce `a b c`. Simplify using the standard rewrite rules. Introduce `a b c`. Simplify using `[LinearEquiv.map_smulₛₗ]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v w`. Conclude with `h1 _ _`. Introduce `v hv`. Conclude with `h2 _ (by simpa using hv)`. Introduce `g v w`.
-
-Simplify using `only [LinearMap.mk₂'ₛₗ_apply, symm_equivariant e he, h3]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnitarisable (e : V ≃ₛₗ[starRingEnd ℂ] W) (he : ∀ g x, e (ρ g x) = ρ' g (e x))
     (h : GlobalTheory.LGrp.IsUnitarisable ρ) : GlobalTheory.LGrp.IsUnitarisable ρ' := by
@@ -91,13 +89,13 @@ theorem isUnitarisable (e : V ≃ₛₗ[starRingEnd ℂ] W) (he : ∀ g x, e (ρ
     simp only [LinearMap.mk₂'ₛₗ_apply, symm_equivariant e he, h3]
 
 /- English proof (translation)
-Introduce `G _ _ K V _ _ W _ _ ρ ρ' φ hφ hρ`. Set `e : V ≃ₛₗ[starRingEnd ℂ] W` to `LinearEquiv.ofBijective φ hφ`. Establish `he : ∀ g x, e (ρ g x) = ρ' g (e x)` using `hρ`. Use `⟨fun h => ?_, fun h => ⟨fun w => ?_, fun U hU hc => ?_⟩, isUnitarisable e he, fun h h0 => h ?_⟩` and prove the remaining obligations. Use `haveI : IsSimpleOrder (Subrepresentation ρ) := h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(subOrderIso e he).isSimpleOrder`. Take `⟨v, rfl⟩` from `e.surjective w`. Use `h.1 v` as an intermediate fact. Use `this using 3 with g` and compare the differences between its conclusion and the goal. Rewrite using `[← he]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e.injective.eq_iff`. Use `haveI := h.2 U hU hc`. Rewrite using `[← map_fixed e he U]`. Establish `hfg : (fixed ρ U).FG` using `Module.Finite.iff_fg.1 inferInstance`. Conclude with `Module.Finite.iff_fg.2 (hfg.map _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h0` using `[← map_fixed e he K]`. Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Establish `: e v ∈ (⊥ : Submodule ℂ W)` using `h0 ▸ Submodule.mem_map_of_mem hv`. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem conj_transfer : ∀ (G : Type) [Group G] [TopologicalSpace G] (K : Subgroup G) (V : Type) [AddCommGroup V] [Module ℂ V] (W : Type) [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G V) (ρ' : Representation ℂ G W) (φ : V →ₛₗ[starRingEnd ℂ] W), Function.Bijective φ → (∀ g x, φ (ρ g x) = ρ' g (φ x)) → (ρ.IsIrreducible → ρ'.IsIrreducible) ∧ (IsAdmissible ρ → IsAdmissible ρ') ∧ (GlobalTheory.LGrp.IsUnitarisable ρ → GlobalTheory.LGrp.IsUnitarisable ρ') ∧ (GlobalTheory.LGrp.IsSpherical ρ K → GlobalTheory.LGrp.IsSpherical ρ' K) := by
   intro G _ _ K V _ _ W _ _ ρ ρ' φ hφ hρ

@@ -28,27 +28,25 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz) (w : D.what₂.places.Pl) (j : Fin D.R.m)
 
 /- English proof (translation)
-Establish `hbad` using `hS.2.2.1`. Establish `hB` using `hS.2.2.2.1`. Establish `hom` using `hS.2.2.2.2`. Establish `hth : ∀ h P, ρ'.theta (ex.nch.twI w) j (ex.nch.sd w) h P = ρ.theta (ex.nch.twI w) j (ex.nch.sd w) h P`. Introduce `h P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Setup.theta, hB, hom]`. Establish `hlat : ∀ O h, ρ'.lat (ex.nch.twI w) j (ex.nch.sd w) O h = ρ.lat (ex.nch.twI w) j (ex.nch.sd w) O h`. Introduce `O h`. Simplify using `only [Setup.lat, hB]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨f, ⟨s, h, P, hd, hf⟩, rfl⟩`. Establish `key : ∀ Q ∈ Submodule.span (ρ.eO (ex.nch.twI w) (ex.nch.sd w)).range (ρ.lat (ex.nch.twI w) j (ex.nch.sd w) (smallInt D) h : Set (PolF D (Wc D j).rank (Vc D j).rank)), ∃ g, rdAt p w j hρ ν g = ρ.theta (ex.nch.twI w) j (ex.nch.sd w) h Q ∧ ((1 : FractionRing (ex.nch.Oe w)) ⊗ₜ[D.ntw. …`. Introduce `Q hQ`. Proceed by induction on `hQ using Submodule.span_induction with`. Consider the case `mem Q hQ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hd1 : ρ.IsDatum (ex.nch.twI w) j (ex.nch.sd w) s h Q` using `⟨hd.split, hd.off, hd.fin, hd.supp, lat_mono ρ _ j _ (smallInt_le hρ _ _) h hQ⟩`. Establish `hd2 : ρ'.IsDatum (ex.nch.twI w) j (ex.nch.sd w) s h Q` using `⟨hd.split, by rw [hbad]; exact hd.off, hd.fin, hd.supp, lat_mono ρ' _ j _ (smallInt_le hρ' _ _) h (by rw [hlat]; exact hQ)⟩`. Take `⟨g, hg⟩` from `hR s h Q hd1`. Take `⟨g', hg'⟩` from `hR' s h Q hd2`. Rewrite `hg'` using `[hth]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, ⟨n, hn, hu⟩, hgu⟩` from `hunit ρ ρ' hρ hρ' ν ν' hp hL hp' hS hN hN' hR hR' s h Q hd1 hQ g g' hg hg'`. Take `⟨o, ho⟩` from `exists_inv_of_root u n hn hu`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`. Rewrite `hu` using `[zero_pow hn]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hu`. Establish `hgo : g = o • g'`. Rewrite using `[← algebraMap_smul (FractionRing (D.ntw.O (ex.nch.twI w))) o g', ho, hgu, smul_smul, inv_mul_cancel₀ hu0, one_smul]`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Rewrite using `[hgo, TensorProduct.tmul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_of_tower_mem _ o (Submodule.subset_span ⟨g', ⟨s, h, Q, hd2, ?_⟩, rfl⟩)` and prove the remaining obligations. Rewrite using `[hg', hth]`. Consider the case `zero`. Use `⟨0, ?_, by rw [TensorProduct.tmul_zero]; exact zero_mem _⟩` and prove the remaining obligations. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `(map_zero _).symm`. Consider the case `add Q1 Q2 _ _ h1 h2`. Take `⟨g1, e1, m1⟩` from `h1`. Take `⟨g2, e2, m2⟩` from `h2`. Use `⟨g1 + g2, ?_, by rw [TensorProduct.tmul_add]; exact add_mem m1 m2⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_add, e1, e2]`. Conclude with `(map_add _ _ _).symm`. Consider the case `smul a Q _ h1`. Take `⟨g1, e1, m1⟩` from `h1`. Take `⟨o, ho⟩` from `a.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨o • g1, ?_, by rw [TensorProduct.tmul_smul]; exact Submodule.smul_of_tower_mem _ o m1⟩` and prove the remaining obligations. Rewrite using `[rd_smul, e1]`. Express the relevant statement in the definitionally equal form `_ = (ρ.B (ex.nch.twI w) j (ex.nch.sd w)).theta (ρ.om (ex.nch.twI w) j (ex.nch.sd w) 1) h ((a : ℂ) • Q)`. Rewrite using `[map_smul, ← ho]`. Take `⟨g, hg, hm⟩` from `key P (hgen ρ hρ hp h P hd.mem)`.
-
-Establish `: f = g` using `hinj ρ hρ ν hN.1 (hf.trans hg.symm)`. Rewrite using `[this]`. Conclude with `hm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseLat_le
     (hinj : ∀ (ρ : Setup D.ntw) (hρ : ρ.Good) (ν : ℂ), ν ≠ 0 → Function.Injective (rdAt p w j hρ ν))
@@ -143,9 +141,9 @@ def SeriesUnitL : Prop := AtTw fun Fm x hx i p w j => ∀ (ρ ρ' : Setup (Fm.D 
       ∃ u : FractionRing ((Fm.D x i).ntw.O ((Fm.ex x hx i).nch.twI w)), (∃ n : ℕ, n ≠ 0 ∧ u ^ n = 1) ∧ f' = u • f
 
 /- English proof (translation)
-Unfold `ConjBase ReadInj LatSmallGen SeriesUnitL AtTw AtPts at *`. Use `((Formalism.MainNotions.Closed.and hI hG).and hU).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `(h.1.1.and h.1.2).and h.2`. Use `⟨x0, fun x hx hle i p hp hm w hw j ρ ρ' hρ hρ' ν ν' hpin hS hN hR hF => ?_⟩` and prove the remaining obligations. Take `⟨⟨a1, a2⟩, a3⟩` from `hx0 x hx hle i p hp`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hL : ρ.LevelOf (Fm.D x i).nexp` using `levelOf_of_sameBut hm.2.2 hρ' hρ hF.1.1 hpin hS.symm hF.2.2.2`. Conclude with `le_antisymm (baseLat_le p w j (a1 hm w hw j) (a2 hm w hw j) (a3 hm w hw j) ρ ρ' hρ hρ' ν ν' hpin hL hF.1.1 hS hN hF.2.1 hR.1 hF.2.2.1.1) (baseLat_le p w j (a1 hm w hw j) (a2 hm w hw j) (a3 hm w hw j) ρ' ρ hρ' hρ ν' ν hF.1.1 hF.2.2.2 hpin hS.symm hF.2.1 hN hF.2.2.1.1 hR.1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conjBase_of_steps (hI : ReadInj) (hG : LatSmallGen) (hU : SeriesUnitL) : ConjBase := by
   unfold ConjBase ReadInj LatSmallGen SeriesUnitL AtTw AtPts at *
@@ -159,7 +157,7 @@ theorem conjBase_of_steps (hI : ReadInj) (hG : LatSmallGen) (hU : SeriesUnitL) :
     (baseLat_le p w j (a1 hm w hw j) (a2 hm w hw j) (a3 hm w hw j) ρ' ρ hρ' hρ ν' ν hF.1.1 hF.2.2.2 hpin hS.symm hF.2.1 hN hF.2.2.1.1 hR.1)
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4` and use `conjBase_of_steps readInj GlobalTheory.T.LatticeSmallGeneration (GlobalTheory.T.norm_ratio_realization_same h1 h2 h3 h4)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conjBase_of : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
     GlobalTheory.SerStd.SeriesRatS → ConjBase := fun h1 h2 h3 h4 =>

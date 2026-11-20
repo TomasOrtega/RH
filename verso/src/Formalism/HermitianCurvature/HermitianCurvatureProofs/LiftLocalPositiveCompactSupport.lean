@@ -19,41 +19,35 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
 
 /- English proof (translation)
-Establish `hB'` using `hB`. Take `⟨-, -, -, -, -, -, -, -, -, -, hGo, -, -, -, -, hv⟩` from `hB'`. Take `⟨hl0, -, -, -, -⟩` from `hv v`. Establish `hgpos` using `g_pos_of_built hB`. Establish `hΓ` using `gam_pos hB j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsa` using `sizeAt_pos S hGo v a ha`. Use `set T : ℝ := ‖lamB S b s‖ with hT`. Establish `hT0 : 0 < T` using `norm_pos_iff.2 (lamB_ne S hgpos b s)`. Use `set c0 : ℝ := 1 / (ΓS S j * S.sizeAt v a) with hc0`. Use `set ys : (Fin K → Fin (2 * (j - s) + s + 1)) → List ℝ := fun n => List.ofFn fun c => grid c (n c) with hys`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `set Λ : ℝ := ∏ c, ∑ i, |F7.lagCo (grid c) i| with hΛ`. Use `set θ : (Fin K → Fin (2 * (j - s) + s + 1)) → ℝ := fun n => F7.thGrid grid n with hθ`. Use `set lag : (Fin K → Fin (2 * (j - s) + s + 1)) → ℝ := fun n => ∏ c, F7.lagCo (grid c) (n c) with hlag`. Use `set S' := setC S p F with hS'`. Use `set Pn : (Fin K → Fin (2 * (j - s) + s + 1)) → C.LPt → C.LPt → ℂ := fun n p' q' => (((lag n / θ n) * T ^ K * c0 : ℝ) : ℂ) * KB.pairJ ((p v).form j hj a) (ys n) (uS S p F v ε j hj (KB.plusW (ys n) a) Y (s, t) p') (uS S p F v ε j hj (KB.minusW (ys n) a) Y (s, t') q') with hPn`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hCS : ∀ n (c d : C.LPt → ℂ), ‖∑ p' ∈ Y, ∑ q' ∈ Y, c p' * conj (d q') * Pn n p' q'‖ ^ 2 ≤ (Xc ^ K) ^ 2 * ((∑ p' ∈ Y, ∑ p'' ∈ Y, c p' * conj (c p'') * KB.gN S' v ε j (KB.plusW (ys n) a) (p' ++ [(s, t)]) (p'' ++ [(s, t)])).re * (∑ q' ∈ Y, ∑ q'' ∈ Y, d q' * conj (d q'') * KB.gN S' v …`. Introduce `n c d`. Take `⟨hAp, hAm, hCp, hCm, hpw, hnd⟩` from `hnodes n`. Establish `hCp' : KB.CutWord (D.parOf S v) (p v).l0 (KB.plusW (ys n) a)` using `by rw [hl0]; exact hCp`. Establish `hCm' : KB.CutWord (D.parOf S v) (p v).l0 (KB.minusW (ys n) a)` using `by rw [hl0]; exact hCm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hqpos, hcs⟩` from `hSS hA (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (p v) j hj a (ys n) hCp' hCm' hpw`. Use `set qv : ℝ → ℝ := fun y => (Wd.qw (M.qC (D.parOf S v)) (D.positionted a) (y : ℂ)).re with hqv`. Use `set Q : ℝ := ((ys n).map qv).prod with hQd`. Establish `hQ : 0 < Q` using `List.prod_pos fun x hx => by`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hqpos y hy`. Establish `hsp` using `sizeAt_pos S hGo v _ hAp`. Establish `hsm` using `sizeAt_pos S hGo v _ hAm`. Use `set cp : ℝ := 1 / (ΓS S j * S.sizeAt v (KB.plusW (ys n) a)) with hcp`. Use `set cm : ℝ := 1 / (ΓS S j * S.sizeAt v (KB.minusW (ys n) a)) with hcm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hcp0 : 0 < cp` using `by positivity`. Establish `hcm0 : 0 < cm` using `by positivity`. Use `set κ : ℂ := (((lag n / θ n) * T ^ K * c0 : ℝ) : ℂ) with hκ`. Establish `hc` using `cs_choice (CV ((p v).T.bs j) (S := Fin (KB.plusW (ys n) a).length)) (CV ((p v).T.bs j) (S := Fin (KB.minusW (ys n) a).length)) ((p v).form j hj (KB.plusW (ys n) a)) ((p v).form j hj (KB.minusW (ys n) a)) (KB.pairJ ((p v).form j hj a) (ys n)) cv_zero (fun x y hx hy => cv_add hx hy …`. Establish `eA : ∑ p' ∈ Y, ∑ p'' ∈ Y, c p' * conj (c p'') * KB.gN S' v ε j (KB.plusW (ys n) a) (p' ++ [(s, t)]) (p'' ++ [(s, t)]) = ∑ p' ∈ Y, ∑ p'' ∈ Y, c p' * conj (c p'') * ((cp : ℂ) * (p v).form j hj (KB.plusW (ys n) a) (uS S p F v ε j hj (KB.plusW (ys n) a) Y (s, t) p') (uS S p F v ε j h …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun p' hp' => Finset.sum_congr rfl fun p'' hp'' => ?_` and prove the remaining obligations. Rewrite using `[uS_mem S p F v ε j hj _ Y _ p' hp', uS_mem S p F v ε j hj _ Y _ p'' hp'', gN_uB hB F hF v ε hε j hj _ _ _]`. Establish `eB : ∑ q' ∈ Y, ∑ q'' ∈ Y, d q' * conj (d q'') * KB.gN S' v ε j (KB.minusW (ys n) a) (q' ++ [(s, t')]) (q'' ++ [(s, t')]) = ∑ q' ∈ Y, ∑ q'' ∈ Y, d q' * conj (d q'') * ((cm : ℂ) * (p v).form j hj (KB.minusW (ys n) a) (uS S p F v ε j hj (KB.minusW (ys n) a) Y (s, t') q') (uS S p F v …`. Use `Finset.sum_congr rfl fun p' hp' => Finset.sum_congr rfl fun p'' hp'' => ?_` and prove the remaining obligations. Rewrite using `[uS_mem S p F v ε j hj _ Y _ p' hp', uS_mem S p F v ε j hj _ Y _ p'' hp'', gN_uB hB F hF v ε hε j hj _ _ _]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnnA : 0 ≤ (∑ p' ∈ Y, ∑ p'' ∈ Y, c p' * conj (c p'') * KB.gN S' v ε j (KB.plusW (ys n) a) (p' ++ [(s, t)]) (p'' ++ [(s, t)])).re` using `quad_nonneg (psd_shift (s, t) (gN_psdC hA hFP hB F hF v ε hε j hj _ hCp _)) c`. Establish `hnnB : 0 ≤ (∑ q' ∈ Y, ∑ q'' ∈ Y, d q' * conj (d q'') * KB.gN S' v ε j (KB.minusW (ys n) a) (q' ++ [(s, t')]) (q'' ++ [(s, t')])).re` using `quad_nonneg (psd_shift (s, t') (gN_psdC hA hFP hB F hF v ε hε j hj _ hCm _)) d`. Rewrite `hnnA`, the goal using `[eA]`. Rewrite `hnnB`, the goal using `[eB]`. Use `hc.trans (mul_le_mul_of_nonneg_right ?_ (mul_nonneg hnnA hnnB))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hth` using `lam_div_theta grid hinj n`. Establish `hκn : ‖κ‖ = Λ * T ^ K * c0`. Rewrite using `[hκ, Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_mul, abs_div, abs_of_pos hth.1, abs_of_pos (pow_pos hT0 K), abs_of_pos (by positivity : (0 : ℝ) < c0)]`. Rewrite using `[hth.2]`. Establish `hPp : ∀ c, S.P v (grid c (n c)) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hsp`. Rewrite `h1` using `[sizeAt_plusW, prod_ofFn_map']`. Establish `h2` using `(pos_of_mul_pos_left h1 hsa.le).ne'`. Introduce `c hc0'`. Conclude with `h2 (Finset.prod_eq_zero (Finset.mem_univ c) (by rw [hc0', abs_zero]))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hPm : ∀ c, S.P v (grid c (n c) + 1) ≠ 0`. Establish `h1` using `hsm`. Rewrite `h1` using `[sizeAt_minusW, prod_ofFn_map']`. Establish `h2` using `(pos_of_mul_pos_left h1 hsa.le).ne'`. Introduce `c hc0'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2 (Finset.prod_eq_zero (Finset.mem_univ c) (by rw [hc0', abs_zero]))`. Establish `hrb` using `ratio_bound (fun c => grid c (n c)) (S.P v) qv Λ T (ΓS S j) (S.sizeAt v a) (Real.exp 1 * J.supA S.G S.de S.de' S.T S.T' S.l false (S.pl v)) Xc hΓ hsa (fun c => hqpos _ (List.mem_ofFn.2 ⟨c, rfl⟩)) hPp hPm (fun c => (node_bound hB v a ha haN _ false (hnd _ (List.mem_ofFn.2 ⟨c, rfl⟩ …`. Establish `eQ : Q = ∏ c, qv (grid c (n c))` using `prod_ofFn_map' _ _`. Establish `ecp : cp = 1 / (ΓS S j * ((∏ c, |S.P v (grid c (n c))|) * S.sizeAt v a))`. Rewrite using `[hcp, sizeAt_plusW, prod_ofFn_map']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ecm : cm = 1 / (ΓS S j * ((∏ c, |S.P v (grid c (n c) + 1)|) * S.sizeAt v a))`. Rewrite using `[hcm, sizeAt_minusW, prod_ofFn_map']`. Rewrite using `[hκn, eQ, ecp, ecm]`. Conclude with `hrb`. Establish `hblock` using `block_of_choices Y (fun n p' q' => KB.gN S' v ε j (KB.plusW (ys n) a) (p' ++ [(s, t)]) (q' ++ [(s, t)])) (fun n p' q' => KB.gN S' v ε j (KB.minusW (ys n) a) (p' ++ [(s, t')]) (q' ++ [(s, t')])) Pn θ (Xc ^ K) (Xc ^ K) (fun n => (lam_div_theta grid hinj n).1.le) (fun n => psd_shift …`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `blockPSD_congr (fun _ _ _ _ => rfl) (fun p' hp' q' hq' => ?_) (fun _ _ _ _ => rfl) hblock` and prove the remaining obligations. Use `show ∑ n, (θ n : ℂ) * Pn n p' q' = ((T : ℂ) * (-1) ^ (s - 1) * (lamB S b s)⁻¹) ^ K * (t⁻¹ - t'⁻¹) ^ K * KB.gN S' v ε j a (p' ++ [(s, t)]) (q' ++ [(s, t')])`. Rewrite using `[gN_uB hB F hF v ε hε j hj a _ _, show (((1 / (ΓS S j * S.sizeAt v a)) : ℝ) : ℂ) = (c0 : ℂ) from rfl]`. Establish `hdeg` using `deg_uB_lift hDL hB F hF v ε hε j hj b s hb a K grid hinj p' q' (hY p' hp') (hY q' hq') t t'`. Establish `hlm : (lamB S b s * t)⁻¹ - (lamB S b s * t')⁻¹ = (lamB S b s)⁻¹ * (t⁻¹ - t'⁻¹)`.
-
-Rewrite using `[mul_inv, mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hdeg` using `[hlm]`. Establish `eR : ((T : ℂ) * (-1) ^ (s - 1) * (lamB S b s)⁻¹) ^ K * (t⁻¹ - t'⁻¹) ^ K * ((c0 : ℂ) * (p v).form j hj a (uB S p F v ε j hj a (p' ++ [(s, t)])) (uB S p F v ε j hj a (q' ++ [(s, t')]))) = ((T : ℂ) ^ K * c0) * (((-1) ^ (s - 1) * ((lamB S b s)⁻¹ * (t⁻¹ - t'⁻¹))) ^ K * (p v).form j hj …`. Simplify using `only [mul_pow]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eR, hdeg, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Establish `hth` using `(lam_div_theta grid hinj n).1`. Establish `hθ0 : ((F7.thGrid grid n : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hth.ne'`.
-
-Simplify using `only [hPn, uS_mem S p F v ε j hj _ Y _ p' hp', uS_mem S p F v ε j hj _ Y _ q' hq', hlag, hθ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem blockK_liftC (hA : P5.ThmPActualCpt) (hDL : KB.DegLift) (hSS : KB.SizeStdCpt) (hFP : FormPosCpt)
     (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
@@ -256,15 +250,15 @@ end Formalism.FourierDecayAlt.P.PBL
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P.PBL Formalism.FourierDecayAlt.P.LiftDegreeLemmas in
 
 /- English proof (translation)
-Introduce `hA hSS hDL hFP Cb Cc E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hCc hB`. Use `⟨fun b s v => lamLift S b s v, fun b s hb hs hbs v => thr_lift hCc hB b s hb hs hbs v, fun F hF v => ?_⟩` and prove the remaining obligations. Introduce `b s hb hs hbs a ha haK`. Establish `hbs' : b + s ≤ S.G.r + 1` using `hbs`. Establish `haK' : a.length + C.Kst ≤ S.Ntop` using `haK`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : D.AdmAt S v a` using `ha`. Establish `haN : a.length ≤ S.Ntop` using `by omega`. Establish `hgpos` using `g_pos_of_built hB`. Establish `hj : b + s - 1 ≤ S.G.r` using `by omega`. Establish `hB'` using `hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, -, -, -, -, -, -, -, -, hGo, hGr, -⟩` from `hB'`. Establish `hCI` using `Formalism.FourierDecayAlt.P.PBCut.cutInside_of_built hB`. Take `⟨-, grid, hinj, hl1, hmem, hall, hlp, hlm⟩` from `Formalism.FourierDecayAlt.P.new_letters_admissible E Wp Wq S hGo hGr hCI v a C.Kst (2 * (b + s - 1 - s) + s) ha' haK' (by omega)`. Establish `hnodes : ∀ n : Fin C.Kst → Fin (2 * (b + s - 1 - s) + s + 1), D.AdmAt S v (KB.plusW (List.ofFn fun c => grid c (n c)) a) ∧ D.AdmAt S v (KB.minusW (List.ofFn fun c => grid c (n c)) a) ∧ KB.CutWord (D.parOf S v) (S.l + 1) (KB.plusW (List.ofFn fun c => grid c (n c)) a) ∧ KB.CutWord …` using `fun n => by`. Take `⟨h1, h2, h3, h4, h5⟩` from `hall n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨h1, h2, h3, h4, h5.imp fun h => by linarith, fun y hy => Or.inl ⟨rfl, ?_⟩⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `List.mem_ofFn.1 hy`. Conclude with `⟨a.length + C.Kst - c, by omega, by omega, hmem c (n c)⟩`. Use `⟨PBD.pushU grid (fun ys => KB.plusW ys a), PBD.pushTh grid (fun ys => KB.plusW ys a), PBD.pushU grid (fun ys => KB.minusW ys a), PBD.pushTh grid (fun ys => KB.minusW ys a), hlp, hlm, fun ε hε t t' Y _ _ hY => ⟨((((‖lamB S b s‖ : ℝ) : ℂ) * (-1) ^ (s - 1) * (lamB S b s)⁻¹) ^ C.Kst) …` and prove the remaining obligations. Establish `hK` using `blockK_liftC hA hDL hSS hFP hB F hF v ε hε (b + s - 1) hj b s hb a ha' haN C.Kst grid hinj hnodes (lamLift S b s v) (lamLift_nonneg hB b s v) (lift_K hB v b s (b + s - 1) C.Kst (by omega) grid hl1) t t' Y hY`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `blockPSD_congr (fun p' _ q' _ => ?_) (fun _ _ _ _ => rfl) (fun p' _ q' _ => ?_) hK` and prove the remaining obligations. Use `show ((lamLift S b s v ^ C.Kst : ℝ) : ℂ) * ∑ n, (F7.thGrid grid n : ℂ) * KB.gN (setC S p F) v ε (b + s - 1) (KB.plusW (List.ofFn fun c => grid c (n c)) a) (p' ++ [(s, t)]) (q' ++ [(s, t)]) = ((lamLift S b s v ^ C.Kst : ℝ) : ℂ) * KB.mix (setC S p F) v ε (b + s - 1) (PBD.pushU grid …`. Rewrite using `[mix_push]`. Use `show ((lamLift S b s v ^ C.Kst : ℝ) : ℂ) * ∑ n, (F7.thGrid grid n : ℂ) * KB.gN (setC S p F) v ε (b + s - 1) (KB.minusW (List.ofFn fun c => grid c (n c)) a) (p' ++ [(s, t')]) (q' ++ [(s, t')]) = ((lamLift S b s v ^ C.Kst : ℝ) : ℂ) * KB.mix (setC S p F) v ε (b + s - 1) (PBD.pushU g …`. Rewrite using `[mix_push]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.lift_local_compact_support_route : Formalism.FourierDecayAlt.P.PBL.LiftLocBC := by
   intro hA hSS hDL hFP Cb Cc E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hCc hB
@@ -315,7 +309,7 @@ theorem Formalism.FourierDecayAlt.P.lift_local_compact_support_route : Formalism
     rw [mix_push]
 
 /- English proof (translation)
-Introduce `hA hDL` and use `Formalism.FourierDecayAlt.P.lift_local_compact_support_route hA Formalism.FourierDecayAlt.P.size_standard_compact hDL Formalism.FourierDecayAlt.P.module_form_pos_compact_support`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.lift_local_positive_compact_support : Formalism.FourierDecayAlt.P.PBL.LiftLocBPCpt := fun hA hDL =>
   Formalism.FourierDecayAlt.P.lift_local_compact_support_route hA Formalism.FourierDecayAlt.P.size_standard_compact hDL Formalism.FourierDecayAlt.P.module_form_pos_compact_support

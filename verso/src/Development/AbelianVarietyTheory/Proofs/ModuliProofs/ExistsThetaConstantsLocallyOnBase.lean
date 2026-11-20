@@ -28,15 +28,11 @@ namespace GlobalTheory.ThetaLocal
 open Out ThetaPtExist
 
 /- English proof (translation)
-Establish `hL` using `P.isLB`. Establish `e₁ : (snd T P.A).left ≫ (mulA P.A k).left = (snd T P.A ^ k).left`. Rewrite using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id]`. Take `⟨α, hα, -⟩` from `exists_gen hL (φ' := ![(snd T P.A).left, (snd T P.A ^ k).left]) (ε' := ![(k : ℤ) ^ 2, -1]) (fun U _ f => by`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases i`. Conclude with `congrArg (fun q => f q ^ ((k : ℤ) ^ 2)) (Category.comp_id _)`. Conclude with `congrArg (fun q => f q ^ (-1 : ℤ)) e₁)`. Use the proof step `(LB.pullGen P.L ![𝟙 P.A.left, (mulA P.A k).left] ![(k : ℤ) ^ 2, -1] α₀ (snd T P.A).left)`. Use the proof step `(DVR.pullGen_isGen _ _ _ _ hα₀ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨ρ, hρ⟩` from `P.rigid`. Take `⟨τ, hτ, -⟩` from `exists_gen hL (φ' := fun _ : Fin 1 => (1 : T ⟶ P.A).left) (ε' := fun _ => (k : ℤ) ^ 2) (fun U _ f => by`. Rewrite using `[Fintype.prod_unique, Fin.prod_univ_one]`. Conclude with `congrArg₂ (fun q n => f q ^ n) rfl (by simp))`. Use the proof step `(GeneratorPullback.powGen P.L _ _ (LB.pullGen P.L (fun _ : PUnit => eSec P.A) (fun _ => 1) ρ (toUnit T).left) (k ^ 2))`.
-
-Use the proof step `(DVR.powGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hρ _) _)`. Take `⟨s₁, hs₁⟩` from `exists_isTwistPull hL (mulT P.A T k) (snd T P.A ^ k) (lift_snd _ _) ((k : ℤ) ^ 2) 1 α hα th`. Use `choose U hU using hU`. Use `choose s₂ hs₂ using fun i => exists_isTwistPull hL (translT P.A (U i).pt) (translPt P.A (U i).pt) (lift_snd _ _) ((k : ℤ) ^ 2) ((k : ℤ) ^ 2) (U i).φ (U i).isGen s₁`. Use `choose w hw using fun i => exists_isValueAt hL (s₂ i) 1 τ hτ`.
-
-Conclude with `⟨w, th, s₁, α, τ, U, s₂, w, 1, hth, hα, hτ, hs₁, hU, hs₂, hw, fun i => (_root_.one_mul _).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isThetaPtOver {S : Scheme.{0}} (P : PolAV S) (k : ℕ)
     (α₀ : LB.Gen (LB.LinComb P.L (K := Fin 2) ![𝟙 P.A.left, (mulA P.A k).left] ![(k : ℤ) ^ 2, -1]))
@@ -70,11 +66,11 @@ theorem exists_isThetaPtOver {S : Scheme.{0}} (P : PolAV S) (k : ℕ)
   exact ⟨w, th, s₁, α, τ, U, s₂, w, 1, hth, hα, hτ, hs₁, hU, hs₂, hw, fun i => (_root_.one_mul _).symm⟩
 
 /- English proof (translation)
-Set `h : T ⟶ overRes (T` to `T) ⊤ := Over.homMk T.left.topIso.inv (by show T.left.topIso.inv ≫ (⊤ : T.left.Opens).ι ≫ T.hom = T.hom`. Rewrite using `[← Category.assoc, Scheme.toIso_inv_ι, Category.id_comp])`. Establish `hh : h ≫ overResι (T` using `T) ⊤ = 𝟙 T := Over.OverMorphism.ext T.left.toIso_inv_ι`. Establish `hi : overResι (T` using `T) ⊤ ≫ h = 𝟙 _ := by haveI : Mono (overResι (T := T) ⊤) := Over.mono_of_mono_left _ (hk := inferInstanceAs (Mono (⊤ : T.left.Opens).ι))`. Rewrite using `[← cancel_mono (overResι (T := T) ⊤), Category.assoc, hh, Category.comp_id, Category.id_comp]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨th, hth⟩` from `exists_isGenSec_of_retract P.isLB (overResι (T := T) ⊤) h hi t ht`. Take `⟨w, hw⟩` from `exists_isThetaPtOver P k α₀ hα₀ (fun i => overResι (T := T) ⊤ ≫ x i) th hth fun i => by`. Take `⟨θ, hθ⟩` from `hU i`. Conclude with `GlobalLift.exists_symLift_pull P.isLB _ hθ`. Use `⟨fun i => h.left.appTop.hom (w i), hk, hu, fun _ => ⟨⊤, trivial, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hw using 2 with i` and compare the differences between its conclusion and the goal. Establish `q` using `congrArg (fun q => q.left.appTop.hom (w i)) hi`. Simplify using `only [Over.comp_left, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, Over.id_left, Scheme.Hom.id_appTop, CommRingCat.hom_id, RingHom.id_apply] at q`. Conclude with `q`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isThetaPt {S : Scheme.{0}} (P : PolAV S) (k : ℕ) (hk : Odd k)
     (α₀ : LB.Gen (LB.LinComb P.L (K := Fin 2) ![𝟙 P.A.left, (mulA P.A k).left] ![(k : ℤ) ^ 2, -1]))
@@ -101,9 +97,9 @@ theorem exists_isThetaPt {S : Scheme.{0}} (P : PolAV S) (k : ℕ) (hk : Odd k)
   exact q
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty K with h | ⟨⟨i⟩⟩` into its components or cases. Use `⟨0, fun s => ⟨0, ?_⟩⟩` and prove the remaining obligations. Establish `: s ∈ Submodule.span R (Set.range b)` using `hb ▸ Submodule.mem_top`. Rewrite `this` using `[Set.range_eq_empty, Submodule.span_empty, Submodule.mem_bot]`. Rewrite using `[this, zero_smul]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : Set.range b = {b i}`. Use extensionality with `m`. Conclude with `⟨fun ⟨j, hj⟩ => by rw [← hj, Subsingleton.elim j i]; rfl, fun hm => ⟨i, hm.symm⟩⟩`. Conclude with `⟨b i, fun s => Submodule.mem_span_singleton.1 (by rw [← e, hb]; exact Submodule.mem_top)⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_generator {R M K : Type} [CommRing R] [AddCommGroup M] [Module R M] [Subsingleton K] (b : K → M)
     (hb : Submodule.span R (Set.range b) = ⊤) : ∃ t : M, ∀ s, ∃ r : R, r • t = s := by
@@ -118,19 +114,17 @@ theorem exists_generator {R M K : Type} [CommRing R] [AddCommGroup M] [Module R 
     exact ⟨b i, fun s => Submodule.mem_span_singleton.1 (by rw [← e, hb]; exact Submodule.mem_top)⟩
 
 /- English proof (translation)
-Establish `cg` using `GlobalTheory.AbLaw.CubeAssembly.cube_gen`. Establish `neg` using `GlobalTheory.exists_gen_negLB hG`. Take `⟨α₀, hα₀⟩` from `(GlobalTheory.MulPull.mulPull_of_cube_of_symm cg neg).1 S P k`. Establish `sym` using `(GlobalTheory.symLift_odd hG (GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube cg).1).2.2 neg).1`. Take `⟨V₀, hV₀, b, hb⟩` from `hB S P 1 le_rfl p`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose V hV θ hθ using fun i => (sym S P (k ^ 2) hk.pow (baseOver S) (y i) (hy i)).1 p`. Set `O : S.Opens` to `V₀ ⊓ ⟨⋂ i, (V i).carrier, isOpen_iInter_of_finite fun i => (V i).2⟩`. Establish `hO : p ∈ O` using `⟨hV₀, Set.mem_iInter.2 hV⟩`. Take `⟨_, ⟨W, hW, rfl⟩, hpW, hWO⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open hO O.2`. Establish `hW' : IsAffineOpen W` using `hW`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `x₀ : Sp Γ(S, W) ⟶ S` to `hW'.fromSpec`. Establish `hx₀ : Set.range x₀ = W` using `hW'.range_fromSpec`. Establish `hl : ∀ U : S.Opens, O ≤ U → ∃ t : Sp Γ(S, W) ⟶ U.toScheme, t ≫ U.ι = x₀` using `fun U hU => ⟨IsOpenImmersion.lift U.ι x₀ (by`. Rewrite using `[hx₀, Scheme.Opens.range_ι]`. Conclude with `hWO.trans hU), IsOpenImmersion.lift_fac _ _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `hl V₀ inf_le_left`. Establish `ex : t ≫ (overRes (T` using `baseOver S) V₀).hom = x₀ := (congrArg (t ≫ ·) (Category.comp_id _)).trans ht`. Use `⟨Γ(S, W), inferInstance, t ≫ (overRes (T := baseOver S) V₀).hom, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ex]`. Conclude with `inferInstanceAs (IsOpenImmersion hW'.fromSpec)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ex, hx₀]`. Conclude with `hpW`. Take `⟨-, hsp⟩` from `hb _ t (fun i => VVRank.pullS P.A _ (homAt t) (b i)) fun i => VVRank.isPullSec_pullS _ _ _ _`. Use `haveI : Subsingleton (Fin (1 ^ P.g)) := by rw [one_pow]; infer_instance`. Take `⟨th, hth⟩` from `exists_generator _ hsp`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `exists_isThetaPt P k hk α₀ hα₀ (T := baseAt t) ?_ _ th hth fun i => ?_` and prove the remaining obligations. Simplify using `using hu.map (baseAt t).hom.appTop.hom`. Take `⟨u, hu'⟩` from `hl (V i) (inf_le_right.trans fun q hq => Set.mem_iInter.1 hq i)`. Set `r : baseAt t ⟶ overRes (T` to `baseOver S) (V i) := Over.homMk u (((congrArg (u ≫ ·) (Category.comp_id _)).trans hu').trans ex.symm)`. Take `⟨θ', hθ'⟩` from `GlobalLift.exists_symLift_pull P.isLB r (hθ i)`.
-
-Establish `e : r ≫ overResι (V i) = (Over.homMk (baseAt t).hom (by simp) : baseAt t ⟶ baseOver S)` using `Over.OverMorphism.ext (hu'.trans ex.symm)`. Rewrite `hθ'` using `[← Category.assoc, e]`. Rewrite using `[← Nat.cast_pow]`. Conclude with `⟨θ', hθ'⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_affine_isThetaPt (hG : GlobalFnsSt) (hB : SecBaseChangeAnySt) {S : Scheme.{0}} (P : PolAV S) (k : ℕ)
     (hk : Odd k) (hu : IsUnit (k : Γ(S, ⊤))) {I : Type} [Finite I] (y : I → (baseOver S ⟶ P.A))
@@ -174,7 +168,7 @@ theorem exists_affine_isThetaPt (hG : GlobalFnsSt) (hB : SecBaseChangeAnySt) {S 
     exact ⟨θ', hθ'⟩
 
 /- English proof (translation)
-Rewrite using `[linComb, List.prod_ofFn, ← Finset.prod_pow]`. Conclude with `Finset.prod_eq_one fun i _ => by rw [← pow_mul, mul_comm, pow_mul, hy, one_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linComb_pow_eq_one {S : Scheme.{0}} {A T : Over S} [GrpObj A] [IsCommMonObj A] {r n : ℕ}
     {y : Fin r → (T ⟶ A)} (hy : ∀ i, y i ^ n = 1) (a : Fin r → ℕ) : linComb y a ^ n = 1 := by
@@ -182,11 +176,9 @@ theorem linComb_pow_eq_one {S : Scheme.{0}} {A T : Over S} [GrpObj A] [IsCommMon
   exact Finset.prod_eq_one fun i _ => by rw [← pow_mul, mul_comm, pow_mul, hy, one_pow]
 
 /- English proof (translation)
-Introduce `h₁ h₂ o _ g N' J b S s t hN p`. Use `haveI : NeZero (N' ^ 2) := ⟨pow_ne_zero _ hN.pos.ne'⟩`. Establish `hu : IsUnit (N' : Γ(S, ⊤))`. Use `(b.unit.map (Scheme.ΓSpecIso (CommRingCat.of o)).inv.hom).map s.appTop.hom` as an intermediate fact. Rewrite `this` using `[map_natCast, map_natCast, Nat.cast_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(isUnit_pow_iff two_ne_zero).1 this`. Use `haveI := t.ab.comm`. Take `⟨R, _, x, hx, hp, v, hv⟩` from `exists_affine_isThetaPt h₁.globalFns h₂.secBaseChangeAny t.pol N' hN hu t.lab (fun a => linComb_pow_eq_one t.torsion _) p`. Use `⟨R, inferInstance, x, fun a => (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom (v a), hx, hp, ?_⟩` and prove the remaining obligations. Unfold `TObj.HasTh`.
-
-Use `hv using 2 with a` and compare the differences between its conclusion and the goal. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of R)).hom_inv_id_apply (v a)`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_hasTh : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (S : Scheme.{0}) (s : S ⟶ Sp o) (t : TObj g (N' ^ 2) J b s), Odd N' → ∀ p : S, ∃ (R : Type) (_ : CommRing R) (x : Sp R ⟶ S) (v : Ix g (N' ^ 2) → R), IsOpenImmersion x ∧ p ∈ Set.range x ∧ t.HasTh x v := by
   intro h₁ h₂ o _ g N' J b S s t hN p

@@ -28,7 +28,7 @@ Both sides reduce to the same expression.
 theorem evU_apply (u : ℂ) (p : A[X]) : evU u p = eval₂ (RingHom.id A) (algebraMap ℂ A u) p := rfl
 
 /- English proof (translation)
-Unfold `tmPoly Tm`. Apply the tactic sequence `split_ifs <;> simp [evU_apply, map_sub]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem evU_tmPoly {n : ℕ} (E : Fin n → Fin n → A) (u : ℂ) (k : ℕ) (a b : Fin n) :
     evU u (tmPoly E k a b) = Tm E (u - (k : ℂ)) a b := by
@@ -36,9 +36,9 @@ theorem evU_tmPoly {n : ℕ} (E : Fin n → Fin n → A) (u : ℂ) (k : ℕ) (a 
   split_ifs <;> simp [evU_apply, map_sub]
 
 /- English proof (translation)
-Unfold `qdetPoly qdet qminor`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_list_prod, List.map_ofFn]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[Function.comp, evU_tmPoly]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem evU_qdetPoly {n : ℕ} (E : Fin n → Fin n → A) (u : ℂ) : evU u (qdetPoly E) = qdet E u := by
   unfold qdetPoly qdet qminor
@@ -53,7 +53,7 @@ theorem evU_qdetPoly {n : ℕ} (E : Fin n → Fin n → A) (u : ℂ) : evU u (qd
     simp [Function.comp, evU_tmPoly]
 
 /- English proof (translation)
-Unfold `tmPoly`. Use `split_ifs with h`. Use `(natDegree_add_le _ _).trans ?_` and prove the remaining obligations. Apply the tactic sequence `refine max_le ((natDegree_sub_le _ _).trans (max_le natDegree_X_le ?_)) ?_ <;> simp`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem natDegree_tmPoly_le {n : ℕ} (E : Fin n → Fin n → A) (k : ℕ) (a b : Fin n) :
     (tmPoly E k a b).natDegree ≤ if a = b then 1 else 0 := by
@@ -64,7 +64,7 @@ theorem natDegree_tmPoly_le {n : ℕ} (E : Fin n → Fin n → A) (k : ℕ) (a b
   · simp
 
 /- English proof (translation)
-Use `(natDegree_list_prod_le _).trans ?_` and prove the remaining obligations. Rewrite using `[List.map_ofFn, List.sum_ofFn]`. Conclude with `Finset.sum_le_sum fun k _ => natDegree_tmPoly_le E k (σ k) k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natDegree_prod_le {n : ℕ} (E : Fin n → Fin n → A) (σ : Equiv.Perm (Fin n)) :
     (List.ofFn fun k : Fin n => tmPoly E k (σ k) k).prod.natDegree ≤
@@ -74,7 +74,7 @@ theorem natDegree_prod_le {n : ℕ} (E : Fin n → Fin n → A) (σ : Equiv.Perm
   exact Finset.sum_le_sum fun k _ => natDegree_tmPoly_le E k (σ k) k
 
 /- English proof (translation)
-Establish `h : σ.support.card = ∑ k : Fin n, if σ k = k then 0 else 1`. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, zero_add, Finset.sum_const, smul_eq_mul, mul_one]`. Use `congr 1`. Rewrite using `[h, ← Finset.sum_add_distrib]`. Simplify using `only [apply_ite₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -88,7 +88,7 @@ theorem fixed_add_support {n : ℕ} (σ : Equiv.Perm (Fin n)) :
   simp
 
 /- English proof (translation)
-Establish `h1` using `natDegree_prod_le E σ`. Establish `h2` using `fixed_add_support σ`. Establish `h3` using `Equiv.Perm.two_le_card_support_of_ne_one hσ`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem natDegree_prod_ne_one {n : ℕ} (E : Fin n → Fin n → A) {σ : Equiv.Perm (Fin n)} (hσ : σ ≠ 1) :
     (List.ofFn fun k : Fin n => tmPoly E k (σ k) k).prod.natDegree + 2 ≤ n := by
@@ -100,13 +100,13 @@ theorem natDegree_prod_ne_one {n : ℕ} (E : Fin n → Fin n → A) {σ : Equiv.
 omit [Algebra ℂ A] in
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Take `⟨h1, h2, h3⟩` from `ih (fun k => c k.castSucc)`. Rewrite using `[List.ofFn_succ', List.prod_concat]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `set P := (List.ofFn fun k : Fin m => X + C (c k.castSucc)).prod`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `(natDegree_mul_le).trans ?_` and prove the remaining obligations. Establish `: (X + C (c (Fin.last m))).natDegree ≤ 1` using `(natDegree_add_le _ _).trans (max_le natDegree_X_le (by simp))`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add, coeff_add, coeff_mul_X, coeff_mul_C, h2, coeff_eq_zero_of_natDegree_lt (show P.natDegree < m + 1 by omega)]`. Simplify using the standard rewrite rules. Introduce `j hj`. Establish `hj' : j = m` using `by omega`. Substitute `hj'` using the available equality.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.sum_univ_castSucc, mul_add, coeff_add, coeff_mul_C, h2, one_mul]`. Use `congr 1`. Consider the cases of `j with`. Consider the case `zero => simp [P]`. Consider the case `succ i => rw [coeff_mul_X, h3 i rfl]`.
+Reduce the equality to equality of the corresponding arguments. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem prod_linear (m : ℕ) (c : Fin m → A) :
     (List.ofFn fun k : Fin m => X + C (c k)).prod.natDegree ≤ m ∧
@@ -136,7 +136,7 @@ theorem prod_linear (m : ℕ) (c : Fin m → A) :
       | succ i => rw [coeff_mul_X, h3 i rfl]
 
 /- English proof (translation)
-Unfold `tmPoly`. Simplify using `only [if_true, map_sub]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem tmPoly_diag {n : ℕ} (E : Fin n → Fin n → A) (k : ℕ) (a : Fin n) :
     tmPoly E k a a = X + C (E a a - algebraMap ℂ A (k : ℂ)) := by
@@ -145,9 +145,9 @@ theorem tmPoly_diag {n : ℕ} (E : Fin n → Fin n → A) (k : ℕ) (a : Fin n) 
   abel
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.val_castSucc, Fin.val_last]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_fin_cast (n : ℕ) : ∑ k : Fin n, ((k : ℕ) : ℂ) = (n : ℂ) * ((n : ℂ) - 1) / 2 := by
   induction n with
@@ -160,7 +160,7 @@ theorem sum_fin_cast (n : ℕ) : ∑ k : Fin n, ((k : ℕ) : ℂ) = (n : ℂ) * 
     ring
 
 /- English proof (translation)
-Unfold `qdetPoly`. Use `natDegree_sum_le_of_forall_le _ _ fun σ _ => (natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Use `(natDegree_prod_le E σ).trans ?_` and prove the remaining obligations. Use `fixed_add_support σ` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem natDegree_qdetPoly_le {n : ℕ} (E : Fin n → Fin n → A) : (qdetPoly E).natDegree ≤ n := by
   unfold qdetPoly
@@ -170,9 +170,9 @@ theorem natDegree_qdetPoly_le {n : ℕ} (E : Fin n → Fin n → A) : (qdetPoly 
   omega
 
 /- English proof (translation)
-Unfold `qdetPoly`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ (1 : Equiv.Perm (Fin n))), coeff_add, finsetSum_coeff]`. Rewrite using `[Finset.sum_eq_zero]`. Simplify using `[tmPoly_diag]`. Introduce `σ hσ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hσ1 : σ ≠ 1` using `Finset.ne_of_mem_erase hσ`. Use `natDegree_prod_ne_one E hσ1` as an intermediate fact. Rewrite using `[coeff_C_mul, coeff_eq_zero_of_natDegree_lt (by omega), mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_qdetPoly_top {n : ℕ} (E : Fin n → Fin n → A) (j : ℕ) (hj : n ≤ j + 1) :
     (qdetPoly E).coeff j = (List.ofFn fun k : Fin n => X + C (E k k - algebraMap ℂ A ((k : ℕ) : ℂ))).prod.coeff j := by
@@ -188,11 +188,11 @@ theorem coeff_qdetPoly_top {n : ℕ} (E : Fin n → Fin n → A) (j : ℕ) (hj :
 end Capelli
 
 /- English proof (translation)
-Introduce `A _ _ n Eo hn`. Take `⟨-, htop, hsub⟩` from `prod_linear n fun k => Eo k k - algebraMap ℂ A ((k : ℕ) : ℂ)`. Establish `hN : (qdetPoly Eo).coeff n = 1` using `by rw [coeff_qdetPoly_top Eo n (by omega), htop]`. Establish `hN1 : (qdetPoly Eo).coeff (n - 1) = ∑ i, Eo i i - algebraMap ℂ A (((n : ℂ) * ((n : ℂ) - 1)) / 2)`. Rewrite using `[coeff_qdetPoly_top Eo (n - 1) (by omega), hsub (n - 1) (by omega), Finset.sum_sub_distrib, ← map_sum, sum_fin_cast]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun j => (qdetPoly Eo).coeff j, fun u => ?_⟩` and prove the remaining obligations. Establish `hdeg : (qdetPoly Eo).natDegree < n - 1 + 1 + 1`. Use `natDegree_qdetPoly_le Eo` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[← evU_qdetPoly Eo u, evU_apply, eval₂_eq_sum_range' _ hdeg, Finset.sum_range_succ, Finset.sum_range_succ, show n - 1 + 1 = n by omega, hN, hN1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingHom.id_apply, one_mul, ← map_pow]`. Rewrite using `[Finset.sum_congr rfl fun j _ => (Algebra.commutes (u ^ j) ((qdetPoly Eo).coeff j)).symm, ← Algebra.commutes (u ^ (n - 1))]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem quantum_determinant_leading_terms : QdetSub := by
   intro A _ _ n Eo hn

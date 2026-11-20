@@ -19,9 +19,9 @@ namespace GlobalTheory.CompanionTheory.MirFourier
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [colMat]`. Use `split_ifs`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simpa using continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cast i => simpa [Function.comp_def] using (continuous_apply i).comp (continuous_toAdd (X := Fin n → k))`. Conclude with `continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_colMat (n : ℕ) :
     Continuous (fun v : Multiplicative (Fin n → k) => colMat k n v.toAdd) := by
@@ -34,7 +34,7 @@ theorem continuous_colMat (n : ℕ) :
   · exact continuous_const
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `continuous_const.add (continuous_colMat n)`. Conclude with `continuous_const.sub (continuous_colMat n)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_unipIn (n : ℕ) : Continuous (unipIn k n) := by
   refine Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _
@@ -42,18 +42,16 @@ theorem continuous_unipIn (n : ℕ) : Continuous (unipIn k n) := by
   · exact continuous_const.sub (continuous_colMat n)
 
 /- English proof (translation)
-Introduce `v` and use `(hτ v).preimage (continuous_unipIn n)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_comp {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ (Mir k n) V)
     (hτ : IsSmooth τ) : IsSmooth (τ.comp (unipIn k n) : Representation ℂ (Multiplicative (Fin n → k)) V) :=
   fun v => (hτ v).preimage (continuous_unipIn n)
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨u, w₀, rfl⟩`. Use `set x : Multiplicative (Fin n → k) := (unipEquiv k n).symm ((Subgroup.subgroupOfEquivOfLe (MirU_le_Mir k n)) u) with hx`. Establish `hu : unipIn k n x = (u : Mir k n)`. Establish `h` using `(unipEquiv k n).apply_symm_apply ((Subgroup.subgroupOfEquivOfLe (MirU_le_Mir k n)) u)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (Subtype.val : MirU k n → GL (Fin (n + 1)) k) h`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `h2`. Use `Submodule.subset_span ⟨⟨x, trivial⟩, w₀, ?_⟩` and prove the remaining obligations. Use `show τ (u : Mir k n) w₀ - _ = τ (unipIn k n x) w₀ - _`.
-
-Rewrite using `[hu]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem twKer_le_top (ψ : AddChar k Circle) {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (τ : Representation ℂ (Mir k n) V) (a : Fin n → k) :
@@ -74,9 +72,9 @@ theorem twKer_le_top (ψ : AddChar k Circle) {n : ℕ} {V : Type} [AddCommGroup 
   rfl
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_cball_addChar_eq_one ψ hψ`. Use `Subgroup.isOpen_mono (H₁ := polyBall n (t⁻¹ * c)) ?_ (isOpen_polyBall n _)` and prove the remaining obligations. Introduce `x hx a ha`. Use `hc _ ?_` and prove the remaining obligations. Use `Finset.sum_induction _ (· ∈ cball c) (fun _ _ => add_mem_cball) (by simp [cball]) fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `show valuation k (a.toAdd i * x.toAdd i) ≤ valuation k (c : k)`. Establish `h1 : (t : k) * ((t⁻¹ * c : kˣ) : k) = c` using `by simp`. Rewrite using `[map_mul, ← h1, map_mul (valuation k) (t : k)]`. Conclude with `mul_le_mul' (ha i) (hx i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_ann (ψ : AddChar k Circle) (hψ : Continuous ψ) (n : ℕ) (t : kˣ) :
     IsOpen (ann ψ n t : Set (Multiplicative (Fin n → k))) := by
@@ -95,13 +93,11 @@ end GlobalTheory.CompanionTheory.MirFourier
 open GlobalTheory.CompanionTheory.MirFourier in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ hψ h1 n V _ _ τ hτ v hv`. Establish `hρ` using `smooth_comp τ hτ`. Use `set ρ : Representation ℂ (Multiplicative (Fin n → k)) V := τ.comp (unipIn k n) with hρdef`. Establish `hv1 : ∀ a : Fin n → k, ∃ s : kˣ, v ∈ twKer ρ (polyBall n s) (resChr ψ a (polyBall n s))` using `fun a => exists_mem_twKer_polyBall ψ ρ a v (twKer_le_top ψ τ a (hv a))`. Establish `hS : {x | ρ x v = v} ∈ 𝓝 (1 : Multiplicative (Fin n → k))` using `(hρ v).mem_nhds (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `ann_subset_of_mem_nhds ψ h1 n hS`. Take `⟨s, hs⟩` from `exists_polyBall_twKer_uniform ψ hψ ρ v t hv1`. Take `⟨R, hRne, hRt, hRsum⟩` from `exists_reps_sum_eq_zero ψ hψ n t s`. Use `GlobalTheory.CompanionTheory.FiniteFourier.eq_zero_of_twKer ρ hρ (polyBall n s) (isCompact_polyBall n s) ((ann ψ n t).subgroupOf _) ?_ v ?_ R hRne (fun a => resChr ψ a (polyBall n s)) ?_ (fun a ha => hs a (hRt a ha)) (fun x hx => hRsum x hx)` and prove the remaining obligations. Conclude with `(isOpen_ann ψ hψ n t).preimage continuous_subtype_val`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Conclude with `ht hx`. Introduce `a ha x hx`. Establish `h2` using `hx (Multiplicative.ofAdd a) (hRt a ha)`. Use `show Circle.toUnits (ψ (a ⬝ᵥ (x : Multiplicative (Fin n → k)).toAdd)) = 1`.
-
-Establish `h3 : ψ (a ⬝ᵥ (x : Multiplicative (Fin n → k)).toAdd) = 1` using `h2`. Rewrite using `[h3, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.MirFourier.fourier : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GlobalTheory.BZMir.Fun.Fourier k := by

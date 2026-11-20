@@ -13,13 +13,13 @@ variable (p : ℕ) [Fact p.Prime] (K L : IntermediateField ℚ_[p] (PadicAlgCl p
 variable {p K L}
 
 /- English proof (translation)
-The claim follows from `normHom_mem_multiplicative_group hL y hy`.
+A detailed English derivation is pending.
 -/
 theorem normHom_mem (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) (y : KbarMult p) (hy : y ∈ multOf p L) :
     normHom p K L y ∈ multOf p K := normHom_mem_multiplicative_group hL y hy
 
 /- English proof (translation)
-The claim follows from `normHom_eq_algebra_norm hL h y hy`.
+A detailed English derivation is pending.
 -/
 theorem normHom_eq_algebraNorm (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) (y : KbarMult p)
     (hy : y ∈ multOf p L) :
@@ -29,43 +29,43 @@ theorem normHom_eq_algebraNorm (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) 
   normHom_eq_algebra_norm hL h y hy
 
 /- English proof (translation)
-The claim follows from `normHom_layer_eq_trace_sum y`.
+A detailed English derivation is pending.
 -/
 theorem normHom_layer (h : K ≤ L) [(subG p K L).Normal] [Fintype (GalLK p K L)] (y : (layer p K L).V) :
     normHom p K L y.1 = (∑ g, (layer p K L).rho g y).1 := normHom_layer_eq_trace_sum y
 
 /- English proof (translation)
-The claim follows from `normHom_comp_normHom_of_le hL' h h' y hy`.
+A detailed English derivation is pending.
 -/
 theorem normHom_trans {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL' : FiniteDimensional ℚ_[p] L') (h : K ≤ L) (h' : L ≤ L') (y : KbarMult p)
     (hy : y ∈ multOf p L') : normHom p K L (normHom p L L' y) = normHom p K L' y :=
   normHom_comp_normHom_of_le hL' h h' y hy
 
 /- English proof (translation)
-The claim follows from `normGroup_antitone hL' h h'`.
+A detailed English derivation is pending.
 -/
 theorem normGrp_anti {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL' : FiniteDimensional ℚ_[p] L') (h : K ≤ L) (h' : L ≤ L') :
     normGrp p K L' ≤ normGrp p K L := normGroup_antitone hL' h h'
 
 /- English proof (translation)
-The claim follows from `pow_degree_mem_normGroup h x`.
+A detailed English derivation is pending.
 -/
 theorem pow_degLK_mem_normGrp (h : K ≤ L) (x : Kˣ) : x ^ degLK p K L ∈ normGrp p K L :=
   pow_degree_mem_normGroup h x
 
 /- English proof (translation)
-The claim follows from `normGroup_self_eq_top`.
+A detailed English derivation is pending.
 -/
 theorem normGrp_self : normGrp p K K = ⊤ := normGroup_self_eq_top
 
 /- English proof (translation)
-The claim follows from `finiteIndex_range_pow' hK hn`.
+A detailed English derivation is pending.
 -/
 theorem finiteIndex_range_pow (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) :
     (powMonoidHom n : Kˣ →* Kˣ).range.FiniteIndex := finiteIndex_range_pow' hK hn
 
 /- English proof (translation)
-The claim follows from `Subgroup.isOpen_mono (by rintro _ ⟨x, rfl⟩; exact pow_degLK_mem_normGrp h x) (isOpen_range_pow' hK (degLK_pos hL))`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_normGrp (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) :
     IsOpen (normGrp p K L : Set Kˣ) :=
@@ -73,7 +73,7 @@ theorem isOpen_normGrp (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensiona
     (isOpen_range_pow' hK (degLK_pos hL))
 
 /- English proof (translation)
-Use `finiteIndex_range_pow' hK (degLK_pos (K := K) hL)` as an intermediate fact. Conclude with `Subgroup.finiteIndex_of_le (H := (powMonoidHom (degLK p K L) : Kˣ →* Kˣ).range) (by rintro _ ⟨x, rfl⟩; exact pow_degLK_mem_normGrp h x)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteIndex_normGrp (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) :
     (normGrp p K L).FiniteIndex := by

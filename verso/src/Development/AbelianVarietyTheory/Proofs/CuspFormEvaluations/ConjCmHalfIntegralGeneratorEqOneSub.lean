@@ -25,14 +25,14 @@ section General
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.SmulMemOfSpan.exists_smul_mem_lattice X v`.
+A detailed English derivation is pending.
 -/
 theorem exists_multiple_mem (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (v : Fin r → E) :
     ∃ c : 𝓞 E, c ≠ 0 ∧ (c : E) • v ∈ X.Λ :=
   _root_.GlobalTheory.SmulMemOfSpan.exists_smul_mem_lattice X v
 
 /- English proof (translation)
-Simplify using `only [herm, ReciprocityTheory.ChartRestriction.G.FD.cc, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem herm_smul_smul (G : Matrix (Fin r) (Fin r) E) (a b : E) (x y : Fin r → E) :
     herm G (a • x) (b • y) = a * ReciprocityTheory.ChartRestriction.G.FD.cc b * herm G x y := by
@@ -40,7 +40,7 @@ theorem herm_smul_smul (G : Matrix (Fin r) (Fin r) E) (a b : E) (x y : Fin r →
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Take `⟨c, hc, hm⟩` from `exists_multiple_mem X (cu.e ⟨0, hρ⟩)`. Use `⟨_, hm, by rw [herm_smul_smul, cu.iso, mul_zero], ?_⟩` and prove the remaining obligations. Conclude with `smul_ne_zero (by simpa using hc) (cu.ind.ne_zero _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isIso (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) {ρ : ℕ} (cu : FJ.CuspFD X ρ) (hρ : 0 < ρ) :
     ∃ ξ : Fin r → E, X.IsIso ξ := by
@@ -49,13 +49,13 @@ theorem exists_isIso (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) {ρ 
   exact smul_ne_zero (by simpa using hc) (cu.ind.ne_zero _)
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.CMConjugationOfSquareRoot.main H`.
+A detailed English derivation is pending.
 -/
 theorem conj_cmHalfIntegralGenerator_eq_one_sub (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) : ReciprocityTheory.ChartRestriction.G.FD.cc (H.w0 : E) = 1 - (H.w0 : E) :=
   _root_.GlobalTheory.CMConjugationOfSquareRoot.main H
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Ue6.even_im_hermitian_sub X w0 hw`.
+A detailed English derivation is pending.
 -/
 theorem even_im_hermitian_sub (X : DataX E r) (w0 : 𝓞 E) (hw : ReciprocityTheory.ChartRestriction.G.FD.cc (w0 : E) = 1 - (w0 : E)) :
     ∀ u ∈ X.Λ, ∀ v ∈ X.Λ, ∃ k : ℤ,
@@ -66,15 +66,15 @@ theorem even_im_hermitian_sub (X : DataX E r) (w0 : 𝓞 E) (hw : ReciprocityThe
 end General
 
 /- English proof (translation)
-Introduce `D T h j hj large₂ w hG hP hL hrn hjm hf2 hrd hm4 k`. Take `⟨e, -⟩` from `GlobalTheory.CuspDataBounds.cusp_data_bounds D T h hG large₂ j hj w hP hL hrn T.σ₀ T.good_σ₀`. Establish `hfr : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.finrank_cmField, Formalism.BasicNotions.Ranks.f, Formalism.BasicNotions.Ranks.n]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hcard : ((T.U j T.σ₀).X k).Ψ.card = D.R.f`. Establish `h2c` using `Formalism.L2.Pj.DatLin.two_card ((T.U j T.σ₀).X k).cmType`. Rewrite `h2c` using `[hfr]`. Use linear arithmetic over natural numbers and integers. Establish `hPf : ReciprocityTheory.ChartRestriction.G.I2.PT.f D.host.E = D.R.f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Unfold `ReciprocityTheory.ChartRestriction.G.I2.PT.f`. Use linear arithmetic over natural numbers and integers. Establish `hPr : ReciprocityTheory.ChartRestriction.G.I2.PT.rd D.host.E = D.host.rdE` using `rfl`. Establish `hp0 : ((T.U j T.σ₀).X k).p0 = D.R.m - j` using `((h.unf j hj T.σ₀ T.good_σ₀).2.1 k).1.trans (h.pins.2.2.2 j hj).2.1`. Establish `hf1 : (1 : ℝ) ≤ D.R.f`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 < D.R.f` using `by unfold Ranks.f Ranks.n; positivity`. Conclude with `this` after adjusting the coercions. Take `⟨cu⟩` from `h.cuNe j hj k`. Establish `hρ : 0 < WeightFamilies.rho D j` using `by show 0 < D.R.m - j`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.ThetaWeight.exists_weight GlobalTheory.theta_bound_tStatement D.host.E D.R.r (e k).toX (exists_isIso _ cu hρ) ⟨⟨T.Q.H.w0, even_im_hermitian_sub _ _ (conj_cmHalfIntegralGenerator_eq_one_sub T.Q.H)⟩, by rw [hPf, hPr]; nlinarith, by rw [hPf, hPr]; exact hf2, by rw [hPr] …`. Rewrite using `[← hcard]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extra_weight_exists : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (w : WeightFamilies.Wt D j), GamAt T.toCore → ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ w → 2 ≤ large₂.sc.L → D.R.r ≤ w.n → j < D.R.m → (D.R.f : ℝ) ^ 2 ≤ D.host.rdE → 16 ≤ D.host.rdE → D.R.m ^ 4 ≤ D.R.f → ∀ k : (T.U j T.σ₀).Comp, BasePotentialExistence ((T.U j T.σ₀).X k) (de2W ((T.U j T.σ₀).X k)) D.R.r (1 / (2 * (5 : ℝ) ^ 4 * |(NumberField.discr D.host.E : ℝ)| ^ ((1 : ℝ) / D.R.f))) := by
   intro D T h j hj large₂ w hG hP hL hrn hjm hf2 hrd hm4 k

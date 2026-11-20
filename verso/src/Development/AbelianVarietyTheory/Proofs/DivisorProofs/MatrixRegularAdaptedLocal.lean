@@ -15,11 +15,11 @@ set_option autoImplicit false
 namespace GlobalTheory.LieFilt.IntForm
 
 /- English proof (translation)
-Establish `ht : N.BlockTriangular bl`. Introduce `i j hij`. Rewrite using `[h i j (by omega), Matrix.one_apply_ne]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht.det]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Establish `: N.toSquareBlock bl a = 1`. Use extensionality with `i j`. Rewrite using `[Matrix.toSquareBlock_def, Matrix.of_apply, h i j (by rw [i.2, j.2]; exact lt_irrefl _)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply, Subtype.ext_iff]`. Rewrite using `[this, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_blockUni {R : Type} [CommRing R] {κ : Type} [Fintype κ] [DecidableEq κ] (bl : κ → ℕ) (N : Matrix κ κ R)
     (h : ∀ z z', ¬ bl z < bl z' → N z z' = (1 : Matrix κ κ R) z z') : N.det = 1 := by
@@ -37,7 +37,7 @@ theorem det_blockUni {R : Type} [CommRing R] {κ : Type} [Fintype κ] [Decidable
   rw [this, Matrix.det_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_prod]`. Use `mul_le_one₀ ?_ (Finset.prod_nonneg fun _ _ => norm_nonneg _) (Finset.prod_le_one (fun _ _ => norm_nonneg _) fun _ _ => h _ _)` and prove the remaining obligations. Conclude with `IsUltrametricDist.norm_intCast_le_one K _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_det_le_one {K : Type} [NormedField K] [IsUltrametricDist K] {n : Type} [Fintype n] [DecidableEq n]
     (A : Matrix n n K) (h : ∀ i j, ‖A i j‖ ≤ 1) : ‖A.det‖ ≤ 1 := by
@@ -49,11 +49,9 @@ theorem norm_det_le_one {K : Type} [NormedField K] [IsUltrametricDist K] {n : Ty
   exact IsUltrametricDist.norm_intCast_le_one K _
 
 /- English proof (translation)
-Establish `h1 : A.cramer (A.mulVec y) = A.det • y`. Rewrite using `[Matrix.cramer_eq_adjugate_mulVec, Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`. Establish `h2` using `congrFun h1 i`. Rewrite `h2` using `[Matrix.cramer_apply, Pi.smul_apply, smul_eq_mul]`. Establish `h3 : ‖(A.updateCol i (A.mulVec y)).det‖ ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `norm_det_le_one _ fun a b => ?_` and prove the remaining obligations. Rewrite using `[Matrix.updateCol_apply]`. Use `split_ifs`. Conclude with `hy a`. Conclude with `h a b`.
-
-Rewrite `h3` using `[h2, norm_mul, hd, one_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_mulVec {K : Type} [NormedField K] [IsUltrametricDist K] {n : Type} [Fintype n] [DecidableEq n]
     (A : Matrix n n K) (h : ∀ i j, ‖A i j‖ ≤ 1) (hd : ‖A.det‖ = 1) (y : n → K) (hy : ∀ i, ‖A.mulVec y i‖ ≤ 1) (i : n) :
@@ -74,11 +72,11 @@ theorem norm_le_one_of_mulVec {K : Type} [NormedField K] [IsUltrametricDist K] {
 variable {κ : Type} [Fintype κ] (bl : κ → ℕ)
 
 /- English proof (translation)
-Introduce `z z' h`. Establish `: ∀ y, M z y * N y z' = (1 : Matrix κ κ R) z y * (1 : Matrix κ κ R) y z'`. Introduce `y`. Distinguish the cases in `h1 : bl y < bl z'`. Establish `hne : z ≠ y` using `by rintro rfl; exact h h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hM z y (by omega), Matrix.one_apply_ne hne, zero_mul, zero_mul]`. Rewrite using `[hN y z' h1]`. Distinguish the cases in `h2 : y = z'`. Substitute `h2` using the available equality. Rewrite using `[hM z y h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_ne h2, mul_zero, mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_congr rfl fun y _ => this y, ← Matrix.mul_apply, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockUni_mul {R : Type} [CommRing R] {M N : Matrix κ κ R} (hM : BlockUni bl M) (hN : BlockUni bl N) :
     BlockUni bl (M * N) := by
@@ -95,13 +93,11 @@ theorem blockUni_mul {R : Type} [CommRing R] {M N : Matrix κ κ R} (hM : BlockU
   rw [Matrix.mul_apply, Finset.sum_congr rfl fun y _ => this y, ← Matrix.mul_apply, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `ht : N.BlockTriangular bl`. Introduce `i j hij`. Rewrite using `[hN i j (by omega), Matrix.one_apply_ne]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Equip the data with the indicated structure.
 
-Use `letI := invertibleOfLeftInverse N M h`. Establish `hM : M.BlockTriangular bl`. Rewrite using `[← Matrix.inv_eq_left_inv h]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular ht`. Introduce `z z' hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ∀ y, M z y * N y z' = M z y * (1 : Matrix κ κ R) y z'`. Introduce `y`. Distinguish the cases in `h1 : bl y < bl z'`. Rewrite using `[hM (show bl y < bl z by omega), zero_mul, zero_mul]`. Rewrite using `[hN y z' h1]`.
-
-Rewrite using `[← h, Matrix.mul_apply, Finset.sum_congr rfl fun y _ => this y, ← Matrix.mul_apply, Matrix.mul_one]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockUni_inv {R : Type} [CommRing R] {M N : Matrix κ κ R} (hN : BlockUni bl N) (h : M * N = 1) :
     BlockUni bl M := by
@@ -123,9 +119,9 @@ theorem blockUni_inv {R : Type} [CommRing R] {M N : Matrix κ κ R} (hN : BlockU
   rw [← h, Matrix.mul_apply, Finset.sum_congr rfl fun y _ => this y, ← Matrix.mul_apply, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, ← Finset.sum_filter_add_sum_filter_not Finset.univ (fun y => bl y < k)]`. Use `congr 1`. Conclude with `Finset.sum_subtype _ (by simp) _`. Rewrite using `[Finset.sum_congr rfl (g := fun y => P a y * (1 : Matrix κ κ R) y z') fun y hy => by rw [hN y z' (by simp at hy; omega)]]`. Simplify using `only [Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_filter, Finset.mem_univ, true_and]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases h : bl z' < k <;> simp [h]`.
+A detailed English derivation is pending.
 -/
 theorem mul_apply_blockUni {R : Type} [CommRing R] {α : Type} (P : Matrix α κ R) {N : Matrix κ κ R}
     (hN : BlockUni bl N) (k : ℕ) (a : α) (z' : κ) (hz : bl z' ≤ k) :
@@ -140,9 +136,9 @@ theorem mul_apply_blockUni {R : Type} [CommRing R] {α : Type} (P : Matrix α κ
     by_cases h : bl z' < k <;> simp [h]
 
 /- English proof (translation)
-Unfold `minor`. Establish `: (((P * N).submatrix w id).toSquareBlockProp fun z => bl z < k) = ((P.submatrix w id).toSquareBlockProp fun z => bl z < k) * (N.toSquareBlockProp fun z => bl z < k)`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.toSquareBlockProp_def, Matrix.of_apply, Matrix.submatrix_apply, id]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_apply_blockUni bl P hN k _ _ j.2.le, if_pos j.2, add_zero]`. Rewrite using `[this, Matrix.det_mul, det_blockUni (fun z : {z // bl z < k} => bl z) (N.toSquareBlockProp fun z => bl z < k), mul_one]`. Introduce `z z' h`. Rewrite using `[Matrix.toSquareBlockProp_def, Matrix.of_apply, hN z z' h]`. Simplify using `[Matrix.one_apply, Subtype.ext_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem minor_mul {R : Type} [CommRing R] {g : ℕ} (w : κ ≃ Fin g) (k : ℕ) (P : Matrix (Fin g) κ R) {N : Matrix κ κ R}
     (hN : BlockUni bl N) : minor bl w k (P * N) = minor bl w k P := by
@@ -160,17 +156,15 @@ theorem minor_mul {R : Type} [CommRing R] {g : ℕ} (w : κ ≃ Fin g) (k : ℕ)
   simp [Matrix.one_apply, Subtype.ext_iff]
 
 /- English proof (translation)
-Introduce `K _ _ κ _ bl g P w ⟨N, C', hN, hC, _, _, h2⟩ hm Q hQ h0`. Establish `h3 : (C' * P) * N = 1` using `by rw [Matrix.mul_assoc]; exact h2`. Establish `h4 : N * (C' * P) = 1` using `mul_eq_one_comm.mp h3`. Establish `hM : BlockUni bl (C' * P * Q)` using `blockUni_mul bl (blockUni_inv bl hN h3) hQ`. Establish `hPQ : P * Q = (P * N) * (C' * P * Q)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc P N, ← Matrix.mul_assoc N, h4, Matrix.one_mul]`. Rewrite `h0`, the goal using `[hPQ]`. Establish `hm' : ∀ k, ‖minor bl w k (P * N)‖ = 1` using `fun k => by rw [minor_mul bl w k P hN]; exact hm k`. Generalize the expression as in `P * N = C at *`. Generalize the expression as in `C' * P * Q = M at *`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hI : ∀ z z', ‖M z z'‖ ≤ 1`. Introduce `z z'`. Distinguish the cases in `h : bl z < bl z'`. Use `norm_le_one_of_mulVec ((C.submatrix w id).toSquareBlockProp fun y => bl y < bl z') (fun i j => hC _ _) (hm' _) (fun y => M y z') (fun i => ?_) ⟨z, h⟩` and prove the remaining obligations. Establish `h5` using `h0 i z' i.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h5` using `[mul_apply_blockUni bl C hM (bl z') _ _ le_rfl, if_neg (lt_irrefl _)]`. Establish `h6` using `eq_neg_of_add_eq_zero_left h5`. Express the relevant statement in the definitionally equal form `‖∑ y : {y // bl y < bl z'}, C (w i) y * M y z'‖ ≤ 1`. Rewrite using `[h6, norm_neg]`. Conclude with `hC _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [hM z z' h, Matrix.one_apply] split_ifs <;> simp`. Introduce `b z`. Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun y _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
-
-Conclude with `mul_le_one₀ (hC _ _) (norm_nonneg _) (hI _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mul_le_one : ∀ {K : Type} [NormedField K] [IsUltrametricDist K] {κ : Type} [Fintype κ] (bl : κ → ℕ) {g : ℕ}
     (P : Matrix (Fin g) κ K) (w : κ ≃ Fin g), IntAdapted bl P → (∀ k : ℕ, ‖minor bl w k P‖ = 1) →

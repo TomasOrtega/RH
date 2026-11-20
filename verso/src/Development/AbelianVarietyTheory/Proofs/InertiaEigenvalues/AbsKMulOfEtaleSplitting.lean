@@ -8,13 +8,13 @@ open scoped Pointwise
 namespace GlobalTheory.JR.EtProdAbs
 
 /- English proof (translation)
-Use `borelize R₁ R₂`. Set `μ₁ : Measure R₁` to `Measure.addHaar`. Set `μ₂ : Measure R₂` to `Measure.addHaar`. Take `⟨S₁⟩ : Nonempty (TopologicalSpace.PositiveCompacts R₁)` from `inferInstance`. Take `⟨S₂⟩ : Nonempty (TopologicalSpace.PositiveCompacts R₂)` from `inferInstance`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0₁ : μ₁ (S₁ : Set R₁) ≠ 0` using `(Measure.measure_pos_of_nonempty_interior μ₁ S₁.interior_nonempty).ne'`. Establish `h0₂ : μ₂ (S₂ : Set R₂) ≠ 0` using `(Measure.measure_pos_of_nonempty_interior μ₂ S₂.interior_nonempty).ne'`. Establish `h1₁ : μ₁ (S₁ : Set R₁) ≠ ⊤` using `S₁.isCompact.measure_lt_top.ne`. Establish `h1₂ : μ₂ (S₂ : Set R₂) ≠ ⊤` using `S₂.isCompact.measure_lt_top.ne`. Use `distribHaarChar_eq_of_measure_smul_eq_mul (μ := μ₁.prod μ₂) (s := (S₁ : Set R₁) ×ˢ (S₂ : Set R₂)) (by rw [Measure.prod_prod]; exact mul_ne_zero h0₁ h0₂) (by rw [Measure.prod_prod]; exact ENNReal.mul_ne_top h1₁ h1₂) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs : v • ((S₁ : Set R₁) ×ˢ (S₂ : Set R₂)) = (Units.map (RingHom.fst R₁ R₂ : R₁ × R₂ →* R₁) v • (S₁ : Set R₁)) ×ˢ (Units.map (RingHom.snd R₁ R₂ : R₁ × R₂ →* R₂) v • (S₂ : Set R₂))`. Use extensionality with `⟨x, y⟩`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, Set.mem_prod, Set.mem_prod, Set.mem_smul_set_iff_inv_smul_mem, Set.mem_smul_set_iff_inv_smul_mem, ← map_inv, ← map_inv]`. Conclude with `Iff.rfl`. Rewrite using `[hs, Measure.prod_prod, Measure.prod_prod, ← distribHaarChar_mul μ₁, ← distribHaarChar_mul μ₂]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem distribHaarChar_prod {R₁ R₂ : Type} [CommRing R₁] [TopologicalSpace R₁] [IsTopologicalRing R₁]
     [LocallyCompactSpace R₁] [T2Space R₁] [SecondCountableTopology R₁]
@@ -47,19 +47,19 @@ theorem distribHaarChar_prod {R₁ R₂ : Type} [CommRing R₁] [TopologicalSpac
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ U A A₁ A₂ eK t`. Use `U.ultraF` as an intermediate fact. Use `U.lcF` as an intermediate fact. Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A.K`. Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A₁.K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A₂.K`. Distinguish the cases in `ht : IsUnit t`. Set `u : A.Kˣ` to `ht.unit`. Set `v : (A₁.K × A₂.K)ˣ` to `Units.map (eK : A.K →* A₁.K × A₂.K) u`. Set `e' : A.K ≃ₜ+ A₁.K × A₂.K` to `{ eK.toAddEquiv with continuous_toFun := IsModuleTopology.continuous_of_linearMap eK.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap eK.symm.toLinearMap }`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h1 : distribHaarChar (A₁.K × A₂.K) v = distribHaarChar A.K u` using `ModuleNorm.distribHaarChar_transport e' u v (fun x => by`. Express the relevant statement in the definitionally equal form `eK ((u : A.K) * x) = eK (u : A.K) * eK x`. Rewrite using `[map_mul])`. Rewrite `h1` using `[distribHaarChar_prod]`. Establish `ht' : t = (u : A.K)` using `(IsUnit.unit_spec ht).symm`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (eK t).1 = ((Units.map (RingHom.fst A₁.K A₂.K : A₁.K × A₂.K →* A₁.K) v : A₁.Kˣ) : A₁.K)`. Rewrite using `[ht']`. Both sides reduce to the same expression. Establish `e2 : (eK t).2 = ((Units.map (RingHom.snd A₁.K A₂.K : A₁.K × A₂.K →* A₂.K) v : A₂.Kˣ) : A₂.K)`. Rewrite using `[ht']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e1, e2, ht', EtMeas.absK_unit, EtMeas.absK_unit, EtMeas.absK_unit, ← h1]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h0 : A.absK t = 0` using `by simp [Et.absK, ht]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hn : ¬ IsUnit (eK t)` using `fun h => ht ((isUnit_map_iff eK t).1 h)`. Rewrite `hn` using `[Prod.isUnit_iff, not_and_or]`. Rewrite using `[h0]`. Break down `hn with hn | hn` into its components or cases. Establish `: A₁.absK (eK t).1 = 0` using `by simp [Et.absK, hn]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[this, zero_mul]`. Establish `: A₂.absK (eK t).2 = 0` using `by simp [Et.absK, hn]`. Rewrite using `[this, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem absK_prod : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (A A₁ A₂ : Et F E) (eK : A.K ≃ₐ[F] A₁.K × A₂.K) (t : A.K),

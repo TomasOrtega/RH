@@ -16,7 +16,7 @@ namespace GlobalTheory.RowLaw.CvDiv
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `only [PowerSeries.coeff_zero_eq_constantCoeff_apply, h0, mul_zero, Finset.sum_const_zero]`. Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero h0) h0 hf`. Conclude with `coeff_alongCv_low hn hγ hf`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_alongCv_le {σ : Type} [Fintype σ] {γ : σ → PowerSeries C} {n : ℕ}
     (h0 : ∀ i, PowerSeries.constantCoeff (γ i) = 0)
@@ -31,7 +31,7 @@ theorem coeff_alongCv_le {σ : Type} [Fintype σ] {γ : σ → PowerSeries C} {n
   · exact coeff_alongCv_low hn hγ hf
 
 /- English proof (translation)
-Rewrite using `[coeff_alongCv_le h0 hγ hf, coeff_alongCv_le (fun i => by simp [h0 i]) (fun i m hm => by simp [hγ i m hm]) hf, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, PowerSeries.coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coeff_alongCv_smul {σ : Type} [Fintype σ] {γ : σ → PowerSeries C} {n : ℕ} (c : C)
     (h0 : ∀ i, PowerSeries.constantCoeff (γ i) = 0)
@@ -45,7 +45,7 @@ theorem coeff_alongCv_smul {σ : Type} [Fintype σ] {γ : σ → PowerSeries C} 
   ring
 
 /- English proof (translation)
-Introduce `i` and use `⟨by simp [(h i).1], fun n => by simpa only [Pi.smul_apply, PowerSeries.coeff_smul, smul_eq_mul] using hc.mul_int ((h i).2 n)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isCv_smul {V : VF C} {σ : Type} {γ : σ → PowerSeries C} {c : C} (hc : V.Ge 0 c)
     (h : IsCv V γ) : IsCv V (c • γ) := fun i =>
@@ -55,17 +55,15 @@ theorem isCv_smul {V : VF C} {σ : Type} {γ : σ → PowerSeries C} {c : C} (hc
 variable {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Take `⟨γ, lam, hγ, hlam, h1, h2⟩` from `ha`. Establish `hlg0 : ∀ i, MvPowerSeries.constantCoeff (X.lg i) = 0` using `fun i => by`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hX.lin i 0 (by simp), MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.constantCoeff_X]`. Establish `hlg1 : ∀ i j, MvPowerSeries.coeff (Finsupp.single j 1) (X.lg i) = if j = i then 1 else 0` using `fun i j => by`. Rewrite using `[hX.lin i _ (by rw [Finsupp.degree_single]), MvPowerSeries.coeff_X]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hji : j = i`. Rewrite using `[hji, if_pos rfl, if_pos rfl]`. Rewrite using `[if_neg hji, if_neg]`. Introduce `h`. Conclude with `hji (Finsupp.single_left_injective one_ne_zero h)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : ∀ i, PowerSeries.constantCoeff (γ i) = 0` using `fun i => (hγ i).1`. Establish `hord : ∀ k, k < m → ∀ i, PowerSeries.coeff k (γ i) = 0`. Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hk i`. Establish `e1` using `coeff_alongCv_le h0 (fun i m' hm' => ih m' hm' (by omega) i) (hlg0 i)`. Rewrite `e1` using `[h1 i, hv i k hk]`. Simplify using `only [hlg1, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at e1`. Conclude with `e1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(fun i => alongCv (c • γ) (X.lg i), fun q => (c • lam) q - alongCv (c • γ) (X.sg (X.u (1 - g) q))), ⟨c • γ, c • lam, isCv_smul hc hγ, isCv_smul hc hlam, fun _ => rfl, fun _ => rfl⟩, fun k hk => ⟨fun i => ?_, fun q => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← h1 i]`. Conclude with `coeff_alongCv_smul c h0 (fun i m' hm' => hord m' (by omega) i) (hlg0 i)`. Rewrite using `[h2 q]`. Simplify using `only [map_sub, Pi.smul_apply, PowerSeries.coeff_smul, smul_eq_mul]`.
-
-Rewrite using `[coeff_alongCv_smul c h0 (fun i m' hm' => hord m' (by omega) i) (X.constantCoeff_sg (hX.axes 0) _)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem step {X : RawChart C d I κ} {V : VF C} (hX : RLaw X V) (g : Fin 2) {c : C} (hc : V.Ge 0 c)
     (m : ℕ) {a : (κ → PowerSeries C) × (JJ I g → PowerSeries C)} (ha : a ∈ Cv X V g)
@@ -110,23 +108,21 @@ namespace GlobalTheory.RowLaw
 open CvDiv in
 
 /- English proof (translation)
-Introduce `C _ V d _ I _ κ _ X hX g N hN a ha`. Take `⟨hzero, hadd, hneg, -⟩` from `GlobalTheory.T.gaugedFormalGroupCurveLogarithms_addSubgroup_rescale C V d I κ X hX g`. Establish `hN0 : (N : C) ≠ 0`. Introduce `h`. Rewrite `hN` using `[h, V.v.map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithTop.top_ne_zero hN`. Establish `hc : V.Ge 0 (N : C)⁻¹`. Establish `h` using `V.v.map_mul (N : C) (N : C)⁻¹`. Rewrite `h` using `[mul_inv_cancel₀ hN0, V.v.map_one, hN, zero_add]`. Unfold `VF.Ge`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Conclude with `le_rfl`. Establish `hns : ∀ s ∈ Cv X V g, ∀ n : ℕ, (n : C) • s ∈ Cv X V g`. Introduce `s hs n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simpa using hzero`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ, add_smul, one_smul]`. Conclude with `hadd _ ih _ hs`. Establish `key : ∀ m : ℕ, ∃ s ∈ Cv X V g, ∀ k < m, (∀ i, PowerSeries.coeff k (s.1 i) = (N : C)⁻¹ * PowerSeries.coeff k (a.1 i)) ∧ ∀ q, PowerSeries.coeff k (s.2 q) = (N : C)⁻¹ * PowerSeries.coeff k (a.2 q)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact ⟨0, hzero, fun k hk => absurd hk (Nat.not_lt_zero k)⟩`. Consider the case `succ m ih`. Take `⟨s, hs, hsa⟩` from `ih`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hr : a + -((N : C) • s) ∈ Cv X V g` using `hadd _ ha _ (hneg _ (hns s hs N))`. Take `⟨b, hb, hba⟩` from `step hX g hc m hr (fun i k hk => by`. Simplify using `only [Prod.fst_add, Prod.fst_neg, Prod.smul_fst, Pi.add_apply, Pi.neg_apply, Pi.smul_apply, map_add, map_neg, PowerSeries.coeff_smul, smul_eq_mul, (hsa k hk).1 i]`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨s + b, hadd _ hs _ hb, fun k hk => ⟨fun i => ?_, fun q => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Prod.fst_add, Prod.fst_neg, Prod.smul_fst, Pi.add_apply, Pi.neg_apply, Pi.smul_apply, map_add, map_neg, PowerSeries.coeff_smul, smul_eq_mul, (hba k (by omega)).1 i]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Prod.snd_add, Prod.snd_neg, Prod.smul_snd, Pi.add_apply, Pi.neg_apply, Pi.smul_apply, map_add, map_neg, PowerSeries.coeff_smul, smul_eq_mul, (hba k (by omega)).2 q]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `choose s hs hsa using key`. Use `GlobalTheory.T.gaugedCurveLogarithms_closed_under_tadicLimits C V d I κ X hX g s _ hs fun m => ⟨m + 1, fun n hn => ⟨fun i => ?_, fun q => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(hsa n m (by omega)).1 i]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[(hsa n m (by omega)).2 q]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cv_inv_natCast_smul_mem : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (I : Fin 2 → Type) [∀ g, Fintype (I g)] (κ : Type) [Fintype κ] (X : RawChart C d I κ), RLaw X V → ∀ g (N : ℕ), V.v (N : C) = 0 → ∀ a ∈ Cv X V g, (N : C)⁻¹ • a ∈ Cv X V g := by
   intro C _ V d _ I _ κ _ X hX g N hN a ha

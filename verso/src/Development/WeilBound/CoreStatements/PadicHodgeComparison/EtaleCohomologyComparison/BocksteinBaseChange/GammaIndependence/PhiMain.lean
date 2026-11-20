@@ -7,7 +7,7 @@ set_option backward.isDefEq.respectTransparency false
 namespace CrystallineSemistableComparison
 
 /- English proof (translation)
-The claim follows from `phi_of inj`.
+A detailed English derivation is pending.
 -/
 theorem phi : FrobeniusComparison := phi_of inj
 

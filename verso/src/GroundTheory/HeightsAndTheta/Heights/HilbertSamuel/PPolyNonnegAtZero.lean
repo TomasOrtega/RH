@@ -7,21 +7,19 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open Filter Topology
 
 /- English proof (translation)
-Introduce `d p c hc hdom hev`. Assume the negation of the conclusion as `h0`. Use `push Not at h0`. Take `⟨N, hN⟩` from `eventually_atTop.1 hev`. Set `S : Set ℝ` to `{t | 0 ≤ t ∧ p.eval t ≤ 0}`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h0S : (0 : ℝ) ∈ S` using `⟨le_rfl, h0.le⟩`. Establish `hbdd : BddAbove S` using `⟨N, fun t ht => by`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Conclude with `absurd ht.2 (not_le.2 (hN t hlt.le))⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hclosed : IsClosed S` using `(isClosed_le continuous_const continuous_id).inter (isClosed_le p.continuous continuous_const)`. Establish `ht0S : sSup S ∈ S` using `hclosed.csSup_mem ⟨0, h0S⟩ hbdd`. Take `⟨ht0nn, hpt0⟩` from `ht0S`. Establish `hpos : ∀ t, sSup S < t → 0 < p.eval t`. Introduce `t ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hle`. Use `push Not at hle`. Conclude with `absurd (le_csSup hbdd ⟨ht0nn.trans ht.le, hle⟩) (not_le.2 ht)`. Establish `hlim : c * (sSup S) ^ d ≤ p.eval (sSup S)`. Assume the negation of the conclusion as `hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push Not at hlt`. Establish `hcont : Continuous fun t : ℝ => p.eval t - c * t ^ d` using `p.continuous.sub (continuous_const.mul (continuous_pow d))`. Establish `hev' : ∀ᶠ t in 𝓝 (sSup S), p.eval t - c * t ^ d < 0` using `hcont.continuousAt.eventually (gt_mem_nhds (by linarith))`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff.1 hev'`. Take `⟨q, hq1, hq2⟩` from `exists_rat_btwn (show sSup S < sSup S + ε by linarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqpos : (0 : ℝ) < q` using `lt_of_le_of_lt ht0nn hq1`. Establish `hd : dist (q : ℝ) (sSup S) < ε`. Rewrite using `[Real.dist_eq, abs_lt]`. Apply the tactic sequence `constructor <;> linarith`. Establish `h1` using `hball hd`.
+Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h2` using `hdom q (by exact_mod_cast hqpos) (hpos q hq1)`. Combine the linear equalities and inequalities to obtain the conclusion. Break down `ht0nn.lt_or_eq with htpos | htz` into its components or cases. Establish `: 0 < c * (sSup S) ^ d` using `mul_pos hc (pow_pos htpos d)`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hp0 : 0 ≤ p.eval (sSup S)` using `le_trans (mul_nonneg hc.le (pow_nonneg ht0nn d)) hlim`. Rewrite `hp0` using `[← htz]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem PolyNonnegAtZero.proof : PolyNonnegAtZero.Statement := by
   intro d p c hc hdom hev

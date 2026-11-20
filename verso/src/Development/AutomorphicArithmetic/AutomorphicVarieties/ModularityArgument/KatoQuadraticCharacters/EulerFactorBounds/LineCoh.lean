@@ -18,19 +18,19 @@ section Cg
 variable {K : Type} [Field K] {m : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem cg_refl (a : Kˣ) : Cgr m a a := ⟨1, by simp⟩
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `h`. Conclude with `⟨k⁻¹, by simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cg_symm {a b : Kˣ} (h : Cgr m a b) : Cgr m b a := by
   obtain ⟨k, rfl⟩ := h
   exact ⟨k⁻¹, by simp⟩
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `h`. Take `⟨k', rfl⟩` from `h'`. Conclude with `⟨k * k', by rw [mul_pow, mul_mul_mul_comm]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cg_mul {a b a' b' : Kˣ} (h : Cgr m a b) (h' : Cgr m a' b') : Cgr m (a * a') (b * b') := by
   obtain ⟨k, rfl⟩ := h
@@ -38,7 +38,7 @@ private theorem cg_mul {a b a' b' : Kˣ} (h : Cgr m a b) (h' : Cgr m a' b') : Cg
   exact ⟨k * k', by rw [mul_pow, mul_mul_mul_comm]⟩
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `h`. Take `⟨k', rfl⟩` from `h'`. Conclude with `⟨k' * k, by rw [mul_pow, mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cg_trans {a b c : Kˣ} (h : Cgr m a b) (h' : Cgr m b c) : Cgr m a c := by
   obtain ⟨k, rfl⟩ := h
@@ -46,7 +46,7 @@ private theorem cg_trans {a b c : Kˣ} (h : Cgr m a b) (h' : Cgr m b c) : Cgr m 
   exact ⟨k' * k, by rw [mul_pow, mul_assoc]⟩
 
 /- English proof (translation)
-Use `choose! k hk using h`. Conclude with `⟨∏ i ∈ S, k i, by rw [← Finset.prod_pow, ← Finset.prod_mul_distrib]; exact Finset.prod_congr rfl hk⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem cg_prod {ι : Type} (S : Finset ι) {a b : ι → Kˣ} (h : ∀ i ∈ S, Cgr m (a i) (b i)) :
     Cgr m (∏ i ∈ S, a i) (∏ i ∈ S, b i) := by
@@ -54,7 +54,7 @@ private theorem cg_prod {ι : Type} (S : Finset ι) {a b : ι → Kˣ} (h : ∀ 
   exact ⟨∏ i ∈ S, k i, by rw [← Finset.prod_pow, ← Finset.prod_mul_distrib]; exact Finset.prod_congr rfl hk⟩
 
 /- English proof (translation)
-The claim follows from `cgr_map (powMonoidHom k) h`.
+A detailed English derivation is pending.
 -/
 private theorem cg_pow {a b : Kˣ} (k : ℕ) (h : Cgr m a b) : Cgr m (a ^ k) (b ^ k) := cgr_map (powMonoidHom k) h
 
@@ -63,39 +63,39 @@ end Cg
 private def sc {M : ℕ} (k : ZMod M) (u : Row M) : Row M := ![u 0, k * u 1]
 
 /- English proof (translation)
-Simplify using `[sc, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sc_sc {M : ℕ} (k k' : ZMod M) (u : Row M) : sc k (sc k' u) = sc (k * k') u := by
   simp [sc, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [sc]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sc_one {M : ℕ} (u : Row M) : sc 1 u = u := by
   funext i
   fin_cases i <;> simp [sc]
 
 /- English proof (translation)
-Simplify using `[rt, en, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rt_apply {M : ℕ} (x : Row M) (γ : SL(2, ℤ)) (i : Fin 2) :
     rt x γ i = x 0 * (en γ 0 i : ZMod M) + x 1 * (en γ 1 i : ZMod M) := by
   simp [rt, en, Matrix.vecMul, dotProduct, Fin.sum_univ_two]
 
 /- English proof (translation)
-Simplify using `only [rt, Matrix.vecMul_vecMul, Matrix.SpecialLinearGroup.coe_mul, Matrix.map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rt_mul {M : ℕ} (x : Row M) (γ γ' : SL(2, ℤ)) : rt (rt x γ) γ' = rt x (γ * γ') := by
   simp only [rt, Matrix.vecMul_vecMul, Matrix.SpecialLinearGroup.coe_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Simplify using `[rt]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rt_one {M : ℕ} (x : Row M) : rt x 1 = x := by
   simp [rt]
 
 /- English proof (translation)
-Introduce `h0`. Apply `h` to reduce the goal to its premises. Establish `e : rt ((2 : ZMod M) • rt x γ) γ⁻¹ = (2 : ZMod M) • x`. Rewrite using `[rt, Matrix.smul_vecMul, ← rt, rt_mul, mul_inv_cancel, rt_one]`. Rewrite using `[← e, h0, rt, Matrix.zero_vecMul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ne_rt {M : ℕ} {x : Row M} (γ : SL(2, ℤ)) (h : (2 : ZMod M) • x ≠ 0) : (2 : ZMod M) • rt x γ ≠ 0 := by
   intro h0
@@ -105,9 +105,9 @@ private theorem ne_rt {M : ℕ} {x : Row M} (γ : SL(2, ℤ)) (h : (2 : ZMod M) 
   rw [← e, h0, rt, Matrix.zero_vecMul]
 
 /- English proof (translation)
-Introduce `h0`. Apply `h` to reduce the goal to its premises. Establish `h1` using `congrFun h0 0`. Establish `h2` using `congrFun h0 1`. Simplify using `only [sc, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero, Matrix.cons_val_one, Pi.zero_apply] at h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `h1`. Conclude with `hk.mul_right_eq_zero.1 (by rw [← h2]; simp; ring)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem ne_sc {M : ℕ} {x : Row M} {k : ZMod M} (hk : IsUnit k) (h : (2 : ZMod M) • x ≠ 0) :
     (2 : ZMod M) • sc k x ≠ 0 := by
@@ -126,9 +126,9 @@ private def Cj {M : ℕ} (k : ZMod M) (γ γ' : SL(2, ℤ)) : Prop :=
     (en γ' 1 1 : ZMod M) = en γ 1 1
 
 /- English proof (translation)
-Take `⟨h0, h1, h2, h3⟩` from `h`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using `only [Fin.zero_eta, rt_apply, sc, Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[h0, ← h2]`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Fin.mk_one, rt_apply, sc, Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[h1, h3]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem rt_sc {M : ℕ} {k : ZMod M} {γ γ' : SL(2, ℤ)} (h : Cj k γ γ') (v : Row M) :
     rt (sc k v) γ' = sc k (rt v γ) := by
@@ -141,7 +141,7 @@ private theorem rt_sc {M : ℕ} {k : ZMod M} {γ γ' : SL(2, ℤ)} (h : Cj k γ 
     rw [h1, h3]; ring
 
 /- English proof (translation)
-Rewrite using `[CongruenceSubgroup.Gamma0_mem]`. Simplify using `[en, Matrix.mul_apply, Fin.sum_univ_two, Matrix.adjugate_fin_two, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem mem0 (p : ℕ) (η γ : SL(2, ℤ)) : η * γ⁻¹ ∈ CongruenceSubgroup.Gamma0 p ↔
     (en η 1 0 : ZMod p) * en γ 1 1 - en η 1 1 * en γ 1 0 = 0 := by
@@ -149,11 +149,11 @@ private theorem mem0 (p : ℕ) (η γ : SL(2, ℤ)) : η * γ⁻¹ ∈ Congruenc
   simp [en, Matrix.mul_apply, Fin.sum_univ_two, Matrix.adjugate_fin_two, sub_eq_add_neg]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 (CongruenceSubgroup.Gamma0_mem.1 h)`. Establish `hd` using `β.det_coe`. Rewrite `hd` using `[Matrix.det_fin_two]`. Establish `hc' : en β 1 0 = p * c` using `hc`. Use `⟨⟨!![en β 0 0, p * en β 0 1; c, en β 1 1], ?_⟩, ?_, fun M => ⟨rfl, ?_, ?_, rfl⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.det_fin_two_of, ← hd, hc]`. Unfold `en`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [en, Matrix.mul_apply, Fin.sum_univ_two, hc, mul_comm]`. Simplify using `[en]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc']`. Simplify using `[en]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem conjD {p : ℕ} {β : SL(2, ℤ)} (h : β ∈ CongruenceSubgroup.Gamma0 p) : ∃ β' : SL(2, ℤ),
     !![(p : ℤ), 0; 0, 1] * (β : Matrix (Fin 2) (Fin 2) ℤ) = (β' : Matrix (Fin 2) (Fin 2) ℤ) * !![(p : ℤ), 0; 0, 1] ∧
@@ -174,13 +174,13 @@ private def gam (p N : ℕ) : Option (Fin p) → SL(2, ℤ)
   | some j => ⟨!![0, -1; 1, N * ((j : ℕ) : ℤ)], by simp [Matrix.det_fin_two_of]⟩
 
 /- English proof (translation)
-Apply the tactic sequence `cases o <;> fin_cases i <;> simp [gam, lin, en]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem gam_row (p N : ℕ) (o : Option (Fin p)) (i : Fin 2) : lin p N o i = (en (gam p N o) 1 i : ZMod p) := by
   cases o <;> fin_cases i <;> simp [gam, lin, en]
 
 /- English proof (translation)
-Simplify using `only [mem0, ← gam_row]`. Distinguish the cases in `h : (en η 1 0 : ZMod p) = 0`. Conclude with `⟨none, by simp [lin, h]⟩`. Use `⟨some ⟨((en η 1 1 : ZMod p) / (N * en η 1 0)).val, ZMod.val_lt _⟩, ?_⟩` and prove the remaining obligations. Simplify using `[lin]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -195,7 +195,7 @@ private theorem gam_surj (p N : ℕ) [Fact p.Prime] (hN : (N : ZMod p) ≠ 0) (�
     ring
 
 /- English proof (translation)
-Apply the tactic sequence `cases o <;> cases o' <;> simp [lin] at h ⊢`. Name the introduced variables `j j'`. Establish `h2 : ((j : ℕ) : ZMod p) = ((j' : ℕ) : ZMod p)` using `mul_left_cancel₀ hN (by linear_combination -h)`. Rewrite `h2` using `[ZMod.natCast_eq_natCast_iff', Nat.mod_eq_of_lt j.2, Nat.mod_eq_of_lt j'.2]`. Conclude with `Fin.ext h2`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lin_inj (p N : ℕ) [Fact p.Prime] (hN : (N : ZMod p) ≠ 0) (o o' : Option (Fin p))
     (h : lin p N o 0 * lin p N o' 1 - lin p N o 1 * lin p N o' 0 = 0) : o = o' := by
@@ -206,11 +206,11 @@ private theorem lin_inj (p N : ℕ) [Fact p.Prime] (hN : (N : ZMod p) ≠ 0) (o 
   exact Fin.ext h2
 
 /- English proof (translation)
-Consider the cases of `o with`. Consider the case `none`. Take `⟨c, hc⟩` from `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 (CongruenceSubgroup.Gamma0_mem.1 (GlobalTheory.KZ.Betti.isDiam_sgD hN hl hc).1.1)`. Establish `hd` using `(sgD N l p).det_coe`. Rewrite `hd` using `[Matrix.det_fin_two]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc' : en (sgD N l p) 1 0 / N = c`. Rewrite using `[show en (sgD N l p) 1 0 = N * c from hc, Int.mul_ediv_cancel_left _ (by exact_mod_cast hN)]`. Use `⟨⟨!![en (sgD N l p) 0 0, N * en (sgD N l p) 0 1; c, en (sgD N l p) 1 1], ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_fin_two_of, ← hd, hc]`. Unfold `en`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[hP, gam, hc']`. Consider the case `some j => exact ⟨⟨!![0, 1; -1, 0], by simp [Matrix.det_fin_two_of]⟩, by simp [hP, gam]⟩`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 private theorem hP_eq (l p N : ℕ) (hN : N ≠ 0) (hl : l ≠ 0) (hc : Nat.Coprime p N) (o : Option (Fin p)) :
     ∃ δ : SL(2, ℤ), hP l p N o =
@@ -231,9 +231,9 @@ private theorem hP_eq (l p N : ℕ) (hN : N ≠ 0) (hl : l ≠ 0) (hc : Nat.Copr
 private def zr (p : ℕ) {M : ℕ} (γ : SL(2, ℤ)) (x : Row M) : Row M := sc (p : ZMod M) (rt x γ⁻¹)
 
 /- English proof (translation)
-Rewrite using `[Matrix.adjugate_mul_distrib, Matrix.adjugate_mul_distrib, Matrix.map_mul, Matrix.map_mul, ← Matrix.vecMul_vecMul, ← Matrix.vecMul_vecMul]`. Unfold `zr rt`. Rewrite using `[Matrix.SpecialLinearGroup.coe_inv, Matrix.SpecialLinearGroup.coe_inv]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases i <;> simp [sc, Matrix.adjugate_fin_two_of, Matrix.vecMul, dotProduct, Fin.sum_univ_two, mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adj_row (p : ℕ) {M : ℕ} (γ δ : SL(2, ℤ)) (x : Row M) :
     x ᵥ* ((δ : Matrix (Fin 2) (Fin 2) ℤ) * (!![(p : ℤ), 0; 0, 1] * (γ : Matrix (Fin 2) (Fin 2) ℤ))).adjugate.map
@@ -247,28 +247,28 @@ private theorem adj_row (p : ℕ) {M : ℕ} (γ δ : SL(2, ℤ)) (x : Row M) :
   fin_cases i <;> simp [sc, Matrix.adjugate_fin_two_of, Matrix.vecMul, dotProduct, Fin.sum_univ_two, mul_comm]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ne_sc hp (ne_rt _ h.1), ne_sc hp (ne_rt _ h.2)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem ok_zr {p M : ℕ} (hp : IsUnit (p : ZMod M)) (γ : SL(2, ℤ)) {x y : Row M} (h : Ok x y) :
     Ok (zr p γ x) (zr p γ y) := ⟨ne_sc hp (ne_rt _ h.1), ne_sc hp (ne_rt _ h.2)⟩
 
 /- English proof (translation)
-Rewrite using `[zr, rt_sc h, rt_mul, mul_inv_rev, inv_mul_cancel_right, zr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem zr_left {p M : ℕ} {β β' : SL(2, ℤ)} (h : Cj (p : ZMod M) β β') (γ : SL(2, ℤ)) (x : Row M) :
     rt (zr p (β * γ) x) β' = zr p γ x := by
   rw [zr, rt_sc h, rt_mul, mul_inv_rev, inv_mul_cancel_right, zr]
 
 /- English proof (translation)
-Rewrite using `[zr, rt_mul, mul_inv_rev, mul_inv_cancel_left, zr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem zr_right {p M : ℕ} (γ η : SL(2, ℤ)) (x : Row M) : zr p (γ * η) (rt x η) = zr p γ x := by
   rw [zr, rt_mul, mul_inv_rev, mul_inv_cancel_left, zr]
 
 /- English proof (translation)
-Establish `h1` using `rt_sc h (rt (sc e' x) η⁻¹)`. Rewrite `h1` using `[rt_mul, inv_mul_cancel, rt_one, sc_sc, he, sc_one]`. Establish `h2 : rt x γ⁻¹ = sc e (rt (sc e' x) η⁻¹)` using `by conv_lhs => rw [← h1]`. Rewrite using `[rt_mul, mul_inv_cancel, rt_one]`. Rewrite using `[zr, zr, h2, sc_sc, sc_sc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Take the linear combination `(-(p : ZMod M)) * he`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem zr_gal {p M : ℕ} {e e' : ZMod M} (he : e * e' = 1) {η γ : SL(2, ℤ)} (h : Cj e η γ) (x : Row M) :
     zr p η (sc e' x) = sc e' (zr p γ x) := by
@@ -282,7 +282,7 @@ private theorem zr_gal {p M : ℕ} {e e' : ZMod M} (he : e * e' = 1) {η γ : SL
   linear_combination (-(p : ZMod M)) * he
 
 /- English proof (translation)
-Take `⟨h0, h1, h2, h3⟩` from `c`. Use `⟨cast_down h h0, ?_, ?_, cast_down h h3⟩` and prove the remaining obligations. Simplify `congrArg (ZMod.castHom h (ZMod K)) h1` using `only [map_mul, map_natCast, map_intCast]`. Simplify `congrArg (ZMod.castHom h (ZMod K)) h2` using `only [map_mul, map_natCast, map_intCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem cj_down {L K : ℕ} (h : K ∣ L) {i : ℕ} {η γ : SL(2, ℤ)} (c : Cj (i : ZMod L) η γ) : Cj (i : ZMod K) η γ := by
   obtain ⟨h0, h1, h2, h3⟩ := c
@@ -291,14 +291,14 @@ private theorem cj_down {L K : ℕ} (h : K ∣ L) {i : ℕ} {η γ : SL(2, ℤ)}
   · simpa only [map_mul, map_natCast, map_intCast] using congrArg (ZMod.castHom h (ZMod K)) h2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[rz]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem rz_val {M : ℕ} [NeZero M] (x : Row M) : rz M (fun i => ((x i).val : ℤ)) = x := by
   funext i
   simp [rz]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[rt_apply, rz]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem rt_rz {M : ℕ} (a : Fin 2 → ℤ) (γ : SL(2, ℤ)) :
     rt (rz M a) γ = rz M fun i => a 0 * en γ 0 i + a 1 * en γ 1 i := by
@@ -306,11 +306,11 @@ private theorem rt_rz {M : ℕ} (a : Fin 2 → ℤ) (γ : SL(2, ℤ)) :
   simp [rt_apply, rz]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h1 : (((rz p a i).val : ℤ)) = a i % (p : ℤ)` using `ZMod.val_intCast (a i)`. Establish `h2 : tp p M (rz p a) i = (((M : ℤ) * (a i % (p : ℤ)) : ℤ) : ZMod (p * M))`. Rewrite using `[← h1, tp]`. Use `push_cast`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite using `[h2]`. Use `(ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).mpr ⟨a i / (p : ℤ), ?_⟩` and prove the remaining obligations. Use `Int.emod_add_mul_ediv (a i) (p : ℤ)` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Take the linear combination `(-(M : ℤ)) * this`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem tp_rz (p M : ℕ) [NeZero p] (a : Fin 2 → ℤ) : tp p M (rz p a) = rz (p * M) ((M : ℤ) • a) := by
   funext i
@@ -325,7 +325,7 @@ private theorem tp_rz (p M : ℕ) [NeZero p] (a : Fin 2 → ℤ) : tp p M (rz p 
   linear_combination (-(M : ℤ)) * this
 
 /- English proof (translation)
-Rewrite using `[← rz_val u, ← rz_val t, rt_rz, rt_rz, up_rz, up_rz, tp_rz, tp_rz]`. Use function extensionality and compare the values at `i`. Simplify using `only [rt_apply, rz, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem rt_up_tp (p M : ℕ) [NeZero p] [NeZero M] (u : Row M) (t : Row p) (γ : SL(2, ℤ)) :
     rt (up p M u + tp p M t) γ = up p M (rt u γ) + tp p M (rt t γ) := by
@@ -336,7 +336,7 @@ private theorem rt_up_tp (p M : ℕ) [NeZero p] [NeZero M] (u : Row M) (t : Row 
   ring
 
 /- English proof (translation)
-Unfold `dn up tp`. Rewrite using `[Pi.add_apply, map_add, map_natCast, map_natCast]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem dn_up_tp (p M : ℕ) (u : Row M) (t : Row p) [NeZero M] (i : Fin 2) :
     dn p M (up p M u + tp p M t) i = p * u i := by
@@ -345,9 +345,9 @@ private theorem dn_up_tp (p M : ℕ) (u : Row M) (t : Row p) [NeZero M] (i : Fin
   simp
 
 /- English proof (translation)
-Introduce `h0`. Apply `h` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `h1` using `congrArg (ZMod.castHom (dvd_mul_left M p) (ZMod M)) (congrFun h0 i)`. Rewrite `h1` using `[Pi.smul_apply, smul_eq_mul, map_mul, map_ofNat, Pi.zero_apply, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `dn_up_tp p M u t i`. Unfold `dn at h2`. Rewrite `h1` using `[h2]`. Conclude with `hp.mul_right_eq_zero.1 (by rw [← h1]; simp; ring)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ne_up_tp {p M : ℕ} [NeZero M] (hp : IsUnit (p : ZMod M)) {u : Row M} (t : Row p)
     (h : (2 : ZMod M) • u ≠ 0) : (2 : ZMod (p * M)) • (up p M u + tp p M t) ≠ 0 := by
@@ -362,19 +362,17 @@ private theorem ne_up_tp {p M : ℕ} [NeZero M] (hp : IsUnit (p : ZMod M)) {u : 
   exact hp.mul_right_eq_zero.1 (by rw [← h1]; simp; ring)
 
 /- English proof (translation)
-Use `symm`. Use `Finset.prod_nbij (fun t => up p M u + tp p M ![0, t]) ?_ ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `t _`. Rewrite using `[hS]`. Conclude with `⟨by simp [up, tp, sc], dn_up_tp p M u _ 1⟩`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `s _ t _ h`. Establish `h1 : ((M * s.val : ℕ) : ZMod (p * M)) = ((M * t.val : ℕ) : ZMod (p * M))` using `congrFun (add_left_cancel h) 1`. Rewrite `h1` using `[ZMod.natCast_eq_natCast_iff, mul_comm p M]`. Establish `h2` using `Nat.ModEq.mul_left_cancel' (NeZero.ne M) h1`. Rewrite `h2` using `[← ZMod.natCast_eq_natCast_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h2`. Introduce `z hz`. Take `⟨h0, h1⟩` from `(hS z).1 hz`. Establish `h : ZMod.castHom (dvd_mul_left M p) (ZMod M) (z 1 - up p M u 1) = 0`. Rewrite using `[map_sub, sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h1.trans ?_` and prove the remaining obligations. Unfold `up`. Rewrite using `[map_natCast]`. Simplify using `[sc]`. Rewrite `h` using `[← ZMod.natCast_zmod_val (z 1 - _), map_natCast, ZMod.natCast_eq_zero_iff]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, hk⟩` from `h`. Establish `hlt : k < p`. Use `ZMod.val_lt (z 1 - up p M u 1)` as an intermediate fact. Rewrite `this` using `[hk, mul_comm p M]`. Conclude with `Nat.lt_of_mul_lt_mul_left this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(k : ZMod p), by simp, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify `h0.symm` using `[up, tp, sc]`. Express the relevant statement in the definitionally equal form `up p M u 1 + ((M * (k : ZMod p).val : ℕ) : ZMod (p * M)) = z 1`.
-
-Rewrite using `[ZMod.val_natCast, Nat.mod_eq_of_lt hlt, ← hk, ZMod.natCast_zmod_val, add_sub_cancel]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prod_fib {G : Type} [CommMonoid G] (p M : ℕ) [NeZero p] [NeZero M] [NeZero (p * M)] (u : Row M)
     (S : Finset (Row (p * M))) (hS : ∀ z, z ∈ S ↔ z 0 = up p M (sc p u) 0 ∧ dn p M z 1 = sc (p : ZMod M) u 1)
@@ -414,11 +412,11 @@ private theorem prod_fib {G : Type} [CommMonoid G] (p M : ℕ) [NeZero p] [NeZer
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Use `haveI : NeZero (p * M) := ⟨mul_ne_zero (NeZero.ne p) (NeZero.ne M)⟩`. Establish `e : ∀ (v : Row M) (i : ZMod p), rt (up p M (rt v (gam p N o)⁻¹) + tp p M ![0, i]) (gam p N o) = up p M v + tp p M (i • lin p N o)` using `fun v i => by`. Rewrite using `[rt_up_tp, rt_mul, inv_mul_cancel, rt_one]`. Use `congr 2`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[rt_apply, gam_row]`. Unfold `pushH zr`. Rewrite using `[prod_fib p M _ _ (fun z => by rw [Finset.mem_filter, and_iff_right (Finset.mem_univ _)]), map_prod]`. Use `cg_prod _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[prod_fib p M _ _ (fun z => by rw [Finset.mem_filter, and_iff_right (Finset.mem_univ _)]), map_prod]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `cg_prod _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← e, ← e]`. Conclude with `(hb _ _ ⟨ne_up_tp hp _ (ne_rt _ h.1), ne_up_tp hp _ (ne_rt _ h.2)⟩).2 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fac (X : Tower Ω ε) {m p N M : ℕ} [Fact p.Prime] [NeZero M] (hp : IsUnit (p : ZMod M))
     {b : Fam X (p * M)} (hb : Eqv X m (p * M) b) (o : Option (Fin p)) {x y : Row M} (h : Ok x y) :
@@ -440,13 +438,13 @@ private theorem fac (X : Tower Ω ε) {m p N M : ℕ} [Fact p.Prime] [NeZero M] 
   exact (hb _ _ ⟨ne_up_tp hp _ (ne_rt _ h.1), ne_up_tp hp _ (ne_rt _ h.2)⟩).2 _
 
 /- English proof (translation)
-Take `⟨L, hL, hf⟩` from `X.level f`. Establish `h1 : 0 < p * M * L` using `Nat.mul_pos (Nat.mul_pos (NeZero.pos p) (NeZero.pos M)) hL`. Take `⟨ζ, hζ, i, hi, hs, -⟩` from `GlobalTheory.exists_primitiveRoot_pow_cyclotomicCharacter p 0 _ h1 (by simp) s`. Take `⟨η, hη⟩` from `GlobalTheory.exists_sl2_conj_diag_zmod _ i hi γ`. Establish `key : ∀ K : ℕ, K ∣ p * M * L → Cj (cyc K s) η γ` using `fun K hK => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `hK`. Establish `hK0 : K ≠ 0` using `by rintro rfl; omega`. Use `haveI : NeZero K := ⟨hK0⟩`. Establish `ht : IsPrimitiveRoot (ζ ^ k) K` using `hζ.pow h1 (hk.trans (mul_comm _ _))`. Establish `h2 : s (ζ ^ k) = (ζ ^ k) ^ i` using `by rw [map_pow, hs, ← pow_mul, ← pow_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∀ z : Ω, z ^ K = 1 → s z = z ^ (cyc K s).val` using `Classical.epsilon_spec (p := fun y : ZMod K => ∀ z : Ω, z ^ K = 1 → s z = z ^ y.val) ⟨(i : ZMod K), fun z hz => by`. Take `⟨j, -, rfl⟩` from `ht.eq_pow_of_pow_eq_one hz`. Rewrite using `[ZMod.val_natCast, ← pow_eq_pow_mod _ hz, map_pow, h2, ← pow_mul, mul_comm, pow_mul]⟩`. Establish `hfin : IsOfFinOrder (ζ ^ k)` using `isOfFinOrder_iff_pow_eq_one.2 ⟨K, NeZero.pos _, ht.pow_eq_one⟩`. Establish `h4` using `hfin.pow_eq_pow_iff_modEq.1 (h2.symm.trans (h3 _ ht.pow_eq_one))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[← ht.eq_orderOf]`. Rewrite using `[← ZMod.natCast_zmod_val (cyc K s), ← (ZMod.natCast_eq_natCast_iff _ _ _).2 h4]`. Conclude with `cj_down ⟨k, hk⟩ hη`. Use `⟨η, Units.ext ?_, key _ ⟨M * L, by ring⟩, key _ ⟨p * L, by ring⟩⟩` and prove the remaining obligations. Conclude with `X.recip _ f h1 (fun δ hδ => hf δ (gamma_le (dvd_mul_left L _) hδ)) ζ hζ s i (by rw [zpow_natCast, hs]) η γ (by simpa only [Int.cast_natCast] using hη)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem conj [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (p M : ℕ) [Fact p.Prime] [NeZero M] (s : Ω ≃ₐ[ℚ] Ω) (f : X.Kˣ)
     (γ : SL(2, ℤ)) : ∃ η : SL(2, ℤ), galU X s (slU X (ofSL η) f) = slU X (ofSL γ) (galU X s f) ∧
@@ -475,9 +473,9 @@ private theorem conj [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (p M : ℕ) [Fact p
     (by simpa only [Int.cast_natCast] using hη)
 
 /- English proof (translation)
-Establish `h` using `(sSlD Ω ε X 1 one_pos).2.2.2.2.2.2.2 M`. Establish `h1 : cycM M (1 : Ω ≃ₐ[ℚ] Ω) = 1`. Use `(h 1).2.1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `left_eq_mul.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(h s).1, (h s⁻¹).1, ← Units.val_mul, ← (h s).2.1, mul_inv_cancel, h1, Units.val_one]`.
+A detailed English derivation is pending.
 -/
 private theorem cyc_inv [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (M : ℕ) [NeZero M] (s : Ω ≃ₐ[ℚ] Ω) : cyc M s * cyc M s⁻¹ = 1 := by
   have h := (sSlD Ω ε X 1 one_pos).2.2.2.2.2.2.2 M
@@ -491,7 +489,7 @@ private def AA (X : Tower Ω ε) (p : ℕ) {M : ℕ} (a : Fam X M) (γ : SL(2, �
   slU X (ofSL γ) (a (zr p γ x) (zr p γ y))
 
 /- English proof (translation)
-Take `⟨β', h1, h2⟩` from `conjD h`. Establish `h3` using `cgr_map (slU X (ofSL γ)) ((ha _ _ (ok_zr hp (η * γ⁻¹ * γ) hxy)).2 _ _ h1)`. Rewrite `h3` using `[zr_left (h2 M), zr_left (h2 M), ← slU_mul, inv_mul_cancel_right]`. Conclude with `h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem AA_left (X : Tower Ω ε) {m p M : ℕ} (hp : IsUnit (p : ZMod M)) {a : Fam X M} (ha : EqvH X m p M a)
     {η γ : SL(2, ℤ)} (h : η * γ⁻¹ ∈ CongruenceSubgroup.Gamma0 p) {x y : Row M} (hxy : Ok x y) :
@@ -502,9 +500,7 @@ private theorem AA_left (X : Tower Ω ε) {m p M : ℕ} (hp : IsUnit (p : ZMod M
   exact h3
 
 /- English proof (translation)
-Use `choose π hπ using fun o => gam_surj p N hN (η o)`. Establish `hi : Function.Injective π` using `fun o o' e => hη o o' (by`. Use `Subgroup.mul_mem _ (hπ o) (Subgroup.inv_mem _ (hπ o'))` as an intermediate fact. Rewrite using `[e, mul_inv_rev, inv_inv, mul_assoc, inv_mul_cancel_left] at this)` and apply the resulting hypothesis. Rewrite using `[← (Finite.injective_iff_bijective.1 hi).prod_comp fun o => AA X p a (gam p N o) x y]`.
-
-Conclude with `cg_prod _ fun o _ => AA_left X hp ha (hπ o) hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem AA_perm (X : Tower Ω ε) {m p N M : ℕ} [Fact p.Prime] (hN : (N : ZMod p) ≠ 0) (hp : IsUnit (p : ZMod M))
     {a : Fam X M} (ha : EqvH X m p M a) (η : Option (Fin p) → SL(2, ℤ))
@@ -521,25 +517,21 @@ end UpperTheory.V.Z.Kato.Nb.LineCohomology
 
 open UpperTheory.V.Z.Kato.Nb.LineCohomology UpperTheory.V.Z.Kato.Nb.TrConj in
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l _ n N M p c d _ _ _ hc ws hL hlv`. Establish `hpN : Nat.Coprime p N` using `(Nat.Coprime.coprime_mul_right_right hc).coprime_mul_left_right`. Establish `hN : (N : ZMod p) ≠ 0` using `natCast_ne_of_cop Fact.out hpN`. Establish `hp : IsUnit (p : ZMod M)` using `(ZMod.isUnit_iff_coprime _ _).2 hc.coprime_mul_left_right`. Establish `hlv' : Lv c d M` using `⟨NeZero.pos M, hlv.2.1.coprime_mul_left_right, hlv.2.2.coprime_mul_left_right⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, hsl, hmul, hun, -, hgr, -⟩` from `sSlD Ω ε X 1 one_pos`. Take `⟨a, ha, hcob⟩` from `hL.isog n p M hlv`. Use `⟨fun x y => ∏ o, AA X p a (gam p N o) x y, fun x y hxy => ⟨?_, fun γ => ?_⟩, fun s x y hxy => ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_induction _ (· ∈ X.Un (l ^ n)) (fun f f' h h' => ((hgr _).2 f h f' h').1) (hgr _).1 fun o _ => hun _ _ _ (ha _ _ (ok_zr hp _ hxy)).1`. Establish `h` using `AA_perm X hN hp ha (fun o => gam p N o * γ) (fun o o' h => lin_inj p N hN o o' (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[mul_inv_rev, mul_assoc, mul_inv_cancel_left, mem0]`. Simplify `h)) (⟨ne_rt γ hxy.1, ne_rt γ hxy.2⟩ : Ok (rt x γ) (rt y γ))` using `only [gam_row]`. Simplify using `only [AA, zr_right, slU_mul] at h`. Rewrite using `[map_prod]`. Conclude with `h`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `cyc_inv X M s`. Establish `hu : IsUnit (cyc M s⁻¹)` using `IsUnit.of_mul_eq_one _ ((mul_comm _ _).trans he)`. Establish `hu' : cyc p s ≠ 0` using `left_ne_zero_of_mul_eq_one (cyc_inv X p s)`. Use `choose η h1 h2 h3 using fun o => conj X p M s (a (gr M s⁻¹ (zr p (gam p N o) x)) (gr M s⁻¹ (zr p (gam p N o) y))) (gam p N o)`. Establish `hT` using `cg_pow (cyc (l ^ n) s).val (cgr_map (galU X s) (AA_perm X hN hp ha η (fun o o' h => lin_inj p N hN o o' (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h` using `[mem0, ← (h2 o).2.2.1, ← (h2 o).2.2.2, ← (h2 o').2.2.1, ← (h2 o').2.2.2]`. Simplify using `only [gam_row]`. Conclude with `mul_left_cancel₀ hu' (by linear_combination h)))`. Use the proof step `(⟨ne_sc hu hxy.1, ne_sc hu hxy.2⟩ : Ok (gr M s⁻¹ x) (gr M s⁻¹ y))))`. Establish `hT' : galU X s (∏ o, AA X p a (η o) (gr M s⁻¹ x) (gr M s⁻¹ y)) ^ (cyc (l ^ n) s).val = ∏ o, slU X (ofSL (gam p N o)) (tw X (l ^ n) M s a (zr p (gam p N o) x) (zr p (gam p N o) y))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_prod, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun o _ => ?_` and prove the remaining obligations. Rewrite using `[tw, map_pow, ← h1, AA]`. Conclude with `congrArg₂ (fun u v => galU X s (slU X (ofSL (η o)) (a u v)) ^ (cyc (l ^ n) s).val) (zr_gal he (h3 o) x) (zr_gal he (h3 o) y)`. Rewrite `hT` using `[hT']`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hH : Cgr (l ^ n) (∏ o, slU X (ofSL (gam p N o)) (slU X (toGQ !![(p : ℤ), 0; 0, 1]) (ws n M s (zr p (gam p N o) x) (zr p (gam p N o) y)))) (heF X l p N M (ws n M s) x y)`. Use `cg_prod _ fun o _ => cg_symm ?_` and prove the remaining obligations. Take `⟨δ, hδ⟩` from `hP_eq l p N (NeZero.ne N) (NeZero.ne l) hpN o`. Establish `hD : (0 : ℤ) < (!![(p : ℤ), 0; 0, 1]).det`. Rewrite using `[Matrix.det_fin_two_of]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `using NeZero.pos p`. Establish `hz` using `ok_zr hp (gam p N o) hxy`. Establish `h` using `cgr_map (slU X (ofSL (gam p N o))) (cgr_map (slU X (toGQ !![(p : ℤ), 0; 0, 1])) ((((hL.coc n M hlv').eqv s) _ _ ⟨ne_rt δ⁻¹ hz.1, ne_rt δ⁻¹ hz.2⟩).2 δ))`. Rewrite `h` using `[rt_mul, rt_mul, inv_mul_cancel, rt_one, rt_one]`. Rewrite using `[hδ, adj_row, adj_row, hmul _ _ (by simp) (by rwa [Matrix.det_mul, (gam p N o).det_coe, mul_one]), hmul _ _ hD (by simp), hsl, hsl]`.
-
-Use `h using 1` and compare the differences between its conclusion and the goal. Conclude with `Units.ext ((X.sl_mul _ _ _).trans (X.sl_mul _ _ _))`. Use `cg_trans (cg_prod _ fun o _ => cg_trans (cg_symm (fac X hp ((hL.coc n _ hlv).eqv s) o hxy)) (cgr_map _ (hcob s _ _ (ok_zr hp _ hxy)))) ?_` and prove the remaining obligations. Simplify using `only [map_div, map_mul, Finset.prod_div_distrib, Finset.prod_mul_distrib]`. Rewrite using `[div_eq_mul_inv, div_eq_mul_inv]`.
-
-Conclude with `cg_mul (cg_mul hH hT) (cg_refl _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Nb.sLineCoh :
     UpperTheory.V.Z.Kato.Nb.SLineCoh := by

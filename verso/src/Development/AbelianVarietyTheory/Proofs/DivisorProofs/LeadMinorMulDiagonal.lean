@@ -34,26 +34,26 @@ def splitIx (A : Fin (R + 1)) : Ix (R + 1) (S + 1) ≃ Ix R S ⊕ (Unit ⊕ Unit
     (Equiv.sumSumSumComm (Fin R) Unit (Fin S) Unit)
 
 /- English proof (translation)
-Simplify using `[splitIx, Equiv.sumSumSumComm, finSuccEquiv'_at, Equiv.optionEquivSumPUnit]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem splitIx_inl_self (A : Fin (R + 1)) : splitIx (S := S) A (.inl A) = .inr (.inl ()) := by
   simp [splitIx, Equiv.sumSumSumComm, finSuccEquiv'_at, Equiv.optionEquivSumPUnit]
 
 /- English proof (translation)
-Simplify using `[splitIx, Equiv.sumSumSumComm, finSuccEquiv'_succAbove, Equiv.optionEquivSumPUnit]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem splitIx_inl_succAbove (A : Fin (R + 1)) (i : Fin R) :
     splitIx (S := S) A (.inl (A.succAbove i)) = .inl (.inl i) := by
   simp [splitIx, Equiv.sumSumSumComm, finSuccEquiv'_succAbove, Equiv.optionEquivSumPUnit]
 
 /- English proof (translation)
-Simplify using `[splitIx, Equiv.sumSumSumComm, finSuccEquiv'_at, Equiv.optionEquivSumPUnit]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem splitIx_inr_last (A : Fin (R + 1)) : splitIx (S := S) A (.inr (Fin.last S)) = .inr (.inr ()) := by
   simp [splitIx, Equiv.sumSumSumComm, finSuccEquiv'_at, Equiv.optionEquivSumPUnit]
 
 /- English proof (translation)
-Establish `: finSuccEquiv' (Fin.last S) j.castSucc = some j`. Rewrite using `[← Fin.succAbove_last, finSuccEquiv'_succAbove]`. Simplify using `[splitIx, Equiv.sumSumSumComm, this, Equiv.optionEquivSumPUnit]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem splitIx_inr_castSucc (A : Fin (R + 1)) (j : Fin S) :
     splitIx (S := S) A (.inr j.castSucc) = .inl (.inr j) := by
@@ -76,44 +76,44 @@ section Entries
 variable (A : Fin (R + 1)) (g : Matrix (Ix R S) (Ix R S) ℂ) (c : ℂ)
 
 /- English proof (translation)
-Simplify using `[extM]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem extM_pp (i j : Fin R) : extM A g c (.inl (A.succAbove i)) (.inl (A.succAbove j)) = g (.inl i) (.inl j) := by
   simp [extM]
 
 /- English proof (translation)
-Simplify using `[extM]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem extM_AA : extM A g c (.inl A) (.inl A) = c := by simp [extM]
 
 /- English proof (translation)
-Simplify using `[extM]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem extM_Ap (j : Fin R) : extM A g c (.inl A) (.inl (A.succAbove j)) = 0 := by simp [extM]
 
 /- English proof (translation)
-Simplify using `[extM]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem extM_pA (i : Fin R) : extM A g c (.inl (A.succAbove i)) (.inl A) = 0 := by simp [extM]
 
 /- English proof (translation)
-Simplify using `[extM]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem extM_nn (i j : Fin S) : extM A g c (.inr i.castSucc) (.inr j.castSucc) = g (.inr i) (.inr j) := by
   simp [extM]
 
 /- English proof (translation)
-Simplify using `[extM]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem extM_LL : extM A g c (.inr (Fin.last S)) (.inr (Fin.last S)) = c := by simp [extM]
 
 /- English proof (translation)
-Simplify using `[extM]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem extM_Ln (j : Fin S) : extM A g c (.inr (Fin.last S)) (.inr j.castSucc) = 0 := by simp [extM]
 
 /- English proof (translation)
-Simplify using `[extM]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem extM_nL (i : Fin S) : extM A g c (.inr i.castSucc) (.inr (Fin.last S)) = 0 := by simp [extM]
 
@@ -123,19 +123,19 @@ def posEquiv (A : Fin (R + 1)) : Fin R ⊕ Unit ≃ Fin (R + 1) :=
   ((finSuccEquiv' A).trans (Equiv.optionEquivSumPUnit.{0, 0} (Fin R))).symm
 
 /- English proof (translation)
-Rewrite using `[posEquiv, Equiv.symm_apply_eq]`. Simplify using `[finSuccEquiv'_succAbove, Equiv.optionEquivSumPUnit]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem posEquiv_inl (A : Fin (R + 1)) (i : Fin R) : posEquiv A (.inl i) = A.succAbove i := by
   rw [posEquiv, Equiv.symm_apply_eq]; simp [finSuccEquiv'_succAbove, Equiv.optionEquivSumPUnit]
 
 /- English proof (translation)
-Rewrite using `[posEquiv, Equiv.symm_apply_eq]`. Simplify using `[finSuccEquiv'_at, Equiv.optionEquivSumPUnit]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem posEquiv_inr (A : Fin (R + 1)) (u : Unit) : posEquiv A (.inr u) = A := by
   rw [posEquiv, Equiv.symm_apply_eq]; simp [finSuccEquiv'_at, Equiv.optionEquivSumPUnit]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_submatrix_equiv_self (posEquiv A)]`. Establish `: (toBlocks₁₁ (extM A g c)).submatrix (posEquiv A) (posEquiv A) = Matrix.fromBlocks (toBlocks₁₁ g) 0 0 (Matrix.of fun (_ _ : Unit) => c)`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [toBlocks₁₁, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]`. Rewrite using `[this, Matrix.det_fromBlocks_zero₂₁, Matrix.det_unique (Matrix.of fun (_ _ : Unit) => c)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_toBlocks₁₁_extM (A : Fin (R + 1)) (g : Matrix (Ix R S) (Ix R S) ℂ) (c : ℂ) :
     (toBlocks₁₁ (extM A g c)).det = (toBlocks₁₁ g).det * c := by
@@ -150,25 +150,25 @@ def negEquiv : Fin S ⊕ Unit ≃ Fin (S + 1) :=
   ((finSuccEquiv' (Fin.last S)).trans (Equiv.optionEquivSumPUnit.{0, 0} (Fin S))).symm
 
 /- English proof (translation)
-Rewrite using `[← Fin.succAbove_last, finSuccEquiv'_succAbove]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fse_last_castSucc (i : Fin S) : finSuccEquiv' (Fin.last S) i.castSucc = some i := by
   rw [← Fin.succAbove_last, finSuccEquiv'_succAbove]
 
 /- English proof (translation)
-Rewrite using `[negEquiv, Equiv.symm_apply_eq]`. Simplify using `[fse_last_castSucc, Equiv.optionEquivSumPUnit]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem negEquiv_inl (i : Fin S) : negEquiv (.inl i) = i.castSucc := by
   rw [negEquiv, Equiv.symm_apply_eq]; simp [fse_last_castSucc, Equiv.optionEquivSumPUnit]
 
 /- English proof (translation)
-Rewrite using `[negEquiv, Equiv.symm_apply_eq]`. Simplify using `[finSuccEquiv'_at, Equiv.optionEquivSumPUnit]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem negEquiv_inr (u : Unit) : negEquiv (S := S) (.inr u) = Fin.last S := by
   rw [negEquiv, Equiv.symm_apply_eq]; simp [finSuccEquiv'_at, Equiv.optionEquivSumPUnit]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_submatrix_equiv_self negEquiv]`. Establish `: (toBlocks₂₂ (extM A g c)).submatrix negEquiv negEquiv = Matrix.fromBlocks (toBlocks₂₂ g) 0 0 (Matrix.of fun (_ _ : Unit) => c)`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [toBlocks₂₂, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]`. Rewrite using `[this, Matrix.det_fromBlocks_zero₂₁, Matrix.det_unique (Matrix.of fun (_ _ : Unit) => c)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_toBlocks₂₂_extM (A : Fin (R + 1)) (g : Matrix (Ix R S) (Ix R S) ℂ) (c : ℂ) :
     (toBlocks₂₂ (extM A g c)).det = (toBlocks₂₂ g).det * c := by
@@ -216,7 +216,7 @@ Both sides reduce to the same expression.
 @[simp] theorem lowEquiv_inr (A : Fin (R + 1)) (u : Unit) : (lowEquiv A (.inr u) : Fin (R + 1)) = A := rfl
 
 /- English proof (translation)
-Unfold `GlobalTheory.HwCoef.leadMinor`. Rewrite using `[← Matrix.det_submatrix_equiv_self (lowEquiv A)]`. Establish `: ((toBlocks₁₁ (extM A g c)).submatrix (fun i : {i : Fin (R + 1) // (i : ℕ) < (A : ℕ) + 1} => i.1) (fun i => i.1)).submatrix (lowEquiv A) (lowEquiv A) = Matrix.fromBlocks ((toBlocks₁₁ g).submatrix (fun i : {i : Fin R // (i : ℕ) < A} => i.1) (fun i => i.1)) 0 0 (Matrix.of fun (_ _ …`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [toBlocks₁₁, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]`. Rewrite using `[this, Matrix.det_fromBlocks_zero₂₁, Matrix.det_unique (Matrix.of fun (_ _ : Unit) => c)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -233,7 +233,7 @@ theorem leadMinor_extM (A : Fin (R + 1)) (g : Matrix (Ix R S) (Ix R S) ℂ) (c :
   rw [this, Matrix.det_fromBlocks_zero₂₁, Matrix.det_unique (Matrix.of fun (_ _ : Unit) => c)]; rfl
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.HwCoef.coef, leadMinor_extM, det_toBlocks₁₁_extM, det_toBlocks₂₂_extM, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coef_extM_one (A : Fin (R + 1)) (g : Matrix (Ix R S) (Ix R S) ℂ) (e₁ e₂ e₃ : ℤ) :
     GlobalTheory.HwCoef.coef ((A : ℕ) + 1) e₁ e₂ e₃ (extM A g 1) = GlobalTheory.HwCoef.coef A e₁ e₂ e₃ g := by
@@ -242,7 +242,7 @@ theorem coef_extM_one (A : Fin (R + 1)) (g : Matrix (Ix R S) (Ix R S) ℂ) (e₁
 def dExt (A : Fin (R + 1)) (c : ℂ) (i : Ix (R + 1) (S + 1)) : ℂ := Sum.elim (fun _ => 1) (fun _ => c) (splitIx A i)
 
 /- English proof (translation)
-Rewrite using `[extM, Matrix.smul_one_eq_diagonal, ← Matrix.diagonal_one, Matrix.fromBlocks_diagonal, Matrix.submatrix_diagonal_equiv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem extM_one_eq_diagonal (A : Fin (R + 1)) (c : ℂ) : extM (S := S) A 1 c = Matrix.diagonal (dExt A c) := by
   rw [extM, Matrix.smul_one_eq_diagonal, ← Matrix.diagonal_one, Matrix.fromBlocks_diagonal,
@@ -250,7 +250,7 @@ theorem extM_one_eq_diagonal (A : Fin (R + 1)) (c : ℂ) : extM (S := S) A 1 c =
   rfl
 
 /- English proof (translation)
-Unfold `GlobalTheory.HwCoef.leadMinor`. Rewrite using `[← Matrix.det_diagonal, ← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[toBlocks₁₁, Matrix.mul_diagonal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem leadMinor_mul_diagonal {R' S' : ℕ} (m : ℕ) (M : Matrix (Ix R' S') (Ix R' S') ℂ) (d : Ix R' S' → ℂ) :
     GlobalTheory.HwCoef.leadMinor m (M * Matrix.diagonal d) =
@@ -262,21 +262,21 @@ theorem leadMinor_mul_diagonal {R' S' : ℕ} (m : ℕ) (M : Matrix (Ix R' S') (I
   simp [toBlocks₁₁, Matrix.mul_diagonal]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[toBlocks₁₁, Matrix.mul_diagonal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₁₁_mul_diagonal {R' S' : ℕ} (M : Matrix (Ix R' S') (Ix R' S') ℂ) (d : Ix R' S' → ℂ) :
     toBlocks₁₁ (M * Matrix.diagonal d) = toBlocks₁₁ M * Matrix.diagonal (fun i => d (.inl i)) := by
   ext i j; simp [toBlocks₁₁, Matrix.mul_diagonal]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[toBlocks₂₂, Matrix.mul_diagonal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₂₂_mul_diagonal {R' S' : ℕ} (M : Matrix (Ix R' S') (Ix R' S') ℂ) (d : Ix R' S' → ℂ) :
     toBlocks₂₂ (M * Matrix.diagonal d) = toBlocks₂₂ M * Matrix.diagonal (fun i => d (.inr i)) := by
   ext i j; simp [toBlocks₂₂, Matrix.mul_diagonal]
 
 /- English proof (translation)
-Distinguish the cases in `h : i = A`. Substitute `h` using the available equality. Simplify using `[dExt]`. Take `⟨j, rfl⟩` from `Fin.exists_succAbove_eq h`. Simplify using `[dExt, Fin.succAbove_ne]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem dExt_inl (A : Fin (R + 1)) (c : ℂ) (i : Fin (R + 1)) : dExt (S := S) A c (.inl i) = if i = A then c else 1 := by
   by_cases h : i = A
@@ -285,7 +285,7 @@ theorem dExt_inl (A : Fin (R + 1)) (c : ℂ) (i : Fin (R + 1)) : dExt (S := S) A
     simp [dExt, Fin.succAbove_ne]
 
 /- English proof (translation)
-Distinguish the cases in `h : i = Fin.last S`. Substitute `h` using the available equality. Simplify using `[dExt]`. Take `⟨j, rfl⟩` from `Fin.exists_castSucc_eq.2 h`. Simplify using `[dExt, Fin.castSucc_ne_last]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem dExt_inr (A : Fin (R + 1)) (c : ℂ) (i : Fin (S + 1)) :
     dExt (S := S) A c (.inr i) = if i = Fin.last S then c else 1 := by
@@ -295,13 +295,13 @@ theorem dExt_inr (A : Fin (R + 1)) (c : ℂ) (i : Fin (S + 1)) :
     simp [dExt, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Establish `h1 : ∏ i : {i : Fin (R + 1) // (i : ℕ) < (A : ℕ) + 1}, dExt (S` using `S) A c (.inl i.1) = c := by`. Rewrite using `[Fintype.prod_eq_single ⟨A, by omega⟩]`. Simplify using `[dExt_inl]`. Introduce `i hi`. Rewrite using `[dExt_inl, if_neg (fun h => hi (Subtype.ext h))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∏ i : Fin (R + 1), dExt (S` using `S) A c (.inl i) = c := by`. Rewrite using `[Fintype.prod_eq_single A]`. Simplify using `[dExt_inl]`. Introduce `i hi`. Rewrite using `[dExt_inl, if_neg hi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∏ i : Fin (S + 1), dExt (S` using `S) A c (.inr i) = c := by`. Rewrite using `[Fintype.prod_eq_single (Fin.last S)]`. Simplify using `[dExt_inr]`. Introduce `i hi`. Rewrite using `[dExt_inr, if_neg hi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.HwCoef.coef, extM_one_eq_diagonal, leadMinor_mul_diagonal, toBlocks₁₁_mul_diagonal, toBlocks₂₂_mul_diagonal, Matrix.det_mul, Matrix.det_diagonal, h1, h2, h3, mul_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coef_mul_extM (A : Fin (R + 1)) (M : Matrix (Ix (R + 1) (S + 1)) (Ix (R + 1) (S + 1)) ℂ) (c : ℂ) (e₁ e₂ e₃ : ℤ) :
     GlobalTheory.HwCoef.coef ((A : ℕ) + 1) e₁ e₂ e₃ (M * extM A 1 c) =
@@ -324,11 +324,11 @@ theorem coef_mul_extM (A : Fin (R + 1)) (M : Matrix (Ix (R + 1) (S + 1)) (Ix (R 
   ring
 
 /- English proof (translation)
-Establish `hN : K * newCols ε φ = newCols ε φ * (c • (1 : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ))`. Use extensionality with `r (u | u)`. Use `congrFun hε r` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at this`. Simplify using `[newCols, Matrix.mul_apply, this, mul_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congrFun hφ r` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at this`. Simplify using `[newCols, Matrix.mul_apply, this, mul_comm]`. Establish `e1 : K * extFrame A C ε φ = (K * Matrix.fromCols C (newCols ε φ)).submatrix id (splitIx A)`. Use extensionality with `r i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [extFrame, Matrix.submatrix_apply, Matrix.mul_apply, id]`. Rewrite using `[e1, extFrame, extM, Matrix.submatrix_mul_equiv, Matrix.mul_fromCols, Matrix.fromCols_mul_fromBlocks, hC, hN]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_extFrame {n : ℕ} (A : Fin (R + 1)) {K : Matrix (Fin n) (Fin n) ℂ} {C : Matrix (Fin n) (Ix R S) ℂ}
     {g : Matrix (Ix R S) (Ix R S) ℂ} {ε φ : Fin n → ℂ} {c : ℂ} (hC : K * C = C * g) (hε : K *ᵥ ε = c • ε)
@@ -347,7 +347,7 @@ theorem mul_extFrame {n : ℕ} (A : Fin (R + 1)) {K : Matrix (Fin n) (Fin n) ℂ
   simp
 
 /- English proof (translation)
-Introduce `w`. Express the relevant statement in the definitionally equal form `(mat k * mat k').map _ * C w = _`. Rewrite using `[Matrix.map_mul, Matrix.mul_assoc, h' w, ← Matrix.mul_assoc, h w, Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isReading_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (τ : ∀ w : InfinitePlace F, EmbOver E w) {n R' S' : ℕ} {J : Matrix (Fin n) (Fin n) E}

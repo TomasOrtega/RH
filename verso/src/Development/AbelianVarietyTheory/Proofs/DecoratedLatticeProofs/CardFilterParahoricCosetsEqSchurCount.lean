@@ -14,7 +14,7 @@ open GlobalTheory.ParHeckeSource
 variable {k : Type} [Field k] [ValuativeRel k]
 
 /- English proof (translation)
-Rewrite using `[mul_apply]`. Conclude with `Valuation.map_sum_lt _ one_ne_zero fun m _ => by`. Rewrite using `[mul_comm]`. Conclude with `GlobalTheory.DatumEigen.val_mul_lt (hP _ _) (hc _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_lt_mul_right {l m n : Type} [Fintype m] {c : Matrix l m k} {P : Matrix m n k}
     (hc : ∀ i j, valuation k (c i j) < 1) (hP : IsIntM P) (i j) : valuation k ((c * P) i j) < 1 := by
@@ -23,7 +23,7 @@ theorem val_lt_mul_right {l m n : Type} [Fintype m] {c : Matrix l m k} {P : Matr
     rw [mul_comm]; exact GlobalTheory.DatumEigen.val_mul_lt (hP _ _) (hc _ _)
 
 /- English proof (translation)
-Introduce `i j` and use `(show valuation k (M i j) ≤ 1 from (h i j).le)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntM_of_lt {m n : Type} {M : Matrix m n k} (h : ∀ i j, valuation k (M i j) < 1) : IsIntM M :=
   fun i j => (show valuation k (M i j) ≤ 1 from (h i j).le)
@@ -45,7 +45,7 @@ variable [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {A D D' : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] [Fintype D'] [DecidableEq D']
 
 /- English proof (translation)
-Use `mem_parahoric_of ?_ ?_ fun i j => by simpa [val_nlow] using hv i j` and prove the remaining obligations. Rewrite using `[val_nlow]`. Conclude with `isIntM_fromBlocks_iff.2 ⟨isIntM_one, isIntM_zero, isIntM_of_lt hv, isIntM_one⟩`. Rewrite using `[val_nlow, det_fromBlocks_zero₁₂, det_one, det_one, one_mul, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nlow_mem {v : Matrix D' A k} (hv : ∀ i j, valuation k (v i j) < 1) : nlow v ∈ parahoric k A D' := by
   refine mem_parahoric_of ?_ ?_ fun i j => by simpa [val_nlow] using hv i j
@@ -53,9 +53,9 @@ theorem nlow_mem {v : Matrix D' A k} (hv : ∀ i j, valuation k (v i j) < 1) : n
   · rw [val_nlow, det_fromBlocks_zero₁₂, det_one, det_one, one_mul, map_one]
 
 /- English proof (translation)
-Establish `hlt : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Rewrite using `[val_torusElt]`. Introduce `i j`. Rewrite using `[diagonal_apply]`. Use `split_ifs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show valuation k _ ≤ 1`. Rewrite using `[map_zpow₀]`. Apply the tactic sequence `exact zpow_le_one₀ (zero_lt_iff.2 (by simp)) hlt.le (by unfold indic; split_ifs <;> norm_num)`. Conclude with `zero_mem _`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem torus_int {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : Finset D) :
     IsIntM (torusElt k D ϖ (indic s)).val := by
@@ -69,11 +69,9 @@ theorem torus_int {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : F
   · exact zero_mem _
 
 /- English proof (translation)
-Establish `hu : IsUnit x.toBlocks₁₁.det` using `isUnit_iff_ne_zero.2 hx.det_ne`. Establish `hxe` using `fromBlocks_toBlocks x`. Use `set a := x.toBlocks₁₁`. Use `set b := x.toBlocks₁₂`. Use `set c := x.toBlocks₂₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set e := x.toBlocks₂₂`. Rewrite using `[schur, ← hxe, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂]`. Rewrite using `[val_nlow, fromBlocks_multiply]`. Simplify using `only [Matrix.one_mul, Matrix.zero_mul, add_zero, zero_add]`. Use `congr 1`.
-
-Rewrite using `[Matrix.neg_mul, Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.mul_one, neg_add_cancel]`. Rewrite using `[Matrix.neg_mul]`. Normalize the expressions using the abelian group laws.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem nlow_mul_eq {x : Matrix (A ⊕ D') (A ⊕ D) k} (hx : InSupp x) :
     (nlow (-(x.toBlocks₂₁ * x.toBlocks₁₁⁻¹))).val * x = fromBlocks x.toBlocks₁₁ x.toBlocks₁₂ 0 (schur x) := by
@@ -91,19 +89,17 @@ theorem nlow_mul_eq {x : Matrix (A ⊕ D') (A ⊕ D) k} (hx : InSupp x) :
   · rw [Matrix.neg_mul]; abel
 
 /- English proof (translation)
-Establish `hxI : IsIntM x` using `hx.1`. Take `⟨i11, i12, -, -⟩` from `isIntM_toBlocks hxI`. Establish `inv11 : IsIntM x.toBlocks₁₁⁻¹` using `isIntM_inv i11 hx.2.1`. Establish `hu : IsUnit x.toBlocks₁₁.det` using `isUnit_iff_ne_zero.2 hx.det_ne`. Establish `hS` using `schur_int hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : V * fromBlocks x.toBlocks₁₁ x.toBlocks₁₂ 0 (schur x) = fromBlocks (V.toBlocks₁₁ * x.toBlocks₁₁) (V.toBlocks₁₁ * x.toBlocks₁₂ + V.toBlocks₁₂ * schur x) (V.toBlocks₂₁ * x.toBlocks₁₁) (V.toBlocks₂₁ * x.toBlocks₁₂ + V.toBlocks₂₂ * schur x)` using `by conv_lhs => rw [← fromBlocks_toBlocks V]`. Rewrite using `[fromBlocks_multiply]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hI, -, hl⟩`. Take `⟨-, -, -, d⟩` from `isIntM_fromBlocks_iff.1 (show IsIntM _ from hI)`. Establish `hR : ∀ i l, valuation k (V.toBlocks₂₁ i l) < 1`. Establish `e2 : V.toBlocks₂₁ = V.toBlocks₂₁ * x.toBlocks₁₁ * x.toBlocks₁₁⁻¹`. Rewrite using `[Matrix.mul_assoc, mul_nonsing_inv _ hu, Matrix.mul_one]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i l`. Rewrite using `[e2]`. Conclude with `val_lt_mul_right (fun a b => by simpa using hl a b) inv11 i l`. Use `⟨hR, ?_⟩` and prove the remaining obligations. Establish `e3 : V.toBlocks₂₂ * schur x = (V.toBlocks₂₁ * x.toBlocks₁₂ + V.toBlocks₂₂ * schur x) - V.toBlocks₂₁ * x.toBlocks₁₂` using `by abel`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3]`. Conclude with `isIntM_sub d (isIntM_mul (isIntM_of_lt hR) i12)`. Introduce and unpack `⟨hR, hUS⟩`. Establish `iR` using `isIntM_of_lt hR`. Use `⟨isIntM_fromBlocks_iff.2 ⟨isIntM_mul h11 i11, ?_, isIntM_mul iR i11, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun a b => add_mem (isIntM_mul h11 i12 a b) (isIntM_mul h12 hS a b)`. Conclude with `fun a b => add_mem (isIntM_mul iR i12 a b) (hUS a b)`. Rewrite using `[toBlocks_fromBlocks₁₁, det_mul, map_mul, hd, hx.2.1, one_mul]`. Introduce `i l`. Rewrite using `[fromBlocks_apply₂₁]`.
-
-Conclude with `val_lt_mul_right hR i11 i l`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inSupp_mul_iff {x : Matrix (A ⊕ D') (A ⊕ D) k} (hx : InSupp x) (V : Matrix (A ⊕ D') (A ⊕ D') k)
     (h11 : IsIntM V.toBlocks₁₁) (hd : valuation k V.toBlocks₁₁.det = 1) (h12 : IsIntM V.toBlocks₁₂) :
@@ -141,15 +137,13 @@ theorem inSupp_mul_iff {x : Matrix (A ⊕ D') (A ⊕ D) k} (hx : InSupp x) (V : 
     · intro i l; rw [fromBlocks_apply₂₁]; exact val_lt_mul_right hR i11 i l
 
 /- English proof (translation)
-Take `⟨y11, y12, -, -⟩` from `isIntM_toBlocks (isIntM_of_mem_parahoric hY)`. Establish `hv : (dg A T⁻¹ * Y * dg A (E⁻¹ * T)).val = fromBlocks Y.val.toBlocks₁₁ (Y.val.toBlocks₁₂ * (E⁻¹ * T).val) ((T⁻¹).val * Y.val.toBlocks₂₁) 1`. Rewrite using `[Units.val_mul, Units.val_mul, val_dg, val_dg, fromBlocks_diag_mul, mul_fromBlocks_diag]`. Simplify using `only [toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hEY, ← Units.val_mul, ← Units.val_mul, show T⁻¹ * E * (E⁻¹ * T) = 1 by group, Units.val_one]`. Use `mem_parahoric_of ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[hv]`. Establish `hq : IsIntM (E⁻¹ * T).val`. Rewrite using `[Units.val_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntM_mul (isIntM_of_mem_KO (inv_mem hE)) hT`. Conclude with `isIntM_fromBlocks_iff.2 ⟨y11, isIntM_mul y12 hq, isIntM_of_lt hl, isIntM_one⟩`. Establish `h1 : (T⁻¹).val.det * T.val.det = 1`. Rewrite using `[← det_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, det_one]`. Establish `e : (dg A T⁻¹ * Y * dg A (E⁻¹ * T)).val.det = ((T⁻¹).val.det * T.val.det) * Y.val.det * (E⁻¹).val.det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Units.val_mul, Units.val_mul, det_mul, det_mul, det_dg, det_dg, Units.val_mul, det_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, h1, one_mul, map_mul, val_det_of_mem_KO (mem_parahoric.1 hY).1, val_det_of_mem_KO (inv_mem hE), one_mul]`. Introduce `i l`. Rewrite using `[hv]`.
-
-Simplify using `using hl i l`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem key_mem {Y : GL (A ⊕ D') k} (hY : Y ∈ parahoric k A D') {E T : GL D' k} (hE : E ∈ KO k D')
     (hEY : E.val = Y.val.toBlocks₂₂) (hT : IsIntM T.val)
@@ -183,47 +177,41 @@ open GlobalTheory.ParHeckeSource
 open Classical
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A D D' _ _ _ _ _ _ ϖ hϖ s R d hR RK hRK x hx`. Rewrite `hR`, the goal using `[mtor_eq_dg]`. Use `set T := torusElt k D' ϖ (indic s) with hTdef`. Establish `hT : IsIntM T.val` using `torus_int hϖ s`. Use `set S := schur x with hSdef`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hν : ∀ i l, valuation k ((-(x.toBlocks₂₁ * x.toBlocks₁₁⁻¹)) i l) < 1`. Take `⟨i11, -, -, -⟩` from `isIntM_toBlocks (show IsIntM x from hx.1)`. Introduce `i l`. Rewrite using `[Matrix.neg_apply, Valuation.map_neg]`. Conclude with `val_lt_mul_right (fun a b => hx.2.2 a b) (isIntM_inv i11 hx.2.1) i l`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c := nlow (-(x.toBlocks₂₁ * x.toBlocks₁₁⁻¹)) with hcdef`. Establish `hc : c ∈ parahoric k A D'` using `nlow_mem hν`. Establish `hcx : c.val * x = fromBlocks x.toBlocks₁₁ x.toBlocks₁₂ 0 S` using `nlow_mul_eq hx`. Establish `hJR : ∀ j ∈ R, j ∈ parahoric k A D'` using `fun j hj => (hR.1 j hj).1`. Establish `hcond : ∀ j ∈ parahoric k A D', InSupp (((j * dg A T)⁻¹).val * x) ↔ (∀ i l, valuation k (((T⁻¹).val * ((c * j)⁻¹).val.toBlocks₂₁) i l) < 1) ∧ IsIntM ((T⁻¹).val * ((c * j)⁻¹).val.toBlocks₂₂ * S)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j hj`. Establish `hY : (c * j)⁻¹ ∈ parahoric k A D'` using `inv_mem (mul_mem hc hj)`. Establish `e1 : (j * dg A T)⁻¹ = dg A T⁻¹ * (c * j)⁻¹ * c` using `by rw [map_inv]; group`. Establish `e2 : (dg A T⁻¹ * (c * j)⁻¹).val = fromBlocks ((c * j)⁻¹).val.toBlocks₁₁ ((c * j)⁻¹).val.toBlocks₁₂ ((T⁻¹).val * ((c * j)⁻¹).val.toBlocks₂₁) ((T⁻¹).val * ((c * j)⁻¹).val.toBlocks₂₂)`. Rewrite using `[Units.val_mul, val_dg, fromBlocks_diag_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y11, y12, -, -⟩` from `isIntM_toBlocks (isIntM_of_mem_parahoric hY)`. Rewrite using `[e1, Units.val_mul (dg A T⁻¹ * (c * j)⁻¹) c, Matrix.mul_assoc, hcx, inSupp_mul_iff hx _ (by rw [e2, toBlocks_fromBlocks₁₁]; exact y11) (by rw [e2, toBlocks_fromBlocks₁₁]; exact (GlobalTheory.DatumEigen.val_det_blocks hY).1) (by rw [e2, toBlocks_fromBlocks₁₂]; exact y12), e2, toBl …`. Establish `hkey : ∀ j ∈ parahoric k A D', (∀ i l, valuation k (((T⁻¹).val * ((c * j)⁻¹).val.toBlocks₂₁) i l) < 1) → (c * j * dg A T)⁻¹ * dg A ((lowerDiagonalBlockAsGL ((c * j)⁻¹))⁻¹ * T) ∈ parahoric k A D'` using `fun j hj hl => by`. Establish `hY : (c * j)⁻¹ ∈ parahoric k A D'` using `inv_mem (mul_mem hc hj)`. Use `key_mem hY (lowerDiagonalBlockAsGL_mem_integralGeneralLinear hY) (lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two hY) hT hl` as an intermediate fact.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show (c * j * dg A T)⁻¹ = dg A T⁻¹ * (c * j)⁻¹ by rw [map_inv]; group]`. Conclude with `this`. Set `pick : GL (A ⊕ D') k → GL D' k` to `fun j => if h : ∃ g, g ∈ RK ∧ g⁻¹ * ((lowerDiagonalBlockAsGL ((c * j)⁻¹))⁻¹ * T) ∈ KO k D' then h.choose else 1`. Establish `spec : ∀ j ∈ parahoric k A D', pick j ∈ RK ∧ (pick j)⁻¹ * ((lowerDiagonalBlockAsGL ((c * j)⁻¹))⁻¹ * T) ∈ KO k D'` using `fun j hj => by`. Establish `hY : (c * j)⁻¹ ∈ parahoric k A D'` using `inv_mem (mul_mem hc hj)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `(hRK.2 _ (inv_mem (lowerDiagonalBlockAsGL_mem_integralGeneralLinear hY))).exists`. Simplify using `only [pick, dif_pos h]`. Conclude with `h.choose_spec`. Establish `uniq : ∀ j ∈ parahoric k A D', ∀ g ∈ RK, g⁻¹ * ((lowerDiagonalBlockAsGL ((c * j)⁻¹))⁻¹ * T) ∈ KO k D' → pick j = g` using `fun j hj g hg h => (hRK.2 _ (inv_mem (lowerDiagonalBlockAsGL_mem_integralGeneralLinear (inv_mem (mul_mem hc hj))))).unique (spec j hj) ⟨hg, h⟩`. Apply `Finset.card_nbij pick` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `j hj`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_filter] at hj ⊢`. Take `⟨hjR, hin⟩` from `hj`. Establish `hJ` using `hJR j hjR`. Establish `hY : (c * j)⁻¹ ∈ parahoric k A D'` using `inv_mem (mul_mem hc hJ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨-, h22⟩` from `(hcond j hJ).1 hin`. Take `⟨hg, hK⟩` from `spec j hJ`. Use `⟨hg, ?_⟩` and prove the remaining obligations. Establish `e : ((pick j)⁻¹).val = ((pick j)⁻¹ * ((lowerDiagonalBlockAsGL ((c * j)⁻¹))⁻¹ * T)).val * ((T⁻¹).val * (lowerDiagonalBlockAsGL ((c * j)⁻¹)).val)`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Use `group`. Establish `: IsIntM (((pick j)⁻¹).val * S)`. Rewrite using `[e, Matrix.mul_assoc, lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two hY]`. Conclude with `isIntM_mul (isIntM_of_mem_KO hK) h22`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Introduce `j₁ hj₁ j₂ hj₂ he`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq] at hj₁ hj₂`. Take `⟨h1R, h1⟩` from `hj₁`. Take `⟨h2R, h2⟩` from `hj₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ1` using `hJR _ h1R`. Establish `hJ2` using `hJR _ h2R`. Establish `m1` using `hkey j₁ hJ1 ((hcond j₁ hJ1).1 h1).1`. Establish `m2` using `hkey j₂ hJ2 ((hcond j₂ hJ2).1 h2).1`. Take `⟨-, hK1⟩` from `spec j₁ hJ1`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hK2⟩` from `spec j₂ hJ2`. Rewrite `hK1` using `[he]`. Establish `hm : (j₁ * dg A T)⁻¹ * (j₂ * dg A T) ∈ parahoric k A D'`. Use `mul_mem (mul_mem (mul_mem m1 (dg_mem (inv_mem hK1))) (dg_mem hK2)) (inv_mem m2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_inv]`. Use `group`. Conclude with `(hR.2 j₂ hJ2).unique ⟨h1R, hm⟩ ⟨h2R, by simp⟩`. Introduce `g hg`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_filter] at hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨hgR, hSg⟩` from `hg`. Take `⟨κ, hκ, κ', hκ', hgdef⟩` from `hRK.1 g hgR`. Establish `hj₀ : c⁻¹ * dg A κ ∈ parahoric k A D'` using `mul_mem (inv_mem hc) (dg_mem hκ)`. Take `⟨j, ⟨hjR, hm⟩, -⟩` from `hR.2 _ hj₀`. Use `set n := (j * dg A T)⁻¹ * (c⁻¹ * dg A κ * dg A T) with hndef`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hJ` using `hJR j hjR`. Establish `hY : (c * j)⁻¹ ∈ parahoric k A D'` using `inv_mem (mul_mem hc hJ)`. Establish `eV : dg A T⁻¹ * (c * j)⁻¹ = n * dg A (κ * T)⁻¹`. Rewrite using `[hndef]`. Simplify using `only [map_mul, map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `group`. Establish `hb : ∀ (P : Matrix (A ⊕ D') (A ⊕ D') k), P = (dg A T⁻¹ * (c * j)⁻¹).val → P.toBlocks₂₁ = (T⁻¹).val * ((c * j)⁻¹).val.toBlocks₂₁ ∧ P.toBlocks₂₂ = (T⁻¹).val * ((c * j)⁻¹).val.toBlocks₂₂`. Introduce and unpack `P rfl`. Rewrite using `[Units.val_mul, val_dg, fromBlocks_diag_mul, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂]`. Conclude with `⟨rfl, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨h21, h22⟩` from `hb _ (by rw [eV])`. Rewrite `h21` using `[Units.val_mul, val_dg, mul_fromBlocks_diag, toBlocks_fromBlocks₂₁]`. Rewrite `h22` using `[Units.val_mul, val_dg, mul_fromBlocks_diag, toBlocks_fromBlocks₂₂]`. Establish `hE : lowerDiagonalBlockAsGL ((c * j)⁻¹) = T * lowerDiagonalBlockAsGL n * (κ * T)⁻¹` using `by ext1`. Rewrite using `[lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two hY, Units.val_mul, Units.val_mul, lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two hm, Matrix.mul_assoc, h22, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`.
-
-Establish `hpick : pick j = g`. Use `uniq j hJ g hgR ?_` and prove the remaining obligations. Rewrite using `[hE, hgdef, show (κ * T * κ')⁻¹ * ((T * lowerDiagonalBlockAsGL n * (κ * T)⁻¹)⁻¹ * T) = κ'⁻¹ * (lowerDiagonalBlockAsGL n)⁻¹ by group]`. Conclude with `mul_mem (inv_mem hκ') (inv_mem (lowerDiagonalBlockAsGL_mem_integralGeneralLinear hm))`. Use `⟨j, ?_, hpick⟩` and prove the remaining obligations.
-
-Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_filter]`. Use `⟨hjR, (hcond j hJ).2 ⟨fun i l => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← h21]`. Conclude with `(mem_parahoric.1 hm).2 i l`. Rewrite using `[← h22, show (κ * T)⁻¹ = κ' * g⁻¹ by rw [hgdef]; group, Units.val_mul κ' g⁻¹, ← Matrix.mul_assoc, Matrix.mul_assoc]`.
-
-Conclude with `isIntM_mul (isIntM_mul (isIntM_toBlocks (isIntM_of_mem_parahoric hm)).2.2.2 (isIntM_of_mem_KO hκ')) hSg`.
+A detailed English derivation is pending.
 -/
 theorem card_filter_eq : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (A D D' : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] [Fintype D'] [DecidableEq D'] (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k → ∀ (s : Finset D') (R : Finset (GL (A ⊕ D') k)) d, IsReps (mtor ϖ (indic s)) R d → ∀ RK, IsRepsK (torusElt k D' ϖ (indic s)) RK → ∀ x : Matrix (A ⊕ D') (A ⊕ D) k, InSupp x → (R.filter fun j => InSupp (((j * mtor ϖ (indic s))⁻¹).1 * x)).card = (RK.filter fun g => ∀ i l, ((g⁻¹).1 * schur x) i l ∈ 𝒪[k]).card := by
   intro k _ _ _ _ A D D' _ _ _ _ _ _ ϖ hϖ s R d hR RK hRK x hx

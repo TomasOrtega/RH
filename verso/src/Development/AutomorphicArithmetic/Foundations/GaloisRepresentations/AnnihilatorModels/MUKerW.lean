@@ -12,31 +12,25 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Introduce `hKerU _ p _ D O _ _ _ _ f b N r w _ hstd M j c T hflat X g hg`. Take `⟨⟨k, hck⟩, hmon, hact, -, -, ψ', hmon', h1, h2⟩` from `T.isog`. Substitute `hck` using the available equality. Establish `hw : w ≠ ⊤` using `Ideal.IsMaximal.ne_top inferInstance`. Use `haveI : Smooth M.s := M.smooth.smooth`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsLocallyNoetherian M.X := LocallyOfFiniteType.isLocallyNoetherian M.s`. Use `haveI : IsFinite T.s := T.fin`. Use `haveI : IsLocallyNoetherian T.Y := LocallyOfFiniteType.isLocallyNoetherian T.s`. Take `⟨hRep, -, hTors⟩` from `hKerU p D O b N r w hw hstd.ule T.Y (T.s ≫ M.s) T.o T.o' T.ψ ψ' k hmon hmon' hact h1 h2`. Take `⟨K, i, -, -, hflatK, hiff⟩` from `hRep`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hiU : UKer r T.o T.ψ K i` using `(hiff K i).mp ⟨𝟙 _, Category.id_comp _⟩`. Take `⟨y, rfl⟩` from `(hiff X g).mpr hg`. Introduce `a ha`. Use `haveI := T.o.act.hom (algebraMap (𝓞 D.F) D.O a)`. Establish `hpO : ∀ x : O, (p : O) * x = 0 → x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `x hx`. Break down `mul_eq_zero.mp hx with h | h` into its components or cases. Conclude with `absurd h (Nat.cast_ne_zero.mpr (Nat.Prime.ne_zero Fact.out))`. Conclude with `h`. Establish `hpowi : (i ≫ T.o.act.act (algebraMap (𝓞 D.F) D.O a)) ^ p ^ k = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `map_pow (IsMonHom.monoidHom (T.o.act.act (algebraMap (𝓞 D.F) D.O a)) K) i (p ^ k)`. Express the relevant statement in the definitionally equal form `(i ^ p ^ k) ≫ _ = (i ≫ _) ^ p ^ k at h`. Rewrite using `[← h, hTors K i hiU]`. Conclude with `map_one (IsMonHom.monoidHom (T.o.act.act (algebraMap (𝓞 D.F) D.O a)) K)`. Establish `key : i ≫ T.o.act.act (algebraMap (𝓞 D.F) D.O a) = 1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hk0 : k = 0`. Substitute `hk0` using the available equality. Simplify using `using hpowi`. Apply `OrdCount.eq_one_of_reg T.o.A T.o.ab _ (p ^ k)` to reduce the goal to its premises. Introduce `U s hs haveI : Flat K.hom := hflatK haveI : Flat (T.s ≫ M.s) := hflat`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hreg` using `pReg_of_flat (p := p) (K.hom ≫ T.s ≫ M.s) hpO U`. Establish `hregk : ∀ n (t : Γ(K.left, U)), (p : Γ(K.left, U)) ^ n * t = 0 → t = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro t ht`.
+Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using ht`. Consider the case `succ n ih`. Introduce `t ht`. Conclude with `hreg _ (ih _ (by rw [← _root_.mul_assoc, ← _root_.pow_succ]; exact ht))`. Move the coercions through the operations in `at hs`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `hregk k s hs`. Conclude with `hpowi`. Introduce `k' _ _ hk z g'`. Establish `hp' : (p : k') ≠ 0`. Introduce `h0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hk` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[h0, zero_pow hk0]`. Set `φ : O →+* k'` to `(Spec.preimage (z ≫ T.s ≫ M.s)).hom`. Use `haveI : CharZero k' := by`.
-
-Apply `charZero_of_injective_ringHom (f := φ)` to reduce the goal to its premises. Establish `hker : RingHom.ker φ = ⊥`. Assume the negation of the conclusion as `hne`. Establish `hmax` using `Ideal.IsPrime.isMaximal (RingHom.ker_isPrime φ) hne`. Establish `heq` using `IsLocalRing.eq_maximalIdeal hmax`.
-
-Establish `hmem : (p : O) ∈ RingHom.ker φ` using `heq ▸ hstd.pmem`. Rewrite `hmem` using `[RingHom.mem_ker, map_natCast]`. Conclude with `hp' hmem`. Conclude with `(RingHom.injective_iff_ker_eq_bot φ).mpr hker`. Establish `hU : UKer r T.o T.ψ (Over.mk z) (g' ≫ i)` using `(hiff _ _).mp ⟨g', rfl⟩`.
-
-Rewrite using `[← Category.assoc]`. Conclude with `(T.tj k' z).1 _ hU.1 hU.2 a ha`. Rewrite using `[Category.assoc, key]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.uKerW_of :
     KerU → PullKer → UKerW := by

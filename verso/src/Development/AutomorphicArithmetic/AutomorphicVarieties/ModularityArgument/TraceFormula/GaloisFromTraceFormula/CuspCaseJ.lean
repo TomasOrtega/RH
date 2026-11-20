@@ -11,9 +11,9 @@ open PositivityTheory.Rg.Rs.StrStepB
 open PositivityTheory.Rg.BcB.SpectralAccumulation (TypeB HasType InfBdd)
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `zero => simp`. Consider the case `@cons x y s t h1 _ ih`. Rewrite using `[Multiset.sum_cons, Multiset.sum_cons, Multiset.card_cons, add_sub_add_comm]`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem rel_sum {ε : ℝ} {a b : Multiset ℂ} (h : Multiset.Rel (fun x y => ‖x - y‖ ≤ ε) a b) :
     ‖a.sum - b.sum‖ ≤ b.card * ε := by
@@ -26,9 +26,9 @@ private theorem rel_sum {ε : ℝ} {a b : Multiset ℂ} (h : Multiset.Rel (fun x
     linarith
 
 /- English proof (translation)
-Use `Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Establish `hc : (0 : ℝ) < b.card + 1` using `by positivity`. Use `filter_upwards [h (ε / (b.card + 1)) (by positivity)] with k hk`. Rewrite using `[dist_eq_norm]`. Use `(rel_sum hk).trans_lt ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_div_assoc', div_lt_iff₀ hc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem sum_to {m : ℕ → Multiset ℂ} {b : Multiset ℂ}
     (h : ∀ ε : ℝ, 0 < ε → ∀ᶠ k in atTop, Multiset.Rel (fun x y => ‖x - y‖ ≤ ε) (m k) b) :
@@ -42,33 +42,27 @@ private theorem sum_to {m : ℕ → Multiset ℂ} {b : Multiset ℂ}
   linarith
 
 /- English proof (translation)
-Introduce `hM hF hN hU hC hA hL E _ _ _ N h1 bad K W m₀ X hb hK hW hX`. Use `set c : ℂ := (N : ℂ) * (Fintype.card (E →+* ℂ) : ℂ) with hc`. Establish `hc0 : c ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.2 (by omega)) (Nat.cast_ne_zero.2 Fintype.card_ne_zero)`. Use `set z₀ : ℂ := (∑ t, (m₀ t).sum) / c`. Take `⟨R, hR⟩ : ∃ R : ℝ, ∀ t, ∀ x ∈ m₀ t, ‖x‖ ≤ R` from `⟨∑ t, ((m₀ t).map (‖·‖)).sum, fun t x hx => (Multiset.single_le_sum (by simp) _ (Multiset.mem_map_of_mem _ hx)).trans (Finset.single_le_sum (f := fun t => ((m₀ t).map (‖·‖)).sum) (fun _ _ => Multiset.sum_nonneg (by simp)) (Finset.mem_univ t))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `(hF E N h1 K W (R + 1 + (‖z₀‖ + 1)) hK.isOpen hW).subset (t := {π | (GlobalTheory.DiscSpec.IsNormalised π ∧ HasType K W π.V ∧ InfBdd (R + 1 + (‖z₀‖ + 1)) π.V) ∧ π ∉ X ∧ ∀ w ∉ bad, ∃ C, (CG.mk π).HasSat w C}) fun _ h => h.1`. Establish `hC₀ : ∀ (j : hfin.toFinset) w, ∃ C, w ∉ bad → (CG.mk j.1).HasSat w C` using `fun j w => by`. Distinguish the cases in `hw : w ∈ bad`. Conclude with `⟨0, fun h => (h hw).elim⟩`. Conclude with `((hfin.mem_toFinset.1 j.2).2.2 w hw).imp fun _ h _ => h`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose C₀ hC₀ using hC₀`. Use `⟨hfin.toFinset, inferInstance, fun j => ⟨1, fun _ => N, fun _ => (CG.mk j.1).twist (Model.absC E z₀), fun _ => h1, by simp⟩, fun j w => (C₀ j w).map (· * (Model.absC E z₀).val w), fun j => ⟨fun π hπ hh => ?_, fun w hw => ⟨fun _ => _, fun _ => PositivityTheory.RgJS.satake_twist_ho …` and prove the remaining obligations. Take `⟨i, hi⟩` from `hh`. Establish `hj` using `hfin.mem_toFinset.1 j.2`. Establish `e` using `hU E N h1 π j.1 z₀ (hX π hπ) hj.1.1 (by rw [← CG.twist_mk]; exact eq_of_heq (Sigma.mk.inj hi).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hj.2.1 (e ▸ hπ)`. Use `choose π p₁ p₂ p₃ using fun k => hM E N h1 bad hb K W (φ k) (m k) (B k) (h k).1 (h k).2.1`. Use `choose π₀ z q₁ q₂ q₃ q₄ q₅ q₆ using fun k => hN E N h1 bad K W hK (π k) (φ k) (m k) (p₁ k) (h k).1.ne (h k).1.ty (p₂ k)`. Establish `hz : Tendsto z atTop (𝓝 z₀)`. Use `((tendsto_finset_sum _ fun t _ => sum_to (hm t)).div_const c).congr fun k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[q₅ k, mul_div_cancel_left₀ _ hc0]`. Establish `hs : ∀ k, ∀ w ∉ bad, (CG.mk (π₀ k)).HasSat w ((B k w).map (· * (Model.absC E (-z k)).val w))` using `fun k w hw => by`. Use `PositivityTheory.RgJS.satake_twist_holds E _ _ _ w _ (absC_unrAt (-z k) w) (p₃ k w hw)` as an intermediate fact. Rewrite `this` using `[q₂ k, ← CG.twist_mk, ← CG.twist_mul, ← absC_add, add_neg_cancel, absC_zero, CG.twist_one]`. Then use the resulting hypothesis. Establish `hev : ∀ᶠ k in atTop, π₀ k ∈ hfin.toFinset` using `by filter_upwards [eventually_all.2 fun t => hm t 1 one_pos, Metric.tendsto_nhds.1 hz 1 one_pos] with k k₁ k₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hfin.mem_toFinset.2 ⟨⟨q₁ k, q₃ k, fun t => ⟨_, q₄ k t, fun x hx => ?_⟩⟩, fun hx => ?_, fun w hw => ⟨_, hs k w hw⟩⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hx`. Take `⟨y₀, hy₀, h2⟩` from `Multiset.exists_mem_of_rel_of_mem (k₁ t) hy`. Establish `h3` using `hR t y₀ hy₀`. Establish `h4` using `norm_sub_norm_le y y₀`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h5` using `norm_sub_norm_le (z k) z₀`. Rewrite `k₂` using `[dist_eq_norm]`. Establish `h6` using `norm_sub_le y (z k)`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨ψ, hψ, z', e⟩` from `q₆ k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(h k).2.2 _ hx ψ hψ z' e`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j : hfin.toFinset, ∃ᶠ k in atTop, π₀ k = j.1 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Take `⟨k, k₁, k₂⟩` from `(hev.and (eventually_all.2 hn)).exists`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `k₂ ⟨_, k₁⟩ rfl`. Take `⟨σ, hσ, e⟩` from `extraction_of_frequently_atTop hj`. Take `⟨hLu, hLs, -⟩` from `hL E`. Establish `hk : ∀ k t, (m (σ k) t).map (· + -z (σ k)) = (CG.mk j.1).infChar t` using `fun k t => by`. Establish `h2` using `q₄ (σ k) t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[e k]`. Establish `h3` using `CG.HasInfChar.infChar_eq (π := CG.mk j.1) h2`. Simplify `h3.symm` using `[sub_eq_add_neg]`. Establish `hm' : MTo (fun k => m (σ k)) m₀` using `fun t ε hε => hσ.tendsto_atTop.eventually (hm t ε hε)`. Establish `hs₁` using `hLs _ _ (fun k => -z (σ k)) (-z₀) hm' (hz.comp hσ.tendsto_atTop).neg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs₂ : MTo (fun k t => (m (σ k) t).map (· + -z (σ k))) fun t => (CG.mk j.1).infChar t` using `fun t ε hε => Eventually.of_forall fun k => by show Multiset.Rel _ ((m (σ k) t).map (· + -z (σ k))) ((CG.mk j.1).infChar t)`. Rewrite using `[hk k t]`. Conclude with `Multiset.rel_refl_of_refl_on fun x _ => by simpa using hε.le`. Establish `hu` using `hLu _ _ _ hs₂ hs₁`. Use `⟨j, σ, hσ, fun τ => ?_, fun w hw i => ?_⟩` and prove the remaining obligations.
-
-Establish `h2` using `(hA E N (CG.mk j.1) z₀ τ).1`. Establish `h3 : (CG.mk j.1).infChar τ = (m₀ τ).map (· + -z₀)` using `congrFun hu τ`. Rewrite `h2` using `[h3]`. Simplify `h2` using `[Multiset.map_map, Function.comp_def, CD.Inf]`. Establish `hv : Tendsto (fun k => (((Model.absC E (z (σ k))).val w : ℂˣ) : ℂ)) atTop (𝓝 (((Model.absC E z₀).val w : ℂˣ) : ℂ))`.
-
-Simplify using `only [absC_val]`. Conclude with `(hz.comp hσ.tendsto_atTop).neg.const_cpow (Or.inl (Nat.cast_ne_zero.2 (by simpa [Ideal.absNorm_eq_zero_iff] using w.ne_bot)))`. Use `(hC.1 (qV E w) N (C₀ j w) _ _ hv i).congr fun k => ?_` and prove the remaining obligations. Establish `h2` using `p₃ (σ k) w hw`. Rewrite `h2` using `[q₂, e k, ← CG.twist_mk]`.
-
-Conclude with `congrArg (fun M => satEig (qV E w) N M i) ((PositivityTheory.RgJS.satake_twist_holds E _ _ _ w _ (absC_unrAt _ w) (hC₀ j w hw)).unique h2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GaloisFromTraceFormula.cuspCaseJ :
     CuspMem → CuspFin → NormTw → NormUniq → SatComb → AbsInf → MToLaws → CuspCaseJ := by

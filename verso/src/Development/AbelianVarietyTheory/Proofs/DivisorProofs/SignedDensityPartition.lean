@@ -19,11 +19,9 @@ namespace GlobalTheory.ArchLim.DomConv
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
 
 /- English proof (translation)
-Use `set U := ⋃ c : AlgChart p σ D, c.e.source with hUdef`. Establish `hU : MeasurableSet U` using `(isOpen_iUnion fun c => c.e.open_source).measurableSet`. Establish `hle : part ρ ≤ (part ρ).restrict U` using `by show (⨆ c : AlgChart p σ D, ChartGlue.chartMeas c.e fun y => ENNReal.ofReal (ρ c y)) ≤ _`. Use `iSup_le fun c => Measure.le_iff.2 fun A hA => ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ChartGlue.chartMeas_apply _ _ hA, ChartGlue.chartMeas_apply_of_subset _ _ (c.e.open_source.measurableSet.inter hA) Set.inter_subset_left]`. Use `_ ≤ part ρ (c.e.source ∩ A) := Measure.le_iff'.1 (le_iSup (fun c : AlgChart p σ D => ChartGlue.chartMeas c.e fun y => ENNReal.ofReal (ρ c y)) c) _`. Use `_ ≤ part ρ (A ∩ U) := measure_mono fun y hy => ⟨hy.2, Set.mem_iUnion.2 ⟨c, hy.1⟩⟩`. Use `le_antisymm ?_ bot_le` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem part_compl_iUnion_source (ρ : AlgChart p σ D → CxPts p σ → ℝ) :
     part ρ (⋃ c : AlgChart p σ D, c.e.source)ᶜ = 0 := by
@@ -46,21 +44,21 @@ theorem part_compl_iUnion_source (ρ : AlgChart p σ D → CxPts p σ → ℝ) :
     _ = 0 := by rw [Measure.restrict_apply' hU, Set.compl_inter_self, measure_empty]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun c c' y hy hy' => by beta_reduce; rw [h.1 c c' y hy hy']; ring, fun c => (h.2 c).neg⟩`.
+Supply the required witnesses or components.
 -/
 theorem isMDens_neg {ρ : AlgChart p σ D → CxPts p σ → ℝ} (h : IsMDens ρ) : IsMDens fun c y => -ρ c y :=
   ⟨fun c c' y hy hy' => by beta_reduce; rw [h.1 c c' y hy hy']; ring, fun c => (h.2 c).neg⟩
 
 /- English proof (translation)
-Establish `hS` using `ChartGlue.measurableSet_image c.e hA hc`. Establish `hSt : c.e '' A ⊆ c.e.target` using `(Set.image_mono hc).trans c.e.image_source_eq_target.subset`. Establish `hsym : AEMeasurable c.e.symm (volume.restrict (c.e '' A))` using `(c.e.continuousOn_symm.mono hSt).aemeasurable hS`. Establish `hφ : AEMeasurable (fun v => ENNReal.ofReal (w c (c.e.symm v))) (volume.restrict (c.e '' A))` using `((h.2 c).mono_measure (Measure.restrict_mono hSt le_rfl)).ennreal_ofReal`. Establish `hsym'` using `hsym.mono_ac (withDensity_absolutelyContinuous (volume.restrict (c.e '' A)) fun v => ENNReal.ofReal (w c (c.e.symm v)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpa : ∀ {T : Set (CxPts p σ)}, MeasurableSet T → T ⊆ c.e.source → part w T = ∫⁻ v in c.e '' T, ENNReal.ofReal (w c (c.e.symm v))` using `fun hT hTc => by`. Rewrite using `[GlobalTheory.MixDens.part, ChartGlue.glueMeas_apply _ _ (fun c c' => c.holo_trans c') (fun c c' y hy hy' => by`. Rewrite using `[h.1 c c' y hy hy', ENNReal.ofReal_mul (sq_nonneg _)]) c hT hTc,`. Use the proof step `ChartGlue.chartMeas_apply_of_subset _ _ hT hTc]`. Establish `key : (part w).restrict A = Measure.map c.e.symm ((volume.restrict (c.e '' A)).withDensity fun v => ENNReal.ofReal (w c (c.e.symm v)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `B hB`. Rewrite using `[Measure.restrict_apply hB, hpa (hB.inter hA) (Set.inter_subset_right.trans hc), Measure.map_apply_of_aemeasurable hsym' hB, withDensity_apply', Measure.restrict_restrict' hS]`. Use `congr 2`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, ⟨hyB, hyA⟩, rfl⟩`. Conclude with `⟨by rwa [Set.mem_preimage, c.e.left_inv (hc hyA)], ⟨y, hyA, rfl⟩⟩`. Introduce and unpack `⟨hv, ⟨y, hyA, rfl⟩⟩`. Rewrite `hv` using `[Set.mem_preimage, c.e.left_inv (hc hyA)]`. Conclude with `⟨y, ⟨hv, hyA⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hf` using `[key]`. Rewrite using `[key, lintegral_map' hf hsym']`. Conclude with `lintegral_withDensity_eq_lintegral_mul₀' hφ (hf.comp_aemeasurable hsym')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setLIntegral_part_chart [SecondCountableTopology (CxPts p σ)] {w : AlgChart p σ D → CxPts p σ → ℝ}
     (h : IsMDens w) (c : AlgChart p σ D) {A : Set (CxPts p σ)} (hA : MeasurableSet A) (hc : A ⊆ c.e.source)
@@ -99,7 +97,7 @@ theorem setLIntegral_part_chart [SecondCountableTopology (CxPts p σ)] {w : AlgC
   exact lintegral_withDensity_eq_lintegral_mul₀' hφ (hf.comp_aemeasurable hsym')
 
 /- English proof (translation)
-Rewrite using `[Real.norm_eq_abs]`. Break down `le_total 0 a with ha | ha` into its components or cases. Rewrite using `[ENNReal.ofReal_of_nonpos (neg_nonpos.2 ha), zero_mul, add_zero, ← ENNReal.ofReal_mul ha, abs_mul, abs_of_nonneg ha, mul_comm]`. Rewrite using `[ENNReal.ofReal_of_nonpos ha, zero_mul, zero_add, ← ENNReal.ofReal_mul (neg_nonneg.2 ha), abs_mul, abs_of_nonpos ha, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofReal_mul_add_ofReal_neg_mul (a b : ℝ) :
     ENNReal.ofReal a * ENNReal.ofReal ‖b‖ + ENNReal.ofReal (-a) * ENNReal.ofReal ‖b‖ = ENNReal.ofReal |b * a| := by
@@ -117,39 +115,33 @@ namespace GlobalTheory.ArchLim
 open GlobalTheory.ArchLim.DomConv in
 
 /- English proof (translation)
-Introduce `k _ X p σ D _ ρ f w F S hρ hf hw hF hS hSρ hF0 hdom hlim`. Distinguish the cases in `hne : Nonempty (AlgChart p σ D)`. Use `swap`. Use `haveI := not_nonempty_iff.1 hne`. Establish `h0 : ∀ τ : AlgChart p σ D → CxPts p σ → ℝ, part τ = 0` using `fun τ => Measure.measure_univ_eq_zero.1 (by simpa using part_compl_iUnion_source τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `tendsto_const_nhds.congr fun R => ?_` and prove the remaining obligations. Simplify using `[densInt, h0]`. Take `⟨c₀⟩` from `hne`. Take `⟨T, hT, hTS⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun c : AlgChart p σ D => c.e.source) fun c => c.e.open_source`. Take `⟨ch, hch⟩` from `(hT.insert c₀).exists_eq_range (Set.insert_nonempty _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Q : ℕ → Set (CxPts p σ) := disjointed fun m => (ch m).e.source with hQdef`. Use `set P : ℕ → Set (CxPts p σ) := fun m => S ∩ Q m with hPdef`. Establish `hQm : ∀ m, MeasurableSet (Q m)` using `MeasurableSet.disjointed fun m => (ch m).e.open_source.measurableSet`. Establish `hPm : ∀ m, MeasurableSet (P m)` using `fun m => hS.inter (hQm m)`. Establish `hPc : ∀ m, P m ⊆ (ch m).e.source` using `fun m => Set.inter_subset_right.trans (disjointed_subset _ m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPS : ∀ m, P m ⊆ S` using `fun m => Set.inter_subset_left`. Establish `hPd : Pairwise (Function.onFun Disjoint P)` using `fun i j hij => ((disjoint_disjointed _) hij).mono Set.inter_subset_right Set.inter_subset_right`. Establish `hcov : ∀ τ : AlgChart p σ D → CxPts p σ → ℝ, part τ Sᶜ = 0 → part τ (⋃ m, P m)ᶜ = 0`. Introduce `τ hτ`. Use `measure_mono_null (t := Sᶜ ∪ (⋃ c : AlgChart p σ D, c.e.source)ᶜ) ?_ (measure_union_null hτ (part_compl_iUnion_source τ))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_compl_iff, not_or, not_not] at hc`. Take `⟨hyS, hyU⟩` from `hc`. Apply `hy` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : y ∈ ⋃ c ∈ T, c.e.source` using `by rw [hTS]; exact hyU`. Take `⟨c', hc', hy'⟩` from `Set.mem_iUnion₂.1 h1`. Take `⟨m, rfl⟩` from `hch.le (Set.mem_insert_of_mem _ hc')`. Establish `h2 : y ∈ ⋃ m, Q m`. Rewrite using `[hQdef, iUnion_disjointed]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Set.mem_iUnion.2 ⟨m, hy'⟩`. Take `⟨m', hm'⟩` from `Set.mem_iUnion.1 h2`. Conclude with `Set.mem_iUnion.2 ⟨m', hyS, hm'⟩`. Establish `hsplit : ∀ (μ : Measure (CxPts p σ)) (g : CxPts p σ → ℝ≥0∞), μ (⋃ m, P m)ᶜ = 0 → ∫⁻ y, g y ∂μ = ∑' m, ∫⁻ y in P m, g y ∂μ`. Introduce `μ g h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : μ.restrict (⋃ m, P m) = μ` using `Measure.restrict_eq_self_of_ae_mem (mem_ae_iff.2 h)`. Rewrite using `[← lintegral_iUnion hPm hPd, hr]`. Use `set G : ℕ → ℝ → ℝ≥0∞ := fun m R => ∫⁻ v in (ch m).e '' P m, ENNReal.ofReal |f R ((ch m).e.symm v) * ρ R (ch m) ((ch m).e.symm v)| with hGdef`. Use `set B : ℕ → ℝ≥0∞ := fun m => ∫⁻ y in P m, ENNReal.ofReal (F y) ∂part w with hBdef`. Establish `hE : ∀ m, MeasurableSet ((ch m).e '' P m)` using `fun m => ChartGlue.measurableSet_image _ (hPm m) (hPc m)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hEt : ∀ m, (ch m).e '' P m ⊆ (ch m).e.target` using `fun m => (Set.image_mono (hPc m)).trans (ch m).e.image_source_eq_target.subset`. Establish `hFm : ∀ m, AEMeasurable (fun y => ENNReal.ofReal (F y)) ((part w).restrict (P m))` using `fun m => hF.1.aemeasurable.ennreal_ofReal.restrict`. Establish `hBchart : ∀ m, B m = ∫⁻ v in (ch m).e '' P m, ENNReal.ofReal (w (ch m) ((ch m).e.symm v)) * ENNReal.ofReal (F ((ch m).e.symm v))` using `fun m => setLIntegral_part_chart hw (ch m) (hPm m) (hPc m) (hFm m)`. Establish `hBsum : ∑' m, B m ≠ ⊤`. Rewrite using `[hBdef, ← lintegral_iUnion hPm hPd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ne_top_of_le_ne_top hF.lintegral_lt_top.ne (setLIntegral_le_lintegral _ _)`. Establish `hpb : ∀ᶠ R in atTop, ∀ m, ∀ᵐ v ∂(volume.restrict ((ch m).e '' P m)), ENNReal.ofReal |f R ((ch m).e.symm v) * ρ R (ch m) ((ch m).e.symm v)| ≤ ENNReal.ofReal (w (ch m) ((ch m).e.symm v)) * ENNReal.ofReal (F ((ch m).e.symm v))` using `by filter_upwards [hdom] with R hR m`. Use `ae_restrict_of_forall_mem (hE m) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[(ch m).e.left_inv (hPc m hy), ← ENNReal.ofReal_mul' (hF0 y), mul_comm (w (ch m) y)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.ofReal_le_ofReal (hR (ch m) y (hPc m hy) (hPS m hy))`. Establish `hGB : ∀ᶠ R in atTop, ∀ m, G m R ≤ B m` using `by filter_upwards [hpb] with R hR m`. Rewrite using `[hBchart m]`. Conclude with `lintegral_mono_ae (hR m)`. Establish `hG0 : ∀ m, Tendsto (G m) atTop (𝓝 0)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m`. Establish `hsym : AEMeasurable (ch m).e.symm (volume.restrict ((ch m).e '' P m))` using `((ch m).e.continuousOn_symm.mono (hEt m)).aemeasurable (hE m)`. Establish `hl : ∀ᵐ v ∂(volume.restrict ((ch m).e '' P m)), Tendsto (fun R => ENNReal.ofReal |f R ((ch m).e.symm v) * ρ R (ch m) ((ch m).e.symm v)|) atTop (𝓝 0)`. Use `ae_restrict_of_forall_mem (hE m) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(ch m).e.left_inv (hPc m hy)]`. Simplify using `using ENNReal.tendsto_ofReal (hlim (ch m) y (hPc m hy) (hPS m hy)).abs`. Use `tendsto_lintegral_filter_of_dominated_convergence' (μ := volume.restrict ((ch m).e '' P m)) (F := fun R v => ENNReal.ofReal |f R ((ch m).e.symm v) * ρ R (ch m) ((ch m).e.symm v)|) (f := fun _ => 0) (fun v => ENNReal.ofReal (w (ch m) ((ch m).e.symm v)) * ENNReal.ofReal (F ((ch m). …` as an intermediate fact. Simplify `this` using `only [lintegral_zero]`. Establish `hΦ : Tendsto (fun R => ∑' m, G m R) atTop (𝓝 0)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `tendsto_lintegral_filter_of_dominated_convergence (μ := Measure.count) (F := fun R m => G m R) (f := fun _ => 0) B (Eventually.of_forall fun R => measurable_from_nat) (hGB.mono fun R hR => ae_of_all _ hR) (by rwa [lintegral_count]) (ae_of_all _ hG0)` as an intermediate fact. Simplify `this` using `only [lintegral_count, lintegral_zero]`. Establish `hab : ∀ R, ∫⁻ y, ENNReal.ofReal ‖f R y‖ ∂part (ρ R) + ∫⁻ y, ENNReal.ofReal ‖f R y‖ ∂part (fun c y => -ρ R c y) ≤ ∑' m, G m R`. Introduce `R`. Establish `hg : Measurable fun y => ENNReal.ofReal ‖f R y‖` using `(hf R).norm.ennreal_ofReal`.
-
-Rewrite using `[hsplit _ _ (hcov _ (hSρ R).1), hsplit _ _ (hcov _ (hSρ R).2), ← ENNReal.tsum_add]`. Use `ENNReal.tsum_le_tsum fun m => ?_` and prove the remaining obligations. Rewrite using `[setLIntegral_part_chart (isMDens_of_isDens (hρ R)) (ch m) (hPm m) (hPc m) hg.aemeasurable, setLIntegral_part_chart (isMDens_neg (isMDens_of_isDens (hρ R))) (ch m) (hPm m) (hPc m) hg.aemeasurable]`. Conclude with `(le_lintegral_add _ _).trans (lintegral_mono fun v => (ofReal_mul_add_ofReal_neg_mul _ _).le)`. Establish `ha : Tendsto (fun R => ∫⁻ y, ENNReal.ofReal ‖f R y‖ ∂part (ρ R)) atTop (𝓝 0)` using `tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hΦ (fun R => bot_le) fun R => le_self_add.trans (hab R)`.
-
-Establish `hb : Tendsto (fun R => ∫⁻ y, ENNReal.ofReal ‖f R y‖ ∂part (fun c y => -ρ R c y)) atTop (𝓝 0)` using `tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hΦ (fun R => bot_le) fun R => le_add_self.trans (hab R)`. Establish `hlim2` using `((ENNReal.tendsto_toReal ENNReal.zero_ne_top).comp ha).add ((ENNReal.tendsto_toReal ENNReal.zero_ne_top).comp hb)`. Simplify using `only [ENNReal.toReal_zero, add_zero] at hlim2`. Use `squeeze_zero_norm (fun R => ?_) hlim2` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
-
-Conclude with `(norm_sub_le _ _).trans (add_le_add (norm_integral_le_lintegral_norm _) (norm_integral_le_lintegral_norm _))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_densInt_of_dominated : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) [SecondCountableTopology (CxPts p σ)] (ρ : ℝ → AlgChart p σ D → CxPts p σ → ℝ) (f : ℝ → CxPts p σ → ℝ) (w : AlgChart p σ D → CxPts p σ → ℝ) (F : CxPts p σ → ℝ) (S : Set (CxPts p σ)), (∀ R, IsDens (ρ R)) → (∀ R, Measurable (f R)) → IsMDens w → Integrable F (part w) → MeasurableSet S → (∀ R, part (ρ R) Sᶜ = 0 ∧ part (fun c y => -ρ R c y) Sᶜ = 0) → (∀ y, 0 ≤ F y) → (∀ᶠ R in atTop, ∀ c : AlgChart p σ D, ∀ y ∈ c.e.source, y ∈ S → |f R y * ρ R c y| ≤ F y * w c y) → (∀ c : AlgChart p σ D, ∀ y ∈ c.e.source, y ∈ S → Tendsto (fun R => f R y * ρ R c y) atTop (𝓝 0)) → Tendsto (fun R => densInt (ρ R) (f R)) atTop (𝓝 0) := by
   intro k _ X p σ D _ ρ f w F S hρ hf hw hF hS hSρ hF0 hdom hlim

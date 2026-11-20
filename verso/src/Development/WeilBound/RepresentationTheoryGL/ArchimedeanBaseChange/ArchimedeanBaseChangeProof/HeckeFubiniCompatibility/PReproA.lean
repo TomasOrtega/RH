@@ -15,7 +15,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Use `HasCompactSupport.intro (isCompact_univ_pi fun i => ha' i) fun y hy => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, not_forall] at hy`. Take `⟨i, hi⟩` from `hy`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (image_eq_zero_of_notMem_tsupport (f := a i) hi), zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasCompactSupport_prod {ι : Type} [Fintype ι] (a : ι → G → ℂ) (ha' : ∀ i, HasCompactSupport (a i))
     (f : (ι → G) → ℂ) : HasCompactSupport fun y : ι → G => (∏ i, a i (y i)) * f y := by
@@ -25,14 +25,14 @@ theorem hasCompactSupport_prod {ι : Type} [Fintype ι] (a : ι → G → ℂ) (
   rw [Finset.prod_eq_zero (Finset.mem_univ i) (image_eq_zero_of_notMem_tsupport (f := a i) hi), zero_mul]
 
 /- English proof (translation)
-The claim follows from `(continuous_finsetProd _ fun i _ => (ha i).comp (continuous_apply i)).mul hf`.
+A detailed English derivation is pending.
 -/
 theorem continuous_prod_mul {ι : Type} [Fintype ι] (a : ι → G → ℂ) (ha : ∀ i, Continuous (a i))
     (f : (ι → G) → ℂ) (hf : Continuous f) : Continuous fun y : ι → G => (∏ i, a i (y i)) * f y :=
   (continuous_finsetProd _ fun i _ => (ha i).comp (continuous_apply i)).mul hf
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `[Fin.succ_ne_zero]`. Simplify using `only [Fin.cons_succ, Pi.mul_apply, Pi.mulSingle_apply, Fin.succ_inj]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cons_one_mul (n : ℕ) (z : Fin n → G) (j : Fin n) (t : G) :
     (Fin.cons 1 (z * Pi.mulSingle j t) : Fin (n + 1) → G) = Fin.cons 1 z * Pi.mulSingle j.succ t := by
@@ -42,7 +42,7 @@ theorem cons_one_mul (n : ℕ) (z : Fin n → G) (j : Fin n) (t : G) :
   · simp only [Fin.cons_succ, Pi.mul_apply, Pi.mulSingle_apply, Fin.succ_inj]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[Fin.succ_ne_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cons_mul_single (n : ℕ) (z : Fin n → G) (t : G) :
     (Fin.cons 1 z : Fin (n + 1) → G) * Pi.mulSingle 0 t = Fin.cons t z := by
@@ -54,7 +54,7 @@ theorem cons_mul_single (n : ℕ) (z : Fin n → G) (t : G) :
 variable (μ : Measure G) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-The claim follows from `| 0, a, _, _, f, _, s, _ => by rw [Measure.pi_of_empty (fun _ : Fin 0 => μ) 1, integral_dirac] simp | n + 1, a, ha, ha', f, hf, s, h => by set e := MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 1) => G) 0 with he have hmp : MeasurePreserving e (Measure.pi fun _ => μ) (μ.prod ( …`.
+A detailed English derivation is pending.
 -/
 theorem integral_fin_repro : ∀ (n : ℕ) (a : Fin n → G → ℂ), (∀ i, Continuous (a i)) → (∀ i, HasCompactSupport (a i)) →
     ∀ (f : (Fin n → G) → ℂ), Continuous f → ∀ (s : Fin n → ℂ),
@@ -113,21 +113,17 @@ theorem integral_fin_repro : ∀ (n : ℕ) (a : Fin n → G → ℂ), (∀ i, Co
 end Fin
 
 /- English proof (translation)
-Use `set e := Fintype.equivFin ι`. Use `set Φ := MeasurableEquiv.arrowCongr' e.symm (MeasurableEquiv.refl G) with hΦ`. Establish `hmp : MeasurePreserving Φ (Measure.pi fun _ : Fin (Fintype.card ι) => μ) (Measure.pi fun _ : ι => μ)` using `measurePreserving_arrowCongr' _ _ e.symm (MeasurableEquiv.refl G) fun _ => MeasurePreserving.id μ`. Establish `hΦa : ∀ z : Fin (Fintype.card ι) → G, Φ z = fun i => z (e i)`. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `i`. Both sides reduce to the same expression. Rewrite using `[← hmp.integral_comp' (fun y => (∏ i, a i (y i)) * f y)]`. Repeatedly rewrite using `[hΦa]`. Use `set a' : Fin (Fintype.card ι) → G → ℂ := fun k => a (e.symm k)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `set f' : (Fin (Fintype.card ι) → G) → ℂ := fun z => f fun i => z (e i)`. Establish `e1 : ∀ z : Fin (Fintype.card ι) → G, (∏ i, a i (z (e i))) * f (fun i => z (e i)) = (∏ k, a' k (z k)) * f' z`. Introduce `z`. Simplify using `only [a', f']`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Fintype.prod_equiv e _ _ fun i => by simp`. Repeatedly rewrite using `[e1]`. Establish `hf' : Continuous f'` using `hf.comp (continuous_pi fun i => continuous_apply (e i))`. Establish `hmul : ∀ (z : Fin (Fintype.card ι) → G) (k : Fin (Fintype.card ι)) (t : G), (fun i => (z * Pi.mulSingle k t : Fin (Fintype.card ι) → G) (e i)) = (fun i => z (e i)) * Pi.mulSingle (e.symm k) t`. Introduce `z k t`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.mul_apply, Pi.mulSingle_apply]`. Distinguish the cases in `hi : i = e.symm k`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `: e i ≠ k` using `fun h' => hi (by rw [← h']; simp)`. Simplify using `[hi, this]`. Establish `h' : ∀ k z, ∫ t, a' k t * f' (z * Pi.mulSingle k t) ∂μ = s (e.symm k) * f' z`. Introduce `k z`. Simplify using `only [a', f', hmul]`.
-
-Conclude with `h (e.symm k) _`. Rewrite using `[integral_fin_repro μ _ a' (fun k => ha _) (fun k => ha' _) f' hf' _ h']`. Establish `e2 : f' 1 = f 1` using `rfl`. Rewrite using `[e2]`. Use `congr 1`.
-
-Conclude with `Fintype.prod_equiv e.symm _ _ fun k => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem integral_pi_repro {ι : Type} [Fintype ι] [DecidableEq ι] {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G]
@@ -174,7 +170,7 @@ theorem integral_pi_repro {ι : Type} [Fintype ι] [DecidableEq ι] {G : Type} [
   exact Fintype.prod_equiv e.symm _ _ fun k => rfl
 
 /- English proof (translation)
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem pi_isHaar {ι : Type} [Fintype ι] {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G]
@@ -182,21 +178,19 @@ theorem pi_isHaar {ι : Type} [Fintype ι] {G : Type} [Group G] [TopologicalSpac
   infer_instance
 
 /- English proof (translation)
-Establish `hPm : Measurable P` using `hP.measurable`. Establish `hU0m : MeasurableSet (U0 : Set X)` using `hU0.measurableSet`. Use `set lam : Measure A := Measure.map P (ν.restrict U0) with hlam`. Establish `hinv : lam.IsMulLeftInvariant`. Use `⟨fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hf : Measurable fun x : X => σ a * x` using `measurable_const_mul (σ a)`. Establish `hpre : (fun x : X => σ a * x) ⁻¹' (U0 : Set X) = U0`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe]`. Conclude with `⟨fun h => by simpa using U0.mul_mem (U0.inv_mem (hσU a)) h, fun h => U0.mul_mem (hσU a) h⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `e1 : Measure.map (fun x : X => σ a * x) (ν.restrict U0) = ν.restrict U0` using `by conv_lhs => rw [← hpre]`. Rewrite using `[← Measure.restrict_map hf hU0m, map_mul_left_eq_self]`. Rewrite using `[hlam, Measure.map_map (measurable_const_mul a) hPm]`. Establish `e2 : (fun x : A => a * x) ∘ P = P ∘ fun x : X => σ a * x`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[hσ]`. Rewrite using `[e2, ← Measure.map_map hPm hf, e1]`. Establish `hfin : IsFiniteMeasureOnCompacts lam`. Use `⟨fun C hC => ?_⟩` and prove the remaining obligations. Take `⟨D, hD, hsub⟩` from `hprop C hC`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlam, Measure.map_apply hPm hC.isClosed.measurableSet, Measure.restrict_apply (hPm hC.isClosed.measurableSet)]`. Use `lt_of_le_of_lt (measure_mono ?_) hD.measure_lt_top` and prove the remaining obligations. Introduce `x hx`. Conclude with `hsub ⟨hx.2, hx.1⟩`. Establish `heq` using `Measure.isMulLeftInvariant_eq_smul lam lam0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set c' := Measure.haarScalarFactor lam lam0 with hc'`. Establish `hpos : c' ≠ 0`. Introduce `h0`. Establish `h1 : lam Set.univ = 0` using `by rw [heq, h0]; simp`. Rewrite `h1` using `[hlam, Measure.map_apply hPm MeasurableSet.univ, Set.preimage_univ, Measure.restrict_apply MeasurableSet.univ, Set.univ_inter]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hU0.measure_ne_zero ν ⟨1, U0.one_mem⟩) h1`. Use `⟨(c' : ℝ), lt_of_le_of_ne c'.2 (fun h => hpos (NNReal.coe_eq_zero.1 h.symm)), fun F hF _ => ?_⟩` and prove the remaining obligations. Rewrite using `[integral_indicator hU0m, ← integral_map hPm.aemeasurable hF.aestronglyMeasurable, ← hlam]`. Use `conv_lhs => rw [heq]`. Rewrite using `[integral_smul_nnreal_measure]`.
-
-Simplify using `[NNReal.smul_def]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem haar_restrict_eq {X A : Type} [Group X] [TopologicalSpace X] [IsTopologicalGroup X] [MeasurableSpace X]
     [BorelSpace X] [Group A] [TopologicalSpace A] [IsTopologicalGroup A] [LocallyCompactSpace A]
@@ -245,7 +239,7 @@ theorem haar_restrict_eq {X A : Type} [Group X] [TopologicalSpace X] [IsTopologi
   simp [NNReal.smul_def]
 
 /- English proof (translation)
-Take `⟨U, hUo, hUc⟩` from `GlobalTheory.GLIntegral.exists_isOpen_isCompact E N`. Use `⟨K ⊓ U, inf_le_left, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hK.inter hUo`. Conclude with `hUc.inter_left (K.isClosed_of_isOpen hK)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_compact_open_le (E : Type) [Field E] [NumberField E] (N : ℕ) (K : Subgroup (GL (Fin N) (Af E)))
     (hK : IsOpen (K : Set (GL (Fin N) (Af E)))) :

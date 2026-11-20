@@ -12,7 +12,7 @@ open MvPolynomial
 universe u
 
 /- English proof (translation)
-Introduce `f hf b`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.mp hf`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hI x hx b) (hJ y hy b)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsMultiHomogIdeal.sup {K : Type*} [DecidableEq K] {ι : K → Type*} {R : Type*} [CommRing R]
     {I J : Ideal (MRing ι R)} (hI : IsMultiHomogIdeal I) (hJ : IsMultiHomogIdeal J) :
@@ -23,25 +23,21 @@ theorem IsMultiHomogIdeal.sup {K : Type*} [DecidableEq K] {ι : K → Type*} {R 
   exact Submodule.add_mem_sup (hI x hx b) (hJ y hy b)
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ K _ _ ι _ P hP b f g hD c s hs hH W U hU`. Assume the negation of the conclusion as `hne`. Establish `hW : divCycle P s W ≠ 0` using `left_ne_zero_of_mul hne`. Establish `hWU : idealCycle (W ⊔ divisorIdeal P f g) U ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hWm : W ∈ (P ⊔ Ideal.span {s}).minimalPrimes ∧ IsRelevant W`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `divCycle at hW`. Use `split_ifs at hW with h`. Conclude with `h`. Conclude with `absurd rfl hW`. Establish `hUm : U ∈ (W ⊔ divisorIdeal P f g).minimalPrimes ∧ IsRelevant U`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `idealCycle at hWU`. Use `split_ifs at hWU with h`. Conclude with `h`. Conclude with `absurd rfl hWU`. Establish `hWp : W.IsPrime` using `hWm.1.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hUp : U.IsPrime` using `hUm.1.1.1`. Establish `hPW : P ≤ W` using `le_sup_left.trans hWm.1.1.2`. Establish `hWU' : W ≤ U` using `le_sup_left.trans hUm.1.1.2`. Establish `hDU : divisorIdeal P f g ≤ U` using `le_sup_right.trans hUm.1.1.2`. Establish `hWmh : IsMultiHomogIdeal W` using `MinimalPrimeMultiHomog.proof O K ι _ W (SupSpanMultiHomog.proof O K ι P s c hP hs) hWm.1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨bf, bg, hbf, hbg, -⟩` from `hD.1.degrees`. Establish `hDm : IsMultiHomogIdeal (divisorIdeal P f g)` using `ColonMultiHomog.proof O K ι _ g bg (SupSpanMultiHomog.proof O K ι P f bf hP hbf) hbg`. Establish `hUmh : IsMultiHomogIdeal U` using `MinimalPrimeMultiHomog.proof O K ι _ U (hWmh.sup hDm) hUm.1`. Apply `hU` to reduce the goal to its premises. Use `⟨hUp, hUmh, hUm.2, ?_, hPW.trans hWU'⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hϖW : (C ϖ : MRing ι O) ∈ W`. Conclude with `hWU' hϖW`. Assume the negation of the conclusion as `hϖU`. Establish `hV` using `hH W hW hϖW`. Take `⟨u, v, hu, hv, huv⟩` from `hV.unit_off_special U hUp hWU' hUm.2 hϖU`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨u', v', hu', huv'⟩` from `hD.2 U hUp (hPW.trans hWU') hUm.2`. Establish `hv'D : v' ∈ divisorIdeal P f g`. Unfold `divisorIdeal`. Rewrite using `[Submodule.mem_colon_singleton, smul_eq_mul]`. Establish `e : v' * g = u' * f - (u' * f - v' * g)` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.subset_span rfl))) (Ideal.mem_sup_left huv')`. Establish `hmem : g * (u * v' - u' * v) ∈ W`. Establish `e : g * (u * v' - u' * v) = u' * (u * f - v * g) - u * (u' * f - v' * g)` using `by ring`. Rewrite using `[e]`.
-
-Conclude with `W.sub_mem (W.mul_mem_left _ huv) (W.mul_mem_left _ (hPW huv'))`. Establish `hdiff : u * v' - u' * v ∈ U` using `hWU' ((hWp.mem_or_mem hmem).resolve_left hV.den_not_mem)`. Establish `hv'U : v' ∈ U` using `hDU hv'D`. Establish `hu'v : u' * v ∈ U`. Establish `e : u' * v = u * v' - (u * v' - u' * v)` using `by ring`.
-
-Rewrite using `[e]`. Conclude with `U.sub_mem (U.mul_mem_left _ hv'U) hdiff`. Conclude with `(hUp.mem_or_mem hu'v).elim hu' hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RightTermSupport.proof : RightTermSupport.Statement.{u} := by
   intro O _ _ _ ϖ K _ _ ι _ P hP b f g hD c s hs hH W U hU

@@ -13,7 +13,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem unimodLattice_bar_bar {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (a : 𝓞 E) :
     H.bar (H.bar a) = a := by
@@ -21,15 +21,15 @@ theorem unimodLattice_bar_bar {E : Type} [Field E] [NumberField E] [IsCMField E]
   rw [H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[H.bar_eq]`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : φ (H.rt : E) ^ 2 = -(H.d : ℂ)`. Use `congrArg (fun x : 𝓞 E => φ (x : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`. Establish `hd : (7 : ℝ) ≤ H.d`. Use `H.d_mod` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 7 ≤ H.d` using `by omega`. Conclude with `this` after adjusting the coercions. Use `set z := φ (H.rt : E) with hz`. Establish `hre` using `congrArg Complex.re hsq`. Establish `him` using `congrArg Complex.im hsq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[pow_two] at hre him`. Establish `hx : z.re = 0`. Establish `hm : z.re * z.im = 0` using `by linarith`. Break down `mul_eq_zero.1 hm with h | h` into its components or cases. Conclude with `h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `hre` using `[h]`. Use polynomial arithmetic with `[sq_nonneg z.re]`. Apply the tactic sequence `have key : starRingEnd ℂ z = -z := by apply Complex.ext <;> simp [hx]`. Rewrite `key` using `[hz]`. Simplify using `using key`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unimodLattice_bar_rt {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) :
     H.bar H.rt = -H.rt := by
@@ -59,9 +59,9 @@ theorem unimodLattice_bar_rt {E : Type} [Field E] [NumberField E] [IsCMField E] 
   simpa using key
 
 /- English proof (translation)
-Establish `h1` using `H.two_weight_eq_one_add_root`. Establish `h2 : 2 * H.bar H.w0 = 1 - H.rt`. Use `congrArg H.bar h1` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, unimodLattice_bar_rt, map_ofNat]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h3 : (2 : 𝓞 E) * (H.w0 + H.bar H.w0) = 2 * 1`. Rewrite using `[mul_add, h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_left_cancel₀ two_ne_zero h3`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem unimodLattice_w0_add {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) :
     H.w0 + H.bar H.w0 = 1 := by
@@ -75,13 +75,11 @@ theorem unimodLattice_w0_add {E : Type} [Field E] [NumberField E] [IsCMField E] 
   exact mul_left_cancel₀ two_ne_zero h3
 
 /- English proof (translation)
-Introduce `E _ _ _ H`. Take `⟨m, B0, ρ0, hm, hsym, hpd, hadj⟩` from `GlobalTheory.T.exists_cmField_traceForm_gram_matrix_posDef E H`. Take `⟨r, b, ρ, hr, hbs, hbpd, hbu, hbadj⟩` from `GlobalTheory.T.exists_unimodular_posDef_form_adjoint_rep_of_posDef (𝓞 E) (H.bar : 𝓞 E →+* 𝓞 E) (unimodLattice_bar_bar H) m B0 ρ0 hm hsym hpd hadj`. Establish `hW : b * ρ H.w0 + (b * ρ H.w0).transpose = b`. Rewrite using `[Matrix.transpose_mul, hbs, hbadj, ← Matrix.mul_add, ← map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `erw [unimodLattice_w0_add H]`. Rewrite using `[map_one, Matrix.mul_one]`. Use `⟨r, b * ρ H.w0, ρ, hr, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hW]`. Conclude with `hbpd`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hW]`. Conclude with `hbu`. Introduce `a`. Rewrite using `[hW]`. Conclude with `hbadj a`.
-
-Rewrite using `[hW]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unimodLattice :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E), ∃ (r : ℕ) (W : Matrix (Fin r) (Fin r) ℤ) (ρ : 𝓞 E →+* Matrix (Fin r) (Fin r) ℤ), 1 ≤ r ∧ ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef ∧ IsUnit (W + W.transpose).det ∧ (∀ a, (ρ a).transpose * (W + W.transpose) = (W + W.transpose) * ρ (H.bar a)) ∧ W = (W + W.transpose) * ρ H.w0 := by

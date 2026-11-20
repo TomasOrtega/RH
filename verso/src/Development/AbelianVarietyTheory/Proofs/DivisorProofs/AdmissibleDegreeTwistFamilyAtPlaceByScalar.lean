@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Simplify using `only [ord, map_mul]`. Rewrite using `[WithZero.log_mul ((Valuation.ne_zero_iff _).2 hx) ((Valuation.ne_zero_iff _).2 hy)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ord_mul_of_ne {k F : Type} [Field k] [Field F] [Algebra k F] (v : Place k F) {x y : F} (hx : x ≠ 0)
     (hy : y ≠ 0) : ord v (x * y) = ord v x + ord v y := by
@@ -21,7 +21,7 @@ theorem ord_mul_of_ne {k F : Type} [Field k] [Field F] [Algebra k F] (v : Place 
   ring
 
 /- English proof (translation)
-Establish `h0 : v.1 x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Simplify using `only [ord, map_zpow₀]`. Rewrite using `[← WithZero.exp_log h0, ← WithZero.exp_zsmul, WithZero.log_exp, WithZero.log_exp, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ord_zpow_of_ne {k F : Type} [Field k] [Field F] [Algebra k F] (v : Place k F) {x : F} (hx : x ≠ 0)
     (m : ℤ) : ord v (x ^ m) = m * ord v x := by
@@ -31,17 +31,17 @@ theorem ord_zpow_of_ne {k F : Type} [Field k] [Field F] [Algebra k F] (v : Place
   ring
 
 /- English proof (translation)
-Establish `hc : π ^ (-e) ≠ 0` using `zpow_ne_zero _ hπ`. Establish `hdet : ∀ v, (twistAt v₀ (π ^ (-e)) h v).det = (if v = v₀ then (π ^ (-e)) ^ n else 1) * (h v).det`. Introduce `v`. Distinguish the cases in `hv : v = v₀`. Substitute `hv` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[twistAt_self, Matrix.det_smul, Fintype.card_fin, if_pos rfl]`. Rewrite using `[twistAt_of_ne _ _ _ _ hv, if_neg hv, one_mul]`. Establish `hord : ∀ v, ord v (twistAt v₀ (π ^ (-e)) h v).det = ord v (h v).det - if v = v₀ then (n : ℤ) * e else 0`. Introduce `v`. Rewrite using `[hdet, ord_mul_of_ne _ (by split_ifs; exacts [pow_ne_zero _ hc, one_ne_zero]) (hh.1 v)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hv`. Substitute `hv` using the available equality. Rewrite using `[← zpow_natCast, ← zpow_mul, ord_zpow_of_ne _ hπ, h1]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[ord]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨fun v => ?_, (hh.2.union (Set.finite_singleton v₀)).subset fun v hv => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hdet]`. Conclude with `mul_ne_zero (by split_ifs; exacts [pow_ne_zero _ hc, one_ne_zero]) (hh.1 v)`. Distinguish the cases in `hv' : v = v₀`. Conclude with `Or.inr hv'`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative. Establish an intermediate fact.
 
-Conclude with `Or.inl (show ¬ Unimod v (h v) from fun hu => hv (by rw [twistAt_of_ne _ _ _ _ hv']; exact hu))`. Establish `hfin : (Function.support fun v => ord v (h v).det).Finite`. Use `hh.2.subset fun v hv => ?_` and prove the remaining obligations. Introduce `hu`. Conclude with `hv (by simp [ord, hu.2])`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin' : (Function.support fun v : Place k F => if v = v₀ then (n : ℤ) * e else 0).Finite` using `(Set.finite_singleton v₀).subset fun v hv => by`. Assume the negation of the conclusion as `h'`. Conclude with `hv (if_neg h')`. Rewrite using `[deg, deg, finsum_congr hord, finsum_sub_distrib hfin hfin', finsum_eq_single _ v₀ fun v hv => if_neg hv, if_pos rfl]`.
+A detailed English derivation is pending.
 -/
 theorem admissible_degree_twistFamilyAtPlaceByScalar (k F : Type) [Field k] [Field F] [Algebra k F] [IsAlgClosed k] (n : ℕ)
     (h : Place k F → Matrix (Fin n) (Fin n) F) (hh : admitted h) (v₀ : Place k F) (π : F) (hπ : π ≠ 0)

@@ -8,11 +8,9 @@ open scoped Quaternion Topology TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ a b ε p q hε ha hb h2 hE t`. Take `⟨c, hc⟩` from `((h2.mul ha).mul hb)`. Establish `hu : 2 * a * b * ((c⁻¹ : Rˣ) : R) = 1`. Rewrite using `[← hc]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set u : R := ((c⁻¹ : Rˣ) : R) with hu_def`. Use `set l : R := (t ^ 2 - a - 1) * u with hl`. Use `⟨⟨ε * t + (1 - ε), ε * (l * b + 1), ε * (l * a * q), ε * (l * p)⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [nrm]`. Take the linear combination `((t - 1) ^ 2 + (-a * (l * b + 1) ^ 2 - b * (l * a * q) ^ 2 + a * b * (l * p) ^ 2)) * hε - ε * (t ^ 2 - a - 1) * hu - l ^ 2 * a * b * hE`.
-
-Use `show ε * (ε * t + (1 - ε)) = ε * t`. Take the linear combination `(t - 1) * hε`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem quat_norm_one_re_at_idem : ∀ (R : Type) [CommRing R] (a b ε p q : R), ε * ε = ε → IsUnit a → IsUnit b →
     IsUnit (2 : R) → ε * (b - (p ^ 2 - a * q ^ 2)) = 0 → ∀ t : R, ∃ h : ℍ[R, a, b], nrm h = 1 ∧ ε * h.re = ε * t := by

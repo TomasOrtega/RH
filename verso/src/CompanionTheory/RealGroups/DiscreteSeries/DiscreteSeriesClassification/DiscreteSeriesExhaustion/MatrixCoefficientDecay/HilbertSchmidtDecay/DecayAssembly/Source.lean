@@ -10,33 +10,31 @@ namespace CompanionTheory.RgExh.Dec.L.SA
 open CompanionTheory.RgExh CompanionTheory.RgExh.Dec ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `hL n ε H σ D E hK χ ss hU i`. Set `Lf : Fin n → Fin n → (path ⟨D, E, hK.gl⟩ χ ss).V → (Matrix (Fin n) (Fin n) ℂ → ℂ)` to `fun c d w => (l c d).sum (fun i' r => r • famP σ D E hK.gl χ ss i' w)`. Establish `hLf_mem : ∀ c d w, Lf c d w ∈ SS σ D E hK.gl χ ss` using `fun c d w => Submodule.sum_mem _ (fun i' _ => Submodule.smul_mem _ _ (gen_mem σ D E hK.gl χ ss i' w))`. Establish `hLf_apply : ∀ c d w g, Lf c d w g = (l c d).sum (fun i' r => r * famP σ D E hK.gl χ ss i' w g)`. Introduce `c d w g`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Lf, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Establish `hmat : ∀ (g Y' : Matrix (Fin n) (Fin n) ℂ) (c d : Fin n), (g * Y' * g⁻¹) c d = ∑ a, ∑ b, Y' a b * (g * Matrix.single a b (1 : ℂ) * g⁻¹) c d`. Introduce `g Y' c d`. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single Y']`. Simplify using `only [Matrix.mul_sum, Matrix.sum_mul, Matrix.sum_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[show Matrix.single a b (Y' a b) = Y' a b • Matrix.single a b (1 : ℂ) by`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul]`. Establish `hcomm : ∀ (F : Fin n → Fin n → Fin n → Fin n → ℂ), ∑ a, ∑ b, ∑ c, ∑ d, F a b c d = ∑ c, ∑ d, ∑ a, ∑ b, F a b c d`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F`. Establish `h` using `Finset.sum_comm (s := (Finset.univ : Finset (Fin n × Fin n))) (t := (Finset.univ : Finset (Fin n × Fin n))) (f := fun p q => F p.1 p.2 q.1 q.2)`. Simplify `h` using `only [Fintype.sum_prod_type]`. Establish `hid : ∀ g, Formalism.REAL.inUJ ε g → famP σ D E hK.gl χ ss i (∑ k, actM (path ⟨D, E, hK.gl⟩ χ ss) (Y k) (v k)) g = ∑ k, ∑ c, ∑ d, (g * Y k * g⁻¹) c d * Lf c d (v k) g`. Introduce `g hg`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hact : actM (path ⟨D, E, hK.gl⟩ χ ss) (Y k) (v k) = ∑ a, ∑ b, Y k a b • (path ⟨D, E, hK.gl⟩ χ ss).E a b (v k)`. Simplify using `only [actM, LinearMap.sum_apply, LinearMap.smul_apply]`. Rewrite using `[hact]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Simplify using `only [hl _ _ _ g hg, ← hLf_apply]`. Simplify using `only [hmat g (Y k), Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[hcomm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hent : ∀ (x : PSub ε A) (k : Fin m) (c d : Fin n), 0 ≤ τ x → ‖(S7.toM (x : S7.UJ ε) * Y k * (S7.toM (x : S7.UJ ε))⁻¹) c d‖ ≤ Real.exp (-τ x) * Real.sqrt (C * Formalism.REAL.hs (Y k))`. Introduce `x k c d hx`. Use `set M := S7.toM (x : S7.UJ ε) * Y k * (S7.toM (x : S7.UJ ε))⁻¹`. Establish `e1 : ‖M c d‖ ^ 2 ≤ Formalism.REAL.hs M`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `Formalism.REAL.hs`. Conclude with `(Finset.single_le_sum (f := fun j => ‖M c j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ d)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖M i j‖ ^ 2) (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ c))`. Establish `hexp2 : Real.exp (-τ x) ^ 2 = Real.exp (-2 * τ x)`. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : Formalism.REAL.hs M ≤ (C * Formalism.REAL.hs (Y k)) * Real.exp (-τ x) ^ 2`. Rewrite using `[hexp2]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.sqrt_mul' _ (sq_nonneg _), Real.sqrt_sq (Real.exp_pos _).le]`. Use `_ = Real.exp (-τ x) * Real.sqrt (C * Formalism.REAL.hs (Y k)) := mul_comm _ _`. Set `hq : Fin m × Fin n × Fin n → (Matrix (Fin n) (Fin n) ℂ → ℂ)` to `fun q => ((Real.sqrt (C * Formalism.REAL.hs (Y q.1)) : ℝ) : ℂ) • Lf q.2.1 q.2.2 (v q.1)`. Take `⟨T, hTS, hT⟩` from `absorb (SS σ D E hK.gl χ ss) (Finset.univ : Finset (Fin m × Fin n × Fin n)) hq (fun q _ => Submodule.smul_mem _ _ (hLf_mem _ _ _)) 1 le_rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨T, hTS, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hg : Formalism.REAL.inUJ ε (S7.toM (x : S7.UJ ε))` using `(x : S7.UJ ε).2`. Rewrite using `[hid _ hg]`. Use `set g := S7.toM (x : S7.UJ ε)`. Establish `hq_norm : ∀ q : Fin m × Fin n × Fin n, ‖hq q g‖ = Real.sqrt (C * Formalism.REAL.hs (Y q.1)) * ‖Lf q.2.1 q.2.2 (v q.1) g‖`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q`. Simplify using `only [hq, Pi.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _)]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun c _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun d _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `_ ≤ ∑ k, ∑ c, ∑ d, Real.exp (-τ x) * (Real.sqrt (C * Formalism.REAL.hs (Y k)) * ‖Lf c d (v k) g‖) := by`. Use `Finset.sum_le_sum fun k _ => Finset.sum_le_sum fun c _ => Finset.sum_le_sum fun d _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (hent x k c d hx) (norm_nonneg _)`. Use `_ = Real.exp (-τ x) * ∑ q : Fin m × Fin n × Fin n, ‖hq q g‖ ^ 1 := by`. Simplify using `only [pow_one, hq_norm, Finset.mul_sum, Fintype.sum_prod_type]`. Use `_ ≤ Real.exp (-τ x) * ∑ h ∈ T, ‖h g‖ ^ 1 := mul_le_mul_of_nonneg_left (hT g) (Real.exp_pos _).le`. Use `_ = Real.exp (-τ x) * ∑ h ∈ T, ‖h g‖ := by simp only [pow_one]`.
+A detailed English derivation is pending.
 -/
 theorem source_gen (hL : N.LeftRule) {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H}

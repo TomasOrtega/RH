@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SecValLC
 
 /- English proof (translation)
-Unfold `valR`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_def' {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
@@ -20,7 +20,7 @@ theorem valR_def' {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) (U :
   unfold valR; rw [dif_pos h]
 
 /- English proof (translation)
-Simplify using `only [valR_def' x U h, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valR_mul' {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (f g : Γ(X, U)) :
@@ -28,7 +28,7 @@ theorem valR_mul' {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) (U :
   simp only [valR_def' x U h, map_mul]
 
 /- English proof (translation)
-Establish `hU : ⊤ ≤ x ⁻¹ᵁ U` using `h.trans (x.preimage_mono e)`. Rewrite using `[valR_def' x V h, valR_def' x U hU]`. Use `Scheme.Hom.map_appLE x h (homOfLE e).op` as an intermediate fact. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom ((X.presheaf.map (homOfLE e).op ≫ x.appLE V ⊤ h).hom f) = _`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_map' {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) {U V : X.Opens} (e : V ≤ U)
     (h : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(X, U)) :
@@ -41,7 +41,7 @@ theorem valR_map' {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) {U V
   rw [this]
 
 /- English proof (translation)
-Establish `hU : ⊤ ≤ x ⁻¹ᵁ U` using `h`. Rewrite using `[valR_def' x _ h, valR_def' x U hU]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem valR_id_app {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ ((𝟙 X) ⁻¹ᵁ U)) (f : Γ(X, U)) :
@@ -51,7 +51,7 @@ theorem valR_id_app {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) (U
   congr 1
 
 /- English proof (translation)
-Simplify using `only [valR_def' x U h, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valR_pow' {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) (n : ℕ) :
@@ -59,11 +59,11 @@ theorem valR_pow' {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) (U :
   simp only [valR_def' x U h, map_pow]
 
 /- English proof (translation)
-Introduce `X L k σ F _ ξ j j' hj hj'`. Use `set LC := LB.LinComb L (fun _ : Fin 1 => 𝟙 X) (fun _ => (k:ℤ)) with hLC`. Establish `hW : ∀ i : L.ι, L.U i ≤ LC.U (fun _ => i)` using `fun i x hx => Set.mem_iInter.2 fun _ => hx`. Establish `h1 : ⊤ ≤ ξ ⁻¹ᵁ (LC.U (fun _ => j) ⊓ LC.U (fun _ => j'))`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨hW j (hj hx), hW j' (hj' hx)⟩`. Establish `h2 : ⊤ ≤ ξ ⁻¹ᵁ ((𝟙 X) ⁻¹ᵁ (L.U j ⊓ L.U j'))` using `fun x hx => ⟨hj hx, hj' hx⟩`. Establish `hle : LC.U (fun _ => j) ⊓ LC.U (fun _ => j') ≤ (𝟙 X) ⁻¹ᵁ (L.U j ⊓ L.U j')` using `le_inf (inf_le_left.trans (LB.wchart_le L _ _ 0)) (inf_le_right.trans (LB.wchart_le L _ _ 0))`. Establish `hg : ((LC.g (fun _ => j) (fun _ => j') : Γ(X, LC.U (fun _ => j) ⊓ LC.U (fun _ => j'))ˣ) : Γ(X, LC.U (fun _ => j) ⊓ LC.U (fun _ => j'))) = (X.presheaf.map (homOfLE hle).op).hom ((Scheme.Hom.app (𝟙 X) (L.U j ⊓ L.U j')).hom (L.g j j' : Γ(X, L.U j ⊓ L.U j'))) ^ k` using `by show Units.val (∏ _i : Fin 1, (res _ (pullU (𝟙 X) _ (L.g j j'))) ^ (k:ℤ)) = _`. Rewrite using `[Fin.prod_univ_one, zpow_natCast, Units.val_pow_eq_pow_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hc` using `σ.compat (fun _ => j) (fun _ => j')`. Use `congrArg (valR ξ _) hc` as an intermediate fact. Rewrite `this` using `[valR_map' _ _ h1, valR_mul' _ _ h1, valR_map' _ _ h1]`. Rewrite using `[this, hg, valR_pow' _ _ h1, valR_map' _ _ h1, valR_id_app _ _ h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secM_valR_transition : ∀ (X : Scheme.{0}) (L : LB X) (k : ℕ) (σ : SecM (𝟙 X) L k) (F : Type) [Field F] (ξ : Sp F ⟶ X) (j j' : L.ι), ⊤ ≤ ξ ⁻¹ᵁ L.U j → ⊤ ≤ ξ ⁻¹ᵁ L.U j' → valR ξ _ (σ.f fun _ => j) = valR ξ (L.U j ⊓ L.U j') (L.g j j').val ^ k * valR ξ _ (σ.f fun _ => j') := by
   intro X L k σ F _ ξ j j' hj hj'

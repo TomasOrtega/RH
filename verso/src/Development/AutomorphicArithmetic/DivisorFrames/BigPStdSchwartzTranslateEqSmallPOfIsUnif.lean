@@ -14,21 +14,19 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Rewrite using `[bigZetaIntegral_eq, smallP]`. Take `⟨hdet, hrel⟩` from `standardPair_frameBlocks_det_and_neg_transpose a a' h`. Take `⟨hA0, hA⟩` from `bigF_stdA ν ϖ c a a' hϖ`. Take `⟨hB0, hB⟩` from `smallF_stdB (k := k) ν ϖ c a a'`. Distinguish the cases in `h0 : (blk₁ (X0 k (finSumFinEquiv (m := a) (n := a')) * (invT h).val)).det = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Establish `h0' : (blk₂ (Y0 k (finSumFinEquiv (m` using `a) (n := a')) * h.val)).det = 0 := by rw [← hdet, h0, zero_mul]`. Rewrite using `[hA0 _ h0, hB0 _ h0']`. Simplify using the standard rewrite rules. Establish `h0' : (blk₂ (Y0 k (finSumFinEquiv (m` using `a) (n := a')) * h.val)).det ≠ 0 := by`. Rewrite using `[← hdet]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero h0 h.det_ne_zero`. Use `set g₁ := Matrix.GeneralLinearGroup.mkOfDetNeZero _ h0 with hg₁`. Use `set g₂ := Matrix.GeneralLinearGroup.mkOfDetNeZero _ h0' with hg₂`. Rewrite using `[hA _ g₁ rfl, hB _ g₂ rfl, hrel g₁ g₂ rfl rfl, cball_neg_transpose]`. Establish `hd : gdet g₂ = gdet g₁ * gdet h` using `Units.ext (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [gdet, Units.val_mul, Matrix.GeneralLinearGroup.val_det_apply, g₁, g₂, Matrix.GeneralLinearGroup.val_mkOfDetNeZero]`. Conclude with `hdet.symm)`. Establish `hαν : α = ν * β` using `by rw [hν, div_mul_cancel]`. Establish `e : apow (gdet h) ((Fintype.card (Fin a') : ℂ) / 2) * apow (gdet h) (-((Fintype.card (Fin (a + a')) : ℂ) / 2)) = apow (gdet h) (-(a : ℂ) / 2)`. Rewrite using `[← apow_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Simplify using `only [Fintype.card_fin]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : (((ν (gdet g₁ * gdet h))⁻¹ : ℂˣ) : ℂ) = (((ν (gdet g₁))⁻¹ : ℂˣ) : ℂ) * (((ν (gdet h))⁻¹ : ℂˣ) : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, _root_.mul_inv, Units.val_mul]`. Establish `e2 : (α (gdet h) : ℂ) = (ν (gdet h) : ℂ) * (β (gdet h) : ℂ)`. Rewrite using `[hαν, MonoidHom.mul_apply, Units.val_mul]`. Establish `e3 : (ν (gdet h) : ℂ) * (((ν (gdet h))⁻¹ : ℂˣ) : ℂ) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hd, e1, apow_mul, e2]`. Establish `key2 : ∀ B V Vi Vhi P1 Pa' PN I : ℂ, V * Vhi = 1 → B * (Pa' * PN) * (Vi * P1 * I) = V * B * Pa' * (Vi * Vhi * (P1 * PN) * I)`. Introduce `B V Vi Vhi P1 Pa' PN I hV`. Take the linear combination `(-(B * Pa' * PN * Vi * P1 * I)) * hV`. Rewrite using `[← e]`.
-
-Conclude with `key2 _ _ _ _ _ _ _ _ e3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem std_key (α β ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ) (hϖ : IsUnif ϖ) (hν : ν = α / β) (h : GL (Fin (a + a')) k) :
     bigP (haarVol (KO k (Fin a))) ϖ finSumFinEquiv ν β (stdA ν ϖ c a a') h =
@@ -67,11 +65,11 @@ private theorem std_key (α β ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ) (h
     exact key2 _ _ _ _ _ _ _ _ e3
 
 /- English proof (translation)
-Introduce `h1`. Take `⟨-, hA⟩` from `bigF_stdA ν ϖ c a a' hϖ`. Rewrite `h1` using `[bigZetaIntegral_eq, hA _ 1 ?_]`. Simplify using `[Set.indicator, gdet, cball, blk₂, X0] at h1`. Take `⟨i, j, hij⟩` from `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hne : Fin.castAdd a' i ≠ Fin.natAdd a j`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[hne] at hij`. Use extensionality with `i j`. Simplify using `[blk₁, X0, invT_val, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem std_ne (β ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ) (hϖ : IsUnif ϖ) :
     bigP (haarVol (KO k (Fin a))) ϖ finSumFinEquiv ν β (stdA ν ϖ c a a') 1 ≠ 0 := by
@@ -87,19 +85,17 @@ private theorem std_ne (β ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ) (hϖ :
     simp [blk₁, X0, invT_val, Matrix.one_apply]
 
 /- English proof (translation)
-Take `⟨hA0, hA⟩` from `bigF_stdA ν ϖ c a a' hϖ`. Establish `has : ∀ y : GL (Fin a) k, g.1 * (y.1 * X) * M = (g * y).1 * (X * M)` using `fun y => by`. Simplify using `only [Units.val_mul, Matrix.mul_assoc]`. Distinguish the cases in `h0 : (blk₁ (X * M)).det = 0`. Rewrite using `[hA0 _ h0, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ y : GL (Fin a) k, stdA ν ϖ c a a' (g.1 * (y.1 * X) * M) = 0` using `fun y => by`. Rewrite using `[has, stdA, dif_neg]`. Introduce and unpack `⟨h, -⟩`. Conclude with `h (by rw [blk₁_mul, Matrix.det_mul, h0, mul_zero])`. Simplify using `[bigF, shellSum, shell, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set g₁ := Matrix.GeneralLinearGroup.mkOfDetNeZero _ h0 with hg₁`. Establish `hg : g₁.val = blk₁ (X * M)` using `rfl`. Rewrite using `[hA _ g₁ hg]`. Unfold `bigF`. Use `UpperTheory.shellSum_eq_const_of_twist_eq_indicator_double_coset k ϖ hϖ a ν _ _ _ g g₁ fun y => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H` using `integrand_eq ν (ϖ ^ c) ((Fintype.card (Fin (a + a')) : ℂ) / 2) (blk₂ (X * M)) g₁ (g * y) (stdA ν ϖ c a a' ((g * y).1 * (X * M))) (fun h => ?_) (fun h => ?_)`. Establish `hne : (ν (gdet g) : ℂ) * apow (gdet g) ((Fintype.card (Fin (a + a')) : ℂ) / 2) ≠ 0` using `mul_ne_zero (Units.ne_zero _) (apow_ne_zero _ _)`. Establish `H2 : stdA ν ϖ c a a' (g.1 * (y.1 * X) * M) * (ν (gdet y) : ℂ) * apow (gdet y) ((Fintype.card (Fin (a + a')) : ℂ) / 2) = ((ν (gdet g) : ℂ) * apow (gdet g) ((Fintype.card (Fin (a + a')) : ℂ) / 2))⁻¹ * (stdA ν ϖ c a a' ((g * y).1 * (X * M)) * (ν (gdet (g * y)) : ℂ) * apow (gdet (g * …`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ hne, has, gdet_mul, map_mul, apow_mul, Units.val_mul (ν (gdet g))]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `H2.trans ?_` and prove the remaining obligations. Rewrite using `[H]`. Distinguish the cases in `hy : g * y * g₁ ∈ KO k (Fin a)`. Rewrite using `[Set.indicator_of_mem (show g * y ∈ (fun g => g * g₁) ⁻¹' (KO k (Fin a) : Set (GL (Fin a) k)) from hy), Set.indicator_of_mem (show y ∈ {y : GL (Fin a) k | g * y * g₁ ∈ KO k (Fin a)} from hy)]`. Rewrite using `[Set.indicator_of_notMem (show g * y ∉ (fun g => g * g₁) ⁻¹' (KO k (Fin a) : Set (GL (Fin a) k)) from hy), Set.indicator_of_notMem (show y ∉ {y : GL (Fin a) k | g * y * g₁ ∈ KO k (Fin a)} from hy), mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : (blk₁ ((g * y).val * (X * M))).det ≠ 0 ∧ IsGLO (blk₁ ((g * y).val * (X * M))) ∧ ∀ i j, blk₂ ((g * y).val * (X * M)) i j ∈ cball (ϖ ^ c)`. Rewrite using `[blk₁_mul, blk₂_mul, ← hg]`. Conclude with `h`. Rewrite using `[stdA, dif_pos h']`. Use `congr 3`.
-
-Rewrite using `[stdA, dif_neg]`. Rewrite using `[blk₁_mul, blk₂_mul, ← hg]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem bigF_change (ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ) (hϖ : IsUnif ϖ) (g : GL (Fin a) k)
     (M : Matrix (Fin (a + a')) (Fin (a + a')) k) (X : Matrix (Fin a) (Fin (a + a')) k) :
@@ -147,9 +143,9 @@ private theorem bigF_change (ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ) (hϖ
       rwa [blk₁_mul, blk₂_mul, ← hg]
 
 /- English proof (translation)
-Establish `hne : (ν (gdet g) : ℂ) * apow (gdet g) ((Fintype.card (Fin d) : ℂ) / 2) ≠ 0` using `mul_ne_zero (Units.ne_zero _) (apow_ne_zero _ _)`. Unfold `smallF`. Rewrite using `[← integral_mul_left_eq_self (fun y : GL (Fin a') k => Ψ (y.val * (Y * M)) * (ν (gdet y) : ℂ) * apow (gdet y) ((Fintype.card (Fin d) : ℂ) / 2)) g, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, Units.val_mul, map_mul, apow_mul, Matrix.mul_assoc]`. Rewrite using `[mul_assoc l, mul_assoc l, mul_assoc l]`. Use `congr 1`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ hne]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem smallF_change (ν : kˣ →* ℂˣ) (a' d : ℕ) (Ψ : Matrix (Fin a') (Fin d) k → ℂ) (l : ℂ) (g : GL (Fin a') k)
     (M : Matrix (Fin d) (Fin d) k) (Y : Matrix (Fin a') (Fin d) k) :
@@ -170,15 +166,13 @@ private theorem smallF_change (ν : kˣ →* ℂˣ) (a' d : ℕ) (Ψ : Matrix (F
   ring
 
 /- English proof (translation)
-Use `set A : ℂ := ((ν (gdet g) : ℂ) * apow (gdet g) ((Fintype.card (Fin (a + a')) : ℂ) / 2))⁻¹ * ((β (gdet κ) : ℂ) * apow (gdet κ) (-(a : ℂ) / 2)) with hA`. Use `set B : ℂ := ((ν (gdet g') : ℂ) * apow (gdet g') ((Fintype.card (Fin (a + a')) : ℂ) / 2))⁻¹ * ((α (gdet κ) : ℂ) * apow (gdet κ) ((Fintype.card (Fin a') : ℂ) / 2)) with hB`. Establish `hA0 : A ≠ 0` using `mul_ne_zero (inv_ne_zero (mul_ne_zero (Units.ne_zero _) (apow_ne_zero _ _))) (mul_ne_zero (Units.ne_zero _) (apow_ne_zero _ _))`. Establish `hB0 : B ≠ 0` using `mul_ne_zero (inv_ne_zero (mul_ne_zero (Units.ne_zero _) (apow_ne_zero _ _))) (mul_ne_zero (Units.ne_zero _) (apow_ne_zero _ _))`. Establish `h1 : ∀ u : GL (Fin (a + a')) k, bigP (haarVol (KO k (Fin a))) ϖ finSumFinEquiv ν β (fun Y : Matrix (Fin a) (Fin (a + a')) k => stdA ν ϖ c a a' (g.1 * Y * κ.1ᵀ)) (u * κ) = A * bigP (haarVol (KO k (Fin a))) ϖ finSumFinEquiv ν β (stdA ν ϖ c a a') u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u`. Establish `e : X0 k (finSumFinEquiv (m` using `a) (n := a')) * (invT (u * κ)).val * κ.1ᵀ = X0 k (finSumFinEquiv (m := a) (n := a')) * (invT u).val := by`. Rewrite using `[← invT_inv_val κ, Matrix.mul_assoc, ← Units.val_mul, map_mul, mul_inv_cancel_right]`. Rewrite using `[bigZetaIntegral_eq, bigZetaIntegral_eq, bigF_change ν ϖ c a a' hϖ, e, gdet_mul, map_mul, apow_mul, Units.val_mul, hA]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ∀ (l : ℂ) (u : GL (Fin (a + a')) k), smallP (haarVol (KO k (Fin a'))) finSumFinEquiv ν α (l • fun Y : Matrix (Fin a') (Fin (a + a')) k => stdB ν ϖ c a a' (g'.1 * Y * (κ⁻¹).1)) (u * κ) = l * B * smallP (haarVol (KO k (Fin a'))) finSumFinEquiv ν α (stdB ν ϖ c a a') u`. Introduce `l u`. Establish `e : Y0 k (finSumFinEquiv (m` using `a) (n := a')) * (u * κ).val * (κ⁻¹).1 = Y0 k (finSumFinEquiv (m := a) (n := a')) * u.val := by`. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel_right]`. Rewrite using `[smallP, smallP, smallF_change, e, gdet_mul, map_mul, apow_mul, Units.val_mul, hB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨fun H => ?_, A / B, funext fun h => ?_⟩` and prove the remaining obligations. Use `congrFun H (1 * κ)` as an intermediate fact. Rewrite `this` using `[h1]`. Conclude with `mul_ne_zero hA0 (std_ne β ν ϖ c a a' hϖ) this`.
-
-Take `⟨u, rfl⟩ : ∃ u, h = u * κ` from `⟨h * κ⁻¹, by simp⟩`. Rewrite using `[h1, h2, div_mul_cancel₀ _ hB0, std_key α β ν ϖ c a a' hϖ hν]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem main (ϖ : kˣ) (hϖ : IsUnif ϖ) (α β ν : kˣ →* ℂˣ) (hν : ν = α / β) (c a a' : ℕ) (g : GL (Fin a) k)
     (g' : GL (Fin a') k) (κ : GL (Fin (a + a')) k) :
@@ -234,7 +228,7 @@ open GlobalTheory.AdelicU (evFin splitPrime)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ϖ hϖ α β ν hν c a a' g g' κ`. Conclude with `UpperTheory.StandardFormChange.main ϖ hϖ α β ν hν c a a' g g' κ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.bigZeta_stdSchwartz_translate_eq_smallZeta :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ →

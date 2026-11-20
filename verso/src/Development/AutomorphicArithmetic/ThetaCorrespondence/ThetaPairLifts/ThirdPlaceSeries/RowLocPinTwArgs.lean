@@ -24,7 +24,7 @@ namespace GlobalTheory.Mem.Top.Bl
 open scoped TensorProduct in
 open Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions.StandardLattice Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.S Formalism.IndefR.principalLevelFrame in
 /- English proof (translation)
-Substitute `hθ hP hM hJ hχ he` using the available equality. Consider the cases of `hE`. Conclude with `h`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem rowLocPin_congr_alt {D : D7} {V : HSp D} {Sp : D.what₂.Tau → SPar} (lp : Formalism.L2.LPTiedPlaceholder D)
     {θ θ' : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {PY PY' : principalLevelFrame.RowPsi V D.R.r}
@@ -38,9 +38,9 @@ theorem rowLocPin_congr_alt {D : D7} {V : HSp D} {Sp : D.what₂.Tau → SPar} (
   exact h
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Establish `hPY` using `a.PY`. Establish `hE` using `a.eFT`. Take `⟨Dc, Sp, Zsc, lam, err, lam_eq, x, pack, _⟩` from `a`. Simplify using `only at hPY hE ⊢`. Take `⟨G, grp, fin, Pl0, I0, T0, A3, core, alg, R, F, cG, Y, _⟩` from `x`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Extract witnesses or component facts from the available result.
 
-Simplify using `only at pack hPY hE ⊢`. Consider the cases of `pack`. Conclude with `_root_.GlobalTheory.Mem.Top.Bl.rowLocPin_congr_alt lp rfl (eq_of_heq hPY).symm rfl rfl rfl rfl hE.symm hr`.
+Simplify by unfolding definitions. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem rowLocPin_twArgs_alt {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl}
     {L : SizeData₂ (w.st Z).toD7} {hT : GatTies (w.st Z).toD7} {Gi : Formalism.MainNotions.G.Inst (w.st Z).toD7 L} {Gl : Formalism.MainNotions.G.LatInst (w.st Z).toD7}
@@ -64,7 +64,7 @@ theorem rowLocPin_twArgs_alt {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B}
   exact _root_.GlobalTheory.Mem.Top.Bl.rowLocPin_congr_alt lp rfl (eq_of_heq hPY).symm rfl rfl rfl rfl hE.symm hr
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `hL p`. Apply `GlobalTheory.Fc.EvP.of_all` to reduce the goal to its premises. Introduce `κ K _ q c b w _`. Rewrite using `[show b.R.T.n.gal = q.core_data_of_point.a.all.gal from w.recPin.s.gal, ← eq_of_heq w.ax]`. Conclude with `_root_.GlobalTheory.Mem.Top.Bl.rowLocPin_twArgs_alt w.a _ q.core_data_of_point.row.rowLoc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locPin_level_character_of_bWit : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL), GlobalTheory.Fc.EvP fun _ K => ∀ (q : WPt p.s K) (c : ℝ) (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c) (w : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b), q.O.L.sc = K.s → _root_.Formalism.IndefR.principalLevelFrame.RowLocPinAlt b.R.T.n.gal.lp w.x.R.θ w.x.Y.PY (w.x.R.MY 0) (fun s => levS _ (w.x.R.βY 0) (w.x.R.dat0 (w.x.R.toRealDat.levR w.x.F.lv2 s))) (fun s => Formalism.IndefR.Lev.levChi _ (w.x.R.βY 0) (w.x.R.dat0 (w.x.R.toRealDat.levR w.x.F.lv2 s))) (fun _ => w.x.R.e0) w.x.Y.eFT := by
   intro hL p

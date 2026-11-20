@@ -9,15 +9,15 @@ open Pointwise
 namespace GlobalTheory.UnramCocycle
 
 /- English proof (translation)
-Rewrite `hσ`, the goal using `[mem_Ine]`. Take `⟨hdec, hval⟩` from `hσ`. Establish `hmem : ∀ y : Ω, y ∈ g • A ↔ g⁻¹ y ∈ A` using `fun y => ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem`. Establish `hgg : ∀ y : Ω, g⁻¹ (g y) = y` using `fun y => by`. Rewrite using `[← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h' : σ • (g • A) = g • A` using `hdec show (g⁻¹ * σ * g) • A = A`. Rewrite using `[mul_smul, mul_smul, h', inv_smul_smul]`. Establish `hx' : (g • A).valuation (g x) ≤ 1`. Rewrite using `[ValuationSubring.valuation_le_one_iff, hmem, hgg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ValuationSubring.valuation_le_one_iff A x).1 hx`. Establish `hy` using `hval (g x) hx'`. Establish `e : (g⁻¹ * σ * g) x - x = g⁻¹ (σ (g x) - g x)`. Rewrite using `[map_sub, hgg, AlgEquiv.mul_apply, AlgEquiv.mul_apply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hy`, the goal using `[valuation_lt_one_iff']`. Take `⟨hy1, hy2⟩` from `hy`. Use `⟨(hmem _).1 hy1, ?_⟩` and prove the remaining obligations. Break down `hy2 with h0 | h0` into its components or cases. Use `left`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[h0, map_zero]`. Use `right`. Rewrite using `[← map_inv₀, ← hmem]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_ine_of_smul {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     (A : ValuationSubring Ω) (g σ : G F Ω) (hσ : σ ∈ Ine (F := F) (g • A)) :
@@ -69,9 +69,9 @@ def kerSub {Γ R M : Type} [Group Γ] [TopologicalSpace Γ] [CommRing R] [AddCom
       rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Introduce `n hn g`. Take `⟨hx, hρ⟩` from `hn`. Establish `h1 : x.1 1 = 0` using `by simpa using x.2.2 1 1`. Use `⟨?_, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[x.2.2, x.2.2, hx, map_zero, add_zero, map_mul, Module.End.mul_apply, hρ, ← x.2.2, mul_inv_cancel, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hρ, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kerSub_normal {Γ R M : Type} [Group Γ] [TopologicalSpace Γ] [CommRing R] [AddCommGroup M]
     [Module R M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation R Γ M)
@@ -88,9 +88,7 @@ theorem kerSub_normal {Γ R M : Type} [Group Γ] [TopologicalSpace Γ] [CommRing
         ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Establish `h1 : IsClosed {n : Γ | x.1 n = 0}` using `isClosed_eq x.2.1 continuous_const`. Establish `hc : Continuous fun p : Γ × M => ρ p.1 p.2` using `hρ`. Establish `h2 : IsClosed {n : Γ | ∀ m, ρ n m = m}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun m => isClosed_eq (hc.comp (continuous_id.prodMk continuous_const)) continuous_const`.
-
-Conclude with `h1.inter h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kerSub_isClosed {Γ R M : Type} [Group Γ] [TopologicalSpace Γ] [CommRing R]
     [AddCommGroup M] [Module R M] [TopologicalSpace M] [DiscreteTopology M]
@@ -106,17 +104,17 @@ theorem kerSub_isClosed {Γ R M : Type} [Group Γ] [TopologicalSpace Γ] [CommRi
   exact h1.inter h2
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ R M _ _ _ _ _ ρ hρ A S htriv x hx`. Use `kerSub_normal ρ x` as an intermediate fact. Establish `hle : NS Ω S ≤ kerSub ρ x`. Unfold `NS`. Use `Subgroup.topologicalClosure_minimal _ ?_ (kerSub_isClosed ρ hρ x)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.normalClosure_le_normal ?_` and prove the remaining obligations. Introduce `σ hσ`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, Set.mem_compl_iff, exists_prop] at hσ`. Take `⟨v, hv, B, hB, hσB⟩` from `hσ`. Take `⟨g, hg⟩` from `exists_smul_eq_of_isPlaceOver (A.2 v) hB`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hσ' : σ ∈ Ine (F` using `F) (g • A.1 v) := by rw [hg, mem_Ine]; exact hσB`. Establish `hc` using `conj_mem_ine_of_smul (A.1 v) g σ hσ'`. Establish `hzero : x.1 (g⁻¹ * σ * g) = 0`. Establish `hu` using `hx v hv`. Unfold `Formalism.GaloisCohomology.unrAt H1ur at hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `hu` using `[LinearMap.mem_ker]`. Unfold `resH1 at hu`. Rewrite `hu` using `[Submodule.mapQ_apply, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype, mem_coboundaries1]`. Take `⟨m, hm⟩` from `hu`. Establish `hmem : g⁻¹ * σ * g ∈ Dec (F` using `F) (A.1 v) := Ine_le_Dec _ hc`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `hm ⟨⟨g⁻¹ * σ * g, hmem⟩, (Subgroup.mem_subgroupOf).2 hc⟩`. Establish `h' : x.1 (g⁻¹ * σ * g) = ρ (g⁻¹ * σ * g) m - m` using `h`. Rewrite `h'` using `[htriv v hv (A.1 v) (A.2 v) _ hc, sub_self]`. Conclude with `h'`. Establish `hk : g⁻¹ * σ * g ∈ kerSub ρ x` using `⟨hzero, htriv v hv (A.1 v) (A.2 v) _ hc⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(kerSub_normal ρ x).conj_mem _ hk g`. Establish `e : g * (g⁻¹ * σ * g) * g⁻¹ = σ` using `by group`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Conclude with `fun n hn => hle hn`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem vanish_on_NS : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation R (G F Ω) M), ContAction ρ → ∀ (A : Formalism.GaloisCohomology.Places F Ω) (S : Set (HeightOneSpectrum (𝓞 F))), (∀ v ∉ S, ∀ B : ValuationSubring Ω, IsPlaceOver B v → ∀ σ ∈ Ine (F := F) B, ∀ m, ρ σ m = m) → ∀ x : Z1 ρ, (∀ v ∉ S, resH1 ρ (Dec (F := F) (A.1 v)).subtype continuous_subtype_val (Submodule.Quotient.mk x) ∈ Formalism.GaloisCohomology.unrAt ρ (A.1 v)) → ∀ n ∈ NS Ω S, x.1 n = 0 ∧ ∀ m, ρ n m = m := by
   intro F Ω _ _ _ _ _ R M _ _ _ _ _ ρ hρ A S htriv x hx

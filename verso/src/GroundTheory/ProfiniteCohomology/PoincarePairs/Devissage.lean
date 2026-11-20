@@ -48,7 +48,7 @@ variable (hS : S.ShortExact)
 include hS in
 
 /- English proof (translation)
-The claim follows from `compactCohomology_exact₂ φ (Sᵥ := fun v => S.map (Rep.resFunctor (φ v).toMonoidHom)) (fun _ => 𝟙 _) hS (fun v => (Rep.shortExact_res (φ v).toMonoidHom).2 hS) n`.
+A detailed English derivation is pending.
 -/
 theorem compactRes_exact₂ (n : ℕ) :
     (ShortComplex.mk (compactCohomologyResMap φ S.f n) (compactCohomologyResMap φ S.g n)
@@ -57,7 +57,7 @@ theorem compactRes_exact₂ (n : ℕ) :
     (fun _ => 𝟙 _) hS (fun v => (Rep.shortExact_res (φ v).toMonoidHom).2 hS) n
 
 /- English proof (translation)
-The claim follows from `compactCohomology_exact₃ φ (Sᵥ := fun v => S.map (Rep.resFunctor (φ v).toMonoidHom)) (fun _ => 𝟙 _) hS (fun v => (Rep.shortExact_res (φ v).toMonoidHom).2 hS) n`.
+A detailed English derivation is pending.
 -/
 theorem compactRes_exact₃ (n : ℕ) :
     (ShortComplex.mk (compactCohomologyResMap φ S.g n) (compactδRes φ hS n)
@@ -68,7 +68,7 @@ theorem compactRes_exact₃ (n : ℕ) :
     (fun _ => 𝟙 _) hS (fun v => (Rep.shortExact_res (φ v).toMonoidHom).2 hS) n
 
 /- English proof (translation)
-The claim follows from `compactCohomology_exact₁ φ (Sᵥ := fun v => S.map (Rep.resFunctor (φ v).toMonoidHom)) (fun _ => 𝟙 _) hS (fun v => (Rep.shortExact_res (φ v).toMonoidHom).2 hS) n`.
+A detailed English derivation is pending.
 -/
 theorem compactRes_exact₁ (n : ℕ) :
     (ShortComplex.mk (compactδRes φ hS n) (compactCohomologyResMap φ S.f (n + 1))
@@ -88,23 +88,23 @@ variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [IsDiscreteRep D] {N : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `rcases neg_one_pow_eq_or ℤ s with h | h <;> rw [h] at ha <;> simpa using ha`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eq_zero_of_neg_neg_one_pow_zsmul {A : Type*} [AddCommGroup A] (s : ℕ) {a : A}
     (ha : (-(-1 : ℤ) ^ s) • a = 0) : a = 0 := by
   rcases neg_one_pow_eq_or ℤ s with h | h <;> rw [h] at ha <;> simpa using ha
 
 /- English proof (translation)
-Apply the tactic sequence `rcases neg_one_pow_eq_or ℤ s with h | h <;> rw [h] <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem neg_neg_one_pow_zsmul_zsmul {A : Type*} [AddCommGroup A] (s : ℕ) (a : A) :
     (-(-1 : ℤ) ^ s) • ((-(-1 : ℤ) ^ s) • a) = a := by
   rcases neg_one_pow_eq_or ℤ s with h | h <;> rw [h] <;> simp
 
 /- English proof (translation)
-Establish `e : (-1 : R) ^ s • b = ((-1 : ℤ) ^ s) • b`. Rewrite using `[← Int.cast_smul_eq_zsmul R]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `rcases neg_one_pow_eq_or ℤ s with e | e <;> rw [e] at h ⊢`. Rewrite `h` using `[one_smul]`. Rewrite using `[eq_neg_of_add_eq_zero_right h, map_neg, neg_smul, one_smul]`. Rewrite `h` using `[neg_one_smul, ← sub_eq_add_neg, sub_eq_zero]`. Rewrite using `[← h, neg_neg, one_smul]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_eq_of_add_neg_one_pow_smul_eq_zero {R Z A : Type*} [Ring R] [AddCommGroup Z]
     [Module R Z] [AddCommGroup A] (t : Z →+ A) (s : ℕ) {a b : Z}
@@ -124,7 +124,7 @@ variable {S : ShortComplex (Rep.{u} (ULift.{u} ℤ) G)} [IsDiscreteRep S.X₁] [
   [IsDiscreteRep S.X₃] [Finite S.X₁] [Finite S.X₂] [Finite S.X₃]
 
 /- English proof (translation)
-Establish `key` using `compactCup_compactδ_add_compactCup_δ φ (SAᵥ := fun v => (dualShortComplex D S).map (Rep.resFunctor (φ v).toMonoidHom)) (fun _ => 𝟙 _) (C := D) (Cᵥ := fun v => Rep.res (φ v).toMonoidHom D) (c := fun _ => 𝟙 _) (dualEvalPairing D S.X₃) (dualEvalPairing D S.X₂) (dualEvalPairing D S.X …`. Rewrite using `[compactDualityMap_apply, compactDualityMap_apply]`. Conclude with `map_eq_of_add_neg_one_pow_smul_eq_zero t s key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compactDualityMap_δ {n : ℕ} (t : compactCohomologyRes φ D (n + 1) →+ ZMod N) (hS : S.ShortExact)
     (hT : (dualShortComplex D S).ShortExact) {r s : ℕ} (h₁ : r + 1 + s = n + 1)
@@ -158,13 +158,13 @@ section Embedding
 variable {Γ : Type u} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] {n : ℕ}
 
 /- English proof (translation)
-Set `W` to `fixingOpenSubgroup M ⊓ U₀`. Establish `hW : ∀ w ∈ (W : Subgroup Γ), ∀ m : M, M.ρ w m = m` using `fun w hw m => fixingOpenSubgroup_apply M ((inf_le_left : fixingOpenSubgroup M ⊓ U₀ ≤ fixingOpenSubgroup M) hw) m`. Set `e` to `(Finite.equivFin (M →+ ZMod n)).symm`. Set `F : ∀ _ : Fin (Nat.card (M →+ ZMod n)), M ⟶ Rep.coind (W : Subgroup Γ).subtype (zmodRep.{u} (W : Subgroup Γ) n)` to `fun j => Rep.resCoindToHom (W : Subgroup Γ).subtype M _ (charHom (W : Subgroup Γ) M hW (e j))`. Use `⟨W, inf_le_right, Fin (Nat.card (M →+ ZMod n)), inferInstance, biproduct.lift F, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b hab`. Assume the negation of the conclusion as `hne`. Take `⟨χ, hχ⟩` from `zmod_exists_apply_ne_zero hM (sub_ne_zero.2 hne)`. Apply `hχ` to reduce the goal to its premises. Establish `hj` using `congrArg (biproduct.π (fun _ : Fin (Nat.card (M →+ ZMod n)) => Rep.coind (W : Subgroup Γ).subtype (zmodRep.{u} (W : Subgroup Γ) n)) (e.symm χ)).hom hab`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(biproduct.lift F ≫ biproduct.π _ (e.symm χ)).hom a = (biproduct.lift F ≫ biproduct.π _ (e.symm χ)).hom b at hj`. Rewrite `hj` using `[biproduct.lift_π]`. Establish `h1` using `congrArg (fun f => ULift.down (f.1 1 : ULift.{u} (ZMod n))) hj`. Simplify using `only [F, Rep.resCoindToHom_hom_apply_coe, map_one, Module.End.one_apply, Equiv.apply_symm_apply] at h1`. Rewrite `h1` using `[charHom_hom_apply, charHom_hom_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `χ a = χ b at h1`. Rewrite using `[map_sub, h1, sub_self]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_injective_biproduct_coind_le [NeZero n] (U₀ : OpenSubgroup Γ)
     (M : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep M] [Finite M] (hM : ∀ m : M, n • m = 0) :
@@ -224,14 +224,14 @@ variable {φ} {n : ℕ} [NeZero n] {D : Rep.{u} (ULift.{u} ℤ) G} [IsDiscreteRe
 
 include H in
 /- English proof (translation)
-The claim follows from `finite_of_nonempty_addEquiv H.nonempty_addEquiv`.
+A detailed English derivation is pending.
 -/
 theorem finite_D : Finite D :=
   finite_of_nonempty_addEquiv H.nonempty_addEquiv
 
 include H in
 /- English proof (translation)
-The claim follows from `nsmul_eq_zero_of_nonempty_addEquiv H.nonempty_addEquiv d`.
+A detailed English derivation is pending.
 -/
 theorem nsmul_D (d : D) : n • d = 0 :=
   nsmul_eq_zero_of_nonempty_addEquiv H.nonempty_addEquiv d
@@ -239,13 +239,13 @@ theorem nsmul_D (d : D) : n • d = 0 :=
 include H in
 
 /- English proof (translation)
-Take `⟨W, hW, J, _, i, hi⟩` from `exists_injective_biproduct_coind_le (n := n) U₀ M hM`. Establish `hφ : ∀ {r s : ℕ} (h : r + s = 3), Function.Bijective (compactDualityMap φ D h t (⨁ fun _ : J => Rep.coind (W : Subgroup G).subtype (zmodRep.{u} (W : Subgroup G) n) : Rep.{u} (ULift.{u} ℤ) G))` using `fun h => bijective_compactDualityMap_biproduct φ D h t _ fun _ => H.bijective_coind W hW h`. Establish `hnI : ∀ x : ((⨁ fun _ : J => Rep.coind (W : Subgroup G).subtype (zmodRep.{u} (W : Subgroup G) n) : Rep.{u} (ULift.{u} ℤ) G) : Type u), n • x = 0`. Introduce `x`. Rewrite using `[biproduct_eq_sum _ x, Finset.smul_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← map_nsmul, nsmul_coind_zmodRep_eq_zero W, map_zero]`. Establish `hmono : Mono i` using `(Rep.mono_iff_injective i).2 hi`. Set `S` to `ShortComplex.mk i (cokernel.π i) (cokernel.condition i)`. Establish `hS : S.ShortExact` using `ShortComplex.ShortExact.mk' (S.exact_of_g_is_cokernel (cokernelIsCokernel i)) hmono (inferInstance : Epi (cokernel.π i))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hQd : IsDiscreteRep (cokernel i)` using `isDiscreteRep_X₃_of_shortExact hS`. Establish `hsurj : Function.Surjective (cokernel.π i).hom` using `(Rep.epi_iff_surjective _).1 inferInstance`. Establish `hQf : Finite ((cokernel i : Rep.{u} (ULift.{u} ℤ) G) : Type u)` using `Finite.of_surjective _ hsurj`. Use `⟨_, cokernel i, inferInstance, hQd, inferInstance, hQf, i, cokernel.π i, cokernel.condition i, hS, hnI, fun x => ?_, hφ⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hsurj x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_nsmul, hnI, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_devissage (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) :
@@ -298,11 +298,11 @@ variable (H : CompactGroupDualityHypotheses φ n D t U₀)
 include H in
 
 /- English proof (translation)
-Use `H.finite_D` as an intermediate fact. Take `⟨I, Q, _, _, _, _, i, p, w, hS, hnI, hnQ, hI⟩` from `H.exists_devissage M hM`. Establish `hi : Function.Injective i.hom` using `(Rep.mono_iff_injective i).1 hS.mono_f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : compactDualityMap φ D (rfl : 0 + 3 = 3) t I ((cohomologyMap i 0).hom x) = 0`. Use extensionality with `y`. Rewrite using `[compactDualityMap_cohomologyMap φ D (rfl : 0 + 3 = 3) t i x y, hx]`. Both sides reduce to the same expression. Establish `h2 : (cohomologyMap i 0).hom x = 0` using `(injective_iff_map_eq_zero _).1 (hI (rfl : 0 + 3 = 3)).1 _ h1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `(injective_iff_map_eq_zero _).1 (injective_cohomologyMap_zero i hi) x h2`.
+A detailed English derivation is pending.
 -/
 theorem injective_zero (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) :
@@ -323,15 +323,15 @@ theorem injective_zero (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite
 include H in
 
 /- English proof (translation)
-Use `H.finite_D` as an intermediate fact. Take `⟨I, Q, _, _, _, _, i, p, w, hS, hnI, hnQ, hI⟩` from `H.exists_devissage M hM`. Set `S` to `ShortComplex.mk i p w`. Establish `hT : (dualShortComplex D S).ShortExact` using `dualShortComplex_shortExact H.nonempty_addEquiv hS hnI`. Establish `hsurj : Function.Surjective (compactCohomologyResMap φ (dualMap D i) 3).hom`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Establish `: Subsingleton (compactCohomologyRes φ (dualRep D Q) 4)` using `H.subsingleton_four (dualRep D Q) (nsmul_dualRep_eq_zero H.nsmul_D)`. Conclude with `(ShortComplex.moduleCat_exact_iff _).1 (compactRes_exact₃ φ hT 3) y (Subsingleton.elim _ _)`. Introduce `l`. Take `⟨v, hv⟩` from `(hI (rfl : 0 + 3 = 3)).2 (l.comp (compactCohomologyResMap φ (dualMap D i) 3).hom.toAddMonoidHom)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpv : (cohomologyMap p 0).hom v = 0`. Apply `(injective_iff_map_eq_zero _).1 (H.injective_zero Q hnQ)` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[compactDualityMap_cohomologyMap φ D (rfl : 0 + 3 = 3) t p v y, hv]`. Express the relevant statement in the definitionally equal form `l ((compactCohomologyResMap φ (dualMap D p) 3 ≫ compactCohomologyResMap φ (dualMap D i) 3).hom y) = 0`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← compactCohomologyResMap_comp, ← dualMap_comp, w, dualMap_zero, compactCohomologyResMap_zero]`. Conclude with `map_zero l`. Take `⟨m, hm⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₂ hS 0) v hpv`. Use `⟨m, ?_⟩` and prove the remaining obligations. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, rfl⟩` from `hsurj y`. Rewrite using `[← compactDualityMap_cohomologyMap φ D (rfl : 0 + 3 = 3) t i m z]`. Express the relevant statement in the definitionally equal form `compactDualityMap φ D (rfl : 0 + 3 = 3) t I ((cohomologyMap S.f 0).hom m) z = _`. Rewrite using `[hm, hv]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem surjective_zero (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) :
@@ -370,7 +370,7 @@ theorem surjective_zero (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finit
 
 include H in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨H.injective_zero M hM, H.surjective_zero M hM⟩`.
+Supply the required witnesses or components.
 -/
 theorem bijective_zero (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) :
@@ -382,17 +382,17 @@ variable {r s : ℕ} (h₁ : r + 1 + s = 3) (h₀ : r + (s + 1) = 3)
 include H in
 
 /- English proof (translation)
-Use `H.finite_D` as an intermediate fact. Take `⟨I, Q, _, _, _, _, i, p, w, hS, hnI, hnQ, hI⟩` from `H.exists_devissage M hM`. Set `S` to `ShortComplex.mk i p w`. Establish `hT : (dualShortComplex D S).ShortExact` using `dualShortComplex_shortExact H.nonempty_addEquiv hS hnI`. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `h1 : compactDualityMap φ D h₁ t I ((cohomologyMap i (r + 1)).hom x) = 0`. Use extensionality with `y`. Rewrite using `[compactDualityMap_cohomologyMap φ D h₁ t i x y, hx]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hix : (cohomologyMap i (r + 1)).hom x = 0` using `(injective_iff_map_eq_zero _).1 (hI h₁).1 _ h1`. Take `⟨q, hq⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₁ hS r (r + 1) rfl) x hix`. Establish `hker : ((compactCohomologyResMap φ (dualMap D p) (s + 1)).hom.toAddMonoidHom).ker ≤ (compactDualityMap φ D h₀ t Q q).ker`. Introduce `z hz`. Take `⟨y, hy⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (compactRes_exact₁ φ hT s) z hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[AddMonoidHom.mem_ker, ← hy]`. Establish `e` using `compactDualityMap_δ φ D t hS hT h₁ h₀ q y`. Express the relevant statement in the definitionally equal form `compactDualityMap φ D h₁ t M ((δ hS r (r + 1) rfl).hom q) y = _ at e`. Rewrite `e` using `[hq, hx, AddMonoidHom.zero_apply]`. Conclude with `eq_zero_of_neg_neg_one_pow_zsmul s e.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψ⟩` from `zmod_exists_comp_eq_of_ker_le (nsmul_compactCohomologyRes_eq_zero φ (nsmul_dualRep_eq_zero H.nsmul_D) (s + 1)) _ _ hker`. Take `⟨v, hv⟩` from `(ih I hnI).2 ψ`. Establish `hpv : (cohomologyMap p r).hom v = q`. Apply `(ih Q hnQ).1` to reduce the goal to its premises. Use extensionality with `z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[compactDualityMap_cohomologyMap φ D h₀ t p v z, hv, ← hψ]`. Both sides reduce to the same expression. Rewrite using `[← hq, ← hpv]`. Conclude with `congrArg (fun F => F.hom v) (comp_δ hS r (r + 1) rfl)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_succ
     (ih : ∀ (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M], (∀ m : M, n • m = 0) →
@@ -437,19 +437,19 @@ theorem injective_succ
 include H in
 
 /- English proof (translation)
-Use `H.finite_D` as an intermediate fact. Take `⟨I, Q, _, _, _, _, i, p, w, hS, hnI, hnQ, hI⟩` from `H.exists_devissage M hM`. Set `S` to `ShortComplex.mk i p w`. Establish `hT : (dualShortComplex D S).ShortExact` using `dualShortComplex_shortExact H.nonempty_addEquiv hS hnI`. Introduce `l`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv⟩` from `(hI h₁).2 (l.comp (compactCohomologyResMap φ (dualMap D i) s).hom.toAddMonoidHom)`. Establish `hpv : (cohomologyMap p (r + 1)).hom v = 0`. Apply `(injective_iff_map_eq_zero _).1 (H.injective_succ h₁ h₀ ih Q hnQ)` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[compactDualityMap_cohomologyMap φ D h₁ t p v y, hv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `l ((compactCohomologyResMap φ (dualMap D p) s ≫ compactCohomologyResMap φ (dualMap D i) s).hom y) = 0`. Rewrite using `[← compactCohomologyResMap_comp, ← dualMap_comp, w, dualMap_zero, compactCohomologyResMap_zero]`. Conclude with `map_zero l`. Take `⟨x', hx'⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₂ hS (r + 1)) v hpv`. Use `set ν := l - compactDualityMap φ D h₁ t M x' with hν`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hker : ((compactδRes φ hT s).hom.toAddMonoidHom).ker ≤ ν.ker`. Introduce `y hy`. Take `⟨z, hz⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (compactRes_exact₃ φ hT s) y hy`. Rewrite using `[AddMonoidHom.mem_ker, ← hz, hν, AddMonoidHom.sub_apply, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `l ((compactCohomologyResMap φ (dualMap D i) s).hom z) = compactDualityMap φ D h₁ t M x' ((compactCohomologyResMap φ (dualMap D i) s).hom z)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← compactDualityMap_cohomologyMap φ D h₁ t i x' z]`. Express the relevant statement in the definitionally equal form `_ = compactDualityMap φ D h₁ t I ((cohomologyMap S.f (r + 1)).hom x') z`. Rewrite using `[hx', hv]`. Both sides reduce to the same expression. Take `⟨ψ, hψ⟩` from `zmod_exists_comp_eq_of_ker_le (nsmul_compactCohomologyRes_eq_zero φ (nsmul_dualRep_eq_zero H.nsmul_D) (s + 1)) _ _ hker`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q, hq⟩` from `(ih Q hnQ).2 ψ`. Use `⟨x' + (-(-1 : ℤ) ^ s) • (δ hS r (r + 1) rfl).hom q, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Establish `e` using `compactDualityMap_δ φ D t hS hT h₁ h₀ q y`. Express the relevant statement in the definitionally equal form `compactDualityMap φ D h₁ t M ((δ hS r (r + 1) rfl).hom q) y = _ at e`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hψy : ψ ((compactδRes φ hT s).hom y) = ν y` using `congrArg (fun f => f y) hψ`. Rewrite using `[map_add, map_zsmul, AddMonoidHom.add_apply, AddMonoidHom.smul_apply, e, hq, neg_neg_one_pow_zsmul_zsmul]`. Express the relevant statement in the definitionally equal form `_ + ψ ((compactδRes φ hT s).hom y) = l y`. Rewrite using `[hψy, hν, AddMonoidHom.sub_apply, add_sub_cancel]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_succ
     (ih : ∀ (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M], (∀ m : M, n • m = 0) →
@@ -499,7 +499,7 @@ theorem surjective_succ
 
 include H in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨H.injective_succ h₁ h₀ ih M hM, H.surjective_succ h₁ h₀ ih M hM⟩`.
+Supply the required witnesses or components.
 -/
 theorem bijective_succ
     (ih : ∀ (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M], (∀ m : M, n • m = 0) →
@@ -527,9 +527,9 @@ variable (H : CompactGroupDualityHypotheses φ n D t U₀)
 include H in
 
 /- English proof (translation)
-Establish `b0` using `fun (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M] (hM : ∀ m : M, n • m = 0) => H.bijective_zero M hM`. Establish `b1` using `fun (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M] (hM : ∀ m : M, n • m = 0) => H.bijective_succ (r := 0) (s := 2) rfl rfl b0 M hM`. Establish `b2` using `fun (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M] (hM : ∀ m : M, n • m = 0) => H.bijective_succ (r := 1) (s := 1) rfl rfl b1 M hM`. Establish `b3` using `fun (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M] (hM : ∀ m : M, n • m = 0) => H.bijective_succ (r := 2) (s := 0) rfl rfl b2 M hM`. Take `⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ : (r = 0 ∧ s = 3) ∨ (r = 1 ∧ s = 2) ∨ (r = 2 ∧ s = 1) ∨ (r = 3 ∧ s = 0)` from `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `b0 M hM`. Conclude with `b1 M hM`. Conclude with `b2 M hM`. Conclude with `b3 M hM`.
+A detailed English derivation is pending.
 -/
 theorem bijective_compactDualityMap (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) {r s : ℕ} (h : r + s = 3) :

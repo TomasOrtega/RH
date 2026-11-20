@@ -7,7 +7,7 @@ namespace GlobalTheory.PeriodConn
 
 open NumberField Matrix in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`. Use `congr 2`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.PeriodConn.hermForm_conj_mul {g : ℕ} (Hm N : Matrix (Fin g) (Fin g) ℂ)
     (z w : Fin g → ℂ) :
@@ -25,27 +25,25 @@ open NumberField Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} in
 
 /- English proof (translation)
-Take `⟨hlin, hinj, hdisc, hspan, Hm, hHm, hpos, him⟩` from `hP`. Establish `hu : IsUnit A.det` using `isUnit_iff_ne_zero.mpr hA`. Establish `hcancel : ∀ v, A⁻¹ *ᵥ (A *ᵥ v) = v` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul A hu, Matrix.one_mulVec]`. Establish `hcancel' : ∀ v, A *ᵥ (A⁻¹ *ᵥ v) = v` using `fun v => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv A hu, Matrix.one_mulVec]`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a x i`. Simplify using `only [AddMonoidHom.coe_comp, LinearMap.toAddMonoidHom_coe, Function.comp_apply, Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, hlin, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : ty i = ty j`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hty i j h]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x y hxy`. Apply `hinj` to reduce the goal to its premises. Use `congrArg (fun v => A⁻¹ *ᵥ v) hxy` as an intermediate fact. Simplify `this` using `[hcancel]`. Set `f : (A.mulVecLin.toAddMonoidHom.comp P).range → P.range` to `fun v => ⟨A⁻¹ *ᵥ (v : Fin g → ℂ), by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Take `⟨x, hx⟩` from `AddMonoidHom.mem_range.mp v.2`. Use `AddMonoidHom.mem_range.mpr ⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx]`. Conclude with `(hcancel (P x)).symm⟩`. Use `DiscreteTopology.of_continuous_injective (f := f) ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(continuous_const.matrix_mulVec continuous_subtype_val).subtype_mk _`. Introduce `v w hvw`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (fun u : P.range => A *ᵥ (u : Fin g → ℂ)) hvw` as an intermediate fact. Simplify `this` using `[f, hcancel']`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : Set.range ⇑(A.mulVecLin.toAddMonoidHom.comp P) = ((A.mulVecLin).restrictScalars ℝ) '' Set.range ⇑P`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[hr, Submodule.span_image, hspan, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `fun v => ⟨A⁻¹ *ᵥ v, hcancel' v⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hct : ∀ N : Matrix (Fin g) (Fin g) ℂ, (N.map star)ᴴ = Nᵀ` using `fun N => by`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hct' : ∀ N : Matrix (Fin g) (Fin g) ℂ, (Nᵀ)ᴴ = N.map star` using `fun N => by`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use `⟨(A⁻¹)ᵀ * Hm * (A⁻¹).map star, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `Matrix.IsHermitian`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hHm.eq, hct, hct', Matrix.mul_assoc]`. Introduce `z hz`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[_root_.GlobalTheory.PeriodConn.hermForm_conj_mul]`. Use `hpos _ fun h => hz ?_` and prove the remaining obligations. Simplify `congrArg (fun v => A *ᵥ v) h` using `[hcancel']`. Introduce `x y`. Express the relevant statement in the definitionally equal form `(_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm _ (A *ᵥ P x) (A *ᵥ P y)).im = _`.
-
-Rewrite using `[_root_.GlobalTheory.PeriodConn.hermForm_conj_mul, hcancel, hcancel]`. Conclude with `him x y`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PeriodConn.isPeriod_mulVec {D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)}
@@ -108,15 +106,15 @@ open NumberField Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} in
 
 /- English proof (translation)
-Take `⟨hlin, -, -, hspan, -⟩` from `hP`. Establish `hlin'` using `hP'.1`. Establish `key : ∀ a : 𝓞 E, A i j * ((ty j) (a : E) - (ty i) (a : E)) = 0`. Introduce `a`. Use `set d : Fin g → ℂ := fun k => (ty k) (a : E) - (ty i) (a : E) with hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `φ : (Fin g → ℂ) →ₗ[ℝ] ℂ` to `((LinearMap.proj i).comp (A.mulVecLin.comp (Matrix.diagonal d).mulVecLin)).restrictScalars ℝ`. Establish `hφ : φ = 0`. Use `LinearMap.ext_on_range hspan fun x => ?_` and prove the remaining obligations. Establish `h1` using `hlin' a x i`. Rewrite `h1` using `[h (a • x), h x]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hvec : Matrix.diagonal d *ᵥ P x = P (a • x) - (ty i) (a : E) • P x`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mulVec_diagonal, hd, hlin, sub_mul]`. Simplify using `only [φ, LinearMap.restrictScalars_apply, LinearMap.comp_apply, LinearMap.proj_apply, Matrix.mulVecLin_apply, LinearMap.zero_apply, hvec, Matrix.mulVec_sub, Matrix.mulVec_smul, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, h1, sub_self]`. Use `LinearMap.congr_fun hφ (Pi.single j 1)` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[φ, hd, Matrix.mulVec_single, Matrix.mulVec, dotProduct, Matrix.diagonal, Pi.single_apply]`. Assume the negation of the conclusion as `hA`. Apply `hij` to reduce the goal to its premises. Use `(IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) ?_).symm` and prove the remaining obligations. Use extensionality with `a`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `key a` as an intermediate fact. Simplify using `only [RingHom.comp_apply]`. Conclude with `(sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_left hA))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PeriodConn.entry_eq_zero {D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} {P P' : D.La →+ (Fin g → ℂ)}

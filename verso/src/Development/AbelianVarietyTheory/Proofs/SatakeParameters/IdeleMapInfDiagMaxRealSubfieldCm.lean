@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.InfDiagExt
 
 /- English proof (translation)
-Unfold `infDiag`. Rewrite using `[MonoidHom.finsetProd_apply, Units.coe_prod]`. Set `ι : (∀ w : InfinitePlace L, w.Completion) →* AdeleRing (𝓞 L) L` to `MonoidHom.inl (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L)`. Express the relevant statement in the definitionally equal form `∏ w : InfinitePlace L, ι (Pi.mulSingle w (algebraMap L w.Completion k)) = ι (fun w => algebraMap L w.Completion k)`. Rewrite using `[← map_prod, Finset.univ_prod_mulSingle]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_infDiag (L : Type) [Field L] [NumberField L] (k : Lˣ) :
     ((infDiag k : Ideles L) : AdeleRing (𝓞 L) L) = (algebraMap L (InfiniteAdeleRing L) k, 1) := by
@@ -33,9 +33,9 @@ theorem val_infDiag (L : Type) [Field L] [NumberField L] (k : Lˣ) :
   rw [← map_prod, Finset.univ_prod_mulSingle]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap K L ((infDiag x : Ideles K) : AdeleRing (𝓞 K) K) = _`. Rewrite using `[val_infDiag, val_infDiag]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Establish `h` using `congrArg Prod.fst (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap_algebraMap K L (x : K))`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h`. Conclude with `map_one (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteAdeleMap K L)`.
+A detailed English derivation is pending.
 -/
 theorem ideleMap_infDiag_gen (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L]
     [Algebra K L] (x : Kˣ) :
@@ -49,7 +49,7 @@ theorem ideleMap_infDiag_gen (K L : Type) [Field K] [NumberField K] [Field L] [N
   · exact map_one (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteAdeleMap K L)
 
 /- English proof (translation)
-Introduce `E _ _ _ x` and use `ideleMap_infDiag_gen (maximalRealSubfield E) E x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ideleMap_infDiag : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (x : (maximalRealSubfield E)ˣ), GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap (maximalRealSubfield E) E (infDiag x) = infDiag (Units.map (algebraMap (maximalRealSubfield E) E).toMonoidHom x) :=
   fun E _ _ _ x => ideleMap_infDiag_gen (maximalRealSubfield E) E x

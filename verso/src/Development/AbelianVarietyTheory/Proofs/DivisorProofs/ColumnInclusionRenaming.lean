@@ -11,9 +11,9 @@ namespace GlobalTheory.Proof.ColumnInclusionRenaming
 open GlobalTheory.IndefiniteRowSideFullHecke
 
 /- English proof (translation)
-Unfold `fockS`. Rewrite using `[support_rename_of_injective he, Finset.sum_image (fun _ _ _ _ h => Finsupp.mapDomain_injective he h)]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_rename_mapDomain e he, coeff_rename_mapDomain e he]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `mfact`. Rewrite using `[Finsupp.mapDomain_support_of_injective he, Finset.prod_image (fun _ _ _ _ h => he h)]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.mapDomain_apply he]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fockS_rename {σ τ : Type} {e : σ → τ} (he : Function.Injective e) (f g : MvPolynomial σ ℂ) :
     fockS (rename e f) (rename e g) = fockS f g := by
@@ -32,7 +32,7 @@ def colIncl {n₀ n₁ : ℕ} (h : n₀ ≤ n₁) (r : ℕ) : Fin r × Fin n₀ 
   fun v => (v.1, Fin.castLE h v.2)
 
 /- English proof (translation)
-Unfold `lpMinor`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `p q : 2`. Simplify using `[colIncl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rename_lpMinor {n₀ n₁ r : ℕ} (h : n₀ ≤ n₁) (s : ℕ) (hr : s ≤ r) (hs : s ≤ n₀) :
     rename (colIncl h r) (lpMinor ℂ s hr hs) = lpMinor ℂ s hr (hs.trans h) := by
@@ -43,13 +43,13 @@ theorem rename_lpMinor {n₀ n₁ r : ℕ} (h : n₀ ≤ n₁) (s : ℕ) (hr : s
   simp [colIncl]
 
 /- English proof (translation)
-Unfold `hw`. Rewrite using `[map_prod]`. Use `Finset.prod_of_injOn (Fin.castLE h) (Fin.castLE_injective h).injOn (fun _ _ => Finset.mem_univ _) ?_ ?_` and prove the remaining obligations. Introduce `s _ hs`. Establish `hs' : ¬ s.val < n₀` using `fun hlt => hs ⟨⟨s.val, hlt⟩, by simp, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: rowNu (r` using `n₁) ν s = 0 := by simp [rowNu, hs']`. Rewrite using `[this, Nat.zero_sub, pow_zero]`. Introduce `s _`. Rewrite using `[map_pow, rename_lpMinor]`. Establish `e1 : rowNu (r` using `n₁) ν (Fin.castLE h s) = ν s := by simp [rowNu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : nuNext (rowNu (r` using `n₁) ν) (Fin.castLE h s) = nuNext ν s := by`. Unfold `nuNext rowNu`. Distinguish the cases in `h1 : s.val + 1 < n₀`. Establish `h2 : s.val + 1 < n₁` using `by omega`. Simplify using `[h1, h2]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h1]`. Rewrite using `[e1, e2]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rename_hw {n₀ n₁ : ℕ} (h : n₀ ≤ n₁) (ν : Fin n₀ → ℕ) :
     rename (colIncl h n₁) (hw ℂ h ν) = hw ℂ (le_refl n₁) (rowNu (r := n₁) ν) := by

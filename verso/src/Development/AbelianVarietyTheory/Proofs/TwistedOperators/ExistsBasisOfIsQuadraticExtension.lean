@@ -8,11 +8,11 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.QuadSymbol
 
 /- English proof (translation)
-Establish `hr : Module.finrank K L = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two K L`. Establish `: FiniteDimensional K L` using `Module.finite_of_finrank_pos (by omega)`. Establish `: IsGalois K L` using `inferInstance`. Establish `hc : Nat.card (L ≃ₐ[K] L) = 2` using `by rw [IsGalois.card_aut_eq_finrank, hr]`. Establish `: Nontrivial (L ≃ₐ[K] L)` using `Finite.one_lt_card_iff_nontrivial.1 (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨σ, hσ⟩` from `exists_ne (1 : L ≃ₐ[K] L)`. Establish `h2 : σ * σ = 1`. Use `pow_card_eq_one' (x := σ)` as an intermediate fact. Rewrite `this` using `[hc, pow_two]`. Then use the resulting hypothesis. Take `⟨δ, b, hδ, h0, -, h1⟩` from `GlobalTheory.QuadNormBase.exists_basis K L (σ : L →ₐ[K] L) hr (fun x => by simpa using congrArg (fun f : L ≃ₐ[K] L => f x) h2) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hσ (AlgEquiv.ext fun x => h x))`. Conclude with `⟨δ, b, hδ, h0, h1⟩`.
+Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_basis_of_isQuadraticExtension (K L : Type) [Field K] [CharZero K] [Field L] [Algebra K L]
     [Algebra.IsQuadraticExtension K L] :
@@ -35,9 +35,9 @@ theorem exists_basis_of_isQuadraticExtension (K L : Type) [Field K] [CharZero K]
   exact ⟨δ, b, hδ, h0, h1⟩
 
 /- English proof (translation)
-Establish `hφ : ComplexEmbedding.IsReal (Complex.ofRealHom.comp σ)`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hw : (InfinitePlace.mk (Complex.ofRealHom.comp σ)).IsReal` using `InfinitePlace.isReal_mk_iff.2 hφ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨_, InfinitePlace.Completion.extensionEmbeddingOfIsReal hw, fun x => ?_⟩` and prove the remaining obligations. Establish `he` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hw ((WithAbs.equiv _).symm x)`. Use `Eq.trans he ?_` and prove the remaining obligations. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[InfinitePlace.embedding_of_isReal_apply, InfinitePlace.embedding_mk_eq_of_isReal hφ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -57,13 +57,13 @@ theorem exists_completion_hom_real {K : Type} [Field K] (σ : K →+* ℝ) :
   simp
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ t`. Take `⟨δ, e, hδ, h0, h1⟩` from `exists_basis_of_isQuadraticExtension K L`. Establish `: FiniteDimensional K L` using `Module.Finite.of_basis e`. Use `⟨fun h => ⟨fun v => toUnits_mem_normGroup _ h, fun w => toUnits_mem_normGroup _ h⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨hf, hi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hδ0 : δ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hδ ⟨0, by simp⟩`. Take `⟨a, b, hab⟩` from `GlobalTheory.QNorm.hasseNormSt K δ t hδ0 t.ne_zero (fun σ => by`. Take `⟨w, f, hw⟩` from `exists_completion_hom_real σ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hab⟩` from `(mem_normGroup_iff_form e h0 h1).1 (hi w)`. Use `⟨f a, f b, ?_⟩` and prove the remaining obligations. Establish `h3 : algebraMap K w.Completion t = a ^ 2 - algebraMap K w.Completion δ * b ^ 2` using `hab`. Rewrite using `[← hw, ← hw, h3, map_sub, map_mul, map_pow, map_pow])`. Use the proof step `(fun v => (mem_normGroup_iff_form e h0 h1).1 (hf v))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mem_globalNorms_iff.2 ⟨a • e 0 + b • e 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hab]`. Use `GlobalTheory.QuadNormBase.norm_of_basis e δ h0 ?_ a b` and prove the remaining obligations. Rewrite using `[h1, h0, Algebra.algebraMap_eq_smul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normTheorem : ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     [Algebra.IsQuadraticExtension K L], NormTheorem K L := by

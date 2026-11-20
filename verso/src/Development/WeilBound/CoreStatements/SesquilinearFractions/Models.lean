@@ -17,9 +17,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Z : ∀ b : Bool, Curve0 H (sgnRt H b)} {P : (FU.Di i).La →+ (Fin g → ℂ)} {hP : IsPeriod (FU.Di i) ty P}
 
 /- English proof (translation)
-Take `⟨n, M, ρ, hρ, -⟩` from `GlobalTheory.T.lie_model_action_base_change E H Xo.X Xo.univ.t X.K (under X.y)`. Establish `h1 : under X.y = 𝟙 (Sp X.K) ≫ under X.y` using `by simp`. Take `⟨M1, hM1⟩` from `(GlobalTheory.T.lie_model_pullback_equivalence Xo.X (Sp X.K) Xo.univ.t.G X.t.G (under X.y) X.m.φ X.m.cart X.K (𝟙 _) (Fin n → X.K)).1 (castM h1 M)`. Take `⟨M2, hM2⟩` from `(GlobalTheory.T.lie_model_pullback_equivalence (Sp (𝓞 X.K)) (Sp X.K) X.B.t.G X.t.G (spMap (algebraMap (𝓞 X.K) X.K)) X.m'.φ X.m'.cart X.K (𝟙 _) (Fin n → X.K)).2 M1`. Take `⟨bas⟩` from `GlobalTheory.T.lie_model_free_of_smooth (Sp (𝓞 X.K)) X.B.t.G g (by have hd := X.B.dim; rwa [X.dim] at hd) X.K (𝟙 (Sp X.K) ≫ spMap (algebraMap (𝓞 X.K) X.K)) (Fin n → X.K) M2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hn : n = g`. Use `Module.finrank_eq_card_basis bas` as an intermediate fact. Simplify using `using this`. Substitute `hn` using the available equality. Conclude with `⟨M, ρ, hρ, M1, M2, fun e => (hM1 e).trans (castM_left h1 M e), hM2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem models (X : CMPack Z c FU i hP) :
     ∃ (M : LieModel Xo.univ.t.G (under X.y) (Fin g → X.K)) (ρ : 𝓞 E →+* Module.End X.K (Fin g → X.K)),

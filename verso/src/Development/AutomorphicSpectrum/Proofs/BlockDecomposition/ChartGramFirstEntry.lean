@@ -14,20 +14,20 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclR (σ : E →ₐ[F] E) (e : E) : sigR R σ (inclR R e) = inclR R (σ e) := by
   simp [sigR, inclR]
 
 /- English proof (translation)
-Unfold `halfR`. Rewrite using `[sigR_inclR, AlgHom.commutes]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigR_halfR (σ : E →ₐ[F] E) : sigR R σ (halfR (F := F) (E := E) R) = halfR (F := F) (E := E) R := by
   unfold halfR
   rw [sigR_inclR, AlgHom.commutes]
 
 /- English proof (translation)
-Establish `h : (1 / 2 : F) + 1 / 2 = 1` using `by field_simp; norm_num`. Unfold `halfR`. Rewrite using `[← map_add, ← map_add, h, map_one, map_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem halfR_add_halfR (h2 : (2 : F) ≠ 0) :
     halfR (F := F) (E := E) R + halfR (F := F) (E := E) R = 1 := by
@@ -49,7 +49,7 @@ Both sides reduce to the same expression.
 theorem tailH_vH {K : Type} {M : ℕ} (a s : K) (Y : Fin M → K) : tailH (vH a s Y) = Y := rfl
 
 /- English proof (translation)
-Unfold `hR hform JR tailH`. Simplify using `only [Fin.sum_univ_succ, Matrix.map_apply, Fin.succ_zero_eq_one, hypOne_zero_zero, hypOne_zero_one, hypOne_one_zero, hypOne_one_one, hypOne_zero_rest, hypOne_one_rest, hypOne_rest_zero, hypOne_rest_one, hypOne_rest_rest, map_zero, map_one, mul_zero, zero_mul, mul_one, Finset.sum_ …`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hR_hypOne (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (x y : Fin (M + 2) → R ⊗[F] E) :
     hR R σ (hypOne J) x y =
@@ -61,7 +61,7 @@ theorem hR_hypOne (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) 
   ring
 
 /- English proof (translation)
-Unfold `hR hform JR`. Simplify using `only [map_sum, map_mul, sigR_sigR R σ hσ, Matrix.map_apply, sigR_inclR]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ i j]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -76,7 +76,7 @@ theorem sigR_hR (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) {M : ℕ} (J :
   ring
 
 /- English proof (translation)
-Unfold `hR hform`. Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hR_comb_right (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (c : R ⊗[F] E)
     (x u w : Fin M → R ⊗[F] E) :
@@ -87,7 +87,7 @@ theorem hR_comb_right (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M)
   ring
 
 /- English proof (translation)
-Unfold `hR hform`. Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib, map_add, map_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hR_comb_left (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (c : R ⊗[F] E)
     (u w y : Fin M → R ⊗[F] E) :
@@ -98,7 +98,7 @@ theorem hR_comb_left (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) 
   ring
 
 /- English proof (translation)
-Unfold `tHalf`. Rewrite using `[map_mul, sigR_halfR, hR_hypOne, map_add, map_add, map_mul, map_mul, sigR_sigR R σ hσ, sigR_sigR R σ hσ, sigR_hR R σ hσ J hJ]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sigR_tHalf (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (hJ : ∀ i j, σ (J j i) = J i j) (x : Fin (M + 2) → R ⊗[F] E) :
@@ -109,9 +109,9 @@ theorem sigR_tHalf (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) {M : ℕ} (
   ring
 
 /- English proof (translation)
-Establish `e1 : Ring.inverse (sigR R σ (x 0)) * sigR R σ (x 0) = 1` using `Ring.inverse_mul_cancel _ (hu.map (sigR R σ))`. Establish `e3 : tHalf R σ J x + tHalf R σ J x = hR R σ (hypOne J) x x`. Unfold `tHalf`. Rewrite using `[← add_mul, halfR_add_halfR R h2, one_mul]`. Establish `e4` using `hR_hypOne R σ J x x`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht : tailH (cvec R σ J x v) = fun i => v 0 * tailH x i + tailH v i` using `rfl`. Rewrite using `[hR_hypOne, ht, hR_comb_right]`. Simplify using `only [cvec, vH_zero, vH_one]`. Take the linear combination `(v 1 - tHalf R σ J x * v 0 - hR R σ J (tailH x) (tailH v)) * e1 - v 0 * e3 - v 0 * e4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hR_cvec_right (h2 : (2 : F) ≠ 0) (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (x v : Fin (M + 2) → R ⊗[F] E) (hu : IsUnit (x 0)) :
@@ -128,11 +128,11 @@ theorem hR_cvec_right (h2 : (2 : F) ≠ 0) (σ : E →ₐ[F] E) {M : ℕ} (J : M
   linear_combination (v 1 - tHalf R σ J x * v 0 - hR R σ J (tailH x) (tailH v)) * e1 - v 0 * e3 - v 0 * e4
 
 /- English proof (translation)
-Establish `e1 : Ring.inverse (sigR R σ (x 0)) * sigR R σ (x 0) = 1` using `Ring.inverse_mul_cancel _ (hu.map (sigR R σ))`. Establish `e2 : sigR R σ (Ring.inverse (sigR R σ (x 0))) * x 0 = 1`. Use `congrArg (sigR R σ) e1` as an intermediate fact. Rewrite `this` using `[map_mul, sigR_sigR R σ hσ, map_one]`. Then use the resulting hypothesis. Establish `e3 : tHalf R σ J x + tHalf R σ J x = hR R σ (hypOne J) x x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Unfold `tHalf`. Rewrite using `[← add_mul, halfR_add_halfR R h2, one_mul]`. Establish `e4` using `hR_hypOne R σ J x x`. Establish `htv : tailH (cvec R σ J x v) = fun i => v 0 * tailH x i + tailH v i` using `rfl`. Establish `htw : tailH (cvec R σ J x w) = fun i => w 0 * tailH x i + tailH w i` using `rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hR_hypOne, hR_hypOne R σ J v w, htv, htw, hR_comb_left, hR_comb_right, hR_comb_right]`. Simplify using `only [cvec, vH_zero, vH_one, map_add, map_sub, map_mul, sigR_tHalf R σ hσ J hJ, sigR_hR R σ hσ J hJ]`. Take the linear combination `(sigR R σ (v 0) * (w 1 - tHalf R σ J x * w 0 - hR R σ J (tailH x) (tailH w))) * e1 + (w 0 * (sigR R σ (v 1) - tHalf R σ J x * sigR R σ (v 0) - hR R σ J (tailH v) (tailH x))) * e2 - sigR R σ (v 0) * w 0 * e3 - sigR R σ (v 0) * w 0 * e4`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hR_cvec_cvec (h2 : (2 : F) ≠ 0) (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (hJ : ∀ i j, σ (J j i) = J i j)
@@ -160,11 +160,11 @@ theorem hR_cvec_cvec (h2 : (2 : F) ≠ 0) (σ : E →ₐ[F] E) (hσ : ∀ e, σ 
 end Alg
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hc M J hJ R _ _ n x a s Y hu`. Establish `hσ` using `sig_invol σ hc`. Establish `h2 : (2 : F) ≠ 0` using `two_ne_zero`. Establish `e3 : tHalf R σ J (x 0) + tHalf R σ J (x 0) = hR R σ (hypOne J) (x 0) (x 0)`. Unfold `tHalf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← add_mul, halfR_add_halfR R h2, one_mul]`. Use `⟨rfl, fun j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `hR R σ (hypOne J) (x 0) (cvec R σ J (x 0) (vH (a 0 j) (s 0 j - tHalf R σ J (x 0) * a 0 j) (Y j))) = s 0 j`. Rewrite using `[hR_cvec_right R h2 σ J _ _ hu, vH_zero, vH_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Express the relevant statement in the definitionally equal form `hR R σ (hypOne J) (cvec R σ J (x 0) (vH (a 0 i) (s 0 i - tHalf R σ J (x 0) * a 0 i) (Y i))) (cvec R σ J (x 0) (vH (a 0 j) (s 0 j - tHalf R σ J (x 0) * a 0 j) (Y j))) = hR R σ J (Y i) (Y j) + _`. Rewrite using `[hR_cvec_cvec R h2 σ hσ J hJ.1 _ _ _ hu, hR_hypOne]`. Simplify using `only [vH_zero, vH_one, tailH_vH, map_sub, map_mul, sigR_tHalf R σ hσ J hJ.1]`. Take the linear combination `(-(sigR R σ (a 0 i) * a 0 j)) * e3`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem gramR_chartS : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] (n : ℕ) (x : Fin 1 → Fin (M + 2) → R ⊗[F] E) (a s : Fin 1 → Fin n → R ⊗[F] E) (Y : Fin n → Fin M → R ⊗[F] E), IsUnit (x 0 0) → gramR R σ (hypOne J) (chartS R σ J x a s Y) 0 0 = hR R σ (hypOne J) (x 0) (x 0) ∧ (∀ j : Fin n, gramR R σ (hypOne J) (chartS R σ J x a s Y) 0 j.succ = s 0 j) ∧ ∀ i j : Fin n, gramR R σ (hypOne J) (chartS R σ J x a s Y) i.succ j.succ = gramR R σ J Y i j + (sigR R σ (a 0 i) * s 0 j + sigR R σ (s 0 i) * a 0 j - hR R σ (hypOne J) (x 0) (x 0) * (sigR R σ (a 0 i) * a 0 j)) := by
   intro F E _ _ _ _ _ σ hc M J hJ R _ _ n x a s Y hu

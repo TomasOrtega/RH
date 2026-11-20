@@ -24,13 +24,13 @@ def IsJet (π : B →+* A) (ε : A →+* B) (m : A →+* A) (β : B →+* R) (δ
   (∀ f, coeff 1 (φ f) = δ f)
 
 /- English proof (translation)
-Establish `hsq : ∀ x ∈ RingHom.ker ε ^ 2, E x = 0`. Introduce `x hx`. Rewrite `hx` using `[pow_two]`. Use `Submodule.mul_induction_on hx (fun a ha b hb => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite `ha`, `hb` using `[RingHom.mem_ker]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hE, ha, hb]`. Simplify using the standard rewrite rules. Rewrite using `[map_add, ha, hb, add_zero]`. Establish `hk : f - π (ε f) ∈ RingHom.ker ε`. Rewrite using `[RingHom.mem_ker, map_sub, ← RingHom.comp_apply ε π, hεπ, RingHom.id_apply, sub_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : m f = π (ε f) + (m (f - π (ε f)) - 2 * (f - π (ε f))) + (f - π (ε f)) + (f - π (ε f))`. Establish `: m (π (ε f)) = π (ε f)` using `by rw [← RingHom.comp_apply m π, hmπ]`. Rewrite using `[map_sub, this]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : f = π (ε f) + (f - π (ε f))` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[h1, map_add, map_add, map_add, hEπ, hsq _ (hm2 _ hk)]`. Use `conv_rhs => rw [h2, map_add, hEπ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem deriv_comp_m (π : B →+* A) (ε : A →+* B) (m : A →+* A) (β : B →+* R) (E : A →+ R)
     (hεπ : ε.comp π = RingHom.id B) (hmπ : m.comp π = π)

@@ -21,7 +21,7 @@ namespace GlobalTheory.SplitSign
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Set `τ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hc.2.2.2 τ, hc.2.2.2 τ, star_star]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_conj {σ : E →ₐ[F] E} (hc : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   let τ : E →+* ℂ := (IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom
@@ -29,17 +29,17 @@ theorem conj_conj {σ : E →ₐ[F] E} (hc : IsCMExt F E σ) (x : E) : σ (σ x)
   rw [hc.2.2.2 τ, hc.2.2.2 τ, star_star]
 
 /- English proof (translation)
-Take `⟨P, Q, hPQ, hP, hQ⟩` from `hv`. Establish `hPv : P.under (𝓞 F) = v` using `HeightOneSpectrum.ext hP`. Take `⟨τ, hτ⟩` from `SplitChart.exists_splitPrime_eq hc ⟨P, Q, hPQ, hP, hQ⟩ hPv`. Take `⟨w', hne, -, -, -, hw'⟩` from `SplitChart.exists_conj_place hc (splitPrime_under τ) ⟨P, Q, hPQ, hP, hQ⟩`. Establish `hmax : (splitPrime τ).asIdeal.IsMaximal` using `(splitPrime τ).isMaximal`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmax' : w'.asIdeal.IsMaximal` using `w'.isMaximal`. Establish `hnle : ¬ (splitPrime τ).asIdeal ≤ w'.asIdeal` using `fun hle => hne (HeightOneSpectrum.ext (hmax.eq_of_le hmax'.ne_top hle))`. Take `⟨θ, hθP, hθw⟩` from `Set.not_subset.1 hnle`. Use `set σθ : 𝓞 E := RingOfIntegers.mapRingHom (σ : E →+* E) θ with hσθ`. Establish `hσθP : σθ ∉ (splitPrime τ).asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hθw` to reduce the goal to its premises. Rewrite using `[hw']`. Conclude with `h`. Use `⟨τ, θ - σθ, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `e : ((σθ : 𝓞 E) : E) = σ (θ : E)` using `rfl`. Use `push_cast`. Rewrite using `[map_sub]`. Express the relevant statement in the definitionally equal form `σ (θ : E) - σ (σ (θ : E)) = -((θ : E) - σ (θ : E))`. Rewrite using `[conj_conj hc]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hnot : θ - σθ ∉ (splitPrime τ).asIdeal`. Introduce `h`. Apply `hσθP` to reduce the goal to its premises. Use `(splitPrime τ).asIdeal.sub_mem hθP h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Rewrite `hnot` using `[mem_splitPrime]`. Conclude with `le_antisymm (apply_coe_mem τ _) (not_lt.1 hnot)`.
+A detailed English derivation is pending.
 -/
 theorem exists_anti_unit {σ : E →ₐ[F] E} (hc : IsCMExt F E σ) {v : Pl F} (hv : Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v) :
     ∃ (τ : E →ₐ[F] Fv F v) (δ : 𝓞 E), σ (δ : E) = -(δ : E) ∧ Valued.v (τ (δ : E)) = 1 := by
@@ -74,7 +74,7 @@ theorem exists_anti_unit {σ : E →ₐ[F] E} (hc : IsCMExt F E σ) {v : Pl F} (
     exact le_antisymm (apply_coe_mem τ _) (not_lt.1 hnot)
 
 /- English proof (translation)
-Establish `h` using `hz (1 - GlobalTheory.LatVac.liftV v 1) (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])`. Rewrite `h` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eq_self_of_at {M : Type} [AddCommGroup M] [Module (AF F) M] {v : Pl F} {z : M}
     (hz : At (evFin F v) z) : GlobalTheory.LatVac.liftV v 1 • z = z := by
@@ -83,7 +83,7 @@ theorem smul_eq_self_of_at {M : Type} [AddCommGroup M] [Module (AF F) M] {v : Pl
   exact h.symm
 
 /- English proof (translation)
-Rewrite using `[show GlobalTheory.LatVac.liftV v a * GlobalTheory.LatVac.liftV v b = _ from GlobalTheory.EmbChart.atPlace_mul_right v a _]`. Use `show GlobalTheory.LatVac.liftV v (a * evFin F v (GlobalTheory.LatVac.liftV v b)) = _`. Rewrite using `[GlobalTheory.LatVac.evFin_liftV]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftV_mul_liftV (v : Pl F) (a b : Fv F v) :
     GlobalTheory.LatVac.liftV v a * GlobalTheory.LatVac.liftV v b = GlobalTheory.LatVac.liftV v (a * b) := by
@@ -96,21 +96,19 @@ end GlobalTheory.SplitSign
 open GlobalTheory.SplitSign in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB v hv`. Take `⟨τ, δ, hσδ, hδv⟩` from `exists_anti_unit hB.cm hv`. Use `set s : Fv F v := τ (δ : E) with hs`. Establish `hs0 : s ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hδv` using `[h0, map_zero]`. Conclude with `zero_ne_one hδv`. Establish `hsinv : s⁻¹ ∈ v.adicCompletionIntegers F` using `by show Valued.v s⁻¹ ≤ 1`. Rewrite using `[map_inv₀, hδv, inv_one]`. Take `⟨f, hf⟩` from `SnMass.SkewVol.mem_range_of_cm_fixed hB.cm (x := (δ : E) * δ) (by rw [map_mul, hσδ, neg_mul_neg])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨GlobalTheory.LatVac.liftV v s⁻¹ ⊗ₜ[F] (δ : E), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cA, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, hσδ, TensorProduct.tmul_neg]`. Introduce `u hu`. Rewrite using `[TensorProduct.smul_tmul', GlobalTheory.LatVac.at_liftV v s⁻¹ u hu, TensorProduct.zero_tmul]`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcc : (GlobalTheory.LatVac.liftV v s⁻¹ ⊗ₜ[F] (δ : E)) * (GlobalTheory.LatVac.liftV v s⁻¹ ⊗ₜ[F] (δ : E)) = GlobalTheory.LatVac.liftV v 1 • (1 : AE F E)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, ← hf, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul', liftV_mul_liftV, ← map_smul]`. Establish `h1 : f • (s⁻¹ * s⁻¹) = (1 : Fv F v)`. Rewrite using `[Algebra.smul_def, ← AlgHom.commutes τ f, hf, map_mul, ← hs]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[hcc, smul_mul_assoc, one_mul, smul_eq_self_of_at hz]`. Introduce `d W z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, hav, y, hy, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨GlobalTheory.LatVac.liftV v s⁻¹ * a, ?_, ?_, δ • y, W.L.smul_mem δ hy, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[smul_eq_mul, mul_left_comm, ← smul_eq_mul u a, ha u hu, mul_zero]`. Rewrite using `[map_mul, GlobalTheory.LatVac.evFin_liftV]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `mul_mem hsinv hav`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, inclR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, TensorProduct.smul_tmul', mul_one, Algebra.TensorProduct.tmul_mul_tmul]`. Both sides reduce to the same expression. Consider the case `zero => rw [smul_zero]`.
-
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SplitSign.exists_split_sign : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ →
     ∀ (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → ∃ c : AE F E, cA σ c = -c ∧ At (evFin F v) c ∧

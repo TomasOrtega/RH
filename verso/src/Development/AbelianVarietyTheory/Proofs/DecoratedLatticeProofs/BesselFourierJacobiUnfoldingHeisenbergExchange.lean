@@ -17,7 +17,7 @@ open GlobalTheory.Unf.ContrHeis
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hτ` using `(GlobalTheory.Unf.LinkGram.link_gram D ρ B B'.L B'.ζ B'.line l).1`. Conclude with `(GlobalTheory.LinkKappa.kappa_props D B.L B'.L S l.τ 1 hτ (l.κ S) (fun _ => rfl)).2.2.2.1 g w`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kappa_mul {ρ σ : ℕ} {B : BesLev D ρ} {B' : BesLev D σ} (l : Link B B'.L B'.ζ) (S : HSp D) (g : GA D S)
     (w : WO S B'.L) : l.κ S (w ⬝ mt S g⁻¹) = mt S g ⬝ l.κ S w := by
@@ -25,21 +25,21 @@ theorem kappa_mul {ρ σ : ℕ} {B : BesLev D ρ} {B' : BesLev D σ} (l : Link B
   exact (GlobalTheory.LinkKappa.kappa_props D B.L B'.L S l.τ 1 hτ (l.κ S) (fun _ => rfl)).2.2.2.1 g w
 
 /- English proof (translation)
-Rewrite using `[o.symplOH_resT, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_left, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sympl_resT {T A L : HSp D} (o : OrthDec T A L) (S : HSp D) (c d : WO S L) :
     symplOH S T ((o.resT S).symm (0, c)) ((o.resT S).symm (0, d)) = symplOH S L c d := by
   rw [o.symplOH_resT, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_left, zero_add]
 
 /- English proof (translation)
-Rewrite using `[o.symplOH_resS, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_left, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sympl_resS {T A L : HSp D} (o : OrthDec T A L) (S : HSp D) (c d : WO L S) :
     symplOH T S ((o.resS S).symm (0, c)) ((o.resS S).symm (0, d)) = symplOH L S c d := by
   rw [o.symplOH_resS, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_left, zero_add]
 
 /- English proof (translation)
-Rewrite using `[AddEquiv.eq_symm_apply, o.resT_actO, AddEquiv.apply_symm_apply]`. Simplify using `only [actO_eq, mt_one, Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_resT {T A L : HSp D} (o : OrthDec T A L) (S : HSp D) (g : GA D S) (a : GA D A) (c : WO S L) :
     actO S T g (o.emb (a, 1)) ((o.resT S).symm (0, c)) = (o.resT S).symm (0, c ⬝ mt S g⁻¹) := by
@@ -47,7 +47,7 @@ theorem act_resT {T A L : HSp D} (o : OrthDec T A L) (S : HSp D) (g : GA D S) (a
   simp only [actO_eq, mt_one, Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[AddEquiv.eq_symm_apply, o.resS_actO, AddEquiv.apply_symm_apply]`. Simplify using `only [actO_eq, inv_one, mt_one, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_resS {T A L : HSp D} (o : OrthDec T A L) (S : HSp D) (g : GA D S) (a : GA D A) (c : WO L S) :
     actO T S (o.emb (a, 1)) g ((o.resS S).symm (0, c)) = (o.resS S).symm (0, mt S g ⬝ c) := by
@@ -55,9 +55,9 @@ theorem act_resS {T A L : HSp D} (o : OrthDec T A L) (S : HSp D) (g : GA D S) (a
   simp only [actO_eq, inv_one, mt_one, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `r : (o.resT S).symm (0, γ) ∈ ratMx D T.rank S.rank`. Use `(o.mem_ratL_resT S _).2 ?_` and prove the remaining obligations. Rewrite using `[AddEquiv.apply_symm_apply]`. Conclude with `⟨zero_mem _, hγ⟩`. Take `⟨γ₂, hγ₂⟩` from `r`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `q` using `hf.quasi γ₂ ((o.resT S).symm (0, v))`. Establish `e : ratW T S γ₂ = (o.resT S).symm (0, γ)` using `hγ₂`. Rewrite `q` using `[e, ← map_add, Prod.mk_add_mk, zero_add, sympl_resT]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem quasi_resT {ψ : AddChar (AF D.host.F) ℂ} {T A L : HSp D} (o : OrthDec T A L) (S : HSp D) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) {γ : WO S L} (hγ : γ ∈ ratMx D L.rank S.rank) (v : WO S L) :
@@ -72,9 +72,9 @@ theorem quasi_resT {ψ : AddChar (AF D.host.F) ℂ} {T A L : HSp D} (o : OrthDec
   rwa [e, ← map_add, Prod.mk_add_mk, zero_add, sympl_resT] at q
 
 /- English proof (translation)
-Establish `r : (o.resS S).symm (0, γ) ∈ ratMx D S.rank T.rank`. Use `(o.mem_ratL_resS S _).2 ?_` and prove the remaining obligations. Rewrite using `[AddEquiv.apply_symm_apply]`. Conclude with `⟨zero_mem _, hγ⟩`. Take `⟨γ₂, hγ₂⟩` from `r`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `q` using `hf.quasi γ₂ ((o.resS S).symm (0, v))`. Establish `e : ratW S T γ₂ = (o.resS S).symm (0, γ)` using `hγ₂`. Rewrite `q` using `[e, ← map_add, Prod.mk_add_mk, zero_add, sympl_resS]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem quasi_resS {ψ : AddChar (AF D.host.F) ℂ} {T A L : HSp D} (o : OrthDec T A L) (S : HSp D) {f : WO T S → ℂ}
     (hf : IsThetaFunO ψ T S f) {γ : WO L S} (hγ : γ ∈ ratMx D S.rank L.rank) (v : WO L S) :
@@ -89,13 +89,13 @@ theorem quasi_resS {ψ : AddChar (AF D.host.F) ℂ} {T A L : HSp D} (o : OrthDec
   rwa [e, ← map_add, Prod.mk_add_mk, zero_add, sympl_resS] at q
 
 /- English proof (translation)
-Establish `neg : ∀ v y : WO S L, symplOH S L v (-y) = -symplOH S L v y`. Introduce `v y`. Establish `h` using `GlobalTheory.OrientedHeis.symplOH_add_right (S := S) (T := L) v y (-y)`. Rewrite `h` using `[add_neg_cancel, symplOH_zero_right]`. Take the linear combination `-h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[← covolOne_integral_add vL.covol (fun v => ψ (symplOH S L v (-x)) * T (v + -x) * Y v) ?_ x]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_) show _ = ψ (symplOH S L (v + x) (-x)) * T (v + x + -x) * Y (v + x)` and prove the remaining obligations. Rewrite using `[add_neg_cancel_right, neg, GlobalTheory.OrientedHeis.symplOH_add_left, GlobalTheory.OrientedHeis.symplOH_self, add_zero]`. Expand and normalize the polynomial expressions, which then agree. Introduce `γ hγ a show ψ (symplOH S L (γ + a) (-x)) * T (γ + a + -x) * Y (γ + a) = ψ (symplOH S L a (-x)) * T (a + -x) * Y a`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[add_assoc, hT γ hγ, hY γ hγ, GlobalTheory.OrientedHeis.symplOH_add_left, GlobalTheory.OrientedHeis.symplOH_add_right, AddChar.map_add_eq_mul]`. Establish `e : ψ (symplOH S L γ (-x)) * ψ (-(symplOH S L γ a + symplOH S L γ (-x))) * ψ (symplOH S L γ a) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, ← AddChar.map_zero_eq_one ψ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Take the linear combination `(ψ (symplOH S L a (-x)) * T (a + -x) * Y a) * e`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem integral_exchange {ψ : AddChar (AF D.host.F) ℂ} {S L : HSp D} (vL : VolM D L.rank S.rank) (T Y : WO S L → ℂ)
     (hT : ∀ γ ∈ ratMx D L.rank S.rank, ∀ v, T (γ + v) = ψ (-symplOH S L γ v) * T v)
@@ -123,15 +123,13 @@ theorem integral_exchange {ψ : AddChar (AF D.host.F) ℂ} {S L : HSp D} (vL : V
     linear_combination (ψ (symplOH S L a (-x)) * T (a + -x) * Y a) * e
 
 /- English proof (translation)
-Introduce `D ψ σ B J B' s₁ s₂ l vL φ _ Ξ Θ hΞ hΘ w₀`. Use function extensionality and compare the values at `h₁`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h₀ => ?_)` and prove the remaining obligations. Establish `key` using `integral_exchange (ψ := ψ) vL (fun v => s₂.om₀ (h₀, B'.o.emb (h₁, 1)) Θ ((B'.o.resT J.W₀).symm (0, v))) (fun v => liftA B.o s₁.om₀ B.vA φ Ξ h₀ (l.κ J.W₀ v)) (fun γ hγ v => quasi_resT B'.o J.W₀ (s₂.weil₀.om_pres _ _ hΘ) hγ v) (fun γ hγ v => by`. Simplify using `only [liftA]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[kappa_add, quasi_resS B.o J.W₀ (s₁.weil₀.om_pres _ _ hΞ) (kappa_rat l _ γ hγ), symplOH_kappa, neg_neg]`. Use the proof step `ring) (w₀ ⬝ mt J.W₀ h₀⁻¹)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [pairKer, contractT, thPair, handBF_eq, RCLike.star_def, Complex.conj_conj]`. Use `Eq.trans ?_ (key.trans ?_)` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_) beta_reduce` and prove the remaining obligations. Use `congr 1`. Simplify using `only [liftA]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[s₁.weil₀.om_heis _ _ _ _ hΞ, act_resS, ← kappa_mul, heisO, sympl_resS, symplOH_kappa, ← map_add, Prod.mk_add_mk, add_zero, ← kappa_add]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_) beta_reduce` and prove the remaining obligations. Rewrite using `[s₂.weil₀.om_heis _ _ _ _ hΘ, act_resT, heisO, sympl_resT, ← map_add, Prod.mk_add_mk, add_zero, Matrix.neg_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem besselFourierJacobi_unfolding_heisenberg_exchange : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (B : BesLev D (σ + 1)) (J : JacLev D (σ + 1)) (B' : BesLev D σ) (s₁ : StepBF ψ B J) (s₂ : StepFB ψ J B') (l : Link B B'.L B'.ζ) (vL : VolM D B'.L.rank J.W₀.rank) (φ : GA D B.A → ℂ), IsContAut B.A φ →
     ∀ (Ξ : WO B.V₀ J.W₀ → ℂ) (Θ : WO J.W₀ B'.V₀ → ℂ), IsThetaFunO ψ B.V₀ J.W₀ Ξ → IsThetaFunO ψ J.W₀ B'.V₀ Θ → ∀ w₀ : WO J.W₀ B'.L,

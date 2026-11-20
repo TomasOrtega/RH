@@ -18,9 +18,9 @@ attribute [local instance] MvPolynomial.weightedGradedAlgebra
 def mw : (Σ k, ι k) → (K → ℕ) := fun p => Pi.single p.1 1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (fun _ => by simp), Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, mw, smul_eq_mul]`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single k]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[Pi.single_apply, Ne.symm hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem weight_mw (m : (Σ k, ι k) →₀ ℕ) :
     Finsupp.weight (mw (ι := ι)) m = fun k => ∑ i, m ⟨k, i⟩ := by
@@ -34,9 +34,9 @@ theorem weight_mw (m : (Σ k, ι k) →₀ ℕ) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[mem_weightedHomogeneousSubmodule]`. Introduce `m hm`. Rewrite using `[weight_mw]`. Unfold `IsMultiHomog at hf`. Establish `h` using `hf m (by simpa [MvPolynomial.mem_support_iff] using hm)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `first`. Consider the case `exact h`. Consider the case `exact funext h`. Consider the case `simpa [funext_iff] using h`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_weighted_of_isMultiHomog {f : MRingOver F ι} {a : K → ℕ}
     (hf : IsMultiHomog f a) : f ∈ weightedHomogeneousSubmodule F (mw (ι := ι)) a := by
@@ -51,9 +51,9 @@ theorem mem_weighted_of_isMultiHomog {f : MRingOver F ι} {a : K → ℕ}
     | simpa [funext_iff] using h
 
 /- English proof (translation)
-Unfold `IsMultiHomog`. Introduce `m hm`. Rewrite `hf` using `[mem_weightedHomogeneousSubmodule]`. Establish `h` using `hf (by simpa [MvPolynomial.mem_support_iff] using hm)`. Rewrite `h` using `[weight_mw]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `first`. Consider the case `exact h`. Consider the case `exact congrFun h`. Consider the case `simpa [funext_iff] using h`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_of_mem_weighted {f : MRingOver F ι} {a : K → ℕ}
     (hf : f ∈ weightedHomogeneousSubmodule F (mw (ι := ι)) a) : IsMultiHomog f a := by
@@ -68,22 +68,22 @@ theorem isMultiHomog_of_mem_weighted {f : MRingOver F ι} {a : K → ℕ}
     | simpa [funext_iff] using h
 
 /- English proof (translation)
-The claim follows from `(mem_weightedHomogeneousSubmodule _ _ _ _).mpr (isWeightedHomogeneous_monomial _ _ _ (weight_mw m))`.
+A detailed English derivation is pending.
 -/
 theorem monomial_mem_weighted (m : (Σ k, ι k) →₀ ℕ) (c : F) :
     monomial m c ∈ weightedHomogeneousSubmodule F (mw (ι := ι)) (fun k => ∑ i, m ⟨k, i⟩) := (mem_weightedHomogeneousSubmodule _ _ _ _).mpr
     (isWeightedHomogeneous_monomial _ _ _ (weight_mw m))
 
 /- English proof (translation)
-Establish `hX1 : ∀ k, Ideal.Quotient.mk (chartIdeal V j) (X ⟨k, j k⟩) = 1`. Introduce `k`. Rewrite using `[← map_one (Ideal.Quotient.mk (chartIdeal V j)), Ideal.Quotient.eq]`. Unfold `chartIdeal`. Conclude with `Ideal.mem_sup_right (Ideal.subset_span ⟨k, rfl⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun _ => b.totalDegree, fun e he => ?_⟩` and prove the remaining obligations. Establish `hd : ∀ m ∈ b.support, ∀ k, ∑ i, m ⟨k, i⟩ ≤ e k`. Introduce `m hm k`. Combine the equalities or inequalities in the displayed calculation. Use `⟨∑ m ∈ b.support, monomial m (coeff m b) * ∏ k, X ⟨k, j k⟩ ^ (e k - ∑ i, m ⟨k, i⟩), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`. Establish `h1 : IsWeightedHomogeneous (mw (ι` using `ι)) (monomial m (coeff m b)) (fun k => ∑ i, m ⟨k, i⟩) := isWeightedHomogeneous_monomial _ _ _ (weight_mw m)`. Establish `h2 : IsWeightedHomogeneous (mw (ι` using `ι)) (∏ k, (X ⟨k, j k⟩ : MRingOver F ι) ^ (e k - ∑ i, m ⟨k, i⟩)) (∑ k, (e k - ∑ i, m ⟨k, i⟩) • mw (ι := ι) ⟨k, j k⟩) := IsWeightedHomogeneous.prod _ _ _ fun k _ => (isWeightedHomogeneous_X (R := F) (w := mw (ι := ι)) (i := (⟨k, j k⟩ : Σ k, ι k))).pow _`. Establish `h3` using `h1.mul h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : ((fun k => ∑ i, m ⟨k, i⟩) + ∑ k, (e k - ∑ i, m ⟨k, i⟩) • mw (ι` using `ι) ⟨k, j k⟩) = e := by`. Use function extensionality and compare the values at `k`. Use `hd m hm k` as an intermediate fact. Simplify using `only [Pi.add_apply, Finset.sum_apply, Pi.smul_apply, mw, smul_eq_mul, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h3` using `[hsum]`. Then use the resulting hypothesis. Rewrite using `[map_sum] conv_rhs => rw [MvPolynomial.as_sum b, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_prod]`. Simplify using `only [map_pow, hX1, one_pow, Finset.prod_const_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_homog_chart (V : Ideal (MRingOver F ι)) (j : ∀ k, ι k) (b : MRingOver F ι) :
     ∃ e₀ : K → ℕ, ∀ e, e₀ ≤ e → ∃ b' ∈ weightedHomogeneousSubmodule F (mw (ι := ι)) e,
@@ -148,7 +148,7 @@ theorem chartTheta_apply (g : MRingOver F ι) :
       (Ideal.Quotient.mk W g) := rfl
 
 /- English proof (translation)
-Rewrite using `[chartTheta_apply, map_eq_zero_iff _ (IsFractionRing.injective (MRingOver F ι ⧸ W) (FractionRing (MRingOver F ι ⧸ W))), Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chartTheta_eq_zero_iff {g : MRingOver F ι} : chartTheta W g = 0 ↔ g ∈ W := by
   rw [chartTheta_apply, map_eq_zero_iff _
@@ -164,7 +164,7 @@ def chartRho (W : Ideal (MRingOver F ι)) [W.IsPrime] (j : ∀ k, ι k) :
   aeval fun p => chartC W j p.1 * chartTheta W (X p)
 
 /- English proof (translation)
-Rewrite using `[Ne, chartTheta_eq_zero_iff]`. Unfold `IsChart at hj`. Conclude with `hj k`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem chartTheta_X_ne_zero {j : ∀ k, ι k} (hj : IsChart W j) (k : K) :
     chartTheta W (X ⟨k, j k⟩) ≠ 0 := by
@@ -173,11 +173,11 @@ theorem chartTheta_X_ne_zero {j : ∀ k, ι k} (hj : IsChart W j) (k : K) :
   exact hj k
 
 /- English proof (translation)
-Use `conv_lhs => rw [MvPolynomial.as_sum f]`. Use `conv_rhs => rw [MvPolynomial.as_sum f]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hw` using `(mem_weightedHomogeneousSubmodule _ _ _ _).mp (mem_weighted_of_isMultiHomog hf) (MvPolynomial.mem_support_iff.mp hm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hw` using `[weight_mw]`. Rewrite using `[aeval_monomial, aeval_monomial]`. Establish `key : (m.prod fun p e => c p.1 ^ e) = ∏ k, c k ^ a k`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_sigma, ← hw]`. Simplify using `only [Finset.prod_pow_eq_pow_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `split : (m.prod fun p e => (c p.1 * y p) ^ e) = (m.prod fun p e => c p.1 ^ e) * m.prod fun p e => y p ^ e`. Simplify using `only [mul_pow]`. Conclude with `Finsupp.prod_mul`. Rewrite using `[split, key]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem aeval_mul_const_of_isMultiHomog {A : Type*} [CommRing A] [Algebra F A] (c : K → A)
     (y : (Σ k, ι k) → A) {f : MRingOver F ι} {a : K → ℕ} (hf : IsMultiHomog f a) :
@@ -202,17 +202,15 @@ private theorem aeval_mul_const_of_isMultiHomog {A : Type*} [CommRing A] [Algebr
   ring
 
 /- English proof (translation)
-Establish `hX : ∀ k, chartRho W j (X ⟨k, j k⟩ - 1) = 0`. Introduce `k`. Rewrite using `[map_sub, map_one]`. Unfold `chartRho chartC`. Rewrite using `[aeval_X, inv_mul_cancel₀ (chartTheta_X_ne_zero hj k), sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨S, hS, hWS⟩` from `hW`. Establish `hS0 : Ideal.span S ≤ RingHom.ker (chartRho W j)`. Rewrite using `[Ideal.span_le]`. Introduce `f hf`. Take `⟨a, ha⟩` from `hS f hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hfW : f ∈ W`. Rewrite using `[hWS]`. Conclude with `Ideal.subset_span hf`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`. Establish `h1` using `aeval_mul_const_of_isMultiHomog (chartC W j) (fun p => chartTheta W (X p)) ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : aeval (fun p => chartTheta W (X p)) f = chartTheta W f` using `(DFunLike.congr_fun (MvPolynomial.aeval_unique (chartTheta W)) f).symm`. Establish `h3 : chartRho W j f = (∏ k, chartC W j k ^ a k) * chartTheta W f`. Rewrite using `[← h2, ← h1]`. Both sides reduce to the same expression. Rewrite using `[h3, chartTheta_eq_zero_iff.mpr hfW, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hker : chartIdeal W j ≤ RingHom.ker (chartRho W j)`. Unfold `chartIdeal`. Use `sup_le (hWS.le.trans hS0) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
-
-Conclude with `RingHom.mem_ker.mpr (hX k)`. Conclude with `RingHom.mem_ker.mp (hker hg)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem chartRho_chartIdeal (hW : IsMultiHomogIdeal W) {j : ∀ k, ι k} (hj : IsChart W j)
     {g : MRingOver F ι} (hg : g ∈ chartIdeal W j) : chartRho W j g = 0 := by
@@ -246,9 +244,9 @@ theorem chartRho_chartIdeal (hW : IsMultiHomogIdeal W) {j : ∀ k, ι k} (hj : I
   exact RingHom.mem_ker.mp (hker hg)
 
 /- English proof (translation)
-Establish `h1` using `aeval_mul_const_of_isMultiHomog (chartC W j) (fun p => chartTheta W (X p)) (isMultiHomog_of_mem_weighted ha)`. Establish `h2 : aeval (fun p => chartTheta W (X p)) a = chartTheta W a` using `(DFunLike.congr_fun (MvPolynomial.aeval_unique (chartTheta W)) a).symm`. Establish `h3 : chartRho W j a = (∏ k, chartC W j k ^ e k) * chartTheta W a`. Rewrite using `[← h2, ← h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h0` using `[h3]`. Establish `hne : (∏ k, chartC W j k ^ e k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (inv_ne_zero (chartTheta_X_ne_zero hj k))`. Conclude with `chartTheta_eq_zero_iff.mp ((mul_eq_zero.mp h0).resolve_left hne)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chartRho_form [DecidableEq K] {j : ∀ k, ι k} (hj : IsChart W j) {e : K → ℕ} {a : MRingOver F ι}
     (ha : a ∈ weightedHomogeneousSubmodule F (mw (ι := ι)) e) (h0 : chartRho W j a = 0) : a ∈ W := by
@@ -265,14 +263,14 @@ theorem chartRho_form [DecidableEq K] {j : ∀ k, ι k} (hj : IsChart W j) {e : 
   exact chartTheta_eq_zero_iff.mp ((mul_eq_zero.mp h0).resolve_left hne)
 
 /- English proof (translation)
-The claim follows from `chartRho_form hj ha (chartRho_chartIdeal hW hj haW)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_mem_chartIdeal [DecidableEq K] (hW : IsMultiHomogIdeal W) {j : ∀ k, ι k}
     (hj : IsChart W j) {e : K → ℕ} {a : MRingOver F ι}
     (ha : a ∈ weightedHomogeneousSubmodule F (mw (ι := ι)) e) (haW : a ∈ chartIdeal W j) : a ∈ W := chartRho_form hj ha (chartRho_chartIdeal hW hj haW)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `chartRho_chartIdeal hW hj ((Ideal.eq_top_iff_one _).mp h)`. Rewrite `h1` using `[map_one]`. Conclude with `one_ne_zero h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartIdeal_ne_top (hW : IsMultiHomogIdeal W) {j : ∀ k, ι k} (hj : IsChart W j) :
     chartIdeal W j ≠ ⊤ := by
@@ -288,33 +286,31 @@ section Point
 variable {W : Ideal (MRingOver F ι)}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hu`. Take `⟨M, hM, hpM⟩` from `exists_max_ideal_of_mem_nonunits hu`. Establish `hVp : V.IsPrime` using `hV.1.1`. Use `letI : Field (((MRingOver F ι ⧸ chartIdeal V j) ⧸ M)) := Ideal.Quotient.field M`. Set `θ : MRingOver F ι →ₐ[F] MvPolynomial K (((MRingOver F ι ⧸ chartIdeal V j) ⧸ M))` to `(IsScalarTower.toAlgHom F (((MRingOver F ι ⧸ chartIdeal V j) ⧸ M)) (MvPolynomial K (((MRingOver F ι ⧸ chartIdeal V j) ⧸ M)))).comp ((Ideal.Quotient.mkₐ F M).comp (Ideal.Quotient.mkₐ F (chartIdeal V j)))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `hθ : ∀ g, θ g = MvPolynomial.C (Ideal.Quotient.mk M (Ideal.Quotient.mk (chartIdeal V j) g))` using `fun g => rfl`. Set `c : Finset K → K → MvPolynomial K (((MRingOver F ι ⧸ chartIdeal V j) ⧸ M))` to `fun S k => if k ∈ S then 0 else MvPolynomial.X k`. Set `φ : Finset K → MRingOver F ι →ₐ[F] MvPolynomial K (((MRingOver F ι ⧸ chartIdeal V j) ⧸ M))` to `fun S => aeval fun q => c S q.1 * θ (X q)`. Establish `hφX : ∀ S q, φ S (X q) = c S q.1 * θ (X q)` using `fun S q => aeval_X _ _`. Set `Q : Finset K → Ideal (MRingOver F ι)` to `fun S => RingHom.ker (φ S)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hQp : ∀ S, (Q S).IsPrime` using `fun S => RingHom.ker_isPrime (φ S).toRingHom`. Establish `hVQ : ∀ S, V ≤ Q S` using `fun S g hg => RingHom.mem_ker.mpr (aeval_blockScale_eq_zero hV.1.2.1 (c S) θ (fun g hg => by`. Rewrite using `[hθ, Ideal.Quotient.eq_zero_iff_mem.mpr (show g ∈ chartIdeal V j from Ideal.mem_sup_left hg), map_zero, map_zero]) hg)`. Establish `hmono : ∀ S k, Q S ≤ Q (insert k S)`. Introduce `S k g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ρ : MvPolynomial K (((MRingOver F ι ⧸ chartIdeal V j) ⧸ M)) →ₐ[F] MvPolynomial K (((MRingOver F ι ⧸ chartIdeal V j) ⧸ M))` to `(aeval fun k' => if k' = k then 0 else MvPolynomial.X k').restrictScalars F`. Establish `e : ρ.comp (φ S) = φ (insert k S)`. Use `MvPolynomial.algHom_ext fun q => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, hφX, hφX, map_mul]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Distinguish the cases in `h1 : q.1 ∈ S`. Simplify using `[ρ, c, h1]`. Distinguish the cases in `h2 : q.1 = k`. Substitute `h2` using the available equality. Simplify using `[ρ, c, h1]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[ρ, c, h1, h2]`. Rewrite using `[hθ]`. Simplify using `[ρ, MvPolynomial.algebraMap_eq]`. Establish `hg' : φ S g = 0` using `RingHom.mem_ker.mp hg`. Use `show φ (insert k S) g = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, AlgHom.comp_apply, hg', map_zero]`. Establish `hin : ∀ S k, (X ⟨k, j k⟩ : MRingOver F ι) ∈ Q (insert k S)`. Introduce `S k`. Use `show φ (insert k S) (X ⟨k, j k⟩) = 0`. Rewrite using `[hφX]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[c]`. Establish `hout : ∀ S k, k ∉ S → (X ⟨k, j k⟩ : MRingOver F ι) ∉ Q S`. Introduce `S k hk h`. Establish `h' : φ S (X ⟨k, j k⟩) = 0` using `RingHom.mem_ker.mp h`. Rewrite `h'` using `[hφX, hθ, mk_chartIdeal_X_self, map_one, map_one, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [c, if_neg hk] at h'`. Conclude with `MvPolynomial.X_ne_zero k h'`. Establish `hbase : a ∈ Q ∅` using `by show φ ∅ a = 0`. Establish `e1` using `aeval_blockScale ha (c ∅) (fun q => θ (X q))`. Establish `e2 : (aeval fun q => θ (X q) : MRingOver F ι →ₐ[F] _) = θ` using `MvPolynomial.algHom_ext fun q => aeval_X _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `e1` using `[DFunLike.congr_fun e2 a, hθ, Ideal.Quotient.eq_zero_iff_mem.mpr hpM, map_zero, mul_zero]`. Conclude with `e1`. Establish `chain : ∀ S : Finset K, ((S.card : ℕ) : WithBot ℕ∞) + 1 + ringKrullDim (MRingOver F ι ⧸ Q S) ≤ ringKrullDim (MRingOver F ι ⧸ V)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `empty`. Use `cyc_dim_add_one_le (hVQ ∅) hbase hp` as an intermediate fact. Rewrite using `[Finset.card_empty, Nat.cast_zero, zero_add, add_comm]`. Conclude with `this`. Consider the case `@insert k S hk ih`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `: (Q S).IsPrime` using `hQp S`. Establish `h1` using `cyc_dim_add_one_le (hmono S k) (hin S k) (hout S k hk)`. Rewrite using `[Finset.card_insert_of_notMem hk]`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `chain Finset.univ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (Q Finset.univ).IsPrime` using `hQp _`. Establish `: IsDomain (MRingOver F ι ⧸ Q Finset.univ)` using `Ideal.Quotient.isDomain _`. Establish `h0 : (0 : WithBot ℕ∞) ≤ ringKrullDim (MRingOver F ι ⧸ Q Finset.univ)` using `ringKrullDim_nonneg_of_nontrivial`. Rewrite `h` using `[hV.2, Finset.card_univ]`. Establish `h2 : (((Fintype.card K + 1 : ℕ)) : WithBot ℕ∞) ≤ ((0 + Fintype.card K : ℕ) : WithBot ℕ∞)`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : Fintype.card K + 1 ≤ 0 + Fintype.card K` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isUnit_mk_chartIdeal_form {V : Ideal (MRingOver F ι)} (hV : IsProjVarF V 0) (j : ∀ k, ι k)
     {a : MRingOver F ι} {α : K → ℕ} (ha : IsMultiHomog a α) (hp : a ∉ V) :
@@ -410,11 +406,9 @@ theorem isUnit_mk_chartIdeal_form {V : Ideal (MRingOver F ι)} (hV : IsProjVarF 
   omega
 
 /- English proof (translation)
-Use `haveI := hW.1.1`. Establish `hnt : Nontrivial (MRingOver F ι ⧸ chartIdeal W j)` using `Ideal.Quotient.nontrivial_iff.mpr (chartIdeal_ne_top hW.1.2.1 hj)`. Use `⟨exists_pair_ne _, mul_comm, fun {y} hy => ?_⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨e₀, h⟩` from `exists_homog_chart W j b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b', hb', eb⟩` from `h e₀ le_rfl`. Establish `hb'W : b' ∉ W` using `fun h => hy (by`. Rewrite using `[← eb]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_left h))`. Establish `hu` using `isUnit_mk_chartIdeal_form hW j (isMultiHomog_of_mem_weighted hb') hb'W`.
-
-Rewrite `hu` using `[eb]`. Conclude with `hu.exists_right_inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_isField (hW : IsProjVarF W 0) {j : ∀ k, ι k} (hj : IsChart W j) :
     IsField (MRingOver F ι ⧸ chartIdeal W j) := by
@@ -433,7 +427,7 @@ theorem chart_isField (hW : IsProjVarF W 0) {j : ∀ k, ι k} (hj : IsChart W j)
   exact hu.exists_right_inv
 
 /- English proof (translation)
-Use `letI := (chart_isField hW hj).toField`. Use `haveI : Algebra.FiniteType F (MRingOver F ι ⧸ chartIdeal W j) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ F (chartIdeal W j)) (Ideal.Quotient.mkₐ_surjective F _)`. Conclude with `finite_of_finite_type_of_isJacobsonRing F _`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem chart_finite (hW : IsProjVarF W 0) {j : ∀ k, ι k} (hj : IsChart W j) :
     Module.Finite F (MRingOver F ι ⧸ chartIdeal W j) := by
@@ -461,15 +455,13 @@ instance finiteDimensional_weighted [DecidableEq K] (e : K → ℕ) :
   exact hfin.image _
 
 /- English proof (translation)
-Use `haveI := chart_finite hW hj`. Use `haveI := hW.1.1`. Set `bs` to `Module.finBasis F (MRingOver F ι ⧸ chartIdeal W j)`. Use `choose lift hlift using fun i => Ideal.Quotient.mk_surjective (bs i)`. Use `choose e0 he0 using fun i => exists_homog_chart W j (lift i)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Finset.univ.sup e0, fun e he => ?_⟩` and prove the remaining obligations. Set `π : weightedHomogeneousSubmodule F (mw (ι` to `ι)) e →ₗ[F] MRingOver F ι ⧸ chartIdeal W j := (Ideal.Quotient.mkₐ F (chartIdeal W j)).toLinearMap ∘ₗ Submodule.subtype _`. Establish `hsurj : Function.Surjective π`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← bs.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨b', hb', eb⟩` from `he0 i e ((Finset.le_sup (Finset.mem_univ i)).trans he)`. Conclude with `⟨⟨b', hb'⟩, by simp [π, eb, hlift]⟩`. Establish `hker : LinearMap.ker π = (W.restrictScalars F).comap (Submodule.subtype _)`. Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, Submodule.mem_comap, Submodule.restrictScalars_mem, Submodule.coe_subtype]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `mem_of_mem_chartIdeal hW.1.2.1 hj x.2 (Ideal.Quotient.eq_zero_iff_mem.mp h)`. Introduce `h`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_left h)`.
-
-Establish `h1` using `LinearMap.finrank_range_add_finrank_ker π`. Rewrite `h1` using `[LinearMap.range_eq_top.mpr hsurj, finrank_top, hker, ← Submodule.finrank_map_subtype_eq, Submodule.map_comap_subtype]`. Rewrite using `[ptDeg]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem point_hilb [DecidableEq K] (hW : IsProjVarF W 0) {j : ∀ k, ι k} (hj : IsChart W j) :
     ∃ e₀ : K → ℕ, ∀ e, e₀ ≤ e →
@@ -504,13 +496,13 @@ theorem point_hilb [DecidableEq K] (hW : IsProjVarF W 0) {j : ∀ k, ι k} (hj :
   omega
 
 /- English proof (translation)
-Use `le_antisymm ?_ hWP` and prove the remaining obligations. Introduce `x hxP`. Assume the negation of the conclusion as `hxW`. Take `⟨S, hS, hPS⟩` from `hPh`. Establish `hex : ∃ s ∈ S, s ∉ W` using `by by_contra! h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hxW ((hPS ▸ Ideal.span_le.mpr h : P ≤ W) hxP)`. Take `⟨s, hsS, hsW⟩` from `hex`. Take `⟨a, ha⟩` from `hS s hsS`. Establish `hsP : s ∈ P` using `hPS ▸ Ideal.subset_span hsS`. Take `⟨t, ht⟩` from `(isUnit_mk_chartIdeal_form hW j ha hsW).exists_right_inv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `Ideal.Quotient.mk_surjective t`. Establish `h1 : s * t - 1 ∈ chartIdeal W j`. Rewrite using `[← Ideal.Quotient.eq, map_mul, ht, map_one]`. Establish `h2 : chartIdeal W j ≤ chartIdeal P j` using `sup_le_sup_right hWP _`. Establish `h3 : s * t ∈ chartIdeal P j` using `Ideal.mem_sup_left (P.mul_mem_right t hsP)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (1 : MRingOver F ι) ∈ chartIdeal P j`. Use `Ideal.sub_mem _ h3 (h2 h1)` as an intermediate fact. Simplify using `using this`. Use `haveI := hP`. Conclude with `chartIdeal_ne_top (W := P) ⟨S, hS, hPS⟩ hj ((Ideal.eq_top_iff_one _).mpr h4)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_of_point_le {P : Ideal (MRingOver F ι)} (hW : IsProjVarF W 0) (hP : P.IsPrime)
     (hPh : IsMultiHomogIdeal P) {j : ∀ k, ι k} (hj : IsChart P j) (hWP : W ≤ P) : P = W := by

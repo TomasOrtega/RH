@@ -50,7 +50,7 @@ noncomputable section
 namespace GlobalTheory.RegSch.FirstTermHeckeIso
 
 /- English proof (translation)
-Establish `e : thetaKO om g h (om (p, 1) f) = thetaKO om (g * p) h f`. Unfold `thetaKO`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[e, StdUnn.thetaKO_eq_tsum_sch D ψ A B χ om P.weil ν 𝓨 P.cov f hf (g * p) h, StdUnn.theta, P.trans (g * p) f hf Φ hΦ]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem theta_chart {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {A B : HSp D}
     {χ : (AE D)ˣ →* Circle} {om : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)}

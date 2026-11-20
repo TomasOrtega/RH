@@ -65,15 +65,15 @@ theorem trL_apply (f : X → C) : trL R C e f = f ∘ e := rfl
 
 include e in
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem comp_symm (f : N → C) : (f ∘ e.symm) ∘ e = f := by
   ext x; simp
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `(h f).1 hf`. Introduce `hg`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨g ∘ e.symm, (h _).2 (by rwa [comp_symm]), comp_symm e g⟩`.
+A detailed English derivation is pending.
 -/
 theorem map_trL {A : Submodule R (X → C)} {B : Submodule R (N → C)}
     (h : ∀ f, f ∈ A ↔ f ∘ e ∈ B) : A.map (trL R C e : (X → C) →ₗ[R] (N → C)) = B := by
@@ -85,9 +85,9 @@ theorem map_trL {A : Submodule R (X → C)} {B : Submodule R (N → C)}
     exact ⟨g ∘ e.symm, (h _).2 (by rwa [comp_symm]), comp_symm e g⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Conclude with `⟨f, hf, rfl⟩`. Introduce and unpack `⟨f', hf', h'⟩`.
+Substitute using the available equality. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `: f' = f` using `(trL R C e).injective h'`. Rewrite using `[← this]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem iff_of_map {A : Submodule R (X → C)} {B : Submodule R (N → C)}
     (h : A.map (trL R C e : (X → C) →ₗ[R] (N → C)) = B) (f : X → C) : f ∈ A ↔ f ∘ e ∈ B := by
@@ -100,9 +100,9 @@ theorem iff_of_map {A : Submodule R (X → C)} {B : Submodule R (N → C)}
     rwa [← this]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x`. Conclude with `h (e x)`. Introduce `h x`. Take `⟨r, hr⟩` from `h (e.symm x)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨r, by simpa using hr⟩`.
+A detailed English derivation is pending.
 -/
 theorem intFun_iff (f : X → C) : f ∈ intFun (C := C) R X ↔ f ∘ e ∈ intFun (C := C) R N := by
   constructor
@@ -113,7 +113,7 @@ theorem intFun_iff (f : X → C) : f ∈ intFun (C := C) R X ↔ f ∘ e ∈ int
     exact ⟨r, by simpa using hr⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x y`. Simplify using `using h (e x) (e y)`. Introduce `h x y`. Simplify using `using h (e.symm x) (e.symm y)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem addFun_iff (p : ℕ) (f : X → C) : f ∈ addFun (C := C) R p X ↔ f ∘ e ∈ addFun (C := C) R p N := by
   constructor
@@ -123,16 +123,16 @@ theorem addFun_iff (p : ℕ) (f : X → C) : f ∈ addFun (C := C) R p X ↔ f �
     simpa using h (e.symm x) (e.symm y)
 
 /- English proof (translation)
-The claim follows from `and_congr (intFun_iff e f) (addFun_iff e p f)`.
+A detailed English derivation is pending.
 -/
 theorem linFun_iff (p : ℕ) (f : X → C) :
     f ∈ linFun (C := C) R p X ↔ f ∘ e ∈ linFun (C := C) R p N :=
   and_congr (intFun_iff e f) (addFun_iff e p f)
 
 /- English proof (translation)
-Simplify using `only [pFun, Submodule.mem_pi, Set.mem_univ, true_imp_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x`. Conclude with `h (e x)`. Introduce `h x`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h (e.symm x)`.
+A detailed English derivation is pending.
 -/
 theorem pFun_iff (p : ℕ) (f : X → C) : f ∈ pFun (C := C) R p X ↔ f ∘ e ∈ pFun (C := C) R p N := by
   simp only [pFun, Submodule.mem_pi, Set.mem_univ, true_imp_iff]
@@ -145,14 +145,14 @@ theorem pFun_iff (p : ℕ) (f : X → C) : f ∈ pFun (C := C) R p X ↔ f ∘ e
 variable {M : Submodule R (X → C)} {M' : Submodule R (N → C)}
 
 /- English proof (translation)
-The claim follows from `and_congr (h f) (addFun_iff e p f)`.
+A detailed English derivation is pending.
 -/
 theorem afFun_iff (h : ∀ f, f ∈ M ↔ f ∘ e ∈ M') (p : ℕ) (f : X → C) :
     f ∈ afFun p M ↔ f ∘ e ∈ afFun p M' :=
   and_congr (h f) (addFun_iff e p f)
 
 /- English proof (translation)
-Use `iff_of_map e ?_ f` and prove the remaining obligations. Rewrite using `[Submodule.map_sup, map_trL e (afFun_iff e h p), map_trL e (pFun_iff e p)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem afp_iff (h : ∀ f, f ∈ M ↔ f ∘ e ∈ M') (p : ℕ) (f : X → C) :
     f ∈ afFun p M ⊔ pFun (C := C) R p X ↔ f ∘ e ∈ afFun p M' ⊔ pFun (C := C) R p N := by
@@ -160,7 +160,7 @@ theorem afp_iff (h : ∀ f, f ∈ M ↔ f ∘ e ∈ M') (p : ℕ) (f : X → C) 
   rw [Submodule.map_sup, map_trL e (afFun_iff e h p), map_trL e (pFun_iff e p)]
 
 /- English proof (translation)
-Use `and_congr (h f) ?_` and prove the remaining obligations. Simplify using `[LinearMap.mem_ker]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem augIdeal_iff (h : ∀ f, f ∈ M ↔ f ∘ e ∈ M') (f : X → C) :
     f ∈ augIdeal M ↔ f ∘ e ∈ augIdeal M' := by
@@ -168,11 +168,11 @@ theorem augIdeal_iff (h : ∀ f, f ∈ M ↔ f ∘ e ∈ M') (f : X → C) :
   simp [LinearMap.mem_ker]
 
 /- English proof (translation)
-Use `iff_of_map e ?_ f` and prove the remaining obligations. Rewrite using `[sqIdeal, sqIdeal, Submodule.map_span]`. Use `congr 1`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨_, ⟨a, ha, b, hb, rfl⟩, rfl⟩`. Conclude with `⟨a ∘ e, (h a).1 ha, b ∘ e, (h b).1 hb, rfl⟩`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Use `⟨(a ∘ e.symm) * (b ∘ e.symm), ⟨_, (h _).2 (by rwa [comp_symm]), _, (h _).2 (by rwa [comp_symm]), rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `[trL_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sqIdeal_iff {I : Submodule R (X → C)} {I' : Submodule R (N → C)}
     (h : ∀ f, f ∈ I ↔ f ∘ e ∈ I') (f : X → C) : f ∈ sqIdeal I ↔ f ∘ e ∈ sqIdeal I' := by
@@ -207,11 +207,11 @@ def quotTr {A A₁ : Submodule R (X → C)} {B B₁ : Submodule R (N → C)}
       exact (hA₁ _).2 (by rwa [comp_symm]))
 
 /- English proof (translation)
-Take `⟨B, hB, hv⟩` from `hc`. Use `⟨B.submatrix e e, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_trL e h, hB, Submodule.map_span]`. Use `congr 1`. Use extensionality with `g`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨j, rfl⟩, rfl⟩`. Conclude with `⟨e.symm j, by ext x; simp [trL_apply]⟩`. Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨_, ⟨e j, rfl⟩, by ext x; simp [trL_apply]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[show B.submatrix e e = B.submatrix e.toEquiv e.toEquiv from rfl, Matrix.det_submatrix_equiv_self, hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hasColen_tr [Fintype X] [DecidableEq X] [Fintype N] [DecidableEq N]
     (v : Valuation C NNReal) (h : ∀ f, f ∈ M ↔ f ∘ e ∈ M') {c : NNReal}
@@ -239,7 +239,7 @@ def trA (R C : Type) [Field C] [CommRing R] [Algebra R C] {X N : Type} [AddCommG
   commutes' _ := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`. Introduce `h`. Use `⟨h, fun x k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubgroup.mem_bot.1 hk, add_zero]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem invFun_bot (f : X → C) : f ∈ invFun M ⊥ ↔ f ∈ M := by
   constructor
@@ -249,11 +249,11 @@ theorem invFun_bot (f : X → C) : f ∈ invFun M ⊥ ↔ f ∈ M := by
     rw [AddSubgroup.mem_bot.1 hk, add_zero]
 
 /- English proof (translation)
-Establish `hinv : ∀ f, f ∈ invFun M ⊥ ↔ f ∘ e ∈ invFun M' ⊥` using `fun f => by`. Rewrite using `[invFun_bot, invFun_bot]`. Conclude with `h f`. Introduce `f hf`. Establish `h1 : f ∘ e.symm ∈ invFun M ⊥` using `(hinv _).2 (by rwa [comp_symm])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hG h1`. Establish `h3 : trA R C e (f ∘ e.symm) ∈ (Algebra.adjoin R ((afFun p (invFun M ⊥) : Submodule R (X → C)) : Set (X → C))).map (trA R C e)` using `⟨_, h2, rfl⟩`. Rewrite `h3` using `[AlgHom.map_adjoin]`. Establish `h4 : trA R C e (f ∘ e.symm) = f` using `comp_symm e f`. Rewrite `h3` using `[h4]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Algebra.adjoin_mono ?_ h3` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `(afFun_iff e hinv p a).1 ha`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem genAF_tr (h : ∀ f, f ∈ M ↔ f ∘ e ∈ M') (p : ℕ) (hG : GenAF p M ⊥) : GenAF p M' ⊥ := by
   have hinv : ∀ f, f ∈ invFun M ⊥ ↔ f ∘ e ∈ invFun M' ⊥ := fun f => by
@@ -272,9 +272,9 @@ theorem genAF_tr (h : ∀ f, f ∈ M ↔ f ∘ e ∈ M') (p : ℕ) (hG : GenAF p
   exact (afFun_iff e hinv p a).1 ha
 
 /- English proof (translation)
-Take `⟨cA, cN, cO, hA, hN, hO, h1, h2⟩` from `hT`. Establish `hcard : Fintype.card N = Fintype.card X` using `Fintype.card_congr e.toEquiv`. Use `⟨cA, cN, cO, ?_, hasColen_tr e v h hN, ?_, by rwa [hcard], by rwa [hcard]⟩` and prove the remaining obligations. Take `⟨m, c, ⟨f⟩, hx⟩` from `hA`. Conclude with `⟨m, c, ⟨(quotTr e (linFun_iff e p) (afp_iff e h p)).symm.trans f⟩, hx⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨m, c, ⟨f⟩, hx⟩` from `hO`. Conclude with `⟨m, c, ⟨(quotTr e (augIdeal_iff e h) (sqIdeal_iff e (augIdeal_iff e h))).symm.trans f⟩, hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isTight_tr [Fintype X] [DecidableEq X] [Fintype N] [DecidableEq N]
     (v : Valuation C NNReal) (h : ∀ f, f ∈ M ↔ f ∘ e ∈ M') (p : ℕ) (hT : IsTight v p M) :
@@ -294,9 +294,9 @@ section Pts
 variable {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {p : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Use `⟨a, fun x φ hφ => ha (e x) φ ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, hpt]`. Introduce and unpack `⟨a, ha⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨a, fun y φ hφ => ?_⟩` and prove the remaining obligations. Use `ha (e.symm y) φ (by rw [hφ, ← hpt]; simp)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tors_iff (C : Type) [Field C] [Algebra R C] (T : TorsRep G p) {X N : Type}
     (e : N ≃ X) {pt₀ : X → (sp (R₀ := R) R ⟶ G)} {pt : N → (sp (R₀ := R) R ⟶ G)}
@@ -312,7 +312,7 @@ theorem tors_iff (C : Type) [Field C] [Algebra R C] (T : TorsRep G p) {X N : Typ
     simpa using this
 
 /- English proof (translation)
-Use `choose f hf using fun x => (h₀.range (pt x)).1 ((h.range _).2 ⟨x, rfl⟩)`. Use `choose f' hf' using fun y => (h.range (pt₀ y)).1 ((h₀.range _).2 ⟨y, rfl⟩)`. Conclude with `⟨{ toFun := f invFun := f' left_inv := fun x => h.inj (by rw [hf', hf]) right_inv := fun y => h₀.inj (by rw [hf, hf']) map_add' := fun x y => h₀.inj (by rw [hf, h₀.add, hf, hf, h.add]) }, hf⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_addEquiv {X N : Type} [AddCommGroup X] [AddCommGroup N]
     {pt₀ : X → (sp (R₀ := R) R ⟶ G)} {pt : N → (sp (R₀ := R) R ⟶ G)}
@@ -333,9 +333,9 @@ end GlobalTheory.CompanionTheory.Ar.GR.Av
 namespace GlobalTheory.CompanionTheory.Ar.GR
 
 /- English proof (translation)
-Introduce `hHT p _ C _ _ _ v R _ _ hint hp hc P T N _ _ _ pt hpt`. Use `letI : Algebra ℤ_[p] R := (Av.zpLift p R hc).toAlgebra`. Take `⟨-, cp, US, H, pt₀, h₀, hT⟩` from `hHT p C v R hint hp hc P`. Take `⟨e, he⟩` from `Av.exists_addEquiv h₀ hpt`. Establish `key` using `GlobalTheory.T.polarised_augmentation_theorem p P.g C v R ℤ_[p] AlgEquiv.refl cp US H`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only at key`. Take `⟨-, -, -, -, -, -, -, hG, hTi⟩` from `key`. Rewrite `hG`, `hTi` using `[hT T]`. Establish `hiff` using `Av.tors_iff C T e.toEquiv he`. Conclude with `⟨Av.genAF_tr e hiff p hG, Av.isTight_tr e v hiff p hTi⟩`.
+Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem gp_polAV : HodgeTateDatumStatement → ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C]
     [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C],

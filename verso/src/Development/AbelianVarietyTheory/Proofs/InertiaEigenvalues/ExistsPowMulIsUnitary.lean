@@ -24,9 +24,9 @@ Both sides reduce to the same expression.
 theorem normRpow_val (r : ℝ) (z : ℂˣ) : ((normRpow r z : ℂˣ) : ℂ) = ((‖(z : ℂ)‖ ^ r : ℝ) : ℂ) := rfl
 
 /- English proof (translation)
-Establish `hn : Continuous fun z : ℂˣ => ‖(z : ℂ)‖` using `Units.continuous_val.norm`. Establish `hp : Continuous fun z : ℂˣ => ‖(z : ℂ)‖ ^ r` using `hn.rpow_const fun z => Or.inl (norm_pos_iff.2 z.ne_zero).ne'`. Establish `hc : Continuous fun z : ℂˣ => ((‖(z : ℂ)‖ ^ r : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp hp`. Use `Units.continuous_iff.2 ⟨hc, ?_⟩` and prove the remaining obligations. Establish `: (fun z : ℂˣ => (((normRpow r z)⁻¹ : ℂˣ) : ℂ)) = fun z : ℂˣ => (((‖(z : ℂ)‖ ^ r : ℝ) : ℂ))⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[Units.val_inv_eq_inv_val, normRpow_val]`. Rewrite using `[this]`. Conclude with `hc.inv₀ fun z => Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos (norm_pos_iff.2 z.ne_zero) r).ne'`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_normRpow (r : ℝ) : Continuous (normRpow r) := by
   have hn : Continuous fun z : ℂˣ => ‖(z : ℂ)‖ := Units.continuous_val.norm
@@ -44,9 +44,9 @@ def normTwist {E : Type} [Field E] [NumberField E] (ω : HChar E) (r : ℝ) : HC
     rw [MonoidHom.comp_apply, ω.2.2 k, map_one]⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ ω a ha`. Use `⟨normTwist ω (-(1 / (a : ℝ))), fun x => ?_⟩` and prove the remaining obligations. Establish `ha' : (a : ℝ) ≠ 0` using `by exact_mod_cast (Nat.one_le_iff_ne_zero.1 ha)`. Establish `ht : 0 < ‖((ω.1 x : ℂˣ) : ℂ)‖` using `norm_pos_iff.2 (ω.1 x).ne_zero`. Use `set t : ℝ := ‖((ω.1 x : ℂˣ) : ℂ)‖ with htdef`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : (((normTwist ω (-(1 / (a : ℝ)))).1 x : ℂˣ) : ℂ) = ((t ^ (-(1 / (a : ℝ))) : ℝ) : ℂ)` using `rfl`. Establish `hm : (((ω * normTwist ω (-(1 / (a : ℝ))) ^ a).1 x : ℂˣ) : ℂ) = ((ω.1 x : ℂˣ) : ℂ) * (((normTwist ω (-(1 / (a : ℝ)))).1 x : ℂˣ) : ℂ) ^ a`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_pow, MonoidHom.mul_apply, MonoidHom.pow_apply, Units.val_mul, Units.val_pow_eq_pow_val]`. Use `show ‖(((ω * normTwist ω (-(1 / (a : ℝ))) ^ a).1 x : ℂˣ) : ℂ)‖ = 1`. Rewrite using `[hm, hv, norm_mul, norm_pow, ← htdef, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.rpow_pos_of_pos ht _), ← Real.rpow_natCast, ← Real.rpow_mul ht.le, show -(1 / (a : ℝ)) * (a : ℝ) = -1 by field_simp, Real.rpow_neg_one, mul_inv_cancel₀ ht.ne']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_isUnitary : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (ω : HChar E) (a : ℕ),
     1 ≤ a → ∃ ν : HChar E, (ω * ν ^ a).IsUnitary := by

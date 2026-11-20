@@ -13,9 +13,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.TC
 
 /- English proof (translation)
-Introduce `B X I hOk hP l Z u`. Take `⟨C, hC, -⟩` from `GlobalTheory.Mem.Col2.TC.colsTiedSym_std I hOk hP l Z`. Establish `hF` using `hC u`. Establish `hL` using `GlobalTheory.Mem.Col2.LowerTie.lowerMap_tie I hOk hP l Z u _ _ (C.forms u) hF`. Establish `hB` using `GlobalTheory.Mem.Col2.TC.beOnTie_true I hOk hP l Z u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : ∀ i, (∃ ζ : (I.rec7 l Z).what₂.LL, IsPrimitiveRoot ζ ((I.rec7 l Z).host.g i)) ∧ ∃ ζ : (I.rec7 l Z).what₂.LL, IsPrimitiveRoot ζ ((I.rec7 l Z).host.g i - 1)` using `fun i => GlobalTheory.trueCols_exists_primitiveRoots I hOk l Z i`. Conclude with `GlobalTheory.RedPt0.formsMap_of_symmetricComparison_lowerMap_finiteChar (I.rec7 l Z) u _ _ (C.forms u) hL hB (GlobalTheory.chi_last_step_finite_order_symTie (I.rec7 l Z) u _ _ (C.forms u) hR)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formsMap_at_every_trueColumnMember : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws)
     (Z : TC.Later B (I.cols l)) (u : (I.rec7 l Z).what₂.Word), Formalism.MainNotions.product_first_zeroth_parts.Conclusion6 (I.rec7 l Z) u := by

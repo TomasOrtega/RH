@@ -16,9 +16,9 @@ section General
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `⟨ht, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Use `interval_cases i`. Simplify using `using (iw_domT_strDomT n t ht hinc).1`. Simplify using `using (iw_domT_strDomT n (θ t) hθt hinc').1`. Establish `e : PositivityTheory.Lbc.tnorm θ 2 t = t * θ t`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[PositivityTheory.Lbc.tnorm, List.ofFn_succ]`. Rewrite using `[e]`. Conclude with `(iw_domT_strDomT n _ (Subgroup.mul_mem _ ht hθt) hN).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tl_iw_goodT_two (n : ℕ) (θ : MulAut (GL (Fin n) k)) (t : GL (Fin n) k) (ht : t ∈ PositivityTheory.Lbc.Tor k n)
     (hinc : PositivityTheory.Lbc.IncrV k n t) (hθt : θ t ∈ PositivityTheory.Lbc.Tor k n) (hinc' : PositivityTheory.Lbc.IncrV k n (θ t))
@@ -43,9 +43,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Unfold `GlobalTheory.BCT.tdiag`. Rewrite using `[← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.mul_apply, Pi.add_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `(_root_.zpow_add ϖ (a i) (b i)).symm`.
+A detailed English derivation is pending.
 -/
 theorem tl_tdiag_mul {w : Pl E} {n : ℕ} (ϖ : (w.adicCompletion E)ˣ) (a b : Fin n → ℤ) :
     GlobalTheory.BCT.tdiag ϖ a * GlobalTheory.BCT.tdiag ϖ b = GlobalTheory.BCT.tdiag ϖ (a + b) := by
@@ -57,9 +57,9 @@ theorem tl_tdiag_mul {w : Pl E} {n : ℕ} (ϖ : (w.adicCompletion E)ˣ) (a b : F
   exact (_root_.zpow_add ϖ (a i) (b i)).symm
 
 /- English proof (translation)
-Establish `h0 : Valued.v (ϖ : w.adicCompletion E) ≠ 0` using `by simp`. Unfold `ordL at hϖ`. Rewrite `hϖ` using `[dif_neg h0]`. Establish `h1 : Multiplicative.toAdd (WithZero.unzero h0) = -1` using `by linarith`. Establish `h2 : WithZero.unzero h0 = Multiplicative.ofAdd (-1 : ℤ)` using `by rw [← h1]; rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← WithZero.coe_unzero h0, h2, ← WithZero.coe_one, WithZero.coe_lt_coe]`. Conclude with `Multiplicative.ofAdd_lt.mpr (by norm_num)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valued_v_lt_one_of_ordL_eq_one (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (hϖ : ordL (ϖ : w.adicCompletion E) = 1) :
     Valued.v (ϖ : w.adicCompletion E) < 1 := by
@@ -72,9 +72,9 @@ private theorem valued_v_lt_one_of_ordL_eq_one (w : Pl E) (ϖ : (w.adicCompletio
   exact Multiplicative.ofAdd_lt.mpr (by norm_num)
 
 /- English proof (translation)
-Use `show PositivityTheory.Lbc.IncrV _ n (diagT _ (Fin n) fun i => ϖ ^ a i)`. Apply `diagT_incrV` to reduce the goal to its premises. Introduce `i j hij`. Rewrite using `[(ValuativeRel.isEquiv (valuation (w.adicCompletion E)) Valued.v).lt_iff_lt]`. Simplify using `only [Units.val_zpow_eq_zpow_val, map_zpow₀]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpos : 0 < Valued.v (ϖ : w.adicCompletion E)`. Rewrite using `[zero_lt_iff]`. Simplify using the standard rewrite rules. Conclude with `zpow_lt_zpow_right_of_lt_one₀ hpos (valued_v_lt_one_of_ordL_eq_one w ϖ hϖ) (ha hij)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem incrV_tdiag_of_strictAnti_of_ordL_eq_one (w : Pl E) (n : ℕ) (ϖ : (w.adicCompletion E)ˣ)
     (hϖ : ordL (ϖ : w.adicCompletion E) = 1) (a : Fin n → ℤ) (ha : StrictAnti a) :
@@ -90,11 +90,9 @@ private theorem incrV_tdiag_of_strictAnti_of_ordL_eq_one (w : Pl E) (n : ℕ) (�
   exact zpow_lt_zpow_right_of_lt_one₀ hpos (valued_v_lt_one_of_ordL_eq_one w ϖ hϖ) (ha hij)
 
 /- English proof (translation)
-Establish `hrev : StrictAnti (fun i => -y (Fin.rev i))` using `fun i j hij => neg_lt_neg (hy (Fin.rev_lt_rev.mpr hij))`. Establish `hsum : StrictAnti (y + fun i => -y (Fin.rev i))` using `hy.add hrev`. Establish `h1 : θ (GlobalTheory.BCT.tdiag ϖ y) ∈ PositivityTheory.Lbc.Tor (w.adicCompletion E) n`. Rewrite using `[hθ]`. Conclude with `diagT_mem_Tor n _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : PositivityTheory.Lbc.IncrV (w.adicCompletion E) n (θ (GlobalTheory.BCT.tdiag ϖ y))`. Rewrite using `[hθ]`. Conclude with `incrV_tdiag_of_strictAnti_of_ordL_eq_one w n ϖ hϖ _ hrev`. Establish `h3 : PositivityTheory.Lbc.IncrV (w.adicCompletion E) n (GlobalTheory.BCT.tdiag ϖ y * θ (GlobalTheory.BCT.tdiag ϖ y))`. Rewrite using `[hθ, tl_tdiag_mul]`.
-
-Conclude with `incrV_tdiag_of_strictAnti_of_ordL_eq_one w n ϖ hϖ _ hsum`. Conclude with `tl_iw_goodT_two n θ (GlobalTheory.BCT.tdiag ϖ y) (diagT_mem_Tor n _) (incrV_tdiag_of_strictAnti_of_ordL_eq_one w n ϖ hϖ y hy) h1 h2 h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tl_goodT_of (w : Pl E) (n : ℕ) (θ : MulAut (GLw n w)) (ϖ : (w.adicCompletion E)ˣ)
     (hϖ : ordL (ϖ : w.adicCompletion E) = 1) (y : Fin n → ℤ) (hy : StrictAnti y)
@@ -115,9 +113,9 @@ theorem tl_goodT_of (w : Pl E) (n : ℕ) (θ : MulAut (GLw n w)) (ϖ : (w.adicCo
   exact tl_iw_goodT_two n θ (GlobalTheory.BCT.tdiag ϖ y) (diagT_mem_Tor n _) (incrV_tdiag_of_strictAnti_of_ordL_eq_one w n ϖ hϖ y hy) h1 h2 h3
 
 /- English proof (translation)
-Establish `hmem : δ ∈ PositivityTheory.Lbc.dcos (iwGL n w) (GlobalTheory.BCT.tdiag ϖ y)`. Unfold `GlobalTheory.BCT.dcos at hδ`. Use `split_ifs at hδ with h`. Conclude with `h`. Conclude with `absurd rfl hδ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, hj, κ, hκ, hg⟩` from `(GlobalTheory.T.twisted_iwahori_first_identity (k := w.adicCompletion E)) n (iwGL n w) θ 2 (GlobalTheory.BCT.tdiag ϖ y) hadm (tl_goodT_of w n θ ϖ hϖ y hy hθ) δ hmem`. Use `⟨j⁻¹, (iwGL n w).inv_mem hj, κ, iw_tor_TO w n κ hκ, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, map_inv]`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem tl_contr_of (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (hϖ : ordL (ϖ : w.adicCompletion E) = 1) (n : ℕ)
     (θ : MulAut (GLw n w)) (hadm : PositivityTheory.Lbc.admitted (w.adicCompletion E) n (iwGL n w) θ 2)

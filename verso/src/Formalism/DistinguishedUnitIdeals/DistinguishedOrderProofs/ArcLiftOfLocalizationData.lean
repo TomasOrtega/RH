@@ -13,21 +13,21 @@ variable {V V' : Type} [AddCommGroup V] [Module (PowerSeries O) V] [AddCommGroup
   [Module (PowerSeries O) V']
 
 /- English proof (translation)
-Simplify using `[sm, Submodule.mem_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_sm {a : PowerSeries O} {S : Submodule (PowerSeries O) V} {v : V} :
     v ∈ sm a S ↔ ∃ u ∈ S, a • u = v := by
   simp [sm, Submodule.mem_map]
 
 /- English proof (translation)
-Simplify using `[dv, Submodule.mem_comap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_dv {a : PowerSeries O} {S : Submodule (PowerSeries O) V} {v : V} :
     v ∈ dv a S ↔ a • v ∈ S := by
   simp [dv, Submodule.mem_comap]
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨u, hu, rfl⟩` from `mem_sm.1 hv`. Conclude with `S.smul_mem _ hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sm_le (a : PowerSeries O) (S : Submodule (PowerSeries O) V) : sm a S ≤ S := by
   intro v hv
@@ -35,20 +35,20 @@ theorem sm_le (a : PowerSeries O) (S : Submodule (PowerSeries O) V) : sm a S ≤
   exact S.smul_mem _ hu
 
 /- English proof (translation)
-Introduce `v hv`. Conclude with `mem_dv.2 (S.smul_mem _ hv)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem le_dv (a : PowerSeries O) (S : Submodule (PowerSeries O) V) : S ≤ dv a S := by
   intro v hv
   exact mem_dv.2 (S.smul_mem _ hv)
 
 /- English proof (translation)
-Simplify using `[Base.lc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lc_pow (B : Base O) (K : ℕ) : B.lc ^ K = C ((B.ℓ : O) ^ K) := by
   simp [Base.lc]
 
 /- English proof (translation)
-Establish `: B.lc ^ K = ((B.ℓ ^ K : ℕ) : PowerSeries O)` using `by simp [Base.lc]`. Rewrite using `[this, Nat.cast_smul_eq_nsmul]`. Conclude with `D.nsmul_mem hd _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lc_smul_mem (B : Base O) (K : ℕ) (D : AddSubgroup V) {d : V} (hd : d ∈ D) :
     B.lc ^ K • d ∈ D := by
@@ -57,7 +57,7 @@ theorem lc_smul_mem (B : Base O) (K : ℕ) (D : AddSubgroup V) {d : V} (hd : d �
   exact D.nsmul_mem hd _
 
 /- English proof (translation)
-Take `⟨d, hd, hm⟩` from `he`. Conclude with `⟨d, hd, h hm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem InSum.mono {D : AddSubgroup V} {S S' : Submodule (PowerSeries O) V} (h : S ≤ S') {e : V}
     (he : InSum D S e) : InSum D S' e := by
@@ -65,11 +65,11 @@ theorem InSum.mono {D : AddSubgroup V} {S S' : Submodule (PowerSeries O) V} (h :
   exact ⟨d, hd, h hm⟩
 
 /- English proof (translation)
-Establish `hit : ∀ (k : ℕ) (v : V), f ((⇑γ)^[k] v) = (⇑γ')^[k] (f v)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro v`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `succ k ih => intro v`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, ih, hf]`. Unfold `polyAct`. Rewrite using `[Polynomial.sum_def, Polynomial.sum_def, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, hit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem polyAct_map (f : V →ₗ[PowerSeries O] V') (γ : V →+ V) (γ' : V' →+ V')
     (hf : ∀ v, f (γ v) = γ' (f v)) (P : Polynomial O) (v : V) :
@@ -85,13 +85,11 @@ theorem polyAct_map (f : V →ₗ[PowerSeries O] V') (γ : V →+ V) (γ' : V' �
   rw [map_smul, hit]
 
 /- English proof (translation)
-Establish `hit : ∀ k : ℕ, (⇑γ)^[k] w - w ∈ U`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Function.iterate_succ_apply']`. Establish `: γ ((⇑γ)^[k] w) - w = γ ((⇑γ)^[k] w - w) + (γ w - w)`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `U.add_mem (hU _ ih) hw`. Unfold `polyAct`. Rewrite using `[Polynomial.eval_eq_sum, Polynomial.sum_def, Polynomial.sum_def, map_sum, Finset.sum_smul, ← Finset.sum_sub_distrib]`. Use `U.sum_mem fun k _ => ?_` and prove the remaining obligations. Rewrite using `[one_pow, mul_one, ← smul_sub]`.
-
-Conclude with `U.smul_mem _ (hit k)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyAct_shift (γ : V →+ V) (U : Submodule (PowerSeries O) V) (hU : ∀ u ∈ U, γ u ∈ U)
     (P : Polynomial O) {w : V} (hw : γ w - w ∈ U) :
@@ -114,7 +112,7 @@ theorem polyAct_shift (γ : V →+ V) (U : Submodule (PowerSeries O) V) (hU : �
   exact U.smul_mem _ (hit k)
 
 /- English proof (translation)
-Establish `e : γ v - v = (γ (v - a • w) - (v - a • w)) + a • (γ w - w)`. Rewrite using `[map_sub, ha, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `U.add_mem (U.sub_mem (hU _ hv) hv) (U.smul_mem _ hw)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_of_congr (γ : V →+ V) (U : Submodule (PowerSeries O) V) (hU : ∀ u ∈ U, γ u ∈ U)
     (a : PowerSeries O) (ha : ∀ v, γ (a • v) = a • γ v) {v w : V} (hw : γ w - w ∈ U)
@@ -136,7 +134,7 @@ variable {O : Type} [CommRing O] {B : Base O} {n : ℕ} {V V' : Type} [AddCommGr
   [Module (PowerSeries O) V] [AddCommGroup V'] [Module (PowerSeries O) V']
 
 /- English proof (translation)
-Rewrite using `[L.γ_semi]`. Use `congr 1`. Conclude with `B.γ.commutes a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem γ_C (L : Lat B n V) (i : ZMod n) (a : O) (v : V) : L.γ i (C a • v) = C a • L.γ i v := by
   rw [L.γ_semi]
@@ -144,9 +142,9 @@ theorem γ_C (L : Lat B n V) (i : ZMod n) (a : O) (v : V) : L.γ i (C a • v) =
   exact B.γ.commutes a
 
 /- English proof (translation)
-Introduce `u hu`. Take `⟨v, hv, rfl⟩` from `mem_sm.1 hu`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 hX`. Establish `hγv : L.γ c v ∈ L.N c`. Establish `: L.γ c v = (L.γ c v - v) + v` using `by abel`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(L.N c).add_mem (sm_le _ _ (hN v hv)) hv`. Rewrite using `[L.γ_semi, ← ha, mul_comm, mul_smul]`. Conclude with `mem_sm.2 ⟨a • L.γ c v, (L.N c).smul_mem _ hγv, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem γ_XN (L : Lat B n V) (c : ZMod n) (hX : B.GamX) (hN : L.GamN c) :
     ∀ u ∈ sm X (L.N c), L.γ c u ∈ sm X (L.N c) := by
@@ -161,7 +159,7 @@ theorem γ_XN (L : Lat B n V) (c : ZMod n) (hX : B.GamX) (hN : L.GamN c) :
   exact mem_sm.2 ⟨a • L.γ c v, (L.N c).smul_mem _ hγv, rfl⟩
 
 /- English proof (translation)
-Introduce `w hw`. Establish `: L.γ c w = (L.γ c w - w) + w` using `by abel`. Rewrite using `[this]`. Conclude with `(L.W c ell Λ).add_mem (sm_le _ _ (h w hw)) hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamma_mem_latticeW (L : Lat B n V) (c : ZMod n) (ell : ℕ) (Λ : PowerSeries O) (h : L.GammaCongruentArc c ell Λ) :
     ∀ w ∈ L.W c ell Λ, L.γ c w ∈ L.W c ell Λ := by
@@ -171,7 +169,7 @@ theorem gamma_mem_latticeW (L : Lat B n V) (c : ZMod n) (ell : ℕ) (Λ : PowerS
   exact (L.W c ell Λ).add_mem (sm_le _ _ (h w hw)) hw
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => simp only [Lat.phiIt]`. Rewrite using `[h.φ_comm, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_phiIt {L : Lat B n V} {L' : Lat B n V'} (h : LatHom L L') (i : ZMod n) (k : ℕ) (v : V) :
     h.f (L.phiIt i k v) = L'.phiIt i k (h.f v) := by
@@ -180,11 +178,9 @@ theorem hom_phiIt {L : Lat B n V} {L' : Lat B n V'} (h : LatHom L L') (i : ZMod 
   | succ k ih => simp only [Lat.phiIt]; rw [h.φ_comm, ih]
 
 /- English proof (translation)
-Establish `hp : L.pull (c - (ell : ZMod n)) ell ≤ (L'.pull (c - (ell : ZMod n)) ell).comap h.f`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Use `show h.f (L.phiIt _ _ u) ∈ L'.pull _ _`. Rewrite using `[hom_phiIt]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.subset_span ⟨h.f u, h.map_N _ u hu, rfl⟩`. Introduce `v hv`. Establish `h1 : Λ • v ∈ L.pull (c - (ell : ZMod n)) ell` using `mem_dv.1 hv`. Establish `h2` using `hp h1`. Use `mem_dv.2 ?_` and prove the remaining obligations.
-
-Rewrite using `[← map_smul]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_arcSpan {L : Lat B n V} {L' : Lat B n V'} (h : LatHom L L') (c : ZMod n) (ell : ℕ)
     (Λ : PowerSeries O) : ∀ v ∈ L.W c ell Λ, h.f v ∈ L'.W c ell Λ := by
@@ -210,13 +206,13 @@ variable {O : Type} [CommRing O] {B : Base O} {n : ℕ} {V₁ V₂ : Type} [AddC
   {Λ : PowerSeries O} {r₁ r₂ : ℕ} {S₁ : LevelData L₁ c ell Λ r₁} {S₂ : LevelData L₂ c ell Λ r₂}
 
 /- English proof (translation)
-Establish `hU` using `γ_XN L₂ c hGX hGN`. Establish `hW` using `gamma_mem_latticeW L₂ c ell Λ hP4c`. Set `G` to `gW (L₂.γ c) (L₂.W c ell Λ) hW`. Set `x : ↥(L₂.W c ell Λ)` to `⟨w, hwW⟩`. Establish `hval : ((polyAct PP G x : ↥(L₂.W c ell Λ)) : V₂) = polyAct PP (L₂.γ c) w` using `polyAct_map (L₂.W c ell Λ).subtype G (L₂.γ c) (fun _ => rfl) PP x`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2a : ((polyAct PP G x : ↥(L₂.W c ell Λ)) : V₂) - C (PP.eval 1) • w ∈ sm X (L₂.N c)`. Rewrite using `[hval]`. Conclude with `polyAct_shift (L₂.γ c) _ hU PP hwI`. Use `⟨polyAct PP G x, ?_, h2a, ?_⟩` and prove the remaining obligations. Conclude with `inv_of_congr (L₂.γ c) _ hU (C (PP.eval 1)) (γ_C L₂ c _) hwI h2a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s hs`. Establish `hG : ∀ v, S₂.loc s (G v) = S₂.gE s (S₂.loc s v)` using `fun v => hEq s hs v.1 v.2 _`. Rewrite using `[polyAct_map (S₂.loc s) G (S₂.gE s) hG PP x]`. Use `hK3 s hs _ (InSum.mono (hRD s hs).2 (hK2 s hs x ?_))` and prove the remaining obligations. Establish `hm : ((G x - x : ↥(L₂.W c ell Λ)) : V₂) ∈ sm X (L₂.N c)` using `hwI`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `((hP4b (G x - x)).1 hm).2 s hs` as an intermediate fact. Rewrite `this` using `[map_sub, hG]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem step2 (g : ℕ) (PP : Polynomial O) (hGX : B.GamX) (hGN : L₂.GamN c)
     (hP4c : L₂.GammaCongruentArc c ell Λ) (hEq : S₂.Equiv) (hK2 : S₂.K2iii) (hRD : S₂.RD g)
@@ -243,27 +239,25 @@ theorem step2 (g : ℕ) (PP : Polynomial O) (hGX : B.GamX) (hGN : L₂.GamN c)
     rwa [map_sub, hG] at this
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hPa₂.1 x'`. Establish `hyII : ∀ s < ell, InSum (S₂.Dc s) (S₂.Nb s) (S₂.locL s y)`. Introduce `s hs`. Take `⟨d, hd, hm⟩` from `hx' s hs`. Use `⟨B.lc ^ sig • d, lc_smul_mem B sig _ hd, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : S₂.locL s y - B.lc ^ sig • d = (S₂.locL s y - B.lc ^ sig • S₂.loc s x') + B.lc ^ sig • (S₂.loc s x' - d)`. Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `(S₂.Nb s).add_mem ((hP3₂ s hs).2 (hy s hs)) ((S₂.Nb s).smul_mem _ hm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y₁, ν, hII₁, hNN, hyeq⟩` from `hCL y ((hBr₂.2 y).1 hyII)`. Establish `hy₁` using `(hBr₁.2 y₁).2 hII₁`. Establish `hν` using `(hBr₂.1 ν).2 hNN`. Take `⟨x₁, hx₁⟩` from `hPa₁.2 y₁`. Set `hx : ↥(L₂.W c ell Λ)` to `⟨h.f x₁, map_mem_arcSpan h c ell Λ _ x₁.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Δ : ↥(L₂.W c ell Λ)` to `B.lc ^ (2 * sig + 2 * a₀) • x' - hx`. Establish `hΔ : ∀ s < ell, S₂.loc s Δ ∈ S₂.Nb s`. Introduce `s hs`. Establish `a1` using `(hP3₂ s hs).2 (hy s hs)`. Establish `a2` using `(hP3₂ s hs).2 (hFl s hs _ (hx₁ s hs))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a2` using `[map_sub, map_smul, m.loc_comm s hs x₁.1 x₁.2 (map_mem_arcSpan h c ell Λ _ x₁.2), m.locL_comm s hs]`. Establish `heq` using `congrArg (S₂.locL s) hyeq`. Rewrite `heq` using `[map_add, map_smul, map_smul, ← lc_pow]`. Establish `key : S₂.loc s Δ = -(B.lc ^ (sig + 2 * a₀) • (S₂.locL s y - B.lc ^ sig • S₂.loc s x')) - (S₂.loc s hx - B.lc ^ sig • S₂.locL s (extL m.prL y₁)) + (B.lc ^ sig * B.lc ^ (2 * a₀)) • S₂.locL s ν` using `by show S₂.loc s (B.lc ^ (2 * sig + 2 * a₀) • x' - hx) = _`. Establish `h1 : B.lc ^ (sig + 2 * a₀) • S₂.locL s y = B.lc ^ sig • S₂.locL s (extL m.prL y₁) + (B.lc ^ sig * B.lc ^ (2 * a₀)) • S₂.locL s ν`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_add, mul_smul, heq, smul_add, mul_smul]`. Establish `h2 : B.lc ^ (sig + 2 * a₀) • B.lc ^ sig • S₂.loc s x' = B.lc ^ (2 * sig + 2 * a₀) • S₂.loc s x'`. Rewrite using `[smul_smul, ← pow_add]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_smul, smul_sub, h1, h2]`. Normalize the expressions using the abelian group laws. Rewrite using `[key]`. Conclude with `(S₂.Nb s).add_mem ((S₂.Nb s).sub_mem ((S₂.Nb s).neg_mem ((S₂.Nb s).smul_mem _ a1)) a2) ((S₂.Nb s).smul_mem _ (hν s hs))`. Establish `hΔTh : (Δ : V₂) ∈ dv (B.Th ell g) (L₂.N c)` using `(hP4a₂.2 Δ).2 fun s hs => (hRD₂ s hs).1 (hΔ s hs)`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨Δ₁, hΔ₁, hΔim⟩` from `hP4d _ hΔTh`. Set `D1 : ↥(L₁.W c ell Λ)` to `⟨Δ₁, hP4a₁.1 hΔ₁⟩`. Establish `hD1` using `(hP4a₁.2 D1).1 hΔ₁`. Use `⟨B.lc ^ rr • x₁ + D1, ?_, ?_⟩` and prove the remaining obligations. Use `show h.f (B.lc ^ rr • (x₁ : V₁) + Δ₁) = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_add, map_smul, hΔim]`. Use `show B.lc ^ rr • h.f x₁ + B.lc ^ rr • (B.lc ^ (2 * sig + 2 * a₀) • (x' : V₂) - h.f x₁) = _`. Rewrite using `[smul_sub, smul_smul, ← pow_add, add_sub_cancel, add_comm rr]`. Introduce `s hs`. Take `⟨d, hd, hm⟩` from `hy₁ s hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨B.lc ^ rr • B.lc ^ sig • d, lc_smul_mem B rr _ (lc_smul_mem B sig _ hd), ?_⟩` and prove the remaining obligations. Establish `e : S₁.loc s (B.lc ^ rr • x₁ + D1) - B.lc ^ rr • B.lc ^ sig • d = B.lc ^ rr • (S₁.loc s x₁ - B.lc ^ sig • S₁.locL s y₁) + B.lc ^ rr • B.lc ^ sig • (S₁.locL s y₁ - d) + S₁.loc s D1`. Rewrite using `[map_add, map_smul]`. Simplify using `only [smul_sub]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[e]`. Use `Submodule.add_mem _ (Submodule.add_mem _ (Submodule.smul_mem _ _ ?_) (Submodule.smul_mem _ _ (Submodule.smul_mem _ _ ((hRD₁ s hs).1 hm)))) (hD1 s hs)` and prove the remaining obligations. Conclude with `le_dv _ _ ((hP3₁ s hs).1 (hx₁ s hs))`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem step3 (m : LevelMap h S₁ S₂) (g sig rr a₀ : ℕ) (ϖ : O) (H b : ℕ → ℕ) (kind : ℕ → Kind)
     (U₁ : ℕ → Submodule O (Fin r₁ → O)) (U₂ : ℕ → Submodule O (Fin r₂ → O))
@@ -340,13 +334,13 @@ theorem step3 (m : LevelMap h S₁ S₂) (g sig rr a₀ : ℕ) (ϖ : O) (H b : �
     exact le_dv _ _ ((hP3₁ s hs).1 (hx₁ s hs))
 
 /- English proof (translation)
-Establish `hW` using `gamma_mem_latticeW L₁ c ell Λ hP4c`. Set `G` to `gW (L₁.γ c) (L₁.W c ell Λ) hW`. Establish `hval : ((polyAct PP' G z : ↥(L₁.W c ell Λ)) : V₁) = polyAct PP' (L₁.γ c) z` using `polyAct_map (L₁.W c ell Λ).subtype G (L₁.γ c) (fun _ => rfl) PP' z`. Rewrite using `[← hval]`. Use `⟨(polyAct PP' G z).2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set zt := polyAct PP' G z with hzt`. Establish `: ((G zt - zt : ↥(L₁.W c ell Λ)) : V₁) ∈ sm X (L₁.N c)`. Use `(hP4b (G zt - zt)).2 ⟨hP4c zt zt.2, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Establish `hG : ∀ v, S₁.loc s (G v) = S₁.gE s (S₁.loc s v)` using `fun v => hEq s hs v.1 v.2 _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, hm⟩` from `hK3 s hs _ (hz s hs)`. Rewrite `hm` using `[← polyAct_map (S₁.loc s) G (S₁.gE s) hG PP' z, ← hzt]`. Establish `e : S₁.loc s (G zt - zt) = S₁.gE s (S₁.loc s zt - d) - (S₁.loc s zt - d)`. Rewrite using `[map_sub, hG, map_sub, (hDc s hs).1 d hd]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(S₁.Nl s).sub_mem ((hDc s hs).2 _ hm) hm`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem step4 (g : ℕ) (PP' : Polynomial O) (hP4c : L₁.GammaCongruentArc c ell Λ) (hEq : S₁.Equiv)
     (hK3 : S₁.K3a4 g PP') (hDc : S₁.DcFix) (hP4b : S₁.XMulIff) (z : ↥(L₁.W c ell Λ))
@@ -380,15 +374,15 @@ namespace Formalism.ExponentWindows.E
 open PowerSeries IteratedPhiHomomorphisms
 
 /- English proof (translation)
-Introduce `O _ B n _ Cu abelian₂ g sig rr a₀ kap V₁ V₂ _ _ _ _ L₁ L₂ h c r₁ r₂ S₁ S₂ m ϖ H b kind U₁ U₂ PP PP' _ hGX hGN hP4c₁ hP4c₂ hEq₁ hEq₂ hK2 hRD₁ hRD₂ hK32 hK34 hDc hPa₁ hPa₂ hP3₁ hP3₂ hP4a₁ hP4a₂ hP4b₁ hP4b₂ hBr₁ hBr₂ hFl hP4d hCL hPP w hw`. Take `⟨k, ε, hk, hε⟩` from `hPP`. Take `⟨x', hx'I, hx'c, hx'l⟩` from `step2 g PP hGX hGN hP4c₂ hEq₂ hK2 hRD₂ hK32 hP4b₂ w hw.1 hw.2`. Take `⟨z, hzim, hzl⟩` from `step3 m g sig rr a₀ ϖ H b kind U₁ U₂ hRD₁ hRD₂ hPa₁ hPa₂ hP3₁ hP3₂ hP4a₁ hP4a₂ hBr₁ hBr₂ hFl hP4d hCL x' hx'l`. Take `⟨h4W, h4I⟩` from `step4 g PP' hP4c₁ hEq₁ hK34 hDc hP4b₁ z hzl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨polyAct PP' (L₁.γ c) (z : V₁), k, ε, hk, ⟨h4I, h4W⟩, ?_⟩` and prove the remaining obligations. Establish `hU` using `γ_XN L₂ c hGX hGN`. Rewrite using `[polyAct_map h.f (L₁.γ c) (L₂.γ c) (h.γ_comm c) PP' z, hzim, lc_pow]`. Establish `hsm : polyAct PP' (L₂.γ c) (C ((B.ℓ : O) ^ (2 * sig + 2 * a₀ + rr)) • (x' : V₂)) = C ((B.ℓ : O) ^ (2 * sig + 2 * a₀ + rr)) • polyAct PP' (L₂.γ c) (x' : V₂)` using `(polyAct_map (LinearMap.lsmul (PowerSeries O) V₂ (C ((B.ℓ : O) ^ (2 * sig + 2 * a₀ + rr)))) (L₂.γ c) (L₂.γ c) (fun v => (γ_C L₂ c _ v).symm) PP' (x' : V₂)).symm`. Rewrite using `[hsm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `polyAct_shift (L₂.γ c) _ hU PP' hx'I`. Establish `e : C ((B.ℓ : O) ^ (2 * sig + 2 * a₀ + rr)) • polyAct PP' (L₂.γ c) (x' : V₂) - C ((ε : O) * (B.ℓ : O) ^ (2 * sig + 2 * a₀ + rr + k)) • w = C ((B.ℓ : O) ^ (2 * sig + 2 * a₀ + rr)) • ((polyAct PP' (L₂.γ c) (x' : V₂) - C (PP'.eval 1) • (x' : V₂)) + C (PP'.eval 1) • ((x' : V₂) - C (P …`. Establish `hc : C ((ε : O) * (B.ℓ : O) ^ (2 * sig + 2 * a₀ + rr + k)) = C ((B.ℓ : O) ^ (2 * sig + 2 * a₀ + rr)) * (C (PP'.eval 1) * C (PP.eval 1))`. Rewrite using `[← map_mul, ← map_mul, mul_comm (PP'.eval 1), hε]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc]`. Simplify using `only [smul_sub, smul_add, mul_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.add_mem _ h1 (Submodule.smul_mem _ _ hx'c))`.
+A detailed English derivation is pending.
 -/
 theorem arc_lift_of_localization_data : ArcLiftOfLocalizationData := by
   intro O _ B n _ Cu abelian₂ g sig rr a₀ kap V₁ V₂ _ _ _ _ L₁ L₂ h c r₁ r₂ S₁ S₂ m ϖ H b kind U₁ U₂
@@ -433,7 +427,7 @@ open PowerSeries
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Use `ext1 i`. Establish `h` using `RingHom.map_mulVec (C : O →+* PowerSeries O) (LinearMap.toMatrix' f) v i`. Rewrite `h` using `[LinearMap.toMatrix'_mulVec]`. Simplify using `only [extL, Matrix.toLin'_apply, cst]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extL_cst {r₁ r₂ : ℕ} (f : (Fin r₁ → O) →ₗ[O] (Fin r₂ → O)) (v : Fin r₁ → O) :
     extL f (cst v) = cst (f v) := by
@@ -444,14 +438,14 @@ theorem extL_cst {r₁ r₂ : ℕ} (f : (Fin r₁ → O) →ₗ[O] (Fin r₂ →
   exact h.symm
 
 /- English proof (translation)
-Use `ext1 i`. Simplify using `[cst]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cst_smul {r : ℕ} (a : O) (v : Fin r → O) : cst (a • v) = C a • cst v := by
   ext1 i
   simp [cst]
 
 /- English proof (translation)
-Consider the cases of `k`. Conclude with `⟨0, 0, by simp⟩`. Conclude with `⟨0, 0, 0, Submodule.zero_mem _, by simp⟩`. Conclude with `⟨0, 0, 0, Submodule.zero_mem _, by simp⟩`.
+Split into cases according to the possible forms of the given data. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem levelCond_zero {r : ℕ} (ϖ : O) (p : PowerSeries O) (H b : ℕ) (k : Kind)
     (V : Submodule O (Fin r → O)) : LevelCond ϖ p H b k V 0 := by
@@ -461,14 +455,14 @@ theorem levelCond_zero {r : ℕ} (ϖ : O) (p : PowerSeries O) (H b : ℕ) (k : K
   · exact ⟨0, 0, 0, Submodule.zero_mem _, by simp⟩
 
 /- English proof (translation)
-Introduce `_ _` and use `levelCond_zero _ _ _ _ _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NN_zero {r : ℕ} (ϖ : O) (p : ℕ → PowerSeries O) (H b : ℕ → ℕ) (kind : ℕ → Kind)
     (V : ℕ → Submodule O (Fin r → O)) (ell : ℕ) : NN ϖ p H b kind V ell 0 :=
   fun _ _ => levelCond_zero _ _ _ _ _ _
 
 /- English proof (translation)
-Introduce `s _`. Use `⟨0, 0, ?_⟩` and prove the remaining obligations. Establish `: C (ϖ ^ 0) • (0 : Fin r → PowerSeries O) - abelian₂ p H ell • cst 0 = 0` using `by ext1 i; simp [cst]`. Rewrite using `[this]`. Conclude with `levelCond_zero _ _ _ _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem II_zero {r : ℕ} (ϖ : O) (p : ℕ → PowerSeries O) (H b : ℕ → ℕ) (kind : ℕ → Kind)
     (V : ℕ → Submodule O (Fin r → O)) (ell : ℕ) : II ϖ p H b kind V ell 0 := by
@@ -480,7 +474,7 @@ theorem II_zero {r : ℕ} (ϖ : O) (p : ℕ → PowerSeries O) (H b : ℕ → �
   exact levelCond_zero _ _ _ _ _ _
 
 /- English proof (translation)
-Take `⟨v₁, hv₁⟩` from `h v`. Use `⟨(ℓ : O) ^ (2 * a₀ - rr) • v₁, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hv₁, smul_smul, ← pow_add, Nat.sub_add_cancel hr]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_L {r₁ r₂ : ℕ} {ℓ rr a₀ : ℕ} {prL : (Fin r₁ → O) →ₗ[O] (Fin r₂ → O)}
     (h : LLift ℓ rr prL) (hr : rr ≤ 2 * a₀) (v : Fin r₂ → O) :
@@ -490,7 +484,7 @@ theorem lift_L {r₁ r₂ : ℕ} {ℓ rr a₀ : ℕ} {prL : (Fin r₁ → O) →
   rw [map_smul, hv₁, smul_smul, ← pow_add, Nat.sub_add_cancel hr]
 
 /- English proof (translation)
-Rewrite using `[map_smul, extL_cst, h, cst_smul, smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extL_term {r₁ r₂ : ℕ} (prL : (Fin r₁ → O) →ₗ[O] (Fin r₂ → O)) (a : PowerSeries O) (e : O)
     {v₁ : Fin r₁ → O} {v : Fin r₂ → O} (h : prL v₁ = e • v) :
@@ -498,7 +492,7 @@ theorem extL_term {r₁ r₂ : ℕ} (prL : (Fin r₁ → O) →ₗ[O] (Fin r₂ 
   rw [map_smul, extL_cst, h, cst_smul, smul_comm]
 
 /- English proof (translation)
-Introduce `hM O _ _ _ ϖ hϖ ℓ ell r₁ r₂ a₀ p H b kind U₁ U₂ prL hS hk y hy`. Take `⟨h2, hP, -, hs₂, hup⟩` from `hS`. Use `⟨0, y, II_zero _ _ _ _ _ _ _, (hM O ϖ hϖ ℓ ell r₂ p H b kind U₂ h2 hP hs₂ hup hk y).1 hy, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lifts_mod_const_of_no_down : ConstLiftNone := by
   intro hM O _ _ _ ϖ hϖ ℓ ell r₁ r₂ a₀ p H b kind U₁ U₂ prL hS hk y hy
@@ -507,9 +501,9 @@ theorem lifts_mod_const_of_no_down : ConstLiftNone := by
   simp
 
 /- English proof (translation)
-Introduce `hM O _ _ _ ϖ hϖ ℓ ell r₁ r₂ a₀ rr p H b kind U₁ U₂ prL hS hL hr s₁ hs₁ hk₁ hth y hy`. Take `⟨h2, hP, hsat₁, hsat₂, hup⟩` from `hS`. Take `⟨lam, ν, hν, rfl⟩` from `(hM O ϖ hϖ ℓ ell r₂ p H b kind U₂ h2 hP hsat₂ hup s₁ hs₁ hk₁ hth y).1 hy`. Take `⟨lam₁, h₁⟩` from `lift_L hL hr lam`. Use `⟨abelian₂ p H ell • cst lam₁, ν, (hM O ϖ hϖ ℓ ell r₁ p H b kind U₁ h2 hP hsat₁ hup s₁ hs₁ hk₁ hth _).2 ⟨lam₁, 0, NN_zero _ _ _ _ _ _ _, by simp⟩, hν, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[extL_term prL _ _ h₁, smul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lifts_mod_const_of_one_down : ConstLiftD := by
   intro hM O _ _ _ ϖ hϖ ℓ ell r₁ r₂ a₀ rr p H b kind U₁ U₂ prL hS hL hr s₁ hs₁ hk₁ hth y hy
@@ -523,9 +517,9 @@ theorem lifts_mod_const_of_one_down : ConstLiftD := by
   rw [extL_term prL _ _ h₁, smul_add]
 
 /- English proof (translation)
-Introduce `hM O _ _ _ ϖ hϖ ℓ ell r₁ r₂ a₀ rr p H b kind U₁ U₂ prL hS hL hr s₀ s₁ h01 hs₁ hk₁ hk₀ hth hb y hy`. Take `⟨h2, hP, hsat₁, hsat₂, hup⟩` from `hS`. Take `⟨lam, ν, hν, rfl⟩` from `(hM O ϖ hϖ ℓ ell r₂ p H b kind U₂ h2 hP hsat₂ hup s₀ s₁ h01 hs₁ hk₁ hk₀ hth hb y).1 hy`. Take `⟨lam₁, h₁⟩` from `lift_L hL hr lam`. Use `⟨abelian₂ p H ell • cst lam₁, ν, (hM O ϖ hϖ ℓ ell r₁ p H b kind U₁ h2 hP hsat₁ hup s₀ s₁ h01 hs₁ hk₁ hk₀ hth hb _).2 ⟨lam₁, 0, NN_zero _ _ _ _ _ _ _, by simp⟩, hν, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[extL_term prL _ _ h₁, smul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lifts_mod_const_of_down_up : ConstLiftDU := by
   intro hM O _ _ _ ϖ hϖ ℓ ell r₁ r₂ a₀ rr p H b kind U₁ U₂ prL hS hL hr s₀ s₁ h01 hs₁ hk₁ hk₀ hth
@@ -540,9 +534,9 @@ theorem lifts_mod_const_of_down_up : ConstLiftDU := by
   rw [extL_term prL _ _ h₁, smul_add]
 
 /- English proof (translation)
-Introduce `hM O _ _ _ ϖ hϖ ℓ ell r₁ r₂ a₀ rr p H b kind U₁ U₂ prL hS hL hr s₀ s₁ h01 hs₁ hk₁ hk₀ hth ρ fρ hρ hmin hf₁ hf₀ y hy`. Take `⟨h2, hP, hsat₁, hsat₂, hup⟩` from `hS`. Take `⟨lam, lam', ν, hν, rfl⟩` from `(hM O ϖ hϖ ℓ ell r₂ p H b kind U₂ h2 hP hsat₂ hup s₀ s₁ h01 hs₁ hk₁ hk₀ hth ρ fρ hρ hmin hf₁ hf₀ y).1 hy`. Take `⟨lam₁, h₁⟩` from `lift_L hL hr lam`. Take `⟨lam₁', h₁'⟩` from `lift_L hL hr lam'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨abelian₂ p H ell • cst lam₁ + (abelian₂ p H ell * fρ) • cst lam₁', ν, (hM O ϖ hϖ ℓ ell r₁ p H b kind U₁ h2 hP hsat₁ hup s₀ s₁ h01 hs₁ hk₁ hk₀ hth ρ fρ hρ hmin hf₁ hf₀ _).2 ⟨lam₁, lam₁', 0, NN_zero _ _ _ _ _ _ _, by simp⟩, hν, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, extL_term prL _ _ h₁, extL_term prL _ _ h₁', smul_add, smul_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lifts_mod_const_of_down_down : ConstLiftDD := by
   intro hM O _ _ _ ϖ hϖ ℓ ell r₁ r₂ a₀ rr p H b kind U₁ U₂ prL hS hL hr s₀ s₁ h01 hs₁ hk₁ hk₀ hth
@@ -559,9 +553,9 @@ theorem lifts_mod_const_of_down_down : ConstLiftDD := by
   rw [map_add, extL_term prL _ _ h₁, extL_term prL _ _ h₁', smul_add, smul_add]
 
 /- English proof (translation)
-Introduce `hM O _ _ _ ϖ hϖ ℓ ell r₁ r₂ a₀ rr p H b kind U₁ U₂ prL hS hL hr s₀ s₁ h01 hs₁ hk₁ hk₀ hth hC c α β hc hnc y hy`. Take `⟨h2, hP, hsat₁, hsat₂, hup⟩` from `hS`. Take `⟨lam, lam', ν, hlam', hν, rfl⟩` from `(hM O ϖ hϖ ℓ ell r₂ p H b kind U₂ h2 hP hsat₂ hup s₀ s₁ h01 hs₁ hk₁ hk₀ hth c α β hc hnc y).1 hy`. Take `⟨lam₁, h₁⟩` from `lift_L hL hr lam`. Take `⟨lam₁', hm₁', h₁'⟩` from `hC lam' hlam'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨abelian₂ p H ell • cst lam₁ + (α * LamLess p H ell s₁ (b s₁)) • cst lam₁', ν, (hM O ϖ hϖ ℓ ell r₁ p H b kind U₁ h2 hP hsat₁ hup s₀ s₁ h01 hs₁ hk₁ hk₀ hth c α β hc hnc _).2 ⟨lam₁, lam₁', 0, hm₁', NN_zero _ _ _ _ _ _ _, by simp⟩, hν, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, extL_term prL _ _ h₁, extL_term prL _ _ h₁', smul_add, smul_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lifts_mod_const_of_up_down : ConstLiftUD := by
   intro hM O _ _ _ ϖ hϖ ℓ ell r₁ r₂ a₀ rr p H b kind U₁ U₂ prL hS hL hr s₀ s₁ h01 hs₁ hk₁ hk₀ hth
@@ -577,7 +571,7 @@ theorem lifts_mod_const_of_up_down : ConstLiftUD := by
   rw [map_add, extL_term prL _ _ h₁, extL_term prL _ _ h₁', smul_add, smul_add]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨lifts_mod_const_of_no_down, lifts_mod_const_of_one_down, lifts_mod_const_of_down_up, lifts_mod_const_of_down_down, lifts_mod_const_of_up_down⟩`.
+Supply the required witnesses or components.
 -/
 theorem lifts_mod_const_of_words : ConstLiftOf :=
   ⟨lifts_mod_const_of_no_down, lifts_mod_const_of_one_down, lifts_mod_const_of_down_up, lifts_mod_const_of_down_down, lifts_mod_const_of_up_down⟩

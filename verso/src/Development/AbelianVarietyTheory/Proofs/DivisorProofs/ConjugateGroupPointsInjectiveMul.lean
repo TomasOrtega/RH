@@ -7,9 +7,9 @@ open Formalism.L2.Host (aboveF)
 namespace GlobalTheory.UnrEuler.IdealPart
 
 /- English proof (translation)
-Establish `h1` using `FractionalIdeal.finprod_heightOneSpectrum_factorization' E h`. Rewrite `h1` using `[finprod_eq_prod_of_mulSupport_subset (s := S)]`. Unfold `nrm conv_lhs => rw [← h1]`. Rewrite using `[map_prod]`. Simplify using `only [map_zpow₀, FractionalIdeal.coeIdeal_absNorm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Both sides reduce to the same expression. Introduce `w hw`. Use `Finset.mem_coe.2 (hS w fun h0 => hw ?_)` and prove the remaining obligations. Simplify using `[h0]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem nrm_eq_prod {E : Type} [Field E] [NumberField E] {𝔞 : FractionalIdeal (𝓞 E)⁰ E} (h : 𝔞 ≠ 0)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (hS : ∀ w, FractionalIdeal.count E w 𝔞 ≠ 0 → w ∈ S) :
@@ -27,7 +27,7 @@ theorem nrm_eq_prod {E : Type} [Field E] [NumberField E] {𝔞 : FractionalIdeal
     simp [h0]
 
 /- English proof (translation)
-Establish `: Ideal.absNorm w.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `w.ne_bot`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_pos {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) :
     (0 : ℝ) < (Ideal.absNorm w.asIdeal : ℝ) := by
@@ -36,9 +36,9 @@ theorem absNorm_pos {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum 
   exact_mod_cast Nat.pos_of_ne_zero this
 
 /- English proof (translation)
-Establish `hp` using `nrm_pos h`. Rewrite using `[Complex.cpow_def_of_ne_zero (by exact_mod_cast hp.ne'), ← Complex.ofReal_log hp.le, nrm_eq_prod h S hS, Real.log_prod (fun w _ => (zpow_pos (absNorm_pos w) _).ne'), Complex.ofReal_sum, Finset.sum_mul, Complex.exp_sum]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hw` using `absNorm_pos w`. Establish `e : ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) = ((Ideal.absNorm w.asIdeal : ℝ) : ℂ)` using `by simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `npow`. Rewrite using `[e, Complex.cpow_def_of_ne_zero (by exact_mod_cast hw.ne'), ← Complex.ofReal_log hw.le, Real.log_zpow]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nrm_cpow_eq_prod {E : Type} [Field E] [NumberField E] {𝔞 : FractionalIdeal (𝓞 E)⁰ E} (h : 𝔞 ≠ 0)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (hS : ∀ w, FractionalIdeal.count E w 𝔞 ≠ 0 → w ∈ S) (s : ℂ) :
@@ -56,13 +56,13 @@ theorem nrm_cpow_eq_prod {E : Type} [Field E] [NumberField E] {𝔞 : Fractional
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ ν T 𝔞 h hT s`. Establish `hfin` using `Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors (K := E) 𝔞)`. Establish `hfin' : {v : {v : Pl F // v ∉ T} | v.1 ∈ (fun w : HeightOneSpectrum (𝓞 E) => w.under (𝓞 F)) '' {w | ¬ FractionalIdeal.count E w 𝔞 = 0}}.Finite` using `(hfin.image _).preimage Subtype.val_injective.injOn`. Use `set V := hfin'.toFinset with hV`. Use `set S := V.biUnion (fun v => aboveF (L := E) F v.1) with hSdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : ∀ w, FractionalIdeal.count E w 𝔞 ≠ 0 → w ∈ S` using `fun w hw => Finset.mem_biUnion.2 ⟨⟨w.under (𝓞 F), fun hh => hw (hT w hh)⟩, hfin'.mem_toFinset.2 ⟨w, hw, rfl⟩, GlobalTheory.LFun.mem_aboveF.2 rfl⟩`. Establish `hval : idealVal ν 𝔞 = ∏ w ∈ S, val ν w ^ FractionalIdeal.count E w 𝔞`. Unfold `idealVal`. Use `finprod_eq_prod_of_mulSupport_subset _ fun w hw => Finset.mem_coe.2 (hS w fun h0 => hw ?_)` and prove the remaining obligations. Simplify using `[h0]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hval, nrm_cpow_eq_prod h S hS s, Units.coe_prod, ← Finset.prod_mul_distrib, hSdef, Finset.prod_biUnion]`. Use `hasProd_prod_of_ne_finset_one fun v hv => Finset.prod_eq_one fun w hw => ?_` and prove the remaining obligations. Establish `h0 : FractionalIdeal.count E w 𝔞 = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hv (hfin'.mem_toFinset.2 ⟨w, h0, GlobalTheory.LFun.mem_aboveF.1 hw⟩)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[h0, npow]`. Introduce `v _ v' _ hne`. Use `Finset.disjoint_left.2 fun w h1 h2 => hne (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `(GlobalTheory.LFun.mem_aboveF.1 h1).symm.trans (GlobalTheory.LFun.mem_aboveF.1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem hasProd_idealPart : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (ν : Chr F E) (T : Set (Pl F)) (𝔞 : FractionalIdeal (𝓞 E)⁰ E), 𝔞 ≠ 0 → (∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) ∈ T → FractionalIdeal.count E w 𝔞 = 0) → ∀ s : ℂ, HasProd (fun v : {v : Pl F // v ∉ T} => ∏ w ∈ aboveF (L := E) F v.1, ((val ν w ^ FractionalIdeal.count E w 𝔞 : ℂˣ) : ℂ) * npow w (-(s * (FractionalIdeal.count E w 𝔞 : ℂ)))) (((idealVal ν 𝔞 : ℂˣ) : ℂ) * (nrm 𝔞 : ℂ) ^ (-s)) := by
   intro F E _ _ _ _ _ ν T 𝔞 h hT s

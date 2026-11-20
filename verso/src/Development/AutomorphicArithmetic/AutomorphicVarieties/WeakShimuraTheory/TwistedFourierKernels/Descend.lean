@@ -5,20 +5,18 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.H5 GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `hl` and use `hv ((h _).1 (by simpa using hl))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem not_lt_of_not_mem {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {l : ℕ}
     {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} (h : IsPlaceOver A v) (hv : ((l : ℕ) : 𝓞 F) ∉ v.asIdeal) :
     ¬ A.valuation (l : Ω) < 1 := fun hl => hv ((h _).1 (by simpa using hl))
 
 /- English proof (translation)
-Introduce `hmem`. Establish `hcard : Nat.card (𝓞 F ⧸ v.asIdeal) = p` using `hn`. Use `haveI : Nontrivial (𝓞 F ⧸ v.asIdeal) := Ideal.Quotient.nontrivial_iff.mpr v.isPrime.ne_top`. Establish `h1 : addOrderOf (1 : 𝓞 F ⧸ v.asIdeal) ∣ p` using `hcard ▸ addOrderOf_dvd_natCard (1 : 𝓞 F ⧸ v.asIdeal)`. Establish `h2 : addOrderOf (1 : 𝓞 F ⧸ v.asIdeal) ∣ l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[addOrderOf_dvd_iff_nsmul_eq_zero, nsmul_one]`. Establish `h0 : Ideal.Quotient.mk v.asIdeal (l : 𝓞 F) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr hmem`. Simplify using `using h0`. Establish `hne1 : addOrderOf (1 : 𝓞 F ⧸ v.asIdeal) ≠ 1`. Introduce `h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3 : addOrderOf (1 : 𝓞 F ⧸ v.asIdeal) ∣ 1` using `by rw [h]`. Rewrite `h3` using `[addOrderOf_dvd_iff_nsmul_eq_zero, one_nsmul]`. Conclude with `one_ne_zero h3`. Break down `(Nat.dvd_prime hp).mp h1 with h | h` into its components or cases. Conclude with `hne1 h`.
-
-Rewrite `h2` using `[h]`. Conclude with `hne ((Nat.prime_dvd_prime_iff_eq hp hl).mp h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem not_mem_of_norm {F : Type} [Field F] [NumberField F] {l p : ℕ} (hl : l.Prime) (hp : p.Prime) (hne : p ≠ l)
     {v : HeightOneSpectrum (𝓞 F)} (hn : normV v = p) : ((l : ℕ) : 𝓞 F) ∉ v.asIdeal := by
@@ -41,25 +39,21 @@ private theorem not_mem_of_norm {F : Type} [Field F] [NumberField F] {l p : ℕ}
     exact hne ((Nat.prime_dvd_prime_iff_eq hp hl).mp h2)
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T c' h K`. Take `⟨hq, hconj, hkerH⟩` from `prFacts K.V`. Establish `hsurj : Function.Surjective K.V.pr` using `hq.surjective`. Establish `hker : K.V.pr.ker ≤ K.β.ker`. Use `le_trans (hkerH K.t.ker inferInstance ?_ ?_ K.t_unr) K.β_t` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isClosed_singleton.preimage K.t_cont`. Introduce `g g' hg hmem`. Establish `h1` using `(K.conj g g' hg).2.2`. Rewrite `hmem`, the goal using `[MonoidHom.mem_ker]`. Rewrite `h1` using `[hmem, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `h1`. Set `β₀` to `K.V.pr.liftOfRightInverse (Function.surjInv hsurj) (Function.rightInverse_surjInv hsurj) ⟨K.β, hker⟩`. Establish `hcomp : β₀.comp K.V.pr = K.β` using `MonoidHom.liftOfRightInverse_comp _ _ _ _`. Establish `hβ₀ : ∀ g, β₀ (K.V.pr g) = K.β g` using `fun g => DFunLike.congr_fun hcomp g`. Establish `hβt : ∀ g, K.t g = 1 → β₀ (K.V.pr g) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg`. Rewrite using `[hβ₀]`. Conclude with `K.β_t hg`. Establish `hl : l.Prime` using `Fact.out`. Use `⟨β₀, ⟨⟨?_, ?_, ?_, ?_⟩, ?_, ?_⟩, hcomp⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Take `⟨g, rfl⟩` from `hsurj x`. Take `⟨g', hg', hc⟩` from `hconj g`. Rewrite using `[hc]`. Establish `e : β₀ (K.V.pr g') * β₀ (K.V.pr g) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hβ₀, hβ₀, mul_comm]`. Conclude with `(K.conj g g' hg').2.1`. Conclude with `e`. Introduce `u x hx`. Take `⟨w, hw⟩` from `u`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, hg, rfl⟩` from `hx`. Conclude with `hβt g (K.t_unr _ (not_lt_of_not_mem (K.s.hA w) (K.s.St_l w hw)) hg)`. Introduce `x hx`. Take `⟨g, hg, rfl⟩` from `hx`. Conclude with `hβt g (K.t_unr _ (not_lt_of_not_mem (K.s.hA K.s.v0) (not_mem_of_norm hl K.s.p_prime K.s.p_ne K.s.norm_v0_eq_one)) hg)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `v g hg`. Conclude with `hβt _ (K.mu v g hg).2`. Introduce `N s`. Establish `hf : (fun g => Ideal.Quotient.mk (maximalIdeal c'.O ^ N) ((β₀ (K.V.pr g) : c'.O))) = (fun g => Ideal.Quotient.mk (maximalIdeal c'.O ^ N) ((K.β g : c'.O)))` using `funext fun g => by rw [hβ₀]`. Establish `ho : IsOpen (K.V.pr ⁻¹' ((fun x => Ideal.Quotient.mk (maximalIdeal c'.O ^ N) ((β₀ x : c'.O))) ⁻¹' s))` using `by show IsOpen ((fun g => Ideal.Quotient.mk (maximalIdeal c'.O ^ N) ((β₀ (K.V.pr g) : c'.O))) ⁻¹' s)`.
-
-Rewrite using `[hf]`. Conclude with `K.β_cont N s`. Conclude with `hq.isOpen_preimage.mp ho`. Introduce `x`. Take `⟨g, rfl⟩` from `hsurj x`.
-
-Establish `e : ((β₀ (K.V.pr g) : c'.O)) - 1 ∈ maximalIdeal c'.O`. Rewrite using `[hβ₀, ← IsLocalRing.residue_eq_zero_iff, map_sub, map_one, K.β_red, sub_self]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.H5.descend :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h), ∃ β₀ : K.V.frame.G₀ →* c'.Oˣ, TwCh K.V.frame β₀ ∧ β₀.comp K.V.pr = K.β := by

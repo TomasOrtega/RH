@@ -9,17 +9,15 @@ open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar Glo
 namespace PositivityTheory.Xgn.LineLatticePushdown
 
 /- English proof (translation)
-Establish `hex : ValuativeCriterion.Existence f`. Establish `h : UniversallyClosed f` using `inferInstance`. Rewrite `h` using `[UniversallyClosed.eq_valuativeCriterion]`. Conclude with `h.1`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl₁, hl₂⟩ : ∃ l : Spec (CommRingCat.of V) ⟶ X', Spec.map (CommRingCat.ofHom (algebraMap V Ω')) ≫ l = ξ' ∧ l ≫ f = z := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl₁, hl₂⟩` from `(hex { R := V, K := Ω', commSq := ⟨w⟩, .. }).exists_lift`. Conclude with `⟨l, hl₁, hl₂⟩`. Establish `hsp : genPt ξ' ⤳ l (IsLocalRing.closedPoint V)`. Unfold `genPt`. Rewrite using `[← hl₁]`.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(IsLocalRing.specializes_closedPoint _).map l.continuous`. Establish `key : X'.presheaf.stalkSpecializes hsp ≫ Scheme.stalkClosedPointTo ξ' = Scheme.stalkClosedPointTo l ≫ CommRingCat.ofHom (algebraMap V Ω')`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (X'.fromSpecStalk (l (IsLocalRing.closedPoint V)))]`. Establish `h1 : Spec.map (X'.presheaf.stalkSpecializes hsp ≫ Scheme.stalkClosedPointTo ξ') ≫ X'.fromSpecStalk (l (IsLocalRing.closedPoint V)) = ξ'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans (congrArg (· ≫ X'.fromSpecStalk (l (IsLocalRing.closedPoint V))) (Spec.map_comp (X'.presheaf.stalkSpecializes hsp) (Scheme.stalkClosedPointTo ξ'))) ?_` and prove the remaining obligations. Use `Eq.trans (Category.assoc _ _ _) ?_` and prove the remaining obligations. Use `Eq.trans (congrArg (Spec.map (Scheme.stalkClosedPointTo ξ') ≫ ·) (Scheme.SpecMap_stalkSpecializes_fromSpecStalk hsp)) ?_` and prove the remaining obligations. Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ'`. Establish `h2 : Spec.map (Scheme.stalkClosedPointTo l ≫ CommRingCat.ofHom (algebraMap V Ω')) ≫ X'.fromSpecStalk (l (IsLocalRing.closedPoint V)) = ξ'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Spec.map_comp, Category.assoc]`. Use `Eq.trans (congrArg (Spec.map (CommRingCat.ofHom (algebraMap V Ω')) ≫ ·) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk l)) hl₁` and prove the remaining obligations. Conclude with `h1.trans h2.symm`. Use `⟨⟨_, hsp⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hl₂]`.
-
-Conclude with `(Scheme.Hom.comp_apply l f _).symm`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨(Scheme.stalkClosedPointTo l).hom g, (congrArg (fun t => t.hom g) key).symm⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift {X X' : Scheme.{0}} {Ω' : Type} [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X')
     (f : X' ⟶ X) [IsProper f] (V : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Algebra V Ω']
@@ -64,7 +62,7 @@ theorem exists_lift {X X' : Scheme.{0}} {Ω' : Type} [Field Ω'] (ξ' : Spec (Co
     exact ⟨(Scheme.stalkClosedPointTo l).hom g, (congrArg (fun t => t.hom g) key).symm⟩
 
 /- English proof (translation)
-Use `Eq.trans (congrArg (· ≫ X.fromSpecStalk q.1) (Spec.map_comp (X.presheaf.stalkSpecializes q.2) (Scheme.stalkClosedPointTo ξ))) ?_` and prove the remaining obligations. Use `Eq.trans (Category.assoc _ _ _) ?_` and prove the remaining obligations. Use `Eq.trans (congrArg (Spec.map (Scheme.stalkClosedPointTo ξ) ≫ ·) (Scheme.SpecMap_stalkSpecializes_fromSpecStalk q.2)) ?_` and prove the remaining obligations. Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem spec_genMap {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (q : Cpt ξ) :
     Spec.map (X.presheaf.stalkSpecializes q.2 ≫ Scheme.stalkClosedPointTo ξ) ≫ X.fromSpecStalk q.1 = ξ := by
@@ -76,17 +74,17 @@ theorem spec_genMap {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRing
   exact Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ
 
 /- English proof (translation)
-Take `⟨hfr, -, -⟩` from `RegAtRing.regAt_ring X Ω ξ hg q`. Establish `: IsFractionRing (regAt ξ q) Ω` using `hfr`. Establish `: IsIntegrallyClosed (regAt ξ q)`. Rewrite using `[isIntegrallyClosed_iff Ω]`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨x, hn q x hx⟩, rfl⟩`. Establish `hdom : IsDomain (X.presheaf.stalk q.1)` using `(hg.inj q).isDomain (genMap ξ q)`. Establish `: IsIntegrallyClosed (X.presheaf.stalk q.1)` using `IsIntegrallyClosed.of_equiv (RegAtRing.stalkEquiv hg q).symm`. Establish `: IsDiscreteValuationRing (X.presheaf.stalk q.1)` using `normal_noeth_local_dim_one_isDVR _ hd`. Set `_ : Algebra (X.presheaf.stalk q.1) Ω'` to `(i.comp (genMap ξ q)).toAlgebra`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: FaithfulSMul (X.presheaf.stalk q.1) Ω'` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (hi.1.comp (hg.inj q))`. Establish `hfr' : IsFractionRing (X.presheaf.stalk q.1) Ω'`. Use `IsFractionRing.of_field _ _ fun z => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hi.2 z`. Take `⟨⟨_, a, rfl⟩, ⟨_, b, rfl⟩, rfl⟩` from `RegAtRing.exists_div hg q y`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, b, map_div₀ i _ _⟩`. Establish `w : ξ' ≫ f = Spec.map (CommRingCat.ofHom (algebraMap (X.presheaf.stalk q.1) Ω')) ≫ X.fromSpecStalk q.1`. Establish `e : CommRingCat.ofHom (algebraMap (X.presheaf.stalk q.1) Ω') = (X.presheaf.stalkSpecializes q.2 ≫ Scheme.stalkClosedPointTo ξ) ≫ CommRingCat.ofHom i` using `rfl`. Use `hD.trans ?_` and prove the remaining obligations. Use `Eq.trans (congrArg (Spec.map (CommRingCat.ofHom i) ≫ ·) (spec_genMap ξ q).symm) ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans (Category.assoc _ _ _).symm ?_` and prove the remaining obligations. Conclude with `congrArg (· ≫ X.fromSpecStalk q.1) (Spec.map_comp _ _).symm`. Establish `hv : ValuationRing (X.presheaf.stalk q.1)` using `inferInstance`. Take `⟨p', h1, h2⟩` from `@exists_lift X X' Ω' _ ξ' f _ (X.presheaf.stalk q.1) _ hdom hv _ hfr' (X.fromSpecStalk q.1) w`. Use `⟨p', h1.trans Scheme.fromSpecStalk_closedPoint, fun a ha => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `h2 _ ha`. Conclude with `⟨v, hi.1 hv⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_over {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     [IsLocallyNoetherian X] {X' : Scheme.{0}} {Ω' : Type} [Field Ω'] {ξ' : Spec (CommRingCat.of Ω') ⟶ X'}
@@ -129,17 +127,17 @@ theorem exists_over {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRing
 end PositivityTheory.Xgn.LineLatticePushdown
 
 /- English proof (translation)
-Introduce `X Ω _ ξ _ X' Ω' _ ξ' f i _ hD hi hg hn L T p t hL hT hp`. Establish `ht : t ≠ 0`. Establish `h0` using `(hp ⟨genPt ξ', specializes_rfl⟩ (by show f (genPt ξ') ⤳ p.1`. Rewrite using `[hD.map_genPt]`. Conclude with `p.2)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `h0 (map_zero i)`. Use `PositivityTheory.Xgn.line_lattice_generator_codim_one X Ω ξ hg hn L T p t hL hT ht fun q hqp hd => ?_` and prove the remaining obligations. Take `⟨p', hq, hreg⟩` from `PositivityTheory.Xgn.LineLatticePushdown.exists_over hD hi hg hn q hd`. Take `⟨q, hq0⟩` from `q`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : f p'.1 = q` from `hq`. Take `⟨U, hU, b, -, h⟩` from `hL _ (hT _ hqp)`. Take `⟨h1, h2⟩` from `h _ (hT _ hqp) hU`. Establish `hr : Set.range b = {b 0}`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[Fin.exists_fin_one, eq_comm]`. Rewrite `h2` using `[hr]`. Establish `he : b 0 ≠ 0` using `h1.ne_zero 0`. Take `⟨_, -, hpull⟩` from `pull_reg_and_gen X Ω ξ X' Ω' ξ' f i hD p'`. Establish `g1` using `hpull L (b 0) ⟨he, h2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `g2` using `hp p' hqp`. Take `⟨u, hu, e⟩` from `ZUnit.exists_of_span_eq g2.1 (g2.2.symm.trans g1.2)`. Establish `hu' : u = i (t / b 0)`. Rewrite using `[map_div₀, e, smul_eq_mul, mul_div_cancel_right₀ _ g1.1]`. Substitute `hu'` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu2 : unitAt ξ ⟨f p'.1, hq0⟩ (t / b 0)` using `⟨div_ne_zero ht he, hreg _ hu.2.1, hreg _ (by rw [map_inv₀]; exact hu.2.2)⟩`. Use `⟨ht, h2.trans (span_singleton_eq_of_unitAt hu2 ?_).symm⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, div_mul_cancel₀ _ he]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.line_lattice_proper_pushdown : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) [IsLocallyNoetherian X] (X' : Scheme.{0}) (Ω' : Type) [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (f : X' ⟶ X) (i : Ω →+* Ω') [IsProper f], Dominates ξ' ξ f i → Function.Bijective i → IsCptGen ξ → NormalCpt ξ → ∀ (L : Lat ξ Ω) (T : Set (Cpt ξ)) (p : Cpt ξ) (t : Ω), L.IsVBOn T 1 ⊤ → (∀ q : Cpt ξ, q.1 ⤳ p.1 → q ∈ T) → (∀ p' : Cpt ξ', f p'.1 ⤳ p.1 → (L.pull ξ' f i.toAddMonoidHom).IsGenAt p' (i t)) → L.IsGenAt p t := by
   intro X Ω _ ξ _ X' Ω' _ ξ' f i _ hD hi hg hn L T p t hL hT hp

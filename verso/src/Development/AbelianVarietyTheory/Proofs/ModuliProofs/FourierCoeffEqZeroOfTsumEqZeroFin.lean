@@ -8,11 +8,11 @@ namespace GlobalTheory
 open Complex Matrix in
 open scoped ContDiff BigOperators Real in
 /- English proof (translation)
-Rewrite using `[← intervalIntegral.integral_of_le zero_le_one]`. Use `split_ifs with hj`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Establish `hc : (2 * π * I * (j : ℂ)) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (j : ℂ) ≠ 0` using `by exact_mod_cast hj`. Establish `hπ : (π : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Simplify using `[hπ, this, I_ne_zero]`. Rewrite using `[integral_exp_mul_complex hc]`. Establish `h1 : cexp (2 * π * I * (j : ℂ)) = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show 2 * π * I * (j : ℂ) = j * (2 * π * I) by ring]`. Conclude with `exp_int_mul_two_pi_mul_I j`. Simplify using `[h1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma integral_Ioc_cexp_two_pi_I_int_mul (j : ℤ) :
     ∫ t, cexp (2 * π * I * (j : ℂ) * (t : ℂ)) ∂(MeasureTheory.volume.restrict (Set.Ioc (0 : ℝ) 1)) =
@@ -34,21 +34,19 @@ open Complex Matrix in
 open scoped ContDiff BigOperators Real in
 
 /- English proof (translation)
-Introduce `n c hc h μ`. Use `set m : MeasureTheory.Measure ℝ := MeasureTheory.volume.restrict (Set.Ioc (0 : ℝ) 1) with hm`. Use `haveI : MeasureTheory.IsProbabilityMeasure m := ⟨by simp [m]⟩`. Use `set P : MeasureTheory.Measure (Fin n → ℝ) := MeasureTheory.Measure.pi fun _ => m`. Use `set G : (Fin n → ℤ) → (Fin n → ℝ) → ℂ := fun ν x => c ν * ∏ k, cexp (2 * π * I * (((ν k - μ k : ℤ)) : ℂ) * (x k : ℂ)) with hG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hnorm : ∀ ν x, ‖G ν x‖ = ‖c ν‖`. Introduce `ν x`. Simplify using `only [G, norm_mul, norm_prod, Complex.norm_exp]`. Simplify using `[Complex.mul_re]`. Establish `hint : ∀ ν, MeasureTheory.Integrable (G ν) P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ν`. Use `MeasureTheory.Integrable.of_bound (Continuous.aestronglyMeasurable (by fun_prop)) ‖c ν‖ (MeasureTheory.ae_of_all _ fun x => (hnorm ν x).le)` and prove the remaining obligations. Establish `hval : ∀ ν, ∫ x, G ν x ∂P = if ν = μ then c ν else 0`. Introduce `ν`. Simplify using `only [G]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[MeasureTheory.integral_const_mul, MeasureTheory.integral_fintype_prod_eq_prod (E := fun _ => ℝ) (μ := fun _ => m) (fun k (t : ℝ) => cexp (2 * π * I * (((ν k - μ k : ℤ)) : ℂ) * (t : ℂ)))]`. Simplify using `only [hm, integral_Ioc_cexp_two_pi_I_int_mul]`. Distinguish the cases in `hνμ : ν = μ`. Substitute `hνμ` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, hk⟩` from `Function.ne_iff.mp hνμ`. Rewrite using `[if_neg hνμ, Finset.prod_eq_zero (Finset.mem_univ k) (by simp [sub_eq_zero, hk]), mul_zero]`. Establish `hsum : ∀ x, ∑' ν, G ν x = 0`. Introduce `x`. Establish `hx` using `h x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: ∀ ν, G ν x = c ν * cexp (2 * π * I * ∑ k, (ν k : ℂ) * (x k : ℂ)) * cexp (-(2 * π * I * ∑ k, (μ k : ℂ) * (x k : ℂ)))`. Introduce `ν`. Simplify using `only [G, mul_assoc]`. Use `congr 1`. Rewrite using `[← Complex.exp_add, ← Complex.exp_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `push_cast`. Simplify using `only [Finset.mul_sum, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Simplify using `only [this]`.
-
-Rewrite using `[tsum_mul_right, hx, zero_mul]`. Establish `key` using `MeasureTheory.integral_tsum_of_summable_integral_norm hint (by simpa [hnorm] using hc)`. Simplify using `only [hval, hsum, MeasureTheory.integral_zero] at key`. Rewrite `key` using `[tsum_ite_eq]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.fourier_coeff_eq_zero_of_tsum_eq_zero_fin :
     ∀ (n : ℕ) (c : (Fin n → ℤ) → ℂ), Summable (fun ν => ‖c ν‖) →

@@ -31,14 +31,14 @@ def Bas (G : C ⥤ AffOp X) : Prop :=
 variable {s} {G : C ⥤ AffOp X}
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.sep_of_factoring_cover (OAff s) G (_root_.GlobalTheory.CechDR.hasLoc_OAff s) h.1 T x hx`.
+A detailed English derivation is pending.
 -/
 theorem Bas.sep (h : Bas s G) (T : AffOp X) (x : (OAff s).obj T)
     (hx : ∀ t (u : T ⟶ G.obj t), mp (OAff s) u x = 0) : x = 0 :=
   _root_.GlobalTheory.sep_of_factoring_cover (OAff s) G (_root_.GlobalTheory.CechDR.hasLoc_OAff s) h.1 T x hx
 
 /- English proof (translation)
-Establish `H` using `_root_.GlobalTheory.CechDR.hasLoc_OAff s`. Establish `hs` using `_root_.GlobalTheory.sep_of_factoring_cover (OAff s) G H h.1`. Establish `hg` using `_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s) G H h.1 h.2`. Establish `hv` using `_root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_vanishing_comma_of_basis (OAff s) G H h.1 h.2`. Conclude with `⟨_root_.GlobalTheory.CatCoh.CoefMap.restrict_pull1_injective_of_sep_glue _ _ hs hg, _root_.GlobalTheory.CatCoh.pull1_restrict_surjective_of_comma _ _ hs hg hv⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Bas.pull1 [Quiver.IsThin C] (h : Bas s G) :
     Function.Bijective (CoefMap.restrict (OAff s) G).pull1 := by
@@ -50,7 +50,7 @@ theorem Bas.pull1 [Quiver.IsThin C] (h : Bas s G) :
     _root_.GlobalTheory.CatCoh.pull1_restrict_surjective_of_comma _ _ hs hg hv⟩
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.restrict_glob1_bijective _ _ (_root_.GlobalTheory.CechDR.form_eq_zero_of_basis_cover s G h.1) (_root_.GlobalTheory.CechDR.FormExt.glue_one_forms s G h.1 h.2)`.
+A detailed English derivation is pending.
 -/
 theorem Bas.glob [Quiver.IsThin C] (h : Bas s G) :
     Function.Bijective (pullGlob1 (CoefMap.restrict (OAff s) G)) :=
@@ -58,14 +58,14 @@ theorem Bas.glob [Quiver.IsThin C] (h : Bas s G) :
     (_root_.GlobalTheory.CechDR.FormExt.glue_one_forms s G h.1 h.2)
 
 /- English proof (translation)
-The claim follows from `restrict_bijective_one_of_basis s G h.1 h.2`.
+A detailed English derivation is pending.
 -/
 theorem Bas.hyp [Quiver.IsThin C] (h : Bas s G) :
     Function.Bijective (pullHyp1 (CoefMap.restrict (OAff s) G)) :=
   restrict_bijective_one_of_basis s G h.1 h.2
 
 /- English proof (translation)
-Establish `H` using `_root_.GlobalTheory.CechDR.hasLoc_OAff s`. Conclude with `_root_.GlobalTheory.compat_family_extend _ G (_root_.GlobalTheory.sep_of_factoring_cover (OAff s) G H h.1) (_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s) G H h.1 h.2) g' hg'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Bas.extend [Quiver.IsThin C] (h : Bas s G) (g' : ∀ t, (OAff s).obj (G.obj t))
     (hg' : ∀ ⦃t t' : C⦄ (a : t ⟶ t'), g' t' = mp (OAff s) (G.map a) (g' t)) :
@@ -76,9 +76,9 @@ theorem Bas.extend [Quiver.IsThin C] (h : Bas s G) (g' : ∀ t, (OAff s).obj (G.
     (_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s) G H h.1 h.2) g' hg'
 
 /- English proof (translation)
-Establish `h0 : d0 F g = 0`. Use function extensionality and compare the values at `T T' φ`. Rewrite using `[amitsur_d0_apply, hg φ, sub_self]`. Both sides reduce to the same expression. Take `⟨r, hr⟩` from `(h.1 g).1 h0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨r, fun T ↦ (congrFun hr T).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem stein_const {D : Type} [Category.{0} D] {F : D ⥤ CommAlgCat.{0} R} (h : Stein F) (g : C0 F)
     (hg : ∀ ⦃T T' : D⦄ (φ : T ⟶ T'), g T' = mp F φ (g T)) : ∃ r : R, ∀ T, g T = algebraMap R _ r := by
@@ -89,11 +89,11 @@ theorem stein_const {D : Type} [Category.{0} D] {F : D ⥤ CommAlgCat.{0} R} (h 
   exact ⟨r, fun T ↦ (congrFun hr T).symm⟩
 
 /- English proof (translation)
-Use `⟨fun x ↦ ⟨fun hx ↦ ?_, ?_⟩, fun r r' e ↦ hF.2 ?_⟩` and prove the remaining obligations. Establish `hc : ∀ ⦃t t' : C⦄ (a : t ⟶ t'), x t' = mp (OAff s) (G.map a) (x t)` using `fun t t' a ↦ sub_eq_zero.1 (congrFun (congrFun (congrFun hx t) t') a)`. Take `⟨g, hg, hgx⟩` from `h.extend x hc`. Take `⟨r, hr⟩` from `stein_const hF g hg`. Conclude with `⟨r, funext fun t ↦ ((hr _).symm.trans (hgx t))⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨r, rfl⟩`. Use function extensionality and compare the values at `T T' φ`. Use `(mp (G ⋙ OAff s) φ).commutes r` as an intermediate fact. Rewrite using `[amitsur_d0_apply]`. Conclude with `sub_eq_zero.2 this.symm`.
+Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `T`. Use `sub_eq_zero.1 (h.sep T _ fun t u ↦ ?_)` and prove the remaining obligations. Establish `k : ∀ r : R, mp (OAff s) u (algebraMap R (C0 (OAff s)) r T) = algebraMap R (C0 (G ⋙ OAff s)) r t` using `fun r ↦ (mp (OAff s) u).commutes r`. Rewrite using `[map_sub, sub_eq_zero, k, k]`. Conclude with `congrFun e t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bas.stein [Quiver.IsThin C] (h : Bas s G) (hF : Stein (OAff s)) : Stein (G ⋙ OAff s) := by
   refine ⟨fun x ↦ ⟨fun hx ↦ ?_, ?_⟩, fun r r' e ↦ hF.2 ?_⟩
@@ -115,9 +115,9 @@ theorem Bas.stein [Quiver.IsThin C] (h : Bas s G) (hF : Stein (OAff s)) : Stein 
     exact congrFun e t
 
 /- English proof (translation)
-Introduce `T`. Set `e : Glob1 (OAff s) ≃ₗ[R] Glob1 (G ⋙ OAff s)` to `LinearEquiv.ofBijective (pullGlob1 (CoefMap.restrict (OAff s) G)) h.glob`. Use `IsBaseChange.of_equiv ((e.symm.baseChange R ((G ⋙ OAff s).obj T) _ _).trans (hF (G.obj T)).equiv) fun x ↦ ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `e.surjective x`. Establish `k : (hF (G.obj T)).equiv ((1 : (G ⋙ OAff s).obj T) ⊗ₜ[R] y) = evForm (OAff s) (G.obj T) y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[IsBaseChange.equiv_tmul, one_smul]`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.baseChange_tmul, LinearEquiv.symm_apply_apply]`. Conclude with `k.trans (cechDeRhamCoefMapOneForms_restrictAlongFunctor (OAff s) G T _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Bas.par [Quiver.IsThin C] (h : Bas s G) (hF : Par (OAff s)) : Par (G ⋙ OAff s) := by
   intro T
@@ -143,13 +143,13 @@ abbrev Fam : Type :=
 variable {φ}
 
 /- English proof (translation)
-The claim follows from `(Prod.le_def.1 (Subtype.coe_le_coe.2 h)).1`.
+A detailed English derivation is pending.
 -/
 theorem Fam.le_fst {p q : Fam φ} (h : p ≤ q) : p.1.1 ≤ q.1.1 :=
   (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).1
 
 /- English proof (translation)
-The claim follows from `(Prod.le_def.1 (Subtype.coe_le_coe.2 h)).2 i`.
+A detailed English derivation is pending.
 -/
 theorem Fam.le_snd {p q : Fam φ} (h : p ≤ q) (i : J) : p.1.2 i ≤ q.1.2 i :=
   (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).2 i
@@ -166,31 +166,27 @@ def famPair (i : J) : (Fam φ)ᵒᵖ ⥤ (Pair (φ i))ᵒᵖ :=
     Subtype.coe_le_coe.1 (Prod.le_def.2 ⟨Fam.le_fst h, Fam.le_snd h i⟩)).op
 
 /- English proof (translation)
-Use `⟨fun T ↦ ?_, fun t₁ t₂ S h₁ h₂ ↦ ?_⟩` and prove the remaining obligations. Establish `hT : IsAffineOpen T.unop.1` using `T.unop.2`. Set `B : Set Γ(Y, T.unop.1)` to `{f | ∃ V : J → X.affineOpens, ∀ i, Y.basicOpen f ≤ φ i ⁻¹ᵁ (V i).1}`. Establish `hB : Ideal.span B = ⊤`. Rewrite using `[← hT.self_le_iSup_basicOpen_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `hV : ∀ i, ∃ V : X.affineOpens, (φ i).base x ∈ V.1` using `fun i ↦ by`. Take `⟨V, hV, hxV, -⟩` from `exists_isAffineOpen_mem_and_subset (x := (φ i).base x) (U := (⊤ : X.Opens)) trivial`. Conclude with `⟨⟨V, hV⟩, hxV⟩`. Use `choose V hxV using hV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `O : Y.Opens` to `⟨⋂ i, (φ i ⁻¹ᵁ (V i).1 : Set Y), isOpen_iInter_of_finite fun i ↦ (φ i ⁻¹ᵁ (V i).1).2⟩`. Establish `hxO : x ∈ O` using `Set.mem_iInter.2 fun i ↦ hxV i`. Take `⟨f, hf, hxf⟩` from `hT.exists_basicOpen_le (V := O) ⟨x, hxO⟩ hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, ⟨V, fun i y hy ↦ Set.mem_iInter.1 (hf hy) i⟩⟩, hxf⟩`. Take `⟨F, hFB, hF⟩` from `(Ideal.span_eq_top_iff_finite B).1 hB`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨F.card, fun i ↦ (F.equivFin.symm i).1, ?_, fun i S u hu ↦ ?_⟩` and prove the remaining obligations. Establish `hR : Set.range (fun i : Fin F.card ↦ (F.equivFin.symm i).1) = (F : Set Γ(Y, T.unop.1))`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(F.equivFin.symm i).2`. Introduce `hf; exact ⟨F.equivFin ⟨f, hf⟩, by simp⟩`. Conclude with `hR ▸ hF`. Take `⟨V, hV⟩` from `hFB (F.equivFin.symm i).2 set f : Γ(Y, T.unop.1) := (F.equivFin.symm i).1`. Establish `hW : IsAffineOpen (Y.basicOpen f)` using `hT.basicOpen f`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWT : Y.basicOpen f ≤ T.unop.1` using `Y.basicOpen_le f`. Set `q : Fam φ` to `⟨(⟨_, hW⟩, V), hV⟩`. Establish `hSW : S.unop.1 ≤ Y.basicOpen f`. Establish `h1 : Y.basicOpen (Y.presheaf.map (homOfLE (leOfHom u.unop)).op f) = S.unop.1` using `Y.basicOpen_of_isUnit hu`. Rewrite `h1` using `[Scheme.basicOpen_res]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Conclude with `inf_le_right`. Use `⟨Opposite.op q, (homOfLE (show (⟨_, hW⟩ : Y.affineOpens) ≤ T.unop from hWT)).op, (homOfLE (show S.unop ≤ (⟨_, hW⟩ : Y.affineOpens) from hSW)).op, ?_⟩` and prove the remaining obligations. Conclude with `Quiver.Hom.unop_inj (Subsingleton.elim _ _)`. Establish `hS₁ : S.unop.1 ≤ t₁.unop.1.1.1` using `leOfHom h₁.unop`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hS₂ : S.unop.1 ≤ t₂.unop.1.1.1` using `leOfHom h₂.unop`. Set `B : Set Γ(Y, S.unop.1)` to `{g | ∃ W : J → X.affineOpens, (∀ i, (W i).1 ≤ (t₁.unop.1.2 i).1) ∧ (∀ i, (W i).1 ≤ (t₂.unop.1.2 i).1) ∧ ∀ i, Y.basicOpen g ≤ φ i ⁻¹ᵁ (W i).1}`. Establish `hB : Ideal.span B = ⊤`. Use `(S.unop.2.self_le_iSup_basicOpen_iff).1 fun x hx ↦ ?_` and prove the remaining obligations. Establish `hW : ∀ i, ∃ W : X.affineOpens, (φ i).base x ∈ W.1 ∧ W.1 ≤ (t₁.unop.1.2 i).1 ∧ W.1 ≤ (t₂.unop.1.2 i).1` using `fun i ↦ by`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, hxW, hWV⟩` from `exists_isAffineOpen_mem_and_subset (x := (φ i).base x) (U := (t₁.unop.1.2 i).1 ⊓ (t₂.unop.1.2 i).1) ⟨t₁.unop.2 i (hS₁ hx), t₂.unop.2 i (hS₂ hx)⟩`. Conclude with `⟨⟨W, hW⟩, hxW, fun y hy ↦ (hWV hy).1, fun y hy ↦ (hWV hy).2⟩`. Use `choose W hxW hW₁ hW₂ using hW`. Set `O : Y.Opens` to `⟨⋂ i, (φ i ⁻¹ᵁ (W i).1 : Set Y), isOpen_iInter_of_finite fun i ↦ (φ i ⁻¹ᵁ (W i).1).2⟩`. Establish `hxO : x ∈ O` using `Set.mem_iInter.2 fun i ↦ hxW i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨f, hf, hxf⟩` from `S.unop.2.exists_basicOpen_le (V := O) ⟨x, hxO⟩ hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, ⟨W, hW₁, hW₂, fun i y hy ↦ Set.mem_iInter.1 (hf hy) i⟩⟩, hxf⟩`. Take `⟨s0, hs0, hspan⟩` from `(Ideal.span_eq_top_iff_finite B).1 hB`. Use `⟨s0.card, fun i ↦ (s0.equivFin.symm i).1, ?_, fun i S' u hu ↦ ?_⟩` and prove the remaining obligations. Establish `hsp : Ideal.span (Set.range fun i ↦ ((s0.equivFin.symm i).1 : Γ(Y, S.unop.1))) = ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[eq_top_iff, ← hspan]`. Conclude with `Ideal.span_mono fun x hx ↦ ⟨s0.equivFin ⟨x, hx⟩, by simp⟩`. Conclude with `hsp`. Take `⟨W, hW₁, hW₂, hg⟩` from `hs0 (s0.equivFin.symm i).2 set g : Γ(Y, S.unop.1) := (s0.equivFin.symm i).1`. Express the relevant statement in the definitionally equal form `IsUnit (Y.presheaf.map (homOfLE (show S'.unop.1 ≤ S.unop.1 from leOfHom u.unop)).op g) at hu`.
-
-Establish `hS' : S'.unop.1 ≤ Y.basicOpen g`. Use `Scheme.basicOpen_of_isUnit Y hu` as an intermediate fact. Rewrite `this` using `[Scheme.basicOpen_res]`. Rewrite using `[← this]`. Conclude with `inf_le_right`.
-
-Set `t₃ : Fam φ` to `⟨(⟨Y.basicOpen g, S.unop.2.basicOpen g⟩, W), hg⟩`. Use `⟨Opposite.op t₃, ⟨(homOfLE ?_).op⟩, ⟨(homOfLE ?_).op⟩, ⟨(homOfLE ?_).op⟩⟩` and prove the remaining obligations. Conclude with `Subtype.coe_le_coe.1 (Prod.le_def.2 ⟨(Y.basicOpen_le g).trans hS₁, fun i ↦ hW₁ i⟩)`. Conclude with `Subtype.coe_le_coe.1 (Prod.le_def.2 ⟨(Y.basicOpen_le g).trans hS₂, fun i ↦ hW₂ i⟩)`. Conclude with `hS'`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bas_fam [Finite J] {R : Type} [CommRing R] (t : Y ⟶ Sp R) : Bas t (famFst φ) := by
   refine ⟨fun T ↦ ?_, fun t₁ t₂ S h₁ h₂ ↦ ?_⟩
@@ -288,9 +284,9 @@ def famRes (t : Y ⟶ Sp R) (i : J) : CoefMap (RingHom.id R) (OPair (φ i) t) (f
 variable (h : ∀ i, φ i ≫ s = t ≫ spMap (RingHom.id R))
 
 /- English proof (translation)
-Establish `e1 : (famPull h i).pull1 x = (famRes t i).pull1 ((pairPull (h i)).pull1 x)`. Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ ((pairPull (h i)).comp (famRes t i)) { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]) x`. Establish `e2 : ∀ y : HO1 t, (CoefMap.restrict (OAff t) (famFst φ)).pull1 y = (famRes t i).pull1 ((pairRes (φ i) t).pull1 y)` using `fun y ↦ by`. Rewrite using `[← CoefMap.pullCohomologyOne_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ ((pairRes (φ i) t).comp (famRes t i)) { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]; rfl) y`. Rewrite using `[e1, e2]`. Conclude with `congrArg _ (isPullO_pullHO1 (h i) x)`.
+A detailed English derivation is pending.
 -/
 theorem famPull_pull1 (i : J) (x : HO1 s) :
     (famPull h i).pull1 x = (CoefMap.restrict (OAff t) (famFst φ)).pull1 (pullHO1 (h i) x) := by
@@ -307,9 +303,9 @@ theorem famPull_pull1 (i : J) (x : HO1 s) :
   exact congrArg _ (isPullO_pullHO1 (h i) x)
 
 /- English proof (translation)
-Establish `e1 : pullHyp1 (famPull h i) x = pullHyp1 (famRes t i) (pullHyp1 (pairPull (h i)) x)`. Rewrite using `[← pullHyp1_comp]`. Conclude with `pullHyp1_eq_of_natTrans _ ((pairPull (h i)).comp (famRes t i)) { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]) x`. Establish `e2 : ∀ y : HH1 t, pullHyp1 (CoefMap.restrict (OAff t) (famFst φ)) y = pullHyp1 (famRes t i) (pullHyp1 (pairRes (φ i) t) y)` using `fun y ↦ by`. Rewrite using `[← pullHyp1_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pullHyp1_eq_of_natTrans _ ((pairRes (φ i) t).comp (famRes t i)) { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]; rfl) y`. Rewrite using `[e1, e2]`. Conclude with `congrArg _ (isPull1_pullHH1 (h i) x)`.
+A detailed English derivation is pending.
 -/
 theorem famPull_hyp (i : J) (x : HH1 s) :
     pullHyp1 (famPull h i) x = pullHyp1 (CoefMap.restrict (OAff t) (famFst φ)) (pullHH1 (h i) x) := by
@@ -326,7 +322,7 @@ theorem famPull_hyp (i : J) (x : HH1 s) :
   exact congrArg _ (isPull1_pullHH1 (h i) x)
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun T ↦ ?_)` and prove the remaining obligations. Establish `k` using `isPullForm_iff.1 (isPullForm_pullForm (h i) x) (T.unop.pr i)`. Conclude with `k.trans (cechDeRhamCoefMapOneForms_restrictAlongFunctor (OAff t) (famFst φ) T _).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem famPull_glob (i : J) (x : GlobForm s) :
     pullGlob1 (famPull h i) x =
@@ -344,20 +340,20 @@ variable {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {X X' X'' :
   {φ : X' ⟶ X} {ψ : X'' ⟶ X'}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pair_cover_affine φ s', exists_pair_below_two φ s'⟩`.
+Supply the required witnesses or components.
 -/
 theorem bas_pair (φ : X' ⟶ X) (s' : X' ⟶ Sp R') : Bas s' (pairFst φ) :=
   ⟨pair_cover_affine φ s', exists_pair_below_two φ s'⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨triple_cover_affine ψ φ s'', exists_triple_below_two ψ φ s''⟩`.
+Supply the required witnesses or components.
 -/
 theorem bas_triple (ψ : X'' ⟶ X') (φ : X' ⟶ X) (s'' : X'' ⟶ Sp R'') :
     Bas s'' (cechTripleProjFirstThird ψ φ ⋙ pairFst (ψ ≫ φ)) :=
   ⟨triple_cover_affine ψ φ s'', exists_triple_below_two ψ φ s''⟩
 
 /- English proof (translation)
-Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cechTripleRestrictComposite_comp_pairRestrict (s'' : X'' ⟶ Sp R'') (c : HO1 s'') :
     (cechTripleRestrictComposite ψ φ s'').pull1 ((pairRes (ψ ≫ φ) s'').pull1 c) =
@@ -366,7 +362,7 @@ theorem cechTripleRestrictComposite_comp_pairRestrict (s'' : X'' ⟶ Sp R'') (c 
   exact CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) c
 
 /- English proof (translation)
-Introduce `x y e`. Take `⟨x0, rfl⟩` from `(pairRes_bijective (ψ ≫ φ) s'').1.2 x`. Take `⟨y0, rfl⟩` from `(pairRes_bijective (ψ ≫ φ) s'').1.2 y`. Rewrite `e` using `[cechTripleRestrictComposite_comp_pairRestrict, cechTripleRestrictComposite_comp_pairRestrict]`. Rewrite using `[(bas_triple ψ φ s'').pull1.1 e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cechTripleRestrictComposite_injective_cohomology_forms (s'' : X'' ⟶ Sp R'') : Function.Injective (cechTripleRestrictComposite ψ φ s'').pull1 := by
   intro x y e
@@ -376,7 +372,7 @@ theorem cechTripleRestrictComposite_injective_cohomology_forms (s'' : X'' ⟶ Sp
   rw [(bas_triple ψ φ s'').pull1.1 e]
 
 /- English proof (translation)
-Rewrite using `[← CoefMap.pullCohomologyOne_comp, ← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans ((pairPull h'').comp (cechTripleRestrictComposite ψ φ s'')) ((pairPull h).comp (cechTriplePullbackSecond h')) { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]`. Conclude with `congrArg (fun q ↦ q.hom b) (Scheme.Hom.appLE_comp_appLE ψ φ U.unop.1.2.2.1 U.unop.1.2.1.1 U.unop.1.1.1 U.unop.2.2 U.unop.2.1)) a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tri_pull_pullO (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫ spMap τ)
     (h'' : (ψ ≫ φ) ≫ s = s'' ≫ spMap (τ.comp σ)) (a : HO1 s) :
@@ -390,7 +386,7 @@ theorem tri_pull_pullO (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' �
         U.unop.1.1.1 U.unop.2.2 U.unop.2.1)) a
 
 /- English proof (translation)
-Rewrite using `[← CoefMap.pullCohomologyOne_comp, ← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]) a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tri_res_pullO (h' : ψ ≫ s' = s'' ≫ spMap τ) (a : HO1 s') :
     (cechTriplePullbackSecond (φ := φ) h').pull1 ((pairRes φ s').pull1 a) =
@@ -399,7 +395,7 @@ theorem tri_res_pullO (h' : ψ ≫ s' = s'' ≫ spMap τ) (a : HO1 s') :
   exact CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]) a
 
 /- English proof (translation)
-Rewrite using `[← CoefMap.pullCohomologyOne_comp, ← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tri_res_resO (a : HO1 s'') :
     (cechTripleRestrictFirst ψ φ s'').pull1 ((pairRes ψ s'').pull1 a) =
@@ -408,7 +404,7 @@ theorem tri_res_resO (a : HO1 s'') :
   exact CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) a
 
 /- English proof (translation)
-Use `cechTripleRestrictComposite_injective_cohomology_forms s'' ?_` and prove the remaining obligations. Establish `p0 : (pairPull h).pull1 a = (pairRes φ s').pull1 a'` using `p`. Establish `p1 : (pairPull h').pull1 a' = (pairRes ψ s'').pull1 a''` using `p'`. Rewrite using `[tri_pull_pullO h h' h'', p0, tri_res_pullO, p1, tri_res_resO]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPullO_comp (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫ spMap τ)
     (h'' : (ψ ≫ φ) ≫ s = s'' ≫ spMap (τ.comp σ)) {a : HO1 s} {a' : HO1 s'} {a'' : HO1 s''}
@@ -419,23 +415,23 @@ theorem isPullO_comp (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫ 
   rw [tri_pull_pullO h h' h'', p0, tri_res_pullO, p1, tri_res_resO]
 
 /- English proof (translation)
-The claim follows from `cechDeRhamCoefMapOneForms_restrictAlongFunctor F G T _`.
+A detailed English derivation is pending.
 -/
 theorem glob_restrict {C C' : Type} [Category.{0} C] [Category.{0} C'] (F : C ⥤ CommAlgCat.{0} R)
     (G : C' ⥤ C) (ω : Glob1 F) (T : C') :
     (pullGlob1 (CoefMap.restrict F G) ω).1 T = ω.1 (G.obj T) := cechDeRhamCoefMapOneForms_restrictAlongFunctor F G T _
 
 /- English proof (translation)
-The claim follows from `glob_restrict (OPair (ψ ≫ φ) s'') (cechTripleProjFirstThird ψ φ) c t`.
+A detailed English derivation is pending.
 -/
 theorem triRes_apply (s'' : X'' ⟶ Sp R'') (c : Glob1 (OPair (ψ ≫ φ) s'')) (t : (Triple ψ φ)ᵒᵖ) :
     (pullGlob1 (cechTripleRestrictComposite ψ φ s'') c).1 t = c.1 ((cechTripleProjFirstThird ψ φ).obj t) :=
   glob_restrict (OPair (ψ ≫ φ) s'') (cechTripleProjFirstThird ψ φ) c t
 
 /- English proof (translation)
-Establish `key : ∀ c : GlobForm s'', pullGlob1 (cechTripleRestrictComposite ψ φ s'') (pullGlob1 (pairRes (ψ ≫ φ) s'') c) = pullGlob1 (CoefMap.restrict (OAff s'') (cechTripleProjFirstThird ψ φ ⋙ pairFst (ψ ≫ φ))) c` using `fun c ↦ Subtype.ext (funext fun t ↦ (triRes_apply s'' _ t).trans ((glob_restrict (OAff s'') (pairFst (ψ ≫ φ)) c _).trans (glob_restrict (OAff s'') (cechTripleProjFirstThird ψ φ ⋙ pairFst (ψ ≫ φ)) c t).symm))`. Introduce `x y e`. Take `⟨x0, rfl⟩` from `(pairRes_bijective (ψ ≫ φ) s'').2.1.2 x`. Take `⟨y0, rfl⟩` from `(pairRes_bijective (ψ ≫ φ) s'').2.1.2 y`. Rewrite `e` using `[key, key]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[(bas_triple ψ φ s'').glob.1 e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem triple_restriction_forms_injective (s'' : X'' ⟶ Sp R'') :
     Function.Injective (pullGlob1 (cechTripleRestrictComposite ψ φ s'')) := by
@@ -451,9 +447,9 @@ theorem triple_restriction_forms_injective (s'' : X'' ⟶ Sp R'') :
   rw [(bas_triple ψ φ s'').glob.1 e]
 
 /- English proof (translation)
-Use `triple_restriction_forms_injective s'' (Subtype.ext (funext fun t ↦ ?_))` and prove the remaining obligations. Establish `k` using `isPullForm_iff.1 p t.unop.p23`. Establish `k'` using `isPullForm_iff.1 p' t.unop.p12`. Establish `e : (semiHom_secPull h' t.unop.p12).m1 ((semiHom_secPull h t.unop.p23).m1 (a.1 (op t.unop.1.2.2))) = (semiHom_secPull h'' t.unop.p13).m1 (a.1 (op t.unop.1.2.2))` using `SemiHom.oneFormMap_comp_oneFormMap _ _ _ (fun b ↦ congrArg (fun q ↦ q.hom b) (Scheme.Hom.appLE_comp_appLE ψ φ t.unop.1.2.2.1 t.unop.1.2.1.1 t.unop.1.1.1 t.unop.2.2 t.unop.2.1)) _`. Establish `L : (pullGlob1 (pairPull h'') a).1 ((cechTripleProjFirstThird ψ φ).obj t) = (semiHom_secPull h'' t.unop.p13).m1 (a.1 (op t.unop.1.2.2))` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Rr : (pullGlob1 (pairRes (ψ ≫ φ) s'') a'').1 ((cechTripleProjFirstThird ψ φ).obj t) = a''.1 (op t.unop.1.1)` using `glob_restrict (OAff s'') (pairFst (ψ ≫ φ)) a'' _`. Establish `k1 : (semiHom_secPull h t.unop.p23).m1 (a.1 (op t.unop.1.2.2)) = a'.1 (op t.unop.1.2.1)` using `k`. Establish `k2 : (semiHom_secPull h' t.unop.p12).m1 (a'.1 (op t.unop.1.2.1)) = a''.1 (op t.unop.1.1)` using `k'`. Conclude with `(triRes_apply s'' _ t).trans (L.trans (e.symm.trans ((congrArg _ k1).trans (k2.trans (Rr.symm.trans (triRes_apply s'' _ t).symm)))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPullForm_comp (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫ spMap τ)
     (h'' : (ψ ≫ φ) ≫ s = s'' ≫ spMap (τ.comp σ)) {a : GlobForm s} {a' : GlobForm s'}
@@ -476,7 +472,7 @@ theorem isPullForm_comp (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' �
     (k2.trans (Rr.symm.trans (triRes_apply s'' _ t).symm)))))
 
 /- English proof (translation)
-Use `cechTripleRestrictComposite_injective_first ψ φ s'' ?_` and prove the remaining obligations. Establish `p0 : pullHyp1 (pairPull h) a = pullHyp1 (pairRes φ s') a'` using `p`. Establish `p1 : pullHyp1 (pairPull h') a' = pullHyp1 (pairRes ψ s'') a''` using `p'`. Rewrite using `[tri_pull_pull1 h h' h'', p0, tri_res_pull1, p1, cechTriple_restrict_restrict_first]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPull1_comp (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫ spMap τ)
     (h'' : (ψ ≫ φ) ≫ s = s'' ≫ spMap (τ.comp σ)) {a : HH1 s} {a' : HH1 s'} {a'' : HH1 s''}
@@ -487,13 +483,13 @@ theorem isPull1_comp (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫ 
   rw [tri_pull_pull1 h h' h'', p0, tri_res_pull1, p1, cechTriple_restrict_restrict_first]
 
 /- English proof (translation)
-The claim follows from `CoefMap.pullCohomologyOne_eq_of_natTrans (pairPull h) (pairRes _ s) (pairIdTrans X) (fun _ _ ↦ rfl) c`.
+A detailed English derivation is pending.
 -/
 theorem isPullO_id (h : 𝟙 X ≫ s = s ≫ spMap (RingHom.id R)) (c : HO1 s) : IsPullO h c c :=
   CoefMap.pullCohomologyOne_eq_of_natTrans (pairPull h) (pairRes _ s) (pairIdTrans X) (fun _ _ ↦ rfl) c
 
 /- English proof (translation)
-Use `isPullForm_iff.2 fun p ↦ ?_` and prove the remaining obligations. Establish `e : (p.1.1 : X.affineOpens) ≤ p.1.2` using `p.2`. Conclude with `(c.2 (homOfLE e).op).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPullForm_id (h : 𝟙 X ≫ s = s ≫ spMap (RingHom.id R)) (c : GlobForm s) :
     IsPullForm h c c := by
@@ -509,7 +505,7 @@ variable {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) [IsIso s]
 
 omit [IsIso s] in
 /- English proof (translation)
-The claim follows from `IsAffine.of_isIso s`.
+A detailed English derivation is pending.
 -/
 theorem base_affine (s : X ⟶ Sp R) [IsIso s] : IsAffine X := IsAffine.of_isIso s
 
@@ -522,14 +518,14 @@ def topInitial : Limits.IsInitial (topAff s) :=
     le_top (a := U.unop.1))).op) fun _ _ ↦ Subsingleton.elim _ _
 
 /- English proof (translation)
-The claim follows from `H1.eq_zero_of_isInitial (OAff s) (topInitial s) c`.
+A detailed English derivation is pending.
 -/
 theorem base_first_cohomology_zero (c : HO1 s) : c = 0 := H1.eq_zero_of_isInitial (OAff s) (topInitial s) c
 
 /- English proof (translation)
-Establish `e : s.appLE ⊤ ⊤ le_top = s.appTop`. Simplify using `only [Scheme.Hom.appLE]`. Conclude with `(congrArg _ ((X.presheaf.map_id _))).trans (Category.comp_id _)`. Use `haveI : IsIso s.appTop := inferInstanceAs (IsIso (Scheme.Hom.app _ ⊤))`. Establish `h : IsIso (secMap s ⊤)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : IsIso (s.appLE ⊤ ⊤ le_top)`. Rewrite using `[e]`. Use `infer_instance`. Conclude with `IsIso.comp_isIso' (f := (Scheme.ΓSpecIso (CommRingCat.of R)).inv) inferInstance h1`. Conclude with `(ConcreteCategory.bijective_of_isIso (secMap s ⊤)).2`.
+A detailed English derivation is pending.
 -/
 theorem base_surj : Function.Surjective (algebraMap R ((OAff s).obj (topAff s))) := by
   have e : s.appLE ⊤ ⊤ le_top = s.appTop := by
@@ -544,7 +540,7 @@ theorem base_surj : Function.Surjective (algebraMap R ((OAff s).obj (topAff s)))
   exact (ConcreteCategory.bijective_of_isIso (secMap s ⊤)).2
 
 /- English proof (translation)
-Use `haveI : Subsingleton Ω[(OAff s).obj (topAff s)⁄R] := KaehlerDifferential.subsingleton_of_surjective R _ (base_surj s)`. Use `Subtype.ext (funext fun T ↦ ?_)` and prove the remaining obligations. Rewrite using `[c.2 ((topInitial s).to T), Subsingleton.elim (c.1 (topAff s)) 0, map_zero]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem base_form (c : GlobForm s) : c = 0 := by
   haveI : Subsingleton Ω[(OAff s).obj (topAff s)⁄R] :=
@@ -554,7 +550,7 @@ theorem base_form (c : GlobForm s) : c = 0 := by
   rfl
 
 /- English proof (translation)
-Establish `h : c ∈ CechHodgeFiltration s` using `LinearMap.mem_ker.2 (base_first_cohomology_zero s _)`. Rewrite `h` using `[cechHodgeFiltration_eq_range]`. Take `⟨ω, rfl⟩` from `h`. Establish `: ω = 0` using `Subtype.ext (base_form s ω.1)`. Rewrite using `[this, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem base_hyp (c : HH1 s) : c = 0 := by
   have h : c ∈ CechHodgeFiltration s := LinearMap.mem_ker.2 (base_first_cohomology_zero s _)
@@ -578,40 +574,40 @@ abbrev PH {Y Z : Over (Sp R)} (f : Y ⟶ Z) : HH1 Z.hom →ₗ[R] HH1 Y.hom := p
 variable {Y Z W : Over (Sp R)}
 
 /- English proof (translation)
-The claim follows from `(IsPullO.eq_pullHO1 (wOver (f ≫ g)) (isPullO_comp (wOver g) (wOver f) (wOver (f ≫ g)) (isPullO_pullHO1 _ c) (isPullO_pullHO1 _ _))).symm`.
+A detailed English derivation is pending.
 -/
 theorem PO_comp (f : Y ⟶ Z) (g : Z ⟶ W) (c : HO1 W.hom) : PO (f ≫ g) c = PO f (PO g c) :=
   (IsPullO.eq_pullHO1 (wOver (f ≫ g)) (isPullO_comp (wOver g) (wOver f) (wOver (f ≫ g))
     (isPullO_pullHO1 _ c) (isPullO_pullHO1 _ _))).symm
 
 /- English proof (translation)
-The claim follows from `(IsPullForm.eq_pullForm (wOver (f ≫ g)) (isPullForm_comp (wOver g) (wOver f) (wOver (f ≫ g)) (isPullForm_pullForm _ c) (isPullForm_pullForm _ _))).symm`.
+A detailed English derivation is pending.
 -/
 theorem PF_comp (f : Y ⟶ Z) (g : Z ⟶ W) (c : GlobForm W.hom) : PF (f ≫ g) c = PF f (PF g c) :=
   (IsPullForm.eq_pullForm (wOver (f ≫ g)) (isPullForm_comp (wOver g) (wOver f) (wOver (f ≫ g))
     (isPullForm_pullForm _ c) (isPullForm_pullForm _ _))).symm
 
 /- English proof (translation)
-The claim follows from `(IsPull1.eq_pullHH1 (wOver (f ≫ g)) (isPull1_comp (wOver g) (wOver f) (wOver (f ≫ g)) (isPull1_pullHH1 _ c) (isPull1_pullHH1 _ _))).symm`.
+A detailed English derivation is pending.
 -/
 theorem PH_comp (f : Y ⟶ Z) (g : Z ⟶ W) (c : HH1 W.hom) : PH (f ≫ g) c = PH f (PH g c) :=
   (IsPull1.eq_pullHH1 (wOver (f ≫ g)) (isPull1_comp (wOver g) (wOver f) (wOver (f ≫ g))
     (isPull1_pullHH1 _ c) (isPull1_pullHH1 _ _))).symm
 
 /- English proof (translation)
-The claim follows from `(IsPullO.eq_pullHO1 (wOver (𝟙 Y)) (isPullO_id _ c)).symm`.
+A detailed English derivation is pending.
 -/
 theorem PO_id (c : HO1 Y.hom) : PO (𝟙 Y) c = c :=
   (IsPullO.eq_pullHO1 (wOver (𝟙 Y)) (isPullO_id _ c)).symm
 
 /- English proof (translation)
-The claim follows from `(IsPullForm.eq_pullForm (wOver (𝟙 Y)) (isPullForm_id _ c)).symm`.
+A detailed English derivation is pending.
 -/
 theorem PF_id (c : GlobForm Y.hom) : PF (𝟙 Y) c = c :=
   (IsPullForm.eq_pullForm (wOver (𝟙 Y)) (isPullForm_id _ c)).symm
 
 /- English proof (translation)
-The claim follows from `(IsPull1.eq_pullHH1 (wOver (𝟙 Y)) (isPull1_id _ c)).symm`.
+A detailed English derivation is pending.
 -/
 theorem PH_id (c : HH1 Y.hom) : PH (𝟙 Y) c = c :=
   (IsPull1.eq_pullHH1 (wOver (𝟙 Y)) (isPull1_id _ c)).symm
@@ -619,19 +615,19 @@ theorem PH_id (c : HH1 Y.hom) : PH (𝟙 Y) c = c :=
 instance : IsIso (𝟙_ (Over (Sp R))).hom := inferInstanceAs (IsIso (𝟙 (Sp R)))
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, PO_comp, base_first_cohomology_zero _ (PO η[A] c), map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem PO_one {A : Over (Sp R)} [GrpObj A] (c : HO1 A.hom) : PO (1 : Y ⟶ A) c = 0 := by
   rw [Hom.one_def, PO_comp, base_first_cohomology_zero _ (PO η[A] c), map_zero]
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, PF_comp, base_form _ (PF η[A] c), map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem PF_one {A : Over (Sp R)} [GrpObj A] (c : GlobForm A.hom) : PF (1 : Y ⟶ A) c = 0 := by
   rw [Hom.one_def, PF_comp, base_form _ (PF η[A] c), map_zero]
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, PH_comp, base_hyp _ (PH η[A] c), map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem PH_one {A : Over (Sp R)} [GrpObj A] (c : HH1 A.hom) : PH (1 : Y ⟶ A) c = 0 := by
   rw [Hom.one_def, PH_comp, base_hyp _ (PH η[A] c), map_zero]
@@ -644,9 +640,9 @@ variable {R M N : Type} [CommRing R] [AddCommGroup M] [AddCommGroup N] [Module R
   (a b : M →ₗ[R] N) (u v : N →ₗ[R] M)
 
 /- English proof (translation)
-Use `⟨fun x y e ↦ ?_, fun c ↦ ⟨(u c, v c), ?_⟩⟩` and prove the remaining obligations. Establish `e' : a x.1 + b x.2 = a y.1 + b y.2` using `e`. Establish `e1` using `congrArg u e'`. Establish `e2` using `congrArg v e'`. Simplify using `only [map_add, ua, ub, va, vb, add_zero, zero_add] at e1 e2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Prod.ext e1 e2`. Apply the tactic sequence `refine sub_eq_zero.1 (hz _ ?_ ?_) <;> simp [ua, ub, va, vb]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem sum_bijective (ua : ∀ x, u (a x) = x) (ub : ∀ x, u (b x) = 0) (va : ∀ x, v (a x) = 0)
     (vb : ∀ x, v (b x) = x) (hz : ∀ c, u c = 0 → v c = 0 → c = 0) :
@@ -660,7 +656,7 @@ theorem sum_bijective (ua : ∀ x, u (a x) = x) (ub : ∀ x, u (b x) = 0) (va : 
   · refine sub_eq_zero.1 (hz _ ?_ ?_) <;> simp [ua, ub, va, vb]
 
 /- English proof (translation)
-Apply the tactic sequence `refine sub_eq_zero.1 (hz _ ?_ ?_) <;> simp [ua, ub, va, vb, um, vm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_primitive (m : M →ₗ[R] N) (ua : ∀ x, u (a x) = x) (ub : ∀ x, u (b x) = 0)
     (va : ∀ x, v (a x) = 0) (vb : ∀ x, v (b x) = x) (um : ∀ x, u (m x) = x) (vm : ∀ x, v (m x) = x)
@@ -674,11 +670,11 @@ section Main
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `k : IsPull1 (wOver f) (clForm _ β) 0`. Use `isPull1_pullHH1 (wOver f) (clForm _ β)` as an intermediate fact. Rewrite `this` using `[show pullHH1 (wOver f) (clForm _ β) = 0 from e]`. Then use the resulting hypothesis. Establish `k2 : ofForm (OPair f.left Y.hom) (pullClosed1 (pairPull (wOver f)) β) = 0`. Rewrite using `[← pullHyp1_ofForm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `k.trans (map_zero _)`. Take `⟨g, hg, hD⟩` from `ofForm_eq_zero.1 k2`. Take `⟨r, hr⟩` from `stein_const ((bas_pair f.left Y.hom).stein sY) g hg`. Use `Eq.trans ?_ (map_zero _).symm` and prove the remaining obligations. Use `Subtype.ext (funext fun T ↦ ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hD T).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hr T]`. Conclude with `(D R _).map_algebraMap r`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullForm_zero {Y Z : Over (Sp R)} (f : Y ⟶ Z) (sY : Stein (OAff Y.hom))
     (β : ClosedForm Z.hom) (e : PH f (clForm _ β) = 0) : IsPullForm (wOver f) β.1 0 := by
@@ -703,25 +699,23 @@ abbrev ax₁ : A ⟶ A ⊗ A := lift (𝟙 A) 1
 abbrev ax₂ : A ⟶ A ⊗ A := lift 1 (𝟙 A)
 
 /- English proof (translation)
-Rewrite using `[← Hom.mul_def, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ax₁_mul : ax₁ A ≫ (μ : A ⊗ A ⟶ A) = 𝟙 A := by
   rw [← Hom.mul_def, _root_.mul_one]
 
 /- English proof (translation)
-Rewrite using `[← Hom.mul_def, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ax₂_mul : ax₂ A ≫ (μ : A ⊗ A ⟶ A) = 𝟙 A := by
   rw [← Hom.mul_def, _root_.one_mul]
 
 /- English proof (translation)
-Use `set d : HH1 (A ⊗ A).hom := PH (μ : A ⊗ A ⟶ A) c - (PH (fst A A) c + PH (snd A A) c) with hd`. Establish `d1 : PH (ax₁ A) d = 0`. Simplify using `only [hd, map_sub, map_add, ← PH_comp, ax₁_mul, lift_fst, lift_snd, PH_id, PH_one]`. Simplify using the standard rewrite rules. Establish `d2 : PH (ax₂ A) d = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hd, map_sub, map_add, ← PH_comp, ax₂_mul, lift_fst, lift_snd, PH_id, PH_one]`. Simplify using the standard rewrite rules. Establish `toO0 : ∀ f : A ⟶ A ⊗ A, PH f d = 0 → IsPullO (wOver f) (toHO1 _ d) 0` using `fun f e ↦ by`. Use `IsPull1.toO (isPull1_pullHH1 (wOver f) d)` as an intermediate fact. Rewrite `this` using `[show pullHH1 (wOver f) d = 0 from e, map_zero]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hF : d ∈ CechHodgeFiltration (A ⊗ A).hom` using `LinearMap.mem_ker.2 (aO _ (toO0 _ d1) (toO0 _ d2))`. Rewrite `hF` using `[cechHodgeFiltration_eq_range]`. Take `⟨β, hβ⟩` from `hF`. Establish `hβ0 : β = 0` using `Subtype.ext (aF β.1 (isPullForm_zero _ sA β (by rw [hβ]; exact d1)) (isPullForm_zero _ sA β (by rw [hβ]; exact d2)))`. Establish `: d = 0` using `by rw [← hβ, hβ0, map_zero]`.
-
-Conclude with `sub_eq_zero.1 this`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hyp_primitive (sA : Stein (OAff A.hom))
     (aO : ∀ c : HO1 (A ⊗ A).hom, IsPullO (wOver (ax₁ A)) c 0 → IsPullO (wOver (ax₂ A)) c 0 → c = 0)
@@ -749,13 +743,13 @@ theorem hyp_primitive (sA : Stein (OAff A.hom))
 variable {A}
 
 /- English proof (translation)
-Set `φ : J → (Y.left ⟶ A.left)` to `fun i ↦ (f i).left`. Establish `h : ∀ i, φ i ≫ A.hom = Y.hom ≫ spMap (RingHom.id R)` using `fun i ↦ wOver (f i)`. Establish `hb : Bas Y.hom (famFst φ)` using `bas_fam φ Y.hom`. Establish `eO : ∀ i x, (famPull h i).pull1 x = (CoefMap.restrict (OAff Y.hom) (famFst φ)).pull1 (PO (f i) x)` using `famPull_pull1 h`. Establish `eF : ∀ i x, pullGlob1 (famPull h i) x = pullGlob1 (CoefMap.restrict (OAff Y.hom) (famFst φ)) (PF (f i) x)` using `famPull_glob h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eH : ∀ i x, pullHyp1 (famPull h i) x = pullHyp1 (CoefMap.restrict (OAff Y.hom) (famFst φ)) (PH (f i) x)` using `famPull_hyp h`. Use `⟨(Fam φ)ᵒᵖ, inferInstance, famFst φ ⋙ OAff Y.hom, famPull h m, famPull h p, famPull h q, hb.stein sY, hb.par pY, ?_, ?_, fun c ↦ ?_, fun c ↦ ?_, fun c ↦ ?_⟩` and prove the remaining obligations. Use `hb.pull1.comp hO using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, map_add, eO]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `hb.glob.comp hF using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, map_add, eF]`. Rewrite using `[eO, eO, eO, ← map_add, mO]`. Rewrite using `[eF, eF, eF, ← map_add, mF]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eH, eH, eH, ← map_add, mH]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bi_of_fam {Y : Over (Sp R)} {J : Type} [Finite J] (f : J → (Y ⟶ A)) (m p q : J)
     (sY : Stein (OAff Y.hom)) (pY : Par (OAff Y.hom))
@@ -785,7 +779,7 @@ theorem bi_of_fam {Y : Over (Sp R)} {J : Type} [Finite J] (f : J → (Y ⟶ A)) 
   · rw [eH, eH, eH, ← map_add, mH]
 
 /- English proof (translation)
-The claim follows from `bi_of_fam ![m, p, q] 0 1 2 sY pY hO hF mO mF mH`.
+A detailed English derivation is pending.
 -/
 theorem bi_of_pull {Y : Over (Sp R)} (m p q : Y ⟶ A) (sY : Stein (OAff Y.hom)) (pY : Par (OAff Y.hom))
     (hO : Function.Bijective fun x : HO1 A.hom × HO1 A.hom ↦ PO p x.1 + PO q x.2)
@@ -797,21 +791,19 @@ theorem bi_of_pull {Y : Over (Sp R)} (m p q : Y ⟶ A) (sY : Stein (OAff Y.hom))
 end Main
 
 /- English proof (translation)
-Introduce `hS hP hO hF R _ A _ g hA hg`. Establish `hAA` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Establish `hgg` using `GlobalTheory.AbDual.smooth_prod hg hg`. Establish `sA : Stein (OAff A.hom)` using `hS R A g hA hg`. Establish `sAA : Stein (OAff (A ⊗ A).hom)` using `hS R (A ⊗ A) (g + g) hAA hgg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pAA : Par (OAff (A ⊗ A).hom)` using `(hP R (A ⊗ A) (g + g) hAA hgg).1`. Establish `aO` using `hO R A g hA hg`. Establish `aF` using `hF R A g hA hg`. Establish `zO : ∀ c : HO1 (A ⊗ A).hom, PO (ax₁ A) c = 0 → PO (ax₂ A) c = 0 → c = 0` using `fun c e₁ e₂ ↦ by`. Establish `k₁` using `isPullO_pullHO1 (wOver (ax₁ A)) c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k₂` using `isPullO_pullHO1 (wOver (ax₂ A)) c`. Rewrite `k₁` using `[show pullHO1 (wOver (ax₁ A)) c = 0 from e₁]`. Rewrite `k₂` using `[show pullHO1 (wOver (ax₂ A)) c = 0 from e₂]`. Conclude with `aO c k₁ k₂`. Establish `zF : ∀ c : GlobForm (A ⊗ A).hom, PF (ax₁ A) c = 0 → PF (ax₂ A) c = 0 → c = 0` using `fun c e₁ e₂ ↦ by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k₁` using `isPullForm_pullForm (wOver (ax₁ A)) c`. Establish `k₂` using `isPullForm_pullForm (wOver (ax₂ A)) c`. Rewrite `k₁` using `[show pullForm (wOver (ax₁ A)) c = 0 from e₁]`. Rewrite `k₂` using `[show pullForm (wOver (ax₂ A)) c = 0 from e₂]`. Conclude with `aF c k₁ k₂`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `o1 : ∀ x, PO (ax₁ A) (PO (fst A A) x) = x` using `fun x ↦ by rw [← PO_comp, lift_fst, PO_id]`. Establish `o2 : ∀ x, PO (ax₁ A) (PO (snd A A) x) = 0` using `fun x ↦ by rw [← PO_comp, lift_snd, PO_one]`. Establish `o3 : ∀ x, PO (ax₂ A) (PO (fst A A) x) = 0` using `fun x ↦ by rw [← PO_comp, lift_fst, PO_one]`. Establish `o4 : ∀ x, PO (ax₂ A) (PO (snd A A) x) = x` using `fun x ↦ by rw [← PO_comp, lift_snd, PO_id]`. Establish `o5 : ∀ x, PO (ax₁ A) (PO (μ : A ⊗ A ⟶ A) x) = x` using `fun x ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← PO_comp, ax₁_mul, PO_id]`. Establish `o6 : ∀ x, PO (ax₂ A) (PO (μ : A ⊗ A ⟶ A) x) = x` using `fun x ↦ by`. Rewrite using `[← PO_comp, ax₂_mul, PO_id]`. Establish `f1 : ∀ x, PF (ax₁ A) (PF (fst A A) x) = x` using `fun x ↦ by rw [← PF_comp, lift_fst, PF_id]`. Establish `f2 : ∀ x, PF (ax₁ A) (PF (snd A A) x) = 0` using `fun x ↦ by rw [← PF_comp, lift_snd, PF_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f3 : ∀ x, PF (ax₂ A) (PF (fst A A) x) = 0` using `fun x ↦ by rw [← PF_comp, lift_fst, PF_one]`. Establish `f4 : ∀ x, PF (ax₂ A) (PF (snd A A) x) = x` using `fun x ↦ by rw [← PF_comp, lift_snd, PF_id]`. Establish `f5 : ∀ x, PF (ax₁ A) (PF (μ : A ⊗ A ⟶ A) x) = x` using `fun x ↦ by`. Rewrite using `[← PF_comp, ax₁_mul, PF_id]`. Establish `f6 : ∀ x, PF (ax₂ A) (PF (μ : A ⊗ A ⟶ A) x) = x` using `fun x ↦ by`.
-
-Rewrite using `[← PF_comp, ax₂_mul, PF_id]`. Conclude with `bi_of_pull (μ : A ⊗ A ⟶ A) (fst A A) (snd A A) sAA pAA (sum_bijective _ _ (PO (ax₁ A)) (PO (ax₂ A)) o1 o2 o3 o4 zO) (sum_bijective _ _ (PF (ax₁ A)) (PF (ax₂ A)) f1 f2 f3 f4 zF) (sum_primitive _ _ (PO (ax₁ A)) (PO (ax₂ A)) _ o1 o2 o3 o4 o5 o6 zO) (sum_primitive _ _ (PF (ax₁ A)) (P …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biSt_of : SteinSt → ParSt → AxOSt → AxFormSt → BiSt := by
   intro hS hP hO hF R _ A _ g hA hg
@@ -858,7 +850,7 @@ theorem biSt_of : SteinSt → ParSt → AxOSt → AxFormSt → BiSt := by
     (hyp_primitive A sA aO aF)
 
 /- English proof (translation)
-The claim follows from `fun _ _ ↦ biSt_of`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bilinear_statement_with_descent_hypotheses : DescentSt → LowSt → SteinSt → ParSt → AxOSt → AxFormSt → BiSt :=
   fun _ _ ↦ biSt_of

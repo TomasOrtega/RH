@@ -17,9 +17,9 @@ section Geom
 variable {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc]`. Unfold `GlobalTheory.Et.geomMap`. Use `erw [pullback.lift_fst, pullback.lift_fst_assoc, pullback.lift_fst]`. Rewrite using `[Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc]`. Unfold `GlobalTheory.Et.geomMap`. Use `erw [pullback.lift_snd, pullback.lift_snd, pullback.lift_snd]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem geomMap_comp' {X Y Z : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) {q : Y ⟶ Spec (CommRingCat.of k)}
     {r : Z ⟶ Spec (CommRingCat.of k)} (u : X ⟶ Y) (v : Y ⟶ Z) (hu : u ≫ q = p) (hv : v ≫ r = q)
@@ -35,14 +35,14 @@ theorem geomMap_comp' {X Y Z : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) {
     erw [pullback.lift_snd, pullback.lift_snd, pullback.lift_snd]
 
 /- English proof (translation)
-Apply the tactic sequence `apply pullback.hom_ext <;> simp [GlobalTheory.Et.geomMap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem geomMap_id' {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) (h : 𝟙 X ≫ p = p) :
     GlobalTheory.Et.geomMap Ω p (𝟙 X) h = 𝟙 _ := by
   apply pullback.hom_ext <;> simp [GlobalTheory.Et.geomMap]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, GlobalTheory.Et.galMap_fst, GlobalTheory.Et.geomMap, pullback.lift_fst, ← Category.assoc, GlobalTheory.Et.galMap_fst]`. Rewrite using `[Category.assoc, Category.assoc, GlobalTheory.Et.galMap_snd, GlobalTheory.Et.geomMap, pullback.lift_snd, pullback.lift_snd_assoc, GlobalTheory.Et.galMap_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem galMap_geomMap' {X Y : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) (q : Y ⟶ Spec (CommRingCat.of k))
     (u : X ⟶ Y) (hu : u ≫ q = p) (σ : Ω ≃ₐ[k] Ω) :
@@ -56,7 +56,7 @@ theorem galMap_geomMap' {X Y : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) (
 end Geom
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[LinearMap.toMatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toMatrix_map {R : Type*} [CommSemiring R] {M M' N N' : Type*} [AddCommMonoid M] [Module R M]
     [AddCommMonoid M'] [Module R M'] [AddCommMonoid N] [Module R N] [AddCommMonoid N'] [Module R N']
@@ -72,7 +72,7 @@ variable {l : ℕ} [Fact l.Prime] {K : FinExt l}
 section Et
 
 /- English proof (translation)
-Unfold `GlobalTheory.HTLink.etPull`. Rewrite using `[← LinearMap.comp_apply, ← GlobalTheory.EtC.WSS.pullHQ_map_comp, ← Functor.map_comp, geomMap_comp']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem etPull_comp {X X' X'' : Scheme.{0}} {q : X ⟶ Sp ↥K.1} {q' : X' ⟶ Sp ↥K.1} {q'' : X'' ⟶ Sp ↥K.1}
     {f : X' ⟶ X} {g : X'' ⟶ X'} (hf : f ≫ q = q') (hg : g ≫ q' = q'') (n : ℕ) (x : EtV q n) :
@@ -81,14 +81,14 @@ theorem etPull_comp {X X' X'' : Scheme.{0}} {q : X ⟶ Sp ↥K.1} {q' : X' ⟶ S
   rw [← LinearMap.comp_apply, ← GlobalTheory.EtC.WSS.pullHQ_map_comp, ← Functor.map_comp, geomMap_comp']
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem etPull_congr {X X' : Scheme.{0}} {q : X ⟶ Sp ↥K.1} {q' : X' ⟶ Sp ↥K.1} {f f' : X' ⟶ X}
     (hf : f ≫ q = q') (hf' : f' ≫ q = q') (h : f = f') (n : ℕ) (x : EtV q n) : etPull hf n x = etPull hf' n x := by
   subst h; rfl
 
 /- English proof (translation)
-Unfold `GlobalTheory.HTLink.etPull`. Rewrite using `[geomMap_id', CategoryTheory.Functor.map_id, GlobalTheory.EtC.WSS.pullHQ_map_id]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem etPull_id {X : Scheme.{0}} (q : X ⟶ Sp ↥K.1) (h : 𝟙 X ≫ q = q) (n : ℕ) (x : EtV q n) :
     etPull (f := 𝟙 X) h n x = x := by
@@ -104,7 +104,7 @@ theorem etAct_eq {X : Scheme.{0}} (q : X ⟶ Sp ↥K.1) (n : ℕ) (σ : ↥(GK K
       (IntermediateField.fixingSubgroupEquiv K.1 σ))) n 0 := rfl
 
 /- English proof (translation)
-Rewrite using `[etAct_eq, etAct_eq]`. Unfold `GlobalTheory.HTLink.etPull`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.comp_apply, ← GlobalTheory.EtC.WSS.pullHQ_map_comp, ← GlobalTheory.EtC.WSS.pullHQ_map_comp, ← Functor.map_comp, ← Functor.map_comp, galMap_geomMap']`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem etPull_etAct {X X' : Scheme.{0}} {q : X ⟶ Sp ↥K.1} {q' : X' ⟶ Sp ↥K.1} {f : X' ⟶ X} (hf : f ≫ q = q')
     (n : ℕ) (σ : ↥(GK K)) (x : EtV q n) : etPull hf n (etAct q n σ x) = etAct q' n σ (etPull hf n x) := by
@@ -143,7 +143,7 @@ end Et
 section Hodge
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.HodgeCoh.hodgePull_comp hf hg _ j b x`.
+A detailed English derivation is pending.
 -/
 theorem hodgePull_comp' {X X' X'' : Scheme.{0}} {q : X ⟶ Sp ↥K.1} {q' : X' ⟶ Sp ↥K.1} {q'' : X'' ⟶ Sp ↥K.1}
     {f : X' ⟶ X} {g : X'' ⟶ X'} (hf : f ≫ q = q') (hg : g ≫ q' = q'') (j b : ℕ) (x : hodgeH q j b) :
@@ -151,7 +151,7 @@ theorem hodgePull_comp' {X X' X'' : Scheme.{0}} {q : X ⟶ Sp ↥K.1} {q' : X' �
   GlobalTheory.HodgeCoh.hodgePull_comp hf hg _ j b x
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem hodgePull_congr {X X' : Scheme.{0}} {q : X ⟶ Sp ↥K.1} {q' : X' ⟶ Sp ↥K.1} {f f' : X' ⟶ X}
     (hf : f ≫ q = q') (hf' : f' ≫ q = q') (h : f = f') (j b : ℕ) (x : hodgeH q j b) :
@@ -187,9 +187,9 @@ variable {A A' X X' : Scheme.{0}} {qA : A ⟶ Sp ↥K.1} {qA' : A' ⟶ Sp ↥K.1
   (e' : A' ≅ X') (he' : e'.hom ≫ q' = qA') {f : X' ⟶ X} (hf : f ≫ q = q') {f₀ : A' ⟶ A} (hf₀ : f₀ ≫ qA = qA')
 
 /- English proof (translation)
-Establish `key : (etEquiv e he n).toLinearMap ∘ₗ etAct q n σ ∘ₗ (etEquiv e he n).symm.toLinearMap = etAct qA n σ`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `etPull he n (etAct q n σ ((etEquiv e he n).symm x)) = etAct qA n σ x`. Rewrite using `[etPull_etAct]`. Conclude with `congrArg _ ((etEquiv e he n).apply_symm_apply x)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(LinearMap.toMatrix (F.b.map (etEquiv e he n).symm) (F.b.map (etEquiv e he n).symm) (etAct q n σ)).map (algebraMap ℚ_[l] ℂ_[l]) = (LinearMap.toMatrix F.b F.b (etAct qA n σ)).map (algebraMap ℚ_[l] ℂ_[l])`. Rewrite using `[toMatrix_map, LinearEquiv.symm_symm, key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_tr (σ : ↥(GK K)) : (trFrame F e he).rho σ = F.rho σ := by
   have key : (etEquiv e he n).toLinearMap ∘ₗ etAct q n σ ∘ₗ (etEquiv e he n).symm.toLinearMap = etAct qA n σ := by
@@ -202,7 +202,7 @@ theorem rho_tr (σ : ↥(GK K)) : (trFrame F e he).rho σ = F.rho σ := by
   rw [toMatrix_map, LinearEquiv.symm_symm, key]
 
 /- English proof (translation)
-Use `⟨h.1, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[rho_tr]`. Conclude with `h.2 σ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHT_tr (Φ : Matrix (Fin F.d) F.Col ℂ_[l]) (h : F.IsHT Φ) : (trFrame F e he).IsHT Φ := by
   refine ⟨h.1, fun σ => ?_⟩
@@ -211,9 +211,9 @@ theorem isHT_tr (Φ : Matrix (Fin F.d) F.Col ℂ_[l]) (h : F.IsHT Φ) : (trFrame
 
 include hf hf₀ in
 /- English proof (translation)
-Establish `key : (etEquiv e' he' n).toLinearMap ∘ₗ etPull hf n ∘ₗ (etEquiv e he n).symm.toLinearMap = etPull hf₀ n`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `etPull he' n (etPull hf n ((etEquiv e he n).symm x)) = etPull hf₀ n x`. Rewrite using `[etEquiv_symm_apply, etPull_comp, etPull_comp]`. Use `etPull_congr _ _ ?_ n x` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h, Category.assoc, e.hom_inv_id, Category.comp_id]`. Express the relevant statement in the definitionally equal form `(LinearMap.toMatrix (F.b.map (etEquiv e he n).symm) (F'.b.map (etEquiv e' he' n).symm) (etPull hf n)).map (algebraMap ℚ_[l] ℂ_[l]) = (LinearMap.toMatrix F.b F'.b (etPull hf₀ n)).map (algebraMap ℚ_[l] ℂ_[l])`. Rewrite using `[toMatrix_map, LinearEquiv.symm_symm, key]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem etMat_tr (h : f₀ ≫ e.hom = e'.hom ≫ f) :
     (trFrame F e he).etMat (trFrame F' e' he') hf = F.etMat F' hf₀ := by
@@ -229,11 +229,11 @@ theorem etMat_tr (h : f₀ ≫ e.hom = e'.hom ≫ f) :
 
 include hf hf₀ in
 /- English proof (translation)
-Establish `key : ∀ a : Fin (n + 1), LinearMap.toMatrix ((F.c a).map (hodgeEquiv e he a (n - a)).symm) ((F'.c a).map (hodgeEquiv e' he' a (n - a)).symm) (hodgePull hf a (n - a)) = LinearMap.toMatrix (F.c a) (F'.c a) (hodgePull hf₀ a (n - a))`. Introduce `a`. Rewrite using `[toMatrix_map, LinearEquiv.symm_symm]`. Use `congr 1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `hodgePull he' a (n - a) (hodgePull hf a (n - a) (hodgePull (f := e.inv) (by rw [← he, ← Category.assoc, e.inv_hom_id, Category.id_comp]) a (n - a) x)) = hodgePull hf₀ a (n - a) x`. Rewrite using `[hodgePull_comp', hodgePull_comp']`. Use `hodgePull_congr _ _ ?_ a (n - a) x` and prove the remaining obligations. Rewrite using `[← h, Category.assoc, e.hom_inv_id, Category.comp_id]`. Express the relevant statement in the definitionally equal form `(Matrix.blockDiagonal' fun a : Fin (n + 1) => LinearMap.toMatrix ((F.c a).map (hodgeEquiv e he a (n - a)).symm) ((F'.c a).map (hodgeEquiv e' he' a (n - a)).symm) (hodgePull hf a (n - a))).map (GlobalTheory.HTLink.toC K) = (Matrix.blockDiagonal' fun a : Fin (n + 1) => LinearMap.to …`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [key]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hodgeMat_tr (h : f₀ ≫ e.hom = e'.hom ≫ f) :
     (trFrame F e he).hodgeMat (trFrame F' e' he') hf = F.hodgeMat F' hf₀ := by
@@ -263,13 +263,13 @@ namespace PositivityTheory.AutomorphicGaloisHodgeTate.G8
 
 open CoverOfPf in
 /- English proof (translation)
-Introduce `hG l _ K H J ι hcov n`. Take `⟨hfr, Φ, hHT, hnat⟩` from `hG l K n`. Take `⟨MZ, eZ, ⟨hSm, hd, -⟩, hqZ, hj⟩` from `hcov`. Take `⟨FZ, -⟩` from `hfr MZ hSm hd`. Use `⟨trFrame FZ eZ hqZ, Φ MZ hSm hd FZ, isHT_tr FZ eZ hqZ _ (hHT MZ hSm hd FZ), fun j => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨W, c, G, hG1, hG2, a, I, hI, σ, hgal, hspl, MW, eW, ⟨hSmW, hdW, -⟩, ⟨uc, huc, hc⟩, hi⟩` from `hj j`. Establish `hqW : eW.hom ≫ c ≫ H.q = MW.q`. Rewrite using `[← Category.assoc, ← hc, Category.assoc, hqZ, CrystallineSemistableComparison.Model.genMap_q]`. Establish `hσ : ∀ i, (σ i ≫ H.t (ι j)) ≫ H.q = c ≫ H.q`. Introduce `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ui, hui, h⟩` from `hi i`. Rewrite using `[← cancel_epi eW.hom, hqW, ← Category.assoc, ← Category.assoc, Category.assoc eW.hom, ← h, Category.assoc, hqZ, CrystallineSemistableComparison.Model.genMap_q]`. Take `⟨FW, -⟩` from `hfr MW hSmW hdW`. Use `⟨W, c, G, hG1, hG2, a, I, hI, σ, hσ, hgal, hspl, trFrame FW eW hqW, Φ MW hSmW hdW FW, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[etMat_tr FZ FW eZ hqZ eW hqW rfl (CrystallineSemistableComparison.Model.genMap_q uc huc) hc, hodgeMat_tr FZ FW eZ hqZ eW hqW rfl (CrystallineSemistableComparison.Model.genMap_q uc huc) hc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hnat MZ MW hSm hSmW hd hdW FZ FW uc huc`. Take `⟨ui, hui, h⟩` from `hi i`. Rewrite using `[etMat_tr FZ FW eZ hqZ eW hqW (hσ i) (CrystallineSemistableComparison.Model.genMap_q ui hui) h, hodgeMat_tr FZ FW eZ hqZ eW hqW (hσ i) (CrystallineSemistableComparison.Model.genMap_q ui hui) h]`. Conclude with `hnat MZ MW hSm hSmW hd hdW FZ FW ui hui`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coverOf : CoverOf := by
   intro hG l _ K H J ι hcov n

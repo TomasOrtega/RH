@@ -11,14 +11,14 @@ def resHom {R : Type} [CommRing R] (G : Shv R) {V U : Scheme.{0}} (g : V ⟶ U) 
   (G.obj.map g.op).hom.toAddMonoidHom
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_res {R : Type} [CommRing R] (G : Shv R) {W V U : Scheme.{0}} (f : W ⟶ V) (g : V ⟶ U) (a : Sec G U) :
     Sec.res f (Sec.res g a) = Sec.res (f ≫ g) a := by
   simp [Sec.res]
 
 /- English proof (translation)
-Establish `h` using `φ.hom.naturality g.op`. Conclude with `(congrArg (fun t => t.hom a) h).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem res_map {R : Type} [CommRing R] {G G' : Shv R} (φ : G ⟶ G') {V U : Scheme.{0}} (g : V ⟶ U) (a : Sec G U) :
     Sec.res g (Sec.map φ a) = Sec.map φ (Sec.res g a) := by
@@ -26,7 +26,7 @@ theorem res_map {R : Type} [CommRing R] {G G' : Shv R} (φ : G ⟶ G') {V U : Sc
   exact (congrArg (fun t => t.hom a) h).symm
 
 /- English proof (translation)
-Use `((hKap q 0 U ζ f).2.1 _ ?_).symm` and prove the remaining obligations. Introduce `V g a hv`. Rewrite using `[(hKap q 0 U ξ f).1 V g a hv, hTw hGen q V (primRes g ξ) (primRes g ζ)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_zero (hKap : KapSpec) (hTw : TwZero) (hGen : InGen) (q : ℕ) [NeZero q] {U : Scheme.{0}}
     (ζ ξ : Prim q Γ(U, ⊤)) (f : LocallyConstant U (ZMod q)) : kap 0 ζ f = kap 0 ξ f := by
@@ -55,13 +55,13 @@ def resMor {q : ℕ} {C C' : Type 1} [Category.{0} C] [Category.{0} C'] (P : Pro
     exact res_map _ _ _
 
 /- English proof (translation)
-Introduce `hEt hEM hRep hKap hTw hGen q _ C C' _ _ P P' X X' Y Y' u m g hg hτ hy i hi j x`. Take `⟨a, ha⟩` from `(hRep (ZMod q) (GlobalTheory.EtC.res _ (tw q i)) X (j : ℤ)).1 x`. Establish `hE` using `(hEt hGen q C P X Y i j x).1 a ha`. Establish `hι : ∀ (c : C') (f : LocallyConstant (P.U (m.G.obj c)) (ZMod q)), Sec.res (g c) (kap i (P.ζ (m.G.obj c)) f) = kap i (P'.ζ c) (m.τ c f)`. Introduce `c f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(hKap q i _ (P.ζ (m.G.obj c)) f).2.2 _ (g c), hτ c f]`. Break down `hi with rfl | hi` into its components or cases. Conclude with `kap_zero hKap hTw hGen q _ _ _`. Rewrite using `[hi c]`. Set `n` to `resMor P P' m g hg i hι`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hE'` using `hEM ℤ ℤ (RingHom.id ℤ) C C' P.L P'.L (P.res i) (P'.res i) m n j _ _ hE`. Establish `hglob : n.pullC j 0 (Y.glob i j a) = Y'.glob i j (Sec.res u a)`. Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `Sec.res (g (t.obj (Fin.last 0))) (Sec.res (Y.y (m.G.obj (t.obj (Fin.last 0)))) a) = Sec.res (Y'.y (t.obj (Fin.last 0))) (Sec.res u a)`. Rewrite using `[res_res, res_res, hy]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hE'` using `[hglob]`. Establish `hR : Rep (pull _ (sch.map u) _ j x) (Sec.res u a)` using `(hRep (ZMod q) (GlobalTheory.EtC.res _ (tw q i)) X (j : ℤ)).2.2.2.2 X' u x a ha`. Conclude with `(hEt hGen q C' P' X' Y' i j _).2 _ ⟨_, hR, hE'⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etNat : CrystallineSemistableComparison.E.EtSpec → CrystallineSemistableComparison.E.EdgeMap → CrystallineSemistableComparison.E.RepBasic → CrystallineSemistableComparison.E.KapSpec → CrystallineSemistableComparison.E.TwZero → CrystallineSemistableComparison.E.EtNat := by
   intro hEt hEM hRep hKap hTw hGen q _ C C' _ _ P P' X X' Y Y' u m g hg hτ hy i hi j x

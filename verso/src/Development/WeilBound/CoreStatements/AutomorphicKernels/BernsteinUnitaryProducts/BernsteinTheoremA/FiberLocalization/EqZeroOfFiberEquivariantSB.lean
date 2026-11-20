@@ -10,12 +10,12 @@ theorem sb_eq_SC (X : Type*) [TopologicalSpace X] : GlobalTheory.SplitWeil.SB X 
   rfl
 
 /- English proof (translation)
-The claim follows from `D`.
+A detailed English derivation is pending.
 -/
 example (X : Type*) [TopologicalSpace X] (D : Module.Dual ℂ (GlobalTheory.SplitWeil.SB X)) : Distr X := D
 
 /- English proof (translation)
-The claim follows from `eq_zero_of_fiber_equivariant (D := D) hp e χ he (fun y D' hD' hs => hfib y D' hD' hs) hD`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_fiber_equivariant_SB {X : Type*} [TopologicalSpace X] {Y : Type*}
     [TopologicalSpace Y] [T2Space Y] [LocallyCompactSpace Y] [TotallyDisconnectedSpace Y]

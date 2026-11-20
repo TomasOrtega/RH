@@ -22,11 +22,9 @@ noncomputable section
 namespace GlobalTheory.Core.Rk.StringPole
 
 /- English proof (translation)
-Introduce `PP hPP`. Establish `hmem : PP.under (𝓞 D.host.F) ∈ GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl R t`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl`. Conclude with `Finset.mem_image.2 ⟨PP, Finset.mem_union.2 hPP, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hw hmem`. Introduce `hc`. Establish `e` using `GlobalTheory.GoodPrimes.isConjPl_iff.1 hc`. Apply `hw` to reduce the goal to its premises.
-
-Use `show w.under (𝓞 D.host.F) ∈ (GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl R t : Set (HeightOneSpectrum (𝓞 D.host.F)))`. Rewrite using `[e, GlobalTheory.TwistTypePlaces.under_conjPl]`. Conclude with `hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_of_not_mem_above {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
     {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
@@ -52,21 +50,19 @@ end GlobalTheory.Core.Rk.StringPole
 open GlobalTheory.Core.Rk.StringPole in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F _ _ i t s hs`. Take `⟨B, hB, hstr⟩` from `hs`. Use `set x := GlobalTheory.LFun.val (F := D.host.F) (chiV R i t) with hx`. Set `c : GlobalTheory.LFun.Fam D.host.E` to `fun w => B w - GlobalTheory.LFun.segFam x D.R.t w`. Use `⟨B, c, hB, (GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl R t).finite_toSet, D.R.rank_add_five_le, fun w hw => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg` using `good_of_not_mem_above R t w hw`. Take `⟨B', hB', hbd⟩` from `hstr w hg`. Establish `hcard : (B w).card = (Vc D i).rank`. Break down `hB (w.under (𝓞 D.host.F)) (fun h => hw h) w rfl with ⟨_, h2, _⟩ | ⟨_, τ, ϖ, α, _, _, h3, _⟩` into its components or cases. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3]`. Simplify using `[GlobalTheory.LGrp.bcParam]`. Use linear arithmetic over natural numbers and integers. Establish `hrank : (Vc D i).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Establish `hseg : (GlobalTheory.LFun.segFam x D.R.t w).map (fun a : ℂˣ => (a : ℂ)) = str (Ideal.absNorm w.asIdeal) (valV R i t w : ℂ) D.R.t`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `GlobalTheory.LFun.segFam GlobalTheory.LFun.seg str`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Establish `hle : GlobalTheory.LFun.segFam x D.R.t w ≤ B w`. Use `(Multiset.map_le_map_iff (f := fun a : ℂˣ => (a : ℂ)) Units.val_injective).1 ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hB', hseg]`. Conclude with `Multiset.le_add_left _ _`. Establish `hsplit : B w = c w + GlobalTheory.LFun.segFam x D.R.t w` using `(tsub_add_cancel_of_le hle).symm`. Establish `hc' : (c w).map (fun a : ℂˣ => (a : ℂ)) = B'`. Use `congrArg (Multiset.map fun a : ℂˣ => (a : ℂ)) hsplit` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Multiset.map_add, hB', hseg]`. Conclude with `(add_right_cancel this).symm`. Use `⟨?_, ?_, GlobalTheory.LFun.norm_val _ _, GlobalTheory.LFun.norm_val _ _, ?_⟩` and prove the remaining obligations. Use `congrArg Multiset.card hsplit` as an intermediate fact. Rewrite `this` using `[Multiset.card_add, hcard, hrank]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [GlobalTheory.LFun.segFam, GlobalTheory.LFun.card_seg] at this`. Use linear arithmetic over natural numbers and integers. Introduce `b hb`. Establish `hb' : (b : ℂ) ∈ B'` using `hc' ▸ Multiset.mem_map_of_mem _ hb`. Conclude with `hbd _ hb'`.
-
-Use `show B w = GlobalTheory.IndefiniteRowSideFullHecke.SimplePoleTwistedLift.liftFam c x x D.R.t w`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SimplePoleTwistedLift.liftFam`. Rewrite using `[mul_inv_cancel, GlobalTheory.LFun.twist_one]`. Conclude with `hsplit`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Core.Rk.StringPole.string_pole_hyp : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ i t s, HasString R i t s → ∃ B c : GlobalTheory.LFun.Fam D.host.E, GlobalTheory.LFun.IsSysParamD D (GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl R t) (Vc D i).rank s B ∧ GlobalTheory.IndefiniteRowSideFullHecke.SimplePoleTwistedLift.Hyp (GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl R t : Set (HeightOneSpectrum (𝓞 D.host.F))) D.R.r D.R.t c B (GlobalTheory.LFun.val (F := D.host.F) (chiV R i t)) (GlobalTheory.LFun.val (F := D.host.F) (chiV R i t)) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F _ _ i t s hs

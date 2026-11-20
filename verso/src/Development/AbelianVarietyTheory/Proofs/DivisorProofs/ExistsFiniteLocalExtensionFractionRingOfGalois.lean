@@ -12,11 +12,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.GalClosure
 
 /- English proof (translation)
-Introduce `R _ _ _ hR E _ _ hfd hgal`. Take `⟨hloc, hfe⟩` from `finExt_integralClosure (E := E) hR`. Use `letI : Algebra R E := (baseMap R E).toAlgebra`. Use `haveI : IsScalarTower R (FractionRing R) E := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsIntegrallyClosed R := hR.1.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : CharZero R := hR.2`. Use `set R₂ := integralClosure R E`. Use `haveI : IsFractionRing R₂ E := integralClosure.isFractionRing_of_finite_extension (FractionRing R) E`. Set `t : E ≃ₐ[R₂] FractionRing R₂` to `IsLocalization.algEquiv (nonZeroDivisors R₂) E (FractionRing R₂)`. Use `⟨R₂, inferInstance, inferInstance, hloc, algebraMap R R₂, t.toRingEquiv.toRingHom, hfe, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `r`. Establish `h1 : algebraMap (FractionRing R) E (algebraMap R (FractionRing R) r) = algebraMap R₂ E (algebraMap R R₂ r)` using `rfl`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `t (algebraMap R₂ E _) = _`. Rewrite using `[AlgEquiv.commutes]`.
+A detailed English derivation is pending.
 -/
 theorem exists_finExt_fractionRing_of_galois : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (E : Type) [Field E] [Algebra (FractionRing R) E], FiniteDimensional (FractionRing R) E → IsGalois (FractionRing R) E → ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R') (ρ : R →+* R') (t : E →+* FractionRing R'), FinExt ρ ∧ ∀ r : R, t (algebraMap (FractionRing R) E (algebraMap R (FractionRing R) r)) = algebraMap R' (FractionRing R') (ρ r) := by
   intro R _ _ _ hR E _ _ hfd hgal

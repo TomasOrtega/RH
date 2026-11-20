@@ -12,13 +12,13 @@ namespace PositivityTheory.RgBcC.Bridge
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Establish `hprod : ∀ u : ℂ, ((Multiset.map χ' univ.val).map (u + ·)).prod = Formalism.QuantumDeterminants.capP χ' u`. Introduce `u`. Rewrite using `[Multiset.map_map, Formalism.QuantumDeterminants.capP, Finset.prod_eq_multiset_prod]`. Both sides reduce to the same expression. Establish `hcard : Multiset.card (Multiset.map χ' Finset.univ.val) = a` using `by simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `HasInfCharGL`. Simplify using `only [hcard, true_and, hprod, PositivityTheory.NCmp.cap_eq_qdet]`. Break down `a with _ | m` into its components or cases. Prove the components needed by the constructor for the conclusion. Introduce `_ φ _ k`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Formalism.REAL.etr, GlobalTheory.Dec.gelfVal]`. Introduce `_ u φ _`. Simplify using `[Formalism.REAL.qdet, Formalism.REAL.qminor, Formalism.QuantumDeterminants.capP]`. Prove the components needed by the constructor for the conclusion. Introduce `h φ hφ k`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.T.trace_elements_act_by_gelfand_values (Sm E (m + 1)) m (Eop τ) χ' φ (glRel_Eop τ) (fun Y => h Y φ hφ) k`. Introduce `h u φ hφ`. Conclude with `gelfToCap (Sm E (m + 1)) m (Eop τ) χ' φ (glRel_Eop τ) (h φ hφ) u`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasInfCharGL_iff (V : Submodule ℂ (Sm E a)) (τ : E →+* ℂ) (χ' : Fin a → ℂ) :
     HasInfCharGL V τ (Multiset.map χ' Finset.univ.val) ↔
@@ -39,19 +39,19 @@ theorem hasInfCharGL_iff (V : Submodule ℂ (Sm E a)) (τ : E →+* ℂ) (χ' : 
       exact gelfToCap (Sm E (m + 1)) m (Eop τ) χ' φ (glRel_Eop τ) (h φ hφ) u
 
 /- English proof (translation)
-Simplify using `[PositivityTheory.RgBcC.GLs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_mem_GLs : (1 : Matrix (Fin a) (Fin a) ℂ) ∈ PositivityTheory.RgBcC.GLs a := by
   simp [PositivityTheory.RgBcC.GLs]
 
 /- English proof (translation)
-Introduce `E _ _ _ a V w χ`. Rewrite using `[hasInfCharGL_iff, hasInfCharGL_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `key : ∀ s, ∀ φ ∈ V, ∀ k, Formalism.REAL.etr (eopW w s) k φ = GlobalTheory.Dec.gelfVal (χ s) k • φ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s φ hφ k`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Establish `h1` using `h φ hφ g s k 1 one_mem_GLs`. Rewrite `h1` using `[gel_along w g s k φ one_mem_GLs, along_one, along_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Submodule.coe_smul, Pi.smul_apply]`. Conclude with `h1`. Conclude with `⟨by simpa [eopW] using key true, by simpa [eopW] using key false⟩`. Introduce and unpack `⟨h1, h2⟩ φ hφ g s k x hx`. Establish `key : Formalism.REAL.etr (eopW w s) k φ = GlobalTheory.Dec.gelfVal (χ s) k • φ`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `s`. Simplify `h2 φ hφ k` using `[eopW]`. Simplify `h1 φ hφ k` using `[eopW]`. Rewrite using `[gel_along w g s k φ hx, key, Submodule.coe_smul, along_smul, Pi.smul_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bridge : BridgeSt := by
   intro E _ _ _ a V w χ

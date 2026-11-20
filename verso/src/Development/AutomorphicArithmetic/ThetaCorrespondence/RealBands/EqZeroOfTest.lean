@@ -5,13 +5,13 @@ open MeasureTheory Filter UpperTheory.Lit.Cusp
 open scoped Topology
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ μ _ F hF h y₀`. Assume the negation of the conclusion as `hy`. Take `⟨χ, hχc, hχ0, hχy⟩` from `exists_continuous_nonneg_pos y₀`. Establish `hχcont : Continuous (fun y => χ y)` using `χ.continuous`. Establish `hc1 : Continuous (fun y => (χ y : ℂ) * (starRingEnd ℂ) (F y))` using `(Complex.continuous_ofReal.comp hχcont).mul (Complex.continuous_conj.comp hF)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : HasCompactSupport (fun y => (χ y : ℂ))` using `hχc.comp_left (g := fun t : ℝ => (t : ℂ)) (by simp)`. Establish `hs1 : HasCompactSupport (fun y => (χ y : ℂ) * (starRingEnd ℂ) (F y))` using `hs0.mul_right (f' := fun y => (starRingEnd ℂ) (F y))`. Establish `h1` using `h (fun z => (χ z⁻¹ : ℂ) * (starRingEnd ℂ) (F z⁻¹)) (hc1.comp continuous_inv) (hs1.comp_homeomorph (Homeomorph.inv G))`. Establish `h2 : ∀ y, (χ y⁻¹⁻¹ : ℂ) * (starRingEnd ℂ) (F y⁻¹⁻¹) * F y = ((χ y * ‖F y‖ ^ 2 : ℝ) : ℂ)`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[inv_inv, mul_assoc, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression. Simplify using `only [h2] at h1`. Rewrite `h1` using `[integral_complex_ofReal, Complex.ofReal_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc2 : Continuous (fun y => χ y * ‖F y‖ ^ 2)` using `hχcont.mul (hF.norm.pow 2)`. Establish `hs2 : HasCompactSupport (fun y => χ y * ‖F y‖ ^ 2)` using `hχc.mul_right (f' := fun y => ‖F y‖ ^ 2)`. Establish `hpos` using `hc2.integral_pos_of_hasCompactSupport_nonneg_nonzero (μ := μ) (x := y₀) hs2 (fun y => mul_nonneg (hχ0 y) (sq_nonneg _)) (mul_ne_zero hχy (pow_ne_zero 2 (norm_ne_zero_iff.mpr hy)))`. Conclude with `hpos.ne' h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Cusp.eq_zero_of_test :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]

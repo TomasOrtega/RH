@@ -10,11 +10,11 @@ open Classical
 namespace GlobalTheory.FlagPush
 
 /- English proof (translation)
-Introduce `F _ Y W y e h`. Use `letI := algebraΓOfHom (W.p₁ ≫ Y.str)`. Establish `hemb` using `W.δ.isClosedEmbedding`. Establish `hcl : Set.range W.δ = closure {W.δ (genericPoint Y.X)}`. Rewrite using `[← Set.image_singleton, hemb.closure_image_eq, genericPoint_spec Y.X, Set.image_univ]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : ∀ r : F, W.δ.appTop (algebraMap F Γ(W.Z, ⊤) r) = algebraMap F Γ(Y.X, ⊤) r` using `fun r => by show W.δ.appTop ((W.p₁ ≫ Y.str).appTop ((Scheme.ΓSpecIso (.of F)).inv r)) = _`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, ← Category.assoc, W.δ₁, Category.id_comp]`. Both sides reduce to the same expression. Use `show interNumRed F _ _ = _`. Rewrite using `[InterModel.interNumRed_eq_interNumOn F W.δ _ hcl, interNumOn_eq_interNum_pull hf fun i => isLB_toLB (y i)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Var.inter_eq_of_toPic_eq (fun i => LB.isLB_pull (isLB_toLB (y i)) _) fun i => ?_).symm` and prove the remaining obligations. Rewrite using `[cls_pull (isLB_toLB (y i)), toPic_apply]`. Break down `h i with h | h` into its components or cases. Rewrite using `[← PullPres.pull_cls_toLB _ _ W.p₁ _ _ h, ← CechPic.pull_comp, W.δ₁, CechPic.pull_id]`. Rewrite using `[← PullPres.pull_cls_toLB _ _ W.p₂ _ _ h, ← CechPic.pull_comp, W.δ₂, CechPic.pull_id]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interNumRed_section : ∀ (F : Type) [Field F] (Y : Var F) (W : Dbl Y), ∀ (y : Fin Y.dim → CartierDiv W.Z) (e : Fin Y.dim → Y.Dv), (∀ i, IsPull W.p₁ (y i) (e i) ∨ IsPull W.p₂ (y i) (e i)) → letI := algebraΓOfHom (W.p₁ ≫ Y.str); interNumRed F (⟨closure {W.δ (genericPoint Y.X)}, isClosed_closure⟩ : Closeds W.Z) (fun i => toLB (y i)) = Y.inter e := by
   intro F _ Y W y e h

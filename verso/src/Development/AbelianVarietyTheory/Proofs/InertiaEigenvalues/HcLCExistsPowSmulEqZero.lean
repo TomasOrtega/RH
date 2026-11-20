@@ -10,11 +10,11 @@ open Formalism.NG
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `O _ G _ _ _ M _ _ ρ ϖ hM x hx`. Take `⟨c, hc, rfl⟩` from `Submodule.mem_map.1 hx`. Establish `hlc : IsLocallyConstant (c : G → M)` using `hc`. Set `f : M → ℕ` to `fun m => Classical.choose (hM m)`. Establish `hf : ∀ m, ϖ ^ f m • m = 0` using `fun m => Classical.choose_spec (hM m)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfin : (Set.range (c : G → M)).Finite` using `hlc.range_finite`. Take `⟨N, hN⟩` from `(hfin.image f).bddAbove`. Use `⟨N, ?_⟩` and prove the remaining obligations. Establish `hc0 : ϖ ^ N • c = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `g`. Establish `hk : f ((c : G → M) g) ≤ N` using `hN ⟨_, ⟨g, rfl⟩, rfl⟩`. Use `show ϖ ^ N • (c : G → M) g = 0`. Rewrite using `[← Nat.sub_add_cancel hk, pow_add, mul_smul, hf, smul_zero]`. Rewrite using `[← LinearMap.map_smul, hc0, map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hcLC_exists_pow_smul_eq_zero : ∀ {O : Type} [CommRing O] {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G]
     {M : Type} [AddCommGroup M] [Module O M] (ρ : Representation O G M) (ϖ : O),

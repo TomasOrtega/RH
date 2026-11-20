@@ -15,11 +15,11 @@ namespace GlobalTheory.CompanionTheory.LatCris
 section Abstract
 
 /- English proof (translation)
-Establish `hl' : (l : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 hl`. Establish `hn : (n.factorial : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 n.factorial_ne_zero`. Rewrite using `[smul_pow, ← h, Algebra.smul_def, Algebra.smul_def]`. Establish `e1 : (l : B) = algebraMap ℚ B (l : ℚ)` using `(map_natCast _ _).symm`. Establish `e2 : (n.factorial : B) = algebraMap ℚ B (n.factorial : ℚ)` using `(map_natCast _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, ← map_pow, ← mul_assoc, ← mul_assoc, ← mul_assoc, ← map_mul, ← map_mul, ← map_mul]`. Establish `e3 : (l : ℚ) ^ (M * n) * (n.factorial : ℚ)⁻¹ * (((l : ℚ) ^ M)⁻¹) ^ n * (n.factorial : ℚ) = 1`. Rewrite using `[pow_mul, inv_pow]`. Establish `: ((l : ℚ) ^ M) ^ n ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ hl')`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e3, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_factorial_mul {B : Type} [CommRing B] [Algebra ℚ B] {l : ℕ} (hl : l ≠ 0) (M n : ℕ)
     {D b : B} (h : (n.factorial : B) * D = b ^ n) :
@@ -40,9 +40,9 @@ variable {W A B C : Type} [CommRing W] [CommRing A] [Algebra W A] [CommRing B] [
   [CommRing C] [Algebra ℚ C]
 
 /- English proof (translation)
-Establish `h1 : (n.factorial : B) * T d = T (algebraMap W A ξ) ^ n`. Rewrite using `[← map_pow, ← hd, map_mul, map_natCast]`. Establish `h2 : g (T d) = (l : C) ^ (M * n) * dpE f ξ l M n`. Rewrite using `[eq_of_factorial_mul hl M n h1, map_mul, map_pow, map_natCast, dpE, η, map_rat_smul, map_pow, map_rat_smul, hf]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (pow_mem (natCast_mem _ l) _) (Subring.subset_closure (Or.inr ⟨n, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem map_dp_mem (T : A →+* B) (g : B →+* C) (f : W →+* C)
     (hf : ∀ w, g (T (algebraMap W A w)) = f w) (ξ : W) {l : ℕ} (hl : l ≠ 0) (M n : ℕ) {d : A}
@@ -56,9 +56,9 @@ theorem map_dp_mem (T : A →+* B) (g : B →+* C) (f : W →+* C)
   exact mul_mem (pow_mem (natCast_mem _ l) _) (Subring.subset_closure (Or.inr ⟨n, rfl⟩))
 
 /- English proof (translation)
-Proceed by induction on `hs using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨n, rfl⟩` from `hy`. Conclude with `map_dp_mem T g f hf ξ hl M n (hd n)`. Consider the case `algebraMap x => rw [hf]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `Subring.subset_closure (Or.inl (Set.mem_range_self x))`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul, map_mul]`. Conclude with `mul_mem hx hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_adjoin_mem (T : A →+* B) (g : B →+* C) (f : W →+* C)
     (hf : ∀ w, g (T (algebraMap W A w)) = f w) (ξ : W) {l : ℕ} (hl : l ≠ 0) (M : ℕ) (d : ℕ → A)
@@ -79,14 +79,14 @@ variable (l : ℕ) [Fact l.Prime]
 local notation "𝔸" => Localization.Away (l : AInf ℂ_[l] l)
 
 /- English proof (translation)
-Rewrite using `[← ACris.acrisZero_eq_adjoin ker_theta0]`. Conclude with `hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_adjoin_dpow {s : 𝔸} (hs : s ∈ ACris.ACrisZero ℂ_[l] l) :
     s ∈ Algebra.adjoin (AInf ℂ_[l] l) (Set.range fun n : ℕ => ACris.dpow n (xi0 l)) := by
   rw [← ACris.acrisZero_eq_adjoin ker_theta0]; exact hs
 
 /- English proof (translation)
-The claim follows from `ACris.factorial_mul_dpow n _`.
+A detailed English derivation is pending.
 -/
 theorem factorial_mul_dpow_xi (n : ℕ) :
     ((n.factorial : 𝔸)) * ACris.dpow n (xi0 l) = algebraMap (AInf ℂ_[l] l) 𝔸 (xi0 l) ^ n :=
@@ -100,7 +100,7 @@ theorem pk_toB_algebraMap (k : ℕ) (w : AInf ℂ_[l] l) :
 
 set_option maxHeartbeats 400000 in
 /- English proof (translation)
-The claim follows from `map_adjoin_mem (W := AInf ℂ_[l] l) (A := 𝔸) (B := BdRp l) (C := Bk l k) (toBDeRhamPlus (normInteger ℂ_[l]) l) (pk l k) (fk l k) (pk_toB_algebraMap l k) (xi0 l) (Fact.out : l.Prime).ne_zero M (fun n => ACris.dpow n (xi0 l)) (factorial_mul_dpow_xi l) (mem_adjoin_dpow l hs)`.
+A detailed English derivation is pending.
 -/
 theorem pk_toB_mem (k M : ℕ) {s : 𝔸} (hs : s ∈ ACris.ACrisZero ℂ_[l] l) :
     pk l k (toBDeRhamPlus (normInteger ℂ_[l]) l s) ∈ sub (fk l k) (xi0 l) l M :=
@@ -112,9 +112,9 @@ theorem pk_toB_mem (k M : ℕ) {s : 𝔸} (hs : s ∈ ACris.ACrisZero ℂ_[l] l)
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨s, hs, hst⟩` from `(ACris.embedding₂ ℂ_[l] l k c).2`. Establish `e1 : IsPerfectoidField.evalB ℂ_[l] l k (ACris.iota ℂ_[l] l c) = (ACris.embedding₂ ℂ_[l] l k c).1` using `ACris.evalₐ_iota k c`. Establish `e2` using `IsPerfectoidField.evalB_toBDeRhamPlus (K := ℂ_[l]) (p := l) k s`. Establish `e3 : ACris.iota ℂ_[l] l c - toBDeRhamPlus (normInteger ℂ_[l]) l s ∈ Ideal.span {tBdR l ^ k}`. Rewrite using `[← Ideal.span_singleton_pow, ← maximalIdeal_eq_span_tBdR, ← IsPerfectoidField.ker_evalB, RingHom.mem_ker, map_sub, e1, e2, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hst.symm`. Establish `e4 : pk l k (ACris.iota ℂ_[l] l c) = pk l k (toBDeRhamPlus (normInteger ℂ_[l]) l s)` using `Ideal.Quotient.eq.2 e3`. Rewrite using `[e4]`. Conclude with `pk_toB_mem l k M hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cris_in (l : ℕ) [Fact l.Prime] (M k : ℕ) (c : Acris l) :
     Lat.pk l k (ACris.iota ℂ_[l] l c) ∈ Lat.sub (Lat.fk l k) (xi0 l) l M := by

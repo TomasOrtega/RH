@@ -18,7 +18,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] {ST : Finset (Pl E)} {π : 𝓞 E} (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Use `show resS F P ⟨afsplitIE v (prV (E := E) v (β : E ⊗[F] Formalism.L2.Herm.Af F)), _⟩ = resS F P β`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Use `resS_eq_zero_of_prV P v hov _ ?_` and prove the remaining obligations. Use `show prV (E := E) v (afsplitIE v (prV (E := E) v (β : E ⊗[F] Formalism.L2.Herm.Af F)) - (β : E ⊗[F] Formalism.L2.Herm.Af F)) = 0`. Rewrite using `[map_sub, afsplit_prV_IE, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fv_rho_prV {P : Pl E} (hov : IsOver v P) (β : Formalism.L2.Herm.intAf F E) :
     rll_rho v P ⟨prV (E := E) v (β : E ⊗[F] Formalism.L2.Herm.Af F), afsplit_prV_int v _ β.2⟩ = resS F P β := by
@@ -29,9 +29,9 @@ theorem fv_rho_prV {P : Pl E} (hov : IsOver v P) (β : Formalism.L2.Herm.intAf F
   rw [map_sub, afsplit_prV_IE, sub_self]
 
 /- English proof (translation)
-Unfold `pullV`. Rewrite using `[← map_inv]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, afsplit_prV_inclE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fv_prV_pullV (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (z : Fin n → E) (i : Fin n) :
     prV (E := E) v (pullV y z i) =
@@ -48,9 +48,9 @@ theorem fv_prV_pullV (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (z : Fin
 variable (h : BasePi ST π)
 
 /- English proof (translation)
-Establish `hm : iA F E (algebraMap (𝓞 E) E (cO E π)) * pullV y z (lastIdx n) ∈ Formalism.L2.Herm.intAf F E`. Rewrite using `[← pullV_osmul]`. Conclude with `(mem_globLat y _).1 hz _`. Rewrite using `[redA_spec P (h.conj_notMem hP) hm, ← fv_rho_prV v hov]`. Use `show rll_rho v P _ = rll_rho v P _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show inclE (F := F) (v.adicCompletion F) (star (algebraMap (𝓞 E) E π)) * _ = prV (E := E) v (iA F E (algebraMap (𝓞 E) E (cO E π)) * pullV y z (lastIdx n))`. Rewrite using `[map_mul, afsplit_prV_inclE, fv_prV_pullV, algebraMap_cO]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fv_psi_pull {P : Pl E} (hP : P ∈ ST) (hov : IsOver v P) (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (z : Fin n → E)
     (hz : cO E π • z ∈ Formalism.UG.CS.globLat y (stdLat E n))
@@ -104,11 +104,9 @@ variable (SG : Finset (Pl E)) (c₀ : DiaG E ST)
 omit h in
 
 /- English proof (translation)
-Establish `hval : d.1 = (decoRaw ST SG y).dia c₀`. Rewrite using `[← hd, ← rlc_decoOf_val hc n ST SG hyU]`. Both sides reduce to the same expression. Establish `hN : d.1.N = Formalism.UG.CS.globLat y (stdLat E n)` using `by rw [hval]; rfl`. Use `⟨hN, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hloc : z ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (Formalism.UG.CS.globLat y (stdLat E n))`. Rewrite using `[← hN]`. Conclude with `hz`. Rewrite using `[hval]`. Use `show (c₀ P).1 * (if z ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (Formalism.UG.CS.globLat y (stdLat E n)) then redA P.1 (pullV y z (lastIdx n)) else 0) = _`.
-
-Rewrite using `[if_pos hloc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fv_f_eq (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (hyU : y ∈ UAd hc n) (d : DecoSet E n ST SG)
     (hd : decoOfD n ST SG c₀ y = d) (P : ST) (z : Sp E n) (hz : z ∈ d.1.at P.1) :
@@ -127,9 +125,9 @@ theorem fv_f_eq (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (hyU : y ∈ 
   rw [if_pos hloc]
 
 /- English proof (translation)
-Take `⟨hN, hf⟩` from `fv_f_eq hc n SG c₀ y hyU d hd P z (d.2.Lsh_le_at ha P hzL)`. Establish `hzN : cO E π • z ∈ Formalism.UG.CS.globLat y (stdLat E n)`. Rewrite using `[← hN]`. Conclude with `d.2.smul_Lsh_mem_N ha.conj hzL`. Establish `h1 : Ideal.Quotient.mk P.1.asIdeal t * Ideal.Quotient.mk P.1.asIdeal (cO E π) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, mul_comm, ← sub_eq_zero, ← map_one (Ideal.Quotient.mk P.1.asIdeal), ← map_sub]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 htt`. Rewrite using `[hf, fv_psi_pull hc n v h P.2 hov y z hzN ht, mul_assoc, ← mul_assoc (Ideal.Quotient.mk P.1.asIdeal t), h1, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fv_tieL (ha : SepElt ST (cO E π)) (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (hyU : y ∈ UAd hc n)
     (d : DecoSet E n ST SG) (hd : decoOfD n ST SG c₀ y = d) (P : ST) (hov : IsOver v P.1) {t : 𝓞 E}
@@ -155,7 +153,7 @@ variable {X : Fields} {Pr : Primes X} (hc : CMData X.F X.E) (hX : X.Ok) (hPr : P
   (c₀ : DiaG X.E (Pr.vT u)) (s : DecoCl n (Pr.vT u) Pr.vGs Λ.grp → DecoSet X.E n (Pr.vT u) Pr.vGs)
 
 /- English proof (translation)
-Establish `h1 : Ideal.Quotient.mk P.1.asIdeal (tieInv hPr u P) * Ideal.Quotient.mk P.1.asIdeal (cO X.E (Pr.piT u)) = 1`. Rewrite using `[← map_mul, mul_comm, ← sub_eq_zero, ← map_one (Ideal.Quotient.mk P.1.asIdeal), ← map_sub]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (tieInv_spec hPr u P)`. Rewrite using `[mul_assoc, ← mul_assoc (Ideal.Quotient.mk P.1.asIdeal (tieInv hPr u P)), h1, one_mul]`. Conclude with `(c₀ P).val_inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fv_unit (P : Pr.vT u) :
     (c₀ P).1 * Ideal.Quotient.mk P.1.asIdeal (tieInv hPr u P) *
@@ -171,7 +169,7 @@ def fvMe (P : Pr.vT u) : fMod hc n (Pr.vT u) (tieEV hc hX hPr u P).1 ≃+ (𝓞 
     ((basePi_of_ok hX hPr u).over_unique hc P.2 (tieEV_over hc hX hPr u P)) _ _ (fv_unit hPr u c₀ P)
 
 /- English proof (translation)
-The claim follows from `fv_tieL hc n (tieEV hc hX hPr u P).1 (basePi_of_ok hX hPr u) Pr.vGs c₀ (sepElt_of_ok hPr u) y hyU d hd P (tieEV_over hc hX hPr u P) (tieInv_spec hPr u P) z hzL ht`.
+A detailed English derivation is pending.
 -/
 theorem fv_tie₁ (y : GL (Fin n) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F)) (hyU : y ∈ UAd hc n) (d : DecoSet X.E n (Pr.vT u) Pr.vGs)
     (hd : decoOfD n (Pr.vT u) Pr.vGs c₀ y = d) (P : Pr.vT u) (z : Sp X.E n) (hzL : z ∈ d.1.Lsh)
@@ -194,7 +192,7 @@ def tieFMe (P : Pr.vT u) :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hzL : z.1 ∈ (s c).1.Lsh` using `(tie_Ld_eq hc σ₀ u s Q c) ▸ z.2`. Use `(tie_fv hc hPr σ₀ u s Q P c z).trans ?_` and prove the remaining obligations. Take `⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩` from `Q`. Conclude with `fv_tie₁ hc hX hPr u c₀ _ (ptOfD hc n (Pr.vT u) Pr.vGs c₀ (s c)).2 (s c) (decoOfD_ptOfD hc n (Pr.vT u) Pr.vGs hS c₀ (s c)) P z.1 hzL hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tie_FvTie (P : Pr.vT u) (c : DecoCl n (Pr.vT u) Pr.vGs Λ.grp)
     (z : ↥(Formalism.L2.Forms.dualL (hc.sig : X.E →+* X.E) Q.J (Q.lat c)))
@@ -226,7 +224,7 @@ def formModuleEquivAtPlace (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSur
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `v c z hz` and use `tie_FvTie d.sp.cm d.hX d.hPr d.σ₀ u (d.lev i) (colDia (X := d.X) (Pr := d.Pr) d.R u i) (d.repr u i) (hP u i) (fun c => (stepGSD (Pr := d.Pr) d.W d.lev u i).outSec.spec c) (stepCrd a hS hH u i hi) v c z hz`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fvTied (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSurj d) (u : d.what₂.Word) (i : ℕ) (hi : i ≤ d.R.m) :
     CF.FvTie (levelAgreement a hS hH u i hi) (classAgreement a hS hH hP u i hi) (formModuleEquivAtPlace a hS hH hP u i hi) :=

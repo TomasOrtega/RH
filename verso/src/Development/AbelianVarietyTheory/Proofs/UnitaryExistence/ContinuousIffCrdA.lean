@@ -25,7 +25,7 @@ variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] [Algebra F E] {r : ℕ} (V : ConjugateFieldNorm.HSpace E r)
 
 /- English proof (translation)
-Unfold `ConjugateFieldNorm.hermA Formalism.UG.hform`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x a * inclR A (V.Gm a b) * sigR A (ConjugateFieldNorm.cjF F) (y b) = sigR A (ConjugateFieldNorm.cjF F) (y b) * inclR A (V.Gm a b) * x a`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermA_eq (A : Type) [CommRing A] [Algebra F A] (x y : Fin r → A ⊗[F] E) :
     ConjugateFieldNorm.hermA F A V x y = Formalism.UG.hform (sigR A (ConjugateFieldNorm.cjF F)) (JR A V.Gmᵀ) y x := by
@@ -36,9 +36,9 @@ theorem hermA_eq (A : Type) [CommRing A] [Algebra F A] (x y : Fin r → A ⊗[F]
   ring
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ x y, ConjugateFieldNorm.hermA F A V (g.val.mulVec x) (g.val.mulVec y) = ConjugateFieldNorm.hermA F A V x y) ↔ Formalism.UG.cT _ g.val * _ * g.val = _`. Simplify using `only [hermA_eq, Formalism.UG.P.hform_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `h (Pi.single j 1) (Pi.single i 1)` as an intermediate fact. Rewrite `this` using `[Formalism.UG.P.hform_single, Formalism.UG.P.hform_single]`. Then use the resulting hypothesis. Introduce `h x y`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_UA_iff (A : Type) [CommRing A] [Algebra F A] (g : GL (Fin r) (A ⊗[F] E)) :
     g ∈ ConjugateFieldNorm.UA F A V ↔ g ∈ HR A (ConjugateFieldNorm.cjF F) V.Gmᵀ := by
@@ -58,7 +58,7 @@ def crdA (A : Type) [CommRing A] [Algebra F A] (φ : E →ₗ[F] F) : A ⊗[F] E
 
 omit [NumberField F] [IsTotallyReal F] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [crdA]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem crdA_eq (A : Type) [CommRing A] [Algebra F A] (φ : E →ₗ[F] F) (z : A ⊗[F] E) :
     TensorProduct.rid F A (LinearMap.lTensor A φ z) = crdA A φ z := by
@@ -69,9 +69,9 @@ theorem crdA_eq (A : Type) [CommRing A] [Algebra F A] (φ : E →ₗ[F] F) (z : 
 
 omit [IsTotallyReal F] [IsCMField E] in
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => conv_rhs => rw [← (Module.finBasis F E).sum_repr x, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[crdA]`. Consider the case `add x y hx hy => simp only [map_add, add_smul, Finset.sum_add_distrib, hx, hy]`.
+Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem sum_crdA (A : Type) [CommRing A] [Algebra F A] (z : A ⊗[F] E) :
     ∑ i, crdA A ((Module.finBasis F E).coord i) z • ((1 : A) ⊗ₜ[F] Module.finBasis F E i) = z := by
@@ -86,9 +86,9 @@ theorem sum_crdA (A : Type) [CommRing A] [Algebra F A] (z : A ⊗[F] E) :
 
 omit [IsTotallyReal F] [IsCMField E] in
 /- English proof (translation)
-Establish `: IsModuleTopology A (A ⊗[F] E)` using `⟨rfl⟩`. Use `IsModuleTopology.toContinuousAdd A (A ⊗[F] E)` as an intermediate fact. Use `IsModuleTopology.toContinuousSMul (R := A) (A := A ⊗[F] E)` as an intermediate fact. Use `⟨fun h φ => (IsModuleTopology.continuous_of_linearMap (crdA A φ)).comp h, fun h => ?_⟩` and prove the remaining obligations. Establish `: f = fun x => ∑ i, crdA A ((Module.finBasis F E).coord i) (f x) • ((1 : A) ⊗ₜ[F] Module.finBasis F E i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun x => (sum_crdA A (f x)).symm`. Rewrite using `[this]`. Conclude with `continuous_finsetSum _ fun i _ => (h _).fun_smul continuous_const`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_iff_crdA (A : Type) [CommRing A] [Algebra F A] [TopologicalSpace A] [IsTopologicalRing A]
     {X : Type} [TopologicalSpace X] (f : X → A ⊗[F] E) :
@@ -103,9 +103,9 @@ theorem continuous_iff_crdA (A : Type) [CommRing A] [Algebra F A] [TopologicalSp
   exact continuous_finsetSum _ fun i _ => (h _).fun_smul continuous_const
 
 /- English proof (translation)
-Establish `: IsModuleTopology A (A ⊗[F] E)` using `⟨rfl⟩`. Use `IsModuleTopology.toContinuousAdd A (A ⊗[F] E)` as an intermediate fact. Use `IsModuleTopology.toContinuousSMul (R := A) (A := A ⊗[F] E)` as an intermediate fact. Use `(IsModuleTopology.continuous_of_linearMap (LinearMap.baseChange A (ConjugateFieldNorm.cjF F : E →ₐ[F] E).toLinearMap)).congr fun z => ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul a x => simp [sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem continuous_sigR (A : Type) [CommRing A] [Algebra F A] [TopologicalSpace A] [IsTopologicalRing A] :
     Continuous (sigR A (ConjugateFieldNorm.cjF F : E →ₐ[F] E)) := by
@@ -120,9 +120,9 @@ theorem continuous_sigR (A : Type) [CommRing A] [Algebra F A] [TopologicalSpace 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Establish `h : Formalism.UG.cT (sigR A (ConjugateFieldNorm.cjF F)) g.1.val * JR A V.Gmᵀ * g.1.val = JR A V.Gmᵀ` using `(mem_UA_iff V A g.1).1 g.2`. Establish `hu : IsUnit (V.Gmᵀ).det` using `by rw [Matrix.det_transpose]; exact V.Gm_det.isUnit`. Establish `h1 : JR A (V.Gmᵀ)⁻¹ * JR A V.Gmᵀ = (1 : Matrix (Fin r) (Fin r) (A ⊗[F] E))`. Unfold `JR`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hu, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Units.inv_eq_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (Formalism.UG.cT _ _), h, h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_eq_adjoint (A : Type) [CommRing A] [Algebra F A] (g : ConjugateFieldNorm.UA F A V) :
     (g.1⁻¹).val = JR A (V.Gmᵀ)⁻¹ * Formalism.UG.cT (sigR A (ConjugateFieldNorm.cjF F)) g.1.val * JR A V.Gmᵀ := by
@@ -135,11 +135,11 @@ theorem inv_eq_adjoint (A : Type) [CommRing A] [Algebra F A] (g : ConjugateField
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (Formalism.UG.cT _ _), h, h1]
 
 /- English proof (translation)
-Establish `: IsModuleTopology A (A ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (A ⊗[F] E)` using `IsModuleTopology.isTopologicalRing A _`. Apply `le_antisymm` to reduce the goal to its premises. Use `letI := AutomorphismGroupTopologies.topU F A V`. Establish `hv : Continuous fun g : ConjugateFieldNorm.UA F A V => g.1.val`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `continuous_matrix fun a b => (continuous_iff_crdA A _).2 fun φ => ?_` and prove the remaining obligations. Simplify using `only [← crdA_eq]`. Conclude with `continuous_iff_le_induced.2 (iInf_le_of_le a (iInf_le_of_le b (iInf_le _ φ)))`. Use `continuous_iff_le_induced.1 (Units.continuous_iff.2 ⟨hv, ?_⟩)` and prove the remaining obligations. Simplify using `only [Function.comp_def, inv_eq_adjoint]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(continuous_const.matrix_mul (hv.matrix_map (continuous_sigR A)).matrix_transpose).matrix_mul continuous_const`. Use `le_iInf fun a => le_iInf fun b => le_iInf fun φ => continuous_iff_le_induced.1 ?_` and prove the remaining obligations. Simplify using `only [crdA_eq]`. Conclude with `(continuous_iff_crdA A _).1 ((Units.continuous_val.comp continuous_subtype_val).matrix_elem a b) φ`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem topU_eq (A : Type) [CommRing A] [Algebra F A] [TopologicalSpace A] [IsTopologicalRing A] :
     AutomorphismGroupTopologies.topU F A V = instTopologicalSpaceSubtype := by
@@ -163,7 +163,7 @@ abbrev pInf : AF F ⊗[F] E →+* Ainf F ⊗[F] E := (Algebra.TensorProduct.map 
 abbrev pFin : AF F ⊗[F] E →+* Af F ⊗[F] E := (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_sigR {A B : Type} [CommRing A] [Algebra F A] [CommRing B] [Algebra F B] (p : A →ₐ[F] B) (z : A ⊗[F] E) :
     (Algebra.TensorProduct.map p (AlgHom.id F E)).toRingHom (sigR A (ConjugateFieldNorm.cjF F) z) =
@@ -174,9 +174,9 @@ theorem map_sigR {A B : Type} [CommRing A] [Algebra F A] [CommRing B] [Algebra F
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Establish `h2 : (JR A J).map (Algebra.TensorProduct.map p (AlgHom.id F E)).toRingHom = JR B J`. Use extensionality with `i j`. Simplify using `[JR, inclR]`. Use `⟨?_, h2⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, Matrix.map_mul, h2]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use extensionality with `i j`. Conclude with `map_sigR p _`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_unit {A B : Type} [CommRing A] [Algebra F A] [CommRing B] [Algebra F B] (p : A →ₐ[F] B)
     (J : Matrix (Fin r) (Fin r) E) (g : Matrix (Fin r) (Fin r) (A ⊗[F] E)) :
@@ -193,31 +193,23 @@ theorem map_unit {A B : Type} [CommRing A] [Algebra F A] [CommRing B] [Algebra F
   exact map_sigR p _
 
 /- English proof (translation)
-Take `⟨e, he, hc, hc'⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Establish `ext : ∀ {M N : Matrix (Fin r) (Fin r) (AF F ⊗[F] E)}, M.map pInf = N.map pInf → M.map pFin = N.map pFin → M = N` using `fun {M N} h1 h2 => by`. Use extensionality with `i j`. Use `e.injective (Prod.ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[(he _).1, (he _).1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (congrFun h1 i) j`. Rewrite using `[(he _).2, (he _).2]`. Conclude with `congrFun (congrFun h2 i) j`. Set `gl : Matrix (Fin r) (Fin r) (Ainf F ⊗[F] E) → Matrix (Fin r) (Fin r) (Af F ⊗[F] E) → Matrix (Fin r) (Fin r) (AF F ⊗[F] E)` to `fun M N => Matrix.of fun i j => e.symm (M i j, N i j)`. Establish `g1 : ∀ M N, (gl M N).map pInf = M` using `fun M N => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Conclude with `((he _).1.symm.trans (congrArg Prod.fst (e.apply_symm_apply _)))`. Establish `g2 : ∀ M N, (gl M N).map pFin = N` using `fun M N => by`. Use extensionality with `i j`. Conclude with `((he _).2.symm.trans (congrArg Prod.snd (e.apply_symm_apply _)))`.
+By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `χ : HA (AF F) (ConjugateFieldNorm.cjF F) V.Gmᵀ →* ConjugateFieldNorm.GA F V` to `{ toFun := fun h => (⟨Formalism.UG.bc pInf (HA.mat _ _ _ h), (mem_UA_iff V _ _).2 (by`. Use `congrArg (fun M => M.map pInf) (show Formalism.UG.cT _ _ * _ * _ = _ from h.2)` as an intermediate fact. Rewrite `this` using `[(map_unit (fstA F) _ _).1, (map_unit (fstA F) V.Gmᵀ 1).2]`. Conclude with `this)⟩,`. Use the proof step `⟨Formalism.UG.bc pFin (HA.mat _ _ _ h), (mem_UA_iff V _ _).2 (by`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. By extensionality, compare the relevant components. By extensionality, compare the relevant components. By extensionality, compare the relevant components.
 
-Use `congrArg (fun M => M.map pFin) (show Formalism.UG.cT _ _ * _ * _ = _ from h.2)` as an intermediate fact. Rewrite `this` using `[(map_unit (sndA F) _ _).1, (map_unit (sndA F) V.Gmᵀ 1).2]`. Conclude with `this)⟩)`. Use the proof step `map_one' := Prod.ext (Subtype.ext (map_one (Formalism.UG.bc pInf))) (Subtype.ext (map_one (Formalism.UG.bc pFin)))`. Use the proof step `map_mul' := fun a b => Prod.ext (Subtype.ext (map_mul (Formalism.UG.bc pInf) _ _)) (Subtype.ext (map_mul (Formalism.UG.bc pFin) _ _)) }`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `ω : ConjugateFieldNorm.GA F V → HA (AF F) (ConjugateFieldNorm.cjF F) V.Gmᵀ` to `fun g => (⟨⟨gl g.1.1.val g.2.1.val, gl g.1.1.inv g.2.1.inv,`. Use extensionality with `(by rw [Matrix.map_mul, g1, g1, g.1.1.val_inv]; simp) (by rw [Matrix.map_mul, g2, g2, g.2.1.val_inv]; simp),`. Use extensionality with `(by rw [Matrix.map_mul, g1, g1, g.1.1.inv_val]; simp) (by rw [Matrix.map_mul, g2, g2, g.2.1.inv_val]; simp)⟩,`. Use extensionality with `(by`. Rewrite using `[(map_unit (fstA F) _ _).1, (map_unit (fstA F) V.Gmᵀ 1).2]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [g1]`. Conclude with `(mem_UA_iff V _ _).1 g.1.2) (by`. Rewrite using `[(map_unit (sndA F) _ _).1, (map_unit (sndA F) V.Gmᵀ 1).2]`. Simplify using `only [g2]`. Conclude with `(mem_UA_iff V _ _).1 g.2.2)⟩ : HR (AF F) (ConjugateFieldNorm.cjF F) V.Gmᵀ)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l1 : Function.LeftInverse ω χ` using `fun h => Subtype.ext (Units.ext (ext (g1 _ _) (g2 _ _)))`. Establish `l2 : Function.RightInverse ω χ` using `fun g => Prod.ext (Subtype.ext (Units.ext (g1 _ _))) (Subtype.ext (Units.ext (g2 _ _)))`. Set `ψ : HA (AF F) (ConjugateFieldNorm.cjF F) V.Gmᵀ ≃* ConjugateFieldNorm.GA F V` to `{ χ with invFun := ω, left_inv := l1, right_inv := l2 }`. Use `⟨ψ.symm, fun g => ⟨g1 _ _, g2 _ _⟩, ?_⟩` and prove the remaining obligations. Establish `ht : AutomorphismGroupTopologies.topG F V = instTopologicalSpaceProd`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `AutomorphismGroupTopologies.topG`. Rewrite using `[topU_eq, topU_eq]`. Both sides reduce to the same expression. Rewrite using `[ht]`. Establish `hp1 : Continuous (pInf (F` using `F) (E := E)) := (continuous_fst.comp hc).congr fun z => (he z).1`.
-
-Establish `hp2 : Continuous (pFin (F` using `F) (E := E)) := (continuous_snd.comp hc).congr fun z => (he z).2`. Establish `hv : Continuous fun h : HA (AF F) (ConjugateFieldNorm.cjF F) V.Gmᵀ => HA.mat _ _ _ h` using `continuous_subtype_val`. Establish `c1 : Continuous ψ`. Use `Continuous.prodMk (Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _) (Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _)` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp hv).matrix_map hp1`.
-
-Conclude with `(Units.continuous_coe_inv.comp hv).matrix_map hp1`. Conclude with `(Units.continuous_val.comp hv).matrix_map hp2`. Conclude with `(Units.continuous_coe_inv.comp hv).matrix_map hp2`. Establish `c2 : Continuous ψ.symm`. Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations.
-
-Use `continuous_matrix fun i j => hc'.comp (Continuous.prodMk ?_ ?_)` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp (continuous_subtype_val.comp continuous_fst)).matrix_elem i j`. Conclude with `(Units.continuous_val.comp (continuous_subtype_val.comp continuous_snd)).matrix_elem i j`. Use `continuous_matrix fun i j => hc'.comp (Continuous.prodMk ?_ ?_)` and prove the remaining obligations. Conclude with `(Units.continuous_coe_inv.comp (continuous_subtype_val.comp continuous_fst)).matrix_elem i j`.
-
-Conclude with `(Units.continuous_coe_inv.comp (continuous_subtype_val.comp continuous_snd)).matrix_elem i j`. Conclude with `(Homeomorph.mk ψ.symm.toEquiv c2 c1).isInducing.eq_induced`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_groupEquiv : ∃ ψ : ConjugateFieldNorm.GA F V ≃* HA (AF F) (ConjugateFieldNorm.cjF F) V.Gmᵀ,
     (∀ g, (HA.mat _ _ _ (ψ g)).val.map pInf = g.1.1.val ∧ (HA.mat _ _ _ (ψ g)).val.map pFin = g.2.1.val) ∧
@@ -305,9 +297,9 @@ def crdR : V.V ≃ₗ[D.host.E] (Fin r → D.host.E) := (V.frame.reindex (finCon
 def gramR : Matrix (Fin r) (Fin r) D.host.E := (Matrix.reindex (finCongr hr) (finCongr hr) V.gram)ᵀ
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Rewrite using `[Formalism.L2.Herm.hT_crd D.sp.cm V]`. Unfold `herm Formalism.UG.hform`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [crdR, gramR, finCongr_refl, Matrix.reindex_refl_refl, Module.Basis.reindex_refl]`. Express the relevant statement in the definitionally equal form `_ * V.gram b a * cc _ = cc _ * V.gram b a * _`. Unfold `Formalism.L2.Herm.crd`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_crdR (x y : V.V) : herm (gramR V hr) (crdR V hr x) (crdR V hr y) = V.hT y x := by
   subst hr
@@ -321,7 +313,7 @@ theorem herm_crdR (x y : V.V) : herm (gramR V hr) (crdR V hr x) (crdR V hr y) = 
   ring
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_one]`. Conclude with `⟨fun ⟨a, ha⟩ => ha ▸ a.2, fun h => ⟨⟨z, h⟩, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_one_iff (z : D.host.E) : z ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) ↔ IsIntegral ℤ z := by
   rw [Submodule.mem_one]
@@ -365,9 +357,9 @@ structure IsCoord (V' : ConjugateFieldNorm.HSpace D.host.E r) (ψ : ConjugateFie
   top : AutomorphismGroupTopologies.topG D.host.F V' = TopologicalSpace.induced ψ inferInstance
 
 /- English proof (translation)
-Substitute `e hW` using the available equality. Establish `key : ∀ (σ : D.host.E →ₐ[D.host.F] D.host.E) (J : Matrix (Fin V.rank) (Fin V.rank) D.host.E), σ = ConjugateFieldNorm.cjF D.host.F → J = (spOf V rfl).Gmᵀ → ∃ ψ : ConjugateFieldNorm.GA D.host.F (spOf V rfl) ≃* HA (AF D.host.F) σ J, (∀ g, (HA.mat _ _ _ (ψ g)).val.map pInf = g.1.1.va …`. Introduce and unpack `_ _ rfl rfl`. Conclude with `exists_groupEquiv _`. Take `⟨ψ, h1, h2⟩` from `key D.sp.cm.sig V.gram (AlgHom.ext fun _ => rfl) rfl`.
+Substitute using the available equality. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨ψ, rfl, fun g => (h1 g).1, fun g => (h1 g).2, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isCoord {W : HSp D} (e : V = W) (hW : W.rank = r) :
     ∃ ψ, IsCoord V (e ▸ hW) (spOf W hW) ψ := by
@@ -385,7 +377,7 @@ theorem exists_isCoord {W : HSp D} (e : V = W) (hW : W.rank = r) :
 variable {V hr} {V' : ConjugateFieldNorm.HSpace D.host.E r} {ψ : ConjugateFieldNorm.GA D.host.F V' ≃* GA D V}
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Rewrite using `[GfC, MonoidHom.mem_ker, Subtype.ext_iff, Units.ext_iff, Units.ext_iff, ← h.inf g]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem IsCoord.mem_GfC (h : IsCoord V hr V' ψ) (g) : ψ g ∈ GfC V ↔ g.1 = 1 := by
   subst hr
@@ -393,7 +385,7 @@ theorem IsCoord.mem_GfC (h : IsCoord V hr V' ψ) (g) : ψ g ∈ GfC V ↔ g.1 = 
   rfl
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Rewrite using `[GinfC, MonoidHom.mem_ker, Subtype.ext_iff, Units.ext_iff, Units.ext_iff, ← h.fin g]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem IsCoord.mem_GinfC (h : IsCoord V hr V' ψ) (g) : ψ g ∈ GinfC V ↔ g.2 = 1 := by
   subst hr
@@ -401,19 +393,19 @@ theorem IsCoord.mem_GinfC (h : IsCoord V hr V' ψ) (g) : ψ g ∈ GinfC V ↔ g.
   rfl
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Establish `h1 : (HA.mat _ _ _ (ψ g)).val.map pInf = g.1.1.val` using `h.inf g`. Establish `h2 : (HA.mat _ _ _ (ψ g)).val.map pFin = g.2.1.val` using `h.fin g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, -, e⟩`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `e' : (HA.mat _ _ _ (ψ g)).val = γ.val.map (inclR (AF D.host.F))` using `(congrArg Units.val e).symm`. Use `⟨γ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1, e']`. Use extensionality with `i j`. Simplify using `[inclR, ConjugateFieldNorm.incl]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h2, e']`. Use extensionality with `i j`. Simplify using `[inclR, ConjugateFieldNorm.incl]`. Introduce and unpack `⟨γ, e1, e2⟩`. Take `⟨e, he, -, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `e' : (HA.mat _ _ _ (ψ g)).val = γ.val.map (inclR (AF D.host.F))`. Use extensionality with `i j`. Use `e.injective (Prod.ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[(he _).1, (he _).1]`. Use `(congrFun (congrFun (h1.trans e1) i) j).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Rewrite using `[(he _).2, (he _).2]`. Use `(congrFun (congrFun (h2.trans e2) i) j).trans ?_` and prove the remaining obligations. Both sides reduce to the same expression. Use `⟨γ, ?_, Units.ext e'.symm⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : Formalism.UG.cT (sigR _ D.sp.cm.sig) (HA.mat _ _ _ (ψ g)).val * JR _ V.gram * (HA.mat _ _ _ (ψ g)).val = JR _ V.gram` using `(ψ g).2`. Establish `hinj : Function.Injective (inclR (F` using `D.host.F) (E := D.host.E) (AF D.host.F)) := Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ γ.val * V.gram * γ.val = V.gram`. Use `Matrix.map_injective hinj ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(_ : Matrix _ _ _).map _ = JR _ V.gram`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hu, e', Matrix.map_mul, Matrix.map_mul]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem IsCoord.mem_GQ (h : IsCoord V hr V' ψ) (g) : ψ g ∈ GQ V ↔ g ∈ AutomorphismGroupTopologies.ratG D.host.F V' := by
   subst hr
@@ -448,9 +440,9 @@ theorem IsCoord.mem_GQ (h : IsCoord V hr V' ψ) (g) : ψ g ∈ GQ V ↔ g ∈ Au
     congr 2
 
 /- English proof (translation)
-Unfold `ConjugateFieldNorm.latHat Formalism.L2.Pj.latHat`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, _, ⟨x, hx, rfl⟩, e⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, x, hx, by rw [e]; simp [crdR]⟩`. Introduce and unpack `⟨a, ha, x, hx, e⟩`. Conclude with `⟨a, ha, _, ⟨x, hx, rfl⟩, by rw [e]; simp [crdR]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem latHat_spOf (V : HSp D) : ConjugateFieldNorm.latHat D.host.F (spOf V rfl).L = Formalism.L2.Pj.latHat V := by
   unfold ConjugateFieldNorm.latHat Formalism.L2.Pj.latHat
@@ -463,17 +455,15 @@ theorem latHat_spOf (V : HSp D) : ConjugateFieldNorm.latHat D.host.F (spOf V rfl
     exact ⟨a, ha, _, ⟨x, hx, rfl⟩, by rw [e]; simp [crdR]⟩
 
 /- English proof (translation)
-Establish `hf` using `h.mem_GfC`. Substitute `hr` using the available equality. Take `rfl` from `h.sp`. Establish `h2 : ∀ g, (finHom V (ψ g)).val = g.2.1.val` using `h.fin`. Establish `key : Formalism.L2.Pj.IsLevelK V N Kf ↔ ∀ k, ψ k ∈ Kf ↔ k.1 = 1 ∧ ∀ z ∈ ConjugateFieldNorm.latHat D.host.F (spOf V rfl).L, ∃ w ∈ ConjugateFieldNorm.latHat D.host.F (spOf V rfl).L, k.2.1.val.mulVec z - z = N • w`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.L2.Pj.IsLevelK`. Rewrite using `[ψ.surjective.forall]`. Simplify using `only [hf, h2, latHat_spOf]`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hk`. Establish `hl : ConjugateFieldNorm.LevelByCongruence D.host.F (spOf V rfl) N` using `fun k => by`. Use `⟨fun hh => ⟨hh.1, hh.2.2⟩, fun hh => ⟨hh.1, fun z => ⟨fun hz => ?_, fun hz => ?_⟩, hh.2⟩⟩` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `hh.2 z hz`. Rewrite using `[eq_add_of_sub_eq e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (nsmul_mem hw N) hz`. Establish `hi : ψ k⁻¹ ∈ Kf` using `by rw [map_inv]; exact Kf.inv_mem ((hk k).2 hh)`. Take `⟨w, hw, e⟩` from `((hk _).1 hi).2 _ hz`. Establish `e1 : (k⁻¹).2.1.val * k.2.1.val = 1` using `Units.inv_mul _`. Rewrite `e` using `[Matrix.mulVec_mulVec, e1, Matrix.one_mulVec]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_add_of_sub_eq e]`. Conclude with `add_mem (nsmul_mem hw N) hz`. Conclude with `⟨Subgroup.ext fun k => (hk k).trans (hl k).symm, hl⟩`. Introduce and unpack `⟨e, hl⟩ k`. Rewrite using `[← hl k, ← e]`.
-
-Both sides reduce to the same expression.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem IsCoord.isLevelK_iff (h : IsCoord V hr V' ψ) (N : ℕ) (Kf : Subgroup (GA D V)) :
     Formalism.L2.Pj.IsLevelK V N Kf ↔
@@ -529,9 +519,9 @@ theorem IsCoord.quotEquiv_mk (h : IsCoord V hr V' ψ) (g) :
     h.quotEquiv (AutomorphismGroupTopologies.autMk D.host.F V' g) = Formalism.L2.Pj.autMk V (ψ g) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Take `⟨g, rfl⟩` from `Quotient.exists_rep q`. Use `(AutomorphismGroupTopologies.onQ_mk D.host.F V' _ (fun γ hγ g => ?_) g).trans ?_` and prove the remaining obligations. Rewrite using `[map_mul, hφ _ ((h.mem_GQ γ).2 hγ)]`. Establish `e : (QuotientGroup.rightRel (GQ V)) (ψ g) (Quotient.out (Formalism.L2.Pj.autMk V (ψ g)))` using `Quotient.exact (Quotient.out_eq (Formalism.L2.Pj.autMk V (ψ g))).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[QuotientGroup.rightRel_apply]`. Rewrite using `[← hφ _ e (ψ g), inv_mul_cancel_right]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem IsCoord.onQ_eq (h : IsCoord V hr V' ψ) (φ : GA D V → ℂ) (hφ : ∀ γ ∈ GQ V, ∀ g, φ (γ * g) = φ g) :
     AutomorphismGroupTopologies.onQ D.host.F V' (fun g => φ (ψ g)) = Formalism.L2.Pj.onQ V φ ∘ h.quotEquiv := by
@@ -550,13 +540,13 @@ def RightInv (V : HSp D) (ν : Measure (Formalism.L2.Pj.AutQ V)) : Prop :=
     (∀ g : GA D V, ρ (Quotient.mk _ g) = Quotient.mk _ (g * h)) → ∀ s, MeasurableSet s → ν (ρ ⁻¹' s) = ν s
 
 /- English proof (translation)
-Use `and_congr ?_ ⟨fun H k ρ hρ s hs => ?_, fun H k s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[isProbabilityMeasure_iff, isProbabilityMeasure_iff, MeasurableEquiv.map_apply, Set.preimage_univ]`. Take `⟨k, rfl⟩` from `ψ.surjective k`. Rewrite using `[MeasurableEquiv.map_apply, MeasurableEquiv.map_apply, ← H k _ (h.quotEquiv.measurable hs)]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `q`. Take `⟨g, rfl⟩` from `Quotient.exists_rep q`. Express the relevant statement in the definitionally equal form `ρ (Quotient.mk _ (ψ g)) ∈ s ↔ Quotient.mk _ (ψ (g * k)) ∈ s`. Rewrite using `[hρ, map_mul]`. Use `H (ψ k) (h.quotEquiv ∘ AutomorphismGroupTopologies.autRt D.host.F V' k ∘ h.quotEquiv.symm) (fun g => by` as an intermediate fact.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨g, rfl⟩` from `ψ.surjective g`. Express the relevant statement in the definitionally equal form `h.quotEquiv (AutomorphismGroupTopologies.autRt _ _ k (h.quotEquiv.symm (h.quotEquiv (AutomorphismGroupTopologies.autMk D.host.F V' g)))) = _`. Rewrite using `[MeasurableEquiv.symm_apply_apply, AutomorphismGroupTopologies.autRt_mk, h.quotEquiv_mk, map_mul]) _`. Use the proof step `(h.quotEquiv.symm.measurable hs)`. Rewrite `this` using `[MeasurableEquiv.map_apply, MeasurableEquiv.map_apply]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[← Set.preimage_comp, Function.comp_def]`.
+A detailed English derivation is pending.
 -/
 theorem IsCoord.isAutProb_iff (h : IsCoord V hr V' ψ) (ν : Measure (AutomorphismGroupTopologies.AutQ D.host.F V')) :
     AutomorphismGroupTopologies.IsAutProb D.host.F V' ν ↔ IsProbabilityMeasure (ν.map h.quotEquiv) ∧ RightInv V (ν.map h.quotEquiv) := by

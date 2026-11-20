@@ -5,7 +5,7 @@ namespace GlobalTheory.IntegralNormSmallIdeal
 open NumberField
 
 /- English proof (translation)
-Establish `hv` using `Valuation.integer.integers (Valued.v : Valuation (PadicAlgCl l) NNReal)`. Establish `h2 : IsIntegral (Valued.v : Valuation (PadicAlgCl l) NNReal).integer y` using `IsIntegral.tower_top hy`. Establish `h3` using `hv.isIntegral_iff_v_le_one.mp h2`. Rewrite `h3` using `[PadicAlgCl.valuation_def]`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral {l : ℕ} [Fact (Nat.Prime l)] (y : PadicAlgCl l)
     (hy : IsIntegral ℤ y) : ‖y‖ ≤ 1 := by
@@ -17,7 +17,7 @@ theorem norm_le_one_of_isIntegral {l : ℕ} [Fact (Nat.Prime l)] (y : PadicAlgCl
   exact_mod_cast h3
 
 /- English proof (translation)
-Establish `h0` using `PadicAlgCl.norm_extends l (l : ℚ_[l])`. Rewrite `h0` using `[map_natCast]`. Rewrite using `[h0]`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_prime {l : ℕ} [Fact (Nat.Prime l)] :
     ‖((l : ℕ) : PadicAlgCl l)‖ < 1 := by
@@ -27,7 +27,7 @@ theorem norm_natCast_prime {l : ℕ} [Fact (Nat.Prime l)] :
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Apply `norm_le_one_of_isIntegral` to reduce the goal to its premises. Establish `h0` using `(NumberField.RingOfIntegers.isIntegral_coe x).map c.toIntAlgHom`. Simplify using `using h0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_map_le_one {l : ℕ} [Fact (Nat.Prime l)] {E : Type} [Field E]
     (c : E →+* PadicAlgCl l) (x : 𝓞 E) : ‖c (x : E)‖ ≤ 1 := by
@@ -59,17 +59,17 @@ def smallIdeal {l : ℕ} [Fact (Nat.Prime l)] {E : Type} [Field E]
       _ < 1 := by rwa [one_mul]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_smallIdeal {l : ℕ} [Fact (Nat.Prime l)] {E : Type} [Field E]
     (c : E →+* PadicAlgCl l) (x : 𝓞 E) : x ∈ smallIdeal c ↔ ‖c (x : E)‖ < 1 := Iff.rfl
 
 /- English proof (translation)
-Use `Ideal.isPrime_iff.2 ⟨?_, fun {x y} hxy => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, mem_smallIdeal]`. Simplify using the standard rewrite rules. Rewrite using `[mem_smallIdeal, mem_smallIdeal]`. Rewrite `hxy` using `[mem_smallIdeal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `h1` using `norm_map_le_one c x`. Establish `h2` using `norm_map_le_one c y`. Establish `e : ((x * y : 𝓞 E) : E) = (x : E) * (y : E)` using `map_mul (algebraMap (𝓞 E) E) x y`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hxy` using `[e, map_mul, norm_mul]`. Use polynomial arithmetic with `[hcon.1, hcon.2]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem smallIdeal_isPrime {l : ℕ} [Fact (Nat.Prime l)] {E : Type} [Field E]
     (c : E →+* PadicAlgCl l) : (smallIdeal c).IsPrime := by
@@ -87,7 +87,7 @@ theorem smallIdeal_isPrime {l : ℕ} [Fact (Nat.Prime l)] {E : Type} [Field E]
     nlinarith [hcon.1, hcon.2]
 
 /- English proof (translation)
-Rewrite using `[mem_smallIdeal]`. Establish `e : (((l : ℕ) : 𝓞 E) : E) = ((l : ℕ) : E)` using `map_natCast (algebraMap (𝓞 E) E) l`. Rewrite using `[e, map_natCast]`. Conclude with `norm_natCast_prime`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_smallIdeal {l : ℕ} [Fact (Nat.Prime l)] {E : Type} [Field E]
     (c : E →+* PadicAlgCl l) : ((l : ℕ) : 𝓞 E) ∈ smallIdeal c := by
@@ -97,7 +97,7 @@ theorem natCast_mem_smallIdeal {l : ℕ} [Fact (Nat.Prime l)] {E : Type} [Field 
   exact norm_natCast_prime
 
 /- English proof (translation)
-Establish `hl0 : ((l : ℕ) : NumberField.RingOfIntegers E) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Use `⟨⟨smallIdeal c, smallIdeal_isPrime c, fun h => hl0 ?_⟩, natCast_mem_smallIdeal c, fun x => mem_smallIdeal c x⟩` and prove the remaining obligations. Establish `h0` using `natCast_mem_smallIdeal (E := E) c`. Rewrite `h0` using `[h]`. Conclude with `(Submodule.mem_bot _).1 h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_place_of_embedding {l : ℕ} [inst : Fact (Nat.Prime l)] {E : Type} [inst_1 : Field E]
     [NumberField E] (c : E →+* PadicAlgCl l) :

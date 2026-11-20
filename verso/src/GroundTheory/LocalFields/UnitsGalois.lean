@@ -29,7 +29,7 @@ theorem coe_smul_integerUnits (σ : L ≃ₐ[K] L) (u : 𝒪[L]ˣ) :
   rfl
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem unitsIncl_smul (σ : L ≃ₐ[K] L) (u : 𝒪[L]ˣ) :
     unitsIncl L (σ • u) = σ • unitsIncl L u := by

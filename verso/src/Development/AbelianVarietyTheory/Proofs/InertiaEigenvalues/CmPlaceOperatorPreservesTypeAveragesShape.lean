@@ -26,7 +26,7 @@ def opP (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (om : GA D S × GA D T �
   ∑ y ∈ c.support, c y • (GlobalTheory.SplitScalar.heisL ψ S T y * om (1, h))
 
 /- English proof (translation)
-Simplify using `only [opP, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply, GlobalTheory.SplitScalar.heisL_apply, comb, Finsupp.sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem opP_apply (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (c : WO S T →₀ ℂ) (h : GA D T)
     (f : WO S T → ℂ) : opP ψ S T om c h f = comb ψ S T c (om (1, h) f) := by
@@ -34,7 +34,7 @@ theorem opP_apply (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (
     Finsupp.sum]
 
 /- English proof (translation)
-Simplify using `only [opP, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply, map_sum, map_smul]`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitScalar.heisL_apply, GlobalTheory.SplitScalar.heisL_apply, (hB _ (hpres _ _ hf)).2 y (hc y hy), hBh f hf]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem opP_comm {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (hpres : ∀ p f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (om p f)) {e : AE D} {c : WO S T →₀ ℂ}
@@ -46,7 +46,7 @@ theorem opP_comm {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
   rw [GlobalTheory.SplitScalar.heisL_apply, GlobalTheory.SplitScalar.heisL_apply, (hB _ (hpres _ _ hf)).2 y (hc y hy), hBh f hf]
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun a b => by rw [Matrix.map_apply, ← hy a b, RingHom.map_mul, he, zero_mul] rfl`.
+A detailed English derivation is pending.
 -/
 theorem fin_of_half {e : AE D} (he : infPart D e = 0) {y : WO S T} (hy : IsHalf e y) : y.map (infPart D) = 0 :=
   Matrix.ext fun a b => by
@@ -54,7 +54,7 @@ theorem fin_of_half {e : AE D} (he : infPart D e = 0) {y : WO S T} (hy : IsHalf 
     rfl
 
 /- English proof (translation)
-Rewrite using `[opP_apply, comb, Finsupp.sum]`. Conclude with `theta_sum _ _ f hf fun y hy => theta_smul _ (GlobalTheory.FinTranslate.isTheta_heisO_fin hψ.1 (fin_of_half he (hc y hy)) (hpres _ _ hf))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opP_theta {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (hpres : ∀ p f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (om p f)) (hψ : IsStdChar D ψ (-1)) {e : AE D}
@@ -75,25 +75,25 @@ open GlobalTheory.IdemSupport GlobalTheory.DownLift.GenFinite.Inert
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R hω i t Sb v hv h hh c hc f hT hCl hL`. Establish `hW` using `hω i t`. Take `⟨-, -, hcA, hfin, -⟩` from `GlobalTheory.PlaceTensor.idem_spec D`. Establish `hε` using `(hfin v).2.2`. Establish `hεe` using `placeIdem_eq hε`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinf` using `(hfin v).1`. Establish `hce` using `hcA (.inl v)`. Establish `hpres` using `hW.om_pres`. Establish `hk : ∀ κ : GA D (Vc D i), SuppIn (dropPl Sb v) (Vc D i) κ → ∀ φ, IsThetaFunO R.ψ (Vc D i) (Wc D i) φ → R.ωP i t (κ⁻¹, 1) (opP R.ψ _ _ (R.ωP i t) c h φ) = opP R.ψ _ _ (R.ωP i t) c h (R.ωP i t (κ⁻¹, 1) φ) ∧ R.ωP i t (κ, 1) (opP R.ψ _ _ (R.ωP i t) c h φ) = opP R.ψ _ _ (R.ωP i t) c h …`. Introduce `κ hs φ hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `suppF_of_drop hs hε`. Rewrite `h1` using `[hεe]`. Establish `h2` using `(suppGroup _ (1 - idem D (.inl v))).inv_mem h1`. Establish `hcomm : ∀ k : GA D (Vc D i), ∀ ψ', R.ωP i t (k, 1) (R.ωP i t (1, h) ψ') = R.ωP i t (1, h) (R.ωP i t (k, 1) ψ')`. Introduce `k ψ'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, Prod.mk_mul_mk, Prod.mk_mul_mk, mul_one, one_mul, mul_one, one_mul]`. Conclude with `⟨opP_comm hpres hc h (commAt_om hW h2) (fun ψ' _ => hcomm _ ψ') hφ, opP_comm hpres hc h (commAt_om hW h1) (fun ψ' _ => hcomm _ ψ') hφ⟩`. Establish `hth` using `opP_theta hpres hW.std hinf hc h hT.1`. Rewrite using `[← opP_apply]`. Use `⟨⟨hth, fun κ hκ hs => ?_⟩, fun PP a ha tr z hz hov κ hκ hsup => ?_, ⟨hth, fun c' hc' h0 => ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(hk κ hs f hT.1).2, hT.2 κ hκ (suppIn_of_drop hs), map_smul]`. Take `⟨w, hw, how⟩` from `hov`. Establish `h0` using `hCl PP a ha tr z hz ⟨w, (mem_dropPl.1 hw).2, how⟩ κ hκ fun g hg => suppIn_of_drop (hsup g hg)`. Unfold `avgW at h0 ⊢`. Rewrite using `[← map_zero (opP R.ψ _ _ (R.ωP i t) c h), ← h0, map_sum]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Distinguish the cases in `hg : mirC R i PP a tr z g = 0`. Rewrite using `[hg, zero_mul, zero_smul, zero_smul, map_zero]`. Rewrite using `[map_smul, (hk (κ g) (hsup g hg) f hT.1).1]`. Establish `hu : ∀ u ∈ c'.support, ∀ φ, IsThetaFunO R.ψ (Vc D i) (Wc D i) φ → heisO R.ψ _ _ u (opP R.ψ _ _ (R.ωP i t) c h φ) = opP R.ψ _ _ (R.ωP i t) c h (heisO R.ψ _ _ u φ)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `u hu φ hφ`. Establish `hoff` using `hc' u hu`. Establish `he0 : idem D (.inl v) • u = 0` using `Matrix.ext fun a b => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← hεe]`. Conclude with `hoff.2 v hv _ hε a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hact : actO (Vc D i) (Wc D i) 1 h u = u`. Establish `hM : Formalism.L2.Theta.mt (Wc D i) h - 1 = idem D (.inl v) • (Formalism.L2.Theta.mt (Wc D i) h - 1)` using `Matrix.ext fun a b => (hh a b).symm`. Rewrite using `[actO, inv_one, mt_one, Matrix.mul_one]`. Use `conv_lhs => rw [← sub_add_cancel (Formalism.L2.Theta.mt (Wc D i) h) 1]`. Rewrite using `[Matrix.add_mul, Matrix.one_mul, hM, Matrix.smul_mul, ← Matrix.mul_smul, he0, Matrix.mul_zero, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `opP_comm hpres hc h (commAt_heis hW.std hce hoff.1 he0) (fun ψ' hψ' => by rw [GlobalTheory.SplitScalar.heisL_apply, GlobalTheory.SplitScalar.heisL_apply, hW.om_heis _ _ _ _ hψ', hact]) hφ` as an intermediate fact. Rewrite `this` using `[GlobalTheory.SplitScalar.heisL_apply, GlobalTheory.SplitScalar.heisL_apply]`. Then use the resulting hypothesis. Establish `h1` using `hL.2 c' hc' h0`. Rewrite using `[← map_zero (opP R.ψ _ _ (R.ωP i t) c h), ← h1, map_finsuppSum]`. Use `Finset.sum_congr rfl fun u hu' => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[map_smul, hu u hu' f hT.1]`.
+A detailed English derivation is pending.
 -/
 theorem placeOp_keep : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.thP_ωP → ∀ (i : Fin D.R.m) (t : T) (Sb : Finset (FinPl D)) (v : FinPl D), v ∈ Sb → ∀ (h : GA D (Wc D i)), (∀ a b, idem D (.inl v) * (Formalism.L2.Theta.mt (Wc D i) h - 1) a b = (Formalism.L2.Theta.mt (Wc D i) h - 1) a b) → ∀ (c : WO (Vc D i) (Wc D i) →₀ ℂ), (∀ y ∈ c.support, IsHalf (idem D (.inl v)) y) → ∀ (f : WO (Vc D i) (Wc D i) → ℂ), TypeIn R i t Sb f → CleanIn R i t Sb f → LikeOff R i t Sb f → TypeIn R i t (dropPl Sb v) (comb R.ψ (Vc D i) (Wc D i) c (R.ωP i t (1, h) f)) ∧ CleanIn R i t (dropPl Sb v) (comb R.ψ (Vc D i) (Wc D i) c (R.ωP i t (1, h) f)) ∧ LikeOff R i t Sb (comb R.ψ (Vc D i) (Wc D i) c (R.ωP i t (1, h) f)) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R hω i t Sb v hv h hh c hc f hT hCl hL

@@ -15,9 +15,9 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL MeasureT
 namespace GlobalTheory.CompanionTheory.Clozel
 
 /- English proof (translation)
-Introduce `E _ _ _ a π τ i j k l`. Establish `key` using `GlobalTheory.CompanionTheory.ClozelPurity.EopV_val E a π τ`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h` using `LinearMap.congr_fun (glRel_Eop (a := a) τ i j k l) φ.1`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, key] at h ⊢`. Apply the tactic sequence `split_ifs at h ⊢ <;> simpa [key] using h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glRel_EopV : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a)
     (τ : E →+* ℂ), Formalism.REAL.GlRel (EopV π τ) := by

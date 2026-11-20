@@ -14,15 +14,15 @@ variable (h : PosH φ)
 include h
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ W`. Set `L : V →ₗ[ℂ] (Fin (Module.finrank ℂ W) → ℂ)` to `{ toFun := fun v k => φ (b k : V) v map_add' := fun v w => by funext k; exact h.add _ v w map_smul' := fun r v => by funext k; simp [h.smul] }`. Establish `hker : LinearMap.ker L ≤ h.perp W`. Introduce `v hv w hw`. Establish `hv' : ∀ k, φ (b k : V) v = 0` using `fun k => congrFun (LinearMap.mem_ker.1 hv) k`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hw' : w = ∑ k, (b.repr ⟨w, hw⟩ k) • (b k : V)`. Establish `h2 : ((∑ k, b.repr ⟨w, hw⟩ k • b k : W) : V) = w` using `by rw [b.sum_repr]`. Rewrite `h2` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at h2`. Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw', h.sum_left]`. Simplify using `[hv']`. Establish `hrank` using `LinearMap.finrank_range_add_finrank_ker L`. Establish `hr : Module.finrank ℂ (LinearMap.range L) ≤ Module.finrank ℂ W`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hk : Module.finrank ℂ (LinearMap.ker L) ≤ Module.finrank ℂ (h.perp W)` using `Submodule.finrank_mono hker`. Establish `hsum` using `Submodule.finrank_sup_add_finrank_inf_eq W (h.perp W)`. Rewrite `hsum` using `[h.inf_perp, finrank_bot]`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Apply `le_antisymm (Submodule.finrank_le _)` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem sup_perp [FiniteDimensional ℂ V] (W : Submodule ℂ V) : W ⊔ h.perp W = ⊤ := by
   classical
@@ -59,13 +59,13 @@ end CoreA
 
 open CoreA in
 /- English proof (translation)
-Introduce `V _ _ _ φ hadd hsmul hherm hpos ι T hT`. Establish `h : PosH φ` using `⟨hadd, hsmul, hherm, hpos⟩`. Use `⟨fun v => ?_, fun v hv hvW => ?_⟩` and prove the remaining obligations. Establish `hv : v ∈ (⨆ i, LinearMap.range (T i)) ⊔ h.perp (⨆ i, LinearMap.range (T i))`. Rewrite using `[h.sup_perp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨w, hw, v₀, hv₀, hvw⟩` from `Submodule.mem_sup.1 hv`. Use `⟨v₀, w, by rw [← hvw, add_comm], fun i => ?_, hw⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hT i`. Apply `h.definite` to reduce the goal to its premises.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmem : T j (T i v₀) ∈ ⨆ i, LinearMap.range (T i)` using `Submodule.mem_iSup_of_mem j (LinearMap.mem_range_self _ _)`. Rewrite using `[hj, hherm (T j (T i v₀)) v₀, hv₀ _ hmem, star_zero]`. Apply `h.definite` to reduce the goal to its premises. Use `Submodule.iSup_induction (motive := fun w => φ w v = 0) _ hvW ?_ (h.zero_left v) ?_` and prove the remaining obligations. Introduce `j w hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, rfl⟩` from `hw`. Take `⟨j', hj'⟩` from `hT j`. Rewrite using `[hj', hv j', h.zero_right]`. Introduce `x y hx hy`. Rewrite using `[h.add_left, hx, hy, add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem semiFam : SemiFam := by
   intro V _ _ _ φ hadd hsmul hherm hpos ι T hT

@@ -50,9 +50,9 @@ def PhiIsoAwayQ (N₁ : Submodule (LetA O n) (W.DD T)) : Prop :=
   invSub W.Q (phiSpan W T N₁) = invSub W.Q N₁
 
 /- English proof (translation)
-Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `W.N_Γ T _ x hx`. Introduce `x hx`. Use `⟨W.γD T W.gam⁻¹ x, W.N_Γ T _ x hx, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `W.γD T W.gam (W.γD T W.gam⁻¹ x) = x`. Rewrite using `[← W.γD_mul, mul_inv_cancel, W.γD_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example : GammaStable W T (W.N T) := by
   apply Set.Subset.antisymm
@@ -64,16 +64,16 @@ example : GammaStable W T (W.N T) := by
     rw [← W.γD_mul, mul_inv_cancel, W.γD_one]
 
 /- English proof (translation)
-Introduce `x hx` and use `W.N_π T W.gam x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : GammaTrivModπ W T (W.N T) := fun x hx => W.N_π T W.gam x hx
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨k, hk⟩`. Establish `h : phiSpan W T (W.N T) ≤ invSub W.Q (W.N T)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `W.N_φ T y hy`. Take `⟨m, hm⟩` from `h hk`. Conclude with `⟨m + k, by rw [pow_add, mul_smul]; exact hm⟩`. Introduce and unpack `x ⟨k, hk⟩`. Take `⟨m, hm⟩` from `W.N_φinv T _ hk`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨m + k, by rw [pow_add, mul_smul]; exact hm⟩`.
+A detailed English derivation is pending.
 -/
 example : PhiIsoAwayQ W T (W.N T) := by
   apply le_antisymm

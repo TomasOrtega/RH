@@ -16,11 +16,11 @@ namespace GlobalTheory.TwInputs.Move.Forms
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Consider the cases of `D`. Consider the cases of `D'`. Simplify using `only at hR hH hsp`. Substitute `hR` using the available equality. Substitute `hH` using the available equality.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hsp` using the available equality. Consider the cases of `Fin.ext hj`. Use `⟨rfl, HEq.rfl, fun β β' hβ Pg Pg' hPg P P' hP k α R h1 h2 => ?_⟩` and prove the remaining obligations. Substitute `hβ` using the available equality. Substitute `hPg` using the available equality.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hP` using the available equality. Conclude with `⟨α, R, h1, h2, fun F F' hF => by subst hF; rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem hecke_geo {D D' : D7} (hR : D.R = D'.R) (hH : HEq D.host D'.host) (hsp : HEq D.sp D'.sp)
     (j : Fin D.R.m) (j' : Fin D'.R.m) (hj : (j : ℕ) = j') :
@@ -46,15 +46,15 @@ theorem hecke_geo {D D' : D7} (hR : D.R = D'.R) (hH : HEq D.host D'.host) (hsp :
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, -, -, h5⟩` from `hM`. Take `⟨R, H, sp, vol, vp, what₂, eT⟩` from `D`. Take `⟨R', H', sp', vol', vp', rows', eT'⟩` from `D'`. Simplify using `only at hR hH hT he`. Substitute `hR` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality.
 
-Substitute `hH` using the available equality. Consider the cases of `what₂`. Consider the cases of `rows'`. Simplify using `only at hT he`. Substitute `hT` using the available equality.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality.
 
-Substitute `he` using the available equality. Substitute `hV` using the available equality. Consider the cases of `M`. Consider the cases of `M'`. Simplify using `only at h1 h2 h3 h4 h5`.
+Substitute using the available equality. Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions.
 
-Substitute `h1` using the available equality. Substitute `h2` using the available equality. Substitute `h3` using the available equality. Substitute `h4` using the available equality. Substitute `h5` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Conclude with `⟨v', fun τ τ' h => by subst h; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_sameVec {D D' : D7} (hR : D.R = D'.R) (hH : HEq D.host D'.host) (hT : D.what₂.Tau = D'.what₂.Tau)
     (he : HEq D.eTau D'.eTau) {V : HSp D} {V' : HSp D'} (hV : HEq V V') {P : D.what₂.Tau → SPar} {P' : D'.what₂.Tau → SPar}
@@ -75,7 +75,7 @@ theorem exists_sameVec {D D' : D7} (hR : D.R = D'.R) (hH : HEq D.host D'.host) (
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Substitute `hR` using the available equality. Substitute `hH` using the available equality. Use `⟨rfl, fun P P' hP => ?_⟩` and prove the remaining obligations. Substitute `hP` using the available equality. Conclude with `⟨Iff.rfl, rfl, fun _ _ h => by subst h; rfl⟩`.
+Substitute using the available equality. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem place_geo {R R' : Ranks} {H : Host R} {H' : Host R'} (hR : R = R') (hH : HEq H H') :
     PlE H = PlE H' ∧ ∀ (P : PlE H) (P' : PlE H'), HEq P P' → (IsSplitPl H P ↔ IsSplitPl H' P') ∧
@@ -90,29 +90,29 @@ set_option maxHeartbeats 4000000 in
 set_option maxRecDepth 100000 in
 
 /- English proof (translation)
-Take `⟨a1, a2, -, nOm, ninstOm, nalgOm, nplOm, nPlG⟩` from `h1`. Establish `xTw` using `h2.Tw`. Establish `fixedFieldTransport_baseIntegerRing_heq` using `h2.O0`. Establish `fixedFieldTransport_baseIntegerCommRing_heq` using `h2.crO0`. Establish `xO` using `h2.O`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `xcrO` using `h2.crO`. Establish `xalgO` using `h2.algO`. Establish `fixedFieldTransport_initialPlaceSet_heq` using `h2.S0`. Establish `yFm` using `h3.Fm`. Establish `yacgFm` using `h3.acgFm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ymodFmK` using `h3.modFmK`. Establish `ymodFmO` using `h3.modFmO`. Establish `yactG` using `h3.actG`. Establish `yhkF` using `h3.hkF`. Use `clear h2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `D`. Consider the cases of `D'`. Simplify using `only at a1 a2`. Substitute `a1` using the available equality. Substitute `a2` using the available equality.
+Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `N`. Consider the cases of `N'`. Simplify using `only at nOm ninstOm nalgOm nplOm nPlG`. Substitute `nOm` using the available equality. Substitute `ninstOm` using the available equality.
+Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `nalgOm` using the available equality. Substitute `nplOm` using the available equality. Substitute `nPlG` using the available equality. Consider the cases of `X`. Consider the cases of `X'`.
+Substitute using the available equality. Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions.
 
-Simplify using `only at xTw fixedFieldTransport_baseIntegerRing_heq fixedFieldTransport_baseIntegerCommRing_heq xO xcrO xalgO fixedFieldTransport_initialPlaceSet_heq hd`. Substitute `xTw` using the available equality. Substitute `fixedFieldTransport_baseIntegerRing_heq` using the available equality. Substitute `fixedFieldTransport_baseIntegerCommRing_heq` using the available equality. Substitute `xO` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `xcrO` using the available equality. Substitute `xalgO` using the available equality. Substitute `fixedFieldTransport_initialPlaceSet_heq` using the available equality. Substitute `hd` using the available equality. Consider the cases of `Y`.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `Y'`. Simplify using `only at yFm yacgFm ymodFmK ymodFmO yactG yhkF hB`. Substitute `yFm` using the available equality. Substitute `yacgFm` using the available equality. Substitute `ymodFmK` using the available equality.
+Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `ymodFmO` using the available equality. Substitute `yactG` using the available equality. Substitute `yhkF` using the available equality. Substitute `hB` using the available equality. Substitute `hi` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun j b x x' hx => ?_, fun ε ε' hε b a a' ha => ?_, fun P P' hP => ?_⟩` and prove the remaining obligations. Substitute `hx` using the available equality. Conclude with `⟨Iff.rfl, fun g g' h => by subst h; rfl, fun k P P' h => by subst h; rfl⟩`. Substitute `hε` using the available equality. Substitute `ha` using the available equality.
+Substitute using the available equality. Supply the required witnesses or components. Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Substitute `hP` using the available equality. Conclude with `⟨Iff.rfl, fun σ hσ => ⟨σ, hσ, fun _ => HEq.rfl⟩⟩`.
+Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem record_heq {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂}
     {X : NTw D.R D.host D.what₂ D.LL0 N} {X' : NTw D'.R D'.host D'.what₂ D'.LL0 N'}

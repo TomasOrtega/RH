@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.LaurentFrac
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (ha i)]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem prod_zpow_mul {K : Type} [Field K] {I : Type} [Fintype I] (a : I → K) (N : I → ℤ)
     (ha : ∀ i, a i ≠ 0) :
@@ -15,11 +15,9 @@ theorem prod_zpow_mul {K : Type} [Field K] {I : Type} [Fintype I] (a : I → K) 
   omega
 
 /- English proof (translation)
-Use `⟨∏ i, s i ^ (N i).toNat, ∏ i, s i ^ (-N i).toNat, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `Finset.prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `pow_ne_zero _ (hs i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_prod, map_pow]`. Use `prod_zpow_mul _ N fun i => ?_` and prove the remaining obligations. Establish `h : s i ≠ 0` using `fun h => hs i (by rw [h, map_zero])`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 h`. Simplify using `only [map_prod, map_pow]`.
-
-Use `prod_zpow_mul _ N fun i => ?_` and prove the remaining obligations. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 (hs i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_frac (R V : Type) [CommRing R] [IsDomain R] [CommRing V] [IsDomain V]
     (θ : R →+* V) {I : Type} [Fintype I] (s : I → R) (N : I → ℤ) (hs : ∀ i, θ (s i) ≠ 0) :

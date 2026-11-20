@@ -17,7 +17,7 @@ namespace GlobalTheory.CompanionTheory.FewEq.FibreRed
 open GlobalTheory.SmallExtLift
 
 /- English proof (translation)
-Establish `key : Ideal.map (GlobalTheory.SmallExtLift.cst s U) (IsLocalRing.maximalIdeal R) ≤ RingHom.ker (ι.app U).hom`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, GlobalTheory.SmallExtLift.app_cst w U r, (IsLocalRing.residue_eq_zero_iff r).mpr hr, map_zero]`. Conclude with `key hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_eq_zero_of_mem_ext {R : Type} [CommRing R] [IsLocalRing R] {X Y : Scheme.{0}}
     {s : X ⟶ Sp R} {ι : Y ⟶ X} {f : Y ⟶ Sp (IsLocalRing.ResidueField R)}
@@ -32,7 +32,7 @@ theorem app_eq_zero_of_mem_ext {R : Type} [CommRing R] [IsLocalRing R] {X Y : Sc
   exact key hz
 
 /- English proof (translation)
-Use `congrArg (fun q => q.hom x) (φ.naturality (homOfLE h).op)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem app_rs_eq_rs_app {X Y : Scheme.{0}} (φ : Y ⟶ X) {U W : X.Opens} (h : W ≤ U)
     (h' : φ ⁻¹ᵁ W ≤ φ ⁻¹ᵁ U) (x : Γ(X, U)) :
@@ -41,21 +41,17 @@ private theorem app_rs_eq_rs_app {X Y : Scheme.{0}} (φ : Y ⟶ X) {U W : X.Open
   exact this
 
 /- English proof (translation)
-Introduce `hD R _ _ X s hs n r hnr hfib A V hV hVa b hb`. Set `g` to `spMap (algebraMap R (IsLocalRing.ResidueField R))`. Set `φ` to `pullback.fst s g`. Set `s'` to `pullback.snd s g`. Establish `hpb : IsPullback φ s' s g` using `IsPullback.of_hasPullback _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpb' : IsPullback φ s' s (Spec.map (CommRingCat.ofHom (IsLocalRing.residue R)))` using `hpb`. Establish `hw : φ ≫ s = s' ≫ Spec.map (CommRingCat.ofHom (IsLocalRing.residue R))` using `hpb.w`. Establish `hsurj : Function.Surjective (IsLocalRing.residue R)` using `Ideal.Quotient.mk_surjective`. Take `⟨hfin, hrank⟩` from `hfib _ s' φ hpb`. Establish `hSp : ∀ (T : Type) [CommRing T], (Sp T).IsSeparated` using `fun T _ => by unfold Sp; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI hXsep : X.IsSeparated := ⟨by rw [← terminal.comp_from s]; infer_instance⟩`. Use `haveI hsep : (pullback s g).IsSeparated := ⟨by rw [← terminal.comp_from s']; infer_instance⟩`. Use `haveI hg : IsAffineHom g := by show IsAffineHom (Spec.map (CommRingCat.ofHom (algebraMap R (IsLocalRing.ResidueField R)))) infer_instance`. Use `haveI haff : IsAffineHom φ := MorphismProperty.pullback_fst (P := @IsAffineHom) s g hg`. Set `V' : A → (pullback s g).Opens` to `fun a => φ ⁻¹ᵁ V a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hV' : ⨆ a, V' a = ⊤`. Establish `h1 : ⨆ a, V' a = φ ⁻¹ᵁ (⨆ a, V a)` using `(TopologicalSpace.Opens.map_iSup φ.base V).symm`. Rewrite using `[h1, hV]`. Both sides reduce to the same expression. Establish `hV'a : ∀ a, IsAffineOpen (V' a)` using `fun a => (hVa a).preimage φ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `α : Fin r → ∀ a c, Γ(pullback s g, V' a ⊓ V' c)` to `fun i a c => (φ.app (V a ⊓ V c)).hom (b i a c)`. Establish `hα : ∀ i a c d, rs _ (le₁₂ V' a c d) (α i a c) + rs _ (le₂₃ V' a c d) (α i c d) = rs _ (le₁₃ V' a c d) (α i a d)`. Introduce `i a c d`. Establish `h0` using `app_eq_zero_of_mem_ext hw (V a ⊓ V c ⊓ V d) (hb i a c d)`. Rewrite `h0` using `[map_sub, map_add, app_rs_eq_rs_app φ (le₁₂ V a c d) (le₁₂ V' a c d), app_rs_eq_rs_app φ (le₂₃ V a c d) (le₂₃ V' a c d), app_rs_eq_rs_app φ (le₁₃ V a c d) (le₁₃ V' a c d)]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sub_eq_zero.mp h0`. Take `⟨c, ψ, hc0, hcψ⟩` from `hD (IsLocalRing.ResidueField R) (pullback s g) s' hsep n r hfin hrank hnr A V' hV' hV'a α hα`. Use `choose e he using fun i => hsurj (c i)`. Use `choose β hβ using fun a => app_surj hsurj hpb' (hVa a) (ψ a)`. Take `⟨l, hl⟩` from `Function.ne_iff.mp hc0`.
-
-Establish `hlu : IsUnit (e l)` using `(IsLocalRing.residue_ne_zero_iff_isUnit _).mp (by rw [he l]; exact hl)`. Use `⟨e, β, ⟨l, hlu⟩, fun a c' => ?_⟩` and prove the remaining obligations. Use `show _ ∈ Ideal.map (cst s (V a ⊓ V c')) (IsLocalRing.maximalIdeal R)`. Rewrite using `[← IsLocalRing.ker_residue]`. Apply `mem_of_app_eq_zero hsurj hpb' ((hVa a).inf (hVa c'))` to reduce the goal to its premises.
-
-Rewrite using `[map_sub, map_sum, map_sub, app_rs_eq_rs_app φ inf_le_left (inf_le_left : V' a ⊓ V' c' ≤ V' a), app_rs_eq_rs_app φ inf_le_right (inf_le_right : V' a ⊓ V' c' ≤ V' c'), hβ, hβ]`. Simplify using `only [map_mul, app_cst hw, he]`. Conclude with `sub_eq_zero.mpr (hcψ a c')`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dep_fibre : DepSt → ∀ (R : Type) [CommRing R] [IsLocalRing R] (X : Scheme.{0}) (s : X ⟶ Sp R), IsSeparated s →
     ∀ n r : ℕ, n < r →

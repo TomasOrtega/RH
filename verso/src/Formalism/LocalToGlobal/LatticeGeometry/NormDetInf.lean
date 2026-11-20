@@ -37,7 +37,7 @@ def compOf : X.XC → Comp := Sigma.fst
 def vol : ℝ := ∑ c, X.volC c
 
 /- English proof (translation)
-The claim follows from `Finset.sum_pos (fun c _ => X.volC_pos c) Finset.univ_nonempty`.
+A detailed English derivation is pending.
 -/
 theorem vol_pos [Nonempty Comp] : 0 < X.vol :=
   Finset.sum_pos (fun c _ => X.volC_pos c) Finset.univ_nonempty

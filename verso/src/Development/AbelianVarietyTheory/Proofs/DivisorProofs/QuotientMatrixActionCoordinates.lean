@@ -19,15 +19,13 @@ noncomputable section
 namespace GlobalTheory.ChainDesc
 
 /- English proof (translation)
-Introduce `O _ _ _ B Λ _ h M H H' _ _ ι _ ψ hM`. Set `e : (cokernel ψ).V ≅ cokernel ψ.hom` to `PreservesCokernel.iso (Action.forget _ _) ψ`. Establish `he : (cokernel.π ψ).hom ≫ e.hom = cokernel.π ψ.hom` using `PreservesCokernel.π_iso_hom (Action.forget _ _) ψ`. Establish `he' : (cokernel.π ψ).hom = cokernel.π ψ.hom ≫ e.inv` using `by rw [← he, Category.assoc, e.hom_inv_id, Category.comp_id]`. Use `⟨isQuasicoherent_of_iso e.symm, fun W hW => ⟨fun y => ?_, fun s => ?_, fun a s s' hs => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs⟩` from `surjective_cokernel_π_app ψ.hom hW (e.hom.app W y)`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[he', ← app_app, hs, app_app, e.hom_inv_id]`. Both sides reduce to the same expression. Establish `h1 : (cokernel.π ψ).hom.app W s = 0 ↔ (cokernel.π ψ.hom).app W s = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← he, ← app_app]`. Conclude with `(map_eq_zero_iff (appLinear e.hom W) (injective_app_of_mono e.hom W)).symm`. Rewrite using `[h1, exact_cokernel_π_app ψ.hom hW s]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨t, rfl⟩`. Introduce and unpack `⟨t, ht⟩`. Conclude with `⟨t, crd_injective ι W ht⟩`. Take `rfl : s' = (H.ρ a : H.V ⟶ H.V).app W s` from `crd_injective ι W (hs.trans (hM a W s).symm)`. Rewrite using `[app_app, app_app]`.
-
-Conclude with `congrArg (fun φ => Scheme.Modules.Hom.app φ W s) ((cokernel.π ψ).comm a).symm`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isQuot_cokernel : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (B : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] (h : ℕ) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (H H' : AM B Λ) [H.V.IsQuasicoherent] [H'.V.IsQuasicoherent] (ι : H.V ⟶ freeModule B.X (Fin h)) [Mono ι] (ψ : H' ⟶ H), (∀ (a : Λ) (W : B.X.Opens) (s : Γ(H.V, W)), crd ι W ((H.ρ a : H.V ⟶ H.V).app W s) = mv (RingHom.id _) (M a) (crd ι W s)) → IsQuot M ι (fun W => latOf (ψ.hom ≫ ι) W) (cokernel ψ) (cokernel.π ψ).hom := by
   intro O _ _ _ B Λ _ h M H H' _ _ ι _ ψ hM

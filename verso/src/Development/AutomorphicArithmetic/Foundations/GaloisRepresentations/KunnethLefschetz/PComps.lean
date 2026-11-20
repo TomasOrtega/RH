@@ -7,17 +7,15 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 namespace UpperTheory.Gal.KunnethLefschetz
 
 /- English proof (translation)
-Unfold `Comps`. Introduce `k _ _ d X p hp hX`. Take `⟨hfin, hopen⟩` from `comp_fin d p hp`. Set `m` to `Nat.card (_root_.ConnectedComponents X)`. Set `e : Fin m ≃ _root_.ConnectedComponents X` to `(Finite.equivFin _).symm`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `rep : Fin m → X` to `fun j => (ConnectedComponents.surjective_coe (e j)).choose`. Establish `hrep : ∀ j, (rep j : _root_.ConnectedComponents X) = e j` using `fun j => (ConnectedComponents.surjective_coe (e j)).choose_spec`. Set `U : Fin m → X.Opens` to `fun j => ⟨connectedComponent (rep j), hopen _⟩`. Establish `hUc : ∀ j, IsClosed (U j : Set X)` using `fun j => isClosed_connectedComponent`. Establish `hmem : ∀ j (x : X), x ∈ (U j : Set X) ↔ e j = (x : _root_.ConnectedComponents X)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j x`. Rewrite using `[← hrep]`. Conclude with `⟨fun h => ConnectedComponents.coe_eq_coe.mpr (connectedComponent_eq h), fun h => by`. Use `ConnectedComponents.coe_eq_coe.mp h` as an intermediate fact. Use `show x ∈ connectedComponent (rep j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `mem_connectedComponent⟩`. Use `⟨m, U, fun j => ?_, fun x => ?_, fun j j' hj => ?_⟩` and prove the remaining obligations. Establish `h2` using `clopen_smoothProper_projective d p hp hX (U j) (hUc j)`. Establish `hc : ConnectedSpace (U j)` using `isConnected_iff_connectedSpace.mp isConnected_connectedComponent`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨h2.1, h2.2, LCompInt_of k d ((U j).ι ≫ p) h2.1 hc⟩`. Use `⟨e.symm (x : _root_.ConnectedComponents X), ?_⟩ show x ∈ (U _ : Set X)` and prove the remaining obligations. Rewrite using `[hmem]`. Conclude with `e.apply_symm_apply _`. Rewrite using `[disjoint_iff_inf_le]`.
-
-Introduce `x hx`. Conclude with `(hj (e.injective (((hmem j x).mp hx.1).trans ((hmem j' x).mp hx.2).symm))).elim`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem comps_holds : Comps := by
   classical

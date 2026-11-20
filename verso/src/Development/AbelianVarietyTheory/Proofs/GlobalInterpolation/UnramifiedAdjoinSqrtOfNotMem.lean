@@ -4,25 +4,23 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Ba
 open NumberField IsDedekindDomain GlobalTheory.UnitaryBC Polynomial
 
 /- English proof (translation)
-Introduce `L _ _ _ a δ hδ hδK w ha`. Establish `hint : IsIntegral ℤ δ`. Use `IsIntegral.of_pow two_pos ?_` and prove the remaining obligations. Rewrite using `[hδ]`. Conclude with `(RingOfIntegers.isIntegral_coe a).algebraMap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `d : 𝓞 L` to `⟨δ, hint⟩`. Establish `hd : algebraMap (𝓞 L) L d = δ` using `rfl`. Establish `hdA : IsIntegral (𝓞 (maximalRealSubfield L)) d` using `Algebra.IsIntegral.isIntegral d`. Establish `hδR : IsIntegral (maximalRealSubfield L) δ` using `Algebra.IsIntegral.isIntegral δ`. Establish `hsq : d ^ 2 = algebraMap (𝓞 (maximalRealSubfield L)) (𝓞 L) a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `FaithfulSMul.algebraMap_injective (𝓞 L) L` to reduce the goal to its premises. Rewrite using `[map_pow, hd, hδ, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 (maximalRealSubfield L)) (maximalRealSubfield L) L]`. Both sides reduce to the same expression. Establish `hfin : Module.finrank (maximalRealSubfield L) L = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `hdegK : (minpoly (maximalRealSubfield L) δ).natDegree = 2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm (hfin ▸ minpoly.natDegree_le δ) ?_` and prove the remaining obligations. Rewrite using `[minpoly.two_le_natDegree_iff hδR]`. Introduce and unpack `⟨x, hx⟩`. Conclude with `hδK (hx ▸ x.2)`. Establish `hdeg : (minpoly (𝓞 (maximalRealSubfield L)) d).natDegree = 2`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hdegK, ← hd, minpoly.isIntegrallyClosed_eq_field_fractions (maximalRealSubfield L) L hdA, (minpoly.monic hdA).natDegree_map]`. Establish `hpoly : minpoly (𝓞 (maximalRealSubfield L)) d = X ^ 2 - C a`. Establish `hm : (X ^ 2 - C a : (𝓞 (maximalRealSubfield L))[X]).Monic` using `monic_X_pow_sub_C a two_ne_zero`. Establish `hroot : aeval d (X ^ 2 - C a) = 0`. Rewrite using `[map_sub, aeval_X_pow, aeval_C, hsq, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic hdA) hm (minpoly.isIntegrallyClosed_dvd hdA hroot) ?_).symm` and prove the remaining obligations. Rewrite using `[hdeg, natDegree_X_pow_sub_C]`. Establish `hadj : Algebra.adjoin (maximalRealSubfield L) {algebraMap (𝓞 L) L d} = ⊤`. Establish `htop : IntermediateField.adjoin (maximalRealSubfield L) {δ} = ⊤` using `IntermediateField.eq_of_le_of_finrank_le le_top (by`. Rewrite using `[IntermediateField.finrank_top', hfin, IntermediateField.adjoin.finrank hδR, hdegK])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hd, ← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hδR.isAlgebraic, htop, IntermediateField.top_toSubalgebra]`. Establish `hmem : 2 * d ∈ differentIdeal (𝓞 (maximalRealSubfield L)) (𝓞 L)`. Use `aeval_derivative_mem_differentIdeal (𝓞 (maximalRealSubfield L)) (maximalRealSubfield L) L d hadj` as an intermediate fact. Simplify `this` using `[hpoly, derivative_X_pow, one_add_one_eq_two, map_ofNat]`. Rewrite using `[← not_dvd_differentIdeal_iff]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hdvd`. Establish `h2d : 2 * d ∈ w.asIdeal` using `Ideal.dvd_iff_le.mp hdvd hmem`. Establish `h4a : algebraMap (𝓞 (maximalRealSubfield L)) (𝓞 L) (2 * (2 * a)) ∈ w.asIdeal`. Use `w.asIdeal.mul_mem_left (2 * d) h2d` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_mul, map_mul, map_ofNat, ← hsq]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4a' : 2 * (2 * a) ∈ (w.under (𝓞 (maximalRealSubfield L))).asIdeal` using `h4a`. Break down `(w.under (𝓞 (maximalRealSubfield L))).isPrime.mem_or_mem h4a' with h | h` into its components or cases. Conclude with `ha (Ideal.mul_mem_right a _ h)`.
-
-Conclude with `ha h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.unramified_adjoin_sqrt_of_not_mem : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (a : 𝓞 (maximalRealSubfield L)) (δ : L), δ ^ 2 = ((a : maximalRealSubfield L) : L) → δ ∉ maximalRealSubfield L → ∀ w : HeightOneSpectrum (𝓞 L), 2 * a ∉ (w.under (𝓞 (maximalRealSubfield L))).asIdeal → Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield L)) w.asIdeal := by
   intro L _ _ _ a δ hδ hδK w ha

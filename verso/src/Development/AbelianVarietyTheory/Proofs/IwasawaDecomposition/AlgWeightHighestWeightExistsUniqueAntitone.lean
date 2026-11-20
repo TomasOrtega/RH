@@ -19,9 +19,9 @@ section
 variable {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `h : Sle Φ lam ≤ (Sle Φ lam).comap (Matrix.mulVecLin M)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨ν, hν, hw⟩`. Use `Submodule.subset_span ⟨ν, hν, fun D hD => ?_⟩` and prove the remaining obligations. Use `show Φ D *ᵥ (M *ᵥ w) = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← hM, ← Matrix.mulVec_mulVec, hw D hD, Matrix.mulVec_smul]`. Both sides reduce to the same expression. Conclude with `h hx`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sle_mulVec {Φ : GL (Fin n) ℂ → Matrix ι ι ℂ} {M : Matrix ι ι ℂ} (hM : ∀ A, M * Φ A = Φ A * M)
     (lam : Fin n → ℤ) {x : ι → ℂ} (hx : x ∈ Sle Φ lam) : M *ᵥ x ∈ Sle Φ lam := by
@@ -35,7 +35,7 @@ theorem sle_mulVec {Φ : GL (Fin n) ℂ → Matrix ι ι ℂ} {M : Matrix ι ι 
   exact h hx
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `only [mem_filter, mem_univ, true_and, mem_insert, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem filter_succ (i : Fin n) : univ.filter (fun j : Fin n => (j : ℕ) < (i : ℕ) + 1) =
     insert i (univ.filter (fun j : Fin n => (j : ℕ) < i)) := by
@@ -50,7 +50,7 @@ theorem not_mem_filter_self (i : Fin n) : i ∉ univ.filter (fun j : Fin n => (j
   simp
 
 /- English proof (translation)
-Establish `hs : ∀ k : ℕ, ∑ i ∈ univ.filter (fun i : Fin n => (i : ℕ) < k), μ i = ∑ i ∈ univ.filter (fun i : Fin n => (i : ℕ) < k), lam i` using `fun k => le_antisymm (h1.2 k) (h2.2 k)`. Use function extensionality and compare the values at `i`. Establish `h` using `hs ((i : ℕ) + 1)`. Rewrite `h` using `[filter_succ, sum_insert (not_mem_filter_self i), sum_insert (not_mem_filter_self i), hs i]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem domLE_antisymm {μ lam : Fin n → ℤ} (h1 : DomLE μ lam) (h2 : DomLE lam μ) : μ = lam := by
   have hs : ∀ k : ℕ, ∑ i ∈ univ.filter (fun i : Fin n => (i : ℕ) < k), μ i =
@@ -61,9 +61,9 @@ theorem domLE_antisymm {μ lam : Fin n → ℤ} (h1 : DomLE μ lam) (h2 : DomLE 
   linarith
 
 /- English proof (translation)
-Establish `h1` using `h.2 ((i : ℕ) + 1)`. Rewrite `h1` using `[filter_succ, sum_insert (not_mem_filter_self i), sum_insert (not_mem_filter_self i)]`. Establish `h2 : ∑ l ∈ univ.filter (fun l : Fin n => (l : ℕ) < i), (lam ∘ Equiv.swap i j) l = ∑ l ∈ univ.filter (fun l : Fin n => (l : ℕ) < i), lam l`. Use `sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Simplify using `only [mem_filter, mem_univ, true_and] at hl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hli : l ≠ i` using `fun e => by rw [e] at hl; omega`. Establish `hlj : l ≠ j` using `fun e => by rw [e] at hl; rw [Fin.lt_def] at hij; omega`. Simplify using `[Function.comp, Equiv.swap_apply_of_ne_of_ne hli hlj]`. Rewrite `h1` using `[h2]`. Simplify using `only [Function.comp, Equiv.swap_apply_left] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -88,7 +88,7 @@ section
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Use `a.irr` as an intermediate fact. Conclude with `bot_ne_top (α := Subrepresentation a.ρ) (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algWeight_space_nontrivial (a : AlgWt L n) : Nontrivial a.W := by
   by_contra h
@@ -98,7 +98,7 @@ theorem algWeight_space_nontrivial (a : AlgWt L n) : Nontrivial a.W := by
     (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))
 
 /- English proof (translation)
-Take `⟨ι, i1, i2, b, P, hP, v, hv, hB⟩` from `h`. Conclude with `⟨ι, i1, i2, b, P, v, hP, hv, hB⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem beig_of_hwAt {a : AlgWt L n} {τ : L →+* ℂ} {lam : Fin n → ℤ} (h : a.HWAt τ lam) :
     ∃ (ι : Type) (_ : Fintype ι) (_ : DecidableEq ι) (b : Module.Basis ι ℂ a.W)
@@ -108,9 +108,9 @@ theorem beig_of_hwAt {a : AlgWt L n} {τ : L →+* ℂ} {lam : Fin n → ℤ} (h
   exact ⟨ι, i1, i2, b, P, v, hP, hv, hB⟩
 
 /- English proof (translation)
-Take `⟨w, hw0, hw⟩` from `hμ`. Establish `hR` using `GlobalTheory.T.isPolynomialRepGLComplex_algebraicWeight_evalPoint L n a ι b P hP τ`. Use `GlobalTheory.T.dominanceOrderLE_of_mem_spanWeightVectorsDominatedBy n ι _ hR μ lam w hw hw0 ?_` and prove the remaining obligations. Establish `hspan` using `GlobalTheory.T.algebraicWeight_span_translates_factor_commutant L n a ι b P hP τ v hv.1 w`. Use `(Submodule.span_le.2 ?_) hspan` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x ⟨B, M, hM, rfl⟩`. Establish `e : evM P (evPt τ B) *ᵥ (M *ᵥ v) = M *ᵥ (evM P (evPt τ B) *ᵥ v)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hM]`. Rewrite using `[e]`. Conclude with `sle_mulVec hM lam (GlobalTheory.T.mulVec_mem_span_lower_weights_of_borelEigenvector n ι _ hR v lam hv B)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem domLE_of_agrees {a : AlgWt L n} {τ : L →+* ℂ} {ι : Type} [Fintype ι] [DecidableEq ι]
     {b : Module.Basis ι ℂ a.W} {P : ι → ι → MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ}
@@ -129,16 +129,16 @@ theorem domLE_of_agrees {a : AlgWt L n} {τ : L →+* ℂ} {ι : Type} [Fintype 
   exact sle_mulVec hM lam (GlobalTheory.T.mulVec_mem_span_lower_weights_of_borelEigenvector n ι _ hR v lam hv B)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨v, h.1, fun D hD => h.2 D (fun i j hij => hD (ne_of_gt hij))⟩`.
+Supply the required witnesses or components.
 -/
 theorem isWt_of_beig {ι : Type} [Fintype ι] {Φ : GL (Fin n) ℂ → Matrix ι ι ℂ} {v : ι → ℂ} {lam : Fin n → ℤ}
     (h : IsBEig Φ v lam) : IsWt Φ lam :=
   ⟨v, h.1, fun D hD => h.2 D (fun i j hij => hD (ne_of_gt hij))⟩
 
 /- English proof (translation)
-Establish `hC : b'.toMatrix b * b.toMatrix b' = 1` using `Module.Basis.toMatrix_mul_toMatrix_flip b' b`. Use `⟨fun h0 => hv.1 ?_, fun B hB => ?_⟩` and prove the remaining obligations. Use `congrArg (fun x => b'.toMatrix b *ᵥ x) h0` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hC]`. Use `show evM P (evPt τ B) *ᵥ (b.toMatrix b' *ᵥ v') = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.algebraicWeight_polyMatrix_change_of_basis L n a ι' b' P' ι b P hP' hP τ B, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, hC, Matrix.mul_one, ← Matrix.mulVec_mulVec]`. Use `hv.2 B hB` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this, Matrix.mulVec_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem beig_transport {a : AlgWt L n} {τ : L →+* ℂ} {ι : Type} [Fintype ι] [DecidableEq ι]
     {b : Module.Basis ι ℂ a.W} {P : ι → ι → MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ}
@@ -159,13 +159,11 @@ theorem beig_transport {a : AlgWt L n} {τ : L →+* ℂ} {ι : Type} [Fintype �
     rw [this, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Introduce `L _ _ _ n a τ`. Establish `hanti : ∀ lam, a.HWAt τ lam → Antitone lam`. Introduce `lam h`. Take `⟨ι, _, _, b, P, v, hP, hv⟩` from `beig_of_hwAt h`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `eq_or_lt_of_le hij with e | hlt` into its components or cases. Rewrite using `[e]`. Conclude with `le_of_domLE_swap hlt (domLE_of_agrees hP hv (GlobalTheory.T.isTorusWeightOfPolyRep_comp_swap n ι _ (GlobalTheory.T.isPolynomialRepGLComplex_algebraicWeight_evalPoint L n a ι b P hP τ) lam (isWt_of_beig hv) i j))`. Use `⟨?_, hanti⟩` and prove the remaining obligations. Take `⟨_, ι, _, _, b, P, hP⟩` from `a.alg`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := algWeight_space_nontrivial a`. Use `haveI := b.index_nonempty`. Take `⟨v, lam, hv⟩` from `GlobalTheory.T.exists_borelEigenvector_of_polynomialRepGLComplex n ι _ (GlobalTheory.T.isPolynomialRepGLComplex_algebraicWeight_evalPoint L n a ι b P hP τ)`. Use `⟨lam, ⟨ι, inferInstance, inferInstance, b, P, hP, v, hv.1, hv.2⟩, fun lam' h' => ?_⟩` and prove the remaining obligations. Take `⟨ι', _, _, b', P', v', hP', hv'⟩` from `beig_of_hwAt h'`.
-
-Establish `hv''` using `beig_transport hP hP' hv'`. Conclude with `domLE_antisymm (domLE_of_agrees hP hv (isWt_of_beig hv'')) (domLE_of_agrees hP hv'' (isWt_of_beig hv))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hw_exists_unique_antitone : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n)
     (τ : L →+* ℂ), (∃! lam, a.HWAt τ lam) ∧ ∀ lam, a.HWAt τ lam → Antitone lam := by

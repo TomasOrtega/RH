@@ -12,9 +12,9 @@ namespace UpperTheory.V.Af
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `Subring.mem_iInf.2 fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Pi.single w (x : w.adicCompletion F) : ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletion F) v ∈ v.adicCompletionIntegers F`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `x.2`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sLoc_mem (w : HeightOneSpectrum (𝓞 F)) (x : Ov F w) : sLoc F w x ∈ Ohat F := by
   classical
@@ -35,7 +35,7 @@ private def sInt (w : HeightOneSpectrum (𝓞 F)) : Ov F w →ₙ+* Ohat F where
   map_add' x y := Subtype.ext (map_add (sLoc F w) x.1 y.1)
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.HasFixedVector.hasFixed h hU hf`.
+A detailed English derivation is pending.
 -/
 theorem LocIsotypic.hasFixed {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GL (Fin n) (Af F)) V} {w : HeightOneSpectrum (𝓞 F)}

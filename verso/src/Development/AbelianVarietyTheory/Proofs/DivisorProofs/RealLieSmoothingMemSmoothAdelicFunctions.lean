@@ -13,9 +13,9 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Establish `e : (fun q : Lie E a × Lie E a => lmul q.1 q.2) = fun q i j => ∑ k, q.1 i k * q.2 k j`. Use function extensionality and compare the values at `q i j`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ContDiff.sum fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((contDiff_apply ℝ _ k).comp ((contDiff_apply ℝ _ i).comp contDiff_fst)).mul ((contDiff_apply ℝ _ j).comp ((contDiff_apply ℝ _ k).comp contDiff_snd))`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_lmul_uncurry : ContDiff ℝ ∞ fun q : Lie E a × Lie E a => lmul q.1 q.2 := by
   have e : (fun q : Lie E a × Lie E a => lmul q.1 q.2) = fun q i j => ∑ k, q.1 i k * q.2 k j := by
@@ -27,11 +27,11 @@ theorem contDiff_lmul_uncurry : ContDiff ℝ ∞ fun q : Lie E a × Lie E a => l
     ((contDiff_apply ℝ _ j).comp ((contDiff_apply ℝ _ k).comp contDiff_snd))
 
 /- English proof (translation)
-Introduce and unpack `⟨p, t⟩ ⟨hp, -⟩`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Distinguish the cases in `ht : -t ∈ tsupport α`. Establish `hpt : lmul p (-t) ∈ invSet E a` using `IsUnit.mul hp (hα.2.2 ht)`. Establish `h1 : ContDiffAt ℝ ∞ (fun q : Lie E a × Lie E a => lmul q.1 (-q.2)) (p, t)` using `(contDiff_lmul_uncurry.comp (contDiff_fst.prodMk contDiff_snd.neg)).contDiffAt`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ContDiffAt ℝ ∞ (fun q : Lie E a × Lie E a => chart ψ g (lmul q.1 (-q.2))) (p, t)`. Establish `h4` using `contDiffAt_chart hψ g hpt`. Conclude with `h4.comp (p, t) h1`. Conclude with `(hα.1.comp contDiff_snd.neg).contDiffAt.mul h3`. Establish `h0 : α =ᶠ[𝓝 (-t)] 0` using `notMem_tsupport_iff_eventuallyEq.1 ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : (fun q : Lie E a × Lie E a => α (-q.2)) =ᶠ[𝓝 (p, t)] fun _ => 0` using `((continuous_snd.neg).continuousAt.tendsto (x := (p, t))).eventually h0`. Use `(contDiffAt_const (c := (0 : ℂ))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [h2] with q hq`. Simplify using `[hq]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffOn_smoothing_integrand {α : Lie E a → ℂ} (hα : IsTest (invSet E a) α) {ψ : GA E a → ℂ}
     (hψ : ψ ∈ Sm E a) (g : GA E a) :
@@ -55,11 +55,11 @@ theorem contDiffOn_smoothing_integrand {α : Lie E a → ℂ} (hα : IsTest (inv
     simp [hq]
 
 /- English proof (translation)
-Introduce `g`. Set `G : Lie E a → Lie E a → ℂ` to `fun p t => α (-t) * chart ψ g (lmul p (-t))`. Establish `hk : IsCompact ((fun t : Lie E a => -t) '' tsupport α)` using `hα.2.1.isCompact.image continuous_neg`. Establish `hgs : ∀ p, ∀ x, p ∈ invSet E a → x ∉ (fun t : Lie E a => -t) '' tsupport α → G p x = 0`. Introduce `p x _ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: α (-x) = 0` using `image_eq_zero_of_notMem_tsupport fun h => hx ⟨-x, h, neg_neg x⟩`. Simplify using `[G, this]`. Establish `hf : LocallyIntegrable (fun _ : Lie E a => (1 : ℂ)) ν` using `locallyIntegrable_const 1`. Establish `H` using `contDiffOn_convolution_right_with_param_comp (μ := ν) (n := ⊤) (ContinuousLinearMap.mul ℝ ℂ) (contDiffOn_const (c := (0 : Lie E a))) isOpen_invSet hk hgs hf (contDiffOn_smoothing_integrand hα hψ g)`. Use `H.congr fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu⟩` from `hx`. Take `rfl : x = toL u.val` from `hu.symm`. Rewrite using `[chart_val, smoothing, chart_mul, convolution_def]`. Simplify using `[G]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem smoothing_mem_Sm (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure] (α : Lie E a → ℂ) (hα : IsTest (invSet E a) α)

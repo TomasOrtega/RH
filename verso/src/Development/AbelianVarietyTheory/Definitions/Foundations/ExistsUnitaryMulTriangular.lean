@@ -34,13 +34,13 @@ def colAct (b : Matrix (Fin N) (Fin N) R) : Pol N R →ₐ[R] Pol N R :=
 def diagChar (la : Fin N → ℕ) (b : Matrix (Fin N) (Fin N) R) : R := ∏ i, b i i ^ la i
 
 /- English proof (translation)
-Simplify using `[evalAt]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem evalAt_X (y : Matrix (Fin N) (Fin N) R) (v : Fin N × Fin N) : evalAt y (X v) = y v.1 v.2 := by
   simp [evalAt]
 
 /- English proof (translation)
-Establish `: (evalAt y).comp (rowAct R g) = evalAt (g * y)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[rowAct, evalAt, Matrix.mul_apply]`. Conclude with `DFunLike.congr_fun this f`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalAt_rowAct (y g : Matrix (Fin N) (Fin N) R) (f : Pol N R) :
     evalAt y (rowAct R g f) = evalAt (g * y) f := by
@@ -51,7 +51,7 @@ theorem evalAt_rowAct (y g : Matrix (Fin N) (Fin N) R) (f : Pol N R) :
   exact DFunLike.congr_fun this f
 
 /- English proof (translation)
-Establish `: (evalAt y).comp (colAct b) = evalAt (y * b)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[colAct, evalAt, Matrix.mul_apply]`. Conclude with `DFunLike.congr_fun this f`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalAt_colAct (y b : Matrix (Fin N) (Fin N) R) (f : Pol N R) :
     evalAt y (colAct b f) = evalAt (y * b) f := by
@@ -62,7 +62,7 @@ theorem evalAt_colAct (y b : Matrix (Fin N) (Fin N) R) (f : Pol N R) :
   exact DFunLike.congr_fun this f
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [evalAt]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp => simp only [map_mul, hp, map_X, evalAt_X, Matrix.map_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem evalAt_map (φ : R →+* S) (y : Matrix (Fin N) (Fin N) R) (f : Pol N R) :
     evalAt (y.map φ) (map φ f) = φ (evalAt y f) := by
@@ -72,9 +72,9 @@ theorem evalAt_map (φ : R →+* S) (y : Matrix (Fin N) (Fin N) R) (f : Pol N R)
   | mul_X p v hp => simp only [map_mul, hp, map_X, evalAt_X, Matrix.map_apply]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [colAct]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul, map_mul, map_mul, map_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[colAct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_colAct (φ : R →+* S) (b : Matrix (Fin N) (Fin N) R) (f : Pol N R) :
     map φ (colAct b f) = colAct (b.map φ) (map φ f) := by
@@ -86,17 +86,17 @@ theorem map_colAct (φ : R →+* S) (b : Matrix (Fin N) (Fin N) R) (f : Pol N R)
     simp [colAct]
 
 /- English proof (translation)
-Establish `hsum : ∀ (F : Fin N → Pol N R), (∀ t : Fin N, s ≤ t.val → F t = 0) → ∑ t, F t = ∑ q : Fin s, F (Fin.castLE hs q)`. Introduce `F hF`. Use `symm`. Use `Finset.sum_of_injOn (Fin.castLE hs) (fun _ _ _ _ h => Fin.castLE_injective hs h) (fun _ _ => Finset.mem_univ _) ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `t _ ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hF t ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `ht ⟨⟨t.val, by omega⟩, by simp, by ext; simp⟩`. Establish `hb' : (Matrix.of fun p q : Fin s => (C (b (Fin.castLE hs p) (Fin.castLE hs q)) : Pol N R)).BlockTriangular id`. Introduce `p q hpq`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.of_apply]`. Rewrite using `[hb (show id (Fin.castLE hs q) < id (Fin.castLE hs p) from hpq), map_zero]`. Unfold `initMinor`. Rewrite using `[Formalism.GradedWeylDivisibility.algHom_det_of]`. Establish `h1 : (Matrix.of fun p q : Fin s => colAct b (X (I p, Fin.castLE hs q))) = (Matrix.of fun p q : Fin s => (X (I p, Fin.castLE hs q) : Pol N R)) * (Matrix.of fun p q : Fin s => (C (b (Fin.castLE hs p) (Fin.castLE hs q)) : Pol N R))` using `by ext1 p q`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.of_apply, Matrix.mul_apply, colAct, aeval_X]`. Use `hsum _ fun t ht => ?_` and prove the remaining obligations. Rewrite using `[hb (show id (Fin.castLE hs q) < id t from ?_), map_zero, mul_zero]`. Use `q.2` as an intermediate fact. Simplify using `only [id, Fin.lt_def, Fin.val_castLE]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[h1, Matrix.det_mul, Matrix.det_of_isUpperTriangular hb', smul_eq_C_mul, mul_comm]`. Use `congr 1`. Simplify using `only [Matrix.of_apply, diagChar, map_prod, map_pow]`. Use `symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.prod_of_injOn (Fin.castLE hs) (fun _ _ _ _ h => Fin.castLE_injective hs h) (fun _ _ => Finset.mem_univ _) ?_ (fun q _ => ?_)).symm` and prove the remaining obligations. Introduce `t _ ht`. Establish `: ¬ t.val < s` using `fun h => ht ⟨⟨t.val, h⟩, by simp, by ext; simp⟩`. Simplify using `[initW, this]`. Simplify using `[initW]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colAct_initMinor {s : ℕ} (I : Fin s → Fin N) (hs : s ≤ N) (b : Matrix (Fin N) (Fin N) R)
     (hb : b.BlockTriangular id) :
@@ -139,13 +139,13 @@ theorem colAct_initMinor {s : ℕ} (I : Fin s → Fin N) (hs : s ≤ N) (b : Mat
   · simp [initW]
 
 /- English proof (translation)
-Unfold `nabla at hf`. Rewrite `hf` using `[Formalism.GradedWeylDivisibility.standardMonomialSpanDomain R N N la]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨K, sz, hsz, I, rfl, rfl⟩` from `hx`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Unfold `Formalism.GradedWeylDivisibility.bideterminant`. Rewrite using `[map_prod, ← Formalism.GradedWeylDivisibility.sum_initW_eq_shapeDeg]`. Simplify using `only [colAct_initMinor _ _ b hb]`. Rewrite using `[Finset.prod_smul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [diagChar, Finset.sum_apply]`. Rewrite using `[Finset.prod_comm]`. Simplify using `only [Finset.prod_pow_eq_pow_sum]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, smul_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => rw [map_smul, hx, smul_comm]`.
+Treat this case separately.
 -/
 theorem colAct_of_mem [IsDomain R] {la : Fin N → ℕ} {f : Pol N R} (hf : f ∈ nabla la R)
     (b : Matrix (Fin N) (Fin N) R) (hb : b.BlockTriangular id) : colAct b f = diagChar la b • f := by
@@ -167,7 +167,7 @@ theorem colAct_of_mem [IsDomain R] {la : Fin N → ℕ} {f : Pol N R} (hf : f �
   | smul c x _ hx => rw [map_smul, hx, smul_comm]
 
 /- English proof (translation)
-The claim follows from `colAct_of_mem (Formalism.GradedWeylDivisibility.dualWeylMap R S φ N N la f hf) b hb`.
+A detailed English derivation is pending.
 -/
 theorem colAct_map_of_mem [IsDomain S] (φ : R →+* S) {la : Fin N → ℕ} {f : Pol N R} (hf : f ∈ nabla la R)
     (b : Matrix (Fin N) (Fin N) S) (hb : b.BlockTriangular id) :
@@ -175,17 +175,17 @@ theorem colAct_map_of_mem [IsDomain S] (φ : R →+* S) {la : Fin N → ℕ} {f 
   colAct_of_mem (Formalism.GradedWeylDivisibility.dualWeylMap R S φ N N la f hf) b hb
 
 /- English proof (translation)
-Establish `h1 : ∀ v : Fin N × Fin N, (∑ s : Fin N, X (v.1, s) * C (Matrix.diagonal t s v.2) : Pol N R) = C (t v.2) * X v`. Introduce `v`. Rewrite using `[Finset.sum_eq_single v.2]`. Simplify using `[mul_comm]`. Introduce `s _ hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.diagonal_apply_ne _ hs]`. Simplify using the standard rewrite rules. Establish `h2 : ∀ (m : Fin N × Fin N →₀ ℕ) (a : R), colAct (Matrix.diagonal t) (monomial m a) = (∏ s, t s ^ (Finsupp.weight (colW N N) m s)) • monomial m a`. Introduce `m a`. Establish `h3 : (∏ s, t s ^ (Finsupp.weight (colW N N) m s)) = ∏ v ∈ m.support, t v.2 ^ m v`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, ← Finset.prod_pow_eq_pow_sum]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single v.2]`. Simplify using `[colW]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `s _ hs`. Simplify using `[colW, hs]`. Simplify using the standard rewrite rules. Rewrite using `[h3, colAct, aeval_monomial, monomial_eq]`. Simplify using `only [h1, Finsupp.prod, mul_pow, Finset.prod_mul_distrib, smul_eq_C_mul, map_prod, map_pow, algebraMap_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Rewrite using `[h2, coeff_smul, coeff_monomial]`. Use `split_ifs with h`.
+Expand and normalize the polynomial expressions, which then agree. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider the case `add p q hp hq => rw [map_add, coeff_add, hp, hq, coeff_add, mul_add]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coeff_colAct_diagonal (t : Fin N → R) (f : Pol N R) (m : Fin N × Fin N →₀ ℕ) :
     coeff m (colAct (Matrix.diagonal t) f) = (∏ s, t s ^ (Finsupp.weight (colW N N) m s)) * coeff m f := by
@@ -222,23 +222,23 @@ theorem coeff_colAct_diagonal (t : Fin N → R) (f : Pol N R) (m : Fin N × Fin 
   | add p q hp hq => rw [map_add, coeff_add, hp, hq, coeff_add, mul_add]
 
 /- English proof (translation)
-Use `⟨fun hf b hb _ => colAct_of_mem hf b hb, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.GradedWeylDivisibility.dualWeylPoint R N N la f]`. Prove the components needed by the constructor for the conclusion. Introduce `m hm`. Establish `h1 : ∀ t : Fin N → R, ∏ s, t s ^ (Finsupp.weight (colW N N) m s + 1) = ∏ s, t s ^ (la s + 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t`. Distinguish the cases in `ht : ∀ s, t s ≠ 0`. Establish `h2` using `congrArg (coeff m) (h (Matrix.diagonal t) (Matrix.blockTriangular_diagonal t) (by simpa using ht))`. Rewrite `h2` using `[coeff_colAct_diagonal, coeff_smul, smul_eq_mul]`. Establish `h3` using `mul_right_cancel₀ hm h2`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [pow_succ, Finset.prod_mul_distrib, h3, diagChar, Matrix.diagonal_apply_eq]`. Use `push Not at ht`. Take `⟨s, hs⟩` from `ht`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ s) (by simp [hs]), Finset.prod_eq_zero (Finset.mem_univ s) (by simp [hs])]`. Establish `h4 : (monomial (Finsupp.equivFunOnFinite.symm fun s => Finsupp.weight (colW N N) m s + 1) (1 : R)) = monomial (Finsupp.equivFunOnFinite.symm fun s => la s + 1) (1 : R)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `MvPolynomial.funext fun t => ?_` and prove the remaining obligations. Rewrite using `[eval_monomial, eval_monomial, Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp)]`. Simplify using `using h1 t`. Establish `h5` using `Finsupp.equivFunOnFinite.symm.injective (monomial_left_injective one_ne_zero h4)`. Use function extensionality and compare the values at `s`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using congrFun h5 s`. Introduce `l j hlj c`. Establish `hb : (1 + Matrix.single l j c : Matrix (Fin N) (Fin N) R).BlockTriangular id`. Introduce `p q hpq`. Establish `hpq' : q < p` using `hpq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne hpq'.ne', zero_add, Matrix.single_apply_of_ne]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `absurd hlj hpq'.not_gt`. Establish `hd : ∀ i, (1 + Matrix.single l j c : Matrix (Fin N) (Fin N) R) i i = 1`. Introduce `i`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Matrix.add_apply, Matrix.one_apply_eq, Matrix.single_apply_of_ne, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `absurd hlj (lt_irrefl _)`. Establish `h1` using `h _ hb (fun i => by rw [hd]; exact one_ne_zero)`. Establish `h2 : Formalism.GradedWeylDivisibility.colAdd R l j c = colAct (1 + Matrix.single l j c)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [Formalism.GradedWeylDivisibility.colAdd, colAct, aeval_X, Matrix.add_apply, map_add, mul_add, Finset.sum_add_distrib, Matrix.one_apply, Matrix.single_apply]`. Distinguish the cases in `hv : v.2 = j`. Substitute `hv` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[apply_ite C, mul_comm]`. Simplify using `[apply_ite C, hv, Ne.symm hv]`. Rewrite using `[h2, h1]`. Simplify using `[diagChar, hd]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_nabla_iff [IsDomain R] [Infinite R] {la : Fin N → ℕ} {f : Pol N R} :
     f ∈ nabla la R ↔ ∀ b : Matrix (Fin N) (Fin N) R, b.BlockTriangular id → (∀ i, b i i ≠ 0) →
@@ -299,7 +299,7 @@ def width (la : Fin N → ℕ) : ℕ := Finset.univ.sup la
 def colLen (la : Fin N → ℕ) (c : ℕ) : ℕ := (Finset.univ.filter fun i => c < la i).card
 
 /- English proof (translation)
-The claim follows from `(Finset.card_filter_le _ _).trans (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem colLen_le (la : Fin N → ℕ) (c : ℕ) : colLen la c ≤ N :=
   (Finset.card_filter_le _ _).trans (by simp)
@@ -320,7 +320,7 @@ instance (la : Fin N → ℕ) : Fintype (StdTableau la) := Fintype.ofFinite _
 def canon (la : Fin N → ℕ) : Tableau la := fun c => Fin.castLE (colLen_le la c)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => Fin.strictMono_castLE _, fun _ _ _ _ _ _ => le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isStandard_canon (la : Fin N → ℕ) : IsStandard (canon la) :=
   ⟨fun _ => Fin.strictMono_castLE _, fun _ _ _ _ _ _ => le_rfl⟩
@@ -337,14 +337,14 @@ section Ring
 variable {R S : Type} [CommRing R] [CommRing S] {la : Fin N → ℕ}
 
 /- English proof (translation)
-The claim follows from `Formalism.GradedWeylDivisibility.hwMem R N N le_rfl la hla`.
+A detailed English derivation is pending.
 -/
 theorem extremal_mem (hla : Antitone la) : extremal la R ∈ nabla la R := Formalism.GradedWeylDivisibility.hwMem R N N le_rfl la hla
 
 /- English proof (translation)
-Unfold `extremal hw`. Rewrite using `[map_prod]`. Use `Finset.prod_eq_one fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, lpMinor, Formalism.GradedWeylDivisibility.algHom_det_of]`. Establish `h : (Matrix.of fun p q : Fin (s.val + 1) => evalAt (1 : Matrix (Fin N) (Fin N) R) (X (Fin.castLE (by omega) p, Fin.castLE (by omega) q))) = 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `p q`. Simplify using `[Matrix.one_apply]`. Rewrite using `[h, Matrix.det_one, one_pow]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalAt_one_extremal : evalAt 1 (extremal la R) = 1 := by
   unfold extremal hw
@@ -358,7 +358,7 @@ theorem evalAt_one_extremal : evalAt 1 (extremal la R) = 1 := by
   rw [h, Matrix.det_one, one_pow]
 
 /- English proof (translation)
-Introduce `h` and use `by have h1 := evalAt_one_extremal (R := R) (la := la) rw [h, map_zero] at h1 exact zero_ne_one h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem extremal_ne_zero [Nontrivial R] : extremal la R ≠ 0 := fun h => by
   have h1 := evalAt_one_extremal (R := R) (la := la)
@@ -366,7 +366,7 @@ theorem extremal_ne_zero [Nontrivial R] : extremal la R ≠ 0 := fun h => by
   exact zero_ne_one h1
 
 /- English proof (translation)
-Introduce `h` and use `extremal_ne_zero (R := R) (la := la) (by simpa [h] using extremal_mem (R := R) hla)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nabla_ne_bot [Nontrivial R] (hla : Antitone la) : nabla la R ≠ ⊥ := fun h =>
   extremal_ne_zero (R := R) (la := la) (by simpa [h] using extremal_mem (R := R) hla)
@@ -410,19 +410,19 @@ Both sides reduce to the same expression.
 theorem coe_baseChange (φ : R →+* S) (f : nabla la R) : (baseChange la φ f : Pol N S) = map φ f.1 := rfl
 
 /- English proof (translation)
-The claim follows from `evalAt_rowAct _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem evalAt_rho (y g : Matrix (Fin N) (Fin N) R) (f : nabla la R) :
     evalAt y (rho la R g f : Pol N R) = evalAt (gᵀ * y) f := evalAt_rowAct _ _ _
 
 /- English proof (translation)
-Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rho_one (f : nabla la R) : rho la R 1 f = f := by
   rw [map_one]; rfl
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_rho, Matrix.transpose_smul, GlobalTheory.NabStab.rowAct_smul t _ _ f.2.1]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rho_smul (t : R) (g : Matrix (Fin N) (Fin N) R) (f : nabla la R) :
     rho la R (t • g) f = t ^ size la • rho la R g f := by
@@ -431,13 +431,13 @@ theorem rho_smul (t : R) (g : Matrix (Fin N) (Fin N) R) (f : nabla la R) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[rho_smul, rho_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_scalar (t : R) (f : nabla la R) : rho la R (t • 1) f = t ^ size la • f := by
   rw [rho_smul, rho_one]
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_baseChange, coe_rho, GlobalTheory.NabStab.map_rowAct, coe_rho, Matrix.transpose_map]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem baseChange_rho (φ : R →+* S) (g : Matrix (Fin N) (Fin N) R) (f : nabla la R) :
     baseChange la φ (rho la R g f) = rho la S (g.map φ) (baseChange la φ f) := by
@@ -456,7 +456,7 @@ instance (la : Fin N → ℕ) : Fintype (Idx la) := Fintype.ofFinite _
 def intVec (la : Fin N → ℕ) : Idx la → Pol N ℤ := (Formalism.GradedWeylDivisibility.sSBasis ℤ N N la).choose
 
 /- English proof (translation)
-Establish `h` using `Formalism.GradedWeylDivisibility.nablaLKBasis ℤ K (algebraMap ℤ K).injective_int N N la (intVec la) _ (Formalism.GradedWeylDivisibility.sSBasis ℤ N N la).choose_spec.1 1 (by simp)`. Simplify `h` using `[Formalism.GradedWeylDivisibility.ldlat_rowAct_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem intVec_spec (la : Fin N → ℕ) (K : Type) [Field K] [CharZero K] :
     LinearIndependent K (fun i => map (Int.castRingHom K) (intVec la i)) ∧
@@ -469,7 +469,7 @@ def basis (la : Fin N → ℕ) (K : Type) [Field K] [CharZero K] : Module.Basis 
   (Module.Basis.span (intVec_spec la K).1).map (LinearEquiv.ofEq _ _ (intVec_spec la K).2)
 
 /- English proof (translation)
-Simplify using `[basis, Module.Basis.span_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_basis (la : Fin N → ℕ) (K : Type) [Field K] [CharZero K] (i : Idx la) :
     (basis la K i : Pol N K) = map (Int.castRingHom K) (intVec la i) := by
@@ -481,13 +481,13 @@ instance (la : Fin N → ℕ) (K : Type) [Field K] [CharZero K] : FiniteDimensio
 def dim (la : Fin N → ℕ) : ℕ := Module.finrank ℂ (nabla la ℂ)
 
 /- English proof (translation)
-The claim follows from `Module.finrank_eq_card_basis (basis la ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem dim_eq_card (la : Fin N → ℕ) : dim la = Fintype.card (Idx la) :=
   Module.finrank_eq_card_basis (basis la ℂ)
 
 /- English proof (translation)
-Establish `: Nontrivial (nabla la ℂ)` using `Submodule.nontrivial_iff_ne_bot.mpr (nabla_ne_bot hla)`. Conclude with `Module.finrank_pos`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dim_pos {la : Fin N → ℕ} (hla : Antitone la) : 0 < dim la := by
   have : Nontrivial (nabla la ℂ) := Submodule.nontrivial_iff_ne_bot.mpr (nabla_ne_bot hla)
@@ -532,9 +532,9 @@ Both sides reduce to the same expression.
 theorem rhoU_apply (u : UN N) : rhoU la u = rho la ℂ u.1 := rfl
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simpa [evalAt] using continuous_const`. Consider the case `add p q hp hq`. Simplify using `only [map_add]`. Conclude with `hp.add hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p v hp`. Simplify using `only [map_mul, evalAt_X]`. Conclude with `hp.mul (continuous_apply_apply _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_evalAt (f : Pol N ℂ) : Continuous fun y : Matrix (Fin N) (Fin N) ℂ => evalAt y f := by
   induction f using MvPolynomial.induction_on with
@@ -547,13 +547,13 @@ theorem continuous_evalAt (f : Pol N ℂ) : Continuous fun y : Matrix (Fin N) (F
     exact hp.mul (continuous_apply_apply _ _)
 
 /- English proof (translation)
-The claim follows from `(continuous_evalAt f).comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_evalAt_coe (f : Pol N ℂ) : Continuous fun g : UN N => evalAt g.1 f :=
   (continuous_evalAt f).comp continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `integrable_of_continuous_of_compactSpace _ ((continuous_evalAt_coe f).mul (Complex.continuous_conj.comp (continuous_evalAt_coe f')))`.
+A detailed English derivation is pending.
 -/
 theorem integrable_mul_conj (f f' : Pol N ℂ) :
     Integrable (fun g : UN N => evalAt g.1 f * conj (evalAt g.1 f')) (haarU N) :=
@@ -561,13 +561,13 @@ theorem integrable_mul_conj (f f' : Pol N ℂ) :
     ((continuous_evalAt_coe f).mul (Complex.continuous_conj.comp (continuous_evalAt_coe f')))
 
 /- English proof (translation)
-The claim follows from `integrable_of_continuous_of_compactSpace _ ((continuous_evalAt_coe f).norm.pow 2)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_norm_sq (f : Pol N ℂ) : Integrable (fun g : UN N => ‖evalAt g.1 f‖ ^ 2) (haarU N) :=
   integrable_of_continuous_of_compactSpace _ ((continuous_evalAt_coe f).norm.pow 2)
 
 /- English proof (translation)
-Simplify using `only [form, normSq, Complex.mul_conj', ← Complex.ofReal_pow, integral_complex_ofReal]`. Use `push_cast`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem form_self (f : Pol N ℂ) : form la f f = normSq la f := by
   simp only [form, normSq, Complex.mul_conj', ← Complex.ofReal_pow, integral_complex_ofReal]
@@ -575,45 +575,45 @@ theorem form_self (f : Pol N ℂ) : form la f f = normSq la f := by
   rfl
 
 /- English proof (translation)
-The claim follows from `mul_nonneg (Nat.cast_nonneg _) (integral_nonneg fun _ => by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem normSq_nonneg (f : Pol N ℂ) : 0 ≤ normSq la f :=
   mul_nonneg (Nat.cast_nonneg _) (integral_nonneg fun _ => by positivity)
 
 /- English proof (translation)
-Simplify using `only [form, map_mul, ← integral_conj, map_natCast, Complex.conj_conj, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_form (f f' : Pol N ℂ) : conj (form la f f') = form la f' f := by
   simp only [form, map_mul, ← integral_conj, map_natCast, Complex.conj_conj, mul_comm]
 
 /- English proof (translation)
-Simplify using `only [form, map_add, add_mul]`. Rewrite using `[integral_add (integrable_mul_conj _ _) (integrable_mul_conj _ _), mul_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_add_left (f₁ f₂ f' : Pol N ℂ) : form la (f₁ + f₂) f' = form la f₁ f' + form la f₂ f' := by
   simp only [form, map_add, add_mul]
   rw [integral_add (integrable_mul_conj _ _) (integrable_mul_conj _ _), mul_add]
 
 /- English proof (translation)
-Simplify using `only [form, map_smul, smul_eq_mul, mul_assoc, integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_smul_left (c : ℂ) (f f' : Pol N ℂ) : form la (c • f) f' = c * form la f f' := by
   simp only [form, map_smul, smul_eq_mul, mul_assoc, integral_const_mul]
   ring
 
 /- English proof (translation)
-Rewrite using `[← conj_form, form_add_left, map_add, conj_form, conj_form]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_add_right (f f₁ f₂ : Pol N ℂ) : form la f (f₁ + f₂) = form la f f₁ + form la f f₂ := by
   rw [← conj_form, form_add_left, map_add, conj_form, conj_form]
 
 /- English proof (translation)
-Rewrite using `[← conj_form, form_smul_left, map_mul, conj_form]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_smul_right (c : ℂ) (f f' : Pol N ℂ) : form la f (c • f') = conj c * form la f f' := by
   rw [← conj_form, form_smul_left, map_mul, conj_form]
 
 /- English proof (translation)
-Simplify using `only [form, evalAt_rowAct]`. Use `congr 1`. Conclude with `integral_mul_left_eq_self (μ := haarU N) (fun g : UN N => evalAt g.1 f * conj (evalAt g.1 f')) u`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem form_rowAct (u : UN N) (f f' : Pol N ℂ) : form la (rowAct ℂ u.1 f) (rowAct ℂ u.1 f') = form la f f' := by
   simp only [form, evalAt_rowAct]
@@ -621,7 +621,7 @@ theorem form_rowAct (u : UN N) (f f' : Pol N ℂ) : form la (rowAct ℂ u.1 f) (
   exact integral_mul_left_eq_self (μ := haarU N) (fun g : UN N => evalAt g.1 f * conj (evalAt g.1 f')) u
 
 /- English proof (translation)
-Rewrite `hu` using `[Matrix.mem_unitaryGroup_iff]`. Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Establish `h` using `congrArg Matrix.transpose hu`. Rewrite `h` using `[Matrix.transpose_mul, Matrix.transpose_one]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transpose_mem_unitaryGroup {u : Matrix (Fin N) (Fin N) ℂ} (hu : u ∈ Matrix.unitaryGroup (Fin N) ℂ) :
     uᵀ ∈ Matrix.unitaryGroup (Fin N) ℂ := by
@@ -632,23 +632,23 @@ theorem transpose_mem_unitaryGroup {u : Matrix (Fin N) (Fin N) ℂ} (hu : u ∈ 
   exact h
 
 /- English proof (translation)
-The claim follows from `form_rowAct ⟨u.1ᵀ, transpose_mem_unitaryGroup u.2⟩ _ _`.
+A detailed English derivation is pending.
 -/
 theorem form_rhoU (u : UN N) (f f' : nabla la ℂ) :
     form la (rhoU la u f : Pol N ℂ) (rhoU la u f' : Pol N ℂ) = form la f f' :=
   form_rowAct ⟨u.1ᵀ, transpose_mem_unitaryGroup u.2⟩ _ _
 
 /- English proof (translation)
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← form_self, ← form_self, form_rhoU]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem normSq_rhoU (u : UN N) (f : nabla la ℂ) : normSq la (rhoU la u f : Pol N ℂ) = normSq la f := by
   apply Complex.ofReal_injective
   rw [← form_self, ← form_self, form_rhoU]
 
 /- English proof (translation)
-Set `e` to `EuclideanSpace.basisFun (Fin N) ℂ`. Set `v : Fin N → EuclideanSpace ℂ (Fin N)` to `fun s => WithLp.toLp 2 fun a => y a s`. Establish `h : Module.finrank ℂ (EuclideanSpace ℂ (Fin N)) = Fintype.card (Fin N)` using `by simp`. Set `o` to `InnerProductSpace.gramSchmidtOrthonormalBasis h v`. Use `⟨⟨e.toBasis.toMatrix o, e.toMatrix_orthonormalBasis_mem_unitary o⟩, o.toBasis.toMatrix v, InnerProductSpace.gramSchmidtOrthonormalBasis_inv_isUpperTriangular h v, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `y = e.toBasis.toMatrix o.toBasis * o.toBasis.toMatrix v`. Rewrite using `[Module.Basis.toMatrix_mul_toMatrix]`. Use extensionality with `a s`. Simplify using `[Module.Basis.toMatrix_apply, e, v]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_unitary_mul_triangular (y : Matrix (Fin N) (Fin N) ℂ) :
     ∃ (u : UN N) (b : Matrix (Fin N) (Fin N) ℂ), b.BlockTriangular id ∧ y = u.1 * b := by
@@ -664,7 +664,7 @@ theorem exists_unitary_mul_triangular (y : Matrix (Fin N) (Fin N) ℂ) :
   simp [Module.Basis.toMatrix_apply, e, v]
 
 /- English proof (translation)
-Use `MvPolynomial.funext fun x => ?_` and prove the remaining obligations. Take `⟨u, b, hb, hy⟩` from `exists_unitary_mul_triangular (Matrix.of fun a s => x (a, s))`. Establish `h1 : eval x f = evalAt (Matrix.of fun a s => x (a, s)) f`. Simplify using `[evalAt, aeval_eq_eval]`. Rewrite using `[h1, hy, ← evalAt_colAct, colAct_of_mem hf b hb, map_smul, h u]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -678,9 +678,9 @@ theorem eq_zero_of_evalAt_unitary {f : Pol N ℂ} (hf : f ∈ nabla la ℂ) (h :
   simp
 
 /- English proof (translation)
-Establish `: Nontrivial (nabla la ℂ)` using `⟨⟨⟨f, hf⟩, 0, fun h => h0 (congrArg Subtype.val h)⟩⟩`. Establish `hd : 0 < dim la` using `Module.finrank_pos`. Use `mul_pos (by exact_mod_cast hd) ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g : UN N, evalAt g.1 f ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at h`. Conclude with `h0 (eq_zero_of_evalAt_unitary hf h)`. Conclude with `Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := g) ((continuous_evalAt_coe f).norm.pow 2) (HasCompactSupport.of_compactSpace _) (fun k => by positivity) (by simpa using hg)`.
+A detailed English derivation is pending.
 -/
 theorem normSq_pos {f : Pol N ℂ} (hf : f ∈ nabla la ℂ) (h0 : f ≠ 0) : 0 < normSq la f := by
   have : Nontrivial (nabla la ℂ) := ⟨⟨⟨f, hf⟩, 0, fun h => h0 (congrArg Subtype.val h)⟩⟩
@@ -695,7 +695,7 @@ theorem normSq_pos {f : Pol N ℂ} (hf : f ∈ nabla la ℂ) (h0 : f ≠ 0) : 0 
     (by simpa using hg)
 
 /- English proof (translation)
-Establish `h1 : ∫ g : UN N, ‖evalAt g.1 f‖ ^ 2 ∂haarU N ≤ ∫ _ : UN N, (1 : ℝ) ∂haarU N` using `integral_mono (integrable_norm_sq f) (integrable_const _) fun g => pow_le_one₀ (norm_nonneg _) (h g)`. Simplify using `only [integral_const, probReal_univ, smul_eq_mul, mul_one] at h1`. Conclude with `mul_le_of_le_one_right (Nat.cast_nonneg _) h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normSq_le_dim {f : Pol N ℂ} (h : ∀ g : UN N, ‖evalAt g.1 f‖ ≤ 1) : normSq la f ≤ dim la := by
   have h1 : ∫ g : UN N, ‖evalAt g.1 f‖ ^ 2 ∂haarU N ≤ ∫ _ : UN N, (1 : ℝ) ∂haarU N :=
@@ -749,7 +749,7 @@ Both sides reduce to the same expression.
 theorem inner_toSpace (f f' : nabla la ℂ) : ⟪toSpace la f, toSpace la f'⟫_ℂ = form la f'.1 f.1 := rfl
 
 /- English proof (translation)
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← form_self, ← inner_toSpace, inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_toSpace_sq (f : nabla la ℂ) : ‖toSpace la f‖ ^ 2 = normSq la f.1 := by
   apply Complex.ofReal_injective
@@ -767,18 +767,18 @@ Both sides reduce to the same expression.
 theorem rhoSpace_toSpace (u : UN N) (f : nabla la ℂ) : rhoSpace la u (toSpace la f) = toSpace la (rhoU la u f) := rfl
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `(toSpace la).surjective v`. Rewrite using `[← sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _), rhoSpace_toSpace, norm_toSpace_sq, norm_toSpace_sq, normSq_rhoU]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_rhoSpace (u : UN N) (v : Space la) : ‖rhoSpace la u v‖ = ‖v‖ := by
   obtain ⟨f, rfl⟩ := (toSpace la).surjective v
   rw [← sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _), rhoSpace_toSpace, norm_toSpace_sq, norm_toSpace_sq, normSq_rhoU]
 
 /- English proof (translation)
-Establish `hl : ∀ l : Module.Dual ℂ V, Continuous fun t => l (F t)`. Introduce `l`. Establish `hl : l ∈ Submodule.span ℂ s` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hl using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact continuous_const`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul c x _ hx => exact hx.const_smul c`. Set `b` to `Module.finBasis ℂ V`. Establish `: F = fun t => ∑ i, b.coord i (F t) • b i` using `funext fun t => (b.sum_repr _).symm`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `continuous_finsetSum _ fun i _ => (hl _).smul continuous_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_span_dual {V T : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]
     [TopologicalSpace T] (s : Set (Module.Dual ℂ V)) (hs : Submodule.span ℂ s = ⊤) (F : T → V)
@@ -806,9 +806,9 @@ theorem evSpace_toSpace (y : Matrix (Fin N) (Fin N) ℂ) (f : nabla la ℂ) :
     evSpace la y (toSpace la f) = evalAt y f.1 := rfl
 
 /- English proof (translation)
-Use `Submodule.span_eq_top_of_ne_zero fun z hz => ?_` and prove the remaining obligations. Take `⟨f, rfl⟩` from `(toSpace la).surjective z`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `hz ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(toSpace la).map_eq_zero_iff]`. Conclude with `Subtype.ext (eq_zero_of_evalAt_unitary f.2 fun g => h _ ⟨g, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem span_evSpace : Submodule.span ℂ (Set.range fun g : UN N => evSpace la g.1) = ⊤ := by
   refine Submodule.span_eq_top_of_ne_zero fun z hz => ?_
@@ -820,9 +820,9 @@ theorem span_evSpace : Submodule.span ℂ (Set.range fun g : UN N => evSpace la 
   exact Subtype.ext (eq_zero_of_evalAt_unitary f.2 fun g => h _ ⟨g, rfl⟩)
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `(toSpace la).surjective v`. Use `continuous_of_span_dual _ span_evSpace _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Simplify using `only [rhoSpace_toSpace, evSpace_toSpace, rhoU_apply, evalAt_rho]`. Establish `h : Continuous fun u : UN N => u.1ᵀ * y.1` using `(continuous_subtype_val (p := fun x => x ∈ Matrix.unitaryGroup (Fin N) ℂ)).matrix_transpose.matrix_mul continuous_const`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(continuous_evalAt f.1).comp h`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rhoSpace (v : Space la) : Continuous fun u : UN N => rhoSpace la u v := by
   obtain ⟨f, rfl⟩ := (toSpace la).surjective v
@@ -886,26 +886,26 @@ def funLat (la : Fin N → ℕ) (L : Submodule (𝓞 K) (Fin N → K)) : Submodu
       ((rho la K (B : Matrix (Fin N) (Fin N) K)ᵀ).restrictScalars (𝓞 K))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨f.1, f.2, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem baseChange_mem_stdLat (f : nabla la (𝓞 K)) : baseChange la (algebraMap (𝓞 K) K) f ∈ stdLat la K :=
   ⟨f.1, f.2, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨g, hg, h⟩ => ⟨⟨g, hg⟩, Subtype.ext h⟩, fun ⟨g, h⟩ => h ▸ baseChange_mem_stdLat g⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_stdLat {f : nabla la K} :
     f ∈ stdLat la K ↔ ∃ g : nabla la (𝓞 K), baseChange la (algebraMap (𝓞 K) K) g = f :=
   ⟨fun ⟨g, hg, h⟩ => ⟨⟨g, hg⟩, Subtype.ext h⟩, fun ⟨g, h⟩ => h ▸ baseChange_mem_stdLat g⟩
 
 /- English proof (translation)
-Establish `hinj` using `FaithfulSMul.algebraMap_injective (𝓞 K) K`. Rewrite using `[mem_stdLat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩ m`. Conclude with `⟨coeff m g.1, by rw [coe_baseChange, coeff_map]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `h`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : f.1 ∈ Set.range (map (algebraMap (𝓞 K) K)) := by`. Rewrite using `[mem_range_map_iff_coeffs_subset]`. Introduce `c hc`. Take `⟨m, -, rfl⟩` from `mem_coeffs_iff.mp hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `h m`. Use `⟨⟨g, mem_nabla_iff.mpr fun b hb _ => ?_⟩, Subtype.ext hg⟩` and prove the remaining obligations. Apply `map_injective _ hinj` to reduce the goal to its premises. Establish `h1` using `colAct_of_mem f.2 (b.map (algebraMap (𝓞 K) K)) (hb.map _)`. Rewrite using `[map_colAct, hg, h1, smul_eq_C_mul, smul_eq_C_mul, map_mul, hg, map_C]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[diagChar]`.
+A detailed English derivation is pending.
 -/
 theorem mem_stdLat_iff_coeff {f : nabla la K} :
     f ∈ stdLat la K ↔ ∀ m, coeff m f.1 ∈ (algebraMap (𝓞 K) K).range := by
@@ -927,21 +927,19 @@ theorem mem_stdLat_iff_coeff {f : nabla la K} :
     simp [diagChar]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `f ⟨g, hg, hgf⟩`. Establish `h : ∀ g ∈ nabla la (𝓞 K), ∀ f : nabla la K, toK K _ g = f.1 → f ∈ Submodule.span (𝓞 K) (Set.range (basis la K))`. Introduce `g hg`. Unfold `nabla at hg`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite `hg` using `[Formalism.GradedWeylDivisibility.standardMonomialSpanDomain]`. Establish `key : toK K _ g ∈ (Submodule.span (𝓞 K) (Set.range (basis la K))).map ((nabla la K).subtype.restrictScalars (𝓞 K))`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, sz, hsz, I, hsh, rfl⟩` from `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `h1 : Formalism.GradedWeylDivisibility.bideterminant ℤ sz hsz I ∈ Submodule.span ℤ (Set.range (intVec la))`. Rewrite using `[show Submodule.span ℤ (Set.range (intVec la)) = _ from (Formalism.GradedWeylDivisibility.sSBasis ℤ N N la).choose_spec.1.2.1, ← hsh]`. Conclude with `Formalism.GradedWeylDivisibility.bidetMem ℤ N N k sz hsz I`. Rewrite using `[GlobalTheory.NabStab.toK_apply, Formalism.GradedWeylDivisibility.ldlat_map_bidet, ← Formalism.GradedWeylDivisibility.ldlat_map_bidet (Int.castRingHom K)]`. Generalize the expression as in `Formalism.GradedWeylDivisibility.bideterminant ℤ sz hsz I = p at h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Proceed by induction on `h1 using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `⟨basis la K i, Submodule.subset_span ⟨i, rfl⟩, coe_basis la K i⟩`. Consider the case `zero => simp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_zsmul]`. Conclude with `zsmul_mem hx c`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Assume the hypotheses and unpack their components.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Introduce and unpack `f hf`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f', hf', h⟩` from `key`. Rewrite using `[show f = f' from Subtype.ext (hf.symm.trans h.symm)]` and apply the resulting hypothesis. Conclude with `h g hg f hgf`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
-
-Use `mem_stdLat_iff_coeff.mpr fun m => ⟨(coeff m (intVec la i) : ℤ), ?_⟩` and prove the remaining obligations. Rewrite using `[coe_basis, coeff_map]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stdLat_eq_span : stdLat la K = Submodule.span (𝓞 K) (Set.range (basis la K)) := by
   apply le_antisymm
@@ -983,7 +981,7 @@ theorem stdLat_eq_span : stdLat la K = Submodule.span (𝓞 K) (Set.range (basis
     simp
 
 /- English proof (translation)
-Take `⟨s, hs, hf⟩` from `hf`. Take `⟨p, hp⟩` from `mem_stdLat.mp hf`. Use `⟨t ^ size la * s, Submonoid.mul_mem _ (Submonoid.pow_mem _ ht _) hs, mem_stdLat.mpr ⟨rho la _ A p, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[baseChange_rho, hA, hp, rho_smul, LinearMap.map_smul_of_tower, mul_smul, ← map_pow, IsScalarTower.algebraMap_smul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rho_mem_locP (w : HeightOneSpectrum (𝓞 K)) {g : Matrix (Fin N) (Fin N) K} {t : 𝓞 K}
     (ht : t ∈ w.asIdeal.primeCompl) {A : Matrix (Fin N) (Fin N) (𝓞 K)}
@@ -999,7 +997,7 @@ theorem rho_mem_locP (w : HeightOneSpectrum (𝓞 K)) {g : Matrix (Fin N) (Fin N
 omit [NumberField K] in
 
 /- English proof (translation)
-Unfold `colLat`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `exists_congr fun c => Eq.congr_left ?_` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `[Matrix.mulVec, dotProduct, Algebra.smul_def, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mem_colLat_iff (B : GL (Fin N) K) (x : Fin N → K) :
     x ∈ colLat B ↔ ∃ c : Fin N → 𝓞 K, (B : Matrix (Fin N) (Fin N) K) *ᵥ (fun j => (c j : K)) = x := by
@@ -1010,7 +1008,7 @@ theorem mem_colLat_iff (B : GL (Fin N) K) (x : Fin N → K) :
   simp [Matrix.mulVec, dotProduct, Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Use `⟨Submodule.fg_span (Set.finite_range _), ?_⟩` and prove the remaining obligations. Unfold `colLat`. Rewrite using `[Submodule.span_span_of_tower]`. Establish `h : LinearIndependent K (B : Matrix (Fin N) (Fin N) K).col` using `Matrix.linearIndependent_cols_iff_isUnit.mpr B.isUnit`. Conclude with `h.span_eq_top_of_card_eq_finrank' (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLattice_colLat (B : GL (Fin N) K) : Submodule.IsLattice K (colLat B) := by
   refine ⟨Submodule.fg_span (Set.finite_range _), ?_⟩
@@ -1055,19 +1053,19 @@ Evaluate the decidable proposition.
 example : width ![2, 1] = 2 ∧ colLen ![2, 1] 0 = 2 ∧ colLen ![2, 1] 1 = 1 ∧ size ![2, 1] = 3 := by decide
 
 /- English proof (translation)
-Simplify using `[extremal, hw, nuNext, lpMinor, Fin.prod_univ_two, Matrix.det_fin_two]`.
+Simplify using the standard rewrite rules.
 -/
 example (y : Matrix (Fin 2) (Fin 2) ℤ) : evalAt y (extremal ![1, 1] ℤ) = y 0 0 * y 1 1 - y 0 1 * y 1 0 := by
   simp [extremal, hw, nuNext, lpMinor, Fin.prod_univ_two, Matrix.det_fin_two]
 
 /- English proof (translation)
-Simplify using `[extremal, hw, nuNext, lpMinor, Fin.prod_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 example : extremal ![1, 0] ℤ = X (0, 0) := by
   simp [extremal, hw, nuNext, lpMinor, Fin.prod_univ_two]
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[nabla, Formalism.GradedWeylDivisibility.dualWeylNonDom ℤ 2 2 _ ⟨0, 1, by decide, by decide⟩]`. Conclude with `X_ne_zero _ ((Submodule.mem_bot ℤ).mp h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example : (X (0, 1) : Pol 2 ℤ) ∉ nabla ![0, 1] ℤ := by
   intro h
@@ -1075,9 +1073,9 @@ example : (X (0, 1) : Pol 2 ℤ) ∉ nabla ![0, 1] ℤ := by
   exact X_ne_zero _ ((Submodule.mem_bot ℤ).mp h)
 
 /- English proof (translation)
-Use `⟨⟨fun _ _ => 1, ⟨fun c p q hpq => ?_, fun _ _ _ _ _ _ => le_rfl⟩, fun h => ?_⟩, fun h => ?_⟩` and prove the remaining obligations. Use `exfalso revert c`. Evaluate the decidable proposition. Use `revert h`. Evaluate the decidable proposition.
+Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Evaluate the decidable proposition. Evaluate the decidable proposition. Establish an intermediate fact.
 
-Use `h.1 revert this` as an intermediate fact. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 example : (∃ T : Tableau ![1, 0], IsStandard T ∧ T ≠ canon _) ∧ ¬ IsStandard (la := ![1, 1]) fun _ _ => 0 := by
   refine ⟨⟨fun _ _ => 1, ⟨fun c p q hpq => ?_, fun _ _ _ _ _ _ => le_rfl⟩, fun h => ?_⟩, fun h => ?_⟩
@@ -1091,9 +1089,9 @@ example : (∃ T : Tableau ![1, 0], IsStandard T ∧ T ≠ canon _) ∧ ¬ IsSta
     decide
 
 /- English proof (translation)
-Establish `h : ∀ g : UN 2, ‖evalAt g.1 (extremal ![1, 1] ℂ)‖ = 1` using `fun g => by`. Establish `h1 : evalAt g.1 (extremal ![1, 1] ℂ) = g.1.det`. Simplify using `[extremal, hw, nuNext, lpMinor, Fin.prod_univ_two, Matrix.det_fin_two]`. Rewrite using `[h1]`. Conclude with `CStarRing.norm_of_mem_unitary (Matrix.det_of_mem_unitary g.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[normSq, h]`.
+A detailed English derivation is pending.
 -/
 example : normSq ![1, 1] (extremal ![1, 1] ℂ) = dim ![1, 1] := by
   have h : ∀ g : UN 2, ‖evalAt g.1 (extremal ![1, 1] ℂ)‖ = 1 := fun g => by

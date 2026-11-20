@@ -15,21 +15,21 @@ namespace GlobalTheory.CompanionTheory.WaveAll
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h : Continuous fun g : Mat n => g.det` using `Continuous.matrix_det continuous_id`. Conclude with `isOpen_ne_fun h continuous_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_GLs : IsOpen (GLs n) := by
   have h : Continuous fun g : Mat n => g.det := Continuous.matrix_det continuous_id
   exact isOpen_ne_fun h continuous_const
 
 /- English proof (translation)
-Simplify using `only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *`. Conclude with `mul_ne_zero hx hy`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_mem_GLs {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) : x * y ∈ GLs n := by
   simp only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *
   exact mul_ne_zero hx hy
 
 /- English proof (translation)
-Establish `h : k.1 * star k.1 = 1` using `Matrix.mem_unitaryGroup_iff.1 k.2`. Establish `h2` using `congrArg Matrix.det h`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `left_ne_zero_of_mul_eq_one h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_mem_GLs (k : Matrix.unitaryGroup (Fin n) ℂ) : k.1 ∈ GLs n := by
   have h : k.1 * star k.1 = 1 := Matrix.mem_unitaryGroup_iff.1 k.2
@@ -42,7 +42,7 @@ section Ops
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h' : f =ᶠ[𝓝 x] f'` using `Filter.eventuallyEq_of_mem (hS.mem_nhds hx) h`. Simplify using `only [Rd, h'.fderiv_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem Rd_congr {S : Set (Mat n)} (hS : IsOpen S) {f f' : Mat n → V} (h : Set.EqOn f f' S) (X : Mat n) :
     Set.EqOn (Rd X f) (Rd X f') S := by
@@ -51,7 +51,7 @@ theorem Rd_congr {S : Set (Mat n)} (hS : IsOpen S) {f f' : Mat n → V} (h : Set
   simp only [Rd, h'.fderiv_eq]
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, Rd_congr hS h _ hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem Eu_congr {S : Set (Mat n)} (hS : IsOpen S) {f f' : Mat n → V} (h : Set.EqOn f f' S) (s : Bool) (a b : Fin n) :
     Set.EqOn (Eu s a b f) (Eu s a b f') S := by
@@ -59,9 +59,9 @@ theorem Eu_congr {S : Set (Mat n)} (hS : IsOpen S) {f f' : Mat n → V} (h : Set
   simp only [Eu, Pi.smul_apply, Pi.add_apply, Rd_congr hS h _ hx]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b x hx`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Epow, hab, h hx]`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Introduce `a b x hx`. Simplify using `only [Epow, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun c _ => Eu_congr hS (ih c b) s a c hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Epow_congr {S : Set (Mat n)} (hS : IsOpen S) {f f' : Mat n → V} (h : Set.EqOn f f' S) (s : Bool) (m : ℕ) :
     ∀ a b : Fin n, Set.EqOn (Epow s m a b f) (Epow s m a b f') S := by
@@ -75,7 +75,7 @@ theorem Epow_congr {S : Set (Mat n)} (hS : IsOpen S) {f f' : Mat n → V} (h : S
     exact Finset.sum_congr rfl fun c _ => Eu_congr hS (ih c b) s a c hx
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [gel, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => Epow_congr hS h s m a a hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gel_congr {S : Set (Mat n)} (hS : IsOpen S) {f f' : Mat n → V} (h : Set.EqOn f f' S) (s : Bool) (m : ℕ) :
     Set.EqOn (gel s m f) (gel s m f') S := by
@@ -84,7 +84,7 @@ theorem gel_congr {S : Set (Mat n)} (hS : IsOpen S) {f f' : Mat n → V} (h : Se
   exact Finset.sum_congr rfl fun a _ => Epow_congr hS h s m a a hx
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Om, Pi.smul_apply, Pi.add_apply, gel_congr hS h _ _ hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem Om_congr {S : Set (Mat n)} (hS : IsOpen S) {f f' : Mat n → V} (h : Set.EqOn f f' S) :
     Set.EqOn (Om f) (Om f') S := by
@@ -92,7 +92,7 @@ theorem Om_congr {S : Set (Mat n)} (hS : IsOpen S) {f f' : Mat n → V} (h : Set
   simp only [Om, Pi.smul_apply, Pi.add_apply, gel_congr hS h _ _ hx]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h1 : DifferentiableAt ℝ f x` using `(hf.contDiffAt (isOpen_GLs.mem_nhds hx)).differentiableAt (by simp)`. Establish `h2 : DifferentiableAt ℝ f' x` using `(hf'.contDiffAt (isOpen_GLs.mem_nhds hx)).differentiableAt (by simp)`. Establish `h3 : fderiv ℝ (f - f') x = fderiv ℝ f x - fderiv ℝ f' x` using `(h1.hasFDerivAt.sub h2.hasFDerivAt).fderiv`. Simplify using `only [Rd, Pi.sub_apply, h3]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -108,7 +108,7 @@ theorem Rd_sub {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : C
   rfl
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, Pi.sub_apply, Rd_sub hf hf' _ hx, smul_sub, smul_add]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Eu_sub {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : ContDiffOn ℝ ∞ f' (GLs n)) (s : Bool) (a b : Fin n) :
     Set.EqOn (Eu s a b (f - f')) (Eu s a b f - Eu s a b f') (GLs n) := by
@@ -117,7 +117,7 @@ theorem Eu_sub {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : C
   abel
 
 /- English proof (translation)
-Establish `h` using `((hR n).1 V f hf).1`. Unfold `Eu`. Conclude with `((h _).add (contDiffOn_const.smul (h _))).const_smul _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Eu_smooth (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) (a b : Fin n) :
     ContDiffOn ℝ ∞ (Eu s a b f) (GLs n) := by
@@ -126,11 +126,11 @@ theorem Eu_smooth (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs
   exact ((h _).add (contDiffOn_const.smul (h _))).const_smul _
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b`. Distinguish the cases in `hab : a = b`. Simplify `hf` using `[Epow, hab]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Epow, if_neg hab]`. Conclude with `contDiffOn_const (c := (0 : V))`. Consider the case `succ m ih`. Introduce `a b`. Establish `e : Epow s (m + 1) a b f = fun x => ∑ c, Eu s a c (Epow s m c b f) x`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [Epow, Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `ContDiffOn.sum fun c _ => Eu_smooth hR (ih c b) s a c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Epow_smooth (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) (m : ℕ) :
     ∀ a b : Fin n, ContDiffOn ℝ ∞ (Epow s m a b f) (GLs n) := by
@@ -150,9 +150,9 @@ theorem Epow_smooth (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (G
     exact ContDiffOn.sum fun c _ => Eu_smooth hR (ih c b) s a c
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b x hx`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Epow, hab]`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Introduce `a b x hx`. Simplify using `only [Epow, Finset.sum_apply, Pi.sub_apply, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Eu_congr isOpen_GLs (ih c b) s a c hx]`. Conclude with `Eu_sub (Epow_smooth hR hf s m c b) (Epow_smooth hR hf' s m c b) s a c hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Epow_sub (hR : RCalc) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : ContDiffOn ℝ ∞ f' (GLs n))
     (s : Bool) (m : ℕ) : ∀ a b : Fin n, Set.EqOn (Epow s m a b (f - f')) (Epow s m a b f - Epow s m a b f') (GLs n) := by
@@ -168,7 +168,7 @@ theorem Epow_sub (hR : RCalc) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (G
     exact Eu_sub (Epow_smooth hR hf s m c b) (Epow_smooth hR hf' s m c b) s a c hx
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [gel, Finset.sum_apply, Pi.sub_apply, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => Epow_sub hR hf hf' s m a a hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gel_sub (hR : RCalc) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : ContDiffOn ℝ ∞ f' (GLs n))
     (s : Bool) (m : ℕ) : Set.EqOn (gel s m (f - f')) (gel s m f - gel s m f') (GLs n) := by
@@ -177,7 +177,7 @@ theorem gel_sub (hR : RCalc) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GL
   exact Finset.sum_congr rfl fun a _ => Epow_sub hR hf hf' s m a a hx
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Om, Pi.smul_apply, Pi.add_apply, Pi.sub_apply, gel_sub hR hf hf' _ _ hx, smul_sub, smul_add]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Om_sub (hR : RCalc) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : ContDiffOn ℝ ∞ f' (GLs n)) :
     Set.EqOn (Om (f - f')) (Om f - Om f') (GLs n) := by
@@ -188,7 +188,7 @@ theorem Om_sub (hR : RCalc) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs
 end Ops
 
 /- English proof (translation)
-Establish `h : ContDiffOn ℝ ∞ (Function.uncurry u ∘ fun s : ℝ => (s, g)) Set.univ` using `hu.1.comp (contDiff_id.prodMk contDiff_const).contDiffOn fun s _ => ⟨trivial, hg⟩`. Conclude with `contDiffOn_univ.1 h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wave_line {E : KMod n} {u : ℝ → Mat n → E.V} (hu : IsWave E u) {g : Mat n} (hg : g ∈ GLs n) :
     ContDiff ℝ ∞ fun s => u s g := by
@@ -197,11 +197,11 @@ theorem wave_line {E : KMod n} {u : ℝ → Mat n → E.V} (hu : IsWave E u) {g 
   exact contDiffOn_univ.1 h
 
 /- English proof (translation)
-Use `⟨?_, fun t => ⟨?_, ?_⟩, fun t g hg => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `hu.1.sub hv.1`. Conclude with `(hu.2.1 t).1.sub (hv.2.1 t).1`. Introduce `g hg k`. Simplify using `only [Pi.sub_apply, (hu.2.1 t).2 g hg k, (hv.2.1 t).2 g hg k, map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(wave_line hu hg).contDiffAt (x := t)`. Establish `h2` using `(wave_line hv hg).contDiffAt (x := t)`. Establish `e : (fun s => (u - v) s g) = (fun s => u s g) - fun s => v s g` using `rfl`. Rewrite using `[e, iteratedDeriv_sub (h1.of_le (WithTop.coe_le_coe.2 le_top)) (h2.of_le (WithTop.coe_le_coe.2 le_top)), hu.2.2.1 t g hg, hv.2.2.1 t g hg]`. Conclude with `(Om_sub hR (hu.2.1 t).1 (hv.2.1 t).1 hg).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : DifferentiableAt ℝ (fun s => u s g) 0` using `((wave_line hu hg).differentiable (by simp)).differentiableAt`. Establish `h2 : DifferentiableAt ℝ (fun s => v s g) 0` using `((wave_line hv hg).differentiable (by simp)).differentiableAt`. Establish `e : (fun s => (u - v) s g) = (fun s => u s g) - fun s => v s g` using `rfl`. Rewrite using `[e, deriv_sub h1 h2, hu.2.2.2 g hg, hv.2.2.2 g hg, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wave_sub (hR : RCalc) {E : KMod n} {u v : ℝ → Mat n → E.V} (hu : IsWave E u) (hv : IsWave E v) :
     IsWave E (u - v) := by
@@ -224,26 +224,26 @@ theorem wave_sub (hR : RCalc) {E : KMod n} {u v : ℝ → Mat n → E.V} (hu : I
 def cut (R : ℝ) (y : Mat n) : ℝ := Real.smoothTransition (R + 1 - lg y)
 
 /- English proof (translation)
-Establish `h : ContDiffOn ℝ ∞ lg (GLs n)` using `(hL n).2.2.2.1`. Conclude with `Real.smoothTransition.contDiff.comp_contDiffOn (contDiffOn_const.sub h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cut_smooth (hL : LgFacts) (R : ℝ) : ContDiffOn ℝ ∞ (cut R : Mat n → ℝ) (GLs n) := by
   have h : ContDiffOn ℝ ∞ lg (GLs n) := (hL n).2.2.2.1
   exact Real.smoothTransition.contDiff.comp_contDiffOn (contDiffOn_const.sub h)
 
 /- English proof (translation)
-The claim follows from `Real.smoothTransition.one_of_one_le (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem cut_eq_one {R : ℝ} {y : Mat n} (h : lg y ≤ R) : cut R y = 1 :=
   Real.smoothTransition.one_of_one_le (by linarith)
 
 /- English proof (translation)
-The claim follows from `Real.smoothTransition.zero_of_nonpos (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem cut_eq_zero {R : ℝ} {y : Mat n} (h : R + 1 < lg y) : cut R y = 0 :=
   Real.smoothTransition.zero_of_nonpos (by linarith)
 
 /- English proof (translation)
-Establish `h` using `(hL n).2.2.1 x hx 1 k`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lg_mul_unitary (hL : LgFacts) {x : Mat n} (hx : x ∈ GLs n) (k : Matrix.unitaryGroup (Fin n) ℂ) :
     lg (x * k.1) = lg x := by
@@ -254,7 +254,7 @@ def cutSec {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (R : ℝ) (f : 
   fun y => cut R y • f y
 
 /- English proof (translation)
-Use `⟨(cut_smooth hL R).smul hf.1, fun g hg k => ?_⟩` and prove the remaining obligations. Simplify using `only [cutSec, cut, lg_mul_unitary hL hg k, hf.2 g hg k]`. Conclude with `(ContinuousLinearMap.map_smul_of_tower _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cutSec_mem (hL : LgFacts) {E : KMod n} {f : Mat n → E.V} (hf : f ∈ CE E) (R : ℝ) : cutSec R f ∈ CE E := by
   refine ⟨(cut_smooth hL R).smul hf.1, fun g hg k => ?_⟩
@@ -262,27 +262,23 @@ theorem cutSec_mem (hL : LgFacts) {E : KMod n} {f : Mat n → E.V} (hf : f ∈ C
   exact (ContinuousLinearMap.map_smul_of_tower _ _ _).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨R + 1, fun y _ hy => by simp [cutSec, cut_eq_zero hy]⟩`.
+Supply the required witnesses or components.
 -/
 theorem cutSec_cpt {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (R : ℝ) (f : Mat n → V) : Cpt (cutSec R f) :=
   ⟨R + 1, fun y _ hy => by simp [cutSec, cut_eq_zero hy]⟩
 
 /- English proof (translation)
-Use `set l : ℝ × Mat n → ℝ := fun p => lg p.2 + c * (1 + |p.1|) with hl`. Take `⟨u, hud⟩ : ∃ u : ℝ → Mat n → E.V, ∀ t x, u t x = U ⌈l (t, x)⌉₊ t x` from `⟨_, fun _ _ => rfl⟩`. Establish `hu : ∀ (N : ℕ) (t : ℝ), ∀ x ∈ GLs n, l (t, x) ≤ N → u t x = U N t x` using `fun N t x hx h => (hud t x).trans (hst _ _ t x hx (Nat.le_ceil _) h)`. Establish `hlc : ContinuousOn l (Set.univ ×ˢ GLs n)`. Establish `h1 : ContinuousOn (fun p : ℝ × Mat n => lg p.2) (Set.univ ×ˢ GLs n)` using `(hL n).2.2.2.1.continuousOn.comp continuous_snd.continuousOn fun p hp => hp.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `h1.add (by fun_prop)`. Set `W : ℕ → Set (ℝ × Mat n)` to `fun N => (Set.univ ×ˢ GLs n) ∩ l ⁻¹' Set.Iio (N : ℝ)`. Establish `hWo : ∀ N, IsOpen (W N)` using `fun N => hlc.isOpen_inter_preimage (isOpen_univ.prod isOpen_GLs) isOpen_Iio`. Establish `hWm : ∀ t, ∀ x ∈ GLs n, (t, x) ∈ W (⌈l (t, x)⌉₊ + 1)` using `fun t x hx => ⟨⟨trivial, hx⟩, by`. Use `Nat.le_ceil (l (t, x))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [Set.mem_preimage, Set.mem_Iio]`. Use `push_cast`. Use the proof step `linarith⟩`. Establish `hWu : ∀ N, ∀ p ∈ W N, Function.uncurry u p = Function.uncurry (U N) p` using `fun N p hp => hu N p.1 p.2 hp.1.2 (le_of_lt hp.2)`. Establish `hsm : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ GLs n)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨t, x⟩ ⟨-, hx⟩`. Establish `hm` using `hWm t x hx`. Use `((hU _).1 (t, x) ⟨trivial, hx⟩).congr_of_eventuallyEq ?_ (hWu _ _ hm)` and prove the remaining obligations. Conclude with `Filter.mem_of_superset (mem_nhdsWithin_of_mem_nhds ((hWo _).mem_nhds hm)) fun p hp => hWu _ p hp`. Establish `hSo : ∀ (N : ℕ) (t : ℝ), IsOpen ((fun x : Mat n => (t, x)) ⁻¹' W N)` using `fun N t => (hWo N).preimage (by fun_prop)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hTo : ∀ (N : ℕ) (g : Mat n), IsOpen ((fun s : ℝ => (s, g)) ⁻¹' W N)` using `fun N g => (hWo N).preimage (by fun_prop)`. Establish `hline : ∀ (t : ℝ), ∀ g ∈ GLs n, (fun s => u s g) =ᶠ[𝓝 t] fun s => U (⌈l (t, g)⌉₊ + 1) s g` using `fun t g hg => Filter.eventuallyEq_of_mem ((hTo _ g).mem_nhds (hWm t g hg)) fun s hs => hWu _ (s, g) hs`. Use `⟨u, ⟨hsm, fun t => ⟨?_, ?_⟩, fun t g hg => ?_, fun g hg => ?_⟩, fun N t x hx h => hu N t x hx h⟩` and prove the remaining obligations. Establish `h : ContDiffOn ℝ ∞ (Function.uncurry u ∘ fun x : Mat n => (t, x)) (GLs n)` using `hsm.comp (contDiff_const.prodMk contDiff_id).contDiffOn fun x hx => ⟨trivial, hx⟩`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g hg k`. Establish `hk : g * k.1 ∈ GLs n` using `mul_mem_GLs hg (unitary_mem_GLs k)`. Establish `e : l (t, g * k.1) = l (t, g)` using `by simp only [hl, lg_mul_unitary hL hg k]`. Rewrite using `[hu _ t g hg (Nat.le_ceil _), hu ⌈l (t, g)⌉₊ t _ hk (by rw [e]; exact Nat.le_ceil _)]`. Conclude with `((hU _).2.1 t).2 g hg k`.
-
-Establish `hS` using `hSo (⌈l (t, g)⌉₊ + 1) t`. Establish `h1 : Set.EqOn (u t) (U (⌈l (t, g)⌉₊ + 1) t) ((fun x : Mat n => (t, x)) ⁻¹' W (⌈l (t, g)⌉₊ + 1))` using `fun x hx => hWu _ (t, x) hx`. Rewrite using `[(hline t g hg).iteratedDeriv_eq, (hU _).2.2.1 t g hg]`. Conclude with `(Om_congr hS h1 (hWm t g hg)).symm`. Rewrite using `[(hline 0 g hg).deriv_eq]`.
-
-Conclude with `(hU _).2.2.2 g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue (hL : LgFacts) {E : KMod n} (c : ℝ) (U : ℕ → ℝ → Mat n → E.V) (hU : ∀ N, IsWave E (U N))
     (hst : ∀ (N M : ℕ) (t : ℝ), ∀ x ∈ GLs n, lg x + c * (1 + |t|) ≤ N → lg x + c * (1 + |t|) ≤ M → U N t x = U M t x) :
@@ -336,15 +332,13 @@ theorem glue (hL : LgFacts) {E : KMod n} (c : ℝ) (U : ℕ → ℝ → Mat n �
     exact (hU _).2.2.2 g hg
 
 /- English proof (translation)
-Introduce `hL hR hS hC n E f hf`. Take `⟨c₀, hc₀⟩` from `hS n`. Use `set c := max c₀ 0 with hc`. Establish `hc0 : 0 ≤ c` using `le_max_right _ _`. Establish `speed : ∀ u, IsWave E u → ∀ t : ℝ, ∀ x ∈ GLs n, (∀ y ∈ GLs n, lg y ≤ c * (1 + |t|) → u 0 (x * y) = 0) → u t x = 0` using `fun u hu t x hx h => hc₀ E u hu t x hx fun y hy hly => h y hy (hly.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∀ N : ℕ, ∃ u, IsWave E u ∧ ∀ g ∈ GLs n, u 0 g = cutSec (N : ℝ) f g` using `fun N => hC n E _ (cutSec_mem hL hf N) (cutSec_cpt _ f)`. Use `choose U hU hU0 using hex`. Establish `hst : ∀ (N M : ℕ) (t : ℝ), ∀ x ∈ GLs n, lg x + c * (1 + |t|) ≤ N → lg x + c * (1 + |t|) ≤ M → U N t x = U M t x`. Introduce `N M t x hx hN hM`. Use `sub_eq_zero.1 (speed _ (wave_sub hR (hU N) (hU M)) t x hx fun y hy hly => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxy` using `mul_mem_GLs hx hy`. Establish `hsub` using `(hL n).1 x hx y hy`. Simplify using `only [Pi.sub_apply, hU0 N _ hxy, hU0 M _ hxy, cutSec]`. Rewrite using `[cut_eq_one (by linarith), cut_eq_one (by linarith), sub_self]`. Take `⟨u, hu, hUu⟩` from `glue hL c U hU hst`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨u, hu, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hlg : lg g + c * (1 + |(0 : ℝ)|) ≤ (⌈lg g + c * (1 + |(0 : ℝ)|)⌉₊ : ℕ)` using `Nat.le_ceil _`. Rewrite using `[hUu _ 0 g hg hlg, hU0 _ g hg]`. Simplify using `only [abs_zero, add_zero, mul_one] at hlg`. Simplify using `only [cutSec]`.
-
-Rewrite using `[cut_eq_one (by simp only [abs_zero, add_zero, mul_one]; linarith), one_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem asmEx : AsmEx := by
   intro hL hR hS hC n E f hf

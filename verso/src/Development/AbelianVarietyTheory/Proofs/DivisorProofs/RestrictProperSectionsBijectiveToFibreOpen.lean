@@ -9,39 +9,33 @@ open GlobalTheory.Mum
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Y₀ H X'' P'' H' i a'' b'' hY hi ha hs hV hb`. Use `haveI := hY`. Use `haveI := hi`. Use `haveI := ha`. Use `haveI := hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hb`. Establish `hP : IsNoetherian P''` using `by haveI : IsLocallyNoetherian P'' := LocallyOfFiniteType.isLocallyNoetherian b'' haveI : CompactSpace P'' := QuasiCompact.compactSpace_of_compactSpace b''`. Conclude with `{}`. Set `U0 : P''.Opens` to `⟨(a'' '' (Set.range i)ᶜ)ᶜ, (a''.isClosedMap _ i.isOpenEmbedding.isOpen_range.isClosed_compl).isOpen_compl⟩`. Establish `hsub : ∀ w : X'', a'' w ∈ U0 → w ∈ Set.range i`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Assume the negation of the conclusion as `h`. Conclude with `hw ⟨w, h, rfl⟩`. Set `W : H'.toScheme.Opens` to `i ⁻¹ᵁ (a'' ⁻¹ᵁ U0)`. Set `X : H.Opens` to `H'.ι ''ᵁ W`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXr : Set.range X.ι ⊆ Set.range H'.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨z, -, rfl⟩`. Conclude with `⟨z, rfl⟩`. Set `k : X.toScheme ⟶ H'.toScheme` to `IsOpenImmersion.lift H'.ι X.ι hXr`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : k ≫ H'.ι = X.ι` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hrk : Set.range k = (W : Set H'.toScheme)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : H'.ι (k y) ∈ X`. Rewrite using `[← Scheme.Hom.comp_apply, hk]`. Establish `: X.ι y ∈ Set.range X.ι` using `⟨y, rfl⟩`. Rewrite `this` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis. Take `⟨w, hw, he⟩` from `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← H'.ι.isOpenEmbedding.injective he]` and apply the resulting hypothesis. Introduce `hz`. Establish `: H'.ι z ∈ Set.range X.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `⟨z, hz, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨y, hy⟩` from `this`. Use `⟨y, H'.ι.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hk, hy]`. Establish `hrki : Set.range (k ≫ i) = (a'' ⁻¹ᵁ U0 : Set X'')`. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, hrk]`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `hz`. Introduce `hw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, rfl⟩` from `hsub w hw`. Conclude with `⟨z, hw, rfl⟩`. Set `e` to `IsOpenImmersion.isoOfRangeEq (k ≫ i) (a'' ⁻¹ᵁ U0).ι (by rw [Scheme.Opens.range_ι]; exact hrki)`. Set `a : X.toScheme ⟶ U0.toScheme` to `e.hom ≫ (a'' ∣_ U0)`. Establish `hfac : a ≫ U0.ι = k ≫ i ≫ a''`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [a, e, Category.assoc, morphismRestrict_ι, IsOpenImmersion.isoOfRangeEq_hom_fac_assoc]`. Use `⟨U0.toScheme, U0.ι, X, k, a, inferInstance, ?_, inferInstance, ?_, ?_, hk, hfac, ?_, ?_⟩` and prove the remaining obligations. Use `haveI := hP haveI : CompactSpace U0.toScheme := QuasiCompact.compactSpace_of_compactSpace U0.ι`. Conclude with `{}`. Use `⟨fun x => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨w, hw⟩` from `a''.surjective x.1`. Establish `hw' : w ∈ Set.range (k ≫ i)`. Rewrite using `[hrki]`. Use `show a'' w ∈ U0`. Rewrite using `[hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `x.2`. Take `⟨y, rfl⟩` from `hw'`. Use `⟨y, U0.ι.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hfac]`. Simplify using `only [Scheme.Hom.comp_apply] at hw ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hw]`. Both sides reduce to the same expression. Introduce `V show Function.Bijective ((e.hom ≫ (a'' ∣_ U0)).app V).hom`. Rewrite using `[Scheme.Hom.comp_app]`. Establish `h1 : Function.Bijective ((a'' ∣_ U0).app V).hom`.
-
-Rewrite using `[morphismRestrict_app]`. Establish `h3` using `hV (U0.ι ''ᵁ V)`. Establish `h4 : Function.Bijective (X''.presheaf.map (eqToHom (image_morphismRestrict_preimage a'' U0 V)).op).hom` using `ConcreteCategory.bijective_of_isIso _`. Conclude with `h4.comp h3`. Establish `h2 : Function.Bijective (e.hom.app ((a'' ∣_ U0) ⁻¹ᵁ V)).hom` using `ConcreteCategory.bijective_of_isIso _`.
-
-Conclude with `h2.comp h1`. Introduce `z hz`. Establish `: z ∈ W` using `by show a'' (i z) ∈ U0`. Introduce and unpack `⟨w, hw, he⟩`. Conclude with `hw (hz w he)`.
-
-Conclude with `⟨z, this, rfl⟩`. Introduce `w hw`. Rewrite using `[hrki]`. Rewrite `hw` using `[Scheme.Opens.range_ι]`. Conclude with `hw`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrict_proper_sections_bijective_to_fibre_open : ∀ (Y₀ H X'' P'' : Scheme.{0}) (H' : H.Opens) (i : H'.toScheme ⟶ X'') (a'' : X'' ⟶ P'') (b'' : P'' ⟶ Y₀), IsNoetherian Y₀ → IsOpenImmersion i → IsProper a'' → Surjective a'' → (∀ V : P''.Opens, Function.Bijective (a''.app V).hom) → IsFinite b'' → ∃ (P' : Scheme.{0}) (c : P' ⟶ P'') (X : H.Opens) (k : X.toScheme ⟶ H'.toScheme) (a : X.toScheme ⟶ P'), IsOpenImmersion c ∧ IsNoetherian P' ∧ IsProper a ∧ Surjective a ∧ (∀ V : P'.Opens, Function.Bijective (a.app V).hom) ∧ k ≫ H'.ι = X.ι ∧ a ≫ c = k ≫ i ≫ a'' ∧ (∀ z : H'.toScheme, (∀ w : X'', a'' w = a'' (i z) → w ∈ Set.range i) → H'.ι z ∈ X) ∧ ∀ w : X'', a'' w ∈ Set.range c → w ∈ Set.range (k ≫ i) := by
   intro Y₀ H X'' P'' H' i a'' b'' hY hi ha hs hV hb

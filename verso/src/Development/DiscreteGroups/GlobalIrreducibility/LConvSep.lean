@@ -9,15 +9,15 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Glo
 namespace DiscreteGroups.sglob.LConv
 
 /- English proof (translation)
-Introduce `hEx hIrr hUA k _ _ _ _ _ m`. Take `⟨I, hI1, hI2, hI3⟩` from `exists_pos_isInvIntegral k m`. Establish `hI : PosInt I` using `⟨hI1, hI2, hI3⟩`. Use `⟨I, hI1, fun ψ hψ f hf hsep => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hf0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Set `x₀ : WT (m` to `m) ψ := ⟨f, hf⟩`. Establish `hx₀ : x₀ ≠ 0` using `fun h => hf0 (congrArg Subtype.val h)`. Take `⟨B, hBext, hBf⟩` from `hEx _ _ (rhoW ψ) exists_countable_span (formI ψ I) (isInvForm_formI hI) x₀ (formI_self_ne_zero hI hx₀)`. Establish `hB` using `hBext.1`. Establish `hZ` using `hIrr _ _ (rhoW ψ) isSmooth_rhoW exists_fix (fun K hKo hKc => hUA k m K hKo hKc) B hBext`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `τ : IrrRep (GL (Fin m) k)` to `⟨WSp hψ hI hB, tauRep hψ hI hB, isSmooth_tau hψ hI hB, isIrreducible_tau hψ hI hB hZ hBf⟩`. Set `l : Module.Dual ℂ τ.V` to `(LinearMap.proj (1 : GL (Fin m) k)).comp (WSp hψ hI hB).subtype`. Establish `hl : IsFunctional ψ⁻¹ τ.ρ l` using `fun u hu w => by`. Take `⟨y, hy⟩` from `w.2`. Use `show (w : GL (Fin m) k → ℂ) (1 * u) = _ * (w : GL (Fin m) k → ℂ) 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `Wf_left hψ hI hB y hu 1`. Rewrite `h1` using `[mul_one]`. Rewrite using `[one_mul, ← hy, h1]`. Establish `h0` using `hsep τ l hl (Phi hψ hI hB x₀)`. Establish `e : (fun g => f g * l (τ.ρ g (Phi hψ hI hB x₀))) = fun g => (x₀ : GL (Fin m) k → ℂ) g * Wf ψ hψ I B x₀ g` using `funext fun g => by show f g * Wf ψ hψ I B x₀ (1 * g) = f g * Wf ψ hψ I B x₀ g`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul]`. Apply `hBf` to reduce the goal to its premises. Rewrite using `[← repr hψ hI hB x₀ x₀, ← e]`. Conclude with `h0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sepOfExtreme : SepOfExtreme := by
   intro hEx hIrr hUA k _ _ _ _ _ m

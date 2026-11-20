@@ -18,7 +18,7 @@ def IsU (a : ∀ (K : Type) [Field K] [CharZero K], K → K → K) : Prop :=
     a K g2 g3 = MvPolynomial.aeval ![g2, g3] p
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `h`. Conclude with `⟨p, fun K _ _ g2 g3 => by rw [hab, hp]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsU.congr {a b : ∀ (K : Type) [Field K] [CharZero K], K → K → K} (h : IsU a)
     (hab : ∀ (K : Type) [Field K] [CharZero K] (g2 g3 : K), b K g2 g3 = a K g2 g3) : IsU b := by
@@ -26,25 +26,25 @@ theorem IsU.congr {a b : ∀ (K : Type) [Field K] [CharZero K], K → K → K} (
   exact ⟨p, fun K _ _ g2 g3 => by rw [hab, hp]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨MvPolynomial.C q, fun K _ _ g2 g3 => by rw [MvPolynomial.aeval_C, eq_ratCast]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isU_const (q : ℚ) : IsU (fun K [Field K] [CharZero K] _ _ => (q : K)) :=
   ⟨MvPolynomial.C q, fun K _ _ g2 g3 => by rw [MvPolynomial.aeval_C, eq_ratCast]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨MvPolynomial.X 0, fun K _ _ g2 g3 => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem universal_g2 : IsU (fun K [Field K] [CharZero K] g2 _ => g2) :=
   ⟨MvPolynomial.X 0, fun K _ _ g2 g3 => by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨MvPolynomial.X 1, fun K _ _ g2 g3 => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem universal_g3 : IsU (fun K [Field K] [CharZero K] _ g3 => g3) :=
   ⟨MvPolynomial.X 1, fun K _ _ g2 g3 => by simp⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `ha`. Take `⟨q, hq⟩` from `hb`. Conclude with `⟨p + q, fun K _ _ g2 g3 => by show a K g2 g3 + b K g2 g3 = _`. Rewrite using `[map_add, hp, hq]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsU.add {a b : ∀ (K : Type) [Field K] [CharZero K], K → K → K} (ha : IsU a) (hb : IsU b) :
     IsU (fun K [Field K] [CharZero K] g2 g3 => a K g2 g3 + b K g2 g3) := by
@@ -55,7 +55,7 @@ theorem IsU.add {a b : ∀ (K : Type) [Field K] [CharZero K], K → K → K} (ha
     rw [map_add, hp, hq]⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `ha`. Take `⟨q, hq⟩` from `hb`. Conclude with `⟨p * q, fun K _ _ g2 g3 => by show a K g2 g3 * b K g2 g3 = _`. Rewrite using `[map_mul, hp, hq]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsU.mul {a b : ∀ (K : Type) [Field K] [CharZero K], K → K → K} (ha : IsU a) (hb : IsU b) :
     IsU (fun K [Field K] [CharZero K] g2 g3 => a K g2 g3 * b K g2 g3) := by
@@ -66,7 +66,7 @@ theorem IsU.mul {a b : ∀ (K : Type) [Field K] [CharZero K], K → K → K} (ha
     rw [map_mul, hp, hq]⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact (isU_const 0).congr fun K _ _ g2 g3 => by simp`. Consider the case `insert i s hi ih`. Use `((h i (Finset.mem_insert_self i s)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))).congr fun K _ _ g2 g3 => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_insert hi]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsU.sum {ι : Type} (s : Finset ι) (a : ι → ∀ (K : Type) [Field K] [CharZero K], K → K → K)
     (h : ∀ i ∈ s, IsU (a i)) :
@@ -80,13 +80,13 @@ theorem IsU.sum {ι : Type} (s : Finset ι) (a : ι → ∀ (K : Type) [Field K]
     rw [Finset.sum_insert hi]
 
 /- English proof (translation)
-Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Distinguish the cases in `h2 : k = 2`. Use `(universal_g2.mul (isU_const (1 / 20))).congr fun K _ _ g2 g3 => ?_` and prove the remaining obligations. Rewrite using `[POf.cW_eq, if_pos h2]`.
+Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h3 : k = 3`. Use `(universal_g3.mul (isU_const (1 / 28))).congr fun K _ _ g2 g3 => ?_` and prove the remaining obligations. Rewrite using `[POf.cW_eq, if_neg h2, if_pos h3]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h4 : 4 ≤ k`. Use `((isU_const (3 / ((2 * (k : ℚ) + 1) * ((k : ℚ) - 3)))).mul (IsU.sum Finset.univ (fun (m : Fin (k - 3)) K [Field K] [CharZero K] g2 g3 => cW g2 g3 (m.val + 2) * cW g2 g3 (k - (m.val + 2))) fun m _ => (ih (m.val + 2) (by omega)).mul (ih (k - (m.val + 2)) (by omega)))).congr fun K _ …` and prove the remaining obligations. Rewrite using `[POf.cW_eq, if_neg h2, if_neg h3, if_pos h4]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Use `(isU_const 0).congr fun K _ _ g2 g3 => ?_` and prove the remaining obligations. Rewrite using `[POf.cW_eq, if_neg h2, if_neg h3, if_neg h4]`. Simplify using the standard rewrite rules.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isU_cW (k : ℕ) : IsU (fun K [Field K] [CharZero K] g2 g3 => cW g2 g3 k) := by
   induction k using Nat.strong_induction_on with
@@ -115,7 +115,7 @@ theorem isU_cW (k : ℕ) : IsU (fun K [Field K] [CharZero K] g2 g3 => cW g2 g3 k
       simp
 
 /- English proof (translation)
-Distinguish the cases in `hn : Even n`. Conclude with `(isU_cW (n / 2 + 1)).congr fun K _ _ g2 g3 => by rw [POf.coeff_pOf, if_pos hn]`. Conclude with `(isU_const 0).congr fun K _ _ g2 g3 => by rw [POf.coeff_pOf, if_neg hn]; simp`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem isU_pOf (n : ℕ) : IsU (fun K [Field K] [CharZero K] g2 g3 => coeff n (pOf g2 g3)) := by
   by_cases hn : Even n
@@ -123,9 +123,9 @@ theorem isU_pOf (n : ℕ) : IsU (fun K [Field K] [CharZero K] g2 g3 => coeff n (
   · exact (isU_const 0).congr fun K _ _ g2 g3 => by rw [POf.coeff_pOf, if_neg hn]; simp
 
 /- English proof (translation)
-Distinguish the cases in `hn : n = 0`. Conclude with `(isU_const 0).congr fun K _ _ g2 g3 => by`. Rewrite using `[map_neg, B.prim, coeff_mk, if_pos hn]`. Simplify using the standard rewrite rules. Use `((isU_pOf (n - 1)).mul (isU_const (-1 / (n : ℚ)))).congr fun K _ _ g2 g3 => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_neg, B.prim, coeff_mk, if_neg hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isU_prim (n : ℕ) :
     IsU (fun K [Field K] [CharZero K] g2 g3 => coeff n (-B.prim (pOf g2 g3))) := by
@@ -140,11 +140,11 @@ theorem isU_prim (n : ℕ) :
 variable {K : Type} [Field K] [CharZero K]
 
 /- English proof (translation)
-Establish `hS0 : constantCoeff (B.sigS P) = 0`. Rewrite using `[B.sigS, map_neg, B.constantCoeff_prim, neg_zero]`. Establish `hSd : derivative K (B.sigS P) = -B.prim P`. Rewrite using `[B.sigS, map_neg]`. Conclude with `congrArg Neg.neg (B.dz_prim _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : derivative K (B.fExp (B.sigS P) : PowerSeries K) = -B.prim P * (B.fExp (B.sigS P) : PowerSeries K)`. Rewrite using `[← hSd]`. Conclude with `C.derivative_mvExp hS0`. Establish `hc` using `congrArg (coeff n) h`. Rewrite `hc` using `[coeff_derivative, coeff_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hc]`. Establish `hn : ((n : K) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero n`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem coeff_exp_succ (P : PowerSeries K) (n : ℕ) :
     coeff (n + 1) (B.fExp (B.sigS P) : PowerSeries K) =
@@ -167,7 +167,7 @@ theorem coeff_exp_succ (P : PowerSeries K) (n : ℕ) :
   field_simp
 
 /- English proof (translation)
-Establish `hS0 : constantCoeff (B.sigS P) = 0`. Rewrite using `[B.sigS, map_neg, B.constantCoeff_prim, neg_zero]`. Rewrite using `[coeff_zero_eq_constantCoeff_apply]`. Conclude with `C.constantCoeff_mvExp hS0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_exp_zero (P : PowerSeries K) :
     coeff 0 (B.fExp (B.sigS P) : PowerSeries K) = 1 := by
@@ -177,9 +177,9 @@ theorem coeff_exp_zero (P : PowerSeries K) :
   exact C.constantCoeff_mvExp hS0
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Break down `n with _ | n` into its components or cases. Conclude with `(isU_const 1).congr fun K _ _ g2 g3 => by rw [coeff_exp_zero]; simp`. Use `((isU_const (1 / ((n : ℚ) + 1))).mul (IsU.sum (Finset.HasAntidiagonal.antidiagonal n) (fun ij K [Field K] [CharZero K] g2 g3 => coeff ij.1 (-B.prim (pOf g2 g3)) * coeff ij.2 (B.fExp (B.sigS (pOf g2 g3)) : PowerSeries K)) fun ij hij => (isU_prim ij.1).mul (ih ij.2 ?_))).congr fun …` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.HasAntidiagonal.mem_antidiagonal.mp hij` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isU_exp (n : ℕ) : IsU (fun K [Field K] [CharZero K] g2 g3 =>
     coeff n (B.fExp (B.sigS (pOf g2 g3)) : PowerSeries K)) := by
@@ -197,9 +197,7 @@ theorem isU_exp (n : ℕ) : IsU (fun K [Field K] [CharZero K] g2 g3 =>
       omega
 
 /- English proof (translation)
-Break down `n with _ | n` into its components or cases. Conclude with `(isU_const 0).congr fun K _ _ g2 g3 => by`. Rewrite using `[B.sigma, coeff_zero_X_mul]`. Simplify using the standard rewrite rules. Conclude with `(isU_exp n).congr fun K _ _ g2 g3 => by`.
-
-Rewrite using `[B.sigma, coeff_succ_X_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isU_sigma (n : ℕ) : IsU (fun K [Field K] [CharZero K] g2 g3 =>
     coeff n (B.sigma (pOf g2 g3))) := by
@@ -212,7 +210,7 @@ theorem isU_sigma (n : ℕ) : IsU (fun K [Field K] [CharZero K] g2 g3 =>
 end Universal
 
 /- English proof (translation)
-Use `choose U hU using Universal.isU_sigma`. Use `⟨U, fun K _ _ g2 g3 P hP n => ?_⟩` and prove the remaining obligations. Rewrite using `[hu K g2 g3 P (pOf g2 g3) hP (hp K g2 g3)]`. Conclude with `hU n K g2 g3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigmaUniversal_of (hu : IsWpUnique) (hp : POfIsWp) : SigmaUniversal := by
   choose U hU using Universal.isU_sigma
@@ -221,7 +219,7 @@ theorem sigmaUniversal_of (hu : IsWpUnique) (hp : POfIsWp) : SigmaUniversal := b
   exact hU n K g2 g3
 
 /- English proof (translation)
-The claim follows from `sigmaUniversal_of weierstrass_series_unique weierstrass_p_of_series`.
+A detailed English derivation is pending.
 -/
 theorem sigma_universal : SigmaUniversal := sigmaUniversal_of weierstrass_series_unique weierstrass_p_of_series
 

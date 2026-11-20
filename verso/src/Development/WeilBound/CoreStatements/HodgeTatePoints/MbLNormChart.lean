@@ -9,15 +9,15 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 namespace PositivityTheory.HtPt.Mb.LNormChart.ChNorm
 
 /- English proof (translation)
-Take `⟨p, hp, hpv⟩` from `hv`. Establish `huv : v * v⁻¹ = 1` using `mul_inv_cancel₀ hv0`. Establish `key : ∀ i m : ℕ, i ≤ m → v ^ i * v⁻¹ ^ m = v⁻¹ ^ (m - i)`. Introduce `i m him`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le him`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pow_add, ← mul_assoc, ← mul_pow, huv, one_pow, one_mul, Nat.add_sub_cancel_left]`. Rewrite `hpv` using `[hp.as_sum]`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_finsetSum, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X_pow] at hpv`. Generalize the expression as in `p.natDegree = n at hpv`. Consider the cases of `n with`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => simp at hpv`. Consider the case `succ m`. Establish `h2` using `congrArg (· * v⁻¹ ^ m) hpv`. Simplify using `only [add_mul, Finset.sum_mul, zero_mul] at h2`. Rewrite `h2` using `[pow_succ, mul_comm (v ^ m) v, mul_assoc, key m m le_rfl, Nat.sub_self, pow_zero, mul_one]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : v = -∑ i ∈ Finset.range (m + 1), algebraMap R Ω (p.coeff i) * v⁻¹ ^ (m - i)`. Rewrite using `[eq_neg_iff_add_eq_zero, ← h2]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, key i m (by simp at hi; omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Use `neg_mem (sum_mem fun i _ => mul_mem ?_ (pow_mem hu _))` and prove the remaining obligations. Conclude with `(p.coeff i).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_of_isIntegral_of_inv_mem {Ω : Type} [Field Ω] (R : Subring Ω) {v : Ω} (hv : IsIntegral R v)
     (hv0 : v ≠ 0) (hu : v⁻¹ ∈ R) : v ∈ R := by
@@ -51,15 +51,13 @@ end PositivityTheory.HtPt.Mb.LNormChart.ChNorm
 namespace PositivityTheory.HtPt.Mb.LNormChart.ChNorm
 
 /- English proof (translation)
-Establish `hd : x c ^ d ≠ 0` using `pow_ne_zero _ hc`. Establish `hrat : ∀ q : κ × (κ ⊕ Fin n), joinCo (RingHom.id Ω) x z q / joinCo (RingHom.id Ω) x z (c, Sum.inl c) = x q.1 / x c * (z q.2 / x c ^ d)`. Introduce `q`. Simplify using `only [joinCo, RingHom.id_apply, hz c]`. Conclude with `mul_div_mul_comm _ _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hT : chRing o (joinCo (RingHom.id Ω) x z) (c, Sum.inl c) = Algebra.adjoin o (Set.range (fun j => x j / x c) ∪ Set.range (fun k => z k / x c ^ d))`. Apply `le_antisymm` to reduce the goal to its premises. Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `_ ⟨q, rfl⟩`. Simplify using `only`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrat]`. Conclude with `mul_mem (Algebra.subset_adjoin (Or.inl ⟨q.1, rfl⟩)) (Algebra.subset_adjoin (Or.inr ⟨q.2, rfl⟩))`. Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `_ (⟨j, rfl⟩ | ⟨k, rfl⟩)`. Establish `h1 : joinCo (RingHom.id Ω) x z (j, Sum.inl c) / joinCo (RingHom.id Ω) x z (c, Sum.inl c) ∈ chRing o (joinCo (RingHom.id Ω) x z) (c, Sum.inl c)` using `Algebra.subset_adjoin (Set.mem_range_self (j, Sum.inl c))`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hrat, hz c, div_self hd, mul_one]`. Conclude with `h1`. Establish `h1 : joinCo (RingHom.id Ω) x z (c, k) / joinCo (RingHom.id Ω) x z (c, Sum.inl c) ∈ chRing o (joinCo (RingHom.id Ω) x z) (c, Sum.inl c)` using `Algebra.subset_adjoin (Set.mem_range_self (c, k))`. Rewrite `h1` using `[hrat, div_self hc, one_mul]`. Conclude with `h1`.
-
-Rewrite using `[hT]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chRing_join_iff {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} (x : κ → Ω)
     {d n : ℕ} (z : κ ⊕ Fin n → Ω) (hz : ∀ c, z (Sum.inl c) = x c ^ d) (c : κ) (hc : x c ≠ 0) (a : Ω) :
@@ -98,7 +96,7 @@ end PositivityTheory.HtPt.Mb.LNormChart.ChNorm
 namespace PositivityTheory.HtPt.Mb.LNormChart.ChNorm
 
 /- English proof (translation)
-Simplify using `only [joinCo, RingHom.id_apply, hz c]`. Conclude with `mul_div_mul_comm _ _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem joinCo_div {Ω : Type} [Field Ω] {κ : Type} (x : κ → Ω) {d n : ℕ} (z : κ ⊕ Fin n → Ω)
     (hz : ∀ c, z (Sum.inl c) = x c ^ d) (c : κ) (q : κ × (κ ⊕ Fin n)) :
@@ -107,25 +105,21 @@ theorem joinCo_div {Ω : Type} [Field Ω] {κ : Type} (x : κ → Ω) {d n : ℕ
   exact mul_div_mul_comm _ _ _ _
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ κ _ x d n z M' hz hspan c hc`. Establish `hd : x c ^ d ≠ 0` using `pow_ne_zero _ hc`. Establish `hyS : ∀ k, IsIntegral (chRing o x c) (z k / x c ^ d)` using `fun k => (hspan c hc _).2 (Submodule.subset_span ⟨k, rfl⟩)`. Establish `hxS : ∀ j, x j / x c ∈ chRing o x c` using `fun j => Algebra.subset_adjoin ⟨j, rfl⟩`. Use `⟨fun a => ?_, fun p' hp' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[chRing_join_iff x z hz c hc a]`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Establish `hle : Algebra.adjoin o (Set.range (fun j => x j / x c) ∪ Set.range (fun k => z k / x c ^ d)) ≤ (integralClosure (chRing o x c) Ω).restrictScalars o`. Apply `Algebra.adjoin_le` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ (⟨j, rfl⟩ | ⟨k, rfl⟩)`. Conclude with `(Subalgebra.mem_restrictScalars o).2 ((mem_integralClosure_iff _ _).2 (isIntegral_algebraMap (x := (⟨_, hxS j⟩ : chRing o x c))))`. Conclude with `(Subalgebra.mem_restrictScalars o).2 ((mem_integralClosure_iff _ _).2 (hyS k))`. Conclude with `(mem_integralClosure_iff _ _).1 ((Subalgebra.mem_restrictScalars o).1 (hle ha))`. Introduce `ha`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hSle : chRing o x c ≤ Algebra.adjoin o (Set.range (fun j => x j / x c) ∪ Set.range (fun k => z k / x c ^ d))` using `Algebra.adjoin_mono Set.subset_union_left`. Use `Submodule.span_induction (p := fun b _ => b ∈ Algebra.adjoin o (Set.range (fun j => x j / x c) ∪ Set.range (fun k => z k / x c ^ d))) ?_ ?_ ?_ ?_ ((hspan c hc a).1 ha)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Algebra.subset_adjoin (Or.inr ⟨k, rfl⟩)`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `a b _ _ ha hb`. Conclude with `add_mem ha hb`. Introduce `s b _ hb`. Rewrite using `[Subalgebra.smul_def]`. Conclude with `mul_mem (hSle s.2) hb`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hctr, l, hl⟩` from `PositivityTheory.HtPt.Mb.join_charts o Ω κ (κ ⊕ Fin n) x Ω (RingHom.id Ω) z M' (fun _ => rfl) p'`. Take `⟨c', -, hc'⟩` from `hctr`. Establish `ho : ∀ r : o, algebraMap o Ω r ∈ regAt M'.ξ p'` using `fun r => hc' _ (Subalgebra.algebraMap_mem _ r)`. Establish `hSle : ∀ a ∈ chRing o x c, a ∈ regAt M'.ξ p'`. Introduce `a ha`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : a ∈ (chRing o x c).toSubring` using `ha`. Rewrite `h1` using `[chRing, Algebra.adjoin_eq_ring_closure]`. Conclude with `(Subring.closure_le.2 (Set.union_subset (by rintro _ ⟨r, rfl⟩; exact ho r) (by rintro _ ⟨j, rfl⟩; exact hp' j))) h1`. Set `φ : chRing o x c →+* regAt M'.ξ p'` to `{ toFun := fun s => ⟨s, hSle s s.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hvint : IsIntegral (regAt M'.ξ p') (z l / x c ^ d)` using `IsIntegral.map_of_comp_eq φ (RingHom.id Ω) (by ext; rfl) (hyS l)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hzl, hzr⟩` from `hl`. Establish `hv : z l / x c ^ d ∈ regAt M'.ξ p'` using `mem_of_isIntegral_of_inv_mem _ hvint (div_ne_zero hzl hd) (by rw [inv_div, ← hz c]; exact hzr _)`. Establish `hy : ∀ k, z k / x c ^ d ∈ regAt M'.ξ p'` using `fun k => by`. Establish `e : z k / x c ^ d = z k / z l * (z l / x c ^ d)` using `by field_simp`. Rewrite using `[e]`.
-
-Conclude with `mul_mem (hzr k) hv`. Use `⟨?_, fun q => ?_⟩` and prove the remaining obligations. Simplify using `only [joinCo, RingHom.id_apply, hz c]`. Conclude with `mul_ne_zero hc hd`. Rewrite using `[joinCo_div x z hz c q]`.
-
-Conclude with `mul_mem (hp' q.1) (hy q.2)`.
+A detailed English derivation is pending.
 -/
 theorem join_chart_normalisation : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (d n : ℕ) (z : κ ⊕ Fin n → Ω) (M' : PModel o (joinCo (RingHom.id Ω) x z)), (∀ c, z (Sum.inl c) = x c ^ d) → (∀ c, x c ≠ 0 → ∀ a : Ω, IsIntegral (chRing o x c) a ↔ a ∈ Submodule.span (chRing o x c) (Set.range fun k => z k / x c ^ d)) → ∀ c, x c ≠ 0 → (∀ a : Ω, a ∈ chRing o (joinCo (RingHom.id Ω) x z) (c, Sum.inl c) ↔ IsIntegral (chRing o x c) a) ∧ ∀ p' : Cpt M'.ξ, (∀ j, x j / x c ∈ regAt M'.ξ p') → InChart M'.ξ (joinCo (RingHom.id Ω) x z) (c, Sum.inl c) p' := by
   intro o _ Ω _ _ κ _ x d n z M' hz hspan c hc
@@ -197,7 +191,7 @@ end PositivityTheory.HtPt.Mb.LNormChart.ChNorm
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField in
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Mb.LNormChart.ChNorm.join_chart_normalisation`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.HtPt.Mb.norm_chart : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (d n : ℕ) (z : κ ⊕ Fin n → Ω) (M' : PModel o (joinCo (RingHom.id Ω) x z)), (∀ c, z (Sum.inl c) = x c ^ d) → (∀ c, x c ≠ 0 → ∀ a : Ω, IsIntegral (chRing o x c) a ↔ a ∈ Submodule.span (chRing o x c) (Set.range fun k => z k / x c ^ d)) → ∀ c, x c ≠ 0 → (∀ a : Ω, a ∈ chRing o (joinCo (RingHom.id Ω) x z) (c, Sum.inl c) ↔ IsIntegral (chRing o x c) a) ∧ ∀ p' : Cpt M'.ξ, (∀ j, x j / x c ∈ regAt M'.ξ p') → InChart M'.ξ (joinCo (RingHom.id Ω) x z) (c, Sum.inl c) p' :=
   @PositivityTheory.HtPt.Mb.LNormChart.ChNorm.join_chart_normalisation

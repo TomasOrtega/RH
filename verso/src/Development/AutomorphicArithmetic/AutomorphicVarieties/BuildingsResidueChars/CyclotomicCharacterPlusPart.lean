@@ -3,14 +3,14 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Cycloto
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published UpperTheory.V.Af.Sol
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.CyclotomicCharacterAtPrimeContinuous.cyc_cont F Ω l`.
+A detailed English derivation is pending.
 -/
 private theorem cyc_cont (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime] :
     Continuous (cycBar F Ω l) :=
   _root_.UpperTheory.Reformulated.B.CyclotomicCharacterAtPrimeContinuous.cyc_cont F Ω l
 
 /- English proof (translation)
-Rewrite using `[mem_maximalRealSubfield_iff]`. Introduce `φ`. Conclude with `DFunLike.congr_fun (ComplexEmbedding.isReal_iff.1 (IsTotallyReal.complexEmbedding_isReal (φ.comp (algebraMap F₀ F)))) x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem mem_plus {F₀ F : Type} [Field F₀] [NumberField F₀] [Field F] [NumberField F] [Algebra F₀ F]
     [IsTotallyReal F₀] (x : F₀) : algebraMap F₀ F x ∈ maximalRealSubfield F := by
@@ -20,15 +20,15 @@ private theorem mem_plus {F₀ F : Type} [Field F₀] [NumberField F₀] [Field 
     (ComplexEmbedding.isReal_iff.1 (IsTotallyReal.complexEmbedding_isReal (φ.comp (algebraMap F₀ F)))) x
 
 /- English proof (translation)
-Introduce `hA hC F Ω _ _ _ _ _ _ l _ ι n r hpol`. Take `⟨F₀, _, _, _, _, _, _, hR, μ, c, P, hμ, hs, ⟨j, hj⟩, hp⟩` from `hpol`. Use `haveI : IsAlgClosure (maximalRealSubfield F) Ω := ⟨IsAlgClosure.isAlgClosed F, Algebra.IsAlgebraic.trans (maximalRealSubfield F) F Ω⟩`. Use `letI : Algebra F₀ (maximalRealSubfield F) := ((algebraMap F₀ F).codRestrict (maximalRealSubfield F) mem_plus).toAlgebra`. Use `haveI : IsScalarTower F₀ (maximalRealSubfield F) Ω := IsScalarTower.of_algebraMap_eq fun x => IsScalarTower.algebraMap_apply F₀ F Ω x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Set `c' : G (maximalRealSubfield F) Ω` to `AlgEquiv.ofRingEquiv (f := c.toRingEquiv) fun x => by`. Apply `j.injective` to reduce the goal to its premises. Use `(hj _).trans ?_` and prove the remaining obligations. Conclude with `(mem_maximalRealSubfield_iff x.1).1 x.2 (j.comp (algebraMap F Ω))`. Establish `hcyc : IsAlgChar ι (cycBar (maximalRealSubfield F) Ω l ^ ((n : ℤ) - 1))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hA (maximalRealSubfield F) Ω l ι).1 _ ((cyc_cont _ Ω l).zpow _) fun w _ => ?_` and prove the remaining obligations. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Use `⟨A, hA, (n : ℤ) - 1, 1, one_pos, fun s _ => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, MonoidHom.zpow_apply, zpow_neg, mul_inv_cancel]`. Establish `hres` using `(hA F₀ Ω l ι).2.2 (maximalRealSubfield F) μ hμ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨χ, hc, art, a, h1, h2, h3⟩` from `((hA (maximalRealSubfield F) Ω l ι).2.1 _ _ hcyc hres).1`. Use `⟨_, χ, c', P, ⟨hc, art, a, h1, h2, h3⟩, fun d d' hd hd' => ?_, ⟨j, hj⟩, fun s s' hss => ?_⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.mul_apply, MonoidHom.zpow_apply, MonoidHom.comp_apply]`. Rewrite using `[hC _ Ω l d hd, hC _ Ω l d' hd', hs (resG F₀ _ Ω d) (resG F₀ _ Ω d') hd hd']`. Rewrite using `[hp s s' (AlgEquiv.ext fun x => DFunLike.congr_fun hss x)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Express the relevant statement in the definitionally equal form `μ (resG F₀ F Ω s) = cycBar F Ω l s ^ (1 - (n : ℤ)) * (cycBar F Ω l s ^ ((n : ℤ) - 1) * μ (resG F₀ F Ω s))`. Rewrite using `[← mul_assoc, ← zpow_add]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cyclotomicCharacter_plusPart :
     UpperTheory.V.Af.AlgOfCyc → UpperTheory.V.Af.Sol.CycConj → UpperTheory.V.Af.Sol.ToPolC := by

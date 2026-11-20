@@ -19,27 +19,27 @@ Both sides reduce to the same expression.
 @[simp] theorem soPsi_apply (x : E) (σ : E →+* ℂ) : soPsi x σ = σ x := rfl
 
 /- English proof (translation)
-Use extensionality with `σ`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem soPsi_add (x y : E) : soPsi (x + y) = soPsi x + soPsi y := by
   ext σ; simp
 
 /- English proof (translation)
-Use extensionality with `σ`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem soPsi_zero : soPsi (0 : E) = 0 := by
   ext σ; simp
 
 /- English proof (translation)
-Set `T : ((E →+* ℂ) → ℂ) →ₗ[ℂ] (Module.Free.ChooseBasisIndex ℤ (𝓞 E) → ℂ)` to `{ toFun := fun v i => ∑ σ, v σ * σ (RingOfIntegers.basis E i : E) map_add' := fun v v' => by ext i; simp [add_mul, Finset.sum_add_distrib] map_smul' := fun c v => by ext i; simp [Finset.mul_sum, mul_assoc] }`. Establish `hinj : Function.Injective T`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `v hv`. Conclude with `so_emb_inj v (fun i => congr_fun hv i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective T`. Rewrite using `[← LinearMap.injective_iff_surjective_of_finrank_eq_finrank]` and apply the resulting hypothesis. Simplify using `[Module.finrank_fintype_fun_eq_card, NumberField.Embeddings.card, ← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank]`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hσ : ∀ σ : E →+* ℂ, ∑ j, c j * σ (RingOfIntegers.basis E j : E) = 0`. Introduce `σ`. Use `congr_arg (fun v : EuclideanSpace ℂ (E →+* ℂ) => v σ) hc` as an intermediate fact. Simplify using `using this`. Take `⟨v, hv⟩` from `hsurj (Pi.single i 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : ∑ j, c j * T v j = 0`. Simplify using `only [T, LinearMap.coe_mk, AddHom.coe_mk, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun σ _ => ?_` and prove the remaining obligations. Establish `h1 : v σ * ∑ j, c j * σ (RingOfIntegers.basis E j : E) = 0` using `by rw [hσ σ, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Finset.mul_sum]`. Rewrite using `[← h1]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite `h0` using `[hv]`. Simplify `h0` using `[Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem so_li_complex :
     LinearIndependent ℂ (fun i => soPsi (RingOfIntegers.basis E i : E)) := by
@@ -75,7 +75,7 @@ theorem so_li_complex :
   simpa [Pi.single_apply] using h0
 
 /- English proof (translation)
-Rewrite using `[← eq_ratCast (algebraMap ℚ ℂ), trace_eq_sum_embeddings (E := ℂ)]`. Conclude with `Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ) _ _ fun σ => by simp [RingHom.equivRatAlgHom_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem so_sum_emb (x : E) : ∑ σ : E →+* ℂ, σ x = ((Algebra.trace ℚ E x : ℚ) : ℂ) := by
   rw [← eq_ratCast (algebraMap ℚ ℂ), trace_eq_sum_embeddings (E := ℂ)]
@@ -83,103 +83,97 @@ theorem so_sum_emb (x : E) : ∑ σ : E →+* ℂ, σ x = ((Algebra.trace ℚ E 
     fun σ => by simp [RingHom.equivRatAlgHom_apply]
 
 /- English proof (translation)
-Set `J` to `Module.Free.ChooseBasisIndex ℤ (𝓞 E)`. Set `g : J → EuclideanSpace ℂ (E →+* ℂ)` to `fun i => soPsi (RingOfIntegers.basis E i : E)`. Establish `hgR : LinearIndependent ℝ g` using `so_li_complex.restrict_scalars' ℝ`. Take `⟨K, hK⟩ : ∃ K : Submodule ℝ (EuclideanSpace ℂ (E →+* ℂ)), K = Submodule.span ℝ (Set.range g)` from `⟨_, rfl⟩`. Take `⟨N, hNdef⟩ : ∃ N, N = Module.finrank ℝ K` from `⟨_, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hJN : Fintype.card J = N` using `by rw [hNdef, hK, finrank_span_eq_card hgR]`. Establish `hJ : Fintype.card J = Module.finrank ℚ E`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank]`. Establish `hdeg : Module.finrank ℚ E = 2 * PT.f E`. Use `IsTotallyComplex.finrank (K := E)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `PT.f`. Use linear arithmetic over natural numbers and integers. Establish `hNpos : 0 < N` using `by rw [← hJN, hJ]; exact Module.finrank_pos`. Substitute `hNdef` using the available equality. Set `e : K ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ K))` to `(stdOrthonormalBasis ℝ K).repr`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression.
 
-Establish `hgmem : ∀ i, g i ∈ K` using `fun i => hK ▸ Submodule.subset_span ⟨i, rfl⟩`. Set `gK : J → K` to `fun i => ⟨g i, hgmem i⟩`. Establish `hgK : LinearIndependent ℝ gK` using `LinearIndependent.of_comp K.subtype (by exact hgR)`. Establish `hbli : LinearIndependent ℝ (fun i => e (gK i))` using `hgK.map' e.toLinearEquiv.toLinearMap (LinearEquiv.ker _)`. Set `bR : Module.Basis J ℝ (EuclideanSpace ℝ (Fin (Module.finrank ℝ K)))` to `basisOfLinearIndependentOfCardEqFinrank hbli (by rw [hJN, finrank_euclideanSpace_fin])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hbR : ∀ i, bR i = e (gK i)` using `fun i => by simp [bR]`. Set `M : Submodule ℤ (EuclideanSpace ℝ (Fin (Module.finrank ℝ K)))` to `Submodule.span ℤ (Set.range bR)`. Establish `hdisc : DiscreteTopology M` using `inferInstance`. Establish `hspan : Submodule.span ℝ (M : Set (EuclideanSpace ℝ (Fin (Module.finrank ℝ K)))) = ⊤`. Rewrite using `[Submodule.span_span_of_tower, bR.span_eq]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinner : ∀ z z' : EuclideanSpace ℝ (Fin (Module.finrank ℝ K)), ⟪z, z'⟫_ℝ = ⟪((e.symm z : K) : EuclideanSpace ℂ (E →+* ℂ)), ((e.symm z' : K) : _)⟫_ℝ`. Introduce `z z'`. Rewrite using `[← Submodule.coe_inner, LinearIsometryEquiv.inner_map_map]`. Establish `hnormE : ∀ z, ‖((e.symm z : K) : EuclideanSpace ℂ (E →+* ℂ))‖ = ‖z‖`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← e.symm.norm_map z]`. Both sides reduce to the same expression. Establish `hpull : ∀ z ∈ M, ∃ α : 𝓞 E, ((e.symm z : K) : EuclideanSpace ℂ (E →+* ℂ)) = soPsi (α : E)`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem z hz`. Take `⟨i, rfl⟩` from `hz`. Conclude with `⟨RingOfIntegers.basis E i, by rw [hbR, LinearIsometryEquiv.symm_apply_apply]⟩`. Consider the case `zero => exact ⟨0, by simp [soPsi_zero]⟩`. Consider the case `add a b _ _ ha hb`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Take `⟨α, hα⟩` from `ha`. Take `⟨β, hβ⟩` from `hb`. Conclude with `⟨α + β, by rw [map_add, Submodule.coe_add, hα, hβ, ← soPsi_add]; push_cast; rfl⟩`. Consider the case `smul n a _ ha`. Take `⟨α, hα⟩` from `ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨n • α, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, Submodule.coe_smul_of_tower, hα]`. Use extensionality with `σ`. Simplify using the standard rewrite rules. Establish `hrdpos : 0 < PT.rd E`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `PT.rd`. Conclude with `Real.rpow_pos_of_pos (abs_pos.2 (by exact_mod_cast discr_ne_zero E)) _`. Set `cj : (E →+* ℂ) ≃ (E →+* ℂ)` to `(ComplexEmbedding.involutive_conjugate E).toPerm`. Establish `hlow : ∀ z ∈ PI.dualZ M, z ≠ 0 → 2 ≤ PT.rd E ^ 2 * ‖z‖ ^ 2`. Introduce `z hz hz0`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hkdef⟩ : ∃ k, k = ((e.symm z : K) : EuclideanSpace ℂ (E →+* ℂ))` from `⟨_, rfl⟩`. Establish `hkK : k ∈ K` using `hkdef ▸ (e.symm z).2`. Establish `ha : ∀ i, ∃ a : ℤ, ⟪k, g i⟫_ℝ = a`. Introduce `i`. Take `⟨a, ha⟩` from `hz (bR i) (Submodule.subset_span ⟨i, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, hinner, hbR, LinearIsometryEquiv.symm_apply_apply, hkdef]`. Use `choose a ha using ha`. Set `u : (E →+* ℂ) → ℂ` to `fun σ => (starRingEnd ℂ (k σ) + k (ComplexEmbedding.conjugate σ)) / 2`. Establish `hu : ∀ i, ∑ σ, u σ * σ (RingOfIntegers.basis E i : E) = (a i : ℂ)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `hS : ((⟪k, g i⟫_ℝ : ℝ) : ℂ) = (((∑ σ, starRingEnd ℂ (k σ) * σ (RingOfIntegers.basis E i : E)).re : ℝ) : ℂ)`. Use `congr 1`. Rewrite using `[real_inner_eq_Hf]`. Simplify using `[Hf, g, mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hswap : ∑ σ, k (ComplexEmbedding.conjugate σ) * σ (RingOfIntegers.basis E i : E) = starRingEnd ℂ (∑ σ, starRingEnd ℂ (k σ) * σ (RingOfIntegers.basis E i : E))`. Rewrite using `[map_sum]`. Use `conv_lhs => rw [← Equiv.sum_comp cj]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `[cj, ComplexEmbedding.involutive_conjugate E _, ComplexEmbedding.conjugate_coe_eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit : ∑ σ, u σ * σ (RingOfIntegers.basis E i : E) = ((∑ σ, starRingEnd ℂ (k σ) * σ (RingOfIntegers.basis E i : E)) + ∑ σ, k (ComplexEmbedding.conjugate σ) * σ (RingOfIntegers.basis E i : E)) / 2`. Rewrite using `[← Finset.sum_add_distrib, Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun σ _ => by simp only [u]; ring`. Establish `hai : ((a i : ℤ) : ℂ) = ((⟪k, g i⟫_ℝ : ℝ) : ℂ)` using `by rw [ha i]; push_cast; rfl`. Rewrite using `[hsplit, hswap, Complex.add_conj, hai, hS]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Set `db` to `(Algebra.traceForm ℚ E).dualBasis (traceForm_nondegenerate ℚ E) (integralBasis E)`. Set `w : E` to `∑ i, (a i : ℚ) • db i`. Establish `htr : ∀ j, Algebra.trace ℚ E (w * (RingOfIntegers.basis E j : E)) = a j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j`. Establish `hd : ∀ i, Algebra.trace ℚ E (db i * (RingOfIntegers.basis E j : E)) = if j = i then 1 else 0`. Introduce `i`. Use `LinearMap.BilinForm.apply_dualBasis_left (traceForm_nondegenerate ℚ E) (integralBasis E) i j` as an intermediate fact. Rewrite `this` using `[Algebra.traceForm_apply, integralBasis_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [w, Finset.sum_mul, map_sum, smul_mul_assoc, LinearMap.map_smul, hd]`. Simplify using the standard rewrite rules. Establish `hwσ : ∀ σ : E →+* ℂ, σ w = u σ`. Establish `hv` using `so_emb_inj (fun σ => σ w - u σ) (fun j => by`. Simplify using `only [sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h1 : ∑ σ : E →+* ℂ, σ w * σ (RingOfIntegers.basis E j : E) = (a j : ℂ)`. Repeatedly rewrite using `[← map_mul]`. Rewrite using `[so_sum_emb, htr]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1, hu j, sub_self])`. Conclude with `fun σ => sub_eq_zero.1 (congr_fun hv σ)`. Establish `hw0 : w ≠ 0`. Introduce `hw0`. Establish `ha0 : ∀ i, ⟪k, g i⟫_ℝ = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Establish `h1` using `hu i`. Simplify using `only [← hwσ, hw0, map_zero, zero_mul, Finset.sum_const_zero] at h1`. Rewrite using `[ha i]`. Conclude with `h1.symm` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Establish `horth : ∀ y ∈ K, ⟪k, y⟫_ℝ = 0`. Introduce `y hy`. Rewrite `hy` using `[hK]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨i, rfl⟩ := hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `ha0 i`. Consider the case `zero => exact inner_zero_right _`. Consider the case `add y y' _ _ h h' => rw [inner_add_right, h, h', add_zero]`. Consider the case `smul r y _ h => rw [real_inner_smul_right, h, mul_zero]`. Establish `hk0 : k = 0` using `inner_self_eq_zero.1 (horth k hkK)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hz0` to reduce the goal to its premises. Establish `: e.symm z = 0` using `Subtype.ext (hkdef ▸ hk0)`. Simplify using `using congrArg e this`. Establish `hwint : ∀ y : 𝓞 E, ∃ n : ℤ, Algebra.trace ℚ E (w * y) = n`. Introduce `y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ j, (RingOfIntegers.basis E).repr y j * a j, ?_⟩` and prove the remaining obligations. Establish `hy : ((y : 𝓞 E) : E) = ∑ j, (((RingOfIntegers.basis E).repr y j : ℤ) : ℚ) • (RingOfIntegers.basis E j : E)` using `by conv_lhs => rw [← (RingOfIntegers.basis E).sum_repr y]`. Simplify using `[Rat.smul_def]`. Rewrite using `[hy, Finset.mul_sum, map_sum]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, LinearMap.map_smul, htr, smul_eq_mul]`. Establish `h2` using `so_sum_sq_ge w hw0 hwint`. Establish `hsq : ∑ σ : E →+* ℂ, ‖σ w‖ ^ 2 ≤ ‖z‖ ^ 2`. Rewrite using `[← hnormE, ← hkdef, EuclideanSpace.norm_sq_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hterm : ∀ σ : E →+* ℂ, ‖σ w‖ ^ 2 ≤ (‖k σ‖ ^ 2 + ‖k (ComplexEmbedding.conjugate σ)‖ ^ 2) / 2`. Introduce `σ`. Rewrite using `[hwσ]`. Establish `h1 : ‖u σ‖ ≤ (‖k σ‖ + ‖k (ComplexEmbedding.conjugate σ)‖) / 2`. Simplify using `only [u, norm_div, Complex.norm_two]`.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Conclude with `(norm_add_le _ _).trans (by rw [Complex.norm_conj])`. Establish `h0 : 0 ≤ ‖u σ‖` using `norm_nonneg _`. Use polynomial arithmetic with `[sq_nonneg (‖k σ‖ - ‖k (ComplexEmbedding.conjugate σ)‖)]`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[← Finset.sum_div, Finset.sum_add_distrib]`. Establish `: ∑ σ : E →+* ℂ, ‖k (ComplexEmbedding.conjugate σ)‖ ^ 2 = ∑ σ : E →+* ℂ, ‖k σ‖ ^ 2` using `Equiv.sum_comp cj (fun σ => ‖k σ‖ ^ 2)`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hsq (sq_nonneg (PT.rd E))]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hJne : Nonempty J` using `Fintype.card_pos_iff.1 (hJN ▸ hNpos)`. Take `⟨j0⟩` from `hJne`. Set `φ : StrongDual ℝ (EuclideanSpace ℝ (Fin (Module.finrank ℝ K)))` to `LinearMap.toContinuousLinearMap (bR.coord j0)`. Set `z0` to `(InnerProductSpace.toDual ℝ (EuclideanSpace ℝ (Fin (Module.finrank ℝ K)))).symm φ`. Establish `hz0i : ∀ y, ⟪z0, y⟫_ℝ = bR.coord j0 y` using `fun y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[InnerProductSpace.toDual_symm_apply]`. Both sides reduce to the same expression. Establish `hz0 : z0 ∈ PI.dualZ M`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Use `⟨if i = j0 then 1 else 0, ?_⟩` and prove the remaining obligations. Rewrite using `[hz0i, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add y y' _ _ h h'`. Take `⟨m, hm⟩` from `h`. Take `⟨m', hm'⟩` from `h'`. Conclude with `⟨m + m', by rw [inner_add_right, hm, hm']; push_cast; ring⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Consider the case `smul n y _ h`. Take `⟨m, hm⟩` from `h`. Conclude with `⟨n * m, by rw [← Int.cast_smul_eq_zsmul ℝ, real_inner_smul_right, hm]; push_cast; ring⟩`. Establish `hz0ne : z0 ≠ 0`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hz0i (bR j0)` as an intermediate fact. Rewrite `this` using `[h, inner_zero_left, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_eq_same]`. Conclude with `zero_ne_one this`. Establish `hT` using `transference_successive_minima (Module.finrank ℝ K) M hdisc hspan (Module.finrank ℝ K) hNpos le_rfl`. Rewrite `hT` using `[show Module.finrank ℝ K + 1 - Module.finrank ℝ K = 1 by omega]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hsm0 : 0 ≤ PI.succMin M (Module.finrank ℝ K)` using `Real.sInf_nonneg (fun t ht => ht.1)`. Establish `hdual1 : Real.sqrt 2 / PT.rd E ≤ PI.succMin (PI.dualZ M) 1`. Apply `le_csInf` to reduce the goal to its premises. Use `⟨‖z0‖, norm_nonneg _, fun _ => z0, fun _ => hz0, ?_, fun _ => le_rfl⟩` and prove the remaining obligations. Rewrite using `[linearIndependent_unique_iff]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz0ne`. Introduce and unpack `t ⟨-, v, hvM, hvli, hvt⟩`. Establish `h1` using `hlow (v 0) (hvM 0) (hvli.ne_zero 0)`. Establish `h2 : Real.sqrt 2 ≤ ‖v 0‖ * PT.rd E`. Rewrite using `[show ‖v 0‖ * PT.rd E = Real.sqrt ((‖v 0‖ * PT.rd E) ^ 2) from (Real.sqrt_sq (by positivity)).symm]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `Real.sqrt_le_sqrt (by nlinarith)`. Rewrite using `[div_le_iff₀ hrdpos]`. Use polynomial arithmetic with `[hvt 0]`. Establish `hc0 : 0 < Real.sqrt 2 / PT.rd E` using `by positivity`. Establish `hlam : PI.succMin M (Module.finrank ℝ K) ≤ Module.finrank ℝ K / (Real.sqrt 2 / PT.rd E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[le_div_iff₀ hc0]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hN : (Module.finrank ℝ K : ℝ) = 2 * PT.f E`. Rewrite using `[← hJN, hJ, hdeg]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hf1 : (1 : ℝ) ≤ PT.f E`. Establish `: 1 ≤ PT.f E` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hlt : Module.finrank ℝ K / (Real.sqrt 2 / PT.rd E) < omStar (E` using `E) := by`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs2 : 1 < Real.sqrt 2`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 by simp]`. Conclude with `Real.sqrt_lt_sqrt (by norm_num) (by norm_num)`. Establish `hfpow : (PT.f E : ℝ) ≤ (PT.f E : ℝ) ^ ((3 : ℝ) / 2)` using `Real.self_le_rpow_of_one_le hf1 (by norm_num)`. Establish `hA : 0 < 2 * (PT.f E : ℝ) * PT.rd E` using `by positivity`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : 2 * (PT.f E : ℝ) * PT.rd E < 2 * (PT.f E : ℝ) ^ ((3 : ℝ) / 2) * PT.rd E * Real.sqrt 2`. Combine the equalities or inequalities in the displayed calculation. Unfold `omStar`. Rewrite using `[div_div_eq_mul_div, hN, div_lt_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hne : {t : ℝ | 0 ≤ t ∧ ∃ v : Fin (Module.finrank ℝ K) → EuclideanSpace ℝ (Fin (Module.finrank ℝ K)), (∀ j, v j ∈ M) ∧ LinearIndependent ℝ v ∧ ∀ j, ‖v j‖ ≤ t}.Nonempty`. Set `eq : Fin (Module.finrank ℝ K) ≃ J` to `(Fintype.equivFinOfCardEq hJN).symm`. Use `⟨∑ j, ‖bR (eq j)‖, Finset.sum_nonneg (fun _ _ => norm_nonneg _), fun j => bR (eq j), fun j => Submodule.subset_span ⟨_, rfl⟩, bR.linearIndependent.comp eq eq.injective, fun j => ?_⟩` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => ‖bR (eq j)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)`. Take `⟨t, ⟨-, v, hvM, hvli, hvt⟩, htlt⟩` from `exists_lt_of_csInf_lt hne (lt_of_le_of_lt hlam hlt)`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose α hα using fun j => hpull (v j) (hvM j)`. Use `⟨Module.finrank ℝ K, α, fun j σ => ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hli : LinearIndependent ℚ (fun j => (α j : E))`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `q hq j`. Establish `h2 : ∑ i, (q i : ℝ) • ((e.symm (v i) : K) : EuclideanSpace ℂ (E →+* ℂ)) = 0`. Repeatedly rewrite using `[hα]`. Use extensionality with `σ`. Use `congrArg σ hq` as an intermediate fact.
-
-Simplify using `only [map_sum, map_zero, map_rat_smul] at this`. Simplify `this` using `[Rat.smul_def, Complex.real_smul]`. Establish `h1 : ∑ i, (q i : ℝ) • v i = 0`. Establish `h3 : ∑ i, (q i : ℝ) • e.symm (v i) = 0` using `Subtype.ext (by simpa using h2)`. Establish `h4` using `congrArg e h3`.
-
-Simplify `h4` using `[map_sum]`. Use `Fintype.linearIndependent_iff.1 hvli _ h1 j` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hspanQ` using `hli.span_eq_top_of_card_eq_finrank' (by rw [Fintype.card_fin, ← hJN, hJ])`. Introduce `β`.
-
-Rewrite using `[hspanQ]`. Discharge the goal by the elementary cases of `trivial`.
+Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem omega_exists' [IsCMField E] : ∃ (n : ℕ) (ω : Fin n → 𝓞 E),
     (∀ j (σ : E →+* ℂ), ‖σ (ω j)‖ ≤ omStar (E := E)) ∧

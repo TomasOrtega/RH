@@ -35,7 +35,7 @@ section Real
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
 /- English proof (translation)
-Establish `hn : (Yc D 0).rank = D.R.r`. Rewrite using `[D.sp.Y_rank _ (min_le_right _ _)]`. Simplify using `[Formalism.BasicNotions.Ranks.rankY]`. Establish `key` using `(GlobalTheory.LevYZero.lev_datY_zero (Yc D 0) ((_root_.GlobalTheory.Fam.pk_z W).βY 0) _ D.R.r D.R.t (r_le_Y 0) hn (_root_.GlobalTheory.Fam.pk_z W).Pg (_root_.GlobalTheory.Fam.complexLevelStructure W) (_root_.GlobalTheory.Fam.pk_z W).chi (fun _ => 1) rfl (finE (Yc D 0) y) (GlobalT …`. Conclude with `Iff.trans ⟨fun h => h.2, fun h => ⟨hy, h⟩⟩ key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_rJ_iff_finE_mem_St_and_block_mem (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (y : GA D (Yc D 0)) (hy : y ∈ GfC (Yc D 0)) :
     (show GA D (D.sp.Y 0) from y) ∈ _root_.GlobalTheory.MiTop.rJ_z W ↔ finE (Yc D 0) y ∈ St ((_root_.GlobalTheory.Fam.pk_z W).βY 0) ∧
@@ -48,17 +48,17 @@ theorem mem_rJ_iff_finE_mem_St_and_block_mem (W : _root_.GlobalTheory.MiS.RealPa
   exact Iff.trans ⟨fun h => h.2, fun h => ⟨hy, h⟩⟩ key
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨hV, hG⟩` from `ha.tie row col`. Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hb : a.g.b 0 ∈ GfC (Yc D 0)`. Establish `h1` using `ha.vis.b 0`. Rewrite `h1` using `[hV.b 0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Establish `hsd` using `hW.bot.hyp.2.2.2.1.lev.βY 0 hm`. Establish `hΛ` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ hsd`. Take `⟨c, hβ, -⟩` from `hsd`. Establish `hoff` using `GlobalTheory.StMoves.moves_conj_iff x (hV.moves 0 hm (fun p => p ∉ a.v.gP) fun _ h => h)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose e he hM using fun i => hG.frame i 0 ((a.G i).s + 1) (Nat.zero_add _)`. Establish `hex : ∀ i, ∃ m, (a.G i).Mat 0 ((a.G i).s + 1) (Nat.zero_add _) x m` using `fun i => ⟨_, (eq_coordHom_iff _ (a.G i).q.pr _ _ ((a.G i).FY 0 _ (Nat.zero_add _)).βγ ((a.G i).FY 0 _ (Nat.zero_add _)).γβ x _).2 rfl⟩`. Establish `hloc` using `fun i m (hmat : (a.G i).Mat 0 ((a.G i).s + 1) (Nat.zero_add _) x m) hst => red_iff (a.G i).q (hG.idem i).1 (Yc D 0) ((_root_.GlobalTheory.Fam.pk_z W).βY 0) (a.g.b 0) x (a.G i).hs (a.G i).S _ (e i) (he i) (hM i) (r_le_Y 0) m hmat hst`. Rewrite using `[_root_.GlobalTheory.FamTrace.Rows.mem_rJ_iff_finE_mem_St_and_block_mem W _ (mul_mem (mul_mem (inv_mem hb) hx) hb), (hG.lev _).1]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨hst, hred⟩`. Use `⟨hoff.1 (moves_mono (fun _ _ => trivial) ((movesLocal D _ _ hΛ _).2 ((st_iff _ _ _ hβ hΛ _).1 hst))), ?_⟩` and prove the remaining obligations. Conclude with `fun i m hmat => (hloc i m hmat hst).1 (hred i)`. Introduce and unpack `⟨h1, h2⟩`. Establish `hst : finE (Yc D 0) ((a.g.b 0)⁻¹ * x * a.g.b 0) ∈ St ((_root_.GlobalTheory.Fam.pk_z W).βY 0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `(st_iff _ _ _ hβ hΛ _).2 fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ a.v.gP`. Take `⟨i, rfl⟩` from `(ha.gpin.places v).1 hv`. Take `⟨m, hmat⟩` from `hex i`. Establish `hR : ((a.G i).S.T (Fin D.R.t)).Regular` using `GlobalTheory.StepData.Chain.ofType_regular _ _ _ _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `moves_of_stab (a.G i).q (hG.idem i).1 (Yc D 0) _ _ hβ hΛ (a.g.b 0) x _ _ ((e i).symm.trans (stdOrd (Fin D.R.k) (Fin D.R.t) 0 _ (Nat.zero_add _))) (hM i) m hmat ((hR.2.2 0 _ (Nat.zero_add _)).2.2 (h2 i m hmat))`. Conclude with `moves_mono (fun p hp => by rw [hp]; exact hv) (hoff.2 h1)`. Use `⟨hst, fun i => ?_⟩` and prove the remaining obligations. Take `⟨m, hmat⟩` from `hex i`. Conclude with `(hloc i m hmat hst).2 (h2 i m hmat)`.
+A detailed English derivation is pending.
 -/
 theorem main_alt_alt (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (hW : _root_.GlobalTheory.Fam.PackageHypotheses W) (u : D.what₂.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u) (ha : a.Is)
     (row : ∀ t, RowCh (_root_.GlobalTheory.Fam.pk_z W) (_root_.GlobalTheory.Fam.complexLevelStructure W) u a.g t) (col : ∀ t : W.P.T, ColCh u (D.chTw u (W.P.I.tup t)))
@@ -101,7 +101,7 @@ theorem main_alt_alt (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (hW : _root_.G
 end Real
 end GlobalTheory.FamTrace.Rows
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha _ row col _ x hx`. Conclude with `_root_.GlobalTheory.FamTrace.Rows.main_alt_alt W hA.pk u a ha row col x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FamTrace.conj_mem_rows_iff_alt : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ row col, (a.fam row col).c.Is → ∀ x ∈ GfC ((I.rec7 l Z).sp.Y 0), ((show GA (I.rec7 l Z) ((I.rec7 l Z).sp.Y 0) from a.g.b 0)⁻¹ * x * (show GA (I.rec7 l Z) ((I.rec7 l Z).sp.Y 0) from a.g.b 0) ∈ _root_.GlobalTheory.MiTop.rJ_z W ↔ _root_.GlobalTheory.FamTrace.InLevelGroupOfY a x) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha _ row col _ x hx

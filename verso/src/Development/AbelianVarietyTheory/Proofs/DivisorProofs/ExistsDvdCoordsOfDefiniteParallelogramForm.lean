@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h0 : Q 0 = 0`. Use `hQ 0 0` as an intermediate fact. Simplify using `only [add_zero, sub_zero] at this`. Use linear arithmetic over natural numbers and integers. Establish `hneg : ∀ g, Q (-g) = Q g`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `g`. Use `hQ 0 g` as an intermediate fact. Simplify using `only [zero_add, zero_sub, h0] at this`. Use linear arithmetic over natural numbers and integers. Establish `hnat : ∀ n : ℕ, Q ((n : ℤ) • f) = (n : ℤ) ^ 2 * Q f ∧ Q (((n : ℤ) + 1) • f) = ((n : ℤ) + 1) ^ 2 * Q f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [h0]`. Consider the case `succ n ih`. Use `⟨by push_cast; exact ih.2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hQ (((n : ℤ) + 1) • f) f`. Establish `e1 : ((n : ℤ) + 1) • f + f = (((n + 1 : ℕ) : ℤ) + 1) • f` using `by push_cast; module`. Establish `e2 : ((n : ℤ) + 1) • f - f = (n : ℤ) • f` using `by module`. Rewrite `h` using `[e1, e2, ih.1, ih.2]`. Move the coercions through the operations in `at h ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `h`. Take `⟨n, rfl | rfl⟩` from `k.eq_nat_or_neg`. Conclude with `(hnat n).1`. Rewrite using `[neg_smul, hneg, (hnat n).1]`. Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem parallelogram_zsmul {E : Type} [AddCommGroup E] (Q : E → ℤ)
     (hQ : ∀ f g, Q (f + g) + Q (f - g) = 2 * Q f + 2 * Q g) (k : ℤ) (f : E) :
@@ -44,15 +44,15 @@ theorem parallelogram_zsmul {E : Type} [AddCommGroup E] (Q : E → ℤ)
   · rw [neg_smul, hneg, (hnat n).1]; ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨0, fun z M _ => ?_⟩` and prove the remaining obligations. Use `parallelogram_zsmul Q hQ 0 0` as an intermediate fact. Simplify using `at this`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Consider the case `insert a s ha ih`. Take `⟨C, hC⟩` from `ih`. Use `⟨2 * (Q (u a)).toNat + 2 * C, fun z M hz => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_insert ha]`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hQ (z a • u a) (∑ i ∈ s, z i • u i)`. Establish `h2` using `hpos (z a • u a - ∑ i ∈ s, z i • u i)`. Establish `h3` using `hC z M hz`. Establish `h4` using `parallelogram_zsmul Q hQ (z a) (u a)`. Establish `h5 : z a ^ 2 ≤ M ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← sq_abs (z a)]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) (hz a) 2`. Establish `h6` using `mul_le_mul_of_nonneg_right h5 (hpos (u a))`. Use `push_cast`. Rewrite using `[Int.toNat_of_nonneg (hpos (u a))]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem parallelogram_sum_le {E ι : Type} [AddCommGroup E] (Q : E → ℤ)
     (hQ : ∀ f g, Q (f + g) + Q (f - g) = 2 * Q f + 2 * Q g) (hpos : ∀ f, 0 ≤ Q f)
@@ -83,35 +83,33 @@ theorem parallelogram_sum_le {E ι : Type} [AddCommGroup E] (Q : E → ℤ)
     nlinarith
 
 /- English proof (translation)
-Introduce `E _ H Q hQ hpos hdef n u hu hli`. Take `⟨C, hC⟩` from `parallelogram_sum_le Q hQ hpos u Finset.univ`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Use `set R : ℕ := C + 1 with hR`. Use `⟨(R ^ n).factorial, Nat.factorial_pos _, fun k m h hh hk => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos k with rfl | hkpos` into its components or cases. Introduce `i`. Use `hli m (by simpa using hk.symm) i` as an intermediate fact. Simplify using `[this]`. Establish `hk0 : (0 : ℤ) < k` using `by exact_mod_cast hkpos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR0 : (0 : ℤ) < R` using `by positivity`. Take `⟨a, ha, b, hb, hab, hf⟩` from `Finset.exists_ne_map_eq_of_card_lt_of_maps_to (s := Finset.range (R ^ n + 1)) (t := Fintype.piFinset (fun _ : Fin n => Finset.Ico (0 : ℤ) R)) (f := fun (j : ℕ) (i : Fin n) => ((R : ℤ) * (((j : ℤ) * m i) % k)) / k) (by simp [Fintype.card_piFinset]) (by`. Introduce `j _`. Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Ico]`. Introduce `i`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `Int.emod_nonneg ((j : ℤ) * m i) hk0.ne'`. Establish `h2` using `Int.emod_lt_of_pos ((j : ℤ) * m i) hk0`. Use `⟨Int.ediv_nonneg (by positivity) hk0.le, ?_⟩` and prove the remaining obligations. Apply `Int.ediv_lt_of_lt_mul hk0` to reduce the goal to its premises. Conclude with `mul_lt_mul_of_pos_left h2 hR0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set y : Fin n → ℤ := fun i => ((a : ℤ) * m i) % k - ((b : ℤ) * m i) % k with hy`. Use `set q : Fin n → ℤ := fun i => ((a : ℤ) * m i) / k - ((b : ℤ) * m i) / k with hq`. Establish `hyq : ∀ i, y i = ((a : ℤ) - b) * m i - k * q i`. Introduce `i`. Simplify using `only [hy, hq, Int.emod_def]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hbound : ∀ i, |(R : ℤ) * y i| ≤ k`. Introduce `i`. Establish `e` using `congrFun hf i`. Use `beta_reduce at e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a1` using `Int.emod_nonneg ((R : ℤ) * (((a : ℤ) * m i) % k)) hk0.ne'`. Establish `a2` using `Int.emod_lt_of_pos ((R : ℤ) * (((a : ℤ) * m i) % k)) hk0`. Establish `b1` using `Int.emod_nonneg ((R : ℤ) * (((b : ℤ) * m i) % k)) hk0.ne'`. Establish `b2` using `Int.emod_lt_of_pos ((R : ℤ) * (((b : ℤ) * m i) % k)) hk0`. Rewrite `a1`, `a2`, `b1`, `b2` using `[Int.emod_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `a1`, `a2` using `[e]`. Simplify using `only [hy]`. Rewrite using `[abs_le, mul_sub]`. Apply the tactic sequence `constructor <;> linarith`. Use `set w : E := ((a : ℤ) - b) • h - ∑ i, q i • u i with hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hwH : w ∈ H` using `H.sub_mem (H.zsmul_mem hh _) (H.sum_mem fun i _ => H.zsmul_mem (hu i) _)`. Establish `hkw : (k : ℤ) • w = ∑ i, y i • u i`. Rewrite using `[hw, smul_sub, smul_comm, natCast_zsmul h k, hk, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hyq i, smul_smul, smul_smul, sub_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hRkw : ((R : ℤ) * k) • w = ∑ i, ((R : ℤ) * y i) • u i`. Rewrite using `[mul_smul, hkw, Finset.smul_sum]`. Simplify using `only [smul_smul]`. Establish `hle` using `hC (fun i => (R : ℤ) * y i) k hbound`. Rewrite `hle` using `[← hRkw, parallelogram_zsmul Q hQ]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQw : Q w = 0`. Assume the negation of the conclusion as `hne`. Establish `h1 : 1 ≤ Q w` using `by have := hpos w; omega`. Establish `h2 : ((R : ℤ) * k) ^ 2 ≤ ((R : ℤ) * k) ^ 2 * Q w` using `le_mul_of_one_le_right (by positivity) h1`. Establish `h3 : (C : ℤ) < (R : ℤ) ^ 2`.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hR]`. Use `push_cast`. Use polynomial arithmetic with `[Int.natCast_nonneg C]`. Establish `h4` using `mul_lt_mul_of_pos_right h3 (show (0 : ℤ) < (k : ℤ) ^ 2 by positivity)`. Rewrite `h2`, `hle` using `[mul_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hw0` using `hdef w hwH hQw`. Rewrite `hkw` using `[hw0, smul_zero]`. Introduce `i`. Establish `hyi` using `hli y hkw.symm i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers.
 
-Establish `hd : (k : ℤ) ∣ ((a : ℤ) - b) * m i` using `⟨q i, by have := hyq i; linarith⟩`. Use `hd.trans (mul_dvd_mul_right ?_ _)` and prove the remaining obligations. Rewrite using `[← Int.natAbs_dvd, Int.natCast_dvd_natCast]`. Rewrite `ha`, `hb` using `[Finset.mem_range]`. Apply `Nat.dvd_factorial` to reduce the goal to its premises.
-
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_dvd_coords_of_definite_form :
     ∀ (E : Type) [AddCommGroup E] (H : AddSubgroup E) (Q : E → ℤ), (∀ f g, Q (f + g) + Q (f - g) = 2 * Q f + 2 * Q g) → (∀ f, 0 ≤ Q f) → (∀ f ∈ H, Q f = 0 → f = 0) → ∀ (n : ℕ) (u : Fin n → E), (∀ i, u i ∈ H) → LinearIndependent ℤ u → ∃ e : ℕ, 0 < e ∧ ∀ (k : ℕ) (m : Fin n → ℤ) (h : E), h ∈ H → k • h = ∑ i, m i • u i → ∀ i, (k : ℤ) ∣ e * m i := by

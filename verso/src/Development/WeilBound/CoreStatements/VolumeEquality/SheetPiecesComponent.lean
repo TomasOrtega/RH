@@ -14,13 +14,13 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 namespace SheetDecomposition
 
 /- English proof (translation)
-Establish `hq : ∀ f j j' : ℕ, Nonempty (Fin f × Fin j × Fin j' ≃ Fin (f * j * j'))` using `fun f j j' => ⟨Fintype.equivFinOfCardEq (by simp [_root_.mul_assoc])⟩`. Use `choose κ hκ hκ' using fun f j j' : ℕ => GlobalTheory.T.monge_ampere_density_of_ball_potential (Fin f) j j' (f * j * j') (hq f j j').some`. Use `⟨κ, hκ, fun Ψ _ j j' n q t ht => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `rfl : n = Fintype.card Ψ * j * j' := by`. Use `Fintype.card_congr q` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this.symm` using `[_root_.mul_assoc]`. Take `⟨c, -, hc⟩` from `GlobalTheory.T.monge_ampere_density_of_ball_potential Ψ j j' _ q`. Rewrite using `[hc t ht]`. Use `congr 1`. Establish `h0` using `hc 0 (zero_mem_ballDom q)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hκ' (Fintype.card Ψ) j j' 0 (zero_mem_ballDom _)`. Rewrite `h0`, `h1` using `[ballDens_zero, _root_.mul_one]`. Rewrite using `[← h0, ← h1]`. Take `⟨σ, hσ⟩` from `ballPot_renumber (Fintype.equivFin Ψ) q (hq (Fintype.card Ψ) j j').some`. Establish `h2` using `GlobalTheory.T.monge_ampere_density_change_of_variables _ (fun t' => ballPot (hq (Fintype.card Ψ) j j').some t' / 2) (fun t' => ballPot q t' / 2) (fun t i => t (σ i)) (fun _ => 0) 0 (analyticAt_pi_iff.2 fun i => (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ => ℂ) (σ i)).analytic …`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, norm_det_perm, one_pow, _root_.one_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem densU : ∃ κ : ℕ → ℕ → ℕ → ℝ, (∀ f j j', 0 < κ f j j') ∧
     ∀ (Ψ : Type) [Fintype Ψ] (j j' n : ℕ) (q : Ψ × Fin j × Fin j' ≃ Fin n), ∀ t ∈ ballDom q,
@@ -49,7 +49,7 @@ theorem densU : ∃ κ : ℕ → ℕ → ℕ → ℝ, (∀ f j j', 0 < κ f j j'
   rfl
 
 /- English proof (translation)
-The claim follows from `norm_det_perm (Equiv.refl _) t`.
+A detailed English derivation is pending.
 -/
 theorem norm_det_id (n : ℕ) (t : Fin n → ℂ) :
     ‖LinearMap.det ((fderiv ℂ (fun t : Fin n → ℂ => t) t : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ)) :
@@ -57,19 +57,17 @@ theorem norm_det_id (n : ℕ) (t : Fin n → ℂ) :
   norm_det_perm (Equiv.refl _) t
 
 /- English proof (translation)
-Take `⟨κ, hκ, hd⟩` from `densU`. Use `⟨κ, hκ, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or Q G Gk hG hGk hint`. Establish `hdens : ∀ m, ∀ t ∈ Q.V m, maDensity (fun (_ : Fin Dc.n) t' => Real.log ((muLine Hd).h (Q.γ m t'))) t = κ Dc.f Dc.j Dc.j' * ballDens (Q.F (Q.pc m)).q t`. Introduce `m t ht`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, hg, hev⟩` from `Q.pot m t ht`. Establish `h2` using `GlobalTheory.T.monge_ampere_density_change_of_variables _ (fun t' => ballPot (Q.F (Q.pc m)).q t' / 2) (fun t' => Real.log ((muLine Hd).h (Q.γ m t'))) (fun t => t) g t analyticAt_id hg (contDiffAt_ballPot _ (Q.V_sub m ht)) hev`. Rewrite using `[h2, norm_det_id, one_pow, _root_.one_mul]`. Conclude with `hd _ _ _ _ _ t (Q.V_sub m ht)`. Establish `hsm : ∀ m, ContDiffOn ℝ 2 (fun t => Real.log ((muLine Hd).h (Q.γ m t))) (Q.V m)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m t ht`. Take `⟨g, hg, hev⟩` from `Q.pot m t ht`. Establish `hψ : ContDiffAt ℝ 2 (fun y => (g y).re) t` using `Complex.reCLM.contDiff.contDiffAt.comp t (hg.contDiffAt.restrict_scalars ℝ)`. Conclude with `(((contDiffAt_ballPot _ (Q.V_sub m ht)).add hψ).congr_of_eventuallyEq hev).contDiffWithinAt`. Establish `heq : ∀ m, Set.EqOn (fun t => G (Q.γ m t) * maDensity (fun (_ : Fin Dc.n) t' => Real.log ((muLine Hd).h (Q.γ m t'))) t) (fun t => κ Dc.f Dc.j Dc.j' * (Gk (Q.pc m) t * ballDens (Q.F (Q.pc m)).q t)) (Q.B m)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `m t ht`. Establish `hV` using `(Q.cover.meas m).2 ht`. Simplify using `only`. Rewrite using `[hdens m t hV, hGk m t hV]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hint' : ∀ k, IntegrableOn (fun t => κ Dc.f Dc.j Dc.j' * (Gk k t * ballDens (Q.F k).q t)) (Q.FF k)` using `fun k => (hint k).const_mul _`. Take `⟨hs1, hs2⟩` from `sum_sheets volume Q.FF Q.pc Q.B Q.d (fun k => (Q.fund k).1) (fun m => (Q.cover.meas m).1) Q.B_sub (fun k t => κ Dc.f Dc.j Dc.j' * (Gk k t * ballDens (Q.F k).q t)) Q.count hint'`. Establish `key` using `GlobalTheory.T.sheet_cover_of_arithmetic_variety K J (mCoordIdeal Dc.y) Dc.n Dc.nCharts Dc.Bd Dc.chart Q.V Q.B Q.γ (muLine Hd) G Dc.arith (fun z hz => by`. Take `⟨a, t, ht, cc, hc, rfl⟩` from `Dc.chart_cover z hz`. Conclude with `⟨a, t, ht, _, rfl, cc, hc, rfl⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `Q.cover hsm hG`. Use the proof step `(fun m => ((hint' (Q.pc m)).mono_set (Q.B_sub m)).congr_fun (heq m).symm (Q.cover.meas m).1)`. Use the proof step `(hs1.congr fun m => setIntegral_congr_fun (Q.cover.meas m).1 fun t ht => congrArg abs (heq m ht).symm)`. Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[tsum_congr fun m => setIntegral_congr_fun (Q.cover.meas m).1 (heq m), hs2, Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem transferU : ∃ κ : ℕ → ℕ → ℕ → ℝ, (∀ f j j', 0 < κ f j j') ∧
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (Q : Pieces Or) (G : ((Σ k, J k) → ℂ) → ℝ) (Gk : Fin Q.np → (Fin Dc.n → ℂ) → ℝ), (∀ w ∈ Dc.Xo, ∀ w' ∈ torusSat {w}, G w' = G w) → (∀ m, ∀ t ∈ Q.V m, G (Q.γ m t) = Gk (Q.pc m) t) → (∀ k, IntegrableOn (fun t => Gk k t * ballDens (Q.F k).q t) (Q.FF k)) → ptsIntegral (e := Dc.n) (mCoordIdeal Dc.y) (fun _ => phMu Hd) G = κ Dc.f Dc.j Dc.j' * ∑ k, (Q.d k : ℝ) * ∫ t in Q.FF k, Gk k t * ballDens (Q.F k).q t := by
@@ -117,7 +115,7 @@ theorem transferU : ∃ κ : ℕ → ℕ → ℕ → ℝ, (∀ f j j', 0 < κ f 
   ring
 
 /- English proof (translation)
-Take `⟨κ, hκ, h⟩` from `transferU`. Introduce `E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or Q`. Conclude with `⟨κ Dc.f Dc.j Dc.j', hκ _ _ _, h E H D Xo l c Y II K J Ω W Dc Hd S₀ Or Q⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem sheet_pieces_component : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (Q : Pieces Or), ∃ κ : ℝ, 0 < κ ∧ ∀ (G : ((Σ k, J k) → ℂ) → ℝ) (Gk : Fin Q.np → (Fin Dc.n → ℂ) → ℝ), (∀ w ∈ Dc.Xo, ∀ w' ∈ torusSat {w}, G w' = G w) → (∀ m, ∀ t ∈ Q.V m, G (Q.γ m t) = Gk (Q.pc m) t) → (∀ k, IntegrableOn (fun t => Gk k t * ballDens (Q.F k).q t) (Q.FF k)) → ptsIntegral (e := Dc.n) (mCoordIdeal Dc.y) (fun _ => phMu Hd) G = κ * ∑ k, (Q.d k : ℝ) * ∫ t in Q.FF k, Gk k t * ballDens (Q.F k).q t := by
   obtain ⟨κ, hκ, h⟩ := transferU

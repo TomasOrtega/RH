@@ -35,7 +35,7 @@ namespace GlobalTheory.CMExistsCompare
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem spMap_comp' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
@@ -45,7 +45,7 @@ section Triples
 variable {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `ObjMaps.exists_sab_comp m m'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sab_comp {f : S' ⟶ S} {g : S'' ⟶ S'} {k : S'' ⟶ S} (m : SABMap t' t f) (m' : SABMap t'' t' g)
     (h : g ≫ f = k) : ∃ n : SABMap t'' t k, n.φ = m'.φ ≫ m.φ := by
@@ -53,7 +53,7 @@ theorem sab_comp {f : S' ⟶ S} {g : S'' ⟶ S'} {k : S'' ⟶ S} (m : SABMap t' 
   exact ObjMaps.exists_sab_comp m m'
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `ObjMaps.exists_sab_cancel m n`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sab_cancel {f : S' ⟶ S} {g : S'' ⟶ S'} {k : S'' ⟶ S} (m : SABMap t' t f) (n : SABMap t'' t k)
     (h : g ≫ f = k) : ∃ m' : SABMap t'' t' g, n.φ = m'.φ ≫ m.φ := by
@@ -61,36 +61,34 @@ theorem sab_cancel {f : S' ⟶ S} {g : S'' ⟶ S'} {k : S'' ⟶ S} (m : SABMap t
   exact ObjMaps.exists_sab_cancel m n
 
 /- English proof (translation)
-Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨w, hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sab_lbIso {f : S' ⟶ S} (m : SABMap t' t f) : LBIso t'.PP.L (t.PP.L.pull m.φ) := by
   obtain ⟨w, hw, -⟩ := m.lin
   exact ⟨w, hw⟩
 
 /- English proof (translation)
-The claim follows from `LiePull.exists_pushEquiv m.cart (Over.mk x') x h.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_ptEquiv {f : S' ⟶ S} (m : SABMap t' t f) {T : Scheme.{0}} {x' : T ⟶ S'} {x : T ⟶ S} (h : x' ≫ f = x) :
     ∃ p : (Over.mk x' ⟶ t'.G) ≃* (Over.mk x ⟶ t.G), ∀ u, (p u).left = u.left ≫ m.φ :=
   LiePull.exists_pushEquiv m.cart (Over.mk x') x h.symm
 
 /- English proof (translation)
-The claim follows from `m.cart.1.hom_ext h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem pt_ext {f : S' ⟶ S} (m : SABMap t' t f) {T : Scheme.{0}} {u v : T ⟶ t'.G.left} (h₁ : u ≫ m.φ = v ≫ m.φ)
     (h₂ : u ≫ t'.G.hom = v ≫ t'.G.hom) : u = v :=
   m.cart.1.hom_ext h₁ h₂
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `⟨p, hp⟩` from `exists_ptEquiv m (x' := x') rfl`. Take `rfl : e = fun z => p (e' z)` from `funext fun z => Over.OverMorphism.ext ((he z).trans (hp _).symm)`. Establish `hact : ∀ (u : Over.mk x' ⟶ t'.G) a, p (u ≫ t'.act.act a) = p u ≫ t.act.act a` using `fun u a => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Over.comp_left, hp, hp, Over.comp_left, Category.assoc, Category.assoc]`. Conclude with `congrArg _ (m.act a)`. Use `and_congr_right fun _ => and_congr ⟨fun hh => ?_, fun hh => ?_⟩ (and_congr ?_ (and_congr ?_ (and_congr ?_ (and_congr ?_ ?_))))` and prove the remaining obligations. Simplify using `only [hp]`. Conclude with `HolFibre.isHolTo_comp hh m.φ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hp] at hh`. Use `HolFibre.isHolTo_of_isPullback m.cart.1 hh ?_` and prove the remaining obligations. Establish `: (fun w => (e' w).left ≫ t'.G.hom) = fun _ => x'` using `funext fun w => Over.w (e' w)`. Rewrite using `[this]`. Conclude with `HolFibre.isHolTo_const isOpen_univ x'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [← map_mul, EmbeddingLike.apply_eq_iff_eq]`. Conclude with `(EquivLike.comp_surjective e' p).symm`. Simplify using `only [EmbeddingLike.map_eq_one_iff]`. Simplify using `only [← hact, EmbeddingLike.apply_eq_iff_eq]`. Use `forall_congr' fun k => forall_congr' fun a => forall_congr' fun b => forall_congr' fun c => forall_congr' fun _ => forall_congr' fun _ => ?_` and prove the remaining obligations.
-
-Conclude with `weilIs_grpPullback_of_comm _ _ _ _ _ m.φ _ _ t.PP.isLB t'.PP.isLB m.cart (sab_lbIso m) (Over.mk x') k _ _ _ _ _ (hp _) (hp _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isExpAt_iff {f : S' ⟶ S} (m : SABMap t' t f) {x' : Sp ℂ ⟶ S'} {x : Sp ℂ ⟶ S} (h : x' ≫ f = x)
     {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {Pe : D.La →+ (Fin g → ℂ)}
@@ -122,7 +120,7 @@ theorem isExpAt_iff {f : S' ⟶ S} (m : SABMap t' t f) {x' : Sp ℂ ⟶ S'} {x :
       (hp _) (hp _)
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `exists_ptEquiv m h`. Conclude with `⟨fun z => p.symm (e z), fun z => by rw [← hp, p.apply_symm_apply]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lift {f : S' ⟶ S} (m : SABMap t' t f) {T : Scheme.{0}} {x' : T ⟶ S'} {x : T ⟶ S} (h : x' ≫ f = x)
     {V : Type} (e : V → (Over.mk x ⟶ t.G)) :
@@ -131,7 +129,7 @@ theorem exists_lift {f : S' ⟶ S} (m : SABMap t' t f) {T : Scheme.{0}} {x' : T 
   exact ⟨fun z => p.symm (e z), fun z => by rw [← hp, p.apply_symm_apply]⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `exists_ptEquiv m h`. Conclude with `⟨fun z => p (e' z), fun z => hp _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_push {f : S' ⟶ S} (m : SABMap t' t f) {T : Scheme.{0}} {x' : T ⟶ S'} {x : T ⟶ S} (h : x' ≫ f = x)
     {V : Type} (e' : V → (Over.mk x' ⟶ t'.G)) :
@@ -146,7 +144,7 @@ section Extend
 variable {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K']
 
 /- English proof (translation)
-Rewrite using `[spMap_comp', ← h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_int (j : K →+* K') {σ : K →+* ℂ} {σ' : K' →+* ℂ} (h : σ'.comp j = σ) :
     spMap (σ'.comp (algebraMap (𝓞 K') K')) ≫ spMap (RingOfIntegers.mapRingHom j) =
@@ -155,17 +153,15 @@ theorem spMap_int (j : K →+* K') {σ : K →+* ℂ} {σ' : K' →+* ℂ} (h : 
   rfl
 
 /- English proof (translation)
-Use `set f := RingOfIntegers.mapRingHom j with hf`. Establish `hinj : Function.Injective f` using `fun a b e => Subtype.ext (j.injective (congrArg Subtype.val e))`. Use `choose A' a _ using fun b => PAT.exists_pullback E H _ _ (spMap f) (X.A b)`. Take `⟨B', mb, -⟩` from `PAT.exists_pullback E H _ _ (spMap f) X.B`. Establish `hmon : ∀ i, IsMonHom (X.φ i)` using `fun i => (X.lin i).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose φ' hφm hφ using fun i : Fin p ⊕ Fin q => PairingFibre.exists_hom (a i.isLeft).cart mb.cart (X.φ i)`. Establish `hpt` using `spMap_int j h`. Use `⟨{ split := ((splits_basic E).2.2 K).2.2 K' j X.split |>.1 ρ_sq := by rw [← map_pow, X.ρ_sq, map_neg, map_natCast] A := A', B := B' typeP := (hasType_baseChange E H _ _ f _ _ (a true) ρ 1 0).1 hinj X.typeP typeM := (hasType_baseChange E H _ _ f _ _ (a false) ρ 0 1).1 hinj X.typeM …` and prove the remaining obligations. Use `⟨hφm i, fun c => Over.OverMorphism.ext (pt_ext mb ?_ (by rw [Over.w, Over.w]))⟩` and prove the remaining obligations. Establish `e` using `congrArg Over.Hom.left ((X.lin i).2 c)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Over.comp_left] at e`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hφ, mb.act, ← Category.assoc, (a i.isLeft).act, Category.assoc, e, ← Category.assoc, ← hφ, Category.assoc]`. Take `⟨pB, hB⟩` from `exists_ptEquiv mb hpt choose pA hA using fun b => exists_ptEquiv (a b) hpt`. Take `⟨x, hx⟩` from `X.onto (pB y)`. Use `⟨fun i => (pA i.isLeft).symm (x i), pB.injective ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hx, map_list_prod, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Function.comp_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hB, Over.comp_left, Over.comp_left, Category.assoc]`. Use `erw [hφ]`. Rewrite using `[← Category.assoc, ← hA, MulEquiv.apply_symm_apply]`. Use `(PairingFibre.weilEq_iff (a i.isLeft).cart (a i.isLeft).cart mb.cart (a i.isLeft).cart X.B.t.PP.isLB (X.A i.isLeft).t.PP.isLB B'.t.PP.isLB (A' i.isLeft).t.PP.isLB (sab_lbIso mb) (sab_lbIso (a i.isLeft)) (hφ i) (hφ i) ((a i.isLeft).act _) (g₂ := 𝟙 _) (by simp) _).2 ?_` and prove the remaining obligations. Rewrite using `[hpt]`.
-
-Conclude with `X.weil i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cmObj_extend {ρ : 𝓞 K} {σ : K →+* ℂ} {p q : ℕ} (X : CMObj H K ρ σ p q) (j : K →+* K') (σ' : K' →+* ℂ)
     (h : σ'.comp j = σ) :
@@ -244,7 +240,7 @@ def EmbeddedConcl (Z : CMLat hP D.p D.q) (x : Sp ℂ ⟶ Xo.X) (e : (Fin g → �
     TiedToLattices Z X eB
 
 /- English proof (translation)
-Set `e` to `σ.toRatAlgHom.equivFieldRange`. Use `haveI : FiniteDimensional ℚ σ.toRatAlgHom.fieldRange := e.toLinearEquiv.finiteDimensional`. Conclude with `⟨σ.toRatAlgHom.fieldRange, ⟨⟩, e.toRingEquiv.toRingHom, RingHom.ext fun _ => rfl, fun z => Iff.rfl⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_image {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) :
     ∃ (K₂ : IntermediateField ℚ ℂ) (_ : NumberField K₂) (j : K →+* K₂),
@@ -257,19 +253,17 @@ variable {Xo} {Z : CMLat hP D.p D.q} {x : Sp ℂ ⟶ Xo.X} {e : (Fin g → ℂ) 
   {K' : Type} [Field K'] [NumberField K'] {κ : KA l →+* K'} {σ' : K' →+* ℂ} {k : IntermediateField ℚ ℂ}
 
 /- English proof (translation)
-Take `⟨K₁, _, _, j, σ₁, ρ, X, y, o, mU, mB, eB, hj, hρ, hy, hx, hw, -, hhh, gA, tyA, PA, eA, hA, hF⟩` from `h`. Use `choose F hF hφ using hF`. Take `⟨K₂, _, i, hi, hK₂⟩` from `exists_image σ₁`. Establish `hle : ∀ a, σ' a ∈ K₂` using `fun a => (hK₂ _).2 ⟨j a, by rw [← hj]; rfl⟩`. Establish `hKA : KA l ≤ K₂` using `fun z hz => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hle (κ ⟨z, hz⟩)` as an intermediate fact. Rewrite `this` using `[← RingHom.comp_apply, hκ]`. Then use the resulting hypothesis. Take `⟨X', a, mb, hh', hφ'⟩` from `exists_cmObj_extend X i (algebraMap K₂ ℂ) hi`. Take `⟨T₀, m', -⟩` from `PAT.exists_pullback E H _ _ (spMap (algebraMap (𝓞 K₂) K₂)) X'.B`. Take `⟨n₁, hn₁⟩` from `sab_comp mb m' rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `sab_cancel (g := spMap i) mB n₁ (by rw [spMap_comp', spMap_comp']; rfl)`. Take `⟨m, hm⟩` from `sab_comp mU.toSABMap n rfl`. Establish `hpt` using `spMap_int i hi`. Use `choose eA' heA' using fun b => exists_lift (a b) hpt (eA b)`. Establish `hσ : spMap (algebraMap K₂ ℂ) ≫ spMap i = spMap σ₁` using `by rw [spMap_comp', hi]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨K₂, inferInstance, hKA, _, X', spMap i ≫ y, T₀.t, m, m', gA, tyA, PA, eA', F, fun z hz => ?_, ?_, hh'.trans hhh, ?_, ?_, fun b => ⟨(hA b).1, (isExpAt_iff (a b) hpt (heA' b)).2 (hA b).2⟩, hF, fun s z w hw₁ hw₂ => ?_⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `hk z hz`. Conclude with `hle b`. Use `show (algebraMap K₂ ℂ).comp i (ρ : K₁) = _`. Rewrite using `[hi, hρ, ← RingHom.comp_apply, hj, ← RingHom.comp_apply, hκ]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Rewrite using `[Category.assoc, hy, spMap_comp']`. Use `congr 1`. Use extensionality with `b`. Use `show (algebraMap K₂ ℂ).comp i (j (κ b)) = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hi, ← RingHom.comp_apply, hj, ← RingHom.comp_apply, hκ]`. Both sides reduce to the same expression. Rewrite using `[← Category.assoc, hσ, hx]`. Take `⟨v, hv₁, hv₂⟩` from `hw (F s z)`. Establish `: w ≫ n.φ = v.left`.
-
-Use `pt_ext mB ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hn, hn₁, ← Category.assoc, hw₂, hv₂, ← hφ, Over.comp_left, Over.comp_left, Category.assoc, hφ', heA', Category.assoc]`. Rewrite using `[Category.assoc, n.cart.1.w, ← Category.assoc, hw₁, hσ]`. Conclude with `(Over.w v).symm`. Rewrite using `[hm, ← Category.assoc, this, hv₁]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subfieldConcl_of_embeddedConcl (hκ : σ'.comp κ = algebraMap (KA l) ℂ) (hk : ∀ z ∈ k, z ∈ Set.range σ')
     (h : EmbeddedConcl Xo Z x e κ σ') : SubfieldConcl Xo Z x e k := by
@@ -312,15 +306,13 @@ theorem subfieldConcl_of_embeddedConcl (hκ : σ'.comp κ = algebraMap (KA l) �
     rw [hm, ← Category.assoc, this, hv₁]
 
 /- English proof (translation)
-Take `⟨K₁, _, hKA, ρ, X, y, t₀, m, m', gA, tyA, PA, eA, F, hle, hρ, hhh, hy, hx, hA, hF, hφ⟩` from `h`. Set `j : K' →+* K₁` to `σ'.codRestrict K₁.toSubfield fun a => hle (hk a)`. Establish `hj : (algebraMap K₁ ℂ).comp j = σ'` using `RingHom.ext fun _ => rfl`. Establish `hjκ : (IntermediateField.inclusion hKA).toRingHom = j.comp κ` using `RingHom.ext fun b => Subtype.ext (RingHom.congr_fun hκ b).symm`. Rewrite `hy` using `[hjκ]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨o, ⟨mU⟩⟩` from `ObjPull.objPull_of_pol pol_pull E H D l _ _ (baseKA l) (baseKA l) (RingHom.id _) _ _ Xo.s (spMap (j.comp κ)) y rfl rfl (by rw [hy, spMap_comp', RingHom.comp_id]) Xo.univ`. Take `⟨n, hn⟩` from `sab_cancel m mU.toSABMap (Category.id_comp y)`. Take `⟨mB, hmB⟩` from `sab_comp m' n (Category.id_comp _)`. Take `⟨e₀, he₀⟩` from `exists_lift mU.toSABMap hx e`. Establish `hpt` using `spMap_comp' (algebraMap (𝓞 K₁) K₁) (algebraMap K₁ ℂ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨eB, heB⟩` from `exists_push mB hpt e₀`. Use `⟨K₁, inferInstance, inferInstance, j, algebraMap K₁ ℂ, ρ, X, y, o, mU, mB, eB, hj, ?_, hy, hx, fun z => ⟨e₀ z, (he₀ z).symm, (heB z).symm⟩, (isExpAt_iff mB hpt heB).1 ((isExpAt_iff mU.toSABMap hx he₀).2 he), hhh, gA, tyA, PA, eA, hA, fun s => ⟨F s, hF s, fun z => ?_⟩⟩` and prove the remaining obligations. Conclude with `Subtype.ext (hρ.trans (RingHom.congr_fun hκ (baseKA l).ρ).symm)`. Take `⟨w, ⟨hw₁, hw₂⟩, -⟩` from `ExSt.existsUnique_point (algebraMap K₁ ℂ) m' (eA _ z ≫ X.φ s)`. Establish `: w = (e₀ (F s z)).left ≫ n.φ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `pt_ext m ?_ ?_` and prove the remaining obligations. Rewrite using `[hφ s z w hw₁ hw₂, he₀, hn, Category.assoc]`. Rewrite using `[hw₁, Category.assoc, n.cart.1.w, Category.comp_id]`. Conclude with `(Over.w (e₀ (F s z))).symm`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
-
-Rewrite using `[← hw₂, this, heB, hmB, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embeddedConcl_of_subfieldConcl (hκ : σ'.comp κ = algebraMap (KA l) ℂ) (hk : ∀ a, σ' a ∈ k)
     (he : IsExpAt Xo.univ.t x D' ty Pe e) (h : SubfieldConcl Xo Z x e k) : EmbeddedConcl Xo Z x e κ σ' := by
@@ -358,11 +350,11 @@ section ChangeOfExp
 variable {D₁ D₂ : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {P₁ : D₁.La →+ (Fin g → ℂ)} {P₂ : D₂.La →+ (Fin g → ℂ)}
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.1 (h ((a - b).natAbs + 1) (Nat.succ_pos _))`. Use `set k : ℕ := (a - b).natAbs + 1 with hk`. Establish `hk0 : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `e : ((b - a : ℤ) : ℂ) = ((n * k : ℤ) : ℂ)`. Apply `mul_left_cancel₀ Complex.two_pi_I_ne_zero` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts.
 
-Clear denominators, using `at hn` for the nonvanishing conditions. Use `push_cast`. Take the linear combination `(2 * Real.pi * Complex.I) * hn`. Establish `e' : b - a = n * k` using `by exact_mod_cast e`. Establish `: (b - a).natAbs = n.natAbs * k` using `by rw [e', Int.natAbs_mul, Int.natAbs_natCast]`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos n.natAbs with h0 | h0` into its components or cases. Rewrite `this` using `[h0, zero_mul]`. Use linear arithmetic over natural numbers and integers. Use `Nat.mul_le_mul_right k h0` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem int_eq_of_exp {a b : ℤ} (h : ∀ k : ℕ, 0 < k →
     Complex.exp (-(2 * Real.pi * Complex.I) * (a : ℂ) / k) = Complex.exp (-(2 * Real.pi * Complex.I) * (b : ℂ) / k)) :
@@ -384,7 +376,7 @@ theorem int_eq_of_exp {a b : ℤ} (h : ∀ k : ℕ, 0 < k →
     omega
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hv`. Establish `: (Set.univ : Set ℂ).Countable` using `Set.countable_of_injective_of_countable_image (f := fun c : ℂ => c • L v) (fun a _ b _ e => smul_left_injective ℂ hv e) (hs.mono (by rintro _ ⟨c, -, rfl⟩; simpa using h (c • v)))`. Conclude with `not_countable_complex this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linear_eq_zero_of_countable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (L : V →ₗ[ℂ] W) {s : Set W} (hs : s.Countable) (h : ∀ v, L v ∈ s) (v : V) : L v = 0 := by
@@ -395,7 +387,7 @@ theorem linear_eq_zero_of_countable {V W : Type} [AddCommGroup V] [Module ℂ V]
   exact not_countable_complex this
 
 /- English proof (translation)
-Use `D.fin` as an intermediate fact. Establish `: Countable (𝓞 E)` using `Finsupp.Countable.of_moduleFinite (R := ℤ)`. Conclude with `Finsupp.Countable.of_moduleFinite (R := 𝓞 E)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem countable_la (D : Datum H) : Countable D.La := by
   have := D.fin
@@ -403,17 +395,15 @@ theorem countable_la (D : Datum H) : Countable D.La := by
   exact Finsupp.Countable.of_moduleFinite (R := 𝓞 E)
 
 /- English proof (translation)
-Take `⟨hP₁, hol₁, add₁, on₁, ker₁, lin₁, w₁⟩` from `h₁`. Take `⟨hP₂, hol₂, add₂, on₂, ker₂, lin₂, w₂⟩` from `h₂`. Use `t.semi.separated` as an intermediate fact. Establish `c₁` using `countable_la D₁`. Establish `c₂` using `countable_la D₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Λ : Submodule ℤ (Fin g → ℂ)` to `AddSubgroup.toIntSubmodule P₂.range`. Establish `: DiscreteTopology Λ` using `hP₂.2.2.1`. Establish `: IsZLattice ℝ Λ` using `⟨hP₂.2.2.2.1⟩`. Take `⟨h, hh⟩` from `hd.exists_linearEquiv Λ ker₂ add₁ on₁ hol₁ ((Set.countable_range P₁).mono fun z hz => (ker₁ z).1 hz)`. Establish `hc : ∀ (a : 𝓞 E) z, h (fun k => ty k (a : E) * z k) = fun k => ty k (a : E) * h z k` using `fun a z => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `d : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `LinearMap.pi fun k => ty k (a : E) • LinearMap.proj k`. Use `sub_eq_zero.1 (linear_eq_zero_of_countable (h.toLinearMap ∘ₗ d - d ∘ₗ h.toLinearMap) (Set.countable_range P₂) (fun v => (ker₂ _).1 ((UnifPoint.eq_iff_sub_of_add add₂ _ _).1 ?_)) z)` and prove the remaining obligations. Conclude with `(hh _).trans ((lin₁ a v).trans (((lin₂ a (h v)).trans (by rw [hh])).symm))`. Establish `hz₁` using `UnifPoint.map_zero_of_add add₁`. Use `choose ψ hψ using fun a => (ker₂ (h (P₁ a))).1 ((hh _).trans ((ker₁ _).2 ⟨a, rfl⟩))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨⟨ψ, fun a b => hP₂.2.1 (by rw [map_add, hψ, hψ, hψ, map_add, map_add])⟩, fun s a => hP₂.2.1 ?_⟩, h, fun b => ?_, fun a b => ?_, hψ, hh, hc⟩` and prove the remaining obligations. Rewrite using `[hψ, show P₁ (s • a) = _ from funext (hP₁.1 s a), hc]`. Use function extensionality and compare the values at `k`. Rewrite using `[RingHom.id_apply, hP₂.1, hψ]`. Take `⟨a, ha⟩` from `(ker₁ (h.symm (P₂ b))).1 (by rw [← hh, h.apply_symm_apply]; exact (ker₂ _).2 ⟨b, rfl⟩)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨a, hP₂.2.1 ((hψ a).trans (by rw [ha, h.apply_symm_apply]))⟩`. Use `int_eq_of_exp fun k hk => ?_` and prove the remaining obligations. Establish `u₁` using `w₁ k a b (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl`. Establish `u₂` using `w₂ k (ψ a) (ψ b) (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl`. Rewrite `u₂` using `[hψ, hψ, ← map_smul h, ← map_smul h, hh, hh]`.
-
-Conclude with `congrArg Units.val (weilIs_unique_fieldPoint _ _ _ t.PP.isLB ℂ x k _ _ _ _ u₂ u₁)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isometry {S : Scheme.{0}} {t : SAB H S} {x : Sp ℂ ⟶ S} {e₁ e₂ : (Fin g → ℂ) → (Over.mk x ⟶ t.G)}
     (h₁ : IsExpAt t x D₁ ty P₁ e₁) (h₂ : IsExpAt t x D₂ ty P₂ e₂) (hd : UnifPoint.IsExp e₂) :
@@ -478,9 +468,7 @@ def moveLat {hP₁ : IsPeriod D₁ ty P₁} (hP₂ : IsPeriod D₂ ty P₂) {p q
     exact ⟨x, by rw [← map_nsmul, hx, map_sum]; rfl⟩
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨ψ, h, hs, hE, hψ, he, hl⟩ := exists_isometry h₁ h₂ hd`. Take `⟨K₁, _, hKA, ρ, X, y, t₀, m, m', gA, tyA, PA, eA, F, hle, hρ, hhh, hy, hx, hA, hF, hφ⟩` from `hc (moveLat h₂.1 Z ψ h hs hE hψ hl)`. Use `⟨K₁, inferInstance, hKA, ρ, X, y, t₀, m, m', gA, tyA, PA, eA, fun j => h.symm.toLinearMap ∘ₗ F j, hle, hρ, hhh, hy, hx, hA, fun j a => ?_, fun j z w hw₁ hw₂ => ?_⟩` and prove the remaining obligations. Conclude with `h.symm_apply_eq.2 ((hF j a).trans (hψ _))`. Rewrite using `[hφ j z w hw₁ hw₂, ← he]`.
-
-Conclude with `congrArg (fun v => (e₂ v).left) (h.apply_symm_apply _).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subfieldConcl_of_exp {D : Datum H} {l : Level H} {Xo : Moduli D l} {x : Sp ℂ ⟶ Xo.X}
     {e₁ e₂ : (Fin g → ℂ) → (Over.mk x ⟶ Xo.univ.t.G)} (h₁ : IsExpAt Xo.univ.t x D₁ ty P₁ e₁)
@@ -501,15 +489,15 @@ end ChangeOfExp
 section Point
 
 /- English proof (translation)
-Take `⟨τ, hτ, hτ'⟩` from `LevQuot.exists_fieldAut l (σ'.comp κ) (algebraMap (KA l) ℂ) hρ`. Take `⟨r, m, -, hr, -⟩` from `LevQuot.exists_semiTwist_iso (l := l) hpq { l with A := 1, A_pos := one_pos } rfl rfl rfl Xo τ hτ`. Take `⟨e', he'⟩` from `exists_push m (x' := x) rfl e`. Take `⟨K₁, _, _, j, σ₁, ρ, X, y', o', mU', mB', eB, hj, hρ₁, hy, hx', hw, hT⟩` from `h (κ.comp τ.toRingHom) (x ≫ r.hom) e' hτ' (by rw [Category.assoc, hr, ← Category.assoc, hx, spMap_comp', hτ']) ((isExpAt_iff m rfl he').1 he)`. Establish `hid : spMap τ.toRingHom ≫ spMap τ.symm.toRingHom = 𝟙 _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[spMap_comp', RingEquiv.toRingHom_comp_symm_toRingHom]`. Conclude with `Spec.map_id _`. Establish `hyr : (y' ≫ r.inv) ≫ r.hom = y'` using `by simp`. Establish `hs : (y' ≫ r.inv) ≫ Xo.s = spMap (j.comp κ)`. Rewrite using `[← Category.comp_id Xo.s, ← hid, ← Category.assoc Xo.s, ← hr, Category.assoc r.hom, ← Category.assoc, hyr, ← Category.assoc, hy, spMap_comp', RingHom.comp_assoc, RingHom.comp_assoc, RingEquiv.toRingHom_comp_symm_toRingHom, RingHom.comp_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxy : spMap σ₁ ≫ y' ≫ r.inv = x` using `by rw [← Category.assoc, hx']; simp`. Take `⟨o, ⟨mU⟩⟩` from `ObjPull.objPull_of_pol pol_pull E H D l _ _ (baseKA l) (baseKA l) (RingHom.id _) _ _ Xo.s (spMap (j.comp κ)) (y' ≫ r.inv) rfl rfl (by rw [hs, spMap_comp', RingHom.comp_id]) Xo.univ`. Take `⟨n₁, hn₁⟩` from `sab_comp m mU.toSABMap hyr`. Take `⟨n, hn⟩` from `sab_cancel mU'.toSABMap n₁ (Category.id_comp y')`. Take `⟨mB, hmB⟩` from `sab_comp mB' n (Category.id_comp _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e₀, he₀⟩` from `exists_lift mU.toSABMap hxy e`. Use `⟨K₁, inferInstance, inferInstance, j, σ₁, ρ, X, y' ≫ r.inv, o, mU, mB, eB, hj, hρ₁.trans (congrArg (fun a => j (κ a)) hτ), hs, hxy, fun z => ⟨e₀ z, (he₀ z).symm, ?_⟩, hT⟩` and prove the remaining obligations. Take `⟨w, hw₁, hw₂⟩` from `hw z`. Establish `: (e₀ z).left ≫ n.φ = w.left`. Use `pt_ext mU'.toSABMap ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ← hn, hn₁, ← Category.assoc, ← he₀, ← he', hw₁]`. Rewrite using `[Category.assoc, n.cart.1.w, Category.comp_id]`. Conclude with `(Over.w (e₀ z)).trans (Over.w w).symm`. Rewrite using `[hmB, ← Category.assoc, this, hw₂]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embeddedConcl_of_inclusion {D : Datum H} {l : Level H} {Xo : Moduli D l} (hpq : 1 ≤ D.p + D.q) {D' : Datum H}
     {g : ℕ} {ty : Fin g → (E →+* ℂ)} {Pe : D'.La →+ (Fin g → ℂ)} {hP : IsPeriod D' ty Pe} (Z : CMLat hP D.p D.q)
@@ -559,7 +547,7 @@ def CMExistsOn (P : ℕ → Prop) : Prop :=
     SubfieldConcl Xo Z (FU.u i Pe) (FU.ex i Pe) k
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨fun E _ _ _ H D l Xo g ty FU i Pe hP Z k hk _ => h E H D l Xo g ty FU i Pe hP Z k hk, fun E _ _ _ H D l Xo g ty FU i Pe hP Z k hk _ => h E H D l Xo g ty FU i Pe hP Z k hk⟩, fun h E _ _ _ H D l Xo g ty FU i Pe hP Z k hk => (Nat.eq_zero_or_pos (D.p + D.q)).elim (h.2 E H …`.
+Supply the required witnesses or components.
 -/
 theorem cmExistsSt_iff : CMExistsSt ↔ CMExistsOn (1 ≤ ·) ∧ CMExistsOn (· = 0) :=
   ⟨fun h => ⟨fun E _ _ _ H D l Xo g ty FU i Pe hP Z k hk _ => h E H D l Xo g ty FU i Pe hP Z k hk,
@@ -568,9 +556,9 @@ theorem cmExistsSt_iff : CMExistsSt ↔ CMExistsOn (1 ≤ ·) ∧ CMExistsOn (·
       (h.2 E H D l Xo g ty FU i Pe hP Z k hk) (h.1 E H D l Xo g ty FU i Pe hP Z k hk)⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo g ty FU i Pe hP Z k hk hpq`. Use `LevQuot.finiteDimensional_field l` as an intermediate fact. Establish `: NumberField (k ⊔ KA l : IntermediateField ℚ ℂ)` using `⟨⟩`. Establish `hty` using `PeriodCompare.isTypeFn_of_isPeriod hP`. Rewrite `hty` using `[(FU.sig i).1, (FU.sig i).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `subfieldConcl_of_embeddedConcl (σ' := algebraMap (k ⊔ KA l : IntermediateField ℚ ℂ) ℂ) (κ := (IntermediateField.inclusion le_sup_right).toRingHom) rfl (fun z hz => ⟨⟨z, (le_sup_left : k ≤ k ⊔ KA l) hz⟩, rfl⟩) (h E H D l Xo _ _ _ _ _ g ty Pe hP _ Z hpq rfl (FU.over_σ i Pe hP) (FU. …`.
+A detailed English derivation is pending.
 -/
 theorem cmExistsOn_of_pointCarriesObject (h : PointCarriesObject) : CMExistsOn (1 ≤ ·) := by
   intro E _ _ _ H D l Xo g ty FU i Pe hP Z k hk hpq
@@ -585,9 +573,9 @@ theorem cmExistsOn_of_pointCarriesObject (h : PointCarriesObject) : CMExistsOn (
       (isExpAt_of_familyUnif FU i Pe hP))
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo K' _ _ κ σ' x D' g ty Pe hP e Z hpq hρ hx _ _ hty he`. Use `embeddedConcl_of_inclusion hpq Z (fun κ x e hκ hx he => ?_) hρ hx he` and prove the remaining obligations. Take `⟨FU⟩` from `hU E H D l Xo (algebraMap (KA l) ℂ) g ty hpq rfl hty`. Take `⟨i, P, hP', rfl⟩` from `FU.onto x hx`. Take `⟨k, _, -, -, hk⟩` from `exists_image σ'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `he'` using `isExpAt_of_familyUnif FU i P hP'`. Conclude with `embeddedConcl_of_subfieldConcl hκ (fun a => (hk _).2 ⟨a, rfl⟩) he (subfieldConcl_of_exp he he' ⟨he'.2.2.1, he'.2.2.2.1, he'.2.1, FU.ex_diff i P hP'⟩ (fun Z' => h E H D l Xo g ty FU i P hP' Z' k inferInstance hpq) Z)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pointCarriesObject_of_cmExistsOn (hU : N1c) (h : CMExistsOn (1 ≤ ·)) : PointCarriesObject := by
   intro E _ _ _ H D l Xo K' _ _ κ σ' x D' g ty Pe hP e Z hpq hρ hx _ _ hty he
@@ -601,7 +589,7 @@ theorem pointCarriesObject_of_cmExistsOn (hU : N1c) (h : CMExistsOn (1 ≤ ·)) 
       (fun Z' => h E H D l Xo g ty FU i P hP' Z' k inferInstance hpq) Z)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pointCarriesObject_of_cmExistsOn hU, cmExistsOn_of_pointCarriesObject⟩`.
+Supply the required witnesses or components.
 -/
 theorem cmExistsOn_iff (hU : N1c) : CMExistsOn (1 ≤ ·) ↔ PointCarriesObject :=
   ⟨pointCarriesObject_of_cmExistsOn hU, cmExistsOn_of_pointCarriesObject⟩
@@ -625,13 +613,13 @@ def TensorForSomeCurve : Prop :=
       IsKForm D ε h ∧ Nonempty (IsTen C D h T) ∧ Nonempty (SABMap o.t T.t (spMap β))
 
 /- English proof (translation)
-Use `⟨fun hA E _ _ _ H D l k hk hD => ?_, fun hB E _ _ _ H D l k hk hD => ?_⟩` and prove the remaining obligations. Take `⟨K₁, _, hKA, ω, C, ε, h, T, o, hle, hC, hh, hT, hm⟩` from `hA E H D l k hk hD`. Conclude with `⟨K₁, inferInstance, inferInstance, ω, C, ε, h, T, K₁, inferInstance, inferInstance, _, _, algebraMap K₁ ℂ, o, rfl, fun z hz => ⟨⟨z, hle hz⟩, rfl⟩, hC, hh, hT, hm⟩`. Take `⟨M, _, _, ω, C, ε, h, T, K₁, _, _, β, κ, σ₁, o, hκ, hle, hC, hh, ⟨tt⟩, ⟨m⟩⟩` from `hB E H D l k hk hD`. Take `⟨K₂, _, i, hi, hK₂⟩` from `exists_image σ₁`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hKA : KA l ≤ K₂` using `fun z hz => (hK₂ z).2 ⟨κ ⟨z, hz⟩, RingHom.congr_fun hκ _⟩`. Establish `hiκ : (IntermediateField.inclusion hKA).toRingHom = i.comp κ` using `RingHom.ext fun b => Subtype.ext ((RingHom.congr_fun hκ b).symm.trans (RingHom.congr_fun hi (κ b)).symm)`. Set `f : 𝓞 M →+* 𝓞 K₂` to `(i.comp β).codRestrict (integralClosure ℤ K₂).toSubring fun a => (RingOfIntegers.isIntegral a).map (i.comp β).toIntAlgHom`. Establish `hf : (algebraMap (𝓞 K₂) K₂).comp f = i.comp β` using `RingHom.ext fun _ => rfl`. Take `⟨C', φ, hφ⟩` from `exists_ellMap polBaseChange_holds E H _ ω C _ f`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T', mT, -⟩` from `PAT.exists_pullback E H _ _ (spMap f) T`. Take `⟨tt', -⟩` from `isTen_baseChange E H _ ω C D h T tt _ _ C' f φ T' mT hφ`. Take `⟨o', ⟨mo⟩⟩` from `ObjPull.objPull_of_pol pol_pull E H D l _ _ (baseKA l) (baseKA l) (RingHom.id _) _ _ (spMap κ) (spMap (IntermediateField.inclusion hKA).toRingHom) (spMap i) rfl rfl (by rw [hiκ, spMap_comp', spMap_comp', RingHom.comp_id]) o`. Take `⟨n₁, -⟩` from `sab_comp m mo.toSABMap rfl`. Take `⟨n, -⟩` from `sab_cancel (g := spMap (algebraMap (𝓞 K₂) K₂)) mT n₁ (by rw [spMap_comp', spMap_comp', hf])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨K₂, inferInstance, hKA, _, C', ε, h, T', o', fun z hz => (hK₂ z).2 (hle z hz), ?_, hh, ⟨tt'⟩, ⟨n⟩⟩` and prove the remaining obligations. Use `(EllComp.ellMap_comp E H _ ω C _ _ C' f φ hφ).2.1 _ ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, hf, ← RingHom.comp_assoc, hi]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem tensorObjSt_iff_some : TensorObjSt ↔ TensorForSomeCurve := by
   refine ⟨fun hA E _ _ _ H D l k hk hD => ?_, fun hB E _ _ _ H D l k hk hD => ?_⟩
@@ -659,7 +647,7 @@ theorem tensorObjSt_iff_some : TensorObjSt ↔ TensorForSomeCurve := by
     rwa [RingHom.comp_assoc, hf, ← RingHom.comp_assoc, hi]
 
 /- English proof (translation)
-Introduce `E _ _ _ H`. Take `⟨l⟩ : Nonempty (Level H)` from `inferInstance`. Take `⟨K₁, hK, -, ω, C, -, -, -, -, -, hC, -⟩` from `h E H (ExStModel.zeroDatum H) l ⊥ inferInstance (Or.inl rfl)`. Conclude with `⟨K₁, inferInstance, hK, algebraMap K₁ ℂ, ω, C, hC⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem principalCurve_of_tensorObjSt (h : TensorObjSt) : PrincipalCurve := by
   intro E _ _ _ H
@@ -668,9 +656,9 @@ theorem principalCurve_of_tensorObjSt (h : TensorObjSt) : PrincipalCurve := by
   exact ⟨K₁, inferInstance, hK, algebraMap K₁ ℂ, ω, C, hC⟩
 
 /- English proof (translation)
-Take `⟨τ, hτ, -⟩` from `LieChar.ell_char E H R ω C`. Establish `: (2 * wK H - 1) ^ 2 = -(H.d : OK H)` using `Subtype.ext (by`. Use `push_cast`. Use `show (2 * H.w0 - 1) ^ 2 = _`. Rewrite using `[H.two_weight_eq_one_add_root, add_sub_cancel_left, H.rt_sq])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `congrArg τ this` using `[hτ, map_ofNat]`.
+A detailed English derivation is pending.
 -/
 theorem ell_sq {R : Type} [CommRing R] {ω : R} (C : Ell H R ω) : (2 * ω - 1) ^ 2 = -(H.d : R) := by
   obtain ⟨τ, hτ, -⟩ := LieChar.ell_char E H R ω C
@@ -681,9 +669,9 @@ theorem ell_sq {R : Type} [CommRing R] {ω : R} (C : Ell H R ω) : (2 * ω - 1) 
   simpa [hτ, map_ofNat] using congrArg τ this
 
 /- English proof (translation)
-Take `⟨M, _, _, σ, ω, C, hp⟩` from `hC E H`. Establish `h₁ : σ.comp (algebraMap (𝓞 M) M) (2 * ω - 1) ^ 2 = r ^ 2`. Rewrite using `[← map_pow, ell_sq C, map_neg, map_natCast, hr]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h₁ with h₂ | h₂` into its components or cases. Conclude with `⟨M, inferInstance, inferInstance, σ, ω, C, hp, h₂⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Take `⟨a, -, h₃, h₄, h₅⟩` from `EllConj.exists_conj_action E H _ ω C`. Use `⟨M, inferInstance, inferInstance, σ, 1 - ω, ⟨C.P, C.dim, a, C.v, C.basis, h₃, h₄, h₅⟩, hp, ?_⟩` and prove the remaining obligations. Rewrite using `[show 2 * (1 - ω) - 1 = -(2 * ω - 1) by ring, map_neg, h₂, neg_neg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem exists_curve_sign (hC : PrincipalCurve) (H : Host E) {r : ℂ} (hr : r ^ 2 = -(H.d : ℂ)) :
     ∃ (M : Type) (_ : Field M) (_ : NumberField M) (σ : M →+* ℂ) (ω : 𝓞 M) (C : Ell H (𝓞 M) ω),
@@ -698,19 +686,19 @@ theorem exists_curve_sign (hC : PrincipalCurve) (H : Host E) {r : ℂ} (hr : r ^
     rw [show 2 * (1 - ω) - 1 = -(2 * ω - 1) by ring, map_neg, h₂, neg_neg]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l k hk hD`. Establish `him : H.rt0.im ≠ 0` using `fun h0 => by`. Establish `h` using `congrArg Complex.re H.sqrt_neg_disc_sq`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Simplify using `[sq, h0] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Choose the witnesses or unpack the hypotheses as in `⟨ε₀, hε₀⟩ : ∃ ε₀ : ℤˣ, 0 < ((ε₀ : ℤ) : ℝ) * H.rt0.im := by`. Break down `lt_or_gt_of_ne him with h | h` into its components or cases. Conclude with `⟨-1, by simpa using h⟩`. Conclude with `⟨1, by simpa using h⟩`.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨ε, r, hr, hε, hs⟩ : ∃ (ε : ℤˣ) (r : ℂ), r ^ 2 = -(H.d : ℂ) ∧ (∀ x : D.La, x ≠ 0 → 0 < (ε : ℤ) * D.EF (H.w0 • x) x) ∧ ((D.q = 0 ∧ H.rt0 = r) ∨ (D.p = 0 ∧ H.rt0 = -r)) := by`. Break down `hD with h | h` into its components or cases. Conclude with `⟨-ε₀, -H.rt0, by rw [neg_sq, H.sqrt_neg_disc_sq], definite_datum_form_pos E H D _ (Or.inr ⟨h, by simpa using hε₀⟩), Or.inr ⟨h, (neg_neg _).symm⟩⟩`. Conclude with `⟨ε₀, H.rt0, H.sqrt_neg_disc_sq, definite_datum_form_pos E H D _ (Or.inl ⟨h, hε₀⟩), Or.inl ⟨h, rfl⟩⟩`. Take `⟨M, _, _, σ, ω, C, hp, hω⟩` from `exists_curve_sign hC H hr`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩ : ∃ h : D.La → D.La → OK H, IsKForm D ε h` from `⟨fun x y => (((ε : ℤ) * (D.EF (H.w0 • x) y - D.EF x y) : ℤ) : OK H) + (((ε : ℤ) * D.EF x y : ℤ) : OK H) * wK H, fun x y => by simp [wK]⟩`. Take `⟨T, hT⟩` from `h₁ E H M ω C D ε h hh hε`. Take `⟨M', _, i, hi, -⟩` from `exists_image σ`. Use `LevQuot.finiteDimensional_field l` as an intermediate fact. Set `K' : IntermediateField ℚ ℂ` to `(k ⊔ KA l) ⊔ M'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: NumberField K'` using `⟨⟩`. Set `β : 𝓞 M →+* K'` to `((IntermediateField.inclusion le_sup_right).toRingHom.comp i).comp (algebraMap (𝓞 M) M)`. Set `κ : KA l →+* K'` to `(IntermediateField.inclusion (le_sup_right.trans le_sup_left)).toRingHom`. Establish `hβ : (algebraMap K' ℂ).comp β = σ.comp (algebraMap (𝓞 M) M)` using `by rw [← hi]; rfl`. Establish `hω' : ((β (2 * ω - 1) : K') : ℂ) = r` using `(RingHom.congr_fun hβ _).trans hω`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K₁, _, _, j, o, hm⟩` from `h₂ E H M ω C D ε h T hh hT l K' β κ (hs.imp (fun a => ⟨a.1, Subtype.ext (a.2.trans hω'.symm)⟩) fun a => ⟨a.1, Subtype.ext (a.2.trans (congrArg Neg.neg hω'.symm))⟩)`. Choose the witnesses or unpack the hypotheses as in `⟨σ₁, hσ₁⟩ : ∃ σ₁ : K₁ →+* ℂ, σ₁.comp j = algebraMap K' ℂ := by`. Use `letI := j.toAlgebra`. Use `haveI : IsScalarTower ℚ K' K₁ := IsScalarTower.of_algebraMap_eq fun q => (map_ratCast j q).symm`. Use `haveI : Algebra.IsAlgebraic K' K₁ := Algebra.IsAlgebraic.tower_top (K := ℚ) K'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨(IsAlgClosed.lift (R := K') (S := K₁) (M := ℂ)).toRingHom, RingHom.ext fun a => (IsAlgClosed.lift (R := K') (S := K₁) (M := ℂ)).commutes a⟩`. Use `⟨M, inferInstance, inferInstance, ω, C, ε, h, T, K₁, inferInstance, inferInstance, j.comp β, j.comp κ, σ₁, o, ?_, fun z hz => ⟨j ⟨z, (le_sup_left.trans le_sup_left : k ≤ K') hz⟩, RingHom.congr_fun hσ₁ _⟩, ?_, hh, hT, hm⟩` and prove the remaining obligations. Rewrite using `[← RingHom.comp_assoc, hσ₁]`. Both sides reduce to the same expression. Rewrite using `[← RingHom.comp_assoc, hσ₁, hβ]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem some_of_tensor (h₁ : TensorExists) (h₂ : TensorIsObject) (hC : PrincipalCurve) : TensorForSomeCurve := by
   intro E _ _ _ H D l k hk hD
@@ -757,7 +745,7 @@ theorem some_of_tensor (h₁ : TensorExists) (h₂ : TensorIsObject) (hC : Princ
   · rwa [← RingHom.comp_assoc, hσ₁, hβ]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨principalCurve_of_tensorObjSt, fun hC => tensorObjSt_iff_some.2 (some_of_tensor h₁ h₂ hC)⟩`.
+Supply the required witnesses or components.
 -/
 theorem tensorObjSt_iff_curve (h₁ : TensorExists) (h₂ : TensorIsObject) : TensorObjSt ↔ PrincipalCurve :=
   ⟨principalCurve_of_tensorObjSt, fun hC => tensorObjSt_iff_some.2 (some_of_tensor h₁ h₂ hC)⟩
@@ -765,7 +753,7 @@ theorem tensorObjSt_iff_curve (h₁ : TensorExists) (h₂ : TensorIsObject) : Te
 end Tensor
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cmExistsSt_iff, cmExistsOn_of_pointCarriesObject, cmExistsOn_iff, tensorObjSt_iff_some, fun h => tensorObjSt_iff_curve h.1 h.2, fun h hC => ⟨(tensorObjSt_iff_curve h.1.1 h.1.2).2 hC, cmExistsOn_of_pointCarriesObject h.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem compare :
     (CMExistsSt ↔ CMExistsOn (1 ≤ ·) ∧ CMExistsOn (· = 0)) ∧ (PointCarriesObject → CMExistsOn (1 ≤ ·)) ∧

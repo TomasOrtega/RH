@@ -14,13 +14,13 @@ variable {n : ℕ} {Y : Type*} [TopologicalSpace Y] [T2Space Y] [SecondCountable
   (A : WeightedAtlas n Y ι La)
 
 /- English proof (translation)
-The claim follows from `(A.chart j).isOpen_inter_preimage_symm (A.chart i).open_source`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_ovl (j i : ι) : IsOpen (ovl A.chart j i) :=
   (A.chart j).isOpen_inter_preimage_symm (A.chart i).open_source
 
 /- English proof (translation)
-Use `contDiffOn_piLp' 2 fun k => ?_` and prove the remaining obligations. Establish `h : DifferentiableOn ℂ (fun x => ((A.chart i) ((A.chart j).symm x)) k) (ovl A.chart j i)` using `(EuclideanSpace.proj k : V n →L[ℂ] ℂ).differentiable.comp_differentiableOn (A.holo_trans j i)`. Conclude with `ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn n _ _ (A.isOpen_ovl j i) h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trans_contDiffOn (j i : ι) :
     ContDiffOn ℂ ∞ ((A.chart i) ∘ (A.chart j).symm) (ovl A.chart j i) := by
@@ -33,13 +33,13 @@ def chiC (i : ι) (β : V n → ℝ) (y : Y) : ℝ :=
   open Classical in if y ∈ (A.chart i).source then β (A.chart i y) else 0
 
 /- English proof (translation)
-Simplify using `[chiC, hy]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chiC_of_mem {i : ι} {β : V n → ℝ} {y : Y} (hy : y ∈ (A.chart i).source) :
     A.chiC i β y = β (A.chart i y) := by simp [chiC, hy]
 
 /- English proof (translation)
-Unfold `chiC`. Use `split_ifs with h`. Assume the negation of the conclusion as `hne`. Conclude with `hy ⟨_, hβs _ hne, (A.chart i).left_inv h⟩`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chiC_eq_zero {i : ι} {β : V n → ℝ} {K0 : Set (V n)} (hβs : ∀ u, β u ≠ 0 → u ∈ K0)
     {y : Y} (hy : y ∉ (A.chart i).symm '' K0) : A.chiC i β y = 0 := by
@@ -50,25 +50,25 @@ theorem chiC_eq_zero {i : ι} {β : V n → ℝ} {K0 : Set (V n)} (hβs : ∀ u,
   · rfl
 
 /- English proof (translation)
-The claim follows from `hK0.image_of_continuousOn ((A.chart i).continuousOn_symm.mono hK0t)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_chartImage {i : ι} {K0 : Set (V n)} (hK0 : IsCompact K0)
     (hK0t : K0 ⊆ (A.chart i).target) : IsCompact ((A.chart i).symm '' K0) :=
   hK0.image_of_continuousOn ((A.chart i).continuousOn_symm.mono hK0t)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `(A.chart i).map_target (hK0t hu)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem chartImage_subset {i : ι} {K0 : Set (V n)} (hK0t : K0 ⊆ (A.chart i).target) :
     (A.chart i).symm '' K0 ⊆ (A.chart i).source := by
   rintro _ ⟨u, hu, rfl⟩; exact (A.chart i).map_target (hK0t hu)
 
 /- English proof (translation)
-Introduce `j`. Use `contDiffOn_of_locally_contDiffOn fun v hv => ?_` and prove the remaining obligations. Distinguish the cases in `hx : (A.chart j).symm v ∈ (A.chart i).source`. Use `⟨ovl A.chart j i, A.isOpen_ovl j i, ⟨hv, hx⟩, ?_⟩` and prove the remaining obligations. Use `(hβ.comp_contDiffOn (((A.trans_contDiffOn j i).restrict_scalars ℝ).mono Set.inter_subset_right)).congr fun v' hv' => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp]`. Conclude with `A.chiC_of_mem hv'.2.2`. Establish `hKc` using `(A.isCompact_chartImage hK0 hK0t).isClosed`. Establish `hxK : (A.chart j).symm v ∉ (A.chart i).symm '' K0` using `fun h => hx (A.chartImage_subset hK0t h)`. Use `⟨(A.chart j).target ∩ (A.chart j).symm ⁻¹' ((A.chart i).symm '' K0)ᶜ, (A.chart j).isOpen_inter_preimage_symm hKc.isOpen_compl, ⟨hv, hxK⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(contDiffOn_const (c := (0 : ℝ))).congr fun v' hv' => ?_` and prove the remaining obligations. Simplify using `only [Function.comp]`. Conclude with `A.chiC_eq_zero hβs hv'.2.2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chiC_smooth {i : ι} {β : V n → ℝ} (hβ : ContDiff ℝ ∞ β) {K0 : Set (V n)}
     (hβs : ∀ u, β u ≠ 0 → u ∈ K0) (hK0 : IsCompact K0) (hK0t : K0 ⊆ (A.chart i).target) :
@@ -94,17 +94,17 @@ def F0 (la' : La) (Sf : Finset Y) (idx : Y → ι) (χ : Y → Y → ℝ) (c : Y
   ∑ P ∈ Sf, c P * (χ P y : ℂ) * A.g la' j (idx P) y
 
 /- English proof (translation)
-Use `⟨fun j => ?_, fun i j y hi hj => ?_⟩` and prove the remaining obligations. Establish `: (A.F0 la' Sf idx χ c j ∘ (A.chart j).symm) = fun v => ∑ P ∈ Sf, c P * (χ P ((A.chart j).symm v) : ℂ) * A.g la' j (idx P) ((A.chart j).symm v)`. Use function extensionality and compare the values at `v`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `ContDiffOn.sum fun P hP => contDiffOn_of_locally_contDiffOn fun v hv => ?_` and prove the remaining obligations. Distinguish the cases in `hx : (A.chart j).symm v ∈ (A.chart (idx P)).source`. Use `⟨ovl A.chart j (idx P), A.isOpen_ovl j _, ⟨hv, hx⟩, ?_⟩` and prove the remaining obligations. Establish `hg : ContDiffOn ℝ ∞ (A.g la' j (idx P) ∘ (A.chart j).symm) (ovl A.chart j (idx P))` using `contDiffOn_of_holo (A.isOpen_ovl j _) (A.holo_g la' j (idx P))`. Establish `hc : ContDiffOn ℝ ∞ (fun v => (χ P ((A.chart j).symm v) : ℂ)) (A.chart j).target` using `Complex.ofRealCLM.contDiff.comp_contDiffOn (hχ P hP j)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((contDiffOn_const.mul hc).mono Set.inter_subset_left).mul (hg.mono Set.inter_subset_right)`. Establish `hKc'` using `(hKc P hP).isClosed`. Establish `hxK : (A.chart j).symm v ∉ K P` using `fun h => hx (hKs P hP h)`. Use `⟨(A.chart j).target ∩ (A.chart j).symm ⁻¹' (K P)ᶜ, (A.chart j).isOpen_inter_preimage_symm hKc'.isOpen_compl, ⟨hv, hxK⟩, ?_⟩` and prove the remaining obligations. Use `(contDiffOn_const (c := (0 : ℂ))).congr fun v' hv' => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : χ P ((A.chart j).symm v') = 0`. Assume the negation of the conclusion as `h`. Conclude with `hv'.2.2 (hχs P hP _ h)`. Simplify using `[h0]`. Unfold `F0`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun P hP => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ (A.chart (idx P)).source`. Rewrite using `[A.g_cocycle la' i j (idx P) y hi hj hy]`. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : χ P y = 0` using `by by_contra h; exact hy (hKs P hP (hχs P hP y h))`. Simplify using `[h0]`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothSection_localizedSection (la' : La) (Sf : Finset Y) (idx : Y → ι) (χ : Y → Y → ℝ) (c : Y → ℂ)
     (K : Y → Set Y) (hχ : ∀ P ∈ Sf, A.SmoothFn (χ P)) (hχs : ∀ P ∈ Sf, ∀ y, χ P y ≠ 0 → y ∈ K P)

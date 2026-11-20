@@ -6,23 +6,21 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.InertiaLift
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w _ L ψ hψ hL`. Use `letI : TopologicalSpace (IntCl E Ω) := ⊥`. Use `haveI : DiscreteTopology (IntCl E Ω) := ⟨rfl⟩`. Use `haveI := continuousSMul_intCl E Ω`. Set `H` to `L.fixingSubgroup`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : IsClosed (H : Set (Ω ≃ₐ[E] Ω))`. Establish `e : (H : Set (Ω ≃ₐ[E] Ω)) = ⋂ x : L, ((MulAction.stabilizer (Ω ≃ₐ[E] Ω) (x : Ω) : Subgroup (Ω ≃ₐ[E] Ω)) : Set (Ω ≃ₐ[E] Ω))`. Use extensionality with `σ`. Simplify using `only [Set.mem_iInter, SetLike.mem_coe, MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h x => h x x.2, fun h x hx => h ⟨x, hx⟩⟩`. Rewrite using `[e]`. Conclude with `isClosed_iInter fun x => (MulAction.stabilizer (Ω ≃ₐ[E] Ω) (x : Ω)).isClosed_of_isOpen (stabilizer_isOpen_of_isIntegral (K := E) (x : Ω))`. Use `haveI : CompactSpace H := isCompact_iff_compactSpace.mp hH.isCompact`. Set `Q` to `primeBelow (F := E) A`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Set `R'` to `FixedPoints.subalgebra (𝓞 E) (IntCl E Ω) H`. Establish `hR' : ∀ b : R', ∀ k ∈ H, k • (b : IntCl E Ω) = b` using `fun b k hk => b.2 ⟨k, hk⟩`. Establish `: SMulCommClass H R' (IntCl E Ω)` using `⟨fun k r b => by`. Express the relevant statement in the definitionally equal form `(k : Ω ≃ₐ[E] Ω) • ((r : IntCl E Ω) * b) = (r : IntCl E Ω) * (k : Ω ≃ₐ[E] Ω) • b`. Rewrite using `[smul_mul', hR' r k k.2]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.IsInvariant R' (IntCl E Ω) H` using `⟨fun b hb => ⟨⟨b, hb⟩, rfl⟩⟩`. Establish `: Q.LiesOver (Q.under R')` using `⟨rfl⟩`. Establish `hψQ : ψ • Q = Q`. Establish `h1 : ψ • A = A` using `hψ`. Rewrite using `[← primeBelow_smul, h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : ∀ r : R', ψ • (r : IntCl E Ω) - r ∈ Q`. Introduce `r`. Establish `hrL : ((r : IntCl E Ω) : Ω) ∈ L`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup L, IntermediateField.mem_fixedField_iff]`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subtype.val (hR' r f hf)`. Conclude with `hL _ hrL (isIntegral_int_of_isIntegral (r : IntCl E Ω).2)`. Set `φ : (IntCl E Ω ⧸ Q) ≃ₐ[R' ⧸ Q.under R'] (IntCl E Ω ⧸ Q)` to `AlgEquiv.ofRingEquiv (f := Ideal.quotientEquiv Q Q (MulSemiringAction.toRingEquiv (Ω ≃ₐ[E] Ω) (IntCl E Ω) ψ) hψQ.symm) (fun r => by`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk Q (ψ • (r : IntCl E Ω)) = Ideal.Quotient.mk Q (r : IntCl E Ω)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Ideal.Quotient.eq]`. Conclude with `hfix r)`. Take `⟨⟨v, hvQ⟩, hv⟩` from `Ideal.Quotient.stabilizerHom_surjective_of_profinite (G := H) (Q.under R') Q φ`. Use `⟨ψ * (v : Ω ≃ₐ[E] Ω)⁻¹, GlobalTheory.InertiaMovesRoot.mem_Ine_of_cong fun b => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : Ideal.Quotient.mk Q ((v : Ω ≃ₐ[E] Ω) • ((v : Ω ≃ₐ[E] Ω)⁻¹ • b)) = Ideal.Quotient.mk Q (ψ • ((v : Ω ≃ₐ[E] Ω)⁻¹ • b))` using `DFunLike.congr_fun hv (Ideal.Quotient.mk Q ((v : Ω ≃ₐ[E] Ω)⁻¹ • b))`.
-
-Rewrite `h1` using `[smul_inv_smul, eq_comm, Ideal.Quotient.eq]`. Rewrite using `[mul_smul]` and apply the resulting hypothesis. Establish `hv' : ((v : Ω ≃ₐ[E] Ω)⁻¹) x = x` using `(IntermediateField.mem_fixingSubgroup_iff L _).mp (H.inv_mem v.2) x hx`. Rewrite using `[AlgEquiv.mul_apply, hv']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_Ine_eq_on : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)), IsPlaceOver A w →

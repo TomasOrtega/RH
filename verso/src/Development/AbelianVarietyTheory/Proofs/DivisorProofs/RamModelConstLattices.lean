@@ -14,7 +14,7 @@ open GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Published
 namespace GlobalTheory.EigWhole
 
 /- English proof (translation)
-The claim follows from `ramModel_of_hypotheses`.
+A detailed English derivation is pending.
 -/
 theorem ramModel_constLattices : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → PrismaticDieudonnePerfd →
     RamModel :=

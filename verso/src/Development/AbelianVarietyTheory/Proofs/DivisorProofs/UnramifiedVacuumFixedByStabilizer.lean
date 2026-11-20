@@ -23,7 +23,7 @@ namespace GlobalTheory.VacFixStab
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Rewrite using `[← partFin_of_at ha]`. Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F ((GlobalTheory.LatVac.liftV v 1).1 * a.1) = 0`. Rewrite using `[show (GlobalTheory.LatVac.liftV v 1).1 = 0 from rfl, zero_mul, map_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem evI_eq_zero_of_at {v : Pl F} {a : AF F} (ha : At (evFin F v) a) : evI F a = 0 := by
   rw [← partFin_of_at ha]
@@ -31,16 +31,16 @@ theorem evI_eq_zero_of_at {v : Pl F} {a : AF F} (ha : At (evFin F v) a) : evI F 
   rw [show (GlobalTheory.LatVac.liftV v 1).1 = 0 from rfl, zero_mul, map_zero]
 
 /- English proof (translation)
-Rewrite using `[← partFin_of_at ha, partFin, smul_eq_mul, map_mul, show evFin F w (GlobalTheory.LatVac.liftV v 1) = 0 from evalV_singleFin_ne h 1, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evFin_eq_zero_of_at {v w : Pl F} (h : w ≠ v) {a : AF F} (ha : At (evFin F v) a) : evFin F w a = 0 := by
   rw [← partFin_of_at ha, partFin, smul_eq_mul, map_mul,
     show evFin F w (GlobalTheory.LatVac.liftV v 1) = 0 from evalV_singleFin_ne h 1, zero_mul]
 
 /- English proof (translation)
-Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨a, ha, hint, x, hx, rfl⟩`. Use `AddSubgroup.subset_closure ⟨a, evI_eq_zero_of_at ha, fun w => ?_, x, hx, rfl⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `hint`. Rewrite using `[evFin_eq_zero_of_at hw ha]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latAt_le_latHat {n : ℕ} (X : Spc F E n) (v : Pl F) : GlobalTheory.InertSph.latAt X v ≤ latHat X := by
   refine (AddSubgroup.closure_le _).2 ?_
@@ -51,11 +51,11 @@ theorem latAt_le_latHat {n : ℕ} (X : Spc F E n) (v : Pl F) : GlobalTheory.Iner
   · rw [evFin_eq_zero_of_at hw ha]; exact zero_mem _
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, -, hint, x, hx, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨GlobalTheory.LatVac.liftV v 1 * a, at_partFin v a, ?_, x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, GlobalTheory.LatVac.evFin_liftV, one_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hint v`. Rewrite using `[partFin, smul_smul]`. Both sides reduce to the same expression. Consider the case `zero => rw [partFin, smul_zero]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [partFin, smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [partFin, smul_neg]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem partFin_mem_latAt {n : ℕ} (X : Spc F E n) (v : Pl F) {z : Fin n → AE F E} (hz : z ∈ latHat X) :
     partFin v z ∈ GlobalTheory.InertSph.latAt X v := by
@@ -70,11 +70,11 @@ theorem partFin_mem_latAt {n : ℕ} (X : Spc F E n) (v : Pl F) {z : Fin n → AE
   | neg x _ hx => rw [partFin, smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, -, x, -, rfl⟩` from `hz`. Introduce `u hu`. Rewrite using `[smul_smul, ← smul_eq_mul, ha u hu, zero_smul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => intro u _`. Conclude with `smul_zero u`. Consider the case `add x y _ _ hx hy => intro u hu`. Rewrite using `[smul_add, hx u hu, hy u hu, add_zero]`. Consider the case `neg x _ hx => intro u hu`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_neg, hx u hu, neg_zero]`.
+A detailed English derivation is pending.
 -/
 theorem at_of_mem_latAt {n : ℕ} (X : Spc F E n) (v : Pl F) {z : Fin n → AE F E} (hz : z ∈ GlobalTheory.InertSph.latAt X v) :
     At (evFin F v) z := by
@@ -88,7 +88,7 @@ theorem at_of_mem_latAt {n : ℕ} (X : Spc F E n) (v : Pl F) {z : Fin n → AE F
   | neg x _ hx => intro u hu; rw [smul_neg, hx u hu, neg_zero]
 
 /- English proof (translation)
-Establish `hat : At (evFin F v) (m *ᵥ z)` using `fun u hu => by`. Rewrite using `[← Matrix.mulVec_smul, at_of_mem_latAt X v hz u hu, Matrix.mulVec_zero]`. Rewrite using `[← partFin_of_at hat]`. Conclude with `partFin_mem_latAt X v hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_latAt {n : ℕ} (X : Spc F E n) (v : Pl F) (m : Matrix (Fin n) (Fin n) (AE F E))
     {z : Fin n → AE F E} (hz : z ∈ GlobalTheory.InertSph.latAt X v) (hm : m *ᵥ z ∈ latHat X) :
@@ -99,7 +99,7 @@ theorem mulVec_mem_latAt {n : ℕ} (X : Spc F E n) (v : Pl F) (m : Matrix (Fin n
   exact partFin_mem_latAt X v hm
 
 /- English proof (translation)
-Take `⟨hkK, hkv⟩` from `mem_KAt.1 hk`. Establish `hst` using `((hK k).1 hkK).2`. Conclude with `⟨hkv, fun z hz => ⟨mulVec_mem_latAt X v _ hz (hst z (latAt_le_latHat X v hz)).1, mulVec_mem_latAt X v _ hz (hst z (latAt_le_latHat X v hz)).2⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem mem_KAt_of_isStab (B : Base F E) {n : ℕ} {X : Spc F E n} {K : Subgroup (UA σ X.J)} (hK : IsStab B K)
     {v : Pl F} {k : UA σ X.J} (hk : k ∈ KAt K (evFin F v)) : k ∈ GlobalTheory.InertSph.KAt σ X v := by
@@ -111,7 +111,7 @@ theorem mem_KAt_of_isStab (B : Base F E) {n : ℕ} {X : Spc F E n} {K : Subgroup
 end GlobalTheory.VacFixStab
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hv`. Break down `GlobalTheory.KFinLoc.split_or_inert F E σ B hT.base v with hs | ⟨w, hw⟩` into its components or cases. Conclude with `⟨fun K hK k hk => GlobalTheory.T.unramified_spherical_vacuum_fixed F E σ B a a' G X om om' hT v hs hv k (GlobalTheory.VacFixStab.mem_KAt_of_isStab B hK hk), fun K hK k hk => GlobalTheory.T.unramified_spherical_vacuum_fixed_dual F E σ B a a' G X om om' hT v hs hv k (GlobalTheory.V …`. Conclude with `⟨fun K hK k hk => GlobalTheory.T.inert_place_both_stabilisers_fix_vacuum F E σ B a a' G X om om' hT v w hw hv k (GlobalTheory.VacFixStab.mem_KAt_of_isStab B hK hk) 1 (GlobalTheory.InertSph.one_mem_KAt σ G.W v), fun K hK k hk => GlobalTheory.T.inertPlace_stabilizer_fixes_vacuum_le …`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.VacFixStab.vac_fixed_both : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) {a a' : ℕ} (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

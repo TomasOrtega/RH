@@ -56,7 +56,7 @@ def psi (x : Fin m → Ω) (j₀ : Fin m) : ΩT Ω D m →ₐ[Ω] CT Ω D j₀ :
 def incl (j₀ : Fin m) : CT Ω D j₀ →ₐ[Ω] ΩT Ω D m := rename Subtype.val
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [xv, dif_neg h])`. Consider the case `simp [xv, h]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem xv_of_not {j₀ : Fin m} {p : Fin (D + 1) × Fin m} (h : ¬ Zs j₀ p) :
     xv (Ω := Ω) j₀ p = X ⟨p, h⟩ := by
@@ -65,7 +65,7 @@ theorem xv_of_not {j₀ : Fin m} {p : Fin (D + 1) × Fin m} (h : ¬ Zs j₀ p) :
   | simp [xv, h]
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [xv, dif_pos h])`. Consider the case `simp [xv, h]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem xv_of_Z {j₀ : Fin m} {p : Fin (D + 1) × Fin m} (h : Zs j₀ p) :
     xv (Ω := Ω) j₀ p = 0 := by
@@ -74,7 +74,7 @@ theorem xv_of_Z {j₀ : Fin m} {p : Fin (D + 1) × Fin m} (h : Zs j₀ p) :
   | simp [xv, h]
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [psi, aeval_X])`. Consider the case `simp [psi]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem psi_X (x : Fin m → Ω) (j₀ : Fin m) (p : Fin (D + 1) × Fin m) :
     psi x j₀ (X p) = gs x j₀ p := by
@@ -83,7 +83,7 @@ theorem psi_X (x : Fin m → Ω) (j₀ : Fin m) (p : Fin (D + 1) × Fin m) :
   | simp [psi]
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [psi, aeval_C, MvPolynomial.algebraMap_eq])`. Consider the case `simp [psi]`. Consider the case `exact (psi x j₀).commutes a`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem psi_C (x : Fin m → Ω) (j₀ : Fin m) (a : Ω) :
     psi (D := D) x j₀ (C a) = C a := by
@@ -93,7 +93,7 @@ theorem psi_C (x : Fin m → Ω) (j₀ : Fin m) (a : Ω) :
   | exact (psi x j₀).commutes a
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [incl, rename_C])`. Consider the case `simp [incl]`. Consider the case `exact (incl j₀).commutes a`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem incl_C (j₀ : Fin m) (a : Ω) : incl (D := D) j₀ (C a) = C a := by
   first
@@ -102,9 +102,9 @@ theorem incl_C (j₀ : Fin m) (a : Ω) : incl (D := D) j₀ (C a) = C a := by
   | exact (incl j₀).commutes a
 
 /- English proof (translation)
-Establish `h : (psi x j₀).comp (incl j₀) = AlgHom.id Ω (CT Ω D j₀)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `q`. Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply, incl, rename_X, psi, aeval_X]`. Rewrite using `[gs, if_neg q.2, xv_of_not q.2]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try rfl`. Conclude with `DFunLike.congr_fun h f`.
+A detailed English derivation is pending.
 -/
 theorem psi_incl (x : Fin m → Ω) (j₀ : Fin m) (f : CT Ω D j₀) : psi x j₀ (incl j₀ f) = f := by
   have h : (psi x j₀).comp (incl j₀) = AlgHom.id Ω (CT Ω D j₀) := by
@@ -116,9 +116,9 @@ theorem psi_incl (x : Fin m → Ω) (j₀ : Fin m) (f : CT Ω D j₀) : psi x j�
   exact DFunLike.congr_fun h f
 
 /- English proof (translation)
-Distinguish the cases in `h : j = j₀`. Establish `hz : Zs j₀ (i.succ, j)`. Unfold `Zs`. Conclude with `⟨Fin.succ_ne_zero i, h⟩`. Rewrite using `[gs, if_pos hz, xv_of_Z hz, if_pos h, zero_add]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try rfl`. Establish `hz : ¬ Zs j₀ (i.succ, j)`. Unfold `Zs`. Conclude with `fun hz => h hz.2`. Rewrite using `[gs, if_neg hz, if_neg h, add_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_succ (x : Fin m → Ω) (j₀ : Fin m) (i : Fin D) (j : Fin m) :
     gs x j₀ (i.succ, j) = xv j₀ (i.succ, j) +
@@ -135,15 +135,15 @@ theorem gs_succ (x : Fin m → Ω) (j₀ : Fin m) (i : Fin D) (j : Fin m) :
     rw [gs, if_neg hz, if_neg h, add_zero]
 
 /- English proof (translation)
-Establish `hS : (∑ k, xv (Ω` using `Ω) j₀ (i.succ, k) * C (rr x j₀ k)) * C (x j₀) = ∑ k, xv (Ω := Ω) j₀ (i.succ, k) * C (x k) := by`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← C_mul, rr]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `first`. Consider the case `exact div_mul_cancel₀ (x k) hx₀`. Consider the case `field_simp`. Establish `hI : ∑ j : Fin m, (if j = j₀ then -∑ k, xv (Ω` using `Ω) j₀ (i.succ, k) * C (rr x j₀ k) else 0) * C (x j) = -(∑ k, xv (Ω := Ω) j₀ (i.succ, k) * C (rr x j₀ k)) * C (x j₀) := by`. Rewrite using `[Finset.sum_eq_single j₀]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl]`. Introduce `b _ hb`. Rewrite using `[if_neg hb, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j₀) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : psi x j₀ (sec x i) = ∑ j, gs x j₀ (i.succ, j) * C (x j)`. Simplify using `only [sec, map_sum, map_mul, psi_X, psi_C]`. Rewrite using `[h1]`. Simplify using `only [gs_succ, add_mul]`. Rewrite using `[Finset.sum_add_distrib, hI, neg_mul, hS]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact add_neg_cancel _`. Consider the case `exact add_right_neg _`. Consider the case `abel`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem psi_sec (x : Fin m → Ω) (j₀ : Fin m) (hx₀ : x j₀ ≠ 0) (i : Fin D) :
     psi x j₀ (sec x i) = 0 := by
@@ -175,9 +175,9 @@ theorem psi_sec (x : Fin m → Ω) (j₀ : Fin m) (hx₀ : x j₀ ≠ 0) (i : Fi
   | abel
 
 /- English proof (translation)
-Distinguish the cases in `h : k = j₀`. Establish `hz : Zs j₀ (i.succ, k)`. Unfold `Zs`. Conclude with `⟨Fin.succ_ne_zero i, h⟩`. Rewrite using `[xv_of_Z hz, map_zero, if_pos h]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ¬ Zs j₀ (i.succ, k)`. Unfold `Zs`. Conclude with `fun hz => h hz.2`. Rewrite using `[xv_of_not hz, if_neg h, incl, rename_X]`. Apply the tactic sequence `try rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incl_xv_succ (j₀ : Fin m) (i : Fin D) (k : Fin m) :
     incl (Ω := Ω) j₀ (xv j₀ (i.succ, k)) = if k = j₀ then 0 else X (i.succ, k) := by
@@ -193,11 +193,11 @@ theorem incl_xv_succ (j₀ : Fin m) (i : Fin D) (k : Fin m) :
     try rfl
 
 /- English proof (translation)
-Establish `hz : Zs j₀ (i.succ, j₀)`. Unfold `Zs`. Conclude with `⟨Fin.succ_ne_zero i, rfl⟩`. Rewrite using `[gs, if_pos hz]`. Simplify using `only [map_neg, map_sum, map_mul, incl_C, incl_xv_succ, sub_neg_eq_add, sec, Finset.mul_sum]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hX : (X (i.succ, j₀) : ΩT Ω D m) = ∑ j : Fin m, if j = j₀ then (X (i.succ, j₀) : ΩT Ω D m) else 0`. Simplify using the standard rewrite rules. Rewrite using `[hX, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : j = j₀`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, zero_mul, add_zero, mul_left_comm, ← C_mul, inv_mul_cancel₀ hx₀, C_1, mul_one]`. Rewrite using `[if_neg h, if_neg h, zero_add, rr, div_eq_mul_inv, C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem X_sub_incl_gs (x : Fin m → Ω) (j₀ : Fin m) (hx₀ : x j₀ ≠ 0) (i : Fin D) :
     X (i.succ, j₀) - incl j₀ (gs x j₀ (i.succ, j₀)) = C (x j₀)⁻¹ * sec x i := by
@@ -217,19 +217,15 @@ theorem X_sub_incl_gs (x : Fin m → Ω) (j₀ : Fin m) (hx₀ : x j₀ ≠ 0) (
     ring
 
 /- English proof (translation)
-Establish `hgen : ∀ p : Fin (D + 1) × Fin m, X p - incl j₀ (psi x j₀ (X p)) ∈ Ideal.span (Set.range (sec x))`. Introduce `p`. Rewrite using `[psi_X]`. Distinguish the cases in `hp : Zs j₀ p`. Take `⟨i', j⟩` from `p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hp' : i' ≠ 0 ∧ j = j₀` using `hp`. Take `⟨i, rfl⟩ : ∃ i : Fin D, i.succ = i'` from `by first`. Consider the case `exact Fin.exists_succ_eq.mpr hp'.1`. Consider the case `exact ⟨i'.pred hp'.1, Fin.succ_pred i' hp'.1⟩`. Rewrite using `[hp'.2, X_sub_incl_gs x j₀ hx₀ i]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`. Use `first`. Consider the case `(rw [gs, if_neg hp, xv_of_not hp, incl, rename_X, sub_self]`. Conclude with `Ideal.zero_mem _)`. Consider the case `simp [gs, hp, xv_of_not hp, incl]`.
+Treat this case separately. Treat this case separately. Proceed by induction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Proceed by induction on `f using MvPolynomial.induction_on`. Use `next a =>`. Rewrite using `[psi_C, incl_C, sub_self]`. Conclude with `Ideal.zero_mem _`. Use `next f g hf hg =>`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : f + g - incl j₀ (psi x j₀ (f + g)) = (f - incl j₀ (psi x j₀ f)) + (g - incl j₀ (psi x j₀ g))`. Simplify using `only [map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ hf hg`.
-
-Use `next f p hf =>`. Establish `e : f * X p - incl j₀ (psi x j₀ (f * X p)) = (f - incl j₀ (psi x j₀ f)) * X p + incl j₀ (psi x j₀ f) * (X p - incl j₀ (psi x j₀ (X p)))`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ hf) (Ideal.mul_mem_left _ _ (hgen p))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_incl_psi_mem (x : Fin m → Ω) (j₀ : Fin m) (hx₀ : x j₀ ≠ 0) (f : ΩT Ω D m) :
     f - incl j₀ (psi x j₀ f) ∈ Ideal.span (Set.range (sec x)) := by
@@ -270,9 +266,9 @@ theorem sub_incl_psi_mem (x : Fin m → Ω) (j₀ : Fin m) (hx₀ : x j₀ ≠ 0
     exact Ideal.add_mem _ (Ideal.mul_mem_right _ _ hf) (Ideal.mul_mem_left _ _ (hgen p))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hm` using `sub_incl_psi_mem x j₀ hx₀ f`. Rewrite `hm` using `[h, map_zero, sub_zero]`. Then use the resulting hypothesis. Introduce `hf`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : Ideal.span (Set.range (sec (D` using `D) x)) ≤ RingHom.ker (psi (D := D) x j₀) := by`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `RingHom.mem_ker.mpr (psi_sec x j₀ hx₀ i)`. Conclude with `RingHom.mem_ker.mp (hle hf)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem psi_eq_zero_iff (x : Fin m → Ω) (j₀ : Fin m) (hx₀ : x j₀ ≠ 0) (f : ΩT Ω D m) :
     psi x j₀ f = 0 ↔ f ∈ Ideal.span (Set.range (sec x)) := by
@@ -288,9 +284,9 @@ theorem psi_eq_zero_iff (x : Fin m → Ω) (j₀ : Fin m) (hx₀ : x j₀ ≠ 0)
     exact RingHom.mem_ker.mp (hle hf)
 
 /- English proof (translation)
-Distinguish the cases in `hp : Zs j₀ p`. Establish `hne : p ≠ q.1` using `fun h => q.2 (h ▸ hp)`. Rewrite using `[xv_of_Z hp, map_zero, if_neg hne]`. Rewrite using `[xv_of_not hp, pderiv_X, Pi.single_apply]`. Distinguish the cases in `h : p = q.1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `e : (⟨p, hp⟩ : {p : Fin (D + 1) × Fin m // ¬ Zs j₀ p}) = q` using `Subtype.ext h`. Rewrite using `[if_pos e, if_pos h]`. Establish `e : (⟨p, hp⟩ : {p : Fin (D + 1) × Fin m // ¬ Zs j₀ p}) ≠ q` using `fun e => h (congrArg Subtype.val e)`. Rewrite using `[if_neg e, if_neg h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_xv (j₀ : Fin m) (q : {p : Fin (D + 1) × Fin m // ¬ Zs j₀ p}) (p : Fin (D + 1) × Fin m) :
     pderiv q (xv (Ω := Ω) j₀ p) = if p = q.1 then 1 else 0 := by
@@ -306,13 +302,13 @@ theorem pderiv_xv (j₀ : Fin m) (q : {p : Fin (D + 1) × Fin m // ¬ Zs j₀ p}
       rw [if_neg e, if_neg h]
 
 /- English proof (translation)
-Distinguish the cases in `hp : Zs j₀ p`. Establish `hne : p ≠ q.1` using `fun h => q.2 (h ▸ hp)`. Rewrite using `[gs, if_pos hp, if_neg hne, zero_sub, map_neg]`. Use `congr 1`. Simplify using `only [map_sum, Derivation.leibniz, pderiv_C, smul_zero, smul_eq_mul, pderiv_xv, mul_zero, zero_add]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single q.1.2]`. Distinguish the cases in `h1 : p.1 = q.1.1`. Establish `e : (p.1, q.1.2) = q.1` using `Prod.ext h1 rfl`. Rewrite using `[if_pos e, if_pos ⟨hp, h1⟩, mul_one]`. Establish `e : (p.1, q.1.2) ≠ q.1` using `fun h => h1 (by have h' := congrArg Prod.fst h; exact h')`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : ¬ (Zs j₀ p ∧ p.1 = q.1.1)` using `fun h => h1 h.2`. Rewrite using `[if_neg e, if_neg hn, mul_zero]`. Introduce `k _ hk`. Establish `e : (p.1, k) ≠ q.1` using `fun h => hk (congrArg Prod.snd h)`. Rewrite using `[if_neg e, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hn : ¬ (Zs j₀ p ∧ p.1 = q.1.1)` using `fun h => hp h.1`. Rewrite using `[gs, if_neg hp, pderiv_xv, if_neg hn, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_gs (x : Fin m → Ω) (j₀ : Fin m) (q : {p : Fin (D + 1) × Fin m // ¬ Zs j₀ p})
     (p : Fin (D + 1) × Fin m) :
@@ -339,15 +335,15 @@ theorem pderiv_gs (x : Fin m → Ω) (j₀ : Fin m) (q : {p : Fin (D + 1) × Fin
     rw [gs, if_neg hp, pderiv_xv, if_neg hn, sub_zero]
 
 /- English proof (translation)
-Proceed by induction on `G using MvPolynomial.induction_on`. Use `next a => first`. Consider the case `(rw [aeval_C, MvPolynomial.algebraMap_apply, pderiv_C]`. Simplify using `only [pderiv_C, map_zero, zero_mul, Finset.sum_const_zero])`. Consider the case `simp`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `next G₁ G₂ h₁ h₂ =>`. Simplify using `only [map_add, h₁, h₂, add_mul, Finset.sum_add_distrib]`. Use `next G i h =>`. Establish `e1 : ∀ p, pderiv p (G * X i) = G * pderiv p (X i) + X i * pderiv p G` using `fun p => by`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∑ p, aeval u (G * pderiv p (X i)) * pderiv q (u p) = aeval u G * pderiv q (u i)`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[pderiv_X_self, mul_one]`. Introduce `b _ hb`. Establish `h0 : pderiv b (X i : MvPolynomial ι K) = 0` using `by first`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact pderiv_X_of_ne (Ne.symm hb)`. Consider the case `exact pderiv_X_of_ne hb`. Consider the case `simp [pderiv_X, Pi.single_apply, hb, Ne.symm hb]`. Rewrite using `[h0, mul_zero, map_zero, zero_mul]`. Introduce `hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Finset.mem_univ i) hi`. Rewrite using `[map_mul, aeval_X, Derivation.leibniz, smul_eq_mul, smul_eq_mul, h]`. Simplify using `only [e1, map_add, add_mul, Finset.sum_add_distrib]`. Rewrite using `[hs]`. Simplify using `only [map_mul, aeval_X, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pderiv_aeval {ι : Type*} [Fintype ι] [DecidableEq ι] (j₀ : Fin m) (u : ι → CT Ω D j₀)
     (q : {p : Fin (D + 1) × Fin m // ¬ Zs j₀ p}) (G : MvPolynomial ι K) :

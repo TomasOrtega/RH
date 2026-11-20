@@ -22,7 +22,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {V : Submodule ℂ H}
 
 /- English proof (translation)
-Rewrite using `[dsigC_eq]`. Conclude with `add_mem (hV.lieStable _ (cre_mem Y) v hv) (Submodule.smul_mem _ _ (hV.lieStable _ (cim_mem Y) v hv))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dsigC_mem_sub (hV : IsGKSub ε ρ V) (Y : Matrix (Fin n) (Fin n) ℂ) {v : H} (hv : v ∈ V) :
     PI.DSInfCharCap.dsigC ε ρ Y v ∈ V := by
@@ -53,7 +53,7 @@ section Equiv
 variable [CompleteSpace H]
 
 /- English proof (translation)
-Take `⟨h1, -⟩` from `CompanionTheory.D.gk.HC.K_finite_smooth_vectors n ε H ρ hU hI`. Conclude with `⟨fun v hv => CompanionTheory.D.gk.HC.smoothVec_of_smD_A (h1 v hv), fun v hv => hv, isKStableOn_kFinVec ε ρ, fun X hX v hv => GlobalTheory.CompanionTheory.KFinLink.isLieStable_of hU hI X hX v hv⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isGKSub_kFinVec (hU : IsURepOn (UJset ε) ρ) (hI : IsIrredOn (UJset ε) ρ) :
     IsGKSub ε ρ (kFinVec ε ρ) := by

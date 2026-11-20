@@ -7,7 +7,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CechPer
 
 /- English proof (translation)
-Introduce `B M _ _ _ g f hf hp hr hs`. Use `(Module.bijective_of_surjective_of_rankAtStalk_eq hs ?_).1` and prove the remaining obligations. Introduce `m hm`. Establish `: Nontrivial B` using `⟨⟨0, 1, fun h => hm.ne_top (by rw [Ideal.eq_top_iff_one, ← h]; exact m.zero_mem)⟩⟩`. Rewrite using `[hr, Module.rankAtStalk_eq_finrank_of_free]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

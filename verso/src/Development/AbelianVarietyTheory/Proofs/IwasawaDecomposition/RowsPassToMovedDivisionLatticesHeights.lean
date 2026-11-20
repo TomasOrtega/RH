@@ -31,64 +31,64 @@ def readB : letI := alg c.to iK; Read (A3 := famInThreeCoefficientChange c.to A3
   (by with_unfolding_all exact ((Tr.read c Y) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl Y.tup) :))`.
+A detailed English derivation is pending.
 -/
 theorem readB_tup : letI := alg c.to iK; HEq (readB c Y).tup Y.tup := (by with_unfolding_all exact ((HEq.refl Y.tup) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl Y.tupT) :))`.
+A detailed English derivation is pending.
 -/
 theorem readB_tupT : letI := alg c.to iK; HEq (readB c Y).tupT Y.tupT := (by with_unfolding_all exact ((HEq.refl Y.tupT) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl Y.PY.ψ) :))`.
+A detailed English derivation is pending.
 -/
 theorem readB_PY : letI := alg c.to iK; HEq (readB c Y).PY.ψ Y.PY.ψ := (by with_unfolding_all exact ((HEq.refl Y.PY.ψ) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl (fun i => (Y.PW i).ψ)) :))`.
+A detailed English derivation is pending.
 -/
 theorem readB_PW : letI := alg c.to iK; HEq (fun i => ((readB c Y).PW i).ψ) (fun i => (Y.PW i).ψ) := (by with_unfolding_all exact ((HEq.refl (fun i => (Y.PW i).ψ)) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl Y.eE) :))`.
+A detailed English derivation is pending.
 -/
 theorem readB_eE : letI := alg c.to iK; HEq (readB c Y).eE Y.eE := (by with_unfolding_all exact ((HEq.refl Y.eE) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl Y.jA) :))`.
+A detailed English derivation is pending.
 -/
 theorem readB_jA : letI := alg c.to iK; HEq (readB c Y).jA Y.jA := (by with_unfolding_all exact ((HEq.refl Y.jA) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl Y.jA0) :))`.
+A detailed English derivation is pending.
 -/
 theorem substitutedColumnValuesReading_baseCoordinatesA_eq : letI := alg c.to iK; HEq (readB c Y).jA0 Y.jA0 := (by with_unfolding_all exact ((HEq.refl Y.jA0) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl Y.eMt) :))`.
+A detailed English derivation is pending.
 -/
 theorem readB_eMt : letI := alg c.to iK; HEq (readB c Y).eMt Y.eMt := (by with_unfolding_all exact ((HEq.refl Y.eMt) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl Y.mj.eW) :))`.
+A detailed English derivation is pending.
 -/
 theorem readB_eW : letI := alg c.to iK; HEq (readB c Y).mj.eW Y.mj.eW := (by with_unfolding_all exact ((HEq.refl Y.mj.eW) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((heq_of_eq (funext fun x => val_trans_ofEq (j := Y.Ish.jE) (congrFun (spEEc_eq c F.lv2 Y.tupT Y.hm Y.hTop) true) x)) :))`.
+A detailed English derivation is pending.
 -/
 theorem readB_jE : letI := alg c.to iK; HEq (fun x => ((readB c Y).Ish.jE x).1) (fun x => (Y.Ish.jE x).1) :=
   (by with_unfolding_all exact ((heq_of_eq (funext fun x => val_trans_ofEq (j := Y.Ish.jE) (congrFun (spEEc_eq c F.lv2 Y.tupT Y.hm Y.hTop) true) x)) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((heq_of_eq (funext fun x => val_trans_ofEq (j := Y.Iz.jE) (congrFun (spEEc_eq c F.lv2 Y.tupT Y.hm Y.hTop) false) x)) :))`.
+A detailed English derivation is pending.
 -/
 theorem substitutedColumnValuesReading_baseLevelRows_eq : letI := alg c.to iK; HEq (fun x => ((readB c Y).Iz.jE x).1) (fun x => (Y.Iz.jE x).1) :=
   (by with_unfolding_all exact ((heq_of_eq (funext fun x => val_trans_ofEq (j := Y.Iz.jE) (congrFun (spEEc_eq c F.lv2 Y.tupT Y.hm Y.hTop) false) x)) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((heq_of_eq (funext fun π => (Tr.rep_eq c Y π).symm)) :))`.
+A detailed English derivation is pending.
 -/
 theorem readB_rep : letI := alg c.to iK
     HEq (fun π => principalLevelFrame.rowRepR (real3 c.to R).θ ((readB c Y).eFT π)) (fun π => principalLevelFrame.rowRepR R.θ (Y.eFT π)) :=
@@ -97,29 +97,29 @@ theorem readB_rep : letI := alg c.to iK
 variable {Y} (L : ReadL R F X0 Y)
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl L.eRR) :))`.
+A detailed English derivation is pending.
 -/
 theorem eRRu_heq (u : Parts R) : HEq (eRRu L u) L.eRR := (by with_unfolding_all exact ((HEq.refl L.eRR) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl L.eRR0) :))`.
+A detailed English derivation is pending.
 -/
 theorem eRR0u_heq (u : Parts R) : HEq (riemannRochSpaceCoordinateEquiv L u) L.eRR0 := (by with_unfolding_all exact ((HEq.refl L.eRR0) :))
 
 def readLB : letI := alg c.to iK; ReadL (real3 c.to R) (face3 c.to F) (baseLevelRowSideTransport c X0) (readB c Y) := (by with_unfolding_all exact ((Tr.readL c L) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl L.jW) :))`.
+A detailed English derivation is pending.
 -/
 theorem readLB_jW : letI := alg c.to iK; HEq (readLB c L).jW L.jW := (by with_unfolding_all exact ((HEq.refl L.jW) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((eRRu_heq L (partsB c R)) :))`.
+A detailed English derivation is pending.
 -/
 theorem readLB_eRR : letI := alg c.to iK; HEq (readLB c L).eRR L.eRR := (by with_unfolding_all exact ((eRRu_heq L (partsB c R)) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((eRR0u_heq L (partsB c R)) :))`.
+A detailed English derivation is pending.
 -/
 theorem substitutedColumnValuesLift_baseRowLatticeCoords_eq : letI := alg c.to iK; HEq (readLB c L).eRR0 L.eRR0 := (by with_unfolding_all exact ((eRR0u_heq L (partsB c R)) :))
 
@@ -143,7 +143,7 @@ def readLMv : ReadL (datMv N h t.r.z).R (datMv N h t.r.z).F ((p0Mv N h p0)) (rea
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((readB_tup (a := Z) (Refill.ofDiv Z N h) (iK := t.r.z.alg) t.r.Y) :)) tupT := (by with_unfolding_all exact ((readB_tupT (a := Z) (Refill.ofDiv Z N h) (iK := t.r.z.alg) t.r.Y) :)) PY := (by with_unfolding_all exact ((readB_PY (a := Z) (Refill.ofDiv Z …`.
+A detailed English derivation is pending.
 -/
 theorem readSame : ReadSame N h t (readMv N h t) (readLMv N h t) where
   tup := (by with_unfolding_all exact ((readB_tup (a := Z) (Refill.ofDiv Z N h) (iK := t.r.z.alg) t.r.Y) :))
@@ -165,7 +165,7 @@ theorem readSame : ReadSame N h t (readMv N h t) (readLMv N h t) where
 end Main
 
 /- English proof (translation)
-Introduce `K B f T w Z Wt O t N h O' hO` and use `rows_move_of_read K B f T w Z Wt O t N h O' hO ⟨_, _, readSame N h t⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rows_move : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl)
     (O : Obj2 (w.D Z)) (t : RowsT K w Z Wt O.p0) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ)
@@ -177,7 +177,7 @@ theorem rows_move : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w :
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl (geoHalf (a := ⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) (SRe.upL Z Z.S N h) (iK := z.alg) z.geo)) :))`.
+A detailed English derivation is pending.
 -/
 theorem datMv_geo {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl}
     (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ) {hX : B.fields.Ok} (z : Dat (w.st Z) w.I hX T Wt) :
@@ -187,7 +187,7 @@ theorem datMv_geo {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `K B f T w Z Wt O t N h O' hO`. Substitute `hO` using the available equality. Establish `s` using `readSame N h t`. Conclude with `⟨(by with_unfolding_all exact (s.what₂ :)), (by with_unfolding_all exact (s.rowsSame :)), (by with_unfolding_all exact ((datMv_geo N h t.r.z) :)), (by with_unfolding_all exact (s.pk :)), fun H => (by with_unfolding_all exact ((s.objT H) :)), fun ⟨x⟩ => ⟨(by with_unfolding_all exa …`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem rows_move_geo : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl)
     (O : Obj2 (w.D Z)) (t : RowsT K w Z Wt O.p0) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ)

@@ -10,17 +10,15 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 namespace GlobalTheory.CompanionTheory.HopfC.LowDict
 
 /- English proof (translation)
-Establish `hmap : K.map (e : M →ₗ[R] N) = Z`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(hK x).1 hx`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Conclude with `⟨e.symm y, (hK _).2 (by simpa using hy), by simp⟩`. Set `v : K ≃ₗ[R] Z` to `e.ofSubmodules K Z hmap`. Establish `hv : ∀ x : K, (v x).1 = e x.1` using `fun _ ↦ rfl`. Establish `hq : BZ'.map (v.symm : Z →ₗ[R] K) = BK`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Use `(hB _ f ?_).2 hf` and prove the remaining obligations. Rewrite using `[← hv]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `hx`. Conclude with `⟨v x, (hB x (v x) (hv x).symm).1 hx, by simp⟩`. Use `⟨Submodule.Quotient.equiv BZ' BK v.symm hq, fun f x h ↦ ?_, fun f ↦ ⟨v.symm f, ?_⟩⟩` and prove the remaining obligations. Establish `hx : v.symm f = x`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `Subtype.ext h.symm`. Rewrite using `[← hx]`. Both sides reduce to the same expression. Rewrite using `[← hv]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_quot_equiv {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     (e : M ≃ₗ[R] N) (K : Submodule R M) (Z : Submodule R N) (hK : ∀ x, x ∈ K ↔ e x ∈ Z)
@@ -65,11 +63,11 @@ theorem d2_apply (z : C2 F) {T T' T'' T''' : C} (φ : T ⟶ T') (ψ : T' ⟶ T''
       mp F χ (z T T' T'' φ ψ) := rfl
 
 /- English proof (translation)
-Use extensionality with `z`. Use `⟨fun h ↦ ?_, fun h T T' T'' T''' φ ψ χ ↦ ?_⟩` and prove the remaining obligations. Use `LinearMap.mem_ker.2 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' T''' φ ψ χ`. Rewrite using `[d2_apply]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `h φ ψ χ` as an intermediate fact. Simplify using `only [Pi.zero_apply]`. Take the linear combination `-this`. Use `congrFun (congrFun (congrFun (congrFun (congrFun (congrFun (congrFun (LinearMap.mem_ker.1 h) T) T') T'') T''') φ) ψ) χ` as an intermediate fact. Rewrite `this` using `[d2_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Pi.zero_apply] at this`. Take the linear combination `-this`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Z2_eq_ker : Z2 F = LinearMap.ker (d2 F) := by
   ext z
@@ -86,21 +84,19 @@ theorem Z2_eq_ker : Z2 F = LinearMap.ker (d2 F) := by
     linear_combination -this
 
 /- English proof (translation)
-Introduce `hD R _ C _ F`. Take `⟨e₀, e₁, e₂, e₃, v₀, v₁, v₂, -, h₀, h₁, h₂⟩` from `hD R C F`. Establish `k₁ : ∀ x, x ∈ Zc F 1 ↔ e₁ x ∈ Z1 F` using `fun x ↦ by`. Rewrite using `[commAlgFunctorCocyclesOne_eq_ker, LinearMap.mem_ker, LinearMap.mem_ker, ← h₁, LinearEquiv.map_eq_zero_iff]`. Establish `k₂ : ∀ x, x ∈ Zc F 2 ↔ e₂ x ∈ Z2 F` using `fun x ↦ by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Z2_eq_ker, LinearMap.mem_ker, LinearMap.mem_ker, ← h₂, LinearEquiv.map_eq_zero_iff]`. Establish `b₁ : ∀ (x : Zc F 1) (f : Z1 F), e₁ x.1 = f.1 → (x ∈ BZ F 1 ↔ f ∈ LinearMap.range ((d0 F).codRestrict (Z1 F) (commAlgFunctorCoboundaryZero_mem_cocyclesOne F)))` using `fun x f hxf ↦ by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Use `⟨e₀ g, Subtype.ext ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.codRestrict_apply, ← h₀, hg]`. Conclude with `hxf`. Introduce and unpack `⟨g, hg⟩`. Use `⟨e₀.symm g, e₁.injective ?_⟩` and prove the remaining obligations. Rewrite using `[h₀, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congrArg Subtype.val hg).trans hxf.symm`. Establish `b₂ : ∀ (x : Zc F 2) (f : Z2 F), e₂ x.1 = f.1 → (x ∈ BZ F 2 ↔ f ∈ LinearMap.range ((d1 F).codRestrict (Z2 F) (differential_one_mem_scaled_lattice F)))` using `fun x f hxf ↦ by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Use `⟨e₁ g, Subtype.ext ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[LinearMap.codRestrict_apply, ← h₁, hg]`. Conclude with `hxf`. Introduce and unpack `⟨g, hg⟩`. Use `⟨e₁.symm g, e₂.injective ?_⟩` and prove the remaining obligations. Rewrite using `[h₁, LinearEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg Subtype.val hg).trans hxf.symm`. Take `⟨u₁, c₁, s₁⟩` from `exists_quot_equiv e₁ (Zc F 1) (Z1 F) k₁ (BZ F 1) _ b₁`. Take `⟨u₂, c₂, s₂⟩` from `exists_quot_equiv e₂ (Zc F 2) (Z2 F) k₂ (BZ F 2) _ b₂`. Use `⟨u₁, u₂, fun f x hx ↦ c₁ f x ?_, fun f x hx ↦ c₂ f x ?_, fun f ↦ ?_, fun f ↦ ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ`.
+Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `(v₁ x.1 T T' φ).trans (hx T T' φ)`. Use function extensionality and compare the values at `T T' T'' φ ψ`. Conclude with `(v₂ x.1 T T' T'' φ ψ).trans (hx T T' T'' φ ψ)`. Take `⟨x, hx⟩` from `s₁ f`. Conclude with `⟨x, fun T T' φ ↦ (v₁ x.1 T T' φ).symm.trans (congrFun (congrFun (congrFun hx T) T') φ)⟩`.
-
-Take `⟨x, hx⟩` from `s₂ f`. Conclude with `⟨x, fun T T' T'' φ ψ ↦ (v₂ x.1 T T' T'' φ ψ).symm.trans (congrFun (congrFun (congrFun (congrFun (congrFun hx T) T') T'') φ) ψ)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dict_low : DictSt → ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R),
     ∃ (u₁ : H1 F ≃ₗ[R] HH F 1) (u₂ : H2 F ≃ₗ[R] HH F 2), IsIdealValuedLiftSystemCocycle F u₁.toLinearMap ∧ IsDegreeTwoComparison F u₂.toLinearMap ∧

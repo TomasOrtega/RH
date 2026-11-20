@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.CuspRep GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Establish `hs : IsUnit (∑ i ∈ Finset.range m, x ^ i)`. Establish `h0 : residue R (∑ i ∈ Finset.range m, x ^ i) = residue R (m : R)`. Simplify using `[map_sum, map_pow, h1]`. Assume the negation of the conclusion as `hn`. Establish `hmem : (∑ i ∈ Finset.range m, x ^ i) ∈ maximalIdeal R` using `hn`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hmem` using `[← residue_eq_zero_iff, h0]`. Conclude with `(residue_eq_zero_iff _).mp hmem hm`. Establish `hg` using `geom_sum_mul x m`. Rewrite `hg` using `[hx, sub_self]`. Conclude with `sub_eq_zero.mp ((hs.mul_right_eq_zero).mp hg)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_one_of_res {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {x : R} {m : ℕ} (hm : IsUnit (m : R))
     (h1 : residue R x = 1) (hx : x ^ m = 1) : x = 1 := by
@@ -21,9 +21,9 @@ private theorem eq_one_of_res {R : Type} [CommRing R] [IsDomain R] [IsLocalRing 
   exact sub_eq_zero.mp ((hs.mul_right_eq_zero).mp hg)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `hu : IsUnit (x - 1)`. Assume the negation of the conclusion as `hu`. Conclude with `hn (sub_eq_zero.mp (by rw [← map_one (residue R), ← map_sub]; exact (residue_eq_zero_iff _).mpr hu))`. Establish `hfu` using `hu.map f`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hfu` using `[map_sub, map_one]`. Establish `hz : residue S (f x - 1) = 0` using `by rw [map_sub, h, map_one, sub_self]`. Conclude with `((residue_eq_zero_iff _).mp hz) hfu`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem res_one_of_map {R S : Type} [CommRing R] [IsLocalRing R] [CommRing S] [IsLocalRing S] (f : R →+* S) {x : R}
     (h : residue S (f x) = 1) : residue R x = 1 := by
@@ -37,15 +37,15 @@ private theorem res_one_of_map {R S : Type} [CommRing R] [IsLocalRing R] [CommRi
   exact ((residue_eq_zero_iff _).mp hz) hfu
 
 /- English proof (translation)
-Introduce `hv`. Establish `hmem : (l : 𝓞 (W.Lp T.L)) ∈ K.s.v0.asIdeal`. Rewrite using `[← K.s.hA K.s.v0 (l : 𝓞 (W.Lp T.L))]`. Simplify using `using hv`. Establish `hmax` using `K.s.v0.isMaximal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `letI : Field (𝓞 (W.Lp T.L) ⧸ K.s.v0.asIdeal) := Ideal.Quotient.field _`. Establish `hcard : Nat.card (𝓞 (W.Lp T.L) ⧸ K.s.v0.asIdeal) = K.s.p` using `K.s.norm_v0_eq_one`. Establish `hfin : Finite (𝓞 (W.Lp T.L) ⧸ K.s.v0.asIdeal)`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[hcard]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `K.s.p_prime.ne_zero`. Use `letI := Fintype.ofFinite (𝓞 (W.Lp T.L) ⧸ K.s.v0.asIdeal)`. Establish `hp0 : ((K.s.p : ℕ) : 𝓞 (W.Lp T.L) ⧸ K.s.v0.asIdeal) = 0`. Rewrite using `[← hcard, Nat.card_eq_fintype_card]`. Conclude with `FiniteField.cast_card_eq_zero _`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl0 : ((l : ℕ) : 𝓞 (W.Lp T.L) ⧸ K.s.v0.asIdeal) = 0`. Use `(Ideal.Quotient.eq_zero_iff_mem).mpr hmem` as an intermediate fact. Simplify using `using this`. Establish `h1` using `Nat.dvd_gcd (ringChar.dvd hp0) (ringChar.dvd hl0)`. Rewrite `h1` using `[(Nat.coprime_primes K.s.p_prime (Fact.out)).mpr K.s.p_ne]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : ((1 : ℕ) : 𝓞 (W.Lp T.L) ⧸ K.s.v0.asIdeal) = 0` using `(ringChar.spec _ 1).mpr h1`. Simplify using `at h0`.
+A detailed English derivation is pending.
 -/
 private theorem not_valuation_natCast_prime_lt_one_link {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h) : ¬ (K.s.A K.s.v0).valuation (l : Ω) < 1 := by
   intro hv
@@ -72,31 +72,27 @@ private theorem not_valuation_natCast_prime_lt_one_link {Ω : Type} [Field Ω] [
   simp at h0
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T c' h K n r hr g hg`. Establish `hv` using `not_valuation_natCast_prime_lt_one_link K`. Establish `hβ : K.β g = 1` using `K.β_t (K.t_unr _ hv hg)`. Take `⟨m, hcop, hm⟩` from `K.tame`. Establish `hchib : ∀ i, (K.r.chib i) (K.V.pr g) = 1` using `fun i => K.v0.1 i (Subgroup.mem_map_of_mem K.V.pr hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hres : ∀ i, residue c'.O ((K.κ g : c'.O) * inc h ((chi D T.pr i) (resQ T.L g) : c.O)) = 1`. Introduce `i`. Rewrite using `[← K.chib i g, hchib i, Units.val_one]`. Establish `hi3 : ∃ i, lab T.pr i = 3`. Unfold `lab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split`. Conclude with `⟨1, rfl⟩`. Conclude with `⟨3, rfl⟩`. Establish `hsurj : ∀ j, ∃ i, lab T.pr i = j`. Unfold `lab`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Evaluate the decidable proposition.
 
-Use `split`. Evaluate the decidable proposition. Introduce `j`. Conclude with `⟨j, rfl⟩`. Take `⟨i3, hi3⟩` from `hi3`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκr : residue c'.O (K.κ g : c'.O) = 1`. Establish `h3` using `hres i3`. Establish `hc : (chi D T.pr i3) (resQ T.L g) = 1`. Simplify using `[chi, hi3, Raw.ps]`. Rewrite `h3` using `[hc, Units.val_one, map_one, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h3`. Establish `hκ : K.κ g = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_one]`. Apply `eq_one_of_res ((dvrFacts l c'.O).2.2.2.2.2.2.2.2 m ((Nat.Prime.coprime_iff_not_dvd Fact.out).mp hcop)) hκr` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Units.val_pow_eq_pow_val, hm _ hv g hg, Units.val_one]`. Establish `hps : ∀ j, residue c.O ((D.ps j) (resQ T.L g) : c.O) = 1`. Introduce `j`. Take `⟨i, hi⟩` from `hsurj j`. Apply `res_one_of_map (inc h)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `hres i`. Rewrite `h4` using `[map_mul, hκr, one_mul]`. Rewrite using `[← hi]`. Conclude with `h4`. Establish `hrbar : D.rbar (resQ T.L g) = 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Unfold `Raw.rbar Raw.r0`. Use extensionality with `a b`. Simplify using `only [GradeZeroInterpolatingElement.mapRep, GradeZeroInterpolatingElement.diagRep, MonoidHom.coe_comp, Function.comp_apply, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.one_apply]`. Use `split_ifs with hab`. Substitute `hab show ((residue c.O).mapMatrix _) a a = 1` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.diagonal_apply_eq]`. Conclude with `hps a`. Use `show ((residue c.O).mapMatrix _) a b = 0`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.diagonal_apply_ne _ hab, map_zero]`. Establish `hN : resLe T.F_le g ∈ (T.fr ∅).N`.
+Establish an intermediate fact. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨K.s.A K.s.v0, ?_, (resLe_mem_Ine T.F_le).mpr hg, hrbar⟩` and prove the remaining obligations. Introduce `q hq`. Establish `hq' : q = l` using `by simpa using hq`. Substitute `hq'` using the available equality. Conclude with `hv`.
-
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Link.rho_val, hr _ hN, Units.val_one]`. Establish `htw : ((K.twc n) g : PadicAlgCl l) = 1`. Rewrite using `[Link.twc_val, hκ, hβ]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[htw, one_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Pt.ptUnr :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h) (n : ℕ) (r : G T.F Ω →* M4 (PadicAlgCl l)), (∀ g ∈ (T.fr ∅).N, r g = 1) → ∀ g ∈ Ine (F := T.L) (K.s.A K.s.v0), K.rhoQ n r g = 1 := by

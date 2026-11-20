@@ -16,9 +16,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [FiniteDimensional ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Introduce `j`. Distinguish the cases in `hj : j = l`. Substitute `hj` using the available equality. Simplify using `using ht`. Rewrite using `[Function.update_of_ne hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc j`.
+A detailed English derivation is pending.
 -/
 theorem update_mem_OmX {c : Fin r → ℂ} (hc : c ∈ OmX r) (l : Fin r) {t : ℂ} (ht : t ≠ 0) :
     Function.update c l t ∈ OmX r := by
@@ -28,11 +28,11 @@ theorem update_mem_OmX {c : Fin r → ℂ} (hc : c ∈ OmX r) (l : Fin r) {t : �
   · rw [Function.update_of_ne hj]; exact hc j
 
 /- English proof (translation)
-Distinguish the cases in `hg : g ∈ Glev k r (Fin.last r) ∧ 0 < GGl k r z z' g`. Take `⟨-, hs, -⟩` from `Φ.2`. Take `⟨U, F, hU, hxU, hF, hΦ⟩` from `hs (x, g) ⟨hx, hg.1, hg.2⟩`. Establish `hcont : Continuous (fun c' : Fin r → ℂ => (c', g))` using `continuous_id.prodMk continuous_const`. Establish `hV : IsOpen ((fun c' : Fin r → ℂ => (c', g)) ⁻¹' U)` using `hU.preimage hcont`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFx : ContDiffAt ℝ ∞ (fun c' : Fin r → ℂ => F (c', g)) x` using `(hF.contDiffAt (hU.mem_nhds hxU)).comp x (contDiff_id.prodMk contDiff_const).contDiffAt`. Use `hFx.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hV.mem_nhds hxU] with c' hc'`. Conclude with `hΦ (c', g) hc' hg.1`. Establish `h0 : (fun c' => (Φ : Fn k r (Wq →L[ℂ] Wp)) c' g) = fun _ => 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `c'`. Conclude with `radSp_zero_off Φ (x := (c', g)) (fun h => hg ⟨h.2.1, h.2.2⟩)`. Rewrite using `[h0]`. Conclude with `contDiffAt_const`.
+A detailed English derivation is pending.
 -/
 theorem cslice_contDiffAt (Φ : RadSp k r z z' π π') (g : Mx k r) {x : Fin r → ℂ} (hx : x ∈ OmX r) :
     ContDiffAt ℝ ∞ (fun c' => (Φ : Fn k r (Wq →L[ℂ] Wp)) c' g) x := by
@@ -52,13 +52,13 @@ theorem cslice_contDiffAt (Φ : RadSp k r z z' π π') (g : Mx k r) {x : Fin r �
     rw [h0]; exact contDiffAt_const
 
 /- English proof (translation)
-Establish `hu` using `hasFDerivAt_update (𝕜 := ℝ) c (i := l) t`. Establish `h` using `hf.hasFDerivAt.comp t hu`. Establish `hd : ∀ v : ℂ, fderiv ℝ (fun s => f (Function.update c l s)) t v = fderiv ℝ f (Function.update c l t) (Pi.single l v)`. Introduce `v`. Rewrite using `[show (fun s => f (Function.update c l s)) = f ∘ Function.update c l from rfl, h.fderiv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousLinearMap.comp_apply]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = l`. Substitute `hj` using the available equality.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[hj]`. Prove the components needed by the constructor for the conclusion. Unfold `dZv wirt`. Rewrite using `[hd, hd]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `dZbv wirtBar`. Rewrite using `[hd, hd]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dZv_update {f : (Fin r → ℂ) → (Wq →L[ℂ] Wp)} (c : Fin r → ℂ) (l : Fin r) (t : ℂ)
     (hf : DifferentiableAt ℝ f (Function.update c l t)) :
@@ -81,23 +81,21 @@ theorem dZv_update {f : (Fin r → ℂ) → (Wq →L[ℂ] Wp)} (c : Fin r → �
   · unfold dZbv wirtBar; rw [hd, hd]
 
 /- English proof (translation)
-Use `set fΦ : (Fin r → ℂ) → (Wq →L[ℂ] Wp) := fun c' => (Φ : Fn k r (Wq →L[ℂ] Wp)) c' g with hfΦ`. Use `set fΨ : (Fin r → ℂ) → (Wq →L[ℂ] Wp) := fun c' => (Ψ : Fn k r (Wq →L[ℂ] Wp)) c' g with hfΨ`. Use `set A : ℂ → (Wq →L[ℂ] Wp) := fun t => fΦ (Function.update c l t) with hA`. Use `set Bf : ℂ → (Wq →L[ℂ] Wp) := fun t => fΨ (Function.update c l t) with hB`. Establish `hupd : ContDiff ℝ ∞ (fun t : ℂ => Function.update c l t)` using `contDiff_pi.mpr fun j => by`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `hj : j = l`. Substitute `hj` using the available equality. Simplify using `only [Function.update_self]`. Conclude with `contDiff_id`. Simplify `contDiff_const` using `[Function.update_of_ne hj]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hAc : ContDiffOn ℝ 1 A {t | t ≠ 0}` using `fun t ht => (((cslice_contDiffAt Φ g (update_mem_OmX hc l ht)).comp t hupd.contDiffAt).of_le (by simp)).contDiffWithinAt`. Establish `hBc : ContDiffOn ℝ 1 Bf {t | t ≠ 0}` using `fun t ht => (((cslice_contDiffAt Ψ g (update_mem_OmX hc l ht)).comp t hupd.contDiffAt).of_le (by simp)).contDiffWithinAt`. Establish `hpΦ : ∀ t : ℂ, t ≠ 0 → (X.op l 0 Φ : Fn k r (Wq →L[ℂ] Wp)) (Function.update c l t) g = t • dZv A t`. Introduce `t ht`. Establish `hd` using `dZv_update (f := fΦ) c l t ((cslice_contDiffAt Φ g (update_mem_OmX hc l ht)).differentiableAt (by simp))`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[X.op_apply, hd.1]`. Use `show pOp l fΦ (Function.update c l t) = _`. Unfold `pOp`. Rewrite using `[if_pos (update_mem_OmX hc l ht), Function.update_self]`. Establish `hpΨ : ∀ t : ℂ, t ≠ 0 → (X.op l 3 Ψ : Fn k r (Wq →L[ℂ] Wp)) (Function.update c l t) g = conj t • dZbv Bf t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `t ht`. Establish `hd` using `dZv_update (f := fΨ) c l t ((cslice_contDiffAt Ψ g (update_mem_OmX hc l ht)).differentiableAt (by simp))`. Rewrite using `[X.op_apply, hd.2]`. Use `show pbOp l fΨ (Function.update c l t) = _`. Unfold `pbOp`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos (update_mem_OmX hc l ht), Function.update_self]`. Both sides reduce to the same expression. Establish `e1 : (fun t : ℂ => B.hsInner ((X.op l 0 Φ : Fn k r (Wq →L[ℂ] Wp)) (Function.update c l t) g) ((Ψ : Fn k r (Wq →L[ℂ] Wp)) (Function.update c l t) g) / ((‖t‖ ^ 2 : ℝ) : ℂ)) = fun t => B.hsInner (t • dZv A t) (Bf t) / ((‖t‖ ^ 2 : ℝ) : ℂ)`. Use function extensionality and compare the values at `t`. Distinguish the cases in `ht : t = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `ht` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[hpΦ t ht]`. Establish `e2 : (fun t : ℂ => B.hsInner ((Φ : Fn k r (Wq →L[ℂ] Wp)) (Function.update c l t) g) ((X.op l 3 Ψ : Fn k r (Wq →L[ℂ] Wp)) (Function.update c l t) g) / ((‖t‖ ^ 2 : ℝ) : ℂ)) = fun t => B.hsInner (A t) (conj t • dZbv Bf t) / ((‖t‖ ^ 2 : ℝ) : ℂ)`. Use function extensionality and compare the values at `t`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[hpΨ t ht]`. Establish `h1'` using `e1 ▸ h1`.
-
-Establish `h2'` using `e2 ▸ h2`. Rewrite using `[e1, e2]`. Conclude with `pLogAdjHS A Bf hAc hBc h0 h1' h2'`.
+A detailed English derivation is pending.
 -/
 theorem site_p_adj_g (X : ActualOps k r z z' π π') (Φ Ψ : RadSp k r z z' π π') (l : Fin r) (c : Fin r → ℂ)
     (hc : c ∈ OmX r) (g : Mx k r)
@@ -162,9 +160,9 @@ theorem site_p_adj_g (X : ActualOps k r z z' π π') (Φ Ψ : RadSp k r z z' π 
   exact pLogAdjHS A Bf hAc hBc h0 h1' h2'
 
 /- English proof (translation)
-Unfold `pairAt`. Simplify using `only [← integral_div]`. Rewrite using `[integral_integral_swap h1]`. Use `conv_rhs => rw [integral_integral_swap h2]`. Rewrite using `[← integral_neg]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h0.prod_left_ae, h1.prod_left_ae, h2.prod_left_ae] with x hx0 hx1 hx2`. Conclude with `site_p_adj_g X Φ Ψ l c hc (Matrix.of x) hx0 hx1 hx2`.
+A detailed English derivation is pending.
 -/
 theorem site_p_adj (X : ActualOps k r z z' π π') (μ : Measure (Mt k r)) [SFinite μ] (Φ Ψ : RadSp k r z z' π π')
     (l : Fin r) (c : Fin r → ℂ) (hc : c ∈ OmX r)

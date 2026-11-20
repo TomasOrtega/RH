@@ -7,7 +7,7 @@ import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.PfSplit
 namespace PositivityTheory.KCo
 
 /- English proof (translation)
-The claim follows from `kCoinv_of surjectivity_statement (irrSt_of hB) hD nu_statement so_statement good_split_of_cm`.
+A detailed English derivation is pending.
 -/
 theorem kCoinv_of_dict (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) (hD : DictSt) : GlobalTheory.ThK.KCoinv :=
   kCoinv_of surjectivity_statement (irrSt_of hB) hD nu_statement so_statement good_split_of_cm

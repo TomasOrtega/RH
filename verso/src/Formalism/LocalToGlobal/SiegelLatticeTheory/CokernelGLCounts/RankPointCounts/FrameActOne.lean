@@ -17,13 +17,13 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Simplify using `[frameAct, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frameAct_one {n : ℕ} (f : Fin n → (VS D).V) (b : Fin n) : frameAct f 1 b = f b := by
   simp [frameAct, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[(D.s.atP p).O_def]`. Use `⟨Polynomial.X ^ 2 - 1, by monicity!, ?_⟩` and prove the remaining obligations. Simplify using `only [Polynomial.eval₂_sub, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_one]`. Rewrite using `[pow_two, TermLoc.localSign_sq, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sgnP_mem (p : PlF D) (b : Fin (D.R.rS + 1)) : TermLoc.sgnP D p b ∈ (D.s.atP p).O := by
   rw [(D.s.atP p).O_def]
@@ -34,35 +34,29 @@ theorem sgnP_mem (p : PlF D) (b : Fin (D.R.rS + 1)) : TermLoc.sgnP D p b ∈ (D.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hC γ Z F'₂ φ φ' Λ₂ hs`. Take `⟨_, _, ⟨hlat, hloc⟩, _⟩` from `hs`. Use `⟨fun a b h => Matrix.one_apply_ne h.ne', fun a => Matrix.one_apply_eq a, fun b => ?_⟩` and prove the remaining obligations. Introduce `P hgP`. Rewrite using `[frameAct_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := P.isPrime`. Use `set x : (VS D).V := frame (liftF F'₂) b - frame (lf D F0) b with hx`. Take `⟨p, hpdef⟩ : ∃ p : PlF D, p = Formalism.L2.SG.Pf.LocalDenominators.plOf P.asIdeal P.isMaximal` from `⟨_, rfl⟩`. Establish `hPp : P.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = p.asIdeal` using `by rw [hpdef]; rfl`. Establish `hty : Loc.resChar p ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ)` using `(Formalism.L2.SG.Pf.BBTie.bt_g_mem_iff p P hPp).1 hgP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨sg, hsg⟩` from `Option.isSome_iff_exists.1 ((D.s_split p).2 hty)`. Establish `hag` using `(Zd.agree p).2.2.2.2.2`. Choose the witnesses or unpack the hypotheses as in `⟨g', hMs⟩ : ∃ g', (Zd.M p).split = some g' := by`. Consider the cases of `hm : (Zd.M p).split with`. Consider the case `none => rw [hm, hsg] at hag`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `hag.elim`. Consider the case `some g' => exact ⟨g', rfl⟩`. Establish `hadm` using `((hloc p).1.1.2.2.2.2.2 g' hMs).2.2 b`. Establish `hrow` using `hC.2.1.1 γ.lam γ.mem`. Establish `hgP' : ∀ P' : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E), P'.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = p.asIdeal → (gS D : 𝓞 D.host.E) ∈ P'.asIdeal` using `fun P' hP' => (Formalism.L2.SG.Pf.BBTie.bt_g_mem_iff p P' hP').2 hty`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, w, hw, hw1⟩` from `Formalism.L2.SG.Pf.BBTie.bt_typed_frFac Zd (Formalism.L2.SG.Pf.locEqC_holds D Zd) (Formalism.L2.SG.Pf.locDiffC_holds D Zd) p F0 γ.lam hrow.2.1.1.fg hrow.2.2 hrow.2.1.2.2.2 hgP' b`. Establish `hO` using `(Zd.agree p).2.2.2.1`. Establish `hsg' : TermLoc.sgnP' D p b = TermLoc.sgnP D p b` using `by show (match (D.s.atP p).split with | some _ => TermLoc.sgnP D p b | none => (-1) ^ (D.R.rS - b.val)) = _`. Rewrite using `[hsg]`. Use `set c : (D.s.atP p).Ep := TermLoc.sgnP D p b * frFac Zd.δ p b with hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hdiff : locF' Zd p F'₂ b - (tLoc Zd p γ).f b = c • baseChange₂ D p x` using `by show (TermLoc.sgnP' D p b * frFac Zd.δ p b) • baseChange₂ D p (frame F'₂ b) - (TermLoc.sgnP D p b * frFac Zd.δ p b) • baseChange₂ D p (frame (lf D F0) b) = _`. Rewrite using `[hsg', hx, map_sub, smul_sub]`. Both sides reduce to the same expression. Establish `hinv : (TermLoc.sgnP D p b * w) * c = 1`. Rewrite using `[hc, mul_mul_mul_comm, TermLoc.localSign_sq, hw1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinvO : TermLoc.sgnP D p b * w ∈ (Zd.M p).L.O`. Rewrite using `[hO]; exact (D.s.atP p).O.mul_mem (sgnP_mem p b) (by rw [← hO]; exact hw)`. Establish `h1 : baseChange₂ D p x ∈ (locH Zd p).smulLat (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g'.q : (D.s.atP p).Fp)) (lattice₂ D Zd.M p Λ₂)`. Establish `: baseChange₂ D p x = (TermLoc.sgnP D p b * w) • (locF' Zd p F'₂ b - (tLoc Zd p γ).f b)`. Rewrite using `[hdiff, smul_smul, hinv, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ ⟨_, hinvO⟩ hadm`. Establish `hqg` using `Formalism.L2.SG.Pf.Cnt.DualityBasisChange.q_gS_inv_mem Zd.agree p hMs`. Establish `h2 : (D.s.atP p).ιE (((gS D : ℕ) : D.host.E))⁻¹ • baseChange₂ D p x ∈ lattice₂ D Zd.M p Λ₂`. Establish `key : ∀ v ∈ (locH Zd p).smulLat (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g'.q : (D.s.atP p).Fp)) (lattice₂ D Zd.M p Λ₂), (D.s.atP p).ιE (((gS D : ℕ) : D.host.E))⁻¹ • v ∈ lattice₂ D Zd.M p Λ₂`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨y, hy, rfl⟩` from `hv`. Rewrite using `[smul_smul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(lattice₂ D Zd.M p Λ₂).smul_mem ⟨_, hqg⟩ hy`. Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a c _ _ ha hc => rw [smul_add]`. Conclude with `Submodule.add_mem _ ha hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul o v _ hv`. Establish `e : (D.s.atP p).ιE (((gS D : ℕ) : D.host.E))⁻¹ • (o • v) = o • ((D.s.atP p).ιE (((gS D : ℕ) : D.host.E))⁻¹ • v)` using `by show _ • ((o : (D.s.atP p).Ep) • v) = (o : (D.s.atP p).Ep) • _`. Rewrite using `[smul_smul, smul_smul, mul_comm]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key _ h1`. Establish `hg0 : ((gS D : ℕ) : D.host.E) ≠ 0`. Use `Formalism.L2.SG.Pf.Cnt.DualityBasisChange.gS_ne (D := D)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `h3 : baseChange₂ D p ((((gS D : ℕ) : D.host.E))⁻¹ • x) ∈ lattice₂ D Zd.M p Λ₂`.
-
-Rewrite using `[Formalism.L2.SG.Pf.LocalDenominators.baseChange_smul₂]`. Conclude with `h2`. Use `haveI := p.isPrime`. Establish `h4` using `(Formalism.L2.SG.Pf.LocalDenominators.baseChangeAt_mem_localLattice_iff Zd p hlat _).1 h3`. Take `⟨t, ht, htx⟩` from `(Formalism.HermitianLattices.Ext.L3.LocalSpans.mem_locF p.asIdeal Λ₂ _).1 h4`.
-
-Use `⟨algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t, fun h => ht (by rw [← hPp]; exact h), ?_⟩` and prove the remaining obligations. Establish `e : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t • x = ((gS D : ℕ) : 𝓞 D.host.E) • (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t • ((((gS D : ℕ) : D.host.E))⁻¹ • x))`. Rewrite using `[Formalism.L2.SG.Pf.LocalDenominators.oE_smul, Formalism.L2.SG.Pf.LocalDenominators.oE_smul, Formalism.L2.SG.Pf.LocalDenominators.oE_smul, smul_smul, smul_smul]`. Use `congr 1`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) htx`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem btAdm : BtAdm Zd u u' F0 what₂ := by
   intro hC γ Z F'₂ φ φ' Λ₂ hs

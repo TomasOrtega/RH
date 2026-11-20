@@ -7,7 +7,7 @@ namespace GlobalTheory.PfaffBlock
 open Equiv Finset
 
 /- English proof (translation)
-Establish `h` using `α.toAlternatingMap.map_swap ![w, u] (i := 0) (j := 1) (by decide)`. Establish `e : (![w, u] ∘ ⇑(Equiv.swap (0 : Fin 2) 1)) = ![u, w]`. Apply the tactic sequence `ext i; fin_cases i <;> rfl`. Rewrite `h` using `[e]`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem alt_antisymm {T : Type} [NormedAddCommGroup T] [NormedSpace ℝ T]
     (α : T [⋀^Fin 2]→L[ℝ] ℝ) (u w : T) : α ![u, w] = -α ![w, u] := by
@@ -18,20 +18,20 @@ theorem alt_antisymm {T : Type} [NormedAddCommGroup T] [NormedSpace ℝ T]
   simpa using h
 
 /- English proof (translation)
-Establish `: (Finset.univ : Finset (Perm (Fin 2))) = {1, swap 0 1}` using `by decide`. Rewrite using `[this, Finset.sum_pair (by decide)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_perm_fin_two (f : Perm (Fin 2) → ℝ) : ∑ c, f c = f 1 + f (swap 0 1) := by
   have : (Finset.univ : Finset (Perm (Fin 2))) = {1, swap 0 1} := by decide
   rw [this, Finset.sum_pair (by decide)]
 
 /- English proof (translation)
-Establish `h2 : ∀ (σ : Perm (Fin g × Fin 2)) i, A (σ (i, 0)) (σ (i, 1)) = ∑ c : Perm (Fin 2), ((Perm.sign c : ℤ) : ℝ) * A' (σ (i, c 0)) (σ (i, c 1))`. Introduce `σ i`. Rewrite using `[hA, sum_perm_fin_two, Perm.sign_swap (by decide)]`. Simplify using `[sub_eq_add_neg]`. Establish `key : ∀ σ : Perm (Fin g × Fin 2), ∏ i, A (σ (i, 0)) (σ (i, 1)) = ∑ C : Fin g → Perm (Fin 2), ((Perm.sign (prodCongrRight C) : ℤ) : ℝ) * ∏ i, A' ((σ * prodCongrRight C) (i, 0)) ((σ * prodCongrRight C) (i, 1))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `σ`. Repeatedly rewrite using `[h2 σ, Finset.prod_univ_sum, Perm.sign_prodCongrRight]`. Use `Finset.sum_congr rfl fun C _ => ?_` and prove the remaining obligations. Simplify using `[Finset.prod_mul_distrib, Perm.mul_apply, prodCongrRight_apply]`. Repeatedly rewrite using `[key, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Establish `hC : ∀ C : Fin g → Perm (Fin 2), ∑ σ : Perm (Fin g × Fin 2), ((Perm.sign σ : ℤ) : ℝ) * (((Perm.sign (prodCongrRight C) : ℤ) : ℝ) * ∏ i, A' ((σ * prodCongrRight C) (i, 0)) ((σ * prodCongrRight C) (i, 1))) = ∑ σ : Perm (Fin g × Fin 2), ((Perm.sign σ : ℤ) : ℝ) * ∏ i, A' (σ (i, 0)) ( …`. Introduce `C`. Use `Fintype.sum_equiv (Equiv.mulRight (prodCongrRight C)) _ _ (fun σ => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, Perm.sign_mul, Units.val_mul, Int.cast_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun C _ => hC C, Finset.sum_const, Finset.card_univ, Fintype.card_fun, Fintype.card_perm, nsmul_eq_mul]`. Simplify using `[Finset.mul_sum]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_sign_prod_split {g : ℕ} (A A' : Fin g × Fin 2 → Fin g × Fin 2 → ℝ)
     (hA : ∀ x y, A x y = A' x y - A' y x) :
@@ -72,9 +72,9 @@ def colPerm {g : ℕ} (p : Perm (Fin g) × Perm (Fin g)) : Perm (Fin g × Fin 2)
   prodCongrLeft fun c => if c = 0 then p.1 else p.2
 
 /- English proof (translation)
-Introduce `p q h`. Establish `h0 : ∀ i, p.1 i = q.1 i` using `fun i => by`. Use `congrArg (fun s : Perm (Fin g × Fin 2) => (s (i, 0)).1) h` as an intermediate fact. Simplify `this` using `[colPerm]`. Establish `h1 : ∀ i, p.2 i = q.2 i` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (fun s : Perm (Fin g × Fin 2) => (s (i, 1)).1) h` as an intermediate fact. Simplify `this` using `[colPerm]`. Conclude with `Prod.ext (Equiv.ext h0) (Equiv.ext h1)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem colPerm_injective {g : ℕ} : Function.Injective (colPerm (g := g)) := by
   intro p q h
@@ -87,15 +87,15 @@ theorem colPerm_injective {g : ℕ} : Function.Injective (colPerm (g := g)) := b
   exact Prod.ext (Equiv.ext h0) (Equiv.ext h1)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hprod : ∏ i, half S (σ (i, 0)) (σ (i, 1)) ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hcol : ∀ i, (σ (i, 0)).2 = 0 ∧ (σ (i, 1)).2 = 1`. Introduce `i`. Use `Finset.prod_ne_zero_iff.1 hprod i (Finset.mem_univ _)` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `half at this`. Assume the negation of the conclusion as `h`. Conclude with `this (if_neg h)`. Establish `hinj : ∀ c : Fin 2, Function.Injective fun i => (σ (i, c)).1`. Introduce `c i j hij`.
+Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : (σ (i, c)).2 = (σ (j, c)).2` using `by fin_cases c`. Simplify using `[(hcol i).1, (hcol j).1]`. Simplify using `[(hcol i).2, (hcol j).2]`. Use `σ.injective (Prod.ext hij hc)` as an intermediate fact. Conclude with `congrArg Prod.fst this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `a : Perm (Fin g)` to `Equiv.ofBijective _ (Finite.injective_iff_bijective.1 (hinj 0))`. Set `b : Perm (Fin g)` to `Equiv.ofBijective _ (Finite.injective_iff_bijective.1 (hinj 1))`. Apply `hσ` to reduce the goal to its premises. Use `Finset.mem_image.2 ⟨(a, b), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨i, c⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `fin_cases c <;> simp [colPerm, a, b]`. Use `fin_cases c`. Simplify using `[colPerm, (hcol i).1]`. Simplify using `[colPerm, (hcol i).2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem half_term_eq_zero {g : ℕ} (S : Matrix (Fin g) (Fin g) ℝ) (σ : Perm (Fin g × Fin 2))
     (hσ : σ ∉ Finset.univ.image (colPerm (g := g))) :
@@ -127,7 +127,7 @@ theorem half_term_eq_zero {g : ℕ} (S : Matrix (Fin g) (Fin g) ℝ) (σ : Perm 
     · simp [colPerm, (hcol i).2]
 
 /- English proof (translation)
-Simplify using `[colPerm, half, Perm.sign_prodCongrLeft, Fin.prod_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem half_term_colPerm {g : ℕ} (S : Matrix (Fin g) (Fin g) ℝ) (p : Perm (Fin g) × Perm (Fin g)) :
     ((Perm.sign (colPerm p) : ℤ) : ℝ) * ∏ i, half S (colPerm p (i, 0)) (colPerm p (i, 1)) =
@@ -135,11 +135,11 @@ theorem half_term_colPerm {g : ℕ} (S : Matrix (Fin g) (Fin g) ℝ) (p : Perm (
   simp [colPerm, half, Perm.sign_prodCongrLeft, Fin.prod_univ_two]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.image (colPerm (g := g)))) (fun σ _ hσ => half_term_eq_zero S σ hσ), Finset.sum_image (fun p _ q _ h => colPerm_injective h)]`. Repeatedly rewrite using `[half_term_colPerm]`. Rewrite using `[Fintype.sum_prod_type]`. Establish `inner : ∀ a : Perm (Fin g), ∑ b : Perm (Fin g), ((Perm.sign a : ℤ) : ℝ) * ((Perm.sign b : ℤ) : ℝ) * ∏ i, S (a i) (b i) = S.det`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.det_transpose, Matrix.det_apply']`. Use `(Fintype.sum_equiv (Equiv.mulRight a) _ _ (fun c => ?_)).symm` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, Perm.mul_apply, Matrix.transpose_apply]`. Rewrite using `[Equiv.prod_comp a (fun j => S j (c j))]`. Establish `hs : ((Perm.sign a : ℤ) : ℝ) * ((Perm.sign (c * a) : ℤ) : ℝ) = ((Perm.sign c : ℤ) : ℝ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Perm.sign_mul, ← Int.cast_mul, ← Units.val_mul, mul_comm (Perm.sign c), ← mul_assoc, Int.units_mul_self, one_mul]`. Rewrite using `[hs]`. Repeatedly rewrite using `[inner]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_half {g : ℕ} (S : Matrix (Fin g) (Fin g) ℝ) :
     ∑ σ : Perm (Fin g × Fin 2), ((Perm.sign σ : ℤ) : ℝ) * ∏ i, half S (σ (i, 0)) (σ (i, 1)) =
@@ -170,9 +170,9 @@ namespace GlobalTheory
 open GlobalTheory.PfaffBlock
 
 /- English proof (translation)
-Establish `hA : ∀ x y, α ![v x, v y] = half S x y - half S y x`. Introduce and unpack `⟨i, c⟩ ⟨j, d⟩`. Apply the tactic sequence `fin_cases c <;> fin_cases d`. Simplify using `[half, h0]`. Simplify using `[half, h01]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[half, alt_antisymm α (v (i, 1)), h01]`. Simplify using `[half, h1]`. Unfold `wedgePow`. Rewrite using `[sum_sign_prod_split (fun x y => α ![v x, v y]) (half S) hA, sum_half, ← mul_assoc, one_div, inv_mul_cancel₀ (pow_ne_zero _ two_ne_zero), one_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wedgePow_block_eq {T : Type} [NormedAddCommGroup T] [NormedSpace ℝ T]
     (α : T [⋀^Fin 2]→L[ℝ] ℝ) (g : ℕ) (v : Fin g × Fin 2 → T) (S : Matrix (Fin g) (Fin g) ℝ)
@@ -191,7 +191,7 @@ theorem wedgePow_block_eq {T : Type} [NormedAddCommGroup T] [NormedSpace ℝ T]
     one_div, inv_mul_cancel₀ (pow_ne_zero _ two_ne_zero), one_mul]
 
 /- English proof (translation)
-Introduce `α g v S` and use `wedgePow_block_eq α g v S`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ {T : Type} [NormedAddCommGroup T] [NormedSpace ℝ T] (α : T [⋀^Fin 2]→L[ℝ] ℝ) (g : ℕ)
     (v : Fin g × Fin 2 → T) (S : Matrix (Fin g) (Fin g) ℝ), (∀ i j, α ![v (i, 0), v (j, 0)] = 0) →

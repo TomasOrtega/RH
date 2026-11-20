@@ -46,7 +46,7 @@ structure ArcWit (Y : Model Xo c β) {O' : Type} [CommRing O'] [IsDomain O'] {b 
             P.ToA F k q x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨t, m, P, φ, he, w, e, h⟩ => ⟨⟨t, m, P, φ, he, w, e, h⟩⟩, fun ⟨⟨t, m, P, φ, he, w, e, h⟩⟩ => ⟨t, m, P, φ, he, w, e, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem Model.hasArcData_iff (Y : Model Xo c β) {O' : Type} [CommRing O'] [IsDomain O'] {b : O →+* O'}
     (a : ArcIn D l β O' b) {R : Type} [CommRing R] [IsDomain R] (I : Ideal R) (f : O' →+* R) (u : R) (χ : Sp R ⟶ Y.X) :

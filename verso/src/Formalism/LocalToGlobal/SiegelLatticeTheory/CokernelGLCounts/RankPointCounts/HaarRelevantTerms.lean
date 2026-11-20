@@ -25,14 +25,14 @@ def FixDecC : Prop :=
       ∃ C : Set X.B.I.Ginf, IsCompact C ∧ ∀ m : ℤ, k ^ m ∈ C
 
 /- English proof (translation)
-Introduce `D X Y u u' t _` and use `h D X Y u u' t`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rHaarRelC_of_rHaarC (h : RHaarC) : RHaarRelC := fun D X Y u u' t _ => h D X Y u u' t
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hr`. Take `⟨r, hr, hne⟩` from `hNR D X Y u u' t hr`. Apply `hne` to reduce the goal to its premises. Establish `h1` using `hχ r hr`. Establish `hb : starRingEnd ℂ (X.psiInfU u' (t.pt.1⁻¹ * r * t.pt.1)) * X.psiInfU u' (t.pt.1⁻¹ * r * t.pt.1) = 1`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_comm, Complex.mul_conj', psiInfU_norm X u']`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem relevant_of_triv (hNR : NonRelCharC) {D : D7} {X : HidaSetting D} (Y : Full X) {u u' : D.what₂.Word}
     (t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'))
@@ -50,11 +50,11 @@ theorem relevant_of_triv (hNR : NonRelCharC) {D : D7} {X : HidaSetting D} (Y : F
     _ = X.psiInfU u' (t.pt.1⁻¹ * r * t.pt.1) := by rw [← mul_assoc, h1, one_mul]
 
 /- English proof (translation)
-Introduce `D X Y u u' t hχ h hh`. Establish `hΓR : ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin ≤ Rsub hG t`. Introduce `s hs`. Establish `hs0 : s ∈ ROset X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin` using `hs`. Take `⟨z, n, hz, hzs, hn, hn'⟩` from `hs0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hl : RatLink X (t.pt⁻¹ * z * t.pt) (t.lin⁻¹ * n * t.lin)` using `ratLink_mul X (ratLink_mul X (ratLink_inv X t.rep.2.1) hz) t.rep.2.1`. Establish `hs2` using `hN D X u' t.lam' _ _ hl hn'`. Rewrite `hs2` using `[Prod.fst_mul, Prod.fst_mul, Prod.fst_inv, ← hzs]`. Conclude with `⟨hzs ▸ hN D X u t.lam z n hz hn, hs2⟩`. Use `haveI := ROsub_countable X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `haveI := h2 D X Y u u' t`. Take `⟨K, hK, hKc⟩` from `h3 D X Y u u' t`. Take `⟨ν, hs, h0, hc, hKf, hl, hi⟩` from `pushHaar_inv (Rsub hG t) (ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin) (h1 D X Y u u' t) hΓR ⟨K, hK, fun r hr => hKc r hr⟩`. Take `⟨k, n, rfl, hn, hk, hC⟩` from `hFD D X Y u u' t (relevant_of_triv hNR Y t hχ) h hh`. Conclude with `⟨ν, hs, h0, hc, hKf, hl, hi, conj_of_decomp (Rsub hG t) (h1 D X Y u u' t) ν hs h0 hc hKf hl hi k n hk hn hC⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rHaarRelC_of (hN : NLamNinf) (hG : PsiInfChar) (h1 : RClosedC) (h2 : RODiscreteC) (h3 : RCocompactC)
     (hNR : NonRelCharC) (hFD : FixDecC) : RHaarRelC := by

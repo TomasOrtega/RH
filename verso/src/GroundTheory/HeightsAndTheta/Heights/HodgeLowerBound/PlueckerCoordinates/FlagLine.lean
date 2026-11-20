@@ -23,15 +23,15 @@ def lineGen : ∀ (τ : Unit) (i : Fin DL.N), Fin (lineM τ i) →
   | _, ⟨_ + 2, _⟩ => fun m => m.elim0
 
 /- English proof (translation)
-Simplify using `[twistFactor]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twistFactor_zero (c : (k : Unit) → PBlk 2 k) : twistFactor DL.y c 0 = 1 := by
   simp [twistFactor]
 
 /- English proof (translation)
-Use `set ψ := (AlternatingMap.ofSubsingleton Ω (Fin 2 → Ω) Ω (0 : Fin 1)).symm φ`. Establish `hψ : ∀ w, φ (fun _ => w) = ψ w` using `fun w => by conv_lhs => rw [← (AlternatingMap.ofSubsingleton Ω (Fin 2 → Ω) Ω (0 : Fin 1)).apply_symm_apply φ]`. Both sides reduce to the same expression. Establish `hv : v = fun _ => v 0` using `funext fun a => by rw [Subsingleton.elim a 0]`. Rewrite using `[hv, hψ]`.
+Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hψ]`. Use `conv_lhs => rw [← (Pi.basisFun Ω (Fin 2)).sum_repr (v 0)]`. Simplify using `[map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem altFin1_apply (φ : (Fin 2 → Ω) [⋀^Fin 1]→ₗ[Ω] Ω) (v : Fin 1 → Fin 2 → Ω) :
     φ v = ∑ m, v 0 m * φ (fun _ => Pi.basisFun Ω (Fin 2) m) := by
@@ -46,7 +46,7 @@ theorem altFin1_apply (φ : (Fin 2 → Ω) [⋀^Fin 1]→ₗ[Ω] Ω) (v : Fin 1 
   simp [map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[altFin1_apply, Fin.sum_univ_two, Fin.sum_univ_two, AlternatingMap.add_apply, AlternatingMap.smul_apply, AlternatingMap.smul_apply]`. Simplify using `[smul_eq_mul, mul_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem altFin1_eq (φ : (Fin 2 → Ω) [⋀^Fin 1]→ₗ[Ω] Ω) :
     φ = ∑ m : Fin 2, φ (fun _ => Pi.basisFun Ω (Fin 2) m) •
@@ -57,14 +57,14 @@ theorem altFin1_eq (φ : (Fin 2 → Ω) [⋀^Fin 1]→ₗ[Ω] Ω) :
   simp [smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-The claim follows from `mem_trivLat`.
+A detailed English derivation is pending.
 -/
 theorem lat_line (c : (k : Unit) → PBlk 2 k) (e : Fin 2 → Ω) :
     e ∈ (DL.W ()).lat c ↔ ∀ q, e q ∈ chartRing ℤ (segreCoord yLine) c :=
   mem_trivLat
 
 /- English proof (translation)
-Rewrite using `[Module.Basis.det_apply, Matrix.det_fin_two]`. Simplify using `only [Module.Basis.toMatrix_apply, Pi.basisFun_repr]`. Conclude with `sub_mem (mul_mem (he _ _) (he _ _)) (mul_mem (he _ _) (he _ _))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_mem (c : (k : Unit) → PBlk 2 k) (e : Fin 2 → Fin 2 → Ω)
     (he : ∀ a q, e a q ∈ chartRing ℤ (segreCoord yLine) c) :
@@ -74,9 +74,7 @@ theorem det_mem (c : (k : Unit) → PBlk 2 k) (e : Fin 2 → Fin 2 → Ω)
   exact sub_mem (mul_mem (he _ _) (he _ _)) (mul_mem (he _ _) (he _ _))
 
 /- English proof (translation)
-Rewrite using `[lat_line]`. Introduce `q`. Simplify using `only [Pi.basisFun_apply, Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`.
-
-Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem basis_mem (c : (k : Unit) → PBlk 2 k) (m : Fin 2) :
     Pi.basisFun Ω (Fin 2) m ∈ (DL.W ()).lat c := by
@@ -122,13 +120,13 @@ def linePlueckerData : PlueckerData DL where
 abbrev PL : PlueckerData DL := linePlueckerData
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, C a, 1, isMultiHomog_C_zero a, isMultiHomog_one, by simp, by simp, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isValueAt_intCast (z : (Σ _ : Unit, Fin 2) → ℂ) (a : ℤ) : IsValueAt yLine (a : Ω) z a :=
   ⟨0, C a, 1, isMultiHomog_C_zero a, isMultiHomog_one, by simp, by simp, by simp, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hz, a, by rw [twistFactor_zero, mul_one]; exact isValueAt_intCast z a, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTwValueAt_intCast (c : (k : Unit) → PBlk 2 k) (z : (Σ _ : Unit, Fin 2) → ℂ)
     (hz : ∀ k, z ⟨k, c k⟩ ≠ 0) (a : ℤ) : IsTwValueAt DL.y c 0 (a : Ω) z a :=
@@ -137,7 +135,7 @@ theorem isTwValueAt_intCast (c : (k : Unit) → PBlk 2 k) (z : (Σ _ : Unit, Fin
 def detInt (q : Fin 2 → Fin 2) : ℤ := (Matrix.of fun p a => if q a = p then (1 : ℤ) else 0).det
 
 /- English proof (translation)
-Rewrite using `[Module.Basis.det_apply, detInt, Int.cast_det]`. Use `congr 1`. Use extensionality with `p a`. Simplify using `[Module.Basis.toMatrix_apply, Pi.single_apply, eq_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem basis_det_comp (q : Fin 2 → Fin 2) :
     (Pi.basisFun Ω (Fin 2)).det (Pi.basisFun Ω (Fin 2) ∘ q) = (detInt q : Ω) := by
@@ -147,7 +145,7 @@ theorem basis_det_comp (q : Fin 2 → Fin 2) :
   simp [Module.Basis.toMatrix_apply, Pi.single_apply, eq_comm]
 
 /- English proof (translation)
-Rewrite using `[← (finTwoArrowEquiv (Fin 2)).symm.sum_comp, Fintype.sum_prod_type, Fin.sum_univ_two, Fin.sum_univ_two, Fin.sum_univ_two]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_fin_two_arrow (F : (Fin 2 → Fin 2) → ℂ) :
     ∑ q : Fin 2 → Fin 2, F q = F ![0, 0] + F ![0, 1] + (F ![1, 0] + F ![1, 1]) := by
@@ -156,7 +154,7 @@ theorem sum_fin_two_arrow (F : (Fin 2 → Fin 2) → ℂ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[sum_fin_two_arrow, Matrix.det_fin_two]`. Simplify using `[detInt, Matrix.det_fin_two, Fin.prod_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_det_expand (g : Matrix (Fin 2) (Fin 2) ℂ) :
     ∑ q : Fin 2 → Fin 2, (∏ a, g (q a) a) * (detInt q : ℂ) = g.det := by
@@ -165,9 +163,9 @@ theorem sum_det_expand (g : Matrix (Fin 2) (Fin 2) ℂ) :
   ring
 
 /- English proof (translation)
-Use `⟨fun q => ((if q 0 = m then 1 else 0 : ℤ) : ℂ), fun q => ?_, ?_⟩` and prove the remaining obligations. Establish `hval : (AlternatingMap.ofSubsingleton Ω (Fin 2 → Ω) Ω (0 : Fin 1) (LinearMap.proj m)) (Pi.basisFun Ω (Fin 2) ∘ q) = ((if q 0 = m then 1 else 0 : ℤ) : Ω)` using `by show (Pi.basisFun Ω (Fin 2) (q 0)) m = _`. Rewrite using `[Pi.basisFun_apply, Pi.single_apply]`. Distinguish the cases in `h : q 0 = m`. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`. Rewrite using `[hval]`. Conclude with `isTwValueAt_intCast _ _ (fun _ => hz0) _`. Rewrite using `[← (Equiv.funUnique (Fin 1) (Fin 2)).symm.sum_comp]`. Simplify using `[firstCols, Equiv.funUnique]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pluecker_step1 (i0 : Fin 2) (z : (Σ _ : Unit, Fin 2) → ℂ) (hz0 : z ⟨(), i0⟩ ≠ 0)
     (g : Matrix (Fin 2) (Fin 2) ℂ) (m : Fin 2) :
@@ -188,7 +186,7 @@ theorem pluecker_step1 (i0 : Fin 2) (z : (Σ _ : Unit, Fin 2) → ℂ) (hz0 : z 
     simp [firstCols, Equiv.funUnique]
 
 /- English proof (translation)
-Use `⟨fun q => (detInt q : ℂ), fun q => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[basis_det_comp]`. Conclude with `isTwValueAt_intCast _ _ (fun _ => hz0) _`. Rewrite using `[← sum_det_expand g]`. Simplify using `[firstCols]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pluecker_step2 (i0 : Fin 2) (z : (Σ _ : Unit, Fin 2) → ℂ) (hz0 : z ⟨(), i0⟩ ≠ 0)
     (g : Matrix (Fin 2) (Fin 2) ℂ) :
@@ -201,21 +199,19 @@ theorem pluecker_step2 (i0 : Fin 2) (z : (Σ _ : Unit, Fin 2) → ℂ) (hz0 : z 
     simp [firstCols]
 
 /- English proof (translation)
-Take `⟨i0, hi0⟩` from `hz`. Use `⟨mem_mcPts_line.2 ⟨i0, hi0⟩, fun τ => ?_⟩` and prove the remaining obligations. Take `rfl : τ = ()` from `rfl`. Use `set w1 : Fin 2 → ℂ := wPart PL u ((), ⟨0, by decide⟩) with hw1`. Use `set w2 : ℂ := wPart PL u ((), ⟨1, by decide⟩) (0 : Fin 1) with hw2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw1ne : w1 ≠ 0` using `fun h => by obtain ⟨m, hm⟩ := h1; exact hm (congrFun h m)`. Use `set t : Fin 2 → ℂ := if w1 0 ≠ 0 then ![0, 1] else ![1, 0] with ht`. Use `set g : Matrix (Fin 2) (Fin 2) ℂ := Matrix.of ![![w1 0, t 0], ![w1 1, t 1]] with hg`. Establish `hdet : g.det ≠ 0`. Rewrite using `[Matrix.det_fin_two]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h0 : w1 0 ≠ 0`. Simplify using `[hg, ht, h0]`. Establish `h1' : w1 1 ≠ 0`. Introduce `h1'`. Apply `hw1ne` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `p`. Use `fin_cases p`. Simplify using `using h0`. Simplify using `using h1'`. Simplify using `[hg, ht, h0, h1']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Assume the hypotheses and unpack their components.
 
-Establish `hz0 : zPart PL u ⟨(), i0⟩ ≠ 0` using `hi0`. Use `⟨fun _ => i0, 1, Pi.basisFun Ω (Fin 2), g, fun i => if (i : ℕ) = 0 then 1 else w2 / g.det, ⟨segreCoord_line_ne_zero i0, one_mem _, one_ne_zero, (Pi.basisFun Ω (Fin 2)).linearIndependent, trivial_frame_iff _ 2 _⟩, inFrameDomain_line hz0, hdet, ?_, ?_⟩` and prove the remaining obligations. Introduce `i dsimp only split_ifs`. Conclude with `one_ne_zero`. Conclude with `div_ne_zero h2 hdet`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨_ | _ | n, hi⟩ m`. Use `⟨g m 0, pluecker_step1 i0 (zPart PL u) hz0 g m, ?_⟩ show wPart PL u ((), ⟨0, hi⟩) m = (if (0 : ℕ) = 0 then 1 else w2 / g.det) * g m 0` and prove the remaining obligations. Rewrite using `[if_pos rfl, one_mul]`. Apply the tactic sequence `have hm : g m 0 = w1 m := by fin_cases m <;> rfl`. Rewrite using `[hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g.det, pluecker_step2 i0 (zPart PL u) hz0 g, ?_⟩` and prove the remaining obligations. Establish `hm0 : (m : ℕ) = 0`. Establish `h` using `m.isLt`. Express the relevant statement in the definitionally equal form `(m : ℕ) < 1 at h`. Use linear arithmetic over natural numbers and integers.
-
-Use `show wPart PL u ((), ⟨0 + 1, hi⟩) m = (if (0 + 1 : ℕ) = 0 then 1 else w2 / g.det) * g.det`. Rewrite using `[if_neg (by omega), div_mul_cancel₀ _ hdet, hw2]`. Establish `: m = (0 : Fin 1)` using `Fin.ext hm0`. Rewrite using `[this]`. Conclude with `absurd hi (by show ¬ (n + 2 < 2); omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_flagPts_line (u : (Σ k : YBlk DL, ιY PL k) → ℂ)
     (hz : ∃ i, zPart PL u ⟨(), i⟩ ≠ 0) (h1 : ∃ m : Fin 2, wPart PL u ((), ⟨0, by decide⟩) m ≠ 0)
@@ -269,11 +265,11 @@ theorem mem_flagPts_line (u : (Σ k : YBlk DL, ιY PL k) → ℂ)
     · exact absurd hi (by show ¬ (n + 2 < 2); omega)
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `f hf`. Rewrite using `[Ideal.mem_bot]`. Establish `hvan : ∀ u ∈ flagPts PL, eval u (map (Int.castRingHom ℂ) f) = 0`. Introduce `u hu`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hf u) hu` as an intermediate fact. Simplify using `using this`. Establish `hzero : map (Int.castRingHom ℂ) f = 0`. Use `funext_set (fun _ => ({0}ᶜ : Set ℂ)) (fun _ => (Set.finite_singleton (0 : ℂ)).infinite_compl) ?_` and prove the remaining obligations. Introduce `u hu`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_zero, hvan u (mem_flagPts_line u ⟨0, hu _ trivial⟩ ⟨0, hu _ trivial⟩ (hu _ trivial))]`. Conclude with `MvPolynomial.map_injective _ (Int.castRingHom ℂ).injective_int (by rw [hzero, map_zero])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PY_line : PY PL = ⊥ := by
   rw [eq_bot_iff]

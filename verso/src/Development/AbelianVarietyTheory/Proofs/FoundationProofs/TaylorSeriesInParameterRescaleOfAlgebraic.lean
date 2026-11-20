@@ -11,7 +11,7 @@ namespace GlobalTheory.SerTransport
 open PowerSeries
 
 /- English proof (translation)
-Simplify using `only [coef1]`. Rewrite using `[iteratedDeriv_fun_add hF.contDiff.contDiffAt hG.contDiff.contDiffAt, add_div]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem taylorCoeff_add_entire {F G : ℂ → ℂ} (hF : Differentiable ℂ F) (hG : Differentiable ℂ G) (n : ℕ) :
     coef1 (fun z => F z + G z) n = coef1 F n + coef1 G n := by
@@ -19,11 +19,9 @@ theorem taylorCoeff_add_entire {F G : ℂ → ℂ} (hF : Differentiable ℂ F) (
   rw [iteratedDeriv_fun_add hF.contDiff.contDiffAt hG.contDiff.contDiffAt, add_div]
 
 /- English proof (translation)
-Simplify using `only [coef1]`. Rewrite using `[iteratedDeriv_fun_mul hF.contDiff.contDiffAt hG.contDiff.contDiffAt, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Finset.sum_div]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ n` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Establish `e : ((n.choose i : ℕ) : ℂ) * (i.factorial : ℂ) * ((n - i).factorial : ℂ) = n.factorial`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.choose_mul_factorial_mul_factorial hi'` after adjusting the coercions. Establish `h1 : (i.factorial : ℂ) ≠ 0` using `by exact_mod_cast i.factorial_ne_zero`. Establish `h2 : ((n - i).factorial : ℂ) ≠ 0` using `by exact_mod_cast (n - i).factorial_ne_zero`. Establish `h3 : ((n.choose i : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast (Nat.choose_pos hi').ne'`. Rewrite using `[← e]`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem taylorCoeff_mul_entire {F G : ℂ → ℂ} (hF : Differentiable ℂ F) (hG : Differentiable ℂ G) (n : ℕ) :
     coef1 (fun z => F z * G z) n =
@@ -42,7 +40,7 @@ theorem taylorCoeff_mul_entire {F G : ℂ → ℂ} (hF : Differentiable ℂ F) (
   field_simp
 
 /- English proof (translation)
-Simplify using `only [coef1, iteratedDeriv_const]`. Use `split_ifs with h`. Simplify using `[h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem taylorCoeff_const_function (c : ℂ) (n : ℕ) : coef1 (fun _ => c) n = if n = 0 then c else 0 := by
   simp only [coef1, iteratedDeriv_const]
@@ -51,12 +49,12 @@ theorem taylorCoeff_const_function (c : ℂ) (n : ℕ) : coef1 (fun _ => c) n = 
   · simp
 
 /- English proof (translation)
-Simplify using `[coef1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem taylorCoeff_zero_eq_value (F : ℂ → ℂ) : coef1 F 0 = F 0 := by simp [coef1]
 
 /- English proof (translation)
-Simplify using `only [coef1]`. Rewrite using `[iteratedDeriv_comp_const_mul hF.contDiff]`. Simplify using `[mul_div_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem taylorCoeff_scale_entire {F : ℂ → ℂ} (hF : Differentiable ℂ F) (β : ℂ) (n : ℕ) :
     coef1 (fun z => F (β * z)) n = β ^ n * coef1 F n := by
@@ -67,28 +65,28 @@ theorem taylorCoeff_scale_entire {F : ℂ → ℂ} (hF : Differentiable ℂ F) (
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Simplify using `[lamC]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lamC_coe (lam : Qbar →+* ℂ_[p]) (x : Qbar) : lamC lam (x : ℂ) = lam x := by
   simp [lamC]
 
 /- English proof (translation)
-Simplify using `[GL3Theta.ser1, coef1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_padicTransportSeries (lam : Qbar →+* ℂ_[p]) (F : ℂ → ℂ) (n : ℕ) :
     coeff n (GL3Theta.ser1 lam F) = lamC lam (coef1 F n) := by
   simp [GL3Theta.ser1, coef1]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun n => ⟨_, hF.2 n⟩, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_coef {F : ℂ → ℂ} (hF : AlgEnt F) : ∃ a : ℕ → Qbar, ∀ n, coef1 F n = a n :=
   ⟨fun n => ⟨_, hF.2 n⟩, fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_coef hF`. Take `⟨b, hb⟩` from `exists_coef hG`. Establish `e : ∀ n, coef1 (fun z => F z + G z) n = ((a n + b n : Qbar) : ℂ)` using `fun n => by`. Rewrite using `[taylorCoeff_add_entire hF.1 hG.1, ha, hb]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨⟨hF.1.add hG.1, fun n => e n ▸ Subtype.property _⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Simplify using `only [map_add, coeff_padicTransportSeries, e, ha, hb, lamC_coe]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem padicTransportSeries_add (lam : Qbar →+* ℂ_[p]) {F G : ℂ → ℂ} (hF : AlgEnt F) (hG : AlgEnt G) :
     AlgEnt (fun z => F z + G z) ∧
@@ -102,9 +100,9 @@ theorem padicTransportSeries_add (lam : Qbar →+* ℂ_[p]) {F G : ℂ → ℂ} 
   simp only [map_add, coeff_padicTransportSeries, e, ha, hb, lamC_coe]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_coef hF`. Take `⟨b, hb⟩` from `exists_coef hG`. Establish `e : ∀ n, coef1 (fun z => F z * G z) n = ((∑ q ∈ Finset.HasAntidiagonal.antidiagonal n, a q.1 * b q.2 : Qbar) : ℂ)` using `fun n => by`. Rewrite using `[taylorCoeff_mul_entire hF.1 hG.1]`. Simplify using `[ha, hb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨⟨hF.1.mul hG.1, fun n => e n ▸ Subtype.property _⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Simplify using `only [coeff_mul, coeff_padicTransportSeries, e, ha, hb, lamC_coe, map_sum, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem padicTransportSeries_mul (lam : Qbar →+* ℂ_[p]) {F G : ℂ → ℂ} (hF : AlgEnt F) (hG : AlgEnt G) :
     AlgEnt (fun z => F z * G z) ∧
@@ -120,9 +118,9 @@ theorem padicTransportSeries_mul (lam : Qbar →+* ℂ_[p]) {F G : ℂ → ℂ} 
   simp only [coeff_mul, coeff_padicTransportSeries, e, ha, hb, lamC_coe, map_sum, map_mul]
 
 /- English proof (translation)
-Use `⟨⟨differentiable_const c, fun n => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[taylorCoeff_const_function] split_ifs exacts [hc, zero_mem _]`. Use extensionality with `n`. Rewrite using `[coeff_padicTransportSeries, taylorCoeff_const_function, coeff_C]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `(lamC_coe lam 0).trans (map_zero lam)`.
+A detailed English derivation is pending.
 -/
 theorem padicTransportSeries_const (lam : Qbar →+* ℂ_[p]) {c : ℂ} (hc : c ∈ Qbar) :
     AlgEnt (fun _ => c) ∧ GL3Theta.ser1 lam (fun _ => c) = C (lamC lam c) := by
@@ -137,9 +135,9 @@ theorem padicTransportSeries_const (lam : Qbar →+* ℂ_[p]) {c : ℂ} (hc : c 
     · exact (lamC_coe lam 0).trans (map_zero lam)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_coef hF`. Take `⟨b, rfl⟩ : ∃ b : Qbar, (b : ℂ) = β` from `⟨⟨β, hβ⟩, rfl⟩`. Establish `e : ∀ n, coef1 (fun z => F (b * z)) n = ((b ^ n * a n : Qbar) : ℂ)` using `fun n => by`. Rewrite using `[taylorCoeff_scale_entire hF.1, ha]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨⟨hF.1.comp (by fun_prop), fun n => e n ▸ Subtype.property _⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Simplify using `only [coeff_rescale, coeff_padicTransportSeries, e, ha, lamC_coe, map_pow, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem taylorSeriesInParameter_rescale_of_algebraic (lam : Qbar →+* ℂ_[p]) {F : ℂ → ℂ} (hF : AlgEnt F) {β : ℂ} (hβ : β ∈ Qbar) :
     AlgEnt (fun z => F (β * z)) ∧
@@ -154,7 +152,7 @@ theorem taylorSeriesInParameter_rescale_of_algebraic (lam : Qbar →+* ℂ_[p]) 
   simp only [coeff_rescale, coeff_padicTransportSeries, e, ha, lamC_coe, map_pow, map_mul]
 
 /- English proof (translation)
-Establish `hs` using `HasSubst.of_constantCoeff_zero' ha`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_subst' hs, finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `k hk`. Simplify using `[ha, hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem const_subst {a : PowerSeries ℂ_[p]} (ha : constantCoeff a = 0) (f : PowerSeries ℂ_[p]) :
     constantCoeff (f.subst a : PowerSeries ℂ_[p]) = constantCoeff f := by
@@ -165,7 +163,7 @@ theorem const_subst {a : PowerSeries ℂ_[p]} (ha : constantCoeff a = 0) (f : Po
     simp [ha, hk]
 
 /- English proof (translation)
-Establish `hs` using `HasSubst.of_constantCoeff_zero' ha`. Establish `e` using `congrArg constantCoeff (derivative_subst (f := f) hs)`. Rewrite `e` using `[map_mul, const_subst ha]`. Simplify `e` using `[← coeff_zero_eq_constantCoeff_apply, coeff_derivative]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_subst {a : PowerSeries ℂ_[p]} (ha : constantCoeff a = 0) (f : PowerSeries ℂ_[p]) :
     coeff 1 (f.subst a : PowerSeries ℂ_[p]) = coeff 1 f * coeff 1 a := by
@@ -177,14 +175,14 @@ theorem one_subst {a : PowerSeries ℂ_[p]} (ha : constantCoeff a = 0) (f : Powe
 variable (g : GL3Theta.G1 p)
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Simplify using `[GL3Theta.G1.l, flog]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem const_l : constantCoeff g.l = 0 := by
   rw [← coeff_zero_eq_constantCoeff_apply]
   simp [GL3Theta.G1.l, flog]
 
 /- English proof (translation)
-Rewrite using `[map_mul, const_l, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem const_Cl (c : ℂ_[p]) : constantCoeff (C c * g.l) = 0 := by
   rw [map_mul, const_l, mul_zero]
@@ -196,7 +194,7 @@ theorem atU_eq (F : ℂ → ℂ) : g.atU F =
     subst (C ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * g.l : PowerSeries ℂ_[p]) (GL3Theta.ser1 g.lam F) := rfl
 
 /- English proof (translation)
-Establish `: g.lg (GL3Theta.Xv ()) = g.l` using `X_subst g.l`. Rewrite using `[GL3Theta.G1.mulBy, this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mulBy_X (c : ℂ_[p]) : (g.mulBy c (GL3Theta.Xv ()) : MvPowerSeries Unit ℂ_[p]) =
     subst (C c * g.l : PowerSeries ℂ_[p]) g.ex := by
@@ -205,15 +203,15 @@ theorem mulBy_X (c : ℂ_[p]) : (g.mulBy c (GL3Theta.Xv ()) : MvPowerSeries Unit
   rfl
 
 /- English proof (translation)
-Introduce `p _ g`. Establish `hs` using `HasSubst.of_constantCoeff_zero' (const_Cl g ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]))`. Use `⟨fun F G hF hG => ⟨⟨(padicTransportSeries_mul g.lam hF hG).1, ?_⟩, (padicTransportSeries_add g.lam hF hG).1, ?_⟩, fun c hc => ⟨(padicTransportSeries_const g.lam hc).1, ?_⟩, fun F hF => ⟨taylorCoeff_zero_eq_value F ▸ hF.2 0, ?_⟩, fun hg β hβ => ?_⟩` and prove the remaining obligations. Simplify using `only [atU_eq, (padicTransportSeries_mul g.lam hF hG).2, subst_mul hs]`. Simplify using `only [atU_eq, (padicTransportSeries_add g.lam hF hG).2, subst_add hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[atU_eq, (padicTransportSeries_const g.lam hc).2, subst_C]`. Both sides reduce to the same expression. Rewrite using `[atU_eq, const_subst (const_Cl g _), ← coeff_zero_eq_constantCoeff_apply, coeff_padicTransportSeries, taylorCoeff_zero_eq_value]`. Use `set b := lamC g.lam β with hb`. Establish `hbl` using `HasSubst.of_constantCoeff_zero' (const_Cl g b)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `HasSubst.of_constantCoeff_zero' hg.2.2.1`. Establish `h0 : constantCoeff (subst (C b * g.l : PowerSeries ℂ_[p]) g.ex : PowerSeries ℂ_[p]) = 0`. Rewrite using `[const_subst (const_Cl g b), hg.2.2.1]`. Establish `hh` using `HasSubst.of_constantCoeff_zero' h0`. Use `⟨subst (C b * g.l : PowerSeries ℂ_[p]) g.ex, (mulBy_X g b).symm, h0, ?_, fun F hF => ⟨(taylorSeriesInParameter_rescale_of_algebraic g.lam hF hβ).1, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `congrArg (coeff 1) hg.2.2.2`. Rewrite `e` using `[one_subst hg.2.2.1, coeff_one_X]`. Rewrite using `[one_subst (const_Cl g b), coeff_C_mul]`. Take the linear combination `b * e`. Establish `e : subst (subst (C b * g.l : PowerSeries ℂ_[p]) g.ex : PowerSeries ℂ_[p]) g.l = C b * g.l`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← subst_comp_subst_apply he hbl, hg.2.2.2, subst_X hbl]`. Rewrite using `[atU_eq, atU_eq, (taylorSeriesInParameter_rescale_of_algebraic g.lam hF hβ).2, rescale_eq_subst, subst_comp_subst_apply (HasSubst.smul_X' _) hs, subst_comp_subst_apply hs hh, subst_smul hs, subst_X hs, subst_mul hh, e, subst_C]`. Use `congr 1`. Rewrite using `[smul_eq_C_mul]`. Conclude with `mul_left_comm _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport : ∀ (p : ℕ) [Fact p.Prime] (g : GL3Theta.G1 p), (∀ F G : ℂ → ℂ, AlgEnt F → AlgEnt G → (AlgEnt (fun z => F z * G z) ∧ g.atU (fun z => F z * G z) = g.atU F * g.atU G) ∧ (AlgEnt (fun z => F z + G z) ∧ g.atU (fun z => F z + G z) = g.atU F + g.atU G)) ∧ (∀ c ∈ Qbar, AlgEnt (fun _ => c) ∧ g.atU (fun _ => c) = PowerSeries.C (lamC g.lam c)) ∧ (∀ F : ℂ → ℂ, AlgEnt F → F 0 ∈ Qbar ∧ PowerSeries.constantCoeff (g.atU F) = lamC g.lam (F 0)) ∧ (g.Ok → ∀ β ∈ Qbar, ∃ h : PowerSeries ℂ_[p], h = (g.mulBy (lamC g.lam β) (GL3Theta.Xv ()) : MvPowerSeries Unit ℂ_[p]) ∧ PowerSeries.constantCoeff h = 0 ∧ PowerSeries.coeff 1 h = lamC g.lam β ∧ ∀ F : ℂ → ℂ, AlgEnt F → AlgEnt (fun z => F (β * z)) ∧ g.atU (fun z => F (β * z)) = PowerSeries.subst h (g.atU F)) := by
   intro p _ g

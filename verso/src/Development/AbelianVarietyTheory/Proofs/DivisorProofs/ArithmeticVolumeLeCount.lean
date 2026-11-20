@@ -25,24 +25,24 @@ open scoped ENNReal
 namespace GlobalTheory.CovHt.HodgeCount
 
 /- English proof (translation)
-The claim follows from `le_of_tendsto ((ENNReal.continuous_ofReal.tendsto T).mono_left (nhdsWithin_le_nhds (s := Set.Iio T))) (eventually_nhdsWithin_of_forall h)`.
+A detailed English derivation is pending.
 -/
 theorem ofReal_le_of_forall_lt {T : ℝ} {V : ℝ≥0∞} (h : ∀ r < T, ENNReal.ofReal r ≤ V) : ENNReal.ofReal T ≤ V :=
   le_of_tendsto ((ENNReal.continuous_ofReal.tendsto T).mono_left (nhdsWithin_le_nhds (s := Set.Iio T)))
     (eventually_nhdsWithin_of_forall h)
 
 /- English proof (translation)
-Establish `hc : (0 : ℝ) < ((a * q : ℕ) : ℝ) ^ (D + 1) * d * ((D : ℝ) + 1)` using `by positivity`. Rewrite using `[div_div, div_div, ← mul_assoc]`. Use `ofReal_le_of_forall_lt fun r hr => ?_` and prove the remaining obligations. Rewrite `hr` using `[lt_div_iff₀ hc]`. Establish `h₁` using `frequently_lt_of_lt_limsup (h := (EReal.coe_lt_coe_iff.2 hr).trans_le h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ht : Tendsto (fun τ : ℕ => q * τ) atTop atTop` using `tendsto_id.const_mul_atTop' hq`. Use `le_limsup_of_frequently_le (ht.frequently ((h₁.and_eventually (eventually_gt_atTop 0)).mono ?_))` and prove the remaining obligations. Introduce and unpack `τ ⟨h₂, hτ⟩`. Establish `hf : (0 : ℝ) < ((D + 1).factorial : ℝ) / (τ : ℝ) ^ (D + 1)` using `by positivity`. Establish `h₃ : ENNReal.ofReal (r * (((a * q : ℕ) : ℝ) ^ (D + 1) * d * ((D : ℝ) + 1)) / (((D + 1).factorial : ℝ) / (τ : ℝ) ^ (D + 1))) ≤ logCard (m (a * (q * τ)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `logCard`. Generalize the expression as in `ENNReal.log (m (a * (q * τ)) : ENNReal) = y at h₂`. Proceed by induction on `y with`. Consider the case `bot => rw [EReal.bot_mul_coe_of_pos hf] at h₂`. Conclude with `absurd h₂ not_lt_bot`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `top => simp`. Consider the case `coe y`. Rewrite `h₂` using `[← EReal.coe_mul, EReal.coe_lt_coe_iff]`. Rewrite using `[EReal.real_coe_toENNReal]`. Conclude with `ENNReal.ofReal_le_ofReal ((div_le_iff₀ hf).2 h₂.le)`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_trans ?_ (ENNReal.div_le_div_right (mul_le_mul_right h₃ _) _)` and prove the remaining obligations. Establish `hp : (0 : ℝ) < (d : ℝ) * ((a * (q * τ) : ℕ) : ℝ) ^ (D + 1)` using `by positivity`. Rewrite using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_natCast d, ← ENNReal.ofReal_natCast (a * (q * τ)), ← ENNReal.ofReal_pow (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_div_of_pos hp]`. Use `ENNReal.ofReal_le_ofReal (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Nat.factorial_succ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem le_countVol {D d a q : ℕ} (hd : 0 < d) (ha : 0 < a) (hq : 0 < q) (m : ℕ → ℕ∞) (s : ℝ)
     (h : (s : EReal) ≤ limsup (fun τ : ℕ => ENNReal.log (m (a * (q * τ)) : ENNReal) *
@@ -82,17 +82,17 @@ theorem le_countVol {D d a q : ℕ} (hd : 0 < d) (ha : 0 < a) (hq : 0 < q) (m : 
 variable {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F} {A : Adl C Y}
 
 /- English proof (translation)
-Take `⟨hfin, r, hr, hinf, hv⟩` from `hI`. Establish `hu (x : Y.X)` using `unitAt_constFn Y.str x hb'`. Set `c : Y.Fnˣ` to `Units.mk0 (Cartier.constFn Y.str b) (hu (genericPoint Y.X)).ne_zero`. Establish `hc : (c : Y.Fn) = Cartier.constFn Y.str b` using `rfl`. Use `⟨?_, fun i => r i * c, ⟨hr.isLB, (hr.add_principal c).isRatSec, fun i x hx => ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hfin.union (sum_log_embedding_add_finsum_log_adicAbv_eq_zero F _ hb').1).subset fun v h => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Simplify using `only [Set.mem_union, Function.mem_support, not_or, not_not] at h'`. Conclude with `h (by simp only [h'.1, h'.2, zero_div, add_zero])`. Use `(hr.isEqn i x hx).iff_unitAt.2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, mul_div_cancel_left₀ _ (r i).ne_zero]`. Conclude with `hu x`. Introduce `σ y y' i f hy hi hf`. Establish `h₁ : RegAt (under y) (f * (r i : Y.Fn))` using `(hr.isEqn i _ hi).regularAt_iff.1 hf`. Establish `h₂ : 0 < ‖σ b‖` using `norm_pos_iff.2 ((map_ne_zero σ).2 hb')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(hinf σ y y' i f hy hi hf).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ‖ratVal (f * ((r i : Y.Fn) * (c : Y.Fn))) y‖ ^ 2 * Real.exp (-((L.φ _).φ (i PUnit.unit) y' + 2 * t (σ.comp (algebraMap (𝓞 F) F))))`. Rewrite using `[htb, ← mul_assoc, hc, ratVal_mul h₁ (hu _).regAt, ratVal_constFn, norm_mul, neg_add, Real.exp_add, Real.exp_neg (2 * _), show (2 : ℝ) * Real.log ‖σ b‖ = Real.log (‖σ b‖ ^ 2) by rw [Real.log_pow]; norm_num, Real.exp_log (pow_pos h₂ 2)]`. Clear the denominators using the available nonvanishing facts. Introduce `v e y yt i h hi`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁ : below y.1 ∈ (L.B.pull M.j).U i` using `OfModel.le_chart M L.B e y yt h hi trivial`. Establish `h₂ : UnitAt (below y.1) (((eqn A.D (below y.1))⁻¹ ^ (k : ℕ) * r i : Y.Fnˣ) : Y.Fn)`. Use `((A.D.exists_isEqn (below y.1)).choose_spec.nsmul k).iff_unitAt.1 (hr.isEqn i _ h₁)` as an intermediate fact. Rewrite `this` using `[div_eq_inv_mul, ← Units.val_inv_eq_inv_val, ← Units.val_mul, ← inv_pow]`. Then use the resulting hypothesis. Establish `hk : ((k : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast k.ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn : ((A.n : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast A.n.ne_zero`. Use `(hv v e y yt i h hi).trans ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, Units.val_mul _ c, hc, OfModel.valAt_mul _ h₂.regAt (hu _).regAt, valAt_constFn Y.str _ y.1 y.2, map_mul, e.w_alg, Real.log_mul (e.w.ne_zero (valAt_ne_zero _ h₂)) (AbsoluteValue.ne_zero _ hb')]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem induced_scale {M : TrueGeo.Model Y} {L : HermLB M.p} {k : ℕ+} {cf : HeightOneSpectrum (𝓞 F) → ℝ} {b : F}
     (hb' : b ≠ 0) (t : (𝓞 F →+* ℂ) → ℝ) (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ)
@@ -137,15 +137,15 @@ theorem induced_scale {M : TrueGeo.Model Y} {L : HermLB M.p} {k : ℕ+} {cf : He
     ring
 
 /- English proof (translation)
-Take `⟨N, π, -, hN, hπ, -, hj, -⟩` from `GlobalTheory.ModelDom.exists_normal_dominating F Y M M`. Take `⟨h, b, b', hb, hb', e⟩` from `GlobalTheory.exists_mul_eq_log_adicAbv_sub F (fun v => ((k : ℕ) : ℝ) * a * (A.n : ℕ) * cf v) (hI.1.subset fun v hv h0 => hv (by simp [h0])) fun v => by`. Take `⟨r, hr⟩` from `hq v`. Use `⟨r.den, (k : ℕ) * (a : ℕ) * (A.n : ℕ) * r.num, r.den_pos, ?_⟩` and prove the remaining obligations. Establish `: (r : ℝ) * r.den = r.num` using `by exact_mod_cast r.mul_den_eq_num`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hr]`. Use `push_cast`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `h₁` using `InducedPow.induced_pow F C Y A N _ k (a * h) cf (InducedPull.induced_pull F C Y A M N π hπ hj L k cf hI)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hne : ∀ x : 𝓞 F, x ≠ 0 → algebraMap (𝓞 F) F x ≠ 0` using `fun x hx => (map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective _ _)).2 hx`. Establish `h₂` using `induced_scale (div_ne_zero (hne b' hb') (hne b hb)) (fun σ => Real.log ‖σ b'‖ - Real.log ‖σ b‖) (fun σ => by simp) (fun σ => by`. Rewrite using `[map_div₀, norm_div, Real.log_div (norm_ne_zero_iff.2 ((map_ne_zero σ).2 (hne b' hb'))) (norm_ne_zero_iff.2 ((map_ne_zero σ).2 (hne b hb)))]`. Use the proof step `rfl) h₁`. Rewrite `h₂` using `[mul_left_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N, _, k * h, hN, (congrArg (A.Induced N _ _) (funext fun v => ?_)).mpr h₂⟩` and prove the remaining obligations. Establish `hk : ((k : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast k.ne_zero`. Establish `ha : ((a : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast a.ne_zero`. Establish `hh : ((h : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast h.ne_zero`. Establish `hn : ((A.n : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast A.n.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀, Real.log_div (AbsoluteValue.ne_zero _ (hne b' hb')) (AbsoluteValue.ne_zero _ (hne b hb)), ← neg_sub, ← e v]`. Simplify using `only [PNat.mul_coe, Nat.cast_mul, Pi.zero_apply]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_induced_zero {M : TrueGeo.Model Y} {L : HermLB M.p} {k : ℕ+} {cf : HeightOneSpectrum (𝓞 F) → ℝ}
     (hI : A.Induced M L k cf) (hq : ∀ v, ∃ r : ℚ, cf v = r * Real.log (Ideal.absNorm v.asIdeal : ℝ)) (a : ℕ+) :
@@ -181,11 +181,11 @@ theorem exists_induced_zero {M : TrueGeo.Model Y} {L : HermLB M.p} {k : ℕ+} {c
   ring
 
 /- English proof (translation)
-Use `haveI := M.ar.isIntegral`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, L.IsSelfInter s := by`. Take `⟨h, hh⟩` from `(hC.arExists _ M.X M.p _ M.ar).1 L`. Conclude with `⟨_, h, hh, rfl⟩`. Establish `h₁` using `hV _ M.X M.p Y.dim M.ar L s (NefFibUniq.nefFib_of_induced F C Y A M L _ _ hI hF) ((InducedSemiPos.mSmooth_and_semiPos_iff F C Y A M L _ _ hI).2.1 hP) hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂` using `(arTop_of_induced hC hD F C Y A M L _ _ hI).2 s hs`. Establish `h₃` using `le_countVol (D := Y.dim) (Module.finrank_pos (R := ℚ) (M := F)) a.pos (q * A.n).pos (fun τ => (A.small τ).encard) s (h₁.trans_eq (congrArg (limsup · atTop) (funext fun τ => ?_)))`. Rewrite using `[h₂]`. Use `le_of_eq_of_le (congrArg _ ?_) h₃` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨e⟩` from `SmallSec.small_equiv_smallSec F C Y A M L _ hI hN τ`. Rewrite using `[← Set.encard_congr e]`. Use `congr 5`. Simplify using `only [PNat.mul_coe]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem le_countVol_of_induced (hV : GlobalTheory.Published.VolGe) (hC : GlobalTheory.Published.ArCalc) (hD : GlobalTheory.Published.ArDegree)
     (hP : A.SemiPos) (hF : A.NefFib) {M : TrueGeo.Model Y} {L : HermLB M.p} {a q : ℕ+} (hN : Geo.Tor.IsNormalScheme M.X)
@@ -210,9 +210,9 @@ theorem le_countVol_of_induced (hV : GlobalTheory.Published.VolGe) (hC : GlobalT
     ring
 
 /- English proof (translation)
-Introduce and unpack `f ⟨h₁, h₂, h₃⟩`. Use `⟨h₁, fun σ y => ?_, fun v e y => le_trans ?_ (h₃ v e y)⟩` and prove the remaining obligations. Simplify `h₂ σ y` using `only [Adl.nrmInf, Adl.twist, add_zero]`. Simplify using `only [Adl.nrmFin, Adl.twist, Pi.neg_apply]`. Use `hδ v` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `gcongr`. Use polynomial arithmetic with `[mul_nonneg (Nat.cast_nonneg (α := ℝ) (A.n : ℕ)) this]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem small_twist_subset {δ : HeightOneSpectrum (𝓞 F) → ℝ} (hδ : ∀ v, 0 ≤ δ v) (τ : ℕ) :
     (A.twist 0 (-δ)).small τ ⊆ A.small τ := by
@@ -225,13 +225,13 @@ theorem small_twist_subset {δ : HeightOneSpectrum (𝓞 F) → ℝ} (hδ : ∀ 
     nlinarith [mul_nonneg (Nat.cast_nonneg (α := ℝ) (A.n : ℕ)) this]
 
 /- English proof (translation)
-Use `set η := ε / (hc.toFinset.card + 1) with hη`. Establish `hη0 : 0 < η` using `by positivity`. Establish `key : ∀ v : HeightOneSpectrum (𝓞 F), ∃ x : ℝ, 0 ≤ x ∧ x ≤ η ∧ (c v = 0 → x = 0) ∧ ∃ r : ℚ, c v + -x = r * Real.log (Ideal.absNorm v.asIdeal : ℝ)` using `fun v => by`. Distinguish the cases in `h : c v = 0`. Conclude with `⟨0, le_rfl, hη0.le, fun _ => rfl, 0, by simp [h]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hl : 0 < Real.log (Ideal.absNorm v.asIdeal : ℝ)` using `Real.log_pos (by exact_mod_cast NumberField.HeightOneSpectrum.one_lt_absNorm v)`. Take `⟨r, h₁, h₂⟩` from `exists_rat_btwn (div_lt_div_of_pos_right (sub_lt_self (c v) hη0) hl)`. Rewrite `h₁` using `[div_lt_iff₀ hl]`. Rewrite `h₂` using `[lt_div_iff₀ hl]`. Conclude with `⟨c v - r * Real.log (Ideal.absNorm v.asIdeal : ℝ), by linarith, by linarith, fun h' => absurd h' h, r, by ring⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose δ h₀ h₁ h₂ h₃ using key`. Establish `hs : Function.support δ ⊆ hc.toFinset` using `fun v hv => by`. Simplify using `using fun h => hv (h₂ v h)`. Use `⟨δ, (Finset.finite_toSet _).subset hs, h₀, ?_, h₃⟩` and prove the remaining obligations. Rewrite using `[finsum_eq_sum_of_support_subset _ hs]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.sum_le_card_nsmul _ _ _ fun v _ => h₁ v).trans ?_` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul, hη, mul_div_assoc', div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_rat_approx {c : HeightOneSpectrum (𝓞 F) → ℝ} (hc : (Function.support c).Finite) {ε : ℝ} (hε : 0 < ε) :
     ∃ δ : HeightOneSpectrum (𝓞 F) → ℝ, (Function.support δ).Finite ∧ (∀ v, 0 ≤ δ v) ∧ ∑ᶠ v, δ v ≤ ε ∧
@@ -259,7 +259,7 @@ theorem exists_rat_approx {c : HeightOneSpectrum (𝓞 F) → ℝ} (hc : (Functi
   nlinarith
 
 /- English proof (translation)
-Take `⟨M, L, k, c, hI, -⟩` from `id hF`. Take `⟨M', L', k', c', s, hI', hs, e⟩` from `GlobalTheory.TwistTop.isArTop_twist hC hD F C Y A _ ci cf hc (arTop_of_induced hC hD F C Y A M L k c hI).1`. Conclude with `((arTop_of_induced hC hD F C Y _ M' L' k' c' hI').2 s hs).trans e.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem arTop_twist (hC : GlobalTheory.Published.ArCalc) (hD : GlobalTheory.Published.ArDegree) (hF : A.NefFib) (ci : InfinitePlace F → ℝ)
     {cf : HeightOneSpectrum (𝓞 F) → ℝ} (hc : (Function.support cf).Finite) :
@@ -271,15 +271,15 @@ theorem arTop_twist (hC : GlobalTheory.Published.ArCalc) (hD : GlobalTheory.Publ
   exact ((arTop_of_induced hC hD F C Y _ M' L' k' c' hI').2 s hs).trans e.symm
 
 /- English proof (translation)
-Use `ofReal_le_of_forall_lt fun r hr => ?_` and prove the remaining obligations. Take `⟨M, L, k, c, hI, -⟩` from `id hF`. Establish `hd : (1 : ℝ) ≤ (Module.finrank ℚ F : ℝ)` using `by exact_mod_cast Module.finrank_pos (R := ℚ) (M := F)`. Establish `hε : 0 < (A.arTop / ((Y.dim : ℝ) + 1) - r) / (|A.deg| + 1)` using `div_pos (sub_pos.2 hr) (by positivity)`. Take `⟨δ, hδ, h₀, h₁, h₂⟩` from `exists_rat_approx hI.1 hε`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hδ' : (Function.support (-δ)).Finite` using `by rwa [Function.support_neg]`. Take `⟨N, L', q, hN, hI'⟩` from `exists_induced_zero (hI.twist_fin hδ') h₂ a`. Establish `h₃` using `le_countVol_of_induced hV hC hD (A := A.twist 0 (-δ)) hP ((GlobalTheory.TwistModel.twist_isModel_nefFib F C Y A 0 (-δ) hδ').2 hF) hN hI'`. Use `le_trans (ENNReal.ofReal_le_ofReal ?_) (h₃.trans (countVol_mono _ _ _ fun τ => Set.encard_le_encard (small_twist_subset h₀ τ)))` and prove the remaining obligations. Rewrite using `[arTop_twist hC hD hF 0 hδ']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h₄ : 0 ≤ ∑ᶠ v, δ v` using `finsum_nonneg h₀`. Establish `e : ∑ᶠ v, (-δ) v = -∑ᶠ v, δ v` using `finsum_neg_distrib δ`. Rewrite `h₁` using `[le_div_iff₀ (by positivity)]`. Establish `h₅ : A.deg * ((∑ᶠ v, δ v) / (Module.finrank ℚ F : ℝ)) ≤ (∑ᶠ v, δ v) * (|A.deg| + 1)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e₂ : (A.arTop + ((Y.dim : ℝ) + 1) * A.deg * ((∑ v : InfinitePlace F, (v.mult : ℝ) * (0 : InfinitePlace F → ℝ) v) + ∑ᶠ v, (-δ) v) / (Module.finrank ℚ F : ℝ)) / ((Y.dim : ℝ) + 1) = A.arTop / ((Y.dim : ℝ) + 1) - A.deg * ((∑ᶠ v, δ v) / (Module.finrank ℚ F : ℝ))`. Rewrite using `[e]`. Simplify using `only [Pi.zero_apply, mul_zero, Finset.sum_const_zero, zero_add]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e₂]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem arTop_le_countVol (hV : GlobalTheory.Published.VolGe) (hC : GlobalTheory.Published.ArCalc) (hD : GlobalTheory.Published.ArDegree)
     (hP : A.SemiPos) (hF : A.NefFib) (a : ℕ+) : ENNReal.ofReal (A.arTop / ((Y.dim : ℝ) + 1)) ≤
@@ -315,7 +315,7 @@ theorem arTop_le_countVol (hV : GlobalTheory.Published.VolGe) (hC : GlobalTheory
   linarith
 
 /- English proof (translation)
-Introduce `hV hC hD F _ _ C Y M hP hF t cf hc a ha`. Use `le_of_eq_of_le (congrArg _ ?_) (arTop_le_countVol hV hC hD (A := M.twist (fun _ => t) cf) hP ((GlobalTheory.TwistModel.twist_isModel_nefFib F C Y M _ cf hc).2 hF) ⟨a, ha⟩)` and prove the remaining obligations. Establish `hd : (Module.finrank ℚ F : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `hm : ∑ v : InfinitePlace F, (v.mult : ℝ) = Module.finrank ℚ F` using `by exact_mod_cast InfinitePlace.sum_mult_eq`. Rewrite using `[arTop_twist hC hD hF _ hc, ← Finset.sum_mul, hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/

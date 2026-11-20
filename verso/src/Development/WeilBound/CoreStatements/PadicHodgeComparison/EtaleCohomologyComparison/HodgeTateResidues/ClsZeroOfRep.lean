@@ -18,9 +18,9 @@ section Gen
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A : C ⥤ CommAlgCat.{0} R}
 
 /- English proof (translation)
-Take `⟨f, hf, rfl, hv⟩` from `hc`. Take `⟨f', hf', rfl, hv'⟩` from `hc'`. Establish `ef : f = fun s => sqMk a b (z s) (hz s)` using `funext fun s => Subtype.ext (hv s)`. Establish `ef' : f' = fun s => sqMk a' b' (z' s) (hz' s)` using `funext fun s => Subtype.ext (hv' s)`. Substitute `ef ef'` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨hc, ec⟩` from `CrystallineSemistableComparison.P.cup_cls h.pair e _ _ hf hf'`. Use `⟨fun s => h.aa _ (a.map_mem _ (hz ((CH.front_mono e).functor ⋙ s))) (a'.map_mem _ (hz' ((CH.back_mono e).functor ⋙ s))), _, hc, ec, fun s => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (h.mul_mk _ _ (a.map_mem _ (hz ((CH.front_mono e).functor ⋙ s))) (a'.map_mem _ (hz' ((CH.back_mono e).functor ⋙ s))))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rep_cup {a b a' b' a'' b'' : IdF A} (h : MulOk a b a' b' a'' b'') {p q n : ℕ} (e : p + q = n)
     (z : CH.Cn (CH.modF A) p) (z' : CH.Cn (CH.modF A) q) (hz : ∀ s, z s ∈ a.S _) (hz' : ∀ s, z' s ∈ a'.S _)
@@ -36,19 +36,19 @@ theorem rep_cup {a b a' b' a'' b'' : IdF A} (h : MulOk a b a' b' a'' b'') {p q n
   exact congrArg Subtype.val (h.mul_mk _ _ (a.map_mem _ (hz ((CH.front_mono e).functor ⋙ s))) (a'.map_mem _ (hz' ((CH.back_mono e).functor ⋙ s))))
 
 /- English proof (translation)
-Take `⟨f, hf, e, hv⟩` from `h`. Establish `inj : ∀ (T : C) (x y : A.obj T), Ideal.Quotient.mk (b.S T) x = Ideal.Quotient.mk (b.S T) y → x = y` using `fun T x y hxy => by`. Use `Ideal.Quotient.eq.1 hxy` as an intermediate fact. Rewrite `this` using `[hb, Ideal.mem_bot, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hB` using `((CrystallineSemistableComparison.P.cls_surj (CH.cx (sq a b)) n).2.1 f hf).1 e.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `((CrystallineSemistableComparison.P.cls_surj (CH.cx (CH.modF A)) n).2.1 z hz).2 ?_` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero`. Establish `h0 : f = 0` using `hB`. Express the relevant statement in the definitionally equal form `z = 0`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use function extensionality and compare the values at `s`. Use `inj _ _ _ ((hv s).symm.trans ?_)` and prove the remaining obligations. Rewrite using `[h0]`. Both sides reduce to the same expression. Consider the case `succ n`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Take `⟨g, hg⟩` from `hB`. Set `g' : CH.Cn (CH.modF A) n` to `fun s => out a b (g s)`. Set `m₁` to `toSq (IdF.top A) b fun _ => rfl`. Set `m₂ : CH.Mor (sq a b) (sq (IdF.top A) b) (RingHom.id R)` to `sqLe (fun _ => le_top) fun _ => le_rfl`. Establish `e1 : m₁.pullC n g' = m₂.pullC n g`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `s`. Use `Subtype.ext ?_` and prove the remaining obligations. Use `mk_out a b (g s)` as an intermediate fact. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (out a b (g s)) = Ideal.Quotient.factorₐ R le_rfl (show sqM a b _ from g s).1`. Use `conv_rhs => rw [← this]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e2 : m₁.pullC (n + 1) (CH.d _ n g') = m₂.pullC (n + 1) f`. Rewrite using `[← m₁.d_pullC, e1, m₂.d_pullC]`. Conclude with `congrArg _ hg`. Use `⟨g', funext fun s => inj _ _ _ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e3` using `congrArg Subtype.val (congrFun e2 s)`. Use `e3.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.factorₐ R le_rfl (show sqM a b _ from f s).1 = _`. Rewrite using `[hv s]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cls_zero_of_rep {a b : IdF A} (hb : ∀ T, b.S T = ⊥) {n : ℕ} (z : CH.Cn (CH.modF A) n) (hz : CH.d _ n z = 0)
     (h : Rep a b z 0) : (CH.cx (CH.modF A)).cls z hz = 0 := by
@@ -87,7 +87,7 @@ theorem cls_zero_of_rep {a b : IdF A} (hb : ∀ T, b.S T = ⊥) {n : ℕ} (z : C
     rw [hv s]; rfl
 
 /- English proof (translation)
-Take `⟨f, hf, e, hv⟩` from `hc`. Conclude with `⟨f, hf, e, fun s => (hv s).trans (Ideal.Quotient.eq.2 (h s))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rep_congr {a b : IdF A} {n : ℕ} {z z' : ∀ s : ComposableArrows C n, A.obj (s.obj (Fin.last n))}
     (h : ∀ s, z s - z' s ∈ b.S _) {c : CH.H (sq a b) n} (hc : Rep a b z c) : Rep a b z' c := by
@@ -95,7 +95,7 @@ theorem rep_congr {a b : IdF A} {n : ℕ} {z z' : ∀ s : ComposableArrows C n, 
   exact ⟨f, hf, e, fun s => (hv s).trans (Ideal.Quotient.eq.2 (h s))⟩
 
 /- English proof (translation)
-Take `⟨f, hf, rfl, hv⟩` from `hc`. Take `⟨f', hf', rfl, hv'⟩` from `hc'`. Establish `: f = f'` using `funext fun s => Subtype.ext ((hv s).trans (hv' s).symm)`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem rep_uniq {a b : IdF A} {n : ℕ} {z : ∀ s : ComposableArrows C n, A.obj (s.obj (Fin.last n))}
     {c c' : CH.H (sq a b) n} (hc : Rep a b z c) (hc' : Rep a b z c') : c = c' := by

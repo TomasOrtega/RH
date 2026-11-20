@@ -21,9 +21,9 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Me
 open scoped Matrix
 
 /- English proof (translation)
-Consider the cases of `B`. Consider the cases of `B'`. Simplify using `only at h`. Substitute `h` using the available equality. Consider the cases of `hp`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Conclude with `⟨MulEquiv.refl _, fun g => HEq.rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Mem.R3.DefLatBC.typePrimeFiniteGroup_heq_of_eq_preData (B B' : Base) (px : PreX B.toPre) (px' : PreX B'.toPre) (h : B'.toPre = B.toPre) (hp : HEq px' px) :
     ∃ e : Gc B px ≃* Gc B' px', ∀ g, HEq (e g) g := by
@@ -35,7 +35,7 @@ theorem GlobalTheory.Mem.R3.DefLatBC.typePrimeFiniteGroup_heq_of_eq_preData (B B
   exact ⟨MulEquiv.refl _, fun g => HEq.rfl⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _`. Use `StepW.of_all fun K B' f' T' w' _ _ _ B f T w hE _ _ hp => ?_` and prove the remaining obligations. Use `intros`. Conclude with `GlobalTheory.Mem.R3.DefLatBC.typePrimeFiniteGroup_heq_of_eq_preData B B' w.px w'.px hE.1 hp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.R3.DefLatBC.gc_ext : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

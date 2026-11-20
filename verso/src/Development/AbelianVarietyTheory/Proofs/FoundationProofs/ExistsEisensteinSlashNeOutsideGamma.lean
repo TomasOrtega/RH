@@ -20,22 +20,22 @@ theorem coe_pt (n : ℕ) : ((pt n : ℍ) : ℂ) = ((n : ℂ) + 1) * Complex.I :=
 def lim0 (v : Fin 2 → ℤ) : ℂ := if v 0 = 0 then (v 1 : ℂ) ^ (-3 : ℤ) else 0
 
 /- English proof (translation)
-Apply the tactic sequence `rw [coe_pt]; constructor <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem re_im_summand (v : Fin 2 → ℤ) (n : ℕ) :
     ((v 0 : ℂ) * (pt n : ℂ) + v 1).re = v 1 ∧ ((v 0 : ℂ) * (pt n : ℂ) + v 1).im = v 0 * ((n : ℝ) + 1) := by
   rw [coe_pt]; constructor <;> simp
 
 /- English proof (translation)
-Take `⟨hre, him⟩` from `re_im_summand v n`. Use `set w : ℂ := (v 0 : ℂ) * (pt n : ℂ) + v 1 with hw`. Establish `hvw : ‖v‖ ≤ ‖w‖`. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Use `fin_cases i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `Complex.abs_im_le_norm w`. Rewrite `h1` using `[him, abs_mul]`. Establish `h2 : |(v 0 : ℝ)| ≤ |(v 0 : ℝ)| * |(n : ℝ) + 1|`. Establish `: (1 : ℝ) ≤ |(n : ℝ) + 1|` using `by rw [abs_of_pos (by positivity)]; simp`. Use polynomial arithmetic with `[abs_nonneg (v 0 : ℝ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Int.norm_eq_abs]`. Simplify using `using h2.trans h1`. Establish `h1` using `Complex.abs_re_le_norm w`. Rewrite `h1` using `[hre]`. Simplify `h1` using `[Int.norm_eq_abs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : eisSummand 3 v (pt n) = w ^ (-3 : ℤ)` using `rfl`. Rewrite using `[he, norm_zpow, Real.rpow_neg (norm_nonneg _), zpow_neg]`. Break down `(norm_nonneg v).eq_or_lt with h0 | h0` into its components or cases. Establish `: v = 0` using `norm_eq_zero.1 h0.symm`. Establish `hw0 : w = 0` using `by simp [hw, this]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hw0]`. Rewrite using `[show (3 : ℝ) = ((3 : ℕ) : ℝ) by norm_num, Real.rpow_natCast, zpow_ofNat]`. Conclude with `inv_anti₀ (pow_pos h0 _) (pow_le_pow_left₀ h0.le hvw _)`.
+A detailed English derivation is pending.
 -/
 theorem norm_le (v : Fin 2 → ℤ) (n : ℕ) : ‖eisSummand 3 v (pt n)‖ ≤ ‖v‖ ^ (-(3 : ℝ)) := by
   obtain ⟨hre, him⟩ := re_im_summand v n
@@ -63,13 +63,13 @@ theorem norm_le (v : Fin 2 → ℤ) (n : ℕ) : ‖eisSummand 3 v (pt n)‖ ≤ 
     exact inv_anti₀ (pow_pos h0 _) (pow_le_pow_left₀ h0.le hvw _)
 
 /- English proof (translation)
-Distinguish the cases in `h : v 0 = 0`. Establish `: ∀ n, eisSummand 3 v (pt n) = (v 1 : ℂ) ^ (-3 : ℤ)` using `fun n => by simp [eisSummand, h]`. Simplify using `only [this, lim0, h, if_true]`. Conclude with `tendsto_const_nhds`. Simplify using `only [lim0, h, if_false]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `squeeze_zero_norm (a := fun n : ℕ => 1 / ((n : ℝ) + 1)) (fun n => ?_) tendsto_one_div_add_atTop_nhds_zero_nat` and prove the remaining obligations. Take `⟨_, him⟩` from `re_im_summand v n`. Use `set w : ℂ := (v 0 : ℂ) * (pt n : ℂ) + v 1`. Establish `hn : (1 : ℝ) ≤ (n : ℝ) + 1` using `by simp`. Establish `hw : (n : ℝ) + 1 ≤ ‖w‖`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `Complex.abs_im_le_norm w`. Rewrite `h1` using `[him, abs_mul, abs_of_pos (by positivity : (0 : ℝ) < (n : ℝ) + 1)]`. Establish `: (1 : ℝ) ≤ |(v 0 : ℝ)|` using `by exact_mod_cast Int.one_le_abs h`. Use the polynomial consequences of the given equalities and inequalities. Establish `he : eisSummand 3 v (pt n) = w ^ (-3 : ℤ)` using `rfl`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he, norm_zpow, zpow_neg, one_div]`. Establish `hw1 : (1 : ℝ) ≤ ‖w‖` using `hn.trans hw`. Establish `: ‖w‖ ≤ ‖w‖ ^ (3 : ℤ)`. Rewrite using `[zpow_ofNat]; nlinarith [mul_le_mul hw1 hw1 zero_le_one (by linarith)]`. Conclude with `inv_anti₀ (by positivity) (hw.trans this)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_term (v : Fin 2 → ℤ) : Tendsto (fun n => eisSummand 3 v (pt n)) atTop (𝓝 (lim0 v)) := by
   by_cases h : v 0 = 0
@@ -95,7 +95,7 @@ theorem tendsto_term (v : Fin 2 → ℤ) : Tendsto (fun n => eisSummand 3 v (pt 
     exact inv_anti₀ (by positivity) (hw.trans this)
 
 /- English proof (translation)
-The claim follows from `tendsto_tsum_of_dominated_convergence (bound := fun v : gammaSet M 1 c => ‖v.1‖ ^ (-(3 : ℝ))) ((summable_one_div_norm_rpow (by norm_num)).subtype _) (fun v => tendsto_term v.1) (Eventually.of_forall fun n v => norm_le v.1 n)`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_eis {M : ℕ} (c : Fin 2 → ZMod M) :
     Tendsto (fun n => eisensteinSeries c 3 (pt n)) atTop (𝓝 (∑' v : gammaSet M 1 c, lim0 v)) :=
@@ -104,7 +104,7 @@ theorem tendsto_eis {M : ℕ} (c : Fin 2 → ZMod M) :
     (Eventually.of_forall fun n v => norm_le v.1 n)
 
 /- English proof (translation)
-Establish `h` using `hv.2`. Rewrite `h` using `[h0, Int.gcd_zero_left, Int.natAbs_eq_iff]`. Break down `h with h | h` into its components or cases. Apply the tactic sequence `left; ext i; fin_cases i <;> simp [h0, h]`. Apply the tactic sequence `right; ext i; fin_cases i <;> simp [h0, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eq_of_zero {M : ℕ} {c : Fin 2 → ZMod M} {v : Fin 2 → ℤ} (hv : v ∈ gammaSet M 1 c) (h0 : v 0 = 0) :
     v = ![0, 1] ∨ v = ![0, -1] := by
@@ -115,17 +115,15 @@ theorem eq_of_zero {M : ℕ} {c : Fin 2 → ZMod M} {v : Fin 2 → ℤ} (hv : v 
   · right; ext i; fin_cases i <;> simp [h0, h]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i; fin_cases i <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cast_zero_one (M : ℕ) : ((↑) : ℤ → ZMod M) ∘ (![0, 1] : Fin 2 → ℤ) = ![0, 1] := by
   ext i; fin_cases i <;> simp
 
 /- English proof (translation)
-Use `haveI : Fact (2 < M) := ⟨by omega⟩`. Establish `hm : (![0, 1] : Fin 2 → ℤ) ∈ gammaSet M 1 (![0, 1] : Fin 2 → ZMod M)` using `⟨cast_zero_one M, by simp⟩`. Rewrite using `[tsum_eq_single ⟨_, hm⟩]`. Simplify using `[lim0]`. Introduce `v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Establish `h0 : v.1 0 = 0` using `by by_contra h; simp [lim0, h] at hne`. Break down `eq_of_zero v.2 h0 with h | h` into its components or cases. Conclude with `hv (Subtype.ext h)`. Establish `h1` using `congrFun v.2.1 1`.
-
-Rewrite `h1` using `[h]`. Conclude with `ZMod.neg_one_ne_one (n := M) (by simpa using h1)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lim_one {M : ℕ} (hM : 3 ≤ M) : ∑' v : gammaSet M 1 (![0, 1] : Fin 2 → ZMod M), lim0 v = 1 := by
   haveI : Fact (2 < M) := ⟨by omega⟩
@@ -142,11 +140,11 @@ theorem lim_one {M : ℕ} (hM : 3 ≤ M) : ∑' v : gammaSet M 1 (![0, 1] : Fin 
       exact ZMod.neg_one_ne_one (n := M) (by simpa using h1)
 
 /- English proof (translation)
-Establish `key : ∀ v : gammaSet M 1 c, v.1 ≠ ![0, -1] → lim0 v = 0`. Introduce `v hv`. Assume the negation of the conclusion as `hne`. Establish `h0 : v.1 0 = 0` using `by by_contra h; simp [lim0, h] at hne`. Break down `eq_of_zero v.2 h0 with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hc (by rw [← v.2.1, h, cast_zero_one])`. Conclude with `hv h`. Distinguish the cases in `hm : (![0, -1] : Fin 2 → ℤ) ∈ gammaSet M 1 c`. Rewrite using `[tsum_eq_single ⟨_, hm⟩ fun v hv => key v fun h => hv (Subtype.ext h)]`. Simplify using `only [lim0]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[tsum_congr fun v => key v fun h => hm (h ▸ v.2)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lim_ne {M : ℕ} {c : Fin 2 → ZMod M} (hc : c ≠ ![0, 1]) : ∑' v : gammaSet M 1 c, lim0 v ≠ 1 := by
   have key : ∀ v : gammaSet M 1 c, v.1 ≠ ![0, -1] → lim0 v = 0 := by
@@ -164,7 +162,7 @@ theorem lim_ne {M : ℕ} {c : Fin 2 → ZMod M} (hc : c ≠ ![0, 1]) : ∑' v : 
     simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Establish `h1` using `tendsto_eis c`. Rewrite `h1` using `[h]`. Conclude with `lim_ne hc ((tendsto_nhds_unique h1 (tendsto_eis _)).trans (lim_one hM))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_eis_eq {M : ℕ} (hM : 3 ≤ M) {c : Fin 2 → ZMod M}
     (h : eisensteinSeries c 3 = eisensteinSeries (![0, 1] : Fin 2 → ZMod M) 3) : c = ![0, 1] := by
@@ -174,17 +172,15 @@ theorem eq_of_eis_eq {M : ℕ} (hM : 3 ≤ M) {c : Fin 2 → ZMod M}
   exact lim_ne hc ((tendsto_nhds_unique h1 (tendsto_eis _)).trans (lim_one hM))
 
 /- English proof (translation)
-Introduce `M hM x hx`. Use `haveI : NeZero M := ⟨by omega⟩`. Establish `hMF : ∀ a : Fin 2 → ZMod M, IsMF (CongruenceSubgroup.Gamma M) 3 (eisensteinSeries a 3)` using `fun a => isMF_coe (ModularForm.eisensteinSeriesMF le_rfl a)`. Rewrite `hx` using `[CongruenceSubgroup.Gamma_mem]`. Distinguish the cases in `hrow : ((x 1 0 : ℤ) : ZMod M) = 0 ∧ ((x 1 1 : ℤ) : ZMod M) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨3, _, hMF ![-1, 0], fun h => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (fun f => f ∣[(3 : ℤ)] ModularGroup.S) h`. Simplify using `only [eisensteinSeries_slash_apply] at h2`. Establish `hS0 : ((ModularGroup.S : SL(2, ZMod M)) : Matrix (Fin 2) (Fin 2) (ZMod M)) = !![0, -1; 1, 0]`. Rewrite using `[Matrix.SpecialLinearGroup.map_apply_coe, ModularGroup.coe_S]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp`. Establish `hS : Matrix.vecMul (![-1, 0] : Fin 2 → ZMod M) ((ModularGroup.S : SL(2, ZMod M)) : Matrix (Fin 2) (Fin 2) (ZMod M)) = ![0, 1]`. Apply the tactic sequence `rw [hS0]; ext i; fin_cases i <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Rewrite `h2` using `[hS, hS0]`. Establish `h3` using `eq_of_eis_eq hM h2`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h30` using `congrFun h3 0`. Establish `h31` using `congrFun h3 1`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two] at h30 h31`. Conclude with `hx ⟨h31, h30, hrow⟩`. Use `⟨3, _, hMF ![0, 1], fun h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[eisensteinSeries_slash_apply]`. Establish `h3` using `eq_of_eis_eq hM h`. Establish `h30` using `congrFun h3 0`. Establish `h31` using `congrFun h3 1`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two] at h30 h31`.
-
-Conclude with `hrow ⟨h30, h31⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isMF_slash_ne : ∀ M : ℕ, 3 ≤ M → ∀ x : SL(2, ℤ), x ∉ CongruenceSubgroup.Gamma M →
     ∃ (k : ℤ) (f : ℍ → ℂ), IsMF (CongruenceSubgroup.Gamma M) k f ∧ f ∣[k] x ≠ f := by

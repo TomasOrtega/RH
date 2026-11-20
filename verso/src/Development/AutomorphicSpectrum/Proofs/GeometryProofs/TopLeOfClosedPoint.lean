@@ -22,7 +22,7 @@ def valR {O : Type} [CommRing O] {X : Scheme.{0}} (a : Sp O ⟶ X) (U : X.Opens)
   (Scheme.ΓSpecIso (CommRingCat.of O)).hom.hom.comp (a.appLE U ⊤ h).hom
 
 /- English proof (translation)
-Introduce `x _`. Establish `hs : (x : Sp O) ⤳ IsLocalRing.closedPoint O` using `(PrimeSpectrum.le_iff_specializes _ _).mp (IsLocalRing.le_maximalIdeal (x : PrimeSpectrum O).2.ne_top)`. Conclude with `hs.mem_open V.2 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem top_le_of_closedPoint {O : Type} [CommRing O] [IsLocalRing O] (V : (Sp O).Opens)
     (h : IsLocalRing.closedPoint O ∈ V) : ⊤ ≤ V := by
@@ -32,11 +32,11 @@ theorem top_le_of_closedPoint {O : Type} [CommRing O] [IsLocalRing O] (V : (Sp O
   exact hs.mem_open V.2 h
 
 /- English proof (translation)
-Establish `e : (a.appLE U ⊤ h).hom b = (Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom (valR a U h b)`. Simplify using `[valR]`. Establish `e2` using `Scheme.basicOpen_appLE a ⊤ U h b`. Rewrite `e2` using `[e, basicOpen_eq_of_affine]`. Establish `: a (IsLocalRing.closedPoint O) ∈ X.basicOpen b ↔ IsLocalRing.closedPoint O ∈ a ⁻¹ᵁ X.basicOpen b` using `Iff.rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Establish `e3 : (IsLocalRing.closedPoint O ∈ a ⁻¹ᵁ X.basicOpen b) ↔ (IsLocalRing.closedPoint O ∈ (PrimeSpectrum.basicOpen (valR a U h b)))`. Rewrite using `[e2]`. Conclude with `⟨fun h => ⟨trivial, h⟩, fun h => h.2⟩`. Rewrite using `[e3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ ↔ (valR a U h b) ∉ IsLocalRing.maximalIdeal O`. Simplify using `[IsLocalRing.mem_maximalIdeal]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem valR_isUnit_iff {O : Type} [CommRing O] [IsLocalRing O] {X : Scheme.{0}} (a : Sp O ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ a ⁻¹ᵁ U) (b : Γ(X, U)) :
@@ -54,7 +54,7 @@ theorem valR_isUnit_iff {O : Type} [CommRing O] [IsLocalRing O] {X : Scheme.{0}}
   simp [IsLocalRing.mem_maximalIdeal]
 
 /- English proof (translation)
-Simplify using `only [valR, RingHom.comp_apply]`. Use `congr 1`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_res {O : Type} [CommRing O] {X : Scheme.{0}} (a : Sp O ⟶ X) {U V : X.Opens} (hVU : V ≤ U)
     (h : ⊤ ≤ a ⁻¹ᵁ V) (h' : ⊤ ≤ a ⁻¹ᵁ U) (f : Γ(X, U)) :
@@ -64,11 +64,11 @@ theorem valR_res {O : Type} [CommRing O] {X : Scheme.{0}} (a : Sp O ⟶ X) {U V 
   rw [← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Establish `key : ∀ (g : Sp O ⟶ Sp R) (_ : g = spMap ρ) (e : ⊤ ≤ g ⁻¹ᵁ ⊤), (Scheme.ΓSpecIso (CommRingCat.of O)).hom.hom ((g.appLE ⊤ ⊤ e).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) = ρ r`. Introduce and unpack `_ rfl e`. Establish `e1 : (spMap ρ).appLE ⊤ ⊤ e = (spMap ρ).appTop` using `Scheme.Hom.appLE_eq_app (f := spMap ρ) (U := ⊤)`. Establish `e2` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ρ)`. Rewrite using `[e1]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : ((spMap ρ).appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r) = (Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom (ρ r)` using `(congrArg (fun q => q.hom r) e2).symm`. Rewrite using `[e3]`. Simplify using the standard rewrite rules. Establish `e1` using `Scheme.Hom.appLE_comp_appLE a π ⊤ U ⊤ (fun _ _ => trivial) h`. Rewrite using `[← key (a ≫ π) hρ (by simpa using fun _ _ => trivial)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [valR, sc, RingHom.comp_apply]`. Use `congr 1`. Rewrite using `[← CommRingCat.comp_apply, e1]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_sc {O R : Type} [CommRing O] [CommRing R] {X : Scheme.{0}} (a : Sp O ⟶ X) (π : X ⟶ Sp R) (ρ : R →+* O)
     (hρ : a ≫ π = spMap ρ) (U : X.Opens) (h : ⊤ ≤ a ⁻¹ᵁ U) (r : R) : valR a U h (sc π U r) = ρ r := by

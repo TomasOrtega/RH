@@ -25,13 +25,11 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Establish `hKc : IsClosed K` using `isClosed_of_mem_irreducibleComponents K hK`. Establish `hcompl : Kᶜ = ⋃₀ (irreducibleComponents S \ {K})`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨irreducibleComponent x, ⟨irreducibleComponent_mem_irreducibleComponents .., ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_singleton_iff]`. Introduce `h`. Conclude with `hx (by rw [← h]; exact (irreducibleComponent_property x).2.1 rfl)`. Conclude with `(irreducibleComponent_property x).2.1 rfl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨C, ⟨hC, hCK⟩, hxC⟩ hxK`. Establish `hne : C ≠ K`. Introduce `h`. Conclude with `hCK (by simp [h])`. Conclude with `Set.disjoint_left.mp (hsep C hC K hK hne) hxC hxK`.
-
-Establish `hfin : (irreducibleComponents S \ {K}).Finite` using `Set.Finite.subset NoetherianSpace.finite_irreducibleComponents Set.sdiff_subset`. Use `⟨hKc, ?_⟩` and prove the remaining obligations. Rewrite using `[← isClosed_compl_iff, hcompl, Set.sUnion_eq_biUnion]`. Conclude with `hfin.isClosed_biUnion (fun C hC => isClosed_of_mem_irreducibleComponents C hC.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClopen_of_pairwise_disjoint_irreducibleComponents {S : Type*} [TopologicalSpace S]
     [NoetherianSpace S]
@@ -60,7 +58,7 @@ theorem isClopen_of_pairwise_disjoint_irreducibleComponents {S : Type*} [Topolog
   exact hfin.isClosed_biUnion (fun C hC => isClosed_of_mem_irreducibleComponents C hC.1)
 
 /- English proof (translation)
-The claim follows from `(isClopen_of_pairwise_disjoint_irreducibleComponents hsep hK).connectedComponent_subset hx`.
+A detailed English derivation is pending.
 -/
 theorem connectedComponent_subset_of_mem_irreducibleComponents {S : Type*} [TopologicalSpace S]
     [NoetherianSpace S]
@@ -73,7 +71,7 @@ theorem connectedComponent_subset_of_mem_irreducibleComponents {S : Type*} [Topo
 namespace DivisorReduction
 
 /- English proof (translation)
-Establish `hmem : T.boundary.get ⟨j, hj⟩ ∈ T.boundary` using `List.getElem_mem hj`. Establish `hDiv : IsSmoothDivisor T.structMap (T.boundary.get ⟨j, hj⟩)` using `((inStrictNormalCrossingPosition_iff T.structMap T.boundary).mp hV.snc).1 _ hmem`. Conclude with `((isSmoothDivisor_iff _ _).mp hDiv).2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem smooth_subschemeι_comp_structureMorphism (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -84,7 +82,7 @@ private theorem smooth_subschemeι_comp_structureMorphism (T : MarkedIdealWithBo
   exact ((isSmoothDivisor_iff _ _).mp hDiv).2
 
 /- English proof (translation)
-Use `hV.isNoetherian` as an intermediate fact. Establish `: NoetherianSpace ↥T.scheme` using `inferInstance`. Conclude with `(AlgebraicGeometry.IsClosedImmersion.isClosedEmbedding (T.boundary.get ⟨j, hj⟩).subschemeι).isInducing.noetherianSpace`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem noetherianSpace_boundary_subscheme (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (j : ℕ) (hj : j < T.boundary.length) :
@@ -95,11 +93,11 @@ private theorem noetherianSpace_boundary_subscheme (T : MarkedIdealWithBoundary.
     (T.boundary.get ⟨j, hj⟩).subschemeι).isInducing.noetherianSpace
 
 /- English proof (translation)
-Use `hX` as an intermediate fact. Establish `: NoetherianSpace ↥V.toScheme` using `inferInstanceAs (NoetherianSpace ↥(V : Set ↥X))`. Introduce `h`. Establish `: AlgebraicGeometry.QuasiCompact (V.ι ≫ g)` using `⟨fun _ _ _ => NoetherianSpace.isCompact _⟩`. Establish `hx' : x ∈ Set.range ⇑V.ι` using `by simpa using hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `hx'`. Establish `h3 : ⇑g x ∈ ((AlgebraicGeometry.Scheme.Hom.ker (V.ι ≫ g)).support : Set ↥Z)`. Rewrite using `[AlgebraicGeometry.Scheme.Hom.support_ker]`. Conclude with `subset_closure ⟨y, by simp [hy]⟩`. Rewrite `h3` using `[h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at h3`.
+A detailed English derivation is pending.
 -/
 private theorem ker_ι_comp_ne_top {X Z : Scheme.{u}} (hX : NoetherianSpace ↥X) (V : X.Opens)
     (g : X ⟶ Z) (x : ↥X) (hx : x ∈ V) :
@@ -117,15 +115,15 @@ private theorem ker_ι_comp_ne_top {X Z : Scheme.{u}} (hX : NoetherianSpace ↥X
   simp at h3
 
 /- English proof (translation)
-Use `hV.charZero` as an intermediate fact. Use `hV.smooth` as an intermediate fact. Use `hV.locallyOfFiniteType` as an intermediate fact. Establish `hsm : AlgebraicGeometry.Smooth ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap)` using `smooth_subschemeι_comp_structureMorphism T hV j hj`. Establish `hNoe : NoetherianSpace ↥(T.boundary.get ⟨j, hj⟩).subscheme` using `noetherianSpace_boundary_subscheme T hV j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hNoe` as an intermediate fact. Establish `hbal : IsDerivBalanced T.base T.structMap T.ideal T.mult` using `hBalanced`. Establish `hcs : orderAtLeastLocus T.ideal T.mult = (T.ideal.support : Set ↥T.scheme)` using `orderAtLeastLocus_eq_support_of_isDerivBalanced T.base T.structMap T.ideal T.mult hbal hV.one_le_mult`. Establish `hdisj : ∀ C₁ ∈ irreducibleComponents ↥(T.boundary.get ⟨j, hj⟩).subscheme, ∀ C₂ ∈ irreducibleComponents ↥(T.boundary.get ⟨j, hj⟩).subscheme, C₁ ≠ C₂ → Disjoint C₁ C₂` using `irreducibleComponentsDisjointOfSmooth T.base (T.boundary.get ⟨j, hj⟩).subscheme ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap) hsm`. Establish `hopen` using `isOpen_setOf_connectedComponent_subset_orderAtLeastLocus T hV j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hZ` using `[DivisorReduction.containedComponentsIdeal_eq_ker T j hj hopen]`. Establish `hI : DivisorReduction.lowerIdealWithoutBlowup T = T.ideal` using `by show T.ideal.comap (𝟙 T.scheme) = T.ideal`. Simplify using the standard rewrite rules. Rewrite using `[hI, nonzeroOnComponents_iff]`. Introduce `C hC hsub`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hxC⟩` from `hC.1.nonempty`. Establish `hCsub : C ⊆ ⇑(T.boundary.get ⟨j, hj⟩).subschemeι ⁻¹' orderAtLeastLocus T.ideal T.mult`. Introduce `y hy`. Establish `h1 : y ∈ ((T.ideal.comap (T.boundary.get ⟨j, hj⟩).subschemeι).support : Set ↥(T.boundary.get ⟨j, hj⟩).subscheme)` using `hsub hy`. Rewrite using `[Set.mem_preimage, hcs]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `h1` using `[AlgebraicGeometry.Scheme.IdealSheafData.support_comap]`. Establish `hxV : connectedComponent x ⊆ ⇑(T.boundary.get ⟨j, hj⟩).subschemeι ⁻¹' orderAtLeastLocus T.ideal T.mult` using `fun z hz => hCsub (connectedComponent_subset_of_mem_irreducibleComponents hdisj hC hxC hz)`. Conclude with `absurd hZ (ker_ι_comp_ne_top hNoe _ _ x hxV)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nonzeroOnComponents_comap_lowerIdealWithoutBlowup (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (hBalanced : T.IsBalanced hV.locallyOfFiniteType) (j : ℕ) (hj : j < T.boundary.length)
@@ -169,11 +167,11 @@ theorem nonzeroOnComponents_comap_lowerIdealWithoutBlowup (T : MarkedIdealWithBo
   exact absurd hZ (ker_ι_comp_ne_top hNoe _ _ x hxV)
 
 /- English proof (translation)
-Use `hV.charZero` as an intermediate fact. Use `hV.smooth` as an intermediate fact. Use `hV.locallyOfFiniteType` as an intermediate fact. Use `hV.quasiCompact` as an intermediate fact. Establish `hsm : AlgebraicGeometry.Smooth ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap)` using `smooth_subschemeι_comp_structureMorphism T hV j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hsm` as an intermediate fact. Establish `hlft : AlgebraicGeometry.LocallyOfFiniteType ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap)` using `inferInstance`. Establish `hqc : AlgebraicGeometry.QuasiCompact ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap)` using `inferInstance`. Establish `hsnc0 : InStrictNormalCrossingPosition ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap) ((T.boundary.eraseIdx j).map fun D => D.comap (T.boundary.get ⟨j, hj⟩).subschemeι)` using `inStrictNormalCrossingPosition_comap_subschemeι_eraseIdx T.structMap T.boundary hV.snc j hj`. Establish `hbd : DivisorReduction.lowerBoundaryWithoutBlowup T = T.boundary` using `by show List.map (fun D => D.comap (𝟙 T.scheme)) T.boundary = T.boundary`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hsnc : InStrictNormalCrossingPosition ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap) (List.map (fun D => D.comap (T.boundary.get ⟨j, hj⟩).subschemeι) (List.take (T.boundary.length - 1) ((DivisorReduction.lowerBoundaryWithoutBlowup T).eraseIdx j)))`. Rewrite using `[hbd, List.take_of_length_le (le_of_eq (List.length_eraseIdx_of_lt hj))]`. Conclude with `hsnc0`. Conclude with `⟨hV.charZero, hlft, nonzeroOnComponents_comap_lowerIdealWithoutBlowup T hV hBalanced j hj hZ, hV.one_le_mult, hqc, hsm, hsnc⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isAdmissible_restrictToDivisor (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (_hOB : T.IsOrderBoundedByMult) (hBalanced : T.IsBalanced hV.locallyOfFiniteType) (j : ℕ)

@@ -4,7 +4,7 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-Proceed by induction on `y using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r => simp [GDet.repAlg, diagRep]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem repAlg_comp {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (φ : H →* G)
     (χ : Fin n → G →* Aˣ) (B : Type) [CommRing B] [Algebra A B] (y : MonoidAlgebra B H) :
@@ -16,9 +16,9 @@ private theorem repAlg_comp {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Gro
   | single g r => simp [GDet.repAlg, diagRep]
 
 /- English proof (translation)
-Proceed by induction on `y using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp [GFrame.star]`. Consider the case `add a b ha hb`. Simplify using `only [GFrame.star] at ha hb`. Simplify using `only [GFrame.star, map_add, MulOpposite.unop_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Consider the case `single g r`. Simplify using `[GFrame.star, GFrame.starOp, ← h.p₀_conj, h.eps_p₀]`.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 private theorem star_map {l : ℕ} [Fact l.Prime] {L : Loc} {G G' : Glob l L} (h : G.Hom G') (n : ℕ)
     (O : Type) [CommRing O] [Algebra ℤ_[l] O] (B : Type) [CommRing B] [Algebra O B] (y : MonoidAlgebra B G.G₀) :
@@ -33,11 +33,11 @@ private theorem star_map {l : ℕ} [Fact l.Prime] {L : Loc} {G G' : Glob l L} (h
     simp [GFrame.star, GFrame.starOp, ← h.p₀_conj, h.eps_p₀]
 
 /- English proof (translation)
-Introduce `l _ L G G' h n O _ _ _ r`. Use `⟨⟨fun i => (r.chib i).comp h.p₀, fun i => (r.chib_open i).preimage h.p₀_cont, ?_, ?_, r.psib, r.psib_open, r.th, r.th_comm⟩, fun _ => rfl, rfl, rfl⟩` and prove the remaining obligations. Introduce `i j hij`. Apply `r.chib_inj` to reduce the goal to its premises. Use extensionality with `g`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Take `⟨g, rfl⟩` from `h.p₀_surj g`. Conclude with `congrArg Units.val (DFunLike.congr_fun hij g)`. Introduce `B _ _ _ _ y`. Use `r.polar B (MonoidAlgebra.mapDomainRingHom B h.p₀ y)` as an intermediate fact. Rewrite `this` using `[← star_map]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(GDet.repAlg _ B _).det = (GDet.repAlg _ B _).det`. Rewrite using `[repAlg_comp, repAlg_comp]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.resPull :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G' : Glob l L) (h : G.Hom G') (n : ℕ) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (r : Resid G'.frame O n), ∃ r' : Resid G.frame O n, Glob.Compat h r' r := by

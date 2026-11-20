@@ -9,11 +9,11 @@ noncomputable def UpperTheory.Reformulated.B.RestrictAutomorphism.zlW :
 namespace UpperTheory.Reformulated.B.RestrictAutomorphism
 
 /- English proof (translation)
-Use `ext1 x`. Rewrite using `[← sub_eq_zero]`. Use extensionality with `i`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec (i + 1) x)`. Establish `hx : x = y * (p : ℤ_[p]) ^ (i + 1) + (x.appr (i + 1) : ℤ_[p])`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `h : φ x - ψ x = (φ y - ψ y) * (p : WittVector p R) ^ (i + 1)` using `by conv_lhs => rw [hx]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, WittVector.mul_pow_charP_coeff_zero _ (Nat.lt_succ_self i), WittVector.zero_coeff]`.
+A detailed English derivation is pending.
 -/
 private theorem hom_unique {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] [CharP R p]
     (φ ψ : ℤ_[p] →+* WittVector p R) : φ = ψ := by
@@ -30,7 +30,7 @@ private theorem hom_unique {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] [Cha
   rw [h, WittVector.mul_pow_charP_coeff_zero _ (Nat.lt_succ_self i), WittVector.zero_coeff]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Nat.mul_succ, pow_add, pow_mul, ih, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem pow_pow_mul {p : ℕ} {R : Type} [CommRing R] {y : R} {m : ℕ}
     (h : y ^ p ^ m = y) (n : ℕ) : y ^ p ^ (m * n) = y := by
@@ -57,7 +57,7 @@ private def algPart (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [CharP R p]
     rwa [iterateFrobenius_def, iterateFrobenius_def, ha] at h
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `hy`. Conclude with `⟨m, hm, by rw [← map_pow, h]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem map_mem_algPart {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] [CharP R p]
     (σ : R ≃+* R) {y : R} (hy : y ∈ algPart p R) : σ y ∈ algPart p R := by
@@ -88,13 +88,13 @@ private def restrictHom (p : ℕ) [Fact p.Prime] {G : Type} [Group G] {R : Type}
 end UpperTheory.Reformulated.B.RestrictAutomorphism
 
 /- English proof (translation)
-Introduce `p hp G _ R _ ρ _ _ _ _ _ hopen r M hM hker`. Use `haveI : CharP (algPart p R) p := inferInstance`. Take `⟨V, hV, hVeq⟩` from `UpperTheory.Reformulated.B.WittVectorTrivializingMatrix.exists_alg (p := p) (restrictHom p ρ) (fun y m hm hy => (hopen y m hm (by simpa using congrArg Subtype.val hy)).mono fun g hg => Subtype.ext hg) M hM (fun g hg => hker g fun m hm y hy => congrArg Subtype.val (hg m hm ⟨y, m, …`. Set `ι : WittVector p (algPart p R) →+* WittVector p R` to `WittVector.map (algPart p R).subtype`. Use `⟨V.map ι, ?_, fun g => ?_, fun i j n => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hV.map ι`. Rewrite `h` using `[RingHom.map_det]`. Then use the resulting hypothesis. Establish `h` using `congrArg (fun A => A.map ι) (hVeq g (restrictHom p ρ g).toRingHom fun _ _ _ _ => rfl)`. Establish `h1 : (M g).map (zlW p R) = ((M g).map (UpperTheory.Reformulated.B.WittVectorTrivializingMatrix.zlW p (algPart p R))).map ι`. Rewrite using `[hom_unique (zlW p R) (ι.comp (UpperTheory.Reformulated.B.WittVectorTrivializingMatrix.zlW p (algPart p R))), RingHom.coe_comp, Matrix.map_map]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (V.map ι).map (WittVector.map (ρ g).toRingHom) = (V.map (WittVector.map (restrictHom p ρ g).toRingHom)).map ι`. Use extensionality with `i j n`. Simplify using `only [Matrix.map_apply, ι, WittVector.map_coeff]`. Both sides reduce to the same expression. Rewrite using `[h1, h2, ← Matrix.map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Simplify using `only [Matrix.map_apply, ι, WittVector.map_coeff]`. Conclude with `((V i j).coeff n).2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.RestrictAutomorphism.exists_alg :
     ∀ {p : ℕ} [hp : Fact (Nat.Prime p)] {G : Type} [inst : Group G] {R : Type} [inst_1 : CommRing R] (ρ : G →* R ≃+* R)

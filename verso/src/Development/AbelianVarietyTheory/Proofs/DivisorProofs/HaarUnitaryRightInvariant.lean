@@ -26,7 +26,7 @@ variable (F) in
 def inclArch : Ainf F →ₗ[F] AF F := LinearMap.inl F (Ainf F) (Af F)
 
 /- English proof (translation)
-The claim follows from `Prod.ext rfl (mul_zero (0 : Af F)).symm`.
+A detailed English derivation is pending.
 -/
 theorem inclArch_mul (a b : Ainf F) : inclArch F (a * b) = inclArch F a * inclArch F b :=
   Prod.ext rfl (mul_zero (0 : Af F)).symm
@@ -37,32 +37,32 @@ Both sides reduce to the same expression.
 theorem projArch_inclArch (a : Ainf F) : projArch F (inclArch F a) = a := rfl
 
 /- English proof (translation)
-The claim follows from `Prod.ext (one_mul a.1).symm (zero_mul a.2).symm`.
+A detailed English derivation is pending.
 -/
 theorem inclArch_projArch (a : AF F) : inclArch F (projArch F a) = inclArch F 1 * a :=
   Prod.ext (one_mul a.1).symm (zero_mul a.2).symm
 
 /- English proof (translation)
-The claim follows from `continuous_fst`.
+A detailed English derivation is pending.
 -/
 theorem continuous_projArch : Continuous (projArch F) := continuous_fst
 
 /- English proof (translation)
-The claim follows from `continuous_id.prodMk continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_inclArch : Continuous (inclArch F) := continuous_id.prodMk continuous_const
 
 /- English proof (translation)
-The claim follows from `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`.
+A detailed English derivation is pending.
 -/
 theorem fst_eq_zero {u : AF F} (hu : evI F u = 0) : u.1 = 0 :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)
 
 omit [NumberField E] in
 /- English proof (translation)
-Introduce `u hu`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, smul_zero]`. Consider the case `tmul a x`. Establish `h : u * inclArch F a = 0` using `Prod.ext (show u.1 * a = 0 by rw [fst_eq_zero hu, zero_mul]) (show u.2 * 0 = 0 from mul_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(u * inclArch F a) ⊗ₜ[F] x = 0`. Rewrite using `[h, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [map_add, smul_add, hx, hy, add_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem at_tens (y : Ainf F ⊗[F] E) : At (evI F) (tensNU (E := E) (inclArch F) inclArch_mul y : AE F E) := by
   intro u hu
@@ -77,7 +77,7 @@ theorem at_tens (y : Ainf F ⊗[F] E) : At (evI F) (tensNU (E := E) (inclArch F)
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, smul_zero]`. Consider the case `tmul a x => exact congrArg (· ⊗ₜ[F] x) (inclArch_projArch a)`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tens_proj (z : AE F E) :
     tensNU (E := E) (inclArch F) inclArch_mul (Algebra.TensorProduct.map (projArch F) (AlgHom.id F E) z) =
@@ -89,7 +89,7 @@ theorem tens_proj (z : AE F E) :
 
 omit [NumberField E] in
 /- English proof (translation)
-Establish `h` using `hz (1 - inclArch F 1) (by`. Establish `: (1 - inclArch F 1 : AF F).1 = 0` using `sub_self (1 : Ainf F)`. Conclude with `(congrArg (InfiniteAdeleRing.ringEquiv_mixedSpace F) this).trans (map_zero _))`. Rewrite `h` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_of_at {z : AE F E} (hz : At (evI F) z) : inclArch F 1 • z = z := by
   have h := hz (1 - inclArch F 1) (by
@@ -103,11 +103,11 @@ variable (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `HA_ext σ J fun r s => ?_` and prove the remaining obligations. Rewrite using `[mat_extH, mat_mapH, tens_proj]`. Use `set x := (HA.mat (AF F) σ J g : Matrix (Fin n) (Fin n) (AE F E)) r s with hxdef`. Establish `hx : At (evI F) (x - (1 : Matrix (Fin n) (Fin n) (AE F E)) r s)` using `fun u hu => by`. Use `congrFun (congrFun (hg u hu) r) s` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[smul_sub]`. Establish `key` using `smul_of_at hx`. Establish `h1 : (tensNU (E` using `E) (inclArch F) inclArch_mul 1 : AE F E) = inclArch F 1 • (1 : AE F E) := by`. Rewrite using `[← tens_proj, map_one (Algebra.TensorProduct.map (projArch F) (AlgHom.id F E))]`. Rewrite using `[h1, sub_mul, one_mul, smul_mul_assoc, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[smul_sub]`. Take the linear combination `key`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem extH_mapH {g : HA (AF F) σ J}
     (hg : At (evI F) ((HA.mat (AF F) σ J g : Matrix (Fin n) (Fin n) (AE F E)) - 1)) :
@@ -128,9 +128,9 @@ theorem extH_mapH {g : HA (AF F) σ J}
 omit [NumberField E] in
 
 /- English proof (translation)
-Introduce `u hu`. Use extensionality with `r s`. Rewrite using `[Matrix.smul_apply, Matrix.sub_apply, mat_extH, Matrix.zero_apply]`. Establish `h1` using `at_tens (E := E) 1 u hu`. Establish `h2` using `at_tens (E := E) ((HA.mat (Ainf F) σ J h).1 r s) u hu`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sub_mul, one_mul, smul_sub, smul_add, smul_sub, ← smul_mul_assoc, h1, h2, zero_mul, sub_zero, add_zero, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem at_extH (h : HA (Ainf F) σ J) :
     At (evI F) ((HA.mat (AF F) σ J (extH σ J (inclArch F) inclArch_mul h) : Matrix (Fin n) (Fin n) (AE F E)) - 1) := by
@@ -142,7 +142,7 @@ theorem at_extH (h : HA (Ainf F) σ J) :
   rw [sub_mul, one_mul, smul_sub, smul_add, smul_sub, ← smul_mul_assoc, h1, h2, zero_mul, sub_zero, add_zero, sub_self]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Conclude with `(continuous_mapH σ X.Jᵀ (projArch F) continuous_projArch).comp ((continuous_toHAe σ X.J).comp continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_archTo (X : Spc F E n) :
     Continuous fun g : UAtSub σ X (evI F) => mapH σ X.Jᵀ (projArch F) (toHAe σ X.J g.1) := by
@@ -151,7 +151,7 @@ theorem continuous_archTo (X : Spc F E n) :
     ((continuous_toHAe σ X.J).comp continuous_subtype_val)
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Conclude with `(continuous_toHAe_symm σ X.J).comp (continuous_extH σ X.Jᵀ (inclArch F) inclArch_mul continuous_inclArch)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_archFrom (X : Spc F E n) :
     Continuous fun h : HA (Ainf F) σ X.Jᵀ => (toHAe σ X.J).symm (extH σ X.Jᵀ (inclArch F) inclArch_mul h) := by
@@ -159,7 +159,7 @@ theorem continuous_archFrom (X : Spc F E n) :
   exact (continuous_toHAe_symm σ X.J).comp (continuous_extH σ X.Jᵀ (inclArch F) inclArch_mul continuous_inclArch)
 
 /- English proof (translation)
-Rewrite using `[mem_UAtSub]`. Express the relevant statement in the definitionally equal form `At (evI F) (mat ((toHAe σ X.J).symm (extH σ X.Jᵀ (inclArch F) inclArch_mul h)) - 1)`. Rewrite using `[mat_toHAe_symm]`. Conclude with `at_extH σ X.Jᵀ h`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_archFrom (X : Spc F E n) (h : HA (Ainf F) σ X.Jᵀ) :
     (toHAe σ X.J).symm (extH σ X.Jᵀ (inclArch F) inclArch_mul h) ∈ UAtSub σ X (evI F) := by
@@ -169,7 +169,7 @@ theorem mem_archFrom (X : Spc F E n) (h : HA (Ainf F) σ X.Jᵀ) :
   exact at_extH σ X.Jᵀ h
 
 /- English proof (translation)
-Establish `hg : At (evI F) ((HA.mat (AF F) σ X.Jᵀ (toHAe σ X.J g.1) : Matrix (Fin n) (Fin n) (AE F E)) - 1)`. Rewrite using `[mat_toHAe]`. Conclude with `g.2`. Rewrite using `[extH_mapH σ X.Jᵀ hg, MulEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archFrom_archTo (X : Spc F E n) (g : UAtSub σ X (evI F)) :
     (toHAe σ X.J).symm (extH σ X.Jᵀ (inclArch F) inclArch_mul (mapH σ X.Jᵀ (projArch F) (toHAe σ X.J g.1))) = g.1 := by
@@ -193,9 +193,7 @@ def archEquiv (X : Spc F E n) : UAtSub σ X (evI F) ≃ₜ* HA (Ainf F) σ X.J�
   continuous_invFun := (continuous_archFrom σ X).subtype_mk _
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Use `haveI : IsTopologicalGroup (UA σ X.J) := inferInstanceAs (IsTopologicalGroup (UG (cA σ) (incM F X.J)))`. Establish `hJ : IsHermND σ X.Jᵀ` using `⟨fun i j => by simp [Matrix.transpose_apply, herm], by rwa [Matrix.det_transpose]⟩`.
-
-Establish `hU` using `(GlobalTheory.ArchUnitaryUnimod.unimodularOver_infinite F E σ hcm n X.Jᵀ hJ).1`. Conclude with `GlobalTheory.ArchUnitaryUnimod.isUnimodularLC_of_equiv hU (archEquiv σ X).symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnimodularLC_UAtSub_inf (hcm : IsCMExt F E σ) (X : Spc F E n) (herm : ∀ i j, σ (X.J j i) = X.J i j)
     (hdet : X.J.det ≠ 0) : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryHaarMeasure.IsUnimodularLC (UAtSub σ X (evI F)) := by
@@ -208,7 +206,7 @@ theorem isUnimodularLC_UAtSub_inf (hcm : IsCMExt F E σ) (X : Spc F E n) (herm :
   exact GlobalTheory.ArchUnitaryUnimod.isUnimodularLC_of_equiv hU (archEquiv σ X).symm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n X r s hB hX μ hμ g`. Take `⟨-, -, -, -, -, -, hR⟩` from `isUnimodularLC_UAtSub_inf σ hB.cm X hX.herm (GlobalTheory.ThetaKInv.det_ne_zero_of_isHerm hX)`. Conclude with `(hR μ hμ).map_mul_right_eq_self g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem haar_map_mul_right : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n : ℕ) (X : Spc F E n) (r s : ℕ), B.IsGood σ → X.IsHerm σ B r s →

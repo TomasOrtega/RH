@@ -5,11 +5,11 @@ namespace GlobalTheory.CompanionTheory.LeviGen
 open GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `e : i ∈ block T k ↔ i ∈ {i | i ≤ k} ∧ ¬ i ∈ upTo (T.filter (· < k))`. Simplify using `only [block, upTo, Set.mem_setOf_eq, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨t, ⟨ht, htk⟩, hit⟩`. Conclude with `absurd (h2 t ht htk) (not_lt.2 hit)`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun t ht htk => lt_of_not_ge fun hit => h2 ⟨t, ⟨ht, htk⟩, hit⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.sub_apply, Pi.mul_apply, ind_apply, e]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ind_block_eq {A : Type} [CommRing A] {r : ℕ} (T : Finset (Fin r)) (k : Fin r) :
     (ind (block T k) : Fin r → A) = ind {i | i ≤ k} - ind {i | i ≤ k} * ind (upTo (T.filter (· < k))) := by
@@ -28,11 +28,11 @@ theorem ind_block_eq {A : Type} [CommRing A] {r : ℕ} (T : Finset (Fin r)) (k :
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `e : i ∈ upTo (insert a S) ↔ i ∈ {i | i ≤ a} ∨ i ∈ upTo S`. Simplify using `only [upTo, Set.mem_setOf_eq, Finset.mem_insert]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk | hk, hik⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `Or.inl (hk ▸ hik)`. Conclude with `Or.inr ⟨k, hk, hik⟩`. Introduce and unpack `(h | ⟨k, hk, hik⟩)`. Conclude with `⟨a, Or.inl rfl, h⟩`. Conclude with `⟨k, Or.inr hk, hik⟩`.
+Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.mul_apply, ind_apply, e]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ind_upTo_insert {A : Type} [CommRing A] {r : ℕ} (S : Finset (Fin r)) (a : Fin r) :
     (ind (upTo (insert a S)) : Fin r → A) = ind {i | i ≤ a} + ind (upTo S) - ind {i | i ≤ a} * ind (upTo S) := by
@@ -51,17 +51,15 @@ theorem ind_upTo_insert {A : Type} [CommRing A] {r : ℕ} (S : Finset (Fin r)) (
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Finset.sum_apply]`. Distinguish the cases in `hi : i ∈ upTo T`. Establish `hne : (T.filter (i ≤ ·)).Nonempty`. Take `⟨k, hk, hik⟩` from `hi`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k, Finset.mem_filter.2 ⟨hk, hik⟩⟩`. Use `set k0 := (T.filter (i ≤ ·)).min' hne`. Establish `hk0 : k0 ∈ T.filter (i ≤ ·)` using `Finset.min'_mem _ hne`. Establish `hk0T : k0 ∈ T` using `(Finset.mem_filter.1 hk0).1`. Establish `hik0 : i ≤ k0` using `(Finset.mem_filter.1 hk0).2`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmin : ∀ t ∈ T, i ≤ t → k0 ≤ t` using `fun t ht hit => Finset.min'_le _ _ (Finset.mem_filter.2 ⟨ht, hit⟩)`. Establish `hb : ∀ k ∈ T, (i ∈ block T k ↔ k = k0)`. Introduce `k hk`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm ?_ (hmin k hk h1)` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `absurd (h2 k0 hk0T (lt_of_not_ge hlt)) (not_lt.2 hik0)`. Introduce and unpack `rfl`. Conclude with `⟨hik0, fun t ht htk => lt_of_not_ge fun hit => absurd (hmin t ht hit) (not_le.2 htk)⟩`.
+Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_eq_single_of_mem k0 hk0T, ind_apply, ind_apply, if_pos ((hb k0 hk0T).2 rfl), if_pos hi]`. Introduce `k hk hkk`. Rewrite using `[ind_apply, if_neg fun h => hkk ((hb k hk).1 h)]`. Rewrite using `[ind_apply, if_neg hi]`. Use `Finset.sum_eq_zero fun k hk => ?_` and prove the remaining obligations.
-
-Rewrite using `[ind_apply, if_neg fun h => hi ⟨k, hk, h.1⟩]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_ind_block {A : Type} [CommRing A] {r : ℕ} (T : Finset (Fin r)) :
     ∑ k ∈ T, (ind (block T k) : Fin r → A) = ind (upTo T) := by
@@ -94,9 +92,9 @@ theorem sum_ind_block {A : Type} [CommRing A] {r : ℕ} (T : Finset (Fin r)) :
     rw [ind_apply, if_neg fun h => hi ⟨k, hk, h.1⟩]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.mul_apply, Pi.zero_apply, ind_apply]`. Distinguish the cases in `h1 : i ∈ block T k`. Distinguish the cases in `h2 : i ∈ block T l`. It suffices to derive a contradiction.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction.
 
-Break down `lt_or_gt_of_ne hkl with h | h` into its components or cases. Conclude with `absurd (h2.2 k hk h) (not_lt.2 h1.1)`. Conclude with `absurd (h1.2 l hl h) (not_lt.2 h2.1)`. Rewrite using `[if_neg h2, mul_zero]`. Rewrite using `[if_neg h1, zero_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ind_block_mul_ind_block {A : Type} [CommRing A] {r : ℕ} (T : Finset (Fin r)) {k l : Fin r} (hk : k ∈ T) (hl : l ∈ T) (hkl : k ≠ l) :
     (ind (block T k) : Fin r → A) * ind (block T l) = 0 := by
@@ -113,13 +111,13 @@ theorem ind_block_mul_ind_block {A : Type} [CommRing A] {r : ℕ} (T : Finset (F
   · rw [if_neg h1, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[prX]`. Use `congr 1`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, Matrix.submatrix_apply, id, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : (Finset.univ : Finset (Fin (k.val + 1))).image (Fin.castLE k.2) = Finset.univ.filter (· ≤ k)`. Use extensionality with `c`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `Fin.le_iff_val_le_val.2 (Nat.lt_succ_iff.1 j.2)`. Introduce `hc`. Conclude with `⟨⟨c.val, Nat.lt_succ_of_le (Fin.le_iff_val_le_val.1 hc)⟩, rfl⟩`. Rewrite using `[← Finset.sum_image (s := Finset.univ) (g := Fin.castLE k.2) (f := fun c => Z a c * s (W b c)) (fun x _ y _ h => Fin.castLE_injective _ h), e, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ind_apply]`. Apply the tactic sequence `split_ifs with h <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem prX_ind_le {A : Type} [CommRing A] (s : A →+* A) {n r : ℕ} (J : Matrix (Fin n) (Fin n) A) (Z W : Matrix (Fin n) (Fin r) A)
     (k : Fin r) : prX s J Z W (ind {i | i ≤ k}) =
@@ -165,32 +163,32 @@ variable {A : Type} [CommRing A] {s : A →+* A} {n r : ℕ} {J : Matrix (Fin n)
   {X Y : Matrix (Fin n) (Fin r) A}
 
 /- English proof (translation)
-Rewrite using `[prj, prj, prj, prX_add, prY_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem prj_add (d e : Fin r → A) : prj s J X Y (d + e) = prj s J X Y d + prj s J X Y e := by
   rw [prj, prj, prj, prX_add, prY_add]; abel
 
 /- English proof (translation)
-Rewrite using `[prj, prX_zero, prY_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prj_zero : prj s J X Y 0 = 0 := by rw [prj, prX_zero, prY_zero, add_zero]
 
 /- English proof (translation)
-Simplify using `[onPart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem onPart_zero (G : Matrix (Fin n) (Fin n) A) : onPart 0 G = 1 := by simp [onPart]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_sub_mul {m : ℕ} (Z W : Matrix (Fin n) (Fin r) A) (f : Fin m → Fin r) :
     cT s (W.submatrix id f) * J * Z.submatrix id f = (cT s W * J * Z).submatrix f f := by
   ext i j; simp [Matrix.mul_apply, cT]
 
 /- English proof (translation)
-Establish `: diagonal (ind I) *ᵥ ((cT s W * J) *ᵥ y) = 0`. Use function extensionality and compare the values at `i`. Rewrite using `[mulVec_diagonal, ind_apply]`. Distinguish the cases in `hi : i ∈ I`. Rewrite using `[hy i hi, mul_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[if_neg hi, zero_mul]`. Both sides reduce to the same expression. Rewrite using `[prX, Matrix.mul_assoc (Z * diagonal _), ← mulVec_mulVec, ← mulVec_mulVec, this, mulVec_zero]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem prX_mulVec_eq_zero {Z W : Matrix (Fin n) (Fin r) A} {I : Set (Fin r)} {y : Fin n → A}
     (hy : ∀ i ∈ I, ((cT s W * J) *ᵥ y) i = 0) : prX s J Z W (ind I) *ᵥ y = 0 := by
@@ -204,7 +202,7 @@ theorem prX_mulVec_eq_zero {Z W : Matrix (Fin n) (Fin r) A} {I : Set (Fin r)} {y
   rw [prX, Matrix.mul_assoc (Z * diagonal _), ← mulVec_mulVec, ← mulVec_mulVec, this, mulVec_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[Matrix.mul_apply, mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_col {m : ℕ} (M : Matrix (Fin n) (Fin n) A) (N : Matrix (Fin n) (Fin m) A) (i : Fin m) :
     M *ᵥ Nᵀ i = (M * N)ᵀ i := by
@@ -233,7 +231,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J : Matrix (Fin n) (Fin n) E} {X Y : Matrix (Fin n) (Fin r) E}
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x e => simp [sigR, GlobalTheory.SiegelSet.sigma_sigma h]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_sigR (h : IsCMExt F E σ) (a : AF F ⊗[F] E) : sigR (AF F) σ (sigR (AF F) σ a) = a := by
   induction a using TensorProduct.induction_on with
@@ -248,35 +246,35 @@ theorem cT_adMat {a b : ℕ} (Z : Matrix (Fin a) (Fin b) E) :
     cT (sigR (AF F) σ) (adMat F Z) = adMat F (cT (σ : E →+* E) Z) := rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem adMat_mul {a b c : ℕ} (M : Matrix (Fin a) (Fin b) E) (N : Matrix (Fin b) (Fin c) E) :
     adMat F (M * N) = adMat F M * adMat F N := Matrix.map_mul
 
 /- English proof (translation)
-Use `ext`. Simplify using `[adMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem adMat_zero {a b : ℕ} : adMat F (0 : Matrix (Fin a) (Fin b) E) = 0 := by ext; simp [adMat]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem adMat_one {a : ℕ} : adMat F (1 : Matrix (Fin a) (Fin a) E) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_mul_inv (g : GAd σ J) : (matHom _ σ J g).1 * (matHom _ σ J g⁻¹).1 = 1 := by
   rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]
 
 /- English proof (translation)
-Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_inv_mul (g : GAd σ J) : (matHom _ σ J g⁻¹).1 * (matHom _ σ J g).1 = 1 := by
   rw [← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]
 
 /- English proof (translation)
-The claim follows from `g.2`.
+A detailed English derivation is pending.
 -/
 theorem mat_unitary (g : GAd σ J) :
     cT (sigR (AF F) σ) (matHom _ σ J g).1 * adMat F J * (matHom _ σ J g).1 = adMat F J := g.2
@@ -285,7 +283,7 @@ def mkPt (M N : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) (h1 : M * N = 1) (h2 : N
     (hu : cT (sigR (AF F) σ) M * adMat F J * M = adMat F J) : GAd σ J := ⟨⟨M, N, h1, h2⟩, hu⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mkPt _ _ (onPart_inv hQ hc (mat_mul_inv g) (mat_inv_mul g)) (onPart_inv hQ (comm_inv hc (mat_mul_inv g) (mat_inv_mul g)) (mat_inv_mul g) (mat_mul_inv g)) (onPart_unitary hQ hQJ hc (mat_unitary g) (mat_mul_inv g) (mat_inv_mul g)), rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_onPart (g : GAd σ J) {Q : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)} (hQ : Q * Q = Q)
     (hQJ : cT (sigR (AF F) σ) Q * adMat F J = adMat F J * Q)
@@ -300,7 +298,7 @@ variable (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y)
 include h hJ hW
 
 /- English proof (translation)
-Simplify using `only [cT_adMat, ← adMat_mul, hW.xx, hW.yy, hW.xy, yx h hJ hW, adMat_zero, adMat_one]`. Use `⟨trivial, trivial, trivial, trivial, congrArg _ (Matrix.ext fun i j => hJ.1 i j)⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem adFrame : cT (sigR (AF F) σ) (adMat F X) * adMat F J * adMat F X = 0 ∧
     cT (sigR (AF F) σ) (adMat F Y) * adMat F J * adMat F Y = 0 ∧
@@ -335,11 +333,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 include h hJ hW
 
 /- English proof (translation)
-Take `⟨fxx, fyy, fxy, fyx, fJ⟩` from `adFrame h hJ hW`. Establish `hm` using `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hg j) hj`. Take `⟨⟨B, -, eB⟩, ⟨C, -, eC⟩⟩` from `Subgroup.mem_inf.1 hm`. Establish `inj` using `Fin.castLE_injective j.2`. Establish `h1 : cT (sigR (AF F) σ) ((adMat F Y).submatrix id (Fin.castLE j.2)) * adMat F J * (adMat F X).submatrix id (Fin.castLE j.2) = 1` using `by rw [cT_sub_mul, fyx, Matrix.submatrix_one _ inj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : cT (sigR (AF F) σ) ((adMat F X).submatrix id (Fin.castLE j.2)) * adMat F J * (adMat F Y).submatrix id (Fin.castLE j.2) = 1` using `by rw [cT_sub_mul, fxy, Matrix.submatrix_one _ inj]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[prX_ind_le]`. Conclude with `comm_of_frame h1 (mat_unitary g) (mat_mul_inv g) (mat_inv_mul g) eB eC`. Express the relevant statement in the definitionally equal form `_ * prX _ _ (adMat F Y) (adMat F X) _ = prX _ _ (adMat F Y) (adMat F X) _ * _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prX_ind_le]`. Conclude with `comm_of_frame h2 (mat_unitary g) (mat_mul_inv g) (mat_inv_mul g) eC eB`.
+A detailed English derivation is pending.
 -/
 theorem isComm_of_mem_levi {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ levi σ J X Y T) {j : Fin r} (hj : j ∈ T) :
     IsComm (sigR (AF F) σ) (adMat F J) (adMat F X) (adMat F Y) (matHom _ σ J g).1 (ind {i | i ≤ j}) := by
@@ -359,13 +357,13 @@ theorem isComm_of_mem_levi {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ levi 
     exact comm_of_frame h2 (mat_unitary g) (mat_mul_inv g) (mat_inv_mul g) eC eB
 
 /- English proof (translation)
-Take `⟨fxx, fyy, fxy, fyx, fJ⟩` from `adFrame h hJ hW`. Use `Subgroup.mem_iInf.2 fun j => Subgroup.mem_iInf.2 fun hj => Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `inj` using `Fin.castLE_injective j.2`. Establish `h1 : cT (sigR (AF F) σ) ((adMat F Y).submatrix id (Fin.castLE j.2)) * adMat F J * (adMat F X).submatrix id (Fin.castLE j.2) = 1` using `by rw [cT_sub_mul, fyx, Matrix.submatrix_one _ inj]`. Establish `c1` using `(hm j hj).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2` using `(hm' j hj).1`. Rewrite `c1`, `c2` using `[prX_ind_le]`. Take `⟨B, eB⟩` from `exists_unit_of_comm h1 (mat_mul_inv m) c1 c2`. Conclude with `⟨B, Subgroup.mem_top _, eB⟩`. Establish `inj` using `Fin.castLE_injective j.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h2 : cT (sigR (AF F) σ) ((adMat F X).submatrix id (Fin.castLE j.2)) * adMat F J * (adMat F Y).submatrix id (Fin.castLE j.2) = 1` using `by rw [cT_sub_mul, fxy, Matrix.submatrix_one _ inj]`. Establish `c1 : _ * prX _ _ (adMat F Y) (adMat F X) _ = prX _ _ (adMat F Y) (adMat F X) _ * _` using `(hm j hj).2`. Establish `c2 : _ * prX _ _ (adMat F Y) (adMat F X) _ = prX _ _ (adMat F Y) (adMat F X) _ * _` using `(hm' j hj).2`. Rewrite `c1`, `c2` using `[prX_ind_le]`. Take `⟨B, eB⟩` from `exists_unit_of_comm h2 (mat_mul_inv m) c1 c2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨B, Subgroup.mem_top _, eB⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_levi_of_isComm {T : Finset (Fin r)} {m : GAd σ J}
     (hm : ∀ j ∈ T, IsComm (sigR (AF F) σ) (adMat F J) (adMat F X) (adMat F Y) (matHom _ σ J m).1 (ind {i | i ≤ j}))
@@ -391,11 +389,9 @@ theorem mem_levi_of_isComm {T : Finset (Fin r)} {m : GAd σ J}
     exact ⟨B, Subgroup.mem_top _, eB⟩
 
 /- English proof (translation)
-Take `⟨fxx, fyy, fxy, fyx, fJ⟩` from `adFrame h hJ hW`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Establish `e : upTo (∅ : Finset (Fin r)) = ∅` using `by ext; simp [upTo]`. Rewrite using `[e, ind_empty]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isComm_zero`. Consider the case `insert a S _ ih`. Establish `ha` using `isComm_of_mem_levi h hJ hW hg (hS (Finset.mem_insert_self a S))`. Establish `hS'` using `ih ((Finset.subset_insert a S).trans hS)`. Rewrite using `[ind_upTo_insert]`.
-
-Conclude with `(ha.add hS').sub (ha.mul fxy fyx hS')`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isComm_upTo {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ levi σ J X Y T) {S : Finset (Fin r)} (hS : S ⊆ T) :
     IsComm (sigR (AF F) σ) (adMat F J) (adMat F X) (adMat F Y) (matHom _ σ J g).1 (ind (upTo S)) := by
@@ -411,7 +407,7 @@ theorem isComm_upTo {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ levi σ J X 
     exact (ha.add hS').sub (ha.mul fxy fyx hS')
 
 /- English proof (translation)
-Take `⟨fxx, fyy, fxy, fyx, fJ⟩` from `adFrame h hJ hW`. Establish `hk'` using `isComm_of_mem_levi h hJ hW hg hk`. Rewrite using `[ind_block_eq]`. Conclude with `hk'.sub (hk'.mul fxy fyx (isComm_upTo h hJ hW hg (Finset.filter_subset _ T)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isComm_block {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ levi σ J X Y T) {k : Fin r} (hk : k ∈ T) :
     IsComm (sigR (AF F) σ) (adMat F J) (adMat F X) (adMat F Y) (matHom _ σ J g).1 (ind (block T k)) := by
@@ -445,15 +441,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 include h hJ hW
 
 /- English proof (translation)
-Take `⟨fxx, fyy, fxy, fyx, fJ⟩` from `adFrame h hJ hW`. Use `set P := prj (sigR (AF F) σ) (adMat F J) (adMat F X) (adMat F Y) (ind (block T k))`. Establish `hP : P * P = P` using `by rw [prj_mul_prj fxx fyy fxy fyx, ind_mul_self]`. Establish `hPJ : cT (sigR (AF F) σ) P * adMat F J = adMat F J * P` using `cT_prj_mul (sigR_sigR h) fJ (map_ind _ _)`. Take `⟨m, e1, e2⟩` from `exists_onPart g hP hPJ (isComm_block h hJ hW hg hk).comm_prj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, Subgroup.mem_inf.2 ⟨?_, fun y hy => ?_⟩, e1⟩` and prove the remaining obligations. Use `mem_levi_of_isComm h hJ hW (fun j hj => ?_) (fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `isComm_onPart fxx fyy fxy fyx (isComm_of_mem_levi h hJ hW hg hj)`. Rewrite using `[e2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `isComm_onPart fxx fyy fxy fyx (isComm_of_mem_levi h hJ hW (inv_mem hg) hj)`. Take `⟨hy1, hy2⟩` from `Submodule.mem_inf.1 hy`. Establish `z1 : prX (sigR (AF F) σ) (adMat F J) (adMat F X) (adMat F Y) (ind (block T k)) *ᵥ y = 0` using `prX_mulVec_eq_zero fun i hi => by`. Use `LinearMap.mem_ker.1 ((Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hy2 i) hi)` as an intermediate fact. Rewrite using `[cT_adMat, ← adMat_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `z2 : prX (sigR (AF F) σ) (adMat F J) (adMat F Y) (adMat F X) (ind (block T k)) *ᵥ y = 0` using `prX_mulVec_eq_zero fun i hi => by`. Use `LinearMap.mem_ker.1 ((Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hy1 i) hi)` as an intermediate fact. Rewrite using `[cT_adMat, ← adMat_mul]`. Conclude with `this`.
-
-Establish `z : P *ᵥ y = 0`. Simplify using `only [P, prj, add_mulVec]`. Rewrite using `[z1]`. Conclude with `(zero_add _).trans z2`. Rewrite using `[e1, onPart, add_mulVec, sub_mulVec, one_mulVec, z, ← mulVec_mulVec, z, mulVec_zero, sub_zero, add_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_glPart {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ levi σ J X Y T) {k : Fin r} (hk : k ∈ T) :
     ∃ m ∈ glPart σ J X Y T k, (matHom _ σ J m).1 =
@@ -481,19 +475,19 @@ theorem exists_glPart {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ levi σ J 
     rw [e1, onPart, add_mulVec, sub_mulVec, one_mulVec, z, ← mulVec_mulVec, z, mulVec_zero, sub_zero, add_zero]
 
 /- English proof (translation)
-Take `⟨fxx, fyy, fxy, fyx, fJ⟩` from `adFrame h hJ hW`. Use `set P := prj (sigR (AF F) σ) (adMat F J) (adMat F X) (adMat F Y) (ind (upTo T))`. Establish `hP : P * P = P` using `by rw [prj_mul_prj fxx fyy fxy fyx, ind_mul_self]`. Establish `hPJ : cT (sigR (AF F) σ) P * adMat F J = adMat F J * P` using `cT_prj_mul (sigR_sigR h) fJ (map_ind _ _)`. Establish `hc : (matHom _ σ J g).1 * P = P * (matHom _ σ J g).1` using `(isComm_upTo h hJ hW hg subset_rfl).comm_prj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : (1 - P) * (1 - P) = 1 - P`. Rewrite using `[Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_sub, hP, Matrix.one_mul, Matrix.mul_one, Matrix.one_mul]`. Normalize the expressions using the abelian group laws. Establish `hQJ : cT (sigR (AF F) σ) (1 - P) * adMat F J = adMat F J * (1 - P)`. Rewrite using `[cT_sub', Formalism.UG.cT_one, Matrix.sub_mul, hPJ, Matrix.one_mul, Matrix.mul_sub, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcQ : (matHom _ σ J g).1 * (1 - P) = (1 - P) * (matHom _ σ J g).1`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, hc, Matrix.mul_one, Matrix.one_mul]`. Take `⟨m, e1, -⟩` from `exists_onPart g hQ hQJ hcQ`. Use `⟨m, fun y hy => ?_, e1⟩` and prove the remaining obligations. Establish `hcol : ∀ (C : Matrix (Fin n) (Fin r) E), P * adMat F C = adMat F C * diagonal (ind (upTo T)) → colSpan F C (upTo T) ≤ LinearMap.ker (1 - P).mulVecLin` using `fun C hC => by classical`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Express the relevant statement in the definitionally equal form `(1 - P) *ᵥ (adMat F C)ᵀ i = 0`. Rewrite using `[mulVec_col, Matrix.sub_mul, Matrix.one_mul, hC]`. Use function extensionality and compare the values at `a`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.transpose_apply, Matrix.sub_apply]`. Use `erw [Matrix.mul_diagonal]`. Rewrite using `[ind_apply, if_pos hi, mul_one, sub_self]`. Both sides reduce to the same expression. Establish `hX : P * adMat F X = adMat F X * diagonal (ind (upTo T))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [P, prj, Matrix.add_mul, prX_mul_X fyx, prY_mul_X fxx, add_zero]`. Both sides reduce to the same expression. Establish `hY : P * adMat F Y = adMat F Y * diagonal (ind (upTo T))`. Simplify using `only [P, prj, Matrix.add_mul, prX_mul_Y fyy, prY_mul_Y fxy, zero_add]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `z : (1 - P) *ᵥ y = 0` using `LinearMap.mem_ker.1 (sup_le (hcol X hX) (hcol Y hY) hy)`. Rewrite using `[e1, onPart, add_mulVec, sub_mulVec, one_mulVec, z, ← mulVec_mulVec, z, mulVec_zero, sub_zero, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_uPart {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ levi σ J X Y T) :
     ∃ m ∈ uPart σ J X Y T, (matHom _ σ J m).1 =
@@ -560,9 +554,7 @@ variable (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y)
 include h hJ hW
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `isComm_zero`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.sum_insert ha]`.
-
-Conclude with `(isComm_block h hJ hW hg (hS (Finset.mem_insert_self a S))).add (ih ((Finset.subset_insert a S).trans hS))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isComm_sum {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ levi σ J X Y T) {S : Finset (Fin r)} (hS : S ⊆ T) :
     IsComm (sigR (AF F) σ) (adMat F J) (adMat F X) (adMat F Y) (matHom _ σ J g).1 (∑ k ∈ S, ind (block T k)) := by
@@ -573,13 +565,13 @@ theorem isComm_sum {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ levi σ J X Y
     exact (isComm_block h hJ hW hg (hS (Finset.mem_insert_self a S))).add (ih ((Finset.subset_insert a S).trans hS))
 
 /- English proof (translation)
-Take `⟨fxx, fyy, fxy, fyx, fJ⟩` from `adFrame h hJ hW`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Use `⟨1, one_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, prj_zero, onPart_zero, map_one, Units.val_one]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `insert a S ha ih`. Establish `haT` using `hS (Finset.mem_insert_self a S)`. Establish `hST` using `(Finset.subset_insert a S).trans hS`. Take `⟨m, hm, em⟩` from `ih hST`. Take `⟨ma, hma, ema⟩` from `exists_glPart h hJ hW hg haT`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hle : part σ J X Y T (some (⟨a, haT⟩ : {k // k ∈ T})) ≤ ⨆ i, part σ J X Y T i` using `le_iSup _ _`. Use `⟨ma * m, mul_mem (hle hma) hm, ?_⟩` and prove the remaining obligations. Establish `h0` using `prj_mul_prj (s := sigR (AF F) σ) (J := adMat F J) fxx fyy fxy fyx (ind (block T a)) (∑ k ∈ S, ind (block T k))`. Establish `hz : (ind (block T a) : Fin r → AF F ⊗[F] E) * ∑ k ∈ S, ind (block T k) = 0`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun k hk => ind_block_mul_ind_block T haT (hST hk) (fun e => ha (e ▸ hk))`. Rewrite `h0` using `[hz, prj_zero]`. Rewrite using `[map_mul, Units.val_mul, ema, em, onPart_add h0 (isComm_sum h hJ hW hg hST).comm_prj, ← prj_add, Finset.sum_insert ha]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ levi σ J X Y T) {S : Finset (Fin r)} (hS : S ⊆ T) :
     ∃ m ∈ ⨆ i, part σ J X Y T i, (matHom _ σ J m).1 =
@@ -606,17 +598,15 @@ theorem exists_sum {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ levi σ J X Y
 end Var
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ r X Y hW T`. Take `⟨fxx, fyy, fxy, fyx, fJ⟩` from `adFrame h hJ hW`. Use `le_antisymm (fun g hg => ?_) (iSup_le fun i => ?_)` and prove the remaining obligations. Take `⟨mT, hmT, emT⟩` from `exists_sum h hJ hW hg (subset_refl T)`. Take `⟨mW, hmW, emW⟩` from `exists_uPart h hJ hW hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `emT` using `[sum_ind_block]`. Use `set P := prj (sigR (AF F) σ) (adMat F J) (adMat F X) (adMat F Y) (ind (upTo T)) with hPdef`. Establish `hP : P * P = P` using `by rw [hPdef, prj_mul_prj fxx fyy fxy fyx, ind_mul_self]`. Establish `hc : (matHom _ σ J g).1 * P = P * (matHom _ σ J g).1` using `(isComm_upTo h hJ hW hg subset_rfl).comm_prj`. Establish `h0 : (1 - P) * P = 0` using `by rw [Matrix.sub_mul, hP, Matrix.one_mul, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (matHom _ σ J (mW * mT)).1 = (matHom _ σ J g).1`. Rewrite using `[map_mul, Units.val_mul, emW, emT, onPart_add h0 hc, sub_add_cancel, onPart_one_left]`. Establish `: mW * mT = g` using `Subtype.ext (Units.ext e)`. Rewrite using `[← this]`. Conclude with `mul_mem (Subgroup.mem_iSup_of_mem none hmW) hmT`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `i with`. Consider the case `none`. Introduce `m hm`. Establish `key : ∀ (C : Matrix (Fin n) (Fin r) E) (k : Fin r), k ∈ T → (∀ y ∈ colSpan F C (upTo T), (matHom _ σ J m).1 *ᵥ y = y) → m ∈ frameStab σ J (initCols C k) ⊤`. Introduce `C k hk hC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1, Subgroup.mem_top _, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_one, Matrix.mul_one]`. Use `Matrix.transpose_injective (funext fun j => ?_)` and prove the remaining obligations. Rewrite using `[← mulVec_col]`. Conclude with `hC _ (Submodule.subset_span ⟨Fin.castLE k.2 j, ⟨k, hk, Fin.le_iff_val_le_val.2 (Nat.lt_succ_iff.1 j.2)⟩, rfl⟩)`.
-
-Use `Subgroup.mem_iInf.2 fun k => Subgroup.mem_iInf.2 fun hk => Subgroup.mem_inf.2 ⟨key X k hk fun y hy => hm y (Submodule.mem_sup_left hy), key Y k hk fun y hy => hm y (Submodule.mem_sup_right hy)⟩` and prove the remaining obligations. Consider the case `some k => exact inf_le_left`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem levi_eq_iSup_part : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ)

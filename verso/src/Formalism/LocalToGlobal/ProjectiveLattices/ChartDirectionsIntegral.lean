@@ -23,7 +23,7 @@ section Jet
 variable {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (κ : Type) (m : ℕ)
 
 /- English proof (translation)
-Establish `h : MvPolynomial.map f a ∈ Ideal.map (MvPolynomial.map f : MvPolynomial κ R →+* MvPolynomial κ R') (orig R κ ^ (m + 1))` using `Ideal.mem_map_of_mem _ ha`. Rewrite `h` using `[map_orig_pow]`. Simplify `h` using `[MvPolynomial.map_X, orig]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_orig_pow_map {a : MvPolynomial κ R} (ha : a ∈ orig R κ ^ (m + 1)) :
     MvPolynomial.map f a ∈ orig R' κ ^ (m + 1) := by
@@ -43,9 +43,7 @@ section Flat
 variable {X X' Y : Scheme.{0}} (L : LB X) (F : X' ⟶ X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X')) (ε : K → ℤ)
 
 /- English proof (translation)
-Introduce `y hy`. Use `show y ∈ (⋂ k, (φ k ≫ F).base ⁻¹' (L.U (j k ⟨⟩) : Set _))`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Establish `h1 : (φ k).base y ∈ LB.wchart L (fun _ : PUnit.{1} => F) (j k)` using `Set.mem_iInter.1 hy k`. Establish `h2 : F.base ((φ k).base y) ∈ L.U (j k ⟨⟩)` using `Set.mem_iInter.1 h1 ⟨⟩`.
-
-Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma wchart_pull_le (j : K → PUnit.{1} → L.ι) :
     LB.wchart (L.pull F) φ j ≤ LB.wchart L (fun k => φ k ≫ F) (fun k => j k ⟨⟩) := by

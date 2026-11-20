@@ -30,15 +30,15 @@ theorem finComp_apply (x : normOneGL K n) :
     finComp K n x = (AdelicGLn.prodEquiv K n (x : AdelicGLn.AdelicGL K n)).2 := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_snd.comp ((AdelicGLn.prodEquiv K n).continuous.comp continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finComp : Continuous (finComp K n) :=
   continuous_snd.comp ((AdelicGLn.prodEquiv K n).continuous.comp continuous_subtype_val)
 
 /- English proof (translation)
-Rewrite using `[finComp_apply, coe_archProj, map_mul, map_inv]`. Establish `h1 : (AdelicGLn.prodEquiv K n (archIncl K n A)).2 = 1` using `by show (AdelicGLn.prodEquiv K n (infEmb K n ⟨A, trivial⟩)).2 = 1`. Rewrite using `[prodEquiv_infEmb]`. Establish `h2 : (AdelicGLn.prodEquiv K n (centralSection K n (detModule K n (archIncl K n A)))).2 = 1`. Rewrite using `[centralSection, MonoidHom.comp_apply, scalarUnits_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `prodEquiv_diagUnits_posIdele_snd (K := K) (n := n) (fun _ => ((rpowHom ((n * Module.finrank ℚ K : ℝ))⁻¹ (detModule K n (archIncl K n A)) : {r : ℝ // 0 < r}) : ℝ)) (fun _ => (rpowHom _ _).2)`. Simplify using `only [Prod.snd_mul, Prod.snd_inv, h1, h2, inv_one, mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finComp_archProj (A : ArchUnits K n) : finComp K n (archProj K n A) = 1 := by
   rw [finComp_apply, coe_archProj, map_mul, map_inv]
@@ -54,9 +54,9 @@ theorem finComp_archProj (A : ArchUnits K n) : finComp K n (archProj K n A) = 1 
   simp only [Prod.snd_mul, Prod.snd_inv, h1, h2, inv_one, mul_one]
 
 /- English proof (translation)
-Rewrite using `[finComp_apply, coe_finProj, map_mul, map_inv]`. Establish `h1 : (AdelicGLn.prodEquiv K n (finEmb K n u)).2 = u` using `by rw [prodEquiv_finEmb]`. Establish `h2 : (AdelicGLn.prodEquiv K n (centralSection K n (detModule K n (finEmb K n u)))).2 = 1`. Rewrite using `[centralSection, MonoidHom.comp_apply, scalarUnits_apply]`. Conclude with `prodEquiv_diagUnits_posIdele_snd (K := K) (n := n) (fun _ => ((rpowHom ((n * Module.finrank ℚ K : ℝ))⁻¹ (detModule K n (finEmb K n u)) : {r : ℝ // 0 < r}) : ℝ)) (fun _ => (rpowHom _ _).2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.snd_mul, Prod.snd_inv, h1, h2, inv_one, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem finComp_finProj (u : AdelicGLn.FiniteAdelicGL K n) : finComp K n (finProj K n u) = u := by
   rw [finComp_apply, coe_finProj, map_mul, map_inv]
@@ -75,13 +75,13 @@ def levelSubgroup (U : Subgroup (AdelicGLn.FiniteAdelicGL K n)) : Subgroup (norm
   U.comap (finComp K n)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_levelSubgroup {U : Subgroup (AdelicGLn.FiniteAdelicGL K n)} {x : normOneGL K n} :
     x ∈ levelSubgroup K n U ↔ finComp K n x ∈ U := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `hU.preimage continuous_finComp`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_levelSubgroup {U : Subgroup (AdelicGLn.FiniteAdelicGL K n)}
     (hU : IsOpen (U : Set (AdelicGLn.FiniteAdelicGL K n))) :
@@ -89,7 +89,7 @@ theorem isOpen_levelSubgroup {U : Subgroup (AdelicGLn.FiniteAdelicGL K n)}
   hU.preimage continuous_finComp
 
 /- English proof (translation)
-Rewrite using `[mem_levelSubgroup, finComp_archProj]`. Conclude with `U.one_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archProj_mem_levelSubgroup (U : Subgroup (AdelicGLn.FiniteAdelicGL K n)) (A : ArchUnits K n) :
     archProj K n A ∈ levelSubgroup K n U := by
@@ -97,7 +97,7 @@ theorem archProj_mem_levelSubgroup (U : Subgroup (AdelicGLn.FiniteAdelicGL K n))
   exact U.one_mem
 
 /- English proof (translation)
-Rewrite using `[mem_levelSubgroup, finComp_finProj]`. Conclude with `hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finProj_mem_levelSubgroup {U : Subgroup (AdelicGLn.FiniteAdelicGL K n)}
     {u : AdelicGLn.FiniteAdelicGL K n} (hu : u ∈ U) : finProj K n u ∈ levelSubgroup K n U := by
@@ -105,7 +105,7 @@ theorem finProj_mem_levelSubgroup {U : Subgroup (AdelicGLn.FiniteAdelicGL K n)}
   exact hu
 
 /- English proof (translation)
-Take `⟨A, u, rfl⟩` from `exists_archProj_mul_finProj x`. Use `⟨A, u, ?_, rfl⟩` and prove the remaining obligations. Use `(mem_levelSubgroup).1 hx` as an intermediate fact. Rewrite `this` using `[map_mul, finComp_archProj, finComp_finProj, one_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_of_mem_levelSubgroup {U : Subgroup (AdelicGLn.FiniteAdelicGL K n)}
     {x : normOneGL K n} (hx : x ∈ levelSubgroup K n U) :
@@ -126,14 +126,14 @@ def fixedSubspace (σ : UnitaryRep (normOneGL K n) H) (U : Subgroup (AdelicGLn.F
   smul_mem' c v hv u hu := by rw [map_smul, hv u hu]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_fixedSubspace {σ : UnitaryRep (normOneGL K n) H}
     {U : Subgroup (AdelicGLn.FiniteAdelicGL K n)} {v : H} :
     v ∈ fixedSubspace σ U ↔ ∀ u ∈ U, σ (finProj K n u) v = v := Iff.rfl
 
 /- English proof (translation)
-Establish `e : (fixedSubspace σ U : Set H) = ⋂ u ∈ U, {v | σ (finProj K n u) v = v}`. Use extensionality with `v`. Simplify using `only [SetLike.mem_coe, mem_fixedSubspace, Set.mem_iInter, Set.mem_ofPred_eq]`. Rewrite using `[e]`. Conclude with `isClosed_biInter fun u _ => isClosed_eq (σ (finProj K n u)).continuous continuous_id`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_fixedSubspace (σ : UnitaryRep (normOneGL K n) H)
     (U : Subgroup (AdelicGLn.FiniteAdelicGL K n)) :
@@ -146,9 +146,9 @@ theorem isClosed_fixedSubspace (σ : UnitaryRep (normOneGL K n) H)
   exact isClosed_biInter fun u _ => isClosed_eq (σ (finProj K n u)).continuous continuous_id
 
 /- English proof (translation)
-Introduce and unpack `⟨x, hx⟩ v hv u hu`. Take `⟨A, u', hu', rfl⟩` from `exists_of_mem_levelSubgroup hx`. Use `show σ (finProj K n u) (σ (archProj K n A * finProj K n u') v) = σ (archProj K n A * finProj K n u') v`. Establish `e : finProj K n u * (archProj K n A * finProj K n u') = archProj K n A * finProj K n u' * finProj K n (u'⁻¹ * u * u')`. Rewrite using `[map_mul, map_mul, map_inv, ← mul_assoc, finProj_mul_archProj_comm]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[← UnitaryRep.map_mul_apply, e, UnitaryRep.map_mul_apply, hv _ (U.mul_mem (U.mul_mem (U.inv_mem hu') hu) hu')]`.
+A detailed English derivation is pending.
 -/
 theorem isInvariant_fixedSubspace (σ : UnitaryRep (normOneGL K n) H)
     (U : Subgroup (AdelicGLn.FiniteAdelicGL K n)) :
@@ -183,7 +183,7 @@ variable {μ : Measure (normOneGL K n)} [μ.IsHaarMeasure]
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `UnitaryRep.isFiniteMeasureOnCompacts_comap μ (isOpen_levelSubgroup (K := K) (n := n) hU) IsCompactOperator ((levelRep σ U).integrated (μ.comap ((↑) : levelSubgroup K n U → normOneGL K n)) (UnitaryRep.ccToL1 (μ.comap ((↑) : levelSubgroup K n U → normOneGL K n)) f)) := by have := U …`.
+A detailed English derivation is pending.
 -/
 theorem isCompactOperator_levelRep (hσ : σ.IsIrreducible) (T : cuspIntertwiners μ σ) (hT0 : T ≠ 0)
     (hU : IsOpen (U : Set (AdelicGLn.FiniteAdelicGL K n)))

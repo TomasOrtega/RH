@@ -26,27 +26,27 @@ section Proofs
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-The claim follows from `evalWD_of_frChart h`.
+A detailed English derivation is pending.
 -/
 theorem evalWD_fr (h : FrChartF Xo c) :
     EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) :=
   evalWD_of_frChart h
 
 /- English proof (translation)
-Introduce `a n f hf S _ _ t y y' hy hy' hb`. Conclude with `wtAll_of_borChart h (ex Dw a n) hf.1 hf.2 S t y y' hy hy' hb`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wtField_of_borChart (h : BorChartF Xo c) : WtField Xo c := by
   intro a n f hf S _ _ t y y' hy hy' hb
   exact wtAll_of_borChart h (ex Dw a n) hf.1 hf.2 S t y y' hy hy' hb
 
 /- English proof (translation)
-The claim follows from `unitIndep_of (wtField_of_borChart h) (intDiagUnit_of hL)`.
+A detailed English derivation is pending.
 -/
 theorem unitIndep_of_charts (h : BorChartF Xo c) (hL : IntLatU Xo c) : UnitIndep Xo c :=
   unitIndep_of (wtField_of_borChart h) (intDiagUnit_of hL)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨evalWD_fr hC, wtField_of_borChart hB, intDiagUnit_of hL⟩`.
+Supply the required witnesses or components.
 -/
 theorem exist3_of (hC : FrChartF Xo c) (hB : BorChartF Xo c) (hL : IntLatU Xo c) :
     EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) ∧ WtField Xo c ∧ IntDiagUnit Xo c :=

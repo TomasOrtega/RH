@@ -12,13 +12,13 @@ namespace GlobalTheory.ComatrixEigen
 open Formalism.REAL
 
 /- English proof (translation)
-Use `⟨∑ σ : Equiv.Perm (Fin t), ((Equiv.Perm.sign σ : ℤ) : Polynomial A) * (List.ofFn fun k : Fin t => ((if a (σ k) = b k then Polynomial.X - Polynomial.C (algebraMap ℂ A (k : ℂ)) else 0) + Polynomial.C (E (a (σ k)) (b k)) : Polynomial A)).prod, fun u => ?_⟩` and prove the remaining obligations. Set `φ : Polynomial A →+* A` to `Polynomial.eval₂RingHom' (RingHom.id A) (algebraMap ℂ A u) (fun x => (Algebra.commutes u x).symm)`. Establish `hφ : ∀ p : Polynomial A, φ p = ∑ d ∈ p.support, u ^ d • p.coeff d`. Introduce `p`. Express the relevant statement in the definitionally equal form `Polynomial.eval₂ (RingHom.id A) (algebraMap ℂ A u) p = _`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Polynomial.eval₂_eq_sum, Polynomial.sum_def]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, ← map_pow, Algebra.smul_def, Algebra.commutes]`. Establish `hX : φ Polynomial.X = algebraMap ℂ A u` using `Polynomial.eval₂_X _ _`. Establish `hC : ∀ x, φ (Polynomial.C x) = x` using `fun x => Polynomial.eval₂_C _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hφ, map_sum, qminor]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast, map_list_prod, List.map_ofFn]`. Use `congr 3`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, Tm, map_add, hC]`. Use `split_ifs`. Rewrite using `[map_sub, map_sub, hX, hC]`. Rewrite using `[map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qminor_exists_poly {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin n → Fin n → A)
     (a b : Fin t → Fin n) :
@@ -48,7 +48,7 @@ theorem qminor_exists_poly {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : 
   · rw [map_zero]
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `qminor_exists_poly E a b`. Simplify using `only [hp, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `fun_prop`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_qminor_apply {M : Type} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {n t : ℕ}
     (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin t → Fin n) (v : M) :
@@ -58,23 +58,21 @@ theorem continuous_qminor_apply {M : Type} [NormedAddCommGroup M] [InnerProductS
   fun_prop
 
 /- English proof (translation)
-Establish `key : ∀ Y : ℂ, (Y + (mu t : ℂ)) • ∑ j : Fin (m + 1), ((-1 : ℂ) ^ (i.val + j.val)) • qminor E (Fin.succAbove j) (Fin.succAbove i) (Y + (m : ℂ) / 2) (x j) = (Y + (mu t : ℂ)) • (∏ r ∈ univ.erase t, (Y + (mu r : ℂ))) • x i`. Introduce `Y`. Establish `hT : ∀ j, ∑ l, Tm E (Y + (m : ℂ) / 2 - (m : ℂ)) j l (x l) = (Y + (mu t : ℂ)) • x j`. Introduce `j`. Establish `h1` using `congrFun hx j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [splitCas, Pi.smul_apply] at h1`. Establish `h2 : ∀ l, Tm E (Y + (m : ℂ) / 2 - (m : ℂ)) j l (x l) = (if j = l then (Y + (m : ℂ) / 2 - (m : ℂ)) • x l else 0) + E j l (x l)`. Introduce `l`. Rewrite using `[Tm, LinearMap.add_apply]`. Use `split_ifs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.algebraMap_end_apply]`. Rewrite using `[LinearMap.zero_apply]`. Simplify using `only [h2, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite `h1` using `[neg_eq_iff_eq_neg]`. Rewrite using `[h1, ← neg_smul, ← add_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hu : Y + (m : ℂ) / 2 = Y + (((m + 1 : ℕ) : ℂ) - 1) / 2` using `by push_cast; ring`. Establish `h3 : ∑ l, (if i = l then qdet E (Y + (m : ℂ) / 2) else 0) (x l) = (Y + (mu t : ℂ)) • (∏ r ∈ univ.erase t, (Y + (mu r : ℂ))) • x i`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[if_pos rfl, hu, hq, smul_smul, Finset.mul_prod_erase _ (fun r => Y + (mu r : ℂ)) (Finset.mem_univ t)]`. Introduce `l _ hl`. Rewrite using `[if_neg (Ne.symm hl), LinearMap.zero_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h3]`. Simplify using `only [← qComatrix (Module.End ℂ M) m E hE (Y + (m : ℂ) / 2) i, LinearMap.sum_apply]`. Rewrite using `[Finset.sum_comm, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_sum, ← map_sum, hT, map_smul, map_smul, Module.End.intCast_apply, ← Int.cast_smul_eq_zsmul ℂ]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hc1 : Continuous fun Y : ℂ => ∑ j : Fin (m + 1), ((-1 : ℂ) ^ (i.val + j.val)) • qminor E (Fin.succAbove j) (Fin.succAbove i) (Y + (m : ℂ) / 2) (x j)`. Use `continuous_finset_sum _ fun j _ => Continuous.const_smul ?_ _` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(continuous_qminor_apply E _ _ (x j)).comp (continuous_add_const _)`. Establish `hc2 : Continuous fun Y : ℂ => (∏ r ∈ univ.erase t, (Y + (mu r : ℂ))) • x i` using `by fun_prop`. Establish `hd : Dense ({-(mu t : ℂ)}ᶜ : Set ℂ)` using `dense_compl_singleton _`. Use `congrFun (Continuous.ext_on hd hc1 hc2 fun Z hZ => ?_) Y` and prove the remaining obligations. Establish `hne : Z + (mu t : ℂ) ≠ 0` using `fun h => hZ (eq_neg_of_add_eq_zero_left h)`.
-
-Conclude with `smul_right_injective M hne (key Z)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cof_eigen {M : Type} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {m : ℕ}
     (E : Fin (m + 1) → Fin (m + 1) → Module.End ℂ M) (mu : Fin (m + 1) → ℝ) (x : Fin (m + 1) → M)
@@ -138,9 +136,9 @@ end GlobalTheory.ComatrixEigen
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `M _ _ m E mu y hE hq hy s i`. Simplify using `only [map_sum, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [fun t => ComatrixEigen.cof_eigen E mu (y t) hE hq t (hy t) i (-(mu s : ℂ))]`. Rewrite using `[Finset.sum_eq_single s]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [neg_add_eq_sub]`. Introduce `t _ ht`. Rewrite using `[Finset.prod_eq_zero (i := s) (Finset.mem_erase.2 ⟨Ne.symm ht, Finset.mem_univ _⟩) (neg_add_cancel _), zero_smul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem comatrix_picks_eigencomponent : ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (m : ℕ) (E : Fin (m + 1) → Fin (m + 1) → Module.End ℂ M) (mu : Fin (m + 1) → ℝ) (y : Fin (m + 1) → Fin (m + 1) → M), Formalism.REAL.GlRel E → (∀ (Y : ℂ) (w : M), Formalism.REAL.qdet E (Y + (((m + 1 : ℕ) : ℂ) - 1) / 2) w = (∏ s, (Y + (mu s : ℂ))) • w) → (∀ t, splitCas E (y t) = ((-mu t + (1 - ((m + 1 : ℕ) : ℝ)) / 2 : ℝ) : ℂ) • y t) → ∀ s i, ∑ j : Fin (m + 1), ((-1 : ℂ) ^ (i.val + j.val)) • Formalism.REAL.qminor E (Fin.succAbove j) (Fin.succAbove i) (-(mu s : ℂ) + (m : ℂ) / 2) (∑ t, y t j) = (∏ t ∈ univ.erase s, ((mu t : ℂ) - mu s)) • y s i := by
   intro M _ _ m E mu y hE hq hy s i

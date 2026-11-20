@@ -29,7 +29,7 @@ def mackeyRealRes (n : ℕ) (c : cohomology N n) :
     (continuous_toMonoidHom (mackeyConjₜ W (ψ w) d.out)) (𝟙 _) n).hom c
 
 /- English proof (translation)
-The claim follows from `funext fun w => funext fun d => mackeyCohomologyEquiv_cohomologyMapAlong W (ψ w) N n c d`.
+A detailed English derivation is pending.
 -/
 theorem mackeyCohomologyEquiv_globalToLocal_coind (n : ℕ)
     (c : cohomology (Rep.coind (W : Subgroup G).subtype N) n) :
@@ -41,14 +41,14 @@ theorem mackeyCohomologyEquiv_globalToLocal_coind (n : ℕ)
   funext fun w => funext fun d => mackeyCohomologyEquiv_cohomologyMapAlong W (ψ w) N n c d
 
 /- English proof (translation)
-Use `isIso_shapiroMap W n N` as an intermediate fact. Conclude with `ConcreteCategory.bijective_of_isIso _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijective_shapiroMap_hom (n : ℕ) : Function.Bijective (shapiroMap W N n).hom := by
   have := isIso_shapiroMap W n N
   exact ConcreteCategory.bijective_of_isIso _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ h => funext fun w => (mackeyCohomologyEquiv W (ψ w) N n).injective (congrFun h w), fun t => ⟨fun w => (mackeyCohomologyEquiv W (ψ w) N n).symm (t w), funext fun _ => LinearEquiv.apply_symm_apply _ _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem bijective_pi_mackeyCohomologyEquiv (n : ℕ) :
     Function.Bijective (fun (f : ∀ w, cohomology (Rep.res (ψ w).toMonoidHom
@@ -58,7 +58,7 @@ theorem bijective_pi_mackeyCohomologyEquiv (n : ℕ) :
       funext fun _ => LinearEquiv.apply_symm_apply _ _⟩⟩
 
 /- English proof (translation)
-Rewrite using `[← Function.Injective.of_comp_iff (bijective_pi_mackeyCohomologyEquiv ψ W N n).1]`. Establish `key : (fun (f : ∀ w, cohomology (Rep.res (ψ w).toMonoidHom (Rep.coind (W : Subgroup G).subtype N)) n) w => mackeyCohomologyEquiv W (ψ w) N n (f w)) ∘ (globalToLocal ψ (Rep.coind (W : Subgroup G).subtype N) (fun w => Rep.res (ψ w).toMonoidHom (Rep.coind (W : Subgroup G).subtype N) …`. Use function extensionality and compare the values at `fun c => mackeyCohomologyEquiv_globalToLocal_coind ψ W N n c`. Rewrite using `[key]`. Conclude with `Function.Injective.of_comp_iff' _ (bijective_shapiroMap_hom W N n)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_globalToLocal_coind_iff (n : ℕ) :
     Function.Injective (globalToLocal ψ (Rep.coind (W : Subgroup G).subtype N)
@@ -77,7 +77,7 @@ theorem injective_globalToLocal_coind_iff (n : ℕ) :
   exact Function.Injective.of_comp_iff' _ (bijective_shapiroMap_hom W N n)
 
 /- English proof (translation)
-Rewrite using `[← Function.Surjective.of_comp_iff' (bijective_pi_mackeyCohomologyEquiv ψ W N n)]`. Establish `key : (fun (f : ∀ w, cohomology (Rep.res (ψ w).toMonoidHom (Rep.coind (W : Subgroup G).subtype N)) n) w => mackeyCohomologyEquiv W (ψ w) N n (f w)) ∘ (globalToLocal ψ (Rep.coind (W : Subgroup G).subtype N) (fun w => Rep.res (ψ w).toMonoidHom (Rep.coind (W : Subgroup G).subtype N) …`. Use function extensionality and compare the values at `fun c => mackeyCohomologyEquiv_globalToLocal_coind ψ W N n c`. Rewrite using `[key]`. Conclude with `Function.Surjective.of_comp_iff _ (bijective_shapiroMap_hom W N n).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_globalToLocal_coind_iff (n : ℕ) :
     Function.Surjective (globalToLocal ψ (Rep.coind (W : Subgroup G).subtype N)
@@ -113,9 +113,9 @@ include h
 omit [CompactSpace G] [∀ w, CompactSpace (F w)] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hi c c' hcc`. Use `hi (funext fun w => funext fun d => ?_)` and prove the remaining obligations. Distinguish the cases in `hd : mackeySubgroup (W : Subgroup G) (ψ w).toMonoidHom d.out = ⊤`. Conclude with `congrFun hcc ⟨⟨w, d⟩, hd⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(h w d hd).elim _ _`. Introduce `hi c c' hcc`. Conclude with `hi (funext fun p => congrFun (congrFun hcc p.1.1) p.1.2)`.
+A detailed English derivation is pending.
 -/
 theorem injective_mackeyRealRes_iff :
     Function.Injective (mackeyRealRes ψ W N n) ↔ Function.Injective (mackeyTopRes ψ W N n) := by
@@ -131,11 +131,11 @@ theorem injective_mackeyRealRes_iff :
 omit [CompactSpace G] [∀ w, CompactSpace (F w)] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hs t`. Take `⟨c, hc⟩` from `hs fun w d => if hd : mackeySubgroup (W : Subgroup G) (ψ w).toMonoidHom d.out = ⊤ then t ⟨⟨w, d⟩, hd⟩ else 0`. Use `⟨c, funext fun p => ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun hc p.1.1) p.1.2` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[dif_pos p.2]`. Conclude with `this`. Introduce `hs t`. Take `⟨c, hc⟩` from `hs fun p => t p.1.1 p.1.2`. Use `⟨c, funext fun w => funext fun d => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hd : mackeySubgroup (W : Subgroup G) (ψ w).toMonoidHom d.out = ⊤`. Conclude with `congrFun hc ⟨⟨w, d⟩, hd⟩`. Conclude with `(h w d hd).elim _ _`.
+A detailed English derivation is pending.
 -/
 theorem surjective_mackeyRealRes_iff :
     Function.Surjective (mackeyRealRes ψ W N n) ↔ Function.Surjective (mackeyTopRes ψ W N n) := by
@@ -163,7 +163,7 @@ variable {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [Compa
   [TotallyDisconnectedSpace H]
 
 /- English proof (translation)
-It suffices to establish `h : ∀ x : cohomology A n, x = 0 from ⟨fun x y => (h x).trans (h y).symm⟩`. Introduce `x`. Take `⟨U, hU⟩` from `exists_card_smul_eq_zero A (by omega) x`. Establish `: Nat.card (H ⧸ (U : Subgroup H)) = 1` using `Nat.card_unique`. Rewrite `hU` using `[this, one_smul]`. Then use the resulting hypothesis.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem subsingleton_cohomology_of_subsingleton_group [Subsingleton H] (A : Rep.{0} (ULift.{0} ℤ) H)
     [IsDiscreteRep A] {n : ℕ} (hn : 1 ≤ n) : Subsingleton (cohomology A n) := by
@@ -191,7 +191,7 @@ instance isDiscreteRep_res_coind_zmodRep_two {H' : Type} [Group H'] [Topological
   isDiscreteRep_res_toMonoidHom ψ _
 
 /- English proof (translation)
-Use `subsingleton_cohomology_of_cdp_le_two (n := 2) two_ne_zero (fun ℓ hℓ _ => ?_) (Rep.res (gsFinFamily S ιs v).toMonoidHom (Rep.coind (W : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype (zmodRep.{0} (G := (W : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) 2))) (fun m => nsmul_coind_ …` and prove the remaining obligations. Use `cdp_galois_le_two _ _ hℓ ?_` and prove the remaining obligations. Conclude with `hℓ.ne_zero` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_gsFinFamily_coind_zmodRep (v : S) {j : ℕ} (hj : 3 ≤ j) :
     Subsingleton (cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom
@@ -205,7 +205,7 @@ theorem subsingleton_cohomology_gsFinFamily_coind_zmodRep (v : S) {j : ℕ} (hj 
   exact_mod_cast hℓ.ne_zero
 
 /- English proof (translation)
-Establish `: Fact (Nat.card Gal(AlgebraicClosure v.1.Completion / v.1.Completion)).Prime` using `⟨by rw [Nat.card_eq_fintype_card, card_realGal_eq_two v.1 v.2]; exact Nat.prime_two⟩`. Conclude with `P.eq_bot_or_eq_top_of_prime_card.resolve_right hP`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_bot_of_ne_top_realGal (v : {v : InfinitePlace K.1 // v.IsReal})
     (P : Subgroup Gal(AlgebraicClosure v.1.Completion / v.1.Completion)) (hP : P ≠ ⊤) : P = ⊥ := by
@@ -214,7 +214,7 @@ theorem eq_bot_of_ne_top_realGal (v : {v : InfinitePlace K.1 // v.IsReal})
   exact P.eq_bot_or_eq_top_of_prime_card.resolve_right hP
 
 /- English proof (translation)
-Establish `hb` using `eq_bot_of_ne_top_realGal v _ hd`. Establish `: Subsingleton (mackeySubgroup (W : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr v).toMonoidHom d.out)`. Rewrite using `[hb]`. Use `infer_instance`. Conclude with `subsingleton_cohomology_of_subsingleton_group _ hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_mackeyRep_realFamily (N : Rep.{0} (ULift.{0} ℤ)
     (W : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) [IsDiscreteRep N] {n : ℕ} (hn : 1 ≤ n)
@@ -239,7 +239,7 @@ def GsMackeyTopSurjective (j : ℕ) : Prop :=
   Function.Surjective (mackeyTopRes (gsRealFamily S ιr) W (zmodRep.{0} (G := (W : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) 2) j)
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, r = n + 2` from `⟨r - 2, by omega⟩`. Establish `htriv : ∀ j, 1 ≤ j → ∀ v (d : MackeyDoubleCoset (W : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr v).toMonoidHom), mackeySubgroup (W : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr v).toMonoidHom d.out ≠ ⊤ → Subsingleton (cohomology (mackeyRep (W : …` using `(W : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) 2) d.out) j) := fun j hj v d hd => subsingleton_cohomology_mackeyRep_realFamily S ιr W _ hj v d hd`. Establish `hs` using `(surjective_tateGlobalToLocal_iff (gsFinFamily S ιs) (gsRealFamily S ιr) (Rep.coind (W : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype (zmodRep.{0} (G := (W : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) 2)) (fun v => Rep.res (gsFinFamily S ιs v).toMonoidHom (Rep.coind (W : Sub …`. Establish `hi` using `(injective_tateGlobalToLocal_iff (gsFinFamily S ιs) (gsRealFamily S ιr) (Rep.coind (W : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype (zmodRep.{0} (G := (W : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) 2)) (fun v => Rep.res (gsFinFamily S ιs v).toMonoidHom (Rep.coind (W : Subg …`. Conclude with `tateCompactCohomology_eq_zero_of_surjective_of_injective (gsFinFamily S ιs) (gsRealFamily S ιr) (Rep.coind (W : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype (zmodRep.{0} (G := (W : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) 2)) (fun v => Rep.res (gsFinFamily S ιs v).toMonoid …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gsTateCompactCohomology_coind_zmodRep_eq_zero_of
     (hI : ∀ j, 4 ≤ j → GsMackeyTopInjective S ιr W j)

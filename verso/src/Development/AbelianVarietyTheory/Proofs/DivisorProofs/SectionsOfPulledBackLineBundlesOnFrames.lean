@@ -9,7 +9,7 @@ open GlobalTheory GlobalTheory.FlagMod GlobalTheory.FlagPlucker
 namespace GlobalTheory.FlagPlucker
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.DeterminantProductExpansion.main A B`.
+A detailed English derivation is pending.
 -/
 theorem det_mul_eq_sum_fun {R : Type} [CommRing R] {i N : ℕ} (A : Matrix (Fin i) (Fin N) R)
     (B : Matrix (Fin N) (Fin i) R) :
@@ -17,9 +17,9 @@ theorem det_mul_eq_sum_fun {R : Type} [CommRing R] {i N : ℕ} (A : Matrix (Fin 
   _root_.GlobalTheory.DeterminantProductExpansion.main A B
 
 /- English proof (translation)
-Establish `e : B.submatrix (Fin.castLE hd) id * A.submatrix id (Fin.castLE hd) = 1`. Rewrite using `[← Matrix.submatrix_mul _ _ _ id _ Function.bijective_id, hBA, Matrix.submatrix_one _ (Fin.castLE_injective _)]`. Use `⟨fun r => ∏ a, B (Fin.castLE hd a) (r a), ?_⟩` and prove the remaining obligations. Use `congrArg Matrix.det e` as an intermediate fact. Rewrite `this` using `[det_mul_eq_sum_fun, Matrix.det_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_sum_minors_eq_one {R : Type} [CommRing R] {n k d : ℕ} (hd : d ≤ k) (A : Matrix (Fin n) (Fin k) R)
     (B : Matrix (Fin k) (Fin n) R) (hBA : B * A = 1) :
@@ -46,13 +46,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Z : Scheme.{0}} {π : Z ⟶ Y.X}
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `F.split k σ`. Establish `hm : ∀ (M M' : MChart Y) (hle : F.U k ⊓ π ⁻¹ᵁ Mc.U ≤ π ⁻¹ᵁ (M.U ⊓ M'.U)) (S : Type) [CommRing S] (z : Sp S ⟶ Z) (hz : ⊤ ≤ z ⁻¹ᵁ (F.U k ⊓ π ⁻¹ᵁ Mc.U)), ((chg M M').map (π.appLE _ _ hle).hom).map (ev z _ hz) = (chg M M').map (ev (z ≫ π) _ (le_preimage_map π hle hz))`. Introduce `M M' hle S _ z hz`. Rewrite using `[Matrix.map_map]`. Use extensionality with `a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `ev_appLE z π hle hz _ _`. Establish `hle1 : F.U k ⊓ π ⁻¹ᵁ Mc.U ≤ π ⁻¹ᵁ ((F.M k).U ⊓ Mc.U)` using `fun _ hp => ⟨F.le k hp.1, hp.2⟩`. Establish `hle2 : F.U k ⊓ π ⁻¹ᵁ Mc.U ≤ π ⁻¹ᵁ (Mc.U ⊓ (F.M k).U)` using `fun _ hp => ⟨hp.2, F.le k hp.1⟩`. Establish `hC : (chg (F.M k).toMChart Mc).map (π.appLE _ _ hle1).hom * (chg Mc (F.M k).toMChart).map (π.appLE _ _ hle2).hom = 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext_ev fun S _ z hz => ?_` and prove the remaining obligations. Establish `e : (((chg (F.M k).toMChart Mc).map (π.appLE _ _ hle1).hom * (chg Mc (F.M k).toMChart).map (π.appLE _ _ hle2).hom)).map (ev z _ hz) = (1 : Matrix (Fin (F.M k).n) (Fin (F.M k).n) Γ(Z, F.U k ⊓ π ⁻¹ᵁ Mc.U)).map (ev z _ hz)`. Establish `hx` using `le_preimage_map π hle1 hz`. Establish `hx'` using `le_preimage_map π hle2 hz`. Rewrite using `[Matrix.map_mul, hm _ _ hle1, hm _ _ hle2, chg_map _ _ (z ≫ π) (le_preimage_mono inf_le_left hx) (le_preimage_mono inf_le_right hx), chg_map _ _ (z ≫ π) (le_preimage_mono inf_le_left hx') (le_preimage_mono inf_le_right hx'), Module.Basis.toMatrix_mul_toMatrix, Module.Basis.toMatr …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrFun (congrFun e i) j`. Use `⟨(w.map (resG Z (inf_le_left : F.U k ⊓ π ⁻¹ᵁ Mc.U ≤ F.U k))) * (chg (F.M k).toMChart Mc).map (π.appLE _ _ hle1).hom, ?_⟩` and prove the remaining obligations. Unfold `plkU`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc ((chg (F.M k).toMChart Mc).map _), hC, Matrix.one_mul, ← Matrix.map_mul, hw, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_plkU_eq_one (F : Frames Y π) (Mc : MChart Y) (k : F.J) (σ : E →+* ℂ) :
     ∃ B : Matrix (Fin (Dw.mult σ)) (Fin Mc.n) Γ(Z, F.U k ⊓ π ⁻¹ᵁ Mc.U), B * plkU F Mc k σ = 1 := by
@@ -89,11 +89,11 @@ theorem exists_mul_plkU_eq_one (F : Frames Y π) (Mc : MChart Y) (k : F.J) (σ :
     ← Matrix.map_mul, hw, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_mul_plkU_eq_one F Mc k σ`. Take `⟨cf, hc⟩` from `exists_sum_minors_eq_one (d := (m : ℕ) + 1) m.2 _ B hB`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hmax : (Z.presheaf.germ _ z hz).hom (∑ r, cf r * plkMinor F Mc k σ m r) ∈ IsLocalRing.maximalIdeal (Z.presheaf.stalk z)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `Ideal.sum_mem _ fun r _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 fun hu => hno r ?_)` and prove the remaining obligations. Conclude with `(Scheme.mem_basicOpen Z _ z hz).2 hu`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ∑ r, cf r * plkMinor F Mc k σ m r = 1` using `hc`. Rewrite `hmax` using `[h1, map_one]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal _).ne_top ((Ideal.eq_top_iff_one _).2 hmax)`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_basicOpen_plkMinor (F : Frames Y π) (Mc : MChart Y) (k : F.J) (σ : E →+* ℂ)
     (m : Fin (Dw.mult σ)) (z : Z) (hz : z ∈ F.U k ⊓ π ⁻¹ᵁ Mc.U) :
@@ -122,15 +122,13 @@ namespace GlobalTheory.FlagPlucker
 open GlobalTheory.FlagMod Formalism.L2.Pj
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y Z π F Mc T g hg σ m t ht`. Use `eq_top_iff.2 fun p _ => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, g.base p ∈ F.U k := by`. Establish `: g.base p ∈ (⨆ k, F.U k)` using `by rw [F.cover]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpM : g.base p ∈ π ⁻¹ᵁ Mc.U`. Use `hg (show p ∈ (⊤ : T.Opens) from trivial)` as an intermediate fact. Simplify using `using this`. Take `⟨r, hr⟩` from `exists_mem_basicOpen_plkMinor F Mc k σ m (g.base p) ⟨hk, hpM⟩`. Set `j : ((F.LL (ind σ m)).pull g).ι` to `fun _ => k`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpj : p ∈ ((F.LL (ind σ m)).pull g).U j` using `mem_pull.2 hk`. Set `q : Fin (plkNum Mc m + 1)` to `Fin.succ (Fintype.equivFin _ r)`. Establish `hq : plkIdx Mc m q = some r` using `by simp [q, plkIdx]`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨q, (mem_nonzeroLocus_iff_basicOpen (t q) hpj).2 ?_⟩` and prove the remaining obligations. Rewrite using `[congrFun (ht q) j]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `plkLoc`. Use `split`. Name the introduced variables `h; rw [hq] at h; exact absurd h (by simp)`. Name the introduced variables `r' h`. Rewrite `h` using `[hq]`.
-
-Consider the cases of `h`. Rewrite using `[Scheme.basicOpen_appLE]`. Conclude with `⟨hpj, hr⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem iSup_nonzeroLocus_plk : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {Z : Scheme.{0}} {π : Z ⟶ Y.X} (F : Frames Y π) (Mc : MChart Y) {T : Scheme.{0}} (g : T ⟶ Z) (hg : ⊤ ≤ (g ≫ π) ⁻¹ᵁ Mc.U) (σ : E →+* ℂ) (m : Fin (Dw.mult σ)) (t : Fin (plkNum Mc m + 1) → ((F.LL (ind σ m)).pull g).Sec), (∀ q, (t q).f = plkLoc F Mc g hg σ m q) → ⨆ q, nonzeroLocus (t q) = ⊤ := by
   intro E _ _ _ H Dw l Xo c O _ β Y Z π F Mc T g hg σ m t ht

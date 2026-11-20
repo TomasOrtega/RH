@@ -8,11 +8,11 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.TangentOrigin GlobalTheory.Toroid
 open scoped ComplexOrder
 
 /- English proof (translation)
-Use extensionality with `a b : 1`. Establish `h₁ : c.U ⊓ c'.U ≤ c.U` using `inf_le_left`. Establish `h₂ : c.U ⊓ c'.U ≤ c'.U` using `inf_le_right`. Establish `key : ∀ t : Γ(M, c.U ⊓ c'.U), (((c.isFrame.map_iso φ.hom).basis h₁).repr (φ.hom.app _ t)) = (c.isFrame.basis h₁).repr t` using `fun t => by conv_lhs => rw [← (c.isFrame.basis h₁).sum_repr t]`. Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, IsFrame.basis_apply, Twist.app_resM]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [← (c.isFrame.map_iso φ.hom).basis_apply h₁]`. Rewrite using `[← map_sum]`. Use extensionality with `k`. Conclude with `congrFun (((c.isFrame.map_iso φ.hom).basis h₁).repr_sum_self _) k`. Use `key (Twist.resM M h₂ (c'.e b))` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Twist.app_resM]`. Conclude with `congrArg (fun t => t a) this`.
+A detailed English derivation is pending.
 -/
 private theorem trS_map_iso {X : Scheme.{0}} {M M' : X.Modules} {r : ℕ} (φ : M ≅ M') (c c' : Chart M r) :
     trS (c.map φ) (c'.map φ) = trS c c' := by
@@ -32,7 +32,7 @@ private theorem trS_map_iso {X : Scheme.{0}} {M M' : X.Modules} {r : ℕ} (φ : 
   exact congrArg (fun t => t a) this
 
 /- English proof (translation)
-Unfold `trAt`. Rewrite using `[trS_map_iso]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem trAt_map_iso {X : Scheme.{0}} {M M' : X.Modules} {r : ℕ} {K : Type} [CommRing K] (x : Sp K ⟶ X)
     (φ : M ≅ M') (c c' : Chart M r) : trAt x (c.map φ) (c'.map φ) = trAt x c c' := by
@@ -41,7 +41,7 @@ private theorem trAt_map_iso {X : Scheme.{0}} {M M' : X.Modules} {r : ℕ} {K : 
   rfl
 
 /- English proof (translation)
-Take `rfl : e = e'` from `funext h`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private theorem chart_ext {X : Scheme.{0}} {M : X.Modules} {r : ℕ} {U : X.Opens} {e e' : Fin r → Γ(M, U)}
     (he : IsFrame e) (he' : IsFrame e') (h : ∀ i, e i = e' i) : (⟨U, e, he⟩ : Chart M r) = ⟨U, e', he'⟩ := by
@@ -49,7 +49,7 @@ private theorem chart_ext {X : Scheme.{0}} {M : X.Modules} {r : ℕ} {U : X.Open
   rfl
 
 /- English proof (translation)
-The claim follows from `chart_ext (U := (g' ≫ π) ⁻¹ᵁ b.U) _ _ fun i => (PullPull.pullbackComp_hom_app g' π M le_rfl le_rfl le_rfl (b.e i)).symm`.
+A detailed English derivation is pending.
 -/
 private theorem pull_comp {B Y T : Scheme.{0}} (π : Y ⟶ B) (g' : T ⟶ Y) {M : B.Modules} {r : ℕ} (hM : IsVB M r)
     (b : Chart M r) : b.pull hM (g' ≫ π) =
@@ -58,13 +58,13 @@ private theorem pull_comp {B Y T : Scheme.{0}} (π : Y ⟶ B) (g' : T ⟶ Y) {M 
     (PullPull.pullbackComp_hom_app g' π M le_rfl le_rfl le_rfl (b.e i)).symm
 
 /- English proof (translation)
-Introduce `B Y T π ι M n hM fl g' g w fl' hC a ch had`. Substitute `w` using the available equality. Establish `hP` using `(hM a).pullback π`. Use `⟨(ch.pull hP g').map ((Scheme.Modules.pullbackComp g' π).app (M a)), rfl, fun i => ?_, fun K _ x b hb hc => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `had i`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `hC a i.succ`. Simplify using `only [Scheme.Modules.pullbackCongr, eqToIso_refl, Iso.refl_hom, NatTrans.id_app, Category.comp_id] at he`. Use `⟨e.hom.app (g' ⁻¹ᵁ ch.U) (QCoh.pullbackSections g' _ le_rfl s), ?_⟩` and prove the remaining obligations. Use `(QCoh.app_app e.hom ((fl' a).ι i.succ) (g' ⁻¹ᵁ ch.U) _).trans ?_` and prove the remaining obligations. Rewrite using `[he, ← QCoh.app_app, QCoh.pullback_map_app_pullbackSections, hs]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hb' : ⊤ ≤ (x ≫ g') ⁻¹ᵁ (b.pull (hM a) π).U` using `fun p hp => by`. Use `hb hp` as an intermediate fact. Rewrite `this` using `[← Category.assoc]`. Conclude with `this`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pull_comp, trAt_map_iso, trAt_pull hP g' _ _ hb' hc]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.flag_connection_adapted :
     ∀ (B Y T : Scheme.{0}) (π : Y ⟶ B) (ι : Type) (M : ι → B.Modules) (n : ι → ℕ) (hM : ∀ a, IsVB (M a) (n a)) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (M a)) (n a)) (g' : T ⟶ Y) (g : T ⟶ B) (w : g' ≫ π = g) (fl' : ∀ a, Vert.Flag ((Scheme.Modules.pullback g).obj (M a)) (n a)), GlobalTheory.FlagConnect.Carries π M n fl g' g w fl' → ∀ (a : ι) (ch : Chart ((Scheme.Modules.pullback π).obj (M a)) (n a)), IsAdapted (fl a) ch → ∃ ch' : Chart ((Scheme.Modules.pullback g).obj (M a)) (n a), ch'.U = g' ⁻¹ᵁ ch.U ∧ IsAdapted (fl' a) ch' ∧ ∀ (K : Type) [CommRing K] (x : Sp K ⟶ T) (b : Chart (M a) (n a)), ⊤ ≤ (x ≫ g) ⁻¹ᵁ b.U → ⊤ ≤ (x ≫ g') ⁻¹ᵁ ch.U → trAt x (b.pull (hM a) g) ch' = trAt (x ≫ g') (b.pull (hM a) π) ch := by

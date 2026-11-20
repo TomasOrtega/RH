@@ -12,7 +12,7 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Rewrite using `[petersson, mul_comm (starRingEnd ℂ (f z)), Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem petersson_self_eq (k : ℤ) (f : ℍ → ℂ) (z : ℍ) :
     petersson k f f z = ((‖f z‖ ^ 2 * z.im ^ k : ℝ) : ℂ) := by
@@ -25,23 +25,19 @@ end GlobalTheory.Hk
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Use `haveI := lev_finiteIndex N l hN hl`. Use `haveI : Finite (SL(2, ℤ) ⧸ lev N l) := Subgroup.finite_quotient_of_finiteIndex`. Use `haveI : Fintype (SL(2, ℤ) ⧸ lev N l) := Fintype.ofFinite _`. Use `set r : ℍ → ℝ := fun z => ‖f z‖ ^ 2 * z.im ^ k with hr_def`. Establish `hr0 : ∀ z, 0 ≤ r z` using `fun z => mul_nonneg (sq_nonneg _) (zpow_nonneg z.im_pos.le _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrc : Continuous r`. Use `(f.holo'.continuous.norm.pow 2).mul ?_` and prove the remaining obligations. Conclude with `(continuous_im).zpow₀ k fun z => Or.inl z.im_ne_zero`. Establish `hrp : ∀ z, petersson k f f z = (r z : ℂ)` using `fun z => petersson_self_eq k f z`. Use `set I : SL(2, ℤ) ⧸ lev N l → ℝ := fun q => ∫ z in ModularGroup.fd, r (q.out⁻¹ • z) with hI`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpet : pet (lev N l) k ⇑f ⇑f = ((∑ q, I q : ℝ) : ℂ)`. Rewrite using `[pet, finsum_eq_sum_of_fintype, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `only [hrp, hI]`. Conclude with `integral_ofReal`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hI0 : ∀ q, 0 ≤ I q` using `fun q => integral_nonneg fun z => hr0 _`. Choose the witnesses or unpack the hypotheses as in `⟨z₀, hz₀⟩ : ∃ z, f z ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hf (CuspForm.ext h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨g, hg⟩` from `ModularGroup.exists_smul_mem_fd z₀`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (lev N l) g`. Establish `hinv : ∀ z, r (((h⁻¹ : lev N l) : SL(2, ℤ)) • z) = r z`. Introduce `z`. Establish `e` using `SlashInvariantFormClass.norm_petersson_smul (f := f) (f' := f) (τ := z) (Γ := (lev N l : Subgroup (GL (Fin 2) ℝ))) (g := (((h⁻¹ : lev N l) : SL(2, ℤ)) : GL (Fin 2) ℝ)) ⟨_, (h⁻¹).2, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[hrp, hrp, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg (hr0 _), Real.norm_of_nonneg (hr0 _)]`. Conclude with `e`. Establish `hpt : (((g : SL(2, ℤ) ⧸ lev N l)).out⁻¹ • (g • z₀)) = ((h⁻¹ : lev N l) : SL(2, ℤ)) • z₀`. Rewrite using `[hh, smul_smul, mul_inv_rev, inv_mul_cancel_right]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hIpos : 0 < I (g : SL(2, ℤ) ⧸ lev N l)`. Establish `hpos : 0 < r ((g : SL(2, ℤ) ⧸ lev N l).out⁻¹ • (g • z₀))`. Rewrite using `[hpt, hinv]`. Conclude with `mul_pos (pow_pos (norm_pos_iff.2 hz₀) 2) (zpow_pos z₀.im_pos _)`. Establish `hc : Continuous fun z : ℍ => r ((g : SL(2, ℤ) ⧸ lev N l).out⁻¹ • z)` using `hrc.comp (continuous_const_smul (((g : SL(2, ℤ) ⧸ lev N l).out⁻¹ : SL(2, ℤ)) : GL (Fin 2) ℝ))`.
-
-Establish `hint : IntegrableOn (fun z : ℍ => r ((g : SL(2, ℤ) ⧸ lev N l).out⁻¹ • z)) ModularGroup.fd`. Take `⟨C, hC⟩` from `CuspFormClass.petersson_bounded_left k (lev N l : Subgroup (GL (Fin 2) ℝ)) f f`. Establish `fin` using `UpperTheory.V.Af.Rs.fdFin (UpperTheory.V.Af.Rs.stripIm UpperTheory.V.Af.Rs.volMap) UpperTheory.V.Af.Rs.volMap`. Use `Measure.integrableOn_of_bounded (M := C) fin.2.ne hc.aestronglyMeasurable (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Use `hC ((g : SL(2, ℤ) ⧸ lev N l).out⁻¹ • z)` as an intermediate fact.
-
-Rewrite `this` using `[hrp, Complex.norm_real]`. Conclude with `this`. Conclude with `UpperTheory.V.Af.Rs.fdPos UpperTheory.V.Af.Rs.volMap _ hc (fun z => hr0 _) hint _ hg hpos`. Rewrite using `[hpet, Complex.ofReal_re, Complex.ofReal_im]`. Conclude with `⟨Finset.sum_pos' (fun q _ => hI0 q) ⟨_, Finset.mem_univ _, hIpos⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pet_self_pos (N l : ℕ) (k : ℤ) (hN : 0 < N) (hl : 0 < l) (f : CuspForm (lev N l) k)
     (hf : f ≠ 0) :

@@ -6,7 +6,7 @@ open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare
 
 /- English proof (translation)
-Use `(GlobalTheory.T.mass_degType_le_card_cycleType_div g N (fun _ => True)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.filter_true, Finset.card_univ, Fintype.card_perm, Fintype.card_fin]`. Establish `hN : (N.factorial : ℝ) ≠ 0` using `by positivity`. Conclude with `div_self hN`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mass_true_le_one (g : ℕ) [Fact g.Prime] (N : ℕ) : (mass g N fun _ => True) ≤ 1 := by
   refine (GlobalTheory.T.mass_degType_le_card_cycleType_div g N (fun _ => True)).trans (le_of_eq ?_)
@@ -15,23 +15,21 @@ theorem mass_true_le_one (g : ℕ) [Fact g.Prime] (N : ℕ) : (mass g N fun _ =>
   exact div_self hN
 
 /- English proof (translation)
-Take `⟨hmon, hdeg, -, -⟩` from `mem_sqSet.1 hh`. Establish `hh0 : h ≠ 0` using `hmon.ne_zero`. Unfold `mass`. Use `set S := (sqSet g N).filter fun f => h ∣ f with hS`. Establish `hfac : ∀ f ∈ S, h * (f /ₘ h) = f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Establish `hd : h ∣ f` using `(Finset.mem_filter.1 hf).2`. Establish `e` using `Polynomial.modByMonic_add_div f h`. Rewrite `e` using `[(Polynomial.modByMonic_eq_zero_iff_dvd hmon).2 hd, zero_add]`. Then use the resulting hypothesis. Establish `hmem : ∀ f ∈ S, f /ₘ h ∈ sqSet g (N - a)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Take `⟨fmon, fdeg, fsq, fc0⟩` from `mem_sqSet.1 (Finset.mem_filter.1 hf).1`. Establish `e` using `hfac f hf`. Establish `umon : (f /ₘ h).Monic` using `hmon.of_mul_monic_left (by rw [e]; exact fmon)`. Use `mem_sqSet.2 ⟨umon, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd` using `hmon.natDegree_mul umon`. Rewrite `hd` using `[e, fdeg, hdeg]`. Use linear arithmetic over natural numbers and integers. Conclude with `Squarefree.of_mul_right (by rw [e]; exact fsq)`. Introduce `hz`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `fc0` to reduce the goal to its premises. Rewrite using `[← e, Polynomial.mul_coeff_zero, hz, mul_zero]`. Establish `hinj : Set.InjOn (fun f => f /ₘ h) (S : Set (ZMod g)[X])`. Introduce `f hf f' hf' hq`. Rewrite using `[← hfac f hf, ← hfac f' hf']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg (h * ·) hq`. Establish `hterm : ∀ f ∈ S, ((torusCard g f : ℝ))⁻¹ = ((torusCard g h : ℝ))⁻¹ * ((torusCard g (f /ₘ h) : ℝ))⁻¹`. Introduce `f hf`. Establish `e` using `hfac f hf`. Establish `hu0 : f /ₘ h ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `hz`. Rewrite `e` using `[hz, mul_zero]`. Conclude with `(mem_sqSet.1 (Finset.mem_filter.1 hf).1).1.ne_zero e.symm`. Use `conv_lhs => rw [← e]`. Rewrite using `[torusCard_mul hh0 hu0, Nat.cast_mul, mul_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_congr rfl hterm, ← Finset.mul_sum]`. Use `mul_le_mul_of_nonneg_left ?_ (inv_nonneg.2 (Nat.cast_nonneg _))` and prove the remaining obligations. Rewrite using `[← Finset.sum_image (f := fun u => ((torusCard g u : ℝ))⁻¹) hinj, Finset.filter_true]`. Use `Finset.sum_le_sum_of_subset_of_nonneg ?_ (fun _ _ _ => inv_nonneg.2 (Nat.cast_nonneg _))` and prove the remaining obligations. Introduce `u hu`.
-
-Take `⟨f, hf, rfl⟩` from `Finset.mem_image.1 hu`. Conclude with `hmem f hf`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mass_dvd_le (g : ℕ) [Fact g.Prime] (N a : ℕ) (h : (ZMod g)[X]) (hh : h ∈ sqSet g a) :
     (mass g N fun f => h ∣ f) ≤ ((torusCard g h : ℝ))⁻¹ * mass g (N - a) fun _ => True := by
@@ -80,7 +78,7 @@ theorem mass_dvd_le (g : ℕ) [Fact g.Prime] (N a : ℕ) (h : (ZMod g)[X]) (hh :
   exact hmem f hf
 
 /- English proof (translation)
-Introduce `g _`. Use `⟨mass_true_le_one g, fun N a h hh => ?_⟩` and prove the remaining obligations. Use `(mass_dvd_le g N a h hh).trans ?_` and prove the remaining obligations. Conclude with `mul_le_of_le_one_right (inv_nonneg.2 (Nat.cast_nonneg _)) (mass_true_le_one g _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem divisor_bound : ∀ (g : ℕ) [Fact g.Prime], (∀ N : ℕ, (mass g N fun _ => True) ≤ 1) ∧
     ∀ (N a : ℕ), ∀ h ∈ sqSet g a, (mass g N fun f => h ∣ f) ≤ ((torusCard g h : ℝ))⁻¹ := by

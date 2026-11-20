@@ -6,7 +6,7 @@ open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain F
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LocalUniformizerReal.lUnif_realTB` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIndefiniteScaleThetaBoundLeft.lean&line=11#L11)
 -/

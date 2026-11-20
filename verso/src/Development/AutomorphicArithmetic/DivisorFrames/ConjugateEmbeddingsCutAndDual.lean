@@ -11,11 +11,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw _ p _ F _ _ σ σ' hσ`. Take `⟨M, a, T, S, h⟩` from `UpperTheory.lattice_data_integral_specialisation E H Dw p F σ'`. Establish `key : ∀ k : F →+* ℂ_[p], (∃ δ : ℂ_[p], δ ≠ 0 ∧ Real.log ‖δ‖ = -(vDiff E p * Real.log p) ∧ CutL Dw (k.comp σ) a (fun j m => k (T j m)) δ) ∧ CutL Dw (k.comp σ') a (fun j m => k (S j m)) 1 ∧ DualL Dw (k.comp σ') a (fun j m => k (T j m)) (fun j m => k (S j m))`. Introduce `k`. Take `⟨s, T', S', hs, hT, hS, hL⟩` from `h k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e1 : (intO ℂ_[p]).subtype.comp s = k.comp σ'` using `RingHom.ext fun o => hs o`. Establish `e2 : (fun j m => (T' j m : ℂ_[p])) = fun j m => k (T j m)` using `funext fun j => funext fun m => hT j m`. Establish `e3 : (fun j m => (S' j m : ℂ_[p])) = fun j m => k (S j m)` using `funext fun j => funext fun m => hS j m`. Establish `hd` using `UpperTheory.lattice_data_gives_cut_and_dual E H Dw p s M _ a T' S' hL`. Establish `hc` using `UpperTheory.lattice_data_valuation_of_difference E H Dw p s (k.comp σ) (fun o => by rw [hs, hσ]; rfl) M _ a T' S' hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hd` using `[e1, e2, e3]`. Rewrite `hc` using `[e2]`. Conclude with `⟨hc, hd⟩`. Use `⟨M, a, T, S, fun k => (key k).1, fun k => ⟨1, one_ne_zero, by simp, (key k).2.1⟩, fun k => (key k).2.2⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem UpperTheory.conjugate_embeddings_cut_and_dual :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) [IsGalois ℚ E] (p : ℕ) [Fact p.Prime] (F : Type) [Field F] [NumberField F] (σ σ' : 𝓞 E →+* F), (∀ o, σ' o = σ (H.bar o)) → ∃ (M : ℕ) (a : Fin M → Dw.La) (T S : Fin (Dw.p + Dw.q) → Fin M → F), CutAll Dw p σ a T (vDiff E p) ∧ CutAll Dw p σ' a S 0 ∧ ∀ k : F →+* ℂ_[p], DualL Dw (k.comp σ') a (fun j m => k (T j m)) (fun j m => k (S j m)) := by

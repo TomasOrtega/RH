@@ -9,11 +9,11 @@ open GlobalTheory.TripleGal Formalism Formalism.BasicNotions Formalism.BasicNoti
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `α using Multiset.induction_on generalizing k with`. Consider the case `empty`. Consider the cases of `k with`. Consider the case `zero => simp [Multiset.esymm]`. Consider the case `succ k => simp [Multiset.esymm, Polynomial.coeff_one, Multiset.powersetCard_zero_right]`.
+Proceed by induction. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `cons a s ih`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, sub_mul, one_mul, mul_assoc, Polynomial.coeff_sub, Polynomial.coeff_C_mul]`. Consider the cases of `k with`. Consider the case `zero => rw [ih]`. Simplify using `[Multiset.esymm]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ k`. Establish `h : (a ::ₘ s).esymm (k + 1) = s.esymm (k + 1) + a * s.esymm k`. Simplify using `[Multiset.esymm, Multiset.powersetCard_cons, Multiset.sum_map_mul_left]`. Rewrite using `[Polynomial.coeff_X_mul, ih, ih, h]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coeff_prod_one_sub_C_mul_X (c : ℂ) (α : Multiset ℂ) (k : ℕ) :
     ((α.map fun a => (1 : Polynomial ℂ) - Polynomial.C (c * a) * Polynomial.X).prod).coeff k
@@ -35,9 +35,9 @@ theorem coeff_prod_one_sub_C_mul_X (c : ℂ) (α : Multiset ℂ) (k : ℕ) :
       ring
 
 /- English proof (translation)
-Introduce `r q hq α _ k _`. Rewrite using `[coeff_prod_one_sub_C_mul_X]`. Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast hq.ne'`. Establish `hk : ((k * (k - 1) / 2 : ℕ) : ℂ) = (k : ℂ) * ((k : ℂ) - 1) / 2`. Rewrite using `[← Nat.choose_two_right, Nat.cast_choose_two]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : (q : ℂ) ^ (k * (k - 1) / 2) * (q : ℂ) ^ (((k : ℂ) * ((r : ℂ) - k)) / 2) = ((q : ℂ) ^ (((r : ℂ) - 1) / 2)) ^ k`. Rewrite using `[← Complex.cpow_natCast (q : ℂ) (k * (k - 1) / 2), ← Complex.cpow_add _ _ hq0, hk, ← Complex.cpow_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

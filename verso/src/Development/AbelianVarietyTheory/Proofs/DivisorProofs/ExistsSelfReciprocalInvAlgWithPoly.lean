@@ -11,7 +11,7 @@ namespace InertUnit
 variable {K : UQ} {P : K.E[X]}
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun Q => Q.coeff 0) hr`. Simplify using `only [coeff_C_mul, coeff_zero_reverse] at h`. Rewrite using `[h, leadingCoeff_map_of_leadingCoeff_ne_zero _ (by simp [hP.leadingCoeff]), hP.leadingCoeff, map_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_mul (hP : P.Monic) (hr : C (K.c (P.coeff 0)) * P = (P.map (K.c : K.E →+* K.E)).reverse) :
     K.c (P.coeff 0) * P.coeff 0 = 1 := by
@@ -23,9 +23,9 @@ def rootInv (P : K.E[X]) : AdjoinRoot P :=
   -(algebraMap K.E (AdjoinRoot P) (K.c (P.coeff 0))) * aeval (AdjoinRoot.root P) P.divX
 
 /- English proof (translation)
-Establish `h0 : aeval (AdjoinRoot.root P) P = 0` using `AdjoinRoot.aeval_eq P ▸ AdjoinRoot.mk_self`. Establish `h1` using `congrArg (aeval (AdjoinRoot.root P)) (X_mul_divX_add P)`. Rewrite `h1` using `[h0, map_add, map_mul, aeval_X, aeval_C]`. Establish `h2 : AdjoinRoot.root P * aeval (AdjoinRoot.root P) P.divX = -algebraMap K.E (AdjoinRoot P) (P.coeff 0)` using `eq_neg_of_add_eq_zero_left h1`. Unfold `rootInv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[mul_left_comm, h2, neg_mul_neg, ← map_mul, coeff_mul hP hr, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem root_mul_rootInv (hP : P.Monic) (hr : C (K.c (P.coeff 0)) * P = (P.map (K.c : K.E →+* K.E)).reverse) :
     AdjoinRoot.root P * rootInv P = 1 := by
@@ -38,9 +38,9 @@ theorem root_mul_rootInv (hP : P.Monic) (hr : C (K.c (P.coeff 0)) * P = (P.map (
   rw [mul_left_comm, h2, neg_mul_neg, ← map_mul, coeff_mul hP hr, map_one]
 
 /- English proof (translation)
-Establish `hu` using `root_mul_rootInv hP hr`. Use `letI : Invertible (rootInv P) := ⟨AdjoinRoot.root P, hu, by rw [mul_comm]; exact hu⟩`. Rewrite using `[← eval₂_map, ← eval₂_reverse_mul_pow]`. Establish `: ⅟(rootInv P) = AdjoinRoot.root P` using `rfl`. Rewrite using `[this, ← hr, eval₂_mul, eval₂_C]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : P.eval₂ (algebraMap K.E (AdjoinRoot P)) (AdjoinRoot.root P) = 0` using `AdjoinRoot.eval₂_root P`. Rewrite using `[h0, mul_zero, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_rootInv (hP : P.Monic) (hr : C (K.c (P.coeff 0)) * P = (P.map (K.c : K.E →+* K.E)).reverse) :
     P.eval₂ ((algebraMap K.E (AdjoinRoot P)).comp (K.c : K.E →+* K.E)) (rootInv P) = 0 := by
@@ -57,7 +57,7 @@ def sig (hP : P.Monic) (hr : C (K.c (P.coeff 0)) * P = (P.map (K.c : K.E →+* K
   AdjoinRoot.lift ((algebraMap K.E (AdjoinRoot P)).comp (K.c : K.E →+* K.E)) (rootInv P) (eval_rootInv hP hr)
 
 /- English proof (translation)
-Rewrite using `[AdjoinRoot.algebraMap_eq, sig, AdjoinRoot.lift_of]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sig_alg (hP : P.Monic) (hr : C (K.c (P.coeff 0)) * P = (P.map (K.c : K.E →+* K.E)).reverse) (e : K.E) :
     sig hP hr (algebraMap K.E (AdjoinRoot P) e) = algebraMap K.E (AdjoinRoot P) (K.c e) := by
@@ -65,15 +65,15 @@ theorem sig_alg (hP : P.Monic) (hr : C (K.c (P.coeff 0)) * P = (P.map (K.c : K.E
   rfl
 
 /- English proof (translation)
-The claim follows from `AdjoinRoot.lift_root _`.
+A detailed English derivation is pending.
 -/
 theorem sig_root (hP : P.Monic) (hr : C (K.c (P.coeff 0)) * P = (P.map (K.c : K.E →+* K.E)).reverse) :
     sig hP hr (AdjoinRoot.root P) = rootInv P := AdjoinRoot.lift_root _
 
 /- English proof (translation)
-Use `AdjoinRoot.ringHom_ext (RingHom.ext fun e => ?_) ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingHom.id_apply]`. Rewrite using `[← AdjoinRoot.algebraMap_eq, sig_alg, sig_alg, K.c_c]`. Simplify using `only [RingHom.comp_apply, RingHom.id_apply, sig_root]`. Establish `hu` using `root_mul_rootInv hP hr`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : sig hP hr (AdjoinRoot.root P) * sig hP hr (rootInv P) = 1` using `by rw [← map_mul, hu, map_one]`. Rewrite `h1` using `[sig_root]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem sig_sig (hP : P.Monic) (hr : C (K.c (P.coeff 0)) * P = (P.map (K.c : K.E →+* K.E)).reverse) :
     (sig hP hr).comp (sig hP hr) = RingHom.id _ := by
@@ -97,7 +97,7 @@ def invAlg (hP : P.Monic) (hr : C (K.c (P.coeff 0)) * P = (P.map (K.c : K.E →+
   g := AdjoinRoot.root P
 
 /- English proof (translation)
-Use `haveI : Module.Finite K.E (AdjoinRoot P) := (AdjoinRoot.powerBasis hP.ne_zero).finite`. Establish `h` using `charpoly_leftMulMatrix (AdjoinRoot.powerBasis hP.ne_zero)`. Rewrite `h` using `[Algebra.leftMulMatrix_apply, LinearMap.charpoly_toMatrix, AdjoinRoot.powerBasis_gen, AdjoinRoot.minpoly_root hP.ne_zero, hP.leadingCoeff, inv_one, C_1, mul_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_root (hP : P.Monic) (hr : C (K.c (P.coeff 0)) * P = (P.map (K.c : K.E →+* K.E)).reverse) :
     (invAlg hP hr).P = P := by
@@ -111,7 +111,7 @@ end InertUnit
 
 open InertUnit in
 /- English proof (translation)
-Introduce `K P hP hr`. Use `⟨invAlg hP hr, ?_, charpoly_root hP hr⟩` and prove the remaining obligations. Use `show AdjoinRoot.root P * sig hP hr (AdjoinRoot.root P) = 1`. Rewrite using `[sig_root]`. Conclude with `root_mul_rootInv hP hr`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invAlg_root : ∀ (K : GlobalTheory.UnitLemma.UQ) (P : K.E[X]), P.Monic →
     C (K.c (P.coeff 0)) * P = (P.map (K.c : K.E →+* K.E)).reverse →

@@ -5,15 +5,15 @@ open TensorProduct Module
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis F L`. Set `e : L ⊗[F] X ≃ₗ[F] (Module.Free.ChooseBasisIndex F L →₀ X)` to `(TensorProduct.congr b.repr (LinearEquiv.refl F X)).trans (finsuppScalarLeft F X _)`. Establish `nat : ∀ (f : X →ₗ[F] X) (w : L ⊗[F] X) j, e (f.baseChange L w) j = f (e w j)`. Introduce `f w j`. Proceed by induction on `w using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul a x => simp [e, finsuppScalarLeft_apply_tmul_apply]`. Consider the case `add u v hu hv => simp only [map_add, Finsupp.add_apply, hu, hv]`. Establish `hmem : ∀ j, e z j ∈ ⨅ k, LinearMap.ker (A k - LinearMap.id)`. Introduce `j`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Introduce `k`. Establish `h` using `congrArg (fun w => e w j) (hz k)`. Simplify `h` using `only [nat]`. Establish `hsingle : ∀ j (x : X), e.symm (Finsupp.single j x) = b j ⊗ₜ[F] x`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `j x`. Simplify using `[e]`. Establish `hz' : z = (e z).sum (fun j x => b j ⊗ₜ[F] x)` using `by conv_lhs => rw [← e.symm_apply_apply z, ← Finsupp.sum_single (e z)]`. Simplify using `only [Finsupp.sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => hsingle j _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz']`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.tmul_mem_baseChange_of_mem _ (hmem j)`.
+A detailed English derivation is pending.
 -/
 private theorem mem_baseChange_iInf_ker_sub_id_of_baseChange_eq {F L X ι : Type} [Field F] [Field L] [Algebra F L]
     [AddCommGroup X] [Module F X] (A : ι → X →ₗ[F] X) (z : L ⊗[F] X)
@@ -46,21 +46,21 @@ private theorem mem_baseChange_iInf_ker_sub_id_of_baseChange_eq {F L X ι : Type
   exact Submodule.sum_mem _ fun j _ => Submodule.tmul_mem_baseChange_of_mem _ (hmem j)
 
 /- English proof (translation)
-Unfold `DinvExt`. Introduce `F G B _ _ _ _ σ L _ _ V _ _ ρ`. Set `T : G → (V ⊗[F] B) →ₗ[F] (V ⊗[F] B)` to `fun g => AlgebraTensorModule.map (ρ g) (σ g)`. Establish `hD : Dinv σ ρ = ⨅ g, LinearMap.ker (T g - LinearMap.id)` using `rfl`. Establish `comm : ∀ g (w : (L ⊗[F] V) ⊗[F] B), AlgebraTensorModule.assoc F F L L V B (AlgebraTensorModule.map (extRep L ρ g) (σ g) w) = (T g).baseChange L (AlgebraTensorModule.assoc F F L L V B w)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul u c`. Proceed by induction on `u using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul a v => simp [T, extRep, AlgebraTensorModule.map_tmul]`. Consider the case `add u₁ u₂ h₁ h₂ => simp only [TensorProduct.add_tmul, map_add, h₁, h₂]`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Use extensionality with `z`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components.
 
-Rewrite using `[Submodule.mem_map_equiv]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Rewrite using `[hD]`. Apply `mem_baseChange_iInf_ker_sub_id_of_baseChange_eq` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `g`. Establish `h : AlgebraTensorModule.map (extRep L ρ g) (σ g) ((AlgebraTensorModule.assoc F F L L V B).symm z) = (AlgebraTensorModule.assoc F F L L V B).symm z`. Simplify using `only [Dinv, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hz`. Conclude with `hz g`. Establish `h2` using `congrArg (AlgebraTensorModule.assoc F F L L V B) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[comm, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `hz`. Simplify using `only [Dinv, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Introduce `g`. Apply `(AlgebraTensorModule.assoc F F L L V B).injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comm, LinearEquiv.apply_symm_apply]`. Take `⟨w, rfl⟩` from `hz`. Establish `hfix : T g ∘ₗ (Dinv σ ρ).subtype = (Dinv σ ρ).subtype`. Use `LinearMap.ext fun s => ?_` and prove the remaining obligations. Establish `hs` using `s.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Dinv, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hs`. Conclude with `hs g`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp, hfix]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.dinvExt_of :
     DinvExt := by

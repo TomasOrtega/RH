@@ -17,11 +17,11 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} {p : PtAt ex Csz} {i : Fin D.R.m} {Y : Cov p i}
 end Point
 /- English proof (translation)
-Introduce `hPX hP hDG hSz hDg hSh hGe hMu hBu hDS`. Take `⟨C0, h0, hDS⟩` from `hDS`. Use `Closed.imp ((((((hDG.and hSz).and hDg).and hSh).and hGe).and hMu).and hBu) ?_` and prove the remaining obligations. Introduce `eps Fm CH _ hF`. Take `⟨⟨⟨⟨⟨⟨⟨C1, -, a1⟩, ⟨C2, -, a2⟩⟩, ⟨C3, -, a3⟩⟩, ⟨C4, c4, a4⟩⟩, ⟨C5, -, a5⟩⟩, ⟨C6, c6, a6⟩⟩, ⟨C7, c7, a7⟩⟩` from `hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨C4 + C6 + C7 + C0 * C7, by positivity, ?_⟩` and prove the remaining obligations. Take `⟨x0, hall⟩` from `((((((a1.and a2).and a3).and a4).and a5).and a6).and a7)`. Use `⟨x0, fun x hx hle ι p hp i hm Y hY u1 hq => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨⟨b1, b2⟩, b3⟩, b4⟩, b5⟩, b6⟩, b7⟩` from `hall x hx hle ι p hp`. Establish `hDGa` using `b1 i hm Y hY`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hb1, hbE, -, -, -, -, hρ⟩` from `b2 i`. Establish `hU : 0 ≤ unitE p` using `by linarith`. Establish `hρ1 : rhoB (dat p i) u1 < 1` using `((hρ hm).2 u1 hq).2.2.1`. Establish `hBu` using `b7 i hm Y hY u1 hq`. Conclude with `_root_.GlobalTheory.CovHt.HtTopG.heightAt_eq_of_cover hPX hP hY.1 (_root_.GlobalTheory.CovHt.cover_height_comparison hP _ _ _ _ _ _) h0 c4 c6 c7 hU (hDS _ p.T p.fw.laws (Formalism.BasicNotions.ParameterChoice'.m_sq_le_k (Fm.params x hx ι)) ((i : ℕ) + 1) (by omega) hm Y _ _ hY.1 h …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem height_of_meanAll_bound : _root_.SelfIntersectionVolumeEstimates.VolumeEstimateHypotheses → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.CoverDegree → _root_.GlobalTheory.CovHt.ShortAlt → _root_.GlobalTheory.CovHt.GeometricCondition → _root_.GlobalTheory.CovHt.MultiplicityConstantCondition → _root_.GlobalTheory.CovHt.ErrorBudgetCondition →
     (∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D), LawsJ T → D.R.m ^ 2 ≤ D.R.k → ∀ j : ℕ, 1 ≤ j → j < D.R.m → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → Y.d.l₂.M'.primeFactors.card ≤ 15 → MeanAll Y.U (xiR D) (ell D) C) →

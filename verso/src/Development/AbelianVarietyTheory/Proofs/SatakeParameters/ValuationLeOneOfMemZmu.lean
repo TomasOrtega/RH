@@ -21,11 +21,11 @@ variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {a b : �
   {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E) (Sp E b)} {f : Sp E a ≃ₗ[E] Sp E a} {f' : Sp E b ≃ₗ[E] Sp E b}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h Q hQ y hy`. Rewrite `hQ` using `[Finset.mem_singleton]`. Substitute `hQ` using the available equality. Establish `h1 : f.symm y ∈ stdAt E a Q` using `(hf _).1 (by simpa using hy)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h2` using `(hf' _).2 (h Q (Finset.mem_singleton_self _) _ h1)`. Simplify `h2` using `[inFr]`. Introduce `h Q hQ y hy`. Rewrite `hQ` using `[Finset.mem_singleton]`. Substitute `hQ` using the available equality.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use `(hf' _).1 ?_` and prove the remaining obligations. Simplify `h Q (Finset.mem_singleton_self _) _ ((hf _).2 hy)` using `[inFr]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inFr_mem_iff (hf : ∀ x, f x ∈ localization₂ P.asIdeal N ↔ x ∈ stdAt E a P) (hf' : ∀ x, f' x ∈ localization₂ P.asIdeal N' ↔ x ∈ stdAt E b P)
     (x : HomE E a b) : inFr f f' x ∈ homAt {P} (stdLat E a) (stdLat E b) ↔ x ∈ homAt {P} N N' := by
@@ -44,14 +44,14 @@ theorem inFr_mem_iff (hf : ∀ x, f x ∈ localization₂ P.asIdeal N ↔ x ∈ 
 
 omit [NumberField E] [StarRing E] in
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `[inFr]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem inFr_add_smul (x z : HomE E a b) (c : E) : inFr f f' (x + c • z) = inFr f f' x + c • inFr f f' z := by
   ext y
   simp [inFr]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x hx => (inFr_mem_iff hf hf' x).1 (h.1 _ hx), fun x z hz => by dsimp only rw [inFr_add_smul, h.2.1 _ _ ((inFr_mem_iff hf hf' z).2 hz)], fun _ => h.2.2 _⟩`.
+Supply the required witnesses or components.
 -/
 theorem fnModAt_inFr (hf : ∀ x, f x ∈ localization₂ P.asIdeal N ↔ x ∈ stdAt E a P)
     (hf' : ∀ x, f' x ∈ localization₂ P.asIdeal N' ↔ x ∈ stdAt E b P) {Φ : HomE E a b → K} (h : FnMod P Φ) :
@@ -63,7 +63,7 @@ theorem fnModAt_inFr (hf : ∀ x, f x ∈ localization₂ P.asIdeal N ↔ x ∈ 
     fun _ => h.2.2 _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => h.1 _, fun x z hz => by dsimp only rw [inFr_add_smul, h.2 _ _ ((inFr_mem_iff hf hf' z).2 hz)]⟩`.
+Supply the required witnesses or components.
 -/
 theorem awayAt_inFr [NumberField K] (hf : ∀ x, f x ∈ localization₂ P.asIdeal N ↔ x ∈ stdAt E a P)
     (hf' : ∀ x, f' x ∈ localization₂ P.asIdeal N' ↔ x ∈ stdAt E b P) {w : HeightOneSpectrum (𝓞 K)} {B : ℕ} {Φ : HomE E a b → K}
@@ -73,7 +73,7 @@ theorem awayAt_inFr [NumberField K] (hf : ∀ x, f x ∈ localization₂ P.asIde
     rw [inFr_add_smul, h.2 _ _ ((inFr_mem_iff hf hf' z).2 hz)]⟩
 
 /- English proof (translation)
-Establish `h1 : IsIntegral ℤ x`. Use `(Algebra.adjoin_le (S := integralClosure ℤ K) fun ζ hζ => ?_) hx` and prove the remaining obligations. Establish `h2 : 0 < g * (g - 1)` using `Nat.mul_pos hg.pos (by have := hg.two_le; omega)`. Conclude with `IsIntegral.of_pow h2 (by rw [show ζ ^ (g * (g - 1)) = 1 from hζ]; exact isIntegral_one)`. Conclude with `w.valuation_le_one (K := K) ⟨x, h1⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valuation_le_one_of_mem_Zmu [NumberField K] (w : HeightOneSpectrum (𝓞 K)) {g : ℕ} (hg : g.Prime) {x : K}
     (hx : x ∈ Zmu K g) : w.valuation K x ≤ 1 := by
@@ -85,9 +85,9 @@ theorem valuation_le_one_of_mem_Zmu [NumberField K] (w : HeightOneSpectrum (𝓞
 
 omit [StarRing E] in
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hq`. Take `⟨y, hy, rfl⟩` from `hz`. Use `⟨k • y, nsmul_mem (fun Q hQ => ?_) k, ?_⟩` and prove the remaining obligations. Rewrite `hQ` using `[Finset.mem_singleton]`. Substitute `hQ` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `hy Q hP`. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, mul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_mulLat {S : Finset (HeightOneSpectrum (𝓞 E))} {c q : ℕ} (hq : q ∣ c) {z : HomE E a b}
     (hz : z ∈ mulLat c (homAt S N N')) (hP : P ∈ S) : ∃ z' ∈ homAt {P} N N', z = (q : E) • z' := by
@@ -100,11 +100,11 @@ theorem exists_of_mem_mulLat {S : Finset (HeightOneSpectrum (𝓞 E))} {c q : �
   · rw [LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, mul_smul]
 
 /- English proof (translation)
-Establish `key : ∀ (x z : HomE E a b), (∀ Q : ST, ∃ z' ∈ homAt {Q.1} d.N d'.N, z = (T : E) • z') → (∀ Q : ST, ∀ y ∈ d.at Q.1, x y ∈ d'.at Q.1 ∧ d'.f Q (x y) = d.f Q y) → ∀ Q : ST, ∀ y ∈ d.at Q.1, (x + z) y ∈ d'.at Q.1 ∧ d'.f Q ((x + z) y) = d.f Q y`. Introduce `x z hz h Q y hy`. Take `⟨z', hz', rfl⟩` from `hz Q`. Establish `h1 : z' y ∈ d'.at Q.1` using `hz' Q.1 (Finset.mem_singleton_self _) y hy`. Establish `e : (x + (T : E) • z') y = x y + (T : 𝓞 E) • z' y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Rewrite using `[e]`. Use `⟨add_mem (h Q y hy).1 (Submodule.smul_mem _ _ h1), ?_⟩` and prove the remaining obligations. Rewrite using `[hd'.f_add Q _ (h Q y hy).1 _ (Submodule.smul_mem _ _ h1), hd'.f_smul Q _ _ h1, Ideal.Quotient.eq_zero_iff_mem.2 (hT Q), zero_mul, add_zero, (h Q y hy).2]`. Unfold `phiT`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `if_congr ⟨fun h => ?_, key x z hz⟩ rfl rfl` and prove the remaining obligations. Use `key (x + z) (-z) (fun Q => by` as an intermediate fact. Take `⟨z', hz', rfl⟩` from `hz Q`. Conclude with `⟨-z', neg_mem hz', (smul_neg _ _).symm⟩) h`. Rewrite `this` using `[add_neg_cancel_right]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem phiT_add {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))} (d : Deco E a ST SG) {d' : Deco E b ST SG'} (hd' : d'.Ok)
     {T : ℕ} (hT : ∀ Q : ST, (T : 𝓞 E) ∈ Q.1.asIdeal) (x : HomE E a b) {z : HomE E a b}
@@ -137,7 +137,7 @@ variable {X : Fields} {Pr : Primes X} {sel : HeightOneSpectrum (𝓞 X.F) → He
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)}
 
 /- English proof (translation)
-Rewrite using `[← hPr.piG_norm i]`. Conclude with `P.asIdeal.mul_mem_left _ (mem_divs h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g_mem_of_mem_vG (hPr : Pr.Ok) {i : Fin 2} {P : HeightOneSpectrum (𝓞 X.E)} (h : P ∈ Pr.vG i) :
     ((Pr.g i : ℕ) : 𝓞 X.E) ∈ P.asIdeal := by
@@ -145,7 +145,7 @@ theorem g_mem_of_mem_vG (hPr : Pr.Ok) {i : Fin 2} {P : HeightOneSpectrum (𝓞 X
   exact P.asIdeal.mul_mem_left _ (mem_divs h)
 
 /- English proof (translation)
-Use `fin_cases i`. Use `exacts [Finset.subset_union_left, Finset.subset_union_right]`.
+A detailed English derivation is pending.
 -/
 theorem vG_subset (i : Fin 2) : Pr.vG i ⊆ Pr.vGs := by
   classical
@@ -153,7 +153,7 @@ theorem vG_subset (i : Fin 2) : Pr.vG i ⊆ Pr.vGs := by
   exacts [Finset.subset_union_left, Finset.subset_union_right]
 
 /- English proof (translation)
-Break down `Finset.mem_union.1 h with h2 | h2` into its components or cases. Use `exacts [⟨0, h2⟩, ⟨1, h2⟩]`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_mem_vG {P : HeightOneSpectrum (𝓞 X.E)} (h : P ∈ Pr.vGs) : ∃ i, P ∈ Pr.vG i := by
   classical
@@ -161,19 +161,17 @@ theorem exists_mem_vG {P : HeightOneSpectrum (𝓞 X.E)} (h : P ∈ Pr.vGs) : �
   exacts [⟨0, h2⟩, ⟨1, h2⟩]
 
 /- English proof (translation)
-Use `⟨fun x => ?_, fun x hx P hP => ?_, fun x z hz hz' => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_prod]`. Use `mul_le_one' ?_ (Finset.prod_le_one' fun P _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `unfold phiT split_ifs <;> simp`. Distinguish the cases in `h : P.1 ∈ Pr.vGs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails.
 
-Take `⟨k, hk⟩` from `exists_mem_vG h`. Use `valuation_le_one_of_mem_Zmu w (g := qOf P.1) ?_ ((hg P h).2.2 x)` and prove the remaining obligations. Rewrite using `[qOf, hPr.vG_norm k _ hk]`. Conclude with `hPr.g_prime k`. Conclude with `(hq P h).1 x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Establish `h1 : P ∈ rowSG Pr sel mu` using `Finset.mem_union_left _ (vG_subset i hP)`. Conclude with `(hg ⟨P, h1⟩ (vG_subset i hP)).1 x (Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hx) ⟨P, h1⟩ (Finset.mem_univ _)) P (Finset.mem_singleton_self _)`. Simplify using `only`. Establish `hdv : ∀ P : rowSG Pr sel mu, qOf P.1 ^ cst.B ∣ cBof sel mu cst u` using `fun P => Dvd.dvd.mul_left (pow_dvd_pow_of_dvd (Finset.dvd_prod_of_mem _ (Finset.mem_univ P)) _) _`. Use `congr 1`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `phiT_add d hd' (T := Pr.T u) (fun Q => T_mem_of_piT_mem hPr u (mem_divs Q.2)) x fun Q => ?_` and prove the remaining obligations. Use `exists_of_mem_mulLat (Dvd.intro _ rfl) hz' ?_` and prove the remaining obligations. Rewrite using `[Finset.mem_sdiff]`. Use `⟨Finset.mem_union_left _ Q.2, fun h => ?_⟩` and prove the remaining obligations. Conclude with `natCast_notMem_of_ne (hPr.T_prime u) (hPr.g_prime i) (hPr.T_ne_g u i) _ (g_mem_of_mem_vG hPr h) (T_mem_of_piT_mem hPr u (mem_divs Q.2))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : P.1 ∈ Pr.vG i`. Take `⟨z', h1, rfl⟩` from `exists_of_mem_mulLat (q := qOf P.1) (by rw [qOf, hPr.vG_norm i _ h0]) hz h0`. Conclude with `(hg P (vG_subset i h0)).2.1 x z' h1`. Establish `h2 : P.1 ∈ Sall sel mu u \ Pr.vG i`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.mem_sdiff]`. Conclude with `⟨Finset.mem_union_right _ P.2, h0⟩`. Distinguish the cases in `h : P.1 ∈ Pr.vGs`. Take `⟨z', h1, rfl⟩` from `exists_of_mem_mulLat (q := qOf P.1) ((dvd_pow_self _ (by have := hc.B_pos; omega)).trans (hdv P)) hz' (by convert h2)`. Conclude with `(hg P h).2.1 x z' h1`.
-
-Take `⟨z', h1, rfl⟩` from `exists_of_mem_mulLat (hdv P) hz' (by convert h2)`. Rewrite using `[Nat.cast_pow]`. Conclude with `(hq P h).2 x z' h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem datumAt_prod (hPr : Pr.Ok) (hc : cst.Ok) (u : Pr.Word) (i : Fin 2) (w : HeightOneSpectrum (𝓞 X.K)) {a b : ℕ}
     {SG SG' : Finset (HeightOneSpectrum (𝓞 X.E))} (d : Deco X.E a (Pr.vT u) SG) {d' : Deco X.E b (Pr.vT u) SG'} (hd' : d'.Ok)
@@ -222,7 +220,7 @@ theorem datumAt_prod (hPr : Pr.Ok) (hc : cst.Ok) (u : Pr.Word) (i : Fin 2) (w : 
           exact (hq P h).2 x z' h1
 
 /- English proof (translation)
-Introduce `P x`. Unfold `frsF`. Use `split_ifs with h`. Conclude with `(GlobalTheory.TopStep.liftFr_spec p.deco.2 ⟨P.1, h⟩).1 x`. Conclude with `p.2 ⟨P.1, (Finset.mem_union.mp P.2).resolve_left h⟩ x`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isFrames_frsF {R : Ranks} {u : Pr.Word} {j : ℕ} (p : ChPt (R := R) sel mu u j) : IsFrames p.deco.1.N (frsF sel mu p) := by
   classical
@@ -233,7 +231,7 @@ theorem isFrames_frsF {R : Ranks} {u : Pr.Word} {j : ℕ} (p : ChPt (R := R) sel
   · exact p.2 ⟨P.1, (Finset.mem_union.mp P.2).resolve_left h⟩ x
 
 /- English proof (translation)
-Introduce `P x` and use `(GlobalTheory.TopStep.liftFr_spec (tilQ sel mu u d).2 P).1 x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isFrames_frsT {R : Ranks} {u : Pr.Word} (d : RowPt Pr R sel mu) : IsFrames (tilQ sel mu u d).1.N (frsT sel mu u d) :=
   fun P x => (GlobalTheory.TopStep.liftFr_spec (tilQ sel mu u d).2 P).1 x
@@ -245,7 +243,7 @@ section Jets
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] {a b : ℕ}
 
 /- English proof (translation)
-Establish `h : jetLin (fun m => ∑ i, c i * J i m) = ∑ i, c i • jetLin (J i)`. Use `(MvPolynomial.basisMonomials _ K).ext fun m => ?_` and prove the remaining obligations. Simplify using `only [jetLin, Module.Basis.constr_basis, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, MvPolynomial.smul_monomial, smul_eq_mul]`. Use `ext1 F`. Simplify using `only [jetOp, jetMap, h, LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetOp_sum (lam : ι → DomWeight a) (lam' : ι → DomWeight b) (n : ι → ℕ) {I : Type} [Fintype I] (c : I → K)
     (J : I → (DVar ι a b →₀ ℕ) → K) :
@@ -260,11 +258,11 @@ theorem jetOp_sum (lam : ι → DomWeight a) (lam' : ι → DomWeight b) (n : ι
 variable {X : Fields} (A : Amb X)
 
 /- English proof (translation)
-Establish `hfin` using `GlobalTheory.finite_divLat_quot_mulLat_homAt X.E a b Sa N N' cA cB hN hN' hA hB`. Set `_` to `Fintype.ofFinite (↥(divLat cA (homAt Sa N N')) ⧸ (mulLat cB (homAt Sa N N')).comap (divLat cA (homAt Sa N N')).subtype)`. Unfold `kerOf jetSum latSum`. Simplify using `only [finsum_eq_sum_of_fintype]`. Rewrite using `[jetOp_sum, Finset.smul_sum]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Use `congr 1`. Unfold `thDistC`. Rewrite using `[if_pos]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Dvd.intro_left _ rfl, ?_⟩` and prove the remaining obligations. Establish `h` using `(Function.surjInv (Submodule.Quotient.mk_surjective ((mulLat cB (homAt Sa N N')).comap (divLat cA (homAt Sa N N')).subtype)) z).2`. Express the relevant statement in the definitionally equal form `((cA * cB : ℕ) : 𝓞 X.E) • _ ∈ homAt Sa N N'`. Rewrite using `[Nat.cast_mul, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerOf_thDistC (Sa SB : Finset (HeightOneSpectrum (𝓞 X.E))) {cA cB : ℕ} (hA : 0 < cA) (hB : 0 < cB)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (mU : HeightOneSpectrum (𝓞 X.E) → X.Kˣ)
@@ -295,23 +293,21 @@ end Jets
 section Point
 
 /- English proof (translation)
-Introduce `τ`. Set `_ : StarRing K` to `starRingOfComm`. Use `⟨(GlobalTheory.TauLat.tauLatLattice E K ι n emb τ N hN).fg, ?_⟩` and prove the remaining obligations. Set `φ : 𝓞 E →+* 𝓞 K` to `RingOfIntegers.mapRingHom (emb τ)`. Establish `hpm : (p : 𝓞 E) ∈ w.asIdeal.comap φ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hw`. Set `P : HeightOneSpectrum (𝓞 E)` to `⟨w.asIdeal.comap φ, Ideal.comap_isPrime _ _, fun h => by`. Rewrite `hpm` using `[h, Ideal.mem_bot]`. Conclude with `hp (by exact_mod_cast hpm)⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ L L' : Submodule (𝓞 E) (Sp E n), localization₂ P.asIdeal L ≤ localization₂ P.asIdeal L' → localization₂ w.asIdeal (tauLat emb τ L) ≤ localization₂ w.asIdeal (tauLat emb τ L')`. Introduce `L L' h`. Establish `h1 : tauLat emb τ L ≤ localization₂ w.asIdeal (tauLat emb τ L')`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, hsx⟩` from `(Formalism.L2.Col.mem_locP P _ _).1 (h (Formalism.L2.Col.le_locP P _ hx))`. Use `(Formalism.L2.Col.mem_locP w _ _).2 ⟨φ s, hs, Submodule.subset_span ⟨s • x, hsx, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `(Formalism.L2.Col.mem_locP w _ _).1 hx`. Take `⟨t, ht, htx⟩` from `(Formalism.L2.Col.mem_locP w _ _).1 (h1 hsx)`. Conclude with `(Formalism.L2.Col.mem_locP w _ _).2 ⟨t * s, fun hm => (w.isPrime.mem_or_mem hm).elim ht hs, by rwa [mul_smul]⟩`. Establish `e : tauLat emb τ (stdLat E n) = colLat (1 : GL (Fin n) K)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `choose r hr using (mem_stdLat x).1 hx`. Establish `: (fun a => emb τ (x a)) = ∑ j, φ (r j) • fun a => ((1 : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Units.val_one, Matrix.one_apply, Algebra.smul_def, mul_ite, mul_zero, mul_one, Finset.sum_ite_eq, Finset.mem_univ, if_true, ← hr]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(fun a => emb τ (x a)) ∈ _`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Use `Submodule.subset_span ⟨Pi.single j 1, by simpa using single_mem_stdLat (E := E) j 1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
-
-Simplify using `only [Units.val_one, Matrix.one_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Express the relevant statement in the definitionally equal form `localization₂ w.asIdeal (tauLat emb τ N) = localization₂ w.asIdeal (colLat (1 : GL (Fin n) K))`. Rewrite using `[← e]`. Conclude with `le_antisymm (key _ _ (hs P hpm).le) (key _ _ (hs P hpm).ge)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latWithBasis_of_stdOver {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] {ι : Type} [Fintype ι]
     (emb : ι → E →+* K) {n p : ℕ} (hp : p ≠ 0) {N : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsLattice E N) (hs : StdOver p N)
@@ -365,7 +361,7 @@ theorem latWithBasis_of_stdOver {E K : Type} [Field E] [NumberField E] [StarRing
   exact le_antisymm (key _ _ (hs P hpm).le) (key _ _ (hs P hpm).ge)
 
 /- English proof (translation)
-Take `⟨r, t, h⟩` from `w.exists_primeCompl_mul_eq_of_integer a ha`. Use `GlobalTheory.TestLat.WeylLocal.smul_mem_locP w M ((GlobalTheory.TestLat.WeylLocal.mem_locRing w a).2 ⟨r, t, t.2, ?_⟩) hy` and prove the remaining obligations. Rewrite using `[← h, mul_inv_cancel_right₀ (GlobalTheory.TestLat.WeylLocal.ne_zero_of_mem w t.2)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mem_localizationAt_of_le {K : Type} [Field K] [NumberField K] {Z : Type} [AddCommGroup Z] [Module K Z] [Module (𝓞 K) Z]
     [IsScalarTower (𝓞 K) K Z] (w : HeightOneSpectrum (𝓞 K)) (M : Submodule (𝓞 K) Z) {a : K} (ha : w.valuation K a ≤ 1) {y : Z}
@@ -384,14 +380,14 @@ variable (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOne
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (A : Amb X)
 
 /- English proof (translation)
-The claim follows from `pow_pos (Finset.prod_pos fun P _ => Nat.pos_of_ne_zero (by rw [qOf, Ne, Ideal.absNorm_eq_zero_iff]; exact P.1.ne_bot)) _`.
+A detailed English derivation is pending.
 -/
 theorem cAof_pos : 0 < cAof sel mu cst :=
   pow_pos (Finset.prod_pos fun P _ => Nat.pos_of_ne_zero (by
     rw [qOf, Ne, Ideal.absNorm_eq_zero_iff]; exact P.1.ne_bot)) _
 
 /- English proof (translation)
-The claim follows from `Nat.mul_pos (hPr.T_prime u).pos (pow_pos (Finset.prod_pos fun P _ => Nat.pos_of_ne_zero (by rw [qOf, Ne, Ideal.absNorm_eq_zero_iff]; exact P.1.ne_bot)) _)`.
+A detailed English derivation is pending.
 -/
 theorem cBof_pos (hPr : Pr.Ok) (u : Pr.Word) : 0 < cBof sel mu cst u :=
   Nat.mul_pos (hPr.T_prime u).pos (pow_pos (Finset.prod_pos fun P _ => Nat.pos_of_ne_zero (by

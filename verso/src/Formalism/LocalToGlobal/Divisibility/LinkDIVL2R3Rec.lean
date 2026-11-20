@@ -17,7 +17,7 @@ variable {X : Fields} {Pr : Primes X} {Rk : Ranks} {W : Wts X Pr.Word Rk} {Ch : 
   {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨divClausesR_of (A3.side_well_formed hOk P0 ψ0 Pk.Zs Pk.stable Pk.inBlock hsep) (A3.side_well_formed hOk P1 ψ1 Pk.Zs Pk.stable Pk.inBlock hsep) Pk.core R x Nu sg I, FirstCols.chain hE h0, fun φ F => (I.ch.fact φ F).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem linkDIV_L2R3_rec [IsTotallyComplex X.K] (A3 : FamIn3 X.K G Pl0 I0 Ty T m) {s : ℕ} (hOk : A3.fam3.Ok3 s)
     (hsep : A3.fam3.TypesSep3) (P0 : Subgroup G) (ψ0 : P0 →* X.Kˣ) (P1 : Subgroup G) (ψ1 : P1 →* X.Kˣ) (hX : X.Ok)

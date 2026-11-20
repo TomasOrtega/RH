@@ -22,13 +22,13 @@ namespace GlobalTheory.PolExtension
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CubTransport
 
 /- English proof (translation)
-Use `⟨fun x y => ?_, fun x y z => ?_, fun x y z => ?_, fun x x' x'' y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hβ x`. Take `⟨y, rfl⟩` from `hβ y`. Simplify `h.face x y` using `only [map_one]`. Take `⟨x, rfl⟩` from `hβ x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `hβ y`. Take `⟨z, rfl⟩` from `hβ z`. Conclude with `h.s01 x y z`. Take `⟨x, rfl⟩` from `hβ x`. Take `⟨y, rfl⟩` from `hβ y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `hβ z`. Conclude with `h.s12 x y z`. Take `⟨x, rfl⟩` from `hβ x`. Take `⟨x', rfl⟩` from `hβ x'`. Take `⟨x'', rfl⟩` from `hβ x''`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨y, rfl⟩` from `hβ y`. Simplify `h.coc x x' x'' y` using `only [map_mul]`.
+A detailed English derivation is pending.
 -/
 theorem isCub_of_surjective {A A' U : Type} [CommGroup A] [CommGroup A'] [CommGroup U] {θ : A → A → A → U}
     (β : A' →* A) (hβ : Function.Surjective β) (h : IsCub (fun a b c => θ (β a) (β b) (β c))) : IsCub θ := by
@@ -43,7 +43,7 @@ theorem isCub_of_surjective {A A' U : Type} [CommGroup A] [CommGroup A'] [CommGr
     simpa only [map_mul] using h.coc x x' x'' y
 
 /- English proof (translation)
-The claim follows from `isCub_of_twist hθ (MonoidHom.id A) (fun a => (Ω a)⁻¹) fun a b c => by rw [h] apply Additive.ofMul.injective simp only [ofMul_mul, ofMul_inv, MonoidHom.id_apply] abel`.
+A detailed English derivation is pending.
 -/
 theorem isCub_mul_diff {A U : Type} [CommGroup A] [CommGroup U] {θ θ' : A → A → A → U} (hθ : IsCub θ) (Ω : A → U)
     (h : ∀ a b c, θ' a b c = Ω (a * b * c) * (Ω (a * b))⁻¹ * (Ω (a * c))⁻¹ * (Ω (b * c))⁻¹ * Ω a * Ω b *
@@ -62,7 +62,7 @@ variable {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Fie
 omit [IsDomain V] [IsDiscreteValuationRing V] [GrpObj G] [IsCommMonObj G] in
 
 /- English proof (translation)
-The claim follows from `corr_of_generic_of_isSeparated V K G T L φ ε φ' ε' t t' (corr_of_val hL fun y J hJ => by rw [val_pull hJ, val_pull hJ, Category.id_comp] exact H y J hJ)`.
+A detailed English derivation is pending.
 -/
 theorem corr_of_generic_val [IsSeparated G.hom] (T : Over (Spec (CommRingCat.of V))) [Flat T.hom]
     {L : LB G.left} (hL : L.IsLB) {I I' : Type} [Fintype I] [Fintype I']
@@ -76,17 +76,15 @@ theorem corr_of_generic_val [IsSeparated G.hom] (T : Over (Spec (CommRingCat.of 
     exact H y J hJ)
 
 /- English proof (translation)
-Establish `f₂ : Flat (G2 G).hom` using `by show Flat (pullback.fst G.hom G.hom ≫ G.hom) infer_instance`. Establish `f₃ : Flat (G3 G).hom` using `by show Flat (pullback.fst G.hom (G2 G).hom ≫ G.hom) infer_instance`. Establish `f₄ : Flat (G4 G).hom` using `by show Flat (pullback.fst G.hom (G3 G).hom ≫ G.hom) infer_instance`. Set `ρ : ∀ T : Over (Spec (CommRingCat.of V)), Over.mk (pullback.snd T.hom (etaK V K) ≫ etaK V K) ⟶ T` to `fun T => Over.homMk (pullback.fst T.hom (etaK V K)) pullback.condition`. Establish `v : ∀ (T : Over (Spec (CommRingCat.of V))) (y : (pullback T.hom (etaK V K) :)) J, Good L.L y J → ∀ a b c : T ⟶ G, val (LB.pullGen L.L (thφ G (x3 G)) thε t (lift a (lift b c)).left) (pullback.fst T.hom (etaK V K)) y J = thV t (T` using `Over.mk (pullback.snd T.hom (etaK V K) ≫ etaK V K)) y J (ρ T ≫ a) (ρ T ≫ b) (ρ T ≫ c) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `T y J hJ a b c`. Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[thV, ← comp_lift, ← comp_lift]`. Both sides reduce to the same expression. Establish `v' : ∀ (y : (pullback (G3 G).hom (etaK V K) :)) J, val (L` using `L.L) (φ := thφ G (x3 G)) (ε := thε) t (pullback.fst (G3 G).hom (etaK V K)) y J = thV t (T := Over.mk (pullback.snd (G3 G).hom (etaK V K) ≫ etaK V K)) y J (ρ _ ≫ x3 G 0) (ρ _ ≫ x3 G 1) (ρ _ ≫ x3 G 2) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `y J`. Establish `e : lift (x3 G 0) (lift (x3 G 1) (x3 G 2)) = 𝟙 (G3 G)`. Apply the tactic sequence `ext <;> simp [x3]`. Rewrite using `[thV, ← comp_lift, ← comp_lift, e, Category.comp_id]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨⟨t, ht, fun i => corr_of_generic_val (K := K) (G2 G) L.isLB fun y J hJ => ?_, corr_of_generic_val (K := K) (G3 G) L.isLB fun y J hJ => ?_, corr_of_generic_val (K := K) (G3 G) L.isLB fun y J hJ => ?_, corr_of_generic_val (K := K) (G4 G) L.isLB fun y J hJ => ?_⟩⟩` and prove the remaining obligations. Use `Eq.trans ?_ (val_one _).symm` and prove the remaining obligations. Establish `C` using `h (Over.mk (pullback.snd (G2 G).hom (etaK V K))) y J hJ`. Establish `o : ρ (G2 G) ≫ pzero G _ = 1` using `map_one (preHom (ρ (G2 G)))`. Use `fin_cases i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(v _ y J hJ _ _ _).trans (by rw [o]; exact C.face _ _)`. Conclude with `(v _ y J hJ _ _ _).trans (by rw [o]; exact C.face₂ _ _)`. Conclude with `(v _ y J hJ _ _ _).trans (by rw [o]; exact C.face₃ _ _)`. Conclude with `(v' y J).trans (((h (Over.mk (pullback.snd (G3 G).hom (etaK V K))) y J hJ).s01 _ _ _).trans (v _ y J hJ _ _ _).symm)`. Conclude with `(v' y J).trans (((h (Over.mk (pullback.snd (G3 G).hom (etaK V K))) y J hJ).s12 _ _ _).trans (v _ y J hJ _ _ _).symm)`.
-
-Establish `C` using `h (Over.mk (pullback.snd (G4 G).hom (etaK V K))) y J hJ`. Establish `m : ∀ a b : G4 G ⟶ G, ρ (G4 G) ≫ padd G a b = (ρ (G4 G) ≫ a) * (ρ (G4 G) ≫ b)` using `fun a b => MonObj.comp_mul _ _ _`. Use `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (v _ y J hJ _ _ _) (v _ y J hJ _ _ _))).trans (Eq.trans ?_ ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (v _ y J hJ _ _ _) (v _ y J hJ _ _ _))).symm)` and prove the remaining obligations. Rewrite using `[m, m]`. Conclude with `C.coc _ _ _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_cubical_of_generic [IsSeparated G.hom] [Flat G.hom] (L : RigLB G) (t : LB.Gen (Theta G L.L))
     (ht : t.IsGen)
@@ -145,27 +143,23 @@ variable [Smooth G.hom] [IsSeparated G.hom] [QuasiCompact G.hom] [GeometricallyC
   {A : Over (Spec (CommRingCat.of K))} [GrpObj A] [IsCommMonObj A] {F : A.left ⟶ G.left}
 
 /- English proof (translation)
-Establish `hp` using `gp.1`. Take `⟨t₁, ht₁, v₁⟩` from `exists_up ((isGen_iff w).1 hw) L.isLB M.isLB (φ' := thφ A (x3 A)) (ε := thε) c.t c.isGen`. Set `P : Over (Spec (CommRingCat.of K))` to `Over.mk (pullback.snd (G3 G).hom (etaK V K))`. Set `x : Fin 3 → (P ⟶ A)` to `fun i => Over.homMk (hp.lift (pullback.fst _ _ ≫ (x3 G i).left) P.hom (by`. Rewrite using `[Category.assoc, Over.w]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pullback.condition)) (hp.lift_snd _ _ _)`. Establish `hx : ∀ i, (x i).left ≫ F = pullback.fst _ _ ≫ (x3 G i).left` using `fun i => hp.lift_fst _ _ _`. Set `l : P ⟶ G3 A` to `lift (x 0) (lift (x 1) (x 2))`. Apply the tactic sequence `have lx : ∀ i, l ≫ x3 A i = x i := fun i => by fin_cases i <;> simp [l, x3]`. Establish `f3 : ∀ i, (cubeMapOf gp).F3 ≫ (x3 G i).left = (x3 A i).left ≫ F` using `cubeMap_comp_proj_three (cubeMapOf gp)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : l.left ≫ (cubeMapOf gp).F3 = genericFiberCubeInclusion V K G` using `hom_ext_triple _ fun i => by`. Rewrite using `[Category.assoc, f3, ← Category.assoc, ← Over.comp_left, lx, hx]`. Set `κ : (G3 A).left ⟶ pullback (G3 G).hom (etaK V K)` to `pullback.lift (cubeMapOf gp).F3 (G3 A).hom (Over.w (lift (pushPt hp.w (x3 A 0)) (lift (pushPt hp.w (x3 A 1)) (pushPt hp.w (x3 A 2)))))`. Establish `κ₁ : κ ≫ genericFiberCubeInclusion V K G = (cubeMapOf gp).F3` using `pullback.lift_fst _ _ _`. Establish `κ₂ : κ ≫ l.left = 𝟙 _` using `hom_ext_triple _ fun i => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ← Over.comp_left, lx, Category.id_comp]`. Use `hp.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hx, ← Category.assoc]`. Conclude with `(congrArg (· ≫ _) κ₁).trans (f3 i)`. Rewrite using `[Category.assoc, Over.w, Over.w]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pullback.lift_snd _ _ _`. Take `⟨t₂, ht₂, v₂⟩` from `exists_gen L.isLB (φ' := fun I => genericFiberCubeInclusion V K G ≫ thφ G (x3 G) I) (ε' := thε) (fun U _ k => Finset.prod_congr rfl fun I _ => congrArg (fun q => k q ^ thε I) (by show _ = genericFiberCubeInclusion V K G ≫ _`. Rewrite using `[← hl, Category.assoc]`. Conclude with `congrArg (l.left ≫ ·) ((cubeMapOf gp).psum_comm I.down)))`. Use the proof step `(LB.pullGen L.L _ _ t₁ l.left) (DVR.pullGen_isGen _ _ _ _ ht₁ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `C : ∀ (T : Over (Spec (CommRingCat.of K))) (z : T.left) (J), Good L.L z J → IsCub (fun a b d : T ⟶ A => val t₂ ((lift a (lift b d)).left ≫ κ) z J)`. Introduce `T z J hJ`. Use `choose J' hJ' using fun χ : T.left ⟶ A.left => exists_chart M.isLB (χ z)`. Use `isCub_mul_diff (isCub_cubV c hJ') (fun q => gw w q.left z (J (q.left ≫ F)) (J' q.left)) fun a b d => ?_` and prove the remaining obligations. Use `(v₂ _ _ z J hJ).trans ((val_pull hJ _ _ _).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Category.assoc, κ₂, Category.comp_id]`. Use `(v₁ _ _ z _ _ (hJ.mem _ _) (Good.mem hJ' _ _)).trans (congrArg₂ (· * ·) (Eq.trans ?_ (prod_cub a b d (fun q => gw w q z (J (q ≫ F)) (J' q)))) rfl)` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun I _ => by rw [Category.assoc]`. Establish `q : ∀ (T : Over (Spec (CommRingCat.of K))) (a b d : T ⟶ A), (lift a (lift b d)).left ≫ (cubeMapOf gp).F3 = (lift (pushHom gp T a) (lift (pushHom gp T b) (pushHom gp T d))).left` using `fun T a b d => hom_ext_triple _ fun i => by`. Rewrite using `[Category.assoc, cubeMap_comp_proj_three, ← Category.assoc, ← Over.comp_left, ← Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `fin_cases i <;> simp [x3] <;> rfl`. Take `⟨t, ⟨ht, htt⟩, -⟩` from `hE V K G ((lift (1 : 𝟙_ _ ⟶ A) (lift 1 1)).left ≫ κ) (by`. Rewrite using `[Category.assoc, κ₁, q, map_one, CubeExtension.eSec_three]`. Use `hom_ext_triple _ fun i => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Over.comp_left, ← Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `fin_cases i <;> simp [x3, Hom.one_def]) L t₂ (corr_of_val L.isLB fun y J hJ => by`. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ (val_one _).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `(C (𝟙_ _) y J hJ).face 1 1) ht₂`. Use `nonempty_cubical_of_generic (K := K) L t ht fun T z J hJ => isCub_of_surjective (pushHom gp T) (fun a => ?_) ?_` and prove the remaining obligations.
-
-Conclude with `⟨Over.homMk (hp.lift a.left T.hom (Over.w a)) (hp.lift_snd _ _ _), Over.OverMorphism.ext (hp.lift_fst _ _ _)⟩`. Use `(congrArg IsCub (funext fun a => funext fun b => funext fun d => ?_)).mpr (C T z J hJ)` and prove the remaining obligations. Rewrite using `[← htt]`. Use `Eq.trans ?_ (val_pull hJ _ _ _).symm` and prove the remaining obligations. Rewrite using `[Category.assoc, κ₁, q]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem nonempty_cubical (hE : cubical_extendsSt.{0}) (gp : IsGrpPullback A G (etaK V K) F) (L : RigLB G)
     {M : RigLB A} (c : CubicalStr A M) (w : LB.Iso M.L (L.L.pull F)) (hw : w.IsGen) :
@@ -231,21 +225,19 @@ theorem nonempty_cubical (hE : cubical_extendsSt.{0}) (gp : IsGrpPullback A G (e
 omit [IsCommMonObj A] [QuasiCompact G.hom] in
 
 /- English proof (translation)
-Establish `hp` using `gp.1`. Take `⟨U, hU, t, ht⟩` from `hs (IsLocalRing.closedPoint K)`. Take `⟨n, hn⟩ : ∃ n : pullback G.hom (etaK V K) ⟶ (A.hom ⁻¹ᵁ U).toScheme, n ≫ (A.hom ⁻¹ᵁ U).ι = hp.isoPullback.inv` from `⟨IsOpenImmersion.lift _ _ (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `: A.hom (hp.isoPullback.inv y) = IsLocalRing.closedPoint K` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Conclude with `(congrArg (· ∈ U) this).mpr hU), IsOpenImmersion.lift_fac _ _ _⟩`. Establish `hι : (ι[A]).left ≫ F = F ≫ (ι[G]).left`. Establish `e` using `congrArg (fun q => q.left) (map_inv (pushHom gp A) (𝟙 A))`. Simplify using `only [Hom.inv_def, Category.id_comp] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `e.trans ?_` and prove the remaining obligations. Use `show (𝟙 _ ≫ F) ≫ _ = _`. Rewrite using `[Category.id_comp]`. Take `⟨t₁, ht₁, -⟩` from `exists_up ((isGen_iff w).1 hw) hL hM _ (DVR.pullGen_isGen _ _ _ _ ht n)`. Take `⟨t₂, ht₂, -⟩` from `exists_gen hL (φ' := fun k : Fin 2 => pullback.fst G.hom (etaK V K) ≫ ![(ι[G]).left, 𝟙 G.left] k) (ε' := ![1, -1]) (fun _ _ k => Finset.prod_congr rfl fun i _ => congrArg (fun q => k q ^ (![1, -1] : Fin 2 → ℤ) i) (by fin_cases i`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (n ≫ _ ≫ (ι[A]).left) ≫ F = _ ≫ (ι[G]).left`. Rewrite using `[← Category.assoc, hn, Category.assoc, hι, ← Category.assoc, hp.isoPullback_inv_fst]`. Use `show (n ≫ (A.hom ⁻¹ᵁ U).ι) ≫ F = _ ≫ 𝟙 _`. Rewrite using `[hn, hp.isoPullback_inv_fst, Category.comp_id])) t₁ ht₁`. Establish `a₁ : eSec G ≫ G.hom = 𝟙 _` using `Over.w η[G]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : eSec G ≫ (ι[G]).left = eSec G`. Rewrite using `[eSec, ← Over.comp_left, GrpObj.one_inv]`. Set `e : Spec (CommRingCat.of K) ⟶ pullback G.hom (etaK V K)` to `pullback.lift (etaK V K ≫ eSec G) (𝟙 _) (by`. Rewrite using `[Category.assoc, a₁, Category.id_comp]`. Conclude with `Category.comp_id _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `he : e ≫ pullback.fst G.hom (etaK V K) = etaK V K ≫ eSec G` using `pullback.lift_fst _ _ _`. Take `⟨u, hu, cu⟩` from `DVR.exists_normalized_to hL _ _ t₂ ht₂ (pullback.snd G.hom (etaK V K)) e (pullback.lift_snd _ _ _) _ _ (LB.oneGen L) (LB.isGen_oneGen L) (by`. Establish `: e ≫ pullback.fst G.hom (etaK V K) ≫ (ι[G]).left = e ≫ pullback.fst G.hom (etaK V K)`. Rewrite using `[← Category.assoc, he, Category.assoc]`. Conclude with `congrArg (etaK V K ≫ ·) e₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[DVR.fsum, Fin.sum_univ_two, this, Finsupp.single_neg])`. Take `⟨ρ, hρ, vρ⟩` from `exists_gen hL (φ' := fun k : Fin 2 => eSec G ≫ ![(ι[G]).left, 𝟙 G.left] k) (ε' := ![1, -1]) (fun U _ k => by simp [Fin.prod_univ_two, e₂]) (LB.oneGen L) (LB.isGen_oneGen L)`. Take `⟨s, ⟨hs₁, hs₂⟩, -⟩` from `GenExtend.existsUnique_gen_extend V K G.left G.left G.hom (eSec G) inferInstance (forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ inferInstance inferInstance) a₁ e he L hL (Fin 2) ![(ι[G]).left, 𝟙 G.left] ![1, -1] u ρ hu hρ (corr_of_val hL fun y J hJ => (va …`. Establish `: Flat (𝟙_ (Over (Spec (CommRingCat.of V)))).hom` using `inferInstanceAs (Flat (𝟙 _))`. Use `⟨s, hs₁, corr_of_generic_val (K := K) (𝟙_ _) hL fun y J hJ => ?_⟩` and prove the remaining obligations.
-
-Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ ((val_corr hJ cu (pullback.snd _ _)).trans ((val_one _).trans (val_one _).symm)))` and prove the remaining obligations. Rewrite using `[← hs₂]`. Use `Eq.trans ?_ ((val_pull hJ _ _ _).trans (val_pull hJ _ _ _)).symm` and prove the remaining obligations. Rewrite using `[Category.assoc, he, ← Category.assoc, ← pullback.condition]`. Conclude with `congrArg (fun q => val s (q ≫ eSec G) y J) (Category.comp_id _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_symmetry (gp : IsGrpPullback A G (etaK V K) F) {L : LB G.left} (hL : L.IsLB)
     {M : LB A.left} (hM : M.IsLB) (hs : Out.Sym A M) (w : LB.Iso M (L.pull F)) (hw : w.IsGen) :
@@ -306,13 +298,13 @@ theorem exists_symmetry (gp : IsGrpPullback A G (etaK V K) F) {L : LB G.left} (h
 end DVR
 
 /- English proof (translation)
-Introduce `laws V _ _ _ G _ _ hG A eA hA`. Use `hG.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsMonHom eA.symm.hom` using `inferInstanceAs (IsMonHom eA.inv)`. Establish `gp : IsGrpPullback A.A G (jK V) (eA.inv.left ≫ pullback.fst G.hom (jK V))` using `((isGrpPullback_of_iso eA.symm).comp (isGrpPullback_pullback G (jK V))).congr (Category.id_comp _) rfl`. Establish `hi : eA.inv.left ≫ eA.hom.left = 𝟙 _` using `by rw [← Over.comp_left, eA.inv_hom_id, Over.id_left]`. Take `⟨r, hr⟩` from `A.rigid`. Take `⟨ρ, hρ⟩` from `gen_chartPull (chartPullLinComb A.L eA.hom.left (K := PUnit) (fun _ => eSec A.A ≫ eA.inv.left) (fun _ => eSec A.A) (fun _ => 1) (𝟙 _) fun _ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Category.assoc, hi, Category.comp_id, Category.id_comp]) r hr`. Take `⟨L, hφ⟩` from `laws.extend V (FractionRing V) G (eSec A.A ≫ eA.inv.left) ((Category.assoc _ _ _).trans (cubeMapOf gp).e_comm) (A.L.pull eA.hom.left) (pull_isLB A.isLB _) ρ hρ`. Establish `h₁ : LBIso (A.L.pull eA.hom.left) (L.L.pull (pullback.fst G.hom (jK V)))` using `LBIso.symm hφ`. Take `⟨w, hw⟩ : LBIso A.L (L.L.pull (eA.inv.left ≫ pullback.fst G.hom (jK V)))` from `LBIso.chartPull (chartPullSec A.L _ eA.inv.left hi) (chartPullSame L.L _ _ _ eA.inv.left fun _ => rfl) h₁`. Take `⟨c⟩` from `(laws.cube _ A ⟨A.L, r, A.isLB, hr⟩ rfl).1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c'⟩` from `nonempty_cubical laws.cubicalExtends gp L c w hw`. Apply the tactic sequence `obtain ⟨s, hs, hs'⟩ := exists_symmetry gp L.isLB A.isLB A.sym w hw`. Conclude with `⟨L, c', s, hs, hs', h₁⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cubical_symmetric_extension : Laws → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (eA : (Over.pullback (jK V)).obj G ≅ A.A), IsMonHom eA.hom → ∃ (LG : RigLB G) (_c : CubicalStr G LG) (s : LB.Gen (LB.LinComb LG.L (K := Fin 2) ![(ι[G]).left, 𝟙 G.left] ![1, -1])), s.IsGen ∧ LB.Gen.Corr LG.L _ _ _ _ (LB.pullGen LG.L _ _ s (eSec G)) (LB.oneGen LG.L) ∧ (∃ w : LB.Iso (A.L.pull eA.hom.left) (LG.L.pull (pullback.fst G.hom (jK V))), w.IsGen) := by
   intro laws V _ _ _ G _ _ hG A eA hA

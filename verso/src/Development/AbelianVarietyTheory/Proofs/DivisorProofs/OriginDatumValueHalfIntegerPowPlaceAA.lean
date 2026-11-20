@@ -22,11 +22,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 open Classical in
 
 /- English proof (translation)
-Use `set P := ((oppositePath G.m).map fun b => apow (gdet (g b.src))⁻¹ ((G.rank b.tgt : ℂ) / 2) * apow (gdet (g b.tgt))⁻¹ (-(G.rank b.src : ℂ) / 2)).prod`. Establish `key : flatIntegrand hs ψ (moved G false g (Set.indicator {z : G.Args | ∀ b ∈ oppositePath G.m, ∀ i j, (((ϖ ^ a)⁻¹ : kˣ) : k) * z b i j ∈ 𝒪[k]} 1)) 0 0 = (box G ϖ a a').indicator fun _ => P`. Use function extensionality and compare the values at `e`. Rewrite using `[flatIntegrand, moved_false, GlobalTheory.T.indicator_moveArgs_origin_eq_box_indicator G hs ϖ a a' g hg e]`. Distinguish the cases in `he : e ∈ box G ϖ a a'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.T.unfoldingCharacterPhase_origin_valuation_le_box G ϖ a a' e he`. Rewrite using `[Set.indicator_of_mem he, Set.indicator_of_mem he, hψ _ (by rwa [Valuation.map_neg])]`. Simplify using `only [Pi.one_apply, mul_one, Circle.coe_one, P]`. Rewrite using `[Set.indicator_of_notMem he, Set.indicator_of_notMem he]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[flatTensor, key, integral_indicator_const _ (measurableSet_box G ϖ a a'), Measure.real, vol_box G ν hν ϖ a a', Complex.real_smul, mul_comm]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem flatTensor_moved_box (G : Grid k) (hs : 1 ≤ G.s) (ψ : AddChar k Circle) (ν : Measure k) (hν : IsUnitVol ν)
     (ϖ : kˣ) (a a' : ℤ) (hψ : ∀ y : k, valuation k y ≤ valuation k ((ϖ ^ (a + a') : kˣ) : k) → ψ y = 1)
@@ -65,11 +65,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Establish `hn : ∀ x : kˣ, ((nabs k x : ℝ) : ℂ) = apow x 1` using `fun x => by simp [apow]`. Rewrite using `[flatTensor_moved_box G hs ψ ν hν ϖ a a' hψ g hg]`. Repeatedly rewrite using `[gdet_eq ϖ a a' g hg hg', ← _root_.zpow_neg, apow_zpow, ← apow_add, hn, apow_zpow, prod_apow_finset, prod_apow_list, ← apow_add]`. Use `congr 1`. Establish `hl : ∀ l : List Edge, (l.map fun b => ((-vtxDet G a a' b.src : ℤ) : ℂ) * ((G.rank b.tgt : ℂ) / 2) + ((-vtxDet G a a' b.tgt : ℤ) : ℂ) * (-(G.rank b.src : ℂ) / 2)).sum = -(((l.map fun b => vtxDet G a a' b.src * G.rank b.tgt - vtxDet G a a' b.tgt * G.rank b.src).sum : ℤ) : ℂ) / 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons b l ih => simp only [List.map_cons, List.sum_cons, ih]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hl, expo]`. Use `push_cast`. Simplify using `only [mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem flatTensor_moved_box_apow (G : Grid k) (hs : 1 ≤ G.s) (ψ : AddChar k Circle) (ν : Measure k) (hν : IsUnitVol ν)
     (ϖ : kˣ) (a a' : ℤ) (hψ : ∀ y : k, valuation k y ≤ valuation k ((ϖ ^ (a + a') : kˣ) : k) → ψ y = 1)
@@ -104,9 +104,9 @@ section Generic
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[colDiag, diagGL_val, Units.val_one, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `h` using `topRank_add hs j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hx` using `x.2`. Rewrite using `[vtxExp, if_neg (by omega), zpow_zero, Units.val_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem colDiag_eq_one (G : Grid k) (hs : 1 ≤ G.s) (ϖ : kˣ) (a a' : ℤ) {j : ℕ} (hj : G.m - 1 ≤ j) :
     colDiag G ϖ a a' j = 1 := by
@@ -123,13 +123,13 @@ end Generic
 variable {D : D7}
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[aaElt, colDiag, diagGL_val, diagGL_val]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `h` using `topRank_add (G := bareGrid w) one_le_sLen j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hx` using `x.2`. Simplify using `only [vtxExp]`. Use `split_ifs with h1`. Simplify using `only [genAt, ← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_neg, ← _root_.zpow_add, Units.val_zpow_eq_zpow_val]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `: x.val - topRank (bareGrid w) j < D.R.m - 1 - j`. Express the relevant statement in the definitionally equal form `topRank (bareGrid w) j + D.R.m = (bareGrid w).rank ((bareGrid w).m, j) + j + 1 at h`. Express the relevant statement in the definitionally equal form `(x : ℕ) < (bareGrid w).rank ((bareGrid w).m, j) at hx`. Use linear arithmetic over natural numbers and integers. Express the relevant statement in the definitionally equal form `_ = _ * (((D.R.m - 1 - j : ℕ) : ℤ) - _) - _`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. Express the relevant assertion in an equivalent form by its definition. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `[Nat.sub_sub]`. Rewrite using `[show D.R.m - (1 + j + (x.val - topRank (bareGrid w) j)) = D.R.m - (1 + j) - (x.val - topRank (bareGrid w) j) by omega, Nat.cast_sub (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aaElt_eq (w : Pl D.host.E) (j : ℕ) :
     aaElt w j = colDiag (bareGrid w) (unifAt w) (FractionalIdeal.count D.host.E w D.host.AA)
@@ -156,9 +156,9 @@ theorem aaElt_eq (w : Pl D.host.E) (j : ℕ) :
   · simp
 
 /- English proof (translation)
-Unfold `Reps.elt`. Rewrite using `[onColumn_apply]`. Consider the cases of `j with`. Consider the case `zero => exact aaElt_eq w 0`. Consider the case `succ i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Simplify using `only [Reps.through]`. Use `split_ifs with h`. Conclude with `aaElt_eq w (i + 1)`. Conclude with `(colDiag_eq_one _ one_le_sLen _ _ _ (by omega)).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aaElt_elt_col (w : Pl D.host.E) (j : ℕ) :
     (Reps.through (G := bareGrid w) one_le_sLen (fun _ => KO _ _) (aaElt w)).elt
@@ -176,7 +176,7 @@ theorem aaElt_elt_col (w : Pl D.host.E) (j : ℕ) :
     · exact (colDiag_eq_one _ one_le_sLen _ _ _ (by omega)).symm
 
 /- English proof (translation)
-Simplify using `[Reps.elt, onColumn, hi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aaElt_elt_off (w : Pl D.host.E) (i j : ℕ) (hi : i ≠ (bareGrid w).m) :
     (Reps.through (G := bareGrid w) one_le_sLen (fun _ => KO _ _) (aaElt w)).elt
@@ -184,9 +184,9 @@ theorem aaElt_elt_off (w : Pl D.host.E) (i j : ℕ) (hi : i ≠ (bareGrid w).m) 
   simp [Reps.elt, onColumn, hi]
 
 /- English proof (translation)
-Establish `h1` using `Nat.mul_le_mul_right D.R.t hj`. Establish `h2` using `Nat.mul_le_mul_right (sLen D) hi`. Establish `hr : D.R.r ≤ D.R.k + D.R.m`. Establish `: D.R.r = D.R.k + D.R.m - 1` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Express the relevant statement in the definitionally equal form `D.R.r + j * D.R.t + i * sLen D ≤ D.R.k + D.R.m * (D.R.t + sLen D + 1)`. Express the relevant statement in the definitionally equal form `i ≤ D.R.m at hi`. Express the relevant statement in the definitionally equal form `j ≤ D.R.m at hj`. Use the polynomial consequences of the given equalities and inequalities.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem rank_le_bigN (w : Pl D.host.E) (i j : ℕ) (hi : i ≤ (bareGrid w).m) (hj : j ≤ (bareGrid w).m) :
     (bareGrid w).rank (i, j) ≤ bigN D := by
@@ -201,9 +201,9 @@ theorem rank_le_bigN (w : Pl D.host.E) (i j : ℕ) (hi : i ≤ (bareGrid w).m) (
   nlinarith
 
 /- English proof (translation)
-Introduce `D T L sc G W w hψ`. Establish `hψ' : ∀ y : Kw w, valuation (Kw w) y ≤ valuation (Kw w) (((unifAt w) ^ (FractionalIdeal.count D.host.E w D.host.AA + FractionalIdeal.count D.host.E w D.host.AAbar) : (Kw w)ˣ) : Kw w) → psiAt W w y = 1` using `fun y hy => hψ y (by rwa [genAt, genAt, ← _root_.zpow_add])`. Establish `key` using `flatTensor_moved_box_apow (bareGrid w) one_le_sLen (psiAt W w) (unitVol w) (isUnitVol_unitVol w) (unifAt w) _ _ hψ' _ (aaElt_elt_col w) (aaElt_elt_off w)`. Use `⟨expo (bareGrid w) (FractionalIdeal.count D.host.E w D.host.AA) (FractionalIdeal.count D.host.E w D.host.AAbar), ?_, GlobalTheory.T.abs_originBoxValueExponent_le (bareGrid w) one_le_sLen _ _ (bigN D) (rank_le_bigN w)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `flatTensor _ _ _ _ 0 0 = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `*` using `[aaVac, genAt]`. Rewrite using `[key, IsUnif.apow_eq (isUnif_unifAt w)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aaTerm_datum_origin : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (w : Pl D.host.E), (∀ a : Kw w, valuation (Kw w) a ≤ valuation (Kw w) ((genAt w D.host.AA * genAt w D.host.AAbar : (Kw w)ˣ) : Kw w) → psiAt W w a = 1) → ∃ n : ℤ, (aaTerm W w).datum 0 0 = (resCard (Kw w) : ℂ) ^ ((n : ℂ) / 2) ∧ |n| ≤ 8 * ((D.R.m : ℤ) ^ 3 * (bigN D : ℤ) ^ 2 * (|FractionalIdeal.count D.host.E w D.host.AA| + |FractionalIdeal.count D.host.E w D.host.AAbar|)) := by
   intro D T L sc G W w hψ

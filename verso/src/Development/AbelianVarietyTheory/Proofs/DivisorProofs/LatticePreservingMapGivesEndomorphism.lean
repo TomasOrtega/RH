@@ -17,11 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RealMult.Obj
 
 /- English proof (translation)
-Use `haveI := u.discrete`. Use `haveI := u'.discrete`. Establish `hinj` using `AnyUnif.injective_of_ker_le_discrete u.Λ F fun z hz => by`. Rewrite using `[← u.ker, ← hF, hz]`. Conclude with `(u'.ker 0).2 u'.Λ.zero_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsurj : LinearMap.range F = ⊤` using `GlobalTheory.AHWeil.eq_top_of_add_discrete u'.Λ _ fun w => by`. Take `⟨z, hz⟩` from `u.ex_onto (u'.ex w)`. Use `⟨⟨w - F z, (u'.ker _).1 ?_⟩, z, by simp⟩` and prove the remaining obligations. Establish `h` using `u'.ex_add (w - F z) (F z)`. Rewrite `h` using `[sub_add_cancel, hF, hz]`.
-
-Conclude with `(mul_eq_right.1 h.symm)`. Simplify using `using (LinearEquiv.ofBijective F ⟨hinj, LinearMap.range_eq_top.1 hsurj⟩).finrank_eq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem holUnif_dim_eq_of_linear {A : Over (Sp ℂ)} [GrpObj A] {L L' : LB A.left} {g g' : ℕ} (u : HolUnif A L g)
     (u' : HolUnif A L' g') (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)) (hF : ∀ z, u'.ex (F z) = u.ex z) : g = g' := by
@@ -39,7 +37,7 @@ theorem holUnif_dim_eq_of_linear {A : Over (Sp ℂ)} [GrpObj A] {L L' : LB A.lef
   simpa using (LinearEquiv.ofBijective F ⟨hinj, LinearMap.range_eq_top.1 hsurj⟩).finrank_eq
 
 /- English proof (translation)
-Take `⟨L₀, u₀, -, -⟩` from `Obj.exists_holUnif_ringHom_lift F 𝔠 X`. Take `⟨h₁, h₂⟩` from `TorusTransfer.tangent_bijective u₀ X.dim`. Take `⟨T, hT, -⟩` from `GlobalTheory.existsUnique_linear_lift_of_isHolTo X.A X.ab L₀ (Module.finrank ℚ F) g u₀ h₁ h₂ u.ex u.ex_add (fun U f => by simpa only [Set.mem_univ, true_and] using u.hol U f)`. Conclude with `holUnif_dim_eq_of_linear u u₀ T hT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem holUnif_dim_eq {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} (X : Obj F 𝔠 (Sp ℂ))
     {M : LB X.A.left} {g : ℕ} (u : HolUnif X.A M g) : g = Module.finrank ℚ F := by
@@ -50,7 +48,7 @@ theorem holUnif_dim_eq {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} (X
   exact holUnif_dim_eq_of_linear u u₀ T hT
 
 /- English proof (translation)
-Introduce `F _ _ 𝔠 X M g u T hT`. Establish `hg` using `holUnif_dim_eq X u`. Substitute `hg` using the available equality. Conclude with `GlobalTheory.HolUnifEnd.exists_isMonHom_of_map_lattice X.A _ X.ab X.dim M u T hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_isMonHom_of_map_lattice : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X : Obj F 𝔠 (Sp ℂ)) (M : LB X.A.left) (g : ℕ)
     (u : HolUnif X.A M g) (T : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), (∀ w ∈ u.Λ, T w ∈ u.Λ) →

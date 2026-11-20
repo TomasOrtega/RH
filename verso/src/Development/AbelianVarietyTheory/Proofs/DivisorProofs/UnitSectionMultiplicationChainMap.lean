@@ -15,15 +15,11 @@ open ClsSpec
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `key : ∀ (U : Scheme.{0}) (x : Sec F U), ∃ a : Sec G U, ∀ (V : Scheme.{0}) (g : V ⟶ U) (s : Sec G V), Rel V (Sec.res g x) s → Sec.res g a = s`. Introduce `U x`. Take `⟨S, hS, hP⟩` from `hex U x`. Use `choose s hs using hP`. Take `⟨a, ha⟩` from `(GlobalTheory.T.etaleSheafSections_ext_and_glue R G U).2 S hS s (fun V W g k hg => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `huniq W (Sec.res (k ≫ g) x) _ _ ?_ (hs _ _ _)` and prove the remaining obligations. Rewrite using `[← res_comp]`. Conclude with `hres _ _ _ _ _ (hs _ _ hg))`. Use `⟨a, fun V g s' hs' => sep ⟨S.pullback g, Scheme.etaleTopology.pullback_stable g hS, fun W k hk => ?_⟩⟩` and prove the remaining obligations. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[res_comp, ha W (k ≫ g) hk]`. Use `huniq W (Sec.res (k ≫ g) x) _ _ (hs _ _ _) ?_` and prove the remaining obligations. Rewrite using `[← res_comp]`. Conclude with `hres _ _ _ _ _ hs'`. Use `choose a ha using key`.
-
-Use `⟨a, fun V U g x => sep (ClsSpec.loc_mono (hex V (Sec.res g x)) ?_), fun U x s hs => ?_⟩` and prove the remaining obligations. Introduce and unpack `W k ⟨s, hs⟩`. Rewrite using `[ha V _ W k s hs, res_comp]`. Conclude with `ha U x W (k ≫ g) s (by rwa [← res_comp])`. Rewrite using `[← res_id (a U x)]`.
-
-Conclude with `ha U x U (𝟙 U) s (by rwa [res_id])`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_sec (F G : Shv R) (Rel : ∀ U : Scheme.{0}, Sec F U → Sec G U → Prop)
     (hex : ∀ (U : Scheme.{0}) (x : Sec F U), Loc U fun V g => ∃ s, Rel V (Sec.res g x) s)
@@ -64,7 +60,7 @@ def Good (s : ℤ) {U : Scheme.{0}} (b : Sec (D.X s) U) (c : Sec ((res _ (tw q k
     (Sec.map (ι.f s) (Sec.res g b) = 0 → Sec.res g c = 0)
 
 /- English proof (translation)
-Introduce `W l`. Rewrite using `[res_comp, res_comp]`. Conclude with `h W (l ≫ g)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_res {s : ℤ} {V U : Scheme.{0}} (g : V ⟶ U) {b : Sec (D.X s) U} {c : Sec ((res _ (tw q k)).X s) U}
     (h : Good μ ι s b c) : Good μ ι s (Sec.res g b) (Sec.res g c) := by
@@ -73,7 +69,7 @@ theorem good_res {s : ℤ} {V U : Scheme.{0}} (g : V ⟶ U) {b : Sec (D.X s) U} 
   exact h W (l ≫ g)
 
 /- English proof (translation)
-Introduce `V g`. Use `⟨fun ξ => ?_, fun h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[μ.nat, res_resGen, res_map, resGen_zero_eq ξ (ζ.map g.appTop.hom)]`. Rewrite using `[μ.nat, res_map, h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_prim (s : ℤ) {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) (b : Sec (D.X s) U) :
     Good μ ι s b (μ.mul U 0 s s (zero_add s) (resGen 0 ζ) (Sec.map (ι.f s) b)) := by
@@ -83,7 +79,7 @@ theorem good_prim (s : ℤ) {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) (b : Sec (
   · rw [μ.nat, res_map, h0, map_zero]
 
 /- English proof (translation)
-Introduce `V g`. Rewrite using `[res_zero]`. Use `⟨fun ξ => ?_, fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[← res_map, h, res_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_zero (s : ℤ) {U : Scheme.{0}} (b : Sec (D.X s) U) (h : Sec.map (ι.f s) b = 0) : Good μ ι s b 0 := by
   intro V g
@@ -93,9 +89,7 @@ theorem good_zero (s : ℤ) {U : Scheme.{0}} (b : Sec (D.X s) U) (h : Sec.map (�
 
 variable {ι} in
 /- English proof (translation)
-Establish `h1` using `(hD s U (Sec.map (ι.f s) b)).1 ⟨b, rfl⟩`. Use `ClsSpec.loc_trans (ClsSpec.loc_mono h1 fun V g h => ?_)` and prove the remaining obligations. Break down `h with hu | h0` into its components or cases. Conclude with `ClsSpec.loc_mono ((GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity q V).1 hu) fun W l ⟨ζ⟩ => Or.inl ⟨ζ⟩`. Rewrite `h0` using `[res_map]`.
-
-Conclude with `GlobalTheory.T.etaleLocal_property_calculus_rules.1 V _ fun W l => Or.inr (by rw [← res_comp, ← res_map, h0, res_zero])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localization₂ (hD : ∀ n U (a : Sec ((res _ (tw q i)).X n) U), (∃ b, Sec.map (ι.f n) b = a) ↔
       Loc U fun V g => IsUnit (q : Γ(V, ⊤)) ∨ Sec.res g a = 0)
@@ -119,19 +113,19 @@ variable {q : ℕ} [NeZero q] {i k : ℤ} (μ : Pair (res _ (tw q 0)) (res _ (tw
   {D : Cx (ZMod q)} (ι : D ⟶ res _ (tw q i))
 
 /- English proof (translation)
-The claim follows from `map_smul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem res_smul {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (r : ULift.{1} R) (a : Sec F U) :
     Sec.res g (r • a) = r • Sec.res g a := map_smul _ _ _
 /- English proof (translation)
-The claim follows from `map_smul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem smap_smul {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (r : ULift.{1} R) (a : Sec F U) :
     Sec.map φ (r • a) = r • Sec.map φ a := map_smul _ _ _
 
 variable {ι} in
 /- English proof (translation)
-The claim follows from `sep (ClsSpec.loc_mono (localization₂ hD b) fun V g h => h.elim (fun ⟨ζ⟩ => ((hc V g).1 ζ).trans ((hc' V g).1 ζ).symm) (fun h0 => ((hc V g).2 h0).trans ((hc' V g).2 h0).symm))`.
+A detailed English derivation is pending.
 -/
 theorem good_uniq (hD : ∀ n U (a : Sec ((res _ (tw q i)).X n) U), (∃ b, Sec.map (ι.f n) b = a) ↔
       Loc U fun V g => IsUnit (q : Γ(V, ⊤)) ∨ Sec.res g a = 0)
@@ -143,7 +137,7 @@ theorem good_uniq (hD : ∀ n U (a : Sec ((res _ (tw q i)).X n) U), (∃ b, Sec.
 variable {ι} in
 
 /- English proof (translation)
-The claim follows from `glue_sec _ _ (fun U x c => Good μ ι s x c) (fun U x => ClsSpec.loc_mono (localization₂ hD x) fun V g h => h.elim (fun ⟨ζ⟩ => ⟨_, good_prim μ ι s ζ _⟩) (fun h0 => ⟨0, good_zero μ ι s _ h0⟩)) (fun V U g x c h => good_res μ ι g h) (fun U x c c' h h' => good_uniq μ hD x c c' h h')`.
+A detailed English derivation is pending.
 -/
 theorem exists_fam (hD : ∀ n U (a : Sec ((res _ (tw q i)).X n) U), (∃ b, Sec.map (ι.f n) b = a) ↔
       Loc U fun V g => IsUnit (q : Γ(V, ⊤)) ∨ Sec.res g a = 0) (s : ℤ) :
@@ -161,23 +155,21 @@ end GlobalTheory.EtC.UnitMul
 open GlobalTheory.EtC.UnitMul ClsSpec in
 
 /- English proof (translation)
-Introduce `q _ i k μ D ι hD`. Use `choose a ha hs using exists_fam μ hD`. Establish `aP : ∀ (s : ℤ) (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (x : Sec (D.X s) U), a s U x = μ.mul U 0 s s (zero_add s) (resGen 0 ζ) (Sec.map (ι.f s) x)` using `fun s U ζ x => hs s U x _ (good_prim μ ι s ζ x)`. Establish `aZ : ∀ (s : ℤ) (U : Scheme.{0}) (x : Sec (D.X s) U), Sec.map (ι.f s) x = 0 → a s U x = 0` using `fun s U x h => hs s U x 0 (good_zero μ ι s x h)`. Establish `aAdd : ∀ (s : ℤ) (U : Scheme.{0}) (x y : Sec (D.X s) U), a s U (x + y) = a s U x + a s U y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s U x y`. Use `sep (ClsSpec.loc_mono (ClsSpec.loc_and (localization₂ hD x) (localization₂ hD y)) fun V g h => ?_)` and prove the remaining obligations. Rewrite using `[res_add, ha, ha, ha, res_add]`. Break down `h with ⟨⟨⟨ζ⟩⟩ | hx, ⟨⟨ζ⟩⟩ | hy⟩` into its components or cases. Rewrite using `[aP s V ζ, aP s V ζ, aP s V ζ, smap_add, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aP s V ζ, aP s V ζ, aP s V ζ, smap_add, map_add]`. Rewrite using `[aP s V ζ, aP s V ζ, aP s V ζ, smap_add, map_add]`. Rewrite using `[aZ s V _ hx, aZ s V _ hy, aZ s V _ (by rw [smap_add, hx, hy, add_zero]), add_zero]`. Establish `aSmul : ∀ (s : ℤ) (U : Scheme.{0}) (r : ULift.{1} (ZMod q)) (x : Sec (D.X s) U), a s U (r • x) = r • a s U x`. Introduce `s U r x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `sep (ClsSpec.loc_mono (localization₂ hD x) fun V g h => ?_)` and prove the remaining obligations. Rewrite using `[res_smul, ha, ha, res_smul]`. Break down `h with ⟨⟨ζ⟩⟩ | hx` into its components or cases. Rewrite using `[aP s V ζ, aP s V ζ, smap_smul, map_smul]`. Rewrite using `[aZ s V _ hx, aZ s V _ (by rw [smap_smul, hx, smul_zero]), smul_zero]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `aD : ∀ (s : ℤ) (U : Scheme.{0}) (x : Sec (D.X s) U), Sec.map ((res _ (tw q k)).d s (s + 1)) (a s U x) = a (s + 1) U (Sec.map (D.d s (s + 1)) x)`. Introduce `s U x`. Establish `hι : ∀ {V : Scheme.{0}} (y : Sec (D.X s) V), Sec.map ((res _ (tw q i)).d s (s + 1)) (Sec.map (ι.f s) y) = Sec.map (ι.f (s + 1)) (Sec.map (D.d s (s + 1)) y)` using `fun y => by`. Rewrite using `[map_comp, ι.comm, ← map_comp]`. Use `sep (ClsSpec.loc_mono (localization₂ hD x) fun V g h => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[res_map, ha, ha, res_map]`. Break down `h with ⟨⟨ζ⟩⟩ | hx` into its components or cases. Rewrite using `[aP s V ζ, aP (s + 1) V ζ, μ.leibniz, ← hι]`. Establish `h0 : Sec.map ((res _ (tw q 0)).d 0 (0 + 1)) (resGen 0 ζ) = 0` using `d_resGen 0 ζ`. Rewrite using `[h0, map_zero, LinearMap.zero_apply, zero_add, Int.negOnePow_zero, one_smul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aZ s V _ hx, smap_zero, aZ (s + 1) V _ (by rw [← hι, hx, smap_zero])]`. Set `F : ∀ s : ℤ, D.X s ⟶ (res _ (tw q k)).X s` to `fun s => ⟨{ app := fun X => ModuleCat.ofHom { toFun := a s X.unop map_add' := aAdd s X.unop map_smul' := aSmul s X.unop } naturality := fun X Y f => by`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(ha s Y.unop X.unop f.unop x).symm }⟩`. Use `⟨{ f := F, comm' := fun s t hst => ?_ }, fun U ζ s b => aP s U ζ b⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `s + 1 = t at hst`. Substitute `hst` using the available equality. Apply `Sheaf.hom_ext` to reduce the goal to its premises.
-
-Use extensionality with `X x`. Conclude with `aD s X.unop x`.
+Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.unit_mul_chain_map : ∀ (q : ℕ) [NeZero q] (i k : ℤ) (μ : Pair (res _ (tw q 0)) (res _ (tw q i)) (res _ (tw q k)))
     (D : Cx (ZMod q)) (ι : D ⟶ res _ (tw q i)), (∀ n U (a : Sec ((res _ (tw q i)).X n) U),

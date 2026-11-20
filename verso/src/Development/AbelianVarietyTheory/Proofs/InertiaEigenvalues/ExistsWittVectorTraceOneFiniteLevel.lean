@@ -4,35 +4,31 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormSubLtOneOf
 namespace GlobalTheory.UnramifiedCrys
 
 /- English proof (translation)
-Introduce `p hp G _ R _ _ _ _ ρ m hm hfin`. Use `set N := fixer ρ p m with hN`. Use `letI : Fintype (G ⧸ N) := Fintype.ofFinite _`. Set `χ : G ⧸ N → (fixedPow p R m →* R)` to `fun x => (ρ x.out).toMonoidHom.comp (fixedPow p R m).subtype`. Establish `hχ : Function.Injective χ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x x' h`. Rewrite using `[← x.out_eq, ← x'.out_eq]`. Apply `Quotient.sound` to reduce the goal to its premises. Apply `QuotientGroup.leftRel_apply.2` to reduce the goal to its premises. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ρ x.out y = ρ x'.out y` using `DFunLike.congr_fun h ⟨y, hy⟩`. Rewrite using `[map_mul, RingAut.mul_apply, ← h1, ← RingAut.mul_apply, ← map_mul, inv_mul_cancel, map_one, RingAut.one_apply]`. Establish `hli` using `(linearIndependent_monoidHom (fixedPow p R m) R).comp χ hχ`. Choose the witnesses or unpack the hypotheses as in `⟨θ, hθ⟩ : ∃ θ : fixedPow p R m, ∑ x : G ⧸ N, ρ x.out θ ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push Not at hc`. Use `Fintype.linearIndependent_iff.1 hli (fun _ => 1) (by` as an intermediate fact. Use function extensionality and compare the values at `θ`. Simplify using `only [one_smul, Finset.sum_apply, Function.comp, Pi.zero_apply]`. Conclude with `hc θ) (QuotientGroup.mk 1)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `one_ne_zero this`. Establish `hθm : (θ : R) ^ p ^ m = θ` using `θ.2`. Establish `hsum : ∀ (f : G → WittVector p R), (∀ g, ∀ n ∈ N, f (g * n) = f g) → ∀ g, ∑ x : G ⧸ N, f (g * x.out) = ∑ x : G ⧸ N, f x.out`. Introduce `f hf g`. Use `Fintype.sum_equiv (MulAction.toPerm g) _ _ fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨n, hn⟩` from `QuotientGroup.mk_out_eq_mul N (g * x.out)`. Establish `: MulAction.toPerm g x = QuotientGroup.mk (g * x.out)`. Rewrite using `[MulAction.toPerm_apply]`. Use `conv_lhs => rw [← x.out_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hn, hf _ _ n.2]`. Use `set t := ∑ x : G ⧸ N, ρ x.out θ with ht`. Establish `htq : t ^ p ^ m = t`. Rewrite using `[ht, sum_pow_char_pow]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, hθm]`. Establish `h1 : 1 < p ^ m` using `Nat.one_lt_pow hm.ne' hp.out.one_lt`. Establish `hu : t ^ (p ^ m - 2) * t = 1`. Apply `mul_right_cancel₀ hθ` to reduce the goal to its premises. Rewrite using `[← pow_succ, ← pow_succ, one_mul, show p ^ m - 2 + 1 + 1 = p ^ m by omega, htq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hθN : ∀ n ∈ N, WittVector.map (ρ n).toRingHom (WittVector.teichmuller p (θ : R)) = WittVector.teichmuller p (θ : R)` using `fun n hn => by`. Rewrite using `[WittVector.map_teichmuller]`. Use `congr 1`. Conclude with `hn θ hθm`. Use `set T := ∑ x : G ⧸ N, WittVector.map (ρ x.out).toRingHom (WittVector.teichmuller p (θ : R)) with hT`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hTg : ∀ g, WittVector.map (ρ g).toRingHom T = T` using `fun g => by`. Rewrite using `[hT, map_sum, ← hsum (fun g => WittVector.map (ρ g).toRingHom (WittVector.teichmuller p (θ : R))) (fun g n hn => by`. Simplify using `only [wittMap_mul, hθN n hn]) g]`. Simplify using `only [wittMap_mul]`. Establish `hT0 : WittVector.constantCoeff T = t`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hT, map_sum, ht]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[WittVector.map_teichmuller, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`. Both sides reduce to the same expression. Establish `hcomp` using `WittVector.isAdicCompleteIdealSpanP (p := p) (k := R)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : T * WittVector.teichmuller p (t ^ (p ^ m - 2)) - 1 ∈ Ideal.span {(p : WittVector p R)}`. Rewrite using `[WittVector.mem_span_p_iff_coeff_zero_eq_zero, ← WittVector.constantCoeff_apply, map_sub, map_mul, map_one, hT0, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero, mul_comm, hu, sub_self]`. Establish `hunit : IsUnit T`. Use `Ideal.mem_jacobson_bot.1 (IsAdicComplete.le_jacobson_bot _ hmem) 1` as an intermediate fact. Rewrite `this` using `[mul_one, sub_add_cancel]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `isUnit_of_mul_isUnit_left this`. Take `⟨S, hS⟩` from `hunit.exists_left_inv`. Establish `hSg : ∀ g, WittVector.map (ρ g).toRingHom S = S` using `fun g => by`. Establish `h2` using `congrArg (WittVector.map (ρ g).toRingHom) hS`. Rewrite `h2` using `[map_mul, hTg, map_one]`.
-
-Conclude with `hunit.mul_right_cancel (h2.trans hS.symm)`. Use `⟨S * WittVector.teichmuller p (θ : R), fun g hg => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hSg, hθN g hg]`. Rewrite using `[finsum_eq_sum_of_fintype]`. Simplify using `only [map_mul, hSg]`.
-
-Rewrite using `[← Finset.mul_sum, ← hT, hS]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_witt_trace_one : ∀ (p : ℕ) [Fact p.Prime] (G : Type) [Group G] (R : Type) [CommRing R] [IsDomain R] [CharP R p] [PerfectRing R p] (ρ : G →* (R ≃+* R)) (m : ℕ), 0 < m → Finite (G ⧸ GlobalTheory.UnramifiedCrys.fixer ρ p m) → ∃ τ : WittVector p R, (∀ g ∈ GlobalTheory.UnramifiedCrys.fixer ρ p m, WittVector.map (ρ g).toRingHom τ = τ) ∧ ∑ᶠ x : G ⧸ GlobalTheory.UnramifiedCrys.fixer ρ p m, WittVector.map (ρ x.out).toRingHom τ = 1 := by
   intro p hp G _ R _ _ _ _ ρ m hm hfin

@@ -15,7 +15,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.HdStep
 
 /- English proof (translation)
-Apply `Submodule.eq_starProjection_of_mem_of_inner_eq_zero` to reduce the goal to its premises. Conclude with `hL a b hab _ (L.starProjection_apply_mem y)`. Introduce `z hz`. Rewrite using `[← map_sub, hU a b hab]`. Conclude with `Submodule.starProjection_inner_eq_zero y _ (hL b a hab.symm z hz)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_comm {n : ℕ} {ε : Fin n → Bool} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     {E : Fin n → Fin n → Module.End ℂ V} (hU : KUnit ε E) (L : Submodule ℂ V) [L.HasOrthogonalProjection]
@@ -28,19 +28,17 @@ theorem proj_comm {n : ℕ} {ε : Fin n → Bool} {V : Type} [NormedAddCommGroup
     exact Submodule.starProjection_inner_eq_zero y _ (hL b a hab.symm z hz)
 
 /- English proof (translation)
-Introduce `n ε V _ _ E hG hU L hfd hL Λ hΛ μ w hw s t l hl x hx hxl`. Use `haveI : FiniteDimensional ℂ L := hfd`. Set `word : List (Fin n × Fin n) → V` to `fun l => (l.map fun p : Fin n × Fin n => E p.1 p.2).prod w`. Set `ht : List (Fin n × Fin n) → ℤ` to `fun l => (l.map fun p : Fin n × Fin n => ((p.2 : ℕ) : ℤ) - ((p.1 : ℕ) : ℤ)).sum`. Set `S : Set (List (Fin n × Fin n))` to `{l' | l'.length = l.length ∧ (∀ p ∈ l', ε p.1 = s ∧ ε p.2 = t) ∧ L.starProjection (word l') ≠ 0}`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hSfin : S.Finite` using `(List.finite_length_eq (Fin n × Fin n) l.length).subset (fun l' h => h.1)`. Establish `hlS : l ∈ S`. Use `⟨rfl, hl, fun h0 => hxl ?_⟩` and prove the remaining obligations. Establish `hPx : L.starProjection x = x` using `Submodule.starProjection_eq_self_iff.mpr hx`. Rewrite using `[← hPx, Submodule.inner_starProjection_left_eq_right]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `⟪x, L.starProjection (word l)⟫_ℂ = 0`. Rewrite using `[h0, inner_zero_right]`. Take `⟨l', hl'S, hmax⟩` from `Set.exists_max_image S ht hSfin ⟨l, hlS⟩`. Use `⟨l', hl'S.1, hl'S.2.1, ?_⟩` and prove the remaining obligations. Use `set u := L.starProjection (word l') with hu`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huL : u ∈ L` using `L.starProjection_apply_mem _`. Establish `hwt` using `GlobalTheory.T.isWeight_word_apply_weightVector n V E hG μ w hw.1 l'`. Use `hΛ _ u huL hl'S.2.2 ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Rewrite using `[hu, ← proj_comm hU L hL a a rfl, hwt a, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c d hcd hcd'`. Rewrite using `[hu, ← proj_comm hU L hL c d hcd']`. Establish `hspan` using `GlobalTheory.T.compactRaising_word_mem_span_higherWords n ε V E hG w c d hcd hcd' (hw.2 c d hcd hcd') s t l' hl'S.2.1`. Establish `hle : Submodule.span ℂ {y : V | ∃ l'' : List (Fin n × Fin n), l''.length = l'.length ∧ (∀ p ∈ l'', ε p.1 = s ∧ ε p.2 = t) ∧ (l'.map fun p : Fin n × Fin n => ((p.2 : ℕ) : ℤ) - ((p.1 : ℕ) : ℤ)).sum < (l''.map fun p : Fin n × Fin n => ((p.2 : ℕ) : ℤ) - ((p.1 : ℕ) : ℤ)).sum ∧ y = (l' …`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `y ⟨l'', hlen, htyp, hlt, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, ContinuousLinearMap.coe_coe]`. Assume the negation of the conclusion as `hne`. Establish `hS'' : l'' ∈ S` using `⟨hlen.trans hl'S.1, htyp, hne⟩`. Conclude with `absurd (hmax l'' hS'') (not_le.mpr hlt)`.
-
-Conclude with `LinearMap.mem_ker.mp (hle hspan)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (n : ℕ) (ε : Fin n → Bool) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (E : Fin n → Fin n → Module.End ℂ V), GlRel E → KUnit ε E → ∀ L : Submodule ℂ V, FiniteDimensional ℂ L → KStab ε E L → ∀ Λ : Fin n → ℝ, (∀ ν : Fin n → ℝ, ∀ x ∈ L, x ≠ 0 → KHighest ε E ν x → ν = Λ) → ∀ (μ : Fin n → ℝ) (w : V), KHighest ε E μ w → ∀ (s t : Bool) (l : List (Fin n × Fin n)), (∀ p ∈ l, ε p.1 = s ∧ ε p.2 = t) → ∀ x ∈ L, ⟪x, (l.map fun p : Fin n × Fin n => E p.1 p.2).prod w⟫_ℂ ≠ 0 → ∃ l' : List (Fin n × Fin n), l'.length = l.length ∧ (∀ p ∈ l', ε p.1 = s ∧ ε p.2 = t) ∧ μ + (l'.map fun p : Fin n × Fin n => root p.1 p.2).sum = Λ := by
   intro n ε V _ _ E hG hU L hfd hL Λ hΛ μ w hw s t l hl x hx hxl

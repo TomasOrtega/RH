@@ -42,7 +42,7 @@ def translates {H : Type} [Mul H] (z : H →₀ ℂ) (φ : H → ℂ) : H → �
 def zdeg {H : Type} (z : H →₀ ℂ) : ℂ := z.sum fun _ c => c
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨funext fun u => by simp [translates], by simp [zdeg]⟩`.
+Supply the required witnesses or components.
 -/
 theorem translates_one {H : Type} [MulOneClass H] (φ : H → ℂ) :
     translates (Finsupp.single 1 1) φ = φ ∧ zdeg (Finsupp.single (1 : H) 1) = 1 :=
@@ -56,7 +56,7 @@ def toTens {P Q : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup Q] [Module
     ((Unit × P) × Q →₀ ℂ) →ₗ[ℂ] P ⊗[ℂ] Q := Finsupp.linearCombination ℂ fun d => d.1.2 ⊗ₜ d.2
 
 /- English proof (translation)
-Introduce `x` and use `by induction x with | zero => exact ⟨0, map_zero _⟩ | tmul p q => exact ⟨Finsupp.single (((), p), q) 1, by simp [toTens]⟩ | add x y hx hy => obtain ⟨a, rfl⟩ := hx obtain ⟨b, rfl⟩ := hy exact ⟨a + b, map_add _ _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toTens_surjective {P Q : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup Q] [Module ℂ Q] :
     Function.Surjective (toTens (P := P) (Q := Q)) := fun x => by
@@ -97,7 +97,7 @@ def Matched {t : T} {i j : ℕ} (a : PolT G (routeBig t i j) →₀ ℂ) (b : Po
   (toTens a, toTens b) ∈ ρ.rel i j
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `ρ.onto_small i j (toTens b)`. Take `⟨a, rfl⟩` from `toTens_surjective x`. Conclude with `⟨a, fun _ => hx⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_matched (i j : ℕ) (b : (Unit × PolF D (G.V (.grid i (j + 1))).rank (G.V (.grid i j)).rank) ×
     PolF D (G.V (.grid i j)).rank (G.V (.grid (i + 1) j)).rank →₀ ℂ) :
@@ -108,7 +108,7 @@ theorem exists_matched (i j : ℕ) (b : (Unit × PolF D (G.V (.grid i (j + 1))).
   exact ⟨a, fun _ => hx⟩
 
 /- English proof (translation)
-Use `by_contra! h`. Use `ρ.proper i j (eq_top_iff.2 fun x _ => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `ρ.onto_small i j x.2`. Simplify using `using add_mem ha (h (x.1 - a))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_not_rel_zero (i j : ℕ) : ∃ a, (a, 0) ∉ ρ.rel i j := by
   by_contra! h
@@ -124,9 +124,9 @@ def RealMatch.Over {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 : Type} {A : FamIn D
   (∀ k, k + 1 < D.R.m → HEq (ρ.vT 0 k) (R.vac k)) ∧ ∀ k, k + 1 = D.R.m → HEq (ρ.vT 0 k) R.vacX
 
 /- English proof (translation)
-Establish `a` using `node_isV G hL hp`. Establish `b` using `node_isV G hL hp.small`. Establish `ca` using `W.cart_is _ hp`. Establish `cb` using `W.cart_is _ hp.small`. Consider the cases of `p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Apply the tactic sequence `all_goals first`. Consider the case `exact GlobalTheory.VacuumO.vacExists D _ _ W.ψ_std W.θ_is _ _ _ _ b.sigOK a.sigOK cb ca _ _ b.sd a.sd`. Consider the case `exact GlobalTheory.VacuumO.vacExists D _ _ W.ψ_std W.θ_is _ _ _ _ (GlobalTheory.GridWeil.sigOK_neg a.sigOK) b.sigOK (fun τ => isCartanInv_neg (ca τ)) cb _ _ (isSelfDualC_neg a.sd) b.sd`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_isVac (W : G.Weil) {μ₀ : T} (hL : L.Is μ₀) {p : Pair T} (hp : p.InRange D.R.m) : ∃ f, W.IsVac p f := by
   have a := node_isV G hL hp
@@ -140,7 +140,7 @@ theorem exists_isVac (W : G.Weil) {μ₀ : T} (hL : L.Is μ₀) {p : Pair T} (hp
         (fun τ => isCartanInv_neg (ca τ)) cb _ _ (isSelfDualC_neg a.sd) b.sd
 
 /- English proof (translation)
-Establish `H : ∀ M, ∃ (f : PolRoute G X M Y →ₗ[ℂ] ℂ) (x : PolRoute G X M Y), f x = 1` using `fun M => ⟨LinearMap.mul' ℂ ℂ ∘ₗ TensorProduct.map (MvPolynomial.lcoeff ℂ 0) (MvPolynomial.lcoeff ℂ 0), 1 ⊗ₜ 1, by simp⟩`. Take `⟨f, x, hx⟩` from `H M`. Take `⟨g, y, hy⟩` from `H M'`. Use `⟨LinearMap.eqLocus (f ∘ₗ LinearMap.fst _ _ _) (g ∘ₗ LinearMap.snd _ _ _), fun a => ⟨f a • y, by simp [hy]⟩, fun b => ⟨g b • x, by simp [hx]⟩, fun h => ?_⟩` and prove the remaining obligations. Simplify `h.ge (Submodule.mem_top (x := (x, 0)))` using `[hx]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_rel (X M M' Y : Node) : ∃ R : Submodule ℂ (PolRoute G X M Y × PolRoute G X M' Y),
     (∀ a, ∃ b, (a, b) ∈ R) ∧ (∀ b, ∃ a, (a, b) ∈ R) ∧ R ≠ ⊤ := by
@@ -153,13 +153,11 @@ theorem exists_rel (X M M' Y : Node) : ∃ R : Submodule ℂ (PolRoute G X M Y �
   simpa [hx] using h.ge (Submodule.mem_top (x := (x, 0)))
 
 /- English proof (translation)
-Establish `h1 : ∀ i j, ∃ f : Sch G (.right i j), (i < D.R.m → j ≤ D.R.m → W.IsVac (.chi i j) f) ∧ ∀ h : j = 0, f = (by subst h; exact W.vac i)` using `fun i j => by`. Break down `j with _ | j` into its components or cases. Conclude with `⟨W.vac i, fun hi _ => W.vac_is i hi, fun _ => rfl⟩`. Distinguish the cases in `h : i < D.R.m ∧ j + 1 ≤ D.R.m`. Take `⟨f, hf⟩` from `exists_isVac W hL (p := .chi i (j + 1)) h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f, fun _ _ => hf, fun h => by omega⟩`. Conclude with `⟨0, fun a b => absurd ⟨a, b⟩ h, fun h => by omega⟩`. Establish `h2 : ∀ i j, ∃ f : Sch G (.down μ₀ i j), i ≤ D.R.m → j < D.R.m → W.IsVac (.mu μ₀ i j) f` using `fun i j => by`. Distinguish the cases in `h : i ≤ D.R.m ∧ j < D.R.m`. Take `⟨f, hf⟩` from `exists_isVac W hL (p := .mu μ₀ i j) h`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f, fun _ _ => hf⟩`. Conclude with `⟨0, fun a b => absurd ⟨a, b⟩ h⟩`. Use `choose vX h1 using h1`. Use `choose vT h2 using h2`. Use `choose rel h3 using fun i j : ℕ => exists_rel (G := G) (.grid i (j + 1)) (.grid (i + 1) (j + 1)) (.grid i j) (.grid (i + 1) j)`.
-
-Conclude with `⟨⟨vX, vT, fun i j => (h1 i j).1, fun _ => h2, fun i => (h1 i 0).2 rfl, rel, fun i j => (h3 i j).1, fun i j => (h3 i j).2.1, fun i j => (h3 i j).2.2⟩⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_realMatch (W : G.Weil) {μ₀ : T} (hL : L.Is μ₀) : Nonempty (RealMatch W) := by
   have h1 : ∀ i j, ∃ f : Sch G (.right i j), (i < D.R.m → j ≤ D.R.m → W.IsVac (.chi i j) f) ∧
@@ -258,7 +256,7 @@ def CommutesWith (c : ℂ) : Prop :=
 variable {W B ρ t i j}
 
 /- English proof (translation)
-Take `⟨M, hM, Θ, Θ', hΘ, z, g, g₁, hz, h0⟩` from `h`. Conclude with `mul_right_cancel₀ h0 ((hc M hM Θ Θ' hΘ z g g₁ hz).symm.trans (hc' M hM Θ Θ' hΘ z g g₁ hz))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsSquareConst.unique (h : SquareNonzero W B ρ t i j) {c c' : ℂ} (hc : IsSquareConst W B ρ t i j c)
     (hc' : IsSquareConst W B ρ t i j c') : c = c' := by
@@ -266,7 +264,7 @@ theorem IsSquareConst.unique (h : SquareNonzero W B ρ t i j) {c c' : ℂ} (hc :
   exact mul_right_cancel₀ h0 ((hc M hM Θ Θ' hΘ z g g₁ hz).symm.trans (hc' M hM Θ Θ' hΘ z g g₁ hz))
 
 /- English proof (translation)
-Use `hc M hM Θ Θ' hΘ (Finsupp.single 1 1) g g₁ ⟨h, by rwa [(translates_one _).1]⟩` as an intermediate fact. Rewrite `this` using `[(translates_one _).1, (translates_one (fun _ => 0)).2, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsSquareConst.of_integrable {c : ℂ} (hc : IsSquareConst W B ρ t i j c) {M : Vol G} (hM : M.Is t) {Θ Θ'}
     (hΘ : IsMatched B t ρ i j Θ Θ') {g g₁} (h : IntegrableOn (kerBig W Θ g g₁) (M.fd _) (M.ν _))
@@ -276,15 +274,15 @@ theorem IsSquareConst.of_integrable {c : ℂ} (hc : IsSquareConst W B ρ t i j c
   rwa [(translates_one _).1, (translates_one (fun _ => 0)).2, one_mul] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (t : T) : (routeSmall t 0 0).arrows = [.down t 0 0, .right 0 0] ∧
     (routeBig t 0 0).arrows = [.right 0 1, .down t 1 0] := ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[liftT_single, one_smul]`. Use `integral_congr_ae (.of_forall fun u => ?_)` and prove the remaining obligations. Establish `e : ∀ g, kerSmall W (Finsupp.single d 1) g g₁ u * F g = W.kerA (.right i j) d.2 u g₁ * (W.kerA (.down t i j) d.1.2 g u * F g)` using `fun g => by`. Rewrite using `[kerSmall, Finsupp.sum_single_index (zero_mul _)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [e, integral_const_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 example (M : Vol G) (d : PureT G (routeSmall t i j)) (F : Fn G (.grid i (j + 1))) (g₁ : GA D (G.V (.grid (i + 1) j))) :
     liftT W M _ (Finsupp.single d 1) F g₁ =
@@ -298,7 +296,7 @@ example (M : Vol G) (d : PureT G (routeSmall t i j)) (F : Fn G (.grid i (j + 1))
   rfl
 
 /- English proof (translation)
-Rewrite using `[zdeg, Finsupp.sum_sub_index (fun _ _ _ => rfl)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example {H : Type} (u v : H) : zdeg (Finsupp.single u 1 - Finsupp.single v 1) = 0 := by
   rw [zdeg, Finsupp.sum_sub_index (fun _ _ _ => rfl)]; simp

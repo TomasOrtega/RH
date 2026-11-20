@@ -11,7 +11,7 @@ open scoped BigOperators Real
 namespace GlobalTheory.ThetaSpan
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[ofIntVec]`. Simplify using `[ofIntVec, Pi.single_eq_of_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ofIntVec_single {g : ℕ} (j : Fin g) :
     ofIntVec (Pi.single j (1 : ℤ)) = (Pi.single j 1 : Fin g → ℂ) := by
@@ -21,11 +21,11 @@ theorem ofIntVec_single {g : ℕ} (j : Fin g) :
   · simp [ofIntVec, Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Use `⟨fun i z => ?_, fun j z => ?_⟩` and prove the remaining obligations. Use `h 0 (Pi.single i 1) z` as an intermediate fact. Rewrite `this` using `[ofIntVec_zero, ofIntVec_single]`. Simplify `this` using `[eC]`. Use `h (Pi.single j 1) 0 z` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[ofIntVec_zero, ofIntVec_single, add_zero]`. Rewrite using `[this]`. Use `congr 1`. Simplify using `only [eC, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [single_one_dotProduct, mulVec_single_one, Matrix.col_apply, transpose_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem laws_of_level {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (N : ℕ) (f : (Fin g → ℂ) → ℂ)
     (h : ∀ (n n' : Fin g → ℤ) z, f (z + τ *ᵥ ofIntVec n + ofIntVec n') =
@@ -50,15 +50,13 @@ open Complex Matrix Filter Topology in
 open scoped BigOperators Real in
 
 /- English proof (translation)
-Introduce `_ H g τ hτ N hN f hf`. Establish `hN0 : 0 < N` using `hN`. Take `⟨hmem, hli⟩` from `H g τ hτ N hN`. Establish `hV : _root_.GlobalTheory.thetaLevel N τ = _root_.GlobalTheory.thetaLevelChar 0 0 N τ`. Use extensionality with `φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[_root_.GlobalTheory.mem_thetaLevel, _root_.GlobalTheory.mem_thetaLevelChar, _root_.ReciprocityTheory.PTheta.eC_zero]`. Establish `hsymm : τ.IsSymm` using `(_root_.GlobalTheory.isSiegel_iff_mem_siegelH.2 hτ).isSymm`. Use `haveI : FiniteDimensional ℂ (_root_.GlobalTheory.thetaLevel N τ) := by`. Rewrite using `[hV]`. Conclude with `_root_.GlobalTheory.finiteDimensional_thetaLevelChar hsymm hN0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrank : Module.finrank ℂ (_root_.GlobalTheory.thetaLevel N τ) = N ^ g`. Rewrite using `[hV, _root_.GlobalTheory.finrank_thetaLevelChar hτ hN0, Fintype.card_fin]`. Set `v : (Fin g → Fin N) → _root_.GlobalTheory.thetaLevel N τ` to `fun c => ⟨_, _root_.GlobalTheory.mem_thetaLevel.2 (hmem c)⟩`. Establish `hvli : LinearIndependent ℂ v` using `LinearIndependent.of_comp (_root_.GlobalTheory.thetaLevel N τ).subtype hli`. Establish `hspan : Submodule.span ℂ (Set.range v) = ⊤` using `hvli.span_eq_top_of_card_eq_finrank' (by simp [hrank])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfv : (⟨f, _root_.GlobalTheory.mem_thetaLevel.2 hf⟩ : _root_.GlobalTheory.thetaLevel N τ) ∈ Submodule.span ℂ (Set.range v)`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`. Use `Submodule.mem_map_of_mem (f := (_root_.GlobalTheory.thetaLevel N τ).subtype) hfv` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, ← Set.range_comp]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ThetaSpan.mem_span_theta_of_level :
   (∀ (g n : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ) (b : Fin g → ℂ), 1 ≤ n → (∀ j, b j ≠ 0) → ∀ (N : ℕ) (f : Fin N → (Fin g → ℂ) → ℂ), (∀ k, (Differentiable ℂ (f k) ∧ (∀ (i : Fin g) z, (f k) (z + Pi.single i 1) = (f k) z) ∧ ∀ (j : Fin g) z, (f k) (z + τ.mulVec (Pi.single j 1)) = b j ^ n * cexp (-(2 * Real.pi * I) * n * z j) * (f k) z)) → LinearIndependent ℂ f → N ≤ n ^ g) → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g) → ∀ N : ℕ, 1 ≤ N → (∀ c : Fin g → Fin N, (Differentiable ℂ (fun z => _root_.ReciprocityTheory.PTheta.theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) ∧ ∀ (n n' : Fin g → ℤ) z, (fun z => _root_.ReciprocityTheory.PTheta.theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) (z + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n + _root_.ReciprocityTheory.PTheta.ofIntVec n') = _root_.ReciprocityTheory.PTheta.eC (-(N : ℂ) * (_root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n) / 2 + _root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ z)) * (fun z => _root_.ReciprocityTheory.PTheta.theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) z)) ∧ LinearIndependent ℂ (fun (c : Fin g → Fin N) (z : Fin g → ℂ) => _root_.ReciprocityTheory.PTheta.theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ))) → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g) → ∀ N : ℕ, 1 ≤ N → ∀ f : (Fin g → ℂ) → ℂ, (Differentiable ℂ f ∧ ∀ (n n' : Fin g → ℤ) z, f (z + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n + _root_.ReciprocityTheory.PTheta.ofIntVec n') = _root_.ReciprocityTheory.PTheta.eC (-(N : ℂ) * (_root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n) / 2 + _root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ z)) * f z) → f ∈ Submodule.span ℂ (Set.range (fun (c : Fin g → Fin N) (z : Fin g → ℂ) => _root_.ReciprocityTheory.PTheta.theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)))) := by

@@ -26,7 +26,7 @@ instance fact_le_compositum_right : Fact (F ≤ compositum K F) :=
   ⟨show F.1 ≤ K.1 ⊔ F.1 from le_sup_right⟩
 
 /- English proof (translation)
-The claim follows from `fixingSubgroup_sup`.
+A detailed English derivation is pending.
 -/
 theorem fixingSubgroup_compositum :
     (compositum K F).1.fixingSubgroup = K.1.fixingSubgroup ⊓ F.1.fixingSubgroup :=
@@ -35,9 +35,7 @@ theorem fixingSubgroup_compositum :
 variable [IsGalois ℚ F.1]
 
 /- English proof (translation)
-Establish `: IsGalois ℚ ℚ̄` using `IsAlgClosure.isGalois ℚ ℚ̄`. Establish `h : @IsGalois ℚ _ F.1 _ (IntermediateField.algebra' F.1)`. Use `(inferInstance : IsGalois ℚ F.1)` and compare the differences between its conclusion and the goal. Conclude with `Subsingleton.elim _ _`. Rewrite using `[InfiniteGalois.normal_iff_isGalois]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixingSubgroup_normal : F.1.fixingSubgroup.Normal := by
   have : IsGalois ℚ ℚ̄ := IsAlgClosure.isGalois ℚ ℚ̄
@@ -57,9 +55,9 @@ instance isGalois_compositum : IsGalois K.1 (compositum K F).1 :=
   isGalois_of_normal
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use extensionality with `y`. Conclude with `(AlgEquiv.restrictNormal_commutes g F.1 y).trans (hg y y.2)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hg y hy`. Establish `h1` using `AlgEquiv.restrictNormal_commutes g F.1 ⟨y, hy⟩`. Rewrite `h1` using `[hg]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_fixingSubgroup_iff_restrictNormal_eq_one (g : ℚ̄ ≃ₐ[ℚ] ℚ̄) :
     g ∈ F.1.fixingSubgroup ↔ g.restrictNormal F.1 = 1 := by
@@ -76,7 +74,7 @@ theorem mem_fixingSubgroup_iff_restrictNormal_eq_one (g : ℚ̄ ≃ₐ[ℚ] ℚ�
 variable [IsMulCommutative (F.1 ≃ₐ[ℚ] F.1)] in
 
 /- English proof (translation)
-Rewrite using `[mem_fixingSubgroup_iff_restrictNormal_eq_one]`. Express the relevant statement in the definitionally equal form `AlgEquiv.restrictNormalHom (F := ℚ) (K₁ := ℚ̄) F.1 ((a * b)⁻¹ * (b * a)) = 1`. Rewrite using `[map_mul, map_inv, map_mul, map_mul, mul_comm' (AlgEquiv.restrictNormalHom (F := ℚ) (K₁ := ℚ̄) F.1 b), inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem commutator_mem_fixingSubgroup (a b : ℚ̄ ≃ₐ[ℚ] ℚ̄) :
     (a * b)⁻¹ * (b * a) ∈ F.1.fixingSubgroup := by
@@ -99,7 +97,7 @@ instance isMulCommutative_compositum :
 omit [IsMulCommutative (F.1 ≃ₐ[ℚ] F.1)] in
 
 /- English proof (translation)
-Use extensionality with `y`. Establish `h1` using `AlgEquiv.restrictNormal_commutes ((restrictHom (E := compositum K F) g).restrictScalars ℚ) F.1 y`. Establish `h2` using `AlgEquiv.restrictNormal_commutes (g : ℚ̄ ≃ₐ[ℚ] ℚ̄) F.1 y`. Conclude with `(congrArg Subtype.val h1).trans h2.symm`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem restrictNormal_restrictHom (g : K.1.fixingSubgroup) :
     ((restrictHom (E := compositum K F) g).restrictScalars ℚ).restrictNormal F.1 =
@@ -111,7 +109,7 @@ theorem restrictNormal_restrictHom (g : K.1.fixingSubgroup) :
   exact (congrArg Subtype.val h1).trans h2.symm
 
 /- English proof (translation)
-The claim follows from `(restrictNormal_restrictScalars_ideleSymbol x).symm`.
+A detailed English derivation is pending.
 -/
 theorem ideleSymbol_ideleNorm (x : IdeleGroup K.1) :
     ideleSymbol ℚ F.1 (ideleNorm ℚ K.1 x) =
@@ -119,7 +117,7 @@ theorem ideleSymbol_ideleNorm (x : IdeleGroup K.1) :
   (restrictNormal_restrictScalars_ideleSymbol x).symm
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `restrictHom_surjective (F := K) (E := compositum K F) (ideleSymbol K.1 (compositum K F).1 x)`. Use `⟨g, g.2, ?_⟩` and prove the remaining obligations. Rewrite using `[ideleSymbol_ideleNorm, ← hg, restrictNormal_restrictHom]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_restrictNormal_eq_ideleSymbol (x : IdeleGroup K.1) :
     ∃ g ∈ K.1.fixingSubgroup,
@@ -130,7 +128,7 @@ theorem exists_restrictNormal_eq_ideleSymbol (x : IdeleGroup K.1) :
   rw [ideleSymbol_ideleNorm, ← hg, restrictNormal_restrictHom]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `ideleSymbol_surjective (K := K.1) (L := (compositum K F).1) (restrictHom (E := compositum K F) ⟨g, hg⟩)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[ideleSymbol_ideleNorm, hx, restrictNormal_restrictHom]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ideleSymbol_eq_restrictNormal {g : ℚ̄ ≃ₐ[ℚ] ℚ̄} (hg : g ∈ K.1.fixingSubgroup) :
     ∃ x : IdeleGroup K.1, ideleSymbol ℚ F.1 (ideleNorm ℚ K.1 x) = g.restrictNormal F.1 := by
@@ -140,9 +138,9 @@ theorem exists_ideleSymbol_eq_restrictNormal {g : ℚ̄ ≃ₐ[ℚ] ℚ̄} (hg :
   rw [ideleSymbol_ideleNorm, hx, restrictNormal_restrictHom]
 
 /- English proof (translation)
-Take `⟨g', hg'⟩` from `restrictHom_surjective (F := K) (E := compositum K F) (ideleSymbol K.1 (compositum K F).1 x)`. Establish `h' : (g' : ℚ̄ ≃ₐ[ℚ] ℚ̄).restrictNormal F.1 = (g : ℚ̄ ≃ₐ[ℚ] ℚ̄).restrictNormal F.1`. Rewrite using `[h, ideleSymbol_ideleNorm, ← hg', restrictNormal_restrictHom]`. Rewrite using `[← hg', eq_comm, MonoidHom.eq_iff, ker_restrictHom, Subgroup.mem_subgroupOf, fixingSubgroup_compositum]`. Use `⟨(g⁻¹ * g' : K.1.fixingSubgroup).2, (mem_fixingSubgroup_iff_restrictNormal_eq_one F _).2 ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `AlgEquiv.restrictNormalHom (F := ℚ) (K₁ := ℚ̄) F.1 ((g : ℚ̄ ≃ₐ[ℚ] ℚ̄)⁻¹ * (g' : ℚ̄ ≃ₐ[ℚ] ℚ̄)) = 1`. Rewrite using `[map_mul, map_inv]`. Express the relevant statement in the definitionally equal form `((g : ℚ̄ ≃ₐ[ℚ] ℚ̄).restrictNormal F.1)⁻¹ * (g' : ℚ̄ ≃ₐ[ℚ] ℚ̄).restrictNormal F.1 = 1`. Rewrite using `[h', inv_mul_cancel]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictHom_eq_ideleSymbol (g : K.1.fixingSubgroup) (x : IdeleGroup K.1)
     (h : (g : ℚ̄ ≃ₐ[ℚ] ℚ̄).restrictNormal F.1 = ideleSymbol ℚ F.1 (ideleNorm ℚ K.1 x)) :

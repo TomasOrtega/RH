@@ -28,7 +28,7 @@ def stab {G : Type*} [Group G] (S S' : Subgroup G) (γ : G) : Subgroup G :=
   S ⊓ S'.comap (MulAut.conj γ⁻¹).toMonoidHom
 
 /- English proof (translation)
-Unfold `stab`. Rewrite using `[Subgroup.mem_inf, Subgroup.mem_comap]`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_stab {G : Type*} [Group G] (S S' : Subgroup G) (γ g : G) :
     g ∈ stab S S' γ ↔ g ∈ S ∧ γ⁻¹ * g * γ ∈ S' := by

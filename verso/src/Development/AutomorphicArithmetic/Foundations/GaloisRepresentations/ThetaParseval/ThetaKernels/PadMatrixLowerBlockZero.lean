@@ -22,11 +22,11 @@ def padM_k (M : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) (AE F E)) :
   fun r c => if h : (∃ a, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a = r) ∧ ∃ a, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a = c then M h.1.choose h.2.choose
     else (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) r c
 /- English proof (translation)
-The claim follows from `Sum.map_injective.2 ⟨L.inj, L.inj⟩`.
+A detailed English derivation is pending.
 -/
 theorem emS_inj_k : Function.Injective (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L) := Sum.map_injective.2 ⟨L.inj, L.inj⟩
 /- English proof (translation)
-Establish `h : (∃ x, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L x = _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a) ∧ ∃ x, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L x = _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a'` using `⟨⟨a, rfl⟩, ⟨a', rfl⟩⟩`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_k]`. Rewrite using `[dif_pos h, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_inj_k L h.1.choose_spec, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_inj_k L h.2.choose_spec]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem padM_emS_k (M : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) (AE F E)) (a a' : Fin L.n ⊕ Fin L.n) :
     _root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_k L M (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a) (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a') = M a a' := by
@@ -34,23 +34,23 @@ theorem padM_emS_k (M : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) (AE F
   simp only [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_k]
   rw [dif_pos h, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_inj_k L h.1.choose_spec, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_inj_k L h.2.choose_spec]
 /- English proof (translation)
-Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_k]`. Rewrite using `[dif_neg (fun h => hr h.1)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem padM_out_row_k (M : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) (AE F E)) {r : Fin d.n ⊕ Fin d.n}
     (hr : ¬ ∃ a, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a = r) (c : Fin d.n ⊕ Fin d.n) : _root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_k L M r c = (1 : Matrix _ _ (AE F E)) r c := by
   simp only [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_k]
   rw [dif_neg (fun h => hr h.1)]
 /- English proof (translation)
-Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_k]`. Rewrite using `[dif_neg (fun h => hc h.2)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem padM_out_col_k (M : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) (AE F E)) (r : Fin d.n ⊕ Fin d.n)
     {c : Fin d.n ⊕ Fin d.n} (hc : ¬ ∃ a, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a = c) : _root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_k L M r c = (1 : Matrix _ _ (AE F E)) r c := by
   simp only [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_k]
   rw [dif_neg (fun h => hc h.2)]
 /- English proof (translation)
-Break down `r with i | i` into its components or cases. Distinguish the cases in `hi : i = L.i₀`. Simplify using `[hi]`. Take `⟨a, ha⟩` from `(L.rng i).1 hi`. Conclude with `(h ⟨Sum.inl a, by simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k, ha]⟩).elim`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i = L.i₀`. Simplify using `[hi]`. Take `⟨a, ha⟩` from `(L.rng i).1 hi`. Conclude with `(h ⟨Sum.inr a, by simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k, ha]⟩).elim`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_out_k {r : Fin d.n ⊕ Fin d.n} (h : ¬ ∃ a, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a = r) :
     r ∈ ({Sum.inl L.i₀, Sum.inr L.i₀} : Set (Fin d.n ⊕ Fin d.n)) := by
@@ -64,11 +64,11 @@ theorem mem_out_k {r : Fin d.n ⊕ Fin d.n} (h : ¬ ∃ a, _root_.PositivityTheo
     · obtain ⟨a, ha⟩ := (L.rng i).1 hi
       exact (h ⟨Sum.inr a, by simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k, ha]⟩).elim
 /- English proof (translation)
-The claim follows from `(L.rng (L.em a)).2 ⟨a, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem em_ne_k (a : Fin L.n) : L.em a ≠ L.i₀ := (L.rng (L.em a)).2 ⟨a, rfl⟩
 /- English proof (translation)
-Introduce and unpack `⟨a | a, ha⟩`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k, Sum.map_inl, Sum.inl.injEq] at ha`. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L a (ha.trans hi)`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k] at ha`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_inl_k (i : Fin d.n) (hi : i = L.i₀) : ¬ ∃ a, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a = Sum.inl i := by
   rintro ⟨a | a, ha⟩
@@ -76,7 +76,7 @@ theorem not_inl_k (i : Fin d.n) (hi : i = L.i₀) : ¬ ∃ a, _root_.PositivityT
     exact _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L a (ha.trans hi)
   · simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k] at ha
 /- English proof (translation)
-Introduce and unpack `⟨a | a, ha⟩`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k] at ha`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k, Sum.map_inr, Sum.inr.injEq] at ha`. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L a (ha.trans hi)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_inr_k (i : Fin d.n) (hi : i = L.i₀) : ¬ ∃ a, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a = Sum.inr i := by
   rintro ⟨a | a, ha⟩
@@ -84,11 +84,9 @@ theorem not_inr_k (i : Fin d.n) (hi : i = L.i₀) : ¬ ∃ a, _root_.PositivityT
   · simp only [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k, Sum.map_inr, Sum.inr.injEq] at ha
     exact _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L a (ha.trans hi)
 /- English proof (translation)
-Use extensionality with `r c`. Distinguish the cases in `h : (∃ a, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a = r) ∧ ∃ a, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a = c`. Take `⟨⟨a, rfl⟩, ⟨a', rfl⟩⟩` from `h`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_emS_k]`. Use `congrFun (congrFun (L.j_in g) a) a'` as an intermediate fact.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.submatrix_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k]`. Break down `not_and_or.1 h with h1 | h1` into its components or cases. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_out_row_k L _ h1]`. Conclude with `(L.j_out g r (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.mem_out_k L h1) c).1`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_out_col_k L _ r h1]`.
-
-Conclude with `(L.j_out g c (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.mem_out_k L h1) r).2`.
+Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inFrame_j_k (g : G2 σ L.Y) : inFrame d.b (L.j g) = _root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_k L (inFrame L.b g) := by
   ext r c
@@ -103,9 +101,9 @@ theorem inFrame_j_k (g : G2 σ L.Y) : inFrame d.b (L.j g) = _root_.PositivityThe
     · rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_out_col_k L _ r h1]
       exact (L.j_out g c (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.mem_out_k L h1) r).2
 /- English proof (translation)
-Take `⟨⟨ε, hε⟩, -⟩` from `d.ok.frame`. Take `⟨⟨ε', hε'⟩, -⟩` from `L.ok.frame`. Establish `hee : ε = ε'` using `_root_.PositivityTheory.SiegelWeilFormula.Afc.eps_eq_k L hε hε'`. Substitute `hee` using the available equality. Rewrite using `[kunf.mem_nA_iff hε']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : β.1 ∈ kfour.nCond σ d.n ε` using `(kunf.mem_nA_iff hε β.1).1 β.2`. Conclude with `Afc.sub_nCond (σ := σ) L.em β.1 h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sub_mem_nA_k (β : nA σ d.Y d.b) : β.1.submatrix L.em L.em ∈ nA σ L.Y L.b := by
   obtain ⟨⟨ε, hε⟩, -⟩ := d.ok.frame
@@ -128,17 +126,17 @@ Both sides reduce to the same expression.
 -/
 theorem prj_val_k (β : nA σ d.Y d.b) : (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.prj_k L β).1 = β.1.submatrix L.em L.em := rfl
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `continuous_subtype_val.matrix_submatrix L.em L.em`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_prj_k : Continuous (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.prj_k L) := by
   refine Continuous.subtype_mk ?_ _
   exact continuous_subtype_val.matrix_submatrix L.em L.em
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.zero_apply]`. Distinguish the cases in `hi : i = L.i₀`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_out_row_k L M (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.not_inr_k L i hi)]`. Simplify using `[Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hk : k = L.i₀`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_out_col_k L M _ (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.not_inl_k L k hk)]`. Simplify using `[Matrix.one_apply]`. Take `⟨a, rfl⟩` from `(L.rng i).1 hi`. Take `⟨a', rfl⟩` from `(L.rng k).1 hk`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_emS_k L M (Sum.inr a) (Sum.inl a')`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k, Sum.map_inr, Sum.map_inl] at h1`. Rewrite using `[h1]`. Establish `h2` using `congrFun (congrFun hM a) a'`. Simplify `h2` using `[Matrix.toBlocks₂₁]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pad_matrix_lower_block_zero (M : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) (AE F E)) (hM : M.toBlocks₂₁ = 0) :
     (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_k L M).toBlocks₂₁ = 0 := by
@@ -158,7 +156,7 @@ theorem pad_matrix_lower_block_zero (M : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n �
       have h2 := congrFun (congrFun hM a) a'
       simpa [Matrix.toBlocks₂₁] using h2
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hx`. Take `⟨-, t₀, ht₀⟩` from `L.ok.frame`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C4.inFrame_j_k]`. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.pad_matrix_lower_block_zero L _ ((kunf.isPar_frame ht₀ x t).1 ht).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embedding_lower_block_zero {x : G2 σ L.Y} (hx : ∃ t, IsPar x t) : (inFrame d.b (L.j x)).toBlocks₂₁ = 0 := by
   obtain ⟨t, ht⟩ := hx
@@ -166,17 +164,15 @@ theorem embedding_lower_block_zero {x : G2 σ L.Y} (hx : ∃ t, IsPar x t) : (in
   rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.inFrame_j_k]
   exact _root_.PositivityTheory.SiegelWeilFormula.Act.C4.pad_matrix_lower_block_zero L _ ((kunf.isPar_frame ht₀ x t).1 ht).1
 /- English proof (translation)
-Take `⟨t, ht⟩` from `mem_parabolic_GL2_iff.1 h`. Take `⟨-, t₁, ht₁⟩` from `d.ok.frame`. Use `set P := inFrame d.b (L.j g)`. Use `set Q := inFrame d.b (L.j g⁻¹)`. Establish `hP : P.toBlocks₂₁ = 0` using `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.embedding_lower_block_zero L ⟨t, ht⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : Q.toBlocks₂₁ = 0` using `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.embedding_lower_block_zero L ⟨t⁻¹, ht.inv⟩`. Establish `hPQ : P * Q = 1`. Rewrite using `[← GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, ← map_mul, mul_inv_cancel, map_one, GlobalTheory.EisBL.DoubledParabolic.inFrame_one]`. Establish `hQP : Q * P = 1`. Rewrite using `[← GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, ← map_mul, inv_mul_cancel, map_one, GlobalTheory.EisBL.DoubledParabolic.inFrame_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `upper_block_mul_of_lower_zero hQ hPQ`. Establish `e2` using `upper_block_mul_of_lower_zero hP hQP`. Use `set T0 := incM F t₁.1`. Use `set Ti := incM F (t₁⁻¹).1`. Establish `hT : T0 * Ti = 1` using `by show incM F t₁.1 * incM F (t₁⁻¹).1 = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← kunf.incM_mul', Units.mul_inv]`. Use extensionality with `i j`. Simplify using `[incM, Matrix.one_apply]`. Establish `hT' : Ti * T0 = 1` using `by show incM F (t₁⁻¹).1 * incM F t₁.1 = 1`. Rewrite using `[← kunf.incM_mul', Units.inv_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation.
 
-Use extensionality with `i j`. Simplify using `[incM, Matrix.one_apply]`. Set `t' : GL (Fin d.n) (AE F E)` to `⟨T0 * P.toBlocks₁₁ * Ti, T0 * Q.toBlocks₁₁ * Ti, by`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = 1 := by rw [hT', Matrix.mul_one, e1, Matrix.mul_one, hT], by`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hT', Matrix.mul_one, e2, Matrix.mul_one, hT]⟩`. Conclude with `mem_parabolic_GL2_iff.2 ⟨t', (kunf.isPar_frame ht₁ (L.j g) t').2 ⟨hP, rfl⟩⟩`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem j_par_k {g : G2 σ L.Y} (h : g ∈ par2 σ L.Y) : L.j g ∈ par2 σ d.Y := by
   obtain ⟨t, ht⟩ := mem_parabolic_GL2_iff.1 h
@@ -211,7 +207,7 @@ def padE_k (N : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) E) : Matrix (
   fun r c => if h : (∃ a, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a = r) ∧ ∃ a, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a = c then N h.1.choose h.2.choose
     else (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) r c
 /- English proof (translation)
-Use extensionality with `r c`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_k, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.padE_k, incM, Matrix.map_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Apply the tactic sequence `rw [Matrix.one_apply, Matrix.one_apply] split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem padM_incM_k (N : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) E) : _root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_k L (incM F N) = incM F (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padE_k L N) := by
   ext r c
@@ -221,9 +217,9 @@ theorem padM_incM_k (N : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) E) :
   · rw [Matrix.one_apply, Matrix.one_apply]
     split_ifs <;> simp
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `Subgroup.mem_subgroupOf.1 h`. Establish `hm : mat2 g = incM F γ.1` using `by show g.1.1 = _`. Rewrite using `[← hγ]`. Both sides reduce to the same expression. Establish `hf : inFrame L.b g = incM F ((L.b⁻¹).1 * γ.1 * L.b.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[kunf.incM_mul', kunf.incM_mul', ← hm]`. Both sides reduce to the same expression. Use `kunf.rat_of_inFrame (b := d.b) (M := _root_.PositivityTheory.SiegelWeilFormula.Act.C4.padE_k L ((L.b⁻¹).1 * γ.1 * L.b.1)) ?_` and prove the remaining obligations. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C4.inFrame_j_k, hf, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_incM_k]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem j_rat_k {g : G2 σ L.Y} (h : g ∈ rat2 σ L.Y) : L.j g ∈ rat2 σ d.Y := by
   obtain ⟨γ, hγ⟩ := Subgroup.mem_subgroupOf.1 h

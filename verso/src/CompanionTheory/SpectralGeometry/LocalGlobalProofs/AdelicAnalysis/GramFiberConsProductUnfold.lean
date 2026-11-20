@@ -18,7 +18,7 @@ open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW GlobalT
 open scoped TensorProduct ENNReal NNReal Matrix
 
 /- English proof (translation)
-Use `measurable_pi_iff.2 fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hf`. Simplify using `using measurable_pi_iff.1 hg j`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem measurable_fin_cons {Ω A : Type} [MeasurableSpace Ω] [MeasurableSpace A] {n : ℕ}
     {f : Ω → A} {g : Ω → Fin n → A} (hf : Measurable f) (hg : Measurable g) :
@@ -29,7 +29,7 @@ theorem measurable_fin_cons {Ω A : Type} [MeasurableSpace Ω] [MeasurableSpace 
   · simpa using measurable_pi_iff.1 hg j
 
 /- English proof (translation)
-Use `measurable_pi_iff.2 fun a => measurable_pi_iff.2 fun i => ?_` and prove the remaining obligations. Conclude with `(measurable_pi_iff.1 (measurable_pi_iff.1 (measurable_snd (α := K) (β := Fin m → Fin N → K)) a) i).mul measurable_fst`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_scl {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
     [SecondCountableTopology K] [MeasurableSpace K] [BorelSpace K] {N m : ℕ} :
@@ -42,7 +42,7 @@ section
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Simplify using `[s0, gramR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem corner_half_trace_gram_cons (σ : E →ₐ[F] E) {N n : ℕ} (J₂ : Matrix (Fin N) (Fin N) E)
     (y : Fin 1 → Fin N → R ⊗[F] E) (Z : Fin n → Fin N → R ⊗[F] E) :
@@ -51,19 +51,19 @@ theorem corner_half_trace_gram_cons (σ : E →ₐ[F] E) {N n : ℕ} (J₂ : Mat
   simp [s0, gramR]
 
 /- English proof (translation)
-Simplify using `using hx.map (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[F] E)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_tmul_one {x : R} (hx : IsUnit x) : IsUnit (x ⊗ₜ[F] (1 : E)) := by
   simpa using hx.map (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[F] E)
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_one_eq_smul (x : R) : x ⊗ₜ[F] (1 : E) = x • (1 : R ⊗[F] E) := by
   rw [Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Use `haveI : ContinuousSMul R (R ⊗[F] E) := ModuleTopology.continuousSMul R (R ⊗[F] E)`. Establish `h : Continuous fun x : R => x • (1 : R ⊗[F] E)` using `by fun_prop`. Simplify `h` using `only [tmul_one_eq_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_tmul_one [TopologicalSpace R] :
     Continuous fun x : R => x ⊗ₜ[F] (1 : E) := by
@@ -86,9 +86,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 include R in
 /- English proof (translation)
-Take `⟨hTR, hLC, hSC, hT2, -, -, -, -⟩` from `D.hR`. Establish `h1 : ContinuousOn (fun x : R => ((((a x)⁻¹ : Rˣ) : R))) B₀` using `Units.continuous_val.comp_continuousOn (continuous_inv.comp_continuousOn D.hac)`. Establish `h2 : ContinuousOn (fun _ : R => (1 : R)) B₀ᶜ` using `continuousOn_const`. Establish `h3` using `h1.measurable_piecewise h2 D.hB₀.measurableSet`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ B₀`. Simplify using `[hx]`. Simplify using `[hx, D.hoff x hx]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem measurable_inv_a (D : StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm) :
     Measurable fun x : R => ((((a x)⁻¹ : Rˣ) : R)) := by
@@ -105,11 +105,9 @@ theorem measurable_inv_a (D : StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm
   · simp [hx, D.hoff x hx]
 
 /- English proof (translation)
-Establish `hTR` using `D.hR.1`. Establish `hLC` using `D.hR.2.1`. Establish `hSC` using `D.hR.2.2.1`. Establish `hT2` using `D.hR.2.2.2.1`. Take `⟨k1, k2, k3, k4, hsigc, htrc, -, hbw, -, hgramc⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ D.hCM R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Establish `hq : Continuous fun y : Fin 1 → Fin (M + 1) → R ⊗[F] E => s0 R (gramR R σ (blockOne (algebraMap F E t) J) y)`. Unfold `s0`. Conclude with `continuous_const.mul (htrc.comp ((hgramc 1 (M + 1) _).matrix_elem 0 0))`. Establish `hw : Measurable fun y : Fin 1 → Fin (M + 1) → R ⊗[F] E => (((a (s0 R (gramR R σ (blockOne (algebraMap F E t) J) y)))⁻¹ : Rˣ) : R) ⊗ₜ[F] (1 : E)` using `(continuous_tmul_one R (F := F) (E := E)).measurable.comp ((measurable_inv_a D).comp hq.measurable)`.
-
-Conclude with `D.hs.comp (measurable_scl.comp (hw.prodMk measurable_id))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_sTil (D : StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm) :
     Measurable (sTil σ J t s a) := by
@@ -129,13 +127,11 @@ theorem measurable_sTil (D : StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm)
   exact D.hs.comp (measurable_scl.comp (hw.prodMk measurable_id))
 
 /- English proof (translation)
-Establish `hTR` using `D.hR.1`. Establish `hLC` using `D.hR.2.1`. Establish `hSC` using `D.hR.2.2.1`. Establish `hT2` using `D.hR.2.2.2.1`. Take `⟨k1, k2, k3, k4, -, -, -, hbw, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ D.hCM R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Establish `hJ'` using `GlobalTheory.T.block_one_scalar_preserves_nondegenerate F E σ M J D.hJ t D.ht`. Take `⟨h1, h2, h3, h4, h5, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ D.hCM (M + 1) _ hJ' R`. Establish `hact'` using `(hact n).1.measurable`. Take `⟨hK, -, -⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ D.hCM R d b lam D.hlam`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : SigmaFinite (coordK R b lam) := inferInstance`. Use `haveI : SigmaFinite (coordW R b lam n M) := by unfold coordW; infer_instance`. Establish `hG : Measurable fun q : ((Fin 1 → Fin (M + 1) → R ⊗[F] E) × (Fin n → R ⊗[F] E)) × (Fin n → Fin M → R ⊗[F] E) => φ (Fin.cons (q.1.1 0) (actW R σ (blockOne (algebraMap F E t) J) (sTil σ J t s a q.1.1) (fun j => Fin.cons (q.1.2 j) (q.2 j))))`. Use `hφ.comp (measurable_fin_cons ?_ ?_)` and prove the remaining obligations. Conclude with `measurable_pi_iff.1 (measurable_fst.comp measurable_fst) 0`.
-
-Use `hact'.comp (((measurable_sTil D).comp (measurable_fst.comp measurable_fst)).prodMk ?_)` and prove the remaining obligations. Use `measurable_pi_iff.2 fun j => measurable_fin_cons ?_ ?_` and prove the remaining obligations. Conclude with `measurable_pi_iff.1 (measurable_snd.comp measurable_fst) j`. Conclude with `measurable_pi_iff.1 measurable_snd j`. Conclude with `(hG.lintegral_prod_right' (ν := coordW R b lam n M)).lintegral_prod_right' (ν := Measure.pi fun _ : Fin n => coordK R b lam)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_chi (D : StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm)
     {φ : (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) → ℝ≥0∞} (hφ : Measurable φ) :
@@ -166,9 +162,9 @@ theorem measurable_chi (D : StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm)
     (ν := Measure.pi fun _ : Fin n => coordK R b lam)
 
 /- English proof (translation)
-Unfold `chi`. Establish `hz : ∀ Z : Fin n → Fin (M + 1) → R ⊗[F] E, (Uset σ J t B₀ a : Set (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E)).indicator φ (Fin.cons (y 0) Z) = 0`. Introduce `Z`. Use `Set.indicator_of_notMem ?_ _` and prove the remaining obligations. Introduce and unpack `⟨S, hS, hSe⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Apply `hy` to reduce the goal to its premises. Rewrite using `[← corner_half_trace_gram_cons R σ _ y Z, ← hSe]`. Conclude with `hS.1`. Simplify using `[hz]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chi_eq_zero (D : StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm)
     (φ : (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) → ℝ≥0∞)
@@ -187,13 +183,13 @@ theorem chi_eq_zero (D : StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm)
   simp [hz]
 
 /- English proof (translation)
-Establish `hTR` using `D.hR.1`. Establish `hLC` using `D.hR.2.1`. Establish `hSC` using `D.hR.2.2.1`. Establish `hT2` using `D.hR.2.2.2.1`. Establish `hJ'` using `GlobalTheory.T.block_one_scalar_preserves_nondegenerate F E σ M J D.hJ t D.ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, -, -, hg⟩` from `GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ D.hCM R 1`. Take `⟨g, -, hg⟩` from `hg (M + 1) _ hJ'`. Take `⟨-, hh, -⟩` from `hermScal_main F E σ D.hCM R d b`. Establish `hS` using `hh (g y)`. Rewrite `hS` using `[← hg y]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx : IsUnit (s0 R (gramR R σ (blockOne (algebraMap F E t) J) y))`. Rewrite using `[D.hsq _ hy]`. Conclude with `((Units.isUnit _).pow 2).mul ((IsUnit.mk0 t D.ht).map (algebraMap F R))`. Establish `h00 : gramR R σ (blockOne (algebraMap F E t) J) y 0 0 = s0 R (gramR R σ (blockOne (algebraMap F E t) J) y) ⊗ₜ[F] (1 : E)`. Use `congrArg (fun S : HermR R σ 1 => (S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)) 0 0) hS` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [← hg y] at this`. Simplify `this.symm` using `[hermScal, s0]`. Rewrite using `[Matrix.det_fin_one, h00]`. Conclude with `isUnit_tmul_one R hx`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_gram (D : StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm)
     {y : Fin 1 → Fin (M + 1) → R ⊗[F] E}
@@ -223,33 +219,31 @@ theorem isUnit_gram (D : StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm)
 end Main
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M J t n R _ _ _ _ _ d b lam m₁ m' s B₀ a κ₁ cm D φ hφ`. Establish `hTR` using `D.hR.1`. Establish `hLC` using `D.hR.2.1`. Establish `hSC` using `D.hR.2.2.1`. Establish `hT2` using `D.hR.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k1, k2, k3, k4, -, -, -, hbw, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ D.hCM R`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Establish `hJ'` using `GlobalTheory.T.block_one_scalar_preserves_nondegenerate F E σ M J D.hJ t D.ht`. Establish `hUm : MeasurableSet (Uset σ J t B₀ a : Set (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E))`. Take `⟨-, -, -, hbor, hg⟩` from `GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ D.hCM R (n + 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hgc, hg⟩` from `hg (M + 1) _ hJ'`. Establish `hBo` using `(GlobalTheory.T.continuousOn_schur_coordinates_and_isOpen_Bset F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D).2.2.2.2`. Establish `: (Uset σ J t B₀ a : Set (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E)) = g ⁻¹' Bset R σ t a B₀`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨S, hS, hSe⟩`. Establish `: S = g v` using `Subtype.ext (hSe.trans (hg v))`. Simplify `hS` using `[this]`. Introduce `hv`. Conclude with `⟨g v, hv, (hg v).symm⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(hBo.preimage hgc).measurableSet`. Establish `hφ'` using `hφ.indicator hUm`. Establish `hchi` using `measurable_chi D hφ'`. Take `⟨-, -, -, hbor1, hg1⟩` from `GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ D.hCM R 1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g₁, hg₁c, hg₁⟩` from `hg1 (M + 1) _ hJ'`. Take `⟨hUo, -, -, -, -, hae⟩` from `GlobalTheory.T.gram_fiber_measure_locally_finite_measurable_supported F E σ D.hCM (M + 1) 1 _ hJ' R D.hR d b lam D.hlam m₁ D.hm₁`. Establish `hU₁ : MeasurableSet {X : Fin 1 → Fin (M + 1) → R ⊗[F] E | IsUnit (gramR R σ (blockOne (algebraMap F E t) J) X).det}`. Establish `: {X : Fin 1 → Fin (M + 1) → R ⊗[F] E | IsUnit (gramR R σ (blockOne (algebraMap F E t) J) X).det} = g₁ ⁻¹' Unt σ R 1`. Use extensionality with `X`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Unt, hg₁ X]`. Rewrite using `[this]`. Conclude with `(hUo.preimage hg₁c).measurableSet`. Take `⟨hh, hh2, hh3⟩` from `hermScal_main F E σ D.hCM R d b`. Establish `hemb : MeasurableEmbedding (hermScal R σ)` using `(hh.homeomorph _).measurableEmbedding`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : ∀ x : R, s0 R ((hermScal R σ x : HermR R σ 1) : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)) = x` using `fun x => hh.injective (hh2 (hermScal R σ x))`. Use `set χ := chi σ J t s a b lam ((Uset σ J t B₀ a : Set (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E)).indicator φ) with hχ`. Establish `hzero : ∀ y, s0 R (gramR R σ (blockOne (algebraMap F E t) J) y) ∉ B₀ → χ y = 0` using `fun y hy => chi_eq_zero D φ hy`. Establish `e1 : ∫⁻ v in (Uset σ J t B₀ a : Set (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E)), φ v ∂(coordW R b lam (n + 1) (M + 1)) = ∫⁻ y, χ y ∂(coordW R b lam 1 (M + 1))`. Rewrite using `[← lintegral_indicator hUm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `GlobalTheory.T.lintegral_coordW_succ_eq_iterated_of_unitary_section F E σ D.hCM M _ hJ' R D.hR d b lam D.hlam n (sTil σ J t s a) (measurable_sTil D) _ hφ'`. Establish `e2 : ∫⁻ y, χ y ∂(coordW R b lam 1 (M + 1)) = ∫⁻ y in {X : Fin 1 → Fin (M + 1) → R ⊗[F] E | IsUnit (gramR R σ (blockOne (algebraMap F E t) J) X).det}, χ y ∂(coordW R b lam 1 (M + 1))`. Rewrite using `[← lintegral_indicator hU₁]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ {X : Fin 1 → Fin (M + 1) → R ⊗[F] E | IsUnit (gramR R σ (blockOne (algebraMap F E t) J) X).det}`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Set.indicator_of_mem hy χ).symm`. Rewrite using `[Set.indicator_of_notMem hy, hzero y fun h => hy (isUnit_gram D h)]`. Establish `e3` using `D.hm₁.2.1 χ hchi`. Rewrite `e3` using `[← hh3 lam D.hlam, hemb.lintegral_map]`. Establish `e4 : ∫⁻ x, ∫⁻ v, χ v ∂(m₁ (hermScal R σ x)) ∂lam = ∫⁻ x in B₀, ∫⁻ v, χ v ∂(m₁ (hermScal R σ x)) ∂lam`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← lintegral_indicator D.hB₀.measurableSet]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ B₀`. Rewrite using `[Set.indicator_of_mem hx]`. Rewrite using `[Set.indicator_of_notMem hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `lintegral_eq_zero_of_ae_eq_zero ?_` and prove the remaining obligations. Use `filter_upwards [hae (hermScal R σ x)] with y hy`. Use `hzero y ?_` and prove the remaining obligations. Rewrite using `[hy, hs0]`. Conclude with `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, e3, e4]`. Use `setLIntegral_congr_fun D.hB₀.measurableSet fun x hx => ?_` and prove the remaining obligations. Establish `hm : m₁ (hermScal R σ x) = κ₁ (a x) • (m₁ (hermScal R σ (algebraMap F R t))).map (scl (((a x : Rˣ) : R) ⊗ₜ[F] (1 : E)))`. Use `D.hscale (a x)` as an intermediate fact. Rewrite `this` using `[← D.hsq x hx]`. Then use the resulting hypothesis.
-
-Establish `hsm : Measurable (scl (N` using `M + 1) (n := 1) (((a x : Rˣ) : R) ⊗ₜ[F] (1 : E))) := measurable_scl.comp (measurable_const.prodMk measurable_id)`. Simplify using `only [hm]`. Rewrite using `[lintegral_smul_measure, lintegral_map hchi hsm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem first_step : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (t : F) (n : ℕ) (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R] (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R) (m₁ : HermR R σ 1 → Measure (Fin 1 → Fin (M + 1) → R ⊗[F] E)) (m' : HermR R σ n → Measure (Fin n → Fin M → R ⊗[F] E)) (s : (Fin 1 → Fin (M + 1) → R ⊗[F] E) → HA R σ (blockOne (algebraMap F E t) J)) (B₀ : Set R) (a : R → Rˣ) (κ₁ cm : Rˣ → ℝ≥0), StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm → ∀ φ : (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) → ℝ≥0∞, Measurable φ → ∫⁻ v in (Uset σ J t B₀ a : Set (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E)), φ v ∂(coordW R b lam (n + 1) (M + 1)) = ∫⁻ x in B₀, (κ₁ (a x) : ℝ≥0∞) * ∫⁻ y₀, chi σ J t s a b lam ((Uset σ J t B₀ a : Set (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E)).indicator φ) (scl (((a x : Rˣ) : R) ⊗ₜ[F] (1 : E)) y₀) ∂(m₁ (hermScal R σ (algebraMap F R t))) ∂lam := by
   intro F E _ _ _ _ _ σ M J t n R _ _ _ _ _ d b lam m₁ m' s B₀ a κ₁ cm D φ hφ

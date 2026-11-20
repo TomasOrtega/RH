@@ -12,7 +12,7 @@ def redK : OK p K →+* resK p K :=
   (resMap p K).codRestrict (resK p K) fun x => (mem_resK_iff p K _).2 ⟨toObar p K x, (x : K).2, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Subtype.ext_iff]`. Use `show IsLocalRing.residue (Obar p) (toObar p K a) = IsLocalRing.residue (Obar p) (toObar p K b) ↔ _`. Rewrite using `[residue_eq_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem redK_eq_iff (a b : OK p K) :
     redK p K a = redK p K b ↔ ‖((a : K) : PadicAlgCl p) - ((b : K) : PadicAlgCl p)‖ < 1 := by
@@ -22,7 +22,7 @@ theorem redK_eq_iff (a b : OK p K) :
   rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨c, hc⟩`. Take `⟨x, hx, rfl⟩` from `(mem_resK_iff p K c).1 hc`. Conclude with `⟨⟨⟨x, hx⟩, x.2⟩, Subtype.ext rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem redK_surjective : Function.Surjective (redK p K) := by
   rintro ⟨c, hc⟩

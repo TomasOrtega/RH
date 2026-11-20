@@ -14,7 +14,7 @@ namespace GlobalTheory.Izumi
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
 
 /- English proof (translation)
-Rewrite using `[Subalgebra.coe_add, RatModel.val_add (RatModel.gPt_specializes hy.1) F.2 G.2]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_val_add_le {U : Set M.Z} {x : M.Z} {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ M.Z} (hy : M.Cen U x y)
     (F G : M.O x) :
@@ -23,7 +23,7 @@ theorem norm_val_add_le {U : Set M.Z} {x : M.Z} {p : ℕ} [Fact p.Prime] {y : Sp
   exact IsUltrametricDist.norm_add_le_max _ _
 
 /- English proof (translation)
-Rewrite using `[Subalgebra.coe_mul, RatModel.val_mul (RatModel.gPt_specializes hy.1) c.2 F.2, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (hy.norm_val_le_one c.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_val_mul_le {U : Set M.Z} {x : M.Z} {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ M.Z} (hy : M.Cen U x y)
     (c F : M.O x) : ‖M.val (gPt p ≫ y) ((c * F : M.O x) : Ω)‖ ≤ ‖M.val (gPt p ≫ y) (F : Ω)‖ := by
@@ -62,7 +62,7 @@ def smallIdeal (U : M.Z.Opens) (x : M.Z) (f : Ω) (N : ℕ) : Ideal (M.O x) wher
 variable {M}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_smallIdeal {U : M.Z.Opens} {x : M.Z} {f : Ω} {N : ℕ} {F : M.O x} :
     F ∈ smallIdeal M U x f N ↔ ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z), M.Cen U x y →
@@ -70,7 +70,7 @@ theorem mem_smallIdeal {U : M.Z.Opens} {x : M.Z} {f : Ω} {N : ℕ} {F : M.O x} 
         ∃ h, NonUnitAt M x h ∧ ‖M.val (gPt p ≫ y) F‖ ≤ ‖M.val (gPt p ≫ y) h‖ ^ N := Iff.rfl
 
 /- English proof (translation)
-Introduce `N N' hN F hF p _ y hy`. Break down `hF p y hy with h' | ⟨k, hk, h'⟩` into its components or cases. Conclude with `Or.inl h'`. Use `Or.inr ⟨k, hk, h'.trans (pow_le_pow_of_le_one (norm_nonneg _) (hy.norm_val_le_one hk.1) hN)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem smallIdeal_antitone (U : M.Z.Opens) (x : M.Z) (f : Ω) : Antitone (smallIdeal M U x f) := by
   intro N N' hN F hF p _ y hy
@@ -79,7 +79,7 @@ theorem smallIdeal_antitone (U : M.Z.Opens) (x : M.Z) (f : Ω) : Antitone (small
   · refine Or.inr ⟨k, hk, h'.trans (pow_le_pow_of_le_one (norm_nonneg _) (hy.norm_val_le_one hk.1) hN)⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _` and use `Or.inl le_rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Prove the first alternative.
 -/
 theorem self_mem_smallIdeal (U : M.Z.Opens) {x : M.Z} {f : Ω} (hf : f ∈ M.O x) (N : ℕ) :
     (⟨f, hf⟩ : M.O x) ∈ smallIdeal M U x f N :=
@@ -92,25 +92,23 @@ namespace GlobalTheory.Izumi
 open IsLocalRing
 
 /- English proof (translation)
-Use `set B := AdicCompletion (maximalIdeal A) A`. Use `set φ := algebraMap A B`. Use `haveI : IsNoetherianRing B := GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion A _`. Use `set I : Ideal B := Ideal.span {φ f}`. Set `L : ℕ → Submodule B (B ⧸ I)` to `fun N => Submodule.map I.mkQ ((K N).map φ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : Directed (· ≥ ·) L`. Use `Antitone.directed_ge fun N N' hN => ?_` and prove the remaining obligations. Conclude with `Submodule.map_mono (Ideal.map_mono (hK hN))`. Establish `hIK : ∀ N, I ≤ (K N).map φ` using `fun N => (Ideal.span_le).2 (Set.singleton_subset_iff.2 (Ideal.mem_map_of_mem φ (hf N)))`. Establish `h0 : (⨅ N, L N) = ⊥`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `I.mkQ_surjective x`. Establish `hb : b ∈ ⨅ N, (K N).map φ`. Use `Submodule.mem_iInf _ |>.2 fun N => ?_` and prove the remaining obligations. Take `⟨b', hb', hbb'⟩` from `(Submodule.mem_iInf _).1 hx N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : b' - b ∈ I`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_sub]`. Simplify using `only [Submodule.mkQ_apply] at hbb'`. Rewrite using `[hbb', sub_self]`. Use `Submodule.sub_mem _ hb' (hIK N hd)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this`. Use `h hb` as an intermediate fact. Simplify using `only [Submodule.mem_bot, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `this`. Take `⟨N, hN⟩` from `GlobalTheory.Chevalley.exists_le_maximalIdeal_pow_smul_of_directed B (B ⧸ I) ℕ L inferInstance hL h0 e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨N, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h1 : I.mkQ (φ a) ∈ maximalIdeal B ^ e • (⊤ : Submodule B (B ⧸ I))` using `hN (Submodule.mem_map_of_mem (Ideal.mem_map_of_mem φ ha))`. Establish `h2 : maximalIdeal B ^ e • (⊤ : Submodule B (B ⧸ I)) = Submodule.map I.mkQ (maximalIdeal B ^ e)`. Establish `h4 : maximalIdeal B ^ e • (⊤ : Submodule B B) = maximalIdeal B ^ e`. Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Submodule.range_mkQ I, ← Submodule.map_top, ← Submodule.map_smul'', h4]`. Rewrite `h1` using `[h2, ← Submodule.mem_comap, Submodule.comap_map_mkQ]`. Take `⟨u, hu, t, ht, hut⟩` from `Submodule.mem_sup.1 h1`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hu`. Use `set ψ := AdicCompletion.evalₐ (maximalIdeal A) (R := A) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hψ : ∀ r : A, ψ (φ r) = Ideal.Quotient.mk _ r` using `fun r => ψ.commutes r`. Establish `ht0 : ψ t = 0`. Establish `hle : maximalIdeal B ^ e ≤ RingHom.ker ψ.toRingHom`. Rewrite using `[AdicCompletion.maximalIdeal_eq_map, ← Ideal.map_pow, Ideal.map_le_iff_le_comap]`. Introduce `r hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom]`. Rewrite using `[hψ, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hr`. Conclude with `hle ht`. Take `⟨c', hc'⟩` from `Ideal.Quotient.mk_surjective (ψ c)`.
-
-Establish `h3` using `congrArg ψ hut`. Rewrite `h3` using `[map_add, map_mul, ht0, add_zero, hψ, hψ, ← hc', ← map_mul, Ideal.Quotient.eq]`. Establish `: a = c' * f + (a - c' * f)` using `by ring`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self f)) (by rw [← neg_sub]; exact neg_mem h3)`.
+A detailed English derivation is pending.
 -/
 theorem exists_le_span_sup_pow (A : Type) [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (K : ℕ → Ideal A)
     (f : A) (hK : Antitone K) (hf : ∀ N, f ∈ K N)

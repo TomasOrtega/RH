@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.Jp
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [blk4, Matrix.map_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with a | a <;> rcases finSumFinEquiv.symm j with b | b <;>`. Simplify using `[Matrix.one_apply, apply_ite f, f0, f1]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem block_unipotent_map {A B : Type} {m : ℕ} [Zero A] [One A] [Zero B] [One B] [DecidableEq (Fin m)] (f : A → B) (f0 : f 0 = 0)
     (f1 : f 1 = 1) (x : Matrix (Fin m) (Fin m) A) :
@@ -25,7 +25,7 @@ theorem block_unipotent_map {A B : Type} {m : ℕ} [Zero A] [One A] [Zero B] [On
     simp [Matrix.one_apply, apply_ite f, f0, f1]
 
 /- English proof (translation)
-Establish `e1` using `GlobalTheory.LocIntw.matR_mapH (evFin D.host.F v) (nb x)`. Rewrite `e1` using `[GlobalTheory.LocIntw.matR_adele, h x]`. Establish `e2 : (splitHom D.sp.cm.sig (Jst D n) τ (proj D.sp.cm.sig (Jst D n) v (nb x))).1 = (GlobalTheory.LocIntw.matR (Fv D.host.F v) D.sp.cm.sig (proj D.sp.cm.sig (Jst D n) v (nb x))).map (splitProj τ)` using `rfl`. Establish `e3 : (GlobalTheory.LocIntw.matR (Fv D.host.F v) D.sp.cm.sig (proj D.sp.cm.sig (Jst D n) v (nb x))) = (blk4 1 x.1 0 1).map (cv D v)` using `e1`. Rewrite using `[e2, e3, block_unipotent_map _ (map_zero _) (map_one _), block_unipotent_map _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -44,9 +44,9 @@ theorem splitHom_proj_nMap (D : D7) (n : ℕ) (nb : hermA D n → G D n) (h : Is
   rfl
 
 /- English proof (translation)
-Establish `e` using `splitHom_proj_nMap D n nb h v τ x`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `e' : (thU D n v τ (proj D.sp.cm.sig (Jst D n) v (nb x))).1 i j = (splitHom D.sp.cm.sig (Jst D n) τ (proj D.sp.cm.sig (Jst D n) v (nb x))).1 (finSumFinEquiv i) (finSumFinEquiv j)` using `rfl`. Rewrite using `[e', e]`. Express the relevant statement in the definitionally equal form `(Matrix.fromBlocks 1 (tauC τ x.1) 0 1 : Matrix _ _ _) (finSumFinEquiv.symm (finSumFinEquiv i)) (finSumFinEquiv.symm (finSumFinEquiv j)) = (Matrix.fromBlocks 1 (tauC τ x.1) 0 1 : Matrix _ _ _) i j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Equiv.symm_apply_apply, Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thU_proj_nMap (D : D7) (n : ℕ) (nb : hermA D n → G D n) (h : IsNMap nb) (v : Pl D)
     (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (x : hermA D n) :

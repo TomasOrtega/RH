@@ -19,9 +19,9 @@ namespace GlobalTheory.ProjSpace
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 /- English proof (translation)
-Use `IsZariskiLocalAtTarget.of_openCover (coprodOpenCover.{0, 0} X' Y') ?_` and prove the remaining obligations. Introduce and unpack `(⟨⟩ | ⟨⟩)`. Express the relevant statement in the definitionally equal form `IsImmersion (pullback.snd (coprod.map f g) coprod.inl)`. Establish `h` using `(isPullback_inl_inl_coprodMap f g).flip`. Rewrite using `[← Iso.inv_hom_id_assoc h.isoPullback (pullback.snd _ _), h.isoPullback_hom_snd]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Express the relevant statement in the definitionally equal form `IsImmersion (pullback.snd (coprod.map f g) coprod.inr)`. Establish `h` using `(isPullback_inr_inr_coprodMap f g).flip`. Rewrite using `[← Iso.inv_hom_id_assoc h.isoPullback (pullback.snd _ _), h.isoPullback_hom_snd]`. Use `infer_instance`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isImmersion_coprod_map {X Y X' Y' : Scheme.{0}} (f : X ⟶ X') (g : Y ⟶ Y')
     [IsImmersion f] [IsImmersion g] : IsImmersion (coprod.map f g) := by
@@ -40,19 +40,15 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 
 /- English proof (translation)
-Introduce `R _ X X₁ X₂ f₁ f₂ s h₁ h₂ hc q₁ q₂`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsQProjOver at q₁ q₂ ⊢`. Take `⟨N₁, i₁, hi₁, hq₁, e₁⟩` from `q₁`. Take `⟨N₂, i₂, hi₂, hq₂, e₂⟩` from `q₂`. Establish `hP` using `_root_.GlobalTheory.ProjSpace.isProjOver_coprodDesc (_root_.GlobalTheory.ProjSpace.isProjOver_pspace_str R N₁) (_root_.GlobalTheory.ProjSpace.isProjOver_pspace_str R N₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver at hP`. Take `⟨M, j, hj, ej⟩` from `hP`. Establish `hc' : IsCompl f₁.opensRange f₂.opensRange` using `⟨disjoint_iff.mpr (SetLike.coe_injective (by simpa using hc.inf_eq_bot)), codisjoint_iff.mpr (SetLike.coe_injective (by simpa using hc.sup_eq_top))⟩`. Take `⟨hX⟩` from `nonempty_isColimit_binaryCofanMk_of_isCompl f₁ f₂ hc'`. Set `e : X₁ ⨿ X₂ ≅ X` to `(coprodIsCoprod X₁ X₂).coconePointUniqueUpToIso hX`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `he₁ : coprod.inl ≫ e.hom = f₁` using `(coprodIsCoprod X₁ X₂).comp_coconePointUniqueUpToIso_hom hX ⟨WalkingPair.left⟩`. Establish `he₂ : coprod.inr ≫ e.hom = f₂` using `(coprodIsCoprod X₁ X₂).comp_coconePointUniqueUpToIso_hom hX ⟨WalkingPair.right⟩`. Establish `hcomp : (e.inv ≫ coprod.map i₁ i₂ ≫ j) ≫ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace.str R M = s`. Rewrite using `[Category.assoc, Category.assoc, ej, Iso.inv_comp_eq]`. Apply `coprod.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[coprod.inl_map_assoc, coprod.inl_desc, ← Category.assoc, he₁, e₁]`. Rewrite using `[coprod.inr_map_assoc, coprod.inr_desc, ← Category.assoc, he₂, e₂]`. Use `haveI := isImmersion_coprod_map i₁ i₂`. Use `haveI := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str R M`. Use `haveI := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str R N₁`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `haveI := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str R N₂`. Use `haveI : CompactSpace X₁ := (quasiCompact_iff_compactSpace (f₁ ≫ s)).mp (by rw [← e₁]; infer_instance)`. Use `haveI : CompactSpace X₂ := (quasiCompact_iff_compactSpace (f₂ ≫ s)).mp (by rw [← e₂]; infer_instance)`. Use `haveI : CompactSpace X := ⟨by`. Rewrite using `[← Set.top_eq_univ, ← hc.sup_eq_top]`.
-
-Conclude with `(isCompact_range f₁.continuous).union (isCompact_range f₂.continuous)⟩`. Use `haveI : QuasiCompact s := (quasiCompact_iff_compactSpace s).mpr inferInstance`. Use `haveI : QuasiCompact ((e.inv ≫ coprod.map i₁ i₂ ≫ j) ≫ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace.str R M) := by`. Rewrite using `[hcomp]`. Use `infer_instance`.
-
-Conclude with `⟨M, e.inv ≫ coprod.map i₁ i₂ ≫ j, inferInstance, QuasiCompact.of_comp _ (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace.str R M), hcomp⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ProjSpace.isQProjOver_of_isCompl : ∀ (R : Type) [CommRing R] (X X₁ X₂ : Scheme.{0})
     (f₁ : X₁ ⟶ X) (f₂ : X₂ ⟶ X) (s : X ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R), IsOpenImmersion f₁ → IsOpenImmersion f₂ →

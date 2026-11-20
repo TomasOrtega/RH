@@ -7,13 +7,13 @@ open Finset
 namespace Formalism.InvariantFactorPaths.ColumnFamilies
 
 /- English proof (translation)
-Introduce `n _ M CF pi _ x hx l`. Set `L0 : (M.ι → ℤ) →+ (M.ι → ℤ)` to `{ toFun := fun x i => l (∑ k, M.A i k * (x k : GLCoord ℤ n)) map_zero' := by funext i; simp map_add' := fun x y => by`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Int.cast_add, mul_add, sum_add_distrib, map_add] }`. Set `L : (M.ι → ℤ) →ₗ[ℤ] (M.ι → ℤ)` to `L0.toIntLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hL : CF.Mpi pi ≤ (CF.Mpi pi).comap L`. Unfold `ColFam.Mpi`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨j, hj, I, rfl⟩`. Establish `: L (CF.vec j I) = ∑ K, l (TMat (CF.mu j) K I) • CF.vec j K`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `h1 : L (CF.vec j I) i = l (∑ k, M.A i k * (CF.ph j k I : GLCoord ℤ n))` using `rfl`. Rewrite using `[h1, qb_equiv_apply, map_sum, Finset.sum_apply]`. Use `sum_congr rfl fun K _ => ?_` and prove the remaining obligations. Rewrite using `[← zsmul_eq_mul, map_zsmul, Pi.smul_apply, smul_eq_mul, smul_eq_mul, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, this]`. Conclude with `Submodule.sum_mem _ fun K _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, hj, K, rfl⟩)`. Conclude with `hL hx`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem filtration_coaction_stable : FiltrationCoactionStable := by
   intro n _ M CF pi _ x hx l

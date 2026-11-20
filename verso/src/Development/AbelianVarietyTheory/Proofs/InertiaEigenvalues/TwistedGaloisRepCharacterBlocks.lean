@@ -6,7 +6,7 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 namespace GlobalTheory.Pass
 
 /- English proof (translation)
-Introduce `D i r ρ hr π hd Xs hπ`. Take `⟨e, he⟩` from `hd`. Conclude with `subTw_blocks D i r ρ hr π e he Xs hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stepSub_holds : StepSub := by
   intro D i r ρ hr π hd Xs hπ

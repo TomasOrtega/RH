@@ -31,42 +31,40 @@ Both sides reduce to the same expression.
 theorem compAt_eq {θ : InfFam D} {τ : D.what₂.Tau} {m k : ℕ} (w : Mx D m k) : compAt θ τ w = w.map (cθ θ τ) := rfl
 
 /- English proof (translation)
-Simplify using `only [compAt_eq]`. Conclude with `Matrix.map_mul`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem compAt_mul' {θ : InfFam D} {τ : D.what₂.Tau} {m k l : ℕ} (x : Mx D m k) (y : Mx D k l) :
     compAt θ τ (x * y : Mx D m l) = compAt θ τ x * compAt θ τ y := by
   simp only [compAt_eq]; exact Matrix.map_mul
 
 /- English proof (translation)
-Simplify using `only [compAt_eq]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem compAt_one' {θ : InfFam D} {τ : D.what₂.Tau} {k : ℕ} : compAt θ τ (1 : Mx D k k) = 1 := by
   simp only [compAt_eq]; exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[compAt_eq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem compAt_zero' {θ : InfFam D} {τ : D.what₂.Tau} {m k : ℕ} : compAt θ τ (0 : Mx D m k) = 0 := by
   ext i j; simp [compAt_eq]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[compAt_eq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem compAt_add' {θ : InfFam D} {τ : D.what₂.Tau} {m k : ℕ} (x y : Mx D m k) :
     compAt θ τ (x + y) = compAt θ τ x + compAt θ τ y := by
   ext i j; simp [compAt_eq]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.StdUnn.Frame.block_matrix_map _ a b c d`.
+A detailed English derivation is pending.
 -/
 theorem component_block_matrix {θ : InfFam D} {τ : D.what₂.Tau} (a b c d : Mx D n n) :
     compAt θ τ (blk4 a b c d : Mx D (n + n) (n + n)) = blk4 (compAt θ τ a) (compAt θ τ b) (compAt θ τ c) (compAt θ τ d) :=
   GlobalTheory.StdUnn.Frame.block_matrix_map _ a b c d
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.StdUnn.RealComp.real_components D θ hθ).2.2.2 (z - z') (fun τ => by`. Use `h1 τ` as an intermediate fact. Simplify using `only [cθ, RingHom.comp_apply] at this`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, this, sub_self])`. Use the proof step `(by rw [RingHom.map_sub, h2, sub_self])`.
-
-Conclude with `sub_eq_zero.mp h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ae_ext {θ : InfFam D} (hθ : IsInfFam θ) {z z' : AE D} (h1 : ∀ τ, cθ θ τ z = cθ θ τ z')
     (h2 : finPart D z = finPart D z') : z = z' := by
@@ -78,7 +76,7 @@ theorem ae_ext {θ : InfFam D} (hθ : IsInfFam θ) {z z' : AE D} (h1 : ∀ τ, c
   exact sub_eq_zero.mp h
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `ae_ext hθ (fun τ => congrFun (congrFun (h1 τ) i) j) (congrFun (congrFun h2 i) j)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mx_ext {θ : InfFam D} (hθ : IsInfFam θ) {m k : ℕ} {x x' : Mx D m k} (h1 : ∀ τ, compAt θ τ x = compAt θ τ x')
     (h2 : x.map (finPart D) = x'.map (finPart D)) : x = x' := by
@@ -86,13 +84,13 @@ theorem mx_ext {θ : InfFam D} (hθ : IsInfFam θ) {m k : ℕ} {x x' : Mx D m k}
   exact ae_ext hθ (fun τ => congrFun (congrFun (h1 τ) i) j) (congrFun (congrFun h2 i) j)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.StdUnn.RealComp.real_components D θ hθ).2.1 z τ`.
+A detailed English derivation is pending.
 -/
 theorem cθ_cA {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (z : AE D) : cθ θ τ (cA D z) = conj (cθ θ τ z) :=
   (GlobalTheory.StdUnn.RealComp.real_components D θ hθ).2.1 z τ
 
 /- English proof (translation)
-Use `show (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)) ((Algebra.TensorProduct.map (AlgHom.id D.host.F (AF D.host.F)) D.sp.cm.sig) z) = (Algebra.TensorProduct.map (AlgHom.id D.host.F (Af D.host.F)) D.sp.cm.sig) ((Algebra.TensorProduct.map (sndA D.host.F) ( …`. Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp, ← Algebra.TensorProduct.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finPart_cA (z : AE D) : finPart D (cA D z) = sigR (Af D.host.F) D.sp.cm.sig (finPart D z) := by
   show (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E))

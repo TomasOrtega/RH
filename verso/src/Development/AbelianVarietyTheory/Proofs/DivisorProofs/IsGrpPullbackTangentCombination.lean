@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Establish `e` using `h.2 T 1 1 z z hz hz`. Rewrite `e` using `[_root_.mul_one, ← hz]`. Conclude with `_root_.mul_eq_left.1 (Over.OverMorphism.ext e)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_isGrpPullback {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [GrpObj G]
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {T : Over S'}
@@ -31,17 +31,15 @@ theorem eq_one_of_isGrpPullback {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} 
   exact _root_.mul_eq_left.1 (Over.OverMorphism.ext e)
 
 /- English proof (translation)
-Introduce `E _ _ _ H S0 t p _ _ P x0 ψ' hψ m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `xs us a u _ hc`. Take `⟨w, -, hw⟩` from `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hw` using `[List.ofFn_zero, List.prod_nil]`. Substitute `hw` using the available equality. Use `⟨lieZero P.G, 1, Corr.one, ?_, ?_⟩` and prove the remaining obligations. Establish `e` using `eq_one_of_isGrpPullback hψ (pushPt hψ.1.w (1 : specO ℂ_[p] (DualNumber ℂ_[p]) ⟶ P.A.A)) rfl`. Conclude with `congrArg (fun z => z.left) e`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `d : Over.mk ((specO ℂ_[p] (DualNumber ℂ_[p])).hom ≫ spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p])) ⟶ specO 𝓞_ℂ_[p] (DualNumber 𝓞_ℂ_[p])` to `Over.homMk (spMap (dualMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]))) (by`. Use `(spMap_spMap _ _).trans (Eq.trans (congrArg _ ?_) (spMap_spMap _ _).symm)` and prove the remaining obligations. Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl])`. Establish `e2` using `eq_one_of_isGrpPullback P.gen_pull (pushPt P.gen_pull.1.w (1 : specO ℂ_[p] (DualNumber ℂ_[p]) ⟶ P.A.A)) rfl`. Establish `e3 : d ≫ (1 : specO 𝓞_ℂ_[p] (DualNumber 𝓞_ℂ_[p]) ⟶ P.G) = pushPt P.gen_pull.1.w (1 : specO ℂ_[p] (DualNumber ℂ_[p]) ⟶ P.A.A)`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, MonObj.comp_one]`. Conclude with `(congrArg (fun z => z.left) e3).symm`. Consider the case `succ m ih`. Introduce `xs us a u hx hc`. Take `⟨w, hw1, hw2⟩` from `hc`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `hw2` using `[List.ofFn_succ, List.prod_cons]`. Substitute `hw2` using the available equality. Rewrite using `[lieComb_succ]`. Establish `h0 : LieTie P ψ' (AvDefs.lieScale P.Gt (a 0) (xs 0)) (w 0).left`. Rewrite using `[hw1 0]`.
-
-Conclude with `(hx 0).scale (a 0)`. Establish `ht` using `ih (Fin.tail xs) (Fin.tail us) (Fin.tail a) _ (fun i => hx i.succ) ⟨fun i => w i.succ, fun i => hw1 i.succ, rfl⟩`. Conclude with `TieIndep.lieTie_add hψ h0 ht`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lieTie_lieComb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (S0 : Scheme.{0})
     (t : SAB H S0) (p : ℕ) [Fact p.Prime] [StarRing (𝓞 E)] (P : PtP E p) (x0 : Sp ℂ_[p] ⟶ S0)

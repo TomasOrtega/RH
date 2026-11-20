@@ -10,13 +10,13 @@ namespace UpperTheory.Gal.KunnethLefschetz.Di.PBLimPf
 open LRingPf
 
 /- English proof (translation)
-Set `e : (∀ j, M j) ≃ₗ[R] P` to `LinearEquiv.ofBijective Ψ hΨ`. Set `b : A ⊗[R] (∀ j, M j) ≃ₗ[A] A ⊗[R] P` to `LinearEquiv.baseChange R A _ _ e`. Set `p : A ⊗[R] (∀ j, M j) ≃ₗ[A] ∀ j, A ⊗[R] M j` to `TensorProduct.piRight R A A M`. Establish `key : φ ∘ₗ p.toLinearMap = b.toLinearMap`. Apply `ext1` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Establish `hp : p ((1 : A) ⊗ₜ x) = fun j => (1 : A) ⊗ₜ x j`. Use function extensionality and compare the values at `j`. Simplify using `[p, TensorProduct.piRight_apply]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, hp, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[b, e]`. Establish `hφ : ∀ u, φ u = b (p.symm u)`. Introduce `u`. Use `LinearMap.congr_fun key (p.symm u)` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: (φ : (∀ j, A ⊗[R] M j) → A ⊗[R] P) = b ∘ p.symm` using `funext hφ`. Rewrite using `[this]`. Conclude with `b.bijective.comp p.symm.bijective`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pi_bc {R A P : Type*} [CommRing R] [CommRing A] [Algebra R A] {ι : Type*} [Fintype ι] [DecidableEq ι]
     {M : ι → Type*} [∀ j, AddCommGroup (M j)] [∀ j, Module R (M j)] [AddCommGroup P] [Module R P]
@@ -49,7 +49,7 @@ private def powL (hB : A11) {E : Scheme.{0}} (hl : IsUnit (l : Γ(E, ⊤))) (v :
   | j + 1 => cupL l (sch.obj E) (by push_cast; ring) hB (powL hB hl v j) v
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Establish `h : 2 * (j : ℤ) + 2 = 2 * ((j + 1 : ℕ) : ℤ)` using `by push_cast; ring`. Conclude with `congrArg (fun t => cup0 (l ^ k) h t (v.1 k)) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem powL_lvl (hB : A11) {E : Scheme.{0}} (hl : IsUnit (l : Γ(E, ⊤))) (v : Hl l (sch.obj E) 2 0) (j k : ℕ) :
     (powL hB hl v j).1 k = pow0 (l ^ k) (v.1 k) j := by
@@ -60,7 +60,7 @@ private theorem powL_lvl (hB : A11) {E : Scheme.{0}} (hl : IsUnit (l : Γ(E, ⊤
     exact congrArg (fun t => cup0 (l ^ k) h t (v.1 k)) ih
 
 /- English proof (translation)
-Rewrite using `[← powL_lvl hB hl, ← powL_lvl hB hl]`. Conclude with `(powL hB hl v j).2 k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem power_zero_reduction_compat (hB : A11) {E : Scheme.{0}} (hl : IsUnit (l : Γ(E, ⊤))) (v : Hl l (sch.obj E) 2 0) (j k : ℕ) :
     red (l ^ (k + 1)) (l ^ k) _ _ 0 (pow0 (l ^ (k + 1)) (v.1 (k + 1)) j) = pow0 (l ^ k) (v.1 k) j := by
@@ -73,7 +73,7 @@ private def Psi (hB : A11) {E Z : Scheme.{0}} (r : E ⟶ Z) (hl : IsUnit (l : Γ
     ((pullHl l (sch.map r) _ 0).comp (LinearMap.proj j))
 
 /- English proof (translation)
-Simplify using `[Psi, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem Psi_apply (hB : A11) {E Z : Scheme.{0}} (r : E ⟶ Z) (hl : IsUnit (l : Γ(E, ⊤))) (v : Hl l (sch.obj E) 2 0)
     (N : ℕ) (n : ℤ) (a : ∀ j : Fin N, Hl l (sch.obj Z) (n - 2 * ((j : ℕ) : ℤ)) 0) :
@@ -82,7 +82,7 @@ private theorem Psi_apply (hB : A11) {E Z : Scheme.{0}} (r : E ⟶ Z) (hl : IsUn
   simp [Psi, LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[Psi_apply, Submodule.coe_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← powL_lvl hB hl]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem Psi_lvl (hB : A11) {E Z : Scheme.{0}} (r : E ⟶ Z) (hl : IsUnit (l : Γ(E, ⊤))) (v : Hl l (sch.obj E) 2 0)
     (N : ℕ) (n : ℤ) (a : ∀ j : Fin N, Hl l (sch.obj Z) (n - 2 * ((j : ℕ) : ℤ)) 0) (k : ℕ) :
@@ -94,7 +94,7 @@ private theorem Psi_lvl (hB : A11) {E Z : Scheme.{0}} (r : E ⟶ Z) (hl : IsUnit
   rfl
 
 /- English proof (translation)
-Establish `e` using `red_cc h hB (l ^ (k + 1)) (dvd_succ l k) (pull _ (sch.map r) _ _ a) (pow0 (l ^ (k + 1)) (v.1 (k + 1)) j)`. Rewrite `e` using `[power_zero_reduction_compat hB hl, ← pull_red]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lvl_red (hB : A11) {E Z : Scheme.{0}} (r : E ⟶ Z) (hl : IsUnit (l : Γ(E, ⊤))) (v : Hl l (sch.obj E) 2 0)
     {m n : ℤ} (j : ℕ) (h : m + 2 * (j : ℤ) = n) (k : ℕ) (a : Ht (l ^ (k + 1)) (sch.obj Z) m 0) :
@@ -105,13 +105,13 @@ private theorem lvl_red (hB : A11) {E Z : Scheme.{0}} (r : E ⟶ Z) (hl : IsUnit
   exact e
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Use function extensionality and compare the values at `j`. Use `Subtype.ext (funext fun k => ?_)` and prove the remaining obligations. Establish `h` using `congrArg (fun y : Hl l (sch.obj E) n 0 => y.1 k) hab`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Psi_lvl] at h`. Conclude with `congrFun ((hv k n).1 h) j`. Introduce `y choose c hc using fun k => (hv k n).2 (y.1 k)`. Establish `compat : ∀ k j, red (l ^ (k + 1)) (l ^ k) _ _ 0 (c (k + 1) j) = c k j`. Introduce `k`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun ((hv k n).1 ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (hc k).symm` and prove the remaining obligations. Use `Eq.trans ?_ (y.2 k)` and prove the remaining obligations. Rewrite using `[← hc (k + 1), map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (lvl_red hB r hl v j _ k (c (k + 1) j)).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun j => ⟨fun k => c k j, fun k => compat k j⟩, Subtype.ext (funext fun k => ?_)⟩` and prove the remaining obligations. Rewrite using `[Psi_lvl]`. Conclude with `hc k`.
+A detailed English derivation is pending.
 -/
 private theorem Psi_bij (hB : A11) {E Z : Scheme.{0}} (r : E ⟶ Z) (hl : IsUnit (l : Γ(E, ⊤))) (v : Hl l (sch.obj E) 2 0)
     (N : ℕ) (n : ℤ) (hv : ∀ k, ProjectiveBundleFormulaTorsion (l ^ k) N r (v.1 k)) : Function.Bijective (Psi hB r hl v N n) := by
@@ -136,7 +136,7 @@ private theorem Psi_bij (hB : A11) {E Z : Scheme.{0}} (r : E ⟶ Z) (hl : IsUnit
     exact hc k
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => exact oneV_eq l hB E hl`. Consider the case `succ j ih`. Express the relevant statement in the definitionally equal form `cupV l E _ (powV l (toV v) j) (toV v) = _`. Rewrite using `[ih, cupV_eq l hB, cupQ_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -153,13 +153,13 @@ end UpperTheory.Gal.KunnethLefschetz.Di.PBLimPf
 
 open UpperTheory.Gal.KunnethLefschetz.Di.PBLimPf LRingPf in
 /- English proof (translation)
-Introduce `hI l _ _ N E Z r hl v hv n`. Establish `hB` using `hI.a11`. Establish `hE : IsUnit (l : Γ(E, ⊤))` using `unit_pull l r hl`. Set `φ : (∀ j : Fin N, V l Z (n - 2 * ((j : ℕ) : ℤ))) →ₗ[ℚ_[l]] V l E n` to `∑ j : Fin N, ((cupV l E (sub_add_cancel n (2 * ((j : ℕ) : ℤ)))).flip (powV l (toV v) j)).comp ((pb l r _).comp (LinearMap.proj j))`. Establish `hφ : ∀ a, φ a = ∑ j : Fin N, cupV l E (sub_add_cancel n _) (pb l r _ (a j)) (powV l (toV v) j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a`. Simplify using `[φ, LinearMap.sum_apply]`. Establish `hb : Function.Bijective φ`. Use `pi_bc (Psi hB r hE v N n) (Psi_bij hB r hE v N n hv) φ fun a => ?_` and prove the remaining obligations. Rewrite using `[hφ, Psi_apply, TensorProduct.tmul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[powV_eq hB hE, pb_tmul, cupV_eq l hB, cupQ_tmul]`. Establish `: (fun a : ∀ j : Fin N, V l Z (n - 2 * ((j : ℕ) : ℤ)) => ∑ j : Fin N, cupV l E (sub_add_cancel n _) (pb l r _ (a j)) (powV l (toV v) j)) = φ`. Use function extensionality and compare the values at `fun a => (hφ a).symm`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.Di.pBLim_holds :
     UpperTheory.Gal.KunnethLefschetz.Di.PBLim := by

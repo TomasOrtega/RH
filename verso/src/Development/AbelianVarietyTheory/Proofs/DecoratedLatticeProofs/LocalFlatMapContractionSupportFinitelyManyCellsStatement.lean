@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CosInj
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LocFlat.contr_support_finite_cells` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FLocalFlatMapContractionSupportFinitelyManyCells.lean&line=44#L44)
 -/

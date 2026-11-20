@@ -8,7 +8,7 @@ namespace PositivityTheory.Lit1.GEN.W_coinf_b
 local notation "ℚ̄" => AlgebraicClosure ℚ
 
 /- English proof (translation)
-Take `⟨n⟩` from `c`. Establish `h` using `Int.cast_smul_eq_zsmul (R := ULift.{0} ℤ) (M := A) n a`. Establish `hn : ((n : ℤ) : ULift.{0} ℤ) = ⟨n⟩` using `by ext; simp`. Rewrite `h` using `[hn]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uliftInt_smul {A : Type} [AddCommGroup A] (inst : Module (ULift.{0} ℤ) A) (c : ULift.{0} ℤ) (a : A) :
     inst.smul c a = c.down • a := by
@@ -33,7 +33,7 @@ theorem cosetEquiv_mk (g : G) :
     cosetEquiv π hπ D W hW (QuotientGroup.mk g) = QuotientGroup.mk (π g) := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H y`. Rewrite using `[MulAction.Quotient.smul_mk, cosetEquiv_mk, cosetEquiv_mk, MulAction.Quotient.smul_mk, smul_eq_mul, smul_eq_mul, map_mul]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem cosetEquiv_smul (g : G) (x : G ⧸ W) :
     cosetEquiv π hπ D W hW (g • x) = π g • cosetEquiv π hπ D W hW x := by
@@ -43,7 +43,7 @@ theorem cosetEquiv_smul (g : G) (x : G ⧸ W) :
       smul_eq_mul, smul_eq_mul, map_mul]
 
 /- English proof (translation)
-Apply `(cosetEquiv π hπ D W hW).injective` to reduce the goal to its premises. Rewrite using `[cosetEquiv_smul, Equiv.apply_symm_apply, Equiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cosetEquiv_symm_smul (g : G) (y : Γ ⧸ D) :
     (cosetEquiv π hπ D W hW).symm (π g • y) = g • (cosetEquiv π hπ D W hW).symm y := by
@@ -55,13 +55,11 @@ end Equiv
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hπ : Function.Surjective (QuotientGroup.mk' (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)))` using `QuotientGroup.mk'_surjective _`. Set `E` to `cosetEquiv _ hπ D _ hW`. Use `letI i1 : Module (ULift.{0} ℤ) ((galUnramifiedOutside K.1 ℚ̄ S ⧸ (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) → M) := (funDiagRep (galUnramifiedOutside K.1 ℚ̄ S ⧸ (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) M).hV2`. Use `letI i2 : Module (ULift.{0} ℤ) (((galUnramifiedOutside K.1 ℚ̄ S ⧸ (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) ⧸ D) → M) := (W_killed_c.infl (gsOpenSubgroup S hL) (funRep ((galUnramifiedOutside K.1 ℚ̄ S ⧸ (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside …`. Set `eqv : (funDiagRep (galUnramifiedOutside K.1 ℚ̄ S ⧸ (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) M).ρ.Equiv (W_killed_c.infl (gsOpenSubgroup S hL) (funRep ((galUnramifiedOutside K.1 ℚ̄ S ⧸ (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) ⧸ D) …` to `{ toLinearEquiv := { toFun := fun F y => F (E.symm y) invFun := fun F x => F (E x) map_add' := fun F F' => rfl map_smul' := fun c F => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use function extensionality and compare the values at `y`. Conclude with `uliftInt_smul _ c (F (E.symm y))`. Use `left_inv := fun F => by funext x; simp`. Use `right_inv := fun F => by funext y; simp }`. Use the proof step `isIntertwining' := fun g => by`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `LinearMap.ext fun F => funext fun y => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `M.ρ g (F (g⁻¹ • E.symm y)) = ρ (QuotientGroup.mk g) (F (E.symm ((QuotientGroup.mk g : galUnramifiedOutside K.1 ℚ̄ S ⧸ (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)))⁻¹ • y)))`. Rewrite using `[hρ]`. Use `congr 2`. Use `cosetEquiv_symm_smul _ hπ D _ hW g⁻¹ y` as an intermediate fact.
-
-Conclude with `this.symm }`. Use `haveI := W_killed_c.isDiscreteRep_infl (gsOpenSubgroup S hL) (funRep ((galUnramifiedOutside K.1 ℚ̄ S ⧸ (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) ⧸ D) ρ)`. Conclude with `gsEulerRatio_eq_of_iso S _ ιr (coindResIsoFunDiagRep (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) M ≪≫ Rep.mkIso eqv)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coind_eq_infl_funRep (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)

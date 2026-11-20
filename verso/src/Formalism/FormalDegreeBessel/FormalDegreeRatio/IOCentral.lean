@@ -26,7 +26,7 @@ section Core
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Unfold `inUJ at hA hB ⊢`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Jm ε := by rw [hA, hB]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma io_inUJ_mul {A B : Matrix (Fin n) (Fin n) ℂ} (hA : inUJ ε A) (hB : inUJ ε B) :
     inUJ ε (A * B) := by
@@ -36,7 +36,7 @@ lemma io_inUJ_mul {A B : Matrix (Fin n) (Fin n) ℂ} (hA : inUJ ε A) (hB : inUJ
     _ = Jm ε := by rw [hA, hB]
 
 /- English proof (translation)
-Unfold `ioExt`. Rewrite using `[dif_pos hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma ioExt_at {φ : IOPt ε → E} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     ioExt ε φ g = φ ⟨g, hg⟩ := by
@@ -44,7 +44,7 @@ lemma ioExt_at {φ : IOPt ε → E} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ 
   rw [dif_pos hg]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g₀ hg₀`. Conclude with `⟨U, F, hU, hgU, hF, fun g hg hgJ => (h g hgJ).symm.trans (hfF g hg hgJ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma io_smooth_congr {f f' : Matrix (Fin n) (Fin n) ℂ → E} (h : ∀ g, inUJ ε g → f g = f' g)
     (hf : SmoothOnGV ε f) : SmoothOnGV ε f' := by
@@ -53,14 +53,14 @@ lemma io_smooth_congr {f f' : Matrix (Fin n) (Fin n) ℂ → E} (h : ∀ g, inUJ
   exact ⟨U, F, hU, hgU, hF, fun g hg hgJ => (h g hgJ).symm.trans (hfF g hg hgJ)⟩
 
 /- English proof (translation)
-Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 lemma io_smooth_zero : SmoothOnGV ε (fun _ : Matrix (Fin n) (Fin n) ℂ => (0 : E)) := by
   intro g₀ _
   exact ⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g₀ hg₀`. Take `⟨U', F', hU', hgU', hF', hfF'⟩` from `hf' g₀ hg₀`. Use `⟨U ∩ U', fun g => F g + F' g, hU.inter hU', ⟨hgU, hgU'⟩, (hF.mono Set.inter_subset_left).add (hF'.mono Set.inter_subset_right), fun g hg hgJ => ?_⟩` and prove the remaining obligations. Simplify using `only [hfF g hg.1 hgJ, hfF' g hg.2 hgJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma io_smooth_add {f f' : Matrix (Fin n) (Fin n) ℂ → E} (hf : SmoothOnGV ε f)
     (hf' : SmoothOnGV ε f') : SmoothOnGV ε (fun g => f g + f' g) := by
@@ -72,7 +72,7 @@ lemma io_smooth_add {f f' : Matrix (Fin n) (Fin n) ℂ → E} (hf : SmoothOnGV �
   simp only [hfF g hg.1 hgJ, hfF' g hg.2 hgJ]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g₀ hg₀`. Use `⟨U, fun g => c • F g, hU, hgU, hF.const_smul c, fun g hg hgJ => ?_⟩` and prove the remaining obligations. Simplify using `only [hfF g hg hgJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma io_smooth_smul {f : Matrix (Fin n) (Fin n) ℂ → E} (c : ℂ) (hf : SmoothOnGV ε f) :
     SmoothOnGV ε (fun g => c • f g) := by
@@ -82,7 +82,7 @@ lemma io_smooth_smul {f : Matrix (Fin n) (Fin n) ℂ → E} (c : ℂ) (hf : Smoo
   simp only [hfF g hg hgJ]
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma Jm_mul_self_eq_oneFormalDegreeRatio {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   unfold Jm
@@ -92,9 +92,9 @@ private lemma Jm_mul_self_eq_oneFormalDegreeRatio {n : ℕ} (ε : Fin n → Bool
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.star_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma Jm_conjTranspose_eq_selfFormalDegreeRatio {n : ℕ} (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   unfold Jm
@@ -105,9 +105,9 @@ private lemma Jm_conjTranspose_eq_selfFormalDegreeRatio {n : ℕ} (ε : Fin n �
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `inG at hY`. Unfold `inUJ`. Establish `hYH : Yᴴ = Jm ε * -Y * (Jm ε)⁻¹`. Establish `hJi : (Jm ε)⁻¹ = Jm ε` using `Matrix.inv_eq_left_inv (Jm_mul_self_eq_oneFormalDegreeRatio ε)`. Establish `h1 : Yᴴ * Jm ε * Jm ε = -(Jm ε * Y) * Jm ε` using `by rw [eq_neg_of_add_eq_zero_left hY]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Matrix.mul_assoc, Jm_mul_self_eq_oneFormalDegreeRatio, Matrix.mul_one]`. Rewrite using `[h1, hJi, Matrix.mul_neg, Matrix.neg_mul]`. Establish `hJu : IsUnit (Jm ε)` using `⟨⟨Jm ε, Jm ε, Jm_mul_self_eq_oneFormalDegreeRatio ε, Jm_mul_self_eq_oneFormalDegreeRatio ε⟩, rfl⟩`. Establish `hJi : (Jm ε)⁻¹ = Jm ε` using `Matrix.inv_eq_left_inv (Jm_mul_self_eq_oneFormalDegreeRatio ε)`. Rewrite using `[← Matrix.exp_conjTranspose, hYH, Matrix.exp_conj _ _ hJu, hJi, Matrix.mul_assoc (Jm ε * NormedSpace.exp (-Y)) (Jm ε) (Jm ε), Jm_mul_self_eq_oneFormalDegreeRatio, Matrix.mul_one, Matrix.mul_assoc, ← Matrix.exp_add_of_commute _ _ (Commute.refl Y).neg_left, neg_add_cancel, NormedSp …`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private lemma inUJ_exp_of_inG_formal_degree_ratio {n : ℕ} {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inG ε Y) :
     inUJ ε (NormedSpace.exp Y) := by
@@ -126,7 +126,7 @@ private lemma inUJ_exp_of_inG_formal_degree_ratio {n : ℕ} {ε : Fin n → Bool
     NormedSpace.exp_zero, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `inG at hX ⊢`. Establish `hs : star (t : ℂ) = t` using `Complex.conj_ofReal t`. Rewrite using `[Matrix.conjTranspose_smul, hs, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma inG_real_smul_of_inG {n : ℕ} {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X)
     (t : ℝ) : inG ε ((t : ℂ) • X) := by
@@ -135,7 +135,7 @@ private lemma inG_real_smul_of_inG {n : ℕ} {ε : Fin n → Bool} {X : Matrix (
   rw [Matrix.conjTranspose_smul, hs, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]
 
 /- English proof (translation)
-Unfold `RdV`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `h _ (io_inUJ_mul hg (inUJ_exp_of_inG_formal_degree_ratio (inG_real_smul_of_inG hX t)))`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma io_rd_congr {f f' : Matrix (Fin n) (Fin n) ℂ → E} (h : ∀ g, inUJ ε g → f g = f' g)
     {X g : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (hg : inUJ ε g) : RdV X f g = RdV X f' g := by
@@ -145,7 +145,7 @@ lemma io_rd_congr {f f' : Matrix (Fin n) (Fin n) ℂ → E} (h : ∀ g, inUJ ε 
   exact h _ (io_inUJ_mul hg (inUJ_exp_of_inG_formal_degree_ratio (inG_real_smul_of_inG hX t)))
 
 /- English proof (translation)
-Establish `hs : star (1 / 2 : ℂ) = 1 / 2` using `by simp only [star_div₀, star_one, star_ofNat]`. Establish `hJJ : ∀ M : Matrix (Fin n) (Fin n) ℂ, Jm ε * (Jm ε * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, Jm_mul_self_eq_oneFormalDegreeRatio, Matrix.one_mul]`. Unfold `inG cpart1`. Simplify using `only [Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Jm_conjTranspose_eq_selfFormalDegreeRatio, hs, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, Jm_mul_self_eq_oneFormalDegr …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -161,9 +161,9 @@ private lemma inG_cpart1_formal_degree_ratio {n : ℕ} (ε : Fin n → Bool) (Z 
   abel
 
 /- English proof (translation)
-Establish `hI : star Complex.I = -Complex.I` using `Complex.conj_I`. Establish `hs : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I))`. Simplify using `only [star_div₀, star_one, star_mul', hI, star_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `hJJ : ∀ M : Matrix (Fin n) (Fin n) ℂ, Jm ε * (Jm ε * M) = M` using `fun M => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, Jm_mul_self_eq_oneFormalDegreeRatio, Matrix.one_mul]`. Unfold `inG cpart2`. Simplify using `only [Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Jm_conjTranspose_eq_selfFormalDegreeRatio, hs, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, Jm_mul_self_eq_oneFormalDegr …`. Simplify using `only [neg_smul, one_smul, Matrix.neg_mul, Matrix.smul_mul, Matrix.mul_assoc, Jm_mul_self_eq_oneFormalDegreeRatio, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private lemma inG_cpart2_formal_degree_ratio {n : ℕ} (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) :
     inG ε (cpart2 ε Z) := by
@@ -182,7 +182,7 @@ private lemma inG_cpart2_formal_degree_ratio {n : ℕ} (ε : Fin n → Bool) (Z 
   abel
 
 /- English proof (translation)
-Simplify using `only [EabV, EcV]`. Rewrite using `[io_rd_congr h (inG_cpart1_formal_degree_ratio ε _) hg, io_rd_congr h (inG_cpart2_formal_degree_ratio ε _) hg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma io_eab_congr {f f' : Matrix (Fin n) (Fin n) ℂ → E} (h : ∀ g, inUJ ε g → f g = f' g)
     (a b : Fin n) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
@@ -191,7 +191,7 @@ lemma io_eab_congr {f f' : Matrix (Fin n) (Fin n) ℂ → E} (h : ∀ g, inUJ ε
   rw [io_rd_congr h (inG_cpart1_formal_degree_ratio ε _) hg, io_rd_congr h (inG_cpart2_formal_degree_ratio ε _) hg]
 
 /- English proof (translation)
-Establish `h1` using `rdSmoothV n ε E f (cpart1 ε (Matrix.single a b 1)) hf (inG_cpart1_formal_degree_ratio ε _)`. Establish `h2` using `rdSmoothV n ε E f (cpart2 ε (Matrix.single a b 1)) hf (inG_cpart2_formal_degree_ratio ε _)`. Conclude with `io_smooth_add h1 (io_smooth_smul Complex.I h2)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma io_eab_smooth {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : SmoothOnGV ε f) (a b : Fin n) :
     SmoothOnGV ε (EabV ε a b f) := by
@@ -200,7 +200,7 @@ lemma io_eab_smooth {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : SmoothOnGV ε f
   exact io_smooth_add h1 (io_smooth_smul Complex.I h2)
 
 /- English proof (translation)
-Establish `h1` using `(rdLinV n ε E f f' (cpart1 ε (Matrix.single a b 1)) (cpart1 ε (Matrix.single a b 1)) 0 c g hf hf' (inG_cpart1_formal_degree_ratio ε _) (inG_cpart1_formal_degree_ratio ε _) hg).2.2`. Establish `h2` using `(rdLinV n ε E f f' (cpart2 ε (Matrix.single a b 1)) (cpart2 ε (Matrix.single a b 1)) 0 c g hf hf' (inG_cpart2_formal_degree_ratio ε _) (inG_cpart2_formal_degree_ratio ε _) hg).2.2`. Simplify using `only [EabV, EcV]`. Rewrite using `[h1, h2, smul_add, smul_add, smul_comm Complex.I c]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma io_eab_lin {f f' : Matrix (Fin n) (Fin n) ℂ → E} (hf : SmoothOnGV ε f)
     (hf' : SmoothOnGV ε f') (c : ℂ) (a b : Fin n) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
@@ -214,7 +214,7 @@ lemma io_eab_lin {f f' : Matrix (Fin n) (Fin n) ℂ → E} (hf : SmoothOnGV ε f
   abel
 
 /- English proof (translation)
-Simplify using `only [EabV, EcV, RdV, deriv_const, smul_zero, add_zero]`.
+Simplify using the standard rewrite rules.
 -/
 lemma io_eab_zero (a b : Fin n) (g : Matrix (Fin n) (Fin n) ℂ) :
     EabV ε a b (fun _ : Matrix (Fin n) (Fin n) ℂ => (0 : E)) g = 0 := by
@@ -231,7 +231,7 @@ def ioS : Submodule ℂ (IOPt ε → E) where
     io_smooth_congr (fun g hg => by simp only [ioExt_at hg, Pi.smul_apply]) (io_smooth_smul c hφ)
 
 /- English proof (translation)
-The claim follows from `x.2`.
+A detailed English derivation is pending.
 -/
 lemma io_mem_smooth (x : ioS ε E) : SmoothOnGV ε (ioExt ε (x : IOPt ε → E)) := x.2
 
@@ -243,7 +243,7 @@ variable (ε) in
 def ioT (a b : Fin n) (φ : IOPt ε → E) : IOPt ε → E := fun g => EabV ε a b (ioExt ε φ) g.1
 
 /- English proof (translation)
-Introduce `g hg`. Conclude with `io_eab_congr (fun g' hg' => (h g' hg').trans (ioExt_at hg').symm) a b hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma ioT_rep {F : Matrix (Fin n) (Fin n) ℂ → E} {φ : IOPt ε → E} (h : IORep F φ) (a b : Fin n) :
     IORep (EabV ε a b F) (ioT ε a b φ) := by
@@ -251,14 +251,14 @@ lemma ioT_rep {F : Matrix (Fin n) (Fin n) ℂ → E} {φ : IOPt ε → E} (h : I
   exact io_eab_congr (fun g' hg' => (h g' hg').trans (ioExt_at hg').symm) a b hg
 
 /- English proof (translation)
-Use `show SmoothOnGV ε (ioExt ε (ioT ε a b φ))`. Conclude with `io_smooth_congr (fun g hg => (ioExt_at (φ := ioT ε a b φ) hg).symm) (io_eab_smooth hφ a b)`.
+A detailed English derivation is pending.
 -/
 lemma ioT_mem {φ : IOPt ε → E} (hφ : φ ∈ ioS ε E) (a b : Fin n) : ioT ε a b φ ∈ ioS ε E := by
   show SmoothOnGV ε (ioExt ε (ioT ε a b φ))
   exact io_smooth_congr (fun g hg => (ioExt_at (φ := ioT ε a b φ) hg).symm) (io_eab_smooth hφ a b)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Use `show EabV ε a b (ioExt ε (φ + ψ)) g.1 = EabV ε a b (ioExt ε φ) g.1 + EabV ε a b (ioExt ε ψ) g.1`. Rewrite using `[io_eab_congr (f := ioExt ε (φ + ψ)) (f' := fun h => ioExt ε φ h + (1 : ℂ) • ioExt ε ψ h) (fun h hh => by simp only [ioExt_at hh, Pi.add_apply, one_smul]) a b g.2, io_eab_lin hφ hψ 1 a b g.2, one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ioT_add {φ ψ : IOPt ε → E} (hφ : φ ∈ ioS ε E) (hψ : ψ ∈ ioS ε E) (a b : Fin n) :
     ioT ε a b (φ + ψ) = ioT ε a b φ + ioT ε a b ψ := by
@@ -269,7 +269,7 @@ lemma ioT_add {φ ψ : IOPt ε → E} (hφ : φ ∈ ioS ε E) (hψ : ψ ∈ ioS 
     io_eab_lin hφ hψ 1 a b g.2, one_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Use `show EabV ε a b (ioExt ε (c • φ)) g.1 = c • EabV ε a b (ioExt ε φ) g.1`. Rewrite using `[io_eab_congr (f := ioExt ε (c • φ)) (f' := fun h => (fun _ : Matrix (Fin n) (Fin n) ℂ => (0 : E)) h + c • ioExt ε φ h) (fun h hh => by simp only [ioExt_at hh, Pi.smul_apply, zero_add]) a b g.2, io_eab_lin io_smooth_zero hφ c a b g.2, io_eab_zero, zero_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ioT_smul {φ : IOPt ε → E} (hφ : φ ∈ ioS ε E) (c : ℂ) (a b : Fin n) :
     ioT ε a b (c • φ) = c • ioT ε a b φ := by
@@ -288,21 +288,21 @@ def ioE (a b : Fin n) : Module.End ℂ (ioS ε E) where
   map_smul' c x := Subtype.ext (ioT_smul x.2 c a b)
 
 /- English proof (translation)
-The claim follows from `ioT_rep h a b`.
+A detailed English derivation is pending.
 -/
 lemma ioE_rep {F : Matrix (Fin n) (Fin n) ℂ → E} {x : ioS ε E} (h : IORep F x.1) (a b : Fin n) :
     IORep (EabV ε a b F) (ioE ε E a b x).1 :=
   ioT_rep h a b
 
 /- English proof (translation)
-Introduce `g hg`. Conclude with `ioExt_at hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma io_rep_ext (x : ioS ε E) : IORep (ioExt ε x.1) x.1 := by
   intro g hg
   exact ioExt_at hg
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Conclude with `(hx g.1 g.2).symm.trans (hy g.1 g.2)`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma io_rep_unique {F : Matrix (Fin n) (Fin n) ℂ → E} {x y : ioS ε E} (hx : IORep F x.1)
     (hy : IORep F y.1) : x = y := by
@@ -311,7 +311,7 @@ lemma io_rep_unique {F : Matrix (Fin n) (Fin n) ℂ → E} {x y : ioS ε E} (hx 
   exact (hx g.1 g.2).symm.trans (hy g.1 g.2)
 
 /- English proof (translation)
-Use `⟨⟨fun g => f g.1, ?_⟩, fun g hg => rfl⟩` and prove the remaining obligations. Use `show SmoothOnGV ε (ioExt ε (fun g : IOPt ε => f g.1))`. Conclude with `io_smooth_congr (fun g hg => (ioExt_at (φ := fun g : IOPt ε => f g.1) hg).symm) hf`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma io_rep_mk {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : SmoothOnGV ε f) :
     ∃ x : ioS ε E, IORep f x.1 := by
@@ -320,7 +320,7 @@ lemma io_rep_mk {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : SmoothOnGV ε f) :
   exact io_smooth_congr (fun g hg => (ioExt_at (φ := fun g : IOPt ε => f g.1) hg).symm) hf
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h i g hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma io_rep_sum {ι : Type*} [Fintype ι] (c : ι → ℂ) {F : ι → Matrix (Fin n) (Fin n) ℂ → E}
     {x : ι → ioS ε E} (h : ∀ i, IORep (F i) (x i).1) :
@@ -331,7 +331,7 @@ lemma io_rep_sum {ι : Type*} [Fintype ι] (c : ι → ℂ) {F : ι → Matrix (
   rw [h i g hg]
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [Top, Tm]`. Use `split_ifs with hab`. Simplify using `only [LinearMap.add_apply, Module.algebraMap_end_apply, Submodule.coe_add, Submodule.coe_smul, Pi.add_apply, Pi.smul_apply, h g hg, ioE_rep h a b g hg]`. Simplify using `only [LinearMap.add_apply, LinearMap.zero_apply, zero_add, ioE_rep h a b g hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma io_Tm_rep {F : Matrix (Fin n) (Fin n) ℂ → E} {x : ioS ε E} (h : IORep F x.1) (u : ℂ)
     (a b : Fin n) : IORep (Top (EabV ε) u a b F) (Tm (ioE ε E) u a b x).1 := by
@@ -343,9 +343,9 @@ lemma io_Tm_rep {F : Matrix (Fin n) (Fin n) ℂ → E} {x : ioS ε E} (h : IORep
   · simp only [LinearMap.add_apply, LinearMap.zero_apply, zero_add, ioE_rep h a b g hg]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.foldr_nil, List.prod_nil, Module.End.one_apply]`. Conclude with `h`. Consider the case `cons p l ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.map_cons, List.foldr_cons, List.prod_cons, Module.End.mul_apply]`. Conclude with `io_Tm_rep ih _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma io_foldr_rep (l : List (ℂ × Fin n × Fin n)) {F : Matrix (Fin n) (Fin n) ℂ → E}
     {x : ioS ε E} (h : IORep F x.1) :
@@ -360,7 +360,7 @@ lemma io_foldr_rep (l : List (ℂ × Fin n × Fin n)) {F : Matrix (Fin n) (Fin n
     exact io_Tm_rep ih _ _ _
 
 /- English proof (translation)
-Simplify using `only [qminor, LinearMap.sum_apply, Module.End.mul_apply, Module.End.intCast_apply, Int.cast_smul_eq_zsmul, List.map_ofFn, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 lemma io_qminor_apply {t : ℕ} (a b : Fin t → Fin n) (u : ℂ) (x : ioS ε E) :
     qminor (ioE ε E) a b u x = ∑ σ : Equiv.Perm (Fin t), (((Equiv.Perm.sign σ : ℤ) : ℂ)) •
@@ -370,7 +370,7 @@ lemma io_qminor_apply {t : ℕ} (a b : Fin t → Fin n) (u : ℂ) (x : ioS ε E)
     Int.cast_smul_eq_zsmul, List.map_ofFn, Function.comp_def]
 
 /- English proof (translation)
-Introduce `g hg`. Rewrite using `[io_qminor_apply]`. Use `Eq.trans ?_ (io_rep_sum (fun σ : Equiv.Perm (Fin t) => ((Equiv.Perm.sign σ : ℤ) : ℂ)) (fun σ => io_foldr_rep (List.ofFn fun k : Fin t => (u - ((k : ℕ) : ℂ), a (σ k), b k)) h) g hg)` and prove the remaining obligations. Simplify using `only [qminorOp, Finset.sum_apply, Pi.smul_apply, List.map_ofFn, Function.comp_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma io_qminor_rep {t : ℕ} (a b : Fin t → Fin n) (u : ℂ) {F : Matrix (Fin n) (Fin n) ℂ → E}
     {x : ioS ε E} (h : IORep F x.1) :
@@ -383,11 +383,11 @@ lemma io_qminor_rep {t : ℕ} (a b : Fin t → Fin n) (u : ℂ) {F : Matrix (Fin
 
 variable (ε E) in
 /- English proof (translation)
-Introduce `a b c d`. Use `LinearMap.ext fun x => Subtype.ext (funext fun p => ?_)` and prove the remaining obligations. Take `⟨g, hg⟩` from `p`. Establish `hF` using `io_rep_ext x`. Establish `key` using `eabGlV n ε E (ioExt ε x.1) a b c d g (io_mem_smooth x) hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r1` using `ioE_rep (ioE_rep hF c d) a b g hg`. Establish `r2` using `ioE_rep (ioE_rep hF a b) c d g hg`. Establish `r3` using `ioE_rep hF a d g hg`. Establish `r4` using `ioE_rep hF c b g hg`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, Pi.sub_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← r1, ← r2, key]`. Apply the tactic sequence `split_ifs <;> simp [r3, r4]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma io_gl : GlRel (ioE ε E) := by
   intro a b c d
@@ -406,7 +406,7 @@ lemma io_gl : GlRel (ioE ε E) := by
 end Core
 
 /- English proof (translation)
-Introduce `n ε E _ _ f u c d g hf hg`. Take `⟨x, hx⟩` from `io_rep_mk (ε := ε) (E := E) hf`. Establish `hq` using `qDetCentral (Module.End ℂ (ioS ε E)) n (ioE ε E) (io_gl ε E) u c d`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem capelli_central_holds : CapCentral := by
   intro n ε E _ _ f u c d g hf hg
@@ -420,13 +420,13 @@ theorem capelli_central_holds : CapCentral := by
     _ = EabV ε c d (capelli ε u f) g := (ioE_rep (io_qminor_rep id id u hx) c d g hg).symm
 
 /- English proof (translation)
-Introduce `n ε E _ _ f ν hf hHW g hg`. Take `⟨x, hx⟩` from `io_rep_mk (ε := ε) (E := E) hf`. Establish `hW : IsHW (ioE ε E) ν x`. Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Use `Subtype.ext (funext fun p => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g', hg'⟩` from `p`. Combine the equalities or inequalities in the displayed calculation. Use `Subtype.ext (funext fun p => ?_)` and prove the remaining obligations. Take `⟨g', hg'⟩` from `p`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Establish `hu : ∀ u : ℂ, capelli ε u f g = (∏ k : Fin n, (u - ((k : ℕ) : ℂ) + ν k)) • f g`. Introduce `u`. Combine the equalities or inequalities in the displayed calculation. Use `⟨hu, fun Y => ?_⟩` and prove the remaining obligations. Rewrite using `[hu]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Finset.prod_congr rfl fun k _ => by ring`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem capelli_highest_weight_holds : CapHW := by
   intro n ε E _ _ f ν hf hHW g hg
@@ -459,11 +459,11 @@ theorem capelli_highest_weight_holds : CapHW := by
   exact Finset.prod_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Introduce `m ε E _ _ f u i l g hf hg`. Take `⟨x, hx⟩` from `io_rep_mk (ε := ε) (E := E) hf`. Establish `hq` using `LinearMap.congr_fun (qComatrix (Module.End ℂ (ioS ε E)) m (ioE ε E) (io_gl ε E) u i l) x`. Establish `hy : ∀ j : Fin (m + 1), IORep (qminorOp (EabV ε) (Fin.succAbove j) (Fin.succAbove i) u (Top (EabV ε) (u - (m : ℂ)) j l f)) (qminor (ioE ε E) (Fin.succAbove j) (Fin.succAbove i) u (Tm (ioE ε E) (u - (m : ℂ)) j l x)).1` using `fun j => io_qminor_rep _ _ u (io_Tm_rep hx _ j l)`. Establish `hs` using `io_rep_sum (fun j : Fin (m + 1) => ((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)))) hy g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (∑ j : Fin (m + 1), ((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ))) • qminor (ioE ε E) (Fin.succAbove j) (Fin.succAbove i) u (Tm (ioE ε E) (u - (m : ℂ)) j l x)) = (if i = l then qdet (ioE ε E) u else 0) x`. Rewrite using `[← hq]`. Simplify using `only [LinearMap.sum_apply, Module.End.mul_apply, Module.End.intCast_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [← Int.cast_smul_eq_zsmul ℂ, Int.cast_pow, Int.cast_neg, Int.cast_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `(io_qminor_rep id id u hx g hg).symm`. Both sides reduce to the same expression.
+Chain the equalities or inequalities of the calculation. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem capelli_comatrix_holds : CapComatrix := by
   intro m ε E _ _ f u i l g hf hg

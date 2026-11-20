@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PartsSign
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, N = n + 1` from `⟨N - 1, (Nat.succ_pred_eq_of_pos (NeZero.pos N)).symm⟩`. Take `⟨j, hj⟩` from `h`. Introduce `x hx`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj, map_pow, Units.val_neg, Units.val_one, ZMod.val_neg_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : (j x) ^ (n + 1) = 1` using `by rw [← map_pow, hx, map_one]`. Establish `hnorm : ‖j x‖ = 1`. Establish `: ‖j x‖ ^ (n + 1) = 1` using `by rw [← norm_pow, hz, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (Nat.succ_ne_zero n)).1 this`. Establish `hne : j x ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `hnorm` using `[h0, norm_zero]`. Conclude with `zero_ne_one hnorm`. Establish `h1 : j x * (starRingEnd ℂ) (j x) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hnorm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Evaluate the numerical expressions. Establish `h2 : j x * (j x) ^ n = 1` using `by rw [← pow_succ', hz]`. Conclude with `mul_left_cancel₀ hne (h1.trans h2.symm)`.
+A detailed English derivation is pending.
 -/
 private theorem conj_cycLift {Ω : Type} [Field Ω] (N : ℕ) [NeZero N] {σ : Ω ≃+* Ω} (h : IsConjOm σ) :
     CycLift N (-1) σ := by
@@ -34,13 +34,13 @@ private theorem conj_cycLift {Ω : Type} [Field Ω] (N : ℕ) [NeZero N] {σ : �
   exact mul_left_cancel₀ hne (h1.trans h2.symm)
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ N _ ρ hρ`. Take `⟨σ, hσ⟩` from `exists_isConjOm (E := E) (Ω := Ω)`. Establish `hL1 : IsLift (cE E) σ` using `hσ.isLift`. Establish `hL2 : IsLift (ρ (-1)).toRingEquiv σ` using `hρ (-1) σ (conj_cycLift N hσ)`. Establish `heq : (ρ (-1)).toRingEquiv = cE E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Apply `(algebraMap E Ω).injective` to reduce the goal to its premises. Rewrite using `[← hL2 x, hL1 x]`. Use `⟨heq, ?_⟩` and prove the remaining obligations. Introduce `hone`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hker : ρ (-1) = 1`. Use `(QuotientGroup.eq_one_iff (N := ρ.ker) (-1 : (ZMod N)ˣ)).1 hone` as an intermediate fact. Conclude with `this`. Apply `IsCMField.complexConj_ne_one (K := E)` to reduce the goal to its premises. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `congrArg (fun f : E ≃+* E => f x) heq` as an intermediate fact. Simplify using `only [hker] at this`. Conclude with `this.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Odd.actConj :
     ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (N : ℕ) [NeZero N] (ρ : (ZMod N)ˣ →* (E ≃ₐ[ℚ] E)), IsCycAct Ω N ρ → (ρ (-1)).toRingEquiv = cE E ∧ piQ ρ (-1) ≠ 1 := by

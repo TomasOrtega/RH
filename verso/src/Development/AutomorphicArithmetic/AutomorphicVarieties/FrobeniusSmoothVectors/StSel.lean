@@ -7,9 +7,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
 /- English proof (translation)
-Unfold `toGS`. Rewrite using `[QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Unfold `ReciprocityTheory.Gal.NS`. Apply `Subgroup.le_topologicalClosure` to reduce the goal to its premises. Apply `Subgroup.subset_normalClosure` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, Set.mem_compl_iff]`. Conclude with `⟨v, hv, A, hA, hs⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem toGS_eq_one_of_mem_inertia_of_notMem (Ω : Type) [Field Ω] [CharZero Ω] (S : Set (HeightOneSpectrum (𝓞 ℚ)))
     (v : HeightOneSpectrum (𝓞 ℚ)) (hv : v ∉ S) (A : ValuationSubring Ω) (hA : IsPlaceOver A v)
@@ -23,7 +23,7 @@ private theorem toGS_eq_one_of_mem_inertia_of_notMem (Ω : Type) [Field Ω] [Cha
   exact ⟨v, hv, A, hA, hs⟩
 
 /- English proof (translation)
-Unfold `toGS`. Conclude with `continuous_quot_mk`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem continuous_toGS' (Ω : Type) [Field Ω] [CharZero Ω] (S : Set (HeightOneSpectrum (𝓞 ℚ))) :
     Continuous (toGS Ω S) := by
@@ -31,7 +31,7 @@ private theorem continuous_toGS' (Ω : Type) [Field Ω] [CharZero Ω] (S : Set (
   exact continuous_quot_mk
 
 /- English proof (translation)
-Unfold `toGS`. Conclude with `QuotientGroup.mk'_surjective _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem toGS_surjective' (Ω : Type) [Field Ω] [CharZero Ω] (S : Set (HeightOneSpectrum (𝓞 ℚ))) :
     Function.Surjective (toGS Ω S) := by
@@ -40,41 +40,39 @@ private theorem toGS_surjective' (Ω : Type) [Field Ω] [CharZero Ω] (S : Set (
 
 set_option maxHeartbeats 200000 in
 /- English proof (translation)
-Introduce `hP Ω _ _ _ l _ hl2 k _ _ _ κ hκo hCC hs0ex S hSA hIne v₀ hv₀ hlv₀ hD0 hDo`. Take `⟨σ, hσ, hσκ⟩` from `hCC`. Take `⟨s0, hs0⟩` from `hs0ex`. Establish `hdvd : l ∣ l ^ 1` using `by simp`. Use `haveI : Fact (l ^ 1).Prime := ⟨by simpa using (Fact.out : l.Prime)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI alg : Algebra (ZMod (l ^ 1)) k := (ZMod.castHom hdvd k).toAlgebra`. Use `letI : TopologicalSpace k := ⊥`. Use `haveI : DiscreteTopology k := ⟨rfl⟩`. Take `⟨κS, hκS, hκSlc⟩` from `st_desc Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))) kˣ κ hκo (fun v hv A hA => hIne v hv A hA)`. Establish `hκS' : ∀ g, κS (toGS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))) g) = κ g` using `fun g => by`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← MonoidHom.comp_apply, hκS]`. Set `ρ : Representation (ZMod (l ^ 1)) (GS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ)))) k` to `(Algebra.lmul (ZMod (l ^ 1)) k).toRingHom.toMonoidHom.comp ((Units.coeHom k).comp κS)`. Establish `hρ : ∀ g m, ρ g m = (κS g : k) * m` using `fun g m => rfl`. Establish `hcont : ReciprocityTheory.Gal.ContAction ρ`. Unfold `ReciprocityTheory.Gal.ContAction`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc : Continuous fun g => (κS g : k)` using `(hκSlc.comp (fun u : kˣ => (u : k))).continuous`. Conclude with `(hc.comp continuous_fst).mul continuous_snd`. Take `⟨μ, hμ⟩` from `GlobalTheory.Published.PoitouTate.exists_lift_cycMod (F := ℚ) (Ω := Ω) (l := l) (r := 1) hSA`. Set `Av : S → ValuationSubring Ω` to `fun v => (exists_isPlaceOver Ω v.1).choose`. Establish `hAv : ∀ v : S, IsPlaceOver (Av v) v.1` using `fun v => (exists_isPlaceOver Ω v.1).choose_spec`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `kill : ∀ (a : kˣ) (m : k), a ≠ 1 → (a : k) * m = m → m = 0`. Introduce `a m ha hm`. Establish `h2 : ((a : k) - 1) * m = 0` using `by rw [sub_mul, one_mul, hm, sub_self]`. Conclude with `(mul_eq_zero.mp h2).resolve_left (sub_ne_zero.mpr (fun h => ha (Units.val_eq_one.mp h)))`. Establish `hfix : ∀ m : k, ρ (toGS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))) σ) m = m → m = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m hm`. Rewrite `hm` using `[hρ, hκS']`. Conclude with `kill _ m hσκ hm`. Establish `hdual : H0 (twDual μ ρ) = ⊥`. Use `st_dual l k _ μ ρ (toGS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))) s0) (κ s0 : k) (fun m => by rw [hρ, hκS']) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hs0` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `hμs : μ (toGS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))) s0) = cycMod ℚ Ω l 1 s0`. Rewrite using `[← MonoidHom.comp_apply, hμ]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[h, hμs]`. Both sides reduce to the same expression. Establish `hother : ∀ v : S, v ≠ ⟨v₀, hv₀⟩ → H0 (MonoidHom.comp ρ (locFam S Av v)) = ⊥`. Introduce `v hv`. Use extensionality with `m`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[mem_riemannRochSpace_iff_regularAt_everywhere, Submodule.mem_bot]`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Take `⟨s, hs, hκs⟩` from `hDo v.1 v.2 (fun h => hv (Subtype.ext h)) (Av v) (hAv v)`. Establish `h1` using `hm ⟨s, hs⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(κS (toGS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))) s) : k) * m = m at h1`. Rewrite `h1` using `[hκS']`. Conclude with `kill _ m hκs h1`. Introduce and unpack `rfl g`. Conclude with `map_zero _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hloc : Nat.card (H0 (MonoidHom.comp ρ (locFam S Av ⟨v₀, hv₀⟩))) < Nat.card (H1 (MonoidHom.comp ρ (locFam S Av ⟨v₀, hv₀⟩)))`. Use `st_loc hP.1.lf hP.1.lt hP.1.le Ω l k (Av ⟨v₀, hv₀⟩) v₀ (hAv ⟨v₀, hv₀⟩) hlv₀ ?_ _ ?_` and prove the remaining obligations. Introduce `g hg`. Establish `h1 : GC.cycF ℚ Ω l k g = 1` using `(hD0 (Av ⟨v₀, hv₀⟩) (hAv ⟨v₀, hv₀⟩) hg).2`. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `(ZMod.castHom hdvd k).injective` to reduce the goal to its premises. Establish `h2` using `congrArg Units.val h1`. Rewrite using `[Units.val_one, map_one]`. Conclude with `h2`. Introduce `g m`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(κS (toGS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))) g.1) : k) * m = m`. Establish `h1 : κ g.1 = 1` using `(hD0 (Av ⟨v₀, hv₀⟩) (hAv ⟨v₀, hv₀⟩) g.2).1`. Rewrite using `[hκS', h1, Units.val_one, one_mul]`. Take `⟨z, hz, hzB, hzloc⟩` from `st_count hP.1.gf hP.gw Ω l hl2 k S ρ hSA hcont μ hμ Av hAv σ hσ hfix hdual ⟨v₀, hv₀⟩ hother hloc`. Rewrite `hz` using `[mem_Z1_iff_cocycle]`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨hzc, hzco⟩` from `hz`. Establish `hz1 : z 1 = 0`. Establish `h1` using `hzco 1 1`. Rewrite `h1` using `[mul_one, hρ, map_one, Units.val_one, one_mul]`. Take the linear combination `(-1 : k) * h1`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun s => z (toGS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))) s), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `((IsLocallyConstant.iff_continuous z).2 hzc).comp_continuous (continuous_toGS' Ω _)`. Introduce `s t`. Simplify using `only [map_mul]`. Rewrite using `[hzco, hρ, hκS']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨b, hb⟩`. Apply `hzB` to reduce the goal to its premises. Rewrite using `[mem_coboundaries1]`. Use `⟨b, fun g => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `toGS_surjective' Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))) g`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `hbs` using `hb s`. Use `beta_reduce at hbs`. Rewrite using `[hbs, hρ, hκS']`. Introduce `v hv A hA s hs`. Simplify using `only`.
-
-Rewrite using `[toGS_eq_one_of_mem_inertia_of_notMem Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))) v hv A hA s hs, hz1]`. Introduce `v hv hne`. Take `⟨m, hm⟩` from `hzloc ⟨v, hv⟩ (fun h => hne (congrArg Subtype.val h))`. Conclude with `⟨Av ⟨v, hv⟩, hAv _, m, fun s hs => by beta_reduce`. Rewrite using `[hm s hs, hρ, hκS']⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.st_sel :
     GC.Hypotheses₂ → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (k : Type) [Field k] [Finite k] [CharP k l] (κ : G ℚ Ω →* kˣ), IsOpen (κ.ker : Set (G ℚ Ω)) → (∃ σ : G ℚ Ω, IsCC σ ∧ κ σ ≠ 1) → (∃ s, κ s ≠ GC.cycF ℚ Ω l k s) → ∀ S : Finset (HeightOneSpectrum (𝓞 ℚ)), ContainsAbove S l → (∀ v ∉ S, ∀ A : ValuationSubring Ω, IsPlaceOver A v → Ine (F := ℚ) A ≤ κ.ker) → ∀ v₀ ∈ S, ((l : ℕ) : 𝓞 ℚ) ∉ v₀.asIdeal → (∀ A : ValuationSubring Ω, IsPlaceOver A v₀ → Dec (F := ℚ) A ≤ κ.ker ⊓ (GC.cycF ℚ Ω l k).ker) → (∀ v ∈ S, v ≠ v₀ → ∀ A : ValuationSubring Ω, IsPlaceOver A v → ∃ s ∈ Dec (F := ℚ) A, κ s ≠ 1) → ∃ y : G ℚ Ω → k, IsLocallyConstant y ∧ (∀ s t, y (s * t) = y s + κ s * y t) ∧ (¬ ∃ b, ∀ s, y s = κ s * b - b) ∧ (∀ v ∉ S, ∀ A : ValuationSubring Ω, IsPlaceOver A v → ∀ s ∈ Ine (F := ℚ) A, y s = 0) ∧ ∀ v ∈ S, v ≠ v₀ → ∃ A : ValuationSubring Ω, IsPlaceOver A v ∧ ∃ b, ∀ s ∈ Dec (F := ℚ) A, y s = κ s * b - b := by

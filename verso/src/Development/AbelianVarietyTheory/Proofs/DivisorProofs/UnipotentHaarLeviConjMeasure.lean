@@ -19,31 +19,25 @@ noncomputable section
 namespace GlobalTheory.LeviConjHaar
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n n₁ Y Y₁ H r s i₀ i₁ hB hY hH t m hm μN hμ S`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Use `letI mE : MeasurableSpace (AE F E) := borel _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (AE F E) := ⟨rfl⟩`. Use `letI mF : MeasurableSpace (AF F) := borel _`. Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Take `⟨hTG, -, -, -⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ n Y.J`. Use `haveI := hTG`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : BorelSpace (UA σ Y.J) := ⟨rfl⟩`. Take `⟨Φ, β, hβ, hmul, hconj⟩` from `GlobalTheory.T.heisenberg_unipotent_coordinates F E σ B n n₁ Y Y₁ H r s i₀ i₁ hB hY hH`. Establish `hcm` using `hB.cm`. Use `set lam : (AE F E)ˣ := Units.map (cA σ : AE F E →* AE F E) t with hlam`. Establish `hlam' : absE F E lam = absE F E t` using `GlobalTheory.Doubling.absE_conjUnit σ t`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set Nt : (AF F)ˣ := Units.map (Algebra.norm (AF F) : AE F E →* AF F) t with hNt`. Establish `h0 : (absE F E t : ENNReal) ≠ 0`. Establish `: absE F E t ≠ 0` using `fun h => by`. Use `congrArg (absE F E) (mul_inv_cancel t)` as an intermediate fact. Rewrite `this` using `[map_mul, map_one, h, zero_mul]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_ne_one this`. Conclude with `this` after adjusting the coercions. Establish `h0l : (absE F E lam : ENNReal) ≠ 0` using `by rw [hlam']; exact h0`. Set `νE : Measure (AE F E)` to `Measure.addHaar`. Set `νV : Measure (Fin n₁ → AE F E)` to `Measure.pi fun _ => νE`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Set `νZ : Measure (AF F)` to `Measure.addHaar`. Establish `hE` using `GlobalTheory.T.haar_scaling_multiplicative F E σ hcm νE inferInstance lam`. Establish `hZ` using `GlobalTheory.T.haar_scaling_norm_additive F E σ hcm νZ inferInstance t`. Establish `hV` using `GlobalTheory.T.pi_measure_map_scaling νE (fun x => (lam : AE F E) * x) (continuous_const_mul _).measurable _ (ENNReal.inv_ne_top.2 h0l) hE n₁`. Set `A : (Fin n₁ → AE F E) ≃ₜ (Fin n₁ → AE F E)` to `{ toFun := fun v => (lam : AE F E) • v, invFun := fun v => ((lam⁻¹ : (AE F E)ˣ) : AE F E) • v, left_inv := fun v => by simp [smul_smul], right_inv := fun v => by simp [smul_smul], continuous_toFun := continuous_const_smul _, continuous_invFun := continuous_const_smul _ }`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `C : AF F ≃ₜ AF F` to `{ toFun := fun v => (Nt : AF F) * v, invFun := fun v => ((Nt⁻¹ : (AF F)ˣ) : AF F) * v, left_inv := fun v => by simp [← mul_assoc], right_inv := fun v => by simp [← mul_assoc], continuous_toFun := continuous_const_mul _, continuous_invFun := continuous_const_mul _ }`. Set `f : unip σ Y H → unip σ Y H` to `fun u => ⟨m * u.1 * m⁻¹, (hconj t m hm u).1⟩`. Establish `hf : ∀ u, Φ (f u) = (A (Φ u).1, C (Φ u).2)` using `fun u => (hconj t m hm u).2`. Establish `hVA : νV.map A = ((absE F E t : ENNReal))⁻¹ ^ n₁ • νV`. Rewrite using `[← hlam']`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hV`. Establish `hk` using `GlobalTheory.T.locally_compact_group_fubini_schwartz νV νZ inferInstance inferInstance Φ β hβ hmul f A C _ _ (ENNReal.pow_ne_top (ENNReal.inv_ne_top.2 h0)) (ENNReal.inv_ne_top.2 h0) hVA hZ hf μN hμ S`. Establish `hset : Subtype.val ⁻¹' ((fun g => m⁻¹ * g * m) '' (Subtype.val '' S)) = f ⁻¹' S`. Use extensionality with `u`. Simplify using `only [Set.mem_preimage, Set.mem_image, f]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨s, hs, rfl⟩, hsu⟩`. Establish `: s = ⟨m * u.1 * m⁻¹, (hconj t m hm u).1⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[← hsu, mul_assoc]`.
-
-Rewrite using `[← this]`. Conclude with `hs`. Introduce `hu`. Conclude with `⟨_, ⟨_, hu, rfl⟩, by simp [mul_assoc]⟩`. Rewrite using `[hset, hk]`.
-
-Establish `hn : (n : ℝ) - 1 = ((n₁ + 1 : ℕ) : ℝ)` using `by rw [hH.rank]; push_cast; ring`. Rewrite using `[hn, Real.rpow_natCast]`. Establish `h1 : (absE F E t : ENNReal) ≠ ⊤` using `by simp`. Rewrite using `[ENNReal.ofReal_pow (NNReal.coe_nonneg _), ENNReal.ofReal_coe_nnreal]`. Establish `key : (absE F E t : ENNReal) ^ (n₁ + 1) * ((absE F E t : ENNReal)⁻¹ ^ n₁ * (absE F E t : ENNReal)⁻¹) = 1`.
-
-Rewrite using `[← pow_succ, ← ENNReal.inv_pow, ENNReal.mul_inv_cancel (pow_ne_zero _ h0) (ENNReal.pow_ne_top h1)]`. Rewrite using `[← mul_assoc, key, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem levi_conj_haar : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁) (r s i₀ i₁ : ℕ), B.IsGood σ → Y.IsHerm σ B r s → H.IsAdapted σ B Y Y₁ i₀ i₁ → ∀ (t : (AE F E)ˣ) (m : UA σ Y.J), IsLevi (W₁ := Y₁) H (Units.map (cA σ : AE F E →* AE F E) t) 1 m → ∀ μN : Measure (unip σ Y H), μN.IsHaarMeasure → ∀ S : Set (unip σ Y H), ENNReal.ofReal ((absE F E t : ℝ) ^ ((n : ℝ) - 1)) * μN (Subtype.val ⁻¹' ((fun g => m⁻¹ * g * m) '' (Subtype.val '' S))) = μN S := by
   intro F E _ _ _ _ _ σ B n n₁ Y Y₁ H r s i₀ i₁ hB hY hH t m hm μN hμ S

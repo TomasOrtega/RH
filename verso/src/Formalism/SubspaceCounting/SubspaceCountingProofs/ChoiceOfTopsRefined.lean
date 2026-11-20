@@ -14,11 +14,11 @@ open TopsConditionalProbabilityWindows
 def Dep (S : Finset ℕ) (A : Finset ℕ → Prop) : Prop := ∀ t, A t ↔ A (t ∩ S)
 
 /- English proof (translation)
-Proceed by induction on `R using Finset.induction_on generalizing F with`. Consider the case `empty => simp`. Consider the case `insert x R hx ih`. Establish `hxS : x ∉ S` using `fun hs => disjoint_left.1 h hs (mem_insert_self x R)`. Establish `h' : Disjoint S R` using `disjoint_of_subset_right (subset_insert x R) h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[union_insert, sum_powerset_insert (by simp [hx, hxS])]`. Rewrite using `[ih h', ih h' (fun t => F (insert x t))]`. Rewrite using `[← sum_add_distrib]`. Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `a _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[sum_powerset_insert hx]`. Use `congr 1`. Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[union_insert]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_powerset_union_disj {β : Type*} [AddCommMonoid β] (S R : Finset ℕ)
     (h : Disjoint S R) (F : Finset ℕ → β) :
@@ -40,7 +40,7 @@ theorem sum_powerset_union_disj {β : Type*} [AddCommMonoid β] (S R : Finset �
     rw [union_insert]
 
 /- English proof (translation)
-Establish `hab : Disjoint a b` using `disjoint_of_subset_left ha (disjoint_of_subset_right hb h)`. Rewrite using `[card_union_of_disjoint hab, card_union_of_disjoint h]`. Establish `h1` using `card_le_card ha`. Establish `h2` using `card_le_card hb`. Rewrite using `[show S.card + R.card - (a.card + b.card) = (S.card - a.card) + (R.card - b.card) by omega, pow_add, pow_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -56,11 +56,11 @@ theorem w_union {S R a b : Finset ℕ} (δ : ℝ) (h : Disjoint S R) (ha : a ⊆
   ring
 
 /- English proof (translation)
-Unfold `P`. Use `beta_reduce`. Rewrite using `[sum_powerset_union_disj S R h, sum_mul_sum]`. Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `a ha`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `b hb`. Establish `ha'` using `mem_powerset.1 ha`. Establish `hb'` using `mem_powerset.1 hb`. Establish `e1 : (a ∪ b) ∩ S = a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[union_inter_distrib_right, inter_eq_left.2 ha', disjoint_iff_inter_eq_empty.1 (disjoint_of_subset_left hb' h.symm), union_empty]`. Establish `e2 : (a ∪ b) ∩ R = b`. Rewrite using `[union_inter_distrib_right, inter_eq_left.2 hb', disjoint_iff_inter_eq_empty.1 (disjoint_of_subset_left ha' h), empty_union]`. Rewrite using `[e1, e2, w_union δ h ha' hb']`. Apply the tactic sequence `by_cases hA : A a <;> by_cases hB : B b <;> simp [hA, hB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem prob_and_eq_mul_of_disjoint (S R : Finset ℕ) (δ : ℝ) (h : Disjoint S R) (A B : Finset ℕ → Prop) :
     P (S ∪ R) δ (fun t => A (t ∩ S) ∧ B (t ∩ R)) = P S δ A * P R δ B := by
@@ -84,7 +84,7 @@ theorem prob_and_eq_mul_of_disjoint (S R : Finset ℕ) (δ : ℝ) (h : Disjoint 
   by_cases hA : A a <;> by_cases hB : B b <;> simp [hA, hB]
 
 /- English proof (translation)
-Unfold `P`. Simplify using `only [if_true]`. Rewrite using `[sum_pow_mul_eq_add_pow]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prob_true (S : Finset ℕ) (δ : ℝ) : P S δ (fun _ => True) = 1 := by
   unfold P
@@ -93,9 +93,7 @@ theorem prob_true (S : Finset ℕ) (δ : ℝ) : P S δ (fun _ => True) = 1 := by
   simp
 
 /- English proof (translation)
-Unfold `P`. Apply `sum_nonneg` to reduce the goal to its premises. Introduce `t _`. Use `split_ifs`. Conclude with `w_nonneg h0 h1 _ _`.
-
-Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem P_nonneg {U : Finset ℕ} {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (A : Finset ℕ → Prop) :
     0 ≤ P U δ A := by
@@ -108,7 +106,7 @@ theorem P_nonneg {U : Finset ℕ} {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (A 
   · exact le_rfl
 
 /- English proof (translation)
-Establish `h` using `prob_and_eq_mul_of_disjoint S (U \ S) δ disjoint_sdiff A (fun _ => True)`. Rewrite `h` using `[prob_true, mul_one]`. Simplify using `only [and_true] at h`. Rewrite using `[← h, union_sdiff_of_subset hS]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prob_marginal {U S : Finset ℕ} (δ : ℝ) (hS : S ⊆ U) (A : Finset ℕ → Prop) :
     P U δ (fun t => A (t ∩ S)) = P S δ A := by
@@ -118,7 +116,7 @@ theorem prob_marginal {U S : Finset ℕ} (δ : ℝ) (hS : S ⊆ U) (A : Finset �
   rw [← h, union_sdiff_of_subset hS]
 
 /- English proof (translation)
-Rewrite using `[← prob_marginal δ hS A]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `propext (hA t)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem prob_eq_of_dependsOn {U S : Finset ℕ} (δ : ℝ) (hS : S ⊆ U) {A : Finset ℕ → Prop} (hA : Dep S A) :
     P U δ A = P S δ A := by
@@ -128,11 +126,9 @@ theorem prob_eq_of_dependsOn {U S : Finset ℕ} (δ : ℝ) (hS : S ⊆ U) {A : F
   exact propext (hA t)
 
 /- English proof (translation)
-Establish `hD : Dep (S ∪ R) (fun t => A t ∧ B t)`. Introduce `t`. Establish `e1 : t ∩ (S ∪ R) ∩ S = t ∩ S` using `by rw [inter_assoc, inter_eq_right.2 subset_union_left]`. Establish `e2 : t ∩ (S ∪ R) ∩ R = t ∩ R` using `by rw [inter_assoc, inter_eq_right.2 subset_union_right]`. Use `show A t ∧ B t ↔ A (t ∩ (S ∪ R)) ∧ B (t ∩ (S ∪ R))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA (t ∩ (S ∪ R)), hB (t ∩ (S ∪ R)), e1, e2]`. Conclude with `and_congr (hA t) (hB t)`. Rewrite using `[prob_eq_of_dependsOn δ (union_subset hS hR) hD, prob_eq_of_dependsOn δ hS hA, prob_eq_of_dependsOn δ hR hB, ← prob_and_eq_mul_of_disjoint S R δ h]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
-
-Conclude with `propext (and_congr (hA t) (hB t))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem prob_and_eq_mul_of_disjoint₂ {U S R : Finset ℕ} (δ : ℝ) (hS : S ⊆ U) (hR : R ⊆ U) (h : Disjoint S R)
     {A B : Finset ℕ → Prop} (hA : Dep S A) (hB : Dep R B) :
@@ -150,15 +146,13 @@ theorem prob_and_eq_mul_of_disjoint₂ {U S R : Finset ℕ} (δ : ℝ) (hS : S �
   exact propext (and_congr (hA t) (hB t))
 
 /- English proof (translation)
-Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => simpa using prob_true U δ`. Consider the case `insert k F hk ih`. Rewrite using `[prod_insert hk]`. Establish `hS' : ∀ i ∈ F, S i ⊆ U` using `fun i hi => hS i (mem_insert_of_mem hi)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd' : ∀ i ∈ F, ∀ j ∈ F, i ≠ j → Disjoint (S i) (S j)` using `fun i hi j hj hij => hd i (mem_insert_of_mem hi) j (mem_insert_of_mem hj) hij`. Establish `hE' : ∀ i ∈ F, Dep (S i) (E i)` using `fun i hi => hE i (mem_insert_of_mem hi)`. Rewrite using `[← ih hS' hd' hE']`. Establish `hD : Dep (F.biUnion S) (fun t => ∀ i ∈ F, E i t)`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `forall₂_congr` to reduce the goal to its premises. Introduce `i hi`. Rewrite using `[hE' i hi t, hE' i hi (t ∩ F.biUnion S), inter_assoc, inter_eq_right.2 (subset_biUnion_of_mem S hi)]`. Establish `hdisj : Disjoint (S k) (F.biUnion S)`. Rewrite using `[disjoint_biUnion_right]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i hi`. Conclude with `hd k (mem_insert_self k F) i (mem_insert_of_mem hi) (fun h => hk (h ▸ hi))`. Rewrite using `[← prob_and_eq_mul_of_disjoint₂ δ (hS k (mem_insert_self k F)) (biUnion_subset.2 hS') hdisj (hE k (mem_insert_self k F)) hD]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
-
-Conclude with `propext (forall_mem_insert _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem prob_forall_eq_prod {ι : Type*} [DecidableEq ι] {U : Finset ℕ} (δ : ℝ) (F : Finset ι)
     (S : ι → Finset ℕ) (hS : ∀ i ∈ F, S i ⊆ U)
@@ -191,9 +185,9 @@ theorem prob_forall_eq_prod {ι : Type*} [DecidableEq ι] {U : Finset ℕ} (δ :
     exact propext (forall_mem_insert _ _ _)
 
 /- English proof (translation)
-Rewrite using `[← prob_true U δ, eq_sub_iff_add_eq]`. Unfold `P`. Rewrite using `[← sum_add_distrib]`. Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `t _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `by_cases h : A t <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prob_not_eq_one_sub (U : Finset ℕ) (δ : ℝ) (A : Finset ℕ → Prop) :
     P U δ (fun t => ¬ A t) = 1 - P U δ A := by
@@ -206,9 +200,9 @@ theorem prob_not_eq_one_sub (U : Finset ℕ) (δ : ℝ) (A : Finset ℕ → Prop
   by_cases h : A t <;> simp [h]
 
 /- English proof (translation)
-Unfold `P`. Rewrite using `[← sum_add_distrib]`. Apply `sum_le_sum` to reduce the goal to its premises. Introduce `t _`. Use `w_nonneg h0 h1 t.card (U.card - t.card)` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases hA : A t <;> by_cases hB : B t <;> simp [hA, hB] <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prob_or_le_add {U : Finset ℕ} {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (A B : Finset ℕ → Prop) :
     P U δ (fun t => A t ∨ B t) ≤ P U δ A + P U δ B := by
@@ -221,9 +215,7 @@ theorem prob_or_le_add {U : Finset ℕ} {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 
   by_cases hA : A t <;> by_cases hB : B t <;> simp [hA, hB] <;> linarith
 
 /- English proof (translation)
-Unfold `P`. Use `le_trans (le_of_eq (sum_congr rfl fun t ht => ?_)) (sum_le_sum_of_subset_of_nonneg (fun t ht => mem_powerset.2 (hF t ht).1) ?_)` and prove the remaining obligations. Rewrite using `[if_pos (hF t ht).2]`. Introduce `t _ _ split_ifs`. Conclude with `w_nonneg h0 h1 _ _`.
-
-Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_le_prob {S : Finset ℕ} {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) {A : Finset ℕ → Prop}
     (Fam : Finset (Finset ℕ)) (hF : ∀ t ∈ Fam, t ⊆ S ∧ A t) :
@@ -239,11 +231,11 @@ theorem sum_le_prob {S : Finset ℕ} {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) 
     · exact le_rfl
 
 /- English proof (translation)
-Unfold `P binUpper`. Use `beta_reduce`. Apply the tactic sequence `rw [show (∑ t ∈ S.powerset, _) = ∑ t ∈ S.powerset, (fun j => if N ≤ j then δ ^ j * (1 - δ) ^ (S.card - j) else 0) t.card from sum_congr rfl (fun t _ => by by_cases h : N ≤ t.card <;> simp [h])]`. Rewrite using `[sum_powerset_apply_card (fun j => if N ≤ j then δ ^ j * (1 - δ) ^ (S.card - j) else 0)]`. Simplify using `only [nsmul_eq_mul, mul_ite, mul_zero]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sum_filter]`. Establish `hs : (range (S.card + 1)).filter (fun j => N ≤ j) = Icc N S.card`. Use extensionality with `j`. Simplify using `only [mem_filter, mem_range, mem_Icc]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem prob_le_card_eq_binUpper (S : Finset ℕ) (δ : ℝ) (N : ℕ) :
     P S δ (fun a => N ≤ a.card) = binUpper S.card δ N := by
@@ -266,9 +258,9 @@ theorem prob_le_card_eq_binUpper (S : Finset ℕ) (δ : ℝ) (N : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `e1` using `prob_le_card_eq_binUpper (range m) δ N`. Establish `e2` using `prob_le_card_eq_binUpper (range G) δ N`. Rewrite `e1`, `e2` using `[card_range]`. Rewrite using `[← e1, ← e2, ← prob_marginal δ (range_subset_range.2 h)]`. Apply `P_mono h0 h1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `t _ hN`. Conclude with `hN.trans (card_le_card inter_subset_left)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem binUpper_mono_trials {m G : ℕ} (h : m ≤ G) {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (N : ℕ) :
     binUpper m δ N ≤ binUpper G δ N := by
@@ -281,7 +273,7 @@ theorem binUpper_mono_trials {m G : ℕ} (h : m ≤ G) {δ : ℝ} (h0 : 0 ≤ δ
   exact hN.trans (card_le_card inter_subset_left)
 
 /- English proof (translation)
-Unfold `binUpper`. Apply `sum_le_sum_of_subset_of_nonneg (Icc_subset_Icc (Nat.sub_le N 1) le_rfl)` to reduce the goal to its premises. Introduce `j _ _`. Establish `: 0 ≤ 1 - δ` using `by linarith`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem binUpper_mono_N (G : ℕ) {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (N : ℕ) :
     binUpper G δ N ≤ binUpper G δ (N - 1) := by
@@ -303,7 +295,7 @@ def EC (r u s c : ℕ) (t : Finset ℕ) : Prop :=
   (Odd c → t ∩ cell r u s c = ∅) ∧ (Even c → ∃ x, t ∩ cell r u s c = {x} ∧ Even x)
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, c = k + 1` from `⟨c - 1, by omega⟩`. Unfold `cell`. Simplify using `only [Nat.add_sub_cancel]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cell_eq {r u s c : ℕ} (hc : 1 ≤ c) :
     cell r u s c = Ico (s * ((6 * r + 1) * u) + (c - 1) * u)
@@ -315,16 +307,16 @@ theorem cell_eq {r u s c : ℕ} (hc : 1 ≤ c) :
   ring
 
 /- English proof (translation)
-Rewrite using `[cell_eq hc, Nat.card_Ico]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cell_card {r u s c : ℕ} (hc : 1 ≤ c) : (cell r u s c).card = u := by
   rw [cell_eq hc, Nat.card_Ico]
   omega
 
 /- English proof (translation)
-Rewrite using `[cell_eq hc]`. Unfold `tile`. Establish `h1 : (c - 1) * u + u ≤ (6 * r + 1) * u`. Use `Nat.mul_le_mul_right u (show c - 1 + 1 ≤ 6 * r + 1 by omega)` as an intermediate fact. Rewrite `this` using `[add_mul, one_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : (s + 1) * ((6 * r + 1) * u) = s * ((6 * r + 1) * u) + (6 * r + 1) * u` using `by ring`. Apply the tactic sequence `apply Ico_subset_Ico <;> omega`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cell_sub_tile {r u s c : ℕ} (hc : 1 ≤ c) (hc' : c ≤ 6 * r + 1) :
     cell r u s c ⊆ tile r u s := by
@@ -337,9 +329,9 @@ theorem cell_sub_tile {r u s c : ℕ} (hc : 1 ≤ c) (hc' : c ≤ 6 * r + 1) :
   apply Ico_subset_Ico <;> omega
 
 /- English proof (translation)
-Rewrite using `[cell_eq hc, cell_eq hc']`. Break down `lt_or_gt_of_ne h with h | h` into its components or cases. Establish `: (c - 1) * u + u ≤ (c' - 1) * u`. Use `Nat.mul_le_mul_right u (show c - 1 + 1 ≤ c' - 1 by omega)` as an intermediate fact. Rewrite `this` using `[add_mul, one_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `disjoint_left.2 fun x hx hx' => by rw [mem_Ico] at hx hx'; omega`. Establish `: (c' - 1) * u + u ≤ (c - 1) * u`. Use `Nat.mul_le_mul_right u (show c' - 1 + 1 ≤ c - 1 by omega)` as an intermediate fact. Rewrite `this` using `[add_mul, one_mul]`. Then use the resulting hypothesis. Conclude with `disjoint_left.2 fun x hx hx' => by rw [mem_Ico] at hx hx'; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cell_disjoint {r u s c c' : ℕ} (hc : 1 ≤ c) (hc' : 1 ≤ c') (h : c ≠ c') :
     Disjoint (cell r u s c) (cell r u s c') := by
@@ -355,9 +347,7 @@ theorem cell_disjoint {r u s c c' : ℕ} (hc : 1 ≤ c) (hc' : 1 ≤ c') (h : c 
     exact disjoint_left.2 fun x hx hx' => by rw [mem_Ico] at hx hx'; omega
 
 /- English proof (translation)
-Unfold `tile`. Break down `lt_or_gt_of_ne h with h | h` into its components or cases. Use `Nat.mul_le_mul_right ((6 * r + 1) * u) (show s + 1 ≤ s' by omega)` as an intermediate fact. Conclude with `disjoint_left.2 fun x hx hx' => by rw [mem_Ico] at hx hx'; omega`. Use `Nat.mul_le_mul_right ((6 * r + 1) * u) (show s' + 1 ≤ s by omega)` as an intermediate fact.
-
-Conclude with `disjoint_left.2 fun x hx hx' => by rw [mem_Ico] at hx hx'; omega`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tile_disjoint {r u s s' : ℕ} (h : s ≠ s') : Disjoint (tile r u s) (tile r u s') := by
   unfold tile
@@ -368,9 +358,9 @@ theorem tile_disjoint {r u s s' : ℕ} (h : s ≠ s') : Disjoint (tile r u s) (t
     exact disjoint_left.2 fun x hx hx' => by rw [mem_Ico] at hx hx'; omega
 
 /- English proof (translation)
-Establish `h` using `card_le_card_of_injOn (s := range (u / 2)) (t := (Ico a (a + u)).filter Even) (fun k => a + a % 2 + 2 * k) ?_ ?_`. Simplify using `using h`. Introduce `k hk`. Simplify using `only [coe_range, Set.mem_Iio] at hk`. Simplify using `only [coe_filter, Set.mem_ofPred_eq, mem_Ico]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨⟨by omega, by omega⟩, ⟨a / 2 + a % 2 + k, by omega⟩⟩` and prove the remaining obligations. Introduce `k1 _ k2 _ h`. Simplify using `only at h`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem even_card (a u : ℕ) : u / 2 ≤ ((Ico a (a + u)).filter Even).card := by
   have h := card_le_card_of_injOn (s := range (u / 2)) (t := (Ico a (a + u)).filter Even)
@@ -385,7 +375,7 @@ theorem even_card (a u : ℕ) : u / 2 ≤ ((Ico a (a + u)).filter Even).card := 
     omega
 
 /- English proof (translation)
-Unfold `Marked EC`. Simplify using `only [mem_Icc, and_imp]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem marked_iff (t : Finset ℕ) (r u s : ℕ) :
     Marked t r u s ↔ ∀ c ∈ Icc 1 (6 * r + 1), EC r u s c t := by
@@ -393,7 +383,7 @@ theorem marked_iff (t : Finset ℕ) (r u s : ℕ) :
   simp only [mem_Icc, and_imp]
 
 /- English proof (translation)
-Introduce `t`. Unfold `EC`. Rewrite using `[inter_assoc, inter_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dep_EC (r u s c : ℕ) : Dep (cell r u s c) (EC r u s c) := by
   intro t
@@ -401,9 +391,9 @@ theorem dep_EC (r u s c : ℕ) : Dep (cell r u s c) (EC r u s c) := by
   rw [inter_assoc, inter_self]
 
 /- English proof (translation)
-Unfold `Marked`. Apply `forall_congr'` to reduce the goal to its premises. Introduce `c`. Apply `imp_congr_right` to reduce the goal to its premises. Introduce `hc`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `imp_congr_right` to reduce the goal to its premises. Introduce `hc'`. Rewrite using `[inter_assoc, inter_eq_right.2 (cell_sub_tile hc hc')]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem marked_inter (t : Finset ℕ) (r u s : ℕ) :
     Marked t r u s ↔ Marked (t ∩ tile r u s) r u s := by
@@ -417,7 +407,7 @@ theorem marked_inter (t : Finset ℕ) (r u s : ℕ) :
   rw [inter_assoc, inter_eq_right.2 (cell_sub_tile hc hc')]
 
 /- English proof (translation)
-Unfold `tile at h`. Rewrite `h` using `[mem_Ico]`. Conclude with `Nat.div_eq_of_lt_le h.1 h.2`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tile_div {r u s x : ℕ} (h : x ∈ tile r u s) : x / ((6 * r + 1) * u) = s := by
   unfold tile at h
@@ -425,9 +415,9 @@ theorem tile_div {r u s x : ℕ} (h : x ∈ tile r u s) : x / ((6 * r + 1) * u) 
   exact Nat.div_eq_of_lt_le h.1 h.2
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx'` using `hx`. Unfold `tile at hx`. Rewrite `hx` using `[mem_Ico]`. Establish `h2` using `Nat.mul_le_mul_right ((6 * r + 1) * u) (show s + 1 ≤ n / ((6 * r + 1) * u) by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `Nat.div_mul_le_self n ((6 * r + 1) * u)`. Rewrite using `[mem_erase, mem_range]`. Use `⟨fun hxi => hnot (hxi ▸ hx'), by omega⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem tile_sub' {n r u s i₀ : ℕ} (hs : s < n / ((6 * r + 1) * u)) (hnot : i₀ ∉ tile r u s) :
     tile r u s ⊆ (range n).erase i₀ := by
@@ -441,9 +431,9 @@ theorem tile_sub' {n r u s i₀ : ℕ} (hs : s < n / ((6 * r + 1) * u)) (hnot : 
   refine ⟨fun hxi => hnot (hxi ▸ hx'), by omega⟩
 
 /- English proof (translation)
-Unfold `Marked`. Apply `forall_congr'` to reduce the goal to its premises. Introduce `c`. Apply `imp_congr_right` to reduce the goal to its premises. Introduce `hc`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `imp_congr_right` to reduce the goal to its premises. Introduce `hc'`. Rewrite using `[insert_inter_of_notMem (fun h => hnot (cell_sub_tile hc hc' h))]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem marked_insert (t : Finset ℕ) {r u s i₀ : ℕ} (hnot : i₀ ∉ tile r u s) :
     Marked (insert i₀ t) r u s ↔ Marked t r u s := by
@@ -457,9 +447,9 @@ theorem marked_insert (t : Finset ℕ) {r u s i₀ : ℕ} (hnot : i₀ ∉ tile 
   rw [insert_inter_of_notMem (fun h => hnot (cell_sub_tile hc hc' h))]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[show 2 * (m + 1) + 1 = (2 * m + 2) + 1 by ring, prod_Icc_succ_top (by omega), show 2 * m + 2 = (2 * m + 1) + 1 by ring, prod_Icc_succ_top (by omega), ih]`. Establish `h1 : ¬ Odd (2 * m + 1 + 1)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.not_odd_iff_even]`. Conclude with `⟨m + 1, by ring⟩`. Establish `h2 : Odd (2 * m + 1 + 1 + 1)` using `⟨m + 1, by ring⟩`. Rewrite using `[if_neg h1, if_pos h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_g (X Y : ℝ) (m : ℕ) :
     ∏ c ∈ Icc 1 (2 * m + 1), (if Odd c then X else Y) = X ^ (m + 1) * Y ^ m := by
@@ -476,15 +466,15 @@ theorem prod_g (X Y : ℝ) (m : ℕ) :
     ring
 
 /- English proof (translation)
-Rewrite using `[prob_eq_of_dependsOn δ hU (dep_EC r u s c)]`. Use `split_ifs with hodd`. Use `sum_le_prob (S := cell r u s c) (A := EC r u s c) h0 h1 {∅} (by` as an intermediate fact. Introduce `t ht`. Rewrite `ht` using `[mem_singleton]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `ht` using the available equality. Conclude with `⟨empty_subset _, fun _ => empty_inter _, fun he => absurd hodd (Nat.not_odd_iff_even.2 he)⟩)`. Simplify `this` using `[cell_card hc]`. Establish `hev : Even c` using `Nat.not_odd_iff_even.1 hodd`. Use `sum_le_prob (S := cell r u s c) (A := EC r u s c) h0 h1 (((cell r u s c).filter Even).image (fun x => {x})) (by` as an intermediate fact.
+Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Rewrite `ht` using `[mem_image]`. Take `⟨x, hx, rfl⟩` from `ht`. Rewrite `hx` using `[mem_filter]`. Conclude with `⟨singleton_subset_iff.2 hx.1, fun ho => absurd ho hodd, fun _ => ⟨x, inter_eq_left.2 (singleton_subset_iff.2 hx.1), hx.2⟩⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[sum_image (fun x _ y _ h => singleton_injective h)]`. Simplify using `only [card_singleton, pow_one, cell_card hc, sum_const, nsmul_eq_mul] at this`. Use `le_trans ?_ this` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Apply `mul_le_mul_of_nonneg_right _ (mul_nonneg h0 (pow_nonneg (by linarith) _))` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `even_card (s * ((6 * r + 1) * u) + (c - 1) * u) u` as an intermediate fact. Rewrite `this` using `[← cell_eq hc]`. Conclude with `this` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EC_ge {U : Finset ℕ} {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) {r u s c : ℕ} (hc : 1 ≤ c)
     (hU : cell r u s c ⊆ U) :
@@ -519,13 +509,13 @@ theorem EC_ge {U : Finset ℕ} {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) {r u s
     exact_mod_cast this
 
 /- English proof (translation)
-Establish `hcU : ∀ c ∈ Icc 1 (6 * r + 1), cell r u s c ⊆ U` using `fun c hc => (cell_sub_tile (mem_Icc.1 hc).1 (mem_Icc.1 hc).2).trans hT`. Establish `e : P U δ (fun t => Marked t r u s) = ∏ c ∈ Icc 1 (6 * r + 1), P U δ (EC r u s c)`. Rewrite using `[← prob_forall_eq_prod δ (Icc 1 (6 * r + 1)) (cell r u s) hcU (fun c hc c' hc' hne => cell_disjoint (mem_Icc.1 hc).1 (mem_Icc.1 hc').1 hne) (EC r u s) (fun c _ => dep_EC r u s c)]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `propext (marked_iff t r u s)`. Rewrite using `[e]`. Establish `hg` using `prod_g ((1 - δ) ^ u) (((u / 2 : ℕ) : ℝ) * δ * (1 - δ) ^ (u - 1)) (3 * r)`. Rewrite `hg` using `[show 2 * (3 * r) + 1 = 6 * r + 1 by ring]`. Unfold `markedBound`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg]`. Apply `prod_le_prod` to reduce the goal to its premises. Introduce `c _`. Establish `: 0 ≤ 1 - δ` using `by linarith`. Use `split_ifs`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Check the signs of the components of the expression. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Check the signs of the components of the expression. Introduce `c hc`. Conclude with `EC_ge h0 h1 (mem_Icc.1 hc).1 (hcU c hc)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem marked_ge {U : Finset ℕ} {δ : ℝ} {r u s : ℕ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1)
     (hT : tile r u s ⊆ U) :
@@ -562,13 +552,13 @@ namespace TopsChoiceProbabilityLemmas
 open TopsConditionalProbabilityWindows
 
 /- English proof (translation)
-Establish `h0 : i₀ ∈ range n` using `mem_range.2 hi`. Establish `hU : range n = insert i₀ ((range n).erase i₀)` using `(insert_erase h0).symm`. Establish `hc : ((range n).erase i₀).card = n - 1` using `by rw [card_erase_of_mem h0, card_range]`. Unfold `condProbAt P`. Use `conv_lhs => rw [hU]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_powerset_insert (notMem_erase i₀ _)]`. Rewrite using `[sum_eq_zero (fun t ht => ?_), zero_add]`. Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `t ht`. Establish `h0t : i₀ ∉ t` using `fun h => notMem_erase i₀ (range n) (mem_powerset.1 ht h)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnt : n - (t.card + 1) = n - 1 - t.card` using `by omega`. Rewrite using `[card_insert_of_notMem h0t, hc, hnt]`. Distinguish the cases in `hA : A (insert i₀ t)`. Rewrite using `[if_pos ⟨mem_insert_self i₀ t, hA⟩, if_pos hA]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h => hA h.2), if_neg hA]`. Establish `h0t : i₀ ∉ t` using `fun h => notMem_erase i₀ (range n) (mem_powerset.1 ht h)`. Rewrite using `[if_neg (fun h => h0t h.1)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem condProbAt_eq (n : ℕ) (δ : ℝ) (i₀ : ℕ) (hi : i₀ < n) (A : Finset ℕ → Prop) :
     condProbAt n δ i₀ A = P ((range n).erase i₀) δ (fun t => A (insert i₀ t)) := by
@@ -593,11 +583,9 @@ theorem condProbAt_eq (n : ℕ) (δ : ℝ) (i₀ : ℕ) (hi : i₀ < n) (A : Fin
     rw [if_neg (fun h => h0t h.1)]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Introduce `x hx`. Rewrite `hx` using `[mem_inter, mem_insert]`. Rewrite using `[mem_insert, mem_inter, mem_erase]`. Distinguish the cases in `h : x = a`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `left`. Conclude with `h`. Use `right`. Break down `hx with ⟨hx | hx, hw⟩` into its components or cases. Conclude with `absurd hx h`.
-
-Conclude with `⟨hx, h, hw⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_insert_inter (a : ℕ) (t W : Finset ℕ) :
     (insert a t ∩ W).card ≤ (t ∩ W.erase a).card + 1 := by
@@ -614,17 +602,15 @@ theorem card_insert_inter (a : ℕ) (t W : Finset ℕ) :
     · exact ⟨hx, h, hw⟩
 
 /- English proof (translation)
-Set `F : ℕ → Finset (Finset ℕ)` to `fun i => powersetCard K ((window n i L₂).erase i₀)`. Combine the equalities or inequalities in the displayed calculation. Apply `P_mono h0 h1` to reduce the goal to its premises. Introduce `t _ h`. Unfold `CondA at h`.
+Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `push Not at h`. Take `⟨i, hi, hK⟩` from `h`. Establish `hc` using `card_insert_inter i₀ t (window n i L₂)`. Take `⟨S, hS, hSc⟩` from `exists_subset_card_eq (show K ≤ (t ∩ (window n i L₂).erase i₀).card by omega)`. Conclude with `⟨i, mem_range.2 hi, S, mem_powersetCard.2 ⟨hS.trans inter_subset_right, hSc⟩, hS.trans inter_subset_left⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `_ ≤ ∑ i ∈ range n, P ((range n).erase i₀) δ (fun t => ∃ S ∈ F i, S ⊆ t) := prob_exists_le_sum h0 h1 (range n) (fun i t => ∃ S ∈ F i, S ⊆ t)`. Use `_ ≤ ∑ i ∈ range n, ∑ S ∈ F i, P ((range n).erase i₀) δ (fun t => S ⊆ t) := sum_le_sum fun i _ => prob_exists_le_sum h0 h1 (F i) (fun S t => S ⊆ t)`. Use `_ = ∑ i ∈ range n, ∑ S ∈ F i, δ ^ S.card := by`. Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `i _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `S hS`. Apply `prob_subset_eq_pow_card` to reduce the goal to its premises. Conclude with `(mem_powersetCard.1 hS).1.trans (erase_subset_erase i₀ (window_subset n i L₂ hn))`. Use `_ = ∑ i ∈ range n, (((window n i L₂).erase i₀).card.choose K : ℝ) * δ ^ K := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[sum_congr rfl (fun S hS => by rw [(mem_powersetCard.1 hS).2]), sum_const, card_powersetCard, nsmul_eq_mul]`. Use `_ ≤ ∑ i ∈ range n, (L₂.choose K : ℝ) * δ ^ K := by`. Apply `sum_le_sum` to reduce the goal to its premises.
-
-Introduce `i _`. Apply `mul_le_mul_of_nonneg_right _ (pow_nonneg h0 _)` to reduce the goal to its premises. Conclude with `Nat.choose_le_choose K (card_erase_le.trans (window_card n i L₂))` after adjusting the coercions. Use `_ = _ := by rw [sum_const, card_range, nsmul_eq_mul]; ring`.
+A detailed English derivation is pending.
 -/
 theorem partA (n : ℕ) (δ : ℝ) (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (L₂ K i₀ : ℕ) (hn : 1 ≤ n) :
     P ((range n).erase i₀) δ (fun t => ¬ CondA n (insert i₀ t) L₂ K) ≤
@@ -666,13 +652,11 @@ theorem partA (n : ℕ) (δ : ℝ) (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (L₂ K i₀ 
     _ = _ := by rw [sum_const, card_range, nsmul_eq_mul]; ring
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Apply `P_mono h0 h1` to reduce the goal to its premises. Introduce `t _ h`. Unfold `CondIntervals at h`. Use `push Not at h`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, hN⟩` from `h`. Establish `hc` using `card_insert_inter i₀ t (window n i G')`. Conclude with `⟨i, mem_range.2 hi, by omega⟩`. Use `_ ≤ ∑ i ∈ range n, P ((range n).erase i₀) δ (fun t => N₁ ≤ (t ∩ (window n i G').erase i₀).card) := prob_exists_le_sum h0 h1 (range n) (fun i t => N₁ ≤ (t ∩ (window n i G').erase i₀).card)`. Use `_ = ∑ i ∈ range n, binUpper ((window n i G').erase i₀).card δ N₁ := by`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Conclude with `(prob_marginal δ (erase_subset_erase i₀ (window_subset n i G' hn)) (fun a => N₁ ≤ a.card)).trans (prob_le_card_eq_binUpper _ δ N₁)`. Use `_ ≤ ∑ i ∈ range n, binUpper G' δ (N₁ - 1) := by`. Apply `sum_le_sum` to reduce the goal to its premises.
-
-Introduce `i _`. Conclude with `(binUpper_mono_trials (card_erase_le.trans (window_card n i G')) h0 h1 N₁).trans (binUpper_mono_N G' h0 h1 N₁)`. Use `_ = _ := by rw [sum_const, card_range, nsmul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem partC (n : ℕ) (δ : ℝ) (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (G' N₁ i₀ : ℕ) (hn : 1 ≤ n) :
     P ((range n).erase i₀) δ (fun t => ¬ CondIntervals n (insert i₀ t) G' N₁) ≤
@@ -703,21 +687,19 @@ theorem partC (n : ℕ) (δ : ℝ) (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (G' N₁ i₀
     _ = _ := by rw [sum_const, card_range, nsmul_eq_mul]
 
 /- English proof (translation)
-Establish `hℓpos : 0 < (6 * r + 1) * u` using `Nat.mul_pos (by omega) (by omega)`. Establish `hM : M₀ + 1 ≤ n / ((6 * r + 1) * u)` using `(Nat.le_div_iff_mul_le hℓpos).2 hn`. Use `set tt := n / ((6 * r + 1) * u) with htt`. Use `set J := (range (M₀ + 1)).image (fun j => (s₀ + j) % tt) with hJdef`. Establish `hJ : J.card = M₀ + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[card_image_of_injOn, card_range]`. Introduce `j hj j' hj' h`. Simplify using `only [coe_range, Set.mem_Iio] at hj hj'`. Use `Nat.ModEq.add_left_cancel' s₀ h` as an intermediate fact. Unfold `Nat.ModEq at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[Nat.mod_eq_of_lt (by omega), Nat.mod_eq_of_lt (by omega)]`. Then use the resulting hypothesis. Establish `hF : M₀ ≤ (J.erase (i₀ / ((6 * r + 1) * u))).card`. Use `pred_card_le_card_erase (s := J) (a := i₀ / ((6 * r + 1) * u))` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨F, hFs, hFc⟩` from `exists_subset_card_eq hF`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hFmem : ∀ s ∈ F, s ≠ i₀ / ((6 * r + 1) * u) ∧ s < tt ∧ ∃ j ≤ M₀, (s₀ + j) % tt = s`. Introduce `s hs`. Use `hFs hs` as an intermediate fact. Rewrite `this` using `[mem_erase, mem_image]`. Take `⟨hs0, j, hj, hjs⟩` from `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨hs0, hjs ▸ Nat.mod_lt _ (by omega), j, by have := mem_range.1 hj; omega, hjs⟩`. Establish `hnot : ∀ s ∈ F, i₀ ∉ tile r u s` using `fun s hs hmem => (hFmem s hs).1 (tile_div hmem).symm`. Establish `hsub : ∀ s ∈ F, tile r u s ⊆ (range n).erase i₀` using `fun s hs => tile_sub' (hFmem s hs).2.1 (hnot s hs)`. Combine the equalities or inequalities in the displayed calculation. Apply `P_mono h0 h1` to reduce the goal to its premises.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `t _ h s hs`. Take `⟨_, _, j, hj, hjs⟩` from `hFmem s hs`. Rewrite using `[← marked_insert t (hnot s hs), ← hjs]`. Conclude with `h j hj`. Use `_ = ∏ s ∈ F, P ((range n).erase i₀) δ (fun t => ¬ Marked t r u s) := prob_forall_eq_prod δ F (tile r u) hsub (fun s _ s' _ hne => tile_disjoint hne) (fun s t => ¬ Marked t r u s) (fun s _ t => not_congr (marked_inter t r u s))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ ∏ s ∈ F, (1 - markedBound δ r u) := by`. Apply `prod_le_prod` to reduce the goal to its premises. Introduce `s _`. Conclude with `P_nonneg h0 h1 _`. Introduce `s hs`.
-
-Rewrite using `[prob_not_eq_one_sub]`. Combine the linear relations using `[marked_ge (r := r) (u := u) (s := s) h0 h1 (hsub s hs)]`. Use `_ = _ := by rw [prod_const, hFc]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tiles_bound {n : ℕ} {δ : ℝ} {r u M₀ i₀ : ℕ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (hu : 1 ≤ u)
     (hn : (M₀ + 1) * ((6 * r + 1) * u) ≤ n) (s₀ : ℕ) (hs₀ : s₀ < n / ((6 * r + 1) * u)) :
@@ -768,11 +750,11 @@ theorem tiles_bound {n : ℕ} {δ : ℝ} {r u M₀ i₀ : ℕ} (h0 : 0 ≤ δ) (
     _ = _ := by rw [prod_const, hFc]
 
 /- English proof (translation)
-Establish `hℓpos : 0 < (6 * r + 1) * u` using `Nat.mul_pos (by omega) (by omega)`. Establish `hM : M₀ + 1 ≤ n / ((6 * r + 1) * u)` using `(Nat.le_div_iff_mul_le hℓpos).2 hn`. Establish `hX : ∀ s₀ ∈ range (n / ((6 * r + 1) * u)), P ((range n).erase i₀) δ (fun t => ∀ j ≤ M₀, ¬ Marked (insert i₀ t) r u ((s₀ + j) % (n / ((6 * r + 1) * u)))) ≤ (1 - markedBound δ r u) ^ M₀` using `fun s₀ hs => tiles_bound h0 h1 hu hn s₀ (mem_range.1 hs)`. Establish `hX0 : 0 ≤ (1 - markedBound δ r u) ^ M₀` using `le_trans (P_nonneg h0 h1 _) (hX 0 (mem_range.2 (by omega)))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `le_trans (P_mono h0 h1 ?_) (prob_exists_le_sum h0 h1 (range (n / ((6 * r + 1) * u))) (fun s₀ t => ∀ j ≤ M₀, ¬ Marked (insert i₀ t) r u ((s₀ + j) % (n / ((6 * r + 1) * u)))))` and prove the remaining obligations. Introduce `t _ h`. Unfold `CondTiles at h`. Use `push Not at h`. Take `⟨s₀, hs, h⟩` from `h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨s₀, mem_range.2 hs, h⟩`. Use `_ ≤ ∑ s₀ ∈ range (n / ((6 * r + 1) * u)), (1 - markedBound δ r u) ^ M₀ := sum_le_sum hX`. Use `_ = ((n / ((6 * r + 1) * u) : ℕ) : ℝ) * (1 - markedBound δ r u) ^ M₀ := by`. Rewrite using `[sum_const, card_range, nsmul_eq_mul]`. Use `_ ≤ n * (1 - markedBound δ r u) ^ M₀ := mul_le_mul_of_nonneg_right (by exact_mod_cast Nat.div_le_self n _) hX0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partB {n : ℕ} {δ : ℝ} {r u M₀ i₀ : ℕ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (hu : 1 ≤ u)
     (hn : (M₀ + 1) * ((6 * r + 1) * u) ≤ n) :
@@ -806,11 +788,9 @@ end TopsChoiceProbabilityLemmas
 
 open TopsChoiceProbabilityLemmas TopsConditionalProbabilityWindows in
 /- English proof (translation)
-Introduce `n δ L₂ K r u M₀ G' N₁ i₀ h0 h1 hr hu hn hi`. Establish `hn1 : 1 ≤ n` using `by omega`. Rewrite using `[condProbAt_eq n δ i₀ hi]`. Combine the equalities or inequalities in the displayed calculation. Apply `P_mono h0 h1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `t _ h`. Unfold `GoodOrbitIntervalTileCondition at h`. The claim follows by propositional logic. Use `_ ≤ P ((range n).erase i₀) δ (fun t => ¬ CondA n (insert i₀ t) L₂ K) + P ((range n).erase i₀) δ (fun t => ¬ CondTiles n (insert i₀ t) r u M₀ ∨ ¬ CondIntervals n (insert i₀ t) G' N₁) := prob_or_le_add h0 h1 (fun t => ¬ CondA n (insert i₀ t) L₂ K) (fun t => ¬ CondTiles n (insert i₀ …`. Use `_ ≤ P ((range n).erase i₀) δ (fun t => ¬ CondA n (insert i₀ t) L₂ K) + (P ((range n).erase i₀) δ (fun t => ¬ CondTiles n (insert i₀ t) r u M₀) + P ((range n).erase i₀) δ (fun t => ¬ CondIntervals n (insert i₀ t) G' N₁)) := add_le_add le_rfl (prob_or_le_add h0 h1 (fun t => ¬ CondT …`.
-
-Use `_ ≤ n * (L₂.choose K : ℝ) * δ ^ K + (n * (1 - markedBound δ r u) ^ M₀ + n * binUpper G' δ (N₁ - 1)) := add_le_add (partA n δ h0 h1 L₂ K i₀ hn1) (add_le_add (partB h0 h1 hu hn) (partC n δ h0 h1 G' N₁ i₀ hn1))`. Use `_ = _ := by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. The claim follows by propositional logic. A detailed English derivation is pending.
 -/
 theorem choice_of_tops_refined_holds : TileConditionFailureProbBound := by
   classical

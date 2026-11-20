@@ -7,7 +7,7 @@ noncomputable section
 namespace GlobalTheory.AWFront
 
 /- English proof (translation)
-Establish `e : SimplexCategory.subinterval (n` using `N) 0 N h = 𝟙 _ := by`. Use extensionality with `i`. Simplify using `[SimplexCategory.subinterval]`. Unfold `Sx.sub`. Rewrite using `[e, op_id, CategoryTheory.Functor.map_id]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -20,11 +20,11 @@ theorem sub_full {E : Spc} {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (h : 0 + N 
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ (s : ℤ) (hs : s = n) (H : s + (-(N : ℤ) + m) = w) (h1 : -((0 : ℕ) : ℤ) + n = s), μ.mul U s (-(N : ℤ) + m) w H (ev α 0 s h1 U (x.sub 0 0 (by omega))) (ev β N _ rfl U x) = μ.mul U n (-(N : ℤ) + m) w (by omega) (ev α 0 n (by simp) U (x.sub 0 0 (by omega))) (ev β N _ rfl U x)`. Introduce and unpack `s rfl H h1`. Both sides reduce to the same expression. Establish `gen : ∀ (p : ℕ), p = 0 → ∀ (H : -(p : ℤ) + n + (-((N - p : ℕ) : ℤ) + m) = w) (h1 : 0 + p ≤ N) (h2 : p + (N - p) ≤ N), (m * (p : ℤ)).negOnePow • μ.mul U (-(p : ℤ) + n) (-((N - p : ℕ) : ℤ) + m) w H (ev α p _ rfl U (x.sub 0 p h1)) (ev β (N - p) _ rfl U (x.sub p (N - p) h2)) = μ.mul …`. Introduce and unpack `p rfl H h1 h2`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `e1 : (m * ((0 : ℕ) : ℤ)).negOnePow = 1` using `by simp`. Rewrite using `[e1, one_smul]`. Establish `e2 : x.sub 0 (N - 0) h2 = x` using `sub_full x h2`. Rewrite using `[e2]`. Conclude with `key _ (by simp) H rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hγ N w h U x, Fin.sum_univ_succ, Finset.sum_eq_zero (fun i _ => ?_), add_zero]`. Conclude with `gen _ (by simp) _ _ _`. Rewrite using `[hα (i.succ : ℕ) _ rfl U _ (by simp), map_zero, LinearMap.zero_apply, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_of_front {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) {S : Spc} {n m k : ℤ} (hk : n + m = k)
     (α : Cochain ((chains R).obj S) I n) (β : Cochain ((chains R).obj S) J m) (γ : Cochain ((chains R).obj S) K k)

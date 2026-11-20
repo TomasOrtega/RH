@@ -17,9 +17,9 @@ def hat {κ : Type} (w : (κ → F) × (κ → F)) : (κ → AF F) × (κ → AF
   (fun i => algebraMap F (AF F) (w.1 i), fun i => algebraMap F (AF F) (w.2 i))
 
 /- English proof (translation)
-Introduce `w w' h`. Establish `hinj` using `AdeleRing.algebraMap_injective (𝓞 F) F`. Simplify using `only [hat, Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Use extensionality with `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Conclude with `hinj (congrFun h1 i)`. Conclude with `hinj (congrFun h2 i)`.
+A detailed English derivation is pending.
 -/
 theorem hat_injective {κ : Type} : Function.Injective (hat (F := F) (κ := κ)) := by
   intro w w' h
@@ -31,26 +31,26 @@ theorem hat_injective {κ : Type} : Function.Injective (hat (F := F) (κ := κ))
   · exact hinj (congrFun h2 i)
 
 /- English proof (translation)
-Simplify using `only [hat, Prod.fst_add, Prod.snd_add, Pi.add_apply, map_add]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem hat_add {κ : Type} (w w' : (κ → F) × (κ → F)) : hat (w + w') = hat w + hat w' := by
   simp only [hat, Prod.fst_add, Prod.snd_add, Pi.add_apply, map_add]; rfl
 
 /- English proof (translation)
-Simplify using `only [hat, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, map_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem hat_smul {κ : Type} (c : F) (w : (κ → F) × (κ → F)) :
     hat (c • w) = algebraMap F (AF F) c • hat w := by
   simp only [hat, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, map_mul]; rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_add {m k : Type} (x x' : Matrix m k E) : incM F (x + x') = incM F x + incM F x' := by
   ext i j; simp [incM]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [incM, Matrix.map_apply, Matrix.smul_apply]`. Use `show (1 : AF F) ⊗ₜ[F] (c • x i j) = algebraMap F (AF F) c • ((1 : AF F) ⊗ₜ[F] x i j)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incM_smul' {m k : Type} (c : F) (x : Matrix m k E) :
     incM F (c • x) = algebraMap F (AF F) c • incM F x := by
@@ -60,7 +60,7 @@ theorem incM_smul' {m k : Type} (c : F) (x : Matrix m k E) :
   rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]
 
 /- English proof (translation)
-Introduce `x x' h`. Establish `hinj : Function.Injective (inclR (F` using `F) (E := E) (AF F)) := Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 F) F)`. Use extensionality with `i j`. Conclude with `hinj (congrFun (congrFun h i) j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem incM_injective {m k : Type} : Function.Injective (incM F (E := E) (m := m) (n := k)) := by
   intro x x' h
@@ -73,15 +73,13 @@ end GlobalTheory.RatCoord
 
 open GlobalTheory.RatCoord in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d X W M ψ hM hE`. Set `Φ₀ : Matrix (Fin n) (Fin d) E → (Fin n × Fin d → F) × (Fin n × Fin d → F)` to `fun x => ((hM.rat x).choose, (hM.rat x).choose_spec.choose)`. Establish `hΦ₀ : ∀ x, M.co.e (incM F x) = hat (Φ₀ x)` using `fun x => (hM.rat x).choose_spec.choose_spec`. Set `L : Matrix (Fin n) (Fin d) E →ₗ[F] (Fin n × Fin d → F) × (Fin n × Fin d → F)` to `{ toFun := Φ₀ map_add' := fun x x' => by`. Apply `hat_injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hat_add, ← hΦ₀, ← hΦ₀, ← hΦ₀, incM_add, map_add]`. Use the proof step `map_smul' := fun c x => by`. Apply `hat_injective` to reduce the goal to its premises. Rewrite using `[RingHom.id_apply, hat_smul, ← hΦ₀, ← hΦ₀, incM_smul', LinearEquiv.map_smul] }`. Establish `hinj : Function.Injective L`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x x' h`. Apply `incM_injective (F := F)` to reduce the goal to its premises. Apply `M.co.e.injective` to reduce the goal to its premises. Rewrite using `[hΦ₀, hΦ₀]`. Conclude with `congrArg hat h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by omega)`. Establish `hrank : Module.finrank F (Matrix (Fin n) (Fin d) E) = Module.finrank F ((Fin n × Fin d → F) × (Fin n × Fin d → F))`. Rewrite using `[Module.finrank_matrix, Module.finrank_prod, Module.finrank_fintype_fun_eq_card, hE, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsurj` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hrank).1 hinj`.
-
-Use `⟨LinearEquiv.ofBijective L ⟨hinj, hsurj⟩, fun x => ?_⟩` and prove the remaining obligations. Conclude with `hΦ₀ x`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RatCoord.ratEquiv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ), M.IsGood ψ → Module.finrank F E = 2 → ∃ Φ : Matrix (Fin n) (Fin d) E ≃ₗ[F] (Fin n × Fin d → F) × (Fin n × Fin d → F), ∀ x, M.co.e (incM F x) = ((fun i => algebraMap F (AF F) ((Φ x).1 i)), (fun i => algebraMap F (AF F) ((Φ x).2 i))) := by
   intro F E _ _ _ _ _ σ n d X W M ψ hM hE

@@ -20,7 +20,7 @@ def lmul {R : Type} [CommRing R] {m : ℕ} (n : ℕ) (A : Matrix (Fin m) (Fin m)
     Fin m → Fin n → R := fun i j => ∑ c, A i c * z c j
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(A * (B * Matrix.of z) : Matrix (Fin m) (Fin n) R) = Matrix.of z`. Rewrite using `[← Matrix.mul_assoc, h, Matrix.one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem lmul_lmul {R : Type} [CommRing R] {m n : ℕ} {A B : Matrix (Fin m) (Fin m) R} (h : A * B = 1)
     (z : Fin m → Fin n → R) : lmul n A (lmul n B z) = z := by
@@ -28,7 +28,7 @@ theorem lmul_lmul {R : Type} [CommRing R] {m n : ℕ} {A B : Matrix (Fin m) (Fin
   rw [← Matrix.mul_assoc, h, Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `lmul`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_lmul {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] {m : ℕ} (n : ℕ)
     (A : Matrix (Fin m) (Fin m) R) : Continuous (lmul n A) := by
@@ -58,7 +58,7 @@ def lmulFam {T : Type} {m : ℕ} (n : ℕ) {A B : T → Matrix (Fin m) (Fin m) �
   right_inv z := funext fun τ => lmul_lmul (h τ) (z τ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Simplify using `only [lmul, Matrix.mul_apply, map_sum, map_mul, Matrix.map_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem map_mul_entry {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') {m n : ℕ} (M : Matrix (Fin m) (Fin m) R)
     (x : Matrix (Fin m) (Fin n) R) : (fun i j => φ ((M * x) i j)) = lmul n (M.map φ) fun i j => φ (x i j) := by
@@ -68,7 +68,7 @@ theorem map_mul_entry {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R')
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Establish `h : mt V g * mt V g⁻¹ = 1`. Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_inv]`. Conclude with `Units.mul_inv _`. Rewrite using `[← Matrix.map_mul, h, Matrix.map_one _ (map_zero φ) (map_one φ)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_cancel {R : Type} [CommRing R] (φ : AE D →+* R) (V : HSp D) (g : GA D V) :
     (mt V g).map φ * (mt V g⁻¹).map φ = 1 := by
@@ -79,11 +79,9 @@ theorem map_cancel {R : Type} [CommRing R] (φ : AE D →+* R) (V : HSp D) (g : 
   rw [← Matrix.map_mul, h, Matrix.map_one _ (map_zero φ) (map_one φ)]
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add Φ Ψ _ _ h1 h2 => exact Submodule.add_mem _ h1 h2`. Consider the case `smul c Φ _ h1 => exact Submodule.smul_mem _ c h1`. Consider the case `mem Φ hΦ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨f, g, hg, rfl⟩` from `hΦ`. Use `haveI : IsModuleTopology (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Af D.host.F ⊗[D.host.F] D.host.E) := IsModuleTopology.isTopologicalRing (Af D.host.F) _`. Use `Submodule.subset_span ⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℝ (lmulFam n fun τ => map_cancel ((θ τ).comp (infPart D)) V h).toContinuousLinearEquiv f, g ∘ lmulHomeo n (map_cancel (finPart D) V h), ⟨hg.1.comp_continuous (lmulHomeo n _).continuous, hg.2.comp_homeomorph _⟩, fun …` and prove the remaining obligations. Apply the tactic sequence `have e1 := fun τ => map_mul_entry ((θ τ).comp (infPart D)) (mt V h) x`.
-
-Apply the tactic sequence `have e2 := map_mul_entry (finPart D) (mt V h) x`. Conclude with `congrArg₂ (· * ·) (congrArg f (funext e1)) (congrArg g e2)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comp_mem (θ : InfFam D) (V : HSp D) (h : GA D V) {Φ : Mx D V.rank n → ℂ} (hΦ : Φ ∈ schwartzA θ V.rank n) :
     (fun x : Mx D V.rank n => Φ (mt V h ⬝ x)) ∈ schwartzA θ V.rank n := by
@@ -103,7 +101,7 @@ theorem comp_mem (θ : InfFam D) (V : HSp D) (h : GA D V) {Φ : Mx D V.rank n �
     exact congrArg₂ (· * ·) (congrArg f (funext e1)) (congrArg g e2)
 
 /- English proof (translation)
-Unfold `StdUnn.inner`. Rewrite using `[adj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gA V), ← Matrix.mul_assoc (adj (mt V h)), mt_unitary]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_mul (V : HSp D) (h : GA D V) (x y : Mx D V.rank n) :
     StdUnn.inner V (mt V h ⬝ x) (mt V h ⬝ y) = StdUnn.inner V x y := by
@@ -116,15 +114,13 @@ def subst (θ : InfFam D) (V : HSp D) (n : ℕ) (h : GA D V) : Module.End ℂ (s
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ _ μ 𝓕 hμ ω hω h`. Use `⟨fun Φ hΦ => comp_mem θ V h hΦ, fun g Φ Ψ hΨ x => ?_⟩` and prove the remaining obligations. Set `S : Subgroup (StdUnn.G D n)` to `{ carrier := {g | Commute (ω g) (subst θ V n h)} one_mem' := by`. Express the relevant statement in the definitionally equal form `Commute (ω 1) _`. Rewrite using `[map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Commute.one_left _`. Use the proof step `mul_mem' := fun {a b} ha hb => by`. Express the relevant statement in the definitionally equal form `Commute (ω (a * b)) _`. Rewrite using `[map_mul]`. Conclude with `Commute.mul_left ha hb`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Use the proof step `inv_mem' := fun {a} ha => Commute.units_inv_left (u := ω.toHomUnits a) ha }`. Establish `hS : S = ⊤`. Apply the tactic sequence `refine StdUnn.eq_top_of_levi_unip_weyl D n S (fun g a hg => ?_) (fun g b hg => ?_) (fun g hg => ?_) <;>`. Apply the tactic sequence `refine LinearMap.ext fun Φ => Subtype.ext (funext fun x => ?_) <;>`. Express the relevant statement in the definitionally equal form `(ω g (subst θ V n h Φ)).1 x = (ω g Φ).1 (mt V h ⬝ x)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hω.levi g a hg, hω.levi g a hg, Matrix.mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[hω.unip g b hg, hω.unip g b hg, inner_mul]`. Both sides reduce to the same expression. Rewrite using `[hω.weyl g hg, hω.weyl g hg, ← GlobalTheory.Twist.LeftHaar.integral_left_unitary D V n h μ hμ.1 (fun y => Φ.1 y * ψ (StdUnn.trA (Matrix.trace (StdUnn.inner V (mt V h ⬝ x) y))))]`.
-
-Use `congrArg (integral μ) (funext fun y => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun t => Φ.1 (mt V h ⬝ y) * ψ (StdUnn.trA (Matrix.trace t))) (inner_mul V h x y).symm`. Establish `hg : g ∈ S` using `hS ▸ Subgroup.mem_top g`. Take `rfl : Ψ = subst θ V n h Φ` from `Subtype.ext (funext hΨ)`. Conclude with `congrFun (congrArg Subtype.val (LinearMap.congr_fun (show Commute (ω g) (subst θ V n h) from hg).eq Φ)) x`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem subst_mem_and_comm : ∀ (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (χ : (AE D)ˣ →* Circle) (θ : InfFam D), IsInfFam θ → ∀ (μ : Measure (Mx D V.rank n)) (𝓕 : Set (Mx D V.rank n)), IsCovolOne (ratMx D V.rank n) μ 𝓕 → ∀ ω : StdUnn.G D n →* Module.End ℂ (schwartzA θ V.rank n), StdUnn.IsWeilSch ψ χ θ V μ ω → ∀ h : GA D V, (∀ Φ ∈ schwartzA θ V.rank n, (fun x : Mx D V.rank n => Φ (mt V h ⬝ x)) ∈ schwartzA θ V.rank n) ∧ ∀ (g : StdUnn.G D n) (Φ Ψ : schwartzA θ V.rank n), (∀ x, Ψ.1 x = Φ.1 (mt V h ⬝ x)) → ∀ x, (ω g Ψ).1 x = (ω g Φ).1 (mt V h ⬝ x) := by
   intro D n V ψ χ θ _ μ 𝓕 hμ ω hω h

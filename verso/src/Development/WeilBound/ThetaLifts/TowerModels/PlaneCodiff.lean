@@ -14,20 +14,20 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.DYhb7.main y`.
+A detailed English derivation is pending.
 -/
 theorem trace_mixedEmbedding (y : F) :
     Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (mixedEmbedding F y) = (Algebra.trace ℚ F y : ℝ) :=
   _root_.UpperTheory.Reformulated.B.DYhb7.main y
 
 /- English proof (translation)
-Establish `e : pairA F 0 (algebraMap F (Af F) x) = algebraMap F (AF F) x + pairA F (algebraMap F (Ainf F) (-x)) 0`. Use `Prod.ext ?_ (add_zero _).symm` and prove the remaining obligations. Use `show (0 : Ainf F) = algebraMap F (Ainf F) x + algebraMap F (Ainf F) (-x)`. Rewrite using `[map_neg, add_neg_cancel]`. Establish `hat : At (evI F) (pairA F (algebraMap F (Ainf F) (-x)) 0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * _ = 0`. Rewrite using `[h1, zero_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `u.2 * 0 = 0`. Rewrite using `[mul_zero]`. Rewrite using `[e, AddChar.map_add_eq_mul, hψ.2.1, one_mul, hψ.2.2 _ hat]`. Establish `h2 : evI F (pairA F (algebraMap F (Ainf F) (-x)) 0) = mixedEmbedding F (-x)` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace F (algebraMap F (Ainf F) (-x)) = _`. Rewrite using `[InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, trace_mixedEmbedding, map_neg]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem psi_fin_rat {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (x : F) :
     ψ (pairA F 0 (algebraMap F (Af F) x)) =
@@ -55,7 +55,7 @@ theorem psi_fin_rat {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (x : F) :
   ring
 
 /- English proof (translation)
-Use `GlobalTheory.IntDense.addChar_eq_one_of_integral F ψ hψ.1 t (fun a => ?_) α hα` and prove the remaining obligations. Take `⟨k, hk⟩` from `ht a`. Rewrite using `[psi_fin_rat hψ, hk, Complex.exp_eq_one_iff]`. Conclude with `⟨k, by push_cast; ring⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem psi_int {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (t : F)
     (ht : ∀ a : 𝓞 F, ∃ k : ℤ, Algebra.trace ℚ F ((a : F) * t) = k) (α : Af F) (hα : ∀ v, α v ∈ v.adicCompletionIntegers F) :
@@ -66,9 +66,9 @@ theorem psi_int {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (t : F)
   exact ⟨k, by push_cast; ring⟩
 
 /- English proof (translation)
-Establish `h1` using `trace_eq_sum_embeddings (K := F) (L := E) (AlgebraicClosure E) (x := x)`. Set `τ : E →ₐ[F] AlgebraicClosure E` to `IsScalarTower.toAlgHom F E _`. Establish `h2 : (Finset.univ : Finset (E →ₐ[F] AlgebraicClosure E)) = {τ, τ.comp σ}`. Use extensionality with `τ'`. Simplify using `using eq_or_eq_comp_conj h τ τ'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h1` using `[h2, Finset.sum_pair (comp_conj_ne h τ).symm]`. Apply `(algebraMap E (AlgebraicClosure E)).injective` to reduce the goal to its premises. Rewrite using `[← IsScalarTower.algebraMap_apply, h1, map_add]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trace_cm (h : IsCMExt F E σ) (x : E) : algebraMap F E (Algebra.trace F E x) = x + σ x := by
   classical
@@ -83,15 +83,15 @@ theorem trace_cm (h : IsCMExt F E σ) (x : E) : algebraMap F E (Algebra.trace F 
   rfl
 
 /- English proof (translation)
-Establish `h2` using `psi_int hψ a fun o => by`. Take `⟨k, hk⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (ha o)`. Conclude with `⟨k, hk.symm⟩`. Use `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 ((hv _).1 fun y hy => ?_)` and prove the remaining obligations. Establish `h3` using `h2 (singleFin v y) fun w => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Express the relevant statement in the definitionally equal form `evalV _ w (singleFin w y) ∈ _`. Rewrite using `[evalV_singleFin_self]`. Conclude with `hy`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `evalV _ w (singleFin v y) ∈ _`. Rewrite using `[evalV_singleFin_ne hw]`. Conclude with `zero_mem _`. Establish `e : singleFin v y * algebraMap F (Af F) a = singleFin v (algebraMap F (Fv F v) a * y)`. Apply `af_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `u`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[map_mul, evalV_singleFin_self, evalV_singleFin_self, mul_comm]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, evalV_singleFin_ne hu, evalV_singleFin_ne hu, zero_mul]`. Rewrite `h3` using `[e]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem val_le_one_of_codiff {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {v : Pl F} (hv : PsiUnr ψ v) (a : F)
     (ha : ∀ o : 𝓞 F, IsIntegral ℤ (Algebra.trace ℚ F (o * a))) : Valued.v (algebraMap F (Fv F v) a) ≤ 1 := by
@@ -131,7 +131,7 @@ def codE : Submodule (𝓞 E) E where
     rwa [mul_assoc] at this
 
 /- English proof (translation)
-Introduce `o` and use `by rw [mul_one]; exact Algebra.isIntegral_trace o.isIntegral_coe`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_mem_codE : (1 : E) ∈ codE E := fun o => by
   rw [mul_one]; exact Algebra.isIntegral_trace o.isIntegral_coe
@@ -145,23 +145,23 @@ def intE : Submodule (𝓞 E) E where
   smul_mem' a _ hc := a.isIntegral_coe.mul hc
 
 /- English proof (translation)
-The claim follows from `apply_coe_mem τ (⟨c, hc⟩ : 𝓞 E)`.
+A detailed English derivation is pending.
 -/
 theorem val_le_one_of_intE {v : Pl F} (τ : E →ₐ[F] Fv F v) (c : E) (hc : c ∈ intE E) : Valued.v (τ c) ≤ 1 :=
   apply_coe_mem τ (⟨c, hc⟩ : 𝓞 E)
 
 /- English proof (translation)
-Establish `h1 : ∀ o : 𝓞 E, Valued.v (τ (o * c) + τ (σ (o * c))) ≤ 1` using `fun o => by`. Rewrite using `[← map_add, ← trace_cm h, AlgHom.commutes]`. Use `val_le_one_of_codiff hψ hv _ fun a => ?_` and prove the remaining obligations. Use `hc (algebraMap (𝓞 F) (𝓞 E) a * o)` as an intermediate fact. Rewrite `this` using `[← Algebra.trace_trace (S := F)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[← smul_eq_mul, ← map_smul, Algebra.smul_def, ← mul_assoc]`. Both sides reduce to the same expression. Establish `hne : ¬ (splitPrime (τ.comp σ)).asIdeal ≤ (splitPrime τ).asIdeal` using `fun hle => splitPrime_comp_ne h τ (HeightOneSpectrum.ext ((splitPrime (τ.comp σ)).isMaximal.eq_of_le (splitPrime τ).isPrime.ne_top hle))`. Take `⟨p, hp, hp'⟩` from `Set.not_subset.1 hne`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `a1 : Valued.v (τ (σ p)) < 1` using `(mem_splitPrime (τ.comp σ) p).1 hp`. Establish `a2 : Valued.v (τ p) = 1` using `le_antisymm (apply_coe_mem τ p) (not_lt.1 fun e => hp' ((mem_splitPrime τ p).2 e))`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : ℕ, Valued.v (τ (σ p)) ^ k * Valued.v (τ (σ c)) ≤ 1 := by`. Distinguish the cases in `h0 : Valued.v (τ (σ c)) = 0`. Conclude with `⟨0, by simp [h0]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨k, hk⟩` from `exists_pow_lt₀ a1 (Units.mk0 _ h0)⁻¹`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite `hk` using `[Units.val_inv_eq_inv_val, Units.val_mk0]`. Combine the equalities or inequalities in the displayed calculation. Establish `b1` using `h1 (p ^ k)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `b2 : Valued.v (τ (σ (((p ^ k : 𝓞 E) : E) * c))) ≤ 1`. Use `push_cast`. Simplify `hk` using `only [map_mul, map_pow]`. Establish `b3` using `Valuation.map_sub_le _ b1 b2`. Rewrite `b3` using `[add_sub_cancel_right]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at b3`. Simplify `b3` using `only [map_mul, map_pow, a2, one_pow, one_mul]`.
+Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_le_one_of_codE (h : IsCMExt F E σ) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {v : Pl F} (hv : PsiUnr ψ v)
     (τ : E →ₐ[F] Fv F v) (c : E) (hc : c ∈ codE E) : Valued.v (τ c) ≤ 1 := by

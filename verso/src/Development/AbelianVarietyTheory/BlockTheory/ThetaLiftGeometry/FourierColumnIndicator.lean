@@ -39,11 +39,11 @@ omit [StarRing E] in
 open Classical in
 
 /- English proof (translation)
-Use `⟨fun y hy => ?_, fun y z hz => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `h : y - y₀ ∈ stdAt E n P`. Assume the negation of the conclusion as `h`. Conclude with `hy (if_neg h)`. Establish `h1 : (qOf P : E) • (y - y₀) ∈ stdAt E n P`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem h _`. Establish `h2` using `add_mem h1 h₀`. Rewrite `h2` using `[← smul_add, sub_add_cancel]`. Then use the resulting hypothesis. Establish `h1 : y + z - y₀ = (y - y₀) + z` using `by abel`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify by unfolding definitions.
 
-Simplify using `only [h1, Submodule.add_mem_iff_left _ hz]`. Simplify using `only split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem colFn_indicator (P : HeightOneSpectrum (𝓞 E)) {n : ℕ} (y₀ : Sp E n) (h₀ : (qOf P : E) • y₀ ∈ stdAt E n P) :
     ColFn P (fun y => if y - y₀ ∈ stdAt E n P then (1 : K) else 0) := by

@@ -8,9 +8,9 @@ namespace GlobalTheory.WeightCount
 open Module
 
 /- English proof (translation)
-Establish `e : (A + a) * (B + b) - a * b = A * (B + b) + a * B` using `by noncomm_ring`. Rewrite using `[e]`. Establish `h1 : Commute A (B + b)` using `hAB.add_right (hb A).symm`. Establish `h3 : Commute (A * (B + b)) B` using `Commute.mul_left hAB ((Commute.refl B).add_left (hb B))`. Establish `h2 : Commute (A * (B + b)) (a * B)` using `Commute.mul_right (ha _).symm h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2.isNilpotent_add (h1.isNilpotent_mul_right hA) ((ha B).isNilpotent_mul_left hB)`.
+A detailed English derivation is pending.
 -/
 theorem isNilpotent_perturb_mul {R : Type*} [Ring R] {A B a b : R} (hAB : Commute A B)
     (ha : ∀ z, Commute a z) (hb : ∀ z, Commute b z) (hA : IsNilpotent A) (hB : IsNilpotent B) :
@@ -23,31 +23,29 @@ theorem isNilpotent_perturb_mul {R : Type*} [Ring R] {A B a b : R} (hAB : Commut
   exact h2.isNilpotent_add (h1.isNilpotent_mul_right hA) ((ha B).isNilpotent_mul_left hB)
 
 /- English proof (translation)
-Use `set U := ⨅ d, (ρ d).maxGenEigenspace (ψ d) with hU`. Establish `hc : ∀ x y, Commute (ρ x) (ρ y)` using `fun x y => by show ρ x * ρ y = ρ y * ρ x`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Establish `hmaps : ∀ i j μ, Set.MapsTo (ρ i) ((ρ j).maxGenEigenspace μ) ((ρ j).maxGenEigenspace μ)` using `fun i j μ => Module.End.mapsTo_maxGenEigenspace_of_comm (hc j i) μ`. Establish `hUm : ∀ m, Set.MapsTo (ρ m) U U` using `fun m v hv => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [U, SetLike.mem_coe, Submodule.mem_iInf] at hv ⊢`. Conclude with `fun i => hmaps m i (ψ i) (hv i)`. Use `haveI : Nontrivial U := Submodule.nontrivial_iff_ne_bot.mpr hψ`. Set `R : C → Module.End k U` to `fun m => (ρ m).restrict (hUm m)`. Establish `hRadd : ∀ x y, R (x + y) = R x + R y` using `fun x y => by`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `v`. Use `show ρ (x + y) (v : V) = ρ x (v : V) + ρ y (v : V)`. Rewrite using `[map_add]`. Both sides reduce to the same expression. Establish `hRmul : ∀ x y, R (x * y) = R x * R y` using `fun x y => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use extensionality with `v`. Use `show ρ (x * y) (v : V) = ρ x (ρ y (v : V))`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Establish `hR1 : R 1 = 1` using `by ext v; simp [R, LinearMap.restrict_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hR0 : R 0 = 0` using `by ext v; simp [R, LinearMap.restrict_apply]`. Establish `hRc : ∀ x y, Commute (R x) (R y)` using `fun x y => by show R x * R y = R y * R x`. Rewrite using `[← hRmul, ← hRmul, mul_comm]`. Establish `hnil : ∀ m, IsNilpotent (R m - algebraMap k _ (ψ m))`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsub : Set.MapsTo (ρ m - algebraMap k (Module.End k V) (ψ m)) (U : Set V) U`. Introduce `v hv`. Simplify using `only [SetLike.mem_coe, LinearMap.sub_apply, Module.algebraMap_end_apply] at hv ⊢`. Conclude with `U.sub_mem (hUm m hv) (U.smul_mem _ hv)`. Establish `hn : IsNilpotent ((ρ m - algebraMap k _ (ψ m)).restrict hsub)` using `Module.End.isNilpotent_restrict_of_le (iInf_le _ m) (Module.End.isNilpotent_restrict_maxGenEigenspace_sub_algebraMap (ρ m) (ψ m))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `e : R m - algebraMap k _ (ψ m) = (ρ m - algebraMap k _ (ψ m)).restrict hsub`. Use extensionality with `v`. Simplify using `only [R, LinearMap.sub_apply, Module.algebraMap_end_apply, Submodule.coe_sub, Submodule.coe_smul]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hn`. Establish `hNc : ∀ x y, Commute (R x - algebraMap k _ (ψ x)) (R y - algebraMap k _ (ψ y))` using `fun x y => ((hRc x y).sub_right (Algebra.commute_algebraMap_right _ _)).sub_left ((Algebra.commute_algebraMap_left _ _).sub_right (Algebra.commute_algebraMap_left _ _))`. Establish `key : ∀ a : k, IsNilpotent (algebraMap k (Module.End k U) a) → a = 0` using `fun a h => by`. Rewrite `h` using `[IsNilpotent.map_iff (FaithfulSMul.algebraMap_injective k (Module.End k U)), isNilpotent_iff_eq_zero]`. Then use the resulting hypothesis. Use `⟨{ toFun := ψ, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, rfl⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hnil 1`. Rewrite `h` using `[hR1, ← map_one (algebraMap k (Module.End k U)), ← map_sub]`. Conclude with `(sub_eq_zero.1 (key _ h)).symm`. Introduce `x y`. Establish `h1` using `isNilpotent_perturb_mul (hNc x y) (Algebra.commute_algebraMap_left (ψ x)) (Algebra.commute_algebraMap_left (ψ y)) (hnil x) (hnil y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[sub_add_cancel, sub_add_cancel, ← hRmul, ← map_mul]`. Establish `h2` using `hnil (x * y)`. Establish `h3` using `(((Commute.refl (R (x * y))).sub_right (Algebra.commute_algebraMap_right _ _)).sub_left ((Algebra.commute_algebraMap_left _ _).sub_right (Algebra.commute_algebraMap_left _ _))).isNilpotent_sub h1 h2`. Establish `e : R (x * y) - algebraMap k _ (ψ x * ψ y) - (R (x * y) - algebraMap k _ (ψ (x * y))) = algebraMap k (Module.End k U) (ψ (x * y) - ψ x * ψ y)`. Rewrite using `[map_sub]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Rewrite `h3` using `[e]`. Conclude with `sub_eq_zero.1 (key _ h3)`. Establish `h` using `hnil 0`. Rewrite `h` using `[hR0, zero_sub, ← map_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `neg_eq_zero.1 (key _ h)`. Introduce `x y`. Establish `h1` using `(hNc x y).isNilpotent_add (hnil x) (hnil y)`. Establish `h2` using `hnil (x + y)`. Establish `h3` using `((hNc (x + y) x).add_right (hNc (x + y) y)).isNilpotent_sub h2 h1`.
-
-Establish `e : R (x + y) - algebraMap k _ (ψ (x + y)) - (R x - algebraMap k _ (ψ x) + (R y - algebraMap k _ (ψ y))) = algebraMap k (Module.End k U) (ψ x + ψ y - ψ (x + y))`. Rewrite using `[hRadd, map_sub, map_add]`. Normalize the expressions using the abelian group laws. Rewrite `h3` using `[e]`. Conclude with `(sub_eq_zero.1 (key _ h3)).symm`.
+A detailed English derivation is pending.
 -/
 theorem weight_isRingHom {k V C : Type*} [Field k] [AddCommGroup V] [Module k V]
     [FiniteDimensional k V] [CommRing C] (ρ : C →+* Module.End k V) (ψ : C → k)
@@ -131,9 +129,9 @@ theorem weight_isRingHom {k V C : Type*} [Field k] [AddCommGroup V] [Module k V]
     exact (sub_eq_zero.1 (key _ h3)).symm
 
 /- English proof (translation)
-Set `U : (C → k) → Submodule k V` to `fun ψ => ⨅ d, (ρ d).maxGenEigenspace (ψ d)`. Establish `hc : ∀ x y, Commute (ρ x) (ρ y)` using `fun x y => by show ρ x * ρ y = ρ y * ρ x`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Establish `hmaps : ∀ i j μ, Set.MapsTo (ρ i) ((ρ j).maxGenEigenspace μ) ((ρ j).maxGenEigenspace μ)` using `fun i j μ => Module.End.mapsTo_maxGenEigenspace_of_comm (hc j i) μ`. Establish `hind : iSupIndep U` using `Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo (fun x => ρ x) hmaps`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : {ψ | U ψ ≠ ⊥}.Finite` using `WellFoundedGT.finite_ne_bot_of_iSupIndep hind`. Use `⟨hfin.toFinset.attach.image (fun ψ => Classical.choose (weight_isRingHom ρ ψ.1 (by have := ψ.2; rw [Set.Finite.mem_toFinset] at this; exact this))), fun ψ hψ => ?_⟩` and prove the remaining obligations. Establish `hmem : ψ ∈ hfin.toFinset` using `by rw [Set.Finite.mem_toFinset]; exact hψ`. Use `⟨_, Finset.mem_image_of_mem _ (Finset.mem_attach _ ⟨ψ, hmem⟩), ?_⟩` and prove the remaining obligations. Conclude with `Classical.choose_spec (weight_isRingHom ρ ψ hψ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_finset_weights {k V C : Type*} [Field k] [AddCommGroup V] [Module k V]
     [FiniteDimensional k V] [CommRing C] (ρ : C →+* Module.End k V) :
@@ -162,13 +160,13 @@ namespace GlobalTheory.WeightCount
 open Module
 
 /- English proof (translation)
-Set `U : (C → k) → Submodule k V` to `fun ψ => ⨅ d, (ρ d).maxGenEigenspace (ψ d)`. Establish `hcomm : ∀ x y, Commute (ρ x) (ρ y)` using `fun x y => by show ρ x * ρ y = ρ y * ρ x`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Establish `hmaps : ∀ i j μ, Set.MapsTo (ρ i) ((ρ j).maxGenEigenspace μ) ((ρ j).maxGenEigenspace μ)` using `fun i j μ => Module.End.mapsTo_maxGenEigenspace_of_comm (hcomm j i) μ`. Establish `htop : ⨆ ψ, U ψ = ⊤` using `Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_forall_mapsTo (fun x => ρ x) hmaps (fun i => Module.End.iSup_maxGenEigenspace_eq_top (ρ i))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set E := (ρ c).maxGenEigenspace (χ c) with hE`. Establish `hXE : U χ ≤ E` using `iInf_le _ c`. Establish `hY : (⨆ ψ, ⨆ (_ : ψ ≠ χ), U ψ) ≤ ⨆ μ, ⨆ (_ : μ ≠ χ c), (ρ c).maxGenEigenspace μ`. Use `iSup₂_le fun ψ hψ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : U ψ = ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `bot_le`. Conclude with `le_iSup₂_of_le (f := fun μ (_ : μ ≠ χ c) => (ρ c).maxGenEigenspace μ) (ψ c) (hc ψ h0 hψ) (iInf_le _ c)`. Establish `hdisj : Disjoint E (⨆ μ, ⨆ (_ : μ ≠ χ c), (ρ c).maxGenEigenspace μ)` using `(Module.End.independent_maxGenEigenspace (ρ c)) (χ c)`. Establish `hsup : U χ ⊔ (⨆ ψ, ⨆ (_ : ψ ≠ χ), U ψ) = ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← htop]`. Conclude with `(iSup_split_single U χ).symm`. Establish `hEY : (⨆ ψ, ⨆ (_ : ψ ≠ χ), U ψ) ⊓ E = ⊥` using `(hdisj.mono_right hY).symm.eq_bot`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem maxGenEigenspace_eq_weight {k V C : Type*} [Field k] [IsAlgClosed k] [AddCommGroup V]
     [Module k V] [FiniteDimensional k V] [CommRing C] (ρ : C →+* Module.End k V) (χ : C → k)
@@ -202,9 +200,9 @@ theorem maxGenEigenspace_eq_weight {k V C : Type*} [Field k] [IsAlgClosed k] [Ad
     _ = U χ := by rw [hEY, sup_bot_eq]
 
 /- English proof (translation)
-Establish `e : Algebra.lmul k (k ⊗[ℤ] C) ((Algebra.TensorProduct.includeRight : C →ₐ[ℤ] k ⊗[ℤ] C) c) = (LinearMap.mulLeft ℤ c).baseChange k`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [Algebra.TensorProduct.tmul_mul_tmul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[e, LinearMap.charpoly_baseChange, algebraMap_int_eq]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_lmul_includeRight (k C : Type) [Field k] [CommRing C] [Module.Free ℤ C]
     [Module.Finite ℤ C] (c : C) :
@@ -221,13 +219,11 @@ theorem charpoly_lmul_includeRight (k C : Type) [Field k] [CommRing C] [Module.F
   rw [e, LinearMap.charpoly_baseChange, algebraMap_int_eq]
 
 /- English proof (translation)
-Introduce `k _ _ C _ _ _ H _ _ _ σ r hσ χ`. Set `σA : C →+* Module.End k (k ⊗[ℤ] C)` to `(Algebra.lmul k (k ⊗[ℤ] C)).toRingHom.comp (Algebra.TensorProduct.includeRight : C →ₐ[ℤ] k ⊗[ℤ] C).toRingHom`. Establish `hA : ∀ c, LinearMap.charpoly (σA c) = (LinearMap.charpoly (LinearMap.mulLeft ℤ c)).map (Int.castRingHom k)` using `fun c => charpoly_lmul_includeRight k C c`. Take `⟨S1, hS1⟩` from `exists_finset_weights σ`. Take `⟨S2, hS2⟩` from `exists_finset_weights σA`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `GlobalTheory.T.exists_separating_element_ringHom_moduleFinite_int k C (S1 ∪ S2) χ`. Establish `sepH : ∀ ψ : C → k, (⨅ d, (σ d).maxGenEigenspace (ψ d)) ≠ ⊥ → ψ ≠ ⇑χ → ψ c ≠ χ c`. Introduce `ψ h hne`. Take `⟨φ, hφS, rfl⟩` from `hS1 ψ h`. Conclude with `hc φ (Finset.mem_union_left _ hφS) (fun e => hne (by rw [e]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `sepA : ∀ ψ : C → k, (⨅ d, (σA d).maxGenEigenspace (ψ d)) ≠ ⊥ → ψ ≠ ⇑χ → ψ c ≠ χ c`. Introduce `ψ h hne`. Take `⟨φ, hφS, rfl⟩` from `hS2 ψ h`. Conclude with `hc φ (Finset.mem_union_right _ hφS) (fun e => hne (by rw [e]))`. Use `show Module.finrank k ↥(⨅ d : C, (σ d).maxGenEigenspace (χ d)) = r * Module.finrank k ↥(⨅ d : C, (σA d).maxGenEigenspace (χ d))`.
-
-Rewrite using `[← maxGenEigenspace_eq_weight σ χ c sepH, ← maxGenEigenspace_eq_weight σA χ c sepA, LinearMap.finrank_maxGenEigenspace_eq, LinearMap.finrank_maxGenEigenspace_eq, hσ c, hA c, Polynomial.map_pow, ← Polynomial.count_roots, ← Polynomial.count_roots, Polynomial.roots_pow, Multiset.cou …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_weight_eq : ∀ (k : Type) [Field k] [IsAlgClosed k] (C : Type) [CommRing C]
     [Module.Free ℤ C] [Module.Finite ℤ C] (H : Type 1) [AddCommGroup H] [Module k H]

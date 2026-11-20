@@ -19,7 +19,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Set `L : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (A : H →ₗ[ℂ] H), norm_map' := hA }`. Conclude with `L.inner_map_map u v`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem inner_map_map_of_norm {A : H →L[ℂ] H} (hA : ∀ v, ‖A v‖ = ‖v‖) (u v : H) :
     ⟪A u, A v⟫_ℂ = ⟪u, v⟫_ℂ := by
@@ -27,11 +27,11 @@ theorem inner_map_map_of_norm {A : H →L[ℂ] H} (hA : ∀ v, ‖A v‖ = ‖v�
   exact L.inner_map_map u v
 
 /- English proof (translation)
-Introduce `k hk x hx`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `t ht`. Set `f : T →ₗ[ℂ] T` to `((ρ k : H →ₗ[ℂ] H).restrict fun v hv => hT k hk v hv)`. Establish `hinj : Function.Injective f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a b hab`. Establish `: ρ k ((a : H) - b) = 0`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.2 (congrArg Subtype.val hab)`. Establish `h0 : ‖((a : H) - b)‖ = 0` using `by rw [← hK k hk, this, norm_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Subtype.ext (sub_eq_zero.1 (norm_eq_zero.1 h0))`. Take `⟨t', ht'⟩` from `(LinearMap.injective_iff_surjective.1 hinj) ⟨t, ht⟩`. Establish `ht'' : ρ k (t' : H) = t` using `congrArg Subtype.val ht'`. Rewrite using `[← ht'', inner_map_map_of_norm (hK k hk)]`. Conclude with `(Submodule.mem_orthogonal _ _).1 hx t' t'.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isKStableOn_orthogonal (hK : ∀ k ∈ Kset ε, ∀ v, ‖ρ k v‖ = ‖v‖) {T : Submodule ℂ H}
     [FiniteDimensional ℂ T] (hT : IsKStableOn ε ρ T) : IsKStableOn ε ρ Tᗮ := by
@@ -51,21 +51,17 @@ theorem isKStableOn_orthogonal (hK : ∀ k ∈ Kset ε, ∀ v, ‖ρ k v‖ = �
   exact (Submodule.mem_orthogonal _ _).1 hx t' t'.2
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `F hF hd hFK hM`. Distinguish the cases in `hF0 : F = ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hF0]`. Conclude with `bot_le`. Establish `hex : ∃ m, ∃ T : Submodule ℂ H, T ≤ F ∧ T ≠ ⊥ ∧ IsKStableOn ε ρ T ∧ Module.finrank ℂ T = m` using `⟨_, F, le_rfl, hF0, hFK, rfl⟩`. Take `⟨T, hTF, hT0, hTK, hTm⟩` from `Nat.find_spec hex`. Use `haveI : FiniteDimensional ℂ T := Submodule.finiteDimensional_of_le hTF`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTirr : ∀ S' : Submodule ℂ H, S' ≤ T → IsKStableOn ε ρ S' → S' = ⊥ ∨ S' = T`. Introduce `S' hS' hS'K`. Distinguish the cases in `h0 : S' = ⊥`. Conclude with `Or.inl h0`. Use `right`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℂ S' := Submodule.finiteDimensional_of_le hS'`. Establish `hle : Module.finrank ℂ T ≤ Module.finrank ℂ S'`. Rewrite using `[hTm]`. Conclude with `Nat.find_min' hex ⟨S', hS'.trans hTF, h0, hS'K, rfl⟩`. Conclude with `Submodule.eq_of_le_of_finrank_le hS' hle`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTM : T ≤ M` using `hM T hTF hT0 inferInstance hTK hTirr`. Use `set F' := Tᗮ ⊓ F with hF'`. Establish `hF'K : IsKStableOn ε ρ F'` using `fun k hk v hv => ⟨isKStableOn_orthogonal hK hTK k hk v hv.1, hFK k hk v hv.2⟩`. Use `haveI : FiniteDimensional ℂ F' := Submodule.finiteDimensional_of_le inf_le_right`. Establish `hlt : F' < F`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lt_of_le_of_ne inf_le_right fun h => hT0 ?_` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `hxF' : x ∈ F'` using `h ▸ hTF hx`. Use `Submodule.inner_right_of_mem_orthogonal hx hxF'.1` as an intermediate fact.
-
-Rewrite using `[Submodule.mem_bot]`. Conclude with `inner_self_eq_zero.1 this`. Establish `hF'M : F' ≤ M` using `ih _ (hd ▸ Submodule.finrank_lt_finrank_of_lt hlt) F' inferInstance rfl hF'K fun T' hT' => hM T' (hT'.trans inf_le_right)`. Establish `hsup : T ⊔ F' = F` using `Submodule.sup_orthogonal_inf_of_hasOrthogonalProjection hTF`. Rewrite using `[← hsup]`.
-
-Conclude with `sup_le hTM hF'M`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_of_forall_irred (hK : ∀ k ∈ Kset ε, ∀ v, ‖ρ k v‖ = ‖v‖) (M : Submodule ℂ H) :
     ∀ (d : ℕ) (F : Submodule ℂ H), FiniteDimensional ℂ F → Module.finrank ℂ F = d → IsKStableOn ε ρ F →
@@ -114,19 +110,17 @@ theorem le_of_forall_irred (hK : ∀ k ∈ Kset ε, ∀ v, ‖ρ k v‖ = ‖v�
   exact sup_le hTM hF'M
 
 /- English proof (translation)
-Rewrite using `[Submodule.starProjection_apply]`. Conclude with `(W.orthogonalProjection x).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem starProjection_mem (W : Submodule ℂ H) [W.HasOrthogonalProjection] (x : H) : W.starProjection x ∈ W := by
   rw [Submodule.starProjection_apply]; exact (W.orthogonalProjection x).2
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℂ S := hS.1`. Establish `hSo : IsKStableOn ε ρ Sᗮ` using `isKStableOn_orthogonal hK hS.2.1`. Establish `hmeet : T ⊓ Sᗮ = ⊥` using `(hTirr _ inf_le_left fun k hk x hx => ⟨hTK k hk x hx.1, hSo k hk x hx.2⟩).resolve_right fun h => hTS (inf_eq_left.1 h)`. Establish `hPv : S.starProjection v ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv : v ∈ T ⊓ Sᗮ` using `⟨hvT, (Submodule.starProjection_apply_eq_zero_iff S).1 h⟩`. Rewrite `hv` using `[hmeet, Submodule.mem_bot]`. Conclude with `hv0 hv`. Establish `comm : ∀ k ∈ Kset ε, ∀ x, S.starProjection (ρ k x) = ρ k (S.starProjection x)`. Introduce `k hk x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : ρ k x = ρ k (S.starProjection x) + ρ k (x - S.starProjection x)`. Rewrite using `[← map_add, add_sub_cancel]`. Rewrite using `[hx, map_add, Submodule.starProjection_eq_self_iff.2 (hS.2.1 k hk _ (starProjection_mem S x)), (Submodule.starProjection_apply_eq_zero_iff S).2 (hSo k hk _ (Submodule.sub_starProjection_mem_orthogonal x)), add_zero]`. Use `hS.2.2.2.2 μ _ (starProjection_mem S v) hPv ?_` and prove the remaining obligations. Introduce `θ hθ`.
-
-Rewrite using `[← comm _ hθ, hvw θ hθ, map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cdom_of_not_le_orthogonal (hK : ∀ k ∈ Kset ε, ∀ v, ‖ρ k v‖ = ‖v‖) {Λ μ : Fin n → ℝ} {S T : Submodule ℂ H}
     (hS : IsKTypeOf ε ρ Λ S) (hTK : IsKStableOn ε ρ T)
@@ -154,9 +148,9 @@ theorem cdom_of_not_le_orthogonal (hK : ∀ k ∈ Kset ε, ∀ v, ‖ρ k v‖ =
   rw [← comm _ hθ, hvw θ hθ, map_smul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨s, hs, t, ht, hst⟩` from `hcon`. Establish `hTS : ¬ T ≤ Sᗮ` using `fun h => hst (Submodule.inner_right_of_mem_orthogonal hs (h ht))`. Establish `hST : ¬ S ≤ Tᗮ` using `fun h => hst (Submodule.inner_left_of_mem_orthogonal ht (h hs))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hwT, hw0, hww⟩` from `hT.2.2.2.1`. Take `⟨u, huS, hu0, huw⟩` from `hS.2.2.2.1`. Establish `h1 : CDom ε Λ' Λ` using `cdom_of_not_le_orthogonal hK hS hT.2.1 hT.2.2.1 hwT hw0 hww hTS`. Establish `h2 : CDom ε Λ Λ'` using `cdom_of_not_le_orthogonal hK hT hS.2.1 hS.2.2.1 huS hu0 huw hST`. Conclude with `hne (GlobalTheory.LowHW.cdom_antisymm h2 h1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inner_eq_zero_of_ne (hK : ∀ k ∈ Kset ε, ∀ v, ‖ρ k v‖ = ‖v‖) {Λ Λ' : Fin n → ℝ} {S T : Submodule ℂ H}
     (hS : IsKTypeOf ε ρ Λ S) (hT : IsKTypeOf ε ρ Λ' T) (hne : Λ ≠ Λ') :
@@ -177,23 +171,19 @@ end GlobalTheory.KPerp
 open GlobalTheory.KPerp in
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ ρ hρ Z hZ hZK hne`. Take `⟨hC, hcont, hK, hadm⟩` from `hρ`. Establish `hirr` using `(GlobalTheory.T.maxCompact_irreducible_has_highest_weight_and_iso n ε H ρ hC hcont hK).1`. Take `⟨y, hy, hyZ⟩` from `SetLike.not_le_iff_exists.1 fun h : kFinVec ε ρ ≤ Z => hne (le_antisymm hZ h)`. Take `⟨F, hF, hyF, hFK⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hex : ∃ T : Submodule ℂ H, T ≤ F ∧ T ≠ ⊥ ∧ FiniteDimensional ℂ T ∧ IsKStableOn ε ρ T ∧ (∀ S' : Submodule ℂ H, S' ≤ T → IsKStableOn ε ρ S' → S' = ⊥ ∨ S' = T) ∧ ¬ T ≤ Z`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hyZ (le_of_forall_irred hK Z _ F hF rfl hFK (fun T a b c d e => hcon T a b c d e) hyF)`. Take `⟨S, -, hS0, hSfd, hSK, hSirr, hSZ⟩` from `hex`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Λ, hΛ⟩` from `hirr S hSfd hS0 hSK hSirr`. Use `set U : Submodule ℂ H := sSup {S | S ≤ ⊤ ∧ IsKTypeOf ε ρ Λ S} with hUdef`. Use `haveI hUfd : FiniteDimensional ℂ U := hadm Λ`. Establish `hSU : S ≤ U` using `le_sSup ⟨le_top, hΛ⟩`. Establish `hUK : IsKStableOn ε ρ U`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `k hk v hv`. Establish `: U ≤ U.comap (ρ k : H →ₗ[ℂ] H)` using `sSup_le fun S' hS' x hx => show ρ k x ∈ U from le_sSup hS' (hS'.2.2.1 k hk x hx)`. Conclude with `this hv`. Take `⟨x, hxS, hxZ⟩` from `SetLike.not_le_iff_exists.1 hSZ`. Use `set W : Submodule ℂ H := Z ⊓ U with hWdef`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : FiniteDimensional ℂ W := Submodule.finiteDimensional_of_le inf_le_right`. Establish `haW : x - W.starProjection x ∈ Wᗮ` using `Submodule.sub_starProjection_mem_orthogonal x`. Establish `haU : x - W.starProjection x ∈ U` using `U.sub_mem (hSU hxS) (starProjection_mem W x).2`. Use `⟨x - W.starProjection x, ?_, ⟨U, hUfd, haU, hUK⟩, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : x = W.starProjection x` using `sub_eq_zero.1 h`. Conclude with `hxZ (hx ▸ (starProjection_mem W x).1)`. Introduce `z hz`. Take `⟨F', hF', hzF', hF'K⟩` from `hZ hz`. Establish `hGK : IsKStableOn ε ρ (F' ⊓ Z)` using `fun k hk v hv => ⟨hF'K k hk v hv.1, hZK k hk v hv.2⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℂ ↥(F' ⊓ Z) := Submodule.finiteDimensional_of_le inf_le_left`. Establish `hle : F' ⊓ Z ≤ (ℂ ∙ (x - W.starProjection x))ᗮ`. Use `le_of_forall_irred hK _ _ _ inferInstance rfl hGK ?_` and prove the remaining obligations. Introduce `T hTG hT0 hTfd hTK hTirr t ht`. Rewrite using `[Submodule.mem_orthogonal_singleton_iff_inner_right]`.
-
-Take `⟨Λ', hΛ'⟩` from `hirr T hTfd hT0 hTK hTirr`. Distinguish the cases in `hL : Λ' = Λ`. Substitute `hL` using the available equality. Establish `hTU : T ≤ U` using `le_sSup ⟨le_top, hΛ'⟩`. Establish `htW : t ∈ W` using `⟨(hTG ht).2, hTU ht⟩`.
-
-Conclude with `Submodule.inner_left_of_mem_orthogonal htW haW`. Establish `hUT : U ≤ Tᗮ` using `sSup_le fun S' hS' s hs => (Submodule.mem_orthogonal T s).2 fun t' ht' => inner_eq_zero_of_ne hK hΛ' hS'.2 hL t' ht' s hs`. Conclude with `Submodule.inner_left_of_mem_orthogonal ht (hUT haU)`. Conclude with `Submodule.mem_orthogonal_singleton_iff_inner_right.1 (hle ⟨hzF', hz⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_kFin_orthogonal_of_ne_kFinVec :
     ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

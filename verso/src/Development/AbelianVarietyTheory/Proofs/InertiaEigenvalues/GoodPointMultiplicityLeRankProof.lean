@@ -12,9 +12,9 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.MultiplicityBound
 
 /- English proof (translation)
-Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a A ha ih`. Rewrite using `[Finset.sum_insert ha, ← ih]`. Establish `hs : (⨆ σ ∈ insert a A, t σ) = t a ⊔ ⨆ σ ∈ A, t σ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.iSup_insert]`. Establish `hd : Disjoint (t a) (⨆ σ ∈ A, t σ)` using `ht.disjoint_biSup (by simpa using ha)`. Rewrite using `[hs, ← Submodule.finrank_sup_add_finrank_inf_eq, hd.eq_bot, finrank_bot, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_biSup_indep {K V ι : Type*} [DivisionRing K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] [DecidableEq ι] {t : ι → Submodule K V} (ht : iSupIndep t) (A : Finset ι) :
@@ -34,11 +34,11 @@ noncomputable def goodRows (D : D7) (i : D.nd.Loc) : Finset D.what₂.FT :=
   Finset.univ.filter (fun σ => D.nd.goodRow σ ∧ AtM D.nd D.naut i σ)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hr` using `D.nd.j_range i`. Establish `hind : iSupIndep (D.what₂.isot (D.nd.j i))` using `(hI _ hr.1 hr.2).submodule_iSupIndep`. Establish `hsup : goodPartM D.nd D.naut i = ⨆ σ ∈ goodRows D i, D.what₂.isot (D.nd.j i) σ`. Unfold `goodPartM goodRows`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply `iSup_congr` to reduce the goal to its premises. Introduce `σ`. Simplify using the standard rewrite rules. Unfold `dM`. Rewrite using `[hsup]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finrank_biSup_indep hind _`.
+A detailed English derivation is pending.
 -/
 theorem dM_eq_sum (D : D7) (hI : Rows.IsotInternal D.what₂) (i : D.nd.Loc) (j : ℕ) (h : D.nd.j i = j) :
     dM D.nd D.naut i = ∑ σ ∈ goodRows D i, Module.finrank ℂ ↥(D.what₂.isot j σ) := by
@@ -56,13 +56,13 @@ theorem dM_eq_sum (D : D7) (hI : Rows.IsotInternal D.what₂) (i : D.nd.Loc) (j 
   exact finrank_biSup_indep hind _
 
 /- English proof (translation)
-Break down `(D.nd.Zgood i).eq_empty_or_nonempty with he | hne` into its components or cases. Rewrite using `[he, Finset.sum_empty]`. Conclude with `Nat.cast_nonneg _`. Establish `hG : HG D.nd D.naut i`. Take `⟨x, hx⟩` from `hne`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, (D.Zgood_tie i x).1 hx⟩`. Establish `h3` using `(hZ i hG).2.2`. Rewrite using `[← h3, ← Nat.cast_sum]`. Apply `le_of_eq` to reduce the goal to its premises. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_subset (Finset.subset_univ (D.nd.Zgood i))]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `x hx`. Rewrite using `[if_pos ((D.Zgood_tie i x).1 hx)]`. Introduce `x _ hx`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h => hx ((D.Zgood_tie i x).2 h))]`.
+A detailed English derivation is pending.
 -/
 theorem sum_mult_le (D : D7) (hZ : SumRepresentations.ConclusionZ D) (i : D.nd.Loc) :
     (∑ π ∈ D.nd.Zgood i, (D.nd.mult i π : ℝ)) ≤ (dM D.nd D.naut i : ℝ) := by
@@ -89,17 +89,15 @@ end GlobalTheory.MultiplicityBound
 open GlobalTheory.MultiplicityBound in
 
 /- English proof (translation)
-Introduce `D L h42 hZ hI h2 j hj w hw`. Break down `(D.nd.locs j w).eq_empty_or_nonempty with he | ⟨i0, hi0⟩` into its components or cases. Rewrite using `[he, Finset.sum_empty]`. Conclude with `Nat.cast_nonneg _`. Take `⟨hj0, hw0⟩` from `(D.nd.locs_mem j w i0).1 hi0`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Substitute `hj0 hw0` using the available equality. Establish `hr` using `D.nd.j_range i0`. Establish `hind : iSupIndep (D.what₂.isot (D.nd.j i0))` using `(hI _ hr.1 hr.2).submodule_iSupIndep`. Establish `h1 : (∑ i ∈ D.nd.locs (D.nd.j i0) (D.nd.w i0), ∑ π ∈ D.nd.Zgood i, (D.nd.mult i π : ℝ)) ≤ ((∑ i ∈ D.nd.locs (D.nd.j i0) (D.nd.w i0), dM D.nd D.naut i : ℕ) : ℝ)`. Rewrite using `[Nat.cast_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_le_sum (fun i _ => sum_mult_le D hZ i)`. Use `h1.trans ?_` and prove the remaining obligations. Apply `Nat.cast_le.2` to reduce the goal to its premises. Establish `hdisj : (↑(D.nd.locs (D.nd.j i0) (D.nd.w i0)) : Set D.nd.Loc).PairwiseDisjoint (goodRows D)`. Introduce `i hi i' hi' hne`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.onFun, Finset.disjoint_left]`. Introduce `σ hσ hσ'`. Establish `hi` using `(D.nd.locs_mem _ _ i).1 hi`. Establish `hi'` using `(D.nd.locs_mem _ _ i').1 hi'`. Simplify using `only [goodRows, Finset.mem_filter, Finset.mem_univ, true_and] at hσ hσ'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `htw : TwistedPlaces.TwLoc D i`. Unfold `TwistedPlaces.TwLoc`. Rewrite using `[hi.2]`. Conclude with `hw`. Conclude with `hne (h2 i i' htw (hi.1.trans hi'.1.symm) (hi.2.trans hi'.2.symm) σ hσ.1 hσ.2 hσ'.2)`.
-
-Combine the equalities or inequalities in the displayed calculation. Unfold `SizeData₂.zeroSpaceRankAtPlace Rows.Data.Zj`. Rewrite using `[← D.nd.mu_w i0, LinearMap.finrank_range_of_inj (Formalism.MainNotions.J.theta_injective_of_scalars D h42 hI i0 hj)]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.NLink.multLe_of_rank : ∀ (D : D7) (L : SizeData₂ D), SumRepresentations.Conclusion42 D → SumRepresentations.ConclusionZ D → Rows.IsotInternal D.what₂ →
     KillingConditions.LocalisationUniqueness D → MultLe L := by

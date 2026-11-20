@@ -11,13 +11,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.C
 namespace GlobalTheory.ElementarySymmetricInverse
 
 /- English proof (translation)
-Simplify using `[Multiset.esymm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem esymm_deg_zero (s : Multiset ℂ) : s.esymm 0 = 1 := by
   simp [Multiset.esymm]
 
 /- English proof (translation)
-Simplify using `only [Multiset.esymm, Multiset.powersetCard_cons, Multiset.map_add, Multiset.sum_add, Multiset.map_map, Function.comp_def, Multiset.prod_cons, Multiset.sum_map_mul_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem esymm_cons_succ (x : ℂ) (s : Multiset ℂ) (k : ℕ) :
     (x ::ₘ s).esymm (k + 1) = s.esymm (k + 1) + x * s.esymm k := by
@@ -25,20 +25,20 @@ theorem esymm_cons_succ (x : ℂ) (s : Multiset ℂ) (k : ℕ) :
     Multiset.map_map, Function.comp_def, Multiset.prod_cons, Multiset.sum_map_mul_left]
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Simplify using `[Multiset.esymm]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem esymm_top (s : Multiset ℂ) (k : ℕ) (hk : Multiset.card s = k) : s.esymm k = s.prod := by
   subst hk
   simp [Multiset.esymm]
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty`. Introduce `i j h`. Establish `hi : i = 0` using `by simp at h; exact h.1`. Establish `hj : j = 0` using `by simp at h; exact h.2`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hi hj` using the available equality. Simplify using `[esymm_deg_zero]`. Consider the case `cons x s ih`. Introduce `i j h`. Establish `hx : x ≠ 0` using `hs x (Multiset.mem_cons_self x s)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ih'` using `ih (fun y hy => hs y (Multiset.mem_cons_of_mem hy))`. Break down `i with _ | i` into its components or cases. Rewrite using `[esymm_deg_zero, one_mul, esymm_top _ j (by omega)]`. Break down `j with _ | j` into its components or cases. Rewrite using `[esymm_deg_zero, esymm_top _ (i + 1) (by rw [Multiset.card_map]; omega), Multiset.prod_map_inv']`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_mul_cancel₀ (Multiset.prod_ne_zero (fun h0 => hs 0 h0 rfl))`. Rewrite `h` using `[Multiset.card_cons]`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, esymm_cons_succ, esymm_cons_succ, ← ih' (i + 1) j (by omega), ← ih' i (j + 1) (by omega)]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem esymm_inv_mul_prod (s : Multiset ℂ) (hs : ∀ x ∈ s, x ≠ 0) :
     ∀ i j : ℕ, i + j = Multiset.card s →
@@ -67,7 +67,7 @@ theorem esymm_inv_mul_prod (s : Multiset ℂ) (hs : ∀ x ∈ s, x ≠ 0) :
     ring
 
 /- English proof (translation)
-Establish `h : ((q : ℝ) ^ (((a : ℝ) - 1) / 2)) ^ a = (q : ℝ) ^ Nat.choose a 2`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg q), ← Real.rpow_natCast, Nat.cast_choose_two]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `congrArg (fun r : ℝ => (r : ℂ)) h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem half_pow (q a : ℕ) :
     (((q : ℝ) ^ (((a : ℝ) - 1) / 2) : ℝ) : ℂ) ^ a = (q : ℂ) ^ Nat.choose a 2 := by
@@ -79,7 +79,7 @@ theorem half_pow (q a : ℕ) :
   exact_mod_cast congrArg (fun r : ℝ => (r : ℂ)) h
 
 /- English proof (translation)
-Unfold `UpperTheory.V.Af.algSat`. Simplify using `only [Multiset.pure_def, Multiset.bind_def, Multiset.bind_singleton, Multiset.map_map, Function.comp_def]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem algSat_eq (a q : ℕ) (B : Multiset ℂˣ) :
     UpperTheory.V.Af.algSat a q B =
@@ -89,13 +89,13 @@ theorem algSat_eq (a q : ℕ) (B : Multiset ℂˣ) :
     Function.comp_def]
 
 /- English proof (translation)
-Introduce `q hq a B hB j hj hne`. Establish `hsat : GlobalTheory.LFun.satEig q a B a = (B.map fun b : ℂˣ => (b : ℂ)).prod`. Unfold `GlobalTheory.LFun.satEig`. Rewrite using `[esymm_top _ a (by rw [Multiset.card_map, hB])]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hcard : Multiset.card (UpperTheory.V.Af.algSat a q B) = a`. Rewrite using `[algSat_eq, Multiset.card_map, hB]`. Establish `hprod : (UpperTheory.V.Af.algSat a q B).prod = (q : ℂ) ^ Nat.choose a 2 * GlobalTheory.LFun.satEig q a B a`. Rewrite using `[hsat, ← half_pow, algSat_eq, Multiset.prod_map_mul, Multiset.map_const', Multiset.prod_replicate, hB]`. Establish `hq' : (q : ℂ) ^ Nat.choose a 2 ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr hq)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : (UpperTheory.V.Af.algSat a q B).prod ≠ 0`. Rewrite using `[hprod]`. Conclude with `mul_ne_zero hq' hne`. Establish `hall : ∀ x ∈ UpperTheory.V.Af.algSat a q B, x ≠ 0`. Introduce and unpack `x hx rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP (Multiset.prod_eq_zero hx)`. Rewrite using `[← esymm_inv_mul_prod _ hall j (a - j) (by omega), hprod]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem esymm_inv_algSat : ∀ {q : ℕ}, q ≠ (0 : ℕ) → ∀ {a : ℕ} {B : Multiset ℂˣ},
     Multiset.card B = a → ∀ {j : ℕ}, j ≤ a → GlobalTheory.LFun.satEig q a B a ≠ (0 : ℂ) →

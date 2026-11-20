@@ -6,7 +6,7 @@ open MeasureTheory Complex Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Conclude with `morseGen_uniform hρ₀ hνmin`.
+A detailed English derivation is pending.
 -/
 theorem morse_general_uniform {D : ℕ} (ρ₀ K₂ K₃ Lν νmin : ℝ) (hρ₀ : 0 < ρ₀) (hνmin : 0 < νmin) :
     ∃ M : ℝ, 0 < M ∧ ∀ n : ℕ, 0 < n → ∀ (φ ν : (Fin D → ℂ) → ℝ) (f : (Fin D → ℂ) → ℂ),

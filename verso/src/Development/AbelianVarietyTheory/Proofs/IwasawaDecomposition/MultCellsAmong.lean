@@ -37,7 +37,7 @@ def FormFamily.Carries (c : FormFamily O) {X : Type} [AddCommGroup X] [Module O 
   ∃ (e : X ≃ₗ[O] c.X) (s : Fin m ≃ Fin c.m), ∀ i, δ i = pull e.toLinearMap (c.δ (s i))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearEquiv.refl O c.X, Equiv.refl _, fun _ => LinearMap.ext₂ fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem FormFamily.carries_self (c : FormFamily O) : c.Carries c.δ :=
   ⟨LinearEquiv.refl O c.X, Equiv.refl _, fun _ => LinearMap.ext₂ fun _ _ => rfl⟩
@@ -51,12 +51,12 @@ def MultCellsAmong (q : ℕ) (φ : InvFun O) (M n : ℕ) : Prop :=
 def mulFormFamily : FormFamily ℤ := ⟨ℤ, 1, ![mulForm]⟩
 
 /- English proof (translation)
-The claim follows from `mulFormFamily.carries_self`.
+A detailed English derivation is pending.
 -/
 example : mulFormFamily.Carries ![mulForm] := mulFormFamily.carries_self
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `h`. Use `⟨Fin.cons (FormFamily.mk PUnit 0 Fin.elim0) R, fun X _ _ _ _ hX m δ hδ => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hR X hX m δ hδ`. Conclude with `⟨k.succ, by simpa using hk⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem MultCellsAmong.succ {q : ℕ} {φ : InvFun O} {M n : ℕ} (h : MultCellsAmong bar q φ M n) :
     MultCellsAmong bar q φ M (n + 1) := by

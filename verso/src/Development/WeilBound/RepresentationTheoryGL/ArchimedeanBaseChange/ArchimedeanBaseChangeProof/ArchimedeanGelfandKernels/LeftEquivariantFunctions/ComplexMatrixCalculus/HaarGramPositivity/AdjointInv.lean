@@ -21,18 +21,16 @@ theorem lefFr_eq (lam : Fin n → ℤ) (x : Mat n) :
     lefFr n lam x = sqQ lam * (clm lam (fr0 lam x) * Ring.inverse (sqQ lam)) := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Ring.mul_inverse_cancel _ (hA n lam).1, Ring.inverse_mul_cancel _ (hA n lam).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem sq_inv (hA : Avg) (lam : Fin n → ℤ) :
     sqQ lam * Ring.inverse (sqQ lam) = 1 ∧ Ring.inverse (sqQ lam) * sqQ lam = 1 :=
   ⟨Ring.mul_inverse_cancel _ (hA n lam).1, Ring.inverse_mul_cancel _ (hA n lam).1⟩
 
 /- English proof (translation)
-Take `⟨h1, _⟩` from `sq_inv hA lam`. Establish `hs : star (sqQ (n` using `n) lam) = sqQ lam := (hA n lam).2.1.star_eq`. Rewrite using `[← ContinuousLinearMap.star_eq_adjoint]`. Establish `key : star (Ring.inverse (sqQ (n` using `n) lam)) * star (sqQ lam) = 1 := by`. Rewrite using `[← star_mul, h1, star_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[hs]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, mul_one]`. Use `_ = (star (Ring.inverse (sqQ (n := n) lam)) * sqQ lam) * Ring.inverse (sqQ lam) := by`. Rewrite using `[mul_assoc]`.
-
-Use `_ = Ring.inverse (sqQ lam) := by rw [key, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoint_inv (hA : Avg) (lam : Fin n → ℤ) :
     ContinuousLinearMap.adjoint (Ring.inverse (sqQ (n := n) lam)) = Ring.inverse (sqQ lam) := by
@@ -50,7 +48,7 @@ theorem adjoint_inv (hA : Avg) (lam : Fin n → ℤ) :
     _ = Ring.inverse (sqQ lam) := by rw [key, one_mul]
 
 /- English proof (translation)
-Simplify using `only [clm, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem clm_mul' (lam : Fin n → ℤ) (A B : Matrix (Ix n lam) (Ix n lam) ℂ) :
     clm lam (A * B) = clm lam A * clm lam B := by simp only [clm, map_mul]
@@ -64,7 +62,7 @@ open PositivityTheory.RgBcC.CxeAvg
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `n lam`. Rewrite using `[lefFr_eq, (hF n lam).1]`. Simplify using `only [clm, map_one, one_mul]`. Conclude with `(sq_inv hA lam).1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frOne' (hF : MatrixFrechetDerivativeAtZeroLaws) (hA : Avg) : FrOne := by
   intro n lam
@@ -73,7 +71,7 @@ theorem frOne' (hF : MatrixFrechetDerivativeAtZeroLaws) (hA : Avg) : FrOne := by
   exact (sq_inv hA lam).1
 
 /- English proof (translation)
-Introduce `n lam k k'`. Establish `h2` using `(sq_inv hA lam).2`. Rewrite using `[CxeAvg.lefFr_eq, CxeAvg.lefFr_eq, CxeAvg.lefFr_eq, Submonoid.coe_mul, (hF n lam).2.1 _ _ (Matrix.UnitaryGroup.det_isUnit k) (Matrix.UnitaryGroup.det_isUnit k'), clm_mul']`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (Ring.inverse (sqQ lam)) (sqQ lam), h2, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem frMulK' (hF : MatrixFrechetDerivativeAtZeroLaws) (hA : Avg) : FrMulK := by
   intro n lam k k'
@@ -85,15 +83,13 @@ theorem frMulK' (hF : MatrixFrechetDerivativeAtZeroLaws) (hA : Avg) : FrMulK := 
   rw [← mul_assoc (Ring.inverse (sqQ lam)) (sqQ lam), h2, one_mul]
 
 /- English proof (translation)
-Introduce `n lam k v`. Take `⟨h1, h2⟩` from `sq_inv hA lam`. Establish `hs : star (sqQ (n` using `n) lam) = sqQ lam := (hA n lam).2.1.star_eq`. Establish `hr : star (Ring.inverse (sqQ (n` using `n) lam)) = Ring.inverse (sqQ lam) := by`. Rewrite using `[ContinuousLinearMap.star_eq_adjoint]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `adjoint_inv hA lam`. Use `set C := clm lam (fr0 lam (k : Matrix (Fin n) (Fin n) ℂ)) with hCdef`. Establish `hC : star C * gramQ lam * C = gramQ lam`. Rewrite using `[ContinuousLinearMap.star_eq_adjoint]`. Conclude with `(hA n lam).2.2.2.1 k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : sqQ lam * sqQ lam = gramQ lam` using `(hA n lam).2.2.1`. Establish `hTT : star (sqQ lam * (C * Ring.inverse (sqQ lam))) * (sqQ lam * (C * Ring.inverse (sqQ lam))) = 1`. Rewrite using `[star_mul, star_mul, hs, hr]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = 1 := by`. Rewrite using `[hg, hC, ← hg, ← mul_assoc (Ring.inverse (sqQ lam)) (sqQ lam) (sqQ lam), h2, one_mul, h1]`. Rewrite using `[CxeAvg.lefFr_eq]`. Use `set T := sqQ lam * (C * Ring.inverse (sqQ lam)) with hT`. Establish `hin : inner ℂ (T v) (T v) = inner ℂ v v`.
-
-Rewrite using `[← ContinuousLinearMap.adjoint_inner_right, ← ContinuousLinearMap.star_eq_adjoint, ← ContinuousLinearMap.mul_apply, hTT, ContinuousLinearMap.one_apply]`. Establish `h3 : ‖T v‖ ^ 2 = ‖v‖ ^ 2`. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), ← inner_self_eq_norm_sq (𝕜 := ℂ), hin]`. Conclude with `(sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frIso' (_hF : MatrixFrechetDerivativeAtZeroLaws) (hA : Avg) : FrIso := by
   intro n lam k v
@@ -122,7 +118,7 @@ theorem frIso' (_hF : MatrixFrechetDerivativeAtZeroLaws) (hA : Avg) : FrIso := b
   exact (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 h3
 
 /- English proof (translation)
-Introduce `n lam`. Simplify using `only [lefFr_eq]`. Establish `h1 : ContinuousOn (fr0 (n` using `n) lam) (GLs n) := ((hF n lam).2.2).continuousOn`. Establish `h2 : Continuous fun k : UK n => fr0 lam k.1` using `h1.comp_continuous continuous_subtype_val mem_GLs`. Conclude with `continuous_const.mul (((clm_continuous lam).comp h2).mul continuous_const)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frCont' (hF : MatrixFrechetDerivativeAtZeroLaws) (hA : Avg) : FrCont := by
   intro n lam

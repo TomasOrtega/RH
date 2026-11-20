@@ -19,15 +19,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 open GlobalTheory.CompanionTheory.KCoNarrow
 
 /- English proof (translation)
-Introduce and unpack `N ⟨hAN, hNS, hst⟩`. Break down `hI _ n d ν α hnd hν h1 hα (N.map ι) ((aug_le_map hb hD).trans (Submodule.map_mono hAN)) (by` into its components or cases. Introduce and unpack `h₀ _ ⟨ψ, hψ, rfl⟩ -`. Take `⟨h, hh, hr⟩` from `hD.rightOnto h₀`. Take `⟨ψ₁, h₁, ha, e⟩` from `hr ψ (hNS hψ)`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ψ₁, hst h hh ψ hψ ψ₁ h₁ ha, e⟩) with h | h`. Use `right`. Use `le_antisymm hNS fun φ hφ => ?_` and prove the remaining obligations. Take `⟨φ₀, h₀, hf, ha⟩` from `exists_full hS hb hD hν h1 hφ`. Take `⟨χ, hχ, e⟩` from `h _ hf`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e' : χ = φ₀` using `hb.2.1 (hNS hχ) h₀ e`. Use `add_mem (hAN ha) (e' ▸ hχ)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Use `left`. Use `le_antisymm (fun φ hφ => ?_) hAN` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ₀, h₀, hf, ha⟩` from `exists_full hS hb hD hν h1 (hNS hφ)`. Establish `hN0 : φ₀ ∈ N`. Use `sub_mem hφ (hAN ha)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Use `add_mem ha (mem_augAt hb hD h₀ (h _ ⟨φ₀, hN0, rfl⟩ hf))` as an intermediate fact.
-
-Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem irrAt_ne (hS : SurjSt) (hI : IrrStNe) {om : Rep σ X W} {v : Pl F}
     {ι : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) (Fv F v) → ℂ)} {ν α : (Fv F v)ˣ →* ℂˣ} (hnd : n ≤ d)
@@ -56,17 +54,17 @@ theorem irrAt_ne (hS : SurjSt) (hI : IrrStNe) {om : Rep σ X W} {v : Pl F}
     rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Take `⟨⟨ι₀, hι₀⟩, s1, s2, k⟩` from `dictionary_extended F E σ n d B X W M om χX χW hBg ⟨_, _, hX⟩ ⟨_, _, hW⟩ hom v t`. Establish `hu` using `(section_statement F E σ hBg.cm v t).2`. Distinguish the cases in `h1 : chrW χW t = 1`. Use `left`. Use `hX.lat` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hW.lat` as an intermediate fact. Take `⟨b, hb⟩` from `exists_isSplitBasis t X.L hBg.cm`. Take `⟨c, hc⟩` from `exists_isSplitBasis t W.L hBg.cm`. Take `⟨δ, hδ⟩` from `SplitDict.exists_cond hBg.std v`. Take `⟨ι, hι, hv, hg, hh⟩` from `SplitDict.model_Bar hBg hX hW (hM.vac v) hom hb hc hδ (b' := δ • b) rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg`, `hh` using `[h1]`. Use `sphAt_of (α := chrW χX t) hL hι.bij (hM.vac v).1 hv (fun g₀ => ?_) (fun h₀ => ?_)` and prove the remaining obligations. Take `⟨g, hg', e⟩` from `s1 ((δ • b) * g₀ * (δ • b)⁻¹)`. Use `⟨g, hg', ?_⟩` and prove the remaining obligations. Use `hg g hg'` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[show SplitDict.inB t (δ • b) g = g₀ by` and apply the resulting hypothesis. Rewrite using `[SplitDict.inB, show Matrix.GeneralLinearGroup.map (piW t) g.1 = (δ • b) * g₀ * (δ • b)⁻¹ from Units.ext e]`. Use the proof step `group] at this`. Take `⟨h, hh', e⟩` from `s2 (c * h₀ * c⁻¹)`. Use `⟨h, hh', ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `hh h hh'` as an intermediate fact. Rewrite using `[show SplitDict.inB t c h = h₀ by` and apply the resulting hypothesis. Rewrite using `[SplitDict.inB, show Matrix.GeneralLinearGroup.map (piW t) h.1 = c * h₀ * c⁻¹ from Units.ext e]`. Use the proof step `group] at this`. Use `right`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `irrAt_ne surjectivity_statement hI hnd hι₀.bij ⟨fun g hg => ⟨_, (k ι₀ hι₀).1 g hg (Matrix.GeneralLinearGroup.map (piW t) g.1) rfl⟩, fun g₀ => ?_, fun g hg => ⟨_, (k ι₀ hι₀).2 g hg (Matrix.GeneralLinearGroup.map (piW t) g.1) rfl⟩, fun g₀ => ?_⟩ (hu χW hHW) (hu χX hHX) h1` and prove the remaining obligations. Take `⟨g, hg, e⟩` from `s1 g₀`. Conclude with `⟨g, hg, (k ι₀ hι₀).1 g hg g₀ e⟩`. Take `⟨g, hg, e⟩` from `s2 g₀`. Conclude with `⟨g, hg, (k ι₀ hι₀).2 g hg g₀ e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pair_case2 (hI : IrrStNe) (hL : LatSt) {B : Base F E} (hBg : B.IsGood σ)
     {r s r' s' : ℕ} (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s') {M : Model σ X W} (hM : M.IsGood B.ψ)
@@ -112,7 +110,7 @@ namespace PositivityTheory.Sph
 open NumberField IsDedekindDomain Topology GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes PositivityTheory.ThK
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v ⟨t⟩`. Conclude with `⟨SplitPl.pair_case2 hI hL hT.base hT.geo.hV hT.geo.hW hT.geo.hM hT.weil hT.chars.heckeβ (PositivityTheory.KCo.isHecke_div hT.chars.heckeβ hT.chars.heckeα) (Nat.le_add_right a a') v t, SplitPl.pair_case2 hI hL hT.base hT.geo.hV' hT.geo.hW hT.geo.hM' hT.weil' hT.chars.heckeα (Posit …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem sphSplit_ne (hI : GlobalTheory.CompanionTheory.KCoNarrow.IrrStNe) (hL : LatSt) : SphSplit := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hT v ⟨t⟩
@@ -122,7 +120,7 @@ theorem sphSplit_ne (hI : GlobalTheory.CompanionTheory.KCoNarrow.IrrStNe) (hL : 
       (PositivityTheory.KCo.isHecke_div hT.chars.heckeα hT.chars.heckeβ) (Nat.le_add_left a' a) v t⟩
 
 /- English proof (translation)
-The claim follows from `sphSplit_ne (GlobalTheory.CompanionTheory.KCoNarrow.irrSt_narrow PositivityTheory.BernsteinRamification.Close.narrowBern) latSt`.
+A detailed English derivation is pending.
 -/
 theorem sphSplit_geo : SphSplit :=
   sphSplit_ne (GlobalTheory.CompanionTheory.KCoNarrow.irrSt_narrow PositivityTheory.BernsteinRamification.Close.narrowBern) latSt

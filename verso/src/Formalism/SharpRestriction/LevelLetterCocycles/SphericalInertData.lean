@@ -72,7 +72,7 @@ structure Pend : Prop where
 variable {D}
 
 /- English proof (translation)
-Establish `h0 : (((1 : ℕ) : ℝ) - 1) / 2 - ((0 : ℕ) : ℝ) = 0` using `by norm_num`. Use `show D.naut.lpSum (D.naut.lpSum (D.naut.lpTw (D.naut.locG P w) ((((1 : ℕ) : ℝ) - 1) / 2 - ((0 : ℕ) : ℝ))) (D.naut.lpZero w)) (D.naut.lpZero w) = D.naut.locG P w`. Rewrite using `[D.naut.lpSum_zero, D.naut.lpSum_zero, h0, D.naut.lpTw_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoLoc_single {a : ℕ} (P : D.naut.CG a) (w : PlE D.host) :
     isoLoc D.nd D.naut [⟨a, P, 1⟩] w = D.naut.locG P w := by
@@ -87,13 +87,13 @@ def RalgHalf {a : ℕ} (π : D.naut.CG a) : Prop :=
   ∀ τ, (D.naut.infG π τ).Nodup ∧ ∀ x ∈ D.naut.infG π τ, ∃ k : ℤ, x = (k : ℂ) + (a : ℂ) / 2
 
 /- English proof (translation)
-Take `⟨h1, -, -, -, -, h6⟩` from `h`. Establish `hd : 1 ≤ p.d` using `(h1 p hp).2.1`. Establish `hsub : (D.naut.infG p.π τ).map (· + (((p.d : ℂ) - 1) / 2 - ((0 : ℕ) : ℂ))) ≤ isoInf D.nd D.naut Pa τ`. Unfold `isoInf`. Use `le_trans ?_ (List.le_sum_of_mem (List.mem_map.mpr ⟨p, hp, rfl⟩))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Apply `List.le_sum_of_mem` to reduce the goal to its premises. Rewrite using `[List.mem_map]`. Use `⟨((0 : ℕ) : ℂ), ?_, rfl⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `⟨0, hd, by simp⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite `hsub` using `[h6 τ]`. Take `⟨hnd, hent⟩` from `hP.infW_alg j (D.nbc.wtAU j π) τ`. Use `⟨Multiset.Nodup.of_map _ (Multiset.nodup_of_le hsub hnd), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hent _ (Multiset.mem_of_le hsub (Multiset.mem_map_of_mem _ hx))`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Move the coercions through the operations in `at hk ⊢`. Take the linear combination `hk`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Pend.part_entries (hP : Pend D) {j : ℕ} {π : D.nbc.AU j} {Pa : List (Part D.naut.CG)}
     (h : IsBC D.nd D.naut D.nbc j π Pa) (p : Part D.naut.CG) (hp : p ∈ Pa) (τ : D.host.E →+* ℂ) :
@@ -119,13 +119,13 @@ theorem Pend.part_entries (hP : Pend D) {j : ℕ} {π : D.nbc.AU j} {Pa : List (
   linear_combination hk
 
 /- English proof (translation)
-Establish `he` using `fun τ => hP.part_entries h p hp τ`. Break down `Int.even_or_odd ((D.R.nV : ℤ) - p.d - p.a + 1) with ⟨t, ht⟩ | ⟨t, ht⟩` into its components or cases. Use `left`. Rewrite using `[hP.ralg_iff]`. Introduce `τ`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(he τ).1, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `(he τ).2 x hx`. Use `⟨k + t, ?_⟩` and prove the remaining obligations. Establish `ht' : ((D.R.nV : ℂ) - p.d - p.a + 1) = (t : ℂ) + t` using `by exact_mod_cast ht`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hk + ht' / 2`. Use `right`. Introduce `τ`. Use `⟨(he τ).1, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `(he τ).2 x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨k + t, ?_⟩` and prove the remaining obligations. Establish `ht' : ((D.R.nV : ℂ) - p.d - p.a + 1) = 2 * (t : ℂ) + 1` using `by exact_mod_cast ht`. Use `push_cast`. Take the linear combination `hk + ht' / 2`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Pend.part_alg (hP : Pend D) {j : ℕ} {π : D.nbc.AU j} {Pa : List (Part D.naut.CG)}
     (h : IsBC D.nd D.naut D.nbc j π Pa) (p : Part D.naut.CG) (hp : p ∈ Pa) :

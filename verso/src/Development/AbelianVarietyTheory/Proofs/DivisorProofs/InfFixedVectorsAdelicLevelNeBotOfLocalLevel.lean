@@ -13,9 +13,9 @@ namespace GlobalTheory.FixLev
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hx' : cInf x = 1` using `hx`. Establish `hy' : cInf y = 1` using `hy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `ga_ext` to reduce the goal to its premises. Conclude with `hx'.trans hy'.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `Units.ext (Matrix.ext fun i j => FiniteAdeleRing.ext _ fun v => by`. Use `congrArg (fun z : GLw n v => (z : Matrix (Fin n) (Fin n) (v.adicCompletion E)) i j) (h v)` as an intermediate fact. Conclude with `this)`.
+A detailed English derivation is pending.
 -/
 theorem ext_fin {x y : UA E n} (hx : x ∈ finU E n) (hy : y ∈ finU E n) (h : ∀ v : Pl E, cLoc v x = cLoc v y) : x = y := by
   have hx' : cInf x = 1 := hx
@@ -29,9 +29,9 @@ theorem ext_fin {x y : UA E n} (hx : x ∈ finU E n) (hy : y ∈ finU E n) (h : 
         exact this)
 
 /- English proof (translation)
-Establish `h1 : ∀ x : Af E, ∀ᶠ v in cofinite, pLoc E v x ∈ v.adicCompletionIntegers E` using `fun x => x.2`. Establish `h2 : ∀ i j : Fin n, ∀ᶠ v in cofinite, (cLoc v g) i j ∈ v.adicCompletionIntegers E ∧ (cLoc v g)⁻¹ i j ∈ v.adicCompletionIntegers E`. Introduce `i j`. Use `filter_upwards [h1 (pFin E ((g : GA E n) i j)), h1 (pFin E (((g⁻¹ : UA E n) : GA E n) i j))] with v hv hv'`. Use `⟨hv, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv]`. Conclude with `hv'`. Conclude with `Filter.eventually_all.2 fun i => Filter.eventually_all.2 (h2 i)`.
+A detailed English derivation is pending.
 -/
 theorem integral_eventually (g : UA E n) : ∀ᶠ v in cofinite, ∀ i j : Fin n,
     (cLoc v g) i j ∈ v.adicCompletionIntegers E ∧ (cLoc v g)⁻¹ i j ∈ v.adicCompletionIntegers E := by
@@ -49,7 +49,7 @@ def fib (B : Finset (Pl E)) : Set (Pl E) :=
   {u | ∃ t ∈ B, u.under (𝓞 (maximalRealSubfield E)) = t.under (𝓞 (maximalRealSubfield E))}
 
 /- English proof (translation)
-Take `⟨t, ht, e⟩` from `hu`. Conclude with `⟨t, ht, h.symm.trans e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fib_closed (B : Finset (Pl E)) (u v : Pl E)
     (h : u.under (𝓞 (maximalRealSubfield E)) = v.under (𝓞 (maximalRealSubfield E))) (hu : u ∈ fib B) : v ∈ fib B := by
@@ -70,7 +70,7 @@ def stabU (φ : UA E n → ℂ) : Subgroup (UA E n) where
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin n) (Fin n) (v.adicCompletion E)) i j ∈ _`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_entry_mem (v : Pl E) (i j : Fin n) : (1 : GLw n v) i j ∈ v.adicCompletionIntegers E := by
   change (1 : Matrix (Fin n) (Fin n) (v.adicCompletion E)) i j ∈ _
@@ -80,23 +80,21 @@ theorem one_entry_mem (v : Pl E) (i j : Fin n) : (1 : GLw n v) i j ∈ v.adicCom
   · exact zero_mem _
 
 /- English proof (translation)
-Proceed by induction on `B using Finset.induction_on with`. Consider the case `empty`. Introduce `h hfin _ h1`. Establish `: h = 1` using `ext_fin hfin (one_mem _) fun v => by`. Rewrite using `[h1 v (by rintro ⟨t, ht, _⟩; simp at ht), map_one]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `one_mem _`. Consider the case `insert t B _ ih`. Introduce `h hfin hK h1`. Take `⟨wt, ⟨hwtS, hwt⟩, _⟩` from `hS t`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hxfin, hx⟩` from `GlobalTheory.T.exists_finiteAdelicUnitaryPoint_cut_to_fibreUnion E n (fib {t}) (fib_closed {t}) h hfin`. Establish `hxloc : x ∈ locU n wt`. Use `Subgroup.mem_inf.2 ⟨hxfin, Subgroup.mem_iInf.2 fun u => Subgroup.mem_iInf.2 fun hu => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, hx u, if_neg]`. Introduce and unpack `⟨t', ht', e⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht'` using `[Finset.mem_singleton]`. Substitute `ht'` using the available equality. Conclude with `hu (e.trans hwt.symm)`. Establish `hwtf : wt ∈ fib {t}` using `⟨t, Finset.mem_singleton_self t, hwt⟩`. Establish `hxS : x ∈ stabU φ`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk, hkx⟩` from `hK wt hwtS`. Use `hφ wt hwtS x hxloc ⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hx wt, if_pos hwtf, hkx]`. Establish `hrest : x⁻¹ * h ∈ stabU φ`. Use `ih _ (mul_mem (inv_mem hxfin) hfin) ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Rewrite using `[map_mul, map_inv, hx w]`. Use `split_ifs`. Conclude with `⟨1, one_mem _, by rw [inv_mul_cancel]; rfl⟩`. Rewrite using `[inv_one, one_mul]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hK w hw`. Introduce `v hv`. Rewrite using `[map_mul, map_inv, hx v]`. Use `split_ifs with hvt`. Conclude with `inv_mul_cancel _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_one, one_mul]`. Use `h1 v ?_` and prove the remaining obligations. Introduce and unpack `⟨t', ht', e⟩`. Break down `Finset.mem_insert.1 ht' with rfl | ht'` into its components or cases. Conclude with `hvt ⟨t', Finset.mem_singleton_self _, e⟩`.
-
-Conclude with `hv ⟨t', ht', e⟩`. Establish `: h = x * (x⁻¹ * h)` using `by group`. Rewrite using `[this]`. Conclude with `mul_mem hxS hrest`.
+A detailed English derivation is pending.
 -/
 theorem local_fixed (S : Set (Pl E)) (hS : IsSection S) (K' : ∀ w : Pl E, Subgroup (UL n w)) (φ : UA E n → ℂ)
     (hφ : ∀ w ∈ S, ∀ x ∈ locU n w, (∃ k ∈ K' w, k.1 = cLoc w x) → RU E n x φ = φ) (B : Finset (Pl E)) :
@@ -147,31 +145,27 @@ theorem local_fixed (S : Set (Pl E)) (hS : IsSection S) (K' : ∀ w : Pl E, Subg
     exact mul_mem hxS hrest
 
 /- English proof (translation)
-Introduce `E _ _ _ n S hS K' _ π hπ hL`. Take `⟨φ, hφπ, hφ0, hφfix⟩` from `hL`. Establish `hlev` using `(hπ.aut φ hφπ).level`. Establish `key : ∀ g : finU E n, g ∈ globLev S K' → (g : UA E n) ∈ stabU φ`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgS : ∀ w ∈ S, ∃ k ∈ K' w, k.1 = cLoc w (g : UA E n)`. Introduce `w hw`. Establish `h1` using `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hg w) hw`. Rewrite `h1` using `[Subgroup.mem_comap]`. Take `⟨k, hk, e⟩` from `Subgroup.mem_map.1 h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k, hk, e⟩`. Take `⟨T, hT⟩` from `GlobalTheory.T.mem_open_nhd_one_of_integral_eq_one_on_finset E n _ hlev (by simp)`. Establish `hbad` using `Filter.eventually_cofinite.1 (integral_eventually (g : UA E n))`. Set `B : Finset (Pl E)` to `T ∪ hbad.toFinset`. Take `⟨x, hxfin, hx⟩` from `GlobalTheory.T.exists_finiteAdelicUnitaryPoint_cut_to_fibreUnion E n (fib B) (fib_closed B) (g : UA E n) g.2`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hxS : x ∈ stabU φ`. Use `local_fixed S hS K' φ hφfix B x hxfin ?_ ?_` and prove the remaining obligations. Introduce `w hw`. Rewrite using `[hx w]`. Use `split_ifs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hgS w hw`. Conclude with `⟨1, one_mem _, rfl⟩`. Introduce `v hv`. Rewrite using `[hx v, if_neg hv]`. Establish `hc : ∀ v, cLoc v (x⁻¹ * (g : UA E n)) = if v ∈ fib B then 1 else cLoc v (g : UA E n)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Rewrite using `[map_mul, map_inv, hx v]`. Use `split_ifs`. Conclude with `inv_mul_cancel _`. Rewrite using `[inv_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hint : ∀ v, v ∉ fib B → ∀ i j : Fin n, (cLoc v (g : UA E n)) i j ∈ v.adicCompletionIntegers E ∧ (cLoc v (g : UA E n))⁻¹ i j ∈ v.adicCompletionIntegers E`. Introduce `v hv`. Assume the negation of the conclusion as `hc'`. Conclude with `hv ⟨v, Finset.mem_union_right _ (hbad.mem_toFinset.2 hc'), rfl⟩`. Establish `hrest : x⁻¹ * (g : UA E n) ∈ stabU φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hT ⟨x⁻¹ * (g : UA E n), mul_mem (inv_mem hxfin) g.2⟩ ?_ ?_ ?_` as an intermediate fact. Conclude with `this`. Introduce `v hv`. Express the relevant statement in the definitionally equal form `cLoc v (x⁻¹ * (g : UA E n)) = 1`. Rewrite using `[hc v, if_pos ⟨v, Finset.mem_union_left _ hv, rfl⟩]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `v i j`. Express the relevant statement in the definitionally equal form `(cLoc v (x⁻¹ * (g : UA E n))) i j ∈ _`. Rewrite using `[hc v]`. Use `split_ifs with hv`. Conclude with `one_entry_mem v i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hint v hv i j).1`. Introduce `v i j`. Express the relevant statement in the definitionally equal form `(cLoc v (x⁻¹ * (g : UA E n)))⁻¹ i j ∈ _`. Rewrite using `[hc v]`. Use `split_ifs with hv`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[inv_one]`. Conclude with `one_entry_mem v i j`. Conclude with `(hint v hv i j).2`. Establish `: (g : UA E n) = x * (x⁻¹ * (g : UA E n))` using `by group`. Rewrite using `[this]`.
-
-Conclude with `mul_mem hxS hrest`. Introduce `hbot`. Establish `hmem : φ ∈ π ⊓ fixed (RF E n) (globLev S K')`. Use `⟨hφπ, ?_⟩` and prove the remaining obligations. Introduce `h`.
-
-Express the relevant statement in the definitionally equal form `RU E n ((h : finU E n) : UA E n) φ = (1 : ℂˣ) • φ`. Rewrite using `[one_smul]`. Conclude with `key h h.2`. Rewrite `hmem` using `[hbot]`. Conclude with `hφ0 ((Submodule.mem_bot ℂ).1 hmem)`.
+A detailed English derivation is pending.
 -/
 theorem inf_fixed_globLev_ne_bot : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (S : Set (Pl E)), IsSection S →
     ∀ (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' →

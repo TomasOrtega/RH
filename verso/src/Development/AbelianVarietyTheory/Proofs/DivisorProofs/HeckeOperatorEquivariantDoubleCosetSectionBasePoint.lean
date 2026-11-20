@@ -9,25 +9,21 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT.TraceBlocks
 
 /- English proof (translation)
-Introduce `G H V _ _ _ _ ι _ ρ K K' F hF hS x _ hT v`. Establish `hout : ∀ y : G, F (y : G ⧸ K').out = F y`. Introduce `y`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K' y`. Rewrite using `[hk, hF _ k.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hcond : ∀ (q : G ⧸ K') (h : H), ((ι h * x)⁻¹ * (x * q.out) ∈ K') ↔ (((x⁻¹ * ι h * x : G) : G ⧸ K') = q)`. Introduce `q h`. Establish `e : (ι h * x)⁻¹ * (x * q.out) = (x⁻¹ * ι h * x)⁻¹ * q.out` using `by group`. Rewrite using `[e]`. Use `conv_rhs => rw [← QuotientGroup.out_eq' q]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `QuotientGroup.eq.symm`. Establish `hreg : ∀ (g : G) (φ : G → V) (y : G), rightReg ℂ G V g φ y = φ (y * g)` using `fun _ _ _ => rfl`. Establish `hsec : ∀ y, secM ι ρ K' x v y = ((stabCard ι K' x : ℂ))⁻¹ • (∑ᶠ h : H, if (ι h * x)⁻¹ * y ∈ K' then ρ h else 0) v` using `fun _ => rfl`. Rewrite using `[GlobalTheory.BCT.LevOpTmul.levOp_apply _ K K' F LinearMap.id hS.toFinset (fun q hq => by simpa using hq)]`. Rewrite using `[finsum_eq_sum_of_support_subset (f := fun h : H => F (x⁻¹ * ι h * x) • ρ h v) (s := hT.toFinset) (fun h hh => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.Finite.coe_toFinset]`. Introduce `h0; exact hh (by simp only [h0, zero_smul]))]`. Simplify using `only [Pi.smul_apply, Finset.sum_apply, LinearMap.id_apply, hreg, hsec]`. Use `congr 1`. Establish `hin : ∀ q ∈ hS.toFinset, (∑ᶠ h : H, if (ι h * x)⁻¹ * (x * q.out) ∈ K' then ρ h else 0) = ∑ h ∈ hT.toFinset, if (((x⁻¹ * ι h * x : G) : G ⧸ K') = q) then ρ h else 0`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `q hq`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hq`. Rewrite using `[finsum_eq_sum_of_support_subset (s := hT.toFinset)]`. Conclude with `Finset.sum_congr rfl fun h _ => by simp only [hcond]`. Introduce `h hh`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.mem_support, ne_eq, ite_eq_right_iff, not_forall] at hh`. Take `⟨hc, _⟩` from `hh`. Rewrite using `[Set.Finite.coe_toFinset]`. Use `show _ ≠ _`. Rewrite `hc` using `[hcond]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hout, hc]`. Conclude with `hq`. Rewrite using `[Finset.sum_congr rfl fun q hq => by rw [hin q hq]]`. Simplify using `only [LinearMap.sum_apply, Finset.sum_apply, ite_apply, LinearMap.zero_apply, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun h hh => ?_` and prove the remaining obligations. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hh`. Establish `: ∀ q ∈ hS.toFinset, F q.out • ((stabCard ι K' x : ℂ))⁻¹ • (if (((x⁻¹ * ι h * x : G) : G ⧸ K') = q) then ρ h else 0) v = if (((x⁻¹ * ι h * x : G) : G ⧸ K') = q) then ((stabCard ι K' x : ℂ))⁻¹ • F (x⁻¹ * ι h * x) • ρ h v else 0`. Introduce `q _`. Use `split_ifs with e`.
-
-Rewrite using `[← e, hout, smul_comm]`. Simplify using `only [LinearMap.zero_apply, smul_zero]`. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_ite_eq]`. Rewrite using `[if_pos]`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, hout]`.
-
-Conclude with `hh`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levOp_secM_apply_self : ∀ (G H V : Type) [Group G] [Group H] [AddCommGroup V] [Module ℂ V] (ι : H →* G), Function.Injective ι → ∀ (ρ : Representation ℂ H V) (K K' : Subgroup G) (F : G → ℂ), (∀ k ∈ K', ∀ x, F (x * k) = F x) → {q : G ⧸ K' | F q.out ≠ 0}.Finite → ∀ x : G, Finite (ι.range ⊓ K'.map (MulAut.conj x).toMonoidHom : Subgroup G) → {h : H | F (x⁻¹ * ι h * x) ≠ 0}.Finite → ∀ v : V, levOp (rightReg ℂ G V) K K' F LinearMap.id (secM ι ρ K' x v) x = ((K'.relIndex K : ℕ) : ℂ)⁻¹ • ((stabCard ι K' x : ℂ))⁻¹ • ∑ᶠ h : H, F (x⁻¹ * ι h * x) • ρ h v := by
   intro G H V _ _ _ _ ι _ ρ K K' F hF hS x _ hT v

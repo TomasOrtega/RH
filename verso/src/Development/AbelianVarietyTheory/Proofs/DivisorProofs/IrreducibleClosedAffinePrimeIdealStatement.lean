@@ -15,7 +15,7 @@ open GlobalTheory.IrrAn
 open scoped GlobalTheory.AffinePoints
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.IrrSmooth.exists_affine_smooth_prime` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIrreducibleClosedAffinePrimeIdeal.lean&line=73#L73)
 -/

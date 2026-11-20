@@ -20,7 +20,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((Units.map (algebraMap O LL).toMonoidHom (u ^ z) : LLˣ) : LL) = _`. Rewrite using `[map_zpow, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraMap_unit_zpow (u : Oˣ) (z : ℤ) :
     algebraMap O LL ((u ^ z : Oˣ) : O) = (algebraMap O LL (u : O)) ^ z := by
@@ -29,7 +29,7 @@ theorem algebraMap_unit_zpow (u : Oˣ) (z : ℤ) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, AddValuation.map_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem v_prod {ι : Type*} (s : Finset ι) (f : ι → LL) :
     v (∏ i ∈ s, f i) = ∑ i ∈ s, v (f i) := by
@@ -38,7 +38,7 @@ theorem v_prod {ι : Type*} (s : Finset ι) (f : ι → LL) :
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, AddValuation.map_mul, ih]
 
 /- English proof (translation)
-Use `Fact.mk hp` as an intermediate fact. Simplify using `only [padicValInt, Int.natAbs_mul, Int.natAbs_pow, Int.natAbs_natCast]`. Rewrite using `[padicValNat.mul (Int.natAbs_ne_zero.2 hi) (pow_ne_zero _ hp.ne_zero), padicValNat.prime_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem padicValInt_mul_pow {p : ℕ} (hp : p.Prime) {i : ℤ} (hi : i ≠ 0) (ell : ℕ) :
     padicValInt p (i * (p : ℤ) ^ ell) = padicValInt p i + ell := by
@@ -47,7 +47,7 @@ theorem padicValInt_mul_pow {p : ℕ} (hp : p.Prime) {i : ℤ} (hi : i ≠ 0) (e
   rw [padicValNat.mul (Int.natAbs_ne_zero.2 hi) (pow_ne_zero _ hp.ne_zero), padicValNat.prime_pow]
 
 /- English proof (translation)
-Simplify using `only [PPO, Polynomial.eval_mul, Polynomial.eval_prod, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_finsetSum, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, map_mul, map_prod, map_sub, map_one, map_natCast, …`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_PPO (W : LocWach PD LL O v n) (ell : ℕ) (JS : Finset ℤ) :
     algebraMap O LL ((PPO W ell JS).eval 1) =
@@ -61,9 +61,9 @@ theorem eval_PPO (W : LocWach PD LL O v n) (ell : ℕ) (JS : Finset ℤ) :
   ring
 
 /- English proof (translation)
-Establish `hy : 1 ≤ v (algebraMap O LL (W.χΓ W.gam : O) - 1)`. Rewrite using `[W.gam_gen, hs, Nat.cast_one]`. Establish `hfac : ∀ i ∈ JS.erase 0, v (1 - (algebraMap O LL (W.χΓ W.gam : O)) ^ (i * (PD.p : ℤ) ^ ell)) = ((ell + 1 + padicValInt PD.p i : ℕ) : WithTop ℚ)`. Introduce `i hi`. Establish `hi0 : i ≠ 0` using `(Finset.mem_erase.1 hi).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : i * (PD.p : ℤ) ^ ell ≠ 0` using `mul_ne_zero hi0 (pow_ne_zero _ (by exact_mod_cast PD.hp.ne_zero))`. Rewrite using `[AddValuation.map_sub_swap, LTE.val_zpow_sub_one v PD.hp hp W.v_l hy hm, W.gam_gen, hs, padicValInt_mul_pow PD.hp hi0]`. Use `push_cast`. Normalize the expressions using the abelian group laws. Rewrite using `[eval_PPO, AddValuation.map_mul, v_prod, Finset.sum_congr rfl hfac, AddValuation.map_pow, W.v_l, nsmul_one, Nat.cast_add, Nat.cast_sum, add_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_PP_one (W : LocWach PD LL O v n) (hs : W.s = 1) (hp : PD.p ≠ 2) (ell : ℕ)
     (JS : Finset ℤ) :

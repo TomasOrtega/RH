@@ -10,9 +10,9 @@ def IsParabolic {N : ℕ} (ca cb : Fin N) (M : Matrix (Fin N) (Fin N) ℂ) : Pro
   ∀ a b, b < a → ¬ (a = cb ∧ b = ca) → M a b = 0
 
 /- English proof (translation)
-Introduce `a b hba hne`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : c < a ∧ ¬ (a = cb ∧ c = ca)`. Rewrite using `[hA a c h1.1 h1.2, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h2 : b < c ∧ ¬ (c = cb ∧ b = ca)`. Rewrite using `[hB c b h2.1 h2.2, mul_zero]`. It suffices to derive a contradiction. Simplify using `only [Fin.lt_def, Fin.ext_iff] at *`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem IsParabolic.mul {N : ℕ} {ca cb : Fin N} (hc : (cb : ℕ) = ca + 1)
     {A B : Matrix (Fin N) (Fin N) ℂ} (hA : IsParabolic ca cb A) (hB : IsParabolic ca cb B) :
@@ -29,13 +29,13 @@ theorem IsParabolic.mul {N : ℕ} {ca cb : Fin N} (hc : (cb : ℕ) = ca + 1)
   omega
 
 /- English proof (translation)
-Introduce `_ _ h _` and use `hM h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isParabolic_of_upper {N : ℕ} (ca cb : Fin N) {M : Matrix (Fin N) (Fin N) ℂ}
     (hM : M.BlockTriangular id) : IsParabolic ca cb M := fun _ _ h _ => hM h
 
 /- English proof (translation)
-Introduce `a b hba hne`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne hba.ne', Matrix.single_apply_of_ne, add_zero]`. Introduce `h`. Conclude with `hne ⟨h.1.symm, h.2.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isParabolic_transvection {N : ℕ} (ca cb : Fin N) (t : ℂ) :
     IsParabolic ca cb (1 + Matrix.single cb ca t) := by
@@ -45,11 +45,11 @@ theorem isParabolic_transvection {N : ℕ} (ca cb : Fin N) (t : ℂ) :
   exact hne ⟨h.1.symm, h.2.symm⟩
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.add_apply]`. Distinguish the cases in `e : a = cb ∧ b = ca`. Take `⟨rfl, rfl⟩` from `e`. Rewrite using `[Matrix.one_apply_ne hne, Matrix.single_apply_same, zero_add]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : Matrix.single cb ca (Y cb ca) a b = 0` using `Matrix.single_apply_of_ne _ _ _ _ _ (fun h => e ⟨h.1.symm, h.2.symm⟩)`. Rewrite using `[hs, add_zero]`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Rewrite using `[hY.2 a b h, Matrix.one_apply_ne h.ne]`. Substitute `h` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[hY.1 a, Matrix.one_apply_eq]`. Rewrite using `[hP a b h e, Matrix.one_apply_ne h.ne']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_transvection {N : ℕ} {ca cb : Fin N} {Y : Matrix (Fin N) (Fin N) ℂ} (hne : cb ≠ ca)
     (hlt : ca < cb) (hY : IsLowerUni Y) (hP : IsParabolic ca cb Y) :
@@ -69,15 +69,15 @@ theorem eq_transvection {N : ℕ} {ca cb : Fin N} {Y : Matrix (Fin N) (Fin N) �
     · rw [hP a b h e, Matrix.one_apply_ne h.ne']
 
 /- English proof (translation)
-Introduce `N h B₀ B₁ ca cb t hc h0 h1 d0 _ L0 L1`. Establish `hlt : ca < cb` using `by simp only [Fin.lt_def]; omega`. Establish `hL0 : IsUnit (h * B₀).det` using `by rw [L0.det]; exact isUnit_one`. Establish `hB0 : IsUnit B₀.det` using `isUnit_iff_ne_zero.mpr d0`. Use `letI := Matrix.invertibleOfIsUnitDet (h * B₀) hL0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI := Matrix.invertibleOfIsUnitDet B₀ hB0`. Use `set E : Matrix (Fin N) (Fin N) ℂ := 1 + Matrix.single cb ca t with hE`. Use `set Y : Matrix (Fin N) (Fin N) ℂ := B₀⁻¹ * (E * B₁) with hYdef`. Establish `hY : h * B₀ * Y = h * E * B₁`. Rewrite using `[hYdef, Matrix.mul_assoc h B₀, Matrix.mul_nonsing_inv_cancel_left _ _ hB0, Matrix.mul_assoc]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `low : Y.BlockTriangular OrderDual.toDual`. Establish `e1 : (h * B₀).BlockTriangular OrderDual.toDual` using `fun a b e => L0.2 _ _ e`. Establish `e2 : (h * E * B₁).BlockTriangular OrderDual.toDual` using `fun a b e => L1.2 _ _ e`. Use `(blockTriangular_inv_of_blockTriangular e1).mul e2` as an intermediate fact. Rewrite `this` using `[← hY, Matrix.nonsing_inv_mul_cancel_left _ _ hL0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hYl : IsLowerUni Y`. Use `⟨fun a => ?_, fun a b e => low e⟩` and prove the remaining obligations. Use `L1.1 a` as an intermediate fact. Rewrite using `[← hY, Matrix.mul_apply, Finset.sum_eq_single a (fun c _ hc' => by`. Break down `lt_or_gt_of_ne hc' with e | e` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[low e, mul_zero]`. Rewrite `this` using `[L0.2 a c e, zero_mul]) (by simp), L0.1, one_mul]`. Conclude with `this`. Establish `hP : IsParabolic ca cb Y` using `(isParabolic_of_upper ca cb (blockTriangular_inv_of_blockTriangular h0)).mul hc ((isParabolic_transvection ca cb t).mul hc (isParabolic_of_upper ca cb h1))`. Conclude with `⟨Y cb ca, by rw [← hY, ← eq_transvection hlt.ne' hlt hYl hP]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mul_transvection_eq : ∀ (N : ℕ) (h B₀ B₁ : Matrix (Fin N) (Fin N) ℂ) (ca cb : Fin N) (t : ℂ),
     (cb : ℕ) = ca + 1 → B₀.BlockTriangular id → B₁.BlockTriangular id → B₀.det ≠ 0 → B₁.det ≠ 0 →

@@ -10,63 +10,57 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `k _ _ _ _ N V _ _ π r s d e j d' e' t c f hord hsub`. Establish `hKf : twKer π (unipRad k f) 1 = ⊤` using `Submodule.Quotient.subsingleton_iff.mp hsub`. Apply `Submodule.Quotient.subsingleton_iff.mpr` to reduce the goal to its premises. Establish `hfblk : ∀ (a : Fin t) (i : Fin (c a)), blk f (f ⟨a, i⟩) = a` using `fun a i => by simp only [blk, Equiv.symm_apply_apply]`. Establish `heblk : ∀ (a : Fin r) (i : Fin (d a)), blk e (e ⟨a, i⟩) = a` using `fun a i => by simp only [blk, Equiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he'blk : ∀ (b : Fin s) (i : Fin (d' b)), blk e' (e' ⟨b, i⟩) = b` using `fun b i => by simp only [blk, Equiv.symm_apply_apply]`. It suffices to establish `key : twKer π (unipRad k f) 1 ≤ (twKer ((jac e π).comp (MonoidHom.mulSingle (fun a => GL (Fin (d a)) k) j)) (unipRad k e') 1).comap (twKer π (unipRad k e) 1).mkQ by`. Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `key (hKf ▸ Submodule.mem_top)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨n, hn⟩, w, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨hnf, hnd⟩` from `mem_unipRad.mp hn`. Establish `hoff : ∀ p q, p ≠ q → (n : Matrix (Fin N) (Fin N) k) p q ≠ 0 → blk f p < blk f q`. Introduce `p q hpq h0`. Break down `lt_trichotomy (blk f p) (blk f q) with h | h | h` into its components or cases. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-It suffices to derive a contradiction. Take `⟨⟨a, i⟩, rfl⟩` from `f.surjective p`. Take `⟨⟨b, i'⟩, rfl⟩` from `f.surjective q`. Rewrite `h` using `[hfblk, hfblk]`. Substitute `h` using the available equality.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[hnd a i i']`. Establish `hii : i = i'`. Assume the negation of the conclusion as `hii`. Conclude with `h0 (Matrix.one_apply_ne hii)`. Conclude with `hpq (by rw [hii])`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (mem_parab.mp hnf p q h) h0`. Establish `hdiag : ∀ p, (n : Matrix (Fin N) (Fin N) k) p p = 1`. Introduce `p`. Take `⟨⟨a, i⟩, rfl⟩` from `f.surjective p`. Rewrite using `[hnd a i i, Matrix.one_apply_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hA : n ∈ parab k e`. Rewrite using `[mem_parab]`. Introduce `p q hlt`. Assume the negation of the conclusion as `h0`. Establish `hpq : p ≠ q` using `fun h => by`.
+Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Conclude with `lt_irrefl _ hlt`. Break down `hord p q (hoff p q hpq h0) with h | ⟨p', q', rfl, rfl, -⟩` into its components or cases. Conclude with `lt_asymm h hlt`. Rewrite `hlt` using `[heblk, heblk]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `lt_irrefl _ hlt`. Take `⟨u', hu'eq⟩ : ∃ u', leviProj k e ⟨n, hA⟩ j = u'` from `⟨_, rfl⟩`. Establish `hu'e : ∀ i i', (u' : Matrix (Fin (d j)) (Fin (d j)) k) i i' = (n : Matrix (Fin N) (Fin N) k) (e ⟨j, i⟩) (e ⟨j, i'⟩)`. Introduce `i i'`. Rewrite using `[← hu'eq, leviProj_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hu' : u' ∈ unipRad k e'`. Rewrite using `[mem_unipRad]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_parab]`. Introduce `i i' hlt`.
+Substitute using the available equality. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hu'e]`. Assume the negation of the conclusion as `h0`. Establish `hii : i ≠ i'` using `fun h => by`. Substitute `h` using the available equality. Conclude with `lt_irrefl _ hlt`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hpq : e ⟨j, i⟩ ≠ e ⟨j, i'⟩` using `fun h => hii (by simpa using e.injective h)`. Break down `hord _ _ (hoff _ _ hpq h0) with h | ⟨p', q', h1, h2, h3⟩` into its components or cases. Rewrite `h` using `[heblk, heblk]`. Conclude with `lt_irrefl _ h`. Take `rfl : i = p'` from `by simpa using e.injective h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Take `rfl : i' = q'` from `by simpa using e.injective h2`. Conclude with `lt_asymm h3 hlt`. Introduce `b x y`. Rewrite using `[hu'e]`. Distinguish the cases in `hxy : x = y`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Substitute `hxy` using the available equality. Rewrite using `[hdiag, Matrix.one_apply_eq]`. Rewrite using `[Matrix.one_apply_ne hxy]`. Assume the negation of the conclusion as `h0`. Establish `hpq : e ⟨j, e' ⟨b, x⟩⟩ ≠ e ⟨j, e' ⟨b, y⟩⟩` using `fun h => hxy (by simpa using e.injective h)`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `hord _ _ (hoff _ _ hpq h0) with h | ⟨p', q', h1, h2, h3⟩` into its components or cases. Rewrite `h` using `[heblk, heblk]`. Conclude with `lt_irrefl _ h`. Take `rfl : e' ⟨b, x⟩ = p'` from `by simpa using e.injective h1`. Take `rfl : e' ⟨b, y⟩ = q'` from `by simpa using e.injective h2`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite `h3` using `[he'blk, he'blk]`. Conclude with `lt_irrefl _ h3`. Establish `hproj : leviProj k e ⟨n, hA⟩ = Pi.mulSingle j u'`. Use function extensionality and compare the values at `a`. Distinguish the cases in `ha : a = j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `ha` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, hu'eq]`. Rewrite using `[Pi.mulSingle_eq_of_ne ha]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i i'`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[leviProj_apply, Units.val_one]`. Distinguish the cases in `hii : i = i'`. Substitute `hii` using the available equality. Rewrite using `[hdiag, Matrix.one_apply_eq]`. Rewrite using `[Matrix.one_apply_ne hii]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h0`. Establish `hpq : e ⟨a, i⟩ ≠ e ⟨a, i'⟩` using `fun h => hii (by simpa using e.injective h)`. Break down `hord _ _ (hoff _ _ hpq h0) with h | ⟨p', q', h1, -, -⟩` into its components or cases. Rewrite `h` using `[heblk, heblk]`. Conclude with `lt_irrefl _ h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ha (congrArg Sigma.fst (e.injective h1))`. Take `⟨L, hLeq⟩ : ∃ L, leviEmb k e (Pi.mulSingle j u') = L` from `⟨_, rfl⟩`. Establish `hLpar : L ∈ parab k e` using `hLeq ▸ leviEmb_mem_parab k e _`. Establish `hLproj : leviProj k e ⟨L, hLpar⟩ = Pi.mulSingle j u'`. Substitute `hLeq` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `leviProj_leviEmb k e _`. Establish `hupar : n * L⁻¹ ∈ parab k e` using `mul_mem hA (inv_mem hLpar)`. Establish `huproj : leviProj k e ⟨n * L⁻¹, hupar⟩ = 1`. Establish `hsplit : (⟨n * L⁻¹, hupar⟩ : parab k e) = ⟨n, hA⟩ * (⟨L, hLpar⟩ : parab k e)⁻¹` using `rfl`. Rewrite using `[hsplit, map_mul, map_inv, hproj, hLproj, mul_inv_cancel]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hu : n * L⁻¹ ∈ unipRad k e`. Rewrite using `[mem_unipRad]`. Use `⟨hupar, fun a i i' => ?_⟩` and prove the remaining obligations. Establish `h` using `leviProj_apply k e ⟨n * L⁻¹, hupar⟩ a i i'`. Rewrite `h` using `[huproj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.symm`. Establish `hdelta : deltaHalf k (fun a => Fin (d a)) (Pi.mulSingle j u') = 1`. Unfold `deltaHalf`. Rewrite using `[MonoidHom.finset_prod_apply]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `a _`. Rewrite using `[MonoidHom.comp_apply, Pi.evalMonoidHom_apply]`. Unfold `detChar`. Rewrite using `[MonoidHom.comp_apply]`. Establish `hdet : Matrix.GeneralLinearGroup.det ((Pi.mulSingle j u' : Levi k (fun a => Fin (d a))) a) = 1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Distinguish the cases in `ha : a = j`. Substitute `ha` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `det_eq_one_of_mem_unipRad k hu'`. Rewrite using `[Pi.mulSingle_eq_of_ne ha, map_one]`.
-
-Rewrite using `[hdet, map_one]`. Establish `hsplit : π n w - w = (π (n * L⁻¹) (π L w) - π L w) + (π L w - w)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]`. Normalize the expressions using the abelian group laws. Rewrite using `[hsplit, map_add]`.
-
-Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).mpr]`. Conclude with `zero_mem _`. Conclude with `Submodule.subset_span ⟨⟨n * L⁻¹, hu⟩, π L w, by simp⟩`. Rewrite using `[map_sub, Submodule.mkQ_apply, Submodule.mkQ_apply]`.
-
-Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨⟨u', hu'⟩, Submodule.Quotient.mk w, ?_⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, MonoidHom.comp_apply, MonoidHom.mulSingle_apply]`. Rewrite using `[show jac e π = twist (jacU e π) (deltaHalf k (fun a => Fin (d a)))⁻¹ from rfl, twist_apply, MonoidHom.inv_apply, hdelta, inv_one, Units.val_one, one_smul, ← hLeq]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.weilDeligne_unipotent_monodromy :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V)

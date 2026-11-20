@@ -16,34 +16,34 @@ variable {K : Type} [Field K] {κ : Type} [Fintype κ] [DecidableEq κ]
 def upM (T : Matrix κ κ K) : Matrix (κ ⊕ κ) (κ ⊕ κ) K := fromBlocks 1 T 0 1
 
 /- English proof (translation)
-The claim follows from `Submonoid.subset_closure (Or.inr rfl)`.
+A detailed English derivation is pending.
 -/
 theorem weylM_mem : (weylM : Matrix (κ ⊕ κ) (κ ⊕ κ) K) ∈ Submonoid.closure (gens (F := K) (κ := κ)) :=
   Submonoid.subset_closure (Or.inr rfl)
 
 /- English proof (translation)
-The claim follows from `Submonoid.subset_closure (Or.inl (Or.inl ⟨A, h, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem leviM_mem (A : Matrix κ κ K) (h : IsUnit A.det) :
     leviM A ∈ Submonoid.closure (gens (F := K) (κ := κ)) :=
   Submonoid.subset_closure (Or.inl (Or.inl ⟨A, h, rfl⟩))
 
 /- English proof (translation)
-The claim follows from `Submonoid.subset_closure (Or.inl (Or.inr ⟨S, h, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem unipM_mem (S : Matrix κ κ K) (h : Sᵀ = S) :
     unipM S ∈ Submonoid.closure (gens (F := K) (κ := κ)) :=
   Submonoid.subset_closure (Or.inl (Or.inr ⟨S, h, rfl⟩))
 
 /- English proof (translation)
-Simplify using `[upM, weylM, unipM, fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem upM_eq (T : Matrix κ κ K) :
     upM T = weylM * unipM (-T) * (weylM * weylM * weylM) := by
   simp [upM, weylM, unipM, fromBlocks_multiply]
 
 /- English proof (translation)
-Rewrite using `[upM_eq]`. Conclude with `Submonoid.mul_mem _ (Submonoid.mul_mem _ weylM_mem (unipM_mem _ (by rw [transpose_neg, h]))) (Submonoid.mul_mem _ (Submonoid.mul_mem _ weylM_mem weylM_mem) weylM_mem)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upM_mem (T : Matrix κ κ K) (h : Tᵀ = T) :
     upM T ∈ Submonoid.closure (gens (F := K) (κ := κ)) := by
@@ -52,7 +52,7 @@ theorem upM_mem (T : Matrix κ κ K) (h : Tᵀ = T) :
     (Submonoid.mul_mem _ (Submonoid.mul_mem _ weylM_mem weylM_mem) weylM_mem)
 
 /- English proof (translation)
-Unfold `IsSymp at *`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [transpose_mul, Matrix.mul_assoc]`. Use `_ = weylM := by rw [hG, hH]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSymp_mul {G H : Matrix (κ ⊕ κ) (κ ⊕ κ) K} (hG : IsSymp G) (hH : IsSymp H) :
     IsSymp (G * H) := by
@@ -62,43 +62,39 @@ theorem isSymp_mul {G H : Matrix (κ ⊕ κ) (κ ⊕ κ) K} (hG : IsSymp G) (hH 
     _ = weylM := by rw [hG, hH]
 
 /- English proof (translation)
-Simplify using `[IsSymp, upM, weylM, fromBlocks_transpose, fromBlocks_multiply, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isSymp_upM (T : Matrix κ κ K) (h : Tᵀ = T) : IsSymp (upM T) := by
   simp [IsSymp, upM, weylM, fromBlocks_transpose, fromBlocks_multiply, h]
 
 /- English proof (translation)
-Simplify using `[weylM, fromBlocks_multiply, ← fromBlocks_one, fromBlocks_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem weyl_sq : (weylM : Matrix (κ ⊕ κ) (κ ⊕ κ) K) * weylM = -1 := by
   simp [weylM, fromBlocks_multiply, ← fromBlocks_one, fromBlocks_neg]
 
 /- English proof (translation)
-Set `P : Finset κ → Prop` to `fun s => ∀ y, (∀ i ∉ s, (a *ᵥ y) i = 0) → a *ᵥ y = 0`. Establish `hP0 : P ∅` using `fun y hy => funext fun i => hy i (Finset.notMem_empty i)`. Take `⟨s, hs_mem, hmax⟩` from `Finset.exists_max_image (Finset.univ.filter P) Finset.card ⟨∅, Finset.mem_filter.2 ⟨Finset.mem_univ _, hP0⟩⟩`. Establish `hsP : P s` using `(Finset.mem_filter.1 hs_mem).2`. Establish `key : ∀ z : κ → K, (∀ i ∈ s, z i = 0) → (∀ y, z ⬝ᵥ (a *ᵥ y) = 0) → z = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hzs hzo`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j ∈ s`. Conclude with `hzs j hj`. Establish `hnot : ¬ P (insert j s)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hP'`. Use `hmax (insert j s) (Finset.mem_filter.2 ⟨Finset.mem_univ _, hP'⟩)` as an intermediate fact. Rewrite `this` using `[Finset.card_insert_of_notMem hj]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [P, not_forall] at hnot`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hne⟩` from `hnot`. Establish `hvj : (a *ᵥ y) j ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Apply `hsP y` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Distinguish the cases in `hij : i = j`. Rewrite using `[hij]`. Conclude with `h0`. Conclude with `hy i (by simp [hij, hi])`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsum : z ⬝ᵥ (a *ᵥ y) = z j * (a *ᵥ y) j`. Unfold `dotProduct`. Apply `Finset.sum_eq_single j` to reduce the goal to its premises. Introduce `i _ hij`. Distinguish the cases in `his : i ∈ s`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hzs i his, zero_mul]`. Rewrite using `[hy i (by simp [hij, his]), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Establish `h0` using `hzo y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h0` using `[hsum]`. Conclude with `(mul_eq_zero.1 h0).resolve_right hvj`. Use `set T : Matrix κ κ K := diagonal fun i => if i ∈ s then 1 else 0 with hTdef`. Establish `hTe : ∀ w : κ → K, ∀ i, (T *ᵥ w) i = (if i ∈ s then 1 else 0) * w i` using `fun w i => by`. Simplify using `[hTdef, mulVec_diagonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : ∀ x, (a + T * c) *ᵥ x = 0 → x = 0`. Introduce `x hx`. Rewrite `hx` using `[add_mulVec, ← mulVec_mulVec]`. Establish `hx2 : ∀ i, (a *ᵥ x) i + (if i ∈ s then 1 else 0) * (c *ᵥ x) i = 0` using `fun i => by`. Rewrite using `[← hTe]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `congrFun hx i`. Establish `hax : a *ᵥ x = 0` using `hsP x (fun i hi => by`. Use `hx2 i` as an intermediate fact. Rewrite using `[if_neg hi, zero_mul, add_zero] at this)` and apply the resulting hypothesis. Establish `hcs : ∀ i ∈ s, (c *ᵥ x) i = 0` using `fun i hi => by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hx2 i` as an intermediate fact. Rewrite `this` using `[if_pos hi, one_mul, hax, Pi.zero_apply, zero_add]`. Then use the resulting hypothesis. Establish `horth : ∀ y, (c *ᵥ x) ⬝ᵥ (a *ᵥ y) = 0` using `fun y => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mulVec_mulVec, dotProduct_mulVec x cᵀ, vecMul_transpose]`.
-
-Use `_ = x ⬝ᵥ ((aᵀ * c) *ᵥ y) := by rw [hs]`. Use `_ = (a *ᵥ x) ⬝ᵥ (c *ᵥ y) := by`. Rewrite using `[← mulVec_mulVec, dotProduct_mulVec x aᵀ, vecMul_transpose]`. Use `_ = 0 := by rw [hax, zero_dotProduct]`. Conclude with `hinj x hax (key _ hcs horth)`.
-
-Use `⟨T, by simp [hTdef], isUnit_iff_ne_zero.2 fun hdet => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hmv⟩` from `exists_mulVec_eq_zero_iff.2 hdet`. Conclude with `hv (hx v hmv)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_sym_isUnit (a c : Matrix κ κ K) (hs : aᵀ * c = cᵀ * a)
     (hinj : ∀ x, a *ᵥ x = 0 → c *ᵥ x = 0 → x = 0) :
@@ -167,7 +163,7 @@ theorem exists_sym_isUnit (a c : Matrix κ κ K) (hs : aᵀ * c = cᵀ * a)
   exact hv (hx v hmv)
 
 /- English proof (translation)
-Simplify using `only [IsSymp, weylM, fromBlocks_transpose, fromBlocks_multiply] at h`. Take `⟨h11, h12, -, h22⟩` from `fromBlocks_inj.1 h`. Simplify using `at h11 h12 h22`. Use `⟨(neg_add_eq_zero.1 h11).symm, ?_, (neg_add_eq_zero.1 h22).symm⟩` and prove the remaining obligations. Rewrite using `[← h12]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -180,17 +176,17 @@ theorem symp_blocks {a b c d : Matrix κ κ K} (h : IsSymp (fromBlocks a b c d))
   rw [← h12]; abel
 
 /- English proof (translation)
-Take `⟨e1, e2, e3⟩` from `symp_blocks h`. Establish `haa : a * a⁻¹ = 1` using `mul_nonsing_inv a ha`. Establish `hai : a⁻¹ * a = 1` using `nonsing_inv_mul a ha`. Establish `hT1 : a⁻¹ᵀ * aᵀ = 1` using `by rw [← transpose_mul, haa, transpose_one]`. Establish `hT2 : aᵀ * a⁻¹ᵀ = 1` using `by rw [← transpose_mul, hai, transpose_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Y := c * a⁻¹ with hYdef`. Establish `hY : Yᵀ = Y`. Rewrite using `[hYdef, transpose_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hd : d = a⁻¹ᵀ + Y * b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `set X := a⁻¹ * b with hXdef`. Establish `hX : Xᵀ = X`. Establish `e3'` using `e3`. Rewrite `e3'` using `[hd, Matrix.mul_add, transpose_add, Matrix.add_mul, transpose_mul, hY, transpose_transpose]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Matrix.mul_assoc] at e3'`. Rewrite using `[hXdef, transpose_mul]`. Conclude with `add_right_cancel e3'`. Establish `hG : fromBlocks a b c d = unipM Y * leviM a * upM X`. Simplify using `only [unipM, leviM, upM, fromBlocks_multiply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add]`. Use `congr 1`. Rewrite using `[hXdef, ← Matrix.mul_assoc, haa, Matrix.one_mul]`. Rewrite using `[hYdef, Matrix.mul_assoc, hai, Matrix.mul_one]`. Rewrite using `[hd, hXdef, hYdef, add_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc a a⁻¹ b, haa, Matrix.one_mul]`. Rewrite using `[hG]`. Conclude with `Submonoid.mul_mem _ (Submonoid.mul_mem _ (unipM_mem _ hY) (leviM_mem _ ha)) (upM_mem _ hX)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_isUnit {a b c d : Matrix κ κ K} (h : IsSymp (fromBlocks a b c d)) (ha : IsUnit a.det) :
     fromBlocks a b c d ∈ Submonoid.closure (gens (F := K) (κ := κ)) := by
@@ -233,19 +229,17 @@ theorem mem_of_isUnit {a b c d : Matrix κ κ K} (h : IsSymp (fromBlocks a b c d
   exact Submonoid.mul_mem _ (Submonoid.mul_mem _ (unipM_mem _ hY) (leviM_mem _ ha)) (upM_mem _ hX)
 
 /- English proof (translation)
-Introduce `K _ _ κ _ _ G hG`. Rewrite `hG`, the goal using `[← fromBlocks_toBlocks G]`. Use `set a := G.toBlocks₁₁`. Use `set b := G.toBlocks₁₂`. Use `set c := G.toBlocks₂₁`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set d := G.toBlocks₂₂`. Take `⟨e1, -, -⟩` from `symp_blocks hG`. Establish `hL : (-(weylM * (fromBlocks a b c d)ᵀ * weylM)) * fromBlocks a b c d = 1`. Establish `h` using `hG`. Unfold `IsSymp at h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : weylM * (fromBlocks a b c d)ᵀ * weylM * fromBlocks a b c d = weylM * ((fromBlocks a b c d)ᵀ * weylM * fromBlocks a b c d)` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[Matrix.neg_mul, e, h, weyl_sq, neg_neg]`. Establish `hinj : ∀ x, a *ᵥ x = 0 → c *ᵥ x = 0 → x = 0`. Introduce `x hax hcx`. Establish `hv : fromBlocks a b c d *ᵥ Sum.elim x 0 = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fromBlocks_mulVec, Sum.elim_comp_inl, Sum.elim_comp_inr, hax, hcx, mulVec_zero, mulVec_zero]`. Simplify using the standard rewrite rules. Establish `h0 : Sum.elim x (0 : κ → K) = 0`. Rewrite using `[← Matrix.one_mulVec (Sum.elim x 0), ← hL, ← mulVec_mulVec, hv, mulVec_zero]`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `congrFun h0 (Sum.inl i)`. Take `⟨T, hT, hu⟩` from `exists_sym_isUnit a c e1 hinj`. Establish `hH : upM T * fromBlocks a b c d = fromBlocks (a + T * c) (b + T * d) c d`. Simplify using `[upM, fromBlocks_multiply]`. Establish `hHs : IsSymp (fromBlocks (a + T * c) (b + T * d) c d)` using `hH ▸ isSymp_mul (isSymp_upM T hT) hG`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : upM (-T) * upM T = (1 : Matrix (κ ⊕ κ) (κ ⊕ κ) K)`. Simplify using `[upM, fromBlocks_multiply]`. Establish `: fromBlocks a b c d = upM (-T) * fromBlocks (a + T * c) (b + T * d) c d`. Rewrite using `[← hH, ← Matrix.mul_assoc, hinv, Matrix.one_mul]`. Rewrite using `[this]`.
-
-Conclude with `Submonoid.mul_mem _ (upM_mem _ (by rw [transpose_neg, hT])) (mem_of_isUnit hHs hu)`.
+A detailed English derivation is pending.
 -/
 theorem mem_closure_gens : ∀ (K : Type) [Field K] [CharZero K] (κ : Type) [Fintype κ] [DecidableEq κ]
     (G : Matrix (κ ⊕ κ) (κ ⊕ κ) K),

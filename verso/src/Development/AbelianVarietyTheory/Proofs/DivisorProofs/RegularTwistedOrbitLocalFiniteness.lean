@@ -16,7 +16,7 @@ section Generic
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
 
 /- English proof (translation)
-Introduce `g hg`. Apply `Subgroup.subset_closure` to reduce the goal to its premises. Use `⟨hg.1, ?_⟩` and prove the remaining obligations. Establish `hzp : (Subgroup.zpowers g : Set G) ⊆ K` using `(Subgroup.zpowers_le (G := G) (H := K)).2 hg.2`. Conclude with `hK.of_isClosed_subset isClosed_closure (closure_minimal hzp hK.isClosed)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inf_le_cptPart (T K : Subgroup G) (hK : IsCompact (K : Set G)) : T ⊓ K ≤ cptPart T := by
   intro g hg
@@ -26,7 +26,7 @@ theorem inf_le_cptPart (T K : Subgroup G) (hK : IsCompact (K : Set G)) : T ⊓ K
   exact hK.of_isClosed_subset isClosed_closure (closure_minimal hzp hK.isClosed)
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_map]`. Establish `hc : Continuous fun a : G => x * a * x⁻¹` using `by fun_prop`. Conclude with `hK.image hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompact_map_conj (K : Subgroup G) (hK : IsCompact (K : Set G)) (x : G) :
     IsCompact ((K.map (MulAut.conj x).toMonoidHom : Subgroup G) : Set G) := by
@@ -35,7 +35,7 @@ theorem isCompact_map_conj (K : Subgroup G) (hK : IsCompact (K : Set G)) (x : G)
   exact hK.image hc
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_map]`. Conclude with `(Homeomorph.mulLeft x |>.trans (Homeomorph.mulRight x⁻¹)).isOpenMap _ hK`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_map_conj (K : Subgroup G) (hK : IsOpen (K : Set G)) (x : G) :
     IsOpen ((K.map (MulAut.conj x).toMonoidHom : Subgroup G) : Set G) := by
@@ -43,7 +43,7 @@ theorem isOpen_map_conj (K : Subgroup G) (hK : IsOpen (K : Set G)) (x : G) :
   exact (Homeomorph.mulLeft x |>.trans (Homeomorph.mulRight x⁻¹)).isOpenMap _ hK
 
 /- English proof (translation)
-Use `haveI : CompactSpace H := isCompact_iff_compactSpace.mp hH`. Establish `ho : IsOpen ((A.subgroupOf H : Subgroup H) : Set H)` using `hA.preimage continuous_subtype_val`. Use `haveI := Subgroup.quotient_finite_of_isOpen _ ho`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_isOpen (A H : Subgroup G) (hA : IsOpen (A : Set G)) (hH : IsCompact (H : Set G)) :
     A.relIndex H ≠ 0 := by
@@ -53,11 +53,11 @@ theorem relIndex_ne_zero_of_isOpen (A H : Subgroup G) (hA : IsOpen (A : Set G)) 
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Establish `hPT : cptPart T ≤ T`. Rewrite using `[cptPart, Subgroup.closure_le]`. Conclude with `fun t ht => ht.1`. Establish `e : (T ⊓ A) ⊓ cptPart T = A ⊓ cptPart T`. Use extensionality with `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Subgroup.mem_inf]`. Conclude with `⟨fun h => ⟨h.1.2, h.2⟩, fun h => ⟨⟨hPT h.2, h.1⟩, h.2⟩⟩`. Rewrite using `[← Subgroup.inf_relIndex_right, e, Subgroup.inf_relIndex_right]`. Establish `h1` using `relIndex_ne_zero_of_isOpen A H hA hH`. Establish `: (A.subgroupOf H).FiniteIndex` using `⟨h1⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (cptPart T ⧸ A.subgroupOf (cptPart T))` using `Finite.of_injective _ (Subgroup.quotientSubgroupOfEmbeddingOfLE A hTH).injective`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIndex_cptPart_ne_zero (T A H : Subgroup G) (hA : IsOpen (A : Set G)) (hH : IsCompact (H : Set G))
     (hTH : cptPart T ≤ H) : (T ⊓ A).relIndex (cptPart T) ≠ 0 := by
@@ -74,9 +74,9 @@ theorem relIndex_cptPart_ne_zero (T A H : Subgroup G) (hA : IsOpen (A : Set G)) 
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `compact_covered_by_mul_left_translates hD (show (interior (K' : Set G)).Nonempty from ⟨1, hK'.interior_eq.symm ▸ K'.one_mem⟩)`. Use `(s.finite_toSet.image fun g => DoubleCoset.mk T K' g⁻¹).subset ?_` and prove the remaining obligations. Introduce `q hq`. Take `⟨t, ht, d, hd, hx⟩` from `hP _ hq`. Use `hs hd` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe] at this`. Take `⟨g, hg, hgd⟩` from `this`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Rewrite using `[← DoubleCoset.out_eq' T K' q, DoubleCoset.eq]`. Conclude with `⟨t, ht, g * d, hgd, by simp [hx, mul_assoc]⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem finite_of_subset_mul (T K' : Subgroup G) (hK' : IsOpen (K' : Set G)) (D : Set G) (hD : IsCompact D)
     (P : G → Prop) (hP : ∀ x, P x → ∃ t ∈ T, ∃ d ∈ D, x = t * d) :
@@ -98,31 +98,31 @@ end Generic
 section Main
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.continuous_involutive_local_transpose_inverse`.
+A detailed English derivation is pending.
 -/
 theorem hKT : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (w : Pl E), Continuous (thL n w) ∧ ∀ g : GLw n w, thL n w (thL n w g) = g := GlobalTheory.T.continuous_involutive_local_transpose_inverse
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.orbit_compact_mod_centralizer_separable_local`.
+A detailed English derivation is pending.
 -/
 theorem hKPa : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (w : Pl E) (N : GLw n w), N.val.charpoly.Separable → ∀ C : Set (GLw n w), IsCompact C → ∃ D : Set (GLw n w), IsCompact D ∧ ∀ x : GLw n w, x⁻¹ * N * x ∈ C → ∃ z : GLw n w, z * N = N * z ∧ ∃ d ∈ D, x = z * d := GlobalTheory.T.orbit_compact_mod_centralizer_separable_local
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_compact_ge_compactPart_twistedCentralizer`.
+A detailed English derivation is pending.
 -/
 theorem hKA : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (w : Pl E) (y : GLw n w), (nrmL n w y).val.charpoly.Separable → ∃ H : Subgroup (GLw n w), IsCompact (H : Set (GLw n w)) ∧ cptPart (twCent (thL n w) y) ≤ H := GlobalTheory.T.exists_compact_ge_compactPart_twistedCentralizer
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.normCommuting_twistedConj_compact_mem_twistedCentralizer_mul`.
+A detailed English derivation is pending.
 -/
 theorem hKPb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (w : Pl E) (y : GLw n w), (nrmL n w y).val.charpoly.Separable → ∀ C : Set (GLw n w), IsCompact C → ∃ D : Set (GLw n w), IsCompact D ∧ ∀ z : GLw n w, z * nrmL n w y = nrmL n w y * z → z⁻¹ * y * thL n w z ∈ C → ∃ t ∈ twCent (thL n w) y, ∃ d ∈ D, z = t * d := GlobalTheory.T.normCommuting_twistedConj_compact_mem_twistedCentralizer_mul
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Distinguish the cases in `hs : IsSplitAt w`. Establish `h1 : thL n w = MonoidHom.id _` using `by rw [thL, if_pos hs]`. Simplify using `only [nrmL, if_pos hs, h1, MonoidHom.id_apply]`. Establish `h1 : thL n w = thetaGL n (cj w)` using `by rw [thL, if_neg hs]`. Establish `h2` using `(hKT E hU n w).2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1]`. Simplify using `only [nrmL, if_neg hs, h1, map_mul, map_inv, h2]`. Use `group`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nrmL_twConj (hU : Unr E) (n : ℕ) (w : Pl E) (x y : GLw n w) :
     nrmL n w (x⁻¹ * y * thL n w x) = x⁻¹ * nrmL n w y * x := by
@@ -136,9 +136,9 @@ theorem nrmL_twConj (hU : Unr E) (n : ℕ) (w : Pl E) (x y : GLw n w) :
     group
 
 /- English proof (translation)
-Distinguish the cases in `hs : IsSplitAt w`. Establish `e : nrmL n w = fun u => u` using `funext fun u => by simp [nrmL, hs]`. Rewrite using `[e]`. Conclude with `continuous_id`. Establish `h1 : thL n w = thetaGL n (cj w)` using `by rw [thL, if_neg hs]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `(hKT E hU n w).1`. Rewrite `hc` using `[h1]`. Establish `e : nrmL n w = fun u => u * thetaGL n (cj w) u` using `funext fun u => by simp [nrmL, hs]`. Rewrite using `[e]`. Conclude with `continuous_id.mul hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_nrmL (hU : Unr E) (n : ℕ) (w : Pl E) : Continuous (nrmL n w) := by
   by_cases hs : IsSplitAt w
@@ -151,11 +151,11 @@ theorem continuous_nrmL (hU : Unr E) (n : ℕ) (w : Pl E) : Continuous (nrmL n w
     rw [e]; exact continuous_id.mul hc
 
 /- English proof (translation)
-Establish `hθ` using `(hKT E hU n w).1`. Take `⟨D₁, hD₁, h₁⟩` from `hKPa E hU n w (nrmL n w y) hy _ (hC.image (continuous_nrmL hU n w))`. Use `set C₂ := (fun p : GLw n w × GLw n w × GLw n w => p.1 * p.2.1 * (thL n w p.2.2)⁻¹) '' (D₁ ×ˢ C ×ˢ D₁)`. Establish `hC₂ : IsCompact C₂` using `(hD₁.prod (hC.prod hD₁)).image (by fun_prop)`. Take `⟨D₂, hD₂, h₂⟩` from `hKPb E hU n w y hy C₂ hC₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(fun p : GLw n w × GLw n w => p.1 * p.2) '' (D₂ ×ˢ D₁), (hD₂.prod hD₁).image (by fun_prop), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨z, hz, d, hd, rfl⟩` from `h₁ x ⟨_, hx, by rw [nrmL_twConj hU]⟩`. Establish `hz2 : z⁻¹ * y * thL n w z ∈ C₂` using `⟨(d, (z * d)⁻¹ * y * thL n w (z * d), d), ⟨hd, hx, hd⟩, by`. Simplify using `only [map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use the proof step `group⟩`. Take `⟨t, ht, d₂, hd₂, rfl⟩` from `h₂ z hz hz2`. Conclude with `⟨t, ht, d₂ * d, ⟨(d₂, d), ⟨hd₂, hd⟩, rfl⟩, by group⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem proper (hU : Unr E) (n : ℕ) (w : Pl E) (y : GLw n w) (hy : (nrmL n w y).val.charpoly.Separable)
     (C : Set (GLw n w)) (hC : IsCompact C) : ∃ D : Set (GLw n w), IsCompact D ∧
@@ -174,9 +174,9 @@ theorem proper (hU : Unr E) (n : ℕ) (w : Pl E) (y : GLw n w) (hy : (nrmL n w y
   exact ⟨t, ht, d₂ * d, ⟨(d₂, d), ⟨hd₂, hd⟩, rfl⟩, by group⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n w y hy K' hK'`. Take `⟨hK'o, hK'K, -⟩` from `hK'`. Take `⟨hKo, hKc⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n`. Take `⟨H, hH, hPH⟩` from `hKA E hU n w y hy`. Use `⟨fun x => ⟨inf_le_cptPart _ _ (isCompact_map_conj _ hKc x), relIndex_cptPart_ne_zero _ _ H (isOpen_map_conj _ hK'o x) hH hPH⟩, fun C hC => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨D, hD, hP⟩` from `proper hU n w y hy C hC`. Conclude with `finite_of_subset_mul _ K' hK'o D hD _ hP`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (w : Pl E) (y : GLw n w), (nrmL n w y).val.charpoly.Separable → ∀ K' : Subgroup (GLw n w), IsLevel (thL n w) (GlobalTheory.LFun.KGL w n) K' → (∀ x : GLw n w, twCent (thL n w) y ⊓ (GlobalTheory.LFun.KGL w n).map (MulAut.conj x).toMonoidHom ≤ cptPart (twCent (thL n w) y) ∧ (twCent (thL n w) y ⊓ K'.map (MulAut.conj x).toMonoidHom).relIndex (cptPart (twCent (thL n w) y)) ≠ 0) ∧ ∀ C : Set (GLw n w), IsCompact C → {q : DoubleCoset.Quotient (twCent (thL n w) y : Set (GLw n w)) (K' : Set (GLw n w)) | (Quotient.out q)⁻¹ * y * thL n w (Quotient.out q) ∈ C}.Finite := by
   intro E _ _ _ hU n w y hy K' hK'

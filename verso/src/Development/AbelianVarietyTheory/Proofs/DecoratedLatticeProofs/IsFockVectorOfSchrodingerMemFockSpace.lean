@@ -20,17 +20,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.StdUnnFockRev
 
 /- English proof (translation)
-Establish `wT : ∀ (l : List Q) f, T f → T (l.foldr b f)` using `fun l f hf => by`. Proceed by induction on `l with`. Consider the case `nil => exact hf`. Consider the case `cons q l ih => exact hb _ _ ih`. Establish `wadd : ∀ (l : List Q) f g, T f → T g → l.foldr b (f + g) = l.foldr b f + l.foldr b g` using `fun l f g hf hg => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons q l ih => rw [List.foldr_cons, ih, hadd _ _ _ (wT l f hf) (wT l g hg)]`. Both sides reduce to the same expression. Establish `wsmul : ∀ (l : List Q) (c : ℂ) f, l.foldr b (c • f) = c • l.foldr b f` using `fun l c f => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons q l ih => rw [List.foldr_cons, ih, hsmul]`. Both sides reduce to the same expression. Establish `step : ∀ (M : ℕ) (f : V) (p : P), (∀ l : List P, l.length = M + 1 → (l.map ι).foldr b f = 0) → ∀ l : List P, l.length = M → (l.map ι).foldr b (b (ι p) f) = 0` using `fun M f p h l hl => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `h (l ++ [p]) (by simp [hl])` as an intermediate fact. Rewrite `this` using `[List.map_append, List.foldr_append]`. Then use the resulting hypothesis. Proceed by induction on `N with`. Consider the case `zero`. Introduce `f _ k l hl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `rfl` from `List.length_eq_zero_iff.1 hl`. Conclude with `k [] rfl`. Consider the case `succ N ih`. Introduce `f hf k l hl`. Take `rfl | ⟨l', q, rfl⟩` from `l.eq_nil_or_concat'`.
+Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `at hl`. Establish `hl' : l'.length = N` using `by simpa using hl`. Take `⟨p, p', c, h⟩` from `hdec q`. Rewrite using `[List.foldr_append, List.foldr_cons, List.foldr_nil, h f hf, wadd _ _ _ (hb _ _ hf) (hT _ _ (hb _ _ hf)), wsmul, ih _ (hb _ _ hf) (step _ _ _ k) l' hl', ih _ (hb _ _ hf) (step _ _ _ k) l' hl', smul_zero, add_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killed_of_subfamily {P Q V : Type} [AddCommGroup V] [Module ℂ V] (b : Q → V → V) (ι : P → Q) (T : V → Prop)
     (hb : ∀ q f, T f → T (b q f)) (hT : ∀ (c : ℂ) f, T f → T (c • f))
@@ -71,9 +71,9 @@ theorem killed_of_subfamily {P Q V : Type} [AddCommGroup V] [Module ℂ V] (b : 
       ih _ (hb _ _ hf) (step _ _ _ k) l' hl', ih _ (hb _ _ hf) (step _ _ _ k) l' hl', smul_zero, add_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [Formalism.IndefR.Datum.dRho, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← deriv_const_mul_field]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dRho_smul_fun {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (c : ℂ) (f : WO S T → ℂ) :
@@ -87,15 +87,13 @@ theorem dRho_smul_fun {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) 
   ring
 
 /- English proof (translation)
-Introduce `D ψ hψ θ hθ A B ν 𝓨 hν μ hμ s' sB hs' hsB l hl f hth hf`. Take `⟨N, hN⟩` from `GlobalTheory.T.fockPolynomialSchwartz_killed_by_longAnnihilation D θ hθ B A.rank l sB hsB _ hf`. Establish `key : ∀ L : List (D.what₂.Tau × Matrix (Fin B.rank) (Fin A.rank) ℂ), IsThetaFunO ψ (dblSp A) B (List.foldr (fun (p : D.what₂.Tau × Matrix (Fin B.rank) (Fin (dblSp A).rank) ℂ) g => annih (heisO ψ (dblSp A) B) θ p.1 (cplxO (s' p.1) (sB p.1)) p.2 g) f (L.map (fun q => (q.1, q.2 * (d …`. Introduce `L`. Proceed by induction on `L with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `nil => exact ⟨hth, rfl⟩`. Consider the case `cons q L ih`. Take `⟨ih1, ih2⟩` from `ih`. Use `⟨isThetaFunO_annih_of_std hψ hθ hν _ _ _ ih1, ?_⟩` and prove the remaining obligations. Rewrite using `[List.foldr_cons, ← ih2]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.annihilationOperator_schroedingerFunctions_doubledPair D ψ hψ θ hθ A B ν 𝓨 hν μ hμ s' sB hs' hsB l hl _ ih1 q.1 q.2`. Use `⟨hth, N, ?_⟩` and prove the remaining obligations. Use `killed_of_subfamily (P := D.what₂.Tau × Matrix (Fin B.rank) (Fin A.rank) ℂ) (Q := D.what₂.Tau × Matrix (Fin B.rank) (Fin (dblSp A).rank) ℂ) (fun p g => annih (heisO ψ (dblSp A) B) θ p.1 (cplxO (s' p.1) (sB p.1)) p.2 g) (fun q => (q.1, q.2 * (dblDec A).qX.map (tauE D q.1))) (IsThe …` and prove the remaining obligations. Simplify using `only [annih]`. Rewrite using `[GlobalTheory.Core.Rk.FockBox.dRho_add hθ hψ _ _ hg hg', GlobalTheory.Core.Rk.FockBox.dRho_add hθ hψ _ _ hg hg', smul_add]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Simplify using `only [annih]`. Rewrite using `[dRho_smul_fun, dRho_smul_fun, smul_add, smul_comm]`. Take `⟨X, X', c, h⟩` from `GlobalTheory.T.annihilationOperator_doubledHermitianSpace_decomp D ψ hψ θ hθ A B μ hμ s' sB hs' hsB q.1 q.2`. Conclude with `⟨(q.1, X), (q.1, X'), c, h⟩`.
-
-Conclude with `GlobalTheory.T.doubledPairThetaFunction_eq_zero_of_schrodinger_eq_zero D ψ hψ A B ν 𝓨 hν _ (key L).1 ((key L).2.trans (hN L hL))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFockVec_of_sch_mem_fockA : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (A B : HSp D) (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ μ : D.host.E, IsSkew μ → ∀ (s' : RealMat (dblSp A)) (sB : RealMat B), IsStdInv A μ s' → (∀ τ, IsCartanInv (gramAt D B τ) (sB τ)) → ∀ l : D.what₂.Tau → ℝ, (∀ τ, |l τ| = ‖tauE D τ D.host.xi0‖ / ‖tauE D τ μ‖) → ∀ f, IsThetaFunO ψ (dblSp A) B f → sch ψ A B ν 𝓨 f ∈ fockA θ B A.rank l sB → IsFockVec ψ θ (dblSp A) B s' sB f := by
   intro D ψ hψ θ hθ A B ν 𝓨 hν μ hμ s' sB hs' hsB l hl f hth hf

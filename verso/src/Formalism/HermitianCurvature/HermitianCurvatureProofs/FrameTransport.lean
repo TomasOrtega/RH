@@ -95,7 +95,7 @@ def RadWord : Prop :=
 def hcell {r : ℕ} (c : Fin r → ℂ) : C.LPt := List.ofFn fun j => (1, c j)
 
 /- English proof (translation)
-Simplify using `[hcell, D.ptSize, List.map_ofFn, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ptSize_hcell {r : ℕ} (c : Fin r → ℂ) : D.ptSize (hcell c) = r := by
   simp [hcell, D.ptSize, List.map_ofFn, Function.comp_def]

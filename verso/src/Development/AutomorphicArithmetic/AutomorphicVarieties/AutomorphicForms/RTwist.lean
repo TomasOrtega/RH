@@ -23,11 +23,9 @@ Both sides reduce to the same expression.
 theorem lieS_apply (i j : Fin a) (x : Rinf E) : lieS E a i j x = lie E a (toL (Matrix.single i j x)) := rfl
 
 /- English proof (translation)
-Simplify using `only [lieS_apply]`. Rewrite using `[lie_comm]`. Use `congr 1`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Substitute using the available equality. Substitute using the available equality.
 
-Conclude with `congrArg (fun X => lie E a (toL X)) (Matrix.single_mul_single_same _ _ _ _ _)`. Conclude with `(congrArg (fun X => lie E a (toL X)) (Matrix.single_mul_single_of_ne _ _ _ _ h _)).trans (map_zero _)`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[mul_comm x]`.
-
-Conclude with `congrArg (fun X => lie E a (toL X)) (Matrix.single_mul_single_same _ _ _ _ _)`. Conclude with `(congrArg (fun X => lie E a (toL X)) (Matrix.single_mul_single_of_ne _ _ _ _ h _)).trans (map_zero _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieS_comm (i j k l : Fin a) (x y : Rinf E) :
     lieS E a i j x * lieS E a k l y - lieS E a k l y * lieS E a i j x =
@@ -50,7 +48,7 @@ Both sides reduce to the same expression.
 theorem Eop_eq (v : InfinitePlace E) (i j : Fin a) : Eop v i j = lieS E a i j (Pi.single v 1) := rfl
 
 /- English proof (translation)
-Introduce `i j k l`. Simplify using `only [Eop_eq]`. Rewrite using `[lieS_comm, ← Pi.single_mul, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem glRel_Eop (v : InfinitePlace E) : Formalism.REAL.GlRel (Eop (a := a) v) := by
   classical
@@ -59,9 +57,9 @@ theorem glRel_Eop (v : InfinitePlace E) : Formalism.REAL.GlRel (Eop (a := a) v) 
   rw [lieS_comm, ← Pi.single_mul, mul_one]
 
 /- English proof (translation)
-Establish `e : (Pi.single v 1 : Rinf E) * Pi.single v' 1 = 0`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `[Pi.single_eq_of_ne h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hw]`. Rewrite using `[← sub_eq_zero]`. Simplify using `only [Eop_eq]`. Rewrite using `[lieS_comm, e]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Eop_comm {v v' : InfinitePlace E} (h : v ≠ v') (i j k l : Fin a) :
     Eop v i j * Eop v' k l = Eop v' k l * Eop v i j := by
@@ -77,13 +75,13 @@ theorem Eop_comm {v v' : InfinitePlace E} (h : v ≠ v') (i j k l : Fin a) :
   simp
 
 /- English proof (translation)
-The claim follows from `Formalism.REAL.qDetCentral _ a _ (glRel_Eop τ) _ i j`.
+A detailed English derivation is pending.
 -/
 theorem cap_comm (τ : InfinitePlace E) (u : ℂ) (i j : Fin a) : cap τ u * Eop τ i j = Eop τ i j * cap τ u :=
   Formalism.REAL.qDetCentral _ a _ (glRel_Eop τ) _ i j
 
 /- English proof (translation)
-Rewrite using `[cap, Formalism.REAL.qDetHW _ a _ ν φ (glRel_Eop τ) h]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun k _ => by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem cap_highest (τ : InfinitePlace E) (ν : Fin a → ℂ) (φ : Sm E a) (h : Formalism.REAL.IsHW (Eop τ) ν φ) (u : ℂ) :
     cap τ u φ = (∏ k : Fin a, (u + (ν k + (((a : ℂ) - 1) / 2 - (k : ℕ))))) • φ := by
@@ -92,9 +90,9 @@ theorem cap_highest (τ : InfinitePlace E) (ν : Fin a → ℂ) (φ : Sm E a) (h
   exact Finset.prod_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Use `Units.ext (ad_ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[← GlobalTheory.CuspRep.det_map, pInf_finGL]`. Express the relevant statement in the definitionally equal form `_ = pInf E (1 - sFin E 1 + sFin E _)`. Establish `h : ∀ x, pInf E (sFin E x) = 0` using `fun x => map_zero (infEq E).symm`. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← GlobalTheory.CuspRep.det_map, pFin_finGL]`. Express the relevant statement in the definitionally equal form `_ = (1 : Af E) - 1 + (GeneralLinearGroup.det k : (Af E)ˣ)`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem det_finGL (k : GL (Fin a) (Af E)) :
     GeneralLinearGroup.det (finGL E a k) = finId E (GeneralLinearGroup.det k) := by
@@ -110,21 +108,21 @@ theorem det_finGL (k : GL (Fin a) (Af E)) :
 def chiInf (χ : HChar E) : (Rinf E)ˣ →* ℂˣ := χ.1.comp (infId E)
 
 /- English proof (translation)
-The claim follows from `χ.2.1.comp (continuous_infId E)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_chiInf (χ : HChar E) : Continuous (chiInf χ) := χ.2.1.comp (continuous_infId E)
 
 def dchi (χ : HChar E) : Rinf E →L[ℝ] ℂ := fderiv ℝ (extZero (chiInf χ)) 1
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `exists_lin _ (continuous_chiInf χ)`. Rewrite using `[dchi, fderiv_extZero (continuous_chiInf χ) hL, hL]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiInf_expU (χ : HChar E) (z : Rinf E) : ((chiInf χ (expU z) : ℂˣ) : ℂ) = Complex.exp (dchi χ z) := by
   obtain ⟨L, hL⟩ := exists_lin _ (continuous_chiInf χ)
   rw [dchi, fderiv_extZero (continuous_chiInf χ) hL, hL]
 
 /- English proof (translation)
-Rewrite using `[dchi, fderiv_extZero (L := LinearMap.toContinuousLinearMap d) (continuous_chiInf χ) h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dchi_eq_of_exp (χ : HChar E) (d : Rinf E →ₗ[ℝ] ℂ)
     (h : ∀ z, ((chiInf χ (expU z) : ℂˣ) : ℂ) = Complex.exp (d z)) (z : Rinf E) : dchi χ z = d z := by
@@ -136,7 +134,7 @@ open Classical in
 def expo (χ : HChar E) (v : InfinitePlace E) : ℂ := dchi χ (Pi.single v 1)
 
 /- English proof (translation)
-Use `conv_lhs => rw [pi_eq_sum_univ' z]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Complex.real_smul, mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dchi_eq_sum (χ : HChar E) (z : Rinf E) : dchi χ z = ∑ v, expo χ v * (z v : ℂ) := by
   classical
@@ -147,7 +145,7 @@ theorem dchi_eq_sum (χ : HChar E) (z : Rinf E) : dchi χ z = ∑ v, expo χ v *
   rfl
 
 /- English proof (translation)
-Rewrite using `[chiInf_expU, dchi_eq_sum]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chiInf_expU_eq (χ : HChar E) (z : Rinf E) :
     ((chiInf χ (expU z) : ℂˣ) : ℂ) = Complex.exp (∑ v, expo χ v * (z v : ℂ)) := by
@@ -156,9 +154,9 @@ theorem chiInf_expU_eq (χ : HChar E) (z : Rinf E) :
 open Classical in
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun t : ℝ => Complex.exp (t * expo χ v)) (expo χ v) 0`. Simplify using `using ((Complex.ofRealCLM.hasDerivAt (x := 0)).mul_const (expo χ v)).cexp`. Establish `h2 : HasDerivAt (fun t : ℝ => Complex.exp (t * p)) p 0`. Simplify using `using ((Complex.ofRealCLM.hasDerivAt (x := 0)).mul_const p).cexp`. Use `h1.unique (h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (Pi.single v t : Rinf E) = t • (Pi.single v 1 : Rinf E)`. Rewrite using `[← Pi.single_smul, smul_eq_mul, mul_one]`. Use `h t` as an intermediate fact. Rewrite `this` using `[chiInf_expU, e, map_smul, Complex.real_smul, mul_comm p]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expo_eq_of_exp (χ : HChar E) (v : InfinitePlace E) (p : ℂ)
     (h : ∀ t : ℝ, ((chiInf χ (expU (Pi.single v t)) : ℂˣ) : ℂ) = Complex.exp (p * t)) : expo χ v = p := by
@@ -174,7 +172,7 @@ theorem expo_eq_of_exp (χ : HChar E) (v : InfinitePlace E) (p : ℂ)
   exact this
 
 /- English proof (translation)
-The claim follows from `dchi_eq_of_exp (χ * χ') ((dchi χ).toLinearMap + (dchi χ').toLinearMap) (fun z => by change ((chiInf χ (expU z) * chiInf χ' (expU z) : ℂˣ) : ℂ) = Complex.exp (dchi χ z + dchi χ' z) rw [Units.val_mul, chiInf_expU, chiInf_expU, Complex.exp_add]) z`.
+A detailed English derivation is pending.
 -/
 theorem dchi_mul (χ χ' : HChar E) (z : Rinf E) : dchi (χ * χ') z = dchi χ z + dchi χ' z :=
   dchi_eq_of_exp (χ * χ') ((dchi χ).toLinearMap + (dchi χ').toLinearMap) (fun z => by
@@ -182,36 +180,36 @@ theorem dchi_mul (χ χ' : HChar E) (z : Rinf E) : dchi (χ * χ') z = dchi χ z
     rw [Units.val_mul, chiInf_expU, chiInf_expU, Complex.exp_add]) z
 
 /- English proof (translation)
-The claim follows from `dchi_eq_of_exp 1 0 (fun z => by simp [chiInf]) z`.
+A detailed English derivation is pending.
 -/
 theorem dchi_one (z : Rinf E) : dchi (1 : HChar E) z = 0 :=
   dchi_eq_of_exp 1 0 (fun z => by simp [chiInf]) z
 
 /- English proof (translation)
-The claim follows from `eq_neg_of_add_eq_zero_left (by rw [← dchi_mul, inv_mul_cancel, dchi_one])`.
+A detailed English derivation is pending.
 -/
 theorem dchi_inv (χ : HChar E) (z : Rinf E) : dchi χ⁻¹ z = -dchi χ z :=
   eq_neg_of_add_eq_zero_left (by rw [← dchi_mul, inv_mul_cancel, dchi_one])
 
 /- English proof (translation)
-The claim follows from `dchi_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem expo_mul (χ χ' : HChar E) (v : InfinitePlace E) : expo (χ * χ') v = expo χ v + expo χ' v := dchi_mul _ _ _
 
 /- English proof (translation)
-The claim follows from `dchi_one _`.
+A detailed English derivation is pending.
 -/
 theorem expo_one (v : InfinitePlace E) : expo (1 : HChar E) v = 0 := dchi_one _
 
 /- English proof (translation)
-The claim follows from `dchi_inv _ _`.
+A detailed English derivation is pending.
 -/
 theorem expo_inv (χ : HChar E) (v : InfinitePlace E) : expo χ⁻¹ v = -expo χ v := dchi_inv _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Distinguish the cases in `h : IsUnit (Matrix.of x)`. Take `⟨u, hu⟩` from `h`. Establish `hx : x = toL u.val` using `hu.symm`. Rewrite using `[hx, chart_val, chart_val, map_mul, Units.val_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[show chiDet a χ (infGL E a u) = chiInf χ (GeneralLinearGroup.det u) from congrArg χ.1 (det_infGL u)]`. Conclude with `(extZero_unit _ _).symm`. Simplify using `[chart, h]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chart_mul_chi (χ : HChar E) (φ : GA E a → ℂ) (g : GA E a) :
     chart (fun x => φ x * (chiDet a χ x : ℂˣ)) g =
@@ -227,7 +225,7 @@ theorem chart_mul_chi (χ : HChar E) (φ : GA E a → ℂ) (g : GA E a) :
   · simp [chart, h]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det _).1 hx`. Conclude with `ContDiffAt.comp (g := extZero (chiInf χ)) x (hu ▸ contDiffAt_extZero _ (continuous_chiInf χ) u) contDiff_det.contDiffAt`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem contDiffAt_chi_det (χ : HChar E) {x : Lie E a} (hx : x ∈ invSet E a) :
     ContDiffAt ℝ ∞ (fun x : Lie E a => extZero (chiInf χ) (Matrix.of x).det) x := by
@@ -236,7 +234,7 @@ theorem contDiffAt_chi_det (χ : HChar E) {x : Lie E a} (hx : x ∈ invSet E a) 
     contDiff_det.contDiffAt
 
 /- English proof (translation)
-Introduce `g` and use `by rw [chart_mul_chi] exact (hφ g).mul (contDiffOn_const.mul fun x hx => (contDiffAt_chi_det χ hx).contDiffWithinAt)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_chi_mem_Sm (χ : HChar E) {φ : GA E a → ℂ} (hφ : φ ∈ Sm E a) :
     (fun x => φ x * (chiDet a χ x : ℂˣ)) ∈ Sm E a := fun g => by
@@ -260,18 +258,18 @@ Both sides reduce to the same expression.
     (mulChi a χ φ).1 g = φ.1 g * (chiDet a χ g : ℂˣ) := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| funext fun _ => (mul_assoc _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem mulChi_mul (χ χ' : HChar E) (φ : Sm E a) : mulChi a (χ * χ') φ = mulChi a χ' (mulChi a χ φ) :=
   Subtype.ext <| funext fun _ => (mul_assoc _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| funext fun _ => mul_one _`.
+A detailed English derivation is pending.
 -/
 theorem mulChi_one (φ : Sm E a) : mulChi a 1 φ = φ := Subtype.ext <| funext fun _ => mul_one _
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| funext fun g => by simp only [rt_apply, mulChi_apply, map_mul, Units.val_mul, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]; ring`.
+A detailed English derivation is pending.
 -/
 theorem rt_mulChi (χ : HChar E) (h : GA E a) (φ : Sm E a) :
     rt E a h (mulChi a χ φ) = mulChi a χ (((chiDet a χ h : ℂˣ) : ℂ) • rt E a h φ) :=
@@ -281,15 +279,13 @@ theorem rt_mulChi (χ : HChar E) (h : GA E a) (φ : Sm E a) :
 omit [IsTotallyReal E] in
 
 /- English proof (translation)
-Establish `hd : HasFDerivAt (fun x : Lie E a => (Matrix.of x).det) (fderiv ℝ (fun x : Lie E a => (Matrix.of x).det) (oneL E a)) (oneL E a + (0 : ℝ) • X)`. Rewrite using `[zero_smul, add_zero]`. Conclude with `(contDiff_det.differentiable (by simp) _).hasFDerivAt`. Establish `h1` using `hd.comp_hasDerivAt (0 : ℝ) (((hasDerivAt_id (0 : ℝ)).smul_const X).const_add (oneL E a))`. Rewrite `h1` using `[one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.unique ?_` and prove the remaining obligations. Use `set P := (1 + (Polynomial.X : Polynomial (Rinf E)) • (Matrix.of X).map Polynomial.C).det.divX.divX`. Establish `hr : HasDerivAt (fun t : ℝ => t • (1 : Rinf E)) 1 0`. Simplify using `using (hasDerivAt_id (0 : ℝ)).smul_const (1 : Rinf E)`. Establish `hP : DifferentiableAt ℝ (fun t : ℝ => P.eval (t • (1 : Rinf E))) 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Polynomial.eval_eq_sum_range]`. Use `fun_prop`. Establish `h2` using `((hr.const_mul (Matrix.of X).trace).const_add 1).add (hP.hasDerivAt.mul (hr.mul hr))`. Simplify using `only [mul_one, zero_smul, Pi.mul_apply, mul_zero, zero_mul, add_zero] at h2`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : Matrix.of (oneL E a + t • X) = 1 + (t • (1 : Rinf E)) • Matrix.of X`. Rewrite using `[smul_assoc, one_smul]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(Matrix.of (oneL E a + t • X)).det = _`. Rewrite using `[e, Matrix.det_one_add_smul, sq]`.
-
-Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fderiv_det_one (X : Lie E a) :
     fderiv ℝ (fun x : Lie E a => (Matrix.of x).det) (oneL E a) X = (Matrix.of X).trace := by
@@ -316,11 +312,11 @@ theorem fderiv_det_one (X : Lie E a) :
   rfl
 
 /- English proof (translation)
-Use `Subtype.ext <| funext fun g => ?_` and prove the remaining obligations. Establish `h1 : (Matrix.of (oneL E a)).det = 1` using `Matrix.det_one`. Establish `hd : HasFDerivAt (fun x : Lie E a => extZero (chiInf χ) (Matrix.of x).det) ((dchi χ).comp (fderiv ℝ (fun x : Lie E a => (Matrix.of x).det) (oneL E a))) (oneL E a)`. Use `HasFDerivAt.comp (g := extZero (chiInf χ)) _ ?_ (contDiff_det.differentiable (by simp) _).hasFDerivAt` and prove the remaining obligations. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((contDiffAt_extZero _ (continuous_chiInf χ) 1).differentiableAt (by simp)).hasFDerivAt`. Establish `h2` using `((differentiableAt_chart φ.2 g).hasFDerivAt.mul (hd.const_mul ((chiDet a χ g : ℂˣ) : ℂ))).fderiv`. Establish `h3 : extZero (chiInf χ) 1 = 1` using `(extZero_unit _ 1).trans (by simp)`. Establish `h4 : chart φ.1 g (oneL E a) = φ.1 g` using `(chart_val φ.1 g 1).trans (by simp)`. Express the relevant statement in the definitionally equal form `fderiv ℝ (chart (fun x => φ.1 x * (chiDet a χ x : ℂˣ)) g) _ X = (lieD X φ.1 g + _ * φ.1 g) * _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chart_mul_chi]`. Use `(congrArg (fun L : Lie E a →L[ℝ] ℂ => L X) h2).trans ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, fderiv_det_one, h1, h3, h4, smul_eq_mul, lieD]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lie_mulChi (χ : HChar E) (X : Lie E a) (φ : Sm E a) :
     lie E a X (mulChi a χ φ) = mulChi a χ (lie E a X φ + dchi χ (Matrix.of X).trace • φ) := by
@@ -342,11 +338,9 @@ theorem lie_mulChi (χ : HChar E) (X : Lie E a) (φ : Sm E a) :
   ring
 
 /- English proof (translation)
-Establish `ht : ∀ x : Rinf E, (Matrix.of (toL (Matrix.single i j x))).trace = if i = j then x else 0` using `fun x => by`. Express the relevant statement in the definitionally equal form `(Matrix.single i j x).trace = _`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Matrix.trace_single_eq_of_ne _ _ _ h`. Simplify using `only [Eop, lie_mulChi, ht]`. Use `congr 1`. Use `split_ifs`. Both sides reduce to the same expression.
-
-Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Eop_mulChi (χ : HChar E) (τ : InfinitePlace E) (i j : Fin a) (φ : Sm E a) :
     Eop τ i j (mulChi a χ φ) = mulChi a χ (Eop τ i j φ + (if i = j then expo χ τ else 0) • φ) := by
@@ -362,11 +356,11 @@ theorem Eop_mulChi (χ : HChar E) (τ : InfinitePlace E) (i j : Fin a) (φ : Sm 
   · simp
 
 /- English proof (translation)
-Establish `h` using `map_qdet ((mulChi a χ).conjAlgEquiv ℂ).toAlgHom (fun i j => Eop τ i j + if i = j then algebraMap ℂ _ (expo χ τ) else 0) (u + ((a : ℂ) - 1) / 2)`. Establish `e : (fun i j => ((mulChi a χ).conjAlgEquiv ℂ).toAlgHom (Eop τ i j + if i = j then algebraMap ℂ _ (expo χ τ) else 0)) = Eop τ`. Use function extensionality and compare the values at `i j`. Use `LinearMap.ext fun ψ => ?_` and prove the remaining obligations. Take `⟨ψ, rfl⟩` from `(mulChi a χ).surjective ψ`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Eop_mulChi]`. Express the relevant statement in the definitionally equal form `mulChi a χ ((Eop τ i j + if i = j then algebraMap ℂ _ (expo χ τ) else 0) ((mulChi a χ).symm (mulChi a χ ψ))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite `h` using `[e, qdet_shift]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[cap, ← h, cap, add_right_comm u (expo χ τ)]`. Generalize the expression as in `Formalism.REAL.qdet (Eop (a := a) τ) (u + ((a : ℂ) - 1) / 2 + expo χ τ) = z`. Express the relevant statement in the definitionally equal form `mulChi a χ (z ((mulChi a χ).symm (mulChi a χ φ))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cap_mulChi (χ : HChar E) (τ : InfinitePlace E) (u : ℂ) (φ : Sm E a) :
     cap τ u (mulChi a χ φ) = mulChi a χ (cap τ (u + expo χ τ) φ) := by
@@ -399,9 +393,7 @@ def opAdd (χ : HChar E) : Op E a → ℂ
   | .lie X => dchi χ (Matrix.of X).trace
 
 /- English proof (translation)
-Consider the cases of `o with`. Consider the case `fin k => simp only [opAdd, zero_smul, add_zero]`. Conclude with `rt_mulChi χ (finGL E a k) φ`. Consider the case `cpt k => simp only [opAdd, zero_smul, add_zero]`. Conclude with `rt_mulChi χ (infGL E a (Unitary.toUnits k)) φ`.
-
-Consider the case `lie X => simp only [opMul, Units.val_one, one_smul]`. Conclude with `lie_mulChi χ X φ`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem act_mulChi (χ : HChar E) (o : Op E a) (φ : Sm E a) :
     act o (mulChi a χ φ) = mulChi a χ (((opMul χ o : ℂˣ) : ℂ) • act o φ + opAdd χ o • φ) := by
@@ -411,7 +403,7 @@ theorem act_mulChi (χ : HChar E) (o : Op E a) (φ : Sm E a) :
   | lie X => simp only [opMul, Units.val_one, one_smul]; exact lie_mulChi χ X φ
 
 /- English proof (translation)
-Establish `h` using `(isOpen_ker_finIdele E (χ.1.comp (finId E)) (χ.2.1.comp (continuous_finId E))).preimage (GeneralLinearGroup.continuous_det (n := Fin a))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Conclude with `Iff.of_eq (congrArg (fun u => χ.1 u = 1) (det_finGL k))`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isOpen_ker_chiDet (χ : HChar E) : IsOpen {k : GL (Fin a) (Af E) | chiDet a χ (finGL E a k) = 1} := by
   have h := (isOpen_ker_finIdele E (χ.1.comp (finId E)) (χ.2.1.comp (continuous_finId E))).preimage
@@ -423,7 +415,7 @@ theorem isOpen_ker_chiDet (χ : HChar E) : IsOpen {k : GL (Fin a) (Af E) | chiDe
 omit [IsTotallyReal E] in
 
 /- English proof (translation)
-Unfold `height`. Combine the linear relations using `[norm_nonneg (toL y.val), norm_nonneg (toL (y⁻¹).val)]`.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_le_height (y : GL (Fin a) (Rinf E)) : 1 ≤ height y := by
   unfold height; linarith [norm_nonneg (toL y.val), norm_nonneg (toL (y⁻¹).val)]
@@ -431,9 +423,9 @@ theorem one_le_height (y : GL (Fin a) (Rinf E)) : 1 ≤ height y := by
 omit [IsTotallyReal E] in
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `(norm_sum_le _ _).trans ((Finset.sum_le_card_nsmul _ _ (B ^ a) fun σ _ => ?_).trans_eq (by simp [Fintype.card_perm]))` and prove the remaining obligations. Establish `h : ‖∏ i, x (σ i) i‖ ≤ B ^ a`. Use `(Finset.norm_prod_le _ _).trans ((Finset.prod_le_prod (g := fun _ => B) (fun _ _ => norm_nonneg _) fun i _ => ?_).trans_eq (by simp))` and prove the remaining obligations. Conclude with `((norm_le_pi_norm (toL x (σ i)) i).trans (norm_le_pi_norm (toL x) (σ i))).trans hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with e | e <;> simpa [e] using h`.
+A detailed English derivation is pending.
 -/
 theorem norm_det_le (x : Matrix (Fin a) (Fin a) (Rinf E)) {B : ℝ} (hx : ‖toL x‖ ≤ B) :
     ‖x.det‖ ≤ a.factorial * B ^ a := by
@@ -447,9 +439,9 @@ theorem norm_det_le (x : Matrix (Fin a) (Fin a) (Rinf E)) {B : ℝ} (hx : ‖toL
   rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with e | e <;> simpa [e] using h
 
 /- English proof (translation)
-Take `⟨C, N, -, h⟩` from `exists_bound _ (continuous_chiInf χ)`. Use `⟨C * a.factorial ^ N, a * N, fun y => ?_⟩` and prove the remaining obligations. Establish `h1` using `one_le_height y`. Establish `h2` using `h (GeneralLinearGroup.det y) (a.factorial * height y ^ a) (one_le_mul_of_one_le_of_one_le (by exact_mod_cast a.factorial_pos) (one_le_pow₀ h1)) (norm_det_le _ (by unfold height; linarith [norm_nonneg (toL (y⁻¹).val)])) (by rw [← map_inv]; exact norm_det_le _ (by unfold height; li …`. Rewrite using `[show chiDet a χ (infGL E a y) = chiInf χ (GeneralLinearGroup.det y) from congrArg χ.1 (det_infGL y)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.trans_eq (by rw [mul_pow, ← pow_mul, mul_assoc])`.
+A detailed English derivation is pending.
 -/
 theorem chiDet_growth (χ : HChar E) :
     ∃ (C : ℝ) (N : ℕ), ∀ y, ‖((chiDet a χ (infGL E a y) : ℂˣ) : ℂ)‖ ≤ C * height y ^ N := by
@@ -464,11 +456,11 @@ theorem chiDet_growth (χ : HChar E) :
   exact h2.trans_eq (by rw [mul_pow, ← pow_mul, mul_assoc])
 
 /- English proof (translation)
-Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨τ, u, rfl⟩` from `hx`. Conclude with `⟨_, Algebra.subset_adjoin ⟨τ, _, rfl⟩, cap_mulChi χ τ u⟩`. Consider the case `algebraMap c => exact ⟨_, Subalgebra.algebraMap_mem _ c, fun φ => by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨x', h1, h2⟩` from `hx`. Take `⟨y', h3, h4⟩` from `hy`. Conclude with `⟨x' + y', add_mem h1 h3, fun φ => by simp [h2, h4]⟩`. Consider the case `mul x y _ _ hx hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨x', h1, h2⟩` from `hx`. Take `⟨y', h3, h4⟩` from `hy`. Conclude with `⟨x' * y', mul_mem h1 h3, fun φ => by simp [h2, h4]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Zalg_mulChi (χ : HChar E) {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) :
     ∃ z' ∈ Zalg E a, ∀ φ, z (mulChi a χ φ) = mulChi a χ (z' φ) := by
@@ -487,15 +479,15 @@ theorem Zalg_mulChi (χ : HChar E) {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zal
     exact ⟨x' * y', mul_mem h1 h3, fun φ => by simp [h2, h4]⟩
 
 /- English proof (translation)
-Simplify using `[h.left, chiDet_ratGL] level := isOpen_stab_of_mem_nhds _ _ <| Filter.mem_of_superset ((h.level.inter (isOpen_ker_chiDet χ)).mem_nhds ⟨by simp, by simp⟩) fun k hk => by`. Establish `h1 : rt E a (finGL E a k) φ = φ` using `hk.1`. Establish `h2 : chiDet a χ (finGL E a k) = 1` using `hk.2`. Express the relevant statement in the definitionally equal form `rt E a (finGL E a k) _ = _`. Rewrite using `[rt_mulChi, h1, h2, Units.val_one, one_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `kfin := by`. Use `h.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k => cptRep E a k φ)).map (TR.mulChi a χ).toLinearMap) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩), (rt_mulChi χ _ φ).symm⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `zfin := by`. Use `h.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a)).map (TR.mulChi a χ).toLinearMap) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨z', h1, h2⟩` from `Zalg_mulChi χ hz`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, Submodule.subset_span ⟨z', h1, rfl⟩, (h2 φ).symm⟩`. Use `growth g := by`. Take `⟨C, N, h1⟩` from `h.growth g`. Take `⟨C', N', h2⟩` from `chiDet_growth (a := a) χ`. Use `⟨C * (‖((chiDet a χ g : ℂˣ) : ℂ)‖ * C'), N + N', fun y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mulChi_apply, map_mul, Units.val_mul, norm_mul, norm_mul]`. Use `(mul_le_mul (h1 y) (mul_le_mul_of_nonneg_left (h2 y) (norm_nonneg _)) (by positivity) ((norm_nonneg _).trans (h1 y))).trans_eq ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem IsAutForm.mulChi {φ : Sm E a} (h : IsAutForm φ) (χ : HChar E) : IsAutForm (mulChi a χ φ) where
   left γ g := by simp [h.left, chiDet_ratGL]
@@ -528,7 +520,7 @@ theorem IsAutForm.mulChi {φ : Sm E a} (h : IsAutForm φ) (χ : HChar E) : IsAut
     ring
 
 /- English proof (translation)
-Use `⟨h.1.mulChi χ, fun r h0 h1 _ _ μ 𝓕 hμ hF g => ?_⟩` and prove the remaining obligations. Establish `e : ∀ x : BlockIx a r → Ad E, chiDet a χ (unip x * g) = chiDet a χ g` using `fun x => by`. Rewrite using `[map_mul, show chiDet a χ (unip x) = 1 from (congrArg χ.1 (det_unip x)).trans (map_one _), one_mul]`. Simplify using `only [mulChi_apply, e]`. Rewrite using `[integral_mul_const, h.2 r h0 h1 μ 𝓕 hμ hF g, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsCuspForm.mulChi {φ : Sm E a} (h : IsCuspForm φ) (χ : HChar E) : IsCuspForm (mulChi a χ φ) := by
   refine ⟨h.1.mulChi χ, fun r h0 h1 _ _ μ 𝓕 hμ hF g => ?_⟩
@@ -542,20 +534,20 @@ namespace CuspSub
 variable (π π' : CuspSub E a)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨.refl _ _, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem Iso.refl : Iso π π := ⟨.refl _ _, fun _ _ => rfl⟩
 
 variable {π π'} in
 /- English proof (translation)
-The claim follows from `h.elim fun T h => ⟨T.symm, fun o φ => T.injective (by rw [h]; simp)⟩`.
+A detailed English derivation is pending.
 -/
 theorem Iso.symm (h : Iso π π') : Iso π' π :=
   h.elim fun T h => ⟨T.symm, fun o φ => T.injective (by rw [h]; simp)⟩
 
 variable {π π'} in
 /- English proof (translation)
-The claim follows from `h.elim fun T h => h'.elim fun T' h' => ⟨T.trans T', fun o φ => by simp [h, h']⟩`.
+A detailed English derivation is pending.
 -/
 theorem Iso.trans {π'' : CuspSub E a} (h : Iso π π') (h' : Iso π' π'') : Iso π π'' :=
   h.elim fun T h => h'.elim fun T' h' => ⟨T.trans T', fun o φ => by simp [h, h']⟩
@@ -586,7 +578,7 @@ def twist (χ : HChar E) : CuspSub E a where
 def toTwist (χ : HChar E) : π.V ≃ₗ[ℂ] (π.twist χ).V := (mulChi a χ).submoduleMap π.V
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (act_mulChi χ o φ.1)`.
+A detailed English derivation is pending.
 -/
 theorem op_toTwist (χ : HChar E) (o : Op E a) (φ : π.V) :
     (π.twist χ).op o (π.toTwist χ φ) = π.toTwist χ (((opMul χ o : ℂˣ) : ℂ) • π.op o φ + opAdd χ o • φ) :=
@@ -595,7 +587,7 @@ theorem op_toTwist (χ : HChar E) (o : Op E a) (φ : π.V) :
 variable {π π'} in
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `h`. Use `⟨((π.toTwist χ).symm.trans T).trans (π'.toTwist χ), fun o φ => ?_⟩` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `(π.toTwist χ).surjective φ`. Simplify using `only [op_toTwist, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, map_add T, map_smul T, hT]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem Iso.twist (h : Iso π π') (χ : HChar E) : Iso (π.twist χ) (π'.twist χ) := by
   obtain ⟨T, hT⟩ := h
@@ -604,14 +596,14 @@ theorem Iso.twist (h : Iso π π') (χ : HChar E) : Iso (π.twist χ) (π'.twist
   simp only [op_toTwist, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, map_add T, map_smul T, hT]
 
 /- English proof (translation)
-The claim follows from `CuspSub.ext <| by ext φ exact ⟨fun ⟨ψ, h, e⟩ => e ▸ (mulChi_one ψ).symm ▸ h, fun h => ⟨φ, h, mulChi_one φ⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem twist_one : π.twist 1 = π := CuspSub.ext <| by
   ext φ
   exact ⟨fun ⟨ψ, h, e⟩ => e ▸ (mulChi_one ψ).symm ▸ h, fun h => ⟨φ, h, mulChi_one φ⟩⟩
 
 /- English proof (translation)
-The claim follows from `CuspSub.ext <| by change _ = (π.V.map _).map _ rw [← Submodule.map_comp] exact congrArg (fun f => π.V.map f) (LinearMap.ext (mulChi_mul χ χ'))`.
+A detailed English derivation is pending.
 -/
 theorem twist_mul (χ χ' : HChar E) : π.twist (χ * χ') = (π.twist χ).twist χ' := CuspSub.ext <| by
   change _ = (π.V.map _).map _
@@ -621,9 +613,9 @@ theorem twist_mul (χ χ' : HChar E) : π.twist (χ * χ') = (π.twist χ).twist
 variable {π π'}
 
 /- English proof (translation)
-Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Establish `e : (( m.map Neg.neg).map fun z => Polynomial.X - Polynomial.C z).prod = ((m'.map Neg.neg).map fun z => Polynomial.X - Polynomial.C z).prod`. Use `Polynomial.funext fun u => ?_` and prove the remaining obligations. Use `smul_left_injective ℂ h0 ((h.2 u φ hφ).symm.trans (h'.2 u φ hφ))` as an intermediate fact. Simplify `this` using `[Polynomial.eval_multiset_prod, Multiset.map_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e2` using `congrArg Polynomial.roots e`. Rewrite `e2` using `[Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C]`. Conclude with `Multiset.map_injective neg_injective e2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasInfChar.unique {τ : InfinitePlace E} {m m' : Multiset ℂ} (h : π.HasInfChar τ m) (h' : π.HasInfChar τ m') :
     m = m' := by
@@ -638,13 +630,11 @@ theorem HasInfChar.unique {τ : InfinitePlace E} {m m' : Multiset ℂ} (h : π.H
   exact Multiset.map_injective neg_injective e2
 
 /- English proof (translation)
-Set `S : Subalgebra ℂ (Module.End ℂ (Sm E a))` to `{ carrier := {z | ∀ φ : π.V, ∃ h : z φ.1 ∈ π.V, (T ⟨_, h⟩).1 = z (T φ).1} mul_mem' := fun {x y} hx hy φ => by`. Take `⟨h1, e1⟩` from `hy φ`. Take `⟨h2, e2⟩` from `hx ⟨_, h1⟩`. Conclude with `⟨h2, e2.trans (congrArg x e1)⟩`. Use the proof step `add_mem' := fun {x y} hx hy φ => by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, e1⟩` from `hx φ`. Take `⟨h2, e2⟩` from `hy φ`. Conclude with `⟨add_mem h1 h2, (congrArg Subtype.val (map_add T ⟨_, h1⟩ ⟨_, h2⟩)).trans (congrArg₂ (· + ·) e1 e2)⟩`. Use the proof step `algebraMap_mem' := fun c φ => ⟨π.V.smul_mem c φ.2, congrArg Subtype.val (map_smul T c φ)⟩ }`. Establish `hL : ∀ X, lie E a X ∈ S` using `fun X φ => ⟨π.stable (.lie X) _ φ.2, congrArg Subtype.val (hT (.lie X) φ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : ∀ i j, Eop τ i j ∈ S` using `fun i j => hL _`. Establish `: cap τ u ∈ S`. Use `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Use `S.add_mem ?_ (hE _ _)` and prove the remaining obligations.
-
-Use `split_ifs`. Conclude with `S.algebraMap_mem _`. Conclude with `S.zero_mem`. Conclude with `this φ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem iso_cap (T : π.V ≃ₗ[ℂ] π'.V) (hT : ∀ o φ, T (π.op o φ) = π'.op o (T φ)) (τ : InfinitePlace E) (u : ℂ) (φ : π.V) :
     ∃ h : cap τ u φ.1 ∈ π.V, (T ⟨_, h⟩).1 = cap τ u (T φ).1 := by
@@ -671,9 +661,9 @@ theorem iso_cap (T : π.V ≃ₗ[ℂ] π'.V) (hT : ∀ o φ, T (π.op o φ) = π
   exact this φ
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `h`. Use `⟨hm.1, fun u φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `T.surjective ⟨φ, hφ⟩`. Take `⟨h1, e⟩` from `iso_cap T hT τ u ψ`. Establish `e2 : (⟨_, h1⟩ : π.V) = (m.map (u + ·)).prod • ψ` using `Subtype.ext (hm.2 u _ ψ.2)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[e2, map_smul, hψ]`. Conclude with `e.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Iso.hasInfChar (h : Iso π π') {τ : InfinitePlace E} {m : Multiset ℂ} (hm : π.HasInfChar τ m) : π'.HasInfChar τ m := by
   obtain ⟨T, hT⟩ := h
@@ -685,9 +675,9 @@ theorem Iso.hasInfChar (h : Iso π π') {τ : InfinitePlace E} {m : Multiset ℂ
   exact e.symm
 
 /- English proof (translation)
-Use `⟨by rw [Multiset.card_map, h.1], ?_⟩` and prove the remaining obligations. Introduce and unpack `u _ ⟨φ, hφ, rfl⟩`. Express the relevant statement in the definitionally equal form `cap τ u (mulChi a χ φ) = _ • mulChi a χ φ`. Rewrite using `[cap_mulChi, h.2 _ φ hφ, map_smul, Multiset.map_map]`. Use `congr 3`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem HasInfChar.twist {τ : InfinitePlace E} {m : Multiset ℂ} (h : π.HasInfChar τ m) (χ : HChar E) :
     (π.twist χ).HasInfChar τ (m.map (· + expo χ τ)) := by
@@ -700,13 +690,13 @@ theorem HasInfChar.twist {τ : InfinitePlace E} {m : Multiset ℂ} (h : π.HasIn
   simp only [Function.comp_apply]; ring
 
 /- English proof (translation)
-Introduce `v` and use `(hπ v).imp fun _ hm => ⟨h.hasInfChar hm.1, hm.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Iso.isRegAlg (h : Iso π π') (hπ : π.IsRegAlg) : π'.IsRegAlg := fun v =>
   (hπ v).imp fun _ hm => ⟨h.hasInfChar hm.1, hm.2⟩
 
 /- English proof (translation)
-Introduce `v` and use `by obtain ⟨m, h1, h2, h3⟩ := h v obtain ⟨n, hn⟩ := hχ v refine ⟨_, h1.twist χ, h2.map (add_left_injective _), fun z hz => ?_⟩ obtain ⟨y, hy, rfl⟩ := Multiset.mem_map.1 hz obtain ⟨k, rfl⟩ := h3 y hy exact ⟨k + n, by rw [hn]; push_cast; ring⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsRegAlg.twist (h : π.IsRegAlg) {χ : HChar E} (hχ : ∀ v, ∃ n : ℤ, expo χ v = n) : (π.twist χ).IsRegAlg := fun v => by
   obtain ⟨m, h1, h2, h3⟩ := h v
@@ -730,7 +720,7 @@ theorem locRep_eq (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin a) (w.adicComple
 variable (π) in
 
 /- English proof (translation)
-Introduce `φ` and use `by convert (π.cusp _ φ.2).1.level using 1 ext k exact Subtype.ext_iff`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_finPart : GlobalTheory.PRep.IsSmooth π.finPart := fun φ => by
   convert (π.cusp _ φ.2).1.level using 1
@@ -740,15 +730,15 @@ theorem isSmooth_finPart : GlobalTheory.PRep.IsSmooth π.finPart := fun φ => by
 variable (π) in
 
 /- English proof (translation)
-Introduce `φ` and use `(π.isSmooth_finPart φ).preimage (GlobalTheory.CuspRep.CuspSub.continuous_locGL w)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_locRep (w : HeightOneSpectrum (𝓞 E)) : GlobalTheory.PRep.IsSmooth (π.locRep w) := fun φ =>
   (π.isSmooth_finPart φ).preimage (GlobalTheory.CuspRep.CuspSub.continuous_locGL w)
 
 /- English proof (translation)
-Take `⟨f, h0, hf⟩` from `h`. Take `⟨T, hT⟩` from `hπ`. Take `⟨e⟩` from `hσ`. Use `⟨T.toLinearMap ∘ₗ f ∘ₗ e.symm.toLinearEquiv.toLinearMap, fun h => h0 (LinearMap.ext fun v => T.injective ?_), fun g v => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun h (e.toLinearEquiv v)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.zero_apply, map_zero]`. Conclude with `(congrArg (fun x => T (f x)) (e.toLinearEquiv.symm_apply_apply v)).symm.trans this`. Establish `h1 : e.symm.toLinearEquiv (σ'.ρ g v) = σ.ρ g (e.symm.toLinearEquiv v)` using `LinearMap.congr_fun (e.symm.isIntertwining' g) v`. Express the relevant statement in the definitionally equal form `T (f (e.symm.toLinearEquiv (σ'.ρ g v))) = π'.locRep w g (T (f (e.symm.toLinearEquiv v)))`. Rewrite using `[h1, hf, locRep_eq, hT, locRep_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLocComp.congr {w : HeightOneSpectrum (𝓞 E)} {σ σ' : SmIrr (GL (Fin a) (w.adicCompletion E))}
     (h : π.IsLocComp w σ) (hπ : Iso π π') (hσ : Nonempty (σ.ρ.Equiv σ'.ρ)) : π'.IsLocComp w σ' := by
@@ -766,22 +756,22 @@ theorem IsLocComp.congr {w : HeightOneSpectrum (𝓞 E)} {σ σ' : SmIrr (GL (Fi
     rw [h1, hf, locRep_eq, hT, locRep_eq]
 
 /- English proof (translation)
-The claim follows from `congrArg χ.1 ((det_finGL _).trans (finId_det_locGL w g))`.
+A detailed English derivation is pending.
 -/
 theorem chiDet_locGL (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin a) (w.adicCompletion E)) :
     chiDet a χ (finGL E a (locGL E a w g)) = GlobalTheory.CuspRep.CuspSub.locDet a χ w g :=
   congrArg χ.1 ((det_finGL _).trans (finId_det_locGL w g))
 
 /- English proof (translation)
-Simplify `(isOpen_ker_chiDet (a := a) χ).preimage (GlobalTheory.CuspRep.CuspSub.continuous_locGL w)` using `only [Set.preimage_ofPred_eq, chiDet_locGL]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isOpen_ker_locDet (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) : IsOpen {g | GlobalTheory.CuspRep.CuspSub.locDet a χ w g = 1} := by
   simpa only [Set.preimage_ofPred_eq, chiDet_locGL] using (isOpen_ker_chiDet (a := a) χ).preimage (GlobalTheory.CuspRep.CuspSub.continuous_locGL w)
 
 /- English proof (translation)
-Take `⟨f, h0, hf⟩` from `h`. Use `⟨(π.toTwist χ).toLinearMap ∘ₗ f, fun h => h0 (LinearMap.ext fun v => (π.toTwist χ).injective ?_), fun g v => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply, map_zero]`. Conclude with `LinearMap.congr_fun h v`. Express the relevant statement in the definitionally equal form `π.toTwist χ (f (((GlobalTheory.CuspRep.CuspSub.locDet a χ w g : ℂˣ) : ℂ) • σ.ρ g v)) = (π.twist χ).op (.fin (locGL E a w g)) (π.toTwist χ (f v))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[op_toTwist, map_smul f, hf g v, ← chiDet_locGL, opAdd, zero_smul, add_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem IsLocComp.twist {w : HeightOneSpectrum (𝓞 E)} {σ : SmIrr (GL (Fin a) (w.adicCompletion E))}
     (h : π.IsLocComp w σ) (χ : HChar E) :
@@ -795,7 +785,7 @@ theorem IsLocComp.twist {w : HeightOneSpectrum (𝓞 E)} {σ : SmIrr (GL (Fin a)
     rfl
 
 /- English proof (translation)
-Rewrite using `[finPart_eq, op_toTwist, opAdd, zero_smul, add_zero, map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finPart_toTwist (χ : HChar E) (k : GL (Fin a) (Af E)) (φ : π.V) :
     (π.twist χ).finPart k (π.toTwist χ φ) = ((chiDet a χ (finGL E a k) : ℂˣ) : ℂ) • π.toTwist χ (π.finPart k φ) := by
@@ -803,9 +793,9 @@ theorem finPart_toTwist (χ : HChar E) (k : GL (Fin a) (Af E)) (φ : π.V) :
   rfl
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `h`. Establish `hf : ∀ g y, T.toLinearMap (π.locRep w g y) = π'.locRep w g (T.toLinearMap y)` using `fun g y => hT (.fin _) y`. Prove the components needed by the constructor for the conclusion. Take `⟨x, hx⟩` from `hB.exists_vec`. Establish `h1` using `hx.map T.toLinearMap hf ((map_ne_zero_iff T T.injective).2 hx.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(Submodule.ne_bot_iff _).2 ⟨_, h1.2.1, h1.1⟩`. Introduce `y hy h0`. Take `⟨x, rfl⟩` from `T.surjective y`. Use `(hB.2 x (GlobalTheory.LGrp.mem_fixed.2 fun k hk => T.injective ?_) fun e => h0 (by rw [e, map_zero])).map T.toLinearMap hf h0` and prove the remaining obligations. Conclude with `(hf k x).trans (GlobalTheory.LGrp.mem_fixed.1 hy k hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Iso.hasSat (h : Iso π π') {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ}
     (hB : π.HasSat w B) : π'.HasSat w B := by
@@ -822,19 +812,19 @@ theorem Iso.hasSat (h : Iso π π') {w : HeightOneSpectrum (𝓞 E)} {B : Multis
     exact (hf k x).trans (GlobalTheory.LGrp.mem_fixed.1 hy k hk)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LFun.HasSatGL.unique h h'`.
+A detailed English derivation is pending.
 -/
 theorem HasSat.unique {w : HeightOneSpectrum (𝓞 E)} {B B' : Multiset ℂˣ} (h : π.HasSat w B) (h' : π.HasSat w B') :
     B = B' := GlobalTheory.LFun.HasSatGL.unique h h'
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LFun.HasSatGL.card h`.
+A detailed English derivation is pending.
 -/
 theorem HasSat.card {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ} (h : π.HasSat w B) : B.card = a :=
   GlobalTheory.LFun.HasSatGL.card h
 
 /- English proof (translation)
-Use `GlobalTheory.SphGal.hasSatGL_of_twist hχ (π.toTwist χ) (fun g x => ?_) h` and prove the remaining obligations. Rewrite using `[locRep_eq, op_toTwist, opAdd, zero_smul, add_zero, map_smul, opMul, chiDet_locGL]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem HasSat.twist {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ} (h : π.HasSat w B) {χ : HChar E} (hχ : χ.UnrAt w) :
     (π.twist χ).HasSat w (B.map (· * χ.val w)) := by

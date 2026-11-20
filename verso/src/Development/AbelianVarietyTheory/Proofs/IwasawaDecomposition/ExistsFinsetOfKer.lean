@@ -25,11 +25,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RefCharValues
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite C`. Set `r : C → G` to `Function.invFun cl`. Use `⟨S₀ ∪ Finset.univ.image fun c => f (r c), fun z hz => ?_, fun F hF x => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_union.1 hz with h | h` into its components or cases. Conclude with `h₀ z h`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 h`. Establish `h1` using `hk (algebraicClosure ℚ ℂ).toSubfield (fun z hz => mem_algebraicClosure_iff.2 (h₀ z hz)) (r c ^ Nat.card C) (by rw [map_pow, pow_card_eq_one'])`. Rewrite `h1` using `[map_pow]`. Conclude with `IsAlgebraic.of_pow Nat.card_pos (mem_algebraicClosure_iff.1 h1)`. Establish `h1 : cl (r (cl x)) = cl x` using `Function.invFun_eq ⟨x, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hk F (fun z hz => hF z (Finset.mem_union_left _ hz)) (x * (r (cl x))⁻¹) (by rw [map_mul, map_inv, h1, mul_inv_cancel])`. Establish `h3 : f (r (cl x)) ∈ F` using `hF _ (Finset.mem_union_right _ (Finset.mem_image.2 ⟨_, Finset.mem_univ _, rfl⟩))`. Establish `h4` using `mul_mem h2 h3`. Rewrite `h4` using `[← map_mul, inv_mul_cancel_right]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_finset_of_ker {G C : Type} [CommGroup G] [Group C] [Finite C] (f : G →* ℂ) (cl : G →* C)
     (S₀ : Finset ℂ) (h₀ : ∀ z ∈ S₀, IsAlgebraic ℚ z)
@@ -55,9 +55,9 @@ theorem exists_finset_of_ker {G C : Type} [CommGroup G] [Group C] [Finite C] (f 
     rwa [← map_mul, inv_mul_cancel_right] at h4
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℚ E`. Use `⟨Finset.univ.image fun p : (E →+* ℂ) × Fin (Module.finrank ℚ E) => p.1 (b p.2), fun z hz => ?_, fun F hF φ x => ?_⟩` and prove the remaining obligations. Take `⟨p, -, rfl⟩` from `Finset.mem_image.1 hz`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic (R := ℚ) (b p.2)).algHom p.1.toRatAlgHom`. Rewrite using `[← b.sum_repr x, map_sum]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_rat_smul, Rat.smul_def]`. Conclude with `mul_mem (SubfieldClass.ratCast_mem F _) (hF _ (Finset.mem_image.2 ⟨(φ, i), Finset.mem_univ _, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_emb (E : Type) [Field E] [NumberField E] :
     ∃ S : Finset ℂ, (∀ z ∈ S, IsAlgebraic ℚ z) ∧ ∀ F : Subfield ℂ, (∀ z ∈ S, z ∈ F) →
@@ -74,9 +74,9 @@ theorem exists_finset_emb (E : Type) [Field E] [NumberField E] :
     exact mul_mem (SubfieldClass.ratCast_mem F _) (hF _ (Finset.mem_image.2 ⟨(φ, i), Finset.mem_univ _, rfl⟩))
 
 /- English proof (translation)
-Rewrite `h1` using `[ClassGroup.mk_eq_one_iff]`. Take `⟨x, hx⟩` from `(FractionalIdeal.isPrincipal_iff _).1 h1`. Establish `hx' : GlobalTheory.Idele.idealOf a = FractionalIdeal.spanSingleton (𝓞 L)⁰ x` using `hx`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `GlobalTheory.Idele.idealOf_ne_zero _ (hx'.trans (FractionalIdeal.spanSingleton_zero))`. Use `⟨Units.mk0 x hx0, (GlobalTheory.Idele.smul_eq_self_iff (R := 𝓞 L) (K := L) _ (I := 1) one_ne_zero).1 ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Idele.smul_one_eq, GlobalTheory.Idele.idealOf_mul, GlobalTheory.Idele.idealOf_inv, GlobalTheory.Idele.idealOf_unitEmbedding, hx']`. Conclude with `mul_inv_cancel₀ (FractionalIdeal.spanSingleton_ne_zero_iff.2 hx0)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_principal (L : Type) [Field L] [NumberField L] (a : (FiniteAdeleRing (𝓞 L) L)ˣ)
     (h1 : ClassGroup.mk L ((GlobalTheory.Mem.UnitIndex.idealHom L).toHomUnits a) = 1) : ∃ e : Lˣ, ∀ v, Valued.v
@@ -92,11 +92,11 @@ theorem exists_principal (L : Type) [Field L] [NumberField L] (a : (FiniteAdeleR
   exact mul_inv_cancel₀ (FractionalIdeal.spanSingleton_ne_zero_iff.2 hx0)
 
 /- English proof (translation)
-Take `⟨ι, h1, h2, -⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Set `φ : (AE D)ˣ →* (FiniteAdeleRing (𝓞 D.host.E) D.host.E)ˣ` to `Units.map (ι.toRingHom.comp (finPart D)).toMonoidHom`. Use `⟨(ClassGroup.mk D.host.E).comp ((GlobalTheory.Mem.UnitIndex.idealHom D.host.E).toHomUnits.comp φ), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `exists_principal D.host.E (φ x) hx`. Establish `hφ : φ (Units.map (incA D).toMonoidHom e) = FiniteAdeleRing.unitEmbedding (𝓞 D.host.E) D.host.E e` using `Units.ext (h1 e)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `he` using `[← hφ, ← map_inv, ← map_mul]`. Use `⟨e, ?_⟩` and prove the remaining obligations. Generalize the expression as in `x * (Units.map (incA D).toMonoidHom e)⁻¹ = u at he`. Use `⟨(h2 _).2 fun P => (he P).le, (h2 _).2 fun P => ?_⟩` and prove the remaining obligations. Establish `h3 : (φ u).1 P * (φ u⁻¹).1 P = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (φ u).1 * (φ u⁻¹).1 = 1` using `by rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Conclude with `congrArg (fun z : FiniteAdeleRing (𝓞 D.host.E) D.host.E => z P) this`. Establish `h4` using `congrArg Valued.v h3`. Rewrite `h4` using `[map_mul, he P, one_mul, map_one]`. Conclude with `h4.le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_class (D : D7) : ∃ cl : (AE D)ˣ →* ClassGroup (𝓞 D.host.E), ∀ x, cl x = 1 → ∃ e : D.host.Eˣ,
     finPart D ((x * (Units.map (incA D).toMonoidHom e)⁻¹ : (AE D)ˣ) : AE D) ∈ intAE D ∧
@@ -120,9 +120,9 @@ theorem exists_class (D : D7) : ∃ cl : (AE D)ˣ →* ClassGroup (𝓞 D.host.E
   exact h4.le
 
 /- English proof (translation)
-Rewrite using `[zpow_mul]`. Use `congr 1`. Establish `h1 : (‖z‖ : ℂ) ^ 2 = z * starRingEnd ℂ z`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Establish `h2 : starRingEnd ℂ z ≠ 0` using `by simpa using h`. Rewrite using `[zpow_ofNat, div_pow, h1]`. Clear the denominators using the available nonvanishing facts.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem sign_zpow_even (z : ℂ) (h : z ≠ 0) (k : ℤ) :
     (z / ((‖z‖ : ℝ) : ℂ)) ^ (2 * k) = (z / starRingEnd ℂ z) ^ k := by
@@ -135,19 +135,17 @@ theorem sign_zpow_even (z : ℂ) (h : z ≠ 0) (k : ℤ) :
   field_simp
 
 /- English proof (translation)
-Take `⟨-, a, b, -, -, hab, ha, hb⟩` from `GlobalTheory.IdeleParts.congr_open_and_parts D`. Take `⟨N, -, -, m, hm, hm1⟩` from `GlobalTheory.CharFin.char_finUnit_finite_order D c hc.1.1`. Take `⟨cl, hcl⟩` from `exists_class D`. Take `⟨S₁, hS₁, hE⟩` from `exists_finset_emb D.host.E`. Take `⟨S, hS, h⟩` from `exists_finset_of_ker (Circle.coeHom.comp (c.comp b)) cl (S₁ ∪ Polynomial.nthRootsFinset m (1 : ℂ)) (fun z hz => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `Finset.mem_union.1 hz with h | h` into its components or cases. Conclude with `hS₁ z h`. Use `IsAlgebraic.of_pow hm ?_` and prove the remaining obligations. Rewrite using `[(Polynomial.mem_nthRootsFinset hm _).1 h]`. Conclude with `isAlgebraic_one)`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `(fun F hF x hx => by`. Take `⟨e, he1, he2⟩` from `hcl x hx`. Establish `hF1` using `hE F fun z hz => hF z (Finset.mem_union_left _ hz)`. Set `y : (AE D)ˣ` to `Units.map (incA D).toMonoidHom e`. Establish `hu : FinUnit (b (x * y⁻¹))` using `⟨(hb _).1, by rw [(hb _).2]; exact he1, by rw [← map_inv, (hb _).2]; exact he2⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ((c (b (x * y⁻¹)) : Circle) : ℂ) ∈ F` using `hF _ (Finset.mem_union_right _ ((Polynomial.mem_nthRootsFinset hm _).2 (by`. Rewrite using `[← Circle.coe_pow, hm1 _ hu, Circle.coe_one])))`. Establish `h2 : ((c (a y) : Circle) : ℂ) ∈ F`. Rewrite using `[GlobalTheory.HeckeInfExp.eq_inf D c χ hc e _ _ (hab _) (hb _).1 (hb _).2, hi e]`. Use `prod_mem fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sign_zpow_even _ ((map_ne_zero _).2 e.ne_zero)]`. Conclude with `zpow_mem (div_mem (hF1 _ _) (hF1 ((starRingEnd ℂ).comp (φ i)) _)) _`. Establish `h3 : c (a y) * c (b y) = 1` using `by rw [← map_mul, ← hab y]; exact hc.1.2 e`. Establish `h4 : c (b x) = c (b (x * y⁻¹)) * (c (a y))⁻¹`. Rewrite using `[← eq_inv_of_mul_eq_one_right h3, ← map_mul, ← map_mul, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ((c (b x) : Circle) : ℂ) ∈ F`. Rewrite using `[h4, Circle.coe_mul, Circle.coe_inv]`. Conclude with `mul_mem h1 (inv_mem h2))`. Use `⟨S, hS, fun F hF x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : b x = x` using `Units.ext (GlobalTheory.PlaceIdem.parts_inj D _ _ ((hb x).1.trans hx.symm) (hb x).2)`.
-
-Establish `h2 : ((c (b x) : Circle) : ℂ) ∈ F` using `h F hF x`. Rewrite `h2` using `[h1]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_finset_char (D : D7) (c : (AE D)ˣ →* Circle) (χ : Formalism.L2.Host.HChar D.host.E) (hc : ChrEq c χ)
     {I : Type} [Fintype I] (φ : I → D.host.E →+* ℂ) (k : I → ℤ) (hi : χ.HasInf φ fun i => 2 * k i) :
@@ -191,13 +189,11 @@ theorem exists_finset_char (D : D7) (c : (AE D)ˣ →* Circle) (χ : Formalism.L
   rwa [h1] at h2
 
 /- English proof (translation)
-Introduce `D T0 L μ0 hL`. Establish `key : ∀ i : Fin D.R.m, ∃ S : Finset ℂ, (∀ z ∈ S, IsAlgebraic ℚ z) ∧ ∀ F : Subfield ℂ, (∀ z ∈ S, z ∈ F) → ∀ x : (AE D)ˣ, infPart D (x : AE D) = 1 → ((L.mu0 ((i : ℕ) + 1) x : Circle) : ℂ) ∈ F`. Introduce `i`. Take `⟨n, hn, hi⟩` from `(L.C.isMu0 i).inf`. Use `choose z hz using fun g => (D.hc (D.eTau.symm g)).e_int i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_finset_char D _ _ (hL.mu0 i) (Formalism.L2.Host.embPsi D.host) (fun g => -z g) ?_` and prove the remaining obligations. Establish `: n = fun g => 2 * -z g` using `funext fun g => by`. Establish `h1` using `hn g`. Simplify using `only [Formalism.L2.Host.eExp, hz] at h1`. Conclude with `h1` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hi` using `[this]`. Then use the resulting hypothesis. Use `choose S hS h using key`. Use `⟨Finset.univ.biUnion S, fun z hz => ?_, fun F hF i => h i F fun z hz => hF z ?_⟩` and prove the remaining obligations. Take `⟨i, -, hi⟩` from `Finset.mem_biUnion.1 hz`. Conclude with `hS i z hi`.
-
-Conclude with `Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, hz⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_finset_values : ∀ (D : D7) (T0 : Type) (L : LevCh D T0) (μ0 : T0), L.Is μ0 → ∃ S : Finset ℂ, (∀ z ∈ S, IsAlgebraic ℚ z) ∧ ∀ F : Subfield ℂ, (∀ z ∈ S, z ∈ F) → ∀ (i : Fin D.R.m) (x : (AE D)ˣ), infPart D (x : AE D) = 1 → ((L.mu0 ((i : ℕ) + 1) x : Circle) : ℂ) ∈ F := by
   intro D T0 L μ0 hL

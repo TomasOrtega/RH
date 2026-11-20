@@ -19,7 +19,7 @@ open PlacesLyingOver Formalism.DivisionValues.PlaceSumConjugation
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Introduce `φ hφ F hF`. Break down `H φ hφ F hF with h0 | h1` into its components or cases. Conclude with `Or.inl h0`. Conclude with `Or.inr (le_trans h h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem perBd_mono [StarRing K] {Bs : DefBase K} {Df : DefSide Bs} {Dc : DefCols Df} {u : Dc.Mem}
     {Nu : Submodule (𝓞 K) (Fin (Dc.a u) → K)} {t : Bs.Tup} {w : HeightOneSpectrum (𝓞 K)} {s s' : ℝ}
@@ -34,11 +34,9 @@ end UnitPeriodBounds
 open PlacesLyingOver UnitPeriodBounds Formalism.DivisionValues.PlaceSumConjugation Formalism.DivisionValues.ValuationRepresentative
 
 /- English proof (translation)
-Introduce `K _ _ c n hn hc w`. Establish `hc0 : c ≠ 0`. Introduce `h`. Rewrite `hc` using `[h, zero_pow hn.ne']`. Conclude with `zero_ne_one hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `vw_pow' w c hc0 n`. Rewrite `h` using `[hc, vw_one']`. Establish `hn' : (n : ℤ) ≠ 0` using `by exact_mod_cast hn.ne'`. Break down `mul_eq_zero.mp h.symm with h1 | h1` into its components or cases. Conclude with `absurd h1 hn'`.
-
-Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem root_of_unity_valuation_zero : RootOfUnityIsUnit := by
   intro K _ _ c n hn hc w

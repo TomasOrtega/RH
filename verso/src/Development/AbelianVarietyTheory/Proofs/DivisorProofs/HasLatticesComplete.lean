@@ -65,11 +65,11 @@ def Reads {H : Type*} [AddCommGroup H] [Module K H] [Module R H] [IsScalarTower 
 variable {w a b} in
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃, h₄⟩` from `h`. Use `⟨fun s => ?_, fun t' => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← h₂, h₁, ← h'.1]`. Both sides reduce to the same expression. Introduce and unpack `⟨s, hs, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Conclude with `(h₃ s).1 (h'.2 ▸ Submodule.mem_sup_left hs)`. Introduce and unpack `⟨t, rfl⟩`. Take `⟨s, hs⟩` from `h₄ (resSec w B t)`. Take `⟨x, hx, y, hy, e⟩` from `Submodule.mem_sup.1 (h'.2.ge ((h₃ s).2 ⟨t, hs⟩))`. Use `⟨E.symm x, by simpa using hx, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e' : s = E.symm x + E.symm y` using `by rw [← map_add, e, E.symm_apply_apply]`. Rewrite using `[← hs, e', map_add, (h₁ (E.symm y)).2 (by simpa using hy), add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Reads.latSeq {H : Type*} [AddCommGroup H] [Module K H] [Module R H] [IsScalarTower R K H]
     {E : Γ((Scheme.Modules.pullback ξ).obj D, ⊤) ≃+ H} {β : LinearMap.BilinForm K H} {F : Submodule K H}
@@ -149,7 +149,7 @@ def FinTower.ofTower {Γ : PDivGroup p R} {G : Over (Sp R)} [GrpObj G] (t : Γ.T
   ⟨t.y, t.mul, t.inj, fun n B _ _ _ => t.surj n B, t.res⟩
 
 /- English proof (translation)
-The claim follows from `.ofTower (muTower p R)`.
+A detailed English derivation is pending.
 -/
 example [Fact p.Prime] : FinTower (mu p R) (Gm (Sp R)) := .ofTower (muTower p R)
 

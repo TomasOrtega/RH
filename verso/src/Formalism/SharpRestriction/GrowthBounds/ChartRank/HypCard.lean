@@ -7,7 +7,7 @@ namespace Formalism.MainNotions.G.CmpJ.PCard
 open Formalism.BasicNotions Formalism.MainNotions.G Formalism.L2.G Formalism.L2.G.Cmp Formalism.L2.Forms NumberField Module
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_surjective (LinearMap.proj (R := R) (φ := φ) b) fun y => ⟨Pi.single b y, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem fin_fac {R ι : Type} [CommRing R] [DecidableEq ι] {φ : ι → Type} [∀ b, AddCommGroup (φ b)] [∀ b, Module R (φ b)]
     [Module.Finite R (∀ b, φ b)] (b : ι) : Module.Finite R (φ b) :=
@@ -18,7 +18,7 @@ section Loc
 variable {p : ℕ} (G : GAtP p)
 
 /- English proof (translation)
-Simplify using `[GAtP.M, GAtP.funMod, Submodule.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_M {x : G.Fn} : x ∈ G.M ↔ ∀ a, x a ∈ (G.lev a).funMod G.P.HtupW := by
   simp [GAtP.M, GAtP.funMod, Submodule.mem_pi]
@@ -32,9 +32,9 @@ def eM : G.M ≃ₗ[G.O] ((a : G.comp) → (G.lev a).funMod G.P.HtupW) where
   right_inv _ := rfl
 
 /- English proof (translation)
-Use `⟨fun {c x} hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hc : c = 0`. Conclude with `Or.inl hc`. Use `Or.inr (MvPolynomial.ext _ _ fun m => ?_)` and prove the remaining obligations. Establish `h1` using `congrArg (MvPolynomial.coeff m) hx`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[MvPolynomial.coeff_smul, MvPolynomial.coeff_zero, Algebra.smul_def]`. Rewrite using `[MvPolynomial.coeff_zero]`. Conclude with `(mul_eq_zero.1 h1).resolve_left fun h0 => hc (IsFractionRing.injective G.O G.Kf (by rw [h0, map_zero]))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem noZero_Xsp [IsFractionRing G.O G.Kf] : NoZeroSMulDivisors G.O G.P.Xsp := by
   refine ⟨fun {c x} hx => ?_⟩
@@ -47,9 +47,9 @@ theorem noZero_Xsp [IsFractionRing G.O G.Kf] : NoZeroSMulDivisors G.O G.P.Xsp :=
   exact (mul_eq_zero.1 h1).resolve_left fun h0 => hc (IsFractionRing.injective G.O G.Kf (by rw [h0, map_zero]))
 
 /- English proof (translation)
-Use `noZero_Xsp G` as an intermediate fact. Use `⟨fun {c x} hx => ?_⟩` and prove the remaining obligations. Establish `h1 : c • (x : G.P.Tup → G.P.Xsp) = 0` using `by rw [← Submodule.coe_smul, hx, Submodule.coe_zero]`. Break down `smul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `Or.inl h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr (Subtype.ext h)`.
+Prove the second alternative.
 -/
 theorem noZero_fac [IsFractionRing G.O G.Kf] (a : G.comp) : NoZeroSMulDivisors G.O ((G.lev a).funMod G.P.HtupW) := by
   have := noZero_Xsp G
@@ -60,7 +60,7 @@ theorem noZero_fac [IsFractionRing G.O G.Kf] (a : G.comp) : NoZeroSMulDivisors G
   · exact Or.inr (Subtype.ext h)
 
 /- English proof (translation)
-Establish `: Module.Finite G.O ((b : G.comp) → (G.lev b).funMod G.P.HtupW)` using `Module.Finite.equiv (eM G)`. Conclude with `fin_fac (R := G.O) (φ := fun b => (G.lev b).funMod G.P.HtupW) a`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_fac [Module.Finite G.O G.M] (a : G.comp) : Module.Finite G.O ((G.lev a).funMod G.P.HtupW) := by
   classical
@@ -68,7 +68,7 @@ theorem finite_fac [Module.Finite G.O G.M] (a : G.comp) : Module.Finite G.O ((G.
   exact fin_fac (R := G.O) (φ := fun b => (G.lev b).funMod G.P.HtupW) a
 
 /- English proof (translation)
-Use `hf` as an intermediate fact. Use `noZero_fac G` as an intermediate fact. Establish `: ∀ a, Module.Free G.O ((G.lev a).funMod G.P.HtupW)` using `fun a => Module.free_of_finite_type_torsion_free'`. Rewrite using `[(eM G).finrank_eq, Module.finrank_pi_fintype]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_M [IsFractionRing G.O G.Kf] (hf : ∀ a, Module.Finite G.O ((G.lev a).funMod G.P.HtupW)) :
     finrank G.O G.M = ∑ a, finrank G.O ((G.lev a).funMod G.P.HtupW) := by
@@ -78,9 +78,9 @@ theorem finrank_M [IsFractionRing G.O G.Kf] (hf : ∀ a, Module.Finite G.O ((G.l
   rw [(eM G).finrank_eq, Module.finrank_pi_fintype]
 
 /- English proof (translation)
-Set `_ : Fintype (Σ β, cmpt β)` to `Fintype.ofEquiv G.comp eC.symm`. Establish `hf` using `finite_fac G`. Rewrite using `[finrank_M G hf]`. Establish `e1 : ∑ a, finrank G.O ((G.lev a).funMod G.P.HtupW) = ∑ q : (Σ β, cmpt β), finrank G.O ((G.lev (eC q)).funMod G.P.HtupW)` using `(Fintype.sum_equiv eC _ _ fun _ => rfl).symm`. Establish `e2 : (Finset.univ : Finset (Σ β, cmpt β)) = s.sigma fun _ => Finset.univ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `⟨β, a⟩`. Simplify using `[hs β a]`. Rewrite using `[e1, e2, Finset.sum_sigma]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Rewrite using `[finrank_M (gatCh G fun a : cmpt β => eC ⟨β, a⟩) fun a => hf _]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_M_sigma [IsFractionRing G.O G.Kf] [Module.Finite G.O G.M] {Ch : Type} (cmpt : Ch → Type) [∀ β, Fintype (cmpt β)]
     (eC : (Σ β, cmpt β) ≃ G.comp) (s : Finset Ch) (hs : ∀ β (_ : cmpt β), β ∈ s) :
@@ -107,7 +107,7 @@ variable {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW
   {M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P} {p : ℕ} {i : ℕ} {hi : i ≤ D.R.m} {G : GAtP p}
 
 /- English proof (translation)
-Rewrite using `[← (M.emb_basis i).2]`. Conclude with `(finrank_span_eq_card (M.emb_basis i).1).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_eq_finrank (M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P) (i : ℕ) :
     Fintype.card (M.lat i).ι = finrank ℂ (M.Fi i) := by
@@ -115,7 +115,7 @@ theorem card_eq_finrank (M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.
   exact (finrank_span_eq_card (M.emb_basis i).1).symm
 
 /- English proof (translation)
-Rewrite using `[← (M.emb_basis i).2]`. Conclude with `FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_Fi (M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P) (i : ℕ) :
     FiniteDimensional ℂ (M.Fi i) := by
@@ -129,14 +129,14 @@ def chs (S : StepIn M i hi G) : Finset S.Ch :=
 
 open Classical in
 /- English proof (translation)
-The claim follows from `Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ c))`.
+A detailed English derivation is pending.
 -/
 theorem chOf_mem (S : StepIn M i hi G) (c : C.cls i) : S.chOf c ∈ chs S :=
   Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ c))
 
 open Classical in
 /- English proof (translation)
-The claim follows from `Finset.mem_union_right _ (Finset.mem_image.2 ⟨S.eC ⟨β, a⟩, Finset.mem_univ _, by rw [Equiv.symm_apply_apply]⟩)`.
+A detailed English derivation is pending.
 -/
 theorem cmpt_mem (S : StepIn M i hi G) (β : S.Ch) (a : S.cmpt β) : β ∈ chs S :=
   Finset.mem_union_right _ (Finset.mem_image.2 ⟨S.eC ⟨β, a⟩, Finset.mem_univ _, by rw [Equiv.symm_apply_apply]⟩)
@@ -170,7 +170,7 @@ def eF (S : StepIn M i hi G) : M.Fi i ≃ₗ[ℂ] ((β : chs S) → FiB S β.1) 
     simp
 
 /- English proof (translation)
-Use `fin_Fi M i` as an intermediate fact. Establish `: Module.Finite ℂ ((β : chs S) → FiB S β.1)` using `Module.Finite.equiv (eF S)`. Establish `: ∀ β : chs S, Module.Finite ℂ (FiB S β.1)` using `fun β => fin_fac (R := ℂ) (φ := fun β : chs S => FiB S β.1) β`. Rewrite using `[(eF S).finrank_eq, Module.finrank_pi_fintype, Finset.sum_coe_sort (chs S) fun β => finrank ℂ (FiB S β)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_Fi (S : StepIn M i hi G) : finrank ℂ (M.Fi i) = ∑ β ∈ chs S, finrank ℂ (FiB S β) := by
   classical
@@ -183,7 +183,7 @@ def ChartRank (S : StepIn M i hi G) : Prop :=
   ∀ β, finrank ℂ (FiB S β) = finrank G.O (gatCh G fun a : S.cmpt β => S.eC ⟨β, a⟩).M
 
 /- English proof (translation)
-Rewrite using `[card_eq_finrank, finrank_Fi S, finrank_M_sigma G S.cmpt S.eC (chs S) (cmpt_mem S)]`. Conclude with `Finset.sum_congr rfl fun β _ => hR β`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_of [IsFractionRing G.O G.Kf] [Module.Finite G.O G.M] (S : StepIn M i hi G) (hR : ChartRank S) :
     Fintype.card (M.lat i).ι = finrank G.O G.M := by
@@ -191,9 +191,9 @@ theorem card_of [IsFractionRing G.O G.Kf] [Module.Finite G.O G.M] (S : StepIn M 
   exact Finset.sum_congr rfl fun β _ => hR β
 
 /- English proof (translation)
-Establish `hli` using `StepIn.cmpJ_li (S := S) e H hS`. Establish `hmem` using `fun a => StepIn.cmpJ_mem_span (S := S) e H hS w hw hloc ((M.lat i).b a)`. Establish `hli' : LinearIndependent G.Kf fun a => (⟨_, hmem a⟩ : Submodule.span G.Kf (G.M : Set G.Fn))` using `LinearIndependent.of_comp (Submodule.span G.Kf (G.M : Set G.Fn)).subtype hli`. Establish `h1` using `hli'.cardinal_le_rank`. Establish `h2` using `Formalism.L2.G.finrank_span_le (Kf := G.Kf) G.M`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Cardinal.mk_fintype]`. Conclude with `h1.trans h2` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_le [IsFractionRing G.O G.Kf] [Module.Finite G.O G.M] (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf)
     (H : ∀ β, S.Core e β) (hS : BlockRationalityField) (w : D.what₂.places.Pl) (hw : S.okW w) (hloc : S.ValIntJ e w) :
@@ -211,7 +211,7 @@ def ChartRankGe (S : StepIn M i hi G) : Prop :=
   ∀ β, finrank G.O (gatCh G fun a : S.cmpt β => S.eC ⟨β, a⟩).M ≤ finrank ℂ (FiB S β)
 
 /- English proof (translation)
-Rewrite using `[card_eq_finrank, finrank_Fi S, finrank_M_sigma G S.cmpt S.eC (chs S) (cmpt_mem S)]`. Conclude with `Finset.sum_le_sum fun β _ => hR β`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_M_le [IsFractionRing G.O G.Kf] [Module.Finite G.O G.M] (S : StepIn M i hi G) (hR : ChartRankGe S) :
     finrank G.O G.M ≤ Fintype.card (M.lat i).ι := by
@@ -219,7 +219,7 @@ theorem finrank_M_le [IsFractionRing G.O G.Kf] [Module.Finite G.O G.M] (S : Step
   exact Finset.sum_le_sum fun β _ => hR β
 
 /- English proof (translation)
-The claim follows from `le_antisymm (card_le S e H hS w hw hloc) (finrank_M_le S hR)`.
+A detailed English derivation is pending.
 -/
 theorem card_of_ge [IsFractionRing G.O G.Kf] [Module.Finite G.O G.M] (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf)
     (H : ∀ β, S.Core e β) (hS : BlockRationalityField) (w : D.what₂.places.Pl) (hw : S.okW w) (hloc : S.ValIntJ e w) (hR : ChartRankGe S) :
@@ -232,7 +232,7 @@ variable {D : D7} {Tw : TwForms D} {u : D.what₂.Word} {μ : D.what₂.Tup} {w 
   {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : Fills (D.gat u w h)} {Lv : Levels Fl}
 
 /- English proof (translation)
-Establish `: IsFractionRing (gatJ Lv (j + 1)).O (gatJ Lv (j + 1)).Kf` using `((D.gat u w h).P.setting (plc Gt u w h)).frac_O`. Establish `: Module.Finite (gatJ Lv (j + 1)).O (gatJ Lv (j + 1)).M` using `mfin_of Gt u w h Lv (j + 1) (hfin j hj)`. Conclude with `card_of (I.at' j hj).st (hR j hj)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_of_charts (I : CmpJIn Tw u μ w h Lv) (Gt : GatTies D) (hfin : ∀ j, j + 1 ≤ D.R.m → (gatJ Lv (j + 1)).FinClasses)
     (hR : ∀ j hj, ChartRank (I.at' j hj).st) (j : ℕ) (hj : j + 1 ≤ D.R.m) :
@@ -242,7 +242,7 @@ theorem card_of_charts (I : CmpJIn Tw u μ w h Lv) (Gt : GatTies D) (hfin : ∀ 
   exact card_of (I.at' j hj).st (hR j hj)
 
 /- English proof (translation)
-Establish `: IsFractionRing (gatJ Lv (j + 1)).O (gatJ Lv (j + 1)).Kf` using `((D.gat u w h).P.setting (plc Gt u w h)).frac_O`. Establish `: Module.Finite (gatJ Lv (j + 1)).O (gatJ Lv (j + 1)).M` using `mfin_of Gt u w h Lv (j + 1) (hfin j hj)`. Conclude with `card_of_ge (I.at' j hj).st (c.embW u w h) (core j hj) hS w (ok j hj) (StepIn.valIntJ_of (S := (I.at' j hj).st) (c.embW u w h) w (twUnit j hj) (valIntN j hj)) (hR j hj)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_of_charts_ge (c : LatCmp D) (I : CmpJIn Tw u μ w h Lv) (Gt : GatTies D) (hS : BlockRationalityField)
     (core : ∀ j hj β, (I.at' j hj).st.Core (c.embW u w h) β) (ok : ∀ j hj, (I.at' j hj).st.okW w)
@@ -256,7 +256,7 @@ theorem card_of_charts_ge (c : LatCmp D) (I : CmpJIn Tw u μ w h Lv) (Gt : GatTi
     (StepIn.valIntJ_of (S := (I.at' j hj).st) (c.embW u w h) w (twUnit j hj) (valIntN j hj)) (hR j hj)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨core, ok, twUnit, valIntN, iwF, hfin, card_of_charts_ge c I Gt hS core ok twUnit valIntN hfin hR⟩`.
+Supply the required witnesses or components.
 -/
 theorem cmpJHyp_of_ge (c : LatCmp D) {I : CmpJIn Tw u μ w h Lv} (Gt : GatTies D) (hS : BlockRationalityField)
     (core : ∀ j hj β, (I.at' j hj).st.Core (c.embW u w h) β) (ok : ∀ j hj, (I.at' j hj).st.okW w)

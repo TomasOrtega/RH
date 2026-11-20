@@ -16,28 +16,28 @@ def Wop (x : Fin k → A) : Module.End A (Finset (Fin k) → A) := ∑ a, x a �
 def Iop (y : Fin k → A) : Module.End A (Finset (Fin k) → A) := ∑ a, y a • exteriorContraction A a
 
 /- English proof (translation)
-Rewrite using `[right_wedge_eq_sum]`. Simplify using `[Wop]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma Wop_apply (x : Fin k → A) (K : Finset (Fin k) → A) : Wop x K = wedgeR x K := by
   rw [right_wedge_eq_sum]
   simp [Wop]
 
 /- English proof (translation)
-Rewrite using `[right_contraction_eq_sum]`. Simplify using `[Iop]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma Iop_apply (y : Fin k → A) (K : Finset (Fin k) → A) : Iop y K = contrR y K := by
   rw [right_contraction_eq_sum]
   simp [Iop]
 
 /- English proof (translation)
-Use `LinearMap.ext fun K => funext fun J => ?_` and prove the remaining obligations. Simplify using `[Module.End.mul_apply, exterior_wedge_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma exterior_wedge_sq_zero (a : Fin k) : exteriorWedge A a * exteriorWedge A a = 0 := by
   refine LinearMap.ext fun K => funext fun J => ?_
   simp [Module.End.mul_apply, exterior_wedge_apply]
 
 /- English proof (translation)
-Unfold `Wop`. Rewrite using `[Finset.sum_mul]`. Simplify using `only [Finset.mul_sum, smul_mul_smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma Wop_mul (x y : Fin k → A) : Wop x * Wop y = ∑ a, ∑ b, (x a * y b) • (exteriorWedge A a * exteriorWedge A b) := by
   unfold Wop
@@ -45,7 +45,7 @@ lemma Wop_mul (x y : Fin k → A) : Wop x * Wop y = ∑ a, ∑ b, (x a * y b) �
   simp only [Finset.mul_sum, smul_mul_smul_comm]
 
 /- English proof (translation)
-Rewrite using `[Wop_mul, Wop_mul, ← Finset.sum_neg_distrib, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[wedge_anticommute, smul_neg, mul_comm (x b) (y a)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma Wop_anti (x y : Fin k → A) : Wop x * Wop y = -(Wop y * Wop x) := by
   rw [Wop_mul, Wop_mul, ← Finset.sum_neg_distrib, Finset.sum_comm]
@@ -55,11 +55,11 @@ lemma Wop_anti (x y : Fin k → A) : Wop x * Wop y = -(Wop y * Wop x) := by
   rw [wedge_anticommute, smul_neg, mul_comm (x b) (y a)]
 
 /- English proof (translation)
-Rewrite using `[Wop_mul, ← Fintype.sum_prod_type']`. Use `Finset.sum_involution (fun p _ => p.swap) ?_ ?_ (fun _ _ => Finset.mem_univ _) (fun p _ => Prod.swap_swap p)` and prove the remaining obligations. Introduce `p _`. Simplify using `only [Prod.fst_swap, Prod.snd_swap]`. Rewrite using `[wedge_anticommute p.2 p.1, smul_neg, mul_comm (x p.2) (x p.1), add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `p _ hne heq`. Apply `hne` to reduce the goal to its premises. Establish `h12 : p.1 = p.2`. Use `congrArg Prod.fst heq` as an intermediate fact. Simplify using `using this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[h12, exterior_wedge_sq_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma Wop_sq (x : Fin k → A) : Wop x * Wop x = 0 := by
   rw [Wop_mul, ← Fintype.sum_prod_type']
@@ -76,11 +76,11 @@ lemma Wop_sq (x : Fin k → A) : Wop x * Wop x = 0 := by
     rw [h12, exterior_wedge_sq_zero, smul_zero]
 
 /- English proof (translation)
-Establish `h1 : Wop x * Iop y = ∑ a, ∑ b, (x a * y b) • (exteriorWedge A a * exteriorContraction A b)`. Unfold `Wop Iop`. Rewrite using `[Finset.sum_mul]`. Simplify using `only [Finset.mul_sum, smul_mul_smul_comm]`. Establish `h2 : Iop y * Wop x = ∑ a, ∑ b, (x a * y b) • (exteriorContraction A b * exteriorWedge A a)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `Wop Iop`. Rewrite using `[Finset.sum_mul]`. Simplify using `only [Finset.mul_sum, smul_mul_smul_comm]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by rw [mul_comm (y b)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, ← Finset.sum_add_distrib]`. Repeatedly rewrite using `[← Finset.sum_add_distrib, ← smul_add, wedge_contraction_anticommute]`. Simplify using `only [smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_smul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma WI_rel (x y : Fin k → A) : Wop x * Iop y + Iop y * Wop x = (∑ a, x a * y a) • 1 := by
   have h1 : Wop x * Iop y = ∑ a, ∑ b, (x a * y b) • (exteriorWedge A a * exteriorContraction A b) := by
@@ -98,7 +98,7 @@ lemma WI_rel (x y : Fin k → A) : Wop x * Iop y + Iop y * Wop x = (∑ a, x a *
   simp only [smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_smul]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f => f v) (WI_rel x y)`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, LinearMap.smul_apply, Module.End.one_apply] at h`. Rewrite using `[← h]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma IW_apply (x y : Fin k → A) (v : Finset (Fin k) → A) :
     Iop y (Wop x v) = (∑ a, x a * y a) • v - Wop x (Iop y v) := by
@@ -108,7 +108,7 @@ lemma IW_apply (x y : Fin k → A) (v : Finset (Fin k) → A) :
   abel
 
 /- English proof (translation)
-Simplify using `only [Wop, Matrix.vecMul, dotProduct, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Wop_vecMul (x : Fin k → A) (m : Matrix (Fin k) (Fin k) A) :
     Wop (Matrix.vecMul x m) = ∑ a, x a • Wop (m a) := by
@@ -116,13 +116,13 @@ lemma Wop_vecMul (x : Fin k → A) (m : Matrix (Fin k) (Fin k) A) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `[Wop, Pi.single_apply, ite_smul]`.
+Simplify using the standard rewrite rules.
 -/
 lemma w_eq_Wop (b : Fin k) : exteriorWedge A b = Wop (Pi.single b 1) := by
   simp [Wop, Pi.single_apply, ite_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[Matrix.vecMul, dotProduct, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma single_vecMul' (b : Fin k) (m : Matrix (Fin k) (Fin k) A) : Matrix.vecMul (Pi.single b 1) m = m b := by
   funext j
@@ -134,17 +134,15 @@ termination_by I.card
 decreasing_by exact Finset.card_erase_lt_of_mem (Finset.max'_mem _ _)
 
 /- English proof (translation)
-Rewrite using `[img, dif_neg Finset.not_nonempty_empty]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma img_empty (m : Matrix (Fin k) (Fin k) A) : img m ∅ = extOne := by
   rw [img, dif_neg Finset.not_nonempty_empty]
 
 /- English proof (translation)
-Establish `hbI : b ∉ I` using `fun h => lt_irrefl b (hb b h)`. Establish `hmax : (insert b I).max' (Finset.insert_nonempty b I) = b`. Apply `le_antisymm` to reduce the goal to its premises. Apply `Finset.max'_le` to reduce the goal to its premises. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases. Conclude with `le_rfl`. Conclude with `(hb y hy).le`. Conclude with `Finset.le_max' _ _ (Finset.mem_insert_self b I)`. Rewrite using `[img, dif_pos (Finset.insert_nonempty b I)]`.
-
-Simplify using `only [hmax, Finset.erase_insert hbI]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma img_insert_max (m : Matrix (Fin k) (Fin k) A) (b : Fin k) (I : Finset (Fin k)) (hb : ∀ x ∈ I, x < b) :
     img m (insert b I) = wedgeR (m b) (img m I) := by
@@ -161,9 +159,9 @@ lemma img_insert_max (m : Matrix (Fin k) (Fin k) A) (b : Fin k) (I : Finset (Fin
   simp only [hmax, Finset.erase_insert hbI]
 
 /- English proof (translation)
-Unfold `exteriorSign`. Rewrite using `[Finset.filter_eq_empty_iff.2]`. Simplify using the standard rewrite rules. Introduce `j hj`. Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `lt_irrefl _`. Conclude with `not_lt.2 (hb j hj).le`.
+A detailed English derivation is pending.
 -/
 lemma sg_top (a : Fin k) (I : Finset (Fin k)) (hb : ∀ x ∈ I, x < a) : exteriorSign A (insert a I) a = 1 := by
   unfold exteriorSign
@@ -175,21 +173,19 @@ lemma sg_top (a : Fin k) (I : Finset (Fin k)) (hb : ∀ x ∈ I, x < a) : exteri
     · exact not_lt.2 (hb j hj).le
 
 /- English proof (translation)
-Proceed by induction on `I using Finset.induction_on_max with`. Consider the case `empty`. Introduce `a`. Use `⟨fun h => by simp at h, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[sg_top a ∅ (by simp), one_smul, img_insert_max m a ∅ (by simp), Wop_apply]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `insert b s hb ih`. Establish `hbs : b ∉ s` using `fun h => lt_irrefl b (hb b h)`. Establish `himg : img m (insert b s) = Wop (m b) (img m s)`. Rewrite using `[img_insert_max m b s hb, Wop_apply]`. Introduce `a`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hanti : ∀ v, Wop (m a) (Wop (m b) v) = -(Wop (m b) (Wop (m a) v))` using `fun v => by`. Establish `h` using `congrArg (fun f => f v) (Wop_anti (m a) (m b))`. Simplify `h` using `only [Module.End.mul_apply, LinearMap.neg_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `ha`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Finset.mem_insert.1 ha with rfl | ha'` into its components or cases. Rewrite using `[himg]`. Establish `h` using `congrArg (fun f => f (img m s)) (Wop_sq (m a))`. Simplify `h` using `only [Module.End.mul_apply, LinearMap.zero_apply]`. Rewrite using `[himg, hanti, (ih a).1 ha', map_zero, neg_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Introduce `ha`. Establish `hab : a ≠ b` using `fun h => ha (h ▸ Finset.mem_insert_self b s)`. Establish `has : a ∉ s` using `fun h => ha (Finset.mem_insert_of_mem h)`. Break down `lt_or_gt_of_ne hab with hlt | hgt` into its components or cases. Establish `hins : ∀ x ∈ insert a s, x < b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Introduce `x hx`. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `hlt`. Conclude with `hb x hx`. Establish `hba : b ∉ insert a s` using `by simp [Ne.symm hab, hbs]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[himg, hanti, (ih a).2 has, map_smul, Wop_apply, ← img_insert_max m b (insert a s) hins, Finset.insert_comm a b s, exterior_sign_insert b a (insert a s), if_pos ⟨hba, hlt⟩, neg_one_mul, neg_smul]`. Establish `hins : ∀ x ∈ insert b s, x < a`. Introduce `x hx`. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `hgt`.
-
-Conclude with `(hb x hx).trans hgt`. Rewrite using `[sg_top a (insert b s) hins, one_smul, img_insert_max m a (insert b s) hins, Wop_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma img_wedge (m : Matrix (Fin k) (Fin k) A) (I : Finset (Fin k)) :
     ∀ a, (a ∈ I → Wop (m a) (img m I) = 0) ∧
@@ -237,7 +233,7 @@ def LamL (m : Matrix (Fin k) (Fin k) A) : Module.End A (Finset (Fin k) → A) :=
   ∑ I, (LinearMap.proj I : (Finset (Fin k) → A) →ₗ[A] A).smulRight (img m I)
 
 /- English proof (translation)
-Simplify using `[LamL]`.
+Simplify using the standard rewrite rules.
 -/
 lemma LamL_apply (m : Matrix (Fin k) (Fin k) A) (K : Finset (Fin k) → A) : LamL m K = ∑ I, K I • img m I := by
   simp [LamL]
@@ -245,7 +241,7 @@ lemma LamL_apply (m : Matrix (Fin k) (Fin k) A) (K : Finset (Fin k) → A) : Lam
 def abelian₂ (m : Matrix (Fin k) (Fin k) A) : Matrix (Finset (Fin k)) (Finset (Fin k)) A := fun I J => img m I J
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Rewrite using `[LamL_apply]`. Simplify using `[Matrix.vecMul, dotProduct, abelian₂, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma vecMul_Lam (K : Finset (Fin k) → A) (m : Matrix (Fin k) (Fin k) A) : Matrix.vecMul K (abelian₂ m) = LamL m K := by
   funext J
@@ -253,7 +249,7 @@ lemma vecMul_Lam (K : Finset (Fin k) → A) (m : Matrix (Fin k) (Fin k) A) : Mat
   simp [Matrix.vecMul, dotProduct, abelian₂, Finset.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[LamL_apply]`. Simplify using `[Pi.single_apply, ite_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma LamL_single (m : Matrix (Fin k) (Fin k) A) (I : Finset (Fin k)) (c : A) :
     LamL m (Pi.single I c) = c • img m I := by
@@ -261,13 +257,13 @@ lemma LamL_single (m : Matrix (Fin k) (Fin k) A) (I : Finset (Fin k)) (c : A) :
   simp [Pi.single_apply, ite_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Rewrite using `[exterior_wedge_apply]`. Distinguish the cases in `haI : a ∈ I`. Rewrite using `[if_pos haI, Pi.zero_apply] split_ifs with haJ`. Rewrite using `[Pi.single_apply, if_neg (fun h => by rw [← h] at haI; simp at haI), mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[if_neg haI]`. Distinguish the cases in `haJ : a ∈ J`. Rewrite using `[if_pos haJ]`. Distinguish the cases in `hJ : J = insert a I`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hJ` using the available equality. Rewrite using `[Finset.erase_insert haI]`. Simplify using `[Pi.single_apply]`. Establish `hne : J.erase a ≠ I` using `fun h => hJ (by rw [← h, Finset.insert_erase haJ])`. Rewrite using `[Pi.single_apply, if_neg hne, Pi.single_apply, if_neg hJ, mul_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg haJ, Pi.single_apply, if_neg (fun (h : J = insert a I) => haJ (h ▸ Finset.mem_insert_self a I))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma w_single (a : Fin k) (I : Finset (Fin k)) (c : A) :
     exteriorWedge A a (Pi.single I c) = if a ∈ I then 0 else Pi.single (insert a I) (exteriorSign A (insert a I) a * c) := by
@@ -290,7 +286,7 @@ lemma w_single (a : Fin k) (I : Finset (Fin k)) (c : A) :
     · rw [if_neg haJ, Pi.single_apply, if_neg (fun (h : J = insert a I) => haJ (h ▸ Finset.mem_insert_self a I))]
 
 /- English proof (translation)
-Rewrite using `[w_single]`. Use `split_ifs with ha`. Rewrite using `[map_zero, (img_wedge m I a).1 ha, smul_zero]`. Rewrite using `[LamL_single, (img_wedge m I a).2 ha, smul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma LamL_w_single (m : Matrix (Fin k) (Fin k) A) (a : Fin k) (I : Finset (Fin k)) (c : A) :
     LamL m (exteriorWedge A a (Pi.single I c)) = c • Wop (m a) (img m I) := by
@@ -300,9 +296,9 @@ lemma LamL_w_single (m : Matrix (Fin k) (Fin k) A) (a : Fin k) (I : Finset (Fin 
   · rw [LamL_single, (img_wedge m I a).2 ha, smul_smul, mul_comm]
 
 /- English proof (translation)
-Apply `LinearMap.pi_ext` to reduce the goal to its premises. Introduce `I c`. Simplify using `only [Module.End.mul_apply]`. Establish `e : Wop x (Pi.single I c) = ∑ a, x a • exteriorWedge A a (Pi.single I c)` using `by simp [Wop]`. Rewrite using `[e, map_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, LamL_w_single]`. Rewrite using `[LamL_single, map_smul, Wop_vecMul]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => smul_comm _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma LamL_Wop (m : Matrix (Fin k) (Fin k) A) (x : Fin k → A) :
     LamL m * Wop x = Wop (Matrix.vecMul x m) * LamL m := by
@@ -317,7 +313,7 @@ lemma LamL_Wop (m : Matrix (Fin k) (Fin k) A) (x : Fin k → A) :
   exact Finset.sum_congr rfl fun a _ => smul_comm _ _ _
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f => f v) (LamL_Wop m x)`. Simplify `h` using `only [Module.End.mul_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma LamL_Wop_apply (m : Matrix (Fin k) (Fin k) A) (x : Fin k → A) (v : Finset (Fin k) → A) :
     LamL m (Wop x v) = Wop (Matrix.vecMul x m) (LamL m v) := by
@@ -325,30 +321,30 @@ lemma LamL_Wop_apply (m : Matrix (Fin k) (Fin k) A) (x : Fin k → A) (v : Finse
   simpa only [Module.End.mul_apply] using h
 
 /- English proof (translation)
-Rewrite using `[vecMul_Lam, vecMul_Lam, ← Wop_apply, ← Wop_apply, LamL_Wop_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Lam_wedge (m : Matrix (Fin k) (Fin k) A) (x : Fin k → A) (K : Finset (Fin k) → A) :
     Matrix.vecMul (wedgeR x K) (abelian₂ m) = wedgeR (Matrix.vecMul x m) (Matrix.vecMul K (abelian₂ m)) := by
   rw [vecMul_Lam, vecMul_Lam, ← Wop_apply, ← Wop_apply, LamL_Wop_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Simplify using `[extOne, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma extOne_eq : (extOne : Finset (Fin k) → A) = Pi.single ∅ 1 := by
   funext J
   simp [extOne, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[← w_eq_Wop, w_single, if_neg (fun h => lt_irrefl b (hb b h)), sg_top b I hb, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma single_insert_max (b : Fin k) (I : Finset (Fin k)) (hb : ∀ x ∈ I, x < b) (c : A) :
     (Pi.single (insert b I) c : Finset (Fin k) → A) = Wop (Pi.single b 1) (Pi.single I c) := by
   rw [← w_eq_Wop, w_single, if_neg (fun h => lt_irrefl b (hb b h)), sg_top b I hb, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `I using Finset.induction_on_max with`. Consider the case `empty => rw [img_empty, extOne_eq]`. Consider the case `insert b s hb ih`. Establish `hrow : (1 : Matrix (Fin k) (Fin k) A) b = Pi.single b 1`. Use function extensionality and compare the values at `j`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`. Rewrite using `[img_insert_max 1 b s hb, ih, ← Wop_apply, hrow, ← single_insert_max b s hb 1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma img_one (I : Finset (Fin k)) : img (1 : Matrix (Fin k) (Fin k) A) I = Pi.single I 1 := by
   induction I using Finset.induction_on_max with
@@ -360,16 +356,16 @@ lemma img_one (I : Finset (Fin k)) : img (1 : Matrix (Fin k) (Fin k) A) I = Pi.s
     rw [img_insert_max 1 b s hb, ih, ← Wop_apply, hrow, ← single_insert_max b s hb 1]
 
 /- English proof (translation)
-Use extensionality with `I J`. Simplify using `[abelian₂, img_one, Pi.single_apply, Matrix.one_apply, eq_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Lam_one : abelian₂ (1 : Matrix (Fin k) (Fin k) A) = 1 := by
   ext I J
   simp [abelian₂, img_one, Pi.single_apply, Matrix.one_apply, eq_comm]
 
 /- English proof (translation)
-Proceed by induction on `I using Finset.induction_on_max with`. Consider the case `empty`. Establish `hL : LamL m' (extOne : Finset (Fin k) → A) = extOne`. Rewrite using `[extOne_eq, LamL_single, one_smul, img_empty, extOne_eq]`. Rewrite using `[img_empty, img_empty, hL]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `insert b s hb ih`. Establish `hrow : (m * m') b = Matrix.vecMul (m b) m'`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.mul_apply, Matrix.vecMul, dotProduct]`. Rewrite using `[img_insert_max (m * m') b s hb, ih, img_insert_max m b s hb, ← Wop_apply, ← Wop_apply, LamL_Wop_apply, hrow]`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 lemma img_mul (m m' : Matrix (Fin k) (Fin k) A) (I : Finset (Fin k)) : img (m * m') I = LamL m' (img m I) := by
   induction I using Finset.induction_on_max with
@@ -385,7 +381,7 @@ lemma img_mul (m m' : Matrix (Fin k) (Fin k) A) (I : Finset (Fin k)) : img (m * 
       LamL_Wop_apply, hrow]
 
 /- English proof (translation)
-Use extensionality with `I J`. Rewrite using `[Matrix.mul_apply]`. Use `show img (m * m') I J = _`. Rewrite using `[img_mul, ← vecMul_Lam]`. Simplify using `[Matrix.vecMul, dotProduct, abelian₂]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Lam_mul (m m' : Matrix (Fin k) (Fin k) A) : abelian₂ (m * m') = abelian₂ m * abelian₂ m' := by
   ext I J
@@ -395,7 +391,7 @@ theorem Lam_mul (m m' : Matrix (Fin k) (Fin k) A) : abelian₂ (m * m') = abelia
   simp [Matrix.vecMul, dotProduct, abelian₂]
 
 /- English proof (translation)
-Rewrite using `[Iop_apply]`. Use function extensionality and compare the values at `J`. Simplify using `[contrR, extOne]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma Iop_extOne (y : Fin k → A) : Iop y (extOne : Finset (Fin k) → A) = 0 := by
   rw [Iop_apply]
@@ -403,13 +399,13 @@ lemma Iop_extOne (y : Fin k → A) : Iop y (extOne : Finset (Fin k) → A) = 0 :
   simp [contrR, extOne]
 
 /- English proof (translation)
-Proceed by induction on `I using Finset.induction_on_max with`. Consider the case `empty`. Introduce `c`. Establish `e : (Pi.single ∅ c : Finset (Fin k) → A) = c • extOne`. Use function extensionality and compare the values at `J`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Pi.single_apply, extOne]`. Establish `hL : LamL m (extOne : Finset (Fin k) → A) = extOne`. Rewrite using `[extOne_eq, LamL_single, one_smul, img_empty, extOne_eq]`. Simplify using `only [e, map_smul, Iop_extOne, smul_zero, map_zero, hL]`. Consider the case `insert b s hb ih`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `c`. Establish `hrow : Matrix.vecMul (Pi.single b 1) m = m b` using `single_vecMul' b m`. Establish `hyb : ∑ a, (Pi.single b (1 : A) : Fin k → A) a * y a = y b` using `by simp [Pi.single_apply]`. Establish `hmy : ∑ a, m b a * Matrix.mulVec m' y a = y b`. Establish `h2 : Matrix.mulVec m (Matrix.mulVec m' y) = y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, h, Matrix.one_mulVec]`. Use `congrFun h2 b` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct]`. Rewrite using `[single_insert_max b s hb c, IW_apply, hyb, map_sub, map_smul, LamL_Wop_apply, hrow, ih c, LamL_Wop_apply, hrow, IW_apply, hmy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 lemma LamL_Iop_single (m m' : Matrix (Fin k) (Fin k) A) (h : m * m' = 1) (y : Fin k → A) (I : Finset (Fin k)) :
     ∀ c : A, LamL m (Iop y (Pi.single I c)) = Iop (Matrix.mulVec m' y) (LamL m (Pi.single I c)) := by
@@ -435,7 +431,7 @@ lemma LamL_Iop_single (m m' : Matrix (Fin k) (Fin k) A) (h : m * m' = 1) (y : Fi
       LamL_Wop_apply, hrow, IW_apply, hmy]
 
 /- English proof (translation)
-Rewrite using `[vecMul_Lam, vecMul_Lam, ← Iop_apply, ← Iop_apply]`. Establish `hK : K = ∑ I, Pi.single I (K I)` using `(Finset.univ_sum_single K).symm`. Rewrite using `[hK]`. Simplify using `only [map_sum]`. Conclude with `Finset.sum_congr rfl fun I _ => LamL_Iop_single m m' h y I (K I)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Lam_contr (m m' : Matrix (Fin k) (Fin k) A) (h : m * m' = 1) (y : Fin k → A) (K : Finset (Fin k) → A) :
     Matrix.vecMul (contrR y K) (abelian₂ m) = contrR (Matrix.mulVec m' y) (Matrix.vecMul K (abelian₂ m)) := by
@@ -446,27 +442,27 @@ theorem Lam_contr (m m' : Matrix (Fin k) (Fin k) A) (h : m * m' = 1) (y : Fin k 
   exact Finset.sum_congr rfl fun I _ => LamL_Iop_single m m' h y I (K I)
 
 /- English proof (translation)
-Simplify using `[abelian₂, img_empty, extOne, hJ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Lam_empty (m : Matrix (Fin k) (Fin k) A) (J : Finset (Fin k)) (hJ : J ≠ ∅) : abelian₂ m ∅ J = 0 := by
   simp [abelian₂, img_empty, extOne, hJ]
 
 /- English proof (translation)
-Simplify using `[abelian₂, img_empty, extOne]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Lam_empty_self (m : Matrix (Fin k) (Fin k) A) : abelian₂ m ∅ ∅ = 1 := by
   simp [abelian₂, img_empty, extOne]
 
 /- English proof (translation)
-Establish `key : ∀ (I J : Finset (Fin k)), J.card ≠ I.card → img m I J = 0`. Introduce `I`. Proceed by induction on `I using Finset.induction_on_max with`. Consider the case `empty`. Introduce `J hJ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[img_empty]`. Simplify using `only [extOne]`. Rewrite using `[if_neg]`. Introduce `h`. Apply `hJ` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[h]`. Consider the case `insert b s hb ih`. Introduce `J hJ`. Establish `hbs : b ∉ s` using `fun h => lt_irrefl b (hb b h)`. Rewrite using `[img_insert_max m b s hb]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [wedgeR]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a ha`. Rewrite using `[ih (J.erase a) ?_, mul_zero]`. Rewrite using `[Finset.card_erase_of_mem ha]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hJ` using `[Finset.card_insert_eq_ite, if_neg hbs]`. Use `Finset.card_pos.2 ⟨a, ha⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `key I J (Ne.symm h)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem Lam_card (m : Matrix (Fin k) (Fin k) A) (I J : Finset (Fin k)) (h : I.card ≠ J.card) : abelian₂ m I J = 0 := by
   have key : ∀ (I J : Finset (Fin k)), J.card ≠ I.card → img m I J = 0 := by
@@ -495,11 +491,11 @@ theorem Lam_card (m : Matrix (Fin k) (Fin k) A) (I J : Finset (Fin k)) (h : I.ca
   exact key I J (Ne.symm h)
 
 /- English proof (translation)
-Establish `key : ∀ (I J : Finset (Fin k)), φ (img m I J) = img (m.map φ) I J`. Introduce `I`. Proceed by induction on `I using Finset.induction_on_max with`. Consider the case `empty`. Introduce `J`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [img_empty, extOne]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `insert b s hb ih`. Introduce `J`. Simplify using `only [img_insert_max m b s hb, img_insert_max (m.map φ) b s hb, wedgeR, map_sum, map_mul, map_pow, map_neg, map_one, ih, Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use extensionality with `I J`. Simplify using `[Matrix.map_apply, abelian₂, key]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Lam_map {A' : Type*} [CommRing A'] (φ : A →+* A') (m : Matrix (Fin k) (Fin k) A) :
     (abelian₂ m).map φ = abelian₂ (m.map φ) := by

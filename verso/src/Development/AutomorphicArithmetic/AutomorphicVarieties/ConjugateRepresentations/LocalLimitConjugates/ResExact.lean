@@ -9,11 +9,11 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha n e he U Ξ r c hc q ω hω hd`. Take `⟨k0, k1⟩` from `kugaSm E a n e he Ξ r c hc`. Consider the cases of `q with`. Consider the case `zero => exact ⟨k0 ω hω.equiv hd, fun _ _ => trivial⟩`. Consider the case `succ q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `hk` using `k1 q ω hω.equiv hd`. Take `⟨d1, d2⟩` from `delLev E a n e he U Ξ r q ω`. Take `⟨l1, l2, -⟩` from `levLin E a U Ξ q`. Establish `hl` using `d1 hω`. Use `⟨⟨(-1 : ℂ) • del (smAdj Ξ r) e ω + (0 : ℂ) • del (smAdj Ξ r) e ω, l1 _ _ _ _ hl hl, ?_⟩, fun hs h0 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[l2, hk, zero_smul, add_zero]`. Conclude with `AlternatingMap.ext fun X => neg_one_smul ℂ _`. Rewrite `h0` using `[hk, neg_eq_zero]`. Conclude with `(sqOrth E a ha n e he Ξ r q).2 ω hs (d2 hs) h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.resExact :
     UpperTheory.V.Cj.H.ResExact := by

@@ -20,23 +20,23 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨e, -, -, h3, h4⟩` from `GroupAverageFixedPoints.GlobalTheory.CompanionTheory.LatSpan.stage1 (w := w) ht j S hks rho chi eF hact`. Establish `hre : ∀ x, rd (fi.e x) = e x`. Introduce `x`. Take `⟨n, b, hbK, -, -, -, hsp⟩` from `hks`. Establish `hx : x ∈ Submodule.span D.what₂.LL (Set.range b)` using `hsp ▸ Submodule.mem_top`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun D.what₂.LL).1 hx`. Establish `h5` using `h3 n a (fun k => ⟨b k, hbK k⟩)`. Use `Eq.trans ?_ h5.symm` and prove the remaining obligations. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, map_smulₛₗ]`. Rewrite using `[hrd ⟨b k, hbK k⟩, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Take `⟨x, rfl⟩` from `fi.e.surjective y`. Use `letI : Fintype S.G := Fintype.ofEquiv Gp fi.eG.symm.toEquiv`. Use `letI : Fintype (G0g D.nd) := Fintype.ofEquiv Gp I.toEquiv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Establish `hL : A'.eOp eC (fi.e x) = fi.e (∑ s : S.G, eC (fi.eG s) • ((((S.A j).chi s)⁻¹ : D.what₂.LLˣ).val • (S.A j).ρ s x))`. Rewrite using `[map_sum, FormsL.eOp, LinearMap.sum_apply]`. Use `(Fintype.sum_equiv fi.eG.toEquiv _ _ fun s => ?_).symm` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, fi.rho]`. Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, LinearMap.smul_apply, smul_smul, fi.chi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hR : ∀ t : FractionRing (c.Oe w) ⊗[D.ntw.O (c.twI w)] D.nexp.Fm (c.twI w) j (c.sd w), GlobalTheory.IndefiniteRowSideFullHecke.ToricLatticeDenominators.eExt D.nexp (c.twI w) j (c.sd w) (c.Oe w) t = ∑ s : S.G, algebraMap (FractionRing (D.ntw.O (c.twI w))) (FractionRing (c.Oe w)) (( …`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add u v hu hv => rw [map_add, hu, hv, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [map_add, smul_add]`. Consider the case `tmul a m`. Establish `h1 : GlobalTheory.IndefiniteRowSideFullHecke.ToricLatticeDenominators.eExt D.nexp (c.twI w) j (c.sd w) (c.Oe w) (a ⊗ₜ m) = a ⊗ₜ[D.ntw.O (c.twI w)] GlobalTheory.IndefiniteRowSideFullHecke.ToricLatticeDenominators.eOp D.nexp (c.twI w) j (c.sd w) m` using `rfl`. Establish `h2 : GlobalTheory.IndefiniteRowSideFullHecke.ToricLatticeDenominators.eOp D.nexp (c.twI w) j (c.sd w) m = ∑ s : S.G, (D.nexp.eAlg (c.twI w) (c.sd w)).coeff (S.eG s) • D.nexp.actG (c.twI w) j (c.sd w) (S.eG s) m`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ToricLatticeDenominators.eOp`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[GroupAverageFixedPoints.GlobalTheory.CompanionTheory.LatSpan.lift_eq_sum, LinearMap.sum_apply]`. Conclude with `(Fintype.sum_equiv S.eG.toEquiv _ _ fun s => rfl).symm`. Rewrite using `[h1, h2, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[GroupAverageFixedPoints.GlobalTheory.CompanionTheory.LatSpan.tmul_smul_frac, GroupAverageFixedPoints.GlobalTheory.CompanionTheory.LatSpan.ext_tmul, TensorProduct.smul_tmul', smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hL, hre, hre, hR, map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, h4 s x]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heC, hgeq, GlobalTheory.Proof.FractionFieldEmbeddingCompat.embW_eq_of_tie ht w]`. Express the relevant statement in the definitionally equal form `_ = fracExt c w ((D.nexp.eAlg (c.twI w) (c.sd w)).coeff (S.eG s))`. Rewrite using `[D.nexp.eAlg_def]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rd_eOp {D : D7} {c : NChoice D} {w : D.what₂.places.Pl} (ht : NChTie D c) {Gp : Type} [Group Gp] [Fintype Gp]
     (I : Gp ≃* G0g D.nd) (S : RatDat D.ntw) (j : ℕ)
@@ -115,7 +115,7 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => EvPt.of_forall fun x hx i p _ _ w _ j rd hrd y => ?_⟩⟩` and prove the remaining obligations. Take `⟨-, -, -, hid, -⟩` from `p.grpRecPin`. Conclude with `GlobalTheory.BigOn.Exp.ProjRd.rd_eOp (Fm.ex x hx i).nch_tie (p.R.eG.trans p.cG) p.Sx ((j : ℕ) + 1) ((R2 p).FW j) (p.nexp.fi j) (GroupAverageFixedPoints.GlobalTheory.CompanionTheory.LatSpan.isKsForm_of_iso (p.nexp.fi j) (p.fw.ks j)) (p.nexp.geq j) (p.nexp.rho _ (Nat.le_add_left _ …`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BigOn.Exp.canProj : CanProj := by
   refine ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ =>

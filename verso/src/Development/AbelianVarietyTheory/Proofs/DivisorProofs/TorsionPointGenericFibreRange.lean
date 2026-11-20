@@ -20,13 +20,11 @@ namespace GlobalTheory.DblBoxCoef
 open ComplexConjugate
 
 /- English proof (translation)
-Set `T : (κ₂ → R) ≃ₜ+ (κ → R) × (κ → R)` to `{ toFun := fun x => (fun i => x (e (.inl i)), fun i => x (e (.inr i))) invFun := fun y k => Sum.elim y.1 y.2 (e.symm k) left_inv := fun x => funext fun k => by`. Take `⟨s, rfl⟩` from `e.surjective k`. Apply the tactic sequence `cases s <;> simp`. Apply the tactic sequence `right_inv := fun y => by ext i <;> simp`. Use the proof step `map_add' := fun _ _ => rfl`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis.
 
-Use `continuous_toFun := (continuous_pi fun i => continuous_apply _).prodMk (continuous_pi fun i => continuous_apply _)`. Use `continuous_invFun := continuous_pi fun k => by`. Break down `e.symm k with s | s` into its components or cases. Conclude with `(continuous_apply s).comp continuous_fst`. Conclude with `(continuous_apply s).comp continuous_snd }`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : (μ.map T).IsAddHaarMeasure := T.isAddHaarMeasure_map μ`. Establish `key` using `Measure.isAddLeftInvariant_eq_smul (μ.map T) (m.prod m)`. Use `⟨((Measure.addHaarScalarFactor (μ.map T) (m.prod m) : ℝ) : ℂ), fun P Q => ?_⟩` and prove the remaining obligations. Establish `h1` using `integral_map_equiv (μ := μ) T.toHomeomorph.toMeasurableEquiv (fun z => P z.1 * Q z.2)`. Establish `h2 : Measure.map (⇑T.toHomeomorph.toMeasurableEquiv) μ = μ.map T` using `rfl`.
-
-Rewrite `h1` using `[h2, key, integral_smul_nnreal_measure, integral_prod_mul]`. Use `Eq.trans (h1.symm : _) ?_` and prove the remaining obligations. Simplify using `[NNReal.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_split {R κ κ₂ : Type} [AddCommGroup R] [TopologicalSpace R] [IsTopologicalAddGroup R]
     [LocallyCompactSpace R] [SecondCountableTopology R] [Fintype κ] [Fintype κ₂]
@@ -65,9 +63,9 @@ open ComplexConjugate
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
 
 /- English proof (translation)
-Establish `h1 : mat p.1 * mat (p⁻¹).1 = 1` using `by show (((p.1 * p.1⁻¹ : UA σ J) : GL (Fin m) (AE F E)) : Matrix (Fin m) (Fin m) (AE F E)) = 1`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression. Establish `h2 : mat p.2 * mat (p⁻¹).2 = 1` using `by show (((p.2 * p.2⁻¹ : UA σ J') : GL (Fin k) (AE F E)) : Matrix (Fin k) (Fin k) (AE F E)) = 1`. Rewrite using `[mul_inv_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `show mat p.1 * (mat (p⁻¹).1 * x * (mat (p⁻¹).2)ᵀ) * (mat p.2)ᵀ = x`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (mat p.1), h1, Matrix.one_mul, ← Matrix.transpose_mul, h2, Matrix.transpose_one, Matrix.mul_one]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actAB_inv {m k : ℕ} {J : Matrix (Fin m) (Fin m) E} {J' : Matrix (Fin k) (Fin k) E} (p : UA σ J × UA σ J')
     (x : Matrix (Fin m) (Fin k) (AE F E)) : actAB (cA σ) p (actAB (cA σ) p⁻¹ x) = x := by
@@ -83,9 +81,9 @@ theorem actAB_inv {m k : ℕ} {J : Matrix (Fin m) (Fin m) E} {J' : Matrix (Fin k
     Matrix.mul_one]
 
 /- English proof (translation)
-Establish `: upB (GlobalTheory.Doubling.blkMat finSumFinEquiv A B * v) = A * upB v`. Use function extensionality and compare the values at `i j`. Simplify using `only [upB, Matrix.mul_apply]`. Rewrite using `[← finSumFinEquiv.sum_comp]`. Simplify using `[GlobalTheory.Doubling.blkMat, Fintype.sum_sum_type]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem upB_blk {R : Type} [CommRing R] (A B : Matrix (Fin n) (Fin n) R) (v : Matrix (Fin (n + n)) (Fin d) R)
     (H : Matrix (Fin d) (Fin d) R) : upB (GlobalTheory.Doubling.blkMat finSumFinEquiv A B * v * H) = A * upB v * H := by
@@ -97,9 +95,9 @@ theorem upB_blk {R : Type} [CommRing R] (A B : Matrix (Fin n) (Fin n) R) (v : Ma
   rw [← this]; rfl
 
 /- English proof (translation)
-Establish `: loB (GlobalTheory.Doubling.blkMat finSumFinEquiv A B * v) = B * loB v`. Use function extensionality and compare the values at `i j`. Simplify using `only [loB, Matrix.mul_apply]`. Rewrite using `[← finSumFinEquiv.sum_comp]`. Simplify using `only [GlobalTheory.Doubling.blkMat, Matrix.submatrix_apply, Equiv.symm_apply_apply, Fintype.sum_sum_type, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, zero_add]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem loB_blk {R : Type} [CommRing R] (A B : Matrix (Fin n) (Fin n) R) (v : Matrix (Fin (n + n)) (Fin d) R)
     (H : Matrix (Fin d) (Fin d) R) : loB (GlobalTheory.Doubling.blkMat finSumFinEquiv A B * v * H) = B * loB v * H := by
@@ -112,7 +110,7 @@ theorem loB_blk {R : Type} [CommRing R] (A B : Matrix (Fin n) (Fin n) R) (v : Ma
   rw [← this]; rfl
 
 /- English proof (translation)
-Rewrite using `[bx, hb.rho_reix]`. Conclude with `congrArg (reix (rIdx n d)) (GlobalTheory.DblBoxRho.schr_boxFun ψ hψ (co.e (upB u)) (co.e (loB u)) f₁ f₂)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_bx {J : Matrix (Fin n) (Fin n) E} {J' : Matrix (Fin d) (Fin d) E} {J₂ : Matrix (Fin (n + n)) (Fin (n + n)) E}
     {co : Darboux (symp (R := AF F) (cA σ) (-1) (incM F J) (incM F J')) (Fin n × Fin d)}
@@ -123,9 +121,9 @@ theorem rho_bx {J : Matrix (Fin n) (Fin n) E} {J' : Matrix (Fin d) (Fin d) E} {J
   exact congrArg (reix (rIdx n d)) (GlobalTheory.DblBoxRho.schr_boxFun ψ hψ (co.e (upB u)) (co.e (loB u)) f₁ f₂)
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Take `⟨C, hC⟩` from `integral_split (rIdx n d) μ m`. Use `⟨C, fun a b a' b' => ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_conj, ← hC]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a (fun i => x (rIdx n d (.inl i))) * conj (b (fun i => x (rIdx n d (.inr i)))) * conj (a' (fun i => x (rIdx n d (.inl i))) * conj (b' (fun i => x (rIdx n d (.inr i))))) = a (fun i => x (rIdx n d (.inl i))) * conj (a' (fun i => x (rIdx n d (.inl i)))) * conj (b (fun i => x (rIdx n …`. Simplify using `only [map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_bx [MeasurableSpace (Fin (n + n) × Fin d → AF F)] [BorelSpace (Fin (n + n) × Fin d → AF F)]
     [MeasurableSpace (Fin n × Fin d → AF F)] [BorelSpace (Fin n × Fin d → AF F)]
@@ -153,25 +151,23 @@ namespace GlobalTheory.DblBoxCoef
 open ComplexConjugate
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s' r₁ s₁ hP X₂ _ i hi Mb χ χ' omb r₂ s₂ hPb hbox φ₁ hφ₁ φ₂ hφ₂ g₁ g₂ h`. Use `letI : MeasurableSpace (Fin (n + n) × Fin d → AF F) := borel _`. Use `haveI : BorelSpace (Fin (n + n) × Fin d → AF F) := ⟨rfl⟩`. Use `letI : MeasurableSpace (Fin n × Fin d → AF F) := borel _`. Use `haveI : BorelSpace (Fin n × Fin d → AF F) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Establish `hF : IsTotallyReal F` using `hP.base.cm.1`. Establish `hψ` using `GlobalTheory.StdCharFromIsStd.isCharAF hP.base.std`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hP.weil`. Establish `hWb` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hPb.weil`. Use `set γ : UA σ X₂.J × UA σ W.J := (i (g₁, g₂), h) with hγ`. Use `set γ₁ : UA σ X.J × UA σ W.J := (g₁, h) with hγ₁`. Use `set γ₂ : UA σ X.J × UA σ W.J := (g₂, h) with hγ₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hB0 : bx φ₁ (cj φ₂) ∈ schA F _` using `bx_mem_schA hφ₁ (cj_mem_schA hφ₂)`. Establish `hΨ : omb γ (bx φ₁ (cj φ₂)) ∈ schA F _` using `hWb.pres γ _ hB0`. Establish `hΦ : bx (om γ₁ φ₁) (cj (om γ₂ φ₂)) ∈ schA F _` using `bx_mem_schA (hW.pres γ₁ φ₁ hφ₁) (cj_mem_schA (hW.pres γ₂ φ₂ hφ₂))`. Take `⟨c1, b1, i1⟩` from `GlobalTheory.SplitSvN.schA_facts hF hΦ`. Take `⟨c2, b2, i2⟩` from `GlobalTheory.SplitSvN.schA_facts hF hΨ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `unitX : ∀ μ : Measure (Fin n × Fin d → AF F), μ.IsAddHaarMeasure → ∀ (p : UA σ X.J × UA σ W.J) (f : Fn F n d), f ∈ schA F _ → ∀ z, ∫ x, om p f x * conj (M.co.rho B.ψ z (om p f) x) ∂μ = ∫ x, f x * conj (M.co.rho B.ψ (actAB (cA σ) p⁻¹ z) f x) ∂μ`. Introduce `μ hμ p f hf z`. Establish `e1 : M.co.rho B.ψ z (om p f) = om p (M.co.rho B.ψ (actAB (cA σ) p⁻¹ z) f)`. Rewrite using `[hW.impl p _ f hf, actAB_inv]`. Rewrite using `[e1, GlobalTheory.CptCoeff.integral_mul_conj_map (μ := μ) (schA F _) (fun f hf => GlobalTheory.WeilM.schA_memLp_two F _ μ hμ f hf) (om p) (fun f hf => hW.pres _ f hf) (fun f hf => hW.unit μ hμ _ f hf) hf (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hP.base.std _ f hf)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `unitX₂ : ∀ μ : Measure (Fin (n + n) × Fin d → AF F), μ.IsAddHaarMeasure → ∀ (p : UA σ X₂.J × UA σ W.J) (f : Fn F (n + n) d), f ∈ schA F _ → ∀ z, ∫ x, omb p f x * conj (Mb.co.rho B.ψ z (omb p f) x) ∂μ = ∫ x, f x * conj (Mb.co.rho B.ψ (actAB (cA σ) p⁻¹ z) f x) ∂μ`. Introduce `μ hμ p f hf z`. Establish `e1 : Mb.co.rho B.ψ z (omb p f) = omb p (Mb.co.rho B.ψ (actAB (cA σ) p⁻¹ z) f)`. Rewrite using `[hWb.impl p _ f hf, actAB_inv]`. Rewrite using `[e1, GlobalTheory.CptCoeff.integral_mul_conj_map (μ := μ) (schA F _) (fun f hf => GlobalTheory.WeilM.schA_memLp_two F _ μ hμ f hf) (omb p) (fun f hf => hWb.pres _ f hf) (fun f hf => hWb.unit μ hμ _ f hf) hf (GlobalTheory.HeisSchA.rho_mem_schA Mb B.ψ hPb.base.std _ f hf)]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hinv : mat (γ⁻¹).1 = blkMat finSumFinEquiv (mat g₁⁻¹) (mat g₂⁻¹)`. Establish `: (γ⁻¹).1 = i (g₁⁻¹, g₂⁻¹)` using `by show (i (g₁, g₂))⁻¹ = i (g₁⁻¹, g₂⁻¹)`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression. Rewrite using `[this, hi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hup : ∀ u, upB (actAB (cA σ) γ⁻¹ u) = actAB (cA σ) γ₁⁻¹ (upB u)` using `fun u => by show upB (mat (γ⁻¹).1 * u * (mat (γ⁻¹).2)ᵀ) = mat (γ₁⁻¹).1 * upB u * (mat (γ₁⁻¹).2)ᵀ`. Rewrite using `[hinv, upB_blk]`. Both sides reduce to the same expression. Establish `hlo : ∀ u, loB (actAB (cA σ) γ⁻¹ u) = actAB (cA σ) γ₂⁻¹ (loB u)` using `fun u => by show loB (mat (γ⁻¹).1 * u * (mat (γ⁻¹).2)ᵀ) = mat (γ₂⁻¹).1 * loB u * (mat (γ₂⁻¹).2)ᵀ`. Rewrite using `[hinv, loB_blk]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Both sides reduce to the same expression. Take `⟨c, hc⟩` from `GlobalTheory.SplitSvN.proportional_of_coeff B.ψ hψ.1 hψ.2.1 (GlobalTheory.SWQ.Annihilator.self_annihilator F hF B.ψ hψ).1 1 (one_mul 1) (bx (om γ₁ φ₁) (cj (om γ₂ φ₂))) (omb γ (bx φ₁ (cj φ₂))) (fun _ => 1) (bx (om γ₁ φ₁) (cj (om γ₂ φ₂))) (omb γ (bx φ₁ (cj φ₂))) (fun x => by simp) …`. Take `⟨C, hC⟩` from `integral_bx μ (Measure.addHaar : Measure (Fin n × Fin d → AF F))`. Establish `hm : (Measure.addHaar : Measure (Fin n × Fin d → AF F)).IsAddHaarMeasure` using `inferInstance`. Use `set u := Mb.co.e.symm (x₁, y₁) with hu`.
-
-Establish `hw : schr B.ψ (x₁, y₁) = Mb.co.rho B.ψ u`. Simplify using `only [Darboux.rho, hu, LinearEquiv.apply_symm_apply]`. Rewrite using `[hw, unitX₂ μ hμ γ _ hB0 u, rho_bx hbox B.ψ hψ.2.1, rho_bx hbox B.ψ hψ.2.1, hC, hC, unitX _ hm γ₁ φ₁ hφ₁, unitX _ hm γ₂ φ₂ hφ₂, hup, hlo])`. Conclude with `⟨c, hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem weil_bx_prop : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ →

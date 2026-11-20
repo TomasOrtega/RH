@@ -12,13 +12,13 @@ variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n : ℕ}
   {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ V}
 
 /- English proof (translation)
-Unfold `sgn`. Simplify using `only [eq_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 lemma WDA_sgn_symm (ε : Fin n → Bool) (a b : Fin n) : sgn ε a b = sgn ε b a := by
   unfold sgn; simp only [eq_comm]
 
 /- English proof (translation)
-Rewrite using `[Complex.ofReal_pow, ← hU a b x (E a b x)]`. Conclude with `(inner_self_eq_norm_sq_to_K (E a b x)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma WDA_norm (hU : IsUnitary ε E) (a b : Fin n) (x : V) :
     (((‖E a b x‖ ^ 2 : ℝ)) : ℂ) = (sgn ε a b : ℂ) * ⟪x, E b a (E a b x)⟫_ℂ := by
@@ -26,9 +26,9 @@ lemma WDA_norm (hU : IsUnitary ε E) (a b : Fin n) (x : V) :
   exact (inner_self_eq_norm_sq_to_K (E a b x)).symm
 
 /- English proof (translation)
-Simplify using `only [CasK, Cas, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))` and prove the remaining obligations. Unfold `sgn`. Use `split_ifs with h`. Simplify using `[two_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 lemma WDA_op (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) :
     (2 • CasK ε E - Cas E) = ∑ a, ∑ b, ((sgn ε a b : ℂ)) • (E a b * E b a) := by
@@ -44,9 +44,9 @@ end WDA
 section WDA2
 
 /- English proof (translation)
-Introduce `V _ _ n ε E w hU`. Rewrite using `[WDA_op]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply, inner_sum, inner_smul_right]`. Simplify using `only [Complex.ofReal_sum]`. Simplify using `only [WDA_norm hU]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))` and prove the remaining obligations. Rewrite using `[WDA_sgn_symm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sumOfSquaresIdentity_holds : SumSq := by
   intro V _ _ n ε E w hU

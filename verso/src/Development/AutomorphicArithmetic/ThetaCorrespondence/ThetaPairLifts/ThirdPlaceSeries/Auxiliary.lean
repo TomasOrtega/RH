@@ -14,7 +14,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace UpperTheory.BaseChangeIdentities
 /- English proof (translation)
-Introduce `h _` and use `_root_.UpperTheory.BaseChangeIdentities.aux_of_cgTrue_of_auTrue ascComp h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Conclusion1_alt_alt_alt : DefiniteN → GlobalTheory.Published.BernsteinUnitaryProductIrreducible →
     GlobalTheory.Published.GenericUnitaryDualGL → GlobalTheory.Published.StandardCosocleGL →

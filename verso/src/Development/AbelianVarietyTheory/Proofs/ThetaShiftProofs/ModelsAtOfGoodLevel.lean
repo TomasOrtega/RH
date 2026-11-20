@@ -8,9 +8,9 @@ open scoped LaurentSeries
 namespace GlobalTheory.ArcCM
 
 /- English proof (translation)
-Introduce `hK E _ _ _ H Dw l Xo c hr hg`. Establish `key : ∀ Xs : ∀ l' : Level H, Moduli Dw l', ModelsAt (Xs l) c`. Introduce `Xs p W hp hW`. Take `⟨Y, hY, -⟩` from `hK.models.2 E H Dw hr Xs`. Take `⟨h2, h4⟩` from `hY p W hp hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Y p W hp hW ⟨l, c, hg p hp⟩, (h4 _).2.2, (h2.1 ⟨l, c, hg p hp⟩).2.2.1⟩`. Establish `h` using `key (Function.update (fun l' => Classical.choice (hK.n1ab E H Dw l' hr)) l Xo)`. Rewrite `h` using `[Function.update_self]`. Then use the resulting hypothesis.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem modelsAt_of_good_level : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → ModelsAt Xo c := by
   intro hK E _ _ _ H Dw l Xo c hr hg

@@ -22,7 +22,7 @@ namespace GlobalTheory.AmpleKaehler
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Use `and_congr_right fun _ => and_congr_right fun _ => forall_congr' fun c => forall₂_congr fun y hy => forall_congr' fun _ => forall_congr' fun ξ => ?_` and prove the remaining obligations. Rewrite using `[h c y hy ξ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPotential_congr {σ : F →+* ℂ} {a b : ChartForm Y.str σ Y.dim}
     (h : ∀ (c : AlgChart Y.str σ Y.dim), ∀ y ∈ c.e.source, ∀ ξ, a c y ξ = b c y ξ) {W : Set (Pts Y σ)}
@@ -32,7 +32,7 @@ theorem isPotential_congr {σ : F →+* ℂ} {a b : ChartForm Y.str σ Y.dim}
   rw [h c y hy ξ]
 
 /- English proof (translation)
-Use `and_congr (forall_congr' fun y => exists₂_congr fun W φ => and_congr_right fun _ => isPotential_congr h) (forall_congr' fun c => forall₂_congr fun y hy => forall₂_congr fun ξ _ => ?_)` and prove the remaining obligations. Rewrite using `[h c y hy ξ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isKaehlerForm_congr {σ : F →+* ℂ} {a b : ChartForm Y.str σ Y.dim}
     (h : ∀ (c : AlgChart Y.str σ Y.dim), ∀ y ∈ c.e.source, ∀ ξ, a c y ξ = b c y ξ) :
@@ -44,9 +44,9 @@ theorem isKaehlerForm_congr {σ : F →+* ℂ} {a b : ChartForm Y.str σ Y.dim}
 variable {σ : F →+* ℂ} {Δ : Y.Dv} {m : Var.Met Y σ Δ} {L : LB Y.X} {r : L.ι → Y.Fnˣ} {ψ : Weight Y.str σ L}
 
 /- English proof (translation)
-Establish `e (i) (y) (hi : y ∈ ptsIn Y.str σ (L.U i)) : m.wt (r i) y = ψ.φ i y`. Rewrite using `[Var.Met.wt, he i y hi, Real.log_exp, neg_neg]`. Use `Var.Met.smoothOn_of_cover isOpen_univ (fun y _ => ?_) (fun i => isOpen_ptsIn (L.U i)) (fun y => ⟨_, mem_pick ψ.isLB y⟩) (Var.ptsIn_subset_eqnSet hp) fun i => ((hs i).mono Set.inter_subset_right).congr fun y hy => e i y hy.2` and prove the remaining obligations. Establish `hi` using `mem_pick ψ.isLB y`. Rewrite using `[Var.Met.mem_posSet_iff (Var.ptsIn_subset_eqnSet hp _ hi), he _ _ hi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.exp_pos _`.
+A detailed English derivation is pending.
 -/
 theorem mSmooth_of_wt (hp : Presents Δ L r) (hs : ψ.IsSmooth (Y.an σ))
     (he : ∀ i, ∀ y ∈ ptsIn Y.str σ (L.U i), m.h (r i) y = Real.exp (-ψ.φ i y)) : Y.mSmooth σ Δ m := by
@@ -60,9 +60,9 @@ theorem mSmooth_of_wt (hp : Presents Δ L r) (hs : ψ.IsSmooth (Y.an σ))
   exact Real.exp_pos _
 
 /- English proof (translation)
-Establish `hm` using `mSmooth_of_wt hp hs he`. Establish `hi` using `mem_pick ψ.isLB y`. Establish `e₁` using `hm.levi_frame Var.smoothOn_zero hy (Var.ptsIn_subset_eqnSet hp _ hi) (Var.mem_eqnSet Δ y) ξ`. Simplify using `only [Pi.zero_apply, add_zero] at e₁`. Express the relevant statement in the definitionally equal form `c.levi _ y ξ / Real.pi = c.levi _ y ξ / Real.pi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e₁]`. Use `congrArg (· / Real.pi) (AlgChart.levi_congr (isOpen_ptsIn _) hy hi (fun z hz => ?_) ξ)` and prove the remaining obligations. Rewrite using `[Var.Met.wt, he _ _ hz, Real.log_exp, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem curvMet_eq (hp : Presents Δ L r) (hs : ψ.IsSmooth (Y.an σ))
     (he : ∀ i, ∀ y ∈ ptsIn Y.str σ (L.U i), m.h (r i) y = Real.exp (-ψ.φ i y))
@@ -84,13 +84,13 @@ namespace GlobalTheory.AmpleKaehler
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Take `⟨-, r, hr, h₂, -⟩` from `hA`. Establish `hr₁ : Presents A.D (L.B.pull Z.j) r` using `by simpa using hr`. Use `⟨r, hr₁, fun i y hy => ?_⟩` and prove the remaining obligations. Establish `hi : under y ∈ (L.B.pull Z.j).U i` using `Var.mem_ptsIn_iff.1 hy`. Establish `h₁ : A.D.IsEqn (under y) (r i)` using `hr₁.isEqn i _ hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : (1 • A.D).RegularAt (under y) ((r i : Y.Fn)⁻¹)`. Rewrite using `[one_nsmul]`. Conclude with `(CartierDiv.isEqn_iff_generatesAt_inv.1 h₁).regularAt`. Establish `e` using `h₂ σ y (OfModel.ptMap Z σ y) i ((r i : Y.Fn)⁻¹) rfl hi (by simpa using hf)`. Establish `h₈ : ratVal (1 : Y.Fn) y = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e'` using `ratVal_fnOf (y := y) CxPts.mem_ptsIn_top trivial 1`. Rewrite `e'` using `[map_one, CxPts.ev_one CxPts.mem_ptsIn_top]`. Then use the resulting hypothesis. Simplify using `only [hci, mul_zero, neg_zero, Real.exp_zero, one_mul, PNat.val_ofNat] at e`. Rewrite `e` using `[OfLattice.pn_mPow_one (cxSt F) σ (A.m σ) y h₁ hf, inv_mul_cancel₀ (r i).ne_zero, h₈]`. Simplify using `only [norm_one, one_pow, one_mul] at e`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pullW_φ, ← e, ← Units.val_inv_eq_inv_val]`. Conclude with `(Var.pn_frame (Var.ptsIn_subset_eqnSet hr₁ i hy)).symm`.
+A detailed English derivation is pending.
 -/
 theorem h_of_induced {A : Adl (cxSt F) Y} {Z : TrueGeo.Model Y} {L : HermLB Z.p} {cf : HeightOneSpectrum (𝓞 F) → ℝ}
     (hA : A.Induced Z L 1 cf) (hci : ∀ v, A.ci v = 0) (σ : F →+* ℂ) :
@@ -114,15 +114,13 @@ theorem h_of_induced {A : Adl (cxSt F) Y} {Z : TrueGeo.Model Y} {L : HermLB Z.p}
   exact (Var.pn_frame (Var.ptsIn_subset_eqnSet hr₁ i hy)).symm
 
 /- English proof (translation)
-Introduce `F _ _ Y Δ hΔ`. Take `⟨q, Z, L, r, hr, hnef, hw⟩` from `GlobalTheory.T.exists_arithmetic_nef_model_of_ample F Y Δ hΔ`. Take `⟨A, hD, hn, hci, hA⟩` from `OfModel.exists_induced F (cxSt F) Y Z L ((q : ℕ) • Δ) r hr`. Establish `hci' : ∀ v, A.ci v = 0` using `fun v => by rw [hci]; rfl`. Establish `key (σ : F →+* ℂ) : (cxSt F).mSmooth Y σ _ (A.m σ) ∧ ∀ (c : AlgChart Y.str σ Y.dim), ∀ y ∈ c.e.source, ∀ ξ, curvMet (A.m σ) c y ξ = curvForm (pullW Z L σ) c y ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r', hr', he⟩` from `h_of_induced hA hci' σ`. Conclude with `⟨mSmooth_of_wt hr' (hw σ).1 he, curvMet_eq hr' (hw σ).1 he⟩`. Use `⟨A.divide q, ?_, ?_, ⟨Z, L, 1, ?_, hnef⟩, fun σ => ⟨(key σ).1, ?_⟩, fun σ σ' ι hι W φ hφ => ?_⟩` and prove the remaining obligations. Simplify using `only [qDiv, Adl.divide, hn, hD, one_mul, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Express the relevant statement in the definitionally equal form `Y.ample A.D`. Rewrite using `[hD]`. Conclude with `GlobalTheory.T.ample_nsmul_of_pos F Y Δ q q.pos hΔ`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hA.divide q` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules. Conclude with `(isKaehlerForm_congr (key σ).2).2 (isKaehlerForm_curvForm (hw σ).1 (hw σ).2)`.
-
-Establish `h₁` using `(isPotential_congr (key σ).2).1 hφ`. Conclude with `(isPotential_congr (key σ').2).2 (KaehlerFamily.isPotential_conj (hw σ).1 (pullW_isConj Z L σ σ') hι h₁)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_ample_model : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (Δ : Y.Dv), Y.ample Δ → ∃ M : Adl (cxSt F) Y, qDiv M = 1 ⊗ₜ Δ ∧ Y.ample M.D ∧ (∃ (Z : TrueGeo.Model Y) (L : HermLB Z.p) (q : ℕ+), M.Induced Z L q 0 ∧ ArInt.NefFib L) ∧ (∀ σ, (cxSt F).mSmooth Y σ _ (M.m σ) ∧ IsKaehlerForm (Y.an σ) (curvMet (M.m σ))) ∧ ∀ σ σ' (ι : Pts Y σ' → Pts Y σ), IsConjMap ι → (∀ W φ, IsPotential (Y.an σ) (curvMet (M.m σ)) W φ → IsPotential (Y.an σ') (curvMet (M.m σ')) (ι ⁻¹' W) (φ ∘ ι)) := by
   intro F _ _ Y Δ hΔ

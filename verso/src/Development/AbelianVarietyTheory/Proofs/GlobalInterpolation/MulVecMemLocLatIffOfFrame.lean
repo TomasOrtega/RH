@@ -13,11 +13,11 @@ open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 
 /- English proof (translation)
-Establish `hc0 : (c : F) ≠ 0`. Introduce `h`. Apply `hc` to reduce the goal to its premises. Rewrite using `[show c = 0 from RingOfIntegers.coe_eq_zero_iff.mp h]`. Conclude with `v.asIdeal.zero_mem`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : algebraMap F (v.adicCompletion F) (c : F)⁻¹ ∈ v.adicCompletionIntegers F`. Rewrite using `[_root_.GlobalTheory.LocalLattice.algebraMap_mem_adicCompletionIntegers_iff, _root_.GlobalTheory.LocalLattice.mem_localRing_iff]`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, show algebraMap (𝓞 F) F c = (c : F) from rfl, mul_inv_cancel₀ hc0]`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨1 ⊗ₜ[F] algebraMap F (v.adicCompletion F) (c : F)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Unfold `_root_.Formalism.BasicNotions.intV _root_.Formalism.UG.tensInt _root_.Formalism.UG.intOE`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨_, hmem⟩, rfl⟩)`. Unfold `_root_.Formalism.UG.inclE`. Rewrite using `[Algebra.TensorProduct.includeLeftRingHom_apply, ← Algebra.TensorProduct.algebraMap_apply, ← Algebra.TensorProduct.algebraMap_apply', ← map_mul, inv_mul_cancel₀ hc0, map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.OverCompare.exists_intV_mul_inclE_eq_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) (c : 𝓞 F) (hc : c ∉ v.asIdeal) :

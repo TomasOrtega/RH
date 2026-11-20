@@ -20,7 +20,7 @@ namespace GlobalTheory.CartanInt
 variable {p q : ℕ}
 
 /- English proof (translation)
-Use `GlobalTheory.UpqTopology.continuous_mat (P := p) (Q := q)` as an intermediate fact. Unfold `l1`. Use `fun_prop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_matrixEntryNormSum_unitaryPQ_sub_one : Continuous fun g : UpqT p q => l1 (UpqT.mat g - 1) := by
   have := GlobalTheory.UpqTopology.continuous_mat (P := p) (Q := q)
@@ -28,9 +28,9 @@ theorem continuous_matrixEntryNormSum_unitaryPQ_sub_one : Continuous fun g : Upq
   fun_prop
 
 /- English proof (translation)
-Use `show (Complex.I • H)ᴴ * Formalism.UG.Jpq p q + Formalism.UG.Jpq p q * (Complex.I • H) = 0`. Rewrite using `[Matrix.conjTranspose_smul, h]`. Use extensionality with `a b`. Use `hK a b` as an intermediate fact. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [Formalism.UG.Jpq, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, sameBlock] at this ⊢ <;>`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_mem_lieU {H : Mat p q} (h : Hᴴ = H) (hK : IsKC H) : Complex.I • H ∈ lieU p q := by
   show (Complex.I • H)ᴴ * Formalism.UG.Jpq p q + Formalism.UG.Jpq p q * (Complex.I • H) = 0
@@ -42,13 +42,11 @@ theorem smul_mem_lieU {H : Mat p q} (h : Hᴴ = H) (hK : IsKC H) : Complex.I •
     simp [this]
 
 /- English proof (translation)
-Use `set J : Mat p q := Formalism.UG.Jpq p q with hJ`. Establish `hJJ : J * J = 1` using `GlobalTheory.UpqTopology.jpq_sq`. Establish `h1 : J * (Complex.I • H) * J = Complex.I • H`. Use extensionality with `a b`. Use `hK a b` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Apply the tactic sequence `simp [hJ, Formalism.UG.Jpq, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, sameBlock] at this ⊢ <;>`. Simplify using `[this]`. Establish `h2` using `Matrix.exp_conj J (Complex.I • H) ⟨⟨J, J, hJJ, hJJ⟩, rfl⟩`. Rewrite `h2` using `[Matrix.inv_eq_left_inv hJJ, h1]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show IsKC (NormedSpace.exp (Complex.I • H))`. Introduce `a b hab`. Establish `e` using `congrFun (congrFun h2 a) b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Simplify using `[hJ, Formalism.UG.Jpq, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, sameBlock] at e hab`.
-
-Conclude with `self_eq_neg.mp e`. Conclude with `self_eq_neg.mp e`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exp_mem_Kc {H : Mat p q} (h : Hᴴ = H) (hK : IsKC H) :
     GlobalTheory.CompactDualExists.expU ⟨Complex.I • H, smul_mem_lieU h hK⟩ ∈ Kc p q := by
@@ -71,7 +69,7 @@ theorem exp_mem_Kc {H : Mat p q} (h : Hᴴ = H) (hK : IsKC H) :
   · exact self_eq_neg.mp e
 
 /- English proof (translation)
-Use `sq_sum_le_card_mul_sum_sq (s := (Finset.univ : Finset (Ix p q × Ix p q))) (f := fun ab => ‖A ab.1 ab.2‖)` as an intermediate fact. Rewrite `this` using `[Fintype.sum_prod_type, Fintype.sum_prod_type]`. Simplify `this` using `[l1, sq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sq_matrixEntryNormSum_le_card_sq_mul_sum_sq (A : Mat p q) : l1 A ^ 2 ≤ ((p + q : ℕ) : ℝ) ^ 2 * ∑ a, ∑ b, ‖A a b‖ ^ 2 := by
   have := sq_sum_le_card_mul_sum_sq (s := (Finset.univ : Finset (Ix p q × Ix p q)))
@@ -80,19 +78,17 @@ theorem sq_matrixEntryNormSum_le_card_sq_mul_sum_sq (A : Mat p q) : l1 A ^ 2 ≤
   simpa [l1, sq] using this
 
 /- English proof (translation)
-Introduce `p q mK hprob hK0 hleft δ hδ hδ'`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc p q`. Take `⟨Φ, hΦc, hΦ, hiso, hsurj⟩` from `GlobalTheory.T.exists_isometric_chart_blockHermitian p q`. Set `θ : ((Fin p × Fin p) ⊕ (Fin q × Fin q) → ℝ) → UpqT p q` to `fun R => GlobalTheory.CompactDualExists.expU ⟨Complex.I • Φ R, smul_mem_lieU (hΦ R).1 (hΦ R).2⟩`. Establish `hθc : Continuous θ` using `GlobalTheory.CompactDualExists.continuous_expU.comp ((hΦc.const_smul Complex.I).subtype_mk _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.T.ofReal_pow_le_measure_of_chart_cover (UpqT p q) _ mK (Kc p q) {k | l1 (UpqT.mat k - 1) ≤ (((p + q : ℕ) : ℝ) ^ 2 / 4 + ((p ^ 2 + q ^ 2 : ℕ) : ℝ)) * δ} θ (89 / 20) δ hθc (isClosed_le continuous_matrixEntryNormSum_unitaryPQ_sub_one continuous_const) hK0 (fun R => hlef …`. Introduce `x hx`. Take `⟨H, hH, hHK, hHb, hxH⟩` from `GlobalTheory.T.exists_hermitian_log_unitaryBlockDiagonal p q x hx`. Take `⟨R₀, rfl, hR₀⟩` from `hsurj H hH hHK hHb`. Use `⟨R₀, hR₀, fun R hR => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : UpqT.mat ((θ R)⁻¹ * x) = NormedSpace.exp (-(Complex.I • Φ R)) * NormedSpace.exp (Complex.I • Φ R₀)`. Rewrite using `[mat_mul, hxH]`. Both sides reduce to the same expression. Use `show l1 (UpqT.mat ((θ R)⁻¹ * x) - 1) ≤ _`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a1` using `GlobalTheory.T.sum_norm_sq_exp_herm_sub_one_le_blockMat p q (Φ R₀) (Φ R) (hΦ R₀).1 (hΦ R).1`. Rewrite `a1` using `[hiso]`. Establish `a2 : ∑ i, (R₀ i - R i) ^ 2 ≤ ((p ^ 2 + q ^ 2 : ℕ) : ℝ) * δ ^ 2`. Use `(Finset.sum_le_card_nsmul _ _ (δ ^ 2) fun i _ => ?_).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← sq_abs, abs_sub_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `pow_le_pow_left₀ (abs_nonneg _) (hR i) 2`. Simplify using `[sq]`. Establish `a3` using `(sq_matrixEntryNormSum_le_card_sq_mul_sum_sq _).trans (mul_le_mul_of_nonneg_left (a1.trans a2) (by positivity))`. Use `le_of_sq_le_sq (a3.trans ?_) (by positivity)` and prove the remaining obligations. Rewrite using `[mul_pow, ← mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Use polynomial arithmetic with `[sq_nonneg (((p + q : ℕ) : ℝ) ^ 2 / 4 - ((p ^ 2 + q ^ 2 : ℕ) : ℝ))])`. Use `le_trans (ENNReal.ofReal_le_ofReal ?_) key` and prove the remaining obligations. Establish `: Fintype.card ((Fin p × Fin p) ⊕ (Fin q × Fin q)) = p ^ 2 + q ^ 2` using `by simp [sq]`. Rewrite using `[this]`.
-
-Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem measure_ball_K : ∀ (p q : ℕ) (mK : Measure (UpqT p q)), IsProbabilityMeasure mK → mK (Kc p q)ᶜ = 0 → (∀ k ∈ Kc p q, Measure.map (fun x => k * x) mK = mK) → ∀ δ : ℝ, 0 < δ → δ ≤ 1 / 20 → ENNReal.ofReal ((δ / (9 / 2)) ^ (p ^ 2 + q ^ 2)) ≤ mK {k | l1 (UpqT.mat k - 1) ≤ (((p + q : ℕ) : ℝ) ^ 2 / 4 + ((p ^ 2 + q ^ 2 : ℕ) : ℝ)) * δ} := by
   intro p q mK hprob hK0 hleft δ hδ hδ'
@@ -133,23 +129,21 @@ theorem measure_ball_K : ∀ (p q : ℕ) (mK : Measure (UpqT p q)), IsProbabilit
   linarith
 
 /- English proof (translation)
-Unfold `l1`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem weightAbsEntrySum_nonneg (A : Mat p q) : 0 ≤ l1 A := by unfold l1; positivity
 
 /- English proof (translation)
-Simplify using `only [l1, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => norm_add_le _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem l1_add_le (A B : Mat p q) : l1 (A + B) ≤ l1 A + l1 B := by
   simp only [l1, ← Finset.sum_add_distrib]
   exact Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => norm_add_le _ _
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `(norm_sum_le _ _).trans (le_of_eq (by simp))`. Use `_ = ∑ i, ∑ k, ‖A i k‖ * ∑ j, ‖B k j‖ := by`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.mul_sum]`. Use `_ ≤ ∑ i, ∑ k, ‖A i k‖ * l1 B := by`. Use `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations.
-
-Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun k => ∑ j, ‖B k j‖) (fun _ _ => by positivity) (Finset.mem_univ k)`. Use `_ = l1 A * l1 B := by simp only [l1, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem matrixEntryAbsSum_mul_le (A B : Mat p q) : l1 (A * B) ≤ l1 A * l1 B := by
   calc l1 (A * B) ≤ ∑ i, ∑ j, ∑ k, ‖A i k‖ * ‖B k j‖ := by
@@ -166,9 +160,9 @@ theorem matrixEntryAbsSum_mul_le (A B : Mat p q) : l1 (A * B) ≤ l1 A * l1 B :=
     _ = l1 A * l1 B := by simp only [l1, Finset.sum_mul]
 
 /- English proof (translation)
-Establish `h1 : ∑ i, ∑ j, ‖B i j‖ ≤ ((p * q : ℕ) : ℝ) * δ`. Use `(Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => h i j).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `[mul_assoc]`. Establish `h2 : l1 (pY B) = ∑ i, ∑ j, ‖B i j‖ + ∑ i, ∑ j, ‖B i j‖`. Simplify using `[l1, pY, pOf, Fintype.sum_sum_type]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_comm`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem matrixEntryNormSum_upperRightBlockElement_le {B : Fin p → Fin q → ℂ} {δ : ℝ} (h : ∀ i j, ‖B i j‖ ≤ δ) :
     l1 (pY B) ≤ 2 * ((p * q : ℕ) : ℝ) * δ := by
@@ -181,7 +175,7 @@ theorem matrixEntryNormSum_upperRightBlockElement_le {B : Fin p → Fin q → �
   linarith
 
 /- English proof (translation)
-Rewrite using `[volume_pi_pi]`. Simplify using `only [volume_pi_pi, Complex.volume_closedBall, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← pow_mul, mul_comm q p, ENNReal.ofReal_pow (by positivity), ENNReal.ofReal_mul Real.pi_pos.le, ENNReal.ofReal_pow hδ.le, mul_comm]`. Use `congr 2`. Rewrite using `[← NNReal.coe_real_pi, ENNReal.ofReal_coe_nnreal]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem volume_polydisc {δ : ℝ} (hδ : 0 < δ) :
     volume (Set.univ.pi fun _ : Fin p => Set.univ.pi fun _ : Fin q => Metric.closedBall (0 : ℂ) δ) =
@@ -194,41 +188,37 @@ theorem volume_polydisc {δ : ℝ} (hδ : 0 < δ) :
   rw [← NNReal.coe_real_pi, ENNReal.ofReal_coe_nnreal]
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc p q`. Take `⟨-, lam, hlam, ht⟩` from `hm`. Take `⟨ρ, hρ, hexp, hlog⟩` from `GlobalTheory.T.exists_radius_exp_sub_one_le_and_exists_log p q`. Use `set a : ℝ := ((p + q : ℕ) : ℝ) with ha`. Use `set w : ℝ := max 1 (3 / 2 * a ^ 2) with hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw1 : 1 ≤ w` using `le_max_left _ _`. Establish `hw2 : 3 / 2 * a ^ 2 ≤ w` using `le_max_right _ _`. Establish `hw0 : 0 < w` using `by linarith`. Establish `hpos : ∀ x : ℝ, 0 < x → 0 < (x / a) ^ ((p + q) ^ 2)`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos (p + q) with h | h` into its components or cases. Rewrite using `[h]`. Simplify using the standard rewrite rules. Establish `: 0 < a` using `by rw [ha]; exact_mod_cast h`. Check the signs of the components of the expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Q : ℝ := (18 / 5 * w / a) ^ ((p + q) ^ 2) * (9 / 2) ^ (p ^ 2 + q ^ 2) / Real.pi ^ (p * q) with hQ`. Establish `hQ0 : 0 < Q`. Use `hpos (18 / 5 * w) (by positivity)` as an intermediate fact. Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : a ^ 2 = ((p ^ 2 + q ^ 2 : ℕ) : ℝ) + 2 * ((p * q : ℕ) : ℝ)` using `by rw [ha]; push_cast; ring`. Establish `hd0 : (0 : ℝ) ≤ ((p ^ 2 + q ^ 2 : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `he0 : (0 : ℝ) ≤ ((p * q : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `main : ENNReal.ofReal (c / Q) ≤ Formalism.L2.Theta.minfDensity (p + q)`. Use `ge_of_tendsto ht ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [Ioo_mem_nhdsGT (lt_min hρ (show (0 : ℝ) < 1 / 20 by norm_num))] with r hr`. Take `⟨hr0, hr⟩` from `hr`. Rewrite `hr` using `[lt_min_iff]`. Use `set δ := r / w with hδ`. Establish `hδ0 : 0 < δ` using `div_pos hr0 hw0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr' : r = w * δ` using `by rw [hδ]; field_simp`. Establish `hδr : δ ≤ r` using `div_le_self hr0.le hw1`. Establish `hNδ : 3 / 2 * a ^ 2 * δ ≤ r` using `by rw [hr']; gcongr`. Use `set E := {g : UpqT p q | ∃ X ∈ ballU p q r, UpqT.mat g = NormedSpace.exp (X : Mat p q)} with hE`. Use `set U := {k : UpqT p q | l1 (UpqT.mat k - 1) ≤ (a ^ 2 / 4 + ((p ^ 2 + q ^ 2 : ℕ) : ℝ)) * δ} with hU`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D := Set.univ.pi fun _ : Fin p => Set.univ.pi fun _ : Fin q => Metric.closedBall (0 : ℂ) δ with hD`. Establish `hUm : MeasurableSet U` using `(isClosed_le continuous_matrixEntryNormSum_unitaryPQ_sub_one continuous_const).measurableSet`. Establish `hDm : MeasurableSet D` using `MeasurableSet.univ_pi fun _ => MeasurableSet.univ_pi fun _ => measurableSet_closedBall`. Establish `hsub : ∀ k ∈ U, ∀ B ∈ D, k * eP B ∈ E`. Introduce `k hk B hB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : l1 (UpqT.mat k - 1) ≤ _` using `hk`. Establish `hy` using `matrixEntryNormSum_upperRightBlockElement_le (B := B) (δ := δ) fun i j => by simpa using hB i trivial j trivial`. Establish `hy2 : 2 * ((p * q : ℕ) : ℝ) * δ ≤ a ^ 2 * δ` using `by gcongr; linarith`. Establish `hv` using `hexp (pY B) (by nlinarith [hr.1])`. Establish `e : UpqT.mat (k * eP B) - 1 = (UpqT.mat k - 1) + (NormedSpace.exp (pY B) - 1) + (UpqT.mat k - 1) * (NormedSpace.exp (pY B) - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mat_mul, mat_eP]`. Use `noncomm_ring`. Establish `b1` using `l1_add_le ((UpqT.mat k - 1) + (NormedSpace.exp (pY B) - 1)) ((UpqT.mat k - 1) * (NormedSpace.exp (pY B) - 1))`. Establish `b2` using `l1_add_le (UpqT.mat k - 1) (NormedSpace.exp (pY B) - 1)`. Establish `b3` using `matrixEntryAbsSum_mul_le (UpqT.mat k - 1) (NormedSpace.exp (pY B) - 1)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `b4 : l1 (UpqT.mat k - 1) * l1 (NormedSpace.exp (pY B) - 1) ≤ l1 (UpqT.mat k - 1) * (1 / 20)` using `mul_le_mul_of_nonneg_left (by nlinarith [hr.2]) (weightAbsEntrySum_nonneg _)`. Establish `b5 : (a ^ 2 / 4 + ((p ^ 2 + q ^ 2 : ℕ) : ℝ)) * δ + 2 * ((p * q : ℕ) : ℝ) * δ = 5 / 4 * (a ^ 2 * δ)`. Establish `: ((p ^ 2 + q ^ 2 : ℕ) : ℝ) = a ^ 2 - 2 * ((p * q : ℕ) : ℝ)` using `by linarith`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `b6 : l1 (UpqT.mat (k * eP B) - 1) ≤ 7 / 8 * r` using `by rw [e]; linarith`. Take `⟨X, hX, hXl⟩` from `hlog (k * eP B) (by linarith [hr.1])`. Conclude with `⟨X, show l1 (X : Mat p q) < r by linarith, hX⟩`. Establish `hmE : ENNReal.ofReal (c * ((δ / (9 / 2)) ^ (p ^ 2 + q ^ 2) * (Real.pi * δ ^ 2) ^ (p * q))) ≤ m E`. Rewrite using `[← measure_toMeasurable E, ← lintegral_indicator_one (measurableSet_toMeasurable m E), hf _ (measurable_one.indicator (measurableSet_toMeasurable m E)), ENNReal.ofReal_mul hc.le, ENNReal.ofReal_mul (by positivity), ← volume_polydisc hδ0, ← lintegral_indicator_const hDm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_right (lintegral_mono fun B => ?_) _` and prove the remaining obligations. Distinguish the cases in `hB : B ∈ D`. Rewrite using `[Set.indicator_of_mem hB]`. Use `le_trans ?_ (le_mul_of_one_le_right' (ENNReal.one_le_ofReal.2 (one_le_polJ (Matrix.of B))))` and prove the remaining obligations. Use `(measure_ball_K p q mK hprob hK0 hleft δ hδ0 (by linarith [hr.2])).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← lintegral_indicator_one hUm]`. Use `lintegral_mono fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k ∈ U`. Rewrite using `[Set.indicator_of_mem hk, Set.indicator_of_mem (subset_toMeasurable m E (hsub k hk B hB))]`. Conclude with `le_rfl`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_notMem hk]`. Conclude with `zero_le`. Rewrite using `[Set.indicator_of_notMem hB]`. Conclude with `zero_le`. Use `le_trans (le_of_eq ?_) (ENNReal.div_le_div hmE (GlobalTheory.T.lam_ballU_le_ofReal_pow p q lam hlam r hr0))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← ENNReal.ofReal_div_of_pos (hpos _ (by positivity))]`. Use `congr 1`. Establish `e1 : (18 / 5 * r / a) ^ ((p + q) ^ 2) = (18 / 5 * w / a) ^ ((p + q) ^ 2) * (δ ^ (p ^ 2 + q ^ 2) * (δ ^ 2) ^ (p * q))`. Rewrite using `[← pow_mul, ← pow_add, show p ^ 2 + q ^ 2 + 2 * (p * q) = (p + q) ^ 2 by ring, ← mul_pow, hr']`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `hpos (18 / 5 * w) (by positivity)` as an intermediate fact. Use `Real.pi_pos` as an intermediate fact. Rewrite using `[e1, hQ, div_pow δ, mul_pow Real.pi]`. Clear the denominators using the available nonvanishing facts.
-
-Establish `h1 : Formalism.L2.Theta.minfDensity (p + q) ≤ 1` using `ENNReal.inv_le_one.2 (one_le_pow₀ (by norm_num))`. Establish `h2` using `ENNReal.ofReal_le_one.1 (main.trans h1)`. Rewrite `h2` using `[div_le_one hQ0]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem const_le (m mK : Measure (UpqT p q)) (hm : Formalism.IndefR.Lev.IsMinf m) (c : ℝ) (hc : 0 < c)
     (hprob : IsProbabilityMeasure mK) (hK0 : mK (Kc p q)ᶜ = 0)
@@ -329,17 +319,17 @@ theorem const_le (m mK : Measure (UpqT p q)) (hm : Formalism.IndefR.Lev.IsMinf m
   rwa [div_le_one hQ0] at h2
 
 /- English proof (translation)
-Establish `h1 : coshPow c (k * eP B) ≤ (2 : ℝ) ^ (c * (min p q : ℕ)) * Real.exp (-(c * ∑ i ∈ Finset.range (min p q), singVal (Matrix.of B) i))`. Unfold `coshPow`. Rewrite using `[cartanB_mul_eP hk, Real.rpow_mul_natCast (by norm_num), Finset.mul_sum, ← Finset.sum_neg_distrib, Real.exp_sum, ← Finset.card_range (min p q), ← Finset.prod_const, Finset.card_range, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun i _ => (Real.rpow_pos_of_pos (Real.cosh_pos _) _).le) fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.1 hi`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc0 : 0 ≤ c`. Establish `: (1 : ℝ) ≤ ((p + q : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ p + q)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set s := singVal (Matrix.of B) i`. Establish `b1 : Real.exp s / 2 ≤ Real.cosh s`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.cosh_eq]`. Combine the linear relations using `[Real.exp_pos (-s)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.div_rpow (by positivity) (by norm_num), ← Real.exp_mul, Real.rpow_neg (by norm_num), div_inv_eq_mul, mul_comm]`. Use `congr 2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `polJ_le_exp (Matrix.of B)`. Establish `h3` using `GlobalTheory.T.sum_norm_entries_le_sum_singularValues p q (Matrix.of B)`. Use `(mul_le_mul h1 h2 (zero_le_one.trans (one_le_polJ _)) (by positivity)).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← Real.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) (by positivity)` and prove the remaining obligations. Establish `hs : 0 < (((p + q : ℕ) : ℝ) + 1) / 2` using `by positivity`. Establish `h4 : (c - 2 * (((p + q : ℕ) : ℝ) - 1)) / ((((p + q : ℕ) : ℝ) + 1) / 2) * ∑ i, ∑ j, ‖B i j‖ ≤ (c - 2 * (((p + q : ℕ) : ℝ) - 1)) * ∑ i ∈ Finset.range (min p q), singVal (Matrix.of B) i`. Rewrite using `[div_mul_eq_mul_div, mul_div_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ (by linarith)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_iff₀' hs]`. Conclude with `h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem integrand_le {c : ℝ} (hc : 2 * (((p + q : ℕ) : ℝ) - 1) < c) {k : UpqT p q} (hk : k ∈ Kc p q)
     (B : Fin p → Fin q → ℂ) : coshPow c (k * eP B) * polJ (pY B) ≤ (2 : ℝ) ^ (c * (min p q : ℕ)) *
@@ -378,9 +368,9 @@ theorem integrand_le {c : ℝ} (hc : 2 * (((p + q : ℕ) : ℝ) - 1) < c) {k : U
   linarith
 
 /- English proof (translation)
-Rewrite using `[hf _ (GlobalTheory.T.measurable_coshPow' p q c).ennreal_ofReal, ENNReal.ofReal_mul hC.le, ENNReal.ofReal_mul (by positivity), ← GlobalTheory.T.lintegral_exp_neg_mul_sum_norm_matrix p q _ (div_pos (by linarith) (by positivity)), ← lintegral_const_mul' (ENNReal.ofReal (2 ^ _)) _ E …`. Use `mul_le_mul_right (lintegral_mono fun B => ?_) _` and prove the remaining obligations. Rewrite using `[← lintegral_mul_const' _ _ ENNReal.ofReal_ne_top, ← ENNReal.ofReal_mul (by positivity)]`. Use `le_trans (lintegral_mono_ae ?_) (le_of_eq (by rw [lintegral_const, measure_univ, mul_one]))` and prove the remaining obligations. Use `filter_upwards [show ∀ᵐ k ∂mK, k ∈ Kc p q from hK0] with k hk`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_mul (coshPow_pos _ _).le]`. Conclude with `ENNReal.ofReal_le_ofReal (integrand_le hc hk B)`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_coshPow_le (m mK : Measure (UpqT p q)) (C : ℝ) (hC : 0 < C)
     (hprob : IsProbabilityMeasure mK) (hK0 : mK (Kc p q)ᶜ = 0)
@@ -399,14 +389,14 @@ theorem lintegral_coshPow_le (m mK : Measure (UpqT p q)) (C : ℝ) (hC : 0 < C)
   exact ENNReal.ofReal_le_ofReal (integrand_le hc hk B)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_le_prod (fun _ _ => (Real.rpow_pos_of_pos (Real.cosh_pos _) _).le) fun _ _ => Real.rpow_le_rpow_of_exponent_le (Real.one_le_cosh _) (neg_le_neg h)`.
+A detailed English derivation is pending.
 -/
 theorem coshPow_anti {c c' : ℝ} (h : c ≤ c') (g : UpqT p q) : coshPow c' g ≤ coshPow c g :=
   Finset.prod_le_prod (fun _ _ => (Real.rpow_pos_of_pos (Real.cosh_pos _) _).le) fun _ _ =>
     Real.rpow_le_rpow_of_exponent_le (Real.one_le_cosh _) (neg_le_neg h)
 
 /- English proof (translation)
-Introduce `p q m hm c hc`. Take `⟨C, mK, hC, hprob, hK0, -, hf⟩` from `haar_polar p q m hm.1`. Use `⟨(GlobalTheory.T.measurable_coshPow' p q c).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun g => (coshPow_pos c g).le)]`. Conclude with `(lintegral_coshPow_le m mK C hC hprob hK0 hf hc).trans_lt ENNReal.ofReal_lt_top`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coshFinite : CoshFinite := by
   intro p q m hm c hc
@@ -416,7 +406,7 @@ theorem coshFinite : CoshFinite := by
   exact (lintegral_coshPow_le m mK C hC hprob hK0 hf hc).trans_lt ENNReal.ofReal_lt_top
 
 /- English proof (translation)
-Introduce `p q m hm c₀ hc`. Use `⟨(c₀ - 2 * (((p + q : ℕ) : ℝ) - 1)) / 2, by linarith, coshPow (c₀ - (c₀ - 2 * (((p + q : ℕ) : ℝ) - 1)) / 2), coshFinite p q m hm _ (by linarith), fun c h g => coshPow_anti ?_ g⟩` and prove the remaining obligations. Combine the linear relations using `[(abs_lt.1 h).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem coshLocUnif : CoshLocUnif := by
   intro p q m hm c₀ hc
@@ -426,11 +416,11 @@ theorem coshLocUnif : CoshLocUnif := by
   linarith [(abs_lt.1 h).1]
 
 /- English proof (translation)
-Introduce `p q m hm n t hn`. Establish `hn' : ((p + q : ℕ) : ℝ) ≤ n` using `by exact_mod_cast (by omega : p + q ≤ n)`. Establish `hi` using `coshFinite p q m hm (2 * n) (by linarith)`. Establish `hc : 2 * (((p + q : ℕ) : ℝ) - 1) < 2 * ((p + q : ℕ) : ℝ)` using `by linarith`. Establish `hi'` using `coshFinite p q m hm _ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hi, (integral_mono hi hi' fun g => coshPow_anti (by linarith) g).trans ?_⟩` and prove the remaining obligations. Take `⟨C, mK, hC, hprob, hK0, hleft, hf⟩` from `haar_polar p q m hm.1`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun g => (coshPow_pos _ g).le) hi'.1]`. Use `ENNReal.toReal_le_of_le_ofReal (Real.exp_pos _).le ((lintegral_coshPow_le m mK C hC hprob hK0 hf hc).trans (ENNReal.ofReal_le_ofReal ?_))` and prove the remaining obligations. Use `le_trans ?_ (GlobalTheory.T.cosh_constant_le_exp_three_mul_sq_mul_log p q)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show 2 * ((p + q : ℕ) : ℝ) - 2 * (((p + q : ℕ) : ℝ) - 1) = 2 by ring, show 2 * ((p + q : ℕ) : ℝ) * ((min p q : ℕ) : ℝ) = ((2 * (p + q) * min p q : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]`. Conclude with `mul_le_mul_of_nonneg_right (const_le m mK hm C hC hprob hK0 hleft hf) (by positivity)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coshBound : CoshBound := by
   intro p q m hm n t hn
@@ -450,7 +440,7 @@ theorem coshBound : CoshBound := by
   exact mul_le_mul_of_nonneg_right (const_le m mK hm C hC hprob hK0 hleft hf) (by positivity)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨coshFinite, coshLocUnif, coshBound⟩`.
+Supply the required witnesses or components.
 -/
 theorem coshIntegral : CoshIntegral := ⟨coshFinite, coshLocUnif, coshBound⟩
 

@@ -46,13 +46,13 @@ noncomputable def tqOfIso {S : Scheme.{0}} {X : Type} [AddCommGroup X] {G : Over
       exact ⟨β.inv.left ⁻¹ᵁ V, hV, res le u, hu.res le⟩ }
 
 /- English proof (translation)
-Introduce `hw Q X _ _ _ G _ _ T β hβ M hM hiso`. Use `haveI := hβ`. Establish `hL` using `Q.isLB`. Establish `hN : (LB.div M Q.L).IsLB` using `LB.isLB_div hM hL`. Establish `hNp : ((LB.div M Q.L).pull (T.q ≫ β.hom).left).IsLB` using `LB.isLB_pull hN _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : cls ((LB.div M Q.L).pull (T.q ≫ β.hom).left) hNp = 0`. Rewrite using `[cls_pull hN _ hNp, cls_div hM hL hN, map_sub, ← cls_pull hM _ (LB.isLB_pull hM _), ← cls_pull hL _ (LB.isLB_pull hL _), sub_eq_zero]`. Conclude with `(cls_eq_iff _ _).2 hiso`. Take `⟨t, ht⟩` from `(cls_eq_zero_iff hNp).1 hc`. Set `T'` to `tqOfIso T Q.isAb β`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨χ, t', ht'⟩` from `hw ℂ X G T' (LB.div M Q.L) hN t ht`. Take `⟨N', s, hN', hs, u, hu⟩` from `GlobalTheory.WtBundle.exists_genWt T' χ`. Establish `hI : LBIso (LB.div M Q.L) N'` using `GlobalTheory.UU.lbIso_of_genWt _ X G T' _ N' t' s χ hN hN' ht' hs`. Establish `hLam : (abelian₂ Q.A (LB.div M Q.L)).IsLB` using `LB.isLB_linComb hN _ _`. Establish `hLam' : (abelian₂ Q.A N').IsLB` using `LB.isLB_linComb hN' _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `(cls_eq_zero_iff hLam').2 ⟨u, hu⟩`. Use `(cls_eq_zero_iff hLam).1 ?_` and prove the remaining obligations. Use `(cls_linComb hN _ _ hLam).trans ?_` and prove the remaining obligations. Rewrite using `[(cls_eq_iff hN hN').2 hI]`. Conclude with `(cls_linComb hN' _ _ hLam').symm.trans h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamdiff : (∀ (k : Type) [Field k] [IsAlgClosed k] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (G : Over (Sp k)) [GrpObj G] [IsCommMonObj G] (T : GlobalTheory.UU.TQ G X) (N : LB T.B.left), N.IsLB → ∀ t : LB.Gen (N.pull T.q.left), t.IsGen → ∃ (χ : X) (t' : LB.Gen (N.pull T.q.left)), T.GenWt N t' χ) → ∀ (Q : Out.PolAV (Sp ℂ)) (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (G : Over (Sp ℂ)) [GrpObj G] [IsCommMonObj G] (T : GlobalTheory.UU.TQ G X) (β : T.B ≅ Q.A), IsMonHom β.hom → ∀ M : LB Q.A.left, M.IsLB → LBIso (M.pull (T.q ≫ β.hom).left) (Q.L.pull (T.q ≫ β.hom).left) → ∃ u : LB.Gen (abelian₂ Q.A (LB.div M Q.L)), u.IsGen := by
   intro hw Q X _ _ _ G _ _ T β hβ M hM hiso

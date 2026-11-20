@@ -25,7 +25,7 @@ theorem evI_apply (v : InfinitePlace I.F) (a : Formalism.MainNotions.GlobalTheor
     evI I v a = InfinitePlace.Completion.extensionEmbedding v (a v) := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbedding v (algebraMap I.F v.Completion a) = _`. Conclude with `InfinitePlace.Completion.extensionEmbedding_coe v ((WithAbs.equiv v.1).symm a)`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem evI_algebraMap (v : InfinitePlace I.F) (a : I.F) :
     evI I v (algebraMap I.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) a) = v.embedding a := by
@@ -41,7 +41,7 @@ def thI (v : InfinitePlace I.F) : TI I →+* ℂ :=
     (fun _ _ => Commute.all _ _)).toRingHom
 
 /- English proof (translation)
-Simplify using `[thI]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thI_tmul (v : InfinitePlace I.F) (a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) (x : I.E) :
     thI I v (a ⊗ₜ[I.F] x) = evI I v a * I.φ v x := by
@@ -50,14 +50,14 @@ theorem thI_tmul (v : InfinitePlace I.F) (a : Formalism.MainNotions.GlobalTheory
 def kap : TT I →+* TI I := Formalism.L2.SG.Measures.tensMap (E := I.E) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA I.F)
 
 /- English proof (translation)
-Simplify using `[kap, Formalism.L2.SG.Measures.tensMap]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem kap_tmul (a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) (x : I.E) : kap I (a ⊗ₜ[I.F] x) = a.1 ⊗ₜ[I.F] x := by
   simp [kap, Formalism.L2.SG.Measures.tensMap]
   rfl
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rw [kap_tmul, thI_tmul, thetaV_tmul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem thI_kap (v : InfinitePlace I.F) (y : TT I) : thI I v (kap I y) = thetaV I v y := by
   induction y using TensorProduct.induction_on with
@@ -66,11 +66,11 @@ theorem thI_kap (v : InfinitePlace I.F) (y : TT I) : thI I v (kap I y) = thetaV 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `tmul a x`. Set `a0 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F` to `(a, 0)`. Use `⟨a0 ⊗ₜ[I.F] x, kap_tmul I a0 x, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[tauF_tmul]`. Conclude with `TensorProduct.tmul_zero _ _`. Consider the case `add x y hx hy`. Take `⟨x0, hx0, hx1⟩` from `hx`. Take `⟨y0, hy0, hy1⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x0 + y0, by rw [map_add, hx0, hy0], by rw [map_add, hx1, hy1, add_zero]⟩`.
+A detailed English derivation is pending.
 -/
 theorem kap_surj (y : TI I) : ∃ y0 : TT I, kap I y0 = y ∧ tauF I y0 = 0 := by
   induction y using TensorProduct.induction_on with
@@ -86,7 +86,7 @@ theorem kap_surj (y : TI I) : ∃ y0 : TT I, kap I y0 = y ∧ tauF I y0 = 0 := b
     exact ⟨x0 + y0, by rw [map_add, hx0, hy0], by rw [map_add, hx1, hy1, add_zero]⟩
 
 /- English proof (translation)
-Take `⟨y0, rfl, hτ⟩` from `kap_surj I y`. Establish `: y0 = 0` using `TT_ext I y0 (fun v => by rw [← thI_kap]; exact h v) hτ`. Rewrite using `[this, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem thI_inj (y : TI I) (h : ∀ v, thI I v y = 0) : y = 0 := by
   obtain ⟨y0, rfl, hτ⟩ := kap_surj I y
@@ -94,20 +94,20 @@ theorem thI_inj (y : TI I) (h : ∀ v, thI I v y = 0) : y = 0 := by
   rw [this, map_zero]
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.1 (thI_inj I _ fun v => by rw [map_sub, h v, sub_self])`.
+A detailed English derivation is pending.
 -/
 theorem thI_ext (y y' : TI I) (h : ∀ v, thI I v y = thI I v y') : y = y' :=
   sub_eq_zero.1 (thI_inj I _ fun v => by rw [map_sub, h v, sub_self])
 
 /- English proof (translation)
-Take `⟨y0, h1, -⟩` from `TT_surj I z 0`. Conclude with `⟨kap I y0, fun v => by rw [thI_kap]; exact h1 v⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem thI_surj (z : InfinitePlace I.F → ℂ) : ∃ y : TI I, ∀ v, thI I v y = z v := by
   obtain ⟨y0, h1, -⟩ := TT_surj I z 0
   exact ⟨kap I y0, fun v => by rw [thI_kap]; exact h1 v⟩
 
 /- English proof (translation)
-Use `show thI I v ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) ⊗ₜ[I.F] x) = _`. Rewrite using `[thI_tmul, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thI_inclR (v : InfinitePlace I.F) (x : I.E) :
     thI I v (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) x) = I.φ v x := by
@@ -115,11 +115,11 @@ theorem thI_inclR (v : InfinitePlace I.F) (x : I.E) :
   rw [thI_tmul, map_one, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y`. Establish `hs : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig (a ⊗ₜ[I.F] y) = a ⊗ₜ[I.F] I.cm.sig y`. Simplify using `[Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs, thI_tmul, thI_tmul, map_mul]`. Use `congr 1`. Establish `hv : v.IsReal` using `I.cm.totReal.isReal v`. Rewrite using `[evI_apply, ← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hv, Complex.conj_ofReal]`. Conclude with `I.cm.cmUnram.2.1 (I.φ v) y`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+A detailed English derivation is pending.
 -/
 theorem thI_sigR (v : InfinitePlace I.F) (x : TI I) :
     thI I v (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig x) =
@@ -143,15 +143,15 @@ instance topRingTI : IsTopologicalRing (TI I) :=
   IsModuleTopology.isTopologicalRing (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) (TI I)
 
 /- English proof (translation)
-The claim follows from `(InfinitePlace.Completion.isometry_extensionEmbedding v).continuous.comp (continuous_apply v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_evI (v : InfinitePlace I.F) : Continuous (evI I v) :=
   (InfinitePlace.Completion.isometry_extensionEmbedding v).continuous.comp (continuous_apply v)
 
 /- English proof (translation)
-Apply `IsModuleTopology.continuous_of_ringHom (R := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F)` to reduce the goal to its premises. Establish `: (thI I v).comp (algebraMap (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) (TI I)) = evI I v`. Use extensionality with `a`. Simplify using `[Algebra.TensorProduct.algebraMap_apply, thI_tmul]`. Rewrite using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_evI I v`.
+A detailed English derivation is pending.
 -/
 theorem continuous_thI (v : InfinitePlace I.F) : Continuous (thI I v) := by
   apply IsModuleTopology.continuous_of_ringHom (R := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F)
@@ -162,9 +162,9 @@ theorem continuous_thI (v : InfinitePlace I.F) : Continuous (thI I v) := by
   exact continuous_evI I v
 
 /- English proof (translation)
-Apply `IsModuleTopology.continuous_of_ringHom (R := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F)` to reduce the goal to its premises. Use `IsModuleTopology.toContinuousSMul (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) (TI I)` as an intermediate fact. Establish `: (kap I).comp (algebraMap (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) (TT I)) = (algebraMap (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) (TI I)).comp (RingHom.fst (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) …`. Use extensionality with `a`. Use `show kap I (algebraMap _ _ a) = algebraMap _ (TI I) a.1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.algebraMap_self, RingHom.id_apply, kap_tmul]`. Rewrite using `[this]`. Conclude with `(continuous_algebraMap (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) (TI I)).comp continuous_fst`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_kap : Continuous (kap I) := by
   apply IsModuleTopology.continuous_of_ringHom (R := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F)

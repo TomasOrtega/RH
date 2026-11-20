@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.Cong.LimitAtL
 
 /- English proof (translation)
-Use `show (∀ h : H, ρ (h : G) v = ((1 : H →* kˣ) h : k) • v) ↔ _`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Conclude with `⟨fun h g hg => h ⟨g, hg⟩, fun h g => h g g.2⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_fixed {k G V : Type} [Field k] [Group G] [AddCommGroup V] [Module k V] {ρ : Representation k G V}
     {H : Subgroup G} {v : V} : v ∈ GlobalTheory.PRep.fixed ρ H ↔ ∀ h ∈ H, ρ h v = v := by

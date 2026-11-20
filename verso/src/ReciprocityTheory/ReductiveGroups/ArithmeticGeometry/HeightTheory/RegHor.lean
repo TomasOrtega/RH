@@ -6,7 +6,7 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 open IsLocalRing
 
 /- English proof (translation)
-Conclude with `reg_horizontal_pf P hh hmeet e he f hdvr hf`.
+A detailed English derivation is pending.
 -/
 theorem reg_horizontal {O A : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] [CharZero O]

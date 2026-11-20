@@ -20,7 +20,7 @@ abbrev Rn (n : ℕ) := O ⧸ span {(p : O) ^ (n + 1)}
 abbrev R'n (ε : PreTilt O p) (n : ℕ) := R0 p O ε ⧸ span {(p : R0 p O ε) ^ (n + 1)}
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (Ideal.Quotient.mk (span {(p : O) ^ (n + 1)})) p, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hpRn (n : ℕ) : (p : Rn p O n) ^ (n + 1) = 0 := by
   rw [← map_natCast (Ideal.Quotient.mk (span {(p : O) ^ (n + 1)})) p, ← map_pow,
@@ -28,7 +28,7 @@ lemma hpRn (n : ℕ) : (p : Rn p O n) ^ (n + 1) = 0 := by
   exact Ideal.mem_span_singleton_self _
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (Ideal.Quotient.mk (span {(p : R0 p O ε) ^ (n + 1)})) p, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hpR' (ε : PreTilt O p) (n : ℕ) : (p : R'n p O ε n) ^ (n + 1) = 0 := by
   rw [← map_natCast (Ideal.Quotient.mk (span {(p : R0 p O ε) ^ (n + 1)})) p, ← map_pow,
@@ -36,9 +36,9 @@ lemma hpR' (ε : PreTilt O p) (n : ℕ) : (p : R'n p O ε n) ^ (n + 1) = 0 := by
   exact Ideal.mem_span_singleton_self _
 
 /- English proof (translation)
-Use `haveI := O_local O hv`. Use `haveI : Nontrivial (Rn p O n) := by`. Use `⟨⟨0, 1, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : (1 : O) ∈ span {(p : O) ^ (n + 1)}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h.symm`. Rewrite `h1` using `[Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `h1`. Conclude with `(Fact.out : ¬IsUnit (p : O)) ((isUnit_pow_iff (Nat.succ_ne_zero n)).1 (IsUnit.of_mul_eq_one_right a ha))`. Conclude with `IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`.
+A detailed English derivation is pending.
 -/
 lemma Rn_local (hv : v.Integers O) (n : ℕ) : IsLocalRing (Rn p O n) := by
   haveI := O_local O hv
@@ -53,7 +53,7 @@ lemma Rn_local (hv : v.Integers O) (n : ℕ) : IsLocalRing (Rn p O n) := by
   exact IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective
 
 /- English proof (translation)
-Conclude with `IsUnit.of_mul_eq_one (1 - a * b) (by linear_combination (-a ^ 2) * hb)`.
+A detailed English derivation is pending.
 -/
 lemma one_add_unit {S : Type} [CommRing S] (a b : S) (hb : b * b = 0) : IsUnit (1 + a * b) := by
   exact IsUnit.of_mul_eq_one (1 - a * b) (by linear_combination (-a ^ 2) * hb)
@@ -86,7 +86,7 @@ lemma piRing_mk (n : ℕ) (a : A p O) :
       Ideal.Quotient.mk _ (fontaineTheta O p a) := rfl
 
 /- English proof (translation)
-Introduce `y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨a, rfl⟩` from `theta_surj p O hv x`. Conclude with `⟨_, piRing_mk p O hv ε hε n a⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma piRing_surj (n : ℕ) : Function.Surjective (piRing p O hv ε hε n) := by
   intro y
@@ -98,13 +98,13 @@ def xiR (n : ℕ) : R'n p O ε n :=
   Ideal.Quotient.mk (span {(p : R0 p O ε) ^ (n + 1)}) (Ideal.Quotient.mk (span {xi p O ε ^ 2}) (xi p O ε))
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[RingHom.mem_ker]`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[piRing_mk, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Take `⟨o, ho⟩` from `hx`. Take `⟨b, rfl⟩` from `theta_surj p O hv o`. Establish `hk : a - b * (p : A p O) ^ (n + 1) ∈ RingHom.ker (fontaineTheta O p)`. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, map_pow, map_natCast, ho, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hk` using `[ker_theta p O hv ε hε, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hk`. Establish `ha : a = c * xi p O ε + b * (p : A p O) ^ (n + 1)` using `by rw [hc]; ring`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨Ideal.Quotient.mk _ (Ideal.Quotient.mk _ c), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ha]`. Simplify using `only [xiR, map_add, map_mul, map_pow, map_natCast, hpR', mul_zero, add_zero]`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, RingHom.mem_ker, xiR, piRing_mk, theta_xi p O hv ε hε, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma ker_pi (n : ℕ) : RingHom.ker (piRing p O hv ε hε n) = span {xiR p O ε n} := by
   apply le_antisymm
@@ -128,7 +128,7 @@ lemma ker_pi (n : ℕ) : RingHom.ker (piRing p O hv ε hε n) = span {xiR p O ε
       theta_xi p O hv ε hε, map_zero]
 
 /- English proof (translation)
-Unfold `xiR`. Rewrite using `[← map_mul, ← map_mul]`. Establish `h : (Ideal.Quotient.mk (span {xi p O ε ^ 2})) (xi p O ε * xi p O ε) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton'.2 ⟨1, by ring⟩)`. Rewrite using `[h, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma xi_sq' (n : ℕ) : xiR p O ε n * xiR p O ε n = 0 := by
   unfold xiR
@@ -138,13 +138,13 @@ lemma xi_sq' (n : ℕ) : xiR p O ε n * xiR p O ε n = 0 := by
   rw [h, map_zero]
 
 /- English proof (translation)
-Use `haveI := Rn_local p O hv n`. Use `haveI : Nontrivial (R'n p O ε n) := (piRing p O hv ε hε n).domain_nontrivial`. Establish `key : ∀ a : R'n p O ε n, IsUnit (piRing p O hv ε hε n a) → IsUnit a`. Introduce `a ha`. Take `⟨u, hu⟩` from `ha.exists_right_inv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u', rfl⟩` from `piRing_surj p O hv ε hε n u`. Establish `hk : a * u' - 1 ∈ RingHom.ker (piRing p O hv ε hε n)`. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, hu, map_one, sub_self]`. Rewrite `hk` using `[ker_pi, Ideal.mem_span_singleton']`. Take `⟨k, hk⟩` from `hk`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : a * u' = 1 + k * xiR p O ε n` using `by rw [hk]; ring`. Establish `h2` using `one_add_unit k (xiR p O ε n) (xi_sq' p O hv ε hε n)`. Rewrite `h2` using `[← h1]`. Conclude with `isUnit_of_mul_isUnit_left h2`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self (fun a => ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h : piRing p O hv ε hε n a + piRing p O hv ε hε n (1 - a) = 1`. Rewrite using `[← map_add, add_sub_cancel, map_one]`. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one h with h | h` into its components or cases. Conclude with `Or.inl (key a h)`. Conclude with `Or.inr (key _ h)`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 lemma R'n_local (n : ℕ) : IsLocalRing (R'n p O ε n) := by
   haveI := Rn_local p O hv n
@@ -169,17 +169,17 @@ lemma R'n_local (n : ℕ) : IsLocalRing (R'n p O ε n) := by
   · exact Or.inr (key _ h)
 
 /- English proof (translation)
-Use `haveI : IsDomain O := Function.Injective.isDomain (algebraMap O C) hv.hom_inj`. Establish `hp0 : (p : O) ≠ 0`. Introduce `h`. Establish `h'` using `congrArg (algebraMap O C) h`. Rewrite `h'` using `[map_natCast, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hp.out.ne_zero (by exact_mod_cast h')`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Unfold `xiR at ha`. Rewrite `ha` using `[← map_mul, ← map_mul, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d0, hd0⟩` from `ha`. Take `⟨d, rfl⟩` from `Ideal.Quotient.mk_surjective d0`. Rewrite `hd0` using `[← map_natCast (Ideal.Quotient.mk (span {xi p O ε ^ 2})) p, ← map_pow, ← map_mul, Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hd0`. Establish `h1 : fontaineTheta O p d * (p : O) ^ (n + 1) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h'` using `congrArg (fontaineTheta O p) hc`. Simplify using `only [map_mul, map_sub, map_pow, map_natCast, theta_xi p O hv ε hε] at h'`. Take the linear combination `-h'`. Establish `h2 : fontaineTheta O p d = 0` using `(mul_eq_zero.1 h1).resolve_right (pow_ne_zero _ hp0)`. Establish `h3 : d ∈ RingHom.ker (fontaineTheta O p)` using `h2`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h3` using `[ker_theta p O hv ε hε, Ideal.mem_span_singleton']`. Take `⟨e0, rfl⟩` from `h3`. Establish `h4 : (y - (e0 * (p : A p O) ^ (n + 1) - c * xi p O ε)) * xi p O ε = 0`. Take the linear combination `hc`. Establish `h5` using `xi_nzd p O hv ε hε _ h4`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h5` using `[sub_eq_zero]`. Rewrite using `[h5, Ideal.mem_span_singleton']`. Use `⟨-(Ideal.Quotient.mk _ (Ideal.Quotient.mk _ c)), ?_⟩` and prove the remaining obligations. Simplify using `only [xiR, map_sub, map_mul, map_pow, map_natCast, hpR', mul_zero, zero_sub, neg_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ann' (n : ℕ) (a : R'n p O ε n) (ha : a * xiR p O ε n = 0) :
     a ∈ span {xiR p O ε n} := by
@@ -220,7 +220,7 @@ def zv (n : ℕ) : R'n p O ε n :=
 def nuR (n : ℕ) : R'n p O ε n := Ideal.Quotient.mk _ (Ideal.Quotient.mk _ (nu p O ε))
 
 /- English proof (translation)
-Unfold `zv nuR xiR`. Rewrite using `[← map_pow, ← map_pow, ← map_pow, root_pow, teich_eps p O hv ε hε, map_add, map_add, map_one, map_one, map_mul, map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma zv_pow (n : ℕ) :
     zv p O ε n ^ p ^ (n + 1) = 1 + nuR p O ε n * xiR p O ε n := by
@@ -229,7 +229,7 @@ lemma zv_pow (n : ℕ) :
     map_one, map_mul, map_mul]
 
 /- English proof (translation)
-Establish `hne : p ^ (n + 1) ≠ 0` using `pow_ne_zero _ hp.out.ne_zero`. Use `(isUnit_pow_iff hne).1 ?_` and prove the remaining obligations. Rewrite using `[zv_pow p O hv ε hε n]`. Conclude with `one_add_unit _ _ (xi_sq' p O hv ε hε n)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma zv_unit (n : ℕ) : IsUnit (zv p O ε n) := by
   have hne : p ^ (n + 1) ≠ 0 := pow_ne_zero _ hp.out.ne_zero
@@ -240,9 +240,9 @@ lemma zv_unit (n : ℕ) : IsUnit (zv p O ε n) := by
 def zetaV (n : ℕ) : O := fontaineTheta O p (teichmuller p (root p O ε (n + 1)))
 
 /- English proof (translation)
-Establish `hne : p ^ (n + 1) ≠ 0` using `pow_ne_zero _ hp.out.ne_zero`. Establish `h : zetaV p O ε n ^ p ^ (n + 1) = 1`. Unfold `zetaV`. Rewrite using `[← map_pow, ← map_pow, root_pow, teich_eps p O hv ε hε, map_add, map_one, map_mul, theta_xi p O hv ε hε, mul_zero, add_zero]`. Use `IsUnit.of_mul_eq_one (zetaV p O ε n ^ (p ^ (n + 1) - 1)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← pow_succ', Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.2 hne), h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma zeta_unit (n : ℕ) : IsUnit (zetaV p O ε n) := by
   have hne : p ^ (n + 1) ≠ 0 := pow_ne_zero _ hp.out.ne_zero
@@ -261,7 +261,7 @@ def LR (n : ℕ) : LAlg (R0 p O ε) :=
 def LR' (n : ℕ) : LAlg (R0 p O ε) := { carrier := R'n p O ε n, loc := R'n_local p O hv ε hε n }
 
 /- English proof (translation)
-Conclude with `Ideal.Quotient.mk_surjective`.
+A detailed English derivation is pending.
 -/
 lemma q_surj (n : ℕ) : Function.Surjective (Ideal.Quotient.mk (span {(p : O) ^ (n + 1)})) := by
   exact Ideal.Quotient.mk_surjective
@@ -291,20 +291,20 @@ def ainfTower : ATower (R0 p O ε) p where
   ζ_spec n := by rw [IsUnit.unit_spec, IsUnit.unit_spec]; rfl
 
 /- English proof (translation)
-Conclude with `theta_nu p O hv ε hε`.
+A detailed English derivation is pending.
 -/
 theorem ainfTower_c_ne_zero : (ainfTower p O hv ε hε).c ≠ 0 := by
   exact theta_nu p O hv ε hε
 
 /- English proof (translation)
-Use `show IsDomain O`. Conclude with `Function.Injective.isDomain (algebraMap O C) hv.hom_inj`.
+A detailed English derivation is pending.
 -/
 theorem ainfTower_isDomain : IsDomain ((ainfTower p O hv ε hε).O : Type) := by
   show IsDomain O
   exact Function.Injective.isDomain (algebraMap O C) hv.hom_inj
 
 /- English proof (translation)
-Conclude with `thmAFull B hB1 hB3 _`.
+A detailed English derivation is pending.
 -/
 theorem thmA_ainf (B : BX (R0 p O ε)) (hB1 : PairingPropertiesStatement B) (hB3 : TangentPairingStatement B) :
     ThmAFullStatement B (ainfTower p O hv ε hε) := by

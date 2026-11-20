@@ -17,9 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.FlipRun
 
 /- English proof (translation)
-Introduce `hLC hP`. Establish `hS` using `GlobalTheory.T.cuspidal_lifts_smooth_everywhere hLC hP`. Use `(GlobalTheory.RowClaim.Big.and (GlobalTheory.T.cuspidal_along_right_grid_arrows hS hP) (GlobalTheory.T.cuspidal_along_down_grid_arrows hS hP)).imp fun CF0 h ε CF hC => ?_` and prove the remaining obligations. Take `⟨x₀, h⟩` from `h ε CF hC`. Use `⟨x₀, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch hsc t M hM a ha e' he φ f hf Q F' hF => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `H` using `h D large₂ e hx Γ Pl0 T A Ks R F s ch hch hsc`. Break down `ha with ⟨i, j, hi, hj, rfl⟩ | ⟨i, j, hi, hj, rfl⟩` into its components or cases. Conclude with `H.1 t M hM _ (Or.inl ⟨i, j, hi, hj, rfl⟩) ⟨i, j, rfl⟩ e' he φ f hf Q F' hF`. Conclude with `H.2 t M hM _ (Or.inr ⟨i, j, hi, hj, rfl⟩) ⟨i, j, rfl⟩ e' he φ f hf Q F' hF`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem cuspStep_big : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.RowClaim.Big fun {_} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (M : Vol ch.G), M.Is t → GlobalTheory.FlipRun.CuspStep ch.W M ch.rm t := by
   intro hLC hP

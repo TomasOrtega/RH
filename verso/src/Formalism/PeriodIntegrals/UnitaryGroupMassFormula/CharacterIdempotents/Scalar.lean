@@ -13,14 +13,14 @@ section General
 variable {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Rewrite using `[PI.CharIdem.act, MonoidAlgebra.lift_single]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_single (W : FDRep ℂ G) (g : G) (c : ℂ) :
     act W (MonoidAlgebra.single g c) = c • W.ρ g := by
   rw [PI.CharIdem.act, MonoidAlgebra.lift_single]
 
 /- English proof (translation)
-Rewrite using `[PI.CharIdem.charIdem, map_sum]`. Simplify using `only [act_single]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_charIdem (V W : FDRep ℂ G) :
     act W (charIdem V) = ∑ g : G,
@@ -29,7 +29,7 @@ theorem act_charIdem (V W : FDRep ℂ G) :
   simp only [act_single]
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Fintype.sum_equiv (MulAut.conj h).toEquiv _ _ (fun g => ?_)` and prove the remaining obligations. Use `show W.ρ h * (f g • W.ρ g) = f (h * g * h⁻¹) • W.ρ (h * g * h⁻¹) * W.ρ h`. Rewrite using `[hf g h, smul_mul_assoc, mul_smul_comm, ← map_mul W.ρ h g, ← map_mul W.ρ (h * g * h⁻¹) h, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_of_class (W : FDRep ℂ G) (f : G → ℂ) (hf : ∀ g h : G, f (h * g * h⁻¹) = f g)
     (h : G) : W.ρ h * (∑ g : G, f g • W.ρ g) = (∑ g : G, f g • W.ρ g) * W.ρ h := by
@@ -40,9 +40,9 @@ theorem comm_of_class (W : FDRep ℂ G) (f : G → ℂ) (hf : ∀ g h : G, f (h 
     inv_mul_cancel_right]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hW`. Rewrite `hW` using `[not_nontrivial_iff_subsingleton]`. Establish `: Invertible ((Nat.card G : ℂ))` using `invertibleOfNonzero (Nat.cast_ne_zero.mpr (by rw [Nat.card_eq_fintype_card]; exact Fintype.card_ne_zero))`. Establish `horth` using `FDRep.char_orthonormal W W`. Establish `h0 : ∀ g : G, W.character g = 0` using `fun g => by`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : W.ρ g = 0` using `LinearMap.ext fun x => Subsingleton.elim _ _`. Use `show LinearMap.trace ℂ W (W.ρ g) = 0`. Rewrite using `[hz, map_zero]`. Establish `hne : Nonempty (W ≅ W)` using `⟨Iso.refl W⟩`. Simplify using `[h0, hne] at horth`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem nontrivial_of_simple_fdRep (W : FDRep ℂ G) [Simple W] : Nontrivial W := by
   by_contra hW
@@ -58,7 +58,7 @@ private theorem nontrivial_of_simple_fdRep (W : FDRep ℂ G) [Simple W] : Nontri
   simp [h0, hne] at horth
 
 /- English proof (translation)
-Use `nontrivial_of_simple_fdRep W` as an intermediate fact. Introduce `h`. Take `⟨x, hx⟩` from `exists_ne (0 : W)`. Apply `hx` to reduce the goal to its premises. Simplify using `using LinearMap.congr_fun h x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem end_one_ne_zero (W : FDRep ℂ G) [Simple W] : (1 : Module.End ℂ W) ≠ 0 := by
   have := nontrivial_of_simple_fdRep W
@@ -68,14 +68,14 @@ theorem end_one_ne_zero (W : FDRep ℂ G) [Simple W] : (1 : Module.End ℂ W) �
   simpa using LinearMap.congr_fun h x
 
 /- English proof (translation)
-The claim follows from `nontrivial_of_simple_fdRep W`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_of_simple (W : FDRep ℂ G) [Simple W] : Nontrivial W := nontrivial_of_simple_fdRep W
 
 /- English proof (translation)
-Set `f : W ⟶ W` to `{ hom := FGModuleCat.ofHom T comm := fun g => by`. Use extensionality with `x`. Conclude with `(LinearMap.congr_fun (hT g) x).symm }`. Take `⟨c, hc⟩` from `endomorphism_simple_eq_smul_id ℂ f`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Establish `hx` using `congrArg (fun φ : W ⟶ W => φ.hom.hom.hom x) hc`. Conclude with `hx.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem schur_scalar (W : FDRep ℂ G) [Simple W] (T : Module.End ℂ W)
     (hT : ∀ g : G, W.ρ g * T = T * W.ρ g) : ∃ c : ℂ, T = c • 1 := by
@@ -91,9 +91,9 @@ theorem schur_scalar (W : FDRep ℂ G) [Simple W] (T : Module.End ℂ W)
   exact hx.symm
 
 /- English proof (translation)
-Apply `schur_scalar W` to reduce the goal to its premises. Introduce `g`. Rewrite using `[act_charIdem]`. Use `comm_of_class W (fun x => (Module.finrank ℂ V : ℂ) / (Fintype.card G : ℂ) * V.character x⁻¹) ?_ g` and prove the remaining obligations. Introduce `x h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show (h * x * h⁻¹)⁻¹ = h * x⁻¹ * h⁻¹ by group, FDRep.char_conj]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem act_charIdem_eq_smul (V W : FDRep ℂ G) [Simple W] :
     ∃ c : ℂ, act W (charIdem V) = c • 1 := by
@@ -107,9 +107,9 @@ theorem act_charIdem_eq_smul (V W : FDRep ℂ G) [Simple W] :
 
 open scoped Classical in
 /- English proof (translation)
-Establish `: Invertible ((Nat.card G : ℂ))` using `invertibleOfNonzero (Nat.cast_ne_zero.mpr (by rw [Nat.card_eq_fintype_card]; exact Fintype.card_ne_zero))`. Establish `horth` using `FDRep.char_orthonormal W V`. Rewrite `horth` using `[Nat.card_eq_fintype_card]`. Rewrite using `[act_charIdem, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : ∀ x : G, (Module.finrank ℂ V : ℂ) / (Fintype.card G : ℂ) * V.character x⁻¹ * LinearMap.trace ℂ W (W.ρ x) = (Module.finrank ℂ V : ℂ) * ((Fintype.card G : ℂ)⁻¹ * (W.character x * V.character x⁻¹))` using `fun x => by`. Rewrite using `[show LinearMap.trace ℂ W (W.ρ x) = W.character x from rfl]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun x _ => h1 x), ← Finset.mul_sum, ← Finset.mul_sum, horth]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_act_charIdem (V W : FDRep ℂ G) [Simple V] [Simple W] :
     LinearMap.trace ℂ W (act W (charIdem V)) =
@@ -130,15 +130,15 @@ theorem trace_act_charIdem (V W : FDRep ℂ G) [Simple V] [Simple W] :
 end General
 
 /- English proof (translation)
-Introduce `G _ _ V W hV hW`. Use `hV` as an intermediate fact. Use `hW` as an intermediate fact. Take `⟨c, hc⟩` from `act_charIdem_eq_smul V W`. Establish `htr` using `trace_act_charIdem V W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `htr` using `[hc, map_smul, LinearMap.trace_one, smul_eq_mul]`. Establish `hWpos : (Module.finrank ℂ W : ℂ) ≠ 0`. Use `nontrivial_of_simple W` as an intermediate fact. Conclude with `Nat.cast_ne_zero.mpr Module.finrank_pos.ne'`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨e⟩`. Establish `hWV : Nonempty (W ≅ V)` using `⟨e.symm⟩`. Establish `hdim : (Module.finrank ℂ V : ℂ) = Module.finrank ℂ W`. Use `congr_fun (FDRep.char_iso e) 1` as an intermediate fact. Rewrite `this` using `[FDRep.char_one, FDRep.char_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `htr` using `[if_pos hWV, hdim, mul_one]`. Establish `hc1 : c = 1` using `mul_right_cancel₀ hWpos (htr.trans (one_mul _).symm)`. Rewrite using `[hc, hc1, one_smul]`. Introduce `hE`. Establish `hn : ¬ Nonempty (W ≅ V)` using `fun ⟨e⟩ => hE.false e.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `htr` using `[if_neg hn, mul_zero]`. Rewrite using `[hc, (mul_eq_zero.mp htr).resolve_right hWpos, zero_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalar : Scalar := by
   intro G _ _ V W hV hW

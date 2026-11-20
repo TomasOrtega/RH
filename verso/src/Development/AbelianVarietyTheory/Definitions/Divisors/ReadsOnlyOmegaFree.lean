@@ -21,7 +21,7 @@ open Classical
 def stdM (κ : Type) [Zero κ] [One κ] (b a : ℕ) : Matrix (Fin b) (Fin a) κ := fun i j => if i.val = j.val then 1 else 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi : i.val < b` using `lt_of_lt_of_le i.2 h`. Simplify using `[topL, stdM, hi, Matrix.one_apply, Fin.ext_iff]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem topL_stdM {κ : Type} [Zero κ] [One κ] {b a : ℕ} (h : a ≤ b) : topL a (stdM κ b a) = 1 := by
   ext i j
@@ -29,11 +29,11 @@ theorem topL_stdM {κ : Type} [Zero κ] [One κ] {b a : ℕ} (h : a ≤ b) : top
   simp [topL, stdM, hi, Matrix.one_apply, Fin.ext_iff]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use extensionality with `i j`. Distinguish the cases in `hi : i.val < a`. Use `congrFun (congrFun h2 ⟨i.val, hi⟩) j` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify `this` using `[topL, stdM, Matrix.one_apply, Fin.ext_iff]`. Establish `hne : i.val ≠ j.val` using `by have := j.2; omega`. Simplify using `[stdM, hne, h1 i j (by omega) j.2]`. Introduce and unpack `rfl`. Use `⟨fun i j hi hj => ?_, topL_stdM h⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : i.val ≠ j.val` using `by omega`. Simplify using `[stdM, hne]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem eq_stdM_iff {κ : Type} [Zero κ] [One κ] {b a : ℕ} (h : a ≤ b) (y : Matrix (Fin b) (Fin a) κ) :
     (LowZero a y ∧ topL a y = 1) ↔ y = stdM κ b a := by
@@ -51,17 +51,17 @@ theorem eq_stdM_iff {κ : Type} [Zero κ] [One κ] {b a : ℕ} (h : a ≤ b) (y 
     simp [stdM, hne]
 
 /- English proof (translation)
-The claim follows from `(D.sp.W_rank _ (Nat.le_add_left _ _) i.2).le.trans (r_le_V i)`.
+A detailed English derivation is pending.
 -/
 theorem rank_W_le_V : (Wc D i).rank ≤ (Vc D i).rank :=
   (D.sp.W_rank _ (Nat.le_add_left _ _) i.2).le.trans (r_le_V i)
 
 /- English proof (translation)
-Introduce `y y' h`. Establish `hg : ∀ PP ∈ R.Pg, y PP = y' PP` using `fun PP hp => h PP (Finset.mem_union_left _ hp)`. Establish `hq : ∀ PP ∈ Q, y PP = y' PP` using `fun PP hp => h PP (Finset.mem_union_right _ hp)`. Unfold `omegaFree`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `if_congr ⟨fun H PP hp => (hg PP hp) ▸ H PP hp, fun H PP hp => (hg PP hp).symm ▸ H PP hp⟩ rfl rfl`. Distinguish the cases in `H : ∀ PP ∈ Q, IsUnit (topL (Wc D i).rank (y PP)).det`. Establish `H' : ∀ PP ∈ Q, IsUnit (topL (Wc D i).rank (y' PP)).det` using `fun PP hp => (hq PP hp) ▸ H PP hp`. Rewrite using `[dif_pos H, dif_pos H']`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (H PP.1 PP.2).unit = (H' PP.1 PP.2).unit` using `by ext; simp [hq PP.1 PP.2]`. Rewrite using `[this]`. Establish `H' : ¬ ∀ PP ∈ Q, IsUnit (topL (Wc D i).rank (y' PP)).det` using `fun H' => H fun PP hp => (hq PP hp).symm ▸ H' PP hp`. Rewrite using `[dif_neg H, dif_neg H']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem readsOnly_omegaFree (Q : Finset (Pl D.host.E)) (ξR : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     (y₀ : ∀ PP : Pl D.host.E, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP)) :
@@ -84,11 +84,11 @@ theorem readsOnly_omegaFree (Q : Finset (Pl D.host.E)) (ξR : ∀ PP : Pl D.host
       rw [dif_neg H, dif_neg H']
 
 /- English proof (translation)
-Unfold `omegaFree omegaK omegaQ`. Simplify using `only [eq_stdM_iff (rank_W_le_V i)]`. Distinguish the cases in `h1 : ∀ PP ∈ Q, LowZero (Wc D i).rank (y PP)`. Rewrite using `[if_pos h1, one_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Distinguish the cases in `H : ∀ PP ∈ Q, IsUnit (topL (Wc D i).rank (y PP)).det`. Rewrite using `[dif_pos H, dif_pos (fun PP hp => ⟨h1 PP hp, H PP hp⟩)]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[dif_neg H, dif_neg (fun H' => H fun PP hp => (H' PP hp).2)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1, zero_mul, dif_neg (fun H' => h1 fun PP hp => (H' PP hp).1), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem omegaK_mul_omegaQ (Q : Finset (Pl D.host.E)) (ξR : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     (y : ∀ PP : Pl D.host.E, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP)) :
@@ -107,9 +107,9 @@ theorem omegaK_mul_omegaQ (Q : Finset (Pl D.host.E)) (ξR : ∀ PP : Pl D.host.E
   · rw [if_neg h1, zero_mul, dif_neg (fun H' => h1 fun PP hp => (H' PP hp).1), mul_zero]
 
 /- English proof (translation)
-Use `⟨fun PP => if PP ∈ Q then stdM (kP PP) _ _ else y₀ PP, ?_⟩` and prove the remaining obligations. Unfold `omegaFree`. Establish `h1 : ∀ PP ∈ R.Pg, (if PP ∈ Q then stdM (kP PP) _ _ else y₀ PP) = y₀ PP` using `fun PP hp => if_neg (Finset.disjoint_left.1 hd hp)`. Establish `h2 : ∀ PP ∈ Q, IsUnit (topL (Wc D i).rank (if PP ∈ Q then stdM (kP PP) _ _ else y₀ PP)).det` using `fun PP hp => by`. Rewrite using `[if_pos hp, topL_stdM (rank_W_le_V i)]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_pos h1, dif_pos h2, one_mul]`. Conclude with `Finset.prod_ne_zero_iff.2 fun _ _ => Units.ne_zero _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omegaFree_ne_zero (Q : Finset (Pl D.host.E)) (hd : Disjoint R.Pg Q) (ξR : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     (y₀ : ∀ PP : Pl D.host.E, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP)) :
@@ -124,7 +124,7 @@ theorem omegaFree_ne_zero (Q : Finset (Pl D.host.E)) (hd : Disjoint R.Pg Q) (ξR
   exact Finset.prod_ne_zero_iff.2 fun _ _ => Units.ne_zero _
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem phiOf_iff_phiIs (t : T0) {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La]
     (ι : La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)) (N : Submodule (𝓞 D.host.E) La)
@@ -133,9 +133,9 @@ theorem phiOf_iff_phiIs (t : T0) {La : Type} [AddCommGroup La] [Module (𝓞 D.h
       PhiIs R i (RingHom.id ℂ) t ι N φ := Iff.rfl
 
 /- English proof (translation)
-Take `⟨hv, e, he, hex, hall⟩` from `h`. Use `⟨hv, e, he, hex, fun T hT => ?_⟩` and prove the remaining obligations. Rewrite using `[hall T hT, ← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem VecOf.smul {Q : Finset (Pl D.host.E)} {Ω : DatFn D i} {φ : WO (Vc D i) (Wc D i) → ℂ} (h : VecOf R i Q Ω φ) (c : ℂ) :
     VecOf R i Q (c • Ω) (c • φ) := by

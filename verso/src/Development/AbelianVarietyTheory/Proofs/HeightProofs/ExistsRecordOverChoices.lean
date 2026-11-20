@@ -30,7 +30,7 @@ open GlobalTheory.Mem
 open GlobalTheory.EX.OB
 
 /- English proof (translation)
-Use `⟨Real.exp (N * y + 2 * Real.log G), Real.exp_pos _, le_of_eq ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_one, div_one, ← Real.exp_mul, Real.rpow_def_of_pos hG, ← Real.exp_add, Real.log_exp]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_window_start (N y G : ℝ) (hN : 0 < N) (hG : 0 < G) : ∃ Ds : ℝ, 0 < Ds ∧
     y ≤ Real.log ((Ds / ((1 : ℕ) : ℝ)) ^ ((1 : ℝ) / N) * G ^ (-(2 : ℝ) / N)) := by
@@ -42,21 +42,19 @@ theorem exists_window_start (N y G : ℝ) (hN : 0 < N) (hG : 0 < G) : ∃ Ds : �
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `GlobalTheory.EX.exists_sizeData_explicit eps C cD ch h0 h1 hC hcD hch`. Use `⟨x0, ?_⟩` and prove the remaining obligations. Introduce `s P q1 a b c Lv hs hx hP hG`. Take `⟨F, hfd, hrich, hsz⟩` from `exists_rich_small_of_rayField hR (StdFrameObj.coordPre P Lv)`. Take `⟨B, hB, hF, -⟩` from `exists_base_of_rich _ F hfd hrich ∅ ∅ (by simp) (by simp)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hxp : 0 < s.x` using `by linarith [s.one_lt_alt]`. Establish `hDel : (0 : ℚ) < (Delv s cD : ℚ)`. Establish `: 0 < Delv s cD` using `Nat.ceil_pos.2 (by positivity)`. Conclude with `this` after adjusting the coercions. Establish `hlev : ∀ p ∈ Lv.host.levelPrimes, Lv.host.cls p = .splitK` using `(StdFrameObj.coordPre P Lv).level_split`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ Q : Pre, Q = StdFrameObj.coordPre P Lv → ∃ letter : Q.Word → Fin (Q.R.k - 2) → Bool, Function.Injective letter ∧ (∀ w τ (l : ℕ) (h : l + 1 < Q.R.k - 1), (Q.hcW w τ).v ⟨l, by omega⟩ - (Q.hcW w τ).v ⟨l + 1, h⟩ = 4 * (Delv s cD : ℚ)) ∧ ∀ w τ (l : ℕ) (h : l < Q.R.k - 2), (Q.h …`. Introduce and unpack `Q rfl`. Use `⟨c, hP.inj, fun w τ l h => ?_, fun w τ l h => hP.code w τ l h⟩` and prove the remaining obligations. Establish `h' : l + 1 < P.R.k - 1` using `h`. Establish `a1` using `(hP.hc w).1 τ ⟨l, by omega⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `(hP.hc w).1 τ ⟨l + 1, h'⟩`. Use `(congrArg₂ (· - ·) a1 a2).trans ?_` and prove the remaining obligations. Establish `: P.R.k - 2 - l = (P.R.k - 2 - (l + 1)) + 1` using `by omega`. Simplify using `only [this]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨letter, k1, k2, k3⟩` from `key B.toPre hB`. Take `⟨X, rfl, e1, e2, e3, e4⟩` from `GlobalTheory.T.exists_stages_with_delta B (Delv s cD : ℚ) letter (6 * s.x ^ (-C.P.CF)) hDel (by positivity) k1 k2 k3`. Use `clear key k1 k2 k3 letter`. Establish `hJ : JointQ X.toD7` using `jointQ_of_small_field X F (hB ▸ hrich) ((congrArg (fun Q : Pre => ∀ L : ℝ, HostSz Q.host L → Sz F (poR Q.R L) (poR Q.R L)) hB).mpr hsz) hF`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hE : Nonempty (ErrX X.toD7)` using `GlobalTheory.T.error_data_of_norm_generators X ((congrArg (fun Q : Pre => ∀ i, ∃ π : 𝓞 Q.host.E, (π : Q.host.E) ∈ Q.host.K ∧ (π : Q.host.E) * Q.host.conj (π : Q.host.E) = (Q.host.g i : Q.host.E)) hB).mpr hP.arith.1)`. Use `clear hF hrich hsz`. Take `⟨B, Cc, W, V, S, N, Gj⟩` from `X`. Consider the cases of `B`. Simplify using `only at hB`.
+Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Substitute `hB` using the available equality. Use `set D := Stages.toD7 _ with hD`. Use `⟨D, hJ, hE, e3, ⟨hP.arith.1, hP.arith.2.1, hP.arith.2.2.1, hlev⟩, ?_⟩` and prove the remaining obligations. Take `⟨L, l1, -, -, l4⟩` from `hx0 s D (fun t => a t.1) (fun t => b t.1) hs hx hP.rank hP.val (hP.hc P.u₀) hP.dlog e1 hP.ct2 hP.card e2 (fun u => by`. Establish `e : (D.mem u).A.GamP = Lv.GamP` using `Cc.A_GamP u`.
-
-Rewrite using `[e, hG, GamS, Real.log_exp]`. Use the proof step `rfl)`. Use the proof step `(fun t => hP.win t.1 t.2) (fun τ t h ht => hP.top P.u₀ τ t h ht) e4`. Conclude with `⟨L, l1, l4⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_record_over_choices (hR : GlobalTheory.NT.RayField) (eps cD ch : ℝ) (C : FC) (h0 : 0 < eps) (h1 : eps < 1 / 52)
     (hC : Std C) (hcD : 0 ≤ cD) (hch : 402 ≤ ch) : ∃ x0 : ℝ, ∀ (s : Scale) (P : PreCh) (q1 : ℕ)

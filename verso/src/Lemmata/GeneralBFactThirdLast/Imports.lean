@@ -3,11 +3,11 @@ import Mathlib
 namespace Bl.general_b_fact_third_last
 
 /- English proof (translation)
-Introduce `a n h`. Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot`. It suffices to derive a contradiction. Rewrite `h` using `[WithBot.bot_add, ← WithBot.coe_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithBot.bot_ne_coe h`. Consider the case `coe e`. Establish `h1 : ((e + 1 : ENat) : WithBot ENat) = (((n : ENat) + 1 : ENat) : WithBot ENat)`. Rewrite using `[WithBot.coe_add, WithBot.coe_one, WithBot.coe_add, WithBot.coe_one, WithBot.coe_natCast, h]`. Use `push_cast`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h2 : e + 1 = (n : ENat) + 1` using `WithBot.coe_injective h1`. Establish `h3 : e = (n : ENat)` using `ENat.add_left_injective_of_ne_top ENat.one_ne_top h2`. Rewrite using `[h3, WithBot.coe_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {a : WithBot.{0} ENat} {n : Nat},

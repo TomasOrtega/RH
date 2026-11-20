@@ -14,7 +14,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl : d = dict` from `funext fun g => hdd g rfl`. Conclude with `⟨Kf, hr, hl, hd, hu⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dict_transport {D : D7} {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {Comp : Type}
     {X : Comp → Data E r} {V W : HSp D} (h : V = W) (dict : GA D V → Σ k, Frame (X k).Ψ r)
@@ -33,13 +33,13 @@ end GlobalTheory.LevCore
 open GlobalTheory.LevCore in
 
 /- English proof (translation)
-Introduce `D T j hT hj`. Take `⟨hH, hL, _, hDat⟩` from `hT.pins`. Use `⟨⟨hj, hH, hDat j hj, hL.2, hT.unf j hj, hT.chiTriv j hj, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `σ hσ`. Take `⟨th, hr, hinf, hdu⟩` from `hT.dictU j hj σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Kf', hr', h1, h2, h3⟩` from `dict_transport (hT.spaceW j hj σ hσ) (T.dict j σ) (coreDict T.toCore j σ) (fun g h' => by unfold coreDict; rw [dif_pos h']) (T.Kf j σ) th hr _ (hL.1 ▸ hT.levelK j hj σ hσ) hdu (hT.muUnit j hj σ hσ).2.2.2`. Conclude with `⟨Kf', th, hr', h1, hinf, h2, h3⟩`. Introduce `σ hσ`. Establish `h` using `hT.modelW j hj σ hσ`. Rewrite `h` using `[hT.spaceW j hj σ hσ]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Introduce `G σ f`. Establish `hg` using `Formalism.L2.Pj.goodEmb_goodOf (c := T.Q.c) σ`. Establish `key : ∀ (W : HSp D) (h : T.V j (Formalism.L2.Pj.goodOf T.Q.c σ) = W) (d : GA D W → Σ k, Frame ((T.U j (Formalism.L2.Pj.goodOf T.Q.c σ)).X k).Ψ D.R.r), (∀ g (h' : T.V j (Formalism.L2.Pj.goodOf T.Q.c σ) = W), d g = T.dict j _ (h' ▸ g)) → petAt (T.U j (Formalism.L2.Pj.goodOf T.Q.c σ …`. Introduce `W h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Substitute `h` using the available equality. Introduce `d hdd`. Take `rfl : d = _` from `funext fun g => hdd g rfl`. Both sides reduce to the same expression. Conclude with `key _ (hT.spaceW j hj _ hg) _ (fun g h' => by unfold coreDict; rw [dif_pos h'])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LevGeo.laws_of_coreJ : ∀ (D : D7) (T : CoreJ D) (j : ℕ), LawsJ T → InR D j → Laws D j (T.Q.Xo j) T.Q.c (T.U j) (coreDict T.toCore j) ∧ ∀ (G : WTZ D.host.E) (σ : T.Q.c.F →+* ℂ) (f : cuspW (T.Q.Xo j) T.Q.c (T.U j) G), normW (T.U j) (xiR D) (fun _ => D.sp.W j) (coreDict T.toCore j) G σ f = normW (T.U j) (xiR D) (T.V j) (T.dict j) G σ f := by
   intro D T j hT hj

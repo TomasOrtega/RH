@@ -8,17 +8,17 @@ namespace QuadraticFlow
 variable {A : Type u} [CommRing A] {D : A → A}
 
 /- English proof (translation)
-The claim follows from `h.1 a b`.
+A detailed English derivation is pending.
 -/
 lemma der_add (h : IsDer D) (a b : A) : D (a + b) = D a + D b := h.1 a b
 
 /- English proof (translation)
-The claim follows from `h.2 a b`.
+A detailed English derivation is pending.
 -/
 lemma der_mul (h : IsDer D) (a b : A) : D (a * b) = a * D b + b * D a := h.2 a b
 
 /- English proof (translation)
-Establish `e` using `h.1 0 0`. Rewrite `e` using `[add_zero]`. Take the linear combination `-e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma der_zero (h : IsDer D) : D 0 = 0 := by
   have e := h.1 0 0
@@ -26,7 +26,7 @@ lemma der_zero (h : IsDer D) : D 0 = 0 := by
   linear_combination -e
 
 /- English proof (translation)
-Establish `e` using `h.2 1 1`. Simplify using `only [mul_one, one_mul] at e`. Take the linear combination `-e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma der_one (h : IsDer D) : D 1 = 0 := by
   have e := h.2 1 1
@@ -34,7 +34,7 @@ lemma der_one (h : IsDer D) : D 1 = 0 := by
   linear_combination -e
 
 /- English proof (translation)
-Establish `e` using `h.1 a (-a)`. Rewrite `e` using `[add_neg_cancel, der_zero h]`. Take the linear combination `-e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma der_neg (h : IsDer D) (a : A) : D (-a) = -D a := by
   have e := h.1 a (-a)
@@ -42,13 +42,13 @@ lemma der_neg (h : IsDer D) (a : A) : D (-a) = -D a := by
   linear_combination -e
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, der_add h, der_neg h, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma der_sub (h : IsDer D) (a b : A) : D (a - b) = D a - D b := by
   rw [sub_eq_add_neg, der_add h, der_neg h, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using der_zero h`. Consider the case `succ n ih => rw [Nat.cast_succ, der_add h, ih, der_one h, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma der_natCast (h : IsDer D) (n : ℕ) : D (n : A) = 0 := by
   induction n with
@@ -56,20 +56,20 @@ lemma der_natCast (h : IsDer D) (n : ℕ) : D (n : A) = 0 := by
   | succ n ih => rw [Nat.cast_succ, der_add h, ih, der_one h, add_zero]
 
 /- English proof (translation)
-Simplify using `using der_natCast h (OfNat.ofNat n)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma der_ofNat (h : IsDer D) (n : ℕ) [n.AtLeastTwo] : D (OfNat.ofNat n : A) = 0 := by
   simpa using der_natCast h (OfNat.ofNat n)
 
 /- English proof (translation)
-Rewrite using `[sq, der_mul h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma der_sq (h : IsDer D) (a : A) : D (a ^ 2) = 2 * a * D a := by
   rw [sq, der_mul h]
   ring
 
 /- English proof (translation)
-Establish `e` using `h.2 t s`. Rewrite `e` using `[hts, der_one h]`. Take the linear combination `(-t) * e + (-D t) * hts`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma der_inv (h : IsDer D) {t s : A} (hts : t * s = 1) : D t = -t ^ 2 * D s := by
   have e := h.2 t s
@@ -77,14 +77,14 @@ lemma der_inv (h : IsDer D) {t s : A} (hts : t * s = 1) : D t = -t ^ 2 * D s := 
   linear_combination (-t) * e + (-D t) * hts
 
 /- English proof (translation)
-The claim follows from `hk.mul_left_cancel e`.
+A detailed English derivation is pending.
 -/
 lemma cancel_unit {k a b : A} (hk : IsUnit k) (e : k * a = k * b) : a = b := hk.mul_left_cancel e
 
 /- English proof (translation)
-Establish `e6 : (6 : A) = 2 * 3` using `by norm_num`. Rewrite `h6` using `[e6]`. Establish `h2 : IsUnit (2 : A)` using `isUnit_of_mul_isUnit_left h6`. Establish `e4 : (4 : A) = 2 * 2` using `by norm_num`. Rewrite using `[e4]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.mul h2`.
+A detailed English derivation is pending.
 -/
 lemma unit_four (h6 : IsUnit (6 : A)) : IsUnit (4 : A) := by
   have e6 : (6 : A) = 2 * 3 := by norm_num
@@ -95,7 +95,7 @@ lemma unit_four (h6 : IsUnit (6 : A)) : IsUnit (4 : A) := by
   exact h2.mul h2
 
 /- English proof (translation)
-Establish `e6 : (6 : A) = 2 * 3` using `by norm_num`. Establish `h2 : IsUnit (2 : A)` using `isUnit_of_mul_isUnit_left (e6 ▸ h6)`. Establish `e12 : (12 : A) = 6 * 2` using `by norm_num`. Rewrite using `[e12]`. Conclude with `h6.mul h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma unit_twelve (h6 : IsUnit (6 : A)) : IsUnit (12 : A) := by
   have e6 : (6 : A) = 2 * 3 := by norm_num
@@ -105,7 +105,7 @@ lemma unit_twelve (h6 : IsUnit (6 : A)) : IsUnit (12 : A) := by
   exact h6.mul h2
 
 /- English proof (translation)
-Establish `e : (432 : A) = 6 * 6 * 12` using `by norm_num`. Rewrite using `[e]`. Conclude with `(h6.mul h6).mul (unit_twelve h6)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma weierstrassSubstitution_unit_fact (h6 : IsUnit (6 : A)) : IsUnit (432 : A) := by
   have e : (432 : A) = 6 * 6 * 12 := by norm_num
@@ -117,11 +117,11 @@ end QuadraticFlow
 open QuadraticFlow
 
 /- English proof (translation)
-Introduce `A _ W D x y xT yT t hD hC hF hT hDxT hDyT h2 ht`. Take `⟨hE, hDx, hDy⟩` from `hF`. Take `⟨ha1, ha2, ha3, ha4, ha6⟩` from `hC`. Rewrite `hE`, `hT` using `[WeierstrassCurve.Affine.equation_iff]`. Establish `hDt : D t = -t ^ 2 * (2 * y + W.a₁ * x + W.a₃)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[der_inv hD ht, der_sub hD, hDxT, sub_zero, hDx]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [WeierstrassCurve.Affine.addX]`. Take the linear combination `t ^ 2 * hE - t ^ 2 * hT - t ^ 2 * (y - yT) * h2 + ((3 * xT + (x - xT) + W.a₂) + t * ((x ^ 2 + x * xT + xT ^ 2 + W.a₂ * (x + xT) + W.a₄) - W.a₁ * yT) - W.a₁ * (y - yT) * t) * ht`. Rewrite using `[hDt]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [WeierstrassCurve.b₂]`. Take the linear combination `4 * t ^ 4 * hE - 4 * t ^ 4 * hT + t ^ 4 * ((2 * yT + W.a₁ * xT + W.a₃) + 2 * W.a₁ * (x - xT)) * h2 + (4 * (3 * xT ^ 2 + 2 * W.a₂ * xT + W.a₄ - W.a₁ * yT) * t ^ 3 + (12 * xT + (W.a₁ ^ 2 + 4 * W.a₂)) * t ^ 2 * (2 + (t * (x - xT) - 1)) + 4 * t * (3 + 3 * (t * (x - xT) - 1) + (t * (x …`. Rewrite using `[hDt]`. Simplify using `only [der_neg hD, der_mul hD, der_add hD, der_sq hD, der_ofNat hD, hDx, hDy, hDt, ha1, ha3, WeierstrassCurve.b₂]`. Take the linear combination `8 * t ^ 3 * hE - 8 * t ^ 3 * hT + (2 * t ^ 3 * ((2 * yT + W.a₁ * xT + W.a₃) + 2 * W.a₁ * (x - xT)) - W.a₁ * t ^ 2) * h2 + (8 * (3 * xT ^ 2 + 2 * W.a₂ * xT + W.a₄ - W.a₁ * yT) * t ^ 2 + (12 * xT + (W.a₁ ^ 2 + 4 * W.a₂)) * t * (3 + 2 * (t * (x - xT) - 1)) + 12 + 18 * (t * (x - xT) …`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem twoTorsionTranslation : FlowTwoTorsion.{u} := by
   intro A _ W D x y xT yT t hD hC hF hT hDxT hDyT h2 ht
@@ -146,13 +146,13 @@ theorem twoTorsionTranslation : FlowTwoTorsion.{u} := by
       (8 * (3 * xT ^ 2 + 2 * W.a₂ * xT + W.a₄ - W.a₁ * yT) * t ^ 2 + (12 * xT + (W.a₁ ^ 2 + 4 * W.a₂)) * t * (3 + 2 * (t * (x - xT) - 1)) + 12 + 18 * (t * (x - xT) - 1) + 8 * (t * (x - xT) - 1) ^ 2) * ht
 
 /- English proof (translation)
-Introduce `A _ W D x y xT yT t c g2 g3 kap hD hC hF hT hDxT hDyT h2 ht h6 hc hg2 hg3 hk`. Establish `H1` using `twoTorsionTranslation A W D x y xT yT t hD hC hF hT hDxT hDyT h2 ht`. Rewrite `hT` using `[WeierstrassCurve.Affine.equation_iff]`. Establish `hkap : kap = (3 * xT ^ 2 + 2 * W.a₂ * xT + W.a₄ - W.a₁ * yT)`. Apply `cancel_unit ((unit_four h6).mul (unit_twelve h6))` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.c₄] at hc hg2`. Take the linear combination `12 * hk + (24 * xT + 12 * c + (W.a₁ ^ 2 + 4 * W.a₂)) * hc - hg2 + 24 * W.a₁ * h2`. Establish `ha : 4 * (xT + c) ^ 3 - g2 * (xT + c) - g3 = 0`. Apply `cancel_unit (weierstrassSubstitution_unit_fact h6)` to reduce the goal to its premises. Simplify using `only [WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.c₄, WeierstrassCurve.c₆] at hc hg2 hg3`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take the linear combination `((12 * xT + 12 * c) ^ 2 + (12 * xT + 12 * c) * (12 * xT + (W.a₁ ^ 2 + 4 * W.a₂)) + (12 * xT + (W.a₁ ^ 2 + 4 * W.a₂)) ^ 2 - 3 * ((W.a₁ ^ 2 + 4 * W.a₂) ^ 2 - 24 * (2 * W.a₄ + W.a₁ * W.a₃))) * hc - 36 * (xT + c) * hg2 - 2 * hg3 + 432 * (2 * yT + W.a₁ * xT + W.a₃) * h2 - 1728 * hT`. Establish `hd : D t ^ 2 = 4 * t * (1 + 3 * (xT + c) * t + kap * t ^ 2)`. Take the linear combination `H1.2.1 - t ^ 2 * hc - 4 * t ^ 3 * hkap`. Use `⟨ha, hkap, ?_, hd, ?_⟩` and prove the remaining obligations. Rewrite using `[H1.1, hkap]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `e2 e3 hs he`. Take the linear combination `hd + (4 * t ^ 2 + 8 * (xT + c) * t ^ 3) * hs + t ^ 3 * hk - t ^ 3 * he`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem twoTorsionTranslationWeierstrassForm : FlowTwoTorsionWp.{u} := by
   intro A _ W D x y xT yT t c g2 g3 kap hD hC hF hT hDxT hDyT h2 ht h6 hc hg2 hg3 hk

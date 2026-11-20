@@ -10,7 +10,7 @@ namespace GlobalTheory.PlaceOver
 open Filter Topology
 
 /- English proof (translation)
-Establish `h` using `Valued.isOpen_ball (P.adicCompletion F) 1`. Simplify `h` using `only [Valuation.restrict_lt_iff_lt_embedding, map_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isOpen_valuation_lt_one {F : Type} [Field F] [NumberField F] (P : HeightOneSpectrum (𝓞 F)) :
     IsOpen {z : P.adicCompletion F | Valued.v z < 1} := by
@@ -18,13 +18,11 @@ theorem isOpen_valuation_lt_one {F : Type} [Field F] [NumberField F] (P : Height
   simpa only [Valuation.restrict_lt_iff_lt_embedding, map_one] using h
 
 /- English proof (translation)
-Establish `hU : {y : P'.adicCompletion F' | Valued.v y < 1} ∈ 𝓝 (i 0)`. Rewrite using `[map_zero]`. Conclude with `(isOpen_valuation_lt_one P').mem_nhds (by simp)`. Establish `hV` using `hi.continuousAt.preimage_mem_nhds hU`. Take `⟨γ, hγ⟩` from `Valued.mem_nhds_zero.1 hV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hγ0 : (MonoidWithZeroHom.ValueGroup₀.embedding γ.1) ≠ 0`. Simplify using the standard rewrite rules. Take `⟨n, hn⟩` from `exists_pow_lt₀ hx (Units.mk0 _ hγ0)`. Establish `hxn : x ^ n ∈ i ⁻¹' {y : P'.adicCompletion F' | Valued.v y < 1}`. Apply `hγ` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show Valued.v.restrict (x ^ n) < γ.1`. Rewrite using `[Valuation.restrict_lt_iff_lt_embedding, map_pow]`. Conclude with `hn`. Establish `h1 : Valued.v (i x) ^ n < 1` using `by simpa [map_pow] using hxn`. Assume the negation of the conclusion as `h`.
-
-Conclude with `absurd h1 (not_lt.2 (one_le_pow₀ (not_lt.1 h)))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem valuation_lt_one_of_continuous {F F' : Type} [Field F] [NumberField F] [Field F'] [NumberField F']
     {P : HeightOneSpectrum (𝓞 F)} {P' : HeightOneSpectrum (𝓞 F')}
@@ -52,18 +50,16 @@ end GlobalTheory.PlaceOver
 namespace GlobalTheory.PlaceOver
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P k`.
+A detailed English derivation is pending.
 -/
 theorem valued_algebraMap {F : Type} [Field F] [NumberField F] (P : HeightOneSpectrum (𝓞 F)) (k : F) :
     Valued.v (algebraMap F (P.adicCompletion F) k) = P.valuation F k :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P k
 
 /- English proof (translation)
-Introduce `E E' _ _ _ _ _ w w' i hi hc`. Establish `hle : w.asIdeal ≤ w'.asIdeal.comap (algebraMap (𝓞 E) (𝓞 E'))`. Introduce `e he`. Rewrite using `[Ideal.mem_comap, ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E')]`. Establish `h1 : Valued.v (algebraMap E (w.adicCompletion E) (e : E)) < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[valued_algebraMap]`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) w e).2 he`. Establish `h2` using `valuation_lt_one_of_continuous (i : w.adicCompletion E →+* w'.adicCompletion E') hi h1`. Establish `h3 : (i : w.adicCompletion E →+* w'.adicCompletion E') (algebraMap E (w.adicCompletion E) (e : E)) = algebraMap E' (w'.adicCompletion E') (algebraMap E E' (e : E))` using `hc _`. Rewrite `h2` using `[h3, valued_algebraMap]`.
-
-Conclude with `h2`. Conclude with `(w.isMaximal.eq_of_le (Ideal.comap_ne_top _ w'.isPrime.ne_top) hle).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_eq_of_continuous_iso : ∀ (E E' : Type) [Field E] [NumberField E] [Field E'] [NumberField E'] [Algebra E E']
     (w : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E))

@@ -32,15 +32,15 @@ set_option maxHeartbeats 2000000
 namespace GlobalTheory.HeightCounting.Up
 
 /- English proof (translation)
-Use `(EvG.inter (EvG.inter hp hq) h).imp fun K _ _ _ _ H => ?_` and prove the remaining obligations. Take `⟨⟨hp, hq⟩, hr⟩` from `H`. Establish `hs' : large₂ K fun B f T => KPx B f → q K B f T` using `(hq.inter (lg_forced K)).imp fun _ _ _ _ G a => G.1 a G.2 trivial`. Take `⟨S₁, P₁, A₀, S₂₀, a₁, a₂, hlg⟩` from `hs'`. Establish `hb : large₂ K fun B f T => (∀ z ∈ S₁ B.toPre f B.KsC, z ∈ B.fixedCoefficientFieldInComplex) ∧ P₁ B.toPre f B.KsC B.fixedCoefficientFieldInComplex ⊆ T.pl` using `⟨S₁, P₁, fun _ _ _ _ _ => ∅, S₂₀, a₁, a₂, fun _ _ _ _ h p _ => ⟨h.1, p⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(hp.inter hb).imp ?_` and prove the remaining obligations. Introduce and unpack `B f T hO ⟨hp, h₁, hpl₁⟩ hKP hT C W V S N G c q hx A S₂ hS₂`. Take `⟨B', f', T', e, hf, hpl, hAv, hS', hK', hfin⟩` from `hr B f T hO hKP hT (hp hKP c.forced trivial) C W V S N G c q hx (fun l => A l ∪ A₀ B.toPre f B.KsC B.fixedCoefficientFieldInComplex l) (fun P g Ξ => S₂ P g Ξ ∪ S₂₀ P g B.KsC B.fixedCoefficientFieldInComplex Ξ) (fun P g Ξ z hz => (Finset.mem_union.1 hz).elim (hS₂ P g Ξ z) (a₂ P g …`. Establish `hP : B'.toPre = B.toPre` using `e.1`. Establish `hk : B'.KsC = B.KsC` using `e.KsC_eq`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : B'.fixedCoefficientFieldInComplex = B.fixedCoefficientFieldInComplex` using `e.fixedCoefficientField_eq`. Establish `hO' : K.Over B'.toPre` using `hP ▸ hO`. Establish `hLL : ∀ z ∈ S₂₀ B'.toPre f' B'.KsC B'.fixedCoefficientFieldInComplex (T'.set f'), z ∈ B'.LLC`. Introduce `z hz`. Rewrite `hz` using `[hk, hl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, rfl⟩` from `hS' z (Finset.mem_union_right _ hz)`. Conclude with `⟨x, rfl⟩`. Establish `hq'` using `hlg B' f' T' hO' ⟨by rw [hk, hl, secondG_congr S₁ hP hf]; exact h₁, hLL⟩ (by rw [hk, hl, secondG_congr P₁ hP hf, hpl]; exact hpl₁) (fun w v hv hA => hAv w v hv (Finset.mem_union_right _ (by`. Rewrite `hA` using `[hk, hl, secondG_congr A₀ hP hf]`. Conclude with `hA))) hK'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨B', f', T', e, hf, hpl, fun w v hv hA => hAv w v hv (Finset.mem_union_left _ hA), fun z hz => hS' z (Finset.mem_union_left _ hz), hfin hq'⟩`.
+A detailed English derivation is pending.
 -/
 theorem pass_of {Q : V4.Slot} {p q r : AtP} (hp : Step KPx (fun _ _ _ _ => True) p) (hq : Step KPx (fun _ _ _ _ => True) q)
     (h : EvG fun K => ∀ B f T, K.Over B.toPre → KPx B f → T = TwDat.untw B T.pl → p K B f T →
@@ -84,7 +84,7 @@ theorem pass_of {Q : V4.Slot} {p q r : AtP} (hp : Step KPx (fun _ _ _ _ => True)
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
 
 /- English proof (translation)
-The claim follows from `{ inj := w.ok.xi_inj range := w.xi_range mu0 := w.l.xi0 star := by show w.I.xi w.I.muStar = f.del rw [w.ok.xi_star, w.C_eq] star' := by show w.I.xi w.I.muStar' = f.del' rw [w.ok.xi_star', w.C_eq] tw := P.q.mu.tw on := P.q.mu.on off := P.q.mu.off sub := P.sub supp := P.supp }`.
+A detailed English derivation is pending.
 -/
 theorem muIsW_st {P : Pre2 K w} (x : St P) : V4.MuIsW (w.st x.o.Z) f T P.Wt w.I.xi :=
   { inj := w.ok.xi_inj
@@ -103,13 +103,13 @@ theorem muIsW_st {P : Pre2 K w} (x : St P) : V4.MuIsW (w.st x.o.Z) f T P.Wt w.I.
     supp := P.supp }
 
 /- English proof (translation)
-The claim follows from `(TupTieW.tupTied_of_muIsW (w.st x.o.Z) f T P.Wt w.I.xi (muIsW_st x)).1 v`.
+A detailed English derivation is pending.
 -/
 theorem twisted_st {P : Pre2 K w} (x : St P) (v : B.places.Pl) : TwistedAt (Dof x) v ↔ v ∈ P.Wt :=
   (TupTieW.tupTied_of_muIsW (w.st x.o.Z) f T P.Wt w.I.xi (muIsW_st x)).1 v
 
 /- English proof (translation)
-Introduce `x x' e`. Establish `: x' = RingOfIntegers.mapRingHom (TwChar.incl h) x` using `RingOfIntegers.ext (B'.embLL.injective (e.symm.trans (TwChar.embLL_incl h _).symm))`. Substitute `this` using the available equality. Conclude with `TwChar.mem_plUnder h v' x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem below_plUnder {B' : Base} {f' : Fr B'.toPre} {T' : TwDat B'} {w' : ColW B' f' T'} (h : Enl B B') (Z : w.Lt) (Z' : w'.Lt)
     (v' : B'.places.Pl) : Below (w.D Z) (w'.D Z') (plUnder h v') v' := by
@@ -120,7 +120,7 @@ theorem below_plUnder {B' : Base} {f' : Fr B'.toPre} {T' : TwDat B'} {w' : ColW 
   exact TwChar.mem_plUnder h v' x
 
 /- English proof (translation)
-Use `StepW.trans h (StepW.of_all fun K B f T w _ _ H P x l S Γ hl => ?_)` and prove the remaining obligations. Take `⟨Z, v, h1, h2⟩` from `H P x l S Γ hl.1`. Conclude with `⟨Z, { g := v.g, coh := v.coh, Wt := v.Wt, p0 := v.p0, what₂ := v.what₂, rx := v.rx, nch := v.nch, n := v.n, xd := v.xd, chiT := v.chiT, nx := ⟨v.nx.1, v.nx.2, ⟨P, x, l, hl, h1, h2⟩⟩ }, h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sFino_of {hL : GlobalTheory.Published.LocalLanglandsGL} {cDep : ℝ} (h : SFinl hL cDep) : SFino hL cDep := by
   refine StepW.trans h (StepW.of_all fun K B f T w _ _ H P x l S Γ hl => ?_)
@@ -129,9 +129,9 @@ theorem sFino_of {hL : GlobalTheory.Published.LocalLanglandsGL} {cDep : ℝ} (h 
               chiT := v.chiT, nx := ⟨v.nx.1, v.nx.2, ⟨P, x, l, hl, h1, h2⟩⟩ }, h1, h2⟩
 
 /- English proof (translation)
-Establish `hm : ∀ x : B.LL0, TwChar.incl h (x : B.LL) ∈ B'.LL0` using `fun x => by`. Take `⟨y, hy, e⟩ : B.embLL (x : B.LL) ∈ B'.embLL '' (B'.LL0 : Set B'.LL)` from `h.2.2.1 ▸ ⟨x, x.2, rfl⟩`. Rewrite using `[← B'.embLL.injective (e.trans (TwChar.embLL_incl h _).symm)]` and apply the resulting hypothesis. Set `j : B.LL0 →+* B'.LL0` to `((TwChar.incl h).comp B.LL0.val.toRingHom).codRestrict B'.LL0 hm`. Introduce `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `x' : 𝓞 ↥(w'.D Z').LL0` to `RingOfIntegers.mapRingHom j x`. Establish `key : ∀ v : B'.places.Pl, 0 < (w.D Z).what₂.places.val (plUnder h v) ((x : ↥(w.D Z).LL0) : (w.D Z).what₂.LL) ↔ 0 < (w'.D Z').what₂.places.val v ((x' : ↥(w'.D Z').LL0) : (w'.D Z').what₂.LL)` using `fun v => (val_pos_iff_mem (w.D Z) _ x).trans (((TwChar.mem_plUnder h v _).trans (iff_of_eq (congrArg (· ∈ HeightOneSpectrum.asIdeal v) (RingOfIntegers.ext rfl)))).trans (val_pos_iff_mem (w'.D Z') v x').symm)`. Conclude with `(key v₁).trans ((ho x').trans (key v₂).symm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem overOne_plUnder_of {B' : Base} {f' : Fr B'.toPre} {T' : TwDat B'} {w' : ColW B' f' T'} (h : Enl B B') (Z : w.Lt) (Z' : w'.Lt)
     {v₁ v₂ : B'.places.Pl} (ho : OverOne (w'.D Z') v₁ v₂) : OverOne (w.D Z) (plUnder h v₁) (plUnder h v₂) := by
@@ -148,7 +148,7 @@ theorem overOne_plUnder_of {B' : Base} {f' : Fr B'.toPre} {T' : TwDat B'} {w' : 
   exact (key v₁).trans ((ho x').trans (key v₂).symm)
 
 /- English proof (translation)
-The claim follows from `positionOf_ind (R := fun K X f T c => ExportAt X.toD7 c.O.nch c.O.xd → ∃ (w : ColW X.B f T) (Z : w.Lt) (c' : V4.Core K (w.st Z) f T), P K X.B f T w Z c' ∧ ExportAt (w.st Z).toD7 c'.O.nch c'.O.xd) (fun _ _ _ _ w Z c h e => ⟨w, Z, c, h, e⟩) h`.
+A detailed English derivation is pending.
 -/
 theorem exists_of_position {P : CP} {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} {c : V4.Core K X f T} (h : positionOf P K X f T c) :
     ExportAt X.toD7 c.O.nch c.O.xd → ∃ (w : ColW X.B f T) (Z : w.Lt) (c' : V4.Core K (w.st Z) f T), P K X.B f T w Z c' ∧
@@ -158,7 +158,7 @@ theorem exists_of_position {P : CP} {X : Stages} {f : Fr X.B.toPre} {T : TwDat X
     (fun _ _ _ _ w Z c h e => ⟨w, Z, c, h, e⟩) h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨h.gal.R.trans h'.gal.R, h.gal.host.trans h'.gal.host, h.gal.loc.trans h'.gal.loc, h.gal.Om.trans h'.gal.Om, h.gal.instOm.trans h'.gal.instOm, h.gal.algOm.trans h'.gal.algOm, h.gal.plOm.trans h'.gal.plOm, h.gal.PlG.trans h'.gal.PlG⟩, h.pl.trans h'.pl⟩`.
+Supply the required witnesses or components.
 -/
 theorem SameGal.trans {D D' D'' : D7} (h : SameGal D D') (h' : SameGal D' D'') : SameGal D D'' :=
   ⟨⟨h.gal.R.trans h'.gal.R, h.gal.host.trans h'.gal.host, h.gal.loc.trans h'.gal.loc, h.gal.Om.trans h'.gal.Om,
@@ -166,7 +166,7 @@ theorem SameGal.trans {D D' D'' : D7} (h : SameGal D D') (h' : SameGal D' D'') :
     h.pl.trans h'.pl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, subset_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem enl_refl (B : Base) : Enl B B := ⟨rfl, rfl, rfl, subset_rfl⟩
 
@@ -176,9 +176,7 @@ Both sides reduce to the same expression.
 theorem avPrimes_st (Z Z' : w.Lt) : avPrimes (w.st Z).toD7 = avPrimes (w.st Z').toD7 := rfl
 
 /- English proof (translation)
-Take `⟨P, x, l, hl, hW, hk⟩` from `b.nx.2.2.down`. Establish `key` using `(TupTieW.tupTied_of_muIsW (w.st Z) f T c.Wt c.xi c.mu).1`. Use `⟨P, x, l, hl, GlobalTheory.HeightCounting.Up.nonempty_seed_of_kept (Dof x) (w.st Z).toD7 l.c.ch c.O.nch c.O.xd hk rfl (fun v v₀ hv ht => ?_) l.c.side.nct l.c.side.choice.twI_conj ?_ B.coeffGaloisSubfield_isGalois (twistedPlaceIndex_mem_firstPair_of_compatibleChoice (w.st Z).toD7 …` and prove the remaining obligations. Take `rfl : v = v₀` from `eq_of_heq hv`. Conclude with `(key v).2 (hW ▸ (twisted_st x v).1 ht)`.
-
-Conclude with `(TupTieW.tupTied_of_muIsW (w.st x.o.Z) f T P.Wt w.I.xi (muIsW_st x)).2.1.subset fun v hv => (twisted_st x v).1 hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_seed {hL : GlobalTheory.Published.LocalLanglandsGL} {cDep : ℝ} {S : SExt} {Γ : GeoP} {Z : w.Lt} {c : V4.Core K (w.st Z) f T}
     (b : Built (prmR (NEo hL cDep) S Γ).s K w Z c) (e : ExportAt (w.st Z).toD7 c.O.nch c.O.xd) :
@@ -192,11 +190,11 @@ theorem exists_seed {hL : GlobalTheory.Published.LocalLanglandsGL} {cDep : ℝ} 
   · exact (TupTieW.tupTied_of_muIsW (w.st x.o.Z) f T P.Wt w.I.xi (muIsW_st x)).2.1.subset fun v hv => (twisted_st x v).1 hv
 
 /- English proof (translation)
-Use `GlobalTheory.T.goodTwist_of_seed_character_powers (Dof x) (Dof y) (w'.st Z).toD7 A σ l.c.ch C xd (plUnder h) hc.exp hk (avPrimes_st _ _) rfl hx hA fun v₂ v₃ hv ht => ?_` and prove the remaining obligations. Take `rfl : v₂ = v₃` from `eq_of_heq hv`. Establish `h1` using `hZ v₂ ht`. Establish `h2 : TwistedAt (Dof x) (plUnder h v₂)` using `(twisted_st x _).2 ((hW _).2 h1)`. Establish `h3 : TwistedAt (Dof y) v₂` using `(twisted_st y _).2 h1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hQ, hk', ι, χ, hF, hχ⟩` from `(hT.2 v₂).1 h2`. Establish `hg` using `(((σ.good _ h2).2 1 (by simp)).1)`. Rewrite `hg` using `[zpow_one]`. Establish `e1 : l.c.ch.Q v₂ = T'.Q v₂` using `(congrFun l.c.Q_eq v₂).trans (if_pos h1)`. Establish `e2 : l.c.ch.k' v₂ = T'.k v₂` using `l.c.k_eq v₂ h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨h2, GlobalTheory.HeightCounting.Rigid.rawPack_eq_pow hP (Dof x) (Dof y) (σ.pack (plUnder h v₂)) _ ι χ (cfOf y) l.c.ch l.c.tp v₂ hc.exp hg hF l.c.side.psi h3 (hs v₂) ((heq_of_eq e1).trans hQ) (e2.trans hk') ((heq_of_eq (congrFun l.c.psi_eq v₂)).trans hχ) fun z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[e2]`. Conclude with `hT.1 v₂ z hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodO_of (hP : PrN) {hL : GlobalTheory.Published.LocalLanglandsGL} {B' : Base} {f' : Fr B'.toPre} {T' : TwDat B'} {w' : ColW B' f' T'}
     (h : Enl B B') {P : Pre2 K w} (x : St P) {A} (σ : Seed (Dof x) A) (hA : ∀ i, avD (Dof x) (avDesign (Dof x)) i ⊆ A i)
@@ -222,7 +220,7 @@ theorem goodO_of (hP : PrN) {hL : GlobalTheory.Published.LocalLanglandsGL} {B' :
   exact hT.1 v₂ z hz
 
 /- English proof (translation)
-Establish `eT : (Dof x).ntw.Tw = (Dof y).ntw.Tw` using `(same_basic hc.exp.gal hc.exp.set hc.exp.frm).1`. Take `⟨c, hs⟩` from `ck (fun v' => cast eT (σ.s (plUnder h v'))) (fun v' => (σ.reads (plUnder h v')).imp fun b hb => GlobalTheory.HeightCounting.Up.readsAt_of_plUnder (w.st x.o.Z) (w'.st y.o.Z) h hc v' _ _ b (cast_heq eT _).symm hb) (fun v' => congrArg (cast eT) ((congrArg σ.s (TwChar.plUnder_conj h …`. Take `⟨Z, v, h1, h2⟩` from `fin { toStrictHenselianAcyclic := l, c := c } S Γ hl`. Establish `hg : GoodO (w'.st Z).toD7 v.nch v.xd` using `goodO_of hP h x σ hA hT hW { toStrictHenselianAcyclic := l, c := c } hc (fun v' => (heq_of_eq (congrFun hs v')).trans (cast_heq eT _)) h2 v.nx.2.1.1.1.xd fun v' hv' => h1 ▸ ((TupTieW.tupTied_of_muIsW (w'.st Z) f' T' v.Wt w'.I.xi v.what₂.mu).1 v').1 hv'`. Conclude with `⟨Z, ⟨{ g := v.g, coh := v.coh, Wt := v.Wt, p0 := v.p0, what₂ := v.what₂, rx := v.rx, nch := v.nch, n := v.n, xd := v.xd, chiT := v.chiT, nx := ⟨v.nx.1, v.nx.2, ⟨hg⟩⟩ }⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem has3_of {hL : GlobalTheory.Published.LocalLanglandsGL} {cDep : ℝ} (hP : PrN) (S : SExt) (Γ : GeoP) {B' : Base} {f' : Fr B'.toPre}
     {T' : TwDat B'} {w' : ColW B' f' T'} (h : Enl B B') {P : Pre2 K w} (x : St P) {A} (σ : Seed (Dof x) A)
@@ -246,17 +244,17 @@ theorem has3_of {hL : GlobalTheory.Published.LocalLanglandsGL} {cDep : ℝ} (hP 
                chiT := v.chiT, nx := ⟨v.nx.1, v.nx.2, ⟨hg⟩⟩ }⟩⟩
 
 /- English proof (translation)
-Introduce `S Γ`. Establish `h3` using `GlobalTheory.Mem.R3.Rw.Second.exists_ext_twisted_places hP.greenC hD`. Establish `h4` using `(GlobalTheory.T.constructionStartingChoices_of_fine_adelicData GlobalTheory.weilRepresentationUnitaryPair hds hP.hc hP.decay hH).and ((GlobalTheory.T.bare_statement_of_discrete_series hP hds).and ((GlobalTheory.T.statement_a_of_point_compat hP hc hL).and (hMt.and (hRat.and (hCu.a …`. Use `pass_of (p := fun _ _ _ _ => True) (Step.of_all fun _ _ _ _ _ _ _ h => h) (Step.and h3 h4) (EvG.imp GlobalTheory.Mem.Top.ReW.extend_pinned fun K _ _ _ _ hw2 => ?_)` and prove the remaining obligations. Introduce `B f T hO hKP hT _ C W V S' N G c₀ hQ hE A S₂ hS₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, Z, c, ⟨b, -⟩, e⟩` from `exists_of_position hQ hE`. Establish `hSt : Start K B f T w` using `⟨⟨b.pin⟩, Or.inl hT, b.coh⟩`. Take `⟨P, x, l, hl, hσ⟩` from `exists_seed b e`. Take `⟨A₁, S₁, a₁, hw'⟩` from `hw2 B f T w hO ⟨b.pin⟩`. Take `⟨σ⟩` from `hσ fun i => avD (Dof x) (avDesign (Dof x)) i ∪ avoidPlaces B.toPre (A ((Dof x).ntw.l i) ∪ A₁ ((Dof x).ntw.l i))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B', f', T', h, hf, hpl, hAv, hS', hCoh, hTw⟩` from `GlobalTheory.HeightCounting.Up.exists_coh_twFrom hP (w.st x.o.Z) f T.pl _ σ (fun p => A p ∪ A₁ p) (fun v hv => P.sub v ((twisted_st x v).1 hv)) (fun v v' ho hv => (twisted_st x v').2 (hl.2 hT v v' ho ((twisted_st x v).1 hv))) (fun i p hp hp' v hv => Finset.mem_coe.2 (Finset.mem_u …`. Take `⟨w', hPin, epx, esel, eJ, eδ⟩` from `hw' B' f' T' h hf (fun v u hu hA => hAv v u hu (Finset.mem_union_right _ hA)) fun z hz => hS' z (Finset.mem_union_right _ hz)`. Establish `eP : B'.toPre = B.toPre` using `h.1`. Use `⟨B', f', T', h, hf, hpl, fun v u hu hA => hAv v u hu (Finset.mem_union_left _ hA), fun z hz => hS' z (Finset.mem_union_left _ hz), ⟨⟨w'.δ, w'.exact⟩, eP ▸ hKP.2⟩, fun hq => ?_⟩` and prove the remaining obligations. Take `⟨Z', hX', z', g1, g2, g3, g4, g5, g6, g7, g8, g9⟩` from `hq.1 w' hPin B f T w h hf ⟨b.pin⟩ epx hpl P.Z₀ P.hX P.Wt P.z P.grp P.grpAt P.kap ⟨P.exAt, P.inGeo, P.core, P.std⟩ (HoldsL.of_holds P.intersectionNumber_baseChange) P.exact P.sub (fun Z' v' hv => (hTw.2 v').2 fun ht => hv _ (below_plUnder h P.Z₀ Z' v') ((twisted_st x _).1 ht))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hSt' : Start K B' f' T' w'` using `⟨hPin, Or.inr ⟨Z', hX', z', g1, g2, g3, g4, g5.1, g5.2.1, g5.2.2.1, g5.2.2.2, g6, g7⟩, hCoh⟩`. Take `⟨pre, bare, sa, mt, rat, cu, mv, ck, fin⟩` from `hq.2 w' hSt'`. Take `⟨P', -, eW, g10⟩` from `pre Z' hX' z' g1 g2 g3 g4 g5 g6 g7`. Establish `hExt : Ext P.z P'.z` using `GlobalTheory.T.standardReading_transport_and_extension_trans.2 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ h (enl_refl B') g8 g10`. Take `⟨x0, hE0, s0⟩` from `bare P' (w.st x.o.Z) f eP hf x.fits.grp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x1, ⟨la⟩, s1⟩` from `sa P' x0 hE0`. Take `⟨imt⟩` from `mt P' x1`. Take `⟨irat⟩` from `rat P' x1 la`. Take `⟨y, ⟨l2⟩, hcar, hlist⟩` from `mv B f T w h hf hSt epx esel eJ eδ P x l.toStrictHenselianAcyclic P' hExt x1 { toLA := la, mt := imt, rat := irat, cusp := cu P' x1 la } (s0.trans s1)`. Establish `hWt : ∀ v', plUnder h v' ∈ P.Wt ↔ v' ∈ P'.Wt` using `fun v' => eW ▸ g9 _ v' (below_plUnder h P.Z₀ Z' v')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨w', hSt', has3_of hP S Γ h x σ (fun i => Finset.subset_union_left) hTw hWt l2 hcar ⟨hlist cDep hl.1, fun _ v₁ v₂ ho hv => (hWt v₂).1 (hl.2 hT _ _ (overOne_plUnder_of h P.Z₀ P'.Z₀ ho) ((hWt v₁).2 hv))⟩ (ck P' y l2) (fin P' y)⟩`.
+Supply the required witnesses or components.
 -/
 theorem secondNo_of (hCo : GlobalTheory.Published.DiscreteSeriesCover) (hCW : GlobalTheory.Published.CasselmanWallach) (hHM : GlobalTheory.Published.HarishChandraModules) (hP : PrN) (hS : SerN) (hD : DatExt) (hH : WeightCaseCondition) (hds : GlobalTheory.Published.DiscreteSeriesExists)
     (hc : PhtCmp) {hL : GlobalTheory.Published.LocalLanglandsGL} (hMt : SMt) (hRat : SRat hL) (hCu : SCusp hL) {cDep : ℝ}
@@ -304,7 +302,7 @@ theorem secondNo_of (hCo : GlobalTheory.Published.DiscreteSeriesCover) (hCW : Gl
     (ck P' y l2) (fin P' y)⟩
 
 /- English proof (translation)
-Introduce `hCo hCW hHM hP hS hD hH hds hc _ hMt hRat hCu _ hF` and use `⟨sFino_of hF, secondNo_of hCo hCW hHM hP hS hD hH hds hc hMt hRat hCu hF⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem second_pass : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraModules → PrN → SerN → DatExt → WeightCaseCondition → GlobalTheory.Published.DiscreteSeriesExists → PhtCmp →
     ∀ hL : GlobalTheory.Published.LocalLanglandsGL, SMt → SRat hL → SCusp hL → ∀ cDep : ℝ, SFinl hL cDep → SFino hL cDep ∧ SecondNo hL cDep :=

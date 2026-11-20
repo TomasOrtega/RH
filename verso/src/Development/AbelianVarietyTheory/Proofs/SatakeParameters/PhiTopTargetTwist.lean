@@ -15,17 +15,15 @@ section Gen
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)} {n r b : ℕ}
 
 /- English proof (translation)
-Establish `hq0` using `qOf_ne_zero (P := P)`. Establish `hv' : ∀ l : Fin n, IntAt P (((qOf P : E) ^ (if r ≤ l.1 ∧ l.1 < n then (1 : ℤ) else 0))⁻¹ * v l)` using `GlobalTheory.LastSteps.mem_sclLat.1 hv`. Establish `hv0 : ∀ l : Fin n, IntAt P (v l)` using `fun l => by`. Establish `h1` using `hv' l`. Use `split_ifs at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(intAt_nat (P := P) (qOf P)).mul h1`. Rewrite `h2` using `[zpow_one, mul_inv_cancel_left₀ hq0]`. Then use the resulting hypothesis. Simplify using `using h1`. Use `GlobalTheory.LastSteps.mem_sclLat.2 fun (l : Fin n) => ?_` and prove the remaining obligations. Use `show IntAt P (((qOf P : E) ^ (if r ≤ l.1 ∧ l.1 < n then (1 : ℤ) else 0))⁻¹ * j.1 v l)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs with hl`. Establish `e` using `apply_eq_sum (j.1 : Sp E n →ₗ[E] Sp E n) v l`. Rewrite `e` using `[LinearEquiv.coe_coe]`. Rewrite using `[e, Finset.mul_sum, zpow_one]`. Use `intAt_sum _ fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hi : r ≤ i.1`. Establish `h1` using `hv' i`. Rewrite `h1` using `[if_pos ⟨hi, i.2⟩, zpow_one]`. Rewrite using `[← mul_assoc]`. Apply the tactic sequence `exact h1.mul (glint_entry j l i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h0 : redP P (j.1 (Pi.single i 1) l) = 0` using `mem_btG.1 h l i (by rw [coarse_of_lt (Nat.not_le.1 hi), coarse_of_le hl.1]; omega)`. Apply the tactic sequence `have h1 := (hv0 i).mul (intAt_div_of_redP hq (glint_entry j l i) h0)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[zpow_zero, inv_one, one_mul]`.
-
-Conclude with `mem_stdAt.1 (glint_mem j (mem_stdAt.2 hv0)) l`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parL_map_of_red (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (j : GLint E n P)
     (h : redGL n P j ∈ HQ (𝓞 E ⧸ P.asIdeal) n r b) {v : Sp E n} (hv : v ∈ LocE.parL P (qOf P) r n 0) :
@@ -60,7 +58,7 @@ theorem parL_map_of_red (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (j : G
     exact mem_stdAt.1 (glint_mem j (mem_stdAt.2 hv0)) l
 
 /- English proof (translation)
-Use `⟨j.2, fun v => ⟨fun hv => ?_, parL_map_of_red hq j h⟩⟩` and prove the remaining obligations. Establish `h1` using `parL_map_of_red hq j⁻¹ (by rw [map_inv]; exact inv_mem h) hv`. Establish `e : (j⁻¹).1 (j.1 v) = v` using `LinearEquiv.symm_apply_apply j.1 v`. Conclude with `e ▸ h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_JQ_of_red (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (j : GLint E n P)
     (h : redGL n P j ∈ HQ (𝓞 E ⧸ P.asIdeal) n r b) : j.1 ∈ LocE.JQ P (qOf P) r n 0 := by
@@ -70,11 +68,11 @@ theorem mem_JQ_of_red (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (j : GLi
   exact e ▸ h1
 
 /- English proof (translation)
-Establish `hA : GlobalTheory.DatumLaw.IntM P n n fun p p' => Loc.atN (j.1.toLinearMap (Loc.eN E n p')) p` using `fun p p' hp hp' => by show IntAt P (Loc.atN _ _)`. Rewrite using `[GlobalTheory.LastSteps.eN_eq hp', Loc.atN, dif_pos hp]`. Apply the tactic sequence `exact glint_entry j _ _`. Establish `h1` using `blkDet_eq_dB (coarse r [b]) 1 r (n - r) (by omega) (fun i hi => by`. Distinguish the cases in `hr : i < r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coarse_of_lt hr]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[coarse_of_le (Nat.not_lt.1 hr), blkIdx, if_pos (by omega)]; omega) ⟨_, h⟩`. Use the proof step `(GlobalTheory.DatumLaw.red P fun p p' => Loc.atN (j.1.toLinearMap (Loc.eN E n p')) p) (fun i l => by show redP P (Loc.atN _ _) = _`. Rewrite using `[GlobalTheory.LastSteps.eN_eq l.2, Loc.atN, dif_pos i.2]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl)`. Rewrite `h1` using `[← GlobalTheory.DatumLaw.redP_dB hA (by omega) (by omega)]`. Rewrite using `[lamQ_apply, Units.val_inv_eq_inv_val]`. Use `show (GlobalTheory.DatumLaw.ext0 ξ (redP P (GlobalTheory.DatumLaw.dB (fun p p' => Loc.atN (j.1.toLinearMap (Loc.eN E n p')) p) r (n - r))))⁻¹ = _`. Rewrite using `[← h1, GlobalTheory.DatumLaw.ext0, dif_pos (Units.isUnit _), IsUnit.unit_of_val_units]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamQB_eq_red (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (hn : n = r + b) (j : GLint E n P)
     (h : redGL n P j ∈ HQ (𝓞 E ⧸ P.asIdeal) n r b) :
@@ -99,9 +97,9 @@ theorem lamQB_eq_red (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (hn : n = r + b) (
 end Gen
 
 /- English proof (translation)
-Introduce `X Pr R Ch S mu m2 P hm hq hP sharp Q hQ j h x`. Take `⟨a1, a2, a3, -⟩` from `GlobalTheory.DatumLaw.ranks R (j := m2 + 1) (by omega)`. Unfold `PhiTop`. Rewrite using `[if_neg hP]`. Establish `h1` using `GlobalTheory.DatumLaw.phiQ_target (resChar (mu : Chr X.F X.E X.K) P) (k₀ := R.k) (r := R.r) (c' := cOf R (m2 + 1)) (n' := R.N (m2 + 1)) (c := 0) (n := R.N R.m - 1) (kj := R.r) (by omega) (r_le_X' R) rfl (by omega) (mem_JQ_of_red hq j h) x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1.trans (congrArg (· * _) (lamQB_eq_red _ (rank_X'_eq R) j h))`.
+A detailed English derivation is pending.
 -/
 theorem phiTop_target_twist : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (m2 : ℕ) (P : HeightOneSpectrum (𝓞 X.E)), R.m = m2 + 2 → ((qOf P : ℕ) : 𝓞 X.E) ∉ P.asIdeal ^ 2 → P ∉ Pr.vGs → ∀ (sharp : Bool) (Q : Finset (HeightOneSpectrum (𝓞 X.E))) (hQ : P ∈ Q) (j : GLint X.E (R.N R.m - 1) P) (h : redGL _ P j ∈ (rowTyQ R (mu : Chr X.F X.E X.K) Q ⟨P, hQ⟩).H) (x : HomE X.E (R.N (m2 + 1) + cOf R (m2 + 1)) (R.N R.m - 1)), PhiTop Ch mu sharp m2 P (j.1.toLinearMap ∘ₗ x) * LocE.unitV (resChar (mu : Chr X.F X.E X.K) P)⁻¹ ((LinearEquiv.det j.1 : X.Eˣ) : X.E) = (((rowTyQ R (mu : Chr X.F X.E X.K) Q ⟨P, hQ⟩).lam ⟨_, h⟩ : X.Kˣ) : X.K) * PhiTop Ch mu sharp m2 P x := by
   intro X Pr R Ch S mu m2 P hm hq hP sharp Q hQ j h x

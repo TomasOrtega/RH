@@ -24,9 +24,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation (UB incM incM_sm
 variable {D : D7}
 
 /- English proof (translation)
-Establish `e : ((x.1.1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)).map (cA D)).map (cA D) = (x.1.1 : Matrix (Fin V.rank) (Fin V.rank) (AE D))` using `Matrix.ext fun _ _ => Formalism.L2.Theta.cA_cA _`. Establish `hx : (x.1.1 : Matrix (Fin V.rank) (Fin V.rank) (AE D))ᵀ * incM J * (x.1.1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)).map (cA D) = incM J` using `x.2`. Use `show (((x.1.1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)).map (cA D)).map (cA D))ᵀ * incM V.gram * (x.1.1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)).map (cA D) = incM V.gram`. Rewrite using `[e]`. Generalize the expression as in `(x.1.1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) = X at hx ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[h, incM_smul, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hx'` using `congrArg (fun y => incA D c⁻¹ • y) hx`. Simplify using `only [smul_smul, ← map_mul, inv_mul_cancel₀ hc, map_one, one_smul] at hx'`. Conclude with `hx'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_inv (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.host.E) (hc : c ≠ 0)
     (h : J = c • V.gram) (x : UB J) :
@@ -65,7 +65,7 @@ def conjEquiv (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D
     simp [Formalism.L2.Theta.mt, map_mul]
 
 /- English proof (translation)
-Establish `: IsTopologicalRing (AE D)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing`. Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp continuous_subtype_val).matrix_map (continuous_conj D)`. Conclude with `(Units.continuous_coe_inv.comp continuous_subtype_val).matrix_map (continuous_conj D)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_conjUInv (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.host.E) (hc : c ≠ 0)
     (h : J = c • V.gram) : Continuous (conjUInv V c hc h) := by
@@ -81,9 +81,9 @@ theorem cA_inclR (a : D.host.E) :
     cA D (inclR (F := D.host.F) (AF D.host.F) a) = inclR (F := D.host.F) (AF D.host.F) (D.sp.cm.sig a) := rfl
 
 /- English proof (translation)
-Take `⟨y, -, e⟩` from `hγ`. Use `⟨GeneralLinearGroup.map (D.sp.cm.sig : D.host.E →+* D.host.E) y, Units.ext ?_⟩` and prove the remaining obligations. Establish `e' : mt V γ = (y : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (F` using `D.host.F) (AF D.host.F)) := (congrArg Units.val e).symm`. Use `show _ = (mt V γ).map (cA D)`. Rewrite using `[e']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Conclude with `(cA_inclR _).symm`.
+A detailed English derivation is pending.
 -/
 theorem rat_fwd (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.host.E) (h : J = c • V.gram)
     (γ : GA D V) (hγ : γ ∈ GQ V) : conjU V c h γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ratU D.sp.cm.sig J := by
@@ -97,21 +97,19 @@ theorem rat_fwd (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c :
   exact (cA_inclR _).symm
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)`.
+A detailed English derivation is pending.
 -/
 theorem inclR_injective : Function.Injective (inclR (F := D.host.F) (E := D.host.E) (AF D.host.F)) :=
   Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hx`. Establish `hz' : (x.1.1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) = (z : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (F` using `D.host.F) (AF D.host.F)) := (congrArg Units.val hz).symm`. Use `set Z := (z : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (D.sp.cm.sig : D.host.E →+* D.host.E) with hZ`. Establish `hY : (x.1.1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)).map (cA D) = Z.map (inclR (F` using `D.host.F) (AF D.host.F)) := by`. Rewrite using `[hz']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Conclude with `cA_inclR _`. Use `⟨GeneralLinearGroup.map (D.sp.cm.sig : D.host.E →+* D.host.E) z, ?_, Units.ext ?_⟩` and prove the remaining obligations. Establish `hm` using `mem_inv V c hc h x`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) ((x.1.1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)).map (cA D)) * JR (AF D.host.F) V.gram * (x.1.1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)).map (cA D) = JR (AF D.host.F) V.gram at hm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[hY]`. Establish `hcT : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (Z.map (inclR (F` using `D.host.F) (AF D.host.F))) = (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Z).map (inclR (F := D.host.F) (AF D.host.F)) := by`. Use extensionality with `i j`. Conclude with `cA_inclR _`. Rewrite `hm` using `[hcT]`.
+By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Z * V.gram * Z = V.gram`. Apply `Matrix.map_injective inclR_injective` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Conclude with `hm`.
-
-Use `show Z.map (inclR (F := D.host.F) (AF D.host.F)) = (x.1.1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)).map (cA D)`. Conclude with `hY.symm`.
+A detailed English derivation is pending.
 -/
 theorem rat_inv (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.host.E) (hc : c ≠ 0)
     (h : J = c • V.gram) (x : UB J) (hx : x ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ratU D.sp.cm.sig J) : conjUInv V c hc h x ∈ GQ V := by
@@ -148,13 +146,13 @@ def ratEquiv (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.
   right_inv γ := Subtype.ext ((conjEquiv V c hc h).left_inv γ.1)
 
 /- English proof (translation)
-Introduce `D V J c hc h ν fd hν hfd`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram` as an intermediate fact. Establish `: IsTopologicalRing (AE D)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing`. Establish `: BorelSpace (UB J)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ` to `conjEquiv V c hc h`. Establish `c1 : Continuous φ` using `continuous_conjU V c h`. Establish `c2 : Continuous φ.symm` using `continuous_conjUInv V c hc h`. Establish `hH : (ν.map φ).IsHaarMeasure` using `MulEquiv.isHaarMeasure_map ν φ c1 c2`. Use `⟨hH, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `H : GA D V ≃ₜ UB J` to `⟨φ.toEquiv, c1, c2⟩`. Set `M` to `H.toMeasurableEquiv`. Establish `hq : Measure.QuasiMeasurePreserving M.symm (ν.map M) ν` using `(M.measurePreserving_symm ν).quasiMeasurePreserving`. Use `hfd.image_of_equiv M.toEquiv hq (ratEquiv V c hc h) fun γ x => ?_` and prove the remaining obligations. Use `show φ (φ.symm γ.1 * x) = γ.1 * φ x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, MulEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem map_isHaar_isFundamentalDomain : ∀ {D : D7} (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.host.E), c ≠ 0 →
     ∀ (h : J = c • V.gram) (ν : Measure (GA D V)) (fd : Set (GA D V)), ν.IsHaarMeasure →

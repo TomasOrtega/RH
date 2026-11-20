@@ -7,7 +7,7 @@ noncomputable section
 namespace GlobalTheory.MomT.Heis
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.Ker.HV, LinearMap.mk₂'ₛₗ_apply, map_mul, map_sum, Complex.conj_ofReal, Complex.conj_conj]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem HV_conj {ι : Type} [Fintype ι] {a b : ℕ} (sc : ℝ) (x y : VV ι a b) :
     Formalism.L2.Ker.HV sc y x = (starRingEnd ℂ) (Formalism.L2.Ker.HV sc x y) := by
@@ -16,13 +16,13 @@ theorem HV_conj {ι : Type} [Fintype ι] {a b : ℕ} (sc : ℝ) (x y : VV ι a b
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => mul_comm _ _
 
 /- English proof (translation)
-Simplify using `only [alphaQ, opU, Formalism.L2.Th1.H.qOf]`. Rewrite using `[← add_assoc z x y]`. Establish `key : ∀ a b c d e f g u : ℂ, a + b + c + d = e + f + g → Complex.exp a * (Complex.exp b * (u * Complex.exp c) * Complex.exp d) = Complex.exp e * (Complex.exp f * (u * Complex.exp g))`. Introduce `a b c d e f g u h`. Establish `: Complex.exp a * Complex.exp b * Complex.exp c * Complex.exp d = Complex.exp e * Complex.exp f * Complex.exp g`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [← Complex.exp_add, h]`. Take the linear combination `u * this`. Apply `key` to reduce the goal to its premises. Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[hH x y]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : H x y = ((H x y).re : ℂ) + ((H x y).im : ℂ) * Complex.I` using `(Complex.re_add_im _).symm`. Establish `h2 : (starRingEnd ℂ) (H x y) = ((H x y).re : ℂ) - ((H x y).im : ℂ) * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp`. Simplify using `only [Complex.add_re, Complex.conj_re]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `(H x y).re = r at *`. Generalize the expression as in `(H x y).im = s at *`. Rewrite using `[h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem alpha_opU_mul {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V)
     (hH : ∀ x y, H y x = (starRingEnd ℂ) (H x y)) (c : ℝ) (x y : V) (F : V → ℂ) (z : V) :
@@ -56,12 +56,12 @@ theorem alpha_opU_mul {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V)
 variable {X : Fields} (A : Amb X) {a b : ℕ}
 
 /- English proof (translation)
-The claim follows from `map_add _ x y`.
+A detailed English derivation is pending.
 -/
 theorem emb_add (x y : HomE X.E a b) : emb A (x + y) = emb A x + emb A y := map_add _ x y
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Use `alpha_opU_mul (Formalism.L2.Ker.HV A.sc) (fun x y => HV_conj A.sc x y) (Real.sqrt A.d) (emb A x) (emb A y) F z` as an intermediate fact. Rewrite `this` using `[← emb_add]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Wx_Wx (x y : HomE X.E a b) (F : VCx X.Tau a b → ℂ) :
     Wx A x (Wx A y F) = fun z => Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (coc A x y : ℂ)) * Wx A (x + y) F z := by
@@ -71,7 +71,7 @@ theorem Wx_Wx (x y : HomE X.E a b) (F : VCx X.Tau a b → ℂ) :
   exact this
 
 /- English proof (translation)
-Simplify using `only [coc, imH, altE]`. Rewrite using `[HV_conj A.sc (emb A x) (emb A y)]`. Simplify using `only [Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem imH_eq (x y : HomE X.E a b) : imH A x y = coc A x y - coc A y x := by
   simp only [coc, imH, altE]
@@ -80,21 +80,21 @@ theorem imH_eq (x y : HomE X.E a b) : imH A x y = coc A x y - coc A y x := by
   ring
 
 /- English proof (translation)
-Simplify using `only [imH, altE, emb_add, map_add, LinearMap.add_apply, Complex.add_im]`.
+Simplify using the standard rewrite rules.
 -/
 theorem imH_add_left (x y z : HomE X.E a b) : imH A (x + y) z = imH A x z + imH A y z := by
   simp only [imH, altE, emb_add, map_add, LinearMap.add_apply, Complex.add_im]
 
 /- English proof (translation)
-Simplify using `only [imH, altE, emb_add, map_add, LinearMap.add_apply, Complex.add_im]`.
+Simplify using the standard rewrite rules.
 -/
 theorem imH_add_right (x y z : HomE X.E a b) : imH A x (y + z) = imH A x y + imH A x z := by
   simp only [imH, altE, emb_add, map_add, LinearMap.add_apply, Complex.add_im]
 
 /- English proof (translation)
-Rewrite using `[Wx_Wx, Wx_Wx, add_comm y x]`. Use function extensionality and compare the values at `z`. Establish `: brkE A y x = Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (imH A x y : ℂ))` using `rfl`. Rewrite using `[this, ← mul_assoc, ← Complex.exp_add, imH_eq]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Wx_comm (x y : HomE X.E a b) (F : VCx X.Tau a b → ℂ) :
     Wx A x (Wx A y F) = fun z => brkE A y x * Wx A y (Wx A x F) z := by
@@ -107,7 +107,7 @@ theorem Wx_comm (x y : HomE X.E a b) (F : VCx X.Tau a b → ℂ) :
   ring
 
 /- English proof (translation)
-Establish `h : ContDiff ℂ k (fun z : VCx X.Tau a b => Formalism.L2.Ker.HV A.sc z (emb A x))`. Simplify using `only [Formalism.L2.Ker.HV, LinearMap.mk₂'ₛₗ_apply]`. Use `fun_prop`. Unfold `Wx opU`. Conclude with `contDiff_const.mul ((hF.comp (contDiff_id.add contDiff_const)).mul (((contDiff_const.mul h).sub contDiff_const).cexp))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiff_Wx (x : HomE X.E a b) (F : VCx X.Tau a b → ℂ) (k : ℕ) (hF : ContDiff ℂ k F) :
     ContDiff ℂ k (Wx A x F) := by
@@ -119,9 +119,9 @@ theorem contDiff_Wx (x : HomE X.E a b) (F : VCx X.Tau a b → ℂ) (k : ℕ) (hF
     (((contDiff_const.mul h).sub contDiff_const).cexp))
 
 /- English proof (translation)
-Establish `hd : ∀ n : ℕ, iteratedFDeriv ℂ n (fun z => ∑ i ∈ T, c i * F i z) 0 = ∑ i ∈ T, c i • iteratedFDeriv ℂ n (F i) 0`. Introduce `n`. Establish `e : (fun z => ∑ i ∈ T, c i * F i z) = ∑ i ∈ T, c i • F i`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, iteratedFDeriv_sum_apply (f := fun i => c i • F i) (fun i hi => ((hF i hi n).const_smul (c i)).contDiffAt)]`. Conclude with `Finset.sum_congr rfl fun i hi => iteratedFDeriv_const_smul_apply (hF i hi n).contDiffAt`. Simplify using `only [jetC, derivAt0, hd, ContinuousMultilinearMap.sum_apply, ContinuousMultilinearMap.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetC_sum (κ : Type) (T : Finset κ) (c : κ → ℂ) (F : κ → VCx X.Tau a b → ℂ)
     (hF : ∀ i ∈ T, ∀ k : ℕ, ContDiff ℂ k (F i)) (m : DVar X.Tau a b →₀ ℕ) :
@@ -138,15 +138,15 @@ theorem jetC_sum (κ : Type) (T : Finset κ) (c : κ → ℂ) (F : κ → VCx X.
   exact Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Introduce `X A a b`. Use `⟨Wx_Wx A, Wx_comm A, imH_eq A, fun x y z => ⟨?_, ?_, imH_add_left A x y z, imH_add_right A x y z⟩, fun _ _ => rfl, fun y t => ?_, fun x F hF k => contDiff_Wx A x F k (hF k), fun κ T c F hF m => jetC_sum A κ T c F hF m⟩` and prove the remaining obligations. Simplify using `only [coc, imH_add_left, emb_add, map_add, LinearMap.add_apply, Complex.add_re]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [coc, imH_add_right, emb_add, map_add, LinearMap.add_apply, Complex.add_re]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `: brkE A y t = Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (imH A t y : ℂ))` using `rfl`. Rewrite using `[this, Complex.exp_eq_one_iff]`. Establish `hne : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0` using `Complex.two_pi_I_ne_zero`. Prove the components needed by the constructor for the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨n, hn⟩`. Use `⟨-n, ?_⟩` and prove the remaining obligations. Establish `: ((imH A t y : ℝ) : ℂ) = ((-n : ℤ) : ℂ)`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Use `push_cast`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `-hn`. Conclude with `this` after adjusting the coercions. Introduce and unpack `⟨n, hn⟩`. Use `⟨-n, ?_⟩` and prove the remaining obligations. Rewrite using `[hn]`.
+Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem calculus : ∀ (X : Fields) (A : Amb X) (a b : ℕ), (∀ (x y : HomE X.E a b) (F : VCx X.Tau a b → ℂ), Wx A x (Wx A y F) = fun z => Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (coc A x y : ℂ)) * Wx A (x + y) F z) ∧ (∀ (x y : HomE X.E a b) (F : VCx X.Tau a b → ℂ), Wx A x (Wx A y F) = fun z => brkE A y x * Wx A y (Wx A x F) z) ∧ (∀ x y : HomE X.E a b, imH A x y = coc A x y - coc A y x) ∧ (∀ x y z : HomE X.E a b, coc A (x + y) z = coc A x z + coc A y z ∧ coc A x (y + z) = coc A x y + coc A x z ∧ imH A (x + y) z = imH A x z + imH A y z ∧ imH A x (y + z) = imH A x y + imH A x z) ∧ (∀ y t : HomE X.E a b, brkE A y t = Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (imH A t y : ℂ))) ∧ (∀ y t : HomE X.E a b, brkE A y t = 1 ↔ ∃ n : ℤ, imH A t y = n) ∧ (∀ (x : HomE X.E a b) (F : VCx X.Tau a b → ℂ), (∀ k : ℕ, ContDiff ℂ k F) → ∀ k : ℕ, ContDiff ℂ k (Wx A x F)) ∧ (∀ (κ : Type) (T : Finset κ) (c : κ → ℂ) (F : κ → VCx X.Tau a b → ℂ), (∀ i ∈ T, ∀ k : ℕ, ContDiff ℂ k (F i)) → ∀ m, jetC A.cD (fun z => ∑ i ∈ T, c i * F i z) m = ∑ i ∈ T, c i * jetC A.cD (F i) m) := by
   intro X A a b

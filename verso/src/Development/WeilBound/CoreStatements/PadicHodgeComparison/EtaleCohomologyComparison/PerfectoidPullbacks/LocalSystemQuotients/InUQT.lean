@@ -27,7 +27,7 @@ theorem pt_qT (T : Thick (Wc.L l (B.schFn q) ρ (n + 1))) :
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Unfold `InU at hV ⊢`. Rewrite using `[pt_qT, Scheme.Hom.comp_preimage, top_le_iff.1 hV]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inU_qT (T : Thick (Wc.L l (B.schFn q) ρ (n + 1))) {V : X.Opens}
     (hV : InU (γ := Wc.pd l k (n + 1)) (p := l) (q := q) (κ := (Wc.res l k (n + 1)).comp ρ) V T) :
@@ -37,7 +37,7 @@ theorem inU_qT (T : Thick (Wc.L l (B.schFn q) ρ (n + 1))) {V : X.Opens}
   simp
 
 /- English proof (translation)
-Take `⟨-, V, hV, hin⟩` from `T.property`. Conclude with `⟨((mq (F := B.schFn q) (ρ := ρ) hn).G.obj ⟨T.obj, T.property.1⟩).property, V, hV, inU_qT q ρ hn T.obj hin⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hGq (𝒱 : Set X.Opens) (T : (stF q ρ (n + 1) 𝒱).FullSubcategory) :
     stF q ρ n 𝒱 ((mq (F := B.schFn q) (ρ := ρ) hn).G.obj ⟨T.obj, T.property.1⟩).obj := by

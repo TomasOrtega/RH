@@ -15,7 +15,7 @@ variable {K V M ι : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup
   {σ : K →+* ℂ} (e : V →ₛₗ[σ] M) (b : Module.Basis ι K V)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr x]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl (fun i _ => LinearMap.map_smulₛₗ e _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_sum (x : V) : e x = ∑ i, σ (b.repr x i) • e (b i) := by
   conv_lhs => rw [← b.sum_repr x]
@@ -23,9 +23,9 @@ theorem map_eq_sum (x : V) : e x = ∑ i, σ (b.repr x i) • e (b i) := by
   exact Finset.sum_congr rfl (fun i _ => LinearMap.map_smulₛₗ e _ _)
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `LinearMap.exists_extend ((Finsupp.linearCombination ℂ (fun i => g (b i))).comp h.repr)`. Establish `hb : ∀ i, F (e (b i)) = g (b i)`. Introduce `i`. Establish `h1` using `LinearMap.congr_fun hF ⟨e (b i), Submodule.subset_span ⟨i, rfl⟩⟩`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h.repr_eq_single i _ rfl]`. Simplify using the standard rewrite rules. Use `⟨F, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[map_eq_sum e b, map_eq_sum g b, map_sum]`. Simplify using `[hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_extension (h : LinearIndependent ℂ (fun i => e (b i))) {N : Type} [AddCommGroup N] [Module ℂ N]
     (g : V →ₛₗ[σ] N) : ∃ F : M →ₗ[ℂ] N, ∀ x, F (e x) = g x := by
@@ -41,13 +41,13 @@ theorem exists_extension (h : LinearIndependent ℂ (fun i => e (b i))) {N : Typ
   simp [hb]
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `LinearMap.exists_extend hz.repr`. Establish `hfz : ∀ j, f (z j) = Finsupp.single j 1`. Introduce `j`. Establish `h1` using `LinearMap.congr_fun hf ⟨z j, Submodule.subset_span ⟨j, rfl⟩⟩`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, hz.repr_eq_single j _ rfl]`. Set `g : V →ₛₗ[σ] (κ → ℂ)` to `{ toFun := fun x j => σ (f x j) map_add' := fun x y => by funext j; simp map_smul' := fun a x => by funext j; simp }`. Take `⟨F, hF⟩` from `exists_extension e b h g`. Use `LinearIndependent.of_comp F ?_` and prove the remaining obligations. Establish `: (F ∘ fun j => e (z j)) = Pi.basisFun ℂ κ`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j k`. Simplify using `only [Function.comp, hF, g, LinearMap.coe_mk, AddHom.coe_mk, hfz, Pi.basisFun_apply]`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Ne.symm hjk]`. Rewrite using `[this]`. Conclude with `(Pi.basisFun ℂ κ).linearIndependent`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndependent_map (h : LinearIndependent ℂ (fun i => e (b i))) {κ : Type} [Fintype κ] {z : κ → V}
     (hz : LinearIndependent K z) : LinearIndependent ℂ (fun j => e (z j)) := by
@@ -74,25 +74,25 @@ theorem linearIndependent_map (h : LinearIndependent ℂ (fun i => e (b i))) {κ
   exact (Pi.basisFun ℂ κ).linearIndependent
 
 /- English proof (translation)
-Establish `hinj` using `inj_of_li σ e b h`. Set `N : S → V →ₗ[K] V` to `fun v => descend e e hinj (T v) (hT v)`. Establish `hN : ∀ v x, e (N v x) = T v (e x)` using `fun v x => descend_spec e e hinj (T v) (hT v) x`. Set `N' : V →ₗ[K] (S → V)` to `LinearMap.pi N`. Take `⟨r, hr⟩` from `N'.rangeRestrict.exists_rightInverse_of_surjective N'.range_rangeRestrict`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `LinearMap.exists_extend r`. Establish `hsN : ∀ x, N' (s (N' x)) = N' x`. Introduce `x`. Establish `h1` using `LinearMap.congr_fun hs ⟨N' x, ⟨x, rfl⟩⟩`. Establish `h2` using `congrArg Subtype.val (LinearMap.congr_fun hr ⟨N' x, ⟨x, rfl⟩⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at h1`. Rewrite using `[h1]`. Conclude with `h2`. Set `p : V →ₗ[K] V` to `LinearMap.id - s ∘ₗ N'`. Establish `hp : ∀ x v, T v (e (p x)) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x v`. Establish `h1 : N' (p x) = 0` using `by simp [p, hsN]`. Establish `h2 : N v (p x) = 0` using `congrFun h1 v`. Rewrite using `[← hN, h2, map_zero]`. Take `⟨P, hP⟩` from `exists_extension e b h (e.comp p)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose Sx hSx using fun v => exists_extension e b h (e.comp (s ∘ₗ LinearMap.single K (fun _ : S => V) v))`. Establish `key : ∀ ψ ∈ Submodule.span ℂ (Set.range fun i => e (b i)), ψ = P ψ + ∑ v, Sx v (T v ψ) ∧ P ψ ∈ Submodule.span ℂ (e '' {x | ∀ v, T v (e x) = 0})`. Introduce `ψ hψ`. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, rfl⟩` from `hψ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [← hN, hSx, hP, LinearMap.comp_apply]`. Rewrite using `[← map_sum e, ← map_sum s, ← map_add]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: ∑ v, LinearMap.single K (fun _ : S => V) v (N v (b i)) = N' (b i)`. Use function extensionality and compare the values at `w`. Simplify using `[N', Finset.sum_apply, Pi.single_apply]`. Rewrite using `[this]`. Simplify using `[p]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hP]`. Conclude with `Submodule.subset_span ⟨p (b i), hp _, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Use `⟨?_, by rw [map_add]; exact Submodule.add_mem _ hx.2 hy.2⟩` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Simplify using `only [map_add, Finset.sum_add_distrib]`. Use `conv_lhs => rw [hx.1, hy.1]`. Normalize the expressions using the abelian group laws. Consider the case `smul a x _ hx`. Use `⟨?_, by rw [map_smul]; exact Submodule.smul_mem _ _ hx.2⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul]`. Rewrite using `[← Finset.smul_sum, ← smul_add, ← hx.1]`. Take `⟨h1, h2⟩` from `key φ hφ`. Rewrite using `[h1]`. Simplify `h2` using `[h0]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_span_ker (h : LinearIndependent ℂ (fun i => e (b i))) {S : Type} [Fintype S] (T : S → M →ₗ[ℂ] M)
     (hT : ∀ v x, ∃ y, e y = T v (e x)) {φ : M} (hφ : φ ∈ Submodule.span ℂ (Set.range fun i => e (b i)))
@@ -153,9 +153,9 @@ section Frames
 
 open scoped MatrixOrder in
 /- English proof (translation)
-Take `⟨B, hB⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hA.posSemidef.nonneg`. Establish `hB' : A = Bᴴ * B` using `by rw [hB, Matrix.star_eq_conjTranspose]`. Establish `hdet : IsUnit B.det`. Establish `h1 : A.det ≠ 0` using `hA.det_pos.ne'`. Rewrite `h1` using `[hB', Matrix.det_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_iff_ne_zero.mpr (right_ne_zero_of_mul h1)`. Use `⟨B⁻¹, Matrix.isUnit_nonsing_inv_det _ hdet, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hdet, hB']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame {κ : Type} [Fintype κ] [DecidableEq κ] (A : Matrix κ κ ℂ) (hA : A.PosDef) :
     ∃ Y : Matrix κ κ ℂ, IsUnit Y.det ∧ (Y⁻¹)ᴴ * Y⁻¹ = A := by
@@ -169,7 +169,7 @@ theorem exists_frame {κ : Type} [Fintype κ] [DecidableEq κ] (A : Matrix κ κ
   rw [Matrix.nonsing_inv_nonsing_inv _ hdet, hB']
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.cnorm`. Use `congr 1`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec, dotProduct, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.star_apply, Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cnorm_mulVec {ι κ : Type} [Fintype ι] [Fintype κ] (M : Matrix ι κ ℂ) (y : κ → ℂ) :
     Formalism.HermitianLatticesTheory.cnorm (M *ᵥ y) = Real.sqrt (star y ⬝ᵥ ((Mᴴ * M) *ᵥ y)).re := by
@@ -187,17 +187,15 @@ def vecMap (b : Module.Basis ι K V) (v : InfinitePlace K) : V →ₛₗ[v.embed
   map_smul' a x := by funext i; simp [Formalism.HermitianLatticesTheory.vecAt]
 
 /- English proof (translation)
-Set `E : InfinitePlace K → Matrix ι κ ℂ` to `fun v => Matrix.of fun i j => vecMap b v (c j : V) i`. Establish `hE : ∀ v, Function.Injective (E v).mulVec`. Introduce `v`. Rewrite using `[Matrix.mulVec_injective_iff]`. Use `linearIndependent_map (vecMap b v) b ?_ (c.linearIndependent.map' U.subtype U.ker_subtype)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (fun i => vecMap b v (b i)) = Pi.basisFun ℂ ι`. Use function extensionality and compare the values at `i k`. Use `show v.embedding (b.repr (b i) k) = _`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Ne.symm hik]`. Rewrite using `[this]`. Conclude with `(Pi.basisFun ℂ ι).linearIndependent`. Establish `hM : ∀ v, Function.Injective ((X v)⁻¹ * E v).mulVec`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `v y y' hy`. Rewrite `hy` using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `hE v (Matrix.mulVec_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_nonsing_inv_det _ (hX v))) hy)`. Use `choose Y hY1 hY2 using fun v => exists_frame _ (Matrix.PosDef.conjTranspose_mul_self _ (hM v))`. Use `⟨Y, hY1, fun v x => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hx : Formalism.HermitianLatticesTheory.vecAt b v (x : V) = E v *ᵥ Formalism.HermitianLatticesTheory.vecAt c v x`. Use `map_eq_sum ((vecMap b v).comp U.subtype) c x` as an intermediate fact. Use function extensionality and compare the values at `i`. Establish `h2` using `congrFun this i`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h2`.
-
-Use `h2.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Conclude with `mul_comm _ _`. Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[hx, Matrix.mulVec_mulVec, cnorm_mulVec, cnorm_mulVec, hY2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frames_restrict (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) (U : Submodule K V) {κ : Type} [Fintype κ] [DecidableEq κ]
@@ -248,9 +246,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
   L := A.L.comap (U.subtype.restrictScalars (𝓞 K))
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨hy, y.2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨x, h2⟩, h1, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem subHLat_map (A : HLat K) (U : Submodule K A.V) {d : ℕ} (c : Module.Basis (Fin d) K U)
     (Y : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) :
@@ -263,13 +261,11 @@ theorem subHLat_map (A : HLat K) (U : Submodule K A.V) {d : ℕ} (c : Module.Bas
     exact ⟨⟨x, h2⟩, h1, rfl⟩
 
 /- English proof (translation)
-Use `⟨hY, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.fg_of_fg_map_injective (U.subtype.restrictScalars (𝓞 K)) U.injective_subtype ?_` and prove the remaining obligations. Rewrite using `[subHLat_map]`. Conclude with `hA.2.1.of_le inf_le_left`. Rewrite using `[eq_top_iff]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x -`. Establish `hx : (x : A.V) ∈ Submodule.span K (A.L : Set A.V)` using `by rw [hA.2.2]; trivial`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 K)) K _ _ hx`. Rewrite `ht` using `[Submodule.span_eq]`. Establish `ht0 : ((t : 𝓞 K) : K) ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `nonZeroDivisors.coe_ne_zero t` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `h1 : ((t : 𝓞 K) : K) • x ∈ Submodule.span K ((subHLat A U c Y).L : Set U)`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Use `show ((t : 𝓞 K) : K) • (x : A.V) ∈ A.L`.
-
-Establish `: ((t : 𝓞 K) : K) • (x : A.V) = (t : 𝓞 K) • (x : A.V)` using `algebraMap_smul K (t : 𝓞 K) (x : A.V)`. Rewrite using `[this]`. Conclude with `ht`. Conclude with `(Submodule.smul_mem_iff _ ht0).1 h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subHLat_good (A : HLat K) (hA : A.Good) (U : Submodule K A.V) {d : ℕ} (c : Module.Basis (Fin d) K U)
     (Y : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (hY : ∀ v, IsUnit (Y v).det) : (subHLat A U c Y).Good := by
@@ -293,7 +289,7 @@ theorem subHLat_good (A : HLat K) (hA : A.Good) (U : Submodule K A.V) {d : ℕ} 
     exact (Submodule.smul_mem_iff _ ht0).1 h1
 
 /- English proof (translation)
-Use `⟨ProvRowSide.stdHLat_frames _ _ _, Submodule.fg_span (Set.finite_range _), ?_⟩` and prove the remaining obligations. Use `show Submodule.span K (Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin n))) : Set (Fin n → K)) = ⊤`. Rewrite using `[Submodule.span_span_of_tower, Module.Basis.span_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdHLat_good (n : ℕ) :
     (ProvRowSide.stdHLat K n (Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin n))))).Good := by
@@ -311,11 +307,11 @@ variable {R : Ranks} {LL : Type} [Field LL] [NumberField LL] [StarRing LL] {embL
   (M : MemberForms LL embLL Pl Tau hc C A P)
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span LL ((M.lat 0).L : Set (M.lat 0).V)` using `by rw [(M.lat_good 0).2.2]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨y, -, hy⟩ := M.rhoT_lat v a x hx`. Conclude with `⟨y, hy⟩`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨x', hx'⟩` from `hx`. Take `⟨y', hy'⟩` from `hy`. Conclude with `⟨x' + y', by simp [hx', hy']⟩`. Consider the case `smul c x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨x', hx'⟩` from `hx`. Conclude with `⟨c • x', by rw [LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, map_smul, hx']⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rhoT_rat (v : A.vT) (a : (A.Fv v)ˣ) (x : (M.lat 0).V) : ∃ y, M.emb 0 y = A.rhoT v a (M.emb 0 x) := by
   have hx : x ∈ Submodule.span LL ((M.lat 0).L : Set (M.lat 0).V) := by rw [(M.lat_good 0).2.2]; trivial
@@ -331,14 +327,14 @@ theorem rhoT_rat (v : A.vT) (a : (A.Fv v)ˣ) (x : (M.lat 0).V) : ∃ y, M.emb 0 
     exact ⟨c • x', by rw [LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, map_smul, hx']⟩
 
 /- English proof (translation)
-Use `choose y hy using fun a => rhoT_rat M v a x`. Conclude with `⟨∑ a, y a, by simp [ColumnsAtT.Nm, hy]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Nm_rat (v : A.vT) (x : (M.lat 0).V) : ∃ y, M.emb 0 y = A.Nm v (M.emb 0 x) := by
   choose y hy using fun a => rhoT_rat M v a x
   exact ⟨∑ a, y a, by simp [ColumnsAtT.Nm, hy]⟩
 
 /- English proof (translation)
-Rewrite using `[← M.Fi_zero, ← (M.emb_basis 0).2, map_eq_sum (M.emb 0) (M.lat 0).b]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_embedding_mem_unit_group (x : (M.lat 0).V) : M.emb 0 x ∈ A.Mu0 := by
   rw [← M.Fi_zero, ← (M.emb_basis 0).2, map_eq_sum (M.emb 0) (M.lat 0).b]
@@ -348,11 +344,11 @@ def ramEmb : M.ramSub →ₛₗ[embLL] A.Mram :=
   LinearMap.codRestrict A.Mram ((M.emb 0).comp M.ramSub.subtype) fun x => x.2
 
 /- English proof (translation)
-Use `⟨LinearIndependent.of_comp A.Mram.subtype ?_, ?_⟩` and prove the remaining obligations. Conclude with `linearIndependent_map (M.emb 0) (M.lat 0).b (M.emb_basis 0).1 (c.linearIndependent.map' M.ramSub.subtype M.ramSub.ker_subtype)`. Apply `Submodule.map_injective_of_injective A.Mram.injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_subtype_top]`. Use `le_antisymm (Submodule.map_subtype_le _ _) fun φ hφ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : φ ∈ Submodule.span ℂ (Set.range fun i => M.emb 0 ((M.lat 0).b i))`. Rewrite using `[(M.emb_basis 0).2, M.Fi_zero]`. Conclude with `hφ.1`. Establish `h2` using `mem_span_ker (M.emb 0) (M.lat 0).b (M.emb_basis 0).1 A.Nm (Nm_rat M) h1 (fun v => (Submodule.mem_iInf _).1 hφ.2 v)`. Use `Submodule.span_le.2 ?_ h2` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx' : x ∈ M.ramSub` using `⟨lattice_embedding_mem_unit_group M x, (Submodule.mem_iInf _).2 hx⟩`. Use `⟨ramEmb M ⟨x, hx'⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[map_eq_sum (ramEmb M) c]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramEmb_basis {κ : Type} [Fintype κ] (c : Module.Basis κ LL M.ramSub) :
     LinearIndependent ℂ (fun i => ramEmb M (c i)) ∧ Submodule.span ℂ (Set.range fun i => ramEmb M (c i)) = ⊤ := by
@@ -376,15 +372,13 @@ theorem ramEmb_basis {κ : Type} [Fintype κ] (c : Module.Basis κ LL M.ramSub) 
 end Ram
 
 /- English proof (translation)
-Introduce `B C W`. Establish `hfin : ∀ u, Module.Finite B.LL (C.fm u).ramSub` using `fun u =>`. Use `Module.Finite.of_basis ((C.fm u).lat 0).b` as an intermediate fact. Use `inferInstance`. Set `c` to `fun u => Module.finBasis B.LL (C.fm u).ramSub`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `choose Y hY1 hY2 using fun u => exists_frames_restrict ((C.fm u).lat 0).b ((C.fm u).lat 0).X ((C.fm u).lat_good 0).1 (C.fm u).ramSub (c u)`. Set `RR : HLat B.LL` to `ProvRowSide.stdHLat B.LL W.Drows (Submodule.span (𝓞 B.LL) (Set.range (Pi.basisFun B.LL (Fin W.Drows))))`. Set `Nu : B.Word → HLat B.LL` to `fun u => subHLat ((C.fm u).lat 0) (C.fm u).ramSub (c u) (Y u)`. Set `D : DivData B.LL B.Word` to `{ RR := RR, Nu := Nu, Bk := fun _ => 0, h := fun _ => 0, HH := sFrame Nu (fun _ => 0) + RR.muMax HH_ge := le_rfl, etaF := 0, Dall := W.Dall, delP := W.delp, delP_le_one := W.delp_le_one }`. Establish `hb : (fun i : Fin W.Drows => ProvRowSide.coordMap B.embLL W.onb (Pi.basisFun B.LL (Fin W.Drows) i)) = W.onb.toBasis`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[ProvRowSide.coordMap_basisFun]`. Simplify using the standard rewrite rules. Use `⟨{ div := D div_good := ⟨ProvRowSide.stdHLat_frames _ _ _, hY1⟩ jEE := ProvRowSide.coordMap B.embLL W.onb jEE_basis := ⟨?_, ?_⟩ jN := fun u => (W.eMu u).symm.toLinearMap.comp (ramEmb (C.fm u)) jN_basis := fun u => ⟨?_, ?_⟩ Dall_eq := rfl delP_eq := rfl nuIn := fun u => (C.fm u).r …` and prove the remaining obligations. Use `show LinearIndependent ℂ (fun i : Fin W.Drows => ProvRowSide.coordMap B.embLL W.onb (Pi.basisFun B.LL (Fin W.Drows) i))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb]`. Conclude with `W.onb.toBasis.linearIndependent`. Use `show Submodule.span ℂ (Set.range (fun i : Fin W.Drows => ProvRowSide.coordMap B.embLL W.onb (Pi.basisFun B.LL (Fin W.Drows) i))) = ⊤`. Rewrite using `[hb]`. Conclude with `W.onb.toBasis.span_eq`.
-
-Conclude with `(ramEmb_basis (C.fm u) (c u)).1.map' (W.eMu u).symm.toLinearMap (W.eMu u).symm.ker`. Use `show Submodule.span ℂ (Set.range ((W.eMu u).symm.toLinearMap ∘ fun i => ramEmb (C.fm u) (c u i))) = ⊤`. Rewrite using `[Set.range_comp, ← Submodule.map_span, (ramEmb_basis (C.fm u) (c u)).2, Submodule.map_top, LinearEquiv.range]`.
+A detailed English derivation is pending.
 -/
 theorem exists_divStage : ∀ (B : GlobalTheory.Mem.Base) (C : GlobalTheory.Mem.Cols B) (W : GlobalTheory.Mem.RowsRest B C),
     ∃ X : GlobalTheory.Mem.DivStage B C W, X.div.AllGood ∧

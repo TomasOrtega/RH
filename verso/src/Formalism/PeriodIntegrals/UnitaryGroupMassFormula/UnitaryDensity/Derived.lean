@@ -10,7 +10,7 @@ noncomputable def detPoly {ι : Type} (n : ℕ) (τ : ι) : MvPolynomial (ι × 
   Matrix.det (Matrix.of fun i j : Fin n => (X (τ, i, j) : MvPolynomial (ι × Fin n × Fin n) ℂ))
 
 /- English proof (translation)
-Introduce `h0`. Use `congrArg Matrix.det hy` as an intermediate fact. Rewrite `this` using `[det_mul, det_mul, det_one, h0, mul_zero]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma det_ne_zero_of_frame {n : ℕ} (G y : Matrix (Fin n) (Fin n) ℂ) (hy : yᴴ * G * y = 1) :
     y.det ≠ 0 := by
@@ -24,9 +24,9 @@ end PI.UnitaryDenseWork
 open PI.UnitaryDenseWork
 
 /- English proof (translation)
-Introduce `n P hP`. Set `e : Unit × Fin n × Fin n ≃ Fin n × Fin n` to `Equiv.punitProd _`. Establish `hR : rename e.symm P = 0`. Use `h Unit n (fun _ => 1) (fun _ => Matrix.PosDef.one) (rename e.symm P) ?_` and prove the remaining obligations. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eval_rename]`. Establish `h1` using `hP (y ()) (by simpa using hy ())`. Conclude with `h1`. Conclude with `rename_injective _ e.symm.injective (by rw [hR, map_zero])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unitaryDense_of (h : PI.FramesDense) : PI.UnitaryDense := by
   intro n P hP

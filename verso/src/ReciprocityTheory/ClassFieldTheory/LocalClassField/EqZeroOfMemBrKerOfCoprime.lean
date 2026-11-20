@@ -14,13 +14,13 @@ variable (p : ℕ) [Fact p.Prime] (K L : IntermediateField ℚ_[p] (PadicAlgCl p
 variable {p K L}
 
 /- English proof (translation)
-The claim follows from `multiplicative_inflation_h2_injective p K (subG p K L) (isClosed_subG p K L) _ _ (InflationRestrictionInvariants.invariants_isInvRep _ _)`.
+A detailed English derivation is pending.
 -/
 theorem layer_inflation_h2_injective [(subG p K L).Normal] : Injective ((layerInf p K L).hom.H 2) :=
   multiplicative_inflation_h2_injective p K (subG p K L) (isClosed_subG p K L) _ _ (InflationRestrictionInvariants.invariants_isInvRep _ _)
 
 /- English proof (translation)
-Proceed by induction on `x using Cx.H_ind with`. Consider the case `h x hx => rfl`.
+Proceed by induction. Treat this case separately.
 -/
 theorem layerInf_layerInfl {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : L ≤ L') [(subG p K L).Normal]
     [(subG p K L').Normal] (n : ℕ) (x : (layer p K L).H n) :
@@ -29,7 +29,7 @@ theorem layerInf_layerInfl {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : 
   | h x hx => rfl
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨(layerInfl h).hom.H 2 x, layerInf_layerInfl h 2 x⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem BrLK_mono {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : L ≤ L') [(subG p K L).Normal]
     [(subG p K L').Normal] : BrLK p K L ≤ BrLK p K L' := by
@@ -37,13 +37,13 @@ theorem BrLK_mono {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : L ≤ L')
   exact ⟨(layerInfl h).hom.H 2 x, layerInf_layerInfl h 2 x⟩
 
 /- English proof (translation)
-The claim follows from `(Nat.card_congr (LinearEquiv.ofInjective ((layerInf p K L).hom.H 2) layer_inflation_h2_injective).toEquiv).symm`.
+A detailed English derivation is pending.
 -/
 theorem card_BrLK [(subG p K L).Normal] : Nat.card (BrLK p K L) = Nat.card ((layer p K L).H 2) :=
   (Nat.card_congr (LinearEquiv.ofInjective ((layerInf p K L).hom.H 2) layer_inflation_h2_injective).toEquiv).symm
 
 /- English proof (translation)
-Take `⟨e, he, hf⟩` from `exists_resPair_factor h`. Use `show (resPair h).hom.H 2 x = 0 ↔ _`. Rewrite using `[hf 2 x]`. Conclude with `map_eq_zero_iff _ (he 2).1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_BrKer_iff (h : K ≤ L) (x : Br p K) :
     x ∈ BrKer h ↔ (resP (kbarT p K) (subG p K L)).hom.H 2 x = 0 := by
@@ -53,7 +53,7 @@ theorem mem_BrKer_iff (h : K ≤ L) (x : Br p K) :
   exact map_eq_zero_iff _ (he 2).1
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_BrKer_iff]`. Conclude with `infRes2_exact (kbarT p K) (subG p K L) (isOpen_subG hL) _ _ (InflationRestrictionInvariants.invariants_isInvRep _ _) (restricted_multiplicative_h1_subsingleton p K _) x`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BrKer_eq_BrLK (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) [(subG p K L).Normal] :
     BrKer h = BrLK p K L := by
@@ -63,7 +63,7 @@ theorem BrKer_eq_BrLK (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) [(subG p 
     (restricted_multiplicative_h1_subsingleton p K _) x
 
 /- English proof (translation)
-Use `finiteIndex_subG (K := K) hL` as an intermediate fact. Take `⟨cor, -, hcor⟩` from `cor_holds ℤ (GK p K) (kbarT p K) (subG p K L) (isOpen_subG hL)`. Establish `h2` using `hcor 2 x`. Rewrite `h2` using `[(mem_BrKer_iff h x).1 hx, map_zero]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degLK_smul_eq_zero (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) (x : Br p K) (hx : x ∈ BrKer h) :
     degLK p K L • x = 0 := by
@@ -74,7 +74,7 @@ theorem degLK_smul_eq_zero (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) (x :
   exact h2.symm
 
 /- English proof (translation)
-Establish `h1` using `Nat.dvd_gcd (addOrderOf_dvd_of_nsmul_eq_zero hk) (addOrderOf_dvd_of_nsmul_eq_zero (degLK_smul_eq_zero hL h x hx))`. Rewrite `h1` using `[Nat.Coprime.gcd_eq_one hc, Nat.dvd_one]`. Conclude with `AddMonoid.addOrderOf_eq_one_iff.1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem_BrKer_of_coprime (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) (x : Br p K)
     (hx : x ∈ BrKer h) (k : ℕ) (hk : k • x = 0) (hc : Nat.Coprime k (degLK p K L)) : x = 0 := by
@@ -84,7 +84,7 @@ theorem eq_zero_of_mem_BrKer_of_coprime (hL : FiniteDimensional ℚ_[p] L) (h : 
   exact AddMonoid.addOrderOf_eq_one_iff.1 h1
 
 /- English proof (translation)
-Take `⟨N, hN, hNo, hx⟩` from `FiniteLevelCohomology.exists_level (kbarT p K) 2 x`. Take `⟨L, h, hL, rfl⟩` from `exists_subG_eq_of_isOpen hK N hNo`. Use `⟨L, h, hL, hN, ?_⟩` and prove the remaining obligations. Rewrite using `[BrKer_eq_BrLK hL h]`. Conclude with `hx _ _ (InflationRestrictionInvariants.invariants_isInvRep _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_BrKer (hK : FiniteDimensional ℚ_[p] K) (x : Br p K) :
     ∃ (L : IntermediateField ℚ_[p] (PadicAlgCl p)) (h : K ≤ L), FiniteDimensional ℚ_[p] L ∧

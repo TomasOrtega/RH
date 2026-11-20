@@ -11,21 +11,19 @@ namespace GlobalTheory.PowFixNear
 open GlobalTheory.MemLoc GlobalTheory.MemLoc.FrobLaws
 
 /- English proof (translation)
-Introduce `l _ F hF g hg`. Use `haveI := F.2`. Use `haveI : Normal ℚ_[l] ↥F.1 := hF`. Establish `hpow : ∀ (i : ℕ) (x : Om l), x ∈ F.1 → x ≠ 0 → ‖(g ^ i) x - x‖ < ‖x‖`. Introduce `i x hx hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `i with`. Consider the case `zero => simpa using hx0`. Consider the case `succ i ih`. Establish `e : (g ^ (i + 1)) x - x = (g ^ i) (g x - x) + ((g ^ i) x - x)`. Rewrite using `[pow_succ, AlgEquiv.mul_apply, map_sub (g ^ i)]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ ih)` and prove the remaining obligations. Rewrite using `[norm_gal]`. Conclude with `hg x hx hx0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hst : ∀ (h : GQ l) (x : Om l), x ∈ F.1 → h x ∈ F.1`. Introduce `h x hx`. Establish `e` using `AlgEquiv.restrictNormal_commutes h (↥F.1) ⟨x, hx⟩`. Establish `e' : h x = (algebraMap (↥F.1) (Om l)) ((AlgEquiv.restrictNormal h (↥F.1)) ⟨x, hx⟩)` using `e.symm`. Rewrite using `[e']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((AlgEquiv.restrictNormal h (↥F.1)) ⟨x, hx⟩).2`. Use `set r := AlgEquiv.restrictNormalHom (F := ℚ_[l]) (K₁ := Om l) (↥F.1) with hr`. Establish `hfin : IsOfFinOrder (r g)` using `isOfFinOrder_of_finite _`. Use `set N := orderOf (r g) with hNdef`. Establish `hN0 : N ≠ 0` using `(hfin.orderOf_pos).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hgN : ∀ x ∈ F.1, (g ^ N) x = x`. Introduce `x hx`. Establish `e` using `AlgEquiv.restrictNormal_commutes (g ^ N) (↥F.1) ⟨x, hx⟩`. Establish `h1 : AlgEquiv.restrictNormal (g ^ N) (↥F.1) = 1`. Use `pow_orderOf_eq_one (r g)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[← map_pow]`. Conclude with `this`. Rewrite `e` using `[h1]`. Simplify using `using e.symm`. Take `⟨s, N', hN', hNe⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN0 l (Fact.out : l.Prime).ne_one`.
-
-Use `⟨s, fun y hy => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.TameInertiaCyclic.fix_of_near F (g ^ l ^ s) (hst _) (fun x hx hx0 => hpow _ x hx hx0) hN' (fun x hx => ?_) y hy` and prove the remaining obligations. Rewrite using `[← pow_mul, ← hNe]`. Conclude with `hgN x hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (F : FinExt l), Normal ℚ_[l] ↥F.1 → ∀ g : GQ l, (∀ x ∈ F.1, x ≠ 0 → ‖g x - x‖ < ‖x‖) → ∃ s : ℕ, ∀ x ∈ F.1, (g ^ l ^ s) x = x := by
   intro l _ F hF g hg

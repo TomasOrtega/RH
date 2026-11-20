@@ -12,9 +12,9 @@ section Descent
 variable {k k' : Type} [Field k] [NumberField k] [Field k'] [NumberField k'] [Algebra k k']
 
 /- English proof (translation)
-Introduce `h0`. Establish `hmem : ((Ideal.absNorm 𝔓.asIdeal : ℕ) : 𝓞 k') ∈ 𝔓.asIdeal` using `Ideal.absNorm_mem _`. Establish `h2 : 𝔓.valuation k' (algebraMap (𝓞 k') k' ((Ideal.absNorm 𝔓.asIdeal : ℕ) : 𝓞 k')) < 1`. Rewrite using `[HeightOneSpectrum.valuation_lt_one_iff_mem]` and apply the resulting hypothesis. Establish `h1` using `hv 𝔓 (Ideal.absNorm 𝔓.asIdeal : k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0, pow_zero, map_natCast]`. Rewrite `h2` using `[map_natCast, h1]`. Conclude with `lt_irrefl _ h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_ne_zero_of_valuation_pow {π : HeightOneSpectrum (𝓞 k') → HeightOneSpectrum (𝓞 k)}
     {ε : HeightOneSpectrum (𝓞 k') → ℕ}
@@ -30,7 +30,7 @@ theorem exp_ne_zero_of_valuation_pow {π : HeightOneSpectrum (𝓞 k') → Heigh
   exact lt_irrefl _ h2
 
 /- English proof (translation)
-Rewrite using `[hv, pow_lt_one_iff (exp_ne_zero_of_valuation_pow hv 𝔓), ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := k)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_iff_of_valuation_pow {π : HeightOneSpectrum (𝓞 k') → HeightOneSpectrum (𝓞 k)}
     {ε : HeightOneSpectrum (𝓞 k') → ℕ}
@@ -40,11 +40,11 @@ theorem mem_iff_of_valuation_pow {π : HeightOneSpectrum (𝓞 k') → HeightOne
   rw [hv, pow_lt_one_iff (exp_ne_zero_of_valuation_pow hv 𝔓), ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := k)]
 
 /- English proof (translation)
-Establish `hπ : π = π'`. Use function extensionality and compare the values at `𝔓`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[mem_iff_of_valuation_pow hv, mem_iff_of_valuation_pow hv']`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hπ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `𝔓`. Take `⟨z, hz⟩` from `(π 𝔓).valuation_exists_uniformizer k`. Establish `h` using `(hv 𝔓 z).symm.trans (hv' 𝔓 z)`. Rewrite `h` using `[← hπ, hz, ← WithZero.exp_nsmul, ← WithZero.exp_nsmul, WithZero.exp_inj]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_of_valuation_pow {π π' : HeightOneSpectrum (𝓞 k') → HeightOneSpectrum (𝓞 k)}
     {ε ε' : HeightOneSpectrum (𝓞 k') → ℕ}
@@ -64,27 +64,25 @@ theorem eq_of_valuation_pow {π π' : HeightOneSpectrum (𝓞 k') → HeightOneS
   simpa using h
 
 /- English proof (translation)
-Introduce `k k' _ _ _ _ _ π ε hv r ρ hfin`. Take `⟨π₀, ε₀, hv₀, hsum⟩` from `GlobalTheory.FlatDegreeCompare.exists_under_valuation_sum_log_absNorm k k' (algebraMap k k')`. Take `⟨hπ, hε'⟩` from `eq_of_valuation_pow hv hv₀`. Rewrite `hsum` using `[← hπ, ← hε']`. Use `choose s hs hne hid using hsum`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hε : ∀ 𝔓, ε 𝔓 ≠ 0` using `exp_ne_zero_of_valuation_pow hv`. Establish `hk : (0 : ℝ) < finrank ℚ k` using `by exact_mod_cast Module.finrank_pos`. Establish `hk' : (0 : ℝ) < finrank ℚ k'` using `by exact_mod_cast Module.finrank_pos`. Establish `hρ : (Function.support ρ).Finite`. Use `(hfin.image π).subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `𝔭 h𝔭`. Take `⟨𝔓, h𝔓⟩` from `hne 𝔭`. Establish `he : π 𝔓 = 𝔭` using `(hs 𝔭 𝔓).1 h𝔓`. Use `⟨𝔓, ?_, he⟩` and prove the remaining obligations. Simplify using `only [Function.mem_support, he]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_ne_zero (by exact_mod_cast hε 𝔓) h𝔭`. Use `⟨hρ, ?_⟩` and prove the remaining obligations. Establish `harch` using `GlobalTheory.finrank_mul_sum_embeddings_comp k k' (algebraMap k k') (fun σ => Real.log (r σ))`. Establish `hA : (∑ σ : k' →+* ℂ, Real.log (r (σ.comp (algebraMap k k')))) / (finrank ℚ k' : ℝ) = (∑ σ : k →+* ℂ, Real.log (r σ)) / (finrank ℚ k : ℝ)`. Rewrite using `[div_eq_div_iff hk'.ne' hk.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear relations using `[harch]`. Establish `hdisj : ((hρ.toFinset : Finset (HeightOneSpectrum (𝓞 k))) : Set (HeightOneSpectrum (𝓞 k))).PairwiseDisjoint s`. Introduce `a _ b _ hab`. Conclude with `Finset.disjoint_left.2 fun 𝔓 ha hb => hab (((hs a 𝔓).1 ha).symm.trans ((hs b 𝔓).1 hb))`. Unfold `lineDeg lw`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `beta_reduce`. Establish `h1 : Function.support (fun la : HeightOneSpectrum (𝓞 k) => ρ la * (Real.log (Ideal.absNorm la.asIdeal) / (finrank ℚ k : ℝ))) ⊆ ↑hρ.toFinset`. Use `Function.support_subset_iff'.2 fun x hx => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_coe, Set.Finite.mem_toFinset, Function.mem_support, not_not] at hx`. Simplify using `[hx]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h2 : Function.support (fun la : HeightOneSpectrum (𝓞 k') => (ε la : ℝ) * ρ (π la) * (Real.log (Ideal.absNorm la.asIdeal) / (finrank ℚ k' : ℝ))) ⊆ ↑(hρ.toFinset.biUnion s)`. Use `Function.support_subset_iff'.2 fun x hx => ?_` and prove the remaining obligations. Establish `h0 : ρ (π x) = 0`. Assume the negation of the conclusion as `h`. Apply `hx` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.coe_biUnion, Set.mem_iUnion, Finset.mem_coe, Set.Finite.mem_toFinset, Function.mem_support]`. Conclude with `⟨π x, h, (hs _ _).2 rfl⟩`. Simplify using `[h0]`. Rewrite using `[finsum_eq_sum_of_support_subset _ h1, finsum_eq_sum_of_support_subset _ h2, hA, Finset.sum_biUnion hdisj]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun 𝔭 _ => ?_` and prove the remaining obligations. Establish `e1 : ∑ 𝔓 ∈ s 𝔭, (ε 𝔓 : ℝ) * ρ (π 𝔓) * (Real.log (Ideal.absNorm 𝔓.asIdeal) / (finrank ℚ k' : ℝ)) = ρ 𝔭 / (finrank ℚ k' : ℝ) * ∑ 𝔓 ∈ s 𝔭, (ε 𝔓 : ℝ) * Real.log (Ideal.absNorm 𝔓.asIdeal)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun 𝔓 h => ?_` and prove the remaining obligations. Rewrite using `[(hs 𝔭 𝔓).1 h]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hS : ∑ 𝔓 ∈ s 𝔭, (ε 𝔓 : ℝ) * Real.log (Ideal.absNorm 𝔓.asIdeal) = (finrank ℚ k' : ℝ) * Real.log (Ideal.absNorm 𝔭.asIdeal) / (finrank ℚ k : ℝ)`. Rewrite using `[eq_div_iff hk.ne']`. Combine the linear relations using `[hid 𝔭]`. Rewrite using `[e1, hS]`.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem lineDeg_descent : ∀ (k k' : Type) [Field k] [NumberField k] [Field k'] [NumberField k'] [Algebra k k']
     (π : HeightOneSpectrum (𝓞 k') → HeightOneSpectrum (𝓞 k)) (ε : HeightOneSpectrum (𝓞 k') → ℕ),

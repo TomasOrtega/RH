@@ -14,14 +14,14 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 omit [StarRing E] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem phit_mem_loc {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (M : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → E) :
     y ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal M ↔ ∃ s : 𝓞 E, s ∉ P.asIdeal ∧ s • y ∈ M := Iff.rfl
 
 omit [StarRing E] in
 /- English proof (translation)
-Simplify using `[Formalism.L2.Col.stdLat, Submodule.mem_pi, Submodule.mem_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phit_mem_std {n : ℕ} (y : Fin n → E) :
     y ∈ Formalism.L2.Col.stdLat E n ↔ ∀ i, ∃ c : 𝓞 E, algebraMap (𝓞 E) E c = y i := by
@@ -29,7 +29,7 @@ theorem phit_mem_std {n : ℕ} (y : Fin n → E) :
 
 omit [StarRing E] in
 /- English proof (translation)
-Rewrite using `[phit_mem_std]`. Introduce `i`. Distinguish the cases in `h : i = r`. Substitute `h; exact ⟨1, by simp⟩` using the available equality. Conclude with `⟨0, by simp [h]⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem phit_single_std {n : ℕ} (r : Fin n) : (Pi.single r 1 : Fin n → E) ∈ Formalism.L2.Col.stdLat E n := by
   rw [phit_mem_std]
@@ -40,45 +40,43 @@ theorem phit_single_std {n : ℕ} (r : Fin n) : (Pi.single r 1 : Fin n → E) �
 
 omit [StarRing E] in
 /- English proof (translation)
-Introduce `h` and use `hs (Ideal.Quotient.eq_zero_iff_mem.1 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem phit_mk_ne (P : HeightOneSpectrum (𝓞 E)) {s : 𝓞 E} (hs : s ∉ P.asIdeal) :
     Ideal.Quotient.mk P.asIdeal s ≠ 0 := fun h => hs (Ideal.Quotient.eq_zero_iff_mem.1 h)
 
 /- English proof (translation)
-Use `haveI := P.1.isPrime`. Establish `hle : ∀ y ∈ Formalism.L2.Col.stdLat E a, y ∈ d.at P.1` using `fun y hy => (phit_mem_loc P.1 _ _).2 ⟨1, (Ideal.ne_top_iff_one _).1 P.1.isPrime.ne_top, by rw [hN, one_smul]; exact hy⟩`. Establish `hxs : ∀ (s : 𝓞 E) (y : Fin a → E), x (s • y) = s • x y` using `fun s y => x.map_smul_of_tower s y`. Establish `hfe : ∀ r : Fin a, d.f P (Pi.single r 1) = Ideal.Quotient.mk P.1.asIdeal (t * if r.1 + 1 = a then 1 else 0)`. Introduce `r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hr` using `r.2`. Use `hf _ (phit_single_std r) ⟨a - 1, by omega⟩ (by simp only; omega) _ ?_` and prove the remaining obligations. Distinguish the cases in `h : r.1 + 1 = a`. Establish `: (⟨a - 1, by omega⟩ : Fin a) = r` using `Fin.ext (by simp only; omega)`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Establish `: (⟨a - 1, by omega⟩ : Fin a) ≠ r` using `fun e => h (by have := congrArg Fin.val e; simp only at this; omega)`. Simplify using `[h, this]`. Establish `hsm : ∀ (s : 𝓞 E) (z : Fin b → E) (q : Fin b), (s • z) q = algebraMap (𝓞 E) E s * z q`. Introduce `s z q`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Prove the components needed by the constructor for the conclusion. Introduce `h r`. Take `⟨h1, h2⟩` from `h _ (hle _ (phit_single_std r))`. Take `⟨s, hs, hsx⟩` from `(phit_mem_loc P.1 _ _).1 h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsx` using `[hN']`. Use `choose c hc using (phit_mem_std _).1 hsx`. Use `⟨s, hs, c, fun q => by rw [hc, hsm], fun q hq => ?_⟩` and prove the remaining obligations. Establish `e1` using `hf' _ hsx q hq (c q) (hc q)`. Rewrite `e1` using `[hd'.f_smul P s _ h1, h2, hfe, ← map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `e2` using `Ideal.Quotient.eq.1 e1.symm`. Use `e2 using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> ring`. Introduce `h`. Establish `hb : b ≠ 0`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `rfl`. Take `⟨z, hz, hz0⟩` from `hd'.f_ne P`. Apply `hz0` to reduce the goal to its premises. Establish `h0` using `hd'.f_smul P 0 0 (Submodule.zero_mem _)`. Rewrite using `[Subsingleton.elim z 0]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify using `using h0`. Set `M : Submodule (𝓞 E) (Fin a → E)` to `{ carrier := {y | y ∈ d.at P.1 ∧ x y ∈ d'.at P.1 ∧ d'.f P (x y) = d.f P y} add_mem' := by`. Introduce and unpack `y z ⟨h1, h2, h3⟩ ⟨k1, k2, k3⟩`. Use `⟨Submodule.add_mem _ h1 k1, by rw [map_add]; exact Submodule.add_mem _ h2 k2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hd'.f_add P _ h2 _ k2, hd.f_add P _ h1 _ k1, h3, k3]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the proof step `zero_mem' := by`. Use `⟨Submodule.zero_mem _, by rw [map_zero]; exact Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Establish `h0` using `hd.f_smul P 0 0 (Submodule.zero_mem _)`. Establish `h0'` using `hd'.f_smul P 0 0 (Submodule.zero_mem _)`. Simplify using `only [smul_zero, map_zero, zero_mul] at h0 h0'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zero, h0, h0']`. Use the proof step `smul_mem' := by`. Introduce and unpack `s y ⟨h1, h2, h3⟩`. Use `⟨Submodule.smul_mem _ s h1, by rw [hxs]; exact Submodule.smul_mem _ s h2, ?_⟩` and prove the remaining obligations. Rewrite using `[hxs, hd'.f_smul P s _ h2, hd.f_smul P s _ h1, h3] }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hM : ∀ y, y ∈ M ↔ (y ∈ d.at P.1 ∧ x y ∈ d'.at P.1 ∧ d'.f P (x y) = d.f P y)` using `fun _ => Iff.rfl`. Establish `he : ∀ r : Fin a, (Pi.single r 1 : Fin a → E) ∈ M`. Introduce `r`. Take `⟨s, hs, c, hc, hq⟩` from `h r`. Establish `hsx : s • x (Pi.single r 1) ∈ Formalism.L2.Col.stdLat E b` using `(phit_mem_std _).2 fun q => ⟨c q, by rw [hc, hsm]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : x (Pi.single r 1) ∈ d'.at P.1` using `(phit_mem_loc P.1 _ _).2 ⟨s, hs, by rw [hN']; exact hsx⟩`. Use `(hM _).2 ⟨hle _ (phit_single_std r), h1, ?_⟩` and prove the remaining obligations. Establish `hq' : (⟨b - 1, by omega⟩ : Fin b).1 + 1 = b` using `by simp only; omega`. Establish `e1` using `hf' _ hsx _ hq' (c _) (by rw [hc, hsm])`. Rewrite `e1` using `[hd'.f_smul P s _ h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Apply `mul_left_cancel₀ (phit_mk_ne P.1 hs)` to reduce the goal to its premises. Rewrite using `[e1, hfe, ← map_mul]`. Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations. Use `hq _ hq' using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hstd : ∀ y ∈ Formalism.L2.Col.stdLat E a, y ∈ M`. Introduce `y hy`. Use `choose c hc using (phit_mem_std _).1 hy`. Establish `: y = ∑ r, c r • (Pi.single r 1 : Fin a → E)`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def, ← hc]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun r _ => Submodule.smul_mem _ _ (he r)`. Introduce `y hy`. Take `⟨s, hs, hsy⟩` from `(phit_mem_loc P.1 _ _).1 hy`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hsy` using `[hN]`. Take `⟨-, h2, h3⟩` from `(hM _).1 (hstd _ hsy)`. Rewrite `h2`, `h3` using `[hxs]`. Take `⟨u, hu, huy⟩` from `(phit_mem_loc P.1 _ _).1 h2`. Establish `h1 : x y ∈ d'.at P.1` using `(phit_mem_loc P.1 _ _).2 ⟨u * s, fun hm => (P.1.isPrime.mem_or_mem hm).elim hu hs, by rw [mul_smul]; exact huy⟩`.
-
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite `h3` using `[hd'.f_smul P s _ h1, hd.f_smul P s _ hy]`. Conclude with `mul_left_cancel₀ (phit_mk_ne P.1 hs) h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phit_local {a b : ℕ} {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))}
     (d : Formalism.L2.Col.Deco E a ST SG) (d' : Formalism.L2.Col.Deco E b ST SG') (t : 𝓞 E) (hd : d.Ok) (hd' : d'.Ok)
@@ -182,7 +180,7 @@ theorem phit_local {a b : ℕ} {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))}
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ a b ST SG SG' K _ d d' t hd hd' hN hN' hf hf' x`. Unfold `Formalism.L2.Col.phiT`. Rewrite using `[ite_eq_left_iff]`. Simplify using `only [zero_ne_one, imp_false, not_not]`. Conclude with `forall_congr' fun P => phit_local d d' t hd hd' hN hN' P (hf P) (hf' P) x`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phiT_eq_one_iff_colCond : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ} {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))}
     (K : Type) [Field K] (d : Formalism.L2.Col.Deco E a ST SG) (d' : Formalism.L2.Col.Deco E b ST SG') (t : 𝓞 E), d.Ok → d'.Ok →

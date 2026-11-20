@@ -11,9 +11,9 @@ open Formalism.REAL Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Qr
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Use `haveI : Nontrivial G := Submodule.nontrivial_iff_ne_bot.2 hG`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue (T.restrict hT)`. Take `⟨x, hx⟩` from `hμ.exists_hasEigenvector`. Use `⟨μ, x, x.2, fun h => hx.2 (Subtype.ext h), ?_⟩` and prove the remaining obligations. Establish `h1` using `Module.End.mem_eigenspace_iff.1 hx.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Subtype.val h1`. Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eig_in [FiniteDimensional ℂ V] (T : Module.End ℂ V) (G : Submodule ℂ V) (hG : G ≠ ⊥)
     (hT : ∀ x ∈ G, T x ∈ G) : ∃ (μ : ℂ) (x : V), x ∈ G ∧ x ≠ 0 ∧ T x = μ • x := by
@@ -26,15 +26,15 @@ theorem eig_in [FiniteDimensional ℂ V] (T : Module.End ℂ V) (G : Submodule �
   simpa using h2
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨G, 0, le_rfl, hG, hst, by simp⟩`. Consider the case `@insert a s ha ih`. Take `⟨G₁, ν, h1, h2, h3, h4⟩` from `ih`. Take `⟨μ, x, hx1, hx2, hx3⟩` from `eig_in (D a) G₁ h2 (h3 a)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨G₁ ⊓ LinearMap.ker (D a - μ • 1), Function.update ν a μ, le_trans inf_le_left h1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hbot`. Apply `hx2` to reduce the goal to its premises. Establish `hm : x ∈ G₁ ⊓ LinearMap.ker (D a - μ • 1)` using `Submodule.mem_inf.2 ⟨hx1, LinearMap.mem_ker.2 (by simp [hx3])⟩`. Rewrite `hm` using `[hbot]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using hm`. Introduce `c y hy`. Take `⟨hy1, hy2⟩` from `Submodule.mem_inf.1 hy`. Establish `hy2' : D a y = μ • y` using `by simpa [sub_eq_zero] using LinearMap.mem_ker.1 hy2`. Establish `hcomm : D a (D c y) = D c (D a y)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun T => T y) (hc a c)` as an intermediate fact. Simplify using `using this`. Conclude with `Submodule.mem_inf.2 ⟨h3 c y hy1, LinearMap.mem_ker.2 (by simp [hcomm, hy2'])⟩`. Introduce `b hb y hy`. Take `⟨hy1, hy2⟩` from `Submodule.mem_inf.1 hy`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy2' : D a y = μ • y` using `by simpa [sub_eq_zero] using LinearMap.mem_ker.1 hy2`. Break down `Finset.mem_insert.1 hb with rfl | hb` into its components or cases. Simplify using `[hy2']`. Establish `hba : b ≠ a` using `fun h => ha (h ▸ hb)`. Simplify using `[Function.update_apply, hba, h4 b hb y hy1]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem common [FiniteDimensional ℂ V] {ι : Type} [DecidableEq ι] (D : ι → Module.End ℂ V)
     (hc : ∀ a b, D a * D b = D b * D a) (s : Finset ι) (G : Submodule ℂ V) (hG : G ≠ ⊥)
@@ -72,7 +72,7 @@ def hop {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V) : Module.End ℂ V 
   ∑ c : Fin n, ((n : ℂ) - ((c : ℕ) : ℂ)) • E c c
 
 /- English proof (translation)
-Establish `h : E c c (E a b x) - E a b (E c c x) = ((if c = a then E c b else 0) - (if b = c then E a c else 0)) x` using `congrArg (fun T => T x) (hE c c a b)`. Rewrite `h` using `[sub_eq_iff_eq_add']`. Rewrite using `[h, LinearMap.sub_apply]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> subst_vars <;> simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diag_move {n : ℕ} {E : Fin n → Fin n → Module.End ℂ V} (hE : GlRel E) (c a b : Fin n) (x : V) :
     E c c (E a b x) = E a b (E c c x) + ((if c = a then E a b x else 0) - (if b = c then E a b x else 0)) := by
@@ -84,7 +84,7 @@ theorem diag_move {n : ℕ} {E : Fin n → Fin n → Module.End ℂ V} (hE : GlR
   split_ifs <;> subst_vars <;> simp
 
 /- English proof (translation)
-Unfold `hop`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, diag_move hE, smul_add, smul_sub, smul_ite, smul_zero, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[← sub_smul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hop_move {n : ℕ} {E : Fin n → Fin n → Module.End ℂ V} (hE : GlRel E) (a b : Fin n) (x : V) :
     hop E (E a b x) = E a b (hop E x) + (((b : ℕ) : ℂ) - ((a : ℕ) : ℂ)) • E a b x := by
@@ -97,7 +97,7 @@ theorem hop_move {n : ℕ} {E : Fin n → Fin n → Module.End ℂ V} (hE : GlRe
   ring
 
 /- English proof (translation)
-Unfold `hop`. Rewrite using `[LinearMap.sum_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, hx, smul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hop_weight {n : ℕ} {E : Fin n → Fin n → Module.End ℂ V} {θ : Fin n → ℂ} {x : V}
     (hx : ∀ a, E a a x = θ a • x) :
@@ -108,7 +108,7 @@ theorem hop_weight {n : ℕ} {E : Fin n → Fin n → Module.End ℂ V} {θ : Fi
   rw [LinearMap.smul_apply, hx, smul_smul]
 
 /- English proof (translation)
-Unfold `hval`. Rewrite using `[Complex.re_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by simp [Complex.mul_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hval_re {n : ℕ} (θ : Fin n → ℂ) :
     (∑ c : Fin n, ((n : ℂ) - ((c : ℕ) : ℂ)) * θ c).re = hval θ := by
@@ -123,23 +123,21 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.REAL Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Qr CommonEigenvectors
 
 /- English proof (translation)
-Introduce `V _ _ _ n E hE S hS hS0`. Establish `hcomm : ∀ a b : Fin n, E a a * E b b = E b b * E a a`. Introduce `a b`. Establish `h` using `hE a a b b`. Rewrite `h` using `[sub_eq_iff_eq_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hab, Ne.symm hab]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hstab : ∀ a b, ∀ x ∈ S, E a b x ∈ S`. Introduce `a b x hx`. Conclude with `hS a b x hx`. Take `⟨G', ν0, hG'S, hG'0, -, hG'ν⟩` from `common (fun a => E a a) hcomm Finset.univ S hS0 (fun a => hstab a a)`. Take `⟨x0, hx0G, hx00⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hG'0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `W : Set (Fin n → ℂ)` to `{θ | ∃ x ∈ S, x ≠ 0 ∧ ∀ a, E a a x = θ a • x}`. Establish `hWne : W.Nonempty` using `⟨ν0, x0, hG'S hx0G, hx00, fun a => hG'ν a (Finset.mem_univ a) x0 hx0G⟩`. Establish `hWfin : W.Finite`. Use `(Set.Finite.pi (t := fun a => {μ | (E a a).HasEigenvalue μ}) fun a => Module.End.finite_hasEigenvalue (E a a)).subset ?_` and prove the remaining obligations. Introduce and unpack `θ ⟨x, -, hx0, hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.mem_univ_pi.2 fun a => Module.End.hasEigenvalue_of_hasEigenvector ⟨Module.End.mem_eigenspace_iff.2 (hx a), hx0⟩`. Take `⟨ν, ⟨v, hvS, hv0, hv⟩, hmax⟩` from `Set.exists_max_image W hval hWfin hWne`. Use `⟨ν, v, hvS, hv0, ⟨hv, fun a b hab => ?_⟩, fun θ x hxS hx0 hx => hmax θ ⟨x, hxS, hx0, hx⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hy`. Use `set y := E a b v with hydef`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hyS : y ∈ S` using `hstab a b v hvS`. Set `θ' : Fin n → ℂ` to `fun c => ν c + ((if c = a then 1 else 0) - (if b = c then 1 else 0))`. Establish `hy' : ∀ c, E c c y = θ' c • y`. Introduce `c`. Rewrite using `[hydef, diag_move hE, hv c, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [θ', add_smul, sub_smul, ite_smul, one_smul, zero_smul]`. Establish `hle` using `hmax θ' ⟨y, hyS, hy, hy'⟩`. Establish `k1` using `hop_weight hy'`. Establish `k2` using `hop_move hE a b v`. Rewrite `k2` using `[hop_weight hv, map_smul, ← hydef, ← add_smul, k1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k3` using `smul_left_injective ℂ hy k2`. Establish `hv' : hval θ' = hval ν + (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))`. Rewrite using `[← hval_re, ← hval_re, k3]`. Simplify using the standard rewrite rules. Establish `hba : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)`.
-
-Use `Fin.lt_iff_val_lt_val.1 hab` as an intermediate fact. Conclude with `this` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_singular_maximal_vector : Qr.ExistsSingMax := by
   intro V _ _ _ n E hE S hS hS0
@@ -190,15 +188,15 @@ theorem exists_singular_maximal_vector : Qr.ExistsSingMax := by
 
 attribute [local instance 100] LieRing.ofAssociativeRing in
 /- English proof (translation)
-Introduce `V _ _ _ n E ν v hE hv hv0 a b hab`. Take `⟨hd, hr⟩` from `hv`. Establish `hab' : a ≠ b` using `ne_of_lt hab`. Distinguish the cases in `h0 : E a a - E b b = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (E a a - E b b) v = 0` using `by rw [h0]; rfl`. Rewrite `h1` using `[LinearMap.sub_apply, hd, hd, ← sub_smul]`. Simplify `h1` using `[hv0]`. Establish `e0` using `hE a b b a`. Establish `e1` using `hE a a a b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hE b b a b`. Establish `e3` using `hE a a b a`. Establish `e4` using `hE b b b a`. Simplify using `[hab', hab'.symm] at e0 e1 e2 e3 e4`. Establish `t : IsSl2Triple (E a a - E b b) (E a b) (E b a)` using `{ h_ne_zero := h0 lie_e_f := by rw [Ring.lie_def, e0] lie_h_e_nsmul := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Ring.lie_def]`. Combine the equalities or inequalities in the displayed calculation. Use `lie_h_f_nsmul := by`. Rewrite using `[Ring.lie_def]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `pv : t.HasPrimitiveVectorWith v (ν a - ν b)` using `{ ne_zero := hv0 lie_h := by show (E a a - E b b) v = (ν a - ν b) • v`. Rewrite using `[LinearMap.sub_apply, hd, hd, sub_smul]`. Use `lie_e := by show E a b v = 0`. Conclude with `hr a b hab }`. Conclude with `pv.exists_nat`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem singular_dominant : Qr.SingDom := by
   intro V _ _ _ n E ν v hE hv hv0 a b hab

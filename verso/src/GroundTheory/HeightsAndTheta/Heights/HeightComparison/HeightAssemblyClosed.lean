@@ -9,7 +9,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `HeightAsIntersection.of_orbit_parts OrbitDegreeRatio.proof (OrbitLocalSum.proof hR hM hF hU hP hC hS hT) (OrbitCenterZero.proof hLe hIff hDiv) OrbitConjSum.proof`.
+A detailed English derivation is pending.
 -/
 theorem HeightAsIntersection.of_chart_and_centre (hR : OrbitChartRing.Statement) (hM : OrbitChartMax.Statement)
     (hF : OrbitChartResidue.Statement) (hU : OrbitChartMult.Statement)

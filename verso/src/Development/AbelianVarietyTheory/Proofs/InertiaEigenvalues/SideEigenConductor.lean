@@ -14,7 +14,7 @@ namespace GlobalTheory.ExtTheta
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `NG.isoTyp`. Use `congr 1`. Use extensionality with `T`. Conclude with `⟨fun ⟨h1, h2⟩ => ⟨h1, (h.symm hS).trans h2⟩, fun ⟨h1, h2⟩ => ⟨h1, h.trans h2⟩⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem isoTyp_congr {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type}
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (GQ L n) W) {S S' : Submodule ℂ (GAf L n → W)}
@@ -25,11 +25,11 @@ theorem isoTyp_congr {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ
   exact ⟨fun ⟨h1, h2⟩ => ⟨h1, (h.symm hS).trans h2⟩, fun ⟨h1, h2⟩ => ⟨h1, h.trans h2⟩⟩
 
 /- English proof (translation)
-Substitute `hμ` using the available equality. Substitute `hj` using the available equality. Take `⟨P, hP⟩` from `surj S₁ irr₁ ne`. Establish `e` using `isoTyp_congr (M μ₀ j₀ a₀ b₀).wt.ρ (irr₀ P).1.stable hP`. Establish `hc : U.cls j₀ a₀ b₀ { (M μ₀ j₀ a₀ b₀).wt with S` using `S₀ P, irrS := irr₀ P } = U.cls j₀ a₀ b₀ { (M μ₀ j₀ a₀ b₀).wt with S := S₁, irrS := irr₁ } := (U.iso j₀ a₀ b₀ _ _).2 ⟨NG.AlgWt.Iso.refl _, hP⟩`.
+Substitute using the available equality. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨P, fun s ϖ k c h => ?_, fun w => ?_, fun w => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `h`. Rewrite using `[hc]`. Rewrite using `[hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`.
+A detailed English derivation is pending.
 -/
 theorem transport (U : AUSide D) (M : MtFam D) {μ₀ μ₁ : D.what₂.Tup} {j₀ j₁ : ℕ} (hμ : μ₀ = μ₁) (hj : j₀ = j₁)
     (a₀ : 1 ≤ j₀) (b₀ : j₀ ≤ D.R.m) (a₁ : 1 ≤ j₁) (b₁ : j₁ ≤ D.R.m) {ι : Type}
@@ -67,11 +67,11 @@ variable {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : SideA D cf jE} {M : Mt
   {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E}
 
 /- English proof (translation)
-Establish `hl : X₀.nd.l i₀ = X₁.nd.l i₁` using `by rw [← X₀.nd.w_l, ← X₁.nd.w_l, hw]`. Establish `q₀ : X₀.nd.Q i₀ = C.Q (X₀.nd.w i₀)` using `(Sp₀.Q_eq _ _ i₀ ((X₀.nd.locs_mem _ _ _).2 ⟨rfl, rfl⟩)).trans (Sp₀.Qc_eq _ _)`. Establish `q₁ : X₁.nd.Q i₁ = C.Q (X₁.nd.w i₁)` using `(Sp₁.Q_eq _ _ i₁ ((X₁.nd.locs_mem _ _ _).2 ⟨rfl, rfl⟩)).trans (Sp₁.Qc_eq _ _)`. Take `⟨h1, h2, h3, h4⟩` from `h`. Use `⟨h1, hl ▸ h2, fun hs => h3 ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(X₁.S_def i₁ v).1 hs` as an intermediate fact. Use `(X₀.S_def i₀ v).2 ?_` and prove the remaining obligations. Establish `hl' : X₀.l i₀ = X₁.l i₁` using `hl`. Rewrite using `[hl']`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[q₁, ← hw, ← q₀]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem splitOut_of {big₀ big₁ : D.what₂.places.Pl → Finset ℂ} {X₀ X₁ : LocNd (lay0 D)} {T₀ : LocTw X₀} {T₁ : LocTw X₁}
     (Sp₀ : NdSpec A.pl M C big₀ X₀ T₀) (Sp₁ : NdSpec A.pl M C big₁ X₁ T₁) (i₀ : X₀.nd.Loc) (i₁ : X₁.nd.Loc)
@@ -90,9 +90,9 @@ theorem splitOut_of {big₀ big₁ : D.what₂.places.Pl → Finset ℂ} {X₀ X
   · rw [q₁, ← hw, ← q₀]; exact h4
 
 /- English proof (translation)
-Establish `hr` using `X₀.nd.j_range i₀`. Set `j : Fin D.R.m` to `⟨X₀.nd.j i₀ - 1, by omega⟩`. Establish `e₀ : j.1 + 1 = X₀.nd.j i₀` using `by simp only [j]; omega`. Establish `h₀` using `U₀.muC i₀ j e₀`. Establish `h₁` using `U₁.muC i₁ j (e₀.trans hj)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `A.chr.e1.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[h₀, h₁, hμ]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem muC_eq {X₀ X₁ : LocNd (lay0 D)} {iq₀ : ∀ i : X₀.nd.Loc, FractionRing (X₀.nd.O i) →+* Qbar (X₀.nd.l i)}
     {iq₁ : ∀ i : X₁.nd.Loc, FractionRing (X₁.nd.O i) →+* Qbar (X₁.nd.l i)} {Y₀ : LocAut X₀} {Y₁ : LocAut X₁}
@@ -111,17 +111,15 @@ theorem muC_eq {X₀ X₁ : LocNd (lay0 D)} {iq₀ : ∀ i : X₀.nd.Loc, Fracti
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hμ : X₀.nd.mu i₀ = X₁.nd.mu i₁` using `by rw [X₀.nd.mu_w, X₁.nd.mu_w, hw]`. Establish `hm` using `muC_eq U₀ U₁ i₀ i₁ hμ hj`. Take `⟨P₁, hP₁, Pa, ⟨c1, c2, c3, c4, c5, c6⟩, hmem⟩` from `h`. Establish `ne` using `Y₁.naut.typeV_ne i₁ P₁`. Rewrite `ne` using `[U₁.typeV]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨P₀, t1, t2, t3, t4⟩` from `transport A.au M hμ hj (X₀.nd.j_range i₀).1 (X₀.nd.j_range i₀).2 (X₁.nd.j_range i₁).1 (X₁.nd.j_range i₁).2 (U₀.S i₀) (U₀.irr i₀) (U₀.surj i₀) (U₁.S i₁ P₁) (U₁.irr i₁ P₁) ne`. Establish `l1 : ∀ w, (Y₀.naut.locV i₀ P₀ w : D.naut.LP w) = Y₁.naut.locV i₁ P₁ w` using `fun w => by`. Rewrite using `[C₀.embAV_loc, C₁.embAV_loc, U₀.emb, U₁.emb]`. Conclude with `t2 w`. Establish `l2 : ∀ w, Y₀.naut.satV i₀ P₀ w = Y₁.naut.satV i₁ P₁ w` using `fun w => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[C₀.embAV_sat, C₁.embAV_sat, U₀.emb, U₁.emb]`. Conclude with `t3 w`. Establish `l3 : Y₀.naut.infWt i₀ = Y₁.naut.infWt i₁`. Rewrite using `[C₀.embAV_inf i₀ P₀, C₁.embAV_inf i₁ P₁, U₀.emb, U₁.emb]`. Conclude with `t4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨P₀, (U₀.ptV i₀ P₀ x₀).2 fun w k s ϖ h1 h2 h3 h4 h5 => ?_, Pa, ⟨c1, c2, c3, fun w hw => ?_, fun w hw => ?_, fun τ => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h6` using `(U₁.ptV i₁ P₁ x₁).1 hP₁ w k s ϖ (hs w h1) h2 h3 h4 h5`. Rewrite `h6` using `[U₁.typeV, he w k h1 h4 h5]`. Rewrite using `[U₀.typeV]`. Conclude with `t1 s ϖ k _ h6`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(c4 w hw).trans (l1 w).symm`. Rewrite using `[l2]`. Conclude with `c5 w hw`. Rewrite using `[l3]`. Conclude with `c6 τ`.
-
-Establish `: (Y₀.naut.muC i₀ : D.naut.CG 1) = Y₁.naut.muC i₁` using `hm`. Rewrite using `[this]`. Conclude with `hmem`.
+A detailed English derivation is pending.
 -/
 theorem zn_of {X₀ X₁ : LocNd (lay0 D)} {iq₀ : ∀ i : X₀.nd.Loc, FractionRing (X₀.nd.O i) →+* Qbar (X₀.nd.l i)}
     {iq₁ : ∀ i : X₁.nd.Loc, FractionRing (X₁.nd.O i) →+* Qbar (X₁.nd.l i)} {Y₀ : LocAut X₀} {Y₁ : LocAut X₁}
@@ -159,9 +157,7 @@ theorem zn_of {X₀ X₁ : LocNd (lay0 D)} {iq₀ : ∀ i : X₀.nd.Loc, Fractio
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `_ D cf jE A low Pq S hL eig θ Bs M C tp _ _ _ _ _ _ big₀ big₁ L₀ L₁ ⟨Sp₀, ⟨U₀⟩, _⟩ ⟨Sp₁, ⟨U₁⟩, _⟩ i₀ i₁ hw hj e he x`. Establish `s01` using `splitOut_of Sp₀ Sp₁ i₀ i₁ hw`. Establish `s10` using `splitOut_of Sp₁ Sp₀ i₁ i₀ hw.symm`. Use `(L₁.lay.zOk_fixZ.1 i₁ x).trans (Iff.trans ⟨fun h => ?_, fun h => ?_⟩ (L₀.lay.zOk_fixZ.1 i₀ (e x)).symm)` and prove the remaining obligations. Conclude with `zn_of U₀ U₁ i₀ i₁ hw hj s01 (e x) x (fun v k h1 h2 h3 => he v k x (s01 v h1) h2 h3) h`.
-
-Conclude with `zn_of U₁ U₀ i₁ i₀ hw.symm hj.symm s10 x (e x) (fun v k h1 h2 h3 => (he v k x h1 h2 h3).symm) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem theta_loci : HeckeStdPlain → ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf A.row low Pq S hL eig θ) (M : MtFam D) (C : NChoice D) (tp : TupTied D cf C), ChoiceSide D cf M Bs.exp C tp → MtInput D M tp.tup C.Q → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) → (∀ j g, ∃ z : ℤ, eExp D j g = z) → (∀ v, v ∈ placesOver D.host.E D.host.pde ∨ v ∈ placesOver D.host.E D.host.pde' → IsSplitPl D.host v) → GlobalTheory.RowTie.ChebSplit D.nd → ∀ (big₀ big₁ : D.what₂.places.Pl → Finset ℂ) (L₀ L₁ : LocAll (lay0 D)), Built A M C tp.tup big₀ L₀ → Built A M C tp.tup big₁ L₁ → ∀ (i₀ : L₀.lay.fixZ.nd.Loc) (i₁ : L₁.lay.fixZ.nd.Loc), L₀.lay.fixZ.nd.w i₀ = L₁.lay.fixZ.nd.w i₁ → L₀.lay.fixZ.nd.j i₀ = L₁.lay.fixZ.nd.j i₁ → ∀ e : L₁.lay.fixZ.nd.X i₁ ≃ L₀.lay.fixZ.nd.X i₀, (∀ (v : PlE D.host) (k : ℕ) (x : L₁.lay.fixZ.nd.X i₁), SplitOut L₁.lay.fixZ.nd i₁ v → 1 ≤ k → k ≤ D.R.nV → iotaO L₁.lay.fixZ.nd L₁.lay.fixZ.naut i₁ ((L₁.lay.fixZ.nd.hT i₁ v k : L₁.lay.fixZ.nd.X i₁ → L₁.lay.fixZ.nd.O i₁) x) = iotaO L₀.lay.fixZ.nd L₀.lay.fixZ.naut i₀ ((L₀.lay.fixZ.nd.hT i₀ v k : L₀.lay.fixZ.nd.X i₀ → L₀.lay.fixZ.nd.O i₀) (e x))) → ∀ x, x ∈ L₁.lay.fixZ.nd.Z i₁ ↔ e x ∈ L₀.lay.fixZ.nd.Z i₀ := by
   intro _ D cf jE A low Pq S hL eig θ Bs M C tp _ _ _ _ _ _ big₀ big₁ L₀ L₁ ⟨Sp₀, ⟨U₀⟩, _⟩ ⟨Sp₁, ⟨U₁⟩, _⟩ i₀ i₁ hw hj e he x

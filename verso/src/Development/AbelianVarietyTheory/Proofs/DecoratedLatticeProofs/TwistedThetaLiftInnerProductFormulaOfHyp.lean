@@ -27,7 +27,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hDecay hWeil hCont D G _ _ Pl0 T A Ks _ _ _ R F hL`. Conclude with `GlobalTheory.T.thetaInnerProductFormulaDefinite_of_rallisConvergent hDecay R F (GlobalTheory.T.rallisInnerProduct_convergent_of_weilSiegelFormula hDecay hWeil hCont D) hL`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem innerProductFormula_of_hypotheses : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelEisensteinContinuation → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), (∃ L : SizeData₂ D, Nonempty (ParameterChoice' D L)) → InnerProductFormulaC R F := by
   intro hDecay hWeil hCont D G _ _ Pl0 T A Ks _ _ _ R F hL

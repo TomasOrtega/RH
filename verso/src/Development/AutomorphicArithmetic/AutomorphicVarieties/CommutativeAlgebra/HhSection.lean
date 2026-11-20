@@ -4,19 +4,19 @@ open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 open Matrix in
 /- English proof (translation)
-Establish `k : ∀ x y : R, res O R x = 0 → p y = 0 → x * y = 0` using `fun x y hx hy => by`. Establish `: x * y ∈ maximalIdeal R * RingHom.ker p` using `Ideal.mul_mem_mul ((res_eq_zero_iff O R x).1 hx) hy`. Rewrite `this` using `[hs, Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `z1 : ∀ a b, p (Z a b) = 0` using `fun a b => congrFun (congrFun hZ a) b`. Establish `z2 : ∀ a b, res O R (Z a b) = 0` using `fun a b => by rw [← res_map p, z1, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ a b, res O R ((h - 1) a b) = 0` using `fun a b => by`. Use `congrFun (congrFun hh a) b` as an intermediate fact. Simplify using `only [map_apply] at this`. Rewrite using `[Matrix.sub_apply, map_sub, this]`. Distinguish the cases in `e : a = b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[one_apply_ne e]`. Establish `K : ∀ A B : Matrix ι ι R, (∀ a b, res O R (A a b) = 0) → (∀ a b, p (B a b) = 0) → Aᵀ * J * B = 0 ∧ Bᵀ * J * A = 0` using `fun A B hA hB => by`. Prove the components needed by the constructor for the conclusion.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `a b`. Simplify using `only [mul_apply, transpose_apply, Matrix.zero_apply, Finset.sum_mul]`. Use `Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Rewrite using `[mul_right_comm, k _ _ (hA _ _) (hB _ _), zero_mul]`. Use extensionality with `a b`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [mul_apply, transpose_apply, Matrix.zero_apply, Finset.sum_mul]`. Use `Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Rewrite using `[mul_right_comm, mul_comm (B _ _), k _ _ (hA _ _) (hB _ _), zero_mul]`. Prove the components needed by the constructor for the conclusion. Take `⟨e1, e2⟩` from `K (h - 1) Z h1 z1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨e3, -⟩` from `K Z Z z2 z1`. Rewrite `e1` using `[transpose_sub, transpose_one, sub_mul, sub_mul, one_mul, sub_eq_zero]`. Rewrite `e2` using `[mul_sub, mul_one, sub_eq_zero]`. Rewrite using `[transpose_add, add_mul, add_mul, mul_add, mul_add, e1, e2, e3]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use extensionality with `a b`. Use `congrFun (congrFun hh a) b` as an intermediate fact. Simplify using `only [map_apply] at this`. Rewrite using `[map_apply, Matrix.add_apply, map_add, z2, add_zero, this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem expand_small {O : Type} [CommRing O] [IsLocalRing O] {ι : Type} [Fintype ι] [DecidableEq ι]
     {R : Type} [CommRing R] [Algebra O R] [IsCO O R] {R' : Type} [CommRing R'] [Algebra O R'] [IsCO O R']
@@ -61,17 +61,17 @@ private theorem expand_small {O : Type} [CommRing O] [IsLocalRing O] {ι : Type}
 
 open Matrix Classical in
 /- English proof (translation)
-Establish `hd : IsUnit Φ.J.det` using `(Matrix.isUnit_iff_isUnit_det _).1 Φ.unit`. Set `E : Matrix ι ι O` to `diagonal fun x => if Φ.blk x = Φ.blk a ∧ w x = w a then 1 else 0`. Set `E' : Matrix ι ι O` to `diagonal fun x => if Φ.blk x = Φ.σ (Φ.blk a) ∧ w a + w x = Φ.c then 1 else 0`. Establish `e : E' * Φ.J = Φ.J * E`. Use extensionality with `x y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [E, E', diagonal_mul, mul_diagonal]`. Distinguish the cases in `hxy : Φ.J x y = 0`. Simplify using `[hxy]`. Establish `h1` using `Φ.hblk x y hxy`. Establish `h2` using `Φ.hw x y hxy`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (Φ.blk x = Φ.σ (Φ.blk a) ∧ w a + w x = Φ.c) ↔ (Φ.blk y = Φ.blk a ∧ w y = w a)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k1, k2⟩`. Use `⟨by rw [h1, k1, Φ.invol], ?_⟩` and prove the remaining obligations. Rewrite `k2` using `[← h2, add_comm]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(add_left_cancel k2).symm`. Introduce and unpack `⟨k1, k2⟩`. Use `⟨by rw [← k1, h1, Φ.invol], ?_⟩` and prove the remaining obligations. Rewrite using `[← k2, add_comm, h2]`. Simplify using `only [this, mul_comm]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : Φ.J⁻¹ * E' = E * Φ.J⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_assoc, Matrix.mul_nonsing_inv _ hd, mul_one]`. Use `_ = E * Φ.J⁻¹ := by rw [e, ← mul_assoc, Matrix.nonsing_inv_mul _ hd, one_mul]`. Establish `e3` using `congrFun (congrFun e2 a) c`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [E, E', diagonal_mul, mul_diagonal, and_self, if_true, one_mul] at e3`. Assume the negation of the conclusion as `n`. Rewrite `e3` using `[if_neg n, mul_zero]`. Conclude with `h e3.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inv_supp {O : Type} [CommRing O] {ι X : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup X] {w : ι → X}
     (Φ : FormData O w) (a c : ι) (h : Φ.J⁻¹ a c ≠ 0) : Φ.blk c = Φ.σ (Φ.blk a) ∧ w a + w c = Φ.c := by
@@ -107,35 +107,35 @@ private theorem inv_supp {O : Type} [CommRing O] {ι X : Type} [Fintype ι] [Dec
 
 open Matrix Classical in
 /- English proof (translation)
-Take `⟨a1, a2, a3⟩` from `hh`. Establish `b3 : h0.map (res O R) = 1`. Rewrite using `[← a3, ← b1]`. Use extensionality with `a b`. Simplify using `[res_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `jp : (Φ.JR R).map p = Φ.JR R'`. Use extensionality with `a b`. Simplify using `[FormData.JR]`. Establish `jb : ∀ a b, Φ.JR R a b ≠ 0 → Φ.blk b = Φ.σ (Φ.blk a)` using `fun a b e => Φ.hblk a b fun n => e (by simp [FormData.JR, n])`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε, hε2⟩ : ∃ ε : R, (Φ.JR R)ᵀ = ε • Φ.JR R ∧ ε * ε = 1 := by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Break down `Φ.sym with e | e` into its components or cases. Use `⟨1, ?_, by simp⟩` and prove the remaining obligations. Use extensionality with `a b`. Use `congrFun (congrFun e a) b` as an intermediate fact. Simplify using `only [transpose_apply] at this`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[FormData.JR, this]`. Use `⟨-1, ?_, by simp⟩` and prove the remaining obligations. Use extensionality with `a b`. Use `congrFun (congrFun e a) b` as an intermediate fact. Simplify using `only [transpose_apply] at this`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[FormData.JR, this]`. Use `set E := h0ᵀ * Φ.JR R * h0 - Φ.JR R with hE`. Establish `E1 : E.map p = 0`. Rewrite using `[hE, Matrix.map_sub _ (map_sub p), Matrix.map_mul, Matrix.map_mul, transpose_map, b1, jp, a1, sub_self]`. Establish `E2 : Eᵀ = ε • E`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE, transpose_sub, transpose_mul, transpose_mul, transpose_transpose, hε, smul_sub]`. Simplify using `[mul_assoc]`. Establish `E3 : ∀ a b, Φ.blk b ≠ Φ.σ (Φ.blk a) → E a b = 0` using `fun a b e => by`. Establish `: Φ.JR R a b = 0` using `by_contra fun n => e (jb a b n)`. Rewrite using `[hE, Matrix.sub_apply, this, sub_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_apply, transpose_apply, Finset.sum_mul]`. Use `Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Distinguish the cases in `e1 : Φ.blk d = Φ.blk a`. Distinguish the cases in `e2 : Φ.blk c = Φ.blk b`. Establish `: Φ.JR R d c = 0` using `by_contra fun n => e (by rw [← e2, ← e1]; exact jb d c n)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Simplify using `[b2 _ _ e2]`. Simplify using `[b2 _ _ e1]`. Use `set Z0 : Matrix ι ι R := K * ((-u) • E) with hZ0`. Establish `Z1 : Φ.JR R * Z0 = (-u) • E` using `by rw [hZ0, ← mul_assoc, hK, one_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `Z2 : ∀ a b, p (Z0 a b) = 0` using `fun a b => by`. Rewrite using `[hZ0, mul_apply, map_sum]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Establish `: p (E c b) = 0` using `congrFun (congrFun E1 c) b`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Z : Matrix ι ι R` to `Matrix.of fun a b => if Φ.blk a = Φ.blk b then Z0 a b else 0`. Establish `Z3 : Z.map p = 0`. Use extensionality with `a b`. Apply the tactic sequence `by_cases e : Φ.blk a = Φ.blk b <;> simp [Z, e, Z2]`. Establish `Z4 : Φ.JR R * Z = (-u) • E`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `a b`. Distinguish the cases in `e : Φ.blk b = Φ.σ (Φ.blk a)`. Rewrite using `[← Z1, mul_apply, mul_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `n : Φ.JR R a c = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[n]`. Establish `: Φ.blk c = Φ.blk b` using `by rw [e]; exact jb a c n`. Simplify using `[Z, this]`. Rewrite using `[Matrix.smul_apply, E3 a b e, smul_zero, mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `n : Φ.JR R a c = 0`. Simplify using `[n]`. Establish `: ¬ Φ.blk c = Φ.blk b` using `fun m => e (by rw [← m]; exact jb a c n)`. Simplify using `[Z, this]`. Establish `Z5 : Zᵀ * Φ.JR R = (-u) • E`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun M => ε • Mᵀ) Z4` as an intermediate fact. Simplify using `only [transpose_mul, transpose_smul, hε, E2, Matrix.mul_smul, smul_smul] at this`. Rewrite `this` using `[hε2, one_smul, mul_left_comm, hε2, mul_one]`. Conclude with `this`. Take `⟨c1, c2⟩` from `expand_small p hs (Φ.JR R) h0 Z b3 Z3`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Φ.HH (h0 + Z) ∧ (h0 + Z).map p = h'`. Use `⟨⟨?_, fun a b e => by simp [Z, e, b2 a b e], c2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[c1, Z4, Z5, ← add_smul, show -u + -u = -1 by rw [← hu]; ring, neg_one_smul, hE]`. Normalize the expressions using the abelian group laws. Rewrite using `[Matrix.map_add _ (map_add p), b1, Z3, add_zero]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fix_point {O : Type} [CommRing O] [IsLocalRing O] {ι X : Type} [Fintype ι] [DecidableEq ι]
     [AddCommGroup X] {w : ι → X} (Φ : FormData O w)
@@ -233,27 +233,27 @@ private def Good (I : Ideal A) (W : WPres O X A) (j : X) (f : S → A) : Prop :=
   AdicCont I f ∧ ∀ s, f s ∈ W.part j
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => IsLocallyConstant.const _, fun _ => zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 private theorem good_zero (j : X) : Good I W j fun _ : S => 0 :=
   ⟨fun _ => IsLocallyConstant.const _, fun _ => zero_mem _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun N => by simp only [map_add]; exact (hf.1 N).add (hg.1 N), fun s => add_mem (hf.2 s) (hg.2 s)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem good_add {j : X} {f g : S → A} (hf : Good I W j f) (hg : Good I W j g) :
     Good I W j fun s => f s + g s :=
   ⟨fun N => by simp only [map_add]; exact (hf.1 N).add (hg.1 N), fun s => add_mem (hf.2 s) (hg.2 s)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun N => by simp only [map_sub]; exact (hf.1 N).sub (hg.1 N), fun s => sub_mem (hf.2 s) (hg.2 s)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem good_sub {j : X} {f g : S → A} (hf : Good I W j f) (hg : Good I W j g) :
     Good I W j fun s => f s - g s :=
   ⟨fun N => by simp only [map_sub]; exact (hf.1 N).sub (hg.1 N), fun s => sub_mem (hf.2 s) (hg.2 s)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun N => by simp only [map_mul]; exact (hf.1 N).mul (hg.1 N), fun s => e ▸ SetLike.GradedMul.mul_mem (hf.2 s) (hg.2 s)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem good_mul {i j k : X} {f g : S → A} (hf : Good I W i f) (hg : Good I W j g) (e : i + j = k) :
     Good I W k fun s => f s * g s :=
@@ -261,7 +261,7 @@ private theorem good_mul {i j k : X} {f g : S → A} (hf : Good I W i f) (hg : G
     fun s => e ▸ SetLike.GradedMul.mul_mem (hf.2 s) (hg.2 s)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => IsLocallyConstant.const _, fun _ => by rw [Algebra.algebraMap_eq_smul_one] exact Submodule.smul_mem _ _ SetLike.GradedOne.one_mem⟩`.
+Supply the required witnesses or components.
 -/
 private theorem good_const (c : O) : Good I W 0 fun _ : S => algebraMap O A c :=
   ⟨fun _ => IsLocallyConstant.const _, fun _ => by
@@ -269,7 +269,7 @@ private theorem good_const (c : O) : Good I W 0 fun _ : S => algebraMap O A c :=
     exact Submodule.smul_mem _ _ SetLike.GradedOne.one_mem⟩
 
 /- English proof (translation)
-Distinguish the cases in `e : c = 0`. Simplify `good_zero j` using `[e]`. Conclude with `h e ▸ good_const c`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem good_const' (c : O) {j : X} (h : c ≠ 0 → 0 = j) : Good I W j fun _ : S => algebraMap O A c := by
   by_cases e : c = 0
@@ -277,7 +277,7 @@ private theorem good_const' (c : O) {j : X} (h : c ≠ 0 → 0 = j) : Good I W j
   · exact h e ▸ good_const c
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simpa using good_zero j`. Consider the case `insert a T ha ih => simpa only [Finset.sum_insert ha] using good_add (hf a) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem good_sum {ι : Type} (T : Finset ι) {j : X} {f : ι → S → A} (hf : ∀ i, Good I W j (f i)) :
     Good I W j fun s => ∑ i ∈ T, f i s := by
@@ -290,21 +290,21 @@ end Good
 
 open Matrix in
 /- English proof (translation)
-Introduce `O _ _ _ _ ι X _ _ _ _ _ w Φ h2 A _ _ _ R _ _ _ p hp hs W hz S _ h hH hc hP`. Use `choose y y1 y2 y3 using fun a b => cont_section O X A R p hp hs W hz S (w a - w b) (fun s => h s a b) (hc a b) (fun s => hP s a b)`. Set `h0 : S → Matrix ι ι A` to `fun s => Matrix.of fun a b => if Φ.blk a = Φ.blk b then y a b s else 0`. Establish `g0 : ∀ a b, Good (maximalIdeal A) W (w a - w b) fun s => h0 s a b` using `fun a b => by`. Distinguish the cases in `e : Φ.blk a = Φ.blk b`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [h0, of_apply, if_pos e]`. Conclude with `⟨y1 a b, y2 a b⟩`. Simplify using `only [h0, of_apply, if_neg e]`. Conclude with `good_zero _`. Establish `b1 : ∀ s, (h0 s).map p = h s` using `fun s => by`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `a b`. Distinguish the cases in `e : Φ.blk a = Φ.blk b`. Simplify using `[h0, e, y3]`. Simplify using `[h0, e, (hH s).2.1 a b e]`. Establish `b2 : ∀ s a b, Φ.blk a ≠ Φ.blk b → h0 s a b = 0` using `fun s a b e => by simp [h0, e]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `h2.exists_right_inv`. Establish `hu' : 2 * algebraMap O A u = 1`. Use `congrArg (algebraMap O A) hu` as an intermediate fact. Rewrite `this` using `[map_mul, map_ofNat, map_one]`. Then use the resulting hypothesis. Establish `hK : Φ.JR A * Φ.J⁻¹.map (algebraMap O A) = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : IsUnit Φ.J.det` using `(Matrix.isUnit_iff_isUnit_det _).1 Φ.unit`. Rewrite using `[FormData.JR, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hd]`. Simplify using the standard rewrite rules. Establish `key` using `fun s => fix_point Φ p hs _ hK _ hu' (h s) (hH s) (h0 s) (b1 s) (b2 s)`. Establish `gJ : ∀ a b, Good (maximalIdeal A) W (Φ.c - w a - w b) fun _ : S => Φ.JR A a b` using `fun a b => good_const' _ fun n => by rw [← Φ.hw a b n]; abel`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gK : ∀ a b, Good (maximalIdeal A) W (w a + w b - Φ.c) fun _ : S => Φ.J⁻¹.map (algebraMap O A) a b` using `fun a b => good_const' _ fun n => by rw [← (inv_supp Φ a b n).2]; abel`. Establish `gE : ∀ a b, Good (maximalIdeal A) W (Φ.c - w a - w b) fun s => ((h0 s)ᵀ * Φ.JR A * h0 s - Φ.JR A) a b` using `fun a b => by`. Simplify using `only [Matrix.sub_apply, mul_apply, transpose_apply]`. Use `good_sub (good_sum _ fun c => good_mul (i := Φ.c - w a - w c) (good_sum _ fun d => good_mul (g0 d a) (gJ d c) (by abel)) (g0 c b) (by abel)) (gJ a b)` and prove the remaining obligations. Establish `g1 : ∀ a b, Good (maximalIdeal A) W (w a - w b) fun s => (h0 s + Matrix.of fun a b => if Φ.blk a = Φ.blk b then (Φ.J⁻¹.map (algebraMap O A) * ((-algebraMap O A u) • ((h0 s)ᵀ * Φ.JR A * h0 s - Φ.JR A))) a b else 0) a b` using `fun a b => by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.add_apply, of_apply]`. Use `good_add (g0 a b) ?_` and prove the remaining obligations. Distinguish the cases in `e : Φ.blk a = Φ.blk b`. Simplify using `only [if_pos e, ← map_neg]`. Simplify using `only [mul_apply (M := Φ.J⁻¹.map (algebraMap O A)), Matrix.smul_apply, smul_eq_mul]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `good_sum _ fun c => good_mul (gK a c) (good_mul (good_const (-u)) (gE c b) (zero_add _)) (by abel)`. Simplify using `only [if_neg e]`. Conclude with `good_zero _`. Conclude with `⟨_, fun s => (key s).1, fun a b => (g1 a b).1, fun s a b => (g1 a b).2 s, fun s => (key s).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.hh_section :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (ι X : Type) [Fintype ι] [DecidableEq ι] [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (w : ι → X) (Φ : FormData O w), IsUnit (2 : O) → ∀ (A : Type) [CommRing A] [Algebra O A] [IsCO O A] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (p : A →ₐ[O] R), Function.Surjective p → maximalIdeal A * RingHom.ker p = ⊥ → ∀ (W : WPres O X A), (∀ s, W.z s ∈ maximalIdeal A) →

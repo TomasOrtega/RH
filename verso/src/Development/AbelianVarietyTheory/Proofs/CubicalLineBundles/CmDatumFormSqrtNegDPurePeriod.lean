@@ -13,15 +13,15 @@ namespace GlobalTheory.CM
 open PureTypeVector in
 
 /- English proof (translation)
-Take `⟨hlin, hinj, -, -, Hm, hH, hpos, hEF⟩` from `hP`. Establish `hw0 : Pe (H.w0 • x) = ((1 + ρ) / 2) • Pe x`. Use function extensionality and compare the values at `i`. Rewrite using `[hlin, Pi.smul_apply, smul_eq_mul]`. Establish `h2 : (2 : E) * (H.w0 : E) = 1 + (H.rt : E)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (algebraMap (𝓞 E) E) H.two_weight_eq_one_add_root` as an intermediate fact. Simplify `this` using `[map_ofNat]`. Establish `h3` using `congrArg (ty i) h2`. Rewrite `h3` using `[map_mul, map_add, map_one, map_ofNat, hty i]`. Rewrite using `[← h3]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set r : ℝ := (hermForm Hm (Pe x) (Pe x)).re with hr`. Establish `hre : hermForm Hm (Pe x) (Pe x) = (r : ℂ)` using `Complex.ext (by simp [hr]) (by simp [hermForm_self_im hH])`. Establish `hr0 : 0 < r` using `hpos _ fun h => hx (hinj (by rw [h, map_zero]))`. Use `⟨r / 2, by positivity, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hEF, hw0]`. Use `hermForm_smul_smul Hm ((1 + ρ) / 2) 1 (Pe x) (Pe x)` as an intermediate fact. Rewrite `this` using `[one_smul]`. Rewrite using `[this, hre]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem cmDatum_form_sqrtNegD_pure_period {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} {Pe : D.La →+ (Fin g → ℂ)} (hP : IsPeriod D ty Pe) {ρ : ℂ}
@@ -50,17 +50,17 @@ theorem cmDatum_form_sqrtNegD_pure_period {E : Type} [Field E] [NumberField E] [
   ring
 
 /- English proof (translation)
-Introduce `E _ _ _ H D ε h x hx`. Take `⟨g, ty, hty⟩ : ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H D.p D.q ty` from `by classical`. Set `n : (E →+* ℂ) → ℕ` to `fun τ => if τ (H.rt : E) = H.rt0 then D.p else D.q`. Set `e` to `(Fintype.equivFin (Σ τ, Fin (n τ))).symm`. Establish `key : ∀ τ, Nat.card {i // (e i).1 = τ} = n τ` using `fun τ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_congr ((e.subtypeEquiv (q := fun s => s.1 = τ) fun _ => Iff.rfl).trans (Equiv.sigmaSubtype τ))]`. Simplify using the standard rewrite rules. Conclude with `⟨_, fun i => (e i).1, fun τ => ⟨fun h => (key τ).trans (if_pos h), fun h => (key τ).trans (if_neg h)⟩⟩`. Take `⟨Pe, hP⟩` from `datum_exists_period E H D g ty hty`. Establish `hcard : ∀ i, Nat.card {j // ty j = ty i} ≠ 0` using `fun i => haveI : Nonempty {j // ty j = ty i} := ⟨⟨i, rfl⟩⟩ Nat.card_pos.ne'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∃ ρ : ℂ, (∀ i, ty i (H.rt : E) = ρ) ∧ 0 < ((ε : ℤ) : ℝ) * ρ.im`. Break down `h with ⟨hq, hε⟩ | ⟨hp, hε⟩` into its components or cases. Use `⟨H.rt0, fun i => ?_, hε⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hcard i (((hty (ty i)).2 hne).trans hq)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨-H.rt0, fun i => ?_, by simpa using hε⟩` and prove the remaining obligations. Establish `hne : ty i (H.rt : E) ≠ H.rt0` using `fun he => hcard i (((hty (ty i)).1 he).trans hp)`. Establish `h2 : (H.rt : E) ^ 2 = -(H.d : E)`. Use `congrArg (algebraMap (𝓞 E) E) H.rt_sq` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h3 : ty i (H.rt : E) ^ 2 = H.rt0 ^ 2`. Rewrite using `[← map_pow, h2, H.sqrt_neg_disc_sq]`. Simplify using the standard rewrite rules. Conclude with `(sq_eq_sq_iff_eq_or_eq_neg.1 h3).resolve_left hne`. Take `⟨ρ, hρ, hε⟩` from `key`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr, hE⟩` from `cmDatum_form_sqrtNegD_pure_period D hP hρ hx`. Establish `: (0 : ℝ) < ((ε : ℤ) : ℝ) * ((D.EF (H.w0 • x) x : ℤ) : ℝ)`. Rewrite using `[hE, ← _root_.mul_assoc]`. Conclude with `mul_pos hε hr`. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem definite_datum_form_pos :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (ε : ℤˣ),

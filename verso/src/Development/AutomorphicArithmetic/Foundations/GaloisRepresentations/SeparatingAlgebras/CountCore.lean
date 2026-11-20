@@ -8,7 +8,7 @@ open MeasureTheory GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 namespace UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Break down `F.eq_empty_or_nonempty with rfl | ⟨g, hg⟩` into its components or cases. Simplify using the standard rewrite rules. Establish `e : F = {g}` using `Finset.eq_singleton_iff_unique_mem.2 ⟨hg, fun g' h' => hF _ h' _ hg⟩`. Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 private theorem sq_sum_of_subsingleton {G : Type} (F : Finset G) (hF : ∀ g ∈ F, ∀ g' ∈ F, g = g') (t : G → ℂ) :
     ‖∑ g ∈ F, t g‖ ^ 2 = ∑ g ∈ F, ‖t g‖ ^ 2 := by
@@ -19,7 +19,7 @@ private theorem sq_sum_of_subsingleton {G : Type} (F : Finset G) (hF : ∀ g ∈
     simp
 
 /- English proof (translation)
-Use `Eq.trans ?_ (Finset.sum_fiberwise S π fun g => ‖t g‖ ^ 2)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun y _ => sq_sum_of_subsingleton _ (fun g hg g' hg' => ?_) t` and prove the remaining obligations. Rewrite `hg`, `hg'` using `[Finset.mem_filter]`. Conclude with `hπ g hg.1 g' hg'.1 (hg.2.trans hg'.2.symm)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fibre_sum {G Y : Type} [Fintype Y] [DecidableEq Y] (S : Finset G) (π : G → Y)
     (hπ : ∀ g ∈ S, ∀ g' ∈ S, π g = π g' → g = g') (t : G → ℂ) :
@@ -34,9 +34,9 @@ private noncomputable def mat {G X : Type} [DecidableEq X] {d : ℕ} (S : Finset
   fun r s => ∑ g ∈ S with π r.1 g = s.1, t g * m r.1 g r.2 s.2
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_prod_type, mat, Finset.sum_mul]`. Use `Eq.trans ?_ (Finset.sum_fiberwise S (π y) _)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun y' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(Finset.mem_filter.1 hg).2, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_assoc _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mat_mulVec {G X : Type} [Fintype X] [DecidableEq X] {d : ℕ} (S : Finset G) (π : X → G → X) (t : G → ℂ)
     (m : X → G → Fin d → Fin d → ℂ) (u : X × Fin d → ℂ) (y : X) (i : Fin d) :
@@ -50,11 +50,11 @@ private theorem mat_mulVec {G X : Type} [Fintype X] [DecidableEq X] {d : ℕ} (S
   exact Finset.sum_congr rfl fun j _ => mul_assoc _ _ _
 
 /- English proof (translation)
-Establish `hrow : ∀ r : X × Fin d, ∑ s, ‖mat S π t m r s‖ ^ 2 ≤ (d : ℝ) * (M₀ ^ 2 * ∑ g ∈ S, ‖t g‖ ^ 2)`. Introduce `r`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_comm]`. Establish `hj : ∀ j : Fin d, ∑ y', ‖mat S π t m r (y', j)‖ ^ 2 ≤ M₀ ^ 2 * ∑ g ∈ S, ‖t g‖ ^ 2`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `fibre_sum S (π r.1) (hπ r.1) (fun g => t g * m r.1 g r.2 j)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, mul_pow, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (norm_nonneg _) (hm _ _ _ _) 2) (by positivity)`. Use `_ = _ := (Finset.mul_sum _ _ _).symm`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Fintype.card_prod]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem mat_hs {G X : Type} [Fintype X] [DecidableEq X] {d : ℕ} (S : Finset G) (π : X → G → X) (t : G → ℂ)
     (m : X → G → Fin d → Fin d → ℂ) (M₀ : ℝ) (hm : ∀ y g i j, ‖m y g i j‖ ≤ M₀)
@@ -81,7 +81,7 @@ private theorem mat_hs {G X : Type} [Fintype X] [DecidableEq X] {d : ℕ} (S : F
       ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨γ' * γ⁻¹, R.mul_mem hγ' (R.inv_mem hγ), c⁻¹ * (x⁻¹ * x') * c, hN.conj_mem' _ (N.mul_mem (N.inv_mem hx) hx') c, c⁻¹ * c', C.mul_mem (C.inv_mem hc) hc', by group⟩`.
+Supply the required witnesses or components.
 -/
 private theorem sep_eq {G : Type} [Group G] (R N C : Subgroup G) (hN : N.Normal) {z γ γ' x x' c c' : G}
     (hγ : γ ∈ R) (hγ' : γ' ∈ R) (hx : x ∈ N) (hx' : x' ∈ N) (hc : c ∈ C) (hc' : c' ∈ C) :
@@ -90,9 +90,9 @@ private theorem sep_eq {G : Type} [Group G] (R N C : Subgroup G) (hN : N.Normal)
     hN.conj_mem' _ (N.mul_mem (N.inv_mem hx) hx') c, c⁻¹ * c', C.mul_mem (C.inv_mem hc) hc', by group⟩
 
 /- English proof (translation)
-Establish `h1 : f.1 v (γ * q * x * c) = f.1 (W.rep ⟨x, hx⟩ v) q`. Rewrite using `[mem_fixedBy.1 hf c hc v, mul_assoc γ q x, (f.2.1 v).left γ hγ, f.2.2 ⟨x, hx⟩ v]`. Both sides reduce to the same expression. Use `h1.trans ?_` and prove the remaining obligations. Establish `h2` using `congrFun (congrArg f.1 (B.sum_repr (W.rep ⟨x, hx⟩ v))) q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h2.symm.trans ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_smul]; rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem form_val {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ} {W : Wt E a} {C : Subgroup (UA E a)}
     {f : algForms W} (hf : f ∈ fixedBy W C) {d : ℕ} (B : Module.Basis (Fin d) ℂ W.Sp) {γ q x c : UA E a}
@@ -110,21 +110,21 @@ private theorem form_val {E : Type} [Field E] [NumberField E] [IsCMField E] {a :
 end UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Introduce `hHS hWB E _ _ _ a W`. Set `d` to `Module.finrank ℂ W.Sp`. Set `B : Module.Basis (Fin d) ℂ W.Sp` to `Module.finBasis ℂ W.Sp`. Take `⟨M₀, hM₀⟩` from `hWB E a W d B`. Use `⟨(d : ℝ) ^ 2 * M₀ ^ 2, by positivity, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `C X _ p hcov h hsep V hVC hV`. Use `choose γ hγ π ξ hξ c hc hdec using fun (y : X) (g : UA E a) => hcov (p y * g)`. Set `η : X → UA E a → infU E a` to `fun y g => ⟨ξ y g, hξ y g⟩`. Set `m : X → UA E a → Fin d → Fin d → ℂ` to `fun y g i j => B.repr (W.rep (η y g) (B i)) j`. Set `ev : V →ₗ[ℂ] (X × Fin d → ℂ)` to `{ toFun := fun f q => f.1.1 (B q.2) (p q.1) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective ev`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf0`. Establish `hz : ∀ j y, f.1.1 (B j) (p y) = 0` using `fun j y => congrFun hf0 (y, j)`. Use `Subtype.ext (Subtype.ext (LinearMap.ext fun v => funext fun g => ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨γ₀, hγ₀, y, x, hx, c₀, hc₀, rfl⟩` from `hcov g`. Rewrite using `[form_val (hVC f.2) B hγ₀ hx hc₀ v]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [hz, mul_zero]`. Establish `hfix : ∀ f : V, (mat h.support π h m).mulVec (ev f) = ev f`. Introduce `f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `⟨y, i⟩`. Rewrite using `[mat_mulVec]`. Establish `hop` using `congrFun (hV f.1 f.2 (B i)) (p y)`. Simplify using `only [opOf, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, RU_apply, smul_eq_mul] at hop`. Use `Eq.trans (Finset.sum_congr rfl fun g _ => ?_) hop` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hdec y g, form_val (hVC f.2) B (hγ y g) (hξ y g) (hc y g) (B i)]`. Both sides reduce to the same expression. Establish `hπ : ∀ y, ∀ g ∈ h.support, ∀ g' ∈ h.support, π y g = π y g' → g = g'`. Introduce `y g hg g' hg' e`. Take `⟨Γ, hΓ, ξ', hξ', k, hk, e'⟩` from `sep_eq (ratU E a) (infU E a) C inferInstance (z := p (π y g)) (hγ y g) (hγ y g') (hξ y g) (hξ y g') (hc y g) (hc y g')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hsep y g hg g' hg' Γ hΓ ξ' hξ' k hk ?_` and prove the remaining obligations. Establish `e1` using `hdec y g'`. Rewrite `e1` using `[← e]`. Rewrite using `[e1, e', ← hdec y g]`. Establish `hfd : FiniteDimensional ℂ V` using `FiniteDimensional.of_injective ev hinj`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hfd, ?_⟩` and prove the remaining obligations. Establish `h1` using `hHS (X × Fin d) (mat h.support π h m) (LinearMap.range ev) (by rintro _ ⟨f, rfl⟩; exact hfix f)`. Rewrite `h1` using `[LinearMap.finrank_range_of_inj hinj]`. Conclude with `h1.trans (mat_hs h.support π h m M₀ (fun y g i j => hM₀ (η y g) i j) hπ)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.countCore_pf :
     UpperTheory.Gal.Gen.HS → UpperTheory.Gal.Gen.WBound → UpperTheory.Gal.Gen.CountCore := by

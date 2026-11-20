@@ -9,7 +9,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.CompanionTheory.TorCent
 
 /- English proof (translation)
-Use `(NumberField.Embeddings.finite_of_norm_le M ℂ 1).subset ?_` and prove the remaining obligations. Introduce and unpack `ζ ⟨k, hk, h⟩`. Use `⟨IsIntegral.of_pow hk (by rw [h]; exact isIntegral_one), fun φ => ?_⟩` and prove the remaining obligations. Establish `h1 : (φ ζ) ^ k = 1` using `by rw [← map_pow, h, map_one]`. Conclude with `(Complex.norm_eq_one_of_pow_eq_one h1 hk.ne').le`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_roots_of_unity (M : Type) [Field M] [NumberField M] :
     {ζ : M | ∃ k : ℕ, 0 < k ∧ ζ ^ k = 1}.Finite := by
@@ -20,9 +20,9 @@ theorem finite_roots_of_unity (M : Type) [Field M] [NumberField M] :
   exact (Complex.norm_eq_one_of_pow_eq_one h1 hk.ne').le
 
 /- English proof (translation)
-Establish `hnd : A.charpoly.roots.Nodup` using `nodup_roots hs`. Establish `hcard` using `splits_iff_card_roots.1 hsp`. Establish `hdeg : A.charpoly.natDegree = n`. Rewrite using `[charpoly_natDegree_eq_dim, Fintype.card_fin]`. Use `set s := A.charpoly.roots.toFinset with hs_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsc : Fintype.card s = n`. Rewrite using `[Fintype.card_coe, Multiset.toFinset_card_of_nodup hnd, hcard, hdeg]`. Set `e` to `Fintype.equivFinOfCardEq hsc`. Use `⟨fun a => ((e.symm a : s) : M), Subtype.val_injective.comp e.symm.injective, ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.prod_comp e.symm (fun r : s => X - C (r : M)), Finset.prod_coe_sort s (fun r => X - C r), Finset.prod_eq_multiset_prod, hs_def, Multiset.toFinset_val, Multiset.dedup_eq_self.2 hnd, prod_multiset_X_sub_C_of_monic_of_roots_card_eq (charpoly_monic _) hcard]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_distinct_roots {M : Type} [Field M] {n : ℕ} (A : Matrix (Fin n) (Fin n) M)
     (hs : A.charpoly.Separable) (hsp : A.charpoly.Splits) :
@@ -41,9 +41,9 @@ theorem exists_distinct_roots {M : Type} [Field M] {n : ℕ} (A : Matrix (Fin n)
     prod_multiset_X_sub_C_of_monic_of_roots_card_eq (charpoly_monic _) hcard]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Establish `h1` using `congrFun (congrFun h i) j`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[mul_diagonal, diagonal_mul]`. Rewrite using `[diagonal_apply_ne _ hij]`. Establish `h2 : F i j * (z j - z i) = 0` using `by rw [mul_sub, h1]; ring`. Conclude with `(mul_eq_zero.1 h2).resolve_right (sub_ne_zero.2 fun e => hij (hz e.symm))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_diagonal_of_commute {M : Type} [Field M] {n : ℕ} {z : Fin n → M}
     (hz : Function.Injective z) {F : Matrix (Fin n) (Fin n) M}
@@ -58,33 +58,31 @@ theorem eq_diagonal_of_commute {M : Type} [Field M] {n : ℕ} {z : Fin n → M}
     exact (mul_eq_zero.1 h2).resolve_right (sub_ne_zero.2 fun e => hij (hz e.symm))
 
 /- English proof (translation)
-Introduce `E _ _ n N hsep`. Set `M` to `N.val.charpoly.SplittingField`. Use `haveI : NumberField M := NumberField.of_module_finite E M`. Set `f : E →+* M` to `algebraMap E M`. Set `A : Matrix (Fin n) (Fin n) M` to `N.val.map f`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hA : A.charpoly = N.val.charpoly.map f` using `charpoly_map _ _`. Establish `hs : A.charpoly.Separable` using `by rw [hA]; exact hsep.map`. Establish `hsp : A.charpoly.Splits` using `by rw [hA]; exact SplittingField.splits _`. Take `⟨z, hz, hprod⟩` from `exists_distinct_roots A hs hsp`. Take `⟨x, hx⟩` from `GlobalTheory.Orb.IsRegSS.exists_conj (M := A) (N := diagonal z) hs (by rw [charpoly_diagonal, hprod])`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `B : Matrix (Fin n) (Fin n) M` to `x.val`. Set `Bi : Matrix (Fin n) (Fin n) M` to `(x⁻¹).val`. Establish `hBB : B * Bi = 1` using `by simp [B, Bi]`. Establish `hBB' : Bi * B = 1` using `by simp [B, Bi]`. Establish `hx' : diagonal z * B = B * A` using `hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2 : Bi * diagonal z = A * Bi`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hBB, Matrix.mul_one]`. Use `_ = A * Bi := by rw [hx', ← Matrix.mul_assoc, hBB', Matrix.one_mul]`. Set `F : GL (Fin n) E → Matrix (Fin n) (Fin n) M` to `fun g => B * g.val.map f * Bi`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hFc : ∀ g : GL (Fin n) E, g * N = N * g → F g * diagonal z = diagonal z * F g`. Introduce `g hg`. Establish `h1 : g.val * N.val = N.val * g.val` using `congrArg Units.val hg`. Establish `h2 : g.val.map f * A = A * g.val.map f`. Simplify using `only [A]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, h1]`. Simplify using `only [F]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, hx2, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc]`. Use `_ = diagonal z * (B * g.val.map f * Bi) := by`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← hx', Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc]`. Establish `hFpow : ∀ (g : GL (Fin n) E) (k : ℕ), F g ^ k = F (g ^ k)`. Introduce `g k`. Proceed by induction on `k with`. Consider the case `zero => simp [F, hBB, Matrix.map_one, Matrix.mul_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Rewrite using `[pow_succ, ih, pow_succ]`. Simplify using `only [F, Units.val_mul]`. Rewrite using `[Matrix.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hBB', Matrix.mul_one]; simp only [Matrix.mul_assoc]`. Set `φ : GL (Fin n) E → Fin n → M` to `fun g i => F g i i`. Establish `hfin` using `Set.Finite.pi' fun _ : Fin n => finite_roots_of_unity M`. Use `Set.Finite.of_injOn (f := φ) ?_ ?_ hfin` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `g ⟨hg, ho⟩ i`. Take `⟨k, hk, hgk⟩` from `isOfFinOrder_iff_pow_eq_one.1 ho`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Establish `h1 : F g ^ k = 1`. Rewrite using `[hFpow, hgk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[F, hBB, Matrix.map_one]`. Rewrite `h1` using `[eq_diagonal_of_commute hz (hFc g hg), diagonal_pow]`. Establish `h2` using `congrFun (congrFun h1 i) i`. Simplify `h2` using `[φ]`. Introduce and unpack `g ⟨hg, -⟩ g' ⟨hg', -⟩ e`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : F g = F g'`. Rewrite using `[eq_diagonal_of_commute hz (hFc g hg), eq_diagonal_of_commute hz (hFc g' hg')]`. Conclude with `congrArg diagonal e`. Establish `h2 : g.val.map f = g'.val.map f`. Establish `h3 : Bi * F g * B = Bi * F g' * B` using `by rw [h1]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `h4 : ∀ Y : Matrix (Fin n) (Fin n) M, Bi * (B * Y * Bi) * B = Y` using `fun Y => by`. Combine the equalities or inequalities in the displayed calculation. Simplify `h3` using `only [F, h4]`. Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`.
-
-Conclude with `f.injective (congrFun (congrFun h2 i) j)`.
+A detailed English derivation is pending.
 -/
 theorem finite_torsion_centralizer : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (N : GL (Fin n) E), N.val.charpoly.Separable →
   {g : GL (Fin n) E | g * N = N * g ∧ IsOfFinOrder g}.Finite := by

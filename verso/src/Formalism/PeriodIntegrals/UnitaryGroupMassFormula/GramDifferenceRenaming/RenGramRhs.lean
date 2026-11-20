@@ -38,14 +38,14 @@ theorem PhOn_eq {κ T : Type} [Fintype κ] [Fintype T] (B : T → κ → ℂ_[p]
     PhOn l ex ph B = PhVF l ex ph B (fun e => X e) := rfl
 
 /- English proof (translation)
-The claim follows from `PI.FglPhSplit.Wk.cc_psubst _ hl0 hx`.
+A detailed English derivation is pending.
 -/
 theorem cc_lg (hl0 : PowerSeries.constantCoeff l = 0) {σ : Type} {x : MvPowerSeries σ ℂ_[p]}
     (hx : constantCoeff x = 0) : constantCoeff (lg l x) = 0 :=
   PI.FglPhSplit.Wk.cc_psubst _ hl0 hx
 
 /- English proof (translation)
-Establish `h : constantCoeff (C c * lg l x) = 0` using `by rw [map_mul, cc_lg hl0 hx, mul_zero]`. Conclude with `PI.FglPhSplit.Wk.cc_psubst _ hex0 h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cc_mulBy (hex0 : PowerSeries.constantCoeff ex = 0) (hl0 : PowerSeries.constantCoeff l = 0)
     {σ : Type} (c : ℂ_[p]) {x : MvPowerSeries σ ℂ_[p]} (hx : constantCoeff x = 0) :
@@ -54,7 +54,7 @@ theorem cc_mulBy (hex0 : PowerSeries.constantCoeff ex = 0) (hl0 : PowerSeries.co
   exact PI.FglPhSplit.Wk.cc_psubst _ hex0 h
 
 /- English proof (translation)
-The claim follows from `PI.FglPhSplit.Wk.cc_psubst _ hex0 (cc_lin hl0 c w hw)`.
+A detailed English derivation is pending.
 -/
 theorem cc_linF (hex0 : PowerSeries.constantCoeff ex = 0) (hl0 : PowerSeries.constantCoeff l = 0)
     {σ T : Type} [Fintype T] (c : T → ℂ_[p]) (w : T → MvPowerSeries σ ℂ_[p])
@@ -62,7 +62,7 @@ theorem cc_linF (hex0 : PowerSeries.constantCoeff ex = 0) (hl0 : PowerSeries.con
   PI.FglPhSplit.Wk.cc_psubst _ hex0 (cc_lin hl0 c w hw)
 
 /- English proof (translation)
-Establish `h : constantCoeff (C c * lg l x) = 0` using `by rw [map_mul, cc_lg hl0 hx, mul_zero]`. Establish `e1 : mulBy l ex c x = PowerSeries.subst (C c * lg l x) ex` using `rfl`. Establish `e2 : lg l x = PowerSeries.subst x l` using `rfl`. Establish `e3 : mulBy l ex c (ren r x) = PowerSeries.subst (C c * PowerSeries.subst (ren r x) l) ex` using `rfl`. Rewrite using `[e1, ren_psubst r _ h, map_mul, ren_C, e2, ren_psubst r _ hx, e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ren_mulBy (hl0 : PowerSeries.constantCoeff l = 0) {σ τ : Type} [Finite σ] (r : σ → τ)
     (c : ℂ_[p]) {x : MvPowerSeries σ ℂ_[p]} (hx : constantCoeff x = 0) :
@@ -74,14 +74,14 @@ theorem ren_mulBy (hl0 : PowerSeries.constantCoeff l = 0) {σ τ : Type} [Finite
   rw [e1, ren_psubst r _ h, map_mul, ren_C, e2, ren_psubst r _ hx, e3]
 
 /- English proof (translation)
-The claim follows from `ren_psubst r ph hx`.
+A detailed English derivation is pending.
 -/
 theorem ren_phAt {σ τ : Type} [Finite σ] (r : σ → τ) {x : MvPowerSeries σ ℂ_[p]}
     (hx : constantCoeff x = 0) : ren (p := p) r (phAt ph x) = phAt ph (ren r x) :=
   ren_psubst r ph hx
 
 /- English proof (translation)
-Unfold `PhVF`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[ren_phAt r (cc_linF hex0 hl0 _ w hw), ren_lin r hl0 _ w hw]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ren_PhVF (hex0 : PowerSeries.constantCoeff ex = 0) (hl0 : PowerSeries.constantCoeff l = 0)
     {κ T σ τ : Type} [Fintype κ] [Fintype T] [Finite σ] (r : σ → τ)
@@ -93,7 +93,7 @@ theorem ren_PhVF (hex0 : PowerSeries.constantCoeff ex = 0) (hl0 : PowerSeries.co
   rw [ren_phAt r (cc_linF hex0 hl0 _ w hw), ren_lin r hl0 _ w hw]
 
 /- English proof (translation)
-Unfold `PhVF`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `congrArg (fun S => phAt ph (pt ex S)) (Equiv.sum_comp E.symm (fun e => C (B e k).1 * lg l (w e)))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem PhVF_equiv {κ T T' σ : Type} [Fintype κ] [Fintype T] [Fintype T'] (E : T ≃ T')
     (B : T → κ → ℂ_[p] × ℂ_[p]) (w : T → MvPowerSeries σ ℂ_[p]) :
@@ -103,11 +103,11 @@ theorem PhVF_equiv {κ T T' σ : Type} [Fintype κ] [Fintype T] [Fintype T'] (E 
   exact congrArg (fun S => phAt ph (pt ex S)) (Equiv.sum_comp E.symm (fun e => C (B e k).1 * lg l (w e)))
 
 /- English proof (translation)
-Unfold `GramRhs GR`. Simplify using `only [Finset.sum_filter, Xv]`. Rewrite using `[map_add, map_sum, map_sum]`. Use `congr 1`. Use `Fintype.sum_equiv E.symm _ _ fun j => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, ren_C, ren_phAt r (constantCoeff_X j), ren_X, Equiv.apply_symm_apply]`. Use `Fintype.sum_equiv E.symm _ _ fun j => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Fintype.sum_equiv E.symm _ _ fun j' => ?_` and prove the remaining obligations. Simplify using `only [Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Rewrite using `[ren_be hex0 hl0 r (cc_mulBy hex0 hl0 _ (constantCoeff_X _)) (constantCoeff_X _), ren_mulBy hl0 r _ (constantCoeff_X _), ren_X, ren_X]`. Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ren_GramRhs (hex0 : PowerSeries.constantCoeff ex = 0) (hl0 : PowerSeries.constantCoeff l = 0)
     {κ T τ : Type} [Fintype κ] [Fintype T] {m : ℕ} (E : T ≃ Fin m) (r : Fin m → τ)
@@ -129,7 +129,7 @@ theorem ren_GramRhs (hex0 : PowerSeries.constantCoeff ex = 0) (hl0 : PowerSeries
     · exact map_zero _
 
 /- English proof (translation)
-Unfold `GR sdRF`. Simplify using `only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, hll, hrr, hlr, hrl, ↓reduceIte, Finset.sum_const_zero, add_zero, zero_add, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem gr_split {κ ι ι' : Type} [Fintype κ] [Fintype ι] [Fintype ι'] {n n' m : ℕ}
     (E : ι ⊕ ι' → Fin m) (o : ι → Fin n) (o' : ι' → Fin n')
@@ -147,7 +147,7 @@ theorem gr_split {κ ι ι' : Type} [Fintype κ] [Fintype ι] [Fintype ι'] {n n
   abel
 
 /- English proof (translation)
-Unfold `hP`. Conclude with `Finset.sum_induction _ (· ∈ S) (fun u v hu hv => hadd u hu v hv) h0 (fun k _ => hmul _ (hx k) _ (hsw _ (hy k)))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem hP_mem {S : Set (ℂ_[p] × ℂ_[p])} (h0 : (0 : ℂ_[p] × ℂ_[p]) ∈ S) (hsw : ∀ α ∈ S, α.swap ∈ S)
     (hadd : ∀ α ∈ S, ∀ β ∈ S, α + β ∈ S) (hmul : ∀ α ∈ S, ∀ β ∈ S, α * β ∈ S)
@@ -158,13 +158,13 @@ theorem hP_mem {S : Set (ℂ_[p] × ℂ_[p])} (h0 : (0 : ℂ_[p] × ℂ_[p]) ∈
     (fun k _ => hmul _ (hx k) _ (hsw _ (hy k)))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨map_zero _, by rw [expMv_zero]; exact int_one⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_zero {σ : Type} : Good (0 : MvPowerSeries σ ℂ_[p]) :=
   ⟨map_zero _, by rw [expMv_zero]; exact int_one⟩
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction _ Good (fun _ _ => good_add) good_zero h`.
+A detailed English derivation is pending.
 -/
 theorem good_sum {σ T : Type} (s : Finset T) (F : T → MvPowerSeries σ ℂ_[p]) (h : ∀ i ∈ s, Good (F i)) :
     Good (∑ i ∈ s, F i) :=

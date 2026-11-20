@@ -37,7 +37,7 @@ def ZfN (C₁ : Coord W I T₁) (F : LatHom T₁.L T₂.L) :
   (ZfDN F).toAddSubgroup.comap (totP C₁)
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ZfN (C₁ : Coord W I T₁) (F : LatHom T₁.L T₂.L)
     (κ : (ZMod n → C₁.V) × (ZMod n → C₁.V)) :
@@ -47,9 +47,7 @@ theorem mem_ZfN (C₁ : Coord W I T₁) (F : LatHom T₁.L T₂.L)
   exact Iff.rfl
 
 /- English proof (translation)
-Use `show totP C₁ (PowerSeries.C m • κ.1, PowerSeries.C m • κ.2) ∈ ZfDN F`. Establish `e : totP C₁ (PowerSeries.C m • κ.1, PowerSeries.C m • κ.2) = m • totP C₁ κ` using `by show (tot C₁ (PowerSeries.C m • κ.1), tot C₁ (PowerSeries.C m • κ.2)) = m • (tot C₁ κ.1, tot C₁ κ.2)`. Rewrite using `[tot_smulC, tot_smulC]`. Both sides reduce to the same expression. Rewrite using `[e]`.
-
-Conclude with `(ZfDN F).smul_mem m h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ZfN_smul (C₁ : Coord W I T₁) (F : LatHom T₁.L T₂.L) (m : O)
     (κ : (ZMod n → C₁.V) × (ZMod n → C₁.V)) (h : κ ∈ ZfN C₁ F) :
@@ -64,21 +62,19 @@ theorem ZfN_smul (C₁ : Coord W I T₁) (F : LatHom T₁.L T₂.L) (m : O)
   exact (ZfDN F).smul_mem m h
 
 /- English proof (translation)
-Introduce `c hc`. Establish `hcZ : c ∈ latticeCocycles T₂.L` using `hc.1`. Establish `hcls : (Submodule.Quotient.mk (⟨c, hcZ⟩ : ↥(latticeCocycles T₂.L)) : LatticeCohomology T₂.L) ∈ latticeFiniteCohomology PD T₂.L` using `⟨⟨c, hcZ⟩, hc, rfl⟩`. Take `⟨hsurj, hker⟩` from `herr hs hp`. Take `⟨w, hw⟩ : ∃ w : ↥(W.wachCocyclesDelta T₂), W.clK T₂ w = Submodule.Quotient.mk (⟨c, hcZ⟩ : ↥(latticeCocycles T₂.L))` from `hsurj _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hwa, hwb⟩` from `(mem_Z1DΔ (w : W.DD T₂ × W.DD T₂).1 (w : W.DD T₂ × W.DD T₂).2).1 w.2`. Take `⟨y, hy⟩` from `tot_surj C₂ _ hwa`. Take `⟨z, hz⟩` from `tot_surj C₂ _ hwb`. Establish `hκ : (y, z) ∈ Zf C₂` using `(mem_Zf C₂ _).2 ⟨w, hw ▸ hcls, Prod.ext hy.symm hz.symm⟩`. Take `⟨κ₁, hκ₁, m, hm1, hm2⟩` from `key _ hκ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w₁, ⟨hw₁f, hnat⟩, hw₁⟩` from `(mem_ZfN C₁ F _).1 hκ₁`. Establish `hzero : W.clK T₂ ((((PD.p : ℕ) : O) ^ e) • w - mapZ F w₁) = 0`. Use `(hker _).2 ⟨tot C₂ m, fun δ hδ => tot_Δ C₂ m δ hδ, ?_⟩` and prove the remaining obligations. Establish `e1` using `congrArg (tot C₂) hm1`. Establish `e2` using `congrArg (tot C₂) hm2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[tot_sub, lc_pow, tot_smulC, tot_map, tot_dφ]`. Rewrite `e2` using `[tot_sub, lc_pow, tot_smulC, tot_map, tot_dγ]`. Establish `a1 : tot C₁ κ₁.1 = (w₁ : W.DD T₁ × W.DD T₁).1` using `by rw [hw₁]`. Establish `a2 : tot C₁ κ₁.2 = (w₁ : W.DD T₁ × W.DD T₁).2` using `by rw [hw₁]`. Rewrite `e1` using `[a1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[a2]`. Simplify using `only at e1 e2`. Rewrite `e1` using `[hy]`. Rewrite `e2` using `[hz]`. Conclude with `Prod.ext e1 e2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : W.clK T₂ ((((PD.p : ℕ) : O) ^ e) • w - mapZ F w₁) = (((PD.p : ℕ) : O) ^ e) • W.clK T₂ w - W.clK T₂ (mapZ F w₁)` using `((W.clK T₂).map_sub ((((PD.p : ℕ) : O) ^ e) • w) (mapZ F w₁)).trans (congrArg (· - W.clK T₂ (mapZ F w₁)) ((W.clK T₂).map_smul _ w))`. Establish `hz2 : (((PD.p : ℕ) : O) ^ e) • (Submodule.Quotient.mk (⟨c, hcZ⟩ : ↥(latticeCocycles T₂.L)) : LatticeCohomology T₂.L) = F.H1map (W.clK T₁ w₁)`. Rewrite using `[hnat, ← hw]`. Conclude with `sub_eq_zero.1 (e3.symm.trans hzero)`. Take `⟨c₁, hc₁, hc₁e⟩` from `hw₁f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hz2` using `[← hc₁e]`. Establish `hq : (Submodule.Quotient.mk ((((PD.p : ℕ) : O) ^ e) • (⟨c, hcZ⟩ : ↥(latticeCocycles T₂.L))) : LatticeCohomology T₂.L) = Submodule.Quotient.mk (⟨F.post c₁, F.post_Z1T _ c₁.2⟩ : ↥(latticeCocycles T₂.L))` using `hz2`. Establish `hB` using `(Submodule.Quotient.eq _).1 hq`. Establish `hB' : (((PD.p : ℕ) : O) ^ e) • c - F.post c₁ ∈ latticeCoboundaries T₂.L` using `hB`. Establish `: (((PD.p : ℕ) : O) ^ e) • c = F.post c₁ + ((((PD.p : ℕ) : O) ^ e) • c - F.post c₁)` using `by abel`.
-
-Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup (Submodule.mem_map_of_mem hc₁) hB'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftF_ofN {F : LatHom T₁.L T₂.L} {C₁ : Coord W I T₁} {C₂ : Coord W I T₂}
     (h : CoordHom C₁ C₂ F) (hs : W.s = 1) (hp : PD.p ≠ 2) (herr : Formalism.MainNotions.DeltaInvariantLattices.p2aK W T₂) (e : ℕ)
@@ -132,7 +128,7 @@ theorem liftF_ofN {F : LatHom T₁.L T₂.L} {C₁ : Coord W I T₁} {C₂ : Coo
   exact Submodule.add_mem_sup (Submodule.mem_map_of_mem hc₁) hB'
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.LocWach.NΔ at hx ⊢`. Take `⟨hN, hΔ⟩` from `hx`. Use `⟨W.map_N F h₁ h₂ _ hN, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[← W.map_γ, hΔ δ hδ]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_NΔ (F : LatHom T₁.L T₂.L) (h₁ : IsCrys PD T₁.ρ) (h₂ : IsCrys PD T₂.ρ) {x : W.DD T₁}
     (hx : x ∈ W.NΔ T₁) : W.map F x ∈ W.NΔ T₂ := by
@@ -142,7 +138,7 @@ theorem map_NΔ (F : LatHom T₁.L T₂.L) (h₁ : IsCrys PD T₁.ρ) (h₂ : Is
   rw [← W.map_γ, hΔ δ hδ]
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `⟨W.map F y, map_NΔ F h₁ h₂ hy, map_smulA W F a y⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem map_mulSet (F : LatHom T₁.L T₂.L) (h₁ : IsCrys PD T₁.ρ) (h₂ : IsCrys PD T₂.ρ) (a : LetA O n) {x : W.DD T₁}
     (hx : x ∈ mulSet W T₁ a (W.NΔ T₁)) : W.map F x ∈ mulSet W T₂ a (W.NΔ T₂) := by
@@ -150,9 +146,9 @@ theorem map_mulSet (F : LatHom T₁.L T₂.L) (h₁ : IsCrys PD T₁.ρ) (h₂ :
   exact ⟨W.map F y, map_NΔ F h₁ h₂ hy, map_smulA W F a y⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hx`. Unfold `HerrCocycleAtLetter`. Simplify using `only [mapZ_coe]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `InLetter at h1 ⊢`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[← map_smulA W F, h1]`. Rewrite using `[← W.map_γ, ← map_sub]`. Conclude with `map_mulSet F h₁ h₂ _ h2`. Conclude with `map_mulSet F h₁ h₂ _ h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobenius_cocycle_map (F : LatHom T₁.L T₂.L) (h₁ : IsCrys PD T₁.ρ) (h₂ : IsCrys PD T₂.ρ) (M : ℕ) (c : ZMod n) (x : ↥(W.wachCocyclesDelta T₁))
     (hx : HerrCocycleAtLetter W T₁ M c x) : HerrCocycleAtLetter W T₂ M c (mapZ F x) := by
@@ -167,11 +163,11 @@ theorem frobenius_cocycle_map (F : LatHom T₁.L T₂.L) (h₁ : IsCrys PD T₁.
   · exact map_mulSet F h₁ h₂ _ h3
 
 /- English proof (translation)
-Take `⟨τ, -, hy, -, hz⟩` from `hρ`. Establish `hzM` using `tot_sm C M z hz`. Use `⟨?_, ?_, hzM⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(letE (c + (j : ZMod n)) : LetA O n) • tot C y = tot C y`. Rewrite using `[hy, tot_single]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `C.t_letter _ _`. Express the relevant statement in the definitionally equal form `W.γD T W.gamK (tot C y) - tot C y ∈ mulSet W T (W.π₀ ^ M) (W.NΔ T)`. Rewrite using `[((mem_Z1DΔ _ _).1 hZ).1]`. Take `⟨x, hx, hxz⟩` from `hzM`. Take `⟨x', hx', hφ⟩` from `((hF1 hh M hM).1 T hcr hJ).1 x hx`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨I.d I.Bs.q • x' - x, (W.NΔ T).sub_mem (d_smul_NΔ _ hx') hx, ?_⟩` and prove the remaining obligations. Rewrite using `[hxz, hφ, smul_sub, I.d_q, mul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobenius_cocycle_of_rho_data {T : LocLat G Qp LL O} (hF1 : F1 W) (hcr : IsCrys PD T.ρ) (hh M : ℕ)
     (hJ : ∀ τ : K →ₐ[Qp] LL, JumpsInV PD T.ρ τ (Set.Icc (-(hh : ℤ)) hh))
@@ -192,11 +188,11 @@ theorem frobenius_cocycle_of_rho_data {T : LocLat G Qp LL O} (hF1 : F1 W) (hcr :
     rw [hxz, hφ, smul_sub, I.d_q, mul_smul]
 
 /- English proof (translation)
-Introduce `c hc w hw y z hρ`. Establish `hM : hh < (PD.p - 1) * Formalism.ExponentWindows.E.parM I.Bs.ℓ hh g`. Rewrite using `[Formalism.ExponentWindows.E.parM, I.ℓ_eq]`. Use `Nat.lt_mul_div_succ (hh + 2 * g) (show 0 < PD.p - 1 by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨x, hxf, hx⟩` from `(mem_Zf C _).1 (rho_field hF1 hF2 hcr₁ hh hJ₁ hp C h5 Cu H j g sig c hc w hw y z hρ)`. Establish `hZ : (tot C y, tot C z) ∈ W.wachCocyclesDelta T₁` using `hx ▸ x.2`. Establish `hxe : x = ⟨_, hZ⟩` using `Subtype.ext hx`. Establish `hcoc` using `frobenius_cocycle_of_rho_data hF1 hcr₁ hh _ hJ₁ hM C c w j g sig y z hρ hZ`. Rewrite `hcoc` using `[← hxe]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(mem_ZfN C F _).2 ⟨x, ⟨hxf, ?_⟩, hx⟩` and prove the remaining obligations. Conclude with `((hF1 hh _ hM).2 T₁ T₂ F hcr₁ hcr₂ hJ₁ hJ₂ (c + (j : ZMod n)) x (mapZ F x) hcoc (frobenius_cocycle_map F hcr₁ hcr₂ _ _ x hcoc) rfl).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rho_fieldN (hF1 : F1 W) (hF2 : F2 W) (F : LatHom T₁.L T₂.L) (hcr₁ : IsCrys PD T₁.ρ)
     (hcr₂ : IsCrys PD T₂.ρ) (hh : ℕ)

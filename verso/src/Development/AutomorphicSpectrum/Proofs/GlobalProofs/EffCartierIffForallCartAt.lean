@@ -12,7 +12,7 @@ def CartAt {X : Scheme.{0}} (J : X.IdealSheafData) (x : X) : Prop :=
   ∃ (U : X.affineOpens) (f : Γ(X, U.1)), x ∈ U.1 ∧ f ∈ nonZeroDivisors Γ(X, U.1) ∧ J.ideal U = Ideal.span {f}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem effCartier_iff_forall_cartAt {X : Scheme.{0}} (J : X.IdealSheafData) :
     FinalTheorems.EffCartier J ↔ ∀ x, CartAt J x := Iff.rfl

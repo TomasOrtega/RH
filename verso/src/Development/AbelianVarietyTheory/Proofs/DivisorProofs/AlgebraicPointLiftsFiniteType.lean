@@ -10,9 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CovLift
 
 /- English proof (translation)
-Introduce `V Y π hπ K _ _ y u hu`. Take `⟨z, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := π) (g := y) u (IsLocalRing.closedPoint K) hu`. Establish `: JacobsonSpace ↥(pullback π y : Scheme.{0})` using `LocallyOfFiniteType.jacobsonSpace (pullback.snd π y)`. Take `⟨c, -, hc'⟩` from `nonempty_inter_closedPoints (X := ↥(pullback π y : Scheme.{0})) (Z := Set.univ) ⟨z, trivial⟩ isOpen_univ.isLocallyClosed`. Establish `hc : IsClosed {c}` using `hc'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨pointOfClosedPoint (pullback.snd π y) c hc ≫ pullback.fst π y, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, pointOfClosedPoint_comp_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift_of_locallyOfFiniteType : ∀ (V Y : Scheme.{0}) (π : V ⟶ Y), LocallyOfFiniteType π → ∀ (K : Type) [Field K] [IsAlgClosed K] (y : Sp K ⟶ Y) (u : V), π u = y (IsLocalRing.closedPoint K) → ∃ w : Sp K ⟶ V, w ≫ π = y := by
   intro V Y π hπ K _ _ y u hu

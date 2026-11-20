@@ -7,7 +7,7 @@ open scoped ENNReal Classical
 namespace GlobalTheory.Mass.OrbMono
 
 /- English proof (translation)
-Conclude with `(tsum_subtype {q : MulAction.orbitRel.Quotient G α | Quotient.out q ∈ X} (fun q => ((ENat.card (MulAction.stabilizer G (Quotient.out q)) : ℕ∞) : ℝ≥0∞)⁻¹ * N (Quotient.out q))).trans (tsum_congr fun q => by simp [Set.indicator_apply])`.
+A detailed English derivation is pending.
 -/
 theorem orbSum_eq (G α : Type) [Group G] [MulAction G α] (X : Set α) (N : α → ℝ≥0∞) :
     orbSum G X N = ∑' q : MulAction.orbitRel.Quotient G α,
@@ -19,25 +19,21 @@ theorem orbSum_eq (G α : Type) [Group G] [MulAction G α] (X : Set α) (N : α 
       N (Quotient.out q))).trans (tsum_congr fun q => by simp [Set.indicator_apply])
 
 /- English proof (translation)
-Introduce `G α _ _`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `X Y N N' hXY hN`. Simplify using `only [orbSum_eq]`. Use `ENNReal.tsum_le_tsum fun q => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hq : Quotient.out q ∈ X`. Rewrite using `[if_pos hq, if_pos (hXY hq)] gcongr`. Conclude with `hN _ hq`. Rewrite using `[if_neg hq]`. Conclude with `zero_le`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `X B`. Simplify using `only [orbMass, orbSum]`. Rewrite using `[← ENNReal.tsum_mul_left]`. Conclude with `tsum_congr fun q => by rw [mul_one, mul_comm]`. Introduce `ι s X Xi N hX`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [orbSum_eq]`. Rewrite using `[← Summable.tsum_finsetSum (fun i _ => ENNReal.summable)]`. Use `ENNReal.tsum_le_tsum fun q => ?_` and prove the remaining obligations. Distinguish the cases in `hq : Quotient.out q ∈ X`. Take `⟨i, hi, hqi⟩` from `Set.mem_iUnion₂.1 (hX hq)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans ?_ (Finset.single_le_sum (fun j _ => zero_le) hi)` and prove the remaining obligations. Simplify using `[hq, hqi]`. Rewrite using `[if_neg hq]`. Conclude with `zero_le`. Introduce `X s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ q : {q : MulAction.orbitRel.Quotient G α // Quotient.out q ∈ X}, ∃ y : s, (Quotient.mk _ (y : α) : MulAction.orbitRel.Quotient G α) = q.1`. Introduce and unpack `⟨q, hq⟩`. Take `⟨y, hy, g, hg⟩` from `hs _ hq`. Use `⟨⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Conclude with `(Quotient.sound (MulAction.orbitRel_apply.2 ⟨g⁻¹, by simp [← hg]⟩)).trans (Quotient.out_eq q)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `choose φ hφ using key`. Establish `hinj : Function.Injective φ`. Introduce `a b h`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hφ a, ← hφ b, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.tsum_le_tsum fun q => ?_` and prove the remaining obligations. Rewrite using `[mul_one]`. Apply `ENNReal.inv_le_one.2` to reduce the goal to its premises. Establish `h1 : (1 : ℕ∞) ≤ ENat.card (MulAction.stabilizer G (Quotient.out q.1))` using `(ENat.one_le_card_iff_nonempty _).2 ⟨1⟩`.
-
-Conclude with `h1` after adjusting the coercions. Use `_ ≤ ∑' _ : s, (1 : ℝ≥0∞) := ENNReal.tsum_comp_le_tsum_of_injective hinj _`. Use `_ = s.encard := ENNReal.tsum_set_one s`. Introduce `X N N'`. Simplify using `only [orbSum]`.
-
-Rewrite using `[← ENNReal.tsum_add]`. Conclude with `tsum_congr fun q => mul_add _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (G α : Type) [Group G] [MulAction G α] , (∀ (X Y : Set α) (N N' : α → ℝ≥0∞), X ⊆ Y → (∀ x ∈ X, N x ≤ N' x) → orbSum G X N ≤ orbSum G Y N') ∧ (∀ (X : Set α) (B : ℝ≥0∞), orbSum G X (fun _ => B) = B * orbMass G X) ∧ (∀ (ι : Type) (s : Finset ι) (X : Set α) (Xi : ι → Set α) (N : α → ℝ≥0∞), X ⊆ ⋃ i ∈ s, Xi i → orbSum G X N ≤ ∑ i ∈ s, orbSum G (Xi i) N) ∧ (∀ (X : Set α) (s : Set α), (∀ x ∈ X, ∃ y ∈ s, ∃ g : G, g • y = x) → orbMass G X ≤ ((s.encard : ℕ∞) : ℝ≥0∞)) ∧ (∀ (X : Set α) (N N' : α → ℝ≥0∞), orbSum G X (fun x => N x + N' x) = orbSum G X N + orbSum G X N') := by
   intro G α _ _

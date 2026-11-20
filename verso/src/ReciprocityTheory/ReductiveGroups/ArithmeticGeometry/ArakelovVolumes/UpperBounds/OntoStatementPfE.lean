@@ -13,7 +13,7 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `X.χ_fin la`. Establish `h1` using `congrArg norm (h γ hγ)`. Rewrite `h1` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').mp h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_norm (la : Wt X.Ψ r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : ‖X.χ la γ‖ = 1 := by
   obtain ⟨n, hn, h⟩ := X.χ_fin la
@@ -22,11 +22,11 @@ theorem chi_norm (la : Wt X.Ψ r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : ‖X
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').mp h1
 
 /- English proof (translation)
-Establish `hb' : ∀ τ : X.Ψ, (mat b τ).det ≠ 0 ∧ ∀ a c : Fin r, c < a → b τ a c = 0` using `hb`. Unfold `bchar`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `τ _`. Rewrite using `[Finset.prod_ne_zero_iff]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _`. Establish `hd` using `(hb' τ).1`. Establish `hbt : (mat b τ).BlockTriangular id` using `fun a c hca => (hb' τ).2 a c hca`. Rewrite `hd` using `[Matrix.det_of_upperTriangular hbt, Finset.prod_ne_zero_iff]`. Establish `hi` using `hd i (Finset.mem_univ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zpow_ne_zero _ hi`.
+A detailed English derivation is pending.
 -/
 theorem bchar_ne (la : Wt X.Ψ r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) : bchar la b ≠ 0 := by
   have hb' : ∀ τ : X.Ψ, (mat b τ).det ≠ 0 ∧ ∀ a c : Fin r, c < a → b τ a c = 0 := hb
@@ -47,20 +47,18 @@ def phiF (f0 : Frame X.Ψ r → ℂ) (W : Frame X.Ψ r → ℝ≥0∞) : Frame X
   fun y => X.dom.piecewise (fun y => ENNReal.ofReal (‖f0 y‖ ^ 2)) 0 y * W y
 
 /- English proof (translation)
-Simplify using `[phiF, Set.piecewise, hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phiF_dom (f0 : Frame X.Ψ r → ℂ) (W : Frame X.Ψ r → ℝ≥0∞) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     phiF X f0 W x = ENNReal.ofReal (‖f0 x‖ ^ 2) * W x := by
   simp [phiF, Set.piecewise, hx]
 
 /- English proof (translation)
-Establish `hopen : IsOpen X.dom`. Establish `h1 : X.dom = ⋂ τ : X.Ψ, ({x : Frame X.Ψ r | (mat x τ).det ≠ 0} ∩ ⋂ i : Fin (r + 1), {x | 0 < psgn X.p0 i * (dmin X.Gm x τ i).re})`. Use extensionality with `x`. Simplify using `only [Set.mem_iInter, Set.mem_inter_iff, Set.mem_setOf_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[h1]`. Use `isOpen_iInter_of_finite fun τ => IsOpen.inter ?_ (isOpen_iInter_of_finite fun i => ?_)` and prove the remaining obligations. Use `isOpen_ne_fun ?_ continuous_const` and prove the remaining obligations. Unfold `mat`. Use `fun_prop`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `isOpen_lt continuous_const ?_` and prove the remaining obligations. Unfold `dmin lminor ReciprocityTheory.ChartRestriction.G.FD.gram ReciprocityTheory.ChartRestriction.G.FD.hermC ReciprocityTheory.ChartRestriction.G.FD.col mat`. Use `fun_prop`. Unfold `phiF`. Use `Measurable.mul ?_ hW` and prove the remaining obligations.
-
-Use `ContinuousOn.measurable_piecewise ?_ continuousOn_const hopen.measurableSet` and prove the remaining obligations. Conclude with `ENNReal.continuous_ofReal.comp_continuousOn (hf.norm.pow 2)`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem phiF_meas {f0 : Frame X.Ψ r → ℂ} {W : Frame X.Ψ r → ℝ≥0∞} (hf : ContinuousOn f0 X.dom)
     (hW : Measurable W) : Measurable (phiF X f0 W) := by
@@ -85,9 +83,9 @@ theorem phiF_meas {f0 : Frame X.Ψ r → ℂ} {W : Frame X.Ψ r → ℝ≥0∞} 
   exact ENNReal.continuous_ofReal.comp_continuousOn (hf.norm.pow 2)
 
 /- English proof (translation)
-Introduce `x hx b hb`. Rewrite using `[phiF_dom X f0 W (dom_rmul X hx hb), phiF_dom X f0 W hx, hf0 x hx b hb, hW.2.1 x hx b hb, norm_mul, mul_pow, ENNReal.ofReal_mul (sq_nonneg _)]`. Establish `hA0 : ENNReal.ofReal (‖bchar la b‖ ^ 2) ≠ 0`. Rewrite using `[ne_eq, ENNReal.ofReal_eq_zero, not_le]`. Conclude with `pow_pos (norm_pos_iff.2 (bchar_ne X la hb)) 2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAt : ENNReal.ofReal (‖bchar la b‖ ^ 2) ≠ ⊤` using `ENNReal.ofReal_ne_top`. Rewrite using `[ENNReal.div_eq_inv_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem phiF_B {la : Wt X.Ψ r} {f0 : Frame X.Ψ r → ℂ} {W : Frame X.Ψ r → ℝ≥0∞}
     (hf0 : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, f0 (rmul x b) = bchar la b * f0 x)
@@ -107,7 +105,7 @@ theorem phiF_B {la : Wt X.Ψ r} {f0 : Frame X.Ψ r → ℂ} {W : Frame X.Ψ r �
     _ = ENNReal.ofReal (‖f0 x‖ ^ 2) * W x := by rw [ENNReal.mul_inv_cancel hA0 hAt, mul_one]
 
 /- English proof (translation)
-Introduce `γ hγ x hx`. Rewrite using `[phiF_dom X f0 W (dom_lact X hγ hx), phiF_dom X f0 W hx, hf0 γ hγ x hx, hW.2.2 γ hγ x hx, norm_mul, chi_norm X la hγ, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiF_G {la : Wt X.Ψ r} {f0 : Frame X.Ψ r → ℂ} {W : Frame X.Ψ r → ℝ≥0∞}
     (hf0 : ∀ γ ∈ X.Γ, ∀ x ∈ X.dom, f0 (lact γ x) = X.χ la γ * f0 x)
@@ -119,11 +117,11 @@ theorem phiF_G {la : Wt X.Ψ r} {f0 : Frame X.Ψ r → ℂ} {W : Frame X.Ψ r �
 variable (x0 : Frame X.Ψ r)
 
 /- English proof (translation)
-Establish `hz' : ∀ τ : X.Ψ, (mat (cpt X x0 z) τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm (cpt X x0 z) τ i).re` using `hz`. Establish `hd : ∀ τ i, dmin X.Gm (cpt X x0 z) τ i ≠ 0`. Introduce `τ i h`. Establish `h2` using `(hz' τ).2 i`. Rewrite `h2` using `[h, Complex.zero_re, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ h2`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.Data.nfac`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `τ _`. Apply `Finset.prod_pos` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Conclude with `Real.rpow_pos_of_pos (norm_pos_iff.mpr (div_ne_zero (hd τ _) (hd τ _))) _`.
+A detailed English derivation is pending.
 -/
 theorem nfac_pos {la : Wt X.Ψ r} {z : V (nd X)} (hz : z ∈ OmF X x0) : 0 < X.nfac la (cpt X x0 z) := by
   have hz' : ∀ τ : X.Ψ, (mat (cpt X x0 z) τ).det ≠ 0 ∧
@@ -141,19 +139,17 @@ theorem nfac_pos {la : Wt X.Ψ r} {z : V (nd X)} (hz : z ∈ OmF X x0) : 0 < X.n
   exact Real.rpow_pos_of_pos (norm_pos_iff.mpr (div_ne_zero (hd τ _) (hd τ _))) _
 
 /- English proof (translation)
-Establish `hn : Continuous fun z : V (nd X) => nmat X z`. Use `continuous_pi fun τ => continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Unfold `nmat`. Distinguish the cases in `h : b < a`. Simplify using `only [h, dif_pos] fun_prop`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, dif_neg, not_false_eq_true]`. Conclude with `continuous_const`. Establish `hc : Continuous fun z : V (nd X) => cpt X x0 z`. Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Use `show Continuous fun z : V (nd X) => mat x0 τ * mat (nmat X z) τ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `continuous_const.matrix_mul ((continuous_apply τ).comp hn)`. Establish `hd : ∀ τ i, Continuous fun z : V (nd X) => dmin X.Gm (cpt X x0 z) τ i`. Introduce `τ i`. Establish `h1 : Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i`. Unfold `dmin lminor ReciprocityTheory.ChartRestriction.G.FD.gram ReciprocityTheory.ChartRestriction.G.FD.hermC ReciprocityTheory.ChartRestriction.G.FD.col mat`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `fun_prop`. Conclude with `h1.comp hc`. Establish `hne : ∀ z ∈ OmF X x0, ∀ τ i, dmin X.Gm (cpt X x0 z) τ i ≠ 0`. Introduce `z hz τ i h`. Establish `hz' : ∀ τ : X.Ψ, (mat (cpt X x0 z) τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm (cpt X x0 z) τ i).re` using `hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `(hz' τ).2 i`. Rewrite `h2` using `[h, Complex.zero_re, mul_zero]`. Conclude with `lt_irrefl _ h2`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.Data.nfac`. Apply `continuousOn_finset_prod` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `τ _`. Apply `continuousOn_finset_prod` to reduce the goal to its premises. Introduce `i _`. Introduce `z hz`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises.
-
-Apply `ContinuousAt.rpow_const` to reduce the goal to its premises. Conclude with `((hd τ _).continuousAt.div (hd τ _).continuousAt (hne z hz τ _)).norm`. Use `left`. Conclude with `norm_ne_zero_iff.mpr (div_ne_zero (hne z hz τ _) (hne z hz τ _))`.
+A detailed English derivation is pending.
 -/
 theorem nfac_cont (la : Wt X.Ψ r) : ContinuousOn (fun z => X.nfac la (cpt X x0 z)) (OmF X x0) := by
   have hn : Continuous fun z : V (nd X) => nmat X z := by
@@ -194,7 +190,7 @@ theorem nfac_cont (la : Wt X.Ψ r) : ContinuousOn (fun z => X.nfac la (cpt X x0 
     exact norm_ne_zero_iff.mpr (div_ne_zero (hne z hz τ _) (hne z hz τ _))
 
 /- English proof (translation)
-Unfold `phla`. Establish `h1` using `nfac_cont X x0 la`. Conclude with `(continuousOn_const.mul (h1.log fun z hz => (nfac_pos X x0 (la := la) hz).ne')).neg.rexp`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem expPhla_cont (la : Wt X.Ψ r) :
     ContinuousOn (fun z => Real.exp (-phla X la (cpt X x0 z))) (OmF X x0) := by

@@ -8,11 +8,11 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi 
 namespace GlobalTheory.FlagBundle.AffRad
 
 /- English proof (translation)
-Establish `hq : ∀ a : A, Ideal.Quotient.mk (Ideal.span {g}) a = 0 ↔ g ∣ a` using `fun a => by`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Rewrite `h`, the goal using `[MvPolynomial.C_dvd_iff_map_hom_eq_zero _ g hq]`. Rewrite `h` using `[map_pow]`. Establish `hn` using `(MvPolynomial.isNilpotent_iff).1 ⟨n, h⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i`. Take `⟨k, hk⟩` from `hn i`. Rewrite `hk`, the goal using `[MvPolynomial.coeff_map]`. Rewrite `hk` using `[← map_pow, hq]`. Rewrite using `[MvPolynomial.coeff_zero, hq]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg _ _ hk`.
+A detailed English derivation is pending.
 -/
 theorem C_dvd_of_C_dvd_pow {A σ : Type} [CommRing A] {g : A} (hg : ∀ (x : A) (n : ℕ), g ∣ x ^ n → g ∣ x)
     {P : MvPolynomial σ A} {n : ℕ} (h : MvPolynomial.C g ∣ P ^ n) : MvPolynomial.C g ∣ P := by
@@ -29,11 +29,11 @@ theorem C_dvd_of_C_dvd_pow {A σ : Type} [CommRing A] {g : A} (hg : ∀ (x : A) 
   exact hg _ _ hk
 
 /- English proof (translation)
-Take `⟨U, f, hU, rfl⟩` from `hx`. Establish `hne : (V : Set M.Z).Nonempty` using `⟨z, hz⟩`. Take `⟨g, hgU, hwg⟩` from `hV.exists_basicOpen_le (V := U) ⟨z, hU⟩ hz`. Establish `hg : ((M.Z.basicOpen g : M.Z.Opens) : Set M.Z).Nonempty` using `⟨z, hwg⟩`. Use `hV.isLocalization_basicOpen g` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj g (resG M.Z hgU f)`. Establish `h1` using `congrArg (M.res _ hg) ha`. Establish `h2 : ∀ t : Γ(M.Z, V), M.res _ hg (algebraMap Γ(M.Z, V) Γ(M.Z, M.Z.basicOpen g) t) = M.res V hne t` using `fun t => M.res_resG (M.Z.basicOpen_le g) hg t`. Rewrite `h1` using `[map_mul, map_pow, h2, h2, RatModel.res_resG, RatModel.res_apply, RatModel.res_apply, RatModel.res_apply]`. Establish `hu` using `(RatModel.isUnit_O_iff _).1 ((RatModel.isUnit_valF_iff hz g).2 hwg)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨_, _, (RatModel.mem_ringOn_iff_exists hne).2 ⟨a, rfl⟩, pow_mem ((RatModel.mem_ringOn_iff_exists hne).2 ⟨g, rfl⟩) n, pow_ne_zero _ hu.1, ?_, h1⟩` and prove the remaining obligations. Rewrite using `[← inv_pow]`. Conclude with `pow_mem hu.2 n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_div_of_mem_O {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω}
     {V : M.Z.Opens} (hV : IsAffineOpen V) {z : M.Z} (hz : z ∈ V) {x : Ω} (hx : x ∈ M.O z) :
@@ -56,31 +56,29 @@ theorem exists_div_of_mem_O {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
   exact pow_mem hu.2 n
 
 /- English proof (translation)
-Introduce and unpack `z' g ⟨hg0, hgO, hg⟩`. Take `⟨hf, hc⟩` from `h`. Take `⟨U, W, t, hU, -, hz, hW, hinj, hR⟩` from `hc z'`. Establish `hφ0 : φ g ≠ 0` using `(map_ne_zero φ).2 hg0`. Use `⟨hφ0, hf.map_mem_O hgO, fun x n hx hxn => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `A` to `(M.O (f z')).toSubring`. Set `ψ : MvPolynomial (Fin r) A →+* Ω'` to `MvPolynomial.eval₂Hom ((φ : Ω →+* Ω').comp A.subtype) t`. Establish `hψ : Function.Injective ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `P hP`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hinj (MvPolynomial.map A.subtype P) (by rw [MvPolynomial.eval₂_map]; exact hP)` as an intermediate fact. Conclude with `(map_eq_zero_iff _ (MvPolynomial.map_injective _ A.subtype_injective)).1 this`. Establish `hO : ∀ P, ψ P ∈ M'.O z'` using `fun P => by`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => rw [MvPolynomial.eval₂Hom_C]`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `hf.map_mem_O a.2`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, MvPolynomial.eval₂Hom_X']`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_mem hp (RatModel.ringOn_le_O hz (hR ▸ Algebra.subset_adjoin (Or.inr ⟨i, rfl⟩)))`. Establish `hS : ∀ y ∈ M'.ringOn U, ∃ P, ψ P = y`. Introduce `y hy`. Rewrite `hy` using `[hR]`. Proceed by induction on `hy using Algebra.adjoin_induction with`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Consider the case `mem y hy`. Break down `hy with ⟨w, hw, rfl⟩ | ⟨i, rfl⟩` into its components or cases. Conclude with `⟨MvPolynomial.C ⟨w, RatModel.ringOn_le_O (hW z' hz) hw⟩, MvPolynomial.eval₂Hom_C _ _ _⟩`. Conclude with `⟨MvPolynomial.X i, MvPolynomial.eval₂Hom_X' _ _ _⟩`. Consider the case `algebraMap c`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨MvPolynomial.C ⟨algebraMap F Ω c, (M.O (f z')).algebraMap_mem c⟩, (MvPolynomial.eval₂Hom_C _ _ _).trans (φ.commutes c)⟩`. Consider the case `add a b _ _ ha hb => obtain ⟨P, rfl⟩ := ha`. Take `⟨Q, rfl⟩` from `hb`. Conclude with `⟨P + Q, map_add _ _ _⟩`. Consider the case `mul a b _ _ ha hb => obtain ⟨P, rfl⟩ := ha`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨Q, rfl⟩` from `hb`. Conclude with `⟨P * Q, map_mul _ _ _⟩`. Establish `hrad : ∀ (y : A) (k : ℕ), (⟨g, hgO⟩ : A) ∣ y ^ k → (⟨g, hgO⟩ : A) ∣ y`. Introduce and unpack `y k ⟨c, hc⟩`. Establish `e : (y : Ω) ^ k = g * c` using `congrArg Subtype.val hc`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hg y k y.2 (by rw [e, mul_div_cancel_left₀ _ hg0]; exact c.2)` as an intermediate fact. Conclude with `⟨⟨_, this⟩, Subtype.ext (mul_div_cancel₀ _ hg0).symm⟩`. Establish `hC : ψ (MvPolynomial.C ⟨g, hgO⟩) = φ g` using `MvPolynomial.eval₂Hom_C _ _ _`. Take `⟨a, b, ha, hb, hb0, hbi, e1⟩` from `exists_div_of_mem_O hU hz hx`. Take `⟨c, d, hc, hd, hd0, hdi, e2⟩` from `exists_div_of_mem_O hU hz hxn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hS a ha`. Take `⟨b, rfl⟩` from `hS b hb`. Take `⟨c, rfl⟩` from `hS c hc`. Take `⟨d, rfl⟩` from `hS d hd`. Establish `hdvd : MvPolynomial.C (⟨g, hgO⟩ : A) ∣ (a * d) ^ (n + 1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨c * b ^ n * a * d ^ n, hψ ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, hC, ← e2]`. Rewrite using `[← e1]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨Q, hQ⟩` from `C_dvd_of_C_dvd_pow hrad hdvd`. Establish `e3` using `congrArg ψ hQ`. Rewrite `e3` using `[map_mul, map_mul, hC, ← e1]`. Establish `e4 : x / φ g = ψ Q * (ψ b)⁻¹ * (ψ d)⁻¹`. Clear the denominators using the available nonvanishing facts.
-
-Take the linear combination `e3`. Rewrite using `[e4]`. Conclude with `mul_mem (mul_mem (hO Q) hbi) hdi`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem keepsRad_of_affCover (F Ω Ω' : Type) [Field F] [Field Ω] [Algebra F Ω] [Field Ω'] [Algebra F Ω']
     (M : RatModel F Ω) (M' : RatModel F Ω') (φ : Ω →ₐ[F] Ω') (f : M'.Z ⟶ M.Z) (r : ℕ)

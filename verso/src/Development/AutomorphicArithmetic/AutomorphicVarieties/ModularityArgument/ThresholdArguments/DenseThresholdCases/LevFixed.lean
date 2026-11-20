@@ -11,7 +11,7 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.V.Lev.fixed_semisimple_of_flag_fixed_dvd_fixed_unramified UpperTheory.V.Lev.flagPol (_root_.UpperTheory.V.Z.Win.T2.fixedDvd' P) (_root_.UpperTheory.V.Z.Win.T2.fixedUnr_alt P)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lev.fixedSs_of_prints (P : _root_.UpperTheory.V.Af.Hypotheses') : _root_.UpperTheory.V.Lev.FixedSsAlt :=
   _root_.UpperTheory.V.Lev.fixed_semisimple_of_flag_fixed_dvd_fixed_unramified UpperTheory.V.Lev.flagPol (_root_.UpperTheory.V.Z.Win.T2.fixedDvd' P) (_root_.UpperTheory.V.Z.Win.T2.fixedUnr_alt P)

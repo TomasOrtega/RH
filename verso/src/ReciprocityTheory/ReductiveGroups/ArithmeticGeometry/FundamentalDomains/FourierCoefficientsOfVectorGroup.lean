@@ -9,49 +9,43 @@ open NumberField Complex MeasureTheory FourierCoefficientMatrices FourierCubeVol
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 /- English proof (translation)
-Introduce `r X u g hiso hg la G hGd hB hper χ`. Take `⟨hadd, hH⟩` from `hL1 r X u hiso`. Establish `hunit : ∀ b, IsHermFam b → X.IsUnitaryC (X.zmat u b)` using `fun b hb => (hH b hb).1`. Establish `hdomH : ∀ b, IsHermFam b → ∀ x ∈ X.dom, X.Zb u b x ∈ X.dom` using `fun b hb => (hH b hb).2.2.2.1`. Establish `hex : ∃ ω, X.IsLZBasis g ω` using `FixedPointImaginarySpan.exists_basis X g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ω, hωdef⟩ : ∃ ω, ω = hex.choose` from `⟨_, rfl⟩`. Establish `hω : X.IsLZBasis g ω` using `hωdef ▸ hex.choose_spec`. Establish `hfz : ∀ ψ x, X.fz u g ψ G x = if IsHermFam ψ ∧ X.IsFreqZ g ψ then Ich X u ω G ψ x else 0`. Introduce `ψ x`. Unfold `Data.fz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hex, ← hωdef]`. Both sides reduce to the same expression. Establish `hsum : ∀ x ∈ X.dom, Summable (fun ψ : X.Ψ → Fin 2 → Fin 2 → ℂ => ‖X.fz u g ψ G x‖) → HasSum (fun ψ : X.Ψ → Fin 2 → Fin 2 → ℂ => X.fz u g ψ G x) (G x)`. Introduce `x hx hs`. Establish `hωh` using `herm_ω hω`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hli` using `hω.2.2`. Take `⟨c, hc⟩ : ∃ c : (Fin (4 * Fintype.card X.Ψ) → ℤ) → X.Ψ → Fin 2 → Fin 2 → ℂ, c = fun m => chiOf ω hωh hli rfl fun j => (m j : ℝ)` from `⟨_, rfl⟩`. Establish `hcm : ∀ m, c m = chiOf ω hωh hli rfl fun j => (m j : ℝ)` using `fun m => by rw [hc]`. Establish `hc_inj : Function.Injective c`. Introduce `m m' h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[hcm, hcm]`. Establish `h'` using `chiOf_inj ω hωh hli rfl h`. Use function extensionality and compare the values at `j`. Conclude with `congrFun h' j` after adjusting the coercions. Establish `hcfreq : ∀ m, IsHermFam (c m) ∧ X.IsFreqZ g (c m)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Use `⟨by rw [hcm]; exact chiOf_herm ω hωh hli rfl _, ?_⟩` and prove the remaining obligations. Introduce `b hb`. Take `⟨n, hn, -⟩` from `hω.2.1 b hb`. Use `⟨∑ j, n j * m j, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb' : b = ∑ j, ((n j : ℝ) : ℂ) • ω j`. Rewrite using `[hn]`. Simplify using `only [Complex.ofReal_intCast]`. Use `show 2 * pr (c m) b = _`. Rewrite using `[hb', pr_sum, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hp : 2 * pr (c m) (ω j) = (m j : ℝ)`. Rewrite using `[hcm]`. Conclude with `chiOf_pair ω hωh hli rfl _ j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨D, hD⟩` from `I2.DimB.descend (fun t => G (X.Zb u (Bv ω t) x)) (psi_cont hω hdomH hGd hx) (fun n t => psi_per hω hadd hdomH hper hx n t)`. Establish `hcoef : ∀ m, X.fz u g (c m) G x = UnitAddTorus.mFourierCoeff D m`. Introduce `m`. Rewrite using `[hfz, if_pos (hcfreq m)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Ich_coeff (fun j => ?_) D hD` and prove the remaining obligations. Use `show 2 * pr (c m) (ω j) = (m j : ℝ)`. Rewrite using `[hcm]`. Conclude with `chiOf_pair ω hωh hli rfl _ j`. Establish `hsupp : ∀ ψ ∉ Set.range c, X.fz u g ψ G x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ψ hψ`. Rewrite using `[hfz]`. Use `split_ifs with h`. It suffices to derive a contradiction. Apply `hψ` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `choose k hk using fun j => h.2 (ω j) (hω.1 j)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[hcm]`. Conclude with `(chiOf_eq ω hωh hli rfl h.1 (m := fun j => (k j : ℝ)) hk).symm`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsm : Summable (UnitAddTorus.mFourierCoeff D)`. Use `Summable.of_norm ((hs.comp_injective hc_inj).congr fun m => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp, hcoef]`. Establish `hG0 : D (I2.DimB.tproj 0) = G x`. Rewrite using `[hD, Bv_zero, Zb_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hF` using `UnitAddTorus.hasSum_mFourier_series_apply_of_summable hsm (I2.DimB.tproj 0)`. Rewrite `hF` using `[hG0]`. Establish `hF' : HasSum (UnitAddTorus.mFourierCoeff D) (G x)`. Simplify `hF` using `[I2.DimB.mF_tproj]`. Rewrite using `[← hc_inj.hasSum_iff hsupp]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomp : (fun ψ : X.Ψ → Fin 2 → Fin 2 → ℂ => X.fz u g ψ G x) ∘ c = UnitAddTorus.mFourierCoeff D` using `funext fun m => hcoef m`. Rewrite using `[hcomp]`. Conclude with `hF'`. Distinguish the cases in `hχ : IsHermFam χ ∧ X.IsFreqZ g χ`. Establish `hfe : X.fz u g χ G = Ich X u ω G χ` using `funext fun x => by rw [hfz, if_pos hχ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfreq : ∀ j, ∃ k : ℤ, 2 * X.pairR χ (ω j) = k` using `fun j => hχ.2 (ω j) (hω.1 j)`. Use `⟨⟨?_, ?_, ?_⟩, ?_, hsum⟩` and prove the remaining obligations. Rewrite using `[hfe]`. Conclude with `Ich_diff hω hdomH hGd χ`. Introduce `x hx b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hfe]`. Conclude with `Ich_rmul la hB hω hdomH χ hx hb`. Introduce `b hb x hx`. Rewrite using `[hfe]`. Conclude with `Ich_Zb hω hadd hdomH hGd hper hfreq hb hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx M hM`. Rewrite using `[pnorm_eq, hfe]`. Conclude with `Ich_bound hω hunit la χ x hM`. Establish `hfe : X.fz u g χ G = fun _ => 0` using `funext fun x => by rw [hfz, if_neg hχ]`. Establish `hh0 : IsHermFam (0 : X.Ψ → Fin 2 → Fin 2 → ℂ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `th_herm (0 : X.Ψ → Fin 2 → Fin 2 → ℝ)`. Rewrite `h` using `[th_zero]`. Then use the resulting hypothesis. Use `⟨⟨?_, ?_, ?_⟩, ?_, hsum⟩` and prove the remaining obligations. Rewrite using `[hfe]`. Conclude with `differentiableOn_const 0`.
-
-Introduce `x hx b hb`. Rewrite using `[hfe]`. Simplify using the standard rewrite rules. Introduce `b hb x hx`. Rewrite using `[hfe]`.
-
-Simplify using the standard rewrite rules. Introduce `x hx M hM`. Establish `h0` using `hM 0 hh0`. Rewrite `h0` using `[Zb_zero, pnorm_eq]`. Rewrite using `[pnorm_eq, hfe]`.
-
-Simplify using `only [norm_zero, zero_mul]`. Conclude with `(mul_nonneg (norm_nonneg _) (fac_nonneg X la x)).trans h0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fourier_coefficients_of_vector_group (hL1 : UnipotentVectorGroup (E := E)) : FourierCoefficientProperties (E := E) := by
   intro r X u g hiso hg la G hGd hB hper χ
@@ -170,7 +164,7 @@ theorem fourier_coefficients_of_vector_group (hL1 : UnipotentVectorGroup (E := E
       exact (mul_nonneg (norm_nonneg _) (fac_nonneg X la x)).trans h0
 
 /- English proof (translation)
-The claim follows from `fourier_coefficients_of_vector_group unipotent_vector_group`.
+A detailed English derivation is pending.
 -/
 theorem fourier_coefficients_holds : FourierCoefficientProperties (E := E) :=
   fourier_coefficients_of_vector_group unipotent_vector_group

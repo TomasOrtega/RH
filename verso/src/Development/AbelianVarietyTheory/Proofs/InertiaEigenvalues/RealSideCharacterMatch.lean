@@ -22,7 +22,7 @@ variable {S : CSD K} {σ : K →+* ℂ} {ρ : Γ →* Module.End ℂ W} {J : Sub
 def InRg (P : ClassPres ι S σ ρ J χ) (w : W) : Prop := ∃ x, P.coef x = w
 
 /- English proof (translation)
-Introduce `x x' h`. Establish `: P.coef (x - x') = 0` using `by rw [map_sub, h, sub_self]`. Conclude with `sub_eq_zero.1 (P.coef_inj this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coef_injective (P : ClassPres ι S σ ρ J χ) : Function.Injective P.coef := by
   intro x x' h
@@ -32,31 +32,31 @@ theorem coef_injective (P : ClassPres ι S σ ρ J χ) : Function.Injective P.co
 def cinv (P : ClassPres ι S σ ρ J χ) : W → S.V := Function.invFun P.coef
 
 /- English proof (translation)
-The claim follows from `Function.invFun_eq hw`.
+A detailed English derivation is pending.
 -/
 theorem coef_cinv (P : ClassPres ι S σ ρ J χ) {w : W} (hw : InRg P w) : P.coef (cinv P w) = w :=
   Function.invFun_eq hw
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `h`. Take `⟨x', rfl⟩` from `h'`. Conclude with `⟨x + x', map_add _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem InRg.add {P : ClassPres ι S σ ρ J χ} {w w' : W} (h : InRg P w) (h' : InRg P w') : InRg P (w + w') := by
   obtain ⟨x, rfl⟩ := h; obtain ⟨x', rfl⟩ := h'; exact ⟨x + x', map_add _ _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, map_zero _⟩`.
+Supply the required witnesses or components.
 -/
 theorem InRg.zero (P : ClassPres ι S σ ρ J χ) : InRg P 0 := ⟨0, map_zero _⟩
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `h`. Take `⟨b, rfl⟩` from `hz`. Conclude with `⟨b • x, map_smulₛₗ _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem InRg.smul {P : ClassPres ι S σ ρ J χ} {w : W} {z : ℂ} (hz : ∃ b : K, σ b = z) (h : InRg P w) :
     InRg P (z • w) := by
   obtain ⟨x, rfl⟩ := h; obtain ⟨b, rfl⟩ := hz; exact ⟨b • x, map_smulₛₗ _ _ _⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using InRg.zero P`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self _ _)).add (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InRg.sum {P : ClassPres ι S σ ρ J χ} {α : Type} (s : Finset α) (w : α → W) (h : ∀ a ∈ s, InRg P (w a)) :
     InRg P (∑ a ∈ s, w a) := by
@@ -68,13 +68,13 @@ theorem InRg.sum {P : ClassPres ι S σ ρ J χ} {α : Type} (s : Finset α) (w 
     exact (h a (Finset.mem_insert_self _ _)).add (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[stabK]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem stabK_one' {y : G} : stabK ι (1 : stab ι J y) = 1 := by
   apply Subtype.ext; simp [stabK]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [stabK, Subgroup.coe_mul, map_mul, Subgroup.coe_inv, InvMemClass.coe_inv]`. Use `group`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stabK_mul' {y : G} (a b : stab ι J y) : stabK ι (a * b) = stabK ι b * stabK ι a := by
   apply Subtype.ext
@@ -89,7 +89,7 @@ def rhoF (c : S.Cl) (g : S.Gam c) (x : S.V) : W :=
 
 include hχ' hρ in
 /- English proof (translation)
-Take `⟨x', hx'⟩` from `hρ (P.stabI c g : Γ) x`. Conclude with `InRg.smul (hχ' _) ⟨x', hx'⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rhoF_rg (c : S.Cl) (g : S.Gam c) (x : S.V) : InRg P (rhoF P χ' c g x) := by
   obtain ⟨x', hx'⟩ := hρ (P.stabI c g : Γ) x
@@ -109,7 +109,7 @@ def rhoE (c : S.Cl) (g : S.Gam c) : Module.End K S.V where
     rw [smul_comm]
 
 /- English proof (translation)
-The claim follows from `coef_cinv P (rhoF_rg P χ' hχ' hρ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem coef_rhoE (c : S.Cl) (g : S.Gam c) (x : S.V) :
     P.coef (rhoE P χ' hχ' hρ c g x) = rhoF P χ' c g x :=
@@ -150,21 +150,21 @@ variable {S : CSD K} {σ : K →+* ℂ} {ρ : Γ →* Module.End ℂ W} {J : Sub
 variable (P : ClassPres ι S σ ρ J χ)
 
 /- English proof (translation)
-The claim follows from `P.extL.map_add f f'`.
+A detailed English derivation is pending.
 -/
 theorem ext_add (f f' : S.Forms) :
     P.ext ((f + f' : S.Forms) : S.Cl → S.V) = P.ext (f : S.Cl → S.V) + P.ext (f' : S.Cl → S.V) :=
   P.extL.map_add f f'
 
 /- English proof (translation)
-The claim follows from `P.extL.map_smulₛₗ b f`.
+A detailed English derivation is pending.
 -/
 theorem ext_smul (b : K) (f : S.Forms) :
     P.ext ((b • f : S.Forms) : S.Cl → S.V) = σ b • P.ext (f : S.Cl → S.V) :=
   P.extL.map_smulₛₗ b f
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Apply `coef_injective P` to reduce the goal to its premises. Rewrite using `[← P.ext_rep, ← P.ext_rep, h]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_inj {f f' : S.Forms} (h : P.ext (f : S.Cl → S.V) = P.ext (f' : S.Cl → S.V)) : f = f' := by
   apply Subtype.ext; funext c
@@ -172,7 +172,7 @@ theorem ext_inj {f f' : S.Forms} (h : P.ext (f : S.Cl → S.V) = P.ext (f' : S.C
   rw [← P.ext_rep, ← P.ext_rep, h]
 
 /- English proof (translation)
-Take `⟨x', hx'⟩` from `hρ (P.decG h) (f (P.decC h))`. Conclude with `InRg.smul (hχ _) ⟨x', hx'⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ext_rg (hχ : ∀ k, ∃ b : K, σ b = (χ k : ℂ)) (hρ : ∀ γ x, ∃ x', P.coef x' = ρ γ (P.coef x))
     (f : S.Cl → S.V) (h : G) : InRg P (P.ext f h) := by
@@ -187,7 +187,7 @@ variable (hχ : ∀ k, ∃ b : K, σ b = (χ k : ℂ)) (hρ : ∀ γ x, ∃ x', 
 
 include hχ hρ hT in
 /- English proof (translation)
-The claim follows from `hT _ (ClassPres.extMem_holds P f) (ext_rg P hχ hρ _)`.
+A detailed English derivation is pending.
 -/
 theorem keeps_ext (f : S.Forms) :
     T (P.ext (f : S.Cl → S.V)) ∈ AdForms ι ρ J χ ∧ ∀ h, InRg P (T (P.ext (f : S.Cl → S.V)) h) :=
@@ -201,7 +201,7 @@ def trForm (f : S.Forms) : S.Forms :=
     exact P.adForms_fixed (keeps_ext P hχ hρ hT f).1 c g⟩
 
 /- English proof (translation)
-The claim follows from `P.adForms_ext (ClassPres.extMem_holds P _) (keeps_ext P hχ hρ hT f).1 fun c => by rw [P.ext_rep]; exact coef_cinv P ((keeps_ext P hχ hρ hT f).2 _)`.
+A detailed English derivation is pending.
 -/
 theorem ext_trForm (f : S.Forms) :
     P.ext ((trForm P hχ hρ hT f : S.Forms) : S.Cl → S.V) = T (P.ext (f : S.Cl → S.V)) :=
@@ -215,7 +215,7 @@ def trE : Module.End K S.Forms where
     rw [ext_smul, ext_trForm, ext_trForm, ext_smul, RingHom.id_apply, map_smul])
 
 /- English proof (translation)
-The claim follows from `ext_trForm P hχ hρ hT f`.
+A detailed English derivation is pending.
 -/
 theorem ext_trE (f : S.Forms) :
     P.ext ((trE P hχ hρ hT f : S.Forms) : S.Cl → S.V) = T (P.ext (f : S.Cl → S.V)) :=
@@ -236,7 +236,7 @@ def g0L {Q : Subgroup G} (ch : Q →* ℂˣ) (κ : Q) : (G → W) →ₗ[ℂ] (G
   map_smul' a F := by funext h; simp only [g0Act, Pi.smul_apply, RingHom.id_apply]; rw [smul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Simplify using `only [g0Act, Subgroup.coe_mul, mul_assoc, smul_smul, map_mul, _root_.mul_inv_rev, Units.val_mul, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem reductionGroupAction_mul {Q : Subgroup G} (ch : Q →* ℂˣ) (κ κ' : Q) (F : G → W) :
     g0Act ch κ (g0Act ch κ' F) = g0Act ch (κ * κ') F := by
@@ -244,19 +244,19 @@ theorem reductionGroupAction_mul {Q : Subgroup G} (ch : Q →* ℂˣ) (κ κ' : 
   simp only [g0Act, Subgroup.coe_mul, mul_assoc, smul_smul, map_mul, _root_.mul_inv_rev, Units.val_mul, mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Simplify using `[g0Act]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem reductionGroupAction_one {Q : Subgroup G} (ch : Q →* ℂˣ) (F : G → W) : g0Act ch (1 : Q) F = F := by
   funext h; simp [g0Act]
 
 /- English proof (translation)
-Establish `hF' : ∀ (γ : Γ) (h : G) (k : J), F (ι γ * h * k) = (χ k : ℂ) • ρ γ (F h)` using `hF`. Introduce `γ h k`. Set `q : Q` to `κ⁻¹ * ⟨k, hJ k.2⟩ * κ`. Establish `hq : (q : G) ∈ J`. Rewrite using `[← hker]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: red ⟨k, hJ k.2⟩ = 1` using `(hker _).2 k.2`. Simplify using `[q, map_mul, this]`. Set `k' : J` to `⟨q, hq⟩`. Establish `e : ι γ * h * (k : G) * (κ : G) = ι γ * (h * κ) * (k' : G)`. Simplify using `only [k', q, Subgroup.coe_mul, Subgroup.coe_inv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `group`. Establish `hc : χ k' = χ k`. Rewrite using `[← hch k', ← hch k]`. Establish `: (⟨(k' : G), hJ k'.2⟩ : Q) = q` using `rfl`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [q, map_mul, map_inv]`. Rewrite using `[mul_comm, ← mul_assoc, mul_inv_cancel, one_mul]`. Use `show (((ch κ)⁻¹ : ℂˣ) : ℂ) • F (ι γ * h * k * κ) = (χ k : ℂ) • ρ γ ((((ch κ)⁻¹ : ℂˣ) : ℂ) • F (h * κ))`. Rewrite using `[e, hF', hc, map_smul, smul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reductionGroupAction_mem_adelicForms {Q : Subgroup G} {G0 : Type} [Group G0] (red : Q →* G0) (hJ : J ≤ Q)
     (hker : ∀ q : Q, red q = 1 ↔ (q : G) ∈ J) (ch : Q →* ℂˣ) (hch : ∀ k : J, ch ⟨k, hJ k.2⟩ = χ k)
@@ -281,7 +281,7 @@ theorem reductionGroupAction_mem_adelicForms {Q : Subgroup G} {G0 : Type} [Group
   rw [e, hF', hc, map_smul, smul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Conclude with `lift_independent_action_holds ι ρ J χ red ch hJ hker hch κ κ' hκ F hF h`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem reductionGroupAction_eq_of_same_reduction {Q : Subgroup G} {G0 : Type} [Group G0] (red : Q →* G0) (hJ : J ≤ Q)
     (hker : ∀ q : Q, red q = 1 ↔ (q : G) ∈ J) (ch : Q →* ℂˣ) (hch : ∀ k : J, ch ⟨k, hJ k.2⟩ = χ k)
@@ -304,7 +304,7 @@ variable {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
 variable {J : Subgroup G} {x : G} {A : Finset G}
 
 /- English proof (translation)
-Take `⟨j₁, j₂, e⟩` from `hDC.1 a ha`. Conclude with `⟨⟨u, hu⟩ * j₁, j₂, by rw [e]; simp [mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mul_mem_dc (hDC : IsDC J x A) {u : G} (hu : u ∈ J) {a : G} (ha : a ∈ A) :
     ∃ k₁ k₂ : J, u * a = (k₁ : G) * x * k₂ := by
@@ -317,7 +317,7 @@ def pick (hDC : IsDC J x A) {u : G} (hu : u ∈ J) (a : G) : G :=
   if ha : a ∈ A then (hDC.2 (u * a) (mul_mem_dc hDC hu ha)).exists.choose else a
 
 /- English proof (translation)
-Unfold `pick`. Rewrite using `[dif_pos ha]`. Conclude with `(hDC.2 (u * a) (mul_mem_dc hDC hu ha)).exists.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pick_spec (hDC : IsDC J x A) {u : G} (hu : u ∈ J) {a : G} (ha : a ∈ A) :
     pick hDC hu a ∈ A ∧ (pick hDC hu a)⁻¹ * (u * a) ∈ J := by
@@ -325,14 +325,14 @@ theorem pick_spec (hDC : IsDC J x A) {u : G} (hu : u ∈ J) {a : G} (ha : a ∈ 
   exact (hDC.2 (u * a) (mul_mem_dc hDC hu ha)).exists.choose_spec
 
 /- English proof (translation)
-The claim follows from `(hDC.2 (u * a) (mul_mem_dc hDC hu ha)).unique (pick_spec hDC hu ha) ⟨hb, hab⟩`.
+A detailed English derivation is pending.
 -/
 theorem pick_unique (hDC : IsDC J x A) {u : G} (hu : u ∈ J) {a b : G} (ha : a ∈ A) (hb : b ∈ A)
     (hab : b⁻¹ * (u * a) ∈ J) : pick hDC hu a = b :=
   (hDC.2 (u * a) (mul_mem_dc hDC hu ha)).unique (pick_spec hDC hu ha) ⟨hb, hab⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `pick_spec hDC hu ha`. Use `pick_unique hDC _ h1 ha ?_` and prove the remaining obligations. Establish `: a⁻¹ * (u⁻¹ * pick hDC hu a) = ((pick hDC hu a)⁻¹ * (u * a))⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `J.inv_mem h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pick_inv (hDC : IsDC J x A) {u : G} (hu : u ∈ J) {a : G} (ha : a ∈ A) :
     pick hDC (J.inv_mem hu) (pick hDC hu a) = a := by
@@ -344,15 +344,15 @@ theorem pick_inv (hDC : IsDC J x A) {u : G} (hu : u ∈ J) {a : G} (ha : a ∈ A
 variable {χ : J →* ℂˣ} {ρ : Γ →* Module.End ℂ W}
 
 /- English proof (translation)
-Establish `hF' : ∀ (γ : Γ) (h : G) (k : J), F (ι γ * h * k) = (χ k : ℂ) • ρ γ (F h)` using `hF`. Introduce `γ h k`. Take `⟨k₁, hk₁, k₂, hk₂, hk₁L, hk, hcomm⟩` from `hsplit k k.2`. Establish `hχk : χ k = χ ⟨k₂, hk₂⟩`. Establish `e : k = ⟨k₁, hk₁⟩ * ⟨k₂, hk₂⟩` using `Subtype.ext hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, map_mul, hχL ⟨k₁, hk₁⟩ hk₁L, one_mul]`. Establish `term : ∀ a ∈ A, F (ι γ * h * k * a) = (χ k : ℂ) • ρ γ (F (h * pick hDC hk₁ a))`. Introduce `a ha`. Take `⟨h1, h2⟩` from `pick_spec hDC hk₁ ha`. Use `set a' := pick hDC hk₁ a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hjL : a'⁻¹ * (k₁ * a) ∈ Lc` using `Lc.mul_mem (Lc.inv_mem (hAL _ h1)) (Lc.mul_mem hk₁L (hAL _ ha))`. Set `j : J` to `⟨a'⁻¹ * (k₁ * a), h2⟩`. Establish `e : ι γ * h * (k : G) * a = ι γ * (h * a') * ((j * ⟨k₂, hk₂⟩ : J) : G)`. Establish `hc : k₂ * a = a * k₂` using `hcomm a (hAL a ha)`. Simplify using `only [j, Subgroup.coe_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, hF', map_mul, hχL j hjL, one_mul, hχk]`. Use `show ∑ a ∈ A, F (ι γ * h * k * a) = (χ k : ℂ) • ρ γ (∑ a ∈ A, F (h * a))`. Rewrite using `[Finset.sum_congr rfl term, map_sum, Finset.smul_sum]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Finset.sum_nbij' (pick hDC hk₁) (pick hDC (J.inv_mem hk₁)) (fun a ha => (pick_spec hDC hk₁ ha).1) (fun a ha => (pick_spec hDC _ ha).1) (fun a ha => pick_inv hDC hk₁ ha) (fun a ha => by`. Use `pick_inv hDC (J.inv_mem hk₁) ha` as an intermediate fact. Simplify `this)` using `only [inv_inv]`. Use the proof step `(fun a ha => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem dcOp_mem (hDC : IsDC J x A) (Lc : Subgroup G) (hAL : ∀ a ∈ A, a ∈ Lc)
     (hsplit : ∀ k ∈ J, ∃ k₁ ∈ J, ∃ k₂ ∈ J, k₁ ∈ Lc ∧ k = k₁ * k₂ ∧ ∀ x ∈ Lc, Commute k₂ x)
@@ -405,9 +405,7 @@ variable (P : ClassPres ι S σ ρ J χ) (hχ : ∀ k, ∃ b : K, σ b = (χ k :
 
 include hker hch hchK in
 /- English proof (translation)
-Introduce `F hF hv`. Use `⟨reductionGroupAction_mem_adelicForms red hJ hker ch hch κ hF, fun h => ?_⟩` and prove the remaining obligations. Use `show InRg P ((((ch κ)⁻¹ : ℂˣ) : ℂ) • F (h * κ))`. Use `InRg.smul ?_ (hv _)` and prove the remaining obligations. Rewrite using `[← map_inv]`.
-
-Conclude with `hchK _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classPresentation_reductionAction_preserved (κ : Q) : Keeps P (g0L (W := W) ch κ) := by
   intro F hF hv
@@ -435,7 +433,7 @@ def actNew : Representation K G0 S.Forms where
       (ClassPres.extMem_holds P f)]
 
 /- English proof (translation)
-Use `show P.ext ((trE P hχ hρ _ f : S.Forms) : S.Cl → S.V) = _`. Rewrite using `[ext_trE]`. Use `show g0Act ch _ _ = _`. Conclude with `reductionGroupAction_eq_of_same_reduction red hJ hker ch hch (by rw [(hsurj g).choose_spec, hκ]) (ClassPres.extMem_holds P f)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actNew_eq (g : G0) (κ : Q) (hκ : red κ = g) (f : S.Forms) :
     P.ext ((actNew P hχ hρ red hsurj hJ hker ch hch hchK g f : S.Forms) : S.Cl → S.V) =
@@ -469,7 +467,7 @@ variable (P : ClassPres ι S σ ρ J χ) (hχ : ∀ k, ∃ b : K, σ b = (χ k :
 
 include hloc in
 /- English proof (translation)
-Take `⟨Lc, hL1, hL2, hL3⟩` from `hloc i hi`. Introduce `F hF hv`. Use `⟨dcOp_mem (H.hDC i hi) Lc (fun a ha => hL1 _ (H.hA_loc i hi a ha)) hL2 hL3 hF, fun h => ?_⟩` and prove the remaining obligations. Conclude with `InRg.sum _ _ fun a _ => hv _`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem keeps_dc (i : I) (hi : inR i) : Keeps P (dcL (W := W) (H.hA i)) := by
   obtain ⟨Lc, hL1, hL2, hL3⟩ := hloc i hi

@@ -40,7 +40,7 @@ def gelfH (G : Matrix (Fin n) (Fin n) ℂ) (π : Matrix (Fin n) (Fin n) ℂ → 
 variable {G : Matrix (Fin n) (Fin n) ℂ} {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_smSub {w : H} : w ∈ smSub G π ↔ SmoothVec (lieG G) π w := Iff.rfl
 
@@ -56,19 +56,19 @@ Both sides reduce to the same expression.
     word π (X :: l) w = dRep π X (word π l w) := rfl
 
 /- English proof (translation)
-The claim follows from `List.foldr_append`.
+A detailed English derivation is pending.
 -/
 theorem word_append (l l' : List (Matrix (Fin n) (Fin n) ℂ)) (w : H) :
     word π (l ++ l') w = word π l (word π l' w) := List.foldr_append
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GardingVec.exp_mem hG hX t`.
+A detailed English derivation is pending.
 -/
 theorem exp_mem_UH (hG : IsUnit G) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieG G) (t : ℝ) :
     NormedSpace.exp (t • X) ∈ UH G := GlobalTheory.GardingVec.exp_mem hG hX t
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GardingVec.list_prod_mem _ fun g hg => by obtain ⟨i, rfl⟩ := (List.mem_ofFn' _ _).1 hg exact exp_mem_UH hG (hX i) _`.
+A detailed English derivation is pending.
 -/
 theorem expProd_mem_UH (hG : IsUnit G) {k : ℕ} {Xs : Fin k → Matrix (Fin n) (Fin n) ℂ} (hX : ∀ i, Xs i ∈ lieG G)
     (t : Fin k → ℝ) : (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod ∈ UH G :=
@@ -77,14 +77,14 @@ theorem expProd_mem_UH (hG : IsUnit G) {k : ℕ} {Xs : Fin k → Matrix (Fin n) 
     exact exp_mem_UH hG (hX i) _
 
 /- English proof (translation)
-Establish `h : gᴴ * G * g = G` using `hg`. Conclude with `isUnit_of_mul_isUnit_right (h.symm ▸ hG : IsUnit (gᴴ * G * g))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_of_mem_UH (hG : IsUnit G) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UH G) : IsUnit g := by
   have h : gᴴ * G * g = G := hg
   exact isUnit_of_mul_isUnit_right (h.symm ▸ hG : IsUnit (gᴴ * G * g))
 
 /- English proof (translation)
-Establish `h : gᴴ * G * g = G` using `hg`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det g).1 (isUnit_of_mem_UH hG hg)`. Use `show (g⁻¹)ᴴ * G * g⁻¹ = G`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem inv_mem_UH (hG : IsUnit G) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UH G) : g⁻¹ ∈ UH G := by
   have h : gᴴ * G * g = G := hg
@@ -95,11 +95,11 @@ theorem inv_mem_UH (hG : IsUnit G) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ 
     _ = G := by rw [mul_nonsing_inv _ hd]; simp
 
 /- English proof (translation)
-Establish `h : gᴴ * G * g = G` using `hg`. Establish `hX' : Xᴴ * G + G * X = 0` using `hX`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det g).1 (isUnit_of_mem_UH hG hg)`. Establish `h1 : G * g⁻¹ = gᴴ * G` using `by conv_lhs => rw [← h]`. Rewrite using `[Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (g⁻¹)ᴴ * G = G * g` using `by conv_lhs => rw [← h]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← conjTranspose_mul, mul_nonsing_inv _ hd]`. Simplify using the standard rewrite rules. Use `show (g⁻¹ * X * g)ᴴ * G + G * (g⁻¹ * X * g) = 0`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = gᴴ * (Xᴴ * G + G * X) * g := by rw [h1, h2]; simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hX']; simp`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_lieG (hG : IsUnit G) {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UH G) (hX : X ∈ lieG G) :
     g⁻¹ * X * g ∈ lieG G := by
@@ -119,32 +119,32 @@ theorem conj_mem_lieG (hG : IsUnit G) {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g
     _ = 0 := by rw [hX']; simp
 
 /- English proof (translation)
-Rewrite using `[hπ.1.2 g hg g' hg']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rep_mul (hπ : IsURepOn (UH G) π) {g g' : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UH G) (hg' : g' ∈ UH G) (w : H) :
     π (g * g') w = π g (π g' w) := by rw [hπ.1.2 g hg g' hg']; rfl
 
 /- English proof (translation)
-Rewrite using `[hπ.1.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rep_one (hπ : IsURepOn (UH G) π) (w : H) : π 1 w = w := by rw [hπ.1.1]; rfl
 
 /- English proof (translation)
-The claim follows from `LinearIsometry.inner_map_map (⟨(π g : H →ₗ[ℂ] H), hπ.2.1 g hg⟩ : H →ₗᵢ[ℂ] H) v w`.
+A detailed English derivation is pending.
 -/
 theorem rep_inner (hπ : IsURepOn (UH G) π) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UH G) (v w : H) :
     ⟪π g v, π g w⟫_ℂ = ⟪v, w⟫_ℂ :=
   LinearIsometry.inner_map_map (⟨(π g : H →ₗ[ℂ] H), hπ.2.1 g hg⟩ : H →ₗᵢ[ℂ] H) v w
 
 /- English proof (translation)
-Rewrite using `[← Matrix.exp_conj' _ _ hg, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_conj_inv {g : Matrix (Fin n) (Fin n) ℂ} (hg : IsUnit g) (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
     NormedSpace.exp (t • (g⁻¹ * X * g)) = g⁻¹ * NormedSpace.exp (t • X) * g := by
   rw [← Matrix.exp_conj' _ _ hg, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Establish `h1` using `hw 1 (fun _ => X) (fun _ => hX)`. Establish `h2 : ContDiff ℝ ∞ fun t : ℝ => fun _ : Fin 1 => t` using `contDiff_pi.2 fun _ => contDiff_id`. Establish `h3 : ContDiff ℝ ∞ fun t : ℝ => π (NormedSpace.exp (t • X)) w`. Simplify `h1.comp h2` using `[Function.comp_def]`. Conclude with `(h3.differentiable (by simp) 0).hasDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_dRep {w : H} (hw : w ∈ smSub G π) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieG G) :
     HasDerivAt (fun t : ℝ => π (NormedSpace.exp (t • X)) w) (dRep π X w) 0 := by
@@ -155,9 +155,9 @@ theorem hasDerivAt_dRep {w : H} (hw : w ∈ smSub G π) {X : Matrix (Fin n) (Fin
   exact (h3.differentiable (by simp) 0).hasDerivAt
 
 /- English proof (translation)
-Establish `hs : ContDiff ℝ ∞ fun p : (Fin k → ℝ) × ℝ => (Fin.snoc p.1 p.2 : Fin (k + 1) → ℝ)`. Use `contDiff_pi.2 fun i => ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using contDiff_snd`. Simplify using `only [Fin.snoc_castSucc] fun_prop`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `h1 : ContDiff ℝ ∞ (Function.uncurry fun (t : Fin k → ℝ) (s : ℝ) => F (Fin.snoc t s))` using `hF.comp hs`. Establish `h2` using `ContDiff.fderiv (𝕜 := ℝ) (m := ∞) (n := ∞) (g := fun _ : Fin k → ℝ => (0 : ℝ)) h1 contDiff_const (le_of_eq rfl)`. Conclude with `h2.clm_apply (contDiff_const (c := (1 : ℝ)))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_deriv_snoc {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {k : ℕ} {F : (Fin (k + 1) → ℝ) → E}
     (hF : ContDiff ℝ ∞ F) : ContDiff ℝ ∞ fun t : Fin k → ℝ => deriv (fun s : ℝ => F (Fin.snoc t s)) 0 := by
@@ -173,11 +173,11 @@ theorem contDiff_deriv_snoc {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E
   exact h2.clm_apply (contDiff_const (c := (1 : ℝ)))
 
 /- English proof (translation)
-Introduce `k Xs hXs`. Establish `h1` using `hw (k + 1) (Fin.snoc Xs X) (fun i => by`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hX`. Simplify using `using hXs j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `contDiff_deriv_snoc h1 using 2 with t` and compare the differences between its conclusion and the goal. Establish `h2` using `(((π _).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_dRep hw hX) : HasDerivAt (fun s : ℝ => π (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod (π (NormedSpace.exp (s • X)) w)) _ 0)`. Use `h2.deriv.symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `s`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show π _ (π _ w) = _`. Rewrite using `[← rep_mul hπ (expProd_mem_UH hG hXs t) (exp_mem_UH hG hX s)]`. Simplify using `[List.ofFn_succ', -List.ofFn_succ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dRep_mem (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {w : H} (hw : w ∈ smSub G π)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieG G) : dRep π X w ∈ smSub G π := by
@@ -198,9 +198,9 @@ theorem dRep_mem (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {w : H} (hw : w ∈ 
   simp [List.ofFn_succ', -List.ofFn_succ]
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det g).1 hg`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons x l ih`. Rewrite using `[List.map_cons, List.prod_cons, List.prod_cons, Matrix.mul_assoc x, ← ih]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prod_conj {g : Matrix (Fin n) (Fin n) ℂ} (hg : IsUnit g) (l : List (Matrix (Fin n) (Fin n) ℂ)) :
     g * (l.map fun x => g⁻¹ * x * g).prod = l.prod * g := by
@@ -212,9 +212,9 @@ theorem prod_conj {g : Matrix (Fin n) (Fin n) ℂ} (hg : IsUnit g) (l : List (Ma
     simp only [← Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `k Xs hXs`. Establish `hu` using `isUnit_of_mem_UH hG hg`. Establish `hY : ∀ i, g⁻¹ * Xs i * g ∈ lieG G` using `fun i => conj_mem_lieG hG hg (hXs i)`. Establish `h1` using `((π g).restrictScalars ℝ).contDiff.comp (hw k _ hY)`. Use `h1 using 2 with t` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `show _ = π g _`. Rewrite using `[← rep_mul hπ (expProd_mem_UH hG hXs t) hg, ← rep_mul hπ hg (expProd_mem_UH hG hY t), ← prod_conj hu, List.map_ofFn]`. Simplify using `only [exp_conj_inv hu, Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rep_mem (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {w : H} (hw : w ∈ smSub G π)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UH G) : π g w ∈ smSub G π := by
@@ -229,9 +229,9 @@ theorem rep_mem (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {w : H} (hw : w ∈ s
   simp only [exp_conj_inv hu, Function.comp_def]
 
 /- English proof (translation)
-Use `(hasDerivAt_dRep hv hX).add (hasDerivAt_dRep hw hX)` as an intermediate fact. Use `Eq.trans ?_ this.deriv` and prove the remaining obligations. Unfold `dRep`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem dRep_add {v w : H} (hv : v ∈ smSub G π) (hw : w ∈ smSub G π) {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : X ∈ lieG G) : dRep π X (v + w) = dRep π X v + dRep π X w := by
@@ -243,9 +243,9 @@ theorem dRep_add {v w : H} (hv : v ∈ smSub G π) (hw : w ∈ smSub G π) {X : 
   exact map_add _ _ _
 
 /- English proof (translation)
-Use `(hasDerivAt_dRep hw hX).const_smul c` as an intermediate fact. Use `Eq.trans ?_ this.deriv` and prove the remaining obligations. Unfold `dRep`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `map_smul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem dRep_smul (c : ℂ) {w : H} (hw : w ∈ smSub G π) {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : X ∈ lieG G) : dRep π X (c • w) = c • dRep π X w := by
@@ -257,11 +257,11 @@ theorem dRep_smul (c : ℂ) {w : H} (hw : w ∈ smSub G π) {X : Matrix (Fin n) 
   exact map_smul _ _ _
 
 /- English proof (translation)
-Establish `hu` using `isUnit_of_mem_UH hG hg`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det g).1 hu`. Establish `hY` using `conj_mem_lieG hG hg hX`. Establish `h2` using `(((π g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_dRep hw hY) : HasDerivAt (fun s : ℝ => π g (π (NormedSpace.exp (s • (g⁻¹ * X * g))) w)) _ 0)`. Use `Eq.trans ?_ h2.deriv` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `dRep`. Use `congr 1`. Use function extensionality and compare the values at `s`. Use `show _ = π g (π _ w)`. Rewrite using `[← rep_mul hπ hg (exp_mem_UH hG hY s), ← rep_mul hπ (exp_mem_UH hG hX s) hg, exp_conj_inv hu]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem dRep_rep (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {w : H} (hw : w ∈ smSub G π)
     {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UH G) (hX : X ∈ lieG G) :
@@ -280,7 +280,7 @@ theorem dRep_rep (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {w : H} (hw : w ∈ 
   simp only [← Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h` using `(hasDerivAt_dRep hv hX).inner ℂ (hasDerivAt_dRep hw hX)`. Simplify using `only [rep_inner hπ (exp_mem_UH hG hX _), zero_smul, NormedSpace.exp_zero, rep_one hπ] at h`. Conclude with `eq_neg_of_add_eq_zero_left (h.unique (hasDerivAt_const _ _))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inner_dRep (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {v w : H} (hv : v ∈ smSub G π) (hw : w ∈ smSub G π)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieG G) : ⟪v, dRep π X w⟫_ℂ = -⟪dRep π X v, w⟫_ℂ := by
@@ -289,7 +289,7 @@ theorem inner_dRep (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {v w : H} (hv : v 
   exact eq_neg_of_add_eq_zero_left (h.unique (hasDerivAt_const _ _))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact hw`. Consider the case `cons X l ih => exact dRep_mem hG hπ (ih fun Y hY => hl Y (by simp [hY])) (hl X (by simp))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem word_mem (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {l : List (Matrix (Fin n) (Fin n) ℂ)}
     (hl : ∀ X ∈ l, X ∈ lieG G) {w : H} (hw : w ∈ smSub G π) : word π l w ∈ smSub G π := by
@@ -298,7 +298,7 @@ theorem word_mem (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {l : List (Matrix (F
   | cons X l ih => exact dRep_mem hG hπ (ih fun Y hY => hl Y (by simp [hY])) (hl X (by simp))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih`. Establish `hl' : ∀ Y ∈ l, Y ∈ lieG G` using `fun Y hY => hl Y (by simp [hY])`. Rewrite using `[word_cons, ih hl', dRep_add (word_mem hG hπ hl' hv) (word_mem hG hπ hl' hw) (hl X (by simp))]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -313,7 +313,7 @@ theorem word_add (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {l : List (Matrix (F
     rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih`. Establish `hl' : ∀ Y ∈ l, Y ∈ lieG G` using `fun Y hY => hl Y (by simp [hY])`. Rewrite using `[word_cons, ih hl', dRep_smul c (word_mem hG hπ hl' hw) (hl X (by simp))]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -327,9 +327,9 @@ theorem word_smul (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {l : List (Matrix (
     rfl
 
 /- English proof (translation)
-Proceed by induction on `l generalizing u with`. Consider the case `nil => exact ⟨u, hu, fun _ _ => rfl⟩`. Consider the case `cons X l ih`. Establish `hl' : ∀ Y ∈ l, Y ∈ lieG G` using `fun Y hY => hl Y (by simp [hY])`. Establish `hX` using `hl X (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u', h1, h2⟩` from `ih hl' (dRep_mem hG hπ hu hX)`. Use `⟨-u', neg_mem h1, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[word_cons, inner_dRep hG hπ hu (word_mem hG hπ hl' hw) hX, h2 w hw, inner_neg_left]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem word_adjoint (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {l : List (Matrix (Fin n) (Fin n) ℂ)}
     (hl : ∀ X ∈ l, X ∈ lieG G) {u : H} (hu : u ∈ smSub G π) :
@@ -344,13 +344,11 @@ theorem word_adjoint (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {l : List (Matri
     rw [word_cons, inner_dRep hG hπ hu (word_mem hG hπ hl' hw) hX, h2 w hw, inner_neg_left]
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det G).1 hG`. Establish `h1 : G * conjG G Z = -(Zᴴ * G)`. Simplify using `only [conjG, Matrix.mul_neg, ← Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.one_mul]`. Establish `h2 : (conjG G Z)ᴴ * G = -(G * Z)`. Use `congrArg conjTranspose h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[conjTranspose_mul, conjTranspose_neg, conjTranspose_mul, conjTranspose_conjTranspose, hh]`. Then use the resulting hypothesis. Prove the components needed by the constructor for the conclusion. Use `show _ + _ = 0`. Rewrite using `[conjTranspose_smul, conjTranspose_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, h1, h2]`. Establish `: star (1 / 2 : ℂ) = 1 / 2` using `by simp`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← smul_add]`. Simplify using the standard rewrite rules. Use `show _ + _ = 0`. Rewrite using `[conjTranspose_smul, conjTranspose_sub, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, h1, h2]`. Establish `: star (1 / (2 * Complex.I) : ℂ) = -(1 / (2 * Complex.I))` using `by simp [div_neg]`.
-
-Rewrite using `[this]`. Use `module`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parts_mem (hG : IsUnit G) (hh : Gᴴ = G) (Z : Matrix (Fin n) (Fin n) ℂ) :
     (1 / 2 : ℂ) • (Z + conjG G Z) ∈ lieG G ∧ (1 / (2 * Complex.I)) • (Z - conjG G Z) ∈ lieG G := by
@@ -371,7 +369,7 @@ theorem parts_mem (hG : IsUnit G) (hh : Gᴴ = G) (Z : Matrix (Fin n) (Fin n) �
     rw [this]; module
 
 /- English proof (translation)
-The claim follows from `add_mem (dRep_mem hG hπ hw (parts_mem hG hh Z).1) ((smSub G π).smul_mem _ (dRep_mem hG hπ hw (parts_mem hG hh Z).2))`.
+A detailed English derivation is pending.
 -/
 theorem dRepC_mem (hG : IsUnit G) (hh : Gᴴ = G) (hπ : IsURepOn (UH G) π) (Z : Matrix (Fin n) (Fin n) ℂ) {w : H}
     (hw : w ∈ smSub G π) : dRepC G π Z w ∈ smSub G π :=
@@ -382,29 +380,29 @@ section Frame
 variable {ε : Fin n → Bool} {P : Matrix (Fin n) (Fin n) ℂ} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Rewrite using `[← h]`. Conclude with `(((Matrix.isUnit_conjTranspose _).2 hP).mul (IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε))).mul hP`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_unit (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) : IsUnit G := by
   rw [← h]
   exact (((Matrix.isUnit_conjTranspose _).2 hP).mul (IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε))).mul hP
 
 /- English proof (translation)
-Rewrite using `[← h]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Formalism.REAL.Jm_conjTranspose, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_herm (h : Pᴴ * Formalism.REAL.Jm ε * P = G) : Gᴴ = G := by
   rw [← h]
   simp only [conjTranspose_mul, conjTranspose_conjTranspose, Formalism.REAL.Jm_conjTranspose, Matrix.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GardingVec.conj_mem hP h hg`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_UJ (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UH G) :
     P * g * P⁻¹ ∈ UJset ε := GlobalTheory.GardingVec.conj_mem hP h hg
 
 /- English proof (translation)
-Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `hk : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε` using `hg`. Establish `h1 : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← conjTranspose_mul, mul_nonsing_inv _ hd, conjTranspose_one]`. Express the relevant statement in the definitionally equal form `(P⁻¹ * g * P)ᴴ * G * (P⁻¹ * g * P) = G`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← h]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = G := by rw [h1, mul_nonsing_inv _ hd, Matrix.mul_one, Matrix.mul_one, hk, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_mem_UH (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ UJset ε) : P⁻¹ * g * P ∈ UH G := by
@@ -418,7 +416,7 @@ theorem conj_mem_UH (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) {g
     _ = G := by rw [h1, mul_nonsing_inv _ hd, Matrix.mul_one, Matrix.mul_one, hk, h]
 
 /- English proof (translation)
-Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Unfold `trRep`. Use `congr 1`. Simplify using `only [← Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.mul_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trRep_conj (hP : IsUnit P) (g : Matrix (Fin n) (Fin n) ℂ) : trRep σ P (P⁻¹ * g * P) = σ g := by
   have hd : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).1 hP
@@ -428,9 +426,9 @@ theorem trRep_conj (hP : IsUnit P) (g : Matrix (Fin n) (Fin n) ℂ) : trRep σ P
   rw [Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Use `⟨⟨?_, fun a ha b hb => ?_⟩, fun g hg v => hσ.2.1 _ (conj_mem_UJ hP h hg) v, fun v => ?_⟩` and prove the remaining obligations. Unfold `trRep`. Rewrite using `[Matrix.mul_one, mul_nonsing_inv _ hd, hσ.1.1]`. Unfold `trRep`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hσ.1.2 _ (conj_mem_UJ hP h ha) _ (conj_mem_UJ hP h hb)]`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc P⁻¹, nonsing_inv_mul _ hd, Matrix.one_mul]`. Conclude with `(hσ.2.2 v).comp ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).continuousOn fun g hg => conj_mem_UJ hP h hg`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isURepOn_trRep (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) (hσ : IsURepOn (UJset ε) σ) :
     IsURepOn (UH G) (trRep σ P) := by
@@ -447,7 +445,7 @@ theorem isURepOn_trRep (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G)
       fun g hg => conj_mem_UJ hP h hg
 
 /- English proof (translation)
-Introduce `S hS hst` and use `hσ S hS fun g hg v hv => by rw [← trRep_conj (σ := σ) hP g] exact hst _ (conj_mem_UH hP h hg) v hv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIrredOn_trRep (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) (hσ : IsIrredOn (UJset ε) σ) :
     IsIrredOn (UH G) (trRep σ P) := fun S hS hst => hσ S hS fun g hg v hv => by
@@ -455,7 +453,7 @@ theorem isIrredOn_trRep (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G
   exact hst _ (conj_mem_UH hP h hg) v hv
 
 /- English proof (translation)
-Rewrite using `[← trRep_conj (σ := σ) hP g]`. Conclude with `rep_mem (gram_unit hP h) (isURepOn_trRep hP h hσ) hw (conj_mem_UH hP h hg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigma_mem (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) (hσ : IsURepOn (UJset ε) σ) {w : H}
     (hw : w ∈ smSub G (trRep σ P)) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
@@ -466,7 +464,7 @@ theorem sigma_mem (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) (hσ
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 
 /- English proof (translation)
-Introduce `k Xs hX` and use `GlobalTheory.LowTypeRestriction.contDiff_garding hσ hφ hφc w k _ ((contDiff_const.mul (GlobalTheory.GardingVec.contDiff_expProd Xs)).mul contDiff_const) fun t => conj_mem_UJ hP h (expProd_mem_UH (gram_unit hP h) hX t)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem garding_mem [CompleteSpace H] (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) (hσ : IsURepOn (UJset ε) σ)
     {φ : Matrix (Fin n) (Fin n) ℂ → ℝ} (hφ : ContDiff ℝ ∞ φ) (hφc : HasCompactSupport φ) (w : H) :
@@ -481,7 +479,7 @@ def IsTest (φ : Matrix (Fin n) (Fin n) ℂ → ℝ) : Prop := ContDiff ℝ ∞ 
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 /- English proof (translation)
-The claim follows from `h.1.continuous`.
+A detailed English derivation is pending.
 -/
 theorem IsTest.continuous {φ : Matrix (Fin n) (Fin n) ℂ → ℝ} (h : IsTest φ) : Continuous φ := h.1.continuous
 
@@ -496,19 +494,19 @@ theorem gard_eq (hσ : IsURepOn (UJset ε) σ) {φ : Matrix (Fin n) (Fin n) ℂ 
     gard ε σ φ w = GlobalTheory.LowTypeRestriction.garding hσ hφ.continuous hφ.2 w := rfl
 
 /- English proof (translation)
-The claim follows from `garding_mem hP h hσ hφ.1 hφ.2 w`.
+A detailed English derivation is pending.
 -/
 theorem gard_mem [CompleteSpace H] (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) (hσ : IsURepOn (UJset ε) σ)
     {φ : Matrix (Fin n) (Fin n) ℂ → ℝ} (hφ : IsTest φ) (w : H) : gard ε σ φ w ∈ smSub G (trRep σ P) :=
   garding_mem hP h hσ hφ.1 hφ.2 w
 
 /- English proof (translation)
-The claim follows from `(Formalism.REAL.isClosedEmbeddingMatrix n ε).1.continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_umat : Continuous fun g : Formalism.REAL.UJ ε => umat g := (Formalism.REAL.isClosedEmbeddingMatrix n ε).1.continuous
 
 /- English proof (translation)
-The claim follows from `((hφ.continuous.comp continuous_umat).smul hF).integrable_of_hasCompactSupport (hφ.2.comp_isClosedEmbedding (Formalism.REAL.isClosedEmbeddingMatrix n ε).1).smul_right`.
+A detailed English derivation is pending.
 -/
 theorem IsTest.integrable {φ : Matrix (Fin n) (Fin n) ℂ → ℝ} (hφ : IsTest φ) {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {F : Formalism.REAL.UJ ε → E} (hF : Continuous F) :
@@ -517,13 +515,13 @@ theorem IsTest.integrable {φ : Matrix (Fin n) (Fin n) ℂ → ℝ} (hφ : IsTes
     (hφ.2.comp_isClosedEmbedding (Formalism.REAL.isClosedEmbeddingMatrix n ε).1).smul_right
 
 /- English proof (translation)
-The claim follows from `(hσ.2.2 w).comp_continuous continuous_umat fun g => g.2`.
+A detailed English derivation is pending.
 -/
 theorem continuous_orbit (hσ : IsURepOn (UJset ε) σ) (w : H) : Continuous fun g : Formalism.REAL.UJ ε => σ (umat g) w :=
   (hσ.2.2 w).comp_continuous continuous_umat fun g => g.2
 
 /- English proof (translation)
-Use `(MeasureTheory.norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← MeasureTheory.integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[norm_smul, hσ.2.1 _ g.2, Real.norm_eq_abs]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_gard_le (hσ : IsURepOn (UJset ε) σ) (φ : Matrix (Fin n) (Fin n) ℂ → ℝ) (w : H) :
     ‖gard ε σ φ w‖ ≤ (∫ g : Formalism.REAL.UJ ε, |φ (umat g)| ∂(Formalism.REAL.muG ε)) * ‖w‖ := by
@@ -536,17 +534,17 @@ theorem norm_gard_le (hσ : IsURepOn (UJset ε) σ) (φ : Matrix (Fin n) (Fin n)
 open MeasureTheory in
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hw`. Establish `hwpos : 0 < ‖F 1‖` using `norm_pos_iff.2 hw`. Take `⟨hemb, -⟩` from `Formalism.REAL.isClosedEmbeddingMatrix n ε`. Establish `hnb : {g | ‖F g - F 1‖ < ‖F 1‖ / 2} ∈ 𝓝 (1 : Formalism.REAL.UJ ε)`. Use `hF.continuousAt (x := 1) (Metric.ball_mem_nhds _ (half_pos hwpos))` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Set.preimage, dist_eq_norm]`. Rewrite `hnb` using `[hemb.isInducing.nhds_eq_comap]`. Take `⟨U, hU, hUs⟩` from `hnb`. Take `⟨φ, hφ, hφc, hφU, hφ0, hφ1, -⟩` from `GlobalTheory.LowTypeRestriction.exists_bump hU`. Establish `hT : IsTest φ` using `⟨hφ, hφc⟩`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hint` using `hT.integrable hF`. Establish `h0` using `h φ hT`. Use `set μ := Formalism.REAL.muG ε`. Establish `hψ : Continuous fun g : Formalism.REAL.UJ ε => φ (umat g)` using `hT.continuous.comp continuous_umat`. Establish `hψc : HasCompactSupport fun g : Formalism.REAL.UJ ε => φ (umat g)` using `hφc.comp_isClosedEmbedding hemb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψi : Integrable (fun g : Formalism.REAL.UJ ε => φ (umat g)) μ` using `hψ.integrable_of_hasCompactSupport hψc`. Establish `hpos : 0 < ∫ g : Formalism.REAL.UJ ε, φ (umat g) ∂μ` using `hψ.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) hψc (fun g => hφ0 _) (by show φ 1 ≠ 0; rw [hφ1]; exact one_ne_zero)`. Establish `e1 : ∫ g : Formalism.REAL.UJ ε, (φ (umat g) • F g - φ (umat g) • F 1) ∂μ = -((∫ g : Formalism.REAL.UJ ε, φ (umat g) ∂μ) • F 1)`. Rewrite using `[integral_sub hint (hψi.smul_const _), h0, integral_smul_const, zero_sub]`. Establish `e2 : ‖∫ g : Formalism.REAL.UJ ε, (φ (umat g) • F g - φ (umat g) • F 1) ∂μ‖ ≤ ∫ g : Formalism.REAL.UJ ε, φ (umat g) * (‖F 1‖ / 2) ∂μ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `norm_integral_le_of_norm_le (hψi.mul_const _) (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[← smul_sub, norm_smul, Real.norm_of_nonneg (hφ0 _)]`. Distinguish the cases in `hg : φ (umat g) = 0`. Simplify using `[hg]`. Conclude with `mul_le_mul_of_nonneg_left (le_of_lt (hUs (hφU _ hg))) (hφ0 _)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `e2` using `[e1, norm_neg, norm_smul, Real.norm_of_nonneg hpos.le, integral_mul_const]`. Use polynomial arithmetic with `[mul_pos hpos hwpos]`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_test {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     {F : Formalism.REAL.UJ ε → E} (hF : Continuous F)
@@ -584,7 +582,7 @@ theorem eq_zero_of_forall_test {E : Type} [NormedAddCommGroup E] [NormedSpace �
   nlinarith [mul_pos hpos hwpos]
 
 /- English proof (translation)
-Unfold `gard`. Rewrite using `[← integral_inner (hφ.integrable (continuous_orbit hσ w))]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[← Complex.coe_smul, inner_smul_right, Complex.real_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_gard [CompleteSpace H] (hσ : IsURepOn (UJset ε) σ) {φ : Matrix (Fin n) (Fin n) ℂ → ℝ} (hφ : IsTest φ)
     (y w : H) :
@@ -596,9 +594,9 @@ theorem inner_gard [CompleteSpace H] (hσ : IsURepOn (UJset ε) σ) {φ : Matrix
   rw [← Complex.coe_smul, inner_smul_right, Complex.real_smul]
 
 /- English proof (translation)
-Use `eq_zero_of_forall_test (F := fun g : Formalism.REAL.UJ ε => ⟪y, σ (umat g) y⟫_ℂ) (continuous_const.inner (continuous_orbit hσ y)) fun φ hφ => by` as an intermediate fact. Rewrite using `[← inner_gard hσ hφ, ← inner_conj_symm, h φ hφ, map_zero]`. Establish `e : σ (umat (1 : Formalism.REAL.UJ ε)) y = y` using `by show σ 1 y = y`. Rewrite using `[hσ.1.1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [e] at this`. Conclude with `inner_self_eq_zero.1 this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_inner_gard [CompleteSpace H] (hσ : IsURepOn (UJset ε) σ) {y : H}
     (h : ∀ φ, IsTest φ → ∀ w, ⟪gard ε σ φ w, y⟫_ℂ = 0) : y = 0 := by
@@ -612,14 +610,14 @@ theorem eq_zero_of_inner_gard [CompleteSpace H] (hσ : IsURepOn (UJset ε) σ) {
   exact inner_self_eq_zero.1 this
 
 /- English proof (translation)
-The claim follows from `eq_zero_of_inner_gard hσ fun _ hφ w => hy _ (gard_mem hP h hσ hφ w)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_inner_smooth [CompleteSpace H] (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G)
     (hσ : IsURepOn (UJset ε) σ) {y : H} (hy : ∀ u ∈ smSub G (trRep σ P), ⟪u, y⟫_ℂ = 0) : y = 0 :=
   eq_zero_of_inner_gard hσ fun _ hφ w => hy _ (gard_mem hP h hσ hφ w)
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.1 (eq_zero_of_inner_smooth hP h hσ fun u hu => by rw [inner_sub_right, hy u hu, sub_self])`.
+A detailed English derivation is pending.
 -/
 theorem ext_inner_smooth [CompleteSpace H] (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G)
     (hσ : IsURepOn (UJset ε) σ) {y z : H} (hy : ∀ u ∈ smSub G (trRep σ P), ⟪u, y⟫_ℂ = ⟪u, z⟫_ℂ) : y = z :=
@@ -630,7 +628,7 @@ end Frame
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.IndefR.Mult in
 
 /- English proof (translation)
-The claim follows from `Submodule.span_eq (smSub (gramAt D V τ) (trRep (M.σ τ) (M.fr τ)))`.
+A detailed English derivation is pending.
 -/
 theorem sm_eq {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) :
     M.sm τ = smSub (gramAt D V τ) (trRep (M.σ τ) (M.fr τ)) :=

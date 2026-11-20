@@ -9,11 +9,9 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 namespace GlobalTheory.PDForm
 
 /- English proof (translation)
-Use `choose θ hθ using GlobalTheory.T.exists_smoothLift_hom_affinePair D D' Λ Λ' σ φ φ₀ hφ m hi`. Use `⟨⟨fun p ↦ θ p.unop, fun p q a ↦ ?_⟩, fun p a ↦ hθ p.unop a⟩` and prove the remaining obligations. Apply `Thick.hom_ext` to reduce the goal to its premises. Introduce `b`. Take `⟨x, rfl⟩` from `(Λ.e (Opposite.op p.unop.1.2)).surjective b`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `Λ.nat ((pairSnd φ).map a) x`. Establish `h2` using `hθ q.unop (mp (OAff D.s) ((pairSnd φ).map a) x)`. Establish `h3` using `hθ p.unop x`. Establish `h4` using `Λ'.nat ((pairFst φ).map a) (GlobalTheory.CechDR.secPull D.s D'.s p.unop x)`. Establish `h5` using `(pairPull hφ).naturality a x`.
-
-Conclude with `((congrArg (θ q.unop).φ h1.symm).trans h2).trans ((congrArg (Λ'.e (Opposite.op q.unop.1.1)) h5).trans (h4.trans (congrArg (Λ'.L.map ((pairFst φ).map a)).φ h3.symm)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_lift_pair_natTrans (D D' : Data) (Λ : Lift D) (Λ' : Lift D') (σ : D.R →+* D'.R)
     (φ : D'.X ⟶ D.X) (φ₀ : D'.X₀ ⟶ D.X₀) (hφ : φ ≫ D.s = D'.s ≫ spMap σ)

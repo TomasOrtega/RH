@@ -13,7 +13,7 @@ Both sides reduce to the same expression.
 theorem PD.map_map (P : PD ι Γ R) (f : R →+* R') (g : R' →+* R'') : (P.map f).map g = P.map (g.comp f) := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [adj_apply, Matrix.map_apply]`. Rewrite using `[map_zsmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_map (f : R →+* R') (X : M4 R) : adj (X.map f) = (adj X).map f := by
   ext i j
@@ -21,7 +21,7 @@ theorem adj_map (f : R →+* R') (X : M4 R) : adj (X.map f) = (adj X).map f := b
   rw [map_zsmul]
 
 /- English proof (translation)
-Unfold `IsGSp at h ⊢`. Rewrite using `[adj_map, ← Matrix.map_mul, h]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isGSp_map (f : R →+* R') {ν : R} {X : M4 R} (h : IsGSp ν X) : IsGSp (f ν) (X.map f) := by
   unfold IsGSp at h ⊢
@@ -41,14 +41,14 @@ Both sides reduce to the same expression.
 theorem PD.map_n (P : PD ι Γ R) (f : R →+* R') (v : ι) : (P.map f).n v = (P.n v).map f := rfl
 
 /- English proof (translation)
-Rewrite using `[PD.map_r, PD.map_n, adj_map, ← Matrix.map_mul, ← Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem PD.map_flag (P : PD ι Γ R) (f : R →+* R') (v : ι) (s : Γ) :
     adj ((P.map f).n v) * (P.map f).r s * (P.map f).n v = (adj (P.n v) * P.r s * P.n v).map f := by
   rw [PD.map_r, PD.map_n, adj_map, ← Matrix.map_mul, ← Matrix.map_mul]
 
 /- English proof (translation)
-Unfold `PD.ψ`. Rewrite using `[PD.map_flag]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem PD.map_ψ (P : PD ι Γ R) (f : R →+* R') (v : ι) (i : Fin 4) (s : Γ) : (P.map f).ψ v i s = f (P.ψ v i s) := by
   unfold PD.ψ
@@ -56,9 +56,9 @@ theorem PD.map_ψ (P : PD ι Γ R) (f : R →+* R') (v : ι) (i : Fin 4) (s : Γ
   rfl
 
 /- English proof (translation)
-Introduce `i j N`. Establish `hle : I ^ N ≤ (J ^ N).comap f` using `(Ideal.pow_right_mono hf N).trans (Ideal.le_comap_pow f N)`. Use `(h i j N).comp (Ideal.quotientMap (J ^ N) f hle)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, Ideal.quotientMap_mk]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem PD.Cont.map [TopologicalSpace Γ] {P : PD ι Γ R} {I : Ideal R} (h : P.Cont I) (f : R →+* R') {J : Ideal R'}
     (hf : I ≤ J.comap f) : (P.map f).Cont J := by
@@ -74,7 +74,7 @@ theorem PD.Cont.map [TopologicalSpace Γ] {P : PD ι Γ R} {I : Ideal R} (h : P.
 end
 
 /- English proof (translation)
-The claim follows from `isGSp_map f (h.mult g) kill g hg := by rw [PD.map_r, h.kill g hg]; exact Matrix.map_one _ f.map_zero f.map_one nrm := h.nrm.map f.map_zero low v := ⟨by simpa [PD.map_n] using isGSp_map f (h.low v).1, fun i => by rw [PD.map_n, Matrix.map_apply, (h.low v).2.1, map_one], fun i j hij …`.
+A detailed English derivation is pending.
 -/
 theorem Fr.IsPair.map {O Γ R R' : Type} [CommRing O] [Group Γ] [CommRing R] [CommRing R'] {Φ : Fr O Γ} {a : O →+* R}
     {P : PD Φ.ι Γ R} (h : Φ.IsPair a P) (f : R →+* R') : Φ.IsPair (f.comp a) (P.map f) where
@@ -91,14 +91,14 @@ variable {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O 
   {a : O →+* Λ} (X : Space Φ a)
 
 /- English proof (translation)
-The claim follows from `haveI := X.ft Algebra.FiniteType.isNoetherianRing X.B X.A`.
+A detailed English derivation is pending.
 -/
 theorem Space.noeth : IsNoetherianRing X.A :=
   haveI := X.ft
   Algebra.FiniteType.isNoetherianRing X.B X.A
 
 /- English proof (translation)
-Use `X.pair.map (f : X.A →+* R)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Space.pair_map {R : Type} [CommRing R] [Algebra Λ R] (f : X.A →ₐ[Λ] R) :
     Φ.IsPair ((algebraMap Λ R).comp a) (X.P.map (f : X.A →+* R)) := by
@@ -108,7 +108,7 @@ theorem Space.pair_map {R : Type} [CommRing R] [Algebra Λ R] (f : X.A →ₐ[Λ
   simp
 
 /- English proof (translation)
-Use `X.cont.map _ (Ideal.map_le_iff_le_comap.2 fun b hb => ?_)` and prove the remaining obligations. Use `show (f.comp (IsScalarTower.toAlgHom Λ X.B X.A)) b ∈ maximalIdeal R`. Rewrite using `[← res_eq_zero_iff Λ, res_map, res_eq_zero_iff]`. Conclude with `hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Space.cont_map {R : Type} [CommRing R] [Algebra Λ R] [IsCO Λ R] (f : X.A →ₐ[Λ] R) :
     (X.P.map (f : X.A →+* R)).Cont (maximalIdeal R) := by
@@ -118,23 +118,19 @@ theorem Space.cont_map {R : Type} [CommRing R] [Algebra Λ R] [IsCO Λ R] (f : X
   exact hb
 
 /- English proof (translation)
-Use `haveI := X.coB`. Establish `hr : ∀ g i j, f (X.P.r g i j) = f' (X.P.r g i j)`. Introduce `g i j`. Use `congrArg (fun Q => Q.r g i j) h` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn : ∀ v i j, f (X.P.n v i j) = f' (X.P.n v i j)`. Introduce `v i j`. Use `congrArg (fun Q => Q.n v i j) h` as an intermediate fact. Conclude with `this`. Establish `hB : f.comp (IsScalarTower.toAlgHom Λ X.B X.A) = f'.comp (IsScalarTower.toAlgHom Λ X.B X.A)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `X.genB R` to reduce the goal to its premises. Introduce `g n`. Simplify using `only [AlgHom.comp_apply, IsScalarTower.coe_toAlgHom']`. Rewrite using `[← Polynomial.coeff_map, X.cp_map]`. Establish `e : ∀ φ : X.A →ₐ[Λ] R, φ ((X.P.r g).charpoly.coeff n) = (((X.P.r g).map (φ : X.A →+* R)).charpoly).coeff n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `φ`. Rewrite using `[Matrix.charpoly_map, Polynomial.coeff_map]`. Both sides reduce to the same expression. Rewrite using `[e f, e f']`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Conclude with `hr g i j`. Introduce `v i s hs`. Simplify using `only [AlgHom.comp_apply, IsScalarTower.coe_toAlgHom']`. Rewrite using `[X.ψ_map v i s hs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `congrArg (fun Q => Q.ψ v i s) h` as an intermediate fact. Simplify using `only [PD.map_ψ] at this`. Conclude with `this`. Use extensionality with `x`. Establish `hx : x ∈ Algebra.adjoin X.B ((Set.range fun x : Γ × Fin 4 × Fin 4 => X.P.r x.1 x.2.1 x.2.2) ∪ Set.range fun x : Φ.ι × Fin 4 × Fin 4 => X.P.n x.1 x.2.1 x.2.2)`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[X.gen]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Break down `hy with ⟨⟨g, i, j⟩, rfl⟩ | ⟨⟨v, i, j⟩, rfl⟩` into its components or cases.
-
-Conclude with `hr g i j`. Conclude with `hn v i j`. Consider the case `algebraMap b`. Conclude with `DFunLike.congr_fun hB b`. Consider the case `add y z _ _ hy hz => rw [map_add, map_add, hy, hz]`.
-
-Consider the case `mul y z _ _ hy hz => rw [map_mul, map_mul, hy, hz]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Space.hom_ext {R : Type} [CommRing R] [Algebra Λ R] [IsCO Λ R] (f f' : X.A →ₐ[Λ] R)
     (h : X.P.map (f : X.A →+* R) = X.P.map (f' : X.A →+* R)) : f = f' := by

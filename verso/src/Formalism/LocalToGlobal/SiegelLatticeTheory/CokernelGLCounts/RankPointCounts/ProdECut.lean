@@ -144,7 +144,7 @@ def CP (p : PlF D) (Lp Lpi Up Upi : MP p) (hL : Lpi * Lp = 1) (hU : Up * Upi = 1
 section PiP
 
 /- English proof (translation)
-Consider the cases of `h : (M p).split with`. Consider the case `none => simp only [lOf, h, lL, Matrix.of_apply, (ha i j).1 hij, map_zero, mul_zero, zero_mul]`. Consider the case `some g`. Simplify using `only [lOf, h, lG, Matrix.of_apply, (ha i j).1 hij, (hb j i).1 hij]`. Simplify using the standard rewrite rules.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lOf_low {p : PlF D} (a b : Formalism.L2.SG.PairVal.MatR D) (ha : IsLoUni a) (hb : IsUpUni b) (i j : Fin (D.R.rS + 1))
     (hij : i < j) : lOf δ M p a b i j = 0 := by
@@ -155,7 +155,7 @@ theorem lOf_low {p : PlF D} (a b : Formalism.L2.SG.PairVal.MatR D) (ha : IsLoUni
     simp
 
 /- English proof (translation)
-Consider the cases of `h : (M p).split with`. Consider the case `none => simp only [ρOf, h, ρL, Matrix.of_apply, (hb i j).1 hij]`. Simplify using the standard rewrite rules. Consider the case `some g`. Simplify using `only [ρOf, h, ρG, Matrix.of_apply, (hb i j).1 hij, (ha j i).1 hij]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -168,23 +168,23 @@ theorem ρOf_up {p : PlF D} (a b : Formalism.L2.SG.PairVal.MatR D) (ha : IsLoUni
     simp
 
 /- English proof (translation)
-Introduce `i j` and use `⟨fun h => lOf_low M δ a b ha hb i j h, fun h => by subst h; exact lOf_diag δ M hA a b ha hb i⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem lOf_loUni {p : PlF D} (hA : Agree δ M p) (a b : Formalism.L2.SG.PairVal.MatR D) (ha : IsLoUni a) (hb : IsUpUni b) :
     IsLoUni (lOf δ M p a b) := fun i j =>
   ⟨fun h => lOf_low M δ a b ha hb i j h, fun h => by subst h; exact lOf_diag δ M hA a b ha hb i⟩
 
 /- English proof (translation)
-Introduce `i j` and use `⟨fun h => ρOf_up M δ a b ha hb i j h, fun h => by subst h; exact ρOf_diag δ M hA a b ha hb i⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ρOf_upUni {p : PlF D} (hA : Agree δ M p) (a b : Formalism.L2.SG.PairVal.MatR D) (ha : IsLoUni a) (hb : IsUpUni b) :
     IsUpUni (ρOf δ M p a b) := fun i j =>
   ⟨fun h => ρOf_up M δ a b ha hb i j h, fun h => by subst h; exact ρOf_diag δ M hA a b ha hb i⟩
 
 /- English proof (translation)
-Take `⟨ha, b, hb, hW⟩` from `β.2`. Establish `hWu` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.ptMat_isUnit (K := D.host.E) w`. Establish `e : VolPinAsm.bOf w β = b`. Unfold `VolPinAsm.bOf`. Establish `h1 : ((((β : Formalism.L2.SG.PairVal.GLR D))⁻¹ : Formalism.L2.SG.PairVal.GLR D) : Formalism.L2.SG.PairVal.MatR D) * ((β : Formalism.L2.SG.PairVal.GLR D) : Formalism.L2.SG.PairVal.MatR D) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `⟨ha, hb, hW⟩`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem bOf_spec (β : VolPinAsm.StG w) : IsLoUni ((β : Formalism.L2.SG.PairVal.GLR D) : Formalism.L2.SG.PairVal.MatR D) ∧
     IsUpUni (VolPinAsm.bOf w β) ∧
@@ -206,9 +206,9 @@ theorem bOf_spec (β : VolPinAsm.StG w) : IsLoUni ((β : Formalism.L2.SG.PairVal
   exact ⟨ha, hb, hW⟩
 
 /- English proof (translation)
-Establish `hWu` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.ptMat_isUnit (K := D.host.E) w`. Unfold `VolPinAsm.bOf`. Rewrite using `[mul_inv_rev, Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hWu, Matrix.mul_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bOf_mul (β β' : Formalism.L2.SG.PairVal.GLR D) :
     VolPinAsm.bOf w (β * β') = VolPinAsm.bOf w β' * VolPinAsm.bOf w β := by
@@ -223,7 +223,7 @@ theorem bOf_mul (β β' : Formalism.L2.SG.PairVal.GLR D) :
     _ = _ := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hWu` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.ptMat_isUnit (K := D.host.E) w`. Unfold `VolPinAsm.bOf`. Rewrite using `[inv_one, Units.val_one, Matrix.mul_one, Matrix.nonsing_inv_mul _ hWu]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem bOf_one : VolPinAsm.bOf w (1 : Formalism.L2.SG.PairVal.GLR D) = 1 := by
   have hWu := Formalism.L2.SG.Pf.StabilizerIndexVolumes.ptMat_isUnit (K := D.host.E) w
@@ -288,14 +288,14 @@ open Formalism.L2.SG.Pf.ZsVolCut
 variable {p : PlF D}
 
 /- English proof (translation)
-Rewrite using `[← lOf_mul δ M hA, (ZsVolGrp.isLoUni_inv hL).2.1, (ZsVolGrp.isUpUni_inv hU).2.2, lOf_one δ M hA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lp_inv (hA : Agree δ M p) (L U : Formalism.L2.SG.PairVal.MatR D) (hL : IsLoUni L) (hU : IsUpUni U) :
     lOf δ M p L⁻¹ U⁻¹ * lOf δ M p L U = 1 := by
   rw [← lOf_mul δ M hA, (ZsVolGrp.isLoUni_inv hL).2.1, (ZsVolGrp.isUpUni_inv hU).2.2, lOf_one δ M hA]
 
 /- English proof (translation)
-Rewrite using `[← ρOf_mul δ M hA, (ZsVolGrp.isLoUni_inv hL).2.1, (ZsVolGrp.isUpUni_inv hU).2.2, ρOf_one δ M hA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem up_inv (hA : Agree δ M p) (L U : Formalism.L2.SG.PairVal.MatR D) (hL : IsLoUni L) (hU : IsUpUni U) :
     ρOf δ M p L U * ρOf δ M p L⁻¹ U⁻¹ = 1 := by

@@ -27,9 +27,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h1`. Take `⟨hGF, -, hBC, -, -⟩` from `GlobalTheory.T.abelianScheme_laws_without_cohomology`. Take `⟨hcube, -, hgrow⟩` from `GlobalTheory.T.cube_theorem_and_sections_finite_growth_abelianVariety`. Take `⟨-, -, -, -, -, -, -, -, hmulq, hrel⟩` from `GlobalTheory.T.abelianSchemeLaws_of_cubeBundleGenerator hcube`. Establish `hproj` using `GlobalTheory.AbLaw.polAV_veryAmpleBy hBC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmul` using `(GlobalTheory.MulPull.mulPull_of_cube_of_symm hcube (GlobalTheory.exists_gen_negLB hGF)).1`. Establish `hvan` using `GlobalTheory.AbLaw.PowVanish.first_cohomology_vanishes_powers hproj GlobalTheory.T.serre_vanishing_very_ample.1 GlobalTheory.AbLaw.h1Zero_of_isIso hmul hmulq (GlobalTheory.torsion_invariant_descends hmulq)`. Establish `h0` using `GlobalTheory.FinrankGrowthBounds.finrank_sections_lineBundlePow_eq_pow GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected h1 hrel hgrow hmulq`. Conclude with `GlobalTheory.T.sections_powerTwist_basis_stable_baseChange GlobalTheory.T.nonempty_perfectSectionsComplex_of_smooth_proj hproj hvan GlobalTheory.AbLaw.h1Zero_of_isIso GlobalTheory.exists_matrix_basis_ker_of_exact_at_point hBC ((GlobalTheory.secM_invariant_eq_bot_or_univ_at_geomet …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twistBaseChange_of_finrank_sections_one :
     (∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))),

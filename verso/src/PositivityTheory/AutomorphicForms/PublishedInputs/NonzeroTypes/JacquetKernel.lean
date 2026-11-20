@@ -15,18 +15,18 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {n : ℕ} (G : Grp k n)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_NO {g : GL (Fin n) k} : g ∈ G.NO ↔ g ∈ unipRad k G.e ∧ g ∈ KO k (Fin n) := Iff.rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.DepthZeroJac.dia_val]`. Use extensionality with `i j`. Take `⟨⟨a, i'⟩, rfl⟩` from `G.e.surjective i`. Take `⟨⟨b, j'⟩, rfl⟩` from `G.e.surjective j`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[zEl, leviEmb_apply_same]`. Distinguish the cases in `hij : i' = j'`. Substitute `hij` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Matrix.scalar_apply, Matrix.diagonal_pow]`. Establish `hne : G.e ⟨a, i'⟩ ≠ G.e ⟨a, j'⟩` using `fun h => hij (by simpa using h)`. Simplify using `[Matrix.scalar_apply, Matrix.diagonal_pow, Matrix.diagonal_apply_ne _ hij, hne]`. Rewrite using `[zEl, leviEmb_apply_ne _ _ _ hab, Matrix.diagonal_apply_ne]`. Introduce `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hab (congrArg Sigma.fst (G.e.injective h))`.
+A detailed English derivation is pending.
 -/
 theorem zEl_eq_dia (ϖ : kˣ) :
     G.zEl ϖ = GlobalTheory.DepthZeroJac.dia G.e ϖ.ne_zero (fun a => G.s - 1 - (a : ℕ)) := by
@@ -48,11 +48,9 @@ theorem zEl_eq_dia (ϖ : kˣ) :
     exact hab (congrArg Sigma.fst (G.e.injective h))
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Simplify using `only [zero_mul]`. Conclude with `(GlobalTheory.DepthZeroJac.dia_zero G.e ϖ.ne_zero).symm`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ m ih`. Rewrite using `[pow_succ, ih, zEl_eq_dia, ← GlobalTheory.DepthZeroJac.dia_add]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Use `show m * (G.s - 1 - (a : ℕ)) + (G.s - 1 - (a : ℕ)) = (m + 1) * (G.s - 1 - (a : ℕ))`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem zEl_pow (ϖ : kˣ) (m : ℕ) :
     G.zEl ϖ ^ m = GlobalTheory.DepthZeroJac.dia G.e ϖ.ne_zero (fun a => m * (G.s - 1 - (a : ℕ))) := by
@@ -69,7 +67,7 @@ theorem zEl_pow (ϖ : kˣ) (m : ℕ) :
     ring
 
 /- English proof (translation)
-Take `⟨w, hw, hwϖ⟩` from `h`. Rewrite using `[GlobalTheory.IwahoriInj.deep_one_iff, ← hwϖ]`. Establish `hnu : ¬ IsUnit w` using `hw.not_isUnit`. Conclude with `(Valuation.Integer.not_isUnit_iff_valuation_lt_one (v := valuation k) (x := w)).1 hnu`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem deep_unif {ϖ : kˣ} (h : IsUnif ϖ) : GlobalTheory.IwahoriInj.Deep 1 (ϖ : k) := by
   obtain ⟨w, hw, hwϖ⟩ := h
@@ -78,7 +76,7 @@ theorem deep_unif {ϖ : kˣ} (h : IsUnif ϖ) : GlobalTheory.IwahoriInj.Deep 1 (�
   exact (Valuation.Integer.not_isUnit_iff_valuation_lt_one (v := valuation k) (x := w)).1 hnu
 
 /- English proof (translation)
-Establish `e : g = (g - 1) + 1` using `by abel`. Rewrite using `[e]`. Conclude with `GlobalTheory.StepData.IntM.add (fun i j => GlobalTheory.DepthZeroJac.mem_int_of_deep (h i j)) (GlobalTheory.StepData.intM_one (k := k) (n := Fin n))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intM_of_deep {g : Matrix (Fin n) (Fin n) k} (h : ∀ i j, GlobalTheory.IwahoriInj.Deep 0 ((g - 1) i j)) :
     GlobalTheory.StepData.IntM g := by
@@ -88,15 +86,15 @@ theorem intM_of_deep {g : Matrix (Fin n) (Fin n) k} (h : ∀ i j, GlobalTheory.I
     (GlobalTheory.StepData.intM_one (k := k) (n := Fin n))
 
 /- English proof (translation)
-Establish `key : ∀ᶠ M : ℕ in Filter.atTop, ∀ i j, GlobalTheory.IwahoriInj.Deep (-(M : ℤ)) ((u.val - 1) i j)`. Simplify using `only [Filter.eventually_all]`. Conclude with `fun i j => GlobalTheory.IwahoriInj.eventually_deep _`. Use `filter_upwards [key] with m hm`. Introduce `i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.DepthZeroJac.conj_sub_apply]`. Apply the tactic sequence `try dsimp only`. Distinguish the cases in `h : blk G.e i < blk G.e j`. Establish `h1 : ((blk G.e i : Fin G.s) : ℕ) < (blk G.e j : Fin G.s)` using `h`. Establish `h2 : ((blk G.e j : Fin G.s) : ℕ) < G.s` using `(blk G.e j).2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, m * (G.s - 1 - ((blk G.e i : Fin G.s) : ℕ)) = m * (G.s - 1 - ((blk G.e j : Fin G.s) : ℕ)) + m + t := by`. Use `Nat.exists_eq_add_of_le ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : ∀ (A : ℕ) (x : k), c ^ (A + m + t) * x * (c ^ A)⁻¹ = c ^ m * c ^ t * x`. Introduce `A x`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : c ^ A ≠ 0` using `pow_ne_zero _ hc`. Rewrite using `[pow_add, pow_add]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ht, e1]`. Establish `d1 : GlobalTheory.IwahoriInj.Deep ((m : ℤ) * 1) (c ^ m)` using `GlobalTheory.DepthZeroJac.deep_pow hc1 m`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `d2 : GlobalTheory.IwahoriInj.Deep ((t : ℤ) * 1) (c ^ t)` using `GlobalTheory.DepthZeroJac.deep_pow hc1 t`. Conclude with `((d1.mul d2).mul (hm i j)).mono (by omega)`. Rewrite using `[GlobalTheory.DepthZeroJac.sub_one_of_mem_unipRad hu h, mul_zero, zero_mul]`. Conclude with `GlobalTheory.IwahoriInj.deep_zero 0`.
+A detailed English derivation is pending.
 -/
 theorem eventually_conj_deep {c : k} (hc : c ≠ 0) (hc1 : GlobalTheory.IwahoriInj.Deep 1 c) {u : GL (Fin n) k}
     (hu : u ∈ unipRad k G.e) :
@@ -133,7 +131,7 @@ theorem eventually_conj_deep {c : k} (hc : c ≠ 0) (hc1 : GlobalTheory.IwahoriI
     exact GlobalTheory.IwahoriInj.deep_zero 0
 
 /- English proof (translation)
-Use `(mem_NO G).2 ⟨hun, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.StepData.mem_KO]`. Establish `hinv : (D * u * D⁻¹)⁻¹ = D * u⁻¹ * D⁻¹` using `by group`. Conclude with `⟨intM_of_deep h1, by rw [hinv]; exact intM_of_deep h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem mem_NO_of_deep {D u : GL (Fin n) k} (hun : D * u * D⁻¹ ∈ unipRad k G.e)
     (h1 : ∀ i j, GlobalTheory.IwahoriInj.Deep 0 (((D * u * D⁻¹).val - 1) i j))
@@ -144,9 +142,9 @@ theorem mem_NO_of_deep {D u : GL (Fin n) k} (hun : D * u * D⁻¹ ∈ unipRad k 
   exact ⟨intM_of_deep h1, by rw [hinv]; exact intM_of_deep h2⟩
 
 /- English proof (translation)
-Establish `hc1` using `deep_unif hϖ`. Use `filter_upwards [eventually_conj_deep G ϖ.ne_zero hc1 hu, eventually_conj_deep G ϖ.ne_zero hc1 (inv_mem hu)] with m h1 h2`. Rewrite using `[zEl_pow]`. Use `mem_NO_of_deep G ?_ h1 h2` and prove the remaining obligations. Use `GlobalTheory.DepthZeroJac.mem_unipRad_of fun i j h => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.DepthZeroJac.conj_sub_apply, GlobalTheory.DepthZeroJac.sub_one_of_mem_unipRad hu h, mul_zero, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem eventually_conj_mem_NO {ϖ : kˣ} (hϖ : IsUnif ϖ) {u : GL (Fin n) k} (hu : u ∈ unipRad k G.e) :
     ∀ᶠ m : ℕ in Filter.atTop, G.zEl ϖ ^ m * u * (G.zEl ϖ ^ m)⁻¹ ∈ G.NO := by
@@ -159,7 +157,7 @@ theorem eventually_conj_mem_NO {ϖ : kˣ} (hϖ : IsUnif ϖ) {u : GL (Fin n) k} (
   rw [GlobalTheory.DepthZeroJac.conj_sub_apply, GlobalTheory.DepthZeroJac.sub_one_of_mem_unipRad hu h, mul_zero, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[zEl_pow]`. Use `GlobalTheory.DepthZeroJac.mem_unipRad_of fun i j h => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.DepthZeroJac.conj'_sub_apply, GlobalTheory.DepthZeroJac.sub_one_of_mem_unipRad hu h, mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_inv_mem_unipRad (ϖ : kˣ) (m : ℕ) {u : GL (Fin n) k} (hu : u ∈ unipRad k G.e) :
     (G.zEl ϖ ^ m)⁻¹ * u * G.zEl ϖ ^ m ∈ unipRad k G.e := by
@@ -168,13 +166,11 @@ theorem conj_inv_mem_unipRad (ϖ : kˣ) (m : ℕ) {u : GL (Fin n) k} (hu : u ∈
   rw [GlobalTheory.DepthZeroJac.conj'_sub_apply, GlobalTheory.DepthZeroJac.sub_one_of_mem_unipRad hu h, mul_zero, zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨u, w, rfl⟩` from `hy`. Use `filter_upwards [eventually_conj_mem_NO G hϖ u.2] with m hm`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, map_sub]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : π (G.zEl ϖ ^ m) (π (u : GL (Fin n) k) w) = π (G.zEl ϖ ^ m * (u : GL (Fin n) k) * (G.zEl ϖ ^ m)⁻¹) (π (G.zEl ϖ ^ m) w)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]`. Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨⟨_, hm⟩, π (G.zEl ϖ ^ m) w, by simp⟩`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add y z _ _ hy hz => filter_upwards [hy, hz] with m h1 h2`. Rewrite using `[map_add]`. Conclude with `add_mem h1 h2`. Consider the case `smul a y _ hy => filter_upwards [hy] with m h1`. Rewrite using `[map_smul]`.
-
-Conclude with `Submodule.smul_mem _ a h1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_mem_twKer_NO {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) k) V) {ϖ : kˣ} (hϖ : IsUnif ϖ) {x : V}
@@ -201,16 +197,16 @@ theorem eventually_mem_twKer_NO {V : Type} [AddCommGroup V] [Module ℂ V]
     exact Submodule.smul_mem _ a h1
 
 /- English proof (translation)
-The claim follows from `isClosed_singleton`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_zero : IsClosed ({0} : Set k) := isClosed_singleton
 
 /- English proof (translation)
-Establish `e : (unipRad k G.e : Set (GL (Fin n) k)) = ⋂ i, ⋂ j, {g : GL (Fin n) k | ¬ blk G.e i < blk G.e j → (g.val - 1) i j = 0}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, Set.mem_iInter, Set.mem_ofPred_eq]`. Conclude with `⟨fun hg i j h => GlobalTheory.DepthZeroJac.sub_one_of_mem_unipRad hg h, fun h => GlobalTheory.DepthZeroJac.mem_unipRad_of fun i j hij => h i j hij⟩`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `isClosed_iInter fun i => isClosed_iInter fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : blk G.e i < blk G.e j`. Simplify using `only [h, not_true_eq_false, false_implies, Set.ofPred_true]`. Conclude with `isClosed_univ`. Simplify using `only [h, not_false_eq_true, true_implies]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun g : GL (Fin n) k => (g.val - 1) i j`. Use `Units.continuous_val (M := Matrix (Fin n) (Fin n) k)` as an intermediate fact. Use `fun_prop`. Conclude with `isClosed_zero.preimage hcont`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_unipRad : IsClosed (unipRad k G.e : Set (GL (Fin n) k)) := by
   have e : (unipRad k G.e : Set (GL (Fin n) k)) =
@@ -231,13 +227,13 @@ theorem isClosed_unipRad : IsClosed (unipRad k G.e : Set (GL (Fin n) k)) := by
     exact isClosed_zero.preimage hcont
 
 /- English proof (translation)
-The claim follows from `Subgroup.isOpen_mono GlobalTheory.StepData.KOne_le_KO GlobalTheory.StepData.isOpen_KOne`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_KO : IsOpen (KO k (Fin n) : Set (GL (Fin n) k)) :=
   Subgroup.isOpen_mono GlobalTheory.StepData.KOne_le_KO GlobalTheory.StepData.isOpen_KOne
 
 /- English proof (translation)
-Establish `hKO : IsCompact (KO k (Fin n) : Set (GL (Fin n) k))` using `GlobalTheory.SplitFlip.isCompact_KO`. Use `hKO.of_isClosed_subset ?_ (fun g hg => ((mem_NO G).1 hg).2)` and prove the remaining obligations. Use `show IsClosed ((unipRad k G.e : Set (GL (Fin n) k)) ∩ (KO k (Fin n) : Set (GL (Fin n) k)))`. Conclude with `(isClosed_unipRad G).inter (Subgroup.isClosed_of_isOpen _ isOpen_KO)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCompact_NO : IsCompact (G.NO : Set (GL (Fin n) k)) := by
   have hKO : IsCompact (KO k (Fin n) : Set (GL (Fin n) k)) := GlobalTheory.SplitFlip.isCompact_KO
@@ -246,11 +242,11 @@ theorem isCompact_NO : IsCompact (G.NO : Set (GL (Fin n) k)) := by
   exact (isClosed_unipRad G).inter (Subgroup.isClosed_of_isOpen _ isOpen_KO)
 
 /- English proof (translation)
-Set `f : ↥G.NO →* GL (Fin n) k` to `(MulAut.conj (G.zEl ϖ ^ m)⁻¹).toMonoidHom.comp G.NO.subtype`. Set `S : Subgroup ↥G.NO` to `(KO k (Fin n)).comap f`. Establish `hf : Continuous f` using `by show Continuous fun u : ↥G.NO => (G.zEl ϖ ^ m)⁻¹ * (u : GL (Fin n) k) * (G.zEl ϖ ^ m)⁻¹⁻¹`. Conclude with `(continuous_const.mul continuous_subtype_val).mul continuous_const`. Establish `hS : IsOpen (S : Set ↥G.NO)` using `isOpen_KO.preimage hf`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.isOpen_mono (H₁ := S) ?_ hS` and prove the remaining obligations. Introduce `u hu`. Establish `hu' : (G.zEl ϖ ^ m)⁻¹ * (u : GL (Fin n) k) * (G.zEl ϖ ^ m)⁻¹⁻¹ ∈ KO k (Fin n)` using `hu`. Rewrite `hu'` using `[inv_inv]`. Rewrite using `[zN, Subgroup.mem_subgroupOf, Subgroup.mem_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(G.zEl ϖ ^ m)⁻¹ * (u : GL (Fin n) k) * G.zEl ϖ ^ m, (mem_NO G).2 ⟨conj_inv_mem_unipRad G ϖ m ((mem_NO G).1 u.2).1, hu'⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `G.zEl ϖ ^ m * ((G.zEl ϖ ^ m)⁻¹ * (u : GL (Fin n) k) * G.zEl ϖ ^ m) * (G.zEl ϖ ^ m)⁻¹ = u`. Use `group`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem isOpen_zN (ϖ : kˣ) (m : ℕ) : IsOpen ((G.zN ϖ m : Subgroup ↥G.NO) : Set ↥G.NO) := by
   let f : ↥G.NO →* GL (Fin n) k := (MulAut.conj (G.zEl ϖ ^ m)⁻¹).toMonoidHom.comp G.NO.subtype
@@ -270,7 +266,7 @@ theorem isOpen_zN (ϖ : kˣ) (m : ℕ) : IsOpen ((G.zN ϖ m : Subgroup ↥G.NO) 
   group
 
 /- English proof (translation)
-Establish `: CompactSpace ↥G.NO` using `isCompact_iff_compactSpace.1 (isCompact_NO G)`. Conclude with `(G.zN ϖ m).quotient_finite_of_isOpen (isOpen_zN G ϖ m)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_quot (ϖ : kˣ) (m : ℕ) : Finite (↥G.NO ⧸ G.zN ϖ m) := by
   have : CompactSpace ↥G.NO := isCompact_iff_compactSpace.1 (isCompact_NO G)
@@ -285,15 +281,15 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ hU ϖ hϖ V _ _ π hπ x hx h0`. Establish `h1 : x ∈ twKer π (unipRad k G.e) 1` using `(Submodule.Quotient.mk_eq_zero _).1 h0`. Take `⟨m, hm⟩` from `(JacquetKernel.eventually_mem_twKer_NO G π hϖ h1).exists`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `hc : IsCompact (G.NO : Set (GL (Fin n) k))` using `JacquetKernel.isCompact_NO G`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: Finite (↥G.NO ⧸ G.zN ϖ m)` using `JacquetKernel.finite_quot G ϖ m`. Set `: Fintype (↥G.NO ⧸ G.zN ϖ m)` to `Fintype.ofFinite _`. Establish `hfix : ∀ u ∈ G.zN ϖ m, π ((u : ↥G.NO) : GL (Fin n) k) (π (G.zEl ϖ ^ m) x) = π (G.zEl ϖ ^ m) x`. Introduce `u hu`. Rewrite `hu` using `[zN, Subgroup.mem_subgroupOf]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, hy, hyu⟩` from `Subgroup.mem_map.1 hu`. Rewrite using `[← hyu]`. Express the relevant statement in the definitionally equal form `π (G.zEl ϖ ^ m * y * (G.zEl ϖ ^ m)⁻¹) (π (G.zEl ϖ ^ m) x) = π (G.zEl ϖ ^ m) x`. Establish `hyx : π y x = x`. Rewrite using `[hx y (hU.1 y hy).1, (hU.1 y hy).2, one_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right, map_mul, Module.End.mul_apply, hyx]`. Establish `hid` using `GlobalTheory.LocGL.idem_eq_cosetSum hπ hc (G.zN ϖ m) hfix`. Rewrite `hid` using `[(GlobalTheory.LocGL.idem_eq_zero_iff hπ hc).2 hm]`. Establish `hcard : ((Fintype.card (↥G.NO ⧸ G.zN ϖ m) : ℂ))⁻¹ ≠ 0` using `inv_ne_zero (Nat.cast_ne_zero.2 Fintype.card_ne_zero)`. Establish `hsum` using `(smul_eq_zero.1 hid.symm).resolve_left hcard`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (∑ᶠ c : ↥G.NO ⧸ G.zN ϖ m, π ((Quotient.out c : ↥G.NO) : GL (Fin n) k) (π (G.zEl ϖ ^ m) x)) = 0`. Rewrite using `[finsum_eq_sum_of_fintype]`. Conclude with `hsum`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_jacKer (G : Grp k n) : G.JacquetKernelProp := by
   intro _ _ _ _ _ _ _ _ _ hU ϖ hϖ V _ _ π hπ x hx h0

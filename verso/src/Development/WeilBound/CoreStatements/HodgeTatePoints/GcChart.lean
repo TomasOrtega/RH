@@ -16,7 +16,7 @@ variable {A K : Type} [CommRing A] [Field K] [Algebra A K] {E : Type} [Field E] 
   (D : HTChart A K c p R N Ω)
 
 /- English proof (translation)
-Use `sup_le (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `D.h_mem x`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `D.om.smul_mem _ hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem om'_le : D.om' ≤ D.om := by
   refine sup_le (Submodule.span_le.2 ?_) ?_
@@ -26,31 +26,29 @@ theorem om'_le : D.om' ≤ D.om := by
     exact D.om.smul_mem _ hx
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sup_right ⟨x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem pow_smul_mem {x : Ω} (hx : x ∈ D.om) : ((p : A) ^ R) • x ∈ D.om' :=
   Submodule.mem_sup_right ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sup_left (Submodule.subset_span ⟨x, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem h_mem_om' (x : Fin N → 𝓞 E) : D.h x ∈ D.om' :=
   Submodule.mem_sup_left (Submodule.subset_span ⟨x, rfl⟩)
 
 /- English proof (translation)
-Use `set S := Submodule.span O (ι '' {x : D.om | (x : Ω) ∈ D.om'})`. Establish `hp : ∀ y ∈ P.om, (p ^ R) • y ∈ S`. Introduce `y hy`. Rewrite `hy` using `[← hred.span_eq]`. Proceed by induction on `hy using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem w hw`. Take `⟨m, rfl⟩` from `hw`. Use `Submodule.subset_span ⟨(p ^ R) • m, ?_, map_nsmul ι _ _⟩` and prove the remaining obligations. Use `pow_smul_mem D m.2` as an intermediate fact. Rewrite `this` using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Conclude with `this`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `S.add_mem ha hb`. Consider the case `smul a w _ hw => rw [smul_comm]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `S.smul_mem a hw`. Establish `hT : P.T ≤ S.comap (P.ht.restrictScalars O)`. Rewrite using `[P.free.2.2, Submodule.span_le]`. Introduce and unpack `_ ⟨⟨i, k⟩, rfl⟩`. Take `⟨y, hy, he⟩` from `hred.ht_eq (Pi.single i (RingOfIntegers.basis E k))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : P.tate (Pi.single i (RingOfIntegers.basis E k)) = P.ρ (RingOfIntegers.basis E k) (P.t i)`. Rewrite using `[HTPoint.tate, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `he` using `[h1]`. Express the relevant statement in the definitionally equal form `P.ht (P.ρ (RingOfIntegers.basis E k) (P.t i)) ∈ S`. Rewrite using `[← sub_eq_iff_eq_add.2 he]`. Conclude with `S.sub_mem (Submodule.subset_span ⟨_, h_mem_om' D _, rfl⟩) (hp y hy)`.
-
-Conclude with `hT ht`.
+A detailed English derivation is pending.
 -/
 theorem ht_mem_span {C O : Type} [Field C] [CommRing O] [Algebra O C] {κ' : O}
     {V Ω' : Type} [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V]
@@ -93,19 +91,17 @@ theorem ht_mem_span {C O : Type} [Field C] [CommRing O] [Algebra O C] {κ' : O}
 end
 
 /- English proof (translation)
-Introduce `A K _ _ _ _ _ _ _ _ E _ _ c hc p R N hp Ω _ _ _ _ D κ hκ hP hT`. Use `⟨om'_le D, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hp0 : algebraMap A K ((p : A) ^ R) ≠ 0`. Rewrite using `[map_pow, map_natCast]`. Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.2 hp.out.ne_zero)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlat : D.om'.IsLattice K` using `by haveI : Module.Finite A D.om := haveI := D.om_lat; Submodule.IsLattice.finite K D.om`. Use `⟨Submodule.FG.of_le D.om_lat.fg (om'_le D), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← D.om_lat.span_eq_top, Submodule.span_le]`. Introduce `y hy`. Establish `: y = (algebraMap A K ((p : A) ^ R))⁻¹ • (((p : A) ^ R) • y)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul K ((p : A) ^ R) y, smul_smul, inv_mul_cancel₀ hp0, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (pow_smul_mem D hy))`. Use `test_incl A K Ω D.om' _ hlat hP fun q hq h1 => ?_` and prove the remaining obligations. Distinguish the cases in `hpq : (p : A) ∈ q`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `swap`. Use `⟨(p : A) ^ R, fun h => hpq (hq.mem_of_pow_mem R h), ?_⟩` and prove the remaining obligations. Conclude with `pow_smul_mem D (D.om.smul_mem κ hx)`. Take `⟨C, O, _, _, _, _, _, v, φ, V, Ω', _, _, _, _, _, _, _, _, P, ι, hv, hφ, hcen, hred⟩` from `hT q hq h1 hpq`. Use `letI : Algebra A O := φ.toAlgebra`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, hj, -, hj1⟩` from `bc_iso A K Ω D.om C v O hv Ω' P.om ι D.om_lat D.om_proj P.om_lat hred.span_eq hred.rank_eq`. Take `⟨s, hs, hsx⟩` from `test_descend A K C v O hv q D.om (D.om'.comap D.om.subtype) (κ • ⟨x, hx⟩) hq h1 hφ hcen (by`. Take `⟨t, ht, hte⟩` from `P.κ_mem (ι ⟨x, hx⟩) (hred.span_eq ▸ Submodule.subset_span ⟨_, rfl⟩)`. Establish `h2` using `ht_mem_span D φ P ι hred ht`. Rewrite `h2` using `[hte, ← ι.map_smulₛₗ, ← hj1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `h3 : Submodule.span O (ι '' {x : D.om | (x : Ω) ∈ D.om'}) = (Submodule.span O ((fun y : D.om => (1 : O) ⊗ₜ[A] y) '' (D.om'.comap D.om.subtype : Set D.om))).map j`. Rewrite using `[Submodule.map_span, Set.image_image]`. Simplify using `only [hj1]`. Both sides reduce to the same expression. Rewrite `h2` using `[h3]`.
-
-Take `⟨z, hz, hze⟩` from `h2`. Rewrite using `[← hj hze])` and apply the resulting hypothesis. Conclude with `⟨s, hs, hsx⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chart_ii : ∀ (A K : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] [Field K] [Algebra A K] [IsFractionRing A K] [CharZero K] (E : Type) [Field E] [NumberField E] (c : E ≃+* E) (hc : ∀ x, c (c x) = x) (p R N : ℕ) [Fact p.Prime] (Ω : Type) [AddCommGroup Ω] [Module K Ω] [Module A Ω] [IsScalarTower A K Ω] (D : HTChart A K c p R N Ω) (κ : A), κ ∣ (p : A) ^ R → Module.Projective A D.om' → D.HasTestPoints κ → D.om' ≤ D.om ∧ (∀ x ∈ D.om, κ • x ∈ D.om') := by
   intro A K _ _ _ _ _ _ _ _ E _ _ c hc p R N hp Ω _ _ _ _ D κ hκ hP hT

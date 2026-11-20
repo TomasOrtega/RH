@@ -7,15 +7,15 @@ namespace GlobalTheory.ZModFlat
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `set n := a.down.val with hn`. Establish `ha : a = (n : ULift.{1} (ZMod q))`. Apply `ULift.down_injective` to reduce the goal to its premises. Rewrite using `[ULift.down_natCast, hn, ZMod.natCast_zmod_val]`. Establish `hq : ((q : ℕ) : ULift.{1} (ZMod q)) = 0` using `by ext; simp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgq : Nat.gcd n q ∣ q` using `Nat.gcd_dvd_right n q`. Establish `hgn : Nat.gcd n q ∣ n` using `Nat.gcd_dvd_left n q`. Use `⟨q / Nat.gcd n q, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, ← Nat.cast_mul]`. Establish `: q ∣ q / Nat.gcd n q * n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Nat.mul_dvd_mul (dvd_refl (q / Nat.gcd n q)) hgn`. Rewrite `h` using `[Nat.div_mul_cancel hgq]`. Then use the resulting hypothesis. Take `⟨m, hm⟩` from `this`. Rewrite using `[hm, Nat.cast_mul, hq, zero_mul]`. Apply `hdiv (Nat.gcd n q) (q / Nat.gcd n q) (Nat.mul_div_cancel' hgq)` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : n • y = 0`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q)), ← ha, hy]`. Establish `h2 : q • y = 0`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q)), hq, zero_smul]`. Establish `hb : ((Nat.gcd n q : ℕ) : ℤ) = n * Nat.gcdA n q + q * Nat.gcdB n q` using `Nat.gcd_eq_gcd_ab n q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((n : ℤ) * Nat.gcdA n q) • y = 0`. Rewrite using `[mul_comm, mul_smul, natCast_zsmul, h1, smul_zero]`. Establish `h4 : ((q : ℤ) * Nat.gcdB n q) • y = 0`. Rewrite using `[mul_comm, mul_smul, natCast_zsmul, h2, smul_zero]`. Rewrite using `[← natCast_zsmul, hb, add_smul, h3, h4, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_zero_of_smul_eq_zero (q : ℕ) [NeZero q] (M : Type 1) [AddCommGroup M]
     [Module (ULift.{1} (ZMod q)) M]
@@ -51,21 +51,21 @@ theorem exists_mul_eq_zero_of_smul_eq_zero (q : ℕ) [NeZero q] (M : Type 1) [Ad
     rw [← natCast_zsmul, hb, add_smul, h3, h4, add_zero]
 
 /- English proof (translation)
-Introduce `q _ M _ _ hdiv`. Use `haveI : IsPrincipalIdealRing (ULift.{1} (ZMod q)) := IsPrincipalIdealRing.of_surjective ((ULift.ringEquiv (R := ZMod q)).symm.toRingHom.comp (Int.castRingHom (ZMod q))) (by`. Introduce `x`. Take `⟨z, hz⟩` from `ZMod.intCast_surjective x.down`. Conclude with `⟨z, by apply ULift.down_injective; simpa using hz⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.Flat.iff_rTensor_injective']`. Introduce `J`. Take `⟨a, ha⟩` from `(IsPrincipalIdealRing.principal J).principal`. Set `b : J` to `⟨a, by rw [ha]; exact Submodule.mem_span_singleton_self a⟩`. Establish `hall : ∀ t : J ⊗[ULift.{1} (ZMod q)] M, ∃ y : M, t = b ⊗ₜ y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul r x`. Establish `hr : (r : ULift.{1} (ZMod q)) ∈ Submodule.span (ULift.{1} (ZMod q)) {a}` using `ha ▸ r.2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.mp hr`. Use `⟨c • x, ?_⟩` and prove the remaining obligations. Rewrite using `[← TensorProduct.smul_tmul]`. Use `congr 1`. Use `ext`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[b, ← hc]`. Consider the case `add s t hs ht`. Take `⟨y1, rfl⟩` from `hs`. Take `⟨y2, rfl⟩` from `ht`. Conclude with `⟨y1 + y2, (TensorProduct.tmul_add _ _ _).symm⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Take `⟨y, rfl⟩` from `hall t`. Establish `hy : a • y = 0`. Use `congrArg (TensorProduct.lid (ULift.{1} (ZMod q)) M) ht` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[b]`. Take `⟨e, he, z, rfl⟩` from `exists_mul_eq_zero_of_smul_eq_zero q M hdiv a y hy`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q)), ← TensorProduct.smul_tmul]`. Establish `: ((e : ULift.{1} (ZMod q))) • b = 0`. Use `ext`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[b, he]`. Rewrite using `[this, TensorProduct.zero_tmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_of_divisibility : ∀ (q : ℕ) [NeZero q] (M : Type 1) [AddCommGroup M]
     [Module (ULift.{1} (ZMod q)) M],

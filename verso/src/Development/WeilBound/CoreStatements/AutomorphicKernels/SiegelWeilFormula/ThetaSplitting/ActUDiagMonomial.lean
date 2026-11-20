@@ -19,14 +19,14 @@ def lf (b : Bool) (M : Matrix (Fin m) (Fin m) ℂ) (a : Fin m) (i : Fin n) : PX 
 def am (b : Bool) (u : Matrix (Fin m) (Fin m) ℂ) : Matrix (Fin m) (Fin m) ℂ := if b then u.map star else u
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [actU, lf, am]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem actU_X (u : Matrix (Fin m) (Fin m) ℂ) (a : Fin m) (i : Fin n) (b : Bool) :
     actU u (X (a, i, b)) = lf b (am b u) a i := by
   cases b <;> simp [actU, lf, am]
 
 /- English proof (translation)
-Simplify using `only [lf, C_mul', map_sum, map_smul, h, Finset.smul_sum, smul_smul, mul_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun x _ => C_mul'.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_lf (φ : PX m n →ₗ[ℂ] PX m n) (b : Bool) (N M : Matrix (Fin m) (Fin m) ℂ) (a : Fin m) (i : Fin n)
     (h : ∀ c, φ (X (c, i, b)) = lf b N c i) : φ (lf b M a i) = lf b (M * N) a i := by
@@ -37,26 +37,26 @@ theorem lin_lf (φ : PX m n →ₗ[ℂ] PX m n) (b : Bool) (N M : Matrix (Fin m)
   exact Finset.sum_congr rfl fun x _ => C_mul'.symm
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[mul_apply, star_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mstar_mul (A B : Matrix (Fin m) (Fin m) ℂ) : (A * B).map star = A.map star * B.map star := by
   ext i j; simp [mul_apply, star_sum]
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [am, mstar_mul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem am_mul (b : Bool) (A B : Matrix (Fin m) (Fin m) ℂ) : am b (A * B) = am b A * am b B := by
   cases b <;> simp [am, mstar_mul]
 
 /- English proof (translation)
-The claim follows from `lin_lf (actU u).toLinearMap b _ M a i fun c => actU_X u c i b`.
+A detailed English derivation is pending.
 -/
 theorem actU_lf (u M : Matrix (Fin m) (Fin m) ℂ) (b : Bool) (a : Fin m) (i : Fin n) :
     actU u (lf b M a i) = lf b (M * am b u) a i :=
   lin_lf (actU u).toLinearMap b _ M a i fun c => actU_X u c i b
 
 /- English proof (translation)
-Establish `h : (actU (n` using `n) A).comp (actU B) = actU (B * A) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, i, b⟩`. Rewrite using `[AlgHom.comp_apply, actU_X, actU_X, actU_lf, am_mul]`. Conclude with `congrArg (fun f : PX m n →ₐ[ℂ] PX m n => f P) h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actU_comp (A B : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) : actU A (actU B P) = actU (B * A) P := by
   have h : (actU (n := n) A).comp (actU B) = actU (B * A) := by
@@ -66,7 +66,7 @@ theorem actU_comp (A B : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) : actU A (actU
   exact congrArg (fun f : PX m n →ₐ[ℂ] PX m n => f P) h
 
 /- English proof (translation)
-Establish `h : actU (n` using `n) (1 : Matrix (Fin m) (Fin m) ℂ) = AlgHom.id ℂ _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, i, b⟩`. Apply the tactic sequence `cases b <;> simp [actU, one_apply]`. Rewrite using `[h]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -78,9 +78,9 @@ theorem actU_one (P : PX m n) : actU 1 P = P := by
   rw [h]; rfl
 
 /- English proof (translation)
-Establish `h : (aeval (R` using `ℂ) fun k : Fin m × Fin n × Bool => if k.2.2 then star (v k.1 k.2.1) else v k.1 k.2.1).comp (actU u) = aeval fun k : Fin m × Fin n × Bool => if k.2.2 then star ((u * v) k.1 k.2.1) else (u * v) k.1 k.2.1 := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, i, b⟩`. Consider the cases of `b`. Simplify using `[actU, mul_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Simplify using `[actU, mul_apply, star_sum]`. Establish `e` using `congrArg (fun f : PX m n →ₐ[ℂ] ℂ => f P) h`. Simplify using `only [AlgHom.comp_apply, coe_aeval_eq_eval] at e`. Conclude with `e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evX_actU (u : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) (v : Matrix (Fin m) (Fin n) ℂ) :
     evX (actU u P) v = evX P (u * v) := by
@@ -102,35 +102,35 @@ def dY (Y : Matrix (Fin m) (Fin m) ℂ) : Derivation ℂ (PX m n) (PX m n) :=
   MvPolynomial.mkDerivation ℂ fun k => lf k.2.2 (dm k.2.2 Y) k.1 k.2.1
 
 /- English proof (translation)
-Simplify using `[dY, mkDerivation_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dY_X (Y : Matrix (Fin m) (Fin m) ℂ) (a : Fin m) (i : Fin n) (b : Bool) :
     dY Y (X (a, i, b)) = lf b (dm b Y) a i := by
   simp [dY, mkDerivation_X]
 
 /- English proof (translation)
-The claim follows from `lin_lf (dY Y : Derivation ℂ (PX m n) (PX m n)).toLinearMap b _ M a i fun c => dY_X Y c i b`.
+A detailed English derivation is pending.
 -/
 theorem dY_lf (Y M : Matrix (Fin m) (Fin m) ℂ) (b : Bool) (a : Fin m) (i : Fin n) :
     dY Y (lf b M a i) = lf b (M * dm b Y) a i :=
   lin_lf (dY Y : Derivation ℂ (PX m n) (PX m n)).toLinearMap b _ M a i fun c => dY_X Y c i b
 
 /- English proof (translation)
-Simplify using `[lf, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lf_add (b : Bool) (M N : Matrix (Fin m) (Fin m) ℂ) (a : Fin m) (i : Fin n) :
     lf b (M + N) a i = lf b M a i + lf b N a i := by
   simp [lf, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[lf, C_mul', smul_smul, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lf_smul (b : Bool) (z : ℂ) (M : Matrix (Fin m) (Fin m) ℂ) (a : Fin m) (i : Fin n) :
     lf b (z • M) a i = z • lf b M a i := by
   simp [lf, C_mul', smul_smul, Finset.smul_sum]
 
 /- English proof (translation)
-Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, i, b⟩`. Rewrite using `[Derivation.add_apply, dY_X, dY_X, dY_X, ← lf_add]`. Use `congr 1`. Apply the tactic sequence `cases b <;> simp [dm, add_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dY_add (Y Y' : Matrix (Fin m) (Fin m) ℂ) : (dY (Y + Y') : Derivation ℂ (PX m n) (PX m n)) = dY Y + dY Y' := by
   apply MvPolynomial.derivation_ext
@@ -140,7 +140,7 @@ theorem dY_add (Y Y' : Matrix (Fin m) (Fin m) ℂ) : (dY (Y + Y') : Derivation �
   cases b <;> simp [dm, add_comm]
 
 /- English proof (translation)
-Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, i, b⟩`. Rewrite using `[Derivation.smul_apply, dY_X, dY_X, ← lf_smul]`. Use `congr 1`. Apply the tactic sequence `cases b <;> simp [dm]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dY_smul (z : ℂ) (Y : Matrix (Fin m) (Fin m) ℂ) : (dY (z • Y) : Derivation ℂ (PX m n) (PX m n)) = z • dY Y := by
   apply MvPolynomial.derivation_ext
@@ -150,13 +150,13 @@ theorem dY_smul (z : ℂ) (Y : Matrix (Fin m) (Fin m) ℂ) : (dY (z • Y) : Der
   cases b <;> simp [dm]
 
 /- English proof (translation)
-Establish `hid : ∀ Q : PX m n, actU V (actU (star V) Q) = Q` using `fun Q => by`. Rewrite using `[actU_comp, (mem_unitaryGroup_iff'.1 hV), actU_one]`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `: actU (n` using `n) (star V) (C a) = C a := by simp [actU]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[this, derivation_C, map_zero, derivation_C]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p k hp`. Establish `key : actU V (dY Y (actU (star V) (X k))) = dY (star V * Y * V) (X k)`. Take `⟨a, i, b⟩` from `k`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[actU_X, dY_lf, actU_lf, dY_X]`. Use `congr 1`. Consider the cases of `b`. Simplify using `[am, dm, Matrix.mul_assoc]`. Establish `h1 : (star V).map star = Vᵀ` using `by ext c e; simp [star_eq_conjTranspose]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : V.map star = (star V)ᵀ` using `by ext c e; simp [star_eq_conjTranspose]`. Simplify using `only [am, dm, if_true, h1, h2, transpose_mul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Rewrite using `[map_mul, Derivation.leibniz, smul_eq_mul, smul_eq_mul, map_add, map_mul, map_mul, hid, hid, hp, key, Derivation.leibniz, smul_eq_mul, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem actU_dY_actU (V : Matrix (Fin m) (Fin m) ℂ) (hV : V ∈ unitaryGroup (Fin m) ℂ) (Y : Matrix (Fin m) (Fin m) ℂ)
     (P : PX m n) : actU V (dY Y (actU (star V) P)) = dY (star V * Y * V) P := by
@@ -181,11 +181,11 @@ theorem actU_dY_actU (V : Matrix (Fin m) (Fin m) ℂ) (hV : V ∈ unitaryGroup (
       Derivation.leibniz, smul_eq_mul, smul_eq_mul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finsupp.induction with`. Consider the case `zero => simp`. Consider the case `single_add k e s _ _ ih`. Establish `e1 : (monomial (Finsupp.single k e + s) (1 : ℂ) : PX m n) = X k ^ e * monomial s 1`. Rewrite using `[X_pow_eq_monomial (R := ℂ), monomial_mul, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, Derivation.leibniz, Derivation.leibniz_pow, hD, ih, Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by push_cast; ring), Finsupp.sum_single_index (by simp)]`. Simplify using `only [smul_eq_mul, nsmul_eq_mul, map_add, map_mul, map_natCast]`. Break down `Nat.eq_zero_or_pos e with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: (X k : PX m n) ^ e = X k ^ (e - 1) * X k`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hpos]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem der_monomial (D : Derivation ℂ (PX m n) (PX m n)) (w : Fin m × Fin n × Bool → ℂ)
     (hD : ∀ k, D (X k) = C (w k) * X k) (s : Fin m × Fin n × Bool →₀ ℕ) :
@@ -205,11 +205,11 @@ theorem der_monomial (D : Derivation ℂ (PX m n) (PX m n)) (w : Fin m × Fin n 
       rw [this]; ring
 
 /- English proof (translation)
-Establish `hX : ∀ k : Fin m × Fin n × Bool, actU (n` using `n) (diagonal ζ) (X k) = C (if k.2.2 then star (ζ k.1) else ζ k.1) * X k := by`. Introduce and unpack `⟨a, i, b⟩`. Rewrite using `[actU_X]`. Consider the cases of `b`. Simplify using `only [lf, am, Bool.false_eq_true, if_false]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single a (fun c _ hc => by rw [diagonal_apply_ne _ (Ne.symm hc)]; simp) (by simp)]`. Simplify using the standard rewrite rules. Simplify using `only [lf, am, if_true]`. Rewrite using `[Finset.sum_eq_single a (fun c _ hc => by rw [map_apply, diagonal_apply_ne _ (Ne.symm hc)]; simp) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [monomial_eq, C_1, one_mul, Finsupp.prod, map_prod, map_pow, hX, mul_pow, ← Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actU_diag_monomial (ζ : Fin m → ℂ) (s : Fin m × Fin n × Bool →₀ ℕ) :
     actU (diagonal ζ) (monomial s 1) =
@@ -231,7 +231,7 @@ def chg (a : Fin m) (s : Fin m × Fin n × Bool →₀ ℕ) : ℤ :=
   s.sum fun k e => if k.1 = a then (if k.2.2 then -(e : ℤ) else e) else 0
 
 /- English proof (translation)
-Unfold `chg`. Apply the tactic sequence `rw [Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by split_ifs <;> push_cast <;> ring), Finsupp.sum_single_index (by simp)]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chg_add (a : Fin m) (k : Fin m × Fin n × Bool) (e : ℕ) (s : Fin m × Fin n × Bool →₀ ℕ) :
     chg a (Finsupp.single k e + s) = (if k.1 = a then (if k.2.2 then -(e : ℤ) else e) else 0) + chg a s := by
@@ -240,9 +240,9 @@ theorem chg_add (a : Fin m) (k : Fin m × Fin n × Bool) (e : ℕ) (s : Fin m ×
     Finsupp.sum_single_index (by simp)]
 
 /- English proof (translation)
-Establish `hz0 : z ≠ 0` using `fun h => by simp [h] at hz`. Establish `hs : star z = z⁻¹` using `eq_inv_of_mul_eq_one_left hz`. Proceed by induction on `s using Finsupp.induction with`. Consider the case `zero => simp [chg]`. Consider the case `single_add k e s _ _ ih`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finsupp.prod_add_index' (fun _ => by simp) (fun _ _ _ => by rw [pow_add]), Finsupp.prod_single_index (by simp), ih, chg_add, zpow_add₀ hz0]`. Use `congr 1`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp [hs, _root_.zpow_neg, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prod_phase (a : Fin m) (z : ℂ) (hz : star z * z = 1) (s : Fin m × Fin n × Bool →₀ ℕ) :
     (s.prod fun k e => (if k.2.2 then star (if k.1 = a then z else 1) else (if k.1 = a then z else 1)) ^ e) =
@@ -258,7 +258,7 @@ theorem prod_phase (a : Fin m) (z : ℂ) (hz : star z * z = 1) (s : Fin m × Fin
     split_ifs with h1 h2 h2 <;> simp [hs, _root_.zpow_neg, zpow_natCast]
 
 /- English proof (translation)
-Rewrite using `[show star (Complex.exp (t * Complex.I)) = Complex.exp (-(t * Complex.I)) by`. Rewrite using `[Complex.star_def, ← Complex.exp_conj]`. Simplify using `[Complex.conj_ofReal], ← Complex.exp_add, neg_add_cancel,`. Use the proof step `Complex.exp_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem star_exp_mul_I (t : ℝ) : star (Complex.exp (t * Complex.I)) * Complex.exp (t * Complex.I) = 1 := by
   rw [show star (Complex.exp (t * Complex.I)) = Complex.exp (-(t * Complex.I)) by
@@ -266,15 +266,13 @@ theorem star_exp_mul_I (t : ℝ) : star (Complex.exp (t * Complex.I)) * Complex.
     Complex.exp_zero]
 
 /- English proof (translation)
-Use `set q := chg a s`. Use `set z : ℂ := Complex.exp ((Real.pi / q : ℝ) * Complex.I)`. Establish `hz : star z * z = 1` using `star_exp_mul_I _`. Establish `hq : z ^ q = -1`. Rewrite using `[← Complex.exp_int_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (q : ℂ) * (((Real.pi / q : ℝ) : ℂ) * Complex.I) = Real.pi * Complex.I by push_cast; field_simp]`. Conclude with `Complex.exp_pi_mul_I`. Use `set ζ : Fin m → ℂ := fun c => if c = a then z else 1`. Establish `hu : diagonal ζ ∈ unitaryGroup (Fin m) ℂ`. Rewrite using `[mem_unitaryGroup_iff', star_eq_conjTranspose, diagonal_conjTranspose, diagonal_mul_diagonal, ← diagonal_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use extensionality with `c`. Simplify using `only [ζ, Pi.star_apply, Pi.mul_apply, Pi.one_apply]`. Use `split_ifs`. Conclude with `hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `e` using `hΛ _ hu (monomial s 1)`. Rewrite `e` using `[actU_diag_monomial, C_mul', map_smul, smul_eq_mul]`. Establish `e2 : (s.prod fun k e => (if k.2.2 then star (ζ k.1) else ζ k.1) ^ e) = -1`. Rewrite using `[← hq]`.
-
-Conclude with `prod_phase a z hz s`. Rewrite `e` using `[e2]`. Take the linear combination `-e / 2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem kill_charged (Λ : PX m n →ₗ[ℂ] ℂ) (hΛ : ∀ u ∈ unitaryGroup (Fin m) ℂ, ∀ P, Λ (actU u P) = Λ P)
     (s : Fin m × Fin n × Bool →₀ ℕ) (a : Fin m) (h : chg a s ≠ 0) : Λ (monomial s 1) = 0 := by
@@ -300,9 +298,9 @@ theorem kill_charged (Λ : PX m n →ₗ[ℂ] ℂ) (hΛ : ∀ u ∈ unitaryGroup
   linear_combination -e / 2
 
 /- English proof (translation)
-Simplify using `only [chg, Finsupp.sum, Int.cast_sum, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single k.1 (fun b _ hb => by`. Establish `: k.1 ≠ b` using `Ne.symm hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[this]) (by simp)]`. Break down `k with ⟨a, i, b⟩` into its components or cases. Apply the tactic sequence `cases b <;> simp [mul_comm]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_weight (d : Fin m → ℂ) (s : Fin m × Fin n × Bool →₀ ℕ) :
     (s.sum fun k e => (e : ℂ) * if k.2.2 then -d k.1 else d k.1) = ∑ a, d a * chg a s := by
@@ -316,15 +314,15 @@ theorem sum_weight (d : Fin m → ℂ) (s : Fin m × Fin n × Bool →₀ ℕ) :
   cases b <;> simp [mul_comm]
 
 /- English proof (translation)
-Establish `hD : ∀ k : Fin m × Fin n × Bool, dY (diagonal d) (X k) = C (if k.2.2 then -d k.1 else d k.1) * X k`. Introduce and unpack `⟨a, i, b⟩`. Rewrite using `[dY_X]`. Consider the cases of `b`. Simplify using `only [lf, dm, Bool.false_eq_true, if_false]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single a (fun c _ hc => by rw [diagonal_apply_ne _ (Ne.symm hc)]; simp) (by simp)]`. Simplify using the standard rewrite rules. Simplify using `only [lf, dm, if_true]`. Rewrite using `[Finset.sum_eq_single a (fun c _ hc => by`. Rewrite using `[Matrix.neg_apply, transpose_apply, diagonal_apply_ne _ hc]; simp) (by simp)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hmon : ∀ s, Λ (dY (diagonal d) (monomial s 1)) = 0` using `fun s => by`. Rewrite using `[der_monomial _ _ hD, C_mul', map_smul, smul_eq_mul, sum_weight]`. Distinguish the cases in `h : ∀ a, chg a s = 0`. Rewrite using `[Finset.sum_eq_zero fun a _ => by rw [h a]; simp, zero_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `push Not at h`. Take `⟨a, ha⟩` from `h`. Rewrite using `[kill_charged Λ hΛ s a ha, mul_zero]`. Rewrite using `[P.as_sum, map_sum, map_sum]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (monomial s (coeff s P) : PX m n) = coeff s P • monomial s 1 by rw [smul_monomial, smul_eq_mul, mul_one], (dY (diagonal d)).map_smul, map_smul, hmon, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem kill_diag (Λ : PX m n →ₗ[ℂ] ℂ) (hΛ : ∀ u ∈ unitaryGroup (Fin m) ℂ, ∀ P, Λ (actU u P) = Λ P)
     (d : Fin m → ℂ) (P : PX m n) : Λ (dY (diagonal d) P) = 0 := by
@@ -352,9 +350,9 @@ theorem kill_diag (Λ : PX m n →ₗ[ℂ] ℂ) (hΛ : ∀ u ∈ unitaryGroup (F
     (dY (diagonal d)).map_smul, map_smul, hmon, smul_zero]
 
 /- English proof (translation)
-Use `set U := hH.eigenvectorUnitary`. Establish `e` using `hH.spectral_theorem`. Rewrite `e` using `[Unitary.conjStarAlgAut_apply]`. Establish `hs : star (U : Matrix (Fin m) (Fin m) ℂ) ∈ unitaryGroup (Fin m) ℂ` using `Unitary.star_mem U.2`. Establish `e2 : H = star (star (U : Matrix (Fin m) (Fin m) ℂ)) * diagonal (RCLike.ofReal ∘ hH.eigenvalues) * star (U : Matrix (Fin m) (Fin m) ℂ)` using `by rw [star_star]; exact e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, ← actU_dY_actU _ hs, hΛ _ hs]`. Conclude with `kill_diag Λ hΛ _ _`.
+A detailed English derivation is pending.
 -/
 theorem kill_herm (Λ : PX m n →ₗ[ℂ] ℂ) (hΛ : ∀ u ∈ unitaryGroup (Fin m) ℂ, ∀ P, Λ (actU u P) = Λ P)
     (H : Matrix (Fin m) (Fin m) ℂ) (hH : H.IsHermitian) (P : PX m n) : Λ (dY H P) = 0 := by
@@ -368,13 +366,13 @@ theorem kill_herm (Λ : PX m n →ₗ[ℂ] ℂ) (hΛ : ∀ u ∈ unitaryGroup (F
   exact kill_diag Λ hΛ _ _
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨H₁, h1, H₂, h2, eY⟩ : ∃ H₁ : Matrix (Fin m) (Fin m) ℂ, H₁.IsHermitian ∧ ∃ H₂ : Matrix (Fin m) (Fin m) ℂ, H₂.IsHermitian ∧ Y = H₁ + Complex.I • H₂ := by`. Use `⟨(1 / 2 : ℂ) • (Y + Yᴴ), ?_, (1 / (2 * Complex.I) : ℂ) • (Y - Yᴴ), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [IsHermitian, conjTranspose_apply, Matrix.smul_apply, Matrix.add_apply, smul_eq_mul, star_mul', star_add, star_star]`. Rewrite using `[show star (1 / 2 : ℂ) = 1 / 2 by simp [Complex.ext_iff]]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use extensionality with `i j`. Simplify using `only [IsHermitian, conjTranspose_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, star_mul', star_sub, star_star]`. Rewrite using `[show star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I)) by`. Simplify using `[Complex.ext_iff, Complex.div_re, Complex.div_im]]`.
+Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[eY, dY_add, dY_smul, Derivation.add_apply, Derivation.smul_apply, map_add, map_smul, kill_herm Λ hΛ _ h1, kill_herm Λ hΛ _ h2, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kill_dY (Λ : PX m n →ₗ[ℂ] ℂ) (hΛ : ∀ u ∈ unitaryGroup (Fin m) ℂ, ∀ P, Λ (actU u P) = Λ P)
     (Y : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) : Λ (dY Y P) = 0 := by
@@ -400,7 +398,7 @@ theorem kill_dY (Λ : PX m n →ₗ[ℂ] ℂ) (hΛ : ∀ u ∈ unitaryGroup (Fin
     kill_herm Λ hΛ _ h2, smul_zero, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, Derivation.add_apply, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem dsum_apply {ι : Type} (s : Finset ι) (D : ι → Derivation ℂ (PX m n) (PX m n)) (P : PX m n) :
     (∑ i ∈ s, D i) P = ∑ i ∈ s, D i P := by
@@ -410,15 +408,15 @@ theorem dsum_apply {ι : Type} (s : Finset ι) (D : ι → Derivation ℂ (PX m 
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, Derivation.add_apply, ih]
 
 /- English proof (translation)
-Use `set D' : Derivation ℂ (PX m n) (PX m n) := ∑ i, ((X (b, i, false) : PX m n) • pderiv (a, i, false) - (X (a, i, true) : PX m n) • pderiv (b, i, true))`. Establish `h1 : hOp (fun _ => true) c a b P = D' P`. Simplify using `only [D', dsum_apply, Derivation.sub_apply, Derivation.smul_apply, smul_eq_mul, hOp, sgn, if_true, mul_one, sub_self, mul_zero, map_zero, zero_mul, sub_zero, C_1, one_mul]`. Establish `h2 : D' = dY (single a b 1)`. Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a', i', b'⟩`. Rewrite using `[dY_X]`. Simplify using `only [D', dsum_apply, Derivation.sub_apply, Derivation.smul_apply, smul_eq_mul, pderiv_X, Pi.single_apply, Prod.mk.injEq]`. Consider the cases of `b'`. Simplify using `only [lf, dm, Bool.false_eq_true, if_false, and_false, mul_zero, sub_zero, single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ha : a' = a`. Substitute `ha` using the available equality. Rewrite using `[Finset.sum_eq_single b (fun c _ hc => by simp [Ne.symm hc]) (by simp)]`. Rewrite using `[Finset.sum_eq_single i' (fun c _ hc => by simp [Ne.symm hc]) (by simp)]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Ne.symm ha, ha]`. Simplify using `only [lf, dm, if_true, and_false, and_true, mul_zero, zero_sub, single_apply, Matrix.neg_apply, transpose_apply]`. Distinguish the cases in `hb : a' = b`. Substitute `hb` using the available equality. Rewrite using `[Finset.sum_eq_single a (fun c _ hc => by simp [hc, Ne.symm hc]) (by simp)]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i' (fun c _ hc => by simp [Ne.symm hc]) (by simp)]`. Simplify using the standard rewrite rules. Simplify using `[Ne.symm hb, hb]`. Rewrite using `[h1, h2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hOp_eq (c : ℝ) (a b : Fin m) (P : PX m n) : hOp (fun _ => true) c a b P = dY (single a b 1) P := by
   set D' : Derivation ℂ (PX m n) (PX m n) := ∑ i, ((X (b, i, false) : PX m n) • pderiv (a, i, false) -
@@ -451,7 +449,7 @@ theorem hOp_eq (c : ℝ) (a b : Fin m) (P : PX m n) : hOp (fun _ => true) c a b 
   rw [h1, h2]
 
 /- English proof (translation)
-Rewrite using `[hOp_eq]`. Conclude with `kill_dY Λ hΛ _ P`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hOp_kill (Λ : PX m n →ₗ[ℂ] ℂ) (hΛ : ∀ u ∈ unitaryGroup (Fin m) ℂ, ∀ P, Λ (actU u P) = Λ P) (c : ℝ)
     (a b : Fin m) (P : PX m n) : Λ (hOp (fun _ => true) c a b P) = 0 := by

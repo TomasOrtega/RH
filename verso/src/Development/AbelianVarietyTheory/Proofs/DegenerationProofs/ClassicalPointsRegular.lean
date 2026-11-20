@@ -14,7 +14,7 @@ namespace GlobalTheory.ZH.MinorModel
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
 
 /- English proof (translation)
-Use `haveI := M.lft`. Use `haveI : LocallyOfFiniteType (spMap (algebraMap ℤ o)) := (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).2 (RingHom.finiteType_algebraMap.2 inferInstance)`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem locallyOfFiniteType_int [Algebra.FiniteType ℤ o] :
     LocallyOfFiniteType (M.s ≫ spMap (algebraMap ℤ o)) := by
@@ -24,9 +24,9 @@ theorem locallyOfFiniteType_int [Algebra.FiniteType ℤ o] :
   infer_instance
 
 /- English proof (translation)
-Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]`. Introduce and unpack `a ⟨⟨n, hn⟩, ha⟩`. Rewrite using `[Submodule.mem_bot]`. Break down `(U : Set M.Z).eq_empty_or_nonempty with hU | hU` into its components or cases. Take `rfl : U = ⊥` from `SetLike.coe_injective hU`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `Subsingleton.elim _ _`. Establish `h : n • M.res U hU a = 0`. Rewrite using `[← map_zsmul, show n • a = 0 from ha, map_zero]`. Conclude with `(map_eq_zero_iff _ (M.res_injective U hU)).1 ((smul_eq_zero.1 h).resolve_left (nonZeroDivisors.ne_zero hn))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_int_sections [CharZero Ω] (U : M.Z.Opens) : Module.Flat ℤ Γ(M.Z, U) := by
   rw [Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]
@@ -41,9 +41,9 @@ theorem flat_int_sections [CharZero Ω] (U : M.Z.Opens) : Module.Flat ℤ Γ(M.Z
       ((smul_eq_zero.1 h).resolve_left (nonZeroDivisors.ne_zero hn))
 
 /- English proof (translation)
-Use `HasRingHomProperty.of_iSup_eq_top (P := @Flat) (fun U : M.Z.affineOpens => U) (iSup_affineOpens_eq_top _) fun U => ?_` and prove the remaining obligations. Establish `e : (π.appLE ⊤ U le_top).hom = (algebraMap ℤ Γ(M.Z, U)).comp (Scheme.ΓSpecIso (CommRingCat.of ℤ)).hom.hom`. Establish `e' : ((Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv ≫ π.appLE ⊤ U le_top).hom = algebraMap ℤ Γ(M.Z, U)` using `RingHom.ext_int _ _`. Rewrite using `[← e', ← CommRingCat.hom_comp, Iso.hom_inv_id_assoc]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.Flat.comp (RingHom.Flat.of_bijective (Scheme.ΓSpecIso (CommRingCat.of ℤ)).commRingCatIsoToRingEquiv.bijective) (RingHom.flat_algebraMap_iff.2 (flat_int_sections M U))`.
+A detailed English derivation is pending.
 -/
 theorem flat_int [CharZero Ω] (π : M.Z ⟶ Sp ℤ) : Flat π := by
   refine HasRingHomProperty.of_iSup_eq_top (P := @Flat) (fun U : M.Z.affineOpens => U)
@@ -63,9 +63,9 @@ end GlobalTheory.ZH.MinorModel
 namespace GlobalTheory.ZH.MinorModel
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ _ M U₀ hn`. Use `haveI := locallyOfFiniteType_int M`. Use `haveI := flat_int M (M.s ≫ spMap (algebraMap ℤ o))`. Use `⟨fun U _ hU z hz => ⟨GlobalTheory.padicAlgCl_integral_points.1 M.Z (M.s ≫ spMap (algebraMap ℤ o)) z hz U hU, fun φ hφ hb => ?_⟩, (GlobalTheory.jacobson_closedPoints_tools_int M.Z (M.s ≫ spMap (algebraMap ℤ o))).1⟩` and prove the remaining obligations. Take `⟨f, rfl⟩` from `(RatModel.mem_ringOn_iff_exists hU).1 hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨W, ψ, hzW, h⟩` from `GlobalTheory.regular_of_bounded_at_padicAlgCl_points.1 M.Z (M.s ≫ spMap (algebraMap ℤ o)) z hz (hn z).2 U f hU fun p _ y h1 h2 => (RatModel.val_valF h2 f) ▸ hb p y ⟨h1, h2⟩`. Establish `hWU` using `M.nonempty_inf ⟨z, hzW⟩ hU`. Conclude with `⟨W, ψ, hzW, (M.valF_resG inf_le_left hWU ψ).symm.trans ((congrArg _ h).trans (M.valF_resG inf_le_right hWU f))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem classical_points_regular :
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [Algebra.FiniteType ℤ o] [CharZero Ω] (M : RatModel o Ω)

@@ -20,13 +20,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨p, ⟨p.1, c p.1⟩, rfl, rfl⟩`. Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨p, q, hpq, rfl⟩`. Establish `hp : y p / y ⟨p.1, c p.1⟩ ∈ ratioField y c` using `IntermediateField.subset_adjoin _ _ ⟨p, rfl⟩`. Establish `hq : y q / y ⟨q.1, c q.1⟩ ∈ ratioField y c` using `IntermediateField.subset_adjoin _ _ ⟨q, rfl⟩`. Establish `key : y p / y q = (y p / y ⟨p.1, c p.1⟩) / (y q / y ⟨q.1, c q.1⟩)`. Rewrite using `[← hpq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `hc p.1`. Distinguish the cases in `hq0 : y q = 0`. Simplify using `[hq0]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[key]`.
-
-Conclude with `div_mem hp hq`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratioField_eq_blockFnField (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) :
     ratioField y c = blockFnField y := by
@@ -48,11 +46,11 @@ theorem ratioField_eq_blockFnField (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (
     exact div_mem hp hq
 
 /- English proof (translation)
-Use `haveI hP : (mCoordIdeal y).IsPrime := RingHom.ker_isPrime (mConeMap y)`. Establish `hdim` using `GroundTheory.Heights₂.Heights.IntDomainDim.full (MRing ι ⧸ mCoordIdeal y) (algebraMap_injective _ (horizontal y))`. Establish `hne : ∀ k, ∃ i, ratioPtL y c ⟨k, i⟩ ≠ 0`. Introduce `k`. Use `⟨c k, fun h0 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `congrArg Subtype.val h0`. Express the relevant statement in the definitionally equal form `ratioPt y c ⟨k, c k⟩ = 0 at h1`. Simplify using `[ratioPt, hc k] at h1`. Establish `htr` using `GroundTheory.Heights₂.Heights.ConeTrdeg.full K ι (ratioField y c) (ratioPtL y c) (birational y c hc) hne (horizontal _)`. Rewrite `htr` using `[mCoordIdeal_ratioPtL y c hc]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdim, htr, ratioField_eq_blockFnField y c hc]`.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_coord (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) :
     ringKrullDim (MRing ι ⧸ mCoordIdeal y) =
@@ -74,7 +72,7 @@ theorem ringKrullDim_coord (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use `letI : Algebra L₁ L₂ := (IntermediateField.inclusion h).toRingHom.toAlgebra`. Set `f : L₂ →ₐ[L₁] Ω` to `{ toRingHom := L₂.val.toRingHom commutes' := fun _ => rfl }`. Use `haveI : Algebra.IsAlgebraic L₁ L₂ := ⟨fun x => (isAlgebraic_algHom_iff f Subtype.val_injective).mp (halg x x.2)⟩`. Establish `h0 : trdeg L₁ L₂ = 0` using `trdeg_eq_zero`. Rewrite using `[← trdeg_add_eq (R := ℤ) (S := L₁) (A := L₂), h0, add_zero]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trdeg_eq_of_le_of_isAlgebraic {L₁ L₂ : IntermediateField ℚ Ω} (h : L₁ ≤ L₂)
     (halg : ∀ t ∈ L₂, IsAlgebraic L₁ t) : Algebra.trdeg ℤ L₂ = Algebra.trdeg ℤ L₁ := by
@@ -90,19 +88,17 @@ theorem trdeg_eq_of_le_of_isAlgebraic {L₁ L₂ : IntermediateField ℚ Ω} (h 
 end Dim
 
 /- English proof (translation)
-Take `⟨hK, -, -, hdz⟩` from `hz`. Take `⟨hκ, -, hfst, hsurj⟩` from `hv`. Use `choose c' hc' using hy`. Establish `hcv : ∀ k : K, ∃ i : ι k, (y ∘ v) ⟨k, i⟩ ≠ 0`. Introduce `k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨k', i⟩, hp⟩` from `hsurj ⟨κ k, c' (κ k)⟩ ⟨k, rfl⟩`. Establish `h2 : k' = k`. Apply `hκ` to reduce the goal to its premises. Establish `h3` using `hfst ⟨k', i⟩`. Rewrite `h3` using `[hp]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `h3.symm`. Substitute `h2` using the available equality. Conclude with `⟨i, fun h0 => hc' _ (by rw [← hp]; exact h0)⟩`. Use `choose c hc using hcv`. Establish `e1` using `hdz.symm.trans (ringKrullDim_coord (y ∘ v) c hc)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hle : blockFnField (y ∘ v) ≤ blockFnField y`. Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, q, hpq, rfl⟩`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨v p, v q, by rw [hfst, hfst, hpq], rfl⟩`. Establish `htr` using `trdeg_eq_of_le_of_isAlgebraic hle halg`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Unfold `IsArithVar IsMultiProjPrime`. Use `⟨⟨κ hK.some⟩, ⟨RingHom.ker_isPrime (mConeMap y), isMultiHomogIdeal y, relevant y c' hc'⟩, horizontal y, ?_⟩` and prove the remaining obligations. Rewrite using `[ringKrullDim_coord y c' hc', htr]`. Generalize the expression as in `Algebra.trdeg ℤ ↥(blockFnField (y ∘ v)) = T at e1 ⊢`. Simplify using `only [map_add, map_natCast] at e1 ⊢`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. It suffices to derive a contradiction.
 
-Generalize the expression as in `Cardinal.toENat T = e at e1 ⊢`. Proceed by induction on `e using ENat.recTopCoe with`. Consider the case `top`. It suffices to derive a contradiction. Establish `h5 : ((d + Fintype.card K : ℕ) : ℕ∞) = ⊤` using `by exact_mod_cast e1`.
-
-Conclude with `ENat.natCast_ne_top _ h5`. Consider the case `coe m`. Normalize the coercions in `at e1 ⊢`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Treat this case separately. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isArithVar_of_isAlgebraic_image (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (K' : Type)
     [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (κ : K → K') (v : (Σ k, ι k) → Σ k, ι' k) (Ω : Type)

@@ -19,21 +19,21 @@ noncomputable def thetaS (sgn : K) : MvPolynomial (V D N) K →ₐ[K] MvPolynomi
     | Sum.inr i => X (Sum.inr i)
 
 /- English proof (translation)
-Simplify using `[thetaS]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem thetaS_X_inr (sgn : K) (i : Fin (D + 2)) :
     thetaS (D := D) (N := N) sgn (X (Sum.inr i)) = X (Sum.inr i) := by
   simp [thetaS]
 
 /- English proof (translation)
-Simplify using `[thetaS]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem thetaS_X_inl_zero (sgn : K) (j : Fin (N + 1)) :
     thetaS (D := D) (N := N) sgn (X (Sum.inl (0, j))) = X (Sum.inl (0, j)) := by
   simp [thetaS]
 
 /- English proof (translation)
-Simplify using `[thetaS, ha]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem thetaS_X_inl_of_ne_zero (sgn : K) {a : Fin (D + 2)} (ha : a ≠ 0) (j : Fin (N + 1)) :
     thetaS (D := D) (N := N) sgn (X (Sum.inl (a, j))) =
@@ -41,9 +41,9 @@ private theorem thetaS_X_inl_of_ne_zero (sgn : K) {a : Fin (D + 2)} (ha : a ≠ 
   simp [thetaS, ha]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `(⟨a, j⟩ | i)`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply, thetaS_X_inl_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hC : (C s + C t : MvPolynomial (V D N) K) = 0`. Rewrite using `[← C_add, hst, C_0]`. Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply, thetaS_X_inl_of_ne_zero _ ha, map_add, map_mul, thetaS_X_inr, thetaS_X_inl_zero, algHom_C, algebraMap_eq]`. Take the linear combination `(X (Sum.inr a) * X (Sum.inl (0, j)) : MvPolynomial (V D N) K) * hC`. Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply, thetaS_X_inr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem thetaS_comp (s t : K) (hst : s + t = 0) :
     (thetaS (D := D) (N := N) s).comp (thetaS t) = AlgHom.id K _ := by
@@ -66,7 +66,7 @@ noncomputable def theta : MvPolynomial (V D N) K ≃ₐ[K] MvPolynomial (V D N) 
 def iota (p : TVar D N) : V D N := Sum.inl (p.1.succ, p.2)
 
 /- English proof (translation)
-Introduce and unpack `⟨a, j⟩ ⟨b, k⟩ h`. Simplify using `only [iota, Sum.inl.injEq, Prod.mk.injEq, Fin.succ_inj] at h`. Take `⟨rfl, rfl⟩` from `h`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem iota_injective : Function.Injective (iota (D := D) (N := N)) := by
   rintro ⟨a, j⟩ ⟨b, k⟩ h
@@ -75,23 +75,23 @@ theorem iota_injective : Function.Injective (iota (D := D) (N := N)) := by
   rfl
 
 /- English proof (translation)
-Simplify using `[ev1]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ev1_X_inr_zero :
     ev1 (K := K) (D := D) (N := N) (X (Sum.inr 0)) = 1 := by
   simp [ev1]
 
 /- English proof (translation)
-Simplify using `[ev1, hv]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ev1_X_of_ne_inr_zero {v : V D N} (hv : v ≠ Sum.inr 0) :
     ev1 (K := K) (X v) = X v := by
   simp [ev1, hv]
 
 /- English proof (translation)
-Establish `key : (ev1 (K` using `K) (D := D) (N := N)).comp (aeval fun t : ReciprocityTheory.ChartRestriction.G.T0.TVar D N => (X (Sum.inr 0) * X (Sum.inl (t.1.succ, t.2)) - X (Sum.inr t.1.succ) * X (Sum.inl (0, t.2)) : MvPolynomial (V D N) K)) = (thetaS (-1)).comp (rename iota) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, j⟩`. Establish `h1 : (Sum.inl (a.succ, j) : V D N) ≠ Sum.inr 0` using `Sum.inl_ne_inr`. Establish `h2 : (Sum.inr a.succ : V D N) ≠ Sum.inr 0` using `fun h => Fin.succ_ne_zero a (Sum.inr_injective h)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (Sum.inl (0, j) : V D N) ≠ Sum.inr 0` using `Sum.inl_ne_inr`. Simplify using `only [AlgHom.comp_apply, aeval_X, map_sub, map_mul, ev1_X_inr_zero, ev1_X_of_ne_inr_zero h1, ev1_X_of_ne_inr_zero h2, ev1_X_of_ne_inr_zero h3, rename_X, iota, thetaS_X_inl_of_ne_zero _ (Fin.succ_ne_zero a), map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `DFunLike.congr_fun key F`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem evalOne_bilinearSubstitution (F : KTp K D N) : ev1 (bilinearSubstitution F) = theta (rename iota F) := by
   have key : (ev1 (K := K) (D := D) (N := N)).comp
@@ -112,9 +112,9 @@ theorem evalOne_bilinearSubstitution (F : KTp K D N) : ev1 (bilinearSubstitution
   exact DFunLike.congr_fun key F
 
 /- English proof (translation)
-Establish `hP : Prime F` using `UniqueFactorizationMonoid.irreducible_iff_prime.mp hF`. Establish `h1 : rename f F = rename ((↑) : Set.range f → β) (renameEquiv K (Equiv.ofInjective f hf) F)`. Rewrite using `[renameEquiv_apply, rename_rename]`. Use `congr 1`. Establish `h2 : Prime (renameEquiv K (Equiv.ofInjective f hf) F)` using `(MulEquiv.prime_iff _).mpr hP`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `((prime_rename_iff (Set.range f)).mpr h2).irreducible`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem irreducible_rename_of_injective_height {α β : Type} [Fintype α] {f : α → β}
     (hf : Function.Injective f) {F : MvPolynomial α K} (hF : Irreducible F) :
@@ -128,7 +128,7 @@ private theorem irreducible_rename_of_injective_height {α β : Type} [Fintype �
   exact ((prime_rename_iff (Set.range f)).mpr h2).irreducible
 
 /- English proof (translation)
-The claim follows from `(MulEquiv.irreducible_iff (theta (K := K) (D := D) (N := N))).mpr (irreducible_rename_of_injective_height iota_injective hF)`.
+A detailed English derivation is pending.
 -/
 theorem irreducible_theta_rename (F : KTp K D N) (hF : Irreducible F) :
     Irreducible (theta (rename (iota (D := D) (N := N)) F)) :=

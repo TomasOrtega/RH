@@ -25,20 +25,20 @@ def EffectiveCartierSupportContainsNoComponent : Prop :=
     ∀ C ∈ irreducibleComponents (X : Type u), ¬ C ⊆ (D.support : Set (X : Type u))
 
 /- English proof (translation)
-Introduce `_ _ hD _ hC` and use `hD.not_irreducibleComponent_subset_support hC`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem effectiveCartierSupportContainsNoComponent : EffectiveCartierSupportContainsNoComponent.{u} :=
   fun _ _ hD _ hC => hD.not_irreducibleComponent_subset_support hC
 
 /- English proof (translation)
-The claim follows from `PrincipalizationIsoTransport.nonzeroOnComponents_comap_iso f I h`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroOnComponents_comap_iso_hom {X Y : Scheme.{u}} (f : X ≅ Y) (I : Y.IdealSheafData)
     (h : NonzeroOnComponents I) : NonzeroOnComponents (I.comap f.hom) :=
   PrincipalizationIsoTransport.nonzeroOnComponents_comap_iso f I h
 
 /- English proof (translation)
-Introduce `V W hV hW hVne hWne`. Take `⟨a, haTU, haV⟩` from `hVne`. Take `⟨b, hbTU, hbW⟩` from `hWne`. Take `⟨x, hxT, hx1, hx2⟩` from `hT (V ∩ U) (W ∩ U) (hV.inter hU) (hW.inter hU) ⟨a, haTU.1, haV, haTU.2⟩ ⟨b, hbTU.1, hbW, hbTU.2⟩`. Conclude with `⟨x, ⟨hxT, hx1.2⟩, hx1.1, hx2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem isPreirreducible_inter_of_isOpen {α : Type u} [TopologicalSpace α] {T U : Set α}
     (hT : IsPreirreducible T) (hU : IsOpen U) : IsPreirreducible (T ∩ U) := by
@@ -51,9 +51,9 @@ private theorem isPreirreducible_inter_of_isOpen {α : Type u} [TopologicalSpace
   exact ⟨x, ⟨hxT, hx1.2⟩, hx1.1, hx2.1⟩
 
 /- English proof (translation)
-Introduce `O₁ O₂ hO₁ hO₂ h₁ h₂`. Take `⟨G₁, hG₁, rfl⟩` from `isOpen_induced_iff.mp hO₁`. Take `⟨G₂, hG₂, rfl⟩` from `isOpen_induced_iff.mp hO₂`. Take `⟨a, ha⟩` from `h₁`. Take `⟨b, hb⟩` from `h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hxV, hx1, hx2⟩` from `hV G₁ G₂ hG₁ hG₂ ⟨a.1, ha.1, ha.2⟩ ⟨b.1, hb.1, hb.2⟩`. Conclude with `⟨⟨x, hVU hxV⟩, hxV, hx1, hx2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem isPreirreducible_preimage_val {α : Type u} [TopologicalSpace α] {U V : Set α}
     (hVU : V ⊆ U) (hV : IsPreirreducible V) :
@@ -67,23 +67,21 @@ private theorem isPreirreducible_preimage_val {α : Type u} [TopologicalSpace α
   exact ⟨⟨x, hVU hxV⟩, hxV, hx1, hx2⟩
 
 /- English proof (translation)
-Establish `hCirr : IsIrreducible C` using `hC.1`. Establish `hVcOpen : IsOpen (f ⁻¹' Uc)` using `hUc.preimage hf`. Establish `hWne : (C ∩ f ⁻¹' Uc).Nonempty` using `⟨x₀, hx₀, hx₀U⟩`. Establish `hWirr : IsIrreducible (C ∩ f ⁻¹' Uc)` using `⟨hWne, isPreirreducible_inter_of_isOpen hCirr.2 hVcOpen⟩`. Establish `hImIrr : IsIrreducible (f '' (C ∩ f ⁻¹' Uc))` using `hWirr.image f hf.continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨T, hT, hTsub⟩` from `exists_mem_irreducibleComponents_subset_of_isIrreducible _ hImIrr`. Establish `hTirr : IsIrreducible T` using `hT.1`. Establish `hy₀T : f x₀ ∈ T` using `hTsub ⟨x₀, ⟨hx₀, hx₀U⟩, rfl⟩`. Establish `hSne : (T ∩ Uc).Nonempty` using `⟨f x₀, hy₀T, hx₀U⟩`. Establish `hSirr : IsIrreducible (T ∩ Uc)` using `⟨hSne, isPreirreducible_inter_of_isOpen hTirr.2 hUc⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre : IsIrreducible ((Subtype.val : ↥Uc → β) ⁻¹' (T ∩ Uc))` using `⟨⟨⟨f x₀, hx₀U⟩, hy₀T, hx₀U⟩, isPreirreducible_preimage_val (fun y hy => hy.2) hSirr.2⟩`. Establish `hVeq : f ⁻¹' (T ∩ Uc) = g '' ((Subtype.val : ↥Uc → β) ⁻¹' (T ∩ Uc))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy⟩` from `hgs x hx.2`. Use `⟨y, ?_, hy⟩` and prove the remaining obligations. Establish `h3 : f (g y) = (y : β)` using `hgf y`. Rewrite `h3` using `[hy]`. Use `show (y : β) ∈ T ∩ Uc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h3]`. Conclude with `hx`. Introduce and unpack `⟨y, hy, rfl⟩ show f (g y) ∈ T ∩ Uc`. Rewrite using `[hgf y]`. Conclude with `hy`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hVirr : IsIrreducible (f ⁻¹' (T ∩ Uc))`. Rewrite using `[hVeq]`. Conclude with `hpre.image g hgc.continuousOn`. Establish `hWV : C ∩ f ⁻¹' Uc ⊆ f ⁻¹' (T ∩ Uc)` using `fun x hx => ⟨hTsub ⟨x, hx, rfl⟩, hx.2⟩`. Establish `hCcl : C ⊆ closure (C ∩ f ⁻¹' Uc)` using `subset_closure_inter_of_isPreirreducible_of_isOpen hCirr.2 hVcOpen hWne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hVC : f ⁻¹' (T ∩ Uc) ⊆ C` using `subset_closure.trans (hC.2 hVirr.closure (hCcl.trans (closure_mono hWV)))`. Establish `hVW : f ⁻¹' (T ∩ Uc) ⊆ C ∩ f ⁻¹' Uc` using `fun x hx => ⟨hVC hx, hx.2⟩`. Establish `hTUK : T ∩ Uc ⊆ K`. Introduce `y hy`. Establish `hx : g ⟨y, hy.2⟩ ∈ C ∩ f ⁻¹' Uc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hVW ?_` and prove the remaining obligations. Use `show f (g ⟨y, hy.2⟩) ∈ T ∩ Uc`. Rewrite using `[hgf ⟨y, hy.2⟩]`. Conclude with `hy`. Establish `h5 : f (g ⟨y, hy.2⟩) ∈ K` using `hCK hx.1`.
-
-Rewrite `h5` using `[hgf ⟨y, hy.2⟩]`. Conclude with `h5`. Use `⟨T, hT, ?_⟩` and prove the remaining obligations. Establish `hd : T ⊆ closure (T ∩ Uc)` using `subset_closure_inter_of_isPreirreducible_of_isOpen hTirr.2 hUc hSne`. Conclude with `hd.trans (closure_minimal hTUK hK)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_irreducibleComponent_subset_of_section {α : Type u} {β : Type u}
     [TopologicalSpace α] [TopologicalSpace β]
@@ -146,7 +144,7 @@ private theorem exists_irreducibleComponent_subset_of_section {α : Type u} {β 
   exact hd.trans (closure_minimal hTUK hK)
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[Scheme.IdealSheafData.support_comap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem coe_support_comap_eq_preimage {X Y : Scheme.{u}} (f : X ⟶ Y) (I : Y.IdealSheafData) :
     ((I.comap f).support : Set ↥X) = ⇑f.base ⁻¹' (I.support : Set ↥Y) := by
@@ -154,15 +152,15 @@ private theorem coe_support_comap_eq_preimage {X Y : Scheme.{u}} (f : X ⟶ Y) (
   simp [Scheme.IdealSheafData.support_comap]
 
 /- English proof (translation)
-Use `Blowup.blowupIsIsoOffCenter X X' π Z hπ` as an intermediate fact. Establish `hinvhom : ∀ (A B : Scheme.{u}) (f : A ≅ B) (z : ↥B), f.hom.base (f.inv.base z) = z`. Introduce `A B f z`. Simplify using the standard rewrite rules. Establish `hhominv : ∀ (A B : Scheme.{u}) (f : A ≅ B) (z : ↥A), f.inv.base (f.hom.base z) = z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `A B f z`. Simplify using the standard rewrite rules. Set `e` to `asIso (π ∣_ Z.support.compl)`. Establish `hmem : ∀ y : ↥(((Z.support : Set ↥X))ᶜ), (y : ↥X) ∈ Z.support.compl` using `fun y => y.2`. Establish `hcont : Continuous (⇑e.inv.base)` using `e.inv.continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun y => (e.inv.base ⟨(y : ↥X), hmem y⟩).1, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_subtype_val.comp (hcont.comp (continuous_subtype_val.subtype_mk hmem))`. Introduce `y`. Establish `h1 : e.hom.base (e.inv.base ⟨(y : ↥X), hmem y⟩) = ⟨(y : ↥X), hmem y⟩` using `hinvhom _ _ e _`. Establish `h2` using `morphismRestrict_base_coe π Z.support.compl (e.inv.base ⟨(y : ↥X), hmem y⟩)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ⇑π.base (e.inv.base ⟨(y : ↥X), hmem y⟩).1 = (y : ↥X)`. Rewrite using `[← h2]`. Conclude with `congrArg Subtype.val h1`. Introduce `x hx`. Establish `hx' : x ∈ π ⁻¹ᵁ Z.support.compl` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨⇑π.base x, hx⟩, ?_⟩` and prove the remaining obligations. Establish `hb : e.hom.base (⟨x, hx'⟩ : ↥(π ⁻¹ᵁ Z.support.compl).toScheme) = ⟨⇑π.base x, hmem ⟨⇑π.base x, hx⟩⟩` using `Subtype.ext (morphismRestrict_base_coe π Z.support.compl ⟨x, hx'⟩)`. Establish `hc : e.inv.base (e.hom.base (⟨x, hx'⟩ : ↥(π ⁻¹ᵁ Z.support.compl).toScheme)) = ⟨x, hx'⟩` using `hhominv _ _ e _`. Rewrite `hc` using `[hb]`. Conclude with `congrArg Subtype.val hc`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_section_off_center {X X' : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (hπ : Blowup.IsBlowupAlongIdealSheaf π Z) :
@@ -201,15 +199,13 @@ private theorem exists_section_off_center {X X' : Scheme.{u}} (π : X' ⟶ X) (Z
     exact congrArg Subtype.val hc
 
 /- English proof (translation)
-Rewrite `hI`, the goal using `[nonzeroOnComponents_iff]`. Introduce `C hC hsub`. Establish `hsub2 : C ⊆ ((I.comap π).support : Set ↥X')`. Introduce `x hx`. Establish `h1 : stalkIdeal I' x ≠ ⊤` using `(mem_support_iff_stalkIdeal_ne_top I' x).mp (hsub hx)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(mem_support_iff_stalkIdeal_ne_top (I.comap π) x).mpr ?_` and prove the remaining obligations. Rewrite using `[← htr, stalkIdeal_mul]`. Introduce `hcon`. Establish `hle : stalkIdeal ((Z.comap π) ^ m) x * stalkIdeal I' x ≤ stalkIdeal I' x` using `le_trans Ideal.mul_le_inf inf_le_right`. Rewrite `hle` using `[hcon]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1 (top_le_iff.mp hle)`. Take `⟨x₀, hx₀C, hx₀E⟩` from `Set.not_subset.mp (hcart X' (Z.comap π) hπ.1 C hC)`. Establish `hx₀U : ⇑π.base x₀ ∈ ((Z.support : Set ↥X))ᶜ`. Introduce `hmem`. Use `hx₀E ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_support_comap_eq_preimage π Z]`. Conclude with `hmem`. Establish `hCK : C ⊆ ⇑π.base ⁻¹' ((I.support : Set ↥X))`. Rewrite using `[← coe_support_comap_eq_preimage π I]`. Conclude with `hsub2`.
-
-Take `⟨g, hgc, hgf, hgs⟩` from `exists_section_off_center π Z hπ`. Take `⟨T, hTcomp, hTK⟩` from `exists_irreducibleComponent_subset_of_section (⇑π.base) π.continuous (((Z.support : Set ↥X))ᶜ) (Z.support.2.isOpen_compl) g hgc hgf hgs C hC x₀ hx₀C hx₀U ((I.support : Set ↥X)) I.support.2 hCK`. Conclude with `hI T hTcomp hTK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nonzeroOnComponents_of_pow_mul_eq_comap (hcart : EffectiveCartierSupportContainsNoComponent.{u})
     {X X' : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData) (hπ : Blowup.IsBlowupAlongIdealSheaf π Z) (m : ℕ)
@@ -247,11 +243,11 @@ theorem nonzeroOnComponents_of_pow_mul_eq_comap (hcart : EffectiveCartierSupport
 namespace MarkedSequenceOfBlowups
 
 /- English proof (translation)
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `_`. Rewrite using `[s.ideal_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nonzeroOnComponents_comap_iso_hom s.toSequenceOfBlowups.isoZero T.ideal hT.nonzeroOnComponents`. Consider the case `succ n ih`. Introduce `hn`. Establish `hlt : n < s.toSequenceOfBlowups.length` using `hn`. Use `nonzeroOnComponents_of_pow_mul_eq_comap hcart (s.toSequenceOfBlowups.transitionMapSucc n) (s.toSequenceOfBlowups.center n) (s.toSequenceOfBlowups.isBlowupAlongIdealSheaf_blowupMorphism n hlt) T.mult (s.ideal n) (s.ideal (n + 1)) ?_ (ih (Nat.le_of_lt hlt))` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `he : Blowup.exceptionalIdeal (s.toSequenceOfBlowups.transitionMapSucc n) (s.toSequenceOfBlowups.center n) = (s.toSequenceOfBlowups.center n).comap (s.toSequenceOfBlowups.transitionMapSucc n)` using `s.exceptionalDivisor_eq n`. Rewrite using `[← he]`. Conclude with `s.ideal_succ n hlt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonzeroOnComponents_ideal_of_isAdmissible (hcart : EffectiveCartierSupportContainsNoComponent.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible) (s : T.SequenceOfBlowups) :
@@ -274,9 +270,9 @@ theorem nonzeroOnComponents_ideal_of_isAdmissible (hcart : EffectiveCartierSuppo
     exact s.ideal_succ n hlt
 
 /- English proof (translation)
-Introduce `i hi W hW hsub`. Establish `hlt : i < s.toSequenceOfBlowups.length` using `hi`. Establish `hnz` using `nonzeroOnComponents_ideal_of_isAdmissible hcart hT s i (Nat.le_of_lt hlt)`. Rewrite `hnz` using `[nonzeroOnComponents_iff]`. Use `hnz W hW (hsub.trans ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Establish `h2 : x ∈ orderAtLeastLocus (s.ideal i) T.mult` using `s.center_order i hlt hx`. Conclude with `(mem_orderAtLeastLocus_one_iff (s.ideal i) x).mp (orderAtLeastLocus_subset_of_le (s.ideal i) hT.one_le_mult h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem centersContainNoComponent_ofMarkedSequence (hcart : EffectiveCartierSupportContainsNoComponent.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible) (s : T.SequenceOfBlowups) :

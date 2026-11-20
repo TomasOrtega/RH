@@ -40,9 +40,9 @@ theorem smul_eq {X : Scheme.{0}} (I : X.IdealSheafData) {W : X.Opens} (r : Γ(X,
       (I.subschemeι.app W).hom r * structureModuleSectionsEquiv (X := I.subscheme) (I.subschemeι ⁻¹ᵁ W) m := rfl
 
 /- English proof (translation)
-Rewrite using `[epi_iff_forall_affine]`. Introduce `U hU y`. Take `⟨f, hf⟩` from `I.subschemeι_app_surjective ⟨U, hU⟩ ((structureModuleSectionsEquiv _) y)`. Use `⟨(structureModuleSectionsEquiv U).symm f, ?_⟩` and prove the remaining obligations. Apply `(structureModuleSectionsEquiv _).injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem epi_toSubscheme {X : Scheme.{0}} (I : X.IdealSheafData) : Epi (toSubscheme I) := by
   rw [epi_iff_forall_affine]
@@ -54,15 +54,13 @@ theorem epi_toSubscheme {X : Scheme.{0}} (I : X.IdealSheafData) : Epi (toSubsche
   rfl
 
 /- English proof (translation)
-Use `⟨mkSec (fun i => (structureModuleSectionsEquiv (X := I.subscheme) (I.subschemeι ⁻¹ᵁ (⊤ ⊓ M.U i))).symm ((I.subscheme.presheaf.map (homOfLE (fun z hz => (mem_pull (F := I.subschemeι) (J := fun _ => i)).2 hz.2 : I.subschemeι ⁻¹ᵁ (⊤ ⊓ M.U i) ≤ (M.pull I.subschemeι).U (fun _ => i))). …` and prove the remaining obligations. Introduce `i j`. Apply `(structureModuleSectionsEquiv (X := I.subscheme) (I.subschemeι ⁻¹ᵁ (⊤ ⊓ M.U i ⊓ M.U j))).injective` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[smul_eq, res_eq, res_eq]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : ∀ z ∈ I.subschemeι ⁻¹ᵁ (⊤ ⊓ M.U i ⊓ M.U j), z ∈ (M.pull I.subschemeι).U (fun _ => i)` using `fun z hz => (mem_pull (F := I.subschemeι)).2 hz.1.2`. Establish `hj : ∀ z ∈ I.subschemeι ⁻¹ᵁ (⊤ ⊓ M.U i ⊓ M.U j), z ∈ (M.pull I.subschemeι).U (fun _ => j)` using `fun z hz => (mem_pull (F := I.subschemeι)).2 hz.2`. Use `fn_ext fun z hz => ?_` and prove the remaining obligations. Establish `e1` using `gs_res (𝟙 I.subscheme) z (fun _ hz => hz.1 : I.subschemeι ⁻¹ᵁ (⊤ ⊓ M.U i ⊓ M.U j) ≤ I.subschemeι ⁻¹ᵁ (⊤ ⊓ M.U i)) hz ((I.subscheme.presheaf.map (homOfLE (fun z hz => (mem_pull (F := I.subschemeι) (J := fun _ => i)).2 hz.2 : I.subschemeι ⁻¹ᵁ (⊤ ⊓ M.U i) ≤ (M.pull I.subschemeι).U ( …`. Establish `e1'` using `gs_res (𝟙 I.subscheme) z (fun z hz => (mem_pull (F := I.subschemeι) (J := fun _ => i)).2 hz.2 : I.subschemeι ⁻¹ᵁ (⊤ ⊓ M.U i) ≤ (M.pull I.subschemeι).U (fun _ => i)) hz.1 (σ.f (fun _ => i))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `gs_res (𝟙 I.subscheme) z (fun _ hz => ⟨hz.1.1, hz.2⟩ : I.subschemeι ⁻¹ᵁ (⊤ ⊓ M.U i ⊓ M.U j) ≤ I.subschemeι ⁻¹ᵁ (⊤ ⊓ M.U j)) hz ((I.subscheme.presheaf.map (homOfLE (fun z hz => (mem_pull (F := I.subschemeι) (J := fun _ => j)).2 hz.2 : I.subschemeι ⁻¹ᵁ (⊤ ⊓ M.U j) ≤ (M.pull I.subsc …`. Establish `e2'` using `gs_res (𝟙 I.subscheme) z (fun z hz => (mem_pull (F := I.subschemeι) (J := fun _ => j)).2 hz.2 : I.subschemeι ⁻¹ᵁ (⊤ ⊓ M.U j) ≤ (M.pull I.subschemeι).U (fun _ => j)) ⟨hz.1.1, hz.2⟩ (σ.f (fun _ => j))`. Establish `hz' : I.subschemeι z ∈ M.U i ⊓ M.U j` using `⟨hz.1.2, hz.2⟩`. Establish `e3` using `gs_pull (𝟙 I.subscheme) I.subschemeι z (⊤ ⊓ M.U i ⊓ M.U j) hz (resG X (le_inf (inf_le_left.trans inf_le_right) inf_le_right) (M.g i j : Γ(X, M.U i ⊓ M.U j)))`. Establish `e4` using `gs_res (𝟙 I.subscheme ≫ I.subschemeι) z (le_inf (inf_le_left.trans inf_le_right) inf_le_right : ⊤ ⊓ M.U i ⊓ M.U j ≤ M.U i ⊓ M.U j) hz (M.g i j : Γ(X, M.U i ⊓ M.U j))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e5` using `gs_unit (𝟙 I.subscheme ≫ I.subschemeι) z _ hz' (M.g i j)`. Establish `e6` using `gs_compat σ (𝟙 _) z (hi z hz) (hj z hz)`. Establish `e7` using `gm_pull_g M I.subschemeι (𝟙 _) z (fun _ => i) (fun _ => j) (hi z hz) (hj z hz)`. Rewrite using `[gs_mul _ z _ hz]`. Use `erw [e1, e1', e2, e2', e3, e4, e5, e6, e7]`.
-
-Conclude with `LinearEquiv.apply_symm_apply _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_twistSec_of_sec {X : Scheme.{0}} (I : X.IdealSheafData) (M : LB X) (σ : (M.pull I.subschemeι).Sec) :
     ∃ b : Γ(twist ((Scheme.Modules.pushforward I.subschemeι).obj (QCoh.structureModule I.subscheme)) M, ⊤),
@@ -103,11 +101,11 @@ theorem exists_twistSec_of_sec {X : Scheme.{0}} (I : X.IdealSheafData) (M : LB X
   · exact LinearEquiv.apply_symm_apply _ _
 
 /- English proof (translation)
-Use `DVR.SecOps.sec_ext fun J => ?_` and prove the remaining obligations. Establish `h1` using `hb (J PUnit.unit)`. Rewrite `h1` using `[← ha, coord_map_app]`. Express the relevant statement in the definitionally equal form `(I.subschemeι.appLE _ _ _).hom (resG X _ (structureModuleSectionsEquiv _ (coord a (J PUnit.unit)))) = _`. Use `set i := J PUnit.unit`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hJ : (fun _ : PUnit => i) = J` using `rfl`. Establish `h2 : (I.subschemeι.app (⊤ ⊓ M.U i)).hom (structureModuleSectionsEquiv _ (coord a i)) = (I.subscheme.presheaf.map (homOfLE (fun z hz => (mem_pull (F` using `I.subschemeι) (J := fun _ => i)).2 hz.2 : I.subschemeι ⁻¹ᵁ (⊤ ⊓ M.U i) ≤ (M.pull I.subschemeι).U (fun _ => i))).op).hom (σ.f J) := h1`. Establish `e3 : ∀ y : Γ(X, ⊤ ⊓ M.U i), (I.subschemeι.appLE (M.U i) ((M.pull I.subschemeι).U J) (fun z hz => (mem_pull (F` using `I.subschemeι)).1 hz)).hom (resG X (le_inf le_top le_rfl) y) = (I.subscheme.presheaf.map (homOfLE (fun z hz => ⟨trivial, (mem_pull (F := I.subschemeι)).1 hz⟩ : (M.pull I.subschemeι).U J ≤ I.subschemeι ⁻¹ᵁ (⊤ ⊓ M.U i))).op).hom ((I.subschemeι.app _).hom y) := by`. Introduce `y`. Rewrite using `[← CommRingCat.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `erw [Scheme.Hom.map_appLE]`. Rewrite using `[Scheme.Hom.appLE, CommRingCat.comp_apply]`. Use `(e3 _).trans ?_` and prove the remaining obligations. Rewrite using `[h2, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Conclude with `(congrArg (fun q => (I.subscheme.presheaf.map q).hom (σ.f J)) (Subsingleton.elim _ (𝟙 _))).trans (by rw [CategoryTheory.Functor.map_id]; rfl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secPull_secOfTwist_eq {X : Scheme.{0}} (I : X.IdealSheafData) (M : LB X) (σ : (M.pull I.subschemeι).Sec)
     (b : Γ(twist ((Scheme.Modules.pushforward I.subschemeι).obj (QCoh.structureModule I.subscheme)) M, ⊤))
@@ -140,9 +138,9 @@ theorem secPull_secOfTwist_eq {X : Scheme.{0}} (I : X.IdealSheafData) (M : LB X)
     (by rw [CategoryTheory.Functor.map_id]; rfl)
 
 /- English proof (translation)
-Use `haveI := epi_toSubscheme I`. Set `S : ShortComplex X.Modules` to `ShortComplex.mk (idealModuleι I) (toSubscheme I) (Limits.kernel.condition _)`. Establish `hS : S.ShortExact` using `{ exact := ShortComplex.exact_kernel _ }`. Establish `hsurj` using `cohOn.app_surjective (Twist.shortExact_map hM hS) ⊤ h`. Take `⟨b, hb⟩` from `exists_twistSec_of_sec I M σ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hsurj b`. Conclude with `⟨_, secPull_secOfTwist_eq I M σ b hb a ha⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_secPull_eq_of_subsingleton {X : Scheme.{0}} (I : X.IdealSheafData) (M : LB X) (hM : M.IsLB)
     (h : Subsingleton (coh (twist (idealModule I) M) 1)) (σ : (M.pull I.subschemeι).Sec) :
@@ -157,7 +155,7 @@ theorem exists_secPull_eq_of_subsingleton {X : Scheme.{0}} (I : X.IdealSheafData
   exact ⟨_, secPull_secOfTwist_eq I M σ b hb a ha⟩
 
 /- English proof (translation)
-Introduce `X _ _ p hp N Z hN`. Use `letI := algebraΓOfHom p`. Use `(isProper_and_exists_isAmpleLB_of_isProjOver hp).1` as an intermediate fact. Use `(hN.eventually_subsingleton_coh_twist (f := p) (fun _ => rfl) (idealModule (Scheme.IdealSheafData.vanishingIdeal Z))).mono fun l hl σ => ?_` and prove the remaining obligations. Conclude with `exists_secPull_eq_of_subsingleton _ _ (isLB_lbPow hN.isLB l) (hl 1 one_pos) σ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eventually_exists_secPull_eq : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ), IsProjOver p → ∀ (N : LB X) (Z : Closeds X), IsAmpleLB N → ∀ᶠ l in atTop, ∀ σ : ((lbPow N l).pull (redι Z)).Sec, ∃ s : (lbPow N l).Sec, GlobalTheory.secPull s (redι Z) = σ := by
   intro X _ _ p hp N Z hN

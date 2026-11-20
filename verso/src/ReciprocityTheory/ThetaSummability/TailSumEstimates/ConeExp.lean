@@ -7,7 +7,7 @@ open MeasureTheory Finset Real
 variable {r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [tailSum, partialSum, Finset.sum_filter, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_mul_tailSum (s y : Fin r → ℝ) :
     ∑ i, s i * tailSum y i = ∑ k, partialSum s k * y k := by
@@ -17,7 +17,7 @@ theorem sum_mul_tailSum (s y : Fin r → ℝ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Rewrite using `[sum_mul_tailSum, Real.exp_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_sum_mul_tailSum_eq (s : Fin r → ℝ) :
     (fun y : Fin r → ℝ => exp (∑ i, s i * tailSum y i)) =
@@ -26,9 +26,7 @@ theorem exp_sum_mul_tailSum_eq (s : Fin r → ℝ) :
   rw [sum_mul_tailSum, Real.exp_sum]
 
 /- English proof (translation)
-Rewrite using `[integrableOn_logCone_iff]`. Use `show IntegrableOn (fun y : Fin r → ℝ => exp (∑ i, s i * tailSum y i)) (lowerBox r c)`. Rewrite using `[exp_sum_mul_tailSum_eq, IntegrableOn, lowerBox, volume_pi, Measure.restrict_pi_pi]`. Use `Integrable.fintype_prod (E := ℝ) (f := fun (k : Fin r) (t : ℝ) => exp (partialSum s k * t)) (μ := fun _ => volume.restrict (Set.Ici c)) fun k => ?_` and prove the remaining obligations. Use `show IntegrableOn (fun t : ℝ => exp (partialSum s k * t)) (Set.Ici c)`.
-
-Rewrite using `[integrableOn_Ici_iff_integrableOn_Ioi]`. Conclude with `integrableOn_exp_mul_Ioi (hs k) c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_exp_logCone (c : ℝ) {s : Fin r → ℝ} (hs : ∀ k, partialSum s k < 0) :
     IntegrableOn (fun x => exp (∑ i, s i * x i)) (logCone r c) := by
@@ -42,7 +40,7 @@ theorem integrableOn_exp_logCone (c : ℝ) {s : Fin r → ℝ} (hs : ∀ k, part
   exact integrableOn_exp_mul_Ioi (hs k) c
 
 /- English proof (translation)
-Rewrite using `[setIntegral_logCone]`. Use `show ∫ y in lowerBox r c, (fun y : Fin r → ℝ => exp (∑ i, s i * tailSum y i)) y = _`. Rewrite using `[exp_sum_mul_tailSum_eq, lowerBox, volume_pi, Measure.restrict_pi_pi, integral_fintype_prod_eq_prod (E := fun _ => ℝ) (fun (k : Fin r) (t : ℝ) => exp (partialSum s k * t))]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[integral_Ici_eq_integral_Ioi, integral_exp_mul_Ioi (hs k), neg_div, div_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_exp_logCone (c : ℝ) {s : Fin r → ℝ} (hs : ∀ k, partialSum s k < 0) :
     ∫ x in logCone r c, exp (∑ i, s i * x i) =

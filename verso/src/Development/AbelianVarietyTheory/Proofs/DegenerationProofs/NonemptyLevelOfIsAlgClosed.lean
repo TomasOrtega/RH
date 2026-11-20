@@ -16,13 +16,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.SS
 
 /- English proof (translation)
-Introduce `k _ _ P M ze hM hz`. Establish `hz0 : IsPrimitiveRoot (ze : k) M` using `IsPrimitiveRoot.coe_units_iff.mpr hz`. Establish `hinj : ∀ (K : Type) [Field K] (s : Spec (CommRingCat.of K) ⟶ Sp k), Function.Injective ((Scheme.Hom.appTop s).hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom)`. Introduce `K _ s`. Conclude with `Function.Injective.of_comp ((Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom.comp ((Scheme.Hom.appTop s).hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom)).injective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinv : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom` using `fun a b h => hinj k (𝟙 _) (by rw [RingHom.comp_apply, RingHom.comp_apply, h])`. Establish `hu : IsPrimitiveRoot (unitOn ze) M`. Rewrite using `[← IsPrimitiveRoot.coe_units_iff]`. Conclude with `hz0.map_of_injective hinv`. Take `⟨hL, -⟩` from `GlobalTheory.abelianSchemeLaws_all`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx1, hx2⟩` from `GlobalTheory.ConstThetaLevel.exists_symplectic_points hL k P rfl M hM (unitOn ze) hu`. Take `⟨lev, -⟩` from `GlobalTheory.exists_level_of_pairing GlobalTheory.globalFns_holds hL.weil hL.mulN (Sp k) P M (unitOn ze) hu (fun K _ s => by`. Use `⟨fun h0 => hM ?_, ?_⟩` and prove the remaining obligations. Establish `hf` using `((Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom.comp ((Scheme.Hom.appTop s).hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom)).injective`. Conclude with `hf (by rw [map_natCast, map_zero]; exact h0)`.
-
-Rewrite using `[← IsPrimitiveRoot.coe_units_iff]`. Conclude with `hz0.map_of_injective (hinj K s))`. Use `x hx1 hx2`. Conclude with `⟨lev⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.nonempty_level_of_isAlgClosed : ∀ (k : Type) [Field k] [IsAlgClosed k] (P : Out.PolAV (Sp k)) (M : ℕ) (ze : kˣ), (M : k) ≠ 0 → IsPrimitiveRoot ze M → Nonempty (Out.Level P M (unitOn ze)) := by
   intro k _ _ P M ze hM hz

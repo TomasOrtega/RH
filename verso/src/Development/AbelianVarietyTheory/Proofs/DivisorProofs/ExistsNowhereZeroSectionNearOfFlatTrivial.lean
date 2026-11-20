@@ -21,7 +21,7 @@ namespace GlobalTheory.FlatTrivSec
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[gs_eq f z U h, ← Scheme.mem_basicOpen Z _ z h, ← Scheme.preimage_basicOpen]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isUnit_gs_iff {Z : Scheme.{0}} (f : Z ⟶ X) (z : Z) (U : X.Opens) (h : f z ∈ U) (a : Γ(X, U)) :
     IsUnit (gs f z U a) ↔ f z ∈ X.basicOpen a := by
@@ -43,7 +43,7 @@ def pullSec (L : LB X) (θ : LB.Sec L) (F : Y ⟶ X) : LB.Sec (L.pull F) where
       ((gs_mul _ y _ hm _ _).trans (congrArg₂ (· * ·) (gs_unit _ y _ hm _) (gs_res _ y _ hm _))))
 
 /- English proof (translation)
-Establish `hI : F y ∈ L.U (J PUnit.unit)` using `mem_pull.1 hy`. Use `(gs_res (𝟙 Y) y _ hy _).trans ((gs_pull (𝟙 Y) F y _ hI _).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_pullSec (L : LB X) (θ : LB.Sec L) (F : Y ⟶ X) (y : Y) (J : PUnit → L.ι) (hy : y ∈ (L.pull F).U J) :
     gs (𝟙 Y) y _ ((pullSec L θ F).f J) = gs F y (L.U (J PUnit.unit)) (θ.f (J PUnit.unit)) := by
@@ -52,11 +52,9 @@ theorem gs_pullSec (L : LB X) (θ : LB.Sec L) (F : Y ⟶ X) (y : Y) (J : PUnit �
   rw [Category.id_comp]
 
 /- English proof (translation)
-Establish `key : ∀ (V' : (Sp C).Opens) (h : V' ≤ ⊤), V' = V → Function.Bijective ((Sp C).presheaf.map (homOfLE h).op).hom`. Introduce and unpack `V' h rfl`. Conclude with `hV`. Establish `h₁ : Function.Bijective V.ι.appTop.hom`. Rewrite using `[Scheme.Opens.ι_appTop]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `key _ _ V.ι_image_top`. Establish `h₀ : Function.Bijective (rs V.toScheme (le_top : (⊤ : V.toScheme.Opens) ≤ ⊤))`. Establish `: ⇑(rs V.toScheme (le_top : (⊤ : V.toScheme.Opens) ≤ ⊤)) = id` using `funext fun x => rs_self _ x`. Rewrite using `[this]`. Conclude with `Function.bijective_id`.
-
-Establish `h₃ : Function.Bijective (Scheme.ΓSpecIso (CommRingCat.of C)).inv.hom` using `ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of C)).inv`. Conclude with `h₀.comp (h₁.comp h₃)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cst_bijective_of {C : Type} [CommRing C] (V : (Sp C).Opens)
     (hV : Function.Bijective ((Sp C).presheaf.map (homOfLE (le_top : V ≤ ⊤)).op).hom) :
@@ -77,7 +75,7 @@ theorem cst_bijective_of {C : Type} [CommRing C] (V : (Sp C).Opens)
   exact h₀.comp (h₁.comp h₃)
 
 /- English proof (translation)
-Use `(gs_res (𝟙 Z) z (U := f ⁻¹ᵁ ⊤) (V := ⊤) le_top trivial _).trans ((gs_pull (𝟙 Z) f z ⊤ trivial _).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_cst_top {C : Type} [CommRing C] {Z : Scheme.{0}} (f : Z ⟶ Sp C) (z : Z) (x : C) :
     gs (𝟙 Z) z ⊤ (cst f ⊤ x) = gs f z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of C)).inv.hom x) := by
@@ -85,25 +83,21 @@ theorem gs_cst_top {C : Type} [CommRing C] {Z : Scheme.{0}} (f : Z ⟶ Sp C) (z 
   rw [Category.id_comp]
 
 /- English proof (translation)
-Introduce `B C _ _ _ g hg W hbij M hM hT y`. Use `haveI : CompactSpace W.toScheme := isCompact_iff_compactSpace.mp (TopologicalSpace.NoetherianSpace.isCompact (W : Set (Sp B)))`. Take `⟨t, ht⟩` from `hT`. Take `⟨n, c, u, hcomb⟩` from `FlatSec.exists_comb_of_flat B C g hg W.toScheme W.ι _ (spMap g ∣_ W) (spMap g ⁻¹ᵁ W).ι (isPullback_morphismRestrict (spMap g) W) M hM (genSec t ht)`. Use `choose a ha using fun i => DVR.ValuationAtUnit.exists_glue_ratio (DVR.linComb_cover M hM (fun _ : PUnit => spMap g ∣_ W) (fun _ => 1)) (pullSec M (u i) (spMap g ∣_ W)) t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `cst_bijective_of _ hbij`. Use `choose e he using fun i => hb.2 (a i)`. Establish `chart : ∀ z : (spMap g ⁻¹ᵁ W).toScheme, ∃ k, (spMap g ∣_ W) z ∈ M.U k` using `fun z => by`. Establish `hz : (spMap g ∣_ W) z ∈ ⨆ k, M.U k` using `by rw [hM.cover]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ (z : (spMap g ⁻¹ᵁ W).toScheme) (k : M.ι), (spMap g ∣_ W) z ∈ M.U k → ∀ i, gs (spMap g ∣_ W) z _ ((u i).f k) = gs (𝟙 _) z ⊤ (a i) * (gm (𝟙 _) z _ (t.s (fun _ => k))).val`. Introduce `z k hk i`. Establish `hz : z ∈ (M.pull (spMap g ∣_ W)).U (fun _ => k)` using `mem_pull.2 hk`. Use `(gs_pullSec M (u i) _ z (fun _ => k) hz).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (gs (𝟙 _) z _) (ha i (fun _ => k))).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gs_mul (𝟙 _) z _ hz, gs_res (𝟙 _) z _ hz, gs_unit (𝟙 _) z _ hz]`. Establish `hsum : ∑ i, c i * e i = 1`. Apply `hb.1` to reduce the goal to its premises. Rewrite using `[map_sum, map_one]`. Use `fn_ext fun z _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨k, hk⟩` from `chart z`. Establish `hz : z ∈ (M.pull (spMap g ∣_ W)).U (fun _ => k)` using `mem_pull.2 hk`. Establish `h1` using `hcomb z k hk`. Simplify using `only [key z k hk] at h1`. Establish `h2 : gs (𝟙 _) z _ ((genSec t ht).f (fun _ => k)) = (gm (𝟙 _) z _ (t.s (fun _ => k))).val` using `gs_unit (𝟙 _) z _ hz _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[h2]`. Simplify using `only [map_mul, he]`. Rewrite using `[FlatSec.gs_sum (𝟙 _) z ⊤ trivial, gs_eq (𝟙 _) z ⊤ trivial 1, map_one, map_one]`. Simplify using `only [gs_mul (𝟙 _) z ⊤ trivial]`. Establish `h3 : (∑ i, gs (𝟙 _) z ⊤ (cst (spMap g ⁻¹ᵁ W).ι ⊤ (c i)) * gs (𝟙 _) z ⊤ (a i)) * (gm (𝟙 _) z _ (t.s (fun _ => k))).val = 1 * (gm (𝟙 _) z _ (t.s (fun _ => k))).val`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[_root_.one_mul, Finset.sum_mul]`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => _root_.mul_assoc _ _ _) h1.symm` and prove the remaining obligations. Conclude with `(Units.mul_left_inj _).1 h3`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, e i ∉ y.asIdeal := by`. Assume the negation of the conclusion as `hne`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push_neg at hne`. Apply `y.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hsum]`. Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (hne i)`. Use `⟨u i, PrimeSpectrum.basicOpen (e i), hi, fun z hz => ?_⟩` and prove the remaining obligations.
-
-Take `⟨k, hk⟩` from `chart z`. Establish `hu1 : IsUnit (gs (𝟙 _) z ⊤ (a i))`. Rewrite using `[← he i, gs_cst_top, isUnit_gs_iff _ z ⊤ trivial, basicOpen_eq_of_affine]`. Conclude with `hz`. Establish `hu2 : IsUnit (gs (spMap g ∣_ W) z _ ((u i).f k))`.
-
-Rewrite using `[key z k hk i]`. Conclude with `hu1.mul (Units.isUnit _)`. Rewrite `hu2` using `[isUnit_gs_iff _ z _ hk]`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k, hu2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_near : ∀ (B C : Type) [CommRing B] [IsNoetherianRing B] [CommRing C] (g : B →+* C), g.Flat → ∀ (W : (Sp B).Opens), Function.Bijective ((Sp C).presheaf.map (homOfLE (le_top : spMap g ⁻¹ᵁ W ≤ ⊤)).op).hom → ∀ (M : LB W.toScheme), M.IsLB → Triv (M.pull (spMap g ∣_ W)) → ∀ y : Sp C, ∃ (s : M.Sec) (D : (Sp C).Opens), y ∈ D ∧ ∀ z : (spMap g ⁻¹ᵁ W).toScheme, (spMap g ⁻¹ᵁ W).ι z ∈ D → (spMap g ∣_ W) z ∈ Out.nonzeroLocus s := by
   intro B C _ _ _ g hg W hbij M hM hT y

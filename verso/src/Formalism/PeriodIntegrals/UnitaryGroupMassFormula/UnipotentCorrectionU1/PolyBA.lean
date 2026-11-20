@@ -21,7 +21,7 @@ def PG (e : ℝ) (f : B.Mat k r → ℂ) : Prop :=
     (∀ x ∈ w, B.unitLie k r x.2) → w.length ≤ n → ∀ g ∈ B.GV k r, ‖Dw w f g‖ ≤ C * B.gN g ^ e
 
 /- English proof (translation)
-Introduce `g₀ _`. Conclude with `⟨Set.univ, f, isOpen_univ, Set.mem_univ _, (hf.of_le (WithTop.coe_le_coe.mpr le_top)).contDiffOn, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 lemma pb_ck {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {f : B.Mat k r → E} (hf : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) f) (m : ℕ∞) :
     B.CkOn m (B.GV k r) f := by
@@ -30,7 +30,7 @@ lemma pb_ck {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {f : B.Mat k 
     (hf.of_le (WithTop.coe_le_coe.mpr le_top)).contDiffOn, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `h.2 n`. Use `⟨max C 0, le_max_right _ _, fun w hw hl g hg => (hC w hw hl g hg).trans ?_⟩` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg (by unfold B.gN; positivity) _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma pb_nonneg {e : ℝ} {f : B.Mat k r → ℂ} (h : PG e f) (n : ℕ) : ∃ C : ℝ, 0 ≤ C ∧
     ∀ w : List (Bool × B.Mat k r), (∀ x ∈ w, B.unitLie k r x.2) → w.length ≤ n →
@@ -41,7 +41,7 @@ lemma pb_nonneg {e : ℝ} {f : B.Mat k r → ℂ} (h : PG e f) (n : ℕ) : ∃ C
     (Real.rpow_nonneg (by unfold B.gN; positivity) _)
 
 /- English proof (translation)
-Use `⟨h.1, fun n => ?_⟩` and prove the remaining obligations. Take `⟨C, hC0, hC⟩` from `pb_nonneg h n`. Conclude with `⟨C, fun w hw hl g hg => (hC w hw hl g hg).trans (mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le (gN_ge_one hg) he) hC0)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma pb_mono {e e' : ℝ} {f : B.Mat k r → ℂ} (h : PG e f) (he : e ≤ e') : PG e' f := by
   refine ⟨h.1, fun n => ?_⟩
@@ -50,9 +50,9 @@ lemma pb_mono {e e' : ℝ} {f : B.Mat k r → ℂ} (h : PG e f) (he : e ≤ e') 
     (mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le (gN_ge_one hg) he) hC0)⟩
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih`. Establish `h' : List.foldr Dx (fun _ : B.Mat k r => (0 : ℂ)) w = fun _ => 0` using `ih`. Simplify using `only [Dw, List.foldr, Dx, h']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> funext g <;> simp [B.LdV, RdV]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Dw_const_zero (w : List (Bool × B.Mat k r)) :
     Dw w (fun _ : B.Mat k r => (0 : ℂ)) = fun _ => 0 := by
@@ -64,7 +64,7 @@ private theorem Dw_const_zero (w : List (Bool × B.Mat k r)) :
     split_ifs <;> funext g <;> simp [B.LdV, RdV]
 
 /- English proof (translation)
-Unfold `PG`. Use `⟨contDiff_const, fun n => ⟨0, fun w _ _ g _ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Dw_const_zero]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma pb_zero (e : ℝ) : PG e (fun _ : B.Mat k r => (0 : ℂ)) := by
   unfold PG
@@ -73,9 +73,9 @@ lemma pb_zero (e : ℝ) : PG e (fun _ : B.Mat k r => (0 : ℂ)) := by
   simp
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact ⟨c, le_rfl, rfl⟩`. Consider the case `cons x w ih`. Take `⟨c', -, h⟩` from `ih`. Use `⟨0, by simp, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h' : List.foldr Dx (fun _ => c) w = fun _ => c'` using `h`. Simplify using `only [Dw, List.foldr, Dx, h']`. Apply the tactic sequence `split_ifs <;> funext g <;> simp [B.LdV, RdV]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma pb_Dw_const (c : ℂ) (w : List (Bool × B.Mat k r)) :
     ∃ c' : ℂ, ‖c'‖ ≤ ‖c‖ ∧ Dw w (fun _ => c) = fun _ => c' := by
@@ -89,7 +89,7 @@ lemma pb_Dw_const (c : ℂ) (w : List (Bool × B.Mat k r)) :
     split_ifs <;> funext g <;> simp [B.LdV, RdV]
 
 /- English proof (translation)
-Unfold `PG`. Use `⟨contDiff_const, fun n => ⟨‖c‖, fun w _ _ g _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨c', hc', h⟩` from `pb_Dw_const (k := k) (r := r) c w`. Rewrite using `[h, Real.rpow_zero, mul_one]`. Conclude with `hc'`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pb_const (c : ℂ) : PG 0 (fun _ : B.Mat k r => c) := by
   unfold PG
@@ -99,9 +99,9 @@ lemma pb_const (c : ℂ) : PG 0 (fun _ : B.Mat k r => c) := by
   exact hc'
 
 /- English proof (translation)
-Use `⟨hf.1.add hh.1, fun n => ?_⟩` and prove the remaining obligations. Take `⟨C₁, hC₁⟩` from `hf.2 n`. Take `⟨C₂, hC₂⟩` from `hh.2 n`. Use `⟨C₁ + C₂, fun w hw hl g hg => ?_⟩` and prove the remaining obligations. Establish `hw' : ∀ x ∈ w, B.inLie k r x.2` using `fun x hx => (hw x hx).1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Dw_add hw' (pb_ck hf.1 _) (pb_ck hh.1 _) g hg, add_mul]`. Conclude with `(norm_add_le _ _).trans (add_le_add (hC₁ w hw hl g hg) (hC₂ w hw hl g hg))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pb_add {e : ℝ} {f h : B.Mat k r → ℂ} (hf : PG e f) (hh : PG e h) :
     PG e (fun g => f g + h g) := by
@@ -114,13 +114,11 @@ lemma pb_add {e : ℝ} {f h : B.Mat k r → ℂ} (hf : PG e f) (hh : PG e h) :
   exact (norm_add_le _ _).trans (add_le_add (hC₁ w hw hl g hg) (hC₂ w hw hl g hg))
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => intro g _`. Both sides reduce to the same expression. Consider the case `cons x w ih`. Establish `hw' : ∀ y ∈ w, B.inLie k r y.2` using `fun y hy => hw y (by simp [hy])`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact.
 
-Establish `hle : ((w.length : ℕ) : ℕ∞) ≤ ((x :: w).length : ℕ)` using `by exact_mod_cast Nat.le_succ _`. Establish `e : (1 : ℕ∞) + (w.length : ℕ∞) = ((x :: w).length : ℕ)`. Move the coercions through the operations in `[List.length_cons]`. Expand and normalize the polynomial expressions, which then agree. Introduce `g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show Dx x (Dw w _) g = ContinuousLinearMap.mul ℂ ℂ (Dx x (Dw w f) g)`. Rewrite using `[Dx_congr (hw x (by simp)) (ih hw' (sCkOn_mono hle hf)) g hg]`. Establish `h1` using `CkOn_diff (hw x (by simp)) (CkOn_Dw hw' (m := 1) (by rw [e]; exact hf)) hg hg`. Establish `h2` using `((ContinuousLinearMap.mul ℂ ℂ).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Rewrite using `[Dx_eq]`.
-
-Conclude with `h2.deriv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pb_Dw_mulL {w : List (Bool × B.Mat k r)} (hw : ∀ x ∈ w, B.inLie k r x.2) {f : B.Mat k r → ℂ}
     (hf : B.CkOn w.length (B.GV k r) f) :
@@ -142,15 +140,15 @@ lemma pb_Dw_mulL {w : List (Bool × B.Mat k r)} (hw : ∀ x ∈ w, B.inLie k r x
     exact h2.deriv
 
 /- English proof (translation)
-Establish `hcd : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun g => ContinuousLinearMap.mul ℂ ℂ (f g))` using `((ContinuousLinearMap.mul ℂ ℂ).restrictScalars ℝ).contDiff.comp hf.1`. Use `⟨hf.1.mul hh.1, fun n => ?_⟩` and prove the remaining obligations. Take `⟨C₁, hC₁0, hC₁⟩` from `pb_nonneg hf n`. Take `⟨C₂, hC₂0, hC₂⟩` from `pb_nonneg hh n`. Use `⟨2 ^ n * (C₁ * C₂), fun w hw hl g hg => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw' : ∀ x ∈ w, B.inLie k r x.2` using `fun x hx => (hw x hx).1`. Establish `hP : Pr (∅ : Set (B.Mat k r)) (B.GV k r) w.length (fun g => ContinuousLinearMap.mul ℂ ℂ (f g)) h` using `⟨pb_ck hcd _, pb_ck hh.1 _, fun _ _ hg => hg.elim⟩`. Establish `hp` using `gN_pos hg`. Establish `hp1 : 0 ≤ B.gN g ^ e₁` using `Real.rpow_nonneg hp.le _`. Establish `hp2 : 0 ≤ B.gN g ^ e₂` using `Real.rpow_nonneg hp.le _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : 0 ≤ C₁ * B.gN g ^ e₁ * (C₂ * B.gN g ^ e₂)` using `mul_nonneg (mul_nonneg hC₁0 hp1) (mul_nonneg hC₂0 hp2)`. Establish `hb` using `leib_bound isOpen_empty (fun g hg => Or.inr hg) g hg (C₁ * B.gN g ^ e₁ * (C₂ * B.gN g ^ e₂)) w (fun g => ContinuousLinearMap.mul ℂ ℂ (f g)) h hw' hP (by`. Introduce `w₁ w₂ h₁ h₂ _`. Establish `u1 : ∀ x ∈ w₁, B.unitLie k r x.2` using `fun x hx => hw x (h₁.subset hx)`. Establish `u2 : ∀ x ∈ w₂, B.unitLie k r x.2` using `fun x hx => hw x (h₂.subset hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pb_Dw_mulL (fun x hx => (u1 x hx).1) (pb_ck hf.1 _) g hg]`. Conclude with `mul_le_mul ((ContinuousLinearMap.opNorm_mul_apply_le _ _ _).trans (hC₁ w₁ u1 (h₁.length_le.trans hl) g hg)) (hC₂ w₂ u2 (h₂.length_le.trans hl) g hg) (norm_nonneg _) (mul_nonneg hC₁0 hp1))`. Establish `e1 : (fun g => f g * h g) = ap (fun g => ContinuousLinearMap.mul ℂ ℂ (f g)) h`. Use function extensionality and compare the values at `g`. Simplify using `[ap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Use `hb.trans ?_` and prove the remaining obligations. Rewrite using `[Real.rpow_add hp]`. Establish `h2 : (2 : ℝ) ^ w.length ≤ 2 ^ n` using `pow_le_pow_right₀ (by norm_num) hl`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma pb_mul {e₁ e₂ : ℝ} {f h : B.Mat k r → ℂ} (hf : PG e₁ f) (hh : PG e₂ h) :
     PG (e₁ + e₂) (fun g => f g * h g) := by

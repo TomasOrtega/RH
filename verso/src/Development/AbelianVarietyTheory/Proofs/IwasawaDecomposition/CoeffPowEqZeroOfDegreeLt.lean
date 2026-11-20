@@ -9,11 +9,11 @@ open scoped ComplexOrder
 namespace GlobalTheory.OscExpDeriv
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro γ h`. Conclude with `absurd h (Nat.not_lt_zero _)`. Consider the case `succ n ih`. Introduce `γ h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, MvPolynomial.coeff_mul]`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x.1 + x.2 = γ` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hx`. Distinguish the cases in `h2 : x.2 = 0`. Rewrite using `[h2, hq, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : x.2.degree ≠ 0` using `fun h0 => h2 ((Finsupp.degree_eq_zero_iff _).1 h0)`. Establish `hs : x.1.degree + x.2.degree = γ.degree` using `by rw [← hx', map_add]`. Rewrite using `[ih x.1 (by omega), zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_pow_eq_zero_of_degree_lt {σ : Type} [DecidableEq σ] (q : MvPolynomial σ ℂ)
     (hq : MvPolynomial.coeff 0 q = 0) (n : ℕ) :
@@ -32,7 +32,7 @@ theorem coeff_pow_eq_zero_of_degree_lt {σ : Type} [DecidableEq σ] (q : MvPolyn
       rw [ih x.1 (by omega), zero_mul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑ n ∈ Finset.range (γ.degree + 1), MvPolynomial.coeff γ (q ^ n) / (n.factorial : ℂ) = _`. Use `Finset.sum_subset (Finset.range_mono (by omega)) fun n _ hn => ?_` and prove the remaining obligations. Rewrite using `[coeff_pow_eq_zero_of_degree_lt q hq n γ (by simp only [Finset.mem_range] at hn; omega), zero_div]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem coeff_expPS_eq_sum {σ : Type} [DecidableEq σ] (q : MvPolynomial σ ℂ)
     (hq : MvPolynomial.coeff 0 q = 0) (γ : σ →₀ ℕ) (N : ℕ) (hN : γ.degree < N) :
@@ -44,15 +44,15 @@ theorem coeff_expPS_eq_sum {σ : Type} [DecidableEq σ] (q : MvPolynomial σ ℂ
     zero_div]
 
 /- English proof (translation)
-Introduce `σ _ q hq l α`. Rewrite using `[coeff_expPS_eq_sum q hq _ (α.degree + 1 + 1) (by rw [map_add, Finsupp.degree_single]; omega), Finset.mul_sum, MvPowerSeries.coeff_mul]`. Establish `h1 : ∀ n : ℕ, ((α l : ℂ) + 1) * (MvPolynomial.coeff (α + Finsupp.single l 1) (q ^ n) / (n.factorial : ℂ)) = MvPolynomial.coeff α (MvPolynomial.pderiv l (q ^ n)) / (n.factorial : ℂ)`. Introduce `n`. Rewrite using `[MvPolynomial.coeff_pderiv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1]`. Rewrite using `[Finset.sum_range_succ']`. Simplify using `only [pow_zero, Derivation.map_one_eq_zero, MvPolynomial.coeff_zero, zero_div, add_zero]`. Establish `h2 : ∀ n : ℕ, MvPolynomial.coeff α (MvPolynomial.pderiv l (q ^ (n + 1))) / (((n + 1).factorial : ℕ) : ℂ) = ∑ x ∈ Finset.HasAntidiagonal.antidiagonal α, MvPolynomial.coeff x.1 (MvPolynomial.pderiv l q) * (MvPolynomial.coeff x.2 (q ^ n) / (n.factorial : ℂ))`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `n`. Establish `hn : ((n : ℂ) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero n`. Establish `hf : (n.factorial : ℂ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero n`. Rewrite using `[Derivation.leibniz_pow, Nat.add_sub_cancel, smul_eq_mul, mul_comm, MvPolynomial.coeff_smul, MvPolynomial.coeff_mul, Nat.factorial_succ, nsmul_eq_mul]`. Simplify using `only [← mul_div_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_div]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify using `only [h2]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x.1 + x.2 = α` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hx`. Establish `hs : x.1.degree + x.2.degree = α.degree` using `by rw [← hx', map_add]`. Rewrite using `[coeff_expPS_eq_sum q hq x.2 (α.degree + 1) (by omega), MvPolynomial.coeff_coe, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_deriv_expPS : ∀ (σ : Type) [DecidableEq σ] (q : MvPolynomial σ ℂ),
     MvPolynomial.coeff 0 q = 0 → ∀ (l : σ) (α : σ →₀ ℕ),

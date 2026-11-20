@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Unfold `rowDiv`. Rewrite using `[map_add, Polynomial.coeff_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rowDiv_add_fock_space_tableaux (R : Type*) [CommRing R] {r n : ℕ} (a b : Fin r) (k : ℕ)
     (f g : MvPolynomial (Fin r × Fin n) R) :
@@ -17,7 +17,7 @@ private theorem rowDiv_add_fock_space_tableaux (R : Type*) [CommRing R] {r n : �
   rw [map_add, Polynomial.coeff_add]
 
 /- English proof (translation)
-Unfold `rowDiv`. Rewrite using `[map_smul, Polynomial.coeff_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rowDiv_smul_fock_space_tableaux (R : Type*) [CommRing R] {r n : ℕ} (a b : Fin r) (k : ℕ)
     (c : R) (f : MvPolynomial (Fin r × Fin n) R) :
@@ -26,9 +26,9 @@ private theorem rowDiv_smul_fock_space_tableaux (R : Type*) [CommRing R] {r n : 
   rw [map_smul, Polynomial.coeff_smul]
 
 /- English proof (translation)
-Unfold `WeylRowDivStable`. Introduce `R _ r n hn ν a b k f hf`. Set `L : MvPolynomial (Fin r × Fin n) R →ₗ[R] MvPolynomial (Fin r × Fin n) R` to `{ toFun := rowDiv R a b k map_add' := rowDiv_add_fock_space_tableaux R a b k map_smul' := rowDiv_smul_fock_space_tableaux R a b k }`. Establish `key : weyl R r n hn ν ≤ (weyl R r n hn ν).comap L`. Unfold `weyl`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Conclude with `Submodule.subset_span ⟨(a, b, k) :: w, rfl⟩`. Conclude with `key hf`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weylModuleRowDividedPowerStable : WeylRowDivStable := by
   unfold WeylRowDivStable

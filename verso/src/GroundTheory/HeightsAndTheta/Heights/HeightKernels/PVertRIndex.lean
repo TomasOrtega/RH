@@ -15,7 +15,7 @@ namespace VerticalIndex
 variable {T : Type} [Fintype T] {K' : Type} [Field K']
 
 /- English proof (translation)
-The claim follows from `HilbertSamuel.NormCountBounded.secM_le_chartLat y 1 (Submodule.subset_span ⟨s, hs, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem aeval_mem_sectionMod (y : (Σ _ : Unit, T) → K') {s : MRing (fun _ : Unit => T)}
     (hs : IsMultiHomog s (fun _ => 1)) : aeval y s ∈ sectionMod y :=
@@ -24,9 +24,9 @@ theorem aeval_mem_sectionMod (y : (Σ _ : Unit, T) → K') {s : MRing (fun _ : U
 omit [Fintype T] in
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [Submodule.mem_toAddSubgroup, Submodule.mem_span_singleton, curveMul, AddSubgroup.mem_map, AddMonoidHom.coe_mulLeft, Subring.mem_toAddSubgroup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨b, b.2, by rw [Subring.smul_def, smul_eq_mul, mul_comm]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨⟨b, hb⟩, by rw [Subring.smul_def, smul_eq_mul, mul_comm]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem span_toAddSubgroup (y : (Σ _ : Unit, T) → K') (x : K') :
     (Submodule.span (curveRing y) {x}).toAddSubgroup = curveMul y x := by
@@ -42,9 +42,9 @@ theorem span_toAddSubgroup (y : (Σ _ : Unit, T) → K') (x : K') :
 omit [Fintype T] in
 
 /- English proof (translation)
-Establish `hle : curveMul y x ≤ chartLat y (fun _ => 1) 1`. Rewrite using `[← span_toAddSubgroup]`. Introduce `z hz`. Conclude with `(Submodule.span_le.mpr (Set.singleton_subset_iff.mpr hx)) hz`. Rewrite using `[genIndex, AddSubgroup.relIndex_eq_one.mpr hle, Nat.cast_one, div_one, ← span_toAddSubgroup]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem genIndex_eq_card (y : (Σ _ : Unit, T) → K') {x : K'} (hx : x ∈ sectionMod y) :
     genIndex (chartLat y (fun _ => 1) 1) (curveMul y x) = Nat.card (sectionQuot y x) := by
@@ -60,11 +60,11 @@ end VerticalIndex
 open IndefiniteRowSideFullHecke.HeightsSet in
 
 /- English proof (translation)
-Introduce `T _ K' _ _ y s hP hs hsP`. Use `hF T K' y s hP hs hsP` as an intermediate fact. Take `⟨hbij, hmult⟩` from `hV T K' y s hP hs hsP`. Rewrite using `[VerticalIndex.genIndex_eq_card y (VerticalIndex.aeval_mem_sectionMod y hs), hL (curveRing y) (sectionQuot y (aeval y s)), vertR]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `finsum_mem_congr rfl fun W hW => ?_` and prove the remaining obligations. Rewrite using `[if_neg (CurveDivVertical.full Unit (fun _ => T) _ s _ hP hs hsP W hW), hmult W hW, ← hR T K' y s hP hs hsP W hW]`. Use `congr 3`. Use `_ = ∑ᶠ m ∈ {m : Ideal (curveRing y) | m.IsMaximal ∧ locLen m (sectionQuot y (aeval y s)) ≠ 0}, (locLen m (sectionQuot y (aeval y s)) : ℝ) * Real.log (Nat.card (curveRing y ⧸ m)) := finsum_mem_eq_of_bijOn _ hbij fun _ _ => rfl`. Use `_ = _ := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `finsum_mem_inter_support_eq _ _ {m : Ideal (curveRing y) | m.IsMaximal} ?_` and prove the remaining obligations. Use extensionality with `m`. Simplify using `only [Set.mem_inter_iff, Set.mem_ofPred_eq, Function.mem_support]`. Conclude with `⟨fun ⟨⟨h1, _⟩, h2⟩ => ⟨h1, h2⟩, fun ⟨h1, h2⟩ => ⟨⟨h1, fun h0 => h2 (by simp [h0])⟩, h2⟩⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem VertRIndex.proof (hL : LogCardLength.Statement) (hF : SectionQuotFinite.Statement)
     (hV : VertPointLength.Statement) (hR : VertPointResidue.Statement) : VertRIndex.Statement := by

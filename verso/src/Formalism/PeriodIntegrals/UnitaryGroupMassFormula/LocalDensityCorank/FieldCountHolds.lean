@@ -13,11 +13,11 @@ open Formalism.MainNotions.S ValuativeRel PI.UnitaryGroupMassFormula.CntFormula
 open Classical
 
 /- English proof (translation)
-Establish `hϖ0 : (ϖ : F) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, he⟩`. Establish `hz' : z = algebraMap F E ((a : F) / ϖ)`. Rewrite using `[div_eq_mul_inv, map_mul, he, mul_comm (algebraMap F E (ϖ : F)) z, mul_assoc, ← map_mul, mul_inv_cancel₀ hϖ0, map_one, mul_one]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (a : F) / ϖ ∈ 𝒪[F]` using `PI.UnitaryGroupMassFormula.CntFormula.fl_mem_int L (PI.UnitaryGroupMassFormula.CntFormula.fl_inj L) (hz' ▸ hz)`. Use `⟨⟨_, hm⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show (a : F) = (ϖ : F) * ((a : F) / ϖ)`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨c, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨algebraMap F E (c : F), PI.UnitaryGroupMassFormula.CntFormula.fl_int_mem L c, by simp [map_mul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem fld_dvd_iff {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E] [Algebra F E]
     [TopologicalSpace E] (L : Loc.LocE F E) {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) (a : 𝒪[F]) :
@@ -37,45 +37,41 @@ theorem fld_dvd_iff {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     exact ⟨algebraMap F E (c : F), PI.UnitaryGroupMassFormula.CntFormula.fl_int_mem L c, by simp [map_mul]⟩
 
 /- English proof (translation)
-Use `hl` as an intermediate fact. Use `set G₀ : Matrix ι ι E := Matrix.diagonal (fun i => algebraMap F E (a i : F)) with hG₀`. Establish `hG1 : ∀ x y, G₀ x y ∈ M.L.O`. Introduce `x y`. Distinguish the cases in `h : x = y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Rewrite using `[hG₀, Matrix.diagonal_apply_eq]`. Conclude with `fl_int_mem M.L (a x)`. Rewrite using `[hG₀, Matrix.diagonal_apply_ne _ h]`. Conclude with `M.L.O.zero_mem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hG2 : ∀ x y, G₀ y x = M.L.cj (G₀ x y)`. Introduce `x y`. Distinguish the cases in `h : x = y`. Substitute `h` using the available equality. Rewrite using `[hG₀, Matrix.diagonal_apply_eq, M.L.cj.commutes]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hG₀, Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (Ne.symm h), map_zero]`. Establish `hR : FC.RedData ϖ k r (Module.finrank E V) b Λ` using `⟨hker, hsurj, hbΛ, hbind, hbcrd⟩`. Establish `hint : ∀ i j, H.h (b i) (b j) ∈ M.L.O` using `fun i j => (hΛ.2.2 (b i)).1 (hbΛ i) (b j) (hbΛ j)`. Establish `hS` using `FC.card_count hR H hϖ o2 o3 hint (Nat.card 𝓀[F]) hfrob G₀ hG1`. Set `_ : Fintype 𝓀[F]` to `Fintype.ofFinite _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hqF : Fintype.card 𝓀[F] = Nat.card 𝓀[F]` using `Nat.card_eq_fintype_card.symm`. Set `ψ : 𝒪[F] →+* M.L.O` to `RingHom.codRestrict ((algebraMap F E).comp (𝒪[F]).subtype) M.L.O (fun c => FC.algO c)`. Set `φ0 : 𝒪[F] →+* k` to `r.comp ψ`. Establish `hker0 : ∀ a ∈ IsLocalRing.maximalIdeal 𝒪[F], φ0 a = 0`. Introduce `a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `ha` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.mem_span_singleton']`. Take `⟨c, rfl⟩` from `ha`. Establish `h0 : r (ψ ϖ) = 0` using `(hker _).2 ⟨1, M.L.O.one_mem, by show algebraMap F E (ϖ : F) = _`. Rewrite using `[mul_one]⟩`. Simplify using `only [φ0, RingHom.comp_apply, map_mul, h0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ι0 : 𝓀[F] →+* k` to `Ideal.Quotient.lift (IsLocalRing.maximalIdeal 𝒪[F]) φ0 hker0`. Set `_ : Algebra 𝓀[F] k` to `ι0.toAlgebra`. Establish `hfin : Module.finrank 𝓀[F] k = 2`. Establish `h1` using `Module.card_eq_pow_finrank (K := 𝓀[F]) (V := k)`. Rewrite `h1` using `[hcard, ← hqF]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(Nat.pow_right_injective (Fintype.one_lt_card (α := 𝓀[F]))).eq_iff.1 h1.symm`. Set `QO : Matrix (Fin (Module.finrank E V)) (Fin (Module.finrank E V)) M.L.O` to `fun i j => ⟨Q i j, hQO i j⟩`. Set `GO : Matrix (Fin (Module.finrank E V)) (Fin (Module.finrank E V)) M.L.O` to `fun i j => ⟨H.h (b i) (b j), hint i j⟩`. Establish `hQG : QO * GO = 1`. Establish `e1 : QO.map M.L.O.subtype = Q` using `by ext i j; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : GO.map M.L.O.subtype = Matrix.of fun k l => H.h (b k) (b l)` using `by ext i j; rfl`. Apply `Matrix.map_injective (f := M.L.O.subtype) Subtype.val_injective` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Matrix.map_mul, e1, e2, hQ, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hPh : IsUnit (FC.Ph r H b hint).det`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : (QO.map r) * (GO.map r) = 1`. Rewrite using `[← Matrix.map_mul, hQG, Matrix.map_one _ (map_zero r) (map_one r)]`. Conclude with `Matrix.isUnit_det_of_left_inverse h2`. Establish `hPhH : ∀ i j, FC.Ph r H b hint j i = FC.Ph r H b hint i j ^ Fintype.card 𝓀[F]`. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hqF]`. Conclude with `hfrob ⟨H.h (b i) (b j), hint i j⟩ ⟨H.h (b j) (b i), hint j i⟩ (H.h_herm (b i) (b j))`. Use `set m := Fintype.card ι`. Set `e` to `Fintype.equivFin ι`. Set `Gm : Matrix (Fin m) (Fin m) k` to `fun i j => r ⟨G₀ (e.symm j) (e.symm i), hG1 _ _⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Establish `hGmH : ∀ i j, Gm j i = Gm i j ^ Fintype.card 𝓀[F]`. Introduce `i j`. Rewrite using `[hqF]`. Conclude with `hfrob ⟨G₀ (e.symm j) (e.symm i), hG1 _ _⟩ ⟨G₀ (e.symm i) (e.symm j), hG1 _ _⟩ (hG2 (e.symm j) (e.symm i))`. Set `d : Fin m → k` to `fun i => r ⟨algebraMap F E (a (e.symm i) : F), fl_int_mem M.L _⟩`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGmd : Gm = Matrix.diagonal d`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrArg r (Subtype.ext (show G₀ (e.symm i) (e.symm i) = _ from Matrix.diagonal_apply_eq _ _))`. Rewrite using `[Matrix.diagonal_apply_ne _ h]`. Establish `hne : e.symm j ≠ e.symm i` using `fun h' => h (e.symm.injective h').symm`. Conclude with `(congrArg r (Subtype.ext (show G₀ (e.symm j) (e.symm i) = 0 from Matrix.diagonal_apply_ne _ hne) : (⟨G₀ (e.symm j) (e.symm i), hG1 _ _⟩ : M.L.O) = 0)).trans (map_zero r)`. Establish `hd0 : ∀ i, d i = 0 ↔ ϖ ∣ a (e.symm i)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[hker]`. Conclude with `fld_dvd_iff M.L hϖ _`. Establish `hrank : m - Gm.rank = (Finset.univ.filter fun i => ϖ ∣ a i).card`. Establish `hc` using `Fintype.card_subtype_compl (fun i : Fin m => d i ≠ 0)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hc` using `[Fintype.card_fin]`. Rewrite using `[hGmd, Matrix.rank_diagonal, ← hc]`. Rewrite using `[← Fintype.card_subtype]`. Use `Fintype.card_congr ((Equiv.subtypeEquiv e.symm fun i => ?_))` and prove the remaining obligations. Rewrite using `[← hd0]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `not_not`. Establish `hT : Nat.card {X : ι → Fin (Module.finrank E V) → k // LinearIndependent k X ∧ ∀ a a', ∑ i, ∑ j, X a' i * FC.Ph r H b hint i j * X a j ^ Nat.card 𝓀[F] = r ⟨G₀ a a', hG1 a a'⟩} = Formalism.L2.SG.DensExact.countInert 𝓀[F] k (Module.finrank E V) m (FC.Ph r H b hint) Gm`. Unfold `Formalism.L2.SG.DensExact.countInert`. Rewrite using `[← Nat.card_coe_set_eq]`. Use `Nat.card_congr (Equiv.subtypeEquiv (Equiv.arrowCongr e (Equiv.refl _)) fun X => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Equiv.arrowCongr_apply, Equiv.coe_refl, Set.mem_ofPred_eq, hqF]`. Use `and_congr (linearIndependent_equiv e.symm).symm ⟨fun h i j => h (e.symm j) (e.symm i), fun h a a' => ?_⟩` and prove the remaining obligations. Use `h (e a') (e a)` as an intermediate fact. Simplify `this` using `[Gm]`. Establish `hD` using `density_exact_inert 𝓀[F] k hfin (Module.finrank E V) m (FC.Ph r H b hint) Gm hPh hPhH hGmH`.
-
-Rewrite `hD` using `[hrank, hqF]`. Unfold `Loc.HermSp.dens`. Rewrite using `[hS, hT, ← hD]`. Use `congr 1`. Establish `hq0 : (Nat.card 𝓀[F] : ℝ) ≠ 0`.
-
-Rewrite using `[← hqF]`. Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Rewrite using `[show ((2 * Module.finrank E V * m : ℤ) - (m : ℤ) ^ 2) = ((2 * Module.finrank E V * m : ℕ) : ℤ) - ((m ^ 2 : ℕ) : ℤ) by push_cast; ring, zpow_sub₀ hq0, zpow_natCast, zpow_natCast]`.
+A detailed English derivation is pending.
 -/
 theorem fld_count_core {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E] [Algebra F E]
     [TopologicalSpace E] [MeasurableSpace E] (M : Loc.Model F E) (hl : IsNonarchimedeanLocalField F)
@@ -201,13 +197,13 @@ theorem fld_count_core {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace
     zpow_sub₀ hq0, zpow_natCast, zpow_natCast]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ M hl hc hE V _ _ H Λ hΛ ϖ hϖ ι _ _ a _`. Take `⟨_, o2, o3⟩` from `local_density_integral F E M.L hl hc hE ϖ hϖ`. Take `⟨rmax, rcard, rfrob⟩` from `residue_field_count F E M.L hl hc hE ϖ hϖ`. Take `⟨b, hb1, hb2, hb3, Q, hQ1, hQ2⟩` from `flatBasis_of local_density_integral F E M hl hc hE V H Λ hΛ`. Set `_ : Field (M.L.O ⧸ Ideal.span {piO M.L ϖ})` to `Ideal.Quotient.field _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hq : 0 < Nat.card 𝓀[F]` using `Nat.card_pos`. Establish `: Finite (M.L.O ⧸ Ideal.span {piO M.L ϖ})` using `Nat.finite_of_card_ne_zero (by rw [rcard]; positivity)`. Set `_ : Fintype (M.L.O ⧸ Ideal.span {piO M.L ϖ})` to `Fintype.ofFinite _`. Use `fld_count_core M hl ϖ hϖ o2 o3 (M.L.O ⧸ Ideal.span {piO M.L ϖ}) (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective ?_ ?_ rfrob V H Λ hΛ b hb1 hb2 hb3 Q hQ1 hQ2 ι a` and prove the remaining obligations. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, c.2, by rw [← hc]; simp [piO, mul_comm]⟩`. Introduce and unpack `⟨z, hz, he⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨z, hz⟩, Subtype.ext (by simp [piO, he, mul_comm])⟩`. Rewrite using `[Fintype.card_eq_nat_card, rcard]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem fieldCount_holds : FieldCount := by
   intro F E _ _ _ _ _ _ _ M hl hc hE V _ _ H Λ hΛ ϖ hϖ ι _ _ a _

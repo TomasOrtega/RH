@@ -16,7 +16,7 @@ variable {𝔊 : Type*} [Group 𝔊] [TopologicalSpace 𝔊] [IsTopologicalGroup
   {W : Type*} [AddCommGroup W] [Module ℂ W] {ρ : Representation ℂ 𝔊 W}
 
 /- English proof (translation)
-Establish `hs` using `sub_fixedProj_mem hρ hKc hKo w`. Use `coinvariantsKer_le_ker_of_invariant hf hs` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_fixedProj_of_invariant (hρ : IsSmooth ρ) {K : Subgroup 𝔊}
     (hKc : IsCompact (K : Set 𝔊)) (hKo : IsOpen (K : Set 𝔊)) {f : W →ₗ[ℂ] ℂ}
@@ -28,35 +28,31 @@ theorem apply_fixedProj_of_invariant (hρ : IsSmooth ρ) {K : Subgroup 𝔊}
   exact this.symm
 
 /- English proof (translation)
-Use `set U := fixedVectors ρ K`. Establish `: FiniteDimensional ℂ U` using `hρ.2 K hKc hKo`. Use `set FC := fixedVectors (contragredient ρ) K`. Use `set e := fixedContragredientEquiv hρ.1 hKc hKo with he`. Use `set β : U →ₗ[ℂ] Module.Dual ℂ (Module.Dual ℂ U) := (b ∘ₗ U.subtype).compl₂ (FC.subtype ∘ₗ (e.symm : Module.Dual ℂ U →ₗ[ℂ] FC)) with hβ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set T : U →ₗ[ℂ] U := (Module.evalEquiv ℂ U).symm.toLinearMap ∘ₗ β with hTdef`. Establish `hT : ∀ (u : U) (φ : Module.Dual ℂ U), φ (T u) = b u (e.symm φ : FC)`. Introduce `u φ`. Establish `h` using `congrArg (fun ψ : Module.Dual ℂ (Module.Dual ℂ U) => ψ φ) ((Module.evalEquiv ℂ U).apply_symm_apply (β u))`. Simplify `h` using `[hTdef, Module.evalEquiv_apply, hβ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hTl : ∀ (u : U) (l : FC), ((l : smoothVectors (Representation.dual ρ)) : Module.Dual ℂ W) (T u) = b u l`. Introduce `u l`. Establish `h` using `hT u (e l)`. Rewrite `h` using `[e.symm_apply_apply]`. Establish `h2 : (e l) (T u) = ((l : smoothVectors (Representation.dual ρ)) : Module.Dual ℂ W) (T u)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Rewrite using `[he, fixedContragredientEquiv_apply, restrictFixed_apply]`. Rewrite using `[← h2, h]`. Establish `hText : ∀ (u : U) (l : smoothVectors (Representation.dual ρ)), b u l = (l : Module.Dual ℂ W) (T u)`. Introduce `u`. Set `g : smoothVectors (Representation.dual ρ) →ₗ[ℂ] ℂ` to `{ toFun := fun l => (l : Module.Dual ℂ W) (T u) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `heq` using `eq_of_invariant_of_eqOn (isSmooth_contragredient ρ) hKc hKo (f := b u) (g := g) (fun k hk l => hinvR u u.2 k hk l) (fun k hk l => by show ((contragredient ρ k l : smoothVectors (Representation.dual ρ)) : Module.Dual ℂ W) (T u) = (l : Module.Dual ℂ W) (T u)`. Rewrite using `[contragredient_apply_apply, (T u).2 k⁻¹ (inv_mem hk)])`. Use the proof step `(fun l hl => (hTl u ⟨l, hl⟩).symm)`. Conclude with `fun l => LinearMap.congr_fun heq l`. Establish `hsep : ∀ x : U, (∀ l : FC, ((l : smoothVectors (Representation.dual ρ)) : Module.Dual ℂ W) x = 0) → x = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ x).1 fun φ => ?_` and prove the remaining obligations. Use `hx (e.symm φ)` as an intermediate fact. Rewrite using `[← this]`. Use `conv_lhs => rw [← e.apply_symm_apply φ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, fixedContragredientEquiv_apply, restrictFixed_apply]`. Use `set E := fixedProj ρ hρ.1 hKc hKo`. Use `set S : 𝔊 → U →ₗ[ℂ] U := fun z => E ∘ₗ ρ z ∘ₗ U.subtype with hS`. Establish `hEl : ∀ l : FC, ∀ w : W, ((l : smoothVectors (Representation.dual ρ)) : Module.Dual ℂ W) (E w) = (l : Module.Dual ℂ W) w` using `fun l w => apply_fixedProj_of_invariant hρ.1 hKc hKo (f := (l : Module.Dual ℂ W)) (fun k hk v => (mem_fixedVectors_contragredient.1 l.2) k hk v) w`. Establish `hcommT : ∀ z (u : U), T (S z u) = S z (T u)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z u`. Rewrite using `[← sub_eq_zero]`. Use `hsep _ fun l => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_sub, map_sub, sub_eq_zero]`. Rewrite using `[hTl, show S z (T u) = E (ρ z (T u)) from rfl, hEl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Establish `h1 : b (S z u) l = b (ρ z u) l` using `by show b (E (ρ z u)) l = b (ρ z u) l`. Conclude with `apply_fixedProj_of_invariant hρ.1 hKc hKo (f := b.flip l) (fun k hk w => hinvL l l.2 k hk w) _`. Rewrite using `[h1, hcomm u u.2 l l.2 z, hText u]`. Rewrite using `[contragredient_apply_apply, inv_inv]`. Establish `hspan : ∀ x : U, x ≠ 0 → ∀ y : U, y ∈ Submodule.span ℂ (Set.range fun z => S z x)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx y`. Establish `hx' : (x : W) ≠ 0` using `fun h => hx (Subtype.ext h)`. Establish `hy : (y : W) ∈ Submodule.span ℂ (Set.range fun z => ρ z (x : W))`. Rewrite using `[span_orbit_eq_top hx']`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hmap` using `Submodule.mem_map_of_mem (f := E) hy`. Rewrite `hmap` using `[Submodule.map_span, ← Set.range_comp]`. Rewrite `hmap` using `[show E (y : W) = y from Subtype.ext (fixedProj_apply_of_mem hρ.1 hKc hKo y.2)]`. Then use the resulting hypothesis. Distinguish the cases in `htriv : Subsingleton U`. Use `⟨0, fun u hu l => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (⟨u, hu⟩ : U) = 0` using `Subsingleton.elim _ _`. Establish `hu0 : u = 0` using `congrArg Subtype.val this`. Rewrite using `[hu0, map_zero, LinearMap.zero_apply, map_zero, mul_zero]`. Rewrite `htriv` using `[not_subsingleton_iff_nontrivial]`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue T`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx⟩` from `hc.exists_hasEigenvector`. Establish `hall : ∀ y : U, T y = c • y`. Introduce `y`. Establish `hmem : y ∈ Module.End.eigenspace T c`. Use `Submodule.span_le.2 ?_ (hspan x hx.2 y)` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[SetLike.mem_coe, Module.End.mem_eigenspace_iff]`. Use `show T (S z x) = c • S z x`. Rewrite using `[hcommT, (Module.End.mem_eigenspace_iff.1 hx.1), map_smul]`. Conclude with `Module.End.mem_eigenspace_iff.1 hmem`.
-
-Use `⟨c, fun u hu l => ?_⟩` and prove the remaining obligations. Rewrite using `[show u = ((⟨u, hu⟩ : U) : W) from rfl, hText, hall, Submodule.coe_smul, map_smul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_of_bilinear (hρ : IsAdmissible ρ) [ρ.IsIrreducible] {K : Subgroup 𝔊}
     (hKc : IsCompact (K : Set 𝔊)) (hKo : IsOpen (K : Set 𝔊))

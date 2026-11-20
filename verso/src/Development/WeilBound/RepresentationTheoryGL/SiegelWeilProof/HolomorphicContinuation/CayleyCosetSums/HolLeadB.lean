@@ -7,7 +7,7 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.HSt
 
 /- English proof (translation)
-The claim follows from `conj (asmH locTau secFz crLem)`.
+A detailed English derivation is pending.
 -/
 theorem holLeadB : PositivityTheory.SiegelWeilFormula.HolLead := conj (asmH locTau secFz crLem)
 

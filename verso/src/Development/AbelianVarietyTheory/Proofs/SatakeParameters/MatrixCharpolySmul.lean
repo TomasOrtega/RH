@@ -14,15 +14,15 @@ namespace GlobalTheory.RowTieLP
 open GlobalTheory.WeilDeligne
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Use extensionality with `i`. Rewrite using `[zero_smul, Matrix.charpoly_zero, coeff_scaleRoots, M.charpoly_natDegree_eq_dim, coeff_X_pow]`. Distinguish the cases in `hi : i = Fintype.card n`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Use `M.charpoly_monic.coeff_natDegree` as an intermediate fact. Rewrite `this` using `[M.charpoly_natDegree_eq_dim]`. Simplify using `[this]`. Break down `lt_or_gt_of_ne hi with h | h` into its components or cases.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: Fintype.card n - i ≠ 0` using `by omega`. Simplify using `[hi, this]`. Simplify using `[hi, coeff_eq_zero_of_natDegree_lt (p := M.charpoly) (by rwa [M.charpoly_natDegree_eq_dim])]`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `t`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (M.charpoly.scaleRoots c).eval (c * (t / c)) = c ^ M.charpoly.natDegree * M.charpoly.eval (t / c)`. Simplify using `using scaleRoots_eval₂_mul (RingHom.id ℂ) (t / c) c (p := M.charpoly)`. Rewrite `h1` using `[mul_div_cancel₀ _ hc, M.charpoly_natDegree_eq_dim]`. Rewrite using `[h1, Matrix.eval_charpoly, Matrix.eval_charpoly, ← Matrix.det_smul]`. Use `congr 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using `[Matrix.scalar_apply, Matrix.sub_apply, Matrix.diagonal_apply, mul_sub]`. Apply the tactic sequence `split_ifs <;> field_simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem matrix_charpoly_smul {n : Type} [Fintype n] [DecidableEq n] (M : Matrix n n ℂ) (c : ℂ) :
     (c • M).charpoly = M.charpoly.scaleRoots c := by
@@ -51,7 +51,7 @@ theorem matrix_charpoly_smul {n : Type} [Fintype n] [DecidableEq n] (M : Matrix 
     split_ifs <;> field_simp
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.charpoly_toMatrix _ (Module.finBasis ℂ V), map_smul, matrix_charpoly_smul, LinearMap.charpoly_toMatrix]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_smul_end {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (f : Module.End ℂ V) (c : ℂ) : (c • f).charpoly = f.charpoly.scaleRoots c := by
@@ -60,11 +60,11 @@ theorem charpoly_smul_end {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDim
     LinearMap.charpoly_toMatrix]
 
 /- English proof (translation)
-Set `e : L ≃ₗ[ℂ] ℂ` to `LinearEquiv.ofFinrankEq L ℂ (by simp [hL])`. Set `E : TensorProduct ℂ V L ≃ₗ[ℂ] V` to `(TensorProduct.congr (LinearEquiv.refl ℂ V) e).trans (TensorProduct.rid ℂ V)`. Establish `key : ∀ x, E (TensorProduct.map f (c • (1 : Module.End ℂ L)) x) = (c • f) (E x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v l`. Simplify using `[E, TensorProduct.map_tmul, smul_comm c, map_smul]`. Establish `h2 : E.conj (TensorProduct.map f (c • (1 : Module.End ℂ L))) = c • f`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `E.surjective v`. Simplify `key x` using `[LinearEquiv.conj_apply]`. Rewrite using `[← charpoly_smul_end, ← h2, LinearEquiv.charpoly_conj]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_map_line {V L : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     [AddCommGroup L] [Module ℂ L] [FiniteDimensional ℂ L] (hL : Module.finrank ℂ L = 1)
@@ -90,9 +90,9 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {B : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver B w}
 
 /- English proof (translation)
-Proceed by induction on `a using WD.ind with`. Consider the case `hP m a`. Proceed by induction on `c using WD.ind with`. Consider the case `hP n c`. Rewrite `hz` using `[WD.inePol_of_mem_Ine _ hσ, WD.charPol_mk]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[WD.lpDim_mk]`. Establish `h1` using `LinearMap.aeval_self_charpoly (c.ρ (ineIncl h ⟨σ, hσ⟩))`. Rewrite `h1` using `[hz, map_sub, aeval_X, aeval_C, sub_eq_zero, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[WD.lpChar_mk, WD.inePol_of_mem_Ine _ hσ, WD.inePol_of_mem_Ine _ hσ, WD.charPol_mk, WD.charPol_mk, WDRep.tensor_ρ, h1, charpoly_map_line hc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inePol_char {a c : WD h} (hc : c.lpDim = 1) {σ : G E Ω} (hσ : σ ∈ Ine (F := E) B)
     {z : ℂ} (hz : c.inePol σ = X - C z) : (a.lpChar c).inePol σ = (a.inePol σ).scaleRoots z := by
@@ -110,9 +110,9 @@ theorem inePol_char {a c : WD h} (hc : c.lpDim = 1) {σ : G E Ω} (hσ : σ ∈ 
 end GlobalTheory.RowTieLP
 
 /- English proof (translation)
-Introduce `D T w a b χ χ' s h1 h2`. Take `⟨l1, l2, l3, l4, l5⟩` from `(GlobalTheory.T.localParameterLaws_of_weilDeligneIdentification _ _ _ _ _ T).2.1 w a b χ χ' s h1 h2`. Use `⟨l1, l2, l3, l4, l5, fun σ hσ => ⟨⟨?_, ?_⟩, fun c hc => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[T.inePol w a σ hσ, GlobalTheory.WeilDeligne.WD.inePol_of_mem_Ine _ hσ]`. Conclude with `GlobalTheory.WeilDeligne.WD.charPol_monic _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[T.inePol w a σ hσ, GlobalTheory.WeilDeligne.WD.inePol_of_mem_Ine _ hσ, GlobalTheory.WeilDeligne.WD.charPol_natDegree, T.dim]`. Rewrite `hc` using `[T.inePol w χ σ hσ]`. Establish `hd : (T.e w χ).lpDim = 1` using `by rw [T.dim, h1]`. Rewrite using `[T.inePol w _ σ hσ, T.char _ _ _ h1, T.inePol w a σ hσ]`. Conclude with `GlobalTheory.RowTieLP.inePol_char hd hσ hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RowTieLP.main : ∀ (D : D7), WDTie D.nd D.naut → Formalism.MainNotions.SumRepresentations.At.TieLP D.nd D.naut := by
   intro D T w a b χ χ' s h1 h2

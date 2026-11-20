@@ -14,11 +14,11 @@ namespace GlobalTheory.FiniteOrderRule
 open Formalism.L2.Pj
 
 /- English proof (translation)
-Establish `hJ : IsJacobsonRing R` using `isJacobsonRing_of_finiteType (A := K)`. Establish `hb : (⊥ : Ideal R).jacobson = ⊥` using `hJ.out (Ideal.isRadical_bot)`. Rewrite using `[← Ideal.mem_bot, ← hb, Ideal.jacobson, Ideal.mem_sInf]`. Introduce and unpack `J ⟨-, hM⟩`. Use `letI := Ideal.Quotient.field J`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Equip the data with the indicated structure.
 
-Use `haveI : Module.Finite K (R ⧸ J) := finite_of_finite_type_of_isJacobsonRing K (R ⧸ J)`. Set `ψ : (R ⧸ J) →ₐ[K] Ω` to `IsAlgClosed.lift`. Establish `h0` using `h (ψ.comp (Ideal.Quotient.mkₐ K J))`. Establish `h1 : Ideal.Quotient.mk J x = 0`. Apply `ψ.toRingHom.injective` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Conclude with `h0`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h1`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_algHom {K R Ω : Type} [Field K] [CommRing R] [Algebra K R] [IsReduced R]
     [Algebra.FiniteType K R] [Field Ω] [IsAlgClosed Ω] [Algebra K Ω] (x : R)
@@ -38,11 +38,11 @@ theorem eq_zero_of_forall_algHom {K R Ω : Type} [Field K] [CommRing R] [Algebra
   exact Ideal.Quotient.eq_zero_iff_mem.mp h1
 
 /- English proof (translation)
-Establish `: IsReduced p.R` using `(Ideal.isRadical_iff_quotient_reduced p.I).mp p.rad`. Rewrite using `[← sub_eq_zero]`. Use `letI : Algebra K ℂ := σ.toAlgebra`. Use `eq_zero_of_forall_algHom (K := K) (Ω := ℂ) _ ?_` and prove the remaining obligations. Introduce `φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `φ' : p.R →ₐ[K] CAt σ` to `φ`. Take `⟨z, hz⟩` from `hB p.R (CAt σ) φ' y`. Establish `hT : FromTest pts mapR z` using `⟨p, φ', y, hz⟩`. Establish `h0` using `h z`. Unfold `evalAt at h0`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h0` using `[dif_pos hT, ← hW f hf (CAt σ) p _ φ' _ y _ z hz hT.choose_spec.choose_spec.choose_spec]`. Use `show φ' _ = 0`. Rewrite using `[map_sub, map_pow, h0, map_one, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_one_of_complex {K : Type} [Field K]
     (pts : ∀ (S : Type) [CommRing S] [Algebra K S], Type)
@@ -68,7 +68,7 @@ theorem pow_eq_one_of_complex {K : Type} [Field K]
   rw [map_sub, map_pow, h0, map_one, sub_self]
 
 /- English proof (translation)
-Unfold `evalAt`. Rewrite using `[dif_pos hT, ← map_pow, h, map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalAt_pow_eq_one {K : Type} [Field K]
     (pts : ∀ (S : Type) [CommRing S] [Algebra K S], Type)
@@ -92,9 +92,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Dict
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c n d Cls _ _ δ gdet hC A y`. Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.firstFiveLaws.1.secBaseChange`. Establish `hk : Nat.card Cls ≠ 0` using `Nat.card_pos.ne'`. Establish `h1` using `GlobalTheory.FiniteOrderRule.pow_eq_one_of_complex (K := d.c₂.F) (fun S _ _ => FrPt d.Xo₂ d.c₂ S) (fun φ y z => FrMap φ y z) (GlobalTheory.Frames.algebraic_laws hS E H Dw d.l₂ d.Xo₂ d.c₂).2.2.1 (fun S _ _ T _ _ φ y => GlobalTheory.Frames.FramedBaseChange.exists_frMap hS E H Dw d. …`. Establish `h2` using `hC.2 z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `evR at h2`. Rewrite using `[h2, if_neg Bool.false_ne_true, ← map_pow, ← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one, map_one])`. Establish `h3` using `@GlobalTheory.FiniteOrderRule.evalAt_pow_eq_one d.c₂.F _ (fun S _ _ => FrPt d.Xo₂ d.c₂ S) (fun φ y z => FrMap φ y z) d.cδ (Nat.card Cls) h1 ℂ _ A y (@GlobalTheory.Frames.allTest_of_secBaseChange hS E _ _ _ H Dw d.l₂ d.Xo₂ d.c₂ ℂ _ inferInstance A y)`. Conclude with `Complex.norm_eq_one_of_pow_eq_one h3 hk`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FiniteOrderRule.unitC_of_cmp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n) (Cls : Type) [CommGroup Cls] [Finite Cls] (δ : Cls →* d.c₂.Fˣ) (gdet : FrPt d.Xo₂ d.c₂ (CAt d.c₂.F.val.toRingHom) → Cls), CMP Xo c d _ Cls δ gdet false → UnitC d := by
   intro E _ _ _ H Dw l Xo c n d Cls _ _ δ gdet hC A y

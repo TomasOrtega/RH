@@ -18,21 +18,17 @@ noncomputable section
 namespace GlobalTheory.RawLift.CoefLeft
 
 /- English proof (translation)
-Establish `pt : ∀ p q : ℂ, star p * q = (1/4 : ℂ) * ((((‖p + 1 * q‖ ^ 2 : ℝ)) : ℂ) - ((‖p + (-1) * q‖ ^ 2 : ℝ) : ℂ) + Complex.I * ((‖p + (-Complex.I) * q‖ ^ 2 : ℝ) : ℂ) - Complex.I * ((‖p + Complex.I * q‖ ^ 2 : ℝ) : ℂ))`. Introduce `p q`. Establish `e : ∀ w : ℂ, ((‖w‖ ^ 2 : ℝ) : ℂ) = w * (starRingEnd ℂ) w`. Introduce `w`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e, map_add, map_mul, map_neg, map_one, Complex.conj_I]`. Use `show (starRingEnd ℂ) p * q = _`. Put the polynomial expressions in normal form. Apply the tactic sequence `try (simp only [Complex.I_sq]; ring)`. Establish `mem : ∀ (f g : X → ℂ), MemLp f 2 ν → MemLp g 2 ν → ∀ z : ℂ, Integrable (fun x => (((‖f x + z * g x‖ ^ 2 : ℝ)) : ℂ)) ν`.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `f g hf hg z`. Establish `h2 : MemLp (fun x => f x + z * g x) 2 ν` using `hf.add (hg.const_mul z)`. Establish `: Integrable (fun x => ‖f x + z * g x‖ ^ 2) ν`. Use `h2.integrable_norm_pow (p := 2) (by norm_num)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this.ofReal`. Establish `Q : ∀ (f g : X → ℂ), MemLp f 2 ν → MemLp g 2 ν → ∀ z : ℂ, ∫ x, (((‖f x + z * g x‖ ^ 2 : ℝ)) : ℂ) ∂ν = (((∫⁻ x, ‖f x + z * g x‖ₑ ^ 2 ∂ν).toReal : ℝ) : ℂ)`. Introduce `f g hf hg z`. Rewrite using `[integral_complex_ofReal]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hm : AEStronglyMeasurable (fun x => f x + z * g x) ν` using `(hf.add (hg.const_mul z)).aestronglyMeasurable`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (f := fun x => ‖f x + z * g x‖ ^ 2) (Filter.Eventually.of_forall fun x => by simp only [Pi.zero_apply]; positivity) (hm.norm.pow 2)]`. Use `congr 1`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm_eq_enorm, ENNReal.ofReal_pow (norm_nonneg _)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `expand : ∀ (f g : X → ℂ), MemLp f 2 ν → MemLp g 2 ν → ∫ x, star (f x) * g x ∂ν = (1/4 : ℂ) * ((((∫⁻ x, ‖f x + 1 * g x‖ₑ ^ 2 ∂ν).toReal : ℝ) : ℂ) - (((∫⁻ x, ‖f x + (-1) * g x‖ₑ ^ 2 ∂ν).toReal : ℝ) : ℂ) + Complex.I * (((∫⁻ x, ‖f x + (-Complex.I) * g x‖ₑ ^ 2 ∂ν).toReal : ℝ) : ℂ) - C …`. Introduce `f g hf hg`. Repeatedly rewrite using `[pt (f _) (g _)]`. Rewrite using `[integral_const_mul, integral_sub, integral_add, integral_sub, integral_const_mul, integral_const_mul, Q f g hf hg, Q f g hf hg, Q f g hf hg, Q f g hf hg]`. Conclude with `mem f g hf hg 1`.
-
-Conclude with `mem f g hf hg (-1)`. Conclude with `(mem f g hf hg 1).sub (mem f g hf hg (-1))`. Conclude with `(mem f g hf hg (-Complex.I)).const_mul _`. Conclude with `((mem f g hf hg 1).sub (mem f g hf hg (-1))).add ((mem f g hf hg (-Complex.I)).const_mul _)`. Conclude with `(mem f g hf hg Complex.I).const_mul _`.
-
-Rewrite using `[expand c d hc hd, expand a b ha hb, h 1, h (-1), h (-Complex.I), h Complex.I]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ip_eq_of_sq {X : Type} [MeasurableSpace X] (ν : Measure X) (a b c d : X → ℂ)
     (ha : MemLp a 2 ν) (hb : MemLp b 2 ν) (hc : MemLp c 2 ν) (hd : MemLp d 2 ν)
@@ -91,13 +87,13 @@ namespace GlobalTheory.RawLift.CoefLeft
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hf.quasi, hg.quasi]`. Expand and normalize the polynomial expressions, which then agree. Use `level := by`. Take `⟨U₁, hU₁, h₁⟩` from `hf.level`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U₂, hU₂, h₂⟩` from `hg.level`. Use `⟨U₁ ⊓ U₂, by rw [AddSubgroup.coe_inf]; exact hU₁.inter hU₂, fun u hu hu0 => ?_⟩` and prove the remaining obligations. Establish `e1` using `h₁ u hu.1 hu0`. Establish `e2` using `h₂ u hu.2 hu0`. Use function extensionality and compare the values at `w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `e1'` using `congrFun e1 w`. Establish `e2'` using `congrFun e2 w`. Simplify using `only [heisO, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at e1' e2' ⊢`. Rewrite using `[← e1', ← e2']`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact.
 
-Use `cont := hf.cont.add (hg.cont.const_smul z)`. Use `smooth k L hL hL0 w := by`. Use `(hf.smooth k L hL hL0 w).add ((hg.smooth k L hL hL0 w).const_smul z)` as an intermediate fact. Simplify `this` using `only [Pi.add_apply, Pi.smul_apply]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isThetaFunO_add_smul {S T' : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {f g : WO S T' → ℂ}
     (hf : IsThetaFunO ψ S T' f) (hg : IsThetaFunO ψ S T' g) (z : ℂ) : IsThetaFunO ψ S T' (f + z • g) where
@@ -121,7 +117,7 @@ theorem isThetaFunO_add_smul {S T' : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {f 
     simpa only [Pi.add_apply, Pi.smul_apply] using this
 
 /- English proof (translation)
-Rewrite using `[memLp_two_iff_integrable_sq_norm hm]`. Use `⟨hm.norm.pow 2, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm]`. Simplify `h` using `[enorm_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem memLp_two_of_lintegral {X : Type} [MeasurableSpace X] {ν : Measure X} {f : X → ℂ}
     (hm : AEStronglyMeasurable f ν) (h : ∫⁻ x, ‖f x‖ₑ ^ 2 ∂ν < ⊤) : MemLp f 2 ν := by
@@ -135,7 +131,7 @@ end GlobalTheory.RawLift.CoefLeft
 namespace GlobalTheory.RawLift.CoefLeft
 
 /- English proof (translation)
-Use `haveI : OpensMeasurableSpace (WO S T') := ⟨le_rfl⟩`. Conclude with `hf.cont.aestronglyMeasurable`.
+A detailed English derivation is pending.
 -/
 theorem aesm_of_theta {D : D7} {S T' : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {f : WO S T' → ℂ} (ν : Measure (WO S T'))
     (hf : IsThetaFunO ψ S T' f) : AEStronglyMeasurable f ν := by
@@ -143,7 +139,7 @@ theorem aesm_of_theta {D : D7} {S T' : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {
   exact hf.cont.aestronglyMeasurable
 
 /- English proof (translation)
-Establish `un` using `fun f (hf : IsThetaFunO ψ S T' f) => hW.om_unit μ 𝓕 hμ.1 hμ.2.1 p f hf`. Unfold `thetaIP`. Use `ip_eq_of_sq (μ.restrict 𝓕) u v (om p u) (om p v) (memLp_two_of_lintegral (aesm_of_theta _ hu) hu2) (memLp_two_of_lintegral (aesm_of_theta _ hv) hv2) (memLp_two_of_lintegral (aesm_of_theta _ (hW.om_pres p u hu)) (by rw [un u hu]; exact hu2)) (memLp_two_of_lintegral (aesm_of_theta …` and prove the remaining obligations. Use `un (u + z • v) (isThetaFunO_add_smul hu hv z)` as an intermediate fact. Simplify `this` using `only [map_add, map_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem thetaInner_weilRep {D : D7} {S T' : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T' →* Module.End ℂ (WO S T' → ℂ)} (hW : IsWeilDatumO ψ S T' χS χT om)
@@ -161,9 +157,9 @@ theorem thetaInner_weilRep {D : D7} {S T' : HSp D} {ψ : AddChar (AF D.host.F) �
   simpa only [map_add, map_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul] using this
 
 /- English proof (translation)
-Establish `hi : Integrable (fun w => star (v w) * v w) (μ.restrict 𝓕)`. Assume the negation of the conclusion as `hn`. Conclude with `h (integral_undef hn)`. Use `hi.hasFiniteIntegral` as an intermediate fact. Rewrite `this` using `[hasFiniteIntegral_iff_enorm]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[enorm_mul, sq]`.
+A detailed English derivation is pending.
 -/
 theorem thetaIP₂ {D : D7} {S T' : HSp D} {μ : Measure (WO S T')} {𝓕 : Set (WO S T')}
     {v : WO S T' → ℂ} (h : thetaIP μ 𝓕 v v ≠ 0) : ∫⁻ w in 𝓕, ‖v w‖ₑ ^ 2 ∂μ < ⊤ := by
@@ -181,15 +177,15 @@ namespace GlobalTheory.RawLift.CoefLeft
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL i t hfix μ 𝓕 hμ k hk g`. Establish `hW` using `hL.thP.ωP i t`. Establish `hv1 : R.ωP i t (1, k) (R.vP i t) = R.vP i t`. Use `hfix k hk 1` as an intermediate fact. Rewrite `this` using `[Model.pureTensor_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hvθ : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i t)`. Use `hL.thP.pt_theta i t 1` as an intermediate fact. Rewrite `this` using `[Model.pureTensor_one]`. Then use the resulting hypothesis. Unfold `coef`. Distinguish the cases in `h0 : thetaIP μ 𝓕 (R.vP i t) (R.vP i t) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h0, div_zero, div_zero]`. Use `congr 1`. Establish `e : R.ωP i t (1, k * g) = R.ωP i t (1, k) * R.ωP i t (1, g)` using `by rw [← map_mul]; simp`. Rewrite using `[e, Module.End.mul_apply]`. Establish `hv2` using `thetaIP₂ h0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `huθ` using `hW.om_pres (1, g) _ hvθ`. Establish `hu2 : ∫⁻ w in 𝓕, ‖R.ωP i t (1, g) (R.vP i t) w‖ₑ ^ 2 ∂μ < ⊤`. Rewrite using `[hW.om_unit μ 𝓕 hμ.1 hμ.2.1 (1, g) _ hvθ]`. Conclude with `hv2`. Establish `key` using `thetaInner_weilRep hW hμ (1, k) huθ hvθ hu2 hv2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `key` using `[hv1]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem coef_lev_mul : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → ∀ i t, LevFix R i t → ∀ (μ : Measure (WO (Vc D i) (Wc D i))) (𝓕 : Set (WO (Vc D i) (Wc D i))), IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕 → ∀ k ∈ levW R i, ∀ g, coef R i t μ 𝓕 (k * g) = coef R i t μ 𝓕 g := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL i t hfix μ 𝓕 hμ k hk g

@@ -35,7 +35,7 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSp
   {M : Submodule ℂ H} {Ω : M →ₗ[ℂ] M} {T : H →L[ℂ] H}
 
 /- English proof (translation)
-Rewrite using `[F.map_mul, F.map_star, ContinuousLinearMap.mul_apply, ContinuousLinearMap.adjoint_inner_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_star_mul (F : FCalc H M Ω T) (x : H) (a b : C₀(ℝ, ℂ)) :
     ⟪F.Φ (star a * b) x, x⟫_ℂ = ⟪F.Φ b x, F.Φ a x⟫_ℂ := by
@@ -43,19 +43,19 @@ theorem inner_star_mul (F : FCalc H M Ω T) (x : H) (a b : C₀(ℝ, ℂ)) :
     ContinuousLinearMap.adjoint_inner_left]
 
 /- English proof (translation)
-Set `h` to `mulC (fun y => (y : ℂ)) Complex.continuous_ofReal f R (fun y hy => by rw [h2 y hy, mul_zero])`. Set `r` to `mulC (fun y => ((Real.sqrt (max (y - c - δ) 0) : ℝ) : ℂ)) (Complex.continuous_ofReal.comp (by fun_prop)) f R (fun y hy => by rw [h2 y hy, mul_zero])`. Take `⟨v, hv, hle⟩` from `hyp f`. Establish `hΩ : (Ω v : H) = F.Φ h x` using `F.omega f h (fun y => rfl) x v hv`. Establish `hid : star r * r = star f * h - ((c + δ : ℝ) : ℂ) • (star f * f)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `y`. Distinguish the cases in `hy : y ≤ c + δ`. Simplify using `[r, h, h1 y hy]`. Establish `hpos : 0 ≤ y - c - δ` using `by linarith [not_le.mp hy]`. Establish `hs : ((Real.sqrt (y - c - δ) : ℝ) : ℂ) * ((Real.sqrt (y - c - δ) : ℝ) : ℂ) = (y : ℂ) - c - δ`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt hpos]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [r, h, ZeroAtInftyContinuousMap.coe_mul, ZeroAtInftyContinuousMap.coe_star, ZeroAtInftyContinuousMap.coe_sub, ZeroAtInftyContinuousMap.coe_smul, Pi.mul_apply, Pi.star_apply, Pi.sub_apply, Pi.smul_apply, mulC_apply, max_eq_left hpos, star_mul', smul_eq_mul]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Take the linear combination `((starRingEnd ℂ) (f y) * f y) * hs`. Establish `e : ((‖F.Φ r x‖ ^ 2 : ℝ) : ℂ) = ⟪(Ω v : H), v⟫_ℂ - ((c + δ : ℝ) : ℂ) * ((‖(v : H)‖ ^ 2 : ℝ) : ℂ)`. Establish `a1` using `inner_star_mul F x r r`. Establish `a2` using `inner_star_mul F x f h`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `inner_star_mul F x f f`. Rewrite `a1` using `[hid, map_sub, map_smul, ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, inner_sub_left, inner_smul_left, a2, a3, Complex.conj_ofReal, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Rewrite using `[hΩ, hv]`. Use `push_cast`. Simplify using `using a1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e'` using `congrArg Complex.re e`. Rewrite `e'` using `[Complex.ofReal_re, Complex.sub_re, Complex.re_ofReal_mul, Complex.ofReal_re]`. Establish `hn : ‖(v : H)‖ ^ 2 ≤ 0`. Establish `p1 : 0 ≤ ‖F.Φ r x‖ ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hv0 : ‖(v : H)‖ = 0`. Use `sq_nonneg ‖(v : H)‖` as an intermediate fact. Conclude with `pow_eq_zero_iff (two_ne_zero) |>.mp (le_antisymm hn this)`. Rewrite using `[← hv]`. Conclude with `norm_eq_zero.mp hv0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (F : FCalc H M Ω T) (c : ℝ) (x : H)
     (hyp : ∀ g, ∃ v : M, (v : H) = F.Φ g x ∧ (⟪(Ω v : H), v⟫_ℂ).re ≤ c * ‖(v : H)‖ ^ 2)
@@ -103,31 +103,29 @@ theorem core (F : FCalc H M Ω T) (c : ℝ) (x : H)
   exact norm_eq_zero.mp hv0
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨R, hR⟩ : ∃ R : ℝ, ∀ y, R ≤ |y| → ‖g y‖ ≤ ε := by`. Establish `ht : Tendsto g (cocompact ℝ) (𝓝 0)` using `g.zero_at_infty'`. Establish `hm : {y | ‖g y‖ < ε} ∈ cocompact ℝ`. Use `ht (Metric.ball_mem_nhds (0 : ℂ) hε)` as an intermediate fact. Simplify `this` using `[Metric.ball, dist_zero_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨t, ht1, ht2⟩` from `Filter.mem_cocompact.mp hm`. Take `⟨r, hr⟩` from `ht1.isBounded.subset_closedBall (0 : ℝ)`. Use `⟨r + 1, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hyt : y ∈ tᶜ` using `fun hyt => by`. Use `hr hyt` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Metric.mem_closedBall, Real.dist_eq, sub_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(ht2 hyt).le`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ, hδc⟩ : ∃ δ > 0, ∀ y, y ≤ c + δ → ‖g y‖ ≤ ε := by`. Take `⟨d, hd, hdc⟩` from `Metric.continuous_iff.mp g.continuous c ε hε`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d / 2, by positivity, fun y hy => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hyc : y ≤ c`. Rewrite using `[hg y hyc, norm_zero]`. Conclude with `hε.le`. Establish `: dist y c < d`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[Real.dist_eq, abs_of_pos (by linarith [not_le.mp hyc])]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : dist (g y) (g c) < ε` using `hdc y this`. Rewrite `h3` using `[hg c le_rfl, dist_zero_right]`. Conclude with `h3.le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `m : ℝ → ℝ` to `fun y => min 1 (max 0 (‖g y‖ / ε - 1))`. Establish `hm0 : ∀ y, ‖g y‖ ≤ ε → m y = 0` using `fun y hy => by`. Establish `: ‖g y‖ / ε - 1 ≤ 0`. Rewrite using `[sub_nonpos, div_le_one hε]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `only [m, max_eq_left this]`. Conclude with `min_eq_right zero_le_one`. Establish `hmc : Continuous m`. Use `g.continuous` as an intermediate fact. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `f` to `mulC (fun y => (m y : ℂ)) (Complex.continuous_ofReal.comp hmc) g R (fun y hy => by rw [hm0 y (hR y hy)]; simp)`. Use `⟨f, δ, R, hδ, fun y hy => ?_, fun y hy => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[f, hm0 y (hδc y hy)]`. Simplify using `[f, hm0 y (hR y hy)]`. Rewrite using `[← ZeroAtInftyContinuousMap.norm_toBCF_eq_norm]`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(BoundedContinuousFunction.norm_le (by positivity)).mpr fun y => ?_` and prove the remaining obligations. Establish `hy : (g - f).toBCF y = (1 - (m y : ℂ)) * g y` using `by show g y - (m y : ℂ) * g y = _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hy, norm_mul]`. Establish `hm1 : m y ≤ 1` using `min_le_left _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hm2 : 0 ≤ m y` using `le_min zero_le_one (le_max_left _ _)`. Establish `hn : ‖(1 - (m y : ℂ))‖ = 1 - m y`. Establish `: (1 - (m y : ℂ)) = ((1 - m y : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_real, Real.norm_of_nonneg (by linarith)]`. Rewrite using `[hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hb : 2 * ε ≤ ‖g y‖`. Establish `: m y = 1`. Establish `h1 : 1 ≤ ‖g y‖ / ε - 1`. Establish `: 2 ≤ ‖g y‖ / ε` using `by rw [le_div_iff₀ hε]; exact hb`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `min_eq_left (h1.trans (le_max_right _ _))`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish `hgy` using `(not_le.mp hb).le`.
-
-Establish `: 0 ≤ ‖g y‖` using `norm_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem approx (c : ℝ) (g : C₀(ℝ, ℂ)) (hg : ∀ y, y ≤ c → g y = 0) (ε : ℝ) (hε : 0 < ε) :
     ∃ (f : C₀(ℝ, ℂ)) (δ R : ℝ), 0 < δ ∧ (∀ y, y ≤ c + δ → f y = 0) ∧ (∀ y, R ≤ |y| → f y = 0) ∧
@@ -196,13 +194,13 @@ theorem approx (c : ℝ) (g : C₀(ℝ, ℂ)) (hg : ∀ y, y ≤ c → g y = 0) 
       nlinarith
 
 /- English proof (translation)
-Introduce `H _ _ _ M Ω T F c x hyp g hg`. Use `norm_eq_zero.mp (le_antisymm (le_of_forall_pos_le_add fun e he => ?_) (norm_nonneg _))` and prove the remaining obligations. Establish `hx : 0 < ‖x‖ + 1` using `by positivity`. Take `⟨f, δ, R, hδ, h1, h2, hfg⟩` from `approx c g hg (e / (2 * (‖x‖ + 1))) (by positivity)`. Establish `hz` using `core F c x hyp f δ R hδ h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsplit : F.Φ g x = F.Φ (g - f) x`. Rewrite using `[map_sub, ContinuousLinearMap.sub_apply, hz, sub_zero]`. Establish `hb : ‖F.Φ (g - f) x‖ ≤ 2 * (e / (2 * (‖x‖ + 1))) * ‖x‖` using `((F.Φ (g - f)).le_opNorm x).trans (mul_le_mul_of_nonneg_right ((F.norm_le _).trans hfg) (norm_nonneg _))`. Establish `hc : 2 * (e / (2 * (‖x‖ + 1))) * ‖x‖ ≤ e`. Establish `: 2 * (e / (2 * (‖x‖ + 1))) * ‖x‖ = e * (‖x‖ / (‖x‖ + 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Establish `: ‖x‖ / (‖x‖ + 1) ≤ 1`. Rewrite using `[div_le_one hx]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hsplit]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem absCut : AbsCut := by
   intro H _ _ _ M Ω T F c x hyp g hg

@@ -10,9 +10,9 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory.DualInt
 
 /- English proof (translation)
-Rewrite `ha`, the goal using `[Submodule.mem_one]`. Take `⟨r, rfl⟩` from `ha`. Establish `hi : IsIntegral ℤ (star (algebraMap (𝓞 K) K r))`. Use `(r.isIntegral_coe).map (starRingAut (R := K) : K ≃+* K).toRingHom.toIntAlgHom` as an intermediate fact. Simplify using `using this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨⟨_, hi⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem star_mem_one_O {K : Type} [Field K] [NumberField K] [StarRing K] {a : K}
     (ha : a ∈ (1 : Submodule (𝓞 K) K)) : star a ∈ (1 : Submodule (𝓞 K) K) := by
@@ -24,7 +24,7 @@ theorem star_mem_one_O {K : Type} [Field K] [NumberField K] [StarRing K] {a : K}
   exact ⟨⟨_, hi⟩, rfl⟩
 
 /- English proof (translation)
-Simplify using `[hform, Matrix.toLinearMapₛₗ₂'_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, starRingEnd_apply, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq_dot {K : Type} [Field K] [NumberField K] [StarRing K] {n : ℕ}
     (H : Matrix (Fin n) (Fin n) K) (a b : Fin n → K) :
@@ -32,9 +32,9 @@ theorem hform_eq_dot {K : Type} [Field K] [NumberField K] [StarRing K] {n : ℕ}
   simp [hform, Matrix.toLinearMapₛₗ₂'_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, starRingEnd_apply, mul_comm]
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap]`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `hform H x (H⁻¹ *ᵥ star y) ∈ (1 : Submodule (𝓞 K) K)`. Rewrite using `[hform_eq_dot, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hH, Matrix.one_mulVec]`. Establish `e : star x ⬝ᵥ star y = star (y ⬝ᵥ x)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[dotProduct, mul_comm]`. Rewrite using `[e]`. Conclude with `star_mem_one_O (hy x hx)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mulVec_star_mem_dual {K : Type} [Field K] [NumberField K] [StarRing K] {n : ℕ}
     (H : Matrix (Fin n) (Fin n) K) (hH : IsUnit H.det) (M : Submodule (𝓞 K) (Fin n → K))
@@ -50,9 +50,9 @@ theorem inv_mulVec_star_mem_dual {K : Type} [Field K] [NumberField K] [StarRing 
   exact star_mem_one_O (hy x hx)
 
 /- English proof (translation)
-Introduce `K _ _ _ n H _ hH M hM y y' hy hy'`. Establish `hz` using `hM (inv_mulVec_star_mem_dual H hH M y hy)`. Establish `e : hform (H⁻¹)ᵀ y y' = y' ⬝ᵥ (H⁻¹ *ᵥ star y)`. Rewrite using `[hform_eq_dot, Matrix.mulVec_transpose, dotProduct_comm, ← Matrix.dotProduct_mulVec]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy' _ hz`.
+A detailed English derivation is pending.
 -/
 theorem dual_form_integral :
     ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (n : ℕ) (H : Matrix (Fin n) (Fin n) K),

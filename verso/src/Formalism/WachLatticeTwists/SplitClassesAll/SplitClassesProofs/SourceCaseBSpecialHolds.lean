@@ -10,23 +10,21 @@ open Formalism.CoboundaryTransfers Formalism.RepresentationBoundsCohomology.N1 F
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `ℓ _ H₁ H₂ _ _ _ _ Hf₁ Hf₂ g e hS`. Take `⟨hℓ2, hS⟩` from `hS`. Use `hS _ ?_` and prove the remaining obligations. Introduce `A A₀ _ _ _ _ S B Δ _ _ _ IB ι _ pr D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ E M h M₀ H ρ₀ ρ₁ ρ₂ D₀' D₁' D₂' _ _ _ _ _ _ _ _ _ _ _ _ j₀ j₁ j₂ φ₀ γ₀ φ₁ γ₁ φ₂ γ₂ u jumps hℓ hs hc hu hR hD a0 a1 a2 b0 b1 b2 c0 c1 c2 hP6 hM hH hp hcard hΔ hmodπ hcap hreg hQL hdiv hjac i0 i1 i2 d0 d1 …`. Take `⟨V₀, V₁, V₂, Sq, J₀, J₁, J₂, e0, e1, e2, hSι, hSπ, -⟩` from `lift_case_a_odd_prime ℓ hℓ2 A A₀ S B Δ IB ι pr D₀ D₁ D₂ W₀ W₁ W₂ E M h M₀ H ρ₀ ρ₁ ρ₂ D₀' D₁' D₂' j₀ j₁ j₂ φ₀ γ₀ φ₁ γ₁ φ₂ γ₂ u jumps hℓ hs hc hu hR hD a0 a1 a2 b0 b1 b2 c0 c1 c2 hP6 hM hH hp hcard hΔ hmodπ hcap hreg hQL hdiv hjac i0 i1 i2 d0 d1 d2 hι hπ hnt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, R, P, ρ, κ, _, _, _, _, _, _, _, L, cl₁, cl₂, _, hδ, hP4, hj, hnat, hc1, hc2, hinj, he1, he2⟩` from `hGal V₀ V₁ V₂ Sq J₀ J₁ J₂ e0 e1 e2 hSι hSπ`. Take `⟨n1, -⟩` from `delta_basis_holds ℤ_[ℓ] A S Δ ι pr D₁ W₁ ρ₁ hR (card_unit' ℓ A _ hcard) d1`. Take `⟨s2, -, -, -, -⟩` from `d2`. Take `⟨-, -, -, y4, y5, -⟩` from `i1`. Take `⟨-, -, -, z4, z5, -⟩` from `i2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e1j, e1φ, e1γ⟩` from `e1`. Take `⟨e2j, e2φ, e2γ⟩` from `e2`. Establish `k1 : J₁.Compat` using `⟨by rw [e1j, e1φ]; exact y4, by rw [e1j, e1γ]; exact y5⟩`. Establish `k2 : J₂.Compat` using `⟨by rw [e2j, e2φ]; exact z4, by rw [e2j, e2γ]; exact z5⟩`. Take `⟨-, -, -, -, -, -, -, q8, -, -⟩` from `base_case_b ℓ A S hℓ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hval : PadicInt.valuation ((u : ℤ_[ℓ]) - 1) = 1` using `by rw [hu, q8 hc, hs]`. Take `⟨hPhi, hGX⟩` from `base_case_a ℤ_[ℓ] A A₀ S B Δ IB hs hΔ hmodπ hcap hreg`. Rewrite `hPhi`, `hGX` using `[hcard]`. Rewrite `hGX` using `[← hu]`. Establish `hGQ` using `gamma_quotient_case_a ℤ_[ℓ] A₀ B hQL hdiv hjac`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, hcc, -, -⟩` from `consequence_five_holds ℓ u hℓ2 hval`. Take `⟨l1, l3⟩` from `regulator_quotient_case_a ℓ A A₀ S B Δ IB ι pr D₀ W₀ ρ₀ M₀ D₀' V₀ J₀ hℓ c0`. Take `⟨p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11⟩` from `hP4`. Establish `hQI : B.Q ∈ Ideal.span {(ℓ : A₀), B.X}`. Establish `hQ' : B.Q = B.X + (B.p : A₀)` using `hQL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hQ', hp]`. Conclude with `Ideal.add_mem _ (Ideal.subset_span (by simp)) (Ideal.subset_span (by simp))`. Establish `hφI : ∀ a ∈ Ideal.span {(ℓ : A₀), B.X}, B.φ a ∈ Ideal.span {(ℓ : A₀), B.X}`. Introduce `a ha`. Establish `: Ideal.span {(ℓ : A₀), B.X} ≤ (Ideal.span {(ℓ : A₀), B.X}).comap (B.φ : A₀ →+* A₀)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `x (rfl | rfl)`. Use `show (B.φ : A₀ →+* A₀) (ℓ : A₀) ∈ Ideal.span {(ℓ : A₀), B.X}`. Rewrite using `[map_natCast]`. Conclude with `Ideal.subset_span (by simp)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `show B.φ B.X ∈ Ideal.span {(ℓ : A₀), B.X}`. Take `⟨v, hv⟩` from `B.φX`. Rewrite using `[hv]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span (by simp))`. Conclude with `this ha`.
-
-Conclude with `⟨hℓ2, A₀, inferInstance, inferInstance, B, M₀, u, H, jumps, c, D₀', D₁', D₂', inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, V₀, V₁, V₂, Sq, δ, cl₁ …`.
+A detailed English derivation is pending.
 -/
 theorem srcNA : StatSrcNA := by
   intro ℓ _ H₁ H₂ _ _ _ _ Hf₁ Hf₂ g e hS
@@ -95,7 +93,7 @@ theorem srcNA : StatSrcNA := by
       hcard hΔ hGQ hcap k2 he2), hrat, he⟩
 
 /- English proof (translation)
-Introduce `ℓ _ H₁ H₂ _ _ _ _ Hf₁ Hf₂ g e hS`. Break down `hS with hB | hA | ⟨K₁, K₂, i1, i2, i3, i4, Kf₁, Kf₂, h, res₂, cor₁, cor₂, n, E, k1, k2, k3, k4, k5, k6, k7⟩` into its components or cases. Conclude with `Or.inl (srcNB ℓ H₁ H₂ Hf₁ Hf₂ g e hB)`. Conclude with `Or.inr (Or.inl (srcNA ℓ H₁ H₂ Hf₁ Hf₂ g e hA))`. Conclude with `Or.inr (Or.inr ⟨K₁, K₂, i1, i2, i3, i4, Kf₁, Kf₂, h, res₂, cor₁, cor₂, n, E, k1, k2, k3, k4, k5, k6.imp (srcNB ℓ K₁ K₂ Kf₁ Kf₂ h E) (srcNA ℓ K₁ K₂ Kf₁ Kf₂ h E), k7⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Prove the second alternative.
 -/
 theorem source_two_cases_holds : SourceTwoCases := by
   intro ℓ _ H₁ H₂ _ _ _ _ Hf₁ Hf₂ g e hS
@@ -106,7 +104,7 @@ theorem source_two_cases_holds : SourceTwoCases := by
       k6.imp (srcNB ℓ K₁ K₂ Kf₁ Kf₂ h E) (srcNA ℓ K₁ K₂ Kf₁ Kf₂ h E), k7⟩)
 
 /- English proof (translation)
-Introduce `ℓ _ O _ _ H₁ H₂ _ _ _ _ _ _ _ _ Hf₁ Hf₂ g e' hS`. Take `⟨e, he, h⟩` from `hS`. Conclude with `⟨e, he, source_two_cases_holds ℓ H₁ H₂ _ _ _ e h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem srcNO2 : StatSrcNO2 := by
   intro ℓ _ O _ _ H₁ H₂ _ _ _ _ _ _ _ _ Hf₁ Hf₂ g e' hS

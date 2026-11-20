@@ -10,14 +10,14 @@ namespace Formalism.MainNotions.UnusedSlot33
 open Formalism.FrobeniusOrbits Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory
 
 /- English proof (translation)
-The claim follows from `Int.eq_zero_of_abs_lt_dvd (addOrderOf_dvd_iff_zsmul_eq_zero.mpr hk) hlt`.
+A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_zsmul_eq_zero_of_abs_lt_addOrderOf {G : Type*} [AddCommGroup G] (a : G) (k : ℤ)
     (hk : k • a = 0) (hlt : |k| < (addOrderOf a : ℤ)) : k = 0 :=
   Int.eq_zero_of_abs_lt_dvd (addOrderOf_dvd_iff_zsmul_eq_zero.mpr hk) hlt
 
 /- English proof (translation)
-Rewrite using `[sub_zsmul, sub_zsmul, natCast_zsmul, natCast_zsmul, ← sub_eq_add_neg, ← sub_eq_add_neg]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem sub_zsmul_eq_of_two_eqs {G : Type*} [AddCommGroup G] (a h t u₀ : G) (i j : ℤ) (s s' : ℕ)
     (e : t + i • h = s • a + u₀) (e' : t + j • h = s' • a + u₀) :
@@ -28,23 +28,23 @@ private theorem sub_zsmul_eq_of_two_eqs {G : Type*} [AddCommGroup G] (a h t u₀
     _ = s' • a - s • a := by abel
 
 /- English proof (translation)
-Establish `hL : (4 * L : ℤ) < addOrderOf h` using `by exact_mod_cast hh`. Establish `hdist : ∀ (i j : ℤ) (s s' : ℕ), i₀ ≤ i → i < i₀ + L → i₀ ≤ j → j < i₀ + L → i ≠ j → (j - i) • h = ((s' : ℤ) - s) • a → s ≠ s'`. Introduce `i j s s' hi hi' hj hj' hij e hss`. Substitute `hss` using the available equality. Rewrite `e` using `[sub_self, zero_zsmul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `have h0 := eq_zero_of_zsmul_eq_zero_of_abs_lt_addOrderOf h (j - i) e (by rw [abs_lt]; constructor <;> omega)`. Use linear arithmetic over natural numbers and integers. Establish `k2` using `sub_zsmul_eq_of_two_eqs a h t u₀ i1 i2 s1 s2 e1 e2`. Establish `k3` using `sub_zsmul_eq_of_two_eqs a h t u₀ i1 i3 s1 s3 e1 e3`. Establish `k23` using `sub_zsmul_eq_of_two_eqs a h t u₀ i2 i3 s2 s3 e2 e3`.
+Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n12` using `hdist i1 i2 s1 s2 a1 b1 a2 b2 h12 k2`. Establish `n13` using `hdist i1 i3 s1 s3 a1 b1 a3 b3 h13 k3`. Establish `n23` using `hdist i2 i3 s2 s3 a2 b2 a3 b3 h23 k23`. Establish `hD : ((i3 - i1) * ((s2 : ℤ) - s1) - (i2 - i1) * ((s3 : ℤ) - s1)) • a = 0`. Rewrite using `[sub_zsmul, ← sub_eq_add_neg, ← smul_smul, ← smul_smul, ← k2, ← k3, smul_smul, smul_smul, mul_comm (i3 - i1), sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hN : ∀ s ∈ T, 4 * (L : ℤ) * s < addOrderOf a` using `fun s hs => by exact_mod_cast hT s hs`. Establish `hb1` using `hN s1 hs1`. Establish `hb2` using `hN s2 hs2`. Establish `hb3` using `hN s3 hs3`. Establish `hLn : (0 : ℤ) ≤ L` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs1n : (0 : ℤ) ≤ s1` using `by positivity`. Establish `hs2n : (0 : ℤ) ≤ s2` using `by positivity`. Establish `hs3n : (0 : ℤ) ≤ s3` using `by positivity`. Establish `hy2 : 4 * (L : ℤ) * |(s2 : ℤ) - s1| < addOrderOf a`. Apply the tactic sequence `rcases abs_cases ((s2 : ℤ) - s1) with ⟨hc, -⟩ | ⟨hc, -⟩ <;> rw [hc] <;>`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use polynomial arithmetic with `[mul_nonneg hLn hs1n, mul_nonneg hLn hs2n]`. Establish `hy3 : 4 * (L : ℤ) * |(s3 : ℤ) - s1| < addOrderOf a`. Apply the tactic sequence `rcases abs_cases ((s3 : ℤ) - s1) with ⟨hc, -⟩ | ⟨hc, -⟩ <;> rw [hc] <;>`. Use polynomial arithmetic with `[mul_nonneg hLn hs1n, mul_nonneg hLn hs3n]`. Apply the tactic sequence `have hx : |i3 - i1| ≤ L := by rw [abs_le]; constructor <;> omega`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have hu : |i2 - i1| ≤ L := by rw [abs_le]; constructor <;> omega`. Establish `hxy : 4 * |(i3 - i1) * ((s2 : ℤ) - s1)| < addOrderOf a`. Rewrite using `[abs_mul]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hx (abs_nonneg ((s2 : ℤ) - s1))]`. Establish `huv : 4 * |(i2 - i1) * ((s3 : ℤ) - s1)| < addOrderOf a`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[abs_mul]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hu (abs_nonneg ((s3 : ℤ) - s1))]`. Establish `hDb : |(i3 - i1) * ((s2 : ℤ) - s1) - (i2 - i1) * ((s3 : ℤ) - s1)| < addOrderOf a`. Rewrite using `[abs_lt]`. Apply the tactic sequence `constructor <;>`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Combine the linear relations using `[le_abs_self ((i3 - i1) * ((s2 : ℤ) - s1)), neg_abs_le ((i3 - i1) * ((s2 : ℤ) - s1)), le_abs_self ((i2 - i1) * ((s3 : ℤ) - s1)), neg_abs_le ((i2 - i1) * ((s3 : ℤ) - s1)), abs_nonneg ((i3 - i1) * ((s2 : ℤ) - s1)), abs_nonneg ((i2 - i1) * ((s3 : ℤ) - s1))]`. Establish `hD0` using `eq_zero_of_zsmul_eq_zero_of_abs_lt_addOrderOf a _ hD hDb`. Conclude with `hR s1 hs1 s2 hs2 s3 hs3 n12 n13 n23 (i2 - i1) (i3 - i1) (abs_pos.mpr (sub_ne_zero.mpr (Ne.symm h12))) hu (abs_pos.mpr (sub_ne_zero.mpr (Ne.symm h13))) hx (fun hc => h23 (by omega)) (sub_eq_zero.mp hD0)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem false_of_three_distinct_in_window {G : Type*} [AddCommGroup G] (a t h u₀ : G) (T : Finset ℕ) (L : ℕ)
     (hT : ∀ s ∈ T, 4 * L * s < addOrderOf a) (hR : Formalism.FrobeniusOrbits.NoRel T L)
@@ -104,13 +104,13 @@ private theorem false_of_three_distinct_in_window {G : Type*} [AddCommGroup G] (
     (fun hc => h23 (by omega)) (sub_eq_zero.mp hD0)
 
 /- English proof (translation)
-Establish `k` using `sub_zsmul_eq_of_two_eqs a h t u₀ i j s s' e e'`. Establish `hm : ((addOrderOf h : ℤ) * ((s' : ℤ) - s)) • a = 0`. Rewrite using `[← smul_smul, ← k, smul_smul, mul_comm, ← smul_smul, natCast_zsmul, addOrderOf_nsmul_eq_zero, zsmul_zero]`. Establish `hm0 : (0 : ℤ) ≤ (addOrderOf h : ℤ)` using `by positivity`. Establish `hmL : (addOrderOf h : ℤ) ≤ 4 * L` using `by exact_mod_cast hh`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLn : (0 : ℤ) ≤ L` using `by positivity`. Establish `hsn : (0 : ℤ) ≤ s` using `by positivity`. Establish `hsn' : (0 : ℤ) ≤ s'` using `by positivity`. Establish `hb` using `(show 4 * (L : ℤ) * s < addOrderOf a by exact_mod_cast hT s hs)`. Establish `hb'` using `(show 4 * (L : ℤ) * s' < addOrderOf a by exact_mod_cast hT s' hs')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : 4 * (L : ℤ) * |(s' : ℤ) - s| < addOrderOf a`. Apply the tactic sequence `rcases abs_cases ((s' : ℤ) - s) with ⟨hc, -⟩ | ⟨hc, -⟩ <;> rw [hc] <;>`. Use polynomial arithmetic with `[mul_nonneg hLn hsn, mul_nonneg hLn hsn']`. Establish `hz` using `eq_zero_of_zsmul_eq_zero_of_abs_lt_addOrderOf a _ hm (by`. Rewrite using `[abs_mul, abs_of_nonneg hm0]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hmL (abs_nonneg ((s' : ℤ) - s))])`. Apply the tactic sequence `rcases mul_eq_zero.mp hz with h0 | h0 <;> omega`.
+Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem eq_of_zsmul_eqs_of_small_orders {G : Type*} [AddCommGroup G] (a t h u₀ : G) (T : Finset ℕ) (L : ℕ)
     (hT : ∀ s ∈ T, 4 * L * s < addOrderOf a) (hpos : 0 < addOrderOf h)
@@ -136,17 +136,17 @@ private theorem eq_of_zsmul_eqs_of_small_orders {G : Type*} [AddCommGroup G] (a 
   rcases mul_eq_zero.mp hz with h0 | h0 <;> omega
 
 /- English proof (translation)
-Take `⟨C, -, hT⟩` from `Formalism.FrobeniusOrbits.hostThickExists`. Use `⟨C, fun D Lw hLw => ?_⟩` and prove the remaining obligations. Take `⟨T, hTs, hTR, hTc⟩` from `hT D.R.n0 Lw hLw`. Use `⟨T, ?_, hTc, hTR, ?_⟩` and prove the remaining obligations. Introduce `s hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ((4 * Lw * s : ℕ) : ℝ) < (D.R.n0 : ℝ)` using `by exact_mod_cast hTs s hs`. Establish `hL : (2 : ℝ) ≤ Lw` using `by exact_mod_cast hLw`. Rewrite using `[lt_div_iff₀ (by linarith)]`. Move the coercions through the operations in `at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `u₀ t h`. Use `⟨fun hh i₀ => ?_, fun hh => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc push_neg at hc`. Take `⟨i1, hi1, i2, hi2, i3, hi3, h12, h13, h23⟩` from `Finset.two_lt_card.mp hc`. Simplify using `only [Finset.mem_filter, Finset.mem_Ico, transl, Set.mem_setOf_eq] at hi1 hi2 hi3`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨⟨a1, b1⟩, s1, hs1, e1⟩` from `hi1`. Take `⟨⟨a2, b2⟩, s2, hs2, e2⟩` from `hi2`. Take `⟨⟨a3, b3⟩, s3, hs3, e3⟩` from `hi3`. Conclude with `false_of_three_distinct_in_window _ t h u₀ T Lw hTs hTR hh i₀ i1 i2 i3 s1 s2 s3 a1 b1 a2 b2 a3 b3 h12 h13 h23 hs1 hs2 hs3 e1 e2 e3`. Use `haveI hfin : Finite (HH D) := by show Finite (Fin _) infer_instance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < addOrderOf h` using `addOrderOf_pos h`. Establish `hsub : (coset t h ∩ transl T u₀).Subsingleton`. Introduce and unpack `x ⟨⟨i, rfl⟩, s, hs, ex⟩ y ⟨⟨j, rfl⟩, s', hs', ey⟩`. Establish `hss` using `eq_of_zsmul_eqs_of_small_orders _ t h u₀ T Lw hTs hpos hh i j s s' hs hs' ex ey`. Substitute `hss` using the available equality.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[ex, ey]`. Break down `hsub.eq_empty_or_singleton with hE | ⟨x, hx⟩` into its components or cases. Rewrite using `[hE, Set.ncard_empty]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hx, Set.ncard_singleton]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dropping_proposition_holds : ∃ C : ℝ, ∀ D : D7, Conclusion5 D C := by
   obtain ⟨C, -, hT⟩ := Formalism.FrobeniusOrbits.hostThickExists

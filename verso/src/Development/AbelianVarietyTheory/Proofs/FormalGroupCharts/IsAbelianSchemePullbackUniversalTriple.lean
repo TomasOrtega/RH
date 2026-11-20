@@ -15,7 +15,7 @@ open MvPolynomial (X)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo X1 t' f mp`. Establish `hp : IsProper t'.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) mp.cart.1 Xo.univ.proper`. Conclude with `⟨t'.semi.comm, t'.semi.smooth, hp, t'.semi.geomConnected⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isAbelianScheme_of_pullback_univ :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (X1 : Scheme.{0}) (t' : SAB H X1) (f : X1 ⟶ Xo.X) (mp : SABMap t' Xo.univ.t f), IsAbelianScheme t'.G := by

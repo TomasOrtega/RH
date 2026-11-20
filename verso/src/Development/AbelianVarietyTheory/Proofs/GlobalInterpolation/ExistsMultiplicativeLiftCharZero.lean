@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `CharP.exists (WittVector p K)`. Break down `CharP.char_is_prime_or_zero (WittVector p K) l with h | h` into its components or cases. It suffices to derive a contradiction. Establish `h1 : ((l : ℕ) : WittVector p K) = 0` using `CharP.cast_eq_zero _ l`. Establish `h2 : ((l : ℕ) : K) = 0`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (WittVector.constantCoeff : WittVector p K →+* K) h1` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Then use the resulting hypothesis. Establish `h3 : p ∣ l` using `(CharP.cast_eq_zero_iff K p l).1 h2`. Establish `h4 : p = l` using `(Nat.prime_dvd_prime_iff_eq hp.out h).1 h3`. Substitute `h4` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `WittVector.p_nonzero p K h1`. Substitute `h` using the available equality. Conclude with `CharP.charP_to_charZero _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem charZero_wittVector_of_field (p : ℕ) [hp : Fact p.Prime] (K : Type) [Field K] [CharP K p] :
     CharZero (WittVector p K) := by
@@ -26,15 +26,15 @@ theorem charZero_wittVector_of_field (p : ℕ) [hp : Fact p.Prime] (K : Type) [F
     exact CharP.charP_to_charZero _
 
 /- English proof (translation)
-Introduce `K _`. Take `⟨p, hp⟩` from `CharP.exists K`. Break down `CharP.char_is_prime_or_zero K p with h | h` into its components or cases. Use `haveI : Fact p.Prime := ⟨h⟩ haveI := charZero_wittVector_of_field p K`. Establish `hinj` using `IsFractionRing.injective (WittVector p K) (FractionRing (WittVector p K))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : CharZero (FractionRing (WittVector p K)) := charZero_of_injective_algebraMap hinj`. Set `τ : K →*₀ FractionRing (WittVector p K)` to `{ toFun := fun a => algebraMap (WittVector p K) _ (WittVector.teichmuller p a) map_zero' := by simp map_one' := by simp map_mul' := by intro a b; simp }`. Establish `hτ : ∀ a, τ a = algebraMap (WittVector p K) _ (WittVector.teichmuller p a)` using `fun _ => rfl`. Establish `hc : ∀ a : K, (WittVector.constantCoeff : WittVector p K →+* K) (WittVector.teichmuller p a) = a` using `fun a => by`. Simplify using `[WittVector.constantCoeff_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨FractionRing (WittVector p K), inferInstance, inferInstance, τ, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Rewrite `hab` using `[hτ, hτ]`. Use `congrArg (WittVector.constantCoeff : WittVector p K →+* K) (hinj hab)` as an intermediate fact. Rewrite `this` using `[hc, hc]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `ι s f hf`. Simplify using `only [hτ] at hf`. Rewrite `hf` using `[← map_sum, ← map_zero (algebraMap (WittVector p K) (FractionRing (WittVector p K)))]`. Use `congrArg (WittVector.constantCoeff : WittVector p K →+* K) (hinj hf)` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality.
 
-Simplify `this` using `only [hc]`. Substitute `h haveI : CharZero K := CharP.charP_to_charZero K` using the available equality. Conclude with `⟨K, inferInstance, inferInstance, MonoidWithZeroHom.id K, fun _ _ h => h, fun _ _ _ h => h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_multiplicative_lift_charZero :
     ∀ (K : Type) [Field K], ∃ (K' : Type) (_ : Field K') (_ : CharZero K') (τ : K →*₀ K'), Function.Injective τ ∧ ∀ (ι : Type) (s : Finset ι) (f : ι → K), ∑ i ∈ s, τ (f i) = 0 → ∑ i ∈ s, f i = 0 := by

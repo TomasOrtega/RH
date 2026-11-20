@@ -9,7 +9,7 @@ noncomputable section
 namespace Formalism.L2.G.RelativeIndexFlags.Core
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_left'''''.goal1 .. | (apply Bl.general_b_fact_left'''''.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left'''''.goal1 <;> assumption) | (apply @Bl.general_b_fact_left'''''.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_left''' …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prodSpan {O A I : Type} [CommRing O] [CommRing A] [Algebra O A] [Fintype I] [DecidableEq I]
     {B : I → Type} [∀ i, AddCommGroup (B i)] [∀ i, Module O (B i)] (ε : ∀ i, B i →ₗ[O] A) (T : ∀ i, Set (B i)) :
@@ -18,9 +18,9 @@ theorem prodSpan {O A I : Type} [CommRing O] [CommRing A] [Algebra O A] [Fintype
   first | exact Bl.general_b_fact_left'''''.goal1 .. | (apply Bl.general_b_fact_left'''''.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left'''''.goal1 <;> assumption) | (apply @Bl.general_b_fact_left'''''.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_left'''''.goal1 <;> assumption) | (apply @Bl.general_b_fact_left'''''.goal1 <;> first | assumption | infer_instance)
 
 /- English proof (translation)
-Establish `h : (MvPolynomial.map φ).comp (rowAct R (n` using `n) g).toRingHom = (rowAct S (n := n) (g.map φ)).toRingHom.comp (MvPolynomial.map φ) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[rowAct]`. Introduce `x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[rowAct]`. Conclude with `RingHom.congr_fun h F`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_rowAct {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n : ℕ} (g : Matrix (Fin r) (Fin r) R)
     (F : MvPolynomial (Fin r × Fin n) R) :
@@ -35,11 +35,11 @@ theorem map_rowAct {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n 
   exact RingHom.congr_fun h F
 
 /- English proof (translation)
-Establish `e : rowAct R (n` using `n) (1 : Matrix (Fin r) (Fin r) R) = AlgHom.id R _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [rowAct, aeval_X, AlgHom.id_apply]`. Rewrite using `[Finset.sum_eq_single v.1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Matrix.one_apply_ne (Ne.symm hb)]`. Simplify using the standard rewrite rules. Introduce `h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rowAct_one {R : Type} [CommRing R] {r n : ℕ} (F : MvPolynomial (Fin r × Fin n) R) :
     rowAct R (1 : Matrix (Fin r) (Fin r) R) F = F := by
@@ -55,7 +55,7 @@ theorem rowAct_one {R : Type} [CommRing R] {r n : ℕ} (F : MvPolynomial (Fin r 
   rw [e]; rfl
 
 /- English proof (translation)
-Establish `h1` using `rowActMul R r n g gi`. Rewrite `h1` using `[h]`. Establish `h2` using `congrArg (fun f => f F) h1`. Simplify using `only [AlgHom.comp_apply] at h2`. Rewrite using `[h2, rowAct_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowAct_cancel {R : Type} [CommRing R] {r n : ℕ} (g gi : Matrix (Fin r) (Fin r) R) (h : gi * g = 1)
     (F : MvPolynomial (Fin r × Fin n) R) : rowAct R g (rowAct R gi F) = F := by
@@ -66,13 +66,11 @@ theorem rowAct_cancel {R : Type} [CommRing R] {r n : ℕ} (g gi : Matrix (Fin r)
   rw [h2, rowAct_one]
 
 /- English proof (translation)
-Unfold `weyl at hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, rfl⟩` from `hx`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨w, by rw [← lclosedeq_applyWord_map, lclosedeq_hw_map]⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `smul c x _ hx`. Establish `e1 : MvPolynomial.map (Int.castRingHom O) (c • x) = (c : O) • MvPolynomial.map (Int.castRingHom O) x`. Rewrite using `[smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul]`. Both sides reduce to the same expression. Rewrite using `[e1]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_weyl {O : Type} [CommRing O] {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ)
     (f : MvPolynomial (Fin r × Fin n) ℤ) (hf : f ∈ weyl ℤ r n hn ν) :
@@ -91,9 +89,9 @@ theorem map_mem_weyl {O : Type} [CommRing O] {r n : ℕ} (hn : n ≤ r) (ν : Fi
     rw [e1]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `show Submodule.span O (Set.range fun w : List (Fin r × Fin r × ℕ) => applyWord O w (hw O hn ν)) ≤ _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Conclude with `⟨applyWord ℤ w (hw ℤ hn ν), Submodule.subset_span ⟨w, rfl⟩, by show MvPolynomial.map (Int.castRingHom O) (applyWord ℤ w (hw ℤ hn ν)) = _`. Rewrite using `[← lclosedeq_applyWord_map, lclosedeq_hw_map]⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `map_mem_weyl hn ν f hf`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem weyl_eq_span_int (O : Type) [CommRing O] {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) :
     weyl O r n hn ν = Submodule.span O ((fun f => MvPolynomial.map (Int.castRingHom O) f) ''

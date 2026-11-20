@@ -15,7 +15,7 @@ namespace GlobalTheory.GroupPointsBX
 variable {R₀ : Type} [CommRing R₀]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [spMap_left, Over.id_left]`. Conclude with `Spec.map_id _`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spMap_algHom_id (P : Type) [CommRing P] [Algebra R₀ P] :
     spMap (AlgHom.id R₀ P) = 𝟙 (sp (R₀ := R₀) P) := by
@@ -24,19 +24,17 @@ theorem spMap_algHom_id (P : Type) [CommRing P] [Algebra R₀ P] :
   exact Spec.map_id _
 
 /- English proof (translation)
-Set `x₀ : Spec (CommRingCat.of C) ⟶ X.left` to `z.left`. Establish `hw : x₀ ≫ X.hom = Spec.map (CommRingCat.ofHom (algebraMap R₀ C))` using `Over.w z`. Take `⟨_, ⟨V, hV : IsAffineOpen V, rfl⟩, hxV, -⟩` from `X.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (x₀ (closedPoint C))) isOpen_univ`. Establish `hx : Set.range x₀ ⊆ Set.range hV.fromSpec`. Rewrite using `[hV.range_fromSpec]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `(Scheme.preimage_eq_top_of_closedPoint_mem (R := CommRingCat.of C) x₀ hxV).ge (Set.mem_univ y)`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (IsOpenImmersion.lift hV.fromSpec x₀ hx)`. Establish `hφ' : Spec.map φ ≫ hV.fromSpec = x₀` using `by rw [hφ, IsOpenImmersion.lift_fac]`. Take `⟨α, hα⟩` from `Spec.map_surjective (hV.fromSpec ≫ X.hom)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : RingHom.Smooth α.hom`. Rewrite using `[← HasRingHomProperty.Spec_iff (P := @Smooth), hα]`. Use `infer_instance`. Establish `hφα : α ≫ φ = CommRingCat.ofHom (algebraMap R₀ C)`. Apply `Spec.map_injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Rewrite using `[Spec.map_comp, hα, ← Category.assoc, hφ', hw]`. Use `letI : Algebra R₀ Γ(X.left, V) := α.hom.toAlgebra`. Use `haveI : Algebra.Smooth R₀ Γ(X.left, V) := hs`. Set `φ' : Γ(X.left, V) →ₐ[R₀] C` to `⟨φ.hom, fun r => congr($hφα r)⟩`. Set `ψ` to `Algebra.FormallySmooth.liftOfSurjective φ' π hπ hk`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hψ : π.comp ψ = φ'` using `Algebra.FormallySmooth.comp_liftOfSurjective φ' π hπ hk`. Use `⟨Over.homMk (Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ hV.fromSpec) ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [sp, Over.mk_hom]`. Rewrite using `[Category.assoc, ← hα, ← Spec.map_comp]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Use extensionality with `r`. Conclude with `ψ.commutes r`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom π.toRingHom) ≫ Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ hV.fromSpec = x₀`. Rewrite using `[← hφ', ← Category.assoc, ← Spec.map_comp]`.
-
-Use `congr 2`. Use extensionality with `a`. Conclude with `congr($hψ a)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_lift (X : Over (Spec (CommRingCat.of R₀))) [Smooth X.hom]
     {B C : Type} [CommRing B] [Algebra R₀ B] [CommRing C] [Algebra R₀ C] [IsLocalRing C]
@@ -103,17 +101,17 @@ variable {G} {g : ℕ}
 open TrivSqZeroExt in
 
 /- English proof (translation)
-Establish `nil : ∀ {M : Type} [AddCommGroup M] [Module R₀ M] [Module R₀ᵐᵒᵖ M] [IsCentralScalar R₀ M] (m : M), IsNilpotent (inr m : TrivSqZeroExt R₀ M)` using `fun m => ⟨2, by rw [pow_two, inr_mul_inr]⟩`. Establish `hfst : ∀ c : TrivSqZeroExt R₀ (K × K), c ∈ RingHom.ker (fstHom R₀ R₀ (K × K)) → c = inr c.snd` using `fun c hc => by`. Establish `: c.fst = 0` using `hc`. Apply the tactic sequence `ext <;> simp [this]`. Take `⟨c, hc, hxc⟩` from `h.ker _ R₀ (fstHom R₀ R₀ (K × K)) (fun r => ⟨inl r, rfl⟩) (fun c hc => by rw [hfst c hc]; exact nil _) (x (TrivSqZeroExt R₀ (K × K)) (fun i => inr (a i, 0)) * x (TrivSqZeroExt R₀ (K × K)) (fun i => inr (0, b i))) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Rewrite using `[MonObj.comp_mul, h.nat _ _ _ _ (fun i => nil _), h.nat _ _ _ _ (fun i => nil _)]`. Establish `e : x R₀ (fun _ => 0) = 1` using `h.zero R₀`. Simplify using `[e])`. Establish `cnil : ∀ i, IsNilpotent (c i)` using `fun i => by rw [hfst _ (hc i)]; exact nil _`. Establish `e0 : x (TrivSqZeroExt R₀ K) (fun _ => 0) = 1` using `h.zero _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (spMap (map (LinearMap.fst R₀ K K)) ≫ ·) hxc`. Establish `h2` using `congrArg (spMap (map (LinearMap.snd R₀ K K)) ≫ ·) hxc`. Simplify using `only [MonObj.comp_mul] at h1 h2`. Rewrite `h1`, `h2` using `[h.nat _ _ _ _ (fun i => nil _), h.nat _ _ _ _ (fun i => nil _), h.nat _ _ _ _ cnil]`. Simplify using `only [map_inr, LinearMap.fst_apply, LinearMap.snd_apply, inr_zero, e0] at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[_root_.mul_one]`. Rewrite `h2` using `[_root_.one_mul]`. Establish `h1'` using `h.inj _ _ _ (fun i => nil _) (fun i => (cnil i).map _) h1`. Establish `h2'` using `h.inj _ _ _ (fun i => nil _) (fun i => (cnil i).map _) h2`. Rewrite using `[hxc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hfst _ (hc i)]`. Use `congr 1`. Establish `e1` using `congrArg snd (congrFun h1' i)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `e2` using `congrArg snd (congrFun h2' i)`. Simplify using `only [snd_inr, snd_map, LinearMap.fst_apply, LinearMap.snd_apply] at e1 e2`. Conclude with `Prod.ext e1.symm e2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Coord.mul_inr (h : Coord G g x) {K : Type} [AddCommGroup K] [Module R₀ K]
     [Module R₀ᵐᵒᵖ K] [IsCentralScalar R₀ K] (a b : Fin g → K) :
@@ -158,11 +156,11 @@ theorem Coord.mul_inr (h : Coord G g x) {K : Type} [AddCommGroup K] [Module R₀
 open TrivSqZeroExt in
 
 /- English proof (translation)
-Use `letI : Module R₀ᵐᵒᵖ K := Module.compHom K ((RingHom.id R₀).fromOpposite mul_comm)`. Use `haveI : IsCentralScalar R₀ K := ⟨fun _ _ => rfl⟩`. Set `l : K × K →ₗ[R₀] S` to `K.subtype ∘ₗ (LinearMap.fst R₀ K K + LinearMap.snd R₀ K K)`. Set `φ : TrivSqZeroExt R₀ (K × K) →ₐ[R₀] S` to `liftEquivOfComm ⟨l, fun u v => hK _ (u.1 + u.2).2 _ (v.1 + v.2).2⟩`. Establish `hφ : ∀ u v : K, φ (inr (u, v)) = (u : S) + v` using `fun u v => by`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [φ]`. Rewrite using `[liftEquivOfComm_apply, lift_apply_inr]`. Both sides reduce to the same expression. Establish `nil : ∀ m : K × K, IsNilpotent (inr m : TrivSqZeroExt R₀ (K × K))` using `fun m => ⟨2, by rw [pow_two, inr_mul_inr]⟩`. Establish `e` using `congrArg (spMap φ ≫ ·) (h.mul_inr a b)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [MonObj.comp_mul] at e`. Rewrite `e` using `[h.nat _ _ _ _ (fun i => nil _), h.nat _ _ _ _ (fun i => nil _), h.nat _ _ _ _ (fun i => nil _)]`. Simplify `e` using `only [hφ, Submodule.coe_zero, add_zero, zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Coord.mul_eq (h : Coord G g x) {S : Type} [CommRing S] [Algebra R₀ S]
     (K : Submodule R₀ S) (hK : ∀ a ∈ K, ∀ b ∈ K, a * b = 0) (a b : Fin g → K) :
@@ -191,7 +189,7 @@ def coords (g : ℕ) (K : Type) [AddCommGroup K] [Module R₀ K] :
   TensorProduct.comm R₀ _ _ ≪≫ₗ TensorProduct.piScalarRight R₀ R₀ K (Fin g)
 
 /- English proof (translation)
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r k => simp [coords]`. Consider the case `add a b ha hb => simp [ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem coords_lTensor (g : ℕ) {K K' : Type} [AddCommGroup K] [Module R₀ K] [AddCommGroup K']
     [Module R₀ K'] (f : K →ₗ[R₀] K') (v : (Fin g → R₀) ⊗[R₀] K) (i : Fin g) :
@@ -202,7 +200,7 @@ theorem coords_lTensor (g : ℕ) {K K' : Type} [AddCommGroup K] [Module R₀ K] 
   | add a b ha hb => simp [ha, hb]
 
 /- English proof (translation)
-Introduce `a ha b hb` and use `by have h : a * b ∈ RingHom.ker π.1 ^ 2 := by rw [pow_two] exact Ideal.mul_mem_mul ha hb rw [hπ.2] at h exact (Ideal.mem_bot).1 h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_eq_zero_of_sqZero {R S : LAlg R₀} {π : LHom R S} (hπ : π.SqZero) :
     ∀ a ∈ π.ker, ∀ b ∈ π.ker, a * b = 0 := fun a ha b hb => by
@@ -213,7 +211,7 @@ theorem mul_eq_zero_of_sqZero {R S : LAlg R₀} {π : LHom R S} (hπ : π.SqZero
   exact (Ideal.mem_bot).1 h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨2, by rw [pow_two, mul_eq_zero_of_sqZero hπ a ha a ha]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isNilpotent_of_sqZero {R S : LAlg R₀} {π : LHom R S} (hπ : π.SqZero) {a : (R : Type)}
     (ha : a ∈ π.ker) : IsNilpotent a :=
@@ -340,7 +338,7 @@ def ptBX [Smooth G.hom] (h : Coord G g x)
 end
 
 /- English proof (translation)
-Introduce `hnil hfib R₀ _ G _ _ _ g hg`. Take `⟨x, h0, h1, h2, h3⟩` from `hnil G g hg`. Use `haveI : Smooth G.hom := SmoothOfRelativeDimension.smooth g G.hom`. Use `⟨ptBX (G := G) ⟨h0, h1, h2, h3⟩ (fun p₁ p₂ f₁ f₂ hf a b e => hfib G p₁ p₂ f₁ f₂ hf a.toMul b.toMul e), fun R z => Additive.toMul z, fun R => Additive.toMul.bijective, fun R x y => rfl, fun f x => rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main :
   (∀ {R₀ : Type} [CommRing R₀] (G : Over (Spec (CommRingCat.of R₀))) [GrpObj G] [IsCommMonObj G] [IsLocalRing R₀] (g : ℕ), SmoothOfRelativeDimension g G.hom →

@@ -22,21 +22,21 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.LogDR G
 namespace GlobalTheory.EtUnit
 
 /- English proof (translation)
-Take `⟨a0, b0, hb0, rfl⟩` from `IsFractionRing.div_surjective (A := R) x`. Establish `hb0' : b0 ≠ 0` using `nonZeroDivisors.ne_zero hb0`. Establish `hb0K : algebraMap R K b0 ≠ 0`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `hb0'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha0 : a0 ≠ 0` using `by rintro rfl; simp at hx`. Take `⟨α, a, ha, hna⟩` from `GlobalTheory.T.exists_strip_finitely_many_prime_factors R π J a0 ha0`. Take `⟨β, b, hb, hnb⟩` from `GlobalTheory.T.exists_strip_finitely_many_prime_factors R π J b0 hb0'`. Establish `hπ0 : ∀ j ∈ J, π j ≠ 0` using `fun j hj => (hπ j hj).elim (fun hu => hu.ne_zero) (fun hp => hp.ne_zero)`. Establish `han : a ≠ 0` using `by rintro rfl; rw [zero_mul] at ha; exact ha0 ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbn : b ≠ 0` using `by rintro rfl; rw [zero_mul] at hb; exact hb0' hb`. Establish `hprodQ : ∀ (Q : Ideal R), Q.IsPrime → (∀ j ∈ J, π j ∉ Q) → ∀ e : Fin n → ℕ, ∏ j ∈ J, π j ^ e j ∉ Q`. Introduce `Q hQ hQJ e hmem`. Take `⟨j, hj, hjm⟩` from `Ideal.IsPrime.prod_mem_iff.mp hmem`. Conclude with `hQJ j hj (hQ.mem_of_pow_mem _ hjm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `GlobalTheory.T.associated_of_height_one_agree R π J a b han hbn hπ (fun j hj hp => ⟨hna j hj hp, hnb j hj hp⟩) (fun Q hQ h1 hQJ => by`. Take `⟨c, d, hc, hd, hcd⟩` from `h Q hQ h1 hQJ`. Use `⟨c * ∏ j ∈ J, π j ^ β j, d * ∏ j ∈ J, π j ^ α j, hQ.mul_notMem hc (hprodQ Q hQ hQJ β), hQ.mul_notMem hd (hprodQ Q hQ hQJ α), ?_⟩` and prove the remaining obligations. Establish `e1 : algebraMap R K a0 * algebraMap R K d = algebraMap R K b0 * algebraMap R K c`. Rewrite using `[← hcd]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `e2 : a0 * d = b0 * c` using `IsFractionRing.injective R K (by rw [map_mul, map_mul, e1])`. Rewrite `e2` using `[ha, hb]`. Take the linear combination `e2)`. Use `⟨u, fun j => (α j : ℤ) - β j, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK : ∀ j ∈ J, algebraMap R K (π j) ≠ 0` using `fun j hj => by`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `hπ0 j hj`. Establish `hprodK : ∏ j ∈ J, algebraMap R K (π j) ^ ((α j : ℤ) - β j) = (∏ j ∈ J, algebraMap R K (π j) ^ α j) / ∏ j ∈ J, algebraMap R K (π j) ^ β j`. Rewrite using `[← Finset.prod_div_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[zpow_sub₀ (hK j hj), zpow_natCast, zpow_natCast]`. Establish `hβK : ∏ j ∈ J, algebraMap R K (π j) ^ β j ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun j hj => pow_ne_zero _ (hK j hj)`. Establish `hbK : algebraMap R K b ≠ 0`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `hbn`. Rewrite using `[hprodK, ha, hb, hu]`. Simplify using `only [map_mul, map_prod, map_pow]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem unit_mul_monomial_of_forall_height_one (R K : Type) [CommRing R] [IsDomain R]
     [IsNoetherianRing R] [IsIntegrallyClosed R] [Field K] [Algebra R K] [IsFractionRing R K]
@@ -88,31 +88,25 @@ theorem unit_mul_monomial_of_forall_height_one (R K : Type) [CommRing R] [IsDoma
   field_simp
 
 /- English proof (translation)
-Introduce `p _ A _ _ _ n t het P _ L _ _ _ J ht g`. Prove the components needed by the constructor for the conclusion. Introduce `hL`. Use `letI : Algebra (MvPolynomial (Fin n) (ZMod p)) A := (MvPolynomial.aeval (R := ZMod p) t).toRingHom.toAlgebra`. Use `haveI : Algebra.Etale (MvPolynomial (Fin n) (ZMod p)) A := het`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsRegularRing A := GlobalTheory.isRegularRing_of_etale (MvPolynomial (Fin n) (ZMod p)) A`. Use `haveI : IsRegularLocalRing (Localization.AtPrime P) := IsRegularRing.isRegularLocalRing_localization P`. Take `⟨hRd, hRi⟩` from `GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing (Localization.AtPrime P)`. Use `haveI : IsNoetherianRing (Localization.AtPrime P) := IsLocalization.isNoetherianRing P.primeCompl _ inferInstance`. Establish `hunits : ∀ y : P.primeCompl, IsUnit (algebraMap A L y)` using `fun y => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Equip the data with the indicated structure.
 
-Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff]`. Introduce and unpack `h0`. Conclude with `y.2 (h0 ▸ P.zero_mem)`. Use `letI : Algebra (Localization.AtPrime P) L := (IsLocalization.lift hunits).toAlgebra`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsScalarTower A (Localization.AtPrime P) L := IsScalarTower.of_algebraMap_eq (fun a => (IsLocalization.lift_eq hunits a).symm)`. Use `haveI : IsFractionRing (Localization.AtPrime P) L := IsFractionRing.isFractionRing_of_isDomain_of_isLocalization P.primeCompl _ L`. Establish `hprime : ∀ j ∈ J, IsUnit (algebraMap A (Localization.AtPrime P) (t j)) ∨ Prime (algebraMap A (Localization.AtPrime P) (t j))`. Introduce `j hj`. Distinguish the cases in `hjP : t j ∈ P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `right`. Use `GlobalTheory.T.regular_quotient_prime_element A P (t j) (fun h0 => ht j (by rw [h0, map_zero])) hjP (GlobalTheory.T.etale_coordinate_quotient_regular p A t het j)` and prove the remaining obligations. Use `left`. Conclude with `IsLocalization.map_units (Localization.AtPrime P) (⟨t j, hjP⟩ : P.primeCompl)`. Take `⟨u, m, hum⟩` from `unit_mul_monomial_of_forall_height_one (Localization.AtPrime P) L (fun j => algebraMap A (Localization.AtPrime P) (t j)) J hprime (g : L) g.ne_zero (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Introduce `Q hQ _ hQJ`. Establish `hQ'P : Q.comap (algebraMap A (Localization.AtPrime P)) ≤ P`. Introduce `x hx`. Assume the negation of the conclusion as `hxP`. Conclude with `hQ.ne_top (Ideal.eq_top_of_isUnit_mem _ hx (IsLocalization.map_units (Localization.AtPrime P) (⟨x, hxP⟩ : P.primeCompl)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b, ha, hb, hab⟩` from `hL (Q.comap (algebraMap A (Localization.AtPrime P))) (Ideal.comap_isPrime _ Q) hQ'P (fun j hj hjQ => hQJ j hj hjQ)`. Use `⟨algebraMap A _ a, algebraMap A _ b, ha, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Conclude with `hab)`. Take `⟨⟨a, s⟩, has⟩` from `IsLocalization.mk'_surjective P.primeCompl (u : Localization.AtPrime P)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `IsLocalization.mk' (Localization.AtPrime P) a s = _ at has`. Establish `haP : a ∈ P.primeCompl`. Rewrite using `[← IsLocalization.AtPrime.isUnit_mk'_iff (Localization.AtPrime P) P a s, has]`. Conclude with `u.isUnit`. Use `⟨Units.map (algebraMap (Localization.AtPrime P) L : Localization.AtPrime P →* L) u, m, ⟨a, s, haP, s.2, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Units.coe_map, MonoidHom.coe_coe, ← has, IsScalarTower.algebraMap_apply A (Localization.AtPrime P) L s, IsScalarTower.algebraMap_apply A (Localization.AtPrime P) L a, ← map_mul, IsLocalization.mk'_spec]`. Use `ext`. Rewrite using `[hum, Units.val_mul, Units.coe_map, MonoidHom.coe_coe, Units.coe_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_zpow_eq_zpow_val, Units.val_mk0, ← IsScalarTower.algebraMap_apply]`. Introduce and unpack `⟨u, m, ⟨a, b, ha, hb, hab⟩, rfl⟩ Q hQ hQP hQJ`. Establish `hK : ∀ j, algebraMap A L (t j) ≠ 0` using `ht`. Establish `hprodQ : ∀ e : Fin n → ℕ, ∏ j ∈ J, t j ^ e j ∉ Q`. Introduce `e hmem`.
-
-Take `⟨j, hj, hjm⟩` from `Ideal.IsPrime.prod_mem_iff.mp hmem`. Conclude with `hQJ j hj (hQ.mem_of_pow_mem _ hjm)`. Use `⟨a * ∏ j ∈ J, t j ^ (m j).toNat, b * ∏ j ∈ J, t j ^ (-m j).toNat, hQ.mul_notMem (fun h => ha (hQP h)) (hprodQ _), hQ.mul_notMem (fun h => hb (hQP h)) (hprodQ _), ?_⟩` and prove the remaining obligations. Establish `key : ∀ j, algebraMap A L (t j) ^ m j * algebraMap A L (t j) ^ (-m j).toNat = algebraMap A L (t j) ^ (m j).toNat`. Introduce `j`.
-
-Establish `e : m j = ((m j).toNat : ℤ) - ((-m j).toNat : ℤ)` using `(Int.toNat_sub_toNat_neg _).symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[zpow_sub₀ (hK j), zpow_natCast, zpow_natCast, div_mul_cancel₀ _ (pow_ne_zero _ (hK j))]`. Rewrite using `[Units.val_mul, Units.coe_prod, map_mul, map_mul, map_prod, map_prod, ← hab]`. Simplify using `only [Units.val_zpow_eq_zpow_val, Units.val_mk0, map_pow]`.
-
-Rewrite using `[show (u : L) * (∏ j ∈ J, algebraMap A L (t j) ^ m j) * (algebraMap A L b * ∏ j ∈ J, algebraMap A L (t j) ^ (-m j).toNat) = (u : L) * algebraMap A L b * ∏ j ∈ J, (algebraMap A L (t j) ^ m j * algebraMap A L (t j) ^ (-m j).toNat) by rw [Finset.prod_mul_distrib]; ring]`. Simplify using `only [key]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unit_mul_monomial_iff : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] [IsDomain A] [Algebra (ZMod p) A] {n : ℕ} (t : Fin n → A), (MvPolynomial.aeval (R := ZMod p) t).toRingHom.Etale → ∀ (P : Ideal A) [P.IsPrime] (L : Type) [Field L] [Algebra A L] [IsFractionRing A L] (J : Finset (Fin n)) (ht : ∀ j, algebraMap A L (t j) ≠ 0) (g : Lˣ), (∀ Q : Ideal A, Q.IsPrime → Q ≤ P → (∀ j ∈ J, t j ∉ Q) → ∃ a b : A, a ∉ Q ∧ b ∉ Q ∧ (g : L) * algebraMap A L b = algebraMap A L a) ↔ ∃ (u : Lˣ) (m : Fin n → ℤ), (∃ a b : A, a ∉ P ∧ b ∉ P ∧ (u : L) * algebraMap A L b = algebraMap A L a) ∧ g = u * ∏ j ∈ J, Units.mk0 _ (ht j) ^ m j := by
   intro p _ A _ _ _ n t het P _ L _ _ _ J ht g

@@ -9,9 +9,9 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k K _ _ s p hp hk ⟨ζ, hζ⟩ n ψ χ a t skip M`. Establish `hψ : ∀ x : k, ψ x ^ p = 1` using `fun x => by`. Rewrite using `[← AddChar.map_nsmul_eq_pow, nsmul_eq_mul, hk, zero_mul, AddChar.map_zero_eq_one]`. Establish `h : lamJ ψ χ a t 0 skip M ^ p = 1`. Unfold `Formalism.L2.Forms.lamJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `[hψ]`. Conclude with `⟨complex_rootOfUnity_mem_range_of_isPrimitiveRoot K s p ζ hp.pos hζ _ h, h⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem lamJ_zero_blocks_mem_range_and_pow_eq_one :
     ∀ (k K : Type) [Field k] [Field K] (s : K →+* ℂ) (p : ℕ), p.Prime → (p : k) = 0 → (∃ ζ : K, IsPrimitiveRoot ζ p) → ∀ (n : ℕ) (ψ : AddChar k ℂ) (χ : ℕ → MulChar k ℂ) (a t skip : ℕ) (M : Matrix (Fin n) (Fin n) k), (∃ r : K, s r = lamJ ψ χ a t 0 skip M) ∧ lamJ ψ χ a t 0 skip M ^ p = 1 := by

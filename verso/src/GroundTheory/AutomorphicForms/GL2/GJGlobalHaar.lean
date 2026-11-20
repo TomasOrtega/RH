@@ -30,7 +30,7 @@ Both sides reduce to the same expression.
   rfl
 
 /- English proof (translation)
-The claim follows from `map_mul (glNormOneSplitting (K := K) hn).symm p q`.
+A detailed English derivation is pending.
 -/
 theorem splitEquiv_mul (hn : 0 < n) (p q : normOneGL K n × {r : ℝ // 0 < r}) :
     splitEquiv (K := K) hn (p * q) = splitEquiv hn p * splitEquiv hn q :=
@@ -45,7 +45,7 @@ instance isHaarMeasure_splitHaar : (splitHaar (K := K) hn μ).IsHaarMeasure :=
   ContinuousMulEquiv.isHaarMeasure_map (μ.prod posRealMeasure) (glNormOneSplitting (K := K) hn).symm
 
 /- English proof (translation)
-The claim follows from `integral_map_equiv (splitEquiv (K := K) hn) H`.
+A detailed English derivation is pending.
 -/
 theorem integral_splitHaar {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (H : AdelicGLn.AdelicGL K n → E) :
@@ -54,7 +54,7 @@ theorem integral_splitHaar {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E
   integral_map_equiv (splitEquiv (K := K) hn) H
 
 /- English proof (translation)
-The claim follows from `integrable_map_equiv (splitEquiv (K := K) hn) H`.
+A detailed English derivation is pending.
 -/
 theorem integrable_splitHaar_iff {E : Type*} [NormedAddCommGroup E] (H : AdelicGLn.AdelicGL K n → E) :
     Integrable H (splitHaar hn μ) ↔
@@ -68,23 +68,23 @@ def centralHaarConst : ℝ≥0 :=
   Measure.haarScalarFactor ν (splitHaar (K := K) hn μ)
 
 /- English proof (translation)
-The claim follows from `Measure.haarScalarFactor_pos_of_isHaarMeasure _ _`.
+A detailed English derivation is pending.
 -/
 theorem centralHaarConst_pos : 0 < centralHaarConst hn μ ν :=
   Measure.haarScalarFactor_pos_of_isHaarMeasure _ _
 
 /- English proof (translation)
-The claim follows from `Measure.isMulLeftInvariant_eq_smul ν _`.
+A detailed English derivation is pending.
 -/
 theorem eq_centralHaarConst_smul : ν = centralHaarConst hn μ ν • splitHaar (K := K) hn μ :=
   Measure.isMulLeftInvariant_eq_smul ν _
 
 /- English proof (translation)
-Establish `hH' : Integrable H (splitHaar hn μ)`. Establish `h` using `eq_centralHaarConst_smul hn μ ν`. Rewrite `hH` using `[h]`. Conclude with `(integrable_smul_measure (by simpa using (centralHaarConst_pos hn μ ν).ne') ENNReal.coe_ne_top).1 hH`. Establish `h` using `eq_centralHaarConst_smul hn μ ν`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_smul_nnreal_measure, integral_splitHaar]`. Rewrite `hH'` using `[integrable_splitHaar_iff]`. Rewrite using `[integral_prod_symm _ hH']`. Simplify using `only [centralSection_mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem integral_eq_centralHaarConst_smul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : AdelicGLn.AdelicGL K n → E} (hH : Integrable H ν) :
@@ -106,9 +106,9 @@ theorem integral_eq_centralHaarConst_smul {E : Type*} [NormedAddCommGroup E] [No
   rfl
 
 /- English proof (translation)
-Establish `hc : (centralHaarConst hn μ ν : ℝ≥0∞) ≠ 0`. Simplify using `using (centralHaarConst_pos hn μ ν).ne'`. Establish `h` using `eq_centralHaarConst_smul hn μ ν`. Establish `e : Integrable H ν ↔ Integrable H ((centralHaarConst hn μ ν : ℝ≥0∞) • splitHaar hn μ)` using `by conv_lhs => rw [h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Rewrite using `[integrable_smul_measure hc ENNReal.coe_ne_top, integrable_splitHaar_iff]`. Simplify using `only [centralSection_mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integrable_iff_prod (hn : 0 < n) {E : Type*} [NormedAddCommGroup E]
     (H : AdelicGLn.AdelicGL K n → E) :
@@ -137,7 +137,7 @@ instance isMulRightInvariant_splitHaar : (splitHaar (K := K) hn μ).IsMulRightIn
     map_mul_right_eq_self]
 
 /- English proof (translation)
-Use `set μ₀ : Measure (normOneGL K n) := Measure.haar`. Establish `h` using `eq_centralHaarConst_smul hn μ₀ ν`. Establish `: ((centralHaarConst hn μ₀ ν) • splitHaar (K` using `K) hn μ₀).IsMulRightInvariant := inferInstance`. Rewrite using `[h]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_haar (hn : 0 < n) : ν.IsMulRightInvariant := by
   set μ₀ : Measure (normOneGL K n) := Measure.haar
@@ -148,14 +148,14 @@ theorem isMulRightInvariant_haar (hn : 0 < n) : ν.IsMulRightInvariant := by
   exact this
 
 /- English proof (translation)
-Use `isMulRightInvariant_haar ν hn` as an intermediate fact. Conclude with `isInvInvariant_of_isMulRightInvariant ν`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isInvInvariant_haar (hn : 0 < n) : ν.IsInvInvariant := by
   have := isMulRightInvariant_haar ν hn
   exact isInvInvariant_of_isMulRightInvariant ν
 
 /- English proof (translation)
-Use `isInvInvariant_haar ν hn` as an intermediate fact. Conclude with `integral_inv_eq_self H ν`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_comp_inv (hn : 0 < n) {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (H : AdelicGLn.AdelicGL K n → E) : ∫ g, H g⁻¹ ∂ν = ∫ g, H g ∂ν := by

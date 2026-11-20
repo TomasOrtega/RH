@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Establish `key : ∀ a : ℤ, AddMonoidAlgebra.single a (p.coeff a) * AddMonoidAlgebra.single (-a + j) (q.coeff (-a + j)) = AddMonoidAlgebra.single j (p.coeff a * q.coeff (-a + j))`. Introduce `a`. Rewrite using `[AddMonoidAlgebra.single_mul_single, add_neg_cancel_left]`. Repeatedly rewrite using `[key]`. Establish `hc : (p * q).coeff j = ∑ a ∈ p.coeff.support, p.coeff a * q.coeff (-a + j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[AddMonoidAlgebra.coeff_mul, Finsupp.sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum]`. Establish `hcond : ∀ b : ℤ, (a + b = j) ↔ (b = -a + j)` using `fun b => by omega`. Repeatedly rewrite using `[hcond]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with hm`. Both sides reduce to the same expression. Rewrite using `[Finsupp.notMem_support_iff.mp hm, mul_zero]`. Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Simplify using `only [AddMonoidAlgebra.coeff_sum, AddMonoidAlgebra.coeff_single, Finsupp.finset_sum_apply, Finsupp.single_apply]`. Use `split_ifs with hk`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Fr.single_coeff_mul {K : Type} [CommRing K] (p q : AddMonoidAlgebra K ℤ) (j : ℤ) :
     AddMonoidAlgebra.single j ((p * q).coeff j) = ∑ a ∈ p.coeff.support,
@@ -40,19 +40,19 @@ private theorem UpperTheory.V.Fr.single_coeff_mul {K : Type} [CommRing K] (p q :
   · simp
 
 /- English proof (translation)
-Introduce `C K _ _ _ _ P _ h N`. Set `comp : lauSub P → ℤ → lauSub P` to `fun q k => ⟨AddMonoidAlgebra.single k (q.1.coeff k), single_mem_lauSub P (q.2 k)⟩`. Establish `hcomp : ∀ q k, (comp q k).1 = AddMonoidAlgebra.single k (q.1.coeff k)` using `fun _ _ => rfl`. Establish `base : ∀ q : lauSub P, q ∈ vertex h → ∀ k : ℤ, comp q k ∈ vertex h`. Introduce `q hq k`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hq`, the goal using `[mem_vertex]`. Take `⟨c, hc, hce⟩` from `hq`. Rewrite using `[hcomp, AddMonoidAlgebra.coeff_single]`. Distinguish the cases in `hk : k = 0`. Substitute `hk` using the available equality.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `⟨c, hc, by rw [Finsupp.single_eq_same, hce]⟩`. Conclude with `⟨0, Ideal.zero_mem _, by rw [Finsupp.single_eq_of_ne' hk, map_zero]⟩`. Use `show ∀ p : lauSub P, p ∈ vertex h ^ N → ∀ j, comp p j ∈ vertex h ^ N`. Proceed by induction on `N with`. Consider the case `zero`.
+Supply the required witnesses or components. Supply the required witnesses or components. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p _ j`. Rewrite using `[pow_zero, Ideal.one_eq_top]`. Conclude with `Submodule.mem_top`. Consider the case `succ n ih`. Introduce `p hp`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hp` using `[pow_succ]`. Use `Submodule.mul_induction_on (C := fun r => ∀ j, comp r j ∈ vertex h ^ (n + 1)) hp ?_ ?_` and prove the remaining obligations. Introduce `x hx y hy j`. Establish `e : comp (x * y) j = ∑ a ∈ x.1.coeff.support, comp x a * comp y (-a + j)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[AddSubmonoidClass.coe_finset_sum, hcomp, Subalgebra.coe_mul, single_coeff_mul]`. Both sides reduce to the same expression. Rewrite using `[e, pow_succ]`. Conclude with `Ideal.sum_mem _ fun a _ => Ideal.mul_mem_mul (ih x hx a) (base y hy _)`. Introduce `x y hx hy j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `e : comp (x + y) j = comp x j + comp y j`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [hcomp, Subalgebra.coe_add, AddMonoidAlgebra.coeff_add, Finsupp.add_apply, AddMonoidAlgebra.single_add]`. Rewrite using `[e]`. Conclude with `add_mem (hx j) (hy j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.alg_homog :
     ∀ {C K : Type} [CommRing C] [IsLocalRing C] [CommRing K] [Algebra C K] {P : ℤ → Submodule C K} [SetLike.GradedMonoid P] (h : HasVertex P) (N : ℕ) (p : lauSub P), p ∈ vertex h ^ N → ∀ j : ℤ, (⟨AddMonoidAlgebra.single j (p.1.coeff j), single_mem_lauSub P (p.2 j)⟩ : lauSub P) ∈ vertex h ^ N := by

@@ -12,19 +12,19 @@ namespace SemicharacterPairingLemmas
 open OperatorUThetaLemmas
 
 /- English proof (translation)
-Rewrite using `[mul_div_mul_left _ _ hm, mul_div_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma succ_mul_succ_sub_one_div_succ (m k a b : ℂ) (hm : m ≠ 0) : (m * (k * a)) / (m * b) = k * (a / b) := by
   rw [mul_div_mul_left _ _ hm, mul_div_assoc]
 
 /- English proof (translation)
-Rewrite using `[altE, altE, altE, herm_add_left, Complex.add_im]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma altE_add_left (L : PeriodPair) (x y w : ℂ) : altE L (x + y) w = altE L x w + altE L y w := by
   rw [altE, altE, altE, herm_add_left, Complex.add_im]
 
 /- English proof (translation)
-Establish `h` using `altE_swap L x x`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma altE_self (L : PeriodPair) (x : ℂ) : altE L x x = 0 := by
   have h := altE_swap L x x
@@ -35,7 +35,7 @@ end SemicharacterPairingLemmas
 open SemicharacterPairingLemmas OperatorUThetaLemmas
 
 /- English proof (translation)
-Introduce `L t x z`. Rewrite using `[← opUMul L x t (sgStar L) z]`. Simplify using `only [th0, opU]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem operator_u_theta : OpUTh0 := by
   intro L t x z

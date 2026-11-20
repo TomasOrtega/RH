@@ -5,17 +5,15 @@ open CategoryTheory Limits TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R D _ _ _ _ hP hF`. Take `⟨s, hs⟩` from `Module.projective_def'.mp hP`. Set `ev : (D →ₗ[R] R) →ₗ[R] R` to `{ toFun := fun τ => τ 1, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Distinguish the cases in `hI : LinearMap.range ev = ⊤`. Take `⟨τ, hτ⟩` from `LinearMap.mem_range.mp (hI ▸ Submodule.mem_top : (1 : R) ∈ LinearMap.range ev)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨τ, hτ⟩`. Take `⟨m, hm, hIm⟩` from `Ideal.exists_le_maximal (LinearMap.range ev) hI`. It suffices to derive a contradiction. Establish `hcoord : ∀ x : D, s 1 x ∈ m` using `fun x => hIm (LinearMap.mem_range.mpr ⟨Finsupp.lapply x ∘ₗ s, rfl⟩)`. Establish `h1 : (1 : D) ∈ m • (⊤ : Submodule R D)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finsupp.linearCombination R id (s 1) = (1 : D)` using `LinearMap.congr_fun hs 1`. Rewrite using `[← this, Finsupp.linearCombination_apply]`. Conclude with `Submodule.sum_mem _ fun x _ => Submodule.smul_mem_smul (hcoord x) Submodule.mem_top`. Establish `hmul : ∀ d : D, ∀ y ∈ m • (⊤ : Submodule R D), d * y ∈ m • (⊤ : Submodule R D)`. Introduce `d y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `r hr n _`. Rewrite using `[mul_smul_comm]`. Conclude with `Submodule.smul_mem_smul hr Submodule.mem_top`. Introduce `x z hx hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mul_add]`. Conclude with `Submodule.add_mem _ hx hz`. Apply `Module.FaithfullyFlat.submodule_ne_top (M := D) hm` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`. Introduce `d _`.
-
-Simplify using `using hmul d 1 h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unit_splits_of_projective_faithfullyFlat :
     ∀ (R D : Type) [CommRing R] [CommRing D] [Algebra R D], Module.Finite R D →

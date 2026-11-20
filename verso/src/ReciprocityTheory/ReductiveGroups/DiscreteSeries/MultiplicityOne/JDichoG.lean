@@ -14,41 +14,33 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Conclude with `(Matrix.inv_eq_right_inv (by rw [← psiM_mul, mul_inv_cancel, psiM_one])).symm`.
+A detailed English derivation is pending.
 -/
 theorem psiM_inv' {k r : ℕ} (u : Formalism.REAL.UJ (epsG k r)) : psiM k r u⁻¹ = (psiM k r u)⁻¹ := by
   exact (Matrix.inv_eq_right_inv (by rw [← psiM_mul, mul_inv_cancel, psiM_one])).symm
 
 /- English proof (translation)
-Introduce `k r Wp _ _ _ D X hD hSq γ hγ`. Take `⟨hgbG, -, -, -, hanti', hinv', hμG, -, -⟩` from `stInvGroup h k r Wp D X hD hSq γ hγ`. Establish `hG` using `D.haarG`. Use `haveI := nuG_left hG`. Use `haveI := nuG_inv hG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := nuG_openPos hG`. Use `haveI : Nontrivial X.Hs := ⟨⟨X.w, 0, fun e => by have hw := X.w_norm; simp [e] at hw⟩⟩`. Establish `inj` using `(isClosedEmbedding_psiM k r).injective`. Establish `hex : ∀ u : Formalism.REAL.UJ (epsG k r), ∃ u', psiM k r u' = gbar k r γ (psiM k r u)`. Introduce `u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hm : gbar k r γ (psiM k r u) ∈ Set.range (psiM k r)`. Rewrite using `[range_psiM]`. Conclude with `hgbG _ (psiM_mem u)`. Conclude with `hm`. Use `choose G hGs using hex`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Set `θ : Formalism.REAL.UJ (epsG k r) → Formalism.REAL.UJ (epsG k r)` to `fun u => (G u)⁻¹`. Establish `hθ : ∀ u, psiM k r (θ u) = th k r γ (psiM k r u)`. Introduce `u`. Simplify using `only [θ, th, psiM_inv', hGs]`. Establish `hanti : ∀ a b, θ (a * b) = θ b * θ a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Apply `inj` to reduce the goal to its premises. Rewrite using `[hθ, psiM_mul, psiM_mul, hθ, hθ]`. Conclude with `hanti' _ (psiM_mem a) _ (psiM_mem b)`. Establish `hinv : ∀ u, θ (θ u) = u`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `u`. Apply `inj` to reduce the goal to its premises. Rewrite using `[hθ, hθ]`. Conclude with `hinv' _ (psiM_mem u)`. Establish `hgbar : Continuous (gbar k r γ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Unfold `gbar`. Conclude with `((continuous_const.matrix_mul ((((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).matrix_map Complex.continuous_conj))).matrix_mul continuous_const)`. Establish `hGc : Continuous G`. Rewrite using `[(isClosedEmbedding_psiM k r).toIsEmbedding.continuous_iff]`. Establish `e : psiM k r ∘ G = gbar k r γ ∘ psiM k r` using `funext hGs`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hgbar.comp (continuous_psiM k r)`. Establish `hθc : Continuous θ` using `continuous_inv.comp hGc`. Establish `hE` using `measurableEmbedding_psiG k r`. Set `T : Mt k r → Mt k r` to `fun x => fun i j => th k r γ (Matrix.of x) i j`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hT : AEMeasurable T D.μG`. Assume the negation of the conclusion as `hne`. Rewrite `hμG` using `[Measure.map_of_not_aemeasurable hne]`. Conclude with `D.haarG.ne_zero hμG.symm`. Establish `hcomp : psiG k r ∘ θ = T ∘ psiG k r`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `u`. Use `show Matrix.of.symm (psiM k r (θ u)) = fun i j => th k r γ (Matrix.of (psiG k r u)) i j`. Rewrite using `[of_psiG, hθ]`. Both sides reduce to the same expression. Establish `key : ((nuG D.μG).map θ).map (psiG k r) = (nuG D.μG).map (psiG k r)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Measure.map_map hE.measurable hθc.measurable, hcomp, ← AEMeasurable.map_map_of_aemeasurable (by rw [map_nuG hG]; exact hT) hE.measurable.aemeasurable, map_nuG hG]`. Conclude with `hμG`. Establish `hmap : (nuG D.μG).map θ = nuG D.μG`. Combine the equalities or inequalities in the displayed calculation. Establish `hSR` using `sqRep_psiG hG X.rep (fun v w => hSq v w)`.
-
-Break down `schurDichotomy (Formalism.REAL.UJ (epsG k r)) (nuG D.μG) X.Hs θ (fun u => X.σ (psiM k r u)) hθc hanti hinv hmap hSR.one hSR.mul hSR.iso hSR.cont hSR.sq (irr_psiG X.irr) with h0 | ⟨C, hC1, hC2⟩` into its components or cases. Use `left`. Introduce `x y x' y'`. Rewrite using `[← map_nuG hG, hE.integral_map]`. Simplify using `only [of_psiG, ← hθ]`.
-
-Conclude with `h0 x y x' y'`. Use `right`. Use `⟨C, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg x y`. Take `⟨u, rfl⟩ : g ∈ Set.range (psiM k r)` from `by rw [range_psiM]; exact hg`.
-
-Rewrite using `[← hθ]`. Conclude with `hC1 u x y`. Introduce `g hg v`. Take `⟨u, rfl⟩ : g ∈ Set.range (psiM k r)` from `by rw [range_psiM]; exact hg`. Rewrite using `[← hθ, ← psiM_inv']`.
-
-Conclude with `hC2 u v`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stDichoG (h : UnitaryGroupStructuralFacts) : StDichoG := by
   intro k r Wp _ _ _ D X hD hSq γ hγ

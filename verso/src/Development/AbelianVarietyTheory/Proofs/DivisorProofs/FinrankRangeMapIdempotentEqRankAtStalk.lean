@@ -8,13 +8,13 @@ noncomputable section
 namespace GlobalTheory.IdemRankStalk
 
 /- English proof (translation)
-Set `r : M →ₗ[R] LinearMap.range e` to `e.rangeRestrict`. Set `i : LinearMap.range e →ₗ[R] M` to `(LinearMap.range e).subtype`. Establish `hri : r ∘ₗ i = LinearMap.id`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `x.2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `e x.1 = x.1`. Rewrite using `[← hy]`. Conclude with `LinearMap.congr_fun he y`. Establish `hir : e = i ∘ₗ r` using `LinearMap.ext fun _ => rfl`. Establish `hS : r.baseChange S ∘ₗ i.baseChange S = LinearMap.id`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.baseChange_comp, hri, LinearMap.baseChange_id]`. Establish `hsurj : Function.Surjective (r.baseChange S)` using `fun x => ⟨i.baseChange S x, LinearMap.congr_fun hS x⟩`. Establish `hinj : Function.Injective (i.baseChange S)` using `fun x y hxy => by`. Use `congrArg (r.baseChange S) hxy` as an intermediate fact. Rewrite `this` using `[← LinearMap.comp_apply, hS, ← LinearMap.comp_apply, hS]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2 : e.baseChange S = i.baseChange S ∘ₗ r.baseChange S`. Rewrite using `[← LinearMap.baseChange_comp, ← hir]`. Rewrite using `[h2, LinearMap.range_comp_of_range_eq_top _ (LinearMap.range_eq_top.2 hsurj), LinearMap.finrank_range_of_inj hinj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_range_baseChange_eq {R S M : Type} [CommRing R] [Field S] [Algebra R S]
     [AddCommGroup M] [Module R M] (e : M →ₗ[R] M) (he : e ∘ₗ e = e) :
@@ -42,21 +42,19 @@ theorem finrank_range_baseChange_eq {R S M : Type} [CommRing R] [Field S] [Algeb
     LinearMap.finrank_range_of_inj hinj]
 
 /- English proof (translation)
-Use `letI : Algebra A k := g.toAlgebra`. Use `set e : (Fin n → A) →ₗ[A] (Fin n → A) := P.mulVecLin with he_def`. Establish `he : e ∘ₗ e = e`. Rewrite using `[he_def, ← Matrix.mulVecLin_mul, hP]`. Set `r : (Fin n → A) →ₗ[A] LinearMap.range e` to `e.rangeRestrict`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `i : LinearMap.range e →ₗ[A] (Fin n → A)` to `(LinearMap.range e).subtype`. Establish `hri : r ∘ₗ i = LinearMap.id`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `x.2`. Express the relevant statement in the definitionally equal form `e x.1 = x.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy]`. Conclude with `LinearMap.congr_fun he y`. Use `haveI : Module.Projective A (LinearMap.range e) := Module.Projective.of_split i r hri`. Establish `hst` using `Module.rankAtStalk_baseChange (R := A) (M := LinearMap.range e) (S := k) ⊥`. Rewrite `hst` using `[Module.rankAtStalk_eq_finrank_of_free]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hcomap : PrimeSpectrum.comap (algebraMap A k) (⊥ : PrimeSpectrum k) = (⟨RingHom.ker g, RingHom.ker_isPrime g⟩ : PrimeSpectrum A)`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `x ∈ Ideal.comap (algebraMap A k) (⊥ : Ideal k) ↔ x ∈ RingHom.ker g`. Rewrite using `[Ideal.mem_comap, Ideal.mem_bot, RingHom.mem_ker]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `hst` using `[hcomap]`. Rewrite using `[← hst, ← finrank_range_baseChange_eq e he]`. Set `Φ : k ⊗[A] (Fin n → A) ≃ₗ[k] (Fin n → k)` to `TensorProduct.piScalarRight A k k (Fin n)`. Establish `hΦ : ∀ x, Φ (e.baseChange k x) = (P.map g).mulVecLin (Φ x)`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c v`. Use extensionality with `j`. Simplify using `[Φ, e, TensorProduct.piScalarRight_apply, Matrix.mulVec, dotProduct, Finset.mul_sum, Algebra.smul_def, RingHom.algebraMap_toAlgebra]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_assoc _ _ _`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hrange : LinearMap.range (P.map g).mulVecLin = (LinearMap.range (e.baseChange k)).map (Φ : k ⊗[A] (Fin n → A) →ₗ[k] (Fin n → k))`. Establish `hc : (P.map g).mulVecLin ∘ₗ (Φ : k ⊗[A] (Fin n → A) →ₗ[k] (Fin n → k)) = (Φ : k ⊗[A] (Fin n → A) →ₗ[k] (Fin n → k)) ∘ₗ e.baseChange k` using `LinearMap.ext fun x => (hΦ x).symm`.
-
-Rewrite using `[← LinearMap.range_comp, ← hc, LinearMap.range_comp_of_range_eq_top _ (LinearEquiv.range Φ)]`. Rewrite using `[hrange, LinearEquiv.finrank_map_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finrank_range_map_eq_rankAtStalk (A : Type) [CommRing A] (n : ℕ)
     (P : Matrix (Fin n) (Fin n) A) (hP : P * P = P) (k : Type) [Field k] (g : A →+* k) :

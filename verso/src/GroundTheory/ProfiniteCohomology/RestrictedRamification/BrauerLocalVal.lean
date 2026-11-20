@@ -32,11 +32,11 @@ theorem ordEmbMor_hom_apply (y : Additive (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) 
 section Levels
 
 /- English proof (translation)
-Set `A : IntermediateField K.1 ℚ̄` to `IntermediateField.adjoin K.1 (T : Set ℚ̄)`. Establish `: FiniteDimensional K.1 A` using `IntermediateField.finiteDimensional_adjoin fun y _ => Algebra.IsIntegral.isIntegral y`. Set `N' : IntermediateField K.1 ℚ̄` to `IntermediateField.normalClosure K.1 A ℚ̄`. Establish `hN'f : FiniteDimensional K.1 N'` using `inferInstance`. Establish `hN'n : Normal K.1 N'` using `inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN'le : N' ≤ maxUnramifiedOutside K.1 ℚ̄ S` using `IntermediateField.normalClosure_le_iff_of_normal.2 ((IntermediateField.adjoin_le_iff).2 fun y hy => hT y hy)`. Use `K.2` as an intermediate fact. Establish `hN'q : FiniteDimensional ℚ N'` using `Module.Finite.trans K.1 N'`. Set `N : FiniteSubfield` to `⟨N'.restrictScalars ℚ, hN'q⟩`. Establish `hKN : Fact (K ≤ N)` using `⟨fun x hx => N'.algebraMap_mem ⟨x, hx⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨N, hKN, ?_, fun x hx => hN'le hx, fun y hy => IntermediateField.le_normalClosure A (IntermediateField.subset_adjoin K.1 _ hy)⟩` and prove the remaining obligations. Conclude with `hN'n`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_galois_level_finset (T : Finset ℚ̄) (hT : ∀ y ∈ T, y ∈ maxUnramifiedOutside K.1 ℚ̄ S) :
     ∃ (N : FiniteSubfield) (_ : Fact (K ≤ N)), Normal K.1 N.1 ∧
@@ -73,22 +73,22 @@ def levelRes : galUnramifiedOutside K.1 ℚ̄ S →* Gal(N.1/K.1) :=
   decompHom K.1 (levelIncl S N hN)
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val (decompHom_apply (Kv := K.1) (levelIncl S N hN) σ x)`.
+A detailed English derivation is pending.
 -/
 theorem levelRes_apply (σ : galUnramifiedOutside K.1 ℚ̄ S) (x : N.1) :
     ((levelRes S N hN σ x : N.1) : ℚ̄) = ((σ ⟨x, hN x x.2⟩ : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) :=
   congrArg Subtype.val (decompHom_apply (Kv := K.1) (levelIncl S N hN) σ x)
 
 /- English proof (translation)
-The claim follows from `continuous_decompHom _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_levelRes : Continuous (levelRes S N hN) :=
   continuous_decompHom _
 
 /- English proof (translation)
-Introduce `γ`. Use `⟨(γ.liftNormal ℚ̄).restrictNormal (maxUnramifiedOutside K.1 ℚ̄ S), ?_⟩` and prove the remaining obligations. Rewrite using `[levelRes, decompHom_eq_iff]`. Introduce `x`. Apply `Subtype.val_injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `((γ x : N.1) : ℚ̄) = (((γ.liftNormal ℚ̄).restrictNormal (maxUnramifiedOutside K.1 ℚ̄ S) ⟨x, hN x x.2⟩ : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄)`. Rewrite using `[show (((γ.liftNormal ℚ̄).restrictNormal (maxUnramifiedOutside K.1 ℚ̄ S) ⟨x, hN x x.2⟩ : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) = γ.liftNormal ℚ̄ (algebraMap (maxUnramifiedOutside K.1 ℚ̄ S) ℚ̄ ⟨x, hN x x.2⟩) from AlgEquiv.restrictNormal_commutes (γ.liftNormal ℚ̄) (maxUnramifiedOuts …`. Conclude with `(AlgEquiv.liftNormal_commutes γ ℚ̄ x).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelRes_surjective : Function.Surjective (levelRes S N hN) := by
   intro γ
@@ -105,7 +105,7 @@ theorem levelRes_surjective : Function.Surjective (levelRes S N hN) := by
   exact (AlgEquiv.liftNormal_commutes γ ℚ̄ x).symm
 
 /- English proof (translation)
-Rewrite using `[decompHom_eq_iff]`. Introduce `x`. Rewrite using `[embedLevel_apply, embedLevel_apply, levelRes_apply]`. Conclude with `decompHom_apply (Kv := v.adicCompletion K.1) (ι.comp (maxUnramifiedOutside K.1 ℚ̄ S).val) σ ⟨x, hN x x.2⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decompHom_embedLevel_eq (σ : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1)) :
     decompHom (v.adicCompletion K.1) (embedLevel ι N) σ =
@@ -138,41 +138,37 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨hc, -, ht⟩` from `galUnramifiedOutside_isProfinite (F := K.1) (Ω := ℚ̄) S`. Take `⟨U, hU⟩` from `exists_openNormalSubgroup_fin_of_isLocallyConstant hf`. Take `⟨E, hEf, hEU⟩` from `(krullTopology_mem_nhds_one_iff K.1 (maxUnramifiedOutside K.1 ℚ̄ S) (U : Set (galUnramifiedOutside K.1 ℚ̄ S))).1 (U.toOpenSubgroup.isOpen.mem_nhds U.one_mem')`. Set `bE` to `Module.finBasis K.1 E`. Establish `hfin : (Set.range f).Finite` using `hf.range_finite`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T : Finset ℚ̄` to `(Finset.univ.image fun i => ((bE i : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄)) ∪ hfin.toFinset.image fun y => (((Additive.toMul y : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄)`. Establish `hT : ∀ y ∈ T, y ∈ maxUnramifiedOutside K.1 ℚ̄ S`. Introduce `y hy`. Break down `Finset.mem_union.1 hy with h | h` into its components or cases. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `(bE i : maxUnramifiedOutside K.1 ℚ̄ S).2`. Take `⟨z, -, rfl⟩` from `Finset.mem_image.1 h`. Conclude with `((Additive.toMul z : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S).2`. Take `⟨N, hKN, hNn, hN, hTN⟩` from `exists_galois_level_finset S T hT`. Establish `hres : ∀ σ σ' : galUnramifiedOutside K.1 ℚ̄ S, levelRes S N hN σ = levelRes S N hN σ' → σ⁻¹ * σ' ∈ U`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `σ σ' h`. Apply `hEU` to reduce the goal to its premises. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Establish `hb : ∀ i, σ' (bE i : maxUnramifiedOutside K.1 ℚ̄ S) = σ (bE i : maxUnramifiedOutside K.1 ℚ̄ S)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `hmem : ((bE i : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) ∈ N.1` using `hTN _ (Finset.mem_union_left _ (Finset.mem_image.2 ⟨i, Finset.mem_univ _, rfl⟩))`. Establish `e` using `congrArg (fun τ : Gal(N.1/K.1) => ((τ ⟨_, hmem⟩ : N.1) : ℚ̄)) h`. Simplify using `only [levelRes_apply] at e`. Conclude with `Subtype.ext e.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsum : x = ∑ i, (bE.repr ⟨x, hx⟩ i) • (bE i : maxUnramifiedOutside K.1 ℚ̄ S)`. Use `congrArg (fun e : E => (e : maxUnramifiedOutside K.1 ℚ̄ S)) (bE.sum_repr ⟨x, hx⟩)` as an intermediate fact. Simplify using `only [IntermediateField.coe_sum, IntermediateField.coe_smul] at this`. Conclude with `this.symm`. Establish `h1 : σ' x = σ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hs : ∀ (τ : galUnramifiedOutside K.1 ℚ̄ S) (r : K.1) (y : maxUnramifiedOutside K.1 ℚ̄ S), τ (r • y) = r • τ y` using `fun τ r y => τ.toLinearEquiv.map_smul r y`. Rewrite using `[hs, hs, hb i]`. Rewrite using `[AlgEquiv.mul_apply, h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `σ.symm_apply_apply x`. Establish `hfac : ∀ u u' : Fin 2 → galUnramifiedOutside K.1 ℚ̄ S, (∀ i, levelRes S N hN (u i) = levelRes S N hN (u' i)) → f u = f u'` using `fun u u' h => hU u u' fun i => hres _ _ (h i)`. Establish `hval : ∀ u, (((f u).toMul : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S).1 ∈ N.1` using `fun u => hTN _ (Finset.mem_union_right _ (Finset.mem_image.2 ⟨f u, hfin.mem_toFinset.2 ⟨u, rfl⟩, rfl⟩))`. Use `choose lift hlift using levelRes_surjective S N hN`. Set `c : Gal(N.1/K.1) × Gal(N.1/K.1) → N.1ˣ` to `fun p => unitOfMem S (f ![lift p.1, lift p.2]).toMul (hval _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc_val : ∀ p, ((c p : N.1) : ℚ̄) = (((f ![lift p.1, lift p.2]).toMul : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S).1` using `fun p => rfl`. Establish `hf2 : ∀ a b : galUnramifiedOutside K.1 ℚ̄ S, f ![a, b] = f ![lift (levelRes S N hN a), lift (levelRes S N hN b)]`. Introduce `a b`. Use `hfac _ _ fun i => ?_` and prove the remaining obligations. Use `fin_cases i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `(hlift _).symm`. Conclude with `(hlift _).symm`. Establish `hc_spec : ∀ u : Fin 2 → galUnramifiedOutside K.1 ℚ̄ S, (((f u).toMul : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S).1 = ((c (levelRes S N hN (u 0), levelRes S N hN (u 1)) : N.1) : ℚ̄)`. Introduce `u`. Establish `hu : u = ![u 0, u 1]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[hc_val, hu, hf2]`. Both sides reduce to the same expression. Use `⟨N, hKN, hNn, hN, c, ?_, hc_spec⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `g h j`. Establish `hd` using `hcoc ![lift g, lift h, lift j]`. Rewrite `hd` using `[inhomogeneousCochains_d_two_apply']`. Establish `e1 : f ![(![lift g, lift h, lift j] : Fin 3 → galUnramifiedOutside K.1 ℚ̄ S) 0 * (![lift g, lift h, lift j] : Fin 3 → galUnramifiedOutside K.1 ℚ̄ S) 1, (![lift g, lift h, lift j] : Fin 3 → galUnramifiedOutside K.1 ℚ̄ S) 2] = f ![lift (g * h), lift j]`. Use `hfac _ _ fun i => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `fin_cases i`. Express the relevant statement in the definitionally equal form `levelRes S N hN (lift g * lift h) = levelRes S N hN (lift (g * h))`. Rewrite using `[map_mul, hlift, hlift, hlift]`. Both sides reduce to the same expression. Establish `e2 : f ![(![lift g, lift h, lift j] : Fin 3 → galUnramifiedOutside K.1 ℚ̄ S) 0, (![lift g, lift h, lift j] : Fin 3 → galUnramifiedOutside K.1 ℚ̄ S) 1 * (![lift g, lift h, lift j] : Fin 3 → galUnramifiedOutside K.1 ℚ̄ S) 2] = f ![lift g, lift (h * j)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Use `hfac _ _ fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `levelRes S N hN (lift h * lift j) = levelRes S N hN (lift (h * j))`. Rewrite using `[map_mul, hlift, hlift, hlift]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hd` using `[e1, e2]`. Establish `key : (galUnits.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S)).ρ (lift g) (f ![lift h, lift j]) + f ![lift g, lift (h * j)] = f ![lift (g * h), lift j] + f ![lift g, lift h]`. Rewrite using `[← sub_eq_zero, ← hd]`. Express the relevant statement in the definitionally equal form `_ = (galUnits.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S)).ρ (lift g) (f ![lift h, lift j]) - f ![lift (g * h), lift j] + f ![lift g, lift (h * j)] - f ![lift g, lift h]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `key'` using `congrArg (fun y : Additive (maxUnramifiedOutside K.1 ℚ̄ S)ˣ => (((Additive.toMul y : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄)) key`. Simplify using `only [toMul_add, Units.val_mul, IntermediateField.coe_mul] at key'`. Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, IntermediateField.coe_mul]`.
-
-Rewrite using `[hc_val, hc_val, hc_val]`. Establish `hg : (((g • c (h, j) : N.1ˣ) : N.1) : ℚ̄) = (((Additive.toMul ((galUnits.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S)).ρ (lift g) (f ![lift h, lift j])) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄)`. Establish `e : (((g • c (h, j) : N.1ˣ) : N.1) : ℚ̄) = ((levelRes S N hN (lift g) (c (h, j) : N.1) : N.1) : ℚ̄)`. Rewrite using `[hlift g]`. Both sides reduce to the same expression.
-
-Rewrite using `[e, levelRes_apply]`. Both sides reduce to the same expression. Rewrite using `[hg]`. Conclude with `key'.symm`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_level_cocycle (f : (Fin 2 → galUnramifiedOutside K.1 ℚ̄ S) →
       Additive (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) (hf : IsLocallyConstant f)
@@ -308,9 +304,9 @@ theorem exists_level_cocycle (f : (Fin 2 → galUnramifiedOutside K.1 ℚ̄ S) �
 end LevelCocycle
 
 /- English proof (translation)
-Establish `hy : ((maxUnitsToUnits S y : ℚ̄ˣ) : ℚ̄) ∈ N.1`. Express the relevant statement in the definitionally equal form `((y : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) ∈ N.1`. Rewrite using `[hyu]`. Conclude with `(u : N.1).2`. Establish `hv'` using `valuation_placeOfEmbedding_eq S ι hv N hN (maxUnitsToUnits S y) hy`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : (u : N.1) = ⟨(maxUnitsToUnits S y : ℚ̄), hy⟩` using `Subtype.ext hyu.symm`. Rewrite using `[ordEmb_apply, ordPlace, hu, hv', WithZero.log_exp, neg_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordEmb_eq_ordPlace (N : FiniteSubfield) [Fact (K ≤ N)]
     (hN : ∀ x ∈ N.1, x ∈ maxUnramifiedOutside K.1 ℚ̄ S) (y : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)
@@ -328,15 +324,15 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hconst : ∀ {X : Type} (w : (Fin 1 → Gal(AlgebraicClosure (v.adicCompletion K.1)/ v.adicCompletion K.1)) → X), IsLocallyConstant w → IsLocallyConstant (fun σ : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1) => w fun _ => σ)` using `fun w hw => hw.comp_continuous (continuous_pi fun _ => continuous_id)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, hwz⟩`. Establish `hbc : ∀ σ τ : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1), σ • Additive.toMul (w fun _ => τ) / Additive.toMul (w fun _ => σ * τ) * Additive.toMul (w fun _ => σ) = Units.map (embedLevel ι N).toRingHom.toMonoidHom (c (decompHom (v.adicCompletion K.1) (embedLev …`. Introduce `σ τ`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : a ![σ, τ] = (galUnitsZ (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))).ρ σ (w fun _ => τ) - w (fun _ => σ * τ) + w (fun _ => σ)` using `hwz ![σ, τ]`. Establish `h2 : Additive.toMul (a ![σ, τ]) = σ • Additive.toMul (w fun _ => τ) / Additive.toMul (w fun _ => σ * τ) * Additive.toMul (w fun _ => σ)` using `(congrArg Additive.toMul h1).trans (toMul_galUnitsZ_coboundary σ _ _ _)`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(congrArg Units.val h2.symm).trans (ha ![σ, τ])`. Take `⟨h, hh, hhc⟩` from `exists_ord_coboundary_of_mulCoboundary ι N c hc (fun σ => Additive.toMul (w fun _ => σ)) ((hconst w hw).comp Additive.toMul) hbc`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun g => h (g 0), hh.comp_continuous (continuous_apply 0), fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[ho u, ← hhc (u 0) (u 1)]`. Both sides reduce to the same expression. Introduce and unpack `⟨w, hw, hwz⟩`. Establish `hhc : ∀ σ τ : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1), (w fun _ => τ) - (w fun _ => σ * τ) + (w fun _ => σ) = ordPlace ι N (c (decompHom (v.adicCompletion K.1) (embedLevel ι N) σ, decompHom (v.adicCompletion K.1) (embedLevel ι N) τ))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ τ`. Establish `h1 : o ![σ, τ] = (w fun _ => τ) - (w fun _ => σ * τ) + (w fun _ => σ)` using `hwz ![σ, τ]`. Conclude with `h1.symm.trans (ho ![σ, τ])`. Take `⟨b, hb, hbc⟩` from `exists_mulCoboundary_of_ord ι N he c hc (fun σ => w fun _ => σ) (hconst w hw) hhc`. Use `⟨fun g => Additive.ofMul (b (g 0)), (hb.comp_continuous (continuous_apply 0)).comp Additive.ofMul, fun u => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[ha u, ← hbc (u 0) (u 1)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coboundary_iff_of_level (N : FiniteSubfield) [Fact (K ≤ N)] [Normal K.1 N.1]
     (he : (placeOfEmbedding ι N).1.asIdeal.ramificationIdx (𝓞 K.1) = 1)
@@ -406,15 +402,13 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `cohomologyπ_surjective _ 2 x`. Establish `hf : IsLocallyConstant (cochainOf _ (cocycleι _ 2 z))` using `isLocallyConstant_cochainOf _`. Establish `hcoc : ∀ u, (inhomogeneousCochains.d (galUnits.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2).hom (cochainOf _ (cocycleι _ 2 z)) u = 0` using `fun u => congrFun (d_cocycleι z) u`. Take `⟨N, hKN, hNn, hN, c, hc, hcf⟩` from `exists_level_cocycle S _ hf hcoc`. Establish `hU : Algebra.IsUnramifiedAt (𝓞 K.1) (placeOfEmbedding ι N).1.asIdeal` using `isUnramifiedIn_of_subset_max S hv N hN _ inferInstance (placeOfEmbedding ι N).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he : (placeOfEmbedding ι N).1.asIdeal.ramificationIdx (𝓞 K.1) = 1` using `Ideal.ramificationIdx_eq_one _ _`. Establish `hA : (gsLocalRes S ι 2).hom (cohomologyULiftIntAddEquiv _ 2 (cohomologyπ _ 2 z)) = cohomologyπ _ 2 (cocyclesMapAlong (decompHomS (v.adicCompletion K.1) S ι) (continuous_decompHomS (Kv` using `v.adicCompletion K.1) S ι) (embUnitsMorZ S ι) 2 (cocyclesULiftInt _ z)) := by`. Rewrite using `[cohomologyULiftIntAddEquiv_cohomologyπ', gsLocalRes]`. Conclude with `cohomologyMapAlong_cohomologyπ _ _ _ _`. Rewrite using `[hA, cohomologyMapAlong_cohomologyπ, cohomologyπ_two_eq_zero_iff_locallyConstant, cohomologyπ_two_eq_zero_iff_locallyConstant]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesULiftInt]`. Establish `hF : ∀ u : Fin 2 → Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1), (((Additive.toMul (cochainOf (galUnits.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) (cocycleι _ 2 z) (⇑(decompHomS (v.adicCompletion K.1) S ι) ∘ u)) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifi …`. Introduce `u`. Rewrite using `[hcf, decompHom_embedLevel_eq S ι N hN, decompHom_embedLevel_eq S ι N hN]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hord : ∀ u : Fin 2 → Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1), (ordEmbMor S ι hv).hom (cochainOf (galUnits.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) (cocycleι _ 2 z) (⇑(decompHomS (v.adicCompletion K.1) S ι) ∘ u)) = ordPlace ι N (c (decompHom (v.adicComple …` using `fun u => (ordEmbMor_hom_apply S ι hv _).trans (ordEmb_eq_ordPlace S ι hv N hN _ _ (hF u))`. Establish `hemb : ∀ u : Fin 2 → Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1), ((Additive.toMul ((embUnitsMorZ S ι).hom (cochainOf (galUnits.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) (cocycleι _ 2 z) (⇑(decompHomS (v.adicCompletion K.1) S ι) ∘ u))) : (AlgebraicClosure (v. …`. Introduce `u`. Rewrite using `[embUnitsMorZ_hom_apply]`. Express the relevant statement in the definitionally equal form `ι _ = ι _`.
-
-Conclude with `congrArg ι (hF u)`. Conclude with `coboundary_iff_of_level ι N he c hc _ _ hemb hord`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem gsLocalRes_eq_zero_iff (x : cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2) :
     (gsLocalRes S ι 2).hom (cohomologyULiftIntAddEquiv _ 2 x) = 0 ↔

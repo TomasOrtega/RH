@@ -8,20 +8,18 @@ namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 open Formalism.GaloisIrreducibility (IsSubSum)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_right_rest.goal1 .. | (apply Bl.general_b_fact_right_rest.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right_rest.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_rest.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_rig …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_le_map_eq {α β : Type*} [DecidableEq β] (f : α → β) (t : Multiset α) :
     ∀ s : Multiset β, s ≤ t.map f → ∃ u ≤ t, u.map f = s := by
   first | exact Bl.general_b_fact_right_rest.goal1 .. | (apply Bl.general_b_fact_right_rest.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right_rest.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_rest.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_right_rest.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_rest.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_right_rest.goal1 α β ‹_› f t s ‹_› | exact @Bl.general_b_fact_right_rest.goal1 α β ‹_› f t s | exact @Bl.general_b_fact_right_rest.goal1 α β ‹_› f t | exact @Bl.general_b_fact_right_rest.goal1 α β ‹_› f | exact @Bl.general_b_fact_right_rest.goal1 α β ‹_› | exact @Bl.general_b_fact_right_rest.goal1 α β | exact @Bl.general_b_fact_right_rest.goal1 α
 
 /- English proof (translation)
-Introduce `K _ f a hf`. Establish `hdeg : ∀ t : Multiset K[X], t ≤ normalizedFactors f → t.prod.natDegree = (t.map natDegree).sum`. Introduce `t ht`. Apply `natDegree_multiset_prod` to reduce the goal to its premises. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `zero_notMem_normalizedFactors f (Multiset.mem_of_le ht h0)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hdvd, rfl⟩`. Establish `hh : h ≠ 0` using `fun h0 => hf (by rw [h0] at hdvd; exact zero_dvd_iff.mp hdvd)`. Establish `hle : normalizedFactors h ≤ normalizedFactors f` using `(dvd_iff_normalizedFactors_le_normalizedFactors hh hf).mp hdvd`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(normalizedFactors h).map natDegree, Multiset.map_le_map hle, ?_⟩` and prove the remaining obligations. Rewrite using `[← hdeg _ hle]`. Conclude with `natDegree_eq_of_degree_eq (degree_eq_degree_of_associated (prod_normalizedFactors hh))`. Introduce and unpack `⟨s, hs, rfl⟩`. Take `⟨u, hu, rfl⟩` from `exists_le_map_eq natDegree _ s hs`.
-
-Use `⟨u.prod, ?_, hdeg u hu⟩` and prove the remaining obligations. Conclude with `(Multiset.prod_dvd_prod_of_le hu).trans (prod_normalizedFactors hf).dvd`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem divisor_degree_subsum : DivisorDegreeSubSum := by
   classical

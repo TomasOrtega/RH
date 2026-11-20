@@ -4,15 +4,15 @@ open Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hx1 : 0 < x + 1` using `by linarith`. Establish `hq : 0 < (x + 1) / x` using `div_pos hx1 hx`. Establish `h1 : 1 - ((x + 1) / x)⁻¹ ≤ Real.log ((x + 1) / x)` using `Real.one_sub_inv_le_log_of_pos hq`. Establish `h2 : 1 - ((x + 1) / x)⁻¹ = 1 / (x + 1)` using `by field_simp; ring`. Establish `h3 : 1 + s * (1 / (x + 1)) ≤ ((x + 1) / x) ^ s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.rpow_def_of_pos hq]`. Establish `h4` using `Real.add_one_le_exp (Real.log ((x + 1) / x) * s)`. Establish `h5 : s * (1 / (x + 1)) ≤ Real.log ((x + 1) / x) * s`. Rewrite using `[mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (h2 ▸ h1) hs.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h3` using `[Real.div_rpow hx1.le hx.le]`. Rewrite using `[Real.rpow_add hx1, Real.rpow_one]`. Establish `hA : 0 < x ^ s` using `Real.rpow_pos_of_pos hx _`. Establish `hB : 0 < (x + 1) ^ s` using `Real.rpow_pos_of_pos hx1 _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `x ^ s = A at *`. Generalize the expression as in `(x + 1) ^ s = B at *`. Rewrite using `[le_div_iff₀ hs]`. Establish `h6 : (1 + s * (1 / (x + 1))) / B ≤ B / A / B` using `by gcongr`. Establish `h7 : B / A / B = 1 / A` using `by field_simp`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h8 : (1 + s * (1 / (x + 1))) / B = 1 / B + 1 / ((x + 1) * B) * s` using `by field_simp`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem one_div_succ_rpow_one_add_le_telescope {s x : ℝ} (hs : 0 < s) (hx : 0 < x) :
     1 / (x + 1) ^ (1 + s) ≤ (1 / x ^ s - 1 / (x + 1) ^ s) / s := by
@@ -40,11 +40,11 @@ theorem one_div_succ_rpow_one_add_le_telescope {s x : ℝ} (hs : 0 < s) (hx : 0 
   linarith
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Establish `: (1 + s) ≠ 0` using `by linarith`. Simplify using `[Finset.sum_range_succ, Real.zero_rpow this]`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[show k + 1 + 2 = (k + 2) + 1 from rfl, Finset.sum_range_succ]`. Establish `h` using `one_div_succ_rpow_one_add_le_telescope (x := (k : ℝ) + 1) hs (by positivity)`. Establish `e : ((k + 2 : ℕ) : ℝ) = (k : ℝ) + 1 + 1` using `by push_cast; ring`. Establish `e' : ((k + 1 : ℕ) : ℝ) = (k : ℝ) + 1` using `by push_cast; ring`. Rewrite using `[e, e']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (1 - 1 / ((k : ℝ) + 1 + 1) ^ s) / s = (1 - 1 / ((k : ℝ) + 1) ^ s) / s + (1 / ((k : ℝ) + 1) ^ s - 1 / ((k : ℝ) + 1 + 1) ^ s) / s` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sum_range_one_div_rpow_one_add_le {s : ℝ} (hs : 0 < s) (k : ℕ) :
     ∑ n ∈ Finset.range (k + 2), 1 / (n : ℝ) ^ (1 + s)
@@ -64,7 +64,7 @@ theorem sum_range_one_div_rpow_one_add_le {s : ℝ} (hs : 0 < s) (k : ℕ) :
     linarith
 
 /- English proof (translation)
-Use `Real.tsum_le_of_sum_range_le (fun n => by positivity) fun k => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ 1 / ((k : ℝ) + 1) ^ s` using `by positivity`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tsum_one_div_rpow_one_add_le {s : ℝ} (hs : 0 < s) :
     ∑' n : ℕ, 1 / (n : ℝ) ^ (1 + s) ≤ 1 + 1 / s := by
@@ -80,13 +80,11 @@ theorem tsum_one_div_rpow_one_add_le {s : ℝ} (hs : 0 < s) :
         linarith
 
 /- English proof (translation)
-Introduce `s hs N`. Establish `hsum : Summable fun n : ℕ => 1 / (n : ℝ) ^ (1 + s)` using `Real.summable_one_div_nat_rpow.2 (by linarith)`. Establish `hE` using `EulerProduct.prod_primesBelow_tsum_eq_tsum_smoothNumbers (f := fun n : ℕ => 1 / (n : ℝ) ^ (1 + s)) (by simp) (fun {m n} _ => by`. Simplify using `only [Nat.cast_mul]`. Rewrite using `[Real.mul_rpow (Nat.cast_nonneg _) (Nat.cast_nonneg _), one_div_mul_one_div])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `hsum.norm N`. Establish `hP : ∏ p ∈ N.primesBelow, (1 - 1 / (p : ℝ) ^ (1 + s))⁻¹ = ∏ p ∈ N.primesBelow, ∑' e : ℕ, 1 / ((p ^ e : ℕ) : ℝ) ^ (1 + s)`. Use `Finset.prod_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Nat.prime_of_mem_primesBelow hp).one_lt`. Establish `hp0 : (0 : ℝ) ≤ p` using `by linarith`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : ℝ) < (p : ℝ) ^ (1 + s)` using `Real.one_lt_rpow hp1 (by linarith)`. Rewrite using `[← tsum_geometric_of_lt_one (by positivity) ((div_lt_one (by linarith)).2 h1)]`. Use `tsum_congr fun e => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, ← Real.rpow_natCast (p : ℝ) e, ← Real.rpow_mul hp0, mul_comm, Real.rpow_mul hp0, Real.rpow_natCast, one_div_pow]`. Rewrite using `[hP, hE]`.
-
-Conclude with `(Summable.tsum_subtype_le _ _ (fun n => by positivity) hsum).trans (tsum_one_div_rpow_one_add_le hs)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_primesBelow_inv_one_sub_one_div_rpow_le :
     ∀ (s : ℝ), 0 < s → ∀ N : ℕ, ∏ p ∈ N.primesBelow, (1 - 1 / (p : ℝ) ^ (1 + s))⁻¹ ≤ 1 + 1 / s := by

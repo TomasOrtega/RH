@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.PRep 
 namespace GlobalTheory.DefU.InfDecomp
 
 /- English proof (translation)
-The claim follows from `| [], _ => by simp | i :: l, h => by rw [List.nodup_cons] at h rw [List.map_cons, List.prod_cons, list_prod_map_mulSingle w a l h.2] by_cases hi : i = w · subst hi simp [h.1] · simp [Pi.mulSingle_apply, hi, Ne.symm hi]`.
+A detailed English derivation is pending.
 -/
 theorem list_prod_map_mulSingle {ι M : Type} [DecidableEq ι] [Monoid M] (w : ι) (a : M) :
     ∀ l : List ι, l.Nodup → (l.map (Pi.mulSingle w a : ι → M)).prod = if w ∈ l then a else 1
@@ -27,12 +27,12 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 def cutPt (v : InfinitePlace E) (x : UA E n) : UA E n := ((embRet (n := n) v.embedding x : embU n v.embedding) : UA E n)
 
 /- English proof (translation)
-The claim follows from `(embRet v.embedding x).2`.
+A detailed English derivation is pending.
 -/
 theorem cutPt_mem (v : InfinitePlace E) (x : UA E n) : cutPt v x ∈ embU n v.embedding := (embRet v.embedding x).2
 
 /- English proof (translation)
-Unfold `cutPt`. Rewrite using `[cInf_embRet, InfinitePlace.mk_embedding]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cInf_cutPt (v : InfinitePlace E) (x : UA E n) : cInf (cutPt v x) = cutGL v (cInf x) := by
   unfold cutPt
@@ -41,7 +41,7 @@ theorem cInf_cutPt (v : InfinitePlace E) (x : UA E n) : cInf (cutPt v x) = cutGL
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[cInf_cutPt, Pi.mulSingle_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `evGL_cutGL_self _ _`. Conclude with `evGL_cutGL_of_ne (Ne.symm h) _`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem evGL_cInf_cutPt (x : UA E n) (v w : InfinitePlace E) :
     evGL w (cInf (cutPt v x)) = (Pi.mulSingle w (evGL w (cInf x)) : InfinitePlace E → GL (Fin n) ℂ) v := by
@@ -58,13 +58,13 @@ namespace GlobalTheory.DefU
 open InfDecomp in
 
 /- English proof (translation)
-Introduce `E _ _ _ n x hx`. Use `⟨fun v => cutPt v x, fun v => cutPt_mem v x, fun v => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (coord v.embedding) (cInf (cutPt v x)) = GeneralLinearGroup.map (coord v.embedding) (cInf x)`. Rewrite using `[cInf_cutPt, coord_embedding]`. Conclude with `evGL_cutGL_self v (cInf x)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext (ga_ext ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cInf (Finset.univ.toList.map fun v => cutPt v x).prod = cInf x`. Rewrite using `[map_list_prod, List.map_map]`. Use `gl_ext_evGL fun w => ?_` and prove the remaining obligations. Rewrite using `[map_list_prod, List.map_map]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (evGL w ∘ cInf ∘ fun v : InfinitePlace E => cutPt v x) = (Pi.mulSingle w (evGL w (cInf x)) : InfinitePlace E → GL (Fin n) ℂ)` using `funext fun v => evGL_cInf_cutPt x v w`. Rewrite using `[e, list_prod_map_mulSingle w _ _ (Finset.nodup_toList _), if_pos (Finset.mem_toList.2 (Finset.mem_univ w))]`. Set `ψ : UA E n →* GL (Fin n) (Af E)` to `(GeneralLinearGroup.map (pFin E)).comp (UA E n).subtype`. Express the relevant statement in the definitionally equal form `ψ (Finset.univ.toList.map fun v => cutPt v x).prod = ψ x`. Rewrite using `[MonoidHom.mem_ker.1 hx, map_list_prod, List.map_map]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `List.prod_eq_one fun g hg => ?_` and prove the remaining obligations. Take `⟨v, -, rfl⟩` from `List.mem_map.1 hg`. Conclude with `MonoidHom.mem_ker.1 (cutPt_mem v x).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem infU_eq_list_prod_embU : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (x : UA E n),
     x ∈ infU E n → ∃ y : InfinitePlace E → UA E n, (∀ v, y v ∈ embU n v.embedding) ∧

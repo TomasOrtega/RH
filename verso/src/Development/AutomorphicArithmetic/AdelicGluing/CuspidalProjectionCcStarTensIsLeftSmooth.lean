@@ -9,7 +9,7 @@ open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Use `letI := (isExpLieAlgebra K n).chartedSpace`. Establish `hc : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : ℂ => conj z)` using `Complex.conjCLE.contDiff`. Conclude with `hc.comp_contMDiff hf`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem conj_smooth {K : Type} [Field K] [NumberField K] {n : ℕ} {f : archGroup K n → ℂ}
     (hf : (isExpLieAlgebra K n).IsSmoothFun f) :
@@ -19,9 +19,9 @@ private theorem conj_smooth {K : Type} [Field K] [NumberField K] {n : ℕ} {f : 
   exact hc.comp_contMDiff hf
 
 /- English proof (translation)
-Introduce `K _ _ n hn β e hβ ⟨U, hUo, hU⟩`. Set `β' : TI K n` to `⟨⟨fun a => conj (β a⁻¹), Complex.continuous_conj.comp (β.continuous.comp continuous_inv)⟩, (β.hasCompactSupport.comp_homeomorph (Homeomorph.inv _)).comp_left (g := fun z : ℂ => conj z) (map_zero _)⟩`. Set `e' : TF K n` to `⟨⟨fun a => conj (e a⁻¹), Complex.continuous_conj.comp (e.continuous.comp continuous_inv)⟩, (e.hasCompactSupport.comp_homeomorph (Homeomorph.inv _)).comp_left (g := fun z : ℂ => conj z) (map_zero _)⟩`. Establish `hL` using `UpperTheory.ConvolutionTheory.Tf.leftSm K n hn β e`. Rewrite using `[hL.2 β' e' (fun _ => rfl) (fun _ => rfl)]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(UpperTheory.ConvolutionTheory.Tf.leftSm K n hn β' e').1 ?_ ⟨U, hUo, fun u hu h => ?_⟩` and prove the remaining obligations. Establish `h1` using `(UpperTheory.ConvolutionTheory.Tf.invSmooth K n (fun g => β g) ((isExpLieAlgebra K n).mem_smoothFuns.2 hβ)).1`. Conclude with `conj_smooth ((isExpLieAlgebra K n).mem_smoothFuns.1 h1)`. Use `show conj (e (u * h)⁻¹) = conj (e h⁻¹)`. Rewrite using `[mul_inv_rev, hU _ (U.inv_mem hu)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cuspidalProjection_ccStar_tens_isLeftSmooth :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (β : TI K n) (e : TF K n), SmoothT β →

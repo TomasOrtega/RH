@@ -9,21 +9,19 @@ namespace ReciprocityTheory.ChartRestriction.G.Geo
 open MvPolynomial
 
 /- English proof (translation)
-Establish `hPp : P.IsPrime` using `hP.2.1.1`. Use `choose i hi using hP.2.1.2.2`. Use `set m : MRing ι := ∏ k, X ⟨k, i k⟩ with hmdef`. Establish `hm : m ∉ P` using `fun h' => by`. Take `⟨k, -, hk⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hPp)).mp h'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hi k hk`. Establish `hv : u * m ∉ P` using `fun h' => (hPp.mem_or_mem h').elim hu hm`. Establish `hvan : map (Int.castRingHom ℂ) (u * m) * H ∈ (pC P).radical`. Rewrite using `[← MvPolynomial.vanishingIdeal_zeroLocus_eq_radical (K := ℂ), MvPolynomial.mem_vanishingIdeal_iff]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Express the relevant statement in the definitionally equal form `eval x _ = 0`. Rewrite `hx` using `[MvPolynomial.mem_zeroLocus_iff]`. Distinguish the cases in `hb : ∀ k, x ⟨k, i k⟩ ≠ 0`. Establish `hxm : x ∈ mcPts P`. Rewrite using `[mcPts_eq_pC]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨fun k => ⟨i k, hb k⟩, fun f hf => hx f hf⟩`. Rewrite using `[map_mul, map_mul, map_mul, mul_right_comm, h x hxm, zero_mul]`. Use `push Not at hb`. Take `⟨k, hk⟩` from `hb`. Establish `: eval x (map (Int.castRingHom ℂ) m) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmdef, map_prod, map_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ k) (by simp [hk])`. Rewrite using `[map_mul, map_mul, map_mul, this, mul_zero, zero_mul]`. Establish `hHrad : H ∈ (pC P).radical`. Rewrite using `[← Ideal.sInf_minimalPrimes]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Submodule.mem_sInf.mpr fun Q hQ => ?_` and prove the remaining obligations. Establish `hQp : Ideal.IsPrime Q` using `hQ.1.1`. Establish `hle : (pC P).radical ≤ Q` using `(Ideal.IsPrime.radical_le_iff hQp).mpr hQ.1.2`. Establish `hvQ : map (Int.castRingHom ℂ) (u * m) ∉ Q` using `fun h' => by`. Apply `hv` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hM K ι P e hP Q hQ]`. Conclude with `h'`. Conclude with `(hQp.mem_or_mem (hle hvan)).resolve_left hvQ`. Introduce `z hz`. Rewrite `hHrad` using `[← MvPolynomial.vanishingIdeal_zeroLocus_eq_radical (K := ℂ), MvPolynomial.mem_vanishingIdeal_iff]`.
-
-Use `hHrad z (by` as an intermediate fact. Rewrite using `[MvPolynomial.mem_zeroLocus_iff]`. Introduce `p hp`. Conclude with `(by rw [mcPts_eq_pC] at hz; exact hz.2 p hp))`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eval_eq_zero_of_mul (hM : PCMinContractStatement) {K : Type} [Fintype K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {P : Ideal (MRing ι)} {e : ℕ} (hP : IsArithVar P (e + 1)) {u : MRing ι}
@@ -75,21 +73,19 @@ theorem eval_eq_zero_of_mul (hM : PCMinContractStatement) {K : Type} [Fintype K]
   exact this
 
 /- English proof (translation)
-Establish `hscale : ∀ (m : ℕ) (t : ℂ) (v : Fin n → ℂ), eval (fun i => t * v i) (homogeneousComponent m c) = t ^ m * eval v (homogeneousComponent m c)`. Introduce `m t v`. Rewrite using `[homogeneousComponent_apply, map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Rewrite `hd` using `[Finset.mem_filter]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdeg : ∑ i ∈ d.support, d i = m` using `by first`. Consider the case `exact hd.2`. Consider the case `(rw [← hd.2]; rfl)`. Consider the case `simpa [Finsupp.degree] using hd.2`. Simplify using `only [eval_monomial, Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcomp : ∀ m, ∀ v ∈ T, eval v (homogeneousComponent m c) = 0`. Introduce `m v hv`. Set `Q : Polynomial ℂ` to `∑ k ∈ Finset.range (c.totalDegree + 1), Polynomial.C (eval v (homogeneousComponent k c)) * Polynomial.X ^ k`. Establish `hQ : ∀ t : ℂ, t ≠ 0 → Q.eval t = 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `t ht`. Establish `h0` using `hcT _ (hT v hv t ht)`. Rewrite `h0` using `[← sum_homogeneousComponent c, map_sum]`. Simplify using `only [Q, Polynomial.eval_finset_sum, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]`. Rewrite using `[← h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k _ => by rw [hscale]; ring`. Establish `hQ0 : Q = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Apply `Set.Infinite.mono (s := {t : ℂ | t ≠ 0})` to reduce the goal to its premises. Introduce `t ht`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `hQ t ht`. Conclude with `(Set.finite_singleton (0 : ℂ)).infinite_compl`. Distinguish the cases in `hm : m ≤ c.totalDegree`. Establish `h1` using `congrArg (fun p => Polynomial.coeff p m) hQ0`. Simplify `h1` using `[Q, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul_X_pow, (by omega : m < c.totalDegree + 1)]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[homogeneousComponent_eq_zero m c (by omega), map_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨m, -, hm⟩ : ∃ m ∈ Finset.range (c.totalDegree + 1), homogeneousComponent m c ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hc` to reduce the goal to its premises.
-
-Rewrite using `[← sum_homogeneousComponent c]`. Conclude with `Finset.sum_eq_zero hcon`. Conclude with `⟨m, hm, homogeneousComponent_isHomogeneous m c, fun v hv => hcomp m v hv⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_homog_of_cone {n : ℕ} {c : MvPolynomial (Fin n) ℂ} (hc : c ≠ 0)
     {T : Set (Fin n → ℂ)} (hT : ∀ v ∈ T, ∀ t : ℂ, t ≠ 0 → (fun i => t * v i) ∈ T)
@@ -142,43 +138,37 @@ theorem exists_homog_of_cone {n : ℕ} {c : MvPolynomial (Fin n) ℂ} (hc : c �
   exact ⟨m, hm, homogeneousComponent_isHomogeneous m c, fun v hv => hcomp m v hv⟩
 
 /- English proof (translation)
-Introduce `K _ ι _ P e Ψ f a hP hΨ hf hfP`. Establish `hPp : P.IsPrime` using `hP.2.1.1`. Establish `hPh : IsMultiHomogIdeal P` using `hP.2.1.2.1`. Take `⟨k1⟩` from `hP.1`. Use `choose i hi using hP.2.1.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set d := ∑ k, a k with hd`. Use `set g : MRing ι := ∏ k, X ⟨k, i k⟩ ^ (d - a k) with hgdef`. Use `set f' : MRing ι := f * g with hf'def`. Establish `hgP : g ∉ P` using `fun h' => by`. Take `⟨k, -, hk⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hPp)).mp h'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hi k (hPp.mem_of_pow_mem _ hk)`. Establish `hf'P : f' ∉ P` using `fun h' => (hPp.mem_or_mem h').elim hfP hgP`. Establish `hf'h : IsWeightedHomogeneous (blkW ι) (map (Int.castRingHom ℂ) f') (fun _ => d)`. Establish `h1 : IsWeightedHomogeneous (blkW ι) (map (Int.castRingHom ℂ) f) a` using `isWeightedHomogeneous_map_of_isMultiHomog hf`. Establish `h2 : IsWeightedHomogeneous (blkW ι) (map (Int.castRingHom ℂ) g) (∑ k, (d - a k) • blkW ι ⟨k, i k⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hgdef, map_prod]`. Use `IsWeightedHomogeneous.prod _ _ _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_X]`. Conclude with `(isWeightedHomogeneous_X ℂ _ _).pow _`. Establish `hw : a + ∑ k, (d - a k) • blkW ι ⟨k, i k⟩ = fun _ => d`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `k'`. Establish `hle : a k' ≤ d` using `Finset.single_le_sum (fun k _ => Nat.zero_le (a k)) (Finset.mem_univ k')`. Simplify using `only [Pi.add_apply, Finset.sum_apply, Pi.smul_apply, blkW, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hf'def, map_mul, ← hw]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h1.mul h2`. Take `⟨F, -, hF⟩` from `diag_of_homog d hf'h`. Take `⟨n, c, hcn, hrelF⟩` from `exists_monic_rel Ψ P hPh hΨ F`. Establish `hex : ∃ k, c k ≠ 0` using `⟨n, by rw [hcn]; exact one_ne_zero⟩`. Use `set k0 := Nat.find hex with hk0def`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hk0 : c k0 ≠ 0` using `Nat.find_spec hex`. Establish `hlt : ∀ j < k0, c j = 0` using `fun j hj => by`. Assume the negation of the conclusion as `h`. Conclude with `Nat.find_min hex hj h`. Establish `hk0n : k0 ≤ n` using `Nat.find_min' hex (by rw [hcn]; exact one_ne_zero)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set S := (Finset.range (n + 1)).filter (fun j => k0 ≤ j) with hSdef`. Use `set H : MRingOver ℂ ι := ∑ j ∈ S, bind₁ (psiPoly Ψ) (c j) * (map (Int.castRingHom ℂ) f') ^ (j - k0) with hHdef`. Establish `hbind : ∀ (z : (Σ k, ι k) → ℂ) (q : MvPolynomial (Fin (e + 1)) ℂ), eval z (bind₁ (psiPoly Ψ) q) = eval (Ψ (segre z)) q`. Introduce `z q`. Proceed by induction on `q using MvPolynomial.induction_on with`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `C a => simp`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add]`. Consider the case `mul_X p j hp => rw [map_mul, map_mul, hp, bind₁_X_right, eval_psiPoly, map_mul, eval_X]`. Establish `hevalH : ∀ z, eval z H = ∑ j ∈ S, eval (Ψ (segre z)) (c j) * eval (segre z) F ^ (j - k0)`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hHdef, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hbind, hF]`. Establish `hmul : ∀ z ∈ mcPts P, eval z (map (Int.castRingHom ℂ) (f' ^ k0)) * eval z H = 0`. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hevalH, map_pow, map_pow, hF, Finset.mul_sum, ← hrelF z hz]`. Rewrite using `[hSdef, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : k0 ≤ j`. Rewrite using `[if_pos hj]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[show j = k0 + (j - k0) from (Nat.add_sub_cancel' hj).symm]`. Rewrite using `[Nat.add_sub_cancel_left, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hj, hlt j (not_le.mp hj), map_zero, zero_mul]`. Establish `hH` using `eval_eq_zero_of_mul hM hP (u := f' ^ k0) (fun h' => hf'P (hPp.mem_of_pow_mem _ h')) hmul`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set T : Set (Fin (e + 1) → ℂ) := {v | ∃ z ∈ mcPts P, eval z (map (Int.castRingHom ℂ) f) = 0 ∧ Ψ (segre z) = v} with hTdef`. Establish `hcT : ∀ v ∈ T, eval v (c k0) = 0`. Introduce and unpack `_ ⟨z, hz, hfz, rfl⟩`. Establish `h0` using `hH z hz`. Establish `hF0 : eval (segre z) F = 0`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hF, hf'def, map_mul, map_mul, hfz, zero_mul]`. Rewrite `h0` using `[hevalH, hF0]`. Rewrite `h0` using `[Finset.sum_eq_single k0]`. Simplify using `using h0`. Introduce `j hj hjk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: 0 < j - k0`. Use `(Finset.mem_filter.mp hj).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[zero_pow this.ne', mul_zero]`. Introduce `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), le_rfl⟩) h`. Establish `hT : ∀ v ∈ T, ∀ t : ℂ, t ≠ 0 → (fun j => t * v j) ∈ T`. Introduce and unpack `_ ⟨z, hz, hfz, rfl⟩ t ht`. Use `set cc : K → ℂ := Function.update (fun _ => (1 : ℂ)) k1 t with hccdef`. Establish `hcc : ∀ k, cc k ≠ 0`.
-
-Introduce `k`. Distinguish the cases in `hk : k = k1`. Substitute `hk` using the available equality. Simplify using `[hccdef, ht]`. Simplify using `[hccdef, Function.update_of_ne hk]`.
-
-Establish `hpc : ∏ k, cc k = t`. Simplify using `[hccdef, Finset.prod_update_of_mem (Finset.mem_univ k1)]`. Use `⟨fun p => cc p.1 * z p, mcPts_smul hPh cc hcc hz, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eval_smul_homog f a hf cc z, hfz, mul_zero]`. Rewrite using `[segre_smul, map_smul, hpc]`.
-
-Both sides reduce to the same expression. Take `⟨m, hm0, hmh, hmT⟩` from `exists_homog_of_cone hk0 hT hcT`. Conclude with `⟨homogeneousComponent m (c k0), m, hm0, hmh, fun z hz hfz => hmT _ ⟨z, hz, hfz, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem normPoly_of (hM : PCMinContractStatement) : NormPolyStatement := by
   intro K _ ι _ P e Ψ f a hP hΨ hf hfP

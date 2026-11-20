@@ -5,7 +5,7 @@ namespace GlobalTheory.IntegralNeighbourhoodZero
 open IsDedekindDomain NumberField
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.isOpen_forall_mem fun _ => Valued.isOpen_valuationSubring _`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_integral (F : Type) [Field F] [NumberField F] :
     IsOpen {a : FiniteAdeleRing (RingOfIntegers F) F |
@@ -13,11 +13,11 @@ theorem isOpen_integral (F : Type) [Field F] [NumberField F] :
   RestrictedProduct.isOpen_forall_mem fun _ => Valued.isOpen_valuationSubring _
 
 /- English proof (translation)
-Take `⟨m, hm⟩ : ∃ m : FiniteAdeleRing (RingOfIntegers F) F, m = algebraMap F _ ((M : F)⁻¹)` from `⟨_, rfl⟩`. Establish `hMF : (M : F) ≠ 0` using `Nat.cast_ne_zero.2 hM.ne'`. Establish `hmM : (M : FiniteAdeleRing (RingOfIntegers F) F) * m = 1`. Rewrite using `[hm, ← map_natCast (algebraMap F (FiniteAdeleRing (RingOfIntegers F) F)), ← map_mul, mul_inv_cancel₀ hMF, map_one]`. Establish `hopen : IsOpen ((fun c => m * c) ⁻¹' {a : FiniteAdeleRing (RingOfIntegers F) F | ∀ v : HeightOneSpectrum (RingOfIntegers F), a v ∈ v.adicCompletionIntegers F})` using `(isOpen_integral F).preimage (continuous_const.mul continuous_id)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : (0 : FiniteAdeleRing (RingOfIntegers F) F) ∈ (fun c => m * c) ⁻¹' {a : FiniteAdeleRing (RingOfIntegers F) F | ∀ v : HeightOneSpectrum (RingOfIntegers F), a v ∈ v.adicCompletionIntegers F}`. Introduce `v`. Express the relevant statement in the definitionally equal form `(m * 0) v ∈ _`. Rewrite using `[mul_zero]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.mem_of_superset (hopen.mem_nhds h0) ?_` and prove the remaining obligations. Introduce `c hc`. Use `⟨m * c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul, ← mul_assoc, hmM, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_integral_mem_nhds_zero (F : Type) [Field F] [NumberField F] (M : ℕ) (hM : 0 < M) :
     {c : FiniteAdeleRing (RingOfIntegers F) F |

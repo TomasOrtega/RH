@@ -12,9 +12,9 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 variable {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Set `L : (Wp →L[ℂ] Wp) →L[ℂ] ℂ` to `(innerSL ℂ e).comp (ContinuousLinearMap.apply ℂ Wp f)`. Establish `hL : ∀ A : Wp →L[ℂ] Wp, L A = ⟪e, A f⟫_ℂ` using `fun A => by`. Simplify using `[L, innerSL_apply_apply]`. Establish `hLa : ∀ (c : ℂ) (A : Wp →L[ℂ] Wp), L (c • A) = c * ⟪e, A f⟫_ℂ` using `fun c A => by`. Rewrite using `[map_smul, hL, smul_eq_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(L.integrable_comp hI).congr (Filter.Eventually.of_forall fun y => hLa _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[hR, ContinuousLinearMap.smul_apply, inner_smul_right, ← hL, ← L.integral_comp_comm hI]`. Use `congr 1`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun y => hLa _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem repro_scalar (D : RealPlaceData k r Wp Wp) (X : SigData k r) (d : ℝ) {u v : X.Hs} (e f : Wp)
     (hI : Integrable (fun y : Mt k r => ⟪X.σ (Matrix.of y) X.w, u⟫_ℂ •
@@ -36,11 +36,11 @@ theorem repro_scalar (D : RealPlaceData k r Wp Wp) (X : SigData k r) (d : ℝ) {
   exact integral_congr_ae (Filter.Eventually.of_forall fun y => hLa _ _)
 
 /- English proof (translation)
-Take `⟨Cc, hCc0, hCc⟩` from `coef_bound X ha0 hu`. Take `⟨Cb, hCb⟩` from `hbv`. Establish `hm : AEStronglyMeasurable (fun y : Mt k r => ⟪X.σ (Matrix.of y) X.w, u⟫_ℂ • beOp D X (X.σ (Matrix.of y) X.w) v) D.μG` using `(show AEStronglyMeasurable (fun y : Mt k r => ⟪X.σ (Matrix.of y) X.w, u⟫_ℂ) D.μG from (sig_aesm D X X.w).inner aestronglyMeasurable_const).smul (be_aesm D X v)`. Use `((gN_integrable D hGN hab).const_mul (Cc * Cb)).mono' hm ?_` and prove the remaining obligations. Use `filter_upwards [ae_G D] with y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_smul]`. Establish `e : gN (Matrix.of y) ^ (-(X.a - b)) = gN (Matrix.of y) ^ (-X.a) * gN (Matrix.of y) ^ b`. Rewrite using `[← Real.rpow_add (gN_pos hy)]`. Put the polynomial expressions in normal form. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem opint (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hGN : GNIntSharp) (ha0 : 0 ≤ X.a) {b : ℝ}
     (hab : AB k r ≤ X.a - b) {u v : X.Hs} (hu : u ∈ Vfl X)
@@ -66,15 +66,15 @@ theorem opint (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hGN : GNIntSharp)
     _ = _ := by ring
 
 /- English proof (translation)
-Use `vanish_core D X hGN ha0 hd hb0 hab (fun u => Mn D X u u₂ u₃ u₄ e₁ e₂ e₃ e₄) ?_ ?_ ?_ h` and prove the remaining obligations. Set `L₂ : (Wp →L[ℂ] Wp) →L[ℂ] ℂ` to `(innerSL ℂ e₁).comp (ContinuousLinearMap.apply ℂ Wp e₂)`. Set `L₄ : (Wp →L[ℂ] Wp) →L[ℂ] ℂ` to `(innerSL ℂ e₁).comp (ContinuousLinearMap.apply ℂ Wp e₄)`. Establish `m2` using `L₂.continuous.comp_aestronglyMeasurable (be_aesm D X u₂)`. Establish `m4` using `L₄.continuous.comp_aestronglyMeasurable (be_aesm D X u₄)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(m2.mul aestronglyMeasurable_const).sub (m4.mul aestronglyMeasurable_const)`. Take `⟨C₂, h₂⟩` from `hbe u₂ hu₂`. Take `⟨C₄, h₄⟩` from `hbe u₄ hu₄`. Use `⟨‖e₁‖ * ‖e₂‖ * C₂ * ‖⟪e₃, beOp D X u₃ u₄ e₄⟫_ℂ‖ + ‖e₁‖ * ‖e₄‖ * C₄ * ‖⟪e₃, beOp D X u₃ u₂ e₂⟫_ℂ‖, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [Mn]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← norm_mul, ← norm_mul]`. Conclude with `norm_sub_le _ _`. Use `_ ≤ (‖e₁‖ * ‖e₂‖ * (C₂ * gN y ^ b)) * ‖⟪e₃, beOp D X u₃ u₄ e₄⟫_ℂ‖ + (‖e₁‖ * ‖e₄‖ * (C₄ * gN y ^ b)) * ‖⟪e₃, beOp D X u₃ u₂ e₂⟫_ℂ‖ := add_le_add (mul_le_mul_of_nonneg_right ((kbound _ _ _).trans (mul_le_mul_of_nonneg_left (h₂ y hy) (by positivity))) (norm_nonneg _)) (mul_le_mul_of …`. Use `_ = _ := by ring`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `u hu`. Take `⟨i2, r2⟩` from `repro_scalar D X d e₁ e₂ (opint D X hGN ha0 hab hu (hbe u₂ hu₂)) (hRep u hu u₂ hu₂)`. Take `⟨i4, r4⟩` from `repro_scalar D X d e₁ e₄ (opint D X hGN ha0 hab hu (hbe u₄ hu₄)) (hRep u hu u₄ hu₄)`. Establish `e5 : ∀ y : Mt k r, ⟪X.σ (Matrix.of y) X.w, u⟫_ℂ * Mn D X (X.σ (Matrix.of y) X.w) u₂ u₃ u₄ e₁ e₂ e₃ e₄ = (⟪X.σ (Matrix.of y) X.w, u⟫_ℂ * ⟪e₁, beOp D X (X.σ (Matrix.of y) X.w) u₂ e₂⟫_ℂ) * ⟪e₃, beOp D X u₃ u₄ e₄⟫_ℂ - (⟪X.σ (Matrix.of y) X.w, u⟫_ℂ * ⟪e₁, beOp D X (X.σ (Matrix.of y) X …` using `fun y => by simp only [Mn]; ring`. Use `show Mn D X u u₂ u₃ u₄ e₁ e₂ e₃ e₄ = (d : ℂ) * ∫ y : Mt k r, ⟪X.σ (Matrix.of y) X.w, u⟫_ℂ * Mn D X (X.σ (Matrix.of y) X.w) u₂ u₃ u₄ e₁ e₂ e₃ e₄ ∂D.μG`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [e5]`. Rewrite using `[integral_sub (i2.mul_const _) (i4.mul_const _), integral_mul_const, integral_mul_const]`. Simplify using `only [Mn]`. Rewrite using `[r2, r4]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem ext1 (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hGN : GNIntSharp) (ha0 : 0 ≤ X.a) {d b : ℝ}
     (hd : 0 < d) (hb0 : 0 ≤ b) (hab : AB k r ≤ X.a - b)
@@ -126,16 +126,16 @@ theorem ext1 (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hGN : GNIntSharp) 
     ring
 
 /- English proof (translation)
-Unfold `Mn`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mn_swap (D : RealPlaceData k r Wp Wp) (X : SigData k r) (u₁ u₂ u₃ u₄ : X.Hs) (e₁ e₂ e₃ e₄ : Wp) :
     Mn D X u₃ u₂ u₁ u₄ e₃ e₂ e₁ e₄ = -Mn D X u₁ u₂ u₃ u₄ e₁ e₂ e₃ e₄ := by
   unfold Mn; ring
 
 /- English proof (translation)
-Establish `kc : ∀ u ∈ Vfl X, ∀ v ∈ Vfl X, ∀ e f : Wp, ⟪f, beOp D X v u e⟫_ℂ = starRingEnd ℂ ⟪e, beOp D X u v f⟫_ℂ`. Introduce `u hu v hv e f`. Rewrite using `[hH v hv u hu e f, inner_conj_symm]`. Unfold `Mn`. Rewrite using `[kc u₁ h₁ u₂ h₂ e₁ e₂, kc u₃ h₃ u₄ h₄ e₃ e₄, kc u₃ h₃ u₂ h₂ e₃ e₂, kc u₁ h₁ u₄ h₄ e₁ e₄]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mn_herm (D : RealPlaceData k r Wp Wp) (X : SigData k r)
     (hH : ∀ u ∈ Vfl X, ∀ u' ∈ Vfl X, ∀ η ξ : Wp, ⟪ξ, beOp D X u u' η⟫_ℂ = ⟪beOp D X u' u ξ, η⟫_ℂ)
@@ -152,17 +152,13 @@ theorem mn_herm (D : RealPlaceData k r Wp Wp) (X : SigData k r)
   ring
 
 /- English proof (translation)
-Establish `hDV : ∀ u ∈ DDinf D X, u ∈ Vfl X`. Introduce and unpack `u ⟨φ, hφ, rfl⟩`. Conclude with `dd_mem D X ha0 hφ`. Establish `hT : ∀ φ : Mat k r → ℂ, IsTestG φ → sigInt D X φ X.w ∈ DDinf D X` using `fun φ hφ => ⟨φ, hφ, rfl⟩`. Establish `S1 : ∀ u₁ ∈ Vfl X, ∀ u₂ ∈ DDinf D X, ∀ u₃ ∈ DDinf D X, ∀ u₄ ∈ DDinf D X, ∀ e₁ e₂ e₃ e₄ : Wp, Mn D X u₁ u₂ u₃ u₄ e₁ e₂ e₃ e₄ = 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u₁ hu₁ u₂ hu₂ u₃ hu₃ u₄ hu₄ e₁ e₂ e₃ e₄`. Conclude with `ext1 D X hGN ha0 hd hb0 hab hbe hRep (hDV _ hu₂) (hDV _ hu₄) u₃ e₁ e₂ e₃ e₄ (fun φ hφ => hDD _ (hT φ hφ) _ hu₂ _ hu₃ _ hu₄ e₁ e₂ e₃ e₄) u₁ hu₁`. Establish `S2 : ∀ u₁ ∈ Vfl X, ∀ u₂ ∈ DDinf D X, ∀ u₃ ∈ Vfl X, ∀ u₄ ∈ DDinf D X, ∀ e₁ e₂ e₃ e₄ : Wp, Mn D X u₁ u₂ u₃ u₄ e₁ e₂ e₃ e₄ = 0`. Introduce `u₁ hu₁ u₂ hu₂ u₃ hu₃ u₄ hu₄ e₁ e₂ e₃ e₄`. Rewrite using `[← neg_eq_zero, ← mn_swap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ext1 D X hGN ha0 hd hb0 hab hbe hRep (hDV _ hu₂) (hDV _ hu₄) u₁ e₃ e₂ e₁ e₄ (fun φ hφ => by`. Rewrite using `[← neg_eq_zero, ← mn_swap]`. Conclude with `S1 u₁ hu₁ _ hu₂ _ (hT φ hφ) _ hu₄ e₁ e₂ e₃ e₄) u₃ hu₃`. Establish `S3 : ∀ u₁ ∈ DDinf D X, ∀ u₂ ∈ Vfl X, ∀ u₃ ∈ DDinf D X, ∀ u₄ ∈ Vfl X, ∀ e₁ e₂ e₃ e₄ : Wp, Mn D X u₁ u₂ u₃ u₄ e₁ e₂ e₃ e₄ = 0`. Introduce `u₁ hu₁ u₂ hu₂ u₃ hu₃ u₄ hu₄ e₁ e₂ e₃ e₄`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mn_herm D X hH hu₂ (hDV _ hu₁) hu₄ (hDV _ hu₃) e₂ e₁ e₄ e₃, S2 u₂ hu₂ u₁ hu₁ u₄ hu₄ u₃ hu₃ e₂ e₁ e₄ e₃, map_zero]`. Establish `S4 : ∀ u₁ ∈ Vfl X, ∀ u₂ ∈ Vfl X, ∀ u₃ ∈ DDinf D X, ∀ u₄ ∈ Vfl X, ∀ e₁ e₂ e₃ e₄ : Wp, Mn D X u₁ u₂ u₃ u₄ e₁ e₂ e₃ e₄ = 0`. Introduce `u₁ hu₁ u₂ hu₂ u₃ hu₃ u₄ hu₄ e₁ e₂ e₃ e₄`. Conclude with `ext1 D X hGN ha0 hd hb0 hab hbe hRep hu₂ hu₄ u₃ e₁ e₂ e₃ e₄ (fun φ hφ => S3 _ (hT φ hφ) _ hu₂ _ hu₃ _ hu₄ e₁ e₂ e₃ e₄) u₁ hu₁`. Introduce `u₁ hu₁ u₂ hu₂ u₃ hu₃ u₄ hu₄ e₁ e₂ e₃ e₄`.
-
-Establish `: Mn D X u₁ u₂ u₃ u₄ e₁ e₂ e₃ e₄ = 0`. Rewrite using `[← neg_eq_zero, ← mn_swap]`. Conclude with `ext1 D X hGN ha0 hd hb0 hab hbe hRep hu₂ hu₄ u₁ e₃ e₂ e₁ e₄ (fun φ hφ => by`. Rewrite using `[← neg_eq_zero, ← mn_swap]`. Conclude with `S4 u₁ hu₁ u₂ hu₂ _ (hT φ hφ) u₄ hu₄ e₁ e₂ e₃ e₄) u₃ hu₃`.
-
-Conclude with `sub_eq_zero.1 this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minorsOn_of_DD (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hGN : GNIntSharp) (ha0 : 0 ≤ X.a)
     {d b : ℝ} (hd : 0 < d) (hb0 : 0 ≤ b) (hab : AB k r ≤ X.a - b)

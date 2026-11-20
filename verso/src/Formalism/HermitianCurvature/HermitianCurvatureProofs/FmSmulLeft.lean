@@ -23,7 +23,7 @@ instance : Module ℂ P.Sp := inferInstanceAs (Module ℂ (α →₀ ℂ))
 def fm (f g : α →₀ ℂ) : ℂ := f.sum fun x a => conj a * g.sum fun y b => P.K x y * b
 
 /- English proof (translation)
-Establish `h` using `(P.psd {x, y}).1`. Establish `hx : x ∈ ({x, y} : Finset α)` using `by simp`. Establish `hy : y ∈ ({x, y} : Finset α)` using `by simp`. Use `congrFun (congrFun h ⟨x, hx⟩) ⟨y, hy⟩` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_apply, Matrix.of_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem herm (x y : α) : conj (P.K y x) = P.K x y := by
   classical
@@ -34,21 +34,21 @@ theorem herm (x y : α) : conj (P.K y x) = P.K x y := by
   simpa [Matrix.conjTranspose_apply, Matrix.of_apply] using this
 
 /- English proof (translation)
-The claim follows from `Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by ring)`.
+A detailed English derivation is pending.
 -/
 theorem fm_inner_add (x : α) (g₁ g₂ : α →₀ ℂ) :
     ((g₁ + g₂).sum fun y b => P.K x y * b) = (g₁.sum fun y b => P.K x y * b) + g₂.sum fun y b => P.K x y * b :=
   Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by ring)
 
 /- English proof (translation)
-Unfold `fm`. Conclude with `Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by simp [map_add]; ring)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fm_add_left (f₁ f₂ g : α →₀ ℂ) : P.fm (f₁ + f₂) g = P.fm f₁ g + P.fm f₂ g := by
   unfold fm
   exact Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by simp [map_add]; ring)
 
 /- English proof (translation)
-Unfold `fm`. Rewrite using `[Finsupp.sum_smul_index' (fun _ => by simp), Finsupp.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fm_smul_left (f g : α →₀ ℂ) (r : ℂ) : P.fm (r • f) g = conj r * P.fm f g := by
   unfold fm
@@ -57,7 +57,7 @@ theorem fm_smul_left (f g : α →₀ ℂ) (r : ℂ) : P.fm (r • f) g = conj r
   simp only [smul_eq_mul, map_mul]; ring
 
 /- English proof (translation)
-Unfold `fm`. Simplify using `only [Finsupp.sum, map_sum, map_mul, Complex.conj_conj, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[P.herm y x]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -69,11 +69,11 @@ theorem fm_conj (f g : α →₀ ℂ) : conj (P.fm g f) = P.fm f g := by
   rw [P.herm y x]; ring
 
 /- English proof (translation)
-Establish `h` using `(Matrix.posSemidef_iff_dotProduct_mulVec.1 (P.psd f.support)).2 (fun i => f i)`. Establish `e : dotProduct (star (fun i : f.support => f i)) (Matrix.mulVec (Matrix.of fun x y : f.support => P.K x y) (fun i => f i)) = P.fm f f`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.of_apply, Pi.star_apply]`. Unfold `fm`. Simplify using `only [Finsupp.sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_coe_sort f.support (fun x => (starRingEnd ℂ) (f x) * ∑ y ∈ f.support, P.K x y * f y)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_coe_sort f.support (fun y => P.K (↑i) y * f y)]`. Simplify using `only [Complex.star_def]`. Rewrite `h` using `[e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Complex.nonneg_iff.1 h).1`.
+A detailed English derivation is pending.
 -/
 theorem fm_nonneg (f : α →₀ ℂ) : 0 ≤ (P.fm f f).re := by
   classical
@@ -105,7 +105,7 @@ abbrev H : Type := UniformSpace.Completion P.Sp
 def vec (x : α) : P.H := UniformSpace.Completion.coe' (show P.Sp from Finsupp.single x (1 : ℂ))
 
 /- English proof (translation)
-Unfold `vec`. Use `(UniformSpace.Completion.inner_coe (𝕜 := ℂ) _ _).trans ?_` and prove the remaining obligations. Use `show P.fm (Finsupp.single x 1) (Finsupp.single y 1) = P.K x y`. Unfold `fm`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inner_vec (x y : α) : ⟪P.vec x, P.vec y⟫_ℂ = P.K x y := by
   unfold vec
@@ -117,7 +117,7 @@ theorem inner_vec (x y : α) : ⟪P.vec x, P.vec y⟫_ℂ = P.K x y := by
 end PKer
 
 /- English proof (translation)
-The claim follows from `let P : PKer α := ⟨K, hK⟩ ⟨P.H, inferInstance, inferInstance, inferInstance, P.vec, fun x y => (P.inner_vec x y).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem kolmogorov {α : Type} (K : α → α → ℂ) (hK : ∀ Y : Finset α, Formalism.FourierDecayAlt.TB.PSDOn Y K) :
     ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H) (_ : CompleteSpace H) (V : α → H),

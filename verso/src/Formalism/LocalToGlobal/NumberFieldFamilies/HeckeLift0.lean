@@ -38,7 +38,7 @@ def hLC (j : ℕ) (w : what₂.places.Pl) (v : HeightOneSpectrum (𝓞 H.E)) (k 
   if h : (1 ≤ j ∧ j ≤ R.m) ∧ GenAt0 H (what₂.places.resChar w) (Qw w) v k then (hR j w v k h.1.1 h.1.2 h.2).choose else 0
 
 /- English proof (translation)
-Establish `h : (1 ≤ j ∧ j ≤ R.m) ∧ GenAt0 H (what₂.places.resChar w) (Qw w) v k` using `⟨⟨h1, h2⟩, hg⟩`. Unfold `hLC`. Rewrite using `[dif_pos h]`. Conclude with `(hR j w v k h.1.1 h.1.2 h.2).choose_spec s ϖ hc hu x`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hLC_spec (j : ℕ) (w : what₂.places.Pl) (v : HeightOneSpectrum (𝓞 H.E)) (k : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ R.m)
     (hg : GenAt0 H (what₂.places.resChar w) (Qw w) v k) (s : SplitPlace H.E)
@@ -58,7 +58,7 @@ def hKC (j : ℕ) (w : what₂.places.Pl) (v : HeightOneSpectrum (𝓞 H.E)) (k 
   (hLC M Qw hR j w v k).baseChange (FractionRing (OcC X j w))
 
 /- English proof (translation)
-The claim follows from `LinearMap.baseChange_tmul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem hKC_def (j : ℕ) (w : what₂.places.Pl) (v : HeightOneSpectrum (𝓞 H.E)) (k : ℕ) (x : what₂.MtL (what₂.muTw w) j) :
     hKC M Qw hR X j w v k (iVC X j w x) = iVC X j w (hLC M Qw hR j w v k x) :=

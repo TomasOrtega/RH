@@ -98,15 +98,13 @@ def CongBoundF {eps : ℝ} (Fm : FamP eps) : Prop :=
 def CongBound (𝒞 : FamClass) : Prop := Closed 𝒞 (fun Fm _ => CongBoundF Fm)
 
 /- English proof (translation)
-Establish `hl : P ∉ placesOver D.host.E (D.nd.l i)` using `D.nd.SQ_l i P (Or.inr hP)`. Establish `hS : P ∉ D.nd.S i` using `fun h => Finset.disjoint_left.1 (D.nd.SQ_disj i) h hP`. Rewrite `hS` using `[D.nd.S_def]`. Establish `h1 : D.ntw.chi1 (D.ntw.twOf i) (D.nd.j i) (D.ntw.twSide i) (D.nd.gam0 i P) = 1`. Use `D.ntw.twistCharacterFamily_unramified _ _ _ P ?_ ?_ ?_ (D.nd.plOm.1 P) (D.nd.plOm.2 P) _ (D.nd.locNd_chebotarevPlace_mem i P)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[D.ntw.twOf_l]`. Conclude with `hl`. Introduce `k hk`. Apply `hS` to reduce the goal to its premises. Use `⟨?_, hl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Prove the first alternative.
 
-Use `fin_cases k`. Conclude with `Or.inl hk`. Conclude with `Or.inr (Or.inl hk)`. Introduce `h`. Apply `hS` to reduce the goal to its premises.
+Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h' : P ∈ (D.ntw.pD (D.ntw.twOf i) : Set _)` using `h`. Rewrite `h'` using `[D.ntw.pD_eq, D.ntw.twOf_l]`. Conclude with `⟨Or.inr (Or.inr h'), hl⟩`. Unfold `zetaP NData.zeta`. Rewrite using `[D.ntw.chi_tw]`.
-
-Simplify using `[h1]`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zetaP_eq (D : D7) (i : D.nd.Loc) (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : P ∈ D.nd.Q i) :
     zetaP D i P = D.nd.zeta i P := by
@@ -132,9 +130,9 @@ theorem zetaP_eq (D : D7) (i : D.nd.Loc) (P : HeightOneSpectrum (𝓞 D.host.E))
   simp [h1]
 
 /- English proof (translation)
-Establish `hm : (0 : ℝ) < D.R.m` using `by have := D.R.two_le_m; exact_mod_cast (by omega : 0 < D.R.m)`. Establish `hk : (0 : ℝ) < D.R.k`. Use `D.R.m_add_three_le_k; exact_mod_cast (by omega : 0 < D.R.k)` as an intermediate fact. Establish `hn : (0 : ℝ) < D.R.n` using `by unfold Ranks.n; positivity`. Establish `hx : 0 < L.sc.x` using `by have := L.sc.one_lt_alt; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : 0 < L.sc.L` using `by unfold Scale.L; positivity`. Establish `hb : 0 < L.sc.b` using `Real.exp_pos _`. Establish `hS` using `L.Sc_pos`. Unfold `LevelStarExponents.lStar`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem lStar_pos {D : D7} (L : SizeData₂ D) : 0 < LevelStarExponents.lStar L := by
   have hm : (0 : ℝ) < D.R.m := by have := D.R.two_le_m; exact_mod_cast (by omega : 0 < D.R.m)
@@ -149,17 +147,15 @@ theorem lStar_pos {D : D7} (L : SizeData₂ D) : 0 < LevelStarExponents.lStar L 
   positivity
 
 /- English proof (translation)
-Establish `hp : (D.nd.l i).Prime` using `(D.nd.lPrime i).out`. Establish `h0 : (D.nd.l i : D.nd.O i) ≠ 0`. Introduce `h`. Establish `h1 : (D.nd.embK i) ((D.nd.l i : ℕ) : D.what₂.LL) = 0`. Rewrite using `[map_natCast, ← map_natCast (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))), h, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((D.nd.l i : ℕ) : D.what₂.LL) = 0` using `(map_eq_zero _).1 h1`. Conclude with `hp.ne_zero (by exact_mod_cast h2)`. Establish `hu : ¬ IsUnit (D.nd.l i : D.nd.O i)`. Introduce `hu`. Establish `hinj : Function.Injective (algebraMap ℤ_[D.nd.l i] (D.nd.O i))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Assume the negation of the conclusion as `hz0`. Rewrite `hz` using `[PadicInt.unitCoeff_spec hz0, map_mul, map_pow, map_natCast]`. Break down `mul_eq_zero.1 hz with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `((PadicInt.unitCoeff hz0).isUnit.map _).ne_zero h`. Conclude with `h0 (pow_eq_zero_iff'.1 h).1`. Use `haveI : FaithfulSMul ℤ_[D.nd.l i] (D.nd.O i) := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Establish `: IsUnit ((D.nd.l i : ℕ) : ℤ_[D.nd.l i])` using `IsLocalHom.map_nonunit (f := algebraMap ℤ_[D.nd.l i] (D.nd.O i)) _ (by rw [map_natCast]; exact hu)`. Conclude with `PadicInt.irreducible_p.not_isUnit this`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `vO nlen`. Apply `ENNReal.div_self` to reduce the goal to its premises. Use `haveI : Nontrivial (D.nd.O i ⧸ Ideal.span {(D.nd.l i : D.nd.O i)}) := Ideal.Quotient.nontrivial_iff.2 (by rwa [Ne, Ideal.span_singleton_eq_top])`. Simplify using `using (Module.length_pos (R := D.nd.O i)).ne'`. Establish `hf : IsFiniteLength (D.nd.O i) (D.nd.O i ⧸ Ideal.span {(D.nd.l i : D.nd.O i)})` using `isFiniteLength_quotient_span_singleton (D.nd.O i) (mem_nonZeroDivisors_of_ne_zero h0)`.
-
-Simplify using `using Module.length_ne_top_iff.2 hf`.
+A detailed English derivation is pending.
 -/
 theorem vO_l (D : D7) (i : D.nd.Loc) : vO (D.nd.O i) (D.nd.l i) (D.nd.l i : D.nd.O i) = 1 := by
   have hp : (D.nd.l i).Prime := (D.nd.lPrime i).out

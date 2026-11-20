@@ -16,9 +16,9 @@ namespace GlobalTheory.Mem.LiftGen
 open GlobalTheory.RealWeil
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun t => Φ (u t)) (Φ A) 0` using `(Φ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hu`. Establish `h2 : HasDerivAt (fun t => Φ (v t)) (Φ G) 0` using `(Φ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hv`. Use `h2.unique ?_` and prove the remaining obligations. Rewrite `h1`, the goal using `[hasDerivAt_iff_isLittleO]`. Rewrite `h1`, the goal using `[← Asymptotics.isLittleO_norm_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `h1.congr_left fun t => ?_` and prove the remaining obligations. Use `hn t` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, map_sub, map_sub, map_smul, map_smul, Complex.coe_smul, Complex.coe_smul]`. Simplify using `only [sub_zero]`. Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deriv_eq_of_norm {B H : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] [NormedAddCommGroup H] [NormedSpace ℂ H]
     (Φ : B →L[ℂ] H) {u v : ℝ → B} {A G A' : B} (hu : HasDerivAt u A 0) (hv : HasDerivAt v G 0)
@@ -39,15 +39,15 @@ theorem deriv_eq_of_norm {B H : Type} [NormedAddCommGroup B] [NormedSpace ℂ B]
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `i6 : BorelSpace (WO S T)` using `⟨rfl⟩`. Take `⟨μ, 𝓕, hμ, h𝓕, h1⟩` from `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (WO S T) (ratL T S) K hK hKc).1`. Establish `: IsFiniteMeasure (μ.restrict 𝓕)` using `⟨by rw [Measure.restrict_apply_univ, h1]; exact ENNReal.one_lt_top⟩`. Set `A' : BB ψ S T` to `toB hψ _ (hW.om_pres p _ hA)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hA' : (A'.1 : WO S T → ℂ) = om p A.1` using `coe_toB _ _ _`. Establish `hk : ∀ a b : BB ψ S T, IsThetaFunO ψ S T b.1 → (a.1 : WO S T → ℂ) = om p b.1 → ‖toL2 _ _ (μ.restrict 𝓕) a‖ = ‖toL2 _ _ (μ.restrict 𝓕) b‖`. Introduce `a b hb hab`. Rewrite using `[← enorm_sq_inj, ← lintegral_norm_sq_eq_toL2, ← lintegral_norm_sq_eq_toL2, hab]`. Conclude with `hW.om_unit μ 𝓕 hμ h𝓕 p _ hb`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : toL2 _ _ (μ.restrict 𝓕) G = toL2 _ _ (μ.restrict 𝓕) A'`. Use `deriv_eq_of_norm _ hu hv fun t => ?_` and prove the remaining obligations. Establish `e1 : ((u t - u 0 - (t : ℂ) • A).1 : WO S T → ℂ) = ((u t).1 : WO S T → ℂ) - ((u 0).1 : WO S T → ℂ) - (t : ℂ) • (A.1 : WO S T → ℂ)` using `rfl`. Establish `e2 : ((v t - v 0 - (t : ℂ) • A').1 : WO S T → ℂ) = om p (u t - u 0 - (t : ℂ) • A).1`. Rewrite using `[e1, map_sub, map_sub, map_smul, ← e, ← e, ← hA']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h3 : IsThetaFunO ψ S T (u t - u 0 - (t : ℂ) • A).1`. Rewrite using `[e1]`. Conclude with `(thetaSub ψ S T).sub_mem ((thetaSub ψ S T).sub_mem (hut t) (hut 0)) ((thetaSub ψ S T).smul_mem _ hA)`. Conclude with `hk _ _ h3 e2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `lintegral_norm_sq_eq_toL2 (μ.restrict 𝓕) (G - A')`. Rewrite `h4` using `[map_sub, key, sub_self, enorm_zero, zero_pow two_ne_zero, lintegral_eq_zero_iff ((G - A').1.continuous.measurable.enorm.pow_const 2)]`. Establish `h5` using `GlobalTheory.WeilVacMove.eq_zero_of_ae_fundamentalDomain (ratL T S) μ 𝓕 h𝓕 _ (G - A').1.continuous (BB_norm_periodic hψ _) (by filter_upwards [h4] with x hx; simpa using hx)`. Rewrite using `[← hA']`. Conclude with `sub_eq_zero.1 h5`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deriv_om (hψ : IsStdChar D ψ (-1)) {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (hW : GlobalTheory.Ker.IsWeak ψ S T om) (p : GA D S × GA D T) {u v : ℝ → BB ψ S T} {A G : BB ψ S T}
@@ -85,15 +85,15 @@ theorem deriv_om (hψ : IsStdChar D ψ (-1)) {om : GA D S × GA D T →* Module.
   exact sub_eq_zero.1 h5
 
 /- English proof (translation)
-Introduce `D θ σ h ψ hψ S T om hW hc γ hγ hadd hinf X hX`. Take `⟨lam, hlam⟩` from `GlobalTheory.T.exists_weilRep_generator_realOneParameter_supNorm D θ σ h ψ hψ S T om hW hc γ hγ hadd hinf X hX`. Take `⟨x, d, -, hxd⟩` from `GlobalTheory.T.exists_ccr_operators_thetaFunctions D θ σ h ψ hψ S T`. Use `⟨lam, fun F hF p w => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hud⟩` from `hlam F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hA : IsThetaFunO ψ S T (nOp (rhoV hψ σ S T) (HM S T) X F + lam • F).1`. Establish `h1` using `((∑ k, ∑ l, X k l • (x k * d l)) ⟨F.1, hF⟩).2`. Rewrite `h1` using `[hxd X ⟨F.1, hF⟩ F rfl]`. Conclude with `(thetaSub ψ S T).add_mem h1 ((thetaSub ψ S T).smul_mem lam hF)`. Establish `: IsTopologicalGroup (GA D S)` using `(GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S).2.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsTopologicalGroup (GA D T)` using `(GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D T).2.2.2.2.1`. Establish `hn : ∀ V : HSp D, (GinfC V).Normal` using `fun V => MonoidHom.normal_ker _`. Take `⟨lam', hlam'⟩` from `GlobalTheory.T.exists_weilRep_generator_realOneParameter_supNorm D θ σ h ψ hψ S T om hW hc (fun t => p * γ t * p⁻¹) ((continuous_const.mul hγ).mul continuous_const) (fun s t => by rw [hadd]; group) (fun t => ⟨(hn S).conj_mem _ (hinf t).1 p.1, (hn T).conj_mem _ (hinf t).2 p.2⟩) (m …`. Simplify using `only [map_mul, Matrix.mul_apply]`. Conclude with `HasDerivAt.fun_sum fun j _ => (HasDerivAt.fun_sum fun i _ => (hX i j).const_mul _).mul_const _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, hv, hvd⟩` from `hlam' (toB hψ _ (hW.om_pres p _ hF)) (by rw [coe_toB]; exact hW.om_pres p _ hF)`. Establish `e : ∀ t, ((v t).1 : WO S T → ℂ) = om (p * γ t) F.1` using `fun t => by`. Rewrite using `[hv, coe_toB, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]`. Establish `key` using `deriv_om hψ hW p hud hvd (fun t => by rw [hu]; exact hW.om_pres _ _ hF) hA (fun t => by rw [e, hu, map_mul, Module.End.mul_apply])`. Rewrite using `[← key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `((ev _ _ w).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hvd`. Use `h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Conclude with `(congrFun (e t) w).symm`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_om : ∀ (D : D7) (θ : InfF D) (σ : (D.what₂.Tau → ℂ) →+ AE D), GlobalTheory.FockCompare.Chart θ σ → ∀ (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), GlobalTheory.Ker.IsWeak ψ S T om → OmCont ψ S T om → ∀ γ : ℝ → GA D S × GA D T, Continuous γ → (∀ s t, γ (s + t) = γ s * γ t) → (∀ t, (γ t).1 ∈ GinfC S ∧ (γ t).2 ∈ GinfC T) → ∀ X : Matrix (GlobalTheory.RealWeil.Ix S T) (GlobalTheory.RealWeil.Ix S T) ℂ, (∀ k l, HasDerivAt (fun t => GlobalTheory.RealWeil.mM θ S T (γ t) k l) (X k l) 0) → ∃ lam : ℂ, ∀ F : GlobalTheory.RealWeil.BB ψ S T, IsThetaFunO ψ S T F.1 → ∀ p w, HasDerivAt (fun t => om (p * γ t) F.1 w) (om p (nOp (GlobalTheory.RealWeil.rhoV hψ σ S T) (GlobalTheory.RealWeil.HM S T) X F + lam • F).1 w) 0 := by
   intro D θ σ h ψ hψ S T om hW hc γ hγ hadd hinf X hX

@@ -11,7 +11,7 @@ open scoped ContDiff
 namespace GlobalTheory.ThK.DiagDeriv
 
 /- English proof (translation)
-The claim follows from `| 0, i, _ => i.elim0 | k + 1, i, x => by rw [List.ofFn_succ, List.prod_cons] refine Fin.cases ?_ (fun i' => ?_) i · simp [Fin.succ_ne_zero] · have := prod_ofFn_ite i' x simp only [Fin.succ_inj, (Fin.succ_ne_zero i').symm, if_false, one_mul] exact this`.
+A detailed English derivation is pending.
 -/
 theorem prod_ofFn_ite {M : Type*} [Monoid M] : ∀ {k : ℕ} (i : Fin k) (x : M),
     (List.ofFn fun j => if j = i then x else 1).prod = x
@@ -25,19 +25,19 @@ theorem prod_ofFn_ite {M : Type*} [Monoid M] : ∀ {k : ℕ} (i : Fin k) (x : M)
       exact this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n J k δ hδ f hf g`. Use `set Φ : (Fin k → ℝ) → ℂ := fun t => f (g * (List.ofFn fun i => δ i (t i)).prod) with hΦdef`. Establish `hΦ : ContDiff ℝ ∞ Φ` using `hf k δ hδ g`. Establish `hd : HasFDerivAt Φ (fderiv ℝ Φ 0) 0` using `(hΦ.differentiable (by simp)).differentiableAt.hasFDerivAt`. Establish `h1 : ∀ j, δ j 0 = 1` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `isRealLine_add F E σ hCM n J (δ j) (hδ j) 0 0`. Rewrite `e` using `[add_zero]`. Conclude with `(mul_left_cancel (a := δ j 0) (e.symm.trans (mul_one _).symm))`. Establish `hsingle : ∀ i, (fun s : ℝ => f (g * δ i s)) = fun s => Φ (Pi.single i s)` using `fun i => funext fun s => by`. Simplify using `only [hΦdef]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[← prod_ofFn_ite (M := GAd σ J) i (δ i s)]`. Use `congr 1`. Use `List.ofFn_inj.2 (funext fun j => ?_)` and prove the remaining obligations. Distinguish the cases in `h : j = i`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h, h1]`. Establish `hpart : ∀ i, fderiv ℝ Φ 0 (Pi.single i 1) = lineDer (δ i) f g` using `fun i => by`. Establish `hs : HasDerivAt (fun s : ℝ => (Pi.single i s : Fin k → ℝ)) (Pi.single i 1) 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `hasDerivAt_pi.2 fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using hasDerivAt_id' (0 : ℝ)`. Simplify `hasDerivAt_const (0 : ℝ) (0 : ℝ)` using `[Pi.single_apply, h]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `HasFDerivAt.comp_hasDerivAt_of_eq (x := (0 : ℝ)) hd hs (by simp)` as an intermediate fact. Simplify using `only [lineDer]`. Rewrite using `[hsingle i]`. Conclude with `this.deriv.symm`. Establish `hc : HasDerivAt (fun t : ℝ => (fun _ : Fin k => t)) (fun _ => (1 : ℝ)) 0` using `hasDerivAt_pi.2 fun _ => hasDerivAt_id 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `HasFDerivAt.comp_hasDerivAt_of_eq (x := (0 : ℝ)) hd hc rfl` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[show (fun _ : Fin k => (1 : ℝ)) = ∑ i, Pi.single i 1 from (Finset.univ_sum_single _).symm, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hpart i`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_prod_ofFn : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (k : ℕ) (δ : Fin k → ℝ → GAd σ J), (∀ i, IsRealLine σ J (δ i)) →

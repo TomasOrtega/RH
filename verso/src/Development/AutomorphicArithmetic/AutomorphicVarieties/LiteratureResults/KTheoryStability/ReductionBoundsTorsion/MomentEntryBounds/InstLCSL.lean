@@ -26,19 +26,19 @@ instance instSCSL (N : ℕ) : SecondCountableTopology (SpecialLinearGroup (Fin N
 variable (L : Type) [Field L] [NumberField L] (N : ℕ)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : LocallyCompactSpace (Sp L N) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : SecondCountableTopology (Sp L N) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsTopologicalGroup (Sp L N) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : T2Space (Sp L N) := inferInstance
 

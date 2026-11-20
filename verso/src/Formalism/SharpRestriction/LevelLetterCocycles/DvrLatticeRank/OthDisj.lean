@@ -22,15 +22,13 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (ρ : Representation LL G V)
 
 /- English proof (translation)
-Take `⟨α, hα⟩` from `Field.exists_primitive_element Qp K`. Establish `hint : IsIntegral Qp α` using `IsIntegral.of_finite Qp α`. Establish `hadj : Algebra.adjoin Qp {α} = ⊤`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic, hα, IntermediateField.top_toSubalgebra]`. Establish `hinj : Function.Injective (fun τ : K →ₐ[Qp] LL => τ α)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `τ₁ τ₂ h`. Establish `hle` using `AlgHom.adjoin_le_equalizer τ₁ τ₂ (s := {α}) (by`. Introduce `y hy`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `h)`. Rewrite `hle` using `[hadj]`. Conclude with `AlgHom.ext fun y => hle (Algebra.mem_top (x := y))`. Use `set f : Module.End LL (V ⊗[Qp] BdR) := mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) α`. Establish `hE : ∀ τ' : K →ₐ[Qp] LL, DdRE PD ρ τ' ≤ f.eigenspace (τ' α)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `τ' x hx`. Rewrite using `[Module.End.mem_eigenspace_iff]`. Establish `h` using `(Submodule.mem_iInf _).1 (Submodule.mem_inf.1 hx).2 α`. Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Conclude with `h`.
-
-Establish `hind` using `Module.End.eigenspaces_iSupIndep f (τ α)`. Use `Disjoint.mono (hE τ) ?_ hind` and prove the remaining obligations. Use `iSup₂_le fun τ' hτ' => ?_` and prove the remaining obligations. Conclude with `le_trans (hE τ') (le_iSup₂_of_le (τ' α) (fun h => hτ' (hinj h)) le_rfl)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem oth_disj [CharZero Qp] [FiniteDimensional Qp K] (τ : K →ₐ[Qp] LL) :
     Disjoint (DdRE PD ρ τ) (⨆ (τ' : K →ₐ[Qp] LL) (_ : τ' ≠ τ), DdRE PD ρ τ') := by
@@ -76,15 +74,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop}
 
 /- English proof (translation)
-Take `⟨hi, hhi⟩` from `fr_fildR_hi PD T.ρ τ`. Take `⟨lo, hlo⟩` from `fr_fildR_lo PD T.ρ τ`. Establish `key : ∀ d : ℕ, FildR PD T.ρ τ (hi - d) ≤ Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c ⊔ ⨆ (τ' : K →ₐ[Qp] LL) (_ : τ' ≠ τ), DdRE PD T.ρ τ'`. Introduce `d`. Proceed by induction on `d with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Rewrite using `[Nat.cast_zero, sub_zero, hhi hi le_rfl]`. Conclude with `bot_le`. Consider the case `succ d ih`. Introduce `w hw`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : -(-(hi - ((d + 1 : ℕ) : ℤ))) = hi - ((d + 1 : ℕ) : ℤ)` using `neg_neg _`. Take `⟨x, a, -, -, hx⟩` from `(hp4.2 c ζ τ hPt).2.2 (-(hi - ((d + 1 : ℕ) : ℤ))) w (by rwa [e1])`. Establish `e2 : -(-(hi - ((d + 1 : ℕ) : ℤ))) + 1 = hi - (d : ℤ)` using `by push_cast; ring`. Rewrite `hx` using `[e2]`. Establish `hmem1 : a • W.levN T c ζ ((letE c : LetA O n) • x) (-(hi - ((d + 1 : ℕ) : ℤ))) ∈ Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c ⊔ ⨆ (τ' : K →ₐ[Qp] LL) (_ : τ' ≠ τ), DdRE PD T.ρ τ'` using `Submodule.mem_sup_left (Submodule.smul_mem _ _ (Submodule.mem_inf.1 ((hp4.2 c ζ τ hPt).2.1 x (-(hi - ((d + 1 : ℕ) : ℤ))))).1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ (hi - (d : ℤ)) ≤ Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c ⊔ ⨆ (τ' : K →ₐ[Qp] LL) (_ : τ' ≠ τ), DdRE PD T.ρ τ' := by`. Unfold `Formalism.MainNotions.DeltaInvariantLattices.FilC`. Conclude with `sup_le ih le_sup_right`. Use `Submodule.sub_mem _ hmem1 (hF hx)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `key (hi - lo).toNat`. Rewrite `h` using `[hlo _ (by omega)]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem dR_le (hp4 : Formalism.MainNotions.DeltaInvariantLattices.p4 W Pt T) {ζ : LL} {τ : K →ₐ[Qp] LL} (hPt : Pt c ζ τ)
     [FiniteDimensional LL ↥(DdRE PD T.ρ τ)] :

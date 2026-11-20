@@ -12,19 +12,19 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
 /- English proof (translation)
-Introduce `E _ _ K W _ _ _ ρH σ p q v w u hA hv hrank hfd`. Take `⟨hmem, hfst, hsnd⟩` from `hA`. Establish `hz : ∀ j : Fin q, (u (Fin.natAdd p j)).1 = 0` using `fun j => (hsnd j).1`. Establish `hli : LinearIndependent K u`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg`. Establish `h1 : ∑ i, g i • (u i).1 = 0`. Use `congrArg Prod.fst hg` as an intermediate fact. Simplify `this` using `[Prod.fst_sum]`. Establish `h2 : ∑ i, g i • (u i).2 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg Prod.snd hg` as an intermediate fact. Simplify `this` using `[Prod.snd_sum]`. Rewrite `h1`, `h2` using `[Fin.sum_univ_add]`. Establish `h1' : ∑ i : Fin p, g (Fin.castAdd q i) • v i = 0`. Simplify `h1` using `[hfst, hz]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcast : ∀ i : Fin p, g (Fin.castAdd q i) = 0` using `(Fintype.linearIndependent_iff.mp hv) _ h1'`. Establish `h2' : ∑ j : Fin q, g (Fin.natAdd p j) • (u (Fin.natAdd p j)).2 = 0`. Simplify `h2` using `[hcast]`. Establish `hnat : ∀ j' : Fin q, g (Fin.natAdd p j') = 0`. Introduce `j'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3` using `congrArg (fun f : Module.Dual K W => f (w j')) h2'`. Simplify `h3` using `[LinearMap.sum_apply, (hsnd _).2 j']`. Introduce `i`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i => exact hcast i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `right j => exact hnat j`. Use `⟨hli, ?_⟩` and prove the remaining obligations. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hmem i`. Rewrite using `[finrank_span_eq_card hli, Fintype.card_fin, hrank]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adaptedFamily_isBasis : ∀ (E : Type) [Field E] [NumberField E] (K W : Type) [Field K] [AddCommGroup W] [Module K W]
     (ρH : 𝓞 E →+* Module.End K (W × Module.Dual K W)) (σ : E →+* K) (p q : ℕ) (v : Fin p → W) (w : Fin q → W)

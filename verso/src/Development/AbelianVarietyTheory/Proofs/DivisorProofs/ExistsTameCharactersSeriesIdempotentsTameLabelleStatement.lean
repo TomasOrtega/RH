@@ -15,7 +15,7 @@ open Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.
 open GlobalTheory.LiftRows
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TameTieOfGood.exists_tameTie_of_given` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsTameCharactersSeriesIdempotentsTameLabelle.lean&line=84#L84)
 -/

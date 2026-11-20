@@ -9,19 +9,17 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `B S X π hπ U J e he V τ hV hτ`. Establish `hp : Function.Surjective (pullback.fst U.hom π)` using `(inferInstance : Surjective (pullback.fst U.hom π)).surj`. Use `⟨fun i => ?_, fun i j k x hx => ?_⟩` and prove the remaining obligations. Use `eq_top_iff.mpr fun y _ => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hp y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(hV i i a).mpr ⟨a, rfl⟩`. Take `⟨a, ha⟩` from `hp ((V i j).ι x)`. Establish `hij : e i a ∈ Set.range (e j)` using `(hV i j a).mp (by`. Rewrite using `[ha]`. Establish `hx' : (V i j).ι x ∈ Set.range (V i j).ι` using `⟨x, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Scheme.Opens.range_ι] at hx')` and apply the resulting hypothesis. Take `⟨b, hb⟩` from `hij`. Establish `hik : e i a ∈ Set.range (e k)` using `(hV i k a).mp (by rw [ha]; exact hx)`. Take `⟨t, ht1, ht2⟩` from `Scheme.exists_preimage_of_isPullback (IsPullback.of_hasPullback (e i) (e j)) a b hb.symm`. Establish `hrange : Set.range (pullback.fst (e i) (e j) ≫ pullback.fst U.hom π) ⊆ Set.range (V i j).ι`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Use `show (pullback.fst U.hom π) (pullback.fst (e i) (e j) z) ∈ V i j`. Rewrite using `[hV i j]`. Use `⟨pullback.snd (e i) (e j) z, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, pullback.condition]`. Set `v` to `IsOpenImmersion.lift (V i j).ι (pullback.fst (e i) (e j) ≫ pullback.fst U.hom π) hrange`. Establish `hv : v ≫ (V i j).ι = pullback.fst (e i) (e j) ≫ pullback.fst U.hom π` using `IsOpenImmersion.lift_fac _ _ _`. Establish `key` using `hτ i j _ (pullback.fst (e i) (e j)) (pullback.snd (e i) (e j)) v pullback.condition hv`. Establish `hvt : v t = x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(V i j).ι.isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, hv, Scheme.Hom.comp_apply, ht1, ha]`. Establish `: τ i j x = pullback.fst U.hom π b`. Rewrite using `[← hvt, ← Scheme.Hom.comp_apply, key, Scheme.Hom.comp_apply, ht2]`. Rewrite using `[this, hV j k, hb]`.
-
-Conclude with `hik`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_overlap_cocycle : ∀ (B S X : Scheme.{0}) (π : S ⟶ B), Surjective π → ∀ (U : Over B) (J : Type) (e : J → (pullback U.hom π ⟶ X)), (∀ j, IsOpenImmersion (e j)) → ∀ (V : J → J → U.left.Opens) (τ : ∀ i j, (V i j).toScheme ⟶ U.left), (∀ (i j : J) (a : ↥(pullback U.hom π)), pullback.fst U.hom π a ∈ V i j ↔ e i a ∈ Set.range (e j)) → (∀ (i j : J) (T : Scheme.{0}) (a b : T ⟶ pullback U.hom π) (v : T ⟶ (V i j).toScheme), a ≫ e i = b ≫ e j → v ≫ (V i j).ι = a ≫ pullback.fst _ _ → v ≫ τ i j = b ≫ pullback.fst _ _) → (∀ i, V i i = ⊤) ∧ (∀ (i j k : J) (x : (V i j).toScheme), (V i j).ι x ∈ V i k → τ i j x ∈ V j k) := by
   intro B S X π hπ U J e he V τ hV hτ

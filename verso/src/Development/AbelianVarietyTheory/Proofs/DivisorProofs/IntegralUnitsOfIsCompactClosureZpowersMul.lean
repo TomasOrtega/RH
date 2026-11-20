@@ -17,7 +17,7 @@ noncomputable def mulMatHom : B.A →+* Matrix (Fin m) (Fin m) (w.adicCompletion
     ((LinearMap.toMatrixAlgEquiv b).toRingHom.comp (Algebra.lmul K.E B.A).toRingHom)
 
 /- English proof (translation)
-Rewrite using `[mulMat_eq_map]`. Simplify using `only [mulMatHom, RingHom.comp_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem mulMatHom_apply (a : B.A) : mulMatHom e b a = mulMat e b a := by
   rw [mulMat_eq_map]
@@ -25,7 +25,7 @@ theorem mulMatHom_apply (a : B.A) : mulMatHom e b a = mulMat e b a := by
   congr 1
 
 /- English proof (translation)
-Simplify using `only [mulMatHom, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgEquiv.toRingEquiv_eq_coe, RingEquiv.toRingHom_eq_coe, AlgHom.coe_toRingHom, AlgHom.commutes, RingEquiv.coe_toRingHom, AlgEquiv.coe_ringEquiv, AlgEquiv.commutes]`. Rewrite using `[Matrix.algebraMap_eq_diagonal, Matrix.algebraMap_eq_diagonal]`. Simplify using `[Pi.algebraMap_def]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mulMatHom_algebraMap (x : K.E) :
     mulMatHom e b (algebraMap K.E B.A x) = algebraMap (w.adicCompletion E) _ (e x) := by
@@ -36,7 +36,7 @@ theorem mulMatHom_algebraMap (x : K.E) :
   simp [Pi.algebraMap_def]
 
 /- English proof (translation)
-Introduce `a a' h`. Rewrite `h` using `[mulMatHom_apply, mulMatHom_apply]`. Conclude with `mulMat_injective e b h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulMatHom_injective : Function.Injective (mulMatHom e b) := by
   intro a a' h
@@ -44,17 +44,17 @@ theorem mulMatHom_injective : Function.Injective (mulMatHom e b) := by
   exact mulMat_injective e b h
 
 /- English proof (translation)
-Take `⟨p, hpm, hp⟩` from `h`. Use `set Q : (w.adicCompletion E)[X] := p.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E)) with hQdef`. Establish `hQ : aeval (mulMat e b a) Q = 0`. Rewrite using `[hQdef, aeval_map_algebraMap]`. Conclude with `hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Q' : K.E[X] := Q.map e.symm.toRingHom with hQ'def`. Establish `hQQ : Q'.map (e : K.E →+* w.adicCompletion E) = Q`. Rewrite using `[hQ'def, Polynomial.map_map]`. Use `Polynomial.map_id` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Establish `hu : aeval a Q' = 0`. Apply `mulMatHom_injective e b` to reduce the goal to its premises. Rewrite using `[map_zero, aeval_def, Polynomial.hom_eval₂]`. Establish `hc : (mulMatHom e b).comp (algebraMap K.E B.A) = (algebraMap (w.adicCompletion E) (Matrix (Fin m) (Fin m) (w.adicCompletion E))).comp (e : K.E →+* w.adicCompletion E)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using `[mulMatHom_algebraMap]`. Rewrite using `[hc, ← Polynomial.eval₂_map, hQQ, mulMatHom_apply, ← aeval_def]`. Conclude with `hQ`. Establish `hlift : Q' ∈ Polynomial.lifts (algebraMap K.O K.E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `i`. Rewrite using `[hQ'def, Polynomial.coeff_map, hQdef, Polynomial.coeff_map]`. Establish `hv : Valued.v (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E) (p.coeff i)) ≤ 1` using `(IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (p.coeff i).2`. Use `(hint (e.symm (algebraMap _ _ (p.coeff i)))).2 (by simpa using hv)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Take `⟨P, hPm, -, hPmon⟩` from `Polynomial.lifts_and_degree_eq_and_monic hlift (by rw [hQ'def]; exact (hpm.map _).map _)`. Use `⟨P, hPmon, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap K.E, hPm]`. Conclude with `hu`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_isIntegral_mulMat
     (hint : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) (a : B.A)
@@ -91,11 +91,9 @@ theorem isIntegral_of_isIntegral_mulMat
   exact hu
 
 /- English proof (translation)
-Introduce `E _ _ _ _ w _ K e _ hint _ B m b a hc`. Establish `h1 : IsIntegral (w.adicCompletionIntegers E) (mulMat e b (a : B.A))`. Rewrite using `[← mulU_val]`. Conclude with `GlobalTheory.isIntegral_of_isCompact_closure_zpowers E w m _ hc`. Establish `hc' : IsCompact (closure (Subgroup.zpowers (mulU e b a⁻¹) : Set (GLw m w)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv, Subgroup.zpowers_inv]`. Conclude with `hc`. Establish `h2 : IsIntegral (w.adicCompletionIntegers E) (mulMat e b ((a⁻¹ : B.Aˣ) : B.A))`. Rewrite using `[← mulU_val]`. Conclude with `GlobalTheory.isIntegral_of_isCompact_closure_zpowers E w m _ hc'`.
-
-Conclude with `⟨isIntegral_of_isIntegral_mulMat e b hint _ h1, isIntegral_of_isIntegral_mulMat e b hint _ h2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_intUnits_of_isCompact_closure_zpowers : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → (∀ x, GlobalTheory.UnitLemma.val K.O x = ordL (e x)) → ∀ (B : GlobalTheory.UnitLemma.InvAlg K) (m : ℕ) (b : Module.Basis (Fin m) K.E B.A) (a : B.Aˣ), IsCompact (closure (Subgroup.zpowers (GlobalTheory.TwLat.mulU e b a) : Set (GLw m w))) → a ∈ GlobalTheory.UnitLemma.intUnits K.O B.A := by
   intro E _ _ _ _ w _ K e _ hint _ B m b a hc

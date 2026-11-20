@@ -24,7 +24,7 @@ def ChiReads (D : D7) {σ₀ : X.K →+* ℂ} (K : KerAmbTied D X σ₀) (Dc : D
       K.idl (QuotientGroup.mk y) = TaylorLogMetric.detId D (StandardLatticesGL3.stdL D (R.N j)) (K.seam.lat (repN W Λ u j cl))
 
 /- English proof (translation)
-Take `⟨y, h1, h2⟩` from `h j cl`. Rewrite using `[← h1, K.χ_rec, ← h2, TaylorLogMetric.chiRec_idl D K.idl K.idl_ok.1]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pt_of_reads (D : D7) {σ₀ : X.K →+* ℂ} (K : KerAmbTied D X σ₀) (Dc : DetChr X R.m) (hc : CMData X.F X.E) (u : Pr.Word)
     (h : ChiReads W Λ D K Dc hc u) (j : ℕ) (cl : StCl W Λ u j) :
@@ -35,7 +35,7 @@ theorem pt_of_reads (D : D7) {σ₀ : X.K →+* ℂ} (K : KerAmbTied D X σ₀) 
   rfl
 
 /- English proof (translation)
-The claim follows from `DetChrOf.chiDetTie_of_pt W Λ σ₀ Dc hc K.amb u (fun a N => K.χ (TaylorLogMetric.detId D (StandardLatticesGL3.stdL D a) (K.seam.lat N))) (fun _ _ _ _ => rfl) (pt_of_reads W Λ D K Dc hc u h)`.
+A detailed English derivation is pending.
 -/
 theorem chiDetTie_of_reads (D : D7) {σ₀ : X.K →+* ℂ} (K : KerAmbTied D X σ₀) (Dc : DetChr X R.m) (hc : CMData X.F X.E) (u : Pr.Word)
     (h : ChiReads W Λ D K Dc hc u) : ChiDetTie W Λ σ₀ Dc hc K.amb u :=
@@ -47,7 +47,7 @@ section Lat
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Introduce `x` and use `Formalism.UG.P.span_recovery_of_integral_adelic_approx Formalism.UG.P.csGlob_intAdApprox F E (Fin n) (stdLat E n) (Module.Finite.iff_fg.2 (stdLat_lattice (E := E) (n := n)).fg) (stdLat_lattice (E := E) (n := n)).span_eq_top g x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem carries_globLat (g : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
     Formalism.L2.Herm.Carries g (stdLat E n) (Formalism.UG.CS.globLat g (stdLat E n)) := fun x =>
@@ -55,9 +55,9 @@ theorem carries_globLat (g : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
     (Module.Finite.iff_fg.2 (stdLat_lattice (E := E) (n := n)).fg) (stdLat_lattice (E := E) (n := n)).span_eq_top g x
 
 /- English proof (translation)
-Establish `hlat` using `Formalism.UG.P.global_lattice_isLattice_holds F E (Fin n) (stdLat E n) (Module.Finite.iff_fg.2 (stdLat_lattice (E := E) (n := n)).fg) (stdLat_lattice (E := E) (n := n)).span_eq_top x`. Establish `hU` using `globLat_unimodular hc n hx`. Use `⟨hlat.fg, hlat.span_eq_top, fun y => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← hU]`. Rewrite using `[mem_dual]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `forall₂_congr fun z _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_one, RingHom.mem_range]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem isSDLat_globLat (hc : CMData F E) {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hx : x ∈ UAd hc n) :
     IsSDLat E n (Formalism.UG.CS.globLat x (stdLat E n)) := by
@@ -78,9 +78,9 @@ section Rep
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Λ : ∀ j, LevFam X.E X.K (R.N j) Pr.vGs)
 
 /- English proof (translation)
-Establish `: NeZero (R.N j)` using `⟨(R.N_pos j).ne'⟩`. Establish `h1` using `decoOf_ptOf hc (R.N j) (Pr.vT u) Pr.vGs hS ((stepGSD W Λ u j).outSec.rep cl)`. Establish `hok` using `decorated_lattice_exists hc (R.N j) (Pr.vT u) Pr.vGs _ (ptOf hc (R.N j) (Pr.vT u) Pr.vGs ((stepGSD W Λ u j).outSec.rep cl)).2`. Use `show ((stepGSD W Λ u j).outSec.rep cl).1.N = _`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `decoOf`. Rewrite using `[dif_pos hok]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem repN_eq_globLat (hc : CMData X.F X.E) (u : Pr.Word) (j : ℕ) (hS : DecoPtSurj hc (R.N j) (Pr.vT u) Pr.vGs)
     (cl : StCl W Λ u j) :
@@ -95,7 +95,7 @@ theorem repN_eq_globLat (hc : CMData X.F X.E) (u : Pr.Word) (j : ℕ) (hS : Deco
   rfl
 
 /- English proof (translation)
-Rewrite using `[repN_eq_globLat W Λ hc u j hS cl]`. Conclude with `carries_globLat (F := X.F) (E := X.E) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem carries_rep (hc : CMData X.F X.E) (u : Pr.Word) (j : ℕ) (hS : DecoPtSurj hc (R.N j) (Pr.vT u) Pr.vGs)
     (cl : StCl W Λ u j) :
@@ -118,7 +118,7 @@ def RelReads (D : D7) {σ₀ : X.K →+* ℂ} (K : KerAmbTied D X σ₀) (Dc : D
         (QuotientGroup.mk y : D.Dt ⧸ D.UO) = D.relDet (R.N j) L L'
 
 /- English proof (translation)
-Introduce `j cl`. Take `⟨y, h1, L, L', hL, hL', hy⟩` from `h j cl`. Use `⟨y, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, K.idl_ok.2.2.2.2 (R.N j) L L', hL, hL']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiReads_of_rel (D : D7) {σ₀ : X.K →+* ℂ} (K : KerAmbTied D X σ₀) (Dc : DetChr X R.m) (hc : CMData X.F X.E) (u : Pr.Word)
     (h : RelReads W Λ D K Dc hc u) : ChiReads W Λ D K Dc hc u := by
@@ -128,7 +128,7 @@ theorem chiReads_of_rel (D : D7) {σ₀ : X.K →+* ℂ} (K : KerAmbTied D X σ�
   rw [hy, K.idl_ok.2.2.2.2 (R.N j) L L', hL, hL']
 
 /- English proof (translation)
-The claim follows from `chiDetTie_of_reads W Λ D K Dc hc u (chiReads_of_rel W Λ D K Dc hc u h)`.
+A detailed English derivation is pending.
 -/
 theorem chiDetTie_of_rel (D : D7) {σ₀ : X.K →+* ℂ} (K : KerAmbTied D X σ₀) (Dc : DetChr X R.m) (hc : CMData X.F X.E) (u : Pr.Word)
     (h : RelReads W Λ D K Dc hc u) : ChiDetTie W Λ σ₀ Dc hc K.amb u :=

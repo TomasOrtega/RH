@@ -18,7 +18,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {t : SAB H X}
 
 /- English proof (translation)
-Use `t.act.hom a` as an intermediate fact. Conclude with `isTanAtG_of (ovT hw ≫ t.act.act a) (by rw [smT_post, smT_zero_ovT, MonObj.one_comp])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem tan_act' {S : Type} [CommRing S] {y : Sp S ⟶ X} {w : Sp (DualNumber S) ⟶ t.G.left}
     (hw : IsTanAtG t y w) (a : 𝓞 E) : IsTanAtG t y (w ≫ (t.act.act a).left) := by
@@ -26,7 +26,7 @@ private theorem tan_act' {S : Type} [CommRing S] {y : Sp S ⟶ X} {w : Sp (DualN
   exact isTanAtG_of (ovT hw ≫ t.act.act a) (by rw [smT_post, smT_zero_ovT, MonObj.one_comp])
 
 /- English proof (translation)
-Use `t.act.hom a` as an intermediate fact. Rewrite using `[← (isCombAtG_iff t y (fun j => ovT (hu j)) _ _).1 h]`. Conclude with `(isCombAtG_iff t y (fun j => ovT (hu j) ≫ t.act.act a) _ _).2 (by rw [← combT_post]; rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comb_act' {S : Type} [CommRing S] {y : Sp S ⟶ X} {m : ℕ}
     {u : Fin m → (Sp (DualNumber S) ⟶ t.G.left)} (hu : ∀ k, IsTanAtG t y (u k)) {cf : Fin m → S}
@@ -38,11 +38,9 @@ private theorem comb_act' {S : Type} [CommRing S] {y : Sp S ⟶ X} {m : ℕ}
 
 open GlobalTheory.FlatModel.RetractionModules in
 /- English proof (translation)
-Use `choose xG hxc hxG using hxs`. Take `⟨w, hw, hwu⟩` from `hu`. Take `⟨yG, hyc, hyG⟩` from `hx`. Establish `h1 : ((List.ofFn w).prod).left = ((List.ofFn fun i => ptMap (dualScale (cf i)) ≫ (xG i).1).prod).left ≫ π` using `prod_left_comp hπ (T := specO 𝓞_ℂ_[p] (DualNumber 𝓞_ℂ_[p])) (fun i => ptMap (dualScale (cf i)) ≫ (xG i).1) w fun i => by`. Rewrite using `[hw i, Over.comp_left, Category.assoc, hxG i]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h2 : yG.1 = (List.ofFn fun i => ptMap (dualScale (cf i)) ≫ (xG i).1).prod` using `hom_ext_pb hπ (hyG.trans (hwu.symm.trans h1))`. Establish `h4 : x = combLie P.Gt m cf xs` using `Subtype.ext (corr_left_unique hyc (by`. Rewrite using `[combLie_val, h2]`. Conclude with `corr_prod _ _ fun i => (hxc i).comp (dualScale (cf i))))`.
-
-Rewrite using `[h4, bLie_combLie]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bLie_of_comb {p : ℕ} [Fact p.Prime] [StarRing (𝓞 E)] {P : PtP E p} {yb : Sp 𝓞_ℂ_[p] ⟶ X}
     {π : P.G.left ⟶ t.G.left} (hπ : IsGrpPullback P.G t.G yb π) {m : ℕ}
@@ -69,21 +67,19 @@ private theorem bLie_of_comb {p : ℕ} [Fact p.Prime] [StarRing (𝓞 E)] {P : P
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t p _ _ P yb π hπ hact g e he`. Establish `hex : ∀ k, ∃ x : LieG P.Gt, ITie P π x (e k)` using `fun k => by`. Take `⟨xG, hxG⟩` from `RetractionModules.tan_lift hπ (he.1 k)`. Take `⟨x, hx⟩` from `RetractionModules.exists_corr_left xG`. Conclude with `⟨x, xG, hx, hxG⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose x hx using hex`. Use `⟨x, hx, fun cf w hw σ hσ o => ?_⟩` and prove the remaining obligations. Establish `h1 : spMap (RingHom.id 𝓞_ℂ_[p]) = 𝟙 _` using `Spec.map_id _`. Establish `h3 : spMap (dualMap (RingHom.id 𝓞_ℂ_[p])) = 𝟙 _`. Rewrite using `[← Spec.map_id]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply the tactic sequence `ext r <;> simp [dualMap]`. Establish `hb0` using `he.2 𝓞_ℂ_[p] (RingHom.id _)`. Simplify using `only [h1, h3, Category.id_comp] at hb0`. Use `choose α hα using fun k => (hb0 _ (tan_act' (he.1 k) o)).exists`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hT : ∀ k, ITie P π (AvDefs.lieAct P.Gt P.oGt o (x k)) (e k ≫ (t.act.act o).left)` using `fun k => by`. Take `⟨xG, hxc, hxG⟩` from `hx k`. Use `⟨AvDefs.lieAct P.G P.oG o xG, corr_act hxc o, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(xG.1 ≫ P.oG.act o).left ≫ π = _`. Rewrite using `[Over.comp_left, Category.assoc, hact, ← Category.assoc, hxG]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hV : ∀ k, P.actV o (P.bLie (x k)) = ∑ j, (α k j : ℂ_[p]) • P.bLie (x j)` using `fun k => by`. Rewrite using `[← P.bLie_act]`. Conclude with `bLie_of_comb hπ hx (hα k) (hT k)`. Establish `he'` using `fun k => GlobalTheory.FactorDepth.isTanAtG_map t (algebraMap 𝓞_ℂ_[p] ℂ_[p]) (he.1 k)`. Establish `c1` using `tanLinG _ he' (fun k => (spMap (dualMap (algebraMap 𝓞_ℂ_[p] ℂ_[p])) ≫ e k) ≫ (t.act.act o).left) (Matrix.of fun j k => algebraMap 𝓞_ℂ_[p] ℂ_[p] (α k j)) cf _ (fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Category.assoc]`. Conclude with `GlobalTheory.LatDRFree.comb_map t _ (hα k)) (comb_act' he' hw o)`. Establish `c2` using `GlobalTheory.ShFam.Pad.Guard.comb_smul he' hw (σ o)`. Rewrite `c2` using `[← hσ o]`. Establish `c3` using `(he.2 _ _ _ (GlobalTheory.ShFam.Pad.Guard.comb_tan he' c2)).unique c1 c2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum, Finset.smul_sum]`. Simplify using `only [map_smul, hV, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, ← congrFun c3 j]`.
-
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.tangent_basis_lie_coordinates :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (p : ℕ) [Fact p.Prime] [StarRing (𝓞 E)] (P : PtP E p) (yb : Sp 𝓞_ℂ_[p] ⟶ X) (π : P.G.left ⟶ t.G.left), IsGrpPullback P.G t.G yb π → (∀ a, (P.oG.act a).left ≫ π = π ≫ (t.act.act a).left) → ∀ (g : ℕ) (e : Fin g → (Sp (DualNumber 𝓞_ℂ_[p]) ⟶ t.G.left)), IsTanBasis t yb e → ∃ x : Fin g → LieG P.Gt, (∀ k, ITie P π (x k) (e k)) ∧ ∀ (cf : Fin g → ℂ_[p]) (w : (Sp (DualNumber ℂ_[p]) ⟶ t.G.left)), IsCombAtG t (spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ yb) (fun i => spMap (dualMap (algebraMap 𝓞_ℂ_[p] ℂ_[p])) ≫ e i) cf w → ∀ σ : 𝓞 E →+* ℂ_[p], IsEigG t σ w → ∀ o, P.actV o (∑ k, cf k • P.bLie (x k)) = σ o • ∑ k, cf k • P.bLie (x k) := by

@@ -5,11 +5,11 @@ open Module NumberField GlobalTheory.CompanionTheory.Ar.HT
 namespace GlobalTheory.CompanionTheory.Ar.HT
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, p = n + 1` from `⟨p - 1, by have := hp.pos; omega⟩`. Establish `h` using `hζ.prod_one_sub_pow_eq_order`. Establish `h2 : Associated (∏ _k ∈ Finset.range n, (ζ - 1)) (∏ k ∈ Finset.range n, (1 - ζ ^ (k + 1)))`. Use `Associated.prod _ _ _ fun k hk => ?_` and prove the remaining obligations. Establish `hk'` using `Finset.mem_range.1 hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : (k + 1).Coprime (n + 1)` using `(Nat.coprime_of_lt_prime (by omega) (by omega) hp).symm`. Use `hζ.associated_sub_one_pow_sub_one_of_coprime hc` as an intermediate fact. Rewrite using `[← neg_sub (ζ ^ (k + 1)) 1]`. Conclude with `this.neg_right`. Rewrite `h2` using `[h, Finset.prod_const, Finset.card_range]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h2`.
+A detailed English derivation is pending.
 -/
 theorem primRoot_sub_one_pow_associated {O : Type*} [CommRing O] [IsDomain O] {p : ℕ}
     (hp : p.Prime) {ζ : O} (hζ : IsPrimitiveRoot ζ p) :
@@ -28,15 +28,15 @@ theorem primRoot_sub_one_pow_associated {O : Type*} [CommRing O] [IsDomain O] {p
   simpa using h2
 
 /- English proof (translation)
-Introduce `C _ v O _ _ hv p hp ζ hζ _`. Establish `hp` using `hp.out`. Establish `h2` using `hp.two_le`. Establish `: IsDomain O` using `hv.hom_inj.isDomain (algebraMap O C)`. Establish `hζO : IsPrimitiveRoot ζ p` using `hζ.of_map_of_injective hv.hom_inj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `primRoot_sub_one_pow_associated hp hζO`. Establish `h1 : v (algebraMap O C (ζ - 1)) ^ (p - 1) = v (p : C)`. Take `⟨u, hu⟩` from `ha`. Use `congrArg (fun x => v (algebraMap O C x)) hu` as an intermediate fact. Simplify using `only [map_mul, map_pow, map_natCast, hv.one_of_isUnit u.isUnit, mul_one] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Use `⟨h1, (dvd_pow_self _ (by omega)).trans ha.dvd, ?_, fun hvp => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_one, sub_ne_zero]`. Conclude with `hζ.ne_one hp.one_lt`. Rewrite `h1` using `[hvp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3` using `congrArg (fun x : NNReal => Real.log (x : ℝ)) h1`. Simplify using `only [NNReal.coe_pow, Real.log_pow, NNReal.coe_inv, Real.log_inv, NNReal.coe_natCast] at h3`. Rewrite `h3` using `[Nat.cast_sub hp.one_le, Nat.cast_one]`. Establish `h4 : (p : ℝ) - 1 ≠ 0`. Establish `: (2 : ℝ) ≤ p` using `by exact_mod_cast h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[this] |> fun (h : (0:ℝ) < (p:ℝ) - 1) => h.ne'`. Rewrite using `[eq_div_iff h4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem val_primRoot_sub_one : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O) (p : ℕ) [Fact p.Prime] (ζ : O), IsPrimitiveRoot (algebraMap O C ζ) p → v (p : C) < 1 → v (algebraMap O C (ζ - 1)) ^ (p - 1) = v (p : C) ∧ (ζ - 1) ∣ (p : O) ∧ algebraMap O C (ζ - 1) ≠ 0 ∧ (v (p : C) = (p : NNReal)⁻¹ → -Real.log (v (algebraMap O C (ζ - 1))) = Real.log p / ((p : ℝ) - 1)) := by
   intro C _ v O _ _ hv p hp ζ hζ _

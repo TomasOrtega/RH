@@ -24,17 +24,15 @@ open GlobalTheory.Desc
 namespace GlobalTheory.SqDecC
 
 /- English proof (translation)
-Introduce `A _ L M g uL uM HL HM χL χM _ hfL hfM hχL hχM N K _ F ε hN hε hF hdec l i j z hi hj`. Establish `hL1` using `hfL.2.2 l i z hi`. Establish `hM1 : ∀ k, uM.fr (j k) (F k z) = χM ⟨F k l, hF k l l.2⟩ * Complex.exp (Real.pi * (F k z ⬝ᵥ HM.mulVec (star (F k l))) + Real.pi / 2 * (F k l ⬝ᵥ HM.mulVec (star (F k l)))) * uM.fr (j k) (F k (z + l))` using `fun k => by`. Rewrite using `[map_add]`. Conclude with `hfM.2.2 ⟨F k l, hF k l l.2⟩ (j k) (F k z) (hj k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcL : χL l ^ N = 1`. Apply the tactic sequence `rcases hχL l with h | h <;> rw [h]`. Conclude with `one_pow N`. Conclude with `hN.neg_one_pow`. Establish `hcM : ∀ k, χM ⟨F k l, hF k l l.2⟩ ^ ε k = 1` using `fun k => by`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases hχM ⟨F k l, hF k l l.2⟩ with h | h <;> rw [h]`. Conclude with `one_zpow _`. Conclude with `(hε k).neg_one_zpow`. Establish `hR : ∏ k, uM.fr (j k) (F k z) ^ ε k = (∏ k, χM ⟨F k l, hF k l l.2⟩ ^ ε k) * (∏ k, Complex.exp (Real.pi * (F k z ⬝ᵥ HM.mulVec (star (F k l))) + Real.pi / 2 * (F k l ⬝ᵥ HM.mulVec (star (F k l)))) ^ ε k) * ∏ k, uM.fr (j k) (F k (z + l)) ^ ε k`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hM1 k, mul_zpow, mul_zpow]`. Establish `key : Complex.exp (Real.pi * (z ⬝ᵥ HL.mulVec (star (l : Fin g → ℂ))) + Real.pi / 2 * ((l : Fin g → ℂ) ⬝ᵥ HL.mulVec (star (l : Fin g → ℂ)))) ^ N = ∏ k, Complex.exp (Real.pi * (F k z ⬝ᵥ HM.mulVec (star (F k l))) + Real.pi / 2 * (F k l ⬝ᵥ HM.mulVec (star (F k l)))) ^ ε k`. Rewrite using `[← Complex.exp_nat_mul, Finset.prod_congr rfl (fun k _ => (Complex.exp_int_mul _ (ε k)).symm), ← Complex.exp_sum]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hdec z l`. Establish `h2` using `hdec l l`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
-
-Rewrite using `[hR, hL1, mul_pow, mul_pow, hcL, Finset.prod_eq_one (fun k _ => hcM k), key]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem frame_power_identity : ∀ (A : Over (Sp ℂ)) [GrpObj A] (L M : LB A.left) (g : ℕ) (uL : HolUnif A L g) (uM : HolUnif A M g)
     (HL HM : Matrix (Fin g) (Fin g) ℂ) (χL : uL.Λ → ℂ) (χM : uM.Λ → ℂ), uM.ex = uL.ex →
@@ -89,11 +87,11 @@ theorem frame_power_identity : ∀ (A : Over (Sp ℂ)) [GrpObj A] (L M : LB A.le
   ring
 
 /- English proof (translation)
-Use `haveI := hA.comm`. Use `haveI := hA.smooth`. Establish `hp : IsProjOver A.hom` using `(GlobalTheory.ProjSpace.isProjBy_iff_isProjOver A.hom).1 (GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme ℂ A hA)`. Take `⟨s, hs⟩` from `HolUnifSec.exists_isFn (SameFactor.divUnif u v hex) hA hp (LB.isLB_div hY hX) (θ := fun _ => 1) (differentiable_const _) (by`. Introduce `l hl p z hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hz1, hz2⟩` from `(top_le_preimage_inf _ _ _).1 hz`. Establish `e` using `hper ⟨l, hl⟩ p.2 p.1 z hz2 hz1`. Establish `hl' : u.ex (z + l) = u.ex z`. Rewrite using `[u.ex_add, (u.ker _).2 hl, _root_.mul_one]`. Establish `n1` using `u.fr_ne p.2 z hz2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `n2` using `u.fr_ne p.2 (z + l) (by rw [hl']; exact hz2)`. Express the relevant statement in the definitionally equal form `1 * (v.fr p.1 (z + l) * (u.fr p.2 (z + l))⁻¹) = 1 * (v.fr p.1 z * (u.fr p.2 z)⁻¹)`. Clear the denominators using the available nonvanishing facts. Take the linear combination `e)`. Conclude with `SameFactor.exists_gen_of_isFn _ s _ hs fun _ => one_ne_zero`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lbIso_of_sameFactor (A : Over (Sp ℂ)) [GrpObj A] (hA : IsAbelianScheme A) (X Y : LB A.left) (g : ℕ)
     (u : HolUnif A X g) (v : HolUnif A Y g) (hX : X.IsLB) (hY : Y.IsLB) (hex : v.ex = u.ex)
@@ -118,23 +116,21 @@ theorem lbIso_of_sameFactor (A : Over (Sp ℂ)) [GrpObj A] (hA : IsAbelianScheme
   exact SameFactor.exists_gen_of_isFn _ s _ hs fun _ => one_ne_zero
 
 /- English proof (translation)
-Introduce `A _ hA L M hL hM haL haM hsL hsM`. Use `haveI := hA.comm`. Take `⟨g, hg⟩` from `AbelianDim.exists_relDim ℂ A hA`. Take `⟨L₀, ⟨u₀⟩⟩` from `HomDescentQb.exists_holUnif A g hA hg`. Take `⟨uL, HL, χL, hexL, hfL⟩` from `exists_isFactorAH_frame_of_unif A hA L₀ g u₀ L hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨uM, HM, χM, hexM, hfM⟩` from `exists_isFactorAH_frame_of_unif A hA L₀ g u₀ M hM`. Establish `hposL` using `AmpleHermPos.re_form_pos_of_relAmple A hA L hL haL g uL HL χL hfL.1 hfL.2.1 hfL.2.2`. Establish `hposM` using `AmpleHermPos.re_form_pos_of_relAmple A hA M hM haM g uM HM χM hfM.1 hfM.2.1 hfM.2.2`. Establish `hAHL` using `TorusRM.isAH_of_isFactorAH hfL hposL`. Establish `hAHM` using `TorusRM.isAH_of_isFactorAH hfM hposM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : uM.ex = uL.ex` using `hexM.trans hexL.symm`. Establish `hΛ : ∀ z, z ∈ uM.Λ ↔ z ∈ uL.Λ` using `fun z => by rw [← uM.ker, ← uL.ker, hex]`. Establish `hχL` using `ThetaUnifCompare.chi_eq_one_or_of_sym hL (sym_of_lbIso_neg hsL.symm) hAHL`. Establish `hχM` using `ThetaUnifCompare.chi_eq_one_or_of_sym hM (sym_of_lbIso_neg hsM.symm) hAHM`. Establish `hiL : ∀ l ∈ uL.Λ, ∀ m ∈ uL.Λ, ∃ n : ℤ, (n : ℝ) = (l ⬝ᵥ HL.mulVec (star m)).im` using `fun l hl m hm => FrameValue.exists_int_im hL hAHL ⟨l, hl⟩ ⟨m, hm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiM : ∀ l ∈ uL.Λ, ∀ m ∈ uL.Λ, ∃ n : ℤ, (n : ℝ) = (l ⬝ᵥ HM.mulVec (star m)).im` using `fun l hl m hm => FrameValue.exists_int_im hM hAHM ⟨l, (hΛ l).2 hl⟩ ⟨m, (hΛ m).2 hm⟩`. Take `⟨N, a₀, r, a, F, hN, ha₀, hNe, ha₀e, hae, hF, hdec⟩` from `GlobalTheory.T.exists_even_multiple_hermitian_positive_combination g uL.Λ uL.discrete uL.full HL HM hAHL.1 hAHM.1 hposL hposM hiL hiM`. Use `choose β hβ hβF using fun i => GlobalTheory.T.exists_endomorphism_of_lattice_preserving_linear A hA L g uL (F i) (hF i)`. Set `f : Option (Fin r) → (A ⟶ A)` to `fun o => o.elim (𝟙 A) β`. Set `FF : Option (Fin r) → (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `fun o => o.elim LinearMap.id F`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ε : Option (Fin r) → ℤ` to `fun o => o.elim (a₀ : ℤ) fun i => (a i : ℤ)`. Establish `hfF : ∀ k z, uM.ex (FF k z) = uL.ex z ≫ f k`. Introduce `k z`. Consider the cases of `k with`. Consider the case `none => simp [FF, f, hex]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `some i => simpa [FF, f, hex] using hβF i z`. Take `⟨u₁, hex₁, -, hfr₁⟩` from `exists_holUnif_linComb A A L M g g uL uM _ f FF ε hfF`. Establish `hcomb : LB.LinComb M (fun k => (f k).left) ε = LB.LinComb M (fun (o : Option (Fin r)) => o.elim (𝟙 A.left) fun i => (β i).left) (fun (o : Option (Fin r)) => o.elim (a₀ : ℤ) fun i => (a i : ℤ))`. Use `congr 1`. Use function extensionality and compare the values at `o`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `cases o <;> rfl`. Use `⟨N, a₀, r, a, β, hN, ha₀, hβ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hcomb]`. Use `lbIso_of_sameFactor A hA _ _ g (ThetaGAGA.powFrame uL N) u₁ (isLB_lbPow hL N) (LB.isLB_linComb hM _ _) hex₁ ?_` and prove the remaining obligations. Introduce `l i j z hi hj`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(congrArg₂ (· * ·) rfl (hfr₁ j (z + l))).trans (Eq.trans ?_ (congrArg₂ (· * ·) rfl (hfr₁ j z)).symm)` and prove the remaining obligations. Establish `hi'` using `ThetaGAGA.top_le_of_lbPow uL N i hi`. Establish `hj' : ∀ k, ⊤ ≤ (uM.ex (FF k z)).left ⁻¹ᵁ M.U (j k)` using `fun k => by`. Rewrite using `[hfF k z]`. Conclude with `(CubeValues.le_preimage_wchart (uL.ex z).left M (fun k => (f k).left) j).1 hj k`.
-
-Conclude with `frame_power_identity A L M g uL uM HL HM χL χM hex hfL hfM hχL hχM N _ FF ε hNe (fun k => by cases k with | none => exact (Int.even_coe_nat _).2 ha₀e | some i => exact (Int.even_coe_nat _).2 (hae i)) (fun k l hl => by cases k with | none => exact (hΛ l).2 hl | some i => exact (hΛ …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqDec_complex : ∀ (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → ∀ (L M : LB A.left), L.IsLB → M.IsLB →
     RelAmple A L → RelAmple A M → LBIso (L.pull (GrpObj.inv : A ⟶ A).left) L →

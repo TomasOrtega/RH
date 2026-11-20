@@ -25,21 +25,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CxPtSizes
 
 /- English proof (translation)
-Establish `hn0 : (n : E) ≠ 0`. Introduce `h; have : n = 0 := by exact_mod_cast h`. Substitute `this` using the available equality. Simplify using `at hn`. Establish `hξ : ξ ≠ 0` using `by rintro rfl; simp [hn0, h0] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨hξ, ?_⟩` and prove the remaining obligations. Establish `hint : IsIntegral ℤ (algebraMap (OF E) E a)` using `(Algebra.IsIntegral.isIntegral (R := ℤ) a).map (IsScalarTower.toAlgHom ℤ (OF E) E)`. Establish `hint2 : IsIntegral R (σ (algebraMap (OF E) E a))` using `IsIntegral.map_of_comp_eq (algebraMap ℤ R) σ (RingHom.ext_int _ _) hint`. Take `⟨b, hb⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hint2`. Use `set v := (IsDiscreteValuationRing.maximalIdeal R).valuation (FractionRing R) with hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : v (σ (algebraMap (OF E) E a)) ≤ 1` using `hb ▸ HeightOneSpectrum.valuation_le_one _ _`. Establish `h2 : v (σ (n : E)) = 1`. Establish `: σ (n : E) = algebraMap R (FractionRing R) (n : R)` using `by simp`. Rewrite using `[this, HeightOneSpectrum.valuation_eq_one_iff_notMem]`. Conclude with `fun hm => (IsLocalRing.mem_maximalIdeal _).1 hm hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `h3 : v (σ ξ') ≤ v (σ ξ)`. Use `congrArg (fun x => v (σ x)) h` as an intermediate fact. Simplify using `only [map_mul, h2, _root_.one_mul] at this`. Rewrite using `[this]`. Conclude with `mul_le_of_le_one_left' h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : σ ξ ≠ 0` using `(map_ne_zero σ).2 hξ`. Establish `hs' : σ ξ' ≠ 0` using `(map_ne_zero σ).2 h0`. Establish `hlK : (l : FractionRing R) = algebraMap R (FractionRing R) (l : R)` using `by simp`. Establish `hlv : v (l : FractionRing R) < 1` using `by rw [hlK, HeightOneSpectrum.valuation_lt_one_iff_mem]; exact hl`. Establish `hlv0 : v (l : FractionRing R) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hlK]`. Conclude with `(Valuation.ne_zero_iff _).2 ((map_ne_zero_iff _ (IsFractionRing.injective R _)).2 hl0)`. Establish `hpos : 0 < GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.ord_vw R (l : FractionRing R)`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.ord_vw`. Rewrite using `[← hv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `(WithZero.log_lt_log hlv0 one_ne_zero).2 hlv` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Establish `hle : GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.ord_vw R (σ ξ) ≤ GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.ord_vw R (σ ξ')`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.ord_vw`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← hv]`. Use `(WithZero.log_le_log ((Valuation.ne_zero_iff _).2 hs') ((Valuation.ne_zero_iff _).2 hs)).2 h3` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.val_vp, hs, hs', if_false, WithTop.coe_le_coe]`. Conclude with `div_le_div_of_nonneg_right (by exact_mod_cast hle) (by exact_mod_cast hpos.le)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_le_of_gen {E : Type} [Field E] [NumberField E] (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (l : ℕ)
     (hl : (l : R) ∈ IsLocalRing.maximalIdeal R) (hl0 : (l : R) ≠ 0) (σ : E →+* FractionRing R) (ξ ξ' : E) (h0 : ξ' ≠ 0) (n : ℕ) (hn : IsUnit (n : R))
@@ -79,41 +79,37 @@ theorem val_le_of_gen {E : Type} [Field E] [NumberField E] (R : Type) [CommRing 
   exact div_le_div_of_nonneg_right (by exact_mod_cast hle) (by exact_mod_cast hpos.le)
 
 /- English proof (translation)
-Introduce `hPC hADR hADC hPM E _ _ _ _ I _ d φ hFD 𝔣 h𝔣 l _ Q hQ hQl y hy lam 𝔠 R _ hR X₀ X U p cm hpull hcm hα j hj φK hφK e a he hL n eH c₀ ψ₀ hc₀ hgen hpol hCM hψ₀ D cv hD hcv e' f' hgens hval m hm ψ hψ yv ev w hcmv hyc hec hew`. Take `⟨ξ, hξgen, hrat⟩` from `GlobalTheory.T.auxiliary_set_field_data_congruence hPC hADR hADC hPM E I d φ hFD 𝔣 h𝔣 l Q hQ hQl y hy lam 𝔠 R hR X₀ X U p cm hpull hcm hα j hj φK hφK e a he hL n eH c₀ ψ₀ hc₀ hgen hpol hCM hψ₀ D cv hD hcv e' f' hgens hval m hm ψ hψ yv ev w hcmv hyc hec hew`. Take `⟨j', hj', hchar, hlm, -, -, hSz⟩` from `GlobalTheory.PlaceRingFacts.place_ring_facts E l lam R hR`. Establish `hgenv : ξ ≠ 0 ∧ ∀ σ : E →+* FractionRing R, GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.val_vp R l (σ ξ) ≤ 0`. Establish `hc : condQ 𝔣 Q ≠ ⊥` using `mul_ne_zero h𝔣.1 (Finset.prod_ne_zero_iff.2 fun q _ => q.ne_bot)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ξ', hp', hg'⟩` from `(((hPM E hFD.2.2.1 I φ hFD.2.2.2.2.2.2.1 1).1 _ hc y).2.2.2 l Fact.out).1`. Take `⟨h0', hv'⟩` from `GlobalTheory.T.auxiliary_set_l_adic_place hPM E I d φ hFD 𝔣 h𝔣 l Q hQ hQl y hy lam R hR j hj ξ' 1 hp' hg'`. Take `⟨n', hn', a', ha'⟩` from `hξgen.2 ξ' hg'.1`. Establish `hl0 : (l : R) ≠ 0` using `by haveI := hchar; exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `hu : IsUnit (n' : R)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `(Nat.isCoprime_iff_coprime.2 hn').map (Int.castRingHom R)`. Simplify using `only [eq_intCast, Int.cast_natCast] at hc`. Take `⟨s, t, hst⟩` from `hc`. Assume the negation of the conclusion as `hnu`. Establish `: (1 : R) ∈ IsLocalRing.maximalIdeal R` using `hst ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 hnu)) (Ideal.mul_mem_left _ _ hlm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `(IsLocalRing.maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).2 this)`. Conclude with `⟨by rintro rfl; have : (n' : E) ≠ 0 := (fun h => by have : n' = 0 := (by exact_mod_cast h); subst this; simp at hu); simp [this, h0'] at ha', fun σ => (val_le_of_gen R l hlm hl0 σ ξ ξ' h0' n' hu a' ha').2.trans (hv' σ)⟩`. Take `⟨hξ0, hξv⟩` from `hgenv`. Establish `hjj : j' = j` using `IsLocalization.ringHom_ext (nonZeroDivisors R) (RingHom.ext fun x => by simp [hj, hj'])`. Substitute `hjj` using the available equality.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ2, hδφ⟩` from `hFD.2.2.2.2.2.2.2`. Establish `hdp : d.Prime` using `hFD.1`. Introduce `i`. Use `set P0 : R := ψ₀ (eH.symm (e' i)) (eH.symm (f' i)) with hP0def`. Take `⟨r, hr⟩` from `hψ₀ i (e' i) (hgens i).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP0c : ((P0 : R) : ℂ) = ((r : R) : ℂ) * (a i * w i)`. Rewrite using `[hP0def, hr, ← hew i]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `vtop : GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.val_vp R l (0 : FractionRing R) = ⊤` using `by simp [GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.val_vp]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hD0 : D ≠ 0`. Introduce and unpack `rfl`. Rewrite `hD` using `[map_zero, vtop]`. Conclude with `WithTop.top_ne_coe hD`. Establish `hvP : GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.val_vp R l (algebraMap R (FractionRing R) P0) ≤ (cv : WithTop ℚ)` using `hD ▸ (hval i).2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hP00 : P0 ≠ 0`. Introduce `h0; rw [h0, map_zero, vtop] at hvP; exact absurd hvP (by simp)`. Establish `hD0c : (D : ℂ) ≠ 0` using `fun h => hD0 (Subtype.ext h)`. Establish `hP0c0 : ((P0 : R) : ℂ) ≠ 0` using `fun h => hP00 (Subtype.ext h)`. Establish `hr0 : ((r : R) : ℂ) ≠ 0` using `fun h => r.ne_zero (Subtype.ext h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hφξ : φ i ξ ≠ 0` using `(map_ne_zero (φ i)).2 hξ0`. Take `⟨hh0, hrat'⟩` from `hrat i`. Establish `hhc : ((U.h i : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hh0`. Establish `hψ0 : ψ (ev i) (yv i) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hrat'` using `[h0, zero_mul]`. Conclude with `mul_ne_zero hhc hP0c0 hrat'.symm`. Establish `haw : a i * w i ≠ 0`. Introduce `h0`. Rewrite `hP0c` using `[h0, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hP0c0 hP0c`. Establish `ha0 : a i ≠ 0` using `left_ne_zero_of_mul haw`. Establish `hw0 : w i ≠ 0` using `right_ne_zero_of_mul haw`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `hsd : ((Real.sqrt d : ℝ) : ℂ) ≠ 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) < Real.sqrt d` using `Real.sqrt_pos.2 (by exact_mod_cast hdp.pos)`. Conclude with `this.ne'` after adjusting the coercions. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (mul_ne_zero (mul_ne_zero hpi hhc) (div_ne_zero hD0c hψ0)) (pow_ne_zero _ hw0)`. Establish `hunit : ∀ q : ℕ, q.Prime → q ≠ l → IsUnit (q : R)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `q hq hql`. Use `haveI := Fact.mk hq`. Establish `hv : 0 ≤ padicValRat l ((q : ℚ)⁻¹)`. Rewrite using `[padicValRat.inv, padicValRat.of_nat, padicValNat_primes (Ne.symm hql)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hmem` using `hR.2.2.1 _ hv`. Use `IsUnit.of_mul_eq_one (b := ⟨_, hmem⟩) (Subtype.ext ?_)` and prove the remaining obligations. Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast hq.ne_zero`. Simplify using `[hq0]`. Establish `hl0 : (l : R) ≠ 0` using `by haveI := hchar; exact_mod_cast (Fact.out : l.Prime).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ0 : δ ≠ 0`. Introduce and unpack `rfl`. Establish `: ((d : ℕ) : E) = 0` using `by simpa using hδ2`. Conclude with `hdp.ne_zero (by exact_mod_cast this)`. Use `haveI := hchar`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hvδ` using `GlobalTheory.T.valuation_sqrt_neg_prime E l R hlm hunit d hdp δ hδ2 (φK i)`. Establish `hz` using `GlobalTheory.T.valuation_lower_bound_product R l hlm hl0 (algebraMap R (FractionRing R) P0) (φK i ξ) (φK i δ) r cv (if l = d then 1 / 2 else 0) ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hP00) ((map_ne_zero (φK i)).2 hξ0) ((map_ne_zero (φK i)).2 hδ0) hvP …`. Establish `hS` using `hSz _ (cv + if l = d then 1 / 2 else 0) (by simpa using hz)`. Establish `hφj : ∀ t : E, j' (φK i t) = φ i t` using `fun t => by rw [← hφK i]; rfl`. Establish `key : j' ((algebraMap R (FractionRing R) (r : R)) ^ 2 / (algebraMap R (FractionRing R) P0 * (φK i δ * φK i ξ))) = (a i * (a i * ((Real.pi : ℂ) * (U.h i : ℂ) * ((D : ℂ) / ψ (ev i) (yv i)) * w i ^ 2) / (D : ℂ)) * (Real.sqrt d : ℝ) / (2 * Real.pi))⁻¹`.
-
-Establish `h2I : (2 * Complex.I * φ i ξ) ≠ 0` using `mul_ne_zero (mul_ne_zero two_ne_zero Complex.I_ne_zero) hφξ`. Establish `hψv : ψ (ev i) (yv i) = (U.h i : ℂ) * ((P0 : R) : ℂ) / (2 * Complex.I * φ i ξ)` using `eq_div_of_mul_eq h2I hrat'`. Rewrite using `[map_div₀, map_pow, map_mul, map_mul, hj', hj', hφj, hφj, hδφ i, hψv, hP0c]`. Clear the denominators using the available nonvanishing facts. Establish `hcast : (((cv + if l = d then 1 / 2 else 0 : ℚ)) : ℝ) = c_vp 𝔣 l + if l = d then 1 / 2 else 0`.
-
-Apply the tactic sequence `rw [Rat.cast_add, hcv]; split_ifs <;> norm_num`. Rewrite using `[← hcast, ← key]`. Conclude with `hS`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_size : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
     GlobalTheory.IndefiniteRowSideFullHecke.PolarisationModuleIndex.PolarisationModule → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (I : Type) [Fintype I] (d : ℕ)

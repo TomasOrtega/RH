@@ -9,7 +9,7 @@ def IsNbhd (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A'] (f : A) : Pro
   (∀ a : A, algebraMap A A' a ∈ Ideal.span {algebraMap A A' f} → a ∈ Ideal.span {f})
 
 /- English proof (translation)
-Rewrite using `[RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, AlgHom.commutes]`. Conclude with `IsLocalization.Away.algebraMap_isUnit _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem awayHom_isUnit {A A' A'' : Type} [CommRing A] [CommRing A'] [CommRing A''] [Algebra A A'] [Algebra A A'']
     (φ : A' →ₐ[A] A'') (f : A) :
@@ -22,7 +22,7 @@ def awayHom {A A' A'' : Type} [CommRing A] [CommRing A'] [CommRing A''] [Algebra
   Localization.awayLift ((algebraMap A'' _).comp φ.toRingHom) _ (awayHom_isUnit φ f)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_comp _ (awayHom_isUnit φ f)`.
+A detailed English derivation is pending.
 -/
 theorem awayHom_comp_algebraMap {A A' A'' : Type} [CommRing A] [CommRing A'] [CommRing A''] [Algebra A A']
     [Algebra A A''] (φ : A' →ₐ[A] A'') (f : A) :

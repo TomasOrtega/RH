@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 open CategoryTheory UpperTheory.V.KH
 
 /- English proof (translation)
-Introduce `u`. Rewrite using `[SubMulAction.stabilizer_of_subMul]`. Conclude with `h u`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.KH.stabLe_sub {G X : Type} [Group G] [MulAction G X] {s : ℕ}
     (h : StabLe G X s) (U : SubMulAction G X) : StabLe G U s := by
@@ -12,23 +12,23 @@ private theorem UpperTheory.V.KH.stabLe_sub {G X : Type} [Group G] [MulAction G 
   exact h u
 
 /- English proof (translation)
-Introduce `G X _ _ A s x hO hS`. Set `U : SubMulAction G X` to `{ carrier := MulAction.orbit G x smul_mem' := by`. Introduce and unpack `g y ⟨h, rfl⟩`. Conclude with `⟨g * h, mul_smul _ _ _⟩ }`. Establish `hxU : x ∈ U` using `MulAction.mem_orbit_self x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨U, Uᶜ, fun y => Iff.rfl, ⟨⟨x, hxU⟩⟩, ?_, stabLe_sub hS U, stabLe_sub hS Uᶜ, ?_⟩` and prove the remaining obligations. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `a`. Take `⟨b, hb⟩` from `b`. Take `⟨g, rfl⟩` from `ha`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, rfl⟩` from `hb`. Use `⟨h * g⁻¹, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(h * g⁻¹) • g • x = h • x`. Rewrite using `[smul_smul, inv_mul_cancel_right]`. Establish `hrel : ∀ a b : (Uᶜ : SubMulAction G X), (MulAction.orbitRel G (Uᶜ : SubMulAction G X)) a b ↔ (MulAction.orbitRel G X) a b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a b`. Rewrite using `[SubMulAction.orbitRel_of_subMul]`. Both sides reduce to the same expression. Set `f : MulAction.orbitRel.Quotient G (Uᶜ : SubMulAction G X) → MulAction.orbitRel.Quotient G X` to `Quotient.map (fun a => (a : X)) (fun a b hab => (hrel a b).1 hab)`. Set `F : Option (MulAction.orbitRel.Quotient G (Uᶜ : SubMulAction G X)) → MulAction.orbitRel.Quotient G X` to `fun o => o.elim (Quotient.mk _ x) f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hF : Function.Injective F`. Establish `hne : ∀ a : (Uᶜ : SubMulAction G X), (Quotient.mk _ (a : X) : MulAction.orbitRel.Quotient G X) ≠ Quotient.mk _ x`. Introduce `a hax`. Establish `h1 : (MulAction.orbitRel G X) (a : X) x` using `Quotient.exact hax`. Conclude with `a.2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(_ | p) (_ | q) hpq`. Both sides reduce to the same expression. Proceed by induction on `q using Quotient.inductionOn with`. Consider the case `h b => exact absurd hpq.symm (hne b)`. Proceed by induction on `p using Quotient.inductionOn with`.
+Both sides reduce to the same expression. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `h a => exact absurd hpq (hne a)`. Proceed by induction on `p using Quotient.inductionOn with`. Consider the case `h a`. Proceed by induction on `q using Quotient.inductionOn with`. Consider the case `h b`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Quotient.sound ((hrel a b).2 (Quotient.exact hpq))`. Use `haveI : Finite (MulAction.orbitRel.Quotient G X) := hO.1`. Use `haveI : Finite (Option (MulAction.orbitRel.Quotient G (Uᶜ : SubMulAction G X))) := Finite.of_injective F hF`. Use `haveI : Finite (MulAction.orbitRel.Quotient G (Uᶜ : SubMulAction G X)) := Finite.of_injective some (Option.some_injective _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Establish `h2` using `Nat.card_le_card_of_injective F hF`. Rewrite `h2` using `[Finite.card_option]`. Establish `h3` using `hO.2`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KH.orbStep :
     ∀ (G X : Type) [Group G] [MulAction G X] (A s : ℕ) (x : X), OrbLe G X (A + 1) → StabLe G X s →

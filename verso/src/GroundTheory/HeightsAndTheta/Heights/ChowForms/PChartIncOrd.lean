@@ -12,7 +12,7 @@ noncomputable section
 namespace ChartIncOrd
 
 /- English proof (translation)
-Establish `h` using `MvPolynomial.ker_map (σ := σ) (Ideal.Quotient.mk p)`. Rewrite `h` using `[Ideal.mk_ker]`. Rewrite using `[← h]`. Conclude with `RingHom.ker_isPrime _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrime_map_C {R : Type*} [CommRing R] (σ : Type*) (p : Ideal R) [p.IsPrime] :
     (p.map (C : R →+* MvPolynomial σ R)).IsPrime := by
@@ -30,12 +30,12 @@ abbrev mkQ : MvPolynomial (Fin n) F →+* ChartQ I t := Ideal.Quotient.mk _
 def mkS : MvPolynomial (Fin n ⊕ Fin e × Fin n) F →+* ChartInc I t e := Ideal.Quotient.mk _
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.mk_surjective`.
+A detailed English derivation is pending.
 -/
 theorem mkS_surjective : Function.Surjective (mkS I t e) := Ideal.Quotient.mk_surjective
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.eq_zero_iff_mem.mpr h`.
+A detailed English derivation is pending.
 -/
 theorem mkS_eq_zero {a : MvPolynomial (Fin n ⊕ Fin e × Fin n) F} (h : a ∈ chartIncIdeal I t e) :
     mkS I t e a = 0 :=
@@ -59,21 +59,21 @@ theorem toInc_mk (x : MvPolynomial (Fin n) F) :
     toInc I t e (mkQ I t x) = chartX I t e x := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_sum, ← map_one (mkQ I t), Ideal.Quotient.eq]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_tQ : (∑ m, mkQ I t (C (t m) * X m)) = 1 := by
   rw [← map_sum, ← map_one (mkQ I t), Ideal.Quotient.eq]
   exact Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Use `congrArg (toInc I t e) (sum_tQ I t)` as an intermediate fact. Simplify `this` using `[map_sum, toInc_mk]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_tS : (∑ m, chartX I t e (C (t m) * X m)) = 1 := by
   have := congrArg (toInc I t e) (sum_tQ I t)
   simpa [map_sum, toInc_mk] using this
 
 /- English proof (translation)
-Rewrite using `[← map_sum]`. Conclude with `mkS_eq_zero I t e (Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_uS (i : Fin e) :
     (∑ m, mkS I t e (X (Sum.inr (i, m)) * X (Sum.inl m))) = 0 := by
@@ -85,13 +85,13 @@ def fwd : MvPolynomial (Fin e × Fin n) (ChartQ I t) →+* MvPolynomial (Fin e) 
     C (mkS I t e (X (Sum.inr ij))) + X ij.1 * C (chartX I t e (C (t ij.2)))
 
 /- English proof (translation)
-Simplify using `[fwd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fwd_C (q : ChartQ I t) : fwd I t e (C q) = C (toInc I t e q) := by
   simp [fwd]
 
 /- English proof (translation)
-Simplify using `[fwd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fwd_X (ij : Fin e × Fin n) :
     fwd I t e (X ij) = C (mkS I t e (X (Sum.inr ij))) + X ij.1 * C (chartX I t e (C (t ij.2))) := by
@@ -103,26 +103,26 @@ def back₀ : MvPolynomial (Fin n ⊕ Fin e × Fin n) F →+* MvPolynomial (Fin 
       (fun ij => genSubst (fun m => mkQ I t (X m)) (fun m => mkQ I t (C (t m))) ij))
 
 /- English proof (translation)
-Simplify using `[back₀]`.
+Simplify using the standard rewrite rules.
 -/
 theorem back₀_C (r : F) : back₀ I t e (C r) = C (mkQ I t (C r)) := by
   simp [back₀]
 
 /- English proof (translation)
-Simplify using `[back₀]`.
+Simplify using the standard rewrite rules.
 -/
 theorem back₀_inl (m : Fin n) : back₀ I t e (X (Sum.inl m)) = C (mkQ I t (X m)) := by
   simp [back₀]
 
 /- English proof (translation)
-Simplify using `[back₀]`.
+Simplify using the standard rewrite rules.
 -/
 theorem back₀_inr (ij : Fin e × Fin n) :
     back₀ I t e (X (Sum.inr ij)) = genSubst (fun m => mkQ I t (X m)) (fun m => mkQ I t (C (t m))) ij := by
   simp [back₀]
 
 /- English proof (translation)
-Establish `: (back₀ I t e).comp (rename Sum.inl).toRingHom = (C : ChartQ I t →+* MvPolynomial (Fin e × Fin n) (ChartQ I t)).comp (mkQ I t)`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun m => ?_)` and prove the remaining obligations. Simplify using `[back₀_C]`. Simplify using `[back₀_inl]`. Conclude with `congrArg (fun f => f x) this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem back₀_rename (x : MvPolynomial (Fin n) F) :
     back₀ I t e (rename Sum.inl x) = C (mkQ I t x) := by
@@ -134,13 +134,13 @@ theorem back₀_rename (x : MvPolynomial (Fin n) F) :
   exact congrArg (fun f => f x) this
 
 /- English proof (translation)
-Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Rewrite using `[back₀_rename, Ideal.Quotient.eq_zero_iff_mem.mpr ha, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`. Establish `h1` using `congrArg (C : ChartQ I t →+* MvPolynomial (Fin e × Fin n) (ChartQ I t)) (sum_tQ I t)`. Simplify using `only [map_sum, map_mul, map_one] at h1`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_mul, back₀_inl, back₀_inr, genSubst]`. Use `set S := ∑ l, X (i, l) * C (mkQ I t (X l))`. Establish `: ∑ m, (X (i, m) - S * C (mkQ I t (C (t m)))) * C (mkQ I t (X m)) = S - S * 1`. Rewrite using `[← h1, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem chartIncIdeal_le_ker : chartIncIdeal I t e ≤ RingHom.ker (back₀ I t e) := by
   refine sup_le ?_ ?_
@@ -174,18 +174,18 @@ def bwd : MvPolynomial (Fin e) (ChartInc I t e) →+* MvPolynomial (Fin e × Fin
   eval₂Hom (back I t e) fun i => ∑ m, X (i, m) * C (mkQ I t (X m))
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Conclude with `(congrArg (back I t e) (toInc_mk I t e x)).trans (back₀_rename I t e x)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem back_toInc (q : ChartQ I t) : back I t e (toInc I t e q) = C q := by
   obtain ⟨x, rfl⟩ := Ideal.Quotient.mk_surjective q
   exact (congrArg (back I t e) (toInc_mk I t e x)).trans (back₀_rename I t e x)
 
 /- English proof (translation)
-Establish `hu` using `congrArg (C : ChartInc I t e →+* MvPolynomial (Fin e) (ChartInc I t e)) (sum_uS I t e i)`. Establish `ht` using `congrArg (C : ChartInc I t e →+* MvPolynomial (Fin e) (ChartInc I t e)) (sum_tS I t e)`. Simplify using `only [map_sum, map_mul, map_one, map_zero] at hu ht`. Establish `hX : ∀ l, chartX I t e (X l) = mkS I t e (X (Sum.inl l))` using `fun l => by`. Rewrite using `[chartX_apply, rename_X]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hX] at ht ⊢`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = X i := by rw [hu, ht]; ring`.
+A detailed English derivation is pending.
 -/
 theorem sum_fwd (i : Fin e) :
     (∑ l, (C (mkS I t e (X (Sum.inr (i, l)))) + X i * C (chartX I t e (C (t l)))) *
@@ -204,9 +204,9 @@ theorem sum_fwd (i : Fin e) :
     _ = X i := by rw [hu, ht]; ring
 
 /- English proof (translation)
-Establish `: ((fwd I t e).comp (back I t e)).comp (mkS I t e) = C.comp (mkS I t e)`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun v => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, back_mk, back₀_C, fwd_C, toInc_mk, chartX_apply, rename_C]`. Break down `v with m | ⟨i, m⟩` into its components or cases. Simplify using `only [RingHom.comp_apply, back_mk, back₀_inl, fwd_C, toInc_mk, chartX_apply, rename_X]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply, back_mk, back₀_inr, genSubst, map_sub, map_mul, map_sum, fwd_X, fwd_C, toInc_mk]`. Take the linear combination `(-(C (chartX I t e (C (t m))))) * sum_fwd I t e i`. Take `⟨a, rfl⟩` from `mkS_surjective I t e s`. Conclude with `congrArg (fun f => f a) this`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fwd_back (s : ChartInc I t e) : fwd I t e (back I t e s) = C s := by
   have : ((fwd I t e).comp (back I t e)).comp (mkS I t e) = C.comp (mkS I t e) := by
@@ -221,7 +221,7 @@ theorem fwd_back (s : ChartInc I t e) : fwd I t e (back I t e s) = C s := by
   exact congrArg (fun f => f a) this
 
 /- English proof (translation)
-Use `MvPolynomial.ringHom_ext (fun s => ?_) (fun i => ?_)` and prove the remaining obligations. Simplify using `[bwd, fwd_back]`. Simplify using `only [bwd, RingHom.comp_apply, eval₂Hom_X', map_sum, map_mul, fwd_X, fwd_C, toInc_mk, RingHom.id_apply]`. Conclude with `sum_fwd I t e i`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fwd_bwd : (fwd I t e).comp (bwd I t e) = RingHom.id _ := by
   refine MvPolynomial.ringHom_ext (fun s => ?_) (fun i => ?_)
@@ -231,7 +231,7 @@ theorem fwd_bwd : (fwd I t e).comp (bwd I t e) = RingHom.id _ := by
     exact sum_fwd I t e i
 
 /- English proof (translation)
-Use `MvPolynomial.ringHom_ext (fun q => ?_) (fun ij => ?_)` and prove the remaining obligations. Simplify using `[fwd, bwd, back_toInc]`. Take `⟨i, m⟩` from `ij`. Simplify using `only [RingHom.comp_apply, fwd_X, map_add, map_mul, bwd, eval₂Hom_C, eval₂Hom_X', RingHom.id_apply, chartX_apply, rename_C, back_mk, back₀_C, back₀_inr, genSubst]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bwd_fwd : (bwd I t e).comp (fwd I t e) = RingHom.id _ := by
   refine MvPolynomial.ringHom_ext (fun q => ?_) (fun ij => ?_)
@@ -242,7 +242,7 @@ theorem bwd_fwd : (bwd I t e).comp (fwd I t e) = RingHom.id _ := by
     ring
 
 /- English proof (translation)
-Use `ord_ringEquiv (Localization.localRingEquiv P P' f h) (algebraMap R _ x)` as an intermediate fact. Conclude with `(congrArg (Ring.ord (Localization.AtPrime P')) (Localization.localRingHom_to_map P P' (f : R →+* S) h x)).symm.trans this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ord_atPrime_ringEquiv {R S : Type*} [CommRing R] [CommRing S] (f : R ≃+* S) (P : Ideal R) [P.IsPrime]
     (P' : Ideal S) [P'.IsPrime] (h : P = P'.comap f) (x : R) :
@@ -260,7 +260,7 @@ Both sides reduce to the same expression.
 theorem equiv_apply (y : MvPolynomial (Fin e × Fin n) (ChartQ I t)) : equiv I t e y = fwd I t e y := rfl
 
 /- English proof (translation)
-Establish `h1 : (equiv I t e : MvPolynomial (Fin e × Fin n) (ChartQ I t) →+* MvPolynomial (Fin e) (ChartInc I t e)).comp C = C.comp (toInc I t e)` using `RingHom.ext fun q => fwd_C I t e q`. Establish `h2 : (toInc I t e).comp (mkQ I t) = chartX I t e` using `RingHom.ext fun _ => rfl`. Rewrite using `[Ideal.map_map, h1, ← Ideal.map_map, Ideal.map_map (mkQ I t), h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_equiv (W : Ideal (MvPolynomial (Fin n) F)) :
     ((W.map (mkQ I t)).map (C : ChartQ I t →+* MvPolynomial (Fin e × Fin n) (ChartQ I t))).map
@@ -272,9 +272,9 @@ theorem map_equiv (W : Ideal (MvPolynomial (Fin n) F)) :
   rw [Ideal.map_map, h1, ← Ideal.map_map, Ideal.map_map (mkQ I t), h2]
 
 /- English proof (translation)
-Introduce `F _ n e I W t _ _ x`. Use `isPrime_map_C (Fin e × Fin n) (W.map (mkQ I t))` as an intermediate fact. Use `isPrime_map_C (Fin e) (W.map (chartX I t e))` as an intermediate fact. Establish `hIJ : (W.map (mkQ I t)).map (C : ChartQ I t →+* MvPolynomial (Fin e × Fin n) (ChartQ I t)) = ((W.map (chartX I t e)).map (C : ChartInc I t e →+* MvPolynomial (Fin e) (ChartInc I t e))).comap (equiv I t e)`. Rewrite using `[← Ideal.comap_coe, ← map_equiv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Ideal.comap_map_of_bijective _ (equiv I t e).bijective).symm`. Establish `h2` using `ord_atPrime_ringEquiv (equiv I t e) _ _ hIJ (C (mkQ I t x))`. Rewrite `h2` using `[equiv_apply, fwd_C, toInc_mk]`. Conclude with `(h₁ (ChartInc I t e) (Fin e) (W.map (chartX I t e)) (chartX I t e x)).symm.trans (h2.trans (h₁ (ChartQ I t) (Fin e × Fin n) (W.map (mkQ I t)) (mkQ I t x)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof (h₁ : OrdPolynomialLocalization.Statement) : ChartIncOrd.Statement := by
   intro F _ n e I W t _ _ x

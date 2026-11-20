@@ -16,9 +16,9 @@ variable {n : ℕ}
 def TK (n : ℕ) : Set (M2 n) := {M | Mᴴ * M = 1 ∧ InG M}
 
 /- English proof (translation)
-Establish `hsub : TK n ⊆ Set.pi univ fun _ => Set.pi univ fun _ => Metric.closedBall (0 : ℂ) 1`. Introduce `M hM i _ j _`. Establish `hU : M ∈ Matrix.unitaryGroup (Fin n ⊕ Fin n) ℂ`. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Conclude with `hM.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using entry_norm_bound_of_unitary hU i j`. Use `(isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall (0 : ℂ) 1).of_isClosed_subset ?_ hsub` and prove the remaining obligations. Establish `hc1 : IsClosed {M : M2 n | Mᴴ * M = 1}` using `isClosed_eq (continuous_id.matrix_conjTranspose.matrix_mul continuous_id) continuous_const`. Establish `hc2 : IsClosed {M : M2 n | Mᴴ * JJ n * M = JJ n}` using `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Conclude with `hc1.inter hc2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompact_TK : IsCompact (TK n) := by
   have hsub : TK n ⊆ Set.pi univ fun _ => Set.pi univ fun _ => Metric.closedBall (0 : ℂ) 1 := by
@@ -40,7 +40,7 @@ def toGR (M : TK n) : GR n :=
   ⟨⟨M.1, M.1ᴴ, mul_eq_one_comm.mp M.2.1, M.2.1⟩, M.2.2⟩
 
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`. Conclude with `⟨continuous_subtype_val, continuous_subtype_val.matrix_conjTranspose⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem continuous_toGR : Continuous (toGR (n := n)) := by
   refine Continuous.subtype_mk ?_ _
@@ -48,11 +48,11 @@ theorem continuous_toGR : Continuous (toGR (n := n)) := by
   exact ⟨continuous_subtype_val, continuous_subtype_val.matrix_conjTranspose⟩
 
 /- English proof (translation)
-Establish `hset : (KR n : Set (GR n)) = Set.range (toGR (n` using `n)) := by`. Use extensionality with `k`. Prove the components needed by the constructor for the conclusion. Introduce `hk`. Use `⟨⟨mR k, hk.2, hk.1⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Introduce and unpack `⟨M, rfl⟩`. Conclude with `⟨M.2.2, M.2.1⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `haveI : CompactSpace (TK n) := isCompact_iff_compactSpace.mp isCompact_TK`. Rewrite using `[hset]`. Conclude with `isCompact_range continuous_toGR`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_KR : IsCompact ((KR n : Set (GR n))) := by
   have hset : (KR n : Set (GR n)) = Set.range (toGR (n := n)) := by

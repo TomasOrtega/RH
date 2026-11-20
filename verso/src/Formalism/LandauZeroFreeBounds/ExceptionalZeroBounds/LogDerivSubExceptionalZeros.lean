@@ -7,47 +7,43 @@ noncomputable section
 namespace Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Establish `hs' : 1 - c₁ / 2 / Real.log ((q : ℝ) * (|s.im| + 2)) ≤ s.re` using `hs`. Establish `hq1 : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Establish `hlog2 : (0.6931 : ℝ) < Real.log 2` using `by have := Real.log_two_gt_d9; linarith`. Use `set L := Real.log ((q : ℝ) * (|s.im| + 2)) with hLdef`. Establish `hL2 : Real.log 2 ≤ L` using `Real.log_le_log (by norm_num) (by nlinarith [abs_nonneg s.im])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLpos : 0 < L` using `by linarith`. Establish `hLne : L ≠ 0` using `hLpos.ne'`. Establish `hfar : ∀ ρ ∈ Z, (∀ β ∈ B, ρ ≠ (β : ℂ)) → ‖1 / (s - ρ)‖ ≤ 3 * L / c₁`. Introduce `ρ hρ hne`. Take `⟨hball, hzero⟩` from `(hZ ρ).mp hρ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnot : ¬ InRegion c₁ q ρ`. Introduce `hreg`. Take `⟨β, hβ, hρβ⟩` from `hBall ρ hreg ⟨Or.inl hχ, hzero⟩`. Conclude with `hne β hβ hρβ`. Simplify using `only [InRegion, not_le] at hnot`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `him : |ρ.im - s.im| ≤ 11 / 60`. Rewrite `hball` using `[Metric.mem_closedBall, dist_eq_norm]`. Establish `h1` using `Complex.abs_im_le_norm (ρ - ((21 / 20 : ℂ) + s.im * I))`. Establish `hime : (ρ - ((21 / 20 : ℂ) + s.im * I)).im = ρ.im - s.im` using `by simp`. Rewrite `h1` using `[hime]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set Lρ := Real.log ((q : ℝ) * (|ρ.im| + 2)) with hLρdef`. Establish `hLρ2 : Real.log 2 ≤ Lρ` using `Real.log_le_log (by norm_num) (by nlinarith [abs_nonneg ρ.im])`. Establish `hLρpos : 0 < Lρ` using `by linarith`. Establish `hLρ : Lρ ≤ 6 / 5 * L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (q : ℝ) * (|ρ.im| + 2) ≤ (q : ℝ) * (|s.im| + 2) * (131 / 120)`. Establish `h0 : |ρ.im| ≤ |s.im| + 11 / 60`. Use `abs_sub_abs_le_abs_sub ρ.im s.im` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use polynomial arithmetic with `[abs_nonneg s.im]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Lρ ≤ L + Real.log (131 / 120)`. Rewrite using `[hLρdef, hLdef, ← Real.log_mul (by positivity) (by norm_num)]`. Conclude with `Real.log_le_log (by positivity) h1`. Establish `h3 : Real.log (131 / 120) ≤ 131 / 120 - 1` using `Real.log_le_sub_one_of_pos (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1 : c₁ / (6 / 5 * L) ≤ c₁ / Lρ` using `div_le_div_of_nonneg_left hc₁.le hLρpos hLρ`. Establish `h1' : c₁ / (6 / 5 * L) = 5 * c₁ / (6 * L)`. Rewrite using `[div_eq_div_iff (by positivity) (by positivity)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : c₁ / (3 * L) = 5 * c₁ / (6 * L) - c₁ / 2 / L`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hre : c₁ / (3 * L) ≤ (s - ρ).re`. Rewrite using `[Complex.sub_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hpos : 0 < c₁ / (3 * L)` using `div_pos hc₁ (by linarith)`. Establish `hnorm : c₁ / (3 * L) ≤ ‖s - ρ‖` using `hre.trans (Complex.re_le_norm _)`. Rewrite using `[norm_div, norm_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hnear : ∀ β ∈ B, (β : ℂ) ∉ Z → ‖1 / (s - (β : ℂ))‖ ≤ 120 / 11`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `β hβ hβZ`. Establish `hout : ¬ (β : ℂ) ∈ Metric.closedBall ((21 / 20 : ℂ) + s.im * I) (11 / 20 / 3)`. Introduce `hin`. Conclude with `hβZ ((hZ _).mpr ⟨hin, (hBmem β hβ).2.2.1⟩)`. Rewrite `hout` using `[Metric.mem_closedBall, dist_eq_norm, not_le]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsc : ‖s - ((21 / 20 : ℂ) + s.im * I)‖ ≤ 47 / 540`. Use `(Complex.norm_le_abs_re_add_abs_im _).trans ?_` and prove the remaining obligations. Establish `hre' : (s - ((21 / 20 : ℂ) + s.im * I)).re = s.re - 21 / 20` using `by simp`. Establish `him' : (s - ((21 / 20 : ℂ) + s.im * I)).im = 0` using `by simp`. Rewrite using `[hre', him', abs_zero, add_zero, abs_le]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `constructor <;> linarith`. Establish `htri` using `norm_sub_le_norm_sub_add_norm_sub (β : ℂ) s ((21 / 20 : ℂ) + s.im * I)`. Rewrite `htri` using `[norm_sub_rev (β : ℂ) s]`. Establish `hd : (11 : ℝ) / 120 ≤ ‖s - (β : ℂ)‖` using `by linarith`. Rewrite using `[norm_div, norm_one]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hmsum : ∀ Z' ⊆ Z, (∀ ρ ∈ Z', ∀ β ∈ B, ρ ≠ (β : ℂ)) → ‖∑ ρ ∈ Z', (m ρ : ℂ) / (s - ρ)‖ ≤ 3 * K / (c₁ * Real.log 2) * L ^ 2`. Introduce `Z' hZ' hne`. Establish `hc3 : 0 ≤ 3 * L / c₁` using `div_nonneg (by linarith) hc₁.le`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[div_eq_mul_one_div, norm_mul, Complex.norm_natCast]`. Conclude with `mul_le_mul_of_nonneg_left (hfar ρ (hZ' hρ) (hne ρ hρ)) (Nat.cast_nonneg _)`. Use `_ = (∑ ρ ∈ Z', (m ρ : ℝ)) * (3 * L / c₁) := by rw [Finset.sum_mul]`. Use `_ ≤ (∑ ρ ∈ Z, (m ρ : ℝ)) * (3 * L / c₁) := mul_le_mul_of_nonneg_right (Finset.sum_le_sum_of_subset_of_nonneg hZ' fun _ _ _ => Nat.cast_nonneg _) hc3`. Use `_ ≤ K * L / Real.log 2 * (3 * L / c₁) := mul_le_mul_of_nonneg_right hsum hc3`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `_ = 3 * K / (c₁ * Real.log 2) * L ^ 2 := by ring`. Establish `hdecomp : negLD χ s + ∑ β ∈ B, 1 / (s - (β : ℂ)) = -(deriv (DirichletCharacter.LFunction χ) s / DirichletCharacter.LFunction χ s - ∑ ρ ∈ Z, (m ρ : ℂ) / (s - ρ)) + ((∑ β ∈ B, 1 / (s - (β : ℂ))) - ∑ ρ ∈ Z, (m ρ : ℂ) / (s - ρ))`. Unfold `negLD`. Expand and normalize the polynomial expressions, which then agree. Establish `hdiff : ‖(∑ β ∈ B, 1 / (s - (β : ℂ))) - ∑ ρ ∈ Z, (m ρ : ℂ) / (s - ρ)‖ ≤ 3 * K / (c₁ * Real.log 2) * L ^ 2 + 120 / 11`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `Nat.le_one_iff_eq_zero_or_eq_one.mp hBcard with h0 | h1` into its components or cases. Take `rfl` from `Finset.card_eq_zero.mp h0`. Rewrite using `[Finset.sum_empty, zero_sub, norm_neg]`. Establish `h2` using `hmsum Z subset_rfl (fun ρ _ β hβ => by simp at hβ)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨β, rfl⟩` from `Finset.card_eq_one.mp h1`. Rewrite using `[Finset.sum_singleton]`. Distinguish the cases in `hβZ : (β : ℂ) ∈ Z`. Rewrite using `[← Finset.add_sum_erase Z _ hβZ, hm3 _ hβZ (hBmem β (Finset.mem_singleton_self β)).2.2.2, Nat.cast_one, sub_add_eq_sub_sub, sub_self, zero_sub, norm_neg]`. Establish `h2` using `hmsum (Z.erase (β : ℂ)) (Finset.erase_subset _ _) (fun ρ hρ β' hβ' => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hβ'` using `[Finset.mem_singleton]`. Substitute `hβ'` using the available equality. Conclude with `Finset.ne_of_mem_erase hρ)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations.
-
-Establish `h2` using `hnear β (Finset.mem_singleton_self β) hβZ`. Establish `h3` using `hmsum Z subset_rfl (fun ρ hρ β' hβ' => by`. Rewrite `hβ'` using `[Finset.mem_singleton]`. Substitute `hβ'` using the available equality. Conclude with `fun h => hβZ (h ▸ hρ))`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hdecomp]`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_neg]`. Combine the linear relations using `[hE, hdiff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma log_deriv_sub_exceptional_zeros {c₁ : ℝ} (hc₁ : 0 < c₁) {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q}
     {B : Finset ℝ} (hχ : χ ≠ 1) (hBcard : B.card ≤ 1)

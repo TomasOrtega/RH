@@ -17,7 +17,7 @@ open GlobalTheory.PlaneLeviExt
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [cA, hσ]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma cA_cA (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -28,18 +28,18 @@ lemma cA_cA (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (z : AE F E) : cA 
 variable {d d₁ : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Matrix.mulVec_single, incM, frame, twoCols, incV]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma frame_mulVec_single_eq_x (H' : Plane E d d₁) :
     incM F (frame H') *ᵥ Pi.single (Sum.inr 0) 1 = incV F H'.x := by
   ext i; simp [Matrix.mulVec_single, incM, frame, twoCols, incV]
 
 /- English proof (translation)
-Establish `hmap : ∀ {a b c : Type} [Fintype b] (X : Matrix a b (AE F E)) (Y : Matrix b c (AE F E)), (X * Y).map (cA σ) = X.map (cA σ) * Y.map (cA σ)` using `fun X Y => Matrix.map_mul (f := (cA σ).toRingHom)`. Establish `hG : (incM F (frame H'))ᵀ * incM F W.J * (incM F (frame H')).map (cA σ) = incM F (Matrix.fromBlocks W₁.J 0 0 hyp)`. Rewrite using `[← gram_frame σ hσ B hW hA, incM_mul, incM_mul, incM_transpose, cA_incM]`. Establish `hJ : incM F W.J = (incM F (coframe hA.rank H'))ᵀ * incM F (Matrix.fromBlocks W₁.J 0 0 hyp) * (incM F (coframe hA.rank H')).map (cA σ)`. Establish `h1 : (incM F (frame H') * incM F (coframe hA.rank H'))ᵀ * incM F W.J * (incM F (frame H') * incM F (coframe hA.rank H')).map (cA σ) = incM F W.J`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[S_T hu, Matrix.transpose_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul, hmap]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hG]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.transpose_mul, hmap, Matrix.mul_assoc]`. Use `_ = _ := by rw [← hJ, hm, hG]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma conj_unitary (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E) {W : Spc F E d} {W₁ : Spc F E d₁}
     {H' : Plane E d d₁} {i₀ i₁ r s : ℕ} (hW : W.IsSkew σ B r s) (hA : H'.IsAdapted σ B W W₁ i₀ i₁)
@@ -69,13 +69,13 @@ lemma conj_unitary (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F
     _ = _ := by rw [← hJ, hm, hG]
 
 /- English proof (translation)
-Establish `hcol : ∀ j, q j (Sum.inr 0) = if j = Sum.inr 0 then b else 0`. Introduce `j`. Use `congrFun hx j` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ k, (qᵀ * incM F (Matrix.fromBlocks J₁ 0 0 hyp) * q.map (cA σ)) k (Sum.inr 0) = -(q (Sum.inr 1) k * cA σ b)`. Introduce `k`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two, hcol, incM, hyp]`. Establish `h1 : q (Sum.inr 1) (Sum.inr 1) * cA σ b = 1`. Use `key (Sum.inr 1)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hq]`. Simplify using `[incM, hyp] at this`. Take the linear combination `-this`. Use `⟨h1, fun i => ?_, fun i => by simpa using hcol (Sum.inl i), by simpa using hcol (Sum.inr 0)⟩` and prove the remaining obligations. Establish `h2 : q (Sum.inr 1) (Sum.inl i) * cA σ b = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `key (Sum.inl i)` as an intermediate fact. Rewrite `this` using `[hq]`. Simplify using `[incM] at this`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma row_y (σ : E →ₐ[F] E) (J₁ : Matrix (Fin d₁) (Fin d₁) E) (q : Matrix (Fin d₁ ⊕ Fin 2) (Fin d₁ ⊕ Fin 2) (AE F E))
     (b : AE F E) (hq : qᵀ * incM F (Matrix.fromBlocks J₁ 0 0 hyp) * q.map (cA σ) = incM F (Matrix.fromBlocks J₁ 0 0 hyp))
@@ -110,43 +110,41 @@ end GlobalTheory.ParabExtract
 open GlobalTheory.PlaneLeviExt GlobalTheory.ParabExtract in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ r s r₁ s₁ hB hW hW₁ hA v p hp a ha`. Establish `hσ : ∀ z, σ (σ z) = z` using `fun x => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hB.cm.2.2.2, hB.cm.2.2.2, star_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hu` using `isUnit_sq σ hσ B hW hW₁ hA`. Take `⟨S, hS⟩ : ∃ S, S = incM F (frame H')` from `⟨_, rfl⟩`. Take `⟨T, hT⟩ : ∃ T, T = incM F (coframe hA.rank H')` from `⟨_, rfl⟩`. Establish `hST : S * T = 1` using `by rw [hS, hT]; exact S_T hu`. Establish `hTS : T * S = 1` using `by rw [hS, hT]; exact T_S hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpinv : mat p * mat p⁻¹ = 1` using `by show ((p.1 * (p⁻¹).1 : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) = 1`. Rewrite using `[← Subgroup.coe_mul, mul_inv_cancel]`. Both sides reduce to the same expression. Establish `hpinv' : mat p⁻¹ * mat p = 1` using `by show (((p⁻¹).1 * p.1 : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) = 1`. Rewrite using `[← Subgroup.coe_mul, inv_mul_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨q, hq⟩ : ∃ q, q = T * mat p * S` from `⟨_, rfl⟩`. Take `⟨q', hq'⟩ : ∃ q', q' = T * mat p⁻¹ * S` from `⟨_, rfl⟩`. Establish `hqq' : q * q' = 1`. Rewrite using `[hq, hq']`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc S T, hST, Matrix.one_mul, ← Matrix.mul_assoc (mat p), hpinv, Matrix.one_mul, hTS]`. Establish `hGq : qᵀ * incM F (Matrix.fromBlocks W₁.J 0 0 hyp) * q.map (cA σ) = incM F (Matrix.fromBlocks W₁.J 0 0 hyp)`. Rewrite using `[hq, hT, hS]`. Conclude with `conj_unitary σ hσ B hW hA hu (mat p) p.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hGq' : q'ᵀ * incM F (Matrix.fromBlocks W₁.J 0 0 hyp) * q'.map (cA σ) = incM F (Matrix.fromBlocks W₁.J 0 0 hyp)`. Rewrite using `[hq', hT, hS]`. Conclude with `conj_unitary σ hσ B hW hA hu (mat p⁻¹) (p⁻¹).2`. Establish `hSe : S *ᵥ Pi.single (Sum.inr 0) 1 = incV F H'.x` using `by rw [hS]; exact frame_mulVec_single_eq_x H'`. Establish `hqx : ∀ (m : Matrix (Fin d) (Fin d) (AE F E)) (b : AE F E), m *ᵥ incV F H'.x = b • incV F H'.x → (T * m * S) *ᵥ Pi.single (Sum.inr 0) 1 = b • Pi.single (Sum.inr 0) 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m b hm`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hSe, hm, Matrix.mulVec_smul, ← hSe, Matrix.mulVec_mulVec, hTS, Matrix.one_mulVec]`. Establish `ry` using `row_y σ W₁.J q a hGq (by rw [hq]; exact hqx _ _ ha)`. Establish `hya : a * cA σ (q (Sum.inr 1) (Sum.inr 1)) = 1`. Use `congrArg (cA σ) ry.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[map_mul, cA_cA σ hσ, map_one]`. Rewrite using `[mul_comm]`. Conclude with `this`. Set `t : (AE F E)ˣ` to `Units.mkOfMulEqOne a _ hya`. Establish `ht : (t : AE F E) = a` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha' : mat p⁻¹ *ᵥ incV F H'.x = ((t⁻¹ : (AE F E)ˣ) : AE F E) • incV F H'.x`. Establish `h1 : incV F H'.x = a • (mat p⁻¹ *ᵥ incV F H'.x)`. Rewrite using `[← Matrix.mulVec_smul, ← ha, Matrix.mulVec_mulVec, hpinv', Matrix.one_mulVec]`. Use `conv_rhs => rw [h1]`. Rewrite using `[smul_smul, ← ht, Units.inv_mul, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ry'` using `row_y σ W₁.J q' _ hGq' (by rw [hq']; exact hqx _ _ ha')`. Set `A : Matrix (Fin d₁) (Fin d₁) (AE F E)` to `Matrix.of fun i j => q (Sum.inl i) (Sum.inl j)`. Set `A' : Matrix (Fin d₁) (Fin d₁) (AE F E)` to `Matrix.of fun i j => q' (Sum.inl i) (Sum.inl j)`. Establish `hAA' : A * A' = 1`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrFun (congrFun hqq' (Sum.inl i)) (Sum.inl j)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two, ry.2.2.1 i, ry'.2.1 j, zero_mul, mul_zero, add_zero] at this`. Simplify `this` using `[A, A', Matrix.mul_apply, Matrix.one_apply]`. Apply the tactic sequence `have hA'A : A' * A = 1 := by first | exact mul_eq_one_comm.mp hAA' | exact Matrix.mul_eq_one_comm.mp hAA' | exact (Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).mp hAA'`. Establish `hAU : Aᵀ * incM F W₁.J * A.map (cA σ) = incM F W₁.J`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use extensionality with `i j`. Use `congrFun (congrFun hGq (Sum.inl i)) (Sum.inl j)` as an intermediate fact. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two, incM, hyp, ry.2.1] at this`. Simplify `this` using `[A, Matrix.mul_apply, incM]`. Set `h₁ : UA σ W₁.J` to `⟨⟨A, A', hAA', hA'A⟩, hAU⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hp' : ∀ u, evFin F v u = 0 → u • (mat p - 1) = 0` using `hp`. Establish `hq1 : ∀ u, evFin F v u = 0 → u • (q - 1) = 0`. Introduce `u hu0`. Establish `e : q - 1 = T * (mat p - 1) * S`. Rewrite using `[hq, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hTS]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e, ← Matrix.smul_mul, ← Matrix.mul_smul, hp' u hu0, Matrix.mul_zero, Matrix.zero_mul]`. Use `⟨t, h₁, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show ∀ u, evFin F v u = 0 → u • (a - 1) = 0`. Introduce `u hu0`. Use `congrFun (congrFun (hq1 u hu0) (Sum.inr 0)) (Sum.inr 0)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[ry.2.2.2]`. Use `show ∀ u, evFin F v u = 0 → u • (A - 1) = 0`. Introduce `u hu0`. Use extensionality with `i j`. Use `congrFun (congrFun (hq1 u hu0) (Sum.inl i)) (Sum.inl j)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[A, Matrix.one_apply]`. Introduce `z`. Establish `hpS : mat p * S = S * q`. Rewrite using `[hq, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hST, Matrix.one_mul]`. Establish `hw : incM F H'.ι *ᵥ z = S *ᵥ Sum.elim z 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hS, incM_frame, Matrix.fromCols_mulVec]`. Simplify using the standard rewrite rules. Establish `hy1 : (q *ᵥ Sum.elim z 0) (Sum.inr 1) = 0`. Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, ry.2.1]`. Establish `hinl : (fun k => (q *ᵥ Sum.elim z 0) (Sum.inl k)) = A *ᵥ z`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, A]`. Use `⟨(q *ᵥ Sum.elim z 0) (Sum.inr 0), ?_⟩` and prove the remaining obligations. Rewrite using `[hw, Matrix.mulVec_mulVec, hpS, ← Matrix.mulVec_mulVec, hS, incM_frame, Matrix.fromCols_mulVec]`. Use `show _ = incM F H'.ι *ᵥ (A *ᵥ z) + _`.
-
-Rewrite using `[← hinl]`. Use `congr 1`. Generalize the expression as in `q *ᵥ Sum.elim z 0 = w at hy1 ⊢`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two, incM, twoCols, incV, hy1, mul_comm]`.
+Replace the chosen expression with an arbitrary variable. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ParabExtract.extract : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r s r₁ s₁ : ℕ), B.IsGood σ →

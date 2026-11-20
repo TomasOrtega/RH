@@ -23,17 +23,17 @@ open scoped TensorProduct
 namespace GlobalTheory.WeightNat
 
 /- English proof (translation)
-Introduce `D ψ θ A A' WW FA FW a b α β ωA hθ hA hW hT hexp hWeil hf`. Take `⟨f, hf, hf0⟩` from `hf`. Establish `key : ∀ τ, ∃ z : ℤ, (z : ℚ) = b τ - a τ - (WW.rank : ℚ) / 2 ∧ 0 ≤ z`. Introduce `τ`. Take `⟨a', b', ha', hb', hgap⟩` from `hT.gap τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e1` using `GlobalTheory.Mem.HeckeExp.hasInfExp_unique ha' (hexp τ).1`. Establish `e2` using `GlobalTheory.Mem.HeckeExp.hasInfExp_unique hb' (hexp τ).2`. Establish `hdiv` using `GlobalTheory.RealQuot.hasInfExp_div D α β τ (a τ) (b τ) (hexp τ).1 (hexp τ).2`. Take `⟨x, y, hx, -, -⟩` from `GlobalTheory.CompactFockAction.compactFockAll D _ WW (GlobalTheory.SquareComm.frSgn true FA) FW θ ψ β (β / α) (ωA.toSgn true) f τ (b τ) (b τ - a τ) hθ hWeil (hexp τ).2 hdiv hf hf0`. Take `⟨p, q, -, hr, -⟩` from `hT.sig`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hpos : 0 < A.rank` using `by omega`. Establish `h1` using `hx ⟨0, hpos⟩`. Generalize the expression as in `(GlobalTheory.SquareComm.frSgn true FA).ε τ ⟨0, hpos⟩ = e at h1`. Establish `h2` using `GlobalTheory.CompactFockAction.card_sign (FW.ε τ) e`. Use `set c := (Finset.univ.filter fun i => FW.ε τ i = e).card`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ((-(c : ℤ) - x e : ℤ) : ℚ) = b τ - a τ - (WW.rank : ℚ) / 2`. Use `push_cast`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.wtS at h1`. Apply the tactic sequence `cases e <;> simp at h1 h2 <;> linarith`. Establish `hq : (0 : ℚ) < b τ - a τ - (WW.rank : ℚ) / 2`.
+Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1, ← e2]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨-(c : ℤ) - x e, hz, ?_⟩` and prove the remaining obligations. Establish `: (0 : ℚ) ≤ ((-(c : ℤ) - x e : ℤ) : ℚ)` using `by rw [hz]; exact hq.le`. Conclude with `this` after adjusting the coercions.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose z hz hz0 using key`. Use `⟨fun τ => (z τ).toNat, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hz τ]`. Conclude with `Int.toNat_of_nonneg (hz0 τ)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem weight_nat : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A A' WW : HSp D) (FA : GlobalTheory.ChainFr.Fr A) (FW : GlobalTheory.ChainFr.Fr WW)
     (a b : D.what₂.Tau → ℚ) (α β : (Formalism.L2.Theta.AE D)ˣ →* Circle) (ωA : GlobalTheory.Grid.WRep A WW), IsInfFam θ →

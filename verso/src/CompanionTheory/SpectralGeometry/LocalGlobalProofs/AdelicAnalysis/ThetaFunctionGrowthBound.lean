@@ -11,7 +11,7 @@ open scoped ENNReal NNReal MatrixGroups
 namespace GlobalTheory.CompanionTheory.SW.Core.EiBound
 
 /- English proof (translation)
-Establish `hout : Summable (fun s => ∑' r, h (s, r))` using `Summable.of_nonneg_of_le (fun s => tsum_nonneg fun r => h0 _) (fun s => (hin s).2) (ha.mul_right K)`. Establish `hs : Summable h` using `(summable_prod_of_nonneg (fun p => h0 p)).2 ⟨fun s => (hin s).1, hout⟩`. Use `⟨hs, ?_⟩` and prove the remaining obligations. Rewrite using `[hs.tsum_prod, ← tsum_mul_right]`. Conclude with `Summable.tsum_le_tsum (fun s => (hin s).2) hout (ha.mul_right K)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_sum_bound {S R : Type} (h : S × R → ℝ) (a : S → ℝ) (K : ℝ) (h0 : ∀ p, 0 ≤ h p)
     (ha : Summable a)
@@ -26,17 +26,17 @@ theorem prod_sum_bound {S R : Type} (h : S × R → ℝ) (a : S → ℝ) (K : �
   exact Summable.tsum_le_tsum (fun s => (hin s).2) hout (ha.mul_right K)
 
 /- English proof (translation)
-Set `L : AddSubgroup F` to `(algebraMap (𝓞 F) F).toAddMonoidHom.range`. Establish `hL : ∀ x : F, x ∈ L ↔ ∃ r : 𝓞 F, (r : F) = x` using `fun x => by`. Simplify using `[L, AddMonoidHom.mem_range]`. Establish `hsep : ∀ q q' : F ⧸ L, (∃ r : 𝓞 F, (Quotient.out q : F) - Quotient.out q' = (r : F)) → q = q'`. Introduce and unpack `q q' ⟨r, hr⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← QuotientAddGroup.out_eq' q, ← QuotientAddGroup.out_eq' q']`. Use `(QuotientAddGroup.eq).2 ?_` and prove the remaining obligations. Establish `: -(Quotient.out q : F) + Quotient.out q' = ((-r : 𝓞 F) : F)`. Use `push_cast`. Take the linear combination `-hr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `(hL _).2 ⟨-r, this.symm⟩`. Use `⟨F ⧸ L, Quotient.out, ?_, hsep, ?_, ?_⟩` and prove the remaining obligations. Introduce `q q' h`. Conclude with `hsep q q' ⟨0, by simp [h]⟩`. Introduce and unpack `⟨q, r⟩ ⟨q', r'⟩ h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only at h`. Establish `hq : q = q'` using `hsep q q' ⟨r' - r, by push_cast; linear_combination h⟩`. Substitute `hq` using the available equality. Establish `: (r : F) = r'` using `add_left_cancel h`. Establish `: r = r'` using `RingOfIntegers.ext this`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Introduce `b`. Establish `h1 : (QuotientAddGroup.mk (Quotient.out (QuotientAddGroup.mk b : F ⧸ L)) : F ⧸ L) = QuotientAddGroup.mk b` using `QuotientAddGroup.out_eq' _`. Take `⟨r, hr⟩` from `(hL _).1 ((QuotientAddGroup.eq).1 h1)`. Use `⟨⟨QuotientAddGroup.mk b, r⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hr]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_decomp (F : Type) [Field F] [NumberField F] :
     ∃ (Q : Type) (out : Q → F), Function.Injective out ∧
@@ -73,11 +73,11 @@ theorem exists_decomp (F : Type) [Field F] [NumberField F] :
     rw [hr]; ring
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, M = k + 2` from `⟨M - 2, by omega⟩`. Establish `hy0 : 0 < y` using `ht.trans_le hy`. Establish `hs : 0 < Real.sqrt y` using `Real.sqrt_pos.2 hy0`. Establish `hst : 0 < Real.sqrt t` using `Real.sqrt_pos.2 ht`. Establish `hyy : y = Real.sqrt y ^ 2` using `(Real.sq_sqrt hy0.le).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Real.sqrt y ^ (k + 2) * (y * (y ^ (k + 2))⁻¹) = (Real.sqrt y ^ k)⁻¹`. Generalize the expression as in `Real.sqrt y = s at hs hyy`. Substitute `hyy` using the available equality. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, Nat.add_sub_cancel]`. Conclude with `inv_anti₀ (by positivity) (pow_le_pow_left₀ hst.le (Real.sqrt_le_sqrt hy) k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem place_bound (M : ℕ) (hM : 2 ≤ M) (t y : ℝ) (ht : 0 < t) (hy : t ≤ y) :
     Real.sqrt y ^ M * (y * (y ^ M)⁻¹) ≤ ((Real.sqrt t) ^ (M - 2))⁻¹ := by
@@ -95,35 +95,33 @@ theorem place_bound (M : ℕ) (hM : 2 ≤ M) (t y : ℝ) (ht : 0 < t) (hy : t �
   exact inv_anti₀ (by positivity) (pow_le_pow_left₀ hst.le (Real.sqrt_le_sqrt hy) k)
 
 /- English proof (translation)
-Introduce `F _ _ _ _ lf hlf hO ψ hψ ι _ _ M B ρ P hQ hM φ hφ t ht`. Establish `hTR : IsTotallyReal F` using `hQ.1`. Establish `hρ : ∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x` using `hQ.2.2.2.2.1`. Take `⟨C1, hC1⟩` from `GlobalTheory.T.fourier_coefficient_growth_bound F lf hlf hO ψ hψ ι M B ρ P hQ φ hφ`. Take `⟨C2, hC2⟩` from `GlobalTheory.T.eisenstein_lattice_sum_bound F hTR ρ hρ M (by omega) t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, out, hinj, hsep, hbij⟩` from `exists_decomp F`. Take `⟨hd1, hd2, hd3⟩` from `GlobalTheory.T.denominator_power_summable F M hM 1 one_pos`. Set `a : Q → ℝ` to `fun q => ((den (out q) : ℝ) ^ M)⁻¹`. Establish `ha0 : ∀ q, 0 ≤ a q` using `fun q => by positivity`. Establish `ha : Summable a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hd3 (Set.range out) (by`. Introduce and unpack `_ ⟨q, rfl⟩ _ ⟨q', rfl⟩ ⟨r, hr⟩`. Rewrite using `[hsep q q' ⟨r, by simpa using hr⟩])`. Conclude with `(Equiv.ofInjective out hinj).summable_iff.2 h`. Establish `hterm : ∀ τ : InfinitePlace F → ℂ, (∀ w, 0 < (τ w).im) → ∀ b : F, ‖eiTerm ψ lf B ρ P φ τ b‖ ≤ |C1| * ((den b : ℝ) ^ M)⁻¹ * (∏ w, ‖τ w + (ρ w b : ℝ)‖ ^ M)⁻¹`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ hτ b`. Establish `hc` using `(GlobalTheory.T.archimedean_gaussian_fourier F ι M B ρ P hQ (fun w => τ w + (ρ w b : ℝ)) (fun w => by simpa using hτ w)).2.1`. Unfold `eiTerm`. Rewrite using `[norm_mul, hc]`. Use `mul_le_mul_of_nonneg_right ((hC1 b).trans ?_) (by positivity)` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity)`. Use `⟨(∑' q, a q) * |C1| * |C2| * ∏ _w : InfinitePlace F, ((Real.sqrt t) ^ (M - 2))⁻¹, ?_⟩` and prove the remaining obligations. Introduce `τ hτ`. Establish `hτ0 : ∀ w, 0 < (τ w).im` using `fun w => ht.trans_le (hτ w)`. Use `set Y : ℝ := ∏ w, (τ w).im * ((τ w).im ^ M)⁻¹ with hYdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `hY0 : 0 ≤ Y` using `Finset.prod_nonneg fun w _ => by`. Use `hτ0 w` as an intermediate fact. Check the signs of the components of the expression. Set `e : Q × 𝓞 F ≃ F` to `Equiv.ofBijective _ hbij`. Set `h' : Q × 𝓞 F → ℝ` to `fun p => |C1| * a p.1 * (∏ w, ‖(τ w + (ρ w (out p.1) : ℝ)) + (ρ w (p.2 : F) : ℝ)‖ ^ M)⁻¹`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `hh'0 : ∀ p, 0 ≤ h' p` using `fun p => by`. Use `ha0 p.1` as an intermediate fact. Check the signs of the components of the expression. Establish `hle : ∀ p, ‖eiTerm ψ lf B ρ P φ τ (e p)‖ ≤ h' p`. Introduce and unpack `⟨q, r⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hterm τ hτ0 (out q + (r : F))`. Establish `h2 : den (out q + (r : F)) = den (out q)` using `hd1 _ _`. Rewrite `h1` using `[h2]`. Establish `h3 : ∀ w, τ w + ((ρ w (out q + (r : F)) : ℝ) : ℂ) = (τ w + (ρ w (out q) : ℝ)) + (ρ w (r : F) : ℝ)` using `fun w => by`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h3] at h1`. Conclude with `h1`. Establish `hin : ∀ q, Summable (fun r => h' (q, r)) ∧ ∑' r, h' (q, r) ≤ a q * (|C1| * (|C2| * Y))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `q`. Take `⟨hs, hb⟩` from `hC2 (fun w => τ w + (ρ w (out q) : ℝ)) (fun w => by simpa using hτ w)`. Establish `him : ∀ w, (τ w + ((ρ w (out q) : ℝ) : ℂ)).im = (τ w).im` using `fun w => by simp`. Simplify using `only [him] at hb`. Establish `hs' : Summable (fun r : 𝓞 F => |C1| * a q * (∏ w, ‖(τ w + (ρ w (out q) : ℝ)) + (ρ w (r : F) : ℝ)‖ ^ M)⁻¹)` using `hs.mul_left _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hs', ?_⟩` and prove the remaining obligations. Establish `hq0` using `ha0 q`. Express the relevant statement in the definitionally equal form `∑' r : 𝓞 F, |C1| * a q * (∏ w, ‖(τ w + (ρ w (out q) : ℝ)) + (ρ w (r : F) : ℝ)‖ ^ M)⁻¹ ≤ _`. Rewrite using `[tsum_mul_left]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hsum', hbd'⟩` from `prod_sum_bound h' a (|C1| * (|C2| * Y)) hh'0 ha hin`. Establish `hsumc : Summable (fun p => ‖eiTerm ψ lf B ρ P φ τ (e p)‖)` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hle hsum'`. Establish `hsum : Summable (fun b => ‖eiTerm ψ lf B ρ P φ τ b‖)` using `e.summable_iff.1 hsumc`. Use `⟨hsum, ?_⟩` and prove the remaining obligations. Establish `htot : ∑' b, ‖eiTerm ψ lf B ρ P φ τ b‖ ≤ (∑' q, a q) * (|C1| * (|C2| * Y))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e.tsum_eq (fun b => ‖eiTerm ψ lf B ρ P φ τ b‖)]`. Conclude with `(Summable.tsum_le_tsum hle hsumc hsum').trans hbd'`. Establish `hwt0 : 0 ≤ wt M τ` using `Finset.prod_nonneg fun w _ => by positivity`. Establish `hA0 : 0 ≤ ∑' q, a q` using `tsum_nonneg ha0`. Establish `hwY : wt M τ * Y ≤ ∏ _w : InfinitePlace F, ((Real.sqrt t) ^ (M - 2))⁻¹`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hYdef]`. Unfold `wt`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun w _ => ?_) (fun w _ => place_bound M (by omega) t _ ht (hτ w))` and prove the remaining obligations. Use `hτ0 w` as an intermediate fact.
-
-Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation.
+Check the signs of the components of the expression. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ei_bound : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)] [BorelSpace (A F)]
     (lf : Measure (A F)), lf.IsAddHaarMeasure → lf (Oh F) = 1 → ∀ ψ : AddChar (A F) ℂ, IsStdChar F ψ →

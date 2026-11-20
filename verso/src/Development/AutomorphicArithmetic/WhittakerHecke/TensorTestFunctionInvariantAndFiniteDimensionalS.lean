@@ -5,7 +5,7 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨⟨fun g => f (a * g), f.continuous.comp (continuous_const.mul continuous_id)⟩, f.hasCompactSupport.comp_homeomorph (Homeomorph.mulLeft a)⟩, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem trEx {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (f : CompactlySupportedContinuousMap G ℂ) (a : G) :
@@ -14,21 +14,19 @@ private theorem trEx {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGro
     f.hasCompactSupport.comp_homeomorph (Homeomorph.mulLeft a)⟩, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `K _ _ n hn β e U hU hUo he`. Establish `happ : ∀ (β : TI K n) (e : TF K n) x, tens β e x = tensFun β e x` using `fun β e => (UpperTheory.ConvolutionTheory.Tf.tensApply K n hn β e).1`. Use `⟨fun u hu z => ?_, fun hβ => ?_⟩` and prove the remaining obligations. Establish `h1 : (MultiplicityOne.finProj K n u : AdelicGLn.AdelicGL K n) = finEmb K n u` using `congrArg Subtype.val (MultiplicityOne.finProj_eq_finOne ⟨u, hU hu⟩)`. Rewrite using `[happ, happ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `tensFun`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, h1, map_mul, map_mul, map_inv, map_inv, infPart_finEmb, finPart_finEmb, inv_one, one_mul, he _ (U.inv_mem hu)]`. Use `choose tb htb using trEx β choose te hte using trEx e`. Set `Kf` to `AdelicGLn.integralFiniteGL K n`. Set `V : Subgroup Kf` to `U.subgroupOf Kf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hV : IsOpen (V : Set Kf)` using `hUo.preimage continuous_subtype_val`. Use `haveI : CompactSpace Kf := isCompact_iff_compactSpace.1 (AdelicGLn.isCompact_integralFiniteGL K n)`. Use `haveI : Finite (Kf ⧸ V) := Subgroup.quotient_finite_of_isOpen V hV`. Set `c : TI K n →ₗ[ℂ] (archGroup K n → ℂ)` to `{ toFun := fun f => f, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hc : Function.Injective c` using `DFunLike.coe_injective`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Set `T : Submodule ℂ (TI K n)` to `Submodule.span ℂ (Set.range fun k : archCompact K n => tb k)`. Use `haveI : FiniteDimensional ℂ T := by`. Unfold `LeftFin at hβ`. Establish `hle : T.map c ≤ Submodule.span ℂ (Set.range fun k : archCompact K n => fun g : archGroup K n => β ((k : archGroup K n) * g))` using `(Submodule.map_span _ _).le.trans (Submodule.span_mono (by`. Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨k, funext fun g => (htb k g).symm⟩))`. Use `Submodule.finiteDimensional_of_le hle` as an intermediate fact. Conclude with `Module.Finite.equiv (Submodule.equivMapOfInjective _ hc _).symm`. Set `L : TF K n → TI K n →ₗ[ℂ] (normOneGL K n → ℂ)` to `fun e' => { toFun := fun f => tens f e' map_add' := fun f g => by rw [(UpperTheory.ConvolutionTheory.Tf.tensApply K n hn f e').2.2.1]; rfl map_smul' := fun a f => by rw [((UpperTheory.ConvolutionTheory.Tf.tensApply K n hn f e').2.2.2.2 a).1]; rfl }`. Use `Submodule.finiteDimensional_of_le (S₂ := ⨆ q : Kf ⧸ V, T.map (L (te (q.out.1)⁻¹))) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Set `kf : Kf` to `⟨finPart K n k.1, finPart_mem_integralFiniteGL k.2⟩`. Set `ka : archCompact K n` to `⟨infPart K n k.1, archPart_mem_archCompact k.2⟩`. Take `⟨v, hv⟩` from `QuotientGroup.mk_out_eq_mul V kf`. Use `Submodule.mem_iSup_of_mem (QuotientGroup.mk kf) ⟨_, Submodule.subset_span ⟨ka⁻¹, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hv]`. Use function extensionality and compare the values at `z`. Express the relevant statement in the definitionally equal form `tens (tb (infPart K n k.1)⁻¹) (te (finPart K n k.1 * v.1.1)⁻¹) z = tens β e _`. Rewrite using `[happ, happ]`. Unfold `tensFun`.
-
-Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_inclusion, map_mul, map_mul, map_inv, map_inv, hte, mul_inv_rev, mul_assoc, he _ (U.inv_mem (show v.1.1 ∈ U from v.2))]`. Use `congr 1`. Simplify using `only [kbar, htb, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.tensorTestFunction_invariant_and_finiteDimensional_span :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (β : TI K n) (e : TF K n) (U : Subgroup (AdelicGLn.FiniteAdelicGL K n)),

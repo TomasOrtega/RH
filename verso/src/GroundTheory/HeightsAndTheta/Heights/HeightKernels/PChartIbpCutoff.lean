@@ -18,11 +18,11 @@ namespace ChartIntegrationByPartsCutoff
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `Real.sq_sqrt ha`. Establish `h2` using `Real.sq_sqrt hb`. Establish `h3` using `sq_nonneg (2 * ε * Real.sqrt a - Real.sqrt b)`. Establish `h4 : 0 < 4 * ε` using `by positivity`. Establish `key : 4 * ε * (Real.sqrt a * Real.sqrt b) ≤ 4 * ε * (ε * a + b / (4 * ε))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_add, mul_div_cancel₀ _ h4.ne']`. Establish `e : (2 * ε * Real.sqrt a - Real.sqrt b) ^ 2 = 4 * ε * (ε * a) + b - 4 * ε * (Real.sqrt a * Real.sqrt b)`. Rewrite using `[sub_sq, mul_pow, mul_pow, h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `le_of_mul_le_mul_left key h4`.
+A detailed English derivation is pending.
 -/
 theorem sqrt_mul_sqrt_le {a b ε : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hε : 0 < ε) :
     Real.sqrt a * Real.sqrt b ≤ ε * a + b / (4 * ε) := by
@@ -42,18 +42,18 @@ theorem sqrt_mul_sqrt_le {a b ε : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hε : 0 <
 def outer (n k : ℕ) : Set (Fin (n + 1) → ℂ) := {y | ((k : ℝ) + 1) ^ 2 ≤ ∑ i, ‖y i‖ ^ 2}
 
 /- English proof (translation)
-The claim follows from `(isClosed_le continuous_const (continuous_finsetSum _ fun i _ => (continuous_norm.comp (continuous_apply i)).pow 2)).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_outer (k : ℕ) : MeasurableSet (outer n k) :=
   (isClosed_le continuous_const (continuous_finsetSum _ fun i _ =>
     (continuous_norm.comp (continuous_apply i)).pow 2)).measurableSet
 
 /- English proof (translation)
-Establish `h0 : (∫ _y : Fin (n + 1) → ℂ, (0 : ℝ)) = 0` using `integral_zero _ _`. Rewrite using `[← h0]`. Use `tendsto_integral_of_dominated_convergence (fun y => ‖g y‖) (fun k => (hg.indicator (measurableSet_outer k)).aestronglyMeasurable) hg.norm (fun k => Eventually.of_forall fun y => ?_) (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Rewrite using `[Set.indicator] split_ifs`. Conclude with `le_rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨N, hN⟩` from `exists_nat_gt (∑ i, ‖y i‖ ^ 2)`. Use `tendsto_atTop_of_eventually_const (i₀ := N) fun k hk => ?_` and prove the remaining obligations. Establish `hk' : (N : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `: ¬ y ∈ outer n k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [outer, Set.mem_ofPred_eq, not_le]`. Use the polynomial consequences of the given equalities and inequalities. Simplify using `[Set.indicator_of_notMem this]`.
+Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_integral_outer {g : (Fin (n + 1) → ℂ) → ℝ} (hg : Integrable g) :
     Tendsto (fun k : ℕ => ∫ y, (outer n k).indicator g y) atTop (𝓝 0) := by
@@ -75,25 +75,23 @@ theorem tendsto_integral_outer {g : (Fin (n + 1) → ℂ) → ℝ} (hg : Integra
     simp [Set.indicator_of_notMem this]
 
 /- English proof (translation)
-Use `set φ : Fin n → (Fin (n + 1) → ℂ) → ℝ := fun i => hermChartPot (T i) with hφdef`. Establish `h2 : ∀ i, ContDiff ℝ 2 (φ i)` using `fun i => contDiff_hermChartPot_of_le 2 (hT i)`. Establish `hone : ((1 : ℕ) : WithTop ℕ∞) ≤ 3` using `by norm_num`. Establish `hW0 : 0 ≤ W` using `(norm_nonneg _).trans (hW 0)`. Use `set t : ℕ → ℝ := fun k => ∫ y, (outer n k).indicator (gradDens φ u u) y with htdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : ∀ k, 0 ≤ t k` using `fun k => integral_nonneg fun y => Set.indicator_nonneg (fun y _ => gradDens_chart_nonneg hT u y) y`. Use `set ε : ℕ → ℝ := fun k => Real.sqrt (t k + 1 / ((k : ℝ) + 1)) with hεdef`. Establish `hεpos : ∀ k, 0 < ε k` using `fun k => Real.sqrt_pos.mpr (by have := ht0 k; positivity)`. Establish `htε : ∀ k, t k ≤ ε k ^ 2` using `fun k => by`. Rewrite using `[hεdef, Real.sq_sqrt (by have := ht0 k; positivity)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) ≤ 1 / ((k : ℝ) + 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbound : ∀ k, |∫ y, w y * gradDens φ (chartCutoff k) u y| ≤ W * (ε k * (K + 1 / 4))`. Introduce `k`. Establish `hχ3` using `contDiff_chartCutoff (D := n + 1) k 3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc` using `hasCompactSupport_chartCutoff (D := n + 1) k`. Establish `hiχ : Integrable (gradDens φ (chartCutoff k) (chartCutoff k))` using `(continuous_gradDens h2 (hχ3.of_le hone) (hχ3.of_le hone)).integrable_of_hasCompactSupport (hasCompactSupport_gradDens_left φ _ hcc)`. Establish `hiO : Integrable ((outer n k).indicator (gradDens φ u u))` using `hE.indicator (measurableSet_outer k)`. Establish `hpt : ∀ y, ‖w y * gradDens φ (chartCutoff k) u y‖ ≤ W * (ε k * gradDens φ (chartCutoff k) (chartCutoff k) y + (outer n k).indicator (gradDens φ u u) y / (4 * ε k))`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[norm_mul]`. Establish `hnn` using `gradDens_chart_nonneg hT (chartCutoff k) y`. Distinguish the cases in `hy : y ∈ outer n k`. Rewrite using `[Set.indicator_of_mem hy]`. Establish `hcs : ‖gradDens φ (chartCutoff k) u y‖ ≤ ε k * gradDens φ (chartCutoff k) (chartCutoff k) y + gradDens φ u u y / (4 * ε k)` using `(abs_gradDens_chart_le hT (chartCutoff k) u y).trans (sqrt_mul_sqrt_le hnn (gradDens_chart_nonneg hT u y) (hεpos k))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul (hW y) hcs (norm_nonneg _) hW0`. Establish `hlt : ∑ i, ‖y i‖ ^ 2 < ((k : ℝ) + 1) ^ 2` using `by simpa [outer] using hy`. Rewrite using `[gradDens_chartCutoff_left φ u hlt, Set.indicator_of_notMem hy, norm_zero, mul_zero, zero_div, add_zero]`. Conclude with `mul_nonneg hW0 (mul_nonneg (hεpos k).le hnn)`. Establish `hint : Integrable fun y => W * (ε k * gradDens φ (chartCutoff k) (chartCutoff k) y + (outer n k).indicator (gradDens φ u u) y / (4 * ε k))` using `((hiχ.const_mul (ε k)).add (hiO.div_const (4 * ε k))).const_mul W`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `norm_integral_le_of_norm_le hint (Eventually.of_forall hpt)`. Rewrite `h1` using `[Real.norm_eq_abs]`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_add (hiχ.const_mul _) (hiO.div_const _), integral_const_mul, integral_div]`. Use `mul_le_mul_of_nonneg_left ?_ hW0` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hq : t k / (4 * ε k) ≤ ε k / 4`. Rewrite using `[div_le_div_iff₀ (by have := hεpos k; positivity) (by norm_num)]`. Use polynomial arithmetic with `[htε k, hεpos k]`. Use `mul_le_mul_of_nonneg_left (hK k) (hεpos k).le` as an intermediate fact. Express the relevant statement in the definitionally equal form `ε k * _ + t k / (4 * ε k) ≤ _`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `htt : Tendsto t atTop (𝓝 0)` using `tendsto_integral_outer hE`. Establish `hinv : Tendsto (fun k : ℕ => 1 / ((k : ℝ) + 1)) atTop (𝓝 0)` using `tendsto_one_div_add_atTop_nhds_zero_nat`. Establish `hε : Tendsto ε atTop (𝓝 0)`. Use `((htt.add hinv).sqrt)` as an intermediate fact.
-
-Simplify `this` using `[hεdef]`. Establish `hB : Tendsto (fun k => W * (ε k * (K + 1 / 4))) atTop (𝓝 0)`. Simplify using `using (hε.mul_const (K + 1 / 4)).const_mul W`. Conclude with `squeeze_zero_norm (fun k => (hbound k).trans_eq' (Real.norm_eq_abs _)) hB`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendsto_boundary {T : Fin n → Matrix (Fin (n + 1 + 1)) (Fin (n + 1 + 1)) ℂ} (hT : ∀ i, (T i).PosDef)
     {u w : (Fin (n + 1) → ℂ) → ℝ} {W : ℝ} (hW : ∀ y, ‖w y‖ ≤ W)
@@ -166,15 +164,13 @@ end ChartIntegrationByPartsCutoff
 open ChartIntegrationByPartsCutoff in
 
 /- English proof (translation)
-Introduce `n A B C D T hA hB hC hD' hT`. Use `set φ : Fin n → (Fin (n + 1) → ℂ) → ℝ := fun i => hermChartPot (T i) with hφdef`. Use `set u : (Fin (n + 1) → ℂ) → ℝ := fun y => hermChartPot A y - hermChartPot B y with hudef`. Use `set w : (Fin (n + 1) → ℂ) → ℝ := fun y => hermChartPot C y - hermChartPot D y with hwdef`. Establish `h3 : ∀ i, ContDiff ℝ 3 (φ i)` using `fun i => contDiff_hermChartPot_of_le 3 (hT i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu : ContDiff ℝ 3 u` using `(contDiff_hermChartPot_of_le 3 hA).sub (contDiff_hermChartPot_of_le 3 hB)`. Establish `hw : ContDiff ℝ 3 w` using `(contDiff_hermChartPot_of_le 3 hC).sub (contDiff_hermChartPot_of_le 3 hD')`. Take `⟨Wu, hWu⟩` from `ChartEnergyIntegrableAlt.pot_sub_bound HermFormCompare.proof hA hB`. Take `⟨Ww, hWw⟩` from `ChartEnergyIntegrableAlt.pot_sub_bound HermFormCompare.proof hC hD'`. Take `⟨K, hK⟩` from `hE n T hT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ k : ℕ, (∫ y, chartCutoff k y * (u y * maDensity (Fin.cons w φ) y - w y * maDensity (Fin.cons u φ) y)) = (∫ y, w y * gradDens φ (chartCutoff k) u y) - ∫ y, u y * gradDens φ (chartCutoff k) w y`. Introduce `k`. Take `⟨i1, -, -, e1⟩` from `parts_cutoff h3 (contDiff_chartCutoff k 3) (hasCompactSupport_chartCutoff k) hu hw`. Take `⟨i2, -, -, e2⟩` from `parts_cutoff h3 (contDiff_chartCutoff k 3) (hasCompactSupport_chartCutoff k) hw hu`. Establish `hsplit : ∀ y, chartCutoff k y * (u y * maDensity (Fin.cons w φ) y - w y * maDensity (Fin.cons u φ) y) = chartCutoff k y * u y * maDens (Fin.cons w φ) y - chartCutoff k y * w y * maDens (Fin.cons u φ) y` using `fun y => by change _ = _ * _ * maDensity _ y - _ * _ * maDensity _ y; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hsplit]`. Rewrite using `[integral_sub i1 i2, e1, e2]`. Repeatedly rewrite using `[show ∀ y, gradDens φ w u y = gradDens φ u w y from gradDens_chart_comm hT w u]`. Expand and normalize the polynomial expressions, which then agree. Use `Tendsto.congr (fun k => (key k).symm) ?_` and prove the remaining obligations.
-
-Rewrite using `[← sub_zero (0 : ℝ)]`. Conclude with `(tendsto_boundary hT hWw (hD n A B T hA hB hT) hK).sub (tendsto_boundary hT hWu (hD n C D T hC hD' hT) hK)`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChartIbpCutoff.proof (hE : ChartCutoffEnergy.Statement) (hD : ChartDiffEnergy.Statement) :
     ChartIbpCutoff.Statement := by

@@ -16,15 +16,15 @@ open Formalism.DivisionValues Formalism.L2.Indef Formalism.L2.DIV
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Establish `hpd : ((c : ℂ) • Matrix.gram ℂ w).PosDef` using `(Matrix.posDef_gram_of_linearIndependent hli).smul (Complex.zero_lt_real.mpr hc)`. Establish `hm` using `(frameOfSpec n _ hpd).2`. Use `set Y := frameOf ((c : ℂ) • Matrix.gram ℂ w) with hY`. Establish `h0 : star y ⬝ᵥ (metOf Y).mulVec y = star (Y⁻¹.mulVec y) ⬝ᵥ Y⁻¹.mulVec y`. Rewrite using `[metOf, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : star y ⬝ᵥ (metOf Y).mulVec y = (c : ℂ) * ⟪lin w y, lin w y⟫_ℂ`. Rewrite using `[hm, Matrix.smul_mulVec, dotProduct_smul, Matrix.star_dotProduct_gram_mulVec, smul_eq_mul]`. Both sides reduce to the same expression. Establish `h2 : ((∑ i, ‖Y⁻¹.mulVec y i‖ ^ 2 : ℝ) : ℂ) = star (Y⁻¹.mulVec y) ⬝ᵥ Y⁻¹.mulVec y`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Simplify using `only [dotProduct, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Establish `h3 : ⟪lin w y, lin w y⟫_ℂ = ((‖lin w y‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[inner_self_eq_norm_sq_to_K]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `h1 : (∑ i, ‖Y⁻¹.mulVec y i‖ ^ 2 : ℝ) = c * ‖lin w y‖ ^ 2`. Establish `h4 : ((∑ i, ‖Y⁻¹.mulVec y i‖ ^ 2 : ℝ) : ℂ) = ((c * ‖lin w y‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[h2, ← h0, hg, h3]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h4` after adjusting the coercions. Unfold `fnorm Formalism.HermitianLatticesTheory.cnorm`. Rewrite using `[h1, Real.sqrt_mul hc.le, Real.sqrt_sq (norm_nonneg _)]`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fnorm_gram_smul {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {n : ℕ} (w : Fin n → E)
     (hli : LinearIndependent ℂ w) (c : ℝ) (hc : 0 < c) (y : Fin n → ℂ) :
@@ -57,14 +57,14 @@ theorem fnorm_gram_smul {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ
   rw [h1, Real.sqrt_mul hc.le, Real.sqrt_sq (norm_nonneg _)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[cpt]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cpt_zero' (σ : K →+* ℂ) (n : ℕ) : cpt σ (0 : Fin n → K) = 0 := by
   funext i
   simp [cpt]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[cpt]`. Simplify using `[cpt, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cpt_single (σ : K →+* ℂ) {n : ℕ} (i : Fin n) : cpt σ (Pi.single i (1 : K)) = Pi.single i 1 := by
   funext j
@@ -74,9 +74,9 @@ theorem cpt_single (σ : K →+* ℂ) {n : ℕ} (i : Fin n) : cpt σ (Pi.single 
   · simp [cpt, h]
 
 /- English proof (translation)
-Establish `hx : x = ∑ i, x i • (Pi.single i (1 : ℂ) : Fin a → ℂ)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hy : y = ∑ k, y k • (Pi.single k (1 : ℂ) : Fin D → ℂ)`. Use extensionality with `j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hx, hy]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => mul_left_comm _ _ _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bil_expand {a D : ℕ} (Φ : (Fin a → ℂ) →ₗ[ℂ] (Fin D → ℂ) →ₗ[ℂ] ℂ) (x : Fin a → ℂ) (y : Fin D → ℂ) :
     Φ x y = ∑ i, ∑ k, x i * y k * Φ (Pi.single i (1 : ℂ)) (Pi.single k (1 : ℂ)) := by
@@ -92,7 +92,7 @@ theorem bil_expand {a D : ℕ} (Φ : (Fin a → ℂ) →ₗ[ℂ] (Fin D → ℂ)
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => mul_left_comm _ _ _
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, CxData.rinv_spec P h, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_rinv {d n : ℕ} (P : Matrix (Fin d) (Fin n) K) (h : Function.Surjective P.mulVec) (y : Fin d → K) :
     P.mulVec ((CxData.rinv P).mulVec y) = y := by
@@ -144,7 +144,7 @@ def zetaOf (d : X.MIDat fc) (u : (fc X.zs).Dc.Mem) (t : Bs.Tup) : K :=
   open Classical in if h : ∃ k : K, Bs.v0.embedding k = d.ζC u t then h.choose else 1
 
 /- English proof (translation)
-Establish `hx : x = ∑ k, x k • (Pi.single k (1 : K) : Fin ((lv (fc X.zs) b).dQ t) → K)`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_rhs => rw [hx]`. Simplify using `only [iC, map_sum, map_smul, map_smulₛₗ, lin, Fintype.linearCombination_apply, cpt]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iC_cpt' (b : Bool) (t : Bs.Tup) (x : Fin ((lv (fc X.zs) b).dQ t) → K) :
     X.iC cr b t (cpt Bs.v0.embedding x) = X.Θ t (X.jR t (cr.toR X.zs b t x)) := by
@@ -155,15 +155,13 @@ theorem iC_cpt' (b : Bool) (t : Bs.Tup) (x : Fin ((lv (fc X.zs) b).dQ t) → K) 
   simp only [iC, map_sum, map_smul, map_smulₛₗ, lin, Fintype.linearCombination_apply, cpt]
 
 /- English proof (translation)
-Use `set q : A.FR t := cr.toR X.zs true t (((fc X.zs).Df1.Pq t).mulVec F) with hq`. Establish `hdV : eV t F - q ∈ cv.v0R X.zs true t` using `sub_mem (hE.1 t F) (hC t _)`. Establish `hdo : ∀ x, cv.hR t (cr.toR X.zs true t x) (eV t F - q) = 0`. Introduce `x`. Rewrite using `[map_sub, hE.2 t F x, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hjV : X.jR t (eV t F - q) ∈ X.V0C cv true t` using `Submodule.subset_span ⟨_, hdV, rfl⟩`. Establish `hΘE : X.Θ t (X.jR t (eV t F - q)) ∈ X.EEl true` using `hDn t ⟨_, hjV, rfl⟩`. Establish `horth : ∀ e ∈ X.EEl true, ⟪e, X.Θ t (X.jR t (eV t F - q))⟫_ℂ = 0`. Introduce `e he`. Rewrite using `[← LinearMap.adjoint_inner_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : LinearMap.adjoint (X.Θ t) e ∈ Submodule.span ℂ (Set.range fun x : Fin ((lv (fc X.zs) true).dQ t) → K => X.jR t (cr.toR X.zs true t x))`. Rewrite using `[hRL t]`. Conclude with `Submodule.mem_inf.2 ⟨LinearMap.mem_range_self _ e, hUp t (Submodule.mem_map_of_mem he)⟩`. Establish `h2 : Submodule.span ℂ (Set.range fun x : Fin ((lv (fc X.zs) true).dQ t) → K => X.jR t (cr.toR X.zs true t x)) ≤ (Submodule.span ℂ {X.jR t (eV t F - q)})ᗮ`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_orthogonal_singleton_iff_inner_right, inner_eq_zero_symm, hJ, hdo x, map_zero]`. Establish `h3` using `Submodule.mem_orthogonal_singleton_iff_inner_right.1 (h2 h1)`. Rewrite `h3` using `[inner_eq_zero_symm]`. Then use the resulting hypothesis. Establish `h0 : X.Θ t (X.jR t (eV t F - q)) = 0` using `inner_self_eq_zero.1 (horth _ hΘE)`.
-
-Rewrite `h0` using `[map_sub, map_sub, sub_eq_zero]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_eV (eV : ∀ t, (Fin ((fc X.zs).Df1.nV t) → K) →ₗ[K] A.FR t) (hJ : X.JIsoR cv)
     (hRL : X.RatLev cr cv true) (hDn : X.DnLev cv true) (hUp : X.UpLev cv true) (hC : X.CoordinatesInGoodPart cr cv true)
@@ -198,9 +196,9 @@ section Ident
 variable {eV : ∀ t, (Fin ((fc X.zs).Df1.nV t) → K) →ₗ[K] A.FR t} {sEE : X.EE →ₗ⋆[ℂ] (fc X.zs).Sp.HH} {d : X.MIDat fc}
 
 /- English proof (translation)
-Establish `h1` using `hI u Bs.μ0 φ ((rinv ((fc X.zs).Df1.Pq Bs.μ0)).mulVec y)`. Rewrite `h1` using `[hU.2.2.2 u, one_mul, X.theta_eV cr cv eV hJ hRL hDn hUp hC hE]`. Establish `h3 : ((fc X.zs).Df1.Pq Bs.μ0).mulVec ((rinv ((fc X.zs).Df1.Pq Bs.μ0)).mulVec y) = y` using `mulVec_rinv _ (hW.Pq_surj Bs.μ0) y`. Rewrite `h1` using `[h3]`. Rewrite using `[X.iC_cpt' cr true Bs.μ0 y]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem bdef_eq (hW : (fc X.zs).Df1.WF) (hJ : X.JIsoR cv) (hRL : X.RatLev cr cv true) (hDn : X.DnLev cv true)
     (hUp : X.UpLev cv true) (hC : X.CoordinatesInGoodPart cr cv true) (hE : X.EVTie cr cv eV) (hU : X.MIUnit d)
@@ -218,7 +216,7 @@ theorem bdef_eq (hW : (fc X.zs).Df1.WF) (hJ : X.JIsoR cv) (hRL : X.RatLev cr cv 
   exact h1
 
 /- English proof (translation)
-Rewrite using `[X.bdef_eq cr cv hW hJ hRL hDn hUp hC hE hU hI, hI u t φ F, X.theta_eV cr cv eV hJ hRL hDn hUp hC hE]`. Establish `hx : X.iC cr true Bs.μ0 (cpt Bs.v0.embedding ((X.rowMat cr true t).mulVec (((fc X.zs).Df1.Pq t).mulVec F))) = X.Θ t (X.jR t (cr.toR X.zs true t (((fc X.zs).Df1.Pq t).mulVec F)))` using `(X.key_row cr true h2 hr t _).trans (X.iC_cpt' cr true t _)`. Rewrite using `[hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mi_key (hW : (fc X.zs).Df1.WF) (h2 : X.H2 cr true) (hr : X.RATmu cr true) (hJ : X.JIsoR cv)
     (hRL : X.RatLev cr cv true) (hDn : X.DnLev cv true) (hUp : X.UpLev cv true) (hC : X.CoordinatesInGoodPart cr cv true)
@@ -233,9 +231,9 @@ theorem mi_key (hW : (fc X.zs).Df1.WF) (h2 : X.H2 cr true) (hr : X.RATmu cr true
   rw [hx]
 
 /- English proof (translation)
-Introduce `u φ F hF`. Establish `hP : ((fc X.zs).Df1.Pq Bs.μ0).mulVec F = 0` using `LinearMap.mem_ker.1 hF`. Establish `h1` using `hI u Bs.μ0 φ F`. Establish `h0 : cr.toR X.zs true Bs.μ0 (((fc X.zs).Df1.Pq Bs.μ0).mulVec F) = 0`. Rewrite using `[hP]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_zero _`. Rewrite `h1` using `[hU.2.2.2 u, one_mul, X.theta_eV cr cv eV hJ hRL hDn hUp hC hE, h0]`. Simplify using `only [map_zero, inner_zero_left, mul_zero] at h1`. Conclude with `(map_eq_zero Bs.v0.embedding).1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem btVanish_of (hJ : X.JIsoR cv) (hRL : X.RatLev cr cv true) (hDn : X.DnLev cv true)
     (hUp : X.UpLev cv true) (hC : X.CoordinatesInGoodPart cr cv true) (hE : X.EVTie cr cv eV) (hU : X.MIUnit d)
@@ -250,7 +248,7 @@ theorem btVanish_of (hJ : X.JIsoR cv) (hRL : X.RatLev cr cv true) (hDn : X.DnLev
   exact (map_eq_zero Bs.v0.embedding).1 h1
 
 /- English proof (translation)
-Simplify using `only [zetaOf, dif_pos h]`. Conclude with `h.choose_spec`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zetaOf_spec (u : (fc X.zs).Dc.Mem) (t : Bs.Tup) (h : ∃ k : K, Bs.v0.embedding k = d.ζC u t) :
     Bs.v0.embedding (X.zetaOf d u t) = d.ζC u t := by
@@ -258,14 +256,14 @@ theorem zetaOf_spec (u : (fc X.zs).Dc.Mem) (t : Bs.Tup) (h : ∃ k : K, Bs.v0.em
   exact h.choose_spec
 
 /- English proof (translation)
-Simplify using `only [zetaOf, dif_neg h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zetaOf_not (u : (fc X.zs).Dc.Mem) (t : Bs.Tup) (h : ¬ ∃ k : K, Bs.v0.embedding k = d.ζC u t) :
     X.zetaOf d u t = 1 := by
   simp only [zetaOf, dif_neg h]
 
 /- English proof (translation)
-Take `⟨n, hn, hpow⟩` from `hU.2.2.1 u t`. Distinguish the cases in `h : ∃ k : K, Bs.v0.embedding k = d.ζC u t`. Use `⟨n, hn, Bs.v0.embedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, X.zetaOf_spec u t h, hpow, map_one]`. Conclude with `⟨1, one_pos, by rw [X.zetaOf_not u t h, one_pow]⟩`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem zetaOf_pow (hU : X.MIUnit d) (u : (fc X.zs).Dc.Mem) (t : Bs.Tup) :
     ∃ n : ℕ, 0 < n ∧ X.zetaOf d u t ^ n = 1 := by
@@ -276,9 +274,9 @@ theorem zetaOf_pow (hU : X.MIUnit d) (u : (fc X.zs).Dc.Mem) (t : Bs.Tup) :
   · exact ⟨1, one_pos, by rw [X.zetaOf_not u t h, one_pow]⟩
 
 /- English proof (translation)
-Establish `h1 : (n : ℤ) * vw w k = 0`. Unfold `vw`. Rewrite using `[← FractionalIdeal.count_pow]`. Use `first`. Consider the case `rw [FractionalIdeal.spanSingleton_pow]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [← FractionalIdeal.spanSingleton_pow]`. Rewrite using `[hk, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]`. Break down `mul_eq_zero.mp h1 with h | h` into its components or cases. Conclude with `absurd h (by exact_mod_cast hn.ne')`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem vw_pow_lemma {k : K} {n : ℕ} (hn : 0 < n) (hk : k ^ n = 1) (w : HeightOneSpectrum (𝓞 K)) :
     vw w k = 0 := by
@@ -294,9 +292,9 @@ private theorem vw_pow_lemma {k : K} {n : ℕ} (hn : 0 < n) (hk : k ^ n = 1) (w 
   · exact h
 
 /- English proof (translation)
-Use `⟨fun u => ?_, fun u t => ?_, fun u w => ?_⟩` and prove the remaining obligations. Establish `h : ∃ k : K, Bs.v0.embedding k = d.ζC u Bs.μ0` using `⟨1, by rw [map_one, hU.2.2.2 u]⟩`. Apply `Bs.v0.embedding.injective` to reduce the goal to its premises. Rewrite using `[X.zetaOf_spec u Bs.μ0 h, hU.2.2.2 u, map_one]`. Take `⟨n, hn, h⟩` from `X.zetaOf_pow hU u t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `h0`. Rewrite `h` using `[h0, zero_pow hn.ne']`. Conclude with `zero_ne_one h`. Take `⟨n, hn, h⟩` from `X.zetaOf_pow hU u (X.μ w)`. Conclude with `vw_pow_lemma hn h w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem zetaOK_of (hU : X.MIUnit d) : X.ZetaOK (X.zetaOf d) := by
   refine ⟨fun u => ?_, fun u t => ?_, fun u w => ?_⟩
@@ -311,11 +309,11 @@ theorem zetaOK_of (hU : X.MIUnit d) : X.ZetaOK (X.zetaOf d) := by
     exact vw_pow_lemma hn h w
 
 /- English proof (translation)
-Introduce `u t _ φ F`. Establish `hk` using `X.mi_key cr cv hW h2 hr hJ hRL hDn hUp hC hE hU hI u t φ F`. Distinguish the cases in `h : ∃ k : K, Bs.v0.embedding k = d.ζC u t`. Apply `Bs.v0.embedding.injective` to reduce the goal to its premises. Rewrite using `[map_mul, X.zetaOf_spec u t h, hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : (fc X.zs).Dc.Pt u t φ F = 0`. Assume the negation of the conclusion as `hP`. Apply `h` to reduce the goal to its premises. Use `⟨X.Bdef u φ ((X.rowMat cr true t).mulVec (((fc X.zs).Df1.Pq t).mulVec F)) / (fc X.zs).Dc.Pt u t φ F, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, ← hk, mul_div_assoc, div_self ((map_ne_zero _).2 hP), mul_one]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hk` using `[hP, map_zero, mul_zero]`. Rewrite using `[hP, mul_zero]`. Conclude with `((map_eq_zero _).1 hk.symm).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matrix_identity_of_hypotheses (hW : (fc X.zs).Df1.WF) (h2 : X.H2 cr true) (hr : X.RATmu cr true) (hJ : X.JIsoR cv)
     (hRL : X.RatLev cr cv true) (hDn : X.DnLev cv true) (hUp : X.UpLev cv true) (hC : X.CoordinatesInGoodPart cr cv true)
@@ -336,23 +334,19 @@ theorem matrix_identity_of_hypotheses (hW : (fc X.zs).Df1.WF) (h2 : X.H2 cr true
     exact ((map_eq_zero _).1 hk.symm).symm
 
 /- English proof (translation)
-Establish `hn : 0 < X.nP true` using `hpos.2.2 true`. Establish `hli : LinearIndependent ℂ (fun i => X.iC cr true Bs.μ0 (Pi.single i 1))` using `li_of_lin_injective (by rw [lin_basis]; exact h2.1)`. Establish `hXE : X.XE cr true Bs.v0 = frameOf (X.gramE cr true)` using `(rowXE_spec (Df := lv (fc X.zs) true) hW _ (X.gramE_unit cr true h2 hn) X.κ hpos.1 (fun j p v => X.lam j Bs.μ0 p v) (fun j p v => hpos.2.1 j Bs.μ0 p v)).2.1`. Establish `hfn : ∀ y, fnorm (X.XE cr true Bs.v0) y = Real.sqrt (X.nP true)⁻¹ * ‖X.iC cr true Bs.μ0 y‖`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hXE, gramE, fnorm_gram_smul _ hli _ (inv_pos.mpr hn), lin_basis]`. Establish `hmem : ∀ y, X.iC cr true Bs.μ0 y ∈ X.EEl true` using `fun y => h2.2.2 ▸ LinearMap.mem_range_self _ y`. Establish `hsn : ∀ e ∈ X.EEl true, ‖sEE e‖ = Real.sqrt (X.nP true)⁻¹ * ‖e‖`. Introduce `e he`. Establish `h3 : ‖sEE e‖ ^ 2 = (X.nP true)⁻¹ * ‖e‖ ^ 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hS.1 e he, ← mul_assoc, inv_mul_cancel₀ hn.ne', one_mul]`. Rewrite using `[← Real.sqrt_sq (norm_nonneg (sEE e)), h3, Real.sqrt_mul (inv_pos.mpr hn).le, Real.sqrt_sq (norm_nonneg e)]`. Establish `hex : ∀ y, ∃ y', X.iC cr true Bs.μ0 y' = d.V (X.iC cr true Bs.μ0 y)`. Introduce `y`. Establish `h4` using `(hU.1 _ (hmem y)).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h4` using `[← h2.2.2]`. Conclude with `LinearMap.mem_range.1 h4`. Use `choose w hw using hex`. Set `W : (Fin ((lv (fc X.zs) true).dQ Bs.μ0) → ℂ) →ₗ[ℂ] (Fin ((lv (fc X.zs) true).dQ Bs.μ0) → ℂ)` to `{ toFun := w map_add' := fun x y => h2.1 (by simp only [hw, map_add]) map_smul' := fun c y => h2.1 (by simp only [hw, map_smul, RingHom.id_apply]) }`. Establish `hWy : ∀ y, (LinearMap.toMatrix' W).mulVec y = w y` using `fun y => LinearMap.toMatrix'_mulVec W y`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun (y : Fin ((lv (fc X.zs) true).dQ Bs.μ0) → ℂ) => ?_, fun y => ?_, ?_, LinearMap.toMatrix' W, fun (y : Fin ((lv (fc X.zs) true).dQ Bs.μ0) → ℂ) => ?_, fun u => ⟨d.a u, hA u, d.U u, hU.2.1 u, fun x (y : Fin ((lv (fc X.zs) true).dQ Bs.μ0) → ℂ) => ?_⟩⟩` and prove the remaining obligations. Conclude with `(hsn _ (hmem y)).trans (hfn y).symm`. Conclude with `hS.2.1 _ (hmem y)`. Use `show Module.finrank ℂ (fc X.zs).Sp.Rw = (lv (fc X.zs) true).dQ Bs.μ0`. Rewrite using `[hS.2.2, ← h2.2.2, LinearMap.finrank_range_of_inj h2.1, Module.finrank_fin_fun]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `e1 : fnorm (X.XE cr true Bs.v0) ((LinearMap.toMatrix' W).mulVec y) = fnorm (X.XE cr true Bs.v0) (w y)` using `congrArg _ (hWy y)`. Use `e1.trans ((hfn _).trans ?_)` and prove the remaining obligations. Rewrite using `[hw, (hU.1 _ (hmem y)).2]`. Conclude with `(hfn y).symm`. Use `show pairC Bs.v0 (X.Bdef u) x y = d.a u * ⟪sEE (X.iC cr true Bs.μ0 ((LinearMap.toMatrix' W).mulVec y)), (fc X.zs).Sp.Pu u ((d.U u).mulVec x)⟫_ℂ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hWy, hw]`. Set `Φ : (Fin ((fc X.zs).Dc.a u) → ℂ) →ₗ[ℂ] (Fin ((lv (fc X.zs) true).dQ Bs.μ0) → ℂ) →ₗ[ℂ] ℂ` to `LinearMap.mk₂ ℂ (fun x y => d.a u * ⟪sEE (d.V (X.iC cr true Bs.μ0 y)), (fc X.zs).Sp.Pu u ((d.U u).mulVec x)⟫_ℂ) (fun x x' y => by simp only [Matrix.mulVec_add, map_add, inner_add_right, mul_add]) (fun c x y => by simp only [Matrix.mulVec_smul, map_smul, inner_smul_right, smul_eq_ …`. Simplify using `only [map_smul, LinearMap.map_smulₛₗ, inner_smul_left, smul_eq_mul, starRingEnd_self_apply]`. Use the proof step `ring)`. Establish `hΦ : d.a u * ⟪sEE (d.V (X.iC cr true Bs.μ0 y)), (fc X.zs).Sp.Pu u ((d.U u).mulVec x)⟫_ℂ = Φ x y` using `rfl`.
-
-Rewrite using `[hΦ, bil_expand Φ x y, pairC]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hik : Φ (Pi.single i 1) (Pi.single k 1) = Bs.v0.embedding (X.Bdef u (Pi.single i 1) (Pi.single k 1))`. Rewrite using `[X.bdef_eq cr cv hW hJ hRL hDn hUp hC hE hU hI, cpt_single, cpt_single]`. Both sides reduce to the same expression.
-
-Rewrite using `[hik]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isometric_periods_of_hypotheses (hW : (fc X.zs).Df1.WF) (hpos : X.H4pos) (h2 : X.H2 cr true) (hJ : X.JIsoR cv)
     (hRL : X.RatLev cr cv true) (hDn : X.DnLev cv true) (hUp : X.UpLev cv true) (hC : X.CoordinatesInGoodPart cr cv true)
@@ -418,7 +412,7 @@ theorem isometric_periods_of_hypotheses (hW : (fc X.zs).Df1.WF) (hpos : X.H4pos)
 end Ident
 
 /- English proof (translation)
-Take `⟨d, hU, hI, hA⟩` from `hM`. Conclude with `⟨X.btVanish_of cr cv hJ hRL hDn hUp hC hE hU hI, X.zetaOf d, X.matrix_identity_of_hypotheses cr cv hW h2 hr hJ hRL hDn hUp hC hE hU hI, X.zetaOK_of hU, X.isometric_periods_of_hypotheses cr cv hW hpos h2 hJ hRL hDn hUp hC hE hS hU hI hA _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cutMI (eV : ∀ t, (Fin ((fc X.zs).Df1.nV t) → K) →ₗ[K] A.FR t) (sEE : X.EE →ₗ⋆[ℂ] (fc X.zs).Sp.HH)
     (hW : (fc X.zs).Df1.WF) (hpos : X.H4pos) (h2 : X.H2 cr true) (hr : X.RATmu cr true) (hJ : X.JIsoR cv)
@@ -432,7 +426,7 @@ theorem cutMI (eV : ∀ t, (Fin ((fc X.zs).Df1.nV t) → K) →ₗ[K] A.FR t) (s
     X.isometric_periods_of_hypotheses cr cv hW hpos h2 hJ hRL hDn hUp hC hE hS hU hI hA _⟩
 
 /- English proof (translation)
-Take `⟨hBt, ζ, hMI, hZ, hL⟩` from `X.cutMI cr cv eV sEE hW hpos h2 hr hJ hRL hDn hUp hC hE hS hM`. Conclude with `⟨ζ, X.cutPairing cr ζ sEE hW h2 hBt hMI hZ, hL⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cutMI_cols (eV : ∀ t, (Fin ((fc X.zs).Df1.nV t) → K) →ₗ[K] A.FR t) (sEE : X.EE →ₗ⋆[ℂ] (fc X.zs).Sp.HH)
     (hW : (fc X.zs).Df1.WF) (hpos : X.H4pos) (h2 : X.H2 cr true) (hr : X.RATmu cr true) (hJ : X.JIsoR cv)

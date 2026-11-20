@@ -9,7 +9,7 @@ open scoped MatrixGroups ModularForm Manifold Real
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Establish `: (0 : ℝ) < p` using `by exact_mod_cast hp`. Rewrite using `[Complex.div_natCast_im]`. Simplify using `using div_pos hz this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem im_div_pos' {p : ℕ} (hp : 0 < p) {z : ℂ} (hz : 0 < z.im) (b : ℕ) :
     0 < ((z + b) / (p : ℂ)).im := by
@@ -18,9 +18,9 @@ private theorem im_div_pos' {p : ℕ} (hp : 0 < p) {z : ℂ} (hz : 0 < z.im) (b 
   simpa using div_pos hz this
 
 /- English proof (translation)
-Establish `hζ` using `Complex.isPrimitiveRoot_exp p hp.ne'`. Use `set ζ := Complex.exp (2 * π * Complex.I / p)`. Repeatedly rewrite using `[← pow_mul, fun b => mul_comm b m, pow_mul]`. Use `split_ifs with h`. Rewrite using `[(hζ.pow_eq_one_iff_dvd m).2 h]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h1 : ζ ^ m ≠ 1` using `fun e => h ((hζ.pow_eq_one_iff_dvd m).1 e)`. Rewrite using `[geom_sum_eq h1, ← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_root' {p : ℕ} (hp : 0 < p) (m : ℕ) :
     ∑ b ∈ Finset.range p, (Complex.exp (2 * π * Complex.I / p) ^ b) ^ m =
@@ -34,17 +34,17 @@ private theorem sum_root' {p : ℕ} (hp : 0 < p) (m : ℕ) :
     rw [geom_sum_eq h1, ← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one]; simp
 
 /- English proof (translation)
-Establish `hp0 : (q : ℂ) ≠ 0` using `by exact_mod_cast hq0.ne'`. Establish `hinj : Function.Injective fun m : ℕ => q * m` using `mul_right_injective₀ hq0.ne'`. Establish `hrange : ∀ n, n ∉ Set.range (fun m : ℕ => q * m) → ¬ q ∣ n` using `fun n hn ⟨m, hm⟩ => hn ⟨m, hm.symm⟩`. Use `set Q := Function.Periodic.qParam 1 τ with hQ`. Use `set x := Complex.exp (2 * π * Complex.I * τ / q) with hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxq : x ^ q = Q`. Rewrite using `[hx, ← Complex.exp_nat_mul, hQ, Function.Periodic.qParam]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ∀ b : ℕ, HasSum (fun m => a m * x ^ m * (Complex.exp (2 * π * Complex.I / q) ^ b) ^ m) (f (ofComplex (((τ : ℂ) + b) / q)))` using `fun b => by`. Establish `h` using `hf (ofComplex (((τ : ℂ) + b) / q))`. Rewrite `h`, the goal using `[ofComplex_apply_of_im_pos (im_div_pos' hq0 τ.2 b)]`. Use `h using 2 with m` and compare the differences between its conclusion and the goal. Establish `e : Function.Periodic.qParam 1 (((τ : ℂ) + b) / q) = x * Complex.exp (2 * π * Complex.I / q) ^ b`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hx, Function.Periodic.qParam, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[e, mul_pow, mul_assoc]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities.
 
-Establish `hC` using `hasSum_sum (s := Finset.range q) fun b _ => hB b`. Rewrite `hC` using `[← Finset.mul_sum, sum_root' hq0]`. Rewrite `hC` using `[← hinj.hasSum_iff fun n hn => by simp [hrange n hn]]`. Establish `hD` using `hC.mul_left (q : ℂ)⁻¹`. Use `cast (congrArg (HasSum · (uOp q f τ)) (funext fun n => ?_)) hD` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [Function.comp, dvd_mul_right, if_true, pow_mul, hxq, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem hasSum_uOp (q : ℕ) (f : ℍ → ℂ) (a : ℕ → ℂ) (hq0 : 0 < q)
     (hf : ∀ τ : ℍ, HasSum (fun m => a m • Function.Periodic.qParam 1 τ ^ m) (f τ)) (τ : ℍ) :

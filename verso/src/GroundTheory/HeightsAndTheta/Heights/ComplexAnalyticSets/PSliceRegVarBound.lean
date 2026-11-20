@@ -16,7 +16,7 @@ namespace SliceRegVarBound
 variable {n d : ℕ}
 
 /- English proof (translation)
-The claim follows from `|chartDens J A f φ y| ≤ K * chartAbsDens J A (fun _ => 1) φ y := by simp only [chartDens, chartAbsDens, sheetSum] rw [finsum_mem_eq_finite_toFinset_sum _ (hfin y), finsum_mem_eq_finite_toFinset_sum _ (hfin y), Finset.mul_sum] refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.s …`.
+A detailed English derivation is pending.
 -/
 theorem abs_chartDens_le_mul {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (hfin : ∀ y, (fibre J A y).Finite) (f : (Fin n → ℂ) → ℝ) (K : ℝ) (hf : ∀ x, |f x| ≤ K)
@@ -36,33 +36,27 @@ end SliceRegVarBound
 open SliceRegVarBound FormIntegralPositivity in
 
 /- English proof (translation)
-Introduce `n e h W F u' ℓ ε C b₁ b₂ w hW hF hℓ hε hb₁ hb₂ hw hb₁C hb₂C hwI hbw`. Establish `hC : 0 ≤ C` using `(abs_nonneg _).trans (hb₁C 0)`. Use `set J := W ⊔ Ideal.span {linForm ℓ - 1}`. Unfold `varInt`. Use `split_ifs with hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `swap`. Simplify using the standard rewrite rules. Establish `hAfin` using `hA.choose_spec`. Unfold `chartInt`. Use `set A := hA.choose`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set φ : Fin (e + 1) → (Fin n → ℂ) → ℝ := vecCons (fsLogReg h u' ε) fun _ x => Real.log (h.dualNorm x)`. Use `set ψ : Fin (e + 1) → (Fin n → ℂ) → ℝ := fun _ x => Real.log (h.dualNorm x)`. Establish `hfin : ∀ y, (fibre J A y).Finite` using `IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hAfin`. Establish `hMφ : Integrable (chartAbsDens J A (fun _ => 1) φ)`. Establish `e1 : (fun (k : Fin (e + 1)) x => (vecCons 0 fun _ => 1 : Fin (e + 1) → ℝ) k * Real.log (h.dualNorm x) + (vecCons (fsLogReg h u' ε) fun _ _ => 0 : Fin (e + 1) → (Fin n → ℂ) → ℝ) k x) = φ`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `k x`. Apply the tactic sequence `rcases Fin.eq_zero_or_eq_succ k with rfl | ⟨i, rfl⟩ <;> simp [φ]`. Rewrite using `[← e1]`. Use `hM n e h W F ℓ A _ _ _ hW hF hℓ hAfin (fun _ _ _ => rfl) continuousOn_const (fun k t x ht => ?_) fun k => ?_` and prove the remaining obligations. Break down `Fin.eq_zero_or_eq_succ k with rfl | ⟨i, rfl⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `FubiniStudyLogRegularization.fsLogReg_smul h u' ε ht x`. Both sides reduce to the same expression. Break down `Fin.eq_zero_or_eq_succ k with rfl | ⟨i, rfl⟩` into its components or cases. Conclude with `FubiniStudyLogRegularization.contDiffOn_fsLogReg h u' hε`. Conclude with `contDiffOn_const`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMψ : Integrable (chartAbsDens J A (fun _ => 1) ψ)`. Use `hM n e h W F ℓ A (fun _ => 1) (fun _ => 1) (fun _ _ => 0) hW hF hℓ hAfin (fun _ _ _ => rfl) continuousOn_const (fun _ _ _ _ => rfl) fun _ => contDiffOn_const` as an intermediate fact. Simplify `this` using `[ψ]`. Establish `hint : ∀ (f : (Fin n → ℂ) → ℝ) (K : ℝ) (Φ : Fin (e + 1) → (Fin n → ℂ) → ℝ), Measurable f → (∀ x, |f x| ≤ K) → Integrable (chartAbsDens J A (fun _ => 1) Φ) → Integrable (chartDens J A f Φ)` using `fun f K Φ hfm hfK hΦ => (hΦ.const_mul K).mono' (SheetSumMeasurable.measurable_sheetSum hAfin (fun a b => a * b) (continuous_fst.mul continuous_snd).measurable hfm Φ).aestronglyMeasurable (Eventually.of_forall fun y => by`. Rewrite using `[Real.norm_eq_abs]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `abs_chartDens_le_mul hfin f K hfK Φ y)`. Establish `hw1 : ∀ x, |w x| ≤ 1` using `fun x => abs_le.2 ⟨by linarith [(hwI x).1], (hwI x).2⟩`. Establish `i₁` using `hint b₁ C φ hb₁ hb₁C hMφ`. Establish `i₂` using `hint b₂ C φ hb₂ hb₂C hMφ`. Establish `iw` using `hint w 1 φ hw hw1 hMφ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `iq` using `hint w 1 ψ hw hw1 hMψ`. Establish `hpt : ∀ y, ‖chartDens J A b₁ φ y - chartDens J A b₂ φ y‖ ≤ C * (chartDens J A w φ y + 2 * chartDens J A w ψ y)`. Introduce `y`. Rewrite using `[Real.norm_eq_abs]`. Simplify using `only [chartDens, sheetSum, finsum_mem_eq_finite_toFinset_sum _ (hfin y)]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_sub_distrib, Finset.mul_sum, ← Finset.sum_add_distrib, Finset.mul_sum]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun x hx => ?_)` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Take `⟨hxZ, rfl⟩` from `hx`. Establish `hx0 : x ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Use `hxZ _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))` as an intermediate fact. Simplify using `[linForm] at this`. Use `split_ifs with hs`. Establish `hsx` using `hs.choose_spec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Establish `hmq` using `dens_sum_nonneg SheetLogNormDens.proof h u' hε hsx hx0`. Establish `hq : 0 ≤ maDens (fun k => ψ k ∘ hs.choose) (A *ᵥ x)`. Establish `hpot : (fun k => ψ k ∘ hs.choose) = fun (_ : Fin (e + 1)) => (fun z => Real.log √(∑ i, ‖(FubiniStudyLogRegularization.regMat h 0 1 *ᵥ z) i‖ ^ 2)) ∘ hs.choose`. Use function extensionality and compare the values at `k z`. Conclude with `FubiniStudyLogRegularization.log_dualNorm_eq h _`.
-
-Rewrite using `[hpot]`. Conclude with `SheetLogNormDens.proof n (e + 1) (n + 1) J A x hs.choose (fun _ => FubiniStudyLogRegularization.regMat h 0 1) hsx fun _ => FubiniStudyLogRegularization.regMat_mulVec_ne_zero h 0 one_pos hx0`. Use `set m := maDens (fun k => φ k ∘ hs.choose) (A *ᵥ x)`. Use `set q := maDens (fun k => ψ k ∘ hs.choose) (A *ᵥ x)`. Establish `habs : |m| ≤ m + 2 * q` using `abs_le.2 ⟨by linarith, by linarith⟩`.
-
-Establish `hw0 : 0 ≤ w x` using `(hwI x).1`. Rewrite using `[← sub_mul, abs_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[integral_sub i₁ i₂, Real.norm_eq_abs]`. Use `_ ≤ ∫ y, C * (chartDens J A w φ y + 2 * chartDens J A w ψ y) := norm_integral_le_of_norm_le ((iw.add (iq.const_mul 2)).const_mul C) (Eventually.of_forall hpt)`. Use `_ = C * ((∫ y, chartDens J A w φ y) + 2 * ∫ y, chartDens J A w ψ y) := by`. Rewrite using `[integral_const_mul, integral_add iw (iq.const_mul 2), integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SliceRegVarBound.proof (hM : SliceFormMass.Statement) : SliceRegVarBound.Statement := by
   intro n e h W F u' ℓ ε C b₁ b₂ w hW hF hℓ hε hb₁ hb₂ hw hb₁C hb₂C hwI hbw

@@ -16,7 +16,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LiftSys.OfLift
 
 /- English proof (translation)
-Establish `h` using `HasRingHomProperty.appLE @Smooth s ‹_› ⟨⊤, isAffineOpen_top _⟩ U le_top`. Establish `h' : RingHom.Smooth ((s.appLE ⊤ U.1 le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)` using `RingHom.Smooth.comp (RingHom.Smooth.of_bijective (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv.bijective) h`. Conclude with `RingHom.smooth_algebraMap.mp h'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sec_smooth {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) [Smooth s] (U : X.affineOpens) :
     Algebra.Smooth R (Sec s U.1) := by
@@ -30,11 +30,11 @@ variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {π : R →+
   {X₀ X : Scheme.{0}} {s₀ : X₀ ⟶ Sp R₀} {s : X ⟶ Sp R} {i : X₀ ⟶ X}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x`. Establish `hx : (show PrimeSpectrum R from x) ∈ Set.range (PrimeSpectrum.comap π)`. Use `(range_comap_of_surjective R₀ π hπ).ge ?_` and prove the remaining obligations. Rewrite using `[hk]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Establish `h2 : a ^ 2 = 0`. Use `Ideal.pow_mem_pow ha 2` as an intermediate fact. Rewrite `this` using `[hI, Ideal.zero_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis. Conclude with `(show PrimeSpectrum R from x).2.mem_of_pow_mem 2 (by rw [h2]; exact zero_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hx`. Conclude with `⟨y, hy⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem surjective_spMap (hI : I ^ 2 = 0) (hk : RingHom.ker π = I) (hπ : Function.Surjective π) :
     Surjective (spMap π) := by
@@ -58,15 +58,15 @@ def liftOpen (U : X₀.affineOpens) : X.affineOpens :=
     (GlobalTheory.AffineThickening.exists_isAffineOpen_preimage_eq_of_isNilpotent R R₀ π hπ hn X X₀ s s₀ i hpb U.1 U.2).choose_spec.1⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.AffineThickening.exists_isAffineOpen_preimage_eq_of_isNilpotent R R₀ π hπ hn X X₀ s s₀ i hpb U.1 U.2).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem preimage_liftOpen (U : X₀.affineOpens) : i ⁻¹ᵁ (liftOpen hpb hπ hn U).1 = U.1 :=
   (GlobalTheory.AffineThickening.exists_isAffineOpen_preimage_eq_of_isNilpotent R R₀ π hπ hn X X₀ s s₀ i hpb U.1 U.2).choose_spec.2
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, rfl⟩` from `hi x`. Establish `hy : y ∈ i ⁻¹ᵁ (liftOpen hpb hπ hn V).1` using `hx`. Rewrite `hy` using `[preimage_liftOpen]`. Establish `hy' : y ∈ i ⁻¹ᵁ (liftOpen hpb hπ hn U).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[preimage_liftOpen]`. Conclude with `h hy`. Conclude with `hy'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftOpen_mono (hi : Function.Surjective i.base) {U V : X₀.affineOpens} (h : V ≤ U) :
     liftOpen hpb hπ hn V ≤ liftOpen hpb hπ hn U := by
@@ -85,9 +85,9 @@ end GlobalTheory.LiftSys.OfLift
 open GlobalTheory.LiftSys.OfLift in
 
 /- English proof (translation)
-Introduce `R R₀ _ _ I hI π hπ hk X₀ s₀ X s i hpb hsm`. Establish `hn : IsNilpotent (RingHom.ker π)` using `⟨2, hk ▸ hI⟩`. Use `haveI := surjective_spMap hI hk hπ`. Establish `hi : Function.Surjective i.base` using `(MorphismProperty.of_isPullback (P := @Surjective) hpb.flip ‹_›).surj`. Set `G : AffOp X₀ ⥤ AffOp X` to `(Monotone.functor (f := liftOpen hpb hπ hn) fun _ _ h ↦ liftOpen_mono hpb hπ hn hi h).op`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `S : Sys I π s₀` to `{ F := G ⋙ OAff s p := fun U ↦ GlobalTheory.CechDR.secPull s s₀ (pr hpb hπ hn U.unop) semi := fun U ↦ GlobalTheory.CechDR.semiHom_secPull hpb.w _ nat := fun {U V} a b ↦ (congrArg (fun t ↦ t.hom b) (i.map_appLE (pr hpb hπ hn V.unop).2 (homOfLE (liftOpen_mono hpb hπ hn hi (leOfHom …`. Conclude with `⟨S, ⟨⟨fun U ↦ affPt s (liftOpen hpb hπ hn U.unop), fun U ↦ (liftOpen hpb hπ hn U.unop).2.isOpenImmersion_fromSpec, fun U ↦ affPt_w s _, fun U V a ↦ affPt_res s _, fun U ↦ GlobalTheory.CechDR.secPull_affPt s s₀ (pr hpb hπ hn U.unop), S.cover_of_surjective ⟨hi⟩ _ fun U ↦ GlobalTheo …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LiftSys.exists_sys_presents : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀), ∀ (X : Scheme.{0}) (s : X ⟶ Sp R) (i : X₀ ⟶ X), IsPullback i s₀ s (spMap π) → Smooth s → ∃ S : Sys I π s₀, Nonempty (S.Presents s i) := by
   intro R R₀ _ _ I hI π hπ hk X₀ s₀ X s i hpb hsm

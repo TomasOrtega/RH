@@ -11,9 +11,9 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open MvPolynomial Topology Metric Matrix
 
 /- English proof (translation)
-Unfold `GroundTheory.Heights₂.Heights.ComplexSets.pullback`. Express the relevant statement in the definitionally equal form `(aeval z : MvPolynomial (Fin n) ℂ →ₐ[ℂ] ℂ) (aeval (GroundTheory.Heights₂.Heights.ComplexSets.linPoly A) P) = _`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Establish `hlin : (fun i => (aeval z : MvPolynomial (Fin n) ℂ →ₐ[ℂ] ℂ) (GroundTheory.Heights₂.Heights.ComplexSets.linPoly A i)) = A *ᵥ z`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[GroundTheory.Heights₂.Heights.ComplexSets.linPoly, Matrix.mulVec, dotProduct]`. Rewrite using `[hlin]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_pullback_eq {n k : ℕ} (A : Matrix (Fin k) (Fin n) ℂ) (P : MvPolynomial (Fin k) ℂ)
     (z : Fin n → ℂ) : eval z (GroundTheory.Heights₂.Heights.ComplexSets.pullback A P) = eval (A *ᵥ z) P := by
@@ -28,9 +28,9 @@ theorem eval_pullback_eq {n k : ℕ} (A : Matrix (Fin k) (Fin n) ℂ) (P : MvPol
   rfl
 
 /- English proof (translation)
-Use `by_contra! h`. Apply `hP` to reduce the goal to its premises. Establish `han : AnalyticOnNhd ℂ (fun y : Fin k → ℂ => eval y P) Set.univ` using `AnalyticOnNhd.eval_mvPolynomial P`. Establish `hz : (fun y : Fin k → ℂ => eval y P) =ᶠ[𝓝 a] 0` using `Filter.mem_of_superset hN (fun y hy => h y hy)`. Establish `h0` using `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ a) hz`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `y`. Simplify using `using h0 (Set.mem_univ y)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_eval_ne_zero_of_mem_nhds {k : ℕ} {P : MvPolynomial (Fin k) ℂ} (hP : P ≠ 0)
     {a : Fin k → ℂ} {N : Set (Fin k → ℂ)} (hN : N ∈ 𝓝 a) : ∃ y ∈ N, eval y P ≠ 0 := by
@@ -46,57 +46,49 @@ theorem exists_eval_ne_zero_of_mem_nhds {k : ℕ} {P : MvPolynomial (Fin k) ℂ}
   simpa using h0 (Set.mem_univ y)
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `hLNN n k I hdim`. Take `⟨P, hP0, hPcov⟩` from `hDC n k I A hI hdim hA`. Use `set X := zeroSetIn I with hXdef`. Use `set Lc : (Fin n → ℂ) →L[ℂ] (Fin k → ℂ) := LinearMap.toContinuousLinearMap (Matrix.mulVecLin A) with hLcdef`. Establish `hLcA : ∀ z, Lc z = A *ᵥ z` using `fun z => rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w₀ := φ u₀ with hw₀`. Use `set a₀ := A *ᵥ w₀ with ha₀`. Use `set g : (Fin k → ℂ) → Fin k → ℂ := fun v => A *ᵥ φ v with hg`. Establish `hgd : DifferentiableOn ℂ g U` using `Lc.differentiable.comp_differentiableOn hφ`. Establish `hw₀X : w₀ ∈ X` using `hmaps hu₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfin : (GroundTheory.Heights₂.Heights.ComplexSets.fibre I A a₀).Finite` using `(hFB n k I A hI hdim hA a₀).2.1`. Use `set W₀ : Set (Fin n → ℂ) := ((GroundTheory.Heights₂.Heights.ComplexSets.fibre I A a₀) \ {w₀})ᶜ with hW₀`. Establish `hW₀o : IsOpen W₀` using `(hfin.subset Set.sdiff_subset).isClosed.isOpen_compl`. Establish `hw₀W₀ : w₀ ∈ W₀` using `fun h => h.2 rfl`. Establish `hφc : ContinuousAt φ u₀` using `(hφ.differentiableAt (hU.mem_nhds hu₀)).continuousAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hr0, hrU⟩ : ∃ r > 0, closedBall u₀ r ⊆ U ∩ φ ⁻¹' W₀` from `Metric.nhds_basis_closedBall.mem_iff.1 (Filter.inter_mem (hU.mem_nhds hu₀) (hφc.preimage_mem_nhds (hW₀o.mem_nhds hw₀W₀)))`. Use `set K := closedBall u₀ r with hK`. Use `set V := ball u₀ r with hV`. Establish `hKU : K ⊆ U` using `fun v hv => (hrU hv).1`. Establish `hKc : IsCompact K` using `isCompact_closedBall u₀ r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hφK : ContinuousOn φ K` using `hφ.continuousOn.mono hKU`. Establish `hgK : ContinuousOn g K` using `Lc.continuous.comp_continuousOn hφK`. Establish `hVK : V ⊆ K` using `ball_subset_closedBall`. Establish `hiso : ∀ v ∈ K, g v = a₀ → v = u₀`. Introduce `v hv hgv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : φ v ∈ GroundTheory.Heights₂.Heights.ComplexSets.fibre I A a₀` using `⟨hmaps (hKU hv), hgv⟩`. Establish `h3 : φ v = w₀`. Assume the negation of the conclusion as `hne`. Conclude with `(hrU hv).2 ⟨h1, hne⟩`. Conclude with `hinj (hKU hv) hu₀ h3`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hSK : sphere u₀ r ⊆ K` using `sphere_subset_closedBall`. Establish `hgS : IsCompact (g '' sphere u₀ r)` using `(isCompact_sphere u₀ r).image_of_continuousOn (hgK.mono hSK)`. Establish `ha₀S : a₀ ∉ g '' sphere u₀ r`. Introduce and unpack `⟨v, hv, hgv⟩`. Establish `h` using `hiso v (hSK hv) hgv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hv` using `[h, mem_sphere, dist_self]`. Conclude with `hr0.ne hv`. Take `⟨ε, hε, hεS⟩ : ∃ ε > 0, ball a₀ ε ⊆ (g '' sphere u₀ r)ᶜ` from `Metric.isOpen_iff.1 hgS.isClosed.isOpen_compl a₀ ha₀S`. Establish `hcl : ∀ x, A *ᵥ x ∈ ball a₀ ε → x ∈ closure (φ '' V) → x ∈ φ '' V`. Introduce `x hxD hx`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hKimg : IsCompact (φ '' K)` using `hKc.image_of_continuousOn hφK`. Take `⟨v, hvK, rfl⟩ : x ∈ φ '' K` from `hKimg.isClosed.closure_subset (closure_mono (Set.image_mono hVK) hx)`. Use `⟨v, ?_, rfl⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hvV`. Establish `hvS : v ∈ sphere u₀ r`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mem_sphere]`. Rewrite `hvK` using `[mem_closedBall]`. Rewrite `hvV` using `[mem_ball, not_lt]`. Conclude with `le_antisymm hvK hvV`. Conclude with `hεS hxD ⟨v, hvS, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set h := GroundTheory.Heights₂.Heights.ComplexSets.pullback A P with hh`. Establish `hevh : ∀ z, eval z h = eval (A *ᵥ z) P` using `fun z => eval_pullback_eq A P z`. Establish `hhI : h ∉ I`. Introduce `hmem`. Apply `hP0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hA.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `show (Ideal.Quotient.mkₐ ℂ I) h = 0`. Rewrite using `[Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hND : (fun z => A *ᵥ z) ⁻¹' ball a₀ ε ∈ 𝓝 w₀` using `Lc.continuous.continuousAt.preimage_mem_nhds (ball_mem_nhds a₀ hε)`. Take `⟨B, hBo, hw₀B, hBD, hconn, hdense⟩` from `hNLI (Fin n) I h w₀ hI hic hhI hw₀X _ hND`. Use `set C := (X ∩ B) \ {z | eval z h = 0} with hC`. Establish `hop : ∀ v ∈ V, eval (g v) P ≠ 0 → ∃ W' : Set (Fin n → ℂ), IsOpen W' ∧ φ v ∈ W' ∧ X ∩ W' ⊆ φ '' V`. Introduce `v hv hPv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvU : v ∈ U` using `hKU (hVK hv)`. Establish `hfib : φ v ∈ GroundTheory.Heights₂.Heights.ComplexSets.fibre I A (g v)` using `⟨hmaps hvU, rfl⟩`. Take `⟨-, -, hsec⟩` from `hPcov (g v) hPv`. Take `⟨O, W, s, hOo, hgvO, hWo, hvW, -, -, hsA, hXW⟩` from `hsec (φ v) hfib`. Establish `hφV : ContinuousOn φ V` using `hφK.mono hVK`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgV : ContinuousOn g V` using `hgK.mono hVK`. Use `set V1 := (V ∩ φ ⁻¹' W) ∩ (V ∩ g ⁻¹' O) with hV1`. Establish `hV1o : IsOpen V1` using `(hφV.isOpen_inter_preimage isOpen_ball hWo).inter (hgV.isOpen_inter_preimage isOpen_ball hOo)`. Establish `hv1 : v ∈ V1` using `⟨⟨hv, hvW⟩, ⟨hv, hgvO⟩⟩`. Establish `hrep : ∀ v' ∈ V1, φ v' = s (g v')`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `v' hv'`. Establish `hmem : φ v' ∈ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet I ∩ W` using `⟨hmaps (hKU (hVK hv'.1.1)), hv'.1.2⟩`. Rewrite `hmem` using `[hXW]`. Take `⟨o, ho, hso⟩` from `hmem`. Establish `hgo : g v' = o` using `by show A *ᵥ φ v' = o`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[← hso]`. Conclude with `hsA o ho`. Rewrite using `[hgo, hso]`. Establish `hginj : Set.InjOn g V1`. Introduce `v1 h1 v2 h2 he`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `hinj (hKU (hVK h1.1.1)) (hKU (hVK h2.1.1))` to reduce the goal to its premises. Rewrite using `[hrep v1 h1, hrep v2 h2, he]`. Establish `hgV1d : DifferentiableOn ℂ g V1` using `hgd.mono (fun x hx => hKU (hVK hx.1.1))`. Establish `himo : IsOpen (g '' V1)`. Rewrite using `[isOpen_iff_mem_nhds]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨v', hv', rfl⟩`. Conclude with `hIFO k V1 g v' hV1o hv' hgV1d ⟨V1, hV1o.mem_nhds hv', fun x _ hx he => hginj hx hv' he⟩ V1 (hV1o.mem_nhds hv')`. Use `⟨W ∩ (fun z => A *ᵥ z) ⁻¹' (g '' V1), hWo.inter (himo.preimage Lc.continuous), ⟨hvW, v, hv1, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨hzX, hzW, v', hv', hv'z⟩`. Establish `hmem : z ∈ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet I ∩ W` using `⟨hzX, hzW⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hmem` using `[hXW]`. Take `⟨o, ho, rfl⟩` from `hmem`. Establish `hgo : g v' = o` using `hv'z.trans (hsA o ho)`. Conclude with `⟨v', hv'.1.1, by rw [hrep v' hv', hgo]⟩`. Use `set Uo : Set (Fin n → ℂ) := ⋃₀ {W | IsOpen W ∧ X ∩ W ⊆ φ '' V} with hUo`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hUoo : IsOpen Uo` using `isOpen_sUnion (fun W hW => hW.1)`. Establish `hUoX : X ∩ Uo ⊆ φ '' V`. Introduce and unpack `z ⟨hzX, W, hW, hzW⟩`. Conclude with `hW.2 ⟨hzX, hzW⟩`. Establish `hCX : ∀ z ∈ C, z ∈ X ∧ z ∈ B ∧ eval (A *ᵥ z) P ≠ 0` using `fun z hz => ⟨hz.1.1, hz.1.2, fun h0 => hz.2 ((hevh z).trans h0)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hCin : ∀ z ∈ C, z ∈ φ '' V → z ∈ Uo`. Introduce and unpack `z hz ⟨v, hv, rfl⟩`. Take `⟨W', hW'o, hvW', hW'⟩` from `hop v hv (hCX _ hz).2.2`. Conclude with `⟨W', ⟨hW'o, hW'⟩, hvW'⟩`. Choose the witnesses or unpack the hypotheses as in `⟨z₁, hz₁C, hz₁V⟩ : ∃ z ∈ C, z ∈ φ '' V := by`.
-
-Establish `hV2 : V ∩ φ ⁻¹' B ∈ 𝓝 u₀` using `Filter.inter_mem (ball_mem_nhds u₀ hr0) (hφc.preimage_mem_nhds (hBo.mem_nhds hw₀B))`. Establish `himg : g '' (V ∩ φ ⁻¹' B) ∈ 𝓝 a₀` using `hIFO k U g u₀ hU hu₀ hgd ⟨K, closedBall_mem_nhds u₀ hr0, fun v hv _ he => hiso v hv he⟩ _ hV2`. Take `⟨y, ⟨v, hv, rfl⟩, hy⟩` from `exists_eval_ne_zero_of_mem_nhds hP0 himg`. Conclude with `⟨φ v, ⟨⟨hmaps (hKU (hVK hv.1)), hv.2⟩, fun h0 => hy ((hevh _).symm.trans h0)⟩, v, hv.1, rfl⟩`. Establish `hCsub : C ⊆ Uo`.
-
-Establish `hsplit : C ⊆ Uo ∪ (closure (φ '' V))ᶜ`. Introduce `z hz`. Distinguish the cases in `hzc : z ∈ closure (φ '' V)`. Conclude with `Or.inl (hCin z hz (hcl z (hBD (hCX z hz).2.1) hzc))`. Conclude with `Or.inr hzc`.
-
-Assume the negation of the conclusion as `hns`. Take `⟨z, hzC, hzU⟩` from `Set.not_subset.1 hns`. Take `⟨z', hz'C, hz'U, hz'c⟩` from `hconn Uo (closure (φ '' V))ᶜ hUoo isClosed_closure.isOpen_compl hsplit ⟨z₁, hz₁C, hCin z₁ hz₁C hz₁V⟩ ⟨z, hzC, (hsplit hzC).resolve_left hzU⟩`. Conclude with `hz'c (subset_closure (hUoX ⟨(hCX z' hz'C).1, hz'U⟩))`. Use `⟨B, hBo, hw₀B, ?_⟩` and prove the remaining obligations.
-
-Introduce `x hx`. Establish `hxcl : x ∈ closure (φ '' V)` using `closure_mono (fun z hz => hUoX ⟨(hCX z hz).1, hCsub hz⟩) (hdense hx)`. Take `⟨v, hv, hvx⟩` from `hcl x (hBD hx.2) hxcl`. Conclude with `⟨v, hKU (hVK hv), hvx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem normalOpenMapping_local_fin
     (hNLI : NormalLocallyIrreducible.Statement)
@@ -269,29 +261,27 @@ theorem normalOpenMapping_local_fin
   exact ⟨v, hKU (hVK hv), hvx⟩
 
 /- English proof (translation)
-Introduce `σ _ I k U φ hI hic hdim hU hφ hinj hmaps`. Use `set n := Fintype.card σ`. Set `e : σ ≃ Fin n` to `Fintype.equivFin σ`. Set `R : MvPolynomial σ ℂ ≃+* MvPolynomial (Fin n) ℂ` to `(MvPolynomial.renameEquiv ℂ e).toRingEquiv`. Set `I' : Ideal (MvPolynomial (Fin n) ℂ)` to `I.map (R : MvPolynomial σ ℂ →+* MvPolynomial (Fin n) ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hI' : I'.IsPrime`. Use `hI` as an intermediate fact. Conclude with `Ideal.map_isPrime_of_equiv R`. Set `Q : (MvPolynomial σ ℂ ⧸ I) ≃+* (MvPolynomial (Fin n) ℂ ⧸ I')` to `Ideal.quotientEquiv I I' R rfl`. Establish `hic' : IsIntegrallyClosed (MvPolynomial (Fin n) ℂ ⧸ I')`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hic` as an intermediate fact. Conclude with `IsIntegrallyClosed.of_equiv Q`. Establish `hdim' : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ I') = (k : ℕ)`. Rewrite using `[← ringKrullDim_eq_of_ringEquiv Q, hdim]`. Establish `hR : ∀ p : MvPolynomial σ ℂ, R p = rename e p` using `fun p => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Establish `hmem : ∀ x : Fin n → ℂ, x ∈ zeroSetIn I' ↔ x ∘ e ∈ zeroSetIn I`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx q hq`. Establish `h1` using `hx (R q) (Ideal.mem_map_of_mem _ hq)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[hR, MvPolynomial.eval_rename]`. Then use the resulting hypothesis. Introduce `hx q hq`. Take `⟨p, hp, rfl⟩` from `(Ideal.mem_map_of_equiv R q).1 hq`. Rewrite using `[hR, MvPolynomial.eval_rename]`. Conclude with `hx p hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set φ' : (Fin k → ℂ) → Fin n → ℂ := fun t j => φ t (e.symm j) with hφ'`. Establish `hφ'e : ∀ t, φ' t ∘ e = φ t` using `fun t => by`. Use function extensionality and compare the values at `i`. Simplify using `[φ']`. Establish `hφ'd : DifferentiableOn ℂ φ' U` using `differentiableOn_pi.2 (fun j => (differentiableOn_pi.1 hφ) (e.symm j))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj' : Set.InjOn φ' U`. Introduce `a ha b hb hab`. Apply `hinj ha hb` to reduce the goal to its premises. Rewrite using `[← hφ'e a, ← hφ'e b, hab]`. Establish `hmaps' : Set.MapsTo φ' U (zeroSetIn I')`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `t ht`. Rewrite using `[hmem, hφ'e]`. Conclude with `hmaps ht`. Establish `key : ∀ u ∈ U, ∃ B : Set (Fin n → ℂ), IsOpen B ∧ φ' u ∈ B ∧ zeroSetIn I' ∩ B ⊆ φ' '' U` using `fun u hu => normalOpenMapping_local_fin hNLI hLNN hFB hDC hIFO I' U φ' hI' hic' hdim' hU hφ'd hinj' hmaps' u hu`. Use `choose! Bf hBo hBm hBs using key`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Set `T : (σ → ℂ) → Fin n → ℂ` to `fun z j => z (e.symm j)`. Establish `hTc : Continuous T` using `continuous_pi (fun j => continuous_apply (e.symm j))`. Use `⟨T ⁻¹' (⋃ u ∈ U, Bf u), (isOpen_biUnion (fun u hu => hBo u hu)).preimage hTc, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨hmaps hu, Set.mem_iUnion₂.2 ⟨u, hu, hBm u hu⟩⟩`. Introduce and unpack `⟨hzX, hzO⟩`. Take `⟨u, hu, hzu⟩` from `Set.mem_iUnion₂.1 hzO`. Establish `hTe : T z ∘ e = z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `[T]`. Establish `hz' : T z ∈ zeroSetIn I'`. Rewrite using `[hmem, hTe]`. Conclude with `hzX`.
-
-Take `⟨v, hv, hvz⟩` from `hBs u hu ⟨hz', hzu⟩`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ'e v, hvz, hTe]`.
+A detailed English derivation is pending.
 -/
 theorem NormalOpenMapping.proof
     (hNLI : NormalLocallyIrreducible.Statement)

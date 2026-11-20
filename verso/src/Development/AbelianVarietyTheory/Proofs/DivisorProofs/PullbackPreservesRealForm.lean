@@ -20,7 +20,7 @@ def cjCoef (n : ℕ) : Alt n →ₛₗ[starRingEnd ℂ] Alt n where
   map_smul' c a := by simp [Finset.smul_sum, smul_smul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(bas n).repr (∑ S, conj ((bas n).repr α S) • bas n S) S = _`. Rewrite using `[Module.Basis.repr_sum_self]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_cjCoef (α : Alt n) (S : Finset (Fin (n + n))) :
     (bas n).repr (cjCoef n α) S = conj ((bas n).repr α S) := by
@@ -28,7 +28,7 @@ theorem repr_cjCoef (α : Alt n) (S : Finset (Fin (n + n))) :
   rw [Module.Basis.repr_sum_self]
 
 /- English proof (translation)
-Use `(bas n).ext_elem fun T => ?_` and prove the remaining obligations. Rewrite using `[repr_cjCoef]`. Simplify using `only [Module.Basis.repr_self, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cjCoef_bas (S : Finset (Fin (n + n))) : cjCoef n (bas n S) = bas n S := by
   refine (bas n).ext_elem fun T => ?_
@@ -37,16 +37,16 @@ theorem cjCoef_bas (S : Finset (Fin (n + n))) : cjCoef n (bas n S) = bas n S := 
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `ExteriorAlgebra.basis_mul_of_not_disjoint ((Pi.basisFun ℂ (Fin n ⊕ Fin n)).reindex finSumFinEquiv) (Set.powersetCard.ofCard (s := S) rfl) (Set.powersetCard.ofCard (s := T) rfl) h`.
+A detailed English derivation is pending.
 -/
 theorem bas_mul_of_not_disjoint {S T : Finset (Fin (n + n))} (h : ¬ Disjoint S T) : bas n S * bas n T = 0 :=
   ExteriorAlgebra.basis_mul_of_not_disjoint ((Pi.basisFun ℂ (Fin n ⊕ Fin n)).reindex finSumFinEquiv)
     (Set.powersetCard.ofCard (s := S) rfl) (Set.powersetCard.ofCard (s := T) rfl) h
 
 /- English proof (translation)
-Establish `key (S T) : cjCoef n (bas n S * bas n T) = bas n S * bas n T`. Distinguish the cases in `h : Disjoint S T`. Take `⟨ε, e⟩` from `bas_mul h`. Rewrite using `[e, Units.smul_def, map_zsmul, cjCoef_bas]`. Rewrite using `[bas_mul_of_not_disjoint h, map_zero]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (bas n).sum_repr a, ← (bas n).sum_repr b]`. Generalize the expression as in `(bas n).repr a = u`. Generalize the expression as in `(bas n).repr b = w`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, smul_mul_smul_comm, map_sum, map_smulₛₗ, key, cjCoef_bas, map_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules.
 -/
 theorem cjCoef_mul (a b : Alt n) : cjCoef n (a * b) = cjCoef n a * cjCoef n b := by
   have key (S T) : cjCoef n (bas n S * bas n T) = bas n S * bas n T := by
@@ -60,14 +60,14 @@ theorem cjCoef_mul (a b : Alt n) : cjCoef n (a * b) = cjCoef n a * cjCoef n b :=
   simp only [Finset.sum_mul, Finset.mul_sum, smul_mul_smul_comm, map_sum, map_smulₛₗ, key, cjCoef_bas, map_mul]
 
 /- English proof (translation)
-Rewrite using `[← bas_empty, cjCoef_bas]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cjCoef_one : cjCoef n 1 = 1 := by rw [← bas_empty, cjCoef_bas]
 
 /- English proof (translation)
-Establish `h (w : Fin n ⊕ Fin n → ℂ) : ExteriorAlgebra.ι ℂ w = ∑ i, w i • bas n {finSumFinEquiv i}`. Simplify using `only [bas_singleton, ← map_smul, ← map_sum]`. Use `congr 1`. Use extensionality with `j`. Simplify using `[Pi.single_apply, Finset.sum_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, map_sum, map_smulₛₗ, cjCoef_bas]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cjCoef_ι (u : Fin n ⊕ Fin n → ℂ) :
     cjCoef n (ExteriorAlgebra.ι ℂ u) = ExteriorAlgebra.ι ℂ (fun i => conj (u i)) := by
@@ -79,7 +79,7 @@ theorem cjCoef_ι (u : Fin n ⊕ Fin n → ℂ) :
   simp only [h, map_sum, map_smulₛₗ, cjCoef_bas]
 
 /- English proof (translation)
-Simplify using `only [IsReal, ← repr_cjCoef]`. Conclude with `⟨(bas n).ext_elem, fun h _ => by rw [h]⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem isReal_iff (α : Alt n) : IsReal α ↔ swap α = cjCoef n α := by
   simp only [IsReal, ← repr_cjCoef]
@@ -90,9 +90,9 @@ def pullConj (L : V n →L[ℂ] V m) : Alt m →ₐ[ℂ] Alt n :=
     (of fun b a => L (coordVec b) a)))
 
 /- English proof (translation)
-Establish `: swap.comp (pull L) = (pullConj L).comp swap`. Use `ExteriorAlgebra.hom_ext (LinearMap.ext fun u => ?_)` and prove the remaining obligations. Simplify using `only [swap, pull, pullConj, LinearMap.comp_apply, AlgHom.toLinearMap_apply, AlgHom.comp_apply, ExteriorAlgebra.map_apply_ι]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `rcases i with i | i <;>`. Simplify using `[LinearMap.funLeft_apply, Matrix.toLin'_apply, mulVec, dotProduct, Fintype.sum_sum_type]`. Conclude with `DFunLike.congr_fun this α`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem swap_pull (L : V n →L[ℂ] V m) (α : Alt m) : swap (pull L α) = pullConj L (swap α) := by
   have : swap.comp (pull L) = (pullConj L).comp swap := by
@@ -106,11 +106,11 @@ theorem swap_pull (L : V n →L[ℂ] V m) (α : Alt m) : swap (pull L α) = pull
   exact DFunLike.congr_fun this α
 
 /- English proof (translation)
-Proceed by induction on `α using ExteriorAlgebra.induction with`. Consider the case `algebraMap r`. Simplify using `only [Algebra.algebraMap_eq_smul_one, map_smul, map_one, map_smulₛₗ, cjCoef_one]`. Consider the case `ι u`. Simplify using `only [pull, pullConj, ExteriorAlgebra.map_apply_ι, cjCoef_ι]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with i | i <;>`. Simplify using `[Matrix.toLin'_apply, mulVec, dotProduct, Fintype.sum_sum_type]`. Consider the case `mul a b ha hb => simp only [map_mul, cjCoef_mul, ha, hb]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Treat this case separately.
 -/
 theorem cjCoef_pull (L : V n →L[ℂ] V m) (α : Alt m) : cjCoef n (pull L α) = pullConj L (cjCoef m α) := by
   induction α using ExteriorAlgebra.induction with
@@ -126,7 +126,7 @@ theorem cjCoef_pull (L : V n →L[ℂ] V m) (α : Alt m) : cjCoef n (pull L α) 
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[isReal_iff]`. Rewrite using `[swap_pull, h, cjCoef_pull]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isReal_pull (n m : ℕ) (L : V n →L[ℂ] V m) (α : Alt m) (h : IsReal α) : IsReal (pull L α) := by
   rw [isReal_iff] at h ⊢

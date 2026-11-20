@@ -54,11 +54,11 @@ def AgreementOnBase.Statement : Prop :=
       PPmuFib Pl H Ba S B c N = fibNum G J c N * arLim H S B
 
 /- English proof (translation)
-Introduce `II hII Ψ _ _ K _ ι _ Ω _ _ E _ _ D Pl H Ba M S B G J r c N hJ hN hsm hlim`. Take `⟨L, hL⟩` from `hlim`. Establish `hPush` using `(hPD II hII Ψ K ι Ω E D Pl H Ba).1`. Establish `heq : ∀ᶠ t in 𝓝[>] (0 : ℝ), fibNum G J c N * arLimFun H S B t = flagFun Pl H Ba S B c N t` using `by filter_upwards [hsm] with t ht`. Unfold `flagFun fibNum`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[hPush G J (fun _ => muReg H S B t) (fun _ => regularizedFlagPullbackLine Pl H S B t) (N m) hJ (fun _ => ht) (fun _ => IndefiniteRowSideFullHecke.Inter.isPullHerm_pullHerm _ _) (hN m)]`. Unfold `arLimFun`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hT : Tendsto (flagFun Pl H Ba S B c N) (𝓝[>] 0) (𝓝 (fibNum G J c N * L))` using `(hL.const_mul _).congr' heq`. Establish `hA : arLim H S B = L` using `hL.limUnder_eq`. Rewrite using `[hA]`. Conclude with `⟨hT, hT.limUnder_eq⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem AgreementOnBase.proof (hPD : PushDown.Statement) : AgreementOnBase.Statement := by
   intro II hII Ψ _ _ K _ ι _ Ω _ _ E _ _ D Pl H Ba M S B G J r c N hJ hN hsm hlim

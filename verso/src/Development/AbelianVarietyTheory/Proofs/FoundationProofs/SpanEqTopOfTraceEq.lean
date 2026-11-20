@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.TraceFormNondegenerate
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hij` using `h (Matrix.single j i 1)`. Rewrite `hij` using `[Matrix.trace_mul_single]`. Simplify using `using hij`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_trace_mul {K : Type} [Field K] {n : ℕ} (X : Matrix (Fin n) (Fin n) K)
     (h : ∀ Y : Matrix (Fin n) (Fin n) K, Matrix.trace (X * Y) = 0) : X = 0 := by
@@ -13,21 +13,21 @@ theorem eq_zero_of_trace_mul {K : Type} [Field K] {n : ℕ} (X : Matrix (Fin n) 
   simpa using hij
 
 /- English proof (translation)
-Take `⟨A, hA⟩ : ∃ A : (Γ →₀ K) →ₗ[K] Matrix (Fin n) (Fin n) K, A = Finsupp.linearCombination K (⇑M)` from `⟨_, rfl⟩`. Take `⟨B, hB⟩ : ∃ B : (Γ →₀ K) →ₗ[K] Matrix (Fin n) (Fin n) K, B = Finsupp.linearCombination K (⇑N)` from `⟨_, rfl⟩`. Establish `hprod : ∀ (f : Γ →₀ K) (h : Γ), Matrix.trace (B f * N h) = Matrix.trace (A f * M h)`. Introduce `f h`. Proceed by induction on `f using Finsupp.induction_linear with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add f g hf hg => simp [add_mul, hf, hg]`. Consider the case `single g a`. Substitute `hA hB` using the available equality. Simplify using `only [Finsupp.linearCombination_single, smul_mul_assoc, Matrix.trace_smul, ← map_mul, htr]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hker : LinearMap.ker A ≤ LinearMap.ker B`. Introduce `f hf`. Rewrite `hf`, the goal using `[LinearMap.mem_ker]`. Apply `eq_zero_of_trace_mul` to reduce the goal to its premises. Introduce `Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hY : Y ∈ Submodule.span K (Set.range (⇑N))` using `hN ▸ Submodule.mem_top`. Set `ℓ : Matrix (Fin n) (Fin n) K →ₗ[K] K` to `(Matrix.traceLinearMap (Fin n) K K).comp (LinearMap.mulLeft K (B f))`. Establish `hle : Submodule.span K (Set.range (⇑N)) ≤ LinearMap.ker ℓ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `[ℓ, hprod, hf]`. Simplify `hle hY` using `[ℓ]`. Set `φ : LinearMap.range A →ₗ[K] Matrix (Fin n) (Fin n) K` to `((LinearMap.ker A).liftQ B hker).comp A.quotKerEquivRange.symm.toLinearMap`. Establish `hφ : ∀ f, φ ⟨A f, LinearMap.mem_range_self A f⟩ = B f`. Introduce `f`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[φ]`. Establish `hφtop : LinearMap.range φ = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `Y -`. Establish `hY : Y ∈ LinearMap.range B`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[hB, Finsupp.range_linearCombination, hN]`. Conclude with `Submodule.mem_top`. Take `⟨f, rfl⟩` from `hY`. Conclude with `⟨_, hφ f⟩`. Establish `h1` using `LinearMap.finrank_range_le φ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hφtop, finrank_top]`. Establish `h2 : LinearMap.range A = ⊤` using `Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le _) h1)`. Rewrite `h2` using `[hA, Finsupp.range_linearCombination]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_trace_eq {Γ K : Type} [Monoid Γ] [Field K] {n : ℕ}
     (M N : Γ →* Matrix (Fin n) (Fin n) K)

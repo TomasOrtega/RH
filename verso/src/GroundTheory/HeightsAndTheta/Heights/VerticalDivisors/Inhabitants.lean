@@ -9,21 +9,21 @@ open MvPolynomial NumberField IsDedekindDomain
 noncomputable section
 
 /- English proof (translation)
-Introduce `x y h` and use `by simpa using h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NormLength.hypotheses_inhabited :
     Function.Injective (fun x : ℤ_[2] => (1 : ℤ_[2]) * x) := fun x y h => by
   simpa using h
 
 /- English proof (translation)
-The claim follows from `Ring.ord_ne_top (mem_nonZeroDivisors_of_ne_zero two_ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem LengthDecomp.hypotheses_inhabited :
     Module.length ℤ_[2] (ℤ_[2] ⧸ Ideal.span {(2 : ℤ_[2])}) ≠ ⊤ :=
   Ring.ord_ne_top (mem_nonZeroDivisors_of_ne_zero two_ne_zero)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨0, by simp⟩, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem PrimitiveUnit.hypotheses_inhabited :
     (∃ m, IsUnit ((1 : MvPolynomial (Fin 1) ℤ_[2]).coeff m)) ∧
@@ -32,13 +32,13 @@ theorem PrimitiveUnit.hypotheses_inhabited :
   ⟨⟨0, by simp⟩, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 theorem NormFormEval.hypotheses_inhabited : Module.Free ℚ ℚ ∧ Module.Finite ℚ ℚ :=
   ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Use `⟨Ideal.isPrime_bot, fun c hc => ?_, by simp⟩` and prove the remaining obligations. Rewrite `hc` using `[Ideal.mem_bot]`. Conclude with `(C_eq_zero).mp hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChartTorsion.hypotheses_inhabited :
     (⊥ : Ideal (MvPolynomial (Fin 1) ℤ)).IsPrime ∧
@@ -49,7 +49,7 @@ theorem ChartTorsion.hypotheses_inhabited :
   exact (C_eq_zero).mp hc
 
 /- English proof (translation)
-The claim follows from `isChowForm_point ℚ`.
+A detailed English derivation is pending.
 -/
 theorem IncidenceNull.hypotheses_inhabited :
     IsChowForm (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) 1 (X (0, 0)) :=
@@ -59,9 +59,9 @@ abbrev pointPar : Par 0 1 → FractionRing (MvPolynomial (Par 0 1) ℚ) :=
   fun p => algebraMap (MvPolynomial (Par 0 1) ℚ) (FractionRing (MvPolynomial (Par 0 1) ℚ)) (X p)
 
 /- English proof (translation)
-Establish `h` using `MvPolynomial.algebraicIndependent_X (Par 0 1) ℚ`. Establish `hinj : Function.Injective (IsScalarTower.toAlgHom ℚ (MvPolynomial (Par 0 1) ℚ) (FractionRing (MvPolynomial (Par 0 1) ℚ)))` using `IsFractionRing.injective (MvPolynomial (Par 0 1) ℚ) (FractionRing (MvPolynomial (Par 0 1) ℚ))`. Establish `h2` using `h.map' hinj`. Establish `e : (⇑(IsScalarTower.toAlgHom ℚ (MvPolynomial (Par 0 1) ℚ) (FractionRing (MvPolynomial (Par 0 1) ℚ))) ∘ X) = pointPar`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, IsScalarTower.coe_toAlgHom', pointPar]`. Rewrite `h2` using `[e]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pointPar_algebraicIndependent : AlgebraicIndependent ℚ pointPar := by
   have h := MvPolynomial.algebraicIndependent_X (Par 0 1) ℚ
@@ -77,7 +77,7 @@ theorem pointPar_algebraicIndependent : AlgebraicIndependent ℚ pointPar := by
   exact h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pointPar_algebraicIndependent, isProjPrime_point ℚ, isChowForm_point ℚ⟩`.
+Supply the required witnesses or components.
 -/
 theorem ChowNormForm.hypotheses_inhabited :
     AlgebraicIndependent ℚ pointPar ∧ IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧
@@ -85,7 +85,7 @@ theorem ChowNormForm.hypotheses_inhabited :
   ⟨pointPar_algebraicIndependent, isProjPrime_point ℚ, isChowForm_point ℚ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pointPar_algebraicIndependent, isProjPrime_point ℚ, isChowForm_point ℚ, linForm_one_not_mem_point ℚ⟩`.
+Supply the required witnesses or components.
 -/
 theorem SecLinNZD.hypotheses_inhabited :
     AlgebraicIndependent ℚ pointPar ∧ IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧
@@ -96,15 +96,15 @@ theorem SecLinNZD.hypotheses_inhabited :
 abbrev pointForm : MvPolynomial (Fin (0 + 1) × Fin 1) (𝓞 ℚ) := X (0, 0)
 
 /- English proof (translation)
-Simplify using `[pointForm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pointForm_map : pointForm.map (algebraMap (𝓞 ℚ) ℚ) = X (0, 0) := by
   simp [pointForm]
 
 /- English proof (translation)
-Use `⟨isProjPrime_point ℚ, by rw [pointForm_map]; exact isChowForm_point ℚ, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using linForm_one_not_mem_point ℚ`. Use `⟨Finsupp.single (0, 0) 1, ?_⟩` and prove the remaining obligations. Establish `h1 : pointForm.coeff (Finsupp.single (0, 0) 1) = 1` using `by simp [pointForm]`. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NormIdentity.hypotheses_inhabited (v : HeightOneSpectrum (𝓞 ℚ)) :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧
@@ -120,7 +120,7 @@ theorem NormIdentity.hypotheses_inhabited (v : HeightOneSpectrum (𝓞 ℚ)) :
     exact fun h => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjPrime_point ℚ, isChowForm_point ℚ⟩`.
+Supply the required witnesses or components.
 -/
 theorem SecBFinite.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧
@@ -128,12 +128,12 @@ theorem SecBFinite.hypotheses_inhabited :
   ⟨isProjPrime_point ℚ, isChowForm_point ℚ⟩
 
 /- English proof (translation)
-The claim follows from `one_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem GaussDVR.hypotheses_inhabited : (1 : MvPolynomial (Par 0 1) (𝓞 ℚ)) ≠ 0 := one_ne_zero
 
 /- English proof (translation)
-The claim follows from `X_ne_zero 0`.
+A detailed English derivation is pending.
 -/
 theorem PrimitiveScale.hypotheses_inhabited : (X 0 : MvPolynomial (Fin 1) ℚ) ≠ 0 := X_ne_zero 0
 

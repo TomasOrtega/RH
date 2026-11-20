@@ -9,9 +9,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.UnitLine
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `hw.exists_right_inv`. Establish `e : σ w = σ w * v * w` using `by linear_combination (-σ w) * hv`. Use `⟨σ w * v, ?_, e⟩` and prove the remaining obligations. Establish `h1` using `congrArg φ e`. Rewrite `h1` using `[map_mul φ _ w, h, hφ, map_mul σ, hσ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `(hc.mul hw).mul_right_cancel` to reduce the goal to its premises. Rewrite using `[← h1]`. Take the linear combination `(-c * σ w) * hv`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_fixed {R : Type} [CommRing R] (φ σ : R →+* R) (h : ∀ a, φ (σ a) = σ (φ a)) (w c : R)
     (hw : IsUnit w) (hc : IsUnit c) (hσ : σ c = c) (hφ : φ w = c * w) :
@@ -26,9 +26,9 @@ theorem exists_fixed {R : Type} [CommRing R] (φ σ : R →+* R) (h : ∀ a, φ 
   linear_combination (-c * σ w) * hv
 
 /- English proof (translation)
-Introduce `l _ w u hw hφ g`. Take `⟨-, -, -, -, -, h6, -, h8, -⟩` from `ActLaws.act_laws l`. Take `⟨a, ha, e⟩` from `exists_fixed (Per.φA l) (Per.σA g) (ActLaws.φA_σA g) w (Per.zA l u) hw (u.isUnit.map _) (h8 g u) hφ`. Take `⟨z, hz⟩` from `phi_fixed_eq_padicInt l (algebraMap (Per.Ainf l) (Per.Acris l) a) ((PhiFix.phiA_alg l a).trans (congrArg _ ha))`. Establish `hb : Per.aB l a = Per.zB l z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.RingIface.zB_eq_aB_zA, GlobalTheory.RingIface.aB_eq_alg, GlobalTheory.RingIface.aB_eq_alg, hz]`. Conclude with `⟨z, by rw [h6, e, map_mul, hb]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sigma_unit_eigen : ∀ (l : ℕ) [Fact l.Prime] (w : Per.Ainf l) (u : ℤ_[l]ˣ), IsUnit w → Per.φA l w = Per.zA l u * w → ∀ g : GQ l, ∃ z : ℤ_[l], Per.σB g (Per.aB l w) = Per.zB l z * Per.aB l w := by
   intro l _ w u hw hφ g

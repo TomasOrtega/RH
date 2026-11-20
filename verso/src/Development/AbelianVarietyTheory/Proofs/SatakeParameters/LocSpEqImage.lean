@@ -14,25 +14,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n p G A hS hI v Λ z'`. Establish `hph` using `GlobalTheory.T.tensor_first_factor_integers_onto_local_integers A hS v`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Use `⟨fun k => inclE (F := F) _ (x k), Submodule.subset_span ⟨x, hx, rfl⟩, fun k => ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, fun k => by simp⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `add y₁ y₂ _ _ h₁ h₂`. Take `⟨z₁, hz₁, e₁⟩` from `h₁`. Take `⟨z₂, hz₂, e₂⟩` from `h₂`. Use `⟨z₁ + z₂, Submodule.add_mem _ hz₁ hz₂, fun k => ?_⟩` and prove the remaining obligations. Simplify using `[e₁ k, e₂ k]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `smul w y _ h`. Take `⟨z, hz, e⟩` from `h`. Establish `hw : A.eQ v (algebraMap (G.P.W v) (G.P.Qq v) w) ∈ (A.pl v).1.adicCompletionIntegers F` using `(hI v _).1 ⟨w, rfl⟩`. Take `⟨s, hs, hse⟩` from `hph.2 _ hw`. Use `⟨(⟨s, hs⟩ : intV E (A.pl v).1) • z, Submodule.smul_mem _ _ hz, fun k => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (A.eQ v).symm (A.ph v (s * z k)) = (w • y) k`. Rewrite using `[map_mul, hse, map_mul, e k, RingEquiv.symm_apply_apply, Pi.smul_apply, Algebra.smul_def]`. Introduce and unpack `⟨z, hz, hzz⟩`. Establish `key : ∀ z ∈ latS (F` using `F) ((A.pl v).1.adicCompletion F) (intV E (A.pl v).1) Λ, (fun k => (A.eQ v).symm (A.ph v (z k))) ∈ locSp (G.P.W v) (A.iw v) Λ := by`. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h0` using `Submodule.zero_mem (locSp (G.P.W v) (A.iw v) Λ)`. Use `h0 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Consider the case `add y₁ y₂ _ _ h₁ h₂`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Submodule.add_mem _ h₁ h₂` as an intermediate fact. Simplify `this` using `[Pi.add_def]`. Consider the case `smul s y _ h`. Take `⟨w, hw⟩` from `(hI v ((A.eQ v).symm (A.ph v s))).2 (by simpa using hph.1 s.1 s.2)`. Use `Submodule.smul_mem _ w h` as an intermediate fact.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Use `show (A.eQ v).symm (A.ph v (s.1 * y k)) = _`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, hw, map_mul, map_mul]`. Use `key z hz` as an intermediate fact.
-
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Conclude with `(hzz k).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem locSp_eq_image : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n p : ℕ} {G : GAtP p} (A : LocAt F E n G), SplAlg A → LocInt A → ∀ v (Λ : Submodule (𝓞 E) (Fin n → E)) (z' : Fin n → G.P.Qq v), z' ∈ locSp (G.P.W v) (A.iw v) Λ ↔ ∃ z ∈ latS (F := F) ((A.pl v).1.adicCompletion F) (intV E (A.pl v).1) Λ, ∀ k, (A.eQ v).symm (A.ph v (z k)) = z' k := by
   intro F E _ _ _ _ _ n p G A hS hI v Λ z'

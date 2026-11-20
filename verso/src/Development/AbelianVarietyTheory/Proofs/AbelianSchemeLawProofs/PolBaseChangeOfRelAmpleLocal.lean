@@ -14,9 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PolBaseChange
 
 /- English proof (translation)
-Use `⟨⟨fun p => L.g p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Use `(gm_res _ y _ hy _).trans (Eq.symm ((map_mul _ _ _).trans ((congrArg₂ (· * ·) (gm_div L L (𝟙 X) y p q hy) (gm_res _ y _ hy _)).trans ?_)))` and prove the remaining obligations. Establish `a` using `gm_cocycle hL (𝟙 X) y hy.1.1 hy.2.1 hy.2.2`. Establish `b` using `gm_cocycle hL (𝟙 X) y hy.1.1 hy.1.2 hy.2.2`. Use `show gm (𝟙 X) y _ (L.g p.1 q.1) * (gm (𝟙 X) y _ (L.g p.2 q.2))⁻¹ * gm (𝟙 X) y _ (L.g q.1 q.2) = gm (𝟙 X) y _ (L.g p.1 p.2)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_right_comm, a, ← b, mul_inv_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_refl {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) : LBIso L L := by
   refine ⟨⟨fun p => L.g p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩
@@ -32,9 +32,9 @@ variable {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {A' : Over S'} [GrpObj 
   {φ : A'.left ⟶ A.left} {L : LB A.left}
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over S'))))`. Establish `e₁ : (1 : 𝟙_ (Over S') ⟶ A') = η[A']` using `by rw [Hom.one_def]; simp`. Rewrite `e` using `[e₁]`. Use `e.trans ?_` and prove the remaining obligations. Use `show (toUnit _ ≫ η[A]).left = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[eSec]`.
+A detailed English derivation is pending.
 -/
 theorem eSec_comm (h : IsGrpPullback A' A f φ) : eSec A' ≫ φ = f ≫ eSec A := by
   have e := congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over S'))))
@@ -45,7 +45,7 @@ theorem eSec_comm (h : IsGrpPullback A' A f φ) : eSec A' ≫ φ = f ≫ eSec A 
   simp [eSec]
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun z => z.left) (map_inv (pushHom h A') (𝟙 A'))`. Rewrite `e` using `[Hom.inv_def, Hom.inv_def, Category.id_comp]`. Use `e.trans ?_` and prove the remaining obligations. Use `show (𝟙 _ ≫ φ) ≫ _ = _`. Rewrite using `[Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_comm (h : IsGrpPullback A' A f φ) :
     (GrpObj.inv : A' ⟶ A').left ≫ φ = φ ≫ (GrpObj.inv : A ⟶ A).left := by
@@ -56,7 +56,7 @@ theorem inv_comm (h : IsGrpPullback A' A f φ) :
   rw [Category.id_comp]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hr`. Conclude with `gen_chartPull (chartPullLinComb L φ (fun _ : PUnit => eSec A') (fun _ => eSec A) (fun _ => 1) f fun _ => eSec_comm h) t ht`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rigidified_pull (h : IsGrpPullback A' A f φ) (hr : Rigidified A L) : Rigidified A' (L.pull φ) := by
   obtain ⟨t, ht⟩ := hr
@@ -64,9 +64,9 @@ theorem rigidified_pull (h : IsGrpPullback A' A f φ) (hr : Rigidified A L) : Ri
     fun _ => eSec_comm h) t ht
 
 /- English proof (translation)
-Introduce `s`. Take `⟨U, hU, t, ht⟩` from `hs (f s)`. Use `⟨f ⁻¹ᵁ U, hU, ?_⟩` and prove the remaining obligations. Establish `le' : A'.hom ⁻¹ᵁ (f ⁻¹ᵁ U) ≤ φ ⁻¹ᵁ (A.hom ⁻¹ᵁ U)` using `fun y hy => (congrArg (fun q => q y ∈ U) h.1.w).mpr hy`. Establish `hψ : φ.resLE _ _ le' ≫ (A.hom ⁻¹ᵁ U).ι = (A'.hom ⁻¹ᵁ (f ⁻¹ᵁ U)).ι ≫ φ` using `Scheme.Hom.resLE_comp_ι φ le'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `gen_chartPull (chartPullLinComb L φ _ _ _ (φ.resLE _ _ le') fun k => ?_) t ht` and prove the remaining obligations. Use `fin_cases k`. Use `show (_ ≫ _) ≫ φ = _ ≫ _ ≫ _`. Rewrite using `[Category.assoc, inv_comm h, ← Category.assoc, ← hψ, Category.assoc]`. Conclude with `hψ.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sym_pull (h : IsGrpPullback A' A f φ) (hs : Sym A L) : Sym A' (L.pull φ) := by
   intro s
@@ -84,7 +84,7 @@ theorem sym_pull (h : IsGrpPullback A' A f φ) (hs : Sym A L) : Sym A' (L.pull �
 omit [GrpObj A] [GrpObj A'] in
 
 /- English proof (translation)
-Establish `H : IsPullback ((A'.hom ⁻¹ᵁ (f ⁻¹ᵁ V)).ι ≫ φ) (A'.hom ∣_ (f ⁻¹ᵁ V)) A.hom ((f ⁻¹ᵁ V).ι ≫ f)` using `(isPullback_morphismRestrict A'.hom (f ⁻¹ᵁ V)).flip.paste_horiz h`. Take `⟨w, hw⟩ : LBIso ((L.pull φ).pull (A'.hom ⁻¹ᵁ (f ⁻¹ᵁ V)).ι) (L.pull ((A'.hom ⁻¹ᵁ (f ⁻¹ᵁ V)).ι ≫ φ))` from `LBIso.chartPull (chartPullLinComb L φ (fun _ : PUnit => (A'.hom ⁻¹ᵁ (f ⁻¹ᵁ V)).ι) (fun _ => (A'.hom ⁻¹ᵁ (f ⁻¹ᵁ V)).ι ≫ φ) (fun _ => 1) (𝟙 _) fun _ => (Category.id_comp _).symm) (chartPullId _) (lbIso_refl (pull_isLB hL _))`. Conclude with `relAmple_pull (A' := Over.mk (A'.hom ∣_ (f ⁻¹ᵁ V))) H hL (pull_isLB (pull_isLB hL _) _) ((isGen_iff w).1 hw) V hV (fun y => y.2) hA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem relAmple_restrict (h : IsPullback φ A'.hom A.hom f) (hL : L.IsLB) (hA : RelAmple A L)
     (V : S.Opens) (hV : IsAffineOpen V) :
@@ -105,11 +105,11 @@ namespace GlobalTheory
 open PolBaseChange
 
 /- English proof (translation)
-Introduce `hloc S S' f P`. Establish `h` using `isGrpPullback_pullback P.A f`. Establish `hab` using `TLinPf.isAb_pullback f P.A P.isAb`. Establish `hL'` using `pull_isLB P.isLB (pullback.fst P.A.hom f)`. Take `⟨w, hw⟩` from `lbIso_refl hL'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hab.proper` as an intermediate fact. Establish `hamp : RelAmple ((Over.pullback f).obj P.A) (P.L.pull (pullback.fst P.A.hom f))`. Use `hloc S' _ _ hL' inferInstance inferInstance fun s => ?_` and prove the remaining obligations. Take `⟨V, hV, hs, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := ⊤) (x := f s) trivial`. Conclude with `⟨f ⁻¹ᵁ V, hs, relAmple_restrict h.1 P.isLB P.ample V hV⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨{ A := (Over.pullback f).obj P.A isAb := hab g := P.g smoothDim := (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1 P.smoothDim L := P.L.pull (pullback.fst P.A.hom f) isLB := hL' rigid := rigidified_pull h P.rigid sym := sym_pull h P.sym ample := hamp ktri …` and prove the remaining obligations. Conclude with `Over.OverMorphism.ext (h.2 T x y _ _ rfl rfl).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem polBaseChange_of_relAmple_local :
     (∀ (S : Scheme.{0}) (A : Over S) (L : LB A.left), L.IsLB → QuasiCompact A.hom → QuasiSeparated A.hom →

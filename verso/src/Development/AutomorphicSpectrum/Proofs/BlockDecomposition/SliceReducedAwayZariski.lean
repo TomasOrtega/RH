@@ -22,44 +22,44 @@ namespace GlobalTheory.CompanionTheory.Heights.BranchOrder
 open GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `@SliceReducedAwayZariski.proof AutoClose.GenericFibreRadicalAway SliceBundleRadicalAway.proof`.
+A detailed English derivation is pending.
 -/
 theorem sliceReducedAwayZariski : SliceReducedAwayZariski.Statement :=
   @SliceReducedAwayZariski.proof AutoClose.GenericFibreRadicalAway SliceBundleRadicalAway.proof
 
 /- English proof (translation)
-The claim follows from `@SliceReducedAway.proof sliceReducedAwayZariski`.
+A detailed English derivation is pending.
 -/
 theorem sliceReducedAway : SliceReducedAway.Statement :=
   @SliceReducedAway.proof sliceReducedAwayZariski
 
 /- English proof (translation)
-The claim follows from `@SliceUnmixedGeneral.proof AutoClose.CMHeightOneGeneral LocalDimDomain.proof AutoClose.SliceLocalDimGeneral AutoClose.SliceCMUnmixed`.
+A detailed English derivation is pending.
 -/
 theorem sliceUnmixedGeneral : SliceUnmixedGeneral.Statement :=
   @SliceUnmixedGeneral.proof AutoClose.CMHeightOneGeneral LocalDimDomain.proof
     AutoClose.SliceLocalDimGeneral AutoClose.SliceCMUnmixed
 
 /- English proof (translation)
-The claim follows from `@SliceReducedGeneral.proof sliceUnmixedGeneral sliceReducedAway`.
+A detailed English derivation is pending.
 -/
 theorem sliceReducedGeneral : SliceReducedGeneral.Statement :=
   @SliceReducedGeneral.proof sliceUnmixedGeneral sliceReducedAway
 
 /- English proof (translation)
-The claim follows from `@SliceMultGeneral.proof AutoClose.CMGeneralPoint TransverseSliceGeneral.proof AutoClose.LengthTransverseSlice`.
+A detailed English derivation is pending.
 -/
 theorem sliceMultGeneral : SliceMultGeneral.Statement :=
   @SliceMultGeneral.proof AutoClose.CMGeneralPoint TransverseSliceGeneral.proof AutoClose.LengthTransverseSlice
 
 /- English proof (translation)
-The claim follows from `@SliceLength.proof IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.full sliceReducedGeneral sliceMultGeneral`.
+A detailed English derivation is pending.
 -/
 theorem sliceLength : SliceLength.Statement :=
   @SliceLength.proof IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.full sliceReducedGeneral sliceMultGeneral
 
 /- English proof (translation)
-The claim follows from `LocalOrder.proof sliceLength GlobalTheory.T.slice_branches_holds GlobalTheory.T.curve_branch_length_holds`.
+A detailed English derivation is pending.
 -/
 theorem localOrder : LocalOrder.Statement :=
   LocalOrder.proof sliceLength GlobalTheory.T.slice_branches_holds GlobalTheory.T.curve_branch_length_holds

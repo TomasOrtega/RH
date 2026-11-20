@@ -9,7 +9,7 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hinj : Function.Injective fun s : ℂ => s • z` using `smul_left_injective ℂ h`. Establish `h1 : (Set.univ : Set ℂ).Countable` using `(hS.preimage_of_injOn hinj.injOn).mono fun s _ => hz s`. Conclude with `not_countable_complex h1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_smul_mem_countable {V : Type*} [AddCommGroup V] [Module ℂ V] {S : Set V}
     (hS : S.Countable) {z : V} (hz : ∀ s : ℂ, s • z ∈ S) : z = 0 := by
@@ -33,25 +33,25 @@ def kerPerp (hadj : ∀ (a : O) x x', EF (a • x) x' = EF x (bar a • x')) (y 
 variable {hadj : ∀ (a : O) x x', EF (a • x) x' = EF x (bar a • x')} {y : L →ₗ[O] Y}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_kerPerp {t : L} : t ∈ kerPerp hadj y ↔ ∀ v, y v = 0 → EF t v = 0 := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `ht t' (hle ht')`.
+A detailed English derivation is pending.
 -/
 theorem isotropic (hle : kerPerp hadj y ≤ LinearMap.ker y) {t t' : L} (ht : t ∈ kerPerp hadj y)
     (ht' : t' ∈ kerPerp hadj y) : EF t t' = 0 := ht t' (hle ht')
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `ht _ (by rw [map_sub, h, sub_self])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_eq_of_eq {t : L} (ht : t ∈ kerPerp hadj y) {v v' : L} (h : y v = y v') : EF t v = EF t v' := by
   rw [← sub_eq_zero, ← map_sub]
   exact ht _ (by rw [map_sub, h, sub_self])
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hs (-(φ ∘ₗ y.toAddMonoidHom.toIntLinearMap))`. Conclude with `⟨t, fun v hv => by simp [ht, hv], fun v => by simp [ht]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_dual (hs : Function.Surjective EF) (φ : Module.Dual ℤ Y) :
     ∃ t ∈ kerPerp hadj y, ∀ v, -EF t v = φ (y v) := by
@@ -59,7 +59,7 @@ theorem exists_of_dual (hs : Function.Surjective EF) (φ : Module.Dual ℤ Y) :
   exact ⟨t, fun v hv => by simp [ht, hv], fun v => by simp [ht]⟩
 
 /- English proof (translation)
-Use `⟨fun hv t ht => ht v hv, fun h => (Module.forall_dual_apply_eq_zero_iff ℤ _).1 fun φ => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, hφ⟩` from `exists_of_dual (hadj := hadj) (y := y) hs φ`. Rewrite using `[← hφ, h t ht, neg_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_iff [Module.Projective ℤ Y] (hs : Function.Surjective EF) (v : L) :
     y v = 0 ↔ ∀ t ∈ kerPerp hadj y, EF t v = 0 := by
@@ -80,18 +80,18 @@ def toDual (hy : Function.Surjective y) : kerPerp hadj y →ₗ[ℤ] Module.Dual
       exact congrArg _ (apply_eq_of_eq t.2 (by simp [Function.surjInv_eq])))
 
 /- English proof (translation)
-The claim follows from `congrArg Neg.neg (apply_eq_of_eq t.2 (Function.surjInv_eq hy _))`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem toDual_apply (hy : Function.Surjective y) (t : kerPerp hadj y) (v : L) :
     toDual hadj hy t (y v) = -EF t v :=
   congrArg Neg.neg (apply_eq_of_eq t.2 (Function.surjInv_eq hy _))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Use `Subtype.ext (hb.1 (LinearMap.ext fun v => ?_))` and prove the remaining obligations. Use `toDual_apply hadj hy t v` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[ht]`. Simplify using `using this`. Introduce `φ`. Take `⟨t, ht, hφ⟩` from `exists_of_dual (hadj := hadj) (y := y) hb.2 φ`. Use `⟨⟨t, ht⟩, LinearMap.ext fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, rfl⟩` from `hy x`. Rewrite using `[toDual_apply, hφ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem toDual_bijective (hb : Function.Bijective EF) (hy : Function.Surjective y) :
     Function.Bijective (toDual hadj hy) := by
@@ -112,20 +112,20 @@ def equivDual (hb : Function.Bijective EF) (hy : Function.Surjective y) : kerPer
   LinearEquiv.ofBijective _ (toDual_bijective hadj hb hy)
 
 /- English proof (translation)
-The claim follows from `toDual_apply hadj hy t v`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem equivDual_apply (hb : Function.Bijective EF) (hy : Function.Surjective y) (t : kerPerp hadj y)
     (v : L) : equivDual hadj hb hy t (y v) = -EF t v := toDual_apply hadj hy t v
 
 /- English proof (translation)
-Rewrite using `[← equivDual_apply hadj hb hy, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem neg_apply_equivDual_symm (hb : Function.Bijective EF) (hy : Function.Surjective y) (φ : Module.Dual ℤ Y)
     (v : L) : -EF ((equivDual hadj hb hy).symm φ) v = φ (y v) := by
   rw [← equivDual_apply hadj hb hy, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `hy x`. Rewrite using `[← map_smul y, equivDual_apply, equivDual_apply, Submodule.coe_smul, hadj]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem equivDual_smul (hb : Function.Bijective EF) (hy : Function.Surjective y) (a : O) (t : kerPerp hadj y)
     (x : Y) : equivDual hadj hb hy (a • t) x = equivDual hadj hb hy t (bar a • x) := by
@@ -133,7 +133,7 @@ theorem equivDual_smul (hb : Function.Bijective EF) (hy : Function.Surjective y)
   rw [← map_smul y, equivDual_apply, equivDual_apply, Submodule.coe_smul, hadj]
 
 /- English proof (translation)
-Rewrite using `[(equivDual hadj hb hy).finrank_eq, Module.finrank_linearMap_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_kerPerp [Module.Free ℤ Y] [Module.Finite ℤ Y] (hb : Function.Bijective EF)
     (hy : Function.Surjective y) : Module.finrank ℤ (kerPerp hadj y) = Module.finrank ℤ Y := by
@@ -149,7 +149,7 @@ def nilTo (hb : Function.Bijective EF) (hy : Function.Surjective y)
     rw [RingHom.id_apply, equivDual_smul, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply, map_smul, hbe])
 
 /- English proof (translation)
-The claim follows from `neg_apply_equivDual_symm hadj hb hy _ b`.
+A detailed English derivation is pending.
 -/
 theorem neg_apply_nilTo (hb : Function.Bijective EF) (hy : Function.Surjective y)
     (hbe : ∀ (a : O) x x', be (a • x) x' = be x (bar a • x')) (a b : L) :
@@ -162,7 +162,7 @@ section Nil
 variable {nn : L → L}
 
 /- English proof (translation)
-The claim follows from `hi (LinearMap.ext fun b => by simpa [ha] using h a b)`.
+A detailed English derivation is pending.
 -/
 theorem nil_eq_zero (hi : Function.Injective EF) (h : ∀ a b, -EF (nn a) b = be (y a) (y b)) {a : L}
     (ha : y a = 0) : nn a = 0 :=
@@ -177,9 +177,9 @@ namespace AnArc
 variable {O : Type} [CommRing O] [StarRing O] (A : AnArc O)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨(Module.forall_dual_apply_eq_zero_iff ℤ _).1 fun φ => ?_, A.Ef_bij.1 (LinearMap.ext fun l => ?_)⟩` and prove the remaining obligations. Simplify `h (La.mk 0 φ.toAddMonoidHom 0) rfl` using `[EF_apply]`. Simplify `h (La.mk 0 0 l) rfl` using `[EF_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨hy, hl⟩ v' hv'`. Simplify using `[EF_apply, hy, hl, hv']`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem orth_ker_iff (v : A.La) : (∀ v' : A.La, v'.y = 0 → A.EF v v' = 0) ↔ v.y = 0 ∧ v.l = 0 := by
   constructor
@@ -191,26 +191,26 @@ theorem orth_ker_iff (v : A.La) : (∀ v' : A.La, v'.y = 0 → A.EF v v' = 0) �
     simp [EF_apply, hy, hl, hv']
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨v.n, La.ext h.1 rfl h.2⟩, by rintro ⟨n, rfl⟩; exact ⟨rfl, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem y_l_eq_zero_iff (v : A.La) : v.y = 0 ∧ v.l = 0 ↔ ∃ n, v = La.mk 0 n 0 :=
   ⟨fun h => ⟨v.n, La.ext h.1 rfl h.2⟩, by rintro ⟨n, rfl⟩; exact ⟨rfl, rfl⟩⟩
 
 /- English proof (translation)
-The claim follows from `(A.orth_ker_iff v).trans (A.y_l_eq_zero_iff v)`.
+A detailed English derivation is pending.
 -/
 theorem orth_ker_iff_exists (v : A.La) : (∀ v' : A.La, v'.y = 0 → A.EF v v' = 0) ↔ ∃ n, v = La.mk 0 n 0 :=
   (A.orth_ker_iff v).trans (A.y_l_eq_zero_iff v)
 
 /- English proof (translation)
-Simplify using `[EF_n_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smul_periodMap_mk_zero_fst_eq_neg_form (s : ℂ) (n : A.X →+ ℤ) (v' : A.La) :
     (s • A.P0 (La.mk 0 n 0)).1 v'.y = -(s * A.EF (La.mk 0 n 0) v') := by
   simp [EF_n_left]
 
 /- English proof (translation)
-Establish `hc : Countable A.abelian₂` using `Finsupp.Countable.of_moduleFinite (R := ℤ)`. Use `Subtype.ext (eq_zero_of_forall_smul_mem_countable (S := (A.abelian₂ : Set _)) (Set.countable_coe_iff.1 hc) fun s => ?_)` and prove the remaining obligations. Simplify `h s` using `[hv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem l_eq_zero_of_forall_smul_mem {v : A.La} (hv : v.y = 0) (h : ∀ s : ℂ, (s • A.P0 v).2 ∈ A.abelian₂) : v.l = 0 := by
   have hc : Countable A.abelian₂ := Finsupp.Countable.of_moduleFinite (R := ℤ)
@@ -218,7 +218,7 @@ theorem l_eq_zero_of_forall_smul_mem {v : A.La} (hv : v.y = 0) (h : ∀ s : ℂ,
   simpa [hv] using h s
 
 /- English proof (translation)
-Rewrite using `[orth_ker_iff]`. Use `and_congr_right fun hv => ⟨fun hl s => ?_, A.l_eq_zero_of_forall_smul_mem hv⟩` and prove the remaining obligations. Simplify using `[hv, hl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem orth_ker_iff_forall_smul_mem (v : A.La) :
     (∀ v' : A.La, v'.y = 0 → A.EF v v' = 0) ↔ v.y = 0 ∧ ∀ s : ℂ, (s • A.P0 v).2 ∈ A.abelian₂ := by
@@ -227,7 +227,7 @@ theorem orth_ker_iff_forall_smul_mem (v : A.La) :
   simp [hv, hl]
 
 /- English proof (translation)
-Take `⟨n, rfl⟩` from `(A.orth_ker_iff_exists v).1 h`. Conclude with `⟨by simp, A.smul_periodMap_mk_zero_fst_eq_neg_form s n⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem smul_periodMap_of_orthogonal_ker {v : A.La} (h : ∀ v' : A.La, v'.y = 0 → A.EF v v' = 0) (s : ℂ) :
     (s • A.P0 v).2 = 0 ∧ ∀ v' : A.La, (s • A.P0 v).1 v'.y = -(s * A.EF v v') := by
@@ -235,7 +235,7 @@ theorem smul_periodMap_of_orthogonal_ker {v : A.La} (h : ∀ v' : A.La, v'.y = 0
   exact ⟨by simp, A.smul_periodMap_mk_zero_fst_eq_neg_form s n⟩
 
 /- English proof (translation)
-Introduce `h` and use `by have h1 := KerPerp.neg_apply_nilTo A.EF_smul A.EF_bijective A.yLin_surjective A.be_adj a a rw [h] at h1 have h2 : (0 : ℤ) = A.be a.y a.y := by simpa using h1 exact (A.be_pos _ ha).ne h2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nilTo_ne_zero {a : A.La} (ha : a.y ≠ 0) :
     KerPerp.nilTo A.EF_smul A.EF_bijective A.yLin_surjective A.be_adj a ≠ 0 := fun h => by
@@ -245,7 +245,7 @@ theorem nilTo_ne_zero {a : A.La} (ha : a.y ≠ 0) :
   exact (A.be_pos _ ha).ne h2
 
 /- English proof (translation)
-The claim follows from `(gaussCM c τ₀).nilTo_ne_zero (one_ne_zero (α := GaussianInt))`.
+A detailed English derivation is pending.
 -/
 example (c τ₀ : ℂ) : KerPerp.nilTo (gaussCM c τ₀).EF_smul (gaussCM c τ₀).EF_bijective
     (gaussCM c τ₀).yLin_surjective (gaussCM c τ₀).be_adj

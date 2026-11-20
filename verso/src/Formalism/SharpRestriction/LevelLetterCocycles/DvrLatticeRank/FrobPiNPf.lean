@@ -13,9 +13,9 @@ section FrobPiNGeom
 variable {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Introduce `k y hy`. Simplify using `using hy`. Consider the case `succ j ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `k y hy`. Rewrite using `[Function.iterate_succ_apply']`. Establish `h1` using `hf (k + j) _ (ih k y hy)`. Rewrite using `[show k + (j + 1) = k + j + 1 by ring]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem frobpin_iter_mem (I : Ideal A) (f : M →+ M)
     (hf : ∀ k : ℕ, ∀ y ∈ (I ^ k • ⊤ : Submodule A M), f y ∈ (I ^ (k + 1) • ⊤ : Submodule A M))
@@ -32,34 +32,32 @@ theorem frobpin_iter_mem (I : Ideal A) (f : M →+ M)
     rwa [show k + (j + 1) = k + j + 1 by ring]
 
 /- English proof (translation)
-The claim follows from `Submodule.smul_mono_left (Ideal.pow_le_pow_right h) hy`.
+A detailed English derivation is pending.
 -/
 theorem frobpin_mono (I : Ideal A) {m k : ℕ} (h : m ≤ k) {y : M}
     (hy : y ∈ (I ^ k • ⊤ : Submodule A M)) : y ∈ (I ^ m • ⊤ : Submodule A M) :=
   Submodule.smul_mono_left (Ideal.pow_le_pow_right h) hy
 
 /- English proof (translation)
-Establish `hit` using `frobpin_iter_mem I f hf`. Establish `htop : ∀ y : M, y ∈ (I ^ 0 • ⊤ : Submodule A M)`. Introduce `y`. Rewrite using `[pow_zero, Ideal.one_eq_top, Submodule.top_smul]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfix : ∀ y : M, f y = y → y = 0`. Introduce `y hy`. Use `IsHausdorff.haus (inferInstance : IsHausdorff I M) y (fun k => ?_)` and prove the remaining obligations. Establish `h1 : (⇑f)^[k] y = y` using `Function.iterate_fixed hy k`. Establish `h2` using `hit k 0 y (htop y)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1, zero_add]`. Conclude with `SModEq.sub_mem.2 (by simpa using h2)`. Set `S : ℕ → M` to `fun k => ∑ i ∈ Finset.range k, (⇑f)^[i] b`. Establish `hS : ∀ k, f (S k) - S k = (⇑f)^[k] b - b`. Introduce `k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : f (S k) = ∑ i ∈ Finset.range k, (⇑f)^[i + 1] b`. Simplify using `only [S, map_sum]`. Conclude with `Finset.sum_congr rfl (fun i _ => (Function.iterate_succ_apply' _ _ _).symm)`. Rewrite using `[e1]`. Simplify using `only [S]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Finset.sum_sub_distrib, Finset.sum_range_sub (fun i => (⇑f)^[i] b) k, Function.iterate_zero_apply]`. Establish `hbk : ∀ k, (⇑f)^[k] b ∈ (I ^ k • ⊤ : Submodule A M)`. Introduce `k`. Simplify using `using hit k 0 b (htop b)`. Establish `hcauchy : ∀ {m n : ℕ}, m ≤ n → S m ≡ S n [SMOD (I ^ m • ⊤ : Submodule A M)]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `m n hmn`. Use `SModEq.sub_mem.2 ?_` and prove the remaining obligations. Establish `e : S m - S n = -(∑ i ∈ Finset.Ico m n, (⇑f)^[i] b)`. Simplify using `only [S]`. Rewrite using `[Finset.sum_Ico_eq_sub _ hmn, neg_sub]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Use `Submodule.neg_mem _ (Submodule.sum_mem _ (fun i hi => ?_))` and prove the remaining obligations. Conclude with `frobpin_mono I (Finset.mem_Ico.1 hi).1 (hbk i)`. Take `⟨L, hL⟩` from `IsPrecomplete.prec (inferInstance : IsPrecomplete I M) hcauchy`. Establish `hex : f (-L) - -L = b`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : f (-L) - -L - b = 0`. Use `IsHausdorff.haus (inferInstance : IsHausdorff I M) _ (fun k => SModEq.sub_mem.2 ?_)` and prove the remaining obligations. Rewrite using `[sub_zero]`. Establish `hk : S k - L ∈ (I ^ k • ⊤ : Submodule A M)` using `SModEq.sub_mem.1 (hL k)`. Establish `e : f (-L) - -L - b = f (S k - L) - (S k - L) - (⇑f)^[k] b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (⇑f)^[k] b = f (S k) - S k + b by rw [hS k]; abel, map_sub, map_neg]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `Submodule.sub_mem _ (Submodule.sub_mem _ ?_ hk) (hbk k)` and prove the remaining obligations. Conclude with `frobpin_mono I (Nat.le_succ k) (hf k _ hk)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `sub_eq_zero.1 hz`. Use `⟨-L, hex, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h0 : f (y - -L) = y - -L`. Use `sub_eq_zero.1 ?_` and prove the remaining obligations. Rewrite using `[map_sub]`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `sub_eq_zero.1 (hfix _ h0)`.
+A detailed English derivation is pending.
 -/
 theorem frobpin_geom (I : Ideal A) [IsAdicComplete I M] (f : M →+ M)
     (hf : ∀ k : ℕ, ∀ y ∈ (I ^ k • ⊤ : Submodule A M), f y ∈ (I ^ (k + 1) • ⊤ : Submodule A M))
@@ -133,7 +131,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
 /- English proof (translation)
-Use `W.φD_smul T (algebraMap (LetA O n) W.EE a) x` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.φE_ext, algebraMap_smul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobpin_φD_smul (a : LetA O n) (x : W.DD T) :
     W.φD T (a • x) = W.φA a • W.φD T x := by
@@ -142,7 +140,7 @@ theorem frobpin_φD_smul (a : LetA O n) (x : W.DD T) :
   exact this
 
 /- English proof (translation)
-Use `W.γD_smul T g (algebraMap (LetA O n) W.EE a) x` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.γE_ext, algebraMap_smul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobpin_γD_smul (g : W.Gam) (a : LetA O n) (x : W.DD T) :
     W.γD T g (a • x) = W.γA g a • W.γD T g x := by
@@ -151,7 +149,7 @@ theorem frobpin_γD_smul (g : W.Gam) (a : LetA O n) (x : W.DD T) :
   exact this
 
 /- English proof (translation)
-Introduce `a ha`. Establish `h1 : I ≤ Ideal.comap W.φA I` using `fun x hx => hφI x hx`. Conclude with `Ideal.le_comap_pow W.φA k (Ideal.pow_right_mono h1 k ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frobpin_φA_pow (I : Ideal (LetA O n)) (hφI : ∀ a ∈ I, W.φA a ∈ I) (k : ℕ) :
     ∀ a ∈ I ^ k, W.φA a ∈ I ^ k := by
@@ -160,31 +158,29 @@ theorem frobpin_φA_pow (I : Ideal (LetA O n)) (hφI : ∀ a ∈ I, W.φA a ∈ 
   exact Ideal.le_comap_pow W.φA k (Ideal.pow_right_mono h1 k ha)
 
 /- English proof (translation)
-Use `hI` as an intermediate fact. Take `⟨c, hcdef⟩ : ∃ c : LetA O n, c = (u : LetA O n) ^ M * Ep ^ (s' * M)` from `⟨_, rfl⟩`. Establish `hφx : ∀ y : W.DD T, W.φD T (π' ^ M • y) = π' ^ M • (c • W.φD T y)`. Introduce `y`. Rewrite using `[frobpin_φD_smul, map_pow, hφπ, smul_smul, hcdef, mul_pow, mul_pow, ← pow_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take `⟨r, hr⟩ : ∃ r, s' * M = r + 1 + h'` from `⟨s' * M - (h' + 1), by omega⟩`. Establish `hcI : ∀ z ∈ W.N T, c • W.φD T z ∈ (I • W.N T : Submodule (LetA O n) (W.DD T))`. Introduce `z hz`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : c • W.φD T z = Ep • (((u : LetA O n) ^ M * Ep ^ r) • (Ep ^ h' • W.φD T z))`. Rewrite using `[smul_smul, smul_smul, hcdef, hr]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul hEI ((W.N T).smul_mem _ (hN z hz))`. Establish `hcN : ∀ z ∈ W.N T, c • W.φD T z ∈ W.N T` using `fun z hz => Submodule.smul_le_right (hcI z hz)`. Establish `hlev : ∀ k : ℕ, ∀ y ∈ (I ^ k • W.N T : Submodule (LetA O n) (W.DD T)), c • W.φD T y ∈ (I ^ (k + 1) • W.N T : Submodule (LetA O n) (W.DD T))`. Introduce `k y hy`. Use `Submodule.smul_induction_on hy (fun a ha z hz => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[frobpin_φD_smul, smul_comm c (W.φA a), pow_succ, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul (frobpin_φA_pow W I hφI k a ha) (hcI z hz)`. Rewrite using `[map_add, smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Set `f : ↥(W.N T) →+ ↥(W.N T)` to `{ toFun := fun y => ⟨c • W.φD T y, hcN y y.2⟩ map_zero' := by ext; simp map_add' := fun x y => by ext; simp [map_add, smul_add] }`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hf : ∀ k : ℕ, ∀ y ∈ (I ^ k • ⊤ : Submodule (LetA O n) ↥(W.N T)), f y ∈ (I ^ (k + 1) • ⊤ : Submodule (LetA O n) ↥(W.N T))`. Introduce `k y hy`. Rewrite `hy`, the goal using `[Submodule.mem_smul_top_iff]`. Conclude with `hlev k y hy`. Establish `huniq0 : ∀ z ∈ W.N T, c • W.φD T z = z → z = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz h`. Establish `h1 : f ⟨z, hz⟩ - ⟨z, hz⟩ = 0` using `Subtype.ext (show c • W.φD T z - z = (0 : W.DD T) by rw [h, sub_self])`. Establish `h2 : f 0 - 0 = (0 : ↥(W.N T))` using `by rw [map_zero, sub_zero]`. Conclude with `congrArg Subtype.val ((frobpin_geom I f hf 0).unique h1 h2)`. Establish `hcancel : ∀ a b : W.DD T, π' ^ M • a = π' ^ M • b → a = b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit (algebraMap (LetA O n) W.EE (π' ^ M))`. Rewrite using `[map_pow]`. Conclude with `hunit.pow M`. Introduce `a b h`. Rewrite `h` using `[← algebraMap_smul W.EE (π' ^ M) a, ← algebraMap_smul W.EE (π' ^ M) b]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hu.smul_left_cancel.1 h`. Establish `huniq : ∀ z ∈ W.N T, W.φD T (π' ^ M • z) = π' ^ M • z → z = 0`. Introduce `z hz h`. Rewrite `h` using `[hφx]`. Conclude with `huniq0 z hz (hcancel _ _ h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `huniq2 : ∀ x₁ x₂ : W.DD T, (∃ z ∈ W.N T, π' ^ M • z = x₁) → (∃ z ∈ W.N T, π' ^ M • z = x₂) → W.φD T x₁ - x₁ = W.φD T x₂ - x₂ → x₁ = x₂`. Introduce and unpack `_ _ ⟨z₁, hz₁, rfl⟩ ⟨z₂, hz₂, rfl⟩ h`. Rewrite `h` using `[sub_eq_sub_iff_sub_eq_sub, ← map_sub, ← smul_sub]`. Use `huniq (z₁ - z₂) (Submodule.sub_mem _ hz₁ hz₂) h` as an intermediate fact. Rewrite using `[sub_eq_zero.1 this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨⟨y, hy, rfl⟩, hΔ⟩` from `(mem_PiNS W T π' M x).1 hx`. Use `(mem_PiNS W T π' M _).2 ⟨⟨c • W.φD T y, hcN y hy, (hφx y).symm⟩, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[← W.φγ_comm, hΔ δ hδ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `b hb`. Take `⟨⟨yb, hyb, rfl⟩, hbΔ⟩` from `(mem_PiNS W T π' M b).1 hb`. Take `⟨y, hy, -⟩` from `frobpin_geom I f hf ⟨yb, hyb⟩`. Establish `hyv : c • W.φD T (y : W.DD T) - (y : W.DD T) = yb` using `congrArg Subtype.val hy`. Establish `hsol : W.φD T (π' ^ M • (y : W.DD T)) - π' ^ M • (y : W.DD T) = π' ^ M • yb`.
-
-Rewrite using `[hφx, ← smul_sub, hyv]`. Use `⟨π' ^ M • (y : W.DD T), ⟨(mem_PiNS W T π' M _).2 ⟨⟨y, y.2, rfl⟩, fun δ hδ => ?_⟩, hsol⟩, ?_⟩` and prove the remaining obligations. Conclude with `huniq2 _ _ ⟨W.γD T δ y, W.N_Γ T δ y y.2, by rw [frobpin_γD_smul, map_pow, hπΔ δ hδ]⟩ ⟨y, y.2, rfl⟩ (by rw [W.φγ_comm, ← map_sub, hsol, hbΔ δ hδ])`. Introduce and unpack `x' ⟨hx', hx'sol⟩`. Conclude with `huniq2 _ _ ((mem_PiNS W T π' M x').1 hx').1 ⟨y, y.2, rfl⟩ (by rw [hx'sol, hsol])`.
+A detailed English derivation is pending.
 -/
 theorem frobpin_local (I : Ideal (LetA O n)) (hI : IsAdicComplete I ↥(W.N T))
     (hφI : ∀ a ∈ I, W.φA a ∈ I) (π' Ep : LetA O n) (u : (LetA O n)ˣ) (s' h' M : ℕ)
@@ -271,17 +267,15 @@ theorem frobpin_local (I : Ideal (LetA O n)) (hI : IsAdicComplete I ↥(W.N T))
 end FrobPiNLocal
 
 /- English proof (translation)
-Take `⟨hπΔ, -, ⟨w, hw⟩, -, ⟨w₁, hw₁⟩, ⟨u, hu⟩, -, -⟩` from `hp9`. Establish `hQq : W.Q = W.q`. Rewrite using `[LocWach.Q, hs1, Nat.sub_self, pow_zero]`. Both sides reduce to the same expression. Establish `hE : Formalism.MainNotions.DeltaInvariantLattices.Eat E π' = ((w₁⁻¹ : (LetA O n)ˣ) : LetA O n) * W.Q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hQq, hw₁, ← mul_assoc, Units.inv_mul, one_mul]`. Establish `hEI : Formalism.MainNotions.DeltaInvariantLattices.Eat E π' ∈ I`. Rewrite using `[hE]`. Conclude with `Ideal.mul_mem_left _ _ hQI`. Establish `hQN : ∀ y ∈ W.N T, W.Q ^ h' • W.φD T y ∈ W.N T`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Rewrite `hy` using `[hNl]`. Use `Submodule.iSup_induction (fun i => W.Nl T i) (motive := fun y => W.Q ^ h' • W.φD T y ∈ W.N T) hy ?_ ?_ ?_` and prove the remaining obligations. Introduce `i x hx`. Conclude with `hp5 (i + 1) x (by rwa [add_sub_cancel_right])`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_zero, smul_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `x y hx hy`. Rewrite using `[map_add, smul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : ∀ y ∈ W.N T, Formalism.MainNotions.DeltaInvariantLattices.Eat E π' ^ h' • W.φD T y ∈ W.N T`. Introduce `y hy`. Rewrite using `[hE, mul_pow, mul_smul]`. Conclude with `(W.N T).smul_mem _ (hQN y hy)`. Establish `hπΔ' : ∀ δ ∈ W.DelF, W.γA δ π' = π'` using `fun δ hδ => hπΔ δ hδ`.
-
-Establish `hunit : IsUnit (algebraMap (LetA O n) W.EE π')`. Rewrite using `[hw, map_mul, map_pow]`. Conclude with `(w.isUnit.map _).mul (W.EE_π.pow _)`. Conclude with `frobpin_local W T I hI hφI π' (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') u s' h' M hu hEI hsM hN hπΔ' hunit`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobenius_uniformiser_wach {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀]
     [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
@@ -329,7 +323,7 @@ theorem frobenius_uniformiser_wach {G : Type} [Group G] [TopologicalSpace G] {Qp
   exact frobpin_local W T I hI hφI π' (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') u s' h' M hu hEI hsM hN hπΔ' hunit
 
 /- English proof (translation)
-Use `K.2` as an intermediate fact. Establish `: FiniteDimensional ℚ_[l] ↥(K0 K)` using `FiniteDimensional.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).injective`. Conclude with `finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem max_unramified_finrank_pos {l : ℕ} [Fact l.Prime] (K : FinExt l) : 0 < finrank ℚ_[l] ↥(K0 K) := by
   have := K.2
@@ -339,7 +333,7 @@ theorem max_unramified_finrank_pos {l : ℕ} [Fact l.Prime] (K : FinExt l) : 0 <
   exact finrank_pos
 
 /- English proof (translation)
-Rewrite using `[← IntermediateField.restrictScalars_adjoin_eq_sup, ← IntermediateField.adjoin.finrank hint]`. Conclude with `(Module.finrank_mul_finrank ℚ_[l] ↥F ↥(IntermediateField.adjoin F {y})).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobpin_finrank_sup {l : ℕ} [Fact l.Prime] (F : IntermediateField ℚ_[l] (Om l)) (y : Om l)
     (hint : IsIntegral F y) :
@@ -348,31 +342,25 @@ theorem frobpin_finrank_sup {l : ℕ} [Fact l.Prime] (F : IntermediateField ℚ_
   exact (Module.finrank_mul_finrank ℚ_[l] ↥F ↥(IntermediateField.adjoin F {y})).symm
 
 /- English proof (translation)
-Establish `hlp : l.Prime` using `Fact.out`. Establish `hl3 : 2 ≤ l - 1`. Use `hlp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hl0 : (l : Om l) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h : (l : Om l) = algebraMap ℚ_[l] (Om l) (l : ℚ_[l])` using `(map_natCast _ _).symm`. Rewrite using `[h]`. Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 hlp.ne_zero)`. Establish `: NeZero (l : Om l)` using `⟨hl0⟩`. Establish `hdeg : (Polynomial.cyclotomic l (Om l)).degree ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.degree_cyclotomic, Nat.totient_prime hlp]`. Conclude with `(by omega : l - 1 ≠ 0)` after adjusting the coercions. Take `⟨z, hz0⟩` from `IsAlgClosed.exists_root _ hdeg`. Establish `hz : IsPrimitiveRoot z l` using `Polynomial.isRoot_cyclotomic_iff.1 hz0`. Establish `hKs : Ks K 1 = K0 K ⊔ IntermediateField.adjoin ℚ_[l] {z}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `Ks`. Use `congr 1`. Apply `le_antisymm` to reduce the goal to its premises. Use `IntermediateField.adjoin_le_iff.2 fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x ^ l = 1` using `by simpa using hx`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, -, rfl⟩` from `hz.eq_pow_of_pow_eq_one hx'`. Conclude with `pow_mem (IntermediateField.mem_adjoin_simple_self _ _) _`. Use `IntermediateField.adjoin.mono _ _ _ ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[Set.mem_singleton_iff.1 hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show z ^ l ^ 1 = 1`. Rewrite using `[pow_one]`. Conclude with `hz.pow_eq_one`. Establish `hint : IsIntegral (K0 K) z`. Establish `h1 : IsIntegral ℚ_[l] z` using `⟨Polynomial.X ^ l - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hlp.ne_zero, by simp [hz.pow_eq_one]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.tower_top`. Establish `hfin : finrank ℚ_[l] ↥(Ks K 1) = finrank ℚ_[l] ↥(K0 K) * (minpoly (K0 K) z).natDegree`. Rewrite using `[hKs]`. Conclude with `frobpin_finrank_sup (K0 K) z hint`. Establish `hmin : (minpoly (K0 K) z).natDegree ≤ l - 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hroot : Polynomial.aeval z (Polynomial.cyclotomic l (K0 K)) = 0`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Conclude with `hz0`. Establish `hdvd` using `minpoly.dvd (K0 K) z hroot`. Rewrite using `[← Nat.totient_prime hlp, ← Polynomial.natDegree_cyclotomic l (K0 K)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Polynomial.natDegree_le_of_dvd hdvd (Polynomial.cyclotomic_ne_zero _ _)`. Establish `hf` using `max_unramified_finrank_pos K`. Establish `ht` using `Module.finrank_mul_finrank ℚ_[l] ↥(K0 K) ↥K.1`. Establish `hKle : K.1 ≤ Ks K 1` using `hG.2.2.1`. Establish `hpos : 0 < finrank ℚ_[l] ↥(Ks K 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfin]`. Conclude with `Nat.mul_pos hf (minpoly.natDegree_pos hint)`. Establish `hfd : FiniteDimensional ℚ_[l] ↥(Ks K 1)` using `Module.finite_of_finrank_pos hpos`. Establish `hle : finrank ℚ_[l] ↥K.1 ≤ finrank ℚ_[l] ↥(Ks K 1)` using `LinearMap.finrank_le_finrank_of_injective (f := (IntermediateField.inclusion hKle).toLinearMap) (IntermediateField.inclusion hKle).injective`. Establish `he : eK K ≤ l - 1`.
-
-Establish `h2 : finrank ℚ_[l] ↥(K0 K) * eK K ≤ finrank ℚ_[l] ↥(K0 K) * (l - 1)`. Rewrite using `[ht]`. Conclude with `hle.trans (hfin ▸ Nat.mul_le_mul_left _ hmin)`. Conclude with `Nat.le_of_mul_le_mul_left h2 hf`. Establish `hepos : 0 < eK K`.
-
-Establish `hK : 0 < finrank ℚ_[l] ↥K.1`. Use `K.2` as an intermediate fact. Conclude with `Module.finrank_pos`. Rewrite `hK` using `[← ht]`. Establish `h3 : 0 < finrank ↥(K0 K) ↥K.1` using `Nat.pos_of_ne_zero (fun h0 => by rw [h0, mul_zero] at hK; exact lt_irrefl 0 hK)`.
-
-Conclude with `h3`. Conclude with `Nat.div_pos he hepos`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frobpin_sK_pos {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l) (hG : Good K 1 LL) :
     1 ≤ sK l K := by
@@ -445,9 +433,9 @@ theorem frobpin_sK_pos {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l)
   exact Nat.div_pos he hepos
 
 /- English proof (translation)
-Establish `hsR : (0 : ℝ) < (sK l K : ℝ)` using `by exact_mod_cast hs`. Establish `hc : (4 * h' : ℝ) / (sK l K : ℝ) ≤ (MK l K h' : ℝ)` using `Nat.le_ceil _`. Rewrite `hc` using `[div_le_iff₀ hsR]`. Establish `h4 : ((4 * h' : ℕ) : ℝ) ≤ ((sK l K * MK l K h' : ℕ) : ℝ)`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `: 4 * h' ≤ sK l K * MK l K h'` using `by exact_mod_cast h4`. Use linear arithmetic over natural numbers and integers.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem frobpin_sM {l : ℕ} [Fact l.Prime] (K : FinExt l) (h' : ℕ) (hh' : 1 ≤ h')
     (hs : 1 ≤ sK l K) : h' + 1 ≤ sK l K * MK l K h' := by
@@ -461,9 +449,9 @@ theorem frobpin_sM {l : ℕ} [Fact l.Prime] (K : FinExt l) (h' : ℕ) (hh' : 1 �
   omega
 
 /- English proof (translation)
-Introduce `D HW F Cm CA CB CK hA l _ hl K LL hG π' E hp9 T h' hh' hc hj`. Establish `hT1` using `hA.1 l K 1 LL hG`. Establish `hfree : Formalism.MainNotions.DeltaInvariantLattices.wachFree ((HW l).W K 1 LL hG) T` using `hT1.1 T hc`. Use `Formalism.MainNotions.LiftingTheory.liftb_neZero ((HW l).W K 1 LL hG)` as an intermediate fact. Use `Formalism.MainNotions.LiftingTheory.hstr_ps_D D HW F l K LL` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨I, hQI, hφI, hI⟩` from `Formalism.MainNotions.LiftingTheory.hstr_CompleteB ((HW l).W K 1 LL hG) T hfree`. Conclude with `frobenius_uniformiser_wach _ T I hI hQI hφI ((HW l).W_s K 1 LL hG) hfree.1 h' (hT1.2.2.2.2.1 T (fun _ => h') (fun _ => h') hc (fun τ _ _ => hj τ)).1 _ _ _ π' E hp9 (frobpin_sM K h' hh' (frobpin_sK_pos hl K LL hG))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem frobPiNCondition : FrobPiNStep := by
   intro D HW F Cm CA CB CK hA l _ hl K LL hG π' E hp9 T h' hh' hc hj

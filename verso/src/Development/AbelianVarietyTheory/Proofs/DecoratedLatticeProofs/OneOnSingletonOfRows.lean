@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.Core.Diag
 
 /- English proof (translation)
-Establish `h : 2 * D.R.rS + 2 = D.R.m`. Take `⟨j, hj⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Formalism.BasicNotions.Ranks.rS`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Unfold `Formalism.L2.SG.RowsConc.mR`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mR_eq_m (D : D7) : Formalism.L2.SG.RowsConc.mR D = (D.R.m : ℝ) := by
   have h : 2 * D.R.rS + 2 = D.R.m := by
@@ -32,23 +32,23 @@ theorem mR_eq_m (D : D7) : Formalism.L2.SG.RowsConc.mR D = (D.R.m : ℝ) := by
   rw [h]
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Scale.b`. Conclude with `Real.log_exp _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem log_b_eq (D : D7) (large₂ : SizeData₂ D) : Real.log large₂.sc.b = large₂.sc.L := by
   unfold Formalism.BasicNotions.Scale.b
   exact Real.log_exp _
 
 /- English proof (translation)
-Unfold `gamB gamL`. Rewrite using `[mR_eq_m, log_b_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gamB_eq_gamL (D : D7) (large₂ : SizeData₂ D) (C : ℝ) : gamB D large₂ C = gamL D large₂.sc.L C := by
   unfold gamB gamL
   rw [mR_eq_m, log_b_eq]
 
 /- English proof (translation)
-Unfold `epsNG`. Establish `h1 : ((2 : ℝ) ^ (D.R.k - 2 * D.R.rS - 5))⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (one_le_pow₀ (by norm_num))`. Establish `h2 : Real.exp (C * Formalism.L2.SG.RowsConc.mR D ^ 5 * D.R.f * Real.log large₂.sc.b) = gamL D large₂.sc.L C`. Unfold `gamL`. Rewrite using `[mR_eq_m, log_b_eq]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `mul_le_of_le_one_left (Real.exp_pos _).le h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsNG_le_gamL (D : D7) (large₂ : SizeData₂ D) (C : ℝ) : epsNG D large₂ C ≤ gamL D large₂.sc.L C := by
   unfold epsNG
@@ -61,17 +61,17 @@ theorem epsNG_le_gamL (D : D7) (large₂ : SizeData₂ D) (C : ℝ) : epsNG D la
   exact mul_le_of_le_one_left (Real.exp_pos _).le h1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hG c Cg cb Cu cT CT hcb hcT`. Take `⟨CB, hCB, C'₀, Cl₀, H⟩` from `hG Cg cb Cu cT CT c hcb hcT`. Use `⟨CB, hCB, max (max C'₀ Cl₀) 3, ?_⟩` and prove the remaining obligations. Introduce `C0 hC0 C' Cl h1 h2 D large₂ X Y u hT hH hC ha`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hC0` using `[Set.mem_singleton_iff]`. Substitute `hC0` using the available equality. Establish `a1 : C'₀ ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) h1`. Establish `b1 : Cl₀ ≤ Cl` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) h2`. Establish `b3 : (2 : ℝ) < Cl` using `lt_of_lt_of_le (by norm_num) (le_trans (le_max_right _ _) h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Formalism.MainNotions.S.Cnt.Stand D u u` using `Formalism.MainNotions.Stand_of D large₂ C' Cl Cg cb Cu cT CT C0 hH.2.1 hH.1 b3 u u`. Establish `r` using `H C' Cl a1 b1 D large₂ X Y u hT hH hs hC ha`. Unfold `GeneratorBoundAt at r`. Rewrite `r` using `[gamB_eq_gamL]`. Rewrite using `[if_pos rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `r`. Introduce `hN c Cg cb Cu cT CT hcb hcT`. Take `⟨C4, hC4, C'₀, Cl₀, H⟩` from `hN Cg cb Cu cT CT c hcb hcT`. Use `⟨C4, hC4, max (max C'₀ Cl₀) 3, ?_⟩` and prove the remaining obligations. Introduce `C0 hC0 C' Cl h1 h2 D large₂ X Y u hT hH hC ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hC0` using `[Set.mem_singleton_iff]`. Substitute `hC0` using the available equality. Establish `a1 : C'₀ ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) h1`. Establish `b1 : Cl₀ ≤ Cl` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) h2`. Establish `b3 : (2 : ℝ) < Cl` using `lt_of_lt_of_le (by norm_num) (le_trans (le_max_right _ _) h2)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Formalism.MainNotions.S.Cnt.Stand D u u` using `Formalism.MainNotions.Stand_of D large₂ C' Cl Cg cb Cu cT CT C0 hH.2.1 hH.1 b3 u u`. Establish `r : (Y.tO u u).pairSum ((Y.tO u u).one (Y.tO u u).ngSet) ≤ epsNG D large₂ C4 * ddC X Y u u` using `H C' Cl a1 b1 D large₂ X Y u u hT hH hs hC ha`. Rewrite using `[if_neg Bool.false_ne_true]`. Conclude with `r.trans (mul_le_mul_of_nonneg_right (epsNG_le_gamL D large₂ C4) (Formalism.L2.SG.RowsConc.dd_nonneg hC u u))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneOn_singleton_of_rows :
     (RowGen1P → ∀ c : ℝ, GlobalTheory.Core.Diag.OneOn {c} true) ∧ (GlobalTheory.NGRow.RowNGP → ∀ c : ℝ, GlobalTheory.Core.Diag.OneOn {c} false) := by

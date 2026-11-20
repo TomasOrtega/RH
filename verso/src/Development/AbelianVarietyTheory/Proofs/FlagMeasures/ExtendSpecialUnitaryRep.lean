@@ -11,7 +11,7 @@ namespace GlobalTheory.SUExt
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `⟨?_, by simp⟩` and prove the remaining obligations. Use `show Formalism.REAL.inUJ ε 1`. Simplify using `[Formalism.REAL.inUJ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma one_mem_SUset (ε : Fin n → Bool) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ SUset ε := by
   refine ⟨?_, by simp⟩
@@ -19,11 +19,9 @@ lemma one_mem_SUset (ε : Fin n → Bool) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈
   simp [Formalism.REAL.inUJ]
 
 /- English proof (translation)
-Take `⟨ha1, ha2⟩` from `ha`. Take `⟨hb1, hb2⟩` from `hb`. Use `⟨?_, by rw [Matrix.det_mul, ha2, hb2, one_mul]⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.REAL.inUJ ε a at ha1`. Express the relevant statement in the definitionally equal form `Formalism.REAL.inUJ ε b at hb1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Use `show Formalism.REAL.inUJ ε (a * b)`. Unfold `Formalism.REAL.inUJ at *`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = Formalism.REAL.Jm ε := by rw [ha1, hb1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma mul_mem_SUset {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ SUset ε)
     (hb : b ∈ SUset ε) : a * b ∈ SUset ε := by
@@ -40,7 +38,7 @@ lemma mul_mem_SUset {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin n) ℂ} (ha
     _ = Formalism.REAL.Jm ε := by rw [ha1, hb1]
 
 /- English proof (translation)
-Introduce `h`. Rewrite `hz` using `[h, norm_zero]`. Conclude with `zero_ne_one hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ne_zero_of_norm_one {z : ℂ} (hz : ‖z‖ = 1) : z ≠ 0 := by
   intro h; rw [h, norm_zero] at hz; exact zero_ne_one hz
@@ -48,13 +46,13 @@ lemma ne_zero_of_norm_one {z : ℂ} (hz : ‖z‖ = 1) : z ≠ 0 := by
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Establish `hz0` using `ne_zero_of_norm_one hz`. Establish `hw0` using `ne_zero_of_norm_one hw`. Use `set ζ := z * w⁻¹ with hζ`. Establish `hkey : w⁻¹ • g = (ζ • (1 : Matrix (Fin n) (Fin n) ℂ)) * (z⁻¹ • g)`. Rewrite using `[smul_mul_assoc, one_mul, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[hζ]`. Clear the denominators using the available nonvanishing facts. Establish `hζn : ζ ^ n = 1`. Establish `h1` using `congrArg Matrix.det hkey`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hgw.2, Matrix.det_mul, hgz.2, Matrix.det_smul, Matrix.det_one, Fintype.card_fin]`. Simplify using `using h1.symm`. Establish `hζnorm : ‖ζ‖ = 1` using `by rw [hζ, norm_mul, norm_inv, hz, hw]; simp`. Establish `hζ1 : ζ • (1 : Matrix (Fin n) (Fin n) ℂ) ∈ SUset ε` using `⟨((GlobalTheory.T.unitary_to_special_unitary_local n hn ε).2.1 ζ hζnorm 1 (one_mem_SUset ε)).1, by rw [Matrix.det_smul, Matrix.det_one, Fintype.card_fin, hζn, mul_one]⟩`. Use extensionality with `v`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.smul_apply, ContinuousLinearMap.smul_apply, hkey, hrep.1.2 _ hζ1 _ hgz, ContinuousLinearMap.comp_apply, hc ζ hζn, smul_smul]`. Use `congr 1`. Rewrite using `[hζ, mul_zpow, _root_.inv_zpow, mul_left_comm, mul_inv_cancel₀ (zpow_ne_zero m hw0), mul_one]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma central_eq {ε : Fin n → Bool} (hn : 1 ≤ n) (m : ℤ) (π' : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
     (hrep : IsURepOn (SUset ε) π')
@@ -90,7 +88,7 @@ def extRep (ε : Fin n → Bool) (m : ℤ) (π' : Matrix (Fin n) (Fin n) ℂ →
   if h : ∃ z : ℂ, ‖z‖ = 1 ∧ z⁻¹ • g ∈ SUset ε then h.choose ^ m • π' (h.choose⁻¹ • g) else 0
 
 /- English proof (translation)
-Establish `h : ∃ z : ℂ, ‖z‖ = 1 ∧ z⁻¹ • g ∈ SUset ε` using `⟨z, hz, hg⟩`. Rewrite using `[extRep, dif_pos h]`. Conclude with `central_eq hn m π' hrep hc h.choose_spec.1 hz h.choose_spec.2 hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma extRep_eq {ε : Fin n → Bool} (hn : 1 ≤ n) (m : ℤ) (π' : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
     (hrep : IsURepOn (SUset ε) π')
@@ -102,19 +100,19 @@ lemma extRep_eq {ε : Fin n → Bool} (hn : 1 ≤ n) (m : ℤ) (π' : Matrix (Fi
   exact central_eq hn m π' hrep hc h.choose_spec.1 hz h.choose_spec.2 hg
 
 /- English proof (translation)
-Introduce `n hn ε H _ _ m π' hrep hc`. Establish `hS` using `GlobalTheory.T.unitary_to_special_unitary_local n hn ε`. Establish `hE : Ext ε m π' (extRep ε m π')`. Introduce `z hz g hg`. Establish `hg' : z⁻¹ • (z • g) ∈ SUset ε`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, inv_mul_cancel₀ (ne_zero_of_norm_one hz), one_smul]` and apply the resulting hypothesis. Rewrite using `[extRep_eq hn m π' hrep hc hz hg', smul_smul, inv_mul_cancel₀ (ne_zero_of_norm_one hz), one_smul]`. Use `⟨extRep ε m π', hE, ⟨⟨?_, ?_⟩, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hE 1 (by simp) 1 (one_mem_SUset ε)`. Rewrite `h1` using `[one_smul]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1, _root_.one_zpow, one_smul, hrep.1.1]`. Introduce `a ha b hb`. Take `⟨z, hz, a₀, ha₀, rfl, -⟩` from `hS.1 a ha`. Take `⟨w, hw, b₀, hb₀, rfl, -⟩` from `hS.1 b hb`. Establish `hab : z • a₀ * w • b₀ = (z * w) • (a₀ * b₀)` using `smul_mul_smul_comm z a₀ w b₀`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hab, hE _ (by rw [norm_mul, hz, hw, one_mul]) _ (mul_mem_SUset ha₀ hb₀), hE z hz a₀ ha₀, hE w hw b₀ hb₀, hrep.1.2 a₀ ha₀ b₀ hb₀]`. Use extensionality with `v`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, map_smul, smul_smul, mul_zpow]`. Rewrite using `[mul_comm (w ^ m)]`. Introduce `g hg v`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, hz, g₀, hg₀, rfl, -⟩` from `hS.1 g hg`. Rewrite using `[hE z hz g₀ hg₀, ContinuousLinearMap.smul_apply, norm_smul, norm_zpow, hz, _root_.one_zpow, one_mul, hrep.2.1 g₀ hg₀ v]`. Introduce `v g hg`. Take `⟨U, ζ, hUo, hgU, hζc, hζ⟩` from `hS.2.2 g hg`. Establish `hζc' : ContinuousOn ζ (UJset ε ∩ U)` using `hζc.mono Set.inter_subset_right`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : ∀ x ∈ UJset ε ∩ U, ζ x ≠ 0` using `fun x hx => ne_zero_of_norm_one (hζ x hx.2 hx.1).1`. Establish `h1 : ContinuousOn (fun x => ζ x ^ m) (UJset ε ∩ U)` using `hζc'.zpow₀ m (fun x hx => Or.inl (hne x hx))`. Establish `h2 : ContinuousOn (fun x => (ζ x)⁻¹ • x) (UJset ε ∩ U)` using `(hζc'.inv₀ hne).smul continuousOn_id`. Establish `h3 : ContinuousOn (fun x => π' ((ζ x)⁻¹ • x) v) (UJset ε ∩ U)` using `(hrep.2.2 v).comp h2 (fun x hx => (hζ x hx.2 hx.1).2)`. Establish `hs : ContinuousOn (fun x => ζ x ^ m • π' ((ζ x)⁻¹ • x) v) (UJset ε ∩ U)` using `h1.smul h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : Set.EqOn (fun x => extRep ε m π' x v) (fun x => ζ x ^ m • π' ((ζ x)⁻¹ • x) v) (UJset ε ∩ U)`. Introduce `x hx`. Simplify using `only`. Rewrite using `[extRep_eq hn m π' hrep hc (hζ x hx.2 hx.1).1 (hζ x hx.2 hx.1).2, ContinuousLinearMap.smul_apply]`. Conclude with `(continuousWithinAt_inter (hUo.mem_nhds hgU)).1 ((hs.congr heq) g ⟨hg, hgU⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extends_to_U : ∀ (n : ℕ), 1 ≤ n → ∀ (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (m : ℤ) (π' : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)),

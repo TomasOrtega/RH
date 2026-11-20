@@ -11,7 +11,7 @@ def e0 (E : Spc) : ((chains R).obj E).X 0 ≅ (free R).obj (E.obj (op (SimplexCa
   ((chainsN R).obj E).extendXIso ComplexShape.embeddingDownNat (i := 0) rfl
 
 /- English proof (translation)
-Establish `: ((chains R).map g).f 0 = (e0 R E).hom ≫ ((chainsN R).map g).f 0 ≫ (e0 R E').inv` using `HomologicalComplex.extendMap_f (φ := (chainsN R).map g) (e := ComplexShape.embeddingDownNat) (i := 0) (i' := 0) rfl`. Rewrite using `[this]`. Use `erw [Category.assoc, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem etale_discrete_chains_degree_zero_iso_free_naturality {E E' : Spc} (g : E ⟶ E') :
     ((chains R).map g).f 0 ≫ (e0 R E').hom = (e0 R E).hom ≫ (free R).map (g.app (op (SimplexCategory.mk 0))) := by
@@ -22,9 +22,9 @@ theorem etale_discrete_chains_degree_zero_iso_free_naturality {E E' : Spc} (g : 
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(HomologicalComplex.extend ((chainsN R).obj (disc.obj P)) ComplexShape.embeddingDownNat).d (-1) 0 = 0`. Rewrite using `[HomologicalComplex.extend_d_eq (K := (chainsN R).obj (disc.obj P)) (e := ComplexShape.embeddingDownNat) (i' := -1) (j' := 0) (i := 1) (j := 0) rfl rfl]`. Establish `: ((chainsN R).obj (disc.obj P)).d 1 0 = 0`. Express the relevant statement in the definitionally equal form `(AlgebraicTopology.AlternatingFaceMapComplex.obj (((SimplicialObject.whiskering _ _).obj (free R)).obj (disc.obj P))).d (0 + 1) 0 = 0`. Establish `h01 : (((SimplicialObject.whiskering _ _).obj (free R)).obj (disc.obj P)).δ (0 : Fin 2) = (((SimplicialObject.whiskering _ _).obj (free R)).obj (disc.obj P)).δ (1 : Fin 2)` using `rfl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[AlgebraicTopology.AlternatingFaceMapComplex.obj_d_eq, Fin.sum_univ_two, h01]`. Simplify using `only [Fin.val_zero, Fin.val_one, pow_zero, pow_one, one_zsmul, neg_one_zsmul, add_neg_cancel]`. Rewrite using `[this, zero_comp, comp_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem d_zero (P : PSh) : ((chains R).obj (disc.obj P)).d (-1) 0 = 0 := by
   change (HomologicalComplex.extend ((chainsN R).obj (disc.obj P)) ComplexShape.embeddingDownNat).d (-1) 0 = 0
@@ -41,7 +41,7 @@ def e0d (P : PSh) : ((chains R).obj (disc.obj P)).X 0 ≅ (free R).obj P := e0 R
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `etale_discrete_chains_degree_zero_iso_free_naturality R (disc.map h)`.
+A detailed English derivation is pending.
 -/
 theorem etale_discrete_simplicial_chains_degree_zero_iso_naturality {P Q : PSh} (h : P ⟶ Q) :
     ((chains R).map (disc.map h)).f 0 ≫ (e0d R Q).hom = (e0d R P).hom ≫ (free R).map h :=
@@ -58,14 +58,14 @@ def sec (P : PSh) : (HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) 0).
     (LateralTheory.E.CechFiltPf.chains_isZero R (disc.obj P) k (by simp at hk; omega)).eq_of_tgt _ _)
 
 /- English proof (translation)
-Use `ext`. Simplify using `[sec, pr]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sec_pr (P : PSh) : sec R P ≫ pr R P = 𝟙 _ := by
   ext
   simp [sec, pr]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[pr, etale_discrete_simplicial_chains_degree_zero_iso_naturality_assoc, HomologicalComplex.single_map_f_self]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pr_comm {P Q : PSh} (h : P ⟶ Q) :
     (chains R).map (disc.map h) ≫ pr R Q = pr R P ≫ (HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) 0).map ((free R).map h) := by
@@ -73,7 +73,7 @@ theorem pr_comm {P Q : PSh} (h : P ⟶ Q) :
   simp [pr, etale_discrete_simplicial_chains_degree_zero_iso_naturality_assoc, HomologicalComplex.single_map_f_self]
 
 /- English proof (translation)
-Apply `HomologicalComplex.from_single_hom_ext` to reduce the goal to its premises. Simplify using `only [HomologicalComplex.comp_f, sec, HomologicalComplex.mkHomFromSingle_f, HomologicalComplex.single_map_f_self, Category.assoc, Iso.inv_hom_id_assoc]`. Use `congr 1`. Rewrite using `[Iso.eq_inv_comp, ← etale_discrete_simplicial_chains_degree_zero_iso_naturality_assoc, Iso.hom_inv_id, Category.comp_id]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_comm {P Q : PSh} (h : P ⟶ Q) :
     (HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) 0).map ((free R).map h) ≫ sec R Q = sec R P ≫ (chains R).map (disc.map h) := by
@@ -84,7 +84,7 @@ theorem sec_comm {P Q : PSh} (h : P ⟶ Q) :
   rw [Iso.eq_inv_comp, ← etale_discrete_simplicial_chains_degree_zero_iso_naturality_assoc, Iso.hom_inv_id, Category.comp_id]
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cone_map_congr {K₁ L₁ K₂ L₂ : Cx R} (φ₁ : K₁ ⟶ L₁) (φ₂ : K₂ ⟶ L₂) {a a' : K₁ ⟶ K₂} {b b' : L₁ ⟶ L₂}
     (c : φ₁ ≫ b = a ≫ φ₂) (c' : φ₁ ≫ b' = a' ≫ φ₂) (ha : a = a') (hb : b = b') :
@@ -92,7 +92,7 @@ theorem cone_map_congr {K₁ L₁ K₂ L₂ : Cx R} (φ₁ : K₁ ⟶ L₁) (φ�
   subst ha hb; rfl
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp, Cochain.ofHom_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem pull_comp' {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (F : Shv R) (n : ℤ) (x : HK R M F n) :
     HK.pull R (f ≫ g) F n x = HK.pull R f F n (HK.pull R g F n x) := by
@@ -101,7 +101,7 @@ theorem pull_comp' {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (F : Shv R) (n : �
   simp [zcomp, Cochain.ofHom_comp]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem pull_id' (K : Cx R) (F : Shv R) (n : ℤ) (x : HK R K F n) : HK.pull R (𝟙 K) F n x = x := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
@@ -112,11 +112,11 @@ end LateralTheory.E.DiscLvlPf
 
 open LateralTheory.E.DiscLvlPf in
 /- English proof (translation)
-Introduce `R _ F P Q h m hs`. Set `φ₁` to `(chains R).map (disc.map h)`. Set `φ₂` to `(HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) 0).map ((free R).map h)`. Set `Pm` to `mappingCone.map φ₁ φ₂ (pr R P) (pr R Q) (pr_comm R h)`. Set `Sm` to `mappingCone.map φ₂ φ₁ (sec R P) (sec R Q) (sec_comm R h)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hSP : Sm ≫ Pm = 𝟙 _`. Rewrite using `[← mappingCone.map_comp]`. Rewrite using `[cone_map_congr R φ₂ φ₂ _ (by rw [Category.id_comp, Category.comp_id]) (sec_pr R P) (sec_pr R Q)]`. Conclude with `mappingCone.map_id φ₂`. Establish `: Subsingleton (HK R (mappingCone φ₁) F m)` using `hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Function.Injective.subsingleton (f := HK.pull R Pm F m) ?_` and prove the remaining obligations. Introduce `x y hxy`. Use `congrArg (HK.pull R Sm F m) hxy` as an intermediate fact. Rewrite `this` using `[← pull_comp', ← pull_comp', hSP, pull_id', pull_id']`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem LateralTheory.E.DiscLvlPf.DiscLvl_of : LateralTheory.E.CechFiltPf.DiscLvl := by
   intro R _ F P Q h m hs

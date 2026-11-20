@@ -22,7 +22,7 @@ open PositivityTheory.Rg.BcB.F
 attribute [local instance] borelG borelF borelA
 
 /- English proof (translation)
-Establish `hAe : A = (A.map Complex.re).map (Complex.ofRealHom : ℝ →+* ℂ)`. Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [hA i j]`. Rewrite using `[hAe, ← RingHom.mapMatrix_apply, ← map_pow, RingHom.mapMatrix_apply]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem im_pow_entry {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (hA : ∀ i j, (A i j).im = 0) (k : ℕ) (i j : Fin n) :
     ((A ^ k) i j).im = 0 := by
@@ -33,11 +33,11 @@ theorem im_pow_entry {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (hA : ∀ i j, (
   simp
 
 /- English proof (translation)
-Establish `hχ : ∀ s a, (infOf lam s a).im = 0`. Introduce `s a`. Apply the tactic sequence `cases s <;> simp [infOf]`. Establish `hg : ∀ s, (GlobalTheory.Dec.gelfVal (infOf lam s) 2).im = 0`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `GlobalTheory.Dec.gelfVal`. Rewrite using `[Complex.im_sum]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.im_sum]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `im_pow_entry` to reduce the goal to its premises. Introduce `i j`. Simplify using `only [Formalism.REAL.Amat, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp [hχ]`. Simplify using `[cas, hg]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem cas_infOf_im' {n : ℕ} (lam : Fin n → ℤ) : (cas (infOf lam)).im = 0 := by
   have hχ : ∀ s a, (infOf lam s a).im = 0 := by

@@ -14,11 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LieRankSum
 
 /- English proof (translation)
-Establish `hk` using `isGrpPullback_pullback G t`. Establish `hd : SmoothOfRelativeDimension g ((Over.pullback t).obj G).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hk.1 hG`. Take `⟨v, hv⟩` from `GlobalTheory.KeyPow.exists_isLieBasis _ hd`. Set `actk` to `OAct.pullback t G act`. Establish `hak : ∀ a, (actk.act a).left ≫ pullback.fst _ _ = pullback.fst _ _ ≫ (act.act a).left` using `fun a => pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨ρ, hρ⟩` from `LieEigen.exists_action hv actk`. Establish `hinj : Function.Injective fun σ : E →+* k => σ.comp (algebraMap (𝓞 E) E)` using `fun σ σ' e => IsFractionRing.ringHom_ext (A := 𝓞 E) fun x => RingHom.congr_fun e x`. Establish `hσ : EigenSplit.IsSplitting fun σ : E →+* k => (RingHom.id k).comp (σ.comp (algebraMap (𝓞 E) E))` using `EigenSplit.isSplitting_of_isDomain hinj (NumberField.Embeddings.card E k) _ (EigenSplit.isUnit_discr_of_charZero k)`. Establish `hint` using `EigenSplit.isInternal_eigenSub hσ ρ`. Establish `e` using `(LinearEquiv.ofBijective (DirectSum.coeLinearMap _) hint).finrank_eq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[Module.finrank_directSum, Module.finrank_fin_fun]`. Rewrite using `[← e]`. Conclude with `Finset.sum_congr rfl fun σ _ => (LieEigen.finrank_of_lieMult hk hv hak hρ (h _)).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_lieMult {E : Type} [Field E] [NumberField E] {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
     {g : ℕ} (hG : SmoothOfRelativeDimension g G.hom) (act : OAct (𝓞 E) G) {k : Type} [Field k] [IsAlgClosed k]
@@ -45,9 +45,9 @@ theorem sum_lieMult {E : Type} [Field E] [NumberField E] {S : Scheme.{0}} {G : O
   exact Finset.sum_congr rfl fun σ _ => (LieEigen.finrank_of_lieMult hk hv hak hρ (h _)).symm
 
 /- English proof (translation)
-Introduce `E _ _ _ S G _ _ g hG act k _ _ _ t rk r h`. Establish `h₁` using `sum_lieMult hG act t rk fun σ => (h σ).1`. Set `c : (E →+* k) ≃ (E →+* k)` to `⟨fun σ => σ.comp (IsCMField.complexConj E : E →+* E), fun σ => σ.comp (IsCMField.complexConj E : E →+* E), fun σ => RingHom.ext fun a => by simp, fun σ => RingHom.ext fun a => by simp⟩`. Establish `h₂` using `(Equiv.sum_comp c fun σ => rk (σ.comp (algebraMap (𝓞 E) E))).trans h₁`. Establish `h₃ : ∑ σ : E →+* k, (rk (σ.comp (algebraMap (𝓞 E) E)) + rk ((c σ).comp (algebraMap (𝓞 E) E))) = ∑ _σ : E →+* k, r` using `Finset.sum_congr rfl fun σ _ => (h _).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h₃` using `[Finset.sum_add_distrib, h₁, h₂, Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, smul_eq_mul]`. Rewrite using `[mul_comm, ← h₃, two_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rank_mul_finrank : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (g : ℕ), SmoothOfRelativeDimension g G.hom → ∀ (act : OAct (𝓞 E) G) (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (t : Sp k ⟶ S) (rk : (𝓞 E →+* k) → ℕ) (r : ℕ), (∀ σ : 𝓞 E →+* k, LieMult act t σ (rk σ) ∧ rk σ + rk (σ.comp (IsCMField.ringOfIntegersComplexConj E : 𝓞 E →+* 𝓞 E)) = r) → r * Module.finrank ℚ E = 2 * g := by
   intro E _ _ _ S G _ _ g hG act k _ _ _ t rk r h

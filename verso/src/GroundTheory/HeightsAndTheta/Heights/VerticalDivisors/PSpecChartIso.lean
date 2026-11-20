@@ -14,14 +14,14 @@ set_option linter.unusedSectionVars false
 namespace SpecChart
 
 /- English proof (translation)
-Take the linear combination `(-ci) * h + u * hc`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem solve_inl {L : Type*} [CommRing L] {u x ci S : L} (h : u * x + S = 0) (hc : ci * x = 1) :
     -(ci * S) = u := by
   linear_combination (-ci) * h + u * hc
 
 /- English proof (translation)
-Take the linear combination `(-ci) * h + u * hc`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem solve_inr {L : Type*} [CommRing L] {u x ci S : L} (h : u * x + S = 1) (hc : ci * x = 1) :
     ci * (1 - S) = u := by
@@ -48,7 +48,7 @@ def cx (l : Fin n) : Poly e I j := C (toBase I j (X l))
 def cinv : Poly e I j := C (IsLocalization.Away.invSelf (Ideal.Quotient.mk (integralModel I) (X j)))
 
 /- English proof (translation)
-Rewrite using `[cinv, cx, ← map_mul, toBase, RingHom.comp_apply, mul_comm, IsLocalization.Away.mul_invSelf, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cinv_mul_cx : cinv e I j * cx e I j j = 1 := by
   rw [cinv, cx, ← map_mul, toBase, RingHom.comp_apply, mul_comm, IsLocalization.Away.mul_invSelf, map_one]
@@ -60,7 +60,7 @@ def val : Par e n → Poly e I j
       else X (.inr ⟨l, h⟩)
 
 /- English proof (translation)
-Apply the tactic sequence `rcases y with ⟨i, m⟩ | m <;> simp [FreePar.val, val, m.2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem val_free (y : FreePar e j) : val e I j (FreePar.val e j y) = X y := by
   rcases y with ⟨i, m⟩ | m <;> simp [FreePar.val, val, m.2]
@@ -69,19 +69,19 @@ def σ : MvPolynomial (Par e n) (𝓞 K) →+* Poly e I j :=
   eval₂Hom (C.comp ((toBase I j).comp C)) (val e I j)
 
 /- English proof (translation)
-The claim follows from `eval₂Hom_X' _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem σ_X (p : Par e n) : σ e I j (X p) = val e I j p := eval₂Hom_X' _ _ _
 
 /- English proof (translation)
-Simplify using `[σ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem σ_C (c : 𝓞 K) : σ e I j (C c) = C (toBase I j (C c)) := by simp [σ]
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_eq_add_sum_subtype_ne _ j]`. Establish `h : ∀ m : {m : Fin n // m ≠ j}, val e I j (.inl (i, m.1)) = X (.inl (i, m))` using `fun m => by`. Simplify using `[val, m.2]`. Simplify using `only [h]`. Simplify using `only [val, dite_true]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(∑ m : {m : Fin n // m ≠ j}, X (.inl (i, m)) * cx e I j m)) * cinv_mul_cx e I j`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sum_val_inl (i : Fin e) : ∑ m, val e I j (.inl (i, m)) * cx e I j m = 0 := by
   rw [Fintype.sum_eq_add_sum_subtype_ne _ j]
@@ -92,9 +92,9 @@ theorem sum_val_inl (i : Fin e) : ∑ m, val e I j (.inl (i, m)) * cx e I j m = 
   linear_combination (-(∑ m : {m : Fin n // m ≠ j}, X (.inl (i, m)) * cx e I j m)) * cinv_mul_cx e I j
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_eq_add_sum_subtype_ne _ j]`. Establish `h : ∀ m : {m : Fin n // m ≠ j}, val e I j (.inr m.1) = X (.inr m)` using `fun m => by`. Simplify using `[val, m.2]`. Simplify using `only [h]`. Simplify using `only [val, dite_true]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take the linear combination `(1 - ∑ m : {m : Fin n // m ≠ j}, X (.inr m) * cx e I j m) * cinv_mul_cx e I j`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sum_val_inr : ∑ m, val e I j (.inr m) * cx e I j m - 1 = 0 := by
   rw [Fintype.sum_eq_add_sum_subtype_ne _ j]
@@ -114,7 +114,7 @@ def Q : Ideal (Poly e I j) :=
     Poly e I j →+* MvPolynomial (FreePar e j) (Base I j ⧸ Wb I j W))
 
 /- English proof (translation)
-Rewrite using `[Q, MvPolynomial.ker_map, Ideal.mk_ker]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Q_eq : Q e I j W = (Wb I j W).map C := by
   rw [Q, MvPolynomial.ker_map, Ideal.mk_ker]
@@ -122,7 +122,7 @@ theorem Q_eq : Q e I j W = (Wb I j W).map C := by
 variable {I W}
 
 /- English proof (translation)
-Establish `h2 : g ∈ Ideal.comap (Ideal.Quotient.mk (integralModel I)) (W.map (Ideal.Quotient.mk _))` using `h`. Rewrite `h2` using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.mpr hPW]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_mk_mem [W.IsPrime] (hPW : integralModel I ≤ W) {g : MvPolynomial (Fin n) (𝓞 K)}
     (h : Ideal.Quotient.mk (integralModel I) g ∈ W.map (Ideal.Quotient.mk _)) : g ∈ W := by
@@ -132,14 +132,14 @@ theorem mem_of_mk_mem [W.IsPrime] (hPW : integralModel I ≤ W) {g : MvPolynomia
   exact h2
 
 /- English proof (translation)
-The claim follows from `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rwa [Ideal.mk_ker])`.
+A detailed English derivation is pending.
 -/
 theorem map_mk_isPrime [W.IsPrime] (hPW : integralModel I ≤ W) :
     (W.map (Ideal.Quotient.mk (integralModel I))).IsPrime :=
   Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rwa [Ideal.mk_ker])
 
 /- English proof (translation)
-Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨k, rfl⟩ hk`. Simplify using `only [SetLike.mem_coe] at hk`. Rewrite `hk` using `[← map_pow]`. Conclude with `hXj (Ideal.IsPrime.mem_of_pow_mem ‹_› k (mem_of_mk_mem hPW hk))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem disjoint_powers [W.IsPrime] (hPW : integralModel I ≤ W) (hXj : X j ∉ W) :
     Disjoint (↑(Submonoid.powers (Ideal.Quotient.mk (integralModel I) (X j))) :
@@ -152,14 +152,14 @@ theorem disjoint_powers [W.IsPrime] (hPW : integralModel I ≤ W) (hXj : X j ∉
   exact hXj (Ideal.IsPrime.mem_of_pow_mem ‹_› k (mem_of_mk_mem hPW hk))
 
 /- English proof (translation)
-The claim follows from `have := map_mk_isPrime hPW IsLocalization.isPrime_of_isPrime_disjoint _ _ _ this (disjoint_powers j hPW hXj)`.
+A detailed English derivation is pending.
 -/
 theorem Wb_isPrime [W.IsPrime] (hPW : integralModel I ≤ W) (hXj : X j ∉ W) : (Wb I j W).IsPrime :=
   have := map_mk_isPrime hPW
   IsLocalization.isPrime_of_isPrime_disjoint _ _ _ this (disjoint_powers j hPW hXj)
 
 /- English proof (translation)
-Use `map_mk_isPrime hPW` as an intermediate fact. Establish `h2` using `IsLocalization.under_map_of_isPrime_disjoint (Submonoid.powers _) (Base I j) this (disjoint_powers j hPW hXj)`. Apply `mem_of_mk_mem hPW` to reduce the goal to its premises. Rewrite using `[← h2]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_toBase_mem [W.IsPrime] (hPW : integralModel I ≤ W) (hXj : X j ∉ W)
     {g : MvPolynomial (Fin n) (𝓞 K)} (h : toBase I j g ∈ Wb I j W) : g ∈ W := by
@@ -171,21 +171,21 @@ theorem mem_of_toBase_mem [W.IsPrime] (hPW : integralModel I ≤ W) (hXj : X j �
   exact h
 
 /- English proof (translation)
-Use `Wb_isPrime j hPW hXj` as an intermediate fact. Conclude with `RingHom.ker_isPrime _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Q_isPrime [W.IsPrime] (hPW : integralModel I ≤ W) (hXj : X j ∉ W) : (Q e I j W).IsPrime := by
   have := Wb_isPrime j hPW hXj
   exact RingHom.ker_isPrime _
 
 /- English proof (translation)
-Rewrite using `[Q_eq]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ hg))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem C_toBase_mem_Q {g : MvPolynomial (Fin n) (𝓞 K)} (hg : g ∈ W) : C (toBase I j g) ∈ Q e I j W := by
   rw [Q_eq]
   exact Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ hg))
 
 /- English proof (translation)
-Rewrite `h` using `[Q, RingHom.mem_ker, map_C, C_eq_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `mem_of_toBase_mem j hPW hXj h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_C_toBase_mem_Q [W.IsPrime] (hPW : integralModel I ≤ W) (hXj : X j ∉ W)
     {g : MvPolynomial (Fin n) (𝓞 K)} (h : C (toBase I j g) ∈ Q e I j W) : g ∈ W := by
@@ -195,16 +195,16 @@ theorem mem_of_C_toBase_mem_Q [W.IsPrime] (hPW : integralModel I ≤ W) (hXj : X
 variable {v : HeightOneSpectrum (𝓞 K)}
 
 /- English proof (translation)
-Introduce `g hg` and use `by rw [RingHom.mem_ker, toSecB, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem] exact Ideal.mem_sup_left (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hg))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toSecB_le : integralModel I ≤ RingHom.ker (toSecB e I v) := fun g hg => by
   rw [RingHom.mem_ker, toSecB, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]
   exact Ideal.mem_sup_left (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hg))
 
 /- English proof (translation)
-Establish `h : Ideal.Quotient.mk (secIdeal (modelR e I v) (parY e n v)) (secForm (parY e n v) i) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_left (Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩)))`. Rewrite using `[← h, secForm, linForm, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[toSecB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem secB_secForm (i : Fin e) :
     ∑ m, algebraMap (ParDVR e n v) (SecB e I v) (parY e n v (.inl (i, m))) * toSecB e I v (X m) = 0 := by
@@ -218,9 +218,9 @@ theorem secB_secForm (i : Fin e) :
   simp [toSecB]
 
 /- English proof (translation)
-Establish `h : Ideal.Quotient.mk (secIdeal (modelR e I v) (parY e n v)) (chartForm (parY e n v)) = 1`. Rewrite using `[← sub_eq_zero, ← map_one (Ideal.Quotient.mk _), ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Rewrite using `[← h, chartForm, linForm, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Use `congr 1`. Simplify using `[toSecB]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secB_chartForm :
     ∑ m, algebraMap (ParDVR e n v) (SecB e I v) (parY e n v (.inr m)) * toSecB e I v (X m) = 1 := by
@@ -240,7 +240,7 @@ def quotToBn : MvPolynomial (Fin n) (𝓞 K) ⧸ integralModel I →+* Localizat
     (fun g hg => by rw [RingHom.comp_apply, RingHom.mem_ker.mp (toSecB_le e hg), map_zero])
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.lift_mk _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem quotToBn_mk (g : MvPolynomial (Fin n) (𝓞 K)) :
     quotToBn e 𝔫 (Ideal.Quotient.mk _ g) = algebraMap _ (Localization.AtPrime 𝔫) (toSecB e I v g) :=
@@ -258,7 +258,7 @@ def baseToBn (hj : toSecB e I v (X j) ∉ 𝔫) : Base I j →+* Localization.At
       exact IsLocalization.map_units (Localization.AtPrime 𝔫) (⟨toSecB e I v (X j), hj⟩ : 𝔫.primeCompl))
 
 /- English proof (translation)
-Rewrite using `[toBase, RingHom.comp_apply, baseToBn, IsLocalization.Away.lift_eq, quotToBn_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem baseToBn_toBase (hj : toSecB e I v (X j) ∉ 𝔫) (g : MvPolynomial (Fin n) (𝓞 K)) :
     baseToBn hj (toBase I j g) = algebraMap _ _ (toSecB e I v g) := by
@@ -268,38 +268,38 @@ def Φ (hj : toSecB e I v (X j) ∉ 𝔫) : Poly e I j →+* Localization.AtPrim
   eval₂Hom (baseToBn hj) fun y => parB e 𝔫 (FreePar.val e j y)
 
 /- English proof (translation)
-The claim follows from `eval₂Hom_C _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem Φ_C (hj : toSecB e I v (X j) ∉ 𝔫) (b : Base I j) : Φ hj (C b) = baseToBn hj b := eval₂Hom_C _ _ _
 
 /- English proof (translation)
-The claim follows from `eval₂Hom_X' _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem Φ_X (hj : toSecB e I v (X j) ∉ 𝔫) (y : FreePar e j) : Φ hj (X y) = parB e 𝔫 (FreePar.val e j y) :=
   eval₂Hom_X' _ _ _
 
 /- English proof (translation)
-Rewrite using `[cx, Φ_C, baseToBn_toBase]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Φ_cx (hj : toSecB e I v (X j) ∉ 𝔫) (l : Fin n) :
     Φ hj (cx e I j l) = algebraMap _ _ (toSecB e I v (X l)) := by
   rw [cx, Φ_C, baseToBn_toBase]
 
 /- English proof (translation)
-Rewrite using `[← Φ_cx hj, ← map_mul, cinv_mul_cx, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Φ_cinv_mul (hj : toSecB e I v (X j) ∉ 𝔫) :
     Φ hj (cinv e I j) * algebraMap _ _ (toSecB e I v (X j)) = 1 := by
   rw [← Φ_cx hj, ← map_mul, cinv_mul_cx, map_one]
 
 /- English proof (translation)
-Establish `hc` using `Φ_cinv_mul hj`. Break down `p with ⟨i, l⟩ | l` into its components or cases. Distinguish the cases in `hl : l = j`. Substitute `hl` using the available equality. Establish `h` using `congrArg (algebraMap (SecB e I v) (Localization.AtPrime 𝔫)) (secB_secForm e (I := I) (v := v) i)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite `h` using `[map_sum, map_zero, Fintype.sum_eq_add_sum_subtype_ne _ l]`. Simplify using `only [map_mul] at h`. Simplify using `only [val, dite_true, map_neg, map_mul, map_sum, Φ_X, Φ_cx, FreePar.val, parB]`. Conclude with `solve_inl (L := Localization.AtPrime 𝔫) h hc`. Simplify using `only [val, hl, dite_false, Φ_X, FreePar.val]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hl : l = j`. Substitute `hl` using the available equality. Establish `h` using `congrArg (algebraMap (SecB e I v) (Localization.AtPrime 𝔫)) (secB_chartForm e (I := I) (v := v))`. Rewrite `h` using `[map_sum, map_one, Fintype.sum_eq_add_sum_subtype_ne _ l]`. Simplify using `only [map_mul] at h`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [val, dite_true, map_sub, map_one, map_mul, map_sum, Φ_X, Φ_cx, FreePar.val, parB]`. Conclude with `solve_inr (L := Localization.AtPrime 𝔫) h hc`. Simplify using `only [val, hl, dite_false, Φ_X, FreePar.val]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Φ_val (hj : toSecB e I v (X j) ∉ 𝔫) (p : Par e n) : Φ hj (val e I j p) = parB e 𝔫 p := by
   have hc := Φ_cinv_mul hj
@@ -322,7 +322,7 @@ theorem Φ_val (hj : toSecB e I v (X j) ∉ 𝔫) (p : Par e n) : Φ hj (val e I
     · simp only [val, hl, dite_false, Φ_X, FreePar.val]
 
 /- English proof (translation)
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [RingHom.comp_apply, σ_C, Φ_C, baseToBn_toBase, toSecB_C]`. Introduce `p`. Simplify using `only [RingHom.comp_apply, σ_X, Φ_val, parB, parY]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem Φ_σ (hj : toSecB e I v (X j) ∉ 𝔫) :
     (Φ hj).comp (σ e I j) = (algebraMap (SecB e I v) (Localization.AtPrime 𝔫)).comp

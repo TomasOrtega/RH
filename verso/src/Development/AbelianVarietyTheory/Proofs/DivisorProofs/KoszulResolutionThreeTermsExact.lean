@@ -25,25 +25,25 @@ noncomputable def skew (x : Fin (g.choose 2) → O) : Matrix (Fin g) (Fin g) O :
   fun i j => upper x i j - upper x j i
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; simp only [upper, Matrix.add_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma upper_add (x x' : Fin (g.choose 2) → O) : upper (x + x') = upper x + upper x' := by
   ext i j; simp only [upper, Matrix.add_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; simp only [upper, Matrix.smul_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma upper_smul (a : O) (x : Fin (g.choose 2) → O) : upper (a • x) = a • upper x := by
   ext i j; simp only [upper, Matrix.smul_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [skew, upper_add, Matrix.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma skew_add (x x' : Fin (g.choose 2) → O) : skew (x + x') = skew x + skew x' := by
   ext i j; simp only [skew, upper_add, Matrix.add_apply]; ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [skew, upper_smul, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma skew_smul (a : O) (x : Fin (g.choose 2) → O) : skew (a • x) = a • skew x := by
   ext i j; simp only [skew, upper_smul, Matrix.smul_apply, smul_eq_mul]; ring
@@ -62,7 +62,7 @@ Both sides reduce to the same expression.
 lemma d₂_apply (f : Fin g → O) (x : Fin (g.choose 2) → O) : d₂ f x = (skew x).mulVec f := rfl
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, skew, sub_mul, Finset.sum_sub_distrib, Finset.sum_mul]`. Rewrite using `[sub_eq_zero, Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sum_skew_mulVec (f : Fin g → O) (x : Fin (g.choose 2) → O) :
     ∑ i, (skew x).mulVec f i * f i = 0 := by
@@ -71,9 +71,9 @@ lemma sum_skew_mulVec (f : Fin g → O) (x : Fin (g.choose 2) → O) :
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Set `F : Sym2 (Fin g) → O` to `Sym2.lift ⟨fun i j => c (min i j) (max i j), fun i j => show c (min i j) (max i j) = c (min j i) (max j i) by rw [min_comm, max_comm]⟩`. Use `⟨fun k => F ((pairEquiv g).symm k).1, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Simplify using `[skew, upper, h, lt_asymm h, F, min_eq_left h.le, max_eq_right h.le]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[skew, upper, hd]`. Simplify using `[skew, upper, h, lt_asymm h, F, min_eq_left h.le, max_eq_right h.le, ← hs i j]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma exists_skew_eq (c : Matrix (Fin g) (Fin g) O) (hd : ∀ i, c i i = 0)
     (hs : ∀ i j, c i j = - c j i) : ∃ x : Fin (g.choose 2) → O, skew x = c := by
@@ -91,13 +91,13 @@ end GlobalTheory.Koszul
 open GlobalTheory.Koszul in
 
 /- English proof (translation)
-Introduce `O _ g f hreg`. Use `⟨Fintype.linearCombination O f, d₂ f, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.exact_iff, Submodule.ker_mkQ, Fintype.range_linearCombination]`. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hy`. Rewrite `hy` using `[Fintype.linearCombination_apply]`. Take `⟨c, hd, hs, rfl⟩` from `GlobalTheory.T.weaklyRegular_relations_eq_koszulRelations O g f hreg y (by simpa [smul_eq_mul] using hy)`. Take `⟨x, hx⟩` from `exists_skew_eq c hd hs`. Conclude with `⟨x, by rw [d₂_apply, hx]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, rfl⟩`. Rewrite using `[Fintype.linearCombination_apply, d₂_apply]`. Simplify `sum_skew_mulVec f x` using `[smul_eq_mul]`. Introduce `x show _ ∈ Submodule.span O (Set.range f)`. Rewrite using `[← Fintype.range_linearCombination]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.mem_range_self _ x`. Introduce `x i`. Rewrite using `[d₂_apply]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (Ideal.subset_span (Set.mem_range_self j))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.koszul_resolution_three_terms : ∀ (O : Type) [CommRing O] (g : ℕ) (f : Fin g → O), RingTheory.Sequence.IsWeaklyRegular O (List.ofFn f) → ∃ (e₁ : (Fin g → O) →ₗ[O] O) (e₂ : (Fin (g.choose 2) → O) →ₗ[O] (Fin g → O)), Function.Exact e₁ (Ideal.span (Set.range f)).mkQ ∧ Function.Exact e₂ e₁ ∧ (∀ x, e₁ x ∈ Ideal.span (Set.range f)) ∧ ∀ x i, e₂ x i ∈ Ideal.span (Set.range f) := by
   intro O _ g f hreg

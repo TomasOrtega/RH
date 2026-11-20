@@ -6,37 +6,33 @@ open scoped Formalism.Per
 namespace GlobalTheory.Pst.NoLog
 
 /- English proof (translation)
-Introduce `l _ P _ K b b' hb h`. Use `haveI := K.2`. Use `haveI : Finite (GQ l ⧸ GK K) := Subgroup.quotient_finite_of_isOpen _ K.1.fixingSubgroup_isOpen`. Use `haveI := Fintype.ofFinite (GQ l ⧸ GK K)`. Set `ι : P.R.B →+* FractionRing P.R.B` to `algebraMap P.R.B (FractionRing P.R.B)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hι : Function.Injective ι` using `IsFractionRing.injective P.R.B (FractionRing P.R.B)`. Set `e : GQ l → FractionRing P.R.B ≃+* FractionRing P.R.B` to `fun g => IsFractionRing.ringEquivOfRingEquiv (A := P.R.B) (B := P.R.B) (P.actQ g).toRingEquiv`. Establish `he : ∀ g z, e g (ι z) = ι (P.actQ g z)` using `fun g z => IsFractionRing.ringEquivOfRingEquiv_algebraMap _ _`. Establish `hmul : ∀ s g z, e s (e g z) = e (s * g) z`. Introduce `s g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `: (e s).toRingHom.comp (e g).toRingHom = (e (s * g)).toRingHom`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors P.R.B)` to reduce the goal to its premises. Use extensionality with `z`. Use `show e s (e g (ι z)) = e (s * g) (ι z)`. Rewrite using `[he, he, he, map_mul, AlgEquiv.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `z`. Conclude with `RingHom.congr_fun this z`. Establish `hne : ∀ g (z : P.R.B), z ≠ 0 → ι (P.actQ g z) ≠ 0` using `fun g z hz => (map_ne_zero_iff ι hι).2 ((map_ne_zero_iff _ (P.actQ g).injective).2 hz)`. Set `T : GQ l → FractionRing P.R.B` to `fun g => ι ((kummer P g : ℚ_[l]) • P.tB)`. Establish `hT : ∀ s g, e s (T g) = T (s * g) - T s`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression.
 
-Introduce `s g`. Simplify using `only [T, he, map_smul, localPrime_galoisAction_periodT, kummer_mul, smul_smul, add_smul, map_add]`. Rewrite using `[mul_comm]`. Normalize the expressions using the abelian group laws. Set `f : FractionRing P.R.B` to `ι b' / ι b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hb0 : ι b ≠ 0` using `(map_ne_zero_iff ι hι).2 hb`. Establish `hf : ∀ g ∈ GK K, e g f - f = T g`. Introduce `g hg`. Establish `h1` using `congrArg ι (h g hg)`. Simplify using `only [map_sub, map_mul] at h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression.
 
-Establish `h2` using `hne g b hb`. Simplify using `only [f, map_div₀, he]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h1`. Set `Fn : GQ l → FractionRing P.R.B` to `fun g => e g f - T g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `h1 : ∀ s g, e s (Fn g) = Fn (s * g) + T s`. Introduce `s g`. Simplify using `only [Fn, map_sub, hmul, hT]`. Normalize the expressions using the abelian group laws. Establish `h2 : ∀ g (k : ↥(GK K)), Fn (g * k) = Fn g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `g k`. Establish `e1 : Fn k = f` using `by simp only [Fn, ← hf k k.2]; abel`. Use `h1 g k` as an intermediate fact. Rewrite `this` using `[e1]`. Simplify using `only [Fn] at this ⊢`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `-this`. Establish `h3 : ∀ g, Fn (QuotientGroup.mk g : GQ l ⧸ GK K).out = Fn g` using `fun g => by`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (GK K) g`. Rewrite using `[hk, h2]`. Establish `hnB : ((Fintype.card (GQ l ⧸ GK K) : ℕ) : P.R.B) ≠ 0` using `by haveI := nontrivial_B P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (algebraMap ℚ_[l] P.R.B)]`. Conclude with `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective ℚ_[l] P.R.B)).2 (Nat.cast_ne_zero.2 Fintype.card_ne_zero)`. Establish `hn : ((Fintype.card (GQ l ⧸ GK K) : ℕ) : FractionRing P.R.B) ≠ 0`. Rewrite using `[← map_natCast ι]`. Conclude with `(map_ne_zero_iff ι hι).2 hnB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `fa : FractionRing P.R.B` to `((Fintype.card (GQ l ⧸ GK K) : ℕ) : FractionRing P.R.B)⁻¹ * ∑ q : GQ l ⧸ GK K, Fn q.out`. Establish `hfa : ∀ s, e s fa - fa = T s`. Introduce `s`. Establish `h4 : ∑ q : GQ l ⧸ GK K, Fn (s * q.out) = ∑ q : GQ l ⧸ GK K, Fn q.out` using `Fintype.sum_equiv (MulAction.toPerm s) _ _ fun q => by`. Rewrite using `[MulAction.toPerm_apply, ← MulAction.Quotient.mk_smul_out, h3, smul_eq_mul]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [fa, map_mul, map_inv₀, map_natCast, map_sum, h1]`. Rewrite using `[Finset.sum_add_distrib, h4, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨y, x, hx, hxy⟩` from `IsFractionRing.div_surjective (A := P.R.B) fa`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : x ≠ 0` using `nonZeroDivisors.ne_zero hx`. Use `⟨x, y, hx0, fun g => ?_⟩` and prove the remaining obligations. Establish `hxy' : ι y / ι x = fa` using `hxy`. Establish `k` using `hfa g`. Rewrite `k` using `[← hxy', map_div₀, he, he]`.
-
-Establish `k1` using `hne g x hx0`. Establish `k2 : ι x ≠ 0` using `(map_ne_zero_iff ι hι).2 hx0`. Apply `hι` to reduce the goal to its premises. Simplify using `only [map_sub, map_mul]`. Clear denominators, using `at k` for the nonvanishing conditions.
-
-Take the linear combination `k`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_full_frac : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) [IsDomain P.R.B] (K : FinExt l) (b b' : P.R.B), b ≠ 0 →
     (∀ g ∈ GK K, b * P.actQ g b' - P.actQ g b * b' = b * P.actQ g b * ((kummer P g : ℚ_[l]) • P.tB)) →

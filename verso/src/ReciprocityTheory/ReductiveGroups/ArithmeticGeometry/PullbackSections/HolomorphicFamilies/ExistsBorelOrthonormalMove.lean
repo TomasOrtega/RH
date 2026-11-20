@@ -18,7 +18,7 @@ section Frames
 variable {r : ℕ} (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r)
 
 /- English proof (translation)
-Unfold `dmin`. Rewrite using `[hx τ, ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.lminor_diagonal]`. Simplify using `[psgn, Finset.prod_range]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem diagonal_minor_orthonormal {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (i : Fin (r + 1)) :
     dmin X.Gm x τ i = ((psgn X.p0 i : ℝ) : ℂ) := by
@@ -27,9 +27,9 @@ theorem diagonal_minor_orthonormal {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X
   simp [psgn, Finset.prod_range]
 
 /- English proof (translation)
-Rewrite using `[diagonal_minor_orthonormal X hx, Complex.norm_real, Real.norm_eq_abs]`. Unfold `psgn`. Rewrite using `[Finset.abs_prod]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `a _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_diagonal_minor_one {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (i : Fin (r + 1)) :
     ‖dmin X.Gm x τ i‖ = 1 := by
@@ -42,11 +42,9 @@ theorem norm_diagonal_minor_one {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `⟨ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x, ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf_mem X hx, fun τ => ⟨?_, fun i => ?_⟩, ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.ortho_bOf X hx⟩` and prove the remaining obligations. Use `show (mat x τ * mat (ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x) τ).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero (hx τ).1 ((ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf_mem X hx) τ).1`. Rewrite using `[diagonal_minor_orthonormal X (ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.ortho_bOf X hx) τ i, Complex.ofReal_re]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h : psgn X.p0 i ≠ 0`. Unfold `psgn`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `a _`. Unfold `sgn`.
-
-Apply the tactic sequence `split_ifs <;> norm_num`. Conclude with `mul_self_pos.2 h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_borel_orthonormal_move {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     ∃ b ∈ Bor X.Ψ r, rmul x b ∈ X.dom ∧ X.IsOrtho (rmul x b) := by

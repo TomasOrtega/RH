@@ -21,24 +21,24 @@ abbrev ee (hn : r + t = n) : Fin r ⊕ Fin t ≃ Fin n := finSumFinEquiv.trans (
 abbrev ff (hn : r + t = n) : Fin t ⊕ Fin r ≃ Fin n := finSumFinEquiv.trans (finCongr (by omega))
 
 /- English proof (translation)
-Simplify using `[ee]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ee_inl_val (hn : r + t = n) (k : Fin r) : (ee hn (Sum.inl k) : ℕ) = k := by simp [ee]
 /- English proof (translation)
-Simplify using `[ee]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ee_inr_val (hn : r + t = n) (k : Fin t) : (ee hn (Sum.inr k) : ℕ) = r + k := by simp [ee]
 /- English proof (translation)
-Simplify using `[ff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ff_inl_val (hn : r + t = n) (k : Fin t) : (ff hn (Sum.inl k) : ℕ) = k := by simp [ff]
 /- English proof (translation)
-Simplify using `[ff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ff_inr_val (hn : r + t = n) (k : Fin r) : (ff hn (Sum.inr k) : ℕ) = t + k := by simp [ff]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `using h ((ee hn).symm i) ((ee hn).symm j)`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ext_ee (hn : r + t = n) {R : Type} {M N : Matrix (Fin n) (Fin n) R}
     (h : ∀ s s', M (ee hn s) (ee hn s') = N (ee hn s) (ee hn s')) : M = N := by
@@ -46,7 +46,7 @@ theorem ext_ee (hn : r + t = n) {R : Type} {M N : Matrix (Fin n) (Fin n) R}
   simpa using h ((ee hn).symm i) ((ee hn).symm j)
 
 /- English proof (translation)
-Simplify using `only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bl_ee {R : Type} (hn : r + t = n) (a : Matrix (Fin r) (Fin r) R) (b : Matrix (Fin r) (Fin t) R)
     (c : Matrix (Fin t) (Fin r) R) (d : Matrix (Fin t) (Fin t) R) (s s' : Fin r ⊕ Fin t) :
@@ -54,7 +54,7 @@ theorem bl_ee {R : Type} (hn : r + t = n) (a : Matrix (Fin r) (Fin r) R) (b : Ma
   simp only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `ext_ee hn fun s s' => ?_` and prove the remaining obligations. Rewrite using `[bl_ee, Matrix.fromBlocks_one, Matrix.one_apply, Matrix.one_apply]`. Simplify using `only [(ee hn).injective.eq_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blockRowSubstitution_one {R : Type} [CommRing R] (hn : r + t = n) : bl hn (1 : Matrix (Fin r) (Fin r) R) 0 0 1 = 1 := by
   refine ext_ee hn fun s s' => ?_
@@ -62,7 +62,7 @@ theorem blockRowSubstitution_one {R : Type} [CommRing R] (hn : r + t = n) : bl h
   simp only [(ee hn).injective.eq_iff]
 
 /- English proof (translation)
-Use `ext_ee hn fun s s' => ?_` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, bl_ee, bl_ee, bl_ee, ← Matrix.add_apply, Matrix.fromBlocks_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bl_add {R : Type} [CommRing R] (hn : r + t = n) (a a' : Matrix (Fin r) (Fin r) R) (b b' : Matrix (Fin r) (Fin t) R)
     (c c' : Matrix (Fin t) (Fin r) R) (d d' : Matrix (Fin t) (Fin t) R) :
@@ -71,7 +71,7 @@ theorem bl_add {R : Type} [CommRing R] (hn : r + t = n) (a a' : Matrix (Fin r) (
   rw [Matrix.add_apply, bl_ee, bl_ee, bl_ee, ← Matrix.add_apply, Matrix.fromBlocks_add]
 
 /- English proof (translation)
-Use `ext_ee hn fun s s' => ?_` and prove the remaining obligations. Rewrite using `[Matrix.neg_apply, bl_ee, bl_ee, ← Matrix.neg_apply, Matrix.fromBlocks_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem block_neg {R : Type} [CommRing R] (hn : r + t = n) (a : Matrix (Fin r) (Fin r) R) (b : Matrix (Fin r) (Fin t) R)
     (c : Matrix (Fin t) (Fin r) R) (d : Matrix (Fin t) (Fin t) R) :
@@ -80,7 +80,7 @@ theorem block_neg {R : Type} [CommRing R] (hn : r + t = n) (a : Matrix (Fin r) (
   rw [Matrix.neg_apply, bl_ee, bl_ee, ← Matrix.neg_apply, Matrix.fromBlocks_neg]
 
 /- English proof (translation)
-Simplify using `only [bl, ← Matrix.submatrix_map, Matrix.fromBlocks_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_map {R S : Type} (hn : r + t = n) (a : Matrix (Fin r) (Fin r) R) (b : Matrix (Fin r) (Fin t) R)
     (c : Matrix (Fin t) (Fin r) R) (d : Matrix (Fin t) (Fin t) R) (f : R → S) :
@@ -88,14 +88,14 @@ theorem block_map {R S : Type} (hn : r + t = n) (a : Matrix (Fin r) (Fin r) R) (
   simp only [bl, ← Matrix.submatrix_map, Matrix.fromBlocks_map]
 
 /- English proof (translation)
-Rewrite using `[← blockRowSubstitution_one hn, sub_eq_iff_eq_add, bl_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem one_sub_bl {R : Type} [CommRing R] (hn : r + t = n) :
     1 - bl hn (0 : Matrix (Fin r) (Fin r) R) 0 0 1 = bl hn 1 0 0 0 := by
   rw [← blockRowSubstitution_one hn, sub_eq_iff_eq_add, bl_add]; simp
 
 /- English proof (translation)
-Use `ext_ee hn fun s s' => ?_` and prove the remaining obligations. Rewrite using `[bl_ee, eId, Matrix.diagonal_apply]`. Simplify using `only [(ee hn).injective.eq_iff]`. Apply the tactic sequence `rcases s with k | k <;> rcases s' with k' | k' <;>`. Simplify using `[Matrix.one_apply, ee_inl_val, ee_inr_val]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem eId_eq {K : Type} [Field K] (hn : r + t = n) : eId K n r = bl hn 1 0 0 0 := by
   refine ext_ee hn fun s s' => ?_
@@ -105,7 +105,7 @@ theorem eId_eq {K : Type} [Field K] (hn : r + t = n) : eId K n r = bl hn 1 0 0 0
     simp [Matrix.one_apply, ee_inl_val, ee_inr_val]
 
 /- English proof (translation)
-Simplify using `only [cT, blk4, ← Matrix.submatrix_map, Matrix.fromBlocks_map, Matrix.transpose_submatrix, Matrix.fromBlocks_transpose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_blk4 {K : Type} [Field K] (σ : K →+* K) (A B C E : Matrix (Fin n) (Fin n) K) :
     cT σ (blk4 A B C E) = blk4 (cT σ A) (cT σ C) (cT σ B) (cT σ E) := by
@@ -115,36 +115,36 @@ theorem cT_blk4 {K : Type} [Field K] (σ : K →+* K) (A B C E : Matrix (Fin n) 
 def wE {K : Type} [Field K] (e : Matrix (Fin n) (Fin n) K) : Matrix (Fin (n + n)) (Fin (n + n)) K := blk4 (1 - e) e (-e) (1 - e)
 
 /- English proof (translation)
-Simplify using `[cT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_one {K : Type} [Field K] (σ : K →+* K) : cT σ (1 : Matrix (Fin n) (Fin n) K) = 1 := by
   simp [cT]
 
 /- English proof (translation)
-Establish `h : (A - B).map σ = A.map σ - B.map σ` using `by ext; simp`. Rewrite using `[cT, cT, cT, h, Matrix.transpose_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_sub {K : Type} [Field K] (σ : K →+* K) (A B : Matrix (Fin n) (Fin n) K) : cT σ (A - B) = cT σ A - cT σ B := by
   have h : (A - B).map σ = A.map σ - B.map σ := by ext; simp
   rw [cT, cT, cT, h, Matrix.transpose_sub]
 
 /- English proof (translation)
-Establish `h : (-A).map σ = -A.map σ` using `by ext; simp`. Rewrite using `[cT, cT, h, Matrix.transpose_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_neg {K : Type} [Field K] (σ : K →+* K) (A : Matrix (Fin n) (Fin n) K) : cT σ (-A) = -cT σ A := by
   have h : (-A).map σ = -A.map σ := by ext; simp
   rw [cT, cT, h, Matrix.transpose_neg]
 
 /- English proof (translation)
-Simplify using `only [blk4, ← Matrix.submatrix_map, Matrix.fromBlocks_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_matrix_map {R S : Type} (A B C E : Matrix (Fin n) (Fin n) R) (f : R → S) :
     (blk4 A B C E).map f = blk4 (A.map f) (B.map f) (C.map f) (E.map f) := by
   simp only [blk4, ← Matrix.submatrix_map, Matrix.fromBlocks_map]
 
 /- English proof (translation)
-Establish `h1 : e * (1 - e) = 0` using `by rw [Matrix.mul_sub, he, Matrix.mul_one, sub_self]`. Establish `h2 : (1 - e) * e = 0` using `by rw [Matrix.sub_mul, he, Matrix.one_mul, sub_self]`. Establish `h3 : (1 - e) * (1 - e) = 1 - e` using `by rw [Matrix.sub_mul, Matrix.one_mul, h1, sub_zero]`. Prove the components needed by the constructor for the conclusion. Use `Matrix.isUnit_det_of_right_inverse (B := blk4 (1 - e) (-e) e (1 - e)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[wE, submatrix_fromBlocks_mul, ← block_matrix_one]`. Apply the tactic sequence `congr 1 <;> (simp only [Matrix.mul_neg, Matrix.neg_mul, neg_neg, h1, h2, h3, he, neg_zero, add_zero, zero_add, sub_add_cancel, neg_add_cancel]; try abel)`. Unfold `IsUnitary`. Rewrite using `[wE, cT_blk4, cT_sub, cT_one, hσ, cT_neg, hσ, PositivityTheory.GramSchwartzFunctions.EC.Jm, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Apply the tactic sequence `congr 1 <;> (simp only [Matrix.mul_neg, Matrix.neg_mul, neg_neg, h1, h2, h3, he, neg_zero, add_zero, zero_add, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, sub_add_cancel, neg_add_cancel]; try abel)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wE_unit {K : Type} [Field K] (σ : K →+* K) (e : Matrix (Fin n) (Fin n) K) (he : e * e = e) (hσ : cT σ e = e) :
     IsUnit (wE e).det ∧ IsUnitary σ (PositivityTheory.GramSchwartzFunctions.EC.Jm K n) (wE e) := by
@@ -164,19 +164,19 @@ theorem wE_unit {K : Type} [Field K] (σ : K →+* K) (e : Matrix (Fin n) (Fin n
 def πe (hn : r + t = n) : Equiv.Perm (Fin n) := (ff hn).symm.trans ((Equiv.sumComm _ _).trans (ee hn))
 
 /- English proof (translation)
-Rewrite using `[πe, Equiv.trans_apply, Equiv.trans_apply, Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem πe_ff_inl (hn : r + t = n) (k : Fin t) : πe hn (ff hn (Sum.inl k)) = ee hn (Sum.inr k) := by
   rw [πe, Equiv.trans_apply, Equiv.trans_apply, Equiv.symm_apply_apply]; rfl
 
 /- English proof (translation)
-Rewrite using `[Equiv.symm_apply_eq, πe, Equiv.trans_apply, Equiv.trans_apply, Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem πe_symm_ee_inl (hn : r + t = n) (k : Fin r) : (πe hn).symm (ee hn (Sum.inl k)) = ff hn (Sum.inr k) := by
   rw [Equiv.symm_apply_eq, πe, Equiv.trans_apply, Equiv.trans_apply, Equiv.symm_apply_apply]; rfl
 
 /- English proof (translation)
-Rewrite using `[Equiv.symm_apply_eq, πe_ff_inl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem πe_symm_ee_inr (hn : r + t = n) (k : Fin t) : (πe hn).symm (ee hn (Sum.inr k)) = ff hn (Sum.inl k) := by
   rw [Equiv.symm_apply_eq, πe_ff_inl]
@@ -184,13 +184,13 @@ theorem πe_symm_ee_inr (hn : r + t = n) (k : Fin t) : (πe hn).symm (ee hn (Sum
 def Pm (K : Type) [Field K] (hn : r + t = n) : Matrix (Fin n) (Fin n) K := (1 : Matrix (Fin n) (Fin n) K).submatrix (πe hn) id
 
 /- English proof (translation)
-Simplify using `[Pm, Matrix.transpose_submatrix]`.
+Simplify using the standard rewrite rules.
 -/
 theorem permutation_matrix_transpose {K : Type} [Field K] (hn : r + t = n) : (Pm K hn)ᵀ = (1 : Matrix (Fin n) (Fin n) K).submatrix id (πe hn) := by
   simp [Pm, Matrix.transpose_submatrix]
 
 /- English proof (translation)
-Rewrite using `[permutation_matrix_transpose, Pm]`. Use `Matrix.submatrix_mul_equiv (1 : Matrix (Fin n) (Fin n) K) (1 : Matrix (Fin n) (Fin n) K) (πe hn) (Equiv.refl _) (πe hn)` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Pm_mul_alt {K : Type} [Field K] (hn : r + t = n) : Pm K hn * (Pm K hn)ᵀ = 1 := by
   rw [permutation_matrix_transpose, Pm]
@@ -198,7 +198,7 @@ theorem Pm_mul_alt {K : Type} [Field K] (hn : r + t = n) : Pm K hn * (Pm K hn)�
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[permutation_matrix_transpose, Pm]`. Use `Matrix.submatrix_mul_equiv (1 : Matrix (Fin n) (Fin n) K) (1 : Matrix (Fin n) (Fin n) K) id (πe hn) id` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem T_mul_Pm {K : Type} [Field K] (hn : r + t = n) : (Pm K hn)ᵀ * Pm K hn = 1 := by
   rw [permutation_matrix_transpose, Pm]
@@ -206,7 +206,7 @@ theorem T_mul_Pm {K : Type} [Field K] (hn : r + t = n) : (Pm K hn)ᵀ * Pm K hn 
   simpa using this
 
 /- English proof (translation)
-Establish `e1 : M = (M.submatrix (πe hn).symm id).submatrix (πe hn) id` using `by ext; simp`. Establish `e2 : M.submatrix (πe hn).symm id = (M.submatrix (πe hn).symm (πe hn).symm).submatrix id (πe hn)` using `by ext; simp`. Rewrite using `[permutation_matrix_transpose, Pm]`. Use `nth_rewrite 1 [e1]`. Rewrite using `[Matrix.submatrix_mul_equiv (1 : Matrix (Fin n) (Fin n) K) _ id (πe hn) id, Matrix.one_mul, Matrix.submatrix_id_id, e2, Matrix.submatrix_mul_equiv _ (1 : Matrix (Fin n) (Fin n) K) id (πe hn) id, Matrix.mul_one, Matrix.submatrix_id_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_Pm {K : Type} [Field K] (hn : r + t = n) (M : Matrix (Fin n) (Fin n) K) :
     (Pm K hn)ᵀ * M * Pm K hn = M.submatrix (πe hn).symm (πe hn).symm := by
@@ -218,9 +218,9 @@ theorem conj_Pm {K : Type} [Field K] (hn : r + t = n) (M : Matrix (Fin n) (Fin n
     Matrix.submatrix_mul_equiv _ (1 : Matrix (Fin n) (Fin n) K) id (πe hn) id, Matrix.mul_one, Matrix.submatrix_id_id]
 
 /- English proof (translation)
-Rewrite using `[conj_Pm]`. Use `ext_ee hn fun s s' => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases s with k | k <;> rcases s' with k' | k' <;>`. Apply the tactic sequence `simp only [bl_ee, Matrix.submatrix_apply, πe_symm_ee_inl, πe_symm_ee_inr] <;>`. Apply the tactic sequence `rw [eId, Matrix.diagonal_apply] <;>`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [(ff hn).injective.eq_iff, ff_inl_val, ff_inr_val, Matrix.one_apply] <;> simp [Fin.ext_iff] <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eId_conj {K : Type} [Field K] (hn : r + t = n) :
     (Pm K hn)ᵀ * eId K n t * Pm K hn = bl hn 0 0 0 1 := by

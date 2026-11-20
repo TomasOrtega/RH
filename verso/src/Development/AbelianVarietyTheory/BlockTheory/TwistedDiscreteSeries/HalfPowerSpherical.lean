@@ -25,7 +25,7 @@ def act {ι : Type} [Fintype ι] [DecidableEq ι] (h : GL ι k) (Λ : Submodule 
   Λ.map ((Matrix.mulVecLin h.val).restrictScalars 𝒪[k])
 
 /- English proof (translation)
-Unfold `act`. Rewrite using `[← Submodule.map_comp]`. Use `congr 1`. Use extensionality with `v i`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem act_mul {ι : Type} [Fintype ι] [DecidableEq ι] (g h : GL ι k) (Λ : Submodule 𝒪[k] (ι → k)) :
     act (g * h) Λ = act g (act h Λ) := by
@@ -36,7 +36,7 @@ theorem act_mul {ι : Type} [Fintype ι] [DecidableEq ι] (g h : GL ι k) (Λ : 
   simp
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[act]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem act_one {ι : Type} [Fintype ι] [DecidableEq ι] (Λ : Submodule 𝒪[k] (ι → k)) : act 1 Λ = Λ := by
   ext v
@@ -282,11 +282,11 @@ section Basic₂
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `⟨fun i _ _ => ?_, fun j i _ _ => ?_⟩` and prove the remaining obligations. Use `congr 1`. Unfold `chainGen`. Rewrite using `[mul_div_mul_left_eq_div, div_eq_mul_inv, ← _root_.zpow_sub]`. Establish `: ((m / 2 : ℕ) : ℤ) - (i : ℤ) - (((m / 2 : ℕ) : ℤ) - ((i + 1 : ℕ) : ℤ)) = 1` using `by push_cast; ring`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, _root_.zpow_one]`. Use `congr 1`. Unfold `chainGen`. Rewrite using `[← mul_assoc, ← mul_assoc]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← _root_.zpow_neg_one, ← _root_.zpow_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isChain_chainGen (α α' : kˣ) (m : ℕ) : IsChain α α' m (chainGen α α' m) := by
   refine ⟨fun i _ _ => ?_, fun j i _ _ => ?_⟩
@@ -304,7 +304,7 @@ theorem isChain_chainGen (α α' : kˣ) (m : ℕ) : IsChain α α' m (chainGen �
     push_cast; ring
 
 /- English proof (translation)
-Use `ext`. Simplify using `[chainGen, zpow_ofNat]`. Clear the denominators using the available nonvanishing facts.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 example (α α' : kˣ) : chainGen α α' 4 2 1 * α' / α = 1 := by
   ext

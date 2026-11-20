@@ -12,15 +12,15 @@ open Formalism.IndefR.DatumF
 namespace GlobalTheory.PeriodicPositiveIntegral
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure (ν.restrict 𝓕) := ⟨by rwa [Measure.restrict_apply_univ]⟩`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hI.continuousOn`. Establish `hint : Integrable I (ν.restrict 𝓕)`. Use `Integrable.of_bound hI.aestronglyMeasurable C (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hKc w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hper γ hγ w]`. Conclude with `hC _ h`. Establish `hcre : Continuous fun u => (I u).re` using `Complex.continuous_re.comp hI`. Establish `hO : IsOpen (Function.support fun u => (I u).re)` using `hcre.isOpen_support`. Establish `hpos : ν (Function.support fun u => (I u).re) ≠ 0` using `hO.measure_ne_zero ν ⟨0, h0.ne'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hz`. Establish `hre : ∫ u in 𝓕, (I u).re ∂ν = 0`. Use `integral_re (𝕜 := ℂ) hint` as an intermediate fact. Rewrite `this` using `[hz]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : 0 < ∫ u in 𝓕, (I u).re ∂ν`. Rewrite using `[integral_pos_iff_support_of_nonneg_ae (Filter.Eventually.of_forall hnn) hint.re, Measure.restrict_apply hO.measurableSet, pos_iff_ne_zero]`. Introduce `hm`. Use `hpos (h𝓕.measure_zero_of_invariant _ (fun g => ?_) hm)` and prove the remaining obligations. Use extensionality with `u`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem]`. Use `show (I (((-g : Γ) : G) + u)).re ≠ 0 ↔ (I u).re ≠ 0`. Rewrite using `[hper _ (-g).2]`. Conclude with `hlt.ne' hre`.
+A detailed English derivation is pending.
 -/
 theorem integral_ne_zero_of_cocompact {G : Type} [AddGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [MeasurableSpace G] [BorelSpace G] [SecondCountableTopology G] (Γ : AddSubgroup G) [Countable Γ] {K : Set G}
@@ -55,7 +55,7 @@ theorem integral_ne_zero_of_cocompact {G : Type} [AddGroup G] [TopologicalSpace 
   exact hlt.ne' hre
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ nS nT I hI hper hnn h0 ν 𝓕 hν h𝓕`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLatticeF.lattice F E nS nT`. Use `haveI : BorelSpace (WOF F E nS nT) := ⟨rfl⟩`. Use `haveI : Countable (ratLF F E nS nT) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Conclude with `integral_ne_zero_of_cocompact (G := WOF F E nS nT) (ratLF F E nS nT) hK hKc I hI hper hnn h0 ν 𝓕 h𝓕 (GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact (G := WOF F E nS nT) (ratLF F E nS nT) hK hKc ν h𝓕)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integral_ne_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (nS nT : ℕ)
     (I : WOF F E nS nT → ℂ), Continuous I → (∀ γ ∈ ratLF F E nS nT, ∀ u, I (γ + u) = I u) →

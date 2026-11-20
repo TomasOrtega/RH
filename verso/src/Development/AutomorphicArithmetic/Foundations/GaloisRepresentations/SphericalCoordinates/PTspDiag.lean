@@ -5,35 +5,31 @@ open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `F _ _ g ty t₀ i₀ hc hi hij W hW`. Establish `hpat : ∀ S : Matrix (Fin g) (Fin g) ℂ, S ∈ W → ∀ i j, S i j ≠ 0 → ty j = ComplexEmbedding.conjugate (ty i)`. Introduce `S hS i j hne`. Establish `h` using `((hW S).1 hS).2`. Establish `hcc : ∀ c : 𝓞 F, ty j (c : F) = (starRingEnd ℂ) (ty i (c : F))` using `fun c => mul_left_cancel₀ hne (by rw [h c i j, mul_comm])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F)) ?_` and prove the remaining obligations. Use extensionality with `c`. Simplify `hcc c` using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `hi₀ : ty i₀ = t₀` using `(hi i₀).2 rfl`. Establish `hnot : ∀ j, ty j = ComplexEmbedding.conjugate t₀ → j ≠ i₀`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `j hj rfl`. Conclude with `hc (by rw [← hj, hi₀])`. Prove the components needed by the constructor for the conclusion. Introduce `S S' hSS`. Apply `Subtype.ext` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hzero : ∀ T : Matrix (Fin g) (Fin g) ℂ, T ∈ W → ∀ i j, i ≠ i₀ → j ≠ i₀ → T i j = 0`. Introduce `T hT i j hi' hj'`. Assume the negation of the conclusion as `hne`. Break down `hij i j (hpat T hT i j hne) with h | h` into its components or cases. Conclude with `hi' h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hj' h`. Establish `hrow : ∀ j, S.1 i₀ j = S'.1 i₀ j`. Introduce `j`. Distinguish the cases in `hj : ty j = ComplexEmbedding.conjugate t₀`. Conclude with `congrFun hSS ⟨j, hj⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ∀ T : Matrix (Fin g) (Fin g) ℂ, T ∈ W → T i₀ j = 0`. Introduce `T hT`. Assume the negation of the conclusion as `hne`. Conclude with `hj (by rw [hpat T hT i₀ j hne, hi₀])`. Rewrite using `[hz _ S.2, hz _ S'.2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hsym : ∀ T : Matrix (Fin g) (Fin g) ℂ, T ∈ W → ∀ i j, T i j = T j i`. Introduce `T hT i j`. Establish `h` using `congrFun (congrFun ((hW T).1 hT).1 i) j`. Rewrite `h` using `[Matrix.transpose_apply]`. Conclude with `h.symm`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Distinguish the cases in `h1 : i = i₀`. Substitute `h1` using the available equality. Conclude with `hrow j`. Distinguish the cases in `h2 : j = i₀`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `h2` using the available equality. Rewrite using `[hsym _ S.2, hsym _ S'.2]`. Conclude with `hrow i`. Rewrite using `[hzero _ S.2 i j h1 h2, hzero _ S'.2 i j h1 h2]`. Introduce `v`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Set `T : Matrix (Fin g) (Fin g) ℂ` to `fun i j => if h : i = i₀ ∧ ty j = ComplexEmbedding.conjugate t₀ then v ⟨j, h.2⟩ else if h' : j = i₀ ∧ ty i = ComplexEmbedding.conjugate t₀ then v ⟨i, h'.2⟩ else 0`. Establish `hT : T ∈ W`. Use `(hW T).2 ⟨?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j show T j i = T i j`. Distinguish the cases in `h1 : i = i₀ ∧ ty j = ComplexEmbedding.conjugate t₀`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `h2 : ¬ (j = i₀ ∧ ty i = ComplexEmbedding.conjugate t₀)` using `fun h => hnot j h1.2 h.1`. Simplify using `only [T, dif_pos h1, dif_neg h2]`. Distinguish the cases in `h2 : j = i₀ ∧ ty i = ComplexEmbedding.conjugate t₀`. Simplify using `only [T, dif_pos h2, dif_neg h1]`. Simplify using `only [T, dif_neg h1, dif_neg h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Introduce `c i j`. Distinguish the cases in `h1 : i = i₀ ∧ ty j = ComplexEmbedding.conjugate t₀`. Simplify using `only [T, dif_pos h1]`. Establish `e : ty j (c : F) = (starRingEnd ℂ) (ty i (c : F))`. Rewrite using `[h1.2, h1.1, hi₀, ComplexEmbedding.conjugate_coe_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, mul_comm]`. Distinguish the cases in `h2 : j = i₀ ∧ ty i = ComplexEmbedding.conjugate t₀`. Simplify using `only [T, dif_neg h1, dif_pos h2]`. Establish `e : ty j (c : F) = (starRingEnd ℂ) (ty i (c : F))`. Rewrite using `[h2.2, h2.1, hi₀, ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]`.
-
-Rewrite using `[e, mul_comm]`. Simplify using `only [T, dif_neg h1, dif_neg h2]`. Simplify using the standard rewrite rules. Use `⟨⟨T, hT⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
-
-Use `show T i₀ j.1 = v j`. Establish `h1 : i₀ = i₀ ∧ ty j.1 = ComplexEmbedding.conjugate t₀` using `⟨rfl, j.2⟩`. Simplify using `only [T, dif_pos h1]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.tspDiag_of :
     UpperTheory.Gal.W2.TspDiag := by

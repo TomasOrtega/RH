@@ -17,15 +17,15 @@ open GlobalTheory.RealInd.Stages Finset GlobalTheory.FlagMeas Formalism.REAL
 namespace GlobalTheory.RealInd
 
 /- English proof (translation)
-Introduce `n a ε j W hW x t ht m hm`. Establish `hmi : m⁻¹ ∈ flagM ε W` using `(GlobalTheory.FlagLeviGroup.leviSub ε W).inv_mem hm`. Establish `hmul : ∀ g h : UJ ε, uMat (g * h) = uMat g * uMat h` using `fun _ _ => rfl`. Establish `hmm : uMat m * uMat m⁻¹ = 1` using `by rw [← hmul, mul_inv_cancel]; rfl`. Establish `hJ : (uMat m)ᴴ * Jm ε = Jm ε * uMat m⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : (uMat m)ᴴ * Jm ε * uMat m = Jm ε` using `m.2`. Combine the equalities or inequalities in the displayed calculation. Establish `hmy : ∀ y, uMat m *ᵥ (uMat m⁻¹ *ᵥ y) = y` using `fun y => by rw [mulVec_mulVec, hmm, one_mulVec]`. Establish `key : ∀ y, uMat (m * t * m⁻¹) *ᵥ y = uMat m *ᵥ (uMat t *ᵥ (uMat m⁻¹ *ᵥ y))` using `fun y => by`. Rewrite using `[hmul, hmul, mulVec_mulVec, mulVec_mulVec]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : IsSplit ε W x (m * t * m⁻¹)`. Use `⟨(GlobalTheory.FlagLeviGroup.leviSub ε W).mul_mem ((GlobalTheory.FlagLeviGroup.leviSub ε W).mul_mem hm ht.1) hmi, fun i y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1` using `ht.2.1 i _ (hmi _ y hy).1`. Establish `h2` using `(hm _ _ h1).1`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[key, mulVec_sub, mulVec_smul, hmy]`. Establish `hy' : ∀ z ∈ W (Fin.last a), star z ⬝ᵥ (Jm ε *ᵥ (uMat m⁻¹ *ᵥ y)) = 0` using `fun z hz => by`. Rewrite using `[mulVec_mulVec, ← hJ, ← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec]`. Conclude with `hy _ (hm _ z hz).1`. Establish `h2` using `(hm _ _ (ht.2.2 _ hy')).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[key, mulVec_sub, hmy]`. Use `(existsUnique_isSplit hW x).unique hs ht` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isSplit_commute_flagM : ∀ {n a : ℕ} {ε : Fin n → Bool} {j : Fin a → ℕ} {W : Flag n a}, IsIsoFlag ε j W →
     ∀ {x : Fin a → ℝ} {t : UJ ε}, IsSplit ε W x t → ∀ m ∈ flagM ε W, m * t = t * m := by

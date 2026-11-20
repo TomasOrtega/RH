@@ -8,21 +8,21 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A B _ _ _ hsm q Ω _ _ _ hq hΩ`. Take `⟨b, hbq, n, _, hST, hSE⟩` from `Algebra.IsSmoothAt.exists_isStandardEtale_mvPolynomial (R := A) (p := q.asIdeal)`. Establish `hΩb` using `GlobalTheory.T.preirreducible_tensor_localization_away A B b Ω hΩ`. Take `⟨a, I, haΩ, hIΩ, hall⟩` from `GlobalTheory.T.preirreducible_fibre_standardEtale_spreads A (Localization.Away b) n hSE Ω hΩb`. Establish `memq : ∀ x : A, algebraMap A B x ∈ q.asIdeal ↔ algebraMap A Ω x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x`. Use `congrArg (x ∈ ·) hq` as an intermediate fact. Simplify `this` using `[Ideal.mem_comap, RingHom.mem_ker]`. Use `⟨b, a, I, hbq, fun h => haΩ ((memq a).1 h), fun c hc => (memq c).2 (hIΩ c hc), ?_⟩` and prove the remaining obligations. Introduce `t hat hIt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `k` to `AlgebraicClosure t.asIdeal.ResidueField`. Establish `hker : RingHom.ker (algebraMap A k) = t.asIdeal`. Rewrite using `[IsScalarTower.algebraMap_eq A t.asIdeal.ResidueField k, ← RingHom.comap_ker, (RingHom.injective_iff_ker_eq_bot _).1 (algebraMap t.asIdeal.ResidueField k).injective, ← RingHom.ker_eq_comap_bot, Ideal.ker_algebraMap_residueField]`. Establish `hmem : ∀ x : A, algebraMap A k x = 0 ↔ x ∈ t.asIdeal`. Introduce `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← RingHom.mem_ker, hker]`. Establish `hk` using `hall k (fun h => hat ((hmem a).1 h)) (fun c hc => (hmem c).2 (hIt c hc))`. Establish `himg` using `(PreirreducibleSpace.isPreirreducible_univ (X := PrimeSpectrum (k ⊗[A] Localization.Away b))).image (PrimeSpectrum.comap ((Algebra.TensorProduct.includeRight : Localization.Away b →ₐ[A] k ⊗[A] Localization.Away b).toRingHom.comp (algebraMap B (Localization.Away b)))) (PrimeSpectr …`. Use `himg using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Set.image_univ, PrimeSpectrum.comap_comp, Set.range_comp, GlobalTheory.T.range_comap_includeRight_eq_comap_eq_ker, hker]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `r`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hr, hbr⟩`. Establish `: r ∈ Set.range (PrimeSpectrum.comap (algebraMap B (Localization.Away b)))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away b) b]`. Conclude with `hbr`. Take `⟨r', rfl⟩` from `this`. Use `⟨r', ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← hr, IsScalarTower.algebraMap_eq A B (Localization.Away b), ← Ideal.comap_comap]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨r', hr', rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr', IsScalarTower.algebraMap_eq A B (Localization.Away b), ← Ideal.comap_comap]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `: PrimeSpectrum.comap (algebraMap B (Localization.Away b)) r' ∈ Set.range (PrimeSpectrum.comap (algebraMap B (Localization.Away b)))` using `⟨r', rfl⟩`. Rewrite `this` using `[PrimeSpectrum.localization_away_comap_range (Localization.Away b) b]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basicOpen_fibres_preirreducible :
     ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B], Algebra.Smooth A B →

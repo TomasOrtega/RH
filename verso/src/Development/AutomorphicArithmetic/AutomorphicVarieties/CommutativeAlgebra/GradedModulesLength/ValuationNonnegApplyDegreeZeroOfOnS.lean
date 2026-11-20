@@ -4,21 +4,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ K _ _ _ _ v hv A _ _ 𝒜 _ _ x I hI ξ hξ b hb hne`. Use `set M : Submodule O K := Submodule.map ξ.toLinearMap (𝒜 0) with hMdef`. Establish `hker : ∀ f ∈ I, ξ f = 0` using `hξ`. Set `ξ' : (A ⧸ I) →ₐ[O] K` to `Ideal.Quotient.liftₐ I ξ hker`. Establish `hcomp : ξ.toLinearMap = ξ'.toLinearMap.comp (Ideal.Quotient.mkₐ O I).toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `a`. Both sides reduce to the same expression. Establish `hMfg : M.FG`. Rewrite using `[hMdef, hcomp, Submodule.map_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.FG.map _ hI`. Use `haveI : IsNoetherian O M := isNoetherian_of_fg_of_noetherian M hMfg`. Establish `hle : Subalgebra.toSubmodule (Algebra.adjoin O {ξ b}) ≤ M`. Introduce `z hz`. Establish `hz' : z ∈ Algebra.adjoin O {ξ b}` using `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Use `clear hz`. Rewrite using `[hMdef, Submodule.mem_map]`. Proceed by induction on `hz' using Algebra.adjoin_induction with`. Consider the case `mem w hw`. Rewrite `hw` using `[Set.mem_singleton_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨b, hb, hw.symm⟩`. Consider the case `algebraMap r`. Conclude with `⟨algebraMap O A r, SetLike.algebraMap_mem_graded 𝒜 r, by simp⟩`. Consider the case `add w₁ w₂ _ _ h₁ h₂`. Take `⟨c₁, hc₁, e₁⟩` from `h₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c₂, hc₂, e₂⟩` from `h₂`. Conclude with `⟨c₁ + c₂, add_mem hc₁ hc₂, by simp [← e₁, ← e₂]⟩`. Consider the case `mul w₁ w₂ _ _ h₁ h₂`. Take `⟨c₁, hc₁, e₁⟩` from `h₁`. Take `⟨c₂, hc₂, e₂⟩` from `h₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hm : c₁ * c₂ ∈ 𝒜 (0 + 0)` using `SetLike.mul_mem_graded hc₁ hc₂`. Rewrite `hm` using `[add_zero]`. Conclude with `⟨c₁ * c₂, hm, by simp [← e₁, ← e₂]⟩`. Use `haveI : IsNoetherian O (Subalgebra.toSubmodule (Algebra.adjoin O {ξ b})) := isNoetherian_of_le hle`. Establish `hint : IsIntegral O (ξ b)` using `isIntegral_of_submodule_noetherian (Algebra.adjoin O {ξ b}) inferInstance (ξ b) (Algebra.subset_adjoin (Set.mem_singleton _))`.
-
-Conclude with `int_holds O K v hv (ξ b) hint hne`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.valuation_nonneg_apply_degreeZero_of_onS :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

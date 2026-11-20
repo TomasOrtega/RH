@@ -27,13 +27,11 @@ namespace GlobalTheory.CompHt
 open GlobalTheory.ProjSpace in
 
 /- English proof (translation)
-Establish `e₁` using `congrArg (fun t => t F) (appLE_comp_aeval_ratio (φ := π) (hi := hU))`. Establish `e₂ : (π.appLE (chart R m i) U hU).hom (formOn (chart R m i) i le_rfl d F hF) = MvPolynomial.eval₂ (algX (π ≫ PSpace.str R m) U) (pullRatio π U i hU) F`. Rewrite using `[formOn_eq_aeval]`. Conclude with `e₁`. Establish `e₃ : fnOf U hη ((π.appLE (chart R m i) U hU).hom (formOn (chart R m i) i le_rfl d F hF)) = MvPolynomial.eval₂ (GlobalTheory.Cartier.constFn (π ≫ PSpace.str R m)) (fun j => fnOf U hη (pullRatio π U i hU j)) F`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₂, MvPolynomial.eval₂_comp_left, fnOf_comp_algX]`. Both sides reduce to the same expression. Establish `e₄ : X.basicOpen ((π.appLE (chart R m i) U hU).hom (formOn (chart R m i) i le_rfl d F hF)) = U ⊓ π ⁻¹ᵁ (chart R m i ⊓ Proj.basicOpen (grading R m) F)`. Use `(Scheme.basicOpen_appLE π U _ hU _).trans ?_` and prove the remaining obligations. Rewrite using `[basicOpen_formOn]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₅` using `X.mem_basicOpen ((π.appLE (chart R m i) U hU).hom (formOn (chart R m i) i le_rfl d F hF)) (genericPoint X) hη`. Rewrite `e₅` using `[e₄]`. Establish `e₆ : genericPoint X ∈ U ⊓ π ⁻¹ᵁ (chart R m i ⊓ Proj.basicOpen (grading R m) F) ↔ IsUnit (fnOf U hη ((π.appLE (chart R m i) U hU).hom (formOn (chart R m i) i le_rfl d F hF)))` using `e₅`. Rewrite `e₆` using `[e₃, isUnit_iff_ne_zero]`. Rewrite using `[← not_iff_not]`.
-
-Conclude with `Iff.trans ⟨fun h => ⟨hη, hU hη, h⟩, fun h => h.2.2⟩ e₆`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_genericPrime_iff {R : Type} [CommRing R] {m : ℕ} {X : Scheme.{0}} [IsIntegral X]
     (π : X ⟶ PSpace R m) (i : Fin (m + 1)) (U : X.Opens) (hη : genericPoint X ∈ U)
@@ -64,15 +62,15 @@ theorem mem_genericPrime_iff {R : Type} [CommRing R] {m : ℕ} {X : Scheme.{0}} 
   exact Iff.trans ⟨fun h => ⟨hη, hU hη, h⟩, fun h => h.2.2⟩ e₆
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ m y X _ p π ψ i U hη hU hp hψ hy hr`. Substitute `hp` using the available equality. Use `set P := (π (genericPoint X) : ProjectiveSpectrum (MvPolynomial.homogeneousSubmodule (Fin (m + 1)) (𝓞 K))).asHomogeneousIdeal with hP`. Establish `hc : GlobalTheory.Cartier.constFn (π ≫ PSpace.str (𝓞 K) m) = ψ.comp ((algebraMap K Ω).comp (algebraMap (𝓞 K) K))` using `RingHom.ext fun a => (hψ a).symm`. Establish `hs : (fun j => y j / y i) = (y i)⁻¹ • y` using `funext fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[div_eq_inv_mul]`. Establish `key : ∀ {d : ℕ} {F : MvPolynomial (Fin (m + 1)) (𝓞 K)}, F.IsHomogeneous d → (F ∈ P.toIdeal ↔ MvPolynomial.aeval y (MvPolynomial.map (algebraMap (𝓞 K) K) F) = 0)`. Introduce `d F hF`. Rewrite using `[hP, mem_genericPrime_iff π i U hη hU hF, ← mem_coneIdeal_of_isHomogeneous y (hF.map _), ← coneIdeal_smul (inv_ne_zero hy), mem_coneIdeal_of_isHomogeneous _ (hF.map _), ← hs, hc, funext hr, MvPolynomial.aeval_def, MvPolynomial.eval₂_map, ← map_eq_zero_iff ψ ψ.injective, MvPolynom …`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hcomap : P.toIdeal = (coneIdeal K y).comap (MvPolynomial.map (algebraMap (𝓞 K) K))`. Use extensionality with `F`. Rewrite using `[Ideal.mem_comap, mem_coneIdeal_iff, P.isHomogeneous.mem_iff]`. Use `forall_congr' fun d => ?_` and prove the remaining obligations. Establish `e : ((DirectSum.decompose (MvPolynomial.homogeneousSubmodule (Fin (m + 1)) (𝓞 K)) F d : _) : MvPolynomial (Fin (m + 1)) (𝓞 K)) = MvPolynomial.homogeneousComponent d F` using `MvPolynomial.decomposition.decompose'_apply F d`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : MvPolynomial.map (algebraMap (𝓞 K) K) (MvPolynomial.homogeneousComponent d F) = MvPolynomial.homogeneousComponent d (MvPolynomial.map (algebraMap (𝓞 K) K) F)`. Use extensionality with `a`. Simplify using `only [MvPolynomial.coeff_map, MvPolynomial.coeff_homogeneousComponent]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e, key (MvPolynomial.homogeneousComponent_isHomogeneous d F), e']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcomap]`. Use `letI := MvPolynomial.algebraMvPolynomial (σ := Fin (m + 1)) (R := 𝓞 K) (S := K)`. Conclude with `IsLocalization.map_under ((nonZeroDivisors (𝓞 K)).map (MvPolynomial.C (σ := Fin (m + 1)))) (MvPolynomial (Fin (m + 1)) K) (coneIdeal K y)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem map_genericPrime_eq_coneIdeal : ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (m : ℕ) (y : Fin (m + 1) → Ω) (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp (𝓞 K)) (π : X ⟶ PSpace (𝓞 K) m) (ψ : Ω →+* X.functionField) (i : Fin (m + 1)) (U : X.Opens) (hη : genericPoint X ∈ U) (hU : U ≤ π ⁻¹ᵁ GlobalTheory.ProjSpace.chart (𝓞 K) m i),
     π ≫ PSpace.str (𝓞 K) m = p →

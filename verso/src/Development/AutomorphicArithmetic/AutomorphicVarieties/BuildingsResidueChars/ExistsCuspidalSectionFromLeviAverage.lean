@@ -12,9 +12,9 @@ open scoped ComplexConjugate Classical InnerProductSpace
 open scoped NumberField.AdeleRing
 
 /- English proof (translation)
-Set `G : C(X, C(Y, ℂ))` to `ContinuousMap.curry ⟨fun p : X × Y => F p.1 p.2, hF⟩`. Establish `hI : ∀ f : C(Y, ℂ), Integrable (fun y => f y) ρ` using `fun f => f.continuous.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `hL : LipschitzWith (Real.toNNReal (ρ.real Set.univ)) (fun f : C(Y, ℂ) => ∫ y, f y ∂ρ)`. Use `LipschitzWith.of_dist_le_mul fun f g => ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm, ← integral_sub (hI f) (hI g), Real.coe_toNNReal _ measureReal_nonneg, dist_eq_norm, mul_comm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `norm_integral_le_of_norm_le_const (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `(f - g).norm_coe_le_norm y`. Conclude with `hL.continuous.comp G.continuous`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem cont_int {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] [CompactSpace Y] [MeasurableSpace Y]
     [OpensMeasurableSpace Y] (ρ : Measure Y) [IsFiniteMeasure ρ] {F : X → Y → ℂ}
@@ -30,13 +30,13 @@ private theorem cont_int {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] 
   exact hL.continuous.comp G.continuous
 
 /- English proof (translation)
-Take `⟨a, b, φ, ψ, x, y, s, t, hφ, -, hT⟩` from `tens E (⊤ : Submodule ℂ (Unit → ℂ))`. Establish `e : ∀ f ∈ E, ∀ u, f u = ∑ l : Fin a × Fin b × Fin a × Fin b, (s l.1 l.2.2.1 * t l.2.1 l.2.2.2 * ψ l.2.1 ()) * f (x l.1 l.2.2.1) * φ l.1 u`. Introduce `f hf u`. Rewrite using `[hT (fun u _ => f u) (fun _ => hf) (fun _ => Submodule.mem_top) u ()]`. Simplify using `only [Fintype.sum_prod_type, Finset.sum_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `key : (fun u => ∫ w, h w u ∂ρ) = ∑ l : Fin a × Fin b × Fin a × Fin b, ((s l.1 l.2.2.1 * t l.2.1 l.2.2.2 * ψ l.2.1 ()) * ∫ w, h w (x l.1 l.2.2.1) ∂ρ) • φ l.1`. Use function extensionality and compare the values at `u`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `: ∀ w, h w u = ∑ l : Fin a × Fin b × Fin a × Fin b, (s l.1 l.2.2.1 * t l.2.1 l.2.2.2 * ψ l.2.1 ()) * h w (x l.1 l.2.2.1) * φ l.1 u` using `fun w => e _ (hE w) u`. Simplify using `only [this]`. Rewrite using `[integral_finset_sum _ fun l _ => ((hi _).const_mul _).mul_const _]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[integral_mul_const, integral_const_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `E.sum_mem fun l _ => E.smul_mem _ (hφ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem avg_mem {X Y : Type} [MeasurableSpace Y] (E : Submodule ℂ (X → ℂ)) [FiniteDimensional ℂ E] (ρ : Measure Y)
     (h : Y → X → ℂ) (hE : ∀ y, h y ∈ E) (hi : ∀ x, Integrable (fun y => h y x) ρ) :
@@ -81,7 +81,7 @@ private def repSub {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure 
     rw [e1, Pi.smul_apply, e2, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `h1` using `(quasiMeasurePreserving_mk (Gam K n) μ).ae (coeFn_rightRegularRep (Gam K n) μ g v)`. Establish `h2` using `(measurePreserving_mul_right μ g).quasiMeasurePreserving.ae h`. Use `filter_upwards [h1, h2] with y e1 e2`. Rewrite using `[e1]`. Conclude with `e2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem reps_tr {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure]
     {v : L2 μ} {φ : G1 K n → ℂ} (h : Reps μ v φ) (g : G1 K n) :
@@ -93,7 +93,7 @@ private theorem reps_tr {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Mea
   exact e2
 
 /- English proof (translation)
-Take `⟨v, hv, hr⟩` from `h`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, hτ.inv _ v hv, reps_tr μ hr k⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem span_le_rep {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure]
     (τ : Submodule ℂ (L2 μ)) (hτ : CuspIrr μ τ) (S : Subgroup (G1 K n)) {φ : G1 K n → ℂ} (h : ∃ v ∈ τ, Reps μ v φ) :
@@ -104,14 +104,14 @@ private theorem span_le_rep {K : Type} [Field K] [NumberField K] {n : ℕ} (μ :
   exact ⟨_, hτ.inv _ v hv, reps_tr μ hr k⟩
 
 /- English proof (translation)
-The claim follows from `hF.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+A detailed English derivation is pending.
 -/
 private theorem int_cont {Y : Type} [TopologicalSpace Y] [CompactSpace Y] [MeasurableSpace Y] [OpensMeasurableSpace Y]
     (ρ : Measure Y) [IsFiniteMeasure ρ] (F : Y → ℂ) (hF : Continuous F) : Integrable F ρ :=
   hF.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
 
 /- English proof (translation)
-Establish `hB : Continuous fun p : D × Y => ∫ v₂, A p.1 p.2 v₂ ∂ρ` using `cont_int ρ (F := fun (p : D × Y) v₂ => A p.1 p.2 v₂) hA`. Conclude with `⟨cont_int ρ (F := fun d v₁ => ∫ v₂, A d v₁ v₂ ∂ρ) hB, fun d v₁ => int_cont ρ _ (hA.comp (Continuous.prodMk_right (d, v₁))), fun d => int_cont ρ _ (hB.comp (Continuous.prodMk_right d))⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem dbl {D Y : Type} [TopologicalSpace D] [TopologicalSpace Y] [CompactSpace Y] [MeasurableSpace Y]
     [OpensMeasurableSpace Y] (ρ : Measure Y) [IsFiniteMeasure ρ] (A : D → Y → Y → ℂ)
@@ -125,7 +125,7 @@ private theorem dbl {D Y : Type} [TopologicalSpace D] [TopologicalSpace Y] [Comp
     fun d => int_cont ρ _ (hB.comp (Continuous.prodMk_right d))⟩
 
 /- English proof (translation)
-Establish `a1 : Continuous fun p : ((G × G × T) × S) × S => (p.1.2, p.2, p.1.1.2.2)` using `by fun_prop`. Establish `a2 : Continuous fun p : ((G × G × T) × S) × S => p.1.1.1 * (ι p.1.2)⁻¹` using `by fun_prop`. Establish `a3 : Continuous fun p : ((G × G × T) × S) × S => p.1.1.2.1 * (ι p.2)⁻¹` using `by fun_prop`. Conclude with `((hP.comp a1).mul (h₁.comp a2)).mul (h₂.comp a3)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cont_A {G S T : Type} [TopologicalSpace G] [Group G] [IsTopologicalGroup G] [TopologicalSpace S]
     [TopologicalSpace T] (P : S × S × T → ℂ) (hP : Continuous P) (ι : S → G) (hι : Continuous ι) (φ₁ φ₂ : G → ℂ)
@@ -138,7 +138,7 @@ private theorem cont_A {G S T : Type} [TopologicalSpace G] [Group G] [IsTopologi
   exact ((hP.comp a1).mul (h₁.comp a2)).mul (h₂.comp a3)
 
 /- English proof (translation)
-Take `⟨-, -, -, hlc, -, -, -, -, -, -, hlvK, -⟩` from `blkLaws (K := K)`. Establish `h00 : Continuous fun p : KG K 2 × KG K 2 × KG K (2 + 2) => ((p.1 : G1 K 2), (p.2.1 : G1 K 2), (0 : ℝ))` using `(continuous_subtype_val.comp continuous_fst).prodMk (((continuous_subtype_val.comp (continuous_fst.comp continuous_snd))).prodMk continuous_const)`. Establish `h0 : Continuous fun p : KG K 2 × KG K 2 × KG K (2 + 2) => lv (p.1 : G1 K 2) (p.2.1 : G1 K 2) 0 * (p.2.2 : G1 K (2 + 2))` using `(hlc.comp h00).mul (continuous_subtype_val.comp (continuous_snd.comp continuous_snd))`. Conclude with `hΨ.comp (h0.subtype_mk fun p => (KG K (2 + 2)).mul_mem (hlvK _ p.1.2 _ p.2.1.2) p.2.2.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem psi_cont {K : Type} [Field K] [NumberField K] (Ψ : G1 K (2 + 2) → ℂ)
     (hΨ : Continuous fun k : KG K (2 + 2) => Ψ k) :
@@ -159,13 +159,13 @@ private noncomputable def abelian₂ {K : Type} [Field K] [NumberField K] (ρ : 
     Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * k) * φ₁ (m₁ * (v₁ : G1 K 2)⁻¹) * φ₂ (m₂ * (v₂ : G1 K 2)⁻¹) ∂ρ ∂ρ
 
 /- English proof (translation)
-Establish `hmul` using `(blkLaws (K := K)).2.1`. Establish `hemb : ∀ u : KG K 2, MeasurableEmbedding (· * u)` using `fun u => (Homeomorph.mulRight u).measurableEmbedding`. Unfold `abelian₂`. Use `((hρ ⟨u₁, hu₁⟩).integral_comp (hemb _) _).symm.trans ?_` and prove the remaining obligations. Use `integral_congr_ae (Eventually.of_forall fun v₁ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `((hρ ⟨u₂, hu₂⟩).integral_comp (hemb _) _).symm.trans ?_` and prove the remaining obligations. Use `integral_congr_ae (Eventually.of_forall fun v₂ => ?_)` and prove the remaining obligations. Establish `e1 : lv (((v₁ * ⟨u₁, hu₁⟩ : KG K 2)) : G1 K 2) (((v₂ * ⟨u₂, hu₂⟩ : KG K 2)) : G1 K 2) 0 = lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * lv u₁ u₂ 0`. Rewrite using `[hmul, add_zero]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : m₁ * u₁ * (((v₁ * ⟨u₁, hu₁⟩ : KG K 2)) : G1 K 2)⁻¹ = m₁ * (v₁ : G1 K 2)⁻¹`. Rewrite using `[Subgroup.coe_mul, _root_.mul_inv_rev]`. Simplify using `[mul_assoc]`. Establish `e3 : m₂ * u₂ * (((v₂ * ⟨u₂, hu₂⟩ : KG K 2)) : G1 K 2)⁻¹ = m₂ * (v₂ : G1 K 2)⁻¹`. Rewrite using `[Subgroup.coe_mul, _root_.mul_inv_rev]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_assoc]`. Use `show Ψ _ * φ₁ _ * φ₂ _ = Ψ _ * φ₁ _ * φ₂ _`. Rewrite using `[e1, e2, e3, mul_assoc (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lam_eq {K : Type} [Field K] [NumberField K] (ρ : Measure (KG K 2))
     (hρ : ∀ u : KG K 2, MeasurePreserving (· * u) ρ ρ) (Ψ : G1 K (2 + 2) → ℂ) (φ₁ φ₂ : G1 K 2 → ℂ) (m₁ m₂ u₁ u₂ : G1 K 2)
@@ -192,11 +192,11 @@ private theorem lam_eq {K : Type} [Field K] [NumberField K] (ρ : Measure (KG K 
   rw [e1, e2, e3, mul_assoc (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0)]
 
 /- English proof (translation)
-Establish `hlvK` using `(blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.1`. Unfold `abelian₂`. Use `integral_congr_ae (Eventually.of_forall fun v₁ => ?_)` and prove the remaining obligations. Use `integral_congr_ae (Eventually.of_forall fun v₂ => ?_)` and prove the remaining obligations. Take `⟨e, he, -⟩` from `adMeas (v₁ : G1 K 2) (v₂ : G1 K 2) 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hl` using `hlvK _ v₁.2 _ v₂.2`. Establish `e1 : nn (e.symm X) * lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 = lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * nn X`. Rewrite using `[he, e.apply_symm_apply]`. Establish `e2 : nn (e.symm X) ∈ KG K (2 + 2)`. Rewrite using `[eq_mul_inv_of_mul_eq e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(KG K (2 + 2)).mul_mem ((KG K (2 + 2)).mul_mem hl hX) ((KG K (2 + 2)).inv_mem hl)`. Establish `e3 : lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * (nn X * k) = nn (e.symm X) * (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * k)`. Rewrite using `[← mul_assoc, ← mul_assoc, e1]`. Use `show Ψ _ * _ * _ = Ψ _ * _ * _`. Rewrite using `[e3, hN _ e2 _ ((KG K (2 + 2)).mul_mem hl hk)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lam_un {K : Type} [Field K] [NumberField K] (ρ : Measure (KG K 2)) (Ψ : G1 K (2 + 2) → ℂ)
     (hN : ∀ X, nn X ∈ KG K (2 + 2) → ∀ k ∈ KG K (2 + 2), Ψ (nn X * k) = Ψ k) (φ₁ φ₂ : G1 K 2 → ℂ) (m₁ m₂ : G1 K 2)
@@ -219,7 +219,7 @@ private theorem lam_un {K : Type} [Field K] [NumberField K] (ρ : Measure (KG K 
   rw [e3, hN _ e2 _ ((KG K (2 + 2)).mul_mem hl hk)]
 
 /- English proof (translation)
-Use `haveI : CompactSpace (KG K 2) := isCompact_iff_compactSpace.1 ((blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.2 2).1`. Conclude with `dbl ρ (fun (d : G1 K 2 × G1 K 2 × KG K (2 + 2)) (v₁ v₂ : KG K 2) => Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * (d.2.2 : G1 K (2 + 2))) * φ₁ (d.1 * (v₁ : G1 K 2)⁻¹) * φ₂ (d.2.1 * (v₂ : G1 K 2)⁻¹)) (cont_A _ (psi_cont Ψ hΨ) (fun v : KG K 2 => (v : G1 K 2)) continuous_subtype_val φ₁ φ₂ h …`.
+A detailed English derivation is pending.
 -/
 private theorem lam_all {K : Type} [Field K] [NumberField K] (ρ : Measure (KG K 2)) [IsFiniteMeasure ρ]
     (Ψ : G1 K (2 + 2) → ℂ) (hΨ : Continuous fun k : KG K (2 + 2) => Ψ k) (φ₁ φ₂ : G1 K 2 → ℂ) (hc₁ : Continuous φ₁)
@@ -238,13 +238,13 @@ private theorem lam_all {K : Type} [Field K] [NumberField K] (ρ : Measure (KG K
     (cont_A _ (psi_cont Ψ hΨ) (fun v : KG K 2 => (v : G1 K 2)) continuous_subtype_val φ₁ φ₂ hc₁ hc₂)
 
 /- English proof (translation)
-Establish `hlvK` using `(blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.1`. Use `haveI : CompactSpace (KG K (2 + 2)) := isCompact_iff_compactSpace.1 ((blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.2 (2 + 2)).1`. Take `⟨B₁, hB₁⟩` from `hb₁`. Take `⟨B₂, hB₂⟩` from `hb₂`. Take `⟨C, hC'⟩` from `(isCompact_range hΨ).isBounded.exists_norm_le`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC₀ : 0 ≤ C` using `(norm_nonneg _).trans (hC' _ ⟨1, rfl⟩)`. Establish `hB₁₀ : 0 ≤ B₁` using `(norm_nonneg _).trans (hB₁ 1)`. Use `⟨C * B₁ * B₂, fun m₁ m₂ k hk => ?_⟩` and prove the remaining obligations. Establish `hv : ∀ v₁ v₂ : KG K 2, ‖Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * k) * φ₁ (m₁ * (v₁ : G1 K 2)⁻¹) * φ₂ (m₂ * (v₂ : G1 K 2)⁻¹)‖ ≤ C * B₁ * B₂`. Introduce `v₁ v₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_mul]`. Conclude with `mul_le_mul (mul_le_mul (hC' _ ⟨⟨_, (KG K (2 + 2)).mul_mem (hlvK _ v₁.2 _ v₂.2) hk⟩, rfl⟩) (hB₁ _) (norm_nonneg _) hC₀) (hB₂ _) (norm_nonneg _) (mul_nonneg hC₀ hB₁₀)`. Establish `h1 : ∀ v₁ : KG K 2, ‖∫ v₂ : KG K 2, Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * k) * φ₁ (m₁ * (v₁ : G1 K 2)⁻¹) * φ₂ (m₂ * (v₂ : G1 K 2)⁻¹) ∂ρ‖ ≤ C * B₁ * B₂`. Introduce `v₁`. Use `norm_integral_le_of_norm_le_const (μ := ρ) (Eventually.of_forall (hv v₁))` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Use `norm_integral_le_of_norm_le_const (μ := ρ) (Eventually.of_forall h1)` as an intermediate fact. Simplify `this` using `[abelian₂]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem lam_bd {K : Type} [Field K] [NumberField K] (ρ : Measure (KG K 2)) [IsProbabilityMeasure ρ]
     (Ψ : G1 K (2 + 2) → ℂ) (hΨ : Continuous fun k : KG K (2 + 2) => Ψ k) (φ₁ φ₂ : G1 K 2 → ℂ)
@@ -274,9 +274,9 @@ private theorem lam_bd {K : Type} [Field K] [NumberField K] (ρ : Measure (KG K 
   simpa [abelian₂] using this
 
 /- English proof (translation)
-Take `⟨-, hI₂, hI₁⟩` from `lam_all ρ Ψ hΨ φ₁ φ₂ hc₁ hc₂`. Use `avg_mem _ ρ (fun v₁ m => ∫ v₂ : KG K 2, Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * (k : G1 K (2 + 2))) * φ₁ (m * (v₁ : G1 K 2)⁻¹) * φ₂ (w * (v₂ : G1 K 2)⁻¹) ∂ρ) (fun v₁ => ?_) fun m => hI₁ (m, w, k)` and prove the remaining obligations. Use `avg_mem _ ρ (fun v₂ m => Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * (k : G1 K (2 + 2))) * φ₁ (m * (v₁ : G1 K 2)⁻¹) * φ₂ (w * (v₂ : G1 K 2)⁻¹)) (fun v₂ => ?_) fun m => hI₂ (m, w, k) v₁` and prove the remaining obligations. Establish `: (fun m => Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * (k : G1 K (2 + 2))) * φ₁ (m * (v₁ : G1 K 2)⁻¹) * φ₂ (w * (v₂ : G1 K 2)⁻¹)) = (Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * (k : G1 K (2 + 2))) * φ₂ (w * (v₂ : G1 K 2)⁻¹)) • fun m => φ₁ (m * ((v₁⁻¹ : KG K 2) : G1 K 2))`. Use function extensionality and compare the values at `m`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, Subgroup.coe_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨v₁⁻¹, rfl⟩)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lam_mem₁ {K : Type} [Field K] [NumberField K] (ρ : Measure (KG K 2)) [IsFiniteMeasure ρ]
     (Ψ : G1 K (2 + 2) → ℂ) (hΨ : Continuous fun k : KG K (2 + 2) => Ψ k) (φ₁ φ₂ : G1 K 2 → ℂ) (hc₁ : Continuous φ₁)
@@ -299,9 +299,9 @@ private theorem lam_mem₁ {K : Type} [Field K] [NumberField K] (ρ : Measure (K
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨v₁⁻¹, rfl⟩)
 
 /- English proof (translation)
-Take `⟨-, hI₂, hI₁⟩` from `lam_all ρ Ψ hΨ φ₁ φ₂ hc₁ hc₂`. Use `avg_mem _ ρ (fun v₁ m => ∫ v₂ : KG K 2, Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * (k : G1 K (2 + 2))) * φ₁ (w * (v₁ : G1 K 2)⁻¹) * φ₂ (m * (v₂ : G1 K 2)⁻¹) ∂ρ) (fun v₁ => ?_) fun m => hI₁ (w, m, k)` and prove the remaining obligations. Use `avg_mem _ ρ (fun v₂ m => Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * (k : G1 K (2 + 2))) * φ₁ (w * (v₁ : G1 K 2)⁻¹) * φ₂ (m * (v₂ : G1 K 2)⁻¹)) (fun v₂ => ?_) fun m => hI₂ (w, m, k) v₁` and prove the remaining obligations. Establish `: (fun m => Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * (k : G1 K (2 + 2))) * φ₁ (w * (v₁ : G1 K 2)⁻¹) * φ₂ (m * (v₂ : G1 K 2)⁻¹)) = (Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * (k : G1 K (2 + 2))) * φ₁ (w * (v₁ : G1 K 2)⁻¹)) • fun m => φ₂ (m * ((v₂⁻¹ : KG K 2) : G1 K 2))`. Use function extensionality and compare the values at `m`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, Subgroup.coe_inv]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨v₂⁻¹, rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lam_mem₂ {K : Type} [Field K] [NumberField K] (ρ : Measure (KG K 2)) [IsFiniteMeasure ρ]
     (Ψ : G1 K (2 + 2) → ℂ) (hΨ : Continuous fun k : KG K (2 + 2) => Ψ k) (φ₁ φ₂ : G1 K 2 → ℂ) (hc₁ : Continuous φ₁)
@@ -323,9 +323,9 @@ private theorem lam_mem₂ {K : Type} [Field K] [NumberField K] (ρ : Measure (K
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨v₂⁻¹, rfl⟩)
 
 /- English proof (translation)
-Establish `hmul` using `(blkLaws (K := K)).2.1`. Take `⟨X, n₁, n₂, t, k, hk, rfl⟩` from `iwa g`. Use `⟨n₁, n₂, ⟨k, hk⟩, fun m₁ m₂ => ?_⟩` and prove the remaining obligations. Take `⟨e, he, -⟩` from `adMeas m₁ m₂ 0`. Establish `e1 : lv m₁ m₂ 0 * nn X = nn (e.symm X) * lv m₁ m₂ 0` using `by rw [he, e.apply_symm_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : lv m₁ m₂ 0 * (nn X * lv n₁ n₂ t * k) = nn (e.symm X) * lv (m₁ * n₁) (m₂ * n₂) (0 + t) * k`. Rewrite using `[← hmul, ← mul_assoc, ← mul_assoc, e1]`. Simplify using `only [mul_assoc]`. Rewrite using `[e2, hfv _ _ _ _ _ hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sec_red {K : Type} [Field K] [NumberField K] (Λ : G1 K 2 → G1 K 2 → G1 K (2 + 2) → ℂ) (f : G1 K (2 + 2) → ℂ)
     (hfv : ∀ X m₁ m₂ t, ∀ k ∈ KG K (2 + 2), f (nn X * lv m₁ m₂ t * k) = Λ m₁ m₂ k) (g : G1 K (2 + 2)) :
@@ -341,9 +341,9 @@ private theorem sec_red {K : Type} [Field K] [NumberField K] (Λ : G1 K 2 → G1
   rw [e2, hfv _ _ _ _ _ hk]
 
 /- English proof (translation)
-Take `⟨Y, m₁, m₂, t, k, hk, rfl⟩` from `iwa g`. Establish `e1 : nn X * (nn Y * lv m₁ m₂ t * k) = nn (X + Y) * lv m₁ m₂ t * k`. Establish `hadd : nn (X + Y) = nn X * nn Y` using `unipOne_add 2 X Y`. Rewrite using `[hadd]`. Simplify using `only [mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, hfv _ _ _ _ _ hk, hfv _ _ _ _ _ hk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sec_unip {K : Type} [Field K] [NumberField K] (Λ : G1 K 2 → G1 K 2 → G1 K (2 + 2) → ℂ) (f : G1 K (2 + 2) → ℂ)
     (hfv : ∀ X m₁ m₂ t, ∀ k ∈ KG K (2 + 2), f (nn X * lv m₁ m₂ t * k) = Λ m₁ m₂ k) (X : UPos (2 + 2) 2 → 𝔸[K])
@@ -356,9 +356,9 @@ private theorem sec_unip {K : Type} [Field K] [NumberField K] (Λ : G1 K 2 → G
   rw [e1, hfv _ _ _ _ _ hk, hfv _ _ _ _ _ hk]
 
 /- English proof (translation)
-Establish `hmul` using `(blkLaws (K := K)).2.1`. Take `⟨Y, m₁, m₂, s, k, hk, rfl⟩` from `iwa g`. Take `⟨e, he, -⟩` from `adMeas (1 : G1 K 2) 1 t`. Establish `e1 : lv (1 : G1 K 2) 1 t * nn Y = nn (e.symm Y) * lv (1 : G1 K 2) 1 t` using `by rw [he, e.apply_symm_apply]`. Establish `e2 : lv (1 : G1 K 2) 1 t * (nn Y * lv m₁ m₂ s * k) = nn (e.symm Y) * lv (1 * m₁) (1 * m₂) (t + s) * k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hmul, ← mul_assoc, ← mul_assoc, e1]`. Simplify using `only [mul_assoc]`. Rewrite using `[e2, hfv _ _ _ _ _ hk, hfv _ _ _ _ _ hk, one_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sec_ray {K : Type} [Field K] [NumberField K] (Λ : G1 K 2 → G1 K 2 → G1 K (2 + 2) → ℂ) (f : G1 K (2 + 2) → ℂ)
     (hfv : ∀ X m₁ m₂ t, ∀ k ∈ KG K (2 + 2), f (nn X * lv m₁ m₂ t * k) = Λ m₁ m₂ k) (t : ℝ)
@@ -373,13 +373,13 @@ private theorem sec_ray {K : Type} [Field K] [NumberField K] (Λ : G1 K 2 → G1
   rw [e2, hfv _ _ _ _ _ hk, hfv _ _ _ _ _ hk, one_mul, one_mul]
 
 /- English proof (translation)
-Introduce `K _ _ μ₂ _ τ₁ τ₂ h₁ h₂ ρ hp hρ Ψ hΨ hN φ₁ φ₂ hc₁ hc₂ hb₁ hb₂ hr₁ hr₂ hf₁ hf₂`. Use `haveI := hp`. Take `⟨f, hf, hfv⟩` from `mkSec K (abelian₂ ρ Ψ φ₁ φ₂) (lam_all ρ Ψ hΨ φ₁ φ₂ hc₁ hc₂).1 (fun m₁ m₂ u₁ hu₁ u₂ hu₂ k _ => lam_eq ρ hρ Ψ φ₁ φ₂ m₁ m₂ u₁ u₂ hu₁ hu₂ k) (fun m₁ m₂ X hX k hk => lam_un ρ Ψ hN φ₁ φ₂ m₁ m₂ X hX k hk)`. Use `⟨f, hf, ?_, sec_unip _ f hfv, sec_ray _ f hfv, fun g => ?_, hfv⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `lam_bd ρ Ψ hΨ φ₁ φ₂ hb₁ hb₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C, fun g => ?_⟩` and prove the remaining obligations. Take `⟨X, m₁, m₂, t, k, hk, rfl⟩` from `iwa g`. Rewrite using `[hfv _ _ _ _ _ hk]`. Conclude with `hC _ _ _ hk`. Take `⟨n₁, n₂, k, hk⟩` from `sec_red _ f hfv g`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun m₂ => ?_, fun m₁ => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hq⟩` from `span_le_rep μ₂ τ₁ h₁ (KG K 2) hr₁ (lam_mem₁ ρ Ψ hΨ φ₁ φ₂ hc₁ hc₂ hf₁ (m₂ * n₂) k)`. Use `⟨_, h₁.inv n₁ v hv, ?_⟩` and prove the remaining obligations. Use `reps_tr μ₂ hq n₁` as an intermediate fact. Simplify `this` using `only [hk]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv, hq⟩` from `span_le_rep μ₂ τ₂ h₂ (KG K 2) hr₂ (lam_mem₂ ρ Ψ hΨ φ₁ φ₂ hc₁ hc₂ hf₂ (m₁ * n₁) k)`. Use `⟨_, h₂.inv n₂ v hv, ?_⟩` and prove the remaining obligations. Use `reps_tr μ₂ hq n₂` as an intermediate fact. Simplify `this` using `only [hk]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_cuspidal_section_from_levi_average :
     ∀ {K : Type} [Field K] [NumberField K] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ₁ τ₂ : Submodule ℂ (L2 μ₂)), CuspIrr μ₂ τ₁ → CuspIrr μ₂ τ₂ → ∀ ρ : Measure (KG K 2), IsProbabilityMeasure ρ → (∀ u : KG K 2, MeasurePreserving (· * u) ρ ρ) → ∀ Ψ : G1 K (2 + 2) → ℂ, (Continuous fun k : KG K (2 + 2) => Ψ k) → (∀ X, nn X ∈ KG K (2 + 2) → ∀ k ∈ KG K (2 + 2), Ψ (nn X * k) = Ψ k) → ∀ φ₁ φ₂ : G1 K 2 → ℂ, Continuous φ₁ → Continuous φ₂ → (∃ B : ℝ, ∀ m, ‖φ₁ m‖ ≤ B) → (∃ B : ℝ, ∀ m, ‖φ₂ m‖ ≤ B) → (∃ v ∈ τ₁, Reps μ₂ v φ₁) → (∃ v ∈ τ₂, Reps μ₂ v φ₂) → FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : KG K 2 => fun m => φ₁ (m * k))) → FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : KG K 2 => fun m => φ₂ (m * k))) → ∃ f : G1 K (2 + 2) → ℂ, Continuous f ∧ (∃ C : ℝ, ∀ g, ‖f g‖ ≤ C) ∧ (∀ X g, f (nn X * g) = f g) ∧ (∀ t g, f (lv 1 1 t * g) = f g) ∧ Slices τ₁ τ₂ f ∧ ∀ X m₁ m₂ t, ∀ k ∈ KG K (2 + 2), f (nn X * lv m₁ m₂ t * k) = ∫ v₁ : KG K 2, ∫ v₂ : KG K 2, Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * k) * φ₁ (m₁ * (v₁ : G1 K 2)⁻¹) * φ₂ (m₂ * (v₂ : G1 K 2)⁻¹) ∂ρ ∂ρ := by

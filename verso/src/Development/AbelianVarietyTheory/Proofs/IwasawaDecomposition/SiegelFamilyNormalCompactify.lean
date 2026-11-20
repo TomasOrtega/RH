@@ -12,13 +12,11 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 namespace GlobalTheory.SiegLoc
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c n R _ b ω φ φs F S s j _ G _ e BD d N κ C π _ hn3 _ _ hφ _ hω _ _ hS _ hP`. Take `⟨-, -, -, -, -, -, -, -, hd, hch, -⟩` from `hS`. Take `⟨μ, y, α, α₂, -, -, -, hyj, -⟩` from `hP`. Take `⟨⟨_, _⟩, _, hfr⟩` from `hω`. Use `letI : Algebra R c.F := ω.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Establish `hg` using `GlobalTheory.genericPart_dense_proOpen R c.F C.X (Xo.XF c) C.s C.jQ C.flat C.proj C.jQ_open C.jQ_dense`. Use `haveI hdom : IsDominant (C.jQ ≫ pullback.fst C.s (spMap (algebraMap R c.F))) := hg.2.2.2.2.2.1`. Use `GlobalTheory.EffCartierData.keepsRegular_of_dense BD π (fun z => (C.normal z).1) ?_` and prove the remaining obligations. Use `(Scheme.Hom.denseRange (C.jQ ≫ pullback.fst C.s (spMap (algebraMap R c.F)))).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `show π (C.j w) ∉ _`. Establish `e1 : π (C.j w) = j (y w)`. Rewrite using `[← Scheme.Hom.comp_apply, ← hyj, Scheme.Hom.comp_apply]`. Rewrite using `[e1]`. Introduce `hmem`.
-
-Conclude with `(ReciprocityTheory.AnForm.R.mem_support_iff_stalkId _ _).1 hmem ((HasChart.idl_eq_top_iff hφ (by omega) (by omega) (hch (j (y w)))).2 ⟨y w, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem keepsRegular_siegPull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (n : ℕ) (R : Type) [CommRing R] (b : 𝓞 c.F →+* R) (ω : R →+* c.F) (φ φs : InvFun ℤ) (F : SFam (Module.finrank ℚ E / 2 * (D.p + D.q)) n (zetaAway n)) (S : Scheme.{0}) (s : S ⟶ Sp (cycAway n)) (j : F.X ⟶ S) [IsOpenImmersion j] (G : Over S) [GrpObj G] (e : F.univ.A.left ⟶ G.left) (BD : EffCartierData S) (d N : ℕ) (κ : cycAway n →+* R) (C : Model Xo c ω) (π : C.X ⟶ S), 1 ≤ D.p + D.q → 3 ≤ n → Odd n → n ∣ l.M → IsPolFan id (Module.finrank ℚ E / 2 * (D.p + D.q)) φ → AgreesPsd (Module.finrank ℚ E / 2 * (D.p + D.q)) φs φ → IsDedFrac ω → ω.comp b = algebraMap (𝓞 c.F) c.F → @IsLocalization.Away (𝓞 c.F) _ (n : 𝓞 c.F) R _ b.toAlgebra → SiegData (Module.finrank ℚ E / 2 * (D.p + D.q)) φ n F S s j G e BD d N → (∀ x, ((ω (κ x) : c.F) : ℂ) = (x : ℂ)) → IsSiegPull s j G e κ C π → BD.KeepsRegular π := by
   intro E _ _ _ H D l Xo c n R _ b ω φ φs F S s j _ G _ e BD d N κ C π _ hn3 _ _ hφ _ hω _ _ hS _ hP

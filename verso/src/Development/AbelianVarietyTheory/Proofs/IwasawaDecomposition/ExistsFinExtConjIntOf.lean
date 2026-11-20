@@ -13,7 +13,7 @@ namespace GlobalTheory.IntegralConjFinExt
 open Matrix
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(PadicAlgCl.isNonarchimedean l _ _).trans (max_le (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sum_le_one (l : ℕ) [Fact l.Prime] {ι : Type} (s : Finset ι) (f : ι → PadicAlgCl l)
     (h : ∀ i ∈ s, ‖f i‖ ≤ 1) : ‖∑ i ∈ s, f i‖ ≤ 1 := by
@@ -26,7 +26,7 @@ theorem norm_sum_le_one (l : ℕ) [Fact l.Prime] {ι : Type} (s : Finset ι) (f 
       (max_le (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))
 
 /- English proof (translation)
-Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_one_apply_le (l : ℕ) [Fact l.Prime] (a : ℕ) (i j : Fin a) :
     ‖(1 : Matrix (Fin a) (Fin a) (PadicAlgCl l)) i j‖ ≤ 1 := by
@@ -50,11 +50,11 @@ def intSubgroup (l : ℕ) [Fact l.Prime] {Γ : Type} [Group Γ] {a : ℕ}
   inv_mem' := fun {g} hg i j => ⟨(hg i j).2, by rw [inv_inv]; exact (hg i j).1⟩
 
 /- English proof (translation)
-Set `V : Set Γ` to `⋂ i, ⋂ j, ({g | ‖(ρ g : Matrix (Fin a) (Fin a) (PadicAlgCl l)) i j - (1 : Matrix (Fin a) (Fin a) (PadicAlgCl l)) i j‖ < 1} ∩ {g | ‖(ρ g⁻¹ : Matrix (Fin a) (Fin a) (PadicAlgCl l)) i j - (1 : Matrix (Fin a) (Fin a) (PadicAlgCl l)) i j‖ < 1})`. Establish `hVo : IsOpen V` using `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (isOpen_lt (((hρ.matrix_elem i j).sub continuous_const).norm) continuous_const).inter (isOpen_lt ((((hρ.matrix_elem i j).comp continuous_inv).sub continuous_const).norm) continuous_const)`. Establish `hV1 : (1 : Γ) ∈ V`. Simplify using `only [V, Set.mem_iInter, Set.mem_inter_iff, Set.mem_setOf_eq, inv_one, map_one, Units.val_one, sub_self, norm_zero, zero_lt_one, and_self, implies_true]`. Establish `hle : ∀ x y : PadicAlgCl l, ‖x - y‖ < 1 → ‖y‖ ≤ 1 → ‖x‖ ≤ 1` using `fun x y hxy hy => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `PadicAlgCl.isNonarchimedean l (x - y) y` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Conclude with `this.trans (max_le hxy.le hy)`. Establish `hVU : V ⊆ (intSubgroup l ρ : Set Γ)` using `fun g hg i j => by`. Simplify using `only [V, Set.mem_iInter, Set.mem_inter_iff, Set.mem_setOf_eq] at hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨hle _ _ (hg i j).1 (norm_one_apply_le l a i j), hle _ _ (hg i j).2 (norm_one_apply_le l a i j)⟩`. Conclude with `Subgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset (hVo.mem_nhds hV1) hVU)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_intSubgroup (l : ℕ) [Fact l.Prime] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
     [IsTopologicalGroup Γ] {a : ℕ} (ρ : Γ →* GL (Fin a) (PadicAlgCl l))
@@ -82,29 +82,25 @@ theorem isOpen_intSubgroup (l : ℕ) [Fact l.Prime] {Γ : Type} [Group Γ] [Topo
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `l _ Γ _ _ _ _ _ a ρ hρ`. Use `letI : DecidableEq Γ := Classical.decEq Γ`. Take `⟨L, -, hL⟩` from `GlobalTheory.CompactRepField.exists_finExt_entries_mem l Γ a ρ hρ ⟨⊥, inferInstance⟩`. Use `haveI : FiniteDimensional ℚ_[l] L.1 := L.2`. Set `U` to `intSubgroup l ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Finite (Γ ⧸ U) := Subgroup.quotient_finite_of_isOpen _ (isOpen_intSubgroup l ρ hρ)`. Use `haveI : Fintype (Γ ⧸ U) := Fintype.ofFinite _`. Set `T : Finset Γ` to `Finset.univ.image (fun q : Γ ⧸ U => q.out)`. Establish `hTU : ∀ x : Γ, ∃ t ∈ T, t⁻¹ * x ∈ U`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul U x`. Use `⟨(x : Γ ⧸ U).out, Finset.mem_image.2 ⟨_, Finset.mem_univ _, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hh, _root_.mul_inv_rev, inv_mul_cancel_right]`. Conclude with `U.inv_mem h.2`. Take `⟨r, hr⟩` from `GlobalTheory.StableLattice.lift_of_integral (O := L.1) (K := PadicAlgCl l) Subtype.val_injective ρ (fun g i j => ⟨⟨_, hL g i j⟩, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hre : ∀ g i j, (((r g : GL (Fin a) L.1) : Matrix (Fin a) (Fin a) L.1) i j : PadicAlgCl l) = ((ρ g : GL (Fin a) (PadicAlgCl l)) : Matrix (Fin a) (Fin a) (PadicAlgCl l)) i j`. Introduce `g i j`. Rewrite using `[← hr g, Matrix.GeneralLinearGroup.map_apply]`. Both sides reduce to the same expression. Set `e : L.1 ≃ₐ[Loc.OL L] FractionRing (Loc.OL L)` to `IsLocalization.algEquiv (nonZeroDivisors (Loc.OL L)) L.1 (FractionRing (Loc.OL L))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `σ : Γ →* GL (Fin a) (FractionRing (Loc.OL L))` to `(Matrix.GeneralLinearGroup.map e.toRingEquiv.toRingHom).comp r`. Establish `hσ : ∀ x : Γ, ∃ t ∈ T, ∀ i j, (σ (t⁻¹ * x)).val i j ∈ (algebraMap (Loc.OL L) (FractionRing (Loc.OL L))).range`. Introduce `x`. Take `⟨t, ht, hu⟩` from `hTU x`. Use `⟨t, ht, fun i j => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hmem : ((r (t⁻¹ * x) : GL (Fin a) L.1) : Matrix (Fin a) (Fin a) L.1) i j ∈ Loc.OL L`. Rewrite using `[Formalism.BasicNotions.Examples₂.LB.mem_OL, hre]`. Conclude with `(hu i j).1`. Use `⟨⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [σ, MonoidHom.comp_apply, Matrix.GeneralLinearGroup.map_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← e.commutes]`. Both sides reduce to the same expression. Take `⟨P', hP'⟩` from `GlobalTheory.StableLattice.exists_conj_integral σ T hσ`. Set `φ : FractionRing (Loc.OL L) →+* PadicAlgCl l` to `(algebraMap L.1 (PadicAlgCl l)).comp e.symm.toRingEquiv.toRingHom`. Establish `hφσ : ∀ g, Matrix.GeneralLinearGroup.map φ (σ g) = ρ g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `g`. Rewrite using `[← hr g]`. Use extensionality with `i j`. Simplify using `only [σ, φ, MonoidHom.comp_apply, Matrix.GeneralLinearGroup.map_apply, RingHom.comp_apply]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e.symm_apply_apply _`. Use `⟨L, Matrix.GeneralLinearGroup.map φ P', fun g i k => ?_⟩` and prove the remaining obligations. Establish `h1 : (Matrix.GeneralLinearGroup.map φ P')⁻¹ * ρ g * Matrix.GeneralLinearGroup.map φ P' = Matrix.GeneralLinearGroup.map φ (P'⁻¹ * σ g * P')`. Rewrite using `[MonoidHom.map_mul (Matrix.GeneralLinearGroup.map φ), MonoidHom.map_mul (Matrix.GeneralLinearGroup.map φ), MonoidHom.map_inv (Matrix.GeneralLinearGroup.map φ), hφσ]`. It suffices to establish `key : ((Matrix.GeneralLinearGroup.map φ (P'⁻¹ * σ g * P') : GL (Fin a) (PadicAlgCl l)) : Matrix (Fin a) (Fin a) (PadicAlgCl l)) i k ∈ Formalism.L2.TwC.intOf l L.1 by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[← h1]`. Conclude with `key`. Take `⟨z, hz⟩` from `hP' g i k`. Rewrite using `[Matrix.GeneralLinearGroup.map_apply, ← hz]`. Establish `h2 : φ (algebraMap (Loc.OL L) (FractionRing (Loc.OL L)) z) = (((z : L.1)) : PadicAlgCl l)`.
-
-Simplify using `only [φ, RingHom.comp_apply]`. Rewrite using `[← e.commutes z]`. Use `show algebraMap L.1 (PadicAlgCl l) (e.symm (e _)) = _`. Rewrite using `[e.symm_apply_apply]`. Both sides reduce to the same expression.
-
-Rewrite using `[h2, GlobalTheory.IntOfFinExt.mem_intOf_iff]`. Conclude with `⟨(z : L.1).2, (Formalism.BasicNotions.Examples₂.LB.mem_OL L _).1 z.2⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finExt_conj_intOf : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] (a : ℕ) (ρ : Γ →* GL (Fin a) (PadicAlgCl l)), Continuous (fun g => ((ρ g : GL (Fin a) (PadicAlgCl l)) : Matrix (Fin a) (Fin a) (PadicAlgCl l))) → ∃ (L : Loc.FinExt l) (P : GL (Fin a) (PadicAlgCl l)), ∀ g i k, ((P⁻¹ * ρ g * P : GL (Fin a) (PadicAlgCl l)) : Matrix (Fin a) (Fin a) (PadicAlgCl l)) i k ∈ Formalism.L2.TwC.intOf l L.1 := by
   intro l _ Γ _ _ _ _ _ a ρ hρ

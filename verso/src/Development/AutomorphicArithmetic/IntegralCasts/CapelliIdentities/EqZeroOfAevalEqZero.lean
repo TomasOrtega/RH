@@ -7,17 +7,15 @@ noncomputable def UpperTheory.Reformulated.B.G8.kry :
 
 open Polynomial in
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `using hp`. Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Set `L` to `AlgebraicClosure K`. Set `f : K →+* L` to `algebraMap K L`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `G : Matrix (Fin n) (Fin n) L` to `g.map f`. Establish `hG : G.charpoly.Separable`. Rewrite using `[Matrix.charpoly_map]`. Conclude with `hg.map`. Establish `hG0 : aeval G (p.map f) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrArg (AlgHom.mapMatrix (m := Fin n) (Algebra.ofId K L)) h0`. Rewrite `h1` using `[map_zero, ← aeval_algHom_apply]`. Rewrite using `[aeval_map_algebraMap]`. Conclude with `h1`. Establish `hcard : G.charpoly.roots.toFinset.card = n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Multiset.toFinset_card_of_nodup (nodup_roots hG), ← (IsAlgClosed.splits G.charpoly).natDegree_eq_card_roots, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hz : p.map f = 0`. Use `eq_zero_of_degree_lt_of_eval_finset_eq_zero G.charpoly.roots.toFinset ?_ ?_` and prove the remaining obligations. Rewrite using `[hcard, degree_map]`. Conclude with `hp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Establish `hx' : x ∈ spectrum L G` using `Matrix.mem_spectrum_of_isRoot_charpoly (isRoot_of_mem_roots (Multiset.mem_toFinset.mp hx))`. Establish `h2` using `spectrum.subset_polynomial_aeval G (p.map f) ⟨x, hx', rfl⟩`. Rewrite `h2` using `[hG0, spectrum.zero_eq]`. Conclude with `h2`.
-
-Conclude with `(Polynomial.map_eq_zero_iff f.injective).mp hz`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.G8.eq_zero_of_aeval_eq_zero {K : Type} [Field K] {n : ℕ}
     (g : Matrix (Fin n) (Fin n) K) (hg : g.charpoly.Separable) (p : K[X])
@@ -54,15 +52,15 @@ private theorem UpperTheory.Reformulated.B.G8.eq_zero_of_aeval_eq_zero {K : Type
 
 open Polynomial in
 /- English proof (translation)
-Take `⟨x, hx⟩` from `Module.exists_ker_toSpanSingleton_eq_annihilator K[X] (Module.AEval K (Fin n → K) g)`. Take `⟨v, rfl⟩` from `(Module.AEval.of K (Fin n → K) g).surjective x`. Use `⟨v, fun hdet => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hc0⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Set `p : K[X]` to `∑ j : Fin n, C (c j) * X ^ (j : ℕ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hdeg : p.degree < n` using `degree_sum_fin_lt c`. Establish `hv : aeval g p • v = 0`. Rewrite using `[← hc0]`. Use extensionality with `i`. Simplify using `only [p, map_sum, map_mul, aeval_C, map_pow, aeval_X, Finset.sum_smul, Finset.sum_apply, ← Algebra.smul_def, smul_assoc, Pi.smul_apply, smul_eq_mul, Matrix.smul_eq_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [UpperTheory.Reformulated.B.G8.kry, Matrix.mulVec, dotProduct, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hker : p ∈ Module.annihilator K[X] (Module.AEval K (Fin n → K) g)`. Rewrite using `[← hx, LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, ← Module.AEval.of_aeval_smul, hv, map_zero]`. Establish `hp0 : aeval g p = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.ext_iff_mulVec.mpr fun w => ?_` and prove the remaining obligations. Establish `h1` using `Module.mem_annihilator.mp hker (Module.AEval.of K (Fin n → K) g w)`. Rewrite `h1` using `[← Module.AEval.of_aeval_smul, map_eq_zero_iff _ (LinearEquiv.injective _)]`. Rewrite using `[Matrix.zero_mulVec]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hp : p = 0` using `UpperTheory.Reformulated.B.G8.eq_zero_of_aeval_eq_zero g hg p hdeg hp0`. Apply `hc` to reduce the goal to its premises. Use extensionality with `j`. Establish `h1` using `congrArg (fun q => q.coeff j) hp`. Simplify `h1` using `[p, finsetSum_coeff, coeff_X_pow, Fin.val_inj]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.G8.exists_kry_field {K : Type} [Field K] {n : ℕ}
     (g : Matrix (Fin n) (Fin n) K) (hg : g.charpoly.Separable) :
@@ -98,7 +96,7 @@ private theorem UpperTheory.Reformulated.B.G8.exists_kry_field {K : Type} [Field
   simpa [p, finsetSum_coeff, coeff_X_pow, Fin.val_inj] using h1
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [UpperTheory.Reformulated.B.G8.kry, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[RingHom.map_mulVec, Matrix.map_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.Reformulated.B.G8.kry_map {R S : Type} [CommRing R] [CommRing S] {n : ℕ} (f : R →+* S)
     (g : Matrix (Fin n) (Fin n) R) (v : Fin n → R) :
@@ -110,13 +108,11 @@ private theorem UpperTheory.Reformulated.B.G8.kry_map {R S : Type} [CommRing R] 
   rw [RingHom.map_mulVec, Matrix.map_pow]
 
 /- English proof (translation)
-Introduce `R _ _ n g hg`. Establish `h1 : ∀ m : MaximalSpectrum R, ∃ w : Fin n → R ⧸ m.asIdeal, (UpperTheory.Reformulated.B.G8.kry (g.map (Ideal.Quotient.mk m.asIdeal)) w).det ≠ 0`. Introduce `m`. Use `haveI := m.isMaximal`. Use `letI := Ideal.Quotient.field m.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `UpperTheory.Reformulated.B.G8.exists_kry_field _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.charpoly_map]`. Conclude with `hg.map`. Use `choose w hw using h1`. Establish `hco : Pairwise (Function.onFun IsCoprime fun m : MaximalSpectrum R => m.asIdeal)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `a b hab`. Conclude with `Ideal.isCoprime_iff_sup_eq.mpr (a.isMaximal.coprime_of_ne b.isMaximal fun h => hab (MaximalSpectrum.ext h))`. Use `choose v hv using fun i : Fin n => Ideal.pi_quotient_surjective hco fun m => w m i`. Use `⟨v, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`.
-
-Take `⟨M, hM, hmem⟩` from `exists_max_ideal_of_mem_nonunits hu`. Apply `hw ⟨M, hM⟩` to reduce the goal to its premises. Establish `h2 : w ⟨M, hM⟩ = Ideal.Quotient.mk M ∘ v` using `funext fun i => (hv i ⟨M, hM⟩).symm`. Rewrite using `[h2, ← UpperTheory.Reformulated.B.G8.kry_map]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr hmem`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.G8.exists_kry :
     ∀ {R : Type} [inst : CommRing R] [Finite (MaximalSpectrum R)] {n : ℕ} (g : Matrix (Fin n) (Fin n) R),

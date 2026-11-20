@@ -6,9 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.E.TwistTrivial
 
 /- English proof (translation)
-Unfold `twGen ofRings.sec`. Establish `h` using `congrArg (fun φ => φ.hom (Submodule.Quotient.mk (Finsupp.single ζ 1) : (twF q i).obj Γ(U, ⊤))) ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).naturality g.op)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.coe_comp] at h`. Use `h.symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).app (op V)).hom (((Scheme.Γ ⋙ twF q i).map g.op).hom _) = _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congr 1`. Conclude with `congrArg Submodule.Quotient.mk Finsupp.mapDomain_single`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem genRes {q : ℕ} (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)) :
     Sec.res g (twGen i ζ) = twGen i (ζ.map g.appTop.hom) := by
@@ -23,7 +23,7 @@ theorem genRes {q : ℕ} (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Prim q
   exact congrArg Submodule.Quotient.mk Finsupp.mapDomain_single
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `f.appTop.hom (s.appTop.hom ζ.1) = (f ≫ s).appTop.hom ζ.1`. Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prim_map_comp {q : ℕ} {X Y S : Scheme.{0}} (ζ : Prim q Γ(S, ⊤)) (s : X ⟶ S) (f : Y ⟶ X) :
     (ζ.map s.appTop.hom).map f.appTop.hom = ζ.map (f ≫ s).appTop.hom := by
@@ -39,9 +39,9 @@ def Mul : Prop := ∀ (q : ℕ), ∃ μ : ∀ (j k l : ℤ), j + k = l → ∀ (
       μ l k' j h' X (twGen k' ζ) (μ j k l h X (twGen k ζ) x) = x)
 
 /- English proof (translation)
-Introduce `q i S ζ`. Take `⟨μ, hnat, hcan⟩` from `hM q`. Use `⟨fun X s => AddEquiv.mk' ⟨μ 0 i i (zero_add i) X (twGen i (ζ.map s.appTop.hom)), μ i (-i) 0 (add_neg_cancel i) X (twGen (-i) (ζ.map s.appTop.hom)), fun x => hcan 0 i i (-i) (zero_add i) (add_neg_cancel i) X _ x, fun y => hcan i (-i) 0 i (add_neg_cancel i) (zero_add i) X _ y⟩ (fun …` and prove the remaining obligations. Introduce `X Y s t f hf x`. Express the relevant statement in the definitionally equal form `Sec.res f (μ 0 i i _ X _ x) = μ 0 i i _ Y _ (Sec.res f x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hnat, genRes, prim_map_comp, hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem TwTriv_of (hM : Mul) : LateralTheory.E.LCIsoPf.TwTriv := by
   intro q i S ζ

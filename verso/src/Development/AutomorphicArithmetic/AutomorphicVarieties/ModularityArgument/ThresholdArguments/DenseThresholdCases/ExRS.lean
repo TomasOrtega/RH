@@ -17,11 +17,11 @@ open UpperTheory.Zero.LLC UpperTheory.V.Z.Win
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace UpperTheory.Gal.SV
 /- English proof (translation)
-Introduce `P F Ω _ _ _ _ _ _ l _ ι n _ hn π χ hreg hpol`. Take `⟨r, wt, HT, H⟩` from `_root_.UpperTheory.Gal.SV.gr2S' P.galR F Ω l ι n hn π χ hreg hpol`. Establish `key` using `H.frob`. Establish `hsm : GlobalTheory.PRep.IsSmooth π.finPart` using `fun v => by`. Use `(π.cusp v.1 v.2).1.level using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `k`. Conclude with `Subtype.ext_iff`. Establish `: Nontrivial π.V` using `Submodule.nontrivial_iff_ne_bot.2 π.ne_bot`. Use `⟨r, wt, HT, H, ⟨H.ss, ?_⟩, fun r' hr' ha => galRS_iso H ha.1 ?_⟩` and prove the remaining obligations. Use `filter_upwards [sat_ae_of_smooth (_root_.UpperTheory.V.Af.satake_local_of_printed_results P) π.finPart hsm fun w =>`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Set `⟨⟨σ, hσ⟩, hiso⟩` to `_root_.UpperTheory.V.Af.local_comp_real_of_printed_results P F n π w`. Use the proof step `⟨σ, hiso σ hσ⟩, eventually_not_mem F l] with w ⟨B, hB⟩ hw`. Conclude with `⟨B, hB, key w hw B hB⟩`. Use `_root_.UpperTheory.V.Af.iso_of_frobenius_of_printed_results P F Ω l ι n r r' H.cont hr' H.ss ha.1 ?_ filter_upwards [ha.2, eventually_not_mem F l] with w ⟨B, hB, hf⟩ hw` and prove the remaining obligations. Conclude with `⟨_, key w hw B hB, hf⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exRS_alt :
     _root_.UpperTheory.V.Af.Hypotheses' → ExRS := by

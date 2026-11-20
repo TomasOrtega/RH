@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 open Polynomial UpperTheory.V.W
 
 /- English proof (translation)
-Introduce `n A G _ _ _ _ _ I hI D`. Unfold `GDet.IsCont`. Simplify using `only [UpperTheory.V.AlgebraTools.Det.adicContIff I hI]`. Prove the components needed by the constructor for the conclusion. Introduce `h i _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h i`. Introduce `h i`. Distinguish the cases in `hi : i ≤ n`. Conclude with `h i hi`. Establish `heq : (fun g : G => D.lam i (MonoidAlgebra.single g 1)) = fun g => (-1) ^ (i + n) * D.lam n (MonoidAlgebra.single g 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use function extensionality and compare the values at `g`. Unfold `GDet.lam`. Rewrite using `[Nat.sub_eq_zero_of_le (not_le.mp hi).le, Nat.sub_self, ← mul_assoc, ← pow_add, add_assoc, ← two_mul, pow_add, pow_mul, neg_one_sq, one_pow, mul_one]`. Rewrite using `[heq]`. Conclude with `continuous_const.mul (h n le_rfl)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.isContIff :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] [TopologicalSpace A] [IsTopologicalRing A] [TopologicalSpace G] (I : Ideal A), IsAdic I → ∀ D : GDet n A G,

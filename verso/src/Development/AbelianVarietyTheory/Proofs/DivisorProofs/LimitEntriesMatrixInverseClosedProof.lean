@@ -27,21 +27,19 @@ def limSub (φ : R →+* V) (q : R) : Subring V where
     exact ⟨-a, -z, by rw [map_neg, ha]; ring⟩
 
 /- English proof (translation)
-Introduce `N`. Take `⟨a, z, ha⟩` from `hu (N + 1)`. Establish `hqm : φ q ∈ IsLocalRing.maximalIdeal V` using `(IsLocalRing.mem_maximalIdeal _).2 hqu`. Establish `haU : IsUnit (φ a)`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1 : φ a ∈ IsLocalRing.maximalIdeal V` using `(IsLocalRing.mem_maximalIdeal _).2 h`. Establish `h2 : φ q ^ (N + 1) * z ∈ IsLocalRing.maximalIdeal V` using `Ideal.mul_mem_right _ _ (Ideal.pow_mem_of_mem _ hqm _ (Nat.succ_pos N))`. Establish `h3 : (u : V) ∈ IsLocalRing.maximalIdeal V`. Establish `: (u : V) = φ a - φ q ^ (N + 1) * z` using `by rw [ha]; ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.sub_mem _ h1 h2`. Conclude with `((IsLocalRing.mem_maximalIdeal _).1 h3) u.isUnit`. Use `set w : Ideal R := (IsLocalRing.maximalIdeal V).comap φ with hw`. Establish `hwp : w.IsPrime` using `Ideal.comap_isPrime φ _`. Establish `hqw : q ∈ w` using `hqm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hwne : w ≠ ⊥`. Introduce `h`. Establish `: q = 0` using `by rw [h] at hqw; exact (Submodule.mem_bot R).1 hqw`. Conclude with `hq0 (by rw [this, map_zero])`. Establish `hwm : w.IsMaximal` using `hwp.isMaximal hwne`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `haw : a ∉ w` using `fun h => ((IsLocalRing.mem_maximalIdeal _).1 h) haU`. Take `⟨y, i, hiw, hyi⟩` from `hwm.exists_inv haw`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Take `⟨n, e, he⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (pow_ne_zero N hq0) hϖ`. Establish `hiV : φ i ∈ Ideal.span {ϖ}` using `by rw [← hϖ.maximalIdeal_eq]; exact hiw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hiV`. Set `b : R` to `y * ∑ j ∈ Finset.range n, i ^ j`. Establish `hab : φ a * φ b = 1 - φ q ^ N * ((e⁻¹ : Vˣ) * c ^ n)`. Establish `h1 : a * b = 1 - i ^ n`. Establish `: a * y = 1 - i` using `by linear_combination hyi`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2 : φ a * φ b = 1 - φ i ^ n` using `by rw [← map_mul, h1, map_sub, map_one, map_pow]`. Rewrite using `[h2, he, ← hc, mul_pow]`. Establish `: ((e : V) * (e⁻¹ : Vˣ)) = 1` using `Units.mul_inv e`. Take the linear combination `(c ^ n * ϖ ^ n) * this`.
-
-Use `⟨b, -((u⁻¹ : Vˣ) : V) * ((e⁻¹ : Vˣ) * c ^ n) - ((u⁻¹ : Vˣ) : V) * φ q * z * φ b, ?_⟩` and prove the remaining obligations. Establish `hu1 : (u : V) * ((u⁻¹ : Vˣ) : V) = 1` using `Units.mul_inv u`. Take the linear combination `((u⁻¹ : Vˣ) : V) * hab - (((u⁻¹ : Vˣ) : V) * φ b) * ha - φ b * hu1`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem inv_mem_limSub [IsDedekindDomain R] [IsDomain V] [IsDiscreteValuationRing V]
     (φ : R →+* V) (q : R) (hq0 : φ q ≠ 0) (hqu : ¬ IsUnit (φ q)) (u : Vˣ)
@@ -90,15 +88,13 @@ end GlobalTheory.LimInv
 
 open GlobalTheory.LimInv in
 /- English proof (translation)
-Introduce `R V _ _ _ _ _ φ q hq0 hqu n M hdet hM`. Set `S` to `limSub φ q`. Set `M₀ : Matrix (Fin n) (Fin n) S` to `fun b b' => ⟨M b b', fun N => hM b b' N⟩`. Establish `hMM : S.subtype.mapMatrix M₀ = M` using `by ext b b'; rfl`. Establish `hadj : ∀ b b', M.adjugate b b' ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b b'`. Rewrite using `[← hMM, ← RingHom.map_adjugate]`. Conclude with `(M₀.adjugate b b').2`. Establish `hdetS : M.det ∈ S`. Rewrite using `[← hMM, ← RingHom.map_det]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(M₀.det).2`. Use `set u := hdet.unit with hu`. Establish `huS : (u : V) ∈ S` using `by rw [hu, IsUnit.unit_spec]; exact hdetS`. Establish `hinv` using `inv_mem_limSub φ q hq0 hqu u huS`. Use `⟨((u⁻¹ : Vˣ) : V) • M.adjugate, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_smul, Matrix.mul_adjugate, smul_smul]`. Establish `: ((u⁻¹ : Vˣ) : V) * M.det = 1`. Rewrite using `[show M.det = (u : V) by rw [hu, IsUnit.unit_spec]]; exact Units.inv_mul u`. Rewrite using `[this, one_smul]`. Introduce `b b' N`.
-
-Establish `: (((u⁻¹ : Vˣ) : V) • M.adjugate) b b' ∈ S`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `S.mul_mem hinv (hadj b b')`. Conclude with `this N`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.IsoTriv.limitEntriesMatrixInverseClosed_proof : InvSt := by
   intro R V _ _ _ _ _ φ q hq0 hqu n M hdet hM

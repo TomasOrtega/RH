@@ -22,9 +22,9 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 namespace GlobalTheory.LamF
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CM.splits_iff_card]`. Use `le_antisymm GlobalTheory.CM.card_ringHom_le_finrank ?_` and prove the remaining obligations. Establish `h1 : Nat.card (E →+* ℂ) = Module.finrank ℚ E`. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `NumberField.Embeddings.card E ℂ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Conclude with `Nat.card_le_card_of_injective lab hl`.
+A detailed English derivation is pending.
 -/
 theorem splits_of_injective_label {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K]
     {lab : (E →+* ℂ) → (E →+* K)} (hl : Function.Injective lab) : GlobalTheory.CM.Splits E K := by
@@ -37,29 +37,25 @@ theorem splits_of_injective_label {E K : Type} [Field E] [NumberField E] [Field 
   exact Nat.card_le_card_of_injective lab hl
 
 /- English proof (translation)
-Introduce `hD hU hL E _ _ _ _ H _ χ hχ hstar K _ _ A oa x φ S τ lab ρ hfib hl hρ hS hLie i ℓ hℓ`. Establish `hf : IsPolFibre (algebraMap (𝓞 K) K) A x.P φ` using `(GlobalTheory.LamF.isFibreOf_iff_isPolFibre (𝓞 K) K (algebraMap (𝓞 K) K) A x φ).1 hfib`. Establish `hoa : ∃ act : OAct (𝓞 E) A.A, act.act = oa.act`. Conclude with `(GlobalTheory.LamF.ringAct_iff_oAct (𝓞 E) _ A.A).1 oa.1`. Take `⟨act, hact⟩` from `hoa`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsplit : GlobalTheory.CM.Splits E K` using `splits_of_injective_label hl`. Establish `htype : HasType H act ρ 1 0` using `GlobalTheory.LamF.LieType.hasType_of_isLieType E H K A x φ hf oa act S τ lab ρ hact hl hS hLie`. Establish `hlam : ∀ a, LamEq A.L (act.act a) (𝟙 A.A) A.L (𝟙 A.A) (act.act (H.bar a))`. Introduce `a`. Establish `hr` using `oa.rosati a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hr` using `[← hact, hstar]`. Conclude with `(GlobalTheory.RosLam.rosatiAdj_iff_lamEq hL.globalFns _ A (act.act a) (act.act (H.bar a)) (act.hom a) (act.hom (H.bar a))).1 hr`. Use `set F : GenFib A := GenFib.mk x.P φ hf x.v x.basis with hF`. Take `⟨⟨h, hh⟩, -⟩` from `GlobalTheory.CM.LieMetric.exists_unique_isHerm hU hL K A F`. Use `set t : 𝓞 E →+* 𝓞 K := RingOfIntegers.mapRingHom (lab (τ i)) with ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `htv : ∀ a : 𝓞 E, (t a : K) = lab (τ i) (a : E)` using `fun a => rfl`. Establish `hti : t H.rt = ρ`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[htv]`. Conclude with `(hS (τ i)).1 (τ i).2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdeg` using `GlobalTheory.T.two_mul_deg_eigenLattice_polarizedAbelianScheme hD hU hL E H χ hχ K ρ A act hlam hsplit hρ htype F h hh t hti`. Establish `hline : deg h (F.eigLat act t) = ℓ.ndeg`. Use `GlobalTheory.LamF.deg_eq_ndeg_of_line K (Fin x.P.g → K) h (F.eigLat act t) (Pi.single i 1) ℓ ?_ hℓ.1 ?_ ?_` and prove the remaining obligations. Introduce `h0`. Use `congrFun h0 i` as an intermediate fact.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `at this`. Introduce `z`. Rewrite using `[GlobalTheory.LamF.EigLine.mem_eigLat_iff E K A x φ hf oa act S τ lab hact hl hLie i t htv z]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, r, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `⟨r, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.mem_lieVector_line_ideal_iff_mem_lie_lattice K A x φ hf i ℓ hℓ r).2 hz`. Use extensionality with `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using the standard rewrite rules. Simplify using `[hj]`. Introduce and unpack `⟨c, hc, rfl⟩`. Use `⟨?_, c, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.T.mem_lieVector_line_ideal_iff_mem_lie_lattice K A x φ hf i ℓ hℓ c).1 hc` as an intermediate fact.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hj]`. Use extensionality with `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
-
-Simplify using `[hj]`. Conclude with `GlobalTheory.CM.LieMetric.vecLine_norm_sq_eq_form hU hL K A x φ hf h hh i ℓ hℓ`. Establish `hre` using `congrArg Complex.re hdeg`. Rewrite `hre` using `[Complex.ofReal_re]`. Rewrite using `[← hline]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ndeg_vecLine_eq : DegSt → ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)] (H : Host E) [NeZero H.d] (χ : DirichletCharacter ℂ H.d), IsKroneckerChar χ → (∀ a : 𝓞 E, star a = H.bar a) → ∀ (K : Type) [Field K] [NumberField K] (A : Out.PolAV (Sp (𝓞 K))) (oa : A.OAct (𝓞 E)) (x : KeyIn K) (φ : x.P.A.left ⟶ A.A.left) (S : Set (E →+* ℂ)) (τ : Fin x.P.g ≃ S) (lab : (E →+* ℂ) → (E →+* K)) (ρ : 𝓞 K), IsFibreOf A x (gmap K) φ → Function.Injective lab → ρ ^ 2 = -(H.d : 𝓞 K) → (∀ t, t ∈ S ↔ lab t (H.rt : E) = (ρ : K)) → IsLieType A oa x φ τ lab → ∀ (i : Fin x.P.g) (ℓ : MLine K), IsVecLine A x φ i ℓ → ℓ.ndeg = (logOm E χ).re / 2 := by
   intro hD hU hL E _ _ _ _ H _ χ hχ hstar K _ _ A oa x φ S τ lab ρ hfib hl hρ hS hLie i ℓ hℓ

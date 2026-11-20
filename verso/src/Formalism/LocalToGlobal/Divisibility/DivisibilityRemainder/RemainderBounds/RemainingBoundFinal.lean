@@ -13,7 +13,7 @@ namespace Formalism.L2.DIV.RestFinal
 open Formalism.L2.Top3
 
 /- English proof (translation)
-The claim follows from `Closed.large (Formalism.MainNotions.DIV.Proofs.thrHH Formalism.L2.DIV.SlopeMaxB.EbMu Formalism.MainNotions.DIV.HookProducts.Row4C.EcHH CF0) (tie.and ((Formalism.L2.DIV.LinkGCl.linkG_frame 𝒜 sel).and he)) fun Fm CH hL h hc hTu hDG c2 hN => have hE := Formalism.L2.DIV.LvlWire.lvlF_ …`.
+A detailed English derivation is pending.
 -/
 theorem hh_closed {𝒜 : FamClass} (sel : Formalism.L2.TSel 𝒜) (tie : Closed (D3 3 𝒜) fun Fm _ => RealPlaceSecondLayerConditions Fm)
     (CF0 : List ℝ → ℝ)
@@ -34,7 +34,7 @@ theorem hh_closed {𝒜 : FamClass} (sel : Formalism.L2.TSel 𝒜) (tie : Closed
         (Formalism.L2.DIV.SlopeMaxB.boundB_of_sel (sel Fm (d3_a hc)) hTu) (h.2.2 hc hTu hDG hN)
 
 /- English proof (translation)
-The claim follows from `((hh_closed sel tie CF0 he).and br).imp fun Fm _ _ h hc hT hD => show Formalism.L2.Top4.RemainingDivisionBounds Fm Cabs _ from { hh := h.1 hc hT hD, bu := (h.2 hc hT hD).1, rr := (h.2 hc hT hD).2, la := Formalism.L2.DIV.Wire.la_of Fm }`.
+A detailed English derivation is pending.
 -/
 theorem remaining_bound_final {𝒜 : FamClass} (Cabs : ℝ) (sel : Formalism.L2.TSel 𝒜) (tie : Closed (D3 3 𝒜) fun Fm _ => RealPlaceSecondLayerConditions Fm)
     (CF0 : List ℝ → ℝ)
@@ -55,7 +55,7 @@ end
 section Test
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Formalism.L2.Top3 Formalism.L2.Top4
 /- English proof (translation)
-The claim follows from `Formalism.L2.DIV.RestFinal.remaining_bound_final Cabs sel tie CF0 he br`.
+A detailed English derivation is pending.
 -/
 example (𝒜 : FamClass) (Cabs : ℝ) (sel : Formalism.L2.TSel 𝒜) (tie : Closed (D3 3 𝒜) fun Fm _ => RealPlaceSecondLayerConditions Fm) (CF0 : List ℝ → ℝ)
     (he : Closed (D3 3 𝒜) fun Fm _ => ∀ _ : D3 3 𝒜 Fm, Formalism.MainNotions.TuSize Fm → Formalism.MainNotions.DGamSize Fm →

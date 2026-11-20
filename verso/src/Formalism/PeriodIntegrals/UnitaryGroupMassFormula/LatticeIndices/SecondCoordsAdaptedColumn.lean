@@ -15,9 +15,9 @@ variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Wo
   (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p) (Q : GL (IdxD D) (FpX X p))
 
 /- English proof (translation)
-Establish `e1 : crd1 X p θ (Q * glK (OvA X p) c) v = (((glK (OvA X p) c)⁻¹ : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) *ᵥ crd1 X p θ Q v`. Simplify using `only [crd1, _root_.mul_inv_rev, Units.val_mul, Matrix.mulVec_mulVec]`. Establish `e2 : adqCol X hb u p θ Q t = ((glK (OvA X p) c : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) *ᵥ Pi.single t 1`. Rewrite using `[hc]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[adqC, Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[e1, hv, e2, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem firstCoords_adapted_column (c : GL (IdxD D) (OvA X p))
     (hc : ((glK (OvA X p) c : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) = adqC X hb u p θ Q)
@@ -36,7 +36,7 @@ theorem firstCoords_adapted_column (c : GL (IdxD D) (OvA X p))
   rw [e1, hv, e2, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `e1 : crd2 X p θ (Q * glK (OvA X p) c) v = (((glK (OvA X p) c : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)))ᵀ *ᵥ crd2 X p θ Q v`. Simplify using `only [crd2, Units.val_mul, Matrix.transpose_mul, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Rewrite using `[e1, hc]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, adqC]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secondCoords_adapted_column (c : GL (IdxD D) (OvA X p))
     (hc : ((glK (OvA X p) c : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) = adqC X hb u p θ Q)
@@ -51,7 +51,7 @@ theorem secondCoords_adapted_column (c : GL (IdxD D) (OvA X p))
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [F0, frameOf]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem frame_castSucc_vector_eq (a : Fin D.R.rS) :
     F0 (frameOf X u) (Fin.castSucc a) = crdOf X.B.I X.ιE X.bas (X.eX a) := by
@@ -60,7 +60,7 @@ theorem frame_castSucc_vector_eq (a : Fin D.R.rS) :
   | simp [F0, frameOf]
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [F0, frameOf]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem frame_last_vector_eq : F0 (frameOf X u) (Fin.last D.R.rS) = crdOf X.B.I X.ιE X.bas (X.zu u) := by
   first
@@ -70,35 +70,33 @@ theorem frame_last_vector_eq : F0 (frameOf X u) (Fin.last D.R.rS) = crdOf X.B.I 
 end Loc
 
 /- English proof (translation)
-Take `⟨θ, hθ, hε⟩` from `exists_split_eps X p`. Take `⟨Q, hL⟩` from `exists_GL_latBasis_of_isSplitEquiv X p θ hθ`. Take `⟨c, hc⟩` from `adq_gl X hb u p θ Q hθ hε hL`. Establish `hτ` using `(adq_tau_inv X hb u p θ Q hθ hL).2`. Use `⟨θ, hθ, Q * glK (OvA X p) c, Fin.lastCases (adqTau X u p θ Q) (fun _ => 1), ?_, ?_, ?_, latBasis_mulGL X p θ Q hL c⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `b`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => dsimp only`. Rewrite using `[Fin.lastCases_last]`. Conclude with `hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `cast a => dsimp only`. Rewrite using `[Fin.lastCases_castSucc]`. Conclude with `one_ne_zero`. Introduce `b show crd1 X p θ (Q * glK (OvA X p) c) _ = _`. Proceed by induction on `b using Fin.lastCases with`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `last`. Rewrite using `[frame_last_vector_eq]`. Establish `hp : pe (k` using `D.R.k) (Fin.last D.R.rS) = zI := by simp [pe]`. Rewrite using `[hp]`. Conclude with `firstCoords_adapted_column X hb u p θ Q c hc _ zI rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `cast a`. Rewrite using `[frame_castSucc_vector_eq]`. Establish `hp : pe (k` using `D.R.k) (Fin.castSucc a) = Sum.inl a := by simp [pe]`. Rewrite using `[hp]`. Conclude with `firstCoords_adapted_column X hb u p θ Q c hc _ (Sum.inl a) rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Introduce `b show crd2 X p θ (Q * glK (OvA X p) c) _ = _`. Use function extensionality and compare the values at `t`. Rewrite using `[secondCoords_adapted_column X hb u p θ Q c hc]`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[frame_last_vector_eq]`. Simplify using `only`. Rewrite using `[Fin.lastCases_last]`. Establish `hp : pf (k` using `D.R.k) (Fin.last D.R.rS) = zI := by simp [pf]`. Rewrite using `[hp]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `t with a | ((i | v) | c')` into its components or cases. Rewrite using `[show adqCol X hb u p θ Q (Sum.inl a) = crd1 X p θ Q (adqE X p a) from rfl]`. Rewrite using `[adq_ze X u p θ Q hθ]`. Simplify using `[zI]`. Rewrite using `[show adqCol X hb u p θ Q (Sum.inr (Sum.inl (Sum.inl i))) = adqProj X u p θ Q (crd1 X p θ Q (adqM X hb u p *ᵥ PI.FinKW.vecV X.B.I p.1 (X.bw i))) from rfl]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[secondCoords_projection_orth X u p θ Q hθ hτ]`. Simplify using `[zI]`. Rewrite using `[show adqCol X hb u p θ Q (Sum.inr (Sum.inl (Sum.inr v))) = crd1 X p θ Q (adqZ X u p) from rfl]`. Establish `hv : v = ()` using `rfl`. Substitute `hv` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[zI, adqTau]`. Rewrite using `[show adqCol X hb u p θ Q (Sum.inr (Sum.inr c')) = crd1 X p θ Q (adqF X p (Fin.rev c')) from rfl]`. Rewrite using `[adq_zf X u p θ Q hθ]`. Simplify using `[zI]`. Consider the case `cast b`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[frame_castSucc_vector_eq]`. Simplify using `only`. Rewrite using `[Fin.lastCases_castSucc]`. Establish `hp : pf (k` using `D.R.k) (Fin.castSucc b) = Sum.inr (Sum.inr (Fin.rev b)) := by simp [pf]`. Rewrite using `[hp]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `t with a | ((i | v) | c')` into its components or cases. Rewrite using `[show adqCol X hb u p θ Q (Sum.inl a) = crd1 X p θ Q (adqE X p a) from rfl]`. Rewrite using `[adq_ee X p θ Q u hθ]`. Simplify using the standard rewrite rules. Rewrite using `[show adqCol X hb u p θ Q (Sum.inr (Sum.inl (Sum.inl i))) = adqProj X u p θ Q (crd1 X p θ Q (adqM X hb u p *ᵥ PI.FinKW.vecV X.B.I p.1 (X.bw i))) from rfl]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[adq_proj_e X u p θ Q hθ]`. Simplify using the standard rewrite rules. Rewrite using `[show adqCol X hb u p θ Q (Sum.inr (Sum.inl (Sum.inr v))) = crd1 X p θ Q (adqZ X u p) from rfl]`. Rewrite using `[adq_ez X u p θ Q hθ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[show adqCol X hb u p θ Q (Sum.inr (Sum.inr c')) = crd1 X p θ Q (adqF X p (Fin.rev c')) from rfl]`. Rewrite using `[adq_ef X p θ Q u hθ]`. Distinguish the cases in `h : c' = Fin.rev b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
-
-Establish `h' : b ≠ Fin.rev c'` using `fun e => h (by rw [e, Fin.rev_rev])`. Simplify using `[h, h']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stAdaptQ_holds {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X) :
     StAdaptQ X u p := by

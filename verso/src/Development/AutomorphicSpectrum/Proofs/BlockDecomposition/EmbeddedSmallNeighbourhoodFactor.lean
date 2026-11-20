@@ -17,7 +17,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.MirLevi.mirProj_levi _ _`.
+A detailed English derivation is pending.
 -/
 theorem mirProj_iotaM (n : ℕ) (y : Mir k n) :
     mirabolicProjection k (n + 1) (embedding₂ k n y) = (y : GL (Fin (n + 1)) k) :=
@@ -25,7 +25,7 @@ theorem mirProj_iotaM (n : ℕ) (y : Mir k n) :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use `show mirabolicProjection k (n + 1) (embedding₂ k n y) ∈ Mir k n`. Rewrite using `[mirProj_iotaM]`. Conclude with `y.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaM_mem_Q (n : ℕ) (y : Mir k n) : embedding₂ k n y ∈ Q k n := by
   show mirabolicProjection k (n + 1) (embedding₂ k n y) ∈ Mir k n
@@ -33,7 +33,7 @@ theorem iotaM_mem_Q (n : ℕ) (y : Mir k n) : embedding₂ k n y ∈ Q k n := by
   exact y.2
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.CompanionTheory.GPMem.mem_mirabolicParabolic_iff_mirabolicProj_mem_parabolic k m (j + 1) (embedding₂ k (m + j) p)).1 h`. Establish `e : mirabolicProjection k (m + (j + 1)) (embedding₂ k (m + j) p) = (p : GL (Fin (m + j + 1)) k)` using `mirProj_iotaM (m + j) p`. Rewrite `h1` using `[e]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_mirabolicParabolic_of_iotaM_mem (m j : ℕ) (p : Mir k (m + j))
     (h : embedding₂ k (m + j) p ∈ MirabolicParabolic k m (j + 1)) : p ∈ MirabolicParabolic k m j := by
@@ -44,7 +44,7 @@ theorem mem_mirabolicParabolic_of_iotaM_mem (m j : ℕ) (p : Mir k (m + j))
   exact h1
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.GPMem.mem_mirabolicParabolic_iff_mirabolicProj_mem_parabolic, h]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_mirabolicParabolic_of_mirabolicProj_eq_one (m j : ℕ) (w : Mir k (m + j)) (h : mirabolicProjection k (m + j) w = 1) :
     w ∈ MirabolicParabolic k m j := by
@@ -52,7 +52,7 @@ theorem mem_mirabolicParabolic_of_mirabolicProj_eq_one (m j : ℕ) (w : Mir k (m
   exact one_mem _
 
 /- English proof (translation)
-Establish `h1` using `(mem_mirabolicParabolic_iff k m (j + 1) h).1 hh ⟨j, by omega⟩ ⟨i, hi⟩`. Establish `e1 : eGP m (j + 1) ⟨true, ⟨j, by omega⟩⟩ = Fin.castSucc (Fin.last (m + j))` using `Fin.ext (by rw [blockIndex_true_val]; simp)`. Establish `e2 : eGP m (j + 1) ⟨false, ⟨i, hi⟩⟩ = Fin.castSucc i` using `Fin.ext (by rw [blockIndex_false_val]; simp)`. Rewrite `h1` using `[e1, e2]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowQ_eq_zero_of_mem_HGP (m j : ℕ) (h : Mir k (m + (j + 1))) (hh : h ∈ MirabolicParabolic k m (j + 1))
     (i : Fin (m + j + 1)) (hi : (i : ℕ) < m) : rowQ k (m + j) h i = 0 := by
@@ -65,15 +65,13 @@ theorem rowQ_eq_zero_of_mem_HGP (m j : ℕ) (h : Mir k (m + (j + 1))) (hh : h �
   exact h1
 
 /- English proof (translation)
-Rewrite using `[mem_mirabolicParabolic_iff]`. Introduce `b a`. Establish `hb` using `blockIndex_true_val m (j + 1) b`. Establish `ha` using `blockIndex_false_val m (j + 1) a`. Establish `hval : (((rowEl (m + j) r hr : Mir k (m + j + 1)) : GL (Fin (m + j + 2)) k) : Matrix (Fin (m + j + 2)) (Fin (m + j + 2)) k) = rowMat (m + j) r` using `rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `eGP m (j + 1) ⟨true, b⟩ = p at hb ⊢`. Generalize the expression as in `eGP m (j + 1) ⟨false, a⟩ = q at ha ⊢`. Use `show (((rowEl (m + j) r hr : Mir k (m + j + 1)) : GL (Fin (m + j + 2)) k) : Matrix (Fin (m + j + 2)) (Fin (m + j + 2)) k) p q = 0`. Rewrite using `[hval, rowMat]`. Distinguish the cases in `hp : p = Fin.castSucc (Fin.last (m + j))`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hp` using the available equality. Rewrite using `[updateRow_self]`. Establish `ham` using `a.2`. Establish `hq : q = Fin.castSucc (⟨a, by omega⟩ : Fin (m + j + 1))` using `Fin.ext (by simpa using ha)`. Rewrite using `[hq, Fin.lastCases_castSucc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0 _ a.2`. Rewrite using `[updateRow_ne hp, one_apply_ne]`. Introduce `c`. Use `congrArg Fin.val c` as an intermediate fact. Establish `ham` using `a.2`.
-
-Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem rowEl_mem_HGP (m j : ℕ) (r : Fin (m + j + 1) → k) (hr : (rowMat (m + j) r).det ≠ 0)
     (h0 : ∀ i : Fin (m + j + 1), (i : ℕ) < m → r i = 0) :
@@ -103,9 +101,9 @@ theorem rowEl_mem_HGP (m j : ℕ) (r : Fin (m + j + 1) → k) (hr : (rowMat (m +
     omega
 
 /- English proof (translation)
-Apply `mem_mirabolicParabolic_of_iotaM_mem` to reduce the goal to its premises. Use `set y := qProj k (m + j) ⟨d * κ, hq⟩ with hy`. Establish `e1 : embedding₂ k (m + j) (x * y⁻¹) = (h * d⁻¹) * ((d * κ) * (embedding₂ k (m + j) y)⁻¹)`. Rewrite using `[map_mul, map_inv, e]`. Use `group`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1]`. Use `mul_mem (mul_mem hh (inv_mem hd)) (mem_mirabolicParabolic_of_mirabolicProj_eq_one m (j + 1) _ ?_)` and prove the remaining obligations. Establish `e2 : mirabolicProjection k (m + (j + 1)) (embedding₂ k (m + j) y) = (y : GL (Fin (m + j + 1)) k)` using `mirProj_iotaM (m + j) y`. Establish `e3 : (y : GL (Fin (m + j + 1)) k) = mirabolicProjection k (m + (j + 1)) (d * κ)` using `rfl`. Rewrite using `[map_mul, map_inv, e2, e3, mul_inv_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_inv_qProj_mem (m j : ℕ) (x : Mir k (m + j)) (h d κ : Mir k (m + (j + 1)))
     (hh : h ∈ MirabolicParabolic k m (j + 1)) (hd : d ∈ MirabolicParabolic k m (j + 1)) (hq : d * κ ∈ Q k (m + j))
@@ -124,23 +122,21 @@ theorem mul_inv_qProj_mem (m j : ℕ) (x : Mir k (m + j)) (h d κ : Mir k (m + (
   rw [map_mul, map_inv, e2, e3, mul_inv_cancel]
 
 /- English proof (translation)
-Establish `: T2Space k`. Set `` to `IsTopologicalAddGroup.rightUniformSpace k`. Use `isUniformAddGroup_of_addCommGroup (G := k)` as an intermediate fact. Use `infer_instance`. Introduce `K' hK'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `r : Mir k (m + j + 1) → Fin (m + j + 1) → k` to `fun κ => rowQ k (m + j) κ⁻¹`. Establish `hcr : Continuous r` using `(continuous_rowQ (m + j)).comp continuous_inv`. Set `O : Set (Mir k (m + j + 1))` to `{κ | (rowMat (m + j) (r κ)).det ≠ 0}`. Establish `hO : IsOpen O` using `isOpen_compl_singleton.preimage ((continuous_rowMat (m + j)).comp hcr).matrix_det`. Establish `hr1 : r 1 = Pi.single (Fin.last (m + j)) 1` using `by show rowQ k (m + j) 1⁻¹ = _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_one, rowQ_one]`. Establish `hm1 : rowMat (m + j) (r 1) = 1` using `by rw [hr1, rowMat_single]`. Establish `h1O : (1 : Mir k (m + j + 1)) ∈ O` using `by show (rowMat (m + j) (r 1)).det ≠ 0`. Rewrite using `[hm1, det_one]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `d : O → Mir k (m + j + 1)` to `fun κ => rowEl (m + j) (r κ.1) κ.2`. Establish `hdc : Continuous d` using `(continuous_rowEl (k := k) (m + j)).comp (Continuous.subtype_mk (hcr.comp continuous_subtype_val) fun κ => κ.2)`. Establish `hQ : ∀ κ : O, d κ * κ.1 ∈ Q k (m + j)` using `fun κ => by`. Use `mul_inv_mem_Q_of_rowQ_eq (m + j) (d κ) (κ.1)⁻¹ (rowQ_rowEl (m + j) (r κ.1) κ.2)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : O → Q k (m + j)` to `fun κ => ⟨d κ * κ.1, hQ κ⟩`. Establish `hφc : Continuous φ` using `Continuous.subtype_mk (hdc.mul continuous_subtype_val) _`. Set `ψ : O → Mir k (m + j)` to `fun κ => qProj k (m + j) (φ κ)`. Establish `hψc : Continuous ψ` using `(GlobalTheory.CompanionTheory.BZMirOnto.continuous_qProj k (m + j)).comp hφc`. Establish `hd1 : d ⟨1, h1O⟩ = 1` using `Subtype.ext (Units.ext hm1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ1 : ψ ⟨1, h1O⟩ = 1`. Establish `: φ ⟨1, h1O⟩ = 1` using `Subtype.ext (by show d ⟨1, h1O⟩ * 1 = 1`. Rewrite using `[hd1, one_mul])`. Use `show qProj k (m + j) (φ ⟨1, h1O⟩) = 1`. Rewrite using `[this, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hpre : ψ ⁻¹' K' ∈ 𝓝 (⟨1, h1O⟩ : O)` using `hψc.continuousAt.preimage_mem_nhds (by rw [hψ1]; exact hK')`. Use `⟨Subtype.val '' (ψ ⁻¹' K'), hO.isOpenMap_subtype_val.image_mem_nhds hpre, ?_⟩` and prove the remaining obligations. Introduce and unpack `x h hh _ ⟨κ, hκ, rfl⟩ e`. Establish `hκinv : (κ.1)⁻¹ = embedding₂ k (m + j) x⁻¹ * h`. Rewrite using `[map_inv, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `group`. Establish `hrow : r κ.1 = rowQ k (m + j) h` using `by show rowQ k (m + j) (κ.1)⁻¹ = _`. Rewrite using `[hκinv]`. Conclude with `rowQ_mul_of_mem_Q k (m + j) _ h (iotaM_mem_Q (m + j) x⁻¹)`. Establish `hdH : d κ ∈ MirabolicParabolic k m (j + 1)` using `rowEl_mem_HGP m j (r κ.1) κ.2 fun i hi => by`.
-
-Rewrite using `[hrow]`. Conclude with `rowQ_eq_zero_of_mem_HGP m j h hh i hi`. Conclude with `⟨x * (ψ κ)⁻¹, mul_inv_qProj_mem m j x h (d κ) κ.1 hh hdH (hQ κ) e, ψ κ, hκ, by group⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem iotaM_descent (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (m j : ℕ) :

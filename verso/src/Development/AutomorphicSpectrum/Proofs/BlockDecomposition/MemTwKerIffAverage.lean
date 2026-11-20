@@ -12,11 +12,11 @@ section Coset
 variable {H V : Type} [Group H] [AddCommGroup V]
 
 /- English proof (translation)
-Establish `h1 : ∀ q : H ⧸ N, f q.out = f ((Subgroup.quotientEquivProdOfLE hNK q).1).out`. Introduce `q`. Establish `hq : (Subgroup.quotientEquivProdOfLE hNK q).1 = (QuotientGroup.mk q.out : H ⧸ K)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Rewrite using `[hq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul K q.out`. Rewrite using `[hh, hf _ _ h.2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [Finset.sum_const, Finset.card_univ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_out_refine {N K : Subgroup H} (hNK : N ≤ K) [Fintype (H ⧸ N)] [Fintype (H ⧸ K)]
     [Fintype (K ⧸ N.subgroupOf K)] (f : H → V) (hf : ∀ x, ∀ k ∈ K, f (x * k) = f x) :
@@ -40,9 +40,9 @@ theorem sum_out_refine {N K : Subgroup H} (hNK : N ≤ K) [Fintype (H ⧸ N)] [F
         rw [Finset.smul_sum]
 
 /- English proof (translation)
-Establish `h1 : ∀ q : H ⧸ N, f (q.out * l) = f (q * (QuotientGroup.mk l : H ⧸ N)).out`. Introduce `q`. Establish `hq : q * (QuotientGroup.mk l : H ⧸ N) = QuotientGroup.mk (q.out * l)`. Rewrite using `[QuotientGroup.mk_mul, QuotientGroup.out_eq']`. Rewrite using `[hq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul N (q.out * l)`. Rewrite using `[hh, hf _ _ h.2]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_out_mul_right (N : Subgroup H) [N.Normal] [Fintype (H ⧸ N)] (f : H → V)
     (hf : ∀ x, ∀ k ∈ N, f (x * k) = f x) (l : H) :
@@ -82,7 +82,7 @@ def stabKer (ρ : Representation ℂ G V) (L : Subgroup G) (θ : L →* ℂˣ) (
     simp
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hk`. Simplify using `only [twOrbit]`. Rewrite using `[map_mul, h2, mul_one, Subgroup.coe_mul, map_mul, Module.End.mul_apply, h1]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem twOrbit_mul_right (ρ : Representation ℂ G V) (L : Subgroup G) (θ : L →* ℂˣ) (x : V)
     (t k : L) (hk : k ∈ stabKer ρ L θ x) : twOrbit ρ L θ x (t * k) = twOrbit ρ L θ x t := by
@@ -91,7 +91,7 @@ theorem twOrbit_mul_right (ρ : Representation ℂ G V) (L : Subgroup G) (θ : L
   rw [map_mul, h2, mul_one, Subgroup.coe_mul, map_mul, Module.End.mul_apply, h1]
 
 /- English proof (translation)
-Simplify using `only [twOrbit]`. Establish `h : (θ l : ℂ) * (((θ (t * l))⁻¹ : ℂˣ) : ℂ) = (((θ t)⁻¹ : ℂˣ) : ℂ)`. Rewrite using `[← Units.val_mul, map_mul, mul_inv, mul_comm (θ t)⁻¹, mul_inv_cancel_left]`. Rewrite using `[smul_sub, smul_smul, h, Subgroup.coe_mul, map_mul, Module.End.mul_apply, map_sub, map_smul, smul_sub, smul_smul, smul_smul, mul_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem twOrbit_gen (ρ : Representation ℂ G V) (L : Subgroup G) (θ : L →* ℂˣ) (w : V) (l t : L) :
     twOrbit ρ L θ (ρ (l : G) w - (θ l : ℂ) • w) t =
@@ -103,14 +103,14 @@ theorem twOrbit_gen (ρ : Representation ℂ G V) (L : Subgroup G) (θ : L →* 
     smul_sub, smul_smul, smul_smul, mul_comm]
 
 /- English proof (translation)
-Simplify using `only [twOrbit, map_add, smul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twOrbit_add (ρ : Representation ℂ G V) (L : Subgroup G) (θ : L →* ℂˣ) (x y : V) (t : L) :
     twOrbit ρ L θ (x + y) t = twOrbit ρ L θ x t + twOrbit ρ L θ y t := by
   simp only [twOrbit, map_add, smul_add]
 
 /- English proof (translation)
-Simplify using `only [twOrbit, map_smul]`. Rewrite using `[smul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem twOrbit_smul (ρ : Representation ℂ G V) (L : Subgroup G) (θ : L →* ℂˣ) (c : ℂ) (x : V)
     (t : L) : twOrbit ρ L θ (c • x) t = c • twOrbit ρ L θ x t := by
@@ -122,9 +122,9 @@ section Top
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Establish `h1 : IsOpen {l : L | ρ (l : G) x = x}` using `(hρ x).preimage continuous_subtype_val`. Establish `h2 : (stabKer ρ L θ x : Set L) = {l : L | ρ (l : G) x = x} ∩ (θ.ker : Set L)`. Use extensionality with `l`. Simplify using `[stabKer, MonoidHom.mem_ker]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.inter hθ`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_stabKer {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) (L : Subgroup G)
     (θ : L →* ℂˣ) (hθ : IsOpen (θ.ker : Set L)) (x : V) :
@@ -137,7 +137,7 @@ theorem isOpen_stabKer {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) (L : Su
   exact h1.inter hθ
 
 /- English proof (translation)
-Use `haveI : CompactSpace L := isCompact_iff_compactSpace.mp hL`. Use `haveI : Finite (L ⧸ stabKer ρ L θ x) := Subgroup.quotient_finite_of_isOpen _ (isOpen_stabKer hρ L θ hθ x)`. Conclude with `Subgroup.finiteIndex_of_finite_quotient`.
+A detailed English derivation is pending.
 -/
 theorem finiteIndex_stabKer {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) {L : Subgroup G}
     (hL : IsCompact (L : Set G)) (θ : L →* ℂˣ) (hθ : IsOpen (θ.ker : Set L)) (x : V) :
@@ -148,15 +148,15 @@ theorem finiteIndex_stabKer {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) {L
   exact Subgroup.finiteIndex_of_finite_quotient
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, w, rfl⟩` from `hx`. Use `⟨stabKer ρ L θ w, finiteIndex_stabKer hρ hL θ hθ w, ?_⟩` and prove the remaining obligations. Introduce `N _ _ hN`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf : ∀ x, ∀ k ∈ N, twOrbit ρ L θ w (x * k) = twOrbit ρ L θ w x` using `fun x k hk => twOrbit_mul_right ρ L θ w x k (hN hk)`. Simplify using `only [twOrbit_gen]`. Rewrite using `[← Finset.smul_sum, Finset.sum_sub_distrib, sum_out_mul_right N (twOrbit ρ L θ w) hf l, sub_self, smul_zero]`. Consider the case `zero`. Use `⟨⊤, inferInstance, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `N _ _ _`. Simplify using `[twOrbit]`. Consider the case `add x y _ _ hx hy`. Take `⟨M₁, h₁, s₁⟩` from `hx`. Take `⟨M₂, h₂, s₂⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨M₁ ⊓ M₂, inferInstance, ?_⟩` and prove the remaining obligations. Introduce `N _ _ hN`. Simplify using `only [twOrbit_add]`. Rewrite using `[Finset.sum_add_distrib, s₁ N (hN.trans inf_le_left), s₂ N (hN.trans inf_le_right), add_zero]`. Consider the case `smul c x _ hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨M, h, s⟩` from `hx`. Use `⟨M, h, ?_⟩` and prove the remaining obligations. Introduce `N _ _ hN`. Simplify using `only [twOrbit_smul]`. Rewrite using `[← Finset.smul_sum, s N hN, smul_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_sum_eq_zero {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) {L : Subgroup G}
     (hL : IsCompact (L : Set G)) (θ : L →* ℂˣ) (hθ : IsOpen (θ.ker : Set L)) {v : V}
@@ -192,23 +192,19 @@ theorem exists_sum_eq_zero {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) {L 
     rw [← Finset.smul_sum, s N hN, smul_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Take `⟨M, hM, hsum⟩` from `exists_sum_eq_zero hρ hL θ hθ hv`. Use `haveI hK : (stabKer ρ L θ v).FiniteIndex := finiteIndex_stabKer hρ hL θ hθ v`. Use `haveI : Fintype (L ⧸ stabKer ρ L θ v) := Fintype.ofFinite _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨stabKer ρ L θ v, (Finset.univ : Finset (L ⧸ stabKer ρ L θ v)).image Quotient.out, isOpen_stabKer hρ L θ hθ v, fun x hx => hx.1, fun x hx => hx.2, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Use `⟨(QuotientGroup.mk x : L ⧸ stabKer ρ L θ v).out, ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `QuotientGroup.eq.1 (QuotientGroup.out_eq' _)`. Introduce and unpack `t ⟨ht, hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 ht`. Establish `: q = (QuotientGroup.mk x : L ⧸ stabKer ρ L θ v)`. Rewrite using `[← QuotientGroup.out_eq' q]`. Conclude with `QuotientGroup.eq.2 hx`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.sum_image (fun a _ b _ h => Quotient.out_injective h)] set C : Subgroup L := (M ⊓ stabKer ρ L θ v).normalCore with hC haveI : C.Normal := Subgroup.normalCore_normal _ haveI : C.FiniteIndex := inferInstance haveI : Fintype (L ⧸ C) := Fintype.ofFinite _`. Establish `hCM : C ≤ M ⊓ stabKer ρ L θ v` using `Subgroup.normalCore_le _`. Use `haveI : Finite (stabKer ρ L θ v ⧸ C.subgroupOf (stabKer ρ L θ v)) := inferInstance`. Use `haveI : Fintype (stabKer ρ L θ v ⧸ C.subgroupOf (stabKer ρ L θ v)) := Fintype.ofFinite _`. Establish `h0` using `hsum C (hCM.trans inf_le_left)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h0` using `[sum_out_refine (hCM.trans inf_le_right) (twOrbit ρ L θ v) (fun x k hk => twOrbit_mul_right ρ L θ v x k hk)]`. Rewrite `h0` using `[← Nat.cast_smul_eq_nsmul ℂ, smul_eq_zero]`. Break down `h0 with h0 | h0` into its components or cases. Conclude with `absurd h0 (Nat.cast_ne_zero.2 Fintype.card_ne_zero)`. Conclude with `h0`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `⟨K, T, -, -, -, hT, hsum⟩`. Establish `hne : T.Nonempty`. Take `⟨t, ⟨ht, -⟩, -⟩` from `hT 1`. Conclude with `⟨t, ht⟩`. Establish `hc : (T.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hne.card_pos.ne'`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hmem : ∀ t : L, v - (((θ t)⁻¹ : ℂˣ) : ℂ) • ρ (t : G) v ∈ twKer ρ L θ`. Introduce `t`. Establish `hg : ρ (t : G) v - (θ t : ℂ) • v ∈ twKer ρ L θ` using `Submodule.subset_span ⟨t, v, rfl⟩`. Use `(twKer ρ L θ).smul_mem (-(((θ t)⁻¹ : ℂˣ) : ℂ)) hg` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Rewrite using `[smul_sub, smul_smul, neg_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, neg_smul, neg_smul, one_smul]`. Normalize the expressions using the abelian group laws. Establish `hs : (T.card : ℂ) • v = ∑ t ∈ T, (v - (((θ t)⁻¹ : ℂˣ) : ℂ) • ρ (t : G) v)`. Rewrite using `[Finset.sum_sub_distrib, hsum, sub_zero, Finset.sum_const, Nat.cast_smul_eq_nsmul]`. Establish `h1 : (T.card : ℂ) • v ∈ twKer ρ L θ` using `hs ▸ Submodule.sum_mem _ fun t _ => hmem t`.
-
-Conclude with `((twKer ρ L θ).smul_mem_iff hc).1 h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_twKer_iff_average (ρ : Representation ℂ G V) (hρ : IsSmooth ρ) (L : Subgroup G)
     (hL : IsCompact (L : Set G)) (θ : L →* ℂˣ) (hθ : IsOpen (θ.ker : Set L)) (v : V) :

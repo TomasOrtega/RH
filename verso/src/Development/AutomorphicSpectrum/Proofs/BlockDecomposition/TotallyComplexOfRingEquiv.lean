@@ -7,9 +7,9 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 namespace GlobalTheory.CompanionTheory.PTIso
 
 /- English proof (translation)
-Introduce `F F' _ _ _ _ e h`. Use `⟨fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex]`. Introduce `hw`. Establish `hr : (w.comap (e : F →+* F')).IsReal` using `(InfinitePlace.isReal_comap_iff e).2 hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 (h.isComplex _) hr`.
+A detailed English derivation is pending.
 -/
 theorem isTotallyComplex_of_ringEquiv : ∀ (F F' : Type) [Field F] [NumberField F] [Field F']
     [NumberField F'] (e : F ≃+* F'), IsTotallyComplex F → IsTotallyComplex F' := by

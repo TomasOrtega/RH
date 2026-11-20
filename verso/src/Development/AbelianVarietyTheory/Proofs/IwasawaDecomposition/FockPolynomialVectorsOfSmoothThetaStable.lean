@@ -11,7 +11,7 @@ namespace GlobalTheory.FockTheta
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D ψ θ hψ hθ S T sS sT BS BT f P hf`. Conclude with `(GlobalTheory.OrientedHeis.pureTensorL_intertwine (IsThetaFunO ψ S T) GlobalTheory.OrientedHeis.theta_zero (fun _ _ => GlobalTheory.OrientedHeis.theta_add) (fun c _ => GlobalTheory.OrientedHeis.theta_smul c) _ (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT) 1 (fun …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ptStable : ∀ D : D7, Formalism.IndefR.Fin.PtStable D := by
   intro D ψ θ hψ hθ S T sS sT BS BT f P hf

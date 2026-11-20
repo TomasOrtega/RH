@@ -7,9 +7,9 @@ namespace GlobalTheory.AlmostEt
 variable {L : Type} [Field L]
 
 /- English proof (translation)
-Take `⟨θ, hθ, h⟩` from `hA`. Take `⟨w, hw, hle⟩` from `h u hu`. Establish `hvu : 0 < v u` using `pos_iff_ne_zero.mpr ((Valuation.ne_zero_iff v).mpr hu0)`. Establish `hlt : v (w ^ p - u) < v u`. Rewrite using `[Valuation.map_sub_swap]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_le_of_lt hle (mul_lt_of_lt_one_left hvu hθ)`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`. Conclude with `Valuation.map_eq_of_sub_lt v hlt`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem approxRoot_exists_val_pow {p : ℕ} {v : Valuation L ℝ≥0} {F : Subfield L}
     (hA : ApproxRoot p v F) {u : L} (hu : u ∈ F) (hu0 : u ≠ 0) :
@@ -25,11 +25,11 @@ theorem approxRoot_exists_val_pow {p : ℕ} {v : Valuation L ℝ≥0} {F : Subfi
   exact Valuation.map_eq_of_sub_lt v hlt
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨(p : L), natCast_mem F p, by simp⟩`. Consider the case `succ k ih`. Take `⟨π, hπ, hv⟩` from `ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hv` using `[map_zero, zero_pow (pow_ne_zero _ hp.ne_zero)]`. Conclude with `hp0.ne hv`. Take `⟨w, hw, hw'⟩` from `approxRoot_exists_val_pow hA hπ hπ0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ', pow_mul, hw', hv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem approxRoot_exists_root_of_p {p : ℕ} (hp : p.Prime) {v : Valuation L ℝ≥0} {F : Subfield L}
     (hA : ApproxRoot p v F) (hp0 : 0 < v (p : L)) :
@@ -48,21 +48,19 @@ theorem approxRoot_exists_root_of_p {p : ℕ} (hp : p.Prime) {v : Valuation L �
     rw [pow_succ', pow_mul, hw', hv]
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one (pow_pos hp0 p) hr`. Take `⟨π, hπ, hv⟩` from `approxRoot_exists_root_of_p hp hA hp0 n`. Use `set s := v π with hs`. Use `set t := s ^ p with ht`. Establish `hrt : r < t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h1 : t ^ (p ^ n) ≤ r ^ (p ^ n)` using `pow_le_pow_left₀ (by positivity) h _`. Establish `h2 : r ^ (p ^ n) ≤ r ^ n` using `pow_le_pow_of_le_one (by positivity) hr.le (Nat.lt_pow_self hp.one_lt).le`. Establish `h3 : t ^ (p ^ n) = v (p : L) ^ p` using `by rw [ht, ← pow_mul, mul_comm, pow_mul, hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `absurd (lt_of_le_of_lt (h3 ▸ h1.trans h2) hn) (lt_irrefl _)`. Establish `hs1 : s < 1`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `one_le_pow₀ (n := p ^ n) h` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `this` using `[hv]`. Conclude with `absurd hp1 (not_lt.mpr this)`. Establish `ht1 : t < 1` using `pow_lt_one₀ (by positivity) hs1 hp.ne_zero`. Establish `ht0 : 0 < t` using `lt_of_le_of_lt (by positivity) hrt`. Establish `hπ0 : π ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Establish `h0 : s = 0` using `by rw [hs, map_zero]`. Rewrite `ht0` using `[ht, h0, zero_pow hp.ne_zero]`. Conclude with `lt_irrefl _ ht0`. Establish `hvx : 0 < v x` using `pos_iff_ne_zero.mpr ((Valuation.ne_zero_iff v).mpr hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨m, hm1, hm2⟩` from `exists_mem_Ioc_zpow hvx ((one_lt_inv₀ ht0).mpr ht1)`. Use `⟨π ^ (m + 1), zpow_mem hπ _, zpow_ne_zero _ hπ0, ?_⟩` and prove the remaining obligations. Establish `hval : v (x * (π ^ (m + 1)) ^ p) = v x * t ^ (m + 1)`. Rewrite using `[map_mul, map_pow, map_zpow₀, ← hs, ht, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm (m + 1)]`. Rewrite using `[hval]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htne : t ≠ 0` using `ht0.ne'`. Prove the components needed by the constructor for the conclusion. Establish `e : t⁻¹ ^ m * t ^ (m + 1) = t`. Rewrite using `[inv_zpow, zpow_add_one₀ htne, ← mul_assoc, inv_mul_cancel₀ (zpow_ne_zero _ htne), one_mul]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `e : t⁻¹ ^ (m + 1) * t ^ (m + 1) = 1`. Rewrite using `[inv_zpow, inv_mul_cancel₀ (zpow_ne_zero _ htne)]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_scale_shell (L : Type) [Field L] (v : Valuation L ℝ≥0) (p : ℕ) (hp : p.Prime)
     (F : Subfield L) (hA : ApproxRoot p v F) (hp0 : 0 < v (p : L)) (hp1 : v (p : L) < 1)
@@ -113,7 +111,7 @@ theorem exists_scale_shell (L : Type) [Field L] (v : Valuation L ℝ≥0) (p : �
       _ = 1 := e
 
 /- English proof (translation)
-Introduce `L _ v p hp F hA hp0 hp1 r hr x hx` and use `exists_scale_shell L v p hp F hA hp0 hp1 r hr x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem klc_scale : ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) (p : ℕ), p.Prime → ∀ F : Subfield L,
     ApproxRoot p v F → 0 < v (p : L) → v (p : L) < 1 → ∀ r : ℝ≥0, r < 1 → ∀ x : L, x ≠ 0 →

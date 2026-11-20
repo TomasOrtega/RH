@@ -9,31 +9,27 @@ attribute [local instance] GlobalTheory.NPin.ThetaMod.acg GlobalTheory.NPin.Thet
 namespace GlobalTheory.FinTypSpanLoc
 
 /- English proof (translation)
-Introduce `L _ _ _ n π s τ hloc c hc hcL`. Take `⟨i, T0, hi, hiL, hT0inj, hT0S, hT0eq⟩` from `hloc`. Establish `hci : c = i`. Establish `hd` using `IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap (K := maximalRealSubfield L) s.v`. Establish `hfun : (c : s.v.adicCompletion (maximalRealSubfield L) → s.w.adicCompletion L) = i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hd.equalizer hc hi (funext fun y => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[← s.i.commutes y, hcL, hiL]`. Conclude with `RingEquiv.ext (congrFun hfun)`. Substitute `hci` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨hdec, hcomm, -⟩` from `GlobalTheory.T.unitaryFiniteAdeles_splitPlace_decomposition L n s`. Establish `hrt : ∀ (h h' : GAf L n) (f : GAf L n → ℂ), NG.rt L n h (NG.rt L n h' f) = NG.rt L n (h * h') f`. Introduce `h h' f`. Use function extensionality and compare the values at `g`. Simplify using `[NG.rt, mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hnt : Nontrivial τ.V` using `by haveI := τ.irr`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Apply `(bot_ne_top : (⊥ : Subrepresentation τ.ρ) ≠ ⊤)` to reduce the goal to its premises. Establish `: ∀ W : Subrepresentation τ.ρ, W = ⊥`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W`. Use extensionality with `x`. Simplify using `[Subsingleton.elim x 0]`. Rewrite using `[this ⊤]`. Set `Good : (τ.V →ₗ[ℂ] (GAf L n → ℂ)) → Prop` to `fun T => (∀ x : GAf L n, TrivOutside {s.v} x → ∀ v, T (τ.ρ (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n x)) v) = NG.rt L n x (T v)) ∧ ∀ u, T u ∈ π.S`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Wd : Submodule ℂ (GAf L n → ℂ)` to `⨆ T : {T // Good T}, LinearMap.range T.1`. Establish `hWdS : Wd ≤ π.S`. Use `iSup_le fun T => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Conclude with `T.2.2 u`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hWdle : Wd ≤ ⨆ (T : τ.V →ₗ[ℂ] (GAf L n → ℂ)) (_ : (∀ v, T v ∈ π.S) ∧ ∀ x : GAf L n, TrivOutside {s.v} x → ∀ v, T (τ.ρ (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n x)) v) = NG.rt L n x (T v)), LinearMap.range T`. Use `iSup_le fun T => ?_` and prove the remaining obligations. Conclude with `le_iSup₂_of_le (f := fun (T : τ.V →ₗ[ℂ] (GAf L n → ℂ)) (_ : (∀ v, T v ∈ π.S) ∧ ∀ x : GAf L n, TrivOutside {s.v} x → ∀ v, T (τ.ρ (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n x)) v) = NG.rt L n x (T v)) => LinearMap.range T) T.1 ⟨T.2.2, T.2.1⟩ le_rfl`. Establish `htr : ∀ (T : τ.V →ₗ[ℂ] (GAf L n → ℂ)) (y : GAf L n), Good T → TrivOutside {s.v}ᶜ y → Good ((NG.rt L n y).comp T)`. Introduce `T y hT hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun x hx u => ?_, fun u => π.stable y _ (hT.2 u)⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hT.1 x hx u, hrt, hrt, (hcomm x y hx hy).eq]`. Establish `hstab : ∀ h, ∀ f ∈ Wd, NG.rt L n h f ∈ Wd`. Introduce `h f hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `Submodule.iSup_induction _ (motive := fun f => NG.rt L n h f ∈ Wd) hf ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `T _ ⟨u, rfl⟩`. Take `⟨x, y, hx, hy, he⟩` from `hdec h`. Establish `e : NG.rt L n h (T.1 u) = ((NG.rt L n y).comp T.1) (τ.ρ (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n x)) u)`. Rewrite using `[LinearMap.comp_apply, T.2.1 x hx u, hrt, he, (hcomm x y hx hy).eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `Submodule.mem_iSup_of_mem (⟨_, htr T.1 y T.2 hy⟩ : {T // Good T}) ⟨_, rfl⟩`. Simplify using the standard rewrite rules. Introduce `f₁ f₂ h₁ h₂`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.add_mem _ h₁ h₂`. Establish `hT0 : Good T0` using `⟨hT0eq, hT0S⟩`. Break down `π.irr Wd hWdS hstab with h0 | h0` into its components or cases. It suffices to derive a contradiction. Take `⟨u, hu⟩` from `exists_ne (0 : τ.V)`.
-
-Establish `hmem : T0 u ∈ Wd` using `Submodule.mem_iSup_of_mem (⟨T0, hT0⟩ : {T // Good T}) ⟨u, rfl⟩`. Rewrite `hmem` using `[h0, Submodule.mem_bot]`. Conclude with `hu (hT0inj (hmem.trans (map_zero T0).symm))`. Introduce `f hf`. Rewrite `hf` using `[← h0]`.
-
-Conclude with `hWdle hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (π : NG.FinTyp L n) (s : SplitPlace L) (τ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion L))), IsLocS π.S s τ → ∀ (c : s.v.adicCompletion (maximalRealSubfield L) ≃+* s.w.adicCompletion L), Continuous c → (∀ x : L, c (s.i x) = algebraMap L (s.w.adicCompletion L) x) → π.S ≤ ⨆ (T : τ.V →ₗ[ℂ] (GAf L n → ℂ)) (_ : (∀ v, T v ∈ π.S) ∧ ∀ x : GAf L n, TrivOutside {s.v} x → ∀ v, T (τ.ρ (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n x)) v) = NG.rt L n x (T v)), LinearMap.range T := by
   intro L _ _ _ n π s τ hloc c hc hcL

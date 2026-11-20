@@ -5,15 +5,15 @@ namespace GlobalTheory.SmulMemSpanTop
 open NumberField
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span E (↑Λ : Set (Fin n → E))` using `h ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨a, ha, hax⟩` from `hx`. Take `⟨b, hb, hby⟩` from `hy`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `Λ.add_mem ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `Λ.smul_mem _ hax`. Rewrite using `[mul_smul, smul_comm]`. Rewrite using `[smul_comm]`. Conclude with `Λ.smul_mem _ hby`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul c x _ hx`. Take `⟨a, ha, hax⟩` from `hx`. Take `⟨⟨r, s⟩, hrs⟩` from `IsLocalization.surj (nonZeroDivisors (𝓞 E)) c`. Use `⟨a * s, mul_ne_zero ha (nonZeroDivisors.coe_ne_zero s), ?_⟩` and prove the remaining obligations. Establish `h1 : (s : 𝓞 E) • c • x = r • x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul E (s : 𝓞 E), ← algebraMap_smul E r, smul_smul, mul_comm]`. Conclude with `congrArg (· • x) hrs`. Rewrite using `[mul_smul, h1, smul_comm]`. Conclude with `Λ.smul_mem _ hax`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_of_span_eq_top {E : Type} [Field E] [NumberField E] {n : ℕ}
     (Λ : Submodule (𝓞 E) (Fin n → E))

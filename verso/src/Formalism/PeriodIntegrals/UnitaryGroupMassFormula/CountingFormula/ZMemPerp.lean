@@ -17,13 +17,13 @@ variable (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
 abbrev nX : Submodule D.host.E (perpS (VS D) F0.X) := F0.X.comap (perpS (VS D) F0.X).subtype
 
 /- English proof (translation)
-The claim follows from `hy x hx`.
+A detailed English derivation is pending.
 -/
 theorem hT_X_perp {x y : (VS D).V} (hx : x ∈ F0.X) (hy : y ∈ perpS (VS D) F0.X) : (VS D).hT x y = 0 :=
   hy x hx
 
 /- English proof (translation)
-Rewrite using `[← (VS D).herm.eq y x, hx y hy, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_perp_X {x y : (VS D).V} (hx : x ∈ perpS (VS D) F0.X) (hy : y ∈ F0.X) : (VS D).hT x y = 0 := by
   rw [← (VS D).herm.eq y x, hx y hy, map_zero]
@@ -85,9 +85,9 @@ theorem hWb_mk (a b : perpS (VS D) F0.X) :
     hWb D F0 (Submodule.Quotient.mk a) (Submodule.Quotient.mk b) = (VS D).hT a.1 b.1 := rfl
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Conclude with `F0.z_orth a`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add y w _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c y _ h => simp [h]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem z_mem_perp : F0.z ∈ perpS (VS D) F0.X := by
   intro x hx
@@ -102,7 +102,7 @@ theorem z_mem_perp : F0.z ∈ perpS (VS D) F0.X := by
 def zbar : WbQ D F0 := Submodule.Quotient.mk ⟨F0.z, z_mem_perp D F0⟩
 
 /- English proof (translation)
-Rewrite using `[zbar, hWb_mk]`. Conclude with `F0.z_norm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hWb_zbar : hWb D F0 (zbar D F0) (zbar D F0) = -T := by
   rw [zbar, hWb_mk]

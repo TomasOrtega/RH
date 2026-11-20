@@ -41,11 +41,11 @@ def jvMat (v : InfinitePlace E) (u : Matrix (Fin N) (Fin N) ℂ) : Matrix (Fin N
   Matrix.of fun i j w => if w = v then u i j else (1 : Matrix (Fin N) (Fin N) ℂ) i j
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Establish `hu` using `Matrix.mem_unitaryGroup_iff.mp u.2`. Use extensionality with `i j w`. Establish `hij` using `congrFun (congrFun hu i) j`. Simplify using `only [Matrix.mul_apply, Matrix.star_apply, Matrix.one_apply] at hij`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Matrix.star_apply, jvMat, Matrix.of_apply, Finset.sum_apply, Pi.mul_apply, Pi.star_apply, Matrix.one_apply]`. Distinguish the cases in `hw : w = v`. Simplify using `only [hw, if_true]`. Rewrite using `[hij]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [hw, if_false]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem jvMat_mem (v : InfinitePlace E) (u : UN N) : jvMat v u.1 ∈ Matrix.unitaryGroup (Fin N) (Cinf E) := by
   rw [Matrix.mem_unitaryGroup_iff]
@@ -71,9 +71,9 @@ def Yv (v : InfinitePlace E) (t : G N) : GL (Fin N) (Cinf E) :=
     (MulEquiv.piUnits.symm (Pi.mulSingle v t))
 
 /- English proof (translation)
-Establish `e : (Yv v t).val i j w = ((Pi.mulSingle v t : InfinitePlace E → G N) w).val i j` using `rfl`. Rewrite using `[e]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.mulSingle_eq_of_ne hw, hw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Yv_apply (v : InfinitePlace E) (t : G N) (i j : Fin N) (w : InfinitePlace E) :
     (Yv v t).val i j w = if w = v then t.val i j else (1 : Matrix (Fin N) (Fin N) ℂ) i j := by
@@ -89,7 +89,7 @@ Both sides reduce to the same expression.
 theorem infinitePart_mulSingle (v : InfinitePlace E) (t : G N) : infP N (Pi.mulSingle v t) = infGL E N (Yv v t) := rfl
 
 /- English proof (translation)
-Use extensionality with `i j w`. Rewrite using `[Yv_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toUnits_jv (v : InfinitePlace E) (u : UN N) : Unitary.toUnits (jv v u) = Yv v (Unitary.toUnits u) := by
   ext i j w
@@ -97,14 +97,14 @@ theorem toUnits_jv (v : InfinitePlace E) (u : UN N) : Unitary.toUnits (jv v u) =
   rfl
 
 /- English proof (translation)
-Rewrite using `[toUnits_jv, infinitePart_mulSingle]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infGL_jv (v : InfinitePlace E) (u : UN N) :
     infGL E N (Unitary.toUnits (jv v u)) = infP N (Pi.mulSingle v (Unitary.toUnits u)) := by
   rw [toUnits_jv, infinitePart_mulSingle]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j w`. Use `show Bridge.atW v t.val i j w = (Yv v t).val i j w`. Rewrite using `[Yv_apply]`. Unfold `Bridge.atW`. Apply the tactic sequence `split_ifs <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem atW_eq (v : InfinitePlace E) (t : G N) : Bridge.atW v t.val = toL (Yv v t).val := by
   funext i j w
@@ -132,26 +132,26 @@ instance (W : Submodule ℂ (Kinf E N → ℂ)) (v : InfinitePlace E) : Module �
 def toFun (W : Submodule ℂ (Kinf E N → ℂ)) (v : InfinitePlace E) : V0 W v →ₗ[ℂ] (UN N → ℂ) := (S0 W v).subtype
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext h)`.
+A detailed English derivation is pending.
 -/
 theorem serre_vanishing_zero_trans {W : Submodule ℂ (Kinf E N → ℂ)} {v : InfinitePlace E} {w w' : V0 W v}
     (h : ∀ u, toFun W v w u = toFun W v w' u) : w = w' :=
   Subtype.ext (funext h)
 
 /- English proof (translation)
-The claim follows from `(w : S0 W v).2`.
+A detailed English derivation is pending.
 -/
 theorem toFun_mem (W : Submodule ℂ (Kinf E N → ℂ)) (v : InfinitePlace E) (w : V0 W v) :
     toFun W v w ∈ S0 W v := (w : S0 W v).2
 
 /- English proof (translation)
-The claim follows from `(toFun_mem W v w).1`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toFun' (W : Submodule ℂ (Kinf E N → ℂ)) (v : InfinitePlace E) (w : V0 W v) :
     Continuous (toFun W v w) := (toFun_mem W v w).1
 
 /- English proof (translation)
-The claim follows from `(((continuous_toFun' W v b).star).mul (continuous_toFun' W v w)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_toFun (W : Submodule ℂ (Kinf E N → ℂ)) (v : InfinitePlace E) (b w : V0 W v) :
     Integrable (fun u => conj (toFun W v b u) * toFun W v w u) (nuN N) :=
@@ -205,13 +205,13 @@ instance ips (W : Submodule ℂ (Kinf E N → ℂ)) (v : InfinitePlace E) : Inne
   smul_left := (core W v).smul_left
 
 /- English proof (translation)
-Introduce `w hw` and use `by simpa using hw.2 1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rootsOfUnityRing_le_wittIntegers (W : Submodule ℂ (Kinf E N → ℂ)) (v : InfinitePlace E) : S0 W v ≤ Wv W v := fun w hw => by
   simpa using hw.2 1
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℂ (Wv W v)` using `by unfold Wv; infer_instance`. Conclude with `Submodule.finiteDimensional_of_le (rootsOfUnityRing_le_wittIntegers W v)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fd (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteDimensional ℂ W) (v : InfinitePlace E) :
     FiniteDimensional ℂ (V0 W v) := by
@@ -225,17 +225,15 @@ theorem inner_eq (W : Submodule ℂ (Kinf E N → ℂ)) (v : InfinitePlace E) (b
     ⟪b, w⟫_ℂ = ∫ u, conj (toFun W v b u) * toFun W v w u ∂nuN N := rfl
 
 /- English proof (translation)
-Use `fd W hW v` as an intermediate fact. It suffices to establish `H : ∀ n : ℕ, ∀ M : Submodule ℂ (V0 W v), Module.finrank ℂ M ≤ n → ∃ s : Finset (UN N), ∀ w ∈ M, (∀ x ∈ s, toFun W v w x = 0) → w = 0 by`. Take `⟨s, hs⟩` from `H _ ⊤ le_rfl`. Conclude with `⟨s, fun w hw => hs w Submodule.mem_top hw⟩`. Introduce `n`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `M hM`. Establish `hb : M = ⊥` using `Submodule.finrank_eq_zero.mp (Nat.le_zero.mp hM)`. Conclude with `⟨∅, fun w hw _ => by rw [hb] at hw; exact (Submodule.mem_bot ℂ).mp hw⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Consider the case `succ n ih`. Introduce `M hM`. Distinguish the cases in `hb : M = ⊥`. Conclude with `⟨∅, fun w hw _ => by rw [hb] at hw; exact (Submodule.mem_bot ℂ).mp hw⟩`. Take `⟨w0, hw0M, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hx : ∃ x, toFun W v w0 x ≠ 0`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hw0 (serre_vanishing_zero_trans fun u => by rw [h u]; rfl)`. Take `⟨x0, hx0⟩` from `hx`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set M' := M ⊓ LinearMap.ker ((LinearMap.proj x0).comp (toFun W v)) with hM'`. Establish `hlt : M' < M`. Use `lt_of_le_of_ne inf_le_left fun h => hx0 ?_` and prove the remaining obligations. Establish `: w0 ∈ M'` using `h ▸ hw0M`. Conclude with `(Submodule.mem_inf.mp this).2`.
-
-Establish `hr` using `Submodule.finrank_lt_finrank_of_lt hlt`. Take `⟨s', hs'⟩` from `ih M' (by omega)`. Use `⟨insert x0 s', fun w hw hz => hs' w (Submodule.mem_inf.mpr ⟨hw, ?_⟩) fun x hx => hz x (Finset.mem_insert_of_mem hx)⟩` and prove the remaining obligations. Conclude with `hz x0 (Finset.mem_insert_self _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_finset_eval (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteDimensional ℂ W) (v : InfinitePlace E) :
     ∃ s : Finset (UN N), ∀ w : V0 W v, (∀ x ∈ s, toFun W v w x = 0) → w = 0 := by
@@ -272,9 +270,9 @@ theorem exists_finset_eval (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteDi
     exact hz x0 (Finset.mem_insert_self _ _)
 
 /- English proof (translation)
-Use `fd W hW v` as an intermediate fact. Take `⟨s, hs⟩` from `exists_finset_eval W hW v`. Set `Ev : V0 W v →ₗ[ℂ] (s → ℂ)` to `LinearMap.pi fun x : s => (LinearMap.proj (x : UN N)).comp (toFun W v)`. Establish `hk : LinearMap.ker Ev = ⊥` using `LinearMap.ker_eq_bot'.2 fun w hw => hs w fun x hx => congrFun hw ⟨x, hx⟩`. Take `⟨g, hg⟩` from `Ev.exists_leftInverse_of_injective hk`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, LinearMap.toContinuousLinearMap g, fun w => LinearMap.congr_fun hg w⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_linv (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteDimensional ℂ W) (v : InfinitePlace E) :
     ∃ (s : Finset (UN N)) (L : (s → ℂ) →L[ℂ] V0 W v), ∀ w : V0 W v, L (fun x => toFun W v w x) = w := by
@@ -287,7 +285,7 @@ theorem exists_linv (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteDimension
   exact ⟨s, LinearMap.toContinuousLinearMap g, fun w => LinearMap.congr_fun hg w⟩
 
 /- English proof (translation)
-Take `⟨s, L, hL⟩` from `exists_linv W hW v`. Establish `e : F = fun a => L (fun x => toFun W v (F a) x)` using `funext fun a => (hL (F a)).symm`. Rewrite using `[e]`. Conclude with `L.continuous.comp (continuous_pi fun x => h x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_toFun (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteDimensional ℂ W) (v : InfinitePlace E)
     {X : Type} [TopologicalSpace X] (F : X → V0 W v) (h : ∀ u, Continuous fun a => toFun W v (F a) u) :
@@ -328,7 +326,7 @@ theorem toFun_rho (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteDimensional
     (w : (Mv W hW v).V) (u : UN N) : toFun W v ((Mv W hW v).ρ u' w) u = toFun W v w (u'⁻¹ * u) := rfl
 
 /- English proof (translation)
-The claim follows from `w.2.1`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toFun (W : Submodule ℂ (Kinf E N → ℂ)) (v : InfinitePlace E) (w : V0 W v) :
     Continuous (toFun W v w) :=
@@ -346,11 +344,11 @@ theorem evL_apply (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteDimensional
     (w : (Mv W hW v).V) : evL W hW v u w = toFun W v w u := rfl
 
 /- English proof (translation)
-Use `fd W hW v` as an intermediate fact. Take `⟨s, L, hL⟩` from `exists_linv W hW v`. Establish `key : ∀ (w : V0 W v) (u : UN N), toFun W v w u = ∑ x : s, toFun W v w x • toFun W v (L fun j => if x = j then 1 else 0) u`. Introduce `w u`. Use `LinearMap.pi_apply_eq_sum_univ ((LinearMap.proj u).comp ((toFun W v).comp (L : (s → ℂ) →ₗ[ℂ] V0 W v))) (fun x => toFun W v w x)` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[hL w]`. Establish `e : (fun p : (Mv W hW v).V × UN N => toFun W v p.1 p.2) = fun p => ∑ x : s, toFun W v p.1 x • toFun W v (L fun j => if x = j then 1 else 0) p.2`. Use function extensionality and compare the values at `fun p => key p.1 p.2`. Rewrite using `[e]`. Use `continuous_finsetSum _ fun x _ => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((LinearMap.continuous_of_finiteDimensional ((LinearMap.proj (x : UN N)).comp (toFun W v))).comp continuous_fst).smul ((continuous_toFun' W v _).comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toFun₂ (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteDimensional ℂ W) (v : InfinitePlace E) :
     Continuous fun p : (Mv W hW v).V × UN N => toFun W v p.1 p.2 := by
@@ -371,7 +369,7 @@ theorem continuous_toFun₂ (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteD
     continuous_fst).smul ((continuous_toFun' W v _).comp continuous_snd)
 
 /- English proof (translation)
-Rewrite using `[infinitePart_mulSingle, ← chart_val φ g (Yv v t)]`. Use `show chart φ g (Bridge.atW v t.val) = _`. Rewrite using `[atW_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem along_val (v : InfinitePlace E) (g : GA E N) (φ : GA E N → ℂ) (t : G N) :
     Bridge.along v g φ t.val = φ (g * infP N (Pi.mulSingle v t)) := by
@@ -380,7 +378,7 @@ theorem along_val (v : InfinitePlace E) (g : GA E N) (φ : GA E N → ℂ) (t : 
   rw [atW_eq]
 
 /- English proof (translation)
-Use `along_val v g φ 1` as an intermediate fact. Simplify using `only [Units.val_one, Pi.mulSingle_one] at this`. Rewrite using `[this]`. Simplify using `[infP]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem along_one' (v : InfinitePlace E) (g : GA E N) (φ : GA E N → ℂ) : Bridge.along v g φ 1 = φ g := by
   have := along_val v g φ 1
@@ -389,7 +387,7 @@ theorem along_one' (v : InfinitePlace E) (g : GA E N) (φ : GA E N → ℂ) : Br
   simp [infP]
 
 /- English proof (translation)
-Use `atW_eq v (Matrix.GeneralLinearGroup.mkOfDetNeZero x hx)` as an intermediate fact. Establish `e : (Matrix.GeneralLinearGroup.mkOfDetNeZero x hx).val = x` using `rfl`. Rewrite `this` using `[e]`. Rewrite using `[this]`. Conclude with `val_mem_invSet _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atW_mem_invSet (v : InfinitePlace E) {x : Mat N} (hx : x ∈ GLs N) : Bridge.atW v x ∈ invSet E N := by
   have := atW_eq v (Matrix.GeneralLinearGroup.mkOfDetNeZero x hx)
@@ -399,7 +397,7 @@ theorem atW_mem_invSet (v : InfinitePlace E) {x : Mat N} (hx : x ∈ GLs N) : Br
   exact val_mem_invSet _
 
 /- English proof (translation)
-Unfold `Bridge.atW`. Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => contDiff_pi.2 fun w => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `(contDiff_apply ℝ ℂ j).comp (contDiff_apply ℝ (Fin N → ℂ) i)`. Conclude with `contDiff_const`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiff_atW (v : InfinitePlace E) : ContDiff ℝ ∞ (Bridge.atW (E := E) (a := N) v) := by
   unfold Bridge.atW
@@ -409,7 +407,7 @@ theorem contDiff_atW (v : InfinitePlace E) : ContDiff ℝ ∞ (Bridge.atW (E := 
   · exact contDiff_const
 
 /- English proof (translation)
-The claim follows from `((show ∀ g, ContDiffOn ℝ ∞ (chart φ g) (invSet E N) from hs) g).comp (contDiff_atW v).contDiffOn fun _ hx => atW_mem_invSet v hx`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_along (v : InfinitePlace E) {φ : GA E N → ℂ} (hs : φ ∈ Sm E N) (g : GA E N) :
     ContDiffOn ℝ ∞ (Bridge.along v g φ) (GLs N) :=
@@ -417,9 +415,9 @@ theorem contDiffOn_along (v : InfinitePlace E) {φ : GA E N → ℂ} (hs : φ �
     fun _ hx => atW_mem_invSet v hx
 
 /- English proof (translation)
-Use `⟨(contDiffOn_along v hs g).continuousOn.comp_continuous ((GlobalTheory.CompanionTheory.RCalc.mulL y).continuous.comp continuous_subtype_val : Continuous fun u : UN N => y * u.1) fun u => GlobalTheory.CompanionTheory.RCalc.mul_mem_GLs hy (GlobalTheory.CompanionTheory.RCalc.unitary …` and prove the remaining obligations. Use `set Y := Matrix.GeneralLinearGroup.mkOfDetNeZero y hy`. Use `⟨fun k => φ ((g * infP N (Pi.mulSingle v (Y * Unitary.toUnits u'))) * infGL E N (Unitary.toUnits k)), hφ _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Simplify using `only [LinearMap.funLeft_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : y * (u' * u).1 = (Y * Unitary.toUnits u' * Unitary.toUnits u).val`. Simplify using `only [Units.val_mul, mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[e, along_val, infGL_jv]`. Simplify using `only [Pi.mulSingle_mul, infinitePart_mul, mul_assoc]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_ktype_space_along_chart (W : Submodule ℂ (Kinf E N → ℂ)) (v : InfinitePlace E) {φ : GA E N → ℂ}
     (hs : φ ∈ Sm E N) (hφ : ∀ g, (fun k : Kinf E N => φ (g * infGL E N (Unitary.toUnits k))) ∈ W) (g : GA E N)
@@ -443,7 +441,7 @@ section GelClm
 variable {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup V'] [NormedSpace ℂ V']
 
 /- English proof (translation)
-Unfold `Rd`. Establish `h` using `((L.restrictScalars ℝ).hasFDerivAt.comp y hf.hasFDerivAt).fderiv`. Establish `e : (fun z => L (f z)) = (L.restrictScalars ℝ) ∘ f` using `rfl`. Rewrite using `[e]`. Conclude with `(DFunLike.congr_fun h (y * X)).trans rfl`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rd_clm (L : V →L[ℂ] V') (X : Mat N) {f : Mat N → V} {y : Mat N} (hf : DifferentiableAt ℝ f y) :
     Rd X (fun z => L (f z)) y = L (Rd X f y) := by
@@ -454,16 +452,16 @@ theorem Rd_clm (L : V →L[ℂ] V') (X : Mat N) {f : Mat N → V} {y : Mat N} (h
   exact (DFunLike.congr_fun h (y * X)).trans rfl
 
 /- English proof (translation)
-Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, Rd_clm L _ hf, map_add, map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Eu_clm (L : V →L[ℂ] V') (s : Bool) (a b : Fin N) {f : Mat N → V} {y : Mat N}
     (hf : DifferentiableAt ℝ f y) : Eu s a b (fun z => L (f z)) y = L (Eu s a b f y) := by
   simp only [Eu, Pi.smul_apply, Pi.add_apply, Rd_clm L _ hf, map_add, map_smul]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b y _`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Epow, hab]`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Introduce `a b y hy`. Simplify using `only [Epow, Finset.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.WaveAll.Eu_congr GlobalTheory.CompanionTheory.RCalc.isOpen_GLs (ih c b) s a c hy]`. Conclude with `Eu_clm L s a c (GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth (GlobalTheory.CompanionTheory.WaveAll.Epow_smooth GlobalTheory.CompanionTheory.RCalc.rcalc hf s m c b) hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Epow_clm (L : V →L[ℂ] V') (s : Bool) {f : Mat N → V} (hf : ContDiffOn ℝ ∞ f (GLs N)) (m : ℕ) :
     ∀ a b : Fin N, Set.EqOn (Epow s m a b (fun z => L (f z))) (fun z => L (Epow s m a b f z)) (GLs N) := by
@@ -480,7 +478,7 @@ theorem Epow_clm (L : V →L[ℂ] V') (s : Bool) {f : Mat N → V} (hf : ContDif
       (GlobalTheory.CompanionTheory.WaveAll.Epow_smooth GlobalTheory.CompanionTheory.RCalc.rcalc hf s m c b) hy)
 
 /- English proof (translation)
-Simplify using `only [gel, Finset.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Epow_clm L s hf m a a hy`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gel_clm (L : V →L[ℂ] V') (s : Bool) (m : ℕ) {f : Mat N → V} (hf : ContDiffOn ℝ ∞ f (GLs N)) {y : Mat N}
     (hy : y ∈ GLs N) : gel s m (fun z => L (f z)) y = L (gel s m f y) := by
@@ -490,7 +488,7 @@ theorem gel_clm (L : V →L[ℂ] V') (s : Bool) (m : ℕ) {f : Mat N → V} (hf 
 end GelClm
 
 /- English proof (translation)
-Take `⟨s, L, hL⟩` from `exists_linv W hW v`. Conclude with `⟨s, L, hL⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_linv' (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteDimensional ℂ W) (v : InfinitePlace E) :
     ∃ (s : Finset (UN N)) (L : (s → ℂ) →L[ℂ] (Mv W hW v).V), ∀ w : (Mv W hW v).V,
@@ -508,7 +506,7 @@ def sec (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteDimensional ℂ W) (v
     else 0
 
 /- English proof (translation)
-Unfold `sec`. Rewrite using `[dif_pos hy]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toFun_sec (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteDimensional ℂ W) (v : InfinitePlace E)
     (φ : GA E N → ℂ) (hs : φ ∈ Sm E N) (hφ : ∀ g, (fun k : Kinf E N => φ (g * infGL E N (Unitary.toUnits k))) ∈ W)
@@ -519,13 +517,11 @@ theorem toFun_sec (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteDimensional
   rfl
 
 /- English proof (translation)
-Take `⟨s, L, hL⟩` from `exists_linv' W hW v`. Use `⟨?_, fun y hy k => ?_⟩` and prove the remaining obligations. Establish `e : ∀ y ∈ GLs N, sec W hW v φ hs hφ g y = L (fun x : s => Bridge.along v g φ (y * (x : UN N).1))`. Introduce `y hy`. Use `conv_lhs => rw [← hL (sec W hW v φ hs hφ g y)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `toFun_sec W hW v φ hs hφ g hy x`. Use `ContDiffOn.congr ?_ e` and prove the remaining obligations. Use `(L.restrictScalars ℝ).contDiff.comp_contDiffOn (contDiffOn_pi.2 fun x => ?_)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(contDiffOn_along v hs g).comp (GlobalTheory.CompanionTheory.RCalc.mulR (x : UN N).1).contDiff.contDiffOn fun z hz => GlobalTheory.CompanionTheory.RCalc.mul_mem_GLs hz (GlobalTheory.CompanionTheory.RCalc.unitary_mem_GLs _)`. Establish `hyk : y * k.1 ∈ GLs N` using `GlobalTheory.CompanionTheory.RCalc.mul_mem_GLs hy (GlobalTheory.CompanionTheory.RCalc.unitary_mem_GLs k)`. Apply `serre_vanishing_zero_trans` to reduce the goal to its premises. Introduce `u`. Rewrite using `[toFun_rho, toFun_sec W hW v φ hs hφ g hyk, toFun_sec W hW v φ hs hφ g hy, inv_inv]`.
-
-Use `congr 1`. Use `show y * k.1 * u.1 = y * (k.1 * u.1)`. Rewrite using `[mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_mem_CE (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteDimensional ℂ W) (v : InfinitePlace E)
     (φ : GA E N → ℂ) (hs : φ ∈ Sm E N) (hφ : ∀ g, (fun k : Kinf E N => φ (g * infGL E N (Unitary.toUnits k))) ∈ W)
@@ -551,13 +547,11 @@ theorem sec_mem_CE (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteDimensiona
     rw [mul_assoc]
 
 /- English proof (translation)
-Take `⟨s, L, hL⟩` from `exists_linv' W hW v`. Introduce `sb m y hy`. Use `set G' : Mat N → (s → ℂ) := fun z x => Bridge.along v g φ (z * (x : UN N).1) with hG'd`. Establish `hG' : ContDiffOn ℝ ∞ G' (GLs N)` using `contDiffOn_pi.2 fun x => (contDiffOn_along v hs g).comp (GlobalTheory.CompanionTheory.RCalc.mulR (x : UN N).1).contDiff.contDiffOn fun z hz => GlobalTheory.CompanionTheory.RCalc.mul_mem_GLs hz (GlobalTheory.CompanionTheory.RCalc.unitary_mem_GLs _)`. Establish `e : Set.EqOn (sec W hW v φ hs hφ g) (fun z => L (G' z)) (GLs N)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Use `conv_lhs => rw [← hL (sec W hW v φ hs hφ g z)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `toFun_sec W hW v φ hs hφ g hz x`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[GlobalTheory.CompanionTheory.WaveAll.gel_congr GlobalTheory.CompanionTheory.RCalc.isOpen_GLs e sb m hy, gel_clm L sb m hG' hy, e hy, ← L.map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `h1` using `gel_clm (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : s => ℂ) x) sb m hG' hy`. Simplify using `only [ContinuousLinearMap.proj_apply] at h1`.
-
-Rewrite using `[Pi.smul_apply, ← h1]`. Use `show gel sb m (fun z => Bridge.along v g φ (z * (x : UN N).1)) y = _`. Rewrite using `[GlobalTheory.CompanionTheory.RCalc.gel_right sb m (GlobalTheory.CompanionTheory.RCalc.unitary_mem_GLs _) (contDiffOn_along v hs g) hy]`. Conclude with `h sb m _ (GlobalTheory.CompanionTheory.RCalc.mul_mem_GLs hy (GlobalTheory.CompanionTheory.RCalc.unitary_mem_GLs _))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_isEig (W : Submodule ℂ (Kinf E N → ℂ)) (hW : FiniteDimensional ℂ W) (v : InfinitePlace E)
     (φ : GA E N → ℂ) (hs : φ ∈ Sm E N) (hφ : ∀ g, (fun k : Kinf E N => φ (g * infGL E N (Unitary.toUnits k))) ∈ W)

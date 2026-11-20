@@ -10,7 +10,7 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Establish `h : 0 < ((x : ℂ) + (y : ℂ) * Complex.I).im` using `by simpa using hy`. Rewrite using `[ofComplex_apply_of_im_pos h]`. Simplify using `[UpperHalfPlane.im]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem im_ofComplex_pt (x y : ℝ) (hy : 0 < y) :
     (ofComplex ((x : ℂ) + (y : ℂ) * Complex.I)).im = y := by
@@ -19,27 +19,23 @@ private theorem im_ofComplex_pt (x y : ℝ) (hy : 0 < y) :
   simp [UpperHalfPlane.im]
 
 /- English proof (translation)
-Introduce `h b w hw hh hb h0 hL hint`. Use `set a : ℕ → ℂ := fun n => conj (h n) * b n with ha`. Use `set P : ℝ → ℂ := fun y => ∫ x in (0 : ℝ)..1, conj (qs h (ofComplex (x + y * Complex.I))) * qs b (ofComplex (x + y * Complex.I)) with hPd`. Establish `h4 : (0 : ℝ) < 4 * π` using `by positivity`. Establish `ha0 : a 0 = 0` using `by simp [ha, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (∫ τ in strip, conj (qs h τ) * qs b τ * ((τ.im ^ (w + 1) : ℝ) : ℂ)) = mellin P (w : ℂ)`. Rewrite using `[GlobalTheory.T.unitStrip_integral_eq_iterated.2 _ hint]`. Unfold `mellin`. Use `setIntegral_congr_fun measurableSet_Ioi (fun y hy => ?_)` and prove the remaining obligations. Establish `hy : 0 < y` using `hy`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hy' : (y : ℂ) ≠ 0` using `by exact_mod_cast hy.ne'`. Simplify using `only [im_ofComplex_pt _ _ hy, hPd, smul_eq_mul]`. Rewrite using `[intervalIntegral.integral_mul_const]`. Establish `e : ((y : ℂ) ^ ((w : ℂ) - 1)) = ((y ^ (w + 1) : ℝ) : ℂ) / (y : ℂ) ^ 2`. Establish `e1 : (w : ℂ) - 1 = ((w - 1 : ℝ) : ℂ)` using `by push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, ← Complex.ofReal_cpow hy.le]`. Establish `e2 : y ^ (w - 1) = y ^ (w + 1) / y ^ 2`. Establish `: w - 1 = (w + 1) - ((2 : ℕ) : ℝ)` using `by push_cast; ring`. Rewrite using `[this, Real.rpow_sub hy, Real.rpow_natCast]`. Rewrite using `[e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : Summable fun n : ℕ => ‖a n‖ / (4 * π * n) ^ ((w : ℂ).re)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs2` using `(hL.norm).div_const ((4 * π) ^ w)`. Use `hs2.congr (fun n => ?_)` and prove the remaining obligations. Rewrite using `[LSeries.norm_term_eq, Complex.ofReal_re]`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[ha0]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg hn.ne', Real.mul_rpow h4.le (Nat.cast_nonneg n), div_div, mul_comm ((n : ℝ) ^ w)]`. Establish `h2` using `hasSum_mellin (a := a) (p := fun n : ℕ => 4 * π * n) (F := P) (s := (w : ℂ)) (fun n => by`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `left`. Conclude with `ha0`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `right`. Use the proof step `positivity)`. Use the proof step `(by simpa using hw)`. Use the proof step `(fun y hy => by`. Use `GlobalTheory.T.hasSum_parseval_qExpansion_horizontal_line h b y hh hb hy` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `this.congr_fun (fun n => ?_)` and prove the remaining obligations. Simplify using `only [ha]`. Use `congr 2`. Use the proof step `ring_nf)`. Use `hsum`.
-
-Rewrite using `[h1, ← h2.tsum_eq, LSeries, ← tsum_mul_left]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[ha0]`. Rewrite using `[LSeries.term_of_ne_zero hn.ne', ← Complex.ofReal_cpow (by positivity), Real.mul_rpow h4.le (Nat.cast_nonneg n), Complex.ofReal_mul, Complex.ofReal_cpow (Nat.cast_nonneg n), Complex.ofReal_natCast, Complex.Gamma_ofReal]`.
-
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem strip_eq_LSeries : ∀ (h b : ℕ → ℂ) (w : ℝ), 0 < w → PolyB h → PolyB b → h 0 = 0 →
     LSeriesSummable (fun n => conj (h n) * b n) w →

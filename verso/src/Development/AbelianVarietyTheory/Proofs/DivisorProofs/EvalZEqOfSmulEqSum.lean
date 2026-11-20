@@ -6,9 +6,9 @@ noncomputable section
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Rewrite using `[← (linearOn_iff φ γ).1 h _ (fun j => by positivity), ← evalR_toReal]`. Use `congr 1`. Use `LinearMap.ext₂ fun x y => ?_` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun₂ he x y`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, nsmul_eq_mul] at h1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : (k : ℝ) * b x y = ∑ j, (cf j : ℝ) * γ j x y` using `by exact_mod_cast h1`. Establish `hk' : (k : ℝ) ≠ 0` using `by positivity`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul]`. Rewrite using `[show ∑ j, (cf j : ℝ) / k * (γ j x y : ℝ) = (∑ j, (cf j : ℝ) * γ j x y) / k by`. Rewrite using `[Finset.sum_div]; exact Finset.sum_congr rfl fun j _ => by ring, ← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -28,17 +28,15 @@ theorem evalZ_eq_of_smul_eq_sum {X : Type} [AddCommGroup X] [Module.Finite ℤ X
   field_simp
 
 /- English proof (translation)
-Introduce `g φ _ r _ p m γ hγ`. Use `choose N ℓ hN h1 h2 h3 using fun i => (hγ i).strict`. Use `⟨∏ i, N i, fun i => ((∏ j ∈ Finset.univ.erase i, N j : ℕ) : ℤ) • ℓ i, Finset.prod_pos fun i _ => hN i, ?_⟩` and prove the remaining obligations. Introduce and unpack `b' hs hp ⟨i, k, cf, hk, he⟩`. Establish `hb : b' ∈ balForms (id : ℤ → ℤ) (Fin r → ℤ)` using `mem_balForms_int.2 hs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ i, ((∏ j, N j : ℕ) : ℝ) = ((∏ j ∈ Finset.univ.erase i, N j : ℕ) : ℝ) * N i` using `fun i => by`. Rewrite using `[← Nat.cast_mul, Finset.prod_erase_mul _ _ (Finset.mem_univ i)]`. Establish `eq : ∀ i, (N i : ℝ) * φ.evalZ b' ≤ ℓ i b'` using `fun i => h2 i b' hb hp`. Use `⟨fun i' => ?_, i, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, Int.cast_mul, Int.cast_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key i', mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (eq i') (by positivity)`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, Int.cast_mul, Int.cast_natCast]`. Rewrite using `[key i, mul_assoc]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev` using `evalZ_eq_of_smul_eq_sum (hγ i).linear hk he`. Establish `hl : (k : ℤ) * ℓ i b' = ∑ j, (cf j : ℤ) * ℓ i (γ i j)`. Use `congrArg (ℓ i) he` as an intermediate fact. Simplify `this` using `[map_sum, map_nsmul, nsmul_eq_mul]`. Establish `hl' : (k : ℝ) * ℓ i b' = ∑ j, (cf j : ℝ) * ℓ i (γ i j)` using `by exact_mod_cast hl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hk' : (k : ℝ) ≠ 0` using `by positivity`. Rewrite using `[hev, Finset.mul_sum, show (ℓ i b' : ℝ) = (∑ j, (cf j : ℝ) * ℓ i (γ i j)) / k by`. Rewrite using `[← hl']`. Use the proof step `field_simp, Finset.sum_div]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[h1 i j]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem polFn_eq_min_linear : ∀ (g : ℕ) (φ : InvFun ℤ), IsPolFan id g φ → ∀ r : ℕ, r ≤ g → ∀ (p : ℕ) (m : Fin p → ℕ) (γ : ∀ i, Fin (m i) → LinearMap.BilinForm ℤ (Fin r → ℤ)), (∀ i, IsCone id φ (γ i)) → ∃ (Nℓ : ℕ) (ℓ : Fin p → LinearMap.BilinForm ℤ (Fin r → ℤ) →ₗ[ℤ] ℤ), 0 < Nℓ ∧ ∀ b' : LinearMap.BilinForm ℤ (Fin r → ℤ), (∀ x y, b' x y = b' y x) → (∀ x, 0 ≤ b' x x) → (∃ (i : Fin p) (k : ℕ) (cf : Fin (m i) → ℕ), 0 < k ∧ k • b' = ∑ j, cf j • γ i j) → (∀ i, (Nℓ : ℝ) * φ.evalZ b' ≤ ℓ i b') ∧ ∃ i, (Nℓ : ℝ) * φ.evalZ b' = ℓ i b' := by
   intro g φ _ r _ p m γ hγ

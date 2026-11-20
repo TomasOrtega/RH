@@ -7,9 +7,9 @@ open scoped Real ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `e : Pt E g ≃L[ℂ] (Fin (Module.finrank ℂ (Pt E g)) → ℂ)` to `ContinuousLinearEquiv.ofFinrankEq (by simp)`. Establish `ha : AnalyticOnNhd ℂ φ s`. Introduce `z hz`. Establish `h` using `ReciprocityTheory.AnForm.Osgood.osgood _ (e.symm ⁻¹' s) (φ ∘ e.symm) (hs.preimage e.symm.continuous) (hφ.comp e.symm.differentiableOn (fun _ h => h)) (e z) (by simpa using hz)`. Establish `h2` using `h.comp (e.analyticAt z)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h2.congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hc : ContDiffOn ℂ ∞ φ s` using `(ha.contDiffOn hs.uniqueDiffOn).of_le le_top`. Conclude with `hc.restrict_scalars ℝ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffOn_real_of_differentiableOn_pt {g : ℕ} {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [FiniteDimensional ℂ E] {s : Set (Pt E g)} {φ : Pt E g → ℂ}

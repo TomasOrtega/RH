@@ -9,13 +9,13 @@ open MvPolynomial MeasureTheory NumberField
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ _ n H k δ₁ δ₂ f₁ f₂ h₁ h₂`. Unfold `chowHt`. Establish `hmah : ∀ σ : K →+* ℂ, mahler (H.normAt σ) k ((f₁ * f₂).map σ) = mahler (H.normAt σ) k (f₁.map σ) + mahler (H.normAt σ) k (f₂.map σ)`. Introduce `σ`. Rewrite using `[map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hM n k _ _ _ (fun h => h₁ (map_injective σ σ.injective (by rw [h, map_zero]))) (fun h => h₂ (map_injective σ σ.injective (by rw [h, map_zero])))`. Rewrite using `[finsum_log_gaussNorm_mul h₁ h₂]`. Repeatedly rewrite using `[hmah]`. Rewrite using `[← mul_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hs : ∑ σ : K →+* ℂ, (mahler (H.normAt σ) k (f₁.map σ) + mahler (H.normAt σ) k (f₂.map σ) + (k : ℝ) * ((δ₁ + δ₂ : ℕ) : ℝ) * (harmonic (n - 1) : ℝ) / 2) = ∑ σ : K →+* ℂ, (mahler (H.normAt σ) k (f₁.map σ) + (k : ℝ) * δ₁ * (harmonic (n - 1) : ℝ) / 2) + ∑ σ : K →+* ℂ, (mahler (H.normA …`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chowHeightMul_of_mahlerMul (hM : MahlerMul.Statement) : ChowHeightMul.Statement := by
   intro K _ _ n H k δ₁ δ₂ f₁ f₂ h₁ h₂

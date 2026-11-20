@@ -7,11 +7,11 @@ namespace Bl.PaddedFamilies
 open NumberField IsDedekindDomain
 
 /- English proof (translation)
-Take `⟨e⟩ : Nonempty (ι ↪ Fin n)` from `Function.Embedding.nonempty_of_card_le (by simpa using hcard)`. Use `⟨Function.extend e X 0, fun i => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : ∃ j, e j = i`. Take `⟨j, rfl⟩` from `h`. Rewrite using `[e.injective.extend_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hX j`. Rewrite using `[Function.extend_apply' _ _ _ h]`. Conclude with `Lb.zero_mem`. Establish `hsub : Set.range X ⊆ Set.range (Function.extend e X 0)`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e j, e.injective.extend_apply _ _ _⟩`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).mp (Submodule.span_mono hsub (hc z hz))`. Conclude with `⟨a, ha.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma pad_fam {E : Type} [Field E] [NumberField E] {n : ℕ}
     (Lb : Submodule (𝓞 E) (Fin n → E)) {ι : Type} [Fintype ι] (hcard : Fintype.card ι ≤ n)
@@ -37,35 +37,33 @@ private lemma pad_fam {E : Type} [Field E] [NumberField E] {n : ℕ}
     exact ⟨a, ha.symm⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n v Lb hfin hspan`. Take `⟨S, hS⟩` from `(Module.Finite.iff_fg.mp hfin)`. Use `set M := Algebra.algebraMapSubmonoid (𝓞 E) v.asIdeal.primeCompl with hMdef`. Establish `hM : M ≤ nonZeroDivisors (𝓞 E)` using `map_le_nonZeroDivisors_of_injective _ (FaithfulSMul.algebraMap_injective _ _) v.asIdeal.primeCompl_le_nonZeroDivisors`. Set `A : Subalgebra (𝓞 E) E` to `Localization.subalgebra.ofField E M hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsLocalization M A` using `inferInstance`. Establish `: IsDedekindDomain A` using `IsLocalization.isDedekindDomain (𝓞 E) hM A`. Set `: Algebra (𝓞 F) A` to `((algebraMap (𝓞 E) A).comp (algebraMap (𝓞 F) (𝓞 E))).toAlgebra`. Establish `: IsScalarTower (𝓞 F) (𝓞 E) A` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: IsPrincipalIdealRing A` using `IsDedekindDomain.isPrincipalIdealRing_localization_over_prime (𝓞 E) v.asIdeal v.ne_bot`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ z : M, ((IsLocalization.mk' A (1 : 𝓞 E) z : A) : E) * ((z : 𝓞 E) : E) = 1`. Introduce `z`. Establish `h` using `IsLocalization.mk'_spec A (1 : 𝓞 E) z`. Rewrite `h` using `[map_one]`. Conclude with `congrArg Subtype.val h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `N : Submodule A (Fin n → E)` to `Submodule.span A (S : Set (Fin n → E))`. Establish `: Module.Free A N` using `Module.free_of_finite_type_torsion_free'`. Set `b` to `Module.Free.chooseBasis A N`. Establish `hb : ∀ j, ∃ t : 𝓞 F, t ∉ v.asIdeal ∧ (algebraMap F E (t : F)) • (b j : Fin n → E) ∈ Lb`. Introduce `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, z, hz⟩` from `(IsLocalization.mem_span_iff M).mp (b j).2`. Take `⟨t, ht, hzt⟩` from `z.2`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[hS]`. Establish `key : ((z : 𝓞 E) : E) • (b j : Fin n → E) = y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hz]`. Express the relevant statement in the definitionally equal form `((z : 𝓞 E) : E) • (((IsLocalization.mk' A (1 : 𝓞 E) z : A) : E) • y) = y`. Rewrite using `[smul_smul, mul_comm, h1, one_smul]`. Rewrite `key` using `[← hzt]`. Rewrite `hy` using `[← key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hy`. Use `choose t ht hX using hb`. Establish `hlin : LinearIndependent E (fun j => (b j : Fin n → E))` using `(b.linearIndependent.map' N.subtype (Submodule.ker_subtype N)).localization (Rₛ := E) (S := nonZeroDivisors A)`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex A N) ≤ n`. Use `hlin.fintype_card_le_finrank` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite `this` using `[Module.finrank_fin_fun]`. Then use the resulting hypothesis. Set `ι` to `Module.Free.ChooseBasisIndex A N`. Set `zt : ι → M` to `fun j => ⟨algebraMap (𝓞 F) (𝓞 E) (t j), t j, ht j, rfl⟩`. Set `f : (↥S × ι) → A` to `fun p => b.repr ⟨p.1, Submodule.subset_span p.1.2⟩ p.2 * IsLocalization.mk' A (1 : 𝓞 E) (zt p.2)`. Take `⟨m, hm⟩` from `IsLocalization.exist_integer_multiples_of_finite M f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨u, hu, hmu⟩` from `m.2`. Establish `hmE : ((m : 𝓞 E) : E) = algebraMap F E (u : F)`. Rewrite using `[← hmu]`. Both sides reduce to the same expression. Set `X : ι → Fin n → E` to `fun j => algebraMap F E (t j : F) • (b j : Fin n → E)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Establish `hc : ∀ z ∈ Lb, algebraMap F E (u : F) • z ∈ Submodule.span (𝓞 E) (Set.range X)`. Introduce `z hz`. Rewrite `hz` using `[← hS]`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem g hg`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum` using `congrArg Subtype.val (b.sum_repr ⟨g, Submodule.subset_span hg⟩)`. Rewrite `hsum` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at hsum`. Rewrite using `[← hsum, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `hm (⟨g, hg⟩, j)`. Establish `hrE : (r : E) = ((m : 𝓞 E) : E) * (((b.repr ⟨g, Submodule.subset_span hg⟩ j : A) : E) * ((IsLocalization.mk' A (1 : 𝓞 E) (zt j) : A) : E))` using `congrArg Subtype.val hr`. Establish `htE : ((IsLocalization.mk' A (1 : 𝓞 E) (zt j) : A) : E) * algebraMap F E (t j : F) = 1` using `h1 (zt j)`. Establish `heq : algebraMap F E (u : F) • ((b.repr ⟨g, Submodule.subset_span hg⟩ j : A) • (b j : Fin n → E)) = r • X j`. Express the relevant statement in the definitionally equal form `algebraMap F E (u : F) • (((b.repr ⟨g, Submodule.subset_span hg⟩ j : A) : E) • (b j : Fin n → E)) = (r : E) • (algebraMap F E (t j : F) • (b j : Fin n → E))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, smul_smul, hrE, hmE, mul_assoc, mul_assoc, htE, mul_one]`. Rewrite using `[heq]`. Conclude with `Submodule.smul_mem _ r (Submodule.subset_span ⟨j, rfl⟩)`. Consider the case `zero`. Rewrite using `[smul_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
-
-Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`. Take `⟨x, hx1, hx2⟩` from `pad_fam Lb hcard X hX _ hc`. Conclude with `⟨x, u, hu, hx1, hx2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem goal1 :
   PI.SelfDualLoc.W.LocBasis := by

@@ -18,13 +18,13 @@ namespace GlobalTheory.TateUnr
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [← h, HeightOneSpectrum.under_asIdeal]⟩`.
+Supply the required witnesses or components.
 -/
 theorem liesOver_of_under {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)} (h : w.under (𝓞 F) = v) :
     w.asIdeal.LiesOver v.asIdeal := ⟨by rw [← h, HeightOneSpectrum.under_asIdeal]⟩
 
 /- English proof (translation)
-Use `haveI := liesOver_of_under h`. Use `haveI := w.isMaximal`. Use `haveI := v.isMaximal`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 F) (𝓞 E) w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal v.asIdeal, map_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_eq_pow {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)} (h : w.under (𝓞 F) = v) :
     Ideal.absNorm w.asIdeal = Ideal.absNorm v.asIdeal ^ w.asIdeal.inertiaDeg (𝓞 F) := by
@@ -34,7 +34,7 @@ theorem absNorm_eq_pow {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (
   rw [← Ideal.absNorm_relNorm (𝓞 F) (𝓞 E) w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal v.asIdeal, map_pow]
 
 /- English proof (translation)
-Establish `hx : x ≠ 0` using `fun h => h2 (h ▸ zero_le)`. Rewrite `h1`, `h2`, the goal using `[← WithZero.exp_log hx]`. Rewrite `h1`, `h2` using `[WithZero.exp_le_exp]`. Use `congr 1`. Move the coercions through the operations in `at h2`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -48,23 +48,17 @@ theorem eq_exp_of_le {x : WithZero (Multiplicative ℤ)} {n : ℕ} (h1 : x ≤ W
   omega
 
 /- English proof (translation)
-Use `haveI := liesOver_of_under h`. Use `haveI := w.isMaximal`. Use `haveI := v.isMaximal`. Use `set f := w.asIdeal.inertiaDeg (𝓞 F)`. Take `⟨J, hJ⟩ : w.asIdeal ∣ Ideal.span {a}` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 ha)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan : Ideal.span {Algebra.intNorm (𝓞 F) (𝓞 E) a} = v.asIdeal ^ f * Ideal.relNorm (𝓞 F) J`. Rewrite using `[← Ideal.relNorm_singleton, hJ, map_mul, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal v.asIdeal]`. Establish `hJw : ¬ J ≤ w.asIdeal` using `fun hle => ha2 (by`. Establish `: Ideal.span {a} ≤ w.asIdeal ^ 2` using `by rw [hJ, sq]; exact Ideal.mul_mono_right hle`. Conclude with `(Ideal.span_singleton_le_iff_mem _).1 this)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJ0 : J ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `hJ` using `[Ideal.mul_bot, Ideal.span_singleton_eq_bot]`. Conclude with `ha2 (hJ ▸ zero_mem _)`. Establish `hnot : ¬ Ideal.relNorm (𝓞 F) J ≤ v.asIdeal`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hle`. Rewrite `hle` using `[← Ideal.prod_normalizedFactors_eq_self hJ0, map_multiset_prod]`. Take `⟨Q, hQ, hQle⟩` from `(Ideal.IsPrime.multiset_prod_map_le _ v.isPrime).1 hle`. Establish `hQ0 : Q ≠ ⊥` using `UniqueFactorizationMonoid.ne_zero_of_mem_normalizedFactors hQ`. Establish `hQ'` using `(Ideal.mem_normalizedFactors_iff hJ0).1 hQ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Q.IsPrime := hQ'.1`. Use `haveI : Q.IsMaximal := Ring.DimensionLEOne.maximalOfPrime hQ0 hQ'.1`. Rewrite `hQle` using `[Ideal.relNorm_eq_pow_of_isMaximal Q (Q.under (𝓞 F))]`. Establish `hPv : Q.under (𝓞 F) = v.asIdeal` using `(inferInstance : (Q.under (𝓞 F)).IsMaximal).eq_of_le v.isPrime.ne_top (v.isPrime.le_of_pow_le hQle)`. Set `w' : HeightOneSpectrum (𝓞 E)` to `⟨Q, hQ'.1, hQ0⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hw' : w'.under (𝓞 F) = v` using `HeightOneSpectrum.ext (by rw [HeightOneSpectrum.under_asIdeal]; exact hPv)`. Distinguish the cases in `hne : w' = w`. Conclude with `hJw (by rw [← hne]; exact hQ'.2)`. Use `hao w' hw' hne ?_` and prove the remaining obligations. Establish `: Ideal.span {a} ≤ Q` using `by rw [hJ]; exact (Ideal.mul_le_inf.trans inf_le_right).trans hQ'.2`.
-
-Conclude with `(Ideal.span_singleton_le_iff_mem _).1 this`. Use `eq_exp_of_le ((HeightOneSpectrum.intValuation_le_pow_iff_mem _ _ _).2 ?_) ?_` and prove the remaining obligations. Establish `: Ideal.span {Algebra.intNorm (𝓞 F) (𝓞 E) a} ≤ v.asIdeal ^ f`. Rewrite using `[hspan]`. Conclude with `Ideal.mul_le_inf.trans inf_le_left`.
-
-Conclude with `(Ideal.span_singleton_le_iff_mem _).1 this`. Rewrite using `[HeightOneSpectrum.intValuation_le_pow_iff_mem]`. Introduce `hmem`. Establish `hle : Ideal.span {Algebra.intNorm (𝓞 F) (𝓞 E) a} ≤ v.asIdeal ^ (f + 1)` using `(Ideal.span_singleton_le_iff_mem _).2 hmem`. Rewrite `hle` using `[hspan, ← Ideal.dvd_iff_le, pow_succ]`.
-
-Establish `hv0 : v.asIdeal ^ f ≠ 0` using `pow_ne_zero _ v.ne_bot`. Conclude with `hnot (Ideal.dvd_iff_le.1 ((mul_dvd_mul_iff_left hv0).1 hle))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem intValuation_intNorm {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)} (h : w.under (𝓞 F) = v)
     (a : 𝓞 E) (ha : a ∈ w.asIdeal) (ha2 : a ∉ w.asIdeal ^ 2)
@@ -122,13 +116,13 @@ namespace GlobalTheory.TateUnr
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨π, hπ, hπ2⟩ : ∃ π ∈ w.asIdeal, π ∉ w.asIdeal ^ 2 := by`. Use `Ideal.pow_right_strictAnti w.asIdeal w.ne_bot w.isPrime.ne_top (show 1 < 2 by norm_num)` as an intermediate fact. Simplify using `only [pow_one] at this`. Take `⟨π, h1, h2⟩` from `Set.exists_of_ssubset this`. Conclude with `⟨π, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `s : Finset (HeightOneSpectrum (𝓞 E))` to `insert w (Formalism.L2.Host.finite_aboveF (L := E) F v).toFinset`. Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := s) (fun i => i.asIdeal) (fun i => if i = w then 2 else 1) (fun i _ => i.prime) (fun i _ j _ hij h => hij (HeightOneSpectrum.ext h)) (fun i => if i.1 = w then π else 1)`. Establish `hw` using `hy w (Finset.mem_insert_self _ _)`. Simplify using `only [if_pos rfl] at hw`. Establish `hyw : y ∈ w.asIdeal`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Ideal.pow_le_self two_ne_zero hw` as an intermediate fact. Simplify using `using w.asIdeal.add_mem this hπ`. Use `⟨y, hyw, fun hy2 => hπ2 ?_, fun w' hw' hne hyw' => ?_⟩` and prove the remaining obligations. Use `(w.asIdeal ^ 2).sub_mem hy2 hw` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h'` using `hy w' (Finset.mem_insert_of_mem ((Formalism.L2.Host.finite_aboveF (L := E) F v).mem_toFinset.2 hw'))`. Simplify using `only [if_neg hne, pow_one] at h'`. Conclude with `w'.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using w'.asIdeal.sub_mem hyw' h'))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sep_two (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E)) :
     ∃ a : 𝓞 E, a ∈ w.asIdeal ∧ a ∉ w.asIdeal ^ 2 ∧
@@ -156,7 +150,7 @@ theorem exists_sep_two (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (
     exact w'.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using w'.asIdeal.sub_mem hyw' h'))
 
 /- English proof (translation)
-Use `show Valued.v (((a : E)) : w.adicCompletion E) = _`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_of_algebraMap]`. Use `eq_exp_of_le (n := 1) ((HeightOneSpectrum.intValuation_le_pow_iff_mem w a 1).2 (by rw [pow_one]; exact ha)) (by rw [HeightOneSpectrum.intValuation_le_pow_iff_mem w a (1 + 1)]; exact ha2)` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem valued_eq_exp_neg_one (w : HeightOneSpectrum (𝓞 E)) (a : 𝓞 E) (ha : a ∈ w.asIdeal)
     (ha2 : a ∉ w.asIdeal ^ 2) : Valued.v (algebraMap E (w.adicCompletion E) (a : E)) = WithZero.exp (-1) := by
@@ -167,7 +161,7 @@ theorem valued_eq_exp_neg_one (w : HeightOneSpectrum (𝓞 E)) (a : 𝓞 E) (ha 
   simpa using this
 
 /- English proof (translation)
-Establish `e : ‖algebraMap F (Fv F v) ((Algebra.intNorm (𝓞 F) (𝓞 E) a : 𝓞 F) : F)‖ = ‖FinitePlace.embedding v ((Algebra.intNorm (𝓞 F) (𝓞 E) a : 𝓞 F) : F)‖` using `rfl`. Rewrite using `[e, FinitePlace.norm_embedding', HeightOneSpectrum.valuation_of_algebraMap, intValuation_intNorm h a ha ha2 hao, WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero, absNorm_eq_pow h]`. Establish `t : Multiplicative.toAdd (WithZero.unzero (WithZero.exp_ne_zero (a` using `-(w.asIdeal.inertiaDeg (𝓞 F) : ℤ)))) = -(w.asIdeal.inertiaDeg (𝓞 F) : ℤ) := rfl`. Rewrite using `[t, NNReal.coe_zpow, zpow_neg, zpow_natCast]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/
@@ -194,17 +188,15 @@ open GlobalTheory.PlaceAbove (absE_locIdele_of_unit)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨a, haw, ha2, hao⟩` from `exists_sep_two (F := F) (w.under (𝓞 F)) w`. Establish `hE0 : (a : E) ≠ 0` using `fun h => ha2 (by rw [show a = 0 by exact_mod_cast h]; exact zero_mem _)`. Set `y : (Fv F (w.under (𝓞 F)) ⊗[F] E)ˣ` to `Units.map (inclR (F := F) (Fv F (w.under (𝓞 F)))).toMonoidHom (Units.mk0 (a : E) hE0)`. Establish `hval : ∀ (w' : HeightOneSpectrum (𝓞 E)) (h : w'.under (𝓞 F) = w.under (𝓞 F)), ((Units.map (toCompl h).toMonoidHom y : (w'.adicCompletion E)ˣ) : w'.adicCompletion E) = algebraMap E _ (a : E)`. Introduce `w' h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show toCompl h ((1 : Fv F (w.under (𝓞 F))) ⊗ₜ[F] (a : E)) = _`. Rewrite using `[toCompl_tmul, map_one, one_mul]`. Establish `key` using `congrArg (absE F E) (GlobalTheory.LFun.ideleAt_eq_prod_locIdele (w.under (𝓞 F)) y)`. Rewrite `key` using `[GlobalTheory.Doubling.absE_ideleAt, map_prod]`. Establish `hmem : w ∈ (Formalism.L2.Host.finite_aboveF (L` using `E) F (w.under (𝓞 F))).toFinset := (Formalism.L2.Host.finite_aboveF (L := E) F (w.under (𝓞 F))).mem_toFinset.2 rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_eq_single_of_mem ⟨w, hmem⟩ (Finset.mem_attach _ _) (fun b _ hb => by`. Establish `hbv : b.1.under (𝓞 F) = w.under (𝓞 F)` using `(Formalism.L2.Host.finite_aboveF (L := E) F (w.under (𝓞 F))).mem_toFinset.1 b.2`. Establish `hne : b.1 ≠ w` using `fun e => hb (Subtype.ext e)`. Establish `hv1` using `GlobalTheory.PlaceAbove.valued_eq_one b.1 a (hao b.1 hbv hne)`. Use `absE_locIdele_of_unit b.1 _ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 hv1.le`. Rewrite using `[Units.val_inv_eq_inv_val, hval]`. Use `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 ?_` and prove the remaining obligations. Rewrite `key` using `[map_inv₀, hv1, inv_one])]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Units.map (toCompl (rfl : w.under (𝓞 F) = w.under (𝓞 F))).toMonoidHom y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`. Conclude with `valued_eq_exp_neg_one w a haw ha2`. Establish `key' : absE F E (locIdele F w (Units.map (toCompl (rfl : w.under (𝓞 F) = w.under (𝓞 F))).toMonoidHom y)) = GlobalTheory.Doubling.absEv F E (w.under (𝓞 F)) y` using `key.symm`. Rewrite using `[key', GlobalTheory.Doubling.absEv_apply, coe_nnnorm]`.
-
-Use `show ‖Algebra.norm (Fv F (w.under (𝓞 F))) (inclR (F := F) (Fv F (w.under (𝓞 F))) (a : E))‖ = _`. Rewrite using `[GlobalTheory.Doubling.norm_inclR, ← Algebra.algebraMap_intNorm (L := E) (A := 𝓞 F) (B := 𝓞 E) a]`. Conclude with `norm_intNorm rfl a haw ha2 hao`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unif_absE (w : HeightOneSpectrum (𝓞 E)) :
     ∃ α : (w.adicCompletion E)ˣ, Valued.v (α : w.adicCompletion E) = WithZero.exp (-1) ∧
@@ -246,15 +238,13 @@ theorem exists_unif_absE (w : HeightOneSpectrum (𝓞 E)) :
     exact norm_intNorm rfl a haw ha2 hao
 
 /- English proof (translation)
-Use `set n := -WithZero.log (Valued.v (x : w.adicCompletion E)) with hn`. Establish `hx0 : Valued.v (x : w.adicCompletion E) ≠ 0` using `(Valuation.ne_zero_iff _).2 (Units.ne_zero _)`. Establish `h0 : Valued.v (x : w.adicCompletion E) = WithZero.exp (-n)` using `by rw [hn, neg_neg, WithZero.exp_log hx0]`. Establish `hu : Valued.v ((x * α ^ (-n) : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 1`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, hα, h0, ← WithZero.exp_zsmul, ← WithZero.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h1 : absE F E (locIdele F w (x * α ^ (-n))) = 1`. Use `absE_locIdele_of_unit w _ ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 hu.le) ?_` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val]`. Use `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv₀, hu, inv_one]`. Establish `hc : absE F E (locIdele F w α) ≠ 0`. Introduce `h`. Use `congrArg (absE F E) (congrArg (locIdele F w) (mul_inv_cancel α))` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, h, zero_mul, map_one, map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one this`. Establish `hinv : ∀ a : (w.adicCompletion E)ˣ, ((absE F E).comp (locIdele F w)) a⁻¹ = (((absE F E).comp (locIdele F w)) a)⁻¹` using `fun a => eq_inv_of_mul_eq_one_right (by rw [← map_mul, mul_inv_cancel, map_one])`. Establish `h2 : ((absE F E).comp (locIdele F w)) (x * α ^ (-n)) = 1` using `h1`. Establish `hc' : ((absE F E).comp (locIdele F w)) α ≠ 0` using `hc`. Rewrite `h2` using `[map_mul, map_zpow' _ hinv, zpow_neg]`.
-
-Conclude with `(mul_inv_eq_one₀ (zpow_ne_zero n hc')).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absE_locIdele_eq_zpow (w : HeightOneSpectrum (𝓞 E)) (α x : (w.adicCompletion E)ˣ)
     (hα : Valued.v (α : w.adicCompletion E) = WithZero.exp (-1)) :
@@ -286,9 +276,9 @@ theorem absE_locIdele_eq_zpow (w : HeightOneSpectrum (𝓞 E)) (α x : (w.adicCo
   exact (mul_inv_eq_one₀ (zpow_ne_zero n hc')).1 h2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v l`. Establish `h1 : absE F E l.1 = ∏ w ∈ (Formalism.L2.Host.finite_aboveF (L` using `E) F v).toFinset.attach, absE F E (locIdele F w.1 (compW ((Formalism.L2.Host.finite_aboveF (L := E) F v).mem_toFinset.1 w.2) l)) := by conv_lhs => rw [← ideleAt_unitFin l.2]`. Rewrite using `[GlobalTheory.LFun.ideleAt_eq_prod_locIdele, map_prod]`. Both sides reduce to the same expression. Rewrite using `[h1, NNReal.coe_prod, Finset.prod_coe_sort_eq_attach]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Take `⟨α, hα, hc⟩` from `exists_unif_absE (F := F) w.1`. Rewrite using `[absE_locIdele_eq_zpow w.1 α _ hα, NNReal.coe_zpow, hc, inv_zpow']`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem absE_idelesAt : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F)
     (l : idelesAt E (evFin F v)),

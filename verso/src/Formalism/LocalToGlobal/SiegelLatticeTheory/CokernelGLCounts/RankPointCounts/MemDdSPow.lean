@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Establish `h1 : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t ∈ Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F))` using `Ideal.mem_map_of_mem _ ht`. Establish `h2 : ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t : 𝓞 D.host.E) : D.host.E) ∈ ddS D` using `FractionalIdeal.mem_coeIdeal_of_mem _ h1`. Establish `h3` using `Submodule.pow_mem_pow (ddS D : Submodule (𝓞 D.host.E) D.host.E) h2 k`. Rewrite using `[← FractionalIdeal.mem_coe, FractionalIdeal.coe_pow]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem mem_ddS_pow (t : 𝓞 D.host.F) (ht : t ∈ differentIdeal ℤ (𝓞 D.host.F)) (k : ℕ) :
     (((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t) ^ k : 𝓞 D.host.E) : D.host.E) ∈ ddS D ^ k := by
@@ -32,19 +32,19 @@ theorem mem_ddS_pow (t : 𝓞 D.host.F) (ht : t ∈ differentIdeal ℤ (𝓞 D.h
   exact h3
 
 /- English proof (translation)
-Introduce `A B hA hB hloc`. Establish `hAu : IsLoUni A` using `fun i j => ⟨hA.2 i j, fun h => h ▸ hA.1 i⟩`. Establish `hBu : IsUpUni B` using `Formalism.L2.SG.Pf.TupGlob.isUpUni_of hB`. Establish `hsh : ∀ p, Formalism.L2.SG.Pf.StabIntSh.LocEntryShape D p A B` using `fun p => (Formalism.L2.SG.Pf.StabIntSh.loc_iff Formalism.L2.SG.Pf.StabIntSh.locShapeL Formalism.L2.SG.Pf.StabIntSh.locShapeG (p := p) Zd.agree hAu hBu).1 ⟨by rw [lOf_eq]; exact (hloc p).1, by rw [ρOf_eq]; exact Formalism.L2.SG.Pf.FibQ.sgn_conj_intUp Zd p (hloc p).2⟩`. Establish `hES` using `(Formalism.L2.SG.Pf.StabIntSh.glob_iff Formalism.L2.SG.Pf.StabIntSh.locGlob Formalism.L2.SG.Pf.StabIntSh.shapeNZ A B).1 hsh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun c b hcb x hx => ?_, fun c b hcb x hx => ?_, fun P hP c b => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, PI.UnitaryGroupMassFormula.CntFormula.star_eq_conjF]`. Conclude with `mem_aaF hcb hx (ddPow_conj Zd (by have := b.isLt; omega) (hES b c hcb).1)`. Rewrite using `[sg_entry]`. Conclude with `mem_aaF hcb hx (hES b c hcb).2.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `lt_trichotomy c b with h | h | h` into its components or cases. Establish `hq` using `(hES b c h).2.2`. Unfold `Formalism.L2.SG.Pf.StabIntSh.qdPow Formalism.L2.SG.Pf.StabIntSh.qq at hq`. Rewrite `hq` using `[FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.mem_singleton_mul]`. Take `⟨z, hz, hzy⟩` from `hq`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht, htP⟩` from `diff_avoid P hP`. Establish `hk : b.val - c.val ≤ D.R.rS` using `by have := b.isLt; omega`. Establish `hz'` using `ddPow_conj Zd hk hz`. Establish `hprod` using `FractionalIdeal.mul_mem_mul (mem_ddS_pow t ht (b.val - c.val)) hz'`. Unfold `Formalism.L2.SG.Pf.StabIntSh.ddPow at hprod`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hprod` using `[← zpow_natCast, ← zpow_add₀ (PI.NRCW.ddS_ne_zero D), add_neg_cancel, zpow_zero]`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 hprod`. Use `⟨(algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t) ^ (b.val - c.val), fun hs => htP (P.isPrime.mem_of_pow_mem _ hs), o, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, PI.UnitaryGroupMassFormula.CntFormula.star_eq_conjF, sg_entry]`. Establish `e1 : D.conjF (A b c) - Formalism.L2.SG.Pf.StabIntSh.bt D B c b = D.conjF (algebraMap (𝓞 D.host.E) D.host.E ((gS D : ℕ) : 𝓞 D.host.E) * z)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg D.conjF hzy` as an intermediate fact. Simplify `this` using `only [map_sub, Formalism.L2.SG.Pf.LocalDenominators.conjF_invol]`. Rewrite using `[e1, map_mul, map_natCast, map_natCast, mul_left_comm, ← ho]`. Substitute `h` using the available equality. Use `⟨1, fun h1 => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1), 0, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.conjTranspose_apply, sg_entry]`. Simplify using `[Formalism.L2.SG.Pf.StabIntSh.bt, hA.1 c, hB.1 c, ← pow_add, ← two_mul, pow_mul]`. Use `⟨1, fun h1 => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1), 0, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, sg_entry]`. Simplify using `[Formalism.L2.SG.Pf.StabIntSh.bt, hA.2 b c h, hB.2 b c h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dict_holds (Zd : LocDat D) : Formalism.L2.SG.Pf.TupGlob.Dict Zd := by
   intro A B hA hB hloc

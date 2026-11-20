@@ -7,21 +7,19 @@ open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HermTools
 open NumberField MvPolynomial in
 
 /- English proof (translation)
-Introduce `F V _ _ _ _ _ _ d β M hM`. Take `⟨S, hS⟩` from `hM`. Take `⟨c₀, hc₀⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 F)) (Finset.univ ×ˢ S) (fun p : Fin d × V => β.repr p.2 p.1)`. Establish `hcoord : ∀ x ∈ M, ∀ i, (c₀ : 𝓞 F) • β.repr x i ∈ (1 : Submodule (𝓞 F) F)`. Introduce `x hx i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[← hS]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨r, hr⟩` from `hc₀ (i, g) (Finset.mem_product.mpr ⟨Finset.mem_univ _, hg⟩)`. Conclude with `Submodule.mem_one.mpr ⟨r, hr⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add, Finsupp.add_apply, smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.smul_mem _ a hx using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← algebraMap_smul F a x, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Simplify using `only [Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨(c₀ : 𝓞 F) ^ d, pow_ne_zero _ (nonZeroDivisors.ne_zero c₀.2), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, hw, rfl⟩` from `hx`. Use `choose B hB using fun i j => Submodule.mem_one.mp (hcoord (w j) (hw j) i)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_one]`. Use `⟨(Matrix.of B).det, ?_⟩` and prove the remaining obligations. Establish `hmat : (algebraMap (𝓞 F) F).mapMatrix (Matrix.of B) = algebraMap (𝓞 F) F (c₀ : 𝓞 F) • β.toMatrix w`. Use extensionality with `i j`. Simplify using `[Module.Basis.toMatrix_apply, hB, Algebra.smul_def]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[RingHom.map_det, hmat, Matrix.det_smul, Fintype.card_fin, Module.Basis.det_apply, Algebra.smul_def, map_pow]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul a x _ hx`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.det_span_common_denominator : ∀ (F V : Type) [Field F] [NumberField F] [AddCommGroup V] [Module F V] [Module (𝓞 F) V] [IsScalarTower (𝓞 F) F V] (d : ℕ) (β : Module.Basis (Fin d) F V) (M : Submodule (𝓞 F) V), M.FG → ∃ c : 𝓞 F, c ≠ 0 ∧ ∀ y ∈ Submodule.span (𝓞 F) {y | ∃ w : Fin d → V, (∀ i, w i ∈ M) ∧ y = β.det w}, c • y ∈ (1 : Submodule (𝓞 F) F) := by
   intro F V _ _ _ _ _ _ d β M hM

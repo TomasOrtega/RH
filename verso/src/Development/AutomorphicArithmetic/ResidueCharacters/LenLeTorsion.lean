@@ -20,24 +20,24 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V]
 
 /- English proof (translation)
-The claim follows from `le_sup_right`.
+A detailed English derivation is pending.
 -/
 theorem bd_le_hf (L : Lattice (O := O) ρ) : BD L ≤ HfD PD L := le_sup_right
 
 /- English proof (translation)
-Establish `hBH : BD L ≤ HfD PD L` using `bd_le_hf PD L`. Set `φ : ↥(divisibleCocycles L ⊓ (HfD PD L).comap (c • LinearMap.id)) →ₗ[O] (DivisibleCohomology L ⧸ divisibleFiniteCohomology PD L)` to `(divisibleFiniteCohomology PD L).mkQ ∘ₗ (Submodule.comap (divisibleCocycles L).subtype (BD L)).mkQ ∘ₗ Submodule.inclusion inf_le_left`. Establish `hmem : ∀ z : ↥(divisibleCocycles L), (Submodule.Quotient.mk z : DivisibleCohomology L) ∈ divisibleFiniteCohomology PD L ↔ (z : G → V ⧸ L.T) ∈ HfD PD L`. Introduce `z`. Unfold `divisibleFiniteCohomology`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyz⟩`. Establish `h1 : y - z ∈ Submodule.comap (divisibleCocycles L).subtype (BD L)` using `(Submodule.Quotient.eq _).mp hyz`. Establish `h2 : ((y : G → V ⧸ L.T) - z) ∈ HfD PD L` using `by simpa using hBH h1`. Establish `h3 : (z : G → V ⧸ L.T) = y - (y - z)` using `by abel`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Conclude with `Submodule.sub_mem _ hy h2`. Introduce `hz`. Conclude with `⟨z, hz, rfl⟩`. Establish `hφ : ∀ x, φ x = 0 ↔ (x : G → V ⧸ L.T) ∈ HfD PD L`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (Submodule.Quotient.mk (Submodule.inclusion inf_le_left x) : DivisibleCohomology L) = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `hmem _`. Establish `htor : ∀ x, φ x ∈ Submodule.torsionBy O (DivisibleCohomology L ⧸ divisibleFiniteCohomology PD L) c`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[Submodule.mem_torsionBy_iff, ← map_smul, hφ]`. Use `x.2.2` as an intermediate fact. Simplify using `using this`. Set `ψ` to `φ.codRestrict _ htor`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : LinearMap.ker ψ = (divisibleCocycles L ⊓ HfD PD L).comap (divisibleCocycles L ⊓ (HfD PD L).comap (c • LinearMap.id)).subtype`. Rewrite using `[LinearMap.ker_codRestrict]`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, hφ, Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_inf]`. Conclude with `⟨fun h => ⟨x.2.1, h⟩, fun h => h.2⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Module.length_le_of_injective (Submodule.liftQ _ ψ hker.ge)` to reduce the goal to its premises. Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ hker.le`.
+A detailed English derivation is pending.
 -/
 theorem len_le_torsion (L : Lattice (O := O) ρ) (c : O) :
     Module.length O (↥(divisibleCocycles L ⊓ (HfD PD L).comap (c • LinearMap.id)) ⧸
@@ -99,13 +99,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V]
 
 /- English proof (translation)
-Substitute `hIJ` using the available equality. Use `⟨fun he => inf_le_right.trans (h2 he).le, fun he => ?_, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Introduce `c hc`. Rewrite `hc`, the goal using `[Submodule.mem_inf]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨hc.1, Submodule.mem_sup_left ?_⟩` and prove the remaining obligations. Conclude with `((h3 he c).mp hc.2).2`. Introduce `c hc`. Rewrite `hc`, the goal using `[Submodule.mem_inf]`. Take `⟨hcZ, hc⟩` from `hc`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hcZ, (h3 he c).mpr ⟨hcZ, ?_⟩⟩` and prove the remaining obligations. Take `⟨u, hu, b, hb, rfl⟩` from `Submodule.mem_sup.mp hc`. Take `⟨x, hx⟩` from `hu`. Take `⟨y, rfl⟩` from `hb`. Use `⟨x + y, fun g hg => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, hx g hg, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply, map_add]`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation.
+Normalize the expressions using the abelian group laws. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tbe_clauses (L : Lattice (O := O) ρ) (I J : Subgroup G) (hIJ : I = J) (e cB : ℕ)
     (h2 : 0 < e → HfD PD L = BD L)
@@ -152,7 +152,7 @@ variable (S : Sit) [IsTopologicalRing S.LL] [IsDomain S.O] [IsPrincipalIdealRing
 def incL : (kerY Yt p e₀ hpe hp hint he₀).V →ₗ[S.LL] Yt.V := (LinearMap.ker p).subtype
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap _`.
+A detailed English derivation is pending.
 -/
 theorem incL_cont : Continuous (incL S Yt p e₀ hpe hp hint he₀) :=
   IsModuleTopology.continuous_of_linearMap _
@@ -160,7 +160,7 @@ theorem incL_cont : Continuous (incL S Yt p e₀ hpe hp hint he₀) :=
 def projL : Yt.V →ₗ[S.LL] (trivZ S.G S.Qp S.LL S.O hinj).V := p
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap _`.
+A detailed English derivation is pending.
 -/
 theorem projL_cont : Continuous (projL S Yt p hinj) :=
   IsModuleTopology.continuous_of_linearMap _
@@ -181,19 +181,19 @@ def projHom : LatHom Yt.L (trivZ S.G S.Qp S.LL S.O hinj).L :=
 
 include hpe in
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul S.LL a e₀, map_smul, hpe, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem p_smul (a : S.O) : p (a • e₀) = algebraMap S.O S.LL a := by
   rw [← algebraMap_smul S.LL a e₀, map_smul, hpe, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b h`. Conclude with `Subtype.ext h`. Introduce `t`. Set `s : S.LL` to `t`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s • e₀, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p (s • e₀) = s`. Rewrite using `[map_smul, hpe, smul_eq_mul, mul_one]`. Introduce and unpack `y ⟨a, rfl⟩`. Conclude with `⟨a • e₀, Yt.L.T.smul_mem a he₀, p_smul S Yt p e₀ hpe a⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Express the relevant statement in the definitionally equal form `p x = 0 ↔ ∃ y : LinearMap.ker p, (y : Yt.V) = x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨⟨x, h⟩, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`. Introduce `y hy`. Conclude with `hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ses : IsSESLat (Qp := S.Qp) (incHom S Yt p e₀ hpe hp hint he₀) (projHom S Yt p hp hint hinj) := by
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
@@ -219,11 +219,11 @@ theorem ses : IsSESLat (Qp := S.Qp) (incHom S Yt p e₀ hpe hp hint he₀) (proj
 include hinj in
 
 /- English proof (translation)
-Set `Y` to `kerY Yt p e₀ hpe hp hint he₀`. Set `φ' : ↥Y.L.T →ₗ[S.O] (Ve.V ⧸ Ve.L.T)` to `φ ∘ₗ ((incL S Yt p e₀ hpe hp hint he₀).restrictScalars S.O) ∘ₗ Y.L.T.subtype`. Set `f : S.G → ↥Y.L.T` to `fun g => ⟨(⟨Yt.ρ g e₀ - e₀, by rw [LinearMap.mem_ker, map_sub, hp, sub_self]⟩ : ↥(LinearMap.ker p)), Yt.L.T.sub_mem (Yt.L.stable g e₀ he₀) he₀⟩`. Establish `honto : ∀ z ∈ (trivZ S.G S.Qp S.LL S.O hinj).L.T, ∃ a : S.O, z = a • (projHom S Yt p hp hint hinj).f e₀`. Introduce and unpack `_ ⟨a, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Use `show algebraMap S.O S.LL a = a • p e₀`. Rewrite using `[hpe, Algebra.smul_def, mul_one]`. Establish `hequiv : ∀ g y, φ' (actT Y.L g y) = actD Ve.L g (φ' y)` using `fun g y => hφ g _ y.2 y.1.2`. Establish `key` using `hTB e M0 h0 Yt Y (trivZ S.G S.Qp S.LL S.O hinj) Ve (incHom S Yt p e₀ hpe hp hint he₀) (projHom S Yt p hp hint hinj) (ses S Yt p e₀ hpe hp hint he₀ hinj) (Module.finrank_self S.LL) (fun _ _ => rfl) h1 hχ hCt hWY e₀ he₀ honto φ' hequiv f (fun _ => rfl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le hc`. Establish `hfun : (fun g => φ (Yt.ρ g e₀ - e₀)) = fun g => φ' (f g)` using `rfl`. Rewrite using `[hd, pow_add, mul_comm, mul_smul, hfun]`. Conclude with `Submodule.smul_mem _ _ key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tb_part1 (E : S.Comparison₂) (hTB : TBat S E) (e M0 h0 cB : ℕ) (Ve : LocLat S.G S.Qp S.LL S.O)
     (h1 : Module.finrank S.LL Ve.V = 1)
@@ -269,9 +269,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {O : Type} [CommRing O] [Algebra O LL]
 
 /- English proof (translation)
-Take `⟨f, hf, -⟩` from `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[f.finrank_eq, Module.finrank_fin_fun]`. Introduce `g x`. Apply `f.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hf, map_smul]`. Use function extensionality and compare the values at `i`. Establish `hi : i = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Simplify using `[Matrix.mulVec, dotProduct, epsTw, map_inv₀, Units.val_inv_eq_inv_val]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem eps_lat {V : Type} [AddCommGroup V] [Module LL V] [Module O V] {ρ : Representation LL G V}
     (T : Submodule O V) (e : ℕ) (h : IsMatLat (O := O) (ρ := ρ) T (epsTw PD e)) :

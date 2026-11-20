@@ -5,11 +5,11 @@ open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical G
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `he : ∀ i j, ((torusPow F n a * g * (torusPow F n a)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = (uniformizer F : F) ^ (a i - a j) * (g : Matrix (Fin n) (Fin n) F) i j`. Introduce `i j`. Rewrite using `[← torusPow_neg, Units.val_mul, Units.val_mul, coe_torusPow, coe_torusPow, Matrix.mul_diagonal, Matrix.diagonal_mul, sub_eq_add_neg, zpow_add₀ (GLnLocal.uniformizer_ne_zero F), Pi.neg_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hle : ∀ i j, ValuativeRel.valuation F (((torusPow F n a * g * (torusPow F n a)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j) ≤ ValuativeRel.valuation F ((g : Matrix (Fin n) (Fin n) F) i j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[he]`. Break down `lt_or_ge (a i) (a j) with hij | hij` into its components or cases. Rewrite using `[h i j hij, mul_zero]`. Simplify `hij)` using `using Parabolic.valuation_zpow_mul_le_pow_mul (F := F) (e := 0) (z := a i - a j) (x := (g : Matrix (Fin n) (Fin n) F) i j) (by simpa`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨h1, h2, h3⟩` from `(mem_iwahori_iff F n).1 hg`. Use `(mem_iwahori_iff F n).2 ⟨fun i j => (hle i j).trans (h1 i j), fun i j hij => (hle i j).trans_lt (h2 i j hij), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[he, sub_self, zpow_zero, one_mul, h3]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem conj_mem {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {n : ℕ}
     (a : Fin n → ℤ) {g : GL (Fin n) F} (hg : g ∈ iwahori F n)
@@ -36,11 +36,11 @@ private theorem conj_mem {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace
   rw [he, sub_self, zpow_zero, one_mul, h3]
 
 /- English proof (translation)
-Take `⟨x, hx, y, hy, z, hz, rfl⟩` from `Parabolic.iwahori_iwahoriFactorization' (β := (id : Fin n → Fin n)) monotone_id k hk`. Establish `hx'` using `Parabolic.mem_unipotentRadical.1 hx.2`. Use `⟨x, (mem_unipotent F n).2 ⟨hx'.1, fun i => by simpa using hx'.2 i i rfl⟩, hx.1, y * z, mul_assoc _ _ _, fun b hb => ?_⟩` and prove the remaining obligations. Establish `h1` using `conj_mem (-b) hz.1 fun i j hij => (Parabolic.mem_oppositeUnipotentRadical.1 hz.2).1 i j (lt_of_not_ge fun h => (hb h).not_gt (neg_lt_neg_iff.1 hij))`. Establish `h2` using `conj_mem (-b) hy.1 fun i j hij => Parabolic.mem_levi.1 hy.2 i j (fun h => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : i = j` using `h`. Substitute `h'` using the available equality. Conclude with `lt_irrefl _ hij)`. Rewrite `h1`, `h2` using `[torusPow_neg, inv_inv]`. Use `mul_mem h2 h1` as an intermediate fact.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[mul_assoc]`.
+A detailed English derivation is pending.
 -/
 private theorem fact {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {n : ℕ}
     {k : GL (Fin n) F} (hk : k ∈ iwahori F n) :
@@ -63,23 +63,23 @@ private theorem fact {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] 
   simpa [mul_assoc] using this
 
 /- English proof (translation)
-Introduce `F _ _ _ _ n a ha`. Establish `hbi : ∀ g, ∀ y ∈ iwahori F n, (y * g ∈ dco F a ↔ g ∈ dco F a) ∧ (g * y ∈ dco F a ↔ g ∈ dco F a)`. Establish `hl : ∀ g, ∀ y ∈ iwahori F n, g ∈ dco F a → y * g ∈ dco F a`. Introduce and unpack `g y hy ⟨x, hx, x', hx', rfl⟩`. Conclude with `⟨y * x, mul_mem hy hx, x', hx', by group⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hr : ∀ g, ∀ y ∈ iwahori F n, g ∈ dco F a → g * y ∈ dco F a`. Introduce and unpack `g y hy ⟨x, hx, x', hx', rfl⟩`. Conclude with `⟨x, hx, x' * y, mul_mem hx' hy, by group⟩`. Introduce `g y hy`. Conclude with `⟨⟨fun h => by simpa using hl _ _ (inv_mem hy) h, hl g y hy⟩, ⟨fun h => by simpa using hr _ _ (inv_mem hy) h, hr g y hy⟩⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Use `⟨fun g => ⟨?_, ?_⟩, ?_, ?_, fun g y hy => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨k, hk, y, hy, rfl⟩`. Take `⟨u, hu, huI, w, rfl, hw⟩` from `fact hk`. Conclude with `⟨u, ⟨hu, iwahori_le_integralGL F n huI⟩, _, mul_mem (hw a ha) hy, by group⟩`. Introduce and unpack `⟨u, ⟨hu, hu'⟩, y, hy, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨u, ?_, y, hy, rfl⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `(mem_unipotent F n).1 hu`. Use `(mem_iwahori_iff F n).2 ⟨fun i j => ((mem_integralGL_iff F n).1 hu').1 i j, fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[h1 hij, map_zero]`. Conclude with `zero_lt_one`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, map_one]`. Introduce and unpack `b hb g ⟨x, hx, y, hy, rfl⟩ g' ⟨x', hx', y', hy', rfl⟩`. Take `⟨u, hu, huI, w, e, hw⟩` from `fact (mul_mem hy hx')`. Establish `h1` using `conj_mem a huI fun i j hij => ((mem_unipotent F n).1 hu).1 (lt_of_not_ge fun h => (ha h).not_gt hij)`. Use `⟨_, mul_mem hx h1, _, mul_mem (hw b hb) hy', ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[torusPow_add]`. Combine the equalities or inequalities in the displayed calculation. Establish `e : dco F a = (iwahori F n : Set (GL (Fin n) F)) * {torusPow F n a} * (iwahori F n : Set (GL (Fin n) F))`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, hx, y, hy, rfl⟩`. Conclude with `Set.mul_mem_mul (Set.mul_mem_mul hx rfl) hy`. Introduce and unpack `⟨_, ⟨x, hx, _, rfl, rfl⟩, y, hy, rfl⟩`. Conclude with `⟨x, hx, y, hy, rfl⟩`. Use `indicator_mem_locallyConstantCompactSupport (R := ℂ) (U := dco F a) ?_ ?_ (1 : ℂ)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `((isCompact_iwahori F n).mul isCompact_singleton).mul (isCompact_iwahori F n)`. Rewrite using `[e]`. Conclude with `(isOpen_iwahori F n).mul_left`. Distinguish the cases in `h : g ∈ dco F a`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[uFn, h, (hbi g y hy).1]`. Simplify using `[uFn, h, (hbi g y hy).1]`. Distinguish the cases in `h : g ∈ dco F a`. Simplify using `[uFn, h, (hbi g y hy).2]`. Simplify using `[uFn, h, (hbi g y hy).2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.H.dcoShape :
     ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ) (a : Fin n → ℤ), Antitone a →

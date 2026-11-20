@@ -6,7 +6,7 @@ noncomputable section
 namespace Formalism.MainNotions.G.SymmetricFormBlocks
 
 /- English proof (translation)
-The claim follows from `closed_of_symmetric_finite D (restYbc_of_funY hF) hO h`.
+A detailed English derivation is pending.
 -/
 theorem closed_of_coefficient_function (D : Formalism.BasicNotions.D7) (hF : RestFunY) (hO : OrthLat) (h : SymmetryFinitenessWindowLevelDimOnAdmissible D) : Formalism.MainNotions.flipOneThree.IntegralityFromMetricForLargeConstants D :=
   closed_of_symmetric_finite D (restYbc_of_funY hF) hO h

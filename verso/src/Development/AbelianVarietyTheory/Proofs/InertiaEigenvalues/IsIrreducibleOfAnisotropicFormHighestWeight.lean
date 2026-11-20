@@ -3,23 +3,21 @@ import Mathlib
 namespace GlobalTheory.DownLift
 
 /- English proof (translation)
-Set `P : Submodule ℂ V` to `U ⊓ ⨅ s : S, LinearMap.ker (B (s : V))`. Establish `hP : ∀ y, y ∈ P ↔ y ∈ U ∧ ∀ s ∈ S, B s y = 0`. Introduce `y`. Simplify using `[P, Submodule.mem_iInf]`. Establish `hPbot : P = ⊥`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hPE : ∀ j, ∀ x ∈ P, E j x ∈ P`. Introduce `j y hy`. Rewrite `hy`, the goal using `[hP]`. Use `⟨hU j y hy.1, fun s hs => ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hadj (st j) s y`. Rewrite `h` using `[hst]`. Rewrite using `[← h]`. Conclude with `hy.2 _ (hSE _ _ hs)`. Take `⟨y, hyP, hy0, hyw⟩` from `hex P inf_le_left hne hPE`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hxS, hx0, hxw⟩` from `hex S hSU hS hSE`. Rewrite `hyP` using `[hP]`. Take `⟨c, hc⟩` from `hprop x y (hSU hxS) hyP.1 hxw hyw hx0`. Establish `hyS : y ∈ S` using `hc ▸ S.smul_mem c hxS`. Conclude with `hy0 (han y hyP.1 (hyP.2 y hyS))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : FiniteDimensional ℂ S := Submodule.finiteDimensional_of_le hSU`. Set `b` to `Module.finBasis ℂ S`. Set `φ : U →ₗ[ℂ] (Fin (Module.finrank ℂ S) → ℂ)` to `LinearMap.pi fun i => (B (b i : V)).comp U.subtype`. Establish `hφ : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `hy' : ∀ i, B (b i : V) (y : V) = 0` using `fun i => congrFun (LinearMap.mem_ker.mp hy) i`. Establish `hyP : (y : V) ∈ P`. Rewrite using `[hP]`. Use `⟨y.2, fun s hs => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrArg (fun z : S => (z : V)) (b.sum_repr ⟨s, hs⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h`. Rewrite using `[← h, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, hy', smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hyP` using `[hPbot, Submodule.mem_bot]`. Rewrite using `[Submodule.mem_bot]`. Conclude with `Subtype.ext hyP`. Establish `hle` using `LinearMap.finrank_le_finrank_of_injective hφ`. Rewrite `hle` using `[Module.finrank_fin_fun]`.
-
-Conclude with `Submodule.eq_of_le_of_finrank_le hSU hle`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abstract_irreducible_of_highestWeight (V : Type) [AddCommGroup V] [Module ℂ V]
     (U : Submodule ℂ V) (hfin : FiniteDimensional ℂ U) (J : Type) (E : J → Module.End ℂ V)

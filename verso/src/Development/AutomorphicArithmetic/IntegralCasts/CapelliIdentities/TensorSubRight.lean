@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R _ M N _ _ _ _ _`. Establish `h : ∀ x : TensorProduct R M N, x = 0`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul m n => rw [Subsingleton.elim n 0, TensorProduct.tmul_zero]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`. Conclude with `⟨fun x y => (h x).trans (h y).symm⟩`.
+Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.Qn17.tensor_sub_right.{u} :
     ∀ {R : Type} [inst : CommRing R] (M N : Type u) [inst_1 : AddCommMonoid M]

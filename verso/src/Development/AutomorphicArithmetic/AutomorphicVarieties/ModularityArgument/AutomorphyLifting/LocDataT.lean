@@ -28,7 +28,7 @@ def LocRelT (l : ℕ) (x δ : kˣ) {V : Type} [AddCommGroup V] [Module ℂ V] (�
         (T - (χ (Pi.mulSingle i δ) : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) = 0)
 
 /- English proof (translation)
-The claim follows from `@LocRelT`.
+A detailed English derivation is pending.
 -/
 example : type_of% @LocRel := @LocRelT
 
@@ -36,7 +36,7 @@ variable {l : ℕ} {x δ : kˣ} {V : Type} [AddCommGroup V] [Module ℂ V] {π :
   {P T : Matrix (Fin n) (Fin n) ℂ}
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem relT' (h : LocRelT l x δ π P T) : LocRelT l x δ π P T := h
 
@@ -48,11 +48,11 @@ def LocDataT : Prop :=
 def WOT : type_of% @UpperTheory.V.Lev.WO := fun ι r y => WDT ι r y
 
 /- English proof (translation)
-The claim follows from `@LocGlobT`.
+A detailed English derivation is pending.
 -/
 example : type_of% @UpperTheory.V.Af.LocGlob := @LocGlobT
 /- English proof (translation)
-The claim follows from `@ParAtT`.
+A detailed English derivation is pending.
 -/
 example : type_of% @UpperTheory.V.Af.Gu.ParAt := @ParAtT
 

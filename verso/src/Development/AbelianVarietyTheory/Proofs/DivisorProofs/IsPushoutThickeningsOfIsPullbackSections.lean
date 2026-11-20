@@ -7,7 +7,7 @@ noncomputable section
 namespace GlobalTheory.ThickPush
 
 /- English proof (translation)
-Use `Scheme.Hom.ext hb fun U => ?_` and prove the remaining obligations. Rewrite using `[← h U (le_of_eq congr((TopologicalSpace.Opens.map $hb.symm).obj U))]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hom_ext_appLE {Z X : Scheme.{0}} {f g : Z ⟶ X} (hb : f.base = g.base)
     (h : ∀ U e, f.appLE U (g ⁻¹ᵁ U) e = g.app U) : f = g := by
@@ -16,14 +16,14 @@ theorem hom_ext_appLE {Z X : Scheme.{0}} {f g : Z ⟶ X} (hb : f.base = g.base)
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem appLE_eq_of_eq {X Y : Scheme.{0}} {f f' : X ⟶ Y} (h : f = f') (U : Y.Opens) (V : X.Opens)
     (e : V ≤ f ⁻¹ᵁ U) (e' : V ≤ f' ⁻¹ᵁ U) : f.appLE U V e = f'.appLE U V e' := by
   subst h; rfl
 
 /- English proof (translation)
-Substitute `hpq` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isUnit_germ_of_eq {T : Scheme.{0}} {p q : T} (hpq : p = q) (W : T.Opens) (hp : p ∈ W) (hq : q ∈ W)
     (t : Γ(T, W)) (h : IsUnit (T.presheaf.germ W p hp t)) : IsUnit (T.presheaf.germ W q hq t) := by
@@ -39,7 +39,7 @@ def bse : (Y : TopCat) ⟶ (T : TopCat) :=
     g₁.base.hom.continuous.comp (hj.homeomorph _).symm.continuous⟩
 
 /- English proof (translation)
-Use `show g₁ ((hj.homeomorph _).symm (hj.homeomorph _ x)) = g₁ x`. Rewrite using `[Homeomorph.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bse_j₁ (x : Y₁) : bse hj g₁ (j₁ x) = g₁ x := by
   show g₁ ((hj.homeomorph _).symm (hj.homeomorph _ x)) = g₁ x
@@ -47,9 +47,9 @@ theorem bse_j₁ (x : Y₁) : bse hj g₁ (j₁ x) = g₁ x := by
 
 include hw hi₂ hg in
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hi₂ x`. Establish `h1 : j₂ (i₂ y) = j₁ (i₁ y)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hw]`. Establish `h2 : g₂ (i₂ y) = g₁ (i₁ y)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, bse_j₁]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bse_j₂ (x : Y₂) : bse hj g₁ (j₂ x) = g₂ x := by
   obtain ⟨y, rfl⟩ := hi₂ x
@@ -60,7 +60,7 @@ theorem bse_j₂ (x : Y₂) : bse hj g₁ (j₂ x) = g₂ x := by
   rw [h1, h2, bse_j₁]
 
 /- English proof (translation)
-Use extensionality with `x`. Use `show bse hj g₁ (j₁ x) ∈ W ↔ g₁ x ∈ W`. Rewrite using `[bse_j₁]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre₁ (W : T.Opens) : j₁ ⁻¹ᵁ ((TopologicalSpace.Opens.map (bse hj g₁)).obj W) = g₁ ⁻¹ᵁ W := by
   ext x
@@ -69,7 +69,7 @@ theorem pre₁ (W : T.Opens) : j₁ ⁻¹ᵁ ((TopologicalSpace.Opens.map (bse h
 
 include hw hi₂ hg in
 /- English proof (translation)
-Use extensionality with `x`. Use `show bse hj g₁ (j₂ x) ∈ W ↔ g₂ x ∈ W`. Rewrite using `[bse_j₂ hw hi₂ hj g₁ g₂ hg]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre₂ (W : T.Opens) : j₂ ⁻¹ᵁ ((TopologicalSpace.Opens.map (bse hj g₁)).obj W) = g₂ ⁻¹ᵁ W := by
   ext x
@@ -92,14 +92,14 @@ def liftApp (W : T.Opens) : Γ(T, W) ⟶ Γ(Y, (TopologicalSpace.Opens.map (bse 
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `(hV _).lift_fst _ _ _ @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem liftApp_fst (W : T.Opens) : liftApp hw hi₂ hj hV g₁ g₂ hg W ≫ j₁.app _ = g₁.appLE W _ (pre₁ hj g₁ W).le :=
   (hV _).lift_fst _ _ _
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `(hV _).lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem liftApp_snd (W : T.Opens) : liftApp hw hi₂ hj hV g₁ g₂ hg W ≫ j₂.app _ =
     g₂.appLE W _ (pre₂ hw hi₂ hj g₁ g₂ hg W).le :=
@@ -163,9 +163,7 @@ variable {Y₀ Y₁ Y₂ Y T : Scheme.{0}} {i₁ : Y₀ ⟶ Y₁} {i₂ : Y₀ �
   (g₁ : Y₁ ⟶ T) (g₂ : Y₂ ⟶ T) (hg : i₁ ≫ g₁ = i₂ ≫ g₂)
 
 /- English proof (translation)
-Use `hom_ext_appLE ?_ fun W e => ?_` and prove the remaining obligations. Use extensionality with `x`. Conclude with `bse_j₁ hj g₁ x`. Establish `hh : j₁.appLE (desc hw hi₂ hj hV g₁ g₂ hg ⁻¹ᵁ W) (g₁ ⁻¹ᵁ W) e = j₁.app _ ≫ Y₁.presheaf.map (homOfLE e).op` using `rfl`. Rewrite using `[Scheme.Hom.comp_appLE, hh, desc_app]`.
-
-Use `erw [liftApp_fst_assoc]`. Conclude with `(Scheme.Hom.appLE_map _ _ _).trans (Scheme.Hom.appLE_eq_app _)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fac₁ : j₁ ≫ desc hw hi₂ hj hV g₁ g₂ hg = g₁ := by
   refine hom_ext_appLE ?_ fun W e => ?_
@@ -177,9 +175,7 @@ theorem fac₁ : j₁ ≫ desc hw hi₂ hj hV g₁ g₂ hg = g₁ := by
     exact (Scheme.Hom.appLE_map _ _ _).trans (Scheme.Hom.appLE_eq_app _)
 
 /- English proof (translation)
-Use `hom_ext_appLE ?_ fun W e => ?_` and prove the remaining obligations. Use extensionality with `x`. Conclude with `bse_j₂ hw hi₂ hj g₁ g₂ hg x`. Establish `hh : j₂.appLE (desc hw hi₂ hj hV g₁ g₂ hg ⁻¹ᵁ W) (g₂ ⁻¹ᵁ W) e = j₂.app _ ≫ Y₂.presheaf.map (homOfLE e).op` using `rfl`. Rewrite using `[Scheme.Hom.comp_appLE, hh, desc_app]`.
-
-Use `erw [liftApp_snd_assoc]`. Conclude with `(Scheme.Hom.appLE_map _ _ _).trans (Scheme.Hom.appLE_eq_app _)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fac₂ : j₂ ≫ desc hw hi₂ hj hV g₁ g₂ hg = g₂ := by
   refine hom_ext_appLE ?_ fun W e => ?_
@@ -191,11 +187,11 @@ theorem fac₂ : j₂ ≫ desc hw hi₂ hj hV g₁ g₂ hg = g₂ := by
     exact (Scheme.Hom.appLE_map _ _ _).trans (Scheme.Hom.appLE_eq_app _)
 
 /- English proof (translation)
-Use `hom_ext_appLE ?_ fun W e => ?_` and prove the remaining obligations. Use extensionality with `x`. Take `⟨x₁, rfl⟩ : ∃ x₁, j₁ x₁ = x` from `⟨(hj.homeomorph _).symm x, (hj.homeomorph _).apply_symm_apply x⟩`. Use `show m (j₁ x₁) = bse hj g₁ (j₁ x₁)`. Rewrite using `[bse_j₁, ← h₁, Scheme.Hom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[desc_app]`. Apply `(hV _).hom_ext` to reduce the goal to its premises. Use `Eq.trans ?_ (liftApp_fst hw hi₂ hj hV g₁ g₂ hg W).symm` and prove the remaining obligations. Rewrite using `[Scheme.Hom.app_eq_appLE j₁]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).trans (appLE_eq_of_eq h₁ _ _ _ _)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ (liftApp_snd hw hi₂ hj hV g₁ g₂ hg W).symm` and prove the remaining obligations. Rewrite using `[Scheme.Hom.app_eq_appLE j₂]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).trans (appLE_eq_of_eq h₂ _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem uniq (m : Y ⟶ T) (h₁ : j₁ ≫ m = g₁) (h₂ : j₂ ≫ m = g₂) : m = desc hw hi₂ hj hV g₁ g₂ hg := by
   refine hom_ext_appLE ?_ fun W e => ?_
@@ -215,7 +211,7 @@ theorem uniq (m : Y ⟶ T) (h₁ : j₁ ≫ m = g₁) (h₂ : j₂ ≫ m = g₂)
 end Fac
 
 /- English proof (translation)
-Introduce `Y₀ Y₁ Y₂ i₁ i₂ _ _ _ hs₂ Y j₁ j₂ hw hc₁ _ hs₁ _ hV`. Establish `hj : IsHomeomorph j₁` using `isHomeomorph_iff_isEmbedding_surjective.mpr ⟨j₁.isClosedEmbedding.isEmbedding, hs₁.surj⟩`. Use `IsPushout.of_isColimit' ⟨hw⟩ (PushoutCocone.IsColimit.mk _ (fun s => desc hw hs₂.surj hj hV s.inl s.inr s.condition) (fun s => fac₁ hw hs₂.surj hj hV s.inl s.inr s.condition) (fun s => fac₂ hw hs₂.surj hj hV s.inl s.inr s.condition) (fun s m h₁ h₂ => uniq hw hs₂.surj hj hV s.inl …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isPushout_of_isPullback_sections : ∀ (Y₀ Y₁ Y₂ : Scheme.{0}) (i₁ : Y₀ ⟶ Y₁) (i₂ : Y₀ ⟶ Y₂),
     IsClosedImmersion i₁ → IsClosedImmersion i₂ → Surjective i₁ → Surjective i₂ →

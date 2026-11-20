@@ -22,7 +22,7 @@ section Abs
 variable {H H' k : Type} [Group H] [Group H'] [Field k] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Establish `e : ((g * r s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace = (r s : Matrix (Fin n) (Fin n) k).trace`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.trace_mul_cycle, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[← e]`. Conclude with `Finset.sum_congr rfl fun i _ => (hg s).2 i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trace_of_flag {r : H →* GL (Fin n) k} {ψ : Fin n → H →* kˣ} (h : W.HasFlag r ψ) (s : H) :
     (r s : Matrix (Fin n) (Fin n) k).trace = ∑ i, (ψ i s : k) := by
@@ -33,13 +33,13 @@ private theorem trace_of_flag {r : H →* GL (Fin n) k} {ψ : Fin n → H →* k
   exact Finset.sum_congr rfl fun i _ => (hg s).2 i
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Set `c : (H →* kˣ) → (H →* k)` to `fun x => (Units.coeHom k).comp x`. Establish `hc : Function.Injective c` using `fun x y e => MonoidHom.ext fun s => Units.ext (DFunLike.congr_fun e s)`. Set `L : (H →* k) →₀ k` to `∑ j, Finsupp.single (c (a j)) 1 - ∑ j, Finsupp.single (c (b j)) 1`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h0 : Finsupp.linearCombination k (fun f : H →* k => (f : H → k)) L = 0`. Use function extensionality and compare the values at `s`. Simplify using `only [L, map_sub, map_sum, Finsupp.linearCombination_single, one_smul, Pi.sub_apply, Finset.sum_apply, Pi.zero_apply]`. Conclude with `sub_eq_zero.2 (h s)`. Establish `hL` using `(linearIndependent_iff.1 (linearIndependent_monoidHom H k)) L h0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : L (c (a i)) = 0` using `by rw [hL]; rfl`. Establish `h2 : ∑ j, (Finsupp.single (c (b j)) (1 : k)) (c (a i)) = 0` using `Finset.sum_eq_zero fun j _ => by`. Rewrite using `[Finsupp.single_apply, if_neg fun e => hne j (hc e).symm]`. Establish `h1 : ∑ j, (Finsupp.single (c (a j)) (1 : k)) (c (a i)) = ((Finset.univ.filter fun j => a j = a i).card : k)`. Simplify using `only [Finsupp.single_apply, hc.eq_iff, Finset.sum_boole]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : (Finset.univ.filter fun j => a j = a i).card ≠ 0` using `Finset.card_ne_zero.2 ⟨i, by simp⟩`. Simplify using `only [L, Finsupp.coe_sub, Finsupp.coe_finset_sum, Pi.sub_apply, Finset.sum_apply, h1, h2, sub_zero] at hv`. Conclude with `h3 (by exact_mod_cast hv)`.
+A detailed English derivation is pending.
 -/
 private theorem mem_range_of_sum [CharZero k] (a b : Fin n → H →* kˣ) (h : ∀ s, ∑ i, (a i s : k) = ∑ i, (b i s : k)) (i : Fin n) :
     ∃ j, a i = b j := by
@@ -66,14 +66,14 @@ private theorem mem_range_of_sum [CharZero k] (a b : Fin n → H →* kˣ) (h : 
   exact h3 (by exact_mod_cast hv)
 
 /- English proof (translation)
-The claim follows from `mem_range_of_sum a b (fun s => by rw [← trace_of_flag ha, ← trace_of_flag hb]) i`.
+A detailed English derivation is pending.
 -/
 private theorem flag_range [CharZero k] {r : H →* GL (Fin n) k} {a b : Fin n → H →* kˣ} (ha : W.HasFlag r a) (hb : W.HasFlag r b)
     (i : Fin n) : ∃ j, a i = b j :=
   mem_range_of_sum a b (fun s => by rw [← trace_of_flag ha, ← trace_of_flag hb]) i
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Use `⟨g * N⁻¹, fun t => ?_⟩` and prove the remaining obligations. Establish `e : g * N⁻¹ * r₂ t * (g * N⁻¹)⁻¹ = g * r₁ (f t) * g⁻¹` using `by rw [hN]; group`. Rewrite using `[e]`. Conclude with `hg (f t)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem flag_comp {r₁ : H →* GL (Fin n) k} {r₂ : H' →* GL (Fin n) k} {f : H' →* H} {N : GL (Fin n) k}
     (hN : ∀ t, r₂ t = N * r₁ (f t) * N⁻¹) {ψ : Fin n → H →* kˣ} (h : W.HasFlag r₁ ψ) :
@@ -85,11 +85,11 @@ private theorem flag_comp {r₁ : H →* GL (Fin n) k} {r₂ : H' →* GL (Fin n
   exact hg (f t)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Use `⟨g, fun s => ?_⟩` and prove the remaining obligations. Establish `e : ((g * r' s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = (β s : k) • ((g * r s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`. Simplify using `only [Units.val_mul, hr, Matrix.mul_smul, Matrix.smul_mul]`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(hg s).1 i j hij`. Express the relevant statement in the definitionally equal form `((g * r' s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j = 0`. Rewrite using `[e, Matrix.smul_apply]`. Express the relevant statement in the definitionally equal form `_ • ((g * r s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j = 0`. Rewrite using `[show ((g * r s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j = 0 from h1, smul_zero]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1` using `(hg s).2 i`. Express the relevant statement in the definitionally equal form `((g * r' s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i i = _`. Rewrite using `[e, Matrix.smul_apply, show ((g * r s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i i = _ from h1]`. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem flag_smul {r r' : H →* GL (Fin n) k} {β : H →* kˣ}
     (hr : ∀ s, (r' s : Matrix (Fin n) (Fin n) k) = (β s : k) • (r s : Matrix (Fin n) (Fin n) k)) {ψ : Fin n → H →* kˣ}
@@ -113,19 +113,19 @@ private theorem flag_smul {r r' : H →* GL (Fin n) k} {β : H →* kˣ}
 private def revM (n : ℕ) (k : Type) [Field k] : Matrix (Fin n) (Fin n) k := (1 : Matrix (Fin n) (Fin n) k).submatrix Fin.rev id
 
 /- English proof (translation)
-Simplify using `[revM, Matrix.mul_apply, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem revM_mul (X : Matrix (Fin n) (Fin n) k) (i j : Fin n) : (revM n k * X) i j = X (Fin.rev i) j := by
   simp [revM, Matrix.mul_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `[revM, Matrix.mul_apply, Matrix.one_apply, Fin.rev_eq_iff]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mul_revM (X : Matrix (Fin n) (Fin n) k) (i j : Fin n) : (X * revM n k) i j = X i (Fin.rev j) := by
   simp [revM, Matrix.mul_apply, Matrix.one_apply, Fin.rev_eq_iff]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[revM_mul]`. Simplify using `[revM, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem revM_sq : revM n k * revM n k = 1 := by
   ext i j
@@ -140,11 +140,11 @@ private def trG (g : GL (Fin n) k) : GL (Fin n) k :=
     by rw [← Matrix.transpose_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.transpose_one]⟩
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Use `⟨revG n k * (trG g)⁻¹, fun s => ?_⟩` and prove the remaining obligations. Establish `e : ((revG n k * (trG g)⁻¹ * GlobalTheory.MonoConj.dualRep r s * (revG n k * (trG g)⁻¹)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = revM n k * ((g * r s⁻¹ * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)ᵀ * revM n k`. Establish `e1 : revG n k * (trG g)⁻¹ * GlobalTheory.MonoConj.dualRep r s * (revG n k * (trG g)⁻¹)⁻¹ = revG n k * ((trG g)⁻¹ * GlobalTheory.MonoConj.dualRep r s * trG g) * (revG n k)⁻¹` using `by group`. Rewrite using `[e1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Units.val_mul, Matrix.transpose_mul, GlobalTheory.MonoConj.coe_dualRep, Matrix.mul_assoc]`. Both sides reduce to the same expression. Establish `e2 : ∀ i j, ((revG n k * (trG g)⁻¹ * GlobalTheory.MonoConj.dualRep r s * (revG n k * (trG g)⁻¹)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j = ((g * r s⁻¹ * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) (Fin.rev j) (Fin.rev i)` using `fun i j => by`. Rewrite using `[e, mul_revM, revM_mul, Matrix.transpose_apply]`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(e2 i j).trans ((hg s⁻¹).1 _ _ (Fin.rev_lt_rev.2 hij))`. Use `(e2 i i).trans (((hg s⁻¹).2 _).trans ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem flag_dual {r : H →* GL (Fin n) k} {ψ : Fin n → H →* kˣ} (h : W.HasFlag r ψ) :
     W.HasFlag (GlobalTheory.MonoConj.dualRep r) fun i => (ψ (Fin.rev i))⁻¹ := by
@@ -166,7 +166,7 @@ private theorem flag_dual {r : H →* GL (Fin n) k} {ψ : Fin n → H →* kˣ} 
     simp
 
 /- English proof (translation)
-Simplify using `only [mul_pow, inv_pow] at h ⊢`. Rewrite using `[h, mul_inv]`. Simplify using `only [mul_comm, mul_left_comm, mul_assoc]`. Rewrite using `[mul_left_comm (e ^ m), mul_left_comm (e ^ m), mul_inv_cancel, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem aux₁ {C : Type} [CommGroup C] {a b e μ : C} {m : ℕ} (h : a ^ m = (b * e) ^ m) :
     (b⁻¹ * μ) ^ m = (a⁻¹ * μ * e) ^ m := by
@@ -176,9 +176,9 @@ private theorem aux₁ {C : Type} [CommGroup C] {a b e μ : C} {m : ℕ} (h : a 
   rw [mul_left_comm (e ^ m), mul_left_comm (e ^ m), mul_inv_cancel, mul_one]
 
 /- English proof (translation)
-Simplify using `only [mul_pow, inv_pow] at h ⊢`. Establish `h' : (x ^ m)⁻¹ = (y ^ m)⁻¹ * e ^ m`. Use `mul_right_cancel (b := μ ^ m) (a := (x ^ m)⁻¹) (c := (y ^ m)⁻¹ * e ^ m) (by rw [h]; simp [mul_comm, mul_left_comm, mul_assoc])` as an intermediate fact. Conclude with `this`. Establish `h2 : x ^ m = y ^ m * (e ^ m)⁻¹`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (·⁻¹) h'` as an intermediate fact. Simplify `this` using `[mul_comm]`. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem aux₂ {C : Type} [CommGroup C] {x y e μ : C} {m : ℕ} (h : (x⁻¹ * μ) ^ m = (y⁻¹ * μ * e) ^ m) :
     y ^ m = (x * e) ^ m := by
@@ -198,17 +198,17 @@ private def Rel (r₁ : H →* GL (Fin n) k) (r₂ : H' →* GL (Fin n) k) (f : 
       (μ t : k) • ((N * GlobalTheory.MonoConj.dualRep r₁ (f t) * N⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)
 
 /- English proof (translation)
-Break down `hr with ⟨N, hN⟩ | ⟨N, μ, hN⟩` into its components or cases. Use `⟨fun i => (ψ i).comp f, flag_comp hN h, fun m => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨i, j, e⟩`. Use `⟨i, j, MonoidHom.ext fun t => ?_⟩` and prove the remaining obligations. Use `DFunLike.congr_fun e (f t)` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[← hε]`. Introduce and unpack `⟨i, j, e⟩`. Use `⟨i, j, MonoidHom.ext fun s => ?_⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `hf s`. Use `DFunLike.congr_fun e t` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify `this` using `[← hε]`. Set `r₃ : H' →* GL (Fin n) k` to `{ toFun := fun t => N * GlobalTheory.MonoConj.dualRep r₁ (f t) * N⁻¹ map_one' := by simp map_mul' := fun x y => by simp only [map_mul]; group }`. Establish `h3 : W.HasFlag r₃ fun i => ((ψ (Fin.rev i))⁻¹).comp f` using `flag_comp (fun _ => rfl) (flag_dual h)`. Use `⟨fun i => ((ψ (Fin.rev i))⁻¹).comp f * μ, flag_smul (r := r₃) hN h3, fun m => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨i, j, e⟩`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨Fin.rev j, Fin.rev i, MonoidHom.ext fun t => ?_⟩` and prove the remaining obligations. Establish `e1 : ψ i (f t) ^ m = (ψ j (f t) * ε (f t)) ^ m`. Simplify using `using DFunLike.congr_fun e (f t)`. Use `aux₁ (μ := μ t) e1` as an intermediate fact. Simplify `this` using `[hε]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨a, b, e⟩`. Use `⟨Fin.rev b, Fin.rev a, MonoidHom.ext fun s => ?_⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `hf s`. Establish `e1 : ((ψ (Fin.rev a) (f t))⁻¹ * μ t) ^ m = ((ψ (Fin.rev b) (f t))⁻¹ * μ t * ε (f t)) ^ m`. Simplify `DFunLike.congr_fun e t` using `[hε]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using aux₂ e1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem abs_main {r₁ : H →* GL (Fin n) k} {r₂ : H' →* GL (Fin n) k} {f : H' →* H} (hf : Function.Surjective f)
     (hr : Rel r₁ r₂ f) {ε : H →* kˣ} {ε' : H' →* kˣ} (hε : ∀ t, ε (f t) = ε' t) {ψ : Fin n → H →* kˣ} (h : W.HasFlag r₁ ψ) :
@@ -256,7 +256,7 @@ section Conc
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
 
 /- English proof (translation)
-Establish `e : cycZ E Ω l (conjGal h g) = cycZ E Ω l g` using `by show cyclotomicCharacter Ω l (conjGal h g).toRingEquiv = cyclotomicCharacter Ω l g.toRingEquiv`. Establish `e : (conjGal h g).toRingEquiv = σ⁻¹ * g.toRingEquiv * σ` using `rfl`. Rewrite using `[e, map_mul, map_mul, map_inv, mul_comm, ← mul_assoc, mul_inv_cancel, one_mul]`. Simplify using `only [cycBar, MonoidHom.comp_apply, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem cycBar_conjGal {τ : E ≃+* E} {σ : Ω ≃+* Ω} (h : IsLift τ σ) (g : G E Ω) :
     cycBar E Ω l (conjGal h g) = cycBar E Ω l g := by
@@ -271,7 +271,7 @@ private def decMap {τ : E ≃+* E} {σ : Ω ≃+* Ω} (h : IsLift τ σ) {A A' 
   ((conjGal h).comp (Dec (F := E) A').subtype).codRestrict _ fun t => conjGal_mem_Dec h hA t.2
 
 /- English proof (translation)
-Introduce `s` and use `by have hA' : ∀ x, σ.symm x ∈ A ↔ x ∈ A' := fun x => by rw [← hA, RingEquiv.apply_symm_apply] refine ⟨⟨conjGal h.symm s.1, conjGal_mem_Dec h.symm hA' s.2⟩, Subtype.ext (AlgEquiv.ext fun x => ?_)⟩ show conjGal h (conjGal h.symm s.1) x = s.1 x simp [conjGal_apply]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem decMap_surj {τ : E ≃+* E} {σ : Ω ≃+* Ω} (h : IsLift τ σ) {A A' : ValuationSubring Ω}
     (hA : ∀ x, σ x ∈ A' ↔ x ∈ A) : Function.Surjective (decMap h hA) := fun s => by
@@ -281,9 +281,7 @@ private theorem decMap_surj {τ : E ≃+* E} {σ : Ω ≃+* Ω} (h : IsLift τ �
   simp [conjGal_apply]
 
 /- English proof (translation)
-Set `g₀ : G E Ω` to `AlgEquiv.ofRingEquiv (f := σ) fun x => by rw [h, hτ]`. Use `Or.inl ⟨ρ g₀, fun t => ?_⟩` and prove the remaining obligations. Establish `e : conjGal h t.1 = g₀⁻¹ * t.1 * g₀` using `AlgEquiv.ext fun x => rfl`. Use `show ρ t.1 = ρ g₀ * ρ (conjGal h t.1) * (ρ g₀)⁻¹`. Rewrite using `[e, map_mul, map_mul, map_inv]`.
-
-Use `group`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rel_one {τ : E ≃+* E} {σ : Ω ≃+* Ω} (h : IsLift τ σ) {A A' : ValuationSubring Ω} (hA : ∀ x, σ x ∈ A' ↔ x ∈ A)
     (ρ : G E Ω →* GL (Fin n) (Qbar l)) (hτ : ∀ x, τ x = x) :
@@ -296,7 +294,7 @@ private theorem rel_one {τ : E ≃+* E} {σ : Ω ≃+* Ω} (h : IsLift τ σ) {
   group
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨j, hj⟩ := hc refine j.injective ((hj _).trans ?_) exact (IsCMField.complexEmbedding_complexConj E (j.comp (algebraMap E Ω)) x).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem isLift_of_conjEl [IsCMField E] {c : G (maximalRealSubfield E) Ω} (hc : IsConjEl c) :
     IsLift (IsCMField.complexConj E).toRingEquiv c.toRingEquiv := fun x => by
@@ -305,21 +303,19 @@ private theorem isLift_of_conjEl [IsCMField E] {c : G (maximalRealSubfield E) Ω
   exact (IsCMField.complexEmbedding_complexConj E (j.comp (algebraMap E Ω)) x).symm
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Establish `hL` using `isLift_of_conjEl hc`. Set `u : G E Ω` to `AlgEquiv.ofRingEquiv (f := c.symm.toRingEquiv.trans g.toRingEquiv) fun x => by`. Establish `e : c.symm (algebraMap E Ω x) = algebraMap E Ω (IsCMField.complexConj E x)`. Rewrite using `[AlgEquiv.symm_apply_eq]`.
+Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `((hL _).trans ?_).symm` and prove the remaining obligations. Rewrite using `[show (IsCMField.complexConj E).toRingEquiv (IsCMField.complexConj E x) = x from IsCMField.complexConj_apply_apply E x]`. Use `show g (c.symm (algebraMap E Ω x)) = _`. Rewrite using `[e]`. Use `(h _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hτ, IsCMField.complexConj_apply_apply]`. Use `Or.inr ⟨ρ u * P⁻¹, ((cycBar E Ω l ^ (1 - (n : ℤ))).comp (conjGal h)).comp (Dec (F := E) A').subtype, fun t => ?_⟩` and prove the remaining obligations. Use `set s : G E Ω := conjGal h t.1 with hs`. Set `s' : G E Ω` to `u⁻¹ * t.1 * u`. Establish `hs' : s'.restrictScalars (maximalRealSubfield E) = c * s.restrictScalars (maximalRealSubfield E) * c⁻¹` using `AlgEquiv.ext fun x => rfl`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpair` using `hP s s' hs'`. Establish `hD : (dualRep ρ s : Matrix (Fin n) (Fin n) (Qbar l)) * (ρ s : Matrix (Fin n) (Fin n) (Qbar l))ᵀ = 1`. Rewrite using `[coe_dualRep, ← Matrix.transpose_mul, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.transpose_one]`. Establish `hQ : (ρ s' : Matrix (Fin n) (Fin n) (Qbar l)) = ((cycBar E Ω l ^ (1 - (n : ℤ))) s : Qbar l) • ((P⁻¹ * dualRep ρ s * P : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l))`. Establish `h1 : (P : Matrix (Fin n) (Fin n) (Qbar l)) * (ρ s' : Matrix (Fin n) (Fin n) (Qbar l)) = ((cycBar E Ω l ^ (1 - (n : ℤ))) s : Qbar l) • ((dualRep ρ s : Matrix (Fin n) (Fin n) (Qbar l)) * (P : Matrix (Fin n) (Fin n) (Qbar l)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun X => (dualRep ρ s : Matrix (Fin n) (Fin n) (Qbar l)) * X) hpair` as an intermediate fact. Simplify using `only [Matrix.mul_smul, ← Matrix.mul_assoc, hD, Matrix.one_mul] at this`. Conclude with `this`. Establish `h2` using `congrArg (fun X => ((P⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)) * X) h1`. Simplify using `only [← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul, Matrix.mul_smul] at h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[inv_mul_cancel_left, ← mul_assoc]`. Conclude with `h2`. Establish `ht : ρ t.1 = ρ u * ρ s' * (ρ u)⁻¹`. Simplify using `only [s', map_mul, map_inv]`. Use `group`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : ρ u * P⁻¹ * dualRep (ρ.comp (Dec (F` using `E) A).subtype) (decMap h hA t) * (ρ u * P⁻¹)⁻¹ = ρ u * (P⁻¹ * dualRep ρ s * P) * (ρ u)⁻¹ := by`. Establish `e2 : dualRep (ρ.comp (Dec (F` using `E) A).subtype) (decMap h hA t) = dualRep ρ s := rfl`. Rewrite using `[e2]`. Use `group`. Use `show (ρ t.1 : Matrix (Fin n) (Fin n) (Qbar l)) = ((cycBar E Ω l ^ (1 - (n : ℤ))) s : Qbar l) • _`.
-
-Rewrite using `[e1, ht]`. Simplify using `only [Units.val_mul (ρ u * ρ s'), Units.val_mul (ρ u), hQ]`. Simplify using `only [Units.val_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem rel_conj [IsCMField E] {τ : E ≃+* E} {σ : Ω ≃+* Ω} (h : IsLift τ σ) {A A' : ValuationSubring Ω}
     (hA : ∀ x, σ x ∈ A' ↔ x ∈ A) (ρ : G E Ω →* GL (Fin n) (Qbar l)) (hτ : ∀ x, τ x = IsCMField.complexConj E x)
@@ -381,16 +377,16 @@ open UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Af.Gu GlobalTheory.MonoC
 variable {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
 
 /- English proof (translation)
-Introduce `x` and use `h (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) x)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem isPlaceOver_real {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : IsPlaceOver A w) :
     IsPlaceOver (F := maximalRealSubfield E) A (w.under (𝓞 (maximalRealSubfield E))) := fun x =>
   h (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) x)
 
 /- English proof (translation)
-Establish `hc : Nat.card (E ≃ₐ[maximalRealSubfield E] E) = 2`. Rewrite using `[IsGalois.card_aut_eq_finrank, Algebra.IsQuadraticExtension.finrank_eq_two]`. Take `⟨y, _, hy⟩` from `(Nat.card_eq_two_iff' (1 : E ≃ₐ[maximalRealSubfield E] E)).1 hc`. Distinguish the cases in `h1 : t = 1`. Conclude with `Or.inl h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inr ((hy t h1).trans (hy _ (IsCMField.complexConj_ne_one E)).symm)`.
+Prove the second alternative.
 -/
 private theorem gal_cases (t : E ≃ₐ[maximalRealSubfield E] E) : t = 1 ∨ t = IsCMField.complexConj E := by
   have hc : Nat.card (E ≃ₐ[maximalRealSubfield E] E) = 2 := by
@@ -401,11 +397,11 @@ private theorem gal_cases (t : E ≃ₐ[maximalRealSubfield E] E) : t = 1 ∨ t 
   · exact Or.inr ((hy t h1).trans (hy _ (IsCMField.complexConj_ne_one E)).symm)
 
 /- English proof (translation)
-Establish `hA : ∀ x, g.toRingEquiv x ∈ A' ↔ x ∈ A` using `fun x => by`. Substitute `hg` using the available equality. Conclude with `ValuationSubring.smul_mem_pointwise_smul_iff (g := g)`. Establish `h : IsLift (g.restrictNormal E).toRingEquiv g.toRingEquiv` using `fun x => (AlgEquiv.restrictNormal_commutes g E x).symm`. Use `⟨decMap h hA, decMap_surj h hA, ?_, fun t => cycBar_conjGal h t.1⟩` and prove the remaining obligations.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `gal_cases (g.restrictNormal E) with e | e` into its components or cases. Conclude with `rel_one h hA ρ fun x => by show g.restrictNormal E x = x`. Rewrite using `[e]`. Both sides reduce to the same expression. Take `⟨c, hc⟩` from `(GlobalTheory.ConjElOverReal.main E Ω).1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P, hP⟩` from `hp c hc`. Conclude with `rel_conj h hA ρ (fun x => by show g.restrictNormal E x = _`. Rewrite using `[e]) g rfl hc hP`.
+A detailed English derivation is pending.
 -/
 private theorem exists_rel (ρ : G E Ω →* GL (Fin n) (Qbar l))
     (hp : ∀ c : G (maximalRealSubfield E) Ω, IsConjEl c → ∃ P, IsPairing c ρ (cycBar E Ω l ^ (1 - (n : ℤ))) P)

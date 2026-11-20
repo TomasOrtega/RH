@@ -14,21 +14,19 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 namespace GlobalTheory.PoincPull
 
 /- English proof (translation)
-Introduce `D A N j S κ s σ _ m α Λ sg t hB Y q jm hq n ch hhol x y hy hyb hyx`. Take `⟨O₁, hO₁, hyO₁, hO₁U, hO₁s⟩` from `GlobalTheory.PoincSmooth.smoothOn_nhd_off_boundary _ _ (manifold s.T.Z σ).finAtlas m α Λ sg t hB.1 (fun i => ⟨(hB.2.2.1 i).1, (hB.2.2.1 i).2.1⟩) (fun i => (hB.2.2.1 i).2.2.2) (up jm hq σ y) hyb`. Use `set O' := O₁ ∩ α.U x with hO'def`. Establish `hO' : IsOpen O'` using `hO₁.inter (α.isOpen_U x)`. Take `⟨i, hi⟩` from `(manifold s.T.Z σ).finAtlas.cover (up jm hq σ y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(manifold s.T.Z σ).isAlgAtlas_finAtlas i`. Establish `hi' : up jm hq σ y ∈ c.e.source` using `by rw [hc] at hi; exact hi`. Establish `hP : ∀ z' z, (poincarePot α Λ sg t).φ z' z = α.φ z' z + GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions.pFun Λ sg t z / 2` using `fun _ _ => rfl`. Establish `hg : ContDiffOn ℝ ∞ ((poincarePot α Λ sg t).φ x ∘ c.e.symm) (c.e.target ∩ c.e.symm ⁻¹' O')`. Establish `h1` using `hO₁s i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hB.1.1 (up jm hq σ y) i`. Establish `h3` using `hB.1.1 x i`. Rewrite `h1`, `h2`, `h3` using `[hc]`. Establish `h1'` using `(c.contDiffOn_finChart_iff _ _ _).1 h1`. Establish `h2'` using `(c.contDiffOn_finChart_iff _ _ _).1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3'` using `(c.contDiffOn_finChart_iff _ _ _).1 h3`. Establish `h4` using `((h1'.mono fun w (hw : w ∈ c.e.target ∩ c.e.symm ⁻¹' O') => ⟨hw.1, hw.2.1⟩).sub (h2'.mono fun w (hw : w ∈ c.e.target ∩ c.e.symm ⁻¹' O') => ⟨hw.1, (hO₁U hw.2.1).1⟩)).add (h3'.mono fun w (hw : w ∈ c.e.target ∩ c.e.symm ⁻¹' O') => ⟨hw.1, hw.2.2⟩)`. Use `h4.congr fun w _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Pi.add_apply, Pi.sub_apply, hP]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `set O : Set (V n) := ch.e.target ∩ ch.e.symm ⁻¹' (up jm hq σ ⁻¹' (c.e.source ∩ O')) with hOdef`. Establish `hOo : IsOpen O` using `ch.e.isOpen_inter_preimage_symm ((c.e.open_source.inter hO').preimage (continuous_up jm hq σ))`. Establish `hF : ContDiffOn ℝ ∞ (fun w => c.e (up jm hq σ (ch.e.symm w))) O`. Establish `hd : DifferentiableOn ℂ (fun w => c.e (up jm hq σ (ch.e.symm w))) O`. Use `differentiableOn_euclidean.2 fun a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `((hhol c.U (c.x a)).mono fun w hw => ⟨hw.1, c.source_subset hw.2.1⟩).congr fun w hw => ?_` and prove the remaining obligations. Conclude with `c.apply_eq _ hw.2.1 a`. Conclude with `(GlobalTheory.SCV.contDiffOn_of_differentiableOn hOo hd ∞).restrict_scalars ℝ`. Use `⟨O, hOo, ⟨ch.e.map_source hy, ?_⟩, Set.inter_subset_left, ?_⟩` and prove the remaining obligations. Use `show up jm hq σ (ch.e.symm (ch.e y)) ∈ c.e.source ∩ O'`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ch.e.left_inv hy]`. Conclude with `⟨hi', hyO₁, hyx⟩`. Use `(hg.comp hF fun w hw => ⟨c.e.map_source hw.2.1, ?_⟩).congr fun w hw => ?_` and prove the remaining obligations. Use `show c.e.symm (c.e (up jm hq σ (ch.e.symm w))) ∈ O'`. Rewrite using `[c.e.left_inv hw.2.1]`.
-
-Conclude with `hw.2.2`. Simplify using `only [Function.comp_apply]`. Rewrite using `[c.e.left_inv hw.2.1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothOn_chart_up_off_boundary : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (σ : κ.c.F →+* ℂ) [CompactSpace (CxPts (genStr s.T.Z) σ)] (m : ℕ) (α : LocPot (CxPts (genStr s.T.Z) σ)) (Λ : Fin m → LocPot (CxPts (genStr s.T.Z) σ)) (sg : Fin m → CxPts (genStr s.T.Z) σ → CxPts (genStr s.T.Z) σ → ℂ) (t : ℝ), IsBoundarySetting (manifold s.T.Z σ).finAtlas α Λ sg t → ∀ (Y : Scheme.{0}) (q : Y ⟶ Sp (𝓞 κ.c.F)) (jm : Y ⟶ s.T.Z.X) (hq : jm ≫ s.T.Z.s = q) (n : ℕ) (ch : AlgChart q (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F)) n), (∀ (W : (gen s.T.Z).Opens) (f : Γ(gen s.T.Z, W)), DifferentiableOn ℂ (ev (genStr s.T.Z) σ W f ∘ up jm hq σ ∘ ch.e.symm) (ch.e.target ∩ ch.e.symm ⁻¹' (up jm hq σ ⁻¹' ptsIn (genStr s.T.Z) σ W))) → ∀ (x : CxPts (genStr s.T.Z) σ) (y : CxPts q (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F))), y ∈ ch.e.source → up jm hq σ y ∉ boundary sg → up jm hq σ y ∈ α.U x → ∃ O : Set (V n), IsOpen O ∧ ch.e y ∈ O ∧ O ⊆ ch.e.target ∧ ContDiffOn ℝ ∞ (fun v => (poincarePot α Λ sg t).φ x (up jm hq σ (ch.e.symm v))) O := by
   intro D A N j S κ s σ _ m α Λ sg t hB Y q jm hq n ch hhol x y hy hyb hyx

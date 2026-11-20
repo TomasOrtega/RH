@@ -13,11 +13,11 @@ namespace GlobalTheory.ArchFinSplit
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Set `P : InfiniteAdeleRing F ⊗[F] E ≃ₗ[F] (∀ w : InfinitePlace F, w.Completion ⊗[F] E)` to `TensorProduct.piLeft F E (fun w : InfinitePlace F => w.Completion)`. Establish `key : ∀ y : InfiniteAdeleRing F ⊗[F] E, (fun (w : InfinitePlace F) => Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id F E) y) = P y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => funext w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `add x y hx hy`. Use function extensionality and compare the values at `w`. Rewrite using `[P.map_add, Pi.add_apply, ← congrFun hx w, ← congrFun hy w]`. Conclude with `map_add _ x y`.
+Simplify using the standard rewrite rules. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `tmul a x => rfl`. Establish `: (fun (y : InfiniteAdeleRing F ⊗[F] E) (w : InfinitePlace F) => Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id F E) y) = P` using `funext key`. Rewrite using `[this]`. Conclude with `P.bijective`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infTensor_bijective :
     Function.Bijective (fun (y : InfiniteAdeleRing F ⊗[F] E) (w : InfinitePlace F) =>
@@ -45,17 +45,15 @@ end GlobalTheory.ArchFinSplit
 namespace GlobalTheory.ArchFinSplit
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ τ h`. Take `⟨e, he, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Establish `hg : Function.Bijective (fun (y : InfiniteAdeleRing F ⊗[F] E) (w : InfinitePlace F) => infEmb (τ w) (Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id F E) y))`. Use `⟨fun a b hab => infTensor_bijective.1 (funext fun w => (infEmb_bijective h (τ w)).1 (congrFun hab w)), fun z => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `infTensor_bijective.2 (fun w => ((infEmb_bijective h (τ w)).2 (z w)).choose)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, funext fun w => by`. Simplify using `only [congrFun hy w]`. Conclude with `((infEmb_bijective h (τ w)).2 (z w)).choose_spec⟩`. Establish `hc` using `(Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E).bijective`. Establish `hfac : ⇑(splitHom τ) = Prod.map (fun (y : InfiniteAdeleRing F ⊗[F] E) (w : InfinitePlace F) => infEmb (τ w) (Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id F E) y)) (Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E) ∘ e`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Use `Prod.ext (funext fun w => ?_) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `piInf (τ w) z = infEmb (τ w) (Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id F E) (e z).1)`. Rewrite using `[(he z).1]`. Express the relevant statement in the definitionally equal form `infEmb (τ w) (compInf F E w z) = _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Use `erw [map_zero]`. Consider the case `add x y hx hy => rw [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Use `erw [map_add, map_add]`. Consider the case `tmul a x => rfl`. Express the relevant statement in the definitionally equal form `finPart F E z = Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E (e z).2`. Rewrite using `[(he z).2]`. Both sides reduce to the same expression.
-
-Rewrite using `[hfac]`. Conclude with `(hg.prodMap hc).comp e.bijective`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitHom_bijective : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (τ : ∀ w : InfinitePlace F, EmbOver E w), IsCMExt F E σ →

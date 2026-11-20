@@ -6,9 +6,9 @@ open scoped NNReal
 namespace GlobalTheory.K5
 
 /- English proof (translation)
-Introduce `p _`. Establish `hfg : (pI p).FG` using `⟨{(p : Lau p)}, by simp⟩`. Establish `h : IsAdicComplete (pI p) (O0 p)` using `AdicCompletion.isAdicComplete hfg`. Establish `hmap : (pI p).map (algebraMap (Lau p) (O0 p)) = Ideal.span {(p : O0 p)}`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmap]`. Conclude with `{ toIsHausdorff := IsHausdorff.map_algebraMap_iff.2 h.toIsHausdorff toIsPrecomplete := IsPrecomplete.map_algebraMap_iff.2 h.toIsPrecomplete }`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem o0_isAdicComplete_span_p : ∀ (p : ℕ) [Fact p.Prime], IsAdicComplete (Ideal.span {(p : O0 p)}) (O0 p) := by
   intro p _

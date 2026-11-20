@@ -10,7 +10,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents GlobalTheory.Ad
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GluedCmp.isGlued_glueLat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FGluedLatticePrescribedLocalComponents.lean&line=141#L141)
 -/

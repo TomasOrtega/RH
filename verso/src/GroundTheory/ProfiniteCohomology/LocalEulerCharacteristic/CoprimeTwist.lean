@@ -37,15 +37,15 @@ theorem evalMor_hom_tmul (T M : Rep.{u} k G) (t : T) (f : T →ₗ[k] M) :
   rfl
 
 /- English proof (translation)
-Establish `: Module.Finite k T` using `Module.finite_of_finrank_eq_succ hT`. Set `b : Module.Basis (Fin 1) k T` to `Module.finBasisOfFinrankEq k T hT`. Use `set t₀ := b 0`. Establish `ht : ∀ t : T, b.coord 0 t • t₀ = t` using `fun t => by`. Simplify using `using b.sum_repr t`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hext : ∀ f g : T →ₗ[k] M, f t₀ = g t₀ → f = g` using `fun f g h => b.ext fun i => by fin_cases i; exact h`. Set `φ : TensorProduct k T (T →ₗ[k] M) →ₗ[k] (T →ₗ[k] M)` to `TensorProduct.lift (LinearMap.lsmul k (T →ₗ[k] M) ∘ₗ b.coord 0)`. Establish `hφ : ∀ x : TensorProduct k T (T →ₗ[k] M), t₀ ⊗ₜ[k] φ x = x` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul t f`. Simplify using `only [φ, TensorProduct.lift.tmul, LinearMap.comp_apply, LinearMap.lsmul_apply]`. Rewrite using `[← TensorProduct.smul_tmul, ht]`. Consider the case `add x y hx hy => rw [map_add, TensorProduct.tmul_add, hx, hy]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `h0 : φ x = 0` using `hext _ _ (by`. Rewrite `hx` using `[← hφ x, evalMor_hom_tmul]`. Simplify using `using hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hφ x, h0, TensorProduct.tmul_zero]`. Introduce `m`. Use `⟨t₀ ⊗ₜ[k] b.constr k (fun _ => m), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `b.constr k (fun _ => m) (b 0) = m`. Rewrite using `[Module.Basis.constr_basis]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalMor_bijective (T M : Rep.{u} k G) (hT : Module.finrank k T = 1) :
     Function.Bijective (evalMor T M).hom := by
@@ -89,7 +89,7 @@ noncomputable def evalInv (T M : Rep.{u} k G) (hT : Module.finrank k T = 1) :
     rw [LinearEquiv.apply_symm_apply]⟩
 
 /- English proof (translation)
-Use extensionality with `m`. Conclude with `(LinearEquiv.ofBijective (evalMor T M).hom.toLinearMap (evalMor_bijective T M hT)).apply_symm_apply m`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem evalInv_comp_evalMor (T M : Rep.{u} k G) (hT : Module.finrank k T = 1) :
     evalInv T M hT ≫ evalMor T M = 𝟙 M := by
@@ -98,7 +98,7 @@ theorem evalInv_comp_evalMor (T M : Rep.{u} k G) (hT : Module.finrank k T = 1) :
     (evalMor_bijective T M hT)).apply_symm_apply m
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `(LinearEquiv.ofBijective (evalMor T M).hom.toLinearMap (evalMor_bijective T M hT)).symm_apply_apply x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem evalMor_comp_evalInv (T M : Rep.{u} k G) (hT : Module.finrank k T = 1) :
     evalMor T M ≫ evalInv T M hT = 𝟙 _ := by
@@ -121,7 +121,7 @@ omit [IsTopologicalGroup G] [CompactSpace G] [(P : Subgroup G).Normal] [IsDiscre
 include hT hM in
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `t`. Express the relevant statement in the definitionally equal form `M.ρ g (f (T.ρ (g : G)⁻¹ t)) = f t`. Rewrite using `[hM, show ((g : G)⁻¹) = ((g⁻¹ : (P : Subgroup G)) : G) from rfl, hT]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem homRep_ρ_of_mem (g : (P : Subgroup G)) (f : homRep T M) : (homRep T M).ρ g f = f := by
   apply LinearMap.ext
@@ -133,14 +133,14 @@ omit [CompactSpace G] [(P : Subgroup G).Normal] [IsDiscreteRep T] [IsDiscreteRep
 include hT hM in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun f => Subgroup.isOpen_mono (H₁ := (P : Subgroup G)) (fun g hg => homRep_ρ_of_mem P T M hT hM ⟨g, hg⟩ f) P.isOpen⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDiscreteRep_homRep : IsDiscreteRep (homRep T M) :=
   ⟨fun f => Subgroup.isOpen_mono (H₁ := (P : Subgroup G))
     (fun g hg => homRep_ρ_of_mem P T M hT hM ⟨g, hg⟩ f) P.isOpen⟩
 
 /- English proof (translation)
-Establish `h : (fun v : V => m • v) = fun v => (m : k) • v` using `funext fun v => (Nat.cast_smul_eq_nsmul k m v).symm`. Rewrite using `[h]`. Use `⟨fun v w hvw => ?_, fun v => ⟨(m : k)⁻¹ • v, by simp [smul_smul, mul_inv_cancel₀ hm]⟩⟩` and prove the remaining obligations. Use `congrArg (fun x => (m : k)⁻¹ • x) hvw` as an intermediate fact. Simplify `this` using `[smul_smul, inv_mul_cancel₀ hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bijective_nsmul_of_ne_zero {V : Type*} [AddCommGroup V] [Module k V] {m : ℕ}
     (hm : (m : k) ≠ 0) : Function.Bijective fun v : V => m • v := by
@@ -174,7 +174,7 @@ noncomputable def coprimeTwistEquiv (n : ℕ) :
 include hTr hP in
 
 /- English proof (translation)
-The claim follows from `(coprimeTwistEquiv P T M hT hM hTr hP n).finrank_eq`.
+A detailed English derivation is pending.
 -/
 theorem finrank_cohomology_eq_finrank_invariants (n : ℕ) :
     Module.finrank k (cohomology M n) = Module.finrank k

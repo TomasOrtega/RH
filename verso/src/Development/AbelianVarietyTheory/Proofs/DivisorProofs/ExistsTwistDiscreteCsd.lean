@@ -23,9 +23,9 @@ Both sides reduce to the same expression.
 theorem chiInf_pow (χ : HChar E) (k : ℕ) (z : (Cinf E)ˣ) : chiInf (χ ^ k) z = chiInf χ z ^ k := rfl
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `exists_lin _ (continuous_chiInf χ)`. Establish `h1 : dchi χ = L` using `fderiv_extZero (continuous_chiInf χ) hL`. Establish `h2 : dchi (χ ^ k) = (k : ℝ) • L` using `fderiv_extZero (continuous_chiInf (χ ^ k)) fun z => by`. Rewrite using `[chiInf_pow, Units.val_pow_eq_pow_val, hL, ← Complex.exp_nat_mul]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dchi_pow (χ : HChar E) (k : ℕ) : dchi (χ ^ k) = (k : ℝ) • dchi χ := by
   obtain ⟨L, hL⟩ := exists_lin _ (continuous_chiInf χ)
@@ -36,16 +36,16 @@ theorem dchi_pow (χ : HChar E) (k : ℕ) : dchi (χ ^ k) = (k : ℝ) • dchi �
   rw [h1, h2]
 
 /- English proof (translation)
-Simplify using `only [expo, dchi_pow, ContinuousLinearMap.smul_apply, Complex.real_smul, Complex.ofReal_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem expo_pow (χ : HChar E) (k : ℕ) (τ : E →+* ℂ) : expo (χ ^ k) τ = k * expo χ τ := by
   simp only [expo, dchi_pow, ContinuousLinearMap.smul_apply, Complex.real_smul, Complex.ofReal_natCast]
   ring
 
 /- English proof (translation)
-Unfold `splitCentre`. Rewrite using `[chiDet, MonoidHom.comp_apply, det_infGL]`. Express the relevant statement in the definitionally equal form `chiInf μ _ = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[h, Units.val_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Establish `hz : ((GeneralLinearGroup.det (Units.map (Matrix.scalar (Fin a)).toMonoidHom (expU fun _ : InfinitePlace E => (t : ℂ))) : (Cinf E)ˣ) : Cinf E) v = ((Real.exp t ^ a : ℝ) : ℂ)`. Simplify using `[Matrix.scalar_apply, Matrix.det_diagonal, expU, Complex.ofReal_exp]`. Rewrite using `[hz, Complex.norm_real, Real.norm_of_nonneg (by positivity), div_self (by exact_mod_cast (by positivity : Real.exp t ^ a ≠ 0)), _root_.one_zpow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiDet_splitCentre {μ : HChar E} {e : InfinitePlace E → ℤ}
     (h : ∀ z : (Cinf E)ˣ, (chiInf μ z : ℂ) = ∏ v, (z.1 v / (‖z.1 v‖ : ℂ)) ^ e v) (t : ℝ) :
@@ -62,9 +62,9 @@ theorem chiDet_splitCentre {μ : HChar E} {e : InfinitePlace E → ℤ}
   rw [hz, Complex.norm_real, Real.norm_of_nonneg (by positivity), div_self (by exact_mod_cast (by positivity : Real.exp t ^ a ≠ 0)), _root_.one_zpow]
 
 /- English proof (translation)
-Take `⟨h1, μ, 𝓕, hμ, hF, hI⟩` from `h`. Use `⟨fun t g => ?_, μ, 𝓕, hμ, hF, ?_⟩` and prove the remaining obligations. Simplify using `only [mulChi_apply, map_mul, hs, one_mul, h1]`. Establish `e : ∀ g, ‖(mulChi a χ φ).1 g‖ₑ = ‖φ.1 g‖ₑ` using `fun g => by`. Establish `h2 : ‖((chiDet a χ g : ℂˣ) : ℂ)‖ₑ = 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← ofReal_norm_eq_enorm, show ‖((chiDet a χ g : ℂˣ) : ℂ)‖ = 1 from hu _, ENNReal.ofReal_one]`. Rewrite using `[mulChi_apply, enorm_mul, h2, mul_one]`. Simplify using `only [e]`. Conclude with `hI`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSqInt_mulChi {χ : HChar E} (hu : χ.IsUnitary) (hs : ∀ t, chiDet a χ (splitCentre E a t) = 1) {φ : Sm E a}
     (h : IsSqInt φ.1) : IsSqInt (mulChi a χ φ).1 := by
@@ -79,11 +79,9 @@ theorem isSqInt_mulChi {χ : HChar E} (hu : χ.IsUnitary) (hs : ∀ t, chiDet a 
     exact hI
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨φ, hφ, rfl⟩; exact (hV.aut φ hφ).mulChi χ sqInt := by rintro _ ⟨φ, hφ, rfl⟩; exact isSqInt_mulChi hu hs (hV.sqInt φ hφ) stable := by`. Introduce and unpack `o _ ⟨φ, hφ, rfl⟩`. Conclude with `⟨_, add_mem (V.smul_mem _ (hV.stable o φ hφ)) (V.smul_mem _ hφ), (act_mulChi χ o φ).symm⟩`. Use `ne_bot h := hV.ne_bot ((Submodule.map_eq_bot_iff (e := mulChi a χ)).1 h)`. Use `irred W hW hW' := by`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h` using `hV.irred (W.comap (mulChi a χ).toLinearMap) (fun φ hφ => by`. Take `⟨ψ, h1, h2⟩` from `hW hφ`. Rewrite using `[← (mulChi a χ).injective h2]) fun o φ hφ => by` and apply the resulting hypothesis. Establish `h1 : _ ∈ W.comap (mulChi a χ).toLinearMap` using `(act_mulChi χ o φ) ▸ hW' o _ hφ`. Conclude with `(Submodule.smul_mem_iff _ (Units.ne_zero (opMul χ o))).1 ((Submodule.add_mem_iff_left _ (Submodule.smul_mem _ _ hφ)).1 h1)`.
-
-Establish `e` using `Submodule.map_comap_eq_of_surjective (f := (mulChi a χ).toLinearMap) (mulChi a χ).surjective W`. Conclude with `h.imp (fun h => by rw [← e, h, Submodule.map_bot]) fun h => by rw [← e, h]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDiscrete_map {χ : HChar E} (hu : χ.IsUnitary) (hs : ∀ t, chiDet a χ (splitCentre E a t) = 1)
     {V : Submodule ℂ (Sm E a)} (hV : IsDiscrete V) : IsDiscrete (V.map (mulChi a χ).toLinearMap) where
@@ -104,9 +102,9 @@ theorem isDiscrete_map {χ : HChar E} (hu : χ.IsUnitary) (hs : ∀ t, chiDet a 
     exact h.imp (fun h => by rw [← e, h, Submodule.map_bot]) fun h => by rw [← e, h]
 
 /- English proof (translation)
-Take `⟨f, h0, hV, hf⟩` from `h`. Use `⟨(mulChi a χ).toLinearMap ∘ₗ f, fun h => h0 (LinearMap.ext fun v => (mulChi a χ).injective ?_), fun v => ⟨f v, hV v, rfl⟩, fun g v => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply, map_zero]`. Conclude with `LinearMap.congr_fun h v`. Express the relevant statement in the definitionally equal form `mulChi a χ (f (((CuspSub.locDet a χ w g : ℂˣ) : ℂ) • σ.ρ g v)) = rt E a (finGL E a (locGL E a w g)) (mulChi a χ (f v))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul f, hf g v, rt_mulChi, CuspSub.chiDet_locGL]`. Simplify using `only [map_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isLocCompGL_map (χ : HChar E) {V : Submodule ℂ (Sm E a)} {w : HeightOneSpectrum (𝓞 E)}
     {σ : SmIrr (GL (Fin a) (w.adicCompletion E))} (h : IsLocCompGL V w σ) :
@@ -123,9 +121,9 @@ theorem isLocCompGL_map (χ : HChar E) {V : Submodule ℂ (Sm E a)} {w : HeightO
     rfl
 
 /- English proof (translation)
-Use `⟨by rw [Multiset.card_map, h.1], ?_⟩` and prove the remaining obligations. Introduce and unpack `u _ ⟨φ, hφ, rfl⟩`. Express the relevant statement in the definitionally equal form `cap τ u (mulChi a χ φ) = _ • mulChi a χ φ`. Rewrite using `[cap_mulChi, h.2 _ φ hφ, map_smul, Multiset.map_map]`. Use `congr 3`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hasInfCharGL_map {V : Submodule ℂ (Sm E a)} {τ : E →+* ℂ} {m : Multiset ℂ} (h : HasInfCharGL V τ m)
     (χ : HChar E) : HasInfCharGL (V.map (mulChi a χ).toLinearMap) τ (m.map (· + expo χ τ)) := by

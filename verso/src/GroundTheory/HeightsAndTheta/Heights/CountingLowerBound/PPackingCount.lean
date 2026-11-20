@@ -9,17 +9,15 @@ open MeasureTheory Metric
 noncomputable section
 
 /- English proof (translation)
-Set `_ : MeasurableSpace E` to `borel E`. Establish `_ : BorelSpace E` using `⟨rfl⟩`. Use `set μ : Measure E := Measure.addHaar`. Use `set d := Module.finrank ℝ E`. Establish `hd : Set.PairwiseDisjoint (↑T : Set E) (fun x => ball x (lam / 2))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx y hy hxy`. Apply `Metric.ball_disjoint_ball` to reduce the goal to its premises. Rewrite using `[dist_eq_norm]`. Use `hsep x hx y hy hxy` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub : (⋃ x ∈ T, ball x (lam / 2)) ⊆ ball (0 : E) (R + lam / 2)`. Introduce `z hz`. Simplify using `only [Set.mem_iUnion] at hz`. Take `⟨x, hx, hz⟩` from `hz`. Rewrite `hz`, the goal using `[mem_ball]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : dist x 0 < R` using `by rw [dist_zero_right]; exact hT x hx`. Establish `h2` using `dist_triangle z x 0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `measure_mono (μ := μ) hsub`. Rewrite `h2` using `[measure_biUnion_finset hd (fun x _ => measurableSet_ball)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Finset.sum_congr rfl (fun x _ => Measure.addHaar_ball_of_pos μ x (half_pos hlam))]`. Rewrite `h2` using `[Finset.sum_const, nsmul_eq_mul, Measure.addHaar_ball_of_pos μ (0 : E) (r := R + lam / 2) (by positivity), ← mul_assoc]`. Establish `hc0 : μ (ball 0 1) ≠ 0` using `(measure_ball_pos μ (0 : E) one_pos).ne'`. Establish `hc1 : μ (ball 0 1) ≠ ⊤` using `measure_ball_lt_top.ne`. Rewrite `h2` using `[ENNReal.mul_le_mul_iff_left hc0 hc1, ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (Nat.cast_nonneg _), ENNReal.ofReal_le_ofReal_iff (by positivity)]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PackingCount.card_mul_le {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] (T : Finset E) {lam R : ℝ} (hlam : 0 < lam) (hR : 0 ≤ R)
@@ -55,25 +53,21 @@ theorem PackingCount.card_mul_le {E : Type*} [NormedAddCommGroup E] [NormedSpace
   exact h2
 
 /- English proof (translation)
-Introduce `V _ _ L W lam r a h`. Establish `: FiniteDimensional ℝ W` using `Module.finite_of_finrank_pos (by rw [h.finrank_eq]; exact h.one_le_a)`. Establish `hlam` using `h.lam_pos`. Establish `hr : 0 < r` using `lt_of_lt_of_le hlam h.lam_le_r`. Use `set B : ℝ := (1 + 2 * r / lam) ^ a with hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S : Set V := {v | v ∈ L ∧ ‖v‖ < r} with hS`. Establish `key : ∀ T : Finset V, ↑T ⊆ S → (T.card : ℝ) ≤ B`. Introduce `T hT`. Establish `hW : ∀ v ∈ T, v ∈ W` using `fun v hv => h.short_mem v (hT hv).1 (hT hv).2`. Use `set T' : Finset W := T.subtype (· ∈ W)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcard : T'.card = T.card`. Rewrite using `[Finset.card_subtype, Finset.filter_true_of_mem hW]`. Establish `hbd` using `PackingCount.card_mul_le T' hlam hr.le (fun x hx => by`. Rewrite `hx` using `[Finset.mem_subtype]`. Rewrite using `[Submodule.coe_norm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(hT hx).2)`. Use the proof step `(fun x hx y hy hxy => by`. Rewrite `hx`, `hy` using `[Finset.mem_subtype]`. Rewrite using `[Submodule.coe_norm, Submodule.coe_sub]`. Apply `h.lam_le_norm _ (h.sub_mem _ (hT hx).1 _ (hT hy).1)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Conclude with `hxy (Subtype.ext (sub_eq_zero.mp h0)))`. Rewrite `hbd` using `[hcard, h.finrank_eq]`. Establish `hpos : 0 < (lam / 2) ^ a` using `by positivity`. Rewrite `hbd` using `[← le_div_iff₀ hpos, ← div_pow]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `he : (r + lam / 2) / (lam / 2) = 1 + 2 * r / lam`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `hbd` using `[he]`. Then use the resulting hypothesis. Establish `hfin : S.Finite`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Assume the negation of the conclusion as `hinf`. Take `⟨T, hT, hTc⟩` from `(Set.not_finite.mp hinf).exists_subset_card_eq (⌈B⌉₊ + 1)`. Use `key T hT` as an intermediate fact. Rewrite `this` using `[hTc]`. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the linear relations using `[Nat.le_ceil B]`. Establish `hsub : {v | v ∈ L ∧ v ≠ 0 ∧ ‖v‖ < r} ⊆ S` using `fun v hv => ⟨hv.1, hv.2.2⟩`. Establish `hSB : (S.ncard : ℝ) ≤ B`. Rewrite using `[Set.ncard_eq_toFinset_card S hfin]`. Conclude with `key _ (by simp)`.
-
-Establish `hB3 : B ≤ (3 * r / lam) ^ a`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Establish `: lam ≤ r` using `h.lam_le_r`. Rewrite using `[show (1 : ℝ) + 2 * r / lam = (lam + 2 * r) / lam by field_simp]`. Conclude with `div_le_div_of_nonneg_right (by linarith) hlam.le`.
-
-Use `⟨hfin.subset hsub, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `Set.ncard_le_ncard hsub hfin` after adjusting the coercions. Use `_ ≤ B := hSB`. Use `_ ≤ (3 * r / lam) ^ a := hB3`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem PackingCount.proof : PackingCount.Statement := by
   intro V _ _ L W lam r a h

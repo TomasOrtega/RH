@@ -11,23 +11,19 @@ open MeasureTheory GlobalTheory.AutomorphicL2Unitary GlobalTheory.Cusp
 namespace GlobalTheory.KFinCuspApprox
 
 /- English proof (translation)
-Introduce `D θ hθ _ N τ e he φ hφ hc`. Use `set A : Formalism.REAL.KG (N.M.ε τ) → GA D N.V := fun k => atTau θ N.V τ ((N.M.fr τ)⁻¹ * Formalism.REAL.toMK k * N.M.fr τ) with hA`. Establish `hAc : Continuous A` using `(GlobalTheory.PointAtPlaceHom.continuousOn_atTau hθ N.V τ).comp_continuous GlobalTheory.SeriesToClosure.continuous_conjK fun k => GlobalTheory.Published.AutFin.conj_mem_UH (N.M.fr_unit τ) (N.M.fr_gram τ) k`. Establish `hl : LeftInv (GQ N.V) φ` using `hφ.left`. Establish `havg : ∀ x, GlobalTheory.KFinCuspApprox.avgN θ N τ e φ x = ∫ k, e k * φ (x * A k) ∂(Formalism.REAL.muK (N.M.ε τ))` using `fun x => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlA : LeftInv (GQ N.V) (GlobalTheory.KFinCuspApprox.avgN θ N τ e φ)` using `fun γ hγ g => by`. Simplify using `only [havg, mul_assoc, hl γ hγ]`. Use `(isCuspFun_iff hlA).2 fun W hW => funext fun x => ?_` and prove the remaining obligations. Establish `hcc` using `cocompact_single hW`. Establish `h0` using `congrFun ((isCuspFun_iff hl).1 hc W hW)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set NN := NA (IsoFlag.single hW) with hNN`. Establish `h𝓕` using `isFundamentalDomain_stdDom ((GQ N.V).subgroupOf NN) (Measure.haar : Measure NN)`. Establish `hfin` using `hcc.measure_ne_top h𝓕`. Use `show constTermOn (GQ N.V) NN _ x = 0`. Rewrite using `[hcc.constTermOn_eq_zero_iff h𝓕 hlA x]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz : ∀ y, ∫ n in stdDom ((GQ N.V).subgroupOf NN), φ ((n : GA D N.V) * y) ∂(Measure.haar : Measure NN) = 0` using `fun y => (hcc.constTermOn_eq_zero_iff h𝓕 hl y).1 (h0 y)`. Take `⟨K0, hK0, hs⟩` from `hcc`. Establish `hcont : Continuous fun p : NN × Formalism.REAL.KG (N.M.ε τ) => φ ((p.1 : GA D N.V) * x * A p.2)` using `hφ.cont.comp (((continuous_subtype_val.comp continuous_fst).mul continuous_const).mul (hAc.comp continuous_snd))`. Take `⟨C, hC⟩` from `(hK0.prod (isCompact_univ (X := Formalism.REAL.KG (N.M.ε τ)))).exists_bound_of_continuousOn hcont.continuousOn`. Establish `hb : ∀ (n : NN) k, ‖φ ((n : GA D N.V) * x * A k)‖ ≤ C` using `fun n k => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨γ, hγ, hk⟩` from `hs n`. Establish `h1` using `hC (γ * n, k) ⟨hk, trivial⟩`. Establish `h2` using `hl ((γ : NN) : GA D N.V) (Subgroup.mem_subgroupOf.1 hγ) ((n : GA D N.V) * x * A k)`. Simplify using `only [Subgroup.coe_mul] at h1`. Establish `e1 : ((γ : NN) : GA D N.V) * n * x * A k = (γ : GA D N.V) * ((n : GA D N.V) * x * A k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Simplify using `only [mul_assoc]`. Rewrite `h1` using `[e1, h2]`. Then use the resulting hypothesis. Take `⟨Ce, hCe⟩` from `(isCompact_univ (X := Formalism.REAL.KG (N.M.ε τ))).exists_bound_of_continuousOn he.continuousOn`. Use `haveI : IsFiniteMeasure ((Measure.haar : Measure NN).restrict (stdDom ((GQ N.V).subgroupOf NN))) := isFiniteMeasure_restrict.2 hfin`. Establish `hint : Integrable (Function.uncurry fun (n : NN) (k : Formalism.REAL.KG (N.M.ε τ)) => e k * φ ((n : GA D N.V) * x * A k)) (((Measure.haar : Measure NN).restrict (stdDom ((GQ N.V).subgroupOf NN))).prod (Formalism.REAL.muK (N.M.ε τ)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Integrable.mono' (integrable_const (Ce * C)) ?_ (ae_of_all _ fun p => ?_)` and prove the remaining obligations. Conclude with `((he.comp continuous_snd).mul hcont).aestronglyMeasurable`. Use `show ‖e p.2 * φ ((p.1 : GA D N.V) * x * A p.2)‖ ≤ Ce * C`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hCe p.2 trivial) (hb p.1 p.2) (norm_nonneg _) ((norm_nonneg _).trans (hCe p.2 trivial))`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (ae_of_all _ fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[integral_const_mul, ← hz (x * A k)]`. Simplify using `only [mul_assoc]`.
-
-Use `_ = 0 := by simp`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCuspFun_avgN : ∀ {D : D7} (θ : InfFam D), IsInfFam θ → GlobalTheory.FunPr.Hypotheses₂ → ∀ (N : GlobalTheory.Grid.Node D)
     (τ : D.what₂.Tau) (e : Formalism.REAL.KG (N.M.ε τ) → ℂ), Continuous e → ∀ φ : GA D N.V → ℂ, IsAutFunSm θ N.V φ →

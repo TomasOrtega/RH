@@ -3,9 +3,9 @@ import Mathlib
 namespace UpperTheory.V.PiLin
 
 /- English proof (translation)
-Establish `hf : Function.Injective (j.codRestrict (isotypicComponent R V S) h)` using `fun a b hab => hj (congrArg Subtype.val hab)`. Establish `hiso : IsIsotypicOfType R Y S` using `(IsIsotypicOfType.isotypicComponent R V S).of_injective _ hf`. Establish `: IsSemisimpleModule R Y` using `IsSemisimpleModule.of_injective _ hf`. Rewrite using `[eq_top_iff, ← IsSemisimpleModule.sSup_simples_eq_top]`. Use `sSup_le fun m hm => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: IsSimpleModule R m` using `hm`. Conclude with `le_sSup (hiso m)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_isotypic_of_injective {R S Y V : Type} [Ring R] [AddCommGroup S] [Module R S] [AddCommGroup Y] [Module R Y]
     [AddCommGroup V] [Module R V] [IsSimpleModule R S] (j : Y →ₗ[R] V) (hj : Function.Injective j)
@@ -22,21 +22,17 @@ theorem mem_isotypic_of_injective {R S Y V : Type} [Ring R] [AddCommGroup S] [Mo
   exact le_sSup (hiso m)
 
 /- English proof (translation)
-Use `haveI : σ.IsIrreducible := hσ`. Set `J : Representation.IntertwiningMap π ρ` to `j.intertwiningMap_of_isIntertwiningMap π ρ he`. Set `j'` to `Representation.IntertwiningMap.equivLinearMapAsModule π ρ J`. Establish `hj' : Function.Injective j'` using `hj`. Establish `h' : ∀ z, j' z ∈ isotypicComponent (MonoidAlgebra ℂ H) ρ.asModule σ.asModule`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Establish `hz` using `h z`. Use `Submodule.iSup_induction _ (motive := fun x => ρ.asModuleEquiv.symm x ∈ isotypicComponent (MonoidAlgebra ℂ H) ρ.asModule σ.asModule) hz ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `f x ⟨v, rfl⟩`. Set `F` to `Representation.IntertwiningMap.equivLinearMapAsModule σ ρ (f.1.intertwiningMap_of_isIntertwiningMap σ ρ f.2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle : LinearMap.range F ≤ isotypicComponent (MonoidAlgebra ℂ H) ρ.asModule σ.asModule`. Break down `F.injective_or_eq_zero with hF | hF` into its components or cases. Conclude with `le_sSup ⟨(LinearEquiv.ofInjective F hF).symm⟩`. Rewrite using `[hF, LinearMap.range_zero]`. Conclude with `bot_le`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hle ⟨σ.asModuleEquiv.symm v, rfl⟩`. Simplify using the standard rewrite rules. Introduce `x y hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `htop` using `mem_isotypic_of_injective j' hj' h'`. Establish `hy : π.asModuleEquiv.symm y ∈ isotypicComponent (MonoidAlgebra ℂ H) π.asModule σ.asModule`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Rewrite `hy` using `[isotypicComponent, sSup_eq_iSup']`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `key` using `Submodule.iSup_induction _ (motive := fun x => π.asModuleEquiv x ∈ ⨆ f : {f : S →ₗ[ℂ] Y // ∀ g v, f (σ g v) = π g (f v)}, LinearMap.range f.1) hy (by`. Introduce and unpack `⟨m, ⟨e⟩⟩ x hx`. Set `L : σ.asModule →ₗ[MonoidAlgebra ℂ H] π.asModule` to `m.subtype ∘ₗ e.symm.toLinearMap`. Set `F` to `(Representation.IntertwiningMap.equivLinearMapAsModule σ π).symm L`. Use `Submodule.mem_iSup_of_mem ⟨F.toLinearMap, fun g v => Representation.IntertwiningMap.isIntertwining σ π F g v⟩ ⟨σ.asModuleEquiv (e ⟨x, hx⟩), ?_⟩` and prove the remaining obligations.
-
-Use `show (L (e ⟨x, hx⟩) : π.asModule) = x`. Simplify using `[L])`. Use the proof step `(by simp)`. Use the proof step `(by`. Introduce `x z hx hz`.
-
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hz)`. Simplify using `using key`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem iso_sub {H S Y V : Type} [Group H] [AddCommGroup S] [Module ℂ S] [AddCommGroup Y] [Module ℂ Y]
     [AddCommGroup V] [Module ℂ V] (σ : Representation ℂ H S) (π : Representation ℂ H Y) (ρ : Representation ℂ H V)
@@ -90,9 +86,9 @@ theorem iso_sub {H S Y V : Type} [Group H] [AddCommGroup S] [Module ℂ S] [AddC
   simpa using key
 
 /- English proof (translation)
-Establish `hk : LinearMap.ker (Finsupp.linearCombination ℂ s) ≤ LinearMap.ker (Finsupp.linearCombination ℂ s')` using `fun c hc => LinearMap.mem_ker.mpr (h c (LinearMap.mem_ker.mp hc))`. Take `⟨g, hg⟩` from `LinearMap.exists_extend ((LinearMap.ker (Finsupp.linearCombination ℂ s)).liftQ (Finsupp.linearCombination ℂ s') hk ∘ₗ (Finsupp.linearCombination ℂ s).quotKerEquivRange.symm.toLinearMap)`. Use `⟨g, fun m => ?_⟩` and prove the remaining obligations. Establish `hm : s m = Finsupp.linearCombination ℂ s (Finsupp.single m 1)` using `by simp`. Use `LinearMap.congr_fun hg ⟨_, LinearMap.mem_range_self _ (Finsupp.single m (1 : ℂ))⟩` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearEquiv.coe_coe, LinearMap.quotKerEquivRange_symm_apply_image, Submodule.mkQ_apply, Submodule.liftQ_apply] at this`. Rewrite using `[hm, this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_desc {M V : Type} [AddCommGroup V] [Module ℂ V] (s s' : M → V)
     (h : ∀ c : M →₀ ℂ, Finsupp.linearCombination ℂ s c = 0 → Finsupp.linearCombination ℂ s' c = 0) :
@@ -112,11 +108,11 @@ theorem exists_desc {M V : Type} [AddCommGroup V] [Module ℂ V] (s s' : M → V
   simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on generalizing v with`. Consider the case `empty => simp`. Consider the case `insert b s hb ih`. Take `⟨t, ht⟩` from `Function.ne_iff.mp (ha b (Finset.mem_insert_self b s))`. Establish `hvs : ∀ i ∈ s, ∀ t, T t (v i) = χ i t • v i` using `fun i hi => hv i (Finset.mem_insert_of_mem hi)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : (a t - χ b t) • ∑ i ∈ insert b s, v i = ∑ i ∈ s, (χ i t - χ b t) • v i`. Rewrite using `[sub_smul, ← hx t, Finset.sum_insert hb, map_add, map_sum, Finset.sum_congr rfl (fun i hi => hvs i hi t), hv b (Finset.mem_insert_self b s) t]`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, Finset.smul_sum, smul_add]`. Normalize the expressions using the abelian group laws. Establish `hz` using `ih (fun i => (χ i t - χ b t) • v i) (fun i hi t' => by rw [map_smul, hvs i hi t', smul_comm]) (fun i hi => ha i (Finset.mem_insert_of_mem hi)) (fun t' => by rw [← key, map_smul, hx t', smul_comm])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite `hz` using `[← key]`. Conclude with `(smul_eq_zero.mp hz).resolve_left (sub_ne_zero.mpr (Ne.symm ht))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_equivariant_projection_onto_invariant_submodule {R V ι : Type*} [AddCommGroup V] [Module ℂ V] (T : R → V →ₗ[ℂ] V)
     (χ : ι → R → ℂ) (a : R → ℂ) (s : Finset ι) (v : ι → V)
@@ -142,51 +138,45 @@ private theorem exists_equivariant_projection_onto_invariant_submodule {R V ι :
     exact (smul_eq_zero.mp hz).resolve_left (sub_ne_zero.mpr (Ne.symm ht))
 
 /- English proof (translation)
-Establish `hYe : ∀ c, ∀ x ∈ ⨆ j : {j // χ j = c}, W j, ∀ t, T t x = c t • x`. Introduce `c x hx t`. Use `Submodule.iSup_induction _ (motive := fun x => T t x = c t • x) hx ?_ ?_ ?_` and prove the remaining obligations. Introduce `j y hy`. Rewrite using `[hW j.1 t y hy, j.2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `y z hy hz`. Rewrite using `[map_add, hy, hz, smul_add]`. Establish `hKz : ∀ c, ∀ x ∈ ⨆ j : {j // χ j ≠ c}, W j, (∀ t, T t x = c t • x) → x = 0`. Introduce `c x hx hxe`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs⟩` from `Submodule.mem_iSup_iff_exists_finset.mp hx`. Take `⟨μ, hμ⟩` from `(Submodule.mem_iSup_finset_iff_exists_sum _ _).mp hs`. Substitute `hμ` using the available equality. Conclude with `exists_equivariant_projection_onto_invariant_submodule T (fun j : {j // χ j ≠ c} => χ j.1) c s (fun j => (μ j : V)) (fun j _ t => hW j.1 t _ (μ j).2) (fun j _ => j.2) hxe`. Establish `hsplit : ∀ c, E = (⨆ j : {j // χ j = c}, W j) ⊔ ⨆ j : {j // χ j ≠ c}, W j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Rewrite using `[hsup, iSup_split W (fun j => χ j = c), iSup_subtype', iSup_subtype']`. Establish `hTK : ∀ c t, ∀ x ∈ ⨆ j : {j // χ j ≠ c}, W j, T t x ∈ ⨆ j : {j // χ j ≠ c}, W j`. Introduce `c t x hx`. Use `Submodule.iSup_induction _ (motive := fun x => T t x ∈ ⨆ j : {j // χ j ≠ c}, W j) hx ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j y hy`. Rewrite using `[hW j.1 t y hy]`. Conclude with `Submodule.mem_iSup_of_mem j (Submodule.smul_mem _ _ hy)`. Simplify using the standard rewrite rules. Introduce `y z hy hz`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Establish `hEY : ∀ c, ∀ F ∈ E, (∀ t, T t F = c t • F) → F ∈ ⨆ j : {j // χ j = c}, W j`. Introduce `c F hF hFe`. Rewrite `hF` using `[hsplit c]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, k, hk, rfl⟩` from `Submodule.mem_sup.mp hF`. Establish `hke : ∀ t, T t k = c t • k`. Introduce `t`. Establish `h1` using `hFe t`. Rewrite `h1` using `[map_add, hYe c y hy t, smul_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_left_cancel h1`. Rewrite using `[hKz c k hk hke, add_zero]`. Conclude with `hy`. Establish `hYE : ∀ c, (⨆ j : {j // χ j = c}, W j) ≤ E`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsplit c]`. Conclude with `le_sup_left`. Establish `hKE : ∀ c, (⨆ j : {j // χ j ≠ c}, W j) ≤ E`. Introduce `c`. Rewrite using `[hsplit c]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_sup_right`. Establish `hπY : ∀ c g, ∀ F ∈ ⨆ j : {j // χ j = c}, W j, π g F ∈ ⨆ j : {j // χ j = c}, W j`. Introduce `c g F hF`. Use `hEY c _ (hE g F (hYE c hF)) fun t => ?_` and prove the remaining obligations. Rewrite using `[hc t g F (hYE c hF), hYe c F hF t, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hπK : ∀ c g, ∀ x ∈ ⨆ j : {j // χ j ≠ c}, W j, π g x ∈ ⨆ j : {j // χ j ≠ c}, W j`. Introduce `c g x hx`. Use `Submodule.iSup_induction _ (motive := fun x => π g x ∈ ⨆ j : {j // χ j ≠ c}, W j) hx ?_ ?_ ?_` and prove the remaining obligations. Introduce `j y hy`. Establish `h1 : π g y ∈ ⨆ i : {i // χ i = χ j.1}, W i` using `hπY (χ j.1) g y (Submodule.mem_iSup_of_mem (⟨j.1, rfl⟩ : {i // χ i = χ j.1}) hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hle : (⨆ i : {i // χ i = χ j.1}, W i) ≤ ⨆ j : {j // χ j ≠ c}, W j` using `iSup_le fun i => le_iSup (fun j : {j // χ j ≠ c} => W j.1) ⟨i.1, by rw [i.2]; exact j.2⟩`. Conclude with `hle h1`. Simplify using the standard rewrite rules. Introduce `y z hy hz`. Rewrite using `[map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ hy hz`. Establish `h0'` using `h0`. Rewrite `h0'` using `[hsup]`. Take `⟨s, hs⟩` from `Submodule.mem_iSup_iff_exists_finset.mp h0'`. Take `⟨μ, hμ⟩` from `(Submodule.mem_iSup_finset_iff_exists_sum _ _).mp hs`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨j1, -, hu⟩ : ∃ j1 ∈ s, ∑ i ∈ s.filter (fun i => χ i = χ j1), (μ i : V) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← hμ, ← Finset.sum_fiberwise_of_maps_to (g := χ) (t := s.image χ) (fun i hi => Finset.mem_image_of_mem χ hi)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_eq_zero fun c hc => ?_` and prove the remaining obligations. Take `⟨j, hj, rfl⟩` from `Finset.mem_image.mp hc`. Conclude with `hcon j hj`. Take `⟨j0, hj0, hμ0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hu`. Establish `hχ : χ j0 = χ j1` using `(Finset.mem_filter.mp hj0).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu` using `[← hχ]`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl E`. Establish `hYK : IsCompl (⨆ j : {j // χ j = χ j0}, W j) ((⨆ j : {j // χ j ≠ χ j0}, W j) ⊔ C)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`.
+Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hxY hxKC`. Take `⟨k, hk, c', hc', rfl⟩` from `Submodule.mem_sup.mp hxKC`. Establish `hc'E : c' ∈ E`. Establish `h2 : c' = (k + c') - k` using `by abel`. Rewrite using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.sub_mem _ (hYE _ hxY) (hKE _ hk)`. Establish `hc'0 : c' = 0` using `(Submodule.disjoint_def.mp hC.disjoint) c' hc'E hc'`. Substitute `hc'0` using the available equality. Rewrite `hxY`, the goal using `[add_zero]`. Conclude with `hKz (χ j0) k hk (hYe (χ j0) k hxY)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[codisjoint_iff, ← sup_assoc, ← hsplit (χ j0)]`. Conclude with `hC.sup_eq_top`. Establish `hpY : ∀ y (hy : y ∈ ⨆ j : {j // χ j = χ j0}, W j), Submodule.projectionOnto _ _ hYK y = ⟨y, hy⟩` using `fun y hy => Submodule.projectionOnto_apply_of_mem_left hYK hy`. Establish `hpK : ∀ k ∈ ⨆ j : {j // χ j ≠ χ j0}, W j, Submodule.projectionOnto _ _ hYK k = 0` using `fun k hk => Submodule.projectionOnto_apply_of_mem_right hYK (Submodule.mem_sup_left hk)`. Use `⟨j0, _, Submodule.projectionOnto _ _ hYK, ?_, hπY (χ j0), ?_, ?_, ?_, le_rfl⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `hbot`. Conclude with `hμ0 ((Submodule.eq_bot_iff _).mp hbot _ (μ j0).2)`. Establish `huY : (∑ i ∈ s.filter (fun i => χ i = χ j0), (μ i : V)) ∈ ⨆ j : {j // χ j = χ j0}, W j` using `Submodule.sum_mem _ fun i hi => Submodule.mem_iSup_of_mem (⟨i, (Finset.mem_filter.mp hi).2⟩ : {j // χ j = χ j0}) (μ i).2`. Establish `hrK : (∑ i ∈ s.filter (fun i => ¬ χ i = χ j0), (μ i : V)) ∈ ⨆ j : {j // χ j ≠ χ j0}, W j` using `Submodule.sum_mem _ fun i hi => Submodule.mem_iSup_of_mem (⟨i, (Finset.mem_filter.mp hi).2⟩ : {j // χ j ≠ χ j0}) (μ i).2`. Introduce `hp`.
-
-Apply `hu` to reduce the goal to its premises. Rewrite `hp` using `[← hμ, ← Finset.sum_filter_add_sum_filter_not s (fun i => χ i = χ j0), map_add, hpK _ hrK, add_zero, hpY _ huY]`. Simplify using `using congrArg Subtype.val hp`. Introduce `t F hF`. Rewrite `hF` using `[hsplit (χ j0)]`.
-
-Take `⟨y, hy, k, hk, rfl⟩` from `Submodule.mem_sup.mp hF`. Simplify using `only [map_add, map_smul, hYe _ y hy t, hpK _ hk, hpK _ (hTK _ t k hk), add_zero]`. Introduce `g F hF`. Rewrite `hF` using `[hsplit (χ j0)]`. Take `⟨y, hy, k, hk, rfl⟩` from `Submodule.mem_sup.mp hF`.
-
-Simplify using `[hpK _ hk, hpK _ (hπK _ g k hk), hpY _ hy, hpY _ (hπY _ g y hy)]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_proj {R G V : Type} {J : Type 1} [AddCommGroup V] [Module ℂ V] (T : R → V →ₗ[ℂ] V) (π : G → V →ₗ[ℂ] V)
     (E : Submodule ℂ V) (hE : ∀ g, ∀ F ∈ E, π g F ∈ E) (hc : ∀ t g, ∀ F ∈ E, T t (π g F) = π g (T t F))

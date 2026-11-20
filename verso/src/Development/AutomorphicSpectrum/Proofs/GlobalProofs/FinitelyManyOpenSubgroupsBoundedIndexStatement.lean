@@ -6,7 +6,7 @@ import GroundTheory.ProfiniteCohomology.ContinuousCochains
 open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh ReciprocityTheory.Gal Formalism.ConjugateSelfDual
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.GlobalFiniteness.openSubgroups_finite_of_fields_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FFinitelyManyOpenSubgroupsBoundedIndex.lean&line=9#L9)
 -/

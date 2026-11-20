@@ -24,19 +24,19 @@ namespace GlobalTheory.Dict
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hC E _ _ _ H Dw l Xo c r U hr hA hU σ hσ hG hP a n hdom hlast hn hχ`. Establish `hrk : r = Dw.p + Dw.q` using `(hU σ hσ).1`. Establish `h1 : 1 ≤ Dw.p + Dw.q` using `hrk ▸ hr`. Establish `hL : Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `hB : Out.SecBaseChangeSt` using `hL.secBaseChange`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnr : Dw.p + Dw.q ≤ n`. Establish `h0 : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Establish `: r ≤ Module.finrank ℚ E * r` using `Nat.le_mul_of_pos_left r h0`. Use linear arithmetic over natural numbers and integers. Establish `hd : ∃ d : DeltaDat Xo c n, d.IsLev ∧ (∃ _ : StarRing (𝓞 E), IsNab d.Xo₂ d.c₂ d.nab₂) ∧ d.cδ = 1 ∧ d.pd = 1 ∧ d.l₂.A = l.A ∧ ∃ ph x₀, d.PhiPin ph 1 x₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Take `⟨d, e1, -, e2, -, -, hδ, hlev, hnab⟩` from `GlobalTheory.LevelCover.exists_deltaDat_isLev E H Dw l Xo c h1 n 1 ⊤ l Xo c rfl ⟨dvd_rfl, le_rfl, dvd_rfl⟩ (Nat.mul_one _).symm (Nat.coprime_one_left _) (Ideal.mul_top _).symm (top_sup_eq _)`. Take `⟨f, ph, x₀, hpin⟩` from `GlobalTheory.exists_phiPin_of_character E H Dw l Xo c n d hlev hnr 1`. Conclude with `⟨{ d with φδ := f }, hlev, hnab, hδ, e1, congrArg (·.A) e2, ph, x₀, hpin⟩`. Take `⟨d, hlev, hnab, hδ, hpe, hAe, ph, x₀, hpin⟩` from `hd`. Establish `hT : AllTest d.Xo₂ d.c₂` using `GlobalTheory.Frames.allTest_of_secBaseChange hB E H Dw d.l₂ d.Xo₂ d.c₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, nab, -⟩` from `GlobalTheory.CanonConn.exists_isNab hL E H Dw l Xo c`. Establish `hunit : UnitC d` using `fun A y => by`. Establish `: evR d.Xo₂ d.c₂ d.cδ y = 1`. Rewrite using `[hδ]`. Conclude with `evalAt_one _ _ _ (hT _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, norm_one]`. Establish `h3 : ¬ 3 ∣ d.pd` using `by rw [hpe]; decide`. Establish `htie : d.PsiTie 1`. Introduce `k g ρ _ _ _ _ K _ _ _ y y' _`. Establish `h : ∀ z : FrPt d.Xo₂ d.c₂ K, evR d.Xo₂ d.c₂ d.cδ z = 1` using `fun z => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hδ]`. Conclude with `evalAt_one _ _ _ (hT _ _)`. Express the relevant statement in the definitionally equal form `evR d.Xo₂ d.c₂ d.cδ y' = algebraMap d.c₂.F K (d.eF ((1 : c.Fˣ) : c.F)) * evR d.Xo₂ d.c₂ d.cδ y`. Rewrite using `[h y, h y']`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htot : ShortValTot Xo c nab 1 0 a n d` using `GlobalTheory.shortValTot_of_pinned hL hC E H Dw l Xo c n d (GlobalTheory.levelMaps_closed hL E H Dw h1) (GlobalTheory.Frames.algebraic_laws hB E H Dw l Xo c).2.2.1 (GlobalTheory.Frames.allTest_of_secBaseChange hB E H Dw l Xo c) (GlobalTheory.Frames.algebraic_laws hB E H Dw _ _ _) …`. Use `(GlobalTheory.T.cuspForms_vanishing_off_frames_le_span_shortTheta hC E H Dw l Xo c n d σ r (U σ) hσ (hU σ hσ) hr hA hG hP hlev hnab hunit h3 (fun _ => ⟨ph, 1, x₀, hpin⟩) nab 1 0 a Nat.one_pos hdom hn hχ htot).trans (Submodule.span_mono (Set.image_mono ?_))` and prove the remaining obligations. Conclude with `GlobalTheory.T.short_thetaSeries_dominant_weight_isCuspForm hC E H Dw l Xo c n d r U hr hU hlev hnab hunit (fun _ => ⟨ph, 1, x₀, hpin⟩) nab 1 0 a hdom hlast`.
+A detailed English derivation is pending.
 -/
 theorem holSub0_le_span_cusp : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r), 1 ≤ r → l.A = 1 → (∀ σ, GoodEmb c σ → Formalism.L2.PjFree.IsUnf (U σ)) → ∀ σ, GoodEmb c σ → (∀ k k', ((U σ).X k).Gm = ((U σ).X k').Gm ∧ ((U σ).X k).ξ0 = ((U σ).X k').ξ0) → (∀ k, HasPrinc ((U σ).X k) l.M) → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → LastPos Dw a → 4 * (Module.finrank ℚ E * r) + 4 ≤ n → (∀ k, ChiOne ((U σ).X k) (Formalism.L2.PjFree.laU (U σ) a n k)) → GlobalTheory.Dict.holSub0 (U σ).X (Formalism.L2.PjFree.laU (U σ) a n) ≤ Submodule.span ℂ (Formalism.L2.PjFree.rdU (U σ) '' (Formalism.L2.PjFree.cusp Xo c U a n : Set (Rul Xo c))) := by
   intro hC E _ _ _ H Dw l Xo c r U hr hA hU σ hσ hG hP a n hdom hlast hn hχ

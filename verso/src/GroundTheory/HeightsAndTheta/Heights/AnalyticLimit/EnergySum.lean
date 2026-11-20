@@ -38,9 +38,9 @@ section Proof
 variable {D : ℕ}
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `ReciprocityTheory.AnForm.A.exists_multilinearMap_eq_mdisc (D := D)`. Rewrite using `[← hM, MultilinearMap.map_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ, norm_smul, hM, norm_prod]`. Take `⟨him, hre⟩` from `ReciprocityTheory.AnForm.A.mdisc_nonneg_of_posSemidef _ fun k => hB k (σ k)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hz : mdisc (fun k => B k (σ k)) = ((mdisc fun k => B k (σ k)).re : ℂ)` using `Complex.ext (by simp) (by simp [him])`. Rewrite using `[hz, Complex.norm_of_nonneg hre]`. Simplify using `[Complex.norm_real]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_mdisc_sum_le {m : ℕ} (a : Fin D → Fin m → ℝ)
     (B : Fin D → Fin m → Matrix (Fin D) (Fin D) ℂ) (hB : ∀ k i, (B k i).PosSemidef) :
@@ -57,9 +57,9 @@ theorem norm_mdisc_sum_le {m : ℕ} (a : Fin D → Fin m → ℝ)
   simp [Complex.norm_real]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h` using `ReciprocityTheory.AnForm.M.hessC_const_mul' (D := D) 0 (fun _ => (0 : ℝ)) z`. Simplify using `using h`. Consider the case `insert i s hi ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Repeatedly rewrite using `[Finset.sum_insert hi]`. Rewrite using `[ReciprocityTheory.AnForm.M.hessC_add' _ _ z (contDiffAt_const.mul (hf i (Finset.mem_insert_self _ _))) (ContDiffAt.sum fun i' hi' => contDiffAt_const.mul (hf i' (Finset.mem_insert_of_mem hi'))), ReciprocityTheory.AnForm.M.hessC_const_mul', ih fun i' hi' => hf i' (Finset.mem_inse …`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hessC_finset_sum {ι : Type*} (s : Finset ι) (c : ι → ℝ) (f : ι → (Fin D → ℂ) → ℝ)
     (z : Fin D → ℂ) (hf : ∀ i ∈ s, ContDiffAt ℝ 2 (f i) z) :
@@ -78,7 +78,7 @@ theorem hessC_finset_sum {ι : Type*} (s : Finset ι) (c : ι → ℝ) (f : ι �
 variable {X : Type*} [TopologicalSpace X]
 
 /- English proof (translation)
-The claim follows from `|locDens A (fun k => lincomb m (a k) P) j y| ≤ ∑ σ : Fin D → Fin m, (∏ k, |a k (σ k)|) * locDens A (fun k => P (σ k)) j y := by have hmem : ∀ i, (A.chart j).symm y ∈ (P i).U ((A.chart j).symm y) := fun i => (P i).mem_U _ let f : Fin m → (Fin D → ℂ) → ℝ := fun i y' => (P i).φ ((A. …`.
+A detailed English derivation is pending.
 -/
 theorem abs_locDens_lincomb_le (A : FinHolAtlas D X) (Yo : Set X) {m : ℕ} (P : Fin m → LocPot X)
     (a : Fin D → Fin m → ℝ) (hpot : ∀ i, IsPotential A (P i)) (hnn : ∀ i, FormNonneg A Yo (P i))
@@ -117,15 +117,11 @@ theorem abs_locDens_lincomb_le (A : FinHolAtlas D X) (Yo : Set X) {m : ℕ} (P :
         ring
 
 /- English proof (translation)
-Unfold `tvInt mInt`. Use `split_ifs with h`. Simplify using `only [integralWith]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun j _ => integral_mono_of_nonneg ?_ (integrable_finsetSum _ fun σ _ => (hint σ h.some j).const_mul _) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Filter.Eventually.of_forall fun y => mul_nonneg (mul_nonneg (h.some.nonneg j _) (Set.indicator_nonneg (fun _ _ => zero_le_one) _)) (abs_nonneg _)`. Use `(ae_restrict_iff' (A.chart j).open_target.measurableSet).2 (Filter.Eventually.of_forall fun y hy => ?_)` and prove the remaining obligations. Distinguish the cases in `hY : (A.chart j).symm y ∈ Yo`. Simplify using `only [Set.indicator_of_mem hY, Pi.one_apply, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun σ _ => by ring`. Simplify using `[hY]`. Use `_ = ∑ j, ∑ σ : Fin D → Fin m, (∏ k, |a k (σ k)|) * ∫ y in (A.chart j).target, h.some.χ j ((A.chart j).symm y) * Yo.indicator 1 ((A.chart j).symm y) * locDens A (fun k => P (σ k)) j y := by`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[integral_finsetSum _ fun σ _ => (hint σ h.some j).const_mul _]`. Conclude with `Finset.sum_congr rfl fun σ _ => integral_const_mul _ _`. Use `_ = _ := by`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun σ _ => (Finset.mul_sum _ _ _).symm`.
-
-Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tvInt_lincomb_le (A : FinHolAtlas D X) (Yo : Set X) {m : ℕ} (P : Fin m → LocPot X)
     (a : Fin D → Fin m → ℝ) (hpot : ∀ i, IsPotential A (P i)) (hnn : ∀ i, FormNonneg A Yo (P i))
@@ -171,7 +167,7 @@ theorem tvInt_lincomb_le (A : FinHolAtlas D X) (Yo : Set X) {m : ℕ} (P : Fin m
   · simp
 
 /- English proof (translation)
-Introduce `D X _ A Yo m P a V hpot hnn hσ`. Use `(tvInt_lincomb_le A Yo P a hpot hnn fun σ => (hσ σ).1).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum, Finset.sum_mul]`. Conclude with `Finset.sum_le_sum fun σ _ => mul_le_mul_of_nonneg_left (hσ σ).2 (Finset.prod_nonneg fun k _ => abs_nonneg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EnergySum.proof : EnergySum.Statement := by
   intro D X _ A Yo m P a V hpot hnn hσ

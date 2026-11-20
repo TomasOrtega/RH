@@ -15,11 +15,9 @@ namespace Formalism.L2.SG.Pf.EquivPf
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hG : ∀ i j, hJ ε (Q *ᵥ bvec i) (Q *ᵥ bvec j) = Hpk k r i j`. Introduce `i j`. Rewrite using `[hJ_QQ ε Q _ hg]`. Use `show star (Pi.single i (1 : ℂ)) ⬝ᵥ (Hpk k r *ᵥ bvec j) = Hpk k r i j`. Rewrite using `[star_single_dot]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mat_apply_bvec (Hpk k r) i j).symm`. Conclude with `{ ee := fun a b => by rw [hG, Hpk_ee] ff := fun a b => by rw [hG, Hpk_ff] ef := fun a b => by rw [hG, Hpk_ef] ez := fun a => by rw [hG, Hpk_ew] fz := fun a => by rw [hG, Hpk_fw] zz := by rw [hG, Hpk_ww, if_pos rfl, if_pos (by simp)] ww := fun a b => by`. Rewrite using `[hG, Hpk_ww]`. Distinguish the cases in `hab : a = b`. Substitute `hab; rw [if_pos rfl, if_pos rfl, if_neg (by simp only; omega)]` using the available equality.
-
-Rewrite using `[if_neg (fun h => hab (Fin.ext (by simpa using congrArg Fin.val h))), if_neg hab]`. Use `ew := fun c a => by rw [hG, Hpk_ew]`. Use `fw := fun c a => by rw [hG, Hpk_fw]`. Use `zw := fun a => by rw [hG, Hpk_ww, if_neg (fun h => by have := congrArg Fin.val h; simp at this; omega)] }`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_of_tr {ε : Fin (2 * r + k + 1) → Bool} {Q : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : Qᴴ * Formalism.REAL.Jm ε * Q = Hpk k r) :
@@ -48,11 +46,11 @@ theorem frame_of_tr {ε : Fin (2 * r + k + 1) → Bool} {Q : Matrix (Fin (2 * r 
       zw := fun a => by rw [hG, Hpk_ww, if_neg (fun h => by have := congrArg Fin.val h; simp at this; omega)] }
 
 /- English proof (translation)
-Unfold `Qm`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply]`. Unfold `colQ`. Apply the tactic sequence `split_ifs with h1 h2 h3 <;> simp only [bvec, eI, esI, wI] <;> first`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `(simp [Matrix.mulVec_single]; done)`. Consider the case `(simp [Matrix.mulVec_single]; congr 1; ext; simp <;> omega)`. Consider the case `(simp [Matrix.mulVec_single_one]; done)`. Consider the case `(simp [Matrix.mulVec_single_one]; congr 1; ext; simp <;> omega)`. Consider the case `(simp [Matrix.mulVec, dotProduct, Pi.single_apply]; done)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp [Matrix.mulVec, dotProduct, Pi.single_apply]; congr 1; ext; simp <;> omega)`. Consider the case `(simp [Matrix.mulVec_single]; omega)`.
+Treat this case separately. Treat this case separately.
 -/
 theorem Qm_of_tr (Q : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Qm (fun a => Q *ᵥ bvec (eI k r a)) (fun a => Q *ᵥ bvec (esI k r a))
@@ -72,7 +70,7 @@ theorem Qm_of_tr (Q : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     | (simp [Matrix.mulVec_single]; omega)
 
 /- English proof (translation)
-Establish `h1` using `Qi_mul_Qm (frame_of_tr hg)`. Rewrite `h1` using `[Qm_of_tr]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, Matrix.mul_one]`. Use `_ = Qi := by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Qi_of_tr {ε : Fin (2 * r + k + 1) → Bool} {Q Qi : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (h2 : Q * Qi = 1) (hg : Qᴴ * Formalism.REAL.Jm ε * Q = Hpk k r) :
@@ -86,9 +84,9 @@ theorem Qi_of_tr {ε : Fin (2 * r + k + 1) → Bool} {Q Qi : Matrix (Fin (2 * r 
     _ = Qi := by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `spanLt`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, ha, rfl⟩)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Establish `hea : e a = (c a)⁻¹ • (c a • e a)` using `by rw [smul_smul, inv_mul_cancel₀ (hc a), one_smul]`. Rewrite using `[SetLike.mem_coe, hea]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, ha, rfl⟩)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanLt_scale {n : ℕ} (e : Fin r → Fin n → ℂ) (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) (p : ℕ) :
     spanLt (fun a => c a • e a) p = spanLt e p := by
@@ -104,9 +102,9 @@ theorem spanLt_scale {n : ℕ} (e : Fin r → Fin n → ℂ) (c : Fin r → ℂ)
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, ha, rfl⟩)
 
 /- English proof (translation)
-Establish `hs : ∀ (a : Fin r) (S : Submodule ℂ (Fin n → ℂ)) (x : Fin n → ℂ), c a • x ∈ S ↔ x ∈ S` using `fun a S x => Submodule.smul_mem_iff S (hc a)`. Establish `hsp : ∀ p, spanLt (fun a => c a • e a) p = spanLt e p` using `spanLt_scale e c hc`. Unfold `InN InS`. Introduce `h`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `simpa [hsp, hs, Matrix.mulVec_smul, hc] using h`. Consider the case `simpa [hsp, hs, Matrix.mulVec_smul, hc, hJ, dotProduct_smul, smul_dotProduct, mul_eq_zero] using h`. Consider the case `simpa [hsp, hs, Matrix.mulVec_smul, hc, hJ, Matrix.dotProduct_smul, Matrix.smul_dotProduct, mul_eq_zero] using h`. Consider the case `(unfold hJ at h ⊢; simp only [hsp, hs, Matrix.mulVec_smul] at h ⊢; done)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inN_scale {n : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0)
     (z : Fin n → ℂ) (g : Matrix (Fin n) (Fin n) ℂ) :
@@ -122,9 +120,9 @@ theorem inN_scale {n : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) 
     | (unfold hJ at h ⊢; simp only [hsp, hs, Matrix.mulVec_smul] at h ⊢; done)
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hF` using `frame_of_tr hg`. Establish `hz : Qm (fun a => Q *ᵥ bvec (eI k r a)) (fun a => Q *ᵥ bvec (esI k r a)) (fun c : Fin k => Q *ᵥ bvec (wI k r ⟨c.val, by omega⟩)) (Q *ᵥ bvec (wI k r (Fin.last k))) *ᵥ (Qi *ᵥ z) = z`. Rewrite using `[Qm_of_tr, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Establish `h` using `rev_N hF hz hzB hm`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Qm_of_tr, Qi_of_tr h2 hg]`. Establish `hE : (fun a => Q *ᵥ bvec (eI k r a)) = fun a => c a • e a` using `funext fun a => hcolE a`. Rewrite `h` using `[hE]`. Conclude with `inN_scale ε e c hc z _ h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inN_loc {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ)
     (Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ) (h1 : Qi * Q = 1) (h2 : Q * Qi = 1)
@@ -145,11 +143,11 @@ theorem inN_loc {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (Q : Ma
   exact inN_scale ε e c hc z _ h
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hF` using `frame_of_tr hg`. Establish `hz : Qm (fun a => Q *ᵥ bvec (eI k r a)) (fun a => Q *ᵥ bvec (esI k r a)) (fun c : Fin k => Q *ᵥ bvec (wI k r ⟨c.val, by omega⟩)) (Q *ᵥ bvec (wI k r (Fin.last k))) *ᵥ (Qi *ᵥ z) = z`. Rewrite using `[Qm_of_tr, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Take `⟨hE, hFf, hZ⟩` from `rev_UW hF hz hh`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hE`, `hFf`, `hZ` using `[Qm_of_tr, Qi_of_tr h2 hg]`. Use `⟨fun a => ?_, fun a => ?_, hZ⟩` and prove the remaining obligations. Use `hE a` as an intermediate fact. Express the relevant statement in the definitionally equal form `(Q * h * Qi) *ᵥ (Q *ᵥ Pi.single (eI k r a) 1) = Q *ᵥ Pi.single (eI k r a) 1 at this`. Rewrite `this` using `[hcolE, Matrix.mulVec_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `smul_right_injective _ (hc a) this`. Use `hFf a` as an intermediate fact. Express the relevant statement in the definitionally equal form `(Q * h * Qi) *ᵥ (Q *ᵥ Pi.single (esI k r a) 1) = Q *ᵥ Pi.single (esI k r a) 1 at this`. Rewrite `this` using `[hcolF, Matrix.mulVec_smul]`. Conclude with `smul_right_injective _ (hd a) this`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_loc {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ)
     (Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ) (h1 : Qi * Q = 1) (h2 : Q * Qi = 1)
@@ -176,9 +174,9 @@ theorem fix_loc {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (Q : Ma
     exact smul_right_injective _ (hd a) this
 
 /- English proof (translation)
-Establish `hs : ∀ (a : Fin r) (S : Submodule ℂ (Fin n → ℂ)) (x : Fin n → ℂ), c a • x ∈ S ↔ x ∈ S` using `fun a S x => Submodule.smul_mem_iff S (hc a)`. Establish `hsp : ∀ p, spanLt (fun a => c a • e a) p = spanLt e p` using `spanLt_scale e c hc`. Unfold `InN InS`. Introduce `h`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `simpa [hsp, hs, Matrix.mulVec_smul, hc] using h`. Consider the case `simpa [hsp, hs, Matrix.mulVec_smul, hc, hJ, dotProduct_smul, smul_dotProduct, mul_eq_zero] using h`. Consider the case `simpa [hsp, hs, Matrix.mulVec_smul, hc, hJ, Matrix.dotProduct_smul, Matrix.smul_dotProduct, mul_eq_zero] using h`. Consider the case `(unfold hJ at h ⊢; simp only [hsp, hs, Matrix.mulVec_smul] at h ⊢; done)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inN_scale' {n : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0)
     (z : Fin n → ℂ) (g : Matrix (Fin n) (Fin n) ℂ) :
@@ -194,11 +192,11 @@ theorem inN_scale' {n : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ)
     | (unfold hJ at h ⊢; simp only [hsp, hs, Matrix.mulVec_smul] at h ⊢; done)
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hF` using `frame_of_tr hg`. Establish `hE : (fun a => Q *ᵥ bvec (eI k r a)) = fun a => c a • e a` using `funext fun a => hcolE a`. Establish `hN' : InN ε (fun a => Q *ᵥ bvec (eI k r a)) (Q *ᵥ bvec (wI k r (Fin.last k))) s`. Rewrite using `[hE]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨ha, -⟩, hy⟩` from `inN_scale' ε e c hc z s hN`. Use `⟨⟨ha, ?_⟩, hy⟩` and prove the remaining obligations. Apply `hy` to reduce the goal to its premises. Introduce `a`. Rewrite using `[← hE]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hF.ez a`. Establish `h` using `conj_mem_Nset hF ⟨1, by rw [one_smul]⟩ hU hN'`. Rewrite `h` using `[Qm_of_tr, Qi_of_tr h2 hg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem nset_loc {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ)
     (Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ) (h1 : Qi * Q = 1) (h2 : Q * Qi = 1)
@@ -221,9 +219,9 @@ theorem nset_loc {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (Q : M
   rwa [Qm_of_tr, Qi_of_tr h2 hg] at h
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hF` using `frame_of_tr hg`. Establish `hzQ : Qm (fun a => Q *ᵥ bvec (eI k r a)) (fun a => Q *ᵥ bvec (esI k r a)) (fun c : Fin k => Q *ᵥ bvec (wI k r ⟨c.val, by omega⟩)) (Q *ᵥ bvec (wI k r (Fin.last k))) *ᵥ (Qi *ᵥ z) = z`. Rewrite using `[Qm_of_tr, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Establish `he' : ∀ a, s *ᵥ (Q *ᵥ bvec (eI k r a)) = Q *ᵥ bvec (eI k r a)` using `fun a => by show s *ᵥ (Q *ᵥ Pi.single (eI k r a) 1) = Q *ᵥ Pi.single (eI k r a) 1`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcolE, Matrix.mulVec_smul, he]`. Establish `hf' : ∀ a, s *ᵥ (Q *ᵥ bvec (esI k r a)) = Q *ᵥ bvec (esI k r a)` using `fun a => by show s *ᵥ (Q *ᵥ Pi.single (esI k r a) 1) = Q *ᵥ Pi.single (esI k r a) 1`. Rewrite using `[hcolF, Matrix.mulVec_smul, hf]`. Establish `h` using `conj_mem_UWset hF hzQ hU he' hf' hz`. Rewrite `h` using `[Qm_of_tr, Qi_of_tr h2 hg]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem uw_loc {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ)
     (Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ) (h1 : Qi * Q = 1) (h2 : Q * Qi = 1)
@@ -247,11 +245,11 @@ theorem uw_loc {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (Q : Mat
   rwa [Qm_of_tr, Qi_of_tr h2 hg] at h
 
 /- English proof (translation)
-Establish `key : ∀ (a : Fin r) (w : Fin n → ℂ), hJ ε (f a) (H *ᵥ w) = hJ ε (f a) w`. Introduce `a w`. Use `first`. Consider the case `(unfold hJ; conv_lhs => rw [← hf a, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hH])`. Consider the case `(unfold hJ; conv_lhs => rw [← hf a, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hH])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(unfold hJ; conv_lhs => rw [← hf a, Matrix.star_mulVec, ← dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hH])`. Consider the case `(unfold hJ; done)`. Unfold `psiR`. Use `congr 3`. Unfold `rootCoord`.
+Treat this case separately. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Matrix.mulVec_mulVec, key]`.
+A detailed English derivation is pending.
 -/
 theorem psiR_fix_left {n : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e f : Fin r → Fin n → ℂ) (z : Fin n → ℂ)
     {H Y : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * Formalism.REAL.Jm ε * H = Formalism.REAL.Jm ε) (hf : ∀ a, H *ᵥ f a = f a) :
@@ -275,7 +273,7 @@ open Formalism.L2.SG.Pf.WuDec
 variable {D : D7} {X : HidaSetting D} {θ : ℝ}
 
 /- English proof (translation)
-Take `⟨h1, h2, hg, -⟩` from `C.isT τ`. Establish `hx' : xᴴ * Hpk D.R.k D.R.rS * x = Hpk D.R.k D.R.rS` using `hx`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) := by rw [hg, hx', qiHqi _ h2 hg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inUJ_of_UH (C : Choice X θ) (τ : D.what₂.Tau) {x : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ}
     (hx : x ∈ UH (Hpk D.R.k D.R.rS)) :
@@ -288,25 +286,21 @@ theorem inUJ_of_UH (C : Choice X θ) (τ : D.what₂.Tau) {x : Matrix (Fin (2 * 
     _ = Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) := by rw [hg, hx', qiHqi _ h2 hg]
 
 /- English proof (translation)
-Introduce `u τ h hh m hm g hgU`. Use `set v := vOf X τ`. Take `⟨h1, h2, hgQ, hcol⟩` from `C.isT τ`. Establish `hc : ∀ a : Fin D.R.rS, frS D ^ (D.R.rS - (a : ℕ)) ≠ 0` using `fun a => pow_ne_zero _ (frS_ne D)`. Establish `hd : ∀ a : Fin D.R.rS, (star (frS D ^ (D.R.rS - (a : ℕ))))⁻¹ ≠ 0` using `fun a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, inv_eq_zero, star_eq_zero]`. Conclude with `hc a`. Establish `hzB` using `(Formalism.L2.SG.Pf.zTr C u τ).1`. Establish `hhU : h ∈ UH (Hpk D.R.k D.R.rS)` using `hh.1`. Establish `hmU : m ∈ UH (Hpk D.R.k D.R.rS)` using `hm.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set H := Formalism.L2.SG.Pf.GoodS.toUJn (C.Q τ * h * C.Qi τ) (inUJ_of_UH C τ hhU)`. Use `set M := Formalism.L2.SG.Pf.GoodS.toUJn (C.Q τ * m * C.Qi τ) (inUJ_of_UH C τ hmU)`. Use `set G := Formalism.L2.SG.Pf.GoodS.toUJn (C.Q τ * g * C.Qi τ) (inUJ_of_UH C τ hgU)`. Take `⟨hfe, hff, hfz⟩` from `fix_loc (n_eq' X) (X.B.I.ε v) (C.Q τ) (C.Qi τ) h1 h2 hgQ (fun a => rv X.B.I v (X.eR a)) (fun a => rv X.B.I v (X.fR a)) _ _ hc hd (fun a => (hcol a a rfl).1) (fun a => (hcol a a rfl).2) (rv X.B.I v (X.zR u)) hh`. Establish `hH : H ∈ Hloc X u v`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `y ((⟨a, rfl⟩ | ⟨a, rfl⟩) | hy)`. Conclude with `hfe a`. Conclude with `hff a`. Rewrite using `[Set.mem_singleton_iff.mp hy]`. Conclude with `hfz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hM : M ∈ Nloc X u v` using `inN_loc (n_eq' X) (X.B.I.ε v) (C.Q τ) (C.Qi τ) h1 h2 hgQ (fun a => rv X.B.I v (X.eR a)) _ hc (fun a => (hcol a a rfl).1) (rv X.B.I v (X.zR u)) hzB hm`. Establish `hM'' : H * M * H⁻¹ ∈ Nloc X u v` using `by show InN _ _ _ (uMat H * uMat M * uMat H⁻¹)`. Conclude with `Formalism.L2.SG.Pf.WFL.HNL.inN_conj H.2 (Formalism.L2.SG.Pf.WFL.HNL.uMat_mul_inv H) (Formalism.L2.SG.Pf.WFL.HNL.uMat_inv_mul H) hfe hfz hM`. Establish `key` using `locEquiv X u v (H * M * H⁻¹) hM'' H hH G`. Establish `e1 : H * M * H⁻¹ * H * G = H * M * G` using `by group`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : H * M * H⁻¹ * H = H * M` using `by group`. Rewrite `key` using `[e1, e2]`. Establish `hW : wT C u τ (h * m * g) = X.Wloc u v (H * M * G)`. Rewrite using `[← Formalism.L2.SG.Pf.WuBL.wT_at C u τ (H * M * G)]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show h * m * g = C.Qi τ * (C.Q τ * h * C.Qi τ * (C.Q τ * m * C.Qi τ) * (C.Q τ * g * C.Qi τ)) * C.Q τ`. Establish `hQQ : ∀ Y : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ, C.Qi τ * (C.Q τ * Y) = Y` using `fun Y => by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]`. Simplify using `only [Matrix.mul_assoc, hQQ, h1, Matrix.mul_one]`. Establish `hG : X.Wloc u v G = wT C u τ g`. Rewrite using `[← Formalism.L2.SG.Pf.WuBL.wT_at C u τ G]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `congr 1`. Use `show C.Qi τ * (C.Q τ * g * C.Qi τ) * C.Q τ = g`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul, Matrix.mul_assoc, h1, Matrix.mul_one]`. Establish `hpsi : psiV X u v (uMat (H * M)) = psiS D (zB X (C.Qi τ) u τ) m` using `by show psiR (X.B.I.ε v) X.B.g _ _ _ (uMat H * uMat M) = _`. Rewrite using `[psiR_fix_left (H := uMat H) (Y := uMat M) _ _ _ _ _ H.2 hff]`.
-
-Conclude with `Formalism.L2.SG.Pf.psiTr C u τ m hm`. Establish `hpi : matW X.B.I (X.wfr u v) v (single X v H) = Formalism.L2.SG.RealObj.matQ (X.B.I.ε v) (X.wfr u v) (C.Q τ * h * C.Qi τ)`. Use function extensionality and compare the values at `a b`. Simplify using `only [matW, Formalism.L2.SG.Pf.WuDec.single, Function.update_self]`. Both sides reduce to the same expression.
-
-Rewrite using `[hW, key, hpsi, hpi, hG]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem equivClause (C : Choice X θ) : Formalism.L2.SG.Pf.LocF.EquivClause C := by
   intro u τ h hh m hm g hgU
@@ -365,7 +359,7 @@ theorem equivClause (C : Choice X θ) : Formalism.L2.SG.Pf.LocF.EquivClause C :=
   rfl
 
 /- English proof (translation)
-Introduce `D X θ C` and use `equivClause C`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem local_equivalence_all : Formalism.L2.SG.Pf.LocF.EquivAll := fun D X θ C => equivClause C
 

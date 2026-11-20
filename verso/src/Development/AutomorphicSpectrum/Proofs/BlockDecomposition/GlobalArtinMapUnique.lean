@@ -23,9 +23,7 @@ open PositivityTheory.FamInh
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
 
 /- English proof (translation)
-Use `⟨(differentIdeal (𝓞 E) (𝓞 L)).under (𝓞 E), ?_, fun v w hv hl => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (differentIdeal_ne_bot (A := 𝓞 E) (B := 𝓞 L))`. Conclude with `Ideal.comap_ne_bot_of_integral_mem hx0 hx (Algebra.IsIntegral.isIntegral x)`. Establish `hnd : ¬ w.asIdeal ∣ differentIdeal (𝓞 E) (𝓞 L)` using `fun hd => hv (Ideal.dvd_iff_le.2 (by`. Rewrite using `[hl.over]`.
-
-Conclude with `Ideal.comap_mono (Ideal.dvd_iff_le.1 hd)))`. Conclude with `Ideal.ramificationIdx_eq_one_iff.2 (not_dvd_differentIdeal_iff.1 hnd)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ideal_ramificationIdx (L : Type) [Field L] [NumberField L] [Algebra E L] :
     ∃ 𝔡 : Ideal (𝓞 E), 𝔡 ≠ ⊥ ∧ ∀ (v : HeightOneSpectrum (𝓞 E)) (w : HeightOneSpectrum (𝓞 L)),
@@ -40,7 +38,7 @@ theorem exists_ideal_ramificationIdx (L : Type) [Field L] [NumberField L] [Algeb
     exact Ideal.ramificationIdx_eq_one_iff.2 (not_dvd_differentIdeal_iff.1 hnd)
 
 /- English proof (translation)
-Take `⟨σ, hσ, e⟩` from `(ha.frob v A hA _).mp ⟨x, hx, rfl⟩`. Take `⟨σ', hσ', e'⟩` from `(ha'.frob v A hA _).mp ⟨x, hx, rfl⟩`. Establish `h` using `(res_isArithFrobAt hw hσ).mul_inv_mem_inertia (res_isArithFrobAt hw hσ')`. Rewrite `h` using `[(inertia_eq_bot_iff v w).2 hr, Subgroup.mem_bot, mul_inv_eq_one]`. Rewrite using `[← e, ← e', map_inv, map_inv, map_inv, map_inv, res_toAb, res_toAb, h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_unif_eq {art art' : Ideles E →* Gab E Ω} (ha : IsGlobalArtin art)
     (ha' : IsGlobalArtin art') (L : IntermediateField E Ω) [FiniteDimensional E L]
@@ -56,15 +54,15 @@ theorem res_unif_eq {art art' : Ideles E →* Gab E Ω} (ha : IsGlobalArtin art)
   rw [← e, ← e', map_inv, map_inv, map_inv, map_inv, res_toAb, res_toAb, h]
 
 /- English proof (translation)
-Use `isAlgClosure_top L` as an intermediate fact. Use `letI : CommGroup (L ≃ₐ[E] L) := { (inferInstance : Group (L ≃ₐ[E] L)) with mul_comm := fun a b => (IsMulCommutative.is_comm (M := L ≃ₐ[E] L)).comm a b }`. Establish `: T2Space (L ≃ₐ[E] L)` using `krullTopology_t2`. Establish `: IsTopologicalGroup (L ≃ₐ[E] L)` using `inferInstance`. Set `f : Ideles E →* (L ≃ₐ[E] L)` to `(res L).comp art`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f' : Ideles E →* (L ≃ₐ[E] L)` to `(res L).comp art'`. Establish `hf : Continuous f` using `(continuous_res L).comp ha.quot.continuous`. Establish `hf' : Continuous f'` using `(continuous_res L).comp ha'.quot.continuous`. Establish `hk : ∀ b : Ideles E →* Gab E Ω, IsGlobalArtin b → ∀ k, b (diagUnits E k) = 1` using `fun b hb k => by`. Establish `hk : diagUnits E k ∈ b.ker`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hb.ker]`. Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_left ⟨k, rfl⟩)`. Conclude with `MonoidHom.mem_ker.mp hk`. Take `⟨𝔡, h𝔡, hun⟩` from `exists_ideal_ramificationIdx (E := E) L`. Establish `hψ` using `GlobalTheory.FrobDense.eq_one_of_away (f * f'⁻¹) (hf.mul hf'.inv) (fun k => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[f, f', hk _ ha k, hk _ ha' k]) (Ideal.finite_factors (I := 𝔡) h𝔡).toFinset fun v hv => by`. Use `GlobalTheory.FrobDense.eq_one_of_unif ((f * f'⁻¹).comp (localIdele E v)) fun y hy => ?_` and prove the remaining obligations. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω v`. Take `⟨w, hw, hwv⟩` from `exists_place_between (L := L) hA`. Establish `hv' : ¬ v.asIdeal ∣ 𝔡` using `by simpa using hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `res_unif_eq ha ha' L v hA w hw (hun v w hv' hwv) hy`. Simplify using `[f, f', e]`. Use `DFunLike.congr_fun hψ x` as an intermediate fact. Simplify `this` using `[f, f', mul_inv_eq_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem res_eq {art art' : Ideles E →* Gab E Ω} (ha : IsGlobalArtin art)
     (ha' : IsGlobalArtin art') (L : IntermediateField E Ω) [FiniteDimensional E L]
@@ -97,7 +95,7 @@ theorem res_eq {art art' : Ideles E →* Gab E Ω} (ha : IsGlobalArtin art)
   simpa [f, f', mul_inv_eq_one] using this
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ art ha`. Use extensionality with `x`. Establish `h : art x * ((art0 E Ω)⁻¹ x)⁻¹ ∈ (⊥ : Subgroup (Gab E Ω))` using `mem_of_forall_res (H := ⊥) isClosed_singleton fun L _ _ _ => by`. Rewrite using `[map_mul, map_inv, res_eq ha isGlobalArtin_inv L x, mul_inv_cancel]`. Rewrite `h` using `[Subgroup.mem_bot, mul_inv_eq_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eq_inv_arithmetic_artin_map : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (art : Ideles E →* Gab E Ω), IsGlobalArtin art → art = (PositivityTheory.FamInh.art0 E Ω)⁻¹ := by
   intro E Ω _ _ _ _ _ art ha

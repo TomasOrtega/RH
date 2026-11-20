@@ -24,29 +24,27 @@ def TiePsi : Prop :=
             deltaB R.Kf m (PsiXY R.Kf m f) = y)
 
 /- English proof (translation)
-Introduce `p n' R m hm`. Take `⟨hinj, hsp, hdw, hker, hlat⟩` from `h p n' R m hm`. Set `e : ∀ P Q : ℕ, PolAB R.Kf (m + 1) P Q →ₗ[R.Kf] twoSp R.Kf m P Q` to `fun P Q => ((PsiXY R.Kf m).toLinearMap.domRestrict (PolAB R.Kf (m + 1) P Q)).codRestrict (twoSp R.Kf m P Q) (fun f => (hsp P Q _).2 ⟨f.1, f.2, rfl⟩)`. Establish `he : ∀ P Q, Function.Bijective (e P Q)` using `fun P Q => by`. Use `⟨fun f g hfg => Subtype.ext (hinj (congrArg Subtype.val hfg)), fun x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f, hf, hfx⟩` from `(hsp P Q x.1).1 x.2`. Conclude with `⟨⟨f, hf⟩, Subtype.ext hfx⟩`. Set `α : ∀ P Q : ℕ, twoSp R.Kf m P Q ≃ₗ[R.Kf] PolAB R.Kf (m + 1) P Q` to `fun P Q => (LinearEquiv.ofBijective (e P Q) (he P Q)).symm`. Establish `hαe : ∀ P Q (x : twoSp R.Kf m P Q), PsiXY R.Kf m (α P Q x : PolXY R.Kf (m + 1)) = x` using `fun P Q x => by`. Establish `h1` using `(LinearEquiv.ofBijective (e P Q) (he P Q)).apply_symm_apply x`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val h1`. Set `β : ∀ a b : ℕ, PolAB R.Kf (m + 1) a b →ₗ[R.Kf] dualWeyl R.Kf (m + 1) (m + 1) (nuOf (wtPQ m a b))` to `fun a b => (((deltaB R.Kf m).comp (PsiXY R.Kf m)).toLinearMap.domRestrict (PolAB R.Kf (m + 1) a b)).codRestrict _ (fun f => (hdw a b _).2 ⟨f.1, f.2, rfl⟩)`. Establish `hβ : ∀ a b (f : PolAB R.Kf (m + 1) a b), (β a b f : MvPolynomial (Fin (m + 1) × Fin (m + 1)) R.Kf) = deltaB R.Kf m (PsiXY R.Kf m f)` using `fun a b f => rfl`. Establish `ha : ∀ i, deltaB R.Kf m (PsiXY R.Kf m (X (Sum.inl i))) = X (i, (0 : Fin (m + 1)))`. Introduce `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [PsiXY, aeval_X, Sum.elim_inl, deltaB, rename_X]`. Establish `hc : ∀ i, deltaB R.Kf m (PsiXY R.Kf m (X (Sum.inr i))) = covY R.Kf m i`. Introduce `i`. Simplify using `only [PsiXY, aeval_X, Sum.elim_inr, deltaB, rename_rename]`. Rewrite using `[show (Prod.snd ∘ Prod.mk false : Fin (m + 1) × Fin (m + 1) → Fin (m + 1) × Fin (m + 1)) = id from rfl, rename_id, AlgHom.id_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hh0 : deltaB R.Kf m (PsiXY R.Kf m (hXY R.Kf (m + 1))) = 0`. Simplify using `only [hXY, map_sum, map_mul, ha, hc]`. Conclude with `sum_covY R.Kf m (by omega)`. Use `⟨α, β, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b y`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨f, hf, hfy⟩` from `(hdw a b y.1).1 y.2`. Conclude with `⟨⟨f, hf⟩, Subtype.ext hfy⟩`. Introduce `a b f`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : deltaB R.Kf m (PsiXY R.Kf m f) = 0`. Rewrite using `[← hβ]`. Conclude with `congrArg Subtype.val h0`. Conclude with `hker a b f.1 f.2 h1`. Introduce and unpack `⟨G, _, hfG⟩`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hβ, hfG, map_mul, map_mul, hh0, zero_mul]`. Both sides reduce to the same expression. Introduce `Λ hΛ`. Take `⟨g', h1, h2⟩` from `hlat Λ hΛ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨g', fun P Q x => ?_, fun a b y => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hxs` using `twoLat_le_twoSp m P Q Λ hΛ x hx`. Use `⟨hxs, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← h1 P Q _ (α P Q ⟨x, hxs⟩).2, hαe]`. Conclude with `hx`. Introduce and unpack `⟨hxs, hl⟩`. Establish `h3` using `(h1 P Q _ (α P Q ⟨x, hxs⟩).2).2 hl`. Rewrite `h3` using `[hαe]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[h2 a b y]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, hl, hfy⟩`. Conclude with `⟨⟨f, hf⟩, hl, hfy⟩`. Introduce and unpack `⟨f, hl, hfy⟩`.
-
-Conclude with `⟨f.1, f.2, hl, hfy⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem model_identification_of_explicit_map (h : TiePsi) : TwoLetterModelIdentification := by
   intro p n' R m hm

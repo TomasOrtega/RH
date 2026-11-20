@@ -10,19 +10,17 @@ open scoped BigOperators
 namespace GlobalTheory.NearerNeighbour
 
 /- English proof (translation)
-Use `haveI : Nontrivial (M ⧸ N) := Submodule.Quotient.nontrivial_iff.2 hN`. Use `haveI : IsArtinian R (M ⧸ N) := isArtinian_of_finite`. Use `haveI : IsNoetherian R (M ⧸ N) := isNoetherian_of_finite R _`. Take `⟨S, hS⟩` from `IsAtomic.exists_atom (Submodule R (M ⧸ N))`. Use `haveI hs : IsSimpleModule R S := isSimpleModule_iff_isAtom.2 hS`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P, hP, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.1 hs`. Take `⟨x, hx⟩` from `N.mkQ_surjective (e.symm 1 : S)`. Establish `h0 : N.mkQ x ≠ 0`. Rewrite using `[hx]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : e.symm 1 = 0` using `Subtype.ext h`. Rewrite `h1` using `[LinearEquiv.map_eq_zero_iff]`. Conclude with `hP.ne_top (Ideal.Quotient.zero_eq_one_iff.1 h1.symm)`. Establish `hmap : (N ⊔ Submodule.span R {x}).map N.mkQ = S`. Rewrite using `[Submodule.map_sup, Submodule.mkQ_map_self, bot_sup_eq, Submodule.map_span, Set.image_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(hS.le_iff.1 ?_).resolve_left ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem, hx]`. Conclude with `(e.symm 1).2`. Rewrite using `[Submodule.span_singleton_eq_bot]` and apply the resulting hypothesis. Use `⟨P, x, hP, fun h => h0 ((Submodule.Quotient.mk_eq_zero N).2 h), fun p hp => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, map_smul, hx, ← Submodule.coe_smul, ← map_smul]`. Establish `: p • (1 : R ⧸ P) = 0`. Rewrite using `[← Algebra.algebraMap_eq_smul_one]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hp`. Rewrite using `[this, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `h1` using `Module.length_eq_add_of_exact S.subtype S.mkQ S.injective_subtype S.mkQ_surjective (LinearMap.exact_subtype_mkQ S)`. Establish `h2` using `(Submodule.quotientQuotientEquivQuotient N (N ⊔ Submodule.span R {x}) le_sup_left).length_eq`. Rewrite `h2` using `[hmap]`. Establish `h3 : Module.length R ((M ⧸ N) ⧸ S) ≠ ⊤` using `Module.length_ne_top`.
-
-Rewrite using `[← h2, h1, Module.length_eq_one R S, ENat.toNat_add (by simp) h3, add_comm]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_step {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] (N : Submodule R M)
     [Finite (M ⧸ N)] (hN : N ≠ ⊤) :
@@ -61,9 +59,7 @@ theorem exists_step {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] (N 
     simp
 
 /- English proof (translation)
-Establish `hb : P ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField K)`. Use `haveI : Finite (𝓞 K ⧸ P) := Ideal.finiteQuotientOfFreeOfNeBot P hb`. Use `letI := Ideal.Quotient.field P`. Use `⟨ringChar (𝓞 K ⧸ P), CharP.prime_ringChar _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`.
-
-Conclude with `ringChar.Nat.cast_ringChar`.
+Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_mem {K : Type*} [Field K] [NumberField K] (P : Ideal (𝓞 K)) (hP : P.IsMaximal) :
     ∃ q : ℕ, q.Prime ∧ (q : 𝓞 K) ∈ P := by
@@ -75,9 +71,9 @@ theorem exists_prime_mem {K : Type*} [Field K] [NumberField K] (P : Ideal (𝓞 
   exact ringChar.Nat.cast_ringChar
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegerScalarIntegral.main`. Consider the case `exact _root_.GlobalTheory.IntegerScalarIntegral.main`. Consider the case `(apply _root_.GlobalTheory.IntegerScalarIntegral.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegerScalarIntegral.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntegerScalarIntegral.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegerScalarIntegral.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_int_smul_mem {K V : Type*} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (L : Submodule (𝓞 K) V)
@@ -91,21 +87,17 @@ theorem exists_int_smul_mem {K V : Type*} [Field K] [NumberField K] [AddCommGrou
   | (intros; exact _root_.GlobalTheory.IntegerScalarIntegral.main ..)
 
 /- English proof (translation)
-Introduce `D n L₀ L h₀ h hne`. Take `⟨fg₀, -, d₀⟩` from `(sd_iff D L₀).1 h₀`. Take `⟨-, sp, d⟩` from `(sd_iff D L).1 h`. Establish `hN : Submodule.comap L₀.subtype L ≠ ⊤`. Introduce `ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : L₀ ≤ L` using `Submodule.comap_subtype_eq_top.1 ht`. Conclude with `hne (le_antisymm hle fun y hy => (d₀ y).2 fun x hx => (d y).1 hy x (hle hx))`. Use `haveI : Module.Finite (𝓞 D.host.E) L₀ := Module.Finite.iff_fg.2 fg₀`. Use `haveI : Module.Finite ℤ (L₀ ⧸ Submodule.comap L₀.subtype L) := Module.Finite.trans (𝓞 D.host.E) _`. Use `haveI : Finite (L₀ ⧸ Submodule.comap L₀.subtype L) := Module.finite_of_fg_torsion _ fun z => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Take `⟨m, hm, hy⟩` from `exists_int_smul_mem L sp y.1`. Use `⟨⟨m, mem_nonZeroDivisors_of_ne_zero hm⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `m • (Submodule.mkQ (Submodule.comap L₀.subtype L) y) = 0`. Rewrite using `[← map_zsmul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hy`. Take `⟨P, x, hP, hx, hPx, hlen⟩` from `exists_step _ hN`. Take `⟨q, hq, hqP⟩` from `exists_prime_mem P hP`. Use `⟨P, q, x.1, hP, hq, hqP, x.2, ⟨hx, hPx, (d₀ x.1).1 x.2 x.1 x.2⟩, ?_⟩` and prove the remaining obligations. Establish `key : Submodule.comap L₀.subtype (nbr D L x.1) = Submodule.comap L₀.subtype L ⊔ Submodule.span (𝓞 D.host.E) {x}`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 hy`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hb`. Use `Submodule.mem_sup.2 ⟨y - c • x, ?_, c • x, Submodule.mem_span_singleton.2 ⟨c, rfl⟩, sub_add_cancel _ _⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: L₀.subtype (y - c • x) = a`. Rewrite using `[map_sub, ← hab, map_smul]`. Conclude with `add_sub_cancel_right _ _`. Rewrite using `[Submodule.mem_comap, this]`. Conclude with `ha.1`.
-
-Use `sup_le (fun y hy => ?_) ?_` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (S := nbM D L x.1) ⟨hy, (d₀ y.1).1 y.2 x.1 x.2⟩`. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Conclude with `Submodule.mem_sup_right (S := nbM D L x.1) (Submodule.mem_span_singleton_self _)`. Unfold `lenQ`.
-
-Rewrite using `[key]`. Conclude with `hlen`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nearer : ∀ (D : D7) (n : ℕ) (L₀ L : Lat D n), SD D L₀ → SD D L → L₀ ≠ L → ∃ (P : Ideal (𝓞 D.host.E)) (q : ℕ) (x : Fin n → D.host.E), P.IsMaximal ∧ q.Prime ∧ (q : 𝓞 D.host.E) ∈ P ∧ x ∈ L₀ ∧ NbD D P L x ∧ lenQ D L₀ (nbr D L x) + 1 = lenQ D L₀ L := by
   intro D n L₀ L h₀ h hne

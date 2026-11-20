@@ -10,7 +10,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaSeriesI
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hA` and use `⟨GlobalTheory.T.thetaSeriesRationalOnGoodCovers_of_untwisted (GlobalTheory.Published.GlobalArtinReciprocity.rayClassFieldSt hA) GlobalTheory.T.untwisted_theta_rational_on_good_covers, GlobalTheory.T.thetaSeries_integral_uniform_prime_power⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem seriesRatS_and_serInt_of_globalArtin :
     GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.SerStd.SeriesRatS ∧ GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.SerInt :=

@@ -13,20 +13,20 @@ noncomputable section
 namespace GlobalTheory.OverSplit
 
 /- English proof (translation)
-The claim follows from `RingHom.ker_isMaximal_of_surjective ψ (ZMod.ringHom_surjective ψ)`.
+A detailed English derivation is pending.
 -/
 theorem ker_isMaximal {A : Type} [CommRing A] {T : ℕ} [Fact T.Prime] (ψ : A →+* ZMod T) :
     (RingHom.ker ψ).IsMaximal :=
   RingHom.ker_isMaximal_of_surjective ψ (ZMod.ringHom_surjective ψ)
 
 /- English proof (translation)
-Establish `hk : ∀ z, z ∈ IsLocalRing.maximalIdeal O ↔ ψ z = 0` using `fun z => by`. Rewrite using `[← IsLocalRing.eq_maximalIdeal (ker_isMaximal ψ), RingHom.mem_ker]`. Establish `hu : ∀ z, ψ z ≠ 0 → IsUnit z` using `fun z hz => by`. Assume the negation of the conclusion as `h`. Conclude with `hz ((hk z).1 h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `ZMod.ringHom_surjective ψ x`. Establish `hxy' : x - y ≠ 0` using `sub_ne_zero.2 hxy`. Take `⟨r, hr, hra⟩` from `HenselianRing.is_henselian (I := IsLocalRing.maximalIdeal O) (Polynomial.X ^ 2 - Polynomial.C p * Polynomial.X + Polynomial.C n) (by monicity!) a (by rw [hk]; simp [ha, hp, hn]; ring) (by`. Use `IsUnit.map _ (hu _ ?_)` and prove the remaining obligations. Establish `: ψ (Polynomial.eval a (Polynomial.derivative (Polynomial.X ^ 2 - Polynomial.C p * Polynomial.X + Polynomial.C n))) = x - y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[ha, hp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this])` and apply the resulting hypothesis. Establish `hrx : ψ r = x`. Rewrite `hra` using `[hk, map_sub, ha, sub_eq_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hra`. Establish `hr' : r ^ 2 - p * r + n = 0` using `by simpa using hr`. Establish `hry : ψ (p - r) = y` using `by rw [map_sub, hp, hrx]; ring`. Use `⟨r, p - r, by ring, by linear_combination -hr', hrx, hry, hu _ ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hrx, hry]` and apply the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_roots {O : Type} [CommRing O] [IsLocalRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] {T : ℕ} [Fact T.Prime] (ψ : O →+* ZMod T)
@@ -72,11 +72,9 @@ theorem coe_inclO (v : HeightOneSpectrum (𝓞 F)) (a : v.adicCompletionIntegers
       (1 : E) ⊗ₜ[F] (a : v.adicCompletion F) := rfl
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `hx`. Establish `hi : IsIntegral ℤ b`. Rewrite using `[← isIntegral_algebraMap_iff (B := E) (algebraMap F E).injective, hb]`. Conclude with `x.isIntegral_coe`. Set `b' : 𝓞 F` to `⟨b, hi⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx' : x = algebraMap (𝓞 F) (𝓞 E) b'`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hb.symm`. Use `⟨algebraMap (𝓞 F) _ b', Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[coe_inclO, GlobalTheory.OverCompare.coe_toIntV, hx', GlobalTheory.OverCompare.tmul_algebraMap]`.
-
-Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_inclO_eq (v : HeightOneSpectrum (𝓞 F)) (x : 𝓞 E)
     (hx : (x : E) ∈ (algebraMap F E).range) :
@@ -98,23 +96,21 @@ end GlobalTheory.OverSplit
 open GlobalTheory.OverSplit in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hdeg hσ hfix hunr v T hT χ`. Establish `: Fact T.Prime` using `⟨hT⟩`. Use `GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v` as an intermediate fact. Use `set ι := GlobalTheory.IndefiniteRowSideFullHecke.OverPlaceIntegralForm.toIntV E v with hι`. Take `⟨θ, t, ht, hθt⟩` from `hunr _ (ker_isMaximal (χ.comp ι))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxy : χ (ι θ) ≠ χ (ι t)`. Introduce `h`. Apply `hθt` to reduce the goal to its premises. Rewrite using `[RingHom.mem_ker, map_sub, RingHom.comp_apply, RingHom.comp_apply, h, sub_self]`. Establish `e1 : ((θ + t : 𝓞 E) : E) = θ + σ θ` using `by rw [← ht]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ((θ * t : 𝓞 E) : E) = θ * σ θ` using `by rw [← ht]; rfl`. Take `⟨p, hp⟩` from `exists_inclO_eq v (θ + t) (hfix _ (by rw [e1, map_add, hσ, add_comm]))`. Take `⟨n, hn⟩` from `exists_inclO_eq v (θ * t) (hfix _ (by rw [e2, map_mul, hσ, mul_comm]))`. Take `⟨r, r', hs, hm, hr, hr', hu⟩` from `exists_roots (χ.comp (inclO E v)) p n (χ (ι θ)) (χ (ι t)) (by rw [RingHom.comp_apply, hp, map_add, map_add]) (by rw [RingHom.comp_apply, hn, map_mul, map_mul]) hxy`. Take `⟨s, hsp, hsθ⟩` from `GlobalTheory.RootSplitting.exists_isSplitting F E σ hdeg hσ hfix v θ r r' θ.isIntegral_coe hu (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg Subtype.val hp` as an intermediate fact. Rewrite using `[← e1]`. Use `this.symm.trans ?_` and prove the remaining obligations. Rewrite using `[← hs]`. Use the proof step `rfl)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Use `congrArg Subtype.val hn` as an intermediate fact. Rewrite using `[← e2]`. Use `this.symm.trans ?_` and prove the remaining obligations. Rewrite using `[← hm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use the proof step `rfl)`. Use `⟨s, hsp, fun a ha => ?_⟩` and prove the remaining obligations. Set `a₁ : v.adicCompletionIntegers F` to `⟨(s a).1, ((hsp.2.2 a).1 a.2).1⟩`. Establish `ha₁ : χ (inclO E v a₁) = 0`. Establish `h1 : a₁ ∈ IsLocalRing.maximalIdeal _` using `(ValuationSubring.valuation_lt_one_iff _ _).2 ((Valuation.isEquiv_valuation_valuationSubring _).lt_one_iff_lt_one.1 ha)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h1` using `[← IsLocalRing.eq_maximalIdeal (ker_isMaximal (χ.comp (inclO E v)))]`. Conclude with `h1`. Establish `key : (ι θ - inclO E v r') * a = (ι θ - inclO E v r') * inclO E v a₁`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `s.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h0 : s ((ι θ - inclO E v r' : intV E v) : E ⊗[F] v.adicCompletion F) = ((r : v.adicCompletion F) - r', 0)`. Rewrite using `[AddSubgroupClass.coe_sub, map_sub, coe_inclO, hsp.1, hι, GlobalTheory.OverCompare.coe_toIntV, hsθ]`. Simplify using the standard rewrite rules. Rewrite using `[Subring.coe_mul, Subring.coe_mul, map_mul, map_mul, h0, coe_inclO, hsp.1]`. Apply the tactic sequence `ext <;> simp [a₁]`.
-
-Use `congrArg χ key` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, ha₁, mul_zero, map_sub]`. Establish `hr'' : χ (inclO E v r') = χ (ι t)` using `hr'`. Rewrite `this` using `[hr'']`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hxy)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.OverSplit.exists_splitting_of_character :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), Module.finrank F E = 2 → (∀ x, σ (σ x) = x) → (∀ x, σ x = x → x ∈ (algebraMap F E).range) → (∀ P : Ideal (𝓞 E), P.IsMaximal → ∃ θ t : 𝓞 E, (t : E) = σ θ ∧ θ - t ∉ P) → ∀ (v : HeightOneSpectrum (𝓞 F)) (T : ℕ), T.Prime → ∀ χ : intV E v →+* ZMod T, ∃ s : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F, IsSplitting σ v s ∧ ∀ a : intV E v, Valued.v (prP s a) < 1 → χ a = 0 := by

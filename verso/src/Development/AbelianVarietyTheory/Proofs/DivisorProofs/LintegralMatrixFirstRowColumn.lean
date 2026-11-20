@@ -6,7 +6,7 @@ open scoped ENNReal
 namespace GlobalTheory.KSplit.CornerFubini
 
 /- English proof (translation)
-Rewrite using `[← lintegral_prod_swap]`. Conclude with `lintegral_prod_le _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_prod_le_symm {α β : Type} [MeasurableSpace α] [MeasurableSpace β] (μ : Measure α) (ν : Measure β)
     [SFinite μ] [SFinite ν] (f : α × β → ℝ≥0∞) :
@@ -15,7 +15,7 @@ theorem lintegral_prod_le_symm {α β : Type} [MeasurableSpace α] [MeasurableSp
   exact lintegral_prod_le _
 
 /- English proof (translation)
-Establish `h` using `(measurePreserving_piFinSuccAbove (fun _ : Fin (n + 1) => μ) 0).symm`. Rewrite using `[h.lintegral_map_equiv G _]`. Use `(lintegral_prod_le_symm _ _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `[MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNthEquiv, Fin.insertNth_zero']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lintegral_cons_le {α : Type} [MeasurableSpace α] (μ : Measure α) [SigmaFinite μ] (n : ℕ)
     (G : (Fin (n + 1) → α) → ℝ≥0∞) :
@@ -27,9 +27,9 @@ theorem lintegral_cons_le {α : Type} [MeasurableSpace α] (μ : Measure α) [Si
   simp [MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNthEquiv, Fin.insertNth_zero']
 
 /- English proof (translation)
-Establish `h` using `(measurePreserving_piFinSuccAbove (fun _ : Fin (n + 1) => μ) 0).symm`. Set `e` to `(MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 1) => α) 0).symm`. Establish `h1 : MeasurePreserving (MeasurableEquiv.piCongrRight fun _ : Fin m => e) (Measure.pi fun _ : Fin m => μ.prod (Measure.pi fun _ : Fin n => μ)) (Measure.pi fun _ : Fin m => Measure.pi fun _ : Fin (n + 1) => μ)` using `measurePreserving_pi _ _ (f := fun _ : Fin m => e) (fun _ => h)`. Establish `h2` using `(measurePreserving_arrowProdEquivProdArrow α (Fin n → α) (Fin m) (fun _ => μ) (fun _ => Measure.pi fun _ : Fin n => μ)).symm`. Rewrite using `[h1.lintegral_map_equiv G _, h2.lintegral_map_equiv _ _]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(lintegral_prod_le_symm _ _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `lintegral_congr fun M => lintegral_congr fun v => congrArg G ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `e (v i, M i) = _`. Simplify using `[e, MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNthEquiv, Fin.insertNth_zero']`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem lintegral_col_le {α : Type} [MeasurableSpace α] (μ : Measure α) [SigmaFinite μ] (m n : ℕ)
     (G : (Fin m → Fin (n + 1) → α) → ℝ≥0∞) :
@@ -52,7 +52,7 @@ theorem lintegral_col_le {α : Type} [MeasurableSpace α] (μ : Measure α) [Sig
   simp [e, MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNthEquiv, Fin.insertNth_zero']
 
 /- English proof (translation)
-Use `(lintegral_cons_le (Measure.pi fun _ : Fin (n + 1) => ν) n F).trans ?_` and prove the remaining obligations. Use `(lintegral_col_le ν n n _).trans ?_` and prove the remaining obligations. Use `lintegral_mono fun M => lintegral_mono fun v => ?_` and prove the remaining obligations. Conclude with `lintegral_cons_le ν n (fun r => F (Matrix.of (Fin.cons r (fun i => (Fin.cons (v i) (M i) : Fin (n + 1) → k)))))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lintegral_volM_le_corner (k : Type) [MeasurableSpace k] (ν : Measure k) [SigmaFinite ν] (n : ℕ)
     (F : Matrix (Fin (n + 1)) (Fin (n + 1)) k → ℝ≥0∞) :

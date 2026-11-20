@@ -18,9 +18,9 @@ namespace GlobalTheory.Mem.SymChar.ResBar
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hi` using `Subgroup.inv_mem _ hN`. Apply the tactic sequence `have h := unip_mul_entry hi hN (i := i) (j := j) (show i.val < j.val by omega) (fun l h1 h2 => by`. It suffices to derive a contradiction. Establish `: i.val < l.val` using `h1`. Establish `: l.val < j.val` using `h2`.
+Establish an intermediate fact. Establish an intermediate fact. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `omega)`. Rewrite `h` using `[inv_mul_cancel, Units.val_one, Matrix.one_apply_ne (by intro e; rw [e] at hij; omega)]`. Take the linear combination `-h`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem unip_inv_sup {κ : Type} [CommRing κ] {r : ℕ} {N : GL (Fin r) κ} (hN : N ∈ unip κ r) (i j : Fin r)
     (hij : j.val = i.val + 1) :
@@ -42,7 +42,7 @@ abbrev mkW (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) :
   QuotientAddGroup.mk' _
 
 /- English proof (translation)
-Use `show (QuotientAddGroup.mk a : QW X w) = QuotientAddGroup.mk b`. Rewrite using `[QuotientAddGroup.eq_iff_sub_mem]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mkW_eq {X : HidaSetting D} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {a b : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F} (h : a - b ∈ wInt X w) : mkW X w a = mkW X w b := by
@@ -51,7 +51,7 @@ theorem mkW_eq {X : HidaSetting D} {w : HeightOneSpectrum (𝓞 D.host.E)}
   exact h
 
 /- English proof (translation)
-Rewrite using `[← map_zero (mkW X w)]`. Conclude with `mkW_eq (by rw [sub_zero]; exact h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mkW_zero {X : HidaSetting D} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {a : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F} (h : a ∈ wInt X w) : mkW X w a = 0 := by
@@ -59,9 +59,7 @@ theorem mkW_zero {X : HidaSetting D} {w : HeightOneSpectrum (𝓞 D.host.E)}
   exact mkW_eq (by rw [sub_zero]; exact h)
 
 /- English proof (translation)
-Use `⟨ZMod.lift g ⟨zmultiplesHom _ (mkW X w 1), ?_⟩, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[zmultiplesHom_apply, natCast_zsmul, ← map_nsmul, nsmul_one]`. Conclude with `mkW_zero hg`. Use `conv_lhs => rw [← ZMod.natCast_zmod_val t]`. Establish `e : ((t.val : ℕ) : ZMod g) = ((t.val : ℤ) : ZMod g)` using `by simp`.
-
-Rewrite using `[e, ZMod.lift_coe, zmultiplesHom_apply, natCast_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_exists (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) (g : ℕ) [NeZero g]
     (hg : ((g : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) ∈ wInt X w) :
@@ -74,7 +72,7 @@ theorem phi_exists (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) (
     rw [e, ZMod.lift_coe, zmultiplesHom_apply, natCast_zsmul]
 
 /- English proof (translation)
-Unfold `ModW`. Rewrite `h` using `[hφ, ← map_nsmul, nsmul_one]`. Use `show (c - ((t.val : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F)) ∈ (wInt X w).toAddSubgroup`. Rewrite using `[← QuotientAddGroup.eq_iff_sub_mem]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modW_of {X : HidaSetting D} {w : HeightOneSpectrum (𝓞 D.host.E)} {g : ℕ}
     {φ : ZMod g →+ QW X w} (hφ : ∀ t : ZMod g, φ t = t.val • mkW X w 1)
@@ -86,9 +84,9 @@ theorem modW_of {X : HidaSetting D} {w : HeightOneSpectrum (𝓞 D.host.E)} {g :
   exact h
 
 /- English proof (translation)
-Rewrite using `[mkW_eq (hA_isMatIn X w hM hv p), map_sum]`. Establish `e : ∀ j, mkW X w ((((M j p).val : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) * hA X.B.I v (u j)) = if j = q then (M q p).val • mkW X w c else 0`. Introduce `j`. Rewrite using `[← nsmul_eq_mul, map_nsmul, mkW_eq (hG j)]`. Use `split_ifs with hj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj]`. Rewrite using `[map_zero, smul_zero]`. Simplify using `only [e, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem read (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) {g : ℕ} {u : Fin D.R.r → VA X.B.I}
     {x : X.B.I.Gf} {M : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod g)} (hM : GlobalTheory.Mem.SymFrame.IsMatIn X w u x M)
@@ -107,7 +105,7 @@ theorem read (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) {g : �
   simp only [e, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Unfold `Formalism.BasicNotions.Ranks.r Formalism.BasicNotions.Ranks.rS`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem r_eq (D : D7) : D.R.r = 2 * D.R.rS + D.R.k + 1 := by
   obtain ⟨t, ht⟩ := D.R.m_even
@@ -116,9 +114,7 @@ theorem r_eq (D : D7) : D.R.r = 2 * D.R.rS + D.R.k + 1 := by
   omega
 
 /- English proof (translation)
-Unfold `GlobalTheory.Mem.SymFrame.symVec GlobalTheory.SeeConjRead.flagV GlobalTheory.Mem.SymFrame.epsW`. Use `split_ifs`. Conclude with `(X.vectorsInLattice.1 _).1`. Conclude with `(X.vectorsInLattice.2.2 _).1`. Conclude with `(X.vectorsInLattice.2.2 _).2`.
-
-Conclude with `X.vectorsInLattice.2.1`. Conclude with `(X.vectorsInLattice.1 _).2`. Conclude with `zero_mem _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem symVec_mem (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) (j : Fin D.R.r) :
     GlobalTheory.Mem.SymFrame.symVec X w j ∈ X.B.I.Lf := by
@@ -132,9 +128,9 @@ theorem symVec_mem (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) (
   · exact zero_mem _
 
 /- English proof (translation)
-Establish `hr` using `r_eq D`. Unfold `GlobalTheory.Mem.SymFrame.symVec GlobalTheory.SeeConjRead.flagV`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), dif_neg (by omega), dif_pos (by omega)]`. Use `congr 1`. Use `ext`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem symmetricOrderFrameModPlace_last_block (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) (a : Fin D.R.rS) (p : Fin D.R.r)
     (hp : p.val = 2 * D.R.rS + D.R.k - a.val) : GlobalTheory.Mem.SymFrame.symVec X w p = X.f0 a := by
@@ -147,7 +143,7 @@ theorem symmetricOrderFrameModPlace_last_block (X : HidaSetting D) (w : HeightOn
   omega
 
 /- English proof (translation)
-Unfold `GlobalTheory.Mem.SymFrame.symVec GlobalTheory.SeeConjRead.flagV GlobalTheory.Mem.SymFrame.epsW`. Rewrite using `[if_neg hE, dif_neg (by omega), dif_pos (by omega)]`. Use `congr 1`. Use `ext`. Simplify using `only [Fin.val_rev]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -162,7 +158,7 @@ theorem symVec_bwd (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) (
   omega
 
 /- English proof (translation)
-Distinguish the cases in `h : j = q`. Substitute `h` using the available equality. Simplify using `[hq]`. Establish `: j.val ≠ n` using `fun e => h (Fin.ext (by omega))`. Simplify using `[h, this]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ite_val {r : ℕ} {R : Type} [Zero R] (j q : Fin r) (n : ℕ) (hq : q.val = n) (c : R) :
     (if j.val = n then c else 0) = (if j = q then c else 0) := by
@@ -172,31 +168,29 @@ theorem ite_val {r : ℕ} {R : Type} [Zero R] (j q : Fin r) (n : ℕ) (hq : q.va
     simp [h, this]
 
 /- English proof (translation)
-Introduce `D X h hι hg kv k hk N hN hNu`. Establish `hgw` using `hg kv`. Use `set w := D.naut.plGw kv.1 kv.2 with hw`. Use `haveI : NeZero (D.host.g kv.1) := ⟨(D.host.g_prime kv.1).ne_zero⟩`. Establish `hgA : (((D.host.g kv.1 : ℕ)) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) ∈ wInt X w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Submodule.subset_span ⟨((D.host.g kv.1 : ℕ) : 𝓞 X.B.I.E), ⟨_, hgw, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take `⟨φ, hφ⟩` from `phi_exists X w _ hgA`. Establish `hr` using `r_eq D`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set u := GlobalTheory.Mem.SymFrame.symVec X w with hu_def`. Establish `hu : ∀ i, u i ∈ X.B.I.Lf` using `symVec_mem X w`. Establish `hNi` using `GlobalTheory.T.isMatrixModPlaceInFamily_inv D X kv hgw u hu k hk N hN`. Establish `hU : N ∈ unip _ _` using `unipCol_le _ _ _ hNu`. Rewrite using `[GlobalTheory.T.symEdge_conjWeighted_sum_eq_flag_and_unipotent_pairs _ _ _ hr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Apply `modW_of hφ` to reduce the goal to its premises. Simplify using `only [argS, map_add, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Formalism.L2.SG.Pf.unitaryCongruence.hA_symm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e` using `GlobalTheory.St.G.FrameClose.hA_move k⁻¹ (nxt X.e0 X.z0 a) (X.f0 a)`. Rewrite `e` using `[inv_inv]`. Rewrite using `[← e, ← symmetricOrderFrameModPlace_last_block X w a ⟨2 * D.R.rS + D.R.k - a.val, by omega⟩ rfl]`. Distinguish the cases in `ha : a.val + 1 < D.R.rS`. Rewrite using `[dif_pos ha]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hn : nxt X.e0 X.z0 a = X.e0 ⟨a.val + 1, ha⟩` using `by unfold nxt; rw [dif_pos ha]`. Rewrite using `[hn, read X w hNi (X.vectorsInLattice.1 _).1 _ ⟨2 * D.R.rS + D.R.k - a.val - 1, by omega⟩ 1 (fun j => by`. Rewrite using `[← ite_val j _ (2 * D.R.rS + D.R.k - (a.val + 1)) (by simp only; omega)]`. Conclude with `GlobalTheory.T.hermitian_e0_symmetric_frame D X kv hgw ⟨a.val + 1, ha⟩ j), ← hφ, unip_inv_sup hU _ _ (by simp only; omega)]`. Rewrite using `[dif_neg ha]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : nxt X.e0 X.z0 a = X.z0` using `by unfold nxt; rw [dif_neg ha]`. Establish `hp : (⟨2 * D.R.rS + D.R.k - a.val, by omega⟩ : Fin D.R.r) = ⟨D.R.rS + D.R.k + 1, by omega⟩` using `Fin.ext (by simp only; omega)`. Rewrite using `[hn, hp, read X w hNi X.vectorsInLattice.2.1 _ ⟨D.R.rS + D.R.k, by omega⟩ (-1) (fun j => by`. Rewrite using `[← ite_val j _ (D.R.rS + D.R.k) rfl]`. Conclude with `GlobalTheory.T.hermitian_z0_symmetric_frame D X kv hgw j), map_neg, smul_neg, ← hφ, ← map_neg, unip_inv_sup hU _ _ (by simp only),`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use the proof step `neg_neg]`. Distinguish the cases in `hE : GlobalTheory.Mem.SymFrame.EwAt X w`. Establish `hs : side X w = true` using `by simp [side, hE]`. Rewrite using `[hs, if_pos rfl, map_zero]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hi : i.val + 1 < D.R.k`. Rewrite using `[dif_pos hi]`. Apply `mkW_zero` to reduce the goal to its premises. Rewrite using `[← Formalism.L2.SG.Pf.unitaryCongruence.hA_symm]`. Establish `hb : X.bwd i ∈ wLf X w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hE (X.bwd i) (X.vectorsInLattice.2.2 i).2`. Establish `e : (1 - X.ew) • X.bwd i = X.bwd i` using `by conv_lhs => rw [X.bwd_w i]`. Rewrite using `[smul_smul, sub_mul, one_mul, X.ew_orth, sub_zero, ← X.bwd_w i]`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis. Conclude with `hA_mem_wInt X w (Formalism.L2.SG.Pf.unitaryCongruence.K_mv X.B.I hk (X.vectorsInLattice.2.2 _).1) hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hi, map_zero, map_zero]`. Establish `hs : side X w = false` using `by simp [side, hE]`. Establish `hew` using `GlobalTheory.T.conj_idempotent_sub_one_mem_placeIdeal D X h hι kv hgw hE`. Rewrite using `[hs, if_neg (by simp), map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : i.val + 1 < D.R.k`. Rewrite using `[dif_pos hi, dif_pos hi]`. Rewrite using `[← Formalism.L2.SG.Pf.unitaryCongruence.hA_symm]`. Establish `e` using `GlobalTheory.St.G.FrameClose.hA_move k⁻¹ (X.bw ⟨i.val + 1, hi⟩) (X.bwd i)`. Rewrite `e` using `[inv_inv]`.
-
-Rewrite using `[← e, ← symVec_bwd X w hE i ⟨D.R.rS + D.R.k - 1 - i.val, by omega⟩ rfl, read X w hNi (X.vectorsInLattice.2.2 _).1 _ ⟨D.R.rS + D.R.k - 2 - i.val, by omega⟩ 1 (fun j => by`. Rewrite using `[← ite_val j _ (D.R.rS + D.R.k - 1 - (i.val + 1)) (by simp only; omega)]`. Conclude with `GlobalTheory.T.hermitianForm_middle_symmetricFrame_not_oneAt D X kv hgw hE hew ⟨i.val + 1, hi⟩ j), ← hφ, unip_inv_sup hU _ _ (by simp only; omega)]`. Rewrite using `[dif_neg hi, dif_neg hi, map_zero, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resBar : ∀ (D : D7) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), (∀ x : X.B.I.E, HEq (X.ιE x) x) → (∀ kv : (Σ k : Fin 2, D.nd.PlG k), ((D.host.g kv.1 : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw kv.1 kv.2).asIdeal) → ∀ (kv : Σ k : Fin 2, D.nd.PlG k), ∀ k ∈ X.B.I.Kset, ∀ N : GL (Fin D.R.r) (ZMod (D.host.g kv.1)), GlobalTheory.Mem.SymFrame.IsMatIn X (D.naut.plGw kv.1 kv.2) (GlobalTheory.Mem.SymFrame.symVec X (D.naut.plGw kv.1 kv.2)) k (N : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))) → N ∈ unipSym (ZMod (D.host.g kv.1)) D.R.r D.R.rS D.R.k → GlobalTheory.Mem.SymChar.ModW X (D.naut.plGw kv.1 kv.2) (sigA X.B.I (GlobalTheory.Mem.SymChar.argS X k)) (∑ i, ∑ j, if symEdge D.R.rS D.R.k i j then ((GlobalTheory.Mem.SymChar.wtB D.R.rS D.R.k (GlobalTheory.Mem.SymChar.side X (D.naut.plGw kv.1 kv.2)) i j : ℤ) : ZMod (D.host.g kv.1)) * (N : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))) i j else 0) := by
   intro D X h hι hg kv k hk N hN hNu

@@ -24,9 +24,9 @@ open GlobalTheory.IwaPlace (hermAt)
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : SplitPt D k)
 
 /- English proof (translation)
-Take `⟨ε, ⟨α, rfl, h1, h0⟩, h⟩` from `q.above`. Establish `: α = GlobalTheory.FinPlLoc.ePl D (· = q.v)` using `RestrictedProduct.ext _ _ fun w => by`. Express the relevant statement in the definitionally equal form `evalV D.host.F w α = evalV D.host.F w (GlobalTheory.FinPlLoc.ePl D (· = q.v))`. Rewrite using `[GlobalTheory.FinPlLoc.evalV_ePl]`. Use `split_ifs with hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hw` using the available equality. Conclude with `h1`. Conclude with `h0 w hw`. Rewrite using `[h, this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem idem_eq : q.e + cA D q.e = GlobalTheory.FinPlLoc.idem D (· = q.v) := by
   obtain ⟨ε, ⟨α, rfl, h1, h0⟩, h⟩ := q.above
@@ -41,7 +41,7 @@ theorem idem_eq : q.e + cA D q.e = GlobalTheory.FinPlLoc.idem D (· = q.v) := by
 variable {V : HSp D}
 
 /- English proof (translation)
-Unfold `GlobalTheory.FinPl.grpAt`. Rewrite using `[GlobalTheory.FinPlLoc.mem_congGrp]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FinPlLoc.mem_idAt_iff, ← idem_eq]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem supp_iff (x : GA D V) : SuppAt q.e V x ↔ x ∈ grpAt V (· = q.v) := by
   unfold GlobalTheory.FinPl.grpAt
@@ -50,7 +50,7 @@ theorem supp_iff (x : GA D V) : SuppAt q.e V x ↔ x ∈ grpAt V (· = q.v) := b
   rw [GlobalTheory.FinPlLoc.mem_idAt_iff, ← idem_eq]; rfl
 
 /- English proof (translation)
-Rewrite using `[q.sec_pr, q.sec_pr, RingHom.map_mul, cA_cA, ← add_mul, hz]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem entry_eq {z : AE D} (hz : (q.e + cA D q.e) * z = z) : z = q.sec (q.pr z) + cA D (q.sec (q.pr (cA D z))) := by
   rw [q.sec_pr, q.sec_pr, RingHom.map_mul, cA_cA, ← add_mul, hz]
@@ -58,18 +58,18 @@ theorem entry_eq {z : AE D} (hz : (q.e + cA D q.e) * z = z) : z = q.sec (q.pr z)
 variable {Y : Type} [Fintype Y] [DecidableEq Y] {F : Frame k V.rank Y} {gl : GL Y k →* GA D V}
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem map_one' {n : ℕ} : (1 : Matrix (Fin n) (Fin n) (AE D)).map q.pr = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Use `haveI := (Formalism.IndefR.Eqv.ae_facts D).1`. Establish `h2 : ∀ g, (Formalism.L2.Theta.mt V (gl g)).map q.pr = F.β * g.val * F.γ` using `fun g => (h g).2`. Establish `e1 : ∀ g, (Formalism.L2.Theta.mt V (gl g) - 1).map q.pr = F.β * g.val * F.γ - 1` using `fun g => by`. Rewrite using `[Matrix.map_sub _ (map_sub q.pr), map_one', h2]`. Establish `e2 : ∀ g, (adj (Formalism.L2.Theta.mt V (gl g) - 1)).map q.pr = (gA V).map q.pr * (F.β * (g⁻¹).val * F.γ) * (giA V).map q.pr - 1` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inv : adj (Formalism.L2.Theta.mt V (gl g)) = gA V * Formalism.L2.Theta.mt V (gl g)⁻¹ * giA V`. Rewrite using `[GlobalTheory.MixModel.mt_inv, gA_giA_cancel, Matrix.mul_assoc, gA_mul_giA, Matrix.mul_one]`. Rewrite using `[adj_sub, adj_one, Matrix.map_sub _ (map_sub q.pr), map_one', inv, Matrix.map_mul, Matrix.map_mul, ← map_inv, h2]`. Establish `c1 : Continuous fun g : GL Y k => F.β * g.val * F.γ - 1` using `((continuous_const.matrix_mul Units.continuous_val).matrix_mul continuous_const).sub continuous_const`. Establish `c2 : Continuous fun g : GL Y k => (gA V).map q.pr * (F.β * (g⁻¹).val * F.γ) * (giA V).map q.pr - 1` using `((continuous_const.matrix_mul ((continuous_const.matrix_mul Units.continuous_coe_inv).matrix_mul continuous_const)).matrix_mul continuous_const).sub continuous_const`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Establish `c3` using `(continuous_const (y := (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j)).add ((q.cont_sec.comp (c1.matrix_elem i j)).add ((Formalism.IndefR.Eqv.continuous_cA (D := D)).comp (q.cont_sec.comp (c2.matrix_elem j i))))`. Use `c3.congr fun g => ?_` and prove the remaining obligations. Establish `e3` using `entry_eq q ((h g).1 i j)`. Simplify using `only [Function.comp, Pi.add_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1, ← e2]`. Express the relevant statement in the definitionally equal form `_ + (q.sec (q.pr ((Formalism.L2.Theta.mt V (gl g) - 1) i j)) + cA D (q.sec (q.pr (cA D ((Formalism.L2.Theta.mt V (gl g) - 1) i j))))) = _`. Rewrite using `[← e3, Matrix.sub_apply, add_sub_cancel]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_mt_gl (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) : Continuous fun g => Formalism.L2.Theta.mt V (gl g) := by
   haveI := (Formalism.IndefR.Eqv.ae_facts D).1
@@ -99,7 +99,7 @@ theorem continuous_mt_gl (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) : Continuous 
   rw [← e3, Matrix.sub_apply, add_sub_cancel]
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (f := fun g => matHom V (gl g)) (Units.continuous_iff.2 ⟨continuous_mt_gl q h, ?_⟩) _` and prove the remaining obligations. Use `((continuous_mt_gl q h).comp continuous_inv).congr fun g => ?_` and prove the remaining obligations. Simplify using `only [Function.comp]`. Rewrite using `[map_inv]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem continuous_gl (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) : Continuous gl := by
   refine Continuous.subtype_mk (f := fun g => matHom V (gl g)) (Units.continuous_iff.2 ⟨continuous_mt_gl q h, ?_⟩) _
@@ -119,7 +119,7 @@ def comp (x : GA D V) : GL Y k :=
     key x x⁻¹ (mul_inv_cancel x), key x⁻¹ x (inv_mul_cancel x)⟩
 
 /- English proof (translation)
-Use `haveI := (Formalism.IndefR.Eqv.ga_facts D V).1`. Establish `c0 : Continuous (Formalism.L2.Theta.mt V)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `c : Continuous fun x : GA D V => F.γ * (Formalism.L2.Theta.mt V x).map q.pr * F.β` using `(continuous_const.matrix_mul (c0.matrix_map q.cont_pr)).matrix_mul continuous_const`. Conclude with `Units.continuous_iff.2 ⟨c, c.comp continuous_inv⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_comp : Continuous (comp q F) := by
   haveI := (Formalism.IndefR.Eqv.ga_facts D V).1
@@ -129,9 +129,9 @@ theorem continuous_comp : Continuous (comp q F) := by
   exact Units.continuous_iff.2 ⟨c, c.comp continuous_inv⟩
 
 /- English proof (translation)
-Establish `h2 : (Formalism.L2.Theta.mt V (gl g)).map q.pr = F.β * g.val * F.γ` using `(h g).2`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F.γ * (Formalism.L2.Theta.mt V (gl g)).map q.pr * F.β = _`. Rewrite using `[h2]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[F.γβ, Matrix.mul_one, ← Matrix.mul_assoc, F.γβ, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_gl (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) (g : GL Y k) : comp q F (gl g) = g := by
   have h2 : (Formalism.L2.Theta.mt V (gl g)).map q.pr = F.β * g.val * F.γ := (h g).2
@@ -142,20 +142,20 @@ theorem comp_gl (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) (g : GL Y k) : comp q 
   rw [F.γβ, Matrix.mul_one, ← Matrix.mul_assoc, F.γβ, Matrix.one_mul]
 
 /- English proof (translation)
-Use `haveI := (Formalism.IndefR.Eqv.ga_facts D V).2.1`. Conclude with `Function.LeftInverse.isClosedEmbedding (f := comp q F) (comp_gl q h) (continuous_comp q) (continuous_gl q h)`.
+A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_gl (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) : Topology.IsClosedEmbedding gl := by
   haveI := (Formalism.IndefR.Eqv.ga_facts D V).2.1
   exact Function.LeftInverse.isClosedEmbedding (f := comp q F) (comp_gl q h) (continuous_comp q) (continuous_gl q h)
 
 /- English proof (translation)
-The claim follows from `(supp_iff q _).1 (h g).1`.
+A detailed English derivation is pending.
 -/
 theorem gl_mem (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) (g : GL Y k) : gl g ∈ grpAt V (· = q.v) :=
   (supp_iff q _).1 (h g).1
 
 /- English proof (translation)
-Use `le_antisymm ?_ fun x hx => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `gl_mem q h g`. Take `⟨g, hg⟩` from `GlobalTheory.LocGrp.exists_of_supp (ofSplit q) F ((supp_iff q x).2 hx)`. Conclude with `⟨g, GlobalTheory.LocGrp.isLoc_unique (ofSplit q) (h g) hg⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_gl (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) : gl.range = grpAt V (· = q.v) := by
   refine le_antisymm ?_ fun x hx => ?_
@@ -165,11 +165,11 @@ theorem range_gl (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) : gl.range = grpAt V 
     exact ⟨g, GlobalTheory.LocGrp.isLoc_unique (ofSplit q) (h g) hg⟩
 
 /- English proof (translation)
-Take `⟨p1, p2, p3⟩` from `GlobalTheory.FinPlLoc.part_grp (· = q.v) V`. Take `⟨a, ha, b, hb, rfl⟩` from `p1 x`. Establish `hab` using `p2 a ha b hb`. Rewrite `ha` using `[← range_gl q h]`. Take `⟨g, rfl⟩` from `ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hg : gl g * b * (gl g)⁻¹ ∈ grpOff V (· = q.v)` using `by rwa [hab, mul_inv_cancel_right]`. Use `⟨g, hg, fun g' hg' => ?_⟩` and prove the remaining obligations. Establish `h1 : gl g * (gl g')⁻¹ ∈ grpAt V (· = q.v) ⊓ grpOff V (· = q.v)`. Use `Subgroup.mem_inf.2 ⟨mul_mem (gl_mem q h g) (inv_mem (gl_mem q h g')), ?_⟩` and prove the remaining obligations. Establish `e : gl g * (gl g')⁻¹ = (gl g * b * (gl g)⁻¹)⁻¹ * (gl g * b * (gl g')⁻¹)` using `by group`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `mul_mem (inv_mem hg) hg'`. Rewrite `h1` using `[p3, Subgroup.mem_bot, mul_inv_eq_one]`. Conclude with `((isClosedEmbedding_gl q h).injective h1).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_comp (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) (x : GA D V) :
     ∃! g, x * (gl g)⁻¹ ∈ grpOff V (· = q.v) := by
@@ -189,9 +189,9 @@ theorem existsUnique_comp (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) (x : GA D V)
   exact ((isClosedEmbedding_gl q h).injective h1).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Conclude with `⟨fun i j => (u.val i j).2, fun i j => ((u⁻¹).val i j).2⟩`. Introduce and unpack `⟨h1, h2⟩`. Establish `hi : Function.Injective (RingHom.mapMatrix (m` using `Y) (algebraMap 𝒪[k] k)) := Matrix.map_injective Subtype.val_injective`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨⟨Matrix.of fun i j => ⟨_, h1 i j⟩, Matrix.of fun i j => ⟨_, h2 i j⟩, hi ?_, hi ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_one]`. Conclude with `g.mul_inv`. Rewrite using `[map_mul, map_one]`. Conclude with `g.inv_mul`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_KO_iff (g : GL Y k) : g ∈ KO k Y ↔ (∀ i j, g.val i j ∈ 𝒪[k]) ∧ ∀ i j, (g⁻¹).val i j ∈ 𝒪[k] := by
   constructor
@@ -205,13 +205,13 @@ theorem mem_KO_iff (g : GL Y k) : g ∈ KO k Y ↔ (∀ i j, g.val i j ∈ 𝒪[
     · rw [map_mul, map_one]; exact g.inv_mul
 
 /- English proof (translation)
-Simplify using `only [hermAt, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermAt_eq (x y : Fin V.rank → AE D) : hermAt V x y = (fun i => cA D (y i)) ⬝ᵥ (gA V *ᵥ x) := by
   simp only [hermAt, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `h : (fun i => cA D ((Formalism.L2.Theta.mt V g *ᵥ y) i)) = (fun i => cA D (y i)) ᵥ* adj (Formalism.L2.Theta.mt V g)`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, Matrix.vecMul, dotProduct, map_sum, RingHom.map_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[hermAt_eq, h, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, mt_unitary, hermAt_eq]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermAt_unitary (g : GA D V) (x y : Fin V.rank → AE D) :
     hermAt V (Formalism.L2.Theta.mt V g *ᵥ x) (Formalism.L2.Theta.mt V g *ᵥ y) = hermAt V x y := by
@@ -223,7 +223,7 @@ theorem hermAt_unitary (g : GA D V) (x y : Fin V.rank → AE D) :
     hermAt_eq]
 
 /- English proof (translation)
-Unfold `hermAt`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermAt_smul (a : AE D) (x y : Fin V.rank → AE D) : hermAt V (cA D a • x) y = hermAt V x (a • y) := by
   unfold hermAt
@@ -232,7 +232,7 @@ theorem hermAt_smul (a : AE D) (x y : Fin V.rank → AE D) : hermAt V (cA D a �
   ring
 
 /- English proof (translation)
-Establish `h2 : (Formalism.L2.Theta.mt V (gl g)).map q.pr = F.β * g.val * F.γ` using `(h g).2`. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← h2, Pi.smul_apply, smul_eq_mul, ← q.sec_pr]`. Conclude with `congrArg q.sec (RingHom.map_mulVec q.pr _ y i)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_half (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) (g : GL Y k) (y : Fin V.rank → AE D) :
     q.e • (Formalism.L2.Theta.mt V (gl g) *ᵥ y) = fun i => q.sec ((F.β *ᵥ (g.val *ᵥ (F.γ *ᵥ fun j => q.pr (y j)))) i) := by
@@ -242,9 +242,9 @@ theorem act_half (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) (g : GL Y k) (y : Fin
   exact congrArg q.sec (RingHom.map_mulVec q.pr _ y i)
 
 /- English proof (translation)
-Establish `e : (fun i => q.sec ((F.β *ᵥ z) i)) = q.e • fun i => q.sec ((F.β *ᵥ z) i)`. Use function extensionality and compare the values at `fun i => (GlobalTheory.FinPl.LatIndHalf.e_mul_sec q _).symm`. Rewrite using `[e, Matrix.mulVec_smul, act_half q h]`. Simplify using `only [q.pr_sec]`. Express the relevant statement in the definitionally equal form `(fun i => q.sec ((F.β *ᵥ (g.val *ᵥ (F.γ *ᵥ (F.β *ᵥ z)))) i)) = _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.mulVec_mulVec z, F.γβ, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_sec (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) (g : GL Y k) (z : Y → k) :
     Formalism.L2.Theta.mt V (gl g) *ᵥ (fun i => q.sec ((F.β *ᵥ z) i)) = fun i => q.sec ((F.β *ᵥ (g.val *ᵥ z)) i) := by
@@ -256,7 +256,7 @@ theorem act_sec (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) (g : GL Y k) (z : Y �
   rw [Matrix.mulVec_mulVec z, F.γβ, Matrix.one_mulVec]
 
 /- English proof (translation)
-The claim follows from `sum_mem fun j _ => mul_mem (hM i j) (hz j)`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_int {M : Matrix Y Y k} (hM : ∀ i j, M i j ∈ 𝒪[k]) {z : Y → k} (hz : ∀ i, z i ∈ 𝒪[k]) (i : Y) :
     (M *ᵥ z) i ∈ 𝒪[k] :=
@@ -265,9 +265,9 @@ theorem mulVec_int {M : Matrix Y Y k} (hM : ∀ i j, M i j ∈ 𝒪[k]) {z : Y �
 variable {L : Lat V}
 
 /- English proof (translation)
-Establish `he : finPart D q.e ∈ intAE D`. Rewrite using `[← GlobalTheory.FinPl.LatIndHalf.sec_one]`. Conclude with `(q.int_iff 1).1 (one_mem _)`. Rewrite using `[act_half q h]`. Use `(hL _).1 (mulVec_int ((mem_KO_iff g).1 hg).1 ((hL _).2 ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, F.βγ, Matrix.one_mulVec]`. Simplify using `only [q.sec_pr]`. Conclude with `GlobalTheory.FinPl.LatIndHalf.mul_mem_latV he hy`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem half_mem (h : ∀ g, (ofSplit q).IsLoc F (gl g) g)
     (hL : ∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((F.β *ᵥ y) i)) ∈ latV V L (· = q.v))
@@ -282,11 +282,11 @@ theorem half_mem (h : ∀ g, (ofSplit q).IsLoc F (gl g) g)
   exact GlobalTheory.FinPl.LatIndHalf.mul_mem_latV he hy
 
 /- English proof (translation)
-Take `⟨s1, -, s2⟩` from `GlobalTheory.IwaPlace.LocSD.isSDAt_latV D V L q.v hsd`. Establish `hs` using `GlobalTheory.IwaPlace.mulVec_mem_idAt (Formalism.L2.Theta.mt V (gl g)) (s1 y hy)`. Establish `e : Formalism.L2.Theta.mt V (gl g) *ᵥ y = q.e • (Formalism.L2.Theta.mt V (gl g) *ᵥ y) + cA D q.e • (Formalism.L2.Theta.mt V (gl g) *ᵥ y)`. Rewrite using `[← add_smul, idem_eq]`. Conclude with `funext fun i => ((GlobalTheory.FinPlLoc.mem_idAt_iff _ _).1 (hs i)).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `add_mem (half_mem q h hL hg hy) ((s2 _ fun i => Ideal.mul_mem_left _ _ (hs i)).2 fun x hx => ?_)` and prove the remaining obligations. Establish `e2 : q.e • x = Formalism.L2.Theta.mt V (gl g) *ᵥ (q.e • (Formalism.L2.Theta.mt V (gl g⁻¹) *ᵥ x))`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← GlobalTheory.MixModel.mt_mul, ← map_mul, mul_inv_cancel, map_one, GlobalTheory.MixModel.mt_one, Matrix.one_mulVec]`. Express the relevant statement in the definitionally equal form `hermAt V (cA D q.e • (Formalism.L2.Theta.mt V (gl g) *ᵥ y)) x ∈ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hermAt_smul, e2, hermAt_unitary]`. Conclude with `(s2 y (s1 y hy)).1 hy _ (half_mem q h hL (inv_mem hg) hx)`.
+A detailed English derivation is pending.
 -/
 theorem act_mem (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) (hsd : IsSelfDualC V L)
     (hL : ∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((F.β *ᵥ y) i)) ∈ latV V L (· = q.v))
@@ -308,15 +308,13 @@ theorem act_mem (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) (hsd : IsSelfDualC V L
   exact (s2 y (s1 y hy)).1 hy _ (half_mem q h hL (inv_mem hg) hx)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `fun hg => ⟨gl_mem q h g, fun y _ => ⟨act_mem q h hsd hL hg, fun hy => ?_⟩⟩` and prove the remaining obligations. Use `act_mem q h hsd hL (inv_mem hg) hy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← GlobalTheory.MixModel.mt_mul, ← map_mul, inv_mul_cancel, map_one, GlobalTheory.MixModel.mt_one, Matrix.one_mulVec]`. Then use the resulting hypothesis. Introduce and unpack `⟨-, hm⟩`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Establish `key : ∀ z : Y → k, (∀ i, z i ∈ 𝒪[k]) ↔ ∀ i, (g.val *ᵥ z) i ∈ 𝒪[k]` using `fun z => by`. Rewrite using `[hL, hL, ← act_sec q h]`. Use `hm _ fun i => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.FinPl.LatIndHalf.e_mul_sec]`. Conclude with `Ideal.mul_mem_right _ _ (GlobalTheory.FinPl.LatIndHalf.e_mem_idAt q)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : ∀ j i : Y, (Pi.single j 1 : Y → k) i ∈ 𝒪[k]` using `fun j i => by`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(mem_KO_iff g).2 ⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `using (key _).1 (hs j) i`. Use `(key ((g⁻¹).val *ᵥ Pi.single j 1)).2 (by` as an intermediate fact. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Conclude with `hs j) i`.
-
-Rewrite `this` using `[Matrix.mulVec_single_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_KO_iff_inK (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) (hsd : IsSelfDualC V L)
     (hL : ∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((F.β *ᵥ y) i)) ∈ latV V L (· = q.v))
@@ -344,7 +342,7 @@ theorem mem_KO_iff_inK (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) (hsd : IsSelfDu
       rwa [Matrix.mulVec_single_one] at this
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ q V Y _ _ F gl h`. Conclude with `⟨isClosedEmbedding_gl q h, range_gl q h, existsUnique_comp q h, fun g y hy => (GlobalTheory.FinPlLoc.part_grp (· = q.v) V).2.1 _ (gl_mem q h g) y hy, fun L hsd hL => mem_KO_iff_inK q h hsd hL⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem local_group : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (V : HSp D) (Y : Type) [Fintype Y] [DecidableEq Y] (F : Frame k V.rank Y) (gl : GL Y k →* GA D V), (∀ g, (ofSplit q).IsLoc F (gl g) g) → Topology.IsClosedEmbedding gl ∧ gl.range = GlobalTheory.FinPl.grpAt V (· = q.v) ∧ (∀ x : GA D V, ∃! g, x * (gl g)⁻¹ ∈ GlobalTheory.FinPl.grpOff V (· = q.v)) ∧ (∀ g, ∀ y ∈ GlobalTheory.FinPl.grpOff V (· = q.v), gl g * y = y * gl g) ∧ ∀ L : GlobalTheory.FinPl.Lat V, IsSelfDualC V L → (∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((F.β *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV V L (· = q.v)) → ∀ g, g ∈ KO k Y ↔ GlobalTheory.FinPl.InK V L (· = q.v) (gl g) := by
   intro D k _ _ _ _ q V Y _ _ F gl h

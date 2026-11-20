@@ -12,7 +12,7 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
 variable {p : ℕ} [Fact p.Prime] {X : Sys p}
 
 /- English proof (translation)
-Establish `h1 : ((p : ℕ) : WW p) ≠ 0` using `WittVector.p_nonzero p (kb p)`. Establish `h2 : algebraMap (WW p) (K0 p) ((p : ℕ) : WW p) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (WW p) (K0 p))).2 h1`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prime_cast_ne_zero : ((p : ℕ) : K0 p) ≠ 0 := by
   have h1 : ((p : ℕ) : WW p) ≠ 0 := WittVector.p_nonzero p (kb p)
@@ -21,9 +21,7 @@ theorem prime_cast_ne_zero : ((p : ℕ) : K0 p) ≠ 0 := by
   simpa using h2
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : algebraMap X.G.Kf Y.Kc ((p : ℕ) : X.G.Kf) = 0` using `by rw [h, map_zero]`. Establish `h2 : algebraMap (K0 p) Y.Kc ((p : ℕ) : K0 p) = 0`. Rewrite `h1`, the goal using `[map_natCast]`. Conclude with `h1`.
-
-Conclude with `prime_cast_ne_zero ((map_eq_zero _).1 h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pKf_ne (Y : Pend X) : ((p : ℕ) : X.G.Kf) ≠ 0 := by
   intro h
@@ -34,13 +32,13 @@ theorem pKf_ne (Y : Pend X) : ((p : ℕ) : X.G.Kf) ≠ 0 := by
   exact prime_cast_ne_zero ((map_eq_zero _).1 h2)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `ha0`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible ha0 X.unif`. Take `⟨u, hu⟩` from `hn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : algebraMap X.G.O X.G.Kf (X.vp ^ n) = 0` using `by rw [← hu, map_mul, ha, zero_mul]`. Establish `h2 : algebraMap X.G.O X.G.Kf X.vp = 0`. Rewrite `h1` using `[map_pow]`. Assume the negation of the conclusion as `h`. Conclude with `pow_ne_zero n h h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨u', hu'⟩` from `X.eO_spec`. Establish `h3 : algebraMap X.G.O X.G.Kf ((p : X.G.O) * u') = 0`. Rewrite using `[hu', map_pow, h2, zero_pow (by omega)]`. Rewrite `h3` using `[map_mul, map_natCast]`. Break down `mul_eq_zero.1 h3 with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `pKf_ne Y h`. Establish `: algebraMap X.G.O X.G.Kf ((u' : X.G.O) * ((u'⁻¹ : X.G.Oˣ) : X.G.O)) = 0` using `by rw [map_mul, h, zero_mul]`. Simplify using `at this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem algebraMap_inj (Y : Pend X) (he : 0 < X.eO) : Function.Injective (algebraMap X.G.O X.G.Kf) := by
   rw [injective_iff_map_eq_zero]
@@ -64,9 +62,9 @@ theorem algebraMap_inj (Y : Pend X) (he : 0 < X.eO) : Function.Injective (algebr
     simp at this
 
 /- English proof (translation)
-Establish `: FaithfulSMul X.G.O X.G.Kf` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap_inj Y he)`. Apply `IsFractionRing.of_field` to reduce the goal to its premises. Introduce `z`. Break down `Y.Oc_val (algebraMap X.G.Kf Y.Kc z) with h | h` into its components or cases. Take `⟨a, ha⟩` from `(mem_intK X).1 ((Y.Oc_K z).1 h)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, 1, by simp [ha]⟩`. Rewrite `h` using `[← map_inv₀]`. Take `⟨a, ha⟩` from `(mem_intK X).1 ((Y.Oc_K z⁻¹).1 h)`. Conclude with `⟨1, a, by simp [ha]⟩`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isFractionRing_of_pos_eO (Y : Pend X) (he : 0 < X.eO) : IsFractionRing X.G.O X.G.Kf := by
   have : FaithfulSMul X.G.O X.G.Kf := (faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap_inj Y he)

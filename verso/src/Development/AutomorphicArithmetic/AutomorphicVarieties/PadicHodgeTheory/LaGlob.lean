@@ -13,7 +13,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace UpperTheory.V.Loc
 
 /- English proof (translation)
-Rewrite using `[← h, hj.valuation_lt_one_iff]`. Establish `: Bw.j (algebraMap F Ω (((l : ℕ) : 𝓞 F) : F)) = algebraMap ℚ_[l] (Om l) (l : ℚ_[l])` using `by simp`. Rewrite using `[this, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_of_induces {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ}
     [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc F} (h : IsPlaceOver A w) {O : Type} [CommRing O] [Algebra ℤ_[l] O]
@@ -25,13 +25,13 @@ theorem natCast_mem_of_induces {F Ω : Type} [Field F] [NumberField F] [Field Ω
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Establish `h2 : ∀ a, ‖f a‖ ≤ 1` using `fun a => by`. Assume the negation of the conclusion as `ha`. Establish `h0 : 0 < ‖f (l : R)‖`. Rewrite using `[map_natCast, norm_pos_iff]`. Conclude with `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (‖f (l : R)‖⁻¹) (not_le.1 ha)`. Use `h1' _ (I.mul_mem_right (a ^ k) hl)` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, norm_mul, norm_pow]`. Rewrite `hk` using `[inv_lt_iff_one_lt_mul₀' h0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hxw`. Take `⟨a, b, hb, e⟩` from `hI.exists_inv hxw`. Establish `h3` using `congrArg (fun y => ‖f y‖) e`. Simplify using `only [map_add, map_mul, map_one, norm_one] at h3`. Establish `h4` using `IsUltrametricDist.norm_add_le_max (f a * f x) (f b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : ‖f a * f x‖ < 1`. Rewrite using `[norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (h2 a) (norm_nonneg _) hx'`. Rewrite `h4` using `[h3]`. Conclude with `absurd h4 (not_le.2 (max_lt h5 (h1' b hb)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_of_norm {R : Type} [CommRing R] {l : ℕ} [Fact l.Prime] (f : R →+* Om l) (I : Ideal R) (hI : I.IsMaximal)
     (hl : (l : R) ∈ I) (h1' : ∀ y ∈ I, ‖f y‖ < 1) (x : R) (hx' : ‖f x‖ < 1) : x ∈ I := by
@@ -57,11 +57,11 @@ private theorem mem_of_norm {R : Type} [CommRing R] {l : ℕ} [Fact l.Prime] (f 
   exact absurd h4 (not_le.2 (max_lt h5 (h1' b hb)))
 
 /- English proof (translation)
-Establish `hl` using `natCast_mem_of_induces h Bw hj`. Establish `hl' : w ∈ placesOver F l` using `by simpa [placesOver] using hl`. Take `⟨j, hjc⟩` from `τ`. Establish `h1` using `norm_lt_one_of_contEmb w j hjc`. Establish `h2` using `mem_of_norm ((j.comp (algebraMap F (w.adicCompletion F))).comp (algebraMap (𝓞 F) F)) _ w.isMaximal hl (fun y hy => by rw [RingHom.comp_apply, RingHom.comp_apply]; exact h1 y hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.CharAboveRead.exists_isInduced_of (j.comp (algebraMap F (w.adicCompletion F))) w hl' (fun x => ?_) A h O Bw hj` and prove the remaining obligations. Rewrite using `[RingOfIntegers.coe_eq_algebraMap]`. Use `⟨fun hx => h2 x ?_, fun hx => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply]`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_apply]`. Conclude with `h1 x hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_isInduced_emb {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ}
     [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc F} (h : IsPlaceOver A w) {O : Type} [CommRing O] [Algebra ℤ_[l] O]
@@ -83,11 +83,11 @@ theorem exists_isInduced_emb {F Ω : Type} [Field F] [NumberField F] [Field Ω] 
     exact h1 x hx
 
 /- English proof (translation)
-Establish `hint : ∀ x : 𝓞 L, algebraMap L Ω (x : L) ∈ A` using `fun x => by`. Establish `h : IsIntegral A (algebraMap L Ω (x : L))` using `(x.isIntegral_coe.map (algebraMap L Ω).toIntAlgHom).tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `f : 𝓞 L →+* A` to `((algebraMap L Ω).comp (algebraMap (𝓞 L) L)).codRestrict A hint`. Set `P : Ideal (𝓞 L)` to `(IsLocalRing.maximalIdeal A).comap f`. Establish `hP : ∀ x : 𝓞 L, A.valuation (algebraMap L Ω (x : L)) < 1 ↔ x ∈ P` using `fun x => (A.valuation_lt_one_iff (f x)).symm`. Establish `hne : P ≠ ⊥`. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(hP (p : 𝓞 L)).1 (by simpa using hp)` as an intermediate fact. Rewrite `this` using `[h, Ideal.mem_bot]`. Conclude with `hp0 (Nat.cast_eq_zero.1 this)`. Conclude with `⟨⟨P, inferInstance, hne⟩, hP⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem ex_place {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] {A : ValuationSubring Ω} {p : ℕ}
     (hp0 : p ≠ 0) (hp : A.valuation (p : Ω) < 1) : ∃ w : Plc L, IsPlaceOver A w := by
@@ -109,13 +109,11 @@ private theorem ex_place {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Alg
   exact ⟨⟨P, inferInstance, hne⟩, hP⟩
 
 /- English proof (translation)
-Take `⟨α, hα⟩` from `Field.exists_primitive_element ℚ E`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Set `M` to `IntermediateField.adjoin F {algebraMap E Ω α}`. Use `haveI : FiniteDimensional F M := IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral _)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI : NumberField M := NumberField.of_module_finite F M`. Establish `hE : ∀ x : E, algebraMap E Ω x ∈ M` using `fun x => by`. Set `T : IntermediateField ℚ E` to `(M.toSubfield.comap (algebraMap E Ω)).toIntermediateField fun q => by`. Simplify using `using SubfieldClass.ratCast_mem (M.toSubfield.comap (algebraMap E Ω)) q`. Establish `: IntermediateField.adjoin ℚ {α} ≤ T` using `IntermediateField.adjoin_simple_le_iff.2 (IntermediateField.mem_adjoin_simple_self F _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hα]`. Conclude with `this (IntermediateField.mem_top (x := x))`. Use `letI : Algebra E M := ((algebraMap E Ω).codRestrict M hE).toAlgebra`. Use `⟨M, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, IsScalarTower.of_algebraMap_eq fun _ => rfl, ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := F) M⟩, fun S hF hS x => ?_⟩` and prove the remaining obligations. Establish `: M ≤ S.toIntermediateField hF` using `IntermediateField.adjoin_simple_le_iff.2 (hS α)`.
-
-Conclude with `this x.2`.
+A detailed English derivation is pending.
 -/
 private theorem ex_comp (F E Ω : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] [Algebra E Ω] :
@@ -144,35 +142,31 @@ private theorem ex_comp (F E Ω : Type) [Field F] [NumberField F] [Field E] [Num
   exact this x.2
 
 /- English proof (translation)
-Establish `hl` using `natCast_mem_of_induces h Bw hj`. Take `⟨E, _, _, _, _, _, hK, δ, hδ0, hδ, c, hc⟩` from `UpperTheory.exists_totally_imaginary_padic_sqrt F Ω l Bw.j Bw.Kw`. Establish `hE : ∀ x : E, Bw.j (algebraMap E Ω x) ∈ Bw.Kw.1` using `fun x => hK ▸ IntermediateField.subset_adjoin _ _ ⟨x, rfl⟩`. Take `⟨u, hu⟩ : ∃ u : Plc E, IsPlaceOver A u` from `ex_place (Fact.out : l.Prime).ne_zero (by simpa using (h _).2 hl)`. Take `⟨e, he, he', hec⟩` from `GlobalTheory.PlaceBridge.exists_mulEquiv (E := E) hj Bw.Kw hK.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `Bw' : LocBridge l E Ω (Dec (F` to `E) A) O := { Bw with j_E := hE j_dense := hK ▸ GlobalTheory.PlaceBridge.adjoin_range_subset_closure (Bw.j.comp (algebraMap E Ω)) e := e e_cont := he e_symm_cont := he' e_comm := hec }`. Establish `hj' : GlobalTheory.Pst.Induces Bw'` using `hj`. Set `R : (E →+* Om l) → Emb l w → Prop` to `fun τE τ => ∃ s : ↥Bw.Kw.1 →ₐ[ℚ_[l]] Om l, (∀ x : F, τ.1 (algebraMap F _ x) = s ⟨Bw.j (algebraMap F Ω x), Bw.j_E x⟩) ∧ ∀ x : E, τE x = s ⟨Bw.j (algebraMap E Ω x), hE x⟩`. Establish `hR1 : ∀ τE τ τ₂, R τE τ → R τE τ₂ → τ = τ₂`. Introduce and unpack `τE τ τ₂ ⟨s, h1, h2⟩ ⟨s', h1', h2'⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `: s = s'` using `IntermediateField.algHom_ext_of_eq_adjoin ℚ_[l] hK.symm (by`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `(h2 x).symm.trans (h2' x))`. Substitute `this` using the available equality. Use `Subtype.ext (DFunLike.coe_injective ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(HeightOneSpectrum.denseRange_algebraMap (K := F) (v := w)).equalizer τ.2 τ₂.2 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Conclude with `(h1 x).trans (h1' x).symm`. Establish `hR2 : ∀ τE τ, R τE τ → τE δ = algebraMap ℚ_[l] (Om l) c`. Introduce and unpack `τE τ ⟨s, -, h2⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2, ← s.commutes]`. Conclude with `congrArg s (Subtype.ext hc.symm)`. Establish `hc0 : algebraMap ℚ_[l] (Om l) c ≠ 0`. Rewrite using `[hc]`. Conclude with `(map_ne_zero _).2 ((map_ne_zero _).2 hδ0)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `m : (E →+* ℂ) → ℤ` to `fun φ => if H : ∃ τ, R (ι.symm.toRingHom.comp φ) τ then -wt H.choose else 0`. Set `n : (E →+* ℂ) → ℤ` to `fun φ => m φ - m (ComplexEmbedding.conjugate φ)`. Establish `hn : ∀ τE τ, R τE τ → n (ι.toRingHom.comp τE) = -wt τ` using `fun τE τ H => by`. Establish `e1 : ι.symm.toRingHom.comp (ι.toRingHom.comp τE) = τE` using `RingHom.ext fun x => ι.symm_apply_apply _`. Establish `H1 : ∃ τ, R (ι.symm.toRingHom.comp (ι.toRingHom.comp τE)) τ` using `⟨τ, e1.symm ▸ H⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H2 : ¬ ∃ τ, R (ι.symm.toRingHom.comp (ComplexEmbedding.conjugate (ι.toRingHom.comp τE))) τ`. Introduce and unpack `⟨τ₂, H₂⟩`. Establish `a1` using `hR2 _ _ H`. Establish `a2 : ι.symm (starRingEnd ℂ ((ι.toRingHom.comp τE) δ)) = _` using `hR2 _ _ H₂`. Rewrite `a2` using `[hδ, map_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `a3 : ι.symm ((ι.toRingHom.comp τE) δ) = τE δ` using `ι.symm_apply_apply _`. Rewrite `a2` using `[a3, a1]`. Conclude with `hc0 (neg_eq_self.1 a2)`. Use `show m _ - m _ = _`. Simplify using `only [m]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[dif_pos H1, dif_neg H2, sub_zero, hR1 _ _ _ H1.choose_spec (e1.symm ▸ H)]`. Take `⟨χ, hχ, -⟩` from `GlobalTheory.AlgCharUnr.exists_algChar_unr E l Fact.out n 0 (fun φ => by`. Establish `: ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ` using `star_star φ`. Simplify using `only [n, this]`. Use the proof step `ring)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨art, hart, H⟩` from `hH E Ω`. Take `⟨μ, ⟨hμ, hL⟩, -⟩` from `H l ι χ n hχ`. Set `ν : ↥(Dec (F` to `F) A) →* (Qbar l)ˣ := (μ.comp (Dec (F := E) A).subtype).comp (Bw.e.trans e.symm).toMonoidHom`. Establish `hν : ∀ (g : ↥(Dec (F` using `F) A)) (g' : G E Ω), (∀ z, (g : G F Ω) z = g' z) → ν g = μ g' := fun g g' hg => by`. Use `congrArg μ (AlgEquiv.ext fun z => Bw.j.injective ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `show Bw.j (((e.symm (Bw.e g) : ↥(Dec (F := E) A)) : G E Ω) z) = _`. Rewrite using `[← hec, MulEquiv.apply_symm_apply, Bw.e_comm, hg]`. Use `⟨E, inferInstance, inferInstance, inferInstance, inferInstance, u, hu, Bw', art, χ, n, μ, ν, rfl, rfl, rfl, hart, hχ, hμ, hL, (hμ.comp continuous_subtype_val).comp (he'.comp Bw.e_cont), hν, ?_, fun τ s τE h1 h2 => hn τE τ ⟨s, h1, fun x => h2 x _⟩⟩` and prove the remaining obligations. Take `⟨M, _, _, _, _, _, _, _, _, hM⟩` from `ex_comp F E Ω`. Establish `hMK : ∀ x : M, Bw.j (algebraMap M Ω x) ∈ Bw.Kw.1` using `hM (Bw.Kw.1.toSubfield.comap Bw.j) Bw.j_E hE`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht, iF, hF⟩` from `Af.Cq.exPlaceIso F M Ω l A w h O Bw hj hMK`. Take `⟨t', ht', iE, hE'⟩` from `Af.Cq.exPlaceIso E M Ω l A u hu O Bw' hj' hMK`. Take `rfl : t = t'` from `HeightOneSpectrum.ext (Ideal.ext fun x => (ht x).symm.trans (ht' x))`. Take `⟨BM, b1, b2, b3⟩` from `Af.Cq.exBridge F M Ω l A O Bw hMK`. Establish `hjM : GlobalTheory.Pst.Induces BM` using `fun x => by rw [b2]; exact hj x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `κM : ↥(Dec (F` to `M) A) →* (Qbar l)ˣ := (μ.comp (AlgEquiv.restrictScalarsHom E : G M Ω →* G E Ω)).comp (Dec (F := M) A).subtype`. Use `(UpperTheory.isLocallyAlgebraic_transfer_of_placeIso hG h ht _ iF hF ν κM (fun g g' hg => hν g _ hg) wt _ (fun _ => rfl)).2 ?_` and prove the remaining obligations. Use `(UpperTheory.isLocallyAlgebraic_transfer_of_placeIso hG hu ht _ iE hE' (μ.comp (Dec (F := E) A).subtype) κM (fun g g' hg => congrArg μ (AlgEquiv.ext hg)) _ _ (fun τ => ?_)).1 (laHecke hu art hart ι χ n μ hL (laArtin hG hu))` and prove the remaining obligations. Take `⟨τ', hτ'⟩` from `exists_isInduced_emb ht BM hjM τ`. Set `s : ↥Bw.Kw.1 →ₐ[ℚ_[l]] Om l` to `(BM.LL.1.val.comp τ').comp (IntermediateField.inclusion (le_of_eq (congrArg Subtype.val b1.symm)))`.
-
-Establish `hs : ∀ x : M, τ.1 (algebraMap M _ x) = s ⟨Bw.j (algebraMap M Ω x), hMK x⟩` using `fun x => (hτ' x).trans (congrArg (fun y => ((τ' y : ↥BM.LL.1) : Om l)) (Subtype.ext (congrArg (fun j : Ω →+* Om l => j _) b2)))`. Use `hn ((τ.1.comp iE.toRingHom).comp (algebraMap E _)) ⟨τ.1.comp iF.toRingHom, τ.2.comp hF.cont⟩ ⟨s, fun x => ?_, fun x => ?_⟩` as an intermediate fact. Rewrite using `[← neg_neg (wt _), ← this]`. Both sides reduce to the same expression. Use `show τ.1 (iF _) = _`.
-
-Rewrite using `[hF.loc, hs]`. Conclude with `congrArg s (Subtype.ext (congrArg Bw.j (IsScalarTower.algebraMap_apply F M Ω x).symm))`. Use `show τ.1 (iE _) = _`. Rewrite using `[hE'.loc, hs]`. Conclude with `congrArg s (Subtype.ext (congrArg Bw.j (IsScalarTower.algebraMap_apply E M Ω x).symm))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem laGlob (hG : GlobalArtinReciprocity) (hH : HeckeLAdicCharacter) {F Ω : Type} [Field F] [NumberField F] [Field Ω]
     [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc F} (h : IsPlaceOver A w)

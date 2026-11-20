@@ -18,7 +18,7 @@ open Formalism.L2.SG.RealObj Formalism.L2.SG.HidaSetting Formalism.L2.SG.TermOp 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Consider the cases of `F1`. Consider the cases of `F2`. Simplify using `only at he hz`. Substitute `he` using the available equality. Substitute `hz` using the available equality.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -29,7 +29,7 @@ theorem flag_ext {D : D7} {T : D.host.E} (F1 F2 : FlagG (VS D) D.R.rS T)
   subst he; subst hz; rfl
 
 /- English proof (translation)
-Establish `: Fin.castLE h b = Fin.castSucc (Fin.castLE hl b)` using `Fin.ext rfl`. Rewrite using `[this, fam, Fin.snoc_castSucc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fam_castLE {n r l : ℕ} (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (hl : l ≤ r) (h : l ≤ r + 1) (b : Fin l) :
     fam e z (Fin.castLE h b) = e (Fin.castLE hl b) := by
@@ -37,18 +37,16 @@ theorem fam_castLE {n r l : ℕ} (e : Fin r → Fin n → ℂ) (z : Fin n → �
   rw [this, fam, Fin.snoc_castSucc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[famSc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem famSc_one {n r : ℕ} (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : famSc 1 e z = fam e z := by
   funext a
   simp [famSc]
 
 /- English proof (translation)
-Unfold `spanLt at *`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨b, hb, rfl⟩` from `hw`. Conclude with `Submodule.subset_span ⟨b, hb, rfl⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add w1 w2 _ _ h1 h2 => rw [Matrix.mulVec_add]`. Conclude with `add_mem h1 h2`. Consider the case `smul c w _ h1 => rw [Matrix.mulVec_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ h1`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_map {n r : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (e : Fin r → Fin n → ℂ) (a : ℕ) {y : Fin n → ℂ}
     (hy : y ∈ spanLt e a) : g *ᵥ y ∈ spanLt (fun c => g *ᵥ e c) a := by
@@ -64,15 +62,15 @@ theorem span_map {n r : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (e : Fin r → Fin
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-Simplify using `[uMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uMat_mul_inv' {n : ℕ} {ε : Fin n → Bool} (a : Formalism.REAL.UJ ε) : uMat a * uMat a⁻¹ = 1 := by
   simp [uMat]
 
 /- English proof (translation)
-Establish `h : l ≤ D.R.rS + 1` using `hl.trans (Nat.le_succ _)`. Unfold `Dl`. Rewrite using `[dif_pos h]`. Use `congr 1`. Use extensionality with `b c`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.submatrix_apply, ZX, Zhat, frm, famSc_one, HermitianBlockSpans.blk, Matrix.of_apply]`. Rewrite using `[fam_castLE _ _ hl h, fam_castLE _ _ hl h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dl_eq (u u' : D.what₂.Word) (γ : X.B.I.Ginf) (v : InfinitePlace X.B.I.F) {l : ℕ} (hl : l ≤ D.R.rS) :
     Dl (ZX X u u' 1 γ v) l =
@@ -88,17 +86,15 @@ theorem dl_eq (u u' : D.what₂.Word) (γ : X.B.I.Ginf) (v : InfinitePlace X.B.I
 variable {X} {u u' : D.what₂.Word} {what₂ rows' : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Introduce and unpack `y ⟨x, m, hx, rfl, hm, hm'⟩`. Establish `hN` using `Formalism.L2.SG.Pf.nLamNinf_holds D X u t.lam x m hx hm`. Establish `hγ : RatLink X t.pt t.lin` using `t.rep.2.1`. Establish `hx' : RatLink X (t.pt⁻¹ * x * t.pt) (t.lin⁻¹ * m * t.lin)` using `Vanish.ratLink_mul X (Vanish.ratLink_mul X (Vanish.ratLink_inv X hγ) hx) hγ`. Establish `hN'` using `Formalism.L2.SG.Pf.nLamNinf_holds D X u' t.lam' _ _ hx' hm'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `v`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show uMat (x.1 v) = 1`. Use `set g := uMat (t.pt.1 v) with hg`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set gi := uMat (t.pt.1⁻¹ v) with hgi`. Establish `hgg : g * gi = 1` using `uMat_mul_inv' (t.pt.1 v)`. Establish `hv` using `hN v`. Establish `hv'` using `hN' v`. Establish `hconj : uMat ((t.pt⁻¹ * x * t.pt).1 v) = gi * uMat (x.1 v) * g`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[uMat, hg, hgi]`. Rewrite `hv'` using `[hconj]`. Use `set e := fun a => rv X.B.I v (X.eR a) with he`. Establish `hkey : ∀ y, (uMat (x.1 v) - 1) *ᵥ (g *ᵥ y) = g *ᵥ ((gi * uMat (x.1 v) * g - 1) *ᵥ y)`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : g * (gi * uMat (x.1 v) * g - 1) = (uMat (x.1 v) - 1) * g`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, ← Matrix.mul_assoc, hgg]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hm]`. Use `st_triv (X.B.I.ε v) e (fun a => g *ᵥ e a) (uMat (x.1 v)) (hJ_map _ (x.1 v).2) hv.1.1 (fun a => ?_) hv.2 (fun l hl h1 => ?_)` and prove the remaining obligations. Rewrite using `[hkey]`.
-
-Conclude with `span_map g e a.1 (hv'.1.1 a)`. Use `(hreg v).1 l h1 hl` as an intermediate fact. Rewrite `this` using `[dl_eq X u u' t.pt.1 v hl]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ro_triv (t : GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') (hreg : RegX X u u' t.pt.1) :
     ∀ y ∈ ROinf t, y = 1 := by
@@ -134,9 +130,9 @@ theorem ro_triv (t : GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') (hreg : RegX
     rwa [dl_eq X u u' t.pt.1 v hl] at this
 
 /- English proof (translation)
-Establish `htriv` using `ro_triv t hreg`. Establish `h1 : (1 : X.B.I.Ginf) ∈ ROinf t` using `(Vanish.ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin).one_mem`. Establish `hex : ∃ Ω, IsSFund X.B.I (ROinf t) Ω` using `⟨Set.univ, MeasurableSet.univ, fun x => ⟨1, h1, trivial⟩, fun x _ s hs _ => htriv s hs⟩`. Unfold `FundOf`. Rewrite using `[dif_pos hex]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_univ, iff_true]`. Take `⟨s, hs1, hs2⟩` from `hex.choose_spec.2.1 x`. Rewrite `hs2` using `[htriv s hs1, one_mul]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fundOf_univ (t : GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') (hreg : RegX X u u' t.pt.1) :
     FundOf t = Set.univ := by
@@ -154,9 +150,9 @@ theorem fundOf_univ (t : GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') (hreg : 
 variable (X u u')
 
 /- English proof (translation)
-Introduce `hFT`. Take `⟨he, hz, he', hz'⟩` from `hFT`. Take `rfl : F0 = X.Fu u` from `flag_ext _ _ ((funext he).trans (X.Fu_e u).symm) (hz.trans (X.flagZVector u).symm)`. Take `rfl : F0' = X.Fu u'` from `flag_ext _ _ ((funext he').trans (X.Fu_e u').symm) (hz'.trans (X.flagZVector u').symm)`. Introduce `t hreg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `TermOp.OOt OOinf`. Rewrite using `[fundOf_univ t hreg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem OOtReg_holds (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (F0' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (what₂ rows' : Finset (Submodule (𝓞 D.host.E) (VS D).V)) :

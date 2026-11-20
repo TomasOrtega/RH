@@ -50,7 +50,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r}
 
 /- English proof (translation)
-Take `⟨V, _, _, ⟨M⟩⟩` from `GlobalTheory.CompanionTheory.Ar.lieModel_exists Xo.X Xo.univ.t.G ℂ z`. Take `⟨h, hh, -⟩` from `GlobalTheory.CompanionTheory.Ar.exists_hodgeInnerProduct_form E H Xo.X Xo.univ.t z V M ⟨Φ.T.t, Φ.m, Φ.T.ab.proper, Φ.T.ample⟩`. Take `⟨v, rfl⟩` from `M.onto v ha.isTanAt_left`. Take `⟨w, rfl⟩` from `M.onto w ha.isTanAt_right`. Rewrite using `[(hh _ _ _).1 ha, (hh _ _ _).1 hb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ip_unique {z : Sp ℂ ⟶ Xo.X} (Φ : FibKey Xo ℂ z) {v w : GlobalTheory.CompanionTheory.Ar.epsAt z ⟶ Xo.univ.t.G} {a b : ℂ}
     (ha : GlobalTheory.CompanionTheory.Ar.HodgeIP Xo.univ.t.G Xo.univ.t.PP.L z v w a)
@@ -63,9 +63,9 @@ theorem ip_unique {z : Sp ℂ ⟶ Xo.X} (Φ : FibKey Xo ℂ z) {v w : GlobalTheo
   rw [(hh _ _ _).1 ha, (hh _ _ _).1 hb]
 
 /- English proof (translation)
-Take `⟨w₀, hw₀, -⟩` from `Φ.m.lin`. Establish `hL` using `Φ.T.t.PP.isLB`. Establish `hM` using `pull_isLB Xo.univ.t.PP.isLB Φ.m.φ`. Set `u₁ : HolUnif Φ.T.t.G (Xo.univ.t.PP.L.pull Φ.m.φ) g` to `GlobalTheory.ArchMetricCompare.carry u hL hM hw₀`. Establish `hA₁ : u₁.IsAH Hm χ` using `GlobalTheory.ArchMetricCompare.carry_isAH hL hM hw₀ hA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `ip_unique Φ h ⟨h.1, h.isTanAt_left, h.isTanAt_right, Φ.T.t.G, inferInstance, Φ.m.φ, g, u₁, Hm, χ, v', w', a, b, Φ.m.cart, hA₁, e1, e2, d1, d2, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ip_of_unif {z : Sp ℂ ⟶ Xo.X} (Φ : FibKey Xo ℂ z) {g : ℕ} (u : HolUnif Φ.T.t.G Φ.T.t.PP.L g)
     {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (hA : u.IsAH Hm χ)
@@ -82,9 +82,9 @@ theorem ip_of_unif {z : Sp ℂ ⟶ Xo.X} (Φ : FibKey Xo ℂ z) {g : ℕ} (u : H
     v', w', a, b, Φ.m.cart, hA₁, e1, e2, d1, d2, rfl⟩
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Take `⟨Φ₀⟩` from `nonempty_fibKey E H Dw l Xo ℂ (U.un k x).x hpq`. Take `⟨-, h₁, h₂⟩` from `SecTieEx.secTie_exists_unique E H Dw l Xo ℂ (U.un k x).x Φ₀.T.t Φ₀.m`. Take `⟨th, ht⟩` from `h₁ (U.un k x).s`. Establish `hne` using `(h₂ th _ ht).2.1 (secNZ_of_secGen lawsFieldsSeparately.2.1 E H Dw l Xo ℂ _ _ (U.un k x).gen)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `Φ : FibKey Xo ℂ (U.un k x).x` to `{ Φ₀ with th := th, th_ne := hne }`. Take `⟨u, χ, -, hA, -, -, -, hD⟩` from `OrthoMetric.exists_unif W.F (W.ik k) W.per W.pt Φ ht Wu.herm Wu.pos Wu.c2 Wu.c3 Wu.c4 Wu.c5 Wu.c6 Wu.c7`. Take `⟨v', e1, d1⟩` from `hD a v.left ⟨Over.w v, h.isTanAt_left⟩ hv`. Take `⟨w', e2, d2⟩` from `hD b w.left ⟨Over.w w, h.isTanAt_right⟩ hw`. Conclude with `ip_of_unif Φ u hA h e1 e2 d1 d2`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem univ_ip {k : U.Comp} {x : (U.X k).dom} (W : PullbackSections.UnfAt U k x) (Wu : PullbackSections.UnitAt W) (hpq : 1 ≤ Dw.p + Dw.q)
     (z : Sp ℂ ⟶ Xo.X) (hz : z = (U.un k x).x) (a b : Fin W.g → ℂ) (v w : GlobalTheory.CompanionTheory.Ar.epsAt z ⟶ Xo.univ.t.G) (cc₀ : ℂ)
@@ -104,13 +104,13 @@ theorem univ_ip {k : U.Comp} {x : (U.X k).dom} (W : PullbackSections.UnfAt U k x
   exact ip_of_unif Φ u hA h e1 e2 d1 d2
 
 /- English proof (translation)
-Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Take `⟨hp0, hty⟩` from `hU.2.1 k`. Take `⟨f, hf⟩` from `FrameUnif.exists_letter_equiv (U.X k).Ψ (U.X k).cmType Dw.p Dw.q r hU.1 (relab c σ) hbij Dw.mult (fun τ h => by unfold Datum.mult; rw [if_pos ((hrt τ).1 ((hty _).1 h))]) (fun τ h => by unfold Datum.mult; rw [if_neg (fun h' => h ((hty _).2 ((hrt τ).2 h')))])`. Rewrite `hf` using `[← hp0]`. Use `⟨f, hf, fun x v s => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hf s`. Generalize the expression as in `f s = t at h ⊢`. Take `⟨⟨τ, hτ⟩, ⟨n, hn⟩⟩` from `t`. Simplify using `only at h ⊢`. Unfold `RiemMaj.pc`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Replace the relevant objects with their definitions.
 
-Break down `h with ⟨a, rfl, rfl⟩ | ⟨a, rfl, rfl, d⟩` into its components or cases. Rewrite using `[if_neg (by simp)]`. Unfold `perFr`. Rewrite using `[dif_pos a, dif_pos hn]`. Rewrite using `[if_pos (by dsimp only; omega)]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `perFr`. Rewrite using `[dif_neg a, dif_pos (show conjEmb (relab c σ s.1) ∈ (U.X k).Ψ from hτ), dif_pos hn]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem letters (hσ : GoodEmb c σ) (hU : IsUnf U) (k : U.Comp) :
     ∃ f : (Σ τ, Fin (Dw.mult τ)) ≃ (U.X k).Ψ × Fin r, (∀ s,
@@ -140,13 +140,13 @@ theorem letters (hσ : GoodEmb c σ) (hU : IsUnf U) (k : U.Comp) :
     rfl
 
 /- English proof (translation)
-Take `⟨f, hf, hper⟩` from `letters hσ hU k`. Establish `key : Wu.Hm = Matrix.diagonal fun j => ((-2 * (((W.e.trans f) j).1.1 (U.X k).ξ0).im : ℝ) : ℂ)`. Use `PullbackSections.UH.herm_eq_of_im W.Pm W.per.2.2.2.1 _ _ fun a b => ?_` and prove the remaining obligations. Establish `e : ∀ a, W.Pm a = fun j => RiemMaj.pc (U.X k) x.1 (W.φ k a : Fin r → E) ((W.e.trans f) j)` using `fun a => funext fun j => (W.pm_eq a j).trans (hper _ _ _)`. Rewrite using `[Wu.c1, e, e, RiemMaj.im_diag (U.X k) (W.e.trans f) hx, ← W.isom, Rat.cast_intCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : ∀ j, -2 * (((W.e.trans f) j).1.1 (U.X k).ξ0).im = 2 * ‖relab c σ (W.e j).1 (U.X k).ξ0‖`. Introduce `j`. Establish `hpos` using `Wu.pos (Pi.single j 1) (by simp)`. Rewrite `hpos` using `[key, hermForm, single_dotProduct, Matrix.mulVec_diagonal, Pi.star_apply, Pi.single_eq_same, star_one, _root_.one_mul, _root_.mul_one, Complex.ofReal_re]`. Establish `hn : ‖relab c σ (W.e j).1 (U.X k).ξ0‖ = ‖((W.e.trans f) j).1.1 (U.X k).ξ0‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Equiv.trans_apply]`. Break down `hf (W.e j) with ⟨-, h, -⟩ | ⟨-, h, -⟩` into its components or cases. Rewrite using `[h]`. Rewrite using `[h, ComplexEmbedding.conjugate_coe_eq, Complex.norm_conj]`. Rewrite using `[hn]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `((W.e.trans f) j).1.1 = τ at hpos ⊢`. Rewrite using `[← Complex.abs_im_eq_norm.mpr (RiemMaj.re_xi (U.X k) τ), abs_of_neg (by linarith)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Simplify using `only [hd]`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hm_diag (hσ : GoodEmb c σ) (hU : IsUnf U) {k : U.Comp} {x : (U.X k).dom} (W : PullbackSections.UnfAt U k x)
     (Wu : PullbackSections.UnitAt W) (hx : (U.X k).IsOrtho x.1) :
@@ -175,25 +175,23 @@ theorem hm_diag (hσ : GoodEmb c σ) (hU : IsUnf U) {k : U.Comp} {x : (U.X k).do
   simp only [hd]
 
 /- English proof (translation)
-Take `⟨f, hf, hper⟩` from `letters hσ hU k`. Establish `hbij : Function.Bijective (relab c σ)` using `(GlobalTheory.Relab.relab_good E H l c σ hσ).1`. Establish `hb` using `FrameDegreeData.bOf_mem (U.X k) x.2`. Establish `ho` using `FrameDegreeData.ortho_bOf (U.X k) x.2`. Use `set b := FrameDegreeData.bOf (U.X k) x.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : rmul x.1 b ∈ (U.X k).dom` using `OrthogonalFrameDomain.rmul_mem_dom (U.X k) x.2 hb`. Take `⟨-, -, -, -, -, g, e, F, ik, φ, -, hpt⟩` from `hU`. Take `⟨P, h1, h2, h3, h4, -⟩` from `hpt k x`. Take `⟨P₀, k1, k2, k3, k4, -⟩` from `hpt k ⟨_, hy⟩`. Establish `hs : ∀ j j', PerBor.moveMat (U.X k).p0 (e.trans f) b j j' ≠ 0 → (e j).1 = (e j').1 ∧ ((e j).2 : ℕ) ≤ (e j').2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j j' hne`. Take `⟨g1, g2⟩` from `PerBor.moveMat_support _ (e.trans f) hb j j' hne`. Use `clear hpt`. Rewrite `g1`, `g2` using `[Equiv.trans_apply, Equiv.trans_apply]`. Establish `g1'` using `congrArg Subtype.val g1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis.
 
-Apply the tactic sequence `rcases hf (e j) with ⟨a1, a2, a3⟩ | ⟨a1, a2, a3, a4⟩ <;>`. Break down `hf (e j') with ⟨b1, b2, b3⟩ | ⟨b1, b2, b3, b4⟩` into its components or cases. Rewrite `g2` using `[if_neg (by omega)]`. Conclude with `⟨hbij.1 (by rw [← a2, ← b2, g1']), by omega⟩`. Rewrite `g2` using `[if_neg (by omega)]`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `g2` using `[if_pos (by omega)]`. Use linear arithmetic over natural numbers and integers. Rewrite `g2` using `[if_pos (by omega)]`. Use `⟨hbij.1 ((ComplexEmbedding.involutive_conjugate E).injective (by rw [← a2, ← b2, g1'])), by omega⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht, hd⟩` from `FrameNorm.frBor_of_triangular_period E H Dw l Xo c σ g e F (ik k) P P₀ (PerBor.moveMat (U.X k).p0 (e.trans f) b) (U.un k x) (U.un k ⟨_, hy⟩) h2 k2 (fun a => PerBor.moveMat_mulVec _ (e.trans f) hb (U.X k).Gm x.1 (φ k a : Fin r → E) _ _ (fun j => (h1 a j).trans (hper _ _ _)) (fun j …`. Use `⟨⟨_, hy⟩, t, ho, ht, fun s τ a => ?_⟩` and prove the remaining obligations. Establish `hd' : toC (t (some (e (e.symm s))) : CAt σ) = _` using `hd (e.symm s)`. Use `clear hpt`. Rewrite `hd'` using `[PerBor.moveMat_diag _ _ hb]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Equiv.trans_apply, Equiv.apply_symm_apply] at hd'`. Establish `hr` using `FrameDegreeData.ratio_rmul (U.X k) x.1 x.2 hb τ a`. Rewrite `hr` using `[norm_div, RiemMaj.norm_dmin_ortho _ ho, RiemMaj.norm_dmin_ortho _ ho, div_one]`. Prove the components needed by the constructor for the conclusion. Introduce `e1 e2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `hf s with ⟨a1, a2, a3⟩ | ⟨a1, -⟩` into its components or cases. Establish `: f s = (τ, a)` using `Prod.ext (Subtype.ext (a2.trans e1.symm)) (Fin.ext (a3.trans e2.symm))`. Rewrite `hd'` using `[this, if_neg (by dsimp only; omega)]`. Rewrite using `[hd', norm_inv, inv_pow]`. Conclude with `(eq_inv_of_mul_eq_one_right hr.symm).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd (e1 ▸ τ.2) a1`. Introduce `e1 e2`. Break down `hf s with ⟨a1, -⟩ | ⟨a1, a2, a3, a4⟩` into its components or cases. Rewrite `a1` using `[← e1]`. Conclude with `absurd a1 (((U.X k).cmType _).1 τ.2)`.
-
-Establish `: f s = (τ, a)` using `Prod.ext (Subtype.ext (a2.trans (by`. Rewrite using `[← e1]; exact ComplexEmbedding.involutive_conjugate E τ.1))) (Fin.ext (by dsimp only; omega))`. Rewrite `hd'` using `[this, if_pos (by dsimp only; omega)]`. Rewrite using `[hd']`. Conclude with `eq_inv_of_mul_eq_one_left hr.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem move (hσ : GoodEmb c σ) (hU : IsUnf U) {k : U.Comp} (x : (U.X k).dom) :
     ∃ (x₀ : (U.X k).dom) (t : Ix Dw → (CAt σ)ˣ), (U.X k).IsOrtho x₀.1 ∧ FrBor t (U.un k x₀) (U.un k x) ∧
@@ -258,7 +256,7 @@ theorem move (hσ : GoodEmb c σ) (hU : IsUnf U) {k : U.Comp} (x : (U.X k).dom) 
       exact eq_inv_of_mul_eq_one_left hr.symm
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.Ar.leadMinor`. Rewrite using `[dif_pos hm, Matrix.submatrix_smul, Pi.smul_apply, Pi.smul_apply, Matrix.submatrix_one _ (Fin.castLE_injective hm), Matrix.det_smul, Matrix.det_one, Fintype.card_fin, _root_.mul_one, ← Complex.ofReal_pow, Complex.ofReal_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem leadMinor_smul_one {n : ℕ} (κ : ℝ) (m : ℕ) (hm : m ≤ n) :
     GlobalTheory.CompanionTheory.Ar.leadMinor ((κ : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) m = κ ^ m := by
@@ -268,19 +266,17 @@ theorem leadMinor_smul_one {n : ℕ} (κ : ℝ) (m : ℕ) (hm : m ≤ n) :
     ← Complex.ofReal_pow, Complex.ofReal_re]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Take `⟨W⟩` from `PullbackSections.nonempty_unfAt hU k x`. Take `⟨Wu⟩` from `PullbackSections.nonempty_unitAt W (PullbackSections.PfSupAtUnit.dmin_ortho _ hx)`. Establish `hH` using `hm_diag hσ hU W Wu hx`. Use `choose cf h1 h2 h3 using ht.2.1 τ`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Y : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ` to `fun j i => toC (cf i j)`. Establish `hd : ∀ i, IsDerivAt0 (fun z => (W.F.ex (W.ik k) W.Pm z).left) (∑ j, Y j i • (Pi.single (W.e.symm ⟨τ, j⟩) 1 : Fin W.g → ℂ)) (v i).left` using `fun i => by`. Rewrite using `[hv]`. Use `(GlobalTheory.DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ W.g _ W.F (W.ik k) W.Pm W.per _ ((U.un k x).u τ) (fun i => Pi.single (W.e.symm ⟨τ, i⟩) 1) (W.der τ) (fun j => Y j i) _).1 ?_` and prove the remaining obligations. Use `h3 i` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[W.pt]`. Conclude with `this`. Use `set κ : ℝ := Real.pi * (2 * ‖relab c σ τ (U.X k).ξ0‖) with hκ`. Establish `hκ0 : 0 < κ` using `mul_pos Real.pi_pos (mul_pos two_pos (norm_pos_iff.2 ((map_ne_zero _).2 (U.X k).ξ0_ne)))`. Establish `hG : Γ = Yᴴ * ((κ : ℂ) • (1 : Matrix _ _ ℂ)) * Y`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `p q`. Rewrite using `[univ_ip W Wu hpq z (hz.trans ht.1) _ _ _ _ _ (hd p) (hd q) (hΓ p q), MetricChange.hermForm_sum]`. Establish `hf : ∀ a b : Fin (Dw.mult τ), hermForm Wu.Hm (Pi.single (W.e.symm ⟨τ, a⟩) 1) (Pi.single (W.e.symm ⟨τ, b⟩) 1) = if a = b then ((2 * ‖relab c σ τ (U.X k).ξ0‖ : ℝ) : ℂ) else 0`. Introduce `a b`. Rewrite using `[hH, hermForm, single_dotProduct, Matrix.mulVec_diagonal, _root_.one_mul, Equiv.apply_symm_apply, Pi.star_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hab`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne (fun hh => hab (eq_of_heq (Sigma.mk.inj (W.e.symm.injective hh)).2))]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hf, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.smul_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, mul_ite, ite_mul, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, smul_eq_mul, Finset.mul_sum, hκ]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hdiag : ∀ i, Y i i = toC (t (some ⟨τ, i⟩) : CAt σ)` using `fun i => h1 i`.
-
-Rewrite using `[hG, GlobalTheory.CompanionTheory.Ar.GrNorm.sqrt_ratio_conj _ Y (fun l k h => h2 k l h) (fun j => by rw [hdiag]; exact Units.ne_zero (M₀ := ℂ) (t (some ⟨τ, j⟩))), leadMinor_smul_one _ _ i.2, leadMinor_smul_one _ _ i.2.le, pow_succ, mul_div_cancel_left₀ _ (pow_ne_zero _ hκ0.ne'), …`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gram (hσ : GoodEmb c σ) (hU : IsUnf U) (hpq : 1 ≤ Dw.p + Dw.q) {k : U.Comp} (x : (U.X k).dom)
     (hx : (U.X k).IsOrtho x.1) (y : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ) (ht : FrBor t (U.un k x) y)
@@ -333,7 +329,7 @@ theorem gram (hσ : GoodEmb c σ) (hU : IsUnf U) (hpq : 1 ≤ Dw.p + Dw.q) {k : 
   rfl
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Conclude with `GlobalTheory.CompanionTheory.Ar.hodgeInnerProduct_tripleMap_iff E H X t X' t' f m z v' w' v w cc₀ hv hw`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ip_iff {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {f : X' ⟶ X} (m : SABMap t' t f)
     (z : Sp ℂ ⟶ X') (z' : Sp ℂ ⟶ X) (hz : z ≫ f = z') (v' w' : GlobalTheory.CompanionTheory.Ar.epsAt z ⟶ t'.G)
@@ -343,9 +339,9 @@ theorem ip_iff {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {f : X' ⟶ X} 
   exact GlobalTheory.CompanionTheory.Ar.hodgeInnerProduct_tripleMap_iff E H X t X' t' f m z v' w' v w cc₀ hv hw
 
 /- English proof (translation)
-Take `⟨Vz, _, _, ⟨MR⟩⟩` from `GlobalTheory.CompanionTheory.Ar.lieModel_exists 𝔐.X 𝔐.t.G ℂ z`. Take `⟨ev, hev1, -⟩` from `GlobalTheory.T.lie_lattice_eval_at_local_ring 𝔐.X 𝔐.t.G Ω 𝔐.ξ 𝔐.Li 𝔐.M ℂ z (𝔐.all _) Vz MR 𝔐.tie.gen 𝔐.t.semi.smooth`. Take `⟨a, rfl⟩` from `MR.onto v (GlobalTheory.CompanionTheory.Ar.GrNorm.tan_of_valAt hv)`. Take `⟨b, rfl⟩` from `MR.onto w (GlobalTheory.CompanionTheory.Ar.GrNorm.tan_of_valAt hw)`. Take `⟨_, e1⟩` from `(hev1 _ _).1 hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, e2⟩` from `(hev1 _ _).1 hw`. Rewrite using `[← e1, ← e2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt_unique {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Finset ℕ}
     {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω}
@@ -360,11 +356,11 @@ theorem valAt_unique {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c 
   rw [← e1, ← e2]
 
 /- English proof (translation)
-Take `⟨v, hv, hI⟩` from `hΓ`. Establish `e : ∀ i, (v i).left ≫ 𝔐.m.φ = GlobalTheory.CompanionTheory.Ar.Small.tanY Y y τ (ιx i)` using `fun i => by`. Take `⟨w, h1, h2⟩` from `hb i`. Rewrite using `[valAt_unique 𝔐 z (hv i) h1, h2]`. Set `zY : Sp ℂ ⟶ Y.X` to `GlobalTheory.CompanionTheory.Ar.Small.ptY (S := CAt σ) Y y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `zF : Sp ℂ ⟶ Xo.XF c` to `GlobalTheory.CompanionTheory.Ar.Small.ptF (S := CAt σ) y`. Set `zU : Sp ℂ ⟶ Xo.X` to `y.x`. Set `vY : Fin n → (GlobalTheory.CompanionTheory.Ar.epsAt zY ⟶ Y.t.G)` to `fun i => Over.homMk (GlobalTheory.CompanionTheory.Ar.Small.tanY (S := CAt σ) Y y τ (ιx i)) (GlobalTheory.CompanionTheory.Ar.Small.tanY_hom Y y τ (ιx i))`. Set `vF : Fin n → (GlobalTheory.CompanionTheory.Ar.epsAt zF ⟶ Y.oF.t.G)` to `fun i => Over.homMk (GlobalTheory.CompanionTheory.Ar.Small.tanF (S := CAt σ) Y y τ (ιx i)) (GlobalTheory.CompanionTheory.Ar.Small.tanF_hom Y y τ (ιx i))`. Set `vU : Fin n → (GlobalTheory.CompanionTheory.Ar.epsAt zU ⟶ Xo.univ.t.G)` to `fun i => Over.homMk (y.u τ (ιx i)) (y.tan τ (ιx i)).1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨zU, vU, rfl, fun _ => rfl, fun p q => ?_⟩` and prove the remaining obligations. Establish `h1` using `(ip_iff 𝔐.m z zY hz _ _ (vY p) (vY q) _ (e p).symm (e q).symm).1 (hI p q)`. Establish `h2` using `(ip_iff Y.m zF zY rfl (vF p) (vF q) (vY p) (vY q) _ rfl rfl).2 h1`. Conclude with `(ip_iff Y.m0.toSABMap zF zU (GlobalTheory.CompanionTheory.Ar.Small.ptF_fst y) (vF p) (vF q) (vU p) (vU q) _ (GlobalTheory.CompanionTheory.Ar.Small.tanF_φ Y y τ (ιx p)).symm (GlobalTheory.CompanionTheory.Ar.Small.tanF_φ Y y τ (ιx q)).symm).1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem transport {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Finset ℕ}
     {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {y₁ : (Σ k, J k) → Ω}

@@ -4,17 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Spa
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD M h0 K _ _ ξ ξ' hrep`. Establish `hent : ∀ g i j, ξ (M.ent g i j) = ξ' (M.ent g i j)`. Introduce `g i j`. Use `congrArg (fun r => r g i j) hrep` as an intermediate fact. Simplify `this` using `[Model.rep, mapRep, Model.rS, RingHom.mapMatrix_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `Q : Subalgebra c.O M.S` to `(AlgHom.equalizer ξ ξ').map M.SS.val`. Establish `hQent : ∀ g i j, M.ru.hom g i j ∈ Q`. Introduce `g i j`. Conclude with `⟨M.ent g i j, hent g i j, rfl⟩`. Establish `hQmono : ∀ w, mono M.ru.hom w ⊆ (Q : Set M.S)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `w y hy`. Take `⟨L, -, rfl⟩` from `hy`. Apply `Subalgebra.list_prod_mem` to reduce the goal to its premises. Introduce `z hz`. Take `⟨a, -, rfl⟩` from `List.mem_map.mp hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hQent _ _ _`. Establish `hle : (⨆ j, M.sPart j) ≤ Subalgebra.toSubmodule Q`. Use `iSup_le fun w => ?_` and prove the remaining obligations. Rewrite using `[spanMono D hD M h0 w, Submodule.span_le]`. Conclude with `hQmono w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `x`. Establish `hx : (x : M.S) ∈ ⨆ j, M.sPart j` using `x.2`. Take `⟨y, hy, hyx⟩` from `hle hx`. Establish `: y = x` using `Subtype.ext hyx`.
-
-Rewrite using `[← this]`. Conclude with `hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.ptExt :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ M : Model D, D.Fin0 → ∀ (K : Type) [CommRing K] [Algebra c.O K] (ξ ξ' : M.SS →ₐ[c.O] K), M.rep ξ = M.rep ξ' → ξ = ξ' := by

@@ -19,11 +19,11 @@ open GlobalTheory.KS
 namespace GlobalTheory.GlueFn
 
 /- English proof (translation)
-Establish `: JacobsonSpace X.left` using `LocallyOfFiniteType.jacobsonSpace X.hom`. Assume the negation of the conclusion as `hne`. Establish `hne' : ((O : Set X.left) ∩ (W : Set X.left)ᶜ).Nonempty`. Take `⟨p, hp, hp'⟩` from `Set.not_subset.1 hne`. Conclude with `⟨p, hp, hp'⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, ⟨hcO, hcW⟩, hc⟩` from `nonempty_inter_closedPoints hne' (O.isOpen.isLocallyClosed.inter W.isOpen.isClosed_compl.isLocallyClosed)`. Establish `hc' : IsClosed {c}` using `hc`. Set `x : 𝟙_ (Over (Sp ℂ)) ⟶ X` to `Over.homMk (pointOfClosedPoint X.hom c hc') (pointOfClosedPoint_comp X.hom c hc')`. Establish `hx : ∀ U : X.left.Opens, ⊤ ≤ x.left ⁻¹ᵁ U ↔ c ∈ U` using `fun U => by`. Use `(top_le_preimage_iff_mem (pointOfClosedPoint X.hom c hc') U).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(pointOfClosedPoint_apply X.hom c hc' _).symm ▸ Iff.rfl`. Conclude with `hcW ((hx W).1 (h x ((hx O).2 hcO)))`.
+A detailed English derivation is pending.
 -/
 theorem le_of_forall_point {X : Over (Sp ℂ)} [LocallyOfFiniteType X.hom] {O W : X.left.Opens}
     (h : ∀ x : (𝟙_ (Over (Sp ℂ)) ⟶ X), ⊤ ≤ x.left ⁻¹ᵁ O → ⊤ ≤ x.left ⁻¹ᵁ W) : O ≤ W := by
@@ -43,7 +43,7 @@ theorem le_of_forall_point {X : Over (Sp ℂ)} [LocallyOfFiniteType X.hom] {O W 
   exact hcW ((hx W).1 (h x ((hx O).2 hcO)))
 
 /- English proof (translation)
-Use `eq_of_valAt'_eq valAt'_rules existsUnique_point_of_ringHom X inferInstance inferInstance U f f' ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨z, rfl⟩` from `he x`. Conclude with `h z hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ext_val {X : Over (Sp ℂ)} [IsReduced X.left] [LocallyOfFiniteType X.hom] {E : Type}
     (e : E → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (he : Function.Surjective e) (U : X.left.Opens) (f f' : Γ(X.left, U))
@@ -54,11 +54,11 @@ theorem ext_val {X : Over (Sp ℂ)} [IsReduced X.left] [LocallyOfFiniteType X.ho
   exact h z hx
 
 /- English proof (translation)
-Use `choose U c hUO hzU hc using h`. Establish `hcov : O ≤ ⨆ p : {z // ⊤ ≤ (e z).left ⁻¹ᵁ O}, U p.1 p.2`. Use `le_of_forall_point fun x hx => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `he x`. Conclude with `top_le_preimage_mono _ (le_iSup (fun p : {z // ⊤ ≤ (e z).left ⁻¹ᵁ O} => U p.1 p.2) ⟨z, hx⟩) (hzU z hx)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs, -⟩` from `TopCat.Sheaf.existsUnique_gluing' X.left.sheaf (fun p : {z // ⊤ ≤ (e z).left ⁻¹ᵁ O} => U p.1 p.2) O (fun p => homOfLE (hUO p.1 p.2)) hcov (fun p => c p.1 p.2) (by`. Introduce `p q`. Use `ext_val e he (U p.1 p.2 ⊓ U q.1 q.2) _ _ fun z hz => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `(top_le_preimage_inf _ _ _).1 hz`. Conclude with `((valAt'_map _ _ _ hz).trans (hc _ _ z h1)).trans ((valAt'_map _ _ _ hz).trans (hc _ _ z h2)).symm)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hval : ∀ z, ⊤ ≤ (e z).left ⁻¹ᵁ O → valAt' (e z).left O s = ψ z` using `fun z hz => by`. Rewrite using `[← hc z hz z (hzU z hz), ← hs ⟨z, hz⟩]`. Conclude with `(valAt'_map _ _ _ (hzU z hz)).symm`. Conclude with `⟨s, hval, fun t ht => ext_val e he O t s fun z hz => (ht z hz).trans (hval z hz).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_glue {X : Over (Sp ℂ)} [IsReduced X.left] [LocallyOfFiniteType X.hom] {E : Type}
     (e : E → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (he : Function.Surjective e) (O : X.left.Opens) (ψ : E → ℂ)
@@ -90,13 +90,13 @@ namespace GlobalTheory
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct ContDiff in
 /- English proof (translation)
-Use `haveI : JacobsonSpace X := LocallyOfFiniteType.jacobsonSpace p`. Establish `h1 : LocallyOfFiniteType (X.fromSpecResidueField x)` using `isClosed_singleton_iff_locallyOfFiniteType.mp hx`. Establish `h2 : LocallyOfFiniteType (X.fromSpecResidueField x ≫ p)` using `inferInstance`. Take `⟨φ, hφ⟩ : ∃ φ, Spec.map φ = X.fromSpecResidueField x ≫ p` from `⟨Spec.preimage _, Spec.map_preimage _⟩`. Rewrite `h2` using `[← hφ]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hft : φ.hom.FiniteType` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).mp h2`. Use `letI := φ.hom.toAlgebra`. Use `haveI : Algebra.FiniteType ℂ (X.residueField x) := hft`. Use `haveI : Module.Finite ℂ (X.residueField x) := finite_of_finite_type_of_isJacobsonRing ℂ _`. Establish `hsurj : Function.Surjective (algebraMap ℂ (X.residueField x))`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Apply `IsSepClosed.algebraMap_surjective` to reduce the goal to its premises. Set `e` to `RingEquiv.ofBijective (algebraMap ℂ (X.residueField x)) ⟨(algebraMap ℂ _).injective, hsurj⟩`. Use `⟨Spec.map (CommRingCat.ofHom e.symm.toRingHom) ≫ X.fromSpecResidueField x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hφ, ← Spec.map_comp]`. Use `Spec.map_id (CommRingCat.of ℂ)` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a`. Conclude with `e.symm_apply_apply a`. Introduce `s`. Rewrite using `[Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]`.
+A detailed English derivation is pending.
 -/
 private lemma exists_complex_section_through_closed_point (X : Scheme) (p : X ⟶ Spec (CommRingCat.of ℂ))
     [LocallyOfFiniteType p] (x : X) (hx : IsClosed ({x} : Set X)) :
@@ -127,7 +127,7 @@ private lemma exists_complex_section_through_closed_point (X : Scheme) (p : X �
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct ContDiff in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt'`. Rewrite using `[dif_pos hU, dif_pos hU, dif_pos hU]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt`. Simplify using `only [map_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma valAt'_sub_of_top_le {X : Scheme} (q : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ X) (U : X.Opens) (hU : ⊤ ≤ q ⁻¹ᵁ U)
     (a b : Γ(X, U)) : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' q U (a - b) = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' q U a - _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' q U b := by
@@ -139,13 +139,13 @@ private lemma valAt'_sub_of_top_le {X : Scheme} (q : _root_.ReciprocityTheory.Ch
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct ContDiff in
 /- English proof (translation)
-Introduce `hs`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' at hf`. Rewrite `hf` using `[dif_pos hU]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt at hf`. Establish `h0 : q.appLE U ⊤ hU f = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `congrArg (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom hf` as an intermediate fact. Simplify using `using this`. Establish `hmem : s ∈ q ⁻¹ᵁ X.basicOpen f` using `hs`. Rewrite `hmem` using `[Scheme.Hom.preimage_basicOpen]`. Establish `hres : (Spec (CommRingCat.of ℂ)).basicOpen (q.appLE U ⊤ hU f) = ⊤ ⊓ (Spec (CommRingCat.of ℂ)).basicOpen (q.app U f)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.basicOpen_res]`. Both sides reduce to the same expression. Rewrite `hres` using `[h0, Scheme.basicOpen_zero]`. Establish `: s ∈ (⊤ ⊓ (Spec (CommRingCat.of ℂ)).basicOpen (q.app U f) : (Spec (CommRingCat.of ℂ)).Opens)` using `⟨trivial, hmem⟩`. Rewrite `this` using `[← hres]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 private lemma not_mem_basicOpen_of_valAt'_eq_zero {X : Scheme} (q : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ X)
     (U : X.Opens) (hU : ⊤ ≤ q ⁻¹ᵁ U) (f : Γ(X, U)) (hf : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' q U f = 0)
@@ -172,7 +172,7 @@ private lemma not_mem_basicOpen_of_valAt'_eq_zero {X : Scheme} (q : _root_.Recip
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct ContDiff in
 /- English proof (translation)
-Establish `hU : ⊤ ≤ q ⁻¹ᵁ U` using `fun s hs => i.le (hV hs)`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt'`. Rewrite using `[dif_pos hU, dif_pos hV]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt`. Rewrite using `[← Scheme.Hom.map_appLE q hV i.op]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -189,29 +189,23 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct ContDiff in
 
 /- English proof (translation)
-Introduce `P₀ u Hm χ _ O h H`. Use `haveI := P₀.smoothDim`. Establish `hsm : Smooth P₀.A.hom` using `SmoothOfRelativeDimension.smooth P₀.g P₀.A.hom`. Use `haveI := hsm`. Use `haveI : IsReduced P₀.A.left := _root_.GlobalTheory.isReduced_of_smooth_complex _ _ hsm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI : JacobsonSpace P₀.A.left := LocallyOfFiniteType.jacobsonSpace P₀.A.hom`. Establish `hpt : ∀ y : P₀.A.left, IsClosed ({y} : Set P₀.A.left) → ∃ z, ∀ s, (u.ex z).left.base s = y`. Introduce `y hy`. Take `⟨q, hq, hqy⟩` from `exists_complex_section_through_closed_point P₀.A.left P₀.A.hom y hy`. Take `⟨z, hz⟩` from `u.ex_onto (Over.homMk q hq : 𝟙_ (Over (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ)) ⟶ P₀.A)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨z, fun s => by rw [hz]; exact hqy s⟩`. Establish `hs₀ : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ` using `IsLocalRing.closedPoint ℂ`. Establish `huniq : ∀ (V : P₀.A.left.Opens) (a b : Γ(P₀.A.left, V)), (∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ V → _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (u.ex z).left V a = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (u.ex z).left V b) → a = b`. Introduce `V a b hab`. Rewrite using `[← sub_eq_zero, ← basicOpen_eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Take `⟨y, hyB, hyc⟩` from `nonempty_inter_closedPoints ((TopologicalSpace.Opens.ne_bot_iff_nonempty _).mp hne) (P₀.A.left.basicOpen (a - b)).isOpen.isLocallyClosed`. Take `⟨z, hz⟩` from `hpt y (mem_closedPoints_iff.mp hyc)`. Establish `hzV : ⊤ ≤ (u.ex z).left ⁻¹ᵁ V` using `fun s _ => by show (u.ex z).left.base s ∈ V`. Rewrite using `[hz]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `P₀.A.left.basicOpen_le _ hyB`. Establish `h0 : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (u.ex z).left V (a - b) = 0`. Rewrite using `[valAt'_sub_of_top_le _ _ hzV, hab z hzV, sub_self]`. Conclude with `not_mem_basicOpen_of_valAt'_eq_zero _ _ hzV _ h0 hs₀ (by rw [hz]; exact hyB)`. Establish `hloc : ∀ w : {z // ⊤ ≤ (u.ex z).left ⁻¹ᵁ O}, ∃ (O' : P₀.A.left.Opens) (a : Γ(P₀.A.left, O')), O' ≤ O ∧ ⊤ ≤ (u.ex w.1).left ⁻¹ᵁ O' ∧ ∀ z', ⊤ ≤ (u.ex z').left ⁻¹ᵁ O' → _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (u.ex z').left O' a = h z'` using `fun w => H w.1 w.2`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose W aW hWO hWz hWv using hloc`. Establish `hcover : O ≤ iSup W`. Assume the negation of the conclusion as `hle`. Establish `hZ : ((O : Set P₀.A.left) ∩ ((iSup W : P₀.A.left.Opens) : Set P₀.A.left)ᶜ).Nonempty`. Rewrite using `[← Set.diff_eq, Set.diff_nonempty]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hle`. Establish `hZlc : IsLocallyClosed ((O : Set P₀.A.left) ∩ ((iSup W : P₀.A.left.Opens) : Set P₀.A.left)ᶜ)` using `⟨O, ((iSup W : P₀.A.left.Opens) : Set P₀.A.left)ᶜ, O.isOpen, (iSup W).isOpen.isClosed_compl, rfl⟩`. Take `⟨y, ⟨hyO, hyW⟩, hyc⟩` from `nonempty_inter_closedPoints hZ hZlc`. Take `⟨z, hz⟩` from `hpt y (mem_closedPoints_iff.mp hyc)`. Establish `hzO : ⊤ ≤ (u.ex z).left ⁻¹ᵁ O` using `fun s _ => by show (u.ex z).left.base s ∈ O`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hz]`. Conclude with `hyO`. Establish `hyz : y ∈ W ⟨z, hzO⟩`. Rewrite using `[← hz hs₀]`. Conclude with `hWz ⟨z, hzO⟩ (show hs₀ ∈ (⊤ : (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ).Opens) from trivial)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hyW (TopologicalSpace.Opens.mem_iSup.mpr ⟨_, hyz⟩)`. Establish `hcompat : TopCat.Presheaf.IsCompatible P₀.A.left.sheaf.obj W aW`. Introduce `i j`. Apply `huniq` to reduce the goal to its premises. Introduce `z hz`.
-
-Establish `hi : ⊤ ≤ (u.ex z).left ⁻¹ᵁ W i` using `fun s hs => (inf_le_left : W i ⊓ W j ≤ W i) (hz hs)`. Establish `hj : ⊤ ≤ (u.ex z).left ⁻¹ᵁ W j` using `fun s hs => (inf_le_right : W i ⊓ W j ≤ W j) (hz hs)`. Use `erw [valAt'_presheaf_map _ _ hz, valAt'_presheaf_map _ _ hz]`. Rewrite using `[hWv i z hi, hWv j z hj]`. Take `⟨a, ha, -⟩` from `P₀.A.left.sheaf.existsUnique_gluing' W O (fun i => homOfLE (hWO i)) hcover aW hcompat`.
-
-Establish `hval : ∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ O → _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (u.ex z).left O a = h z`. Introduce `z hz`. Rewrite using `[← valAt'_presheaf_map (u.ex z).left (homOfLE (hWO ⟨z, hz⟩)) (hWz ⟨z, hz⟩) a]`. Use `erw [ha ⟨z, hz⟩]`. Conclude with `hWv ⟨z, hz⟩ z (hWz ⟨z, hz⟩)`.
-
-Use `⟨a, hval, fun b hb => huniq O b a fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hb z hz, hval z hz]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.existsUnique_section_of_locally_regular :
     ∀ (P₀ : _root_.ReciprocityTheory.ChartRestriction.G.Out.PolAV (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ)) (u : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), _root_.GlobalTheory.KS.GoodU u Hm χ → ∀ (O : P₀.A.left.Opens) (h : (Fin P₀.g → ℂ) → ℂ), (∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ O → ∃ (O' : P₀.A.left.Opens) (a : Γ(P₀.A.left, O')), O' ≤ O ∧ ⊤ ≤ (u.ex z).left ⁻¹ᵁ O' ∧ ∀ z', ⊤ ≤ (u.ex z').left ⁻¹ᵁ O' → _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (u.ex z').left O' a = h z') → ∃! a : Γ(P₀.A.left, O), ∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ O → _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (u.ex z).left O a = h z := by

@@ -6,7 +6,7 @@ open GlobalTheory.KummerEisensteinGalois
 namespace GlobalTheory.KummerEisensteinGalois
 
 /- English proof (translation)
-Establish `h0 : ζ ≠ 0` using `hζ.ne_zero hM.ne'`. Establish `h1 : ζ ^ (u - v) = 1` using `(hζ.zpow_eq_one_iff_dvd (u - v)).2 (Int.ModEq.dvd h.symm)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma zpow_congr_of_modEq {K : Type} [Field K] {ζ : K} {M : ℕ} (hζ : IsPrimitiveRoot ζ M) (hM : 0 < M)
     {u v : ℤ} (h : u ≡ v [ZMOD M]) : ζ ^ u = ζ ^ v := by

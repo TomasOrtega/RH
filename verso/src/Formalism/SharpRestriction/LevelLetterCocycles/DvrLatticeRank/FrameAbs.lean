@@ -42,57 +42,57 @@ section SlopeTestRemainingChoices
 variable {I J : Ideal A} {X Y : Matrix (Fin d) (Fin d) A}
 
 /- English proof (translation)
-Introduce `_ _` and use `I.zero_mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MatIn.zero : MatIn I (0 : Matrix (Fin d) (Fin d) A) := fun _ _ => I.zero_mem
 
 /- English proof (translation)
-Introduce `i j` and use `I.add_mem (hX i j) (hY i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MatIn.add (hX : MatIn I X) (hY : MatIn I Y) : MatIn I (X + Y) :=
   fun i j => I.add_mem (hX i j) (hY i j)
 
 /- English proof (translation)
-Introduce `i j` and use `I.neg_mem (hX i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MatIn.neg (hX : MatIn I X) : MatIn I (-X) := fun i j => I.neg_mem (hX i j)
 
 /- English proof (translation)
-Introduce `i j` and use `I.sub_mem (hX i j) (hY i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MatIn.sub (hX : MatIn I X) (hY : MatIn I Y) : MatIn I (X - Y) :=
   fun i j => I.sub_mem (hX i j) (hY i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply]; exact I.sum_mem fun k _ => I.mul_mem_left _ (hY k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MatIn.mul_left (hY : MatIn I Y) : MatIn I (X * Y) := fun i j => by
   rw [Matrix.mul_apply]; exact I.sum_mem fun k _ => I.mul_mem_left _ (hY k j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply]; exact I.sum_mem fun k _ => I.mul_mem_right _ (hX i k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MatIn.mul_right (hX : MatIn I X) : MatIn I (X * Y) := fun i j => by
   rw [Matrix.mul_apply]; exact I.sum_mem fun k _ => I.mul_mem_right _ (hX i k)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.smul_apply, smul_eq_mul]; exact I.mul_mem_left a (hX i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MatIn.smul (hX : MatIn I X) (a : A) : MatIn I (a • X) := fun i j => by
   rw [Matrix.smul_apply, smul_eq_mul]; exact I.mul_mem_left a (hX i j)
 
 /- English proof (translation)
-Introduce `i j` and use `hIJ (hX i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MatIn.mono (hIJ : I ≤ J) (hX : MatIn I X) : MatIn J X := fun i j => hIJ (hX i j)
 
 /- English proof (translation)
-Introduce `i j` and use `hX j i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MatIn.transpose (hX : MatIn I X) : MatIn I Xᵀ := fun i j => hX j i
 
 /- English proof (translation)
-Use `choose K hK using fun i j => Ideal.mem_span_singleton'.mp (h i j)`. Use `⟨Matrix.of K, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Conclude with `(hK i j).symm.trans (mul_comm _ _)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MatIn.exists_smul {p : A} (h : MatIn (Ideal.span {p}) X) :
     ∃ K : Matrix (Fin d) (Fin d) A, X = p • K := by
@@ -103,7 +103,7 @@ theorem MatIn.exists_smul {p : A} (h : MatIn (Ideal.span {p}) X) :
   exact (hK i j).symm.trans (mul_comm _ _)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.smul_apply, smul_eq_mul] exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self p)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MatIn.smul_self (p : A) (K : Matrix (Fin d) (Fin d) A) : MatIn (Ideal.span {p}) (p • K) :=
   fun i j => by
@@ -111,9 +111,9 @@ theorem MatIn.smul_self (p : A) (K : Matrix (Fin d) (Fin d) A) : MatIn (Ideal.sp
     exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self p)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, Ideal.Quotient.eq]`. Conclude with `h i j`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h i j`. Use `congr_fun (congr_fun h i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply, Matrix.map_apply, Ideal.Quotient.eq]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matIn_sub_iff : MatIn I (X - Y) ↔ X.map (Ideal.Quotient.mk I) = Y.map (Ideal.Quotient.mk I) := by
   constructor
@@ -127,34 +127,34 @@ theorem matIn_sub_iff : MatIn I (X - Y) ↔ X.map (Ideal.Quotient.mk I) = Y.map 
     exact this
 
 /- English proof (translation)
-The claim follows from `Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow π h)`.
+A detailed English derivation is pending.
 -/
 theorem span_pow_mono (π : A) {m n : ℕ} (h : m ≤ n) :
     Ideal.span {π ^ n} ≤ Ideal.span ({π ^ m} : Set A) :=
   Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow π h)
 
 /- English proof (translation)
-The claim follows from `Ideal.span_singleton_le_span_singleton.mpr (dvd_pow_self π (by omega))`.
+A detailed English derivation is pending.
 -/
 theorem span_pow_le (π : A) {n : ℕ} (h : 1 ≤ n) : Ideal.span {π ^ n} ≤ Ideal.span ({π} : Set A) :=
   Ideal.span_singleton_le_span_singleton.mpr (dvd_pow_self π (by omega))
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.MatrixMapSmul.goal1 .. | (apply Bl.MatrixMapSmul.goal1 <;> assumption) | (intros; apply Bl.MatrixMapSmul.goal1 <;> assumption) | (apply @Bl.MatrixMapSmul.goal1 <;> assumption) | (intros; apply @Bl.MatrixMapSmul.goal1 <;> assumption) | (apply @Bl.MatrixMapSmul.goa …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_smul_ring (σ : A →+* A) (a : A) (X : Matrix (Fin d) (Fin d) A) :
     (a • X).map σ = σ a • X.map σ := by
   first | exact Bl.MatrixMapSmul.goal1 .. | (apply Bl.MatrixMapSmul.goal1 <;> assumption) | (intros; apply Bl.MatrixMapSmul.goal1 <;> assumption) | (apply @Bl.MatrixMapSmul.goal1 <;> assumption) | (intros; apply @Bl.MatrixMapSmul.goal1 <;> assumption) | (apply @Bl.MatrixMapSmul.goal1 <;> first | assumption | infer_instance) | exact @Bl.MatrixMapSmul.goal1 A ‹_› d σ a X | exact @Bl.MatrixMapSmul.goal1 A ‹_› d σ a | exact @Bl.MatrixMapSmul.goal1 A ‹_› d σ | exact @Bl.MatrixMapSmul.goal1 A ‹_› d | exact @Bl.MatrixMapSmul.goal1 A ‹_› | exact @Bl.MatrixMapSmul.goal1 A
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.MatrixMapSub.goal1 .. | (apply Bl.MatrixMapSub.goal1 <;> assumption) | (intros; apply Bl.MatrixMapSub.goal1 <;> assumption) | (apply @Bl.MatrixMapSub.goal1 <;> assumption) | (intros; apply @Bl.MatrixMapSub.goal1 <;> assumption) | (apply @Bl.MatrixMapSub.goal1 <;> …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_sub_ring (σ : A →+* A) (X Y : Matrix (Fin d) (Fin d) A) :
     (X - Y).map σ = X.map σ - Y.map σ := by
   first | exact Bl.MatrixMapSub.goal1 .. | (apply Bl.MatrixMapSub.goal1 <;> assumption) | (intros; apply Bl.MatrixMapSub.goal1 <;> assumption) | (apply @Bl.MatrixMapSub.goal1 <;> assumption) | (intros; apply @Bl.MatrixMapSub.goal1 <;> assumption) | (apply @Bl.MatrixMapSub.goal1 <;> first | assumption | infer_instance) | exact @Bl.MatrixMapSub.goal1 A ‹_› d σ X Y | exact @Bl.MatrixMapSub.goal1 A ‹_› d σ X | exact @Bl.MatrixMapSub.goal1 A ‹_› d σ | exact @Bl.MatrixMapSub.goal1 A ‹_› d | exact @Bl.MatrixMapSub.goal1 A ‹_› | exact @Bl.MatrixMapSub.goal1 A
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp hx`. Establish `h0 : (x - t * π) * π ^ y = 0` using `by linear_combination (-1 : A) * ht`. Establish `h1` using `(mem_nonZeroDivisors_iff.mp (pow_mem hπ y)).2 _ h0`. Conclude with `Ideal.mem_span_singleton'.mpr ⟨t, (sub_eq_zero.mp h1).symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cancel_pow {π x : A} (hπ : π ∈ nonZeroDivisors A) {y : ℕ}
     (hx : π ^ y * x ∈ Ideal.span ({π ^ (y + 1)} : Set A)) : x ∈ Ideal.span ({π} : Set A) := by
@@ -170,9 +170,9 @@ section Core
 variable {σ : A →+* A} {π : A} {ev : ℕ → A}
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp (hσπ y)`. Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.mp (hσ b)`. Use `⟨(ev y + 1) * s + t * b + t * s * π, ?_⟩` and prove the remaining obligations. Establish `e1 : σ (π ^ y) = (ev y + 1) * π ^ y + t * π ^ (y + 1)` using `by rw [ht]; ring`. Establish `e2 : σ b = b + s * π` using `by rw [hs]; ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem scalar_core (hσ : ∀ a : A, σ a - a ∈ (Ideal.span {π} : Ideal A))
     (hσπ : ∀ y : ℕ, σ (π ^ y) - (ev y + 1) * π ^ y ∈ (Ideal.span {π ^ (y + 1)} : Ideal A))
@@ -185,13 +185,13 @@ theorem scalar_core (hσ : ∀ a : A, σ a - a ∈ (Ideal.span {π} : Ideal A))
   rw [map_mul, e1, e2]; ring
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp (hσπ y)`. Establish `hK : MatIn (Ideal.span {π}) (Γ * U.map σ - U)`. Establish `e : Γ * U.map σ - U = (Γ - 1) * U.map σ + (U.map σ - U)`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e]`. Use `(MatIn.mul_right hΓ).add (fun i j => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, Matrix.map_apply]`. Conclude with `hσ (U i j)`. Take `⟨K, hK'⟩` from `hK.exists_smul`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(ev y + 1) • K + t • U + (π * t) • K, ?_⟩` and prove the remaining obligations. Establish `e1 : σ (π ^ y) = (ev y + 1) * π ^ y + t * π ^ (y + 1)` using `by rw [ht]; ring`. Establish `e2 : Γ * U.map σ = U + π • K` using `by rw [← hK']; abel`. Rewrite using `[map_smul_ring, Matrix.mul_smul, e2, e1]`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mat_core {Γ : Matrix (Fin d) (Fin d) A} (hσ : ∀ a : A, σ a - a ∈ (Ideal.span {π} : Ideal A))
     (hΓ : MatIn (Ideal.span {π}) (Γ - 1))
@@ -216,17 +216,17 @@ theorem mat_core {Γ : Matrix (Fin d) (Fin d) A} (hσ : ∀ a : A, σ a - a ∈ 
   ring
 
 /- English proof (translation)
-Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base`. Use `⟨1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.Ico_self, Finset.prod_empty, one_smul, sub_self]`. Conclude with `MatIn.zero`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_one σ (map_zero σ) (map_one σ), Matrix.mul_one, pow_one]`. Conclude with `hΓ`. Consider the case `succ n hn ih`. Take `⟨H, h1, h2⟩` from `ih`. Take `⟨W, hW⟩` from `h2.exists_smul`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨R, hR⟩` from `mat_core hσ hΓ hσπ n W`. Use `⟨ev n • H - π ^ n • W, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_Ico_succ_top hn]`. Establish `e : ev n • H - π ^ n • W - ((∏ y ∈ Finset.Ico 1 n, ev y) * ev n) • (1 : Matrix (Fin d) (Fin d) A) = ev n • (H - (∏ y ∈ Finset.Ico 1 n, ev y) • (1 : Matrix (Fin d) (Fin d) A)) - π ^ n • W`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(h1.smul _).sub ((MatIn.smul_self _ W).mono (span_pow_le π hn))`. Establish `hX : Γ * H.map σ = H + π ^ n • W` using `by rw [← hW]; abel`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hY : Γ * (π ^ n • W).map σ = π ^ n • W + π ^ n • (ev n • W + π • R)`. Rewrite using `[← hR]`. Normalize the expressions using the abelian group laws. Establish `e : Γ * (ev n • H - π ^ n • W).map σ - (ev n • H - π ^ n • W) = π ^ (n + 1) • (-R)`. Rewrite using `[map_sub_ring, map_smul_ring, hσev, Matrix.mul_sub, Matrix.mul_smul, hX, hY]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, Matrix.neg_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `MatIn.smul_self _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_exists_of_eigenvalues {Γ : Matrix (Fin d) (Fin d) A}
     (hσ : ∀ a : A, σ a - a ∈ (Ideal.span {π} : Ideal A))
@@ -269,15 +269,15 @@ theorem frame_exists_of_eigenvalues {Γ : Matrix (Fin d) (Fin d) A}
       exact MatIn.smul_self _ _
 
 /- English proof (translation)
-It suffices to establish `key : ∀ n, 1 ≤ n → n ≤ M → MatIn (Ideal.span {π ^ n}) D from key M hM le_rfl`. Introduce `n hn`. Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base => intro _`. Rewrite using `[pow_one]`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Consider the case `succ n hn ih`. Introduce `hle`. Take `⟨U, hU⟩` from `(ih (by omega)).exists_smul`. Take `⟨R, hR⟩` from `mat_core hσ hΓ hσπ n U`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2' : MatIn (Ideal.span {π ^ (n + 1)}) (π ^ n • (ev n • U + π • R))`. Rewrite using `[← hR, ← hU]`. Conclude with `h2.mono (span_pow_mono π hle)`. Introduce `i j`. Establish `e1` using `h2' i j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.smul_apply, Matrix.add_apply, smul_eq_mul] at e1`. Establish `e2` using `cancel_pow hπ e1`. Establish `e3 : ev n * U i j ∈ (Ideal.span {π} : Ideal A)`. Use `Ideal.sub_mem _ e2 (Ideal.mul_mem_right (R i j) _ (Ideal.mem_span_singleton_self π))` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.mp (hnzd n (U i j) hn e3)`. Rewrite using `[hU, Matrix.smul_apply, smul_eq_mul, ← hs]`. Conclude with `Ideal.mem_span_singleton'.mpr ⟨s, by ring⟩`.
+A detailed English derivation is pending.
 -/
 theorem frame_unique_of_eigenvalues {Γ : Matrix (Fin d) (Fin d) A}
     (hσ : ∀ a : A, σ a - a ∈ (Ideal.span {π} : Ideal A))
@@ -316,15 +316,15 @@ variable {O : Type*} [CommRing O] [Algebra O A] {σ : A →+* A} {Γ : Matrix (F
   {π : A} {ev : ℕ → A}
 
 /- English proof (translation)
-Take `⟨o, ho⟩` from `h.hdec a`. Use `⟨o, ?_⟩` and prove the remaining obligations. It suffices to establish `key : ∀ n, 1 ≤ n → n ≤ M → a - algebraMap O A o ∈ (Ideal.span {π ^ n} : Ideal A) from key M hM le_rfl`. Introduce `n hn`. Proceed by induction on `n, hn using Nat.le_induction with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `base => intro _`. Rewrite using `[pow_one]`. Conclude with `ho`. Consider the case `succ n hn ih`. Introduce `hle`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.mp (ih (by omega))`. Take `⟨r, hr⟩` from `scalar_core h.hσ h.hσπ n b`. Establish `ea : a = algebraMap O A o + π ^ n * b` using `by linear_combination -hb`. Establish `e : σ a - a = π ^ n * (ev n * b + π * r)`. Rewrite using `[← hr, ea, map_add, h.hO]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hin : π ^ n * (ev n * b + π * r) ∈ (Ideal.span {π ^ (n + 1)} : Ideal A)`. Rewrite using `[← e]`. Conclude with `span_pow_mono π hle ha`. Establish `e2` using `cancel_pow h.hπ hin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : ev n * b ∈ (Ideal.span {π} : Ideal A)`. Use `Ideal.sub_mem _ e2 (Ideal.mul_mem_right r _ (Ideal.mem_span_singleton_self π))` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis. Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.mp (h.hnzd n b hn e3)`. Conclude with `Ideal.mem_span_singleton'.mpr ⟨s, by rw [← hb, ← hs]; ring⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem invariants_const (h : Hyp O σ Γ π ev) (M : ℕ) (hM : 1 ≤ M) (a : A)
     (ha : σ a - a ∈ (Ideal.span {π ^ M} : Ideal A)) :
@@ -353,9 +353,9 @@ theorem invariants_const (h : Hyp O σ Γ π ev) (M : ℕ) (hM : 1 ≤ M) (a : A
     exact Ideal.mem_span_singleton'.mpr ⟨s, by rw [← hb, ← hs]; ring⟩
 
 /- English proof (translation)
-Take `⟨o, ho⟩` from `invariants_const h M hM a ha`. Establish `hoo : o = o'`. Apply `sub_eq_zero.mp` to reduce the goal to its premises. Apply `h.hinj` to reduce the goal to its premises. Use `Ideal.sub_mem _ hb (span_pow_le π hM ho)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_sub_sub_cancel_left, ← map_sub]`. Then use the resulting hypothesis. Rewrite using `[← hoo]`. Conclude with `ho`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rigid (h : Hyp O σ Γ π ev) (M : ℕ) (hM : 1 ≤ M) (a : A) (o' : O)
     (ha : σ a - a ∈ (Ideal.span {π ^ M} : Ideal A))
@@ -372,7 +372,7 @@ theorem rigid (h : Hyp O σ Γ π ev) (M : ℕ) (hM : 1 ≤ M) (a : A) (o' : O)
 end Const
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.FirstLemmaB.goal1 .. | (apply Bl.FirstLemmaB.goal1 <;> assumption) | (intros; apply Bl.FirstLemmaB.goal1 <;> assumption) | (apply @Bl.FirstLemmaB.goal1 <;> assumption) | (intros; apply @Bl.FirstLemmaB.goal1 <;> assumption) | (apply @Bl.FirstLemmaB.goal1 <;> first …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_comm_of_mul_eq_smul {R : Type*} [CommRing R] {n : ℕ} (P Q : Matrix (Fin n) (Fin n) R)
     (c : R) (hc : c ∈ nonZeroDivisors R) (h : Q * P = c • (1 : Matrix (Fin n) (Fin n) R)) :
@@ -380,9 +380,9 @@ theorem mul_comm_of_mul_eq_smul {R : Type*} [CommRing R] {n : ℕ} (P Q : Matrix
   first | exact Bl.FirstLemmaB.goal1 .. | (apply Bl.FirstLemmaB.goal1 <;> assumption) | (intros; apply Bl.FirstLemmaB.goal1 <;> assumption) | (apply @Bl.FirstLemmaB.goal1 <;> assumption) | (intros; apply @Bl.FirstLemmaB.goal1 <;> assumption) | (apply @Bl.FirstLemmaB.goal1 <;> first | assumption | infer_instance) | exact @Bl.FirstLemmaB.goal1 R ‹_› n P Q c hc h | exact @Bl.FirstLemmaB.goal1 R ‹_› n P Q c hc | exact @Bl.FirstLemmaB.goal1 R ‹_› n P Q c | exact @Bl.FirstLemmaB.goal1 R ‹_› n P Q | exact @Bl.FirstLemmaB.goal1 R ‹_› n P | exact @Bl.FirstLemmaB.goal1 R ‹_› n | exact @Bl.FirstLemmaB.goal1 R ‹_› | exact @Bl.FirstLemmaB.goal1 R
 
 /- English proof (translation)
-Establish `aux : ∀ x : A ⧸ I, x * Ideal.Quotient.mk I (c ^ 2) = 0 → x = 0`. Introduce `x hx`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hx` using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hc` to reduce the goal to its premises. Apply `hc` to reduce the goal to its premises. Use `hx using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Conclude with `mem_nonZeroDivisors_iff.mpr ⟨fun x hx => aux x (by rwa [mul_comm]), aux⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem quot_sq_nzd {I : Ideal A} {c : A} (hc : ∀ a : A, c * a ∈ I → a ∈ I) :
     Ideal.Quotient.mk I (c ^ 2) ∈ nonZeroDivisors (A ⧸ I) := by
@@ -401,7 +401,7 @@ variable {O : Type*} [CommRing O] [Algebra O A] {σ : A →+* A} {Γ : Matrix (F
   {π : A} {ev : ℕ → A}
 
 /- English proof (translation)
-Use `choose f hf using h.hev`. Conclude with `⟨∏ y ∈ Finset.Ico 1 M, f y, by`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun y _ => hf y⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_ev_mem (h : Hyp O σ Γ π ev) (M : ℕ) :
     ∃ o : O, (∏ y ∈ Finset.Ico 1 M, ev y) = algebraMap O A o := by
@@ -410,21 +410,19 @@ theorem prod_ev_mem (h : Hyp O σ Γ π ev) (M : ℕ) :
     rw [map_prod]; exact Finset.prod_congr rfl fun y _ => hf y⟩
 
 /- English proof (translation)
-Establish `hG1 : MatIn (Ideal.span {π ^ M}) ((F * H).map σ - F * H)`. Establish `e : (F * H).map σ - F * H = -(F * Γ - F.map σ) * H.map σ + F * (Γ * H.map σ - H)`. Rewrite using `[Matrix.map_mul, neg_sub]`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e]`. Conclude with `(MatIn.mul_right hF.2.neg).add (MatIn.mul_left hH.2)`. Establish `hG2 : MatIn (Ideal.span {π}) (F * H - c ^ 2 • (1 : Matrix (Fin d) (Fin d) A))`. Establish `e : F * H - c ^ 2 • (1 : Matrix (Fin d) (Fin d) A) = (F - c • (1 : Matrix (Fin d) (Fin d) A)) * H + c • (H - c • (1 : Matrix (Fin d) (Fin d) A))`. Simplify using `only [Matrix.sub_mul, Matrix.smul_mul, Matrix.one_mul, smul_sub, smul_smul, pow_two]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `(MatIn.mul_right hF.1).add (hH.1.smul c)`. Take `⟨oc, hoc⟩` from `hcO`. Establish `hFH : MatIn (Ideal.span {π ^ M}) (F * H - c ^ 2 • (1 : Matrix (Fin d) (Fin d) A))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `i j`. Choose the witnesses or unpack the hypotheses as in `⟨o', ho'⟩ : ∃ o' : O, (c ^ 2 • (1 : Matrix (Fin d) (Fin d) A)) i j = algebraMap O A o' := by`. Distinguish the cases in `hij : i = j`. Use `⟨oc ^ 2, ?_⟩` and prove the remaining obligations. Substitute `hij` using the available equality.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one, hoc, map_pow]`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Matrix.one_apply_ne hij, smul_zero, map_zero]`. Rewrite using `[Matrix.sub_apply, ho']`. Apply `rigid h M hM` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hG1 i j` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.map_apply]`. Then use the resulting hypothesis. Rewrite using `[← ho', ← Matrix.sub_apply]`. Conclude with `hG2 i j`. Use `⟨hFH, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1` using `matIn_sub_iff.mp hFH`. Apply `matIn_sub_iff.mpr` to reduce the goal to its premises. Establish `hsm : (c ^ 2 • (1 : Matrix (Fin d) (Fin d) A)).map (Ideal.Quotient.mk (Ideal.span {π ^ M})) = Ideal.Quotient.mk (Ideal.span {π ^ M}) (c ^ 2) • (1 : Matrix (Fin d) (Fin d) _)`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij]`.
-
-Rewrite `h1`, the goal using `[Matrix.map_mul, hsm]`. Conclude with `mul_comm_of_mul_eq_smul _ _ _ (quot_sq_nzd hc) h1`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_frame_products (h : Hyp O σ Γ π ev) (M : ℕ) (hM : 1 ≤ M) (c : A)
     (hcO : ∃ o : O, c = algebraMap O A o) (H F : Matrix (Fin d) (Fin d) A)
@@ -473,7 +471,7 @@ theorem dual_frame_products (h : Hyp O σ Γ π ev) (M : ℕ) (hM : 1 ≤ M) (c 
   exact mul_comm_of_mul_eq_smul _ _ _ (quot_sq_nzd hc) h1
 
 /- English proof (translation)
-The claim follows from `dual_frame_products h M hM _ (prod_ev_mem h M) H F hH hF hc`.
+A detailed English derivation is pending.
 -/
 theorem frame_products {O : Type*} [CommRing O] [Algebra O A] {σ : A →+* A}
     {Γ : Matrix (Fin d) (Fin d) A} {π : A} {ev : ℕ → A} (h : Hyp O σ Γ π ev) (M : ℕ) (hM : 1 ≤ M)
@@ -487,9 +485,9 @@ theorem frame_products {O : Type*} [CommRing O] [Algebra O A] {σ : A →+* A}
   dual_frame_products h M hM _ (prod_ev_mem h M) H F hH hF hc
 
 /- English proof (translation)
-Use `⟨frame_exists_of_eigenvalues h.hσ h.hΓ h.hσπ h.hσev M hM, fun H H' hH hH' => ?_⟩` and prove the remaining obligations. Apply `frame_unique_of_eigenvalues h.hσ h.hΓ h.hπ h.hσπ h.hnzd M hM` to reduce the goal to its premises. Use `hH.1.sub hH'.1` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Establish `e : Γ * (H - H').map σ - (H - H') = (Γ * H.map σ - H) - (Γ * H'.map σ - H')`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[map_sub_ring, Matrix.mul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `hH.2.sub hH'.2`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame {O : Type*} [CommRing O] [Algebra O A] {σ : A →+* A}
     {Γ : Matrix (Fin d) (Fin d) A} {π : A} {ev : ℕ → A} (h : Hyp O σ Γ π ev) (M : ℕ) (hM : 1 ≤ M) :
@@ -506,13 +504,13 @@ theorem exists_frame {O : Type*} [CommRing O] [Algebra O A] {σ : A →+* A}
     exact hH.2.sub hH'.2
 
 /- English proof (translation)
-Establish `hinv : Γ⁻¹ * Γ = 1` using `Matrix.nonsing_inv_mul Γ h.hΓunit`. Establish `hΓ' : MatIn (Ideal.span {π}) ((Γ⁻¹)ᵀ - 1)`. Establish `e : (Γ⁻¹)ᵀ - 1 = (Γ⁻¹ * (-(Γ - 1)))ᵀ`. Rewrite using `[Matrix.mul_neg, Matrix.mul_sub, hinv, Matrix.mul_one, neg_sub, Matrix.transpose_sub, Matrix.transpose_one]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(MatIn.mul_left h.hΓ.neg).transpose`. Take `⟨H', h1, h2⟩` from `frame_exists_of_eigenvalues h.hσ hΓ' h.hσπ h.hσev M hM`. Use `⟨H'ᵀ, ?_, ?_⟩` and prove the remaining obligations. Use `h1.transpose` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hΓΓ : Γᵀ * (Γ⁻¹)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, hinv, Matrix.transpose_one]`. Establish `key : (H'ᵀ * Γ - H'ᵀ.map σ)ᵀ = -(Γᵀ * ((Γ⁻¹)ᵀ * H'.map σ - H'))`. Rewrite using `[Matrix.transpose_sub, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_map, Matrix.transpose_transpose, Matrix.mul_sub, ← Matrix.mul_assoc, hΓΓ, Matrix.one_mul, neg_sub]`. Use `((MatIn.mul_left (X := Γᵀ) h2).neg).transpose` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[← key, Matrix.transpose_transpose]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_dualFrame {O : Type*} [CommRing O] [Algebra O A] {σ : A →+* A}
     {Γ : Matrix (Fin d) (Fin d) A} {π : A} {ev : ℕ → A} (h : Hyp O σ Γ π ev) (M : ℕ) (hM : 1 ≤ M) :

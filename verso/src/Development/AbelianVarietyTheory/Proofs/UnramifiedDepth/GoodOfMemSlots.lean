@@ -50,13 +50,13 @@ def Adapted (S : Sys X) (D : Formalism.BaseCaseIdentities.Data C Z I) (a : ZMod 
     (∀ c, D.lev c < Formalism.BaseCaseIdentities.Kn i → X.ty (Sum.inl c) = a + ((2 * D.lev c : ℕ) : ZMod d))
 
 /- English proof (translation)
-Simplify using `[Sys.al, (S.curve c).2.1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem al_zero (S : Sys X) (c x : I) : S.al c 0 x = S.tan c x := by
   simp [Sys.al, (S.curve c).2.1]
 
 /- English proof (translation)
-Rewrite using `[← al_zero]`. Conclude with `X.t2 _ (S.curve c).1 0 (fun i hi => absurd hi (Nat.not_lt_zero _)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tan_int (S : Sys X) (c x : I) : V.Ge 0 (S.tan c x) := by
   rw [← al_zero]
@@ -65,7 +65,7 @@ theorem tan_int (S : Sys X) (c x : I) : V.Ge 0 (S.tan c x) := by
 variable {S : Sys X} {D : Formalism.BaseCaseIdentities.Data C Z I} {a : ZMod d} {i : ℕ}
 
 /- English proof (translation)
-Use `⟨S.curve c, fun x => ?_⟩` and prove the remaining obligations. Use `h.2.2.2.1 c 1 x le_rfl` as an intermediate fact. Simplify `this` using `[D.al_one c hc, Sys.al]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Adapted.good (h : Adapted S D a i) {c : I} (hc : D.good c) :
     X.Good (X.ty (Sum.inl c)) (S.tan c) (S.cur c) := by

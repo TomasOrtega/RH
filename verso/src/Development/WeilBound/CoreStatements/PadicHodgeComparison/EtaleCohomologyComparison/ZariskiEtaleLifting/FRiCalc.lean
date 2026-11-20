@@ -9,7 +9,7 @@ universe w w' v u v' u' v'' u''
 namespace CrystallineSemistableComparison.B
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => (CrystallineSemistableComparison.P.pull_comp m m' n x).1`.
+A detailed English derivation is pending.
 -/
 lemma rc_pull_comp {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C']
     {C'' : Type u''} [Category.{v''} C''] {F : C ⥤ ModuleCat.{w} R} {F' : C' ⥤ ModuleCat.{w} R}
@@ -18,7 +18,7 @@ lemma rc_pull_comp {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : T
   LinearMap.ext fun x => (CrystallineSemistableComparison.P.pull_comp m m' n x).1
 
 /- English proof (translation)
-The claim follows from `rc_pull_comp (Mor.restrict F G) (Mor.restrict (G ⋙ F) G') n`.
+A detailed English derivation is pending.
 -/
 lemma rc_restrict_comp {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C']
     {C'' : Type u''} [Category.{v''} C''] (F : C ⥤ ModuleCat.{w} R) (G : C' ⥤ C) (G' : C'' ⥤ C') (n : ℕ) :
@@ -26,7 +26,7 @@ lemma rc_restrict_comp {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C'
   rc_pull_comp (Mor.restrict F G) (Mor.restrict (G ⋙ F) G') n
 
 /- English proof (translation)
-Establish `h` using `CrystallineSemistableComparison.P.coef_upTo e.hom (1 : R) (fun T => by`. Use `((CrystallineSemistableComparison.P.upTo_alg (e.hom.app T).hom LinearMap.id 1 1).2.2.2.2).2 ?_` and prove the remaining obligations. Conclude with `(e.app T).toLinearEquiv.bijective) n`. Rewrite `h` using `[one_pow]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma rc_iso_upTo {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F F₁ : C ⥤ ModuleCat.{w} R}
     (e : F ≅ F₁) (n : ℕ) : UpTo (1 : R) ((Mor.ofNatTrans e.hom).pull n) := by
@@ -38,21 +38,19 @@ lemma rc_iso_upTo {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F F₁ 
 end CrystallineSemistableComparison.B
 
 /- English proof (translation)
-Introduce `R _ C _ C' _ C'' _ F G G' s s' n`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h1 h2 j hj`. Rewrite `*` using `[RI, IsoLe]`. Rewrite using `[rc_restrict_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(CrystallineSemistableComparison.P.upTo_alg _ _ s s').1 (h1 j hj) (h2 j hj)`. Introduce `h1 h2 j hj`. Use `h2 j hj` as an intermediate fact. Rewrite `this` using `[rc_restrict_comp]`. Conclude with `(CrystallineSemistableComparison.P.upTo_alg _ _ s s').2.1 (h1 j hj) this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h1 h2 j hj`. Use `h2 j hj` as an intermediate fact. Rewrite `this` using `[rc_restrict_comp]`. Conclude with `(CrystallineSemistableComparison.P.upTo_alg _ _ s s').2.2.1 (h1 j hj) this`. Introduce `h1 j hj`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(CrystallineSemistableComparison.P.upTo_alg ((Mor.restrict F G).pull j) LinearMap.id s s').2.2.2.1 (h1 j hj)`. Introduce `G₁ e h1 j hj`. Establish `hp : (Mor.restrict F G₁).pull j = ((Mor.ofNatTrans (Functor.whiskerRight e.hom F)).pull j).comp ((Mor.restrict F G).pull j)`. Rewrite using `[← rc_pull_comp]`. Use `LinearMap.ext fun x => CrystallineSemistableComparison.P.prism (Mor.restrict F G₁) ((Mor.restrict F G).comp (Mor.ofNatTrans (Functor.whiskerRight e.hom F))) e.inv ?_ j x` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `T x`. Express the relevant statement in the definitionally equal form `(F.map (e.hom.app T)).hom ((F.map (e.inv.app T)).hom x) = x`. Rewrite using `[← ModuleCat.comp_apply, ← F.map_comp, e.inv_hom_id_app, F.map_id]`. Both sides reduce to the same expression. Rewrite using `[hp, ← mul_one s]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(CrystallineSemistableComparison.P.upTo_alg _ _ s 1).1 (h1 j hj) (rc_iso_upTo (Functor.isoWhiskerRight e F) j)`. Introduce `hG j hj`. Conclude with `((CrystallineSemistableComparison.P.upTo_alg ((Mor.restrict F G).pull j) LinearMap.id 1 1).2.2.2.2).2 (CrystallineSemistableComparison.P.adj F G G.asEquivalence.inverse G.asEquivalence.toAdjunction j)`. Introduce `F₁ e h1 j hj`. Establish `hp : (Mor.restrict F₁ G).pull j = ((Mor.ofNatTrans (Functor.whiskerLeft G e.hom)).pull j).comp (((Mor.restrict F G).pull j).comp ((Mor.ofNatTrans e.inv).pull j))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← rc_pull_comp, ← rc_pull_comp]`. Use `LinearMap.ext fun x => CrystallineSemistableComparison.P.prism (Mor.restrict F₁ G) ((Mor.ofNatTrans e.inv).comp ((Mor.restrict F G).comp (Mor.ofNatTrans (Functor.whiskerLeft G e.hom)))) (𝟙 G) ?_ j x` and prove the remaining obligations. Introduce `T x`. Express the relevant statement in the definitionally equal form `(e.hom.app (G.obj T)).hom ((e.inv.app (G.obj T)).hom ((F₁.map (𝟙 (G.obj T))).hom x)) = x`. Rewrite using `[F₁.map_id, ← ModuleCat.comp_apply, ← ModuleCat.comp_apply, e.inv_hom_id_app]`.
-
-Both sides reduce to the same expression. Rewrite using `[hp, ← one_mul s, ← mul_one (1 * s)]`. Conclude with `(CrystallineSemistableComparison.P.upTo_alg _ _ (1 * s) 1).1 ((CrystallineSemistableComparison.P.upTo_alg _ _ 1 s).1 (rc_iso_upTo e.symm j) (h1 j hj)) (rc_iso_upTo (Functor.isoWhiskerLeft G e) j)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CrystallineSemistableComparison.B.P.ri_calc : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C'] {C'' : Type u''} [Category.{v''} C''] (F : C ⥤ ModuleCat.{w} R) (G : C' ⥤ C) (G' : C'' ⥤ C') (s s' : R) (n : ℕ), (RI s n F G → RI s' n (G ⋙ F) G' → RI (s * s') n F (G' ⋙ G)) ∧ (RI s n F G → RI s' n F (G' ⋙ G) → RI (s * s') n (G ⋙ F) G') ∧ (RI s n (G ⋙ F) G' → RI s' n F (G' ⋙ G) → RI (s * s') n F G) ∧ (RI s n F G → RI (s * s') n F G) ∧ (∀ G₁ : C' ⥤ C, (G ≅ G₁) → RI s n F G → RI s n F G₁) ∧ (G.IsEquivalence → RI 1 n F G) ∧ (∀ F₁ : C ⥤ ModuleCat.{w} R, (F ≅ F₁) → RI s n F G → RI s n F₁ G) := by
   intro R _ C _ C' _ C'' _ F G G' s s' n

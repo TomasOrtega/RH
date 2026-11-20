@@ -26,7 +26,7 @@ private def algSub (p : ℕ) [hp : Fact p.Prime] (R : Type) [CommRing R] [CharP 
     rwa [zero_sub, hx, zero_pow (pow_pos hp.out.pos _).ne', zero_sub] at h
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.WittVectorTrivializingMatrix.exists_alg ρ hopen M hM hJ`.
+A detailed English derivation is pending.
 -/
 private theorem exists_alg {p : ℕ} [hp : Fact p.Prime] {G : Type} [Group G] {R : Type} [CommRing R]
     (ρ : G →* (R ≃+* R)) [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [IsDomain R] [CharP R p]
@@ -39,19 +39,17 @@ private theorem exists_alg {p : ℕ} [hp : Fact p.Prime] {G : Type} [Group G] {R
   _root_.UpperTheory.Reformulated.B.WittVectorTrivializingMatrix.exists_alg ρ hopen M hM hJ
 
 /- English proof (translation)
-Introduce `l _ n C hC`. Take `⟨-, -, hI, ⟨σ, hσ⟩, -⟩` from `iqBasic l`. Take `⟨Ti⟩` from `tiedP l`. Take `⟨u, rfl⟩` from `(Matrix.isUnit_iff_isUnit_det C).2 hC`. Use `haveI : CompactSpace (Matrix (Fin n) (Fin n) ℤ_[l]) := inferInstanceAs (CompactSpace (Fin n → Fin n → ℤ_[l]))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : TotallyDisconnectedSpace (Matrix (Fin n) (Fin n) ℤ_[l]) := inferInstanceAs (TotallyDisconnectedSpace (Fin n → Fin n → ℤ_[l]))`. Use `haveI : TotallyDisconnectedSpace (Matrix (Fin n) (Fin n) ℤ_[l])ᵐᵒᵖ := (MulOpposite.opHomeomorph (M := Matrix (Fin n) (Fin n) ℤ_[l])).symm.isEmbedding.isTotallyDisconnected_range.1 (isTotallyDisconnected_of_totallyDisconnectedSpace _)`. Use `haveI : TotallyDisconnectedSpace (Matrix (Fin n) (Fin n) ℤ_[l])ˣ := Units.isEmbedding_embedProduct.isTotallyDisconnected_range.1 (isTotallyDisconnected_of_totallyDisconnectedSpace _)`. Take `⟨f, hf, hfI, hfσ⟩` from `frobFree σ hσ (Matrix (Fin n) (Fin n) ℤ_[l])ˣ u⁻¹`. Take `⟨W, hW, hWg⟩` from `exists_alg (p := l) (AIP l).actT (eventually_actT_eq (AIP l)) ((Units.coeHom _).comp f) (Units.continuous_val.comp hf) (fun g hg => congrArg Units.val (hfI g ((hI g).2 (norm_sub_lt_one_of_fix (AIP l) g hg))))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(AIP l).ιA.mapMatrix W, (AIP l).ιA.mapMatrix W⁻¹, ?_, fun i j => (AIP l).ainf_image_mem_filtration_zero _ _, fun i j => (AIP l).ainf_image_mem_filtration_zero _ _, ?_, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, Matrix.mul_nonsing_inv _ hW, map_one]`. Establish `h` using `hWg σ (frobenius _ l) fun m hm y hy => ((UpperTheory.tilt_frobenius_action_pow_and_inertia_trivial_of_pow_eq_self y m hm hy).1 σ hσ).symm`. Establish `h1 : W.map (WittVector.map (frobenius _ l)) = (zlW l (OCb l)).mapMatrix u * W` using `by conv_rhs => rw [← h, ← Matrix.mul_assoc]`. Establish `e : (((Units.coeHom _).comp f) σ).map (zlW l (OCb l)) = (zlW l (OCb l)).mapMatrix (↑u⁻¹)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hfσ]`. Both sides reduce to the same expression. Rewrite using `[e, ← map_mul, Units.mul_inv, map_one, Matrix.one_mul]`. Establish `h2` using `congrArg (AIP l).ιA.mapMatrix h1`. Rewrite `h2` using `[map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(PP l).φB ((AIP l).ιA (W i j)) = (AIP l).ιA (WittVector.map (frobenius _ l) (W i j))`. Rewrite using `[← (AIP l).ιA_φ, WittVector.frobenius_eq_map_frobenius]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `i j`. Conclude with `(ιA_zlW (AIP l) Ti _).symm`. Establish `h` using `hWg 1 ((AIP l).actT g).toRingHom fun m hm y hy => by`. Rewrite using `[map_one, RingAut.one_apply]`. Conclude with `(UpperTheory.tilt_frobenius_action_pow_and_inertia_trivial_of_pow_eq_self y m hm hy).2 g hg`.
-
-Rewrite `h` using `[map_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(PP l).actQ g ((AIP l).ιA (W i j)) = (AIP l).ιA (W i j)`. Rewrite using `[← (AIP l).ιA_act]`. Conclude with `congrArg (AIP l).ιA (congrFun (congrFun h i) j)`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_algebraic_element_of_algebraicVectorSubspace :
     ∀ {l : ℕ} [Fact l.Prime] {n : ℕ} (C : Matrix (Fin n) (Fin n) ℤ_[l]), IsUnit C.det → ∃ N N' : Matrix (Fin n) (Fin n) (Bcr l), N * N' = 1 ∧ (∀ i j, (PP l).ιB (N i j) ∈ ((PP l).PD (botExt l)).Fil 0) ∧ (∀ i j, (PP l).ιB (N' i j) ∈ ((PP l).PD (botExt l)).Fil 0) ∧ N.map (PP l).φB = C.map (fun z => algebraMap ℚ_[l] (Bcr l) (z : ℚ_[l])) * N ∧ ∀ g ∈ Iq l, N.map ((PP l).actQ g) = N := by

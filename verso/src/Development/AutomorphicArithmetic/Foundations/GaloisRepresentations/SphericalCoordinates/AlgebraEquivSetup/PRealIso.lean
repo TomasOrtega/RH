@@ -5,23 +5,21 @@ open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheo
 open scoped TensorProduct
 
 /- English proof (translation)
-Set `σ : P ⊕ P → (E →* ℂ)` to `fun k => (Sum.elim g (fun p => ComplexEmbedding.conjugate (g p)) k).toMonoidHom`. Establish `hσ : Function.Injective σ`. Introduce `k l hkl`. Apply `hg` to reduce the goal to its premises. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Conclude with `DFunLike.congr_fun hkl x`. Establish `hli : LinearIndependent ℂ (fun k => (σ k : E → ℂ))` using `(linearIndependent_monoidHom E ℂ).comp σ hσ`. Establish `hE : ∀ x : E, ∑ p, (u p * (g p x).re + v p * (g p x).im) = 0`. Introduce `x`. Take `⟨d, hd, hdx⟩` from `exists_integral_multiples ℤ ℚ ({x} : Finset E)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `(IsIntegralClosure.isIntegral_iff (A := 𝓞 E)).mp (hdx x (Finset.mem_singleton_self x))`. Establish `h1` using `h w`. Establish `hw' : (w : E) = (d : E) * x`. Rewrite using `[← zsmul_eq_mul, ← hw]`. Rewrite `h1` using `[hw']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_intCast, Complex.mul_re, Complex.mul_im, Complex.intCast_re, Complex.intCast_im, zero_mul, sub_zero, add_zero] at h1`. Establish `h3 : (d : ℝ) * ∑ p, (u p * (g p x).re + v p * (g p x).im) = 0`. Rewrite using `[Finset.mul_sum, ← h1]`. Conclude with `Finset.sum_congr rfl fun p _ => by ring`. Break down `mul_eq_zero.mp h3 with h2 | h2` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `absurd (Int.cast_eq_zero.mp h2) hd`. Conclude with `h2`. Set `c : P ⊕ P → ℂ` to `Sum.elim (fun p => ((u p : ℂ) - Complex.I * v p) / 2) (fun p => ((u p : ℂ) + Complex.I * v p) / 2)`. Establish `hterm : ∀ p (x : E), ((u p : ℂ) - Complex.I * v p) / 2 * g p x + ((u p : ℂ) + Complex.I * v p) / 2 * ComplexEmbedding.conjugate (g p) x = ((u p * (g p x).re + v p * (g p x).im : ℝ) : ℂ)`. Introduce `p x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Establish `hsum : ∑ k, c k • (σ k : E → ℂ) = 0`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply, Fintype.sum_sum_type, ← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hc` using `(Fintype.linearIndependent_iff.mp hli) c hsum`. Introduce `p`. Establish `h1 : ((u p : ℂ) - Complex.I * v p) / 2 = 0` using `hc (Sum.inl p)`. Establish `h1' : (u p : ℂ) - Complex.I * v p = 0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Evaluate the numerical expressions. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Break down `div_eq_zero_iff.mp h1 with h | h` into its components or cases. Conclude with `h`. Evaluate the numerical expressions using `at h`. Prove the components needed by the constructor for the conclusion. Establish `h4` using `congrArg Complex.re h1'`.
-
-Simplify using `using h4`. Establish `h4` using `congrArg Complex.im h1'`. Simplify using `using h4`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma realForm_eq_zero {E : Type} [Field E] [NumberField E] {P : Type} [Fintype P] (g : P → (E →+* ℂ))
     (hg : Function.Injective (Sum.elim g (fun p => ComplexEmbedding.conjugate (g p))))
@@ -82,47 +80,43 @@ private lemma realForm_eq_zero {E : Type} [Field E] [NumberField E] {P : Type} [
     simpa using h4
 
 /- English proof (translation)
-Introduce `hT E _ _ _ A n`. Take `⟨-, -, hpl, him⟩` from `hT E A`. Establish `hcardPhi : Fintype.card (Phi A) = Fintype.card (InfinitePlace E)`. Use `Fintype.card_congr (Equiv.ofBijective (fun τ : Phi A => InfinitePlace.mk τ.1) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hpl (InfinitePlace.mk a.1)).unique rfl hab.symm`. Introduce `v`. Take `⟨τ, hτ, -⟩` from `hpl v`. Conclude with `⟨τ, hτ⟩`. Establish `hrank : 2 * Fintype.card (InfinitePlace E) = Module.finrank ℚ E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `InfinitePlace.card_add_two_mul_card_eq_rank E`. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero E]`. Rewrite `h1` using `[IsTotallyComplex.nrRealPlaces_eq_zero E]`. Use linear arithmetic over natural numbers and integers. Set `b` to `NumberField.RingOfIntegers.basis E`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `bZ` to `Pi.basis (fun _ : Fin n => b)`. Set `b1` to `Algebra.TensorProduct.basis ℝ bZ`. Set `F : (Fin n → 𝓞 E) →ₗ[ℤ] (Phi A × Fin n → ℂ)` to `LinearMap.pi (fun p : Phi A × Fin n => ((p.1.1.comp (algebraMap (𝓞 E) E)).toIntAlgHom.toLinearMap) ∘ₗ LinearMap.proj p.2)`. Set `L : ℝ ⊗[ℤ] (Fin n → 𝓞 E) →ₗ[ℝ] (Phi A × Fin n → ℂ)` to `b1.constr ℝ (fun k => F (bZ k))`. Establish `hL : ∀ x, L (1 ⊗ₜ x) = F x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : (L.restrictScalars ℤ) ∘ₗ TensorProduct.mk ℤ ℝ (Fin n → 𝓞 E) 1 = F`. Use `bZ.ext fun k => ?_` and prove the remaining obligations. Establish `hk : ((L.restrictScalars ℤ) ∘ₗ TensorProduct.mk ℤ ℝ (Fin n → 𝓞 E) 1) (bZ k) = L (b1 k)`. Rewrite using `[Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, Module.Basis.constr_basis]`. Introduce `x`. Conclude with `LinearMap.congr_fun hcomp x`. Establish `dec : ∀ (φ : Module.Dual ℝ (Phi A × Fin n → ℂ)) p (w : ℂ), φ (Pi.single p w) = w.re * φ (Pi.single p 1) + w.im * φ (Pi.single p Complex.I)`. Introduce `φ p w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hw : (Pi.single p w : Phi A × Fin n → ℂ) = w.re • (Pi.single p (1 : ℂ) : Phi A × Fin n → ℂ) + w.im • (Pi.single p Complex.I : Phi A × Fin n → ℂ)`. Use extensionality with `q`. Distinguish the cases in `hq : q = p`. Substitute `hq` using the available equality. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.single_eq_same]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `apply Complex.ext <;> simp`. Simplify using `[Pi.single_apply, hq]`. Rewrite using `[hw, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Establish `hg : Function.Injective (Sum.elim (fun τ : Phi A => τ.1) (fun τ : Phi A => ComplexEmbedding.conjugate τ.1))`. Establish `hcross : ∀ a b : Phi A, a.1 ≠ ComplexEmbedding.conjugate b.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b h`. Establish `h2` using `RingHom.congr_fun h (A.ω : E)`. Rewrite `h2` using `[ComplexEmbedding.conjugate_coe_eq, a.2, b.2]`. Establish `h3` using `congrArg Complex.im h2`. Rewrite `h3` using `[Complex.conj_im]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `him (by linarith)`. Introduce and unpack `(a | a) (b | b) h`. Conclude with `congrArg _ (Subtype.ext h)`. Conclude with `absurd h (hcross a b)`. Conclude with `absurd h.symm (hcross b a)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Sum.elim_inr] at h`. Establish `h' : (a.1 : E →+* ℂ) = b.1`. Use extensionality with `x`. Establish `hx` using `RingHom.congr_fun h x`. Rewrite `hx` using `[ComplexEmbedding.conjugate_coe_eq, ComplexEmbedding.conjugate_coe_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using congrArg (starRingEnd ℂ) hx`. Conclude with `congrArg _ (Subtype.ext h')`. Establish `hsurj : Function.Surjective L`. Rewrite using `[← LinearMap.range_eq_top]`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨φ, hφ0, hφ⟩` from `Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.mpr hne) inferInstance`. Establish `hvan : ∀ y, φ (L y) = 0`. Introduce `y`. Establish `hm : φ (L y) ∈ (LinearMap.range L).map φ` using `⟨L y, ⟨y, rfl⟩, rfl⟩`. Rewrite `hm` using `[hφ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `(Submodule.mem_bot ℝ).mp hm`. Establish `huv : ∀ i : Fin n, ∀ τ : Phi A, φ (Pi.single (τ, i) 1) = 0 ∧ φ (Pi.single (τ, i) Complex.I) = 0`. Introduce `i`. Use `realForm_eq_zero (fun τ : Phi A => τ.1) hg _ _ fun x => ?_` and prove the remaining obligations. Establish `h1` using `hvan (1 ⊗ₜ Pi.single i x)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hL]`. Establish `hFx : F (Pi.single i x) = ∑ τ : Phi A, Pi.single (τ, i) (τ.1 (x : E))`. Use extensionality with `⟨τ', i'⟩`. Rewrite using `[Finset.sum_apply]`. Distinguish the cases in `hi : i' = i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hi` using the available equality. Rewrite using `[Finset.sum_eq_single τ']`. Simplify using `[F]`. Introduce `τ _ hτ`. Simplify using `[Pi.single_apply, hτ]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Simplify using `[F, Pi.single_apply, hi]`. Rewrite `h1` using `[hFx, map_sum]`. Rewrite using `[← h1]`. Conclude with `Finset.sum_congr rfl fun τ _ => by rw [dec φ (τ, i) (τ.1 (x : E))]; ring`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hφ0` to reduce the goal to its premises. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply, ← Finset.univ_sum_single z, map_sum]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations. Take `⟨τ, i⟩` from `p`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[dec, (huv i τ).1, (huv i τ).2]`. Simplify using the standard rewrite rules. Establish `hdim : Module.finrank ℝ (ℝ ⊗[ℤ] (Fin n → 𝓞 E)) = Module.finrank ℝ (Phi A × Fin n → ℂ)`. Rewrite using `[Module.finrank_eq_card_basis b1, Module.finrank_eq_card_basis (Pi.basis fun _ : Phi A × Fin n => Complex.basisOneI)]`. Simplify using `only [Fintype.card_sigma, Finset.sum_const, Finset.card_univ, smul_eq_mul, Fintype.card_fin, Fintype.card_prod]`.
-
-Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank, ← hrank, hcardPhi]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨LinearEquiv.ofBijective L ⟨(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mpr hsurj, hsurj⟩, ?_⟩` and prove the remaining obligations. Introduce `x τ i`. Use `show L (1 ⊗ₜ x) (τ, i) = _`.
-
-Rewrite using `[hL]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pRealIso :
     TraceType → RealIso := by

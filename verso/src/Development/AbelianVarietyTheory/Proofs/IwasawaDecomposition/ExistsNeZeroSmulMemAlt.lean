@@ -3,15 +3,13 @@ import Mathlib
 namespace GlobalTheory.NonzeroSmulMemIntegralSpan
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, hay⟩` from `hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `M.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.smul_mem _ hay`. Rewrite using `[mul_smul]`. Conclude with `M.smul_mem _ hbz`. Consider the case `smul c y _ hy`. Take `⟨a, ha, hay⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨p, q⟩, hpq⟩` from `IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers K)) c`. Use `⟨a * q, mul_ne_zero ha (nonZeroDivisors.ne_zero q.2), ?_⟩` and prove the remaining obligations. Establish `h1 : (q : NumberField.RingOfIntegers K) • c • y = p • y`. Rewrite using `[← algebraMap_smul K (q : NumberField.RingOfIntegers K), smul_smul, mul_comm, ← algebraMap_smul K p y]`. Conclude with `congrArg (· • y) hpq`.
-
-Rewrite using `[mul_smul, h1, smul_comm]`. Conclude with `M.smul_mem _ hay`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_smul_mem {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V]
     [Module K V] [Module (NumberField.RingOfIntegers K) V]

@@ -13,39 +13,35 @@ namespace Formalism.L2.FormalSeriesBounds
 namespace UpFBr
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `M hM`. Distinguish the cases in `h0 : ∃ v ∈ M, v ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `swap`. Use `push_neg at h0`. Use `⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `[h0 v hv]`. Take `⟨v, hvM, hv0⟩` from `h0`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x₀, hx₀⟩` from `Function.ne_iff.1 hv0`. Take `⟨j, -, hjmax⟩` from `(Finset.univ : Finset (Fin n)).exists_max_image (fun x => vm (v x)) ⟨x₀, Finset.mem_univ _⟩`. Establish `hvj : v j ≠ 0`. Introduce `h`. Establish `h1 : vm (v x₀) ≤ vm (v j)` using `hjmax x₀ (Finset.mem_univ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h, map_zero]`. Conclude with `hx₀ ((Valuation.zero_iff vm).1 (le_antisymm h1 zero_le'))`. Use `set v₀ : Fin n → C := (v j)⁻¹ • v with hv₀`. Establish `hv₀j : v₀ j = 1` using `by simp [hv₀, hvj]`. Establish `hv₀M : v₀ ∈ M` using `M.smul_mem _ hvM`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hv₀le : ∀ x, vm (v₀ x) ≤ 1`. Introduce `x`. Establish `hpos : 0 < vm (v j)` using `pos_iff_ne_zero.2 ((Valuation.ne_zero_iff vm).2 hvj)`. Simplify using `only [hv₀, Pi.smul_apply, smul_eq_mul, map_mul, map_inv₀]`. Rewrite using `[inv_mul_le_iff₀ hpos, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hjmax x (Finset.mem_univ _)`. Use `set M' : Submodule C (Fin n → C) := M ⊓ LinearMap.ker (LinearMap.proj j) with hM'`. Establish `hlt : M' < M`. Use `lt_of_le_of_ne inf_le_left fun h => ?_` and prove the remaining obligations. Establish `h1 : v₀ ∈ M'` using `h ▸ hv₀M`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : v₀ j = 0` using `(Submodule.mem_inf.1 h1).2`. Rewrite `h2` using `[hv₀j]`. Conclude with `one_ne_zero h2`. Establish `hfr : Module.finrank C M' < k` using `hM ▸ Submodule.finrank_lt_finrank_of_lt hlt`. Take `⟨s, J', B', hB'M, hB'le, hB'δ, hB'span⟩` from `ih _ hfr M' rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hB'j : ∀ i, B' i j = 0` using `fun i => (Submodule.mem_inf.1 (hB'M i)).2`. Establish `hB'M0 : ∀ i, B' i ∈ M` using `fun i => (Submodule.mem_inf.1 (hB'M i)).1`. Use `set b : Fin n → C := v₀ - ∑ i, v₀ (J' i) • B' i with hb`. Establish `hbM : b ∈ M` using `M.sub_mem hv₀M (M.sum_mem fun i _ => M.smul_mem _ (hB'M0 i))`. Establish `hbj : b j = 1` using `by simp [hb, Finset.sum_apply, hB'j, hv₀j]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hbJ : ∀ i', b (J' i') = 0`. Introduce `i'`. Simplify using `[hb, Finset.sum_apply, hB'δ]`. Establish `hble : ∀ x, vm (b x) ≤ 1`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [hb, Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Valuation.map_sub_le _ (hv₀le x) (Valuation.map_sum_le _ fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hv₀le _) (hB'le i x)`. Use `⟨s + 1, (Fin.cons j J' : Fin (s + 1) → Fin n), (Fin.cons b B' : Fin (s + 1) → Fin n → C), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simpa using hbM`. Consider the case `succ i => simpa using hB'M0 i`. Introduce `i x`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simpa using hble x`. Consider the case `succ i => simpa using hB'le i x`. Introduce `i i'`. Proceed by induction on `i using Fin.cases with`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Proceed by induction on `i' using Fin.cases with`. Consider the case `zero => simp [hbj]`. Consider the case `succ i' => simp only [Fin.cons_zero, Fin.cons_succ, hbJ]`. Rewrite using `[if_neg (Fin.succ_ne_zero i').symm]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `succ i`. Proceed by induction on `i' using Fin.cases with`. Consider the case `zero => simp only [Fin.cons_zero, Fin.cons_succ, hB'j]`. Rewrite using `[if_neg (Fin.succ_ne_zero i)]`. Consider the case `succ i' => simp [hB'δ, Fin.succ_inj]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Establish `hw' : w - w j • b ∈ M'`. Use `Submodule.mem_inf.2 ⟨M.sub_mem hw (M.smul_mem _ hbM), ?_⟩` and prove the remaining obligations.
-
-Simplify using `[LinearMap.mem_ker, hbj]`. Establish `h1` using `hB'span _ hw'`. Establish `e : ∀ i, (w - w j • b) (J' i) = w (J' i)`. Introduce `i`. Simplify using `[hbJ]`.
-
-Simplify using `only [e] at h1`. Rewrite using `[← h1]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem echelon {C : Type} [Field C] (vm : Valuation C NNReal) (n : ℕ) :
     ∀ (k : ℕ) (M : Submodule C (Fin n → C)), Module.finrank C M = k →
@@ -138,25 +134,23 @@ theorem echelon {C : Type} [Field C] (vm : Valuation C NNReal) (n : ℕ) :
     abel
 
 /- English proof (translation)
-Introduce `C _ vm R _ _ hI n ι L χ`. Use `set f := algebraMap R C`. Set `M : Submodule C (Fin n → C)` to `{ carrier := {w | ∀ a, ((L a).map f).mulVec w = f (χ a) • w} add_mem' := by`. Introduce `w w' hw hw' a`. Simplify using `only [Set.mem_setOf_eq] at hw hw' ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_add, hw a, hw' a, smul_add]`. Use the proof step `zero_mem' := by`. Introduce `a`. Simplify using the standard rewrite rules. Use the proof step `smul_mem' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `c w hw a`. Simplify using `only [Set.mem_setOf_eq] at hw ⊢`. Rewrite using `[Matrix.mulVec_smul, hw a, smul_comm] }`. Take `⟨s, J, B, hBM, hBle, hBδ, hspan⟩` from `echelon vm n _ M rfl`. Establish `hlift : ∀ i x, ∃ r : R, f r = B i x` using `fun i x => hI.exists_of_le_one (hBle i x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose W hW using hlift`. Establish `hfW : ∀ i, f ∘ W i = B i` using `fun i => funext (hW i)`. Establish `hmap : ∀ (A : Matrix (Fin n) (Fin n) R) (v : Fin n → R), f ∘ (A.mulVec v) = (A.map f).mulVec (f ∘ v)`. Introduce `A v`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Matrix.mulVec, dotProduct, map_sum]`. Establish `hinj : Function.Injective f` using `hI.hom_inj`. Establish `hinjv : ∀ v w : Fin n → R, f ∘ v = f ∘ w → v = w` using `fun v w h => funext fun x => hinj (congrFun h x)`. Use `⟨s, W, fun i a => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Apply `hinjv` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hmap, hfW, hBM i a]`. Use function extensionality and compare the values at `x`. Simplify using `[hW]`. Establish `hvM : f ∘ v ∈ M`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hmap, hv a]`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Use `⟨fun i => v (J i), ?_, ?_⟩` and prove the remaining obligations. Apply `hinjv` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hspan _ hvM`. Use function extensionality and compare the values at `x`. Establish `hx` using `congrFun h1 x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply] at hx ⊢`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [map_mul, hW]`. Conclude with `hx.symm`. Introduce `c hc`. Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun hc (J i)`.
-
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[← h1]`. Simplify using `[Finset.sum_apply, map_sum, hW, hBδ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eigFreeSt_holds : EigFreeSt := by
   intro C _ vm R _ _ hI n ι L χ

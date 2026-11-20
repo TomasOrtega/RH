@@ -21,7 +21,7 @@ theorem coordIdeal_eq_span (R : Type u) [CommRing R] {σ : Type v} (S : Finset �
     coordIdeal R S = Ideal.span ((MvPolynomial.X : σ → MvPolynomial σ R) '' (S : Set σ)) := rfl
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span ⟨i, Finset.mem_coe.mpr hi, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem X_mem_coordIdeal (R : Type u) [CommRing R] {σ : Type v} (S : Finset σ) {i : σ}
     (hi : i ∈ S) : (MvPolynomial.X i : MvPolynomial σ R) ∈ coordIdeal R S :=
@@ -39,15 +39,13 @@ Both sides reduce to the same expression.
     ((coordIdealGen R S i hi : ↥(coordIdeal R S)) : MvPolynomial σ R) = MvPolynomial.X i := rfl
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `a`. Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem x hx => exact hP x hx _`. Consider the case `zero`. Establish `e : Blowup.reesGenerator (Ideal.span s) (0 : ↥(Ideal.span s)) = 0`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Blowup.reesGenerator_coe]`. Use `show Blowup.reesGenerator (Ideal.span s) (0 : ↥(Ideal.span s)) ∈ P`. Rewrite using `[e]`. Conclude with `P.zero_mem`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add x y hx hy ihx ihy`. Establish `e : Blowup.reesGenerator (Ideal.span s) ((⟨x, hx⟩ : ↥(Ideal.span s)) + ⟨y, hy⟩) = Blowup.reesGenerator (Ideal.span s) ⟨x, hx⟩ + Blowup.reesGenerator (Ideal.span s) ⟨y, hy⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Blowup.reesGenerator_coe]`. Use `show Blowup.reesGenerator (Ideal.span s) ((⟨x, hx⟩ : ↥(Ideal.span s)) + ⟨y, hy⟩) ∈ P`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `P.add_mem ihx ihy`. Consider the case `smul c x hx ih`. Establish `e : Blowup.reesGenerator (Ideal.span s) (c • (⟨x, hx⟩ : ↥(Ideal.span s))) = c • Blowup.reesGenerator (Ideal.span s) ⟨x, hx⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Simplify using `[Blowup.reesGenerator_coe, Polynomial.smul_monomial, smul_eq_mul]`. Use `show Blowup.reesGenerator (Ideal.span s) (c • (⟨x, hx⟩ : ↥(Ideal.span s))) ∈ P`. Rewrite using `[e, Algebra.smul_def]`. Conclude with `Ideal.mul_mem_left P _ ih`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem reesGenerator_mem_of_span {A : Type u} [CommRing A] (s : Set A)
     (P : Ideal ↥(reesAlgebra (Ideal.span s)))
@@ -81,7 +79,7 @@ private theorem reesGenerator_mem_of_span {A : Type u} [CommRing A] (s : Set A)
       exact Ideal.mul_mem_left P _ ih
 
 /- English proof (translation)
-The claim follows from `reesGenerator_mem_of_span s P.toIdeal (fun y hy hy2 => hP y hy hy2) a`.
+A detailed English derivation is pending.
 -/
 private theorem reesGenerator_mem_homogeneousIdeal_of_span {A : Type u} [CommRing A] (s : Set A)
     (P : HomogeneousIdeal (Blowup.reesGrading (Ideal.span s)))
@@ -90,13 +88,13 @@ private theorem reesGenerator_mem_homogeneousIdeal_of_span {A : Type u} [CommRin
   reesGenerator_mem_of_span s P.toIdeal (fun y hy hy2 => hP y hy hy2) a
 
 /- English proof (translation)
-Use `le_antisymm le_top ?_` and prove the remaining obligations. Rewrite using `[SetLike.le_def]`. Introduce `x _`. Establish `hxtop : x ∈ (⨆ a : ↥(coordIdeal R S), Proj.basicOpen (Blowup.reesGrading (coordIdeal R S)) (Blowup.reesGenerator (coordIdeal R S) a))`. Rewrite using `[Blowup.iSup_proj_basicOpen_reesGenerator_eq_top]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.mp hxtop`. Assume the negation of the conclusion as `hxn`. Use `(Proj.mem_basicOpen ..).mp ha ?_` and prove the remaining obligations. Use `reesGenerator_mem_homogeneousIdeal_of_span ((MvPolynomial.X : σ → MvPolynomial σ R) '' (S : Set σ)) _ ?_ a` and prove the remaining obligations.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy hy2`. Take `⟨i, hiS, rfl⟩` from `hy`. Assume the negation of the conclusion as `hcon`. Use `hxn (TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨i, Finset.mem_coe.mp hiS⟩, ?_⟩)` and prove the remaining obligations. Rewrite using `[Blowup.opensRange_affineBlowupChart_eq_basicOpen]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Proj.mem_basicOpen ..).mpr hcon`.
+A detailed English derivation is pending.
 -/
 theorem iSup_opensRange_affineBlowupChart_coordIdealGen (R : Type u) [CommRing R] {σ : Type v}
     (S : Finset σ) :
@@ -123,9 +121,9 @@ theorem iSup_opensRange_affineBlowupChart_coordIdealGen (R : Type u) [CommRing R
   exact (Proj.mem_basicOpen ..).mpr hcon
 
 /- English proof (translation)
-Establish `key : ∀ x : MvPolynomial σ R, x * MvPolynomial.X i = 0 → x = 0`. Introduce `x hx`. Use extensionality with `m`. Establish `h` using `MvPolynomial.coeff_mul_X m i x`. Rewrite `h` using `[hx, MvPolynomial.coeff_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[← h]`. Rewrite using `[mem_nonZeroDivisors_iff]`. Conclude with `⟨fun x hx => key x (by rw [mul_comm]; exact hx), key⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem X_mem_nonZeroDivisors (R : Type u) [CommRing R] {σ : Type v} (i : σ) :
     (MvPolynomial.X i : MvPolynomial σ R) ∈ nonZeroDivisors (MvPolynomial σ R) := by
@@ -145,7 +143,7 @@ def coordBlowupSubst (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ] (S
     else MvPolynomial.X i
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.aeval_X _ i`.
+A detailed English derivation is pending.
 -/
 theorem coordBlowupSubst_X (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ] (S : Finset σ)
     (s : σ) (i : σ) :
@@ -155,7 +153,7 @@ theorem coordBlowupSubst_X (R : Type u) [CommRing R] {σ : Type v} [DecidableEq 
   MvPolynomial.aeval_X _ i
 
 /- English proof (translation)
-Rewrite using `[coordBlowupSubst_X, if_pos ⟨hi, hne⟩]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem coordBlowupSubst_X_of_mem (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) {i : σ} (hi : i ∈ S) (hne : i ≠ s) :
@@ -164,7 +162,7 @@ Rewrite using `[coordBlowupSubst_X, if_pos ⟨hi, hne⟩]`.
   rw [coordBlowupSubst_X, if_pos ⟨hi, hne⟩]
 
 /- English proof (translation)
-Rewrite using `[coordBlowupSubst_X, if_neg]`. Introduce and unpack `⟨-, h⟩`. Conclude with `h rfl`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 @[simp] theorem coordBlowupSubst_X_self (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) :
@@ -174,7 +172,7 @@ Rewrite using `[coordBlowupSubst_X, if_neg]`. Introduce and unpack `⟨-, h⟩`.
   exact h rfl
 
 /- English proof (translation)
-Rewrite using `[coordBlowupSubst_X, if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem coordBlowupSubst_X_of_not_mem_erase (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) {i : σ} (h : ¬ (i ∈ S ∧ i ≠ s)) :
@@ -182,7 +180,7 @@ Rewrite using `[coordBlowupSubst_X, if_neg h]`.
   rw [coordBlowupSubst_X, if_neg h]
 
 /- English proof (translation)
-Rewrite using `[← MvPolynomial.algebraMap_eq]`. Conclude with `(coordBlowupSubst R S s).commutes r`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordBlowupSubst_C (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) (r : R) :
@@ -191,13 +189,11 @@ theorem coordBlowupSubst_C (R : Type u) [CommRing R] {σ : Type v} [DecidableEq 
   exact (coordBlowupSubst R S s).commutes r
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[coordIdeal_eq_span, Ideal.map_span, Ideal.span_le]`. Introduce and unpack `y ⟨x, ⟨i, hi, rfl⟩, rfl⟩`. Use `show (coordBlowupSubst R S s).toRingHom (MvPolynomial.X i) ∈ Ideal.span {(MvPolynomial.X s : MvPolynomial σ R)}`. Distinguish the cases in `h : i ∈ S ∧ i ≠ s`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show (coordBlowupSubst R S s).toRingHom (MvPolynomial.X i) = (MvPolynomial.X i : MvPolynomial σ R) * MvPolynomial.X s from coordBlowupSubst_X_of_mem R S s h.1 h.2]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`. Establish `hieq : i = s`. Assume the negation of the conclusion as `hne`. Conclude with `h ⟨Finset.mem_coe.mp hi, hne⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (coordBlowupSubst R S s).toRingHom (MvPolynomial.X i) = (MvPolynomial.X i : MvPolynomial σ R) from coordBlowupSubst_X_of_not_mem_erase R S s h, hieq]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Establish `h1 : (MvPolynomial.X s : MvPolynomial σ R) ∈ coordIdeal R S` using `X_mem_coordIdeal R S hs`. Establish `h2` using `Ideal.mem_map_of_mem ((coordBlowupSubst R S s).toRingHom) h1`.
-
-Rewrite `h2` using `[show (coordBlowupSubst R S s).toRingHom (MvPolynomial.X s) = (MvPolynomial.X s : MvPolynomial σ R) from coordBlowupSubst_X_self R S s]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_coordIdeal_coordBlowupSubst (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) (hs : s ∈ S) :
@@ -227,7 +223,7 @@ theorem map_coordIdeal_coordBlowupSubst (R : Type u) [CommRing R] {σ : Type v} 
     exact h2
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Blowup.reesDegreeZeroEquiv_coe_coe]`. Simplify using `[Polynomial.C_eq_algebraMap]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem coe_reesDegreeZeroEquiv {A : Type u} [CommRing A] (I : Ideal A) (r : A) :
     ((Blowup.reesDegreeZeroEquiv I r : ↥(Blowup.reesGrading I 0)) : ↥(reesAlgebra I))
@@ -243,7 +239,7 @@ private def coordIdealReesAlgebraLift (R : Type u) [CommRing R] {σ : Type v} [D
     (map_coordIdeal_coordBlowupSubst R S s hs) (X_mem_nonZeroDivisors R s)
 
 /- English proof (translation)
-The claim follows from `Blowup.reesAlgebraLift_algebraMap (coordIdeal R S) (coordBlowupSubst R S s).toRingHom (MvPolynomial.X s) (map_coordIdeal_coordBlowupSubst R S s hs) (X_mem_nonZeroDivisors R s) r`.
+A detailed English derivation is pending.
 -/
 private theorem reesAlgebraToMvPolynomial_algebraMap (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) (hs : s ∈ S) (r : MvPolynomial σ R) :
@@ -253,7 +249,7 @@ private theorem reesAlgebraToMvPolynomial_algebraMap (R : Type u) [CommRing R] {
     (map_coordIdeal_coordBlowupSubst R S s hs) (X_mem_nonZeroDivisors R s) r
 
 /- English proof (translation)
-The claim follows from `Blowup.reesAlgebraLift_reesGenerator (coordIdeal R S) (coordBlowupSubst R S s).toRingHom (MvPolynomial.X s) (map_coordIdeal_coordBlowupSubst R S s hs) (X_mem_nonZeroDivisors R s) (coordIdealGen R S s hs) (by rw [coe_coordIdealGen]; exact coordBlowupSubst_X_self R S s)`.
+A detailed English derivation is pending.
 -/
 private theorem reesAlgebraToMvPolynomial_reesGenerator (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) (hs : s ∈ S) :
@@ -263,7 +259,7 @@ private theorem reesAlgebraToMvPolynomial_reesGenerator (R : Type u) [CommRing R
     (coordIdealGen R S s hs) (by rw [coe_coordIdealGen]; exact coordBlowupSubst_X_self R S s)
 
 /- English proof (translation)
-Introduce and unpack `⟨y, n, rfl⟩`. Use `show IsUnit (coordIdealReesAlgebraLift R S s hs ((Blowup.reesGenerator (coordIdeal R S) (coordIdealGen R S s hs)) ^ n))`. Rewrite using `[map_pow, reesAlgebraToMvPolynomial_reesGenerator, one_pow]`. Conclude with `isUnit_one`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_reesAlgebraToMvPolynomial_powers (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) (hs : s ∈ S) :
@@ -282,7 +278,7 @@ private def homogeneousAwayToLocalization {A : Type u} [CommRing A] (I : Ideal A
     (Localization (Submonoid.powers (Blowup.reesGenerator I a)))
 
 /- English proof (translation)
-The claim follows from `HomogeneousLocalization.algebraMap_apply ..`.
+A detailed English derivation is pending.
 -/
 private theorem homogeneousLocalizationVal_apply {A : Type u} [CommRing A] (I : Ideal A) (a : ↥I)
     (z : HomogeneousLocalization.Away (Blowup.reesGrading I) (Blowup.reesGenerator I a)) :
@@ -297,7 +293,7 @@ private def coordBlowupChartToMvPolynomial (R : Type u) [CommRing R] {σ : Type 
     (homogeneousAwayToLocalization (coordIdeal R S) (coordIdealGen R S s hs))
 
 /- English proof (translation)
-Use `show IsLocalization.lift (isUnit_reesAlgebraToMvPolynomial_powers R S s hs) (homogeneousAwayToLocalization (coordIdeal R S) (coordIdealGen R S s hs) z) = _`. Rewrite using `[homogeneousLocalizationVal_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chartToMvPolynomial_apply (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) (hs : s ∈ S)
@@ -310,7 +306,7 @@ private theorem chartToMvPolynomial_apply (R : Type u) [CommRing R] {σ : Type v
   rw [homogeneousLocalizationVal_apply]
 
 /- English proof (translation)
-Establish `hval : HomogeneousLocalization.val (Blowup.chartRingHom (coordIdeal R S) (coordIdealGen R S s hs) r) = Localization.mk ((Blowup.reesDegreeZeroEquiv (coordIdeal R S) r : ↥(reesAlgebra (coordIdeal R S)))) 1` using `rfl`. Rewrite using `[chartToMvPolynomial_apply, hval, Localization.mk_eq_mk', IsLocalization.mk'_one, IsLocalization.lift_eq, coe_reesDegreeZeroEquiv, reesAlgebraToMvPolynomial_algebraMap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem chartToMvPolynomial_chartRingHom (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) (hs : s ∈ S) (r : MvPolynomial σ R) :
@@ -334,7 +330,7 @@ private def mvPolynomialToCoordBlowupChart (R : Type u) [CommRing R] {σ : Type 
       else Blowup.chartRingHom (coordIdeal R S) (coordIdealGen R S s hs) (MvPolynomial.X i))
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.eval₂Hom_C _ _ r`.
+A detailed English derivation is pending.
 -/
 private theorem awayCoordGenEquivMvPolynomial_invFun_C (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) (hs : s ∈ S) (r : R) :
@@ -343,7 +339,7 @@ private theorem awayCoordGenEquivMvPolynomial_invFun_C (R : Type u) [CommRing R]
   MvPolynomial.eval₂Hom_C _ _ r
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.eval₂Hom_X' _ _ i`.
+A detailed English derivation is pending.
 -/
 private theorem awayCoordGenEquivMvPolynomial_invFun_X (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) (hs : s ∈ S) (i : σ) :
@@ -354,7 +350,7 @@ private theorem awayCoordGenEquivMvPolynomial_invFun_X (R : Type u) [CommRing R]
   MvPolynomial.eval₂Hom_X' _ _ i
 
 /- English proof (translation)
-Rewrite using `[awayCoordGenEquivMvPolynomial_invFun_X, dif_neg]`. Introduce and unpack `⟨-, h⟩`. Conclude with `h rfl`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem awayCoordGenEquivMvPolynomial_invFun_X_self (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) (hs : s ∈ S) :
@@ -365,11 +361,11 @@ private theorem awayCoordGenEquivMvPolynomial_invFun_X_self (R : Type u) [CommRi
   exact h rfl
 
 /- English proof (translation)
-Establish `key : (mvPolynomialToCoordBlowupChart R S s hs).comp ((coordBlowupSubst R S s).toRingHom) = Blowup.chartRingHom (coordIdeal R S) (coordIdealGen R S s hs)`. Use `MvPolynomial.ringHom_ext ?_ ?_` and prove the remaining obligations. Introduce `r show mvPolynomialToCoordBlowupChart R S s hs (coordBlowupSubst R S s (MvPolynomial.C r)) = _`. Rewrite using `[coordBlowupSubst_C, awayCoordGenEquivMvPolynomial_invFun_C]`. Introduce `i show mvPolynomialToCoordBlowupChart R S s hs (coordBlowupSubst R S s (MvPolynomial.X i)) = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : i ∈ S ∧ i ≠ s`. Rewrite using `[coordBlowupSubst_X_of_mem R S s h.1 h.2, map_mul, awayCoordGenEquivMvPolynomial_invFun_X, dif_pos h, awayCoordGenEquivMvPolynomial_invFun_X_self]`. Establish `hb` using `Blowup.chartRingHom_coe_eq_chartFraction_mul (coordIdeal R S) (coordIdealGen R S s hs) (coordIdealGen R S i h.1)`. Rewrite `hb` using `[coe_coordIdealGen, coe_coordIdealGen]`. Conclude with `hb.symm`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coordBlowupSubst_X_of_not_mem_erase R S s h, awayCoordGenEquivMvPolynomial_invFun_X, dif_neg h]`. Conclude with `DFunLike.congr_fun key f`.
+A detailed English derivation is pending.
 -/
 private theorem mvPolynomialToChart_coordBlowupSubst (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) (hs : s ∈ S) (f : MvPolynomial σ R) :
@@ -393,11 +389,11 @@ private theorem mvPolynomialToChart_coordBlowupSubst (R : Type u) [CommRing R] {
   exact DFunLike.congr_fun key f
 
 /- English proof (translation)
-Establish `key : (coordBlowupChartToMvPolynomial R S s hs).comp (mvPolynomialToCoordBlowupChart R S s hs) = RingHom.id (MvPolynomial σ R)`. Use `MvPolynomial.ringHom_ext ?_ ?_` and prove the remaining obligations. Introduce `r show coordBlowupChartToMvPolynomial R S s hs (mvPolynomialToCoordBlowupChart R S s hs (MvPolynomial.C r)) = MvPolynomial.C r`. Rewrite using `[awayCoordGenEquivMvPolynomial_invFun_C, chartToMvPolynomial_chartRingHom, coordBlowupSubst_C]`. Introduce `i show coordBlowupChartToMvPolynomial R S s hs (mvPolynomialToCoordBlowupChart R S s hs (MvPolynomial.X i)) = MvPolynomial.X i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : i ∈ S ∧ i ≠ s`. Rewrite using `[awayCoordGenEquivMvPolynomial_invFun_X, dif_pos h]`. Establish `hb` using `Blowup.chartRingHom_coe_eq_chartFraction_mul (coordIdeal R S) (coordIdealGen R S s hs) (coordIdealGen R S i h.1)`. Rewrite `hb` using `[coe_coordIdealGen, coe_coordIdealGen]`. Establish `h2` using `congrArg (coordBlowupChartToMvPolynomial R S s hs) hb`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[chartToMvPolynomial_chartRingHom, map_mul, chartToMvPolynomial_chartRingHom, coordBlowupSubst_X_of_mem R S s h.1 h.2, coordBlowupSubst_X_self]`. Establish `hnzd` using `X_mem_nonZeroDivisors R s`. Conclude with `(mul_cancel_right_mem_nonZeroDivisors hnzd).mp h2.symm`. Rewrite using `[awayCoordGenEquivMvPolynomial_invFun_X, dif_neg h, chartToMvPolynomial_chartRingHom, coordBlowupSubst_X_of_not_mem_erase R S s h]`. Conclude with `DFunLike.congr_fun key f`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chartToMvPolynomial_mvPolynomialToChart (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) (hs : s ∈ S) (f : MvPolynomial σ R) :
@@ -423,15 +419,13 @@ private theorem chartToMvPolynomial_mvPolynomialToChart (R : Type u) [CommRing R
   exact DFunLike.congr_fun key f
 
 /- English proof (translation)
-Introduce `z`. Take `⟨n, r, hr⟩` from `Blowup.exists_mul_pow_eq_chartRingHom (coordIdeal R S) (coordIdealGen R S s hs) z`. Establish `hLc : coordBlowupChartToMvPolynomial R S s hs (Blowup.chartRingHom (coordIdeal R S) (coordIdealGen R S s hs) ((coordIdealGen R S s hs : ↥(coordIdeal R S)) : MvPolynomial σ R)) = (MvPolynomial.X s : MvPolynomial σ R)`. Rewrite using `[chartToMvPolynomial_chartRingHom, coe_coordIdealGen, coordBlowupSubst_X_self]`. Establish `hpL : coordBlowupChartToMvPolynomial R S s hs (Blowup.chartRingHom (coordIdeal R S) (coordIdealGen R S s hs) ((coordIdealGen R S s hs : ↥(coordIdeal R S)) : MvPolynomial σ R) ^ n) = coordBlowupChartToMvPolynomial R S s hs (Blowup.chartRingHom (coordIdeal R S) (coordIdealGen R S s …` using `map_pow (coordBlowupChartToMvPolynomial R S s hs) (Blowup.chartRingHom (coordIdeal R S) (coordIdealGen R S s hs) ((coordIdealGen R S s hs : ↥(coordIdeal R S)) : MvPolynomial σ R)) n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : coordBlowupChartToMvPolynomial R S s hs z * (MvPolynomial.X s : MvPolynomial σ R) ^ n = coordBlowupSubst R S s r`. Establish `hcg` using `congrArg (coordBlowupChartToMvPolynomial R S s hs) hr`. Rewrite `hcg` using `[map_mul, hpL, hLc, chartToMvPolynomial_chartRingHom]`. Conclude with `hcg`. Establish `hpF : mvPolynomialToCoordBlowupChart R S s hs ((MvPolynomial.X s : MvPolynomial σ R) ^ n) = mvPolynomialToCoordBlowupChart R S s hs (MvPolynomial.X s) ^ n` using `map_pow (mvPolynomialToCoordBlowupChart R S s hs) (MvPolynomial.X s) n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : mvPolynomialToCoordBlowupChart R S s hs (coordBlowupChartToMvPolynomial R S s hs z) * Blowup.chartRingHom (coordIdeal R S) (coordIdealGen R S s hs) (MvPolynomial.X s) ^ n = Blowup.chartRingHom (coordIdeal R S) (coordIdealGen R S s hs) r`. Establish `hcg` using `congrArg (mvPolynomialToCoordBlowupChart R S s hs) h2`. Rewrite `hcg` using `[map_mul, hpF, awayCoordGenEquivMvPolynomial_invFun_X_self, mvPolynomialToChart_coordBlowupSubst]`. Conclude with `hcg`. Establish `hnzd0 : Blowup.chartRingHom (coordIdeal R S) (coordIdealGen R S s hs) (MvPolynomial.X s) ∈ nonZeroDivisors (HomogeneousLocalization.Away (Blowup.reesGrading (coordIdeal R S)) (Blowup.reesGenerator (coordIdeal R S) (coordIdealGen R S s hs)))` using `Blowup.chartRingHom_mem_nonZeroDivisors (coordIdeal R S) (coordIdealGen R S s hs)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hnzd : Blowup.chartRingHom (coordIdeal R S) (coordIdealGen R S s hs) (MvPolynomial.X s) ^ n ∈ nonZeroDivisors (HomogeneousLocalization.Away (Blowup.reesGrading (coordIdeal R S)) (Blowup.reesGenerator (coordIdeal R S) (coordIdealGen R S s hs)))` using `pow_mem hnzd0 n`. Use `⟨coordBlowupChartToMvPolynomial R S s hs z, ?_⟩` and prove the remaining obligations. Establish `h : mvPolynomialToCoordBlowupChart R S s hs (coordBlowupChartToMvPolynomial R S s hs z) * Blowup.chartRingHom (coordIdeal R S) (coordIdealGen R S s hs) (MvPolynomial.X s) ^ n = z * Blowup.chartRingHom (coordIdeal R S) (coordIdealGen R S s hs) (MvPolynomial.X s) ^ n`. Rewrite using `[h3]`. Conclude with `hr.symm`.
-
-Conclude with `(mul_cancel_right_mem_nonZeroDivisors hnzd).mp h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mvPolynomialToChart_surjective (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) (hs : s ∈ S) : Function.Surjective (mvPolynomialToCoordBlowupChart R S s hs) := by
@@ -482,7 +476,7 @@ private theorem mvPolynomialToChart_surjective (R : Type u) [CommRing R] {σ : T
   exact (mul_cancel_right_mem_nonZeroDivisors hnzd).mp h
 
 /- English proof (translation)
-Establish `hL : Function.LeftInverse (coordBlowupChartToMvPolynomial R S s hs) (mvPolynomialToCoordBlowupChart R S s hs)` using `fun f => chartToMvPolynomial_mvPolynomialToChart R S s hs f`. Use `⟨(RingEquiv.ofBijective (mvPolynomialToCoordBlowupChart R S s hs) ⟨hL.injective, mvPolynomialToChart_surjective R S s hs⟩).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[RingEquiv.symm_symm]`. Use `RingHom.ext fun f => ?_` and prove the remaining obligations. Conclude with `mvPolynomialToChart_coordBlowupSubst R S s hs f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_ringEquiv_away_mvPolynomial (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) (hs : s ∈ S) :
@@ -505,7 +499,7 @@ def awayCoordGenEquivMvPolynomial (R : Type u) [CommRing R] {σ : Type v} [Decid
   (exists_ringEquiv_away_mvPolynomial R S s hs).choose
 
 /- English proof (translation)
-The claim follows from `(exists_ringEquiv_away_mvPolynomial R S s hs).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem awayCoordGenEquivMvPolynomial_symm_comp_coordBlowupSubst (R : Type u) [CommRing R] {σ : Type v} [DecidableEq σ]
     (S : Finset σ) (s : σ) (hs : s ∈ S) :

@@ -16,7 +16,7 @@ def ratEquiv (D : D7) (m n : ℕ) : Matrix (Fin m) (Fin n) D.host.E ≃ GlobalTh
     ⟨fun _ _ h => GlobalTheory.MixModel.rat_injective (congrArg Subtype.val h), fun ⟨_, ξ, hξ⟩ => ⟨ξ, Subtype.ext hξ⟩⟩
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.MixModel.lattice_Mx D m n`. Use `haveI : DiscreteTopology (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D m n) := i5`. Conclude with `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem countable_ratMx (D : D7) (m n : ℕ) : Countable (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D m n) := by
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.MixModel.lattice_Mx D m n
@@ -24,16 +24,14 @@ theorem countable_ratMx (D : D7) (m n : ℕ) : Countable (GlobalTheory.Indefinit
   exact TopologicalSpace.separableSpace_iff_countable.1 inferInstance
 
 /- English proof (translation)
-Use `haveI := countable_ratMx D m n`. Conclude with `(ratEquiv D m n).injective.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_mat (D : D7) (m n : ℕ) : Countable (Matrix (Fin m) (Fin n) D.host.E) := by
   haveI := countable_ratMx D m n
   exact (ratEquiv D m n).injective.countable
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, -⟩` from `GlobalTheory.MixModel.lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI := countable_ratMx D m n`. Use `haveI := hcov.1`. Rewrite using `[hcov.2.1.lintegral_eq_tsum'' φ, ← (ratEquiv D m n).tsum_eq]`.
-
-Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lintegral_unfold {D : D7} {m n : ℕ} {μ : Measure (Mx D m n)} {𝓨 : Set (Mx D m n)}
     (hcov : IsCovolOne (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D m n) μ 𝓨) (φ : Mx D m n → ℝ≥0∞) :
@@ -46,9 +44,7 @@ theorem lintegral_unfold {D : D7} {m n : ℕ} {μ : Measure (Mx D m n)} {𝓨 : 
   rfl
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, -⟩` from `GlobalTheory.MixModel.lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI := countable_ratMx D m n`. Use `haveI := hcov.1`. Rewrite using `[hcov.2.1.integral_eq_tsum'' φ hφ, ← (ratEquiv D m n).tsum_eq]`.
-
-Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_unfold {D : D7} {m n : ℕ} {μ : Measure (Mx D m n)} {𝓨 : Set (Mx D m n)}
     (hcov : IsCovolOne (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D m n) μ 𝓨) (φ : Mx D m n → ℂ) (hφ : Integrable φ μ) :
@@ -61,25 +57,21 @@ theorem integral_unfold {D : D7} {m n : ℕ} {μ : Measure (Mx D m n)} {𝓨 : S
   rfl
 
 /- English proof (translation)
-Introduce `D m n X _ _ _ _ ν _ μ 𝓨 hcov h hc M hM`. Take `⟨i1, i2, i3, i4, -⟩` from `GlobalTheory.MixModel.lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI := countable_mat D m n`. Use `haveI := hcov.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FirstCountableTopology (Mx D m n) := @TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _ _ i3`. Establish `hr0 : (0 : Matrix (Fin m) (Fin n) D.host.E).map (incA D) = 0` using `Matrix.map_zero _ (map_zero (incA D))`. Establish `hb : ∀ x u, ‖h x u‖ ≤ M` using `fun x u => by`. Establish `h0` using `(hM x u).1.le_tsum 0 (fun _ _ => norm_nonneg _)`. Rewrite `h0` using `[hr0, zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h0.trans (hM x u).2`. Establish `hcx : ∀ x, Continuous (h x)` using `fun x => hc.comp (continuous_const.prodMk continuous_id)`. Establish `hcu : ∀ u, Continuous fun x => h x u` using `fun u => hc.comp (continuous_id.prodMk continuous_const)`. Establish `hmeas : Measurable (Function.uncurry h)` using `hc.measurable`. Establish `hmx : ∀ x (ξ : Matrix (Fin m) (Fin n) D.host.E), Measurable fun t => ‖h x (ξ.map (incA D) + t)‖ₑ` using `fun x ξ => ((hcx x).comp (continuous_add_left _)).measurable.enorm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmu : ∀ t (ξ : Matrix (Fin m) (Fin n) D.host.E), Measurable fun x => ‖h x (ξ.map (incA D) + t)‖ₑ` using `fun t ξ => (hcu (ξ.map (incA D) + t)).measurable.enorm`. Establish `hsum : ∀ x t, ∑' ξ : Matrix (Fin m) (Fin n) D.host.E, ‖h x (ξ.map (incA D) + t)‖ₑ ≤ ENNReal.ofReal M` using `fun x t => by`. Repeatedly rewrite using `[← ofReal_norm_eq_enorm]`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) (hM x t).1]`. Conclude with `ENNReal.ofReal_le_ofReal (hM x t).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlx : ∀ x, ∫⁻ u, ‖h x u‖ₑ ∂μ ≤ ENNReal.ofReal M` using `fun x => by`. Establish `e1 : ∫⁻ t in 𝓨, ∑' ξ : Matrix (Fin m) (Fin n) D.host.E, ‖h x (ξ.map (incA D) + t)‖ₑ ∂μ = ∑' ξ : Matrix (Fin m) (Fin n) D.host.E, ∫⁻ t in 𝓨, ‖h x (ξ.map (incA D) + t)‖ₑ ∂μ` using `lintegral_tsum fun ξ => (hmx x ξ).aemeasurable`. Rewrite using `[lintegral_unfold hcov (fun u => ‖h x u‖ₑ), ← e1]`. Use `(lintegral_mono fun t => hsum x t).trans ?_` and prove the remaining obligations. Rewrite using `[setLIntegral_const, hcov.2.2, mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGc : Continuous fun u => ∫ x, h x u ∂ν` using `continuous_of_dominated (bound := fun _ => M) (fun u => (hcu u).aestronglyMeasurable) (fun u => Filter.Eventually.of_forall fun x => hb x u) (integrable_const M) (Filter.Eventually.of_forall fun x => hcx x)`. Establish `hGi : Integrable (fun u => ∫ x, h x u ∂ν) μ`. Use `⟨hGc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `h1 : ∫⁻ u, ‖∫ x, h x u ∂ν‖ₑ ∂μ ≤ ∫⁻ u, ∫⁻ x, ‖h x u‖ₑ ∂ν ∂μ` using `lintegral_mono fun u => enorm_integral_le_lintegral_enorm _`. Establish `h2 : ∫⁻ u, ∫⁻ x, ‖h x u‖ₑ ∂ν ∂μ = ∫⁻ x, ∫⁻ u, ‖h x u‖ₑ ∂μ ∂ν` using `lintegral_lintegral_swap (hmeas.enorm.comp measurable_swap).aemeasurable`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∫⁻ x, ∫⁻ u, ‖h x u‖ₑ ∂μ ∂ν ≤ ENNReal.ofReal M * ν Set.univ`. Rewrite using `[← lintegral_const]`. Conclude with `lintegral_mono fun x => hlx x`. Conclude with `lt_of_le_of_lt (h1.trans (h2.le.trans h3)) (ENNReal.mul_lt_top ENNReal.ofReal_lt_top (measure_lt_top _ _))`. Use `⟨hGi, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[integral_unfold hcov _ hGi]`. Establish `hA : ∑' ξ : Matrix (Fin m) (Fin n) D.host.E, ∫⁻ t in 𝓨, ‖∫ x, h x (ξ.map (incA D) + t) ∂ν‖ₑ ∂μ ≠ ∞`. Rewrite using `[← lintegral_unfold hcov (fun u => ‖∫ x, h x u ∂ν‖ₑ)]`. Conclude with `hGi.2.ne`. Establish `e3 : ∫ t in 𝓨, ∑' ξ : Matrix (Fin m) (Fin n) D.host.E, ∫ x, h x (ξ.map (incA D) + t) ∂ν ∂μ = ∑' ξ : Matrix (Fin m) (Fin n) D.host.E, ∫ t in 𝓨, ∫ x, h x (ξ.map (incA D) + t) ∂ν ∂μ` using `integral_tsum (fun ξ => (hGc.comp (continuous_add_left (ξ.map (incA D)))).aestronglyMeasurable) hA`.
-
-Rewrite using `[← e3]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `hB : ∑' ξ : Matrix (Fin m) (Fin n) D.host.E, ∫⁻ x, ‖h x (ξ.map (incA D) + t)‖ₑ ∂ν ≠ ∞`. Establish `e2 : ∫⁻ x, ∑' ξ : Matrix (Fin m) (Fin n) D.host.E, ‖h x (ξ.map (incA D) + t)‖ₑ ∂ν = ∑' ξ : Matrix (Fin m) (Fin n) D.host.E, ∫⁻ x, ‖h x (ξ.map (incA D) + t)‖ₑ ∂ν` using `lintegral_tsum fun ξ => (hmu t ξ).aemeasurable`. Rewrite using `[← e2]`.
-
-Use `ne_of_lt (lt_of_le_of_lt (lintegral_mono fun x => hsum x t) ?_)` and prove the remaining obligations. Rewrite using `[lintegral_const]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (measure_lt_top _ _)`. Establish `e4 : ∫ x, ∑' ξ : Matrix (Fin m) (Fin n) D.host.E, h x (ξ.map (incA D) + t) ∂ν = ∑' ξ : Matrix (Fin m) (Fin n) D.host.E, ∫ x, h x (ξ.map (incA D) + t) ∂ν` using `integral_tsum (fun (ξ : Matrix (Fin m) (Fin n) D.host.E) => (hcu (ξ.map (incA D) + t)).aestronglyMeasurable) hB`. Conclude with `e4.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unfold : ∀ (D : D7) (m n : ℕ) (X : Type) [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X]
     [SecondCountableTopology X] (ν : Measure X) [IsFiniteMeasure ν] (μ : Measure (Mx D m n)) (𝓨 : Set (Mx D m n)),

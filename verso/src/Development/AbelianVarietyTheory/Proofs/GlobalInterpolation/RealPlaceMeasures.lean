@@ -14,25 +14,25 @@ open MeasureTheory FourierTransform Formalism.MainNotions.GlobalTheoryTheory.Gen
 open scoped ENNReal NNReal
 
 /- English proof (translation)
-Establish `gen : ∀ (S : V → E) (c : ℝ≥0), c ≠ 0 → MeasurableEmbedding S → μ.map S = c • (volume : Measure E) → (∀ g : E → ℂ, ∫ x, g (S x) ∂μ = ((c : ℝ) : ℂ) * ∫ w, g w) ∧ ∀ g : E → ℂ, Integrable (fun x => g (S x)) μ ↔ Integrable g`. Introduce `S c hc he h`. Use `⟨fun g => ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← he.integral_map, h, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Use `he.integrable_map_iff (μ := μ) (g := g)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[h]`. Use `this.symm.trans ?_` and prove the remaining obligations. Conclude with `integrable_smul_measure (by exact_mod_cast hc) ENNReal.coe_ne_top`. Establish `ha : a ≠ 0` using `left_ne_zero_of_mul_eq_one hab`. Establish `hb : b ≠ 0` using `right_ne_zero_of_mul_eq_one hab`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨haI, haG⟩` from `gen T a ha T.toHomeomorph.measurableEmbedding hT`. Take `⟨hbI, hbG⟩` from `gen R b hb hRm hRv`. Establish `ha' : ((a : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast ha`. Establish `hab' : ((a : ℝ) : ℂ) * ((b : ℝ) : ℂ) = 1` using `by exact_mod_cast hab`. Establish `key : ∀ (Φ : V → ℂ) (y : V), ∫ x, Φ x * Complex.exp (2 * Real.pi * Complex.I * ((β x y : ℝ) : ℂ)) ∂μ = ((a : ℝ) : ℂ) * 𝓕⁻ (fun w => Φ (T.symm w)) (R y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Φ y`. Rewrite using `[Real.fourierInv_eq', ← haI]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [ContinuousLinearEquiv.symm_apply_apply, smul_eq_mul, hR]`. Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hμ, fun Φ hc hsup hF z => ?_⟩` and prove the remaining obligations. Establish `hi : Integrable Φ μ` using `hc.integrable_of_hasCompactSupport hsup`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [key Φ] at hF ⊢`. Establish `hf : Integrable (fun w => Φ (T.symm w))`. Rewrite using `[← haG]`. Simplify using `using hi`. Establish `hF' : Integrable (𝓕⁻ (fun w => Φ (T.symm w)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hbG]`. Simplify `hF.const_mul ((a : ℝ) : ℂ)⁻¹` using `[← mul_assoc, ha']`. Establish `h1 : 𝓕⁻ (fun w => Φ (T.symm w)) = 𝓕 (fun w => Φ (T.symm (-w)))` using `Real.fourierInv_eq_fourier_comp_neg _`. Establish `h2 : 𝓕⁻ (𝓕 (fun w => Φ (T.symm (-w)))) = fun w => Φ (T.symm (-w))` using `Continuous.fourierInv_fourier_eq (by fun_prop) hf.comp_neg (h1 ▸ hF')`. Establish `h3` using `congrFun h2 (T z)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[← h1, Real.fourierInv_eq']`. Simplify using `only [map_neg, ContinuousLinearEquiv.symm_apply_apply] at h3`. Rewrite using `[← h3, ← one_mul (∫ v : E, _), ← hab', mul_assoc ((a : ℝ) : ℂ), ← hbI, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs y z, hR, real_inner_comm, mul_assoc ((a : ℝ) : ℂ)]`. Use `congr 1`. Rewrite using `[mul_comm]`. Use `congr 2`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem selfDual_of_map {V E : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [MeasurableSpace V] [BorelSpace V] [NormedAddCommGroup E] [InnerProductSpace ℝ E]
@@ -96,7 +96,7 @@ theorem selfDual_of_map {V E : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
   ring
 
 /- English proof (translation)
-Break down `hε with rfl | rfl` into its components or cases. Conclude with `selfDual_of_map volume inferInstance (fun t s => 1 * (t * s)) (fun x y => by ring) (ContinuousLinearEquiv.refl ℝ ℝ) id MeasurableEmbedding.id (fun x y => by simp [mul_comm]) 1 1 (one_mul 1) (by simp) (by simp)`. Conclude with `selfDual_of_map volume inferInstance (fun t s => -1 * (t * s)) (fun x y => by ring) (ContinuousLinearEquiv.refl ℝ ℝ) Neg.neg (Homeomorph.neg ℝ).measurableEmbedding (fun x y => by simp [mul_comm]) 1 1 (one_mul 1) (by simp) (by simp)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem selfDual_line {ε : ℝ} (hε : ε = 1 ∨ ε = -1) :
     SelfDual (volume : Measure ℝ)
@@ -110,15 +110,15 @@ theorem selfDual_line {ε : ℝ} (hε : ε = 1 ∨ ε = -1) :
       (fun x y => by simp [mul_comm]) 1 1 (one_mul 1) (by simp) (by simp)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨u, hu1, hu2⟩ : ∃ u : Fin P ⊕ Fin Q → (ℂ ≃ₗᵢ[ℝ] ℂ), (∀ i z, u (Sum.inl i) z = ε * z) ∧ ∀ i z, u (Sum.inr i) z = -(ε * z) := by`. Break down `hε with rfl | rfl` into its components or cases. Conclude with `⟨Sum.elim (fun _ => .refl ℝ ℂ) (fun _ => .neg ℝ), by simp, by simp⟩`. Conclude with `⟨Sum.elim (fun _ => .neg ℝ) (fun _ => .refl ℝ ℂ), by simp, by simp⟩`. Set `T : PerpendicularEmbedding.Sp P Q ≃L[ℝ] EuclideanSpace ℂ (Fin P ⊕ Fin Q)` to `(PiLp.continuousLinearEquiv 2 ℝ fun _ : Fin P ⊕ Fin Q => ℂ).symm`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `S : EuclideanSpace ℂ (Fin P ⊕ Fin Q) ≃ₗᵢ[ℝ] EuclideanSpace ℂ (Fin P ⊕ Fin Q)` to `LinearIsometryEquiv.piLpCongrRight 2 u`. Establish `hT : MeasurePreserving T volume volume` using `(show MeasurePreserving T.toHomeomorph.toMeasurableEquiv.symm volume volume from GlobalTheory.volume_preserving_ofLp_complex (Fin P ⊕ Fin Q)).symm _`. Establish `hST : MeasurePreserving (S ∘ T) volume volume` using `S.measurePreserving.comp hT`. Establish `h2 : MeasurableEmbedding fun w : EuclideanSpace ℂ (Fin P ⊕ Fin Q) => (2 : ℝ) • w` using `(Homeomorph.smulOfNeZero (2 : ℝ) two_ne_zero).measurableEmbedding`. Use `selfDual_of_map _ (GlobalTheory.RealPlaceCompare.isAddHaar_dx P Q) (fun x y => ε * (2 * (PerpendicularEmbedding.herm x y).re)) (fun x y => by rw [← GlobalTheory.RealPlaceCompare.herm_star x y]; simp) T ((fun w => (2 : ℝ) • w) ∘ (S ∘ T)) (h2.comp (S.toHomeomorph.measurableEmbeddin …` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp, PiLp.inner_apply, Fintype.sum_sum_type, PerpendicularEmbedding.herm, Complex.sub_re, Complex.re_sum]`. Establish `e : ∀ i, S (T y) i = u i (y i)` using `fun i => rfl`. Establish `e' : ∀ i, T x i = x i` using `fun i => rfl`. Simplify using `only [e', Complex.inner, mul_sub, Finset.mul_sum]`. Rewrite using `[sub_eq_add_neg, ← Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun i _ => ?_ <;> simp [e, hu1, hu2] <;> ring`. Rewrite using `[PerpendicularEmbedding.dx, Measure.map_smul, hT.map_eq]`. Use extensionality with `s hs`. Simplify using `[ENNReal.smul_def]`. Rewrite using `[← Measure.map_map h2.measurable hST.measurable, PerpendicularEmbedding.dx, Measure.map_smul, hST.map_eq, Measure.map_smul, Measure.map_addHaar_smul _ two_ne_zero, GlobalTheory.finrank_real_euclideanSpace_complex, smul_smul, ENNReal.smul_def]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[abs_of_pos (by positivity), ENNReal.ofReal_inv_of_pos (by positivity), ENNReal.ofReal_pow (by norm_num), ENNReal.coe_inv (by positivity)]`. Simplify using `only [Fintype.card_sum, Fintype.card_fin, ENNReal.ofReal_ofNat, ENNReal.coe_pow, ENNReal.coe_ofNat]`. Generalize the expression as in `P + Q = n`. Rewrite using `[two_mul, pow_add, ENNReal.mul_inv (by simp) (by simp), ← mul_assoc, ENNReal.mul_inv_cancel (by simp) (by simp), one_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 -/
 theorem selfDual_dx {ε : ℝ} (hε : ε = 1 ∨ ε = -1) (P Q : ℕ) :
     SelfDual (PerpendicularEmbedding.dx P Q) (fun x y : PerpendicularEmbedding.Sp P Q =>
@@ -168,13 +168,13 @@ theorem selfDual_dx {ε : ℝ} (hε : ε = 1 ∨ ε = -1) (P Q : ℕ) :
       ENNReal.mul_inv_cancel (by simp) (by simp), one_mul]
 
 /- English proof (translation)
-Introduce `_ hε` and use `⟨selfDual_dx hε, selfDual_line hε⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem selfDualReal : PerpendicularEmbedding.SelfDualReal := fun _ hε =>
   ⟨selfDual_dx hε, selfDual_line hε⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RealPlaceCompare.typings_agree.2.2.2.1 ⟨selfDualReal, GlobalTheory.SphereMassProof.sphereMass, GlobalTheory.CompactDualQuot.compactDualQuotient⟩`.
+A detailed English derivation is pending.
 -/
 theorem realPlaceMeasures : ActionCoordinates.RealPlaceMeasures :=
   GlobalTheory.RealPlaceCompare.typings_agree.2.2.2.1

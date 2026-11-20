@@ -13,29 +13,25 @@ open GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue
 namespace GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue
 
 /- English proof (translation)
-Introduce `ι _ A _ P _ _ res hid hcomp hstep`. Establish `hA : ∀ (S0 U : Finset ι) (h : S0 ⊆ U) (j : ι), U ⊆ insert j S0 → ∀ b : P U, S0.Nonempty → ∃ k : ℕ, (MvPolynomial.X j : MvPolynomial ι A) ^ k • b ∈ LinearMap.range (res S0 U h)`. Introduce `S0 U h j hU b hS0`. Distinguish the cases in `hj : j ∈ U`. Take `rfl : U = insert j S0` from `subset_antisymm hU (Finset.insert_subset hj h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `hstep S0 j b hS0`. Establish `hUS : U ⊆ S0`. Introduce `x hx`. Break down `Finset.mem_insert.mp (hU hx) with hx' | hx'` into its components or cases. Substitute `hx'` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd hx hj`. Conclude with `hx'`. Take `rfl : U = S0` from `subset_antisymm hUS h`. Conclude with `⟨0, LinearMap.mem_range.mpr ⟨b, by rw [hid, pow_zero, one_smul]⟩⟩`. Establish `hQ : ∀ T : Finset ι, ∀ (S U : Finset ι) (h : S ⊆ U), U ⊆ S ∪ T → ∀ b : P U, S.Nonempty → ∃ l : ℕ, xProd A T ^ l • b ∈ LinearMap.range (res S U h)`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `S U h hU b hS`. Take `rfl : U = S` from `subset_antisymm (by simpa using hU) h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨0, LinearMap.mem_range.mpr ⟨b, by rw [hid, pow_zero, one_smul]⟩⟩`. Consider the case `insert j T hj ih`. Introduce `S U h hU b hS`. Establish `hSV : S ⊆ S ∪ U.erase j` using `Finset.subset_union_left`. Establish `hVU : S ∪ U.erase j ⊆ U` using `Finset.union_subset h (Finset.erase_subset j U)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hUV : U ⊆ insert j (S ∪ U.erase j)`. Introduce `x hx`. Distinguish the cases in `hxj : x = j`. Substitute `hxj` using the available equality. Conclude with `Finset.mem_insert_self _ _`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.mem_insert_of_mem (Finset.mem_union_right _ (Finset.mem_erase.mpr ⟨hxj, hx⟩))`. Establish `hVT : S ∪ U.erase j ⊆ S ∪ T`. Introduce `x hx`. Break down `Finset.mem_union.mp hx with hx | hx` into its components or cases. Conclude with `Finset.mem_union_left _ hx`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hxj, hxU⟩` from `Finset.mem_erase.mp hx`. Break down `Finset.mem_union.mp (hU hxU) with h1 | h1` into its components or cases. Conclude with `Finset.mem_union_left _ h1`. Break down `Finset.mem_insert.mp h1 with h2 | h2` into its components or cases. Conclude with `absurd h2 hxj`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.mem_union_right _ h2`. Establish `hVne : (S ∪ U.erase j).Nonempty` using `hS.mono hSV`. Take `⟨k, hk⟩` from `hA (S ∪ U.erase j) U hVU j hUV b hVne`. Take `⟨c, hc⟩` from `LinearMap.mem_range.mp hk`. Take `⟨l, hl⟩` from `ih S (S ∪ U.erase j) hSV hVT c hS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Take `⟨d, hd⟩` from `LinearMap.mem_range.mp hl`. Use `⟨k + l, ?_⟩` and prove the remaining obligations. Establish `hmem : xProd A T ^ l • (MvPolynomial.X j : MvPolynomial ι A) ^ k • b ∈ LinearMap.range (res S U h)`. Use `LinearMap.mem_range.mpr ⟨d, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, ← (res (S ∪ U.erase j) U hVU).map_smul, ← hd, hcomp]`.
-
-Establish `heq : xProd A (insert j T) ^ (k + l) • b = ((MvPolynomial.X j : MvPolynomial ι A) ^ l * xProd A T ^ k) • (xProd A T ^ l • (MvPolynomial.X j : MvPolynomial ι A) ^ k • b)`. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Simplify using `only [GlobalTheory.xProd, Finset.prod_insert hj]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[heq]`. Conclude with `Submodule.smul_mem _ _ hmem`. Introduce `T S b hS`. Conclude with `hQ T S (S ∪ T) Finset.subset_union_left (Finset.Subset.refl _) b hS`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem xProd_pow_smul_mem_range_res_iter : ∀ (ι : Type) [LinearOrder ι] (A : Type) [CommRing A] (P : Finset ι → Type) [∀ S, AddCommGroup (P S)] [∀ S, Module (MvPolynomial ι A) (P S)] (res : ∀ S S' : Finset ι, S ⊆ S' → P S →ₗ[MvPolynomial ι A] P S'), (∀ S (h : S ⊆ S) a, res S S h a = a) → (∀ S S' S'' (h : S ⊆ S') (h' : S' ⊆ S'') a, res S' S'' h' (res S S' h a) = res S S'' (h.trans h') a) → (∀ (S : Finset ι) (j : ι) (b : P (insert j S)), S.Nonempty → ∃ k : ℕ, (MvPolynomial.X j : MvPolynomial ι A) ^ k • b ∈ LinearMap.range (res S (insert j S) (Finset.subset_insert j S))) → (∀ (T S : Finset ι) (b : P (S ∪ T)), S.Nonempty → ∃ l : ℕ, xProd A T ^ l • b ∈ LinearMap.range (res S (S ∪ T) Finset.subset_union_left)) := by
   intro ι _ A _ P _ _ res hid hcomp hstep

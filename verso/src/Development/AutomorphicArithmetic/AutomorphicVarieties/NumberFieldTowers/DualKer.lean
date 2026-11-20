@@ -5,17 +5,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationN
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Tower
 
 /- English proof (translation)
-Introduce `l _ M _ _ M' _ _ T`. Establish `hI` using `PropA.qzInj l`. Use `⟨?_, fun p g => ?_⟩` and prove the remaining obligations. Use extensionality with `f`. Rewrite using `[LinearMap.mem_range, LinearMap.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Use extensionality with `⟨x, hx⟩`. Simplify using `only [LinearMap.lcomp_apply, LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.zero_apply]`. Rewrite using `[LinearMap.mem_ker.mp hx, map_zero]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `hf`. Establish `hle : LinearMap.ker T ≤ LinearMap.ker f`. Introduce `x hx`. Use `LinearMap.congr_fun hf ⟨x, hx⟩` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `g0 : LinearMap.range T →ₗ[ℤ_[l]] QZ l` to `((LinearMap.ker T).liftQ f hle).comp (LinearMap.quotKerEquivRange T).symm.toLinearMap`. Take `⟨h, hh⟩` from `hI.out (LinearMap.range T).subtype Subtype.val_injective g0`. Use `⟨h, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [LinearMap.lcomp_apply, LinearMap.comp_apply]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `hh ⟨T x, LinearMap.mem_range_self T x⟩` as an intermediate fact. Simplify using `only [Submodule.subtype_apply] at this`. Rewrite using `[this]`. Simplify using `[g0, LinearMap.quotKerEquivRange_symm_apply_image]`. Take `⟨h, hh⟩` from `hI.out p.subtype Subtype.val_injective g`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨h, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `using hh x`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.V.Tower.dualKer :
     ∀ (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module ℤ_[l] M] (M' : Type) [AddCommGroup M'] [Module ℤ_[l] M'] (T : M →ₗ[ℤ_[l]] M'),

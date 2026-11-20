@@ -56,7 +56,7 @@ def H : Subgroup (G ℚ Ω) :=
     ((Units.map (Int.castRingHom (ResidueField c.O)).toMonoidHom).comp X.φ) ⊓ X.η.eqLocus X.η' ⊓ X.κ.ker
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨congrArg Units.val h.1.1, h.1.2, h.2⟩, fun h => ⟨⟨Units.ext h.1, h.2.1⟩, h.2.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_H {g : G ℚ Ω} :
     g ∈ X.H ↔ Raw.bar D.Psi g = ((X.φ g : ℤ) : ResidueField c.O) ∧ X.η g = X.η' g ∧ X.κ g = 1 :=
@@ -81,25 +81,25 @@ def On (T : Tower D) : Prop := T.F.fixingSubgroup = X.H ∧ T.K.fixingSubgroup =
 end Set2
 
 /- English proof (translation)
-The claim follows from `(F.mem_fixingSubgroup_iff _).2 fun x hx => g.commutes ⟨x, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem resQ_mem (F : IntermediateField ℚ Ω) (g : G F Ω) : resQ F g ∈ F.fixingSubgroup :=
   (F.mem_fixingSubgroup_iff _).2 fun x hx => g.commutes ⟨x, hx⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨AlgEquiv.ofRingEquiv (f := g.toRingEquiv) fun x => (F.mem_fixingSubgroup_iff g).1 hg x.1 x.2, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_resQ {F : IntermediateField ℚ Ω} {g : G ℚ Ω} (hg : g ∈ F.fixingSubgroup) : ∃ s : G F Ω, resQ F s = g :=
   ⟨AlgEquiv.ofRingEquiv (f := g.toRingEquiv) fun x => (F.mem_fixingSubgroup_iff g).1 hg x.1 x.2, rfl⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem resQ_Dec (F : IntermediateField ℚ Ω) [NumberField F] (A : ValuationSubring Ω) (g : G F Ω) :
     g ∈ Dec (F := F) A ↔ resQ F g ∈ Dec (F := ℚ) A := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem resQ_Ine (F : IntermediateField ℚ Ω) [NumberField F] (A : ValuationSubring Ω) (g : G F Ω) :
     g ∈ Ine (F := F) A ↔ resQ F g ∈ Ine (F := ℚ) A := Iff.rfl

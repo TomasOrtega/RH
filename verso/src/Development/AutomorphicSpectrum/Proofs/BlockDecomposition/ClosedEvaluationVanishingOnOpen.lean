@@ -11,11 +11,11 @@ namespace GlobalTheory.CompanionTheory.BZPhiPG.Off
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Establish `hs : ((sEmb k n m : Mir k (n + 1)) : GL (Fin (n + 1 + 1)) k) = GlobalTheory.BZMir.glEmb k (n + 1) (m : GL (Fin (n + 1)) k)` using `rfl`. Establish `hm : Matrix.vecMul (GlobalTheory.BZMir.eLast k n) ((m : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = GlobalTheory.BZMir.eLast k n` using `m.2`. Rewrite `hm` using `[GlobalTheory.BZMir.vecMul_eLast]`. Rewrite using `[hs]`. Use `show GlobalTheory.BZMir.glEmbMat k (n + 1) ((m : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.castSucc (Fin.last n)) j = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.lastCases ?_ (fun j' => ?_) j` and prove the remaining obligations. Simplify using `only [GlobalTheory.BZMir.glEmbMat, Fin.lastCases_castSucc, Fin.lastCases_last]`. Rewrite using `[Matrix.one_apply_ne (Fin.castSucc_lt_last _).ne]`. Simplify using `only [GlobalTheory.BZMir.glEmbMat, Fin.lastCases_castSucc]`. Rewrite using `[hm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j' = Fin.last n`. Substitute `hj` using the available equality. Simplify using `[GlobalTheory.BZMir.eLast]`. Rewrite using `[Matrix.one_apply_ne (fun e => hj (Fin.castSucc_injective _ e).symm)]`. Simplify using `[GlobalTheory.BZMir.eLast, Pi.single_apply, hj]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sEmb_row (n : ℕ) (m : Mir k n) (j : Fin (n + 1 + 1)) :
     (((sEmb k n m : Mir k (n + 1)) : GL (Fin (n + 1 + 1)) k) : Matrix (Fin (n + 1 + 1)) (Fin (n + 1 + 1)) k)
@@ -40,13 +40,13 @@ theorem sEmb_row (n : ℕ) (m : Mir k n) (j : Fin (n + 1 + 1)) :
       simp [GlobalTheory.BZMir.eLast, Pi.single_apply, hj]
 
 /- English proof (translation)
-Simplify using `only [Cl, Set.mem_ofPred_eq]`. Introduce `c`. Rewrite using `[_root_.mul_inv_rev, ← map_inv, Subgroup.coe_mul, Units.val_mul, Matrix.mul_apply]`. Repeatedly rewrite using `[sEmb_row]`. Rewrite using `[← Matrix.mul_apply, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ((1 : Matrix (Fin (i + 1 + t + 1 + 1)) (Fin (i + 1 + t + 1 + 1)) k) - GlobalTheory.BZMir.colMat k (i + 1 + (t + 1)) (Fin.append 0 d)) _ _ = 0`. Rewrite using `[Matrix.sub_apply]`. Establish `hRC : (Fin.last (i + 1 + t)).castSucc ≠ (Fin.castLE (by omega) c : Fin (i + 1 + t + 1 + 1))`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Establish `hCL : (Fin.castLE (by omega) c : Fin (i + 1 + t + 1 + 1)) ≠ Fin.last (i + 1 + (t + 1))`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Matrix.one_apply_ne hRC]`. Simplify using `[GlobalTheory.BZMir.colMat, hCL]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dEmb_mul_sEmb_mem_Cl (i t : ℕ) (d : Fin (t + 1) → k) (m : Mir k ((i + 1) + t)) :
     dEmb k i t d * sEmb k _ m ∈ Cl k i t := by
@@ -76,13 +76,13 @@ end GlobalTheory.CompanionTheory.BZPhiPG.Off
 open GlobalTheory.CompanionTheory.BZPhiPG.Off in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i t ψ τ σ hτ hσ f hf`. Use function extensionality and compare the values at `m`. Establish `hz : ∀ d : Fin (t + 1) → k, evX f (dEmb k i t d * sEmb k (i + 1 + t) m) = 0` using `fun d => hf _ (dEmb_mul_sEmb_mem_Cl i t d m)`. Establish `hint : intC ψ f (sEmb k (i + 1 + t) m) = 0`. Unfold `intC`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [hz, smul_zero]`. Unfold `GlobalTheory.CompanionTheory.Rodier.smInt`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `w`. Distinguish the cases in `hw : w = 0`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hw, smul_zero]`. Establish `hpre : ((fun _ => (0 : TensorProduct ℂ τ.V σ.V)) : (Fin (t + 1) → k) → TensorProduct ℂ τ.V σ.V) ⁻¹' {w} = ∅`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun h0 => hw h0.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[hpre, MeasureTheory.measure_empty]`. Simplify using the standard rewrite rules. Simplify using `only [eC, hint, map_zero, smul_zero, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem GlobalTheory.CompanionTheory.BZPhiPG.eC_eq_zero_of_vanish : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (f : XS τ σ) (hf : ∀ x ∈ Cl k i t, evX f x = 0),
     eC ψ f = 0 := by

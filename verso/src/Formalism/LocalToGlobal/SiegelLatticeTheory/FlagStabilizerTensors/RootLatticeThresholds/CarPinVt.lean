@@ -18,7 +18,7 @@ variable {Wq Wp : Type*} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [Fin
   [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.SG.PackageTie.hsEmb, PiLp.inner_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_hsEmb {Wq Wp : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] (A A' : Wq →L[ℂ] Wp) :
@@ -27,7 +27,7 @@ theorem inner_hsEmb {Wq Wp : Type} [NormedAddCommGroup Wq] [InnerProductSpace �
   simp [Formalism.L2.SG.PackageTie.hsEmb, PiLp.inner_apply]
 
 /- English proof (translation)
-Simplify using `[Formalism.FourierDecayAlt.B.hsVec, PiLp.inner_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_hsVec {Wq Wp : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] (A A' : Wq →L[ℂ] Wp) :
@@ -36,7 +36,7 @@ theorem inner_hsVec {Wq Wp : Type} [NormedAddCommGroup Wq] [InnerProductSpace �
   simp [Formalism.FourierDecayAlt.B.hsVec, PiLp.inner_apply]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.trace_eq_sum_inner _ b]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[ContinuousLinearMap.adjoint_inner_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem sum_inner_basis_eq_trace_adjoint_comp {U Y : Type*} [NormedAddCommGroup U] [InnerProductSpace ℂ U]
     [FiniteDimensional ℂ U] [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [FiniteDimensional ℂ Y]
@@ -48,7 +48,7 @@ private theorem sum_inner_basis_eq_trace_adjoint_comp {U Y : Type*} [NormedAddCo
   simp [ContinuousLinearMap.adjoint_inner_right]
 
 /- English proof (translation)
-Establish `key` using `sum_inner_basis_eq_trace_adjoint_comp ((stdOrthonormalBasis ℂ V').map e'.symm) M M'`. Simplify using `only [OrthonormalBasis.map_apply] at key`. Simplify using `only [ContinuousLinearMap.coe_comp', Function.comp_apply, ContinuousLinearEquiv.coe_coe, LinearIsometryEquiv.coe_toContinuousLinearEquiv, LinearIsometryEquiv.inner_map_map]`. Rewrite using `[key, sum_inner_basis_eq_trace_adjoint_comp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hsSum_conj {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup V']
     [InnerProductSpace ℂ V'] [FiniteDimensional ℂ V'] [FiniteDimensional ℂ Wp]
@@ -89,7 +89,7 @@ def locOp (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq) (u u' : D
       ((eQ v).symm.toContinuousLinearEquiv : X.Vloc u' v →L[ℂ] Wq (S.pl (τ.symm v))))
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.B.hsVec`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hsVec_smul {Wq Wp : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] (c : ℂ) (A : Wq →L[ℂ] Wp) :
@@ -99,9 +99,9 @@ theorem hsVec_smul {Wq Wp : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ
   simp
 
 /- English proof (translation)
-Rewrite using `[inner_hsEmb]`. Rewrite using `[hsSum_tensor (X.tensU u') (X.tensU_inner u') (X.tensU_span u') (X.tensU u) (X.tensU_inner u) (unscaledOperatorAtPointRepresentative X u u' sc i0 i0' νq wq) (unscaledOperatorAtPointRepresentative X u u' sc i0 i0' νq wp) (locOp X S u u' T f ν' m₀ τ eP eQ q) (locOp X S u u' T f ν' …`. Rewrite using `[← Fintype.prod_equiv τ.symm (fun v => ⟪Formalism.FourierDecayAlt.JC.vecPlace S T f ν' m₀ (τ.symm v) (Formalism.FourierDecayAlt.C.loc (S.σ (τ.symm v)) q), Formalism.FourierDecayAlt.JC.vecPlace S T f ν' m₀ (τ.symm v) (Formalism.FourierDecayAlt.C.loc (S.σ (τ.symm v)) p)⟫_ℂ) _ (fun …`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Unfold `Formalism.FourierDecayAlt.JC.vecPlace`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hsVec_smul, ← hsVec_smul, inner_hsVec]`. Unfold `locOp`. Establish `: FiniteDimensional ℂ (Wp (S.pl (τ.symm v)))` using `LinearEquiv.finiteDimensional (eP v).symm.toLinearEquiv`. Conclude with `hsSum_conj (eP v) (eQ v) _ _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inner_V0Pt (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq) (u u' : D.what₂.Word) (sc : ℝ)
     (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k) (νq : X.B.I.Ginf → Measure X.B.I.Ginf)
@@ -172,7 +172,7 @@ def RZero (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq) (u u' : D
       Formalism.FourierDecayAlt.JC.vecPlace S T f ν' m₀ j (Formalism.FourierDecayAlt.C.loc (S.σ j) p) = 0
 
 /- English proof (translation)
-Rewrite using `[Complex.conj_ofReal]`. Simplify using `only [Complex.ofReal_prod, Complex.ofReal_mul, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem alg_prod {ι : Type*} [Fintype ι] (a b : ι → ℝ) (c : ι → ℂ) :
     (starRingEnd ℂ) ((∏ j, b j : ℝ) : ℂ) * (((∏ j, a j : ℝ) : ℂ) * ∏ j, c j) = ∏ j, ((a j * b j : ℝ) : ℂ) * c j := by
@@ -181,7 +181,7 @@ theorem alg_prod {ι : Type*} [Fintype ι] (a b : ι → ℝ) (c : ι → ℂ) :
   ring
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem inner_zero_of {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (x y : H) (h : y = 0) :
     inner ℂ x y = 0 := by
@@ -189,7 +189,7 @@ theorem inner_zero_of {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ 
   simp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem inner_zero_of' {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (x y : H) (h : x = 0) :
     inner ℂ x y = 0 := by
@@ -197,7 +197,7 @@ theorem inner_zero_of' {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ
   simp
 
 /- English proof (translation)
-Apply the tactic sequence `rcases h with ⟨j, hj | hj⟩ | ⟨j, hj | hj⟩ <;>`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ j) (by simp [hj])`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem rhs_zero (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq)
     (T : ∀ j : Fin S.f, Formalism.FourierDecayAlt.D.LevTower S.G.k S.G.r (Wp (S.pl j)) (Wq (S.pl j)))
@@ -216,9 +216,9 @@ theorem rhs_zero (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq)
     exact Finset.prod_eq_zero (Finset.mem_univ j) (by simp [hj])
 
 /- English proof (translation)
-Establish `ep : VtPt X u u' sc i0 i0' FdN FdN' νq p = ((Real.sqrt (nW X u u' wp) : ℝ) : ℂ) • Formalism.L2.SG.PackageTie.hsEmb (unscaledOperatorAtPointRepresentative X u u' sc i0 i0' νq wp)`. Unfold `VtPt`. Rewrite using `[hp]`. Establish `eq' : VtPt X u u' sc i0 i0' FdN FdN' νq q = ((Real.sqrt (nW X u u' wq) : ℝ) : ℂ) • Formalism.L2.SG.PackageTie.hsEmb (unscaledOperatorAtPointRepresentative X u u' sc i0 i0' νq wq)`. Unfold `VtPt`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hq]`. Rewrite using `[ep, eq', inner_smul_left, inner_smul_right, inner_V0Pt X S u u' sc i0 i0' νq T f ν' m₀ τ eP eQ hVJ p q wp wq hp hq gp.1 gq.1 gp.2 gq.2, hW p wp hp gp, hW q wq hq gq]`. Conclude with `alg_prod _ _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vt_good (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq) (u u' : D.what₂.Word) (sc : ℝ)
     (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k) (FdN FdN' : Set X.B.I.Ginf) (νq : X.B.I.Ginf → Measure X.B.I.Ginf)
@@ -248,9 +248,9 @@ theorem vt_good (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq) (u 
   exact alg_prod _ _ _
 
 /- English proof (translation)
-Introduce `p q hpP hqP`. Take `⟨wp, hp⟩` from `hPt p hpP`. Take `⟨wq, hq⟩` from `hPt q hqP`. Distinguish the cases in `gp : GoodPt X u u' wp`. Distinguish the cases in `gq : GoodPt X u u' wq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Conclude with `vt_good X S u u' sc i0 i0' FdN FdN' νq T f ν' m₀ τ eP eQ hVJ hW p q wp wq hp hq gp gq`. Rewrite using `[rhs_zero S T f ν' m₀ p q (Or.inr (hR q wq hq gq))]`. Conclude with `inner_zero_of' _ _ (hL q wq hq gq)`. Rewrite using `[rhs_zero S T f ν' m₀ p q (Or.inl (hR p wp hp gp))]`. Conclude with `inner_zero_of _ _ (hL p wp hp gp)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vtTensor_of_steps (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq) (u u' : D.what₂.Word) (sc : ℝ)
     (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k) (FdN FdN' : Set X.B.I.Ginf) (νq : X.B.I.Ginf → Measure X.B.I.Ginf)

@@ -10,15 +10,13 @@ set_option autoImplicit false
 namespace GlobalTheory.FormalAlg
 
 /- English proof (translation)
-Introduce `R _ I Y β n C γ h0 hγ e`. Proceed by induction on `e with`. Consider the case `zero`. Introduce `i`. Use `subst_vars`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun j z _ => ?_⟩` and prove the remaining obligations. Rewrite using `[h0]`. Both sides reduce to the same expression. Rewrite using `[h0]`. Consider the case `succ e ih`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Take `⟨hpre, hgerm⟩` from `ih i`. Establish `hp : γ (e + 1) ⁻¹ᵁ C.D (e + 1) i = C.D 0 i`. Rewrite using `[← hγ e, Scheme.Hom.comp_preimage, C.pre, hpre]`. Use `⟨hp, fun j z hz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hz' : γ e z ∈ C.D e i` using `by rw [← hpre] at hz; exact hz`. Establish `hz'' : β e (γ e z) ∈ C.D (e + 1) i`. Establish `: γ e z ∈ β e ⁻¹ᵁ C.D (e + 1) i` using `by rw [C.pre]; exact hz'`. Conclude with `this`. Rewrite using `[← hgerm j z hz, ← C.ρ_pull e i j, ← hγ e, ← gs_pull (γ e) (β e) z _ hz'', ← gs_res (γ e) z (C.pre e i).ge hz']`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Charts.tower_preimage_germ : ∀ (R : Type) [CommRing R] (I : Ideal R) (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left) (n : ℕ) (C : Charts I Y β n) (γ : ∀ e, (Y 0).left ⟶ (Y e).left), γ 0 = 𝟙 _ → (∀ e, γ e ≫ β e = γ (e + 1)) → ∀ (e : ℕ) (i : Fin (n + 1)), γ e ⁻¹ᵁ C.D e i = C.D 0 i ∧ ∀ (j : Fin (n + 1)) (z : (Y 0).left), z ∈ C.D 0 i → gs (γ e) z (C.D e i) (C.ρ e i j) = gs (𝟙 _) z (C.D 0 i) (C.ρ 0 i j) := by
   intro R _ I Y β n C γ h0 hγ e

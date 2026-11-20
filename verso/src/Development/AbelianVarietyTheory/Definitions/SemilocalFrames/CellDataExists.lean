@@ -13,7 +13,7 @@ namespace GlobalTheory.CellAmp.Model
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S
 
 /- English proof (translation)
-Unfold `amp ampJ`. Rewrite using `[integral_dirac]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem amp_dirac {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (R : BranchingSupport.Rep k r) (l : R.H → Wp) (l' : R.H → Wq) (w : R.H)
@@ -25,7 +25,7 @@ theorem amp_dirac {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProdu
   simp
 
 /- English proof (translation)
-Simplify using `[coefF, smul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coefF_apply {k r : ℕ} (L : LocBessel k r) (v v' : L.Hs) (ξ : L.Wp) (ξ' η : L.Wq)
     (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
@@ -35,9 +35,9 @@ theorem coefF_apply {k r : ℕ} (L : LocBessel k r) (v v' : L.Hs) (ξ : L.Wp) (�
 open MeasureTheory Matrix in
 open scoped InnerProductSpace ENNReal in
 /- English proof (translation)
-Rewrite using `[Matrix.mul_inv_rev]`. Establish `h1 : γ * γ⁻¹ = 1` using `Matrix.mul_nonsing_inv γ hγ`. Establish `h2 : a⁻¹ * a = 1` using `Matrix.nonsing_inv_mul a ha`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by rw [h1, Matrix.one_mul, h2, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 private theorem inv_mul_conj_mul_cancel {n : Type*} [Fintype n] [DecidableEq n] (A B C D γ a : Matrix n n ℂ)
     (hγ : IsUnit γ.det) (ha : IsUnit a.det) :
@@ -54,7 +54,7 @@ open MeasureTheory Matrix in
 open scoped InnerProductSpace ENNReal in
 
 /- English proof (translation)
-The claim follows from `congrArg (fun M => _root_.Formalism.FourierDecayAlt.B.gN M ^ (-b)) (inv_mul_conj_mul_cancel (of p.1.1) (of p.1.2) (of p.2.2) (of p.2.1) γ a hγ ha)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CellAmp.Model.pairMaj_stabAct {k r : ℕ} (γ a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hγ : IsUnit γ.det)
     (ha : IsUnit a.det) (b : ℝ) (p : _root_.Formalism.MainNotions.S.PairSp k r) : _root_.GlobalTheory.CellAmp.pairMaj γ b (_root_.Formalism.MainNotions.S.stabAct γ a p) = _root_.GlobalTheory.CellAmp.pairMaj γ b p :=
@@ -62,7 +62,7 @@ theorem _root_.GlobalTheory.CellAmp.Model.pairMaj_stabAct {k r : ℕ} (γ a : Ma
     (inv_mul_conj_mul_cancel (of p.1.1) (of p.1.2) (of p.2.2) (of p.2.1) γ a hγ ha)
 
 /- English proof (translation)
-Establish `hs : 0 < 8 * Real.sqrt (2 * ((r : ℝ) + 1))` using `by positivity`. Establish `ht : Filter.Tendsto (fun h : ℝ => Formalism.FourierDecayAlt.ThreeDimData.aOf r h) Filter.atTop Filter.atTop` using `Filter.tendsto_id.atTop_div_const hs`. Take `⟨h, h1, h2, h3, h4⟩` from `((Filter.eventually_ge_atTop (120 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 3)).and ((ht.eventually_ge_atTop _).and ((ht.eventually_ge_atTop _).and (ht.eventually_ge_atTop _)))).exists`. Conclude with `⟨h, ⟨hk, h1, h2, h3⟩, h4⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gap_exists (k r : ℕ) (hk : 1 ≤ k) : ∃ h : ℝ, Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h ∧ GapCell k r h := by
   have hs : 0 < 8 * Real.sqrt (2 * ((r : ℝ) + 1)) := by positivity
@@ -75,9 +75,9 @@ theorem gap_exists (k r : ℕ) (hk : 1 ≤ k) : ∃ h : ℝ, Formalism.FourierDe
 open MeasureTheory Matrix in
 open scoped InnerProductSpace ENNReal in
 /- English proof (translation)
-Unfold `_root_.Formalism.QuantumDeterminants.ell`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[Matrix.one_apply_ne]`. Introduce `he`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg Fin.val he` as an intermediate fact. Simplify using `[_root_.Formalism.QuantumDeterminants.eI] at this`. Rewrite using `[Matrix.one_mulVec]`. Conclude with `hz _ (Or.inl (by simp [_root_.Formalism.QuantumDeterminants.eI]))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CellAmp.Model.ell_one (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hz : _root_.Formalism.QuantumDeterminants.inWb k r z) : _root_.Formalism.QuantumDeterminants.ell k r z 1 = 0 := by
   unfold _root_.Formalism.QuantumDeterminants.ell
@@ -94,21 +94,21 @@ open MeasureTheory Matrix in
 open scoped InnerProductSpace ENNReal in
 
 /- English proof (translation)
-Establish `hone : (of fun i j => (1 : _root_.Formalism.MainNotions.S.MatKR k r) i j) = 1` using `rfl`. Use `⟨hg, hG, hm, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Rewrite `ha` using `[hR, Set.mem_singleton_iff]`. Substitute `ha` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[Matrix.mul_one, hinv]`. Unfold `_root_.Formalism.QuantumDeterminants.psi`. Rewrite using `[_root_.GlobalTheory.CellAmp.Model.ell_one _ _ _ L.hz.1, _root_.GlobalTheory.CellAmp.Model.ell_one _ _ _ L.hz'.1]`. Use `⟨inferInstance, Measure.dirac_ne_zero, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hR, Measure.dirac_apply]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_singleton_iff, Set.indicator_apply, Set.mem_setOf_eq]`. Rewrite using `[hone]`. Simplify using the standard rewrite rules. Introduce `s hs`. Rewrite `hs` using `[hR, Set.mem_singleton_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hs` using the available equality. Establish `hid : _root_.Formalism.QuantumDeterminants.lmulM (k` using `k) (r := r) 1 = id := funext fun x => by`. Unfold `_root_.Formalism.QuantumDeterminants.lmulM`. Rewrite using `[Matrix.one_mul]`. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hid, Measure.map_id]`. Introduce `f hf`. Establish `hstab : ∀ x, _root_.Formalism.MainNotions.S.stabAct g (of fun i j => (1 : _root_.Formalism.MainNotions.S.MatKR k r) i j) x = x`. Introduce `x`. Unfold `_root_.Formalism.MainNotions.S.stabAct`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[hone, Matrix.one_mul, Matrix.mul_one, hinv, Matrix.one_mul]`. Both sides reduce to the same expression. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[lintegral_dirac, hstab]`. Introduce `f hf`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Measure.map_congr (ae_eq_dirac _)]`. Use `erw [Measure.map_const]`. Rewrite using `[measure_univ, one_smul]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[lintegral_dirac, hone, Matrix.mul_one, hinv, hone, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CellAmp.Model.cellData_open {k r : ℕ} (L : _root_.Formalism.MainNotions.S.LocBessel k r) (μG : Measure (_root_.Formalism.QuantumDeterminants.Mt k r))
     (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hg : g ∈ _root_.Formalism.QuantumDeterminants.UH (_root_.Formalism.QuantumDeterminants.Hpk k r)) (hinv : g⁻¹ * g = 1)
@@ -153,32 +153,30 @@ theorem _root_.GlobalTheory.CellAmp.Model.cellData_open {k r : ℕ} (L : _root_.
     rfl
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_haar_base_case k`.
+A detailed English derivation is pending.
 -/
 theorem nset_zero (k : ℕ) : Nset k 0 = {1} := Formalism.FourierDecayAlt.P.unipotent_haar_base_case k
 
 /- English proof (translation)
-Take `⟨μs, -, hμ⟩` from `Formalism.FourierDecayAlt.P.SettingConstruction.sectionExists k 0 L.z L.z' hk L.hz.1 L.hz'.1 L.hz.2 L.hz'.2`. Use `set τ := Tz k 0 L.z * Tz k 0 L.z' with hτ`. Establish `hτ0 : 0 < τ` using `mul_pos L.hz.2 L.hz'.2`. Use `set ζ : ℂ := ((τ + 1 : ℝ) : ℂ) with hζ`. Establish `hn : τ < Complex.normSq ζ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hζ, Complex.normSq_ofReal]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨hU, hz⟩` from `hμ ζ hn`. Set `c : Fin 0 → ℂ` to `fun a => a.elim0`. Establish `hmem` using `bigCellMem k 0 c (μs ζ) (fun a => a.elim0) hU`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hZ` using `bigCellZhat k 0 L.z L.z' c (μs ζ) L.hz.1 L.hz'.1`. Rewrite `hZ` using `[Formalism.FourierDecayAlt.P.BigCellHermitian.herm_bigCell _ _ L.hz.1 L.hz'.1, hz]`. Establish `hinv : (bigCell k 0 c (μs ζ))⁻¹ * bigCell k 0 c (μs ζ) = 1`. Apply `Matrix.nonsing_inv_mul` to reduce the goal to its premises. Establish `h` using `congrArg Matrix.det (show (bigCell k 0 c (μs ζ))ᴴ * Hpk k 0 * bigCell k 0 c (μs ζ) = Hpk k 0 from hmem)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : (Hpk k 0).det ≠ 0`. Establish `h2` using `congrArg Matrix.det (hpkFacts k 0).2.1`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_one]`. Introduce `h0`. Rewrite `h2` using `[h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h2`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul]`. Use `isUnit_iff_ne_zero.2 fun h0 => hH ?_` and prove the remaining obligations. Rewrite using `[← h, h0, mul_zero]`. Use `⟨_, _, _, _, cellData_open L μG _ hmem hinv ?_ ?_ ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Gf Dmin`. Rewrite using `[hZ]`. Establish `e1 : ((Matrix.diagonal fun a : Fin (0 + 1) => if h : a.val < 0 then c ⟨a.val, h⟩ else ζ).submatrix (Fin.castLE (Nat.le_of_lt_succ (Fin.last (0 + 1)).isLt)) (Fin.castLE (Nat.le_of_lt_succ (Fin.last (0 + 1)).isLt))).det = ζ`. Establish `: Unique (Fin (Fin.last (0 + 1)).val)` using `inferInstanceAs (Unique (Fin 1))`. Rewrite using `[Matrix.det_unique]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[e1]`. Establish `: IsEmpty (Fin (⟨0, by omega⟩ : Fin (0 + 2)).val)` using `inferInstanceAs (IsEmpty (Fin 0))`. Rewrite using `[Matrix.det_isEmpty]`. Simplify using `only [map_one, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨1, fun _ => ζ, fun _ h0 => ?_, ?_⟩` and prove the remaining obligations. Establish `h0' : ζ = 0` using `h0`. Rewrite `hn` using `[h0']`. Simplify using `at hn`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hZ]`. Use extensionality with `i j`. Establish `: i = j` using `Subsingleton.elim (α := Fin 1) i j`. Substitute `this` using the available equality.
+By extensionality, compare the relevant components. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[Formalism.FourierDecayAlt.C2.monoP]`. Use extensionality with `a`. Simplify using `only [RStab, nset_zero, Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`.
-
-Introduce and unpack `rfl; exact ⟨rfl, by rw [mul_one, hinv]⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem cellData_exists {k : ℕ} (hk : 1 ≤ k) (L : LocBessel k 0) (μG : Measure (Mt k 0)) :
     ∃ g μR νR ν, CellData L μG g μR νR ν := by

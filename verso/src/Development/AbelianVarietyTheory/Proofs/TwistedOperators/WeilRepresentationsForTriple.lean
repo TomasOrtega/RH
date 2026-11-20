@@ -17,7 +17,7 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.SquareComm.WeilOfTriple
 
 /- English proof (translation)
-Introduce `hP D ψ hψ W W₁ X α β h`. Take `⟨⟨ωA, hA⟩, ⟨ωB, hB⟩⟩` from `GlobalTheory.SquareSt.Model.exists_weil_of_isTriple hP.weilRepresentationUnitaryPair hψ h`. Conclude with `⟨ωA, ωB, hA, hB⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_weil_pair : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (W W₁ X : HSp D) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

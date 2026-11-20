@@ -21,15 +21,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Use `haveI : IsLocalRing (CAt σ) := inferInstanceAs (IsLocalRing ℂ)`. Use `GlobalTheory.T.exists_affine_equation_holomorphic_limit F (σ.comp e.toRingHom) C.Y _ C.bd _ C.bd_eff (fun y hy => GlobalTheory.ShFam.OpenReg.regularAt_open E H Dw l Xo c O β Z F e C _ h0 _ hg y fun h => hy ((C.bd_supp y).2 h)) fun y _ V hV => ?_` and prove the remaining obligations. Take `⟨W, hW, hy, φ, fr, t, hWV, hx, hT, ht⟩` from `GlobalTheory.T.exists_affine_eigenframe_flag E H Dw l Xo c O β Z F e C y V hV`. Use `⟨W, hW, hy, _, hWV, fun y' hy' => isEqn_LEx C _ (ht y' hy'), fun p q ψ r hψ hs hin hout hpq hq => ?_⟩` and prove the remaining obligations. Establish `hφ : ∀ u ∈ Metric.ball (0 : ℂ) r, (ψ u).comp φ = σ` using `fun u hu => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hs u hu`. Rewrite `h1` using `[← C.π_str, ← Category.assoc _ C.π, ← Category.assoc _ (genStr Z), hx, OpenReg.spMap_comp, OpenReg.spMap_comp]`. Establish `h2 : (ψ u).comp (φ.comp e.toRingHom) = σ.comp e.toRingHom` using `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`. Use extensionality with `z`. Simplify using `using RingHom.congr_fun h2 (e.symm z)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hb : IsBdArc Z σ φ _ ψ r` using `⟨⟨hψ, hx, hφ⟩, fun s => (C.bd_supp _).1 (hin s), fun u hu h s h' => hout u hu h s ((C.bd_supp _).2 h')⟩`. Establish `hy' : ∀ u : ℂ, u ∈ Metric.ball (0 : ℂ) r ∧ u ≠ 0 → ∃ y : FrPt Xo c (CAt σ), Matches fr (ψ u) y` using `fun u hu => GlobalTheory.T.exists_frame_point_eigenframe E H Dw l Xo c O β Z σ _ φ _ fr (ψ u) hx (hφ u hu.1) (hb.2.2 u hu.1 hu.2)`. Establish `hr : ((r / 2 : ℝ) : ℂ) ∈ Metric.ball (0 : ℂ) r ∧ ((r / 2 : ℝ) : ℂ) ≠ 0`. Use `hψ.1` as an intermediate fact. Use `⟨?_, by exact_mod_cast (half_pos this).ne'⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_ball_zero_iff, Complex.norm_real, Real.norm_of_nonneg (half_pos this).le]`. Conclude with `half_lt_self this`. Use `haveI : Nonempty (FrPt Xo c (CAt σ)) := ⟨(hy' _ hr).choose⟩`. Use `choose! yy hyy using hy'`. Establish `hv : ∀ u ∈ Metric.ball (0 : ℂ) r, u ≠ 0 → ψ u q ≠ 0 ∧ toC (evR Xo c g (yy u)) * ψ u q = ψ u p` using `fun u hu h => ⟨hq u hu h, (GlobalTheory.T.eigenframe_generic_affine_open E H Dw l Xo c O β Z F e C W hW _ φ fr t _ _ σ (ψ u) (yy u) p q hT h0 hg (hφ u hu) (hyy u ⟨hu, h⟩) hpq).symm⟩`.
-
-Use `(GlobalTheory.KoecherArc.tendsto_val Z hσ hU la hχ h0 hg hS fr hb (fun u hu h => hyy u ⟨hu, h⟩) p q hv).congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (Metric.ball_mem_nhds (0 : ℂ) hψ.1)] with u h hu`. Conclude with `(eq_div_iff (hv u hu h).1).2 (hv u hu h).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem val_mem_H0 {Z : Model Xo c β} {F : Type} [Field F] {e : F ≃+* c.F} (C : FlagCpt Z e)
     {σ : c.F →+* ℂ} {N : ℕ} {U : Unf Xo c σ N} (hσ : GoodEmb c σ) (hU : IsUnf U) (la : ∀ k, Wt (U.X k).Ψ N)
@@ -77,14 +75,14 @@ open GlobalTheory.AllWt GlobalTheory.CovHt.Link
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ}
 
 /- English proof (translation)
-Use `show (wtOf S.Dw la 0).2 = 0`. Rewrite using `[wtOf_snd, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exOf_none (la : GlobalTheory.AllWt.Weight S.Dw) : exOf S.Dw la 0 none = 0 := by
   show (wtOf S.Dw la 0).2 = 0
   rw [wtOf_snd, mul_zero]
 
 /- English proof (translation)
-Establish `hσ : GoodEmb κ.c κ.σ₀` using `rfl`. Establish `hu` using `s.unf κ.σ₀ hσ`. Take `⟨h1, h2⟩` from `mem_cuspW.1 hg`. Conclude with `(val_mem_H0 (Φ.C k) hσ ((GlobalTheory.ThetaDictCompare.isUnf_toU _).2 hu.1) (modelWt (unf s κ.σ₀) (wtOf S.Dw la 0)) (fun k γ _ => hu.2.2.1 k _ γ) (exOf_none la) h1 (GlobalTheory.CuspSecFin.mem_SS_of_mem_holSub _ _ (h2 _ hσ))).1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem val_mem_Lw (Φ : s.Flag) (k : s.Comp) (la : GlobalTheory.AllWt.Weight S.Dw) {g : Rul s.Xo κ.c}
     (hg : g ∈ cuspW s.Xo κ.c (unf s) (wtOf S.Dw la 0)) : (Φ.C k).val g ∈ (Φ.C k).Y.H0 ((Φ.C k).Lw la) := by
@@ -95,7 +93,7 @@ theorem val_mem_Lw (Φ : s.Flag) (k : s.Comp) (la : GlobalTheory.AllWt.Weight S.
     (fun k γ _ => hu.2.2.1 k _ γ) (exOf_none la) h1 (GlobalTheory.CuspSecFin.mem_SS_of_mem_holSub _ _ (h2 _ hσ))).1
 
 /- English proof (translation)
-Establish `L` using `FlagCpt.fromTest_and_val_laws _ _ _ _ _ _ _ _ _ _ _ (Φ.C k)`. Use `L.2.2.2.2 0 0` as an intermediate fact. Rewrite `this` using `[smul_zero, map_zero, zero_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem val_zero {Φ : s.Flag} (k : s.Comp) : (Φ.C k).val 0 = 0 := by
   have L := FlagCpt.fromTest_and_val_laws _ _ _ _ _ _ _ _ _ _ _ (Φ.C k)
@@ -103,13 +101,13 @@ theorem val_zero {Φ : s.Flag} (k : s.Comp) : (Φ.C k).val 0 = 0 := by
   rwa [smul_zero, map_zero, zero_mul] at this
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `GlobalTheory.T.flag_components_biject_moduli_components D A N j S κ s Φ`. Establish `disj` using `Formalism.L2.Pj.CompSplitPfD.cspD_comp_disj s.Xo κ.c`. Establish `hZk : Z = q k`. Assume the negation of the conclusion as `hne`. Establish `s0 : Sp (Φ.C k).Y.Fn` using `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Φ.C k).Y.Fn)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `Set.disjoint_left.1 (disj _ _ hne) (hZ s0) (hq k s0)`. Take `⟨hgW, hgZ⟩` from `Submodule.mem_inf.1 hg`. Establish `hs : ∀ i, (Φ.C i).val g = 0` using `fun i => by`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Equip the data with the indicated structure.
 
-Conclude with `h`. Use `letI := (constF κ.e (Φ.C i).Y).toAlgebra`. Use `(mem_suppOn.1 hgZ) _ (Φ.C i).y0 fun t ht => ?_` and prove the remaining obligations. Establish `hne : q i ≠ Z` using `by rw [hZk]; exact q.injective.ne hik`. Conclude with `Set.disjoint_left.1 (disj _ _ hne) (hq i t) ht`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsec` using `(mem_cuspW.1 hgW).1`. Establish `hex` using `exOf_none (S := S) la`. Take `⟨f, -, hf⟩` from `existsUnique_rule_of_regular _ _ _ _ _ _ _ _ _ _ _ _ _ _ Φ (exOf S.Dw la 0) hex (fun i => (Φ.C i).val g) fun i y hy => GlobalTheory.ShFam.OpenReg.regularAt_open _ _ _ _ _ _ _ _ _ _ _ (Φ.C i) _ hex _ hsec y hy`. Conclude with `(hf g ⟨hsec, fun i => rfl⟩).trans (hf 0 ⟨Submodule.zero_mem _, fun i => (val_zero i).trans (hs i).symm⟩).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_val (Φ : s.Flag) (k : s.Comp) (Z : Comp s.Xo κ.c) (hZ : Over Φ k Z)
     (la : GlobalTheory.AllWt.Weight S.Dw) {g : Rul s.Xo κ.c} (hg : g ∈ cuspOn (unf s) Z (wtOf S.Dw la 0))
@@ -136,9 +134,9 @@ theorem eq_zero_of_val (Φ : s.Flag) (k : s.Comp) (Z : Comp s.Xo κ.c) (hZ : Ove
   exact (hf g ⟨hsec, fun i => rfl⟩).trans (hf 0 ⟨Submodule.zero_mem _, fun i => (val_zero i).trans (hs i).symm⟩).symm
 
 /- English proof (translation)
-Introduce `D A N j S κ s Φ k Z hZ la _`. Establish `L` using `FlagCpt.fromTest_and_val_laws _ _ _ _ _ _ _ _ _ _ _ (Φ.C k)`. Set `jm : cuspOn (unf s) Z (wtOf S.Dw la 0) →+ (Φ.C k).Y.H0 ((Φ.C k).Lw la)` to `{ toFun := fun g => ⟨(Φ.C k).val g, val_mem_Lw Φ k la (cuspOn_le _ _ _ g.2)⟩ map_zero' := Subtype.ext (val_zero k) map_add' := fun a b => Subtype.ext (L.2.2.2.1 a b) }`. Establish `hj : Function.Injective jm` using `(injective_iff_map_eq_zero jm).2 fun g hg => Subtype.ext (eq_zero_of_val Φ k Z hZ la g.2 (congrArg Subtype.val hg))`. Establish `key` using `lift_rank_le_of_injective_injectiveₛ (R := κ.c.F) (R' := D.what₂.LL) (M := cuspOn (unf s) Z (wtOf S.Dw la 0)) (M' := (Φ.C k).Y.H0 ((Φ.C k).Lw la)) κ.e jm κ.e.injective hj (fun r m => Subtype.ext (by show (Φ.C k).val (κ.e r • (m : Rul s.Xo κ.c)) = r • (Φ.C k).val m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[L.2.2.2.2, Algebra.smul_def]`. Simplify using `[constF]))`. Rewrite `key` using `[Cardinal.lift_id, Cardinal.lift_id]`. Conclude with `Cardinal.toENat.monotone' key`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_le : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (Z : Comp s.Xo κ.c), Over Φ k Z → ∀ la : AllWt.Weight S.Dw, (∀ τ, Antitone (la τ)) → Cardinal.toENat (Module.rank κ.c.F (cuspOn (unf s) Z (wtOf S.Dw la 0))) ≤ Cardinal.toENat (Module.rank D.what₂.LL ((Φ.C k).Y.H0 ((Φ.C k).Lw la))) := by
   intro D A N j S κ s Φ k Z hZ la _

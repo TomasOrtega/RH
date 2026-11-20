@@ -19,19 +19,19 @@ def gU (μ : Fˣ →* ℂˣ) (y : F) : ℂ :=
   if h : y ≠ 0 ∧ ord y = 0 then ((μ (Units.mk0 y h.1) : ℂˣ) : ℂ) else 0
 
 /- English proof (translation)
-Establish `h : (u : F) ≠ 0 ∧ ord (u : F) = 0` using `⟨u.ne_zero, hu⟩`. Rewrite using `[gU, dif_pos h, Units.mk0_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gU_unit (μ : Fˣ →* ℂˣ) (u : Fˣ) (hu : ord (u : F) = 0) : gU μ (u : F) = ((μ u : ℂˣ) : ℂ) := by
   have h : (u : F) ≠ 0 ∧ ord (u : F) = 0 := ⟨u.ne_zero, hu⟩
   rw [gU, dif_pos h, Units.mk0_val]
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem gU_eq_zero (μ : Fˣ →* ℂˣ) {y : F} (h : ¬ (y ≠ 0 ∧ ord y = 0)) : gU μ y = 0 := dif_neg h
 
 /- English proof (translation)
-Establish `h1 : t ∈ valBall F (ord y + 1)`. Rewrite using `[h0]`. Conclude with `valBall_antitone (by omega) ht`. Take `⟨h2, h3⟩` from `ord_add_eq hy h1`. Conclude with `⟨h2, h3.trans h0⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unit_add {y t : F} {n : ℕ} (hn : 1 ≤ n) (hy : y ≠ 0) (h0 : ord y = 0)
     (ht : t ∈ valBall F n) : y + t ≠ 0 ∧ ord (y + t) = 0 := by
@@ -42,22 +42,22 @@ theorem unit_add {y t : F} {n : ℕ} (hn : 1 ≤ n) (hy : y ≠ 0) (h0 : ord y =
   exact ⟨h2, h3.trans h0⟩
 
 /- English proof (translation)
-Rewrite using `[mem_valBall_iff_le_ord (inv_ne_zero hy), ord_inv hy, h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inv_mem_ball {y : F} (hy : y ≠ 0) (h0 : ord y = 0) : y⁻¹ ∈ valBall F 0 := by
   rw [mem_valBall_iff_le_ord (inv_ne_zero hy), ord_inv hy, h0]
   simp
 
 /- English proof (translation)
-Distinguish the cases in `hy : y ≠ 0 ∧ ord y = 0`. Take `⟨h1, h2⟩` from `unit_add hn hy.1 hy.2 ht`. Establish `hv : (Units.mk0 y hy.1)⁻¹ * Units.mk0 (y + t) h1 ∈ unitFiltrationUnits F n`. Rewrite using `[mem_unitFiltrationUnits_iff_valBall hn]`. Establish `e : (((Units.mk0 y hy.1)⁻¹ * Units.mk0 (y + t) h1 : Fˣ) : F) - 1 = y⁻¹ * t`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hy.1` as an intermediate fact. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `mul_mem_valBall (inv_mem_ball hy.1 hy.2) ht` as an intermediate fact. Simplify using `using this`. Establish `hb : μ (Units.mk0 (y + t) h1) = μ (Units.mk0 y hy.1)`. Use `hk hv` as an intermediate fact. Rewrite `this` using `[MonoidHom.mem_ker, map_mul, map_inv, inv_mul_eq_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Rewrite using `[gU, gU, dif_pos ⟨h1, h2⟩, dif_pos hy, hb]`. Establish `h3 : ¬ (y + t ≠ 0 ∧ ord (y + t) = 0)` using `fun h => hy (by`. Use `unit_add hn h.1 h.2 (neg_mem ht)` as an intermediate fact. Simplify using `using this)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gU_eq_zero μ h3, gU_eq_zero μ hy]`.
+A detailed English derivation is pending.
 -/
 theorem gU_add {μ : Fˣ →* ℂˣ} {n : ℕ} (hn : 1 ≤ n) (hk : unitFiltrationUnits F n ≤ μ.ker)
     (y : F) {t : F} (ht : t ∈ valBall F n) : gU μ (y + t) = gU μ y := by
@@ -84,11 +84,11 @@ theorem gU_add {μ : Fˣ →* ℂˣ} {n : ℕ} (hn : 1 ≤ n) (hk : unitFiltrati
     rw [gU_eq_zero μ h3, gU_eq_zero μ hy]
 
 /- English proof (translation)
-Distinguish the cases in `hy : y ≠ 0 ∧ ord y = 0`. Establish `e : (u : F) * y = ((u * Units.mk0 y hy.1 : Fˣ) : F)` using `by simp`. Establish `hv : ord ((u * Units.mk0 y hy.1 : Fˣ) : F) = 0`. Rewrite using `[ord_units_mul, hu, Units.val_mk0, hy.2]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : y = ((Units.mk0 y hy.1 : Fˣ) : F)` using `rfl`. Rewrite using `[e, gU_unit μ _ hv, map_mul, Units.val_mul]`. Use `conv_rhs => rw [e2, gU_unit μ _ (by rw [Units.val_mk0]; exact hy.2)]`. Establish `h3 : ¬ ((u : F) * y ≠ 0 ∧ ord ((u : F) * y) = 0)` using `fun h => hy (by`. Establish `hy0 : y ≠ 0` using `right_ne_zero_of_mul h.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hy0, ?_⟩` and prove the remaining obligations. Use `h.2` as an intermediate fact. Rewrite `this` using `[ord_mul u.ne_zero hy0, hu]`. Simplify using `using this)`. Rewrite using `[gU_eq_zero μ h3, gU_eq_zero μ hy, mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gU_mul (μ : Fˣ →* ℂˣ) (u : Fˣ) (hu : ord (u : F) = 0) (y : F) :
     gU μ ((u : F) * y) = ((μ u : ℂˣ) : ℂ) * gU μ y := by
@@ -108,7 +108,7 @@ theorem gU_mul (μ : Fˣ →* ℂˣ) (u : Fˣ) (hu : ord (u : F) = 0) (y : F) :
     rw [gU_eq_zero μ h3, gU_eq_zero μ hy, mul_zero]
 
 /- English proof (translation)
-Use `⟨isLocallyConstant_of_add_valBall (N := n) fun x h hh => gU_add hn hk x hh, ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro (isCompact_valBall 0) fun y hy => gU_eq_zero μ fun h => hy ?_` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, mem_valBall_iff_le_ord h.1, h.2]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gU_mem {μ : Fˣ →* ℂˣ} {n : ℕ} (hn : 1 ≤ n) (hk : unitFiltrationUnits F n ≤ μ.ker) :
     gU μ ∈ schwartzBruhat F := by
@@ -119,44 +119,44 @@ theorem gU_mem {μ : Fˣ →* ℂˣ} {n : ℕ} (hn : 1 ≤ n) (hk : unitFiltrati
 def fB (n : ℕ) : F → ℂ := (valBall F (n : ℤ) : Set F).indicator fun _ => (1 : ℂ)
 
 /- English proof (translation)
-The claim follows from `indicator_valBall_mem_schwartzBruhat _`.
+A detailed English derivation is pending.
 -/
 theorem fB_mem (n : ℕ) : (fB n : F → ℂ) ∈ schwartzBruhat F := indicator_valBall_mem_schwartzBruhat _
 
 def phi0 (n : ℕ) (μ : Fˣ →* ℂˣ) : (Fin 2 → F) → ℂ := Ad3.SchwartzSpaceL2.pt (fB n) (gU μ)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hy`. Conclude with `h (Set.indicator_of_notMem hy _)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem fB_ne {n : ℕ} {y : F} (h : fB n y ≠ 0) : y ∈ valBall F (n : ℤ) := by
   by_contra hy
   exact h (Set.indicator_of_notMem hy _)
 
 /- English proof (translation)
-The claim follows from `Set.indicator_of_mem (show y ∈ (valBall F (n : ℤ) : Set F) from h) _`.
+A detailed English derivation is pending.
 -/
 theorem fB_of_mem {n : ℕ} {y : F} (h : y ∈ valBall F (n : ℤ)) : fB n y = 1 :=
   Set.indicator_of_mem (show y ∈ (valBall F (n : ℤ) : Set F) from h) _
 
 /- English proof (translation)
-The claim follows from `Set.indicator_of_notMem h _`.
+A detailed English derivation is pending.
 -/
 theorem fB_of_notMem {n : ℕ} {y : F} (h : y ∉ valBall F (n : ℤ)) : fB n y = 0 :=
   Set.indicator_of_notMem h _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hy`. Conclude with `h (gU_eq_zero μ hy)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem gU_ne {μ : Fˣ →* ℂˣ} {y : F} (h : gU μ y ≠ 0) : y ≠ 0 ∧ ord y = 0 := by
   by_contra hy
   exact h (gU_eq_zero μ hy)
 
 /- English proof (translation)
-Establish `h1` using `(fB_mem (F := F) n).1`. Establish `h2` using `(gU_mem hn hk).1`. Use `⟨(h1.comp_continuous (continuous_apply 0)).mul (h2.comp_continuous (continuous_apply 1)), ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro (GodementSectionLocal.isCompact_box 0) fun r hr => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hr` to reduce the goal to its premises. Establish `h3 : fB n (r 0) ≠ 0` using `left_ne_zero_of_mul hne`. Establish `h4 : gU μ (r 1) ≠ 0` using `right_ne_zero_of_mul hne`. Use `GodementSectionLocal.mem_box.2 fun i => ?_` and prove the remaining obligations. Use `fin_cases i`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `valBall_antitone (by omega) (fB_ne h3)`. Establish `h5` using `gU_ne h4 show r 1 ∈ valBall F 0`. Rewrite using `[mem_valBall_iff_le_ord h5.1, h5.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem test_vector_mem_schwartz_bruhat {μ : Fˣ →* ℂˣ} {n : ℕ} (hn : 1 ≤ n) (hk : unitFiltrationUnits F n ≤ μ.ker) :
     phi0 n μ ∈ GodementSectionLocal.schwartzBruhat2 F := by
@@ -178,7 +178,7 @@ theorem test_vector_mem_schwartz_bruhat {μ : Fˣ →* ℂˣ} {n : ℕ} (hn : 1 
 def Sup (n : ℕ) (r : Fin 2 → F) : Prop := r 0 ∈ valBall F (n : ℤ) ∧ r 1 ≠ 0 ∧ ord (r 1) = 0
 
 /- English proof (translation)
-Establish `h3 : fB n (r 0) ≠ 0` using `left_ne_zero_of_mul h`. Establish `h4 : gU μ (r 1) ≠ 0` using `right_ne_zero_of_mul h`. Conclude with `⟨fB_ne h3, gU_ne h4⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem support_of_test_vector {n : ℕ} {μ : Fˣ →* ℂˣ} {r : Fin 2 → F} (h : phi0 n μ r ≠ 0) : Sup n r := by
   have h3 : fB n (r 0) ≠ 0 := left_ne_zero_of_mul h
@@ -186,16 +186,16 @@ theorem support_of_test_vector {n : ℕ} {μ : Fˣ →* ℂˣ} {r : Fin 2 → F}
   exact ⟨fB_ne h3, gU_ne h4⟩
 
 /- English proof (translation)
-The claim follows from `mem_valBall_zero_iff.2 h`.
+A detailed English derivation is pending.
 -/
 theorem int_ball {x : F} (h : x ∈ 𝒪[F]) : x ∈ valBall F 0 := mem_valBall_zero_iff.2 h
 
 /- English proof (translation)
-Take `⟨hx1, -⟩` from `(GLnLocal.mem_integralGL_iff F 2).1 hx`. Establish `hd` using `GodementSectionLocal.ord_det_eq_zero hx`. Establish `hdet : ((GodementSectionLocal.detU x : Fˣ) : F) = x 0 0 * x 1 1 - x 0 1 * x 1 0` using `by show ((Matrix.GeneralLinearGroup.det x : Fˣ) : F) = _`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]`. Establish `hb : x 0 1 * x 1 0 ∈ valBall F (1 : ℕ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mul_mem_valBall (int_ball (hx1 0 1)) hc` as an intermediate fact. Simplify using `using this`. Take `⟨h1, h2⟩` from `unit_add (n := 1) le_rfl (GodementSectionLocal.detU x).ne_zero hd hb`. Rewrite `h1`, `h2` using `[hdet, sub_add_cancel]`. Establish `ha : x 0 0 ≠ 0` using `left_ne_zero_of_mul h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdd : x 1 1 ≠ 0` using `right_ne_zero_of_mul h1`. Rewrite `h2` using `[ord_mul ha hdd]`. Establish `h3` using `GodementSectionLocal.ord_nonneg_of_mem_integers ha (hx1 0 0)`. Establish `h4` using `GodementSectionLocal.ord_nonneg_of_mem_integers hdd (hx1 1 1)`. Conclude with `⟨ha, by omega, hdd, by omega⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem diag_unit {x : GL (Fin 2) F} (hx : x ∈ GLnLocal.integralGL F 2)
     (hc : x 1 0 ∈ valBall F 1) : x 0 0 ≠ 0 ∧ ord (x 0 0) = 0 ∧ x 1 1 ≠ 0 ∧ ord (x 1 1) = 0 := by
@@ -217,27 +217,27 @@ theorem diag_unit {x : GL (Fin 2) F} (hx : x ∈ GLnLocal.integralGL F 2)
   exact ⟨ha, by omega, hdd, by omega⟩
 
 /- English proof (translation)
-Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vecMul_0 (r : Fin 2 → F) (x : GL (Fin 2) F) :
     (r ᵥ* (x : Matrix (Fin 2) (Fin 2) F)) 0 = r 0 * x 0 0 + r 1 * x 1 0 := by
   simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two]
 
 /- English proof (translation)
-Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vecMul_1 (r : Fin 2 → F) (x : GL (Fin 2) F) :
     (r ᵥ* (x : Matrix (Fin 2) (Fin 2) F)) 1 = r 0 * x 0 1 + r 1 * x 1 1 := by
   simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two]
 
 /- English proof (translation)
-Take `⟨hx1, -⟩` from `(GLnLocal.mem_integralGL_iff F 2).1 hx`. Take `⟨-, -, hd0, hd1⟩` from `diag_unit hx (valBall_antitone (by omega) hc)`. Take `⟨h0, h1, h2⟩` from `hr`. Establish `hr1 : r 1 ∈ valBall F 0` using `by rw [mem_valBall_iff_le_ord h1, h2]`. Establish `hA : r 0 * x 0 0 ∈ valBall F (n : ℤ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using mul_mem_valBall h0 (int_ball (hx1 0 0))`. Establish `hB : r 1 * x 1 0 ∈ valBall F (n : ℤ)`. Simplify using `using mul_mem_valBall hr1 hc`. Establish `hC : r 0 * x 0 1 ∈ valBall F (n : ℤ)`. Simplify using `using mul_mem_valBall h0 (int_ball (hx1 0 1))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨h3, h4⟩` from `unit_add hn (mul_ne_zero h1 hd0) (by rw [ord_mul h1 hd0, h2, hd1]; rfl) hC`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[vecMul_0]`. Conclude with `add_mem hA hB`. Rewrite using `[vecMul_1, add_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3`. Rewrite using `[vecMul_1, add_comm]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem sup_mul {n : ℕ} (hn : 1 ≤ n) {x : GL (Fin 2) F} (hx : x ∈ GLnLocal.integralGL F 2)
     (hc : x 1 0 ∈ valBall F (n : ℤ)) {r : Fin 2 → F} (hr : Sup n r) :
@@ -262,9 +262,9 @@ theorem sup_mul {n : ℕ} (hn : 1 ≤ n) {x : GL (Fin 2) F} (hx : x ∈ GLnLocal
     exact h4
 
 /- English proof (translation)
-Take `⟨hx1, -⟩` from `(GLnLocal.mem_integralGL_iff F 2).1 hx`. Take `⟨-, -, hd0, hd1⟩` from `diag_unit hx (valBall_antitone (by omega) hc)`. Establish `h5` using `sup_mul hn hx hc hr`. Establish `hC : r 0 * x 0 1 ∈ valBall F (n : ℤ)`. Simplify using `using mul_mem_valBall hr.1 (int_ball (hx1 0 1))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [phi0, Ad3.SchwartzSpaceL2.pt]`. Rewrite using `[fB_of_mem h5.1, fB_of_mem hr.1, vecMul_1, add_comm, gU_add hn hk _ hC, mul_comm (r 1), ← hd, gU_mul μ d (by rw [hd]; exact hd1)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem test_vector_congruence_equivariance_support {n : ℕ} (hn : 1 ≤ n) {μ : Fˣ →* ℂˣ} (hk : unitFiltrationUnits F n ≤ μ.ker)
     {x : GL (Fin 2) F} (hx : x ∈ GLnLocal.integralGL F 2) (hc : x 1 0 ∈ valBall F (n : ℤ))
@@ -281,11 +281,11 @@ theorem test_vector_congruence_equivariance_support {n : ℕ} (hn : 1 ≤ n) {μ
   ring
 
 /- English proof (translation)
-Take `⟨-, hx2⟩` from `(GLnLocal.mem_integralGL_iff F 2).1 hx`. Take `⟨ha0, ha1, -, -⟩` from `diag_unit hx (valBall_antitone (by omega) hc)`. Establish `e : (((x⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) * (x : Matrix (Fin 2) (Fin 2) F)) 1 0 = 0`. Rewrite using `[← Units.val_mul, inv_mul_cancel]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e2 : (x⁻¹ : GL (Fin 2) F) 1 0 = (x 0 0)⁻¹ * (-((x⁻¹ : GL (Fin 2) F) 1 1 * x 1 0))`. Establish `: (x⁻¹ : GL (Fin 2) F) 1 0 * x 0 0 = -((x⁻¹ : GL (Fin 2) F) 1 1 * x 1 0)` using `eq_neg_of_add_eq_zero_left e`. Rewrite using `[← this]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e2]`. Establish `h1 : (x⁻¹ : GL (Fin 2) F) 1 1 * x 1 0 ∈ valBall F (n : ℤ)`. Simplify using `using mul_mem_valBall (int_ball (hx2 1 1)) hc`. Simplify using `using mul_mem_valBall (inv_mem_ball ha0 ha1) (neg_mem h1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inv_ball {n : ℕ} (hn : 1 ≤ n) {x : GL (Fin 2) F} (hx : x ∈ GLnLocal.integralGL F 2)
     (hc : x 1 0 ∈ valBall F (n : ℤ)) : (x⁻¹ : GL (Fin 2) F) 1 0 ∈ valBall F (n : ℤ) := by
@@ -305,11 +305,9 @@ theorem inv_ball {n : ℕ} (hn : 1 ≤ n) {x : GL (Fin 2) F} (hx : x ∈ GLnLoca
   simpa using mul_mem_valBall (inv_mem_ball ha0 ha1) (neg_mem h1)
 
 /- English proof (translation)
-Distinguish the cases in `hr : Sup n r`. Conclude with `test_vector_congruence_equivariance_support hn hk hx hc hd hr`. Establish `h0 : phi0 n μ r = 0`. Assume the negation of the conclusion as `h`. Conclude with `hr (support_of_test_vector h)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[h0, mul_zero]`. Assume the negation of the conclusion as `h`. Apply `hr` to reduce the goal to its premises. Use `sup_mul hn (inv_mem hx) (inv_ball hn hx hc) (support_of_test_vector h)` as an intermediate fact. Rewrite `this` using `[Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]`.
-
-Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem test_vector_congruence_equivariance {n : ℕ} (hn : 1 ≤ n) {μ : Fˣ →* ℂˣ} (hk : unitFiltrationUnits F n ≤ μ.ker)
     {x : GL (Fin 2) F} (hx : x ∈ GLnLocal.integralGL F 2) (hc : x 1 0 ∈ valBall F (n : ℤ))
@@ -328,9 +326,9 @@ theorem test_vector_congruence_equivariance {n : ℕ} (hn : 1 ≤ n) {μ : Fˣ �
     exact this
 
 /- English proof (translation)
-Establish `h1 : (((unifUnit F ^ n : Fˣ)) : F) ∈ valBall F (n : ℤ)`. Use `mem_valBall_ord (K := F) (x := ((unifUnit F ^ (n : ℤ) : Fˣ) : F))` as an intermediate fact. Rewrite `this` using `[ord_unifUnit_zpow]`. Simplify using `using this`. Establish `h2` using `mul_mem_valBall h1 (int_ball h.2.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e : ((unifUnit F ^ n : Fˣ) : F) * ((((unifUnit F)⁻¹ ^ n : Fˣ) : F) * x 1 0) = x 1 0`. Rewrite using `[← mul_assoc, ← Units.val_mul, inv_pow, mul_inv_cancel, Units.val_one, one_mul]`. Rewrite `h2` using `[e]`. Simplify using `using h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lower_left_entry_mem_ball {n : ℕ} {x : GL (Fin 2) F} {d : Fˣ} (h : Ad3.R.GammaZeroLevelMembership n x d) :
     x 1 0 ∈ valBall F (n : ℤ) := by
@@ -345,9 +343,9 @@ theorem lower_left_entry_mem_ball {n : ℕ} {x : GL (Fin 2) F} {d : Fˣ} (h : Ad
   simpa using h2
 
 /- English proof (translation)
-Establish `h2 : (ϖ : F) ∈ valBall F 1`. Rewrite using `[mem_valBall_iff_le_ord ϖ.ne_zero, h1]`. Establish `h3` using `mul_mem_valBall h2 (int_ball hz)`. Establish `e : (ϖ : F) * (((ϖ⁻¹ : Fˣ) : F) * z) = z`. Rewrite using `[← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[e]`. Simplify using `using h3`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_ball_one {ϖ : Fˣ} (h1 : ord (ϖ : F) = 1) {z : F} (hz : ((ϖ⁻¹ : Fˣ) : F) * z ∈ 𝒪[F]) :
     z ∈ valBall F 1 := by
@@ -360,30 +358,30 @@ theorem val_ball_one {ϖ : Fˣ} (h1 : ord (ϖ : F) = 1) {z : F} (hz : ((ϖ⁻¹ 
   simpa using h3
 
 /- English proof (translation)
-Rewrite using `[← mem_valBall_zero_iff, mem_valBall_iff_le_ord u.ne_zero, hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_int {u : Fˣ} (hu : ord (u : F) = 0) : (u : F) ∈ 𝒪[F] := by
   rw [← mem_valBall_zero_iff, mem_valBall_iff_le_ord u.ne_zero, hu]
 
 /- English proof (translation)
-Rewrite using `[← mem_valBall_zero_iff, Units.val_inv_eq_inv_val]`. Conclude with `inv_mem_ball u.ne_zero hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_inv_int {u : Fˣ} (hu : ord (u : F) = 0) : ((u⁻¹ : Fˣ) : F) ∈ 𝒪[F] := by
   rw [← mem_valBall_zero_iff, Units.val_inv_eq_inv_val]
   exact inv_mem_ball u.ne_zero hu
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hB`. Establish `hex : ∀ b ∈ B, ∃ b', b' ∈ B ∧ ((ϖ⁻¹ : Fˣ) : F) * (c + u * b - b') ∈ 𝒪[F]` using `fun b hb => (h3 _ (add_mem hc (mul_mem (unit_int hu) (h2 b hb)))).exists`. Use `choose! σ hσ1 hσ2 using hex`. Establish `hGσ : ∀ b ∈ B, G (c + u * b) = G (σ b)`. Introduce `b hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hG (σ b) _ (val_ball_one h1 (hσ2 b hb))` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `hinj : Set.InjOn σ (B : Set F)`. Introduce `b hb b' hb' he`. Establish `hb0 : b ∈ B` using `hb`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0' : b' ∈ B` using `hb'`. Establish `e1` using `sub_mem (hσ2 b hb0) (hσ2 b' hb0')`. Rewrite `e1` using `[he]`. Establish `e2` using `mul_mem (unit_inv_int hu) e1`. Establish `e3 : ((u⁻¹ : Fˣ) : F) * (((ϖ⁻¹ : Fˣ) : F) * (c + u * b - σ b') - ((ϖ⁻¹ : Fˣ) : F) * (c + u * b' - σ b')) = ((ϖ⁻¹ : Fˣ) : F) * (b - b')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((u⁻¹ : Fˣ) : F) * (u : F) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Take the linear combination `(((ϖ⁻¹ : Fˣ) : F) * (b - b')) * this`. Rewrite `e2` using `[e3]`. Use `(h3 b (h2 b hb0)).unique ⟨hb0, ?_⟩ ⟨hb0', e2⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `himg : B.image σ = B`. Use `Finset.eq_of_subset_of_card_le ?_ ?_` and prove the remaining obligations. Introduce `t ht`. Take `⟨b, hb, rfl⟩` from `Finset.mem_image.1 ht`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hσ1 b hb`. Rewrite using `[Finset.card_image_of_injOn hinj]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_affine {ϖ : Fˣ} {B : Finset F} (hB : Ad3.R.Reps ϖ B) {u : Fˣ} (hu : ord (u : F) = 0)
     {c : F} (hc : c ∈ 𝒪[F]) (G : F → ℂ) (hG : ∀ t, ∀ s ∈ valBall F 1, G (t + s) = G t) :
@@ -423,29 +421,27 @@ theorem sum_affine {ϖ : Fˣ} {B : Finset F} (hB : Ad3.R.Reps ϖ B) {u : Fˣ} (h
     _ = ∑ b ∈ B, G b := by rw [himg]
 
 /- English proof (translation)
-The claim follows from `mem_unitFiltrationUnits_zero_iff_ord.1 (unitFiltrationUnits_antitone (Nat.zero_le m) hv)`.
+A detailed English derivation is pending.
 -/
 theorem ord_of_mem_filtration {v : Fˣ} {m : ℕ} (hv : v ∈ unitFiltrationUnits F m) : ord (v : F) = 0 :=
   mem_unitFiltrationUnits_zero_iff_ord.1 (unitFiltrationUnits_antitone (Nat.zero_le m) hv)
 
 /- English proof (translation)
-Distinguish the cases in `hall : ∀ b ∈ B, gU μ (x * b + y) = 0`. Conclude with `Finset.sum_eq_zero hall`. Use `push Not at hall`. Take `⟨b₀, hb₀, hne⟩` from `hall`. Take `⟨hy0, hy1⟩` from `gU_ne hne`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y₀ := x * b₀ + y with hy₀`. Establish `hvo : ord (v : F) = 0` using `ord_of_mem_filtration hv`. Establish `hbI : b₀ ∈ 𝒪[F]` using `hB.2.1 b₀ hb₀`. Establish `hxb : x ∈ valBall F ((n : ℤ) - 1)` using `by rw [← hx]; exact mem_valBall_ord`. Establish `hxi : x⁻¹ ∈ valBall F (-((n : ℤ) - 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem_valBall_iff_le_ord (inv_ne_zero hx0), ord_inv hx0, hx]`. Establish `hv2 : (v : F) - 1 ∈ valBall F ((n : ℤ) - 1)`. Use `unitFiltration_sub_one_mem_valBall hv` as an intermediate fact. Establish `e : ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1` using `by omega`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy2 : y₀ ∈ valBall F 0` using `by rw [mem_valBall_iff_le_ord hy0, hy1]`. Use `set e := ((v : F) - 1) * y₀ * x⁻¹ with he`. Establish `heI : e ∈ 𝒪[F]`. Use `mul_mem_valBall (mul_mem_valBall hv2 hy2) hxi` as an intermediate fact. Rewrite using `[← mem_valBall_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `[he]`. Use `set c := b₀ + e - v * b₀ with hc`. Establish `hcI : c ∈ 𝒪[F]` using `sub_mem (add_mem hbI heI) (mul_mem (unit_int hvo) hbI)`. Establish `hG : ∀ t, ∀ s ∈ valBall F 1, (fun t => gU μ (x * t + y)) (t + s) = (fun t => gU μ (x * t + y)) t`. Introduce `t s hs`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : x * s ∈ valBall F (n : ℤ)`. Simplify using `using mul_mem_valBall hxb hs`. Use `gU_add hn hk (x * t + y) h1` as an intermediate fact. Simplify using `only []`. Rewrite using `[← this]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `sum_affine hB hvo hcI (fun t => gU μ (x * t + y)) hG`. Establish `hmul : ∀ b ∈ B, gU μ (x * (c + v * b) + y) = ((μ v : ℂˣ) : ℂ) * gU μ (x * b + y)`. Introduce `b _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← gU_mul μ v hvo]`. Use `congr 1`. Establish `: x * e = ((v : F) - 1) * y₀`. Rewrite using `[he]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite `*` using `[hc, hy₀]`. Take the linear combination `this`. Simplify using `only [Finset.sum_congr rfl hmul, ← Finset.mul_sum] at key`. Use `eq_zero_of_eq_mul_of_ne_one (a := ((μ v : ℂˣ) : ℂ)) (fun h => hv1 (Units.ext h)) key.symm` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_gU_eq_zero {n : ℕ} (hn : 1 ≤ n) {μ : Fˣ →* ℂˣ} (hk : unitFiltrationUnits F n ≤ μ.ker)
     {v : Fˣ} (hv : v ∈ unitFiltrationUnits F (n - 1)) (hv1 : μ v ≠ 1) {ϖ : Fˣ} {B : Finset F}
@@ -497,31 +493,29 @@ theorem sum_gU_eq_zero {n : ℕ} (hn : 1 ≤ n) {μ : Fˣ →* ℂˣ} (hk : unit
   refine eq_zero_of_eq_mul_of_ne_one (a := ((μ v : ℂˣ) : ℂ)) (fun h => hv1 (Units.ext h)) key.symm
 
 /- English proof (translation)
-Simplify using `[Ad3.R.upm, uni2, dg2, Matrix.vecMul, dotProduct, Fin.sum_univ_two, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem upm_0 (ϖ : Fˣ) (b : F) (r : Fin 2 → F) :
     (r ᵥ* ((Ad3.R.upm ϖ b : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F)) 0 = r 0 * ϖ := by
   simp [Ad3.R.upm, uni2, dg2, Matrix.vecMul, dotProduct, Fin.sum_univ_two, Matrix.mul_apply]
 
 /- English proof (translation)
-Simplify using `[Ad3.R.upm, uni2, dg2, Matrix.vecMul, dotProduct, Fin.sum_univ_two, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem upm_1 (ϖ : Fˣ) (b : F) (r : Fin 2 → F) :
     (r ᵥ* ((Ad3.R.upm ϖ b : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F)) 1 = r 0 * b + r 1 := by
   simp [Ad3.R.upm, uni2, dg2, Matrix.vecMul, dotProduct, Fin.sum_univ_two, Matrix.mul_apply]
 
 /- English proof (translation)
-Simplify using `only [phi0, Ad3.SchwartzSpaceL2.pt, upm_0, upm_1]`. Rewrite using `[← Finset.mul_sum]`. Establish `hϖ : (ϖ : F) ∈ valBall F 1` using `by rw [mem_valBall_iff_le_ord ϖ.ne_zero, hB.1]`. Distinguish the cases in `h0 : r 0 ∈ valBall F (n : ℤ)`. Establish `h1 : r 0 * ϖ ∈ valBall F (n : ℤ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `mul_mem_valBall h0 hϖ` as an intermediate fact. Conclude with `valBall_antitone (by omega) this`. Rewrite using `[fB_of_mem h1, fB_of_mem h0, one_mul, one_mul]`. Establish `: ∀ b ∈ B, gU μ (r 0 * b + r 1) = gU μ (r 1)`. Introduce `b hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : r 0 * b ∈ valBall F (n : ℤ)`. Simplify using `using mul_mem_valBall h0 (int_ball (hB.2.1 b hb))`. Rewrite using `[add_comm]`. Conclude with `gU_add hn hk _ h2`. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_const, nsmul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[fB_of_notMem h0, zero_mul, mul_zero]`. Distinguish the cases in `h1 : r 0 * ϖ ∈ valBall F (n : ℤ)`. Establish `hr0 : r 0 ≠ 0`. Introduce `h`. Conclude with `h0 (h ▸ zero_mem _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ord (r 0) = (n : ℤ) - 1`. Rewrite `h1` using `[mem_valBall_iff_le_ord (mul_ne_zero hr0 ϖ.ne_zero), ord_mul hr0 ϖ.ne_zero, hB.1]`. Rewrite `h0` using `[mem_valBall_iff_le_ord hr0]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[sum_gU_eq_zero hn hk hv hv1 hB hr0 h2, mul_zero]`.
-
-Rewrite using `[fB_of_notMem h1, zero_mul]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem test_vector_hecke_sum {n : ℕ} (hn : 1 ≤ n) {μ : Fˣ →* ℂˣ} (hk : unitFiltrationUnits F n ≤ μ.ker)
     {v : Fˣ} (hv : v ∈ unitFiltrationUnits F (n - 1)) (hv1 : μ v ≠ 1) {ϖ : Fˣ} {B : Finset F}
@@ -558,19 +552,19 @@ theorem test_vector_hecke_sum {n : ℕ} (hn : 1 ≤ n) {μ : Fˣ →* ℂˣ} (hk
 variable [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Simplify using `[mp, modulus_eq_one_iff.2 ⟨u.ne_zero, hu⟩]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mp_unit {u : Fˣ} (hu : ord (u : F) = 0) (s : ℂ) : mp u s = 1 := by
   simp [mp, modulus_eq_one_iff.2 ⟨u.ne_zero, hu⟩]
 
 /- English proof (translation)
-Establish `hq : (0 : ℝ) < residueCard F` using `residueCard_pos_real`. Establish `e : ((modulus (ϖ : F) : NNReal) : ℝ) = (residueCard F : ℝ)⁻¹`. Rewrite using `[modulus_of_ne_zero ϖ.ne_zero, h]`. Simplify using the standard rewrite rules. Establish `e2 : ((((residueCard F : ℝ)⁻¹ : ℝ)) : ℂ) ^ (1 / 2 : ℂ) = ((Real.sqrt ((residueCard F : ℝ)⁻¹) : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Real.sqrt_eq_rpow, Complex.ofReal_cpow (by positivity)]`. Evaluate the numerical expressions. Unfold `mp`. Rewrite using `[e, e2, Real.sqrt_inv]`. Establish `hs : Real.sqrt (residueCard F) ≠ 0` using `(Real.sqrt_pos.2 hq).ne'`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs' : ((Real.sqrt (residueCard F) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hs`. Establish `h2 : (residueCard F : ℂ) = ((Real.sqrt (residueCard F) : ℝ) : ℂ) * ((Real.sqrt (residueCard F) : ℝ) : ℂ)`. Use `Real.mul_self_sqrt hq.le` as an intermediate fact. Conclude with `this.symm` after adjusting the coercions. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem mp_half {ϖ : Fˣ} (h : ord (ϖ : F) = 1) :
     mp ϖ (1 / 2) * (residueCard F : ℂ) = ((Real.sqrt (residueCard F) : ℝ) : ℂ) := by
@@ -594,9 +588,9 @@ theorem mp_half {ϖ : Fˣ} (h : ord (ϖ : F) = 1) :
   field_simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [W2]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Establish `h1` using `hf a (Finset.mem_insert_self a s)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ i ∈ s, f i ∈ GodementSectionLocal.schwartzBruhat2 F` using `fun i hi => hf i (Finset.mem_insert_of_mem hi)`. Establish `h3 : ∑ i ∈ s, f i ∈ GodementSectionLocal.schwartzBruhat2 F` using `Submodule.sum_mem _ h2`. Rewrite using `[(GlobalTheory.CompanionTheory.WhitLin.whittaker_linear_in_schwartz_bruhat F ψ hψ μ₁ μ₂ h₁ h₂ _ h1 _ h3).1, Pi.add_apply, ih h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem whittaker_finite_sum {ψ : AddChar F Circle} (hψ : IsStd ψ) {μ₁ μ₂ : Fˣ →* ℂˣ} (h₁ : IsUnit1 μ₁)
     (h₂ : IsUnit1 μ₂) {ι : Type} (s : Finset ι) (f : ι → (Fin 2 → F) → ℂ)
@@ -614,7 +608,7 @@ theorem whittaker_finite_sum {ψ : AddChar F Circle} (hψ : IsStd ψ) {μ₁ μ�
     rw [(GlobalTheory.CompanionTheory.WhitLin.whittaker_linear_in_schwartz_bruhat F ψ hψ μ₁ μ₂ h₁ h₂ _ h1 _ h3).1, Pi.add_apply, ih h2]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]`. Simplify using `[Ad3.R.upm, uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_upm (ϖ : Fˣ) (b : F) : GeneralLinearGroup.det (Ad3.R.upm ϖ b) = ϖ := by
   ext
@@ -622,17 +616,15 @@ theorem det_upm (ϖ : Fˣ) (b : F) : GeneralLinearGroup.det (Ad3.R.upm ϖ b) = �
   simp [Ad3.R.upm, uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use `set n := quasiCharConductor μ₁ with hndef`. Establish `hk : unitFiltrationUnits F n ≤ μ₁.ker` using `unitFiltrationUnits_quasiCharConductor_le_ker h₁.1`. Establish `hφ` using `test_vector_mem_schwartz_bruhat hn hk`. Establish `hnu : ¬ IsUnramifiedChar μ₁` using `fun h => by`. Use `(quasiCharConductor_eq_zero_iff h₁.1).2 h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨v, hv, hv1⟩` from `exists_apply_ne_one_of_not_isUnramified h₁.1 hnu`. Use `⟨fun x d hxd g => ?_, fun ϖ B hB g => ?_⟩` and prove the remaining obligations. Establish `hc` using `lower_left_entry_mem_ball hxd`. Establish `e : Ad3.SchwartzSpaceL2.rt (phi0 n μ₁) x = ((μ₁ d : ℂˣ) : ℂ) • phi0 n μ₁`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun r => test_vector_congruence_equivariance hn hk hxd.1 hc hxd.2.2 r`. Establish `hdet` using `GodementSectionLocal.ord_det_eq_zero hxd.1`. Establish `hdo : ord (d : F) = 0`. Rewrite using `[hxd.2.2]`. Conclude with `(diag_unit hxd.1 (valBall_antitone (by omega) hc)).2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.CompanionTheory.WhittakerTrans.whittaker_right_translation_formula, e, (GlobalTheory.CompanionTheory.WhitLin.whittaker_linear_in_schwartz_bruhat F ψ hψ μ₁ μ₂ h₁ h₂ _ hφ _ hφ).2, Pi.smul_apply, smul_eq_mul, isUnramifiedChar_iff.1 hu _ hdet, mp_unit hdet, MonoidHom.mu …`. Simplify using the standard rewrite rules. Establish `e1 : ∀ b ∈ B, W2 ψ μ₁ μ₂ (phi0 n μ₁) (g * Ad3.R.upm ϖ b) = (((μ₂ ϖ : ℂˣ) : ℂ) * mp ϖ (1 / 2)) * W2 ψ μ₁ μ₂ (Ad3.SchwartzSpaceL2.rt (phi0 n μ₁) (Ad3.R.upm ϖ b)) g`. Introduce `b _`. Rewrite using `[GlobalTheory.CompanionTheory.WhittakerTrans.whittaker_right_translation_formula, det_upm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e2 : ∑ b ∈ B, Ad3.SchwartzSpaceL2.rt (phi0 n μ₁) (Ad3.R.upm ϖ b) = (residueCard F : ℂ) • phi0 n μ₁`. Use function extensionality and compare the values at `r`. Rewrite using `[Finset.sum_apply, Pi.smul_apply, smul_eq_mul, ← hcard ϖ B hB]`. Conclude with `test_vector_hecke_sum hn hk hv hv1 hB r`. Rewrite using `[Finset.sum_congr rfl e1, ← Finset.mul_sum, ← whittaker_finite_sum hψ h₁ h₂ B _ (fun b _ => GlobalTheory.CompanionTheory.WhittakerTrans.rt_mem hφ _) g, e2, (GlobalTheory.CompanionTheory.WhitLin.whittaker_linear_in_schwartz_bruhat F ψ hψ μ₁ μ₂ h₁ h₂ _ hφ _ hφ).2, Pi.smul_apply, sm …`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem whittaker_test_vector_newform_type {ψ : AddChar F Circle} (hψ : IsStd ψ) {μ₁ μ₂ : Fˣ →* ℂˣ} (h₁ : IsUnit1 μ₁)
     (h₂ : IsUnit1 μ₂) (hu : IsUnramifiedChar μ₂) (hn : 1 ≤ quasiCharConductor μ₁)
@@ -677,9 +669,9 @@ theorem whittaker_test_vector_newform_type {ψ : AddChar F Circle} (hψ : IsStd 
 def Gt (ψ : AddChar F Circle) (μ : Fˣ →* ℂˣ) : F → ℂ := localFourier (selfDualMeasure ψ) ψ (gU μ)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CompanionTheory.WhittakerTorus.integral_comp_unit_mul (selfDualMeasure ψ) u (fun z => gU μ z * (ψ (z * t) : ℂ))`. Rewrite `h` using `[modulus_eq_one_iff.2 ⟨u.ne_zero, hu⟩]`. Simplify using `only [NNReal.coe_one, Complex.ofReal_one, inv_one, one_mul] at h`. Unfold `Gt localFourier`. Rewrite using `[← integral_const_mul, ← h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only []`. Rewrite using `[gU_mul μ u hu, show y * ((u : F) * t) = (u : F) * y * t by ring]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Gt_mul (ψ : AddChar F Circle) (μ : Fˣ →* ℂˣ) {u : Fˣ} (hu : ord (u : F) = 0) (t : F) :
     ((μ u : ℂˣ) : ℂ) * Gt ψ μ ((u : F) * t) = Gt ψ μ t := by
@@ -695,7 +687,7 @@ theorem Gt_mul (ψ : AddChar F Circle) (μ : Fˣ →* ℂˣ) {u : Fˣ} (hu : ord
   ring
 
 /- English proof (translation)
-Use `localFourier_add_eq (selfDualMeasure ψ) hψ.1 hψ.2.1 (M := 0) (fun x hx => ?_) y ?_` and prove the remaining obligations. Establish `h5` using `gU_ne hx`. Rewrite using `[mem_valBall_iff_le_ord h5.1, h5.2]`. Rewrite using `[hψ.2.2]`. Simplify using `using hs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Gt_add {ψ : AddChar F Circle} (hψ : IsStd ψ) (μ : Fˣ →* ℂˣ) (y : F) {s : F}
     (hs : s ∈ valBall F 0) : Gt ψ μ (y + s) = Gt ψ μ y := by
@@ -706,7 +698,7 @@ theorem Gt_add {ψ : AddChar F Circle} (hψ : IsStd ψ) (μ : Fˣ →* ℂˣ) (y
     simpa using hs
 
 /- English proof (translation)
-Use `localFourier_eq_zero_of_notMem (selfDualMeasure ψ) hψ.1 hψ.2.1 (N := (n : ℤ)) (fun x h hh => gU_add hn hk x hh) ?_` and prove the remaining obligations. Rewrite using `[hψ.2.2]`. Simplify using `using hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Gt_out {ψ : AddChar F Circle} (hψ : IsStd ψ) {μ : Fˣ →* ℂˣ} {n : ℕ} (hn : 1 ≤ n)
     (hk : unitFiltrationUnits F n ≤ μ.ker) {y : F} (hy : y ∉ valBall F (-(n : ℤ))) :
@@ -717,11 +709,11 @@ theorem Gt_out {ψ : AddChar F Circle} (hψ : IsStd ψ) {μ : Fˣ →* ℂˣ} {n
   simpa using hy
 
 /- English proof (translation)
-Establish `hvo : ord (v : F) = 0` using `ord_of_mem_filtration hv`. Establish `hv2 : (v : F) - 1 ∈ valBall F ((n : ℤ) - 1)`. Use `unitFiltration_sub_one_mem_valBall hv` as an intermediate fact. Establish `e : ((n - 1 : ℕ) : ℤ) = (n : ℤ) - 1` using `by omega`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hs : y * ((v : F) - 1) ∈ valBall F 0`. Simplify using `using mul_mem_valBall hy hv2`. Establish `e : (v : F) * y = y + y * ((v : F) - 1)` using `by ring`. Establish `h1 : Gt ψ μ ((v : F) * y) = Gt ψ μ y`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Gt_add hψ μ y hs`. Establish `m` using `Gt_mul ψ μ hvo y`. Rewrite `m` using `[h1]`. Conclude with `eq_zero_of_eq_mul_of_ne_one (fun h => hv1 (Units.ext h)) m.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Gt_in {ψ : AddChar F Circle} (hψ : IsStd ψ) {μ : Fˣ →* ℂˣ} {n : ℕ} (hn : 1 ≤ n)
     {v : Fˣ} (hv : v ∈ unitFiltrationUnits F (n - 1)) (hv1 : μ v ≠ 1) {y : F}
@@ -742,11 +734,11 @@ theorem Gt_in {ψ : AddChar F Circle} (hψ : IsStd ψ) {μ : Fˣ →* ℂˣ} {n 
   exact eq_zero_of_eq_mul_of_ne_one (fun h => hv1 (Units.ext h)) m.symm
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h0 : Gt ψ μ = 0` using `funext h`. Establish `h1` using `localFourier_localFourier_selfDual hψ.1 hψ.2.1 (gU_mem hn hk) (-1 : F)`. Express the relevant statement in the definitionally equal form `localFourier (selfDualMeasure ψ) ψ (Gt ψ μ) (-1) = _ at h1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h0, neg_neg]`. Establish `g1 : gU μ (1 : F) = 1`. Use `gU_unit μ 1 (by simp [ord_one])` as an intermediate fact. Simplify using `using this`. Rewrite `h1` using `[g1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[localFourier] at h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_Gt {ψ : AddChar F Circle} (hψ : IsStd ψ) {μ : Fˣ →* ℂˣ} {n : ℕ} (hn : 1 ≤ n)
     (hk : unitFiltrationUnits F n ≤ μ.ker) : ∃ t, Gt ψ μ t ≠ 0 := by
@@ -763,9 +755,9 @@ theorem exists_Gt {ψ : AddChar F Circle} (hψ : IsStd ψ) {μ : Fˣ →* ℂˣ}
   simp [localFourier] at h1
 
 /- English proof (translation)
-Establish `h1 : ord ((-1 : F) * (-1)) = ord (-1 : F) + ord (-1 : F)` using `ord_mul (by simp) (by simp)`. Establish `h2 : (-1 : F) * (-1) = 1` using `by ring`. Rewrite `h1` using `[h2, ord_one]`. Establish `h3 : ord ((-1 : F) * x) = ord (-1 : F) + ord x` using `ord_mul (by simp) hx`. Establish `h4 : (-1 : F) * x = -x` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[h4]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ord_neg' {x : F} (hx : x ≠ 0) : ord (-x) = ord x := by
   have h1 : ord ((-1 : F) * (-1)) = ord (-1 : F) + ord (-1 : F) :=
@@ -778,41 +770,39 @@ theorem ord_neg' {x : F} (hx : x ≠ 0) : ord (-x) = ord x := by
   omega
 
 /- English proof (translation)
-Use `set n := quasiCharConductor μ₁ with hndef`. Establish `hk : unitFiltrationUnits F n ≤ μ₁.ker` using `unitFiltrationUnits_quasiCharConductor_le_ker h₁.1`. Establish `hnu : ¬ IsUnramifiedChar μ₁` using `fun h => by`. Use `(quasiCharConductor_eq_zero_iff h₁.1).2 h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, hv1⟩` from `exists_apply_ne_one_of_not_isUnramified h₁.1 hnu`. Take `⟨t₀, ht₀⟩` from `exists_Gt hψ hn hk`. Establish `ht0 : t₀ ≠ 0`. Introduce and unpack `rfl`. Conclude with `ht₀ (Gt_in hψ hn hv hv1 (zero_mem _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hord : ord t₀ = -(n : ℤ)`. Establish `h1 : t₀ ∈ valBall F (-(n : ℤ))`. Assume the negation of the conclusion as `h`. Conclude with `ht₀ (Gt_out hψ hn hk h)`. Establish `h2 : t₀ ∉ valBall F (1 - (n : ℤ))` using `fun h => ht₀ (Gt_in hψ hn hv hv1 h)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[mem_valBall_iff_le_ord ht0]`. Use linear arithmetic over natural numbers and integers. Establish `hS` using `GlobalTheory.CompanionTheory.WhittakerTorus.swd F ψ hψ μ₁ μ₂ h₁ h₂ (fB n) (fB_mem n) (gU μ₁) (gU_mem hn hk) 1`. Establish `d1 : dg2 (1 : Fˣ) (1 : Fˣ) = (1 : GL (Fin 2) F)`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2]`. Rewrite `hS` using `[d1]`. Express the relevant statement in the definitionally equal form `W2 ψ μ₁ μ₂ (phi0 n μ₁) 1 = _ at hS`. Rewrite using `[hS, map_one, Units.val_one, one_mul, mp_unit (by simp [ord_one]), one_mul]`. Set `h₀ : Fˣ` to `-(Units.mk0 t₀ ht0)⁻¹`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hh₀ : -(((h₀⁻¹ : Fˣ)) : F) = t₀`. Simplify using `[h₀]`. Establish `hoh₀ : ord (h₀ : F) = n`. Establish `: (h₀ : F) = -t₀⁻¹` using `by simp [h₀]`. Rewrite using `[this, ord_neg' (inv_ne_zero ht0), ord_inv ht0, hord]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Use `set I : Fˣ → ℂ := fun h => (((μ₁ h)⁻¹ * μ₂ h : ℂˣ) : ℂ) * fB n ((h : F) * ((1 : Fˣ) : F)) * localFourier (selfDualMeasure ψ) ψ (gU μ₁) (-((h⁻¹ : Fˣ) : F)) with hI`. Establish `hshell : ∀ h : Fˣ, ord (h : F) = n → fB n ((h : F) * ((1 : Fˣ) : F)) = 1`. Introduce `h hh`. Use `fB_of_mem ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Units.val_one, mul_one, mem_valBall_iff_le_ord h.ne_zero, hh]`. Establish `hind : I = (ordShell F (n : ℤ)).indicator fun _ => I h₀`. Use function extensionality and compare the values at `h`. Distinguish the cases in `hh : ord (h : F) = n`. Rewrite using `[Set.indicator_of_mem (show h ∈ ordShell F (n : ℤ) from hh)]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨u, e1⟩ : ∃ u : Fˣ, h = h₀ * u` from `⟨h₀⁻¹ * h, by rw [mul_inv_cancel_left]⟩`. Establish `huo : ord (u : F) = 0`. Rewrite `hh` using `[e1, ord_units_mul, hoh₀]`. Use linear arithmetic over natural numbers and integers. Substitute `e1` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `huo' : ord ((u⁻¹ : Fˣ) : F) = 0` using `by rw [ord_units_inv, huo]; rfl`. Establish `e2 : -(((h₀ * u)⁻¹ : Fˣ) : F) = ((u⁻¹ : Fˣ) : F) * (-((h₀⁻¹ : Fˣ) : F))`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `m` using `Gt_mul ψ μ₁ huo' (-((h₀⁻¹ : Fˣ) : F))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `m` using `[← e2]`. Establish `hm : ((μ₁ u : ℂˣ) : ℂ) * ((μ₁ u⁻¹ : ℂˣ) : ℂ) = 1`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Establish `m2 : Gt ψ μ₁ (-(((h₀ * u)⁻¹ : Fˣ) : F)) = ((μ₁ u : ℂˣ) : ℂ) * Gt ψ μ₁ (-((h₀⁻¹ : Fˣ) : F))`. Rewrite using `[← m, ← mul_assoc, hm, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hμ2` using `isUnramifiedChar_iff.1 hu _ huo`. Express the relevant statement in the definitionally equal form `_ * _ * Gt ψ μ₁ _ = _ * _ * Gt ψ μ₁ _`. Rewrite using `[m2, hshell _ hh, hshell h₀ hoh₀]`. Establish `e3 : (((μ₁ (h₀ * u))⁻¹ * μ₂ (h₀ * u) : ℂˣ) : ℂ) * ((μ₁ u : ℂˣ) : ℂ) = (((μ₁ h₀)⁻¹ * μ₂ h₀ : ℂˣ) : ℂ)`. Rewrite using `[← Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Rewrite using `[map_mul, map_mul, hμ2, mul_one, _root_.mul_inv_rev, mul_right_comm, mul_comm (μ₁ u)⁻¹, inv_mul_cancel_right]`. Rewrite using `[← e3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem (show h ∉ ordShell F (n : ℤ) from hh)]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_or_gt_of_ne hh with hlt | hgt` into its components or cases. Establish `: fB n ((h : F) * ((1 : Fˣ) : F)) = 0`. Use `fB_of_notMem ?_` and prove the remaining obligations. Rewrite using `[Units.val_one, mul_one, mem_valBall_iff_le_ord h.ne_zero]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(((μ₁ h)⁻¹ * μ₂ h : ℂˣ) : ℂ) * fB n ((h : F) * ((1 : Fˣ) : F)) * _ = 0`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `: Gt ψ μ₁ (-((h⁻¹ : Fˣ) : F)) = 0`. Use `Gt_out hψ hn hk ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : ((h⁻¹ : Fˣ) : F) ≠ 0` using `Units.ne_zero _`. Rewrite using `[mem_valBall_iff_le_ord (neg_ne_zero.2 h1), ord_neg' h1, ord_units_inv]`. Use linear arithmetic over natural numbers and integers. Express the relevant statement in the definitionally equal form `_ * _ * Gt ψ μ₁ _ = _`. Rewrite using `[this, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hind]`. Rewrite using `[integral_indicator_const _ (measurableSet_ordShell _), measureReal_def, multHaar_ordShell]`. Simplify using `only [ENNReal.toReal_one, one_smul]`. Express the relevant statement in the definitionally equal form `_ * _ * Gt ψ μ₁ _ ≠ 0`. Rewrite using `[hshell h₀ hoh₀, hh₀, mul_one]`.
-
-Conclude with `mul_ne_zero (Units.ne_zero _) ht₀`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whittaker_test_vector_ne_zero {ψ : AddChar F Circle} (hψ : IsStd ψ) {μ₁ μ₂ : Fˣ →* ℂˣ} (h₁ : IsUnit1 μ₁)
     (h₂ : IsUnit1 μ₂) (hu : IsUnramifiedChar μ₂) (hn : 1 ≤ quasiCharConductor μ₁) :
@@ -908,13 +898,13 @@ theorem whittaker_test_vector_ne_zero {ψ : AddChar F Circle} (hψ : IsStd ψ) {
   exact mul_ne_zero (Units.ne_zero _) ht₀
 
 /- English proof (translation)
-Introduce `_ hC F _ _ _ _ _ _ ψ hψ μ₁ μ₂ h₁ h₂ hu hn`. Establish `hk : unitFiltrationUnits F (quasiCharConductor μ₁) ≤ μ₁.ker` using `unitFiltrationUnits_quasiCharConductor_le_ker h₁.1`. Establish `hφ` using `test_vector_mem_schwartz_bruhat hn hk`. Establish `hne` using `whittaker_test_vector_ne_zero hψ h₁ h₂ hu hn`. Establish `hcard` using `(hC F ψ hψ).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlin` using `(GlobalTheory.CompanionTheory.WhitLin.whittaker_linear_in_schwartz_bruhat F ψ hψ μ₁ μ₂ h₁ h₂ _ hφ _ hφ).2`. Use `set c := (W2 ψ μ₁ μ₂ (phi0 (quasiCharConductor μ₁) μ₁) 1)⁻¹ with hc`. Use `⟨c • phi0 (quasiCharConductor μ₁) μ₁, Submodule.smul_mem _ c hφ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlin, Pi.smul_apply, smul_eq_mul]`. Conclude with `inv_mul_cancel₀ hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t1, t2⟩` from `whittaker_test_vector_newform_type hψ h₁ h₂ hu hn hcard`. Rewrite using `[hlin]`. Use `⟨fun x d hxd g => ?_, fun ϖ B hB g => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[t1 x d hxd g]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← Finset.mul_sum, t2 ϖ B hB g]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : Ad3.R.A2 → Ad3.R.C1 → Ad3.R.M1 := by
   intro _ hC F _ _ _ _ _ _ ψ hψ μ₁ μ₂ h₁ h₂ hu hn

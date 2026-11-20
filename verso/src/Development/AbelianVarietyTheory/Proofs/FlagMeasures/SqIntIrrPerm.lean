@@ -15,14 +15,14 @@ open GlobalTheory.Dec.FormF
 variable {n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma comp_symm {α : Type} (f : Fin n → α) (s : Equiv.Perm (Fin n)) : (f ∘ s) ∘ s.symm = f := by
   funext x
   simp
 
 /- English proof (translation)
-Establish `h'` using `GlobalTheory.Dec.FormF.K_perm s.symm h`. Rewrite `h'` using `[PermK.comp_symm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma K_back {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)) {g : Matrix (Fin n) (Fin n) ℂ} (h : g ∈ Kset (ε ∘ s)) :
     g.submatrix s.symm s.symm ∈ Kset ε := by
@@ -30,7 +30,7 @@ lemma K_back {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)) {g : Matrix (Fin n) 
   rwa [PermK.comp_symm] at h'
 
 /- English proof (translation)
-Establish `h'` using `GlobalTheory.Dec.FormF.UJ_perm s.symm h`. Rewrite `h'` using `[PermK.comp_symm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma UJ_back {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)) {g : Matrix (Fin n) (Fin n) ℂ} (h : g ∈ UJset (ε ∘ s)) :
     g.submatrix s.symm s.symm ∈ UJset ε := by
@@ -38,9 +38,7 @@ lemma UJ_back {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)) {g : Matrix (Fin n)
   rwa [PermK.comp_symm] at h'
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hlt`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases. Conclude with `hab`. Conclude with `absurd hlt (lt_irrefl _)`.
-
-Conclude with `absurd (hs b a hab h.symm) (not_lt.mpr hlt.le)`. Introduce `hab`. Conclude with `hs a b hab h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma lt_iff {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)} (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b)
     {a b : Fin n} (h : ε (s a) = ε (s b)) : s a < s b ↔ a < b := by
@@ -54,7 +52,7 @@ lemma lt_iff {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)} (hs : ∀ a b, a < b
     exact hs a b hab h
 
 /- English proof (translation)
-Introduce `a b hab he`. Establish `he' : ε (s (s.symm a)) = ε (s (s.symm b))` using `he`. Conclude with `(PermK.lt_iff hs he').1 (by simpa using hab)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma mono_symm {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)} (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) :
     ∀ a b, a < b → (ε ∘ s) (s.symm a) = (ε ∘ s) (s.symm b) → s.symm a < s.symm b := by
@@ -63,9 +61,9 @@ lemma mono_symm {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)} (hs : ∀ a b, a 
   exact (PermK.lt_iff hs he').1 (by simpa using hab)
 
 /- English proof (translation)
-Use `Finset.card_equiv s (fun b => ?_)` and prove the remaining obligations. Simplify using `only [mem_filter, mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(PermK.lt_iff hs h2.symm).2 h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(PermK.lt_iff hs h2.symm).1 h1, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private lemma card_infinitePlace_eq_f {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) (a : Fin n) :
@@ -80,9 +78,9 @@ private lemma card_infinitePlace_eq_f {ε : Fin n → Bool} {s : Equiv.Perm (Fin
     exact ⟨(PermK.lt_iff hs h2.symm).1 h1, h2⟩
 
 /- English proof (translation)
-Use `Finset.card_equiv s (fun b => ?_)` and prove the remaining obligations. Simplify using `only [mem_filter, mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(PermK.lt_iff hs h2).2 h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(PermK.lt_iff hs h2).1 h1, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private lemma card_quotient_comap_sq_eq_card_quotient_of_involution {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) (a : Fin n) :
@@ -97,7 +95,7 @@ private lemma card_quotient_comap_sq_eq_card_quotient_of_involution {ε : Fin n 
     exact ⟨(PermK.lt_iff hs h2).1 h1, h2⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [Formalism.REAL.rhoC, Function.comp_apply]`. Rewrite using `[card_infinitePlace_eq_f hs a, card_quotient_comap_sq_eq_card_quotient_of_involution hs a]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma rhoC_perm {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)} (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) :
     rhoC (ε ∘ s) = rhoC ε ∘ s := by
@@ -106,9 +104,9 @@ lemma rhoC_perm {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)} (hs : ∀ a b, a 
   rw [card_infinitePlace_eq_f hs a, card_quotient_comap_sq_eq_card_quotient_of_involution hs a]
 
 /- English proof (translation)
-Unfold `vNormSq`. Rewrite using `[PermK.rhoC_perm hs]`. Establish `e : μ ∘ s + (2 : ℝ) • (Formalism.REAL.rhoC ε ∘ s) = (μ + (2 : ℝ) • Formalism.REAL.rhoC ε) ∘ s`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Simplify using `only [Formalism.REAL.nsq, Formalism.REAL.dot, Function.comp_apply]`. Conclude with `Equiv.sum_comp s (fun a => (μ + (2 : ℝ) • Formalism.REAL.rhoC ε) a * (μ + (2 : ℝ) • Formalism.REAL.rhoC ε) a)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma vNormSq_perm {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)} (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b)
     (μ : Fin n → ℝ) : vNormSq (ε ∘ s) (μ ∘ s) = vNormSq ε μ := by
@@ -122,11 +120,11 @@ lemma vNormSq_perm {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)} (hs : ∀ a b,
   exact Equiv.sum_comp s (fun a => (μ + (2 : ℝ) • Formalism.REAL.rhoC ε) a * (μ + (2 : ℝ) • Formalism.REAL.rhoC ε) a)
 
 /- English proof (translation)
-Unfold `CDom at h ⊢`. Take `⟨c, hc, hsum⟩` from `h`. Use `⟨fun a b => c (s a) (s b), fun a b hab => ?_, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hc _ _ hab`. Conclude with `⟨(PermK.lt_iff hs h2).1 h1, h2⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use function extensionality and compare the values at `x`. Establish `hx` using `congrFun hsum (s x)`. Simplify using `only [Pi.sub_apply, Function.comp_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at hx ⊢`. Rewrite using `[hx]`. Use `symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `Fintype.sum_equiv s _ _ (fun a => ?_)` and prove the remaining obligations. Use `Fintype.sum_equiv s _ _ (fun b => ?_)` and prove the remaining obligations. Simplify using `[Formalism.REAL.root, Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma cdom_perm {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)} (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b)
     {μ Λ : Fin n → ℝ} (h : CDom ε μ Λ) : CDom (ε ∘ s) (μ ∘ s) (Λ ∘ s) := by
@@ -147,9 +145,9 @@ lemma cdom_perm {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)} (hs : ∀ a b, a 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Introduce `θ hθ`. Establish `hmem` using `PermK.K_back s hθ`. Use `beta_reduce`. Rewrite `hmem`, the goal using `[Matrix.submatrix_diagonal_equiv]`. Establish `key` using `h (θ ∘ s.symm) hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : (∑ a, μ a * (θ ∘ s.symm) a) = ∑ a, (μ ∘ s) a * θ a` using `Fintype.sum_equiv s.symm _ _ (fun a => by simp)`. Rewrite using `[← hsum]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma wt_perm {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)) {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     {μ : Fin n → ℝ} {v : H} (h : IsWtOn (Kset ε) σ μ v) :
@@ -165,9 +163,9 @@ lemma wt_perm {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)) {σ : Matrix (Fin n
   exact key
 
 /- English proof (translation)
-Unfold `IsKStableOn`. Prove the components needed by the constructor for the conclusion. Introduce `H' g hg v hv`. Use `H' (g.submatrix s s) (GlobalTheory.Dec.FormF.K_perm s hg) v hv` as an intermediate fact. Simplify `this` using `[Matrix.submatrix_submatrix]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `H' g hg v hv`. Conclude with `H' _ (PermK.K_back s hg) v hv`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma stable_perm {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
     (S : Submodule ℂ H) :
@@ -181,11 +179,11 @@ lemma stable_perm {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)) (σ : Matrix (F
     exact H' _ (PermK.K_back s hg) v hv
 
 /- English proof (translation)
-Unfold `IsKTypeOf at h ⊢`. Take `⟨hfd, hst, hirr, ⟨v, hvS, hv0, hwt⟩, hdom⟩` from `h`. Use `⟨hfd, (PermK.stable_perm s σ S).2 hst, fun S' hle hS' => hirr S' hle ((PermK.stable_perm s σ S').1 hS'), ⟨v, hvS, hv0, PermK.wt_perm s hwt⟩, ?_⟩` and prove the remaining obligations. Introduce `μ' w hwS hw0 hw`. Establish `hw'` using `PermK.wt_perm s.symm hw`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hw'` using `[PermK.comp_symm]`. Simplify using `only [Equiv.symm_symm, Matrix.submatrix_submatrix, Equiv.self_comp_symm, Matrix.submatrix_id_id] at hw'`. Establish `hc` using `PermK.cdom_perm hs (hdom (μ' ∘ s.symm) w hwS hw0 hw')`. Establish `e : (μ' ∘ s.symm) ∘ s = μ'`. Use function extensionality and compare the values at `a`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite `hc` using `[e]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma ktype_perm {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)} (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b)
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {μ : Fin n → ℝ} {S : Submodule ℂ H} (h : IsKTypeOf ε σ μ S) :
@@ -205,13 +203,11 @@ lemma ktype_perm {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)} (hs : ∀ a b, a
   rwa [e] at hc
 
 /- English proof (translation)
-Unfold `IsSqIntIrr IsURepOn Formalism.QuantumDeterminants.IsCRepOn IsIrredOn IsSqIntOn at h ⊢`. Take `⟨hc, hn, ⟨⟨h1, hmul⟩, hiso, hcont⟩, hirr, hsq⟩` from `h`. Use `⟨hc, hn, ⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify `h1` using `[Matrix.submatrix_one_equiv]`. Introduce `a ha b hb beta_reduce`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.submatrix_mul_equiv _ _ _ s.symm _]`. Conclude with `hmul _ (PermK.UJ_back s ha) _ (PermK.UJ_back s hb)`. Introduce `g hg w`. Conclude with `hiso _ (PermK.UJ_back s hg) w`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(hcont w).comp (continuous_id.matrix_submatrix _ _).continuousOn (fun g hg => PermK.UJ_back s hg)`. Introduce `S hS hst`. Apply `hirr S hS` to reduce the goal to its premises. Introduce `g hg w hw`. Use `hst (g.submatrix s s) (GlobalTheory.Dec.FormF.UJ_perm s hg) w hw` as an intermediate fact.
-
-Simplify `this` using `[Matrix.submatrix_submatrix]`. Introduce `v w`. Conclude with `((GlobalTheory.T.unitaryGroup_structures_perm_conj_invariant _ ε s).2 (fun x => ⟪w, σ x v⟫_ℂ) 2).1.mp (hsq v w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma sqIntIrr_perm {ε : Fin n → Bool} (s : Equiv.Perm (Fin n))
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (h : IsSqIntIrr ε σ) :
@@ -237,9 +233,9 @@ lemma sqIntIrr_perm {ε : Fin n → Bool} (s : Equiv.Perm (Fin n))
     exact ((GlobalTheory.T.unitaryGroup_structures_perm_conj_invariant _ ε s).2 (fun x => ⟪w, σ x v⟫_ℂ) 2).1.mp (hsq v w)
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons p w ih`. Use function extensionality and compare the values at `g`. Simplify using `only [Formalism.REAL.Eword, List.map_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih]`. Establish `h` using `GlobalTheory.Dec.FormF.Eab_perm (ε ∘ s) s.symm (s p.1) (s p.2) (Formalism.REAL.Eword ε (w.map fun p => (s p.1, s p.2)) f) g`. Rewrite `h` using `[PermK.comp_symm, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eword_comp_perm_submatrix (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)) (f : Matrix (Fin n) (Fin n) ℂ → ℂ)
     (w : List (Fin n × Fin n)) :
@@ -257,9 +253,9 @@ private lemma eword_comp_perm_submatrix (ε : Fin n → Bool) (s : Equiv.Perm (F
     exact h
 
 /- English proof (translation)
-Unfold `gelf`. Simplify using `only [eword_comp_perm_submatrix ε s f]`. Use `Fintype.sum_equiv (Equiv.arrowCongr (Equiv.refl _) s) _ _ (fun a => ?_)` and prove the remaining obligations. Establish `hw : (cycWord a).map (fun p => (s p.1, s p.2)) = cycWord (Equiv.arrowCongr (Equiv.refl _) s a)`. Simplify using `[cycWord, List.map_ofFn, Function.comp_def, Equiv.arrowCongr_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma gelf_comp_perm_submatrix (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (m : ℕ)
     (g : Matrix (Fin n) (Fin n) ℂ) :
@@ -272,13 +268,11 @@ private lemma gelf_comp_perm_submatrix (ε : Fin n → Bool) (s : Equiv.Perm (Fi
   rw [hw]
 
 /- English proof (translation)
-Set `_ : NormedAddCommGroup (Matrix (Fin n) (Fin n) ℂ)` to `Matrix.normedAddCommGroup`. Set `_ : NormedSpace ℝ (Matrix (Fin n) (Fin n) ℂ)` to `Matrix.normedSpace`. Unfold `Formalism.REAL.SmoothOnG at h ⊢`. Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `h _ (PermK.UJ_back s hg₀)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toContinuousLinearMap (Matrix.reindexLinearEquiv ℝ ℂ s s).toLinearMap`. Establish `hL : ∀ x, L x = x.submatrix s.symm s.symm` using `fun x => rfl`. Use `⟨L ⁻¹' U, fun x => F (L x), hU.preimage L.continuous, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show L g₀ ∈ U`. Rewrite using `[hL]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hgU`. Conclude with `hF.comp_continuousLinearMap L`. Introduce `x hx hxJ`. Establish `hx' : x.submatrix s.symm s.symm ∈ U`. Rewrite using `[← hL]`.
-
-Conclude with `hx`. Use `beta_reduce`. Rewrite using `[hL]`. Conclude with `hfF _ hx' (PermK.UJ_back s hxJ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma smoothOnG_comp_perm_submatrix {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)) {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (h : Formalism.REAL.SmoothOnG ε f) : Formalism.REAL.SmoothOnG (ε ∘ s) (fun x => f (x.submatrix s.symm s.symm)) := by
@@ -304,7 +298,7 @@ private lemma smoothOnG_comp_perm_submatrix {ε : Fin n → Bool} (s : Equiv.Per
     exact hfF _ hx' (PermK.UJ_back s hxJ)
 
 /- English proof (translation)
-Unfold `IsZEigen at h ⊢`. Use `⟨smoothOnG_comp_perm_submatrix s h.1, fun m g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[gelf_comp_perm_submatrix ε s f m g]`. Conclude with `h.2 m _ (PermK.UJ_back s hg)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isZEigen_comp_perm_submatrix {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)) {χ : Fin n → ℂ}
     {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (h : IsZEigen ε χ f) :
@@ -315,9 +309,9 @@ private lemma isZEigen_comp_perm_submatrix {ε : Fin n → Bool} (s : Equiv.Perm
   exact h.2 m _ (PermK.UJ_back s hg)
 
 /- English proof (translation)
-Unfold `IsKFin`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, h1, h2, h3⟩`. Conclude with `⟨S, h1, h2, (PermK.stable_perm s σ S).1 h3⟩`. Introduce and unpack `⟨S, h1, h2, h3⟩`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨S, h1, h2, (PermK.stable_perm s σ S).2 h3⟩`.
+Supply the required witnesses or components.
 -/
 private lemma isKFin_comp_perm_submatrix_iff {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
     (v : H) : IsKFin (ε ∘ s) (fun g => σ (g.submatrix s.symm s.symm)) v ↔ IsKFin ε σ v := by
@@ -329,7 +323,7 @@ private lemma isKFin_comp_perm_submatrix_iff {ε : Fin n → Bool} (s : Equiv.Pe
     exact ⟨S, h1, h2, (PermK.stable_perm s σ S).2 h3⟩
 
 /- English proof (translation)
-Unfold `HasInfChar at h ⊢`. Introduce `v w hv hw`. Conclude with `isZEigen_comp_perm_submatrix s (h v w ((isKFin_comp_perm_submatrix_iff s σ v).1 hv) ((isKFin_comp_perm_submatrix_iff s σ w).1 hw))`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma hasInfChar_comp_perm {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)) {χ : Fin n → ℂ}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (h : HasInfChar ε χ σ) :
@@ -339,11 +333,11 @@ private lemma hasInfChar_comp_perm {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)
   exact isZEigen_comp_perm_submatrix s (h v w ((isKFin_comp_perm_submatrix_iff s σ v).1 hv) ((isKFin_comp_perm_submatrix_iff s σ w).1 hw))
 
 /- English proof (translation)
-Introduce `n ε s H _ _ σ hs`. Establish `hs'` using `PermK.mono_symm hs`. Use `⟨fun μ S => ⟨PermK.ktype_perm hs, fun h => ?_⟩, fun μ => PermK.vNormSq_perm hs μ, PermK.rhoC_perm hs, ⟨PermK.sqIntIrr_perm s, fun h => ?_⟩, fun χ => ⟨fun h => ?_, hasInfChar_comp_perm s⟩⟩` and prove the remaining obligations. Establish `h2` using `PermK.ktype_perm hs' h`. Rewrite `h2` using `[PermK.comp_symm, PermK.comp_symm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h2` using `only [Equiv.symm_symm, Matrix.submatrix_submatrix, Equiv.self_comp_symm, Matrix.submatrix_id_id]`. Establish `h2` using `PermK.sqIntIrr_perm s.symm h`. Rewrite `h2` using `[PermK.comp_symm]`. Simplify `h2` using `only [Equiv.symm_symm, Matrix.submatrix_submatrix, Equiv.self_comp_symm, Matrix.submatrix_id_id]`. Establish `h2` using `hasInfChar_comp_perm s.symm h`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h2` using `[PermK.comp_symm]`. Simplify `h2` using `only [Equiv.symm_symm, Matrix.submatrix_submatrix, Equiv.self_comp_symm, Matrix.submatrix_id_id]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem permKType : ∀ (n : ℕ) (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), (∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) → (∀ (μ : Fin n → ℝ) (S : Submodule ℂ H), IsKTypeOf ε σ μ S ↔ IsKTypeOf (ε ∘ s) (fun g => σ (g.submatrix s.symm s.symm)) (μ ∘ s) S) ∧ (∀ μ : Fin n → ℝ, vNormSq (ε ∘ s) (μ ∘ s) = vNormSq ε μ) ∧ rhoC (ε ∘ s) = rhoC ε ∘ s ∧ (IsSqIntIrr ε σ ↔ IsSqIntIrr (ε ∘ s) (fun g => σ (g.submatrix s.symm s.symm))) ∧ ∀ χ : Fin n → ℂ, (HasInfChar (ε ∘ s) χ (fun g => σ (g.submatrix s.symm s.symm)) ↔ HasInfChar ε χ σ) := by
   intro n ε s H _ _ σ hs

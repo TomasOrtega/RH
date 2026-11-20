@@ -9,11 +9,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Haar
 
 /- English proof (translation)
-Establish `hn : (n : Fv F v) ≠ 0` using `n.ne_zero`. Establish `hva : Valued.v (n : Fv F v) ≠ 0` using `(Valuation.ne_zero_iff _).2 hn`. Establish `h` using `PI.UnitaryGroupMassFormula.LocJacTyp.BM.modF_Fv v (n : Fv F v) hn`. Rewrite `h` using `[PI.NglqJacSplitW.modF, dif_neg hn]`. Establish `hu : Units.mk0 (n : Fv F v) hn = n` using `by ext; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hu]`. Establish `habs : PI.LocJacTyp.absV v (n : Fv F v) = ‖(n : Fv F v)‖`. Unfold `PI.LocJacTyp.absV`. Rewrite using `[dif_neg hva, NumberField.FinitePlace.norm_def, WithZeroMulInt.toNNReal_neg_apply _ hva]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite `h` using `[habs, ← coe_nnnorm, ENNReal.ofReal_coe_nnreal]`. Conclude with `(ENNReal.coe_injective h).symm`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nnnorm_eq_distribHaarChar (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (n : (Fv F v)ˣ) :
@@ -33,9 +33,9 @@ theorem nnnorm_eq_distribHaarChar (F : Type) [Field F] [NumberField F]
   exact (ENNReal.coe_injective h).symm
 
 /- English proof (translation)
-Establish `: SecondCountableTopology (Fv F v)` using `PI.UnitaryGroupMassFormula.LocJacTyp.BM.secondCountable_Fv v`. Establish `: lam.Regular` using `inferInstance`. Establish `hc : Continuous fun t : Fv F v => (n : Fv F v) * t` using `continuous_const.mul continuous_id`. Use extensionality with `S hS`. Rewrite using `[Measure.map_apply hc.measurable hS, nnnorm_eq_distribHaarChar, ← map_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hset : (fun t : Fv F v => (n : Fv F v) * t) ⁻¹' S = n⁻¹ • S`. Use extensionality with `y`. Rewrite using `[Set.mem_inv_smul_set_iff]`. Both sides reduce to the same expression. Rewrite using `[hset, ← distribHaarChar_mul lam n⁻¹ S]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

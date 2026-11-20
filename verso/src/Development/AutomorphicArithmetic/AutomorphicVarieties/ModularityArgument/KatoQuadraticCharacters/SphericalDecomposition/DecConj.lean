@@ -7,7 +7,7 @@ open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Z.Win UpperTheory.V.Z.Kato Upp
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `h' : x ^ (a * m) = x ^ ((b + 1) * m)`. Rewrite using `[zpow_mul, zpow_mul, zpow_add_one, zpow_natCast, zpow_natCast, h]`. Establish `hc : (m : ℤ) * (a - b - 1) = a * m - (b + 1) * m` using `by ring`. Rewrite using `[hc, zpow_sub, h', mul_inv_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gap_pow {C : Type} [CommGroup C] (x : C) (a b : ℤ) (m : ℕ)
     (h : (x ^ a) ^ m = (x ^ b * x) ^ m) : x ^ ((m : ℤ) * (a - b - 1)) = 1 := by
@@ -17,7 +17,7 @@ private theorem gap_pow {C : Type} [CommGroup C] (x : C) (a b : ℤ) (m : ℕ)
   rw [hc, zpow_sub, h', mul_inv_cancel]
 
 /- English proof (translation)
-Use `mul_ne_zero (by exact_mod_cast (by omega : m ≠ 0)) ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> omega`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem exp_ne (e : ℕ) (he : 1 ≤ e) (m : ℕ) (hm : 1 ≤ m) (i j : Fin 2) :
     (m : ℤ) * ((![(e : ℤ), -(e : ℤ)] : Fin 2 → ℤ) i - (![(e : ℤ), -(e : ℤ)] : Fin 2 → ℤ) j - 1) ≠ 0 := by
@@ -34,19 +34,17 @@ private def decConj {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra 
   map_mul' a b := Subtype.ext (by simp only [Subgroup.coe_mul]; group)
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ e he r w A κ hl hA hE`. Take `⟨⟨g, hg⟩, hI⟩` from `hE`. Establish `hvA : A.valuation (l : Ω) < 1`. Establish `h1` using `(hA (l : 𝓞 F)).2 hl`. Simplify using `using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hv : ∀ (t : Dec (F` using `F) A), (t : G F Ω) ∈ Ine A → ∀ i : Fin 2, κ i t = cycBar F Ω l ↑t ^ ((![(e : ℤ), -(e : ℤ)] : Fin 2 → ℤ) i) := by`. Introduce `t ht i`. Use `fin_cases i`. Conclude with `(hI t ht).1`. Conclude with `(hI t ht).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `A' hA'`. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver hA hA'`. Use `⟨fun i => (κ i).comp (decConj A A' σ hσ), ?_, ?_⟩` and prove the remaining obligations. Use `⟨g * r σ⁻¹, fun s => ?_⟩` and prove the remaining obligations. Establish `hc : ((decConj A A' σ hσ s : Dec (F` using `F) A) : G F Ω) = σ⁻¹ * ↑s * σ := rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key : g * r σ⁻¹ * r ↑s * (g * r σ⁻¹)⁻¹ = g * r ↑(decConj A A' σ hσ s) * g⁻¹`. Rewrite using `[hc, map_mul, map_mul, map_inv]`. Use `group`. Rewrite using `[key]`. Conclude with `hg _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j m hm heq`. Take `⟨g0, hg0, hn⟩` from `Ws.Pt.cycIne F Ω l A hvA _ (exp_ne e he m hm i j)`. Establish `hA'σ : σ⁻¹ • A' = A` using `by rw [← hσ, inv_smul_smul]`. Establish `hg1 : σ * g0 * σ⁻¹ ∈ Ine A'`. Establish `h2` using `(Two.ineConj F Ω σ⁻¹).1 A' g0 (by rw [hA'σ]; exact hg0)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[inv_inv]`. Then use the resulting hypothesis. Establish `ht : decConj A A' σ hσ ⟨σ * g0 * σ⁻¹, Ine_le_Dec A' hg1⟩ = ⟨g0, Ine_le_Dec A hg0⟩` using `Subtype.ext (by show σ⁻¹ * (σ * g0 * σ⁻¹) * σ = g0 group)`. Establish `hcyc : cycBar F Ω l (σ * g0 * σ⁻¹) = cycBar F Ω l g0`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm, ← mul_assoc, inv_mul_cancel, one_mul]`. Establish `h3` using `DFunLike.congr_fun heq ⟨σ * g0 * σ⁻¹, Ine_le_Dec A' hg1⟩`.
-
-Simplify using `only [MonoidHom.pow_apply, MonoidHom.mul_apply, MonoidHom.comp_apply, Subgroup.coe_subtype] at h3`. Rewrite `h3` using `[ht, hv _ hg0 i, hv _ hg0 j, hcyc]`. Conclude with `hn (gap_pow (cycBar F Ω l g0) _ _ m h3)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.WeilSphericalRecords.potOf :
     PotOf := by

@@ -50,7 +50,7 @@ instance (l : ℕ) : NeZero (NOf H dg l) := ⟨(dg l).choose_spec.choose.ne'⟩
 def dOf (l : ℕ) : Formalism.ConjugateSelfDual.G H.E Ω →* Multiplicative (ZMod (NOf H dg l)) := (dg l).choose_spec.choose_spec.choose
 
 /- English proof (translation)
-The claim follows from `(dg l).choose_spec.choose_spec.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem dOf_spec (l : ℕ) : IsOpen ((dOf H dg l).ker : Set (Formalism.ConjugateSelfDual.G H.E Ω)) ∧ AntiHom cc (dOf H dg l) ∧
     RamExactly (dOf H dg l) (placesOver H.E (pOf H l)) ∧
@@ -62,7 +62,7 @@ variable (l : ℕ) [hl : Fact l.Prime]
 def zeta : PadicAlgCl l := (exists_prim l (NOf H dg l) (NeZero.pos _)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_prim l (NOf H dg l) (NeZero.pos _)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem zeta_prim : IsPrimitiveRoot (zeta H dg l) (NOf H dg l) :=
   (exists_prim l (NOf H dg l) (NeZero.pos _)).choose_spec
@@ -74,15 +74,15 @@ def LLf : FinExt l :=
     inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `le_sup_left.trans le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem E_le : KE l H.E ≤ (LLf H F dg l).1 := le_sup_left.trans le_sup_left
 /- English proof (translation)
-The claim follows from `le_sup_right.trans le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem F_le : KE l F ≤ (LLf H F dg l).1 := le_sup_right.trans le_sup_left
 /- English proof (translation)
-The claim follows from `(le_sup_right : _ ≤ (LLf H F dg l).1) (IntermediateField.mem_adjoin_simple_self _ _)`.
+A detailed English derivation is pending.
 -/
 theorem zeta_mem : zeta H dg l ∈ (LLf H F dg l).1 :=
   (le_sup_right : _ ≤ (LLf H F dg l).1) (IntermediateField.mem_adjoin_simple_self _ _)
@@ -91,7 +91,7 @@ def delta : Formalism.ConjugateSelfDual.G H.E Ω →* (↥(OL (LLf H F dg l)))ˣ
   (muHom (LLf H F dg l) (zeta_prim H dg l) (zeta_mem H F dg l)).comp (dOf H dg l)
 
 /- English proof (translation)
-Use `show muHom _ _ _ (dOf H dg l σ) = 1 ↔ _`. Rewrite using `[← map_one (muHom (LLf H F dg l) (zeta_prim H dg l) (zeta_mem H F dg l))]`. Conclude with `(muHom_injective _ _ _).eq_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delta_eq_one (σ : Formalism.ConjugateSelfDual.G H.E Ω) : delta H F dg l σ = 1 ↔ dOf H dg l σ = 1 := by
   show muHom _ _ _ (dOf H dg l σ) = 1 ↔ _
@@ -99,7 +99,7 @@ theorem delta_eq_one (σ : Formalism.ConjugateSelfDual.G H.E Ω) : delta H F dg 
   exact (muHom_injective _ _ _).eq_iff
 
 /- English proof (translation)
-Use extensionality with `σ`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mem_ker, delta_eq_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem delta_ker : (delta H F dg l).ker = (dOf H dg l).ker := by
   ext σ

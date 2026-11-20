@@ -22,11 +22,9 @@ open ValuativeRel Matrix GroundTheory.Automorphic GroundTheory.Automorphic.Iwasa
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_uniformizer_iff.2 (GLnLocal.valuation_uniformizer_lt_one k)`. Take `⟨ϖ, hϖ⟩` from `valuation_surjective (ValuativeRel.uniformizer k)`. Establish `hlt : valuation k ϖ < 1` using `hϖ ▸ uniformizer_lt_one`. Set `y : 𝒪[k]` to `⟨ϖ, hlt.le⟩`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hy : y ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ 1`. Rewrite using `[pow_one, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]`. Conclude with `hlt.ne`. Establish `h` using `(GLnLocal.mem_maximalIdeal_pow_iff k).1 hy`. Rewrite `h` using `[pow_one]`.
-
-Rewrite using `[← hϖ]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_uniformizerUnit :
     valuation k ((uniformizerUnit k : kˣ) : k) = ValuativeRel.uniformizer k := by
@@ -45,7 +43,7 @@ theorem valuation_uniformizerUnit :
     exact h
 
 /- English proof (translation)
-Set `o : kˣ →* Multiplicative ℤ` to `MonoidHom.mk' (fun x => .ofAdd (ord k x)) fun x y => by`. Rewrite using `[ord_mul, ofAdd_add]`. Establish `h` using `map_zpow o x m`. Establish `h2 : ord k (x ^ m) = m • ord k x` using `congrArg Multiplicative.toAdd h`. Simplify using `using h2`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ord_zpow' (x : kˣ) (m : ℤ) : ord k (x ^ m) = m * ord k x := by
   let o : kˣ →* Multiplicative ℤ := MonoidHom.mk' (fun x => .ofAdd (ord k x)) fun x y => by
@@ -64,7 +62,7 @@ def toParab (p : blockUpper k n (id : Fin n → Fin n)) : parab k (points (Fin n
   ⟨p.1, fun _ _ h => p.2 h⟩
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [GeneralLinearGroup.val_det_apply, Matrix.det_unique]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem det_leviProj (p : blockUpper k n (id : Fin n → Fin n)) (i : Fin n) :
     GeneralLinearGroup.det (GlobalTheory.SmGL.leviProj k (points (Fin n)) (toParab p) i) = diagUnit p i := by
@@ -73,11 +71,11 @@ theorem det_leviProj (p : blockUpper k n (id : Fin n → Fin n)) (i : Fin n) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[val_deltaHalf]`. Express the relevant statement in the definitionally equal form `_ = ((NNReal.sqrt (MeasureTheory.Measure.modularCharacter p) : ℝ) : ℂ)`. Use `congr 1`. Rewrite using `[Real.coe_sqrt]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Measures.modularCharacter_borel, GlobalTheory.SmGL.modulus]`. Use `push_cast`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[det_leviProj, modExp_fin _ (fun _ => by simp)]`. Establish `h` using `Measures.modulus_units (diagUnit p i)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Measures.modulus (((p : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i i) = MeasureTheory.distribHaarChar k (diagUnit p i)` using `h`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem deltaHalf_eq (p : blockUpper k n (id : Fin n → Fin n)) :
     (deltaHalf k (fun _ : Fin n => Unit) (GlobalTheory.SmGL.leviProj k (points (Fin n)) (toParab p)) : ℂ) =
@@ -98,19 +96,17 @@ theorem deltaHalf_eq (p : blockUpper k n (id : Fin n → Fin n)) :
   rfl
 
 /- English proof (translation)
-Use `set l : Fin n → ℤ := fun i => ord k (diagUnit p i) with hl`. Set `e : Fin n → kˣ` to `fun i => diagUnit p i * uniformizerUnit k ^ (-l i)`. Establish `he : ∀ i, valuation k (e i : k) = 1` using `fun i => ord_eq_zero_iff.1 (by`. Establish `h1 : ord k (uniformizerUnit k) = 1` using `ord_eq_one valuation_uniformizerUnit`. Establish `h2 : ord k (e i) = l i + ord k ((uniformizerUnit k) ^ (-l i))` using `ord_mul k _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, ord_zpow', h1]`. Use the proof step `ring)`. Set `u : GroundTheory.Automorphic.Parabolic.levi k n (id : Fin n → Fin n)` to `⟨diagGL k n e, GroundTheory.Automorphic.Parabolic.diagGL_mem_levi e⟩`. Establish `hdec : GroundTheory.Automorphic.Parabolic.leviProj k n id p = torusLevi k n l * u`. Use `Subtype.ext (Units.ext (Matrix.ext fun i j => ?_))` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((GroundTheory.Automorphic.Parabolic.leviProj k n id p : GroundTheory.Automorphic.Parabolic.levi k n (id : Fin n → Fin n)) : GL (Fin n) k) i j = ((torusPow k n l : Matrix (Fin n) (Fin n) k) * (diagGL k n e : Matrix (Fin n) (Fin n) k)) i j`. Rewrite using `[GroundTheory.Automorphic.Parabolic.leviProj_apply, coe_torusPow, coe_diagGL, diagonal_mul_diagonal, diagonal_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Establish `hϖ : (GLnLocal.uniformizer k : k) ≠ 0` using `(uniformizerUnit k).ne_zero`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `he' : ((e i : kˣ) : k) = ((p : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i i * (GLnLocal.uniformizer k : k) ^ (-l i)`. Simplify using `only [e, Units.val_mul, Units.val_zpow_eq_zpow_val, coe_uniformizerUnit]`. Both sides reduce to the same expression. Rewrite using `[if_pos rfl, if_pos rfl, he', mul_left_comm, ← zpow_add₀ hϖ, add_neg_cancel, zpow_zero, mul_one]`. Simplify using `[h]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : (u : GL (Fin n) k) ∈ GLnLocal.integralGL k n`. Establish `key : ∀ d : Fin n → kˣ, (∀ i, valuation k (d i : k) = 1) → ∀ i j, (diagGL k n d : GL (Fin n) k) i j ∈ 𝒪[k]`. Introduce `d hd i j`. Express the relevant statement in the definitionally equal form `(diagGL k n d : Matrix (Fin n) (Fin n) k) i j ∈ _`. Rewrite using `[coe_diagGL, diagonal_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Conclude with `(hd i).le`. Conclude with `(𝒪[k]).zero_mem`. Rewrite using `[GLnLocal.mem_integralGL_iff]`. Use `⟨key e he, ?_⟩` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `∀ i j, ((diagGL k n e)⁻¹ : GL (Fin n) k) i j ∈ 𝒪[k]`. Rewrite using `[← map_inv]`. Conclude with `key _ fun i => by simp [he i]`. Rewrite using `[hdec, map_mul, paramChar_torusLevi, isUnramified_paramChar α u hu, mul_one, monomialChar_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem paramChar_leviProj (α : Fin n → ℂˣ) (p : blockUpper k n (id : Fin n → Fin n)) :
     paramChar k α (GroundTheory.Automorphic.Parabolic.leviProj k n id p) = ∏ i, ((α i ^ ord k (diagUnit p i) : ℂˣ) : ℂ) := by
@@ -157,7 +153,7 @@ theorem paramChar_leviProj (α : Fin n → ℂˣ) (p : blockUpper k n (id : Fin 
     monomialChar_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨stabilizerOf ρ v, hρ v, fun _ h => mem_stabilizerOf.1 h⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_open_fix {G V : Type} [Group G] [TopologicalSpace G]
     [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (hρ : GlobalTheory.PRep.IsSmooth ρ) (v : V) :
@@ -170,7 +166,7 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Establish `h1 : ∀ i, ((leviTorus k (Fin n)).symm (GlobalTheory.SmGL.leviProj k (points (Fin n)) (toParab p))) i = diagUnit p i` using `det_leviProj p`. Express the relevant statement in the definitionally equal form `GlobalTheory.SmGL.ofChar (torusChar fun i => unrChar k (α i)) ((leviTorus k (Fin n)).symm (GlobalTheory.SmGL.leviProj k (points (Fin n)) (toParab p))) z = _`. Rewrite using `[GlobalTheory.SmGL.ofChar_apply, torusChar_apply, Units.coe_prod]`. Simplify using `only [h1, unrChar_apply]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem char_apply (α : Fin n → ℂˣ) (p : GroundTheory.Automorphic.Iwasawa.blockUpper k n (id : Fin n → Fin n)) (z : ℂ) :
     ((GlobalTheory.SmGL.ofChar (torusChar fun i => unrChar k (α i))).comp (leviTorus k (Fin n)).symm.toMonoidHom)
@@ -184,7 +180,7 @@ theorem char_apply (α : Fin n → ℂˣ) (p : GroundTheory.Automorphic.Iwasawa.
   simp only [h1, unrChar_apply]
 
 /- English proof (translation)
-Establish `h` using `parInd_law (points (Fin n)) _ f (toParab p) g`. Establish `h2 : f.1.1 ((p : GL (Fin n) k) * g) = _` using `h`. Rewrite using `[h2, borelChar_apply, paramChar_leviProj, ← deltaHalf_eq, smul_eq_mul, char_apply, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem addChar_theta_law_rearrangement_identity (α : Fin n → ℂˣ)
     (f : IndSp (points (Fin n)) ((GlobalTheory.SmGL.ofChar (torusChar fun i => unrChar k (α i))).comp (leviTorus k (Fin n)).symm.toMonoidHom))
@@ -195,7 +191,7 @@ theorem addChar_theta_law_rearrangement_identity (α : Fin n → ℂˣ)
   rw [h2, borelChar_apply, paramChar_leviProj, ← deltaHalf_eq, smul_eq_mul, char_apply, mul_assoc]
 
 /- English proof (translation)
-Take `⟨K, hK, hKf⟩` from `exists_open_fix _ (isSmooth_parInd (points (Fin n)) ρ) f`. Use `⟨K, hK, fun x hx g => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun v : IndSp (points (Fin n)) ρ => v.1.1 g) (hKf x hx)`. Conclude with `(parInd_apply (points (Fin n)) ρ x g f).symm.trans h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem induced_vector_smooth_open_subgroup (ρ : Representation ℂ (Levi k fun _ : Fin n => Unit) ℂ)
     (f : IndSp (points (Fin n)) ρ) :
@@ -208,7 +204,7 @@ theorem induced_vector_smooth_open_subgroup (ρ : Representation ℂ (Levi k fun
 end
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n α f`. Rewrite using `[mem_principalSeriesSpace]`. Conclude with `⟨fun p g => addChar_theta_law_rearrangement_identity α f p g, induced_vector_smooth_open_subgroup _ f⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem indSp_mem_principalSeriesSpace : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (α : Fin n → ℂˣ) (f : IndSp (points (Fin n)) ((GlobalTheory.SmGL.ofChar (torusChar fun i => unrChar k (α i))).comp (leviTorus k (Fin n)).symm.toMonoidHom)), (fun g => f.1.1 g) ∈ principalSeriesSpace k n (paramChar k α) := by
   intro k _ _ _ _ n α f

@@ -17,21 +17,19 @@ variable {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {W : Type} [Norme
   {τ : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {w : W}
 
 /- English proof (translation)
-Establish `hf1 : HasFDerivAt (fun y => τ (prJ ε y)) (fderiv ℂ (fun y => τ (prJ ε y)) 1) 1` using `(eventually_differentiableAt_tau hτ).self_of_nhds.hasFDerivAt`. Establish `hτ1 : τ 1 = 1` using `hτ.2.1.1`. Establish `hc : HasDerivAt (fun t : ℂ => (1 : Matrix (Fin n) (Fin n) ℂ) + t • Y) Y 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).smul_const Y).const_add (1 : Matrix (Fin n) (Fin n) ℂ)`. Establish `hcJ : ∀ t : ℂ, prJ ε (1 + t • Y) = 1 + t • Y` using `fun t => prJ_of_comm (by rw [add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, hY])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hτc : HasDerivAt (fun t : ℂ => τ (prJ ε (1 + t • Y))) (fderiv ℂ (fun y => τ (prJ ε y)) 1 Y) 0` using `hf1.comp_hasDerivAt_of_eq 0 hc (by simp)`. Take `⟨hUo, hU1, hUd, -⟩` from `psBasic n ε lam W τ w hl hτ`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℂ] (Fin n → Fin n → ℂ)` to `LinearMap.toContinuousLinearMap (Matrix.ofLinearEquiv ℂ).symm.toLinearMap`. Establish `hdiff : ∀ᶠ z in 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ), DifferentiableAt ℂ (ps ε lam τ w) z`. Establish `hm : L 1 ∈ {z : Fin n → Fin n → ℂ | Matrix.of z ∈ U1 ε}` using `hU1 1 Matrix.PosDef.one`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [L.continuous.continuousAt.preimage_mem_nhds (hUo.mem_nhds hm)] with z hz`. Conclude with `((hUd (L z) hz).differentiableAt (hUo.mem_nhds hz)).comp z L.differentiableAt`. Establish `hmul` using `eventually_ps_mul psBasic GlobalTheory.Dec.Equivar.psEquiv hl hτ`. Establish `hR : ∀ᶠ p : Matrix (Fin n) (Fin n) ℂ × ℂ in 𝓝 ((1 : Matrix (Fin n) (Fin n) ℂ), (0 : ℂ)), ps ε lam τ w (p.1 * (1 + p.2 • Y)) = ps ε lam τ w p.1 * τ (prJ ε (1 + p.2 • Y))`. Establish `hcont : Continuous (fun p : Matrix (Fin n) (Fin n) ℂ × ℂ => (((1 : Matrix (Fin n) (Fin n) ℂ), p.1), ((1 : Matrix (Fin n) (Fin n) ℂ) + p.2 • Y, (1 : Matrix (Fin n) (Fin n) ℂ))))` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ht` using `hcont.tendsto ((1 : Matrix (Fin n) (Fin n) ℂ), (0 : ℂ))`. Simplify using `only [zero_smul, add_zero] at ht`. Use `filter_upwards [ht.eventually hmul] with p hp`. Establish `key` using `sub_eq_zero.mp hp`. Simplify using `only [prJ_one, hτ1, one_mul, mul_one] at key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hL : ∀ᶠ p : Matrix (Fin n) (Fin n) ℂ × ℂ in 𝓝 ((1 : Matrix (Fin n) (Fin n) ℂ), (0 : ℂ)), ps ε lam τ w ((1 + p.2 • Y) * p.1) = τ (prJ ε (1 + p.2 • Y)) * ps ε lam τ w p.1`. Establish `hcont : Continuous (fun p : Matrix (Fin n) (Fin n) ℂ × ℂ => (((1 : Matrix (Fin n) (Fin n) ℂ) + p.2 • Y, (1 : Matrix (Fin n) (Fin n) ℂ)), ((1 : Matrix (Fin n) (Fin n) ℂ), p.1)))` using `by fun_prop`. Establish `ht` using `hcont.tendsto ((1 : Matrix (Fin n) (Fin n) ℂ), (0 : ℂ))`. Simplify using `only [zero_smul, add_zero] at ht`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use `filter_upwards [ht.eventually hmul] with p hp`. Establish `key` using `sub_eq_zero.mp hp`. Simplify using `only [prJ_one, hτ1, one_mul, mul_one] at key`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hR`, `hL` using `[nhds_prod_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hdiff, hR.curry, hL.curry] with z hz hRz hLz`. Establish `hps` using `hz.hasFDerivAt`. Prove the components needed by the constructor for the conclusion. Establish `h1 : HasDerivAt (fun t : ℂ => ps ε lam τ w (z * (1 + t • Y))) (fderiv ℂ (ps ε lam τ w) z (z * Y)) 0` using `hps.comp_hasDerivAt_of_eq 0 (hc.const_mul z) (by simp)`. Establish `h2 : HasDerivAt (fun t : ℂ => ps ε lam τ w z * τ (prJ ε (1 + t • Y))) (ps ε lam τ w z * fderiv ℂ (fun y => τ (prJ ε y)) 1 Y) 0` using `hτc.const_mul _`.
-
-Conclude with `h1.unique (h2.congr_of_eventuallyEq hRz)`. Establish `h1 : HasDerivAt (fun t : ℂ => ps ε lam τ w ((1 + t • Y) * z)) (fderiv ℂ (ps ε lam τ w) z (Y * z)) 0` using `hps.comp_hasDerivAt_of_eq 0 (hc.mul_const z) (by simp)`. Establish `h2 : HasDerivAt (fun t : ℂ => τ (prJ ε (1 + t • Y)) * ps ε lam τ w z) (fderiv ℂ (fun y => τ (prJ ε y)) 1 Y * ps ε lam τ w z) 0` using `hτc.mul_const _`. Conclude with `h1.unique (h2.congr_of_eventuallyEq hLz)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_fderiv_ps (hl : IsHCParam lam) (hτ : IsTau ε (lowK ε lam) τ w)
     {Y : Matrix (Fin n) (Fin n) ℂ} (hY : Y * Jm ε = Jm ε * Y) :
@@ -100,13 +98,13 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {E : Fin n 
   {j : W →ₗᵢ[ℂ] V}
 
 /- English proof (translation)
-Establish `hf1 : HasFDerivAt (fun y => τ (prJ ε y)) (fderiv ℂ (fun y => τ (prJ ε y)) 1) 1` using `(eventually_differentiableAt_tau hτ).self_of_nhds.hasFDerivAt`. Establish `hγ : HasDerivAt (fun u : ℂ => NormedSpace.exp (u • Y)) Y 0`. Simplify using `using hasDerivAt_exp_smul_const (𝕂 := ℂ) Y (0 : ℂ)`. Establish `hcommc : ∀ u : ℂ, prJ ε (NormedSpace.exp (u • Y)) = NormedSpace.exp (u • Y)` using `fun u => prJ_of_comm ((Commute.smul_left (show Commute Y (Jm ε) from hY.2) u).exp_left).eq`. Establish `hg : HasDerivAt (fun u : ℂ => τ (NormedSpace.exp (u • Y)) v) (fderiv ℂ (fun y => τ (prJ ε y)) 1 Y v) ((0 : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hf1.comp_hasDerivAt_of_eq 0 hγ (by simp)`. Establish `h2` using `(ContinuousLinearMap.apply ℂ W v).hasFDerivAt.comp_hasDerivAt 0 h1`. Rewrite using `[Complex.ofReal_zero]`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `[hcommc u]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hh : HasDerivAt (fun t : ℝ => (t : ℂ)) 1 0`. Simplify using `using (hasDerivAt_id (0 : ℝ)).ofReal_comp`. Establish `h4 : HasDerivAt (fun t : ℝ => τ (NormedSpace.exp ((t : ℂ) • Y)) v) (fderiv ℂ (fun y => τ (prJ ε y)) 1 Y v) 0`. Establish `h3` using `HasDerivAt.scomp (x := (0 : ℝ)) hg hh`. Rewrite `h3` using `[one_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3`. Conclude with `((hT Y hY v v' hv).unique h4).symm`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_tau_of_inK {abelian₂ : Fin n → ℝ} (hτ : IsTau ε abelian₂ τ w) (hT : TauTie ε E j τ)
     {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inK ε Y) {v v' : W} (hv : j v' = actM E (Y.map star) (j v)) :
@@ -134,27 +132,27 @@ theorem fderiv_tau_of_inK {abelian₂ : Fin n → ℝ} (hτ : IsTau ε abelian�
   exact ((hT Y hY v v' hv).unique h4).symm
 
 /- English proof (translation)
-Simplify using `[actM, Matrix.single_apply, ite_and]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actM_single (a b : Fin n) : actM E (Matrix.single a b (1 : ℂ)) = E a b := by
   simp [actM, Matrix.single_apply, ite_and]
 
 /- English proof (translation)
-Simplify using `[actM, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actM_add (X Y : Matrix (Fin n) (Fin n) ℂ) : actM E (X + Y) = actM E X + actM E Y := by
   simp [actM, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[actM, Finset.smul_sum, mul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actM_smul (c : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) : actM E (c • X) = c • actM E X := by
   simp [actM, Finset.smul_sum, mul_smul]
 
 /- English proof (translation)
-Use extensionality with `i k`. Rewrite using `[Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.single_apply]`. Distinguish the cases in `h1 : a = i ∧ b = k`. Break down `h1 with ⟨rfl, rfl⟩` into its components or cases. Rewrite using `[if_pos ⟨rfl, rfl⟩, h, one_mul, mul_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1, zero_mul, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem single_comm_Jm {a b : Fin n} (h : ε a = ε b) :
     Matrix.single a b (1 : ℂ) * Jm ε = Jm ε * Matrix.single a b (1 : ℂ) := by
@@ -166,7 +164,7 @@ theorem single_comm_Jm {a b : Fin n} (h : ε a = ε b) :
   · rw [if_neg h1, zero_mul, mul_zero]
 
 /- English proof (translation)
-Use `⟨?_, h'⟩` and prove the remaining obligations. Use `show Yᴴ * Jm ε + Jm ε * Y = 0`. Rewrite using `[h, neg_mul, h', neg_add_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inK_of_skew {Y : Matrix (Fin n) (Fin n) ℂ} (h : Yᴴ = -Y) (h' : Y * Jm ε = Jm ε * Y) : inK ε Y := by
   refine ⟨?_, h'⟩
@@ -174,11 +172,11 @@ theorem inK_of_skew {Y : Matrix (Fin n) (Fin n) ℂ} (h : Yᴴ = -Y) (h' : Y * J
   rw [h, neg_mul, h', neg_add_cancel]
 
 /- English proof (translation)
-Unfold `actM`. Rewrite using `[LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun d _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hcd : ε c = ε d`. Rewrite using `[LinearMap.smul_apply]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Simplify using `only [kSpan, Submodule.mem_sInf] at hx ⊢`. Conclude with `fun S hS => hS.2 c d hcd x (hx S hS)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[hZ c d hcd, zero_smul, LinearMap.zero_apply]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma actM_mem_kSpan_of_block_diagonal {u : V} (Z : Matrix (Fin n) (Fin n) ℂ) (hZ : ∀ c d, ε c ≠ ε d → Z c d = 0)
     {x : V} (hx : x ∈ kSpan ε E u) : actM E Z x ∈ kSpan ε E u := by
@@ -196,29 +194,25 @@ private lemma actM_mem_kSpan_of_block_diagonal {u : V} (Z : Matrix (Fin n) (Fin 
     exact Submodule.zero_mem _
 
 /- English proof (translation)
-Use `set D := fderiv ℂ (fun y => τ (prJ ε y)) 1 with hD`. Use `set S : Matrix (Fin n) (Fin n) ℂ := Matrix.single b a 1 with hS`. Use `set T : Matrix (Fin n) (Fin n) ℂ := Matrix.single a b 1 with hT'`. Establish `hSh : Sᴴ = T` using `by simp [S, T]`. Establish `hTh : Tᴴ = S` using `by simp [S, T]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSJ : S * Jm ε = Jm ε * S` using `single_comm_Jm hab.symm`. Establish `hTJ : T * Jm ε = Jm ε * T` using `single_comm_Jm hab`. Establish `hA : inK ε (S - T)` using `inK_of_skew (by rw [Matrix.conjTranspose_sub, hSh, hTh, neg_sub]) (by rw [sub_mul, mul_sub, hSJ, hTJ])`. Establish `hB : inK ε (Complex.I • (S + T))` using `inK_of_skew (by simp [Matrix.conjTranspose_smul, hSh, hTh, add_comm]) (by rw [smul_mul_assoc, mul_smul_comm, add_mul, mul_add, hSJ, hTJ])`. Establish `hS0 : ∀ c d, ε c ≠ ε d → S c d = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `c d hcd`. Simplify using `only [S, Matrix.single_apply]`. Use `split_ifs with h1`. Break down `h1 with ⟨rfl, rfl⟩` into its components or cases. Conclude with `absurd hab.symm hcd`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Both sides reduce to the same expression. Establish `hT0 : ∀ c d, ε c ≠ ε d → T c d = 0`. Introduce `c d hcd`. Simplify using `only [T, Matrix.single_apply]`. Use `split_ifs with h1`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `h1 with ⟨rfl, rfl⟩` into its components or cases. Conclude with `absurd hab hcd`. Both sides reduce to the same expression. Establish `hjv : j v ∈ kSpan ε E u`. Rewrite using `[← hL.2.2.2.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `LinearMap.mem_range_self _ v`. Establish `hmA : actM E ((S - T).map star) (j v) ∈ LinearMap.range j.toLinearMap`. Rewrite using `[hL.2.2.2.2]`. Conclude with `actM_mem_kSpan_of_block_diagonal _ (fun c d hcd => by simp [hS0 c d hcd, hT0 c d hcd]) hjv`. Establish `hmB : actM E ((Complex.I • (S + T)).map star) (j v) ∈ LinearMap.range j.toLinearMap`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hL.2.2.2.2]`. Conclude with `actM_mem_kSpan_of_block_diagonal _ (fun c d hcd => by simp [hS0 c d hcd, hT0 c d hcd]) hjv`. Take `⟨xA, hxA⟩` from `LinearMap.mem_range.mp hmA`. Take `⟨xB, hxB⟩` from `LinearMap.mem_range.mp hmB`. Establish `hDA : D (S - T) v = xA` using `fderiv_tau_of_inK hτ hT hA hxA`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hDB : D (Complex.I • (S + T)) v = xB` using `fderiv_tau_of_inK hτ hT hB hxB`. Establish `hAm : (S - T).map star = S + (-1 : ℂ) • T`. Use extensionality with `c d`. Simplify using `only [S, T, Matrix.map_apply, Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hBm : (Complex.I • (S + T)).map star = (-Complex.I) • S + (-Complex.I) • T`. Use extensionality with `c d`. Simplify using `only [S, T, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp <;> ring`. Establish `hthE : thE ε (a, b) = -((1 / 2 : ℂ) • ((S - T) - Complex.I • (Complex.I • (S + T))))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[smul_smul, Complex.I_mul_I]`. Simplify using `only [thE, Formalism.REAL.sgn, hab, if_true, Complex.ofReal_one]`. Use `module`. Rewrite using `[hthE, map_neg, map_smul, map_sub, map_smul]`. Simplify using `only [ContinuousLinearMap.neg_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply]`.
-
-Rewrite using `[hDA, hDB]`. Simplify using `only [map_neg, map_smul, map_sub]`. Establish `hxA' : j xA = actM E ((S - T).map star) (j v)` using `hxA`. Establish `hxB' : j xB = actM E ((Complex.I • (S + T)).map star) (j v)` using `hxB`. Rewrite using `[hxA', hxB', hAm, hBm, actM_add, actM_add, actM_smul, actM_smul, actM_smul, actM_single, actM_single]`.
-
-Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, smul_add, smul_smul, mul_neg, Complex.I_mul_I]`. Use `module`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_tau_thE {abelian₂ Λ : Fin n → ℝ} {u : V} (hτ : IsTau ε abelian₂ τ w) (hL : LowData ε E Λ u j)
     (hT : TauTie ε E j τ) {a b : Fin n} (hab : ε a = ε b) (v : W) :
@@ -289,11 +283,11 @@ theorem fderiv_tau_thE {abelian₂ Λ : Fin n → ℝ} {u : V} (hτ : IsTau ε a
   module
 
 /- English proof (translation)
-Introduce `n ε lam W _ _ τ w hl hτ V _ _ E u j hL hT a b hab`. Establish `hY : thE ε (a, b) * Jm ε = Jm ε * thE ε (a, b)`. Simplify using `only [thE, smul_mul_assoc, mul_smul_comm, single_comm_Jm hab.symm]`. Use `filter_upwards [eventually_fderiv_ps hl hτ hY] with z hz`. Use `⟨fun x x' hx => ?_, fun y y' x hy => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz.1, ContinuousLinearMap.mul_apply]`. Use `congr 1`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[fderiv_tau_thE hτ hL hT hab x, hx]`. Rewrite using `[hz.2, ContinuousLinearMap.mul_apply, ← j.inner_map_map y, fderiv_tau_thE hτ hL hT hab, ← j.inner_map_map y', hy, hL.2.1 b a]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Formalism.REAL.sgn, hab]`.
+A detailed English derivation is pending.
 -/
 theorem psFunEquiv : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (W : Type) [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] (τ : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)) (w : W), IsHCParam lam →

@@ -93,7 +93,7 @@ def IsMult (k : Mat n → (E.V →L[ℂ] E.V)) (val : Inf n → ℂ) (T : ℝ) :
       ∀ χ, val χ = ∑ i, c i * zVal (w i) χ * coshT (g i) (cas χ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, Fin.elim0, Fin.elim0, Fin.elim0, Fin.elim0, fun i => i.elim0, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isMult_zero (T : ℝ) : IsMult μ E 0 0 T :=
   ⟨0, Fin.elim0, Fin.elim0, Fin.elim0, Fin.elim0, fun i => i.elim0, by simp, by simp⟩

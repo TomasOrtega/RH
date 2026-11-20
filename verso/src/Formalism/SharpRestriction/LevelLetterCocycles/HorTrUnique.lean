@@ -20,7 +20,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 open Formalism.MainNotions.ArcLiftingSetup
 
 /- English proof (translation)
-Take `⟨h3, h6⟩` from `Formalism.MainNotions.UnusedSlot80.SatW.ring_clauses W hR`. Conclude with `Formalism.MainNotions.UnusedSlot80.SatW.isUnit_EE_of_UPi W (Formalism.MainNotions.UnusedSlot80.SatW.UPi.prod _ _ fun s _ => (Formalism.MainNotions.UnusedSlot80.SatW.UPi_qpow W h3 h6 s).pow _)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lam_unit (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (A : ArcP n) (a : ZMod n) (e : ℕ) :
     IsUnit (algebraMap (LetA O n) W.EE (abelian₂ W A a e)) := by
@@ -29,20 +29,20 @@ theorem lam_unit (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (A : A
     (Formalism.MainNotions.UnusedSlot80.SatW.UPi.prod _ _ fun s _ => (Formalism.MainNotions.UnusedSlot80.SatW.UPi_qpow W h3 h6 s).pow _)
 
 /- English proof (translation)
-The claim follows from `Submonoid.prod_mem _ fun s _ => Submonoid.pow_mem _ (Submonoid.subset_closure (show ps W s ∈ insert W.π₀ (Set.range (ps W)) from Set.mem_insert_of_mem _ ⟨s, rfl⟩)) _`.
+A detailed English derivation is pending.
 -/
 theorem lam_piPs (A : ArcP n) (a : ZMod n) (e : ℕ) : abelian₂ W A a e ∈ PiPs W :=
   Submonoid.prod_mem _ fun s _ => Submonoid.pow_mem _ (Submonoid.subset_closure
     (show ps W s ∈ insert W.π₀ (Set.range (ps W)) from Set.mem_insert_of_mem _ ⟨s, rfl⟩)) _
 
 /- English proof (translation)
-The claim follows from `Submonoid.mul_mem _ (Submonoid.subset_closure (Set.mem_insert _ _)) (lam_piPs W A a e)`.
+A detailed English derivation is pending.
 -/
 theorem piLam_piPs (A : ArcP n) (a : ZMod n) (e : ℕ) : W.π₀ * abelian₂ W A a e ∈ PiPs W :=
   Submonoid.mul_mem _ (Submonoid.subset_closure (Set.mem_insert _ _)) (lam_piPs W A a e)
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul (LetA O n) (((PD.p : ℕ) : O) ^ t) z, map_pow, map_natCast]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lA_smul_eq (T : LocLat G Qp LL O) (t : ℕ) (z : W.DD T) :
     lA W ^ t • z = (((PD.p : ℕ) : O) ^ t) • z := by
@@ -50,14 +50,14 @@ theorem lA_smul_eq (T : LocLat G Qp LL O) (t : ℕ) (z : W.DD T) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[smul_smul, ← pow_add, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lA_smul_smul (T : LocLat G Qp LL O) (t s : ℕ) (z : W.DD T) :
     lA W ^ t • lA W ^ s • z = lA W ^ (s + t) • z := by
   rw [smul_smul, ← pow_add, add_comm]
 
 /- English proof (translation)
-Rewrite using `[Formalism.MainNotions.UnusedSlot80.Relay2.φpow_smul, map_pow]`. Use `congr 2`. Unfold `lA`. Rewrite using `[map_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem φpow_lA (T : LocLat G Qp LL O) (e t : ℕ) (z : W.DD T) :
     ((W.φD T) ^ e) (lA W ^ t • z) = lA W ^ t • ((W.φD T) ^ e) z := by
@@ -67,7 +67,7 @@ theorem φpow_lA (T : LocLat G Qp LL O) (e t : ℕ) (z : W.DD T) :
   rw [map_natCast]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.vecB`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => mul_smul _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecB_smul (T : LocLat G Qp LL O) {d : ℕ} (b : Fin d → W.DD T) (c : O) (y : Fin d → O) :
     Formalism.MainNotions.LiftingTheory.vecB W T b (fun m => c * y m) = c • Formalism.MainNotions.LiftingTheory.vecB W T b y := by
@@ -76,9 +76,9 @@ theorem vecB_smul (T : LocLat G Qp LL O) {d : ℕ} (b : Fin d → W.DD T) (c : O
   exact Finset.sum_congr rfl fun m _ => mul_smul _ _ _
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `h`. Use `⟨fun r m => ((PD.p : ℕ) : O) ^ t * y r m, fun r hr m => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_natCast, hy r hr m, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[lA_smul_eq, Finset.smul_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[vecB_smul, smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem horTr_scale (T : LocLat G Qp LL O) {d : ℕ} (b : Fin d → W.DD T) (sol : Fin d → ℕ → Fin d → LL)
     (R κ t : ℕ) (k : Fin d) {H : W.DD T} (h : IsHorTr W T b sol R κ k H) :
@@ -93,7 +93,7 @@ theorem horTr_scale (T : LocLat G Qp LL O) {d : ℕ} (b : Fin d → W.DD T) (sol
 variable [IsDomain O]
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `h`. Take `⟨y', hy', rfl⟩` from `h'`. Use `Finset.sum_congr rfl fun r hr => ?_` and prove the remaining obligations. Establish `: y r = y' r` using `funext fun m => hinj ((hy r (Finset.mem_range.1 hr) m).trans (hy' r (Finset.mem_range.1 hr) m).symm)`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem horTr_unique (hinj : Function.Injective (algebraMap O LL)) (T : LocLat G Qp LL O) {d : ℕ}
     (b : Fin d → W.DD T) (sol : Fin d → ℕ → Fin d → LL) (R κ : ℕ) (k : Fin d) {H H' : W.DD T}
@@ -112,7 +112,7 @@ def RV (T : LocLat G Qp LL O) (c' : ZMod n) (e : ℕ) (Λ : LetA O n) {d : ℕ} 
     InFP W T c' e (W.π₀ * Λ ^ 2) (lA W ^ κ' • (lA W ^ κ • Λ • x - ∑ k, a k • ((W.φD T) ^ e) (Hh k)))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨κ, κ', Hh, a, h1, h2, h3⟩`. Conclude with `⟨κ, Hh, h1, κ', a, h2, h3⟩`. Introduce and unpack `⟨κ, Hh, h1, κ', a, h2, h3⟩`. Conclude with `⟨κ, κ', Hh, a, h1, h2, h3⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem repVV_iff (T : LocLat G Qp LL O) (c' : ZMod n) (e M : ℕ) (Λ : LetA O n) {d : ℕ}
     (b : Fin d → W.DD T) (sol : Fin d → ℕ → Fin d → LL) (x : W.DD T) (f : Fin d → W.EE) :
@@ -125,11 +125,11 @@ theorem repVV_iff (T : LocLat G Qp LL O) (c' : ZMod n) (e M : ℕ) (Λ : LetA O 
     exact ⟨κ, κ', Hh, a, h1, h2, h3⟩
 
 /- English proof (translation)
-Take `⟨κ', a, ha, hP⟩` from `h`. Use `⟨κ', a, ha, ?_⟩` and prove the remaining obligations. Establish `e1 : lA W ^ κ' • (lA W ^ (κ + t) • Λ • x - ∑ k, a k • ((W.φD T) ^ e) (lA W ^ t • Hh k)) = lA W ^ t • (lA W ^ κ' • (lA W ^ κ • Λ • x - ∑ k, a k • ((W.φD T) ^ e) (Hh k)))`. Simplify using `only [φpow_lA, smul_sub, Finset.smul_sum, smul_smul, pow_add]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Put the polynomial expressions in normal form. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+Put the polynomial expressions in normal form. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_smul W T c' e _ (lA_mem W t) hP`.
+A detailed English derivation is pending.
 -/
 theorem rv_up (T : LocLat G Qp LL O) (c' : ZMod n) (e : ℕ) (Λ : LetA O n) {d : ℕ} (κ t : ℕ)
     (Hh : Fin d → W.DD T) (x : W.DD T) (f : Fin d → W.EE) (h : RV W T c' e Λ κ Hh x f) :
@@ -148,11 +148,11 @@ theorem rv_up (T : LocLat G Qp LL O) (c' : ZMod n) (e : ℕ) (Λ : LetA O n) {d 
   exact Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_smul W T c' e _ (lA_mem W t) hP
 
 /- English proof (translation)
-Take `⟨κ₁, a₁, ha₁, hP₁⟩` from `hx`. Take `⟨κ₂, a₂, ha₂, hP₂⟩` from `hy`. Use `⟨κ₁ + κ₂, a₁ + a₂, fun k => ⟨W.AΔ.add_mem (ha₁ k).1 (ha₂ k).1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, mul_add, (ha₁ k).2, (ha₂ k).2, Pi.add_apply, map_add]`. Establish `e1 : lA W ^ (κ₁ + κ₂) • (lA W ^ κ • Λ • (x + y) - ∑ k, (a₁ + a₂) k • ((W.φD T) ^ e) (Hh k)) = lA W ^ κ₂ • (lA W ^ κ₁ • (lA W ^ κ • Λ • x - ∑ k, a₁ k • ((W.φD T) ^ e) (Hh k))) + lA W ^ κ₁ • (lA W ^ κ₂ • (lA W ^ κ • Λ • y - ∑ k, a₂ k • ((W.φD T) ^ e) (Hh k)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lA_smul_smul, lA_smul_smul, add_comm κ₂ κ₁, ← smul_add]`. Use `congr 1`. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib, smul_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_add W T c' e _ (Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_smul W T c' e _ (lA_mem W _) hP₁) (Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_smul W T c' e _ (lA_mem W _) hP₂)`.
+A detailed English derivation is pending.
 -/
 theorem rv_add (T : LocLat G Qp LL O) (c' : ZMod n) (e : ℕ) (Λ : LetA O n) {d : ℕ} (κ : ℕ)
     (Hh : Fin d → W.DD T) (x y : W.DD T) (f g : Fin d → W.EE) (hx : RV W T c' e Λ κ Hh x f)
@@ -174,11 +174,11 @@ theorem rv_add (T : LocLat G Qp LL O) (c' : ZMod n) (e : ℕ) (Λ : LetA O n) {d
       (Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_smul W T c' e _ (lA_mem W _) hP₂)
 
 /- English proof (translation)
-Take `⟨κ₁, a₁, ha₁, hP₁⟩` from `hx`. Use `⟨κ₁, fun k => c * a₁ k, fun k => ⟨W.AΔ.mul_mem hc (ha₁ k).1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_left_comm, (ha₁ k).2, ← map_mul]`. Establish `e1 : lA W ^ κ₁ • (lA W ^ κ • Λ • (c • x) - ∑ k, (c * a₁ k) • ((W.φD T) ^ e) (Hh k)) = c • (lA W ^ κ₁ • (lA W ^ κ • Λ • x - ∑ k, a₁ k • ((W.φD T) ^ e) (Hh k)))`. Simplify using `only [smul_sub, Finset.smul_sum, mul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[smul_comm c (lA W ^ κ₁), smul_comm c (lA W ^ κ), smul_comm c Λ]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm c (lA W ^ κ₁)]`. Rewrite using `[e1]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_smul W T c' e _ hc hP₁`.
+A detailed English derivation is pending.
 -/
 theorem rv_smul (T : LocLat G Qp LL O) (c' : ZMod n) (e : ℕ) (Λ : LetA O n) {d : ℕ} (κ : ℕ)
     (Hh : Fin d → W.DD T) (x : W.DD T) (f : Fin d → W.EE) {c : LetA O n} (hc : c ∈ W.AΔ)
@@ -198,9 +198,9 @@ theorem rv_smul (T : LocLat G Qp LL O) (c' : ZMod n) (e : ℕ) (Λ : LetA O n) {
     exact Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_smul W T c' e _ hc hP₁
 
 /- English proof (translation)
-Rewrite `hx`, `hy`, the goal using `[repVV_iff]`. Take `⟨κ₁, H₁, hH₁, hR₁⟩` from `hx`. Take `⟨κ₂, H₂, hH₂, hR₂⟩` from `hy`. Establish `h1` using `rv_up W T c' e Λ κ₁ κ₂ H₁ x f hR₁`. Establish `h2` using `rv_up W T c' e Λ κ₂ κ₁ H₂ y g hR₂`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : ∀ k, lA W ^ κ₂ • H₁ k = lA W ^ κ₁ • H₂ k` using `fun k => horTr_unique W hinj T b sol M _ k (horTr_scale W T b sol M κ₁ κ₂ k (hH₁ k)) (by rw [add_comm]; exact horTr_scale W T b sol M κ₂ κ₁ k (hH₂ k))`. Rewrite `h2` using `[show (fun k => lA W ^ κ₁ • H₂ k) = fun k => lA W ^ κ₂ • H₁ k from funext fun k => (hH k).symm, add_comm κ₂ κ₁]`. Conclude with `⟨κ₁ + κ₂, _, fun k => horTr_scale W T b sol M κ₁ κ₂ k (hH₁ k), rv_add W T c' e Λ _ _ x y f g h1 h2⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem repVV_add (hinj : Function.Injective (algebraMap O LL)) (T : LocLat G Qp LL O) (c' : ZMod n)
     (e M : ℕ) (Λ : LetA O n) {d : ℕ} (b : Fin d → W.DD T) (sol : Fin d → ℕ → Fin d → LL)
@@ -219,7 +219,7 @@ theorem repVV_add (hinj : Function.Injective (algebraMap O LL)) (T : LocLat G Qp
   exact ⟨κ₁ + κ₂, _, fun k => horTr_scale W T b sol M κ₁ κ₂ k (hH₁ k), rv_add W T c' e Λ _ _ x y f g h1 h2⟩
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[repVV_iff]`. Take `⟨κ, H, hH, hR⟩` from `hx`. Conclude with `⟨κ, H, hH, rv_smul W T c' e Λ κ H x f hc hR⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem repVV_smul (T : LocLat G Qp LL O) (c' : ZMod n) (e M : ℕ) (Λ : LetA O n) {d : ℕ}
     (b : Fin d → W.DD T) (sol : Fin d → ℕ → Fin d → LL) (x : W.DD T) (f : Fin d → W.EE)
@@ -230,7 +230,7 @@ theorem repVV_smul (T : LocLat G Qp LL O) (c' : ZMod n) (e M : ℕ) (Λ : LetA O
   exact ⟨κ, H, hH, rv_smul W T c' e Λ κ H x f hc hR⟩
 
 /- English proof (translation)
-Establish `h` using `repVV_smul W T c' e M Λ b sol y g (W.AΔ.neg_mem W.AΔ.one_mem) hy`. Simplify using `only [map_neg, map_one, neg_one_mul, neg_smul, one_smul] at h`. Use `repVV_add W hinj T c' e M Λ b sol x (-y) f (fun k => -g k) hx h` as an intermediate fact. Rewrite `this` using `[← sub_eq_add_neg, show f + (fun k => -g k) = f - g from by funext k; simp [sub_eq_add_neg]]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem repVV_sub (hinj : Function.Injective (algebraMap O LL)) (T : LocLat G Qp LL O) (c' : ZMod n)
     (e M : ℕ) (Λ : LetA O n) {d : ℕ} (b : Fin d → W.DD T) (sol : Fin d → ℕ → Fin d → LL)

@@ -25,11 +25,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 end GlobalTheory.TraceFlatLevel
 namespace GlobalTheory.BigOn.Exp.TupLe
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Csz p j hr hm ρ hρ hpin hlev i b ψ ω hψ hQ hω h P`. Establish `hL` using `_root_.GlobalTheory.BigOn.links2_of_rows_alt _ _ _ _ _ _ _ _ _ _ p hr hm.1`. Establish `hC : GlobalTheory.Hk3.Core (R2 p) (F2 p)` using `⟨hL.1.lev, hL.1.grp, hL.1.fam, hL.1.models, hL.1.chain, hL.1.thP⟩`. Establish `hBo : BaseOf (R2 p) j (ρ.B i j b)` using `{ baseOf_of_realPin_at (cG := p.cG) hC.lev hρ hpin i j b with }`. Use `GlobalTheory.TraceFlatLevel.traceLevel_flat (R2 p) j (ρ.B i j b) (hρ.base i j b) hBo (F2 p).P0 (F2 p).ψ0⁻¹ ((p.R.eG.trans p.cG).trans (ρ.eG i j b)) (fun g P h h' a c => ?_) (fun g => mem_level_iff hm.2.2 hlev i j b g) (fun u hu => ?_) ψ hψ hQ ω hω h P` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1` using `hpin.grp i j b (p.cG (p.R.eG g)) P h h' a c`. Rewrite `e1` using `[MulEquiv.symm_apply_apply]`. Conclude with `e1`. Use `(level_chi hm.2.2 hρ hlev i j b u hu).1.trans ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, map_inv₀]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem traceSt_alt : _root_.GlobalTheory.BigOn.Exp.TupLe.TraceCondition := by
   intro D L hT Gi Gl Kc Y cX ex Csz p j hr hm ρ hρ hpin hlev i b ψ ω hψ hQ hω h P

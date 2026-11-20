@@ -19,33 +19,29 @@ namespace GlobalTheory.ThetaDecay
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' _`. Establish `evI_mul : ∀ a b : AF F, evI F (a * b) = evI F a * evI F b` using `fun a b => by show InfiniteAdeleRing.ringEquiv_mixedSpace F (a.1 * b.1) = _`. Conclude with `map_mul _ _ _`. Establish `evI_sub : ∀ a b : AF F, evI F (a - b) = evI F a - evI F b` using `fun a b => by show InfiniteAdeleRing.ringEquiv_mixedSpace F (a.1 - b.1) = _`. Conclude with `map_sub _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `evI_one : evI F 1 = 1` using `map_one (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Establish `evI_realAd : ∀ t : ℝ, evI F (realAd F t) = algebraMap ℝ _ t` using `fun t => by`. Simplify using `only [evI, realAd, LinearMap.inl_apply, RingEquiv.apply_symm_apply]`. Take `⟨K5, hK5, h5⟩` from `GlobalTheory.T.arch_bound_linear_matrix F E n d (Fin n × Fin d) M.co.e.symm.toLinearMap`. Take `⟨K3, hK3, h3⟩` from `GlobalTheory.T.arch_bound_coordinates F E`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨K4, hK4, h4⟩` from `GlobalTheory.T.arch_bound_linear_coordinates F E n d (Fin n × Fin d) M.co.e.toLinearMap`. Use `⟨K4 * (K3 * (n * d * K5)) + 1, fun p u hu => ?_⟩` and prove the remaining obligations. Establish `hg : (1 : ℝ) ≤ ht p.1`. Use `one_le_heightGL F (p.1 : GL (Fin n) (AF F ⊗[F] E))` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hh : (1 : ℝ) ≤ ht p.2`. Use `one_le_heightGL F (p.2 : GL (Fin d) (AF F ⊗[F] E))` as an intermediate fact. Conclude with `this` after adjusting the coercions. Take `⟨H, hH⟩ : ∃ H : ℝ, H = (ht p.1 : ℝ) * ht p.2` from `⟨_, rfl⟩`. Establish `hH0 : 0 ≤ H` using `by rw [hH]; positivity`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, hc⟩ : ∃ c : ℝ, c = (K4 * (K3 * (n * d * K5)) + 1) * H` from `⟨_, rfl⟩`. Establish `hcpos : 0 < c`. Rewrite using `[hc]`. Establish `: 0 < H` using `by rw [hH]; nlinarith`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨x, hx⟩ : ∃ x, x = actAB (cA σ) p u` from `⟨_, rfl⟩`. Establish `s1 : ∀ (w : InfinitePlace F) (τ : EmbOver E w) k l, ‖piInf τ (u k l)‖ ≤ K5 * 1`. Use `h5 (M.co.e u) 1 zero_le_one (fun w i => ⟨((GlobalTheory.T.norm_arch_le_sup_infinite F _).1 w).trans (hu.2 i).1, ((GlobalTheory.T.norm_arch_le_sup_infinite F _).1 w).trans (hu.2 i).2⟩)` as an intermediate fact. Simplify `this` using `only [LinearEquiv.coe_toLinearMap, LinearEquiv.symm_apply_apply]`. Establish `s2` using `GlobalTheory.T.arch_bound_unitary_action F E σ n d X.J W.J p u (K5 * 1) (by positivity) s1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `s2` using `[← hx, ← hH]`. Establish `s3 : ∀ w k l r, ‖archAt F w ((coB F E).repr (x k l) r)‖ ≤ K3 * (n * d * H * (K5 * 1))` using `fun w k l r => h3 (x k l) _ (by positivity) (fun w τ => s2 w τ k l) r w`. Establish `s4` using `h4 x _ (by positivity) s3`. Establish `hbound : K4 * (K3 * (n * d * H * (K5 * 1))) ≤ c`. Establish `e1 : K4 * (K3 * (n * d * H * (K5 * 1))) = K4 * (K3 * (n * d * K5)) * H` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e1, hc]`. Conclude with `mul_le_mul_of_nonneg_right (by linarith) hH0`. Establish `s5 : ∀ i, ‖evI F ((M.co.e x).1 i)‖ ≤ c ∧ ‖evI F ((M.co.e x).2 i)‖ ≤ c` using `fun i => ⟨(GlobalTheory.T.norm_arch_le_sup_infinite F _).2 c hcpos.le (fun w => ((s4 w i).1).trans hbound), (GlobalTheory.T.norm_arch_le_sup_infinite F _).2 c hcpos.le (fun w => ((s4 w i).2).trans hbound)⟩`. Establish `key : ∀ a : AF F, evI F a = 0 → a • M.co.e x = 0`. Introduce `a ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h0 : a • M.co.e u = 0`. Use `Prod.ext (funext fun j => ?_) (funext fun j => ?_)` and prove the remaining obligations. Conclude with `(hu.1 j).1 a ha`. Conclude with `(hu.1 j).2 a ha`. Establish `hu0 : a • u = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congrArg M.co.e.symm h0` as an intermediate fact. Rewrite `this` using `[map_smul, LinearEquiv.symm_apply_apply, map_zero]`. Then use the resulting hypothesis. Rewrite using `[← map_smul, hx]`. Establish `: a • actAB (cA σ) p u = actAB (cA σ) p (a • u)`. Simplify using `only [actAB, Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hu0]`. Simplify using `[actAB]`. Establish `harch : IsArch (M.co.e x)` using `fun i => ⟨fun a ha => by simpa using congrArg (fun z => z.1 i) (key a ha), fun a ha => by simpa using congrArg (fun z => z.2 i) (key a ha)⟩`. Establish `hone : ∀ z : (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F), IsArch z → realAd F 1 • z = z`. Introduce `z hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : evI F (1 - realAd F 1) = 0`. Rewrite using `[evI_sub, evI_one, evI_realAd, map_one, sub_self]`. Establish `: (1 - realAd F 1) • z = 0` using `Prod.ext (funext fun j => (hz j).1 _ h1) (funext fun j => (hz j).2 _ h1)`. Rewrite `this` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `this.symm`.
-
-Use `⟨c, hcpos.le, by rw [hc, hH], realAd F c⁻¹ • M.co.e x, ⟨isArch_smul harch _, fun i => ⟨?_, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Use `show ‖evI F (realAd F c⁻¹ * (M.co.e x).1 i)‖ ≤ 1`. Rewrite using `[evI_mul, evI_realAd, ← Algebra.smul_def, norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.2 hcpos)]`. Combine the equalities or inequalities in the displayed calculation. Use `show ‖evI F (realAd F c⁻¹ * (M.co.e x).2 i)‖ ≤ 1`.
-
-Rewrite using `[evI_mul, evI_realAd, ← Algebra.smul_def, norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.2 hcpos)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, realAd_mul, mul_inv_cancel₀ hcpos.ne', hone _ harch, hx]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archUnit_act_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∃ C : ℝ, ∀ (p : UA σ X.J × UA σ W.J) (u : Matrix (Fin n) (Fin d) (AE F E)), IsArchUnit (M.co.e u) → ∃ c : ℝ, 0 ≤ c ∧ c ≤ C * ((ht p.1 : ℝ) * ht p.2) ∧ ∃ w, IsArchUnit w ∧ M.co.e (actAB (cA σ) p u) = realAd F c • w := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' _

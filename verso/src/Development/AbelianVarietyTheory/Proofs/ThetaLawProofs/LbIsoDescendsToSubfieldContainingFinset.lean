@@ -12,15 +12,15 @@ open GlobalTheory.KeyKa
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k K _ _ σ X₀ X φ M N hφ hqc hqs hM hN H`. Use `letI := σ.toAlgebra`. Establish `same : ∀ {Y Y' : Scheme.{0}} (a : Y ⟶ X₀.left) (j : Y' ⟶ Y) (a' : Y' ⟶ X₀.left), a' = j ≫ a → LBIso (M.pull a) (N.pull a) → LBIso (M.pull a') (N.pull a')` using `fun a j a' e h => LBIso.chartPull (chartPullSame M _ _ _ j fun _ => e) (chartPullSame N _ _ _ j fun _ => e) h`. Establish `hφ' : IsPullback φ X.hom X₀.hom (spMap (algebraMap k K))` using `hφ`. Establish `H₁` using `same φ hφ'.isoPullback.inv (pullback.fst X₀.hom (spMap (algebraMap k K))) (IsPullback.isoPullback_inv_fst hφ').symm H`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨R, hR₀, ⟨s, rfl⟩, hiso⟩` from `exists_fg_lbIso (C := K) (R₀ := ⊥) X₀.hom Subalgebra.fg_bot (M.pull (pullback.fst _ _)) (N.pull (pullback.fst _ _)) (pull_isLB hM _) (pull_isLB hN _) (LBIso.chartPull (chartPullOut M _ _ _ _ fun _ => (baseChangeMap_fst X₀.hom _).symm) (chartPullOut N _ _ _ _ fun _ => (baseChangeM …`. Establish `H₂` using `LBIso.chartPull (chartPullIn M _ _ _) (chartPullIn N _ _ _) hiso`. Use `⟨s, ?_⟩` and prove the remaining obligations. Introduce `k₁ _ α β hαβ hs X₁ χ hχ`. Establish `hR : ∀ x : Algebra.adjoin k (s : Set K), ∃ y, β y = x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, hx⟩`. Express the relevant statement in the definitionally equal form `x ∈ β.range`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hs hx`. Consider the case `algebraMap r => exact ⟨α r, RingHom.congr_fun hαβ r⟩`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`. Use `choose ρ₀ hρ₀ using hR`. Set `ρ : Algebra.adjoin k (s : Set K) →+* k₁` to `{ toFun := ρ₀ map_one' := β.injective (by simp [hρ₀]) map_mul' := fun x y ↦ β.injective (by simp [hρ₀]) map_zero' := β.injective (by simp [hρ₀]) map_add' := fun x y ↦ β.injective (by simp [hρ₀]) }`. Establish `hρ₂ : ρ.comp (algebraMap k _) = α` using `RingHom.ext fun r ↦ β.injective ((hρ₀ _).trans (RingHom.congr_fun hαβ r).symm)`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `j : X₁.left ⟶ pullback X₀.hom (spMap (algebraMap k (Algebra.adjoin k (s : Set K))))` to `pullback.lift χ (X₁.hom ≫ spMap ρ) (by rw [Category.assoc, spMap_comp_ring, hρ₂, hχ.w])`. Establish `hj₁ : j ≫ pullback.fst _ _ = χ` using `pullback.lift_fst _ _ _`. Use `same _ j χ ?_ H₂` and prove the remaining obligations. Rewrite using `[baseChangeMap_fst, hj₁]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_descends_to_subfield_containing_finset :
     ∀ (k K : Type) [Field k] [Field K] (σ : k →+* K) (X₀ : Over (Sp k)) (X : Over (Sp K)) (φ : X.left ⟶ X₀.left) (M N : LB X₀.left), IsPullback φ X.hom X₀.hom (spMap σ) → QuasiCompact X₀.hom → QuasiSeparated X₀.hom → M.IsLB → N.IsLB → LBIso (M.pull φ) (N.pull φ) → ∃ s : Finset K, ∀ (k₁ : Type) [Field k₁] (α : k →+* k₁) (β : k₁ →+* K), β.comp α = σ → (s : Set K) ⊆ Set.range β → ∀ (X₁ : Over (Sp k₁)) (χ : X₁.left ⟶ X₀.left), IsPullback χ X₁.hom X₀.hom (spMap α) → LBIso (M.pull χ) (N.pull χ) := by

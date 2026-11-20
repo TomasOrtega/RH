@@ -17,7 +17,7 @@ namespace PositivityTheory.SiegelWeilFormula.KSplitP
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Rewrite `hp`, `hp'`, the goal using `[SiegelEisensteinSeries.Grp.isPar_iff]`. Establish `e : mat2 (p * p') = mat2 p * mat2 p'` using `rfl`. Rewrite using `[e, Units.val_mul, Matrix.mul_assoc, hp', ← Matrix.mul_assoc, hp, Matrix.mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPar_mul {n : ℕ} {Y : Spc F E n} {p p' : G2 σ Y} {t t' : GL (Fin n) (AE F E)} (hp : IsPar p t) (hp' : IsPar p' t') :
     IsPar (p * p') (t * t') := by
@@ -26,14 +26,14 @@ theorem isPar_mul {n : ℕ} {Y : Spc F E n} {p p' : G2 σ Y} {t t' : GL (Fin n) 
   rw [e, Units.val_mul, Matrix.mul_assoc, hp', ← Matrix.mul_assoc, hp, Matrix.mul_assoc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, fun Φ hΦ => d.ok.dbl.weil.2.2 d.l d.ok.dbl.adm (fun z φ hφ => d.ok.dbl.kill z φ hφ) p t hp Φ hΦ⟩`.
+Supply the required witnesses or components.
 -/
 theorem siegel (d : SD σ) {p : d.G} {t : GL (Fin d.n) (AE F E)} (hp : IsPar p t) :
     ∃ C : ℂ, ∀ Φ ∈ d.sch, d.l (d.om p Φ) = C * d.l Φ :=
   ⟨_, fun Φ hΦ => d.ok.dbl.weil.2.2 d.l d.ok.dbl.adm (fun z φ hφ => d.ok.dbl.kill z φ hφ) p t hp Φ hΦ⟩
 
 /- English proof (translation)
-Unfold `SD.T`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr, Matrix.zero_mul]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem T_zero (d : SD σ) (Φ : d.Fn) : d.T Φ 0 = d.l Φ := by
   unfold SD.T
@@ -42,7 +42,7 @@ theorem T_zero (d : SD σ) (Φ : d.Fn) : d.T Φ 0 = d.l Φ := by
   simp [Darboux.rho, schr, Matrix.zero_mul]
 
 /- English proof (translation)
-Unfold `RD.loc SD.cw`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem loc_zero (d : SD σ) (R : RD d) (w : InfinitePlace F) : R.loc w 0 = 0 := by
   unfold RD.loc SD.cw
@@ -50,46 +50,44 @@ theorem loc_zero (d : SD σ) (R : RD d) (w : InfinitePlace F) : R.loc w 0 = 0 :=
   simp
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `PositivityTheory.SiegelWeilFormula.KMain.schwartz_polyGauss (m := m) (n := n) (2 * Real.pi) (by positivity) P`. Conclude with `⟨S, hS⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fP_sw {m n : ℕ} (P : PX m n) : IsSw (fP P) := by
   obtain ⟨S, hS⟩ := PositivityTheory.SiegelWeilFormula.KMain.schwartz_polyGauss (m := m) (n := n) (2 * Real.pi) (by positivity) P
   exact ⟨S, hS⟩
 
 /- English proof (translation)
-The claim follows from `NNReal.coe_pos.2 (pos_iff_ne_zero.2 ((Group.isUnit z).map (absE F E)).ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem absE_pos (z : (AE F E)ˣ) : 0 < (absE F E z : ℝ) :=
   NNReal.coe_pos.2 (pos_iff_ne_zero.2 ((Group.isUnit z).map (absE F E)).ne_zero)
 
 /- English proof (translation)
-Establish `hn : 0 < d.n` using `d.ok.hn`. Take `⟨t0, ht0⟩` from `d.ok.frame.2`. Use `set M := inFrame d.b (R.ι w q) with hM`. Establish `hζ : R.ζ ≠ 0` using `Krd.zeta_ne R.hζ`. Establish `hw : dZ d.n R.ζ * d.cw w M = mR q * dZ d.n R.ζ` using `R.at_w w q`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C := d.cw w M with hC`. Establish `e1 : dZ d.n R.ζ * C = Matrix.fromBlocks C.toBlocks₁₁ C.toBlocks₁₂ (R.ζ • C.toBlocks₂₁) (R.ζ • C.toBlocks₂₂)` using `by conv_lhs => rw [← Matrix.fromBlocks_toBlocks C]`. Simplify using `[dZ, Matrix.fromBlocks_multiply]`. Establish `e2 : mR q * dZ d.n R.ζ = Matrix.fromBlocks (mR q).toBlocks₁₁ (R.ζ • (mR q).toBlocks₁₂) (mR q).toBlocks₂₁ (R.ζ • (mR q).toBlocks₂₂)` using `by conv_lhs => rw [← Matrix.fromBlocks_toBlocks (mR q)]`. Simplify using `[dZ, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hw` using `[e1, e2]`. Take `⟨h11, -, h21, -⟩` from `Matrix.fromBlocks_inj.1 hw`. Rewrite `h21` using `[hq]`. Establish `hC21 : C.toBlocks₂₁ = 0` using `(smul_eq_zero.1 h21).resolve_left hζ`. Establish `hoff` using `R.off_f w q`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : R.ι w q ∈ SiegelEisensteinSeries.Grp.parS σ d.Y d.b (SiegelEisensteinSeries.Grp.siegelS hn)`. Use `(SiegelEisensteinSeries.Grp.mem_parS_siegelS hn).2 fun i j => ?_` and prove the remaining obligations. Use `Place.ad_ext d.cm d.B.emb (fun w' => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hw' : w' = w`. Substitute `hw'` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun (congrFun hC21 i) j` as an intermediate fact. Simplify `this` using `[Matrix.toBlocks₂₁, hC, SD.cw]`. Use `congrFun (congrFun (R.off_w w w' q hw') (Sum.inr i)) (Sum.inl j)` as an intermediate fact. Simplify `this` using `[SD.cw, hM]`. Use `congrFun (congrFun hoff (Sum.inr i)) (Sum.inl j)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify `this` using `[hM]`. Take `⟨t, hPt, hdet⟩` from `SiegelEisensteinSeries.Grp.isPar_of_mem_siegelS ht0 hn hmem`. Use `⟨t, hPt, ?_⟩` and prove the remaining obligations. Use `set N := M.toBlocks₁₁ with hN`. Establish `hfinN : finOne F • N = finOne F • (1 : Matrix (Fin d.n) (Fin d.n) (AE F E))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use extensionality with `i j`. Use `congrFun (congrFun hoff (Sum.inl i)) (Sum.inl j)` as an intermediate fact. Simplify `this` using `[hN, Matrix.toBlocks₁₁, Matrix.one_apply]`. Use `set e := algebraMap (AF F) (AE F E) (finOne F) with he`. Establish `hidem : e * e = e` using `by rw [he, ← map_mul, Krd.fin_idem]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hpow' : ∀ k : ℕ, e ^ (k + 1) = e`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, ih, hidem]`.
+Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpow : e ^ d.n = e`. Take `⟨k, hk⟩` from `Nat.exists_eq_succ_of_ne_zero hn.ne'`. Rewrite using `[hk]`. Conclude with `hpow' k`. Establish `hdetN : e * (N.det - 1) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (e • N).det = (e • (1 : Matrix (Fin d.n) (Fin d.n) (AE F E))).det`. Rewrite using `[he, algebraMap_smul, algebraMap_smul, hfinN]`. Rewrite `h1` using `[Matrix.det_smul, Matrix.det_smul, Fintype.card_fin, hpow, Matrix.det_one, mul_one]`. Rewrite using `[mul_sub, h1, mul_one, sub_self]`. Establish `hat : ((Matrix.GeneralLinearGroup.det t : (AE F E)ˣ) : AE F E) - 1 ∈ PositivityTheory.ThKG.CayleyTransformDarboux.atI F E`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PositivityTheory.ThKG.CayleyTransformDarboux.mem_atI, hdet]`. Introduce `u hu`. Establish `hu1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (hu.trans (map_zero _).symm)`. Establish `eu : u = u * finOne F` using `Prod.ext (by change u.1 = u.1 * 0; rw [hu1, mul_zero]) (by change u.2 = u.2 * 1; rw [mul_one])`. Rewrite using `[Algebra.smul_def, eu, map_mul, mul_assoc, ← he, hdetN, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PositivityTheory.ThKG.CayleyTransformDarboux.absE_inf d.cm d.B.emb hat]`. Rewrite using `[Finset.prod_eq_single w (fun w' _ hne => ?_) (fun h => absurd (Finset.mem_univ w) h)]`. Rewrite using `[hdet, RingHom.map_det]`. Establish `: (N.map (piInf (d.B.emb w))) = C.toBlocks₁₁` using `by ext i j; rfl`. Rewrite using `[RingHom.mapMatrix_apply, this, h11]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hdet, RingHom.map_det]`. Establish `: (N.map (piInf (d.B.emb w'))) = (d.cw w' M).toBlocks₁₁` using `by ext i j; rfl`. Rewrite using `[RingHom.mapMatrix_apply, this, R.off_w w w' q hne]`. Establish `h1 : (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) ℂ).toBlocks₁₁ = 1`. Use extensionality with `i j`.
-
-Simplify using `[Matrix.toBlocks₁₁, Matrix.one_apply]`. Rewrite using `[h1, Matrix.det_one, norm_one, one_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_isPar (d : SD σ) (R : RD d) (w : InfinitePlace F) (q : GR d.n) (hq : (mR q).toBlocks₂₁ = 0) :
     ∃ t, IsPar (R.ι w q) t ∧ (absE F E (Matrix.GeneralLinearGroup.det t) : ℝ) = ‖(mR q).toBlocks₁₁.det‖ ^ 2 := by

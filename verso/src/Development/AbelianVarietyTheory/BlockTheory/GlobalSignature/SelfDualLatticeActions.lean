@@ -58,7 +58,7 @@ variable {F : Type} [Field F] [NumberField F] (E : Type) [Field E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F)) in
 variable {E} (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) in
 /- English proof (translation)
-Establish `h : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) σ J 1 = 1` using `rfl`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.act, h, Units.val_one, Matrix.one_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.act_one (y : _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.Wv E v M) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.act v σ J 1 y = y := by
@@ -71,7 +71,7 @@ variable {F : Type} [Field F] [NumberField F] (E : Type) [Field E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F)) in
 variable {E} (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) in
 /- English proof (translation)
-Establish `h : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) σ J (g * g') = _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (_root_.Formalism.MainNotions.GlobalTheoryT …` using `rfl`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.act, _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.act, _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.act, h, Units.val_mul, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.act_mul (g g' : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) σ J)
     (y : _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.Wv E v M) :
@@ -187,7 +187,7 @@ variable {F : Type} [Field F] [NumberField F] {E : Type} [Field E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) in
 
 /- English proof (translation)
-Set `φ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.Ev E v →ₐ[_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v] _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.Ev E v` to `Algebra.TensorProduct.map (AlgHom.id (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v)) σ`. Establish `h` using `(hz : IsIntegral (v.adicCompletionIntegers F) z).map (φ.restrictScalars (v.adicCompletionIntegers F))`. Conclude with `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.sigR_mem {z : _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.Ev E v}
     (hz : z ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.OEv E v) :

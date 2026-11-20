@@ -18,7 +18,7 @@ namespace Formalism.MainNotions.OnePlaceEstimates
 open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions.S.ThB Formalism.BasicNotions
 
 /- English proof (translation)
-Simplify using `[cOfDpsi, cStd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cOfDpsi_one : cOfDpsi ((1 : ℝ) : ℂ) = cStd := by
   simp [cOfDpsi, cStd]
@@ -169,13 +169,13 @@ def BesselRangeNearParameter (D : D7) (Cg Cq : ℝ) (L : LocBessel D.R.k D.R.rS)
     l1 L.lam lam0 + (((D.R.rS + 1) * (p + D.R.rS + 2) : ℕ) : ℝ) ≤ q0 Cq (2 * D.R.rS + 2) L.ε L.u lam0
 
 /- English proof (translation)
-Simplify using `[l1]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem lOne_self_lemma {n : ℕ} (x : Fin n → ℝ) : l1 x x = 0 := by
   simp [l1]
 
 /- English proof (translation)
-Conclude with `⟨h.1, by rw [lOne_self_lemma, zero_add]; exact h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem GapAndSizeRange.toC {D : D7} {Cg Cq : ℝ} {L : LocBessel D.R.k D.R.rS} {p : ℕ} (h : GapAndSizeRange D Cg Cq L p) :
     BesselRangeNearParameter D Cg Cq L L.lam p := by
@@ -250,21 +250,21 @@ def BesselConjugatesEveryCell (D : D7) (Ch Cg Cq Cb : ℝ) : Prop :=
           (DpowPt α γ * star (DpowPt β γ)) • OrbInt L (fν 0) g νm = ∑' ν, a ν • OrbInt L (fν ν) g νm)
 
 /- English proof (translation)
-Introduce `L f μsec ka b κ p hκ hL hR hf hs α hα`. Conclude with `h L L.lam f μsec ka b κ p hκ hL hR.toC hf hs α hα`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem bessel_iteration_of_near {D : D7} {Ch Cg Cq Cb : ℝ} (h : BesselIterationNearParameter D Ch Cg Cq Cb) : BesselDerivativeIteration D Ch Cg Cq Cb := by
   intro L f μsec ka b κ p hκ hL hR hf hs α hα
   exact h L L.lam f μsec ka b κ p hκ hL hR.toC hf hs α hα
 
 /- English proof (translation)
-Introduce `L μsec ka b κ p Hν _ _ _ σν fν hκ hL hR hs hν h0 α hα`. Conclude with `h L L.lam μsec ka b κ p Hν σν fν hκ hL hR.toC hs hν h0 α hα`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem bessel_expansion_coeff_of_near {D : D7} {Ch Cg Cq Cb : ℝ} (h : BesselExpansionNearParameter D Ch Cg Cq Cb) : BesselExpansionCoefficientSum D Ch Cg Cq Cb := by
   intro L μsec ka b κ p Hν _ _ _ σν fν hκ hL hR hs hν h0 α hα
   exact h L L.lam μsec ka b κ p Hν σν fν hκ hL hR.toC hs hν h0 α hα
 
 /- English proof (translation)
-Introduce `L μsec ka b κ p Hν _ _ _ σν fν hκ hL hR hs hν h0 α β hαβ`. Take `⟨a, h1, h2, h3, h4, h5⟩` from `h L L.lam μsec ka b κ p Hν σν fν hκ hL hR.toC hs hν h0 α β hαβ`. Use `⟨a, h1, h2, h3, h4, fun hL' hh => h5 hL' ?_⟩` and prove the remaining obligations. Rewrite using `[lOne_self_lemma, zero_add]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem bessel_expansion_of_near {D : D7} {Ch Cg Cq Cb : ℝ} (h : BesselConjugatesEveryCell D Ch Cg Cq Cb) : BesselExpansionCoefficients D Ch Cg Cq Cb := by
   intro L μsec ka b κ p Hν _ _ _ σν fν hκ hL hR hs hν h0 α β hαβ
@@ -544,7 +544,7 @@ def GridOK {D : D7} {k0 : ℕ} (X : GramWordSpace.Dat D k0) (y0 : D.what₂.Tau 
   ∀ v, X.a v + 2 ≤ y0 v ∧ y0 v + 30 * ((D.R.rS : ℝ) + 1) ^ 2 - 2 ≤ X.b v
 
 /- English proof (translation)
-Conclude with `⟨fun v => X.a v + 2, fun v => ⟨le_refl _, by have := h v; linarith⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem GridOK.exists {D : D7} {k0 : ℕ} (X : GramWordSpace.Dat D k0)
     (h : ∀ v, 30 * ((D.R.rS : ℝ) + 1) ^ 2 + 2 ≤ X.b v - X.a v) : ∃ y0, GridOK X y0 := by
@@ -558,17 +558,17 @@ def GridW {D : D7} {k0 : ℕ} (X : GramWordSpace.Dat D k0) (y0 : D.what₂.Tau �
   ∀ v, Admissible (X.I v) (w v) ∧ GridWd D.R.rS (y0 v) (w v)
 
 /- English proof (translation)
-Take `⟨hlen, hw⟩` from `h`. Use `⟨fun l hl => ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `List.mem_iff_getElem?.mp (List.mem_reverse.mpr hl)`. Take `⟨n, -, hn2, hy⟩` from `hw i l hi`. Establish `hil : i < w.length`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(List.getElem?_eq_some_iff.mp hi).1` as an intermediate fact. Simplify using `using this`. Establish `hn : n + 1 ≤ 6 * (r + 1) ^ 2`. Establish `h1 : (i + 1) * (2 * r + 2) ≤ (3 * (r + 1)) * (2 * r + 2)` using `Nat.mul_le_mul_right _ (by omega)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hnR : (n : ℝ) + 1 ≤ 6 * ((r : ℝ) + 1) ^ 2` using `by exact_mod_cast hn`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Rewrite using `[Set.mem_Icc, hy]`. Apply the tactic sequence `constructor <;> split_ifs <;> nlinarith`. Apply `List.pairwise_reverse.mp` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[List.pairwise_iff_getElem]`. Introduce `i j hi hj hij`. Take `⟨n, hn1, hn2, hy⟩` from `hw i _ (List.getElem?_eq_getElem hi)`. Take `⟨n', hn1', hn2', hy'⟩` from `hw j _ (List.getElem?_eq_getElem hj)`. Establish `hlt : n < n'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (i + 1) * (2 * r + 2) ≤ j * (2 * r + 2)` using `Nat.mul_le_mul_right _ hij`. Use linear arithmetic over natural numbers and integers. Establish `hltR : (n : ℝ) + 1 ≤ n'` using `by exact_mod_cast hlt`. Use `lt_abs.mpr (Or.inl ?_)` and prove the remaining obligations. Rewrite using `[hy, hy']`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gridWd_adm {r : ℕ} {y0 a b : ℝ} {w : Word} (h : GridWd r y0 w) (ha : a ≤ y0)
     (hb : y0 + 30 * ((r : ℝ) + 1) ^ 2 - 4 ≤ b) : Admissible (Set.Icc a b) w := by
@@ -600,7 +600,7 @@ theorem gridWd_adm {r : ℕ} {y0 a b : ℝ} {w : Word} (h : GridWd r y0 w) (ha :
     split_ifs <;> linarith
 
 /- English proof (translation)
-Introduce `v`. Use `⟨⟨fun l hl => absurd hl List.not_mem_nil, List.Pairwise.nil⟩, ⟨by simp, fun a l h => by simp at h⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem gridW_nil {D : D7} {k0 : ℕ} (X : GramWordSpace.Dat D k0) (y0 : D.what₂.Tau → ℝ) : GridW X y0 (fun _ => []) := by
   intro v

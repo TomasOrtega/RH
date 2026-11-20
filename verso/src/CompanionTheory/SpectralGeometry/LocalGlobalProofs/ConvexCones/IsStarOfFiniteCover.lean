@@ -10,11 +10,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Fan.StarFiniteCover
 
 /- English proof (translation)
-Take `⟨c, hc, hβ⟩` from `h`. Use `choose j hj using fun i => hsub (Set.mem_range_self i)`. Use `⟨fun a => ∑ i ∈ Finset.univ.filter (fun i => j i = a), c i, fun a => Finset.sum_nonneg fun i _ => hc i, ?_⟩` and prove the remaining obligations. Rewrite using `[hβ]`. Use `symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.mp hi).2]`.
-
-Use `_ = ∑ i, c i • GlobalTheory.PolFan.toReal (γ (j i)) := Finset.sum_fiberwise _ _ _`. Use `_ = ∑ i, c i • GlobalTheory.PolFan.toReal (γ' i) := by simp_rw [hj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inRCone_mono_of_range_subset {X : Type} [AddCommGroup X] {m n : ℕ}
     (γ : Fin m → LinearMap.BilinForm ℤ X) (γ' : Fin n → LinearMap.BilinForm ℤ X)
@@ -37,19 +35,19 @@ private theorem inRCone_mono_of_range_subset {X : Type} [AddCommGroup X] {m n : 
     _ = ∑ i, c i • GlobalTheory.PolFan.toReal (γ' i) := by simp_rw [hj]
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar hO q ψ w ψ' hψ hC hStar X _ _ _ _ hq`. Take `⟨hS1, hS2, -⟩` from `hStar`. Take `⟨S0, hS0, hcov⟩` from `(hψ X hq).finite`. Take `⟨ch, hch⟩ : ∃ ch : Set (LinearMap.BilinForm ℤ X) → LinearMap.BilinForm ℤ X, ∀ T : Set (LinearMap.BilinForm ℤ X), (∃ β, β ∈ GlobalTheory.PolFan.balForms bar X ∧ (∀ y, 0 ≤ β y y) ∧ w.evalZ β = 1 ∧ ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), GlobalTheory.PolFan.IsCell bar ψ γ ∧ …` from `⟨fun T => @Classical.epsilon _ ⟨0⟩ (fun β => β ∈ GlobalTheory.PolFan.balForms bar X ∧ (∀ y, 0 ≤ β y y) ∧ w.evalZ β = 1 ∧ ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), GlobalTheory.PolFan.IsCell bar ψ γ ∧ Set.range γ = T ∧ GlobalTheory.PolFan.InRCone γ β), fun T h => Classical. …`. Use `⟨S0 ∪ ch '' {T | T ⊆ S0}, hS0.union (hS0.finite_subsets.image _), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `B hB`. Take `⟨e, m, γ, c, hcell, hγS, hc, hBe⟩` from `hcov B hB`. Distinguish the cases in `hz : ∀ β ∈ GlobalTheory.PolFan.balForms bar X, (∀ y, 0 ≤ β y y) → GlobalTheory.PolFan.InRCone γ β → w.evalZ β = 0`. Conclude with `⟨e, m, γ, c, hS1 X hq m γ hcell hz, fun i => Set.mem_union_left _ (hγS i), hc, hBe⟩`. Use `push Not at hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨β₀, hbal, hpsd, hin, hne⟩` from `hz`. Establish `hw1 : w.evalZ β₀ = 1` using `((hC X hq).1 β₀ hbal hpsd).resolve_left hne`. Establish `hβne : β₀ ≠ 0`. Introduce `h0`. Establish `h21` using `(hC X hq).2.1 β₀ hbal hpsd hw1 2 0 (by rw [h0, smul_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hsymm : ∀ (i : Fin m) (y z : X), (γ i) y z = (γ i) z y` using `fun i => (show (∀ y z : X, (γ i) y z = (γ i) z y) ∧ _ from hcell.mem i).1`. Establish `hBr : GlobalTheory.PolFan.pullR e.toLinearMap B ∈ GlobalTheory.PolCell.rcone γ`. Simplify using `only [GlobalTheory.PolCell.rcone, Set.mem_ofPred_eq]`. Conclude with `⟨c, hc, hBe⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨m', s, h, hcut, hpos, hB'⟩` from `GlobalTheory.T.realCone_covered_by_star_at_point X m γ β₀ (GlobalTheory.PolFan.pullR e.toLinearMap B) hsymm hcell.nonneg hβne hin hBr`. Take `⟨t, ht, htB⟩` from `hB'`. Use `⟨e, m' + 1, Fin.cons β₀ fun j => γ (s j), t, hS2 X hq m γ hcell β₀ hbal hpsd hw1 hin m' s h hcut hpos, ?_, ht, htB⟩` and prove the remaining obligations. Introduce `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.cons_zero]`. Use `Set.mem_union_right _ ⟨Set.range γ, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hγS i`. Take `⟨hb', hp', hw', m'', γ'', hcell'', hrange, hin''⟩` from `hch (Set.range γ) ⟨β₀, hbal, hpsd, hw1, m, γ, hcell, rfl, hin⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hin2 : GlobalTheory.PolFan.InRCone γ (ch (Set.range γ))` using `inRCone_mono_of_range_subset γ γ'' hrange.le hin''`. Conclude with `(hC X hq).2.2 m γ hcell _ hb' hp' β₀ hbal hpsd hw' hw1 hin2 hin`. Rewrite using `[Fin.cons_succ]`. Conclude with `Set.mem_union_left _ (hγS (s j))`.
+A detailed English derivation is pending.
 -/
 theorem isStarOf_finite_cover : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O),
     CMOrd O bar → ∀ (q : ℕ) (ψ w ψ' : InvFun O), IsPolyFan bar q ψ → IsCentreSet bar q ψ w → IsStarOf bar q ψ w ψ' →

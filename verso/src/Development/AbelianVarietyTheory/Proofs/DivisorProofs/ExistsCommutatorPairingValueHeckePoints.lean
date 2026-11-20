@@ -26,7 +26,7 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {L : LB (A �
 def qc {T : Over S} (a b : T ⟶ A) : Pic T.left := pull (lift a b).left (cls L hL)
 
 /- English proof (translation)
-Unfold `qc`. Rewrite using `[lift_comp_fst_snd]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_eq_qc {T : Over S} (f : T ⟶ A ⊗ A) :
     pull f.left (cls L hL) = qc hL (f ≫ fst A A) (f ≫ snd A A) := by
@@ -34,7 +34,7 @@ theorem pull_eq_qc {T : Over S} (f : T ⟶ A ⊗ A) :
 
 omit [IsCommMonObj A] in
 /- English proof (translation)
-Establish `e : Out.translPt (A ⊗ A) x = (fst T (A ⊗ A) ≫ x) * snd T (A ⊗ A)` using `rfl`. Rewrite using `[e, MonObj.mul_comp, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem translPt_fst {T : Over S} (x : T ⟶ A ⊗ A) :
     Out.translPt (A ⊗ A) x ≫ fst A A = (fst T (A ⊗ A) ≫ x ≫ fst A A) * (snd T (A ⊗ A) ≫ fst A A) := by
@@ -43,7 +43,7 @@ theorem translPt_fst {T : Over S} (x : T ⟶ A ⊗ A) :
 
 omit [IsCommMonObj A] in
 /- English proof (translation)
-Establish `e : Out.translPt (A ⊗ A) x = (fst T (A ⊗ A) ≫ x) * snd T (A ⊗ A)` using `rfl`. Rewrite using `[e, MonObj.mul_comp, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem translPt_snd {T : Over S} (x : T ⟶ A ⊗ A) :
     Out.translPt (A ⊗ A) x ≫ snd A A = (fst T (A ⊗ A) ≫ x ≫ snd A A) * (snd T (A ⊗ A) ≫ snd A A) := by
@@ -55,13 +55,13 @@ variable {hL}
 include hL in
 
 /- English proof (translation)
-Establish `z : pull (lift (toUnit A ≫ h) (𝟙 A)).left (cls L hL) = 0`. Rewrite using `[← cls_pull hL _ (pull_isLB hL _)]`. Conclude with `(cls_eq_zero_iff _).2 ht`. Use `set b := snd T (A ⊗ A) ≫ snd A A`. Establish `e1 : fst T (A ⊗ A) ≫ (t ≫ lift h 1) ≫ fst A A = b ≫ toUnit A ≫ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, lift_fst, ← Category.assoc, ← Category.assoc, toUnit_unique (fst T (A ⊗ A) ≫ t) (b ≫ toUnit A)]`. Establish `e2 : fst T (A ⊗ A) ≫ (t ≫ lift h 1) ≫ snd A A = 1`. Rewrite using `[Category.assoc, lift_snd, MonObj.comp_one, MonObj.comp_one]`. Establish `e3 : qc hL (b ≫ toUnit A ≫ h) b = 0`. Unfold `qc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show lift (b ≫ toUnit A ≫ h) b = b ≫ lift (toUnit A ≫ h) (𝟙 A) by`. Rewrite using `[comp_lift, Category.comp_id], Over.comp_left, pull_comp, z, map_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : LB.Gen (Out.thetaLB (A ⊗ A) L 1 (t ≫ lift h 1)), u.IsGen := by`. Use `(cls_eq_zero_iff (LB.isLB_linComb hL _ _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_linComb hL, Fin.sum_univ_two]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show (1 : ℤ) • pull (snd T (A ⊗ A)).left _ + (-1 : ℤ) • pull (Out.translPt (A ⊗ A) (t ≫ lift h 1)).left _ = 0`. Rewrite using `[pull_eq_qc, pull_eq_qc, translPt_fst, translPt_snd, e1, e2, _root_.one_mul, hB, e3]`. Simplify using the standard rewrite rules. Conclude with `⟨⟨_, u, hu⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_theta_left
     (hB : ∀ (T : Over S) (x x' y : T ⟶ A), qc hL (x * x') y = qc hL x y + qc hL x' y)
@@ -91,13 +91,13 @@ theorem exists_theta_left
 include hL in
 
 /- English proof (translation)
-Establish `z : pull (lift (𝟙 A) (toUnit A ≫ h)).left (cls L hL) = 0`. Rewrite using `[← cls_pull hL _ (pull_isLB hL _)]`. Conclude with `(cls_eq_zero_iff _).2 ht`. Use `set a := snd T (A ⊗ A) ≫ fst A A`. Establish `e1 : fst T (A ⊗ A) ≫ (t ≫ lift 1 h) ≫ snd A A = a ≫ toUnit A ≫ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, lift_snd, ← Category.assoc, ← Category.assoc, toUnit_unique (fst T (A ⊗ A) ≫ t) (a ≫ toUnit A)]`. Establish `e2 : fst T (A ⊗ A) ≫ (t ≫ lift 1 h) ≫ fst A A = 1`. Rewrite using `[Category.assoc, lift_fst, MonObj.comp_one, MonObj.comp_one]`. Establish `e3 : qc hL a (a ≫ toUnit A ≫ h) = 0`. Unfold `qc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show lift a (a ≫ toUnit A ≫ h) = a ≫ lift (𝟙 A) (toUnit A ≫ h) by`. Rewrite using `[comp_lift, Category.comp_id], Over.comp_left, pull_comp, z, map_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : LB.Gen (Out.thetaLB (A ⊗ A) L 1 (t ≫ lift 1 h)), u.IsGen := by`. Use `(cls_eq_zero_iff (LB.isLB_linComb hL _ _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_linComb hL, Fin.sum_univ_two]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show (1 : ℤ) • pull (snd T (A ⊗ A)).left _ + (-1 : ℤ) • pull (Out.translPt (A ⊗ A) (t ≫ lift 1 h)).left _ = 0`. Rewrite using `[pull_eq_qc, pull_eq_qc, translPt_fst, translPt_snd, e1, e2, _root_.one_mul, hB', e3]`. Simplify using the standard rewrite rules. Conclude with `⟨⟨_, u, hu⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_theta_right
     (hB' : ∀ (T : Over S) (x y y' : T ⟶ A), qc hL x (y * y') = qc hL x y + qc hL x y')
@@ -133,19 +133,19 @@ namespace GlobalTheory.HeckeWeilLift
 open GlobalTheory.CechPic GlobalTheory.DiagPairing
 
 /- English proof (translation)
-Introduce `p _ D R _ b g c k N hc hk hN hNp hsim hsurj hdiv S s o h₁ hh₁ h₂ hh₂`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hD : (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left).IsLB` using `pull_isLB o.isLB _`. Establish `hB : ∀ (T : Over S) (x x' y : T ⟶ o.A), pc o.isLB (x * x') y = pc o.isLB x y + pc o.isLB x' y` using `fun T x x' y => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S o.A _ o.ab hD o.ample o.P o.isLB o.rig₁ o.rig₂ T x x' y).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb o.isLB _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb o.isLB, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `pc`. Rewrite using `[← sub_eq_zero, ← e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hB' : ∀ (T : Over S) (x y y' : T ⟶ o.A), pc o.isLB x (y * y') = pc o.isLB x y + pc o.isLB x y'` using `fun T x y y' => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S o.A _ o.ab hD o.ample o.P o.isLB o.rig₁ o.rig₂ T y y' x).2`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb o.isLB _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb o.isLB, Fin.sum_univ_three]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `pc`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws. Establish `hQ : (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)).IsLB` using `LB.isLB_linComb o.isLB _ _`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hcls : cls _ hQ = (k ^ 2 / c) • cls o.P o.isLB`. Use `(cls_linComb o.isLB (K := Fin (k ^ 2 / c)) (fun _ => 𝟙 _) (fun _ => 1) hQ).trans ?_` and prove the remaining obligations. Simplify using `[pull_id]`. Establish `hQB : ∀ (T : Over S) (x x' y : T ⟶ o.A), qc hQ (x * x') y = qc hQ x y + qc hQ x' y` using `fun T x x' y => by`. Unfold `qc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hcls, map_nsmul, map_nsmul, map_nsmul]`. Conclude with `(congrArg _ (hB T x x' y)).trans (smul_add _ _ _)`. Establish `hQB' : ∀ (T : Over S) (x y y' : T ⟶ o.A), qc hQ x (y * y') = qc hQ x y + qc hQ x y'` using `fun T x y y' => by`. Unfold `qc`. Rewrite using `[hcls, map_nsmul, map_nsmul, map_nsmul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(congrArg _ (hB' T x y y')).trans (smul_add _ _ _)`. Take `⟨t₁, -⟩` from `GlobalTheory.T.heckeSections_linearSimilitude_mem_kernel_polarisation p D R b g c k N hc hk hN hNp hsim hsurj hdiv S s o h₁ hh₁`. Take `⟨-, t₂⟩` from `GlobalTheory.T.heckeSections_linearSimilitude_mem_kernel_polarisation p D R b g c k N hc hk hN hNp hsim hsurj hdiv S s o h₂ hh₂`. Establish `hA2 : IsAbelianScheme (G2 o.A)` using `AbelianSchemeGerms.isAbelianScheme_tensor o.A o.A o.ab o.ab`. Conclude with `CommutatorPairing.exists_weilIs hG hA2 hQ (fun _ => ⟨⊤, trivial, exists_theta_left hQB (Out.overResι ⊤) h₁ t₁⟩) (fun _ => ⟨⊤, trivial, exists_theta_right hQB' (Out.overResι ⊤) h₂ t₂⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_weilIs_hecke : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : Base D R) (g : D.La →ₗ[D.O] D.La) (c k N : ℕ), c.Coprime p → k.Coprime p → 3 ≤ N → N.Coprime p → (∀ x y, D.EF (g x) (g y) = c * D.EF x y) → (∀ x, ∃ y, g y = k • x) → c ∣ k ^ 2 → ∀ (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b (N * k) s), ∀ h₁ ∈ GlobalTheory.UPel.HT.Hecke.heckeSub o g N, ∀ h₂ ∈ GlobalTheory.UPel.HT.Hecke.heckeSub o g N, ∃ u : Γ((𝟙_ (Over S)).left, ⊤)ˣ, Out.WeilIs (G2 o.A) (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)) 1 (lift h₁ 1 : 𝟙_ (Over S) ⟶ G2 o.A) (lift 1 h₂) u := by
   intro p _ D R _ b g c k N hc hk hN hNp hsim hsurj hdiv S s o h₁ hh₁ h₂ hh₂

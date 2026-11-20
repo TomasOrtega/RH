@@ -14,11 +14,11 @@ section Ko
 variable (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hϖ0 : ϖ ≠ 0` using `hϖ.ne_zero`. Set `ι` to `algebraMap O (FractionRing O)`. Establish `hc' : ι c ≠ 0` using `fun h0 => hc (IsFractionRing.injective O (FractionRing O) (h0.trans (map_zero ι).symm))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hϖ' : ι ϖ ≠ 0` using `fun h0 => hϖ0 (IsFractionRing.injective O (FractionRing O) (h0.trans (map_zero ι).symm))`. Establish `h1` using `h (Submodule.Quotient.mk ((ι c * ι ϖ)⁻¹))`. Rewrite `h1` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Algebra.smul_def, mul_inv, ← mul_assoc, mul_inv_cancel₀ hc', one_mul]`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 h1`. Apply `hϖ.not_isUnit` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `isUnit_iff_exists_inv.2 ⟨o, IsFractionRing.injective O (FractionRing O) ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_one]`. Express the relevant statement in the definitionally equal form `ι ϖ * ι o = 1`. Rewrite using `[ho, mul_inv_cancel₀ hϖ']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ko_faithful (c : O) (h : ∀ z : KO O, c • z = 0) : c = 0 := by
   by_contra hc
@@ -50,11 +50,11 @@ theorem latQ_act (ρ : A →ₐ[O] Matrix n n O) (x : A) (m : LatQ O n ρ.toRing
     (x • m) i = ∑ j, ρ x i j • (m j : KO O) := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply `sub_eq_zero.1` to reduce the goal to its premises. Apply `ko_faithful O` to reduce the goal to its premises. Introduce `z`. Establish `h1` using `congrFun (h (Pi.single j z : n → KO O)) i`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `∑ j', ρ x i j' • (Pi.single j z : n → KO O) j' = y • (Pi.single j z : n → KO O) i at h1`. Rewrite `h1` using `[Finset.sum_eq_single j (fun b _ hb => by simp [hb]) (by simp)]`. Establish `h2 : ρ x i j • z = y • (Pi.single j z : n → KO O) i`. Establish `h3` using `h1`. Rewrite `h3` using `[Pi.single_eq_same]`. Then use the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[sub_smul, h2, Matrix.smul_apply, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mat_eq_of_act (ρ : A →ₐ[O] Matrix n n O) (x : A) (y : O)
     (h : ∀ m : LatQ O n ρ.toRingHom, x • m = y • m) : ρ x = y • (1 : Matrix n n O) := by
@@ -74,9 +74,9 @@ theorem mat_eq_of_act (ρ : A →ₐ[O] Matrix n n O) (x : A) (y : O)
   · simp [hij]
 
 /- English proof (translation)
-Take `⟨i0, hi0⟩` from `Fintype.card_eq_one_iff.1 h1`. Use function extensionality and compare the values at `i`. Rewrite using `[latQ_act]`. Express the relevant statement in the definitionally equal form `_ = (ρ x).trace • (m i : KO O)`. Establish `hu : ∀ j : n, j = i` using `fun j => (hi0 j).trans (hi0 i).symm`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_eq_single i (fun b _ hb => absurd (hu b) hb) (by simp), Matrix.trace, Finset.sum_eq_single i (fun b _ hb => absurd (hu b) hb) (by simp)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem act_trace (ρ : A →ₐ[O] Matrix n n O) (h1 : Fintype.card n = 1) (x : A) (m : LatQ O n ρ.toRingHom) :
     x • m = (ρ x).trace • m := by
@@ -98,7 +98,7 @@ abbrev zlMod (O : Type) [CommRing O] [Algebra ℤ_[ℓ] O] (M : Type) [AddCommGr
   Module.compHom M (algebraMap ℤ_[ℓ] O)
 
 /- English proof (translation)
-The claim follows from `@IsScalarTower.mk ℤ_[ℓ] O M _ _ (zlMod O M).toSMul fun a b m => by show (a • b) • m = algebraMap ℤ_[ℓ] O a • (b • m) rw [Algebra.smul_def, mul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem zlTower (O : Type) [CommRing O] [Algebra ℤ_[ℓ] O] (M : Type) [AddCommGroup M] [Module O M] :
     @IsScalarTower ℤ_[ℓ] O M _ _ (zlMod O M).toSMul :=
@@ -120,7 +120,7 @@ instance {ℓ : ℕ} [Fact ℓ.Prime] [Algebra ℤ_[ℓ] O] (ρ : A →ₐ[O] Ma
 def vOne (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (h : SurjectionRankOneIdempotent O A n ρ.toRingHom e₁) : LatM O O n ρ.toRingHom := h.choose
 
 /- English proof (translation)
-The claim follows from `h.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem vOne_spec (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (h : SurjectionRankOneIdempotent O A n ρ.toRingHom e₁) :
     (∀ (a : A) v x, tensM O n ρ.toRingHom (a • v) x = a • tensM O n ρ.toRingHom v x) ∧
@@ -168,7 +168,7 @@ Both sides reduce to the same expression.
 -/
 theorem lv_smulA (a : A) (p : LeftId O x) : lv O x (a • p) = a * lv O x p := rfl
 /- English proof (translation)
-The claim follows from `p.2`.
+A detailed English derivation is pending.
 -/
 theorem lv_mem (p : LeftId O x) : lv O x p ∈ Submodule.span A ({x} : Set A) := p.2
 
@@ -187,7 +187,7 @@ Both sides reduce to the same expression.
 theorem incl_apply (p : LeftId O x) : incl O x p = lv O x p := rfl
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (lv_mem O x p)`. Conclude with `⟨c, by rw [incl_apply, ← hc, smul_eq_mul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem incl_mul (p : LeftId O x) : ∃ c : A, incl O x p = c * x := by
   obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.1 (lv_mem O x p)
@@ -222,7 +222,7 @@ theorem eveM_apply (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (v₁ : LatM O O n
     eveM ρ e₁ v₁ p = incl O e₁ p • v₁ := rfl
 
 /- English proof (translation)
-Introduce `v`. Take `⟨c, hc⟩` from `(vOne_spec ρ e₁ h).2.2.2.2.2.2.2.2.2.2 v`. Use `⟨lmk O e₁ (c * e₁) (Submodule.mem_span_singleton.2 ⟨c, rfl⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[eveM_apply, incl_apply, lv_lmk]`. Conclude with `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eveM_onto (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (h : SurjectionRankOneIdempotent O A n ρ.toRingHom e₁) :
     Function.Surjective (eveM ρ e₁ (vOne ρ e₁ h)) := by
@@ -239,7 +239,7 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {A : T
   {m : Type} [Fintype m] [DecidableEq m]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `incl_mul O E p`. Rewrite using `[hc, map_mul, hE, Matrix.mul_smul, mul_one, Matrix.trace_smul, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self δO)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_mem (ρ₁ : A →ₐ[O] Matrix m m O) (E : A) (δO : O) (hE : ρ₁ E = δO • (1 : Matrix m m O))
     (p : LeftId O E) : (ρ₁ (incl O E p)).trace ∈ Ideal.span ({δO} : Set O) := by
@@ -264,7 +264,7 @@ theorem evEM_val (ρ₁ : A →ₐ[O] Matrix m m O) (E : A) (δO : O) (hE : ρ�
     (p : LeftId O E) : ((evEM ρ₁ E δO hE p : ↥(Ideal.span ({δO} : Set O))) : O) = (ρ₁ (incl O E p)).trace := rfl
 
 /- English proof (translation)
-Rewrite using `[evEM_val]`. Conclude with `act_trace ρ₁ h1 _ v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evEM_act (ρ₁ : A →ₐ[O] Matrix m m O) (h1 : Fintype.card m = 1) (E : A) (δO : O)
     (hE : ρ₁ E = δO • (1 : Matrix m m O)) (p : LeftId O E) (v : LatQ O m ρ₁.toRingHom) :
@@ -272,9 +272,9 @@ theorem evEM_act (ρ₁ : A →ₐ[O] Matrix m m O) (h1 : Fintype.card m = 1) (E
   rw [evEM_val]; exact act_trace ρ₁ h1 _ v
 
 /- English proof (translation)
-Introduce and unpack `⟨x, hx⟩`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Use `⟨lmk O E (y • E) (Submodule.smul_of_tower_mem _ y (Submodule.mem_span_singleton_self E)), Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[evEM_val, incl_apply, lv_lmk]`. Use `show (ρ₁ (y • E)).trace = y * δO`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, hE, Matrix.trace_smul, Matrix.trace_smul, Matrix.trace_one, h1, smul_eq_mul, smul_eq_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evEM_onto (ρ₁ : A →ₐ[O] Matrix m m O) (h1 : Fintype.card m = 1) (E : A) (δO : O)
     (hE : ρ₁ E = δO • (1 : Matrix m m O)) : Function.Surjective (evEM ρ₁ E δO hE) := by
@@ -287,7 +287,7 @@ theorem evEM_onto (ρ₁ : A →ₐ[O] Matrix m m O) (h1 : Fintype.card m = 1) (
   simp
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[evEM_val, evEM_val, incl_smul, map_mul, mat_eq_of_act ρ₁ (uElt r χ g) 1 (fun v => by rw [one_smul]; exact hu g v), one_smul, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem evEM_inv {T' G : Type} [CommRing T'] [Algebra T' A] [Group G] (r : G →* A) (χ : G →* T'ˣ)
     (ρ₁ : A →ₐ[O] Matrix m m O) (E : A) (δO : O) (hE : ρ₁ E = δO • (1 : Matrix m m O))
@@ -350,7 +350,7 @@ theorem piM_apply (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (w : n → O) (b : 
     piM ρ e₁ w b = Matrix.vecMul w (ρ (b : A)) := rfl
 
 /- English proof (translation)
-Use `show ∑ a, (Matrix.vecMul w (ρ (b : A))) a • (m a : KO O) = ∑ i, w i • (((b : A) • m) i : KO O)`. Simplify using `only [latQ_act, Matrix.vecMul, dotProduct, Finset.sum_smul, Finset.smul_sum, mul_smul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gam_pi (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (w : n → O) (b : FirstSummandSubmodule O e₁) (m : LatQ O n ρ.toRingHom) :
     gamM ρ (piM ρ e₁ w b) m = lamM ρ w ((FirstSummandSubmodule O e₁).subtype b • m) := by
@@ -359,9 +359,9 @@ theorem gam_pi (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (w : n → O) (b : Fir
   exact Finset.sum_comm
 
 /- English proof (translation)
-Introduce `g b`. Establish `hu : ((χ g : T'ˣ) : T') • ((b : A) * r g⁻¹) = (b : A) * uElt r χ g⁻¹`. Rewrite using `[uElt, map_inv χ, inv_inv, mul_smul_comm]`. Rewrite using `[rhoTwo_apply, piM_apply, piM_apply]`. Use `show Matrix.vecMul w (ρ (((ε g : Oˣ) : O) • (((χ g : T'ˣ) : T') • ((b : A) * r g⁻¹)))) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, map_smul, map_mul, Matrix.vecMul_smul]`. Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.vecMul, Matrix.mulVec, dotProduct, Matrix.smul_apply, Matrix.transpose_apply, Matrix.mul_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_equiv (ρ : A →ₐ[O] Matrix n n O) (r : G →* A) (χ : G →* T'ˣ) (e₁ : A) (ε : G →* Oˣ) (w : n → O) :
     IsEquivMap (firstSummandRep O r χ e₁ ε) (rhoTwo ρ r χ ε) (piM ρ e₁ w) := by
@@ -378,11 +378,11 @@ theorem pi_equiv (ρ : A →ₐ[O] Matrix n n O) (r : G →* A) (χ : G →* T'�
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Introduce `t`. Take `⟨b', hb'⟩` from `hs (Matrix.vecMulVec v t)`. Use `⟨⟨e₁ * b', b', rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[piM_apply]`. Use `show Matrix.vecMul w (ρ (e₁ * b')) = t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ← Matrix.vecMul_vecMul, hb']`. Establish `h1 : Matrix.vecMul w (ρ e₁) = w`. Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.vecMul, dotProduct, hvw, ← mul_assoc]`. Rewrite using `[← Finset.sum_mul, hwv, one_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.vecMulVec_apply, ← mul_assoc]`. Rewrite using `[← Finset.sum_mul, hwv, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_onto (ρ : A →ₐ[O] Matrix n n O) (hs : Function.Surjective ρ) (e₁ : A) (v w : n → O)
     (hvw : ∀ i j, ρ e₁ i j = v i * w j) (hwv : ∑ j, w j * v j = 1) : Function.Surjective (piM ρ e₁ w) := by
@@ -421,20 +421,20 @@ variable {O : Type} [CommRing O] {A : Type} [Ring A] [Algebra O A] [TopologicalS
   [ContinuousConstSMul O A] (e₁ : A)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : TopologicalSpace (FirstSummandSubmodule O e₁) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsTopologicalAddGroup (FirstSummandSubmodule O e₁) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : ContinuousConstSMul O (FirstSummandSubmodule O e₁) := inferInstance
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem inc_cont : Continuous (FirstSummandSubmodule O e₁).subtype := continuous_subtype_val
 
@@ -449,7 +449,7 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X d G
 def cOne (ht : 1 ≤ t) : Fin (t + 1) := ⟨1, by omega⟩
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `[cOne] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem cOne_ne (ht : 1 ≤ t) : cOne ht ≠ 0 := by
   intro h
@@ -460,7 +460,7 @@ variable (Dd : RingData O X d G t bl) (T : Subalgebra O (X → O)) (ht : 1 ≤ t
   [∀ k, SMulCommClass Dd.R' O (blockRestrictedRepresentationType bl Dd.ρk k)]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hee, -, -, -, hsurj, -, hcard1, -, -, -, -, -, -, hOne⟩` from `hT`. Take `⟨p1, -, p3, -⟩` from `hOne`. Conclude with `⟨hee, hsurj, hcard1 _ (cOne_ne ht), mat_eq_of_act _ _ _ p3, p1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem top_facts (hT : Dd.Top T ht) :
     Dd.e₁ * Dd.e₁ = Dd.e₁ ∧ (∀ k, Function.Surjective (Dd.ρk k)) ∧ Fintype.card {a // bl a = cOne ht} = 1 ∧
@@ -471,7 +471,7 @@ theorem top_facts (hT : Dd.Top T ht) :
   exact ⟨hee, hsurj, hcard1 _ (cOne_ne ht), mat_eq_of_act _ _ _ p3, p1⟩
 
 /- English proof (translation)
-The claim follows from `idempotent_rank_one_at_point hI hD`.
+A detailed English derivation is pending.
 -/
 theorem rank_reduction_idempotent_one {T : Subalgebra O (X → O)} {r₀ : G →* (X → Matrix d d O)} {π : X} {χ₁ ε : G →* Oˣ} {g₀ : G}
     {eB e₁ s : X → Matrix d d O} (hI : IdemHyp O T r₀ π bl eB e₁) (hD : RingDef O T r₀ π χ₁ ε g₀ eB e₁ s Dd) :
@@ -479,14 +479,14 @@ theorem rank_reduction_idempotent_one {T : Subalgebra O (X → O)} {r₀ : G →
   idempotent_rank_one_at_point hI hD
 
 /- English proof (translation)
-The claim follows from `surjection_of_rank_one_idempotent O Dd.R' _ (Dd.ρk 0).toRingHom Dd.e₁ ((top_facts Dd T ht hT).2.1 0) (top_facts Dd T ht hT).1 hrk`.
+A detailed English derivation is pending.
 -/
 theorem rho_hypotheses_of_ring_data (hT : Dd.Top T ht) (hrk : ((Dd.ρk 0 Dd.e₁).map (algebraMap O (FractionRing O))).rank = 1) :
     SurjectionRankOneIdempotent O Dd.R' {a // bl a = 0} (Dd.ρk 0).toRingHom Dd.e₁ :=
   surjection_of_rank_one_idempotent O Dd.R' _ (Dd.ρk 0).toRingHom Dd.e₁ ((top_facts Dd T ht hT).2.1 0) (top_facts Dd T ht hT).1 hrk
 
 /- English proof (translation)
-The claim follows from `rank_one_factor O _ (Dd.ρk 0 Dd.e₁) (by rw [← map_mul, (top_facts Dd T ht hT).1]) hrk`.
+A detailed English derivation is pending.
 -/
 theorem rankOne_Dd (hT : Dd.Top T ht) (hrk : ((Dd.ρk 0 Dd.e₁).map (algebraMap O (FractionRing O))).rank = 1) :
     ∃ v w : {a // bl a = 0} → O, (∀ i j, Dd.ρk 0 Dd.e₁ i j = v i * w j) ∧ ∑ j, w j * v j = 1 :=
@@ -516,7 +516,7 @@ def lamDd (hT : Dd.Top T ht) (hrk : ((Dd.ρk 0 Dd.e₁).map (algebraMap O (Fract
   lamM (Dd.ρk 0) (wDd Dd T ht hT hrk)
 
 /- English proof (translation)
-Introduce `ρ0 v₁ c1`. Establish `hs` using `vOne_spec (Dd.ρk 0) Dd.e₁ (rho_hypotheses_of_ring_data Dd T ht hT hrk)`. Establish `hf` using `top_facts Dd T ht hT`. Establish `hvw` using `(rankOne_Dd Dd T ht hT hrk).choose_spec.choose_spec`. Use `⟨⟨hs.1, hs.2.1, hs.2.2.1, hs.2.2.2.1, hs.2.2.2.2.1, hs.2.2.2.2.2.1, hs.2.2.2.2.2.2.1, hs.2.2.2.2.2.2.2.1, hs.2.2.2.2.2.2.2.2.1, hs.2.2.2.2.2.2.2.2.2.1⟩, fun a => rfl, eveM_onto _ _ _, evEM_inv Dd.r Dd.χ _ _ _ _ hf.2.2.2.2, evEM_onto _ hf.2.2.1 _ _ _, incl_mul O Dd.E, evEM_act _ h …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem tensor_lattice_facts (hT : Dd.Top T ht) (hrk : ((Dd.ρk 0 Dd.e₁).map (algebraMap O (FractionRing O))).rank = 1)
     (ε : G →* Oˣ) :
@@ -566,31 +566,31 @@ variable {ℓ : ℕ} [Fact ℓ.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDi
   {n : Type} [Fintype n] [DecidableEq n] (ρ : A →ₐ[O] Matrix n n O) (x e₁ : A)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Module ℤ_[ℓ] (LatM O O n ρ.toRingHom) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsScalarTower ℤ_[ℓ] O (LatM O O n ρ.toRingHom) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : SMulCommClass A O (LeftId O x) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Module ℤ_[ℓ] (LeftId O x) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsScalarTower ℤ_[ℓ] O (LeftId O x) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsTopologicalAddGroup (FirstSummandSubmodule O e₁) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : ContinuousConstSMul O (FirstSummandSubmodule O e₁) := inferInstance
 
@@ -603,9 +603,9 @@ variable {ℓ : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRi
   {A : Type} [Ring A] [Algebra O A] [TopologicalSpace A] [IsTopologicalAddGroup A]
 
 /- English proof (translation)
-Use `hO.ring` as an intermediate fact. Use `hO.compact` as an intermediate fact. Use `hA.t2` as an intermediate fact. Use `hA.csmul` as an intermediate fact. Use `hA.fg` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, f, hf⟩` from `Module.Finite.exists_fin' O A`. Establish `hfc : Continuous f` using `LinearMap.continuous_on_pi f`. Establish `hq : Topology.IsQuotientMap f` using `hfc.isClosedMap.isQuotientMap hfc hf`. Conclude with `hq.continuous_iff.2 (LinearMap.continuous_on_pi (g ∘ₗ f))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lin_cont (hO : PadicCoeff ℓ O) (hA : IsFGTop O A) {N : Type} [AddCommGroup N] [Module O N] [TopologicalSpace N]
     [ContinuousAdd N] [ContinuousSMul O N] (g : A →ₗ[O] N) : Continuous g := by
@@ -623,7 +623,7 @@ def piA (ρ : A →ₐ[O] Matrix n n O) (w : n → O) : A →ₗ[O] (n → O) wh
   map_smul' c b := by rw [map_smul, Matrix.vecMul_smul, RingHom.id_apply]
 
 /- English proof (translation)
-Use `hO.ring` as an intermediate fact. Conclude with `(lin_cont hO hA (piA ρ w)).comp continuous_subtype_val`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem piM_cont (hO : PadicCoeff ℓ O) (hA : IsFGTop O A) (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (w : n → O) :
     Continuous (piM ρ e₁ w) := by
@@ -631,7 +631,7 @@ theorem piM_cont (hO : PadicCoeff ℓ O) (hA : IsFGTop O A) (ρ : A →ₐ[O] Ma
   exact (lin_cont hO hA (piA ρ w)).comp continuous_subtype_val
 
 /- English proof (translation)
-Use `hO.ring` as an intermediate fact. Conclude with `lin_cont hO hA ρ.toLinearMap`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rho_cont (hO : PadicCoeff ℓ O) (hA : IsFGTop O A) (ρ : A →ₐ[O] Matrix n n O) : Continuous ρ := by
   have := hO.ring

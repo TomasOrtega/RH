@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 namespace GlobalTheory
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.allSixLaws.2.2.2.2.2, GlobalTheory.allSixLaws.2.2.2.2.2.unifUniq⟩`.
+Supply the required witnesses or components.
 -/
 theorem sixthLaws_and_unifUniq : Laws6 ∧ UnifUniqSt :=
   ⟨GlobalTheory.allSixLaws.2.2.2.2.2, GlobalTheory.allSixLaws.2.2.2.2.2.unifUniq⟩

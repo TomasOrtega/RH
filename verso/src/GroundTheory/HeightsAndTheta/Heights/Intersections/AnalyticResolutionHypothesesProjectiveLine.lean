@@ -79,7 +79,7 @@ variable {P : Ideal (MRing ι ℂ)} {e : ℕ} (R : Res ι P e)
 def idx (x : R.R.M) : Fin R.R.n := (R.R.cover x).choose
 
 /- English proof (translation)
-The claim follows from `(R.R.cover x).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mem_src_idx (x : R.R.M) : x ∈ R.R.src (R.idx x) := (R.R.cover x).choose_spec
 
@@ -247,7 +247,7 @@ section Ring
 variable {K : Type} {ι : K → Type}
 
 /- English proof (translation)
-Rewrite using `[← Set.image_singleton, mem_ideal_span_X_image]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_span_X_iff {R : Type} [CommRing R] (q : Σ k, ι k) (f : MRing ι R) :
     f ∈ Ideal.span {(X q : MRing ι R)} ↔ ∀ m ∈ f.support, m q ≠ 0 := by
@@ -255,9 +255,9 @@ theorem mem_span_X_iff {R : Type} [CommRing R] (q : Σ k, ι k) (f : MRing ι R)
   simp
 
 /- English proof (translation)
-Introduce `f hf b`. Rewrite `hf`, the goal using `[mem_span_X_iff]`. Introduce `m hm`. Apply `hf m` to reduce the goal to its premises. Rewrite `hm`, the goal using `[mem_support_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hm` using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs at hm`. Conclude with `hm`. Conclude with `absurd rfl hm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomogIdeal_span_X [Fintype K] [DecidableEq K] {R : Type} [CommRing R] (q : Σ k, ι k) :
     IsMultiHomogIdeal (Ideal.span {(X q : MRing ι R)}) := by
@@ -272,7 +272,7 @@ theorem isMultiHomogIdeal_span_X [Fintype K] [DecidableEq K] {R : Type} [CommRin
   · exact absurd rfl hm
 
 /- English proof (translation)
-Rewrite using `[mem_span_X_iff]`. Introduce `hm`. Use `hm (Finsupp.single q' 1) (by simp [support_X])` as an intermediate fact. Simplify using `[h.symm] at this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem X_not_mem_span_X {R : Type} [CommRing R] [Nontrivial R] {q q' : Σ k, ι k} (h : q ≠ q') :
     (X q' : MRing ι R) ∉ Ideal.span {(X q : MRing ι R)} := by
@@ -282,14 +282,14 @@ theorem X_not_mem_span_X {R : Type} [CommRing R] [Nontrivial R] {q q' : Σ k, ι
   simp [h.symm] at this
 
 /- English proof (translation)
-The claim follows from `(Ideal.span_singleton_prime (X_ne_zero q)).mpr X_prime`.
+A detailed English derivation is pending.
 -/
 theorem isPrime_span_X {R : Type} [CommRing R] [IsDomain R] (q : Σ k, ι k) :
     (Ideal.span {(X q : MRing ι R)}).IsPrime :=
   (Ideal.span_singleton_prime (X_ne_zero q)).mpr X_prime
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_bot]`. Conclude with `X_ne_zero q`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_ne_bot {R : Type} [CommRing R] [Nontrivial R] (q : Σ k, ι k) :
     (X q : MRing ι R) ∉ (⊥ : Ideal (MRing ι R)) := by
@@ -305,19 +305,19 @@ abbrev Xj {R : Type} [CommRing R] (j : Fin 2) : MRing ι1 R := X ⟨(), j⟩
 abbrev ptI {R : Type} [CommRing R] (j : Fin 2) : Ideal (MRing ι1 R) := Ideal.span {Xj j}
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases j <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fin_two_add_one_ne (j : Fin 2) : j + 1 ≠ j := by
   fin_cases j <;> decide
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases j <;> fin_cases i <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fin_two_eq_or_eq_add_one (j i : Fin 2) : i = j ∨ i = j + 1 := by
   fin_cases j <;> fin_cases i <;> decide
 
 /- English proof (translation)
-Introduce `k`. Use `⟨j + 1, X_not_mem_span_X ?_⟩` and prove the remaining obligations. Introduce `h`. Use `congrArg Sigma.snd h` as an intermediate fact. Conclude with `fin_two_add_one_ne j (by simpa using this.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isRelevant_ptI {R : Type} [CommRing R] [Nontrivial R] (j : Fin 2) :
     IsRelevant (ptI (R := R) j) := by
@@ -328,9 +328,9 @@ theorem isRelevant_ptI {R : Type} [CommRing R] [Nontrivial R] (j : Fin 2) :
   exact fin_two_add_one_ne j (by simpa using this.symm)
 
 /- English proof (translation)
-Use `isPrime_span_X (R := R) (⟨(), j⟩ : Σ _ : Unit, Fin 2)` as an intermediate fact. Use extensionality with `W`. Simplify using `only [comps, bot_sup_eq, Ideal.minimalPrimes_eq_subsingleton_self, Set.mem_ofPred_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce and unpack `rfl`. Conclude with `⟨rfl, isRelevant_ptI j⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem comps_bot_X {R : Type} [CommRing R] [IsDomain R] (j : Fin 2) :
     comps (⊥ : Ideal (MRing ι1 R)) (Xj j) = {ptI j} := by
@@ -344,7 +344,7 @@ theorem comps_bot_X {R : Type} [CommRing R] [IsDomain R] (j : Fin 2) :
     exact ⟨rfl, isRelevant_ptI j⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `h0 : (Xj 0 : MRing ι1 R) ∈ ptI 0` using `Ideal.subset_span rfl`. Rewrite `h0` using `[h]`. Conclude with `X_not_mem_span_X (by decide) h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptI_ne {R : Type} [CommRing R] [Nontrivial R] : ptI (R := R) 0 ≠ ptI 1 := by
   intro h
@@ -353,31 +353,31 @@ theorem ptI_ne {R : Type} [CommRing R] [Nontrivial R] : ptI (R := R) 0 ≠ ptI 1
   exact X_not_mem_span_X (by decide) h0
 
 /- English proof (translation)
-The claim follows from `Ideal.map_bot`.
+A detailed English derivation is pending.
 -/
 theorem extC_bot : extC (⊥ : Ideal (MRing ι1 ℚ)) = ⊥ := Ideal.map_bot
 
 /- English proof (translation)
-Simplify using `[extC, ReciprocityTheory.AnForm.R.extC, Ideal.map_span]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extC_ptI (j : Fin 2) : extC (ptI (R := ℚ) j) = ptI j := by
   simp [extC, ReciprocityTheory.AnForm.R.extC, Ideal.map_span]
 
 /- English proof (translation)
-The claim follows from `IsDomain.minimalPrimes_eq_singleton_bot _`.
+A detailed English derivation is pending.
 -/
 theorem minimalPrimes_bot_C : (⊥ : Ideal (MRing ι1 ℂ)).minimalPrimes = {⊥} :=
   IsDomain.minimalPrimes_eq_singleton_bot _
 
 /- English proof (translation)
-Use `isPrime_span_X (R := ℂ) (⟨(), j⟩ : Σ _ : Unit, Fin 2)` as an intermediate fact. Conclude with `Ideal.minimalPrimes_eq_subsingleton_self`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem minimalPrimes_ptI (j : Fin 2) : (ptI (R := ℂ) j).minimalPrimes = {ptI j} := by
   have := isPrime_span_X (R := ℂ) (⟨(), j⟩ : Σ _ : Unit, Fin 2)
   exact Ideal.minimalPrimes_eq_subsingleton_self
 
 /- English proof (translation)
-Establish `h` using `ReciprocityTheory.AnForm.R.BaseChangeC.height_add_ringKrullDim_quotient_fintype (σ := Σ _ : Unit, Fin 2) k ⊥`. Rewrite `h` using `[Ideal.height_bot]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dim_bot (k : Type) [Field k] :
     ringKrullDim (MRing ι1 k ⧸ (⊥ : Ideal (MRing ι1 k))) = ((1 + Fintype.card Unit : ℕ) : WithBot ℕ∞) := by
@@ -387,21 +387,21 @@ theorem dim_bot (k : Type) [Field k] :
   simpa using h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GroundTheory.Heights₂.Heights.NumbersDVR.isMultiProjPrime_bot, dim_bot ℂ⟩`.
+Supply the required witnesses or components.
 -/
 theorem isProjVar_bot : IsProjVar (⊥ : Ideal (MRing ι1 ℂ)) 1 :=
   ⟨GroundTheory.Heights₂.Heights.NumbersDVR.isMultiProjPrime_bot, dim_bot ℂ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GroundTheory.Heights₂.Heights.NumbersDVR.isMultiProjPrime_bot, dim_bot ℚ⟩`.
+Supply the required witnesses or components.
 -/
 theorem isProjVarQ_bot : IsProjVarQ (⊥ : Ideal (MRing ι1 ℚ)) 1 :=
   ⟨GroundTheory.Heights₂.Heights.NumbersDVR.isMultiProjPrime_bot, dim_bot ℚ⟩
 
 /- English proof (translation)
-Establish `h` using `isWeightedHomogeneous_X R (GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight ι1) (⟨(), j⟩ : Σ _ : Unit, Fin 2)`. Establish `hw : GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight ι1 (⟨(), j⟩ : Σ _ : Unit, Fin 2) = fun _ => 1`. Use function extensionality and compare the values at `u`. Simplify using `[GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight]`. Rewrite `h` using `[hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomog_Xj {R : Type} [CommRing R] (j : Fin 2) :
     IsMultiHomog (Xj (R := R) j) (fun _ => 1) := by
@@ -426,7 +426,7 @@ def ptLift (j : Fin 2) : (Σ _ : Unit, Fin 2) → MvPolynomial (Fin 0) ℂ :=
   fun q => if q.2 = j then 0 else 1
 
 /- English proof (translation)
-Unfold `ptLift ptVec`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_ptLift (j : Fin 2) (y : Fin 0 → ℂ) (q : Σ _ : Unit, Fin 2) :
     eval y (ptLift j q) = ptVec j q := by
@@ -434,7 +434,7 @@ theorem eval_ptLift (j : Fin 2) (y : Fin 0 → ℂ) (q : Σ _ : Unit, Fin 2) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `⟨fun k => ⟨j + 1, ?_⟩, fun f hf => ?_⟩` and prove the remaining obligations. Simplify using `[ptVec]`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hf`. Simplify using `[ptVec]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem ptVec_mem (j : Fin 2) : ptVec j ∈ ReciprocityTheory.AnForm.R.conePts (ptI (R := ℂ) j) := by
   refine ⟨fun k => ⟨j + 1, ?_⟩, fun f hf => ?_⟩
@@ -443,7 +443,7 @@ theorem ptVec_mem (j : Fin 2) : ptVec j ∈ ReciprocityTheory.AnForm.R.conePts (
     simp [ptVec]
 
 /- English proof (translation)
-Introduce and unpack `⟨-, h⟩`. Simplify using `using h 1 Submodule.mem_top`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem not_mem_conePts_top (z : MCone ι1) :
     z ∉ ReciprocityTheory.AnForm.R.conePts (⊤ : Ideal (MRing ι1 ℂ)) := by
@@ -467,11 +467,11 @@ def ptSnc (p : Fin 0 → ℂ) :
   le_span g _ := by simp
 
 /- English proof (translation)
-Establish `key2 : eval (0 : Fin 0 → ℂ) (bind₁ (ptLift j) f) = eval (ptVec j) f`. Establish `h` using `hom_bind₁ (eval (0 : Fin 0 → ℂ)) (ptLift j) f`. Establish `hc : (eval (0 : Fin 0 → ℂ)).comp C = RingHom.id ℂ` using `RingHom.ext fun c => by simp`. Establish `hv : (fun i => eval (0 : Fin 0 → ℂ) (ptLift j i)) = ptVec j` using `funext (eval_ptLift j 0)`. Rewrite `h` using `[hc, hv, coe_eval₂Hom, eval₂_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `hC` using `eq_C_of_isEmpty (bind₁ (ptLift j) f)`. Establish `hc : coeff 0 (bind₁ (ptLift j) f) ≠ 0`. Introduce `h0`. Apply `hf` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key2, hC, h0]`. Simplify using the standard rewrite rules. Rewrite using `[hC]`. Conclude with `(isUnit_iff_ne_zero.mpr hc).map C`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bind₁_ptLift_isUnit (j : Fin 2) (f : MvPolynomial (Σ _ : Unit, Fin 2) ℂ)
     (hf : eval (ptVec j) f ≠ 0) : IsUnit (bind₁ (ptLift j) f) := by
@@ -560,22 +560,20 @@ def ptRes (j : Fin 2) : Res ι1 (ptI (R := ℂ) j) 0 where
 def qn (z : MCone ι1) : ℝ := ‖z ⟨(), 0⟩‖ ^ 2 + ‖z ⟨(), 1⟩‖ ^ 2
 
 /- English proof (translation)
-The claim follows from `(contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ (⟨(), i⟩ : Σ _ : Unit, Fin 2))`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_normSq_coord (i : Fin 2) :
     ContDiff ℝ ∞ (fun z : MCone ι1 => ‖z ⟨(), i⟩‖ ^ 2) :=
   (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ (⟨(), i⟩ : Σ _ : Unit, Fin 2))
 
 /- English proof (translation)
-The claim follows from `(contDiff_normSq_coord 0).add (contDiff_normSq_coord 1)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_qn : ContDiff ℝ ∞ qn :=
   (contDiff_normSq_coord 0).add (contDiff_normSq_coord 1)
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hz ()`. Establish `h` using `pow_pos (norm_pos_iff.mpr hi) 2`. Unfold `qn`. Use `fin_cases i`. Conclude with `add_pos_of_pos_of_nonneg h (sq_nonneg _)`.
-
-Conclude with `add_pos_of_nonneg_of_pos (sq_nonneg _) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qn_pos {z : MCone ι1} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : 0 < qn z := by
   obtain ⟨i, hi⟩ := hz ()
@@ -586,14 +584,14 @@ theorem qn_pos {z : MCone ι1} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : 0 < qn 
   · exact add_pos_of_nonneg_of_pos (sq_nonneg _) h
 
 /- English proof (translation)
-Simplify using `only [qn, tsmul, norm_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qn_tsmul (c : Unit → ℂ) (z : MCone ι1) : qn (tsmul c z) = ‖c ()‖ ^ 2 * qn z := by
   simp only [qn, tsmul, norm_mul, mul_pow]
   ring
 
 /- English proof (translation)
-The claim follows from `isOpen_lt continuous_const contDiff_qn.continuous`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_qn_pos : IsOpen {w : MCone ι1 | 0 < qn w} :=
   isOpen_lt continuous_const contDiff_qn.continuous
@@ -601,7 +599,7 @@ theorem isOpen_qn_pos : IsOpen {w : MCone ι1 | 0 < qn w} :=
 def fubiniStudyLine : HLine ι1 := ReciprocityTheory.ChartRestriction.G.Geo.fsLine 2
 
 /- English proof (translation)
-Establish `h : fubiniStudyLine.h z = Real.sqrt (qn z)`. Simplify using `[fubiniStudyLine, ReciprocityTheory.ChartRestriction.G.Geo.fsLine, ReciprocityTheory.ChartRestriction.G.Geo.HermLine.ofMetrics, ReciprocityTheory.ChartRestriction.G.Geo.fsMetric, EuclideanSpace.norm_eq, Fin.sum_univ_two, qn]`. Rewrite using `[logH, h, Real.log_sqrt (by unfold qn; positivity)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem logH_fubiniStudyLine (z : MCone ι1) : logH fubiniStudyLine z = Real.log (qn z) / 2 := by
   have h : fubiniStudyLine.h z = Real.sqrt (qn z) := by
@@ -610,7 +608,7 @@ theorem logH_fubiniStudyLine (z : MCone ι1) : logH fubiniStudyLine z = Real.log
   rw [logH, h, Real.log_sqrt (by unfold qn; positivity)]
 
 /- English proof (translation)
-Introduce `z hz`. Use `⟨{w | 0 < qn w}, isOpen_qn_pos.mem_nhds (qn_pos hz.1), fun w => Real.log (qn w) / 2, ?_, fun w _ => logH_fubiniStudyLine w⟩` and prove the remaining obligations. Conclude with `(contDiff_qn.contDiffOn.log fun w hw => ne_of_gt hw).div_const 2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSmoothMetric_fubiniStudyLine (P : Ideal (MRing ι1 ℂ)) : IsSmoothMetric P fubiniStudyLine := by
   intro z hz
@@ -621,7 +619,7 @@ theorem isSmoothMetric_fubiniStudyLine (P : Ideal (MRing ι1 ℂ)) : IsSmoothMet
 def projectiveLineCoordinates (j : Fin 2) (z : MCone ι1) : ℝ := ‖z ⟨(), j⟩‖ ^ 2 / qn z
 
 /- English proof (translation)
-Rewrite using `[projectiveLineCoordinates, projectiveLineCoordinates, qn_tsmul]`. Simplify using `only [tsmul, norm_mul, mul_pow]`. Conclude with `mul_div_mul_left _ _ (pow_ne_zero 2 (norm_ne_zero_iff.mpr (hc ())))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem projLineRatio_torus_smul (j : Fin 2) (c : Unit → ℂ) (hc : ∀ k, c k ≠ 0) (z : MCone ι1) :
     projectiveLineCoordinates j (tsmul c z) = projectiveLineCoordinates j z := by
@@ -630,7 +628,7 @@ theorem projLineRatio_torus_smul (j : Fin 2) (c : Unit → ℂ) (hc : ∀ k, c k
   exact mul_div_mul_left _ _ (pow_ne_zero 2 (norm_ne_zero_iff.mpr (hc ())))
 
 /- English proof (translation)
-Use `⟨fun c hc z _ => projLineRatio_torus_smul j c hc z, fun z hz => ?_⟩` and prove the remaining obligations. Use `⟨{w | 0 < qn w}, isOpen_qn_pos.mem_nhds (qn_pos hz.1), projectiveLineCoordinates j, ?_, fun w _ => rfl⟩` and prove the remaining obligations. Conclude with `(contDiff_normSq_coord j).contDiffOn.div contDiff_qn.contDiffOn fun w hw => ne_of_gt hw`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSmoothFn_projLineRatio (P : Ideal (MRing ι1 ℂ)) (j : Fin 2) : IsSmoothFn P (projectiveLineCoordinates j) := by
   refine ⟨fun c hc z _ => projLineRatio_torus_smul j c hc z, fun z hz => ?_⟩
@@ -638,9 +636,9 @@ theorem isSmoothFn_projLineRatio (P : Ideal (MRing ι1 ℂ)) (j : Fin 2) : IsSmo
   exact (contDiff_normSq_coord j).contDiffOn.div contDiff_qn.contDiffOn fun w hw => ne_of_gt hw
 
 /- English proof (translation)
-Use `⟨⟨L.a, fun c hc z hz => ?_⟩, h⟩` and prove the remaining obligations. Establish `hL` using `L.pos z hz.1`. Establish `hp : ∀ k ∈ Finset.univ, ‖c k‖ ^ L.a k ≠ 0` using `fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc k))`. Unfold `logH tsmul`. Rewrite using `[L.smul c z hc, Real.log_mul (Finset.prod_ne_zero_iff.mpr hp) hL.ne', Real.log_prod hp, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Real.log_zpow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isSmoothPot_logH {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {P : Ideal (MRing ι ℂ)} {L : HLine ι} (h : IsSmoothMetric P L) :
@@ -655,7 +653,7 @@ theorem isSmoothPot_logH {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type
   simp only [Real.log_zpow]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨0, fun c hc z hz => by simp [h.1 c hc z hz]⟩, h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSmoothPot_of_fn {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {P : Ideal (MRing ι ℂ)} {g : MCone ι → ℝ} (h : IsSmoothFn P g) :
@@ -663,7 +661,7 @@ theorem isSmoothPot_of_fn {K : Type} [Fintype K] [DecidableEq K] {ι : K → Typ
   ⟨⟨0, fun c hc z hz => by simp [h.1 c hc z hz]⟩, h.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => 1, fun k => by simp [fubiniStudyLine, ReciprocityTheory.ChartRestriction.G.Geo.fsLine, ReciprocityTheory.ChartRestriction.G.Geo.HermLine.ofMetrics], isMultiHomog_Xj j, X_ne_bot _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSec_bot_X {R : Type} [CommRing R] [IsDomain R] (j : Fin 2) :
     IsFormSec (⊥ : Ideal (MRing ι1 R)) fubiniStudyLine (Xj j) :=
@@ -675,9 +673,9 @@ def fsTw : HLine ι1 :=
     (ReciprocityTheory.ChartRestriction.G.Geo.HermLine.ofWeight (projectiveLineCoordinates 0) fun c z hc => projLineRatio_torus_smul 0 c hc z)
 
 /- English proof (translation)
-Introduce `z hz`. Use `⟨{w | 0 < qn w}, isOpen_qn_pos.mem_nhds (qn_pos hz.1), fun w => Real.log (qn w) / 2 - projectiveLineCoordinates 0 w, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Conclude with `((contDiff_qn.contDiffOn.log fun w hw => ne_of_gt hw).div_const 2).sub ((contDiff_normSq_coord 0).contDiffOn.div contDiff_qn.contDiffOn fun w hw => ne_of_gt hw)`. Establish `hp` using `fubiniStudyLine.pos w hw.2.1 show Real.log (fubiniStudyLine.h w * Real.exp (-projectiveLineCoordinates 0 w)) = _`. Rewrite using `[Real.log_mul hp.ne' (Real.exp_pos _).ne', Real.log_exp, ← logH, logH_fubiniStudyLine]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem isSmoothMetric_fsTw (P : Ideal (MRing ι1 ℂ)) : IsSmoothMetric P fsTw := by
   intro z hz
@@ -691,7 +689,7 @@ theorem isSmoothMetric_fsTw (P : Ideal (MRing ι1 ℂ)) : IsSmoothMetric P fsTw 
     ring
 
 /- English proof (translation)
-Use `show fubiniStudyLine.a + 0 = fubiniStudyLine.a`. Conclude with `add_zero _`.
+A detailed English derivation is pending.
 -/
 theorem fsTw_a : fsTw.a = fubiniStudyLine.a := by
   show fubiniStudyLine.a + 0 = fubiniStudyLine.a
@@ -700,12 +698,12 @@ theorem fsTw_a : fsTw.a = fubiniStudyLine.a := by
 def projLineFubiniStudyMass : ℝ := zInt (⊥ : Ideal (MRing ι1 ℂ)) 1 ![logH fubiniStudyLine] (fun _ => 1)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨projLineResolution⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_resolution_projLine : Nonempty (Res ι1 (⊥ : Ideal (MRing ι1 ℂ)) 1) := ⟨projLineResolution⟩
 
 /- English proof (translation)
-Use `⟨continuous_subtype_val, fun j k y _ => ?_⟩` and prove the remaining obligations. Establish `hc : (ReciprocityTheory.AnForm.M.p1.chart k ∘ Subtype.val ∘ ((ReciprocityTheory.AnForm.M.ptAtlas ({OnePoint.infty} : Set (OnePoint ℂ))).chart j).symm) = fun _ => (ReciprocityTheory.AnForm.M.p1.chart k ∘ Subtype.val ∘ ((ReciprocityTheory.AnForm.M.ptAtlas ({OnePoint.infty} : Set (O …`. Use function extensionality and compare the values at `fun y' => congrArg _ (Subsingleton.elim y' y)`. Rewrite using `[hc]`. Conclude with `analyticAt_const`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holoMap_infty :
     HoloMap (ReciprocityTheory.AnForm.M.ptAtlas ({OnePoint.infty} : Set (OnePoint ℂ))) ReciprocityTheory.AnForm.M.p1
@@ -720,7 +718,7 @@ theorem holoMap_infty :
   exact analyticAt_const
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ReciprocityTheory.AnForm.M.projLine_isSmoothPotential, ReciprocityTheory.AnForm.M.projLine_isHolomorphicSection, ReciprocityTheory.AnForm.M.projLine_isSimpleNormalCrossing, holoMap_infty, ReciprocityTheory.AnForm.M.projLine_smooth_of_charts ReciprocityTheory.AnForm.M.contDiff_fu …`.
+Supply the required witnesses or components.
 -/
 theorem projectiveLineZeroForm_holds.analyticResolution_hypotheses_projectiveLine :
     IsPotential ReciprocityTheory.AnForm.M.p1 ReciprocityTheory.AnForm.M.fsPot ∧
@@ -736,7 +734,7 @@ theorem projectiveLineZeroForm_holds.analyticResolution_hypotheses_projectiveLin
       ReciprocityTheory.AnForm.M.contDiff_fubiniStudyRatio_comp_chart1, fun i => i.elim0⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjVar_bot, fun j => by fin_cases j; exact isSmoothPot_logH (isSmoothMetric_fubiniStudyLine ⊥), Or.inr ⟨fubiniStudyLine, Xj 0, isSmoothMetric_fubiniStudyLine ⊥, isSec_bot_X 0, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ResIndep.analyticResolution_hypotheses_projectiveLine :
     IsProjVar (⊥ : Ideal (MRing ι1 ℂ)) 1 ∧ (∀ j, IsSmoothPot ⊥ ((![logH fubiniStudyLine] : Fin 1 → _) j)) ∧
@@ -746,7 +744,7 @@ theorem ResIndep.analyticResolution_hypotheses_projectiveLine :
     Or.inr ⟨fubiniStudyLine, Xj 0, isSmoothMetric_fubiniStudyLine ⊥, isSec_bot_X 0, rfl⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjVar_bot, nonempty_resolution_projLine, fun j => j.elim0, isSmoothFn_projLineRatio ⊥ 0, isSmoothFn_projLineRatio ⊥ 1⟩`.
+Supply the required witnesses or components.
 -/
 theorem S3.analyticResolution_hypotheses_projectiveLine :
     IsProjVar (⊥ : Ideal (MRing ι1 ℂ)) (0 + 1) ∧ Nonempty (Res ι1 ⊥ (0 + 1)) ∧
@@ -755,7 +753,7 @@ theorem S3.analyticResolution_hypotheses_projectiveLine :
   ⟨isProjVar_bot, nonempty_resolution_projLine, fun j => j.elim0, isSmoothFn_projLineRatio ⊥ 0, isSmoothFn_projLineRatio ⊥ 1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjVar_bot, nonempty_resolution_projLine, fun j => by fin_cases j; exact isSmoothMetric_fubiniStudyLine ⊥, fun j => by fin_cases j; exact isSmoothMetric_fsTw ⊥, fun j => by fin_cases j; exact fsTw_a.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem ThreeSphereMass.analyticResolution_hypotheses_projectiveLine :
     IsProjVar (⊥ : Ideal (MRing ι1 ℂ)) 1 ∧ Nonempty (Res ι1 ⊥ 1) ∧
@@ -766,7 +764,7 @@ theorem ThreeSphereMass.analyticResolution_hypotheses_projectiveLine :
     fun j => by fin_cases j; exact isSmoothMetric_fsTw ⊥, fun j => by fin_cases j; exact fsTw_a.symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjVar_bot, fun j => by fin_cases j; exact isSmoothPot_logH (isSmoothMetric_fubiniStudyLine ⊥), isSmoothMetric_fubiniStudyLine ⊥, isSec_bot_X 0⟩`.
+Supply the required witnesses or components.
 -/
 theorem S4.analyticResolution_hypotheses_projectiveLine :
     IsProjVar (⊥ : Ideal (MRing ι1 ℂ)) 1 ∧ (∀ j, IsSmoothPot ⊥ ((![logH fubiniStudyLine] : Fin 1 → _) j)) ∧
@@ -775,7 +773,7 @@ theorem S4.analyticResolution_hypotheses_projectiveLine :
     isSmoothMetric_fubiniStudyLine ⊥, isSec_bot_X 0⟩
 
 /- English proof (translation)
-Rewrite using `[comps_bot_X]`. Introduce and unpack `W rfl`. Conclude with `⟨ptRes j⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem res_comps_bot (j : Fin 2) :
     ∀ W ∈ comps (⊥ : Ideal (MRing ι1 ℂ)) (Xj j), Nonempty (Res ι1 W 0) := by
@@ -784,7 +782,7 @@ theorem res_comps_bot (j : Fin 2) :
   exact ⟨ptRes j⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjVar_bot, nonempty_resolution_projLine, res_comps_bot 0, fun j => j.elim0, isSmoothMetric_fubiniStudyLine ⊥, isSec_bot_X 0, isSmoothFn_projLineRatio ⊥ 1⟩`.
+Supply the required witnesses or components.
 -/
 theorem PoincareLelongAlt.analyticResolution_hypotheses_projectiveLine :
     IsProjVar (⊥ : Ideal (MRing ι1 ℂ)) (0 + 1) ∧ Nonempty (Res ι1 ⊥ (0 + 1)) ∧
@@ -795,7 +793,7 @@ theorem PoincareLelongAlt.analyticResolution_hypotheses_projectiveLine :
     isSec_bot_X 0, isSmoothFn_projLineRatio ⊥ 1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjVar_bot, nonempty_resolution_projLine, fun j => by fin_cases j; exact isSmoothMetric_fubiniStudyLine ⊥⟩`.
+Supply the required witnesses or components.
 -/
 theorem Degrees.analyticResolution_hypotheses_projectiveLine :
     IsProjVar (⊥ : Ideal (MRing ι1 ℂ)) 1 ∧ Nonempty (Res ι1 ⊥ 1) ∧
@@ -803,7 +801,7 @@ theorem Degrees.analyticResolution_hypotheses_projectiveLine :
   ⟨isProjVar_bot, nonempty_resolution_projLine, fun j => by fin_cases j; exact isSmoothMetric_fubiniStudyLine ⊥⟩
 
 /- English proof (translation)
-Rewrite using `[comps_bot_X, comps_bot_X]`. Introduce and unpack `W rfl h`. Conclude with `ptI_ne h`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem comps_disjoint {R : Type} [CommRing R] [IsDomain R] :
     ∀ W ∈ comps (⊥ : Ideal (MRing ι1 R)) (Xj 0), W ∉ comps ⊥ (Xj 1) := by
@@ -812,7 +810,7 @@ theorem comps_disjoint {R : Type} [CommRing R] [IsDomain R] :
   exact ptI_ne h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjVar_bot, nonempty_resolution_projLine, res_comps_bot 0, res_comps_bot 1, fun j => j.elim0, isSmoothMetric_fubiniStudyLine ⊥, isSmoothMetric_fsTw ⊥, isSec_bot_X 0, by obtain ⟨a, ha, hs, hn⟩ := isSec_bot_X (R := ℂ) 1; exact ⟨a, fun k => by rw [fsTw_a]; exact ha k, hs, hn⟩, c …`.
+Supply the required witnesses or components.
 -/
 theorem ProjectiveLineTwo.analyticResolution_hypotheses_projectiveLine :
     IsProjVar (⊥ : Ideal (MRing ι1 ℂ)) (0 + 1) ∧ Nonempty (Res ι1 ⊥ (0 + 1)) ∧
@@ -826,13 +824,13 @@ theorem ProjectiveLineTwo.analyticResolution_hypotheses_projectiveLine :
     comps_disjoint⟩
 
 /- English proof (translation)
-Simplify using `[sC]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sC_Xj (j : Fin 2) : sC (Xj (R := ℚ) j) = Xj j := by
   simp [sC]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjVarQ_bot, isMultiHomog_Xj 0, X_ne_bot _, by rw [comps_bot_X]; rfl, by rw [extC_ptI, minimalPrimes_ptI]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem BCMult.analyticResolution_hypotheses_projectiveLine :
     IsProjVarQ (⊥ : Ideal (MRing ι1 ℚ)) (0 + 1) ∧ IsMultiHomog (Xj (R := ℚ) 0) (fun _ => 1) ∧
@@ -842,7 +840,7 @@ theorem BCMult.analyticResolution_hypotheses_projectiveLine :
     by rw [extC_ptI, minimalPrimes_ptI]; rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjVarQ_bot, isMultiHomog_Xj 0, X_ne_bot _, by rw [extC_bot, minimalPrimes_bot_C]; rfl, by rw [sC_Xj, comps_bot_X]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem BCCommon.analyticResolution_hypotheses_projectiveLine :
     IsProjVarQ (⊥ : Ideal (MRing ι1 ℚ)) (0 + 1) ∧ IsMultiHomog (Xj (R := ℚ) 0) (fun _ => 1) ∧
@@ -852,12 +850,12 @@ theorem BCCommon.analyticResolution_hypotheses_projectiveLine :
     by rw [sC_Xj, comps_bot_X]; rfl⟩
 
 /- English proof (translation)
-The claim follows from `isProjVarQ_bot`.
+A detailed English derivation is pending.
 -/
 theorem BCDeg.analyticResolution_hypotheses_projectiveLine : IsProjVarQ (⊥ : Ideal (MRing ι1 ℚ)) 1 := isProjVarQ_bot
 
 /- English proof (translation)
-Rewrite using `[extC_bot, minimalPrimes_bot_C]`. Introduce and unpack `Z rfl`. Conclude with `⟨R⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem res_min_extC_bot (e : ℕ) (R : Res ι1 (⊥ : Ideal (MRing ι1 ℂ)) e) :
     ∀ Z ∈ (extC (⊥ : Ideal (MRing ι1 ℚ))).minimalPrimes, Nonempty (Res ι1 Z e) := by
@@ -866,7 +864,7 @@ theorem res_min_extC_bot (e : ℕ) (R : Res ι1 (⊥ : Ideal (MRing ι1 ℂ)) e)
   exact ⟨R⟩
 
 /- English proof (translation)
-Rewrite using `[comps_bot_X]`. Introduce and unpack `W rfl Z hZ`. Rewrite `hZ` using `[extC_ptI, minimalPrimes_ptI]`. Rewrite using `[hZ]`. Conclude with `⟨ptRes j⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem res_comps_extC (j : Fin 2) :
     ∀ W ∈ comps (⊥ : Ideal (MRing ι1 ℚ)) (Xj j), ∀ Z ∈ (extC W).minimalPrimes,
@@ -878,7 +876,7 @@ theorem res_comps_extC (j : Fin 2) :
   exact ⟨ptRes j⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjVarQ_bot, res_min_extC_bot 1 projLineResolution, fun j => by fin_cases j; exact isSmoothMetric_fubiniStudyLine _⟩`.
+Supply the required witnesses or components.
 -/
 theorem DegreesQ.analyticResolution_hypotheses_projectiveLine :
     IsProjVarQ (⊥ : Ideal (MRing ι1 ℚ)) 1 ∧
@@ -887,7 +885,7 @@ theorem DegreesQ.analyticResolution_hypotheses_projectiveLine :
   ⟨isProjVarQ_bot, res_min_extC_bot 1 projLineResolution, fun j => by fin_cases j; exact isSmoothMetric_fubiniStudyLine _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjVarQ_bot, res_min_extC_bot 1 projLineResolution, res_comps_extC 0, fun j => j.elim0, isSmoothMetric_fubiniStudyLine _, isSec_bot_X 0, isSmoothFn_projLineRatio _ 1⟩`.
+Supply the required witnesses or components.
 -/
 theorem ProjectiveLineOverRationals.analyticResolution_hypotheses_projectiveLine :
     IsProjVarQ (⊥ : Ideal (MRing ι1 ℚ)) (0 + 1) ∧
@@ -900,7 +898,7 @@ theorem ProjectiveLineOverRationals.analyticResolution_hypotheses_projectiveLine
     isSmoothMetric_fubiniStudyLine _, isSec_bot_X 0, isSmoothFn_projLineRatio _ 1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjVarQ_bot, res_min_extC_bot 1 projLineResolution, res_comps_extC 0, res_comps_extC 1, fun j => j.elim0, isSmoothMetric_fubiniStudyLine _, isSmoothMetric_fubiniStudyLine _, isSec_bot_X 0, isSec_bot_X 1, comps_disjoint⟩`.
+Supply the required witnesses or components.
 -/
 theorem ProjectivePlaneOverRationals.analyticResolution_hypotheses_projectiveLine :
     IsProjVarQ (⊥ : Ideal (MRing ι1 ℚ)) (0 + 1) ∧

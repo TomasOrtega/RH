@@ -15,15 +15,15 @@ open GlobalTheory GlobalTheory.AbLaw
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ P R _ t₀ m hm O _ _ _ ht`. Establish `hab` using `P.isAb`. Establish `hd` using `P.smoothDim`. Establish `hsm : Smooth P.A.hom` using `SmoothOfRelativeDimension.smooth P.g _`. Establish `hgi : GeometricallyIntegral P.A.hom` using `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hsm hab.geomConnected`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : IsIntegral P.A.left` using `GeometricallyIntegral.isIntegral_of_subsingleton P.A.hom`. Establish `hnt : Nontrivial R` using `⟨⟨0, 1, fun h => hm.ne_top ((Ideal.eq_top_iff_one m).2 (h ▸ m.zero_mem))⟩⟩`. Set `φ : CommRingCat.of K ⟶ CommRingCat.of R` to `Spec.preimage (t₀ ≫ P.A.hom)`. Establish `hφ : t₀ ≫ P.A.hom = Spec.map φ` using `(Spec.map_preimage _).symm`. Set `_ : Algebra K R` to `φ.hom.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hφ' : t₀ ≫ P.A.hom = Spec.map (CommRingCat.ofHom (algebraMap K R))` using `hφ`. Establish `htr : Algebra.trdeg K R = P.g` using `trdeg_eq_of_smoothOfRelativeDimension K P.A.left P.A.hom P.g hd R t₀ ht hφ'`. Establish `: IsIntegral (Spec (CommRingCat.of R))` using `isIntegral_of_isOpenImmersion t₀`. Establish `: IsDomain R` using `(affine_isIntegral_iff (CommRingCat.of R)).1 inferInstance`. Establish `hs : Smooth (Spec.map φ)` using `hφ ▸ inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : Algebra.Smooth K R` using `(HasRingHomProperty.Spec_iff (P := @Smooth)).1 hs`. Establish `hreg : IsRegularRing R` using `isRegularRing_of_smooth K R`. Establish `hh` using `ReciprocityTheory.CA.height_eq_of_isMaximal_of_trdeg_eq_field P.g htr m`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `isRegularRing_iff.mp hreg m` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `IsRegularLocalRing.of_ringEquiv (IsLocalization.algEquiv m.primeCompl (Localization.AtPrime m) O).toRingEquiv`. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height m O, hh]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isRegularLocalRing_and_ringKrullDim_eq_of_polAV :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (R : Type) [CommRing R] (t₀ : Spec (CommRingCat.of R) ⟶ P.A.left) (m : Ideal R) [m.IsMaximal] (O : Type) [CommRing O] [Algebra R O] [IsLocalization.AtPrime O m], IsOpenImmersion t₀ → IsRegularLocalRing O ∧ ringKrullDim O = P.g := by

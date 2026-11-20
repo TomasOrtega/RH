@@ -9,11 +9,11 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 namespace GlobalTheory.PDForm
 
 /- English proof (translation)
-Set `T'` to `Λ'.L.obj (Opposite.op p.1.1)`. Set `e' : Sec D'.s p.1.1.1 →+* T'.B` to `Λ'.e (Opposite.op p.1.1)`. Set `y₀ : Sec D.s p.1.2.1 →+* (m.obj T').B` to `e'.comp (CechDR.secPull D.s D'.s p)`. Establish `hy : ∀ r : D.R, y₀ (algebraMap D.R _ r) = algebraMap D.R (m.obj T').B r`. Introduce `r`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `semiHom_secPull hφ p r 1`. Rewrite `h1` using `[map_one, ← Algebra.algebraMap_eq_smul_one, ← Algebra.algebraMap_eq_smul_one]`. Express the relevant statement in the definitionally equal form `e' (CechDR.secPull D.s D'.s p (algebraMap D.R _ r)) = algebraMap D'.R T'.B (σ r)`. Rewrite using `[h1]`. Conclude with `(Λ'.e (Opposite.op p.1.1)).commutes _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `y : Sec D.s p.1.2.1 →ₐ[D.R] (m.obj T').B` to `{ y₀ with commutes' := hy }`. Use `((GlobalTheory.T.hom_spec_points_levels D Λ).1 (Opposite.op p.1.2) (m.obj T') y).1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap ((T'.π.comp e').comp (CechDR.secPull D.s D'.s p)) ≫ affPt D.s p.1.2 = (T'.x ≫ φ₀) ≫ D.i`. Rewrite using `[Cris.spMap_comp, Category.assoc, secPull_affPt, ← Category.assoc, Category.assoc T'.x, hi, ← Category.assoc]`. Conclude with `congrArg (· ≫ φ) (Λ'.pt (Opposite.op p.1.1))`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_pair_hom (D D' : Data) (Λ : Lift D) (Λ' : Lift D') (σ : D.R →+* D'.R) (φ : D'.X ⟶ D.X)
     (φ₀ : D'.X₀ ⟶ D.X₀) (hφ : φ ≫ D.s = D'.s ≫ spMap σ) (m : IsMor D.κ D.t D'.κ D'.t σ φ₀)

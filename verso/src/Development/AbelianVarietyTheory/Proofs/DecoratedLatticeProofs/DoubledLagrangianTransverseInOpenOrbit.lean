@@ -12,29 +12,25 @@ open Matrix
 namespace GlobalTheory.Core.Rk.Dich
 
 /- English proof (translation)
-Introduce `D V γ hγ γi hγi hinj`. Establish `hinc : Function.Injective (incA D)` using `Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)`. Take `⟨g, hg, hg1, hg2⟩` from `exists_rat (dblSp V) hγ`. Establish `hγi' : γi = (g⁻¹).1` using `Matrix.map_injective hinc (hγi.symm.trans hg2)`. Establish `hgγ : g.1 * γi = 1` using `by rw [hγi']; exact Units.mul_inv g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgi : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) γi * dblGram finSumFinEquiv V.gram * γi = dblGram finSumFinEquiv V.gram`. Establish `h` using `inv_mem hg`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ (g⁻¹).1 * (dblSp V).gram * (g⁻¹).1 = (dblSp V).gram at h`. Rewrite `h` using `[gram_hdbl]`. Rewrite using `[hγi']`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hiso` using `isotropic_diag hgi`. Use `set σ : D.host.E →+* D.host.E := (D.sp.cm.sig : D.host.E →+* D.host.E) with hσ`. Use `set P := leviMat finSumFinEquiv γi with hP`. Use `set Q := diagSnd γi with hQ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQu : IsUnit Q` using `Matrix.mulVec_injective_iff_isUnit.1 fun x y h => sub_eq_zero.1 (hinj _ (by rw [Matrix.mulVec_sub, h, sub_self]))`. Establish `hQ1 : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hQu)`. Establish `hcT : ∀ M N : Matrix (Fin V.rank) (Fin V.rank) D.host.E, Formalism.UG.cT σ (M * N) = Formalism.UG.cT σ N * Formalism.UG.cT σ M`. Introduce `M N`. Simplify using `[Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcT1 : Formalism.UG.cT σ Q⁻¹ * Formalism.UG.cT σ Q = 1`. Rewrite using `[← hcT, hQ1]`. Simplify using `[Formalism.UG.cT]`. Establish `hδ : Formalism.UG.cT σ (P * Q⁻¹) * V.gram * (P * Q⁻¹) = V.gram`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hiso]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hQ1, Matrix.mul_one, ← Matrix.mul_assoc, hcT1, Matrix.one_mul]`. Establish `hdet : IsUnit (P * Q⁻¹).det`. Establish `h` using `congrArg Matrix.det hδ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `hJ : IsUnit V.gram.det` using `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V`. Rewrite `hJ` using `[← h]`. Conclude with `isUnit_of_mul_isUnit_right hJ`. Use `set d : GL (Fin V.rank) D.host.E := ((Matrix.isUnit_iff_isUnit_det (P * Q⁻¹)).2 hdet).unit with hd`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdv : d.1 = P * Q⁻¹` using `rfl`. Establish `hdU : d ∈ Formalism.UG.UJ σ V.gram`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT σ d.1 * V.gram * d.1 = V.gram`. Rewrite using `[hdv]`. Conclude with `hδ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨δ', hδ'Q, hδ'⟩` from `exists_of_rat V hdU`. Use `⟨δ'⁻¹, inv_mem hδ'Q, ?_⟩` and prove the remaining obligations. Rewrite using `[show (io V (δ'⁻¹, 1))⁻¹ = io V (δ', 1) by rw [← map_inv, Prod.inv_mk, inv_inv, inv_one]]`. Establish `hm : (Formalism.L2.Theta.matHom (dblSp V) (γ * io V (δ', 1))).1 = (g.1 * blkMat finSumFinEquiv (P * Q⁻¹) 1).map (incA D)`. Rewrite using `[map_mul, Units.val_mul, hg1, matHom_io, val_blkGL, hδ', map_one, Units.val_one, hdv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `conv_rhs => rw [Matrix.map_mul, blkMat_map _ _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _)]`. Use `mem_siegelOf.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `KeepsDiag finSumFinEquiv (Formalism.L2.Theta.matHom (dblSp V) (γ * io V (δ', 1))).1`. Rewrite using `[hm]`. Use `KeepsDiag.map _ (keepsDiag_of_mulVec fun w hw => ?_) _` and prove the remaining obligations.
-
-Take `⟨x, rfl⟩` from `(mem_diagSub _).1 hw`. Rewrite using `[← Matrix.mulVec_mulVec, blkMat_mulVec, Matrix.one_mulVec]`. Establish `h2 : pairVec finSumFinEquiv ((P * Q⁻¹) *ᵥ x) x = γi *ᵥ pairVec finSumFinEquiv (Q⁻¹ *ᵥ x) (Q⁻¹ *ᵥ x)`. Rewrite using `[mulVec_pairVec_diag, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hQ1, Matrix.one_mulVec]`. Rewrite using `[h2, Matrix.mulVec_mulVec, hgγ, Matrix.one_mulVec]`.
-
-Conclude with `(pairVec_mem_diagSub _).2 rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_siegel_of_diagSnd : ∀ (D : D7) (V : HSp D), ∀ γ ∈ GQ (dblSp V), ∀ γi : Matrix (Fin (V.rank + V.rank)) (Fin (V.rank + V.rank)) D.host.E, (matHom (dblSp V) γ⁻¹).1 = γi.map (incA D) → (∀ x : Fin V.rank → D.host.E, diagSnd γi *ᵥ x = 0 → x = 0) → ∃ δ ∈ GQ V, γ * (io V (δ, 1))⁻¹ ∈ siegel V := by
   intro D V γ hγ γi hγi hinj

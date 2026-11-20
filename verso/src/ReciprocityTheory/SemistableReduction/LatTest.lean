@@ -8,7 +8,7 @@ open Matrix NumberField ComplexConjugate
 open scoped ComplexOrder
 
 /- English proof (translation)
-Rewrite using `[eq_ratCast σ x, map_ratCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ratEmb_conj (σ : ℚ →+* ℂ) (x : ℚ) : σ x = conj (σ x) := by
   rw [eq_ratCast σ x, map_ratCast]
@@ -43,21 +43,21 @@ def majQ (r : ℕ) : Majorant (hermQ r) where
   conj_compat := fun σ => by simp
 
 /- English proof (translation)
-Introduce `x b _ _ _`. Simplify using `[triChar, Matrix.mul_apply, mul_pow, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 example (a : ℕ) : IsTriEquivariant (fun _ : Fin 1 => a) (fun x => x 0 0 ^ a) := by
   intro x b _ _ _
   simp [triChar, Matrix.mul_apply, mul_pow, mul_comm]
 
 /- English proof (translation)
-Introduce `x b _ _ _`. Simplify using `[triChar]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 example (c : ℂ) : IsTriEquivariant (fun _ : Fin 0 => 0) (fun _ => c) := by
   intro x b _ _ _
   simp [triChar]
 
 /- English proof (translation)
-Use `⟨differentiableOn_const c, ?_, ?_⟩` and prove the remaining obligations. Introduce `x b _ _ _`. Simplify using `[triChar]`. Introduce `x hx`. Simplify using `at hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 example (c : ℂ) : IsBW (fun _ : Fin 0 => 0) (fun _ => c) := by
   refine ⟨differentiableOn_const c, ?_, ?_⟩
@@ -67,7 +67,7 @@ example (c : ℂ) : IsBW (fun _ : Fin 0 => 0) (fun _ => c) := by
     simp at hx
 
 /- English proof (translation)
-Use `⟨Metric.isOpen_ball, balanced_ball_zero, differentiableOn_id, fun w hw => ?_⟩` and prove the remaining obligations. Simplify using `using (Metric.mem_ball.mp hw).le`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 example : IsOpen (Metric.ball (0 : ℂ) 1) ∧ Balanced ℂ (Metric.ball (0 : ℂ) 1) ∧
     DifferentiableOn ℂ (fun z : ℂ => z) (Metric.ball 0 1) ∧
@@ -76,7 +76,7 @@ example : IsOpen (Metric.ball (0 : ℂ) 1) ∧ Balanced ℂ (Metric.ball (0 : �
   simpa using (Metric.mem_ball.mp hw).le
 
 /- English proof (translation)
-Use `⟨differentiable_const 1, ⟨0, one_ne_zero⟩, fun v => ⟨v, trivial, by simp⟩, by norm_num⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 example : let V := EuclideanSpace ℂ (Fin 0)
     Differentiable ℂ (fun _ : V => (1 : ℂ)) ∧ (∃ _z : V, (1 : ℂ) ≠ 0) ∧
@@ -84,13 +84,13 @@ example : let V := EuclideanSpace ℂ (Fin 0)
   refine ⟨differentiable_const 1, ⟨0, one_ne_zero⟩, fun v => ⟨v, trivial, by simp⟩, by norm_num⟩
 
 /- English proof (translation)
-Simplify using `[jForm, sgn]`.
+Simplify using the standard rewrite rules.
 -/
 example (x y : Fin 1 → ℂ) : jForm 1 x y = conj (x 0) * y 0 := by
   simp [jForm, sgn]
 
 /- English proof (translation)
-Establish `h1 : Real.exp (1 / 3) ≤ Real.exp 1` using `Real.exp_le_exp.mpr (by norm_num)`. Establish `h2` using `Real.exp_one_lt_d9`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 example : (Real.exp (1 / 3) + 1) * ((1 : ℕ) : ℝ) < ((4 : ℕ) : ℝ) := by
   have h1 : Real.exp (1 / 3) ≤ Real.exp 1 := Real.exp_le_exp.mpr (by norm_num)
@@ -99,7 +99,7 @@ example : (Real.exp (1 / 3) + 1) * ((1 : ℕ) : ℝ) < ((4 : ℕ) : ℝ) := by
   linarith
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ normSq u` using `Finset.sum_nonneg fun k _ => by positivity`. Establish `h1 : 1 ≤ Real.exp (2 / (3 * (r : ℝ)))` using `Real.one_le_exp (by positivity)`. Simplify using `only [Matrix.map_one, map_zero, map_one, inv_one, mul_one, one_mulVec]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 example (r : ℕ) (u : Fin r → ℂ) :
     normSq (((1 : Matrix (Fin r) (Fin r) ℂ) * (1 : Matrix (Fin r) (Fin r) ℚ).map (Rat.castHom ℂ) *
@@ -110,7 +110,7 @@ example (r : ℕ) (u : Fin r → ℂ) :
   nlinarith
 
 /- English proof (translation)
-Simplify using `[leadMinor, Matrix.det_unique]`.
+Simplify using the standard rewrite rules.
 -/
 example (x : Matrix (Fin 1) (Fin 1) ℂ) : leadMinor x 0 = x 0 0 := by
   simp [leadMinor, Matrix.det_unique]
@@ -125,7 +125,7 @@ instance : IsCMField QI :=
   IsCyclotomicExtension.Rat.isCMField QI (S := {4}) ⟨4, rfl, by norm_num⟩
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Nonempty (QI →+* ℂ) := inferInstance
 
@@ -140,7 +140,7 @@ def intLat (K : Type) [Field K] [NumberField K] (r : ℕ) : Submodule (𝓞 K) (
   Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 K) K)
 
 /- English proof (translation)
-Simplify using `only [intLat, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_intLat {K : Type} [Field K] [NumberField K] {r : ℕ} (x : Fin r → K) :
     x ∈ intLat K r ↔ ∀ a, IsIntegralElt (x a) := by
@@ -148,22 +148,20 @@ theorem mem_intLat {K : Type} [Field K] [NumberField K] {r : ℕ} (x : Fin r →
   rfl
 
 /- English proof (translation)
-Simplify using `[HermForm.h, hermQI]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermQI_h (x y : Fin 1 → QI) :
     hermQI.h x y = IsCMField.complexConj QI (x 0) * y 0 := by
   simp [HermForm.h, hermQI]
 
 /- English proof (translation)
-Establish `hz` using `IsCyclotomicExtension.zeta_spec 4 ℚ QI`. Establish `h4 : (φ (IsCyclotomicExtension.zeta 4 ℚ QI)) ^ 4 = 1`. Rewrite using `[← map_pow, hz.pow_eq_one, map_one]`. Establish `hp : IsPrimitiveRoot (φ (IsCyclotomicExtension.zeta 4 ℚ QI)) 4` using `hz.map_of_injective φ.injective`. Use `set z := φ (IsCyclotomicExtension.zeta 4 ℚ QI)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : z ^ 2 ≠ 1`. Introduce `h`. Use `hp.dvd_of_pow_eq_one 2 h` as an intermediate fact. Evaluate the numerical expressions using `at this`. Establish `hsq : z ^ 2 = -1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (z ^ 2 - 1) * (z ^ 2 + 1) = 0`. Establish `: (z ^ 2 - 1) * (z ^ 2 + 1) = z ^ 4 - 1` using `by ring`. Rewrite using `[this, h4, sub_self]`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h) h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `eq_neg_of_add_eq_zero_left h`. Establish `hf : (z - Complex.I) * (z + Complex.I) = 0`. Establish `: (z - Complex.I) * (z + Complex.I) = z ^ 2 - Complex.I ^ 2` using `by ring`. Rewrite using `[this, hsq, Complex.I_sq, sub_self]`. Break down `mul_eq_zero.1 hf with h | h` into its components or cases.
-
-Conclude with `⟨1, by norm_num, by rw [sub_eq_zero.1 h]; simp⟩`. Conclude with `⟨-1, by norm_num, by rw [eq_neg_of_add_eq_zero_left h]; simp⟩`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem emb_zeta4 (φ : QI →+* ℂ) :
     ∃ s : ℤ, s ^ 2 = 1 ∧ φ (IsCyclotomicExtension.zeta 4 ℚ QI) = s * Complex.I := by
@@ -192,15 +190,15 @@ theorem emb_zeta4 (φ : QI →+* ℂ) :
   · exact ⟨-1, by norm_num, by rw [eq_neg_of_add_eq_zero_left h]; simp⟩
 
 /- English proof (translation)
-Take `⟨s, hs, he⟩` from `emb_zeta4 φ`. Establish `hz` using `IsCyclotomicExtension.zeta_spec 4 ℚ QI`. Establish `hint : IsIntegral ℤ (IsCyclotomicExtension.zeta 4 ℚ QI)` using `hz.isIntegral (by norm_num)`. Use `set ζ := IsCyclotomicExtension.zeta 4 ℚ QI with hζ`. Use `set a : ℤ := round w.re with ha_def`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `set b : ℤ := round w.im with hb_def`. Use `⟨(a : QI) + ((s * b : ℤ) : QI) * ζ, ?_, ?_⟩` and prove the remaining obligations. Use `⟨(a : 𝓞 QI) + ((s * b : ℤ) : 𝓞 QI) * ⟨ζ, hint⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_intCast]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs' : (s : ℂ) ^ 2 = 1` using `by exact_mod_cast hs`. Establish `h1 : φ ((a : QI) + ((s * b : ℤ) : QI) * ζ) = (a : ℂ) + (b : ℂ) * Complex.I`. Rewrite using `[map_add, map_mul, map_intCast, map_intCast, he]`. Use `push_cast`. Take the linear combination `(b : ℂ) * Complex.I * hs'`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Establish `hre : ((a : ℂ) + (b : ℂ) * Complex.I - w).re = (a : ℝ) - w.re` using `by simp`. Establish `him : ((a : ℂ) + (b : ℂ) * Complex.I - w).im = (b : ℝ) - w.im` using `by simp`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply, hre, him]`. Establish `ha` using `abs_sub_round w.re`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hb` using `abs_sub_round w.im`. Rewrite `ha`, `hb` using `[abs_le]`. Use polynomial arithmetic with `[ha.1, ha.2, hb.1, hb.2]`.
+A detailed English derivation is pending.
 -/
 theorem cover_QI (φ : QI →+* ℂ) (w : ℂ) : ∃ l : QI, IsIntegralElt l ∧ ‖φ l - w‖ ^ 2 ≤ 1 := by
   obtain ⟨s, hs, he⟩ := emb_zeta4 φ
@@ -228,19 +226,19 @@ theorem cover_QI (φ : QI →+* ℂ) (w : ℂ) : ∃ l : QI, IsIntegralElt l ∧
     nlinarith [ha.1, ha.2, hb.1, hb.2]
 
 /- English proof (translation)
-Introduce `σ Q v`. Use `⟨le_rfl, one_pos, one_pos, le_rfl, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Simplify using `[Q]`. Introduce `i x y show φ (hermQI.h x y) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hermQI_h, map_mul, IsCMField.complexEmbedding_complexConj]`. Simplify using `[jForm, sgn, embVec, Q, σ]`. Introduce `x hx y hy`. Rewrite using `[hermQI_h]`. Rewrite `hx`, `hy` using `[mem_intLat]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z0, hz0⟩` from `hx 0`. Take `⟨z1, hz1⟩` from `hy 0`. Establish `hi : IsIntegral ℤ (IsCMField.complexConj QI (z0 : QI))`. Use `(NumberField.RingOfIntegers.isIntegral_coe z0).map ((IsCMField.complexConj QI : QI →+* QI)).toIntAlgHom` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨⟨_, hi⟩ * z1, ?_⟩` and prove the remaining obligations. Use `show (IsCMField.complexConj QI (z0 : QI)) * (z1 : QI) = _`. Rewrite using `[hz0, hz1]`. Introduce `w`. Take `⟨l, hl, hn⟩` from `cover_QI φ (w () 0)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun _ => l, (mem_intLat _).2 (fun _ => hl), ?_⟩` and prove the remaining obligations. Simplify `hn` using `[normSq, embVec, Q, σ]`. Introduce `j`. Rewrite using `[mem_intLat]`. Introduce `a`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨1, by simp [v]⟩`. Use `linearIndependent_unique_iff.2 ?_` and prove the remaining obligations. Introduce `h`. Use `congrFun h 0` as an intermediate fact. Simplify using `[v] at this`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Simplify using `[majSq, normSq, embVec, Q, σ, v]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem approx_hyps_QI (φ : QI →+* ℂ) :
     let σ : Unit → QI →+* ℂ := fun _ => φ

@@ -18,13 +18,13 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+*
   {w ρ : AlgChart p σ 1 → CxPts p σ → ℝ}
 
 /- English proof (translation)
-Establish `hS` using `ChartGlue.measurableSet_image c.e hA hc`. Establish `hSt : c.e '' A ⊆ c.e.target` using `(Set.image_mono hc).trans c.e.image_source_eq_target.subset`. Establish `hsym : AEMeasurable c.e.symm (volume.restrict (c.e '' A))` using `(c.e.continuousOn_symm.mono hSt).aemeasurable hS`. Establish `hφ : AEMeasurable (fun v => ENNReal.ofReal (w c (c.e.symm v))) (volume.restrict (c.e '' A))` using `(((h.2 c).mono hSt).aemeasurable hS).ennreal_ofReal`. Establish `hsym'` using `hsym.mono_ac (withDensity_absolutelyContinuous (volume.restrict (c.e '' A)) fun v => ENNReal.ofReal (w c (c.e.symm v)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (part w).restrict A = Measure.map c.e.symm ((volume.restrict (c.e '' A)).withDensity fun v => ENNReal.ofReal (w c (c.e.symm v)))`. Use extensionality with `B hB`. Rewrite using `[Measure.restrict_apply hB, h.part_apply c (hB.inter hA) (Set.inter_subset_right.trans hc), Measure.map_apply_of_aemeasurable hsym' hB, withDensity_apply', Measure.restrict_restrict' hS]`. Use `congr 2`. Use extensionality with `v`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨hyB, hyA⟩, rfl⟩`. Conclude with `⟨by rwa [Set.mem_preimage, c.e.left_inv (hc hyA)], ⟨y, hyA, rfl⟩⟩`. Introduce and unpack `⟨hv, ⟨y, hyA, rfl⟩⟩`. Rewrite `hv` using `[Set.mem_preimage, c.e.left_inv (hc hyA)]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨y, ⟨hv, hyA⟩, rfl⟩`. Rewrite using `[key, lintegral_map' hf.aemeasurable hsym']`. Conclude with `lintegral_withDensity_eq_lintegral_mul₀ hφ (hf.comp_aemeasurable hsym)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsDens.setLIntegral_part [SecondCountableTopology (CxPts p σ)] (h : IsDens w)
     (c : AlgChart p σ 1) {A : Set (CxPts p σ)} (hA : MeasurableSet A) (hc : A ⊆ c.e.source)
@@ -58,13 +58,11 @@ theorem IsDens.setLIntegral_part [SecondCountableTopology (CxPts p σ)] (h : IsD
   exact lintegral_withDensity_eq_lintegral_mul₀ hφ (hf.comp_aemeasurable hsym)
 
 /- English proof (translation)
-Establish `hfin : ∀ y, (part w).FiniteAtFilter (𝓝 y)` using `fun y => by`. Take `⟨c, hy⟩` from `cov y`. Take `⟨ε, hε, hεt⟩` from `Metric.isOpen_iff.1 c.e.open_target _ (c.e.map_source hy)`. Use `set B := Metric.closedBall (c.e y) (ε / 2) with hBdef`. Establish `hBt : B ⊆ c.e.target` using `(Metric.closedBall_subset_ball (by linarith)).trans hεt`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set T := c.e.symm '' B with hTdef`. Establish `hTc : IsCompact T` using `(isCompact_closedBall _ _).image_of_continuousOn (c.e.continuousOn_symm.mono hBt)`. Establish `hTs : T ⊆ c.e.source`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `c.e.map_target (hBt hv)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hTB : c.e '' T = B`. Rewrite using `[hTdef, Set.image_image]`. Conclude with `(Set.image_congr fun v hv => c.e.right_inv (hBt hv)).trans (Set.image_id' B)`. Use `⟨T, ?_, ?_⟩` and prove the remaining obligations. Use `mem_of_superset ((c.e.isOpen_inter_preimage Metric.isOpen_ball).mem_nhds ⟨hy, Metric.mem_ball_self (half_pos hε)⟩) fun z hz => ⟨c.e z, ?_, c.e.left_inv hz.1⟩` and prove the remaining obligations.
-
-Conclude with `Metric.ball_subset_closedBall hz.2`. Rewrite using `[h.part_apply c hTc.isClosed.measurableSet hTs, hTB]`. Conclude with `(((h.2 c).mono hBt).integrableOn_compact (isCompact_closedBall _ _)).lintegral_lt_top`. Use `⟨?_⟩` and prove the remaining obligations. Simplify using `using isCompact_univ.measure_lt_top_of_nhdsWithin fun y _ => (hfin y).filter_mono nhdsWithin_le_nhds`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsDens.isFiniteMeasure_part [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)]
     [SecondCountableTopology (CxPts p σ)] (h : IsDens w)
@@ -93,7 +91,7 @@ theorem IsDens.isFiniteMeasure_part [CompactSpace (CxPts p σ)] [T2Space (CxPts 
     (hfin y).filter_mono nhdsWithin_le_nhds
 
 /- English proof (translation)
-Use `⟨fun y => ?_⟩` and prove the remaining obligations. Take `⟨c, hy⟩` from `cov y`. Rewrite using `[h.part_apply c (measurableSet_singleton y) (Set.singleton_subset_iff.2 hy), Set.image_singleton]`. Conclude with `setLIntegral_measure_zero _ _ (measure_singleton _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsDens.noAtoms_part [SecondCountableTopology (CxPts p σ)] [T2Space (CxPts p σ)]
     (h : IsDens w) (cov : ∀ y, ∃ c : AlgChart p σ 1, y ∈ c.e.source) : NoAtoms (part w) := by
@@ -104,11 +102,11 @@ theorem IsDens.noAtoms_part [SecondCountableTopology (CxPts p σ)] [T2Space (CxP
   exact setLIntegral_measure_zero _ _ (measure_singleton _)
 
 /- English proof (translation)
-Use `choose pick hpick using cov`. Establish `hval : ∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, ρ c y = ρ (pick y) y / w (pick y) y * w c y` using `fun c y hy => by`. Establish `hne` using `(hpos (pick y) y (hpick y)).ne'`. Rewrite using `[hρ.1 c (pick y) y hy (hpick y), hw.1 c (pick y) y hy (hpick y)]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun y => ρ (pick y) y / w (pick y) y, continuous_iff_continuousAt.2 fun y => ?_, hval⟩` and prove the remaining obligations. Establish `hcont : ∀ τ : AlgChart p σ 1 → CxPts p σ → ℝ, IsDens τ → ContinuousOn (τ (pick y)) (pick y).e.source` using `fun τ hτ => ((hτ.2 (pick y)).comp (pick y).e.continuousOn (pick y).e.mapsTo).congr fun z hz => by`. Simplify using `[(pick y).e.left_inv hz]`. Establish `ho` using `(pick y).e.open_source.mem_nhds (hpick y)`. Use `(((hcont ρ hρ).continuousAt ho).div ((hcont w hw).continuousAt ho) (hpos _ y (hpick y)).ne').congr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [ho] with z hz`. Rewrite using `[Pi.div_apply, hval (pick y) z hz, mul_div_assoc, div_self (hpos _ z hz).ne', mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem IsDens.exists_quotient (hw : IsDens w) (hpos : ∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, 0 < w c y)
     (cov : ∀ y, ∃ c : AlgChart p σ 1, y ∈ c.e.source) (hρ : IsDens ρ) :
@@ -132,9 +130,9 @@ theorem IsDens.exists_quotient (hw : IsDens w) (hpos : ∀ c : AlgChart p σ 1, 
   rw [Pi.div_apply, hval (pick y) z hz, mul_div_assoc, div_self (hpos _ z hz).ne', mul_one]
 
 /- English proof (translation)
-Establish `hd : IsDens ρ` using `(hw.mul hg).congr hρ`. Use `ChartGlue.ext_of_cover (fun c : AlgChart p σ 1 => c.e.source) (fun c => c.e.open_source) cov fun c A hA hc => ?_` and prove the remaining obligations. Rewrite using `[hd.part_apply c hA hc, withDensity_apply _ hA, hw.setLIntegral_part c hA hc hg.measurable.ennreal_ofReal]`. Use `setLIntegral_congr_fun (ChartGlue.measurableSet_image c.e hA hc) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [c.e.left_inv (hc hy)]`. Rewrite using `[hρ c y (hc hy), ENNReal.ofReal_mul' (hpos c y (hc hy)).le, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsDens.part_eq_withDensity [SecondCountableTopology (CxPts p σ)] (hw : IsDens w)
     (hpos : ∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, 0 < w c y)
@@ -152,7 +150,7 @@ theorem IsDens.part_eq_withDensity [SecondCountableTopology (CxPts p σ)] (hw : 
   rw [hρ c y (hc hy), ENNReal.ofReal_mul' (hpos c y (hc hy)).le, mul_comm]
 
 /- English proof (translation)
-Use `haveI := hw.isFiniteMeasure_part cov`. Establish `hI : Integrable g (part w)` using `integrableOn_univ.1 (hg.continuousOn.integrableOn_compact isCompact_univ)`. Rewrite using `[integral_eq_lintegral_pos_part_sub_lintegral_neg_part hI, total, hw.part_eq_withDensity hpos cov hg hρ, hw.part_eq_withDensity (ρ := fun c y => -ρ c y) (g := fun y => -g y) hpos cov hg.neg fun c y hy => by rw [hρ c y hy, neg_mul], withDensity_apply _ MeasurableSet.univ, withDens …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsDens.total_eq_integral [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)]
     [SecondCountableTopology (CxPts p σ)] (hw : IsDens w)
@@ -171,9 +169,9 @@ theorem IsDens.total_eq_integral [CompactSpace (CxPts p σ)] [T2Space (CxPts p �
     Measure.restrict_univ]
 
 /- English proof (translation)
-Introduce `k _ X p σ _ _ _ hR`. Take `⟨w, hw, hpos⟩` from `GlobalTheory.T.positive_density_exists k X p σ hR`. Take `⟨R⟩` from `hR`. Establish `cov : ∀ y, ∃ c : AlgChart p σ 1, y ∈ c.e.source` using `fun y =>`. Set `⟨i, hi⟩` to `R.cover y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use the proof step `⟨R.chart i, hi⟩`. Conclude with `⟨part w, w, hw.isFiniteMeasure_part cov, hw.noAtoms_part cov, fun ρ hρ => hw.exists_quotient hpos cov hρ, fun ρ g hg hρ => ⟨hw.part_eq_withDensity hpos cov hg hρ, hw.total_eq_integral hpos cov hg hρ⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_refMeasure : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ)
     [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)] [SecondCountableTopology (CxPts p σ)],

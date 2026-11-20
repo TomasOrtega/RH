@@ -76,7 +76,7 @@ def Irr.equivIrrRep (n : ℕ) : Irr k n ≃ IrrRep (GL (Fin n) k) where
 variable {k} in
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem Irr.toIrrRep_equiv_iff {n : ℕ} (π π' : Irr k n) :
     π.toIrrRep ≈ π'.toIrrRep ↔ Nonempty (π.π.Equiv π'.π) := Iff.rfl
@@ -104,7 +104,7 @@ Both sides reduce to the same expression.
 example (a : WD h) : speh a 0 = WD.lpZero h := rfl
 
 /- English proof (translation)
-Simplify using `only [speh, List.range_succ, List.range_zero, List.nil_append, List.cons_append, List.foldr]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 example (a : WD h) : speh a 2 = (a.lpTw (1 / 2)).lpSum ((a.lpTw (-1 / 2)).lpSum (WD.lpZero h)) := by
   simp only [speh, List.range_succ, List.range_zero, List.nil_append, List.cons_append, List.foldr]
@@ -149,17 +149,15 @@ structure ReadAt (T : WDTie N A) (i : N.Loc) (w : PlE H) : Type 1 where
     T.e w (A.locG A.etaTinv w) = rc 1 c
 
 /- English proof (translation)
-Take `⟨μ, hμ, hu, eμ⟩` from `hmu`. Take `⟨η, hη, eη⟩` from `heta`. Establish `hun : IsUnram η`. Use `(hrc.sph 1 (Irr.ofDet 1 η hη)).1 (by rw [eη]; exact (T.unr w _).1 (A.etaTinv_def w).1)` as an intermediate fact. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 this`. Establish `hI : (fun _ : Fin 1 => x) ∈ torusO (w.adicCompletion H.E) (Fin 1)` using `fun _ => hx`. Establish `h2` using `hv ⟨_, iwahori_le_KO _ _ (diagT_mem_iwahori hI)⟩`. Establish `h3 : Matrix.GeneralLinearGroup.det (diagT (w.adicCompletion H.E) (Fin 1) fun _ => x) = x` using `by ext; simp [val_diagT]`. Establish `h4 : (η x : ℂ) * (show ℂ from v) = (show ℂ from v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : detRep (Fin 1) η (diagT (w.adicCompletion H.E) (Fin 1) fun _ => x) v = (show ℂ from v)`. Conclude with `h2.trans (by simp)`. Establish `h6` using `(ofChar_apply (detChar (Fin 1) η) (diagT (w.adicCompletion H.E) (Fin 1) fun _ => x) (show ℂ from v)).symm.trans h5`. Rewrite `h6` using `[detChar_apply, h3]`. Conclude with `h6`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `ext`. Conclude with `(mul_eq_right₀ hv0).1 h4`. Use `choose rep hrep using fun P => hs _ (T.e w (A.locV i P w)) ((T.dim w _).trans (hV P))`. Establish `hrow : ∀ σ, ∃ π, what₂.isot (N.j i) σ ≠ ⊥ → T.e w (A.locW i σ w) = rc R.r π` using `fun σ => by`. Distinguish the cases in `hσ : what₂.isot (N.j i) σ ≠ ⊥`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨π, hπ⟩` from `hs _ (T.e w (A.locW i σ w)) ((T.dim w _).trans (hW σ hσ))`. Conclude with `⟨π, fun _ => hπ.symm⟩`. Conclude with `⟨default, fun h => absurd h hσ⟩`. Use `choose row hrow using hrow`. Use `⟨⟨rc, row, rep, μ, η⁻¹, ⟨hμ, hu⟩, ⟨hη.inv, fun x hx => by simp [hun x hx]⟩, hrow, fun P => (hrep P).symm, fun c hc => ?_, fun c hc => ?_⟩, rfl⟩` and prove the remaining obligations.
-
-Rewrite using `[← eμ]`. Conclude with `((hrc.iso 1 c (Irr.ofDet 1 μ hμ)).2 hc).symm`. Rewrite using `[← eη]`. Rewrite `hc` using `[inv_inv]`. Conclude with `((hrc.iso 1 c (Irr.ofDet 1 η hη)).2 hc).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_readAt (T : WDTie N A) (i : N.Loc) (w : PlE H)
     (rc : ∀ n, Irr (w.adicCompletion H.E) n → WD (E := H.E) (A := N.plOm.1 w) (w := w) (N.plOm.2 w))
@@ -209,7 +207,7 @@ variable {T : WDTie N A} (S : Reading T)
 def Laws : Prop := ∀ i w hw, RecLaws (S i w hw).rc
 
 /- English proof (translation)
-Use `choose S hS using fun i w hw => exists_readAt T i w (rc w) (hrc w hw) (hs w hw) (hW i w hw) (hV i w hw) (hmu i w hw) (heta w hw)`. Conclude with `⟨S, fun i w hw => by rw [hS]; exact hrc w hw, hS⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_reading_laws (T : WDTie N A)
     (rc : ∀ (w : PlE H) n, Irr (w.adicCompletion H.E) n →

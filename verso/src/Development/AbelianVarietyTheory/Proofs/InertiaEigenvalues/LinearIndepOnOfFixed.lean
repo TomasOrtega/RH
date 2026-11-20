@@ -3,31 +3,27 @@ import Mathlib
 namespace GlobalTheory.LinearIndependentFixed
 
 /- English proof (translation)
-Establish `hsli : LinearIndependent K (fun x : (↑s : Set ι) => v x)` using `hs`. Rewrite `hs`, the goal using `[LinearIndepOn, Fintype.linearIndependent_iff]`. It suffices to establish `H : ∀ k : ℕ, ∀ b : (↑s : Set ι) → B, (Finset.univ.filter fun j => b j ≠ 0).card ≤ k → ∑ j, b j • v j = 0 → ∀ j, b j = 0 by`. Introduce `b hb`. Conclude with `H _ b le_rfl hb`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `b hcard _ j`. Assume the negation of the conclusion as `hj`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hmem : j ∈ Finset.univ.filter fun j => b j ≠ 0` using `by simp [hj]`. Use `Finset.card_pos.mpr ⟨j, hmem⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Consider the case `succ k ih`. Introduce `b hcard hsum`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hnot`. Take `⟨j0, hj0⟩` from `not_forall.mp hnot`. Establish `hvj0 : v j0 ≠ 0` using `hsli.ne_zero j0`. Establish `ha0 : ∀ g, a g 0 = 0`. Introduce `g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hσ g 0 (v j0)`. Rewrite `h` using `[zero_smul, map_zero, hv]`. Conclude with `(smul_eq_zero.mp h.symm).resolve_right hvj0`. Establish `hrel : ∀ g, ∀ j, b j0 * a g (b j) = a g (b j0) * b j`. Introduce `g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b', hb'⟩ : ∃ b' : (↑s : Set ι) → B, b' = fun j => b j0 * a g (b j) - a g (b j0) * b j` from `⟨_, rfl⟩`. Establish `hbeq : ∀ j, b' j = b j0 * a g (b j) - a g (b j0) * b j` using `fun j => by rw [hb']`. Establish `hσsum : ∑ j, a g (b j) • v j = 0`. Use `congrArg (σ g) hsum` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[hσ, hv]`. Establish `hsum' : ∑ j, b' j • v j = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hbeq, sub_smul, mul_smul, Finset.sum_sub_distrib, Finset.smul_sum]`. Use `_ = 0 := by rw [hσsum, hsum, smul_zero, smul_zero, sub_zero]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hsub : (Finset.univ.filter fun j => b' j ≠ 0) ⊆ (Finset.univ.filter fun j => b j ≠ 0).erase j0`. Introduce `j hj`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_erase] at hj ⊢`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hj (by rw [hbeq]; ring)`. Introduce `hbj`. Conclude with `hj (by rw [hbeq, hbj, ha0]; ring)`. Establish `hc : (Finset.univ.filter fun j => b' j ≠ 0).card ≤ k`. Establish `h1` using `Finset.card_le_card hsub`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Finset.card_erase_of_mem (by simp [hj0])]`. Use linear arithmetic over natural numbers and integers. Introduce `j`. Establish `h2` using `ih b' hc hsum' j`. Rewrite `h2` using `[hbeq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.mp h2`. Use `choose c hc using fun j => hK (b j0) (b j) hj0 (fun g => hrel g j)`. Establish `hcsum : ∑ j, c j • v j = 0`. Establish `h1 : ∑ j, b j • v j = b j0 • ∑ j, c j • v j`. Rewrite using `[Finset.smul_sum]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hc j, mul_comm, mul_smul, algebraMap_smul]`. Rewrite `hsum` using `[h1]`. Conclude with `(smul_eq_zero.mp hsum).resolve_left hj0`. Establish `hcj0` using `hs c hcsum j0`.
-
-Establish `hb0` using `hc j0`. Rewrite `hb0` using `[hcj0, map_zero, zero_mul]`. Conclude with `hj0 hb0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndepOn_of_fixed {K B W G ι : Type} [Field K] [CommRing B] [IsDomain B]
     [Algebra K B] [AddCommGroup W] [Module B W] [Module K W] [IsScalarTower K B W]

@@ -5,17 +5,17 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `k H _ _ _ _ C hC`. Establish `key : ∀ D : Submodule k H, Module.finrank k D = Module.finrank k (Submodule.map C.mkQ D) + Module.finrank k ↥(D ⊓ C)`. Introduce `D`. Establish `h` using `(C.mkQ.domRestrict D).finrank_range_add_finrank_ker`. Rewrite `h` using `[LinearMap.range_domRestrict, LinearMap.ker_domRestrict, Submodule.ker_mkQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h, ← Submodule.finrank_map_subtype_eq, Submodule.map_comap_subtype]`. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨D₁, h₁⟩ ⟨D₂, h₂⟩ h`. Simplify using `only at h`. Establish `e₁` using `Submodule.comap_map_mkQ C D₁`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e₂` using `Submodule.comap_map_mkQ C D₂`. Rewrite `e₁` using `[h, e₂, sup_eq_right.mpr h₂]`. Rewrite `e₁` using `[sup_eq_right.mpr h₁]`. Conclude with `Subtype.ext e₁.symm`. Introduce `E`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨Submodule.comap C.mkQ E, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Simplify using `[Submodule.mem_comap, (Submodule.Quotient.mk_eq_zero C).mpr hx]`. Conclude with `Submodule.map_comap_eq_self (by simp [Submodule.range_mkQ])`. Introduce `D hD`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[key D, inf_eq_right.mpr hD, hC]`. Introduce `D hD`. Establish `hle : Module.finrank k ↥(D ⊓ C) ≤ 1` using `hC ▸ Submodule.finrank_mono inf_le_right`. Establish `hne : Module.finrank k ↥(D ⊓ C) ≠ 1`. Introduce `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hD` to reduce the goal to its premises. Use `Submodule.eq_of_le_of_finrank_eq (inf_le_right : D ⊓ C ≤ C) (h1.trans hC.symm)` as an intermediate fact. Conclude with `this ▸ inf_le_left`. Rewrite using `[key D]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.countIn_of :
     CountIn := by

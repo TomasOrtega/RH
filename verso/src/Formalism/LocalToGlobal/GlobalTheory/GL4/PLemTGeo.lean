@@ -10,15 +10,15 @@ open scoped InnerProductSpace
 namespace Formalism.L2.GlobalTheoryTheory.TraceIntegrality.LT
 
 /- English proof (translation)
-Use `set K := Submodule.span ℝ {l : W | l ∈ Λ ∧ ‖l‖ ≤ 3 * μ} with hK`. Assume the negation of the conclusion as `hne`. Establish `hKo : Kᗮ ≠ ⊥`. Introduce `h`. Conclude with `hne (Submodule.orthogonal_eq_bot_iff.mp h)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hKo`. Establish `hun : 0 < ‖u‖` using `norm_pos_iff.mpr hu0`. Use `set x : W := (2 * μ / ‖u‖) • u with hx`. Establish `hxn : ‖x‖ = 2 * μ`. Rewrite using `[hx, norm_smul, Real.norm_of_nonneg (by positivity)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Clear the denominators using the available nonvanishing facts. Establish `hxK : x ∈ Kᗮ` using `Submodule.smul_mem _ _ hu`. Take `⟨l, hl, hd⟩` from `hcov x`. Establish `hln : ‖l‖ ≤ 3 * μ`. Establish `: ‖l‖ ≤ ‖x‖ + ‖x - l‖`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlK : l ∈ K` using `Submodule.subset_span ⟨hl, hln⟩`. Establish `horth : ⟪l, x⟫_ℝ = 0` using `Submodule.inner_right_of_mem_orthogonal hlK hxK`. Establish `hsq : ‖x - l‖ ^ 2 = ‖x‖ ^ 2 + ‖l‖ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[@norm_sub_sq_real, real_inner_comm, horth]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ‖x - l‖ ^ 2 ≤ μ ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) hd 2`. Use polynomial arithmetic with `[sq_nonneg ‖l‖]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem span_short_of_cover {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℝ W] [FiniteDimensional ℝ W]
     (Λ : Submodule ℤ W) (μ : ℝ) (hμ : 0 < μ) (hcov : ∀ x : W, ∃ l ∈ Λ, ‖x - l‖ ≤ μ) :
@@ -50,9 +50,9 @@ theorem span_short_of_cover {W : Type} [NormedAddCommGroup W] [InnerProductSpace
   nlinarith [sq_nonneg ‖l‖]
 
 /- English proof (translation)
-Establish `hμ : 0 < (finrank ℝ W : ℝ) / 2 / lam + 1` using `by positivity`. Use `span_short_of_cover Λ _ hμ fun x ↦ ?_` and prove the remaining obligations. Take `⟨l, hl, hle⟩` from `transference_covering W Λ lam hlam hd x`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Rewrite `hle` using `[← le_div_iff₀ hlam]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (finrank ℝ W : ℝ) / 2 / lam = (finrank ℝ W : ℝ) / 2 / lam` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem span_short_of_dual {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℝ W] [FiniteDimensional ℝ W]
     (Λ : Submodule ℤ W) [DiscreteTopology Λ] [IsZLattice ℝ Λ] (lam : ℝ) (hlam : 0 < lam)

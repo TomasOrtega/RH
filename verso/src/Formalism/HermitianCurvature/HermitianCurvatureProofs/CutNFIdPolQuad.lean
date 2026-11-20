@@ -9,11 +9,11 @@ noncomputable section
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Introduce `hA Cb`. Take `⟨C1, H1⟩` from `nFTopFormAll_of hMeas hApx hA Cb`. Take `⟨C2, H2⟩` from `nFTopInt_of hMeas hApx Cb`. Use `⟨max C1 C2, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f A₀ p₀ χ Y N hH w hw hN ε hε`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hH1` using `nfHyp_mono hH (le_max_left C1 C2) hH.1`. Establish `hH2` using `nfHyp_mono hH (le_max_right C1 C2) hH.1`. Use `⟨H2 Wp Wq P p f A₀ p₀ χ Y N hH2 w hw hN ε hε, ?_⟩` and prove the remaining obligations. Establish `hid : B.CkOn ⊤ (B.GV P.k P.r) (fun _ : B.Mat P.k P.r => ContinuousLinearMap.id ℂ Wq)` using `fun g₀ _ => ⟨Set.univ, fun _ => ContinuousLinearMap.id ℂ Wq, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`. Establish `hF` using `ckOn_fpm p p₀ hH.2.2.1 hid`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `Formalism.FourierDecayAlt.P.JCTx6.Link2.ckOn_cutF p.T.base hH.1 hF ε`. Rewrite using `[← residual_pairing_eq_self_pairing p hc hw.1]`. Conclude with `H1 Wp Wq P p f A₀ p₀ χ Y N hH1 w hw hN ε hε`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nfPolQuadAll_of (hMeas : TopDMeasCpt) (hApx : NFApxDomAll) : NFPolQuadAll := by
   intro hA Cb

@@ -8,15 +8,15 @@ open scoped Classical ENNReal NNReal
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
 /- English proof (translation)
-Introduce `E _ _ D ω φ hA x hx`. Establish `hemc : Continuous (em E)` using `Continuous.units_map _ (Continuous.matrix_map continuous_id AdeleBaseChange.continuous_adeleMap)`. Establish `hglc : Continuous (gl : G1 ℚ → GL (Fin 2) (A ℚ))` using `Matrix.SpecialLinearGroup.continuous_toGL`. Establish `hC : IsCompact ((fun k : G1 ℚ => em E (gl k)) '' KK ℚ)` using `(UpperTheory.ConvolutionTheory.R2.M.kkCpt ℚ).2.image (hemc.comp hglc)`. Take `⟨K, hKc, hK⟩` from `hA.wdec _ hC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `exists_nat_gt x`. Take `⟨B, hB⟩` from `hK r`. Establish `hI` using `UpperTheory.lintegral_idele_rat_polyDecay_mul_norm_rpow_lt_top K hKc x hx r hr`. Use `⟨(ENNReal.ofReal |B| * ∫⁻ y : IdeleGroup ℚ, (if (y : A ℚ).2 ∈ K then ENNReal.ofReal (((1 + |re (y : A ℚ)|) ^ r)⁻¹ * ab y ^ x) else 0) ∂(ideleMeasure ℚ)).toNNReal, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[ENNReal.coe_toNNReal (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hI.ne), ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_mono fun y => ?_` and prove the remaining obligations. Establish `hb` using `hB y (em E (gl k)) ⟨k, hk, rfl⟩`. Rewrite `hb` using `[← map_mul]`. Establish `hab : 0 ≤ ab y ^ x` using `Real.rpow_nonneg (IdeleGroup.ideleModule ℚ y).2.le x`. Distinguish the cases in `hy : (y : A ℚ).2 ∈ K`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hy, ← ENNReal.ofReal_mul (abs_nonneg _), ← ofReal_norm_eq_enorm, ← ENNReal.ofReal_mul (norm_nonneg _)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Use `mul_le_mul_of_nonneg_right (hb.1.trans ?_) hab` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : Wo D φ (em E (aE y * gl k)) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hy (hb.2 h)`. Rewrite using `[h0, enorm_zero, zero_mul]`. Conclude with `bot_le`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.whittaker_lintegral_abs_pow_bounded_on_maximalCompact :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (ω : HChar ℚ) (φ : GL (Fin 2) (A E) → ℂ), admitted D ω φ → ∀ x : ℝ, 1 < x → ∃ C : ℝ≥0, ∀ k ∈ KK ℚ,

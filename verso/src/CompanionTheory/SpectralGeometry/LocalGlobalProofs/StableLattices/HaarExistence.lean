@@ -10,11 +10,11 @@ open CompanionTheory.RgExh.Dec ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `Keeps`. Prove the components needed by the constructor for the conclusion. Introduce `h v hv`. Establish `hm : Matrix.toLin' (g : Matrix (Fin n) (Fin n) ℂ) v ∈ Submodule.map (Matrix.toLin' (g : Matrix (Fin n) (Fin n) ℂ)) S` using `Submodule.mem_map_of_mem hv`. Rewrite `hm` using `[h]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `hm` using `[Matrix.toLin'_apply]`. Introduce `h`. Establish `hle : Submodule.map (Matrix.toLin' (g : Matrix (Fin n) (Fin n) ℂ)) S ≤ S`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite using `[Matrix.toLin'_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h v hv`. Set `e : (Fin n → ℂ) ≃ₗ[ℂ] (Fin n → ℂ)` to `LinearEquiv.ofLinear (Matrix.toLin' (g : Matrix (Fin n) (Fin n) ℂ)) (Matrix.toLin' ((g⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) (by rw [← Matrix.toLin'_mul, Units.mul_inv, Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, Units.inv_mul, Matrix.toLin'_one])`. Establish `hfr : Module.finrank ℂ (Submodule.map (Matrix.toLin' (g : Matrix (Fin n) (Fin n) ℂ)) S) = Module.finrank ℂ S` using `LinearEquiv.finrank_map_eq e S`. Conclude with `Submodule.eq_of_le_of_finrank_eq hle hfr`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem keeps_iff_forall_mem (g : (Matrix (Fin n) (Fin n) ℂ)ˣ) (S : Submodule ℂ (Fin n → ℂ)) :
     Keeps (g : Matrix (Fin n) (Fin n) ℂ) S ↔
@@ -41,9 +41,9 @@ theorem keeps_iff_forall_mem (g : (Matrix (Fin n) (Fin n) ℂ)ˣ) (S : Submodule
     exact Submodule.eq_of_le_of_finrank_eq hle hfr
 
 /- English proof (translation)
-Establish `hset : {g : S7.UJ ε | Keeps (S7.toM g) S} = ⋂ v ∈ S, {g : S7.UJ ε | S7.toM g *ᵥ v ∈ S}`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`. Conclude with `keeps_iff_forall_mem (g : (Matrix (Fin n) (Fin n) ℂ)ˣ) S`. Rewrite using `[hset]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `isClosed_biInter fun v _ => ?_` and prove the remaining obligations. Establish `hS : IsClosed (S : Set (Fin n → ℂ))` using `S.closed_of_finiteDimensional`. Establish `hc : Continuous fun g : S7.UJ ε => S7.toM g *ᵥ v` using `Continuous.matrix_mulVec (Units.continuous_val.comp continuous_subtype_val) continuous_const`. Conclude with `IsClosed.preimage hc hS`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_keeps (ε : Fin n → Bool) (S : Submodule ℂ (Fin n → ℂ)) :
     IsClosed {g : S7.UJ ε | Keeps (S7.toM g) S} := by
@@ -60,7 +60,7 @@ theorem isClosed_keeps (ε : Fin n → Bool) (S : Submodule ℂ (Fin n → ℂ))
   exact IsClosed.preimage hc hS
 
 /- English proof (translation)
-Conclude with `(isClosed_keeps ε (Vm A)).inter (isClosed_keeps ε (Wm A))`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_pSub (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) :
     IsClosed (PSub ε A : Set (S7.UJ ε)) := by
@@ -70,14 +70,14 @@ instance (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) : LocallyCompact
   (isClosed_pSub ε A).isClosedEmbedding_subtypeVal.locallyCompactSpace
 
 /- English proof (translation)
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem haar_pSub_isHaar (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) :
     (Measure.haar : Measure (PSub ε A)).IsHaarMeasure := by
   infer_instance
 
 /- English proof (translation)
-Introduce `n ε A _`. Conclude with `⟨Measure.haar, haar_pSub_isHaar ε A⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem haarExists : CompanionTheory.RgExh.Dec.L.HaarExists := by
   intro n ε A _

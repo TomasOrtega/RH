@@ -10,25 +10,25 @@ private noncomputable def coeffL1Norm {ι : Type} (p : MvPolynomial ι ℂ) : �
   ∑ α ∈ p.support, ‖p.coeff α‖
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 private theorem coeffL1Norm_nonneg {ι : Type} (p : MvPolynomial ι ℂ) : 0 ≤ coeffL1Norm p :=
   Finset.sum_nonneg fun _ _ => norm_nonneg _
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.ConvolutionTheory.FX.coeffL1_submultiplicative_facts ι p q).2.1`.
+A detailed English derivation is pending.
 -/
 private theorem coeffL1Norm_mul {ι : Type} (p q : MvPolynomial ι ℂ) :
     coeffL1Norm (p * q) ≤ coeffL1Norm p * coeffL1Norm q := (UpperTheory.ConvolutionTheory.FX.coeffL1_submultiplicative_facts ι p q).2.1
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.ConvolutionTheory.FX.coeffL1_submultiplicative_facts ι p p).2.2.1 c`.
+A detailed English derivation is pending.
 -/
 private theorem coeffL1Norm_C_mul {ι : Type} (c : ℂ) (p : MvPolynomial ι ℂ) :
     coeffL1Norm (C c * p) = ‖c‖ * coeffL1Norm p := (UpperTheory.ConvolutionTheory.FX.coeffL1_submultiplicative_facts ι p p).2.2.1 c
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [coeffL1Norm]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Establish `h : coeffL1Norm (f a + ∑ i ∈ s, f i) ≤ coeffL1Norm (f a) + coeffL1Norm (∑ i ∈ s, f i)` using `(UpperTheory.ConvolutionTheory.FX.coeffL1_submultiplicative_facts ι _ _).1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -44,9 +44,9 @@ private theorem coeffL1Norm_sum {ι κ : Type} (s : Finset κ) (f : κ → MvPol
     linarith
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply, comp_aeval]`. Use `congr 2`. Use function extensionality and compare the values at `ti`. Use `conv_rhs => rw [← rename_esymm (Fin n) ℂ (ti.2 + 1) (w ti.1)]`. Rewrite using `[rename_rename, rename_rename]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem gen_inv {τ : Type} {n : ℕ} (w : τ → Equiv.Perm (Fin n))
     (g : MvPolynomial (τ × Fin n) ℂ) :
@@ -61,25 +61,21 @@ private theorem gen_inv {τ : Type} {n : ℕ} (w : τ → Equiv.Perm (Fin n))
   rfl
 
 /- English proof (translation)
-Introduce `τ _ _ n`. Take `⟨K, hK, hred⟩` from `UpperTheory.ConvolutionTheory.FX.gen_reduce τ n`. Use `choose G hG hGb using hred`. Use `choose F hF using fun β : τ × Fin n → Fin n => UpperTheory.ConvolutionTheory.FX.gen_fund τ n (fun u => (β u : ℕ))`. Use `set M : ℝ := ∑ β, coeffL1Norm (F β) with hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM0 : 0 ≤ M` using `Finset.sum_nonneg fun _ _ => coeffL1Norm_nonneg _`. Establish `hFM : ∀ β, coeffL1Norm (F β) ≤ M` using `fun β => Finset.single_le_sum (f := fun β => coeffL1Norm (F β)) (fun _ _ => coeffL1Norm_nonneg _) (Finset.mem_univ β)`. Use `clear_value M`. Use `⟨K + M, fun k P hP hinv => ?_⟩` and prove the remaining obligations. Use `set N : ℕ := Fintype.card (τ → Equiv.Perm (Fin n)) with hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hN1 : 1 ≤ N` using `Fintype.card_pos`. Establish `hNC : (N : ℂ) ≠ 0` using `by exact_mod_cast (by omega : N ≠ 0)`. Establish `hmon : ∀ α, aeval (fun ti : τ × Fin n => rename (fun j => (ti.1, j)) (esymm (Fin n) ℂ (ti.2 + 1))) (∑ β, G α β * F β) = ∑ w : τ → Equiv.Perm (Fin n), rename (fun ti : τ × Fin n => (ti.1, w ti.1 ti.2)) (monomial α (1 : ℂ))`. Introduce `α`. Rewrite using `[hG α, map_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul, hF, map_sum, gen_inv, Finset.mul_sum]`. Conclude with `Finset.sum_comm`. Establish `hP' : P = ∑ α ∈ P.support, C (P.coeff α) * monomial α (1 : ℂ)` using `by conv_lhs => rw [P.as_sum]`. Simplify using `only [C_mul_monomial, mul_one]`. Establish `hE : aeval (fun ti : τ × Fin n => rename (fun j => (ti.1, j)) (esymm (Fin n) ℂ (ti.2 + 1))) (C (N : ℂ)⁻¹ * ∑ α ∈ P.support, C (P.coeff α) * ∑ β, G α β * F β) = P`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∑ w : τ → Equiv.Perm (Fin n), rename (fun ti : τ × Fin n => (ti.1, w ti.1 ti.2)) P = C (N : ℂ) * P`. Simplify using `only [hinv, Finset.sum_const, Finset.card_univ, ← hN, nsmul_eq_mul, map_natCast]`. Establish `h2 : ∑ α ∈ P.support, C (P.coeff α) * ∑ w : τ → Equiv.Perm (Fin n), rename (fun ti : τ × Fin n => (ti.1, w ti.1 ti.2)) (monomial α (1 : ℂ)) = C (N : ℂ) * P`. Rewrite using `[← h1]`. Use `conv_rhs => rw [hP']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [map_sum, map_mul, rename_C, Finset.mul_sum]`. Conclude with `Finset.sum_comm`. Rewrite using `[map_mul, map_sum]`. Simplify using `only [map_mul (aeval _) (C _), hmon, aeval_C, algebraMap_eq]`. Rewrite using `[h2, ← mul_assoc, ← C_mul, inv_mul_cancel₀ hNC, C_1, one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Take `⟨G', h1, h2, h3⟩` from `UpperTheory.ConvolutionTheory.FX.gen_trunc τ n k _ (by rw [hE]; exact hP)`. Use `⟨G', h1.trans hE, h2, h3.trans ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `coeffL1Norm _ ≤ _`. Establish `hb : ∀ α ∈ P.support, coeffL1Norm (∑ β, G α β * F β) ≤ (K + M) ^ (k + 1)`. Introduce `α hα`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : α.degree ≤ k` using `(le_totalDegree hα).trans hP`. Combine the equalities or inequalities in the displayed calculation. Establish `hn : ‖(N : ℂ)⁻¹‖ ≤ 1`. Rewrite using `[norm_inv, Complex.norm_natCast]`. Conclude with `inv_le_one_of_one_le₀ (by exact_mod_cast hN1)`.
-
-Rewrite using `[coeffL1Norm_C_mul]`. Use `(mul_le_of_le_one_left (coeffL1Norm_nonneg _) hn).trans ((coeffL1Norm_sum _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun α hα => ?_` and prove the remaining obligations. Rewrite using `[coeffL1Norm_C_mul, mul_comm]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (hb α hα) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.FX.generators0 :
     ∀ (τ : Type) [Fintype τ] [DecidableEq τ] (n : ℕ), ∃ K : ℝ, ∀ (k : ℕ) (P : MvPolynomial (τ × Fin n) ℂ), P.totalDegree ≤ k → (∀ w : τ → Equiv.Perm (Fin n), rename (fun ti : τ × Fin n => (ti.1, w ti.1 ti.2)) P = P) → ∃ G : MvPolynomial (τ × Fin n) ℂ, aeval (fun ti : τ × Fin n => rename (fun j => (ti.1, j)) (esymm (Fin n) ℂ (ti.2 + 1))) G = P ∧ G.totalDegree ≤ k ∧ (∑ α ∈ (G).support, ‖(G).coeff α‖) ≤ K ^ (k + 1) * (∑ α ∈ (P).support, ‖(P).coeff α‖) := by

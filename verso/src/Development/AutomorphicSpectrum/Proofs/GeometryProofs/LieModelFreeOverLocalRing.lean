@@ -6,9 +6,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 namespace GlobalTheory.CompanionTheory.Ar.LieFreeSmooth
 
 /- English proof (translation)
-Introduce `S G _ hG R _ _ x E _ _ M`. Use `haveI := hG`. Take `⟨hfin, hproj⟩` from `GlobalTheory.T.lie_model_finite_projective S G R x E M`. Use `haveI := hfin`. Use `haveI := hproj`.
-
-Use `haveI : Module.Free R E := Module.free_of_flat_of_isLocalRing`. Conclude with `⟨_, ⟨Module.finBasis R E⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lieModel_free_of_smooth : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], Smooth G.hom →
     ∀ (R : Type) [CommRing R] [IsLocalRing R] (x : Spec (CommRingCat.of R) ⟶ S) (E : Type) [AddCommGroup E]

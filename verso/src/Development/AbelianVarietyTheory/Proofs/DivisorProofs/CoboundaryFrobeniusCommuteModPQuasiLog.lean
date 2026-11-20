@@ -13,14 +13,14 @@ namespace GlobalTheory.FrobCongr
 variable {Q : Type} [CommRing Q]
 
 /- English proof (translation)
-Rewrite using `[frob, expand, substAlgHom_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_eq_expand {σ : Type} (p : ℕ) (hp : p ≠ 0) (s : Q →+* Q) (f : MvPowerSeries σ Q) :
     frob p s f = expand p hp (map s f) := by
   rw [frob, expand, substAlgHom_apply]
 
 /- English proof (translation)
-Rewrite using `[frob, subst_comp_subst_apply (HasSubst.X_pow hp) ha]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[subst_pow ha, subst_X ha]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_frob {σ τ : Type} (p : ℕ) (hp : p ≠ 0) (s : Q →+* Q) {a : σ → MvPowerSeries τ Q}
     (ha : HasSubst a) (g : MvPowerSeries σ Q) :
@@ -31,7 +31,7 @@ theorem subst_frob {σ τ : Type} (p : ℕ) (hp : p ≠ 0) (s : Q →+* Q) {a : 
   rw [subst_pow ha, subst_X ha]
 
 /- English proof (translation)
-Establish `ha' : HasSubst fun i => map s (a i)` using `hasSubst_of_constantCoeff_nilpotent fun i => by`. Rewrite using `[constantCoeff_map]`. Conclude with `(ha.const_coeff i).map s`. Rewrite using `[frob_eq_expand p hp, map_subst ha, expand_subst p hp ha']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_subst {σ τ : Type} [Finite σ] (p : ℕ) (hp : p ≠ 0) (s : Q →+* Q) {a : σ → MvPowerSeries τ Q}
     (ha : HasSubst a) (g : MvPowerSeries σ Q) :
@@ -46,9 +46,9 @@ end GlobalTheory.FrobCongr
 namespace GlobalTheory.FrobCongr
 
 /- English proof (translation)
-Use `haveI : CharP (B ⧸ Ideal.span {(p : B)}) p := CharP.quotient B p hnu`. Use `set π := Ideal.Quotient.mk (Ideal.span {(p : B)})`. Establish `hπσ : π.comp σ = (frobenius (B ⧸ Ideal.span {(p : B)}) p).comp π`. Use extensionality with `b`. Simplify using `only [RingHom.comp_apply, frobenius_def]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, ← sub_eq_zero, ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton.2 (hσ b)`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← coeff_map]`. Express the relevant statement in the definitionally equal form `coeff α (map π (g ^ p - expand p hp.out.ne_zero (map σ g))) = 0`. Rewrite using `[map_sub, map_pow, map_expand, map_map, hπσ, ← map_map, ← map_expand, map_frobenius_expand, sub_self, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_pow_sub_expand_mem {B τ : Type} [CommRing B] (p : ℕ) [hp : Fact p.Prime]
     (hnu : ¬IsUnit (p : B)) (σ : B →+* B) (hσ : ∀ b, (p : B) ∣ σ b - b ^ p)
@@ -71,9 +71,9 @@ end GlobalTheory.FrobCongr
 namespace GlobalTheory.FrobCongr
 
 /- English proof (translation)
-Introduce `α j`. Use `choose c _ hc using fun i => he i α j`. Use `⟨∑ i, b i * c i, trivial, ?_⟩` and prove the remaining obligations. Simplify using `only [comb, map_sum, coeff_smul, smul_eq_mul, Finset.mul_sum, map_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc i]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dIn_comb {B Q σ ι : Type} [CommRing B] [CommRing Q] [Algebra B Q] [Fintype ι]
     (b : ι → B) (e : ι → MvPowerSeries σ Q) (he : ∀ i, DIn (⊤ : Ideal B) (e i)) :
@@ -86,7 +86,7 @@ theorem dIn_comb {B Q σ ι : Type} [CommRing B] [CommRing Q] [Algebra B Q] [Fin
   rw [← hc i]; ring
 
 /- English proof (translation)
-Introduce `α j`. Take `⟨c, -, hc⟩` from `hf α j`. Use `⟨φ c, trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_map, ← hs, ← hc, map_mul, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dIn_map {B Q σ : Type} [CommRing B] [CommRing Q] [Algebra B Q] (φ : B →+* B) (s : Q →+* Q)
     (hs : ∀ b, s (algebraMap B Q b) = algebraMap B Q (φ b)) (f : MvPowerSeries σ Q)
@@ -97,25 +97,23 @@ theorem dIn_map {B Q σ : Type} [CommRing B] [CommRing Q] [Algebra B Q] (φ : B 
   rw [coeff_map, ← hs, ← hc, map_mul, map_natCast]
 
 /- English proof (translation)
-Introduce `p hp O _ hO _ ε F d μ' hμ ι _ e he b`. Establish `hp0 : p ≠ 0` using `hp.out.ne_zero`. Use `set f := comb b e with hfdef`. Use `set M := up F.Q μ' with hM`. Establish `hM0 : ∀ i, constantCoeff (M i) = 0` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hM, up, constantCoeff_map, hμ.const i, map_zero]`. Establish `hsM : HasSubst M` using `hasSubst_of_constantCoeff_zero hM0`. Establish `hsL : HasSubst fun i : Fin d => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) F.Q)` using `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`. Establish `hsR : HasSubst fun i : Fin d => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) F.Q)` using `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`. Establish `hX : ∀ (a : Fin d → MvPowerSeries (Fin d ⊕ Fin d) F.Q), (∀ i, ∃ j, a i = X j) → HasSubst a →`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `a (frob p F.s f) = frob p F.s (subst a f) := by` using the available equality. Introduce `a ha has`. Rewrite using `[subst_frob p hp0 F.s has, frob_subst p hp0 F.s has]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, hj⟩` from `ha i`. Rewrite using `[hj, map_X, expand_X]`. Establish `hL` using `hX _ (fun i => ⟨_, rfl⟩) hsL`. Establish `hR` using `hX _ (fun i => ⟨_, rfl⟩) hsR`. Use `set u : Fin d → MvPowerSeries (Fin d ⊕ Fin d) F.B := fun i => μ' i ^ p with hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set v : Fin d → MvPowerSeries (Fin d ⊕ Fin d) F.B := fun i => expand p hp0 (map F.σ (μ' i)) with hv`. Establish `hsalg : F.s.comp (algebraMap F.B F.Q) = (algebraMap F.B F.Q).comp F.σ` using `RingHom.ext fun x => F.s_alg x`. Establish `hup_u : up F.Q u = fun i => M i ^ p`. Use function extensionality and compare the values at `i`. Rewrite using `[up, hu, hM, up, map_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hup_v : up F.Q v = fun i => expand p hp0 (map F.s (M i))`. Use function extensionality and compare the values at `i`. Rewrite using `[up, hv, hM, up, map_expand, map_map, map_map, hsalg]`. Establish `key : cob1 M (frob p F.s f) - frob p F.s (cob1 M f) =`. Substitute `(up F.Q u) (map F.s f) - subst (up F.Q v) (map F.s f) := by` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hup_u, hup_v, ← subst_frob p hp0 F.s hsM, ← frob_subst p hp0 F.s hsM]`. Establish `hfs : ∀ a c : MvPowerSeries (Fin d ⊕ Fin d) F.Q, frob p F.s (a - c) = frob p F.s a - frob p F.s c` using `fun a c => by`. Simplify using `only [frob_eq_expand p hp0, map_sub]`. Unfold `cob1 inL inR`. Rewrite using `[hfs, hfs, hL, hR]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[key, ← Ideal.mul_top (Ideal.span {(p : F.B)})]`. Establish `hnu : ¬IsUnit (p : F.B)` using `fun h => hO.out (by simpa using h.map F.θ)`. Use `GlobalTheory.KatzCongr.subst_sub_in p F.B O F.Q F.θ F.frame _ ?_ (Fin d) (Fin d ⊕ Fin d) ⊤ (map F.s f) u v ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Use `⟨z ^ p * (p : F.B) ^ (p - 1), Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ (Ideal.mem_span_singleton_self _) _ (Nat.sub_pos_of_lt hp.out.one_lt)), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, mul_left_comm, ← pow_succ', Nat.sub_add_cancel hp.out.one_le]`. Conclude with `dIn_map F.σ F.s F.s_alg f (dIn_comb b e fun i => GlobalTheory.QLogDiff.dIn_of_QL p F.B O F.Q F.θ F.frame d μ' hμ ⊤ (e i) (he i))`. Introduce `i`.
-
-Rewrite using `[hu, map_pow, hμ.const i, zero_pow hp0]`. Introduce `i`. Rewrite using `[hv, constantCoeff_expand, constantCoeff_map, hμ.const i, map_zero]`. Introduce `i α`. Conclude with `coeff_pow_sub_expand_mem p hnu F.σ F.σ_pow (μ' i) α`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem frob_cong : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (ε : PreTilt O p) (F : BFrame ε) (d : ℕ) (μ' : Fin d → MvPowerSeries (Fin d ⊕ Fin d) F.B), IsLift F.θ μ' → ∀ (ι : Type) [Fintype ι] (e : ι → MvPowerSeries (Fin d) F.Q), (∀ i, QL μ' ⊤ (e i)) → ∀ b : ι → F.B, In (Ideal.span {(p : F.B)}) (cob1 (up F.Q μ') (frob p F.s (comb b e)) - frob p F.s (cob1 (up F.Q μ') (comb b e))) := by
   intro p hp O _ hO _ ε F d μ' hμ ι _ e he b

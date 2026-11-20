@@ -18,7 +18,7 @@ variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (
 abbrev pLine (D : D7) : HSp D := Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral 1
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `e : ∀ a b : Fin 1, (Examples₂.stdSpace (E` using `D.host.E) Examples₂.star_isIntegral 1 (fun _ => false) 1 0).gram a b = 1 := fun a b => by rw [Examples₂.stdSpace_gram_apply, Subsingleton.elim a b]; simp [Examples₂.sgn]`. Conclude with `(e i j).trans (by simp [antiDiagonalSignGramMatrix]; exact ⟨Fin.val_eq_zero i, Fin.val_eq_zero j⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pLine_gram : (pLine D).gram = antiDiagonalSignGramMatrix 1 (1 : D.host.E) := by
   refine Matrix.ext fun i j => ?_
@@ -61,7 +61,7 @@ open GlobalTheory.FunObj GlobalTheory.RowUnf
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (Wl : G.Weil) (t : T) {M : Vol G}
 
 /- English proof (translation)
-The claim follows from `(embRel_iff G.sp.topDec h _).1 ((topOrth G).embRel_left G.sp.topDec.ι rfl h)`.
+A detailed English derivation is pending.
 -/
 theorem topOrth_emb (h : GA D (G.V (.grid D.R.m D.R.m))) : (topOrth G).emb (h, 1) = stabilizerEmbedding G.sp.topDec h :=
   (embRel_iff G.sp.topDec h _).1 ((topOrth G).embRel_left G.sp.topDec.ι rfl h)

@@ -12,58 +12,58 @@ namespace Col
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Simplify using `only [Hf, PiLp.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_add_l (v v' w : EuclideanSpace ℂ ι) : Hf (v + v') w = Hf v w + Hf v' w := by
   simp only [Hf, PiLp.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Hf, PiLp.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_sub_l (v v' w : EuclideanSpace ℂ ι) : Hf (v - v') w = Hf v w - Hf v' w := by
   simp only [Hf, PiLp.sub_apply, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [Hf, PiLp.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_smul_l (c : ℂ) (v w : EuclideanSpace ℂ ι) : Hf (c • v) w = c * Hf v w := by
   simp only [Hf, PiLp.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [Hf, PiLp.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_add_r (v w w' : EuclideanSpace ℂ ι) : Hf v (w + w') = Hf v w + Hf v w' := by
   simp only [Hf, PiLp.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Hf, PiLp.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_sub_r (v w w' : EuclideanSpace ℂ ι) : Hf v (w - w') = Hf v w - Hf v w' := by
   simp only [Hf, PiLp.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [Hf, PiLp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Hf_smul_r (c : ℂ) (v w : EuclideanSpace ℂ ι) : Hf v (c • w) = (starRingEnd ℂ) c * Hf v w := by
   simp only [Hf, PiLp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Hf, PiLp.smul_apply, Complex.real_smul, map_mul, Complex.conj_ofReal, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Hf_rsmul_r (r : ℝ) (v w : EuclideanSpace ℂ ι) : Hf v (r • w) = r * Hf v w := by
   simp only [Hf, PiLp.smul_apply, Complex.real_smul, map_mul, Complex.conj_ofReal, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Hf, PiLp.smul_apply, Complex.real_smul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Hf_rsmul_l (r : ℝ) (v w : EuclideanSpace ℂ ι) : Hf (r • v) w = r * Hf v w := by
   simp only [Hf, PiLp.smul_apply, Complex.real_smul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `[Hf]`. Introduce `a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Hf_add_l, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Hf_sum_l {κ : Type} (s : Finset κ) (f : κ → EuclideanSpace ℂ ι) (w : EuclideanSpace ℂ ι) :
     Hf (∑ k ∈ s, f k) w = ∑ k ∈ s, Hf (f k) w := by
@@ -74,7 +74,7 @@ theorem Hf_sum_l {κ : Type} (s : Finset κ) (f : κ → EuclideanSpace ℂ ι) 
     rw [Finset.sum_insert ha, Finset.sum_insert ha, Hf_add_l, ih]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `[Hf]`. Introduce `a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Hf_add_r, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Hf_sum_r {κ : Type} (s : Finset κ) (v : EuclideanSpace ℂ ι) (f : κ → EuclideanSpace ℂ ι) :
     Hf v (∑ k ∈ s, f k) = ∑ k ∈ s, Hf v (f k) := by
@@ -85,21 +85,21 @@ theorem Hf_sum_r {κ : Type} (s : Finset κ) (v : EuclideanSpace ℂ ι) (f : κ
     rw [Finset.sum_insert ha, Finset.sum_insert ha, Hf_add_r, ih]
 
 /- English proof (translation)
-Simplify using `only [Hf, map_sum, map_mul, Complex.conj_conj]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Hf_swap (v w : EuclideanSpace ℂ ι) : Hf w v = (starRingEnd ℂ) (Hf v w) := by
   simp only [Hf, map_sum, map_mul, Complex.conj_conj]
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)]`. Simplify using `only [Hf, Complex.re_sum, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Hf_self_re (v : EuclideanSpace ℂ ι) : (Hf v v).re = ‖v‖ ^ 2 := by
   rw [EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)]
   simp only [Hf, Complex.re_sum, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[Hf_self_re, Complex.ofReal_re]`. Rewrite using `[Complex.ofReal_im]`. Simplify using `only [Hf, Complex.im_sum, Complex.mul_conj, Complex.ofReal_im, Finset.sum_const_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Hf_self (v : EuclideanSpace ℂ ι) : Hf v v = ((‖v‖ ^ 2 : ℝ) : ℂ) := by
   apply Complex.ext
@@ -126,12 +126,12 @@ def uc (v : EuclideanSpace ℂ ι) : EuclideanSpace ℂ ι := ∑ k, (z K k v).i
 def S (v : EuclideanSpace ℂ ι) : ℂ := ∑ k, z K k v ^ 2
 
 /- English proof (translation)
-The claim follows from `(ob K k).2`.
+A detailed English derivation is pending.
 -/
 theorem e_mem (k : Fin (dK K)) : e K k ∈ K := (ob K k).2
 
 /- English proof (translation)
-Use `show ⟪((ob K k : K) : EuclideanSpace ℂ ι), ((ob K l : K) : EuclideanSpace ℂ ι)⟫_ℝ = _`. Rewrite using `[← Submodule.coe_inner]`. Conclude with `orthonormal_iff_ite.1 (ob K).orthonormal k l`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_e (k l : Fin (dK K)) : ⟪e K k, e K l⟫_ℝ = if k = l then 1 else 0 := by
   show ⟪((ob K k : K) : EuclideanSpace ℂ ι), ((ob K l : K) : EuclideanSpace ℂ ι)⟫_ℝ = _
@@ -145,9 +145,9 @@ variable (hK : ∀ a ∈ K, ∀ b ∈ K, (Hf a b).im = 0)
 include hK
 
 /- English proof (translation)
-Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[← real_inner_eq_Hf, inner_e]`. Distinguish the cases in `h : k = l`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`. Rewrite using `[hK _ (e_mem K k) _ (e_mem K l)]`. Apply the tactic sequence `by_cases h : k = l <;> simp [h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hf_e (k l : Fin (dK K)) : Hf (e K k) (e K l) = if k = l then 1 else 0 := by
   apply Complex.ext
@@ -160,19 +160,19 @@ theorem Hf_e (k l : Fin (dK K)) : Hf (e K k) (e K l) = if k = l then 1 else 0 :=
     by_cases h : k = l <;> simp [h]
 
 /- English proof (translation)
-The claim follows from `Hf_e hK k l`.
+A detailed English derivation is pending.
 -/
 theorem z_e (k l : Fin (dK K)) : z K l (e K k) = if k = l then 1 else 0 := Hf_e hK k l
 
 /- English proof (translation)
-Simplify using `only [z, p1, Hf_sum_l, Hf_smul_l, Hf_e hK, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coord_proj_one (l : Fin (dK K)) (v : EuclideanSpace ℂ ι) : z K l (p1 K v) = z K l v := by
   simp only [z, p1, Hf_sum_l, Hf_smul_l, Hf_e hK, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq',
     Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Establish `h` using `coord_proj_one hK l v`. Use `show Hf (v - p1 K v) (e K l) = 0`. Rewrite using `[Hf_sub_l]`. Unfold `z at h`. Rewrite using `[h, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_proj_two (l : Fin (dK K)) (v : EuclideanSpace ℂ ι) : z K l (p2 K v) = 0 := by
   have h := coord_proj_one hK l v
@@ -182,9 +182,9 @@ theorem coord_proj_two (l : Fin (dK K)) (v : EuclideanSpace ℂ ι) : z K l (p2 
   rw [h, sub_self]
 
 /- English proof (translation)
-Rewrite using `[p1, Hf_sum_r]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Hf_smul_r]`. Establish `h` using `coord_proj_two hK k v`. Unfold `z at h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_proj_two_one (v w : EuclideanSpace ℂ ι) : Hf (p2 K v) (p1 K w) = 0 := by
   rw [p1, Hf_sum_r]
@@ -195,13 +195,13 @@ theorem herm_proj_two_one (v w : EuclideanSpace ℂ ι) : Hf (p2 K v) (p1 K w) =
   rw [h, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Hf_swap, herm_proj_two_one hK, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_proj_one_two (v w : EuclideanSpace ℂ ι) : Hf (p1 K v) (p2 K w) = 0 := by
   rw [Hf_swap, herm_proj_two_one hK, map_zero]
 
 /- English proof (translation)
-Rewrite using `[show p1 K w = ∑ k, z K k w • e K k from rfl, Hf_sum_r]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Hf_smul_r, show Hf (p1 K v) (e K k) = z K k (p1 K v) from rfl, coord_proj_one hK, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_proj_one_one (v w : EuclideanSpace ℂ ι) :
     Hf (p1 K v) (p1 K w) = ∑ k, z K k v * (starRingEnd ℂ) (z K k w) := by
@@ -210,9 +210,9 @@ theorem herm_proj_one_one (v w : EuclideanSpace ℂ ι) :
   rw [Hf_smul_r, show Hf (p1 K v) (e K k) = z K k (p1 K v) from rfl, coord_proj_one hK, mul_comm]
 
 /- English proof (translation)
-Establish `hv : v = p1 K v + p2 K v`. Rewrite using `[p2]`. Normalize the expressions using the abelian group laws. Establish `hw : w = p1 K w + p2 K w`. Rewrite using `[p2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Use `conv_lhs => rw [hv, hw]`. Rewrite using `[Hf_add_l, Hf_add_r, Hf_add_r, herm_proj_one_one hK, herm_proj_one_two hK, herm_proj_two_one hK]`. Expand and normalize the polynomial expressions, which then agree.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Hf_decomp (v w : EuclideanSpace ℂ ι) :
     Hf v w = ∑ k, z K k v * (starRingEnd ℂ) (z K k w) + Hf (p2 K v) (p2 K w) := by
@@ -227,9 +227,9 @@ theorem Hf_decomp (v w : EuclideanSpace ℂ ι) :
   ring
 
 /- English proof (translation)
-Establish `h` using `congrArg Complex.re (Hf_decomp hK v v)`. Rewrite `h` using `[Hf_self_re, Complex.add_re, Hf_self_re, Complex.re_sum]`. Rewrite using `[h]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_sq_decomp (v : EuclideanSpace ℂ ι) :
     ‖v‖ ^ 2 = ∑ k, ‖z K k v‖ ^ 2 + ‖p2 K v‖ ^ 2 := by
@@ -241,7 +241,7 @@ theorem norm_sq_decomp (v : EuclideanSpace ℂ ι) :
   rw [Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Establish `h` using `norm_sq_decomp hK v`. Establish `h0 : 0 ≤ ∑ k, ‖z K k v‖ ^ 2` using `Finset.sum_nonneg fun k _ => sq_nonneg _`. Use polynomial arithmetic with `[norm_nonneg (p2 K v), norm_nonneg v]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_proj_two_le (v : EuclideanSpace ℂ ι) : ‖p2 K v‖ ≤ ‖v‖ := by
   have h := norm_sq_decomp hK v
@@ -251,14 +251,14 @@ theorem norm_proj_two_le (v : EuclideanSpace ℂ ι) : ‖p2 K v‖ ≤ ‖v‖ 
 end iso
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (e_mem K k)`.
+A detailed English derivation is pending.
 -/
 theorem uc_mem (v : EuclideanSpace ℂ ι) : uc K v ∈ K := Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (e_mem K k)
 
 /- English proof (translation)
-Establish `ha' : ∑ k, ⟪e K k, a⟫_ℝ • e K k = a`. Establish `h2` using `congrArg (fun x : K => (x : EuclideanSpace ℂ ι)) ((ob K).sum_repr' ⟨a, ha⟩)`. Simplify `h2` using `only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_inner, e]`. Use `conv_rhs => rw [← ha']`. Rewrite using `[Hf_sum_r, Complex.im_sum, uc, sum_inner]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Hf_rsmul_r, Complex.im_ofReal_mul, real_inner_smul_left, z, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_uc (v : EuclideanSpace ℂ ι) (a : EuclideanSpace ℂ ι) (ha : a ∈ K) :
     ⟪uc K v, a⟫_ℝ = (Hf v a).im := by
@@ -271,7 +271,7 @@ theorem inner_uc (v : EuclideanSpace ℂ ι) (a : EuclideanSpace ℂ ι) (ha : a
   rw [Hf_rsmul_r, Complex.im_ofReal_mul, real_inner_smul_left, z, mul_comm]
 
 /- English proof (translation)
-Simplify using `only [Hf, PiLp.inner_apply, RCLike.inner_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_eq_inner (v w : EuclideanSpace ℂ ι) : Hf v w = ⟪w, v⟫_ℂ := by
   simp only [Hf, PiLp.inner_apply, RCLike.inner_apply]
@@ -292,25 +292,25 @@ def wmap : EuclideanSpace ℂ ι →L[ℂ] EuclideanSpace ℂ (Fin (gB K)) :=
   (ob2 K).repr.toContinuousLinearEquiv.toContinuousLinearMap ∘L (V2 K).orthogonalProjectionOnto
 
 /- English proof (translation)
-The claim follows from `((ob2 K).repr.symm t).2`.
+A detailed English derivation is pending.
 -/
 theorem jj_mem (t : EuclideanSpace ℂ (Fin (gB K))) : jj K t ∈ V2 K := ((ob2 K).repr.symm t).2
 
 /- English proof (translation)
-Unfold `jj wmap Submodule.starProjection`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem jj_wmap (v : EuclideanSpace ℂ ι) : jj K (wmap K v) = (V2 K).starProjection v := by
   unfold jj wmap Submodule.starProjection
   simp
 
 /- English proof (translation)
-Rewrite using `[Hf_eq_inner, Hf_eq_inner, jj, jj, ← Submodule.coe_inner, LinearIsometryEquiv.inner_map_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Hf_jj (t t' : EuclideanSpace ℂ (Fin (gB K))) : Hf (jj K t) (jj K t') = Hf t t' := by
   rw [Hf_eq_inner, Hf_eq_inner, jj, jj, ← Submodule.coe_inner, LinearIsometryEquiv.inner_map_map]
 
 /- English proof (translation)
-Unfold `jj`. Rewrite using `[show ‖(((ob2 K).repr.symm t : V2 K) : EuclideanSpace ℂ ι)‖ = ‖(ob2 K).repr.symm t‖ from rfl, LinearIsometryEquiv.norm_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_jj (t : EuclideanSpace ℂ (Fin (gB K))) : ‖jj K t‖ = ‖t‖ := by
   unfold jj
@@ -318,13 +318,13 @@ theorem norm_jj (t : EuclideanSpace ℂ (Fin (gB K))) : ‖jj K t‖ = ‖t‖ :
     LinearIsometryEquiv.norm_map]
 
 /- English proof (translation)
-Simplify using `[jj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jj_add (t t' : EuclideanSpace ℂ (Fin (gB K))) : jj K (t + t') = jj K t + jj K t' := by
   simp [jj]
 
 /- English proof (translation)
-Rewrite using `[z, Hf_eq_inner]`. Conclude with `Submodule.inner_right_of_mem_orthogonal (Submodule.subset_span (Set.mem_range_self k) : e K k ∈ span1 K) hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_of_mem_complement {v : EuclideanSpace ℂ ι} (hv : v ∈ V2 K) (k : Fin (dK K)) : z K k v = 0 := by
   rw [z, Hf_eq_inner]
@@ -332,12 +332,12 @@ theorem coord_of_mem_complement {v : EuclideanSpace ℂ ι} (hv : v ∈ V2 K) (k
     (Submodule.subset_span (Set.mem_range_self k) : e K k ∈ span1 K) hv
 
 /- English proof (translation)
-The claim follows from `coord_of_mem_complement K (jj_mem K t) k`.
+A detailed English derivation is pending.
 -/
 theorem z_jj (t : EuclideanSpace ℂ (Fin (gB K))) (k : Fin (dK K)) : z K k (jj K t) = 0 := coord_of_mem_complement K (jj_mem K t) k
 
 /- English proof (translation)
-Unfold `wmap jj`. Simplify using `[Submodule.orthogonalProjectionOnto_mem_subspace_eq_self]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem wmap_jj (t : EuclideanSpace ℂ (Fin (gB K))) : wmap K (jj K t) = t := by
   unfold wmap jj
@@ -348,11 +348,9 @@ variable (hK : ∀ a ∈ K, ∀ b ∈ K, (Hf a b).im = 0)
 include hK
 
 /- English proof (translation)
-Use `show p2 K v ∈ (span1 K)ᗮ`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `hx`. Rewrite using `[← Hf_eq_inner]`. Conclude with `coord_proj_two hK k v`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [inner_add_left, hx, hy, add_zero]`.
-
-Consider the case `smul a x _ hx => rw [inner_smul_left, hx, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem p2_mem_Z2_of_mem_Z2 (v : EuclideanSpace ℂ ι) : p2 K v ∈ V2 K := by
   show p2 K v ∈ (span1 K)ᗮ
@@ -368,9 +366,9 @@ theorem p2_mem_Z2_of_mem_Z2 (v : EuclideanSpace ℂ ι) : p2 K v ∈ V2 K := by
   | smul a x _ hx => rw [inner_smul_left, hx, mul_zero]
 
 /- English proof (translation)
-Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (p2_mem_Z2_of_mem_Z2 hK v) fun w hw => ?_` and prove the remaining obligations. Establish `h1 : v - p2 K v = p1 K v`. Rewrite using `[p2]`. Normalize the expressions using the abelian group laws. Establish `h2 : p1 K v ∈ span1 K` using `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self k))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `Submodule.inner_right_of_mem_orthogonal h2 hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem starProj_eq (v : EuclideanSpace ℂ ι) : (V2 K).starProjection v = p2 K v := by
   refine Submodule.eq_starProjection_of_mem_of_inner_eq_zero (p2_mem_Z2_of_mem_Z2 hK v) fun w hw => ?_
@@ -383,19 +381,19 @@ theorem starProj_eq (v : EuclideanSpace ℂ ι) : (V2 K).starProjection v = p2 K
   exact Submodule.inner_right_of_mem_orthogonal h2 hw
 
 /- English proof (translation)
-Rewrite using `[jj_wmap, starProj_eq hK]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jj_wmap' (v : EuclideanSpace ℂ ι) : jj K (wmap K v) = p2 K v := by
   rw [jj_wmap, starProj_eq hK]
 
 /- English proof (translation)
-Rewrite using `[← norm_jj K (wmap K v), jj_wmap' hK]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_wmap (v : EuclideanSpace ℂ ι) : ‖wmap K v‖ = ‖p2 K v‖ := by
   rw [← norm_jj K (wmap K v), jj_wmap' hK]
 
 /- English proof (translation)
-Rewrite using `[← Hf_jj K, jj_wmap' hK, jj_wmap' hK]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Hf_wmap (v w : EuclideanSpace ℂ ι) : Hf (wmap K v) (wmap K w) = Hf (p2 K v) (p2 K w) := by
   rw [← Hf_jj K, jj_wmap' hK, jj_wmap' hK]

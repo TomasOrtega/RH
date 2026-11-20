@@ -5,17 +5,15 @@ open Matrix MeasureTheory ValuativeRel GlobalTheory.SplitFlip GlobalTheory.SmGL 
 namespace GlobalTheory.RankFibreKer
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hr`. Take `⟨κ, f, hinj, hspan, hli⟩` from `exists_linearIndependent' k Y.col`. Use `haveI : Finite κ := Finite.of_injective f hinj`. Use `haveI : Fintype κ := Fintype.ofFinite κ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Fintype.card κ = a`. Rewrite using `[← finrank_span_eq_card hli, hspan, ← Matrix.rank_eq_finrank_span_cols, hr]`. Set `e : κ ≃ Fin a` to `Fintype.equivFinOfCardEq hcard`. Set `J : Fin a ↪ Fin d` to `⟨f ∘ e.symm, hinj.comp e.symm.injective⟩`. Use `⟨J, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hc : (Y.submatrix id J).col = (Y.col ∘ f) ∘ e.symm`. Use function extensionality and compare the values at `j i`. Both sides reduce to the same expression. Establish `hli' : LinearIndependent k (Y.submatrix id J).col`. Rewrite using `[hc]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hli.comp e.symm e.symm.injective`. Establish `hu` using `Matrix.linearIndependent_cols_iff_isUnit.mp hli'`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp hu).ne_zero`. Introduce and unpack `⟨J, hJ⟩`. Establish `hu : IsUnit (Y.submatrix id J)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (Ne.isUnit hJ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Establish `hli'` using `Matrix.linearIndependent_rows_iff_isUnit.mpr hu`. Establish `hr : (Y.submatrix id J).row = (LinearMap.funLeft k k J) ∘ Y.row`. Use function extensionality and compare the values at `i j`. Both sides reduce to the same expression. Rewrite `hli'` using `[hr]`.
-
-Establish `hli` using `LinearIndependent.of_comp _ hli'`. Rewrite using `[Matrix.rank_eq_finrank_span_row, finrank_span_eq_card hli, Fintype.card_fin]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_eq_iff_exists_minor_ne_zero (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (a d : ℕ) (Y : Matrix (Fin a) (Fin d) k) :

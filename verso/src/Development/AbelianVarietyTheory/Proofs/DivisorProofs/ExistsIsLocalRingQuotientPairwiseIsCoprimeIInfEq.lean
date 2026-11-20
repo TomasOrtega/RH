@@ -6,13 +6,13 @@ open Function
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `ℓ _ A _ _ _`. Establish `: HenselianLocalRing ℤ_[ℓ]` using `henselianLocalRing_of_henselianRing ℤ_[ℓ]`. Use `finite_maximalSpectrum_of_finite_of_isLocalRing ℤ_[ℓ] A` as an intermediate fact. Use `letI := Fintype.ofFinite (MaximalSpectrum A)`. Take `⟨e, he, H⟩` from `exists_completeOrthogonalIdempotents_of_henselian ℤ_[ℓ] A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `⟨MaximalSpectrum A, inferInstance, fun q ↦ Ideal.span {1 - e q}, fun q ↦ ?_, ?_, ?_⟩` and prove the remaining obligations. Use `q.isMaximal` as an intermediate fact. Conclude with `isLocalRing_quotient_one_sub (he.idem q) q.asIdeal (H q)`. Introduce `i j hij`. Express the relevant statement in the definitionally equal form `IsCoprime (Ideal.span {1 - e i}) (Ideal.span {1 - e j})`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.isCoprime_span_singleton_iff]`. Establish `h0 : e i * e j = 0` using `he.ortho hij`. Conclude with `⟨1, e i, by linear_combination (-1 : A) * h0⟩`. Use `eq_bot_iff.2 fun x hx ↦ ?_` and prove the remaining obligations. Rewrite `hx` using `[Submodule.mem_iInf]`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_bot, ← one_mul x, ← he.complete, Finset.sum_mul]`. Use `Finset.sum_eq_zero fun q _ ↦ ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.1 (hx q)`. Rewrite using `[← hw]`. Take the linear combination `(-w) * (he.idem q).eq`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_isLocalRing_quotient_pairwise_isCoprime_iInf_eq_bot_padicInt :
     ∀ (ℓ : ℕ) [Fact ℓ.Prime] (A : Type) [CommRing A] [Algebra ℤ_[ℓ] A] [Module.Finite ℤ_[ℓ] A],

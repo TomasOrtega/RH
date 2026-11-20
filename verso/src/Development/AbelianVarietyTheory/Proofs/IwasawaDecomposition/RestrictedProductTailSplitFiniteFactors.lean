@@ -8,13 +8,13 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.GaugeEx.TailSplit
 
 /- English proof (translation)
-Establish `e1 : ∏' v : {v : ι // v ∉ S}, a v.1 = ∏' v, Set.mulIndicator {v | v ∉ S} a v` using `tprod_subtype {v | v ∉ S} a`. Establish `e2 : ∏' v : {v : ι // v ∉ S'}, a v.1 = ∏' v, Set.mulIndicator {v | v ∉ S'} a v` using `tprod_subtype {v | v ∉ S'} a`. Establish `m2 : Multipliable fun v => Set.mulIndicator {v | v ∉ S'} a v`. Establish `: Summable fun v => ‖Set.mulIndicator {v | v ∉ S'} a v - 1‖`. Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun v => ?_) ha` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hv : v ∈ S'`. Simplify using `[Set.mulIndicator, hv]`. Simplify using `[Set.mulIndicator, hv]`. Simplify using `using multipliable_one_add_of_summable this`. Establish `m1 : HasProd (fun v => Set.mulIndicator (T : Set ι) a v) (∏ v ∈ T, a v)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `: HasProd (fun v => Set.mulIndicator (T : Set ι) a v) (∏ v ∈ T, Set.mulIndicator (T : Set ι) a v)` using `hasProd_prod_of_ne_finset_one fun v hv => by simp [Set.mulIndicator, hv]`. Rewrite `this` using `[Finset.prod_congr rfl (fun v hv => Set.mulIndicator_of_mem (by simpa using hv) a)]`. Then use the resulting hypothesis. Rewrite using `[e1, e2, ← (m1.mul m2.hasProd).tprod_eq]`. Use `tprod_congr fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hS : v ∈ S`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hT : v ∉ T` using `Finset.disjoint_left.1 hd hS`. Simplify using `[Set.mulIndicator, h, hS, hT]`. Apply the tactic sequence `by_cases hT : v ∈ T <;> simp [Set.mulIndicator, h, hS, hT]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tprod_split {ι : Type} (a : ι → ℝ) (ha : Summable fun v => |a v - 1|) (S T S' : Finset ι)
     (h : ∀ v, v ∈ S' ↔ v ∈ S ∨ v ∈ T) (hd : Disjoint S T) :
@@ -44,13 +44,13 @@ theorem tprod_split {ι : Type} (a : ι → ℝ) (ha : Summable fun v => |a v - 
   · by_cases hT : v ∈ T <;> simp [Set.mulIndicator, h, hS, hT]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ d b n M mi mv S T S' hc h hd`. Take `⟨-, hfin, hsum⟩` from `hc`. Establish `hne : ∀ v, mv v (latV b v) ≠ ∞`. Introduce `v`. Establish `hk : IsCompact (intV b v)` using `((GlobalTheory.GaugeEx.IntBasis.main F E (AlgHom.id F E) d b).1 v).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hk2 : IsCompact (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E))`. Establish `: (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E)) = Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => intV b v`. Use extensionality with `Y`. Rewrite using `[mem_latV_iff]`. Simplify using `[Set.mem_pi]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hk`. Use `hfin v` as an intermediate fact. Conclude with `hk2.measure_lt_top.ne`. Unfold `tailProd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[tprod_split (fun v => (mv v (latV b v)).toReal) hsum S T S' h hd, ENNReal.ofReal_mul (Finset.prod_nonneg fun _ _ => ENNReal.toReal_nonneg), ENNReal.ofReal_prod_of_nonneg fun _ _ => ENNReal.toReal_nonneg]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun v _ => ENNReal.ofReal_toReal (hne v)`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ) (mi : Measure (Fin n → Fin M → Ainf F ⊗[F] E)) (mv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n → Fin M → Fv F v ⊗[F] E)) (S T S' : Finset (HeightOneSpectrum (𝓞 F))), Conv b mi mv → (∀ v, v ∈ S' ↔ v ∈ S ∨ v ∈ T) → Disjoint S T → tailProd b mv S = (∏ v ∈ T, mv v (latV b v)) * tailProd b mv S' := by
   intro F E _ _ _ _ _ d b n M mi mv S T S' hc h hd

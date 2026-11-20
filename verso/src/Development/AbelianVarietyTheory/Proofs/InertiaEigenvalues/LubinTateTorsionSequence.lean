@@ -10,11 +10,11 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per
 
 /- English proof (translation)
-Introduce `l _ K χ π z h`. Use `haveI : Finite (IsLocalRing.ResidueField ↥(OL K)) := Nat.finite_of_card_ne_zero (by rw [GlobalTheory.AinfK.card_res K]; exact pow_ne_zero _ (Fact.out : l.Prime).ne_zero)`. Establish `hrel` using `h.2.2.2.1`. Take `⟨hπ, hF, v, hv, -, h0, h1, hg⟩` from `GlobalTheory.PZ.ltData_tilt_hyps l K χ π z h`. Use `⟨hπ, hF, v, h0, h1, fun n => ?_, fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `e` using `congrArg (algebraMap (Om l) ℂ_[l]) (hrel n)`. Rewrite `e` using `[map_add, map_mul, map_pow, ← hv, ← hv]`. Establish `hq : resCard K = l ^ fK K` using `rfl`. Rewrite using `[← hq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `e`. Take `⟨a, ha, -⟩` from `h.2.2.2.2 g`. Conclude with `⟨a, ha, hg g a ha⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PZ.ltData_read_OC : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ) (π : ↥(OL K)) (z : ℕ → Om l), LTData K χ π z →
     ∃ (hπ : Irreducible π) (hF : IsLubinTateSeries π (ltSeries K π)) (v : ℕ → OC l), v 0 = 0 ∧ v 1 ≠ 0 ∧

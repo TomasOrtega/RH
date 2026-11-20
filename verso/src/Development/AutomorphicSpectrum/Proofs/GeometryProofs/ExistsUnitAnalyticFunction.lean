@@ -21,7 +21,7 @@ open Matrix
 variable {p q : ℕ} {g : ℕ}
 
 /- English proof (translation)
-Establish `h : Matrix.fromRows (A * C) F = Matrix.fromBlocks A 0 0 1 * Matrix.fromRows C F`. Apply the tactic sequence `ext (a | b) m <;> simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`. Rewrite using `[h, Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_fromRows_mul_top (A : Matrix (Fin p) (Fin p) ℂ) (C : Matrix (Fin p) (Fin p ⊕ Fin q) ℂ)
     (F : Matrix (Fin q) (Fin p ⊕ Fin q) ℂ) :
@@ -32,7 +32,7 @@ theorem det_fromRows_mul_top (A : Matrix (Fin p) (Fin p) ℂ) (C : Matrix (Fin p
   simp
 
 /- English proof (translation)
-Establish `h : Matrix.fromRows C (B * F) = Matrix.fromBlocks 1 0 0 B * Matrix.fromRows C F`. Apply the tactic sequence `ext (a | b) m <;> simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`. Rewrite using `[h, Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_fromRows_mul_bot (B : Matrix (Fin q) (Fin q) ℂ) (C : Matrix (Fin p) (Fin p ⊕ Fin q) ℂ)
     (F : Matrix (Fin q) (Fin p ⊕ Fin q) ℂ) :
@@ -43,25 +43,23 @@ theorem det_fromRows_mul_bot (B : Matrix (Fin q) (Fin q) ℂ) (C : Matrix (Fin p
   simp
 
 /- English proof (translation)
-Establish `lift : ∀ C : Matrix (Fin p) (Fin p ⊕ Fin q) ℂ, (∀ a, T (∑ m, C a m • Pe m) = V a) → ∀ a, T (∑ m, (A * C) a m • Pe m) = V' a`. Introduce `C hC a`. Establish `: ∑ m, (A * C) a m • Pe m = ∑ b, A a b • ∑ m, C b m • Pe m`. Simplify using `only [Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Conclude with `Finset.sum_comm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_sum, hV a]`. Conclude with `Finset.sum_congr rfl fun b _ => by rw [map_smul, hC b]`. Take `⟨C₀, hC₀⟩` from `k6`. Establish `hA : A.det ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `l7 _ (lift C₀ hC₀)` as an intermediate fact. Rewrite `this` using `[det_fromRows_mul_top, h0, zero_mul]`. Conclude with `hd' this.symm`. Establish `hB : B.det ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨c, hc, hcB⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Apply `hc` to reduce the goal to its premises. Establish `hz : ∑ j, c j • W' j = 0`. Simplify using `only [hW, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `congrFun hcB k` as an intermediate fact. Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply] at this`. Rewrite using `[this, zero_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.1 hWi' c hz j`. Establish `hB₀ : ∀ k n, B₀ k n = ∑ j, B j k * B' j n`. Introduce `k n`. Establish `hz : ∑ k, (B₀ k n - ∑ j, B j k * B' j n) • W k = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sub_smul, Finset.sum_sub_distrib, ← k3 n]`. Rewrite using `[sub_eq_zero, l3 n]`. Simplify using `only [hW, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [_root_.mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hWi _ hz k)`. Establish `hfin` using `hu (Bᵀ * Fm') (B.det * d' / A.det) ?_ (div_ne_zero (mul_ne_zero hB hd') hA) ?_`. Rewrite using `[← hfin]`. Clear the denominators using the available nonvanishing facts. Introduce `j n`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hB₀]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_mul, ← l4]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.mul_sum, _root_.mul_assoc]`. Introduce `C hC`.
-
-Establish `h1` using `l7 _ (lift C hC)`. Rewrite `h1` using `[det_fromRows_mul_top]`. Rewrite using `[det_fromRows_mul_bot, Matrix.det_transpose, ← h1]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem det_chg (T : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (Pe Tc : Fin p ⊕ Fin q → Fin g → ℂ)
     (S : Fin p ⊕ Fin q → Fin p ⊕ Fin q → ℂ) (V V' : Fin p → Fin g → ℂ) (W W' : Fin q → Fin g → ℂ)
@@ -136,7 +134,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l}
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Conclude with `(GlobalTheory.DerLin.isCombAt_iff_isDerivAt0 E H D l Xo σK g ty FU i P hP n (fun k => (v k).left) V hV a w.left).1 ((EigDir.isComb_iff_isCombAt _ a v w).1 h)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isDerivAt0_of_isComb {σK : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (FU : FamilyUnif Xo σK ty)
     (i : Fin FU.n) (P : (FU.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (FU.Di i) ty P) (x : Sp ℂ ⟶ Xo.X)
@@ -149,9 +147,9 @@ theorem isDerivAt0_of_isComb {σK : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E
     ((EigDir.isComb_iff_isCombAt _ a v w).1 h)
 
 /- English proof (translation)
-Establish `h1 : tauIn c (ComplexEmbedding.conjugate τ) a = tauIn c τ (H.bar a)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ComplexEmbedding.conjugate τ (a : E) = τ ((H.bar a : 𝓞 E) : E)`. Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `show σ (tauIn c (ComplexEmbedding.conjugate τ) a) = _`. Rewrite using `[h1, hτ, H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tauIn_conj {c : Coeff l} {τ τ' : E →+* ℂ} {σ : c.F →+* ℂ}
     (hτ : ∀ a : 𝓞 E, σ (tauIn c τ a) = τ' (a : E)) (a : 𝓞 E) :
@@ -166,7 +164,7 @@ theorem tauIn_conj {c : Coeff l} {τ τ' : E →+* ℂ} {σ : c.F →+* ℂ}
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `intro a b; funext k; simp only [tyPart, Pi.add_apply]; split_ifs <;> simp`. Apply the tactic sequence `intro a b; funext k; simp only [tyPart, Pi.smul_apply]; split_ifs <;> simp`.
+Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isLinearMap_tyPart {g : ℕ} (ty : Fin g → (E →+* ℂ)) (τ : E →+* ℂ) : IsLinearMap ℂ (tyPart ty τ) := by
   constructor
@@ -174,13 +172,13 @@ theorem isLinearMap_tyPart {g : ℕ} (ty : Fin g → (E →+* ℂ)) (τ : E →+
   · intro a b; funext k; simp only [tyPart, Pi.smul_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨⟨V, W, Fm, B₀, d⟩, ⟨k1, k2, k3, k4, k5, ⟨C, hC⟩, k7⟩, hu⟩` from `GlobalTheory.T.uniformised_eigen_frame_one E H D l Xo c τ τ' σ g ty FU hT hrt hτ i e P y v w he hP hy hf`. Take `⟨⟨V', W', Fm', B', d'⟩, ⟨l1, l2, l3, l4, l5, ⟨C', hC'⟩, l7⟩, -⟩` from `GlobalTheory.T.uniformised_eigen_frame_one E H D l Xo c τ τ' σ g ty FU hT hrt hτ i e P y v' w' he hP hy hf'`. Establish `f1 : Φ y v w * d = ρ`. Use `hΦ P y v w V W C Fm B₀ hP hy hf k1 k2 hC k3 k4` as an intermediate fact. Rewrite `this` using `[k7 C hC]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `f2 : Φ y v' w' * d' = ρ`. Use `hΦ P y v' w' V' W' C' Fm' B' hP hy hf' l1 l2 hC' l3 l4` as an intermediate fact. Rewrite `this` using `[l7 C' hC']`. Then use the resulting hypothesis. Take `⟨V₀, hV₀, -, -⟩` from `exists_directions_of_isEigFrame E H D l Xo _ g ty FU i P (under y) _ τ' D.p v' hP hy hτ hf'.2.2.1`. Take `⟨W₀, hW₀, hWi, -⟩` from `exists_directions_of_isEigFrame E H D l Xo _ g ty FU i P (under y) _ (ComplexEmbedding.conjugate τ') D.q w hP hy (tauIn_conj hτ) hf.2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W₁, hW₁, hWi', -⟩` from `exists_directions_of_isEigFrame E H D l Xo _ g ty FU i P (under y) _ (ComplexEmbedding.conjugate τ') D.q w' hP hy (tauIn_conj hτ) hf'.2.2.2`. Establish `eW : W = W₀` using `funext fun j => (hW₀ j _).1 (k2 j)`. Establish `eW' : W' = W₁` using `funext fun j => (hW₁ j _).1 (l2 j)`. Establish `hV : ∀ a, V' a = ∑ b, A a b • V b` using `fun a => ((hV₀ a _).1 (l1 a)).trans ((hV₀ a _).1 (isDerivAt0_of_isComb FU i P hP _ hy _ v _ V k1 (hA a))).symm`. Establish `hW : ∀ j, W' j = ∑ k, Bm j k • W k` using `fun j => ((hW₁ j _).1 (l2 j)).trans ((hW₁ j _).1 (isDerivAt0_of_isComb FU i P hP _ hy _ w _ W k2 (hB j))).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `det_chg ((isLinearMap_tyPart ty τ').mk' _) (fun m => P (e m)) (fun n => tyPart ty (ComplexEmbedding.conjugate τ') (P (e n))) (fun m n => τ' (sesq (FU.Di i) (e m) (e n))) V V' W W' Fm Fm' B₀ B' d d' A Bm hV hW (eW ▸ hWi) (eW' ▸ hWi') k3 l3 l4 l5 ⟨C, hC⟩ l7 (fun F₂ d₂ h4 h5 h7 => c …`. Apply `mul_right_cancel₀ (mul_ne_zero k5 l5)` to reduce the goal to its premises. Take the linear combination `(A.det * d) * f2 - (Bm.det * d') * f1 + ρ * key`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem chg_of_isFlatAn {c : Coeff l} {τ τ' : E →+* ℂ} {σ : c.F →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
     (FU : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty)
@@ -227,23 +225,21 @@ end GlobalTheory.CompanionTheory.Ar.Flat.Unit
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c τ τ' σ g ty FU hT hrt hτ`. Establish `hrank : ∀ i, ∃ e : Fin D.p ⊕ Fin D.q → (FU.Di i).La, LinearIndependent (𝓞 E) e`. Introduce `i`. Establish `hr : D.p + D.q ≤ Module.finrank (𝓞 E) (FU.Di i).La`. Rewrite using `[(FU.Di i).rank, (FU.sig i).1, (FU.sig i).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, hf⟩` from `exists_linearIndependent_of_le_finrank hr`. Conclude with `⟨f ∘ finSumFinEquiv, hf.comp _ finSumFinEquiv.injective⟩`. Use `choose e he using hrank`. Use `choose t ht hN using fun i => GlobalTheory.T.uniformised_eigen_frame_two E H D l Xo c τ τ' σ g ty FU hT hrt hτ i (e i) (he i)`. Set `ρ : Fin FU.n → ℂ` to `fun i => (((Real.sqrt (t i))⁻¹ : ℝ) : ℂ)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ i, Real.sqrt (t i) ≠ 0` using `fun i => (Real.sqrt_pos.2 (ht i)).ne'`. Establish `hρ : ∀ i, ρ i ≠ 0` using `fun i => Complex.ofReal_ne_zero.2 (inv_ne_zero (hs i))`. Establish `hρt : ∀ i, ‖ρ i‖ ^ 2 * t i = 1`. Introduce `i`. Establish `h1 : ‖ρ i‖ = (Real.sqrt (t i))⁻¹` using `by show ‖(((Real.sqrt (t i))⁻¹ : ℝ) : ℂ)‖ = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (inv_nonneg.2 (Real.sqrt_nonneg _))]`. Rewrite using `[h1, inv_pow, Real.sq_sqrt (ht i).le, inv_mul_cancel₀ (ht i).ne']`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.uniformised_eigen_frames_all E H D l Xo c τ τ' σ g ty FU hT hrt hτ e ρ he`. Establish `hloc : ∀ y : Sp ℂ ⟶ Xo.XF c, y ≫ pullback.snd _ _ = spMap σ → ∃ (i : Fin FU.n) (P : (FU.Di i).La →+ (Fin g → ℂ)), IsPeriod (FU.Di i) ty P ∧ under y = FU.u i P`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, P, hP, hu⟩` from `FU.onto (under y) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hy]`. Simplify using `only [spMap, ← Spec.map_comp]`. Use the proof step `rfl)`. Conclude with `⟨i, P, hP, hu.symm⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨Φ, { ne := ?_, chg := ?_, norm := ?_, hol := ?_ }, fun i => ⟨e i, ρ i, hρ i, he i, hΦ i⟩⟩` and prove the remaining obligations. Introduce `y v w hf h0`. Take `⟨i, P, hP, hy⟩` from `hloc y hf.1`. Take `⟨⟨V, W, Fm, B₀, d⟩, ⟨k1, k2, k3, k4, k5, ⟨C, hC⟩, k7⟩, -⟩` from `GlobalTheory.T.uniformised_eigen_frame_one E H D l Xo c τ τ' σ g ty FU hT hrt hτ i (e i) P y v w (he i) hP hy hf`. Use `hΦ i P y v w V W C Fm B₀ hP hy hf k1 k2 hC k3 k4` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[h0, zero_mul]`. Conclude with `hρ i this.symm`. Introduce `y v w v' w' A B hf hf' hA hB`. Take `⟨i, P, hP, hy⟩` from `hloc y hf.1`. Conclude with `Unit.chg_of_isFlatAn FU hT hrt hτ i (e i) (he i) P hP y hy v v' w w' A B hf hf' hA hB Φ (ρ i) (hΦ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y v w Γ Δ hf hΓ hΔ`. Take `⟨i, P, hP, hy⟩` from `hloc y hf.1`. Use `hN i (ρ i) Φ (hΦ i) P y v w Γ Δ hP hy hf hΓ hΔ` as an intermediate fact. Rewrite using `[this, hρt i, _root_.one_mul]`. Introduce `R _ x vR wR m B ψ v w h1 h2 h3`.
-
-Conclude with `GlobalTheory.T.uniformised_eigen_frames_two E H D l Xo c τ τ' σ g ty FU hT hrt hτ e ρ Φ he hΦ R x vR wR m B ψ v w h1 h2 h3`.
+A detailed English derivation is pending.
 -/
 theorem anUnit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (τ τ' : E →+* ℂ) (σ : c.F →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty), IsTypeFn H D.p D.q ty → τ' (H.rt : E) = H.rt0 → (∀ a : 𝓞 E, σ (tauIn c τ a) = τ' (a : E)) → ∃ Φ : CFn Xo c, IsUnitAn τ σ Φ ∧ ∀ i : Fin FU.n, ∃ (e : Fin D.p ⊕ Fin D.q → (FU.Di i).La) (ρ : ℂ), ρ ≠ 0 ∧ LinearIndependent (𝓞 E) e ∧ IsFlatAn Set.univ τ τ' σ Φ FU i e ρ := by
   intro E _ _ _ H D l Xo c τ τ' σ g ty FU hT hrt hτ

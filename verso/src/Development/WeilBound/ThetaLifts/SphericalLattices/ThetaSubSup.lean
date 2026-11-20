@@ -17,7 +17,7 @@ def Stab (S A : Submodule ℂ V) (U : Set H) (T : H → Module.End ℂ V) (P : S
 variable {S A : Submodule ℂ V} {U : Set H} {T : H → Module.End ℂ V}
 
 /- English proof (translation)
-Use `⟨le_sup_of_le_left h.1, sup_le h.2.1 h'.2.1, fun i hi x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (h.2.2 i hi y hy) (h'.2.2 i hi z hz)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Stab.sup {P P' : Submodule ℂ V} (h : Stab S A U T P) (h' : Stab S A U T P') : Stab S A U T (P ⊔ P') := by
   refine ⟨le_sup_of_le_left h.1, sup_le h.2.1 h'.2.1, fun i hi x hx => ?_⟩
@@ -26,7 +26,7 @@ theorem Stab.sup {P P' : Submodule ℂ V} (h : Stab S A U T P) (h' : Stab S A U 
   exact Submodule.add_mem_sup (h.2.2 i hi y hy) (h'.2.2 i hi z hz)
 
 /- English proof (translation)
-Introduce `hs`. Use `hP (le_antisymm h.2.1 fun φ hφ => (sup_le h.1 (Submodule.span_le.2 ?_)) (hgen φ hφ))` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `h.2.2 i hi s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Stab.not_mem {s : V} (hgen : ∀ φ ∈ S, φ ∈ A ⊔ Submodule.span ℂ {z | ∃ h ∈ U, z = T h s}) {P : Submodule ℂ V}
     (h : Stab S A U T P) (hP : P ≠ S) : s ∉ P := by
@@ -36,17 +36,17 @@ theorem Stab.not_mem {s : V} (hgen : ∀ φ ∈ S, φ ∈ A ⊔ Submodule.span �
   exact h.2.2 i hi s hs
 
 /- English proof (translation)
-Introduce `e`. Establish `hs' : s ∈ P ⊔ P'` using `e ▸ hs`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 hs'`. Take `⟨m, k, w, c, hw, hc⟩` from `hline x (h.2.1 hx)`. Establish `hxP : ∑ i, w i • T (k i) x ∈ P` using `P.sum_mem fun i _ => P.smul_mem _ (h.2.2 _ (hw i).1 x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyP : ∑ i, w i • T (k i) y ∈ P'` using `P'.sum_mem fun i _ => P'.smul_mem _ (h'.2.2 _ (hw i).1 y hy)`. Establish `hsum : ∑ i, w i • T (k i) x + ∑ i, w i • T (k i) y = ((m + 1 : ℕ) : ℂ) • s`. Rewrite using `[← Finset.sum_add_distrib]`. Repeatedly rewrite using `[← smul_add, ← map_add, hxy, (hw _).2]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, Nat.cast_smul_eq_nsmul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : c • s ∈ P`. Use `P.sub_mem hxP (h.1 hc)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `h2 : (((m + 1 : ℕ) : ℂ) - c) • s ∈ P'`. Establish `e2 : (((m + 1 : ℕ) : ℂ) - c) • s = ∑ i, w i • T (k i) y + (∑ i, w i • T (k i) x - c • s)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sub_smul, ← hsum]`. Normalize the expressions using the abelian group laws. Rewrite using `[e2]`. Conclude with `P'.add_mem hyP (h'.1 hc)`. Distinguish the cases in `hc0 : c = 0`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hc0` using the available equality. Use `Stab.not_mem hgen h' hP' ?_` and prove the remaining obligations. Use `P'.smul_mem (((m + 1 : ℕ) : ℂ))⁻¹ h2` as an intermediate fact. Rewrite `this` using `[sub_zero, smul_smul, inv_mul_cancel₀ (by exact_mod_cast Nat.succ_ne_zero m), one_smul]`. Then use the resulting hypothesis. Use `Stab.not_mem hgen h hP ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `P.smul_mem c⁻¹ h1` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem Stab.sup_ne {s : V} (hs : s ∈ S) (hgen : ∀ φ ∈ S, φ ∈ A ⊔ Submodule.span ℂ {z | ∃ h ∈ U, z = T h s})
     (hline : ∀ φ ∈ S, ∃ (m : ℕ) (k : Fin (m + 1) → H) (w : Fin (m + 1) → ℂ) (c : ℂ),
@@ -87,12 +87,12 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 /- English proof (translation)
-Introduce `u _` and use `by simp [mat]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_uat (v : Pl F) : (1 : UA σ X.J) ∈ UAt σ X (evFin F v) := fun u _ => by simp [mat]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hN.1, hN.2.1, fun h hh x hx => hN.2.2 h hh x hx _ (L.pres 1 (one_uat v) h hh x (hN.2.1 hx)) ((L.acts 1 (one_uat v) h hh x (hN.2.1 hx) _).2 rfl)⟩`.
+Supply the required witnesses or components.
 -/
 theorem stab_of (L : IsLocRep M ψ om v ω ρ) {N} (hN : GlobalTheory.Published.ThetaSub om v N) :
     Stab (SB _) (augAt om v) (UAt σ W (evFin F v)) (fun h => ω (1, h)) N :=
@@ -100,7 +100,7 @@ theorem stab_of (L : IsLocRep M ψ om v ω ρ) {N} (hN : GlobalTheory.Published.
     ((L.acts 1 (one_uat v) h hh x (hN.2.1 hx) _).2 rfl)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hN.1, hN.2.1, fun h hh φ hφ φ₁ _ hA => by rw [(L.acts 1 (one_uat v) h hh φ (hN.2.1 hφ) φ₁).1 hA] exact hN.2.2 h hh φ hφ⟩`.
+Supply the required witnesses or components.
 -/
 theorem thetaSub_of (L : IsLocRep M ψ om v ω ρ) {N}
     (hN : Stab (SB _) (augAt om v) (UAt σ W (evFin F v)) (fun h => ω (1, h)) N) : GlobalTheory.Published.ThetaSub om v N :=
@@ -109,16 +109,16 @@ theorem thetaSub_of (L : IsLocRep M ψ om v ω ρ) {N}
     exact hN.2.2 h hh φ hφ⟩
 
 /- English proof (translation)
-The claim follows from `thetaSub_of L ((stab_of L hN).sup (stab_of L hN'))`.
+A detailed English derivation is pending.
 -/
 theorem thetaSub_sup (L : IsLocRep M ψ om v ω ρ) {N N'} (hN : GlobalTheory.Published.ThetaSub om v N)
     (hN' : GlobalTheory.Published.ThetaSub om v N') : GlobalTheory.Published.ThetaSub om v (N ⊔ N') :=
   thetaSub_of L ((stab_of L hN).sup (stab_of L hN'))
 
 /- English proof (translation)
-Break down `hs with hs | hs` into its components or cases. Take `⟨s, hs⟩` from `hs ω ρ L`. Conclude with `Stab.sup_ne hs.mem hs.gen hs.line (stab_of L hN) (stab_of L hN') h1 h2`. Establish `e1` using `(hs N hN).resolve_right h1`. Establish `e2` using `(hs N' hN').resolve_right h2`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, sup_idem]`. Rewrite `h1` using `[e1]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_ne_of (L : IsLocRep M ψ om v ω ρ) (hs : SphAt M ψ om v ∨ IrrAt om v) {N N'} (hN : GlobalTheory.Published.ThetaSub om v N)
     (hN' : GlobalTheory.Published.ThetaSub om v N') (h1 : N ≠ SB _) (h2 : N' ≠ SB _) : N ⊔ N' ≠ SB _ := by
@@ -132,7 +132,7 @@ theorem sup_ne_of (L : IsLocRep M ψ om v ω ρ) (hs : SphAt M ψ om v ∨ IrrAt
     exact h1
 
 /- English proof (translation)
-Introduce `N N' hN hN'`. Establish `hq : GlobalTheory.Published.ThetaSub om v (N ⊔ N') ∧ N ⊔ N' ≠ SB _` using `⟨thetaSub_sup L hN.prop.1 hN'.prop.1, sup_ne_of L hs hN.prop.1 hN'.prop.1 hN.prop.2 hN'.prop.2⟩`. Conclude with `(hN.eq_of_ge hq le_sup_left).symm.trans (hN'.eq_of_ge hq le_sup_right)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem maxAt_of (L : IsLocRep M ψ om v ω ρ) (hs : SphAt M ψ om v ∨ IrrAt om v) : PositivityTheory.HoweDualityUnitaryAlt.MaxAt om v := by
   intro N N' hN hN'
@@ -141,7 +141,7 @@ theorem maxAt_of (L : IsLocRep M ψ om v ω ρ) (hs : SphAt M ψ om v ∨ IrrAt 
   exact (hN.eq_of_ge hq le_sup_left).symm.trans (hN'.eq_of_ge hq le_sup_right)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PositivityTheory.ThKH.Locrep.locRepEx F E σ _ _ B G.V G.W G.M om ⟨hT.base, ⟨_, _, hT.geo.hV⟩, ⟨_, _, hT.geo.hW⟩, hT.geo.hM, ⟨_, _, hT.weil⟩⟩ v, PositivityTheory.ThKH.Locrep.locRepEx F E σ _ _ B G.V' G.W G.M' om' ⟨hT.base, ⟨_, _, hT.geo.hV'⟩, ⟨_, _, hT.geo.hW⟩, hT.geo.hM', ⟨_, _, …`.
+Supply the required witnesses or components.
 -/
 theorem locRep_tri {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {Y : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
     (hT : IsTriple B G Y om om') (v : Pl F) :
@@ -152,7 +152,7 @@ theorem locRep_tri {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {Y : Chars F E}
       ⟨hT.base, ⟨_, _, hT.geo.hV'⟩, ⟨_, _, hT.geo.hW⟩, hT.geo.hM', ⟨_, _, hT.weil'⟩⟩ v⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v _`. Take `⟨h1, h2⟩` from `h F E σ B a a' G X om om' hT v`. Take `⟨⟨ω, ρ, L⟩, ⟨ω', ρ', L'⟩⟩` from `locRep_tri hT v`. Conclude with `⟨maxAt_of L h1, maxAt_of L' h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem maxFinT_of (h : SphTri) : PositivityTheory.HoweDualityUnitaryAlt.MaxFinT := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hT v _

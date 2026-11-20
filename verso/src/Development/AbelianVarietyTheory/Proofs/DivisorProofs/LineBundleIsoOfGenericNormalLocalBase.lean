@@ -18,11 +18,9 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ H _ _ e he L L' hL hL' h`. Establish `hn : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Sp R)` using `GlobalTheory.Published.SemiAbelianHomExtension.isNormalScheme_spec R`. Establish `: IsPreimmersion (jK R)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Establish `: Flat (jK R)`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat _ (nonZeroDivisors R))`. Establish `: IsDominant (jK R)` using `ReciprocityTheory.ChartRestriction.G.DVR.isDominant_jK`. Establish `: QuasiCompact (jK R)` using `inferInstance`. Use `(GlobalTheory.CechPic.cls_eq_iff hL hL').1 (GlobalTheory.ZH.EndoExtend.pic_ext (jK R) hn H e he ?_ ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.DualOpen.pic_sp_local_eq_zero R (GlobalTheory.CechPic.pull e _), GlobalTheory.DualOpen.pic_sp_local_eq_zero R (GlobalTheory.CechPic.pull e _)]`.
-
-Conclude with `(GlobalTheory.CechPic.cls_eq_iff (pull_isLB hL _) (pull_isLB hL' _)).2 h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_of_generic_local : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsIntegrallyClosed R], ∀ (H : Over (Sp R)) [Smooth H.hom] [GeometricallyIntegral H.hom] (e : Sp R ⟶ H.left), e ≫ H.hom = 𝟙 _ → ∀ L L' : LB H.left, L.IsLB → L'.IsLB → LBIso (L.pull (pullback.fst H.hom (jK R))) (L'.pull (pullback.fst H.hom (jK R))) → LBIso L L' := by
   intro R _ _ _ _ _ H _ _ e he L L' hL hL' h

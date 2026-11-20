@@ -5,11 +5,9 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `letI : Algebra C (Module.End k X) := ((algebraMap k (Module.End k X)).comp (algebraMap C k)).toAlgebra' (fun c f => Algebra.commutes (algebraMap C k c) f)`. Use `haveI : IsScalarTower C k (Module.End k X) := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Set `g : O →ₐ[C] Module.End k X` to `{ σX with commutes' := fun c => by`. Express the relevant statement in the definitionally equal form `σX (algebraMap C O c) = algebraMap k (Module.End k X) (algebraMap C k c)`. Rewrite using `[hσ]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(Algebra.algebraMap_eq_smul_one _).symm }`. Set `F : (k ⊗[C] O) →ₐ[k] Module.End k X` to `Algebra.TensorProduct.lift (Algebra.ofId k (Module.End k X)) g (fun x y => Algebra.commutes x (g y))`. Use `⟨F.comp e.symm.toAlgHom, fun o => ?_⟩` and prove the remaining obligations. Use `show F (e.symm (e (1 ⊗ₜ[C] o))) = σX o`. Rewrite using `[e.symm_apply_apply]`.
-
-Rewrite using `[show F (1 ⊗ₜ[C] o) = Algebra.ofId k (Module.End k X) 1 * g o from Algebra.TensorProduct.lift_tmul _ _ _ _ _, map_one, one_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tensor_action_factors (k : Type) [Field k] (C O B : Type) [CommRing C] [Ring O] [Algebra C O]
     [Algebra C k] [Ring B] [Algebra k B] (e : (k ⊗[C] O) ≃ₐ[k] B) (X : Type) [AddCommGroup X]

@@ -16,7 +16,7 @@ variable {k A : Type} [Field k] [CommRing A] [Algebra k A] [Algebra k[X] A]
   [IsScalarTower k k[X] A]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul k[X] c f, map_smul, Finsupp.smul_apply, smul_eq_mul, Polynomial.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_smul_const {n : ℕ} (b : Module.Basis (Fin n) k[X] A) (c : k) (f : A) (i : Fin n) :
     b.repr (c • f) i = C c * b.repr f i := by
@@ -40,11 +40,11 @@ def coeffMap {n : ℕ} (b : Module.Basis (Fin n) k[X] A) (D : Ideal A) (d : ℕ)
   map_smul' c f := by ext i j; simp [repr_smul_const, coeff_C_mul]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `f hf`. Establish `h0 : ∀ i, b.repr (f : A) i = 0`. Introduce `i`. Use extensionality with `j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hj : j ≤ d`. Use `congrFun (congrFun hf i) ⟨j, Nat.lt_succ_of_le hj⟩` as an intermediate fact. Simplify `this` using `[coeffMap]`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (lt_of_le_of_lt (f.2.2 i) (not_le.1 hj))]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: (f : A) = 0`. Rewrite using `[← b.sum_repr (f : A)]`. Simplify using `[h0]`. Conclude with `Subtype.ext this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeffMap_injective {n : ℕ} (b : Module.Basis (Fin n) k[X] A) (D : Ideal A) (d : ℕ) :
     Function.Injective (coeffMap b D d) := by
@@ -68,7 +68,7 @@ instance finiteDimensional_boundedIn {n : ℕ} (b : Module.Basis (Fin n) k[X] A)
 end Bounded
 
 /- English proof (translation)
-Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `h'`. Conclude with `h (le_sup_right.trans (hM.eq_of_le h' le_sup_left).ge)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isCoprime_of_not_le {A : Type} [CommRing A] {M D : Ideal A} (hM : M.IsMaximal)
     (h : ¬ D ≤ M) : IsCoprime M D := by
@@ -81,37 +81,33 @@ end GlobalTheory.PicDiv.LinSys
 open GlobalTheory.PicDiv.LinSys in
 
 /- English proof (translation)
-Introduce `k A _ _ _ _ _ _ _ _ _ hred N P₀ hN hP`. Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Use `set n := Module.finrank k[X] A`. Set `b : Module.Basis (Fin n) k[X] A` to `Module.finBasis k[X] A`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨c, lam, hdeg1, hdeg2⟩` from `GlobalTheory.NormDegree.natDegree_norm_of_coord_degree k A n b`. Take `⟨p, hp2, hpP, hpP2⟩` from `GlobalTheory.PicDiv.exists_deg_lt_two_correction_simple k A n b P₀ (∑ i, (C (lam i) * X ^ 2) • b i) hP`. Use `set f₁ : A := ∑ i, (C (lam i) * X ^ 2 + p i) • b i with hf₁def`. Establish `hf₁eq : (∑ i, (C (lam i) * X ^ 2) • b i) + ∑ i, p i • b i = f₁`. Rewrite using `[hf₁def, ← Finset.sum_add_distrib]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[add_smul]`. Rewrite `hpP`, `hpP2` using `[hf₁eq]`. Take `⟨hf₁0, hf₁deg⟩` from `hdeg2 2 p hp2`. Take `⟨D, hD⟩` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hpP)`. Establish `hDP : ¬ D ≤ P₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hpP2` to reduce the goal to its premises. Establish `: Ideal.span {f₁} ≤ P₀ ^ 2` using `by rw [hD, sq]; exact Ideal.mul_mono_right h`. Conclude with `(Ideal.span_singleton_le_iff_mem _).1 this`. Establish `hf₁D : f₁ ∈ D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Ideal.span {f₁} ≤ D` using `hD ▸ Ideal.mul_le_right`. Conclude with `(Ideal.span_singleton_le_iff_mem _).1 this`. Use `set s := n * 2 + c with hs`. Take `⟨q, r, Q, hqm, hqdeg, hQmax, hQinj, hf₁Q, hqQ⟩` from `GlobalTheory.PicDiv.SquarefreeFibre.main k A hred f₁ s hf₁0`. Use `set d := 2 + (M + 1) * s with hd`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hspan : ∀ m : ℕ, Ideal.span {f₁ * algebraMap k[X] A (q ^ m)} = P₀ * D * ∏ i, Q i ^ m`. Introduce `m`. Rewrite using `[← Ideal.span_singleton_mul_span_singleton, hD, map_pow, ← Ideal.span_singleton_pow, hqQ, Finset.prod_pow]`. Establish `hrepr₁ : ∀ i, b.repr f₁ i = C (lam i) * X ^ 2 + p i`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hf₁def, b.repr_sum_self]`. Establish `hdeg₁ : ∀ i, (b.repr f₁ i).natDegree ≤ 2`. Introduce `i`. Rewrite using `[hrepr₁]`. Conclude with `(natDegree_add_le _ _).trans (max_le (natDegree_C_mul_X_pow_le _ _) (natDegree_le_iff_degree_le.2 (le_of_lt (hp2 i))))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set f₀ : A := f₁ * algebraMap k[X] A (q ^ (M + 1)) with hf₀def`. Establish `hf₀smul : f₀ = q ^ (M + 1) • f₁` using `by rw [hf₀def, Algebra.smul_def, mul_comm]`. Establish `hf₀0 : f₀ ≠ 0`. Rewrite using `[hf₀smul]`. Conclude with `smul_ne_zero (pow_ne_zero _ hqm.ne_zero) hf₁0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf₀V : f₀ ∈ boundedIn b D d`. Use `⟨D.mul_mem_right _ hf₁D, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hf₀smul, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Use `(natDegree_mul_le).trans ?_` and prove the remaining obligations. Rewrite using `[hqm.natDegree_pow, hqdeg]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hdeg₁ i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hnorm₁ : Algebra.norm k[X] f₁ ≠ 0` using `Algebra.norm_ne_zero_iff.2 hf₁0`. Establish `hf₀deg : (Algebra.norm k[X] f₀).natDegree = n * d + c`. Rewrite using `[hf₀def, map_mul, Algebra.norm_algebraMap_of_basis b, Fintype.card_fin, natDegree_mul hnorm₁ (pow_ne_zero _ (pow_ne_zero _ hqm.ne_zero)), hf₁deg, natDegree_pow, hqm.natDegree_pow, hqdeg, hd, hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨r, boundedIn b D d, D, Q, f₀, ⟨inferInstance, fun v hv => hv.1, hQmax, hQinj, fun i h => hf₁Q i (h ▸ hpP), fun i h => hf₁Q i (h hf₁D), hDP, hf₀V, hf₀0, hspan (M + 1), ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `u`. Establish `hcop : IsCoprime (P₀ * ∏ i, Q i ^ M) D` using `(isCoprime_of_not_le hP hDP).mul_left (IsCoprime.prod_left fun i _ => (isCoprime_of_not_le (hQmax i) (fun h => hf₁Q i (h hf₁D))).pow_left)`. Establish `h1 : (1 : A) ∈ (P₀ * ∏ i, Q i ^ M) ⊔ D`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.isCoprime_iff_sup_eq.1 hcop]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 h1`. Establish `hqd : (Algebra.norm k[X] f₁).natDegree + (q ^ M).natDegree ≤ d + 1`. Rewrite using `[hqm.natDegree_pow, hqdeg, hf₁deg, hd, hs]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨p', hp'd, hp'⟩` from `GlobalTheory.exists_lowDegree_coords_mod k A n b f₁ (q ^ M) d hf₁0 (pow_ne_zero _ hqm.ne_zero) hqd (u * y)`. Rewrite `hp'` using `[hspan M]`. Establish `hP0 : P₀ * D * ∏ i, Q i ^ M ≤ D` using `Ideal.mul_le_left.trans Ideal.mul_le_right`. Establish `hPI : P₀ * D * ∏ i, Q i ^ M ≤ P₀ * ∏ i, Q i ^ M` using `Ideal.mul_mono_left Ideal.mul_le_left`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ i, p' i • b i, ⟨?_, fun i => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: ∑ i, p' i • b i = u * y - (u * y - ∑ i, p' i • b i)` using `by ring`. Rewrite using `[this]`. Conclude with `D.sub_mem (D.mul_mem_left _ hy) (hP0 hp')`. Rewrite using `[b.repr_sum_self]`.
-
-Conclude with `hp'd i`. Establish `: u - ∑ i, p' i • b i = u * x + (u * y - ∑ i, p' i • b i)`. Take the linear combination `(-u) * hxy`. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hx) (hPI hp')`.
-
-Introduce `f hf hf0`. Rewrite using `[finrank_quotient_span_eq_natDegree_norm b hf0, finrank_quotient_span_eq_natDegree_norm b hf₀0, hf₀deg]`. Use `hdeg1 d (fun i => b.repr f i) hf.2` as an intermediate fact. Rewrite `this` using `[b.sum_repr]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PicDiv.linear_system_setup : ∀ (k A : Type) [Field k] [IsAlgClosed k] [CommRing A] [IsDedekindDomain A] [Algebra k A] [Algebra k[X] A] [IsScalarTower k k[X] A] [Module.Finite k[X] A] [Module.Free k[X] A], (∃ δ : k[X], δ ≠ 0 ∧ ∀ α : k, δ.eval α ≠ 0 → ∀ Q : Ideal A, Q.IsMaximal → algebraMap k[X] A (X - C α) ∉ Q ^ 2) → ∀ (N : ℕ) (P₀ : Ideal A), 1 ≤ N → P₀.IsMaximal → ∃ (r : ℕ) (V : Submodule k A) (D : Ideal A) (Q : Fin r → Ideal A) (f₀ : A), (FiniteDimensional k V ∧ (∀ v ∈ V, v ∈ D) ∧ (∀ i, (Q i).IsMaximal) ∧ Function.Injective Q ∧ (∀ i, Q i ≠ P₀) ∧ (∀ i, ¬ D ≤ Q i) ∧ ¬ D ≤ P₀ ∧ f₀ ∈ V ∧ f₀ ≠ 0 ∧ Ideal.span {f₀} = P₀ * D * ∏ i, Q i ^ N ∧ (∀ u : A, ∃ v ∈ V, u - v ∈ P₀ * ∏ i, Q i ^ (N - 1))) ∧ (∀ f ∈ V, f ≠ 0 → Module.finrank k (A ⧸ Ideal.span {f}) ≤ Module.finrank k (A ⧸ Ideal.span {f₀})) := by
   intro k A _ _ _ _ _ _ _ _ _ hred N P₀ hN hP

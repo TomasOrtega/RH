@@ -12,35 +12,31 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC hB hG hG₁ K hK μK μ hμK hμ m hm L _hLc hN hLev hint g hg`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evI F)`. Establish `hA : H.IsAdapted σ B G.V G₁.V 0 (b + 1)` using `hC.hH`. Establish `hV` using `hG.hV`. Establish `hV₁` using `hG₁.hV`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w : idelesAt E (evI F) → ℂ := fun l => (((absE F E l.1 : ℝ) ^ ((b + 1 : ℕ) : ℝ) : ℝ) : ℂ) with hw`. Use `set Ψ : UA σ G.V.J → ℂ := fun x => ∫ l, L (m l.1⁻¹ * x) * w l ∂μ with hΨ`. Establish `hw_mul : ∀ l l' : idelesAt E (evI F), w (l * l') = w l * w l'`. Introduce `l l'`. Simplify using `only [hw, Subgroup.coe_mul, map_mul, NNReal.coe_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Real.mul_rpow (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hequiv : ∀ p ∈ UAt σ G.V (evI F), ∀ x ∈ UAt σ G.V (evI F), ∀ t : (AE F E)ˣ, mat p *ᵥ incV F H.x = t.1 • incV F H.x → Ψ (p * x) = (((absE F E t : ℝ) ^ (b + 1) : ℝ) : ℂ) * Ψ x`. Introduce `p hp x hx t hpt`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ht : t ∈ idelesAt E (evI F)` using `GlobalTheory.T.archimedean_eigenvector_idele_mem F E σ B b G.V G₁.V H 0 (b + 1) hA p hp t hpt`. Use `set T : idelesAt E (evI F) := ⟨t, ht⟩ with hT`. Take `⟨hmt, hmtU⟩` from `hm t ht`. Establish `hp' : (m t)⁻¹ * p ∈ UAt σ G.V (evI F)` using `(UAtSub σ G.V (evI F)).mul_mem ((UAtSub σ G.V (evI F)).inv_mem hmtU) hp`. Establish `hfix : mat ((m t)⁻¹ * p) *ᵥ incV F H.x = incV F H.x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : mat (m t) *ᵥ incV F H.x = t.1 • incV F H.x` using `hmt.1`. Establish `h2 : mat (m t)⁻¹ *ᵥ (mat (m t) *ᵥ incV F H.x) = incV F H.x`. Rewrite using `[Matrix.mulVec_mulVec, ← GlobalTheory.StabHaar.mat_mul, inv_mul_cancel, GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec]`. Rewrite using `[GlobalTheory.StabHaar.mat_mul, ← Matrix.mulVec_mulVec, hpt, Matrix.mulVec_smul]`. Rewrite `h2` using `[h1, Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Take `⟨n, hnU, hnA, g₀, hg₀, g', hg', hg'A, hdec⟩` from `GlobalTheory.T.archimedean_parabolic_fixed_decomposition F E σ B b G.V G₁.V H 0 (b + 1) (b + 2 - G.p) G.p (b - G₁.p) G₁.p hB hV hV₁ hA _ hp' hfix`. Establish `hp_eq : p = m t * n * g'`. Rewrite using `[mul_assoc, ← hdec, mul_inv_cancel_left]`. Establish `hpt' : ∀ l : idelesAt E (evI F), L (m l.1⁻¹ * (p * x)) = L (m (T⁻¹ * l).1⁻¹ * x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `l`. Establish `hs : (T⁻¹ * l).1⁻¹ = l.1⁻¹ * t`. Simplify using `[hT, mul_comm]`. Establish `hsI : (T⁻¹ * l).1⁻¹ ∈ idelesAt E (evI F)` using `(idelesAt E (evI F)).inv_mem (T⁻¹ * l).2`. Establish `hlI : l.1⁻¹ ∈ idelesAt E (evI F)` using `(idelesAt E (evI F)).inv_mem l.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hms, hmsU⟩` from `hm _ hsI`. Take `⟨hml, -⟩` from `hm _ hlI`. Establish `hmul : m l.1⁻¹ * m t = m (T⁻¹ * l).1⁻¹` using `GlobalTheory.T.levi_element_composition_rule F E σ B b G.V G₁.V H 0 (b + 1) (b + 2 - G.p) G.p (b - G₁.p) G₁.p hB hV hV₁ hA _ _ _ _ _ hml hmt (hs ▸ hms)`. Use `set s := m (T⁻¹ * l).1⁻¹ with hsdef`. Establish `hcomm : s * g' = g' * s` using `GlobalTheory.T.levi_unipotent_product_decomposition F E σ B b G.V G₁.V H 0 (b + 1) (b + 2 - G.p) G.p (b - G₁.p) G₁.p hB hV hV₁ hA _ _ _ _ hms hg'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hconj : s * n * s⁻¹ ∈ unip σ G.V H` using `GlobalTheory.T.levi_normalizes_unipotent_radical' F E σ b G.V G₁.V H _ _ hms n hnU`. Establish `hconjU : s * n * s⁻¹ ∈ UAt σ G.V (evI F)` using `(UAtSub σ G.V (evI F)).mul_mem ((UAtSub σ G.V (evI F)).mul_mem hmsU hnA) ((UAtSub σ G.V (evI F)).inv_mem hmsU)`. Establish `hsx : s * x ∈ UAt σ G.V (evI F)` using `(UAtSub σ G.V (evI F)).mul_mem hmsU hx`. Establish `hrest : s * g' * x ∈ UAt σ G.V (evI F)`. Rewrite using `[hcomm, mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(UAtSub σ G.V (evI F)).mul_mem hg'A hsx`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Rewrite using `[hp_eq, ← hmul]`. Use `group`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `_ = L (s * g' * x) := hN _ hconj hconjU _ hrest`. Use `_ = L (g' * (s * x)) := by rw [hcomm, mul_assoc]`. Use `_ = L (s * x) := hLev g₀ g' hg' hg'A hg₀ _ hsx`. Establish `hwT : w T = (((absE F E t : ℝ) ^ (b + 1) : ℝ) : ℂ)`. Simplify using `only [hw, hT, Real.rpow_natCast]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hΨ]`. Use `congr 1`. Use function extensionality and compare the values at `l`. Rewrite using `[hpt' l]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `_ = ∫ l, L (m (T⁻¹ * (T * l)).1⁻¹ * x) * w (T * l) ∂μ := (integral_mul_left_eq_self (fun l => L (m (T⁻¹ * l).1⁻¹ * x) * w l) T).symm`. Use `_ = w T * Ψ x := by`. Simplify using `only [hΨ, inv_mul_cancel_left, hw_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `l`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [hwT]`. Establish `hint' : ∀ h ∈ UAt σ G.V (evI F), Integrable (fun k : KAt K (evI F) => Ψ (k.1 * h)) μK`. Introduce `h hh`.
-
-Use `(hint h hh).integral_prod_left` as an intermediate fact. Simplify `this` using `only [hΨ, hw, mul_assoc]`. Establish `key` using `GlobalTheory.T.stabilizer_archimedean_integral_unfold F E σ B b G.V G₁.V H 0 (b + 1) (b + 2 - G.p) G.p hB hV hA K hK μK hμK Ψ hint' hequiv g hg`. Simplify `key` using `only [hΨ, hw, mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.IwasawaConeA.kInt_cone_right_inv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

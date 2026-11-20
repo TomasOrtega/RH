@@ -13,15 +13,15 @@ section Conj
 variable {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `h1 : (((B⁻¹ : GL ι R) : Matrix ι ι R))ᵀ * (B : Matrix ι ι R)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.transpose_one]`. Establish `h2 : (B : Matrix ι ι R).map c * ((B⁻¹ : GL ι R) : Matrix ι ι R).map c = 1`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero c) (map_one c)]`. Establish `h1' : (B : Matrix ι ι R)ᵀ * (((B⁻¹ : GL ι R) : Matrix ι ι R))ᵀ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.transpose_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.transpose_one]`. Establish `h2' : ((B⁻¹ : GL ι R) : Matrix ι ι R).map c * (B : Matrix ι ι R).map c = 1`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero c) (map_one c)]`. Establish `key : ((B⁻¹ * g * B : GL ι R) : Matrix ι ι R)ᵀ * J * ((B⁻¹ * g * B : GL ι R) : Matrix ι ι R).map c = (B : Matrix ι ι R)ᵀ * ((g : Matrix ι ι R)ᵀ * D * (g : Matrix ι ι R).map c) * (B : Matrix ι ι R).map c`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using `only [Units.val_mul, Matrix.transpose_mul, Matrix.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce `e`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e'` using `congrArg (fun M => (((B⁻¹ : GL ι R) : Matrix ι ι R))ᵀ * M * ((B⁻¹ : GL ι R) : Matrix ι ι R).map c) e`. Substitute `h` using the available equality. Establish `l : ∀ M : Matrix ι ι R, (((B⁻¹ : GL ι R) : Matrix ι ι R))ᵀ * ((B : Matrix ι ι R)ᵀ * M * (B : Matrix ι ι R).map c) * ((B⁻¹ : GL ι R) : Matrix ι ι R).map c = M` using `fun M => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite `e'` using `[l]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e', l]`. Introduce `e`. Rewrite using `[e, h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_isom_iff (c : R →+* R) (B g : GL ι R) (D J : Matrix ι ι R)
     (h : (B : Matrix ι ι R)ᵀ * D * (B : Matrix ι ι R).map c = J) :
@@ -72,17 +72,17 @@ theorem bA_val (b : GL (Fin n ⊕ Fin n) E) :
     ((bA (F := F) b : GL (Fin n ⊕ Fin n) (AE F E)) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) = incM F b.1 := rfl
 
 /- English proof (translation)
-Simplify using `[cA, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_inclR (σ : E →ₐ[F] E) (x : E) : cA σ (inclR (F := F) (AF F) x) = inclR (F := F) (AF F) (σ x) := by
   simp [cA, inclR]
 
 /- English proof (translation)
-Use `congrArg (fun M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E => M.map (inclR (F := F) (E := E) (AF F))) hb` as an intermediate fact. Establish `e1 : (bA (F` using `F) b : GL (Fin n ⊕ Fin n) (AE F E)).1.map (adCM σ χ).σ = (b.1.map σ).map (inclR (F := F) (E := E) (AF F)) := by`. Use extensionality with `i j`. Conclude with `cA_inclR σ _`. Establish `e2 : dbl (incM F Y.J) = (dbl Y.J).map (inclR (F` using `F) (E := E) (AF F)) := by`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [dbl, incM]`. Establish `e3 : (bA (F` using `F) b : GL (Fin n ⊕ Fin n) (AE F E)).1ᵀ = (b.1ᵀ).map (inclR (F := F) (E := E) (AF F)) := rfl`. Establish `e4 : Ad.J (AE F E) ε (Fin n) = (Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E).map (inclR (F` using `F) (E := E) (AF F)) := by`. Use extensionality with `i j`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> by_cases h : i = j <;> simp [Ad.J, h, Matrix.one_apply]`. Rewrite using `[e1, e2, e3, e4, ← this]`. Simplify using `only [Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_frame (χ : Chr F E) (ε : ℤˣ) (b : GL (Fin n ⊕ Fin n) E)
     (hb : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) :
@@ -142,7 +142,7 @@ theorem frameEquiv_symm_val (χ : Chr F E) (ε : ℤˣ) (b : GL (Fin n ⊕ Fin n
     ((frameEquiv χ ε b hb).symm y).1 = bA b * y.1 * (bA b)⁻¹ := rfl
 
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `(continuous_const.mul continuous_subtype_val).mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_frameEquiv (χ : Chr F E) (ε : ℤˣ) (b : GL (Fin n ⊕ Fin n) E)
     (hb : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) :
@@ -151,7 +151,7 @@ theorem continuous_frameEquiv (χ : Chr F E) (ε : ℤˣ) (b : GL (Fin n ⊕ Fin
   exact (continuous_const.mul continuous_subtype_val).mul continuous_const
 
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `(continuous_const.mul continuous_subtype_val).mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_frameEquiv_symm (χ : Chr F E) (ε : ℤˣ) (b : GL (Fin n ⊕ Fin n) E)
     (hb : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) :

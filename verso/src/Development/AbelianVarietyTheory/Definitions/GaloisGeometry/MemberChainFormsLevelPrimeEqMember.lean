@@ -57,7 +57,7 @@ def lbOf (Fo : FormsIn M (i + 1) hi) (β : Fo.Ch) : Submodule (𝓞 D.host.E) (F
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `v`. Conclude with `(Subgroup.map_comap_eq_self_of_surjective (reGL (rankN D (i + 1) hi) _).surjective _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sameU_of (Fo : FormsIn M (i + 1) hi) (β : Fo.Ch) : SameUlocJ hi (Fo.K β).lev (ulocOf Fo β) := by
   intro v
@@ -99,9 +99,9 @@ structure SiteD where
 variable {X0 u w hg M}
 
 /- English proof (translation)
-Establish `hk : (D.gat u w hg).P.m + 1 = D.R.k` using `(X0.g u w hg).rk`. Establish `hr : (D.sp.X (i + 1)).rank = D.R.N (i + 1)` using `rankN D (i + 1) (by omega)`. Rewrite using `[hr]`. Use `show _ = D.R.k + (i + 1) * (D.R.t + 1)`. Rewrite using `[ht, ← hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem rank_of (X0 : Formalism.L2.Herm.Herm0 D) (Fl : Fills (D.gat u w hg)) (ht : Fl.t = D.R.t) (i : ℕ) (hi : i < D.R.m) :
     (D.gat u w hg).P.m + (i + 1) * (Fl.t + 1) + 1 = (D.sp.X (i + 1)).rank := by
@@ -122,7 +122,7 @@ def lv : Levels Fl :=
     (fun i hi => (Z.Fo i hi).Ch) (fun i hi β => (Z.S i hi).chart β)
 
 /- English proof (translation)
-Use `Z.chFin` as an intermediate fact. Conclude with `levelsG_empty (X0.g u w hg) Fl D.R.m _ _ _ _ j hj`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lv_empty (j : ℕ) (hj : D.R.m < j) : IsEmpty ((Z.lv Fl ht).comp j) := by
   have := Z.chFin
@@ -162,14 +162,14 @@ Both sides reduce to the same expression.
 theorem loc_Lb (i : ℕ) (hi : i + 1 ≤ D.R.m) : (Z.loc Fl ht i hi).Lb = fun β => lbOf (Z.Fo i hi) β := rfl
 
 /- English proof (translation)
-Introduce `w' h`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem frRat (i : ℕ) (hi : i + 1 ≤ D.R.m) (β : (Z.Fo i hi).Ch) : FrRatJ ((Z.loc Fl ht i hi).t β) (Z.loc Fl ht i hi).B := by
   intro w' h
   rfl
 
 /- English proof (translation)
-Rewrite using `[Z.loc_Uloc Fl ht i hi]`. Conclude with `sameU_of (Z.Fo i hi) β`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameU (i : ℕ) (hi : i + 1 ≤ D.R.m) (β : (Z.Fo i hi).Ch) :
     SameUlocJ hi ((Z.Fo i hi).K β).lev ((Z.loc Fl ht i hi).Uloc β) := by
@@ -206,11 +206,11 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Consider the cases of `h`. Establish `hJJ : J' = J`. Use extensionality with `x y`. Rewrite using `[hJ]`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Substitute `hJJ` using the available equality. Establish `hU : (fun v => (Uloc' v).comap (reGL rfl _).toMonoidHom) = Uloc'`. Use function extensionality and compare the values at `v`. Use extensionality with `g`. Conclude with `Iff.rfl`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself.
 
-Rewrite using `[hU]`. Conclude with `hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_compG_re {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {a b : ℕ} (h : a = b)
     (σ : E →ₐ[F] E) (J : Matrix (Fin a) (Fin a) E) (J' : Matrix (Fin b) (Fin b) E)
@@ -237,7 +237,7 @@ variable {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hcls` using `Finite.of_surjective _ (Fo.K β).y_bij.2`. Establish `hN : Finite (compG (sigD D) (gramN D (i + 1) hi) (Fo.K β).lev.Uloc p)` using `finite_compG (σE := sigD D) (J := gramN D (i + 1) hi) (Uloc := (Fo.K β).lev.Uloc) (p := p) (U := (Fo.K β).lev.U) (hU := fun x hx => ((Fo.K β).lev.U_eq x).1 hx) (hfin := hcls)`. Conclude with `finite_compG_re (rankN D (i + 1) hi) (sigD D) (D.sp.X (i + 1)).gram (gramN D (i + 1) hi) (fun _ _ => rfl) (Fo.K β).lev.Uloc p hN`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fin_of (Fo : FormsIn M (i + 1) hi) (β : Fo.Ch) (p : ℕ) :
     Finite (compG D.sp.cm.sig (D.sp.X (i + 1)).gram (ulocOf Fo β) p) := by
@@ -311,14 +311,14 @@ def formsInMem (F : FormsTiedSym D u Ch chOf) (dt : MemDt F) (i : ℕ) (hi : i +
   else formsInMid F (i + 1) (one_le i) (by omega) (dt.mid (i + 1) (one_le i) (by omega))
 
 /- English proof (translation)
-Rewrite using `[formsInMem, dif_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem formsInMem_top (F : FormsTiedSym D u Ch chOf) (dt : MemDt F) (i : ℕ) (hi : i + 1 ≤ D.R.m) (h : i + 1 = D.R.m) :
     formsInMem F dt i hi = formsInOne (F.val (i + 1) hi (Or.inr h)) (dt.top (i + 1) hi h) := by
   rw [formsInMem, dif_pos h]
 
 /- English proof (translation)
-Establish `hne : ¬ i + 1 = D.R.m` using `by omega`. Rewrite using `[formsInMem, dif_neg hne]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem formsInMem_mid (F : FormsTiedSym D u Ch chOf) (dt : MemDt F) (i : ℕ) (hi : i + 1 ≤ D.R.m) (h : i + 1 + 1 ≤ D.R.m) :
     formsInMem F dt i hi = formsInMid F (i + 1) (one_le i) h (dt.mid (i + 1) (one_le i) h) := by
@@ -326,9 +326,7 @@ theorem formsInMem_mid (F : FormsTiedSym D u Ch chOf) (dt : MemDt F) (i : ℕ) (
   rw [formsInMem, dif_neg hne]
 
 /- English proof (translation)
-Distinguish the cases in `h : i + 1 = D.R.m`. Rewrite using `[formsInMem_top F dt i hi h]`. Conclude with `(inferInstance : Finite Unit)`. Establish `h' : i + 1 + 1 ≤ D.R.m` using `by omega`. Rewrite using `[formsInMem_mid F dt i hi h']`.
-
-Conclude with `(inferInstance : Finite (Ch (i + 1)))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formsInMem_fin [∀ i, Finite (Ch i)] (F : FormsTiedSym D u Ch chOf) (dt : MemDt F) (i : ℕ) (hi : i + 1 ≤ D.R.m) :
     Finite (formsInMem F dt i hi).Ch := by
@@ -347,7 +345,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G
   {ex : Extra D L hT Gi Gl K Dx cX}
 
 /- English proof (translation)
-Conclude with `(ex.ker u w hg).fl_t`.
+A detailed English derivation is pending.
 -/
 theorem fl_t (ex : Extra D L hT Gi Gl K Dx cX) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) : (Gl.Fl u w hg).t = D.R.t := by
@@ -400,7 +398,7 @@ def StepD.ofEx {Fo : FormsIn M (i + 1) hi} {e : D.what₂.LL →+* (D.gat u w hg
   fin := fun β => fin_of Fo β _
 
 /- English proof (translation)
-Conclude with `hB.choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem StepD.ofEx_std {Fo : FormsIn M (i + 1) hi} {e : D.what₂.LL →+* (D.gat u w hg).Kf} (hB : BaseEx X0 u w hg Fo) (hψ : PsiEx Fo e) :
     cT (sigD D : D.host.E →+* D.host.E) (reGL (rankN D (i + 1) hi) D.host.E (StepD.ofEx hB hψ).B).1 * gramN D (i + 1) hi *
@@ -408,7 +406,7 @@ theorem StepD.ofEx_std {Fo : FormsIn M (i + 1) hi} {e : D.what₂.LL →+* (D.ga
   exact hB.choose_spec.1
 
 /- English proof (translation)
-Conclude with `(hψ β).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem StepD.ofEx_psi {Fo : FormsIn M (i + 1) hi} {e : D.what₂.LL →+* (D.gat u w hg).Kf} (hB : BaseEx X0 u w hg Fo) (hψ : PsiEx Fo e)
     (β : Fo.Ch) : UnitCharacterChartCompatibility hi (Fo.K β).lev e ((StepD.ofEx hB hψ).ψ β) := by
@@ -448,14 +446,14 @@ variable {D : D7} {Tw : TwForms D} {u : D.what₂.Word} {μ : D.what₂.Tup} {w 
 def FillOK (μ : D.what₂.Tup) (Lv : Levels Fl) : Prop := ∀ j, D.R.m < j → Lv.comp j → Nonempty ((D.chTw u μ).cls j)
 
 /- English proof (translation)
-Introduce `j hj a`. Conclude with `((hE j hj).false a).elim`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fillOK_of_empty (hE : ∀ j, D.R.m < j → IsEmpty (Lv.comp j)) : FillOK μ Lv := by
   intro j hj a
   exact ((hE j hj).false a).elim
 
 /- English proof (translation)
-Introduce `j hj _`. Conclude with `hN j hj`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fillOK_of_nonempty (hN : ∀ j, D.R.m < j → Nonempty ((D.chTw u μ).cls j)) : FillOK μ Lv := by
   intro j hj _
@@ -469,7 +467,7 @@ structure LabHyp (I : CmpJIn Tw u μ w h Lv) : Prop where
   fill : FillOK μ Lv
 
 /- English proof (translation)
-Conclude with `⟨X.onCh, X.chX, fun j hj a => ⟨X.fill j hj a⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem labHyp_of {I : CmpJIn Tw u μ w h Lv} (X : LabIn I) : LabHyp I := by
   exact ⟨X.onCh, X.chX, fun j hj a => ⟨X.fill j hj a⟩⟩
@@ -510,7 +508,7 @@ def AtInM.I (Z : AtInM X0 u w h Lv) (Tw : TwForms D) (Gt : GatTies D) : CmpJIn T
   ⟨fun j hj => StepAt.ofMem (stepInOf hj (Z.Fo j hj) (Z.Lc j hj) (Gt.gat_pos u w h))⟩
 
 /- English proof (translation)
-Introduce `_ _` and use `(D.memberColumns_twistedChain_base u).symm chX := fun j hj => chX_stepInOf hj (Z.Fo j hj) (Z.Lc j hj) (Gt.gat_pos u w h) (hZ.sameU j hj) (hZ.frRat j hj) (hZ.hypC j hj) fill := hF`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem labHyp_atInM (Z : AtInM X0 u w h Lv) (Tw : TwForms D) (Gt : GatTies D) (hZ : ChartLocalForms Z.Fo Z.Lc) (hF : FillOK D.what₂.mu0 Lv) :
     LabHyp (Z.I Tw Gt) where
@@ -526,14 +524,14 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G
   {ex : Extra D L hT Gi Gl K Dx cX}
 
 /- English proof (translation)
-Conclude with `(ex.ker u w hg).fl_t`.
+A detailed English derivation is pending.
 -/
 theorem fl_t_eq (ex : Extra D L hT Gi Gl K Dx cX) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) : (Gl.Fl u w hg).t = D.R.t := by
   exact (ex.ker u w hg).fl_t
 
 /- English proof (translation)
-Conclude with `(ex.ker u w hg).fl_m`.
+A detailed English derivation is pending.
 -/
 theorem fl_mm_eq (ex : Extra D L hT Gi Gl K Dx cX) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) : (Gl.Fl u w hg).mm = D.R.m := by
@@ -555,7 +553,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Distinguish the cases in `h : i + 1 = D.R.m`. Apply the tactic sequence `rw [formsInMem_top F dt i hi h] try rfl`. Establish `h' : i + 1 + 1 ≤ D.R.m` using `by omega`. Rewrite using `[formsInMem_mid F dt i hi h']`. Apply the tactic sequence `try rfl`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memberChainForms_levelPrime_eq_member {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i} (F : FormsTiedSym D u Ch chOf)
     (dt : MemDt F) (i : ℕ) (hi : i + 1 ≤ D.R.m) : (formsInMem F dt i hi).T = (D.mem u).A.T := by
@@ -585,9 +583,9 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Consider the cases of `h`. Use extensionality with `x`. Simplify using `only [reL, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨z, hz, rfl⟩, rfl⟩`.
+Split into cases according to the possible forms of the given data. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `hz`. Introduce `hx`. Conclude with `⟨x, ⟨x, hx, rfl⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem reL_symm {a b : ℕ} (h : a = b) {E : Type} [Field E] [NumberField E] (L : Submodule (𝓞 E) (Fin b → E)) :
     reL h (reL h.symm L) = L := by
@@ -622,7 +620,7 @@ structure SiteGood (Z : SiteD X0 u w hg M) : Prop where
 section Rec
 
 /- English proof (translation)
-Distinguish the cases in `h : i + 1 = D.R.m`. Apply the tactic sequence `rw [formsInMem_top F dt i hi h] try rfl`. Establish `h' : i + 1 + 1 ≤ D.R.m` using `by omega`. Rewrite using `[formsInMem_mid F dt i hi h']`. Apply the tactic sequence `try rfl`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formsInMem_bad {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i} (F : FormsTiedSym D u Ch chOf)
     (dt : MemDt F) (i : ℕ) (hi : i + 1 ≤ D.R.m) : (formsInMem F dt i hi).bad = badG D := by
@@ -634,9 +632,7 @@ theorem formsInMem_bad {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (
     try rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : i + 1 = D.R.m`. Rewrite using `[formsInMem_top F dt i hi h]`. Conclude with `trivial`. Establish `h' : i + 1 + 1 ≤ D.R.m` using `by omega`. Rewrite using `[formsInMem_mid F dt i hi h']`.
-
-Conclude with `trivial`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formsInMem_ok {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i} (F : FormsTiedSym D u Ch chOf)
     (dt : MemDt F) (i : ℕ) (hi : i + 1 ≤ D.R.m) (w : D.what₂.places.Pl) : (formsInMem F dt i hi).okW w := by

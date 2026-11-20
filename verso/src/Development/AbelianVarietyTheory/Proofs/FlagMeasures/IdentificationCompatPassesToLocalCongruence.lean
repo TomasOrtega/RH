@@ -23,7 +23,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   (H : HermSp M V) (Λ : Submodule M.L.O V) (f f' : Fin (r + 1) → V)
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, c, hc, hbX, hcX, rfl⟩` from `hv`. Take `⟨a', ha', b', hb', c', hc', hbX', hcX', rfl⟩` from `hw`. Conclude with `⟨a + a', add_mem ha ha', b + b', add_mem hb hb', c + c', add_mem hc hc', add_mem hbX hbX', add_mem hcX hcX', by abel⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cong_add {v w : V} (hv : Cong H Λ f f' v) (hw : Cong H Λ f f' w) : Cong H Λ f f' (v + w) := by
   obtain ⟨a, ha, b, hb, c, hc, hbX, hcX, rfl⟩ := hv
@@ -32,22 +32,22 @@ theorem cong_add {v w : V} (hv : Cong H Λ f f' v) (hw : Cong H Λ f f' w) : Con
     add_mem hcX hcX', by abel⟩
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, c, hc, hbX, hcX, rfl⟩` from `hv`. Conclude with `⟨-a, neg_mem ha, -b, neg_mem hb, -c, neg_mem hc, neg_mem hbX, neg_mem hcX, by abel⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cong_neg {v : V} (hv : Cong H Λ f f' v) : Cong H Λ f f' (-v) := by
   obtain ⟨a, ha, b, hb, c, hc, hbX, hcX, rfl⟩ := hv
   exact ⟨-a, neg_mem ha, -b, neg_mem hb, -c, neg_mem hc, neg_mem hbX, neg_mem hcX, by abel⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨v, hv, 0, zero_mem _, 0, zero_mem _, zero_mem _, zero_mem _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem cong_of_mem {v : V} (hv : v ∈ H.smulLat (algebraMap F E (theta M)) Λ) : Cong H Λ f f' v :=
   ⟨v, hv, 0, zero_mem _, 0, zero_mem _, zero_mem _, zero_mem _, by simp⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Use `cong_add H Λ f f' hv (cong_neg H Λ f f' (cong_of_mem H Λ f f' h))` as an intermediate fact. Rewrite `this` using `[show v + -(v - w) = w by abel]`. Then use the resulting hypothesis. Introduce `hw`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `cong_add H Λ f f' hw (cong_of_mem H Λ f f' h)` as an intermediate fact. Rewrite `this` using `[show w + (v - w) = v by abel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cong_iff_of_sub {v w : V} (h : v - w ∈ H.smulLat (algebraMap F E (theta M)) Λ) :
     Cong H Λ f f' v ↔ Cong H Λ f f' w := by
@@ -66,11 +66,11 @@ section Glob
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨y, hy, rfl⟩` from `hv`. Rewrite using `[hg y]`. Use `Submodule.subset_span ⟨β y, ?_, rfl⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hβΛ]`. Conclude with `Submodule.mem_map_of_mem hy`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `add_mem ha hb`. Consider the case `smul o v _ hv`. Establish `e : g (o • v) = o • g v` using `by rw [Subring.smul_def, Subring.smul_def, map_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ o hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_latP (Z : LocDat D) (p : PlF D) {β : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     {g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p} (hg : Ext p β g) {Λ : Submodule (𝓞 D.host.E) (VS D).V}
@@ -89,11 +89,9 @@ theorem ext_latP (Z : LocDat D) (p : PlF D) {β : (VS D).V ≃ₗ[D.host.E] (VS 
     rw [e]; exact Submodule.smul_mem _ o hv
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨w, hw, rfl⟩` from `hv`. Use `show g (c • w) ∈ _`. Rewrite using `[map_smul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.subset_span ⟨g w, ext_latP Z p hg hβΛ hw, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
-
-Consider the case `smul o v _ hv`. Establish `e : g (o • v) = o • g v` using `by rw [Subring.smul_def, Subring.smul_def, map_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ o hv`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_smulLat (Z : LocDat D) (p : PlF D) {β : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     {g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p} (hg : Ext p β g) {Λ : Submodule (𝓞 D.host.E) (VS D).V}
@@ -114,17 +112,17 @@ theorem ext_smulLat (Z : LocDat D) (p : PlF D) {β : (VS D).V ≃ₗ[D.host.E] (
 end Glob
 
 /- English proof (translation)
-Introduce `D Z u u' F0 Λ hR F₁ F₂ _ _ β _ hβΛ _ hIota p g hg hsp x' hx'Λ x hxΛ hx' hx`. Establish `hΛ : Submodule.IsLattice D.host.E Λ` using `hR.2.1.1`. Establish `hLD` using `GlobalTheory.T.integers_dense_localIntegers_mod_g D p`. Take `⟨l, hl, hxl⟩` from `GlobalTheory.T.exists_global_vector_congruent_local_orthogonal D Z p hLD Λ hΛ (lf D F0) x hxΛ hx`. Take `⟨l', hl', hxl'⟩` from `GlobalTheory.T.exists_global_vector_congruent_local_orthogonal D Z p hLD Λ hΛ F₁ x' hx'Λ hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha1, ha2⟩` from `GlobalTheory.T.exists_integer_one_mod_g_at_place_zero_elsewhere D p`. Establish `hlΛ : l ∈ Λ` using `(Submodule.mem_inf.1 hl).1`. Establish `hl'Λ : l' ∈ Λ` using `(Submodule.mem_inf.1 hl').1`. Establish `hβl' : β l' ∈ Λ` using `by rw [← hβΛ]; exact Submodule.mem_map_of_mem hl'Λ`. Establish `e1 : Cong (locH Z p) (lattice₂ D Z.M p Λ) (scaled Z p (frame (lf D F0))) (scaled Z p (frame F₁)) (x - x') ↔ Cong (locH Z p) (lattice₂ D Z.M p Λ) (scaled Z p (frame (lf D F0))) (scaled Z p (frame F₁)) (baseChange₂ D p (l - l'))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `cong_iff_of_sub` to reduce the goal to its premises. Establish `e : x - x' - baseChange₂ D p (l - l') = (x - baseChange₂ D p l) - (x' - baseChange₂ D p l')` using `by rw [map_sub]; abel`. Rewrite using `[e]`. Conclude with `sub_mem hxl hxl'`. Establish `e2 : Cong (locH Z p) (lattice₂ D Z.M p Λ) (scaled Z p (frame (lf D F0))) (scaled Z p (frame F₂)) (x - g x') ↔ Cong (locH Z p) (lattice₂ D Z.M p Λ) (scaled Z p (frame (lf D F0))) (scaled Z p (frame F₂)) (baseChange₂ D p (l - β l'))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `cong_iff_of_sub` to reduce the goal to its premises. Establish `e : x - g x' - baseChange₂ D p (l - β l') = (x - baseChange₂ D p l) - g (x' - baseChange₂ D p l')`. Rewrite using `[map_sub, map_sub, hg l']`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_mem hxl (ext_smulLat Z p hg hβΛ _ hxl')`. Rewrite using `[e1, e2, ← GlobalTheory.T.local_global_congruence_lattice_typed_place D Z p hsp a ha1 ha2 Λ hΛ (lf D F0) F₁ (l - l') (sub_mem hlΛ hl'Λ), ← GlobalTheory.T.local_global_congruence_lattice_typed_place D Z p hsp a ha1 ha2 Λ hΛ (lf D F0) F₂ (l - β l') (sub_mem hlΛ hβl')]`. Establish `hal : a • l ∈ Lrep Λ (lf D F0)` using `Submodule.smul_mem _ a hl`. Establish `hal' : a • l' ∈ Lrep Λ F₁` using `Submodule.smul_mem _ a hl'`. Establish `h` using `hIota (a • l') hal' (a • l) hal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : β (a • l') = a • β l'`. Rewrite using `[← algebraMap_smul D.host.E a l', LinearEquiv.map_smul, algebraMap_smul]`. Rewrite `h` using `[e3]`. Rewrite using `[smul_sub, smul_sub]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_typed : ∀ (D : D7) (Z : LocDat D), ∀ (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (Λ : Submodule (𝓞 D.host.E) (VS D).V), IsRowLat D F0 Λ → ∀ F₁ F₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E), PD D Λ (lf D F0) u' F₁ → PD D Λ (lf D F0) u' F₂ → ∀ β ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT, Formalism.HermitianLatticesTheory.gmap β Λ = Λ → (∀ a, frame F₂ a = β (frame F₁ a)) → IotaCompat Λ (lf D F0) F₁ F₂ β (gS D) → ∀ (p : PlF D) (g), Ext p β g → (Z.M p).split ≠ none → ∀ x' ∈ lattice₂ D Z.M p Λ, ∀ x ∈ lattice₂ D Z.M p Λ, x' ∈ (locH Z p).perp ((locH Z p).X (scaled Z p (frame F₁))) → x ∈ (locH Z p).perp ((locH Z p).X (scaled Z p (frame (lf D F0)))) → (Cong (locH Z p) (lattice₂ D Z.M p Λ) (scaled Z p (frame (lf D F0))) (scaled Z p (frame F₁)) (x - x') ↔ Cong (locH Z p) (lattice₂ D Z.M p Λ) (scaled Z p (frame (lf D F0))) (scaled Z p (frame F₂)) (x - g x')) := by
   intro D Z u u' F0 Λ hR F₁ F₂ _ _ β _ hβΛ _ hIota p g hg hsp x' hx'Λ x hxΛ hx' hx

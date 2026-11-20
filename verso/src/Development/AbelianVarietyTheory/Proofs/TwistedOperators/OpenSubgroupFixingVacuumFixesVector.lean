@@ -38,19 +38,19 @@ noncomputable section
 namespace GlobalTheory.RowTest
 
 /- English proof (translation)
-Introduce `D T L sc G W i j A A' WW X hX t`. Establish `h` using `hX.is`. Establish `hom` using `h.weil t`. Establish `hT2 : IsHeckeChar D ((G.ch.chi (D.R.m - i) * L.eta ^ (rankV D i j % 2)) / (L.mu t (j + 1) * L.eta ^ (rankV D i j % 2)))` using `hom.hecT`. Establish `hx : ∀ x, ((L.mu t (j + 1) * L.eta ^ (rankV D i j % 2)) / (G.ch.chi (D.R.m - i) * L.eta ^ (rankV D i j % 2))) x = (((G.ch.chi (D.R.m - i) * L.eta ^ (rankV D i j % 2)) / (L.mu t (j + 1) * L.eta ^ (rankV D i j % 2))) x)⁻¹` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.div_apply, MonoidHom.div_apply, inv_div]`. Establish `hνH : IsHeckeChar D ((L.mu t (j + 1) * L.eta ^ (rankV D i j % 2)) / (G.ch.chi (D.R.m - i) * L.eta ^ (rankV D i j % 2)))` using `⟨hT2.1.inv.congr fun x => (hx x).symm, fun x => by rw [hx, hT2.2, inv_one]⟩`. Take `⟨N₀, hN₀, hN₀'⟩` from `GlobalTheory.T.exists_level_unitaryHeckeCharacter_trivial_congruence D _ hνH`. Establish `hI : X.ideal (locPl G) t ≠ ⊥` using `Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ w.ne_bot`. Use `set N : ℕ := N₀ * Ideal.absNorm (X.ideal (locPl G) t) * ∏ w ∈ locPl G t, Ideal.absNorm w.asIdeal with hNdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNpos : 0 < N`. Use `Nat.pos_of_ne_zero (mul_ne_zero (mul_ne_zero hN₀.ne' ?_) (Finset.prod_ne_zero_iff.2 fun w _ => ?_))` and prove the remaining obligations. Conclude with `fun h0 => hI (Ideal.absNorm_eq_zero_iff.1 h0)`. Conclude with `fun h0 => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Establish `hNI : ((N : ℕ) : 𝓞 D.host.E) ∈ X.ideal (locPl G) t`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hNdef, Nat.cast_mul, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (Ideal.absNorm_mem _))`. Establish `hNw : ∀ w ∈ locPl G t, ((N : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal` using `fun w hw => by`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem (fun w : Formalism.L2.DIV.Pl D.host.E => Ideal.absNorm w.asIdeal) hw`. Rewrite using `[hNdef, hc, Nat.cast_mul, Nat.cast_mul, Nat.cast_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _))`. Establish `hNdiv : N₀ ∣ N` using `⟨Ideal.absNorm (X.ideal (locPl G) t) * ∏ w ∈ locPl G t, Ideal.absNorm w.asIdeal, by rw [hNdef, mul_assoc]⟩`. Take `⟨U, hUo, hU⟩` from `GlobalTheory.T.exists_open_frame_congruence_unitaryAdelic D WW X.rW.β N hNpos`. Use `⟨U, hUo, fun κ hκ _ hvac => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hzc⟩` from `hU κ hκ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hst : Lev.finE WW κ ∈ Formalism.L2.DIV.St X.rW.β` using `⟨z, hz⟩`. Establish `hinv` using `GlobalTheory.T.standardPairFirst_invariant_congruenceOne D A WW _ (X.e t) (locPl G t) (h.idem t) (X.ideal (locPl G) t) X.rA.β X.rW.β N hNpos hNI hNw (hN₀' N hNdiv) κ z hz hzc`. Establish `hsdA` using `isSelfDualC_neg' h.rigA.1`. Establish `hsdW` using `h.rigW.1`. Establish `hsg : ∀ f, (X.ω t).toSgn true (1, κ) f = X.ω t (1, κ) f` using `fun f => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[GlobalTheory.Grid.WRep.toSgn]`. Establish `key` using `GlobalTheory.ExportSeries.DualType.om_theta_move hom (fun Tm hT Ψ hΨ => GlobalTheory.SchrTheta.isTheta_placeModel D W.ψ h.isVac.1 _ WW _ _ hsdA hsdW _ (GlobalTheory.PlaceDatum.idemSum_mul_self (h.idem t)) (GlobalTheory.PlaceDatum.infPart_idemSum (h.idem t)) _ h.isVac.2.theta Tm h …`. Rewrite `key` using `[hsg, one_mul, one_smul]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem IsBottomTri.exists_open_fix_f : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, IsBottomTri W i j X → ∀ t : T,

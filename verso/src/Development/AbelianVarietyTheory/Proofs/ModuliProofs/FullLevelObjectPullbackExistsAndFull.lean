@@ -20,17 +20,15 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise
 open GlobalTheory.Models GlobalTheory.ZM
 
 /- English proof (translation)
-Introduce `E _ _ _ H D n N S S' s t lev f`. Use `⟨?_, fun t' m lv hlv o => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨t', ⟨m⟩⟩ : ∃ t' : SAB H S', Nonempty (SABMap t' t f) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull f t`. Conclude with `⟨_, ⟨m⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨t', m, fun a => GlobalTheory.ObjPull.secPull m.cart (lev a), fun a => GlobalTheory.ObjPull.secPull_left m.cart _⟩`. Establish `hlv' : ∀ a, lv a = GlobalTheory.ObjPull.secPull m.cart (lev a)` using `fun a => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Conclude with `(hlv a).trans (GlobalTheory.ObjPull.secPull_left m.cart _).symm`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.w, Over.w]`. Establish `hL : LBIso t'.PP.L (t.PP.L.pull m.cm.F)`. Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨w, hw⟩`. Establish `hpr` using `o.proper`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hamp, hk⟩` from `GlobalTheory.PolPull.pol_pull_of_relAmple_local GlobalTheory.AmpleLocal.relAmple_of_locally S S' t.G t'.G f m.cm.F t.PP.L t'.PP.L t.PP.isLB t'.PP.isLB (AbelianSchemeGerms.isAbelianScheme_of_proper t.G t.semi) m.cart hL`. Use `{ proper := MorphismProperty.of_isPullback (P := @IsProper) m.cart.1 hpr ample := hamp o.ample ktriv := hk o.ktriv add := fun a c => by rw [hlv', hlv', hlv', o.add, map_mul] ker := fun a => by rw [hlv', o.ker a, map_one] geom := fun k _ _ _ x β hx => ?_ }` and prove the remaining obligations. Take `⟨hdet, I, hI, hA⟩` from `o.geom k (x ≫ f) β (by rw [Category.assoc, hx])`. Use `⟨fun τ => ?_, GlobalTheory.ObjPull.tateMove (GlobalTheory.ObjPull.pushEquiv m.cart (Over.mk x)) (fun c g => ?_) (fun n g g' c hc => ?_) I, hI, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LiePull.lieMult_pull _ S S' t.G t'.G f m.cm.F t.act t'.act m.cart m.act k x τ, GlobalTheory.LiePull.lieMult_pull _ S S' t.G t'.G f m.cm.F t.act t'.act m.cart m.act k x τ]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hdet τ`. Apply `Over.OverMorphism.ext show (g.left ≫ _) ≫ _ = (g.left ≫ _) ≫ _` to reduce the goal to its premises. Rewrite using `[Category.assoc, m.act, Category.assoc]`. Conclude with `(GlobalTheory.weilIs_grpPullback_of_comm S S' t.G t'.G f m.cm.F t.PP.L t'.PP.L t.PP.isLB t'.PP.isLB m.cart hL (Over.mk x) n g g' _ _ _ rfl rfl).2 hc`. Rewrite using `[hlv']`.
-
-Conclude with `(MulEquiv.eq_symm_apply _).2 ((GlobalTheory.ObjPull.pushEquiv_secPull m.cart _ _).trans (hA a))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.fullObj_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (n N : ℕ) (S S' : Scheme.{0}) (s : S ⟶ Sp (RZ H n N)) (t : SAB H S) (lev : D.La → (𝟙_ (Over S) ⟶ t.G)) (f : S' ⟶ S), (∃ (t' : SAB H S') (ν : SABMap t' t f) (lv : D.La → (𝟙_ (Over S') ⟶ t'.G)), ∀ a, (lv a).left ≫ ν.φ = f ≫ (lev a).left) ∧ ∀ (t' : SAB H S') (ν : SABMap t' t f) (lv : D.La → (𝟙_ (Over S') ⟶ t'.G)), (∀ a, (lv a).left ≫ ν.φ = f ≫ (lev a).left) → FullObj D s t lev → FullObj D (f ≫ s) t' lv := by
   intro E _ _ _ H D n N S S' s t lev f

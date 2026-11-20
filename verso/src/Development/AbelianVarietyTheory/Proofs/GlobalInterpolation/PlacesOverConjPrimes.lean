@@ -11,7 +11,7 @@ open Formalism.MainNotions.product_first_zeroth_parts (Ow ten blk CSpan IntSpan 
 open Formalism.L2.Col (conjPrime₂ PosStar hStd UF Sp)
 
 /- English proof (translation)
-Use `letI : Algebra K L := j.toAlgebra`. Conclude with `⟨W.under (𝓞 K), fun r => Iff.rfl⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem exists_below {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] (j : K →+* L)
     (W : HeightOneSpectrum (𝓞 L)) : ∃ Q : HeightOneSpectrum (𝓞 K),
@@ -20,7 +20,7 @@ theorem exists_below {K L : Type} [Field K] [NumberField K] [Field L] [NumberFie
   exact ⟨W.under (𝓞 K), fun r => Iff.rfl⟩
 
 /- English proof (translation)
-Use `letI : Algebra K L := j.toAlgebra`. Use `haveI : W.asIdeal.LiesOver Q.asIdeal := ⟨Ideal.ext fun r => h r⟩`. Rewrite using `[mem_valO, mem_valO, show j x = algebraMap K L x from rfl, ← HeightOneSpectrum.valuation_liesOver L Q W x]`. Conclude with `pow_le_one_iff (Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver W.asIdeal Q.ne_bot)`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_valO_of_below {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] (j : K →+* L)
     (W : HeightOneSpectrum (𝓞 L)) (Q : HeightOneSpectrum (𝓞 K))
@@ -33,13 +33,13 @@ theorem mem_valO_of_below {K L : Type} [Field K] [NumberField K] [Field L] [Numb
   exact pow_le_one_iff (Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver W.asIdeal Q.ne_bot)
 
 /- English proof (translation)
-The claim follows from `D.val_nonneg_iff w x`.
+A detailed English derivation is pending.
 -/
 theorem mem_Ow_iff_valO (D : D7) (w : D.what₂.places.Pl) (x : D.what₂.LL) : x ∈ Ow D w ↔ x ∈ valO (D.plEq w) :=
   D.val_nonneg_iff w x
 
 /- English proof (translation)
-Rewrite using `[← (D.plEq w).valuation_lt_one_iff_mem (K := D.what₂.LL), D.val_resChar', ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use `D.what₂.places.ramIdx_pos w` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem resChar_mem_plEq (D : D7) (w : D.what₂.places.Pl) :
     ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal := by
@@ -49,9 +49,9 @@ theorem resChar_mem_plEq (D : D7) (w : D.what₂.places.Pl) :
   omega
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hc : IsCoprime ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) (T : 𝓞 D.what₂.LL)` using `Nat.Coprime.cast ((Nat.coprime_primes (D.what₂.places.resChar_prime w) hT).2 hne)`. Take `⟨a, b, hab⟩` from `hc`. Use `(D.plEq w).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Rewrite using `[← hab]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (resChar_mem_plEq D w)) (Ideal.mul_mem_left _ _ h)`.
+A detailed English derivation is pending.
 -/
 theorem resChar_eq_of_mem_plEq (D : D7) (w : D.what₂.places.Pl) {T : ℕ} (hT : T.Prime)
     (h : (T : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal) : D.what₂.places.resChar w = T := by

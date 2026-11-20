@@ -17,7 +17,7 @@ open scoped Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, piInf, compInf, inclR, infEmb_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_map_piInf {n m : Type} (J : Matrix n m E) {w : InfinitePlace F} (τ : EmbOver E w) :
     (incM F J).map (piInf τ) = J.map τ.1 := by
@@ -25,9 +25,9 @@ theorem incM_map_piInf {n m : Type} (J : Matrix n m E) {w : InfinitePlace F} (τ
   simp [incM, piInf, compInf, inclR, infEmb_tmul]
 
 /- English proof (translation)
-Use `choose a ha using fun i j => GlobalTheory.PolRangeInf.exists_at_inf_values hcm τ (fun w => z w i j)`. Use `⟨Matrix.of a, fun x hx => ?_, fun w => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.of_apply, Matrix.zero_apply]`. Conclude with `(ha i j).1 x hx`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[(ha i j).2 w]`.
+A detailed English derivation is pending.
 -/
 theorem exists_mat_at {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w)
     {m k : Type} (z : InfinitePlace F → Matrix m k ℂ) :
@@ -41,9 +41,9 @@ theorem exists_mat_at {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (τ : ∀ w : 
     simp [(ha i j).2 w]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `GlobalTheory.RealLift.KLineProof.eq_zero_of_piInf hcm τ (D i j) (fun u hu => ?_) (fun w => ?_)` and prove the remaining obligations. Use `congrFun (congrFun (hD u hu) i) j` as an intermediate fact. Simplify using `using this`. Use `congrFun (congrFun (h0 w) i) j` as an intermediate fact.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mat_eq_zero {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w)
     {m k : Type} (D : Matrix m k (AE F E)) (hD : At (evI F) D) (h0 : ∀ w, D.map (piInf (τ w)) = 0) : D = 0 := by
@@ -55,34 +55,34 @@ theorem mat_eq_zero {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (τ : ∀ w : In
     simpa using this
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[smul_add, hD u hu, hD' u hu, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_add {m k : Type} {D D' : Matrix m k (AE F E)} (hD : At (evI F) D) (hD' : At (evI F) D') :
     At (evI F) (D + D') := by
   intro u hu; rw [smul_add, hD u hu, hD' u hu, add_zero]
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[← Matrix.smul_mul, hD u hu, Matrix.zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_mul_left {m k l : Type} [Fintype k] {D : Matrix m k (AE F E)} (hD : At (evI F) D) (N : Matrix k l (AE F E)) :
     At (evI F) (D * N) := by
   intro u hu; rw [← Matrix.smul_mul, hD u hu, Matrix.zero_mul]
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[← Matrix.mul_smul, hD u hu, Matrix.mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_mul_right {m k l : Type} [Fintype k] {D : Matrix k l (AE F E)} (hD : At (evI F) D) (N : Matrix m k (AE F E)) :
     At (evI F) (N * D) := by
   intro u hu; rw [← Matrix.mul_smul, hD u hu, Matrix.mul_zero]
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[← Matrix.transpose_smul, hD u hu, Matrix.transpose_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_transpose {m k : Type} {D : Matrix m k (AE F E)} (hD : At (evI F) D) : At (evI F) Dᵀ := by
   intro u hu; rw [← Matrix.transpose_smul, hD u hu, Matrix.transpose_zero]
 
 /- English proof (translation)
-Introduce `u hu`. Use extensionality with `i j`. Use `congrFun (congrFun (hD u hu) i) j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, Matrix.zero_apply, Matrix.map_apply] at this ⊢`. Rewrite using `[← map_smul, this, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_map_cA (σ : E →ₐ[F] E) {m k : Type} {D : Matrix m k (AE F E)} (hD : At (evI F) D) :
     At (evI F) (D.map (cA σ)) := by
@@ -93,7 +93,7 @@ theorem at_map_cA (σ : E →ₐ[F] E) {m k : Type} {D : Matrix m k (AE F E)} (h
   rw [← map_smul, this, map_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[GlobalTheory.RealLift.KLineProof.piInf_cA hcm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_cA_piInf {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) {m k : Type}
     (D : Matrix m k (AE F E)) : (D.map (cA σ)).map (piInf τ) = (D.map (piInf τ)).map star := by
@@ -101,13 +101,13 @@ theorem map_cA_piInf {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {w : InfinitePl
   simp [GlobalTheory.RealLift.KLineProof.piInf_cA hcm]
 
 /- English proof (translation)
-Take `⟨A₁, hF₁, hA₁⟩` from `GlobalTheory.T.cartanEigen_orthonormalFrame_exists n r s M θ₁ hs h₁`. Take `⟨A₂, hF₂, hA₂⟩` from `GlobalTheory.T.cartanEigen_orthonormalFrame_exists n r s M θ₂ hs h₂`. Take `⟨A₁', h11, h12⟩` from `GlobalTheory.RealLift.KLineProof.frame_inv hF₁`. Take `⟨A₂', h21, h22⟩` from `GlobalTheory.RealLift.KLineProof.frame_inv hF₂`. Use `⟨A₂ * A₁', A₁ * A₂', ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e1` using `hF₁.1`. Establish `e2` using `hF₂.1`. Rewrite using `[Matrix.transpose_mul, GlobalTheory.RealLift.KLineProof.map_star_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Matrix.transpose_mul, GlobalTheory.RealLift.KLineProof.map_star_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = M := by`. Rewrite using `[h11, Matrix.transpose_one, Matrix.map_one _ (star_zero _) (star_one _), Matrix.one_mul, Matrix.mul_one]`. Establish `k1 : A₁' * θ₁ = Formalism.BasicNotions.TH.Jm r s * A₁'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cartan_conj {n r s : ℕ} (M θ₁ θ₂ : Matrix (Fin n) (Fin n) ℂ) (hs : HasSig M r s) (h₁ : IsCartan M θ₁)
     (h₂ : IsCartan M θ₂) :
@@ -145,25 +145,21 @@ namespace GlobalTheory.CartanConjSkew
 open scoped Matrix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n r s X Y hB hX hY`. Establish `hcm` using `hB.cm`. Establish `key : ∀ w, ∃ u v : Matrix (Fin n) (Fin n) ℂ, u * v = 1 ∧ uᵀ * X.J.map (B.emb w).1 * u.map star = X.J.map (B.emb w).1 ∧ u * X.θ w = Y.θ w * u`. Introduce `w`. Take `⟨u, v, huv, hu, hθ⟩` from `cartan_conj (Complex.I • X.J.map (B.emb w).1) (X.θ w) (Y.θ w) (hX.sig w) (hX.cartan w) (hY.cartan w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨u, v, huv, ?_, hθ⟩` and prove the remaining obligations. Rewrite `hu` using `[Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `smul_right_injective _ Complex.I_ne_zero hu`. Use `choose u v huv hu hθ using key`. Take `⟨G, hGat, hG⟩` from `exists_mat_at hcm B.emb (fun w => u w - 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨H, hHat, hH⟩` from `exists_mat_at hcm B.emb (fun w => v w - 1)`. Establish `hmap1 : ∀ w, (1 : Matrix (Fin n) (Fin n) (AE F E)).map (piInf (B.emb w)) = 1` using `fun w => Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hgmap : ∀ w, (1 + G).map (piInf (B.emb w)) = u w`. Introduce `w`. Rewrite using `[Matrix.map_add _ (map_add _), hmap1, hG]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `hhmap : ∀ w, (1 + H).map (piInf (B.emb w)) = v w`. Introduce `w`. Rewrite using `[Matrix.map_add _ (map_add _), hmap1, hH]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgh : (1 + G) * (1 + H) = 1`. Establish `h0 : (1 + G) * (1 + H) - 1 = 0`. Apply `mat_eq_zero hcm B.emb` to reduce the goal to its premises. Establish `e : (1 + G) * (1 + H) - 1 = G + H + G * H` using `by noncomm_ring`. Rewrite using `[e]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `at_add (at_add hGat hHat) (at_mul_left hGat H)`. Introduce `w`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_mul, hgmap, hhmap, hmap1, huv, sub_self]`. Conclude with `sub_eq_zero.1 h0`. Establish `hhg : (1 + H) * (1 + G) = 1` using `(Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).1 hgh`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `g0 : GL (Fin n) (AE F E)` to `⟨1 + G, 1 + H, hgh, hhg⟩`. Establish `hmem : g0 ∈ UG (cA σ) (incM F X.J)` using `by show (1 + G)ᵀ * incM F X.J * (1 + G).map (cA σ) = incM F X.J`. Establish `h0 : (1 + G)ᵀ * incM F X.J * (1 + G).map (cA σ) - incM F X.J = 0`. Apply `mat_eq_zero hcm B.emb` to reduce the goal to its premises. Establish `e : (1 + G)ᵀ * incM F X.J * (1 + G).map (cA σ) - incM F X.J = Gᵀ * incM F X.J + incM F X.J * G.map (cA σ) + Gᵀ * incM F X.J * G.map (cA σ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_add, Matrix.transpose_one]`. Use `noncomm_ring`. Rewrite using `[e]`. Conclude with `at_add (at_add (at_mul_left (at_transpose hGat) _) (at_mul_right (at_map_cA σ hGat) _)) (at_mul_right (at_map_cA σ hGat) _)`. Introduce `w`.
-
-Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, map_cA_piInf hcm, hgmap, incM_map_piInf, hu, sub_self]`. Conclude with `sub_eq_zero.1 h0`. Use `⟨⟨g0, hmem⟩, ?_, fun w => ?_⟩` and prove the remaining obligations. Use `show At (evI F) ((1 + G) - 1)`. Rewrite using `[add_sub_cancel_left]`.
-
-Conclude with `hGat`. Use `show (1 + G).map (piInf (B.emb w)) * X.θ w = Y.θ w * (1 + G).map (piInf (B.emb w))`. Rewrite using `[hgmap]`. Conclude with `hθ w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_skew : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n r s : ℕ) (X Y : Spc F E n), B.IsGood σ → X.IsSkew σ B r s → (reS X Y).IsSkew σ B r s →

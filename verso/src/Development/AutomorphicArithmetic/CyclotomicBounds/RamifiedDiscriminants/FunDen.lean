@@ -10,47 +10,43 @@ noncomputable section
 namespace UpperTheory.Ram.Fun
 
 /- English proof (translation)
-Establish `hK0 : (0 : ℝ) ≤ ((2 * s * Fintype.card I : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hk0 : (0 : ℝ) ≤ (Formalism.PairingDivisionLocalBalance.absK κ : ℝ)` using `Nat.cast_nonneg _`. Establish `hA : 0 ≤ A` using `le_trans (Real.log_natCast_nonneg N) h2`. Establish `hlog : ∀ l ∈ S, 0 ≤ Real.log (l : ℝ)` using `fun l hl => Real.log_nonneg (by exact_mod_cast (hS l hl).one_lt.le)`. Establish `hdl : ∀ l, 0 ≤ delta_vp E l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `l`. Unfold `delta_vp`. Check the signs of the components of the expression. Establish `hc0 : ∀ l, 0 ≤ c_vp 𝔣 l`. Introduce `l`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `c_vp`. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `hdl l`. Establish `hcle : ∀ l ∈ S, c_vp 𝔣 l ≤ delta_vp E l`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `l hl`. Unfold `c_vp`. Use `split_ifs`. Rewrite using `[ha l hl]`. Simplify using `using hdl l`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `le_rfl`. Establish `ht : ∀ l : ℕ, ((if l = 2 then (1 : ℝ) else 0) + if l = d then (1 / 2 : ℝ) else 0) ≤ 3 / 2`. Introduce `l`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hn_eq : ∀ l, n_vp d s κ 𝔣 l = 0 ∨ n_vp d s κ 𝔣 l = ((2 * s * Fintype.card I : ℕ) : ℝ) * c_vp 𝔣 l + (Formalism.PairingDivisionLocalBalance.absK κ : ℝ) * (2 * c_vp 𝔣 l + 1 + ((if l = 2 then (1 : ℝ) else 0) + if l = d then (1 / 2 : ℝ) else 0))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `l`. Distinguish the cases in `h : c_vp 𝔣 l = 0`. Use `left`. Unfold `n_vp`. Rewrite using `[if_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `right`. Unfold `n_vp`. Rewrite using `[if_neg h]`. Both sides reduce to the same expression. Establish `hn0 : ∀ l, 0 ≤ n_vp d s κ 𝔣 l`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `l`. Break down `hn_eq l with h | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[h]`. Establish `h1` using `mul_nonneg hK0 (hc0 l)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `have h3 : (0 : ℝ) ≤ (if l = 2 then (1 : ℝ) else 0) + if l = d then (1 / 2 : ℝ) else 0 := by split_ifs <;> norm_num`. Establish `h2` using `mul_nonneg hk0 (by linarith [hc0 l] : (0 : ℝ) ≤ 2 * c_vp 𝔣 l + 1 + ((if l = 2 then (1 : ℝ) else 0) + if l = d then (1 / 2 : ℝ) else 0))`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hceil : ∀ l ∈ S, ((⌈betaBound_vp d s κ 𝔣 z l / 12⌉₊ : ℕ) : ℝ) = (cE_vp l z : ℝ) + (⌈n_vp d s κ 𝔣 l⌉₊ : ℝ)`. Introduce `l hl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `e : betaBound_vp d s κ 𝔣 z l / 12 = n_vp d s κ 𝔣 l + ((cE_vp l z : ℕ) : ℝ)`. Unfold `betaBound_vp`. Rewrite using `[ha l hl]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, Nat.ceil_add_natCast (hn0 l)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsplit : ∑ l ∈ S, ((⌈n_vp d s κ 𝔣 l⌉₊ : ℕ) : ℝ) * Real.log l = ∑ l ∈ S.filter (fun l => c_vp 𝔣 l ≠ 0), ((⌈n_vp d s κ 𝔣 l⌉₊ : ℕ) : ℝ) * Real.log l`. Rewrite using `[Finset.sum_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `l _`. Use `split_ifs with h`. Both sides reduce to the same expression. Establish `h0 : n_vp d s κ 𝔣 l = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `n_vp`. Rewrite using `[if_pos (not_not.mp h)]`. Simplify using `[h0]`. Establish `hsubS : S.filter (fun l => c_vp 𝔣 l ≠ 0) ⊆ S` using `Finset.filter_subset _ _`. Establish `hcA : ∑ l ∈ S.filter (fun l => c_vp 𝔣 l ≠ 0), c_vp 𝔣 l * Real.log l ≤ A`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum_of_subset_of_nonneg hsubS` to reduce the goal to its premises. Introduce `l hl _`. Conclude with `mul_nonneg (hc0 l) (hlog l hl)`. Use `_ ≤ ∑ l ∈ S, delta_vp E l * Real.log l := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `l hl`. Conclude with `mul_le_mul_of_nonneg_right (hcle l hl) (hlog l hl)`. Use `_ ≤ Real.log (|(discr E : ℝ)| ^ ((1 : ℝ) / (Module.finrank ℚ E : ℝ))) := by`. Use `sum_delta_log_le E S hS` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Simplify `this` using `[delta_vp]`. Use `_ ≤ A := h1`. Establish `hlA : ∑ l ∈ S.filter (fun l => c_vp 𝔣 l ≠ 0), Real.log (l : ℝ) ≤ A`. Use `le_trans (sum_log_le_of_dvd hN _ ?_) h2` and prove the remaining obligations. Introduce `l hl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hl` using `[Finset.mem_filter]`. Take `⟨hlS, hne⟩` from `hl`. Use `⟨hS l hlS, ?_⟩` and prove the remaining obligations. Apply `hd l (hS l hlS)` to reduce the goal to its premises. Assume the negation of the conclusion as `hnd`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hne` to reduce the goal to its premises. Unfold `c_vp`. Use `split_ifs`. Rewrite using `[ha l hlS]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Unfold `delta_vp haveI : Fact l.Prime := ⟨hS l hlS⟩`. Rewrite using `[padicValInt.eq_zero_of_not_dvd hnd]`. Simplify using the standard rewrite rules. Establish `hmain` using `sum_ceil_nl_le (S.filter (fun l => c_vp 𝔣 l ≠ 0)) (n_vp d s κ 𝔣) (c_vp 𝔣) (fun l => (if l = 2 then (1 : ℝ) else 0) + if l = d then (1 / 2 : ℝ) else 0) hK0 hk0 (fun l _ => hc0 l) (fun l _ => ht l) (fun l _ => hn0 l) (fun l _ => hn_eq l) hcA hlA`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `l hl`. Rewrite using `[hceil l hl]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ ∑ l ∈ S, (cE_vp l z : ℝ) * Real.log l + (((2 * s * Fintype.card I : ℕ) : ℝ) + 5 * (Formalism.PairingDivisionLocalBalance.absK κ : ℝ) + 1) * A := by`. Rewrite using `[hsplit]`. Establish `hkA` using `mul_nonneg hk0 hA`. Use polynomial arithmetic with `[hmain]`.
+A detailed English derivation is pending.
 -/
 theorem sum_ceil_off_le {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] (d s : ℕ) (κ : I → ℕ)
     (𝔣 : Ideal (GlobalTheory.CMVal.OF E)) (z : ClassGroup (GlobalTheory.CMVal.OF E) → ℚ) (S : Finset ℕ) (hS : ∀ l ∈ S, l.Prime)

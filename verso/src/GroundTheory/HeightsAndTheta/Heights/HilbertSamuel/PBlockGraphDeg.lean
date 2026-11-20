@@ -14,9 +14,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace BlockGraphDeg
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨t, -, ht⟩` from `Finset.mem_biUnion.mp (MvPolynomial.support_sum hm)`. Rewrite `ht` using `[C_mul_X_eq_monomial]`. Establish `hmt` using `Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset ht)`. Substitute `hmt` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality. Simplify using `[blockDeg, Finsupp.single_apply]`. Simplify using `[blockDeg, hk, Sigma.ext_iff]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_blockForms {K : Type} [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {κ : Type}
     (k₀ : K) (M : Matrix (Ix κ) (ι k₀) ℤ) (q : Σ k, GlobalTheory κ k) :
@@ -33,9 +33,9 @@ theorem isMultiHomog_blockForms {K : Type} [DecidableEq K] {ι : K → Type} [�
   · simp [blockDeg, hk, Sigma.ext_iff]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (X ⟨Sum.inl k, i⟩ : MRing (Sum.elim ι ι₂)) ∈ graphIdeal P g`. Rewrite using `[← G.genericFibre_ker_target, RingHom.mem_ker]`. Simplify using `using h`. Rewrite `h1` using `[graphIdeal, RingHom.mem_ker, graphMap, eval₂Hom_X']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hi (Ideal.Quotient.eq_zero_iff_mem.1 (MvPolynomial.C_eq_zero.1 h1))`.
+A detailed English derivation is pending.
 -/
 theorem x'_ne_zero {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {K₂ : Type} [Fintype K₂]
     {ι₂ : K₂ → Type} [∀ k, Fintype (ι₂ k)] {P : Ideal (MRing ι)} {g : (Σ k, ι₂ k) → MRing ι}
@@ -53,21 +53,19 @@ end BlockGraphDeg
 open BlockGraphDeg in
 
 /- English proof (translation)
-Introduce `D K _ _ ι _ Ω _ _ κ _ y k₀ M N x hy hB hx hI`. Establish `hImage` using `hImg K ι Ω κ y k₀ M N x hI`. Establish `hIm : IsArithVar (imageZ (inrV (ι` using `ι) (ι₂ := GlobalTheory κ)) (graphIdeal (mCoordIdeal y) (blockForms k₀ M))) (D + 1) := by`. Rewrite using `[hImage]`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnv : ∀ u : Unit, ∃ j, blockForms k₀ M ⟨u, j⟩ ∉ mCoordIdeal y`. Introduce `u`. Take `⟨j, hj⟩` from `hIm.2.1.2.2 u`. Use `⟨j, fun hm => hj ?_⟩` and prove the remaining obligations. Rewrite using `[imageZ, Ideal.mem_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `rename inrV (X ⟨u, j⟩) ∈ _`. Rewrite using `[rename_X, graphIdeal, RingHom.mem_ker, inrV, graphMap, eval₂Hom_X']`. Express the relevant statement in the definitionally equal form `C (Ideal.Quotient.mk (mCoordIdeal y) (blockForms k₀ M ⟨u, j⟩)) * X u = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 hm, map_zero, zero_mul]`. Establish `hΓ` using `(hGr K ι Unit (GlobalTheory κ) (mCoordIdeal y) (D + 1) (blockForms k₀ M) (fun _ => blockDeg k₀ 1) hy (isMultiHomog_blockForms k₀ M) hnv).1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨G⟩` from `hEx Unit (GlobalTheory κ) (K ⊕ Unit) (Sum.elim ι (GlobalTheory κ)) Sum.inr inrV _ (D + 1) isBlockMap_inr hΓ`. Take `⟨J, hJ, -⟩` from `hEU G.Φ (FibreBlock (Sum.inr : Unit → K ⊕ Unit)) (fibreIdx (Sum.elim ι (GlobalTheory κ)) Sum.inr)`. Establish `hpt : IsProjVarF (ReciprocityTheory.ChartRestriction.G.AI.I4.fibreIdeal Sum.inr G) 0` using `hDim Unit (GlobalTheory κ) (K ⊕ Unit) (Sum.elim ι (GlobalTheory κ)) Sum.inr inrV _ (D + 1) 0 G isBlockMap_inr hΓ hIm`. Use `choose c hc using hy.2.1.2.2`. Set `ch : (k : FibreBlock (Sum.inr : Unit → K ⊕ Unit)) → fibreIdx (Sum.elim ι (GlobalTheory κ)) Sum.inr k` to `fun`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Treat this case separately. Treat this case separately.
 
-Consider the case `⟨Sum.inl k, _⟩ => c k`. Consider the case `⟨Sum.inr u, h⟩ => absurd ⟨u, rfl⟩ h`. Establish `hz : ∀ k : FibreBlock (Sum.inr : Unit → K ⊕ Unit), G.x' ⟨k.1, ch k⟩ ≠ 0`. Introduce and unpack `⟨(k | u), h⟩`. Conclude with `x'_ne_zero G k (c k) (hc k)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd ⟨u, rfl⟩ h`. Establish `hch : IsChart (ReciprocityTheory.ChartRestriction.G.AI.I4.fibreIdeal Sum.inr G) ch`. Introduce `k`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.AI.I4.fibreIdeal, RingHom.mem_ker, aeval_X]`. Conclude with `hz k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨G, J, hJ, ?_⟩` and prove the remaining obligations. Rewrite using `[hJ.1 _ _ _ hpt hch]`. Establish `hdeg` using `hCR (FibreBlock (Sum.inr : Unit → K ⊕ Unit)) (fibreIdx (Sum.elim ι (GlobalTheory κ)) Sum.inr) G.Φ G.Φ' (fun q => G.x' ⟨q.1.1, q.2⟩) ch hz hpt.1.2.1`. Establish `hbot : IntermediateField.adjoin G.Φ (Set.range fun q : Σ k : FibreBlock (Sum.inr : Unit → K ⊕ Unit), fibreIdx (Sum.elim ι (GlobalTheory κ)) Sum.inr k => G.x' ⟨q.1.1, q.2⟩ / G.x' ⟨q.1.1, ch q.1⟩) = ⊥`. Rewrite using `[eq_bot_iff, IntermediateField.adjoin_le_iff]`.
-
-Introduce and unpack `_ ⟨⟨⟨(k | u), h⟩, i⟩, rfl⟩`. Conclude with `IntermediateField.mem_bot.2 (hRat D K ι Ω κ y k₀ M N x hy hB hI G k i (c k) (x'_ne_zero G k (c k) (hc k)))`. Conclude with `absurd ⟨u, rfl⟩ h`. Express the relevant statement in the definitionally equal form `((ptDeg (ReciprocityTheory.ChartRestriction.G.AI.I4.fibreIdeal Sum.inr G) ch : ℕ) : ℤ) = 1`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.AI.I4.fibreIdeal, hdeg, hbot, IntermediateField.finrank_bot, Nat.cast_one]`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BlockGraphDeg.proof (hGr : GraphStatement) (hImg : BlockGraphImage.Statement)
     (hEx : GenFibreExistsStatement) (hDim : FibreDimStatement)

@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain Formalism.L2.Th1.CM Neutral.HilbertClassField
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.DiscreteGroups.LocalClassField.mem_iff_fixed (ReciprocityTheory.DiscreteGroups.LocalClassField.le_Kur (p := l) (K := K)) y]`. Introduce `σ hσ`. Conclude with `h σ ((ReciprocityTheory.DiscreteGroups.LocalClassField.mem_subG_Kur_iff hK σ).1 hσ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fixed_mem_Kur {l : ℕ} [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l))
     (hK : FiniteDimensional ℚ_[l] K) (y : PadicAlgCl l)

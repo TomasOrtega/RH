@@ -6,7 +6,7 @@ namespace ReciprocityTheory.GeometryOfNumbersTheory
 open Filter Topology Asymptotics
 
 /- English proof (translation)
-Unfold `hsDefect`. Use `push_cast`. Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hsDefect_two_mul (D : ℕ) (hh : ℝ) (n : ℕ) :
     hsDefect D (fun m => chiP D (2 * m)) (2 ^ (D + 1) * hh) n = hsDefect D (chiP D) hh (2 * n) := by
@@ -16,21 +16,21 @@ theorem hsDefect_two_mul (D : ℕ) (hh : ℝ) (n : ℕ) :
   ring
 
 /- English proof (translation)
-Take `⟨N1, hN1⟩` from `eventually_atTop.1 h1`. Take `⟨N2, hN2⟩` from `eventually_atTop.1 h2`. Take `⟨N3, hN3⟩` from `eventually_atTop.1 hf`. Establish `hp : (1 : ℝ) ≤ 2 ^ D` using `one_le_pow₀ (by norm_num)`. Establish `hp0 : (0 : ℝ) < 2 ^ D` using `by positivity`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ n : ℕ, N1 + N2 + N3 ≤ n → |f (2 * n)| ≤ 2 ^ D * A * (n : ℝ) ^ (D + 1) + δ * (n : ℝ) ^ (D + 1)`. Introduce `n hn`. Establish `e1` using `hN1 n (by omega)`. Establish `e3` using `hN3 n (by omega)`. Establish `h0` using `abs_sub_abs_le_abs_sub (f (2 * n)) (2 ^ D * f n)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[abs_mul, abs_of_pos hp0]`. Establish `hpA : 2 ^ D * |f n| ≤ 2 ^ D * (A * (n : ℝ) ^ (D + 1))` using `mul_le_mul_of_nonneg_left e3 hp0.le`. Use the polynomial consequences of the given equalities and inequalities. Establish `hcast : ∀ n : ℕ, (((2 * n : ℕ) : ℝ)) ^ (D + 1) = 2 * 2 ^ D * (n : ℝ) ^ (D + 1)`. Introduce `n`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_cast`. Rewrite using `[mul_pow, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Use `eventually_atTop.2 ⟨2 * (N1 + N2 + N3) + 1, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨n, rfl | rfl⟩` from `Nat.even_or_odd' m`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hn : N1 + N2 + N3 ≤ n` using `by omega`. Establish `hx : (0 : ℝ) ≤ (n : ℝ) ^ (D + 1)` using `by positivity`. Establish `e` using `hev n hn`. Rewrite using `[hcast]`. Establish `hδx : δ * (n : ℝ) ^ (D + 1) * 1 ≤ δ * (n : ℝ) ^ (D + 1) * 2 ^ D` using `mul_le_mul_of_nonneg_left hp (mul_nonneg hδ.le hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hn : N1 + N2 + N3 ≤ n` using `by omega`. Establish `hx : (0 : ℝ) ≤ (n : ℝ) ^ (D + 1)` using `by positivity`. Establish `e` using `hev n hn`. Establish `e2` using `hN2 (2 * n) (by omega)`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e2` using `[hcast]`. Establish `h0` using `abs_sub_abs_le_abs_sub (f (2 * n + 1)) (f (2 * n))`. Establish `hmono : (((2 * n : ℕ) : ℝ)) ^ (D + 1) ≤ (((2 * n + 1 : ℕ) : ℝ)) ^ (D + 1)`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Conclude with `Nat.le_succ _` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmono` using `[hcast]`. Establish `hco : 0 ≤ A / 2 + 2 * δ` using `by positivity`. Establish `h3` using `mul_le_mul_of_nonneg_left hmono hco`. Establish `hδx : δ * (n : ℝ) ^ (D + 1) * 1 ≤ δ * (n : ℝ) ^ (D + 1) * 2 ^ D` using `mul_le_mul_of_nonneg_left hp (mul_nonneg hδ.le hx)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem eventually_abs_le_half_add_of_doubling_bounds (D : ℕ) (f : ℕ → ℝ) (A δ : ℝ) (hA : 0 ≤ A) (hδ : 0 < δ)
     (h1 : ∀ᶠ n : ℕ in atTop, |f (2 * n) - 2 ^ D * f n| ≤ δ * (n : ℝ) ^ (D + 1))
@@ -84,15 +84,15 @@ private theorem eventually_abs_le_half_add_of_doubling_bounds (D : ℕ) (f : ℕ
     nlinarith
 
 /- English proof (translation)
-Establish `hC' : ∀ n : ℕ, |f n| ≤ |C| * (n : ℝ) ^ (D + 1)` using `fun n => (hC n).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity))`. Rewrite using `[Asymptotics.isLittleO_iff]`. Introduce `c hc`. Establish `key : ∀ k : ℕ, ∀ᶠ n : ℕ in atTop, |f n| ≤ (|C| / 2 ^ k + 2 * (c / 3)) * (n : ℝ) ^ (D + 1)`. Introduce `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero`. Use `Eventually.of_forall fun n => (hC' n).trans (mul_le_mul_of_nonneg_right ?_ (by positivity))` and prove the remaining obligations. Rewrite using `[pow_zero, div_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Consider the case `succ k ih`. Use `eventually_abs_le_half_add_of_doubling_bounds D f _ (c / 3 / 2) (by positivity) (by positivity) (h1 _ (by positivity)) (h2 _ (by positivity)) ih` as an intermediate fact. Use `this.mono fun n hn => hn.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (|C| * 3 / c) (by norm_num : (1 : ℝ) < 2)`. Establish `h2k : (0 : ℝ) < 2 ^ k` using `by positivity`. Rewrite `hk` using `[div_lt_iff₀ hc]`. Establish `hsmall : |C| / 2 ^ k ≤ c / 3`. Rewrite using `[div_le_iff₀ h2k]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `(key k).mono fun n hn => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (by positivity : (0 : ℝ) ≤ (n : ℝ) ^ (D + 1))]`. Use `hn.trans (mul_le_mul_of_nonneg_right ?_ (by positivity))` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem isLittleO_pow_of_doubling_and_increment_bounds (D : ℕ) (f : ℕ → ℝ) (C : ℝ)
     (hC : ∀ n : ℕ, |f n| ≤ C * (n : ℝ) ^ (D + 1))
@@ -131,9 +131,9 @@ private theorem isLittleO_pow_of_doubling_and_increment_bounds (D : ℕ) (f : �
   linarith
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hilbertSamuelDefect_projectiveSpace_abs_le D hh`. Use `isLittleO_pow_of_doubling_and_increment_bounds D _ C hC (fun δ hδ => ?_) (fun δ hδ => ?_)` and prove the remaining obligations. Use `(hver.def hδ).mono fun n hn => ?_` and prove the remaining obligations. Rewrite `hn` using `[Real.norm_eq_abs, Real.norm_eq_abs, hsDefect_two_mul, abs_of_nonneg (by positivity : (0 : ℝ) ≤ (n : ℝ) ^ (D + 1))]`. Then use the resulting hypothesis. Use `((hilbertSamuelDefect_projectiveSpace_succ_sub_isLittleO D hh).def hδ).mono fun n hn => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hn` using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (by positivity : (0 : ℝ) ≤ (n : ℝ) ^ (D + 1))]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hilbertSamuelDefect_projectiveSpace_isLittleO (D : ℕ) (hh : ℝ)
     (hver : (fun n => hsDefect D (fun m => chiP D (2 * m)) (2 ^ (D + 1) * hh) n -

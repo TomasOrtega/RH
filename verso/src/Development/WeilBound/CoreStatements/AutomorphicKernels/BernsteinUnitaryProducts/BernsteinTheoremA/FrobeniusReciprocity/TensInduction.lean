@@ -15,9 +15,9 @@ section Tens
 variable {A B : Type*} [TopologicalSpace A] [TopologicalSpace B] [T2Space A] [T2Space B]
 
 /- English proof (translation)
-Establish `ha` using `mem_SB_iff.1 a.2`. Establish `hb` using `mem_SB_iff.1 b.2`. Use `mem_SB_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(ha.1.comp_continuous continuous_fst).mul (hb.1.comp_continuous continuous_snd)`. Use `HasCompactSupport.intro (IsCompact.prod ha.2 hb.2) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q hq`. Rewrite `hq` using `[Set.mem_prod, not_and_or]`. Break down `hq with h | h` into its components or cases. Simplify using `[image_eq_zero_of_notMem_tsupport h]`. Simplify using `[image_eq_zero_of_notMem_tsupport h]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tens_mem (a : SB A) (b : SB B) :
     (fun q : A × B => (a : A → ℂ) q.1 * (b : B → ℂ) q.2) ∈ SB (A × B) := by
@@ -78,9 +78,9 @@ theorem tensR_apply (a : SB A) (b : SB B) : tensR a b = tens a b :=
 end Tens
 
 /- English proof (translation)
-Establish `key : Submodule.span ℂ S ≤ (N.comap T).map (SB A).subtype`. Rewrite using `[Submodule.span_le]`. Introduce `F hF`. Conclude with `Submodule.mem_map.2 ⟨⟨F, hS hF⟩, hT F hF, rfl⟩`. Take `⟨f', hf', e⟩` from `Submodule.mem_map.1 (key hf)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e' : f' = f` using `Subtype.ext e`. Substitute `e'` using the available equality. Conclude with `hf'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem span_transfer {A : Type*} [TopologicalSpace A] {M : Type*} [AddCommGroup M] [Module ℂ M]
     (T : SB A →ₗ[ℂ] M) {S : Set (A → ℂ)} (hS : S ⊆ SB A) (N : Submodule ℂ M)
@@ -102,7 +102,7 @@ variable {A B : Type} [TopologicalSpace A] [T2Space A] [LocallyCompactSpace A]
   [TotallyDisconnectedSpace B]
 
 /- English proof (translation)
-Use `span_transfer T ?_ N ?_ f (GlobalTheory.T.schwartzBruhat_prod_span_tensors A B f)` and prove the remaining obligations. Introduce and unpack `F ⟨a, b, -, rfl⟩`. Conclude with `tens_mem a b`. Introduce and unpack `F ⟨a, b, hab, rfl⟩`. Conclude with `h a b hab`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem tens_induction {M : Type*} [AddCommGroup M] [Module ℂ M] (T : SB (A × B) →ₗ[ℂ] M)
     (N : Submodule ℂ M) (f : SB (A × B))
@@ -124,9 +124,9 @@ variable {A B : Type} [TopologicalSpace A] [T2Space A] [LocallyCompactSpace A]
   (μ : Measure B) [IsFiniteMeasureOnCompacts μ]
 
 /- English proof (translation)
-Establish `hF` using `mem_SB_iff.1 F.2`. Use `Continuous.integrable_of_hasCompactSupport ((hF.1.continuous.comp (Continuous.prodMk_right a)).mul hw) ?_` and prove the remaining obligations. Use `HasCompactSupport.mul_right (f' := w) ?_` and prove the remaining obligations. Use `HasCompactSupport.intro (IsCompact.image hF.2 continuous_snd) ?_` and prove the remaining obligations. Introduce `b hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Conclude with `hb ⟨(a, b), subset_tsupport _ h, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem fib_integrable (F : SB (A × B)) (a : A) {w : B → ℂ} (hw : Continuous w) :
     Integrable (fun b => (F : A × B → ℂ) (a, b) * w b) μ := by
@@ -160,7 +160,7 @@ theorem intB_apply (w : B → ℂ) (hw : Continuous w) (F : SB (A × B)) (a : A)
   rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show ∫ y, ((a : A → ℂ) x * (b : B → ℂ) y) * w y ∂μ = (∫ y, (b : B → ℂ) y * w y ∂μ) * (a : A → ℂ) x`. Simplify using `only [mul_assoc]`. Rewrite using `[integral_const_mul, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intB_tens (w : B → ℂ) (hw : Continuous w) (a : SB A) (b : SB B) :
     intB μ w hw (tens a b) = (∫ y, (b : B → ℂ) y * w y ∂μ) • a := by
@@ -192,13 +192,11 @@ theorem rtr_apply (k : K) (F : SB (A × K)) (q : A × K) :
   rfl
 
 /- English proof (translation)
-Establish `hc : ∀ a : SB A, ∃ c : ℂ, ∀ b : SB K, M (tens a b) = c * ∫ y, (b : K → ℂ) y ∂μ`. Introduce `a`. Use `GlobalTheory.T.invariant_functional_eq_haar_multiple K uK μ (M ∘ₗ tensR a) ?_` and prove the remaining obligations. Introduce `k b`. Establish `e : tens a (pullHomeo (Homeomorph.mulRight k) b) = rtr k (tens a b)` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show M (tens a (pullHomeo (Homeomorph.mulRight k) b)) = M (tens a b)`. Rewrite using `[e, hM]`. Use `choose c hc using hc`. Set `T : SB (A × K) →ₗ[ℂ] ℂ` to `M - M ∘ₗ tensL b0 ∘ₗ intB μ (fun _ => (1 : ℂ)) continuous_const`. Establish `key : T F ∈ (⊥ : Submodule ℂ ℂ)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `tens_induction T ⊥ F (fun a b _ => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot]`. Use `show M (tens a b) - M (tensL b0 (intB μ (fun _ => (1 : ℂ)) continuous_const (tens a b))) = 0`. Rewrite using `[intB_tens, LinearMap.map_smul, tensL_apply, LinearMap.map_smul, hc, hc, hb0]`. Simplify using `only [mul_one, smul_eq_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[Submodule.mem_bot]`. Conclude with `sub_eq_zero.1 key`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor_intB (uK : IsUnimod K) (b0 : SB K) (hb0 : ∫ y, (b0 : K → ℂ) y ∂μ = 1)
     (M : SB (A × K) →ₗ[ℂ] ℂ) (hM : ∀ (k : K) (F : SB (A × K)), M (rtr k F) = M F)

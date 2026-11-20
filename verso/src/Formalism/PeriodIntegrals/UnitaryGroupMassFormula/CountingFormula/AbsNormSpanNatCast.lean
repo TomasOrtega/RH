@@ -21,14 +21,14 @@ def supT (F : Type) [Field F] [NumberField F] (T : ℕ) : Finset {𝔭 : Ideal (
   (nfT F T).toFinset.subtype (fun 𝔭 => 𝔭.IsMaximal)
 
 /- English proof (translation)
-Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hT.ne'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_natCast_ne_bot {T : ℕ} (hT : 0 < T) : Ideal.span {((T : ℕ) : 𝓞 F)} ≠ ⊥ := by
   rw [Ne, Ideal.span_singleton_eq_bot]
   exact_mod_cast hT.ne'
 
 /- English proof (translation)
-Unfold `nfT`. Rewrite using `[Ideal.mem_normalizedFactors_iff (span_natCast_ne_bot hT), Ideal.span_singleton_le_iff_mem]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_nfT_iff {T : ℕ} (hT : 0 < T) (P : Ideal (𝓞 F)) :
     P ∈ nfT F T ↔ P.IsPrime ∧ ((T : ℕ) : 𝓞 F) ∈ P := by
@@ -36,7 +36,7 @@ theorem mem_nfT_iff {T : ℕ} (hT : 0 < T) (P : Ideal (𝓞 F)) :
   rw [Ideal.mem_normalizedFactors_iff (span_natCast_ne_bot hT), Ideal.span_singleton_le_iff_mem]
 
 /- English proof (translation)
-Take `⟨hP, hm⟩` from `(mem_nfT_iff hT P).1 h`. Use `hP.isMaximal ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `hm` using `[Ideal.mem_bot]`. Conclude with `(Nat.cast_ne_zero.2 hT.ne') hm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMaximal_of_mem_nfT {T : ℕ} (hT : 0 < T) {P : Ideal (𝓞 F)} (h : P ∈ nfT F T) :
     P.IsMaximal := by
@@ -47,7 +47,7 @@ theorem isMaximal_of_mem_nfT {T : ℕ} (hT : 0 < T) {P : Ideal (𝓞 F)} (h : P 
   exact (Nat.cast_ne_zero.2 hT.ne') hm
 
 /- English proof (translation)
-Unfold `supT`. Rewrite using `[Finset.mem_subtype, Multiset.mem_toFinset, mem_nfT_iff hT]`. Conclude with `⟨fun h => h.2, fun h => ⟨𝔭.2.isPrime, h⟩⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_supT {T : ℕ} (hT : 0 < T) (𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}) :
     𝔭 ∈ supT F T ↔ ((T : ℕ) : 𝓞 F) ∈ 𝔭.1 := by
@@ -56,9 +56,9 @@ theorem mem_supT {T : ℕ} (hT : 0 < T) (𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.I
   exact ⟨fun h => h.2, fun h => ⟨𝔭.2.isPrime, h⟩⟩
 
 /- English proof (translation)
-Rewrite using `[tprod_eq_prod (s := supT F T)]`. Unfold `supT`. Rewrite using `[Finset.prod_subtype_eq_prod_filter (f := fun P => if ((T : ℕ) : 𝓞 F) ∈ P then g P else 1)]`. Rewrite using `[Finset.filter_true_of_mem (fun P hP => isMaximal_of_mem_nfT hT (Multiset.mem_toFinset.1 hP))]`. Use `Finset.prod_congr rfl fun P hP => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_pos ((mem_nfT_iff hT P).1 (Multiset.mem_toFinset.1 hP)).2]`. Introduce `𝔭 h𝔭`. Rewrite using `[if_neg (fun h => h𝔭 ((mem_supT hT 𝔭).2 h))]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem tprod_supT {T : ℕ} (hT : 0 < T) (g : Ideal (𝓞 F) → ℝ) :
     (∏' 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, (if ((T : ℕ) : 𝓞 F) ∈ 𝔭.1 then g 𝔭.1 else 1)) =
@@ -73,7 +73,7 @@ theorem tprod_supT {T : ℕ} (hT : 0 < T) (g : Ideal (𝓞 F) → ℝ) :
     rw [if_neg (fun h => h𝔭 ((mem_supT hT 𝔭).2 h))]
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_span_singleton]`. Establish `e : ((T : ℕ) : 𝓞 F) = algebraMap ℤ (𝓞 F) (T : ℤ)` using `by simp`. Rewrite using `[e, Algebra.norm_algebraMap, RingOfIntegers.rank]`. Simplify using `[Int.natAbs_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem absNorm_span_natCast (T : ℕ) :
     Ideal.absNorm (Ideal.span {((T : ℕ) : 𝓞 F)}) = T ^ finrank ℚ F := by
@@ -83,9 +83,9 @@ theorem absNorm_span_natCast (T : ℕ) :
   simp [Int.natAbs_pow]
 
 /- English proof (translation)
-Establish `h1 : ∏ P ∈ (nfT F T).toFinset, (Ideal.absNorm P) ^ (Multiset.count P (nfT F T)) = ((nfT F T).map Ideal.absNorm).prod` using `(Finset.prod_multiset_map_count _ _).symm`. Establish `h2 : ((nfT F T).map Ideal.absNorm).prod = Ideal.absNorm (nfT F T).prod` using `(map_multiset_prod Ideal.absNorm _).symm`. Establish `h3 : (nfT F T).prod = Ideal.span {((T : ℕ) : 𝓞 F)}` using `Ideal.prod_normalizedFactors_eq_self (span_natCast_ne_bot hT)`. Establish `h4 : ∏ P ∈ (nfT F T).toFinset, (Ideal.absNorm P) ^ (vT F T P) = T ^ finrank ℚ F`. Establish `: ∀ P, vT F T P = Multiset.count P (nfT F T)` using `fun P => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [this]`. Rewrite using `[h1, h2, h3, absNorm_span_natCast]`. Conclude with `h4` after adjusting the coercions.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_absNorm_pow {T : ℕ} (hT : 0 < T) :
     ∏ P ∈ (nfT F T).toFinset, (Ideal.absNorm P : ℝ) ^ (vT F T P) = (T : ℝ) ^ finrank ℚ F := by
@@ -104,7 +104,7 @@ theorem prod_absNorm_pow {T : ℕ} (hT : 0 < T) :
 end Arith
 
 /- English proof (translation)
-Unfold `etaF`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem etaF_cases (K F : Type) [Field K] [Field F] [Algebra F K] (𝔭 : Ideal (𝓞 F)) :
     etaF K F 𝔭 = 1 ∨ etaF K F 𝔭 = -1 := by
@@ -112,11 +112,9 @@ theorem etaF_cases (K F : Type) [Field K] [Field F] [Algebra F K] (𝔭 : Ideal 
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hne : 1 - η * q⁻¹ ≠ 0`. Break down `hη with rfl | rfl` into its components or cases. Rewrite using `[one_mul, sub_ne_zero]`. Introduce `h`. Conclude with `hq (inv_eq_one.mp h.symm)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: 0 ≤ q⁻¹` using `inv_nonneg.2 hq0`. Establish `: 0 < 1 - (-1) * q⁻¹` using `by linarith`. Conclude with `this.ne'`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel, div_mul_eq_mul_div, div_eq_iff hne]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem factor_eq (q η x : ℝ) (hq : q ≠ 1) (hq0 : 0 ≤ q) (hη : η = 1 ∨ η = -1) (k v : ℕ) (hk : 1 ≤ k) :
     q ^ ((k - 1) * v) * x / (1 - η * q⁻¹) * (q ^ v * (1 - η * q⁻¹)) = (q ^ v) ^ k * x := by
@@ -133,11 +131,11 @@ theorem factor_eq (q η x : ℝ) (hq : q ≠ 1) (hq0 : 0 ≤ q) (hη : η = 1 �
   ring
 
 /- English proof (translation)
-Introduce `K F _ _ _ _ k T hk hT`. Establish `e1` using `tprod_supT (F := F) hT (fun P => (Ideal.absNorm P : ℝ) ^ ((k - 1) * vT F T P) * (1 - etaF K F P ^ k * (Ideal.absNorm P : ℝ) ^ (-(k : ℤ))) / (1 - etaF K F P * (Ideal.absNorm P : ℝ)⁻¹))`. Establish `e2` using `tprod_supT (F := F) hT (fun P => (Ideal.absNorm P : ℝ) ^ vT F T P * (1 - etaF K F P * (Ideal.absNorm P : ℝ)⁻¹))`. Establish `e3` using `tprod_supT (F := F) hT (fun P => 1 - etaF K F P ^ k * (Ideal.absNorm P : ℝ) ^ (-(k : ℤ)))`. Use `beta_reduce at e1 e2 e3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `lamT glueT`. Rewrite using `[e1, e2, e3, ← Finset.prod_mul_distrib, pow_mul', ← prod_absNorm_pow hT, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun P hP => ?_` and prove the remaining obligations. Establish `hmax : P.IsMaximal` using `isMaximal_of_mem_nfT hT (Multiset.mem_toFinset.1 hP)`. Establish `hq : (Ideal.absNorm P : ℝ) ≠ 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, Nat.cast_eq_one, Ideal.absNorm_eq_one_iff]`. Conclude with `hmax.ne_top`. Conclude with `factor_eq _ _ _ hq (Nat.cast_nonneg _) (etaF_cases K F P) k _ hk`.
+A detailed English derivation is pending.
 -/
 theorem lamGlue : LamGlue := by
   intro K F _ _ _ _ k T hk hT

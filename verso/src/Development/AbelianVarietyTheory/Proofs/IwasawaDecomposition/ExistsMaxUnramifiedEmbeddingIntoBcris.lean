@@ -9,7 +9,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Set `e : B ≃+* ι.range` to `RingEquiv.ofBijective ι.rangeRestrict ⟨fun a b hab => hι (congrArg Subtype.val hab), ι.rangeRestrict_surjective⟩`. Use `⟨e.symm.toRingHom.comp (f.codRestrict ι.range h), fun x => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (e.apply_symm_apply (f.codRestrict ι.range h x))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_factor_of_range {A B D : Type} [CommRing A] [CommRing B] [CommRing D] (f : A →+* D) (ι : B →+* D)
     (hι : Function.Injective ι) (h : ∀ x, f x ∈ ι.range) : ∃ u : A →+* B, ∀ x, ι (u x) = f x := by
@@ -19,13 +19,13 @@ theorem exists_factor_of_range {A B D : Type} [CommRing A] [CommRing B] [CommRin
   exact congrArg Subtype.val (e.apply_symm_apply (f.codRestrict ι.range h x))
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hl.exists_right_inv`. Establish `hl0 : (l : ℚ_[l]) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `h1 : g (l : ℚ_[l])⁻¹ = ι w`. Establish `a : (l : D) * ι w = 1` using `by simpa using congrArg ι hw`. Establish `b : g (l : ℚ_[l])⁻¹ * (l : D) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast g, ← map_mul, inv_mul_cancel₀ hl0, map_one]`. Combine the equalities or inequalities in the displayed calculation. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n : ℕ, ‖(l : ℚ_[l]) ^ n * q‖ ≤ 1 := by`. Establish `hp : ‖(l : ℚ_[l])‖ < 1` using `Padic.norm_p_lt_one`. Establish `ht` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hp).mul_const ‖q‖`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ht` using `[zero_mul]`. Take `⟨n, hn⟩` from `(ht.eventually (ge_mem_nhds one_pos)).exists`. Conclude with `⟨n, by rwa [norm_mul, norm_pow]⟩`. Establish `e : q = ((l : ℚ_[l])⁻¹) ^ n * ((⟨_, hn⟩ : ℤ_[l]) : ℚ_[l])`. Express the relevant statement in the definitionally equal form `q = _ * ((l : ℚ_[l]) ^ n * q)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← mul_assoc, ← mul_pow, inv_mul_cancel₀ hl0, one_pow, one_mul]`. Rewrite using `[e, map_mul, map_pow, h1]`. Conclude with `mul_mem (pow_mem (ι.mem_range_self w) n) (hz _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padic_mem_range {l : ℕ} [Fact l.Prime] {B D : Type} [CommRing B] [CommRing D] (g : ℚ_[l] →+* D)
     (ι : B →+* D) (hz : ∀ z : ℤ_[l], g z ∈ ι.range) (hl : IsUnit (l : B)) (q : ℚ_[l]) : g q ∈ ι.range := by
@@ -50,13 +50,11 @@ theorem padic_mem_range {l : ℕ} [Fact l.Prime] {B D : Type} [CommRing B] [Comm
   exact mul_mem (pow_mem (ι.mem_range_self w) n) (hz _)
 
 /- English proof (translation)
-Introduce `l _ o ι ho hι ha hl`. Set `f : Om l →+* Per.BdR l` to `(algebraMap (Per.BdRp l) (Per.BdR l)).comp o`. Establish `hq : ∀ q : ℚ_[l], f (algebraMap ℚ_[l] (Om l) q) ∈ ι.range` using `padic_mem_range (f.comp (algebraMap ℚ_[l] (Om l))) ι (fun z => ⟨Per.aB l (Per.zA l z), (ha _).trans (by`. Rewrite using `[← ho.z]`. Use the proof step `rfl)⟩) hl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `S : Subalgebra ℚ_[l] (Om l)` to `{ (ι.range.comap f).toSubsemiring with algebraMap_mem' := hq }`. Establish `key : ∀ x ∈ MaximalUnramifiedExtension l, f x ∈ ι.range`. Introduce `x hx`. Unfold `MaximalUnramifiedExtension at hx`. Rewrite `hx` using `[← IntermediateField.mem_toSubalgebra, IntermediateField.adjoin_toSubalgebra_of_isAlgebraic (fun y _ => Algebra.IsAlgebraic.isAlgebraic y)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Algebra.adjoin_le (S := S) ?_) hx` and prove the remaining obligations. Introduce and unpack `c ⟨m, h0, h1, h2⟩`. Take `⟨⟨xb, hxb⟩, h⟩` from `GlobalTheory.T.rootOfUnity_prime_to_teichmuller_lift l o ho c m h0 h1 h2`. Use `⟨Per.aB l (Per.tm xb), ?_⟩` and prove the remaining obligations. Conclude with `(ha _).trans (by rw [(h xb hxb).2.2]; rfl)`.
-
-Conclude with `exists_factor_of_range (f.comp (MaximalUnramifiedExtension l).val.toRingHom) ι hι (fun x => key x x.2)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_unram_to_cris : ∀ (l : ℕ) [Fact l.Prime], ∀ (o : Om l →+* Per.BdRp l) (ι : Per.Bcris l →+* Per.BdR l), IsSec o → Function.Injective ι → (∀ a : Per.Ainf l, ι (Per.aB l a) = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l a)) → IsUnit (l : Per.Bcris l) → ∃ u : ↥(MaximalUnramifiedExtension l) →+* Per.Bcris l, ∀ c : ↥(MaximalUnramifiedExtension l), ι (u c) = algebraMap (Per.BdRp l) (Per.BdR l) (o (c : Om l)) := by
   intro l _ o ι ho hι ha hl

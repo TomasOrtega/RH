@@ -15,11 +15,11 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 namespace GlobalTheory.ShFam.TieUp
 
 /- English proof (translation)
-Establish `h1 : ∀ τ i j, ∃ r, a r = G τ i j` using `fun τ i j => hO _ ((hG τ).1 i j)`. Use `choose G' hG' using h1`. Set `G'' : Mat m R` to `fun τ => Matrix.of (G' τ)`. Establish `e : G''.map a = G`. Use function extensionality and compare the values at `τ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Conclude with `hG' τ i j`. Use `⟨G'', e, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `hO _ (hG τ).2.2.1`. Establish `hd : a (G'' τ).det = (G τ).det`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e]`. Conclude with `a.map_det (G'' τ)`. Use `IsUnit.of_mul_eq_one r (ha ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hd, hr, map_one, mul_inv_cancel₀ (hG.det_ne τ)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift {ι : Type} {m k : ι → ℕ} {R K : Type} [CommRing R] [Field K] (a : R →+* K)
     (ha : Function.Injective a) {O : Subring K} (hO : ∀ x ∈ O, ∃ r, a r = x) {G : Mat m K} (hG : Par k O G) :
@@ -37,25 +37,25 @@ theorem exists_lift {ι : Type} {m k : ι → ℕ} {R K : Type} [CommRing R] [Fi
   rw [map_mul, hd, hr, map_one, mul_inv_cancel₀ (hG.det_ne τ)]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e B Y j f₀ S A₀ k S' φ f hT hR`. Take `⟨A₁, hA₁⟩` from `S'.nonempty (genericPoint Y.X)`. Establish `hA₀d : ∀ τ, (A₀ τ).det ≠ 0` using `Fr.det_ne hT.1`. Establish `hA₁d : ∀ τ, (A₁ τ).det ≠ 0` using `Fr.det_ne hA₁`. Establish `hmapd : ∀ {A : Mat Dw.mult B.Fn}, (∀ τ, (A τ).det ≠ 0) → ∀ τ, (A.map (φ : B.Fn →+* Y.Fn) τ).det ≠ 0` using `fun {A} hA τ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Mat.det_map]`. Conclude with `(map_ne_zero _).2 (hA τ)`. Establish `hgen : genericPt Y ≫ f = spMap (φ : B.Fn →+* Y.Fn) ≫ genericPt B` using `hR.hom`. Establish `hx : genericPt Y ≫ (f ≫ j) ≫ genι Z = spMap (φ : B.Fn →+* Y.Fn) ≫ genericPt B ≫ j ≫ genι Z`. Rewrite using `[Category.assoc, ← Category.assoc, hgen, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : constF e Y = (φ : B.Fn →+* Y.Fn).comp (constF e B)` using `RingHom.ext fun a => (φ.commutes _).symm`. Establish `hst₀ : f₀.Stable` using `GlobalTheory.T.lie_eigenspace_frame_stable_of_isLocalRing E H Dw l Xo c O β Z _ _ _ f₀ inferInstance`. Take `⟨g₀, hg₀⟩` from `(GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible E H Dw l Xo c O β Z _ _ _ f₀ Y.Fn (constF e Y) (genericPt Y ≫ (f ≫ j) ≫ genι Z) (φ : B.Fn →+* Y.Fn) inferInstance hst₀ hx hc).2 (A₁ * (A₀.map (φ : B.Fn →+* Y.Fn))⁻¹) fun τ => by`. Rewrite using `[Pi.mul_apply, Matrix.det_mul, Pi.inv_apply, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `Ne.isUnit (mul_ne_zero (hA₁d τ) (inv_ne_zero (hmapd hA₀d τ)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨g₀, A₁, ⟨hA₁, fun y A' hA' => ?_⟩, hg₀⟩` and prove the remaining obligations. Take `⟨A, hA⟩` from `S.nonempty (f y)`. Take `⟨φ₁, fA, hfA⟩` from `hT.2 (f y) A hA`. Establish `hAd : ∀ τ, (A τ).det ≠ 0` using `Fr.det_ne hA`. Establish `hA'd : ∀ τ, (A' τ).det ≠ 0` using `Fr.det_ne hA'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `aY : Y.X.presheaf.stalk y →+* Y.Fn` to `algebraMap (Y.X.presheaf.stalk y) Y.X.functionField`. Set `aB : B.X.presheaf.stalk (f y) →+* B.Fn` to `algebraMap (B.X.presheaf.stalk (f y)) B.X.functionField`. Set `σ : B.X.presheaf.stalk (f y) →+* Y.X.presheaf.stalk y` to `(f.stalkMap y).hom`. Establish `hcomp : (φ : B.Fn →+* Y.Fn).comp aB = aY.comp σ` using `RingHom.ext fun a => map_algebraMap_stalk hR.hom y a`. Take `⟨G, hG, hGd⟩` from `exists_lift aY (IsFractionRing.injective (Y.X.presheaf.stalk y) Y.X.functionField) (fun x hx => mem_O_ratOf.1 hx) (hR.sub y A' hA' A hA)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstA : fA.Stable` using `GlobalTheory.T.lie_eigenspace_frame_stable_of_isLocalRing E H Dw l Xo c O β Z _ _ _ fA inferInstance`. Establish `hσ : spMap σ ≫ stalkPt B (f y) = stalkPt Y y ≫ f` using `Scheme.SpecMap_stalkMap_fromSpecStalk f`. Establish `hx' : stalkPt Y y ≫ (f ≫ j) ≫ genι Z = spMap σ ≫ stalkPt B (f y) ≫ j ≫ genι Z`. Rewrite using `[Category.assoc, ← Category.assoc, ← hσ, Category.assoc]`. Take `⟨f', hf'⟩` from `(GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible E H Dw l Xo c O β Z _ _ _ fA (Y.X.presheaf.stalk y) (σ.comp φ₁) (stalkPt Y y ≫ (f ≫ j) ≫ genι Z) σ inferInstance hstA hx' rfl).2 G hGd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hst' : f'.Stable` using `GlobalTheory.T.lie_eigenspace_frame_stable_of_isLocalRing E H Dw l Xo c O β Z _ _ _ f' inferInstance`. Establish `haY : spMap aY ≫ stalkPt Y y = genericPt Y` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes y)`. Establish `hx'' : genericPt Y ≫ (f ≫ j) ≫ genι Z = spMap aY ≫ stalkPt Y y ≫ (f ≫ j) ≫ genι Z`. Rewrite using `[← haY, Category.assoc]`. Establish `hc' : constF e Y = aY.comp (σ.comp φ₁)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← RingHom.comp_assoc, ← hcomp, RingHom.comp_assoc, hc, hfA.2.1]`. Take `⟨T, hTc, -⟩` from `((GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible E H Dw l Xo c O β Z _ _ _ f' Y.Fn (constF e Y) (genericPt Y ≫ (f ≫ j) ≫ genι Z) aY inferInstance hst' hx'' hc').1 g₀).1`. Establish `h1` using `GlobalTheory.ShFam.CoordComp.coord_comp E H Dw l Xo c O β Z _ _ _ fA _ _ _ f' _ _ _ g₀ σ aY G T inferInstance hf' hTc`. Establish `h2` using `GlobalTheory.ShFam.CoordComp.coord_comp E H Dw l Xo c O β Z _ _ _ fA _ _ _ f₀ _ _ _ g₀ aB (φ : B.Fn →+* Y.Fn) _ _ inferInstance hfA hg₀`. Rewrite `h2` using `[hcomp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `((GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible E H Dw l Xo c O β Z _ _ _ fA Y.Fn (constF e Y) (genericPt Y ≫ (f ≫ j) ≫ genι Z) (aY.comp σ) inferInstance hstA h1.1 h1.2.1).1 g₀).1.unique h1 h2`. Establish `hG' : G.map aY = A' * (A.map (φ : B.Fn →+* Y.Fn))⁻¹` using `hG`. Rewrite `hu` using `[hG', Mat.map_mul, Mat.map_inv, ← mul_assoc, ← mul_assoc, mul_assoc A₁, Mat.inv_mul (hmapd hA₀d), mul_one]`. Establish `hT' : T = A₁ * A'⁻¹`. Establish `h3` using `congrArg (fun M => M * A.map (φ : B.Fn →+* Y.Fn) * A'⁻¹) hu`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 
-Rewrite `h3` using `[mul_assoc (T * A'), mul_assoc A₁, Mat.inv_mul (hmapd hAd), mul_one, mul_one, mul_assoc, Mat.mul_inv hA'd, mul_one]`. Then use the resulting hypothesis. Conclude with `⟨σ.comp φ₁, f', hT' ▸ hTc⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (B Y : GlobalTheory.ProjVar.Var F) (j : B.X ⟶ gen Z) (f₀ : EigFrame Z (constF e B) (genericPt B ≫ j ≫ genι Z)) (S : Fr (ratOf B) Dw.mult 0) (A₀ : Mat Dw.mult B.Fn) (k : (E →+* ℂ) → ℕ) (S' : Fr (ratOf Y) Dw.mult k) (φ : B.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ B.X), Tied e B j f₀ S A₀ → Refines S S' φ f → ∃ (g₀ : EigFrame Z (constF e Y) (genericPt Y ≫ (f ≫ j) ≫ genι Z)) (A₁ : Mat Dw.mult Y.Fn), Tied e Y (f ≫ j) g₀ S' A₁ ∧ f₀.Coord (φ : B.Fn →+* Y.Fn) g₀ (A₁ * (A₀.map φ)⁻¹) := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ e B Y j f₀ S A₀ k S' φ f hT hR

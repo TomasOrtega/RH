@@ -3,55 +3,49 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce `V C A W B _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ b al hb hex T hT`. Establish `: IsBezout V` using `ValuationRing.instIsBezout`. Establish `hfree : ∀ (X : Type) [AddCommGroup X] [Module C X] [Module V X] [IsScalarTower V C X] (N : Submodule V X), N.FG → Module.Free V N`. Introduce `X _ _ _ _ N hN`. Establish `: Module.Finite V N` using `Module.Finite.iff_fg.mpr hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: Module.Flat V N`. Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]`. Introduce `x hx`. Rewrite using `[Submodule.mem_bot]`. Take `⟨a, ha⟩` from `(Submodule.mem_torsion_iff x).mp hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2 : ((a : V) • x : N) = 0` using `ha`. Establish `h3 : (a : V) • (x : X) = 0`. Establish `h4` using `congrArg Subtype.val h2`. Simplify using `using h4`. Establish `h1 : (algebraMap V C (a : V)) • (x : X) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[algebraMap_smul]`. Conclude with `h3`. Establish `ha0 : algebraMap V C (a : V) ≠ 0`. Introduce `h`. Establish `h5 : (a : V) = 0` using `(IsFractionRing.injective V C) (by rw [h, map_zero])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `nonZeroDivisors.coe_ne_zero a h5`. Establish `hx0 : (x : X) = 0` using `(smul_eq_zero.mp h1).resolve_left ha0`. Conclude with `Subtype.ext (by simp [hx0])`. Conclude with `Module.free_of_flat_of_isLocalRing`. Establish `hL : ∀ (X : Type) [AddCommGroup X] [Module C X] [Module V X] [IsScalarTower V C X] (N : Submodule V X), N.FG → ∃ (n : ℕ) (v : Fin n → X), LinearIndependent C v ∧ Submodule.span V (Set.range v) = N`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `X _ _ _ _ N hN`. Use `hfree X N hN` as an intermediate fact. Establish `: Module.Finite V N` using `Module.Finite.iff_fg.mpr hN`. Set `e` to `(Module.Free.chooseBasis V N).reindex (Fintype.equivFin (Module.Free.ChooseBasisIndex V N))`. Use `⟨Fintype.card (Module.Free.ChooseBasisIndex V N), fun i => (e i : X), ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← LinearIndependent.iff_fractionRing V C]`. Conclude with `e.linearIndependent.map' N.subtype (Submodule.ker_subtype N)`. Establish `hr : Set.range (fun i => (e i : X)) = N.subtype '' Set.range e`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr, Submodule.span_image, e.span_eq, Submodule.map_subtype_top]`. Take `⟨q, u, hu, hus⟩` from `hL B (T.map (al.restrictScalars V)) (hT.map _)`. Establish `hu_mem : ∀ j, u j ∈ T.map (al.restrictScalars V)`. Introduce `j`. Rewrite using `[← hus]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Use `choose t ht hta using fun j => Submodule.mem_map.mp (hu_mem j)`. Establish `hta' : ∀ j, al (t j) = u j` using `fun j => hta j`. Establish `hal : (fun j => al (t j)) = u` using `funext hta'`. Establish `: Module.Free V (T.map (al.restrictScalars V))` using `hfree B _ (hT.map _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: Module.Finite V (T.map (al.restrictScalars V))` using `Module.Finite.iff_fg.mpr (hT.map _)`. Establish `: Module.Finite V T` using `Module.Finite.iff_fg.mpr hT`. Establish `: Module.FinitePresentation V (T.map (al.restrictScalars V))` using `Module.finitePresentation_of_projective V _`. Establish `hker : (LinearMap.ker ((al.restrictScalars V).submoduleMap T)).FG` using `Module.FinitePresentation.fg_ker _ (LinearMap.submoduleMap_surjective _ _)`. Establish `hK : (T.comap (b.restrictScalars V)).FG`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Submodule.fg_of_fg_map_injective (b.restrictScalars V) hb` to reduce the goal to its premises. Establish `heq : (T.comap (b.restrictScalars V)).map (b.restrictScalars V) = (LinearMap.ker ((al.restrictScalars V).submoduleMap T)).map T.subtype`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨⟨b a, ha⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show ((al.restrictScalars V).submoduleMap T) ⟨b a, ha⟩ = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show al (b a) = 0`. Conclude with `(hex (b a)).mpr ⟨a, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨⟨y, hyT⟩, hy0, rfl⟩`. Establish `hy0' : ((al.restrictScalars V).submoduleMap T) ⟨y, hyT⟩ = 0` using `hy0`. Establish `hy : al y = 0` using `congrArg Subtype.val hy0'`. Take `⟨a, rfl⟩` from `(hex y).mp hy`. Conclude with `⟨a, hyT, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Conclude with `hker.map _`. Take `⟨p, w, hw, hws⟩` from `hL A (T.comap (b.restrictScalars V)) hK`. Use `⟨p, q, w, t, hw, hws, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hal]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hu`. Rewrite using `[hal]`. Conclude with `hus`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `hg` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at hg`. Establish `h1 : ∀ i, al (b (w i)) = 0` using `fun i => (hex _).mpr ⟨w i, rfl⟩`. Establish `h2 : ∑ j, g (Sum.inr j) • u j = 0`. Establish `h7` using `congrArg al hg`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `h7` using `[map_add, map_sum, map_smul, h1, hta']`. Establish `h3 : ∀ j, g (Sum.inr j) = 0` using `Fintype.linearIndependent_iff.mp hu (fun j => g (Sum.inr j)) h2`. Establish `h4 : ∑ i, g (Sum.inl i) • b (w i) = 0`. Simplify `hg` using `[h3]`. Establish `h5 : ∑ i, g (Sum.inl i) • w i = 0`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Apply `hb` to reduce the goal to its premises. Simplify `h4` using `[map_sum, map_smul]`. Establish `h6` using `Fintype.linearIndependent_iff.mp hw (fun i => g (Sum.inl i)) h5`. Introduce `i`. Consider the cases of `i with`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `inl i => exact h6 i`. Consider the case `inr j => exact h3 j`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `i with`. Consider the case `inl i`. Establish `hwi : w i ∈ T.comap (b.restrictScalars V)`. Rewrite using `[← hws]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hwi`. Consider the case `inr j => exact ht j`. Introduce `x hx`. Establish `hax : al x ∈ T.map (al.restrictScalars V)` using `Submodule.mem_map_of_mem hx`. Rewrite `hax` using `[← hus, Submodule.mem_span_range_iff_exists_fun]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨c, hc⟩` from `hax`. Establish `hyal : al (x - ∑ j, c j • t j) = 0`. Rewrite using `[map_sub, map_sum]`. Simplify using `only [LinearMap.map_smul_of_tower, hta']`. Rewrite using `[hc, sub_self]`.
-
-Take `⟨a, ha⟩` from `(hex _).mp hyal`. Establish `haK : a ∈ T.comap (b.restrictScalars V)` using `by show b a ∈ T`. Rewrite using `[ha]`. Conclude with `T.sub_mem hx (T.sum_mem fun j _ => T.smul_mem (c j) (ht j))`. Rewrite `haK` using `[← hws]`.
-
-Establish `hx_eq : x = b a + ∑ j, c j • t j` using `by rw [ha]; abel`. Rewrite using `[hx_eq, Set.Sum.elim_range, Submodule.span_union]`. Apply `Submodule.add_mem_sup` to reduce the goal to its premises. Establish `hr : Set.range (fun i => b (w i)) = (b.restrictScalars V) '' Set.range w`. Rewrite using `[← Set.range_comp]`.
-
-Both sides reduce to the same expression. Rewrite using `[hr, Submodule.span_image]`. Conclude with `Submodule.mem_map_of_mem haK`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis_split_of_exact_of_fg_valuationRing :
     ∀ (V C A W B : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field C] [Algebra V C]

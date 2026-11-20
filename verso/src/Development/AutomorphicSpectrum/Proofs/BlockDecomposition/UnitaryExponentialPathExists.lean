@@ -14,11 +14,11 @@ section
 open scoped Matrix.Norms.L2Operator
 
 /- English proof (translation)
-Use `haveI : IsStarNormal k := ⟨(Unitary.star_mul_self_of_mem hu).trans (Unitary.mul_star_self_of_mem hu).symm⟩`. Establish `hfin` using `Matrix.finite_spectrum k`. Establish `hunit : IsUnit k` using `(Unitary.toUnits ⟨k, hu⟩).isUnit`. Establish `hne : ∀ x ∈ spectrum ℂ k, x ≠ 0` using `fun x hx h0 => (spectrum.zero_notMem_iff ℂ).mpr hunit (h0 ▸ hx)`. Use `⟨cfc Complex.log k, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← CFC.exp_eq_normedSpace_exp (𝕜 := ℂ) (p := IsStarNormal) (a := cfc Complex.log k), ← cfc_comp (R := ℂ) (p := IsStarNormal) NormedSpace.exp Complex.log k (hg := (hfin.image _).continuousOn _) (hf := hfin.continuousOn _)]`. Establish `hc : cfc (NormedSpace.exp ∘ Complex.log) k = cfc (id : ℂ → ℂ) k`. Use `cfc_congr fun x hx => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, id]`. Rewrite using `[← Complex.exp_eq_exp_ℂ, Complex.exp_log (hne x hx)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, cfc_id ℂ k]`.
+A detailed English derivation is pending.
 -/
 theorem exists_exp_eq_of_unitary {n : ℕ} (k : Matrix (Fin n) (Fin n) ℂ)
     (hu : k ∈ unitary (Matrix (Fin n) (Fin n) ℂ)) :
@@ -56,14 +56,14 @@ theorem atPlace_apply (w : InfinitePlace E) (x : Matrix (Fin a) (Fin a) (Cinf E)
     atPlace w x i j = x i j w := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_map (continuous_apply w)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_atPlace (w : InfinitePlace E) :
     Continuous (atPlace (a := a) w) :=
   continuous_id.matrix_map (continuous_apply w)
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem atPlace_star (w : InfinitePlace E) (x : Matrix (Fin a) (Fin a) (Cinf E)) :
     atPlace w (star x) = star (atPlace w x) := by
@@ -71,9 +71,9 @@ theorem atPlace_star (w : InfinitePlace E) (x : Matrix (Fin a) (Fin a) (Cinf E))
   rfl
 
 /- English proof (translation)
-Establish `hk : ∀ w, atPlace w k.1 ∈ unitary (Matrix (Fin a) (Fin a) ℂ)` using `fun w => Unitary.mem_iff.mpr ⟨by rw [← atPlace_star, ← map_mul, Unitary.star_mul_self_of_mem k.2, map_one], by rw [← atPlace_star, ← map_mul, Unitary.mul_star_self_of_mem k.2, map_one]⟩`. Use `choose Y hY using fun w => exists_exp_eq_of_unitary (atPlace w k.1) (hk w)`. Use `⟨Matrix.of fun i j w => Y w i j, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Establish `h1` using `congrArg (fun m => m i j) (NormedSpace.map_exp (atPlace w) (continuous_atPlace w) (Matrix.of fun i j w => Y w i j))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : atPlace w (Matrix.of fun i j w => Y w i j) = Y w`. Use extensionality with `i' j'`. Both sides reduce to the same expression. Simplify using `only [atPlace_apply, hM] at h1`. Conclude with `h1.trans ((congrArg (fun m => m i j) (hY w)).trans (atPlace_apply w k.1 i j))`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_exp_eq (k : Kinf E a) :
     ∃ M : Matrix (Fin a) (Fin a) (Cinf E), NormedSpace.exp M = k.1 := by
@@ -93,15 +93,15 @@ theorem exists_exp_eq (k : Kinf E a) :
   exact h1.trans ((congrArg (fun m => m i j) (hY w)).trans (atPlace_apply w k.1 i j))
 
 /- English proof (translation)
-Introduce `E _ _ _ a k`. Take `⟨M, hM⟩` from `exists_exp_eq k`. Establish `htoL : ∀ N : Matrix (Fin a) (Fin a) (Cinf E), toL N = GlobalTheory.CompanionTheory.LieCurve.toLieL E a N` using `fun N => by`. Rewrite using `[GlobalTheory.CompanionTheory.LieCurve.toLieL_apply]`. Establish `hof : Matrix.of (GlobalTheory.CompanionTheory.LieCurve.toLieL E a M) = M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.CompanionTheory.LieCurve.toLieL_apply]`. Both sides reduce to the same expression. Use `⟨GlobalTheory.CompanionTheory.LieCurve.expUnit E a M, GlobalTheory.CompanionTheory.LieCurve.toLieL E a M, GlobalTheory.CompanionTheory.LieCurve.expUnit_zero E a M, ?_, fun s => ?_, fun s => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CompanionTheory.LieCurve.expUnit_val, one_smul, hM]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [GlobalTheory.CompanionTheory.LieCurve.expUnit_val, hof, htoL]`. Conclude with `(GlobalTheory.CompanionTheory.LieCurve.toLieL E a).hasFDerivAt.comp_hasDerivAt s (GlobalTheory.CompanionTheory.LieCurve.hasDerivAt_exp E a M s)`. Simplify using `only [GlobalTheory.CompanionTheory.LieCurve.expUnit_inv_val, hof, htoL]`. Establish `h1` using `GlobalTheory.CompanionTheory.LieCurve.hasDerivAt_exp E a (-M) s`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (fun t : ℝ => NormedSpace.exp (t • -M)) = fun t : ℝ => NormedSpace.exp (-t • M)`. Use function extensionality and compare the values at `t`. Rewrite using `[neg_smul, smul_neg]`. Establish `e2 : NormedSpace.exp (s • -M) * -M = -(M * NormedSpace.exp (-s • M))`. Rewrite using `[smul_neg, ← neg_smul, mul_neg, ((Commute.refl M).smul_right (-s)).exp_right.eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e1, e2]`. Conclude with `(GlobalTheory.CompanionTheory.LieCurve.toLieL E a).hasFDerivAt.comp_hasDerivAt s h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_curve : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (k : Kinf E a), ∃ (c : ℝ → GL (Fin a) (Cinf E)) (Y : Lie E a), c 0 = 1 ∧ c 1 = Unitary.toUnits k ∧ (∀ s, HasDerivAt (fun t => toL (c t).val) (toL ((c s).val * Matrix.of Y)) s) ∧ (∀ s, HasDerivAt (fun t => toL ((c t)⁻¹).val) (toL (-(Matrix.of Y * ((c s)⁻¹).val))) s) := by
   intro E _ _ _ a k

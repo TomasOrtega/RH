@@ -11,15 +11,15 @@ namespace PI.ScMuExists.UnitaryGroupMassFormula
 variable (I : Formalism.MainNotions.S.AutInst)
 
 /- English proof (translation)
-The claim follows from `I.cm.cmUnram.2.1 (I.φ v) a`.
+A detailed English derivation is pending.
 -/
 theorem phi_star (v : NumberField.InfinitePlace I.F) (a : I.E) : I.φ v (star a) = star (I.φ v a) :=
   I.cm.cmUnram.2.1 (I.φ v) a
 
 /- English proof (translation)
-Establish `h : I.P v * (I.P v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v))`. Establish `e : ((I.P v)⁻¹)ᴴ * (I.P v)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, h, Matrix.conjTranspose_one]`. Rewrite using `[← I.P_spec v]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = I.J.map (I.φ v) := by rw [e, h, Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_real (v : NumberField.InfinitePlace I.F) :
     ((I.P v)⁻¹)ᴴ * Formalism.REAL.Jm (I.ε v) * (I.P v)⁻¹ = I.J.map (I.φ v) := by
@@ -34,7 +34,7 @@ theorem gram_real (v : NumberField.InfinitePlace I.F) :
     _ = I.J.map (I.φ v) := by rw [e, h, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `only [hJ, Matrix.star_mulVec, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hJ_mulVec_gen {n : ℕ} (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) (u w : Fin n → ℂ) :
     hJ ε (A *ᵥ u) (A *ᵥ w) = star u ⬝ᵥ ((Aᴴ * Formalism.REAL.Jm ε * A) *ᵥ w) := by
@@ -42,7 +42,7 @@ theorem hJ_mulVec_gen {n : ℕ} (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n
     Matrix.vecMul_vecMul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [rv]`. Rewrite using `[hJ_mulVec_gen, gram_real I v]`. Simplify using `only [Formalism.UG.hform, map_sum, map_mul, dotProduct, Matrix.mulVec, Pi.star_apply, Matrix.map_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[starRingEnd_apply, phi_star I v]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -57,7 +57,7 @@ theorem rv_hJ (v : NumberField.InfinitePlace I.F) (x y : Fin I.n → I.E) :
   ring
 
 /- English proof (translation)
-Simplify using `only [hJ, Formalism.REAL.Jm, dotProduct, Matrix.mulVec_diagonal, star_sum, star_mul', Pi.star_apply, star_star]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : ε i = true <;> simp [h] <;> ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hJ_conj {n : ℕ} (ε : Fin n → Bool) (u w : Fin n → ℂ) : hJ ε w u = star (hJ ε u w) := by
   simp only [hJ, Formalism.REAL.Jm, dotProduct, Matrix.mulVec_diagonal, star_sum, star_mul',
@@ -68,9 +68,9 @@ theorem hJ_conj {n : ℕ} (ε : Fin n → Bool) (u w : Fin n → ℂ) : hJ ε w 
 variable {I}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `hF`. Use `⟨fun a b => ?_, fun a b => ?_, fun a b => ?_, fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[rv_hJ, h1, map_zero]`. Rewrite using `[rv_hJ, h2, map_zero]`. Apply the tactic sequence `rw [rv_hJ, h3] split_ifs <;> simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[rv_hJ, rv_hJ, (h4 a).1, (h4 a).2, map_zero]`. Conclude with `⟨rfl, rfl⟩`. Rewrite using `[rv_hJ]`. Conclude with `(map_ne_zero _).mpr h5`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rv_frame {r : ℕ} {e f : Fin r → Fin I.n → I.E} {z : Fin I.n → I.E} (hF : IsFrame I e f z)
     (v : NumberField.InfinitePlace I.F) :

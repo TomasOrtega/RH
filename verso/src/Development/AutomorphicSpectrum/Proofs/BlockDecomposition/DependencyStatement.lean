@@ -19,7 +19,7 @@ open GlobalTheory.AbLaw (rs_rs rs_self)
 variable {Y : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `Y.sheaf.existsUnique_gluing' O W (fun a => homOfLE (hO a)) hc s h`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_glue {I : Type} (O : I → Y.Opens) {W : Y.Opens} (hO : ∀ a, O a ≤ W)
     (hc : W ≤ ⨆ a, O a) (s : ∀ a, Γ(Y, O a))
@@ -28,11 +28,11 @@ theorem existsUnique_glue {I : Type} (O : I → Y.Opens) {W : Y.Opens} (hO : ∀
   Y.sheaf.existsUnique_gluing' O W (fun a => homOfLE (hO a)) hc s h
 
 /- English proof (translation)
-Establish `hM` using `ReciprocityTheory.ChartRestriction.G.Out.Inh.trivLB_isLB Y`. Set `ch : ∀ W : Y.Opens, GlobalTheory.AbLaw.SecOn (ReciprocityTheory.ChartRestriction.G.Out.Inh.trivLB Y) W ≃ₗ[Γ(Y, W)] Γ(Y, W)` to `fun W => GlobalTheory.AbLaw.SecOn.chart hM PUnit.unit le_top`. Establish `hr : ∀ {W W' : Y.Opens} (h : W' ≤ W) (s : GlobalTheory.AbLaw.SecOn (ReciprocityTheory.ChartRestriction.G.Out.Inh.trivLB Y) W), ch W' (GlobalTheory.AbLaw.SecOn.restrict _ h s) = rs Y h (ch W s)` using `fun {W W'} h s => GlobalTheory.AbLaw.SecOn.chart_restrict hM PUnit.unit le_top h s`. Take `⟨ψ, hψ⟩` from `GlobalTheory.AbLaw.CechOne.cechHOneVanishesOnOpen_of_isAffineOpen hM hU I O hO hc (fun a b => (ch _).symm (φ a b)) (by`. Introduce `a b d W ha hb hd`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(ch W).injective` to reduce the goal to its premises. Rewrite using `[map_add, hr, hr, hr]`. Simplify `hφ a b d W ha hb hd)` using `only [LinearEquiv.apply_symm_apply]`. Use `⟨fun a => ch _ (ψ a), fun a b => ?_⟩` and prove the remaining obligations. Establish `h` using `(LinearEquiv.symm_apply_eq _).1 (hψ a b)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h, map_sub, hr, hr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_split {U : Y.Opens} (hU : IsAffineOpen U) {I : Type} (O : I → Y.Opens)
     (hO : ∀ a, O a ≤ U) (hc : U ≤ ⨆ a, O a) (φ : ∀ a b, Γ(Y, O a ⊓ O b))
@@ -61,7 +61,7 @@ section Pot
 variable {A : Type} (V : A → Y.Opens)
 
 /- English proof (translation)
-Establish `h` using `congrArg (rs Y (le_inf (le_inf ha hb) hd)) (hα a b d)`. Simplify `h` using `only [map_add, rs_rs]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cocycle_on {α : ∀ a b, Γ(Y, V a ⊓ V b)}
     (hα : ∀ a b d, rs Y (le₁₂ V a b d) (α a b) + rs Y (le₂₃ V a b d) (α b d) =
@@ -76,9 +76,9 @@ def IsPot (α : ∀ a b, Γ(Y, V a ⊓ V b)) (U : Y.Opens) (p : ∀ a, Γ(Y, U �
     rs Y (le_inf h ha) (p a) - rs Y (le_inf h hb) (p b) = rs Y (le_inf ha hb) (α a b)
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `exists_split hU (fun a => U ⊓ V a) (fun _ => inf_le_left) (GlobalTheory.AbLaw.CechOne.le_iSup_inf (hV.ge.trans' le_top)) (fun a b => rs Y (inf_le_inf inf_le_right inf_le_right) (α a b)) (by`. Introduce `a b d W ha hb hd`. Simplify using `only [rs_rs]`. Conclude with `cocycle_on V hα a b d W (ha.trans inf_le_right) (hb.trans inf_le_right) (hd.trans inf_le_right))`. Use `⟨ψ, fun a b W h ha hb => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `congrArg (rs Y (le_inf (le_inf h ha) (le_inf h hb))) (hψ a b)`. Simplify using `only [map_sub, rs_rs] at e`. Conclude with `e.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isPot (hV : ⨆ a, V a = ⊤) {α : ∀ a b, Γ(Y, V a ⊓ V b)}
     (hα : ∀ a b d, rs Y (le₁₂ V a b d) (α a b) + rs Y (le₂₃ V a b d) (α b d) =
@@ -99,9 +99,9 @@ theorem exists_isPot (hV : ⨆ a, V a = ⊤) {α : ∀ a b, Γ(Y, V a ⊓ V b)}
 variable {V}
 
 /- English proof (translation)
-Use `existsUnique_glue (fun a => W ⊓ V a) (fun _ => inf_le_left) (GlobalTheory.AbLaw.CechOne.le_iSup_inf (hV.ge.trans' le_top)) _ fun a b => ?_` and prove the remaining obligations. Establish `hW : W ⊓ V a ⊓ (W ⊓ V b) ≤ W` using `inf_le_left.trans inf_le_left`. Establish `ha : W ⊓ V a ⊓ (W ⊓ V b) ≤ V a` using `inf_le_left.trans inf_le_right`. Establish `hb : W ⊓ V a ⊓ (W ⊓ V b) ≤ V b` using `inf_le_right.trans inf_le_right`. Establish `e1` using `hp a b _ (hW.trans h) ha hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hq a b _ hW ha hb`. Simplify using `only [map_sub, rs_rs]`. Rewrite using `[sub_eq_sub_iff_sub_eq_sub]`. Conclude with `e1.trans e2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_diff (hV : ⨆ a, V a = ⊤) {α : ∀ a b, Γ(Y, V a ⊓ V b)} {U W : Y.Opens}
     (h : W ≤ U) {p : ∀ a, Γ(Y, U ⊓ V a)} {q : ∀ a, Γ(Y, W ⊓ V a)} (hp : IsPot V α U p)
@@ -126,14 +126,14 @@ section Coh
 variable {k : Type} [Field k] (s : Y ⟶ Sp k) {A : Type} {V : A → Y.Opens}
 
 /- English proof (translation)
-The claim follows from `(Sec.res s h).commutes c`.
+A detailed English derivation is pending.
 -/
 theorem rs_cst {U W : Y.Opens} (h : W ≤ U) (c : k) :
     rs Y h (GlobalTheory.SmallExtLift.cst s U c) = GlobalTheory.SmallExtLift.cst s W c :=
   (Sec.res s h).commutes c
 
 /- English proof (translation)
-The claim follows from `Algebra.smul_def (A := Sec s U) c x`.
+A detailed English derivation is pending.
 -/
 theorem smul_eq {U : Y.Opens} (c : k) (x : Γ(Y, U)) :
     @HSMul.hSMul k (Sec s U) (Sec s U) _ c x = GlobalTheory.SmallExtLift.cst s U c * x :=
@@ -146,7 +146,7 @@ def diffF (T T' : Y.affineOpens) (h : T'.1 ≤ T.1) : Γ(Y, T'.1) :=
   (existsUnique_diff hV h (hP T) (hP T')).choose
 
 /- English proof (translation)
-The claim follows from `(existsUnique_diff hV h (hP T) (hP T')).choose_spec.1 a`.
+A detailed English derivation is pending.
 -/
 theorem diffF_spec (T T' : Y.affineOpens) (h : T'.1 ≤ T.1) (a : A) :
     rs Y (inf_le_left : T'.1 ⊓ V a ≤ T'.1) (diffF hV hP T T' h) =
@@ -154,9 +154,9 @@ theorem diffF_spec (T T' : Y.affineOpens) (h : T'.1 ≤ T.1) (a : A) :
   (existsUnique_diff hV h (hP T) (hP T')).choose_spec.1 a
 
 /- English proof (translation)
-Use `(existsUnique_diff hV (h'.trans h) (hP T) (hP T'')).unique (existsUnique_diff hV (h'.trans h) (hP T) (hP T'')).choose_spec.1 fun a => ?_` and prove the remaining obligations. Establish `e1` using `congrArg (rs Y (inf_le_inf_right (V a) h')) (diffF_spec hV hP T T' h a)`. Establish `e2` using `diffF_spec hV hP T' T'' h' a`. Simplify using `only [map_sub, rs_rs] at e1`. Rewrite using `[map_add, rs_rs, e2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show rs Y _ (diffF hV hP T T' h) = _ from e1]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem diffF_comp (T T' T'' : Y.affineOpens) (h : T'.1 ≤ T.1) (h' : T''.1 ≤ T'.1) :
     diffF hV hP T T'' (h'.trans h) = rs Y h' (diffF hV hP T T' h) + diffF hV hP T' T'' h' := by
@@ -183,21 +183,19 @@ open Dep
 open GlobalTheory.AbLaw (rs_rs rs_self)
 
 /- English proof (translation)
-Introduce `k _ Y s₀ hsep n r hfin hle hnr A V hV hVa α hα`. Establish `hex` using `fun (i : Fin r) (T : Y.affineOpens) => exists_isPot V hV (hα i) T.2`. Use `choose p hp using hex`. Set `f : Fin r → CatCoh.Z1 (OAff s₀)` to `fun i => diffZ s₀ hV (hp i)`. Establish `hnot : ¬ LinearIndependent k (fun i => CatCoh.H1.mk (OAff s₀) (f i))` using `fun hli => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: r ≤ Module.finrank k (HO1 s₀)` using `(Fintype.card_fin r).symm.le.trans hli.fintype_card_le_finrank`. Use linear arithmetic over natural numbers and integers. Take `⟨c, hc, i₀, hi₀⟩` from `Fintype.not_linearIndependent_iff.1 hnot`. Establish `h0 : CatCoh.H1.mk (OAff s₀) (∑ i, c i • f i) = 0`. Rewrite using `[map_sum]`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hc` using `only [map_smul]`. Take `⟨g, hg⟩` from `CatCoh.H1.mk_eq_zero.1 h0`. Choose the witnesses or unpack the hypotheses as in `⟨G, hG⟩ : ∃ G : ∀ T : Y.affineOpens, Γ(Y, T.1), ∀ (T T' : Y.affineOpens) (h : T'.1 ≤ T.1), G T' - rs Y h (G T) = ∑ i, GlobalTheory.SmallExtLift.cst s₀ _ (c i) * diffF hV (hp i) T T' h := by`. Use `⟨fun T => g (Opposite.op T), fun T T' h => ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun (congrFun (congrFun hg (Opposite.op T)) (Opposite.op T')) (homOfLE (show T' ≤ T from h)).op`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ev : CatCoh.Z1 (OAff s₀) →+ Γ(Y, T'.1)` to `{ toFun := fun z => z.1 (Opposite.op T) (Opposite.op T') (homOfLE (show T' ≤ T from h)).op map_zero' := rfl map_add' := fun _ _ => rfl }`. Conclude with `e.trans ((map_sum ev (fun i => c i • f i) Finset.univ).trans (Finset.sum_congr rfl fun i _ => smul_eq s₀ (c i) _))`. Set `P : ∀ T : Y.affineOpens, ∀ a, Γ(Y, T.1 ⊓ V a)` to `fun T a => ∑ i, GlobalTheory.SmallExtLift.cst s₀ _ (c i) * p i T a + rs Y inf_le_left (G T)`. Establish `hPot : ∀ (T : Y.affineOpens) (a b : A) (W : Y.Opens) (h : W ≤ T.1) (ha : W ≤ V a) (hb : W ≤ V b), rs Y (le_inf h ha) (P T a) - rs Y (le_inf h hb) (P T b) = rs Y (le_inf ha hb) (∑ i, GlobalTheory.SmallExtLift.cst s₀ _ (c i) * α i a b)`. Introduce `T a b W h ha hb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [P, map_add, map_sum, map_mul, rs_rs, rs_cst]`. Simplify using `only [← hp _ T a b W h ha hb, mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `hPres : ∀ (T T' : Y.affineOpens) (h : T'.1 ≤ T.1) (a : A), rs Y (inf_le_inf_right _ h) (P T a) = P T' a`. Introduce `T T' h a`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `congrArg (rs Y (inf_le_left : T'.1 ⊓ V a ≤ T'.1)) (hG T T' h)`. Simplify using `only [map_sub, map_sum, map_mul, rs_rs, rs_cst, diffF_spec, mul_sub, Finset.sum_sub_distrib] at e`. Simplify using `only [P, map_add, map_sum, map_mul, rs_rs, rs_cst]`. Take the linear combination `-e`. Use `⟨c, fun a => rs Y (le_inf le_rfl le_rfl) (P ⟨V a, hVa a⟩ a), fun h => hi₀ (by rw [h]; rfl), fun a b => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T' : Y.affineOpens` to `⟨V a ⊓ V b, IsAffineOpen.inf (hVa a) (hVa b)⟩`. Establish `e` using `hPot T' a b T'.1 le_rfl inf_le_left inf_le_right`. Rewrite `e` using `[← hPres ⟨V a, hVa a⟩ T' inf_le_left a, ← hPres ⟨V b, hVa b⟩ T' inf_le_right b]`. Simplify using `only [rs_rs] at e ⊢`. Rewrite `e` using `[rs_self]`.
-
-Conclude with `e.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem depSt : DepSt := by
   intro k _ Y s₀ hsep n r hfin hle hnr A V hV hVa α hα

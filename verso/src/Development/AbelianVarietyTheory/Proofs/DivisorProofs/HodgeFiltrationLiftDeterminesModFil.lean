@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.KSGraph
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `ConnectedSpace (PrimeSpectrum (DualNumber k))`. Establish `: PreconnectedSpace (PrimeSpectrum (DualNumber k))`. Use `⟨isPreconnected_of_forall (IsLocalRing.closedPoint (DualNumber k)) fun y _ ↦ ⟨closure {y}, Set.subset_univ _, ?_, subset_closure rfl, isPreconnected_singleton.closure⟩⟩` and prove the remaining obligations. Conclude with `(IsLocalRing.specializes_closedPoint y).mem_closure`. Conclude with `⟨inferInstance⟩`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem connectedSpace_sp_dualNumber (k : Type) [Field k] : ConnectedSpace (Sp (DualNumber k)) := by
   change ConnectedSpace (PrimeSpectrum (DualNumber k))
@@ -24,7 +24,7 @@ theorem connectedSpace_sp_dualNumber (k : Type) [Field k] : ConnectedSpace (Sp (
   exact ⟨inferInstance⟩
 
 /- English proof (translation)
-Use `hA'.smooth` as an intermediate fact. Use `hA'.geomConnected` as an intermediate fact. Use `connectedSpace_sp_dualNumber k` as an intermediate fact. Establish `: ConnectedSpace A'.left` using `GeometricallyConnected.connectedSpace A'.hom A'.hom.isOpenMap`. Conclude with `exists_dim_of_preconnected A'.hom (Classical.arbitrary _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_dim {k : Type} [Field k] (A' : Over (Sp (DualNumber k))) [GrpObj A']
     (hA' : IsAbelianScheme A') : ∃ g, SmoothOfRelativeDimension g A'.hom := by
@@ -35,15 +35,15 @@ theorem exists_dim {k : Type} [Field k] (A' : Over (Sp (DualNumber k))) [GrpObj 
   exact exists_dim_of_preconnected A'.hom (Classical.arbitrary _)
 
 /- English proof (translation)
-Introduce `k _ A₀ _ A' _ i h hA' x hx y y' hy`. Take `⟨g, hg⟩` from `exists_dim A' hA'`. Establish `P` using `GlobalTheory.abelianDeRham`. Establish `hA₀` using `PolPull.isAbelianScheme_of_isGrpPullback hA' h`. Establish `g₀` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback h.1 hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `(P.2.1 k A₀ g hA₀ g₀).1`. Establish `reg` using `ksRegular_of_isAbelianScheme P h hA' hg`. Prove the components needed by the constructor for the conclusion. Introduce `hy'`. Take `⟨w, hw, -⟩` from `hL.1 y`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hw', -⟩` from `hL.1 y'`. Establish `e` using `(reg x hx).unique ⟨y, hy, hw⟩ ⟨y', hy', hw'⟩`. Substitute `e` using the available equality. Conclude with `hw'.sub_mem hw`. Introduce `hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v, ⟨z, hz', -⟩, -⟩` from `reg (y' - y) hz`. Take `⟨d, hd, e⟩` from `hy`. Take `⟨d', hd', e'⟩` from `hz'`. Use `⟨d + (TrivSqZeroExt.inr 1 : DualNumber k) • d', add_mem hd (Submodule.smul_mem _ _ hd'), fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, e, e', smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem isFilLift_iff_sub_mem : ∀ (k : Type) [Field k] (A₀ : Over (Sp k)) [GrpObj A₀] (A' : Over (Sp (DualNumber k))) [GrpObj A'] (i : A₀.left ⟶ A'.left) (h : IsGrpPullback A₀ A' (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) i), IsAbelianScheme A' → ∀ x ∈ Fil A₀, ∀ y y' : HdR A₀, IsFilLift h x y → (IsFilLift h x y' ↔ y' - y ∈ Fil A₀) := by
   intro k _ A₀ _ A' _ i h hA' x hx y y' hy

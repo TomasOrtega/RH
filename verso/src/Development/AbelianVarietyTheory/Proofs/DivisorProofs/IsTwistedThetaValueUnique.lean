@@ -12,15 +12,15 @@ open GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.UPoinc.USum
 namespace GlobalTheory.UPoinc.USum
 
 /- English proof (translation)
-Take `⟨α, U, hα, hU, e⟩` from `H`. Take `⟨α', U', hα', hU', e'⟩` from `H'`. Establish `hG : GlobalFnsSt` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Establish `hc` using `GlobalTheory.SymLiftOdd.symLift_unique hG P.isAb P.isLB hN U U' hU hU'`. Take `⟨c, hcv⟩` from `GlobalTheory.SymLiftOdd.exists_const P.isLB (fst T P.A).left (lift (𝟙 T) (1 : T ⟶ P.A)).left (by rw [← Over.comp_left, lift_fst]; rfl) (GlobalTheory.SymLiftOdd.surj_fst hG P.isAb T) (fun U _ h => (Fintype.prod_sum_type _).trans (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel]))`. Use the proof step `(DVR.mulGen_isGen P.L _ _ _ _ α (LB.invGen P.L _ _ α') hα (DVR.invGen_isGen _ _ _ _ hα'))`. Use `fn_ext fun y _ => ?_` and prove the remaining obligations. Use `choose J hJ using fun χ : T.left ⟶ P.A.left => exists_chart P.isLB (χ y)`. Establish `hJ' : Good P.L y J` using `hJ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r : ∀ w : T ⟶ P.A, val α (𝟙 _ ≫ (ptSecT P.A w).left) y J = val α' (𝟙 _ ≫ (ptSecT P.A w).left) y J * gm (𝟙 T.left) y ⊤ c` using `fun w => by`. Establish `k` using `hcv _ (𝟙 _ ≫ (ptSecT P.A w).left) y J hJ'`. Establish `k₂ : (𝟙 _ ≫ (ptSecT P.A w).left) ≫ (fst T P.A).left = 𝟙 T.left`. Rewrite using `[Category.id_comp, ← Over.comp_left, ptSecT, lift_fst]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `k` using `[k₂, val_mul hJ', val_inv]`. Rewrite using `[← k, mul_comm, inv_mul_cancel_right]`. Establish `t : GlobalTheory.CommPairing.tval U (𝟙 _ ≫ (ptSecT P.A h).left) y J = GlobalTheory.CommPairing.tval U' (𝟙 _ ≫ (ptSecT P.A h).left) y J` using `val_corr hJ' hc _`. Establish `e₁` using `e _ (𝟙 _) y J hJ'`. Establish `e₂` using `e' _ (𝟙 _) y J hJ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e₁` using `[r, r, t]`. Use `(Units.mul_left_inj (val α' (𝟙 _ ≫ (ptSecT P.A h).left) y J * gm (𝟙 T.left) y ⊤ c * val τ (𝟙 _ ≫ β.left) y J)).1 (e₁.trans ?_)` and prove the remaining obligations. Simplify using `only [Units.val_mul] at e₂ ⊢`. Take the linear combination `(-(gm (𝟙 T.left) y ⊤ c).val) * e₂`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isTwVal_unique {B : Scheme.{0}} (P : PolAV B) (N m : ℕ) {T₀ T : Over B} (θ : LB.Sec (LPow P.A P.L 1 T₀))
     {z₀ : T₀ ⟶ P.A} (τ : LB.Gen (LB.LinComb P.L (Y := T₀.left) (K := Fin 1) (fun _ => z₀.left) (fun _ => 1)))

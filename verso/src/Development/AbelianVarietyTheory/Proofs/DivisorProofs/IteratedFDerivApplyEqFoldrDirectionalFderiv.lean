@@ -8,11 +8,11 @@ open scoped Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ g hg j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `m x`. Simplify using `[iteratedFDeriv_zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `m x`. Rewrite using `[iteratedFDeriv_succ_apply_left, List.ofFn_succ, List.foldr_cons]`. Establish `hfun : (List.ofFn (fun i : Fin n => m i.succ)).foldr (fun v g' => fun z => fderiv ℝ g' z v) g = fun z => iteratedFDeriv ℝ n g z (Fin.tail m)`. Use function extensionality and compare the values at `z`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(ih (Fin.tail m) z).symm`. Simplify using `only [hfun]`. Apply the tactic sequence `have hd : DifferentiableAt ℝ (iteratedFDeriv ℝ n g) x := (hg.differentiable_iteratedFDeriv (by first | exact_mod_cast ENat.coe_lt_top n | simp | exact WithTop.coe_lt_coe.2 (ENat.coe_lt_top n))) x`. Rewrite using `[fderiv_continuousMultilinear_apply_const_apply hd]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iteratedFDeriv_apply_eq_foldr_fderiv :
     ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] (g : E → ℂ), ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) g →

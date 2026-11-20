@@ -7,9 +7,9 @@ namespace GroundTheory.Heights₂.Heights
 namespace PSymplGcd
 
 /- English proof (translation)
-Take `⟨a', ha'⟩` from `Int.gcd_dvd_left a b`. Take `⟨b', hb'⟩` from `Int.gcd_dvd_right a b`. Use `⟨(Int.gcd a b : ℤ), a', b', Int.gcdA a b, Int.gcdB a b, ha', hb', ?_⟩` and prove the remaining obligations. Establish `h` using `Int.gcd_eq_gcd_ab a b`. Apply `mul_left_cancel₀ hc` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `(-Int.gcdA a b) * ha' - Int.gcdB a b * hb' - h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem of_gcd_ne_zero (a b : ℤ) (hc : (Int.gcd a b : ℤ) ≠ 0) :
     ∃ c a' b' x y : ℤ, a = c * a' ∧ b = c * b' ∧ x * a' + y * b' = 1 := by
@@ -23,9 +23,9 @@ theorem of_gcd_ne_zero (a b : ℤ) (hc : (Int.gcd a b : ℤ) ≠ 0) :
 end PSymplGcd
 
 /- English proof (translation)
-Introduce `a b`. Distinguish the cases in `hc : (Int.gcd a b : ℤ) = 0`. Establish `h0 : Int.gcd a b = 0` using `by exact_mod_cast hc`. Take `⟨rfl, rfl⟩` from `Int.gcd_eq_zero_iff.mp h0`. Conclude with `⟨0, 1, 0, 1, 0, by ring, by ring, by ring⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `PSymplGcd.of_gcd_ne_zero a b hc`.
+A detailed English derivation is pending.
 -/
 theorem SymplGcd.proof : SymplGcd.Statement := by
   intro a b

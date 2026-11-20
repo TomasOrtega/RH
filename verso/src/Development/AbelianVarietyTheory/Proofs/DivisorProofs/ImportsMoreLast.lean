@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.RealEmbeddingLemmaFirst
 
 /- English proof (translation)
-Introduce `d1 m n k _ M N`. Conclude with `Matrix.map_mul (f := Complex.ofRealHom)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : (let d1 : {m n : Type} → Matrix m n ℝ → Matrix m n ℂ := @(fun {m n : Type} (M : Matrix m n ℝ) ↦ Matrix.map M fun (t : ℝ) ↦ (↑t : ℂ)); ∀ {m n k : Type} [inst : Fintype n] (M : Matrix m n ℝ) (N : Matrix n k ℝ), d1 (M * N) = d1 M * d1 N) := by
   intro d1 m n k _ M N

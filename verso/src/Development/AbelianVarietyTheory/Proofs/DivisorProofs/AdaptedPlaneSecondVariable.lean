@@ -17,15 +17,15 @@ noncomputable section
 namespace GlobalTheory.MixW
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he g t h₁ m hm u hu Φ hΦ`. Establish `pr : ∀ x, ∀ Ψ ∈ schA F (Fin n × Fin d), om x Ψ ∈ schA F (Fin n × Fin d)` using `fun x Ψ hΨ => (IsUWeilPair.isUSplitting hP.weil).pres x Ψ hΨ`. Take `⟨m₁, hm₁⟩` from `GlobalTheory.T.skew_adapted_plane_pair_of_pair F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ t`. Establish `hm₂ : IsLevi H' 1 h₁ (m₁⁻¹ * m)`. Take `⟨a1, a2, a3⟩` from `hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b1, b2, b3⟩` from `hm₁`. Establish `hmat : ∀ a b : UA σ W.J, mat (a * b) = mat a * mat b` using `fun a b => rfl`. Establish `hinv : mat m₁⁻¹ * mat m₁ = 1` using `by rw [← hmat, inv_mul_cancel]; rfl`. Establish `hone : mat (1 : UA σ W₁.J) = 1` using `rfl`. Rewrite `b3` using `[hone, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmat, ← Matrix.mulVec_mulVec, a1, ← b1, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec, Units.val_one, one_smul]`. Rewrite using `[hmat, ← Matrix.mulVec_mulVec, a2, ← b2, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec, inv_one, Units.val_one, map_one, one_smul]`. Rewrite using `[hmat, Matrix.mul_assoc, a3, ← Matrix.mul_assoc, ← b3, ← Matrix.mul_assoc, hinv, Matrix.one_mul, b3]`. Establish `hsplit : m = m₁ * (m₁⁻¹ * m)` using `by group`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlev : e (om (1, m) Φ) = ((χX t : ℂ) * (((absE F E t : ℝ) ^ ((n : ℝ) / 2) : ℝ) : ℂ)) • om₁ (1, h₁) (e Φ)`. Establish `h1 : om (1, m) = om (1, m₁) * om (1, m₁⁻¹ * m)`. Apply the tactic sequence `rw [← map_mul]; congr 1; ext <;> simp`. Rewrite using `[h1, Module.End.mul_apply, GlobalTheory.T.skew_adapted_plane_seesaw_identity hK F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he t m₁ hm₁ _ (pr _ _ hΦ), GlobalTheory.T.ev_om_levi_eq_om_ev_of_isAdapted hK F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ …`. Establish `h2 : om (g, u * m) = om (g, 1) * om (1, u) * om (1, m)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [← map_mul, ← map_mul]; congr 1; ext <;> simp`. Rewrite using `[h2, Module.End.mul_apply, Module.End.mul_apply, GlobalTheory.T.skew_adapted_plane_theta_integral hK F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he g _ (pr _ _ (pr _ _ hΦ)), GlobalTheory.T.skew_adapted_plane_restriction hK F E σ B n d X W M χX χW …`. Apply the tactic sequence `congr 3; ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem evalZero_law : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

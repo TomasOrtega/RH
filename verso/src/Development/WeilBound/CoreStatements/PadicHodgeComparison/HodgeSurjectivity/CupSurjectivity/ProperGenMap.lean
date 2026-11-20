@@ -17,7 +17,7 @@ namespace CrystallineSemistableComparison.Onto
 open Pb HT
 
 /- English proof (translation)
-Use `conv_rhs => rw [← b.sum_dual_apply_smul_coord F]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hf, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bsum {K C V : Type*} [Field K] [CommRing C] [AddCommGroup V] [Module K V] (κ : K →+* C)
     (f : Module.Dual K V →+ C) (hf : ∀ (k : K) φ, f (k • φ) = κ k * f φ) {m : ℕ} (b : Module.Basis (Fin m) K V)
@@ -28,7 +28,7 @@ theorem bsum {K C V : Type*} [Field K] [CommRing C] [AddCommGroup V] [Module K V
   rw [hf, mul_comm]
 
 /- English proof (translation)
-Establish `: F e = ∑ s, b.coord s e * F (b s)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, map_sum]`. Simplify using `[map_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem esum {K C V : Type*} [Field K] [CommRing C] [AddCommGroup V] [Module K V] (κ : K →+* C) {m : ℕ}
     (b : Module.Basis (Fin m) K V) (F : Module.Dual K V) (e : V) : ∑ s, κ (b.coord s e) * κ (F (b s)) = κ (F e) := by
@@ -41,14 +41,14 @@ theorem esum {K C V : Type*} [Field K] [CommRing C] [AddCommGroup V] [Module K V
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Conclude with `LinearMap.baseChange_tmul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pullV_toV {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) (n : ℕ) (x : N.T n) :
     Model.pullV u hu n (N.toV n x) = M.toV n (Model.pullT u hu n x) := by
   exact LinearMap.baseChange_tmul _ _ _
 
 /- English proof (translation)
-Establish `hp : IsProper M.p` using `GlobalTheory.CommonModel.isProper_of_isProjOver h.1.1`. Establish `hs : Smooth M.p` using `h.2`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem sm_gen {M : Model l K} (h : M.Sm) : IsProper M.q ∧ Smooth M.q := by
   have hp : IsProper M.p := GlobalTheory.CommonModel.isProper_of_isProjOver h.1.1
@@ -56,7 +56,7 @@ theorem sm_gen {M : Model l K} (h : M.Sm) : IsProper M.q ∧ Smooth M.q := by
   exact ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Establish `h1` using `(sm_gen hM).1`. Establish `h2` using `(sm_gen hN).1`. Establish `h3 : IsProper (Model.genMap u hu ≫ N.q)` using `by rw [Model.genMap_q]; exact h1`. Conclude with `IsProper.of_comp (Model.genMap u hu) N.q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem proper_genMap {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) (hM : M.Sm) (hN : N.Sm) :
     IsProper (Model.genMap u hu) := by
@@ -66,7 +66,7 @@ theorem proper_genMap {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p)
   exact IsProper.of_comp (Model.genMap u hu) N.q
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Model.genMap, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc, Category.id_comp]`. Rewrite using `[h, Category.comp_id]`. Simplify using `[Model.genMap]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gen_sec {M P : Model l K} (Δ : M.X ⟶ P.X) (p : P.X ⟶ M.X) (hΔ : Δ ≫ P.p = M.p) (hp : p ≫ M.p = P.p)
     (h : Δ ≫ p = 𝟙 _) : Model.genMap Δ hΔ ≫ Model.genMap p hp = 𝟙 _ := by
@@ -76,7 +76,7 @@ theorem gen_sec {M P : Model l K} (Δ : M.X ⟶ P.X) (p : P.X ⟶ M.X) (hΔ : Δ
   · simp [Model.genMap]
 
 /- English proof (translation)
-Substitute `hp hw` using the available equality. Conclude with `hK K W Z Y q i π D d hd hB e he a n a' n' c y hc hy`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem killR (hK : HodgeKill) (K : Type) [Field K] [CharZero K] (W Z Y : Scheme.{0}) (q : Z ⟶ Spec (CommRingCat.of K))
     [IsProper q] [Smooth q] (i : W ⟶ Z) (π : Y ⟶ Z) [IsProper π] (p : Y ⟶ Spec (CommRingCat.of K)) (hp : π ≫ q = p)
@@ -88,7 +88,7 @@ theorem killR (hK : HodgeKill) (K : Type) [Field K] [CharZero K] (W Z Y : Scheme
   exact hK K W Z Y q i π D d hd hB e he a n a' n' c y hc hy
 
 /- English proof (translation)
-Substitute `hp₁` using the available equality. Conclude with `hS K X X' P q q' p₁ p₂ hP a i a' j c n ha h φ`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem slantR (hS : Slant) (K : Type) [Field K] [CharZero K] (X X' P : Scheme.{0}) (q : X ⟶ Spec (CommRingCat.of K))
     (q' : X' ⟶ Spec (CommRingCat.of K)) [IsProper q] [Smooth q] [IsProper q'] [Smooth q'] (p₁ : P ⟶ X) (p₂ : P ⟶ X')
@@ -106,7 +106,7 @@ def cupL (hC : CupLaws) {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (C
   ((hC K X q).1 ha h).choose
 
 /- English proof (translation)
-The claim follows from `((hC K X q).1 ha h).choose_spec x y`.
+A detailed English derivation is pending.
 -/
 theorem cupL_apply (hC : CupLaws) {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) {a a' c i j n : ℕ}
     (ha : a + a' = c) (h : i + j = n) (x : Hdg q a i) (y : Hdg q a' j) : cupL hC q ha h x y = cupH q ha h x y :=

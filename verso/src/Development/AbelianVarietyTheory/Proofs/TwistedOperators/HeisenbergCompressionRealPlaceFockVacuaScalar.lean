@@ -17,9 +17,9 @@ namespace GlobalTheory.VacCompress
 open GlobalTheory.WeilVacMove
 
 /- English proof (translation)
-Establish `key : ∀ s : ℝ, HasDerivAt (fun t : ℝ => Complex.exp (-(a * ((t : ℂ) * (t : ℂ)) / 2)) * c t) 0 s`. Introduce `s`. Establish `e1 : HasDerivAt (fun x : ℂ => -(a * (x * x) / 2)) (-(a * (1 * (s : ℂ) + (s : ℂ) * 1) / 2)) (s : ℂ)` using `((((hasDerivAt_id (s : ℂ)).mul (hasDerivAt_id (s : ℂ))).const_mul a).div_const 2).neg`. Establish `e3` using `(e1.cexp.comp_ofReal).mul (h s)`. Conclude with `e3.congr_deriv (by ring)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `is_const_of_deriv_eq_zero (fun s => (key s).differentiableAt) (fun s => (key s).deriv) 1 0`. Simplify using `only [Complex.ofReal_one, Complex.ofReal_zero, mul_one, mul_zero, zero_div, neg_zero, Complex.exp_zero, one_mul] at hc`. Rewrite using `[← hc, ← mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gauss_ode (c : ℝ → ℂ) (a : ℂ) (h : ∀ s : ℝ, HasDerivAt c ((s : ℂ) * a * c s) s) :
     c 1 = Complex.exp (a / 2) * c 0 := by
@@ -38,15 +38,15 @@ theorem gauss_ode (c : ℝ → ℂ) (a : ℂ) (h : ∀ s : ℝ, HasDerivAt c ((s
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨-, hfin, hcomp⟩` from `GlobalTheory.WeilVacMove.isLineAt_lineAt hθ τ (compAt θ τ w)`. Take `⟨-, -, -, -, hfi, -, hth⟩` from `GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D`. Use extensionality with `i j`. Rewrite using `[← sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Apply `hσ.ext` to reduce the goal to its premises. Establish `h1 : finPart D (lineAt θ τ (compAt θ τ w) 1 i j) = 0`. Use `congrFun (congrFun (hfin 1) i) j` as an intermediate fact. Simplify `this` using `[Matrix.map_apply]`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.wAt, map_sub, map_mul, hfi τ, h1]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Introduce `τ'`. Establish `h2` using `congrFun (congrFun (hcomp 1 τ') i) j`. Distinguish the cases in `hτ : τ' = τ`. Substitute `hτ` using the available equality. Rewrite `h2` using `[if_pos rfl, Complex.ofReal_one, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2' : θ τ' (infPart D (lineAt θ τ' (compAt θ τ' w) 1 i j)) = θ τ' (infPart D (w i j))` using `h2`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.wAt, map_sub, map_mul, (hth θ hθ τ').1, one_mul, h2']`. Conclude with `sub_self _`. Establish `h3` using `(hth θ hθ τ').2 τ (Ne.symm hτ)`. Rewrite `h2` using `[if_neg hτ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2' : θ τ' (infPart D (lineAt θ τ (compAt θ τ w) 1 i j)) = 0` using `h2`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.wAt, map_sub, map_mul, h3, zero_mul, zero_sub, neg_eq_zero, h2']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wAt_eq_lineAt (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what₂.Tau) (w : Mx D m n) :
     wAt (.inr τ) w = lineAt θ τ (compAt θ τ w) 1 := by
@@ -74,15 +74,13 @@ theorem wAt_eq_lineAt (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what₂.Tau) (w : 
       simp only [GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.wAt, map_sub, map_mul, h3, zero_mul, zero_sub, neg_eq_zero, h2']
 
 /- English proof (translation)
-Establish `hG : (fun t : ℝ => heisO ψ S T (L t) (heisO ψ S T v f) x) = fun t : ℝ => ψ (symplOH S T x v) * Complex.exp ((t : ℂ) * (-2 * phase lam S T (L 1) v)) * heisO ψ S T (L t) f (x + v)`. Use function extensionality and compare the values at `t`. Establish `e1` using `GlobalTheory.WeilVacMove.psi_sympl_line hl hlam hL hL0 v t`. Establish `hX : Complex.exp ((t : ℂ) * (-2 * phase lam S T (L 1) v)) = (Complex.exp ((t : ℂ) * phase lam S T (L 1) v))⁻¹ * (Complex.exp ((t : ℂ) * phase lam S T (L 1) v))⁻¹`. Rewrite using `[← Complex.exp_neg, ← Complex.exp_add]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hE` using `Complex.exp_ne_zero ((t : ℂ) * phase lam S T (L 1) v)`. Use `show ψ (symplOH S T x (L t)) * (ψ (symplOH S T (x + L t) v) * f (x + L t + v)) = ψ (symplOH S T x v) * Complex.exp ((t : ℂ) * (-2 * phase lam S T (L 1) v)) * (ψ (symplOH S T (x + v) (L t)) * f (x + v + L t))`. Rewrite using `[GlobalTheory.WeilVacMove.symplOH_add_left, GlobalTheory.WeilVacMove.symplOH_add_left, GlobalTheory.WeilVacMove.symplOH_skew S T v (L t), AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv, e1, add_right_comm x (L t) v, hX]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `hH` using `(GlobalTheory.WeilVacMove.hasDerivAt_zero_and_isTheta hψ hL hL0 hf).1 (x + v)`. Establish `hexp : HasDerivAt (fun t : ℝ => Complex.exp ((t : ℂ) * (-2 * phase lam S T (L 1) v))) (Complex.exp (((0 : ℝ) : ℂ) * (-2 * phase lam S T (L 1) v)) * (1 * (-2 * phase lam S T (L 1) v))) 0` using `(((hasDerivAt_id ((0 : ℝ) : ℂ)).mul_const _).cexp).comp_ofReal`. Establish `hD` using `(hexp.const_mul (ψ (symplOH S T x v))).mul hH`. Use `show deriv (fun t : ℝ => heisO ψ S T (L t) (heisO ψ S T v f) x) 0 = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hD' : HasDerivAt (fun t : ℝ => ψ (symplOH S T x v) * Complex.exp ((t : ℂ) * (-2 * phase lam S T (L 1) v)) * heisO ψ S T (L t) f (x + v)) _ 0` using `hD`. Rewrite using `[hG, hD'.deriv]`. Establish `hv : heisO ψ S T v f x = ψ (symplOH S T x v) * f (x + v)` using `rfl`. Rewrite using `[hv, map_zero, GlobalTheory.WeilVacMove.heisO_zero]`. Simplify using `only [Complex.ofReal_zero, zero_mul, Complex.exp_zero]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dLine_heisO (hψ : IsStdChar D ψ (-1)) {lam : AF D.host.F →+ ℂ} (hl : Continuous lam)
     (hlam : ∀ a, sndA D.host.F a = 0 → ψ a = Complex.exp (lam a)) {L : ℝ →+ WO S T} (hL : Continuous L)
@@ -122,25 +120,23 @@ theorem dLine_heisO (hψ : IsStdChar D ψ (-1)) {lam : AF D.host.F →+ ℂ} (hl
   ring
 
 /- English proof (translation)
-Establish `U` using `GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ`. Use `set J := Complex.I • (sT * z * sS) with hJ`. Take `⟨hLc, hL0, -⟩` from `GlobalTheory.WeilVacMove.isLineAt_lineAt hθ τ z`. Take `⟨hLc', hL0', -⟩` from `GlobalTheory.WeilVacMove.isLineAt_lineAt hθ τ J`. Use `set L := lineAt θ τ z with hLeq`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L' := lineAt θ τ J with hLJeq`. Use `set Dz := Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z with hDz`. Use `set DJ := Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ J with hDJ`. Establish `vf : Dz f + Complex.I • DJ f = 0` using `hvf z`. Establish `vg : Dz g + Complex.I • DJ g = 0` using `hvg z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp : ∀ (u : WO S T) (s : ℝ), phase lam S T u (L s) = (s : ℂ) * phase lam S T u (L 1)`. Introduce `u s`. Establish `hc : Continuous ((phase lam S T u).comp L)` using `hl.comp (GlobalTheory.WeilVacMove.continuous_symplOH S T hLc continuous_const)`. Conclude with `GlobalTheory.WeilVacMove.additive_real _ hc s`. Establish `key : ∀ s : ℝ, HasDerivAt (fun t : ℝ => ipO μ 𝓕 (heisO ψ S T (L t) f) g) ((s : ℂ) * -(phase lam S T (L 1) (L 1) + Complex.I * phase lam S T (L' 1) (L 1)) * ipO μ 𝓕 (heisO ψ S T (L s) f) g) s`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `s`. Use `set h := heisO ψ S T (L s) f with hheq`. Establish `hh : IsThetaFunO ψ S T h` using `GlobalTheory.WeilVacMove.isTheta_heisO_real hψ (hL0 s) hf`. Take `⟨hder, hXs⟩` from `GlobalTheory.T.hasDerivAt_heisenbergMatrixCoeff_realLine_skew D ψ θ S T μ 𝓕 hψ hθ hμ h g hh hg τ z`. Establish `hYs` using `(GlobalTheory.T.hasDerivAt_heisenbergMatrixCoeff_realLine_skew D ψ θ S T μ 𝓕 hψ hθ hμ h g hh hg τ J).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : HasDerivAt (fun t : ℝ => ipO μ 𝓕 (heisO ψ S T (L (t + s)) f) g) (ipO μ 𝓕 (Dz h) g) (s - s)`. Rewrite using `[sub_self]`. Use `hder.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show ipO μ 𝓕 (heisO ψ S T (L (t + s)) f) g = ipO μ 𝓕 (heisO ψ S T (L t) h) g`. Rewrite using `[hheq, GlobalTheory.WeilVacMove.heisO_line_add hψ hLc hL0 t s f]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hd` using `(h0.comp_sub_const s s)`. Simplify using `only [sub_add_cancel] at hd`. Use `hd.congr_deriv ?_` and prove the remaining obligations. Establish `hDzh` using `GlobalTheory.WeilVacMove.isTheta_dRho hψ hθ τ z hh`. Establish `hDJh` using `GlobalTheory.WeilVacMove.isTheta_dRho hψ hθ τ J hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hDJg` using `GlobalTheory.WeilVacMove.isTheta_dRho hψ hθ τ J hg`. Establish `cA : Dz h + Complex.I • DJ h = (-2 * (phase lam S T (L 1) (L s) + Complex.I * phase lam S T (L' 1) (L s))) • h`. Use function extensionality and compare the values at `x`. Establish `c1 : Dz h x = -2 * phase lam S T (L 1) (L s) * h x + ψ (symplOH S T x (L s)) * Dz f (x + L s)` using `dLine_heisO hψ hl hlam hLc hL0 (L s) hf x`. Establish `c2 : DJ h x = -2 * phase lam S T (L' 1) (L s) * h x + ψ (symplOH S T x (L s)) * DJ f (x + L s)` using `dLine_heisO hψ hl hlam hLc' hL0' (L s) hf x`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `c3` using `congrFun vf (x + L s)`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at c3 ⊢`. Rewrite using `[c1, c2]`. Take the linear combination `ψ (symplOH S T x (L s)) * c3`. Establish `e3 : ipO μ 𝓕 h (Dz g) = Complex.I * ipO μ 𝓕 h (DJ g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hz : Dz g = (-Complex.I) • DJ g` using `by rw [neg_smul]; exact eq_neg_of_add_eq_zero_left vg`. Rewrite using `[hz, ((U h (DJ g) hh hDJg).2.2.1 (-Complex.I)).2]`. Simplify using `[Complex.conj_I]`. Establish `e4 : ipO μ 𝓕 (Dz h + Complex.I • DJ h) g = ipO μ 𝓕 (Dz h) g + Complex.I * ipO μ 𝓕 (DJ h) g`. Rewrite using `[((U (Dz h) g hDzh hg).2.2.2.1 _ (GlobalTheory.WeilVacMove.isTheta_smul Complex.I hDJh)).1, ((U (DJ h) g hDJh hg).2.2.1 Complex.I).1]`.
-
-Rewrite `e4` using `[cA, ((U h g hh hg).2.2.1 _).1, hp (L 1) s, hp (L' 1) s]`. Take the linear combination `(-1 / 2 : ℂ) * e4 + (1 / 2 : ℂ) * hXs - (Complex.I / 2) * hYs - (1 / 2 : ℂ) * e3`. Establish `hfin` using `gauss_ode _ _ key`. Simplify using `only [map_zero, GlobalTheory.WeilVacMove.heisO_zero] at hfin`. Conclude with `hfin`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem flow_lemma {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     (hμ : IsCovolOne (ratL T S) μ 𝓕) {lam : AF D.host.F →+ ℂ} (hl : Continuous lam)
@@ -212,9 +208,9 @@ private theorem flow_lemma {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (hψ : 
   exact hfin
 
 /- English proof (translation)
-Introduce `D ψ θ S T μ 𝓕 hψ hθ hμ τ sS sT _ _ w`. Take `⟨lam, hl, hlam⟩` from `GlobalTheory.WeilVacMove.exists_log hψ`. Use `⟨starRingEnd ℂ (Complex.exp (-(phase lam S T (lineAt θ τ (compAt θ τ w) 1) (lineAt θ τ (compAt θ τ w) 1) + Complex.I * phase lam S T (lineAt θ τ (Complex.I • (sT * compAt θ τ w * sS)) 1) (lineAt θ τ (compAt θ τ w) 1)) / 2)), ?_⟩` and prove the remaining obligations. Introduce `f g hf hg hvf hvg`. Establish `U` using `GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨-, hL0, -⟩` from `GlobalTheory.WeilVacMove.isLineAt_lineAt hθ τ (compAt θ τ w)`. Establish `h1` using `GlobalTheory.WeilVacMove.isTheta_heisO_real hψ (hL0 1) hf`. Rewrite using `[wAt_eq_lineAt hθ τ w, (U _ g h1 hg).2.1, (U f g hf hg).2.1, flow_lemma hψ hθ hμ hl hlam τ sS sT (compAt θ τ w) hf hg hvf hvg, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem compress : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsStdChar D ψ (-1) → IsInfFam θ → IsCovolOne (ratL T S) μ 𝓕 → ∀ (τ : D.what₂.Tau) (sS : Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : Matrix (Fin T.rank) (Fin T.rank) ℂ), IsCartanInv (gramAt D S τ) sS → IsCartanInv (gramAt D T τ) sT → ∀ w : WO S T, ∃ γ : ℂ, ∀ f g : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → IsFockVacAt (heisO ψ S T) θ τ (cplxO sS sT) f → IsFockVacAt (heisO ψ S T) θ τ (cplxO sS sT) g → ipO μ 𝓕 g (heisO ψ S T (wAt (.inr τ) w) f) = γ * ipO μ 𝓕 g f := by
   intro D ψ θ S T μ 𝓕 hψ hθ hμ τ sS sT _ _ w

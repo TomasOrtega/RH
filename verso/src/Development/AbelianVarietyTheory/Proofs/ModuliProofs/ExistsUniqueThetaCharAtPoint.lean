@@ -26,14 +26,14 @@ section Transfer
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `(CubeValues.le_preimage_wchart x L (fun _ : PUnit => φ) J).trans ⟨fun h => h _, fun h _ => h⟩`.
+A detailed English derivation is pending.
 -/
 theorem top_le_pull_iff (L : LB X) (φ : Y ⟶ X) (x : Sp ℂ ⟶ Y) (J : (L.pull φ).ι) :
     ⊤ ≤ x ⁻¹ᵁ (L.pull φ).U J ↔ ⊤ ≤ (x ≫ φ) ⁻¹ᵁ L.U (J PUnit.unit) :=
   (CubeValues.le_preimage_wchart x L (fun _ : PUnit => φ) J).trans ⟨fun h => h _, fun h _ => h⟩
 
 /- English proof (translation)
-The claim follows from `(CubeValues.val_linComb x valAt'_rules L (fun _ : PUnit => φ) (fun _ => 1) J J' h h').trans (by rw [Fintype.prod_unique, zpow_one])`.
+A detailed English derivation is pending.
 -/
 theorem valAt'_pull_g (L : LB X) (φ : Y ⟶ X) (x : Sp ℂ ⟶ Y) (J J' : (L.pull φ).ι)
     (h : ⊤ ≤ x ⁻¹ᵁ (L.pull φ).U J) (h' : ⊤ ≤ x ⁻¹ᵁ (L.pull φ).U J') :
@@ -47,13 +47,11 @@ variable {g m : ℕ} {S : Scheme.{0}} {G : Over S} [GrpObj G] (L : RigLB G) (b�
   (θ : (Fin m → ℂ) → (Fin g → ℂ) → ℂ) (x : (Fin g → ℂ) → (Sp ℂ ⟶ pullback G.hom (y b₀)))
 
 /- English proof (translation)
-Establish `ch : ∀ j z, ⊤ ≤ e b₀ z ⁻¹ᵁ L.L.U j → ⊤ ≤ x z ⁻¹ᵁ (L.L.pull (pullback.fst G.hom (y b₀))).U (fun _ => j)` using `fun j z hz => (top_le_pull_iff _ _ _ _).2 (by rwa [h₁])`. Use `⟨fun j bz => fr (fun _ => j) bz.2, fun j => ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(hfr.1 fun _ => j).comp differentiable_snd.differentiableOn ?_` and prove the remaining obligations. Introduce and unpack `⟨b, z⟩ ⟨rfl, hz⟩`. Conclude with `ch j z hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `j b z rfl hz`. Conclude with `hfr.2.1 _ z (ch j z hz)`. Introduce and unpack `j j' b z rfl hz`. Take `⟨k, k'⟩` from `(top_le_preimage_inf _ _ _).1 hz`. Use `(hfr.2.2 _ (fun _ => j') z ((top_le_preimage_inf _ _ _).2 ⟨ch j z k, ch j' z k'⟩)).trans ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[valAt'_pull_g _ _ _ _ _ (ch j z k) (ch j' z k'), h₁]`. Introduce and unpack `j b rfl hz`. Conclude with `hrig j hz`. Introduce and unpack `b rfl`. Take `⟨s, hs⟩` from `hs`.
-
-Use `⟨s, fun j z x' k₁ k₂ hz => ?_⟩` and prove the remaining obligations. Take `rfl : x' = x z` from `pullback.hom_ext (k₁.trans (h₁ z).symm) (k₂.trans (h₂ z).symm)`. Conclude with `hs _ z (ch j z hz)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isThetaFrame_of_fibre (h₁ : ∀ z, x z ≫ pullback.fst _ _ = e b₀ z) (h₂ : ∀ z, x z ≫ pullback.snd _ _ = 𝟙 _)
     {fr : (L.L.pull (pullback.fst G.hom (y b₀))).ι → (Fin g → ℂ) → ℂ} (hfr : IsHolFrame _ x fr)
@@ -81,9 +79,9 @@ theorem isThetaFrame_of_fibre (h₁ : ∀ z, x z ≫ pullback.fst _ _ = e b₀ z
     exact hs _ z (ch j z hz)
 
 /- English proof (translation)
-Take `⟨fr, hd, hne, hc, -, hs⟩` from `h`. Take `⟨s, hs⟩` from `hs b₀ rfl`. Establish `ch : ∀ J z, ⊤ ≤ x z ⁻¹ᵁ (L.L.pull (pullback.fst G.hom (y b₀))).U J → ⊤ ≤ e b₀ z ⁻¹ᵁ L.L.U (J PUnit.unit)` using `fun J z hz => h₁ z ▸ (top_le_pull_iff _ _ _ _).1 hz`. Use `⟨fun J z => fr (J PUnit.unit) (b₀, z), ⟨fun J => ?_, fun J z hz => hne _ _ _ rfl (ch J z hz), fun J J' z hz => ?_⟩, s, fun J z hz => hs (J PUnit.unit) z (x z) (h₁ z) (h₂ z) (ch J z hz)⟩` and prove the remaining obligations. Conclude with `(hd _).comp (f := fun z => (b₀, z)) (by fun_prop) fun z hz => ⟨rfl, ch J z hz⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, k'⟩` from `(top_le_preimage_inf _ _ _).1 hz`. Rewrite using `[valAt'_pull_g _ _ _ _ _ k k', h₁]`. Conclude with `hc _ _ b₀ z rfl ((top_le_preimage_inf _ _ _).2 ⟨ch J z k, ch J' z k'⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fibre_of_isThetaFrame (h₁ : ∀ z, x z ≫ pullback.fst _ _ = e b₀ z)
     (h₂ : ∀ z, x z ≫ pullback.snd _ _ = 𝟙 _) (h : IsThetaFrame L {b₀} y e θ) :
@@ -102,9 +100,9 @@ theorem exists_fibre_of_isThetaFrame (h₁ : ∀ z, x z ≫ pullback.fst _ _ = e
 end Transfer
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.1 (h ((y - x).natAbs + 1) (Nat.succ_pos _))`. Establish `hk : (((y - x).natAbs + 1 : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.succ_ne_zero _)`. Establish `e : ((y - x : ℤ) : ℂ) = ((((y - x).natAbs + 1 : ℕ) : ℤ) * n : ℤ)`. Rewrite using `[Int.cast_mul, Int.cast_natCast, Int.cast_sub]`. Use `mul_left_cancel₀ Complex.two_pi_I_ne_zero ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Clear denominators, using `at hn` for the nonvanishing conditions. Take the linear combination `(2 * Real.pi * Complex.I) * hn`. Use `Int.eq_zero_of_abs_lt_dvd ⟨n, Int.cast_injective e⟩ (by rw [Int.abs_eq_natAbs]; omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem int_eq_of_exp_div_eq {x y : ℤ} (h : ∀ k : ℕ, 0 < k →
     Complex.exp (-(2 * Real.pi * Complex.I) * (x : ℂ) / k) = Complex.exp (-(2 * Real.pi * Complex.I) * (y : ℂ) / k)) :
@@ -120,9 +118,9 @@ theorem int_eq_of_exp_div_eq {x y : ℤ} (h : ∀ k : ℕ, 0 < k →
   omega
 
 /- English proof (translation)
-Set `N` to `LinearMap.toMatrix' Φ`. Establish `hN : ∀ z, Φ z = N *ᵥ z` using `fun z => (LinearMap.toMatrix'_mulVec Φ z).symm`. Use `⟨Nᵀ * Hm * N.map star, ?_, fun z w => ?_⟩` and prove the remaining obligations. Establish `e : Nᵀ = (N.map star)ᴴ` using `by ext i j; simp`. Rewrite using `[e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.isHermitian_conjTranspose_mul_mul _ hH`. Establish `h : star (N *ᵥ w) = N.map star *ᵥ star w`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct]`. Rewrite using `[hN, hN, hermForm, hermForm, h, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec z Nᵀ, Matrix.vecMul_transpose]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hermForm_comp {d g : ℕ} (Φ : (Fin g → ℂ) →ₗ[ℂ] (Fin d → ℂ)) {Hm : Matrix (Fin d) (Fin d) ℂ}
     (hH : Hm.IsHermitian) : ∃ M : Matrix (Fin g) (Fin g) ℂ, M.IsHermitian ∧
@@ -139,9 +137,9 @@ theorem exists_hermForm_comp {d g : ℕ} (Φ : (Fin g → ℂ) →ₗ[ℂ] (Fin 
       Matrix.dotProduct_mulVec z Nᵀ, Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Establish `h1 : ∀ m : Fin g → ℤ, (fun i => (m i : ℂ)) = ∑ i, m i • (Pi.single i 1 : Fin g → ℂ)`. Introduce `m`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `h2 : v = ∑ i, v i • (Pi.single i 1 : Fin g ⊕ Fin g → ℤ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `k`. Simplify using `only [Finset.sum_apply, Pi.single_apply, Pi.smul_apply, smul_eq_mul, mul_ite, _root_.mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[h1 fun i => v (.inl i), h1 fun i => v (.inr i)]`. Use `conv_lhs => rw [h2]`. Simplify using `only [map_sum, map_zsmul, Fintype.sum_sum_type, map_add, (hh _).1, (hh _).2, Matrix.mulVec_sum, Matrix.mulVec_smul, Matrix.mulVec_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_period_basis {g : ℕ} {La : Type} [AddCommGroup La] (P : La →+ (Fin g → ℂ))
     (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] La) {h τ : Matrix (Fin g) (Fin g) ℂ}
@@ -158,43 +156,39 @@ theorem mulVec_period_basis {g : ℕ} {La : Type} [AddCommGroup La] (P : La →+
     Matrix.mulVec_smul, Matrix.mulVec_add]
 
 /- English proof (translation)
-Establish `hg` using `isGrpPullback_pullback t.G (y b₀)`. Take `⟨hL, hr, ⟨c', w, hw, -⟩, hsym⟩` from `Out.CubePf.cubePull S _ t.G _ (cubeMapOf hg) t.PP t.cub`. Take `⟨-, ws, gs', -⟩` from `hsym t.sym`. Establish `semi` using `IsSemiAbelian.pullback (y b₀) t.G t.semi`. Use `semi.smooth` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `semi.geomConnected` as an intermediate fact. Take `⟨U, hU, hc, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := ⊤) (x := y b₀ (default : PrimeSpectrum ℂ)) trivial`. Establish `hy : ∀ x, y b₀ x ∈ U` using `fun x => (top_le_preimage_iff_mem _ U).2 hc trivial`. Use `LocalFibre.connectedSpace_sp ℂ` as an intermediate fact. Establish `: ConnectedSpace ((Over.pullback (y b₀)).obj t.G).left` using `GeometricallyConnected.connectedSpace ((Over.pullback (y b₀)).obj t.G).hom (Scheme.Hom.isOpenMap _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `exists_dim_of_preconnected ((Over.pullback (y b₀)).obj t.G).hom (eSec ((Over.pullback (y b₀)).obj t.G) (IsLocalRing.closedPoint ℂ))`. Set `A : Out.PolAV (Sp ℂ)` to `{ A := (Over.pullback (y b₀)).obj t.G, g := d, smoothDim := hd L := t.PP.L.pull (pullback.fst t.G.hom (y b₀)), isLB := hL ample := relAmple_pull hg.1 t.PP.isLB hL ((isGen_iff w).1 hw) U hU hy hA ktriv := kTriv_pull hg t.PP.isLB hL ((isGen_iff w).1 hw) hK isAb := ⟨inferInstance, i …`. Take `⟨u, Hm, χ, Ef, hAH, hrig, -, -, -, hsec, hE, hbij, hW⟩` from `hT A _ hr`. Set `x : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ A.A)` to `fun z => Over.homMk (pullback.lift (e b₀ z).left (𝟙 _) ((Over.w (e b₀ z)).trans (Category.id_comp _).symm)) (pullback.lift_snd _ _ _)`. Establish `x₁ : ∀ z, (x z).left ≫ pullback.fst t.G.hom (y b₀) = (e b₀ z).left` using `fun z => pullback.lift_fst _ _ _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `x₂ : ∀ p : 𝟙_ (Over (Sp ℂ)) ⟶ A.A, p.left ≫ pullback.snd t.G.hom (y b₀) = 𝟙 _` using `fun p => Over.w p`. Establish `inj : ∀ {p q : 𝟙_ (Over (Sp ℂ)) ⟶ A.A}, p.left ≫ pullback.fst t.G.hom (y b₀) = q.left ≫ pullback.fst t.G.hom (y b₀) → p = q` using `fun {p q} k => Over.OverMorphism.ext (pullback.hom_ext k ((x₂ p).trans (x₂ q).symm))`. Establish `idy : (𝟙_ (Over (Sp ℂ))).hom ≫ y b₀ = y b₀` using `Category.id_comp _`. Establish `xadd : ∀ z w, x (z + w) = x z * x w` using `fun z w => inj (by`. Establish `k` using `hg.2 (𝟙_ _) (x z) (x w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `k` using `[idy]`. Rewrite using `[x₁, hadd]`. Conclude with `k _ _ (x₁ z).symm (x₁ w).symm)`. Establish `xon : Function.Surjective x` using `fun p => by`. Take `⟨z, hz⟩` from `hon (Over.homMk (p.left ≫ pullback.fst t.G.hom (y b₀)) ((Category.assoc _ _ _).trans ((congrArg _ pullback.condition).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ y b₀) (x₂ p)).trans (Category.id_comp _))))))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨z, inj ((x₁ z).trans (congrArg (fun q => q.left) hz))⟩`. Establish `x0 : x 0 = 1`. Use `xadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `xker : ∀ z, x z = 1 ↔ z ∈ P.range` using `fun z => by`. Rewrite using `[← hker, ← x0, ← (hker 0).2 P.range.zero_mem]`. Conclude with `⟨fun k => Over.OverMorphism.ext ((x₁ z).symm.trans ((congrArg (fun q => q.left ≫ _) k).trans (x₁ 0))), fun k => inj ((x₁ z).trans ((congrArg (fun q => q.left) k).trans (x₁ 0).symm))⟩`. Establish `: Countable La` using `bas.symm.injective.countable`. Take `⟨F, hF⟩` from `exists_linearEquiv_lift hmul A u x xadd xon (isHolTo_fibre hg.1 _ (fun z => x₂ (x z)) (by simpa only [x₁] using hol)) ((Set.countable_range P).mono fun z hz => (xker z).1 hz)`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFΛ : ∀ z, F z ∈ u.Λ ↔ z ∈ P.range` using `fun z => by rw [← u.ker, hF, xker]`. Establish `hEF : ∀ a a₂, (hermForm Hm (F (P a)) (F (P a₂))).im = EF a a₂` using `fun a a₂ => by`. Use `(hE ⟨_, (hFΛ _).2 ⟨a, rfl⟩⟩ ⟨_, (hFΛ _).2 ⟨a₂, rfl⟩⟩).symm.trans (congrArg _ ?_)` and prove the remaining obligations. Use `int_eq_of_exp_div_eq fun k hk => ?_` and prove the remaining obligations. Establish `k₁` using `hW k ⟨_, (hFΛ _).2 ⟨a, rfl⟩⟩ ⟨_, (hFΛ _).2 ⟨a₂, rfl⟩⟩ (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `k₂` using `hweil k a a₂ (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl`. Simplify using `only [← map_smul, hF] at k₁`. Establish `k₃` using `weilIs_grpPullback_of_comm S _ t.G A.A (y b₀) _ t.PP.L A.L t.PP.isLB hL hg ⟨w, hw⟩ (𝟙_ _) k (x ((k : ℂ)⁻¹ • P a)) (x ((k : ℂ)⁻¹ • P a₂))`. Rewrite `k₃` using `[idy]`. Conclude with `congrArg Units.val (weilIs_unique_fieldPoint S t.G t.PP.L t.PP.isLB ℂ (y b₀) k _ _ _ _ ((k₃ _ _ _ (x₁ _).symm (x₁ _).symm).1 k₁) k₂)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Establish `hsurj : Function.Surjective (h b₀).mulVec` using `fun z => ⟨∑ i, z i • P (bas (Pi.single (.inl i) 1)), by`. Simplify using `only [Matrix.mulVec_sum, Matrix.mulVec_smul, (hh _).1]`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]⟩`. Set `k : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)` to `LinearEquiv.ofBijective (h b₀).mulVecLin ⟨Matrix.mulVec_injective_iff_isUnit.2 (Matrix.mulVec_surjective_iff_isUnit.1 hsurj), hsurj⟩`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hk : ∀ z, k z = h b₀ *ᵥ z` using `fun z => rfl`. Establish `hkP : ∀ v : Fin g ⊕ Fin g → ℤ, k (P (bas v)) = (fun i => (v (.inl i) : ℂ)) + τ b₀ *ᵥ fun i => (v (.inr i) : ℂ)` using `mulVec_period_basis P bas hh`. Take `⟨M, hM, hMf⟩` from `exists_hermForm_comp (k.symm.trans F).toLinearMap hAH.1`. Establish `hMk : ∀ z w, hermForm Hm (F z) (F w) = hermForm M (k z) (k w)` using `fun z w => by`. Rewrite using `[← hMf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Establish `hMb : ∀ v v', (hermForm M (k (P (bas v))) (k (P (bas v')))).im = ((sgn : ℤ) : ℝ) * omegaStd v v'` using `fun v v' => by rw [← hMk, hEF, hbas, Int.cast_mul]`. Take `⟨hs, rfl⟩` from `isSymm_and_eq_imInv (s := ((sgn : ℤ) : ℝ)) hM (fun z hz => by`. Rewrite using `[← hMf]`. Conclude with `hAH.2.1 _ fun k0 => hz ((k.symm.trans F).map_eq_zero_iff.1 k0)) hτ`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `(by rcases Int.units_eq_one_or sgn with rfl | rfl <;> simp)`. Use the proof step `(fun i j => by`. Rewrite using `[← (hh i).1, ← (hh j).1, ← hk, ← hk, hMb]`. Simplify using `[omegaStd])`. Use the proof step `(fun i j => by`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (hh i).1, ← (hh j).2, ← hk, ← hk, hMb]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [omegaStd, Pi.single_apply, hij, eq_comm])`. Use the proof step `(fun i j => by`. Rewrite using `[← (hh i).2, ← (hh j).2, ← hk, ← hk, hMb]`. Simplify using `[omegaStd])`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨a, b, ha, hb, ⟨fr, hfr, hfr0, hsf⟩, huniq⟩` from `exists_unique_half_char A u hAH (fun θ hθ => ((hsec 1).2 θ hθ).exists) hE hbij F k hs hτ hMk (fun z => by`. Rewrite using `[hFΛ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, rfl⟩`. Take `⟨v, rfl⟩` from `bas.surjective l`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, _, hkP v⟩`. Introduce and unpack `⟨m, n, hz⟩`. Conclude with `⟨bas (Sum.elim m n), k.injective ((hkP _).trans hz.symm)⟩)`. Simplify using `only [hF] at hfr hsf huniq`. Use `⟨a, b, ha, hb, isThetaFrame_of_fibre t.PP b₀ y _ _ (fun z => (x z).left) x₁ (fun z => x₂ _) hfr (fun j hj => ?_) (by simp only [thetaChar_eq_theta]; exact hsf), fun a' b' ha' hb' hth => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e0 : eSec A.A = (x 0).left`. Rewrite using `[x0, Hom.one_def]`. Simplify using `[eSec]`. Establish `hch : ⊤ ≤ (𝟙 (Sp ℂ) : Sp ℂ ⟶ _) ⁻¹ᵁ (A.L.pull (eSec A.A)).U fun _ _ => j`. Use `(top_le_pull_iff _ _ _ _).2 ((top_le_pull_iff _ _ _ _).2 ?_)` and prove the remaining obligations.
-
-Rewrite using `[Category.id_comp, e0, x₁]`. Conclude with `hj`. Use `(hfr0 _).trans ((hrig (fun _ _ => j) fun p hp => hch hp).trans ?_)` and prove the remaining obligations. Use `(CubeValues.val_res _ valAt'_rules _ hch _).trans ((CubeValues.val_pullU _ valAt'_rules _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
-
-Both sides reduce to the same expression. Take `⟨fr', h1, h2⟩` from `exists_fibre_of_isThetaFrame t.PP b₀ y _ _ (fun z => (x z).left) x₁ (fun z => x₂ _) hth`. Conclude with `huniq a' b' ha' hb' fr' h1 (by simp only [thetaChar_eq_theta] at h2; exact h2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem existsUnique_char_of_triple (hT : ThetaUnifAV) (hmul : Out.MulNSt) {E : Type} [Field E] [NumberField E]
     [IsCMField E] {H : Host E} {S : Scheme.{0}} (t : SAB H S) (hp : IsProper t.G.hom)
@@ -339,7 +333,7 @@ theorem existsUnique_char_of_triple (hT : ThetaUnifAV) (hmul : Out.MulNSt) {E : 
     exact huniq a' b' ha' hb' fr' h1 (by simp only [thetaChar_eq_theta] at h2; exact h2)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun k => (c k).re, fun k => (hc k).imp (fun h => by simp [h]) (fun h => by simp [h]), funext fun k => by rcases hc k with h | h <;> simp [h]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_real_half {g : ℕ} {c : Fin g → ℂ} (hc : ∀ k, c k = 0 ∨ c k = 1 / 2) :
     ∃ a : Fin g → ℝ, (∀ k, a k = 0 ∨ a k = 1 / 2) ∧ c = fun i => (a i : ℂ) :=
@@ -353,9 +347,9 @@ namespace GlobalTheory
 open ThetaPoint
 
 /- English proof (translation)
-Introduce `hT hLaws E _ _ _ H D l Xo σ g ty _ _ _ D' t m B P y e bas sgn h τ hU hbas hτ b₀ hb₀`. Take `⟨-, -, ⟨hadd, hon, hol, -, -⟩, hker, -, hweil, -, -⟩` from `hU b₀ hb₀`. Take `⟨a, b, ha, hb, hth, huniq⟩` from `existsUnique_char_of_triple hT hLaws.mulN Xo.univ.t Xo.univ.proper Xo.univ.ample Xo.univ.ktriv (fun a b => D'.EF a b) b₀ (P b₀) y e bas sgn h τ hadd hon hol hker hweil hbas (hτ b₀ hb₀).1 (hτ b₀ hb₀).2`. Use `⟨(fun i => (a i : ℂ), fun i => (b i : ℂ)), ⟨_, _, rfl, fun k => (ha k).imp (fun h => by simp [h]) (fun h => by simp [h]), fun k => (hb k).imp (fun h => by simp [h]) (fun h => by simp [h]), hth⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c₁, c₂, rfl, h₁, h₂, hth'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨a', ha', rfl⟩` from `exists_real_half h₁`. Take `⟨b', hb', rfl⟩` from `exists_real_half h₂`. Take `⟨rfl, rfl⟩` from `huniq a' b' ha' hb' hth'`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem existsUnique_thetaChar_at_point' : ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)), 1 ≤ D.p + D.q → σ (baseKA l).ρ = H.rt0 → IsTypeFn H D.p D.q ty → ∀ (D' : Datum H) (t : D.La →ₗ[𝓞 E] D'.La) (m : ℕ) (B : Set (Fin m → ℂ)) (P : (Fin m → ℂ) → (D'.La →+ (Fin g → ℂ))) (y : (Fin m → ℂ) → (Sp ℂ ⟶ Xo.X)) (e : ∀ b, (Fin g → ℂ) → (Over.mk (y b) ⟶ Xo.univ.t.G)) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D'.La) (sgn : ℤˣ) (h τ : (Fin m → ℂ) → Matrix (Fin g) (Fin g) ℂ), (∀ b ∈ B, ((y b) ≫ Xo.s = spMap σ ∧ IsPeriod D' ty (P b) ∧ ((∀ z w, (e b) (z + w) = (e b) z * (e b) w) ∧ Function.Surjective (e b) ∧ IsHolTo Set.univ (fun z => ((e b) z).left) ∧ (∀ w, ∃! v : epsPt (y b) ⟶ Xo.univ.t.G, IsDerivAt0 (fun z => ((e b) z).left) w v.left) ∧ (∀ v : epsPt (y b) ⟶ Xo.univ.t.G, spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = ((e b) 0).left → ∃! w, IsDerivAt0 (fun z => ((e b) z).left) w v.left)) ∧ (∀ z, (e b) z = 1 ↔ z ∈ ((P b)).range) ∧ (∀ (a : 𝓞 E) z, (e b) (fun k => ty k (a : E) * z k) = (e b) z ≫ Xo.univ.t.act.act a) ∧ (∀ (k : ℕ) (a a₂ : D'.La) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (D'.EF a a₂ : ℂ) / k) → Out.WeilIs Xo.univ.t.G Xo.univ.t.PP.L k ((e b) ((k : ℂ)⁻¹ • (P b) a)) ((e b) ((k : ℂ)⁻¹ • (P b) a₂)) (unitOn c)) ∧ (∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), toUnit _ ≫ Xo.univ.eta a = (e b) ((l.M : ℂ)⁻¹ • (P b) (t a))) ∧ ∀ a, toUnit _ ≫ Xo.univ.etaA a = (e b) ((l.A : ℂ)⁻¹ • (P b) (t a)))) → (∀ a b, D'.EF (bas a) (bas b) = sgn * omegaStd a b) → (∀ b ∈ B, ((τ b).map Complex.im).PosDef ∧ ∀ k, (h b).mulVec (P b (bas (Pi.single (.inl k) 1))) = Pi.single k 1 ∧ (h b).mulVec (P b (bas (Pi.single (.inr k) 1))) = (τ b).mulVec (Pi.single k 1)) → ∀ b₀ ∈ B, ∃! cc : (Fin g → ℂ) × (Fin g → ℂ), ∃ c₁ c₂, cc = (c₁, c₂) ∧ (∀ k, c₁ k = 0 ∨ c₁ k = 1 / 2) ∧ (∀ k, c₂ k = 0 ∨ c₂ k = 1 / 2) ∧ IsThetaFrame Xo.univ.t.PP {b₀} y (fun b z => (e b z).left) (fun b z => thetaChar (τ b) c₁ c₂ ((h b).mulVec z)) := by
   intro hT hLaws E _ _ _ H D l Xo σ g ty _ _ _ D' t m B P y e bas sgn h τ hU hbas hτ b₀ hb₀

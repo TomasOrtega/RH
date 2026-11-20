@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ModelsAreCoverSe
 namespace GlobalTheory.CoverModel
 
 /- English proof (translation)
-The claim follows from `modelsAreCoverSeries`.
+A detailed English derivation is pending.
 -/
 theorem modelsAreCoverSeries_all :
     GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules →

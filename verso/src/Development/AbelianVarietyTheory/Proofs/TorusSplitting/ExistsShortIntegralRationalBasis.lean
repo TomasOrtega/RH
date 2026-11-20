@@ -7,15 +7,15 @@ open NumberField Complex ReciprocityTheory.ChartRestriction.G.I2
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hex E _ _ _`. Take `⟨n, ω, hωB, hsp⟩` from `hex E`. Establish `htop : Submodule.span ℚ (Set.range fun j => (ω j : E)) = ⊤`. Rewrite using `[eq_top_iff, ← (NumberField.integralBasis E).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[NumberField.integralBasis_apply]`. Conclude with `hsp _`. Take `⟨b, hbS, hbspan, hbli⟩` from `exists_linearIndependent ℚ (Set.range fun j => (ω j : E))`. Establish `hbfin : b.Finite` using `hbli.setFinite`. Use `hbfin.fintype` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card b = Module.finrank ℚ E`. Establish `h` using `finrank_span_eq_card hbli`. Rewrite `h` using `[Subtype.range_coe, hbspan, htop, finrank_top]`. Rewrite using `[h]`. Set `e : Fin (Module.finrank ℚ E) ≃ b` to `(Fintype.equivFinOfCardEq hcard).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmem : ∀ x : b, ∃ j, (ω j : E) = x` using `fun x => hbS x.2`. Use `choose idx hidx using hmem`. Use `⟨fun i => ω (idx (e i)), ?_, fun i τ => hωB _ τ⟩` and prove the remaining obligations. Establish `: (fun i => ((ω (idx (e i)) : 𝓞 E) : E)) = (fun x : b => (x : E)) ∘ e`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hidx]`. Rewrite using `[this]`. Conclude with `(linearIndependent_equiv e).mpr hbli`.
+A detailed English derivation is pending.
 -/
 theorem exists_short_integral_rational_basis :
     (∀ (E : Type) [Field E] [NumberField E] [IsCMField E], ∃ (n : ℕ) (ω : Fin n → 𝓞 E),

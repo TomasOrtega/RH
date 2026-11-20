@@ -17,23 +17,23 @@ def LinearFormCut.formMap (n : ℕ) : (Fin n → ℂ) →ₗ[ℂ] MvPolynomial (
   map_smul' c a := by simp [smul_eq_C_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Introduce `n e I hI`. Set `S` to `{Q : Ideal (MvPolynomial (Fin n) ℂ) | Q ∈ I.minimalPrimes ∧ Q ≠ originIdeal n}`. Establish `: Finite S` using `((Ideal.finite_minimalPrimes_of_isNoetherianRing _ I).subset fun Q hQ => hQ.1).to_subtype`. Set `p : S → Submodule ℂ (Fin n → ℂ)` to `fun Q => (Q.1.restrictScalars ℂ).comap (formMap n)`. Establish `hp : ∀ Q, p Q ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `Q htop`. Apply `Q.2.2` to reduce the goal to its premises. Establish `hle : originIdeal n ≤ Q.1`. Rewrite using `[originIdeal, Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `: Pi.single j 1 ∈ p Q` using `htop ▸ Submodule.mem_top`. Simplify `this` using `[p, formMap, Pi.single_apply]`. Conclude with `((originIdeal_isMaximal n).eq_of_le Q.2.1.1.1.ne_top hle).symm`. Take `⟨a, ha⟩` from `Submodule.exists_forall_notMem_of_forall_ne_top p hp`. Set `B : Matrix (Fin 1) (Fin n) ℂ` to `Matrix.of fun _ j => a j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B, ?_⟩` and prove the remaining obligations. Establish `hl : formMap n a ∈ linIdeal B` using `Ideal.subset_span ⟨0, by simp [linPoly, formMap, B]⟩`. Rewrite `hI`, the goal using `[ringKrullDim_quotient]`. Use `iSup_le fun l => ?_` and prove the remaining obligations. Establish `hIh : I ≤ l.head.1.asIdeal` using `fun y hy => l.head.2 (Ideal.mem_sup_left hy)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ, hQle⟩` from `Ideal.exists_minimalPrimes_le hIh`. Distinguish the cases in `hQo : Q = originIdeal n`. Establish `hM : l.head.1.asIdeal.IsMaximal`. Rewrite using `[← (originIdeal_isMaximal n).eq_of_le l.head.1.isPrime.ne_top (hQo ▸ hQle)]`. Conclude with `originIdeal_isMaximal n`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h0 : l.length = 0`. Assume the negation of the conclusion as `h`. Establish `hlt : l.head < l.last` using `l.strictMono (Fin.pos_iff_ne_zero.2 (by simp [Fin.ext_iff]; omega))`. Establish `hlt' : l.head.1.asIdeal < l.last.1.asIdeal` using `hlt`. Conclude with `(hM.eq_of_le l.last.1.isPrime.ne_top hlt'.le ▸ hlt').false`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `[h0]`. Establish `hQa : formMap n a ∉ Q` using `ha ⟨Q, hQ, hQo⟩`. Set `f : PrimeSpectrum.zeroLocus (R` to `MvPolynomial (Fin n) ℂ) ↑(I ⊔ linIdeal B) → PrimeSpectrum.zeroLocus (R := MvPolynomial (Fin n) ℂ) ↑I := fun x => ⟨x.1, fun y hy => x.2 (Ideal.mem_sup_left hy)⟩`. Establish `hf : StrictMono f` using `fun x y h => h`. Set `q0 : PrimeSpectrum.zeroLocus (R` to `MvPolynomial (Fin n) ℂ) ↑I := ⟨⟨Q, hQ.1.1⟩, fun y hy => hQ.1.2 hy⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hq : q0 < (l.map f hf).head`. Use `lt_of_le_of_ne hQle fun h => hQa ?_` and prove the remaining obligations. Establish `: formMap n a ∈ l.head.1.asIdeal` using `l.head.2 (Ideal.mem_sup_right hl)`. Establish `hQh : Q = l.head.1.asIdeal` using `congrArg (fun x : PrimeSpectrum.zeroLocus (R := MvPolynomial (Fin n) ℂ) ↑I => x.1.asIdeal) h`. Rewrite using `[hQh]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hlen` using `(Order.LTSeries.length_le_krullDim ((l.map f hf).cons q0 hq)).trans hI`. Simplify using `only [RelSeries.cons_length] at hlen`. Establish `: l.length + 1 ≤ e + 1` using `by exact_mod_cast hlen`. Conclude with `(by omega : l.length ≤ e)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem LinearFormCut.proof : LinearFormCut.Statement := by
   intro n e I hI

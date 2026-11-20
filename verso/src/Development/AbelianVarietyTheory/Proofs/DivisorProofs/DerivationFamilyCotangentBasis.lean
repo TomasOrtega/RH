@@ -19,69 +19,65 @@ theorem cotFun_toCotangent {R A : Type} [CommRing R] [CommRing A] [Algebra R A] 
     cotFun I f hf (I.toCotangent x) = f x := rfl
 
 /- English proof (translation)
-Introduce `R A _ _ _ _ _ _ e he hfree hfin n dv hadd hmul halg huniq`. Use `set I := RingHom.ker e with hIdef`. Set `dH : Fin n → A →+ R` to `fun a => AddMonoidHom.mk' (dv a) (hadd a)`. Establish `hdH : ∀ a x, dv a x = dH a x` using `fun _ _ => rfl`. Establish `hsmul : ∀ a r x, dv a (algebraMap R A r * x) = r * dv a x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a r x`. Rewrite using `[hmul, he, halg]`. Expand and normalize the polynomial expressions, which then agree. Establish `hI2 : ∀ a x, x ∈ I ^ 2 → dv a x = 0`. Introduce `a x hx`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[pow_two]`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `u hu v hv`. Rewrite using `[hmul, (RingHom.mem_ker).1 hu, (RingHom.mem_ker).1 hv]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u v hu hv`. Rewrite using `[hadd, hu, hv, add_zero]`. Establish `hdec : ∀ x : A, x - algebraMap R A (e x) ∈ I` using `fun x => by`. Simplify using `[I, RingHom.mem_ker, he]`. Set `fa : Fin n → (I →ₗ[R] R)` to `fun a => { toFun := fun x => dv a x map_add' := fun x y => hadd a x y map_smul' := fun r x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_smul_of_tower, Algebra.smul_def, RingHom.id_apply, smul_eq_mul]`. Conclude with `hsmul a r x }`. Set `ℓ : Fin n → Module.Dual R I.Cotangent` to `fun a => cotFun I (fa a) (fun x hx => hI2 a x hx)`. Establish `hℓ : ∀ a (x : I), ℓ a (I.toCotangent x) = dv a x` using `fun _ _ => rfl`. Set `Ψ : (Fin n → R) →ₗ[R] Module.Dual R I.Cotangent` to `∑ a, (LinearMap.proj a : (Fin n → R) →ₗ[R] R).smulRight (ℓ a)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΨ : ∀ c (x : I), Ψ c (I.toCotangent x) = ∑ a, c a * dv a x`. Introduce `c x`. Simplify using `[Ψ, LinearMap.sum_apply, hℓ]`. Establish `hΨinj : Function.Injective Ψ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c hc`. Establish `h0 : ∀ x : A, ∑ a, c a * dv a x = 0`. Introduce `x`. Establish `hx` using `hΨ c ⟨_, hdec x⟩`. Rewrite `hx` using `[hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ∀ a, dv a (x - algebraMap R A (e x)) = dv a x`. Introduce `a`. Rewrite using `[hdH, map_sub, ← hdH, ← hdH, halg, sub_zero]`. Simplify using `only [this] at hx`. Conclude with `hx.symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c0, -, hc0⟩` from `huniq (fun _ => 0) (fun _ _ => by simp) (fun _ _ => by simp) (fun _ => rfl)`. Establish `h1 : c = c0` using `hc0 c (fun x => (h0 x).symm)`. Establish `h2 : (0 : Fin n → R) = c0` using `hc0 0 (fun x => by simp)`. Rewrite using `[h1, ← h2]`. Establish `hΨsurj : Function.Surjective Ψ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `φ`. Set `D : A → R` to `fun x => φ (I.toCotangent ⟨_, hdec x⟩)`. Establish `Dadd : ∀ x y, D (x + y) = D x + D y`. Introduce `x y`. Simplify using `only [D, ← map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Use `ext`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `Dalg : ∀ r, D (algebraMap R A r) = 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `r`. Simplify using `only [D]`. Establish `: (⟨_, hdec (algebraMap R A r)⟩ : I) = 0` using `by ext; simp [he]`. Rewrite using `[this, map_zero, map_zero]`. Establish `Dmul : ∀ x y, D (x * y) = e x * D y + e y * D x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y`. Establish `hsq : (x - algebraMap R A (e x)) * (y - algebraMap R A (e y)) ∈ I ^ 2`. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_mul (hdec x) (hdec y)`. Establish `key : (⟨_, hdec (x * y)⟩ : I) = e x • (⟨_, hdec y⟩ : I) + e y • (⟨_, hdec x⟩ : I) + ⟨_, Ideal.pow_le_self two_ne_zero hsq⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `ext`. Simplify using `only [Submodule.coe_add, Submodule.coe_smul_of_tower, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hw0 : I.toCotangent ⟨(x - algebraMap R A (e x)) * (y - algebraMap R A (e y)), Ideal.pow_le_self two_ne_zero hsq⟩ = 0` using `(I.toCotangent_eq_zero _).2 hsq`. Simplify using `only [D]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key]`. Simplify using `only [map_add, LinearMap.map_smul_of_tower, hw0, map_zero, add_zero, map_smul, smul_eq_mul]`. Take `⟨c, hc, -⟩` from `huniq D Dadd Dmul Dalg`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use extensionality with `w`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨x, rfl⟩` from `I.toCotangent_surjective w`. Rewrite using `[hΨ, ← hc]`. Simplify using `only [D]`. Use `congr 2`. Use `ext`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[(RingHom.mem_ker).1 x.2]`. Set `Ψe : (Fin n → R) ≃ₗ[R] Module.Dual R I.Cotangent` to `LinearEquiv.ofBijective Ψ ⟨hΨinj, hΨsurj⟩`. Establish `hΨsingle : ∀ a, Ψ (Pi.single a 1) = ℓ a`. Introduce `a`. Use extensionality with `w`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Take `⟨x, rfl⟩` from `I.toCotangent_surjective w`. Rewrite using `[hΨ, hℓ]`. Simplify using `[Pi.single_apply]`. Set `w : Fin n → I.Cotangent` to `fun i => (Module.evalEquiv R I.Cotangent).symm ((LinearMap.proj i : (Fin n → R) →ₗ[R] R) ∘ₗ Ψe.symm.toLinearMap)`. Establish `hw : ∀ a i, ℓ a (w i) = if a = i then 1 else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a i`. Simplify using `only [w, Module.apply_evalEquiv_symm_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.proj_apply]`. Establish `: Ψe.symm (ℓ a) = Pi.single a 1`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `(hΨsingle a).symm`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Distinguish the cases in `h : a = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Pi.single_apply, Ne.symm h]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose y hy using fun i => I.toCotangent_surjective (w i)`. Establish `hzI : ∀ i, (y i : A) ∈ I` using `fun i => (y i).2`. Establish `hdz : ∀ a i, dv a (y i : A) = if a = i then 1 else 0`. Introduce `a i`. Rewrite using `[← hℓ, hy, hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hImax : I ≤ maximalIdeal A`. Introduce `x hx`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Use `hu.map e` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[(RingHom.mem_ker).1 hx]`. Conclude with `not_isUnit_zero this`. Establish `hnak : I ≤ Ideal.span (Set.range fun i => (y i : A))`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := maximalIdeal A) (IsNoetherian.noetherian I) ?_ ?_` and prove the remaining obligations. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx set s := ∑ a, algebraMap R A (dv a x) * (y a : A) with hs`. Establish `hsI : s ∈ Ideal.span (Set.range fun i => (y i : A))` using `Ideal.sum_mem _ fun a _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨a, rfl⟩)`. Establish `hsI' : s ∈ I` using `Ideal.sum_mem _ fun a _ => Ideal.mul_mem_left _ _ (hzI a)`. Establish `hr : x - s ∈ I` using `I.sub_mem hx hsI'`. Establish `hdr : ∀ b, dv b (x - s) = 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `b`. Rewrite using `[hdH, map_sub, hs, map_sum]`. Simplify using `only [← hdH, hsmul, hdz]`. Simplify using the standard rewrite rules. Establish `hcot : I.toCotangent ⟨x - s, hr⟩ = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Module.forall_dual_apply_eq_zero_iff R _).1 fun φ => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `hΨsurj φ`. Rewrite using `[hΨ]`. Simplify using `[hdr]`. Establish `hsq : x - s ∈ I ^ 2` using `(I.toCotangent_eq_zero _).1 hcot`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxs : x = s + (x - s)` using `by ring`. Rewrite using `[hxs]`. Use `Submodule.add_mem_sup hsI ?_` and prove the remaining obligations. Rewrite `hsq` using `[pow_two]`. Conclude with `Submodule.smul_mono_left hImax hsq`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun i => (y i : A), fun i => (RingHom.mem_ker).1 (y i).2, hdz, ?_⟩` and prove the remaining obligations. Establish `hmapR : (maximalIdeal R).map (algebraMap R A) ≤ maximalIdeal A`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`. Rewrite using `[Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hu`. Use `hu.map e` as an intermediate fact. Rewrite `this` using `[he]`. Conclude with `(mem_maximalIdeal r).1 hr this`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `hex : e x ∈ maximalIdeal R`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Establish `h1 : algebraMap R A (e x) ∈ maximalIdeal A`.
-
-Use `(maximalIdeal A).sub_mem hx (hImax (hdec x))` as an intermediate fact. Simplify using `using this`. Conclude with `(mem_maximalIdeal _).1 h1 (hu.map _)`. Establish `hxe : x = algebraMap R A (e x) + (x - algebraMap R A (e x))` using `by ring`. Rewrite using `[hxe]`.
-
-Conclude with `Submodule.add_mem_sup (Ideal.mem_map_of_mem _ hex) (hnak (hdec x))`. Use `sup_le hmapR ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hImax (hzI i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem coords_of_derivation_basis : ∀ (R A : Type) [CommRing R] [IsLocalRing R] [CommRing A] [IsLocalRing A] [IsNoetherianRing A] [Algebra R A] (e : A →+* R), (∀ r, e (algebraMap R A r) = r) → Module.Free R (RingHom.ker e).Cotangent → Module.Finite R (RingHom.ker e).Cotangent → ∀ (n : ℕ) (dv : Fin n → A → R), (∀ a x y, dv a (x + y) = dv a x + dv a y) → (∀ a x y, dv a (x * y) = e x * dv a y + e y * dv a x) → (∀ a r, dv a (algebraMap R A r) = 0) → (∀ D : A → R, (∀ x y, D (x + y) = D x + D y) → (∀ x y, D (x * y) = e x * D y + e y * D x) → (∀ r, D (algebraMap R A r) = 0) → ∃! c : Fin n → R, ∀ x, D x = ∑ a, c a * dv a x) → ∃ z : Fin n → A, (∀ i, e (z i) = 0) ∧ (∀ a i, dv a (z i) = if a = i then 1 else 0) ∧ maximalIdeal A = (maximalIdeal R).map (algebraMap R A) ⊔ Ideal.span (Set.range z) := by
   intro R A _ _ _ _ _ _ e he hfree hfin n dv hadd hmul halg huniq

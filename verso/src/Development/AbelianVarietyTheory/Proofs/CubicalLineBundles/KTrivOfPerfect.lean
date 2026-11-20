@@ -14,19 +14,19 @@ namespace GlobalTheory.PerfectTensorKernel
 open GlobalTheory.CechPic GlobalTheory.HermTensorKernel GlobalTheory.Serre
 
 /- English proof (translation)
-Introduce `S O _ G A _ _ _ _ a b M _ _ t L N h n x₀ y₀ hdual hL hN hΘL hΘ hiso hK R _ s x hx`. Establish `am` using `a.hom`. Set `l : M → (M →ₗ[O] O)` to `fun n => { toFun := fun m => h m n map_add' := fun m m' => by rw [map_add, AddMonoidHom.add_apply] map_smul' := fun c m => by rw [map_smul, AddMonoidHom.smul_apply, RingHom.id_apply] }`. Set `q : M → (A ⟶ G)` to `fun n => t.mapLeft (IsTensor.self a) (l n)`. Establish `qm : ∀ n, IsMonHom (q n)` using `fun n => IsTensor.isMonHom_mapLeft _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hq : ∀ m n, t.tmul m ≫ q n = a.act (h m n)` using `fun m n => by`. Simplify using `only [q, IsTensor.tmul_mapLeft, IsTensor.self_tmul]`. Both sides reduce to the same expression. Establish `basic : ∀ {T : Over S} (g y : T ⟶ G) (m n : M), lam (cls N hN) (g ≫ t.tmul m) (y ≫ t.tmul n) = lam (cls L hL) (g ≫ a.act (h m n)) y`. Introduce `T g y m n`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h₀` using `(cls_eq_iff (LB.isLB_linComb hN _ _) (LB.isLB_linComb hL _ _)).2 (hiso m n)`. Establish `h'` using `congrArg (pull (lift g y).left) ((cls_cube_two hN _ _ _).symm.trans (h₀.trans (cls_cube_two hL _ _ _)))`. Simplify `h'` using `only [pull_lam, lift_fst, lift_snd, lift_fst_assoc, lift_snd_assoc, Category.comp_id]`. Establish `key : ∀ {T : Over S} (n : M) (u : T ⟶ A) (y : T ⟶ G), lam (cls N hN) u (y ≫ t.tmul n) = lam (cls L hL) (u ≫ q n) y`. Introduce `T n u y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `t.induction_on (P := fun u => lam (cls N hN) u (y ≫ t.tmul n) = lam (cls L hL) (u ≫ q n) y) u ?_ (fun m g => ?_) fun u v hu hv => ?_` and prove the remaining obligations. Rewrite using `[MonObj.one_comp, lam_one_left, lam_one_left]`. Rewrite using `[Category.assoc, hq, basic]`. Rewrite using `[lam_mul_left hN hΘ, hu, hv, MonObj.mul_comp, lam_mul_left hL hΘL]`. Establish `H` using `(translDiff_iff hN x).1 hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `z : ∀ n, x ≫ q n = 1` using `fun n => by`. Use `hK R s _ ((translDiff_iff hL (x ≫ q n)).2 ?_)` and prove the remaining obligations. Establish `H'` using `H.pull (Over.mk s ◁ t.tmul n).left`. Rewrite `H'` using `[pull_lam, ← Over.comp_left, whiskerLeft_fst, whiskerLeft_fst_assoc, whiskerLeft_snd, key, Category.assoc]`. Then use the resulting hypothesis. Establish `dec : ∀ u : Over.mk s ⟶ A, u = ∏ i, (u ≫ q (y₀ i)) ≫ t.tmul (x₀ i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `u`. Use `t.induction_on (P := fun u => u = ∏ i, (u ≫ q (y₀ i)) ≫ t.tmul (x₀ i)) u ?_ (fun m g => ?_) fun u v hu hv => ?_` and prove the remaining obligations. Simplify using `only [MonObj.one_comp, Finset.prod_const_one]`. Simplify using `only [Category.assoc, reassoc_of% hq, ← t.tmul_smul']`. Use `Eq.trans ?_ (map_prod (preHom g) _ _)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← t.tmul_sum, ← hdual]`. Both sides reduce to the same expression. Simplify using `only [MonObj.mul_comp, Finset.prod_mul_distrib, ← hu, ← hv]`. Rewrite using `[dec x]`. Simplify using `only [z, MonObj.one_comp, Finset.prod_const_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/

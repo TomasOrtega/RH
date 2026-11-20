@@ -18,11 +18,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Introduce `hs`. Take `⟨-, htc, -, h4⟩` from `h`. Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom`. Establish `hr : ComplexEmbedding.IsReal τ`. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Use `h4 τ x` as an intermediate fact. Rewrite `this` using `[hs, AlgHom.id_apply]`. Rewrite using `[starRingEnd_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.symm`. Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 (htc.isComplex (InfinitePlace.mk τ)) (InfinitePlace.isReal_mk_iff.2 hr)`.
+A detailed English derivation is pending.
 -/
 theorem gr_sig_ne (h : IsCMExt F E σ) : σ ≠ AlgHom.id F E := by
   intro hs
@@ -39,15 +39,13 @@ theorem gr_sig_ne (h : IsCMExt F E σ) : σ ≠ AlgHom.id F E := by
     (InfinitePlace.isReal_mk_iff.2 hr)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `li : LinearIndependent F ![(1 : E), y]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using `only [zero_smul, add_zero, smul_eq_zero, one_ne_zero, or_false] at hst`. Conclude with `⟨hst, rfl⟩`. It suffices to derive a contradiction.
+Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hne (-(t⁻¹ * s))` to reduce the goal to its premises. Establish `hy' : y = t⁻¹ • (t • y)` using `by rw [smul_smul, inv_mul_cancel₀ ht, one_smul]`. Rewrite using `[hy', eq_neg_of_add_eq_zero_right hst, smul_neg, smul_smul, Algebra.algebraMap_eq_smul_one, neg_smul]`. Establish `hsp` using `li.span_eq_top_of_card_eq_finrank' (by simpa using h.2.2.1.symm)`. Apply `gr_sig_ne σ h` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hl : σ.toLinearMap = LinearMap.id`. Use `LinearMap.ext_on_range hsp fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Simplify using the standard rewrite rules. Simplify using `using hy`.
-
-Conclude with `AlgHom.ext fun x => LinearMap.congr_fun hl x`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gr_fix_range (h : IsCMExt F E σ) {y : E} (hy : σ y = y) : ∃ c : F, algebraMap F E c = y := by
   by_contra hne
@@ -73,9 +71,9 @@ theorem gr_fix_range (h : IsCMExt F E σ) {y : E} (hy : σ y = y) : ∃ c : F, a
   exact AlgHom.ext fun x => LinearMap.congr_fun hl x
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top, Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨r, hr⟩` from `hu.exists_right_inv`. Establish `hq' : q * (r : Fv F v) = 1` using `congrArg Subtype.val hr`. Establish `hr1 : Valued.v (r : Fv F v) ≤ 1` using `r.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Valued.v hq'` as an intermediate fact. Rewrite `this` using `[map_mul, map_one]`. Establish `hle : Valued.v q * Valued.v (r : Fv F v) ≤ Valued.v q` using `mul_le_of_le_one_right' hr1`. Rewrite `hle` using `[this]`. Conclude with `absurd (lt_of_le_of_lt hle h1) (lt_irrefl _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_le_jac {q : Fv F v} (hq : q ∈ v.adicCompletionIntegers F) (h1 : Valued.v q < 1) :
     Ideal.span {(⟨q, hq⟩ : v.adicCompletionIntegers F)} ≤ Ideal.jacobson ⊥ := by
@@ -92,11 +90,11 @@ theorem span_le_jac {q : Fv F v} (hq : q ∈ v.adicCompletionIntegers F) (h1 : V
   exact absurd (lt_of_le_of_lt hle h1) (lt_irrefl _)
 
 /- English proof (translation)
-Introduce `hqc`. Establish `hle : oEvS (E` using `E) v ≤ Ideal.span {(⟨q, hq⟩ : v.adicCompletionIntegers F)} • oEvS (E := E) v := by`. Introduce `z hz`. Establish `e : z = (⟨q, hq⟩ : v.adicCompletionIntegers F) • (c * z)`. Establish `e1 : (⟨q, hq⟩ : v.adicCompletionIntegers F) • (c * z) = sc (E` using `E) v q * (c * z) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← smul_eq_sc]`. Both sides reduce to the same expression. Rewrite using `[e1, ← mul_assoc, hqc, one_mul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) (oEv_mul v hc hz)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbot` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot _ _ (oEvS_fg (E := E) v) hle (span_le_jac v hq h1)`. Establish `h1m : (1 : Fv F v ⊗[F] E) ∈ oEvS (E` using `E) v := oEv_one (E := E) v`. Rewrite `h1m` using `[hbot, Submodule.mem_bot]`. Conclude with `one_ne_zero h1m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_mul_ne_one {q : Fv F v} (hq : q ∈ v.adicCompletionIntegers F) (h1 : Valued.v q < 1)
     {c : Fv F v ⊗[F] E} (hc : c ∈ OEv (E := E) v) : sc (E := E) v q * c ≠ 1 := by
@@ -117,7 +115,7 @@ theorem sc_mul_ne_one {q : Fv F v} (hq : q ∈ v.adicCompletionIntegers F) (h1 :
   exact one_ne_zero h1m
 
 /- English proof (translation)
-Simplify using `only [sc, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_mul_sc (r s : Fv F v) : sc (E := E) v r * sc (E := E) v s = sc (E := E) v (r * s) := by
   simp only [sc, Algebra.TensorProduct.tmul_mul_tmul, mul_one]
@@ -128,11 +126,9 @@ Both sides reduce to the same expression.
 theorem sc_one : sc (E := E) v 1 = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Assume the negation of the conclusion as `hr`. Use `push Not at hr`. Establish `hr0 : r ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hr` using `[h0, map_zero]`. Conclude with `absurd hr (not_lt.2 zero_le')`. Establish `hv : Valued.v r⁻¹ < 1`. Rewrite using `[map_inv₀]`. Conclude with `inv_lt_one_of_one_lt₀ hr`.
-
-Apply `sc_mul_ne_one v (hv.le : r⁻¹ ∈ v.adicCompletionIntegers F) hv h` to reduce the goal to its premises. Rewrite using `[sc_mul_sc, inv_mul_cancel₀ hr0, sc_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_of_sc {r : Fv F v} (h : sc (E := E) v r ∈ OEv (E := E) v) : r ∈ v.adicCompletionIntegers F := by
   rw [HeightOneSpectrum.mem_adicCompletionIntegers]
@@ -149,19 +145,19 @@ theorem int_of_sc {r : Fv F v} (h : sc (E := E) v r ∈ OEv (E := E) v) : r ∈ 
   rw [sc_mul_sc, inv_mul_cancel₀ hr0, sc_one]
 
 /- English proof (translation)
-Establish `key : ∀ t : Fv F v ⊗[F] E, ∃ r : Fv F v, t + sigR (Fv F v) σ t = sc (E` using `E) v r := by`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp [sc]⟩`. Consider the case `tmul a e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hfix : σ (e + σ e) = e + σ e`. Rewrite using `[map_add, PI.OmLocU.Orb.sigma_invol σ hcm, add_comm]`. Take `⟨c, hc⟩` from `gr_fix_range σ hcm hfix`. Use `⟨c • a, ?_⟩` and prove the remaining obligations. Establish `hs1 : sigR (Fv F v) σ (a ⊗ₜ[F] e) = a ⊗ₜ[F] σ e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[sigR, Algebra.TensorProduct.map_tmul]`. Rewrite using `[hs1, ← TensorProduct.tmul_add, ← hc, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Both sides reduce to the same expression. Consider the case `add x y hx hy`. Take `⟨rx, hx⟩` from `hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨ry, hy⟩` from `hy`. Use `⟨rx + ry, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, show x + y + (sigR (Fv F v) σ x + sigR (Fv F v) σ y) = (x + sigR (Fv F v) σ x) + (y + sigR (Fv F v) σ y) by abel, hx, hy]`. Simplify using `[sc, TensorProduct.add_tmul]`. Take `⟨r, hr⟩` from `key s`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h2 : (2 : Fv F v) ≠ 0`. Introduce `h`. Apply `two_ne_zero (α := F)` to reduce the goal to its premises. Apply `(algebraMap F (Fv F v)).injective` to reduce the goal to its premises. Rewrite using `[map_ofNat, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Use `⟨(1 / 2 : Fv F v) * r, ?_⟩` and prove the remaining obligations. Establish `e : sc (E` using `E) v ((1 / 2 : Fv F v) * r) = (1 / 2 : Fv F v) • sc (E := E) v r := by`. Simplify using `only [sc]`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← hr, hs, ← two_smul (Fv F v) s, smul_smul, one_div, inv_mul_cancel₀ h2, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem fix_sc (hcm : IsCMExt F E σ) (s : Fv F v ⊗[F] E) (hs : sigR (Fv F v) σ s = s) :
     ∃ r : Fv F v, s = sc (E := E) v r := by
@@ -200,7 +196,7 @@ theorem fix_sc (hcm : IsCMExt F E σ) (s : Fv F v ⊗[F] E) (hs : sigR (Fv F v) 
   rw [e, ← hr, hs, ← two_smul (Fv F v) s, smul_smul, one_div, inv_mul_cancel₀ h2, one_smul]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `fix_sc σ v hcm s hs`. Conclude with `⟨r, int_of_sc v (hr ▸ hs0), hr⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fix_int_sc (hcm : IsCMExt F E σ) {s : Fv F v ⊗[F] E} (hs0 : s ∈ OEv (E := E) v)
     (hs : sigR (Fv F v) σ s = s) : ∃ r ∈ v.adicCompletionIntegers F, s = sc (E := E) v r := by
@@ -215,13 +211,13 @@ def redR : v.adicCompletionIntegers F →+* 𝓞 F ⧸ v.asIdeal where
   map_add' x y := red_add v x.2 y.2
 
 /- English proof (translation)
-The claim follows from `red_eq_zero_iff v x.2`.
+A detailed English derivation is pending.
 -/
 theorem redR_eq_zero (x : v.adicCompletionIntegers F) : redR v x = 0 ↔ Valued.v (x : Fv F v) < 1 :=
   red_eq_zero_iff v x.2
 
 /- English proof (translation)
-Use `sc_mul_mem_oEv v hr (oEv_one (E := E) v)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sc_mem {r : Fv F v} (hr : r ∈ v.adicCompletionIntegers F) : sc (E := E) v r ∈ OEv (E := E) v := by
   have := sc_mul_mem_oEv v hr (oEv_one (E := E) v)
@@ -234,31 +230,31 @@ theorem sc_eq (r : Fv F v) :
     sc (E := E) v r = (Algebra.TensorProduct.includeLeftRingHom : Fv F v →+* Fv F v ⊗[F] E) r := rfl
 
 /- English proof (translation)
-Simplify using `[sigR, sc, Algebra.TensorProduct.map_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_sc' (r : Fv F v) : sigR (Fv F v) σ (sc (E := E) v r) = sc (E := E) v r := by
   simp [sigR, sc, Algebra.TensorProduct.map_tmul]
 
 /- English proof (translation)
-The claim follows from `Valued.toNormedField.norm_le_one_iff.2 hx`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) : ‖x‖ ≤ 1 :=
   Valued.toNormedField.norm_le_one_iff.2 hx
 
 /- English proof (translation)
-The claim follows from `le_antisymm (norm_le_one_of v hx) (not_lt.1 fun h' => h (Valued.toNormedField.norm_lt_one_iff.1 h'))`.
+A detailed English derivation is pending.
 -/
 theorem norm_eq_one_of {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) (h : ¬ Valued.v x < 1) : ‖x‖ = 1 :=
   le_antisymm (norm_le_one_of v hx) (not_lt.1 fun h' => h (Valued.toNormedField.norm_lt_one_iff.1 h'))
 
 /- English proof (translation)
-Take `⟨k, _, _, -, hcase⟩` from `hRes hstd hun ϖ hϖ`. Break down `hcase with ⟨-, K, _, _, σ', π, -, -, hne, hsurj, hker, hsig⟩ | ⟨-, π, hsurj, hker, hsig⟩` into its components or cases. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, σ' z ≠ z := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hne (AlgEquiv.ext h)`. Take `⟨θ, rfl⟩` from `hsurj z`. Use `⟨θ, θ.2, fun hmem => ?_⟩` and prove the remaining obligations. Set `θs : PI.OmLocU.Red.OR (E` to `E) v := ⟨sigR (Fv F v) σ θ, PI.OmLocU.UnN.sigR_mem σ v θ.2⟩`. Establish `h1` using `hsig θ θs rfl`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : π ((θ - θs) * (θ - θs)) = 0` using `(hker _).2 hmem`. Rewrite `h2` using `[map_mul, map_sub, h1]`. Conclude with `hz (by simpa using (sub_eq_zero.1 (mul_self_eq_zero.1 h2)).symm)`. Take `⟨θ, hθ⟩` from `hsurj (1, 0)`. Use `⟨θ, θ.2, fun hmem => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `θs : PI.OmLocU.Red.OR (E` to `E) v := ⟨sigR (Fv F v) σ θ, PI.OmLocU.UnN.sigR_mem σ v θ.2⟩`. Establish `h1` using `hsig θ θs rfl`. Establish `h2 : π ((θ - θs) * (θ - θs)) = 0` using `(hker _).2 hmem`. Rewrite `h2` using `[map_mul, map_sub, h1, hθ]`. Simplify using `[Prod.ext_iff] at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_theta (hRes : PI.OmLocU.Red.ResAlg σ J ψ v) (hstd : StdHyp σ J ψ) (hun : UnramAt (E := E) v)
     {ϖ : Fv F v} (hϖ : IsUnif v ϖ) : ∃ θ ∈ OEv (E := E) v,
@@ -286,41 +282,37 @@ theorem exists_theta (hRes : PI.OmLocU.Red.ResAlg σ J ψ v) (hstd : StdHyp σ J
     simp [Prod.ext_iff] at h2
 
 /- English proof (translation)
-Introduce `hstd hun u hu0 hus hinv`. Take `⟨u', hu'0, huu'⟩` from `hinv`. Establish `hcm : IsCMExt F E σ` using `hstd.1`. Take `⟨ϖ, hϖ⟩` from `unifEx_holds v`. Take `⟨θ, hθ0, hθd⟩` from `exists_theta σ J ψ v hRes hstd hun hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set θs := sigR (Fv F v) σ θ with hθs`. Establish `hθs0 : θs ∈ OEv (E` using `E) v := PI.OmLocU.UnN.sigR_mem σ v hθ0`. Establish `hθinv : sigR (Fv F v) σ θs = θ` using `PI.OmLocU.Orb.sigR_invol (v := v) σ hcm θ`. Take `⟨t, ht, hT⟩` from `fix_int_sc σ v hcm (oEv_add v hθ0 hθs0) (by rw [map_add, hθinv, add_comm])`. Take `⟨m, hm, hM⟩` from `fix_int_sc σ v hcm (oEv_mul v hθ0 hθs0) (by rw [map_mul, hθinv, mul_comm])`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε, hU⟩` from `fix_int_sc σ v hcm hu0 hus`. Establish `hus' : sigR (Fv F v) σ u' = u'`. Establish `h1 : sigR (Fv F v) σ u' * u = 1`. Rewrite using `[← hus, ← map_mul, show u' * u = 1 by rw [mul_comm]; exact huu', map_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Take `⟨ε', hε', hU'⟩` from `fix_int_sc σ v hcm hu'0 hus'`. Establish `hDsc : sc (E` using `E) v (t ^ 2 - 4 * m) = (θ - θs) * (θ - θs) := by`. Establish `e : (θ - θs) * (θ - θs) = (θ + θs) * (θ + θs) - 4 * (θ * θs)` using `by ring`. Rewrite using `[e, hT, hM, sc_eq, sc_eq, sc_eq]`. Simplify using `only [map_sub, map_mul, map_pow, map_ofNat]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨tO, htO⟩ : ∃ tO : v.adicCompletionIntegers F, (tO : Fv F v) = t` from `⟨⟨t, ht⟩, rfl⟩`. Take `⟨mO, hmO⟩ : ∃ mO : v.adicCompletionIntegers F, (mO : Fv F v) = m` from `⟨⟨m, hm⟩, rfl⟩`. Take `⟨eO, heO⟩ : ∃ eO : v.adicCompletionIntegers F, (eO : Fv F v) = ε'` from `⟨⟨ε', hε'⟩, rfl⟩`. Establish `hDc : ((tO ^ 2 - 4 * mO : v.adicCompletionIntegers F) : Fv F v) = t ^ 2 - 4 * m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[htO, hmO]`. Both sides reduce to the same expression. Establish `hDint : t ^ 2 - 4 * m ∈ v.adicCompletionIntegers F` using `hDc ▸ (tO ^ 2 - 4 * mO).2`. Establish `hDv : ¬ Valued.v (t ^ 2 - 4 * m) < 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hlt`. Take `⟨d, hd⟩` from `(mem_unifO_iff v hϖ (⟨_, hDint⟩ : v.adicCompletionIntegers F)).2 hlt`. Apply `hθd` to reduce the goal to its premises. Use `⟨sc (E := E) v d, sc_mem v d.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hDsc, sc_mul_sc]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (sc (E := E) v) hd`. Establish `hε'1 : ¬ Valued.v ε' < 1`. Introduce `hlt`. Apply `sc_mul_ne_one v hε' hlt (hU ▸ hu0 : sc (E := E) v ε ∈ OEv (E := E) v)` to reduce the goal to its premises. Rewrite using `[← hU', ← hU, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Conclude with `huu'`. Use `haveI : v.asIdeal.IsMaximal := v.isMaximal`. Use `letI : Field (𝓞 F ⧸ v.asIdeal) := Ideal.Quotient.field v.asIdeal`. Use `letI := Fintype.ofFinite (𝓞 F ⧸ v.asIdeal)`. Establish `hDk : redR v tO ^ 2 - 4 * redR v mO ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Apply `hDv` to reduce the goal to its premises. Establish `h1 : redR v (tO ^ 2 - 4 * mO) = 0`. Rewrite using `[map_sub, map_mul, map_pow, map_ofNat]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `(redR_eq_zero v _).1 h1`. Rewrite `h2` using `[hDc]`. Then use the resulting hypothesis. Take `⟨xb, yb, hxy⟩` from `PI.OmLocU.Nrm.ff_binary (redR v tO) (redR v mO) (redR v eO) hDk`. Take `⟨x0, hx0, hx0r⟩` from `red_surj v xb`. Take `⟨y0, hy0, hy0r⟩` from `red_surj v yb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨xO, hxO⟩ : ∃ xO : v.adicCompletionIntegers F, (xO : Fv F v) = x0` from `⟨⟨x0, hx0⟩, rfl⟩`. Take `⟨yO, hyO⟩ : ∃ yO : v.adicCompletionIntegers F, (yO : Fv F v) = y0` from `⟨⟨y0, hy0⟩, rfl⟩`. Establish `hres : redR v (xO ^ 2 + tO * xO * yO + mO * yO ^ 2 - eO) = 0`. Rewrite using `[map_sub, map_add, map_add, map_mul, map_mul, map_mul, map_pow, map_pow]`. Establish `ex : redR v xO = xb` using `by show red v (xO : Fv F v) = xb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hxO]`. Conclude with `hx0r`. Establish `ey : redR v yO = yb` using `by show red v (yO : Fv F v) = yb`. Rewrite using `[hyO]`. Conclude with `hy0r`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[ex, ey, hxy, sub_self]`. Establish `hrc : ((xO ^ 2 + tO * xO * yO + mO * yO ^ 2 - eO : v.adicCompletionIntegers F) : Fv F v) = x0 ^ 2 + t * x0 * y0 + m * y0 ^ 2 - ε'`. Use `push_cast`. Rewrite using `[hxO, hyO, htO, hmO, heO]`. Establish `h0 : ‖x0 ^ 2 + t * x0 * y0 + m * y0 ^ 2 - ε'‖ < 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3` using `(redR_eq_zero v _).1 hres`. Rewrite `h3` using `[hrc]`. Conclude with `Valued.toNormedField.norm_lt_one_iff.2 h3`. Take `⟨x, y, hx, hy, hq⟩` from `PI.OmLocU.Nrm.solve_int t m ε' x0 y0 (norm_le_one_of v ht) (norm_le_one_of v hm) (norm_eq_one_of v hDint hDv) (norm_eq_one_of v hε' hε'1) (norm_le_one_of v hx0) (norm_le_one_of v hy0) h0`. Establish `hxi : x ∈ v.adicCompletionIntegers F` using `Valued.toNormedField.norm_le_one_iff.1 hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hyi : y ∈ v.adicCompletionIntegers F` using `Valued.toNormedField.norm_le_one_iff.1 hy`. Use `⟨sc (E := E) v x + sc (E := E) v y * θ, oEv_add v (sc_mem v hxi) (oEv_mul v (sc_mem v hyi) hθ0), ?_⟩` and prove the remaining obligations. Establish `hl : sigR (Fv F v) σ (sc (E` using `E) v x + sc (E := E) v y * θ) = sc (E := E) v x + sc (E := E) v y * θs := by`. Rewrite using `[map_add, map_mul, sigR_sc', sigR_sc']`. Rewrite using `[hl]`.
-
-Establish `e1 : (sc (E` using `E) v x + sc (E := E) v y * θs) * (sc (E := E) v x + sc (E := E) v y * θ) = sc (E := E) v x * sc (E := E) v x + sc (E := E) v x * sc (E := E) v y * (θ + θs) + sc (E := E) v y * sc (E := E) v y * (θ * θs) := by ring`. Establish `e2 : sc (E` using `E) v x * sc (E := E) v x + sc (E := E) v x * sc (E := E) v y * sc (E := E) v t + sc (E := E) v y * sc (E := E) v y * sc (E := E) v m = sc (E := E) v (x ^ 2 + t * x * y + m * y ^ 2) := by`. Simplify using `only [sc_eq, map_add, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, hT, hM, e2, hq, ← hU', mul_comm]`.
-
-Conclude with `huu'`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normOne_of (hRes : PI.OmLocU.Red.ResAlg σ J ψ v) : PI.OmLocU.Orb.NormOne σ J ψ v := by
   classical

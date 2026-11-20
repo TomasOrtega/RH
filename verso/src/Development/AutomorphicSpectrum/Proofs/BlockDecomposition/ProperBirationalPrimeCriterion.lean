@@ -10,7 +10,7 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE.Krull
 
 /- English proof (translation)
-Simplify using `[Scheme.Hom.germ_stalkMap_apply, Scheme.Hom.appLE, TopCat.Presheaf.germ_res_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stalkMap_germ_appLE {Y Z : Scheme.{0}} (ψ : Z ⟶ Y) (W : Y.Opens) (U : Z.Opens)
     (h : U ≤ ψ ⁻¹ᵁ W) (z : Z) (hz : z ∈ U) (hy : ψ z ∈ W) (a : Γ(Y, W)) :
@@ -18,7 +18,7 @@ theorem stalkMap_germ_appLE {Y Z : Scheme.{0}} (ψ : Z ⟶ Y) (W : Y.Opens) (U :
   simp [Scheme.Hom.germ_stalkMap_apply, Scheme.Hom.appLE, TopCat.Presheaf.germ_res_apply]
 
 /- English proof (translation)
-Use `letI : Algebra Γ(Z, U) (Z.presheaf.stalk (hU.fromSpec q)) := (Z.presheaf.germ U _ hz).hom.toAlgebra`. Use `haveI : IsLocalization.AtPrime (Z.presheaf.stalk (hU.fromSpec q)) q.asIdeal := hU.isLocalization_stalk' q hz`. Rewrite using `[← Ideal.mem_primeCompl_iff]`. Conclude with `IsLocalization.AtPrime.isUnit_to_map_iff (Z.presheaf.stalk (hU.fromSpec q)) q.asIdeal c`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_germ_fromSpec {Z : Scheme.{0}} {U : Z.Opens} (hU : IsAffineOpen U)
     (q : PrimeSpectrum Γ(Z, U)) (hz : hU.fromSpec q ∈ U) (c : Γ(Z, U)) :
@@ -29,7 +29,7 @@ theorem isUnit_germ_fromSpec {Z : Scheme.{0}} {U : Z.Opens} (hU : IsAffineOpen U
   exact IsLocalization.AtPrime.isUnit_to_map_iff (Z.presheaf.stalk (hU.fromSpec q)) q.asIdeal c
 
 /- English proof (translation)
-Use `letI : Algebra Γ(Z, U) (Z.presheaf.stalk (hU.fromSpec q)) := (Z.presheaf.germ U _ hz).hom.toAlgebra`. Use `haveI : IsLocalization.AtPrime (Z.presheaf.stalk (hU.fromSpec q)) q.asIdeal := hU.isLocalization_stalk' q hz`. Take `⟨⟨v, hv⟩, hvcd⟩` from `(IsLocalization.eq_iff_exists q.asIdeal.primeCompl (Z.presheaf.stalk (hU.fromSpec q))).mp e`. Conclude with `⟨v, hv, hvcd⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_of_germ_eq {Z : Scheme.{0}} {U : Z.Opens} (hU : IsAffineOpen U)
     (q : PrimeSpectrum Γ(Z, U)) (hz : hU.fromSpec q ∈ U) (c d : Γ(Z, U))
@@ -42,7 +42,7 @@ theorem exists_mul_eq_of_germ_eq {Z : Scheme.{0}} {U : Z.Opens} (hU : IsAffineOp
   exact ⟨v, hv, hvcd⟩
 
 /- English proof (translation)
-Use `letI : Algebra Γ(Y, W) (Y.presheaf.stalk y) := (Y.presheaf.germ W y hy).hom.toAlgebra`. Use `haveI : IsLocalization.AtPrime (Y.presheaf.stalk y) (hW.primeIdealOf ⟨y, hy⟩).asIdeal := hW.isLocalization_stalk ⟨y, hy⟩`. Take `⟨⟨a, u⟩, hs⟩` from `IsLocalization.surj (hW.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl s`. Conclude with `⟨a, u.1, IsLocalization.map_units (Y.presheaf.stalk y) u, hs⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frac_stalk {Y : Scheme.{0}} {W : Y.Opens} (hW : IsAffineOpen W) (y : Y) (hy : y ∈ W)
     (s : Y.presheaf.stalk y) :
@@ -55,7 +55,7 @@ theorem exists_frac_stalk {Y : Scheme.{0}} {W : Y.Opens} (hW : IsAffineOpen W) (
   exact ⟨a, u.1, IsLocalization.map_units (Y.presheaf.stalk y) u, hs⟩
 
 /- English proof (translation)
-Use `letI : Algebra Γ(Y, W) (Y.presheaf.stalk y) := (Y.presheaf.germ W y hy).hom.toAlgebra`. Use `haveI : IsLocalization.AtPrime (Y.presheaf.stalk y) (hW.primeIdealOf ⟨y, hy⟩).asIdeal := hW.isLocalization_stalk ⟨y, hy⟩`. Take `⟨⟨u, hu⟩, hua⟩` from `(IsLocalization.map_eq_zero_iff (hW.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl (Y.presheaf.stalk y) a).mp e`. Conclude with `⟨u, IsLocalization.map_units (Y.presheaf.stalk y) (⟨u, hu⟩ : (hW.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl), hua⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_zero_of_germ {Y : Scheme.{0}} {W : Y.Opens} (hW : IsAffineOpen W) (y : Y)
     (hy : y ∈ W) (a : Γ(Y, W)) (e : Y.presheaf.germ W y hy a = 0) :
@@ -68,9 +68,9 @@ theorem exists_mul_eq_zero_of_germ {Y : Scheme.{0}} {W : Y.Opens} (hW : IsAffine
   exact ⟨u, IsLocalization.map_units (Y.presheaf.stalk y) (⟨u, hu⟩ : (hW.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl), hua⟩
 
 /- English proof (translation)
-Use `haveI : IsIso ((ψ ∣_ W).stalkMap ⟨z, hz⟩) := by first`. Consider the case `infer_instance`. Consider the case `(haveI : IsOpenImmersion (ψ ∣_ W) := inferInstance; infer_instance)`. Consider the case `(haveI : IsOpenImmersion (ψ ∣_ W) := IsOpenImmersion.of_isIso _; infer_instance)`. Consider the case `exact PresheafedSpace.IsOpenImmersion.stalk_iso (ψ ∣_ W).toPshHom ⟨z, hz⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `e` using `morphismRestrictStalkMap ψ W ⟨z, hz⟩`. Use `show IsIso (ψ.stalkMap (⟨z, hz⟩ : (ψ ⁻¹ᵁ W : Z.Opens)).1)`. Rewrite using `[Arrow.iso_w' e]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_stalkMap_of_isIso_restrict {Y Z : Scheme.{0}} (ψ : Z ⟶ Y) (W : Y.Opens)
     (h : IsIso (ψ ∣_ W)) (z : Z) (hz : z ∈ ψ ⁻¹ᵁ W) : IsIso (ψ.stalkMap z) := by
@@ -86,17 +86,17 @@ theorem isIso_stalkMap_of_isIso_restrict {Y Z : Scheme.{0}} (ψ : Z ⟶ Y) (W : 
   infer_instance
 
 /- English proof (translation)
-Establish `hy : ψ (hU.fromSpec q) ∈ W` using `h hz`. Establish `hbij` using `(ConcreteCategory.isIso_iff_bijective (ψ.stalkMap (hU.fromSpec q))).mp hiso`. Prove the components needed by the constructor for the conclusion. Introduce `c`. Take `⟨s, hs0⟩` from `hbij.2 (Z.presheaf.germ U _ hz c)`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, u, hu, hs⟩` from `exists_frac_stalk hW (ψ (hU.fromSpec q)) hy s`. Establish `hs'` using `congrArg (ψ.stalkMap (hU.fromSpec q)) hs`. Rewrite `hs'` using `[map_mul, hs0, stalkMap_germ_appLE ψ W U h _ hz hy u, stalkMap_germ_appLE ψ W U h _ hz hy a]`. Establish `hu' : IsUnit (Z.presheaf.germ U _ hz (ψ.appLE W U h u))`. Rewrite using `[← stalkMap_germ_appLE ψ W U h _ hz hy u]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu.map _`. Rewrite `hu'` using `[isUnit_germ_fromSpec hU q hz]`. Use `⟨a, u, hu', ?_⟩` and prove the remaining obligations. Apply `exists_mul_eq_of_germ_eq hU q hz` to reduce the goal to its premises. Rewrite using `[map_mul, mul_comm, hs']`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `a ⟨v, hv, hva⟩`. Establish `h0 : Z.presheaf.germ U _ hz (ψ.appLE W U h a) = 0`. Establish `hvu : IsUnit (Z.presheaf.germ U _ hz v)` using `(isUnit_germ_fromSpec hU q hz v).mpr hv`. Establish `hh` using `congrArg (Z.presheaf.germ U _ hz) hva`. Rewrite `hh` using `[map_mul, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hvu.mul_right_eq_zero.mp hh`. Establish `h1 : Y.presheaf.germ W _ hy a = 0`. Apply `hbij.1` to reduce the goal to its premises. Rewrite using `[map_zero, stalkMap_germ_appLE ψ W U h _ hz hy a, h0]`. Take `⟨u, hu, hua⟩` from `exists_mul_eq_zero_of_germ hW _ hy a h1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u, ?_, hua⟩` and prove the remaining obligations. Rewrite using `[← isUnit_germ_fromSpec hU q hz, ← stalkMap_germ_appLE ψ W U h _ hz hy u]`. Conclude with `hu.map _`.
+A detailed English derivation is pending.
 -/
 theorem chart_fractions_of_isIso_stalkMap {Y Z : Scheme.{0}} (ψ : Z ⟶ Y) {W : Y.Opens}
     (hW : IsAffineOpen W) {U : Z.Opens} (hU : IsAffineOpen U) (h : U ≤ ψ ⁻¹ᵁ W)
@@ -135,21 +135,19 @@ theorem chart_fractions_of_isIso_stalkMap {Y Z : Scheme.{0}} (ψ : Z ⟶ Y) {W :
     exact hu.map _
 
 /- English proof (translation)
-Set `p : PrimeSpectrum Γ(Z, U)` to `⟨q, hq⟩`. Establish `hz : hU.fromSpec p ∈ (U : Set Z)`. Rewrite using `[← hU.range_fromSpec]`. Conclude with `Set.mem_range_self _`. Establish `hunit : IsUnit (Z.presheaf.germ U _ hz ((ψ ≫ J.subschemeι).appLE V U h f))` using `(isUnit_germ_fromSpec hU p hz _).mpr hf`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : hU.fromSpec p ∈ Z.basicOpen ((ψ ≫ J.subschemeι).appLE V U h f)` using `(Z.mem_basicOpen _ _ hz).mpr hunit`. Establish `e1 : Z.basicOpen ((ψ ≫ J.subschemeι).appLE V U h f) = U ⊓ Z.basicOpen ((ψ ≫ J.subschemeι).app V f)` using `Z.basicOpen_res _ (homOfLE h).op`. Establish `hb2 : hU.fromSpec p ∈ Z.basicOpen ((ψ ≫ J.subschemeι).app V f)` using `(TopologicalSpace.Opens.mem_inf.mp (e1 ▸ hb)).2`. Establish `e2` using `Scheme.preimage_basicOpen (ψ ≫ J.subschemeι) f`. Establish `hmem : hU.fromSpec p ∈ ψ ⁻¹ᵁ (J.subschemeι ⁻¹ᵁ X.basicOpen f)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh : hU.fromSpec p ∈ (ψ ≫ J.subschemeι) ⁻¹ᵁ X.basicOpen f` using `e2 ▸ hb2`. Conclude with `hh`. Establish `hist : IsIso (ψ.stalkMap (hU.fromSpec p))` using `isIso_stalkMap_of_isIso_restrict ψ _ hiso _ hmem`. Establish `hW' : IsAffineOpen (J.subschemeι ⁻¹ᵁ V)` using `hV.preimage J.subschemeι`. Take `⟨H1, H2⟩` from `chart_fractions_of_isIso_stalkMap ψ hW' hU h p hz hist`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hce : ∀ t : Γ(X, V), (ψ ≫ J.subschemeι).appLE V U h t = ψ.appLE (J.subschemeι ⁻¹ᵁ V) U h (J.subschemeι.app V t)`. Introduce `t`. Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression. Establish `hsurj` using `J.subschemeι_app_surjective ⟨V, hV⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `c`. Take `⟨a, u, hu, v, hv, hvc⟩` from `H1 c`. Take `⟨b, rfl⟩` from `hsurj a`. Take `⟨t, rfl⟩` from `hsurj u`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨b, t, ?_, v, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[hce]`. Conclude with `hu`. Rewrite using `[hce, hce]`. Conclude with `hvc`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `b ⟨v, hv, hvb⟩`. Rewrite `hvb` using `[hce]`. Take `⟨u, hu, hub⟩` from `H2 (J.subschemeι.app V b) ⟨v, hv, hvb⟩`. Take `⟨t, rfl⟩` from `hsurj u`. Use `⟨t, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hce]`. Conclude with `hu`. Rewrite using `[← J.ker_subschemeι_app ⟨V, hV⟩, RingHom.mem_ker, map_mul]`. Conclude with `hub`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_fractions_subscheme {X : Scheme.{0}} (J : X.IdealSheafData) {Z : Scheme.{0}}
     (ψ : Z ⟶ J.subscheme) (V : X.Opens) (hV : IsAffineOpen V) (f : Γ(X, V))
@@ -207,7 +205,7 @@ theorem chart_fractions_subscheme {X : Scheme.{0}} (J : X.IdealSheafData) {Z : S
       exact hub
 
 /- English proof (translation)
-Introduce `X J Z ψ V hV f hiso U hU h q hq hf`. Conclude with `chart_fractions_subscheme J ψ V hV f hiso U hU h q hq hf`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stalk_over_isoLocus : ∀ {X : Scheme.{0}} (J : X.IdealSheafData) {Z : Scheme.{0}} (ψ : Z ⟶ J.subscheme) (V : X.Opens) (hV : IsAffineOpen V) (f : Γ(X, V)), IsIso (ψ ∣_ (J.subschemeι ⁻¹ᵁ X.basicOpen f)) → ∀ (U : Z.Opens), IsAffineOpen U → ∀ h : U ≤ (ψ ≫ J.subschemeι) ⁻¹ᵁ V, letI : Algebra Γ(X, V) Γ(Z, U) := ((ψ ≫ J.subschemeι).appLE V U h).hom.toAlgebra; ∀ q : Ideal Γ(Z, U), q.IsPrime → f ∉ q.comap (algebraMap Γ(X, V) Γ(Z, U)) → (∀ c : Γ(Z, U), ∃ b t : Γ(X, V), t ∉ q.comap (algebraMap Γ(X, V) Γ(Z, U)) ∧ ∃ v : Γ(Z, U), v ∉ q ∧ v * (algebraMap Γ(X, V) Γ(Z, U) t * c) = v * algebraMap Γ(X, V) Γ(Z, U) b) ∧ (∀ b : Γ(X, V), (∃ v : Γ(Z, U), v ∉ q ∧ v * algebraMap Γ(X, V) Γ(Z, U) b = 0) → ∃ t : Γ(X, V), t ∉ q.comap (algebraMap Γ(X, V) Γ(Z, U)) ∧ t * b ∈ J.ideal ⟨V, hV⟩) := by
   intro X J Z ψ V hV f hiso U hU h q hq hf

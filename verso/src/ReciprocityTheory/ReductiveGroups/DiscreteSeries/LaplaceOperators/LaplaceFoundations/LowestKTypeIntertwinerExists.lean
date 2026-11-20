@@ -20,7 +20,7 @@ def rhoS (h : Matrix (Fin k) (Fin k) ℂ) : spanW (k := k) (r := r) T →L[ℂ] 
   else 0
 
 /- English proof (translation)
-Simplify using `only [rhoS, dif_pos hh]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem rhoS_apply {h : Matrix (Fin k) (Fin k) ℂ} (hh : h ∈ Matrix.unitaryGroup (Fin k) ℂ)
     (v : spanW (k := k) (r := r) T) : (rhoS T h v : T.V) = rhoK (k := k) (r := r) T h v := by
@@ -28,14 +28,14 @@ theorem rhoS_apply {h : Matrix (Fin k) (Fin k) ℂ} (hh : h ∈ Matrix.unitaryGr
   rfl
 
 /- English proof (translation)
-Conclude with `(HW.uqU_mem_Kset hh).1`.
+A detailed English derivation is pending.
 -/
 theorem uj_unit {h : Matrix (Fin k) (Fin k) ℂ} (hh : h ∈ Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos k)) :
     h ∈ Matrix.unitaryGroup (Fin k) ℂ := by
   exact (HW.uqU_mem_Kset hh).1
 
 /- English proof (translation)
-Use `⟨hh, ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.REAL.Jm, Formalism.MainNotions.S.allPos]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem unit_ks {h : Matrix (Fin k) (Fin k) ℂ} (hh : h ∈ Matrix.unitaryGroup (Fin k) ℂ) :
     h ∈ Formalism.REAL.Kset (Formalism.MainNotions.S.allPos k) := by
@@ -43,7 +43,7 @@ theorem unit_ks {h : Matrix (Fin k) (Fin k) ℂ} (hh : h ∈ Matrix.unitaryGroup
   simp [Formalism.REAL.Jm, Formalism.MainNotions.S.allPos]
 
 /- English proof (translation)
-Establish `hJ : Formalism.REAL.Jm (Formalism.MainNotions.S.allPos k) = 1` using `by simp [Formalism.REAL.Jm, Formalism.MainNotions.S.allPos]`. Use `show hᴴ * Formalism.REAL.Jm (Formalism.MainNotions.S.allPos k) * h = Formalism.REAL.Jm (Formalism.MainNotions.S.allPos k)`. Rewrite using `[hJ, Matrix.mul_one, ← Matrix.star_eq_conjTranspose]`. Conclude with `Unitary.star_mul_self_of_mem hh`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_uj {h : Matrix (Fin k) (Fin k) ℂ} (hh : h ∈ Matrix.unitaryGroup (Fin k) ℂ) :
     h ∈ Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos k) := by
@@ -53,9 +53,9 @@ theorem unit_uj {h : Matrix (Fin k) (Fin k) ℂ} (hh : h ∈ Matrix.unitaryGroup
   exact Unitary.star_mul_self_of_mem hh
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h t ht`. Use `congrArg Subtype.val (h t ht)` as an intermediate fact. Rewrite `this` using `[rhoS_apply T ht.1]`. Conclude with `this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h t ht`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[rhoS_apply T ht.1]`. Conclude with `h t ht`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtS_iff {μ : Fin k → ℝ} {v : spanW (k := k) (r := r) T} :
     Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset (Formalism.MainNotions.S.allPos k)) (rhoS T) μ v ↔
@@ -71,25 +71,21 @@ theorem wtS_iff {μ : Fin k → ℝ} {v : spanW (k := k) (r := r) T} :
     exact h t ht
 
 /- English proof (translation)
-Establish `hΛ' : (fun q => Λ (fI k r q)) = Formalism.QuantumDeterminants.lowK (Formalism.MainNotions.S.allPos k) u` using `funext hΛ`. Use `⟨⟨⟨⟨T.w, w_mem_spanW T⟩, 0, fun h => HW.KType.w_ne_zero T (congrArg Subtype.val h)⟩⟩, inferInstance, ⟨⟨?_, ?_⟩, ?_, ?_⟩, ⟨inferInstance, fun _ _ _ _ => Submodule.mem_top, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `v`. Rewrite using `[rhoS_apply T (one_mem _), rhoK_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `a ha b hb`. Use extensionality with `v`. Rewrite using `[rhoS_apply T (mul_mem (uj_unit ha) (uj_unit hb)), rhoK_mul T hε (uj_unit ha) (uj_unit hb)]`. Express the relevant statement in the definitionally equal form `_ = ((rhoS T a (rhoS T b v)) : T.V)`. Rewrite using `[rhoS_apply T (uj_unit ha), rhoS_apply T (uj_unit hb)]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg v`. Express the relevant statement in the definitionally equal form `‖(rhoS T g v : T.V)‖ = ‖(v : T.V)‖`. Rewrite using `[rhoS_apply T (uj_unit hg), rhoK_norm T hε (uj_unit hg)]`. Introduce `v`. Rewrite using `[Topology.IsInducing.subtypeVal.continuousOn_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ContinuousOn (fun g => rhoK (k` using `k) (r := r) T g v) (Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos k)) := ((HW.torep_isURepOn T).2.2 v).comp kE_cont.continuousOn (fun g hg => kE_mem_Kset hε (uj_unit hg))`. Use `hc.congr fun g hg => ?_` and prove the remaining obligations. Conclude with `rhoS_apply T (uj_unit hg) v`. Introduce `S' _ hS'`. Set `S'' : Submodule ℂ T.V` to `S'.map (spanW (k := k) (r := r) T).subtype`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle : S'' ≤ spanW (k` using `k) (r := r) T := by`. Introduce and unpack `_ ⟨v, _, rfl⟩`. Conclude with `v.2`. Establish `hst : ∀ h ∈ Matrix.unitaryGroup (Fin k) ℂ, ∀ v ∈ S'', rhoK (k` using `k) (r := r) T h v ∈ S'' := by`. Introduce and unpack `h hh _ ⟨v, hv, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨rhoS T h v, hS' h (unit_ks hh) v hv, ?_⟩` and prove the remaining obligations. Conclude with `rhoS_apply T hh v`. Break down `spanW_irred T hε S'' hle hst with h | h` into its components or cases. Use `left`. Rewrite using `[Submodule.eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Establish `: (v : T.V) ∈ S''` using `⟨v, hv, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `Subtype.ext this`. Use `right`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eq_top_iff]`. Introduce `v _`. Take `⟨v', hv', he⟩` from `h v.2`. Establish `: v' = v` using `Subtype.ext he`. Rewrite using `[← this]`.
-
-Conclude with `hv'`. Use `⟨⟨T.w, w_mem_spanW T⟩, Submodule.mem_top, fun h => HW.KType.w_ne_zero T (congrArg Subtype.val h), ?_⟩` and prove the remaining obligations. Rewrite using `[wtS_iff, ← hΛ']`. Conclude with `w_wtK T`. Introduce `μ v _ hv hwt`.
-
-Rewrite `hwt` using `[wtS_iff]`. Rewrite using `[← hΛ']`. Conclude with `wt_cdom T hε v.2 (fun h => hv (Subtype.ext h)) hwt`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rhoS_hc (hε : ∀ a : Fin (2 * r + k + 1), a.val < k → ε a = true) {u : Fin k → ℝ}
     (hΛ : ∀ q : Fin k, Λ (fI k r q) = Formalism.QuantumDeterminants.lowK (Formalism.MainNotions.S.allPos k) u q) :
@@ -147,11 +143,11 @@ theorem rhoS_hc (hε : ∀ a : Fin (2 * r + k + 1), a.val < k → ε a = true) {
     exact wt_cdom T hε v.2 (fun h => hv (Subtype.ext h)) hwt
 
 /- English proof (translation)
-Take `⟨U, hU⟩` from `HW.hcTypeU_unique π' (rhoS T) hπ (rhoS_hc T hε hΛ)`. Establish `hint : ∀ g ∈ Matrix.unitaryGroup (Fin k) ℂ, ∀ v, rhoK (k` using `k) (r := r) T g (U v) = (U (π' g v) : T.V) := fun g hg v => by`. Rewrite using `[← rhoS_apply T hg, hU g (unit_uj hg) v]`. Establish `hΛ' : (fun q => Λ (fI k r q)) = Formalism.QuantumDeterminants.lowK (Formalism.MainNotions.S.allPos k) u` using `funext hΛ`. Establish `hwt : Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset (Formalism.MainNotions.S.allPos k)) (rhoK (k` using `k) (r := r) T) (Formalism.QuantumDeterminants.lowK (Formalism.MainNotions.S.allPos k) u) (U ξ : T.V) := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t ht`. Rewrite using `[hint _ ht.1, hξ t (unit_uj ht.1), map_smul]`. Both sides reduce to the same expression. Rewrite `hwt` using `[← hΛ']`. Establish `hfull` using `wt_full T hε (U ξ).2 hwt`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfix : (fun a : Fin (2 * r + k + 1) => if h : a.val < k then (fun q => Λ (fI k r q)) ⟨a.val, h⟩ else Λ a) = Λ`. Apply the tactic sequence `funext a; split_ifs <;> rfl`. Rewrite `hfull` using `[hfix]`. Take `⟨α, hα⟩` from `eq_smul_highestWeight_of_isWeight T hfull`. Conclude with `⟨U, α, hint, hα⟩`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lowestKType_intertwiner_exists (hε : ∀ a : Fin (2 * r + k + 1), a.val < k → ε a = true) {u : Fin k → ℝ}
     (hΛ : ∀ q : Fin k, Λ (fI k r q) = Formalism.QuantumDeterminants.lowK (Formalism.MainNotions.S.allPos k) u q)

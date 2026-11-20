@@ -21,7 +21,7 @@ open GlobalTheory.RowChain
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ratV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ratV_smul' {n : ℕ} (a : D.host.E) (v : Fin n → D.host.E) : ratV (a • v) = incA D a • ratV v := by
   funext i
@@ -32,7 +32,7 @@ section Diag
 variable {σ : ℕ} (l : Fin σ → D.host.E)
 
 /- English proof (translation)
-Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[← map_mul, mul_inv_cancel₀ (hl a), map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem diagI_mul (hl : ∀ a, l a ≠ 0) :
     (diagonal fun a => incA D (l a)) ⬝ (diagonal fun a => incA D (l a)⁻¹) = (1 : Mx D σ σ) := by
@@ -40,7 +40,7 @@ theorem diagI_mul (hl : ∀ a, l a ≠ 0) :
   rw [← map_mul, mul_inv_cancel₀ (hl a), map_one]
 
 /- English proof (translation)
-Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[← map_mul, inv_mul_cancel₀ (hl a), map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem diagI_mul' (hl : ∀ a, l a ≠ 0) :
     (diagonal fun a => incA D (l a)⁻¹) ⬝ (diagonal fun a => incA D (l a)) = (1 : Mx D σ σ) := by
@@ -54,7 +54,7 @@ section Gen
 variable {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (J : Mx D S.rank ρ) (l : Fin ρ → D.host.E)
 
 /- English proof (translation)
-Establish `e` using `d.pX_jX`. Rewrite `e` using `[hJ, ← Matrix.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (d.pX ⬝ J), diagI_mul l hl, Matrix.mul_one]`. Use `_ = _ := by rw [e, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pX_J (hl : ∀ a, l a ≠ 0) (hJ : d.jX = J ⬝ diagonal fun a => incA D (l a)) :
     d.pX ⬝ J = diagonal fun a => incA D (l a)⁻¹ := by
@@ -65,7 +65,7 @@ theorem pX_J (hl : ∀ a, l a ≠ 0) (hJ : d.jX = J ⬝ diagonal fun a => incA D
     _ = _ := by rw [e, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[blockX, hJ, ← Matrix.mul_assoc (mt S n), e1, Matrix.add_mul, Matrix.mul_add]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[pX_J d J l hl hJ, diagI_mul' l hl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockX_J (hl : ∀ a, l a ≠ 0) (hJ : d.jX = J ⬝ diagonal fun a => incA D (l a)) (n : GA D S) (T : Mx D ρ ρ)
     (e1 : mt S n ⬝ J = J + J ⬝ T) :
@@ -75,7 +75,7 @@ theorem blockX_J (hl : ∀ a, l a ≠ 0) (hJ : d.jX = J ⬝ diagonal fun a => in
   rw [pX_J d J l hl hJ, diagI_mul' l hl]
 
 /- English proof (translation)
-Establish `hzs : d.j0 *ᵥ ratV z = incA D t • ratV w`. Rewrite using `[HypDec.j0, ← ratV_mulVec, hz, ratV_smul']`. Rewrite using `[coefX, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hzs, Matrix.mulVec_smul, e2, smul_add, ← hzs, Matrix.mulVec_add, Matrix.mulVec_mulVec, d.pX_j0, Matrix.zero_mulVec, zero_add, Matrix.mulVec_smul, Matrix.mulVec_mulVec, pX_J d J l hl hJ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coefX_J (hl : ∀ a, l a ≠ 0) (hJ : d.jX = J ⬝ diagonal fun a => incA D (l a)) (n : GA D S)
     (z : Fin S₀.rank → D.host.E) (w : Fin S.rank → D.host.E) (t : D.host.E) (b : Fin ρ → AE D)
@@ -90,21 +90,21 @@ theorem coefX_J (hl : ∀ a, l a ≠ 0) (hJ : d.jX = J ⬝ diagonal fun a => inc
 end Gen
 
 /- English proof (translation)
-The claim follows from `neg_ne_zero.2 (GlobalTheory.Unf.Inhab.cmHost_imaginaryGenerator_ne_zero D)`.
+A detailed English derivation is pending.
 -/
 theorem neg_hermitianTraceZeroElement_ne_zero : -D.host.xi0 ≠ 0 := neg_ne_zero.2 (GlobalTheory.Unf.Inhab.cmHost_imaginaryGenerator_ne_zero D)
 
 /- English proof (translation)
-Rewrite using `[← map_mul, pow_succ (-D.host.xi0) (i + 1), ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ neg_hermitianTraceZeroElement_ne_zero), one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem neg_pow_ratio (i : ℕ) :
     incA D ((-D.host.xi0) ^ (i + 1))⁻¹ * incA D ((-D.host.xi0) ^ (i + 1 + 1)) = incA D (-D.host.xi0) := by
   rw [← map_mul, pow_succ (-D.host.xi0) (i + 1), ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ neg_hermitianTraceZeroElement_ne_zero), one_mul]
 
 /- English proof (translation)
-Simplify using `only [upSum, Matrix.diagonal_mul, Matrix.mul_diagonal, Finset.mul_sum, mul_ite, mul_zero]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hij`. Rewrite using `[hij]`. Establish `e` using `neg_pow_ratio (D := D) i.1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `T i j * e`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem upSum_scaled {ρ : ℕ} (T : Mx D ρ ρ) :
     upSum ((diagonal fun a : Fin ρ => incA D ((-D.host.xi0) ^ (a.1 + 1))⁻¹) ⬝ T ⬝
@@ -118,9 +118,9 @@ theorem upSum_scaled {ρ : ℕ} (T : Mx D ρ ρ) :
   · rfl
 
 /- English proof (translation)
-Simplify using `only [ell, dotProduct, Matrix.mulVec_diagonal, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with hi`. Establish `e` using `neg_pow_ratio (D := D) i.1`. Establish `hp : (-D.host.xi0) ^ (ρ + 1) = (-D.host.xi0) ^ (i.1 + 1 + 1)` using `congrArg (fun k => (-D.host.xi0) ^ (k + 1)) hi.symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp]`. Take the linear combination `b i * e`. Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ell_scaled {ρ : ℕ} (b : Fin ρ → AE D) :
     ell D ρ ⬝ᵥ (incA D ((-D.host.xi0) ^ (ρ + 1)) • ((diagonal fun a : Fin ρ => incA D ((-D.host.xi0) ^ (a.1 + 1))⁻¹) *ᵥ b)) =
@@ -135,9 +135,9 @@ theorem ell_scaled {ρ : ℕ} (b : Fin ρ → AE D) :
   · ring
 
 /- English proof (translation)
-Establish `h1 : ‖ψ x‖ = 1` using `hψ.1.2.1 x`. Establish `h2 : ψ x * star (ψ x) = 1`. Rewrite using `[Complex.star_def, Complex.mul_conj', h1]`. Simplify using the standard rewrite rules. Establish `h3 : ψ x * ψ (-x) = 1` using `by rw [← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : ψ x ≠ 0` using `by intro h; rw [h, zero_mul] at h3; exact zero_ne_one h3`. Conclude with `mul_left_cancel₀ h0 (h3.trans h2.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem star_psi_neg {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (x : AF D.host.F) : ψ (-x) = star (ψ x) := by
   have h1 : ‖ψ x‖ = 1 := hψ.1.2.1 x
@@ -148,7 +148,7 @@ theorem star_psi_neg {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)
   exact mul_left_cancel₀ h0 (h3.trans h2.symm)
 
 /- English proof (translation)
-Unfold `psiE`. Use `rewrite [map_neg]`. Conclude with `star_psi_neg hψ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem psiE_neg_star {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (x : AE D) :
     psiE ψ (-x) = star (psiE ψ x) := by
@@ -157,7 +157,7 @@ theorem psiE_neg_star {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1
   exact star_psi_neg hψ _
 
 /- English proof (translation)
-Use `rewrite [upSum_add, upSum_one, zero_add, upSum_scaled, ell_scaled, superSum_const, map_neg]`. Generalize the expression as in `upSum T = u`. Generalize the expression as in `ell D ρ ⬝ᵥ b = v`. Generalize the expression as in `incA D D.host.xi0 = s`. Expand and normalize the polynomial expressions, which then agree.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem simpleSum_scaled {ρ : ℕ} (T : Mx D ρ ρ) (b : Fin ρ → AE D) :
     upSum (1 + (diagonal fun a : Fin ρ => incA D ((-D.host.xi0) ^ (a.1 + 1))⁻¹) ⬝ T ⬝
@@ -172,15 +172,13 @@ theorem simpleSum_scaled {ρ : ℕ} (T : Mx D ρ ρ) (b : Fin ρ → AE D) :
   ring
 
 /- English proof (translation)
-Introduce `D ψ hψ A B S₀ A' Lz c ρ a hc d o ζ hA hz n hn`. Establish `hl : ∀ p : Fin ρ, (-D.host.xi0) ^ (p.1 + 1) ≠ 0` using `fun p => pow_ne_zero _ neg_hermitianTraceZeroElement_ne_zero`. Establish `hde : d.e = a.iso ρ (by omega) * diagonal (fun p : Fin ρ => (-D.host.xi0) ^ (p.1 + 1))`. Take `⟨hh, he, -⟩` from `hA`. Rewrite using `[he]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i p`. Simplify using `only [colsOf, Matrix.mul_diagonal, HermitianOrthogonalExtensionData.iso, Matrix.submatrix_apply, id]`. Conclude with `mul_comm _ _`. Establish `hn' : n ∈ NFlag B (a.besDat (neg_ne_zero.2 one_ne_zero) ρ hc).e`. Establish `h0 : n ∈ NFlag B d.e` using `hn`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[hde, nFlag_diag _ _ hl]`. Conclude with `h0`. Take `⟨T, b, -, h1, h2⟩ : ∃ (T : Mx D ρ ρ) (b : Fin ρ → AE D), GlobalTheory.BesselChar.StrictUp T ∧ mt B n ⬝ rat (a.iso ρ (by omega)) = rat (a.iso ρ (by omega)) + rat (a.iso ρ (by omega)) ⬝ T ∧ mt B n *ᵥ ratV (a.besDat (neg_ne_zero.2 one_ne_zero) ρ hc).z = ratV (a.besDat (neg_ne_zero.2 …` from `GlobalTheory.BesselChar.exists_coords (a.besDat (neg_ne_zero.2 one_ne_zero) ρ hc) n hn'`. Establish `hJ : d.jX = rat (a.iso ρ (by omega)) ⬝ diagonal fun p : Fin ρ => incA D ((-D.host.xi0) ^ (p.1 + 1))` using `by show rat d.e = _`. Rewrite using `[hde, rat_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `diagonal_map (map_zero _)`. Establish `hz' : d.i₀ *ᵥ vecB o ζ = (-D.host.xi0) ^ (ρ + 1) • (a.besDat (neg_ne_zero.2 one_ne_zero) ρ hc).z`. Rewrite using `[vecB, Matrix.mulVec_mulVec]`. Conclude with `hz`.
-
-Rewrite using `[GlobalTheory.BesselChar.besChar_eq ψ _ n T b h1 h2]`. Rewrite using `[psiBes, simpleSum, blockX_J d _ _ hl hJ n T h1, coefX_J d _ _ hl hJ n _ _ _ b hz' h2, simpleSum_scaled, map_one, one_mul, psiE_neg_star hψ, psiE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem psiBes_eq_star_besChar : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ {A B S₀ A' Lz : HSp D} {c ρ : ℕ} (a : HermitianOrthogonalExtensionData A B c (-1)) (hc : c = 2 * ρ + 1) (d : HypDec B S₀ ρ) (o : OrthDec S₀ A' Lz) (ζ : Fin Lz.rank → D.host.E), IsAuxiliaryVectorWittDec a d → (d.i₀ * o.iB) *ᵥ ζ = (-D.host.xi0) ^ (ρ + 1) • (fun k => a.a k ⟨ρ, by omega⟩) → ∀ n ∈ flagN d, psiBes ψ d 1 (vecB o ζ) n = star (besChar ψ (a.besDat (neg_ne_zero.2 one_ne_zero) ρ hc) n) := by
   intro D ψ hψ A B S₀ A' Lz c ρ a hc d o ζ hA hz n hn
@@ -216,7 +214,7 @@ end GlobalTheory.AscFin.EndsPf.Chr
 namespace GlobalTheory.AscFin.EndsPf
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem integral_tr' {D : D7} {S : HSp D} {N N' : Subgroup (GA D S)} (hN : N = N') (ν : Measure N) (𝓝 : Set N)
     (f : GA D S → ℂ) : ∫ n in GlobalTheory.RowChain.trSet hN 𝓝, f n.1 ∂(GlobalTheory.RowChain.trMeas hN ν) = ∫ n in 𝓝, f n.1 ∂ν := by
@@ -224,7 +222,7 @@ theorem integral_tr' {D : D7} {S : HSp D} {N N' : Subgroup (GA D S)} (hN : N = N
   rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AscFin.EndsPf.Chr.psiBes_eq_star_besChar ψ hψ a hc d o ζ hd hz`.
+A detailed English derivation is pending.
 -/
 theorem psi_frame {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) {A B S₀ A' Lz : HSp D} {c ρ : ℕ}
     (a : HermitianOrthogonalExtensionData A B c (-1)) (hc : c = 2 * ρ + 1) (d : HypDec B S₀ ρ) (o : OrthDec S₀ A' Lz) (ζ : Fin Lz.rank → D.host.E)
@@ -233,7 +231,7 @@ theorem psi_frame {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D �
   GlobalTheory.AscFin.EndsPf.Chr.psiBes_eq_star_besChar ψ hψ a hc d o ζ hd hz
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Per.besPer_haar_scale ψ hψ a dd hA μ μ' 𝓕 𝓕' ν ν' 𝓝 𝓝' hμ h𝓕 hμ' h𝓕' hν hν' φ F hφ hF`.
+A detailed English derivation is pending.
 -/
 theorem per_scale {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) {A B : HSp D} {c : ℕ} {ε : D.host.E}
     (a : HermitianOrthogonalExtensionData A B c ε) (dd : BesDat A B a.ι) (hA : GlobalTheory.Unf.CoCpt A) (μ μ' : Measure (GA D A)) (𝓕 𝓕' : Set (GA D A))
@@ -248,9 +246,9 @@ section Parts
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Take `⟨hle, he, -⟩` from `hd`. Use `show NFlag _ d.e = NFlag _ ((G.colDec D.R.m h1 h2).iso ((D.R.m - 2) / 2) (by omega))`. Rewrite using `[he, ← GlobalTheory.RowChain.nFlag_diag ((G.colDec D.R.m h1 h2).iso ((D.R.m - 2) / 2) (by omega)) (fun p : Fin ((D.R.m - 2) / 2) => (-D.host.xi0) ^ (p.1 + 1)) (fun _ => pow_ne_zero _ (neg_ne_zero.2 (GlobalTheory.Unf.Inhab.cmHost_imaginaryGenerator_ne_zero D)))]`. Use `congr 1`. Use extensionality with `k p`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[colsOf, HermitianOrthogonalExtensionData.iso, Matrix.mul_diagonal, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem flag_eq (h1 : 1 ≤ D.R.m) (h2 : D.R.m ≤ D.R.m) {V₀ : HSp D} (d : HypDec (G.V (.grid D.R.m 0)) V₀ ((D.R.m - 2) / 2))
     (hd : IsAuxiliaryVectorWittDec (G.colDec D.R.m h1 h2) d) : flagN d = NFlag (G.V (.grid D.R.m 0)) G.besTop.e := by
@@ -264,7 +262,7 @@ theorem flag_eq (h1 : 1 ≤ D.R.m) (h2 : D.R.m ≤ D.R.m) {V₀ : HSp D} (d : Hy
   simp [colsOf, HermitianOrthogonalExtensionData.iso, Matrix.mul_diagonal, mul_comm]
 
 /- English proof (translation)
-The claim follows from `(embRel_iff (G.rowDec 0 (by omega)) h _).1 (GlobalTheory.CharLaws.embRel_embA d o _ ha.symm h)`.
+A detailed English derivation is pending.
 -/
 theorem emb_eq (h1 : 1 ≤ D.R.m) (h2 : D.R.m ≤ D.R.m) {V₀ Lz : HSp D} {ρ : ℕ} (d : HypDec (G.V (.grid D.R.m 0)) V₀ ρ)
     (o : OrthDec V₀ (G.V (.core D.R.m)) Lz) (ha : d.i₀ * o.iA = frameMat _ _ (G.colDec D.R.m h1 h2).ι)
@@ -272,7 +270,7 @@ theorem emb_eq (h1 : 1 ≤ D.R.m) (h2 : D.R.m ≤ D.R.m) {V₀ Lz : HSp D} {ρ :
   (embRel_iff (G.rowDec 0 (by omega)) h _).1 (GlobalTheory.CharLaws.embRel_embA d o _ ha.symm h)
 
 /- English proof (translation)
-The claim follows from `psi_frame W.ψ W.ψ_std (G.colDec D.R.m h1 h2) (by have := D.R.two_le_m; obtain ⟨a, ha⟩ := D.R.m_even; omega) d o ζ hd hz`.
+A detailed English derivation is pending.
 -/
 theorem psi_eq (W : G.Weil) (h1 : 1 ≤ D.R.m) (h2 : D.R.m ≤ D.R.m) {V₀ Lz : HSp D}
     (d : HypDec (G.V (.grid D.R.m 0)) V₀ ((D.R.m - 2) / 2)) (o : OrthDec V₀ (G.V (.core D.R.m)) Lz) (ζ : Fin Lz.rank → D.host.E)
@@ -287,11 +285,11 @@ section Key
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Establish `hy : (G.besTop.y : GA D (G.V (.grid D.R.m 0))) = 1` using `rfl`. Unfold `besPer GlobalTheory.Per.besPer`. Rewrite using `[← integral_conj]`. Use `integral_congr_ae (ae_of_all _ fun h => ?_)` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Rewrite using `[← integral_conj]`. Establish `e2` using `integral_tr' hN ν 𝓝 (fun g => starRingEnd ℂ (star (star (φ h)) * F (g * embTop G h) * star (besChar W.ψ G.besTop g)))`. Use `Eq.trans ?_ (e2.symm.trans ?_)` and prove the remaining obligations. Use `integral_congr_ae (ae_of_all _ fun n => ?_) show star (φ h) * star (F (n.1 * embA d o h)) * star (psiBes W.ψ d 1 (vecB o ζ) n.1) = _` and prove the remaining obligations. Rewrite using `[hE, hψ n.1 n.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [star_star, map_mul, Complex.star_def, Complex.conj_conj]`. Use `integral_congr_ae (ae_of_all _ fun n => ?_) show _ = starRingEnd ℂ (star (star (φ h)) * F (n.1 * embTop G h * (G.besTop.y : GA D (G.V (.grid D.R.m 0)))) * star (besChar W.ψ G.besTop n.1))` and prove the remaining obligations. Rewrite using `[hy, mul_one]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem per_conj (W : G.Weil) {V₀ Lz : HSp D} {ρ : ℕ} (d : HypDec (G.V (.grid D.R.m 0)) V₀ ρ)
     (o : OrthDec V₀ (G.V (.core D.R.m)) Lz) (ζ : Fin Lz.rank → D.host.E) (hN : flagN d = NFlag (G.V (.grid D.R.m 0)) G.besTop.e)
@@ -331,7 +329,7 @@ section Scale
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-The claim follows from `per_scale W.ψ W.ψ_std (G.rowDec 0 (by have := D.R.two_le_m; omega)) G.besTop (GlobalTheory.RowUnf.cocpt_top G (Nat.zero_le _)) (toTop vA).μ (M.ν (.top 0)) (toTop vA).𝓕 (M.fd (.top 0)) ν M.νN 𝓝 M.fdN (toTop vA).haar (toTop vA).fund hM.top.haar_fund.1 hM.top.haar_fund.2 hν hM.unip …`.
+A detailed English derivation is pending.
 -/
 theorem scale_top (W : G.Weil) (M : GlobalTheory.FunObj.Vol G) (hM : M.IsRow) (vA : GlobalTheory.Unf.Vol (G.V (.core D.R.m)))
     (ν : Measure (NFlag (G.V (.grid D.R.m 0)) G.besTop.e)) (𝓝 : Set (NFlag (G.V (.grid D.R.m 0)) G.besTop.e))
@@ -346,11 +344,11 @@ theorem scale_top (W : G.Weil) (M : GlobalTheory.FunObj.Vol G) (hM : M.IsRow) (v
 end Scale
 
 /- English proof (translation)
-Substitute `hi` using the available equality. Take `rfl : ρ = (D.R.m - 2) / 2` from `by omega`. Establish `hN` using `flag_eq h1 h2 d hd`. Establish `hE` using `emb_eq h1 h2 d o ha`. Establish `hψ` using `psi_eq W h1 h2 d o ζ hd hz`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hr, hrr⟩` from `scale_top W M hM vA (GlobalTheory.RowChain.trMeas hN vN.ν) (GlobalTheory.RowChain.trSet hN vN.𝓝) (GlobalTheory.RowChain.isUnit_trans hN _ _ vN.unit) (φ D.R.m) (f D.R.m) hφ hf`. Introduce `hB`. Apply `hne` to reduce the goal to its premises. Establish `hb : GlobalTheory.Per.besPer W.ψ G.besTop (M.ν (.top 0)) (M.fd (.top 0)) M.νN M.fdN (embTop G) (star (φ D.R.m)) (f D.R.m) = 0` using `(Bplus_eq W M (φ D.R.m) (f D.R.m)).symm.trans hB`. Establish `hrr' : GlobalTheory.Per.besPer W.ψ G.besTop (toTop vA).μ (toTop vA).𝓕 (GlobalTheory.RowChain.trMeas hN vN.ν) (GlobalTheory.RowChain.trSet hN vN.𝓝) (embTop G) (star (φ D.R.m)) (f D.R.m) = 0`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hrr, hb, mul_zero]`. Rewrite using `[per_conj W d o ζ hN hE hψ vA.μ vA.𝓕 vN.ν vN.𝓝 (φ D.R.m) (f D.R.m)]`. Conclude with `(congrArg (starRingEnd ℂ) hrr').trans (map_zero _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_gen {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (M : GlobalTheory.FunObj.Vol G)
     (hM : M.IsRow) (i ρ : ℕ) (hi : i = D.R.m) (hρ : 2 * ρ + 2 = i) (h1 : 1 ≤ i) (h2 : i ≤ D.R.m) {V₀ Lz : HSp D}
@@ -381,7 +379,7 @@ theorem top_gen {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData 
   exact (congrArg (starRingEnd ℂ) hrr').trans (map_zero _)
 
 /- English proof (translation)
-Introduce `D _ T L μ0 _ sc G W M hM v F hF`. Use `⟨fun h => (embRel_iff _ h _).1 (F.oz.embRel_left _ hF.zA.symm h), fun ρ h he φ f hφ hf hne => ?_⟩` and prove the remaining obligations. Use `top_gen W M hM (2 * ρ + 2) ρ he rfl (by omega) h (F.dB ρ h) (F.oB ρ h) (F.ζ (ρ + 1)) (hF.hB ρ h) (hF.aB ρ h) ?_ (v (2 * ρ + 2)) (F.nB ρ h) φ f hφ hf hne` and prove the remaining obligations. Rewrite using `[hF.ζ (ρ + 1), mulVec_smul, hF.zB' ρ h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ends : All fun {_} _ _ _ {G} W M => ∀ (v : CoreVol G) (F : Frames G), Std F → F.Ends v W M := by
   intro D _ T L μ0 _ sc G W M hM v F hF

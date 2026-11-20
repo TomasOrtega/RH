@@ -12,7 +12,7 @@ universe u
 variable {R₀ : Type u} [CommRing R₀]
 
 /- English proof (translation)
-Use `haveI : Nontrivial (DualNumber A) := inferInstanceAs (Nontrivial (A × A))`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_` and prove the remaining obligations. Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.isUnit_iff_isUnit_fst]`. Simplify using `using IsLocalRing.isUnit_or_isUnit_one_sub_self a.fst`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isLocalRing_dualNumber (A : Type u) [CommRing A] [IsLocalRing A] :
     IsLocalRing (DualNumber A) := by
@@ -35,20 +35,20 @@ def incl (R : LAlg R₀) : LHom R (dual R) :=
     ⟨fun _ h => TrivSqZeroExt.isUnit_inl_iff.1 h⟩⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (AlgHom.ext fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem red_comp_incl (R : LAlg R₀) : (red R).comp (incl R) = LHom.id R :=
   Subtype.ext (AlgHom.ext fun _ => rfl)
 
 /- English proof (translation)
-The claim follows from `DualNumber.eps_mul_eps`.
+A detailed English derivation is pending.
 -/
 theorem eta_mul_eta (R : LAlg R₀) : eta R * eta R = 0 := DualNumber.eps_mul_eps
 
 /- English proof (translation)
-Use `LHom.sqZero_of_span _ (eta R) (fun a => ⟨(incl R).1 a, rfl⟩) ?_ (eta_mul_eta R)` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[RingHom.mem_ker, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `have key : ∀ b : DualNumber R, TrivSqZeroExt.fst b = 0 → (TrivSqZeroExt.inl (TrivSqZeroExt.snd b) : DualNumber R) * DualNumber.eps = b := fun b hb => by ext <;> simp [hb]`. Conclude with `⟨_, key x hx⟩`. Introduce and unpack `⟨a, rfl⟩`. Establish `key : ∀ b : DualNumber R, TrivSqZeroExt.fst (b * DualNumber.eps) = 0` using `fun b => by simp`. Conclude with `key a`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem red_sqZero (R : LAlg R₀) : (red R).SqZero := by
   refine LHom.sqZero_of_span _ (eta R) (fun a => ⟨(incl R).1 a, rfl⟩) ?_ (eta_mul_eta R)
@@ -90,21 +90,21 @@ def etaPt (R : LAlg R₀) (v : B.gg ⊗[R₀] R) : B.G (dual R) :=
 def constPt (R : LAlg R₀) (y : B.G R) : B.G (dual R) := B.map (incl R) y
 
 /- English proof (translation)
-The claim follows from `(B.tg_ker _ (red_sqZero R) _).2 ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem red_etaPt (R : LAlg R₀) (v : B.gg ⊗[R₀] R) : B.map (red R) (etaPt B R v) = 0 :=
   (B.tg_ker _ (red_sqZero R) _).2 ⟨_, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[constPt, ← B.map_comp, red_comp_incl, B.map_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem red_constPt (R : LAlg R₀) (y : B.G R) : B.map (red R) (constPt B R y) = y := by
   rw [constPt, ← B.map_comp, red_comp_incl, B.map_id]
 
 /- English proof (translation)
-Establish `hv : N • v = 0`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul g r`. Establish `: N • r = 0` using `by rw [nsmul_eq_mul, hN, zero_mul]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[← TensorProduct.tmul_smul, this, TensorProduct.tmul_zero]`. Consider the case `add a b ha hb => rw [nsmul_add, ha, hb, add_zero]`. Rewrite using `[etaPt, ← map_nsmul, ← map_nsmul, hv, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem nsmul_etaPt {R : LAlg R₀} {N : ℕ} (hN : (N : R) = 0) (v : B.gg ⊗[R₀] R) :
     N • etaPt B R v = 0 := by
@@ -118,7 +118,7 @@ theorem nsmul_etaPt {R : LAlg R₀} {N : ℕ} (hN : (N : R) = 0) (v : B.gg ⊗[R
   rw [etaPt, ← map_nsmul, ← map_nsmul, hv, map_zero, map_zero]
 
 /- English proof (translation)
-Rewrite using `[constPt, ← map_nsmul, hy, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nsmul_constPt {R : LAlg R₀} {N : ℕ} {y : B.G R} (hy : N • y = 0) :
     N • constPt B R y = 0 := by
@@ -148,14 +148,14 @@ def HtStatement : Prop :=
         B.smul (onePlusEta R (-pair B R v h)) (B.zero2 (etaPt B R v)))
 
 /- English proof (translation)
-Simplify using `[onePlusEta, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules.
 -/
 example (R : LAlg R₀) (a : R) :
     (onePlusEta R (-a) : dual R) = 1 - eta R * (incl R).1 a := by
   simp [onePlusEta, sub_eq_add_neg]
 
 /- English proof (translation)
-Introduce `h` and use `by have := congrArg (fun x : DualNumber R => TrivSqZeroExt.snd x) h simp [eta] at this exact one_ne_zero (α := R) this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (R : LAlg R₀) : eta R ≠ 0 := fun h => by
   have := congrArg (fun x : DualNumber R => TrivSqZeroExt.snd x) h

@@ -7,19 +7,17 @@ namespace GlobalTheory.LocalExtField
 open Polynomial
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A β`. Establish `hint : IsIntegral E β` using `Algebra.IsIntegral.isIntegral β`. Establish `hfin : {x : Ω | ∃ d ∈ Dec (F` using `E) A, d β = x}.Finite := by`. Use `(Polynomial.rootSet_finite (minpoly E β) Ω).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨d, -, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Polynomial.mem_rootSet]`. Use `⟨minpoly.ne_zero hint, ?_⟩` and prove the remaining obligations. Rewrite using `[show d β = (d : Ω →ₐ[E] Ω) β from rfl, Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]`. Establish `hS : ∀ x, x ∈ hfin.toFinset ↔ ∃ d ∈ Dec (F` using `E) A, d β = x := fun x => hfin.mem_toFinset`. Use `⟨hfin.toFinset, hS, ∏ x ∈ hfin.toFinset, (X - C x), monic_prod_of_monic _ _ (fun x _ => monic_X_sub_C x), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[natDegree_prod_of_monic _ _ (fun x _ => monic_X_sub_C x)]`. Simplify using the standard rewrite rules. Introduce `d hd i`. Establish `hperm : hfin.toFinset.image d = hfin.toFinset`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx`. Rewrite `hx` using `[Finset.mem_image]`. Take `⟨y, hy, rfl⟩` from `hx`. Take `⟨d', hd', rfl⟩` from `(hS y).1 hy`. Conclude with `(hS _).2 ⟨d * d', mul_mem hd hd', rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.card_image_of_injective _ d.injective]`. Establish `key : (∏ x ∈ hfin.toFinset, (X - C x)).map (d : Ω →+* Ω) = ∏ x ∈ hfin.toFinset, (X - C x)`. Rewrite using `[Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, map_X, map_C]`. Use `conv_rhs => rw [← hperm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Finset.prod_image (fun x _ y _ h => d.injective h)]`. Both sides reduce to the same expression. Use `congrArg (fun p => p.coeff i) key` as an intermediate fact. Simplify `this` using `[Polynomial.coeff_map]`. Rewrite using `[eval_prod]`.
-
-Conclude with `Finset.prod_eq_zero ((hS β).2 ⟨1, one_mem _, rfl⟩) (by simp)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dorbit : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (β : Ω), ∃ S : Finset Ω, (∀ x, x ∈ S ↔ ∃ d ∈ Dec (F := E) A, d β = x) ∧ ∃ f : Polynomial Ω, f.Monic ∧ f.natDegree = S.card ∧ (∀ d ∈ Dec (F := E) A, ∀ i, d (f.coeff i) = f.coeff i) ∧ f.eval β = 0 := by
   intro E Ω _ _ _ _ _ A β

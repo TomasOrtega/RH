@@ -10,11 +10,11 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc PositivityTheory.Rg.
 open scoped NumberField.AdeleRing TensorProduct
 
 /- English proof (translation)
-Take `⟨q, hq, hlim⟩` from `mem_closure_iff_seq_limit.1 (Rat.denseRange_cast (𝕜 := ℝ) s)`. Use `choose u hu using hq`. Establish `h1 : Filter.Tendsto (fun k => ((u k : ℚ) : ℂ)) Filter.atTop (nhds (s : ℂ))`. Use `(Complex.continuous_ofReal.tendsto s).comp hlim` as an intermediate fact. Use `this.congr fun k => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[← hu k]`. Establish `h2 : Filter.Tendsto (fun k => ((u k : ℚ) : A)) Filter.atTop (nhds x)`. Rewrite using `[he.isEmbedding.isInducing.tendsto_nhds_iff, hx]`. Use `h1.congr fun k => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3` using `(hψ.tendsto x).comp h2`. Use `tendsto_nhds_unique h3 (h1.congr fun k => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem real_fix {A : Type*} [NormedField A] [CharZero A] (e ψ : A →+* ℂ) (he : Isometry e) (hψ : Continuous ψ)
     (x : A) (s : ℝ) (hx : e x = (s : ℂ)) : ψ x = (s : ℂ) := by
@@ -33,9 +33,9 @@ private theorem real_fix {A : Type*} [NormedField A] [CharZero A] (e ψ : A →+
   simp
 
 /- English proof (translation)
-Rewrite using `[← IdeleGroup.coe_infiniteProj, infiniteProj_posIdele]`. Use `show InfinitePlace.Completion.extensionEmbedding w (posRealElem w (ρ ^ w.mult)) = _`. Unfold `posRealElem`. Use `split_ifs with hw`. Establish `hm : w.mult = 1` using `by simp [InfinitePlace.mult, hw]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw, hm, pow_one, ← InfinitePlace.Completion.ringEquivRealOfIsReal_apply, RingEquiv.apply_symm_apply]`. Establish `hm : w.mult = 2` using `by simp [InfinitePlace.mult, hw]`. Rewrite using `[← InfinitePlace.Completion.ringEquivComplexOfIsComplex_apply (InfinitePlace.not_isReal_iff_isComplex.1 hw), RingEquiv.apply_symm_apply, hm, Real.sqrt_sq hρ.le]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ext_pos {K : Type} [Field K] [NumberField K] (ρ : ℝ) (hρ : 0 < ρ) (w : InfinitePlace K) :
     InfinitePlace.Completion.extensionEmbedding w (((posIdele ρ hρ : IdeleGroup K) : 𝔸[K]).1 w) = (ρ : ℂ) := by
@@ -55,13 +55,11 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `Prod.ext (funext fun w => ?_) ?_` and prove the remaining obligations. Apply `(InfinitePlace.Completion.extensionEmbedding w).injective` to reduce the goal to its premises. Rewrite using `[ext_pos]`. Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbedding w (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := F) (L := E) ((posIdele (K := F) s hs : IdeleGroup F) : 𝔸[F]).1 w) = _`. Rewrite using `[GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `GroundTheory.Global.InfinitePlace.liesOver_comap (K := F) w` as an intermediate fact. Establish `: CharZero (w.comap (algebraMap F E)).Completion` using `algebraRat.charZero _`. Conclude with `real_fix (InfinitePlace.Completion.extensionEmbedding (w.comap (algebraMap F E))) ((InfinitePlace.Completion.extensionEmbedding w).comp NumberField.LiesOver.completionMap) (InfinitePlace.Completion.isometry_extensionEmbedding _) ((InfinitePlace.Completion.isometry_extensionEmbedd …`. Establish `h1 : ((posIdele (K` using `F) s hs : IdeleGroup F) : 𝔸[F]).2 = 1 := by`. Use `DFunLike.ext _ _ fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `posIdele_finite s hs v`. Establish `h2 : ((posIdele (K` using `E) s hs : IdeleGroup E) : 𝔸[E]).2 = 1 := by`. Use `DFunLike.ext _ _ fun v => ?_` and prove the remaining obligations. Conclude with `posIdele_finite s hs v`. Rewrite using `[h2]`.
-
-Express the relevant statement in the definitionally equal form `finiteAdeleMap F E ((posIdele (K := F) s hs : IdeleGroup F) : 𝔸[F]).2 = 1`. Rewrite using `[h1, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_pos' (s : ℝ) (hs : 0 < s) :
     adeleMap F E ((posIdele (K := F) s hs : IdeleGroup F) : 𝔸[F]) = ((posIdele (K := E) s hs : IdeleGroup E) : 𝔸[E]) := by
@@ -89,9 +87,9 @@ private theorem map_pos' (s : ℝ) (hs : 0 < s) :
     rw [h1, map_one]
 
 /- English proof (translation)
-Establish `h : galAd σ = MulSemiringAction.toRingHom (E ≃ₐ[F] E) 𝔸[E] σ`. Use `adeleRingHom_ext (K := F) (fun l => ?_) (fun a => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `adeleTensorEquiv F E (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F 𝔸[F]) ((adeleTensorEquiv F E).symm (algebraMap E 𝔸[E] l))) = σ • algebraMap E 𝔸[E] l`. Rewrite using `[adeleTensorEquiv_symm_algebraMap, Algebra.TensorProduct.map_tmul, adeleTensorEquiv_tmul, AdeleBaseChange.smul_algebraMap, map_one, map_one, mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `adeleTensorEquiv F E (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F 𝔸[F]) ((adeleTensorEquiv F E).symm (adeleMap F E a))) = σ • adeleMap F E a`. Rewrite using `[adeleTensorEquiv_symm_adeleMap, Algebra.TensorProduct.map_tmul, adeleTensorEquiv_tmul, smul_adeleMap, map_one, map_one, one_mul]`. Both sides reduce to the same expression. Rewrite using `[h]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem galAd_apply (σ : E ≃ₐ[F] E) (y : 𝔸[E]) : galAd σ y = σ • y := by
   have h : galAd σ = MulSemiringAction.toRingHom (E ≃ₐ[F] E) 𝔸[E] σ := by
@@ -110,9 +108,7 @@ private theorem galAd_apply (σ : E ≃ₐ[F] E) (y : 𝔸[E]) : galAd σ y = σ
   rfl
 
 /- English proof (translation)
-Establish `h : Continuous (galAd σ)`. Rewrite using `[show (galAd σ : 𝔸[E] → 𝔸[E]) = fun y => σ • y from funext (galAd_apply σ)]`. Conclude with `continuous_const_smul σ`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Units.continuous_val.matrix_map h`.
-
-Conclude with `Units.continuous_coe_inv.matrix_map h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem cont_gal (σ : E ≃ₐ[F] E) (n : ℕ) :
     Continuous (mapGL n (galAd σ) : AdelicGLn.AdelicGL E n → AdelicGLn.AdelicGL E n) := by
@@ -124,7 +120,7 @@ private theorem cont_gal (σ : E ≃ₐ[F] E) (n : ℕ) :
   · exact Units.continuous_coe_inv.matrix_map h
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `galAd σ (algebraMap E 𝔸[E] (h.1 i j)) = algebraMap E 𝔸[E] (σ (h.1 i j))`. Rewrite using `[galAd_apply, AdeleBaseChange.smul_algebraMap]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gal_diag (σ : E ≃ₐ[F] E) (n : ℕ) (h : GL (Fin n) E) :
     mapGL n (galAd σ) (AdelicGLn.diagonal E n h) = AdelicGLn.diagonal E n (sigmaGL σ h) := by
@@ -133,9 +129,7 @@ private theorem gal_diag (σ : E ≃ₐ[F] E) (n : ℕ) (h : GL (Fin n) E) :
   rw [galAd_apply, AdeleBaseChange.smul_algebraMap]
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `galAd σ (Matrix.diagonal (fun i => ((posIdele (K := E) (ρ i) (hρ i) : IdeleGroup E) : 𝔸[E])) i j) = Matrix.diagonal (fun i => ((posIdele (K := E) (ρ i) (hρ i) : IdeleGroup E) : 𝔸[E])) i j`. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs`. Rewrite using `[← map_pos' (F := F), galAd_apply, smul_adeleMap]`.
-
-Conclude with `map_zero _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gal_torus (σ : E ≃ₐ[F] E) (n : ℕ) (ρ : Fin n → ℝ) (hρ : ∀ i, 0 < ρ i) :
     mapGL n (galAd σ) (diagUnits n (fun i => posIdele (K := E) (ρ i) (hρ i))) =
@@ -149,7 +143,7 @@ private theorem gal_torus (σ : E ≃ₐ[F] E) (n : ℕ) (ρ : Fin n → ℝ) (h
   · exact map_zero _
 
 /- English proof (translation)
-Rewrite `hb`, the goal using `[mem_adelicBorel]`. Introduce `i j hij`. Express the relevant statement in the definitionally equal form `galAd σ (b.1 i j) = 0`. Rewrite using `[hb hij, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gal_borel (σ : E ≃ₐ[F] E) (n : ℕ) (b : AdelicGLn.AdelicGL E n)
     (hb : b ∈ (adelicBorel : Subgroup (AdelicGLn.AdelicGL E n))) :
@@ -161,11 +155,9 @@ private theorem gal_borel (σ : E ≃ₐ[F] E) (n : ℕ) (b : AdelicGLn.AdelicGL
 end
 
 /- English proof (translation)
-Establish `hL0 : 0 < L` using `by linarith`. Establish `hm : max 1 (L⁻¹)⁻¹ = L` using `by rw [inv_inv, max_eq_right hL]`. Rewrite using `[div_le_iff₀ (hρ j)]`. Break down `le_total (j : ℕ) i with hij | hij` into its components or cases. Use `CuspidalSpectrum.le_pow_mul_of_siegel (ρ := ρ) (t := L⁻¹) (inv_pos.2 hL0) hρ (fun a b hab => by rw [inv_mul_le_iff₀ hL0]; exact (h a b hab).1) (i - j) j i (by omega)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `this` using `[hm]`. Conclude with `this.trans (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hL (by omega)) (hρ j).le)`. Use `CuspidalSpectrum.le_pow_mul_of_siegel (ρ := fun a => (ρ a)⁻¹) (t := L⁻¹) (inv_pos.2 hL0) (fun a => inv_pos.2 (hρ a)) (fun a b hab => by` as an intermediate fact. Rewrite using `[← mul_inv]; exact inv_anti₀ (hρ a) (h a b hab).2) (j - i) i j (by omega)`. Rewrite `this` using `[hm, inv_le_iff_one_le_mul₀' (hρ j), ← mul_assoc, ← div_eq_mul_inv, one_le_div (hρ i), mul_comm]`.
-
-Conclude with `this.trans (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hL (by omega)) (hρ j).le)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ratio_le {n : ℕ} {ρ : Fin n → ℝ} (hρ : ∀ i, 0 < ρ i) {L : ℝ} (hL : 1 ≤ L)
     (h : ∀ i j : Fin n, (j : ℕ) = i + 1 → ρ j ≤ L * ρ i ∧ ρ i ≤ L * ρ j) (i j : Fin n) : ρ i / ρ j ≤ L ^ n := by
@@ -185,7 +177,7 @@ private theorem ratio_le {n : ℕ} {ρ : Fin n → ℝ} (hρ : ∀ i, 0 < ρ i) 
     exact this.trans (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hL (by omega)) (hρ j).le)
 
 /- English proof (translation)
-Break down `le_total x 1 with h1 | h1` into its components or cases. Conclude with `h.trans (mul_le_mul_of_nonneg_right (pow_le_of_le_one hx h1 hd) (by linarith))`. Conclude with `one_le_mul_of_one_le_of_one_le h1 hQ`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem one_le_of_pow {x Q : ℝ} {d : ℕ} (hd : d ≠ 0) (hx : 0 ≤ x) (hQ : 1 ≤ Q) (h : 1 ≤ x ^ d * Q) : 1 ≤ x * Q := by
   rcases le_total x 1 with h1 | h1
@@ -193,7 +185,7 @@ private theorem one_le_of_pow {x Q : ℝ} {d : ℕ} (hd : d ≠ 0) (hx : 0 ≤ x
   · exact one_le_mul_of_one_le_of_one_le h1 hQ
 
 /- English proof (translation)
-Use `⟨one_le_pow₀ (one_le_mul_of_one_le_of_one_le hc (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hu hv) hw)), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_pow]`. Use `pow_le_pow_left₀ (by positivity) ?_ 2` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 private theorem numeric_product_inequality {c u v w M₁ M₂ M₃ Y : ℝ} (hc : 1 ≤ c) (hu : 1 ≤ u) (hv : 1 ≤ v) (hw : 1 ≤ w)
     (h1 : u ≤ M₁) (h2 : v ≤ c * c * M₃ * Y) (h3 : w ≤ M₂) :
@@ -208,7 +200,7 @@ private theorem numeric_product_inequality {c u v w M₁ M₂ M₃ Y : ℝ} (hc 
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `h2` using `one_le_of_pow hd (by positivity) hH h`. Establish `h3 : 1 ≤ D * Y ^ 2 * b / a`. Use `h2.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite `h3` using `[one_le_div ha]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem numeric_degree_inequality {N T Q D Y H a b : ℝ} {d : ℕ} (hd : d ≠ 0) (hT : 0 < T) (ha : 0 < a) (hb : 0 < b) (hH : 1 ≤ H)
     (hHQ : H ≤ Q * Y ^ 2) (hD : N ^ 2 * T * Q ≤ D) (h : 1 ≤ (N ^ 2 * (T * (b / a))) ^ d * H) : a ≤ D * Y ^ 2 * b := by
@@ -224,35 +216,27 @@ private theorem numeric_degree_inequality {N T Q D Y H a b : ℝ} {d : ℕ} (hd 
 
 open AutomorphicForm in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ n hn`. Take `⟨ω, hω, hωB, t, ht, hsieg⟩` from `exists_siegelSet (K := E) n`. Take `⟨M₁, hM₁⟩` from `CuspidalSpectrum.exists_height_le_of_isCompact hω`. Take `⟨M₂, hM₂⟩` from `CuspidalSpectrum.exists_height_le_of_isCompact (hω.image (cont_gal σ n))`. Take `⟨M₃, hM₃⟩` from `CuspidalSpectrum.exists_height_le_of_isCompact ((isCompact_maxCompact (K := E) (n := n)).image (cont_gal σ n))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC0, hC⟩` from `CuspidalSpectrum.exists_height_le_normOne hω`. Use `set c := heightConst E n with hc`. Establish `hc1 : 1 ≤ c` using `one_le_heightConst`. Use `set T := max 1 t⁻¹ ^ (2 * n) with hT`. Establish `hT0 : 0 < T` using `pow_pos (lt_of_lt_of_le one_pos (le_max_left _ _)) _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set Q := (c * (M₁ * (c * c * M₃) * M₂)) ^ 2 with hQ`. Use `set D := max (max 1 t⁻¹) ((n : ℝ) ^ 2 * T * Q) with hD`. Establish `hD1 : 1 ≤ D` using `(le_max_left _ _).trans (le_max_left _ _)`. Use `set e := 2 * Fintype.card (InfinitePlace E) with he`. Use `⟨C * D ^ (n * e), 2 * (n * e), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `μ _ θ hθ f Y hY hf hEll x hx`. Choose the witnesses or unpack the hypotheses as in `⟨γ, hγ⟩ : ∃ γ : Gam E n, f (x⁻¹ * (γ : G1 E n) * θ.e x) ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Conclude with `hx (finsum_eq_zero_of_forall_eq_zero hne)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨δ₀, hδ₀⟩ : ∃ δ₀ : GL (Fin n) E, AdelicGLn.diagonal E n δ₀ = ((γ : G1 E n) : AdelicGLn.AdelicGL E n)` from `γ.2`. Take `⟨g, b, hb, _, ⟨ρ, hρ, hρt, rfl⟩, k, hk, hg⟩` from `hsieg (x : AdelicGLn.AdelicGL E n)`. Use `set a := diagUnits n (fun i => posIdele (K := E) (ρ i) (hρ i)) with ha`. Use `set y : G1 E n := x⁻¹ * (γ : G1 E n) * θ.e x with hy`. Set `g₁ : Gam E n` to `⟨⟨AdelicGLn.diagonal E n g, rationalGL_le_normOneGL ⟨g, rfl⟩⟩, ⟨g, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set x' : G1 E n := (g₁ : G1 E n) * x with hx'`. Establish `hx'v : (x' : AdelicGLn.AdelicGL E n) = AdelicGLn.diagonal E n g * x` using `rfl`. Use `set δ : GL (Fin n) E := g * δ₀ * (sigmaGL σ g)⁻¹ with hδ`. Establish `hyv : (y : AdelicGLn.AdelicGL E n) = (x' : AdelicGLn.AdelicGL E n)⁻¹ * AdelicGLn.diagonal E n δ * mapGL n (galAd σ) (x' : AdelicGLn.AdelicGL E n)`. Rewrite using `[hx'v, hδ, map_mul, map_mul, map_mul, map_inv, gal_diag, hδ₀, ← hθ x, hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`. Take `⟨p, hp, hpc⟩` from `hEll δ x' y hyv hγ`. Establish `hyY` using `hf y hγ`. Use `set m := k * (y : AdelicGLn.AdelicGL E n) * (mapGL n (galAd σ) k)⁻¹ with hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hdec : AdelicGLn.diagonal E n δ = b * a * m * a⁻¹ * (mapGL n (galAd σ) b)⁻¹`. Rewrite using `[hm, hyv, hx'v, hg, map_mul (mapGL n (galAd σ)), map_mul (mapGL n (galAd σ)), ha, gal_torus]`. Use `group`. Establish `hb1` using `hM₁ b hb`. Establish `hb2 : AutomorphicForm.height (mapGL n (galAd σ) b)⁻¹ ≤ M₂` using `by rw [height_inv]; exact hM₂ _ ⟨b, hb, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk3 : AutomorphicForm.height (mapGL n (galAd σ) k)⁻¹ ≤ M₃` using `by rw [height_inv]; exact hM₃ _ ⟨k, hk, rfl⟩`. Establish `hM1 : 1 ≤ M₁` using `(one_le_height _).trans hb1`. Establish `hM3 : 1 ≤ M₃` using `(one_le_height _).trans hk3`. Establish `hm1 : AutomorphicForm.height m ≤ c * c * M₃ * Y`. Establish `h1 : AutomorphicForm.height (k * (y : AdelicGLn.AdelicGL E n)) ≤ c * Y`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(height_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[height_eq_one_of_mem_maxCompact hk, mul_one]`. Conclude with `mul_le_mul_of_nonneg_left hyY (by linarith)`. Use `(height_mul_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨hH1, hHQ⟩` from `numeric_product_inequality hc1 (one_le_height _) (one_le_height _) (one_le_height _) hb1 hm1 hb2`. Establish `hY2 : 1 ≤ Y ^ 2` using `one_le_pow₀ hY`. Establish `hL : 1 ≤ D * Y ^ 2` using `one_le_mul_of_one_le_of_one_le hD1 hY2`. Establish `hrat` using `ratio_le hρ hL fun i j hij => by`. Establish `hi` using `hρ i`.
-
-Establish `hj` using `hρ j`. Prove the components needed by the constructor for the conclusion. Establish `h1 : ρ j ≤ t⁻¹ * ρ i` using `by rw [le_inv_mul_iff₀ ht]; exact hρt i j hij`. Use `h1.trans (mul_le_mul_of_nonneg_right ?_ hi.le)` and prove the remaining obligations. Conclude with `((le_max_right _ _).trans (le_max_left _ _)).trans (le_mul_of_one_le_right (by linarith) hY2)`.
-
-Establish `hr : 0 < (j : ℕ)` using `by omega`. Establish `hi' : (⟨(j : ℕ) - 1, by omega⟩ : Fin n) = i` using `Fin.ext (by simp; omega)`. Take `⟨i', j', hi'r, hj'r, hne⟩` from `UpperTheory.exists_lower_entry_ne_zero_of_norm_charpoly_irreducible F E σ hσ n δ p hp hpc j hr j.2`. Establish `h1` using `UpperTheory.one_le_entry_bound_of_borel_diagonal_decomp E n δ b (mapGL n (galAd σ) b)⁻¹ m (hωB hb) (inv_mem (gal_borel σ n b (hωB hb))) ρ hρ j (T * (ρ j / ρ i)) (mul_pos hT0 (div_pos hj hi)) (fun u v hu hv => by`. Use `CuspidalSpectrum.div_le_of_siegel ht hρ hρt hr j.2 (i := u) (j := v) ⟨hu, hv⟩` as an intermediate fact.
-
-Rewrite using `[hi'] at this) hdec i' j' hi'r hj'r hne` and apply the resulting hypothesis. Conclude with `numeric_degree_inequality Module.finrank_pos.ne' hT0 hi hj hH1 hHQ (le_max_right _ _) h1`. Establish `hfin` using `hC b hb ρ hρ k hk x' x'.2 (hx'v.trans hg) _ (one_le_pow₀ hL) hrat`. Establish `hq : qht x ≤ AutomorphicForm.height (x' : AdelicGLn.AdelicGL E n)` using `ciInf_le (f := fun γ : Gam E n => AutomorphicForm.height (((γ : G1 E n) * x : G1 E n) : AdelicGLn.AdelicGL E n)) ⟨1, by rintro _ ⟨γ, rfl⟩; exact one_le_height _⟩ g₁`. Use `(hq.trans hfin).trans (le_of_eq ?_)` and prove the remaining obligations.
-
-Rewrite using `[← pow_mul, mul_pow, ← pow_mul, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G.galois_twist_preserves_siegel_bound :
     G2 := by

@@ -18,14 +18,14 @@ section Ent
 variable {a b c : Type} [Fintype b] {X : Matrix a b (Cv v)} {Y : Matrix b c (Cv v)}
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact Valuation.map_sum_le _ fun k _ => by rw [map_mul]; exact mul_le_one' (hX i k) (hY k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IntM.mul (hX : IntM X) (hY : IntM Y) : IntM (X * Y) := fun i j => by
   rw [Matrix.mul_apply]
   exact Valuation.map_sum_le _ fun k _ => by rw [map_mul]; exact mul_le_one' (hX i k) (hY k j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact Valuation.map_sum_lt _ one_ne_zero fun k _ => by rw [map_mul]; exact (mul_le_of_le_one_right' (hY k j)).trans_lt (hX i k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SmM.mul_int (hX : SmM X) (hY : IntM Y) : SmM (X * Y) := fun i j => by
   rw [Matrix.mul_apply]
@@ -33,7 +33,7 @@ theorem SmM.mul_int (hX : SmM X) (hY : IntM Y) : SmM (X * Y) := fun i j => by
     rw [map_mul]; exact (mul_le_of_le_one_right' (hY k j)).trans_lt (hX i k)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact Valuation.map_sum_lt _ one_ne_zero fun k _ => by rw [map_mul]; exact (mul_le_of_le_one_left' (hX i k)).trans_lt (hY k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IntM.mul_sm (hX : IntM X) (hY : SmM Y) : SmM (X * Y) := fun i j => by
   rw [Matrix.mul_apply]
@@ -42,23 +42,23 @@ theorem IntM.mul_sm (hX : IntM X) (hY : SmM Y) : SmM (X * Y) := fun i j => by
 
 omit [Fintype b] in
 /- English proof (translation)
-Introduce `i j` and use `Valuation.map_add_lt _ (hX i j) (hX' i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SmM.add {X' : Matrix a b (Cv v)} (hX : SmM X) (hX' : SmM X') : SmM (X + X') :=
   fun i j => Valuation.map_add_lt _ (hX i j) (hX' i j)
 
 omit [Fintype b] in
 /- English proof (translation)
-Introduce `i j` and use `by simpa using hX i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SmM.neg (hX : SmM X) : SmM (-X) := fun i j => by simpa using hX i j
 
 end Ent
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Use `⟨by rw [map_mul]; exact mul_le_one' (hg a) ih.1, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show f a * ∏ i ∈ s, f i - g a * ∏ i ∈ s, g i = f a * (∏ i ∈ s, f i - ∏ i ∈ s, g i) + (f a - g a) * ∏ i ∈ s, g i by ring]`. Apply the tactic sequence `refine Valuation.map_add_lt _ ?_ ?_ <;> rw [map_mul]`. Conclude with `(mul_le_of_le_one_left' (hf a)).trans_lt ih.2`. Conclude with `(mul_le_of_le_one_right' ih.1).trans_lt (h a)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem prod_congr_lt {ι : Type} (s : Finset ι) (f g : ι → Cv v) (hf : ∀ i, Valued.v (f i) ≤ 1)
     (hg : ∀ i, Valued.v (g i) ≤ 1) (h : ∀ i, Valued.v (f i - g i) < 1) :
@@ -80,13 +80,13 @@ section Det
 variable {n : Type} [Fintype n] [DecidableEq n] {X Y : Matrix n n (Cv v)}
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem v_sign (σ : Equiv.Perm n) : Valued.v (((Equiv.Perm.sign σ : ℤˣ) : ℤ) : Cv v) = 1 := by
   rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Use `Valuation.map_sum_le _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, v_sign, one_mul]`. Conclude with `(prod_congr_lt _ _ _ (fun i => hX (σ i) i) (fun i => hX (σ i) i) (by simp)).1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntM.det (hX : IntM X) : Valued.v X.det ≤ 1 := by
   rw [Matrix.det_apply']
@@ -95,7 +95,7 @@ theorem IntM.det (hX : IntM X) : Valued.v X.det ≤ 1 := by
   exact (prod_congr_lt _ _ _ (fun i => hX (σ i) i) (fun i => hX (σ i) i) (by simp)).1
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply', Matrix.det_apply', ← Finset.sum_sub_distrib]`. Use `Valuation.map_sum_lt _ one_ne_zero fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub, map_mul, v_sign, one_mul]`. Conclude with `(prod_congr_lt _ _ _ (fun i => hX (σ i) i) (fun i => hY (σ i) i) fun i => h (σ i) i).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_congr (hX : IntM X) (hY : IntM Y) (h : SmM (X - Y)) : Valued.v (X.det - Y.det) < 1 := by
   rw [Matrix.det_apply', Matrix.det_apply', ← Finset.sum_sub_distrib]
@@ -104,15 +104,15 @@ theorem det_congr (hX : IntM X) (hY : IntM Y) (h : SmM (X - Y)) : Valued.v (X.de
   exact (prod_congr_lt _ _ _ (fun i => hX (σ i) i) (fun i => hY (σ i) i) fun i => h (σ i) i).2
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.one_apply]; split_ifs <;> simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intM_one : IntM (1 : Matrix n n (Cv v)) := fun i j => by
   rw [Matrix.one_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h1` using `det_congr (hX.mul hY) intM_one h`. Rewrite `h1` using `[det_mul, det_one]`. Establish `h2 : Valued.v (X.det * Y.det) = 1`. Use `Valuation.map_one_add_of_lt Valued.v h1` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[map_mul]`. Conclude with `⟨le_antisymm hX.det (h2.ge.trans (mul_le_of_le_one_right' hY.det)), le_antisymm hY.det (h2.ge.trans (mul_le_of_le_one_left' hX.det))⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem v_det_eq_one (hX : IntM X) (hY : IntM Y) (h : SmM (X * Y - 1)) :
     Valued.v X.det = 1 ∧ Valued.v Y.det = 1 := by
@@ -128,7 +128,7 @@ theorem v_det_eq_one (hX : IntM X) (hY : IntM Y) (h : SmM (X * Y - 1)) :
 end Det
 
 /- English proof (translation)
-Take `⟨k₀, rfl⟩` from `hk`. Conclude with `fun i j => (k₀.1 i j).2`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intM_of_mem {n : ℕ} {k : GL (Fin n) (Cv v)} (hk : k ∈ KGL v n) : IntM k.1 := by
   obtain ⟨k₀, rfl⟩ := hk
@@ -140,43 +140,43 @@ variable {F : Type} [Field F] {r d c e : ℕ} (x : Matrix (Fin (r + d)) (Fin (r 
   (y : Matrix (Fin (r + c)) (Fin (r + e)) F)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bAA, bAD, bDA, Matrix.mul_apply, Fin.sum_univ_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bAA_mul : bAA (x * y) = bAA x * bAA y + bAD x * bDA y := by
   ext i j; simp [bAA, bAD, bDA, Matrix.mul_apply, Fin.sum_univ_add]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bAA, bAD, bDD, Matrix.mul_apply, Fin.sum_univ_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bAD_mul : bAD (x * y) = bAA x * bAD y + bAD x * bDD y := by
   ext i j; simp [bAA, bAD, bDD, Matrix.mul_apply, Fin.sum_univ_add]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bAA, bDD, bDA, Matrix.mul_apply, Fin.sum_univ_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bDA_mul : bDA (x * y) = bDA x * bAA y + bDD x * bDA y := by
   ext i j; simp [bAA, bDD, bDA, Matrix.mul_apply, Fin.sum_univ_add]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bDD, bAD, bDA, Matrix.mul_apply, Fin.sum_univ_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bDD_mul : bDD (x * y) = bDA x * bAD y + bDD x * bDD y := by
   ext i j; simp [bDD, bAD, bDA, Matrix.mul_apply, Fin.sum_univ_add]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bAA, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bAA_one : bAA (1 : Matrix (Fin (r + c)) (Fin (r + c)) F) = 1 := by
   ext i j; simp [bAA, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bDD, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bDD_one : bDD (1 : Matrix (Fin (r + c)) (Fin (r + c)) F) = 1 := by
   ext i j; simp [bDD, Matrix.one_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> ext i j <;> simp [pEl, bAA, bAD, bDA, bDD]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blocks_pEl (m₁ : GL (Fin r) F) (B : Matrix (Fin r) (Fin c) F) (m₂ : GL (Fin c) F) :
     bAA (pEl m₁ B m₂).1 = m₁.1 ∧ bAD (pEl m₁ B m₂).1 = B ∧ bDA (pEl m₁ B m₂).1 = 0 ∧
@@ -186,9 +186,9 @@ theorem blocks_pEl (m₁ : GL (Fin r) F) (B : Matrix (Fin r) (Fin c) F) (m₂ : 
 end Blocks
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[chi0, hx]`. Distinguish the cases in `hy : y = 0`. Simplify using `[chi0, hy]`. Simplify using `only [chi0, dif_neg hx, dif_neg hy, dif_neg (mul_ne_zero hx hy), ← Units.val_mul, ← map_mul]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Conclude with `Units.ext rfl`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem unitCharExtendedByZero_mul {F : Type} [Field F] (δ : Fˣ →* ℂˣ) (x y : F) :
     chi0 δ (x * y) = chi0 δ x * chi0 δ y := by
@@ -201,15 +201,15 @@ theorem unitCharExtendedByZero_mul {F : Type} [Field F] (δ : Fˣ →* ℂˣ) (x
   exact Units.ext rfl
 
 /- English proof (translation)
-Simplify using `[chi0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extendedCharacter_units {F : Type} [Field F] (δ : Fˣ →* ℂˣ) (x : Fˣ) : chi0 δ x = δ x := by
   simp [chi0]
 
 /- English proof (translation)
-Establish `hy0 : y ≠ 0` using `fun h0 => by simp [h0] at hy`. Establish `h1 : Valued.v (x / y - 1) < 1`. Rewrite using `[div_sub_one hy0, map_div₀, hy, div_one]`. Conclude with `h`. Establish `h0 : x / y ≠ 0` using `fun h0 => by simp [h0] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : chi0 δ (x / y) = 1`. Rewrite using `[chi0, dif_neg h0, hδ.2 (Units.mk0 _ h0) h1, Units.val_one]`. Rewrite using `[← div_mul_cancel₀ x hy0, unitCharExtendedByZero_mul, h2, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extendedCharacter_congr_of_tame {δ : (Cv v)ˣ →* ℂˣ} (hδ : IsTame v δ) {x y : Cv v} (hy : Valued.v y = 1)
     (h : Valued.v (x - y) < 1) : chi0 δ x = chi0 δ y := by
@@ -224,11 +224,11 @@ theorem extendedCharacter_congr_of_tame {δ : (Cv v)ˣ →* ℂˣ} (hδ : IsTame
 variable {r c : ℕ} {J : Subgroup (GL (Fin (r + c)) (Cv v))}
 
 /- English proof (translation)
-Establish `hi` using `intM_of_mem ((hJ _).1 (inv_mem hk)).1`. Establish `h` using `intM_of_mem ((hJ _).1 hk).1`. Establish `hs : SmM (bDA k.1)` using `((hJ _).1 hk).2`. Establish `e1` using `bAA_mul (k⁻¹).1 k.1`. Establish `e2` using `bDD_mul k.1 (k⁻¹).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[Units.inv_mul, bAA_one]`. Rewrite `e2` using `[Units.mul_inv, bDD_one]`. Use `⟨(v_det_eq_one (X := bAA (k⁻¹).1) (Y := bAA k.1) (fun i j => hi _ _) (fun i j => h _ _) ?_).2, (v_det_eq_one (X := bDD k.1) (Y := bDD (k⁻¹).1) (fun i j => h _ _) (fun i j => hi _ _) ?_).1⟩` and prove the remaining obligations. Rewrite using `[e1, sub_add_cancel_left]`. Conclude with `(IntM.mul_sm (fun i j => hi _ _) hs).neg`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, sub_add_cancel_right]`. Conclude with `(hs.mul_int fun i j => hi _ _).neg`.
+A detailed English derivation is pending.
 -/
 theorem IsPar.v_det (hJ : IsPar v r c J) {k} (hk : k ∈ J) :
     Valued.v (bAA k.1).det = 1 ∧ Valued.v (bDD k.1).det = 1 := by
@@ -249,7 +249,7 @@ theorem IsPar.v_det (hJ : IsPar v r c J) {k} (hk : k ∈ J) :
     exact (hs.mul_int fun i j => hi _ _).neg
 
 /- English proof (translation)
-Rewrite using `[lamD, blk, (blocks_pEl _ _ _).2.2.2, ← extendedCharacter_units]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamD_blk (δ : (Cv v)ˣ →* ℂˣ) (m : GL (Fin c) (Cv v)) :
     lamD v δ (blk v r m) = δ (GeneralLinearGroup.det m) := by

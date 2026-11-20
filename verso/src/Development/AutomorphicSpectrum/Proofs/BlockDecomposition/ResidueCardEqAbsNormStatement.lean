@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.PRep GlobalT
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.ResCardAbsNorm.resCard_completion_eq_absNorm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FResidueCardEqAbsNorm.lean&line=12#L12)
 -/

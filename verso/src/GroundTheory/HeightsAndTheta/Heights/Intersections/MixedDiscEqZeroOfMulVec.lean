@@ -13,7 +13,7 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open MvPolynomial Matrix Filter Topology ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-Unfold `mixedDisc`. Rewrite using `[Finset.sum_eq_zero, mul_zero]`. Introduce `S _`. Establish `hS : (∑ k ∈ S, A k) *ᵥ u = 0` using `Finset.sum_induction _ (fun M => M *ᵥ u = 0) (fun M N hM hN => by rw [add_mulVec, hM, hN, add_zero]) (zero_mulVec u) fun k _ => hA k`. Rewrite using `[Matrix.exists_mulVec_eq_zero_iff.mp ⟨u, hu, hS⟩, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mixedDisc_eq_zero_of_mulVec {D : ℕ} {A : Fin D → Matrix (Fin D) (Fin D) ℂ} {u : Fin D → ℂ} (hu : u ≠ 0)
     (hA : ∀ k, A k *ᵥ u = 0) : mixedDisc A = 0 := by
@@ -26,11 +26,11 @@ theorem mixedDisc_eq_zero_of_mulVec {D : ℕ} {A : Fin D → Matrix (Fin D) (Fin
   rw [Matrix.exists_mulVec_eq_zero_iff.mp ⟨u, hu, hS⟩, mul_zero]
 
 /- English proof (translation)
-Use `set F : (Fin n → ℂ) → (Σ k, ι k) → ℂ := fun y' p => γ y' (v p) with hF`. Establish `hγa : AnalyticAt ℂ γ y` using `sheet_analyticAt osgood hγ`. Establish `hFa : AnalyticAt ℂ F y` using `analyticAt_pi_iff.mpr fun p => analyticAt_coord hγa (v p)`. Establish `hFy : ∀ k, ∃ i, F y ⟨k, i⟩ ≠ 0` using `blocks_ne_zero_restrict hv hγ.2.self_of_nhds.2.1.1`. Establish `hFQ : ∀ᶠ y' in 𝓝 y, F y' ∈ mcPts (imageZ v P')` using `by filter_upwards [hγ.2] with y' h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨blocks_ne_zero_restrict hv h.2.1.1, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h0` using `h.2.1.2 _ (Ideal.mem_comap.mp hf)`. Rewrite `h0` using `[AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_rename, eval_rename]`. Conclude with `h0`. Take `⟨x, hx, c, hxc⟩` from `hR K ι (imageZ v P') d n F y hQ (by omega) hFa hFQ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hpot : ∀ j, (fun y' => Real.log ((L' j).h (γ y'))) = fun y' => Real.log ((L j).h (F y'))` using `fun j => funext fun y' => by rw [(hLL j).2]`. Simplify using `only [maDensity, hpot]`. Rewrite using `[mixedDisc_eq_zero_of_mulVec (u := star x) (star_ne_zero.mpr hx) fun j => hE K ι (L j) n F y x c (hL j) hFa hFy hxc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pointForm_holds.maDensity_eq_zero (hR : pointFormRank_holds.Statement) (hE : pointFormEuler_holds.Statement)
     {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
@@ -61,11 +61,9 @@ theorem pointForm_holds.maDensity_eq_zero (hR : pointFormRank_holds.Statement) (
   simp
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' d n L L' g hv _ hQ hdn hL hLL`. Unfold `ptsIntegral`. Use `split_ifs with hΨ`. Unfold `ptsIntegralAt`. Establish `h0 : ∀ y w, sheetDensity P' hΨ.choose (fun j z => Real.log ((L' j).h z)) g y w = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y w`. Unfold `sheetDensity`. Use `split_ifs with hγ`. Conclude with `mul_eq_zero_of_right _ (pointForm_holds.maDensity_eq_zero hR hE hv hQ hdn hL hLL hγ.choose_spec)`. Both sides reduce to the same expression.
-
-Simplify using `[h0]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pointForm_holds.proof (hR : pointFormRank_holds.Statement) (hE : pointFormEuler_holds.Statement) : pointForm_holds.Statement := by
   intro K _ ι _ K' _ ι' _ κ v P' d n L L' g hv _ hQ hdn hL hLL

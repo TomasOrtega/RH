@@ -14,7 +14,7 @@ namespace UpperTheory.ConvolutionTheory.R2.M
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_fin_two]`. Conclude with `S.sub_mem (S.mul_mem (h 0 0) (h 1 1)) (S.mul_mem (h 0 1) (h 1 0))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem int_det {R : Type*} [CommRing R] (S : Subring R) {m : Matrix (Fin 2) (Fin 2) R}
     (h : ∀ i j, m i j ∈ S) : m.det ∈ S := by
@@ -22,7 +22,7 @@ private theorem int_det {R : Type*} [CommRing R] (S : Subring R) {m : Matrix (Fi
   exact S.sub_mem (S.mul_mem (h 0 0) (h 1 1)) (S.mul_mem (h 0 1) (h 1 0))
 
 /- English proof (translation)
-Establish `h` using `((GLnLocal.mem_integralGL_iff _ _).1 (hk.2 v)).1`. Establish `e` using `GL2Classical.det_finAt_eq v k`. Establish `e' : (((Matrix.GeneralLinearGroup.det k : (A F)ˣ) : A F)).2 v = ((Reduction.finAt v k : GL (Fin 2) (v.adicCompletion F)) : Matrix (Fin 2) (Fin 2) (v.adicCompletion F)).det` using `e`. Rewrite using `[e']`. Conclude with `int_det _ h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fin_int {k : GL (Fin 2) (A F)} (hk : k ∈ Reduction.maxCompact (K := F) (n := 2))
     (v : HeightOneSpectrum (𝓞 F)) :
@@ -37,7 +37,7 @@ private theorem fin_int {k : GL (Fin 2) (A F)} (hk : k ∈ Reduction.maxCompact 
   exact int_det _ h
 
 /- English proof (translation)
-Establish `e` using `GL2Classical.det_infAt_eq w k`. Establish `e' : (((Matrix.GeneralLinearGroup.det k : (A F)ˣ) : A F)).1 w = ((Reduction.infAt w k : GL (Fin 2) w.Completion) : Matrix (Fin 2) (Fin 2) w.Completion).det` using `e`. Rewrite using `[e']`. Conclude with `Reduction.norm_det_infAt_of_mem_maxCompact hk w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inf_norm {k : GL (Fin 2) (A F)} (hk : k ∈ Reduction.maxCompact (K := F) (n := 2))
     (w : InfinitePlace F) : ‖(((Matrix.GeneralLinearGroup.det k : (A F)ˣ) : A F)).1 w‖ = 1 := by
@@ -49,13 +49,13 @@ private theorem inf_norm {k : GL (Fin 2) (A F)} (hk : k ∈ Reduction.maxCompact
   exact Reduction.norm_det_infAt_of_mem_maxCompact hk w
 
 /- English proof (translation)
-Use `⟨fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Introduce `y`. Establish `key : Reduction.euclidNorm (y ᵥ* ((Reduction.infAt w (dM t) : GL (Fin 2) w.Completion) : Matrix (Fin 2) (Fin 2) w.Completion)) ^ 2 = Reduction.euclidNorm y ^ 2`. Rewrite using `[Reduction.euclidNorm_sq, Reduction.euclidNorm_sq, Fin.sum_univ_two, Fin.sum_univ_two]`. Establish `a0 : (y ᵥ* ((Reduction.infAt w (dM t) : GL (Fin 2) w.Completion) : Matrix (Fin 2) (Fin 2) w.Completion)) 0 = y 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two, dM]`. Conclude with `Or.inr rfl`. Establish `a1 : (y ᵥ* ((Reduction.infAt w (dM t) : GL (Fin 2) w.Completion) : Matrix (Fin 2) (Fin 2) w.Completion)) 1 = y 1 * ((t : A F)).1 w`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two, dM]`. Conclude with `Or.inr rfl`.
+Simplify using the standard rewrite rules. Prove the second alternative. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the second alternative.
 
-Rewrite using `[a0, a1, norm_mul, h1 w, mul_one]`. Conclude with `(sq_eq_sq₀ (Reduction.euclidNorm_nonneg _) (Reduction.euclidNorm_nonneg _)).1 key`. Rewrite using `[GLnLocal.mem_integralGL_iff, ← Reduction.finAt_inv]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dM, Subring.zero_mem, Subring.one_mem, h2 v]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dM, h3 v]`.
+A detailed English derivation is pending.
 -/
 private theorem dM_mem (t : (A F)ˣ) (h1 : ∀ w : InfinitePlace F, ‖((t : A F)).1 w‖ = 1)
     (h2 : ∀ v : HeightOneSpectrum (𝓞 F), ((t : A F)).2 v ∈
@@ -86,9 +86,9 @@ private theorem dM_mem (t : (A F)ˣ) (h1 : ∀ w : InfinitePlace F, ‖((t : A F
 end UpperTheory.ConvolutionTheory.R2.M
 
 /- English proof (translation)
-Introduce `F _ _ k hk`. Use `⟨dM_mem _ (inf_norm hk) (fin_int hk) fun v => ?_, ?_⟩` and prove the remaining obligations. Use `fin_int (inv_mem hk) v` as an intermediate fact. Rewrite `this` using `[map_inv]`. Then use the resulting hypothesis. Use `GJGlobal.Modulus.ideleModule_det_of_mem_maxCompact' hk` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Simplify using `[ab, this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.M.detK :
     ∀ (F : Type) [Field F] [NumberField F], ∀ k ∈ Reduction.maxCompact (K := F) (n := 2), dM (Matrix.GeneralLinearGroup.det k) ∈ Reduction.maxCompact (K := F) (n := 2) ∧ ab (Matrix.GeneralLinearGroup.det k) = 1 := by

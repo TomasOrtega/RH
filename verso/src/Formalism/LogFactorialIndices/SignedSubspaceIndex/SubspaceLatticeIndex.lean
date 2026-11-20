@@ -11,7 +11,7 @@ namespace Formalism.LatticeIndexTer.subgroupData
 variable {O X : Type} [CommRing O] [AddCommGroup X] [Module O X]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.JointEigenvalueBoundsFromAnyDatum.length_chain hAB hBC`.
+A detailed English derivation is pending.
 -/
 theorem length_chain' {A B C : Submodule O X} (hAB : A ≤ B) (hBC : B ≤ C) :
     Module.length O (C ⧸ A.comap C.subtype) =
@@ -19,11 +19,9 @@ theorem length_chain' {A B C : Submodule O X} (hAB : A ≤ B) (hBC : B ≤ C) :
   _root_.UpperTheory.Reformulated.B.JointEigenvalueBoundsFromAnyDatum.length_chain hAB hBC
 
 /- English proof (translation)
-Set `f : (S ⧸ B.comap S.subtype) →ₗ[O] (T ⧸ A.comap T.subtype)` to `Submodule.mapQ _ _ (Submodule.inclusion hST) (fun x hx => by`. Simplify using `only [Submodule.mem_comap, Submodule.coe_subtype, Submodule.coe_inclusion] at hx ⊢`. Conclude with `hBA hx)`. Apply `Module.length_le_of_injective f` to reduce the goal to its premises. Introduce `x y hxy`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Simplify using `only [f, Submodule.mapQ_apply] at hxy`. Rewrite `hxy`, the goal using `[Submodule.Quotient.eq]`. Simplify using `only [Submodule.mem_comap, Submodule.coe_subtype, map_sub, Submodule.coe_inclusion] at hxy ⊢`.
-
-Conclude with `hSA (Submodule.mem_inf.mpr ⟨S.sub_mem x.2 y.2, hxy⟩)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem length_le_of_le {S T A B : Submodule O X} (hST : S ≤ T) (hBA : B ≤ A)
     (hSA : S ⊓ A ≤ B) :
@@ -43,7 +41,7 @@ theorem length_le_of_le {S T A B : Submodule O X} (hST : S ≤ T) (hBA : B ≤ A
   exact hSA (Submodule.mem_inf.mpr ⟨S.sub_mem x.2 y.2, hxy⟩)
 
 /- English proof (translation)
-Set `g : (S ⧸ B.comap S.subtype) →ₗ[O] (S ⧸ A.comap S.subtype)` to `Submodule.mapQ _ _ LinearMap.id (fun x hx => by simpa using hBA hx)`. Apply `Module.length_le_of_surjective g` to reduce the goal to its premises. Introduce `z`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Conclude with `⟨Submodule.Quotient.mk z, rfl⟩`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem length_le_of_ge {S A B : Submodule O X} (hBA : B ≤ A) :
     Module.length O (S ⧸ A.comap S.subtype) ≤ Module.length O (S ⧸ B.comap S.subtype) := by
@@ -55,9 +53,9 @@ theorem length_le_of_ge {S A B : Submodule O X} (hBA : B ≤ A) :
   exact ⟨Submodule.Quotient.mk z, rfl⟩
 
 /- English proof (translation)
-Unfold `qlen`. Rewrite using `[Module.length_eq_zero_iff]`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.Quotient.eq]`. Conclude with `h (a - b).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qlen_eq_zero {A B : Submodule O X} (h : A ≤ B) : qlen O X A B = 0 := by
   unfold qlen
@@ -69,17 +67,15 @@ theorem qlen_eq_zero {A B : Submodule O X} (h : A ≤ B) : qlen O X A B = 0 := b
   exact h (a - b).2
 
 /- English proof (translation)
-Use `show Module.length O (A ⧸ B.comap A.subtype) ≠ ⊤`. Establish `: Module.Finite O A` using `Module.Finite.iff_fg.mpr hA`. Take `⟨n, b⟩` from `Module.basisOfFiniteTypeTorsionFree' (R := O) (M := A)`. Set `ψ : (Fin n → O) →ₗ[O] A ⧸ B.comap A.subtype` to `(B.comap A.subtype).mkQ ∘ₗ b.equivFun.symm.toLinearMap`. Establish `hψ : Function.Surjective ψ` using `(Submodule.mkQ_surjective _).comp b.equivFun.symm.surjective`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `P : Submodule O (Fin n → O)` to `Submodule.pi Set.univ (fun _ => Ideal.span {ϖ ^ k})`. Establish `hP : P ≤ LinearMap.ker ψ`. Introduce `x hx`. Use `choose y hy using fun i => Ideal.mem_span_singleton.mp (Submodule.mem_pi.mp hx i (Set.mem_univ i))`. Establish `hxy : x = ϖ ^ k • y` using `funext fun i => by simp [hy i]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, hxy, map_smul]`. Use `set m : A := b.equivFun.symm y`. Rewrite using `[show ψ y = Submodule.Quotient.mk m from rfl, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Simplify using `only [Submodule.coe_subtype, SetLike.val_smul]`. Conclude with `hk _ m.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hsurj : Function.Surjective (P.liftQ ψ hP)`. Introduce `z`. Take `⟨w, hw⟩` from `hψ z`. Conclude with `⟨Submodule.Quotient.mk w, hw⟩`. Use `ne_top_of_le_ne_top ?_ (Module.length_le_of_surjective _ hsurj)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(Submodule.quotientPi (fun _ : Fin n => Ideal.span {ϖ ^ k})).length_eq, Module.length_pi]`. Establish `: Ideal.span {ϖ ^ k} = IsLocalRing.maximalIdeal O ^ k`. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]`. Rewrite using `[this, IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]`. Simplify using `only [ENat.card_eq_coe_fintype_card, Fintype.card_fin, ne_eq]`.
-
-Rewrite using `[← Nat.cast_mul]`. Conclude with `ENat.natCast_ne_top _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qlen_ne_top_of_pow {O X : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [AddCommGroup X] [Module O X] [Module.IsTorsionFree O X] (ϖ : O) (hϖ : Irreducible ϖ) (k : ℕ)
@@ -123,41 +119,37 @@ namespace Formalism.LatticeIndexTer
 open Formalism.LatticeIndexTer.subgroupData
 
 /- English proof (translation)
-Introduce `O K X _ _ _ _ _ _ _ _ _ _ _ ϖ hϖ F M Θ hM hΘ W MW ΘW`. Establish `hΘM : Θ ≤ M` using `fun x hx => by`. Take `⟨y, hy, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mp (hΘ hx)`. Conclude with `M.smul_mem _ hy`. Establish `hMW : MW ≤ M` using `inf_le_left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Θ ≤ Θ ⊔ MW` using `le_sup_left`. Establish `h2 : Θ ⊔ MW ≤ M` using `sup_le hΘM hMW`. Rewrite using `[length_chain' h1 h2]`. Establish `hA : Module.length O (MW ⧸ ΘW.comap MW.subtype) ≤ Module.length O (↥(Θ ⊔ MW) ⧸ Θ.comap (Θ ⊔ MW).subtype)` using `length_le_of_le le_sup_right inf_le_left (fun x hx => Submodule.mem_inf.mpr ⟨(Submodule.mem_inf.mp hx).2, (Submodule.mem_inf.mp (Submodule.mem_inf.mp hx).1).2⟩)`. Use `add_le_add hA ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: Module.IsTorsionFree O (X ⧸ W)` using `.trans_faithfulSMul O K (X ⧸ W)`. Set `q : X →ₗ[O] X ⧸ W` to `W.mkQ.restrictScalars O`. Set `N : Submodule O (X ⧸ W)` to `M.map q`. Establish `: Module.Finite O N` using `Module.Finite.iff_fg.mpr (hM.1.map q)`. Take `⟨n, b⟩` from `Module.basisOfFiniteTypeTorsionFree' (R := O) (M := N)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hNle : ∀ y : N, (y : X ⧸ W) ∈ Submodule.span K (Set.range fun i => ((b i : N) : X ⧸ W))`. Introduce `y`. Rewrite using `[← b.sum_repr y]`. Simplify using `only [AddSubmonoidClass.coe_finsetSum, SetLike.val_smul]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_of_tower_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hspan : Submodule.span K (Set.range fun i => ((b i : N) : X ⧸ W)) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `z -`. Take `⟨x, rfl⟩` from `W.mkQ_surjective z`. Establish `hx : x ∈ Submodule.span K (M : Set X)` using `hM.2 ▸ Submodule.mem_top`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact hNle ⟨q y, Submodule.mem_map_of_mem hy⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `smul a y _ hy => rw [map_smul]`. Conclude with `Submodule.smul_mem _ a hy`. Establish `hd : Module.finrank K X - Module.finrank K W ≤ n`. Establish `e1` using `Submodule.finrank_quotient_add_finrank W`. Establish `e2` using `finrank_range_le_card (R := K) (fun i => ((b i : N) : X ⧸ W))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite `e2` using `[Set.finrank, hspan, finrank_top, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Set `I : Ideal O` to `Ideal.span {ϖ ^ F}`. Set `φ : M →ₗ[O] N` to `q.submoduleMap M`. Set `π : (Fin n → O) →ₗ[O] (Fin n → O ⧸ I)` to `LinearMap.pi fun i => I.mkQ ∘ₗ LinearMap.proj i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `ψ : M →ₗ[O] (Fin n → O ⧸ I)` to `π ∘ₗ b.equivFun.toLinearMap ∘ₗ φ`. Establish `hψ : Function.Surjective ψ`. Introduce `y`. Use `choose c hc using fun i => Submodule.Quotient.mk_surjective I (y i)`. Take `⟨m, hm⟩` from `LinearMap.submoduleMap_surjective q M (b.equivFun.symm c)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `hm' : φ m = b.equivFun.symm c` using `hm`. Use function extensionality and compare the values at `i`. Simplify using `only [ψ, LinearMap.comp_apply, hm', LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Simplify using `only [π, LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply, Submodule.mkQ_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hc i`. Establish `hker : (Θ ⊔ MW).comap M.subtype ≤ LinearMap.ker ψ`. Introduce `m hm`. Rewrite `hm` using `[Submodule.mem_comap]`. Take `⟨θ, hθ, w, hw, hsum⟩` from `Submodule.mem_sup.mp hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hm' : m = ⟨θ, hΘM hθ⟩ + ⟨w, hMW hw⟩` using `Subtype.ext (by simp [hsum])`. Rewrite using `[LinearMap.mem_ker, hm', map_add]`. Establish `hw0 : φ ⟨w, hMW hw⟩ = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [φ, ZeroMemClass.coe_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.Quotient.mk_eq_zero W).mpr (Submodule.mem_inf.mp hw).2`. Establish `hw0' : ψ ⟨w, hMW hw⟩ = 0`. Simplify using `only [ψ, LinearMap.comp_apply, hw0, map_zero]`. Establish `hθ0 : ψ ⟨θ, hΘM hθ⟩ = 0`. Take `⟨y, hy, hyθ⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mp (hΘ hθ)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm : (⟨θ, hΘM hθ⟩ : M) = ϖ ^ F • ⟨y, hy⟩` using `Subtype.ext hyθ.symm`. Rewrite using `[hsm, map_smul]`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, Pi.zero_apply]`. Take `⟨c, hc⟩` from `Submodule.Quotient.mk_surjective I (ψ ⟨y, hy⟩ i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[← hc, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Rewrite using `[hθ0, hw0', add_zero]`. Establish `hsurj : Function.Surjective (((Θ ⊔ MW).comap M.subtype).liftQ ψ hker)`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨m, hm⟩` from `hψ z`. Conclude with `⟨Submodule.Quotient.mk m, hm⟩`. Establish `hlen : Module.length O (Fin n → O ⧸ I) = ((n * F : ℕ) : ℕ∞)`. Rewrite using `[Module.length_pi]`. Establish `: I = IsLocalRing.maximalIdeal O ^ F`.
-
-Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]`. Rewrite using `[this, IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]`. Simplify using the standard rewrite rules. Use `le_trans ?_ (Module.length_le_of_surjective _ hsurj)` and prove the remaining obligations. Rewrite using `[hlen]`.
-
-Conclude with `(by rw [Nat.mul_comm n]; exact Nat.mul_le_mul_left F hd)` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subspace_lattice_index : SubspaceIndex := by
   intro O K X _ _ _ _ _ _ _ _ _ _ _ ϖ hϖ F M Θ hM hΘ W MW ΘW
@@ -253,15 +245,15 @@ theorem subspace_lattice_index : SubspaceIndex := by
   exact_mod_cast (by rw [Nat.mul_comm n]; exact Nat.mul_le_mul_left F hd)
 
 /- English proof (translation)
-Introduce `O K X _ _ _ _ _ _ _ _ _ _ _ e he A Θ hA hΘ hΘA V₀`. Establish `hfin : qlen O X A Θ ≠ ⊤` using `h1 O K X A Θ hA hΘ`. Establish `hQ'P : Θ ⊓ V₀ ≤ A ⊓ V₀` using `inf_le_inf_right _ hΘA`. Establish `hPQ' : qlen O X (A ⊓ V₀) (Θ ⊓ V₀) ≤ qlen O X A Θ` using `length_le_of_le inf_le_left inf_le_left (fun x hx => Submodule.mem_inf.mpr ⟨(Submodule.mem_inf.mp hx).2, (Submodule.mem_inf.mp (Submodule.mem_inf.mp hx).1).2⟩)`. Establish `hfin' : qlen O X (A ⊓ V₀) (Θ ⊓ V₀) ≠ ⊤` using `ne_top_of_le_ne_top hfin hPQ'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hidx1 : idx O X A Θ = ((qlen O X A Θ).toNat : ℤ)`. Simplify using `[idx, qlen_eq_zero hΘA]`. Establish `hidx2 : idx O X (A ⊓ V₀) (Θ ⊓ V₀) = ((qlen O X (A ⊓ V₀) (Θ ⊓ V₀)).toNat : ℤ)`. Simplify using `[idx, qlen_eq_zero hQ'P]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hidx1, hidx2]`. Conclude with `ENat.toNat_le_toNat hPQ' hfin` after adjusting the coercions. Rewrite using `[hidx2]`. Establish `hQ'Q : Θ ⊓ V₀ ≤ Θ.map (e.restrictScalars O)`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hxΘ : x ∈ Θ` using `(Submodule.mem_inf.mp hx).1`. Establish `hxV : x ∈ LinearMap.range e` using `(Submodule.mem_inf.mp hx).2`. Take `⟨y, rfl⟩` from `LinearMap.mem_range.mp hxV`. Use `Submodule.mem_map.mpr ⟨e y, hxΘ, ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun he y` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hle : qlen O X (A ⊓ V₀) (Θ.map (e.restrictScalars O)) ≤ qlen O X (A ⊓ V₀) (Θ ⊓ V₀)` using `length_le_of_ge hQ'Q`. Use `ENat.toNat_le_toNat hle hfin'` as an intermediate fact. Unfold `idx`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem goodIndex_of_latFinite (h1 : LatFinite) : GoodIndex := by
   intro O K X _ _ _ _ _ _ _ _ _ _ _ e he A Θ hA hΘ hΘA V₀
@@ -295,7 +287,7 @@ theorem goodIndex_of_latFinite (h1 : LatFinite) : GoodIndex := by
     omega
 
 /- English proof (translation)
-The claim follows from `goodIndex_of_latFinite h1`.
+A detailed English derivation is pending.
 -/
 theorem goodIndex_of (h1 : LatFinite) (_h2 : IdxAdd) : GoodIndex := goodIndex_of_latFinite h1
 

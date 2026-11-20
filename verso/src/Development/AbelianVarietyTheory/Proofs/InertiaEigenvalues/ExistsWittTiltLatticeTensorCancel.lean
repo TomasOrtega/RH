@@ -7,7 +7,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 namespace GlobalTheory.HWL
 
 /- English proof (translation)
-Use `haveI : SMulCommClass R O T := IsScalarTower.to_smulCommClass`. Use `⟨(TensorProduct.comm R A T).toAddEquiv.trans (((TensorProduct.AlgebraTensorModule.cancelBaseChange R O O T A).symm.toAddEquiv).trans (TensorProduct.comm O T (O ⊗[R] A)).toAddEquiv), fun w t => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cancel_tensor {R O A T : Type} [CommRing R] [CommRing O] [CommRing A] [Algebra R O]
     [Algebra R A] [AddCommGroup T] [Module O T] [Module R T] [IsScalarTower R O T] :
@@ -20,7 +20,7 @@ theorem exists_cancel_tensor {R O A T : Type} [CommRing R] [CommRing O] [CommRin
   simp
 
 /- English proof (translation)
-Use `letI : Module R T := Module.compHom T (algebraMap R O)`. Use `haveI : IsScalarTower R O T := IsScalarTower.of_compHom R O T`. Conclude with `exists_cancel_tensor`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem exists_cancel_tensor_compHom (R O A T : Type) [CommRing R] [CommRing O] [CommRing A] [Algebra R O]
     [Algebra R A] [AddCommGroup T] [Module O T] :
@@ -32,7 +32,7 @@ theorem exists_cancel_tensor_compHom (R O A T : Type) [CommRing R] [CommRing O] 
   exact exists_cancel_tensor
 
 /- English proof (translation)
-Introduce `l _ K LL T`. Conclude with `exists_cancel_tensor_compHom ℤ_[l] ↥(OL LL) (WCb l) ↥T.L.T`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_kappa : ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)), letI := Formalism.MainNotions.LocalSituation.zlMod LL T; ∃ κ : (WCb l ⊗[ℤ_[l]] ↥T.L.T) ≃+ TW (RW LL) T, ∀ (w : WCb l) (t : ↥T.L.T), κ (w ⊗ₜ[ℤ_[l]] t) = TensorProduct.tmul ↥(OL LL) ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] w : RW LL) t := by
   intro l _ K LL T

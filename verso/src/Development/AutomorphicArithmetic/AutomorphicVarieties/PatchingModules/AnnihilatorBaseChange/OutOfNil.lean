@@ -5,7 +5,7 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-Use extensionality with `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem comap_comap_quot {R B : Type} [CommRing R] [CommRing B] [Algebra R B] (ii : Ideal R)
     (Q : Ideal (B ⧸ ii.map (algebraMap R B))) :
@@ -15,9 +15,9 @@ private theorem comap_comap_quot {R B : Type} [CommRing R] [CommRing B] [Algebra
   rfl
 
 /- English proof (translation)
-Rewrite `hP` using `[Ideal.minimalPrimes_map_of_surjective Ideal.Quotient.mk_surjective, Ideal.mk_ker]`. Take `⟨P', hP', rfl⟩` from `hP`. Establish `hIP : I ≤ P'` using `le_sup_right.trans hP'.1.2`. Establish `hmin : P' ∈ S.minimalPrimes`. Use `⟨⟨hP'.1.1, le_sup_left.trans hP'.1.2⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Q hQ hQP`. Use `haveI := hQ.1`. Conclude with `hP'.2 ⟨hQ.1, sup_le hQ.2 (h.trans ((Ideal.IsPrime.radical_le_iff hQ.1).mpr hQ.2))⟩ hQP`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotSup I P'), sup_eq_right.mpr hIP]`. Conclude with `hd P' hmin`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dim_quot {B : Type} [CommRing B] (I S : Ideal B) (h : I ≤ S.radical) (d : WithBot ℕ∞)
     (hd : ∀ P ∈ S.minimalPrimes, d ≤ ringKrullDim (B ⧸ P)) (P : Ideal (B ⧸ I))
@@ -34,23 +34,17 @@ private theorem dim_quot {B : Type} [CommRing B] (I S : Ideal B) (h : I ≤ S.ra
   exact hd P' hmin
 
 /- English proof (translation)
-Introduce `Λ R σ _ _ _ _ s ii ann ι q d B _ _ _ S hq hcpl hrad hdim hfib hmove`. Set `J : ∀ i, Ideal (B i)` to `fun i => ii.map (algebraMap R (B i))`. Establish `hJmax : ∀ i, J i ≤ maximalIdeal (B i)`. Introduce `i`. Rewrite using `[Ideal.map_le_iff_le_comap, (hcpl i).comap_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq i`. Establish `hJne : ∀ i, J i ≠ ⊤` using `fun i h => (IsLocalRing.maximalIdeal.isMaximal (B i)).ne_top (top_le_iff.mp (h ▸ hJmax i))`. Use `haveI : ∀ i, Nontrivial (B i ⧸ J i) := fun i => Ideal.Quotient.nontrivial_iff.mpr (hJne i)`. Use `haveI : ∀ i, IsLocalRing (B i ⧸ J i) := fun i => .of_surjective' _ Ideal.Quotient.mk_surjective`. Establish `hker : ∀ i, J i ≤ RingHom.ker (Ideal.Quotient.mk (J i))` using `fun i => by rw [Ideal.mk_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomap : ∀ i (Z : Ideal (B i ⧸ J i)), (Z.comap (algebraMap (R ⧸ ii) (B i ⧸ J i))).comap (Ideal.Quotient.mk ii) = (Z.comap (Ideal.Quotient.mk (J i))).comap (algebraMap R (B i))` using `fun i Z => comap_comap_quot ii Z`. Establish `hJle : ∀ i (Z : Ideal (B i ⧸ J i)), J i ≤ Z.comap (Ideal.Quotient.mk (J i))`. Introduce `i Z x hx`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hx]`. Conclude with `Z.zero_mem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgen : ∀ i (Q : Ideal (B i ⧸ J i)), ((∀ a, algebraMap (R ⧸ ii) (B i ⧸ J i) (Ideal.Quotient.mk ii (s (MvPowerSeries.X a))) ∈ Q) ↔ ∀ a, algebraMap R (B i) (s (MvPowerSeries.X a)) ∈ Q.comap (Ideal.Quotient.mk (J i)))`. Introduce `i Q`. Both sides reduce to the same expression. Use `⟨⟨fun i => B i ⧸ J i, fun i => ?_, fun i => (S i).map (Ideal.Quotient.mk (J i)), fun i => ?_, fun i Q hQ hgQ => ?_, fun i i' Z Q hZ hQ hSZ hZQ hgQ hQq => ?_⟩⟩` and prove the remaining obligations. Conclude with `IsCplAt.quotient R (q i) (B i) (R ⧸ ii) ((q i).map (Ideal.Quotient.mk ii)) (B i ⧸ J i) (hcpl i) Ideal.Quotient.mk_surjective (by show Ideal.comap (Ideal.Quotient.mk ii) _ = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Conclude with `sup_eq_left.mpr (hq i))`. Use the proof step `Ideal.Quotient.mk_surjective`. Use the proof step `(by show RingHom.ker (Ideal.Quotient.mk (J i)) = Ideal.map _ (RingHom.ker (Ideal.Quotient.mk ii))`. Rewrite using `[Ideal.mk_ker, Ideal.mk_ker])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `P hP`. Conclude with `dim_quot (J i) (S i) (Ideal.map_le_iff_le_comap.mpr (hrad i)) d (hdim i) P hP`. Use `haveI := hQ`. Rewrite using `[Ideal.map_le_iff_le_comap, hcomap]`. Conclude with `hfib i _ (Ideal.comap_isPrime _ Q) (hJle i Q) ((hgen i Q).mp hgQ)`.
-
-Use `haveI := hZ haveI := hQ`. Rewrite `hQq` using `[hcomap]`. Take `⟨Z'', hZ''p, hSZ'', hZ''⟩` from `hmove i i' (Z.comap (Ideal.Quotient.mk (J i))) (Q.comap (Ideal.Quotient.mk (J i))) (Ideal.comap_isPrime _ Z) (Ideal.comap_isPrime _ Q) (Ideal.map_le_iff_le_comap.mp hSZ) (Ideal.comap_mono hZQ) ((hgen i Q).mp hgQ) hQq`. Establish `hiiZ : ii ≤ Z''.comap (algebraMap R (B i'))`. Rewrite using `[hZ'', ← Ideal.map_le_iff_le_comap]`.
-
-Conclude with `hJle i Z`. Establish `hJZ : J i' ≤ Z''` using `Ideal.map_le_iff_le_comap.mpr hiiZ`. Establish `hkZ : RingHom.ker (Ideal.Quotient.mk (J i')) ≤ Z''` using `by rw [Ideal.mk_ker]; exact hJZ`. Use `⟨Z''.map (Ideal.Quotient.mk (J i')), Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective hkZ, Ideal.map_mono hSZ'', ?_⟩` and prove the remaining obligations. Apply `Ideal.comap_injective_of_surjective _ (Ideal.Quotient.mk_surjective (I := ii))` to reduce the goal to its premises.
-
-Rewrite using `[hcomap, hcomap, Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, sup_eq_left.mpr hkZ, hZ'']`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.outOfNil :
     ∀ (Λ R σ : Type) [CommRing Λ] [IsLocalRing Λ] [CommRing R] [IsNoetherianRing R] (s : MvPowerSeries σ Λ →+* R) (ii ann : Ideal R) (ι : Type) (q : ι → Ideal R) (d : ℕ) (B : ι → Type) [∀ i, CommRing (B i)] [∀ i, IsLocalRing (B i)] [∀ i, Algebra R (B i)] (S : ∀ i, Ideal (B i)), (∀ i, ii ≤ q i) → (∀ i, IsCplAt R (q i) (B i)) → (∀ i, ii ≤ (S i).radical.comap (algebraMap R (B i))) → (∀ i, ∀ P ∈ (S i).minimalPrimes, (d : WithBot ℕ∞) ≤ ringKrullDim (B i ⧸ P)) → (∀ i (Q : Ideal (B i)), Q.IsPrime → ii.map (algebraMap R (B i)) ≤ Q → (∀ a, algebraMap R (B i) (s (MvPowerSeries.X a)) ∈ Q) → (S i ≤ Q ↔ ann ≤ Q.comap (algebraMap R (B i)))) → (∀ i i' (Z Q : Ideal (B i)), Z.IsPrime → Q.IsPrime → S i ≤ Z → Z ≤ Q → (∀ a, algebraMap R (B i) (s (MvPowerSeries.X a)) ∈ Q) → Q.comap (algebraMap R (B i)) ≤ q i' → ∃ Z' : Ideal (B i'), Z'.IsPrime ∧ S i' ≤ Z' ∧ Z'.comap (algebraMap R (B i')) = Z.comap (algebraMap R (B i))) → Nonempty (PatchedSupportCompletions s ii ann q d) := by

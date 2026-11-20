@@ -10,9 +10,9 @@ namespace GlobalTheory.EtaleGeomDescent
 open scoped TensorProduct
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Apply `IsNilpotent.eq_zero` to reduce the goal to its premises. Rewrite using `[nilpotent_iff_mem_prime]`. Introduce `J hJ`. Use `h (AlgebraicClosure J.ResidueField) ((algebraMap J.ResidueField _).comp (algebraMap R J.ResidueField))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← sub_eq_zero, ← map_sub, RingHom.comp_apply, map_eq_zero, Ideal.algebraMap_residueField_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eq_of_geometric_points' {R : Type} [CommRing R] [_root_.IsReduced R] (a b : R)
     (h : ∀ (k : Type) [Field k] [IsAlgClosed k] (χ : R →+* k), χ a = χ b) : a = b := by
@@ -26,11 +26,11 @@ theorem eq_of_geometric_points' {R : Type} [CommRing R] [_root_.IsReduced R] (a 
     Ideal.algebraMap_residueField_eq_zero] at this
 
 /- English proof (translation)
-Introduce `A B _ _ _ _ _ hff het b hb`. Establish `hBr : _root_.IsReduced B` using `GlobalTheory.isReduced_algebra_of_smooth_of_isReduced A B`. Establish `: Algebra.Smooth B (B ⊗[A] B)` using `inferInstance`. Establish `hCr : _root_.IsReduced (B ⊗[A] B)` using `GlobalTheory.isReduced_algebra_of_smooth_of_isReduced B (B ⊗[A] B)`. Establish `hC : (b ⊗ₜ[A] (1 : B)) = (1 : B) ⊗ₜ[A] b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `eq_of_geometric_points' _ _ fun k _ _ χ => ?_` and prove the remaining obligations. Establish `key` using `hb k (χ.comp Algebra.TensorProduct.includeLeftRingHom) (χ.comp (Algebra.TensorProduct.includeRight (R := A) (A := B)).toRingHom) ?_`. Simplify using `using key`. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeLeftRingHom_apply, Algebra.TensorProduct.includeRight_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Establish `hx` using `(Algebra.IsEffective.of_faithfullyFlat A B b).mp (by simp [hC])`. Take `⟨a, ha⟩` from `hx`. Conclude with `⟨a, ha⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem descent : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [IsReduced A] [IsJacobsonRing A],
     Module.FaithfullyFlat A B → Algebra.Etale A B → ∀ b : B,

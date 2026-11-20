@@ -5,25 +5,25 @@ open Finset BigOperators
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hf : ∀ S : Finset (Fin D), ∑ a ∈ (univ : Finset (Fin D → Fin D)).filter (fun a => univ.image a ⊆ S), E a = 0`. Introduce `S`. Use `h (fun i => if i ∈ S then 1 else 0)` as an intermediate fact. Rewrite using `[← this, Finset.sum_filter]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hs : univ.image a ⊆ S`. Establish `: ∀ j, a j ∈ S` using `fun j => hs (Finset.mem_image_of_mem a (Finset.mem_univ j))`. Simplify using `[this, hs]`. Rewrite using `[if_neg hs]`. Establish `: ∃ j, a j ∉ S`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hs` to reduce the goal to its premises. Introduce `x hx`. Take `⟨j, _, rfl⟩` from `Finset.mem_image.mp hx`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hc j`. Take `⟨j, hj⟩` from `this`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ j) (by simp [hj]), zero_mul]`. Introduce `S`. Proceed by induction on `S using Finset.strongInduction with`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `H S ih`. Establish `hsplit : ∑ a ∈ (univ : Finset (Fin D → Fin D)).filter (fun a => univ.image a ⊆ S), E a = ∑ T ∈ S.powerset, ∑ a ∈ ((univ : Finset (Fin D → Fin D)).filter (fun a => univ.image a ⊆ S)).filter (fun a => univ.image a = T), E a`. Rewrite using `[Finset.sum_fiberwise_of_maps_to]`. Introduce `a ha`. Simplify using `using (Finset.mem_filter.mp ha).2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hsplit` using `[hf S, ← Finset.add_sum_erase _ _ (Finset.mem_powerset_self S)]`. Establish `hrest : ∑ T ∈ S.powerset.erase S, ∑ a ∈ ((univ : Finset (Fin D → Fin D)).filter (fun a => univ.image a ⊆ S)).filter (fun a => univ.image a = T), E a = 0`. Use `Finset.sum_eq_zero (fun T hT => ?_)` and prove the remaining obligations. Take `⟨hTS, hTsub⟩` from `Finset.mem_erase.mp hT`. Establish `hss : T ⊂ S` using `Finset.ssubset_iff_subset_ne.mpr ⟨Finset.mem_powerset.mp hTsub, hTS⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ih T hss, Finset.filter_filter]`. Use `Finset.sum_congr ?_ (fun _ _ => rfl)` and prove the remaining obligations. Use extensionality with `a`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `fun h => h.2`. Introduce `h`. Conclude with `⟨h ▸ hss.subset, h⟩`. Rewrite `hsplit` using `[hrest, add_zero, Finset.filter_filter]`. Use `Eq.trans ?_ hsplit.symm` and prove the remaining obligations.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `Finset.sum_congr ?_ (fun _ _ => rfl)` and prove the remaining obligations. Use extensionality with `a`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `⟨h ▸ Finset.Subset.refl _, h⟩`. Conclude with `fun h => h.2`.
+A detailed English derivation is pending.
 -/
 theorem sum_fibre_image_eq_zero_of_integer_polarisation (D : ℕ) (E : (Fin D → Fin D) → ℝ)
     (h : ∀ n : Fin D → ℤ, ∑ a : Fin D → Fin D, (∏ j, (n (a j) : ℝ)) * E a = 0) :
@@ -80,15 +80,15 @@ theorem sum_fibre_image_eq_zero_of_integer_polarisation (D : ℕ) (E : (Fin D �
     · exact fun h => h.2
 
 /- English proof (translation)
-Introduce `D E h`. Rewrite using `[← sum_fibre_image_eq_zero_of_integer_polarisation D E h univ]`. Use `Finset.sum_bij (fun σ _ => (σ : Fin D → Fin D)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `σ _`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, iff_true]`. Conclude with `⟨σ.symm x, by simp⟩`. Introduce `σ _ τ _ hst`. Conclude with `Equiv.ext (fun x => congrFun hst x)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha`. Establish `hs : Function.Surjective a`. Introduce `x`. Establish `: x ∈ univ.image a` using `by rw [ha]; exact Finset.mem_univ x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, _, hj⟩` from `Finset.mem_image.mp this`. Conclude with `⟨j, hj⟩`. Establish `hb : Function.Bijective a` using `⟨Finite.injective_iff_surjective.mpr hs, hs⟩`. Conclude with `⟨Equiv.ofBijective a hb, Finset.mem_univ _, rfl⟩`. Introduce `σ _`.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sum_perm_eq_zero_of_polarisation :
     ∀ (D : ℕ) (E : (Fin D → Fin D) → ℝ),

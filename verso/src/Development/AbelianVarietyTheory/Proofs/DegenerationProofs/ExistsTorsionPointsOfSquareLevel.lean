@@ -30,17 +30,17 @@ Both sides reduce to the same expression.
 theorem halves_inr (g : ℕ) (i : Fin g) : (halves g (.inr i) : ℕ) = g + i := rfl
 
 /- English proof (translation)
-Establish `h₁ : ∀ i j : Fin g, stdSymp g (halves g (.inl i)) (halves g (.inl j)) = 0` using `fun i j => by`. Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact. Rewrite using `[stdSymp, halves_inl, halves_inl, if_neg (by omega), if_neg (by omega)]`. Establish `h₂ : ∀ i j : Fin g, stdSymp g (halves g (.inl i)) (halves g (.inr j)) = if i = j then 1 else 0` using `fun i j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact. Rewrite using `[stdSymp, halves_inl, halves_inr]`. Distinguish the cases in `h : i = j`. Rewrite using `[if_pos h, if_pos (by subst h; omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `: (i : ℕ) ≠ j` using `fun q => h (Fin.ext q)`. Rewrite using `[if_neg h, if_neg (by omega), if_neg (by omega)]`. Establish `h₃ : ∀ i j : Fin g, stdSymp g (halves g (.inr i)) (halves g (.inl j)) = if i = j then -1 else 0` using `fun i j => by`. Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[stdSymp, halves_inl, halves_inr]`. Distinguish the cases in `h : i = j`. Rewrite using `[if_pos h, if_neg (by omega), if_pos (by subst h; omega)]`. Establish `: (i : ℕ) ≠ j` using `fun q => h (Fin.ext q)`. Rewrite using `[if_neg h, if_neg (by omega), if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₄ : ∀ i j : Fin g, stdSymp g (halves g (.inr i)) (halves g (.inr j)) = 0` using `fun i j => by`. Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact. Rewrite using `[stdSymp, halves_inr, halves_inr, if_neg (by omega), if_neg (by omega)]`. Rewrite using `[labelSymp, ← (halves g).sum_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[← (halves g).sum_comp]`. Simplify using `[Fintype.sum_sum_type, h₁, h₂, h₃, h₄, eStd, sub_eq_add_neg, Finset.sum_add_distrib, add_comm]`.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem labelSymp_eq (g M : ℕ) (a b : Fin g ⊕ Fin g → ZMod M) :
     labelSymp (a ∘ (halves g).symm) (b ∘ (halves g).symm) = eStd g M a b := by
@@ -71,21 +71,21 @@ theorem labelSymp_eq (g M : ℕ) (a b : Fin g ⊕ Fin g → ZMod M) :
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Simplify using `only [linComb, pow_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linComb_pow_left {A : Over S} [GrpObj A] [IsCommMonObj A] {T : Over S} {n : ℕ} (y : Fin n → (T ⟶ A))
     (c : Fin n → ℕ) (M : ℕ) : linComb (fun i => y i ^ M) c = linComb y (fun i => M * c i) := by
   simp only [linComb, pow_mul]
 
 /- English proof (translation)
-Simplify using `only [linComb, List.prod_ofFn, ← Finset.prod_pow, ← pow_mul, Nat.mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linComb_pow_right {A : Over S} [GrpObj A] [IsCommMonObj A] {T : Over S} {n : ℕ} (y : Fin n → (T ⟶ A))
     (c : Fin n → ℕ) (M : ℕ) : linComb y c ^ M = linComb y (fun i => M * c i) := by
   simp only [linComb, List.prod_ofFn, ← Finset.prod_pow, ← pow_mul, Nat.mul_comm]
 
 /- English proof (translation)
-Set `F : (T ⟶ A) →* (T' ⟶ A)` to `MonoidHom.mk' (h ≫ ·) (fun a b => MonObj.comp_mul _ _ _)`. Simplify using `only [linComb, List.prod_ofFn]`. Conclude with `(map_prod F _ _).trans (Finset.prod_congr rfl fun i _ => map_pow F _ _)`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comp_linComb {A : Over S} [GrpObj A] [IsCommMonObj A] {T T' : Over S} (h : T' ⟶ T) {n : ℕ}
     (y : Fin n → (T ⟶ A)) (c : Fin n → ℕ) : h ≫ linComb y c = linComb (fun i => h ≫ y i) c := by
@@ -94,15 +94,13 @@ theorem comp_linComb {A : Over S} [GrpObj A] [IsCommMonObj A] {T T' : Over S} (h
   exact (map_prod F _ _).trans (Finset.prod_congr rfl fun i _ => map_pow F _ _)
 
 /- English proof (translation)
-Establish `hM : 0 < M` using `Nat.pos_of_ne_zero (NeZero.ne M)`. Establish `lt : ∀ a : ZMod M, M * a.val < M ^ 2` using `fun a => by`. Rewrite using `[sq]`. Conclude with `Nat.mul_lt_mul_of_pos_left (ZMod.val_lt a) hM`. Use `existsUnique_of_exists_of_unique ?_ fun a b ha hb => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `sp`. Establish `h₀` using `ind (fun i => ⟨(M * c i) % M ^ 2, Nat.mod_lt _ (pow_pos hM 2)⟩) (fun _ => ⟨0, pow_pos hM 2⟩) (by`. Establish `e : linComb y (fun i => (M * c i) % M ^ 2) = linComb y (fun i => M * c i)`. Simplify using `only [linComb]`. Conclude with `congrArg (fun f => (List.ofFn f).prod) (funext fun i => (pow_eq_pow_mod _ (hy i)).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[← linComb_pow_right, hc, hz]`. Simplify using `[linComb])`. Establish `h₁ : ∀ i, M ∣ (c i : ℕ)` using `fun i => by`. Establish `q : (M * c i) % M ^ 2 = 0` using `congrArg Fin.val (congrFun h₀ i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.dvd_of_mul_dvd_mul_left hM (sq M ▸ Nat.dvd_of_mod_eq_zero q)`. Use `⟨fun i => ((c i : ℕ) / M : ℕ), (linComb_pow_left _ _ _).trans ((congrArg (linComb y) (funext fun i => ?_)).trans hc)⟩` and prove the remaining obligations. Rewrite using `[ZMod.val_cast_of_lt (Nat.div_lt_of_lt_mul (sq M ▸ (c i).2)), Nat.mul_div_cancel' (h₁ i)]`. Establish `h` using `ind (fun i => ⟨_, lt (a i)⟩) (fun i => ⟨_, lt (b i)⟩) ((linComb_pow_left _ _ _).symm.trans ((ha.trans hb.symm).trans (linComb_pow_left _ _ _)))`. Use function extensionality and compare the values at `i`.
-
-Conclude with `ZMod.val_injective M (Nat.eq_of_mul_eq_mul_left hM (congrArg Fin.val (congrFun h i)))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem existsUnique_lab {A : Over S} [GrpObj A] [IsCommMonObj A] {T : Over S} {n M : ℕ} [NeZero M]
     (y : Fin n → (T ⟶ A)) (hy : ∀ i, y i ^ (M ^ 2) = 1)
@@ -133,9 +131,9 @@ theorem existsUnique_lab {A : Over S} [GrpObj A] [IsCommMonObj A] {T : Over S} {
     exact ZMod.val_injective M (Nat.eq_of_mul_eq_mul_left hM (congrArg Fin.val (congrFun h i)))
 
 /- English proof (translation)
-Establish `H'` using `CommPairing.weilIs_symm P.isLB H`. Establish `k : ∀ n, WeilIs P.A P.L (M ^ 2 : ℕ) (y ^ (n + 1)) x (c⁻¹ ^ (n + 1))` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using H'`. Consider the case `succ n ih => rw [pow_succ y, pow_succ c⁻¹]`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `(hW S P _ T).2.1 _ _ _ _ _ ih H'`. Establish `k'` using `CommPairing.weilIs_symm P.isLB (k (M - 1))`. Rewrite `k'` using `[Nat.sub_add_cancel hM, inv_pow, inv_inv]`. Use `((hW S P M T).2.2.2 M x _ _ (by rw [Nat.cast_mul]; exact hu.mul hu) (by rw [← sq, hx]) (by rw [← pow_mul, ← sq, hy])).1 ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_mul, ← sq]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem weilIs_pow_pow (hW : WeilSt) [IsLocallyNoetherian S] (P : PolAV S) {M : ℕ} {T : Over S}
     (hu : IsUnit (M : Γ(T.left, ⊤))) {x y : T ⟶ P.A} {c : Γ(T.left, ⊤)ˣ} (hM : 1 ≤ M) (hx : x ^ (M ^ 2) = 1)
@@ -159,19 +157,17 @@ namespace GlobalTheory
 open SquareLevel ThetaCoord in
 
 /- English proof (translation)
-Introduce `hL S _ P M ze hM hu lev`. Establish `: NeZero M` using `⟨by omega⟩`. Establish `hq : ∀ i, (lev.pt i ^ M) ^ M = 1` using `fun i => by rw [← pow_mul, ← sq, lev.torsion]`. Use `⟨fun a => lab (fun i => lev.pt i ^ M) (a ∘ (halves P.g).symm), fun a b => lab_add hq _ _, fun K _ _ x z hz => ?_, fun a b => ?_, fun a => ?_, fun i i₁ i₂ h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `H` using `existsUnique_lab (M := M) (fun i => (Over.homMk x (by simp) : Over.mk x ⟶ baseOver S) ≫ lev.pt i) (fun i => by rw [← MonObj.comp_pow, lev.torsion, MonObj.comp_one]) (lev.indep K x) z hz (lev.span K x z (by rw [sq, pow_mul, hz, one_pow]))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `((Equiv.arrowCongr (halves P.g) (Equiv.refl (ZMod M))).existsUnique_congr fun a => ?_).2 H` and prove the remaining obligations. Rewrite using `[lab, comp_linComb]`. Simplify using `only [MonObj.comp_pow]`. Both sides reduce to the same expression. Establish `hze : (ze ^ M) ^ M = 1` using `by rw [← pow_mul, ← sq, lev.prim.pow_eq_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `weilIs_lab hL.globalFns P (T := baseOver S) hq (ze := ze ^ M) hze (fun i j => by` as an intermediate fact. Use `weilIs_pow_pow hL.weil P (T := baseOver S) hu hM (lev.torsion i) (lev.torsion j) (lev.pairing i j)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `show (ze ^ M) ^ stdSymp P.g i j = (ze ^ stdSymp P.g i j) ^ M`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm])`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun a b => ((hL.weil S P M _).1 _ _ (lab_pow hq a) (lab_pow hq b)).exists)`. Use the proof step `(a ∘ (halves P.g).symm) (b ∘ (halves P.g).symm)`. Rewrite `this` using `[labelSymp_eq]`. Rewrite using `[pow_mul]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨linComb lev.pt fun i => (a ((halves P.g).symm i)).val, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [linComb, List.prod_ofFn, ← Finset.prod_pow]`. Conclude with `Finset.prod_eq_one fun i _ => by rw [← pow_mul, Nat.mul_comm, pow_mul, lev.torsion, one_pow]`. Conclude with `(linComb_pow_right _ _ _).trans (linComb_pow_left _ _ _).symm`. Establish `k : ∀ s, lab (fun i => lev.pt i ^ M) ((Pi.single s (1 : ZMod M) : _ → ZMod M) ∘ (halves P.g).symm) = lev.pt (halves P.g s) ^ M` using `fun s => by`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← lab_single (M := M) hq (halves P.g s)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply, Equiv.symm_apply_eq]`. Establish `e₁ : i₁ = halves P.g (.inl i)` using `Fin.ext h₁`.
-
-Establish `e₂ : i₂ = halves P.g (.inr i)` using `Fin.ext (h₂.trans (Nat.add_comm _ _))`. Rewrite using `[e₁, e₂]`. Conclude with `⟨k _, k _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_torsionPoints_of_squareLevel : Laws → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : PolAV S) (M : ℕ) (ze : Γ(S, ⊤)ˣ), 1 ≤ M → IsUnit (M : Γ(S, ⊤)) → ∀ lev : Out.Level P (M ^ 2) ze, ∃ pt : (Fin P.g ⊕ Fin P.g → ZMod M) → (baseOver S ⟶ P.A), (∀ a b, pt (a + b) = pt a * pt b) ∧ (∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ S) (z : Over.mk x ⟶ P.A), z ^ M = 1 → ∃! a, (Over.homMk x (by simp) : Over.mk x ⟶ baseOver S) ≫ pt a = z) ∧ (∀ a b, WeilIs P.A P.L (M : ℕ) (pt a) (pt b) (ze ^ (M * (eStd P.g M a b).val))) ∧ (∀ a, ∃ y : baseOver S ⟶ P.A, y ^ (M ^ 2) = 1 ∧ y ^ M = pt a) ∧ ∀ (i : Fin P.g) (i₁ i₂ : Fin (2 * P.g)), (i₁ : ℕ) = i → (i₂ : ℕ) = i + P.g → pt (Pi.single (.inl i) 1) = lev.pt i₁ ^ M ∧ pt (Pi.single (.inr i) 1) = lev.pt i₂ ^ M := by
   intro hL S _ P M ze hM hu lev

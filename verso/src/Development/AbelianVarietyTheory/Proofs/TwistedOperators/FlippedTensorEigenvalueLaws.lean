@@ -25,7 +25,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [BorelSpace k] {Γ : Grid k}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Conclude with `GlobalTheory.FlipAdm.squareFlip_const_mul _ _ _ _ _ _ _ c _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem flipTensor_smul (s : Assignment) (ψ : AddChar k Circle) (ϖ : kˣ) (e i j : ℕ) (J : Γ.Level) (c : ℂ)
     (T : Γ.Args → ℂ) : Γ.flipTensor s ψ ϖ e i j J (c • T) = c • Γ.flipTensor s ψ ϖ e i j J T := by
@@ -33,17 +33,17 @@ theorem flipTensor_smul (s : Assignment) (ψ : AddChar k Circle) (ϖ : kˣ) (e i
   exact GlobalTheory.FlipAdm.squareFlip_const_mul _ _ _ _ _ _ _ c _ _
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro St _ _ _ _ _ h`. Conclude with `h`. Consider the case `cons x l ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `St hν hg hc hJ hT hlaw`. Take `_ | ⟨hp, hc'⟩` from `hc`. Establish `hJ' : ∀ X, IsOpen ((St.flip .one ψ ϖ e x).level X : Set (GL (Fin (Γ.rank X)) k)) ∧ (St.flip .one ψ ϖ e x).level X ≤ KO k _` using `fun X => by`. Express the relevant statement in the definitionally equal form `IsOpen (Γ.flipLevel x.1 x.2 St.level X : Set (GL (Fin (Γ.rank X)) k)) ∧ Γ.flipLevel x.1 x.2 St.level X ≤ _`. Distinguish the cases in `hX : X = (x.1 + 1, x.2 + 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hX` using the available equality. Simplify using `only [Grid.flipLevel, Function.update_self]`. Conclude with `⟨isOpen_KO, le_rfl⟩`. Simplify using `only [Grid.flipLevel, Function.update_of_ne hX]`. Conclude with `hJ X`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ih (St.flip .one ψ ϖ e x) (fun y hy => hν y (List.mem_cons_of_mem _ hy)) (fun y hy => hg y (List.mem_cons_of_mem _ hy)) hc' hJ' (GlobalTheory.FlipAdm.isAdmissible_flip ψ ϖ e hϖ hψ he St x (hν x List.mem_cons_self) hp hJ hT) ?_` and prove the remaining obligations. Establish `hν0` using `hν x List.mem_cons_self`. Establish `hg0` using `hg x List.mem_cons_self`. Take `⟨i, j⟩` from `x`. Take `⟨γ, J, T⟩` from `St`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l₁, l₂, hγ, hfl⟩` from `GlobalTheory.FlipAdm.exists_split hT.path hp`. Establish `hTt` using `hT.tensor`. Simplify using `only at hγ hfl hlaw hTt hν0 hg0 hJ`. Express the relevant statement in the definitionally equal form `Γ.pathAct .one (flipPath i j γ) g (Γ.flipTensor .one ψ ϖ e i j J T) = c • Γ.flipTensor .one ψ ϖ e i j J T`. Rewrite using `[hfl]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hγ` using the available equality. Rewrite using `[GlobalTheory.FlipAdm.pathAct_flipTensor hϖ hψ he hν0 (hJ (i, j)).1 (hJ (i, j)).2 l₁ l₂ hTt g hg0 hK, hlaw, flipTensor_smul]`.
+A detailed English derivation is pending.
 -/
 theorem flips_law {ψ : AddChar k Circle} {ϖ : kˣ} {e : ℕ} (hϖ : IsUnif ϖ) (hψ : HasConductor ψ 1) (he : 1 ≤ e)
     (g : Γ.VertexGroup) (hK : ∀ Y, g Y ∈ KO k _) (c : ℂ) :
@@ -92,13 +92,13 @@ variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 variable {μ₀ : T} {G : GridData L sc} {t : T} {w : Pl D.host.E}
 
 /- English proof (translation)
-Establish `hmu : ∀ j x, (locGrid G t w).mu j x = (muBase L j).loc w x * (L.xiH t).loc w x` using `fun _ _ => rfl`. Distinguish the cases in `hP : w ∈ L.Pg`. Establish `hQ : w ∉ L.Q t` using `fun h => (over_of_mem_Pg hL hP).elim fun i hi => not_over_of_mem_Q hL h i hi`. Establish `h0 : w ∈ G.pl.W0` using `(mem_locPl.1 hw).resolve_right hQ`. Use `⟨fun i => by simp only [stepType, stepGroup, if_pos hP], ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [stepType, stepFn, if_pos hP]`. Conclude with `⟨_, fun x hx => by simp [hmu, xi_unr hL h0 hQ x hx], TypeDatum.hasTypes_iterPhi _ _ _ j⟩`. Distinguish the cases in `hQ : w ∈ L.Q t`. Establish `hδ : IsTame ((L.xiH t).loc w)⁻¹` using `fun x hx => by`. Rewrite using `[MonoidHom.inv_apply, isTame_loc (hL.xi_tame t w) x hx, inv_one]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i => by simp only [stepType, stepGroup, if_neg hP, if_pos hQ, dif_pos (And.intro hQ hδ)]; rfl, ?_⟩` and prove the remaining obligations. Simplify using `only [stepType, stepFn, if_neg hP, if_pos hQ, dif_pos (And.intro hQ hδ)]`. Conclude with `⟨_, fun x hx => by simp [hmu, muBase_unr hL hw hP _ x hx], hasTypes_parPhi hδ (ν := 1) fun _ _ => rfl⟩`. Establish `hn : ¬ (w ∈ L.Q t ∧ IsTame ((L.xiH t).loc w)⁻¹)` using `fun h => hQ h.1`. Use `⟨fun i => by simp only [stepType, stepGroup, if_neg hP, if_neg hQ, dif_neg hn]; rfl, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [stepType, stepFn, if_neg hP, if_neg hQ, dif_neg hn]`. Conclude with `⟨1, fun x hx => by`. Simplify using `[hmu, muBase_unr hL hw hP _ x hx, xi_unr hL ((mem_locPl.1 hw).resolve_right hQ) hQ x hx], hasTypes_vacuum⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem stepType_laws (hL : L.Is μ₀) (hw : w ∈ locPl G t) (j : ℕ) :
     (∀ i, (stepType L t w i).J = stepGroup L t w i) ∧
@@ -133,16 +133,16 @@ open GlobalTheory.FunObj.GivenAdm
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T} {G : GridData L sc} {t : T} {w : Pl D.host.E}
 
 /- English proof (translation)
-Simplify using `[SplitFlip.givenPath, List.range_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem givenPath_succ (n : ℕ) : SplitFlip.givenPath (n + 1) =
     Edge.theta 0 n :: ((List.range n).reverse.map (Edge.theta 0) ++ (List.range (n + 1)).map (Edge.ex · 0)) := by
   simp [SplitFlip.givenPath, List.range_succ]
 
 /- English proof (translation)
-Introduce `b hb`. Simplify using `only [List.mem_append, List.mem_map, List.mem_reverse, List.mem_range] at hb`. Break down `hb with ⟨j, hj, rfl⟩ | ⟨i, -, rfl⟩` into its components or cases. Simplify using `[Edge.src, Edge.tgt]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[Edge.src, Edge.tgt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem not_touch_rest (n : ℕ) : ∀ b ∈ (List.range n).reverse.map (Edge.theta 0) ++ (List.range (n + 1)).map (Edge.ex · 0),
     b.src ≠ (0, n + 1) ∧ b.tgt ≠ (0, n + 1) := by
@@ -153,7 +153,7 @@ theorem not_touch_rest (n : ℕ) : ∀ b ∈ (List.range n).reverse.map (Edge.th
   · simp [Edge.src, Edge.tgt]
 
 /- English proof (translation)
-The claim follows from `| 0, h => absurd rfl h | n + 1, _ => fun κ hκ => by obtain ⟨hJ, ν, hν, H⟩ := stepType_laws (G := G) hL hw n have hKO : ∀ Y, (Pi.mulSingle (0, n + 1) κ : (locGrid G t w).VertexGroup) Y ∈ KO (Kw w) _ := fun Y => by by_cases hY : Y = (0, n + 1) · subst hY; simpa using (givenLevel_op …`.
+A detailed English derivation is pending.
 -/
 theorem given_law_at (hL : L.Is μ₀) (B : Frames G) (Φ : G.Datum) (hw : w ∈ locPl G t) :
     ∀ (m : ℕ), m ≠ 0 → ∀ (κ : GL (Fin ((locGrid G t w).rank (0, m))) (Kw w)), κ ∈ givenLevel G t w (0, m) →
@@ -234,15 +234,15 @@ open GlobalTheory.FunObj.GivenAdm
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T} {G : GridData L sc} {w : Pl D.host.E}
 
 /- English proof (translation)
-Establish `hg` using `(Good.locGrid_isGood hL G W t hde hc).1 w hw`. Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `h00` using `hg.square 0 hm 0 hm`. Establish `hν : ∀ x ∈ flipOrder D.R.m, CondLE (unifAt w) (depthAt G w) ((locGrid G t w).nu x.1 x.2)`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [flipOrder, List.mem_flatMap, List.mem_map, List.mem_range] at hx`. Take `⟨i, hi, j, hj, rfl⟩` from `hx`. Rewrite using `[← Grid.alpha_div_beta]`. Conclude with `(hg.square i hi j hj).condν`. Establish `hg1 : ∀ x ∈ flipOrder D.R.m, (Pi.mulSingle (0, D.R.m) κ : (locGrid G t w).VertexGroup) x = 1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Simplify using `only [flipOrder, List.mem_flatMap, List.mem_map, List.mem_range] at hx`. Take `⟨i, hi, j, hj, rfl⟩` from `hx`. Conclude with `Pi.mulSingle_eq_of_ne (by simp; omega) _`. Establish `hK : ∀ Y, (Pi.mulSingle (0, D.R.m) κ : (locGrid G t w).VertexGroup) Y ∈ KO (Kw w) _` using `fun Y => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hY : Y = (0, D.R.m)`. Substitute `hY` using the available equality. Simplify using `using (givenLevel_open hL hw (0, D.R.m)).2 hκ`. Rewrite using `[Pi.mulSingle_eq_of_ne hY]`. Conclude with `one_mem _`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hbase` using `given_law_at hL B Φ hw D.R.m hm.ne' κ hκ`. Establish `key` using `flips_law h00.unif h00.cond h00.one_le _ hK (endLam G t w κ) (flipOrder D.R.m) (givenStage t w B Φ) hν hg1 (canFlip_flipOrder _).1 (fun X => givenLevel_open hL hw X) (givenStage_isAdmissible hL B t Φ hw) hbase`. Express the relevant statement in the definitionally equal form `(locGrid G t w).pathAct .one (flipStage t w B W Φ).path _ (flipStage t w B W Φ).tensor = _ • (flipStage t w B W Φ).tensor at key`. Rewrite `key` using `[(flipStage_path_level t w B W Φ).1]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tflip_law (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (t : T) (Φ : G.Datum)
     (hde : Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q))
@@ -283,7 +283,7 @@ namespace GlobalTheory.FirstRowEndLaw
 open Formalism.MainNotions in
 
 /- English proof (translation)
-Take `⟨⟨P, -, -⟩, -⟩` from `h.size`. Establish `key : ∀ p ∈ D.host.levelPrimes, p.Prime → Nat.Coprime p (D.host.QS * D.host.q)` using `fun p hp hpp => UpperTheory.Ram.Fun.coprime_QSq_of_splitK D.host hpp (P.level_split p hp)`. Conclude with `⟨key _ D.host.pde_level.1 D.host.pde_prime, key _ D.host.pde_level.2 D.host.pde'_prime⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pde_ne_q' {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {large₂ : SizeData₂ D} {F : Face D A}
@@ -296,11 +296,11 @@ theorem pde_ne_q' {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `hP hS`. Take `⟨CF0, hsc⟩` from `GlobalTheory.T.first_vertex_weil_orbit_value hP hS`. Use `⟨CF0, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hsc⟩` from `hsc ε CF hC`. Use `⟨x₀, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch hat => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs` using `hsc D large₂ he hx Γ Pl0 T A Ks R F s ch hch hat`. Introduce `t a k hk hk' c hc`. Establish `hL : R.toLevCh.Is A.μ0` using `s.core.lev`. Establish `hde` using `pde_ne_q' s`. Establish `hcg : ∀ P ∈ R.toLevCh.Q t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal` using `hch.guard t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun w => endLam ch.G t w.1 (GlobalTheory.FirstRowTermLaw.kapAt ch.S.toGridChoice t w.1 k), fun w => ?_, hs t k hk hk' c hc⟩` and prove the remaining obligations. Conclude with `Tflip_law hL ch.W ch.S.B t (ch.Phi a) hde hcg w.2 _ (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hk).1 w)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem core : GlobalTheory.FunPr.Hypotheses₂ → SumOKK → Big fun {D} {_Γ} _ _ {_Pl0} {T} {_A} {_Ks} _ _ _ {R} ch =>
     ∀ (t : T) (a : Fin ch.n) (k : FinPt ch.G (.grid 0 D.R.m)), finG (ch.G.V (.grid 0 D.R.m)) k ∈ ch.S.levRow t 0 (Nat.zero_le _) →

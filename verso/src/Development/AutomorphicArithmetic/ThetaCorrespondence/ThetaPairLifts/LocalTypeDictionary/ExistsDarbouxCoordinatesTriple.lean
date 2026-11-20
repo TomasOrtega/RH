@@ -23,25 +23,23 @@ end GlobalTheory.TripleDarboux
 namespace GlobalTheory.TripleDarboux
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model SplitsFully Chars HasExp)
 /- English proof (translation)
-Introduce `_ D ψ hψ W W₁ X A A₁ B α β h ωA ωB hA hB`. Set `e : Fin (W.rank + W₁.rank) ≃ Fin X.rank` to `finCongr h.rank.symm`. Use `choose τf hτf using (GlobalTheory.ConjTypeOverReal.conj_tauE_over_realPlace (D := D))`. Use `choose a b ha hb hab using h.gap`. Take `⟨mα, hα, eα⟩` from `GlobalTheory.ConjInfExp.hasExp_conj_of_hasInfExp α a ha τf hτf`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨mβ, hβ, eβ⟩` from `GlobalTheory.ConjInfExp.hasExp_conj_of_hasInfExp β b hb τf hτf`. Take `⟨T, hT1, hT2, hT3⟩` from `exists_ram_set h`. Take `⟨v₁, hv₁, hv₁s, ⟨τ₁⟩⟩` from `exists_good_place D T`. Set `Bs : Base D.host.F D.host.E` to `⟨ψ, fun w => ⟨_, hτf w⟩, mα, mβ, T, fun v => (hT1 v v.2).1.some, v₁, τ₁⟩`. Establish `hBs : Bs.IsGood D.sp.cm.sig` using `base_isGood Bs hψ fun v hv => (hT1 v hv).2`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hemb : ∀ w x, (Bs.emb w).1 x = conj (tauE D (τf w) x)` using `fun _ _ => rfl`. Take `⟨p, q, hsig, hn1, hn2⟩` from `h.sig`. Establish `hneg : ∀ τ, gramAt D (sgn true W) τ = -gramAt D W τ` using `fun τ => by ext i j; simp [gramAt, neg_gram]`. Take `⟨ΛV, basV, hV⟩` from `exists_isHerm Bs τf hemb (sgn true W) (fun τ => sgnM true (A.cart τ)) (fun τ => isCartanInv_sgn true W τ (GlobalTheory.ArchRec.LieAtPlace.cart_isCartanInv A τ)) (fun τ => by rw [hneg]; exact hasSignature_neg (hsig τ).1)`. Establish `eJ : (-1 : D.host.E) • (sgn true W).gram = (1 : D.host.E) • W.gram`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[neg_gram, neg_smul, one_smul, one_smul, neg_neg]`. Establish `eθ : (fun w => -sgnM true (A.cart (τf w))) = fun w => A.cart (τf w)` using `funext fun w => neg_neg _`. Rewrite `hV` using `[eJ, eθ]`. Take `⟨ΛV', basV', hV'⟩` from `exists_isHerm Bs τf hemb W₁ A₁.cart (GlobalTheory.ArchRec.LieAtPlace.cart_isCartanInv A₁) fun τ => (hsig τ).2.1`. Take `⟨ΛX, basX, hX⟩` from `exists_isSkew Bs τf hemb X e B.cart (GlobalTheory.ArchRec.LieAtPlace.cart_isCartanInv B) fun τ => (hsig τ).2.2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3 : X.rank - (p + q) = W.rank + W₁.rank - (p + q)` using `by rw [h.rank]`. Rewrite `hX` using `[e3]`. Take `⟨Mo, hMo⟩` from `exists_model Bs hBs W _ _ hV hX 1 one_ne_zero rfl`. Take `⟨Mo', hMo'⟩` from `exists_model Bs hBs W₁ _ _ hV' hX (-1) (neg_ne_zero.2 one_ne_zero) rfl`. Take `⟨om, hom, htr⟩` from `exists_weil Bs hBs true W X e _ _ hV hX 1 rfl (by rw [neg_gram, one_smul, neg_neg]) rfl Mo hMo hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨om', hom', htr'⟩` from `exists_weil Bs hBs false W₁ X e _ _ hV' hX (-1) rfl (neg_one_smul _ _) rfl Mo' hMo' hB`. Establish `hr` using `h.rank`. Establish `hev` using `h.even`. Establish `h2 : Module.finrank D.host.F D.host.E = 2` using `D.sp.cm.deg2`. Establish `hTe : (⟨α, β, T, ∅⟩ : Chars D.host.F D.host.E).T = T` using `by simp [Chars.T]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e, Bs, ⟨p, q, _, _, _, Mo, Mo'⟩, ⟨α, β, T, ∅⟩, om, om', ⟨rfl, rfl, rfl, rfl, fun w => ⟨τf w, fun _ => rfl, rfl, rfl, rfl⟩, rfl, rfl⟩, ⟨hBs, ?_, ?_, hom, hom'⟩, htr, htr'⟩` and prove the remaining obligations. Use `⟨by omega, hr ▸ hev, fun w => ?_, ?_, hn2, hV, hV', hX, hMo, hMo'⟩` and prove the remaining obligations. Establish `h1` using `eα w`. Establish `h3` using `eβ w`. Establish `h4` using `hab (τf w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h4` using `[hr]`. Establish `: (((W.rank + W₁.rank : ℕ) : ℤ) : ℚ) < ((mα w - mβ w : ℤ) : ℚ)`. Move the coercions through the operations in `at h4 ⊢`. Rewrite using `[h1, h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `this` after adjusting the coercions. Take `⟨m, hm⟩` from `hev show 2 * (p + q) + 1 < (W.rank - W₁.rank) / 2`. Use linear arithmetic over natural numbers and integers. Use `⟨h.hecA, h.hecB, GlobalTheory.LFun.resEtaPow_of_resEta _ _ h2 _ _ ((GlobalTheory.LFun.resEta_iff _ _).1 h.resA), GlobalTheory.LFun.resEtaPow_of_resEta _ _ h2 _ _ ((GlobalTheory.LFun.resEta_iff _ _).1 h.resB), hα, hβ, Finset.disjoint_empty_right _, hTe.le, fun w hw => hT2 w (hTe ▸ …` and prove the remaining obligations. Rewrite using `[hTe]`.
-
-Conclude with `h0`. Rewrite using `[hTe]`. Conclude with `h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_darboux_basis_of_triple : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →
@@ -124,7 +122,7 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.TripleDarboux.exists_darboux_basis_of_triple | exact _root_.GlobalTheory.TripleDarboux.exists_darboux_basis_of_triple | (intros; apply _root_.GlobalTheory.TripleDarboux.exists_darboux_basis_of_triple <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_darboux_coordinates_triple : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

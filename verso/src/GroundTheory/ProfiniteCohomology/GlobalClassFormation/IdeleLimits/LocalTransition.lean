@@ -23,7 +23,7 @@ variable {v : HeightOneSpectrum (𝓞 K.1)} (w : PlacesOver F.1 v) (w' : PlacesO
   [hw : w'.1.asIdeal.LiesOver w.1.asIdeal]
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (coe_levelRestrict_apply σ (x : F.1))`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_levelRestrict_integers (σ : E.1 ≃ₐ[K.1] E.1) (x : 𝓞 F.1) :
     algebraMap (𝓞 F.1) (𝓞 E.1) (levelRestrict K F E σ • x) = σ • algebraMap (𝓞 F.1) (𝓞 E.1) x :=
@@ -32,7 +32,7 @@ theorem algebraMap_levelRestrict_integers (σ : E.1 ≃ₐ[K.1] E.1) (x : 𝓞 F
 include hw in
 
 /- English proof (translation)
-Rewrite `hσ`, the goal using `[MulAction.mem_stabilizer_iff]`. Establish `hover : w.1.asIdeal = w'.1.asIdeal.comap (algebraMap (𝓞 F.1) (𝓞 E.1))` using `hw.over`. Use extensionality with `x`. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem, hover, Ideal.mem_comap, Ideal.mem_comap, ← map_inv, algebraMap_levelRestrict_integers, ← Ideal.mem_pointwise_smul_iff_inv_smul_mem, hσ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem levelRestrict_mem_stabilizer {σ : E.1 ≃ₐ[K.1] E.1}
     (hσ : σ ∈ MulAction.stabilizer (E.1 ≃ₐ[K.1] E.1) w'.1.asIdeal) :
@@ -62,9 +62,9 @@ theorem coe_decompRestrict (σ : MulAction.stabilizer (E.1 ≃ₐ[K.1] E.1) w'.1
   rfl
 
 /- English proof (translation)
-Establish `h1` using `MulAction.mem_stabilizer_iff.1 (decompRestrict (w := w) σ).2`. Establish `h2` using `MulAction.mem_stabilizer_iff.1 σ.2`. Use `(HeightOneSpectrum.denseRange_algebraMap (R := 𝓞 F.1) (K := F.1) w.1).equalizer ((continuous_completionMap w.1 w'.1).comp (continuous_adicCompletionRingHomOf _ h1)) ((continuous_adicCompletionRingHomOf _ h2).comp (continuous_completionMap w.1 w'.1)) (funext fun x => by` as an intermediate fact. Simplify using `only [Function.comp_apply]`. Rewrite using `[adicCompletionRingHomOf_algebraMap, completionMap_algebraMap, completionMap_algebraMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [IsScalarTower.algebraMap_apply F.1 E.1 (w'.1.adicCompletion E.1)]`. Rewrite using `[adicCompletionRingHomOf_algebraMap, coe_decompRestrict, coe_levelRestrict_apply])`. Conclude with `congrFun this a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem completionMap_decomposition_smul (σ : MulAction.stabilizer (E.1 ≃ₐ[K.1] E.1) w'.1.asIdeal)
     (a : w.1.adicCompletion F.1) :
@@ -123,11 +123,11 @@ variable {v : InfinitePlace K.1} (w : v.placesOver F.1) (w' : v.placesOver E.1) 
 include hw in
 
 /- English proof (translation)
-Rewrite `hσ`, the goal using `[MulAction.mem_stabilizer_iff]`. Establish `hover : w'.1.comap (algebraMap F.1 E.1) = w.1` using `InfinitePlace.LiesOver.comap_eq w'.1 w.1`. Establish `key : ∀ y : E.1, w'.1 (σ.symm y) = w'.1 y` using `fun y => by conv_rhs => rw [← hσ]`. Both sides reduce to the same expression. Rewrite using `[← hover]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `InfinitePlace.ext _ _ fun x => ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.smul_apply, InfinitePlace.comap_apply, InfinitePlace.comap_apply]`. Establish `h1 : (levelRestrict K F E σ).symm x = levelRestrict K F E σ⁻¹ x`. Rewrite using `[map_inv]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1, coe_levelRestrict_apply]`. Conclude with `key _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelRestrict_mem_stabilizer_infinite {σ : E.1 ≃ₐ[K.1] E.1}
     (hσ : σ ∈ MulAction.stabilizer (E.1 ≃ₐ[K.1] E.1) w'.1) :
@@ -164,9 +164,9 @@ theorem coe_infDecompRestrict (σ : MulAction.stabilizer (E.1 ≃ₐ[K.1] E.1) w
   rfl
 
 /- English proof (translation)
-Use `(InfinitePlace.Completion.denseRange_coe w.1).equalizer ((NumberField.LiesOver.continuous_completionMap (v := w.1) (w := w'.1)).comp (continuous_completionRingHomOf (infDecompRestrict (w := w) σ).2)) ((continuous_completionRingHomOf σ.2).comp (NumberField.LiesOver.continuous_comp …` as an intermediate fact. Simplify using `only [Function.comp_apply]`. Rewrite using `[completionRingHomOf_coe, NumberField.LiesOver.completionMap_coe, NumberField.LiesOver.completionMap_coe, completionRingHomOf_coe]`. Use `congrArg (fun z : WithAbs (w'.1 : InfinitePlace E.1).1 => (z : w'.1.Completion)) (WithAbs.ofAbs_injective _ ?_)` and prove the remaining obligations. Rewrite using `[ofAbs_withAbsMapOf, WithAbs.ofAbs_algebraMap, WithAbs.ofAbs_algebraMap, ofAbs_withAbsMapOf, coe_infDecompRestrict, coe_levelRestrict_apply])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun this a`.
+A detailed English derivation is pending.
 -/
 theorem infCompletionMap_decomposition_smul (σ : MulAction.stabilizer (E.1 ≃ₐ[K.1] E.1) w'.1)
     (a : w.1.Completion) :

@@ -17,30 +17,30 @@ open GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LFun
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [MonoidHom.mul_apply, hμ x hx, hν x hx, one_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnram_mul {k : Type} [Field k] [ValuativeRel k] {μ ν : kˣ →* ℂˣ} (hμ : IsUnram μ) (hν : IsUnram ν) :
     IsUnram (μ * ν) := fun x hx => by rw [MonoidHom.mul_apply, hμ x hx, hν x hx, one_mul]
 
 /- English proof (translation)
-Rewrite using `[val_absPow_ofReal, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.rpow_pos_of_pos (nabs_pos' k y) t)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_absPow {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (t : ℝ) (y : kˣ) : ‖((absPow k (t : ℂ) y : ℂˣ) : ℂ)‖ = nabs k y ^ t := by
   rw [val_absPow_ofReal, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.rpow_pos_of_pos (nabs_pos' k y) t)]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc hσc Φ hΦ r Xf Yf hW K hK hA S s hS k l hk hl hlt hl0 n hn`. Establish `hr` using `GlobalTheory.WittBoundSkew.wittIndex_le F E σ B a a' G X om om' hT c hc hσc r Xf Yf hW`. Establish `hkr` using `k.2`. Establish `h1` using `hT.geo.aBig`. Establish `h2` using `hT.geo.eBig`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hT.geo.lt`. Take `⟨t, ht⟩` from `hT.geo.even`. Establish `hd : l + n ≤ a + a'` using `by omega`. Take `⟨w, τ, ρ, z, hw, hu, hloc, hsq⟩` from `GlobalTheory.T.pol_data_witt_frame_decomp F E σ hσ B a a' G X om om' hKP hT c hc hσc Φ hΦ r Xf Yf hW K hK hA S s hS k l hk hl hlt hl0 n hn hd`. Take `⟨hα, hβ⟩` from `GlobalTheory.T.unramified_local_characters_good F E σ B a a' G X om om' hT w hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `IsUnram _ at hα hβ`. Establish `hα'` using `isUnram_mul hα (isUnram_absPow _ (z : ℂ))`. Establish `hβ'` using `isUnram_mul hβ (isUnram_absPow _ (z : ℂ))`. Take `⟨x, x', j, j', hxx, hjj, hja, hja', hdp⟩` from `GlobalTheory.T.jacquet_subquotient_char_exists _ hKP.geometricLemmaFiltration a a' l n hd _ _ hα' hβ' ρ hsq`. Use `⟨w, τ, ρ, x, x', _, _, hxx, hu, hloc, isUnram_mul hα' (isUnram_absPow _ _), isUnram_mul hβ' (isUnram_absPow _ _), hdp, fun hx hx' => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hx hx'` using the available equality. Establish `he : a = a' + 2 * ((a - a') / 2)` using `by omega`. Establish `he' : (a : ℝ) = a' + 2 * (((a - a') / 2 : ℕ) : ℝ)` using `by exact_mod_cast he`. Establish `hjr : (j : ℝ) + j' + 2 ≤ G.p + G.q` using `by exact_mod_cast (show j + j' + 2 ≤ G.p + G.q by omega)`. Establish `hb2 : (2 * (G.p + G.q) + 1 : ℝ) < (((a - a') / 2 : ℕ) : ℝ)` using `by exact_mod_cast h2`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨((1 : ℝ) - a) / 2 + j + (((1 : ℕ) : ℝ) - 1) / 2 - (((1 : ℝ) - a') / 2 + j' + (((1 : ℕ) : ℝ) - 1) / 2), ?_, fun y => ?_⟩` and prove the remaining obligations. Use `lt_abs.2 (Or.inr ?_)` and prove the remaining obligations. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `hpos` using `nabs_pos' (w.adicCompletion E) y`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Simplify using `only [MonoidHom.mul_apply, Units.val_mul, norm_div, norm_mul, norm_locChar, one_mul, norm_absPow]`. Rewrite using `[Real.rpow_sub hpos]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem bridge : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyComplex E]
     (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

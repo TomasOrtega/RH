@@ -26,7 +26,7 @@ Both sides reduce to the same expression.
 theorem embA_apply (φ : I → K →+* ℂ) (α : 𝓞 K) (i : I) : embA φ α i = φ i (α : K) := rfl
 
 /- English proof (translation)
-Use `show x ∈ M.toAddSubgroup.map (embA φ) ↔ _`. Rewrite using `[AddSubgroup.mem_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_lat {φ : I → K →+* ℂ} {M : Ideal (𝓞 K)} {x : EuclideanSpace ℂ I} :
     x ∈ lat φ M ↔ ∃ μ ∈ M, embA φ μ = x := by

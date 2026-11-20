@@ -9,32 +9,30 @@ open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 namespace GlobalTheory.CompanionTheory.Ar.BT
 
 /- English proof (translation)
-Simplify using `[Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spec_gamma_isoSpec_inv (S : CommRingCat.{0}) :
     Spec.map (Scheme.ΓSpecIso S).hom ≫ (Spec S).isoSpec.inv = 𝟙 _ := by
   simp [Scheme.isoSpec_Spec_inv, ← Spec.map_comp]
 
 /- English proof (translation)
-Use `haveI : IsAffine X := isAffine_of_isAffineHom f`. Set `ψ : CommRingCat.of R ⟶ Γ(X, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ f.appTop`. Set `φ : Γ(X, ⊤) ⟶ CommRingCat.of (FractionRing R)` to `p.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom`. Establish `hφψ : ψ ≫ φ = CommRingCat.ofHom (algebraMap R (FractionRing R))`. Establish `h1 : f.appTop ≫ p.appTop = (p ≫ f).appTop` using `by simp`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ψ, φ, Category.assoc]`. Rewrite using `[reassoc_of% h1, hp, ← Scheme.ΓSpecIso_inv_naturality_assoc]`. Simplify using the standard rewrite rules. Establish `hfin : ψ.hom.Finite`. Establish `h2 : f.appTop.hom.Finite` using `IsFinite.finite_app f ⊤ (isAffineOpen_top _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom.Finite` using `RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).2`. Simplify `RingHom.Finite.comp h2 h3` using `[ψ]`. Establish `hint : ∀ a : Γ(X, ⊤), ∃ y : R, algebraMap R (FractionRing R) y = φ.hom a`. Introduce `a`. Apply `IsIntegrallyClosed.algebraMap_eq_of_integral` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hm, hP⟩` from `hfin.to_isIntegral a`. Use `⟨P, hm, ?_⟩` and prove the remaining obligations. Establish `h4 : φ.hom.comp ψ.hom = algebraMap R (FractionRing R)`. Rewrite using `[← CommRingCat.hom_comp, hφψ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `Polynomial.hom_eval₂ P ψ.hom φ.hom a` as an intermediate fact. Rewrite `this` using `[hP, map_zero, h4]`. Conclude with `this.symm`. Establish `hinj : Function.Injective (algebraMap R (FractionRing R))` using `IsFractionRing.injective R (FractionRing R)`. Set `e : R ≃+* (algebraMap R (FractionRing R)).range` to `RingEquiv.ofBijective (algebraMap R (FractionRing R)).rangeRestrict ⟨fun x y h => hinj (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `θ₀ : Γ(X, ⊤) →+* R` to `e.symm.toRingHom.comp (φ.hom.codRestrict (algebraMap R (FractionRing R)).range (fun a => hint a))`. Establish `hθ₀ : ∀ a, algebraMap R (FractionRing R) (θ₀ a) = φ.hom a`. Introduce `a`. Establish `h5 : e (θ₀ a) = φ.hom.codRestrict (algebraMap R (FractionRing R)).range (fun a => hint a) a`. Simplify using `[θ₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val h5`. Set `θ : Γ(X, ⊤) ⟶ CommRingCat.of R` to `CommRingCat.ofHom θ₀`. Establish `hθφ : θ ≫ CommRingCat.ofHom (algebraMap R (FractionRing R)) = φ`. Use extensionality with `a`. Conclude with `hθ₀ a`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hψθ : ψ ≫ θ = 𝟙 _`. Use extensionality with `r`. Apply `hinj` to reduce the goal to its premises. Establish `h6` using `congrArg (fun g => g.hom r) hφψ`. Establish `h7` using `hθ₀ (ψ.hom r)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h7.trans h6`. Establish `hfθ : f.appTop ≫ θ = (Scheme.ΓSpecIso (CommRingCat.of R)).hom`. Rewrite using `[← cancel_epi (Scheme.ΓSpecIso (CommRingCat.of R)).inv, Iso.inv_hom_id, ← hψθ]`. Simplify using `[ψ]`. Use `⟨Spec.map θ ≫ X.isoSpec.inv, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Category.assoc, ← Scheme.isoSpec_inv_naturality, ← Spec.map_comp_assoc, hfθ]`. Conclude with `spec_gamma_isoSpec_inv _`. Rewrite using `[← Spec.map_comp_assoc, hθφ]`. Simplify using `only [φ, Spec.map_comp, Category.assoc]`. Rewrite using `[Scheme.isoSpec_inv_naturality, reassoc_of% spec_gamma_isoSpec_inv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section_of_isFinite (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R]
     {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of R)) [IsFinite f]
@@ -99,13 +97,13 @@ theorem exists_section_of_isFinite (R : Type) [CommRing R] [IsDomain R] [IsInteg
     rw [Scheme.isoSpec_inv_naturality, reassoc_of% spec_gamma_isoSpec_inv]
 
 /- English proof (translation)
-Establish `hr : Set.range (Γ.pt t).left ⊆ Set.range U.ι`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `ht (show x ∈ (⊤ : Scheme.Opens _) from trivial)`. Set `p` to `IsOpenImmersion.lift U.ι (Γ.pt t).left hr`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpι : p ≫ U.ι = (Γ.pt t).left` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hp : p ≫ U.ι ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))`. Rewrite using `[reassoc_of% hpι]`. Conclude with `Over.w (Γ.pt t)`. Take `⟨s, hs, hsp⟩` from `exists_section_of_isFinite R (U.ι ≫ Γ.G.hom) p hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Over.homMk (s ≫ U.ι) (by simpa using hs), ?_, ?_⟩` and prove the remaining obligations. Introduce `z`. Establish `h8 : U.ι (s z) ∈ Set.range U.ι` using `⟨_, rfl⟩`. Rewrite `h8` using `[Scheme.Opens.range_ι]`. Simplify using `using h8`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(genPt R).hom ≫ s ≫ U.ι = (Γ.pt t).left`. Rewrite using `[← hpι, ← hsp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_section_of_generic_point (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R]
     (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (U : Γ.G.left.Opens)

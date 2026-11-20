@@ -73,7 +73,7 @@ theorem perm_fin_two_univ : (Finset.univ : Finset (Equiv.Perm (Fin 2))) = {1, Eq
   decide
 
 /- English proof (translation)
-Rewrite using `[← (Equiv.funUnique Unit (Equiv.Perm (Fin 2))).symm.sum_comp, perm_fin_two_univ, Finset.sum_pair (by decide)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_unit_perm {M : Type*} [AddCommMonoid M] (g : (Unit → Equiv.Perm (Fin 2)) → M) :
     ∑ w, g w = g (fun _ => 1) + g (fun _ => Equiv.swap 0 1) := by
@@ -82,7 +82,7 @@ theorem sum_unit_perm {M : Type*} [AddCommMonoid M] (g : (Unit → Equiv.Perm (F
   rfl
 
 /- English proof (translation)
-Use extensionality with `⟨u, i⟩`. Apply the tactic sequence `fin_cases i <;> simp [rhoMono, Finsupp.single_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rhoMono_line : rhoMono Unit 2 = Finsupp.single ((), 0) 1 := by
   ext ⟨u, i⟩
@@ -94,7 +94,7 @@ Both sides reduce to the same expression.
 theorem dimN_line : dimN Unit 2 1 = 1 := rfl
 
 /- English proof (translation)
-Unfold `muPoly`. Rewrite using `[show (Finset.univ.filter fun p : Unit × Fin 2 => ¬ (p.2 : ℕ) < 1) = {((), 1)} by decide]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem muPoly_line : muPoly Unit 2 1 = X ((), 1) := by
   unfold muPoly
@@ -102,7 +102,7 @@ theorem muPoly_line : muPoly Unit 2 1 = X ((), 1) := by
   simp
 
 /- English proof (translation)
-Unfold `vandBlocks`. Rewrite using `[show (Finset.univ.filter fun ab : Fin 2 × Fin 2 => ab.1 < ab.2 ∧ ((ab.1 : ℕ) < 1 ↔ (ab.2 : ℕ) < 1)) = ∅ by decide]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vandBlocks_line : vandBlocks Unit 2 1 = 1 := by
   unfold vandBlocks
@@ -111,7 +111,7 @@ theorem vandBlocks_line : vandBlocks Unit 2 1 = 1 := by
   simp
 
 /- English proof (translation)
-Unfold `Jint flagInt antisym`. Rewrite using `[dimN_line, pow_one, muPoly_line, fib, vandBlocks_line, mul_one, sum_unit_perm, rhoMono_line]`. Simplify using `only [weylSign, Finset.univ_unique, Finset.prod_singleton, Equiv.Perm.sign_one, Equiv.Perm.sign_swap (show (0 : Fin 2) ≠ 1 by decide), map_mul, rename_X, rename_C, coeff_add, coeff_smul, smul_eq_mul, weylAct]`. Rewrite using `[coeff_X_mul', coeff_X_mul']`. Simplify using `[coeff_C, Finsupp.single_apply, Equiv.swap_apply_of_ne_of_ne]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Jint_line (cf : ℚ) : Jint Unit 2 1 cf = -cf := by
   unfold Jint flagInt antisym
@@ -123,9 +123,9 @@ theorem Jint_line (cf : ℚ) : Jint Unit 2 1 cf = -cf := by
   simp [coeff_C, Finsupp.single_apply, Equiv.swap_apply_of_ne_of_ne]
 
 /- English proof (translation)
-Unfold `fdeg blockInt`. Rewrite using `[vandBlocks_line]`. Rewrite using `[show (Finset.univ.filter (IsBlockPerm Unit 2 1)) = {fun _ => 1} by decide]`. Establish `: rhoBlock Unit 2 1 = 0`. Use extensionality with `⟨u, i⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `fin_cases i <;> simp [rhoBlock]`. Simplify using `[this, weylSign]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem fdeg_line : fdeg Unit 2 1 = 1 := by
   unfold fdeg blockInt
@@ -137,7 +137,7 @@ theorem fdeg_line : fdeg Unit 2 1 = 1 := by
   simp [this, weylSign]
 
 /- English proof (translation)
-Unfold `FA fib`. Rewrite using `[dimN_line, muPoly_line, vandBlocks_line]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem FA_line (cf : ℚ) : FA Unit 2 1 cf = C cf * X ((), 1) ^ 2 := by
   unfold FA fib

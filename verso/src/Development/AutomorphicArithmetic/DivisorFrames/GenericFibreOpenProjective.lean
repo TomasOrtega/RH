@@ -11,7 +11,7 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Cartier Gl
 set_option backward.isDefEq.respectTransparency false
 
 /- English proof (translation)
-Take `⟨p, _⟩` from `p`. Take `rfl : p = ⊥` from `hp`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem isFractionRing_residueField {O : Type} [CommRing O] [IsDomain O]
     (p : PrimeSpectrum O) (hp : p.asIdeal = ⊥) : IsFractionRing O p.asIdeal.ResidueField := by
@@ -20,9 +20,9 @@ private theorem isFractionRing_residueField {O : Type} [CommRing O] [IsDomain O]
   infer_instance
 
 /- English proof (translation)
-Use `isFractionRing_residueField (O := O) x hx` as an intermediate fact. Set `e : K ≃ₐ[O] x.asIdeal.ResidueField` to `IsLocalization.algEquiv (nonZeroDivisors O) _ _`. Use `⟨e.toRingEquiv.trans (Scheme.Spec.residueFieldIso (CommRingCat.of O) x).commRingCatIsoToRingEquiv.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Spec.map_residueFieldIso_inv_eq_fromSpecResidueField, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a`. Conclude with `congrArg (Scheme.Spec.residueFieldIso (CommRingCat.of O) x).inv.hom (e.commutes a)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem exists_ringEquiv_residueField (O K : Type) [CommRing O] [IsDomain O] [Field K]
     [Algebra O K] [IsFractionRing O K] (x : Sp O) (hx : x.asIdeal = ⊥) :
@@ -39,9 +39,9 @@ private theorem exists_ringEquiv_residueField (O K : Type) [CommRing O] [IsDomai
   exact congrArg (Scheme.Spec.residueFieldIso (CommRingCat.of O) x).inv.hom (e.commutes a)
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `: IsLocalization.Away ϖ K`. Use `(IsLocalization.iff_of_le_of_exists_dvd (Submonoid.powers ϖ) (nonZeroDivisors O) (powers_le_nonZeroDivisors_of_noZeroDivisors hϖ.ne_zero) fun a ha ↦ ?_).2 inferInstance` and prove the remaining obligations. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible (nonZeroDivisors.ne_zero ha) hϖ`. Conclude with `⟨ϖ ^ n, ⟨n, rfl⟩, hn.dvd⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `IsOpenImmersion.of_isLocalization ϖ`.
+A detailed English derivation is pending.
 -/
 private theorem isOpenImmersion_spMap (O K : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K] :
@@ -56,15 +56,13 @@ private theorem isOpenImmersion_spMap (O K : Type) [CommRing O] [IsDomain O]
   exact IsOpenImmersion.of_isLocalization ϖ
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ B`. Establish `hx : (genericPoint (Vert.Model.base O).X).asIdeal = ⊥` using `Vert.Model.mem_gen_iff_eq_bot.1 (Vert.Model.base O).genericPoint_mem_gen`. Take `⟨ε, hε⟩` from `exists_ringEquiv_residueField O K (genericPoint (Vert.Model.base O).X) hx`. Establish `H : IsPullback B.toBase.genFibreι B.toBase.genFibreStr B.str ((Sp O).fromSpecResidueField (genericPoint (Vert.Model.base O).X))` using `B.toBase.isPullback_genFibre`. Establish `hK` using `isOpenImmersion_spMap O K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso : IsIso (spMap ε.toRingHom)` using `inferInstanceAs (IsIso (Spec.map ε.toCommRingCatIso.hom))`. Establish `hφ : IsOpenImmersion ((Sp O).fromSpecResidueField (genericPoint (Vert.Model.base O).X))`. Rewrite using `[← hε]`. Use `infer_instance`. Establish `hι : IsOpenImmersion B.toBase.genFibreι` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) H.flip hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : Set.range B.toBase.genFibreι = B.gen`. Use `(B.toBase.f.range_fiberι _).trans (Set.ext fun y => ?_)` and prove the remaining obligations. Use `Iff.trans ?_ (Vert.Model.mem_gen_iff_eq_bot (Z := B) (x := y)).symm` and prove the remaining obligations. Conclude with `⟨fun h => (congrArg PrimeSpectrum.asIdeal h).trans hx, fun h => PrimeSpectrum.ext (h.trans hx.symm)⟩`. Use `⟨isIntegral_of_isOpenImmersion B.toBase.genFibreι, hι, hr, ?_, ?_, ε, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `H'` using `H`. Rewrite `H'` using `[← hε, ← Spec.map_comp]`. Conclude with `ProjSpace.isProjOver_of_isPullback_spMap (ε.toRingHom.comp (algebraMap O K)) H' B.isProjOver`. Rewrite using `[← Vert.Model.topologicalKrullDim_gen O B]`. Conclude with `(topologicalKrullDim_eq_of_isEmbedding B.toBase.genFibreι.isOpenEmbedding.isEmbedding hr).symm`.
-
-Rewrite using `[hε]`. Conclude with `H.w.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.generic_fibre_open_projective :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K] (B : GlobalTheory.Vert.Model O), IsIntegral B.toBase.genFibre ∧ IsOpenImmersion B.toBase.genFibreι ∧ Set.range B.toBase.genFibreι = B.gen ∧ IsProjOver B.toBase.genFibreStr ∧ topologicalKrullDim B.toBase.genFibre = B.relDim ∧ ∃ ε : K ≃+* B.toBase.fnField, B.toBase.genFibreStr ≫ spMap ε.toRingHom ≫ spMap (algebraMap O K) = B.toBase.genFibreι ≫ B.str := by

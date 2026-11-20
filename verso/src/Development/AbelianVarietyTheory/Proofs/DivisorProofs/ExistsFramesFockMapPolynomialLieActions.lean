@@ -17,7 +17,7 @@ open GlobalTheory.HoweD
 namespace GlobalTheory.HoweD.FockData
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, piInf, inclR, compInf, infEmb_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_map_piInf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n m : Type}
     (J : Matrix n m E) {w : InfinitePlace F} (τ : EmbOver E w) : (incM F J).map (piInf τ) = J.map τ.1 := by
@@ -25,7 +25,7 @@ theorem incM_map_piInf {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   simp [incM, piInf, inclR, compInf, infEmb_tmul]
 
 /- English proof (translation)
-Rewrite using `[show J.map τ = τ.mapMatrix J from rfl, ← RingHom.map_det]`. Conclude with `(map_ne_zero τ).2 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_map_ne_zero {E : Type} [Field E] {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (τ : E →+* ℂ) (h : J.det ≠ 0) :
     (J.map τ).det ≠ 0 := by
@@ -33,17 +33,15 @@ theorem det_map_ne_zero {E : Type} [Field E] {n : ℕ} (J : Matrix (Fin n) (Fin 
   exact (map_ne_zero τ).2 h
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n d X W M ψ χX χW om hψ hXh hXd hWs hWd hW τ hXc hWc`. Establish `hX : ∀ w, ∃ (r s : ℕ) (A : Matrix (Fin n) (Ix r s) ℂ), IsFrame (X.J.map (τ w).1) A ∧ X.θ w * A = A * Jm r s`. Introduce `w`. Use `GlobalTheory.T.exists_signatureOrthonormalFrame_eigen_of_cartanInvolution n _ _ ?_ (det_map_ne_zero _ _ hXd) (hXc w)` and prove the remaining obligations. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.map_apply]`. Rewrite using `[← hCM.2.2.2 (τ w).1, hXh]`. Establish `hW' : ∀ w, ∃ (r s : ℕ) (C : Matrix (Fin d) (Ix r s) ℂ), IsFrame (Complex.I • W.J.map (τ w).1) C ∧ W.θ w * C = C * Jm r s`. Introduce `w`. Use `GlobalTheory.T.exists_signatureOrthonormalFrame_eigen_of_cartanInvolution d _ _ ?_ ?_ (hWc w)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, star_mul']`. Rewrite using `[← hCM.2.2.2 (τ w).1, hWs, map_neg, show star Complex.I = -Complex.I from Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.det_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (pow_ne_zero _ Complex.I_ne_zero) (det_map_ne_zero _ _ hWd)`. Use `choose P Q A hA hθA using hX`. Use `choose R S C hC hθC using hW'`. Establish `hF : FramedD τ (incM F X.J) (incM F W.J) 1 Complex.I A C`. Use `⟨one_mul _, fun w => ?_, fun w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[one_smul, incM_map_piInf]`. Conclude with `hA w`. Rewrite using `[incM_map_piInf]`. Conclude with `hC w`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.exists_fockMap_signatures_depend_on_place F E σ (Fin n) (Fin d) (Fin n × Fin d) P Q R S ψ τ _ _ M.co 1 Complex.I A C hCM hψ hF`.
-
-Take `⟨hB, ⟨d', hd', hA'⟩, -⟩` from `hW`. Take `⟨c, hc⟩` from `GlobalTheory.T.firstMember_lieAction_fock_plus_trace F E σ (Fin n) (Fin d) (Fin n × Fin d) P Q R S ψ τ _ _ M.co d' 1 Complex.I A C Φ (om.comp (MonoidHom.inl _ _)) hCM hψ hF hΦ hd' hA'.1`. Take `⟨c', hc'⟩` from `GlobalTheory.T.howeSplitting_acts_fockAction_plus_traceMultiples F E σ (Fin n) (Fin d) (Fin n × Fin d) P Q R S ψ τ _ _ M.co 1 Complex.I A C Φ (om.comp (MonoidHom.inr _ _)) hCM hψ hF hΦ hB.1`. Conclude with `⟨P, Q, R, S, A, C, Φ, c, c', hF, hΦ.1, GlobalTheory.T.polynomialFockSpace_eq_range_fockMap_variable_signature F E σ n d P Q R S X W M ψ τ A C Φ hCM hψ hF hθA hθC hΦ, hc, hc'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fock_data : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) , IsCMExt F E σ → ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W), IsStd ψ → (∀ i j, σ (X.J j i) = X.J i j) → X.J.det ≠ 0 → (∀ i j, σ (W.J j i) = -W.J i j) → W.J.det ≠ 0 → M.IsWeil ψ χX χW om → ∀ τ : ∀ w : InfinitePlace F, EmbOver E w, (∀ w, IsCartan (X.J.map (τ w).1) (X.θ w)) → (∀ w, IsCartan (Complex.I • W.J.map (τ w).1) (W.θ w)) → ∃ (P Q R S : InfinitePlace F → ℕ) (A : ∀ w : InfinitePlace F, Matrix (Fin n) (Ix (P w) (Q w)) ℂ) (C : ∀ w : InfinitePlace F, Matrix (Fin d) (Ix (R w) (S w)) ℂ) (Φ : TensD F P Q R S →ₗ[ℂ] SInf F (Fin n × Fin d)) (c c' : InfinitePlace F → ℂ), FramedD τ (incM F X.J) (incM F W.J) 1 Complex.I A C ∧ Function.Injective Φ ∧ LinearMap.range Φ = M.Pol ψ τ ∧ ActsByD τ A (om.comp (MonoidHom.inl _ _)) Φ (fun w => fockAct1 (P w) (Q w) (R w) (S w)) c ∧ ActsByD τ C (om.comp (MonoidHom.inr _ _)) Φ (fun w => fockAct2 (P w) (Q w) (R w) (S w)) c' := by
   intro F E _ _ _ _ _ σ hCM n d X W M ψ χX χW om hψ hXh hXd hWs hWd hW τ hXc hWc

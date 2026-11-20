@@ -16,7 +16,7 @@ def SecCrit0L (D : D7) (HW : HWOf D.loc) : Prop :=
           ∀ e : ℕ, LevC.SecCrit0 (W := (HW l).W K 1 LL hG) A c' e T b sol
 
 /- English proof (translation)
-The claim follows from `neZero_finrank_max_unramified K LevC.Ctx ((HW l).W K 1 LL hG) := by obtain ⟨h3, -, h5, h9, hH, hTr, -, hSat⟩ := h have := neZero_finrank_max_unramified K have : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2 have hCW : Formalism.MainNotions.LiftingTheory.CaseA ((HW l).W K 1 LL hG) := case …`.
+A detailed English derivation is pending.
 -/
 theorem ctx_of (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h : AdmArcA D HW F Cm) (l : ℕ) [Fact l.Prime] (K LL : FinExt l)
@@ -48,9 +48,9 @@ theorem ctx_of (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
   exact Formalism.MainNotions.UnusedSlot80.ArcF.p_ne_zero ((HW l).W K 1 LL hG) this
 
 /- English proof (translation)
-Introduce `l _ K LL hG hCA h5l`. Use `neZero_finrank_max_unramified K` as an intermediate fact. Establish `C` using `ctx_of D HW F Cm h l K LL hG hCA h5l`. Introduce `_ _ A hA c hc e _ _ T hT d b sol hb`. Establish `hc' : c - ((A.len c : ℕ) : ZMod _) ∈ A.cuts` using `((hA.2.2.1 c hc).2.2).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `LevC.secCrit_all C A hA _ hc' T hT b sol hb (h0 l K LL hG hCA h5l A hA _ hc' T hT d b sol hb) e`.
+A detailed English derivation is pending.
 -/
 theorem membership_criterion_of_level_zero (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h : AdmArcA D HW F Cm) (h0 : SecCrit0L D HW) : SecCritL D HW := by
@@ -62,7 +62,7 @@ theorem membership_criterion_of_level_zero (D : D7) (HW : HWOf D.loc) (F : FonOf
   exact LevC.secCrit_all C A hA _ hc' T hT b sol hb (h0 l K LL hG hCA h5l A hA _ hc' T hT d b sol hb) e
 
 /- English proof (translation)
-Introduce `h` and use `arc_coordinates_of_membership D HW F Cm (membership_criterion_of_level_zero D HW F Cm h h0) h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem arc_coordinates_of_level_zero (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h0 : SecCrit0L D HW) : ArcCoordinatesTheorem D HW F Cm := fun h =>

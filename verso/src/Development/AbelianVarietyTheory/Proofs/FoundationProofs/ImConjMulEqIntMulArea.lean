@@ -10,9 +10,9 @@ open scoped BigOperators
 namespace GlobalTheory.TransInv
 
 /- English proof (translation)
-Introduce `h0`. Rewrite `h` using `[LinearIndependent.pair_iff]`. Simplify using `only [Complex.mul_im, Complex.conj_re, Complex.conj_im] at h0`. Establish `h1` using `h w₂.im (-w₁.im) (by`. Apply the tactic sequence `apply Complex.ext <;> simp <;> linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2` using `h w₂.re (-w₁.re) (by`. Apply the tactic sequence `apply Complex.ext <;> simp <;> linarith)`. Establish `h3` using `h 1 0 (by`. Apply the tactic sequence `apply Complex.ext <;> simp <;> linarith [h1.2, h2.2])`. Conclude with `one_ne_zero h3.1`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem im_conj_mul_ne_zero {w₁ w₂ : ℂ} (h : LinearIndependent ℝ ![w₁, w₂]) :
     ((starRingEnd ℂ) w₁ * w₂).im ≠ 0 := by
@@ -28,7 +28,7 @@ theorem im_conj_mul_ne_zero {w₁ w₂ : ℂ} (h : LinearIndependent ℝ ![w₁,
   exact one_ne_zero h3.1
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `AddSubgroup.mem_closure_pair.1 hu`. Take `⟨c, d, rfl⟩` from `AddSubgroup.mem_closure_pair.1 hv`. Use `⟨a * d - b * c, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem im_conj_mul_mem {w₁ w₂ u v : ℂ} (hu : u ∈ AddSubgroup.closure ({w₁, w₂} : Set ℂ))
     (hv : v ∈ AddSubgroup.closure ({w₁, w₂} : Set ℂ)) :
@@ -40,11 +40,11 @@ theorem im_conj_mul_mem {w₁ w₂ u v : ℂ} (hu : u ∈ AddSubgroup.closure ({
   ring
 
 /- English proof (translation)
-Establish `h0` using `im_conj_mul_ne_zero h`. Unfold `area`. Apply `IsLeast.csInf_eq` to reduce the goal to its premises. Use `⟨⟨abs_pos.2 h0, w₁, AddSubgroup.subset_closure (by simp), w₂, AddSubgroup.subset_closure (by simp), rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨ha, u, hu, v, hv, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨k, hk⟩` from `im_conj_mul_mem hu hv`. Rewrite `ha`, the goal using `[hk]`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ha`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `h1 : (1 : ℝ) ≤ |(k : ℝ)|` using `by exact_mod_cast Int.one_le_abs hk0`. Rewrite using `[abs_mul]`. Use polynomial arithmetic with `[abs_nonneg ((starRingEnd ℂ) w₁ * w₂).im]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem area_closure_pair {w₁ w₂ : ℂ} (h : LinearIndependent ℝ ![w₁, w₂]) :
     area (AddSubgroup.closure ({w₁, w₂} : Set ℂ)) = |((starRingEnd ℂ) w₁ * w₂).im| := by
@@ -64,9 +64,9 @@ theorem area_closure_pair {w₁ w₂ : ℂ} (h : LinearIndependent ℝ ![w₁, w
   nlinarith [abs_nonneg ((starRingEnd ℂ) w₁ * w₂).im]
 
 /- English proof (translation)
-Take `⟨w₁, w₂, h, rfl⟩` from `hΛ`. Rewrite using `[area_closure_pair h]`. Use `⟨abs_pos.2 (im_conj_mul_ne_zero h), fun u hu v hv => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `im_conj_mul_mem hu hv`. Break down `abs_cases ((starRingEnd ℂ) w₁ * w₂).im with h1 | h1` into its components or cases.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨k, by rw [hk, h1.1]⟩`. Conclude with `⟨-k, by rw [hk, h1.1]; push_cast; ring⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem im_conj_mul_eq_int_mul_area {Λ : AddSubgroup ℂ}
     (hΛ : ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂}) :
@@ -80,11 +80,11 @@ theorem im_conj_mul_eq_int_mul_area {Λ : AddSubgroup ℂ}
   · exact ⟨-k, by rw [hk, h1.1]; push_cast; ring⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Establish `h` using `hη (z + x)`. Establish `hA' : (area Λ : ℂ) ≠ 0` using `by exact_mod_cast hA`. Establish `hs` using `Complex.sub_conj ((starRingEnd ℂ) η * x)`. Rewrite `hs` using `[hk, map_mul, Complex.conj_conj]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at hs`. Unfold `U1 at h ⊢`. Rewrite using `[← h, mul_assoc (G (z + x + η)), ← Complex.exp_add, ← add_assoc]`. Use `congr 1`. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`.
+Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem translate_add_of_fixed {Λ : AddSubgroup ℂ} (hA : area Λ ≠ 0) (G : ℂ → ℂ) (x η : ℂ) (k : ℤ)
     (hη : ∀ z, U1 Λ η G z = G z) (hk : ((starRingEnd ℂ) η * x).im = 2 * k * area Λ) :
@@ -105,13 +105,13 @@ theorem translate_add_of_fixed {Λ : AddSubgroup ℂ} (hA : area Λ ≠ 0) (G : 
   linear_combination hs
 
 /- English proof (translation)
-Take `⟨hA, hint⟩` from `im_conj_mul_eq_int_mul_area hΛ`. Take `⟨k, hk⟩` from `hint ω hω _ hx`. Establish `hm : (m : ℂ) * ω ∈ Λ` using `by simpa using Λ.nsmul_mem hω m`. Establish `h2 : 2 * (m : ℂ) * ω ∈ Λ`. Use `Λ.add_mem hm hm` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : 2 * (m : ℂ) * ω / 2 ∈ Λ`. Use `hm using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Use `translate_add_of_fixed hA.ne' _ x _ (2 * k) (fun z => ?_) ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.OddTheta.sgStar_laws Λ hΛ).1.2.2.2 _ h2 z, if_pos h3, one_mul]`. Establish `e : (starRingEnd ℂ) (2 * (m : ℂ) * ω) * x = ((4 : ℝ) : ℂ) * ((starRingEnd ℂ) ω * ((m : ℂ) * (x / 2)))`. Simplify using `only [map_mul, map_ofNat, map_natCast]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.im_ofReal_mul, hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem translate_sigma_star_period {Λ : AddSubgroup ℂ}
     (hΛ : ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂})
@@ -139,7 +139,7 @@ theorem translate_sigma_star_period {Λ : AddSubgroup ℂ}
     ring
 
 /- English proof (translation)
-Introduce `D cc δ hc x ω m _ hx hω` and use `translate_sigma_star_period (GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.InducedType.induced_type D).1 cc δ hc).1 x ω m hx hω`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem transInv_all : ∀ D : D7, transInv D := fun D cc δ hc x ω m _ hx hω =>
   translate_sigma_star_period (GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.InducedType.induced_type D).1 cc δ hc).1 x ω m hx hω

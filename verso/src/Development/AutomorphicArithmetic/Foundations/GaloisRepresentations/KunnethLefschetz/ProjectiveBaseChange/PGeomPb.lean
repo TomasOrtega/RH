@@ -5,7 +5,7 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 open scoped TensorProduct DirectSum
 
 /- English proof (translation)
-Use `IsPullback.of_right ?_ (pullback.lift_fst _ _ _) (IsPullback.of_hasPullback q t).flip` and prove the remaining obligations. Rewrite using `[pullback.lift_snd, hu]`. Conclude with `(IsPullback.of_hasPullback p t).flip`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isPullback_lift_fst {X Y S T : Scheme.{0}} (p : X ⟶ S) (q : Y ⟶ S) (t : T ⟶ S) (u : X ⟶ Y)
     (hu : u ≫ q = p) (w : (pullback.fst p t ≫ u) ≫ q = pullback.snd p t ≫ t) :
@@ -16,7 +16,7 @@ private theorem isPullback_lift_fst {X Y S T : Scheme.{0}} (p : X ⟶ S) (q : Y 
   exact (IsPullback.of_hasPullback p t).flip
 
 /- English proof (translation)
-Unfold `UpperTheory.Gal.KunnethLefschetz.GeomPb`. Introduce `l _ K M N u hu`. Conclude with `IsPullback.paste_vert (isPullback_lift_fst M.q N.q _ (Model.genMap u hu) (Model.genMap_q u hu) _) (isPullback_lift_fst M.p N.p _ u hu _)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.geomPb_holds :
     UpperTheory.Gal.KunnethLefschetz.GeomPb := by

@@ -7,9 +7,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option synthInstance.maxHeartbeats 400000
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `h`. Use `⟨B, fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨α, hα, x, hx, hσ⟩` from `hB P hP`. Use `⟨α, hα, e.symm x, ?_, fun σ hs => ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, e.apply_symm_apply, hx]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, e.apply_symm_apply]`. Conclude with `hσ σ hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem readMove {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {A K L L' : Type} [CommRing A] [CommRing K]
     [CommRing L] [CommRing L'] {pl : HeightOneSpectrum (𝓞 E) → ValuationSubring Ω} {φ : G E Ω →* Aˣ} {rd : A →+* K} {eL : L →+* K}
@@ -23,11 +23,11 @@ private theorem readMove {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Alg
   · rw [← h1, e.apply_symm_apply]; exact hσ σ hs
 
 /- English proof (translation)
-Take `⟨w, hl, hw⟩` from `h`. Set `g : 𝓞 L' ≃+* 𝓞 L` to `RingOfIntegers.mapRingEquiv e`. Establish `hp` using `w.isPrime`. Use `⟨⟨w.asIdeal.comap (g : 𝓞 L' →+* 𝓞 L), Ideal.comap_isPrime _ _, fun hb => w.ne_bot ?_⟩, ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Establish `: g.symm y ∈ w.asIdeal.comap (g : 𝓞 L' →+* 𝓞 L)`. Rewrite using `[Ideal.mem_comap]`. Simplify using `using hy`. Rewrite `this` using `[hb, Ideal.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Simplify using `using hl`. Rewrite using `[← h1]`. Conclude with `hw (g x)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem plMove {L L' K : Type} [Field L] [Field L'] [CommRing K] (e : L' ≃+* L) (f : L →+* K) (f' : L' →+* K)
     (h1 : ∀ x, f (e x) = f' x) (l : ℕ) (p : K → Prop)
@@ -49,15 +49,13 @@ private theorem plMove {L L' K : Type} [Field L] [Field L'] [CommRing K] (e : L'
     exact hw (g x)
 
 /- English proof (translation)
-Substitute `hjL hs2 hlamG hqs hmu0 heta hdel hdel'` using the available equality. Establish `hb : ∀ s (b : Bool) x, (if b then D.ntw.emb0 s else D.ntw.emb0b s) (e x) = (if b then m s else mb s) x`. Introduce `s b x`. Consider the cases of `b`. Conclude with `hmb s x`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hm s x`. Use `⟨fun i => ?_, fun i x y z hz => ?_, B.tw.qs_pos, fun s => readMove (B.chi.delta s) e _ _ (hm s) hc, fun s j b h1 h2 => readMove (B.chi.chi1 s j b h1 h2) e _ _ (hb s b) hc, fun s b x y hy => ?_, fun s lam => readMove (B.chi.lamG s lam) e _ _ (fun _ => rfl) hc, B.eta_eq, B.ringSpec …` and prove the remaining obligations. Conclude with `plMove e (D.ntw.emb0 i) (m i) (hm i) (D.ntw.l i) (fun k => ∃ y ∈ IsLocalRing.maximalIdeal (D.ntw.O0 i), algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i)) y = k) (B.tw.pl_emb i)`. Rewrite using `[← hm]`. Conclude with `B.tw.ringSpec_baseEmbedding_compatible i (e x) y z hz`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[← hb]`. Conclude with `B.chi.ringSpec_sidedEmbedding_fixedField s b (e x) y hy`. Rewrite using `[← hc]`. Conclude with `B.iCq_embO s (e x)`. Use `B.embO_star s (e x) (e y) (D.what₂.embLL.injective ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy` using `[← hc, ← hc]`. Rewrite using `[D.starLL_cx]`. Conclude with `hy`. Take `⟨x, hx, hx'⟩` from `B.deltaRead s w h1 h2 A σ h3 h4`. Use `⟨e.symm x, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hc, e.apply_symm_apply]`. Conclude with `hx`. Rewrite using `[← hm, e.apply_symm_apply]`. Conclude with `hx'`.
+A detailed English derivation is pending.
 -/
 private theorem mid {D : D7} {cf : CharFrame D} {low : Finset ℕ} (B : RingPart D cf low) {L' : Type} [Field L'] (e : L' ≃+* ↥D.LL0)
     (m mb : ∀ i, L' →+* FractionRing (D.ntw.O0 i)) (c : L' →+* ℂ)
@@ -125,7 +123,7 @@ private theorem mid {D : D7} {cf : CharFrame D} {low : Finset ℕ} (B : RingPart
       exact hx'
 
 /- English proof (translation)
-Introduce `D D' ι e h cf cf' hf hE low B`. Establish `hst : ∀ x y : ↥D'.LL0, (y : D'.what₂.LL) = star (x : D'.what₂.LL) → embLL0 D' y = starRingEnd ℂ (embLL0 D' x)` using `fun x y hy => (congrArg D'.what₂.embLL hy).trans (D'.starLL_cx _)`. Take `⟨r, rfl⟩` from `h.cp.exists_rest`. Take `⟨m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13⟩` from `mid B e ((by with_unfolding_all exact ((overD D r).ntw.emb0 :))) ((by with_unfolding_all exact ((overD D r).ntw.emb0b :))) (embLL0 (overD D r)) (fun i x => eq_of_heq ((by with_unfolding_all exact ((h.cp.emb0 i ((i)) (((HEq.refl i))) x) : _)))) (fun i x => eq_of_heq ((by with_unfo …`. Conclude with `⟨⟨⟨(by with_unfolding_all exact (B.twF.K0 :)), (by with_unfolding_all exact (B.twF.eO0 :)), (by with_unfolding_all exact ((fun i => (B.twF.j0 i).comp e.toRingHom) :)), (by with_unfolding_all exact (B.twF.Lw :)), (by with_unfolding_all exact (B.twF.eO :)), (by with_unfolding_all e …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.nonempty_coefficientRingData_of_isomorphic_CMDatum :
     ∀ {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0}, CopyAll D D' ι e → ∀ {cf : CharFrame D} {cf' : CharFrame D'}, SameFrame cf cf' → IsEmpty D'.nd.Loc → ∀ low : Finset ℕ, RingPart D cf low → Nonempty (RingPart D' cf' low) := by

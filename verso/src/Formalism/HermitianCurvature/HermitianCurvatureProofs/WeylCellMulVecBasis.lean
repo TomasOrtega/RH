@@ -21,18 +21,18 @@ def lmul (M : Mx k r) : Mx k r →L[ℝ] Mx k r :=
   LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ M)
 
 /- English proof (translation)
-Simplify using `[lmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lmul_apply (M x : Mx k r) : lmul M x = M * x := by
   simp [lmul]
 
 /- English proof (translation)
-The claim follows from `funext (lmul_apply M)`.
+A detailed English derivation is pending.
 -/
 theorem lmul_coe (M : Mx k r) : (⇑(lmul M) : Mx k r → Mx k r) = fun x => M * x := funext (lmul_apply M)
 
 /- English proof (translation)
-Rewrite using `[← lmul_coe]`. Conclude with `(lmul M).continuous`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_lmul (M : Mx k r) : Continuous fun x : Mx k r => M * x := by
   rw [← lmul_coe]; exact (lmul M).continuous
@@ -42,7 +42,7 @@ section transl
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Use `show EabH _ _ _ _ _ = EabH _ _ _ _ _`. Simplify using `only [EabH, RdV, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eH_left (M : Mx k r) (p q : Fin (2 * r + k + 1)) (f : Mx k r → E) (g : Mx k r) :
     EH k r p q (fun x => f (M * x)) g = EH k r p q f (M * g) := by
@@ -50,9 +50,9 @@ theorem eH_left (M : Mx k r) (p q : Fin (2 * r + k + 1)) (f : Mx k r → E) (g :
   simp only [EabH, RdV, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `x₀ hx₀`. Take `⟨U, F, hU, hx₀U, hF, hFU⟩` from `hf (M * x₀) ⟨hM x₀ hx₀.1, hx₀.2⟩`. Establish `hc : Continuous fun x : Mx k r => M * x` using `cont_lmul M`. Use `⟨(fun x => M * x) ⁻¹' U, fun x => F (M * x), hU.preimage hc, hx₀U, ?_, ?_⟩` and prove the remaining obligations. Establish `hl : ContDiff ℝ ∞ fun x : Mx k r => M * x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← lmul_coe]`. Conclude with `(lmul M).contDiff`. Conclude with `hF.comp hl.contDiffOn (fun x hx => hx)`. Introduce `g hg hgl`. Conclude with `hFU _ hg (hM g hgl)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_left {i j : Fin (r + 1)} {D : Set (Mx k r)} {f : Mx k r → E} (M : Mx k r)
     (hM : ∀ x ∈ Glev k r i, M * x ∈ Glev k r j) (hf : SmoothLev k r j D f) :
@@ -70,20 +70,20 @@ theorem smooth_left {i j : Fin (r + 1)} {D : Set (Mx k r)} {f : Mx k r → E} (M
 end transl
 
 /- English proof (translation)
-Rewrite using `[Fin.le_def]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem zero_le' (i : Fin (r + 1)) : (0 : Fin (r + 1)) ≤ i := by
   rw [Fin.le_def]; simp
 
 /- English proof (translation)
-The claim follows from `glev_mul hg (glev_mono (zero_le' i) hx)`.
+A detailed English derivation is pending.
 -/
 theorem glev0 {g : Mx k r} (hg : g ∈ Glev k r 0) {i : Fin (r + 1)} {x : Mx k r} (hx : x ∈ Glev k r i) :
     g * x ∈ Glev k r 0 :=
   glev_mul hg (glev_mono (zero_le' i) hx)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [Matrix.mulVec, dotProduct, bvec, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Pi.smul_apply, smul_eq_mul, w1_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem weyl_cell_mulVec_basis (l : Fin r) (c : ℂ) (q : Fin (2 * r + k + 1)) :
     w1 k r l c *ᵥ bvec q = dd k l c q • bvec (sw k l q) := by
@@ -92,7 +92,7 @@ theorem weyl_cell_mulVec_basis (l : Fin r) (c : ℂ) (q : Fin (2 * r + k + 1)) :
     Finset.sum_ite_eq', Finset.mem_univ, if_true, Pi.smul_apply, smul_eq_mul, w1_apply]
 
 /- English proof (translation)
-The claim follows from `| 0, i, hi => by have : i = 0 := Fin.ext (by simp [hi]) subst this rw [Formalism.FourierDecayAlt.P.Qx6.wCell_zero] exact ⟨glev_one _, fun _ _ x _ => by simp⟩ | n + 1, i, hi => by have hl : n < r := by have := i.isLt; omega set l : Fin r := ⟨n, hl⟩ with hldef have hil : i = l.succ …`.
+A detailed English derivation is pending.
 -/
 theorem head_comm (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) : ∀ n : ℕ, ∀ i : Fin (r + 1), i.val = n →
     wCell k r i c ∈ Glev k r 0 ∧ ∀ j : Fin (r + 1), i ≤ j → ∀ x ∈ Glev k r j, wCell k r i c * x = x * wCell k r i c
@@ -116,7 +116,7 @@ theorem head_comm (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) : ∀ n : ℕ, ∀
     rw [Matrix.mul_assoc, (hw.2 x hx1).2.1, ← Matrix.mul_assoc, ihc j hcj x hxc, Matrix.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `| 0, i, hi => by have : i = b.succ := Fin.ext (by simp [hi]) subst this refine ⟨1, by simp, glev_one _, fun a ha => ?_, fun a _ => by simp, fun c' _ => by simp⟩ rw [if_neg (by simp; omega)] simp | n + 1, i, hi => by have hl : b.val + 1 + n < r := by have := i.isLt; omega set l : …`.
+A detailed English derivation is pending.
 -/
 theorem tail (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) (b : Fin r) : ∀ n : ℕ, ∀ i : Fin (r + 1), i.val = b.val + 1 + n →
     ∃ T : Mx k r, wCell k r i c = wCell k r b.succ c * T ∧ T ∈ Glev k r b.succ ∧
@@ -164,7 +164,7 @@ theorem tail (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) (b : Fin r) : ∀ n : �
       rw [Formalism.FourierDecayAlt.P.Qx6.wCell_succ, hTc c' hc', hc' l (by simp [l]; omega), Matrix.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `| 0, i, hi => by have : i = 0 := Fin.ext (by simp [hi]) subst this simp only [Formalism.FourierDecayAlt.P.Qx6.wCell_zero] exact contDiffOn_const | n + 1, i, hi => by have hl : n < r := by have := i.isLt; omega set l : Fin r := ⟨n, hl⟩ with hldef have hil : i = l.succ := Fin.ext ( …`.
+A detailed English derivation is pending.
 -/
 theorem cd_wCell : ∀ n : ℕ, ∀ i : Fin (r + 1), i.val = n →
     ContDiffOn ℝ ∞ (fun c : Fin r → ℂ => wCell k r i c) (OmX r)
@@ -186,9 +186,9 @@ section diff
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Take `⟨U, F, hU, hcU, hF, hFU⟩` from `hS (φ c) ⟨hφG c hc, hcD⟩`. Establish `hO : IsOpen (OmX r)` using `Formalism.FourierDecayAlt.P.Qx3.isOpen_OmX r`. Establish `hN : IsOpen (OmX r ∩ φ ⁻¹' U)` using `hφ.continuousOn.isOpen_inter_preimage hO hU`. Establish `hev : (fun c' => f (φ c')) =ᶠ[nhds c] fun c' => F (φ c')` using `by filter_upwards [hN.mem_nhds ⟨hc, hcU⟩] with c' hc'`. Conclude with `hFU _ hc'.2 (hφG c' hc'.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : DifferentiableAt ℝ (fun c' => F (φ c')) c`. Establish `h1 : ContDiffAt ℝ ∞ F (φ c)` using `hF.contDiffAt (hU.mem_nhds hcU)`. Establish `h2 : ContDiffAt ℝ ∞ φ c` using `hφ.contDiffAt (hO.mem_nhds hc)`. Conclude with `(h1.comp c h2).differentiableAt (by simp)`. Conclude with `hd.congr_of_eventuallyEq hev`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem diff_comp {D : Set (Mx k r)} {f : Mx k r → E} (hS : SmoothLev k r 0 D f) {φ : (Fin r → ℂ) → Mx k r}
     (hφ : ContDiffOn ℝ ∞ φ (OmX r)) (hφG : ∀ c ∈ OmX r, φ c ∈ Glev k r 0) {c : Fin r → ℂ} (hc : c ∈ OmX r)
@@ -206,9 +206,9 @@ theorem diff_comp {D : Set (Mx k r)} {f : Mx k r → E} (hS : SmoothLev k r 0 D 
   exact hd.congr_of_eventuallyEq hev
 
 /- English proof (translation)
-Establish `hγ : HasDerivAt (fun t : ℝ => c + t • v) v 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const v).const_add c`. Establish `e1` using `h₁.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hγ (by simp)`. Establish `e2` using `h₂.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hγ (by simp)`. Establish `hfun : (F₁ ∘ fun t : ℝ => c + t • v) = F₂ ∘ fun t : ℝ => c + t • v` using `funext fun t => h t`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[hfun]`. Conclude with `e1.unique e2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_line {F₁ F₂ : (Fin r → ℂ) → E} {c v : Fin r → ℂ} (h₁ : DifferentiableAt ℝ F₁ c)
     (h₂ : DifferentiableAt ℝ F₂ c) (h : ∀ t : ℝ, F₁ (c + t • v) = F₂ (c + t • v)) :
@@ -222,7 +222,7 @@ theorem fderiv_line {F₁ F₂ : (Fin r → ℂ) → E} {c v : Fin r → ℂ} (h
   exact e1.unique e2
 
 /- English proof (translation)
-Establish `hv : ∀ w : ℂ, fderiv ℝ F₁ c (Pi.single l w) = fderiv ℝ F₂ c (Pi.single l w)` using `fun w => fderiv_line h₁ h₂ fun t => h _ fun a ha => by simp [ha]`. Simplify using `only [pOp, wirt, hv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem pOp_line {F₁ F₂ : (Fin r → ℂ) → E} {c : Fin r → ℂ} (l : Fin r) (h₁ : DifferentiableAt ℝ F₁ c)
     (h₂ : DifferentiableAt ℝ F₂ c) (h : ∀ c' : Fin r → ℂ, (∀ a, a ≠ l → c' a = c a) → F₁ c' = F₂ c') :
@@ -242,15 +242,15 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `E _ _ k r z' D f hz' hD hS hR g hg a b hab`. Establish `hb` using `b.isLt`. Establish `hc : Continuous fun x : Mx k r => g * x` using `cont_lmul g`. Establish `hD' : IsOpen {x : Mx k r | g * x ∈ D}` using `hD.preimage hc`. Establish `hS' : SmoothLev k r a.castSucc {x | g * x ∈ D} (fun x => f (g * x))` using `smooth_left g (fun x hx => glev0 hg.1 hx) hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR' : RightEq k r z' a.castSucc {x | g * x ∈ D} (fun x => f (g * x))`. Introduce `x hx n hn`. Use `hR (g * x) ⟨glev0 hg.1 hx.1, hx.2⟩ n (nlev_mono (zero_le' _) hn)` as an intermediate fact. Simplify `this` using `[Matrix.mul_assoc]`. Establish `h1 : (1 : Mx k r) ∈ Glev k r a.castSucc ∩ {x | g * x ∈ D}` using `⟨glev_one _, by simpa using hg.2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hrule` using `(Formalism.FourierDecayAlt.P.right_action_rule E k r z' a {x | g * x ∈ D} (fun x => f (g * x)) hz' hD' hS' hR' 1 h1).1`. Establish `hjlt : b.val - a.val - 1 < mdim k r a.succ` using `by simp [mdim]; omega`. Establish `hpos : posL k r a.succ ⟨b.val - a.val - 1, hjlt⟩ = eI k r b`. Simplify using `[posL, eI, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `h` using `hrule ⟨b.val - a.val - 1, hjlt⟩`. Rewrite `h` using `[hpos, eH_left, Matrix.mul_one]`. Rewrite using `[h]`. Use `congr 1`. Establish `ha1 : (a.succ : Fin (r + 1)).val < r` using `by simp; omega`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [xv, fvec, hpos, Fin.val_succ]`. Rewrite using `[dif_pos (show a.val + 1 < r by omega)]`. Distinguish the cases in `hh : b.val = a.val + 1`. Simplify using `[hh, bvec, eI]`. Simplify using `[hh, bvec, eI, Fin.ext_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem right_rule_derivative : PBN.RightRuleE := by
   intro E _ _ k r z' D f hz' hD hS hR g hg a b hab
@@ -282,27 +282,25 @@ theorem right_rule_derivative : PBN.RightRuleE := by
   · simp [hh, bvec, eI, Fin.ext_iff]
 
 /- English proof (translation)
-Introduce `E _ _ k r z D f hz hD hDN hS hL c hc g hg hWD a b hba`. Establish `ha` using `a.isLt`. Establish `hcne : ∀ l, c l ≠ 0` using `hc`. Take `⟨hW0, hWcomm⟩` from `head_comm (k := k) c hcne b.val b.castSucc (by simp)`. Take `⟨T, hT, hTG, hTe, -, -⟩` from `tail (k := k) c hcne b (r - b.val - 1) (Fin.last r) (by simp; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hg₁ : T * g ∈ Glev k r b.succ` using `glev_mul hTG (glev_mono (Fin.le_last _) hg)`. Establish `hsplit : wCell k r (Fin.last r) c * g = wCell k r b.castSucc c * (w1 k r b (c b) * (T * g))`. Simplify using `only [hT, Formalism.FourierDecayAlt.P.Qx6.wCell_succ, Matrix.mul_assoc]`. Establish `hWx : ∀ x ∈ Glev k r b.castSucc, wCell k r b.castSucc c * x ∈ Glev k r 0` using `fun x hx => glev0 hW0 hx`. Establish `hS'` using `smooth_left (E := E) (f := f) (D := D) (wCell k r b.castSucc c) hWx hS`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun x : Mx k r => wCell k r b.castSucc c * x` using `cont_lmul _`. Establish `hD' : IsOpen {x : Mx k r | wCell k r b.castSucc c * x ∈ D}` using `hD.preimage hcont`. Establish `hN' : ∀ x ∈ Glev k r b.castSucc ∩ {x | wCell k r b.castSucc c * x ∈ D}, ∀ n ∈ Nlev k r b.castSucc, n * x ∈ {x | wCell k r b.castSucc c * x ∈ D}`. Introduce `x hx n hn`. Use `show wCell k r b.castSucc c * (n * x) ∈ D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, hWcomm b.castSucc le_rfl n hn.2, Matrix.mul_assoc]`. Conclude with `hDN _ ⟨hWx x hx.1, hx.2⟩ n (nlev_mono (zero_le' _) hn)`. Establish `hL' : LeftEq k r z b.castSucc {x | wCell k r b.castSucc c * x ∈ D} (fun x => f (wCell k r b.castSucc c * x))`. Introduce `x hx n hn`. Use `show f (wCell k r b.castSucc c * (n * x)) = _ • f (wCell k r b.castSucc c * x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, hWcomm b.castSucc le_rfl n hn.2, Matrix.mul_assoc]`. Conclude with `hL _ ⟨hWx x hx.1, hx.2⟩ n (nlev_mono (zero_le' _) hn)`. Establish `hpt : w1 k r b (c b) * (T * g) ∈ {x | wCell k r b.castSucc c * x ∈ D}` using `by show _ ∈ D`. Rewrite using `[← hsplit]`. Conclude with `hWD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hrule` using `(Formalism.FourierDecayAlt.P.left_action_rule E k r z b {x | wCell k r b.castSucc c * x ∈ D} (fun x => f (wCell k r b.castSucc c * x)) hz hD' hS' hN' hL' (c b) (hcne b) (T * g) hg₁ hpt).1`. Establish `hjlt : a.val - b.val - 1 < mdim k r b.succ` using `by simp [mdim]; omega`. Establish `hpos : posL k r b.succ ⟨a.val - b.val - 1, hjlt⟩ = eI k r a`. Simplify using `[posL, eI, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h` using `hrule ⟨a.val - b.val - 1, hjlt⟩`. Rewrite `h` using `[hpos, eH_left, ← hsplit]`. Rewrite using `[h]`. Use `congr 1`. Establish `hb1 : (b.succ : Fin (r + 1)).val < r` using `by simp; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hga : g *ᵥ bvec (eI k r a) = bvec (eI k r a)` using `(hg.2 a (by simp)).1`. Establish `hTa` using `hTe a hba`. Rewrite `hTa` using `[if_pos (by simp)]`. Establish `hy : ybv k r z b.succ (T * g) ⟨a.val - b.val - 1, hjlt⟩ = if a.val = b.val + 1 then c a else 0`. Simplify using `only [ybv, hpos, fvec, dif_pos hb1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.SignAntidiagonal.herm_bvec_eI, ← Matrix.mulVec_mulVec, hga, hTa]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, bvec, Pi.single_apply, esI, Fin.ext_iff, Fin.val_succ]`. Distinguish the cases in `hh : a.val = b.val + 1`. Simplify using `[hh]`. Rewrite using `[if_neg, if_neg hh, mul_zero]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hy]`. Distinguish the cases in `hh : a.val = b.val + 1`. Rewrite using `[if_pos hh, if_pos hh, div_eq_inv_mul]`.
-
-Rewrite using `[if_neg hh, if_neg hh, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem left_rule_cell : PBN.LeftRuleCell := by
   intro E _ _ k r z D f hz hD hDN hS hL c hc g hg hWD a b hba
@@ -358,17 +356,17 @@ theorem left_rule_cell : PBN.LeftRuleCell := by
   · rw [if_neg hh, if_neg hh, mul_zero]
 
 /- English proof (translation)
-Introduce `E _ _ k r D f hD hS c hc g hg hWD l`. Establish `hcne : ∀ a, c a ≠ 0` using `hc`. Establish `hl` using `l.isLt`. Take `⟨hW0, -⟩` from `head_comm (k := k) c hcne l.val l.castSucc (by simp)`. Take `⟨T, hT, hTG, -, -, hTc⟩` from `tail (k := k) c hcne l (r - l.val - 1) (Fin.last r) (by simp; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hg₁ : T * g ∈ Glev k r l.succ` using `glev_mul hTG (glev_mono (Fin.le_last _) hg)`. Establish `hsplit : wCell k r (Fin.last r) c * g = wCell k r l.castSucc c * (w1 k r l (c l) * (T * g))`. Simplify using `only [hT, Formalism.FourierDecayAlt.P.Qx6.wCell_succ, Matrix.mul_assoc]`. Establish `hWx : ∀ x ∈ Glev k r l.castSucc, wCell k r l.castSucc c * x ∈ Glev k r 0` using `fun x hx => glev0 hW0 hx`. Establish `hS'` using `smooth_left (E := E) (f := f) (D := D) (wCell k r l.castSucc c) hWx hS`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD' : IsOpen {x : Mx k r | wCell k r l.castSucc c * x ∈ D}` using `hD.preimage (cont_lmul _)`. Establish `hpt : w1 k r l (c l) * (T * g) ∈ {x | wCell k r l.castSucc c * x ∈ D}` using `by show _ ∈ D`. Rewrite using `[← hsplit]`. Conclude with `hWD`. Establish `hrule` using `(Formalism.FourierDecayAlt.P.torus_action_rule E k r l {x | wCell k r l.castSucc c * x ∈ D} (fun x => f (wCell k r l.castSucc c * x)) hD' hS' c hc (T * g) hg₁ hpt).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hrule` using `[eH_left, ← hsplit]`. Rewrite using `[hrule]`. Establish `hG : ∀ c' ∈ OmX r, wCell k r (Fin.last r) c' ∈ Glev k r 0` using `fun c' hc' => (head_comm (k := k) c' hc' r (Fin.last r) (by simp)).1`. Establish `hd₂ : DifferentiableAt ℝ (fun c' => f (wCell k r (Fin.last r) c' * g)) c`. Use `diff_comp hS (φ := fun c' => wCell k r (Fin.last r) c' * g) (Formalism.FourierDecayAlt.P.Qx6.cd_matmul (cd_wCell r (Fin.last r) (by simp)) contDiffOn_const) (fun c' hc' => glev_mul (hG c' hc') (glev_mono (zero_le' _) hg)) hc hWD` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd₁ : DifferentiableAt ℝ (fun c' => f (wCell k r l.castSucc c * (w1 k r l (c' l) * (T * g)))) c`. Use `diff_comp hS (φ := fun c' => wCell k r l.castSucc c * (w1 k r l (c' l) * (T * g))) (Formalism.FourierDecayAlt.P.Qx6.cd_matmul contDiffOn_const (Formalism.FourierDecayAlt.P.Qx6.cd_matmul (Formalism.FourierDecayAlt.P.Qx6.contDiffOn_weyl_cell l) contDiffOn_const)) (fun c' hc' => ?_) …` and prove the remaining obligations. Use `glev_mul hW0 (glev_mul (glev_mono (zero_le' _) (Formalism.FourierDecayAlt.P.weyl_level_element_properties k r l (c' l) (hc' l)).1) (glev_mono (zero_le' _) hg₁))` and prove the remaining obligations. Rewrite using `[← hsplit]`. Conclude with `hWD`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `pOp_line l hd₁ hd₂ fun c' hc' => ?_` and prove the remaining obligations. Establish `hlow : wCell k r l.castSucc c' = wCell k r l.castSucc c` using `Formalism.FourierDecayAlt.P.Qx6.wCell_congr fun a ha => hc' a (fun h => by subst h; simp at ha)`. Establish `hup` using `hTc c' fun a ha => hc' a (fun h => by subst h; omega)`. Use `show f (wCell k r l.castSucc c * (w1 k r l (c' l) * (T * g))) = f (wCell k r (Fin.last r) c' * g)`. Rewrite using `[hup, Formalism.FourierDecayAlt.P.Qx6.wCell_succ, hlow, Matrix.mul_assoc, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torus_cell : PBN.TorusCell := by
   intro E _ _ k r D f hD hS c hc g hg hWD l

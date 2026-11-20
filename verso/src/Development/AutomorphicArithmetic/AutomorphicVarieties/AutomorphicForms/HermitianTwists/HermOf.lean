@@ -5,7 +5,7 @@ open UpperTheory.V UpperTheory.V.Af
 open private lie_one from Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.RepEig
 
 /- English proof (translation)
-Introduce `c π hπ`. Conclude with `Br.hermEx ℚ 2 one_le_two π fun φ hφ => lie_one φ fun v => by`. Rewrite using `[(Br.capTwo ℚ π v _ _ (hπ v) φ hφ).1, add_neg_cancel, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Rn.hermOf :
     UpperTheory.V.Af.Rn.HermOf := by

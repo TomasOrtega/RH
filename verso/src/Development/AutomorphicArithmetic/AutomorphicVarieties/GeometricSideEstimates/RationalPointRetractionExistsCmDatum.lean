@@ -12,9 +12,9 @@ section
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
 /- English proof (translation)
-Take `⟨m, hmU, hmax⟩` from `hU.exists_isMaxOn ⟨1, U.one_mem⟩ hc.continuousOn`. Establish `hle : ∀ u ∈ U, φ u ≤ 1` using `fun u hu => by`. Establish `h : φ (u * m) ≤ φ m` using `hmax (U.mul_mem hu hmU)`. Rewrite `h` using `[map_mul, mul_comm]`. Conclude with `(mul_le_iff_le_one_right' _).1 h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Establish `h2` using `hle _ (U.inv_mem hu)`. Rewrite `h2` using `[map_inv, inv_le_one']`. Conclude with `le_antisymm (hle u hu) h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hom_one {G : Type} [Group G] [TopologicalSpace G] (U : Subgroup G) (hU : IsCompact (U : Set G))
     (φ : G →* {r : ℝ // 0 < r}) (hc : Continuous φ) : ∀ u ∈ U, φ u = 1 := by
@@ -29,7 +29,7 @@ private theorem hom_one {G : Type} [Group G] [TopologicalSpace G] (U : Subgroup 
   exact le_antisymm (hle u hu) h2
 
 /- English proof (translation)
-Establish `h : vFin (v ᵥ* γ.val) = vFin v ᵥ* (GeneralLinearGroup.map (pFin E) (ratGL E a γ)).val`. Use function extensionality and compare the values at `fun j => RingHom.map_vecMul (algebraMap E (Af E)) γ.val v j`. Express the relevant statement in the definitionally equal form `vFin v ᵥ* _ = vFin (v ᵥ* γ.val) ᵥ* _`. Rewrite using `[h, map_mul, Units.val_mul, Matrix.vecMul_vecMul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ptF_rat (γ : GL (Fin a) E) (g : GA E a) (v : Fin a → E) :
     ptF (ratGL E a γ * g) v = ptF g (v ᵥ* γ.val) := by
@@ -41,7 +41,7 @@ private theorem ptF_rat (γ : GL (Fin a) E) (g : GA E a) (v : Fin a → E) :
 variable [IsTotallyComplex E]
 
 /- English proof (translation)
-Establish `h : vInf (v ᵥ* γ.val) = vInf v ᵥ* (GeneralLinearGroup.map (pInf E) (ratGL E a γ)).val`. Use function extensionality and compare the values at `fun j => RingHom.map_vecMul ((pInf E).comp (algebraMap E (Ad E))) γ.val v j`. Express the relevant statement in the definitionally equal form `vInf v ᵥ* _ = vInf (v ᵥ* γ.val) ᵥ* _`. Rewrite using `[h, map_mul, Units.val_mul, Matrix.vecMul_vecMul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pt_rat (γ : GL (Fin a) E) (g : GA E a) (v : Fin a → E) :
     pt (ratGL E a γ * g) v = pt g (v ᵥ* γ.val) := by
@@ -51,7 +51,7 @@ private theorem pt_rat (γ : GL (Fin a) E) (g : GA E a) (v : Fin a → E) :
   rw [h, map_mul, Units.val_mul, Matrix.vecMul_vecMul]
 
 /- English proof (translation)
-Set `y : KernelIndexFullLattice.G1 E a` to `⟨ratGL E a γ, Reduction.rationalGL_le_normOneGL ⟨γ, rfl⟩⟩`. Express the relevant statement in the definitionally equal form `(retractOne ((y : GA E a) * splitCentre E a t * g) : KernelIndexFullLattice.G1 E a).1 = _`. Rewrite using `[mul_assoc, retractOne_coe_mul, retractOne_mul, KernelIndexFullLattice.splitEq_holds E a t, retractOne_centralSection, one_mul]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem rt_left (γ : GL (Fin a) E) (t : ℝ) (g : GA E a) :
     rt (ratGL E a γ * splitCentre E a t * g) = ratGL E a γ * rt g := by
@@ -61,12 +61,12 @@ private theorem rt_left (γ : GL (Fin a) E) (t : ℝ) (g : GA E a) :
   rfl
 
 /- English proof (translation)
-The claim follows from `retractOne_coe _`.
+A detailed English derivation is pending.
 -/
 private theorem retract_rt (g : GA E a) : retractOne (rt g) = retractOne g := retractOne_coe _
 
 /- English proof (translation)
-Establish `h : GeneralLinearGroup.map (pFin E) (rt g) = GeneralLinearGroup.map (pFin E) g` using `finPart_retract g`. Use `AddMonoidHom.ext fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `vFin v ᵥ* _ = vFin v ᵥ* _`. Rewrite using `[h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ptF_rt (g : GA E a) : ptF (rt g) = ptF g := by
   have h : GeneralLinearGroup.map (pFin E) (rt g) = GeneralLinearGroup.map (pFin E) g := finPart_retract g
@@ -75,7 +75,7 @@ private theorem ptF_rt (g : GA E a) : ptF (rt g) = ptF g := by
   rw [h]
 
 /- English proof (translation)
-Establish `h1 : Reduction.detModule E a (finGL E a u) = 1`. Rewrite using `[← Fb.finEmb_eq]`. Conclude with `hom_one U hU ((Reduction.detModule E a).comp (finEmb E a)) (Reduction.continuous_detModule.comp continuous_finEmb) u hu`. Unfold `Lit.Geo.rt`. Rewrite using `[coe_retractOne, coe_retractOne, map_mul, h1, mul_one, mul_assoc, ← centralSection_inv_mul_comm, ← mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rt_fin (U : Subgroup (GL (Fin a) (Af E))) (hU : IsCompact (U : Set (GL (Fin a) (Af E))))
     (u : GL (Fin a) (Af E)) (hu : u ∈ U) (g : GA E a) : rt (g * finGL E a u) = rt g * finGL E a u := by
@@ -89,7 +89,7 @@ private theorem rt_fin (U : Subgroup (GL (Fin a) (Af E))) (hU : IsCompact (U : S
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ a _`. Use `⟨rt_left, fun g => ⟨congrArg Subtype.val (retract_rt g), ?_, ptF_rt g⟩, fun γ g v => ⟨ptF_rat γ g v, pt_rat γ g v⟩, rt_fin⟩` and prove the remaining obligations. Unfold `qht`. Rewrite using `[retract_rt]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.rationalPoint_retraction_exists_cmDatum :
     RtFacts := by

@@ -46,7 +46,7 @@ theorem kgR_apply (X : Lie E a) :
     kgR π Ξ σ X = (Matrix.toLin' (Ξ.dmat X)).lTensor _ + ((σ / 2 : ℂ) * kgT X) • 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[kgA_apply, kgR_apply]`. Use `show _ = (lieOp π X).rTensor _ + (Matrix.toLin' (Ξ.dmat X)).lTensor _`. Rewrite using `[add_add_add_comm, ← add_smul, neg_mul, neg_add_cancel, zero_smul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kgA_add_kgR (X : Lie E a) : kgA π Ξ σ X + kgR π Ξ σ X = tensorLie π Ξ X := by
   rw [kgA_apply, kgR_apply]
@@ -54,7 +54,7 @@ theorem kgA_add_kgR (X : Lie E a) : kgA π Ξ σ X + kgR π Ξ σ X = tensorLie 
   rw [add_add_add_comm, ← add_smul, neg_mul, neg_add_cancel, zero_smul, add_zero]
 
 /- English proof (translation)
-Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun (lie_comm (E := E) (a := a) (toL X) (toL Y)) φ.1`. Establish `e : toL (X * Y - Y * X) = toL (Matrix.of (toL X) * Matrix.of (toL Y)) - toL (Matrix.of (toL Y) * Matrix.of (toL X))` using `rfl`. Rewrite using `[e, map_sub]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kg_lieOp_comm (X Y : Matrix (Fin a) (Fin a) (Cinf E)) :
     lieOp π (toL X) * lieOp π (toL Y) - lieOp π (toL Y) * lieOp π (toL X) = lieOp π (toL (X * Y - Y * X)) := by
@@ -66,9 +66,9 @@ theorem kg_lieOp_comm (X Y : Matrix (Fin a) (Fin a) (Cinf E)) :
   exact h
 
 /- English proof (translation)
-Establish `e : kgA π Ξ σ (toL (X * Y - Y * X)) = (lieOp π (toL (X * Y - Y * X))).rTensor _`. Rewrite using `[kgA_apply, kgT_comm]`. Simplify using the standard rewrite rules. Rewrite using `[e, ← kg_lieOp_comm, LinearMap.rTensor_sub, LinearMap.rTensor_mul, LinearMap.rTensor_mul, kgA_apply, kgA_apply]`. Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem kgA_comm (X Y : Matrix (Fin a) (Fin a) (Cinf E)) :
     kgA π Ξ σ (toL X) * kgA π Ξ σ (toL Y) - kgA π Ξ σ (toL Y) * kgA π Ξ σ (toL X) = kgA π Ξ σ (toL (X * Y - Y * X)) := by
@@ -79,9 +79,9 @@ theorem kgA_comm (X Y : Matrix (Fin a) (Fin a) (Cinf E)) :
   module
 
 /- English proof (translation)
-Establish `e : kgR π Ξ σ (toL (X * Y - Y * X)) = (Matrix.toLin' (Ξ.dmat (toL (X * Y - Y * X)))).lTensor _`. Rewrite using `[kgR_apply, kgT_comm]`. Simplify using the standard rewrite rules. Rewrite using `[e, ← GlobalTheory.AlgInfChar.dmat_bracket, map_sub, Matrix.toLin'_mul, Matrix.toLin'_mul, LinearMap.lTensor_sub, ← Module.End.mul_eq_comp, ← Module.End.mul_eq_comp, LinearMap.lTensor_mul, LinearMap.lTensor_mul, kgR_apply, kgR_apply]`. Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem kgR_comm (X Y : Matrix (Fin a) (Fin a) (Cinf E)) :
     kgR π Ξ σ (toL X) * kgR π Ξ σ (toL Y) - kgR π Ξ σ (toL Y) * kgR π Ξ σ (toL X) = kgR π Ξ σ (toL (X * Y - Y * X)) := by
@@ -94,9 +94,9 @@ theorem kgR_comm (X Y : Matrix (Fin a) (Fin a) (Cinf E)) :
   module
 
 /- English proof (translation)
-Establish `h : Commute ((lieOp π X).rTensor (Fin Ξ.d → ℂ) : Module.End ℂ (π.V ⊗[ℂ] (Fin Ξ.d → ℂ))) ((Matrix.toLin' (Ξ.dmat Y)).lTensor π.V)` using `by show _ * _ = _ * _`. Rewrite using `[Module.End.mul_eq_comp, Module.End.mul_eq_comp, LinearMap.rTensor_comp_lTensor, LinearMap.lTensor_comp_rTensor]`. Rewrite using `[kgA_apply, kgR_apply]`. Use `Commute.add_left ?_ ?_` and prove the remaining obligations. Use `Commute.add_right h ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Commute.one_right _).smul_right _`. Conclude with `(Commute.one_left _).smul_left _`.
+A detailed English derivation is pending.
 -/
 theorem kgA_kgR_comm (X Y : Lie E a) : Commute (kgA π Ξ σ X) (kgR π Ξ σ Y) := by
   have h : Commute ((lieOp π X).rTensor (Fin Ξ.d → ℂ) : Module.End ℂ (π.V ⊗[ℂ] (Fin Ξ.d → ℂ)))
@@ -110,9 +110,9 @@ theorem kgA_kgR_comm (X Y : Lie E a) : Commute (kgA π Ξ σ X) (kgR π Ξ σ Y)
   · exact (Commute.one_left _).smul_left _
 
 /- English proof (translation)
-Establish `h` using `cx_kgT (E := E) (a := a) τ i j`. Establish `e : (if i = j then -(σ / 2 : ℂ) else 0) = -(σ / 2 : ℂ) * cx τ (kgT (E` using `E) (a := a)) i j := by`. Apply the tactic sequence `rw [h]; split_ifs <;> simp`. Rewrite using `[e]`. Simplify using `only [cx, kgA_apply, LinearMap.rTensor_sub, LinearMap.rTensor_smul, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem cx_kgA (τ : E →+* ℂ) (i j : Fin a) :
     cx τ (kgA π Ξ σ) i j = (cx τ (lieOp π) i j).rTensor _ + (if i = j then -(σ / 2 : ℂ) else 0) • 1 := by
@@ -124,9 +124,9 @@ theorem cx_kgA (τ : E →+* ℂ) (i j : Fin a) :
   module
 
 /- English proof (translation)
-Establish `h` using `cx_kgT (E := E) (a := a) τ i j`. Establish `e : (if i = j then (σ / 2 : ℂ) else 0) = (σ / 2 : ℂ) * cx τ (kgT (E` using `E) (a := a)) i j := by`. Apply the tactic sequence `rw [h]; split_ifs <;> simp`. Rewrite using `[e]`. Simplify using `only [cx, kgR_apply, map_sub, map_smul, LinearMap.lTensor_sub, LinearMap.lTensor_smul, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem cx_kgR (τ : E →+* ℂ) (i j : Fin a) :
     cx τ (kgR π Ξ σ) i j = (Matrix.toLin' (cx τ Ξ.dmat i j)).lTensor _ + (if i = j then (σ / 2 : ℂ) else 0) • 1 := by

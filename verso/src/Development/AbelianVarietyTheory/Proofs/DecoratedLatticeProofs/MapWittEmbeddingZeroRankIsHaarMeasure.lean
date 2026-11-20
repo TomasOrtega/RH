@@ -23,11 +23,9 @@ noncomputable section
 namespace GlobalTheory.HaarEmb
 
 /- English proof (translation)
-Introduce `D S S₀ d μ hμ`. Use `haveI : BorelSpace (GA D S) := ⟨rfl⟩`. Use `haveI : BorelSpace (GA D S₀) := ⟨rfl⟩`. Use `haveI : IsTopologicalGroup (GA D S₀) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : IsTopologicalGroup (GA D S) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hbkc : Continuous (GlobalTheory.WeilSrc.Zero.back d)` using `continuous_of_mt S₀ (by`. Simplify using `only [GlobalTheory.WeilSrc.Zero.back, mt_ofMat]`. Conclude with `(continuous_const.matrix_mul (continuous_mt S)).matrix_mul continuous_const)`. Establish `hli : ∀ g, GlobalTheory.WeilSrc.Zero.back d (d.emb0 g) = g` using `fun g => d.wittDecomp_anisotropicEmbedding_injective (GlobalTheory.WeilSrc.Zero.witt_decomposition_zero_embedding_left_inverse d _)`. Set `e : GA D S₀ ≃* GA D S` to `{ toFun := d.emb0, invFun := GlobalTheory.WeilSrc.Zero.back d, left_inv := hli, right_inv := GlobalTheory.WeilSrc.Zero.witt_decomposition_zero_embedding_left_inverse d, map_mul' := fun x y => map_mul d.emb0 x y }`.
-
-Conclude with `MulEquiv.isHaarMeasure_map μ e d.continuous_embed hbkc`.
+A detailed English derivation is pending.
 -/
 theorem map_wittEmbedding_zero_rank_isHaarMeasure : ∀ (D : D7) (S S₀ : HSp D) (d : HypDec S S₀ 0) (μ : Measure (GA D S₀)), μ.IsHaarMeasure → (Measure.map d.emb0 μ).IsHaarMeasure := by
   intro D S S₀ d μ hμ

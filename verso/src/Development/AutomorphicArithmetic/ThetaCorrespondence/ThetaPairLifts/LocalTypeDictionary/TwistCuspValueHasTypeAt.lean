@@ -10,7 +10,7 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 namespace GlobalTheory.CuspValueTypeAt
 /- English proof (translation)
-Introduce `hP D θ N τ hθ hN _ F hF w`. Conclude with `_root_.GlobalTheory.CuspValueType.hasTypeAt_cusp_of_cusp_value_type hP θ hθ N hN F hF w τ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cusp_value_hasTypeAt : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {D : D7} (θ : InfFam D) (N : GlobalTheory.Grid.Node D) (τ : D.what₂.Tau),
     IsInfFam θ → N.V.SigOK → GoodPar N.V.rank (N.V.sig (tauE D τ)).1 (N.V.sig (tauE D τ)).2 (N.S τ) →
@@ -26,7 +26,7 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CuspValueTypeAt.cusp_value_hasTypeAt | exact _root_.GlobalTheory.CuspValueTypeAt.cusp_value_hasTypeAt | (intros; apply _root_.GlobalTheory.CuspValueTypeAt.cusp_value_hasTypeAt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twist_cusp_value_hasTypeAt : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {D : D7} (θ : InfFam D) (N : GlobalTheory.Grid.Node D) (τ : D.what₂.Tau), IsInfFam θ → N.V.SigOK → GoodPar N.V.rank (N.V.sig (tauE D τ)).1 (N.V.sig (tauE D τ)).2 (N.S τ) → ∀ F ∈ N.Cusp θ, ∀ w, GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.HasTypeAt θ N.V τ (N.S τ) (F w) := by
   first | exact @_root_.GlobalTheory.CuspValueTypeAt.cusp_value_hasTypeAt | exact _root_.GlobalTheory.CuspValueTypeAt.cusp_value_hasTypeAt | (intros; apply _root_.GlobalTheory.CuspValueTypeAt.cusp_value_hasTypeAt <;> assumption)

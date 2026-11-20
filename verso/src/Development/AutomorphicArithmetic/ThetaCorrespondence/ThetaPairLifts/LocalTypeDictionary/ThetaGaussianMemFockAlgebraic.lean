@@ -15,7 +15,7 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 noncomputable section
 namespace GlobalTheory.GaussThetaAlg
 /- English proof (translation)
-Introduce `_ _ D ψ θ _ hθ W W₁ X A A₁ B α β _ ωA ωB _ _ e Bs Γ Xc om om' h _ _ R Rf hM f₀ φ hg hφ hvac`. Use `mem_algF_of_isFinF ψ θ true A B _ (isFinF_thO D ψ θ hθ true W X A B e Bs hM.triple.base h.ψ Γ.V Γ.W _ _ _ _ h.JW h.JX hM.triple.geo.hV hM.triple.geo.hW (fun w => ?_) Γ.M hM.triple.geo.hM f₀ φ hg hφ hvac)` and prove the remaining obligations. Take `⟨τ, h1, h2, -, h4⟩` from `h.cart w`. Conclude with `⟨τ, h1, by rw [h2]; simp, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem theta_gaussian_mem_fockAlgebraic : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
@@ -52,7 +52,7 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.GaussThetaAlg.theta_gaussian_mem_fockAlgebraic | exact _root_.GlobalTheory.GaussThetaAlg.theta_gaussian_mem_fockAlgebraic | (intros; apply _root_.GlobalTheory.GaussThetaAlg.theta_gaussian_mem_fockAlgebraic <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.gaussian_theta_lift_algebraic : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

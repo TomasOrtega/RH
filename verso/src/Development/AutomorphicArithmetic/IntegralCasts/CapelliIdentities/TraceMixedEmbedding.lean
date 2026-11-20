@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `F _ _ y`. Rewrite using `[Algebra.trace_eq_matrix_trace (NumberField.mixedEmbedding.latticeBasis F), Algebra.trace_eq_matrix_trace (NumberField.integralBasis F)]`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Algebra.leftMulMatrix_eq_repr_mul, Rat.cast_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[NumberField.mixedEmbedding.latticeBasis_apply, ← map_mul, NumberField.mixedEmbedding.latticeBasis_repr_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.TraceMixedEmbedding.trace_mixedEmbedding :
     ∀ {F : Type} [inst : Field F] [inst_1 : NumberField F] (y : F),

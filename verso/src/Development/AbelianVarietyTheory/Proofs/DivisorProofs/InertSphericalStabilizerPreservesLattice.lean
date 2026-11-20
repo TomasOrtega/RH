@@ -15,7 +15,7 @@ namespace GlobalTheory.InertSphStab
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, Matrix.vecMulVec_apply, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma incM_vecMulVec {n d : ℕ} (x : Fin n → E) (y : Fin d → E) :
     incM F (Matrix.vecMulVec x y) =
@@ -24,7 +24,7 @@ lemma incM_vecMulVec {n d : ℕ} (x : Fin n → E) (y : Fin d → E) :
   simp [incM, Matrix.vecMulVec_apply, map_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, mul_smul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma smul_vecMulVec {n d : ℕ} (a : AF F) (p : Fin n → AE F E) (q : Fin d → AE F E) :
     a • Matrix.vecMulVec p q = Matrix.vecMulVec p (a • q) := by
@@ -32,7 +32,7 @@ lemma smul_vecMulVec {n d : ℕ} (a : AF F) (p : Fin n → AE F E) (q : Fin d �
   simp [Matrix.vecMulVec_apply, mul_smul_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.transpose_apply, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma vecMulVec_mul_transpose {n d : ℕ} (p : Fin n → AE F E) (q : Fin d → AE F E)
     (M : Matrix (Fin d) (Fin d) (AE F E)) :
@@ -44,13 +44,11 @@ lemma vecMulVec_mul_transpose {n d : ℕ} (p : Fin n → AE F E) (q : Fin d → 
   ring
 
 /- English proof (translation)
-Proceed by induction on `hq using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hai, y, hy, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a, ha, hai, x, hx, y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[incM_vecMulVec, smul_vecMulVec]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Establish `h0 : Matrix.vecMulVec (fun i => inclR (F` using `F) (AF F) (x i)) (0 : Fin d → AE F E) = 0 := by`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]`. Rewrite using `[h0]`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(latAtV X W v).zero_mem`. Consider the case `add z z' _ _ h h'`. Rewrite using `[Matrix.vecMulVec_add]`. Conclude with `(latAtV X W v).add_mem h h'`. Consider the case `neg z _ h`.
-
-Rewrite using `[Matrix.vecMulVec_neg]`. Conclude with `(latAtV X W v).neg_mem h`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma vecMulVec_mem {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (v : Pl F) {x : Fin n → E} (hx : x ∈ X.L)
     {q : Fin d → AE F E} (hq : q ∈ GlobalTheory.InertSph.latAt W v) :

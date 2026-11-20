@@ -32,11 +32,11 @@ noncomputable section
 namespace GlobalTheory.RunJoin
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨H, hH⟩` from `X.inc_mul u v g g'`. Establish `hz : H = 0`. Use `hinj _ H fun Z' => ?_` and prove the remaining obligations. Rewrite using `[← hH, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `e : Z' = Z`. Substitute `e` using the available equality. Rewrite using `[h0, zero_mul]`. Rewrite using `[h2 Z' e, mul_zero]`. Establish `hg0 : g' = 0` using `hg v g' (by rw [hH, hz, map_zero])`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1 (by rw [hg0, map_zero, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem eval_ne_zero_of_nonZeroComp {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : PJ D B P j)
     {ι : Type} (Ω : ι → Type) [∀ Z, Field (Ω Z)] [∀ Z, Algebra B.KO (Ω Z)] (gF : ∀ Z, X.Forms →ₐ[B.KO] Ω Z)
@@ -63,7 +63,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hT : GenFromTest (T.Q.Xo j) T.Q.c hG` using `fun Z => h.allTest j hj (Om Z) (genFr hG Z)`. Establish `hV` using `GlobalTheory.Reg.genValInj_record D T h j hj hG`. Take `⟨g', h1, h2⟩` from `GlobalTheory.Reg.compSplit_record D T h j hj hG Z v w`. Use `eval_ne_zero_of_nonZeroComp (recPlus h j hj) (fun Z : Comp (T.Q.Xo j) T.Q.c => Om Z) (fun Z => formsEvR j hG hT Z) (fun u F hF => hV u F fun Z => (formsEvR_inc h j hj hG hT Z u F).symm.trans (hF Z)) g hg Z g' (fun h0 => hw (h1.symm.trans ((formsEvR_inc h j hj hG hT Z v g').symm.t …` as an intermediate fact. Conclude with `fun h0 => this ((formsEvR_inc h j hj hG hT Z u g).trans h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem generic_ne_zero_of_nonZeroComp (hG : GenFrEx (T.Q.Xo j) T.Q.c) {v u : WeightFamilies.Wt D j}
     (Z : Comp (T.Q.Xo j) T.Q.c) (w : (recB h.toLawsCore).Cusp j v) (hw : evC hG Z (w : T.R j) ≠ 0)
@@ -82,15 +82,11 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Use `choose x hx f hc hf0 using hN`. Set `p : (T.U j σ).Comp → Submodule T.Q.c.F (cutR T.C j w)` to `fun k => { carrier := {F | rdU (T.U j σ) (F.1 : T.R j) k (x k) = 0} zero_mem' := by show rdU (T.U j σ) (0 : T.R j) k (x k) = 0`. Rewrite using `[map_zero]`. Both sides reduce to the same expression. Use the proof step `add_mem' := by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b ha hb`. Use `show rdU (T.U j σ) (a.1 + b.1 : T.R j) k (x k) = 0`. Rewrite using `[map_add]`. Use `show rdU (T.U j σ) (a.1 : T.R j) k (x k) + rdU (T.U j σ) (b.1 : T.R j) k (x k) = 0`. Rewrite using `[ha, hb, add_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `smul_mem' := by`. Introduce `c a ha`. Use `show rdU (T.U j σ) (c • a.1 : T.R j) k (x k) = 0`. Rewrite using `[LinearMap.map_smulₛₗ]`. Use `show σ c * rdU (T.U j σ) (a.1 : T.R j) k (x k) = 0`.
-
-Rewrite using `[ha, mul_zero] }`. Establish `hne : ∀ k, p k ≠ ⊤`. Introduce `k htop`. Establish `hm : (⟨f k, hc k⟩ : cutR T.C j w) ∈ p k` using `by rw [htop]; exact Submodule.mem_top`. Conclude with `hf0 k hm`.
-
-Take `⟨F, hF⟩` from `Submodule.exists_forall_notMem_of_forall_ne_top p hne`. Conclude with `⟨F, fun k => ⟨x k, hx k, hF k⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cusp_reading_ne_zero (w : WeightFamilies.Wt D j) (σ : T.Q.c.F →+* ℂ)
     (hN : ∀ k : (T.U j σ).Comp, ∃ x ∈ ((T.U j σ).X k).dom, ∃ f ∈ cutR T.C j w, rdU (T.U j σ) f k x ≠ 0) :
@@ -127,17 +123,17 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hG hOK`. Establish `hP` using `hOK.hyp`. Take `⟨hDF, -, hr, hl⟩` from `(GlobalTheory.RunWeights.weights_below D _ _ j (recPJ h j hj) large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0 hj.1 hP).1 wF (Set.mem_insert_of_mem _ (Set.mem_insert _ _))`. Establish `hlp` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.lastPos_wtA h hj wF hl`. Establish `hg : ∀ i, 2 * WeightAlgebra.DF ka + 2 < D.host.g i` using `hP.2.2.2.1.2.2.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : T.Q.l.M = D.host.g 0 * D.host.g 1` using `h.pins.2.1.1`. Establish `hdeg : 3 * WeightAlgebra.DF wF + 2 ≤ T.Q.l.M`. Establish `h1 : (2 * WeightAlgebra.DF ka + 3) * 3 ≤ D.host.g 0 * D.host.g 1` using `Nat.mul_le_mul (hg 0) (by have := hg 1; omega)`. Use linear arithmetic over natural numbers and integers. Take `⟨g0, hg0⟩` from `exists_cusp_reading_ne_zero h wF T.σ₀ fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `(ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.flag_domain_frames_connected _ ((T.U j T.σ₀).X k)).nonempty`. Take `⟨f, hf, hf0⟩` from `GlobalTheory.T.exists_thetaGenerator_reading_ne_zero_all_frames GlobalTheory.T.harmonic_germ_value_chart_independent D T h j hj wF hr hdeg T.σ₀ T.good_σ₀ k x hx`. Use `⟨x, hx, f, ?_, hf0⟩` and prove the remaining obligations. Rewrite using `[cutR_eq T.C hj]`. Conclude with `h.thCusp j hj _ _ (dom_wtA wF) hlp f hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hZ : ∀ Z : Comp (T.Q.Xo j) T.Q.c, evC hG Z g0.1 ≠ 0`. Introduce `Z hz`. Take `⟨k, hk⟩` from `(GlobalTheory.CompModel.comp_read_on_model D T h j hj hG T.σ₀ T.good_σ₀).1 Z`. Take `⟨x, hx, hx0⟩` from `hg0 k`. Conclude with `hx0 ((hk wF g0).1 hz x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨g0, ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.nonzero_divisor_of_connected D T h j hj wF g0 T.σ₀ T.good_σ₀ hg0, hZ⟩, fun u F hF => ?_⟩` and prove the remaining obligations. Establish `hFZ : ∀ Z : Comp (T.Q.Xo j) T.Q.c, evC hG Z F.1 ≠ 0` using `fun Z => generic_ne_zero_of_nonZeroComp h hj hG Z g0 (hZ Z) F hF`. Use `⟨hFZ, fun σ hσ k => ?_⟩` and prove the remaining obligations. Take `⟨Z, hk⟩` from `(GlobalTheory.CompModel.comp_read_on_model D T h j hj hG σ hσ).2 k`. Assume the negation of the conclusion as `hno`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hFZ Z ((hk u F).2 fun x hx => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Conclude with `hno ⟨x, hx, h'⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_nonZeroComp_and_ne_zero : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ) (hG : GenFrEx (T.Q.Xo j) T.Q.c), PageOK large₂ (recPJ h j hj) H C2 A2 CT ka wL wF Tn nP nW h0 → (∃ g0 : (recB h.toLawsCore).Cusp j wF, (recPJ h j hj).NonZeroComp wF g0 ∧ ∀ Z : Comp (T.Q.Xo j) T.Q.c, evC hG Z g0.1 ≠ 0) ∧ ∀ (u : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j u), (recPJ h j hj).NonZeroComp u F → (∀ Z : Comp (T.Q.Xo j) T.Q.c, evC hG Z F.1 ≠ 0) ∧ ∀ σ, GoodEmb T.Q.c σ → ∀ k : (T.U j σ).Comp, ∃ x ∈ ((T.U j σ).X k).dom, rdU (T.U j σ) F.1 k x ≠ 0 := by
   intro D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hG hOK

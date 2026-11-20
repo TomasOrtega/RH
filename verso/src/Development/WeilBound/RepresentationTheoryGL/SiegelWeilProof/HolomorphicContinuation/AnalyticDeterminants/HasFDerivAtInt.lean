@@ -13,7 +13,7 @@ variable {Kg : Type*} [TopologicalSpace Kg] [CompactSpace Kg] [MeasurableSpace K
   {μ : Measure Kg} [IsFiniteMeasure μ]
 
 /- English proof (translation)
-Establish `hm : AEStronglyMeasurable f μ`. Simplify using `using (hf.continuousOn (s := univ)).aestronglyMeasurable_of_isCompact isCompact_univ MeasurableSet.univ (μ := μ)`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn (hf.continuousOn (s := univ))`. Conclude with `Integrable.of_bound hm C (Eventually.of_forall fun k => hC k (mem_univ k))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integrable_of_cont {W : Type*} [NormedAddCommGroup W] {f : Kg → W} (hf : Continuous f) :
     Integrable f μ := by
@@ -24,11 +24,9 @@ theorem integrable_of_cont {W : Type*} [NormedAddCommGroup W] {f : Kg → W} (hf
   exact Integrable.of_bound hm C (Eventually.of_forall fun k => hC k (mem_univ k))
 
 /- English proof (translation)
-Take `⟨r, hr, hrΩ⟩` from `Metric.isOpen_iff.mp hΩ x₀ hx₀`. Establish `hsub : closedBall x₀ (r / 2) ⊆ Ω` using `(closedBall_subset_ball (by linarith)).trans hrΩ`. Establish `hK : IsCompact ((univ : Set Kg) ×ˢ closedBall x₀ (r / 2))` using `isCompact_univ.prod (isCompact_closedBall _ _)`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn (hc'.mono (prod_mono subset_rfl hsub))`. Establish `cont_k : ∀ x ∈ Ω, Continuous fun k => Φ k x` using `fun x hx => continuousOn_univ.mp (hc.comp (f := fun k : Kg => (k, x)) (Continuous.continuousOn (by fun_prop)) fun k _ => ⟨mem_univ _, hx⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `cont_k' : ∀ x ∈ Ω, Continuous fun k => Φ' k x` using `fun x hx => continuousOn_univ.mp (hc'.comp (f := fun k : Kg => (k, x)) (Continuous.continuousOn (by fun_prop)) fun k _ => ⟨mem_univ _, hx⟩)`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (𝕜 := ℂ) (F := fun x k => Φ k x) (F' := fun x k => Φ' k x) (bound := fun _ => C) (ball_mem_nhds x₀ (half_pos hr)) ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hΩ.mem_nhds hx₀] with x hx`. Conclude with `(integrable_of_cont (cont_k x hx)).aestronglyMeasurable`. Conclude with `integrable_of_cont (cont_k x₀ hx₀)`.
-
-Conclude with `(integrable_of_cont (cont_k' x₀ hx₀)).aestronglyMeasurable`. Conclude with `Eventually.of_forall fun k x hx => hC (k, x) ⟨mem_univ _, ball_subset_closedBall hx⟩`. Conclude with `integrable_const C`. Conclude with `Eventually.of_forall fun k x hx => hd k x (hsub (ball_subset_closedBall hx))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_int {W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W] [CompleteSpace W]
     {Ω : Set E} (hΩ : IsOpen Ω) {Φ : Kg → E → W} {Φ' : Kg → E → (E →L[ℂ] W)}

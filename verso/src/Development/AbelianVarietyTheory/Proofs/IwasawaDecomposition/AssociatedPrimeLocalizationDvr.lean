@@ -7,11 +7,11 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨hp, v, hv⟩` from `hq`. Use `set q' : Ideal A' := ((⊥ : Submodule A' M).colon {v}).radical with hq'`. Establish `hunder : q'.under A = q`. Use extensionality with `a`. Rewrite using `[Ideal.under_def, Ideal.mem_comap, hv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hq', Ideal.mem_radical_iff, Submodule.mem_colon_singleton, Submodule.mem_bot, ← map_pow, algebraMap_smul]`. Establish `hmap : q.map (algebraMap A A') = q'`. Rewrite using `[← hunder]`. Conclude with `Ideal.map_comap_of_surjective _ hs q'`. Establish `hker : RingHom.ker (algebraMap A A') ≤ q` using `fun a ha ↦ by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hv]`. Use `Ideal.le_radical ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_colon_singleton, Submodule.mem_bot, ← algebraMap_smul A', RingHom.mem_ker.1 ha, zero_smul]`. Establish `hprime : q'.IsPrime` using `hmap ▸ Ideal.map_isPrime_of_surjective hs hker`. Conclude with `⟨q', ⟨hprime, v, rfl⟩, hunder⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_under_eq_of_mem_associatedPrimes_of_surjective {A A' M : Type*} [CommRing A]
     [CommRing A'] [Algebra A A'] [AddCommGroup M] [Module A M] [Module A' M]
@@ -36,23 +36,23 @@ theorem exists_under_eq_of_mem_associatedPrimes_of_surjective {A A' M : Type*} [
   exact ⟨q', ⟨hprime, v, rfl⟩, hunder⟩
 
 /- English proof (translation)
-Establish `hfac : ∀ y : S, y ≠ 0 → ∃ (n : ℕ) (u : S), IsUnit u ∧ y = t ^ n * u`. Introduce `y hy`. Establish `hinf : (⨅ i : ℕ, maximalIdeal S ^ i) = ⊥` using `Ideal.iInf_pow_eq_bot_of_isLocalRing _ Ideal.IsPrime.ne_top'`. Establish `hex : ∃ n : ℕ, y ∉ maximalIdeal S ^ n` using `by by_contra! h`. Conclude with `hy (by simpa [hinf] using (Submodule.mem_iInf _).2 h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, Nat.find hex = k + 1 := by`. Use `Nat.exists_eq_succ_of_ne_zero fun h0 ↦ ?_` and prove the remaining obligations. Use `Nat.find_spec hex` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : y ∈ maximalIdeal S ^ k`. Use `Nat.find_min hex (m := k) (by omega)` as an intermediate fact. Simplify using `using this`. Establish `h2 : y ∉ maximalIdeal S ^ (k + 1)` using `hk ▸ Nat.find_spec hex`. Rewrite `h1` using `[ht, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `h1`. Use `⟨k, u, ?_, rfl⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Apply `h2` to reduce the goal to its premises. Establish `hum : u ∈ maximalIdeal S` using `(mem_maximalIdeal u).2 hu`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hum` using `[ht, Ideal.mem_span_singleton]`. Take `⟨c, rfl⟩` from `hum`. Rewrite using `[ht, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `⟨c, by ring⟩`. Establish `hnzd : NoZeroDivisors S`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun {a b} hab ↦ ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨m, u, hu, rfl⟩` from `hfac a hne.1`. Take `⟨n, v, hv, rfl⟩` from `hfac b hne.2`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : t ^ (m + n) • (u * v) = 0`. Rewrite using `[smul_eq_mul, pow_add]`. Take the linear combination `hab`. Establish `h3 : u * v = 0` using `(hreg.pow (m + n)).right_eq_zero_of_smul h0`. Conclude with `(hu.mul hv).ne_zero h3`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hdom : IsDomain S` using `NoZeroDivisors.to_isDomain S`. Use `⟨hdom, ?_⟩` and prove the remaining obligations. Establish `ht0 : t ≠ 0` using `fun h ↦ by`. Establish `: IsSMulRegular S (0 : S)` using `h ▸ hreg`. Conclude with `one_ne_zero (this.right_eq_zero_of_smul (zero_smul S (1 : S)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf : ¬ IsField S`. Rewrite using `[IsLocalRing.isField_iff_maximalIdeal_eq, ht]`. Simplify using `using ht0`. Use `((IsDiscreteValuationRing.TFAE S hf).out 4 0).mp ?_` and prove the remaining obligations. Conclude with `⟨t, ht⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isDomain_isDiscreteValuationRing_of_maximalIdeal_eq_span {S : Type*} [CommRing S]
     [IsLocalRing S] [IsNoetherianRing S] {t : S} (ht : maximalIdeal S = Ideal.span {t})
@@ -107,41 +107,35 @@ theorem exists_isDomain_isDiscreteValuationRing_of_maximalIdeal_eq_span {S : Typ
   exact ⟨t, ht⟩
 
 /- English proof (translation)
-Introduce `A R _ _ _ _ _ _ _ _ x hx hred P _ hP`. Use `set I : Ideal A := Ideal.span {x} with hI`. Establish `hIR : Ideal.span {algebraMap A R x} = I.map (algebraMap A R)`. Rewrite using `[hI, Ideal.map_span, Set.image_singleton]`. Rewrite `hP` using `[hIR]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set q : Ideal A := P.under A with hqdef`. Establish `hqp : q.IsPrime` using `Ideal.IsPrime.under A P`. Establish `hxq : x ∈ q`. Establish `h1` using `IsAssociatedPrime.annihilator_le hP`. Rewrite `h1` using `[Submodule.annihilator_top, Ideal.annihilator_quotient]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1 (Ideal.mem_map_of_mem _ (Ideal.mem_span_singleton_self x))`. Establish `hqA : q ∈ associatedPrimes A (A ⧸ I)`. Establish `h0 : q ∈ associatedPrimes A (R ⧸ I.map (algebraMap A R))` using `under_mem_associatedPrimes (A := A) hP`. Set `e : (R ⧸ I.map (algebraMap A R)) ≃ₗ[A] (A ⧸ I) ⊗[A] R` to `((Algebra.TensorProduct.quotIdealMapEquivTensorQuot R I).toLinearEquiv.restrictScalars A) ≪≫ₗ TensorProduct.comm A R (A ⧸ I)`. Rewrite `h0` using `[LinearEquiv.AssociatedPrimes.eq e]`.
+Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q', hq', hu⟩` from `exists_under_eq_of_mem_associatedPrimes_of_surjective (A' := A ⧸ I) Ideal.Quotient.mk_surjective h0`. Establish `h2 : q' ∈ associatedPrimes (A ⧸ I) (A ⧸ I)` using `associatedPrimes_subset_of_flat hq'`. Rewrite using `[← hu]`. Conclude with `under_mem_associatedPrimes (A := A) h2`. Establish `hheight : q.height = 1` using `height_eq_one_of_mem_associatedPrimes hx hqA`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hPq : P ∈ associatedPrimes R (R ⧸ q.map (algebraMap A R))`. Rewrite `hP` using `[LinearEquiv.AssociatedPrimes.eq (Algebra.TensorProduct.quotIdealMapEquivTensorQuot R I).toLinearEquiv]`. Rewrite using `[LinearEquiv.AssociatedPrimes.eq (Algebra.TensorProduct.quotIdealMapEquivTensorQuot R q).toLinearEquiv]`. Conclude with `mem_associatedPrimes_tensor_quotient_under (A := A) hP`. Choose the witnesses or unpack the hypotheses as in `⟨z, hzP, hz⟩ : ∃ z ∉ P, ∀ p ∈ P, p * z ∈ q.map (algebraMap A R) := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, w, hw⟩` from `isAssociatedPrime_iff.mp hPq`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Establish `hmem : ∀ p, p ∈ P ↔ p * z ∈ q.map (algebraMap A R)` using `fun p ↦ by`. Rewrite using `[hw, Submodule.mem_colon_singleton, Submodule.mem_bot, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Use `⟨z, fun hzP ↦ ?_, fun p hp ↦ (hmem p).1 hp⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hred q hqp hxq` as an intermediate fact. Establish `h2 : Ideal.Quotient.mk (q.map (algebraMap A R)) z ^ 2 = 0`. Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem, pow_two]`. Conclude with `(hmem z).1 hzP`. Establish `h3 : z ∈ q.map (algebraMap A R)` using `Ideal.Quotient.eq_zero_iff_mem.1 ((pow_eq_zero_iff two_ne_zero).1 h2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Ideal.IsPrime.ne_top' ((Ideal.eq_top_iff_one P).2 ((hmem 1).2 (by simpa using h3)))`. Choose the witnesses or unpack the hypotheses as in `⟨t, htq, ht⟩ : ∃ t ∈ q, ∀ b ∈ q, ∃ v ∉ q, ∃ c, v * b = t * c := by`. Set `B` to `Localization.AtPrime q`. Establish `hdvr : IsDiscreteValuationRing B` using `isDiscreteValuationRing_of_height_eq_one q hheight B`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible B`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨a, s, rfl⟩` from `IsLocalization.exists_mk'_eq q.primeCompl ϖ`. Establish `hmax : maximalIdeal B = Ideal.span {IsLocalization.mk' B a s}` using `hϖ.maximalIdeal_eq`. Establish `h1 : IsLocalization.mk' B a s * algebraMap A B s = algebraMap A B a` using `IsLocalization.mk'_spec B a s`. Establish `haq : a ∈ q`. Rewrite using `[← IsLocalization.AtPrime.to_map_mem_maximal_iff B q a, ← h1, hmax]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Use `⟨a, haq, fun b hb ↦ ?_⟩` and prove the remaining obligations. Establish `hbB` using `(IsLocalization.AtPrime.to_map_mem_maximal_iff B q b).2 hb`. Rewrite `hbB` using `[hmax, Ideal.mem_span_singleton]`. Take `⟨d, hd⟩` from `hbB`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨c, u, rfl⟩` from `IsLocalization.exists_mk'_eq q.primeCompl d`. Establish `h2 : IsLocalization.mk' B c u * algebraMap A B u = algebraMap A B c` using `IsLocalization.mk'_spec B c u`. Use `⟨s * u, q.primeCompl.mul_mem s.2 u.2, c, ?_⟩` and prove the remaining obligations. Apply `IsLocalization.injective B q.primeCompl_le_nonZeroDivisors` to reduce the goal to its premises. Simplify using `only [map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take the linear combination `(algebraMap A B s * algebraMap A B u) * hd + (IsLocalization.mk' B c u * algebraMap A B u) * h1 + algebraMap A B a * h2`. Set `S` to `Localization.AtPrime P`. Establish `hflatRS : Module.Flat R S` using `IsLocalization.flat S P.primeCompl`. Establish `hflatAS : Module.Flat A S` using `Module.Flat.trans A R S`. Establish `hnoeth : IsNoetherianRing S` using `IsLocalization.isNoetherianRing P.primeCompl S inferInstance`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`. Take `⟨v, hv, c, hvc⟩` from `ht x hxq`. Rewrite `hvc` using `[zero_mul]`. Break down `mul_eq_zero.1 hvc with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv (h ▸ q.zero_mem)`. Conclude with `hx h`. Establish `hreg : IsSMulRegular S (algebraMap A S t)` using `(IsSMulRegular.of_ne_zero ht0).of_flat`. Establish `hunitS : ∀ r ∉ P, IsUnit (algebraMap R S r)` using `fun r hr ↦ IsLocalization.map_units S (⟨r, hr⟩ : P.primeCompl)`. Establish `hqS : ∀ b ∈ q, algebraMap A S b ∈ Ideal.span {algebraMap A S t}` using `fun b hb ↦ by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv, c, hvc⟩` from `ht b hb`. Establish `hu : IsUnit (algebraMap A S v)`. Rewrite using `[IsScalarTower.algebraMap_apply A R S]`. Conclude with `hunitS _ hv`. Use `(Ideal.unit_mul_mem_iff_mem _ hu).1 ?_` and prove the remaining obligations.
-
-Rewrite using `[← map_mul, hvc, map_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Establish `hqRS : q.map (algebraMap A R) ≤ (Ideal.span {algebraMap A S t}).comap (algebraMap R S)` using `Ideal.map_le_iff_le_comap.2 fun b hb ↦ by`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, ← IsScalarTower.algebraMap_apply]`. Conclude with `hqS b hb`.
-
-Establish `hmaxS : maximalIdeal S = Ideal.span {algebraMap A S t}`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_le_iff_le_comap]`. Introduce `p hp`. Establish `h` using `hqRS (hz p hp)`.
-
-Rewrite `h` using `[Ideal.mem_comap, map_mul]`. Conclude with `(Ideal.mul_unit_mem_iff_mem _ (hunitS z hzP)).1 h`. Rewrite using `[Ideal.span_singleton_le_iff_mem, IsScalarTower.algebraMap_apply A R S, IsLocalization.AtPrime.to_map_mem_maximal_iff S P]`. Conclude with `htq`. Conclude with `exists_isDomain_isDiscreteValuationRing_of_maximalIdeal_eq_span hmaxS hreg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isDiscreteValuationRing_of_mem_associatedPrimes_quotient :
     ∀ (A R : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A]

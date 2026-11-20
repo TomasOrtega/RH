@@ -7,11 +7,11 @@ open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `L _ _ _ N A hA`. Use `choose f hf1 hf2 hf3 using vxdet L N`. Take `⟨hfin, hcard⟩` from `nearvec L N A hA`. Take `⟨h1, h2⟩` from `cardsub (Lat L N) (nearVec A) (dd L N * N) hfin`. Establish `hinj : Function.Injective f` using `fun v w e => Subtype.ext (hf3 w v.1 (fun y hy => hf2 v y (e ▸ hy)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : ∀ v ∈ nearVx A, f v ∈ {M : Finset (Lat L N) | (↑M : Set (Lat L N)) ⊆ nearVec A ∧ M.card ≤ dd L N * N}`. Introduce `v hv`. Use `⟨fun y hy => ⟨v.1, ?_, hv, hf2 v y hy⟩, hf1 v⟩` and prove the remaining obligations. Use `v.2.1` as an intermediate fact. Rewrite `this` using `[poly_qc]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Set.Finite.of_injOn hmap hinj.injOn h1, ?_⟩` and prove the remaining obligations. Use `(Set.ncard_le_ncard_of_injOn f hmap hinj.injOn h1).trans (h2.trans ?_)` and prove the remaining obligations. Conclude with `Nat.pow_le_pow_left (Nat.succ_le_succ hcard) _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KT.nearvx :
     ∀ (L : Type) [Field L] [NumberField L] [IsTotallyComplex L] (N : ℕ) (A : Matrix (Fin N) (Fin N) (𝓞 L)), A.det ≠ 0 →

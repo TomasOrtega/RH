@@ -12,9 +12,9 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.BZPhiPG.Onto
 
 /- English proof (translation)
-Establish `h0 : Continuous (fun h : HPG k i t => (((h : Mir k (i + t)) : GL (Fin (i + t + 1)) k) : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k))` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Establish `hv : Continuous (fun h : HPG k i t => ((leviProj k (ePG i t) (hpgIncl k i t h)) b : Matrix (Two (Fin (i + 1)) (Fin t) b) (Two (Fin (i + 1)) (Fin t) b) k))` using `(h0.matrix_submatrix (fun j => (ePG i t) ⟨b, j⟩) (fun j => (ePG i t) ⟨b, j⟩)).congr (fun _ => rfl)`. Rewrite using `[Units.continuous_iff]`. Use `⟨hv, ?_⟩` and prove the remaining obligations. Establish `hinv : Continuous (fun h : HPG k i t => ((leviProj k (ePG i t) (hpgIncl k i t h⁻¹)) b : Matrix (Two (Fin (i + 1)) (Fin t) b) (Two (Fin (i + 1)) (Fin t) b) k))` using `hv.comp continuous_inv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hinv.congr (fun h => ?_)` and prove the remaining obligations. Simplify using `only [map_inv, Pi.inv_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem continuous_leviProj_hpgIncl (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (i t : ℕ) (b : Bool) :
@@ -34,7 +34,7 @@ private theorem continuous_leviProj_hpgIncl (k : Type) [Field k] [ValuativeRel k
   simp only [map_inv, Pi.inv_apply]
 
 /- English proof (translation)
-Establish `h1 : Continuous (fun h : HPG k i t => (pgProj k i t h).1)` using `continuous_induced_rng.2 ((continuous_leviProj_hpgIncl k i t false).congr (fun _ => rfl))`. Establish `h2 : Continuous (fun h : HPG k i t => (pgProj k i t h).2)` using `(continuous_leviProj_hpgIncl k i t true).congr (fun _ => rfl)`. Conclude with `(h1.prodMk h2).congr (fun _ => rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_pgProj (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (i t : ℕ) : Continuous (pgProj k i t) := by
@@ -45,11 +45,9 @@ theorem continuous_pgProj (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
   exact (h1.prodMk h2).congr (fun _ => rfl)
 
 /- English proof (translation)
-Establish `hd : ∀ (n : ℕ) (s : ℂ), IsSmoothChar (detChar (Fin n) (absPow k s))` using `fun n s => IsSmoothChar.detChar (isSmoothChar_of_isUnram (isUnram_absPow k s))`. Establish `h1 : IsSmooth (mtw τ (↑(t + 1) / 2)).ρ`. Use `isSmooth_twist hτ ?_` and prove the remaining obligations. Unfold `dpowM dpow`. Unfold `IsSmoothChar`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Rewrite using `[← MonoidHom.comap_ker]`. Conclude with `IsOpen.preimage continuous_subtype_val (hd _ _)`. Establish `h2 : IsSmooth (σ.tw (-↑(i + 1 + 1) / 2)).ρ`. Unfold `GRep.tw`. Conclude with `isSmooth_twist hσ (by unfold dpow; exact hd _ _)`.
-
-Introduce `v`. Conclude with `(isSmooth_extTensor h1 h2 v).preimage (continuous_pgProj k (i + 1) (t + 1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_sigX {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {i t : ℕ} (τ : MRep k (i + 1)) (σ : GRep k (t + 1))
@@ -69,9 +67,9 @@ theorem isSmooth_sigX {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
   exact (isSmooth_extTensor h1 h2 v).preimage (continuous_pgProj k (i + 1) (t + 1))
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i t τ σ hτ hσ w`. Take `⟨O, hO, hOeq⟩` from `isOpen_induced_iff.1 (isSmooth_sigX τ σ hτ hσ w)`. Establish `h1 : (1 : HPG k (i + 1) (t + 1)) ∈ Subtype.val ⁻¹' O`. Rewrite using `[hOeq]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨O, hO.mem_nhds h1, fun h hh => ?_⟩` and prove the remaining obligations. Establish `hh' : h ∈ Subtype.val ⁻¹' O` using `hh`. Rewrite `hh'` using `[hOeq]`. Conclude with `hh'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigX_fix : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (w : τ.V ⊗[ℂ] σ.V),
   ∃ O ∈ nhds (1 : Mir k ((i + 1) + t + 1)), ∀ h : HPG k (i + 1) (t + 1), ((h : Mir k ((i + 1) + (t + 1))) ∈ O) → sigX τ σ h w = w := by

@@ -122,14 +122,14 @@ structure AbelianUnramifiedExtensionConditions : Prop where
 variable {X} in
 
 /- English proof (translation)
-The claim follows from `(even_iff_two_dvd).2 (dvd_trans (by norm_num) h.eight_dvd)`.
+A detailed English derivation is pending.
 -/
 theorem AbelianUnramifiedExtensionConditions.f_even (h : X.AbelianUnramifiedExtensionConditions) : Even X.f := (even_iff_two_dvd).2 (dvd_trans (by norm_num) h.eight_dvd)
 
 variable {X} in
 
 /- English proof (translation)
-Use `show 0 < Fintype.card X.Tau`. Rewrite using `[h.card_Tau]`. Conclude with `Module.finrank_pos`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ok.f_pos (h : X.Ok) : 0 < X.f := by
   show 0 < Fintype.card X.Tau
@@ -139,21 +139,21 @@ theorem Ok.f_pos (h : X.Ok) : 0 < X.f := by
 variable {X} in
 
 /- English proof (translation)
-The claim follows from `Nat.le_of_dvd h.ok.f_pos h.eight_dvd`.
+A detailed English derivation is pending.
 -/
 theorem AbelianUnramifiedExtensionConditions.eight_le_f (h : X.AbelianUnramifiedExtensionConditions) : 8 ≤ X.f := Nat.le_of_dvd h.ok.f_pos h.eight_dvd
 
 variable {X} in
 
 /- English proof (translation)
-The claim follows from `le_trans (by norm_num) h.eight_le_f`.
+A detailed English derivation is pending.
 -/
 theorem AbelianUnramifiedExtensionConditions.two_le_f (h : X.AbelianUnramifiedExtensionConditions) : 2 ≤ X.f := le_trans (by norm_num) h.eight_le_f
 
 variable {X} in
 
 /- English proof (translation)
-The claim follows from `dvd_trans (by norm_num) h.eight_dvd`.
+A detailed English derivation is pending.
 -/
 theorem AbelianUnramifiedExtensionConditions.four_dvd_f (h : X.AbelianUnramifiedExtensionConditions) : 4 ∣ X.f := dvd_trans (by norm_num) h.eight_dvd
 
@@ -173,7 +173,7 @@ structure Core : Prop where
 
 variable {X} in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.realF, h.rankE, h.star_F, h.conjE, h.cplxE, h.emb_star, h.card_Tau, h.emb_inj, h.emb_ne, h.emb_all, h.conjK, h.quad⟩`.
+Supply the required witnesses or components.
 -/
 theorem Ok.core (h : X.Ok) : X.Core := ⟨h.realF, h.rankE, h.star_F, h.conjE, h.cplxE, h.emb_star, h.card_Tau, h.emb_inj, h.emb_ne,
   h.emb_all, h.conjK, h.quad⟩
@@ -256,9 +256,9 @@ structure Ok : Prop where
 def PiGCong : Prop := ∀ i, ((Pr.cond : ℕ) : 𝓞 X.E) ∣ Pr.piG i - 1
 
 /- English proof (translation)
-Set `b` to `NumberField.RingOfIntegers.basis E`. Establish `hd` using `map_dvd (Algebra.norm ℤ) h`. Establish `e1 : ((c : ℕ) : 𝓞 E) = algebraMap ℤ (𝓞 E) (c : ℤ)` using `by simp`. Establish `e2 : ((n : ℤ) : 𝓞 E) = algebraMap ℤ (𝓞 E) n` using `by simp`. Rewrite `hd` using `[e1, e2, Algebra.norm_algebraMap_of_basis b, Algebra.norm_algebraMap_of_basis b]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 E)) ≠ 0`. Rewrite using `[← Module.finrank_eq_card_basis b]`. Conclude with `Module.finrank_pos.ne'`. Conclude with `(Int.pow_dvd_pow_iff hpos).1 hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_dvd_intCast {E : Type} [Field E] [NumberField E] {c : ℕ} {n : ℤ} (h : ((c : ℕ) : 𝓞 E) ∣ ((n : ℤ) : 𝓞 E)) :
     (c : ℤ) ∣ n := by
@@ -276,11 +276,11 @@ theorem natCast_dvd_intCast {E : Type} [Field E] [NumberField E] {c : ℕ} {n : 
 variable {Pr} in
 
 /- English proof (translation)
-Establish `hx` using `h i`. Establish `hc : ((Pr.cond : ℕ) : 𝓞 X.E) ∣ X.conjO (Pr.piG i) - 1`. Use `map_dvd X.conjO hx` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, map_natCast]`. Then use the resulting hypothesis. Establish `hg : ((Pr.cond : ℕ) : 𝓞 X.E) ∣ (((Pr.g i : ℤ) - 1 : ℤ) : 𝓞 X.E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `he : (((Pr.g i : ℤ) - 1 : ℤ) : 𝓞 X.E) = (Pr.piG i - 1) * X.conjO (Pr.piG i) + (X.conjO (Pr.piG i) - 1)`. Use `push_cast`. Rewrite using `[← hn i]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_add (dvd_mul_of_dvd_left hx _) hc`. Conclude with `(Nat.modEq_iff_dvd.2 (natCast_dvd_intCast hg)).symm`.
+A detailed English derivation is pending.
 -/
 theorem PiGCong.g_cong (h : Pr.PiGCong) (hn : ∀ i, Pr.piG i * X.conjO (Pr.piG i) = (Pr.g i : 𝓞 X.E)) (i : Fin 2) :
     Pr.g i ≡ 1 [MOD Pr.cond] := by
@@ -408,7 +408,7 @@ def shiftW {N : ℕ} (lam : DomWeight N) (c : ℤ) : DomWeight N where
     omega
 
 /- English proof (translation)
-Unfold `DomWeight.spread`. Use `split_ifs with h`. Simplify using `only [shiftW]`. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem spread_shiftW {N : ℕ} (lam : DomWeight N) (c : ℤ) : (shiftW lam c).spread = lam.spread := by
   unfold DomWeight.spread
@@ -531,7 +531,7 @@ namespace Sizes
 variable {X : Fields} {Pr : Primes X} {R : Ranks} {W : Wts X Pr.Word R} {a : ℝ}
 
 /- English proof (translation)
-Establish `h1` using `h.a_gt`. Establish `h2 : (0 : ℝ) ≤ ((2 * X.f * R.N R.m + 1 : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem a_pos (h : Sizes Pr W a) : 0 < a := by
   have h1 := h.a_gt
@@ -539,7 +539,7 @@ theorem a_pos (h : Sizes Pr W a) : 0 < a := by
   linarith
 
 /- English proof (translation)
-Establish `h1` using `h.a_gt`. Establish `h2` using `h.T_gt u`. Conclude with `h1.trans h2` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem T_big (h : Sizes Pr W a) (u : Pr.Word) : 2 * X.f * R.N R.m + 1 < Pr.T u := by
   have h1 := h.a_gt
@@ -547,7 +547,7 @@ theorem T_big (h : Sizes Pr W a) (u : Pr.Word) : 2 * X.f * R.N R.m + 1 < Pr.T u 
   exact_mod_cast h1.trans h2
 
 /- English proof (translation)
-Establish `h1` using `h.spread_le u j hj τ`. Rewrite `h1` using `[Wts.lamTrue, spread_shiftW]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem spread_le_N (h : Sizes Pr W a) (u : Pr.Word) (j : ℕ) (hj : j ≤ R.m) (τ : X.Tau) :
     ((W.lamN u j τ).spread : ℝ) ≤ 2 * a := by
@@ -555,7 +555,7 @@ theorem spread_le_N (h : Sizes Pr W a) (u : Pr.Word) (j : ℕ) (hj : j ≤ R.m) 
   rwa [Wts.lamTrue, spread_shiftW] at h1
 
 /- English proof (translation)
-Establish `h1` using `h.spread_le u j hj τ`. Establish `h2` using `h.T_gt u`. Establish `h3 : (2 * (W.lamTrue u j τ).spread : ℝ) < (Pr.T u : ℝ)` using `by linarith`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem two_spread_lt (h : Sizes Pr W a) (u : Pr.Word) (j : ℕ) (hj : j ≤ R.m) (τ : X.Tau) :
     2 * (W.lamTrue u j τ).spread < (Pr.T u : ℤ) := by
@@ -565,7 +565,7 @@ theorem two_spread_lt (h : Sizes Pr W a) (u : Pr.Word) (j : ℕ) (hj : j ≤ R.m
   exact_mod_cast h3
 
 /- English proof (translation)
-Establish `h1` using `h.spread_le_N u j hj τ`. Establish `h2` using `h.T_gt u`. Establish `h3` using `h.a_pos`. Establish `h4 : ((W.lamN u j τ).spread : ℝ) < (Pr.T u : ℝ)` using `by linarith`. Conclude with `h4` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem T_spread (h : Sizes Pr W a) (u : Pr.Word) (j : ℕ) (hj : j ≤ R.m) (τ : X.Tau) :
     (W.lamN u j τ).spread < (Pr.T u : ℤ) := by
@@ -576,7 +576,7 @@ theorem T_spread (h : Sizes Pr W a) (u : Pr.Word) (j : ℕ) (hj : j ≤ R.m) (τ
   exact_mod_cast h4
 
 /- English proof (translation)
-Establish `h1` using `h.spread_le u j hj τ`. Establish `h2` using `h.T_gt u`. Establish `h3` using `h.a_pos`. Establish `h4 : ((W.lamTrue u j τ).spread : ℝ) < (Pr.T u : ℝ)` using `by linarith`. Conclude with `h4` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem T_spread_true (h : Sizes Pr W a) (u : Pr.Word) (j : ℕ) (hj : j ≤ R.m) (τ : X.Tau) :
     (W.lamTrue u j τ).spread < (Pr.T u : ℤ) := by
@@ -589,7 +589,7 @@ theorem T_spread_true (h : Sizes Pr W a) (u : Pr.Word) (j : ℕ) (hj : j ≤ R.m
 end Sizes
 
 /- English proof (translation)
-Use `show 2 ≤ R.k + R.m * (R.t + 1)`. Use `R.m_add_three_le_k` as an intermediate fact. Conclude with `le_add_right (by omega)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem two_le_N (R : Ranks) : 2 ≤ R.N R.m := by
   show 2 ≤ R.k + R.m * (R.t + 1)
@@ -633,7 +633,7 @@ structure Dat.Ok (D : Dat) : Prop where
   sizes : Sizes D.Pr D.W D.a
 
 /- English proof (translation)
-Use `(Polynomial.nthRoots n a).toFinset.finite_toSet.subset ?_` and prove the remaining obligations. Introduce `z hz`. Simplify using `only [Finset.mem_coe, Multiset.mem_toFinset, Polynomial.mem_nthRoots hn]`. Conclude with `hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_pow_eq (n : ℕ) (hn : 0 < n) (a : Qb) : {z : Qb | z ^ n = a}.Finite := by
   classical
@@ -643,26 +643,26 @@ theorem finite_pow_eq (n : ℕ) (hn : 0 < n) (a : Qb) : {z : Qb | z ^ n = a}.Fin
   exact hz
 
 /- English proof (translation)
-Use `haveI : Finite S := hS.to_subtype`. Conclude with `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`.
+A detailed English derivation is pending.
 -/
 theorem fin_adjoin {S : Set Qb} (hS : S.Finite) : FiniteDimensional ℚ (adjoin ℚ S) := by
   haveI : Finite S := hS.to_subtype
   exact IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x
 
 /- English proof (translation)
-The claim follows from `IntermediateField.normal_iff_forall_map_le'.2 h`.
+A detailed English derivation is pending.
 -/
 theorem normal_of_map_le (L : Fld) (h : ∀ s : Qb ≃ₐ[ℚ] Qb, L.map (s : Qb →ₐ[ℚ] Qb) ≤ L) : Normal ℚ L := IntermediateField.normal_iff_forall_map_le'.2 h
 
 /- English proof (translation)
-The claim follows from `IntermediateField.normal_iff_forall_map_le'.1 hL s`.
+A detailed English derivation is pending.
 -/
 theorem map_le_of_normal (L : Fld) [hL : Normal ℚ L] (s : Qb ≃ₐ[ℚ] Qb) : L.map (s : Qb →ₐ[ℚ] Qb) ≤ L := IntermediateField.normal_iff_forall_map_le'.1 hL s
 
 /- English proof (translation)
-Apply `normal_of_map_le` to reduce the goal to its premises. Introduce `s`. Rewrite using `[IntermediateField.adjoin_map]`. Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨y, hy, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `IntermediateField.subset_adjoin ℚ S (hS s y hy)`.
+A detailed English derivation is pending.
 -/
 theorem normal_adjoin {S : Set Qb} (hS : ∀ (s : Qb ≃ₐ[ℚ] Qb), ∀ x ∈ S, s x ∈ S) : Normal ℚ (adjoin ℚ S) := by
   apply normal_of_map_le
@@ -673,9 +673,9 @@ theorem normal_adjoin {S : Set Qb} (hS : ∀ (s : Qb ≃ₐ[ℚ] Qb), ∀ x ∈ 
   exact IntermediateField.subset_adjoin ℚ S (hS s y hy)
 
 /- English proof (translation)
-Establish `e : (L ⊔ M : Fld) = IntermediateField.adjoin ℚ ((L : Set Qb) ∪ (M : Set Qb))`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `sup_le (fun x hx => IntermediateField.subset_adjoin ℚ _ (Or.inl hx)) (fun x hx => IntermediateField.subset_adjoin ℚ _ (Or.inr hx))`. Conclude with `IntermediateField.adjoin_le_iff.2 (Set.union_subset (fun x hx => (le_sup_left : L ≤ L ⊔ M) hx) (fun x hx => (le_sup_right : M ≤ L ⊔ M) hx))`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `normal_adjoin fun s x hx => ?_` and prove the remaining obligations. Break down `hx with h | h` into its components or cases. Conclude with `Or.inl (map_le_of_normal L s ((IntermediateField.mem_map _).2 ⟨x, h, rfl⟩))`. Conclude with `Or.inr (map_le_of_normal M s ((IntermediateField.mem_map _).2 ⟨x, h, rfl⟩))`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem normal_sup' (L M : Fld) [Normal ℚ L] [Normal ℚ M] : Normal ℚ (L ⊔ M : Fld) := by
   have e : (L ⊔ M : Fld) = IntermediateField.adjoin ℚ ((L : Set Qb) ∪ (M : Set Qb)) := by
@@ -718,13 +718,13 @@ instance fin_FQ (e q d : ℕ) : FiniteDimensional ℚ (FQ e q d) := by
   unfold FQ; infer_instance
 
 /- English proof (translation)
-Unfold `FQ EQ`. Apply `sup_le_sup_right` to reduce the goal to its premises. Unfold `sqQ`. Rewrite using `[adjoin_le_iff]`. Introduce `z hz`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha⟩` from `IsAlgClosed.exists_pow_nat_eq ((-(q : ℤ) : ℤ) : Qb) (n := 2) (by norm_num)`. Take `⟨b, hb⟩` from `IsAlgClosed.exists_pow_nat_eq ((-(d : ℤ) : ℤ) : Qb) (n := 2) (by norm_num)`. Establish `haE : a ∈ biquadraticField q d` using `(le_sup_left : sqQ (-(q : ℤ)) ≤ biquadraticField q d) (subset_adjoin ℚ _ ha)`. Establish `hbE : b ∈ biquadraticField q d` using `(le_sup_right : sqQ (-(d : ℤ)) ≤ biquadraticField q d) (subset_adjoin ℚ _ hb)`. Establish `hz2 : z ^ 2 = (a * b) ^ 2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_pow, ha, hb, show z ^ 2 = (((q : ℤ) * (d : ℤ) : ℤ) : Qb) from hz]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hz2 with h | h` into its components or cases. Rewrite using `[h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem haE hbE`. Rewrite using `[h]`. Conclude with `neg_mem (mul_mem haE hbE)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FQ_le_EQ (e q d : ℕ) : FQ e q d ≤ EQ e q d := by
   unfold FQ EQ

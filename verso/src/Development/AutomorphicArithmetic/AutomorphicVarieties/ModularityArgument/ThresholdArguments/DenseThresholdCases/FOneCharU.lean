@@ -17,21 +17,19 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Z.J
 attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing
 /- English proof (translation)
-Take `⟨D⟩` from `exists_dat hG`. Take `⟨g₁, hM, hFin, hB, hW⟩` from `hA Ω K l c N e ψ D he ι`. Take `⟨U⟩` from `exists_uLoc hC D`. Take `⟨S⟩` from `exists_ring hC D U g₁ hM`. Take `⟨M⟩` from `exists_model hC hLP D hM S`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmult : ∀ f : S.R →ₐ[c.O] PadicAlgCl l, HasMult D.η (push f S.r.hom)` using `fun f g => S.r.hasMult g`. Set `ρ : (S.R →ₐ[c.O] PadicAlgCl l) → (G K Ω →* GL (Fin 3) (Qbar l))` to `fun f => D.rhoK (push f S.r.hom) (hmult f)`. Establish `hσ : D.η (galEmb ℚ K Ω σ) = 1`. Rewrite using `[← MonoidHom.mem_ker, D.η_ker]`. Conclude with `galEmb_mem ℚ K Ω σ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htr : ∀ f, trDiff D.η D.Ψ S.r.hom (galEmb ℚ K Ω σ) f = (ρ f σ : Matrix (Fin 3) (Fin 3) (Qbar l)).trace - t`. Introduce `f`. Rewrite using `[trDiff, trace_reducible_three_dim, ht]`. Use `congr 1`. Conclude with `AddMonoidHom.map_trace (f : S.R →+* PadicAlgCl l) _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hadm : ∀ f, TwoPt D.η S.r.hom f → _root_.UpperTheory.V.Z.J.Adm3U_s ι e N (ρ f) ∨ _root_.UpperTheory.V.Z.Win.Dn.Adm2A ι e (N * (discr K).natAbs) (ρ f)`. Introduce `f hf`. Establish `hp` using `isPt_push D hM S f hf.1`. Break down `(twoPt_shape S hG.l_odd hM f hf).1 with h | h` into its components or cases. Conclude with `Or.inl (hAd D hM S f hf.1 (hmult f) ι h (hB U S _ _ _ (isPush_push f _) h))`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inr (_root_.UpperTheory.GalN.V.adm2B_rhoK_of_typeII_of_modular_extensions hC D hM hp ι h (hW U S _ _ (isPush_push f _) h (typeII_facts hC D hM hp h).1))`. Take `⟨hlen, T, hT, hTo, hle⟩` from `model_upper S M hG.l_odd hM hLM (hFin U S) (_root_.UpperTheory.V.Z.J.ptHyp_of_autB_of_lemW_of_isBase hC hK hRI hRII D hM S ι hB hW M.x₀ M.base) (galEmb ℚ K Ω σ) hσ fun f hf => by rw [htr]; exact sub_ne_zero.2 (hne _ (hadm f hf))`. Establish `hV` using `vlen_le hC hLM' D hM S M`. Establish `hinj : ∀ f ∈ T, ∀ f' ∈ T, Af.RepIso (ρ f) (ρ f') → f = f'`. Introduce and unpack `f hf f' hf' ⟨g, hg⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨s, hs⟩` from `(twoPt_shape S hG.l_odd hM f (hT.1 f hf)).2 f' (hT.1 f' hf').1 ⟨g, fun x hx => by`. Rewrite `hx` using `[D.η_ker, ← range_galEmb]`. Take `⟨y, rfl⟩` from `hx`. Conclude with `(congrArg Units.val (eq_mul_inv_iff_mul_eq.1 (hg y))).symm⟩`. Conclude with `hTo f hf f' hf' s hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨ne_top_of_le_ne_top hlen hV, T.image ρ, fun x hx => ?_, fun x hx x' hx' h => ?_, ?_⟩` and prove the remaining obligations. Take `⟨f, hf, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `hadm f (hT.1 f hf)`. Take `⟨f, hf, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨f', hf', rfl⟩` from `Finset.mem_image.1 hx'`.
-
-Rewrite using `[hinj f hf f' hf' h]`. Rewrite using `[Finset.sum_image fun f hf f' hf' h => hinj f hf f' hf' ⟨1, fun s => by rw [h, one_mul, inv_one, mul_one]⟩]`. Simplify using `only [← htr]`. Conclude with `(Chr.nrm_mono l hV hlen).trans hle`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem oneChar_unramU (hC : U3.CohInp) (hLM : LemmaM) (hLM' : LemmaM') (hLP : LemmaP) (hK : _root_.UpperTheory.V.Z.Kato.WeilSphericalRecords.KatoTwoW)
     (hRI : _root_.UpperTheory.V.Th.RigidityFirstCase) (hRII : _root_.UpperTheory.V.Th.RigiditySecondCase) (hAd : _root_.UpperTheory.V.Z.J.AdmI_s) (hA : _root_.UpperTheory.V.Aut.AutomorphyUnramifiedCoefficientsAlt)
@@ -90,13 +88,11 @@ private theorem oneChar_unramU (hC : U3.CohInp) (hLM : LemmaM) (hLM' : LemmaM') 
     simp only [← htr]
     exact (Chr.nrm_mono l hV hlen).trans hle
 /- English proof (translation)
-Introduce `hC hLM hLM' hLP hK hRI hRII hAd hA Ω _ _ _ K _ _ _ _ _ l _ c N _ e ψ hG ι σ t ht hne`. Take `⟨c', ψ', he, hψ⟩` from `exists_unram c ψ hG.ord`. Establish `h1 : chHom c.O.val.toRingHom ψ = chHom c'.O.val.toRingHom ψ'` using `MulChar.ext fun a => hψ a`. Establish `hG' : GD Ω K l e ψ'` using `(gd_chHom c'.O.val.toRingHom Subtype.val_injective ψ').1 (h1 ▸ (gd_chHom c.O.val.toRingHom Subtype.val_injective ψ).2 hG)`. Take `⟨h2, h3⟩` from `coefIndep Ω l c c' N e ψ ψ' hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h4 : ∀ g, Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (Chr.Psi l e (Chr.dirG ℚ Ω ψ) g) = Units.map (algebraMap c'.O (PadicAlgCl l)).toMonoidHom (Chr.Psi l e (Chr.dirG ℚ Ω ψ') g)`. Introduce `g`. Simplify using `only [Chr.Psi, MonoidHom.mul_apply, MonoidHom.zpow_apply, map_mul, map_zpow]`. Use `congr 1`. Conclude with `Units.ext (hψ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h5` using `congrArg Units.val (h4 (galEmb ℚ K Ω σ))`. Establish `h6` using `congrArg (fun u : (PadicAlgCl l)ˣ => (u⁻¹).val) (h4 (galEmb ℚ K Ω σ))`. Rewrite using `[Ne, h2, h3]`. Use `oneChar_unramU hC hLM hLM' hLP hK hRI hRII hAd hA Ω K l c' N e ψ' he hG' ι σ t ?_ hne` and prove the remaining obligations. Rewrite using `[ht, map_add, map_add, map_add, map_add, map_one, map_one]`.
-
-Conclude with `congrArg₂ (· + ·) (congrArg (· + 1) h5) h6`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.oneCharU_of_katoTwoW_rig_admI_automorphy :
     U3.CohInp → LemmaM → LemmaM' → LemmaP → _root_.UpperTheory.V.Z.Kato.WeilSphericalRecords.KatoTwoW → _root_.UpperTheory.V.Th.RigidityFirstCase → _root_.UpperTheory.V.Th.RigiditySecondCase → _root_.UpperTheory.V.Z.J.AdmI_s → _root_.UpperTheory.V.Aut.AutomorphyUnramifiedCoefficientsAlt → _root_.UpperTheory.V.Z.J.OneCharU_s := by

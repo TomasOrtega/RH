@@ -4,13 +4,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Establish `hz` using `IsCyclotomicExtension.zeta_spec m ℚ K`. Establish `key : ((sg N C a : C →ₐ[ℚ] C)).comp i = i.comp (sg m K (ZMod.unitsMap h a) : K →ₐ[ℚ] K)`. Apply `(hz.powerBasis ℚ).algHom_ext` to reduce the goal to its premises. Rewrite using `[IsPrimitiveRoot.powerBasis_gen]`. Use `set z := IsCyclotomicExtension.zeta m ℚ K`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : z ^ m = 1` using `hz.pow_eq_one`. Establish `h2 : (i z) ^ m = 1` using `by rw [← map_pow, h1, map_one]`. Establish `h3 : (i z) ^ N = 1`. Take `⟨k, rfl⟩` from `h`. Rewrite using `[pow_mul, h2, one_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `sg N C a (i z) = i (sg m K (ZMod.unitsMap h a) z)`. Rewrite using `[sg_apply N C a h3, sg_apply m K _ h1, map_pow]`. Establish `: ((ZMod.unitsMap h a : (ZMod m)ˣ) : ZMod m).val = (a : ZMod N).val % m`. Rewrite using `[ZMod.unitsMap_val, ZMod.cast_eq_val, ZMod.val_natCast]`. Rewrite using `[this]`.
-
-Conclude with `pow_eq_pow_mod _ h2`. Conclude with `DFunLike.congr_fun key x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.FW.relCyc_compat {m N : ℕ} [NeZero m] [NeZero N] (h : m ∣ N) (K : Type) [Field K] [NumberField K]
     [IsCyclotomicExtension {m} ℚ K] (C : Type) [Field C] [NumberField C] [IsCyclotomicExtension {N} ℚ C]
@@ -35,29 +33,25 @@ private theorem UpperTheory.V.FW.relCyc_compat {m N : ℕ} [NeZero m] [NeZero N]
   exact DFunLike.congr_fun key x
 
 /- English proof (translation)
-Introduce `l f e n _ h F _ _ _ L _ _ _ hfl`. Establish `hM : 0 < f * l ^ n` using `NeZero.pos _`. Establish `hM0 : 0 < f * l ^ e` using `Nat.pos_of_dvd_of_pos h hM`. Use `haveI : NeZero (f * l ^ e) := ⟨hM0.ne'⟩`. Establish `hf : 0 < f` using `Nat.pos_of_mul_pos_right hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hln : 0 < l ^ n` using `Nat.pos_of_mul_pos_left hM`. Use `haveI : NeZero (l ^ n) := ⟨hln.ne'⟩`. Establish `hζ` using `IsCyclotomicExtension.zeta_spec (f * l ^ n) ℚ L`. Use `set ζ := IsCyclotomicExtension.zeta (f * l ^ n) ℚ L`. Establish `hz` using `IsCyclotomicExtension.zeta_spec (f * l ^ e) ℚ F`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set z := IsCyclotomicExtension.zeta (f * l ^ e) ℚ F with hzdef`. Take `⟨k, hk⟩` from `id h`. Establish `hk' : l ^ n = k * l ^ e`. Apply `Nat.eq_of_mul_eq_mul_left hf` to reduce the goal to its premises. Rewrite using `[hk]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i : F →ₐ[ℚ] L, i z = ζ ^ k := by`. Establish `hξ : IsPrimitiveRoot (ζ ^ k) (f * l ^ e)` using `hζ.pow hM (by rw [hk, mul_comm])`. Use `⟨(hz.powerBasis ℚ).lift (ζ ^ k) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsPrimitiveRoot.powerBasis_gen, ← Polynomial.cyclotomic_eq_minpoly_rat hz hM0, Polynomial.cyclotomic_eq_minpoly_rat hξ hM0]`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `minpoly.aeval ℚ _`. Conclude with `(congrArg _ (IsPrimitiveRoot.powerBasis_gen ℚ hz).symm).trans ((hz.powerBasis ℚ).lift_gen (ζ ^ k) _)`. Use `letI : Algebra F L := i.toRingHom.toAlgebra`. Establish `hal : ∀ x, algebraMap F L x = i x` using `fun _ => rfl`. Use `⟨this, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hη : IsPrimitiveRoot (ζ ^ f) (l ^ n)` using `hζ.pow hM rfl`. Rewrite using `[IsCyclotomicExtension.iff_singleton]`. Use `⟨⟨_, hη⟩, fun x => ?_⟩` and prove the remaining obligations. Use `set A := Algebra.adjoin F {b : L | b ^ l ^ n = 1}`. Establish `h1 : ζ ^ f ∈ A` using `Algebra.subset_adjoin hη.pow_eq_one`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ζ ^ l ^ n ∈ A`. Rewrite using `[hk', pow_mul, ← hi, ← hal]`. Conclude with `A.pow_mem (A.algebraMap_mem z) _`. Establish `h3 : ζ ∈ A`. Establish `hc : Nat.Coprime f (l ^ n)` using `hfl.pow_right n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hc' : Nat.Coprime (f + l ^ n) (f * l ^ n)` using `Nat.Coprime.mul_right (by simpa using hc.symm) (by simpa using hc)`. Take `⟨a, -, ha⟩` from `(hζ.pow_of_coprime _ hc').eq_pow_of_pow_eq_one hζ.pow_eq_one`. Rewrite using `[← ha, pow_add]`. Conclude with `A.pow_mem (A.mul_mem h1 h2) a`. Establish `h4 : Algebra.adjoin ℚ {ζ} = ⊤` using `IsCyclotomicExtension.adjoin_primitive_root_eq_top hζ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h5 : x ∈ Algebra.adjoin ℚ {ζ}` using `h4 ▸ Algebra.mem_top`. Establish `h6 : Algebra.adjoin ℚ {ζ} ≤ A.restrictScalars ℚ` using `Algebra.adjoin_le (by simpa using h3)`. Conclude with `h6 h5`. Introduce `σ`. Take `⟨t, ht⟩` from `(sg (f * l ^ n) L).surjective (σ.restrictScalars ℚ)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨t, ?_, by rw [ht]; rfl⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, ← map_eq_one_iff _ (sg (f * l ^ e) F).injective]`. Use extensionality with `y`. Apply `i.injective` to reduce the goal to its premises. Use `relCyc_compat h F L i t y` as an intermediate fact.
-
-Rewrite `this` using `[ht]`. Conclude with `this.symm.trans (σ.commutes y)`. Introduce `t ht`. Use `⟨{ (sg (f * l ^ n) L t).toRingEquiv with commutes' := fun y => ?_ }, rfl⟩` and prove the remaining obligations. Use `relCyc_compat h F L i t y` as an intermediate fact.
-
-Rewrite `this` using `[MonoidHom.mem_ker.1 ht, map_one]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.relCyc :
     ∀ (l f e n : ℕ) [NeZero (f * l ^ n)] (h : f * l ^ e ∣ f * l ^ n) (F : Type) [Field F] [NumberField F] [IsCyclotomicExtension {f * l ^ e} ℚ F] (L : Type) [Field L] [NumberField L] [IsCyclotomicExtension {f * l ^ n} ℚ L], f.Coprime l → ∃ _ : Algebra F L, IsCyclotomicExtension {l ^ n} F L ∧ (∀ σ : Gal(L/F), ∃ t ∈ (ZMod.unitsMap h).ker, σ.toRingEquiv = (sg (f * l ^ n) L t).toRingEquiv) ∧ ∀ t ∈ (ZMod.unitsMap h).ker, ∃ σ : Gal(L/F), σ.toRingEquiv = (sg (f * l ^ n) L t).toRingEquiv := by

@@ -18,9 +18,9 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Subgroup.mem_pointwise_smul_iff_inv_smul_mem]`. Simplify using `only [MulAut.smul_def, MulAut.conj_inv_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `H.mul_mem (H.mul_mem hh hx) (H.inv_mem hh)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce `hx`. Conclude with `H.mul_mem (H.mul_mem (H.inv_mem hh) hx) hh`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem volSt_conj_self {G : Type} [Group G] (H : Subgroup G) {h : G} (hh : h ∈ H) :
     MulAut.conj h • H = H := by
@@ -35,7 +35,7 @@ theorem volSt_conj_self {G : Type} [Group G] (H : Subgroup G) {h : G} (hh : h �
     exact H.mul_mem (H.mul_mem (H.inv_mem hh) hx) hh
 
 /- English proof (translation)
-Rewrite using `[Subgroup.smul_inf, volSt_conj_self H hh]`. Use `congr 1`. Use extensionality with `g`. Rewrite using `[Subgroup.mem_pointwise_smul_iff_inv_smul_mem]`. Simplify using `only [MulAut.smul_def, MulAut.conj_inv_apply, MulAction.mem_stabilizer_iff, mul_smul, inv_smul_eq_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem volSt_inf_stab_smul {G X : Type} [Group G] [MulAction G X] (H : Subgroup G) {h : G} (hh : h ∈ H)
     (x : X) : H ⊓ MulAction.stabilizer G (h • x) = MulAut.conj h • (H ⊓ MulAction.stabilizer G x) := by
@@ -47,25 +47,23 @@ theorem volSt_inf_stab_smul {G X : Type} [Group G] [MulAction G X] (H : Subgroup
     inv_smul_eq_iff]
 
 /- English proof (translation)
-Take `⟨Λ1, hΛ1, hK0, -⟩` from `GlobalTheory.T.exists_lattice_stabilizer_normalising_subgroup L r k S 1 S.N.one_mem 1 S.N'.one_mem`. Establish `hK : S.K0 = S.St ⊓ stabL L Λ1` using `hK0.symm`. Establish `hc : ∀ Λ, IsLat L Λ → S.K0.relIndex (S.St ⊓ stabL L Λ) ≠ 0 ∧ (S.St ⊓ stabL L Λ).relIndex S.K0 ≠ 0`. Introduce `Λ hΛ`. Rewrite using `[hK]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L Λ Λ1 hΛ hΛ1 S.St).1, (GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L Λ1 Λ hΛ1 hΛ S.St).1⟩`. Establish `hconj : ∀ h ∈ S.St, S.K0.relIndex (MulAut.conj h • S.K0) ≠ 0 ∧ (MulAut.conj h • S.K0).relIndex S.K0 ≠ 0`. Introduce `h hh`. Establish `e : MulAut.conj h • S.K0 = S.St ⊓ stabL L (h • Λ1)`. Rewrite using `[hK]`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(volSt_inf_stab_smul S.St hh Λ1).symm`. Rewrite using `[e]`. Conclude with `hc _ ((GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L Λ1 Λ1 hΛ1 hΛ1 S.St).2 h).1`. Establish `hle : S.K0 ≤ S.St` using `by rw [hK]; exact inf_le_left`. Establish `hmod` using `(GlobalTheory.T.haarInvVolume_conj_modular_character S.St S.K0 hle hconj).2.2.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hone : ∀ h ∈ S.St, invVol S.K0 (MulAut.conj h • S.K0) = 1`. Introduce `h hh`. Take `⟨Λ, hΛ, hs⟩` from `GlobalTheory.T.unipotent_stabilizes_some_lattice L h _ (GlobalTheory.T.pow_eq_zero_of_mem_hermitianFrameUnipotent L r k S h hh.1)`. Conclude with `(hmod _ (hc Λ hΛ).1 (hc Λ hΛ).2 h hh).2 (volSt_conj_self _ ⟨hh, hs⟩)`. Establish `hinv : ∀ K' : Subgroup S.GLV, S.K0.relIndex K' ≠ 0 → K'.relIndex S.K0 ≠ 0 → ∀ h ∈ S.St, invVol S.K0 (MulAut.conj h • K') = invVol S.K0 K'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `K' h1 h2 h hh`. Rewrite using `[(hmod K' h1 h2 h hh).1, hone h hh, one_mul]`. Use `⟨fun Λ hΛ => ⟨(hc Λ hΛ).1, (hc Λ hΛ).2, fun h hh => ?_⟩, ?_⟩` and prove the remaining obligations. Unfold `Frames.mu`. Rewrite using `[volSt_inf_stab_smul S.St hh Λ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hinv _ (hc Λ hΛ).1 (hc Λ hΛ).2 h hh`. Introduce and unpack `C ⟨n, hn, n', hn', hC⟩`. Take `⟨Λ, hΛ, e1, e2, e3⟩` from `GlobalTheory.T.exists_lattice_stabilizer_normalising_subgroup L r k S n hn n' hn'`. Rewrite `e2`, `e3` using `[← hC]`. Take `⟨⟨K, hKm, hKi, -⟩, -⟩` from `GlobalTheory.T.congruence_subgroup_lattice_stabilizer L S.ϖ S.ϖ_irr Λ hΛ 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : S.K0.relIndex (S.St ⊓ MulAction.stabilizer S.GLV C) ≠ 0` using `fun h0 => (hc Λ hΛ).1 (Subgroup.relIndex_eq_zero_of_le_right e2 h0)`. Establish `b1 : K.relIndex (S.St ⊓ stabL L Λ) ≠ 0` using `fun h0 => hKi (Subgroup.relIndex_eq_zero_of_le_right inf_le_right h0)`. Establish `b2 : (K ⊓ (S.St ⊓ stabL L Λ)) ≤ S.St ⊓ MulAction.stabilizer S.GLV C` using `fun g hg => ⟨hg.2.1, e3 g hg.2 ((hKm g).1 hg.1).2⟩`. Establish `b3 : (S.St ⊓ MulAction.stabilizer S.GLV C).relIndex (S.St ⊓ stabL L Λ) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.relIndex_eq_zero_of_le_left b2 h0` as an intermediate fact. Rewrite `this` using `[Subgroup.inf_relIndex_right]`. Conclude with `b1 this`. Establish `a2 : (S.St ⊓ MulAction.stabilizer S.GLV C).relIndex S.K0 ≠ 0` using `Subgroup.relIndex_ne_zero_trans b3 (hc Λ hΛ).2`. Use `⟨a1, a2, ?_, fun h hh => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨h, hh, hw, -⟩` from `GlobalTheory.T.latticeStabilizer_inf_le_conj_normalisingSubgroup L r k S n hn`. Establish `c1 : S.St ⊓ MulAction.stabilizer S.GLV C ≤ MulAut.conj h • S.K0` using `e2.trans (e1.le.trans (inf_le_left.trans hw))`. Establish `c2` using `(invVol_mul_pos_le_conj S.K0 (MulAut.conj h • S.K0) _ (hconj h hh).1 (hconj h hh).2 a1 a2).2.2.1 c1`. Establish `c3` using `Subgroup.relIndex_ne_zero_trans a2 (hconj h hh).1`. Unfold `Frames.wC`.
-
-Rewrite using `[c2, hone h hh, one_mul]`. Conclude with `Nat.one_le_iff_ne_zero.2 c3` after adjusting the coercions. Unfold `Frames.wC`. Rewrite using `[volSt_inf_stab_smul S.St hh C]`. Conclude with `hinv _ a1 a2 h hh`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volSt {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E)

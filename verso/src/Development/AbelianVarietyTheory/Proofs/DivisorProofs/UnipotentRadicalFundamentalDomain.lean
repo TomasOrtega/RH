@@ -15,9 +15,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.StdPar
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ r X Y hW S`. Use `haveI : LocallyCompactSpace (unip σ J X S) := (isClosed_unip S h hJ hW).locallyCompactSpace`. Establish `hc` using `GlobalTheory.T.cocompact_standardParabolicUnipotentRadical_wittFrame F E σ h n J hJ r X Y hW S`. Establish `hd` using `GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom ((ratPts σ J).subgroupOf (unip σ J X S)) (Measure.haar : Measure (unip σ J X S))`. Establish `h0 : (Measure.haar : Measure (unip σ J X S)) (GlobalTheory.AutomorphicL2Unitary.stdDom _) ≠ 0` using `hd.measure_ne_zero (NeZero.ne _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : (Measure.haar : Measure (unip σ J X S)) (GlobalTheory.AutomorphicL2Unitary.stdDom _) ≠ ⊤` using `hc.measure_ne_top hd`. Use `⟨((Measure.haar : Measure (unip σ J X S)) (GlobalTheory.AutomorphicL2Unitary.stdDom _))⁻¹ • Measure.haar, GlobalTheory.AutomorphicL2Unitary.stdDom _, Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 ht) (ENNReal.inv_ne_top.2 h0), GlobalTheory.AutomorphicL2Unitary.isFundamental …` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel h0 ht]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_haar_fundamentalDomain_mass_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E),

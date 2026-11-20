@@ -4,7 +4,7 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.SP
 
 /- English proof (translation)
-The claim follows from `wrOrd_of_minor minorFormula`.
+A detailed English derivation is pending.
 -/
 theorem wrOrd : PositivityTheory.SiegelWeilFormula.Gen.WROrd := wrOrd_of_minor minorFormula
 

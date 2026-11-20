@@ -18,7 +18,7 @@ def hermLin {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (v w : Fin n → ℂ) :
   map_smul' c M := by simp [herm, Matrix.smul_mulVec, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Establish `h : HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) X 0` using `hasDerivAt_iff_tendsto_slope.2 (Formalism.REAL.tendsto_slope_exp_smul X)`. Conclude with `(((LinearMap.toContinuousLinearMap (hermLin H v w)).restrictScalars ℝ).hasFDerivAt).comp_hasDerivAt (0 : ℝ) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem herm_exp_hasDeriv {n : ℕ} (H X : Matrix (Fin n) (Fin n) ℂ) (v w : Fin n → ℂ) :
     HasDerivAt (fun t : ℝ => herm H (NormedSpace.exp ((t : ℂ) • X) *ᵥ v) w) (herm H (X *ᵥ v) w) 0 := by
@@ -28,7 +28,7 @@ theorem herm_exp_hasDeriv {n : ℕ} (H X : Matrix (Fin n) (Fin n) ℂ) (v w : Fi
     (0 : ℝ) h
 
 /- English proof (translation)
-Establish `h : Xᴴ * H = -(H * X)` using `eq_neg_of_add_eq_zero_left hX`. Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h, Matrix.neg_mulVec, dotProduct_neg]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_skew {n : ℕ} {H X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ * H + H * X = 0) (v w : Fin n → ℂ) :
     herm H v (X *ᵥ w) = -herm H (X *ᵥ v) w := by
@@ -38,9 +38,9 @@ theorem herm_skew {n : ℕ} {H X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ * H + 
     Matrix.neg_mulVec, dotProduct_neg]
 
 /- English proof (translation)
-Establish `h1` using `dOp_hasDeriv hπt.1 hπt.2 hX`. Establish `h2` using `dOp_hasDeriv hπ.1 hπ.2 hX`. Establish `h3 : HasDerivAt (fun t : ℝ => πt (NormedSpace.exp ((t : ℂ) • X)) y c) (dOp πt X y c) 0` using `(((PiLp.proj (𝕜 := ℂ) 2 (fun _ : Fin k => V) c).comp (ContinuousLinearMap.apply ℂ _ y)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Establish `h4 : ∀ d, HasDerivAt (fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • X)) (y d)) (dOp π X (y d)) 0` using `fun d => ((ContinuousLinearMap.apply ℂ V (y d)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h2`. Establish `h5` using `HasDerivAt.fun_sum (u := Finset.univ) fun d _ => (herm_exp_hasDeriv (Hpk k r) X (B d) (B c)).star.fun_smul (h4 d)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : (fun t : ℝ => πt (NormedSpace.exp ((t : ℂ) • X)) y c) = fun t : ℝ => ∑ d, star (herm (Hpk k r) (NormedSpace.exp ((t : ℂ) • X) *ᵥ B d) (B c)) • π (NormedSpace.exp ((t : ℂ) • X)) (y d)` using `funext fun t => h _ (exp_uw hX t) y c`. Rewrite `h3` using `[h6]`. Rewrite using `[h3.unique h5, Finset.sum_add_distrib]`. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, Matrix.one_mulVec, hπ.1.1, hB.2.1, Qx2.herm_star, herm_skew hX.1.1]`. Simplify using `[hermLin, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dOp_tensor {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] {k r : ℕ}
     {z : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (V →L[ℂ] V)} {B : Fin k → (Fin (2 * r + k + 1) → ℂ)}
@@ -68,13 +68,13 @@ theorem dOp_tensor {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [
   simp [hermLin, sub_eq_add_neg]
 
 /- English proof (translation)
-Introduce `V _ _ _ k r z π B πt _ _ hπ hπt hB h a b y c`. Establish `hl` using `frame_lie hB a b`. Establish `e1` using `dOp_tensor hπ hπt hB h hl.1 y c`. Establish `e2` using `dOp_tensor hπ hπt hB h hl.2 y c`. Establish `e3 : ∑ d, hermLin (Hpk k r) (B c) (B d) (hpart1 (Hpk k r) (unitB (Hpk k r) B a b)) • y d + Complex.I • ∑ d, hermLin (Hpk k r) (B c) (B d) (hpart2 (Hpk k r) (unitB (Hpk k r) B a b)) • y d = if c = b then y a else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.smul_sum, ← Finset.sum_add_distrib]`. Establish `e4 : ∀ d, hermLin (Hpk k r) (B c) (B d) (hpart1 (Hpk k r) (unitB (Hpk k r) B a b)) • y d + Complex.I • hermLin (Hpk k r) (B c) (B d) (hpart2 (Hpk k r) (unitB (Hpk k r) B a b)) • y d = if a = d then (if c = b then y d else 0) else 0`. Introduce `d`. Rewrite using `[smul_smul, ← add_smul, ← smul_eq_mul Complex.I, ← map_smul, ← map_add, LieListProducts.hsum]`. Establish `e5 : hermLin (Hpk k r) (B c) (B d) (unitB (Hpk k r) B a b) = herm (Hpk k r) (B c) (B b) * herm (Hpk k r) (B a) (B d)` using `by show herm (Hpk k r) (unitB (Hpk k r) B a b *ᵥ B c) (B d) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Qx8.unitB_mulVec]`. Simplify using `[herm, Matrix.mulVec_smul]`. Rewrite using `[e5, hB.2.1, hB.2.1]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `[e4]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `e6 : EB πt B a b y c = dOp πt (hpart1 (Hpk k r) (unitB (Hpk k r) B a b)) y c + Complex.I • dOp πt (hpart2 (Hpk k r) (unitB (Hpk k r) B a b)) y c` using `rfl`. Establish `e7 : EB π B a b (y c) = dOp π (hpart1 (Hpk k r) (unitB (Hpk k r) B a b)) (y c) + Complex.I • dOp π (hpart2 (Hpk k r) (unitB (Hpk k r) B a b)) (y c)` using `rfl`. Rewrite using `[e6, e7, e1, e2, ← e3, smul_sub]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem EB_tensor : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (k r : ℕ) (z : (Fin (2 * r + k + 1) → ℂ)) (π : Mx k r → (V →L[ℂ] V)) (B : Fin k → (Fin (2 * r + k + 1) → ℂ)) (πt : Mx k r → ((PiLp 2 (fun _ : Fin k => V)) →L[ℂ] (PiLp 2 (fun _ : Fin k => V)))), inWb k r z → 0 < Tz k r z → IsRepW k r z π → IsRepW k r z πt → IsFrameOf k r [z] B → (∀ h ∈ UWset k r z, ∀ y c, πt h y c = ∑ d, star (herm (Hpk k r) (h *ᵥ B d) (B c)) • π h (y d)) → ∀ a b y c, EB πt B a b y c = EB π B a b (y c) - if c = b then y a else 0 := by
   intro V _ _ _ k r z π B πt _ _ hπ hπt hB h a b y c

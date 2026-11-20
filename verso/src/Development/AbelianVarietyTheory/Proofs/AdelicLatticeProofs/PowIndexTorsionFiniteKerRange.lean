@@ -6,29 +6,27 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Introduce `p A A' _ _ g h1 h2 h3`. Unfold `pIdx pTor pows at *`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `set f : A →* A := powMonoidHom p with hf`. Establish `hP : ((⊤ : Subgroup A).map f).relIndex g.ker ≠ 0` using `fun h0 => h1 (Subgroup.relIndex_eq_zero_of_le_right le_top h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBD : g.ker ≤ g.ker.comap f`. Introduce `x hx`. Conclude with `g.ker.pow_mem hx p`. Establish `hD : g.ker.relIndex (g.ker.comap f) ≠ 0`. Rewrite using `[Subgroup.relIndex_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Nat.card ((g.ker.comap f).map g) = Nat.card {x : A' // x ∈ g.range ∧ x ^ p = 1}`. Use `Nat.card_congr (Equiv.subtypeEquivRight ?_)` and prove the remaining obligations. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨a, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `: g (a ^ p) = 1` using `ha`. Rewrite `this` using `[map_pow]`. Then use the resulting hypothesis. Introduce and unpack `⟨⟨a, rfl⟩, ha⟩`. Use `⟨a, ?_, rfl⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Express the relevant statement in the definitionally equal form `g (a ^ p) = 1`. Rewrite using `[map_pow]` and apply the resulting hypothesis. Rewrite using `[this]`. Conclude with `h3`. Establish `hQ : (g.ker.map f).relIndex ((g.ker.comap f).map f) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Establish `hd` using `Subgroup.relIndex_map_map f g.ker (g.ker.comap f)`. Establish `hk : f.ker ≤ g.ker.comap f`. Introduce `x hx`. Establish `: f x = 1` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `f x ∈ g.ker`. Rewrite using `[this]`. Conclude with `one_mem _`. Rewrite `hd` using `[h0, sup_eq_left.2 hk]`. Establish `hdv : (g.ker ⊔ f.ker).relIndex (g.ker.comap f) ∣ g.ker.relIndex (g.ker.comap f)` using `Subgroup.relIndex_dvd_of_le_left _ le_sup_left`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hdv` using `[← hd]`. Conclude with `hD (Nat.eq_zero_of_zero_dvd hdv)`. Establish `he : (g.ker.comap f).map f = ((⊤ : Subgroup A).map f) ⊓ g.ker`. Rewrite using `[Subgroup.map_comap_eq, ← MonoidHom.range_eq_map]`. Use `Subgroup.relIndex_ne_zero_trans hQ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[he, Subgroup.inf_relIndex_right]`. Conclude with `hP`. Establish `hfin : Finite {x : A // x ∈ (⊤ : Subgroup A) ∧ x ^ p = 1}` using `Nat.finite_of_card_ne_zero h2`. Establish `: Finite {x : A // x ∈ g.ker ∧ x ^ p = 1}` using `Finite.of_injective (fun x => (⟨x.1, Subgroup.mem_top _, x.2.2⟩ : {x : A // x ∈ (⊤ : Subgroup A) ∧ x ^ p = 1})) (fun x y h => Subtype.ext (congrArg (fun z => z.1) h))`. Establish `: Nonempty {x : A // x ∈ g.ker ∧ x ^ p = 1}` using `⟨⟨1, one_mem _, one_pow p⟩⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `Nat.card_pos.ne'`. Establish `he : g.range.map (powMonoidHom p) = ((⊤ : Subgroup A).map (powMonoidHom p)).map g`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, rfl⟩, rfl⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨a ^ p, ⟨a, Subgroup.mem_top _, rfl⟩, by simp⟩`. Introduce and unpack `⟨_, ⟨a, -, rfl⟩, rfl⟩`. Conclude with `⟨g a, ⟨a, rfl⟩, by simp⟩`. Rewrite using `[he]`. Introduce `h0`.
-
-Establish `hd` using `Subgroup.relIndex_map_map g ((⊤ : Subgroup A).map (powMonoidHom p)) ⊤`. Rewrite `hd` using `[← MonoidHom.range_eq_map g, h0, top_sup_eq]`. Establish `hdv : ((⊤ : Subgroup A).map (powMonoidHom p) ⊔ g.ker).relIndex ⊤ ∣ ((⊤ : Subgroup A).map (powMonoidHom p)).relIndex ⊤` using `Subgroup.relIndex_dvd_of_le_left _ le_sup_left`. Rewrite `hdv` using `[← hd]`. Conclude with `h1 (Nat.eq_zero_of_zero_dvd hdv)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pIdx_pTor_ker_range_ne_zero :
     ∀ (p : ℕ) (A A' : Type) [CommGroup A] [CommGroup A'] (g : A →* A'),

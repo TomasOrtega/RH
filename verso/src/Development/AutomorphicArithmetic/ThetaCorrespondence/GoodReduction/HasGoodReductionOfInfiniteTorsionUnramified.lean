@@ -40,7 +40,7 @@ def fixedPtHom {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] (H : Subgroup (
   MonoidHom.mk' (fun x => ptOverMap (IntermediateField.val _) ≫ x) fun x y => MonObj.comp_mul _ x y
 
 /- English proof (translation)
-Introduce `x y e`. Use `epi_ptOverMap (IntermediateField.val (IntermediateField.fixedField H))` as an intermediate fact. Conclude with `Over.OverMorphism.ext ((cancel_epi (ptOverMap (IntermediateField.val _)).left).1 (by simpa using congrArg (fun q => q.left) (show ptOverMap (IntermediateField.val _) ≫ x = ptOverMap (IntermediateField.val _) ≫ y from e)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fixedPtHom_injective {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] (H : Subgroup (Ω ≃ₐ[K] Ω))
     (A : Over (Sp K)) [GrpObj A] : Function.Injective (fixedPtHom H A) := by
@@ -51,15 +51,15 @@ theorem fixedPtHom_injective {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] (
       ptOverMap (IntermediateField.val _) ≫ y from e)))
 
 /- English proof (translation)
-Establish `e1` using `Equiv.subtypeEquiv (basePtEquiv (K := K) (L := IntermediateField.fixedField H) A).symm.toEquiv (p := fun x => x ^ m = 1) (q := fun y => y ^ m = 1) (fun x => by`. Express the relevant statement in the definitionally equal form `x ^ m = 1 ↔ (basePtEquiv A).symm x ^ m = 1`. Rewrite using `[← map_pow, MulEquiv.map_eq_one_iff])`. Rewrite using `[Nat.card_congr e1]`. Use `Nat.card_eq_of_bijective (fun y => ⟨fixedPtHom H A y.1, by rw [← map_pow, y.2, map_one]⟩) ⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y y' h`. Conclude with `Subtype.ext (fixedPtHom_injective H A (congrArg Subtype.val h))`. Introduce and unpack `⟨z, hz⟩`. Take `⟨y, hy⟩` from `GlobalTheory.T.exists_fixedField_point_of_fixed_by_subgroup K Ω H A hA z (fun σ hσ => hfix σ hσ z hz)`. Establish `hep` using `epi_ptOverMap (IntermediateField.val (IntermediateField.fixedField H))`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : (ptOverMap (IntermediateField.val (IntermediateField.fixedField H))).left = spMap (algebraMap (IntermediateField.fixedField H) Ω)` using `rfl`. Rewrite `hep` using `[hj]`. Establish `hover : y ≫ A.hom = spMap (algebraMap K (IntermediateField.fixedField H))`. Use `(cancel_epi (spMap (algebraMap (IntermediateField.fixedField H) Ω))).1 ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hy, Over.w z]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `spMap (algebraMap K Ω) = _`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Set `y' : ptOver K (IntermediateField.fixedField H) ⟶ A` to `Over.homMk y hover`. Establish `hy' : fixedPtHom H A y' = z` using `Over.OverMorphism.ext hy`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨y', ?_⟩, Subtype.ext hy'⟩` and prove the remaining obligations. Apply `fixedPtHom_injective H A` to reduce the goal to its premises. Rewrite using `[map_pow, hy', hz, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_torsion_fixedField {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] (H : Subgroup (Ω ≃ₐ[K] Ω))
     (A : Over (Sp K)) [GrpObj A] (hA : LocallyOfFiniteType A.hom) (m : ℕ)
@@ -99,17 +99,15 @@ namespace UpperTheory.Lit.Nos.C6
 open GlobalTheory
 
 /- English proof (translation)
-Introduce `R K Ω _ _ _ _ _ _ _ _ _ _ V hV A _ _ hA hinf`. Use `haveI : IsSepClosed Ω := IsSepClosure.sep_closed K`. Apply `UpperTheory.Lit.Nos.C5.hasGoodReduction_of_inertiaFixed R K Ω V hV A hA` to reduce the goal to its premises. Take `⟨hSH, f, -, -⟩` from `GlobalTheory.T.inertiaFixedField_valuationRing_strictlyHenselian R K Ω V hV`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_relativeDimension_abelianVariety_field K A hA`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA'` using `isAbelianScheme_pullback_obj (spMap (algebraMap K (IntermediateField.fixedField (inertia K V)))) A hA`. Use `haveI := hA'.comm`. Establish `hloc : LocallyOfFiniteType A.hom` using `by haveI := hA.smooth; infer_instance`. Use `GlobalTheory.T.hasGoodReduction_of_many_rational_torsion_points _ _ hSH _ hA' g ?_ ?_` and prove the remaining obligations. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback _ _) hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `hinf.mono ?_` and prove the remaining obligations. Introduce and unpack `m ⟨hm, hu⟩`. Establish `hunit : IsUnit (m : R)`. Assume the negation of the conclusion as `h`. Apply `hm` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (residue R), residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `h`. Establish `hmK : (m : K) ≠ 0`. Rewrite using `[← map_natCast (algebraMap R K)]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective R K)).2 hunit.ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h'` using `hunit.map f`. Rewrite `h'` using `[map_natCast]`. Rewrite using `[← map_natCast (residue _), ne_eq, residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, not_not]`. Conclude with `h'`.
-
-Rewrite using `[card_torsion_fixedField (inertia K V) A hloc m (fun σ hσ x hx => hu σ hσ x hx)]`. Conclude with `GlobalTheory.T.card_abelianVariety_torsion_sepClosed K Ω A hA g hg m hmK`.
+A detailed English derivation is pending.
 -/
 theorem hasGoodReduction_of_infinite_torsionUnramified : ∀ (R K Ω : Type) [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] [PerfectField (ResidueField R)] [Field K] [Algebra R K] [IsFractionRing R K]

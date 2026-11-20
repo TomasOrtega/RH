@@ -15,27 +15,27 @@ section K
 variable {O : Type} [CommRing O] [IsDomain O] {n' m r K : ℕ} (hk : m + 1 = r + K)
 
 /- English proof (translation)
-Unfold `toKK`. Rewrite using `[map_mul, map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem toKK_mul (P Q : RRing O n' (r + K)) : toKK hk (P * Q) = toKK hk P * toKK hk Q := by
   unfold toKK
   rw [map_mul, map_mul]
 
 /- English proof (translation)
-Unfold `toKK`. Rewrite using `[map_add, map_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem toKK_add (P Q : RRing O n' (r + K)) : toKK hk (P + Q) = toKK hk P + toKK hk Q := by
   unfold toKK
   rw [map_add, map_add]
 
 /- English proof (translation)
-Simplify using `[toKK]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toKK_C (a : O) : toKK hk (C a : RRing O n' (r + K)) = C (algebraMap O (KK O) a) := by
   simp [toKK]
 
 /- English proof (translation)
-Simplify using `only [toKK, map_pow, rename_X, map_X]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem toKK_X_pow (v : Fin n' × Fin (r + K)) (n : ℕ) :
     toKK hk ((X v : RRing O n' (r + K)) ^ n) = (X (v.1, Fin.cast hk.symm v.2)) ^ n := by
@@ -49,15 +49,15 @@ section Shift
 variable {n' r : ℕ} [NeZero n'] {Fr : Frames n' r} {L₁ N₁ : ℕ} {J : ℕ} [NeZero J]
 
 /- English proof (translation)
-Establish `hv : (j + 1).val = (j.val + 1) % J`. Rewrite using `[ZMod.val_add, ZMod.val_one_eq_one_mod, Nat.add_mod_mod]`. Establish `hlt` using `ZMod.val_lt j`. Break down `Nat.lt_or_ge (j.val + 1) J with h | h` into its components or cases. Use `⟨0, Or.inl rfl, fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : segZ (j + 1) = segZ j + 1`. Unfold `segZ`. Rewrite using `[hv, Nat.mod_eq_of_lt h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Simplify using the standard rewrite rules. Establish `hJe : j.val + 1 = J` using `by omega`. Use `⟨n', Or.inr rfl, fun i => ?_⟩` and prove the remaining obligations. Establish `e : segZ (j + 1) = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `segZ`. Rewrite using `[hv, hJe, Nat.mod_self]`. Both sides reduce to the same expression. Establish `e2 : segZ j + 1 = 0 + (Fr.J : ℤ)`. Unfold `segZ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hJ]`. Use linear arithmetic over natural numbers and integers. Establish `e3 : segZ j = -1 + (Fr.J : ℤ)` using `by omega`. Rewrite using `[e, e2, e3]`. Conclude with `⟨hV.2.1 0 i, by simpa using hV.2.1 (-1) i⟩`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem seg_shift' (hV : Fr.Valid L₁ N₁) (hJ : J = Fr.J) (j : ZMod J) :
     ∃ s : ℤ, (s = 0 ∨ s = n') ∧
@@ -88,11 +88,11 @@ theorem seg_shift' (hV : Fr.Valid L₁ N₁) (hJ : J = Fr.J) (j : ZMod J) :
     exact ⟨hV.2.1 0 i, by simpa using hV.2.1 (-1) i⟩
 
 /- English proof (translation)
-Take `⟨s, hs, h⟩` from `seg_shift' hV hJ j`. Establish `h1` using `(h i).2`. Establish `h2` using `(h (r - 1)).1`. Establish `h3` using `ph_z_mono Fr hV hr (j := segZ j) (j' := segZ j + 1) (by omega)`. Establish `h4` using `frame_entry_le_last Fr L₁ N₁ hV (segZ j) i hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Break down `hs with rfl | rfl` into its components or cases. Rewrite using `[add_zero]`. Conclude with `(bf_posOf_add _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Frames.dist`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem wc_geom (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J) (j : ZMod J) (i : ℕ) (hi : i < r) :
     posOf n' (Fr.fr (segZ (j + 1) - 1) i) = posOf n' (Fr.fr (segZ j) i) ∧
@@ -120,15 +120,15 @@ variable (p : ℕ) {n' r K m : ℕ} [NeZero n'] [NeZero r] [NeZero K] (O : Type)
   (Dt : SignedChainData p O r J)
 
 /- English proof (translation)
-Take `⟨x, a⟩` from `v`. Unfold `xiPl PhiPl`. Rewrite using `[rename_X, aeval_X, toKK_X_pow]`. Unfold `SignedChainData.ph upPl`. Rewrite using `[aeval_X]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `x with`. Consider the case `ll j l => simp only [aeval_X]`. Both sides reduce to the same expression. Consider the case `lab j mm => simp only [aeval_X]`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `tp j mm h => simp only [aeval_X]`. Both sides reduce to the same expression. Consider the case `wc j mm`. Simplify using `only [map_pow, aeval_X]`. Take `⟨g1, g2⟩` from `wc_geom (Fr := Fr) hV hr hJ j (r - 1 - mm.val) (by omega)`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← pow_mul]`. Establish `e1 : (mlPos Fr Dt.nL (ML.wc j mm)) = (j + 1, Fr.fr (segZ (j + 1) - 1) (r - 1 - mm.val))` using `rfl`. Simplify using `only [e1]`. Rewrite using `[g1, g2, pow_add]`. Unfold `SignedChainData.P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hgP]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem plane_X (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J)
     (hgP : ∀ j (mm : Fin r), Dt.gP j mm = (Fr.fr (segZ j + 1) (r - 1) - Fr.fr (segZ j) (r - 1)).toNat)
@@ -155,13 +155,13 @@ theorem plane_X (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J)
     rfl
 
 /- English proof (translation)
-Proceed by induction on `Go using MvPolynomial.induction_on with`. Consider the case `C a`. Unfold `xiPl`. Rewrite using `[rename_C, map_C]`. Establish `h1 : PhiPl Fr p O K J (C a) = C a` using `by unfold PhiPl; rw [aeval_C]; rfl`.
+Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Dt.ph (C (algebraMap O (KK O) a)) = C (algebraMap O (KK O) a)`. Unfold `SignedChainData.ph`. Rewrite using `[aeval_C]`. Both sides reduce to the same expression. Establish `h3 : upPl Fr p O hk Dt.nL (C (algebraMap O (KK O) a)) = C (algebraMap O (KK O) a)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `upPl`. Rewrite using `[aeval_C]`. Both sides reduce to the same expression. Rewrite using `[h1, h2, h3, toKK_C]`. Consider the case `add P Q hP hQ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `e : xiPl Fr O Dt.nL (P + Q) = xiPl Fr O Dt.nL P + xiPl Fr O Dt.nL Q` using `by unfold xiPl; rw [map_add]`. Rewrite using `[e, map_add, toKK_add, hP, hQ, map_add, map_add, map_add]`. Consider the case `mul_X P v hP`. Establish `e : xiPl Fr O Dt.nL (P * X v) = xiPl Fr O Dt.nL P * xiPl Fr O Dt.nL (X v)` using `by unfold xiPl; rw [map_mul]`. Rewrite using `[e, map_mul, toKK_mul, hP, plane_X p O hk Fr Dt hV hr hJ hgP v, map_mul, map_mul, map_mul, map_X]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem plane_hom (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J)
     (hgP : ∀ j (mm : Fin r), Dt.gP j mm = (Fr.fr (segZ j + 1) (r - 1) - Fr.fr (segZ j) (r - 1)).toNat)
@@ -186,13 +186,13 @@ theorem plane_hom (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J)
     rw [e, map_mul, toKK_mul, hP, plane_X p O hk Fr Dt hV hr hJ hgP v, map_mul, map_mul, map_mul, map_X]
 
 /- English proof (translation)
-Proceed by induction on `No using MvPolynomial.induction_on with`. Consider the case `C a`. Unfold `xiNo`. Rewrite using `[rename_C, map_C]`. Establish `h1 : PhiNo Fr p O K J (C a) = C a` using `by unfold PhiNo; rw [aeval_C]; rfl`.
+Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : upNo Fr p O hk nL (C (algebraMap O (KK O) a)) = C (algebraMap O (KK O) a)`. Unfold `upNo`. Rewrite using `[aeval_C]`. Both sides reduce to the same expression. Rewrite using `[h1, h3, toKK_C]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add P Q hP hQ`. Establish `e : xiNo Fr O K nL (P + Q) = xiNo Fr O K nL P + xiNo Fr O K nL Q` using `by unfold xiNo; rw [map_add]`. Rewrite using `[e, map_add, toKK_add, hP, hQ, map_add, map_add]`. Consider the case `mul_X P v hP`. Establish `e : xiNo Fr O K nL (P * X v) = xiNo Fr O K nL P * xiNo Fr O K nL (X v)` using `by unfold xiNo; rw [map_mul]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `hX : toKK hk (PhiNo Fr p O K J (xiNo Fr O K nL (X v))) = upNo Fr p O hk nL (X v)`. Unfold `xiNo PhiNo upNo`. Rewrite using `[rename_X, aeval_X, toKK_X_pow, aeval_X]`. Both sides reduce to the same expression. Rewrite using `[e, map_mul, toKK_mul, hP, hX, map_mul, map_mul, map_X]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem normal_hom (nL : ZMod J → ℕ) (No : MvPolynomial (TL J nL r × Fin K) O) :
     toKK hk (PhiNo Fr p O K J (xiNo Fr O K nL No)) =
@@ -217,11 +217,11 @@ theorem normal_hom (nL : ZMod J → ℕ) (No : MvPolynomial (TL J nL r × Fin K)
     rw [e, map_mul, toKK_mul, hP, hX, map_mul, map_mul, map_X]
 
 /- English proof (translation)
-Establish `h : Finsupp.mapDomain (castVK (n'` using `n') hk) (labO Fr K nL rho) = labMon Fr hk nL rho := by`. Rewrite using `[labMon_eq, Fintype.sum_prod_type]`. Unfold `labO`. Rewrite using `[Finsupp.mapDomain_finsetSum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finsupp.mapDomain_finsetSum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.mapDomain_single]`. Both sides reduce to the same expression. Unfold `toKK`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[rename_monomial, map_monomial, map_one, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem label_hom (nL : ZMod J → ℕ) (rho : TL J nL r × Fin (r + K) → ℕ) :
     toKK hk (monomial (labO Fr K nL rho) (1 : O)) = monomial (labMon Fr hk nL rho) 1 := by
@@ -238,7 +238,7 @@ theorem label_hom (nL : ZMod J → ℕ) (rho : TL J nL r × Fin (r + K) → ℕ)
   rw [rename_monomial, map_monomial, map_one, h]
 
 /- English proof (translation)
-Unfold `AlgAt asm`. Rewrite using `[toKK_mul, toKK_mul, label_hom, plane_hom p O hk Fr Dt hV hr hJ hgP, normal_hom, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem alg_identity (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J)
     (hgP : ∀ j (mm : Fin r), Dt.gP j mm = (Fr.fr (segZ j + 1) (r - 1) - Fr.fr (segZ j) (r - 1)).toNat)
@@ -250,7 +250,7 @@ theorem alg_identity (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J)
 end Hom
 
 /- English proof (translation)
-Introduce `p _ n' r K m _ _ _ O _ _ _ _ hk Fr TT L₁ L₂ N₁ G' deg d Y cP hM J _ Dt dPl dNo ka rho No Go hMH`. Conclude with `alg_identity p O hk Fr Dt hM.frames.2.1 (le_trans (by norm_num) hM.two_le_r) hMH.1.1.1 hMH.1.1.2.2.2.2.1 rho No Go`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem restAlgG : RestAlgG := by
   intro p _ n' r K m _ _ _ O _ _ _ _ hk Fr TT L₁ L₂ N₁ G' deg d Y cP hM J _ Dt dPl dNo ka rho No Go hMH

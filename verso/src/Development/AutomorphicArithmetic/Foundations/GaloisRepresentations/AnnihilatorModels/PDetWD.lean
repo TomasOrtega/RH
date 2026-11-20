@@ -20,7 +20,7 @@ open UpperTheory.Gal.crystallineComparison
 namespace UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ W`. Rewrite using `[← LinearMap.charpoly_toMatrix M b, ← LinearMap.det_toMatrix b M, Matrix.det_eq_prod_roots_charpoly]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem roots_prod {W : Type} [AddCommGroup W] [Module ℂ W] [Module.Finite ℂ W] (M : End ℂ W) :
     M.charpoly.roots.prod = LinearMap.det M := by
@@ -30,13 +30,11 @@ private theorem roots_prod {W : Type} [AddCommGroup W] [Module ℂ W] [Module.Fi
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce `l _ P AI hT ι E Ω _ _ _ _ _ A w h O _ _ _ Bw hj a r c hdet hr hc g hg`. Take `⟨LL, r', c', m₁, m₂, hs, p₁, p₂⟩` from `hC l P AI hT E Ω _ O Bw a r c hr hc`. Establish `hd : ∀ x, Matrix.GeneralLinearGroup.det (c' x) = Matrix.GeneralLinearGroup.det (r' x)`. Introduce `x`. Establish `e` using `congrArg Units.val (hdet x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[← m₁.2, ← m₂.2]`. Use `Units.ext ((algebraMap ↥LL.1 (Om l)).injective ?_)` and prove the remaining obligations. Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply] at e ⊢`. Rewrite using `[RingHom.map_det, RingHom.map_det]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k` using `hE l P AI hT ι E Ω A w h O Bw hj a LL r' c' hd hs p₁ p₂ g hg`. Establish `e₁` using `(hW l P ι E Ω A w h O Bw hj a r LL r' m₁ p₁ g).1`. Establish `e₂` using `(hW l P ι E Ω A w h O Bw hj 1 c LL c' m₂ p₂ g).1`. Use `haveI := p₁.finite`. Use `haveI := p₂.finite`.
-
-Conclude with `((congrArg (fun p : Polynomial ℂ => p.roots.prod) e₁).trans ((roots_prod _).trans (k.trans (roots_prod _).symm))).trans (congrArg (fun p : Polynomial ℂ => p.roots.prod) e₂).symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem detWD_of (hW : WdModel) (hC : CommonModel) (hE : DetE) : DetWD := by
   intro l _ P AI hT ι E Ω _ _ _ _ _ A w h O _ _ _ Bw hj a r c hdet hr hc g hg
@@ -58,7 +56,7 @@ theorem detWD_of (hW : WdModel) (hC : CommonModel) (hE : DetE) : DetWD := by
     (congrArg (fun p : Polynomial ℂ => p.roots.prod) e₂).symm
 
 /- English proof (translation)
-The claim follows from `detWD_of wdModel_of detCommon_of (detOne_of detCo_of detRingS_of (detCore_of detUnit_of detBasis_of) (detMem_of detCo_of) detWeil_of (detSpan_of detCo_of) (detCoLift_of detCo_of detWdLift_of))`.
+A detailed English derivation is pending.
 -/
 theorem detWD_holds : DetWD :=
   detWD_of wdModel_of detCommon_of

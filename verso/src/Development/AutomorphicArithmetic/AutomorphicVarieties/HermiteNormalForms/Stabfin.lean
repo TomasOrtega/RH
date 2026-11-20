@@ -8,17 +8,15 @@ open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `L _ _ _ N v`. Establish `hpoly : v.1 ∈ Ry L N`. Rewrite using `[← poly_qc]`. Conclude with `v.2.1`. Take `⟨S, hSfin, hev⟩` from `locfin L N v.1 (rypos L N hpoly) 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hS : ∀ y, q v.1 y = 1 → y ∈ S`. Introduce `y hy`. Assume the negation of the conclusion as `hyS`. Use `hev.self_of_nhds y hyS` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hspan : Spans (minVec v.1)` using `spanpsd L N _ (fun k _ hk => v.2.2 k (fun y hy => hk y.1 hy))`. Take `⟨A, hA, hAcol⟩` from `exbasis L N _ hspan`. Establish `hinv : ∀ g ∈ MulAction.stabilizer (Gm L N) v, ∀ y, q v.1 y = 1 → q v.1 (g • y) = 1`. Introduce `g hg y hy`. Establish `hgh : g • v.1 = v.1` using `congrArg Subtype.val (MulAction.mem_stabilizer_iff.mp hg)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgh' : g⁻¹ • v.1 = v.1` using `inv_smul_eq_iff.2 hgh.symm`. Combine the equalities or inequalities in the displayed calculation. Use `haveI : Finite S := hSfin.to_subtype`. Set `φ : MulAction.stabilizer (Gm L N) v → (Fin N → S)` to `fun g a => ⟨(g : Gm L N) • (fun i => A i a), hS _ (hinv g.1 g.2 _ (hAcol a))⟩`. Use `Finite.of_injective φ ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g g' hgg`. Establish `hcol : ∀ a, (g : Gm L N) • (fun i => A i a) = (g' : Gm L N) • (fun i => A i a)` using `fun a => congrArg Subtype.val (congrFun hgg a)`. Establish `hM : ((g : Gm L N) : Matrix (Fin N) (Fin N) (𝓞 L)) * A = ((g' : Gm L N) : Matrix (Fin N) (Fin N) (𝓞 L)) * A` using `Matrix.ext fun i a => congrFun (hcol a) i`. Establish `hM2 : A.det • ((g : Gm L N) : Matrix (Fin N) (Fin N) (𝓞 L)) = A.det • ((g' : Gm L N) : Matrix (Fin N) (Fin N) (𝓞 L))`. Establish `h2` using `congrArg (· * A.adjugate) hM`.
-
-Simplify using `only [Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one] at h2`. Conclude with `h2`. Conclude with `Subtype.ext (Units.ext (smul_right_injective _ hA hM2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KT.stabfin :
     ∀ (L : Type) [Field L] [NumberField L] [IsTotallyComplex L] (N : ℕ) (v : Vx L N),

@@ -5,13 +5,13 @@ open Polynomial
 namespace Bl.ScalarIdentities
 
 /- English proof (translation)
-Establish `: Nontrivial S0` using `IsSimpleModule.nontrivial A S0`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (g.restrictScalars K)`. Take `⟨v, hv⟩` from `hc.exists_hasEigenvector`. Set `h : S0 →ₗ[A] S0` to `{ toFun := fun w => g w - c • w map_add' := fun x y => by simp only [map_add, smul_add]; abel map_smul' := fun a w => by`. Simplify using `only [map_smul, RingHom.id_apply, smul_sub]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[smul_comm c a w] }`. Establish `h0 : h v = 0`. Use `hv.apply_eq_smul` as an intermediate fact. Simplify using `only [LinearMap.restrictScalars_apply] at this`. Use `show g v - c • v = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, sub_self]`. Establish `hni : ¬ Function.Injective h`. Introduce `hi`. Conclude with `hv.2 (hi (h0.trans h.map_zero.symm))`. Establish `hz : h = 0` using `(LinearMap.injective_or_eq_zero h).resolve_left hni`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨c, fun w => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun hz w` as an intermediate fact. Conclude with `sub_eq_zero.mp this`.
+A detailed English derivation is pending.
 -/
 private lemma scal {K A : Type} [Field K] [IsAlgClosed K] [Ring A] [Algebra K A]
     (S0 : Type) [AddCommGroup S0] [Module K S0] [Module A S0] [IsScalarTower K A S0]
@@ -40,9 +40,9 @@ private lemma scal {K A : Type} [Field K] [IsAlgClosed K] [Ring A] [Algebra K A]
   exact sub_eq_zero.mp this
 
 /- English proof (translation)
-Set `f : Module.End (Module.End A S0) S0` to `{ toFun := φ map_add' := φ.map_add map_smul' := fun g v => by`. Take `⟨c, hc⟩` from `scal (K := K) S0 g`. Simplify using `only [Module.End.smul_def, RingHom.id_apply, hc, φ.map_smul] }`. Set `b` to `Module.finBasis K S0`. Take `⟨r, hr⟩` from `jacobson_density f (Finset.univ.image b)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `⟨r, fun v => ?_⟩` and prove the remaining obligations. Set `ψ : S0 →ₗ[K] S0` to `{ toFun := fun w => r • w map_add' := smul_add r map_smul' := fun c w => (smul_comm c r w).symm }`. Establish `hψ : ψ = φ` using `b.ext fun i => (hr (b i) (Finset.mem_image_of_mem b (Finset.mem_univ i))).symm`. Conclude with `LinearMap.congr_fun hψ v`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem goal1 {K A : Type} [Field K] [IsAlgClosed K] [Ring A] [Algebra K A]
     (S0 : Type) [AddCommGroup S0] [Module K S0] [Module A S0] [IsScalarTower K A S0]

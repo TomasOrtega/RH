@@ -13,9 +13,9 @@ namespace GlobalTheory.Survey.ArchimedeanCompatibility
 open GlobalTheory.IndefiniteRowSideFullHecke.PrincipalCongruenceGamma GlobalTheory.PrincCore
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h j hj σ hσ k γ h1 h2`. Use `h j hj σ hσ k ⟨h1, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `h2 x hx`. Conclude with `⟨y, hy, by rw [e, Nat.cast_smul_eq_nsmul]⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `h j hj σ hσ k γ hγ`. Use `h j hj σ hσ k γ hγ.1 fun x hx => ?_` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `hγ.2 x hx`. Conclude with `⟨y, hy, by rw [e, Nat.cast_smul_eq_nsmul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gam_iff {D : D7} (T : Core D) : Gam T ↔ GlobalTheory.RunIn.GamAt T := by
   constructor
@@ -42,45 +42,43 @@ def ArchGlue {D : D7} (V : HSp D) : Prop :=
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Take `⟨-, -, ⟨x0, hx0, heq⟩, -, -, hfib⟩` from `hD`. Take `⟨hdom, g, hg⟩` from `hx0 k`. Take `⟨hrat, hsur⟩` from `hglue (X k).Ψ (th k) (X k).cmType (hth k)`. Establish `hact : ∀ h, ∀ τ, mat (rmul (x0 k) (archMat V th rfl x0 h k)) τ = archM V (th k τ) h * mat (x0 k) τ`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h τ`. Use `show mat (x0 k) τ * ((mat (x0 k) τ)⁻¹ * Matrix.reindex (finCongr rfl) (finCongr rfl) (archM V (th k τ) h) * mat (x0 k) τ) = _`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (hdom τ).1), Matrix.one_mul]`. Both sides reduce to the same expression. Establish `key : ∀ h ∈ GinfC V, ∃ γ'' ∈ (X k).Γ, dict (g * h) = ⟨k, lact γ'' (rmul (x0 k) (archMat V th rfl x0 h k))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `heq g` as an intermediate fact. Rewrite `this` using `[hg]`. Conclude with `this`. Establish `hun : ∀ τ : (X k).Ψ, ((γ'.1.map τ.1).map (starRingEnd ℂ))ᵀ * V.gram.map τ.1 * γ'.1.map τ.1 = V.gram.map τ.1`. Introduce `τ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `unitary_of_first_minor hr0 τ.1 (X k).Gm (X k).Gm_herm _ (mat (x0 k) τ) ?_ ?_ ?_ _ ?_` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply, HSpace.gram]`. Rewrite using `[← V.herm.eq (V.frame b) (V.frame a)]`. Conclude with `(IsCMField.complexEmbedding_complexConj D.host.E τ.1 _).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero_iff _ τ.1.injective).2 (gram_det_ne V)`. Introduce `w hw`. Take `⟨h, hh, hw'⟩` from `hsur (Function.update (fun _ => 1) τ w) (by`. Introduce `τ'`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `e : τ' = τ`. Substitute `e` using the available equality. Simplify using `using hw`. Simplify using `[Function.update_of_ne e])`. Take `⟨γ'', h1, h2⟩` from `key h hh`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `hmu.2.2.2 (g * h)`. Rewrite `h3` using `[h2]`. Establish `h4` using `h3 τ ⟨1, by omega⟩`. Rewrite `h4` using `[ReciprocityTheory.ChartRestriction.G.AR.Up.PairUnfoldPf.dmin_lact (X k) h1]`. Unfold `dmin at h4`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h4` using `[hact, hw', Function.update_self]`. Conclude with `h4`. Establish `hcc : (γ'.1.map τ.1).map (starRingEnd ℂ) = (γ'.1.map cc).map τ.1`. Use extensionality with `a b`. Conclude with `(IsCMField.complexEmbedding_complexConj D.host.E τ.1 _).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcc, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, ReciprocityTheory.ChartRestriction.G.AR.Up.PairUnfoldPf.gramE (X k) hγ']`. Take `⟨h, hh, hw⟩` from `hsur _ hun`. Take `⟨γ'', h1, h2⟩` from `key h hh`. Take `⟨γ₀, hγ₀, κ, hκ, hdc⟩` from `hfib g (g * h) (by`. Rewrite using `[hg]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨γ'' * γ', mul_mem h1 hγ', ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Use `show γ''.1.map τ.1 * mat (rmul (x0 k) (archMat V th rfl x0 h k)) τ = (γ'' * γ').1.map τ.1 * mat (x0 k) τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hact, hw, Units.val_mul, Matrix.map_mul, Matrix.mul_assoc])`. Take `⟨δ, hδ1, hδ2⟩` from `hrat γ₀ hγ₀`. Take `⟨hκ1, hκ2⟩` from `(hK κ⁻¹).1 (inv_mem hκ)`. Establish `hfin : finHom V γ₀ * finHom V g = finHom V g * finHom V κ⁻¹`. Establish `h0 : finHom V h = 1` using `hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `: γ₀ * g = g * h * κ⁻¹` using `by rw [hdc]; group`. Rewrite using `[← map_mul, this, map_mul, map_mul, h0, mul_one]`. Establish `hinf : infHom V γ₀ * infHom V g = infHom V g * infHom V h`. Establish `h0 : infHom V κ⁻¹ = 1` using `hκ1`. Establish `: γ₀ * g = g * h * κ⁻¹` using `by rw [hdc]; group`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← map_mul, this, map_mul, map_mul, h0, mul_one]`. Set `f : V.V →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)` to `V.frame.equivFun.toLinearMap.restrictScalars _`. Establish `hhat : latHat V = GlobalTheory.AdLat.hat D.host.F (V.L0.map f : Set (Fin V.rank → D.host.E))`. Unfold `latHat GlobalTheory.AdLat.hat`. Use `congr 1`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, hx, rfl⟩`. Conclude with `⟨a, ha, f x, ⟨x, hx, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨a, ha, x, hx, rfl⟩`. Establish `hspan : Submodule.span D.host.E (V.L0.map f : Set (Fin V.rank → D.host.E)) = ⊤`. Establish `: (V.L0.map f : Set (Fin V.rank → D.host.E)) = V.frame.equivFun.toLinearMap '' (V.L0 : Set V.V)` using `rfl`. Rewrite using `[this, ← Submodule.map_span, V.standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]`. Rewrite `hκ2` using `[hhat]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨Λ', g1, g2, g3⟩` from `exists_lattice_congr D.host.F D.host.E V.rank M (by omega) (V.L0.map f) (V.standardTuple_isLattice.fg.map f) hspan (finHom V g) (finHom V κ⁻¹).1 δ.1 hκ2 (by`. Rewrite using `[← hδ2, ← Units.val_mul, hfin, Units.val_mul])`. Choose the witnesses or unpack the hypotheses as in `⟨τ⟩ : Nonempty (X k).Ψ := by`. Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Distinguish the cases in `e : τ ∈ (X k).Ψ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨⟨τ, e⟩⟩`. Conclude with `⟨⟨_, not_not.1 (fun e' => e (((X k).cmType τ).2 e'))⟩⟩`. Establish `hm : ∀ a b, archM V (th k τ) (a * b) = archM V (th k τ) a * archM V (th k τ) b`. Introduce `a b`. Unfold `archM`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, Units.val_mul, Matrix.map_mul]`. Establish `h1' : archM V (th k τ) 1 = 1`. Unfold `archM`. Rewrite using `[map_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `GlobalTheory.root_of_unity_eq_one_of_conj_congruence D.host.E V.rank M n (X k).Λ Λ' γ.1 δ.1 u τ.1 (archM V (th k τ) g⁻¹) hr0 hM hn hu (X k).Λ_fg g1 (X k).Λ_span g2 hc g3 ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Matrix.det (hm g⁻¹ g)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, h1', Matrix.det_one, Matrix.det_mul]`. Conclude with `left_ne_zero_of_mul_eq_one this.symm`. Rewrite using `[← he, ← hw τ, ← hδ1 τ, ← hm, ← hm]`. Establish `e : infHom V (h * g⁻¹) = infHom V (g⁻¹ * γ₀)`.
-
-Rewrite using `[map_mul, map_mul, map_inv, eq_inv_mul_iff_mul_eq, ← mul_assoc, ← hinf, mul_inv_cancel_right]`. Unfold `archM`. Rewrite using `[e]`.
+A detailed English derivation is pending.
 -/
 theorem root_eq_one_of_glue {D : D7} (V : HSp D) (hglue : ArchGlue V) {r : ℕ} (hr : V.rank = r) (hr0 : 0 < r) {Comp : Type}
     (X : Comp → Data D.host.E r) (dict : GA D V → Σ c, Frame (X c).Ψ r) (mu : GA D V → ℂ)
@@ -200,11 +198,11 @@ theorem root_eq_one_of_glue {D : D7} (V : HSp D) (hglue : ArchGlue V) {r : ℕ} 
     rw [e]
 
 /- English proof (translation)
-Rewrite using `[gam_iff]`. Introduce `j hj σ hσ k γ hγ hc`. Take `⟨hgood, hA, -, -, -, -, hnum⟩` from `GlobalTheory.PinNum.numerics_of_pins D T.Q h.pins`. Establish `hr : 0 < D.R.r` using `(hnum j hj).2.1`. Take `⟨γ', hγ', u, n, hn, hu, he⟩` from `GlobalTheory.unf_group_contains_congruence_upto_rootsOfUnity _ _ _ _ _ _ σ _ (Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) (h.unf j hj σ hσ) hA hr k γ hγ hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨th, hrk, hth, hD⟩` from `h.dictU j hj σ hσ`. Establish `hK` using `h.levelK j hj σ hσ`. Rewrite `hK` using `[← h.pins.2.1.1]`. Establish `h1` using `root_eq_one_of_glue (T.V j σ) (hglue _) hrk hr (T.U j σ).X (T.dict j σ) (T.mu j σ) (T.Kf j σ) th hth hD (h.muUnit j hj σ hσ) _ T.Q.l.three_le hK k γ γ' hγ' hc u n hn hu he`. Rewrite `he` using `[h1, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Units.ext he ▸ hγ'`.
+A detailed English derivation is pending.
 -/
 theorem gam_of_lawsM {D : D7} (hglue : ∀ V : HSp D, ArchGlue V) (T : Core D) (h : LawsM T) : Gam T := by
   rw [gam_iff]
@@ -222,13 +220,13 @@ theorem gam_of_lawsM {D : D7} (hglue : ∀ V : HSp D, ArchGlue V) (T : Core D) (
   exact Units.ext he ▸ hγ'
 
 /- English proof (translation)
-Introduce `Ψ th h1 h2` and use `⟨((GlobalTheory.UnitaryGlue.adelic_glue D V).2 Ψ th h1 h2).2.1, ((GlobalTheory.UnitaryGlue.adelic_glue D V).2 Ψ th h1 h2).2.2.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem archGlue {D : D7} (V : HSp D) : ArchGlue V := fun Ψ th h1 h2 =>
   ⟨((GlobalTheory.UnitaryGlue.adelic_glue D V).2 Ψ th h1 h2).2.1, ((GlobalTheory.UnitaryGlue.adelic_glue D V).2 Ψ th h1 h2).2.2.2⟩
 
 /- English proof (translation)
-The claim follows from `gam_of_lawsM archGlue T h`.
+A detailed English derivation is pending.
 -/
 theorem gam_of_laws {D : D7} (T : Core D) (h : LawsM T) : Gam T := gam_of_lawsM archGlue T h
 

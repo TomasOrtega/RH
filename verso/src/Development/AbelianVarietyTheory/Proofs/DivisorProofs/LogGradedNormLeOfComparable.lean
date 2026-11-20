@@ -8,7 +8,7 @@ namespace GlobalTheory.GradedNorm.Comparable
 open Matrix ReciprocityTheory.ChartRestriction.G.FD
 
 /- English proof (translation)
-Rewrite using `[lminor]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, Matrix.conjTranspose_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lminor_eq_det {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (k : Fin (n + 1)) :
     lminor M k = (((1 : Matrix (Fin n) (Fin n) ℂ).submatrix id (Fin.castLE (Nat.le_of_lt_succ k.isLt)))ᴴ * M *
@@ -19,7 +19,7 @@ theorem lminor_eq_det {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (k : Fin (n + 1
   simp [Matrix.mul_apply, Matrix.one_apply, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `Complex.pos_iff.1 (lminor_pos h k)`. Conclude with `⟨h1, Complex.ext (by simp) (by simp [h2])⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lminor_re {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : M.PosDef) (k : Fin (n + 1)) :
     0 < (lminor M k).re ∧ ((lminor M k).re : ℂ) = lminor M k := by
@@ -27,7 +27,7 @@ theorem lminor_re {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : M.PosDef) (k :
   exact ⟨h1, Complex.ext (by simp) (by simp [h2])⟩
 
 /- English proof (translation)
-The claim follows from `|Real.log (lminor A k).re - Real.log (lminor B k).re| ≤ k * Real.log m := by have hm0 : (0 : ℝ) < m := lt_of_lt_of_le one_pos hm obtain ⟨a1, -⟩ := lminor_re hA k obtain ⟨b1, -⟩ := lminor_re hB k have u := GlobalTheory.CompMetric.det_re_le_of_sub hm0.le hA h1 ((1 : Matrix (Fin n) …`.
+A detailed English derivation is pending.
 -/
 theorem abs_log_lminor {n : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} {m : ℝ} (hm : 1 ≤ m) (hA : A.PosDef) (hB : B.PosDef)
     (h1 : (((m : ℂ) • B) - A).PosSemidef) (h2 : (((m : ℂ) • A) - B).PosSemidef) (k : Fin (n + 1)) :
@@ -49,7 +49,7 @@ theorem abs_log_lminor {n : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} {m : ℝ} (h
   constructor <;> linarith
 
 /- English proof (translation)
-The claim follows from `|Real.log (GlobalTheory.GradedNorm.grSq A i) - Real.log (GlobalTheory.GradedNorm.grSq B i)| ≤ 2 * n * Real.log m := by intro n A B m hm hA hB h1 h2 i have hlog : 0 ≤ Real.log m := Real.log_nonneg hm have e : ∀ {M : Matrix (Fin n) (Fin n) ℂ}, M.PosDef → Real.log (grSq M i) = Real. …`.
+A detailed English derivation is pending.
 -/
 theorem graded_log_bound : ∀ (n : ℕ) (A B : Matrix (Fin n) (Fin n) ℂ) (m : ℝ), 1 ≤ m → A.PosDef → B.PosDef →
     (((m : ℂ) • B) - A).PosSemidef → (((m : ℂ) • A) - B).PosSemidef → ∀ i : Fin n,

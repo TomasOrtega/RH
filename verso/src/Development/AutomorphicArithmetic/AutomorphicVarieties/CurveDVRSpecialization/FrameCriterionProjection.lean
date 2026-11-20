@@ -3,33 +3,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Af UpperTheory.V.Alg UpperTheory.V.Pr UpperTheory.V
 
 /- English proof (translation)
-Unfold `UpperTheory.V.Pr.CrPi`. Introduce `Ω _ _ _ l _ O _ _ η Ψ σ g₁ B M L _ _ _ _ _ Φ k s x V hS`. Establish `hup : Continuous (toUpl Ω L)`. Unfold `UpperTheory.V.Pr.toUpl`. Conclude with `(continuous_restrictScalarsHom ℚ (W.Lp L) Ω).subtype_mk _`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression.
 
-Set `f : G (W.Lp L) Ω →* Φ.Γ` to `k.p.comp (toUpl Ω L)`. Establish `hf : Continuous f` using `k.p_cont.comp hup`. Establish `hclosed : IsClosed (f.ker : Set (G (W.Lp L) Ω))`. Establish `h` using `(isClosed_singleton (x := (1 : Φ.Γ))).preimage hf`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hNS : NS Ω V.S' ≤ f.ker`. Unfold `ReciprocityTheory.Gal.NS`. Apply `Subgroup.topologicalClosure_minimal _ _ hclosed` to reduce the goal to its premises. Apply `Subgroup.normalClosure_le_normal` to reduce the goal to its premises. Introduce `t ht`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, Set.mem_compl_iff] at ht`. Take `⟨v, hv, A, hA, ht⟩` from `ht`. Rewrite `hv` using `[hS]`. Unfold `UpperTheory.V.W.HidaSetting.S at hv`. Simplify using `only [Set.mem_setOf_eq, not_or] at hv`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hl, hSt, -⟩` from `hv`. Establish `hMv` using `fun hM => hSt ((x.St v).2 ⟨hM, hl⟩)`. Establish `hti : galEmb ℚ (W.Lp L) Ω t ∈ Ine A` using `(galEmb_mem_Ine A t).2 ht`. Rewrite using `[SetLike.mem_coe, MonoidHom.mem_ker]`. Use `show k.p (toUpl Ω L t) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← MonoidHom.mem_ker, k.p_ker]`. Apply `Subgroup.le_topologicalClosure` to reduce the goal to its premises. Apply `Subgroup.subset_normalClosure` to reduce the goal to its premises. Use `⟨A, ?_, hti, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[natCast_place hA]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hl`. Conclude with `k.unr A ⟨hti, (toUpl Ω L t).2⟩`. Establish `hΨ : Ψ (galEmb ℚ (W.Lp L) Ω t) = 1` using `x.unr A (by rw [natCast_place hA]; exact hMv) hti`. Unfold `barChar`. Use `show Units.map _ (Ψ (galEmb ℚ (W.Lp L) Ω t)) = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hΨ, map_one]`. Set `πt : GS Ω V.S' →* Φ.Γ` to `QuotientGroup.lift (NS Ω V.S') f hNS`. Establish `hπt : ∀ t, πt (toGS Ω V.S' t) = f t` using `fun t => rfl`. Establish `hπtc : Continuous πt` using `continuous_coinduced_dom.2 hf`. Establish `hmem : ∀ y : V.η.ker, πt y.1 ∈ Φ.del.ker`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `y`. Take `⟨g, hg⟩` from `pr_surj V y`. Rewrite using `[← hg]`. Conclude with `(k.p0 g).2`. Set `π : V.η.ker →* Φ.del.ker` to `(πt.comp V.η.ker.subtype).codRestrict _ hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Establish `hcs : f s.c = Φ.c`. Take `⟨h, hpc⟩` from `k.c`. Establish `h2 : toUpl Ω L s.c = ⟨σ, h⟩` using `Subtype.ext x.c`. Use `show k.p (toUpl Ω L s.c) = Φ.c`. Rewrite using `[h2, hpc]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨π, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hπtc.comp continuous_subtype_val).subtype_mk _`. Introduce `g`. Both sides reduce to the same expression. Introduce `y0`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `y : V.η.ker` to `y0`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show πt (toGS Ω V.S' s.c * y.1 * (toGS Ω V.S' s.c)⁻¹) = Φ.c * πt y.1 * Φ.c⁻¹`. Rewrite using `[map_mul, map_mul, map_inv, hπt, hcs]`. Introduce `y0`.
-
-Set `y : V.η.ker` to `y0`. Take `⟨t, ht⟩` from `QuotientGroup.mk'_surjective (NS Ω V.S') y.1`. Use `show Φ.eps (πt y.1) = V.ε y.1`. Establish `ht' : toGS Ω V.S' t = y.1` using `ht`. Rewrite using `[← ht', hπt]`.
-
-Use `show Φ.eps (k.p (toUpl Ω L t)) = V.ε (toGS Ω V.S' t)`. Rewrite using `[k.eps, ← MonoidHom.comp_apply V.ε, V.hε]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.frame_criterion_projection :
     UpperTheory.V.Pr.CrPi := by

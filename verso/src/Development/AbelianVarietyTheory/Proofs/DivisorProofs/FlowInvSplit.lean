@@ -10,13 +10,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HolDict
 
 /- English proof (translation)
-Take `⟨-, hD⟩` from `h`. Establish `hdet : x₀.det ≠ 0`. Introduce `h0`. Establish `hd` using `congrArg Matrix.det hD`. Rewrite `hd` using `[det_mul, det_mul, h0, mul_zero, det_diagonal]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(Finset.prod_ne_zero_iff.mpr fun a _ => ?_) hd.symm` and prove the remaining obligations. Unfold `ReciprocityTheory.ChartRestriction.G.FD.sgn`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hu : IsUnit x₀` using `(Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hdet)`. Establish `huH : IsUnit x₀ᴴ`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr ?_)` and prove the remaining obligations. Rewrite using `[det_conjTranspose]`. Conclude with `(star_ne_zero).mpr hdet`. Establish `hself : (x₀ᴴ * Hm * x₀)ᴴ = x₀ᴴ * Hm * x₀`. Rewrite using `[hD, diagonal_conjTranspose]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `[Complex.conj_ofReal]`. Rewrite `hself` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, ← Matrix.mul_assoc]`. Conclude with `huH.mul_right_injective (hu.mul_left_injective hself)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flowInv_herm {n : ℕ} {Hm x₀ : Mt n} {q : ℕ} (h : OrthFr Hm q x₀) : Hmᴴ = Hm := by
   obtain ⟨-, hD⟩ := h
@@ -41,7 +41,7 @@ theorem flowInv_herm {n : ℕ} {Hm x₀ : Mt n} {q : ℕ} (h : OrthFr Hm q x₀)
   exact huH.mul_right_injective (hu.mul_left_injective hself)
 
 /- English proof (translation)
-Rewrite using `[vecMulVec_mul_vecMulVec, ← dotProduct_mulVec, he, zero_smul]`. Use extensionality with `i j`. Simplify using `[vecMulVec_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem flowInv_sq {n : ℕ} {Hm : Mt n} {e : Fin n → ℂ} (he : star e ⬝ᵥ Hm.mulVec e = 0) :
     vecMulVec e (star e ᵥ* Hm) * vecMulVec e (star e ᵥ* Hm) = 0 := by
@@ -50,14 +50,14 @@ theorem flowInv_sq {n : ℕ} {Hm : Mt n} {e : Fin n → ℂ} (he : star e ⬝ᵥ
   simp [vecMulVec_apply]
 
 /- English proof (translation)
-Rewrite using `[conjTranspose_vecMulVec, star_vecMul, star_star, hH, vecMulVec_mul, mul_vecMulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem flowInv_adj {n : ℕ} {Hm : Mt n} (hH : Hmᴴ = Hm) (e : Fin n → ℂ) :
     (vecMulVec e (star e ᵥ* Hm))ᴴ * Hm = Hm * vecMulVec e (star e ᵥ* Hm) := by
   rw [conjTranspose_vecMulVec, star_vecMul, star_star, hH, vecMulVec_mul, mul_vecMulVec]
 
 /- English proof (translation)
-Establish `hS` using `flowInv_sq he`. Rewrite using `[add_mul, one_mul, mul_sub, mul_one, smul_mul_assoc, mul_smul_comm, hS, smul_zero, smul_zero, sub_zero, sub_smul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem one_sub_sub_smul_vecMulVec_eq_mul_of_isotropic {n : ℕ} {Hm : Mt n} {e : Fin n → ℂ} (he : star e ⬝ᵥ Hm.mulVec e = 0)
     (a b : ℂ) : (1 - (b - a) • vecMulVec e (star e ᵥ* Hm) : Mt n) =
@@ -68,9 +68,9 @@ private theorem one_sub_sub_smul_vecMulVec_eq_mul_of_isotropic {n : ℕ} {Hm : M
   abel
 
 /- English proof (translation)
-Use `show (1 + ((s : ℂ) * Complex.I) • vecMulVec e (star e ᵥ* Hm))ᴴ * Hm * (1 + ((s : ℂ) * Complex.I) • vecMulVec e (star e ᵥ* Hm)) = Hm`. Establish `hc : star ((s : ℂ) * Complex.I) = -((s : ℂ) * Complex.I)`. Simplify using `[Complex.conj_ofReal]`. Establish `h1 : (1 + ((s : ℂ) * Complex.I) • vecMulVec e (star e ᵥ* Hm))ᴴ * Hm = Hm * (1 + (-((s : ℂ) * Complex.I)) • vecMulVec e (star e ᵥ* Hm))`. Rewrite using `[conjTranspose_add, conjTranspose_one, conjTranspose_smul, add_mul, one_mul, smul_mul_assoc, flowInv_adj hH e, hc, mul_add, mul_one, mul_smul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `one_sub_sub_smul_vecMulVec_eq_mul_of_isotropic he (-((s : ℂ) * Complex.I)) (-((s : ℂ) * Complex.I))`. Establish `h3 : (1 - (-((s : ℂ) * Complex.I)) • vecMulVec e (star e ᵥ* Hm) : Mt n) = 1 + ((s : ℂ) * Complex.I) • vecMulVec e (star e ᵥ* Hm)`. Rewrite using `[neg_smul, sub_neg_eq_add]`. Rewrite `h2` using `[sub_self, zero_smul, sub_zero, h3]`. Rewrite using `[h1, Matrix.mul_assoc, ← h2, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flowInv_mem {n : ℕ} {Hm : Mt n} (hH : Hmᴴ = Hm) {e : Fin n → ℂ} (he : star e ⬝ᵥ Hm.mulVec e = 0)
     (s : ℝ) : (1 + ((s : ℂ) * Complex.I) • vecMulVec e (star e ᵥ* Hm) : Mt n) ∈ Formalism.QuantumDeterminants.UH Hm := by
@@ -90,7 +90,7 @@ theorem flowInv_mem {n : ℕ} {Hm : Mt n} (hH : Hmᴴ = Hm) {e : Fin n → ℂ} 
   rw [h1, Matrix.mul_assoc, ← h2, mul_one]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `g₁ᴴ * Hm * g₁ = Hm at h₁`. Express the relevant statement in the definitionally equal form `g₂ᴴ * Hm * g₂ = Hm at h₂`. Use `show (g₁ * g₂)ᴴ * Hm * (g₁ * g₂) = Hm`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem mul_mem_uh {n : ℕ} {Hm g₁ g₂ : Mt n} (h₁ : g₁ ∈ Formalism.QuantumDeterminants.UH Hm) (h₂ : g₂ ∈ Formalism.QuantumDeterminants.UH Hm) :
     g₁ * g₂ ∈ Formalism.QuantumDeterminants.UH Hm := by
@@ -102,33 +102,29 @@ private theorem mul_mem_uh {n : ℕ} {Hm g₁ g₂ : Mt n} (h₁ : g₁ ∈ Form
     _ = Hm := by rw [h₁, h₂]
 
 /- English proof (translation)
-Introduce `n ι _ _ Hm q x₀ w hO P e he hP hInv u hu t ht`. Establish `hH : ∀ τ, (Hm τ)ᴴ = Hm τ` using `fun τ => flowInv_herm (hO τ)`. Establish `hu' : ∀ τ, u τ ∈ Formalism.QuantumDeterminants.UH (Hm τ)` using `hu`. Take `⟨hOpen, -, hStab, hBase⟩` from `frDoms_open_preconnected_stable n ι Hm q x₀ hO`. Set `X : ℂ → (ι → Fin n → Fin n → ℂ)` to `fun z τ => ((1 - z • vecMulVec (e τ) (star (e τ) ᵥ* Hm τ)) * u τ * x₀ τ : Mt n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hXaff : X = fun z τ i j => (u τ * x₀ τ) i j - z * (vecMulVec (e τ) (star (e τ) ᵥ* Hm τ) * u τ * x₀ τ) i j`. Use function extensionality and compare the values at `z τ i j`. Simplify using `only [X, sub_mul, one_mul, smul_mul_assoc, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Establish `hXd : Differentiable ℂ X`. Rewrite using `[hXaff]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `differentiable_pi.2 fun τ => differentiable_pi.2 fun i => differentiable_pi.2 fun j => ?_` and prove the remaining obligations. Conclude with `(differentiable_const _).sub (differentiable_id.mul (differentiable_const _))`. Establish `hHU : {z : ℂ | 0 ≤ z.re} ⊆ X ⁻¹' frDoms Hm q`. Introduce `z hz`. Establish `hGS` using `fun τ => FlowGS.flowGS n (Hm τ) (q τ) (x₀ τ) (hO τ) (w τ) (e τ) (he τ) (u τ) (hu' τ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose C A hCA using hGS`. Use `choose u' hu' b hbf using fun τ => hCA τ z.re hz`. Establish `hmem` using `hStab (fun τ => (1 + (((-z.im : ℝ) : ℂ) * Complex.I) • vecMulVec (e τ) (star (e τ) ᵥ* Hm τ)) * u' τ) (show ∀ τ, _ ∈ Formalism.QuantumDeterminants.UH (Hm τ) from fun τ => mul_mem_uh (flowInv_mem (hH τ) (he τ) (-z.im)) (hu' τ)) b (fun τ => (hbf τ).1) (fun τ => (x₀ τ : Mt n)) hBase`. It suffices to establish `hXz : X z = fun τ => ((1 + (((-z.im : ℝ) : ℂ) * Complex.I) • vecMulVec (e τ) (star (e τ) ᵥ* Hm τ)) * u' τ * x₀ τ * b τ : Mt n) by show X z ∈ frDoms Hm q`. Rewrite using `[hXz]`.
+Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hmem`. Use function extensionality and compare the values at `τ`. Establish `hfac` using `(hbf τ).2.1`. Establish `hsplit` using `one_sub_sub_smul_vecMulVec_eq_mul_of_isotropic (he τ) (((-z.im : ℝ) : ℂ) * Complex.I) (z.re : ℂ)`. Establish `hz' : (z.re : ℂ) - ((-z.im : ℝ) : ℂ) * Complex.I = z`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `apply Complex.ext <;> simp`. Rewrite `hsplit` using `[hz']`. Use `show (1 - z • vecMulVec (e τ) (star (e τ) ᵥ* Hm τ)) * u τ * x₀ τ = _`. Simplify using `only [Matrix.mul_assoc] at hfac ⊢`. Rewrite using `[hsplit, Matrix.mul_assoc, hfac]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : ℂ → ℂ` to `fun z => P (X z)`. Establish `hfU : DifferentiableOn ℂ f (X ⁻¹' frDoms Hm q)` using `hP.1.comp hXd.differentiableOn fun z hz => hz`. Establish `hUo : IsOpen (X ⁻¹' frDoms Hm q)` using `hOpen.preimage hXd.continuous`. Establish `h0 : (0 : ℂ) ∈ {z : ℂ | 0 ≤ z.re}` using `by simp`. Establish `hVo` using `hUo.connectedComponentIn (x := (0 : ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hHV` using `(convex_halfSpace_re_ge (0 : ℝ)).isPreconnected.subset_connectedComponentIn h0 hHU`. Establish `hfV : AnalyticOnNhd ℂ f (connectedComponentIn (X ⁻¹' frDoms Hm q) 0)` using `(hfU.mono (connectedComponentIn_subset _ _)).analyticOnNhd hVo`. Establish `eX0 : X 0 = fun τ => (u τ * x₀ τ : Mt n)`. Use function extensionality and compare the values at `τ`. Use `show (1 - (0 : ℂ) • vecMulVec (e τ) (star (e τ) ᵥ* Hm τ)) * u τ * x₀ τ = u τ * x₀ τ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[zero_smul, sub_zero, one_mul]`. Establish `hfreq : ∃ᶠ z in nhdsWithin (0 : ℂ) {0}ᶜ, f z = (fun _ => f 0) z`. Establish `hT : Filter.Tendsto (fun s : ℝ => (s : ℂ) * Complex.I) (nhdsWithin 0 {0}ᶜ) (nhdsWithin 0 {0}ᶜ)`. Apply `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within` to reduce the goal to its premises. Establish `hc : Continuous (fun s : ℝ => (s : ℂ) * Complex.I)` using `by fun_prop`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `using (hc.tendsto 0).mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Conclude with `mul_ne_zero (Complex.ofReal_ne_zero.mpr hs) Complex.I_ne_zero`. Apply `hT.frequently` to reduce the goal to its premises. Use `Filter.Eventually.frequently (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hInv (fun τ => 1 + (((-s : ℝ) : ℂ) * Complex.I) • vecMulVec (e τ) (star (e τ) ᵥ* Hm τ)) (fun τ => by unfold InZe; exact ⟨-s, rfl⟩) u hu`. Establish `eX : X ((s : ℂ) * Complex.I) = fun τ => ((1 + (((-s : ℝ) : ℂ) * Complex.I) • vecMulVec (e τ) (star (e τ) ᵥ* Hm τ)) * u τ * x₀ τ : Mt n)`. Use function extensionality and compare the values at `τ`. Simplify using `only [X]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Simplify using `only [neg_mul, neg_smul, sub_eq_add_neg]`. Use `show P (X ((s : ℂ) * Complex.I)) = P (X 0)`. Rewrite using `[eX, eX0]`. Conclude with `h1`.
-
-Establish `hEq` using `hfV.eqOn_of_preconnected_of_frequently_eq analyticOnNhd_const isPreconnected_connectedComponentIn (mem_connectedComponentIn (hHU h0)) hfreq`. Establish `ht' : (t : ℂ) ∈ {z : ℂ | 0 ≤ z.re}` using `by simpa using ht`. Establish `key : f t = f 0` using `hEq (hHV ht')`. Use `show f t = _`. Rewrite using `[key]`.
-
-Use `show P (X 0) = _`. Rewrite using `[eX0]`.
+A detailed English derivation is pending.
 -/
 theorem flowInv : ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (Hm : ι → Mt n) (q : ι → ℕ) (x₀ : ι → Mt n) (w : ι → Fin n → ℤ), (∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) → ∀ (P : (ι → Fin n → Fin n → ℂ) → ℂ) (e : ι → Fin n → ℂ), (∀ τ, star (e τ) ⬝ᵥ (Hm τ).mulVec (e τ) = 0) → HolSec Hm q w P → (∀ m : ι → Mt n, (∀ τ, InZe (Hm τ) (e τ) (m τ)) → ∀ u ∈ UG Hm, P (fun τ => (m τ * u τ * x₀ τ : Mt n)) = P (fun τ => (u τ * x₀ τ : Mt n))) → ∀ u ∈ UG Hm, ∀ t : ℝ, 0 ≤ t → P (fun τ => ((1 - (t : ℂ) • vecMulVec (e τ) (star (e τ) ᵥ* Hm τ)) * u τ * x₀ τ : Mt n)) = P (fun τ => (u τ * x₀ τ : Mt n)) := by
   intro n ι _ _ Hm q x₀ w hO P e he hP hInv u hu t ht

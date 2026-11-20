@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FinSign
 
 /- English proof (translation)
-Unfold `ordL`. Rewrite using `[dif_neg (by rw [h]; exact one_ne_zero)]`. Simplify using `[h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ordL_eq_zero_of_v_eq_one {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {x : L}
     (h : Valued.v x = 1) : ordL x = 0 := by
@@ -24,9 +24,9 @@ theorem ordL_eq_zero_of_v_eq_one {L : Type} [Field L] [Valued L (WithZero (Multi
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n γ₀ H₀ _ _ hpos P₁`. Take `⟨hd0, -⟩` from `gramOn_det_totallyPositive_of_posDef H₀ hpos (LinearMap.ker (Matrix.toLin' (aeval γ₀.val P₁)))`. Use `(GlobalTheory.QNorm.finite_valuation_ne_one E (Units.mk0 _ hd0)).subset ?_` and prove the remaining obligations. Introduce and unpack `w ⟨hw, hs⟩`. Simplify using `only [Set.mem_setOf_eq, Units.val_mk0]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce `h1`. Apply `hs` to reduce the goal to its premises. Unfold `sgnOn`. Establish `hv : Valued.v (algebraMap E (w.adicCompletion E) (gramOn (IsCMField.complexConj E).toRingEquiv.toRingHom H₀ (LinearMap.ker (Matrix.toLin' (aeval γ₀.val P₁)))).det) = 1` using `(w.valuedAdicCompletion_eq_valuation' _).trans h1`. Rewrite using `[aeval_map_mat, GlobalTheory.T.gramKernelSign_nonsplit_baseChange_eq E hU w hw n H₀ (aeval γ₀.val P₁), ordL_eq_zero_of_v_eq_one hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

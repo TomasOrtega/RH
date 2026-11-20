@@ -20,14 +20,14 @@ def CoordSum (ν : NumOf D C N) (m : ℕ) (p : QkPt D C (m ^ 2)) (h : GtPtF D C)
   ∃ (q : N.QT (m ^ 2)) (hv : N.Gt), ν.QPt p q ∧ ν.Pt h hv ∧ HasSum (N.evT m q hv) v
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Prod.ext (Multiplicative.toAdd.injective (ν.eX.injective (h.1.trans h'.1.symm))) (ν.pt_unique h.2 h'.2))`.
+A detailed English derivation is pending.
 -/
 theorem qPt_unique (ν : NumOf D C N) {k : ℕ} {p : QkPt D C k} {q q' : N.QT k} (h : ν.QPt p q) (h' : ν.QPt p q') :
     q = q' :=
   Subtype.ext (Prod.ext (Multiplicative.toAdd.injective (ν.eX.injective (h.1.trans h'.1.symm))) (ν.pt_unique h.2 h'.2))
 
 /- English proof (translation)
-Take `⟨q', h₁, h₂⟩` from `h`. Take `rfl` from `qPt_unique ν h₁ hq`. Conclude with `⟨h₂.summable, h₂.tsum_eq⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ThetaSum.hasSum {ν : NumOf D C N} {m : ℕ} {p : QkPt D C (m ^ 2)} {v : C} (h : ThetaSum ν m p v)
     {q : N.QT (m ^ 2)} (hq : ν.QPt p q) : Summable (N.txT m q) ∧ N.tx m q = v := by
@@ -60,7 +60,7 @@ def ThetaSeriesPrimeSt : Prop :=
   SeriesFor fun V _ m => ∃ n k : ℕ, n.Prime ∧ Odd n ∧ IsUnit (n : V) ∧ m = n ^ k
 
 /- English proof (translation)
-Introduce and unpack `V _ _ _ hV D A G _ _ U C _ _ _ _ _ hC N ν m ⟨n, k, -, hn, -, rfl⟩`. Conclude with `h V hV D A G U C hC N ν _ hn.pow`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ThetaSeriesSt.prime (h : ThetaSeriesSt) : ThetaSeriesPrimeSt := by
   rintro V _ _ _ hV D A G _ _ U C _ _ _ _ _ hC N ν m ⟨n, k, -, hn, -, rfl⟩

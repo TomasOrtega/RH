@@ -17,9 +17,9 @@ def bsTr (la : La) (U : Set Y) (a : ι → Y → ℂ) : Prop :=
   ∀ i j y, y ∈ U → y ∈ (A.chart i).source → y ∈ (A.chart j).source → a i y = A.g la i j y * a j y
 
 /- English proof (translation)
-Establish `h` using `A.g_add 0 0 i j y hi hj`. Rewrite `h` using `[add_zero]`. Establish `hne` using `A.g_ne 0 i j y hi hj`. Establish `h2 : A.g 0 i j y * (A.g 0 i j y - 1) = 0` using `by linear_combination -h`. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h3 hne`. Conclude with `sub_eq_zero.mp h3`.
+A detailed English derivation is pending.
 -/
 theorem bsA_g_zero {i j : ι} {y : Y} (hi : y ∈ (A.chart i).source) (hj : y ∈ (A.chart j).source) :
     A.g 0 i j y = 1 := by
@@ -32,7 +32,7 @@ theorem bsA_g_zero {i j : ι} {y : Y} (hi : y ∈ (A.chart i).source) (hj : y �
   · exact sub_eq_zero.mp h3
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_nsmul, pow_zero]`. Conclude with `bsA_g_zero A hi hj`. Consider the case `succ k ih => rw [succ_nsmul, A.g_add _ _ i j y hi hj, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bsA_g_nsmul (la : La) (k : ℕ) {i j : ι} {y : Y} (hi : y ∈ (A.chart i).source)
     (hj : y ∈ (A.chart j).source) : A.g (k • la) i j y = A.g la i j y ^ k := by
@@ -41,7 +41,7 @@ theorem bsA_g_nsmul (la : La) (k : ℕ) {i j : ι} {y : Y} (hi : y ∈ (A.chart 
   | succ k ih => rw [succ_nsmul, A.g_add _ _ i j y hi hj, ih, pow_succ]
 
 /- English proof (translation)
-Establish `h` using `A.ph_add 0 0 i y hi`. Rewrite `h` using `[add_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem bsA_ph_zero {i : ι} {y : Y} (hi : y ∈ (A.chart i).source) : A.ph 0 i y = 0 := by
   have h := A.ph_add 0 0 i y hi
@@ -49,7 +49,7 @@ theorem bsA_ph_zero {i : ι} {y : Y} (hi : y ∈ (A.chart i).source) : A.ph 0 i 
   linarith
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_nsmul, bsA_ph_zero A hi]`. Simplify using the standard rewrite rules. Consider the case `succ k ih => rw [succ_nsmul, A.ph_add _ _ i y hi, ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -60,7 +60,7 @@ theorem bsA_ph_nsmul (la : La) (k : ℕ) {i : ι} {y : Y} (hi : y ∈ (A.chart i
   | succ k ih => rw [succ_nsmul, A.ph_add _ _ i y hi, ih]; push_cast; ring
 
 /- English proof (translation)
-Establish `h` using `A.ph_add (la - mu) mu i y hi`. Rewrite `h` using `[sub_add_cancel]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem bsA_ph_sub (la mu : La) {i : ι} {y : Y} (hi : y ∈ (A.chart i).source) :
     A.ph (la - mu) i y = A.ph la i y - A.ph mu i y := by
@@ -69,7 +69,7 @@ theorem bsA_ph_sub (la mu : La) {i : ι} {y : Y} (hi : y ∈ (A.chart i).source)
   linarith
 
 /- English proof (translation)
-Unfold `WeightedAtlas.IsSecOn at h`. Conclude with `h.2`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem bsA_tr_of_isSecOn {la : La} {U : Set Y} {a : ι → Y → ℂ} (h : A.IsSecOn la U a) :
     bsTr A la U a := by
@@ -77,7 +77,7 @@ theorem bsA_tr_of_isSecOn {la : La} {U : Set Y} {a : ι → Y → ℂ} (h : A.Is
   exact h.2
 
 /- English proof (translation)
-Unfold `WeightedAtlas.IsSecOn at h ⊢`. Conclude with `And.intro (fun i => (h.1 i).mono (fun v hv => ⟨hv.1, hVU hv.2⟩)) (fun i j y hy => h.2 i j y (hVU hy))`.
+Replace the relevant objects with their definitions. Prove both required implications or components.
 -/
 theorem bsA_isSecOn_mono {la : La} {U V : Set Y} {a : ι → Y → ℂ} (h : A.IsSecOn la U a)
     (hVU : V ⊆ U) : A.IsSecOn la V a := by
@@ -86,7 +86,7 @@ theorem bsA_isSecOn_mono {la : La} {U V : Set Y} {a : ι → Y → ℂ} (h : A.I
     (fun i j y hy => h.2 i j y (hVU hy))
 
 /- English proof (translation)
-Unfold `bsTr at ha hb ⊢`. Introduce `i j y hy hi hj`. Use `show a i y * b i y = A.g (la + mu) i j y * (a j y * b j y)`. Rewrite using `[ha i j y hy hi hj, hb i j y hy hi hj, A.g_add la mu i j y hi hj]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bsA_tr_mul {la mu : La} {U : Set Y} {a b : ι → Y → ℂ} (ha : bsTr A la U a)
     (hb : bsTr A mu U b) : bsTr A (la + mu) U (fun i y => a i y * b i y) := by
@@ -97,7 +97,7 @@ theorem bsA_tr_mul {la mu : La} {U : Set Y} {a b : ι → Y → ℂ} (ha : bsTr 
   ring
 
 /- English proof (translation)
-Unfold `bsTr at ha ⊢`. Introduce `i j y hy hi hj`. Use `show a i y ^ k = A.g (k • la) i j y * a j y ^ k`. Rewrite using `[ha i j y hy hi hj, bsA_g_nsmul A la k hi hj, mul_pow]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bsA_tr_pow {la : La} {U : Set Y} {a : ι → Y → ℂ} (ha : bsTr A la U a) (k : ℕ) :
     bsTr A (k • la) U (fun i y => a i y ^ k) := by
@@ -107,7 +107,7 @@ theorem bsA_tr_pow {la : La} {U : Set Y} {a : ι → Y → ℂ} (ha : bsTr A la 
   rw [ha i j y hy hi hj, bsA_g_nsmul A la k hi hj, mul_pow]
 
 /- English proof (translation)
-Unfold `bsTr at ha hb`. Rewrite using `[ha i j y hy hi hj, hb i j y hy hi hj, mul_div_mul_left _ _ (A.g_ne la i j y hi hj)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem bsA_tr_ratio {la : La} {U : Set Y} {a b : ι → Y → ℂ} (ha : bsTr A la U a)
     (hb : bsTr A la U b) {i j : ι} {y : Y} (hy : y ∈ U) (hi : y ∈ (A.chart i).source)
@@ -116,7 +116,7 @@ theorem bsA_tr_ratio {la : La} {U : Set Y} {a b : ι → Y → ℂ} (ha : bsTr A
   rw [ha i j y hy hi hj, hb i j y hy hi hj, mul_div_mul_left _ _ (A.g_ne la i j y hi hj)]
 
 /- English proof (translation)
-Unfold `bsTr at ha`. Rewrite using `[ha i j y hy hi hj]`. Conclude with `mul_ne_zero (A.g_ne la i j y hi hj) h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bsA_ne_of_tr {la : La} {U : Set Y} {a : ι → Y → ℂ} (ha : bsTr A la U a) {i j : ι}
     {y : Y} (hy : y ∈ U) (hi : y ∈ (A.chart i).source) (hj : y ∈ (A.chart j).source)
@@ -126,7 +126,7 @@ theorem bsA_ne_of_tr {la : La} {U : Set Y} {a : ι → Y → ℂ} (ha : bsTr A l
   exact mul_ne_zero (A.g_ne la i j y hi hj) h
 
 /- English proof (translation)
-Establish `hp` using `A.mem_pick y`. Unfold `bsTr at ha`. Unfold `WeightedAtlas.nsq`. Establish `hg : 0 < ‖A.g la (A.pick y) i y‖ ^ 2` using `pow_pos (norm_pos_iff.mpr (A.g_ne la (A.pick y) i y hp hi)) 2`. Rewrite using `[ha (A.pick y) i y hy hp hi, A.ph_trans la (A.pick y) i y hp hi, norm_mul, mul_pow, neg_sub, sub_eq_add_neg, Real.exp_add, Real.exp_log hg]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -143,9 +143,9 @@ theorem bsA_nsq_chart {la : La} {U : Set Y} {a : ι → Y → ℂ} (ha : bsTr A 
   ring
 
 /- English proof (translation)
-Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at ha`. Establish `h1` using `(ha.1 i).continuousOn`. Establish `h2 : ContinuousOn ((a i ∘ (A.chart i).symm) ∘ (A.chart i)) (A.chart i).source` using `h1.comp (A.chart i).continuousOn (fun z hz => ⟨(A.chart i).map_source hz, Set.mem_univ _⟩)`. Use `h2.congr ?_` and prove the remaining obligations. Introduce `z hz`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.comp_apply, (A.chart i).left_inv hz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem continuousOn_section_chart {la : La} {a : ι → Y → ℂ} (ha : A.IsSec la a) (i : ι) :
     ContinuousOn (a i) (A.chart i).source := by
@@ -158,7 +158,7 @@ theorem continuousOn_section_chart {la : La} {a : ι → Y → ℂ} (ha : A.IsSe
   simp only [Function.comp_apply, (A.chart i).left_inv hz]
 
 /- English proof (translation)
-Establish `h1` using `(A.smooth_ph la i).continuousOn`. Establish `h2 : ContinuousOn ((A.ph la i ∘ (A.chart i).symm) ∘ (A.chart i)) (A.chart i).source` using `h1.comp (A.chart i).continuousOn (fun z hz => (A.chart i).map_source hz)`. Use `h2.congr ?_` and prove the remaining obligations. Introduce `z hz`. Simplify using `only [Function.comp_apply, (A.chart i).left_inv hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem bsA_ph_cont (la : La) (i : ι) : ContinuousOn (A.ph la i) (A.chart i).source := by
   have h1 := (A.smooth_ph la i).continuousOn
@@ -169,9 +169,9 @@ theorem bsA_ph_cont (la : La) (i : ι) : ContinuousOn (A.ph la i) (A.chart i).so
   simp only [Function.comp_apply, (A.chart i).left_inv hz]
 
 /- English proof (translation)
-Establish `htr : bsTr A la Set.univ a` using `bsA_tr_of_isSecOn A (U := Set.univ) ha`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `y`. Establish `hs : (A.chart (A.pick y)).source ∈ 𝓝 y` using `(A.chart (A.pick y)).open_source.mem_nhds (A.mem_pick y)`. Establish `hc : ContinuousOn (fun z => ‖a (A.pick y) z‖ ^ 2 * Real.exp (-A.ph la (A.pick y) z)) (A.chart (A.pick y)).source` using `((continuousOn_section_chart A ha (A.pick y)).norm.pow 2).mul ((bsA_ph_cont A la (A.pick y)).neg.rexp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hc.continuousAt hs).congr ?_` and prove the remaining obligations. Use `filter_upwards [hs] with z hz`. Conclude with `(bsA_nsq_chart A htr (Set.mem_univ z) hz).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bsA_nsq_cont {la : La} {a : ι → Y → ℂ} (ha : A.IsSec la a) : Continuous (A.nsq la a) := by
   have htr : bsTr A la Set.univ a := bsA_tr_of_isSecOn A (U := Set.univ) ha
@@ -187,7 +187,7 @@ theorem bsA_nsq_cont {la : La} {a : ι → Y → ℂ} (ha : A.IsSec la a) : Cont
   exact (bsA_nsq_chart A htr (Set.mem_univ z) hz).symm
 
 /- English proof (translation)
-Use `show Continuous (fun y => ∑ k, A.nsq la (w k) y)`. Conclude with `continuous_finset_sum _ (fun k _ => bsA_nsq_cont A (hw k))`.
+A detailed English derivation is pending.
 -/
 theorem bsA_sqn_cont {la : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} (hw : ∀ k, A.IsSec la (w k)) :
     Continuous (A.sqn la w) := by
@@ -195,14 +195,14 @@ theorem bsA_sqn_cont {la : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} (hw : 
   exact continuous_finset_sum _ (fun k _ => bsA_nsq_cont A (hw k))
 
 /- English proof (translation)
-Unfold `WeightedAtlas.nsq`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem bsA_nsq_nonneg (la : La) (a : ι → Y → ℂ) (y : Y) : 0 ≤ A.nsq la a y := by
   unfold WeightedAtlas.nsq
   positivity
 
 /- English proof (translation)
-Unfold `WeightedAtlas.nsq`. Conclude with `mul_pos (pow_pos (norm_pos_iff.mpr h) 2) (Real.exp_pos _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem bsA_nsq_pos {la : La} {a : ι → Y → ℂ} {y : Y} (h : a (A.pick y) y ≠ 0) :
     0 < A.nsq la a y := by
@@ -210,7 +210,7 @@ theorem bsA_nsq_pos {la : La} {a : ι → Y → ℂ} {y : Y} (h : a (A.pick y) y
   exact mul_pos (pow_pos (norm_pos_iff.mpr h) 2) (Real.exp_pos _)
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `h`. Use `show 0 < ∑ k, A.nsq la (w k) y`. Conclude with `Finset.sum_pos' (fun m _ => bsA_nsq_nonneg A la (w m) y) ⟨k, Finset.mem_univ _, bsA_nsq_pos A hk⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bsA_sqn_pos {la : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {y : Y}
     (h : ∃ k, w k (A.pick y) y ≠ 0) : 0 < A.sqn la w y := by

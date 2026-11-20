@@ -16,7 +16,7 @@ namespace GlobalTheory.DilKer
 open GlobalTheory.StdFrames (cpt)
 
 /- English proof (translation)
-Establish `h : (dil i a z).map (toEAf D) = eToEAf D a • z.map (toEAf D)`. Use extensionality with `k l`. Simplify using `only [dil, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, RingHom.map_mul, GlobalTheory.IdemIntegral.toEAf_incA]`. Simplify using `only [frMapO, h, Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem frMapO_dil {D : D7} (i : Fin D.R.m) (βS : GL (Fin (Vc D i).rank) (EAf D)) (βT : GL (Fin (Wc D i).rank) (EAf D))
     (a : D.host.E) (z : WO (Vc D i) (Wc D i)) :
@@ -27,7 +27,7 @@ theorem frMapO_dil {D : D7} (i : Fin D.R.m) (βS : GL (Fin (Vc D i).rank) (EAf D
   simp only [frMapO, h, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Introduce `k l` and use `by simp only [dil, Matrix.map_apply] rw [mul_left_comm, hz k l]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_dil {D : D7} (i : Fin D.R.m) (e : AE D) (a : D.host.E) {z : WO (Vc D i) (Wc D i)} (hz : IsHalf e z) :
     IsHalf e (dil i a z) := fun k l => by
@@ -35,9 +35,9 @@ theorem isHalf_dil {D : D7} (i : Fin D.R.m) (e : AE D) (a : D.host.E) {z : WO (V
   rw [mul_left_comm, hz k l]
 
 /- English proof (translation)
-Establish `h : z.map (toEAf D) = toEAf D e • z.map (toEAf D)`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, ← RingHom.map_mul, hz a b]`. Establish `h2 : frMapO (Vc D i) (Wc D i) βS βT z = toEAf D e • frMapO (Vc D i) (Wc D i) βS βT z` using `by conv_lhs => rw [frMapO, h]`. Simplify using `only [frMapO, Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `conv_rhs => rw [h2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem frMapO_half {D : D7} (i : Fin D.R.m) (βS : GL (Fin (Vc D i).rank) (EAf D)) (βT : GL (Fin (Wc D i).rank) (EAf D))
     {e : AE D} {z : WO (Vc D i) (Wc D i)} (hz : IsHalf e z) (k l) :
@@ -52,7 +52,7 @@ theorem frMapO_half {D : D7} (i : Fin D.R.m) (βS : GL (Fin (Vc D i).rank) (EAf 
   rfl
 
 /- English proof (translation)
-Establish `: eToEAf D x = GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.inc D x` using `rfl`. Rewrite using `[this, GlobalTheory.AdIsom.cpt_inc, Formalism.UG.P.levelaf_valued_algebraMap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_cpt_eToEAf {D : D7} (PP : Pl D.host.E) (x : D.host.E) :
     Valued.v (cpt PP (eToEAf D x)) = PP.valuation D.host.E x := by
@@ -60,13 +60,13 @@ theorem val_cpt_eToEAf {D : D7} (PP : Pl D.host.E) (x : D.host.E) :
   rw [this, GlobalTheory.AdIsom.cpt_inc, Formalism.UG.P.levelaf_valued_algebraMap]
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Use `(GlobalTheory.AdIsom.mem_OA m).2 fun P => ?_` and prove the remaining obligations. Distinguish the cases in `hP : P ∈ Q`. Establish `h1` using `hr P hP`. Rewrite `h1` using `[RingHom.map_mul, Valuation.map_mul, val_cpt_eToEAf, GlobalTheory.HeckeDetChar.val_unif (hϖ P hP).1 (hϖ P hP).2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `h0 : Valued.v (cpt P m) = 0`. Rewrite using `[h0]`. Conclude with `zero_le'`. Take `⟨k, hk⟩ : ∃ k : ℤ, Valued.v (cpt P m) = WithZero.exp k` from `⟨_, (WithZero.exp_log h0).symm⟩`. Rewrite `h1`, the goal using `[hk]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `h0 : cpt P (toEAf D (∑ PP ∈ Q, es PP)) = 0`. Rewrite using `[map_sum, map_sum]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_eq_zero fun PP hPP => (GlobalTheory.StdFrames.cpt_of_isIdemAt (hes PP hPP)).2 P fun h => hP (h ▸ hPP)`. Use `congrArg (cpt P) hm` as an intermediate fact. Rewrite `this` using `[RingHom.map_mul, h0, zero_mul]`. Rewrite using `[← this, Valuation.map_zero]`. Conclude with `zero_le'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_int_of_mul {D : D7} {Q : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemSum e Q) {ϖ : 𝓞 D.host.E}
     (hϖ : ∀ PP ∈ Q, ϖ ∈ PP.asIdeal ∧ ϖ ∉ PP.asIdeal ^ 2) {m : EAf D} (hm : toEAf D e * m = m)
@@ -94,15 +94,15 @@ theorem mem_int_of_mul {D : D7} {Q : Finset (Pl D.host.E)} {e : AE D} (he : IsId
     exact zero_le'
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC hG i hV Q hQ eQ he ϖ hϖ0 hϖ z hz hϖz`. Establish `hI` using `GlobalTheory.T.mem_completedPairLattice_iff_frameMatrix_integral_on_half D G Pl0 T0 A Ks R F hC hG i hV Q hQ eQ he`. Rewrite using `[frMapO_dil]`. Prove the components needed by the constructor for the conclusion. Introduce `hzL PP hPP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hM` using `(hI z hz).2 hzL`. Use extensionality with `k l`. Establish `hϖi : eToEAf D (ϖ : D.host.E) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[← GlobalTheory.IdemIntegral.toEAf_incA]`. Conclude with `GlobalTheory.IdemIntegral.toEAf_mem_of_finPart (GlobalTheory.SplitIndex.finPart_incA_mem ϖ)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : eToEAf D (ϖ : D.host.E) * frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) z k l ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `mul_mem hϖi (hM k l)`. Simplify using `only [redM, Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply, dif_pos hint]`. Use `(GlobalTheory.AdIsom.resS_eq_zero_iff_cpt PP ⟨_, hint⟩).2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v (cpt PP (eToEAf D (ϖ : D.host.E) * _)) < 1`. Rewrite using `[RingHom.map_mul, Valuation.map_mul, val_cpt_eToEAf, GlobalTheory.HeckeDetChar.val_unif (hϖ PP hPP).1 (hϖ PP hPP).2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `hred`. Establish `hN` using `(hI _ (isHalf_dil i eQ _ hz)).2 hϖz`. Rewrite `hN` using `[frMapO_dil]`. Establish `hN' : ∀ k l, eToEAf D (ϖ : D.host.E) * frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) z k l ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun k l => hN k l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hI z hz).1 fun k l => mem_int_of_mul he hϖ (frMapO_half i _ _ hz k l) (hN' k l) fun PP hPP => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun (hred PP hPP) k) l`. Simplify using `only [redM, Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply, dif_pos (hN' k l)] at h1`. Conclude with `(GlobalTheory.AdIsom.resS_eq_zero_iff_cpt PP ⟨_, hN' k l⟩).1 h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_localLattice_iff_redM : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → QGuard R → ∀ (i : Fin D.R.m), VStd D i → ∀ (Q : Finset (Pl D.host.E)), (∃ t, Q ⊆ R.Q t) → ∀ eQ : AE D, IsIdemSum eQ Q → ∀ ϖ : 𝓞 D.host.E, ϖ ≠ 0 → (∀ PP ∈ Q, ϖ ∈ PP.asIdeal ∧ ϖ ∉ PP.asIdeal ^ 2) → ∀ z : WO (Vc D i) (Wc D i), IsHalf eQ z → dil i (ϖ : D.host.E) z ∈ lattice₂ R i → (z ∈ lattice₂ R i ↔ ∀ PP ∈ Q, redM PP (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (dil i (ϖ : D.host.E) z)) = 0) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC hG i hV Q hQ eQ he ϖ hϖ0 hϖ z hz hϖz

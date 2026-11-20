@@ -7,7 +7,7 @@ open scoped Matrix
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.HS
 
 /- English proof (translation)
-Establish `hL : IsLat (intVec K m)` using `isLat_intVec m`. Use `⟨Submodule.FG.sup hL.1 (Submodule.FG.map _ hL.1), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hL.2]`. Conclude with `Submodule.span_mono (fun v hv => (le_sup_left : intVec K m ≤ lam c) hv)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLat_lam_of_matrix (K : Type) [Field K] [NumberField K] (m : ℕ)
     (c : Matrix (Fin m) (Fin m) K) : IsLat (lam c) := by

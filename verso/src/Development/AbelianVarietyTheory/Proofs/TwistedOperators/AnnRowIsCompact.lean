@@ -17,13 +17,11 @@ noncomputable section
 namespace GlobalTheory.AscFin.RowAnn
 
 /- English proof (translation)
-Introduce `D _ T L μ0 hL sc G W M _ i hi`. Establish `hsd : ∀ k, k ≤ D.R.m → IsSelfDualC (G.V (.grid k 0)) (G.Λ (.grid k 0))`. Introduce `k hk`. Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases. Take `⟨c, hc⟩` from `hL.βY 0 (Nat.lt_of_le_of_lt (Nat.zero_le i) hi)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Establish `hY` using `Formalism.IndefR.Eqv.KerDiag.isSelfDualC_of_base hc`. Use `show IsSelfDualC (G.node (.grid 0 0)).sp (G.node (.grid 0 0)).lat`. Rewrite using `[G.node_zero_zero]`. Conclude with `hY`. Use `(G.isV (X := .grid k 0) ⟨hk, Nat.zero_le _⟩ ?_).sd` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
 
-Introduce `j hj`. Use `injection hj with h1 h2`. Use linear arithmetic over natural numbers and integers. Establish `hfin : FinLat (latRow G i)` using `GlobalTheory.AscFin.DepLat.finLat_depLat G (.chi i 0) (isSelfDualC_neg (hsd (i + 1) hi)) (hsd i hi.le)`. Take `⟨U, hU, h0, hUΓ⟩` from `hfin.opn`.
-
-Conclude with `GlobalTheory.AnnNbhdCpt.isCompact_annSet W.ψ W.ψ_std _ _ (latRow G i) U hU h0 hUΓ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem annRow_isCompact : All fun {D} _ _ {sc} {G} W _ => ∀ i, i < D.R.m → IsCompact {u' : WO (G.V (.grid (i + 1) 0)) (G.V (.grid i 0)) | MxAt (fun _ => True) u' ∧ ∀ u ∈ latRow G i, W.ψ (symplO _ _ u u') = 1} := by
   intro D _ T L μ0 hL sc G W M _ i hi

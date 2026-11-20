@@ -16,11 +16,11 @@ open GroundTheory.ProfCoh GroundTheory.LocalField ValuativeRel CategoryTheory
 namespace GlobalTheory.CompanionTheory.Completion
 
 /- English proof (translation)
-Establish `hval : v.valuation F (ϖ : F) = v.intValuation ϖ` using `v.valuation_of_algebraMap ϖ`. Rewrite using `[hval]`. Establish `hle : v.intValuation ϖ ≤ WithZero.exp (-((1 : ℕ) : ℤ))` using `(v.intValuation_le_pow_iff_mem ϖ 1).2 (by simpa using h1)`. Establish `hnle : ¬ v.intValuation ϖ ≤ WithZero.exp (-((2 : ℕ) : ℤ))` using `fun h => h2 ((v.intValuation_le_pow_iff_mem ϖ 2).1 h)`. Establish `hne : v.intValuation ϖ ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Apply `hnle` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `zero_le'`. Rewrite `hle`, `hnle`, the goal using `[← WithZero.exp_log hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle`, `hnle` using `[WithZero.exp_le_exp]`. Use `congr 1`. Move the coercions through the operations in `at hle hnle`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem valuation_eq_exp_neg_one_of_mem_of_notMem (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (ϖ : 𝓞 F) (h1 : ϖ ∈ v.asIdeal) (h2 : ϖ ∉ v.asIdeal ^ 2) :
@@ -43,11 +43,9 @@ theorem valuation_eq_exp_neg_one_of_mem_of_notMem (F : Type) [Field F] [NumberFi
   omega
 
 /- English proof (translation)
-Introduce `F _ _ v ϖ h1 h2`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[v.adicCompletion F]`. Establish `hv : Valued.v (π : v.adicCompletion F) = WithZero.exp (-1 : ℤ)` using `GlobalTheory.adicCompletion_valuation_map_uniformiser F v (v.adicCompletion F) (RingEquiv.refl _) (fun a => by`. Rewrite using `[GroundTheory.Global.mem_valuationInteger_iff]`. Conclude with `Iff.rfl) π hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : Valued.v (algebraMap F (v.adicCompletion F) (ϖ : F)) = WithZero.exp (-1 : ℤ)`. Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (ϖ : F)).trans (valuation_eq_exp_neg_one_of_mem_of_notMem F v ϖ h1 h2)`. Establish `heq : valuation (v.adicCompletion F) (algebraMap F (v.adicCompletion F) (ϖ : F)) = valuation (v.adicCompletion F) (π : v.adicCompletion F)` using `((ValuativeRel.isEquiv (valuation (v.adicCompletion F)) Valued.v).val_eq).2 (hx.trans hv.symm)`. Establish `hn` using `(normalizedValuation_eq_iff (K := v.adicCompletion F)).2 heq`. Rewrite using `[← ord_uniformizer hπ]`.
-
-Simplify using `only [ord, hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ord_algebraMap_eq_one : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (ϖ : 𝓞 F), ϖ ∈ v.asIdeal → ϖ ∉ v.asIdeal ^ 2 → ord (algebraMap F (v.adicCompletion F) (ϖ : F)) = 1 := by
   intro F _ _ v ϖ h1 h2

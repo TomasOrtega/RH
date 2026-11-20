@@ -14,9 +14,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Establish `hexp : NormedSpace.exp (-X) * NormedSpace.exp X = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl X)), neg_add_cancel, NormedSpace.exp_zero]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = 1 := by`. Rewrite using `[toMK_mul_inv', Matrix.mul_one, Matrix.mul_assoc (toMK k⁻¹), hexp, Matrix.mul_one, toMK_inv_mul']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma inv_conj_exp (k : KG ε) (X : Matrix (Fin n) (Fin n) ℂ) :
     (toMK k⁻¹ * NormedSpace.exp X * toMK k)⁻¹ = toMK k⁻¹ * NormedSpace.exp (-X) * toMK k := by
@@ -32,7 +32,7 @@ lemma inv_conj_exp (k : KG ε) (X : Matrix (Fin n) (Fin n) ℂ) :
           toMK_inv_mul']
 
 /- English proof (translation)
-The claim follows from `funext fun a => by have h2 : ((μ' a : ℤ) : ℝ) = ((μ a : ℤ) : ℝ) := (hμ' a).trans (hμ a).symm exact_mod_cast h2`.
+A detailed English derivation is pending.
 -/
 lemma isMu_unique {lam : Fin n → ℝ} {μ μ' : Fin n → ℤ} (hμ : IsMu lam μ) (hμ' : IsMu lam μ') : μ' = μ :=
   funext fun a => by
@@ -40,7 +40,7 @@ lemma isMu_unique {lam : Fin n → ℝ} {μ μ' : Fin n → ℤ} (hμ : IsMu lam
     exact_mod_cast h2
 
 /- English proof (translation)
-Establish `h1` using `psiM_kexp T μ 1 hX`. Rewrite `h1` using `[toMK_one', op_one', Matrix.one_mul, one_mul]`. Rewrite using `[h1, ← psM_exp_neg T μ hX]`. Repeatedly rewrite using `[inv_conj_exp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem psiM_exp_formula {Λ : Fin n → ℝ} (T : KType ε Λ) (μ : Fin n → ℤ) {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : inP ε X) :

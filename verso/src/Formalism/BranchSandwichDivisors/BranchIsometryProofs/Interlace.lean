@@ -6,19 +6,19 @@ open Finset
 namespace Formalism.BranchingDeterminantCap
 
 /- English proof (translation)
-Introduce `n lam sg h`. Establish `hsum : ∑ i, lam i = lam 0 + ∑ i : Fin n, lam i.succ` using `Fin.sum_univ_succ lam`. Establish `hsum' : ∑ i, lam i = ∑ i : Fin n, lam i.castSucc + lam (Fin.last n)` using `Fin.sum_univ_castSucc lam`. Establish `hd0 : d0 lam sg = ∑ i, sg i - ∑ i : Fin n, lam i.succ`. Rewrite using `[d0, Finset.sum_sub_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnn : ∀ i, 0 ≤ sg i - lam i.succ` using `fun i => by linarith [(h i).2]`. Establish `h3 : 0 ≤ d0 lam sg` using `Finset.sum_nonneg fun i _ => hnn i`. Establish `hle : ∀ i, sg i - lam i.succ ≤ d0 lam sg` using `fun i => Finset.single_le_sum (f := fun i => sg i - lam i.succ) (fun j _ => hnn j) (Finset.mem_univ i)`. Establish `h5 : ∀ i, sg i ∈ rset lam sg i`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[rset, Finset.mem_Icc]`. Use `(h i).1` as an intermediate fact. Use `(h i).2` as an intermediate fact. Use `hle i` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `⟨by linarith, ?_, h3, ?_, h5, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_sub_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `Finset.sum_nonneg fun i _ => ?_` and prove the remaining obligations. Use `(h i).1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(h i).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `i`. Establish `hmem` using `h5 i`. Rewrite using `[Finset.card_erase_of_mem hmem]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hmem` using `[rset, Finset.mem_Icc]`. Rewrite using `[rset, Int.card_Icc]`. Establish `hc : 0 ≤ min (lam i.castSucc) (lam i.succ + d0 lam sg) + 1 - lam i.succ` using `by omega`. Establish `ht : ((min (lam i.castSucc) (lam i.succ + d0 lam sg) + 1 - lam i.succ).toNat : ℤ) = min (lam i.castSucc) (lam i.succ + d0 lam sg) + 1 - lam i.succ` using `Int.toNat_of_nonneg hc`. Establish `h1 : 1 ≤ (min (lam i.castSucc) (lam i.succ + d0 lam sg) + 1 - lam i.succ).toNat` using `by omega`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_sub h1, ht]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 -/
 theorem interlaceIdentities : InterlaceIdent := by
   intro n lam sg h
@@ -57,13 +57,13 @@ theorem interlaceIdentities : InterlaceIdent := by
     omega
 
 /- English proof (translation)
-Introduce `n lam sg h p q hpq`. Establish `hpq'` using `Fin.le_iff_val_le_val.mp hpq`. Take `⟨k, hk⟩ : ∃ k, q.val = p.val + k` from `⟨q.val - p.val, by omega⟩`. Proceed by induction on `k generalizing q with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Establish `: q = p` using `Fin.ext (by omega)`. Substitute `this` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Establish `hlt : p.val + k < n` using `by omega`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hq1 : p ≤ (⟨p.val + k, hlt⟩ : Fin n)` using `Fin.le_iff_val_le_val.mpr (by simp)`. Establish `ih'` using `ih ⟨p.val + k, hlt⟩ hq1 (by simp) rfl`. Establish `hIcc : Finset.Icc p q = insert q (Finset.Icc p ⟨p.val + k, hlt⟩)`. Use extensionality with `x`. Simplify using `only [Finset.mem_Icc, Finset.mem_insert, Fin.le_iff_val_le_val, Fin.ext_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hIcc, Finset.sum_insert (by simp only [Finset.mem_Icc, Fin.le_iff_val_le_val]; omega)]`. Establish `hq` using `(h q).1`. Establish `hcs : q.castSucc = (⟨p.val + k, hlt⟩ : Fin n).succ` using `Fin.ext (by simp; omega)`. Rewrite `hq` using `[hcs]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

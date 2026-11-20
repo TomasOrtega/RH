@@ -19,9 +19,9 @@ namespace GlobalTheory.BumpMixSmooth
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨hg, hlc, -, ht2, hdisc, -⟩` from `lattice_Mx D m n`. Establish `hcl : IsClosed (ratMx D m n : Set (Mx D m n))` using `AddSubgroup.isClosed_of_discrete`. Establish `hS : IsCompact ((Subtype.val : ratMx D m n → Mx D m n) ⁻¹' K)` using `hcl.isClosedEmbedding_subtypeVal.isCompact_preimage hK`. Establish `hfin` using `(hS.finite_of_discrete.image Subtype.val).preimage (rat_injective (D := D) (m := m) (n := n)).injOn`. Use `hfin.subset fun γ hγ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨⟨rat γ, γ, rfl⟩, hγ, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem finite_rat_mem (m n : ℕ) (K : Set (Mx D m n)) (hK : IsCompact K) :
     {γ : Matrix (Fin m) (Fin n) D.host.E | rat γ ∈ K}.Finite := by
@@ -34,7 +34,7 @@ theorem finite_rat_mem (m n : ℕ) (K : Set (Mx D m n)) (hK : IsCompact K) :
   exact ⟨⟨rat γ, γ, rfl⟩, hγ, rfl⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.WeilVacMove.contDiff_additive (⟨⟨f, h0⟩, hadd⟩ : (Fin k → ℝ) →+ ℂ) hc`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_of_additive {k : ℕ} (f : (Fin k → ℝ) → ℂ) (h0 : f 0 = 0) (hadd : ∀ x y, f (x + y) = f x + f y)
     (hc : Continuous f) : ContDiff ℝ ∞ f :=
@@ -46,21 +46,21 @@ def rmul {m n p : ℕ} (Q : Mx D n p) : Mx D m n →+ Mx D m p where
   map_add' x y := Matrix.add_mul _ _ _
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rmul {m n p : ℕ} (Q : Mx D n p) : Continuous (rmul (m := m) Q) :=
   continuous_id.matrix_mul continuous_const
 
 /- English proof (translation)
-Take `⟨lam, hl, hlam⟩` from `GlobalTheory.WeilVacMove.exists_log hψ`. Establish `hadd1` using `GlobalTheory.WeilVacMove.symplOH_add_left S T`. Establish `hadd2` using `GlobalTheory.WeilVacMove.symplOH_add_right S T`. Establish `hz1` using `GlobalTheory.WeilVacMove.symplOH_zero_left S T`. Establish `hz2` using `GlobalTheory.WeilVacMove.symplOH_zero_right S T`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ContDiff ℝ ∞ fun t => lam (symplOH S T c (B t))` using `contDiff_of_additive _ (by rw [map_zero, hz2, map_zero]) (fun x y => by rw [map_add, hadd2, map_add]) (hl.comp (GlobalTheory.WeilVacMove.continuous_symplOH S T continuous_const hB))`. Establish `h2 : ContDiff ℝ ∞ fun t => lam (symplOH S T (A t) c')` using `contDiff_of_additive _ (by rw [map_zero, hz1, map_zero]) (fun x y => by rw [map_add, hadd1, map_add]) (hl.comp (GlobalTheory.WeilVacMove.continuous_symplOH S T hA continuous_const))`. Establish `hQ : ContDiff ℝ ∞ fun t => lam (symplOH S T (A t) (B t))`. Set `φ : (Fin k → ℝ) → ((Fin k → ℝ) →+ ℂ)` to `fun t => { toFun := fun s => lam (symplOH S T (A s) (B t)) map_zero' := by rw [map_zero, hz1, map_zero] map_add' := fun x y => by rw [map_add, hadd1, map_add] }`. Establish `hφ : ∀ t, Continuous (φ t)` using `fun t => hl.comp (GlobalTheory.WeilVacMove.continuous_symplOH S T hA continuous_const)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : (fun t => lam (symplOH S T (A t) (B t))) = fun t => ∑ i, t i • lam (symplOH S T (A fun j => if i = j then 1 else 0) (B t))`. Use function extensionality and compare the values at `t`. Conclude with `LinearMap.pi_apply_eq_sum_univ ((φ t).toRealLinearMap (hφ t) : (Fin k → ℝ) →ₗ[ℝ] ℂ) t`. Rewrite using `[e]`. Use `ContDiff.sum fun i _ => (contDiff_apply ℝ ℝ i).smul ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `contDiff_of_additive _ (by rw [map_zero, hz2, map_zero]) (fun x y => by rw [map_add, hadd2, map_add]) (hl.comp (GlobalTheory.WeilVacMove.continuous_symplOH S T continuous_const hB))`. Establish `e : ∀ t, ψ (symplOH S T (c + A t) (c' + B t)) = ψ (symplOH S T c c') * Complex.exp (lam (symplOH S T c (B t)) + lam (symplOH S T (A t) c') + lam (symplOH S T (A t) (B t)))`. Introduce `t`. Establish `hs : sndA D.host.F (symplOH S T c (B t) + symplOH S T (A t) c' + symplOH S T (A t) (B t)) = 0`. Rewrite using `[map_add, map_add, GlobalTheory.WeilVacMove.snd_symplOH S T _ _ (Or.inr (hB0 t)), GlobalTheory.WeilVacMove.snd_symplOH S T _ _ (Or.inl (hA0 t)), GlobalTheory.WeilVacMove.snd_symplOH S T _ _ (Or.inl (hA0 t)), add_zero, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hadd1, hadd2, hadd2, show ∀ a b c d : AF D.host.F, a + b + (c + d) = a + (b + c + d) from fun _ _ _ _ => by abel, AddChar.map_add_eq_mul, hlam _ hs, map_add, map_add]`. Rewrite using `[show (fun t => ψ (symplOH S T (c + A t) (c' + B t))) = _ from funext e]`. Conclude with `contDiff_const.mul ((h1.add h2).add hQ).cexp`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_psi_symplOH {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {k : ℕ}
     (A B : (Fin k → ℝ) →+ WO S T) (hA : Continuous A) (hB : Continuous B)
@@ -109,23 +109,21 @@ end GlobalTheory.BumpMixSmooth
 namespace GlobalTheory.BumpMixSmooth
 
 /- English proof (translation)
-Introduce `D ψ hψ S S₀ T ρ d β hβ k L hL hL0 w`. Take `⟨hg, hlc, -, -, -, -⟩` from `lattice_Mx D T.rank ρ`. Use `haveI : ContinuousSub (Mx D T.rank ρ) := @IsTopologicalAddGroup.to_continuousSub _ _ _ hg`. Establish `hx : Continuous fun t => (w + L t) ⬝ d.jX` using `(continuous_const.add hL).matrix_mul continuous_const`. Set `lX` to `(rmul (m := T.rank) d.jX).comp L`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `lY` to `(rmul (m := T.rank) d.jY).comp L`. Establish `hlX : Continuous lX` using `(continuous_rmul _).comp hL`. Establish `hlY : Continuous lY` using `(continuous_rmul _).comp hL`. Establish `hlX0 : ∀ t, (lX t).map (finPart D) = 0` using `fun t => map_mul_eq_zero_left (finPart D) (hL0 t) _`. Establish `hlY0 : ∀ t, (lY t).map (finPart D) = 0` using `fun t => map_mul_eq_zero_left (finPart D) (hL0 t) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `A` to `(d.extX T).comp lX`. Set `B` to `(d.extY T).comp lY`. Establish `hA : Continuous A` using `show Continuous fun t => lX t ⬝ d.pX from hlX.matrix_mul continuous_const`. Establish `hB : Continuous B` using `show Continuous fun t => lY t ⬝ d.pY from hlY.matrix_mul continuous_const`. Establish `hA0 : ∀ t, (A t).map (finPart D) = 0` using `fun t => map_mul_eq_zero_left (finPart D) (hlX0 t) d.pX`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0 : ∀ t, (B t).map (finPart D) = 0` using `fun t => map_mul_eq_zero_left (finPart D) (hlY0 t) d.pY`. Establish `hterm : ∀ γ : Matrix (Fin T.rank) (Fin ρ) D.host.E, ContDiff ℝ ∞ fun t => ψ (trHalf D (pairS T ((w + L t) ⬝ d.jX + 2 • rat γ) ((w + L t) ⬝ d.jY))) * β ((w + L t) ⬝ d.jX + rat γ)`. Introduce `γ`. Establish `e : ∀ t, ψ (trHalf D (pairS T ((w + L t) ⬝ d.jX + 2 • rat γ) ((w + L t) ⬝ d.jY))) * β ((w + L t) ⬝ d.jX + rat γ) = ψ (symplOH S T (d.extX T (w ⬝ d.jX + 2 • rat γ) + A t) (d.extY T (w ⬝ d.jY) + B t)) * β ((w ⬝ d.jX + rat γ) + lX t)`. Introduce `t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : (w + L t) ⬝ d.jX = w ⬝ d.jX + lX t` using `Matrix.add_mul _ _ _`. Establish `hy' : (w + L t) ⬝ d.jY = w ⬝ d.jY + lY t` using `Matrix.add_mul _ _ _`. Establish `e1 : d.extX T (w ⬝ d.jX + lX t + 2 • rat γ) = d.extX T (w ⬝ d.jX + 2 • rat γ) + A t`. Rewrite using `[add_right_comm, map_add]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e2 : d.extY T (w ⬝ d.jY + lY t) = d.extY T (w ⬝ d.jY) + B t` using `map_add _ _ _`. Rewrite using `[hx', hy', ← d.symplOH_extX_extY T, e1, e2, add_right_comm (w ⬝ d.jX)]`. Rewrite using `[show (fun t => ψ (trHalf D (pairS T ((w + L t) ⬝ d.jX + 2 • rat γ) ((w + L t) ⬝ d.jY))) * β ((w + L t) ⬝ d.jX + rat γ)) = _ from funext e]`. Conclude with `(contDiff_psi_symplOH hψ A B hA hB hA0 hB0 _ _).mul (hβ.smooth k lX hlX hlX0 _)`. Rewrite using `[contDiff_iff_contDiffAt]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `t₀`. Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds t₀`. Establish `hC : IsCompact ((fun p : Mx D T.rank ρ × Mx D T.rank ρ => p.1 - p.2) '' (tsupport β ×ˢ ((fun t => (w + L t) ⬝ d.jX) '' K)))` using `(hβ.supp.isCompact.prod (hK.image hx)).image (continuous_fst.sub continuous_snd)`. Establish `hF` using `finite_rat_mem T.rank ρ _ hC`. Establish `hsum : ContDiff ℝ ∞ fun t => ∑ γ ∈ hF.toFinset, ψ (trHalf D (pairS T ((w + L t) ⬝ d.jX + 2 • rat γ) ((w + L t) ⬝ d.jY))) * β ((w + L t) ⬝ d.jX + rat γ)` using `ContDiff.sum fun γ _ => hterm γ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hsum.contDiffAt.congr_of_eventuallyEq (Filter.eventually_of_mem hKn fun t ht => ?_)` and prove the remaining obligations. Use `show poinX ψ d T β (w + L t) = _`. Rewrite using `[poinX]`. Use `tsum_eq_sum fun γ hγ => ?_` and prove the remaining obligations. Establish `h0 : β ((w + L t) ⬝ d.jX + rat γ) = 0`.
-
-Assume the negation of the conclusion as `hne`. Conclude with `hγ (hF.mem_toFinset.2 ⟨((w + L t) ⬝ d.jX + rat γ, (w + L t) ⬝ d.jX), ⟨subset_tsupport β hne, t, ht, rfl⟩, add_sub_cancel_left _ _⟩)`. Rewrite using `[h0, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poinX_smooth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S S₀ T : HSp D) (ρ : ℕ)
     (d : HypDec S S₀ ρ) (β : Mx D T.rank ρ → ℂ), IsBump β → ∀ (k : ℕ) (L : (Fin k → ℝ) →+ WO S T), Continuous L →

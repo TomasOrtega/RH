@@ -5,7 +5,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isReduced_of_smooth_over_field'`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.smoothRed_of :
     SmoothReduced :=

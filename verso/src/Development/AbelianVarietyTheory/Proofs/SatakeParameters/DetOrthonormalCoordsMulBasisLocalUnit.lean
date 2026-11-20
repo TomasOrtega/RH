@@ -11,17 +11,15 @@ open scoped Matrix
 namespace GlobalTheory.TwV.LatDet
 
 /- English proof (translation)
-Use `choose M0' hM0 using h1`. Set `M0 : Matrix (Fin N) (Fin N) W` to `fun i c => M0' i c`. Establish `hM : M = M0.map (algebraMap W Qq)`. Use extensionality with `i c`. Rewrite using `[Matrix.map_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hM0 i c).symm`. Establish `h2' : ∀ i, ∃ c : Fin N → W, ∑ k, c k • (fun r => M r k) = Pi.single i (1 : Qq)` using `fun i => (Submodule.mem_span_range_iff_exists_fun W).1 (h2 i)`. Use `choose C hC using h2'`. Set `C0 : Matrix (Fin N) (Fin N) W` to `fun k i => C i k`. Establish `hMC : M * C0.map (algebraMap W Qq) = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use extensionality with `r i`. Use `congrFun (hC i) r` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply] at this`. Simplify using `only [Algebra.smul_def] at this`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∑ k, M r k * (C0.map (algebraMap W Qq)) k i = ∑ k, algebraMap W Qq (C i k) * M r k`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, mul_comm]`. Rewrite using `[h3, this, Pi.single_apply]`. Establish `h4 : (M0 * C0).map (algebraMap W Qq) = (1 : Matrix (Fin N) (Fin N) W).map (algebraMap W Qq)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.map_mul, ← hM, hMC, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h5 : M0 * C0 = 1`. Use extensionality with `i c`. Use `congrFun (congrFun h4 i) c` as an intermediate fact. Conclude with `hinj (by simpa using this)`.
-
-Establish `h6 : M0.det * C0.det = 1` using `by rw [← Matrix.det_mul, h5, Matrix.det_one]`. Use `⟨⟨M0.det, C0.det, h6, by rw [mul_comm, h6]⟩, ?_⟩` and prove the remaining obligations. Use `show M.det = algebraMap W Qq M0.det`. Rewrite using `[hM]`. Conclude with `(RingHom.map_det (algebraMap W Qq) M0).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_isUnit_of_colSpan {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq]
     (hinj : Function.Injective (algebraMap W Qq)) {N : ℕ} (M : Matrix (Fin N) (Fin N) Qq)
@@ -58,7 +56,7 @@ theorem det_isUnit_of_colSpan {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Q
   exact (RingHom.map_det (algebraMap W Qq) M0).symm
 
 /- English proof (translation)
-Establish `hx : IsIntegral ℤ (x : E)` using `NumberField.RingOfIntegers.isIntegral_coe x`. Establish `h1 : IsIntegral ℤ (ρ x)` using `hx.map ρ.toIntAlgHom`. Establish `h2 : IsIntegral W (ρ x)` using `h1.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h2`. Conclude with `⟨y, hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rho_int_mem {E W Qq : Type} [Field E] [NumberField E] [CommRing W] [IsDomain W] [Field Qq] [Algebra W Qq]
     [IsFractionRing W Qq] [IsIntegrallyClosed W] (ρ : E →+* Qq) (x : 𝓞 E) : ρ x ∈ (algebraMap W Qq).range := by
@@ -69,11 +67,11 @@ theorem rho_int_mem {E W Qq : Type} [Field E] [NumberField E] [CommRing W] [IsDo
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Set `f : (Fin N → Qq) →ₗ[W] (Fin N → Qq)` to `((g.1.map ρ).mulVecLin).restrictScalars W`. Establish `hle : locSp W ρ L ≤ (locSp W ρ (mvL g L)).comap f`. Unfold `locSp`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `(g.1.map ρ) *ᵥ (fun k => ρ (x k)) ∈ locSp W ρ (mvL g L)`. Establish `h1 : (g.1.map ρ) *ᵥ (fun k => ρ (x k)) = fun k => ρ ((g.1 *ᵥ x) k)`. Use function extensionality and compare the values at `k`. Conclude with `(RingHom.map_mulVec ρ g.1 x k).symm`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use `Submodule.subset_span ⟨g.1 *ᵥ x, ?_, rfl⟩` and prove the remaining obligations. Conclude with `Submodule.mem_map.2 ⟨x, hx, by simp [toLE_apply]⟩`. Conclude with `hle hz`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_locSp_mvL {E W Qq : Type} [Field E] [NumberField E] [StarRing E] [CommRing W] [Field Qq] [Algebra W Qq]
     (ρ : E →+* Qq) {N : ℕ} (g : GL (Fin N) E) (L : Submodule (𝓞 E) (Fin N → E)) {z : Fin N → Qq}
@@ -98,11 +96,11 @@ end GlobalTheory.TwV.LatDet
 namespace GlobalTheory.TwV.LatDet
 
 /- English proof (translation)
-Set `P : Submodule W (Fin N → Qq)` to `Submodule.pi Set.univ (fun _ => LinearMap.range (Algebra.linearMap W Qq))`. Establish `hle : locSp W ρ (Submodule.pi Set.univ (fun _ : Fin N => (1 : Submodule (𝓞 E) E))) ≤ P`. Unfold `locSp`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩ k -`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hk : x k ∈ (1 : Submodule (𝓞 E) E)` using `hx k trivial`. Take `⟨y, hy⟩` from `Submodule.mem_one.1 hk`. Take `⟨w', hw⟩` from `rho_int_mem (W := W) ρ y`. Use `⟨w', ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.linearMap_apply, hw]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show ρ ↑y = ρ (x k)`. Rewrite using `[← hy]`. Take `⟨w', hw⟩` from `hle hz i trivial`. Conclude with `⟨w', hw⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locSp_std_int {E W Qq : Type} [Field E] [NumberField E] [CommRing W] [IsDomain W] [Field Qq] [Algebra W Qq]
     [IsFractionRing W Qq] [IsIntegrallyClosed W] (ρ : E →+* Qq) {N : ℕ} {z : Fin N → Qq}
@@ -124,23 +122,23 @@ theorem locSp_std_int {E W Qq : Type} [Field E] [NumberField E] [CommRing W] [Is
   exact ⟨w', hw⟩
 
 /- English proof (translation)
-Establish `hc` using `CompSp.locSp_compan_eq sp W Qq ρ J a T Lb hT hdual`. Rewrite `hc` using `[hB]`. Set `M : Matrix (Fin N) (Fin N) Qq` to `crd.1.map ρ * B.1.map ρ`. Establish `hdet : ρ (crd.1.det * B.1.det) = M.det`. Rewrite using `[map_mul, RingHom.map_det, RingHom.map_det, Matrix.det_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hdet]`. Establish `hcolM : ∀ c, (crd.1.map ρ) *ᵥ (fun r => (B.1.map ρ) r c) = fun r => M r c` using `fun c => by`. Use function extensionality and compare the values at `r`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Apply `det_isUnit_of_colSpan (IsFractionRing.injective W Qq) M` to reduce the goal to its premises. Introduce `i c`. Establish `hcol : (fun r => (B.1.map ρ) r c) ∈ colSpan W (B.1.map ρ)` using `Submodule.subset_span ⟨c, rfl⟩`. Rewrite `hcol` using `[← hc]`. Establish `h1` using `mulVec_mem_locSp_mvL ρ crd _ hcol`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hbase, hcolM]`. Conclude with `locSp_std_int ρ h1 i`. Introduce `i`. Establish `hei : Pi.single i (1 : E) ∈ Submodule.pi Set.univ (fun _ : Fin N => (1 : Submodule (𝓞 E) E))`. Introduce `k _`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Conclude with `zero_mem _`. Rewrite `hei` using `[← hbase]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨x, hx, hx'⟩` from `Submodule.mem_map.1 hei`. Establish `hx2 : crd.1 *ᵥ x = Pi.single i (1 : E)`. Rewrite using `[← hx']`. Simplify using `[toLE_apply]`. Establish `hρx : (fun k => ρ (x k)) ∈ colSpan W (B.1.map ρ)` using `hc ▸ Submodule.subset_span ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨cc, hcc⟩` from `(Submodule.mem_span_range_iff_exists_fun W).1 hρx`. Unfold `colSpan`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨cc, ?_⟩` and prove the remaining obligations. Set `f : (Fin N → Qq) →ₗ[W] (Fin N → Qq)` to `((crd.1.map ρ).mulVecLin).restrictScalars W`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hf : ∀ c, f (fun r => (B.1.map ρ) r c) = fun r => M r c` using `hcolM`. Establish `h3 : f (fun k => ρ (x k)) = Pi.single i (1 : Qq)` using `by show (crd.1.map ρ) *ᵥ (fun k => ρ (x k)) = _`. Use function extensionality and compare the values at `r`. Establish `h4` using `RingHom.map_mulVec ρ crd.1 x r`. Rewrite `h4` using `[hx2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (fun k => ρ (x k)) = ⇑ρ ∘ x from rfl, ← h4, Pi.single_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[← h3, ← hcc, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_unit_of_base {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (sp : Spaces R F E) {W Qq : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq] [Algebra W Qq]
@@ -202,11 +200,9 @@ end GlobalTheory.TwV.LatDet
 namespace GlobalTheory.TwV.LatDet
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[latAd, Submodule.span_le]`. Introduce `x hx`. Apply `Formalism.L2.GlobalTheoryTheory.Br.latLocGlob_main (F := F) Lb hfin x` to reduce the goal to its premises. Simplify using `only [Set.mem_setOf_eq, inv_one, Units.val_one, Matrix.one_mulVec] at hx`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `hx`. Introduce `x hx`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `show _ ∈ {x | _}`. Simplify using `only [Set.mem_setOf_eq, inv_one, Units.val_one, Matrix.one_mulVec]`.
-
-Conclude with `(Submodule.subset_span ⟨x, hx, rfl⟩ : (fun i => inclE (FiniteAdeleRing (𝓞 F) F) (x i)) ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) Lb)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem latAd_one_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (Lb : Submodule (𝓞 E) (Fin N → E)) (hfin : Module.Finite (𝓞 E) Lb) :
@@ -225,11 +221,11 @@ theorem latAd_one_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
       latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) Lb)
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S j hj β B v hB`. Establish `hbase` using `J.base j hj β`. Unfold `latCo at hbase`. Rewrite `hbase` using `[latAd_one_eq _ ((J.St j hj).K β).lev.Lb_fin]`. Establish `hTe` using `J.tie.T_eq j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdual` using `((J.St j hj).K β).lev.Lb_dual`. Establish `hset` using `((sysS H X std).G.P.setting v)`. Use `haveI := hset.frac_alt`. Establish `hcop : Nat.Coprime (D.mem u).A.T (D.what₂.places.resChar w)` using `(Nat.coprime_comm).1 ((Nat.Prime.coprime_iff_not_dvd hg.1).2 hg.2.2.2.2.2)`. Establish `hTu : IsUnit (((D.mem u).A.T : ℕ) : (sysS H X std).G.P.W v)` using `natCast_isUnit_localRing (sysS H X std) v _ hcop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hTu` using `[← hTe]`. Conclude with `det_unit_of_base D.sp (J.rho std v) (gramN D j hj) J.a (J.St j hj).T _ hTu hdual (J.A.crd j hj) B hbase hB`.
+A detailed English derivation is pending.
 -/
 theorem crd_mul_det_unit : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => ∀ j (hj : j ≤ D.R.m) (β : (J.St j hj).Ch) (B : GL (Fin (D.R.N j)) D.host.E), ∀ v, locSp ((sysS H X std).G.P.W v) (J.rho std v) ((J.St j hj).K β).lev.Lb = colSpan ((sysS H X std).G.P.W v) (B.1.map (J.rho std v)) → ∃ y : ((sysS H X std).G.P.W v)ˣ, J.rho std v ((J.A.crd j hj).1.det * B.1.det) = algebraMap _ _ (y : (sysS H X std).G.P.W v)) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S j hj β B v hB

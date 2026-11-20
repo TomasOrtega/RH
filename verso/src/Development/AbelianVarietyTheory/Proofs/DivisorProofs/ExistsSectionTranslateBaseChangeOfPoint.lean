@@ -10,7 +10,7 @@ namespace GlobalTheory.TransBaseChange
 variable {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) [GrpObj G]
 
 /- English proof (translation)
-Simplify using `only [Over.pullback_map_left]`. Conclude with `pullback.lift_fst _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pullback_map_left_fst {A B : Over S} (g : A ⟶ B) :
     ((Over.pullback f).map g).left ≫ pullback.fst B.hom f = pullback.fst A.hom f ≫ g.left := by
@@ -18,7 +18,7 @@ theorem pullback_map_left_fst {A B : Over S} (g : A ⟶ B) :
   exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Rewrite using `[Hom.mul_def, Functor.obj.μ_def]`. Simplify using `only [Over.comp_left, Category.assoc]`. Rewrite using `[pullback_map_left_fst]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_left_fst {X : Over S'} (u v : X ⟶ (Over.pullback f).obj G) :
     (u * v).left ≫ pullback.fst G.hom f =
@@ -29,7 +29,7 @@ theorem mul_left_fst {X : Over S'} (u v : X ⟶ (Over.pullback f).obj G) :
   rw [pullback_map_left_fst]
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, ← pullback_map_left_fst, ← Category.assoc, ← Over.comp_left, Category.assoc, Functor.Monoidal.μ_fst, lift_fst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_μ_fst {X : Over S'} (u v : X ⟶ (Over.pullback f).obj G) :
     ((lift u v ≫ Functor.LaxMonoidal.μ (Over.pullback f) G G).left ≫ pullback.fst (G ⊗ G).hom f) ≫
@@ -38,7 +38,7 @@ theorem lift_μ_fst {X : Over S'} (u v : X ⟶ (Over.pullback f).obj G) :
     Functor.Monoidal.μ_fst, lift_fst]
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, ← pullback_map_left_fst, ← Category.assoc, ← Over.comp_left, Category.assoc, Functor.Monoidal.μ_snd, lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_μ_snd {X : Over S'} (u v : X ⟶ (Over.pullback f).obj G) :
     ((lift u v ≫ Functor.LaxMonoidal.μ (Over.pullback f) G G).left ≫ pullback.fst (G ⊗ G).hom f) ≫
@@ -47,19 +47,19 @@ theorem lift_μ_snd {X : Over S'} (u v : X ⟶ (Over.pullback f).obj G) :
     Functor.Monoidal.μ_snd, lift_snd]
 
 /- English proof (translation)
-Rewrite using `[Hom.inv_def, Functor.obj.ι_def, Over.comp_left, Category.assoc, pullback_map_left_fst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_left_fst {X : Over S'} (u : X ⟶ (Over.pullback f).obj G) :
     (u⁻¹).left ≫ pullback.fst G.hom f = u.left ≫ pullback.fst G.hom f ≫ (ι[G]).left := by
   rw [Hom.inv_def, Functor.obj.ι_def, Over.comp_left, Category.assoc, pullback_map_left_fst]
 
 /- English proof (translation)
-The claim follows from `Over.w (toUnit X)`.
+A detailed English derivation is pending.
 -/
 theorem toUnit_left (X : Over S') : (toUnit X).left = X.hom := Over.w (toUnit X)
 
 /- English proof (translation)
-The claim follows from `Over.tensorObj_ext _ _ h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem ext_tensor {Y : Scheme.{0}} (x y : Y ⟶ (G ⊗ G).left)
     (h1 : x ≫ (fst G G).left = y ≫ (fst G G).left) (h2 : x ≫ (snd G G).left = y ≫ (snd G G).left) :
@@ -67,17 +67,15 @@ theorem ext_tensor {Y : Scheme.{0}} (x y : Y ⟶ (G ⊗ G).left)
   Over.tensorObj_ext _ _ h1 h2
 
 /- English proof (translation)
-Introduce `R R' _ _ ρ G _ c hc`. Establish `hw : c ≫ G.hom = 𝟙 (Sp R') ≫ spMap ρ` using `by simpa using hc`. Set `a : 𝟙_ (Over (Sp R')) ⟶ (Over.pullback (spMap ρ)).obj G` to `Over.homMk (pullback.lift c (𝟙 _) hw) (by dsimp; rw [pullback.lift_snd])`. Establish `ha : a.left ≫ pullback.fst G.hom (spMap ρ) = c` using `pullback.lift_fst _ _ _`. Establish `hcond : pullback.fst G.hom (spMap ρ) ≫ G.hom = (pullback.snd G.hom (spMap ρ) ≫ c) ≫ G.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hc, pullback.condition]`. Set `Φ : pullback G.hom (spMap ρ) ⟶ (G ⊗ G).left` to `(pullback.lift (pullback.fst G.hom (spMap ρ)) (pullback.snd G.hom (spMap ρ) ≫ c) hcond : _ ⟶ pullback G.hom G.hom)`. Establish `hΦ1 : Φ ≫ (fst G G).left = pullback.fst G.hom (spMap ρ)` using `pullback.lift_fst _ _ _`. Establish `hΦ2 : Φ ≫ (snd G G).left = pullback.snd G.hom (spMap ρ) ≫ c` using `pullback.lift_snd _ _ _`. Establish `hu : ((toUnit ((Over.pullback (spMap ρ)).obj G)).left) = pullback.snd G.hom (spMap ρ)` using `toUnit_left _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨a, Φ, ?_, hΦ1, ?_, ?_⟩` and prove the remaining obligations. Establish `outer : IsPullback (Φ ≫ (fst G G).left) (pullback.snd G.hom (spMap ρ)) G.hom (c ≫ G.hom)`. Rewrite using `[hΦ1, hc]`. Conclude with `IsPullback.of_hasPullback _ _`. Establish `right : IsPullback (fst G G).left (snd G G).left G.hom G.hom` using `IsPullback.of_hasPullback G.hom G.hom`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsPullback.of_right outer hΦ2 right`. Rewrite using `[mul_left_fst, Hom.mul_def, lift_fst_snd, Category.id_comp]`. Use `congr 1`. Apply `ext_tensor` to reduce the goal to its premises. Rewrite using `[lift_μ_fst, hΦ1, Over.id_left, Category.id_comp]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lift_μ_snd, hΦ2, Over.comp_left, Category.assoc, ha, hu]`. Rewrite using `[mul_left_fst, Hom.mul_def (fst G G), Hom.inv_def (snd G G), Over.comp_left (f := lift (fst G G) (snd G G ≫ ι)), ← Category.assoc]`. Use `congr 1`. Apply `ext_tensor` to reduce the goal to its premises. Rewrite using `[lift_μ_fst, Category.assoc, ← Over.comp_left, lift_fst, hΦ1, Over.id_left, Category.id_comp]`.
-
-Rewrite using `[lift_μ_snd, Category.assoc, ← Over.comp_left, lift_snd, Over.comp_left, Category.assoc, inv_left_fst, ← Category.assoc a.left, ha, hu, Over.comp_left, reassoc_of% hΦ2]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section_translate : ∀ (R R' : Type) [CommRing R] [CommRing R'] (ρ : R →+* R') (G : Over (Sp R)) [GrpObj G] (c : Sp R' ⟶ G.left), c ≫ G.hom = spMap ρ → ∃ (a : 𝟙_ (Over (Sp R')) ⟶ (Over.pullback (spMap ρ)).obj G) (Φ : pullback G.hom (spMap ρ) ⟶ (G ⊗ G).left), IsPullback Φ (pullback.snd G.hom (spMap ρ)) (snd G G).left c ∧ Φ ≫ (fst G G).left = pullback.fst G.hom (spMap ρ) ∧ (𝟙 ((Over.pullback (spMap ρ)).obj G) * (toUnit _ ≫ a)).left ≫ pullback.fst G.hom (spMap ρ) = Φ ≫ (fst G G * snd G G).left ∧ (𝟙 ((Over.pullback (spMap ρ)).obj G) * (toUnit _ ≫ a⁻¹)).left ≫ pullback.fst G.hom (spMap ρ) = Φ ≫ (fst G G * (snd G G)⁻¹).left := by
   intro R R' _ _ ρ G _ c hc

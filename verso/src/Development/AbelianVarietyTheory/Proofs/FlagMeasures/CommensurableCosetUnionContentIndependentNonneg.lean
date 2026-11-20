@@ -10,11 +10,11 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL
 
 /- English proof (translation)
-Use extensionality with `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H x`. Establish `h1 : (AddSubgroup.quotientEquivProdOfLE hle (QuotientAddGroup.mk x)).1 = (QuotientAddGroup.mk x : W ⧸ A)` using `rfl`. Simplify using `only [Set.mem_preimage, Set.mem_prod, Set.mem_univ, and_true, h1]`.
+By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyx⟩`. Conclude with `⟨y, hy, QuotientAddGroup.eq.2 (hle (QuotientAddGroup.eq.1 hyx))⟩`. Introduce and unpack `⟨y, hy, hyx⟩`. Use `hS y hy _ (QuotientAddGroup.eq.1 hyx)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨x, ?_, rfl⟩` and prove the remaining obligations. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem image_mk_eq_preimage_of_le {W : Type} [AddCommGroup W] {A A' : AddSubgroup W} {S : Set W}
     (hle : A' ≤ A) (hS : ∀ x ∈ S, ∀ a ∈ A, x + a ∈ S) :
@@ -36,7 +36,7 @@ theorem image_mk_eq_preimage_of_le {W : Type} [AddCommGroup W] {A A' : AddSubgro
       simpa using this
 
 /- English proof (translation)
-Rewrite using `[image_mk_eq_preimage_of_le hle hS, Set.ncard_preimage_of_injective_subset_range (Equiv.injective _) (by rw [Equiv.range_eq_univ]; exact Set.subset_univ _), Set.ncard_prod, Set.ncard_univ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ncard_image_mk_of_le {W : Type} [AddCommGroup W] {A A' : AddSubgroup W} {S : Set W}
     (hle : A' ≤ A) (hS : ∀ x ∈ S, ∀ a ∈ A, x + a ∈ S) :
@@ -48,7 +48,7 @@ theorem ncard_image_mk_of_le {W : Type} [AddCommGroup W] {A A' : AddSubgroup W} 
   rfl
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Use `⟨AddSubgroup.relIndex_ne_zero_trans hi h1, fun h0 => h2 (AddSubgroup.relIndex_eq_zero_of_le_right hle h0), fun x hx a ha => h3 x hx a (hle ha), ?_⟩` and prove the remaining obligations. Rewrite using `[image_mk_eq_preimage_of_le hle h3]`. Use `haveI : Finite (A ⧸ A'.addSubgroupOf A) := Nat.finite_of_card_ne_zero hi`. Conclude with `(h4.prod Set.finite_univ).preimage (Equiv.injective _).injOn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GoodSub.of_le {W : Type} [AddCommGroup W] {W0 A A' : AddSubgroup W} {S : Set W}
     (h : GoodSub W0 A S) (hle : A' ≤ A) (hi : A'.relIndex A ≠ 0) : GoodSub W0 A' S := by
@@ -61,13 +61,13 @@ theorem GoodSub.of_le {W : Type} [AddCommGroup W] {W0 A A' : AddSubgroup W} {S :
   exact (h4.prod Set.finite_univ).preimage (Equiv.injective _).injOn
 
 /- English proof (translation)
-Establish `h1' : A'.relIndex W0 ≠ 0` using `AddSubgroup.relIndex_ne_zero_trans hi h1`. Establish `e1 : W0.relIndex A' * A'.relIndex A = (W0 ⊓ A').relIndex A`. Use `AddSubgroup.relIndex_inf_mul_relIndex W0 A' A` as an intermediate fact. Rewrite `this` using `[inf_eq_left.2 hle]`. Then use the resulting hypothesis. Establish `e2 : A'.relIndex (W0 ⊓ A) * W0.relIndex A = (A' ⊓ W0).relIndex A` using `AddSubgroup.relIndex_inf_mul_relIndex A' W0 A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e3 : A'.relIndex (A ⊓ W0) * A.relIndex W0 = A'.relIndex W0`. Use `AddSubgroup.relIndex_inf_mul_relIndex A' A W0` as an intermediate fact. Rewrite `this` using `[inf_eq_left.2 hle]`. Then use the resulting hypothesis. Rewrite `e2` using `[inf_comm A' W0, ← e1, inf_comm W0 A]`. Establish `e2' : (A'.relIndex (A ⊓ W0) : ℝ) * W0.relIndex A = W0.relIndex A' * A'.relIndex A`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e2` after adjusting the coercions. Establish `e3' : (A'.relIndex (A ⊓ W0) : ℝ) * A.relIndex W0 = A'.relIndex W0`. Conclude with `e3` after adjusting the coercions. Establish `n1 : (A.relIndex W0 : ℝ) ≠ 0` using `by exact_mod_cast h1`. Establish `n2 : (A'.relIndex W0 : ℝ) ≠ 0` using `by exact_mod_cast h1'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `relVol`. Rewrite using `[← mul_div_assoc, div_eq_div_iff n1 n2, ← e3']`. Take the linear combination `(A.relIndex W0 : ℝ) * e2'`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem relVol_eq_mul_of_le {W : Type} [AddCommGroup W] {W0 A A' : AddSubgroup W}
     (h1 : A.relIndex W0 ≠ 0) (hle : A' ≤ A) (hi : A'.relIndex A ≠ 0) :
@@ -93,7 +93,7 @@ theorem relVol_eq_mul_of_le {W : Type} [AddCommGroup W] {W0 A A' : AddSubgroup W
   linear_combination (A.relIndex W0 : ℝ) * e2'
 
 /- English proof (translation)
-Rewrite using `[ncard_image_mk_of_le hle h.2.2.1, relVol_eq_mul_of_le h.1 hle hi]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem GoodSub.count_eq_of_le {W : Type} [AddCommGroup W] {W0 A A' : AddSubgroup W} {S : Set W}
     (h : GoodSub W0 A S) (hle : A' ≤ A) (hi : A'.relIndex A ≠ 0) :
@@ -104,9 +104,9 @@ theorem GoodSub.count_eq_of_le {W : Type} [AddCommGroup W] {W0 A A' : AddSubgrou
   ring
 
 /- English proof (translation)
-Establish `i1 : (A ⊓ B).relIndex A ≠ 0`. Rewrite using `[AddSubgroup.inf_relIndex_left]`. Conclude with `AddSubgroup.relIndex_ne_zero_trans hB.1 hA.2.1`. Establish `i2 : (A ⊓ B).relIndex B ≠ 0`. Rewrite using `[AddSubgroup.inf_relIndex_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AddSubgroup.relIndex_ne_zero_trans hA.1 hB.2.1`. Rewrite using `[hA.count_eq_of_le inf_le_left i1, hB.count_eq_of_le inf_le_right i2]`.
+A detailed English derivation is pending.
 -/
 theorem GoodSub.count_eq {W : Type} [AddCommGroup W] {W0 A B : AddSubgroup W} {S : Set W}
     (hA : GoodSub W0 A S) (hB : GoodSub W0 B S) :
@@ -121,7 +121,7 @@ theorem GoodSub.count_eq {W : Type} [AddCommGroup W] {W0 A B : AddSubgroup W} {S
   rw [hA.count_eq_of_le inf_le_left i1, hB.count_eq_of_le inf_le_right i2]
 
 /- English proof (translation)
-Establish `h : IsCO W0 S` using `⟨A, hA⟩`. Unfold `cont`. Rewrite using `[dif_pos h]`. Conclude with `GoodSub.count_eq h.choose_spec hA`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GoodSub.cont_eq {W : Type} [AddCommGroup W] {W0 A : AddSubgroup W} {S : Set W}
     (hA : GoodSub W0 A S) :
@@ -132,11 +132,11 @@ theorem GoodSub.cont_eq {W : Type} [AddCommGroup W] {W0 A : AddSubgroup W} {S : 
   exact GoodSub.count_eq h.choose_spec hA
 
 /- English proof (translation)
-Introduce `W _ W0 S`. Use `⟨fun A hA => hA.cont_eq, fun A A' h hle hi => h.of_le hle hi, ?_, ?_⟩` and prove the remaining obligations. Unfold `cont relVol split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨A, hA⟩ hne`. Rewrite using `[hA.cont_eq]`. Establish `p1 : 0 < ((QuotientAddGroup.mk : W → W ⧸ A) '' S).ncard` using `(Set.ncard_pos hA.2.2.2).2 (hne.image _)`. Establish `p2 : 0 < W0.relIndex A` using `Nat.pos_of_ne_zero hA.2.1`. Establish `p3 : 0 < A.relIndex W0` using `Nat.pos_of_ne_zero hA.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `relVol`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem cont_independent_pos : ∀ {W : Type} [AddCommGroup W] (W0 : AddSubgroup W) (S : Set W), (∀ A, GoodSub W0 A S → cont W0 S = (((QuotientAddGroup.mk : W → W ⧸ A) '' S).ncard : ℝ) * relVol W0 A) ∧ (∀ A A', GoodSub W0 A S → A' ≤ A → A'.relIndex A ≠ 0 → GoodSub W0 A' S) ∧ 0 ≤ cont W0 S ∧ (IsCO W0 S → S.Nonempty → 0 < cont W0 S) := by
   intro W _ W0 S

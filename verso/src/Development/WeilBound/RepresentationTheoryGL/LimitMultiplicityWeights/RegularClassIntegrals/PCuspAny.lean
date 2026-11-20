@@ -13,9 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 
 /- English proof (translation)
-Introduce `D V hodd T U hNoFixed μf hμf ff hff fa hA 𝔉 hP`. Use `hμf` as an intermediate fact. Establish `hH` using `(GlobalTheory.T.typeHypothesis_forms_agree D V T hNoFixed).1`. Take `⟨a, ha0, ha2, hpar⟩` from `parabolicAtSplitPlaces D V hodd T 𝔉 hP`. Take `⟨v, hv⟩` from `hH a ha0 (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh, e⟩` from `hff.2.1 v`. Establish `hF` using `hff.isFinFamily`. Establish `he` using `(T.frame v).idem_mem (μf v.1) (T.τ v)`. Use `GlobalTheory.T.unipotentIntegrals_pureTensor_vanish_of_local D V 𝔉 fa ff hA hF v.1 fun ν _ x y => ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.T.typeIdempotent_unipotentIntegral_vanish_splitPlace D V T v a ha0 (by omega) hv 𝔉 (hpar v).1 (μf v.1) _ (conv_mem_SB he hh) (ff v.1) (Or.inr e) ν x y).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem MainStatements.WeightKernel.cuspAny : MainStatements.WeightKernel.CuspAny := by
   intro D V hodd T U hNoFixed μf hμf ff hff fa hA 𝔉 hP

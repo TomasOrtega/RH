@@ -28,9 +28,9 @@ namespace GlobalTheory.DepthColumn
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h1 : p.sec x = p.e * p.sec x`. Use `p.sec_pr (p.sec x)` as an intermediate fact. Rewrite `this` using `[p.pr_sec]`. Then use the resulting hypothesis. Establish `h2` using `p.sec_pr (p.sec x * b)`. Rewrite `h2` using `[map_mul, p.pr_sec, ← mul_assoc, ← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem sec_mul_right (p : GlobalTheory.FinPl.SplitPt D k) (x : k) (b : AE D) : p.sec x * b = p.sec (x * p.pr b) := by
   have h1 : p.sec x = p.e * p.sec x := by
@@ -41,15 +41,13 @@ theorem sec_mul_right (p : GlobalTheory.FinPl.SplitPt D k) (x : k) (b : AE D) : 
   exact h2.symm
 
 /- English proof (translation)
-Establish `h0 : p.pr (incA D a) ≠ 0` using `(map_ne_zero_iff (p.pr.comp (incA D)) (p.pr.comp (incA D)).injective).2 ha0`. Establish `key : ∀ y ∈ GlobalTheory.SeeSaw.idV (1 : GlobalTheory.SeeSaw.FI D) p.v, incA D a * y ∈ GlobalTheory.SeeSaw.idV I p.v`. Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨α, hα, hαv, b, hb, rfl⟩` from `hy`. Rewrite using `[GlobalTheory.SeeSaw.IdVMul.incA_mul_tmul]`. Use `AddSubgroup.subset_closure ⟨α, hα, hαv, _, ?_, rfl⟩` and prove the remaining obligations. Use `FractionalIdeal.mul_mem_mul (S := (𝓞 D.host.E)⁰) ha hb` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [mul_add]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [mul_neg]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_mem ha`. Establish `hint : c / p.pr (incA D a) ∈ 𝒪[k]`. Rewrite using `[Valuation.mem_integer_iff, map_div₀]`. Conclude with `div_le_one_of_le₀ hc zero_le'`. Establish `h1` using `key _ ((GlobalTheory.SeeSaw.idV_one_eq_intAt D p.v _).2 ⟨p.sec_mem_idAt _, (p.int_iff _).1 hint⟩)`.
-
-Rewrite `h1` using `[mul_comm, sec_mul_right, div_mul_cancel₀ _ h0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sec_mem_idV (p : GlobalTheory.FinPl.SplitPt D k) {I : GlobalTheory.SeeSaw.FI D} {a : D.host.E} (ha : a ∈ I) (ha0 : a ≠ 0) {c : k}
     (hc : valuation k c ≤ valuation k (p.pr (incA D a))) : p.sec c ∈ GlobalTheory.SeeSaw.idV I p.v := by
@@ -83,7 +81,7 @@ theorem coe_prInt (p : GlobalTheory.FinPl.SplitPt D k) {PP : HeightOneSpectrum (
     (x : 𝓞 D.host.E) : (prInt p he x : k) = p.pr (incA D (x : D.host.E)) := rfl
 
 /- English proof (translation)
-Rewrite using `[p.mem_iff_val_lt he, ← p.prF_toEAf he]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_iff_lt (p : GlobalTheory.FinPl.SplitPt D k) {PP : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt p.e PP)
     (x : 𝓞 D.host.E) : x ∈ PP.asIdeal ↔ valuation k (p.pr (incA D (x : D.host.E))) < 1 := by
@@ -91,14 +89,14 @@ theorem mem_iff_lt (p : GlobalTheory.FinPl.SplitPt D k) {PP : HeightOneSpectrum 
   rfl
 
 /- English proof (translation)
-The claim follows from `le_antisymm (p.pr_incA_int_mem he x) (not_lt.1 fun h => hx ((mem_iff_lt p he x).2 h))`.
+A detailed English derivation is pending.
 -/
 theorem val_eq_one (p : GlobalTheory.FinPl.SplitPt D k) {PP : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt p.e PP)
     {x : 𝓞 D.host.E} (hx : x ∉ PP.asIdeal) : valuation k (p.pr (incA D (x : D.host.E))) = 1 :=
   le_antisymm (p.pr_incA_int_mem he x) (not_lt.1 fun h => hx ((mem_iff_lt p he x).2 h))
 
 /- English proof (translation)
-Establish `h1 : PP.asIdeal.map (prInt p he) ≤ IsLocalRing.maximalIdeal 𝒪[k]` using `Ideal.map_le_iff_le_comap.2 fun y hy => Ideal.mem_comap.2 ((GlobalTheory.FinPl.SplitPt.mem_max_iff_val_lt_one _).2 ((mem_iff_lt p he y).1 hy))`. Establish `h2` using `Ideal.mem_map_of_mem (prInt p he) hx`. Rewrite `h2` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 n h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prInt_mem_pow (p : GlobalTheory.FinPl.SplitPt D k) {PP : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt p.e PP)
     (n : ℕ) {x : 𝓞 D.host.E} (hx : x ∈ PP.asIdeal ^ n) : prInt p he x ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ n := by
@@ -110,21 +108,19 @@ theorem prInt_mem_pow (p : GlobalTheory.FinPl.SplitPt D k) {PP : HeightOneSpectr
   exact Ideal.pow_right_mono h1 n h2
 
 /- English proof (translation)
-Proceed by induction on `hY using AddSubgroup.closure_induction with`. Consider the case `mem Y hY`. Take `⟨α, hα, hαv, a, ha, x, hx, rfl⟩` from `hY`. Take `⟨m, hm, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 ha`. Use `set Y₀ : Fin S.rank → AE D := fun i => pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 * x i) with hY₀`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : Y₀ ∈ latV S L (· = p.v)` using `AddSubgroup.subset_closure ⟨α, hα, hαv, 1, rfl, x, hx, rfl⟩`. Establish `h1` using `GlobalTheory.UpMem.smul_mem_latMul S {1} L (· = p.v) p.e (GlobalTheory.UpMem.finPart_e_int p) _ h0`. Establish `h2 : (β.b' *ᵥ fun j => p.pr (Y₀ j)) ∈ Submodule.pi Set.univ fun _ : ι => (1 : Submodule 𝒪[k] k)`. Rewrite using `[hL, Matrix.mulVec_mulVec, β.bb', Matrix.one_mulVec]`. Simplify using `only [p.sec_pr]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `h1`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 (h2 r (Set.mem_univ r))`. Use `⟨prInt p he m * o, Ideal.mul_mem_right _ _ (prInt_mem_pow p he n (h𝔪 hm)), ?_⟩` and prove the remaining obligations. Establish `e : (fun j => p.pr (pairA D.host.F 0 α ⊗ₜ[D.host.F] (algebraMap (𝓞 D.host.E) D.host.E m * x j))) = (prInt p he m : k) • fun j => p.pr (Y₀ j)`. Use function extensionality and compare the values at `j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul, coe_prInt, ← map_mul, hY₀, GlobalTheory.SeeSaw.IdVMul.incA_mul_tmul, one_mul]`. Rewrite using `[e, Matrix.mulVec_smul, Pi.smul_apply, ← ho, smul_eq_mul]`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, zero_mem _, by simp [Matrix.mulVec, dotProduct]⟩`. Consider the case `add Y Y' _ _ h h'`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, e⟩` from `h`. Take `⟨z', hz', e'⟩` from `h'`. Use `⟨z + z', add_mem hz hz', ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[e, e', ← Pi.add_apply, ← Matrix.mulVec_add]`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 2`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Consider the case `neg Y _ h`. Take `⟨z, hz, e⟩` from `h`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Use `⟨-z, neg_mem hz, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[e, ← Pi.neg_apply, ← Matrix.mulVec_neg]`. Use `congr 2`. Use function extensionality and compare the values at `j`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coord_mem_pow (p : GlobalTheory.FinPl.SplitPt D k) {PP : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt p.e PP)
     {S : HSp D} {ι : Type} [Fintype ι] [DecidableEq ι] (β : GlobalTheory.FinPl.Frame p S ι) {L : Lat S}
@@ -171,7 +167,7 @@ theorem coord_mem_pow (p : GlobalTheory.FinPl.SplitPt D k) {PP : HeightOneSpectr
     simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Conclude with `FractionalIdeal.one_mem_one _`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `FractionalIdeal.mul_mem_mul ih ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pow_mem_pow_fr {I : GlobalTheory.SeeSaw.FI D} {a : D.host.E} (ha : a ∈ I) (n : ℕ) : a ^ n ∈ I ^ n := by
   induction n with
@@ -181,15 +177,13 @@ theorem pow_mem_pow_fr {I : GlobalTheory.SeeSaw.FI D} {a : D.host.E} (ha : a ∈
 variable {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Establish `hex : ∀ u ∈ P.S0, ∃ t ∈ (P.w u).asIdeal, t ≠ 0 ∧ (if u = v then valuation k ϖ else 1) ≤ valuation k (p.pr (incA D (t : D.host.E)))`. Introduce `u hu`. Use `split_ifs with h`. Substitute `h` using the available equality. Take `⟨t, ht, ht2⟩` from `SetLike.exists_of_lt (Ideal.pow_lt_self (P.w u).asIdeal (P.w u).ne_bot (P.w u).isPrime.ne_top 2 le_rfl)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨q, hq⟩, -⟩` from `GlobalTheory.FinPl.SplitPt.val_eq_unif_and_unit D k p _ he t 1 ht ht2 fun h1 => (P.w u).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Use `⟨t, ht, fun h0 => ht2 (h0 ▸ zero_mem _), ?_⟩` and prove the remaining obligations. Rewrite using `[hq]`. Conclude with `GlobalTheory.FinPl.SplitPt.val_le_unif q hϖ`. Establish `hne : P.w u ≠ P.w v` using `fun e => h (by rw [← P.under_w hu, e, P.under_w hv])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨t, ht, ht'⟩` from `Set.not_subset.1 fun hle : ((P.w u).asIdeal : Set (𝓞 D.host.E)) ⊆ (P.w v).asIdeal => hne (GlobalTheory.IdemSupport.eq_of_le hle)`. Conclude with `⟨t, ht, fun h0 => ht' (h0 ▸ zero_mem _), (val_eq_one p he ht').ge⟩`. Use `choose! t ht ht0 htv using hex`. Use `⟨∏ u ∈ P.S0, t u ^ P.depth sc u, Ideal.prod_mem_prod fun u hu => Ideal.pow_mem_pow (ht u hu) _, Finset.prod_ne_zero_iff.2 fun u hu => pow_ne_zero _ (ht0 u hu), ?_⟩` and prove the remaining obligations. Rewrite using `[← coe_prInt p he, map_prod]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `push_cast`. Rewrite using `[map_prod]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_eq_single_of_mem v hv fun u _ h => by rw [if_neg h, one_pow], if_pos rfl]`. Use `_ ≤ _ := Finset.prod_le_prod' fun u hu => by`.
-
-Rewrite using `[map_pow, SubmonoidClass.coe_pow, map_pow, coe_prInt]`. Conclude with `pow_le_pow_left' (htv u hu) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_modul (P : Places L) {v : GlobalTheory.FinPl.Pl D} (hv : v ∈ P.S0) (p : GlobalTheory.FinPl.SplitPt D k)
     (he : Formalism.L2.NTheta.IsIdemAt p.e (P.w v)) {ϖ : k} (hϖ : valuation k ϖ < 1) :
@@ -223,25 +217,21 @@ theorem exists_mem_modul (P : Places L) {v : GlobalTheory.FinPl.Pl D} (hv : v �
         exact pow_le_pow_left' (htv u hu) _
 
 /- English proof (translation)
-Establish `hw : G.pl.w v ∈ G.pl.W0` using `(GlobalTheory.DepthFix.mem_orthogonal_frame_iff G).2 ⟨v, hv, rfl⟩`. Establish `hb` using `Good.badInt_notMem hL (G := G) (t := μ0) hq (fun P hP => absurd (show (L.xiH μ0).UnrAt P by rw [hL.xi_base]; exact fun x _ => rfl) ((hL.Q_ram μ0 P).2 (Or.inl hP))) (Finset.mem_union_left _ hw)`. Establish `h2q : ((D.host.QS * D.host.q : ℕ) : 𝓞 D.host.E) ∉ (G.pl.w v).asIdeal` using `fun h => hb (GlobalTheory.HalfCompare.mem_of_dvd h (Dvd.intro _ rfl))`. Establish `hN : ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ (G.pl.w v).asIdeal` using `fun h => hb (GlobalTheory.HalfCompare.mem_of_dvd h (Dvd.intro_left _ rfl))`. Establish `hn : ((Ideal.absNorm D.host.𝔟 : ℕ) : 𝓞 D.host.E) ∉ (G.pl.w v).asIdeal` using `fun hm => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨l, hl, hP⟩` from `GlobalTheory.HalfCompare.exists_prime_under (G.pl.w v)`. Conclude with `h2q ((hP _).2 ((GlobalTheory.HalfCompare.prime_dvd_absNorm_halfDifferent D hl).1 ((hP _).1 hm)))`. Take `⟨m, hm, hm0, hmv⟩` from `exists_mem_modul (sc := sc) G.pl hv p he hϖ`. Establish `h1` using `(GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).1`. Establish `h2` using `(GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).2 T L G.pl sc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAb : (D.host.AAbar : GlobalTheory.SeeSaw.FI D) ≠ 0` using `ne_zero_of_conj h1.1 h1.2`. Establish `hmb : ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D) ≠ 0`. Introduce `h`. Establish `h4` using `h2.1`. Rewrite `h4` using `[Places.stA, h, _root_.inv_zero, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h4 rfl`. Use `set N : 𝓞 D.host.E := ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) with hNdef`. Use `set n : 𝓞 D.host.E := ((Ideal.absNorm D.host.𝔟 : ℕ) : 𝓞 D.host.E) with hndef`. Establish `hA : (N : D.host.E) ∈ G.pl.stA sc`. Establish `e1 : (1 : D.host.E) ∈ ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D)⁻¹` using `(FractionalIdeal.mem_inv_iff hmb).2 fun y hy => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[one_mul]`. Conclude with `FractionalIdeal.coeIdeal_le_one hy`. Use `FractionalIdeal.mul_mem_mul (ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelLatA.normCc_mem_AA D) e1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Simplify `this` using `[hNdef, Places.stA]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hB : ((n * m : 𝓞 D.host.E) : D.host.E) ∈ (G.pl.stAbar sc)⁻¹`. Establish `e1 : (n : D.host.E) ∈ (D.host.AAbar : GlobalTheory.SeeSaw.FI D)⁻¹` using `(FractionalIdeal.mem_inv_iff hAb).2 fun y hy => by`. Take `⟨o, ho⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelLatA.int_of_mem_b D (Ideal.absNorm_mem _) ((h1.2 y).1 hy)`. Use `(FractionalIdeal.mem_one_iff _).2 ⟨GlobalTheory.IdemSupport.cO D o, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `star (algebraMap _ D.host.E o) = _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[ho, star_mul', star_star, star_natCast, mul_comm]`. Simplify using `[hndef]`. Rewrite using `[Places.stAbar, mul_inv, inv_inv]`. Use `push_cast`. Conclude with `FractionalIdeal.mul_mem_mul e1 (FractionalIdeal.mem_coeIdeal_of_mem _ hm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha : ((N ^ (c - q.1) * (n * m) ^ (q.1 + 1) : 𝓞 D.host.E) : D.host.E) ∈ stairId (G.pl.stA sc) (G.pl.stAbar sc) c q`. Rewrite using `[stairId, ← inv_pow, RingOfIntegers.coe_eq_algebraMap, map_mul, map_pow, map_pow]`. Conclude with `FractionalIdeal.mul_mem_mul (pow_mem_pow_fr hA _) (pow_mem_pow_fr hB _)`. Establish `hN0 : N ≠ 0` using `fun h => hN (h ▸ zero_mem _)`. Establish `hn0 : n ≠ 0` using `fun h => hn (h ▸ zero_mem _)`.
-
-Substitute `hpv` using the available equality. Use `sec_mem_idV p ha (fun h => ?_) ?_` and prove the remaining obligations. Conclude with `mul_ne_zero (pow_ne_zero _ hN0) (pow_ne_zero _ (mul_ne_zero hn0 hm0)) (RingOfIntegers.coe_eq_zero_iff.1 h)`. Rewrite using `[← coe_prInt p he]`. Simplify using `only [map_mul, map_pow, MulMemClass.coe_mul, SubmonoidClass.coe_pow, coe_prInt, val_eq_one p he hN, val_eq_one p he hn, one_pow, one_mul, pow_mul]`.
-
-Conclude with `pow_le_pow_left' hmv _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sec_mem_stairId {μ0 : T} (hq : OffQ D) (hL : L.Is μ0) (G : GridData L sc) {v : GlobalTheory.FinPl.Pl D} (hv : v ∈ G.pl.S0)
     (p : GlobalTheory.FinPl.SplitPt D k) (hpv : p.v = v) (he : Formalism.L2.NTheta.IsIdemAt p.e (G.pl.w v)) {ϖ : k} (hϖ : valuation k ϖ < 1)
@@ -303,7 +293,7 @@ theorem sec_mem_stairId {μ0 : T} (hq : OffQ D) (hL : L.Is μ0) (G : GridData L 
     exact pow_le_pow_left' hmv _
 
 /- English proof (translation)
-Rewrite using `[HypDec.extX_apply, ← Matrix.mulVec_mulVec]`. Establish `e : (d.pX *ᵥ fun i => d.jX i q) = fun i => (d.pX * d.jX) i q` using `rfl`. Rewrite using `[e, HypDec.pX_jX]`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem col_eq {S S₀ U : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (x : Mx D U.rank ρ) (q : Fin ρ) :
     (fun j => x j q) = d.extX U x *ᵥ fun i => d.jX i q := by
@@ -314,21 +304,21 @@ theorem col_eq {S S₀ U : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (x : Mx D U.
   simp [Matrix.mulVec, dotProduct, Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `D hq T L μ0 hL sc G W M _ F hF σ h h' v hv k _ _ _ _ p β ϖ hpv he hlat hmax a ha q i`. Take `⟨e, hE, -⟩` from `W.cosVec_is`. Take `⟨hc, hJ, -⟩` from `hF.hJ (σ + 1) h`. Establish `hw : G.pl.w v ∈ G.pl.W0` using `(GlobalTheory.DepthFix.mem_orthogonal_frame_iff G).2 ⟨v, hv, rfl⟩`. Establish `hpe : p.pr e = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg p.pr (GlobalTheory.DiagLiftFix.idemSum_mul hE hw he)` as an intermediate fact. Rewrite `this` using `[map_mul, GlobalTheory.FrameAt.pr_e, mul_one]`. Then use the resulting hypothesis. Establish `hϖ : valuation k (ϖ : k) < 1` using `(GlobalTheory.FinPl.SplitPt.mem_max_iff_val_lt_one _).1 (hmax ▸ Ideal.mem_span_singleton_self ϖ)`. Establish `hξ : p.pr (incA D (-D.host.xi0)) ≠ 0` using `(map_ne_zero_iff (p.pr.comp (incA D)) (p.pr.comp (incA D)).injective).2 (neg_ne_zero.2 GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero)`. Use `set s : k := (ϖ : k) ^ (G.pl.depth sc v * (q.1 + 1)) * (p.pr (incA D (-D.host.xi0)))⁻¹ ^ (q.1 + 1) with hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : p.sec s • (fun j => (F.dJ (σ + 1) h).jX j q) = fun j => p.sec ((ϖ : k) ^ (G.pl.depth sc v * (q.1 + 1))) * incA D ((G.colDec (2 * (σ + 1) + 1) (by omega) (by omega)).a j ⟨q.1, by omega⟩)`. Use function extensionality and compare the values at `j`. Establish `e1 : p.sec s * incA D ((-D.host.xi0) ^ (q.1 + 1)) = p.sec ((ϖ : k) ^ (G.pl.depth sc v * (q.1 + 1)))`. Rewrite using `[sec_mul_right, map_pow, map_pow, hs, mul_assoc, ← mul_pow, inv_mul_cancel₀ hξ, one_pow, mul_one]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, HypDec.jX, GlobalTheory.MixModel.rat, hJ, colsOf, Matrix.map_apply, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, e1]`. Both sides reduce to the same expression. Establish `hΛ : G.Λ (.grid (2 * σ + 2 + 1) 0) = (G.colDec (2 * (σ + 1) + 1) (by omega) (by omega)).lat (G.Λ (.core (2 * (σ + 1) + 1))) (stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * (σ + 1) + 1 - 1))` using `G.sp.colLat _ _ _`. Establish `hmem : p.sec s • (fun j => (F.dJ (σ + 1) h).jX j q) ∈ latV (G.V (.grid (2 * σ + 2 + 1) 0)) (G.Λ (.grid (2 * σ + 2 + 1) 0)) (· = v)`. Rewrite using `[hy, hΛ]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.AscFin.UnitaryEmbeddingLine.embedding_line_mem_lattice_iff _ (neg_ne_zero.2 one_ne_zero) _ _ _ v _).1.2 (sec_mem_stairId hq hL G hv p hpv he hϖ _ _)`. Establish `hu : (F.dJ (σ + 1) h).extX (G.V (.grid (2 * σ + 2) 0)) a ∈ latRow G (2 * σ + 2)` using `ha`. Establish `hY` using `GlobalTheory.DepthRowLem.mulVec_mem_latMul _ (hu.2 e hE) hmem`. Establish `hle : G.pl.modul sc ≤ (G.pl.w v).asIdeal ^ G.pl.depth sc v` using `Ideal.prod_le_inf.trans (Finset.inf_le hv)`. Substitute `hpv` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz, hz'⟩` from `coord_mem_pow p he β hlat hle hY i`. Use `⟨z, hz, hz'.trans ?_⟩` and prove the remaining obligations. Establish `e2` using `col_eq (U := G.V (.grid (2 * σ + 2) 0)) (F.dJ (σ + 1) h) a q`. Establish `e4 : s * (β.b' *ᵥ fun j => p.pr (a j q)) i = (β.b' *ᵥ (s • fun j => p.pr (a j q))) i`. Rewrite using `[Matrix.mulVec_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e4]`. Use `congrArg (fun y => (β.b' *ᵥ y) i) (funext fun j => ?_)` and prove the remaining obligations. Establish `e3 : ((e • (F.dJ (σ + 1) h).extX (G.V (.grid (2 * σ + 2) 0)) a) *ᵥ (p.sec s • fun j => (F.dJ (σ + 1) h).jX j q)) j = e * (p.sec s * a j q)`. Rewrite using `[Matrix.smul_mulVec, Matrix.mulVec_smul, ← e2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `(congrArg p.pr e3).trans ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hpe, p.pr_sec, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem col_mem_depth : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m), ∀ v ∈ G.pl.S0,
   ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : GlobalTheory.FinPl.SplitPt D k)

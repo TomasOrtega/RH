@@ -32,7 +32,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `GlobalTheory.AutFunCompare.mat_mapH _ _ _ _ _ _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem matHom_mapH_kfin {A A' : Type} [CommRing A] [Algebra F A] [TopologicalSpace A] [CommRing A'] [Algebra F A']
     [TopologicalSpace A'] (φ : A →ₐ[F] A') (g : HA A σ J) :
@@ -42,7 +42,7 @@ theorem matHom_mapH_kfin {A A' : Type} [CommRing A] [Algebra F A] [TopologicalSp
   exact GlobalTheory.AutFunCompare.mat_mapH _ _ _ _ _ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_adMat_kfin {A A' : Type} [CommRing A] [Algebra F A] [CommRing A'] [Algebra F A'] (φ : A →ₐ[F] A')
     (X : Matrix (Fin n) (Fin r) E) :
@@ -51,7 +51,7 @@ theorem map_adMat_kfin {A A' : Type} [CommRing A] [Algebra F A] [CommRing A'] [A
   simp [inclR]
 
 /- English proof (translation)
-Use `congrArg (fun M : Matrix (Fin n) (Fin r) (A ⊗[F] E) => M.map (Algebra.TensorProduct.map φ (AlgHom.id F E))) h` as an intermediate fact. Rewrite `this` using `[Matrix.map_mul, Matrix.map_mul, map_adMat_kfin]`. Rewrite using `[matHom_mapH_kfin]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flag_map_kfin {A A' : Type} [CommRing A] [Algebra F A] [TopologicalSpace A] [CommRing A'] [Algebra F A']
     [TopologicalSpace A'] (φ : A →ₐ[F] A') (g : HA A σ J) (B : Matrix (Fin r) (Fin r) (A ⊗[F] E))
@@ -65,43 +65,37 @@ theorem flag_map_kfin {A A' : Type} [CommRing A] [Algebra F A] [TopologicalSpace
   exact this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n J hJ r X Y hW`. Take `⟨L₀, hL₀, hae⟩` from `GlobalTheory.T.lattice_max_even_almost_all hCM hJ hW`. Establish `hT : ∀ v, FlagTransitive (sigR (Fv F v) σ) (intLoc F E v)` using `fun v => GlobalTheory.T.flag_transitive_of_base _ _ (GlobalTheory.T.local_hermitian_ring hCM v) (GlobalTheory.T.local_hermitian_has_base hCM v)`. Establish `hex : ∀ v, ∃ Λ : Submodule (intLoc F E v) (Fin n → Fv F v ⊗[F] E), IsMaxEven (sigR (Fv F v) σ) (intLoc F E v) (hR (Fv F v) σ J) Λ ∧ IsAdapted (intLoc F E v) (hR (Fv F v) σ J) (colV v X) (colV v Y) Λ ∧ (IsMaxEven (sigR (Fv F v) σ) (intLoc F E v) (hR (Fv F v) σ J) (latLoc F L₀ v) ∧ …`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hg : IsMaxEven (sigR (Fv F v) σ) (intLoc F E v) (hR (Fv F v) σ J) (latLoc F L₀ v) ∧ IsAdapted (intLoc F E v) (hR (Fv F v) σ J) (colV v X) (colV v Y) (latLoc F L₀ v)`. Conclude with `⟨_, hg.1, hg.2, fun _ => rfl⟩`. Take `⟨L, h1, h2⟩` from `GlobalTheory.T.exists_max_even_adapted_lattice _ (intLoc F E v) (GlobalTheory.T.local_hermitian_ring hCM v) (hR (Fv F v) σ J) (GlobalTheory.T.local_form_hermitian_perfect hCM hJ v).1 (GlobalTheory.T.local_form_hermitian_perfect hCM hJ v).2 (colV v X) (colV v Y) (GlobalTheory.T.lo …`. Conclude with `⟨L, h1, h2, fun h => absurd h hg⟩`. Use `choose Λ hΛ1 hΛ2 hΛ3 using hex`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ v in cofinite, Λ v = latLoc F L₀ v` using `hae.mono fun v h => hΛ3 v h`. Establish `hstab : ∀ v, Λ v = latLoc F L₀ v → (stabLat σ J (Λ v) : Subgroup (GLoc σ J v)) = stabLoc σ J L₀ v`. Introduce `v e`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `K : Subgroup (GAd σ J)` to `finPts σ J ⊓ ⨅ v, (stabLat σ J (Λ v)).comap (proj σ J v)`. Establish `memK : ∀ g, g ∈ K ↔ g ∈ finPts σ J ∧ ∀ v, proj σ J v g ∈ stabLat σ J (Λ v)` using `fun g => by`. Simplify using `[K, Subgroup.mem_inf, Subgroup.mem_iInf]`. Use `⟨K, inf_le_left, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩ : ∃ S : Finset (HeightOneSpectrum (𝓞 F)), ∀ v ∉ S, Λ v = latLoc F L₀ v` from `⟨(eventually_cofinite.1 hev).toFinset, fun v hv => by simpa using hv⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc` using `(isRestrGroup_GFin σ J L₀).isCompact_cyl S (fun _ => Set.univ) (fun v => (stabLat σ J (Λ v) : Set (GLoc σ J v))) (fun e => e.elim) (fun v _ => GlobalTheory.T.lattice_stabilizer_compact hCM hJ v (Λ v) (hΛ1 v).1)`. Use `hc.image (continuous_ofFin σ J) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Rewrite using `[SetLike.mem_coe, memK]`. Prove the components needed by the constructor for the conclusion.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩`. Take `⟨y, rfl⟩ : g ∈ (ofFin σ J).range` from `by rwa [range_ofFin]`. Use `⟨y, ⟨fun e => e.elim, fun v _ => ?_, fun v hv => ?_⟩, rfl⟩` and prove the remaining obligations. Simplify using `using h2 v`. Rewrite using `[← hstab v (hS v hv)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h2 v`. Introduce and unpack `⟨y, ⟨-, h1, h2⟩, rfl⟩`. Use `⟨mem_finPts.2 (by simp), fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[proj_ofFin]`. Distinguish the cases in `hv : v ∈ S`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 v hv`. Rewrite using `[hstab v (hS v hv)]`. Conclude with `h2 v hv`. Introduce `g hg`. Establish `hfin : {v | proj σ J v g ∉ stabLat σ J (Λ v)}.Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `eventually_cofinite.1 ?_` and prove the remaining obligations. Use `filter_upwards [hev, eventually_proj_mem_stabLoc σ J L₀ g] with v e hv`. Rewrite using `[hstab v e]`. Conclude with `hv`. Set `S : Finset (HeightOneSpectrum (𝓞 F))` to `hfin.toFinset`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose pl kl hkl hgl Bl hBl hpl using fun v => GlobalTheory.T.max_even_lattice_flag_transitive_local (X := X) hCM hJ hW v (hT v) (Λ v) (hΛ1 v) (proj σ J v g)`. Set `x : ∀ v : S, GLoc σ J v` to `fun v => pl v`. Establish `hp1 : embAt σ J S x ∈ minPar σ J X`. Establish `: embAt σ J S x ∈ minParSub X hCM hJ hW`. Use `Subgroup.noncommProd_mem _ (f := fun v : S => emb σ J v (x v)) (fun _ _ _ _ h => commute_emb σ J _ (proj_emb_ne σ J (fun e => h (Subtype.ext e)) _)) fun v _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.block_triangular_mem_minimal_parabolic_local (Y := Y) v.1 _ (Bl v.1) (hBl v.1) (hpl v.1)`. Conclude with `this`. Establish `hp2` using `mem_atPts.1 (embAt_mem σ J S x)`. Use `⟨embAt σ J S x, hp1, hp2.1, (embAt σ J S x)⁻¹ * g, (memK _).2 ⟨mul_mem (inv_mem hp2.1) hg, fun v => ?_⟩, by simp⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hv : v ∈ S`. Establish `: proj σ J v (embAt σ J S x) = pl v` using `proj_embAt σ J S x ⟨v, hv⟩`. Rewrite using `[this, hgl v, inv_mul_cancel_left]`. Conclude with `hkl v`. Rewrite using `[hp2.2 v hv, inv_one, one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hv (hfin.mem_toFinset.2 hc)`. Introduce and unpack `p ⟨B, hB, hpB⟩ hpK`. Take `⟨hpf, hpv⟩` from `(memK p).1 hpK`. Take `⟨m, hm, ⟨d, hd⟩, ⟨d', hd'⟩, ⟨B', hB', hB1, hu⟩, hz⟩` from `GlobalTheory.T.block_triangular_mem_minimal_parabolic hCM hJ hW (AF F) p B hB hpB`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hmf : m ∈ finPts σ J`. Use `mem_finPts.2 (Subtype.ext (Units.ext ?_))` and prove the remaining obligations. Establish `e1 : (matHom _ σ J (projInf σ J m)).1 = 1`. Use `(matHom_mapH_kfin (fstA F) m).trans ?_` and prove the remaining obligations. Rewrite using `[hm, ← GlobalTheory.T.levi_matrix_map_base_change]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : (matHom _ σ J p).1.map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) = 1`. Rewrite using `[← matHom_mapH_kfin]`. Use `mem_finPts.1 hpf` as an intermediate fact. Express the relevant statement in the definitionally equal form `(matHom _ σ J (projInf σ J p)).1 = 1`. Rewrite using `[this, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Rewrite using `[e2]`. Conclude with `GlobalTheory.T.levi_matrix_one hCM hJ hW _`. Conclude with `e1`. Establish `hmK : m ∈ K`.
-
-Use `(memK m).2 ⟨hmf, fun v => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.max_even_lattice_adapted_basis hCM hJ hW v (Λ v) (hΛ1 v) (hΛ2 v) (proj σ J v p) (proj σ J v m) (hpv v) _ (hB.map _) (flag_map_kfin (evFin F v) p B hpB) ?_` and prove the remaining obligations. Use `(matHom_mapH_kfin (evFin F v) m).trans ?_` and prove the remaining obligations. Rewrite using `[hm, ← GlobalTheory.T.levi_matrix_map_base_change, ← matHom_mapH_kfin]`. Both sides reduce to the same expression.
-
-Use `⟨m, ⟨d, d', hd, ?_⟩, hmK, m⁻¹ * p, ⟨B', hB', hB1, hu, fun z hz' => ?_⟩, mul_mem (inv_mem hmK) hpK, by simp⟩` and prove the remaining obligations. Conclude with `hd'`. Use `hz _ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `(RingHom.map_mulVec (inclR (F := F) (AF F)) (cT (σ : E →+* E) X * J) z i).symm.trans ?_` and prove the remaining obligations.
-
-Rewrite using `[hz']`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_compact_iwasawa_good : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∃ K : Subgroup (GAd σ J), K ≤ finPts σ J ∧ IsCompact (K : Set (GAd σ J)) ∧ (∀ g ∈ finPts σ J, ∃ p ∈ minPar σ J X, p ∈ finPts σ J ∧ ∃ k ∈ K, g = p * k) ∧ GoodPosition σ J X Y K := by
   intro F E _ _ _ _ _ σ hCM n J hJ r X Y hW

@@ -14,9 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {X : HidaSetting D}
 
 /- English proof (translation)
-Establish `h1 : Formalism.L2.SG.GGMirabolic.gamProd TR.psi0 (1 : Iof TR) = ((∏ v, ((Fintype.card (GL (Fin D.R.k) (TR.Fq v)) : ℝ) / (Formalism.L2.SG.GGMirabolic.cardU (TR.Fq v) D.R.k : ℝ)) : ℝ) : ℂ)`. Simplify using `only [Formalism.L2.SG.GGMirabolic.gamProd, Pi.one_apply, Formalism.L2.SG.GGMirabolic.gam_one]`. Use `push_cast`. Both sides reduce to the same expression. Unfold `Gam1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[h1, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gam1_eq_prod_card_div_cardU (TR : TypedRed X) :
     Gam1 TR = ∏ v, ((Fintype.card (GL (Fin D.R.k) (TR.Fq v)) : ℝ) /
@@ -31,9 +31,9 @@ theorem gam1_eq_prod_card_div_cardU (TR : TypedRed X) :
   rw [h1, Complex.ofReal_re]
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.GGMirabolic.cardU`. Establish `h1 : Formalism.L2.SG.GGMirabolic.IsUni k (1 : GL (Fin k) F)`. Simplify using `[Formalism.L2.SG.GGMirabolic.IsUni, Matrix.one_apply]`. Introduce `i j h e`. Substitute `e` using the available equality.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Conclude with `lt_irrefl _ h`. Establish `: Nonempty {x : GL (Fin k) F // Formalism.L2.SG.GGMirabolic.IsUni k x}` using `⟨⟨1, h1⟩⟩`. Conclude with `Nat.card_pos`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cardU_pos (F : Type) [Field F] [Fintype F] (k : ℕ) : 0 < Formalism.L2.SG.GGMirabolic.cardU F k := by
   unfold Formalism.L2.SG.GGMirabolic.cardU
@@ -46,9 +46,7 @@ theorem cardU_pos (F : Type) [Field F] [Fintype F] (k : ℕ) : 0 < Formalism.L2.
   exact Nat.card_pos
 
 /- English proof (translation)
-Rewrite using `[gam1_eq_prod_card_div_cardU]`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `v _`. Apply `div_pos` to reduce the goal to its premises. Conclude with `Fintype.card_pos` after adjusting the coercions.
-
-Conclude with `cardU_pos _ _` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem gamma_one_pos (TR : TypedRed X) : 0 < Gam1 TR := by
   rw [gam1_eq_prod_card_div_cardU]
@@ -61,13 +59,13 @@ theorem gamma_one_pos (TR : TypedRed X) : 0 < Gam1 TR := by
 variable {u : D.what₂.Word} {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_eq_fintype_card]`. Use `symm`. Use `Nat.card_eq_of_bijective (fun ρ => DoubleCoset.mk (iotaF X u).range (Ku X u hK) (cs.h ρ)) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `ρ ρ' he`. Take `⟨a, ha, b, hb, hab⟩` from `(DoubleCoset.eq _ _ _ _).1 he`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, rfl⟩` from `ha`. Take `⟨ρ₀, _, hu⟩` from `hR (cs.h ρ')`. Establish `e1` using `hu ρ' ⟨1, 1, by simp⟩`. Establish `e2` using `hu ρ ⟨γ, ⟨b, hb⟩, hab⟩`. Conclude with `e2.trans e1.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Proceed by induction on `q using Quotient.inductionOn' with`. Consider the case `h h`. Take `⟨ρ, ⟨γ, κ, hh⟩, _⟩` from `hR h`. Use `⟨ρ, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show DoubleCoset.mk _ _ _ = DoubleCoset.mk _ _ _`. Rewrite using `[DoubleCoset.eq]`. Conclude with `⟨iotaF X u γ, ⟨γ, rfl⟩, κ, κ.2, hh⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_classes_eq (hK : X.LevelSubgroupCharacter) (cs : ColSys X u what₂) (hR : ColReps hK cs) :
     Nat.card (Formalism.L2.SG.ColsDim.Classes (iotaF X u) (Ku X u hK)) = Fintype.card cs.Cl := by
@@ -92,9 +90,9 @@ theorem card_classes_eq (hK : X.LevelSubgroupCharacter) (cs : ColSys X u what₂
       exact ⟨iotaF X u γ, ⟨γ, rfl⟩, κ, κ.2, hh⟩
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (fun ρ : cs.Cl => DoubleCoset.mk (iotaF X u).range (Ku X u hK) (cs.h ρ))`. Introduce `q`. Proceed by induction on `q using Quotient.inductionOn' with`. Consider the case `h h`. Take `⟨ρ, ⟨γ, κ, hh⟩, _⟩` from `hR h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨ρ, ?_⟩` and prove the remaining obligations. Use `show DoubleCoset.mk _ _ _ = DoubleCoset.mk _ _ _`. Rewrite using `[DoubleCoset.eq]`. Conclude with `⟨iotaF X u γ, ⟨γ, rfl⟩, κ, κ.2, hh⟩`. Conclude with `Finite.of_surjective _ hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem classFin_of (hK : X.LevelSubgroupCharacter) (cs : ColSys X u what₂) (hR : ColReps hK cs) :
     Formalism.L2.SG.PoincareInHH.Cut.ClassFin X u hK := by
@@ -111,7 +109,7 @@ theorem classFin_of (hK : X.LevelSubgroupCharacter) (cs : ColSys X u what₂) (h
   exact Finite.of_surjective _ hs
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.RowsConc.duC Formalism.L2.SG.KappaOffDiagonal.dpiC`. Rewrite using `[(Formalism.L2.SG.PoincareInHH.Cut.cols_dim_of_neat X u Y.hK hN (classFin_of Y.hK (Y.cs u) (Y.colReps u))).2, card_classes_eq Y.hK (Y.cs u) (Y.colReps u)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem duC_eq (Y : Full X) (u : D.what₂.Word) (hN : Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u Y.hK) :
     Formalism.L2.SG.RowsConc.duC X Y u = Formalism.L2.SG.KappaOffDiagonal.dpiC X u * (Fintype.card (Y.cs u).Cl : ℝ) := by
@@ -124,7 +122,7 @@ def fib (cs : ColSys X u what₂) (Λ : Submodule (𝓞 D.host.E) (VS D).V) : Fi
   Finset.univ.filter fun ρ => cs.lamOf ρ = Λ
 
 /- English proof (translation)
-Establish `h` using `Finset.card_eq_sum_card_fiberwise (s := (Finset.univ : Finset cs.Cl)) (t := what₂) (f := cs.lamOf) (fun ρ _ => cs.lam_mem ρ)`. Rewrite `h` using `[Finset.card_univ]`. Rewrite using `[h, Nat.cast_sum]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem card_cl_eq_sum (cs : ColSys X u what₂) :
     (Fintype.card cs.Cl : ℝ) = ∑ Λ ∈ what₂, ((fib cs Λ).card : ℝ) := by
@@ -139,11 +137,11 @@ def FibreBound : Prop :=
     ∀ Λ ∈ Y.what₂ u, Gam1 Y.TR * wRow D (X.Fu u) Λ ≤ ((fib (Y.cs u) Λ).card : ℝ)
 
 /- English proof (translation)
-Introduce `D X Y u hT`. Establish `hG : (Y.tO u u).Gam1 = Gam1 Y.TR` using `rfl`. Rewrite using `[hG]`. Use `⟨(gamma_one_pos Y.TR).le, ?_⟩` and prove the remaining obligations. Rewrite using `[duC_eq Y u (hT.2.1 u), card_cl_eq_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : 0 ≤ Formalism.L2.SG.KappaOffDiagonal.dpiC X u` using `by unfold Formalism.L2.SG.KappaOffDiagonal.dpiC; positivity`. Establish `hm : Gam1 Y.TR * Formalism.L2.SG.KappaOffDiagonal.massC Y u ≤ ∑ Λ ∈ Y.what₂ u, ((fib (Y.cs u) Λ).card : ℝ)`. Unfold `Formalism.L2.SG.KappaOffDiagonal.massC massRows`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun Λ hΛ => h4 D X Y u hT Λ hΛ`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem dimFormC_of (h4 : FibreBound) : Formalism.L2.SG.KappaOffDiagonal.DimFormC := by
   intro D X Y u hT

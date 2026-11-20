@@ -13,13 +13,13 @@ def BlockAltUnique.Statement : Prop :=
     ∀ P, L P = L (monomial (rhoBlock Ψ N j) 1) * blockInt Ψ N j P
 
 /- English proof (translation)
-Establish `hrho : rhoBlock Unit 2 1 = 0`. Use extensionality with `⟨u, i⟩`. Apply the tactic sequence `fin_cases i <;> simp [rhoBlock]`. Establish `hw : ∀ w : Unit → Equiv.Perm (Fin 2), IsBlockPerm Unit 2 1 w → w = 1`. Unfold `IsBlockPerm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Evaluate the decidable proposition. Use `⟨lcoeff ℚ 0, fun h => ?_, fun w hw' P => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun h 1` as an intermediate fact. Simplify using `at this`. Take `rfl` from `hw w hw'`.
+Evaluate the decidable proposition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h1 : weylAct Unit 2 1 = id`. Use function extensionality and compare the values at `p`. Both sides reduce to the same expression. Simplify using `[h1, weylSign]`. Rewrite `hb` using `[hrho, map_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb0 : b ≠ 0` using `fun h => hb (by rw [h, map_zero])`. Simplify using `[coeff_monomial]`. Conclude with `hb0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example : ∃ L : RootPoly Unit 2 →ₗ[ℚ] ℚ, L ≠ 0 ∧
     (∀ w, IsBlockPerm Unit 2 1 w → ∀ P, L (rename (weylAct Unit 2 w) P) = weylSign Unit 2 w * L P) ∧

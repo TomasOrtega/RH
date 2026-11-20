@@ -18,7 +18,7 @@ open CategoryTheory AlgebraicGeometry
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-The claim follows from `isBoundaryDivisorReduction_divisorFamily_canonicalAlgorithmRules hres hdiv divisorShift := isBoundaryPositionInvariant_divisorFamily_canonicalAlgorithmRules hres hdiv maxOrderSpec := fun n A L hspec => MaxOrderReduction.isMaxOrderReduction_canonicalAlgorithmRules hG hres n A L hs …`.
+A detailed English derivation is pending.
 -/
 theorem isCorrect_canonicalAlgorithmRules_of_hypotheses
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -32,7 +32,7 @@ theorem isCorrect_canonicalAlgorithmRules_of_hypotheses
   orderSpec := OrderReductionProperties.isOrderReduction_orderFamily_of_strictTransformIsBlowup hres
 
 /- English proof (translation)
-The claim follows from `isCorrect_canonicalAlgorithmRules_of_hypotheses hres (divisorReductionHypotheses_canonicalAlgorithmRules hres) principalizationGeometryHypotheses.{u}`.
+A detailed English derivation is pending.
 -/
 theorem isCorrect_canonicalAlgorithmRules
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) :

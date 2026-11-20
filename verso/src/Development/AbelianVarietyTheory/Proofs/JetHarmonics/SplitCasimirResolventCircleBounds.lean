@@ -10,7 +10,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `htri : ‖u‖ ≤ ‖u + v‖ + ‖v‖`. Combine the equalities or inequalities in the displayed calculation. Establish `hsq : ‖u‖ ^ 2 ≤ (‖u + v‖ + ‖v‖) ^ 2` using `by gcongr`. Use polynomial arithmetic with `[sq_nonneg (2 * ‖u + v‖ - 13 * ‖v‖)]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem splitCasRes_norm_sq_le_weighted {M : Type} [NormedAddCommGroup M] (u v : M) :
     ‖u‖ ^ 2 ≤ 15 / 13 * ‖u + v‖ ^ 2 + 15 / 2 * ‖v‖ ^ 2 := by
@@ -21,7 +21,7 @@ theorem splitCasRes_norm_sq_le_weighted {M : Type} [NormedAddCommGroup M] (u v :
   nlinarith [sq_nonneg (2 * ‖u + v‖ - 13 * ‖v‖)]
 
 /- English proof (translation)
-Establish `hsq : ‖u + v‖ ^ 2 ≤ (‖u‖ + ‖v‖) ^ 2` using `by gcongr`. Conclude with `norm_add_le u v`. Use polynomial arithmetic with `[sq_nonneg (‖u‖ - ‖v‖)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem splitCasRes_norm_add_sq_le {M : Type} [NormedAddCommGroup M] (u v : M) :
     ‖u + v‖ ^ 2 ≤ 2 * ‖u‖ ^ 2 + 2 * ‖v‖ ^ 2 := by
@@ -31,15 +31,15 @@ theorem splitCasRes_norm_add_sq_le {M : Type} [NormedAddCommGroup M] (u v : M) :
   nlinarith [sq_nonneg (‖u‖ - ‖v‖)]
 
 /- English proof (translation)
-Establish `hb : 0 ≤ b`. Use `norm_nonneg (ζ + ((b / 16 : ℝ) : ℂ))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsplit : ζ + (t : ℂ) = (ζ + ((b / 16 : ℝ) : ℂ)) + ((t - b / 16 : ℝ) : ℂ)`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hshift : ‖((t - b / 16 : ℝ) : ℂ)‖ = |t - b / 16|`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs]`. Rewrite using `[hsplit]`. Break down `ht with ⟨h1, h2⟩ | h3` into its components or cases.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hclose : |t - b / 16| ≤ 3 * b / 32`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Establish `key` using `norm_sub_le ((ζ + ((b / 16 : ℝ) : ℂ)) + ((t - b / 16 : ℝ) : ℂ)) ((t - b / 16 : ℝ) : ℂ)`. Rewrite `key` using `[add_sub_cancel_right, hζ, hshift]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfar : 33 * b / 32 ≤ |t - b / 16|`. Use `neg_le_abs (t - b / 16)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `norm_sub_le ((ζ + ((b / 16 : ℝ) : ℂ)) + ((t - b / 16 : ℝ) : ℂ)) (ζ + ((b / 16 : ℝ) : ℂ))`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `key` using `[add_sub_cancel_left, hζ, hshift]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem splitCasRes_circle_dist (b t : ℝ) (ζ : ℂ) (hζ : ‖ζ + ((b / 16 : ℝ) : ℂ)‖ = 9 * b / 16)
     (ht : (-b / 8 - b / 32 ≤ -t ∧ -t ≤ b / 32) ∨ b - b / 32 ≤ -t) :
@@ -70,27 +70,27 @@ theorem splitCasRes_circle_dist (b t : ℝ) (ζ : ℂ) (hζ : ‖ζ + ((b / 16 :
     linarith
 
 /- English proof (translation)
-Introduce `M _ _ n ε E μ kk j bv x hmod hshape hj hlev`. Take `⟨hbv, hω, -⟩` from `shape_position n kk j ε μ bv hshape hj`. Establish `hun : IsUnitary ε E` using `hmod.2.1`. Establish `hoff : ∑ b, ‖∑ c ∈ univ.erase b, E b c (x c)‖ ^ 2 ≤ (bv / 16) ^ 2 * ∑ c, ‖x c‖ ^ 2` using `GlobalTheory.T.splitCasimir_offDiagonal_norm_sq_le_of_level M n ε E μ kk j bv x hmod hshape hj hlev`. Establish `hsplit : ∀ b, splitCas E x b = -(E b b (x b) + ∑ c ∈ univ.erase b, E b c (x c))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b`. Simplify using `only [splitCas]`. Use `congr 1`. Conclude with `(Finset.add_sum_erase univ (fun c => E b c (x c)) (Finset.mem_univ b)).symm`. Establish `hdiag` using `fun c => wtNear_diag_bounds M n ε E (lowK ε μ) (j : ℝ) (x c) hun (hlev c).2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : 0 ≤ ∑ c, ‖x c‖ ^ 2` using `Finset.sum_nonneg (fun _ _ => by positivity)`. Prove the components needed by the constructor for the conclusion. Introduce `ζ hζ`. Establish `hlow : ∀ b, (15 * bv / 32) ^ 2 * ‖x b‖ ^ 2 ≤ ‖ζ • x b + E b b (x b)‖ ^ 2`. Introduce `b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hdiag b).2.1 b ζ (15 * bv / 32) (by positivity) ?_` and prove the remaining obligations. Introduce `ω hωn`. Apply `splitCasRes_circle_dist bv (ω b) ζ hζ` to reduce the goal to its premises. Take `⟨h1, h2⟩` from `hω ω hωn b`. Distinguish the cases in `hb : b.val + 1 < kk`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inl (h1 hb)`. Conclude with `Or.inr (h2 (by omega)).1`. Establish `hper : ∀ b, 13 / 15 * (15 * bv / 32) ^ 2 * ‖x b‖ ^ 2 - 13 / 2 * ‖∑ c ∈ univ.erase b, E b c (x c)‖ ^ 2 ≤ ‖ζ • x b - splitCas E x b‖ ^ 2`. Introduce `b`. Establish `hw` using `splitCasRes_norm_sq_le_weighted (ζ • x b + E b b (x b)) (∑ c ∈ univ.erase b, E b c (x c))`.
+Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ζ • x b - splitCas E x b = (ζ • x b + E b b (x b)) + ∑ c ∈ univ.erase b, E b c (x c)`. Rewrite using `[hsplit]`. Normalize the expressions using the abelian group laws. Rewrite using `[he]`. Use polynomial arithmetic with `[hlow b]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hsum` using `Finset.sum_le_sum (fun b (_ : b ∈ (univ : Finset (Fin n))) => hper b)`. Rewrite `hsum` using `[Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.mul_sum]`. Use polynomial arithmetic with `[hoff, hsum, mul_nonneg (sq_nonneg bv) hS]`. Establish `hD : ∀ b, ‖E b b (x b)‖ ^ 2 ≤ (65 * bv / 32) ^ 2 * ‖x b‖ ^ 2`. Introduce `b`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hdiag b).2.2 b (65 * bv / 32) ?_` and prove the remaining obligations. Introduce `ω hωn`. Take `⟨h1, h2⟩` from `hω ω hωn b`. Rewrite using `[abs_le]`. Distinguish the cases in `hb : b.val + 1 < kk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, a2⟩` from `h1 hb`. Apply the tactic sequence `constructor <;> linarith`. Take `⟨a1, a2⟩` from `h2 (by omega)`. Apply the tactic sequence `constructor <;> linarith`. Establish `hper : ∀ b, ‖splitCas E x b‖ ^ 2 ≤ 2 * (65 * bv / 32) ^ 2 * ‖x b‖ ^ 2 + 2 * ‖∑ c ∈ univ.erase b, E b c (x c)‖ ^ 2`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Rewrite using `[hsplit, norm_neg]`. Establish `ha` using `splitCasRes_norm_add_sq_le (E b b (x b)) (∑ c ∈ univ.erase b, E b c (x c))`. Use polynomial arithmetic with `[hD b]`. Establish `hsum` using `Finset.sum_le_sum (fun b (_ : b ∈ (univ : Finset (Fin n))) => hper b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsum` using `[Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum]`. Use polynomial arithmetic with `[hoff, hsum, mul_nonneg (sq_nonneg bv) hS]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem splitCas_resolvent_bounds : ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (μ : Fin n → ℝ) (kk j : ℕ) (bv : ℝ) (x : Fin n → M), IsMod ε E μ → Shape ε kk μ bv → j ≤ 4 * n ^ 2 + 2 → (∀ c, Lev ε E μ j (x c)) → (∀ ζ : ℂ, ‖ζ + ((bv / 16 : ℝ) : ℂ)‖ = 9 * bv / 16 → (13 * bv / 32) ^ 2 * ∑ c, ‖x c‖ ^ 2 ≤ ∑ c, ‖ζ • x c - splitCas E x c‖ ^ 2) ∧ ∑ c, ‖splitCas E x c‖ ^ 2 ≤ (3 * bv) ^ 2 * ∑ c, ‖x c‖ ^ 2 := by
   intro M _ _ n ε E μ kk j bv x hmod hshape hj hlev

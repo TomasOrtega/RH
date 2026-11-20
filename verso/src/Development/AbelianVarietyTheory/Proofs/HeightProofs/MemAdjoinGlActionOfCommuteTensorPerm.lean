@@ -17,7 +17,7 @@ def sym (X : Fin d → Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin d → Fin n) (F
   ∑ π : Equiv.Perm (Fin d), tens (X ∘ π)
 
 /- English proof (translation)
-Use extensionality with `I K`. Simplify using `only [tens, Matrix.mul_apply, Matrix.of_apply, Pi.mul_apply, ← Finset.prod_mul_distrib]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tens_mul (X Y : Fin d → Matrix (Fin n) (Fin n) ℂ) : tens X * tens Y = tens (X * Y) := by
   ext I K
@@ -25,7 +25,7 @@ theorem tens_mul (X Y : Fin d → Matrix (Fin n) (Fin n) ℂ) : tens X * tens Y 
   rw [Finset.prod_univ_sum, Fintype.piFinset_univ]
 
 /- English proof (translation)
-Use extensionality with `I K`. Simplify using `only [tens, Matrix.of_apply, Pi.one_apply, Matrix.one_apply]`. Rewrite using `[Finset.prod_ite_zero]`. Simplify using `[funext_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tens_one : tens (1 : Fin d → Matrix (Fin n) (Fin n) ℂ) = 1 := by
   ext I K
@@ -34,7 +34,7 @@ theorem tens_one : tens (1 : Fin d → Matrix (Fin n) (Fin n) ℂ) = 1 := by
   simp [funext_iff]
 
 /- English proof (translation)
-Simplify using `only [tens, Matrix.of_apply]`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ p), Pi.mulSingle_eq_same]`. Establish `: ∀ q ∈ Finset.univ.erase p, (Pi.mulSingle p Y : Fin d → Matrix (Fin n) (Fin n) ℂ) q (I q) (K q) = if I q = K q then 1 else 0` using `fun q hq => by`. Rewrite using `[Pi.mulSingle_eq_of_ne (Finset.ne_of_mem_erase hq), Matrix.one_apply]`. Rewrite using `[Finset.prod_congr rfl this, Finset.prod_ite_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -49,9 +49,9 @@ theorem tens_single_apply (p : Fin d) (Y : Matrix (Fin n) (Fin n) ℂ) (I K : Fi
   simp
 
 /- English proof (translation)
-Use extensionality with `I K`. Simplify using `only [Matrix.sum_apply, tens_single_apply, polar, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, Finset.mul_sum]`. Use `symm`. Rewrite using `[Finset.sum_congr rfl fun a _ => Finset.sum_comm, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : ∀ q, q ≠ p → I q = K q`. Simplify using `[eq_true h, ite_and]`. Simplify using `[eq_false h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_tens_single (Y : Matrix (Fin n) (Fin n) ℂ) :
     ∑ p : Fin d, tens (Pi.mulSingle p Y) = ∑ a, ∑ b, Y a b • polar n d a b := by
@@ -66,17 +66,17 @@ theorem sum_tens_single (Y : Matrix (Fin n) (Fin n) ℂ) :
   · simp [eq_false h]
 
 /- English proof (translation)
-The claim follows from `Fintype.sum_equiv (Equiv.mulLeft σ) _ _ fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem sym_comp (X : Fin d → Matrix (Fin n) (Fin n) ℂ) (σ : Equiv.Perm (Fin d)) : sym (X ∘ σ) = sym X :=
   Fintype.sum_equiv (Equiv.mulLeft σ) _ _ fun _ => rfl
 
 /- English proof (translation)
-Simplify using `only [sym, Finset.sum_mul, Finset.mul_sum, tens_mul]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun π _ => Fintype.sum_equiv π _ _ fun p => ?_` and prove the remaining obligations. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `q`. Distinguish the cases in `h : q = p`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `: π q ≠ π p` using `fun e => h (π.injective e)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h, this]`.
+A detailed English derivation is pending.
 -/
 theorem sym_mul (X : Fin d → Matrix (Fin n) (Fin n) ℂ) (Y : Matrix (Fin n) (Fin n) ℂ) :
     sym X * ∑ p : Fin d, tens (Pi.mulSingle p Y) = ∑ i : Fin d, sym (X * Pi.mulSingle i Y) := by
@@ -92,23 +92,21 @@ theorem sym_mul (X : Fin d → Matrix (Fin n) (Fin n) ℂ) (Y : Matrix (Fin n) (
     simp [h, this]
 
 /- English proof (translation)
-Use `set A := Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => polar n d p.1 p.2)`. It suffices to establish `H : ∀ s : Finset (Fin d), ∀ X : Fin d → Matrix (Fin n) (Fin n) ℂ, (∀ i ∉ s, X i = 1) → sym X ∈ A from H Finset.univ X (by simp)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X hX`. Take `rfl : X = 1` from `funext fun i => hX i (by simp)`. Use `A.sum_mem fun π _ => ?_` and prove the remaining obligations. Rewrite using `[show (1 : Fin d → Matrix (Fin n) (Fin n) ℂ) ∘ π = 1 from rfl, tens_one]`. Conclude with `A.one_mem`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `insert j s hj ih`. Introduce `X hX`. Use `set Z := Function.update X j 1 with hZ`. Establish `hZ1 : ∀ i ∉ s, Z i = 1` using `fun i hi => by`. Distinguish the cases in `h : i = j`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Simplify using `[hZ]`. Rewrite using `[hZ, Function.update_of_ne h]; exact hX i (by simp [h, hi])`. Establish `hP : ∑ p : Fin d, tens (Pi.mulSingle p (X j)) ∈ A`. Rewrite using `[sum_tens_single]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `A.sum_mem fun a _ => A.sum_mem fun b _ => A.smul_mem (Algebra.subset_adjoin ⟨(a, b), rfl⟩) _`. Establish `h1` using `A.mul_mem (ih Z hZ1) hP`. Rewrite `h1` using `[sym_mul, ← Finset.sum_add_sum_compl s]`. Establish `h2 : ∑ i ∈ s, sym (Z * Pi.mulSingle i (X j)) ∈ A` using `A.sum_mem fun i hi => ih _ fun k hk => by`. Establish `: k ≠ i` using `fun e => hk (e ▸ hi)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hZ1 k hk, this]`. Establish `h3` using `A.sub_mem h1 h2`. Establish `h4 : ∀ i ∈ sᶜ, sym (Z * Pi.mulSingle i (X j)) = sym X` using `fun i hi => by`. Establish `hi : i ∉ s` using `by simpa using hi`. Rewrite using `[← sym_comp X (Equiv.swap i j)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Simplify using `[hZ1 k hi]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hkj : k = j`. Substitute `hkj` using the available equality. Simplify using `[hZ, hki, hX i (by simp [hi, Ne.symm hki])]`. Simplify using `[hZ, hki, hkj, Equiv.swap_apply_of_ne_of_ne hki hkj]`. Rewrite `h3` using `[add_sub_cancel_left, Finset.sum_congr rfl h4, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ]`.
-
-Establish `h5 : ((sᶜ.card : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 ⟨j, by simpa using hj⟩)`. Use `A.smul_mem h3 ((sᶜ.card : ℕ) : ℂ)⁻¹` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ h5, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sym_mem (X : Fin d → Matrix (Fin n) (Fin n) ℂ) :
     sym X ∈ Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => polar n d p.1 p.2) := by
@@ -156,7 +154,7 @@ theorem sym_mem (X : Fin d → Matrix (Fin n) (Fin n) ℂ) :
     rwa [smul_smul, inv_mul_cancel₀ h5, one_smul] at this
 
 /- English proof (translation)
-Simplify using `only [tens, Matrix.of_apply, Function.comp_apply, Matrix.single_apply]`. Rewrite using `[Finset.prod_ite_zero, ← ite_and]`. Simplify using `only [Finset.mem_univ, forall_const, Finset.prod_const_one, forall_and, funext_iff, Function.comp_apply]`. Apply the tactic sequence `refine if_congr (and_congr ?_ ?_) rfl rfl <;>`. Conclude with `⟨fun h q => by simpa using h (π.symm q), fun h q => by simpa using h (π q)⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 -/
 theorem tens_unit_apply (I K I' K' : Fin d → Fin n) (π : Equiv.Perm (Fin d)) :
     tens ((fun p => Matrix.single (I p) (K p) (1 : ℂ)) ∘ π) I' K' =
@@ -168,11 +166,11 @@ theorem tens_unit_apply (I K I' K' : Fin d → Fin n) (π : Equiv.Perm (Fin d)) 
   exact ⟨fun h q => by simpa using h (π.symm q), fun h q => by simpa using h (π q)⟩
 
 /- English proof (translation)
-Use `set A := Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => polar n d p.1 p.2)`. Establish `h1 : ∀ (π : Equiv.Perm (Fin d)) I K, T (I ∘ π) (K ∘ π) = T I K` using `fun π I K => by`. Use `congrFun (congrFun (hT π) (I ∘ π)) K` as an intermediate fact. Simplify using `only [Matrix.mul_apply, permMat, Matrix.of_apply, mul_ite, ite_mul, mul_one, mul_zero, one_mul, zero_mul, π.surjective.injective_comp_right.eq_iff] at this`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : ∑ I, ∑ K, T I K • sym (fun p => Matrix.single (I p) (K p) (1 : ℂ)) = ((d.factorial : ℕ) : ℂ) • T`. Use extensionality with `I' K'`. Simplify using `only [sym, Matrix.sum_apply, Matrix.smul_apply, tens_unit_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_congr rfl fun a _ => Finset.sum_comm, Finset.sum_comm]`. Simplify using `[h1, Fintype.card_perm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3 : ((d.factorial : ℕ) : ℂ) • T ∈ A` using `h2 ▸ A.sum_mem fun I _ => A.sum_mem fun K _ => A.smul_mem (sym_mem _) _`. Establish `h5 : ((d.factorial : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 d.factorial_ne_zero`. Use `A.smul_mem h3 ((d.factorial : ℕ) : ℂ)⁻¹` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ h5, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_adjoin_polar (n d : ℕ) (T : Matrix (Fin d → Fin n) (Fin d → Fin n) ℂ)
     (hT : ∀ π, T * permMat n d π = permMat n d π * T) :

@@ -15,17 +15,17 @@ variable {LL : Type} [Field LL] {O : Type} [CommRing O] [Algebra O LL]
   {W : Type} [AddCommGroup W] [Module LL W] [Module O W] [IsScalarTower O LL W]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `i`. Distinguish the cases in `h : j = i`. Substitute `h; exact ⟨1, by simp⟩` using the available equality. Conclude with `⟨0, by simp [Finsupp.single_apply, h]⟩`. Consider the case `zero => intro i; exact ⟨0, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x z _ _ hx hz`. Introduce `i`. Take `⟨a, ha⟩` from `hx i`. Take `⟨c, hc⟩` from `hz i`. Conclude with `⟨a + c, by simp [ha, hc]⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul a x _ hx`. Introduce `i`. Take `⟨c, hc⟩` from `hx i`. Use `⟨a * c, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul LL a x, map_smul, Finsupp.smul_apply, ← hc, map_mul, smul_eq_mul]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite using `[← b.sum_repr y]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `h i`. Rewrite using `[← ha, algebraMap_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_basis {ι : Type} [Fintype ι] (b : Basis ι LL W) (y : W) :
     y ∈ Submodule.span O (Set.range b) ↔ ∀ i, b.repr y i ∈ Set.range (algebraMap O LL) := by
@@ -68,39 +68,37 @@ variable {LL : Type} [Field LL] {O : Type} [CommRing O] [IsDomain O] [Algebra O 
   [FiniteDimensional LL V']
 
 /- English proof (translation)
-Use `haveI : Module.Finite O T := Module.Finite.iff_fg.2 hfg`. Set `bT` to `Module.Free.chooseBasis O T`. Set `ι` to `Module.Free.ChooseBasisIndex O T`. Use `haveI : Fintype ι := Module.Free.ChooseBasisIndex.fintype O T`. Set `e : ι → V` to `fun i => (bT i : V)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent O e` using `bT.linearIndependent.map' T.subtype (Submodule.ker_subtype T)`. Establish `hliL : LinearIndependent LL e` using `(LinearIndependent.iff_fractionRing O LL).1 hli`. Establish `hTe : T = Submodule.span O (Set.range e)`. Establish `h` using `congrArg (Submodule.map T.subtype) bT.span_eq`. Rewrite `h` using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.symm`. Establish `hsp : ⊤ ≤ Submodule.span LL (Set.range e)`. Rewrite using `[← hspan, Submodule.span_le]`. Introduce `x hx`. Rewrite `hx` using `[SetLike.mem_coe, hTe]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Submodule.span_le_restrictScalars O LL (Set.range e) hx` as an intermediate fact. Conclude with `this`. Set `bV : Basis ι LL V` to `Basis.mk hliL hsp`. Establish `hbV : ∀ i, bV i = e i` using `fun i => Basis.mk_apply hliL hsp i`. Establish `hinj : Function.Injective P.flip`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Conclude with `hr y fun x => by simpa using congrArg (fun f => f x) hy`. Set `φ : V' ≃ₗ[LL] Dual LL V` to `LinearMap.linearEquivOfInjective P.flip hinj (by rw [Subspace.dual_finrank_eq, hd])`. Set `bb : Basis ι LL V'` to `bV.dualBasis.map φ.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hflip : ∀ j x, P x (bb j) = bV.repr x j`. Introduce `j x`. Establish `h1 : φ (bb j) = bV.coord j` using `by simp [bb]`. Establish `h2 : φ (bb j) x = P x (bb j)` using `rfl`. Rewrite using `[← h2, h1]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `hcoord : ∀ i y, P (e i) y = bb.repr y i`. Introduce `i y`. Establish `: (P (e i)) = bb.coord i`. Use `bb.ext fun j => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hflip, ← hbV]`. Simplify using `[Finsupp.single_apply, eq_comm]`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hTV : T = Submodule.span O (Set.range bV)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hTe]`. Use `congr 2`. Use extensionality with `x`. Simplify using `[hbV]`. Establish `hpair : ∀ x ∈ T, ∀ y ∈ Submodule.span O (Set.range bb), ∃ a : O, P x y = algebraMap O LL a`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`. Rewrite using `[hflip]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Rewrite `hx` using `[hTV]`. Take `⟨a, ha⟩` from `(mem_span_basis bV x).1 hx j`. Conclude with `⟨a, ha.symm⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hy`. Take `⟨c, hc⟩` from `hz`. Conclude with `⟨a + c, by simp [ha, hc]⟩`. Consider the case `smul a y _ hy`. Take `⟨c, hc⟩` from `hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a * c, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul LL a y, map_smul, hc, map_mul, smul_eq_mul]`. Use `⟨Submodule.span O (Set.range bb), Submodule.fg_span (Set.finite_range _), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hl : LinearIndependent O bb` using `(LinearIndependent.iff_fractionRing O LL).2 bb.linearIndependent`. Conclude with `Module.Free.of_basis (Basis.span hl)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `top_le_iff.1 ?_` and prove the remaining obligations. Rewrite using `[← bb.span_eq]`. Conclude with `Submodule.span_mono (Submodule.subset_span)`. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hy x hx`. Conclude with `hpair x hx y hy`. Introduce `h`. Use `(mem_span_basis bb y).2 fun i => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `h (e i) (by rw [hTe]; exact Submodule.subset_span ⟨i, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, by rw [← hcoord, ha]⟩`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Conclude with `hpair x hx y hy`.
-
-Introduce `h`. Rewrite using `[hTV]`. Use `(mem_span_basis bV x).2 fun j => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `h (bb j) (Submodule.subset_span ⟨j, rfl⟩)`. Conclude with `⟨a, by rw [← hflip, ha]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dual (T : Submodule O V) (hfg : T.FG) (hfree : Module.Free O T)
     (hspan : Submodule.span LL (T : Set V) = ⊤) (P : V →ₗ[LL] V' →ₗ[LL] LL)
@@ -205,39 +203,33 @@ variable {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G]
   [FiniteDimensional LL V] [TopologicalSpace V] [IsModuleTopology LL V]
 
 /- English proof (translation)
-Set `b : Basis (Fin (finrank LL V)) LL V` to `Module.finBasis LL V`. Establish `hinj : Function.Injective (algebraMap O LL)` using `IsFractionRing.injective O LL`. Establish `hc : ∀ i j, Continuous fun g => b.repr (ρ g (b i)) j`. Introduce `i j`. Establish `hl : Continuous (b.coord j)` using `IsModuleTopology.continuous_of_linearMap (b.coord j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hl.comp (cont (b i))`. Set `Wa : nonZeroDivisors O → Set G` to `fun a => {g | ∀ i j, algebraMap O LL a * b.repr (ρ g (b i)) j ∈ Set.range (algebraMap O LL)}`. Establish `hWo : ∀ a, IsOpen (Wa a)`. Introduce `a`. Establish `h : Wa a = ⋂ i, ⋂ j, (fun g => algebraMap O LL a * b.repr (ρ g (b i)) j) ⁻¹' Set.range (algebraMap O LL)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `g`. Simplify using `only [Wa, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage]`. Rewrite using `[h]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hO.preimage (continuous_const.mul (hc i j))`. Establish `hcov : (Set.univ : Set G) ⊆ ⋃ a, Wa a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g _`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors O) (Finset.univ : Finset (Fin (finrank LL V) × Fin (finrank LL V))) (fun p => b.repr (ρ g (b p.1)) p.2)`. Use `Set.mem_iUnion.2 ⟨d, fun i j => ?_⟩` and prove the remaining obligations. Take `⟨c, hc'⟩` from `hd (i, j) (Finset.mem_univ _)`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hc']`. Conclude with `Algebra.smul_def (d : O) _`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover Wa hWo hcov`. Set `a : O` to `∏ s ∈ t, (s : O)`. Establish `ha0 : a ≠ 0` using `Finset.prod_ne_zero_iff.2 fun s _ => nonZeroDivisors.ne_zero s.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hbound : ∀ g i j, algebraMap O LL a * b.repr (ρ g (b i)) j ∈ Set.range (algebraMap O LL)`. Introduce `g i j`. Take `⟨s, hs, hg⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ g))`. Take `⟨c, hc'⟩` from `hg i j`. Take `⟨q, hq⟩` from `Finset.dvd_prod_of_mem (fun s : nonZeroDivisors O => (s : O)) hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hq' : a = (s : O) * q` using `hq`. Use `⟨q * c, ?_⟩` and prove the remaining obligations. Rewrite using `[hq', map_mul, map_mul, hc']`. Expand and normalize the polynomial expressions, which then agree. Set `T0 : Submodule O V` to `Submodule.span O (Set.range b)`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `T : Submodule O V` to `Submodule.span O (Set.range fun p : G × Fin (finrank LL V) => ρ p.1 (b p.2))`. Establish `hTa : ∀ x ∈ T, a • x ∈ T0`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨g, i⟩, rfl⟩` from `hx`. Use `(mem_span_basis b _).2 fun j => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul LL a, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `hbound g i j`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Consider the case `add x z _ _ hx hz => rw [smul_add]`. Conclude with `T0.add_mem hx hz`. Consider the case `smul c x _ hx => rw [smul_comm]`. Conclude with `T0.smul_mem c hx`. Set `φ : T →ₗ[O] T0` to `(a • (LinearMap.id : V →ₗ[O] V)).restrict hTa`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hφ : Function.Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `h1 : a • (x : V) = 0` using `congrArg Subtype.val hx`. Rewrite `h1` using `[← algebraMap_smul LL a, smul_eq_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Break down `h1 with h1 | h1` into its components or cases. Conclude with `absurd ((map_eq_zero_iff _ hinj).1 h1) ha0`. Conclude with `Subtype.ext h1`. Establish `hl0 : LinearIndependent O b` using `(LinearIndependent.iff_fractionRing O LL).2 b.linearIndependent`. Use `haveI : Module.Free O T0 := Module.Free.of_basis (Basis.span hl0)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Use `haveI : Module.Finite O T0 := Module.Finite.span_of_finite O (Set.finite_range _)`. Use `haveI : Module.Finite O T := Module.Finite.of_injective φ hφ`. Use `haveI : Module.Free O (LinearMap.range φ) := Module.free_of_finite_type_torsion_free'`. Use `⟨{ T := T, stable := ?_, fg := Module.Finite.iff_fg.1 inferInstance, free := Module.Free.of_equiv (LinearEquiv.ofInjective φ hφ).symm, span := ?_ }⟩` and prove the remaining obligations. Introduce `h x hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨g, i⟩, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨(h * g, i), ?_⟩` and prove the remaining obligations. Simplify using `[map_mul, Module.End.mul_apply]`.
-
-Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [map_add]`. Conclude with `T.add_mem hx hz`. Consider the case `smul c x _ hx`. Rewrite using `[LinearMap.map_smul_of_tower]`.
-
-Conclude with `T.smul_mem c hx`. Use `top_le_iff.1 ?_` and prove the remaining obligations. Rewrite using `[← b.span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
-
-Conclude with `Submodule.subset_span ⟨(1, i), by simp⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_stable (hO : IsOpen (Set.range (algebraMap O LL)))
     (ρ : Representation LL G V) (cont : ∀ x, Continuous fun g => ρ g x) :
@@ -333,9 +325,9 @@ theorem exists_stable (hO : IsOpen (Set.range (algebraMap O LL)))
 end Stable
 
 /- English proof (translation)
-Take `⟨χ, hχ, -, -⟩` from `GlobalTheory.Cyc.exists_integral_cyclotomicChar l (D.loc l)`. Take `⟨⟨hdom, hdvr, -⟩, -⟩` from `id hG`. Use `haveI := hdom`. Use `haveI := hdvr`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `(GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hG ϖ hϖ).2.2.2.2.2 ((χ (g : GQ l) : ℤ_[l]ˣ) : ℤ_[l])`. Rewrite `h` using `[hχ, ← (D.loc l).PD_χ K g]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem cyc_mem (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL : Type) [Field LL]
     [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL]
@@ -351,25 +343,21 @@ theorem cyc_mem (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL : Type) [Fi
   exact h
 
 /- English proof (translation)
-Introduce `D l _ K`. Use `haveI : CompactSpace ↥(GK K) := by haveI := K.2`. Conclude with `isCompact_iff_compactSpace.1 (InfiniteGalois.fixingSubgroup_isClosed K.1).isCompact`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `LL _ _ _ O _ _ hG`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hχ` using `cyc_mem D l K LL O hG`. Take `⟨⟨hdom, hdvr, hfr⟩, -⟩` from `hG`. Use `haveI := hdom`. Use `haveI := hdvr`. Use `haveI := hfr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinj : Function.Injective (algebraMap O LL)` using `IsFractionRing.injective O LL`. Use `⟨{ T := LinearMap.range (Algebra.linearMap O LL), stable := ?_, fg := ?_, free := Module.Free.of_equiv (LinearEquiv.ofInjective (Algebra.linearMap O LL) hinj), span := ?_ }, rfl⟩` and prove the remaining obligations. Introduce and unpack `g _ ⟨a, rfl⟩`. Take `⟨c, hc⟩` from `hχ g`. Use `⟨c * a, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `algebraMap O LL (c * a) = ((cycLL ((D.loc l).PD K) LL g : LLˣ) : LL) • algebraMap O LL a`. Rewrite using `[map_mul, hc, smul_eq_mul]`. Rewrite using `[← Submodule.map_top]`. Conclude with `Module.Finite.fg_top.map _`. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `x _`. Establish `h : (1 : LL) ∈ Submodule.span LL (LinearMap.range (Algebra.linearMap O LL) : Set LL)` using `Submodule.subset_span ⟨1, by simp⟩`. Simplify using `using Submodule.smul_mem _ x h`. Introduce `LL _ _ _ O _ _ hG A A' P hP`. Establish `hχ` using `cyc_mem D l K LL O hG`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨hdom, hdvr, hfr⟩, -, -, htr, hop⟩` from `hG`. Use `haveI := hdom`. Use `haveI := hdvr`. Use `haveI := hfr`. Use `haveI := htr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨LA⟩` from `exists_stable (O := O) hop A.ρ A.cont`. Take `⟨T', hfg, hfree, hspan, h1, h2⟩` from `exists_dual LA.T LA.fg LA.free LA.span P hP.2.2.1 hP.2.2.2`. Establish `hst : ∀ g, ∀ y ∈ T', A'.ρ g y ∈ T'`. Introduce `g y hy`. Use `(h1 _).2 fun x hx => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `(h1 y).1 hy (A.ρ g⁻¹ x) (LA.stable _ _ hx)`. Take `⟨c, hc⟩` from `hχ g`. Use `⟨c * a, ?_⟩` and prove the remaining obligations. Establish `h3` using `hP.1 g (A.ρ g⁻¹ x) y`. Establish `h4 : A.ρ g (A.ρ g⁻¹ x) = x`.
-
-Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite `h3` using `[h4, ha, ← hc]`. Rewrite using `[h3, map_mul]`. Use `⟨LA, { T := T', stable := hst, fg := hfg, free := hfree, span := hspan }, ⟨hP, h1⟩, ⟨fun g x y => hP.1 g y x, hP.2.2.1, hP.2.1, hP.2.2.2.symm⟩, ?_⟩` and prove the remaining obligations.
-
-Introduce `x`. Conclude with `h2 x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dual_lattices_exist : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), cycIntCore ((D.loc l).PD K) ∧ ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (P : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDual1 ((D.loc l).PD K) A.ρ A'.ρ P → ∃ (LA : Lattice (O := O) A.ρ) (LA' : Lattice (O := O) A'.ρ), IsDualLat1 ((D.loc l).PD K) LA LA' P ∧ IsDualLat1 ((D.loc l).PD K) LA' LA P.flip := by
   intro D l _ K

@@ -17,13 +17,11 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E
   [IsFiniteMeasureOnCompacts μ]
 
 /- English proof (translation)
-Use `set S := (finite_image_mk_tsupport K hf).toFinset with hS`. Establish `hmeas : ∀ g : G, MeasurableSet (g • (K : Set G))` using `fun g => (K.isOpen.smul g).measurableSet`. Establish `hfin : ∀ g : G, μ (g • (K : Set G)) ≠ ∞` using `fun g => (hKc.smul g).measure_lt_top.ne`. Establish `hvol : ∀ g : G, μ.real (g • (K : Set G)) = μ.real (K : Set G)` using `fun g => by`. Simplify using `[Measure.real, measure_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdec` using `eq_sum_indicator_coset K hf hK`. Rewrite using `[finsum_eq_sum_of_support_subset (s := S)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[congrFun hdec g, Finset.sum_apply])`. Use `_ = ∑ x ∈ S, ∫ g, (x.out • (K : Set G)).indicator (fun _ => f x.out) g ∂μ := integral_finsetSum _ fun x _ => (integrable_indicator_iff (hmeas _)).2 (integrableOn_const (hfin _))`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = μ.real (K : Set G) • ∑ x ∈ S, f x.out := by`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ (hmeas _), hvol]`. Introduce `x hx`.
-
-Rewrite using `[hS, Set.Finite.coe_toFinset]`. Conclude with `⟨x.out, subset_tsupport f hx, QuotientGroup.out_eq' x⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem integral_eq_smul_finsum_coset (K : OpenSubgroup G) (hKc : IsCompact (K : Set G))
     {f : G → E} (hf : HasCompactSupport f) (hK : ∀ g, ∀ k ∈ K, f (g * k) = f g) :

@@ -6,7 +6,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.LocLang
 open GroundTheory.Global.SemiLocal UpperTheory.V.Published
 
 /- English proof (translation)
-Introduce `_ hW K _ _ _ n hn π`. Take `⟨t, ht⟩` from `hW K n hn π`. Use `⟨t, fun v h => ?_⟩` and prove the remaining obligations. Establish `e` using `(UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.plainIff K n hn π v).1 h`. Conclude with `ht v e.1 e.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Win.winPt :
     Z.Gam.SuppFacts → ImaginaryQuadraticEtaCharacter.WinOf → WinPt := by

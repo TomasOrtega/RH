@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.GenFiniteComp
 
 /- English proof (translation)
-Use `(genericPoint_spec X).image f.continuous` as an intermediate fact. Rewrite `this` using `[Set.image_univ, f.denseRange.closure_range]`. Conclude with `this.eq (genericPoint_spec Y)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_genericPoint {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (f : X ⟶ Y)
     [IsDominant f] : f (genericPoint X) = genericPoint Y := by
@@ -24,7 +24,7 @@ theorem apply_genericPoint {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (f :
   exact this.eq (genericPoint_spec Y)
 
 /- English proof (translation)
-Rewrite using `[apply_genericPoint f]`. Conclude with `Field.toIsField Y.functionField`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isField_stalk_apply {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (f : X ⟶ Y)
     [IsDominant f] : IsField (Y.presheaf.stalk (f (genericPoint X))) := by
@@ -32,9 +32,9 @@ theorem isField_stalk_apply {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (f 
   exact Field.toIsField Y.functionField
 
 /- English proof (translation)
-Use `letI := hA.toField`. Use `letI := hB.toField`. Use `letI := f.hom.toAlgebra`. Use `letI := g.hom.toAlgebra`. Use `letI := (f ≫ g).hom.toAlgebra`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : IsScalarTower A B C := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Conclude with `(Module.finrank_mul_finrank A B C).symm`.
+A detailed English derivation is pending.
 -/
 theorem finrank_comp {A B C : CommRingCat.{0}} (f : A ⟶ B) (g : B ⟶ C) (hA : IsField A)
     (hB : IsField B) :
@@ -49,13 +49,13 @@ theorem finrank_comp {A B C : CommRingCat.{0}} (f : A ⟶ B) (g : B ⟶ C) (hA :
   exact (Module.finrank_mul_finrank A B C).symm
 
 /- English proof (translation)
-Introduce `T'' T' T _ _ _ ρ' ρ d' d h' h`. Use `h'.isDominant` as an intermediate fact. Use `h.isDominant` as an intermediate fact. Use `⟨inferInstance, Nat.mul_pos h'.pos h.pos, ?_⟩` and prove the remaining obligations. Establish `e'` using `h'.finrank_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `h.finrank_eq`. Establish `hF₁ : IsField (T.presheaf.stalk (ρ (ρ' (genericPoint T''))))`. Rewrite using `[apply_genericPoint ρ']`. Conclude with `isField_stalk_apply ρ`. Establish `key` using `finrank_comp (ρ.stalkMap (ρ' (genericPoint T''))) (ρ'.stalkMap (genericPoint T'')) hF₁ (isField_stalk_apply ρ')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.stalkMap_comp]`. Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[e', mul_comm]`. Use `congr 1`. Rewrite using `[← e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[apply_genericPoint ρ']`.
+A detailed English derivation is pending.
 -/
 theorem isGenFinite_comp : ∀ (T'' T' T : Scheme.{0}) [IsIntegral T''] [IsIntegral T'] [IsIntegral T] (ρ' : T'' ⟶ T') (ρ : T' ⟶ T) (d' d : ℕ), IsGenFinite ρ' d' → IsGenFinite ρ d → IsGenFinite (ρ' ≫ ρ) (d' * d) := by
   intro T'' T' T _ _ _ ρ' ρ d' d h' h

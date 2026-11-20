@@ -11,7 +11,7 @@ namespace CrystallineSemistableComparison.E
 open CH GlobalTheory.EtC
 
 /- English proof (translation)
-Use `⟨by rw [map_smul, hz, smul_zero], ?_⟩` and prove the remaining obligations. Conclude with `((((Mor.restrict F G).pull 2).map_smul t y).trans (congrArg (t • ·) h)).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pull_smul_cls {R' : Type} [CommRing R'] {C C' : Type 1} [Category.{0} C] [Category.{0} C']
     {F : C ⥤ ModuleCat.{0} R'} (G : C' ⥤ C) (t : R') (y : CH.H F 2)
@@ -21,7 +21,7 @@ theorem pull_smul_cls {R' : Type} [CommRing R'] {C C' : Type 1} [Category.{0} C]
   exact ((((Mor.restrict F G).pull 2).map_smul t y).trans (congrArg (t • ·) h)).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [m.d_pullC, hz, map_zero], rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem pull_cls {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C C' : Type 1} [Category.{0} C] [Category.{0} C']
     {L : C ⥤ ModuleCat.{0} R} {F : C' ⥤ ModuleCat.{0} R'} (m : Mor L F σ) (z : Cn L 2) (hz : d L 2 z = 0) :
@@ -29,7 +29,7 @@ theorem pull_cls {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C C
   ⟨by rw [m.d_pullC, hz, map_zero], rfl⟩
 
 /- English proof (translation)
-Substitute `ha` using the available equality. Conclude with `pull_cls m z hz`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem pull_cls' {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C D T P : Type 1} [Category.{0} C] [Category.{0} D]
     [Category.{0} T] [Category.{0} P] (G : C ⥤ D) (π : D ⥤ T) (ι : T ⥤ P) (A : P ⥤ CommAlgCat.{0} R')
@@ -41,7 +41,7 @@ theorem pull_cls' {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C 
   exact pull_cls m z hz
 
 /- English proof (translation)
-Establish `h : IsUnit (l : PadicAlgCl l)` using `isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Use `h.map (((pullback.snd _ _ : gb M ⟶ Spec (CommRingCat.of (PadicAlgCl l))).appTop.hom).comp (toΓ _))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_gb {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (M : Model l K) : IsUnit (l : Γ(gb M, ⊤)) := by
   have h : IsUnit (l : PadicAlgCl l) := isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)
@@ -51,7 +51,7 @@ theorem isUnit_gb {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (Padic
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {C : Type 1} [Category.{0} C]
 
 /- English proof (translation)
-The claim follows from `pull_cls' G (CategoryOfElements.π _) (testι l) (AcrA l n) (lcMor hN H r (G ⋙ CategoryOfElements.π _) n) z hz _ he`.
+A detailed English derivation is pending.
 -/
 theorem eG_cls (hN : LcNat) (H : RIn l) (r : Roots l) (M : Model l K) (G : C ⥤ El M.P) (n : ℕ)
     (x : Ht (l ^ n) (sch.obj (gb M)) (2 : ℕ) 1) (z : Cn (probe H r (G ⋙ CategoryOfElements.π _) n).L 2)
@@ -62,7 +62,7 @@ theorem eG_cls (hN : LcNat) (H : RIn l) (r : Roots l) (M : Model l K) (G : C ⥤
   pull_cls' G (CategoryOfElements.π _) (testι l) (AcrA l n) (lcMor hN H r (G ⋙ CategoryOfElements.π _) n) z hz _ he
 
 /- English proof (translation)
-The claim follows from `pull_smul_cls G _ _ z hz h`.
+A detailed English derivation is pending.
 -/
 theorem tCo_cls (M : Model l K) (G : C ⥤ El M.P) (n : ℕ) (e : EtFam l K) (v : Hl l (sch.obj (gb M)) (2 : ℕ) 0)
     (z : Cn (G ⋙ modF (AcrEl M.P n)) 2) (hz : d (G ⋙ modF (AcrEl M.P n)) 2 z = 0)
@@ -72,7 +72,7 @@ theorem tCo_cls (M : Model l K) (G : C ⥤ El M.P) (n : ℕ) (e : EtFam l K) (v 
   pull_smul_cls G _ _ z hz h
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun a => (Mor.restrict (modF (AcrEl M.P n)) G).pull 2 a) hv).trans ((h6 E hN l H r K M C G n 1 2 x).trans he)`.
+A detailed English derivation is pending.
 -/
 theorem res_cls (h6 : FRes) (E : EtIn) (hN : LcNat) (H : RIn l) (r : Roots l) (M : Model l K) (G : C ⥤ El M.P) (n : ℕ)
     (x : Ht (l ^ n) (sch.obj (gb M)) (2 : ℕ) 1) (v : Ht (l ^ n) (sch.obj (gb M)) (2 : ℕ) 0)
@@ -81,7 +81,7 @@ theorem res_cls (h6 : FRes) (E : EtIn) (hN : LcNat) (H : RIn l) (r : Roots l) (M
   (congrArg (fun a => (Mor.restrict (modF (AcrEl M.P n)) G).pull 2 a) hv).trans ((h6 E hN l H r K M C G n 1 2 x).trans he)
 
 /- English proof (translation)
-Introduce `C _ G Λ n` and use `(h C G Λ n).elim fun z a => a.2.elim fun hz b => Exists.intro z (Exists.intro hz (And.intro a.1 b))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isFirstChern_of_cocycle {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* OC l} {D : LineData X}
     {y : ∀ n, MH (PX q κ) n 2}
@@ -92,7 +92,7 @@ theorem isFirstChern_of_cocycle {O : Type} [CommRing O] {X : Scheme.{0}} {q : X 
   (h C G Λ n).elim fun z a => a.2.elim fun hz b => Exists.intro z (Exists.intro hz (And.intro a.1 b))
 
 /- English proof (translation)
-Establish `: NeZero (l ^ n)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Conclude with `(h5 hN l H r K M D D' π hD C G Λ n).elim fun z a => a.1.elim fun k => (h4 E.gen E.kum E.c1 (l ^ n) C _ (gb M) (pts H r M G n) D' L hL hI x hx z k).elim fun hz he => Exists.intro (lcCo hN H r G n 2 z) (And.intro a.2 (eG_cls hN H r M G n x z hz he))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem step (h4 : EtaleFirstChernKummer) (h5 : FKum) (h6 : FRes) (E : EtIn) (hN : LcNat) (H : RIn l) (r : Roots l) (M : Model l K)
     (D : LineData M.X) (D' : LineData (gb M)) (π : D'.Y ⟶ D.Y)
@@ -107,7 +107,7 @@ theorem step (h4 : EtaleFirstChernKummer) (h5 : FKum) (h6 : FRes) (E : EtIn) (hN
       Exists.intro (lcCo hN H r G n 2 z) (And.intro a.2 (eG_cls hN H r M G n x z hz he))
 
 /- English proof (translation)
-Introduce `E hN l _ H r K M D` and use `(h1 (gb M) M.X (pullback.fst _ _ ≫ pullback.fst _ _) D).elim fun D' a => a.elim fun π hD => (h2 _ D').elim fun L hL => have b := @h3 E.a2 E.a11 l _ D'.Y (gb M) D'.f D'.sm D'.surj (isUnit_gb M) L b.2.elim fun x hx => (h7 E hN l H r K M x).elim fun v hv => Exists.intro v (isFirstCh …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem firstChern_family_of_lifts (h1 : LineBC) (h2 : LineMap) (h3 : FirstChernCompatibleSystem) (h4 : EtaleFirstChernKummer) (h5 : FKum) (h6 : FRes) (h7 : FUntw) : FirstChernClassFamily :=
   fun E hN l _ H r K M D => (h1 (gb M) M.X (pullback.fst _ _ ≫ pullback.fst _ _) D).elim fun D' a => a.elim fun π hD =>

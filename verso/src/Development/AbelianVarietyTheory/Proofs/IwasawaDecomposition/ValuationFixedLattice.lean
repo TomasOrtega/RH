@@ -10,7 +10,7 @@ namespace GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Break down `w with ⟨px, I, ok, C_eq, S_eq, xi_range, pins, l, l0, δ, exact, fld, val⟩` into its components or cases. Substitute `C_eq` using the available equality. Conclude with `val _ _ _ _ _ _`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem valLL0_colW {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (Z : w.Lt) :
     ValLL0 (w.D Z) (TC.cf w.I w.l Z) := by
@@ -19,7 +19,7 @@ theorem valLL0_colW {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (
   exact val _ _ _ _ _ _
 
 /- English proof (translation)
-Introduce `_`. Use `StepW.of_all fun K B f T w _ _ _ P x => ?_` and prove the remaining obligations. Conclude with `valLL0_colW w x.o.Z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem valLL0_allSt : PrN → AllSt fun _ _ _ _ _ _ x => ValLL0 (Dof x) (cfOf x) := by
   intro _

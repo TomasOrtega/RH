@@ -41,30 +41,30 @@ section Facts
 variable {sc T T' : ℝ} {c : Fin (r + 1) → ℂ}
 
 /- English proof (translation)
-Simplify using `only [sfv, map_inv₀, map_pow, Complex.conj_ofReal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_sfv (sc : ℝ) (b : Fin r) : conj (sfv sc b) = sfv sc b := by
   simp only [sfv, map_inv₀, map_pow, Complex.conj_ofReal]
 
 /- English proof (translation)
-The claim follows from `inv_ne_zero (pow_ne_zero _ (by exact_mod_cast hsc.ne'))`.
+A detailed English derivation is pending.
 -/
 theorem sfv_ne (hsc : 0 < sc) (b : Fin r) : sfv sc b ≠ 0 :=
   inv_ne_zero (pow_ne_zero _ (by exact_mod_cast hsc.ne'))
 
 /- English proof (translation)
-The claim follows from `div_ne_zero (hc _) (mul_ne_zero (sfv_ne hsc b) (sfv_ne hsc b))`.
+A detailed English derivation is pending.
 -/
 theorem lamv_ne (hsc : 0 < sc) (hc : ∀ l, c l ≠ 0) (b : Fin r) : lamv sc c b ≠ 0 :=
   div_ne_zero (hc _) (mul_ne_zero (sfv_ne hsc b) (sfv_ne hsc b))
 
 /- English proof (translation)
-The claim follows from `Complex.conj_ofReal _`.
+A detailed English derivation is pending.
 -/
 theorem conj_bev (T T' : ℝ) (c : Fin (r + 1) → ℂ) : conj (bev T T' c) = bev T T' c := Complex.conj_ofReal _
 
 /- English proof (translation)
-Establish `hq0 : 0 ≤ ‖c (Fin.last r)‖ ^ 2 / T - T'`. Rewrite using `[div_sub' hT.ne']`. Conclude with `div_nonneg (by nlinarith) hT.le`. Rewrite using `[conj_bev, bev, ← Complex.ofReal_mul, Real.mul_self_sqrt hq0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bev_sq (hT : 0 < T) (hg : 0 < ‖c (Fin.last r)‖ ^ 2 - T * T') :
     conj (bev T T' c) * bev T T' c = ((‖c (Fin.last r)‖ ^ 2 / T - T' : ℝ) : ℂ) := by
@@ -74,7 +74,7 @@ theorem bev_sq (hT : 0 < T) (hg : 0 < ‖c (Fin.last r)‖ ^ 2 - T * T') :
   rw [conj_bev, bev, ← Complex.ofReal_mul, Real.mul_self_sqrt hq0]
 
 /- English proof (translation)
-Rewrite using `[mul_comm, alv, map_div₀, map_neg, Complex.conj_ofReal, neg_div, neg_div, neg_mul_neg, div_mul_div_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem alv_sq (T : ℝ) (c : Fin (r + 1) → ℂ) :
     conj (alv T c) * alv T c = ((‖c (Fin.last r)‖ ^ 2 / T ^ 2 : ℝ) : ℂ) := by
@@ -84,7 +84,7 @@ theorem alv_sq (T : ℝ) (c : Fin (r + 1) → ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[svv, Complex.conj_ofReal, ← Complex.ofReal_mul, ← mul_inv, Real.mul_self_sqrt (by positivity), one_div]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem svv_sq (hT : 0 < T) (hT' : 0 < T') : conj (svv T T') * svv T T' = ((1 / (T * T') : ℝ) : ℂ) := by
   rw [svv, Complex.conj_ofReal, ← Complex.ofReal_mul, ← mul_inv, Real.mul_self_sqrt (by positivity), one_div]
@@ -97,33 +97,33 @@ variable {ε : Fin n → Bool} {e f : Fin r → Fin n → ℂ} {z : Fin n → �
   {sc T T' : ℝ} {c : Fin (r + 1) → ℂ}
 
 /- English proof (translation)
-Establish `hfe : ∀ a b, hJ ε (f a) (e b) = if a = b then 1 else 0`. Introduce `a b`. Rewrite using `[hJ_swapδ F0.ep b a]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Establish `hwz : ∀ j, hJ ε (w j) z = 0` using `fun j => hJ_swap0 (F0.zw j)`. Establish `hTc : (T : ℂ) ≠ 0` using `by exact_mod_cast hT.ne'`. Establish `hT'c : (T' : ℂ) ≠ 0` using `by exact_mod_cast hT'.ne'`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlam` using `lamv_ne hsc hc`. Establish `hcb` using `conj_bev T T' c`. Establish `hβ` using `bev_sq (T' := T') hT hg`. Rewrite `hβ` using `[hcb]`. Establish `hα` using `alv_sq T c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs` using `svv_sq hT hT'`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, hT'.ne'⟩` and prove the remaining obligations. Introduce `a b`. Simplify using `only [e2, UnitaryIsometries.hJ_smul_left, UnitaryIsometries.hJ_smul_right, F0.pp, mul_zero]`. Introduce `a b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [e2, p2, UnitaryIsometries.hJ_smul_left, UnitaryIsometries.hJ_smul_right, hfe]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[mul_one, inv_mul_cancel₀ ((map_ne_zero _).2 (hlam a))]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Simplify using `only [p2, UnitaryIsometries.hJ_smul_left, UnitaryIsometries.hJ_smul_right, F0.ee, mul_zero]`. Introduce `a`. Simplify using `only [e2, z2, UnitaryIsometries.hJ_smul_left, UnitaryIsometries.hJ_add_right, UnitaryIsometries.hJ_smul_right, F0.pz, F0.pw, mul_zero, add_zero]`. Introduce `a`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [p2, z2, UnitaryIsometries.hJ_smul_left, UnitaryIsometries.hJ_add_right, UnitaryIsometries.hJ_smul_right, F0.ez, F0.ew, mul_zero, add_zero]`. Simplify using `only [z2, UnitaryIsometries.hJ_add_left, UnitaryIsometries.hJ_add_right, UnitaryIsometries.hJ_smul_left, UnitaryIsometries.hJ_smul_right, F0.zz, F0.zw, hwz, F0.ww, if_true, mul_zero, add_zero, zero_add, mul_one, hcb]`. Take the linear combination `(norm := skip) (-(T : ℂ)) * hα + hβ`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `a j`. Distinguish the cases in `hj : j = i0`. Simplify using `only [e2, w2, if_pos hj, UnitaryIsometries.hJ_smul_left, UnitaryIsometries.hJ_smul_right, UnitaryIsometries.hJ_add_right, F0.pz, F0.pw, mul_zero, add_zero]`. Simplify using `only [e2, w2, if_neg hj, UnitaryIsometries.hJ_smul_left, F0.pw, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a j`. Distinguish the cases in `hj : j = i0`. Simplify using `only [p2, w2, if_pos hj, UnitaryIsometries.hJ_smul_left, UnitaryIsometries.hJ_smul_right, UnitaryIsometries.hJ_add_right, F0.ez, F0.ew, mul_zero, add_zero]`. Simplify using `only [p2, w2, if_neg hj, UnitaryIsometries.hJ_smul_left, F0.ew, mul_zero]`. Introduce `j`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j = i0`. Simplify using `only [z2, w2, if_pos hj, UnitaryIsometries.hJ_smul_right, UnitaryIsometries.hJ_add_left, UnitaryIsometries.hJ_add_right, UnitaryIsometries.hJ_smul_left, F0.zz, F0.zw, hwz, F0.ww, if_true, mul_zero, add_zero, zero_add, mul_one, hcb]`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : i0 ≠ j` using `fun h => hj h.symm`. Simplify using `only [z2, w2, if_neg hj, UnitaryIsometries.hJ_add_left, UnitaryIsometries.hJ_smul_left, F0.zw, F0.ww, if_neg hne, mul_zero, add_zero]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Apply the tactic sequence `by_cases hi : i = i0 <;> by_cases hj : j = i0`. Substitute `hi` using the available equality. Substitute `hj` using the available equality. Simplify using `only [w2, if_true, UnitaryIsometries.hJ_smul_right, UnitaryIsometries.hJ_add_left, UnitaryIsometries.hJ_add_right, UnitaryIsometries.hJ_smul_left, F0.zz, F0.zw, hwz, F0.ww, mul_zero, add_zero, zero_add, mul_one, hcb, map_mul, Complex.conj_conj, Complex.conj_ofReal]`.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(norm := skip) ((T : ℂ) ^ 2 * (conj (alv T c) * alv T c) - (T : ℂ) * (bev T T' c * bev T T' c)) * hs + (((1 / (T * T') : ℝ) : ℂ) * (T : ℂ) ^ 2) * hα - (((1 / (T * T') : ℝ) : ℂ) * (T : ℂ)) * hβ`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Substitute `hi` using the available equality.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hne : i ≠ j` using `fun h => hj h.symm`. Simplify using `only [w2, if_true, if_neg hj, UnitaryIsometries.hJ_smul_left, UnitaryIsometries.hJ_add_left, F0.zw, F0.ww, if_neg hne, mul_zero, add_zero]`. Substitute `hj` using the available equality. Establish `hne : i ≠ j` using `hi`. Simplify using `only [w2, if_true, if_neg hi, UnitaryIsometries.hJ_smul_right, UnitaryIsometries.hJ_add_right, hwz, F0.ww, if_neg hne, mul_zero, add_zero]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [w2, if_neg hi, if_neg hj]`. Conclude with `F0.ww i j`.
+A detailed English derivation is pending.
 -/
 theorem frm2 (F0 : Frm ε e f z w T) (hT : 0 < T) (hT' : 0 < T') (hsc : 0 < sc) (hc : ∀ l, c l ≠ 0)
     (hg : 0 < ‖c (Fin.last r)‖ ^ 2 - T * T') (i0 : Fin k) :

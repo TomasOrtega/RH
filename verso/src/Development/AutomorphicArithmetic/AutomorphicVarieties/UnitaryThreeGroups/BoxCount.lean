@@ -12,9 +12,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
 /- English proof (translation)
-Introduce `x`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H c`. Use `⟨Submodule.Quotient.mk ⟨fun p => c.1 (e.symm p.1, e.symm p.2), c.2.1.comp (he'.prodMap he'), fun g g' g'' => ?_⟩, congrArg Submodule.Quotient.mk (Subtype.ext (funext fun p => ?_))⟩` and prove the remaining obligations. Use `c.2.2 (e.symm g) (e.symm g') (e.symm g'')` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, e.apply_symm_apply] at this`. Simplify using `only [map_mul]`. Conclude with `this`. Use `show c.1 (e.symm (e p.1), e.symm (e p.2)) = c.1 p`. Rewrite using `[e.symm_apply_apply, e.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem res_surj {k G H M : Type} [CommRing k] [Group G] [TopologicalSpace G] [Group H] [TopologicalSpace H]
     [AddCommGroup M] [Module k M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul k M]
@@ -33,9 +33,9 @@ private theorem res_surj {k G H M : Type} [CommRing k] [Group G] [TopologicalSpa
       rw [e.symm_apply_apply, e.symm_apply_apply]
 
 /- English proof (translation)
-Use `continuous_prod_of_discrete_right.2 fun m => IsLocallyConstant.continuous ?_` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g`. Use `⟨(fun x => g⁻¹ * x) ⁻¹' ρ.ker, h.preimage (by fun_prop), by simp, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : ρ (g⁻¹ * x) = 1` using `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show ρ x m = ρ g m`. Rewrite using `[← mul_inv_cancel_left g x, map_mul, h1, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem contAction_of_open {k G M : Type} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup M] [Module k M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation k G M)
@@ -49,7 +49,7 @@ private theorem contAction_of_open {k G M : Type} [CommRing k] [Group G] [Topolo
   rw [← mul_inv_cancel_left g x, map_mul, h1, mul_one]
 
 /- English proof (translation)
-The claim follows from `Continuous.comp h (hφ.prodMap continuous_id)`.
+A detailed English derivation is pending.
 -/
 private theorem contAction_comp {k G H M : Type} [CommRing k] [Group G] [TopologicalSpace G] [Group H]
     [TopologicalSpace H] [AddCommGroup M] [Module k M] [TopologicalSpace M] (ρ : Representation k G M)
@@ -65,25 +65,21 @@ private theorem arith {h0 h1c L1 Q1 h2 L0 h1 Q0 ob L2 Q2 d f : ℕ}
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Use `haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω`. Use `letI : TopologicalSpace M := ⊥`. Use `haveI : DiscreteTopology M := ⟨rfl⟩`. Use `haveI : IsTopologicalAddGroup M := { continuous_add := continuous_of_discreteTopology, continuous_neg := continuous_of_discreteTopology }`. Use `haveI : ContinuousConstSMul k M := ⟨fun _ => continuous_of_discreteTopology⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `letI : Algebra ℤ_[l] k := ((ZMod.castHom (dvd_refl l) k).comp PadicInt.toZMod).toAlgebra`. Establish `hπ` using `continuous_toGS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ)))`. Establish `hc` using `contAction_of_open ρ hρ`. Use `set F := unitFrame (toGS Ω _) (continuous_toGS Ω _) ι hι (fun q : {v : S // v ≠ v₀} => Dec (F := ℚ) (A q.1)) N with hF`. Take `⟨g1, g2, g3⟩` from `UpperTheory.global_euler_char_rat_of_ne_two hI.gf hI.ge Ω l k M hl S hS ρ hc σ hσ`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨l1, l2, l3, -⟩` from `Loc.tateFin hI.loc (MonoidHom.id (GQ l)) Topology.IsOpenEmbedding.id k M (ρ.comp ((toGS Ω _).comp ι)) (contAction_comp ρ hc _ (hπ.comp hι))`. Rewrite `l3` using `[if_pos rfl, MonoidHom.range_eq_top.2 Function.surjective_id, Subgroup.index_top, one_mul]`. Establish `hq : ∀ q : {v : S // v ≠ v₀}, _` using `fun q => UpperTheory.local_euler_characteristic_of_prime_not_mem hI.loc.lf hI.loc.le Ω l k M (A q) q.1.1 (hA q) (fun h => q.2 ((hv q).1 h)) (ρ.comp ((toGS Ω _).comp (Dec (F := ℚ) (A q)).subtype)) (contAction_comp ρ hc _ (hπ.comp continuous_subtype_val))`. Establish `hur : ∀ q : {v : S // v ≠ v₀}, finrank k (H1ur (ρ.comp (F.ψ q) : Representation k _ M) (F.N q)) = finrank k (H0 (ρ.comp (F.ψ q) : Representation k _ M))` using `fun q => by`. Take `⟨d1, d2, d3, d4, d5⟩` from `UpperTheory.exists_decompositionField_frobenius_data Ω (A q) q.1.1 (hA q)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `haveI := hN2 q`. Use `UpperTheory.cohomology_of_finite_representation l k M (Dec (F := ℚ) (A q)) (ρ.comp (F.ψ q)) (hρ.preimage (F.hψ q)) _ _ (d3.preimage continuous_subtype_val) ((hN3 q).preimage continuous_subtype_val) (fun x hx => hN1 q hx) (fun x hx => hN4 q x hx) ?_ d4 fun n => d5 _ (pow_pos (Fact …` and prove the remaining obligations. Rewrite using `[Subgroup.relIndex_subgroupOf (Ine_le_Dec _)]`. Conclude with `hN5 q`. Establish `hsurj : LinearMap.range ((LinearMap.pi fun v => resH2 ρ (F.φ v) (F.hφ v)).prod (LinearMap.pi fun q => resH2 ρ (F.ψ q) (F.hψ q))) = ⊤` using `by classical`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨x, y⟩ -`. Set `e : GQ l ≃* Dec (F` to `ℚ) (A v₀) := (MonoidHom.ofInjective hinj).trans (MulEquiv.subgroupCongr hr)`. Establish `he : Continuous e` using `hι.subtype_mk _`. Establish `he' : Continuous e.symm` using `(he.homeoOfEquivCompactToT2 (f := e.toEquiv)).symm.continuous`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x', hx'⟩` from `res_surj (ρ.comp ((toGS Ω _).comp (Dec (F := ℚ) (A v₀)).subtype)) e he he' (x ())`. Take `⟨z, hz⟩` from `UpperTheory.global_euler_characteristic_odd hI.pt Ω l k M hl S A hS hA ρ hc hg fun v => if h : v = v₀ then h ▸ x' else y ⟨v, h⟩`. Use `⟨z, Prod.ext (funext fun _ => ?_) (funext fun q => ?_)⟩` and prove the remaining obligations. Establish `h0` using `hz v₀`. Rewrite `h0` using `[dif_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : _ = x'` using `h0`. Use `Eq.trans ?_ hx'` and prove the remaining obligations. Rewrite using `[← h1]`. Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `H c => rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `hz q.1`. Rewrite `h0` using `[dif_neg q.2]`. Conclude with `h0`. Take `⟨-, c2, c3⟩` from `frame_count k _ M ρ hρ F (fun q n hn => hN4 q n hn) g1 g2 (fun _ => ⟨l1, l2⟩) fun q => ⟨(hq q).1, (hq q).2.1⟩`. Use `⟨c2, ?_⟩` and prove the remaining obligations.
-
-Rewrite `c3` using `[@finrank_zero_of_subsingleton k _ _ _ _ _ (Submodule.Quotient.subsingleton_iff.2 hsurj), Finset.sum_congr rfl fun q _ => hur q]`. Establish `e1 : ∑ q, finrank k (H1 (ρ.comp (F.ψ q) : Representation k _ M)) = ∑ q, finrank k (H0 (ρ.comp (F.ψ q) : Representation k _ M)) + ∑ q, finrank k (H2 (ρ.comp (F.ψ q) : Representation k _ M))`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun q _ => (hq q).2.2`. Establish `e2 : ∑ v, finrank k (H1 (ρ.comp (F.φ v) : Representation k _ M)) = ∑ v, finrank k (H0 (ρ.comp (F.φ v) : Representation k _ M)) + ∑ v, finrank k (H2 (ρ.comp (F.φ v) : Representation k _ M)) + finrank k M`.
-
-Simplify using `only [Finset.univ_unique, Finset.sum_singleton]`. Conclude with `l3`. Conclude with `arith c3 e1 e2 g3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.box_count (hI : CohInp) (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime]
     (k M : Type) [Field k] [Finite k] [CharP k l] [AddCommGroup M] [Module k M] [Module.Finite k M] (hl : l ≠ 2)

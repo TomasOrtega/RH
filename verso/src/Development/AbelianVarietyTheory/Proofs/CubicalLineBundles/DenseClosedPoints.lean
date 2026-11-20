@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp valAt valAt')
 namespace GlobalTheory.SchemeHomsFromPoints
 
 /- English proof (translation)
-Establish `: JacobsonSpace X` using `LocallyOfFiniteType.jacobsonSpace p`. Rewrite using `[dense_iff_closure_eq]`. Conclude with `closure_closedPoints`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense_closedPoints {X : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] :
     Dense (closedPoints X) := by
@@ -16,7 +16,7 @@ theorem dense_closedPoints {X : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFiniteT
   exact closure_closedPoints
 
 /- English proof (translation)
-Use `ext_of_fromSpecResidueField_eq f g (terminal.from Y) (closedPoints X) (dense_closedPoints p) ?_ (terminal.hom_ext _ _)` and prove the remaining obligations. Introduce `x hx`. Establish `h` using `H (pointOfClosedPoint p x hx) (pointOfClosedPoint_comp p x hx)`. Rewrite using `[← cancel_epi (Spec.map (residueFieldIsoBase p x hx).hom)]`. Simplify `h` using `only [pointOfClosedPoint, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hom_ext_of_points {X Y : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] [IsReduced X]
     [Y.IsSeparated] (f g : X ⟶ Y) (H : ∀ x : Sp ℂ ⟶ X, x ≫ p = 𝟙 _ → x ≫ f = x ≫ g) : f = g := by
@@ -28,17 +28,15 @@ theorem hom_ext_of_points {X Y : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFinite
   simpa only [pointOfClosedPoint, Category.assoc] using h
 
 /- English proof (translation)
-Rewrite using `[← basicOpen_eq_bot_iff]`. Assume the negation of the conclusion as `hne`. Establish `hne' : ((X.basicOpen h : X.Opens) : Set X).Nonempty`. Rewrite using `[Set.nonempty_iff_ne_empty]`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hne (TopologicalSpace.Opens.ext h0)`. Take `⟨x, hx, hxc⟩` from `(dense_closedPoints p).inter_open_nonempty _ (X.basicOpen h).isOpen hne'`. Establish `e : ⊤ ≤ (pointOfClosedPoint p x hxc) ⁻¹ᵁ W`. Introduce `a _`. Express the relevant statement in the definitionally equal form `pointOfClosedPoint p x hxc a ∈ W`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `(pointOfClosedPoint_apply p x hxc a).symm ▸ X.basicOpen_le h hx`. Establish `h1` using `H _ (pointOfClosedPoint_comp p x hxc) e`. Establish `h2 : ((pointOfClosedPoint p x hxc).appLE W ⊤ e).hom h = 0`. Apply `(Scheme.ΓSpecIso (CommRingCat.of ℂ)).commRingCatIsoToRingEquiv.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `h3` using `Scheme.basicOpen_appLE (pointOfClosedPoint p x hxc) ⊤ W e h`. Establish `h4 : (IsLocalRing.closedPoint ℂ : Spec (CommRingCat.of ℂ)) ∈ (Spec (CommRingCat.of ℂ)).basicOpen (((pointOfClosedPoint p x hxc).appLE W ⊤ e).hom h)`. Establish `h5 : (IsLocalRing.closedPoint ℂ : Spec (CommRingCat.of ℂ)) ∈ ⊤ ⊓ (pointOfClosedPoint p x hxc) ⁻¹ᵁ X.basicOpen h`. Use `⟨trivial, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `pointOfClosedPoint p x hxc _ ∈ X.basicOpen h`. Conclude with `(pointOfClosedPoint_apply p x hxc _).symm ▸ hx`. Rewrite `h5` using `[← h3]`. Conclude with `h5`. Rewrite `h4` using `[h2, Scheme.basicOpen_zero]`.
-
-Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_points {X : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] [IsReduced X]
     (W : X.Opens) (h : Γ(X, W))
@@ -73,7 +71,7 @@ theorem eq_zero_of_points {X : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFiniteTy
   exact h4
 
 /- English proof (translation)
-Establish `h1 : x.resLE W ⊤ e = (⊤ : (Spec R).Opens).ι ≫ x'`. Rewrite using `[← cancel_mono W.ι, Scheme.Hom.resLE_comp_ι, Category.assoc, hx]`. Establish `: IsIso (⊤ : (Spec R).Opens).ι` using `inferInstanceAs (IsIso (Spec R).topIso.hom)`. Rewrite using `[← cancel_epi (⊤ : (Spec R).Opens).ι, Spec.map_comp, SpecMap_ΓSpecIso_hom, ← Category.assoc, ← h1, ← Category.assoc, ← Scheme.Opens.toSpecΓ_top, Scheme.Opens.toSpecΓ_SpecMap_appLE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_toSpecΓ {X : Scheme.{0}} {R : CommRingCat.{0}} (W : X.Opens) (x : Spec R ⟶ X)
     (x' : Spec R ⟶ W) (hx : x' ≫ W.ι = x) (e : ⊤ ≤ x ⁻¹ᵁ W) :
@@ -86,7 +84,7 @@ theorem lift_toSpecΓ {X : Scheme.{0}} {R : CommRingCat.{0}} (W : X.Opens) (x : 
     Scheme.Opens.toSpecΓ_SpecMap_appLE]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨t, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `e trivial`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_subset {X T : Scheme.{0}} (W : X.Opens) (x : T ⟶ X) (e : ⊤ ≤ x ⁻¹ᵁ W) :
     Set.range x ⊆ Set.range W.ι := by
@@ -95,7 +93,7 @@ theorem range_subset {X T : Scheme.{0}} (W : X.Opens) (x : T ⟶ X) (e : ⊤ ≤
   exact e trivial
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Introduce `t _`. Conclude with `(x'.base t).2`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_of_lift {X T : Scheme.{0}} (W : X.Opens) (x : T ⟶ X) (x' : T ⟶ W)
     (hx : x' ≫ W.ι = x) : ⊤ ≤ x ⁻¹ᵁ W := by
@@ -108,7 +106,7 @@ noncomputable def ev {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (W : X.Opens) (e : ⊤ 
   x.appLE W ⊤ e ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom
 
 /- English proof (translation)
-Rewrite using `[valAt', dif_pos e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valAt'_eq {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (W : X.Opens) (e : ⊤ ≤ x ⁻¹ᵁ W) (h : Γ(X, W)) :
     valAt' x W h = (ev x W e).hom h := by
@@ -116,15 +114,15 @@ theorem valAt'_eq {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (W : X.Opens) (e : ⊤ ≤
   rfl
 
 /- English proof (translation)
-Use `choose F hF using hf`. Establish `hF' : ∀ f w (e : ⊤ ≤ ex w ⁻¹ᵁ W), (ev (ex w) W e).hom (F f) = (ev (ey w) D (hWD w e)).hom f`. Introduce `f w e`. Rewrite using `[← valAt'_eq, ← valAt'_eq]`. Conclude with `hF f w e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `inj : ∀ a b : Γ(X, W), (∀ w (e : ⊤ ≤ ex w ⁻¹ᵁ W), (ev (ex w) W e).hom a = (ev (ex w) W e).hom b) → a = b`. Introduce `a b hab`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_points p W _ ?_` and prove the remaining obligations. Introduce `x hx e`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨w, rfl⟩` from `hex x hx`. Express the relevant statement in the definitionally equal form `(ev (ex w) W e).hom (a - b) = 0`. Rewrite using `[map_sub, hab w e, sub_self]`. Set `φ : Γ(Y, D) →+* Γ(X, W)` to `{ toFun := F map_one' := inj _ _ fun w e => by rw [hF', map_one, map_one] map_mul' := fun a b => inj _ _ fun w e => by rw [hF', map_mul, map_mul, hF', hF'] map_zero' := inj _ _ fun w e => by rw [hF', map_zero, map_zero] map_add' := fun a b => inj _ _ fun w e => by rw [hF', map_ad …`. Use `⟨W.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ) ≫ hD.fromSpec, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w x' hx'`. Establish `e` using `top_le_of_lift W (ex w) x' hx'`. Establish `e'` using `hWD w e`. Establish `hy'` using `IsOpenImmersion.lift_fac D.ι (ey w) (range_subset D (ey w) e')`. Establish `h1 : x' ≫ W.toSpecΓ = Spec.map (ev (ex w) W e)` using `lift_toSpecΓ W (ex w) x' hx' e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : _ ≫ D.toSpecΓ = Spec.map (ev (ey w) D e')` using `lift_toSpecΓ D (ey w) _ hy' e'`. Establish `h3 : CommRingCat.ofHom φ ≫ ev (ex w) W e = ev (ey w) D e'`. Use extensionality with `f`. Conclude with `hF' f w e`. Rewrite using `[← Category.assoc, h1, ← Category.assoc, ← Spec.map_comp, h3, ← h2, Category.assoc, hD.toSpecΓ_fromSpec, hy']`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local {X Y : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] [IsReduced X]
     {Z : Type} (ex : Z → (Sp ℂ ⟶ X)) (ey : Z → (Sp ℂ ⟶ Y))
@@ -169,17 +167,15 @@ theorem exists_local {X Y : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFiniteType 
     hD.toSpecΓ_fromSpec, hy']
 
 /- English proof (translation)
-Establish `hY : Y.IsSeparated` using `⟨by rw [← terminal.comp_from q]; infer_instance⟩`. Use `choose W D hD hW hWD hf using H`. Use `choose g hg using fun z => exists_local p ex ey hex (W z) (D z) (hD z) (hWD z) (hf z)`. Establish `hcov : TopologicalSpace.IsOpenCover W`. Establish `: JacobsonSpace X` using `LocallyOfFiniteType.jacobsonSpace p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[TopologicalSpace.IsOpenCover, eq_top_iff]`. Introduce `x₀ _`. Assume the negation of the conclusion as `hx₀`. Establish `hcl : IsClosed ((iSup W : X.Opens) : Set X)ᶜ` using `(iSup W).isOpen.isClosed_compl`. Take `⟨x, hx, hxc⟩` from `nonempty_inter_closedPoints ⟨x₀, hx₀⟩ hcl.isLocallyClosed`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨z, hz⟩` from `hex _ (pointOfClosedPoint_comp p x hxc)`. Apply `hx` to reduce the goal to its premises. Establish `h1 : ex z (IsLocalRing.closedPoint ℂ) ∈ W z` using `hW z (show (IsLocalRing.closedPoint ℂ : Spec (CommRingCat.of ℂ)) ∈ ⊤ from trivial)`. Establish `h2 : ex z (IsLocalRing.closedPoint ℂ) = x`. Rewrite using `[hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `pointOfClosedPoint_apply p x hxc _`. Conclude with `le_iSup W z (h2 ▸ h1)`. Establish `hglue : ∀ i j, pullback.fst (W i).ι (W j).ι ≫ g i = pullback.snd (W i).ι (W j).ι ≫ g j`. Introduce `i j`. Establish `: IsReduced (pullback (W i).ι (W j).ι)` using `isReduced_of_isOpenImmersion (pullback.fst (W i).ι (W j).ι ≫ (W i).ι)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `hom_ext_of_points (pullback.fst (W i).ι (W j).ι ≫ (W i).ι ≫ p) _ _ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨w, hw⟩` from `hex (x ≫ pullback.fst (W i).ι (W j).ι ≫ (W i).ι) (by simpa using hx)`. Rewrite using `[← Category.assoc, ← Category.assoc, hg i w _ (by rw [hw, Category.assoc]), hg j w _ (by rw [hw, Category.assoc, pullback.condition])]`. Use `⟨(X.openCoverOfIsOpenCover W hcov).glueMorphisms g hglue, fun z => ?_⟩` and prove the remaining obligations.
-
-Establish `h1` using `IsOpenImmersion.lift_fac (W z).ι (ex z) (range_subset (W z) (ex z) (hW z))`. Establish `h2 : (W z).ι ≫ (X.openCoverOfIsOpenCover W hcov).glueMorphisms g hglue = g z` using `Scheme.Cover.ι_glueMorphisms (X.openCoverOfIsOpenCover W hcov) g hglue z`. Rewrite using `[← hg z z _ h1, ← h2, ← Category.assoc, h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom {X Y : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] [IsReduced X]
     {Z : Type} (ex : Z → (Sp ℂ ⟶ X)) (ey : Z → (Sp ℂ ⟶ Y))

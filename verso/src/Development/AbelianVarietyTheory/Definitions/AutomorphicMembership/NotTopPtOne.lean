@@ -18,14 +18,14 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adAt_mul {N : ℕ} (P : HeightOneSpectrum (𝓞 E)) (a b : GL (Fin N) (AfE F E)) :
     ((a * b : GL (Fin N) (AfE F E)).1).map (adAt F P) = a.1.map (adAt F P) * b.1.map (adAt F P) := by
   rw [Units.val_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Use `adAt_mul P a a⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, h, one_mul, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adAt_inv_one {N : ℕ} (P : HeightOneSpectrum (𝓞 E)) {a : GL (Fin N) (AfE F E)} (h : a.1.map (adAt F P) = 1) :
     ((a⁻¹ : GL (Fin N) (AfE F E)).1).map (adAt F P) = 1 := by
@@ -34,11 +34,11 @@ theorem adAt_inv_one {N : ℕ} (P : HeightOneSpectrum (𝓞 E)) {a : GL (Fin N) 
   exact this.symm
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h2 : prV (E` using `E) (P.under (𝓞 F)) (k.1 i j - (1 : Matrix (Fin N) (Fin N) (AfE F E)) i j) = 0 := by`. Establish `h3` using `congrArg (fun g : GL (Fin N) _ => g.1 i j) h1`. Simplify using `only [Units.val_one] at h3`. Establish `h4 : prV (E` using `E) (P.under (𝓞 F)) (k.1 i j) = (1 : Matrix (Fin N) (Fin N) _) i j := h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_sub, h4, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h3` using `adAt_eq_zero_of_prV P _ h2`. Rewrite `h3` using `[map_sub, sub_eq_zero]`. Use `h3.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adAt_of_prV {N : ℕ} (P : HeightOneSpectrum (𝓞 E)) {k : GL (Fin N) (AfE F E)}
     (h1 : bc (prV (E := E) (P.under (𝓞 F))) k = 1) : k.1.map (adAt F P) = 1 := by
@@ -56,11 +56,11 @@ theorem adAt_of_prV {N : ℕ} (P : HeightOneSpectrum (𝓞 E)) {k : GL (Fin N) (
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Use `show prV (E := E) v (k.1 i j) = (1 : Matrix (Fin N) (Fin N) _) i j`. Establish `h2 : prV (E` using `E) v (k.1 i j - (1 : Matrix (Fin N) (Fin N) (AfE F E)) i j) = 0 := by`. Use `(GlobalTheory.Mem.Col2.AdComp.prV_zero_int_iff F E v _).1.2 fun w hw => ?_` and prove the remaining obligations. Establish `h3 : adAt F w (k.1 i j) = (1 : Matrix (Fin N) (Fin N) _) i j` using `congrFun (congrFun (h w hw) i) j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, h3, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite `h2` using `[map_sub, sub_eq_zero]`. Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem prV_of_adAt {N : ℕ} (v : HeightOneSpectrum (𝓞 F)) {k : GL (Fin N) (AfE F E)}
     (h : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → k.1.map (adAt F w) = 1) : bc (prV (E := E) v) k = 1 := by
@@ -81,7 +81,7 @@ end Gen
 variable {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : Later B (I.cols l))
 
 /- English proof (translation)
-Use `h (DecoF.base _ _ _ _ _) 1 1 (isPtOf_base _) ⟨(Matrix.one_mul _).trans (Matrix.mul_one _).symm, Matrix.one_mulVec _⟩` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem topPt_base {u : B.Word} {a : I.ι} {k : GA B (B.R.N B.R.m)} [NeZero (B.R.N B.R.m - 1)] (h : I.TopPt l Z u a k) :
     PtOf k (tilF (Pr := B.primes X) (R := B.R) I.sel (I.tup a) u (DecoF.base _ _ _ _ _)) := by
@@ -89,7 +89,7 @@ theorem topPt_base {u : B.Word} {a : I.ι} {k : GA B (B.R.N B.R.m)} [NeZero (B.R
   rwa [one_mul] at this
 
 /- English proof (translation)
-Establish `hPr` using `(base_fields_primes_ok B X).2.1`. Establish `h1` using `(topPt_base I l Z h).fr P i (Br.iL (N_m_succ B.R))`. Establish `h2` using `tilFr_fr_last (N_m_succ B.R) (conj_piT_notMem hPr u) (piT_notMem_vGs hPr u) (fun P : I.Q a => ((TwistPrimes.twist_primes_away I hI).2 u a P.1 P.2).2.1) (DecoF.base _ _ _ _ _) P`. Conclude with `h1.trans (congrArg (fun x => algebraMap B.host.E _ (x i)) h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem topPt_last (hI : I.Ok) {u : B.Word} {a : I.ι} {k : GA B (B.R.N B.R.m)} [NeZero (B.R.N B.R.m - 1)] (h : I.TopPt l Z u a k)
     (P : I.Q a) (i : Fin (B.R.N B.R.m)) : adAt B.host.F P.1 (k.1 i (Br.iL (N_m_succ B.R))) =
@@ -101,15 +101,15 @@ theorem topPt_last (hI : I.Ok) {u : B.Word} {a : I.ι} {k : GA B (B.R.N B.R.m)} 
   exact h1.trans (congrArg (fun x => algebraMap B.host.E _ (x i)) h2)
 
 /- English proof (translation)
-Establish `hX` using `(base_fields_primes_ok B X).1`. Establish `hPr` using `(base_fields_primes_ok B X).2.1`. Use `haveI : NeZero (B.R.N B.R.m) := ⟨by have := N_m_succ B.R; omega⟩`. Establish `hq` using `(TwistPrimes.twist_primes_away I hI).2 u a`. Take `⟨k, h1, h2, h3⟩` from `BasePoint.exists_kStd X hPr u (B.R.N B.R.m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, t1, t2, t3⟩` from `TwUnit.exists_tw B.host.F B.host.E B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs (I.Q a) (fun P hP => (hq P hP).1) (X.piT u) (fun P hP => (hq P hP).2.1)`. Establish `t4 : ∀ w, w ∉ I.Q a → conjPrime₂ w ∉ I.Q a → t.1.map (adAt B.host.F w) = 1` using `fun w a1 a2 => by`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `(t3 w a1 a2 i j).trans Matrix.one_apply.symm`. Establish `hcc : ∀ P : HeightOneSpectrum (𝓞 B.fields.E), conjPrime₂ (conjPrime₂ P) = P` using `fun P => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Rewrite using `[mem_conjP, mem_conjP, cO_cO]`. Establish `hun : ∀ Q : HeightOneSpectrum (𝓞 B.fields.E), (conjPrime₂ Q).under (𝓞 B.fields.F) = Q.under (𝓞 B.fields.F)` using `fun Q => by`. Use extensionality with `r`. Establish `e : cO B.fields.E (algebraMap (𝓞 B.fields.F) (𝓞 B.fields.E) r) = algebraMap (𝓞 B.fields.F) (𝓞 B.fields.E) r` using `RingOfIntegers.ext (hX.star_F (r : B.fields.F))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show algebraMap (𝓞 B.fields.F) (𝓞 B.fields.E) r ∈ (conjPrime₂ Q).asIdeal ↔ algebraMap (𝓞 B.fields.F) (𝓞 B.fields.E) r ∈ Q.asIdeal`. Rewrite using `[mem_conjP, e]`. Use `⟨k * t, TopCh.KStd.exists_ptOf_mul_K1 _ _ _ k t t1 h1, fun v hv hu => ?_, fun P r j hr => ?_, TilQ.pt_tilF_gen I hI hP l Z u a k t h1 h2 h3 t1 t2⟩` and prove the remaining obligations. Rewrite using `[map_mul, h2 v hv, one_mul]`. Conclude with `prV_of_adAt v fun w hw => t4 w (fun h => hu ⟨w, h, hw⟩) (fun h => hu ⟨_, h, (hun w).trans hw⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `adAt_inv_one P.1 (t4 P.1 (fun h => (hq _ h).1.1 P.2) (fun h => (hq _ h).1.2.2.1 ((hcc P.1).symm ▸ P.2)))`. Establish `e2` using `adAt_mul (F := B.host.F) (E := B.host.E) P.1 t⁻¹ k⁻¹`. Rewrite `e2` using `[e1, one_mul, ← _root_.mul_inv_rev]`. Establish `e3 : adAt B.host.F P.1 (((k * t)⁻¹ : GA B (B.R.N B.R.m)).1 r j) = adAt B.host.F P.1 ((k⁻¹ : GA B (B.R.N B.R.m)).1 r j)` using `congrFun (congrFun e2 r) j`. Conclude with `e3 ▸ h3 P r j hr`.
+A detailed English derivation is pending.
 -/
 theorem exists_topPt (hI : I.Ok) (hP : TC.Pins B X) (u : B.Word) (a : I.ι) : ∃ k : GA B (B.R.N B.R.m),
     (∃ p : DecoF B.fields.E (B.R.N B.R.m) ∅ ∅ ∅, PtOf k p ∧ p.deco.1.N = stdLat B.fields.E (B.R.N B.R.m)) ∧
@@ -149,7 +149,7 @@ theorem exists_topPt (hI : I.Ok) (hP : TC.Pins B X) (u : B.Word) (a : I.ι) : �
     exact e3 ▸ h3 P r j hr
 
 /- English proof (translation)
-Introduce `h` and use `by have h1 := topPt_last I l Z hI h P (Br.iL (N_m_succ B.R)) rw [Pi.single_eq_same, Units.val_one, Matrix.one_apply_eq, map_one] at h1 exact hpi ((algebraMap B.host.E _).injective (h1.symm.trans (map_one _).symm))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_topPt_one (hI : I.Ok) {u : B.Word} {a : I.ι} [NeZero (B.R.N B.R.m - 1)] (P : I.Q a)
     (hpi : ((X.piT u : 𝓞 B.host.E) : B.host.E) ≠ 1) : ¬ I.TopPt l Z u a 1 := fun h => by

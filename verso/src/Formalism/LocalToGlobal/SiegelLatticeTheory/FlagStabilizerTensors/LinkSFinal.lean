@@ -20,17 +20,17 @@ open Formalism.MainNotions.S.CountE Formalism.MainNotions.PlaceDegreeData
 variable (P : ∀ I : AutInst, Measure I.Gf → ℕ → (I.Gf → ℂ) → Prop) {eps : ℝ} (Fm : FamP eps)
 
 /- English proof (translation)
-Take `⟨xR, HR⟩` from `hR`. Take `⟨-, hcb, h30⟩` from `h30`. Establish `hG` using `cGam_pos Fm`. Take `⟨Y1, hY1, HY1⟩` from `linear_le_pow_eight_eventually (8 * Fm.CGam) n0 (by positivity)`. Take `⟨Y2, -, HY2⟩` from `linear_le_pow_eight_eventually (cb7 * (8 * Fm.CGam)) 8 (by positivity)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x4, hx4⟩` from `ev_y Fm (max Y1 Y2)`. Use `⟨max (max (Fm.x1 + 1) x4) xR, fun x hx i hH => ?_⟩` and prove the remaining obligations. Establish `hxa` using `le_trans (le_max_left _ _) hx`. Establish `hx1 : Fm.x1 < x`. Use `le_trans (le_max_left _ _) hxa` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hy` using `hx4 x (le_trans (le_max_right _ _) hxa)`. Use `set y : ℝ := x ^ (eps / 8) with hydef`. Establish `hy1 : 1 ≤ y` using `le_trans hY1 (le_trans (le_max_left _ _) hy)`. Establish `a1` using `HY1 y (le_trans (le_max_left _ _) hy)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `HY2 y (le_trans (le_max_right _ _) hy)`. Establish `hL` using `scL_eq Fm x hx1 i`. Establish `hh : AdmissibleBoundsFromSource.hyp (Fm.D x i) (Fm.L x i) C0 (sC' Fm) (sCl Fm) Cg cb Cu cT CT` using `⟨hH.2.1, hH.1, hH.2.2⟩`. Establish `hk8` using `k_ge_of_hyp (Fm.L x i) hh`. Rewrite `hk8` using `[hL, Fm.CGam_eq x i]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨X, hX⟩` from `HR x (le_trans (le_max_right _ _) hx) hx1 i`. Use `admissibility_ten_of_rows_class P (Fm.L x i) X hX n0 A C cb7 c (h30 x i) (count_parameters_of_hyp (Fm.L x i) C0 _ _ Cg cb Cu cT CT n0 A C cb7 hC hcb hA ?_ hCl2 hCl3 ?_ hh)` and prove the remaining obligations. Establish `: (n0 : ℝ) ≤ n0 * y` using `le_mul_of_one_le_right (Nat.cast_nonneg _) hy1`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hL, Real.log_pow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Real.log y ≤ y` using `Real.log_le_self (by linarith)`. Establish `h2 : cb7 * (8 * Fm.CGam * y ^ 8) ≤ cb7 * ((Fm.D x i).R.k : ℝ)` using `mul_le_mul_of_nonneg_left hk8 hcb.le`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem countOwn_of_rowsPEv (Cg cb Cu cT CT C0 : ℝ) (n0 : ℕ) (A C c cb7 : ℝ) (hC : 0 ≤ C) (hA : 2 * Cg ≤ A)
     (hCl2 : 2 ≤ sCl Fm) (hCl3 : 2 * C ≤ sCl Fm)
@@ -68,7 +68,7 @@ theorem countOwn_of_rowsPEv (Cg cb Cu cT CT C0 : ℝ) (n0 : ℕ) (A C c cb7 : �
     nlinarith
 
 /- English proof (translation)
-Establish `h30 : CountAllPointsClass P Fm n0 A C c7 cb7` using `(S30 A30).2.2.2.2.2.2`. Establish `h30R : CountRowsClassFamily P Fm n0 A C c7 cb7` using `⟨h30.1, h30.2.1, fun x i => count_rows_class_of_count_class P n0 A C c7 cb7 (h30.2.2 x i)⟩`. Conclude with `linkS_of_standing_hypotheses Fm Cg cb Cu cT CT C0 c7 h1 h30.1 hS0 hT (countOwn_of_rowsPEv P Fm Cg cb Cu cT CT C0 n0 A C c7 cb7 hC hA hCl2 hCl3 hR h30R)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linkS_of_thmSPEv (Cg cb Cu cT CT C0 Cres : ℝ) (n0 : ℕ) (A Cb C c7 cb7 : ℝ) (h1 : 1 ≤ C0) (hC : 0 ≤ C)
     (hA : 2 * Cg ≤ A) (hCl2 : 2 ≤ sCl Fm) (hCl3 : 2 * C ≤ sCl Fm)
@@ -85,7 +85,7 @@ theorem linkS_of_thmSPEv (Cg cb Cu cT CT C0 Cres : ℝ) (n0 : ℕ) (A Cb C c7 cb
 end Ev
 
 /- English proof (translation)
-The claim follows from `closed_of_large (linkThresholds (fun _ => caZero) c30) (hRes.and (hRows.and (hK1.and (hK2.and (hK3.and (hK4.and (S30.and A30))))))) fun Fm CH hL h a0 => by obtain ⟨-, g2, g3, g4⟩ := link_thresholds_spec Fm CH (fun _ => caZero) c30 hL obtain ⟨a1, a2, k1, k2, k3, k4, a6, a7⟩ := h e …`.
+A detailed English derivation is pending.
 -/
 theorem linkS_concreteEv (𝒞 : FamClass) (C0 : ℝ) (c30 : List ℝ → CountingConstants) (h1 : 1 ≤ C0)
     (hc30 : ∀ {eps : ℝ} (Fm : FamP eps), 0 ≤ (c30 Fm.cOut).C ∧ 2 * (Fm.CYL + 1) ≤ (c30 Fm.cOut).A)
@@ -109,7 +109,7 @@ theorem linkS_concreteEv (𝒞 : FamClass) (C0 : ℝ) (c30 : List ℝ → Counti
         (hc30 Fm).1 (hc30 Fm).2 g2 g3 (standing_hypotheses_hold_family Fm C0 h1 ⟨g4, a0, a1⟩) a2 (thmSOwn_of_clauses k1 k2 k3 k4) a6 a7
 
 /- English proof (translation)
-The claim follows from `kExpTied_of_full Formalism.L2.SG.Closed.FoldOKC_outright Formalism.L2.SG.Closed.InHHC_holds Formalism.L2.SG.Closed.FundExistsC_holds Formalism.L2.SG.Closed.OOIntAllC_outright Formalism.L2.SG.Closed.OOFundIndepC_holds Formalism.L2.SG.Closed.AmpWellDefC_holds Formalism.L2.SG.Closed …`.
+A detailed English derivation is pending.
 -/
 theorem kExpTied_holds : KExpTied :=
   kExpTied_of_full Formalism.L2.SG.Closed.FoldOKC_outright Formalism.L2.SG.Closed.InHHC_holds Formalism.L2.SG.Closed.FundExistsC_holds
@@ -117,7 +117,7 @@ theorem kExpTied_holds : KExpTied :=
     Formalism.L2.SG.Closed.AbsConvC_outright Formalism.L2.SG.Closed.KExpansionC_holds
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.RowsConc.absConvTied_of_full Formalism.L2.SG.Closed.FoldOKC_outright Formalism.L2.SG.Closed.FundExistsC_holds Formalism.L2.SG.Closed.OOIntAllC_outright Formalism.L2.SG.Closed.AbsConvC_outright`.
+A detailed English derivation is pending.
 -/
 theorem absConvTied_holds : Formalism.L2.SG.RowsConc.AbsConvTied :=
   Formalism.L2.SG.RowsConc.absConvTied_of_full Formalism.L2.SG.Closed.FoldOKC_outright Formalism.L2.SG.Closed.FundExistsC_holds
@@ -128,7 +128,7 @@ variable (C0 : ℝ)
 variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
 
 /- English proof (translation)
-The claim follows from `have hFX := Formalism.L2.SG.Pf.finXC_of hWu hRF have hOK := selOK_of C0 hFX hWu sel hLoc hTF have hE : Closed 𝒞 fun Fm _ => ConcEv C0 Fm := closed_with hOK (fun _ => 0) (fun _ => 0) fun Fm _ hc h _ _ _ => concEv_of_sel C0 (h hc) have hRows : Closed 𝒞 fun Fm _ => ∃ xR : ℝ, ∀ x ≥ x …`.
+A detailed English derivation is pending.
 -/
 theorem theoremS_link_zero (𝒞 : FamClass) (sel : SSel 𝒞)
     (hWu : Formalism.L2.SG.Pf.WuDecayOfGap) (hRF : Formalism.L2.SG.RowsDef.RowsFinDim)
@@ -161,7 +161,7 @@ theorem theoremS_link_zero (𝒞 : FamClass) (sel : SSel 𝒞)
 variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
 
 /- English proof (translation)
-The claim follows from `have hOK := selOK_of C0 (Formalism.L2.SG.Pf.finXC_of hWu hRF) hWu sel hLoc hTF theoremS_link_zero C0 𝒞 sel hWu hRF hLoc hTF c30 h1 hc30 hRes hTy hNG hM hLp (theoremS_selected_of_loops C0 hT h1 sel hOK (Formalism.L2.SG.Pf.SzHypOf.sizesRowS_of C0 sel hRw hThr) aF hA hLp absConvTied …`.
+A detailed English derivation is pending.
 -/
 theorem theoremS_link (𝒞 : FamClass) (sel : SSel 𝒞)
     (hWu : Formalism.L2.SG.Pf.WuDecayOfGap) (hRF : Formalism.L2.SG.RowsDef.RowsFinDim)

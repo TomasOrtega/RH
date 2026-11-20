@@ -16,7 +16,7 @@ def StepC : Prop := ∀ (k : ℕ) (H G : Matrix (Fin k) (Fin k) ℂ), H.PosDef �
   ∀ n : ℕ, (∀ μ ∈ G.charpoly.roots, μ ^ n = 1) → G ^ n = 1
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun M => M.map φ) hγ`. Simplify using `only [Matrix.map_mul] at h`. Use `h using 3` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply, hc, Complex.star_def]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_relation {E : Type} [Field E] (c : E →+* E) (φ : E →+* ℂ)
     (hc : ∀ x : E, φ (c x) = (starRingEnd ℂ) (φ x)) {k : ℕ} (J γ : Matrix (Fin k) (Fin k) E)
@@ -28,21 +28,19 @@ theorem map_relation {E : Type} [Field E] (c : E →+* E) (φ : E →+* ℂ)
   simp [Matrix.conjTranspose_apply, hc, Complex.star_def]
 
 /- English proof (translation)
-Introduce `E _ _ c hc k J γ hJ hγ hint`. Take `⟨φ₀⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hrel : ∀ φ : E →+* ℂ, (γ.map φ)ᴴ * J.map φ * γ.map φ = J.map φ` using `fun φ => map_relation c φ (hc φ) J γ hγ`. Establish `hnorm : ∀ (φ : E →+* ℂ) (μ : ℂ), (γ.charpoly.map φ).IsRoot μ → ‖μ‖ = 1`. Introduce `φ μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hμ` using `[← Matrix.charpoly_map]`. Break down `hJ φ with hpos | hneg` into its components or cases. Conclude with `hA k (J.map φ) (γ.map φ) hpos (hrel φ) μ hμ`. Use `hA k (-(J.map φ)) (γ.map φ) hneg ?_ μ hμ` and prove the remaining obligations. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, hrel φ]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hroot : ∀ μ : ℂ, (γ.charpoly.map φ₀).IsRoot μ → ∃ m : ℕ, 0 < m ∧ μ ^ m = 1` using `hB E γ.charpoly (Matrix.charpoly_monic γ) hint hnorm φ₀`. Set `m : ℂ → ℕ` to `fun μ => if h : (γ.charpoly.map φ₀).IsRoot μ then (hroot μ h).choose else 1`. Establish `hm : ∀ μ, 0 < m μ`. Introduce `μ`. Simplify using `only [m]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `split_ifs with h`. Conclude with `(hroot μ h).choose_spec.1`. Conclude with `one_pos`. Set `S` to `(γ.map φ₀).charpoly.roots.toFinset`. Choose the witnesses or unpack the hypotheses as in `⟨H, hH, hHrel⟩ : ∃ H : Matrix (Fin k) (Fin k) ℂ, H.PosDef ∧ (γ.map φ₀)ᴴ * H * γ.map φ₀ = H := by`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Break down `hJ φ₀ with hpos | hneg` into its components or cases. Conclude with `⟨_, hpos, hrel φ₀⟩`. Use `⟨_, hneg, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, hrel φ₀]`. Establish `hpow : (γ.map φ₀) ^ (∏ μ ∈ S, m μ) = 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hC k H (γ.map φ₀) hH hHrel` to reduce the goal to its premises. Introduce `μ hμ`. Establish `hr : (γ.charpoly.map φ₀).IsRoot μ`. Rewrite using `[← Matrix.charpoly_map]`. Conclude with `Polynomial.isRoot_of_mem_roots hμ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht⟩ : m μ ∣ ∏ ν ∈ S, m ν` from `Finset.dvd_prod_of_mem m (Multiset.mem_toFinset.mpr hμ)`. Establish `hmμ : μ ^ m μ = 1`. Simplify using `only [m, dif_pos hr]`. Conclude with `(hroot μ hr).choose_spec.2`. Rewrite using `[ht, pow_mul, hmμ, one_pow]`.
-
-Use `⟨∏ μ ∈ S, m μ, Finset.prod_pos fun μ _ => hm μ, ?_⟩` and prove the remaining obligations. Apply `Matrix.map_injective φ₀.injective` to reduce the goal to its premises. Use `show (γ ^ (∏ μ ∈ S, m μ)).map φ₀ = (1 : Matrix (Fin k) (Fin k) E).map φ₀`. Rewrite using `[Matrix.map_pow, hpow, Matrix.map_one _ (map_zero φ₀) (map_one φ₀)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitKron_of (hA : StepA) (hB : StepB) (hC : StepC) : PI.UnitKron := by
   intro E _ _ c hc k J γ hJ hγ hint

@@ -9,11 +9,11 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersecti
 namespace ReciprocityTheory.ChartRestriction.G.AI
 
 /- English proof (translation)
-The claim follows from `length_two_generator_quotient`.
+A detailed English derivation is pending.
 -/
 theorem len2 : LocalLengthMultiplicativity := length_two_generator_quotient
 /- English proof (translation)
-The claim follows from `fl3Test_thm`.
+A detailed English derivation is pending.
 -/
 theorem fl3Test : FlatnessTestCriterion := fl3Test_thm
 

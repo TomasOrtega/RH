@@ -11,9 +11,9 @@ open scoped ValuativeRel
 namespace GlobalTheory.CompanionTheory.LFUDom
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨hc, h1, h0⟩` from `h`. Establish `ht` using `isTrivialOn_addCharConductor hc h1`. Rewrite `ht` using `[h0]`. Use `ht x (mem_valBall_zero_iff.2 hx)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `show ((ψ x : Circle) : ℂ) = 1`. Rewrite using `[this, Circle.coe_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compChar_eq_one_of_isStd {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {ψ : AddChar F Circle} (h : Ad3.IsStd ψ) :
@@ -27,7 +27,7 @@ theorem compChar_eq_one_of_isStd {F : Type} [Field F] [ValuativeRel F] [Topologi
   rw [this, Circle.coe_one]
 
 /- English proof (translation)
-Use `⟨fun {i j} hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [Ad3.uni2]`. Apply the tactic sequence `fin_cases i <;> simp [Ad3.uni2]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem uni2_mem_unipotent {F : Type} [Field F] (y : F) : Ad3.uni2 y ∈ unipotent F 2 := by
   refine ⟨fun {i j} hij => ?_, fun i => ?_⟩
@@ -35,14 +35,14 @@ theorem uni2_mem_unipotent {F : Type} [Field F] (y : F) : Ad3.uni2 y ∈ unipote
   · fin_cases i <;> simp [Ad3.uni2]
 
 /- English proof (translation)
-Simplify using `[Whittaker.superdiagSum, Fin.sum_univ_two, Ad3.uni2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem superdiagSum_uni2 {F : Type} [Field F] (y : F) :
     Whittaker.superdiagSum ((Ad3.uni2 y : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = y := by
   simp [Whittaker.superdiagSum, Fin.sum_univ_two, Ad3.uni2]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ ν y g`. Unfold `Ad3.LFS.s2`. Rewrite using `[sphericalWhittaker_mul_left (compChar_eq_one_of_isStd hψ) _ (uni2_mem_unipotent y) g, Whittaker.psiN, superdiagSum_uni2]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem whittaker_unipotent_left_equivariant : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle),

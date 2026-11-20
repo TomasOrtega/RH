@@ -15,7 +15,7 @@ open PositivityTheory.RgEis PositivityTheory.RgEis.TF GroundTheory.Global Ground
 variable {k : Type} [Field k] [NumberField k]
 
 /- English proof (translation)
-Establish `h : infiniteModule (ofFinite b : IdeleGroup k) = 1` using `Finset.prod_eq_one fun w _ ↦ by`. Rewrite using `[show ((ofFinite b : IdeleGroup k) : 𝔸[k]).1 w = 1 from rfl, norm_one, one_pow]`. Rewrite using `[ideleModule_apply, h, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ideleModule_ofFinite_eq (b : (FiniteAdeleRing (𝓞 k) k)ˣ) :
     (ideleModule k (ofFinite b) : ℝ) = finiteModule (ofFinite b) := by
@@ -25,7 +25,7 @@ theorem ideleModule_ofFinite_eq (b : (FiniteAdeleRing (𝓞 k) k)ˣ) :
   rw [ideleModule_apply, h, one_mul]
 
 /- English proof (translation)
-The claim follows from `(Valued.toNormedField.norm_le_one_iff).2 ((HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 k) k v).1 (mem_integralFiniteAdeles.1 hb v))`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_mem_OH {b : (FiniteAdeleRing (𝓞 k) k)ˣ}
     (hb : (b : FiniteAdeleRing (𝓞 k) k) ∈ OH k) (v : HeightOneSpectrum (𝓞 k)) :
@@ -35,7 +35,7 @@ theorem norm_le_one_of_mem_OH {b : (FiniteAdeleRing (𝓞 k) k)ˣ}
       (mem_integralFiniteAdeles.1 hb v))
 
 /- English proof (translation)
-Rewrite using `[finiteModule, finprod_eq_prod _ (finite_mulSupport_norm _)]`. Conclude with `Finset.prod_le_one (fun _ _ ↦ norm_nonneg _) fun v _ ↦ norm_le_one_of_mem_OH hb v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteModule_le_one {b : (FiniteAdeleRing (𝓞 k) k)ˣ}
     (hb : (b : FiniteAdeleRing (𝓞 k) k) ∈ OH k) : finiteModule (ofFinite b) ≤ 1 := by
@@ -43,13 +43,11 @@ theorem finiteModule_le_one {b : (FiniteAdeleRing (𝓞 k) k)ˣ}
   exact Finset.prod_le_one (fun _ _ ↦ norm_nonneg _) fun v _ ↦ norm_le_one_of_mem_OH hb v
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : HeightOneSpectrum (𝓞 k), ‖(b : FiniteAdeleRing (𝓞 k) k) v‖ < 1 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `hu ((mem_finiteIntegralUnits k).2 fun v ↦ ⟨mem_integralFiniteAdeles.1 hb v, ?_⟩)` and prove the remaining obligations. Establish `hv1 : ‖(b : FiniteAdeleRing (𝓞 k) k) v‖ = 1` using `le_antisymm (norm_le_one_of_mem_OH hb v) (hcon v)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : (b : FiniteAdeleRing (𝓞 k) k) v * ((b⁻¹ : (FiniteAdeleRing (𝓞 k) k)ˣ) : FiniteAdeleRing (𝓞 k) k) v = 1` using `congrArg (fun a : FiniteAdeleRing (𝓞 k) k ↦ a v) (Units.mul_inv b)`. Establish `hn : ‖((b⁻¹ : (FiniteAdeleRing (𝓞 k) k)ˣ) : FiniteAdeleRing (𝓞 k) k) v‖ = 1`. Use `congrArg norm hmul` as an intermediate fact. Rewrite `this` using `[norm_mul, hv1, one_mul, norm_one]`. Then use the resulting hypothesis. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 k) k v).2 ((Valued.toNormedField.norm_le_one_iff).1 hn.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `finite_mulSupport_norm (ofFinite b : IdeleGroup k)`. Establish `hvS : v ∈ hfin.toFinset`. Rewrite using `[Set.Finite.mem_toFinset, Function.mem_mulSupport]`. Conclude with `hv.ne`. Rewrite using `[finiteModule, finprod_eq_prod _ hfin, ← Finset.mul_prod_erase _ _ hvS]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem finiteModule_lt_one {b : (FiniteAdeleRing (𝓞 k) k)ˣ}
     (hb : (b : FiniteAdeleRing (𝓞 k) k) ∈ OH k) (hu : b ∉ finiteIntegralUnits k) :
@@ -86,14 +84,14 @@ def integrand (g : (Unit → FiniteAdeleRing (𝓞 k) k) → ℂ) (ω : HeckeCha
     ((ideleModule k (ofFinite b) : ℝ) : ℂ) ^ (((n : ℝ) : ℝ) : ℂ)
 
 /- English proof (translation)
-Rewrite using `[ideleModule_ofFinite_eq, Complex.ofReal_cpow (finiteModule_pos _).le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cpow_module_eq (b : (FiniteAdeleRing (𝓞 k) k)ˣ) (x : ℝ) :
     ((ideleModule k (ofFinite b) : ℝ) : ℂ) ^ (x : ℂ) = ((finiteModule (ofFinite b) ^ x : ℝ) : ℂ) := by
   rw [ideleModule_ofFinite_eq, Complex.ofReal_cpow (finiteModule_pos _).le]
 
 /- English proof (translation)
-Rewrite using `[integrand, cpow_module_eq, norm_mul, norm_mul, Circle.norm_coe, mul_one, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg (finiteModule_pos _).le _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_integrand (g : (Unit → FiniteAdeleRing (𝓞 k) k) → ℂ) (ω : HeckeCharacter k) (n : ℕ)
     (b : (FiniteAdeleRing (𝓞 k) k)ˣ) :
@@ -103,9 +101,9 @@ theorem norm_integrand (g : (Unit → FiniteAdeleRing (𝓞 k) k) → ℂ) (ω :
     Real.norm_of_nonneg (Real.rpow_nonneg (finiteModule_pos _).le _)]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun b : (FiniteAdeleRing (𝓞 k) k)ˣ ↦ g fun _ ↦ (b : FiniteAdeleRing (𝓞 k) k)` using `((GJMatrix.mem_finiteSchwartzBruhatPi k).1 hg).1.continuous.comp (continuous_pi fun _ ↦ Units.continuous_val)`. Establish `h2 : Continuous fun b : (FiniteAdeleRing (𝓞 k) k)ˣ ↦ (ω.toIdele (ofFinite b) : ℂ)` using `continuous_subtype_val.comp (ω.continuous_toIdele.comp continuous_ofFinite)`. Establish `h3 : Continuous fun b : (FiniteAdeleRing (𝓞 k) k)ˣ ↦ ((finiteModule (ofFinite b) ^ (n : ℝ) : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp ((continuous_finiteModule.comp continuous_ofFinite).rpow_const fun b ↦ Or.inl (finiteModule_pos _).ne')`. Establish `: integrand g ω n = fun b : (FiniteAdeleRing (𝓞 k) k)ˣ ↦ g (fun _ ↦ (b : FiniteAdeleRing (𝓞 k) k)) * (ω.toIdele (ofFinite b) : ℂ) * ((finiteModule (ofFinite b) ^ (n : ℝ) : ℝ) : ℂ)`. Use function extensionality and compare the values at `b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[integrand, cpow_module_eq]`. Rewrite using `[this]`. Conclude with `(h1.mul h2).mul h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_integrand {g : (Unit → FiniteAdeleRing (𝓞 k) k) → ℂ}
     (hg : g ∈ GJMatrix.finiteSchwartzBruhatPi k) (ω : HeckeCharacter k) (n : ℕ) :
@@ -129,11 +127,9 @@ theorem continuous_integrand {g : (Unit → FiniteAdeleRing (𝓞 k) k) → ℂ}
   exact (h1.mul h2).mul h3
 
 /- English proof (translation)
-Rewrite using `[norm_integrand]`. Distinguish the cases in `h0 : g (fun _ ↦ (b : FiniteAdeleRing (𝓞 k) k)) = 0`. Rewrite using `[h0, norm_zero, zero_mul]`. Conclude with `finiteZetaBound_nonneg _ _ _`. Establish `hO` using `(hb _).2 h0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : (b : FiniteAdeleRing (𝓞 k) k) ∈ idealFiniteAdeles (1 : (FractionalIdeal (𝓞 k)⁰ k)ˣ)`. Rewrite using `[← SetLike.mem_coe, idealFiniteAdeles_one]`. Conclude with `hO`. Rewrite using `[finiteZetaBound, if_pos hL]`. Establish `hpow : finiteModule (ofFinite b) ^ (n : ℝ) ≤ finiteModule (ofFinite b) ^ (2 : ℝ)` using `Real.rpow_le_rpow_of_exponent_ge (finiteModule_pos _) (finiteModule_le_one hO) (by exact_mod_cast hn)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_integrand_le {g : (Unit → FiniteAdeleRing (𝓞 k) k) → ℂ} (ω : HeckeCharacter k)
     (hb : ∀ t, ‖g fun _ ↦ t‖ ≤ 1 ∧ (g (fun _ ↦ t) ≠ 0 → t ∈ OH k)) {n : ℕ} (hn : 2 ≤ n)
@@ -156,11 +152,11 @@ theorem norm_integrand_le {g : (Unit → FiniteAdeleRing (𝓞 k) k) → ℂ} (�
     _ ≤ _ := by rwa [one_mul]
 
 /- English proof (translation)
-Distinguish the cases in `hW : b ∈ finiteIntegralUnits k`. Rewrite using `[Set.indicator_of_mem (SetLike.mem_coe.2 hW)]`. Establish `hm : finiteModule (ofFinite b : IdeleGroup k) = 1` using `finiteModule_eq_one_of_mem hW`. Use `tendsto_const_nhds.congr fun n ↦ ?_` and prove the remaining obligations. Rewrite using `[integrand, cpow_module_eq, hu b hW, hm, Real.one_rpow, Complex.ofReal_one, one_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem (fun h ↦ hW (SetLike.mem_coe.1 h))]`. Distinguish the cases in `h0 : g (fun _ ↦ (b : FiniteAdeleRing (𝓞 k) k)) = 0`. Use `tendsto_const_nhds.congr fun n ↦ ?_` and prove the remaining obligations. Rewrite using `[integrand, h0, zero_mul, zero_mul]`. Establish `hlt` using `finiteModule_lt_one ((hb _).2 h0) hW`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `squeeze_zero_norm (a := fun n : ℕ ↦ finiteModule (ofFinite b) ^ n) (fun n ↦ ?_) (tendsto_pow_atTop_nhds_zero_of_lt_one (finiteModule_pos _).le hlt)` and prove the remaining obligations. Rewrite using `[norm_integrand, Real.rpow_natCast]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem tendsto_integrand {g : (Unit → FiniteAdeleRing (𝓞 k) k) → ℂ} {ω : HeckeCharacter k}
     (hb : ∀ t, ‖g fun _ ↦ t‖ ≤ 1 ∧ (g (fun _ ↦ t) ≠ 0 → t ∈ OH k))
@@ -188,9 +184,9 @@ theorem tendsto_integrand {g : (Unit → FiniteAdeleRing (𝓞 k) k) → ℂ} {�
       _ = _ := one_mul _
 
 /- English proof (translation)
-Introduce `k _ _ g ω hg hb hu B`. Establish `hlim : Tendsto (fun n : ℕ ↦ ∫ b, integrand g ω n b ∂finiteIdeleMeasure k) atTop (𝓝 (∫ b, ((finiteIntegralUnits k : Subgroup (FiniteAdeleRing (𝓞 k) k)ˣ) : Set (FiniteAdeleRing (𝓞 k) k)ˣ).indicator (fun _ ↦ (1 : ℂ)) b ∂finiteIdeleMeasure k))` using `tendsto_integral_filter_of_dominated_convergence (finiteZetaBound (1 : (FractionalIdeal (𝓞 k)⁰ k)ˣ) 2) (Eventually.of_forall fun n ↦ (continuous_integrand hg ω n).aestronglyMeasurable) ((eventually_ge_atTop 2).mono fun n hn ↦ Eventually.of_forall (norm_integrand_le ω hb hn)) (int …`. Establish `hval : (∫ b, ((finiteIntegralUnits k : Subgroup (FiniteAdeleRing (𝓞 k) k)ˣ) : Set (FiniteAdeleRing (𝓞 k) k)ˣ).indicator (fun _ ↦ (1 : ℂ)) b ∂finiteIdeleMeasure k) = 1`. Rewrite using `[integral_indicator_const _ (isOpen_finiteIntegralUnits k).measurableSet, Measure.real, finiteIdeleMeasure_finiteIntegralUnits]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hlim` using `[hval]`. Take `⟨n, hn, hB⟩` from `((hlim.eventually_ne one_ne_zero).and (tendsto_natCast_atTop_atTop.eventually_gt_atTop B)).exists`. Conclude with `⟨n, hB, hn⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem zFinLim : ZFinLim := by
   intro k _ _ g ω hg hb hu B

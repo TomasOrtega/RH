@@ -5,17 +5,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConvexNerveComplex
 open Set UpperTheory.V.ConeExtensionAcyclic
 
 /- English proof (translation)
-Introduce `E Y _ _ _ q T hg s hs hsT`. Take `⟨h0, hh0⟩` from `hg.nonempty`. Set `K : Set E` to `⋃ x ∈ s, {h | h ∈ poly q ∧ x h ≤ x h0}`. Establish `hK : IsCompact K` using `hs.isCompact_biUnion fun x hx => sublevel hg x (hsT hx) (x h0)`. Establish `hKp : K ⊆ poly q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h hh`. Simplify using `only [K, Set.mem_iUnion] at hh`. Take `⟨x, _, hp, _⟩` from `hh`. Conclude with `hp`. Use `((vert_finite hg.locFin K hK hKp).preimage Subtype.val_injective.injOn).subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `v ⟨z, hzs, hzv⟩`. Use `⟨?_, v.2⟩` and prove the remaining obligations. Simplify using `only [K, Set.mem_iUnion]`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hconv : Convex ℝ {f : E →L[ℝ] ℝ | 0 < f (v.1 - h0)}`. Use `convex_halfSpace_gt ?_ 0` and prove the remaining obligations. Conclude with `⟨fun f g => rfl, fun c f => rfl⟩`. Establish `hsub : s ⊆ {f : E →L[ℝ] ℝ | 0 < f (v.1 - h0)}`. Introduce `x hx`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hlt : x h0 < x v.1`. Assume the negation of the conclusion as `hle`. Conclude with `hno x hx ⟨v.2.1, not_lt.mp hle⟩`. Simplify using `only [Set.mem_setOf_eq, map_sub]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hz` using `convexHull_min hsub hconv hzs`. Establish `hz2` using `hzv h0 hh0`. Simplify using `only [Set.mem_setOf_eq, map_sub] at hz`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ConeExtensionAcyclic.cone_finite :
     ∀ {E Y : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {q : Y → E →L[ℝ] ℝ} {T : Set E}, Good q T → ∀ s : Set (E →L[ℝ] ℝ), s.Finite → s ⊆ posDual T → {v : Vert q | (convexHull ℝ s ∩ normalCone q v.1).Nonempty}.Finite := by

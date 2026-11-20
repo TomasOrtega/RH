@@ -13,7 +13,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace ReciprocityTheory.ChartRestriction.G.Semi.LBVal
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h1).op ≫ X.presheaf.map (homOfLE h2).op).hom x = _`. Rewrite using `[← Functor.map_comp]`. Apply the tactic sequence `all_goals rfl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma rres {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x : Γ(X, U)) :
     (X.presheaf.map (homOfLE h2).op).hom ((X.presheaf.map (homOfLE h1).op).hom x) =
@@ -25,13 +25,13 @@ lemma rres {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x :
 variable {X Y Z : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fintype K']
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma wchart_pull_le (φ : K → (Y ⟶ X)) (h : Z ⟶ Y) (j : K → L.ι) :
     LB.wchart L (fun k => h ≫ φ k) j ≤ h ⁻¹ᵁ LB.wchart L φ j := fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k
 
 /- English proof (translation)
-Conclude with `rres (wchart_pull_le L φ h j) hW ((h.app (LB.wchart L φ j)).hom (c.s j).val)`.
+A detailed English derivation is pending.
 -/
 lemma pullGen_val (φ : K → (Y ⟶ X)) (ε : K → ℤ) (c : LB.Gen (LB.LinComb L φ ε)) (h : Z ⟶ Y)
     (j : K → L.ι) (W : Z.Opens) (hW : W ≤ LB.wchart L (fun k => h ≫ φ k) j) :
@@ -40,7 +40,7 @@ lemma pullGen_val (φ : K → (Y ⟶ X)) (ε : K → ℤ) (c : LB.Gen (LB.LinCom
   exact rres (wchart_pull_le L φ h j) hW ((h.app (LB.wchart L φ j)).hom (c.s j).val)
 
 /- English proof (translation)
-Establish `ha : LB.wchart L (Sum.elim φ φ') j ≤ LB.wchart L φ (j ∘ Sum.inl)` using `fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inl k)`. Establish `hb : LB.wchart L (Sum.elim φ φ') j ≤ LB.wchart L φ' (j ∘ Sum.inr)` using `fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inr k)`. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE hW).op).hom ((Y.presheaf.map (homOfLE ha).op).hom (t.s (j ∘ Sum.inl)).val * (Y.presheaf.map (homOfLE hb).op).hom (t'.s (j ∘ Sum.inr)).val) = _`. Rewrite using `[map_mul]`. Conclude with `congrArg₂ (· * ·) (rres ha hW _) (rres hb hW _)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mulGen_val (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε')) (j : K ⊕ K' → L.ι)
@@ -61,7 +61,7 @@ lemma mulGen_val (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)
   exact congrArg₂ (· * ·) (rres ha hW _) (rres hb hW _)
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun u : Γ(Y, LB.wchart L φ j ⊓ LB.wchart L φ' j')ˣ => (Y.presheaf.map (homOfLE hW).op).hom u.val) (hc j j' c1 c2 c3)`. Conclude with `(rres inf_le_left hW _).symm.trans (e.trans (rres inf_le_right hW _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma corr_val (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε'))
@@ -81,7 +81,7 @@ namespace ReciprocityTheory.ChartRestriction.G.Out.LBVal
 open Semi
 
 /- English proof (translation)
-Establish `p : LB.wchart L (Y` using `(splitTorus S X ⊗ G).left) (K := PEmpty) PEmpty.elim j ≤ (fst (splitTorus S X) G).left ⁻¹ᵁ ⊤ := fun _ _ => trivial`. Use `(Semi.LBVal.rres p hW _).trans ?_` and prove the remaining obligations. Apply the tactic sequence `all_goals rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma charGen_val {S : Scheme.{0}} (X : Type) [AddCommGroup X] (G : Over S) {Z : Scheme.{0}}
     (L : LB Z) (χ : X) (j : PEmpty → L.ι) (W : (splitTorus S X ⊗ G).left.Opens)

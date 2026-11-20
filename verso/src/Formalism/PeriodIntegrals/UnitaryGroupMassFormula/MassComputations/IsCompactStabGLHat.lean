@@ -18,9 +18,9 @@ def stabGLHat (Λ : Set (Fin n → E)) : Set (GL (Fin n) (Af F ⊗[F] E)) :=
     ((g⁻¹ : GL (Fin n) (Af F ⊗[F] E)) : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) ∈ matStab (latHat (F := F) Λ)}
 
 /- English proof (translation)
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `loc_of_matStab Λ hg.1 v hy`. Introduce `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy' : ((g : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)).map (tensMap (E` using `E) (evalV F v))) *ᵥ y ∈ latLoc (E := E) v Λ := hy`. Establish `h` using `loc_of_matStab Λ hg.2 v hy'`. Rewrite `h` using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_Kloc_of (Λ : Set (Fin n → E)) {g : GL (Fin n) (Af F ⊗[F] E)} (hg : g ∈ stabGLHat Λ)
     (v : HeightOneSpectrum (𝓞 F)) : compV v g ∈ Kloc (E := E) v Λ := by
@@ -36,7 +36,7 @@ theorem mem_Kloc_of (Λ : Set (Fin n → E)) {g : GL (Fin n) (Af F ⊗[F] E)} (h
       Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec] at h
 
 /- English proof (translation)
-Introduce `x hx v`. Rewrite using `[pv_mulVec]`. Conclude with `((hg v) (pv v x)).1 (hx v)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matStab_of_mem (Λ : Set (Fin n → E)) {g : GL (Fin n) (Af F ⊗[F] E)}
     (hg : ∀ v : HeightOneSpectrum (𝓞 F), compV v g ∈ Kloc (E := E) v Λ) :
@@ -46,9 +46,9 @@ theorem matStab_of_mem (Λ : Set (Fin n → E)) {g : GL (Fin n) (Af F ⊗[F] E)}
   exact ((hg v) (pv v x)).1 (hx v)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hg' : g⁻¹ ∈ Kf σ J Λ` using `(Kf σ J Λ).inv_mem hg`. Use `⟨matStab_of_mem Λ fun v => (Subgroup.mem_iInf.1 hg v), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `matStab_of_mem Λ fun v => (Subgroup.mem_iInf.1 hg' v)`. Introduce `h`. Rewrite using `[Kf, Subgroup.mem_iInf]`. Introduce `v`. Conclude with `mem_Kloc_of Λ h v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kf_iff (Λ : Set (Fin n → E)) (g : HA (Af F) σ J) :
     g ∈ Kf σ J Λ ↔ incAf σ J g ∈ stabGLHat Λ := by
@@ -81,7 +81,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   [FiniteDimensional F E] {n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[pv, ratV, Algebra.smul_def, tensMap, inclR]`. Simplify using `[pv, ratV, h, tensMap, inclR]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pv_intSmul_single (v : HeightOneSpectrum (𝓞 F)) (N : ℤ) (j : Fin n) :
     pv v ((N : F) • (Pi.single j 1 : Fin n → Af F ⊗[F] E)) = ratV (F := F) (Fv F v) (N • (Pi.single j (1 : E) : Fin n → E)) := by
@@ -93,7 +93,7 @@ theorem pv_intSmul_single (v : HeightOneSpectrum (𝓞 F)) (N : ℤ) (j : Fin n)
   · simp [pv, ratV, h, tensMap, inclR]
 
 /- English proof (translation)
-Introduce `v`. Rewrite using `[pv_intSmul_single]`. Conclude with `Submodule.subset_span ⟨_, hN j, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hcol_hat (L : Submodule (𝓞 E) (Fin n → E)) {N : ℤ}
     (hN : ∀ j : Fin n, N • (Pi.single j (1 : E) : Fin n → E) ∈ L) (j : Fin n) :
@@ -103,13 +103,11 @@ theorem hcol_hat (L : Submodule (𝓞 E) (Fin n → E)) {N : ℤ}
   exact Submodule.subset_span ⟨_, hN j, rfl⟩
 
 /- English proof (translation)
-Use `set M := latHat (F := F) (L : Set (Fin n → E))`. Establish `hMcl : IsClosed M` using `hc.isClosed`. Take `⟨N, hN0, hNmem⟩` from `exists_common_mult L hL (fun j : Fin n => (Pi.single j (1 : E) : Fin n → E))`. Establish `hN : (N : F) ≠ 0` using `Int.cast_ne_zero.mpr hN0`. Establish `hSc` using `isCompact_matStab (K := F) hc hMcl (N : F) hN (hcol_hat L hNmem)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : stabGLHat (F` using `F) (L : Set (Fin n → E)) = Units.embedProduct _ ⁻¹' (matStab M ×ˢ (MulOpposite.op '' matStab M)) := by`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, ⟨_, h2, rfl⟩⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, y, hy, hyg⟩`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hy' : y = (((g⁻¹ : GL (Fin n) (Af F ⊗[F] E)) : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)))` using `MulOpposite.op_injective hyg`. Rewrite `hy` using `[hy']`. Then use the resulting hypothesis. Rewrite using `[e]`.
-
-Conclude with `Units.isClosedEmbedding_embedProduct.isCompact_preimage (hSc.prod (hSc.image MulOpposite.continuous_op))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_stabGLHat (L : Submodule (𝓞 E) (Fin n → E))
     (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤) (hc : IsCompact (latHat (F := F) (L : Set (Fin n → E)))) :
@@ -136,7 +134,7 @@ theorem isCompact_stabGLHat (L : Submodule (𝓞 E) (Fin n → E))
     (hSc.prod (hSc.image MulOpposite.continuous_op))
 
 /- English proof (translation)
-Establish `hS` using `isOpen_matStab hc ho`. Conclude with `(hS.preimage Units.continuous_val).inter (hS.preimage Units.continuous_coe_inv)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_stabGLHat (L : Submodule (𝓞 E) (Fin n → E))
     (hc : IsCompact (latHat (F := F) (L : Set (Fin n → E))))
@@ -154,11 +152,9 @@ namespace MassDataMassesW
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub KCptW
 
 /- English proof (translation)
-Introduce `D X`. Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `hMo` using `hO (F := X.B.I.F) X.B.I.L X.B.I.L_span X.B.I.L_fg`. Establish `hMc` using `hC (F := X.B.I.F) X.B.I.L X.B.I.L_span X.B.I.L_fg`. Establish `eK : (KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)) = incAf X.B.I.cm.sig X.B.I.J ⁻¹' stabGLHat (F` using `X.B.I.F) (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `g`. Conclude with `kf_iff X.B.I.cm.sig X.B.I.J _ g`. Establish `hinc : Continuous (incAf X.B.I.cm.sig X.B.I.J)` using `continuous_subtype_val`. Rewrite using `[eK]`. Use `⟨?_, (isOpen_stabGLHat X.B.I.L hMc hMo).preimage hinc⟩` and prove the remaining obligations.
-
-Conclude with `(PI.AdicCompletionValuation.isClosed_HR (Af X.B.I.F) X.B.I.cm.sig X.B.I.J).isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_stabGLHat X.B.I.L X.B.I.L_span hMc)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kCompactOpen_of (hO : LatHatOpen) (hC : LatHatCompact) : KCompactOpen := by
   intro D X

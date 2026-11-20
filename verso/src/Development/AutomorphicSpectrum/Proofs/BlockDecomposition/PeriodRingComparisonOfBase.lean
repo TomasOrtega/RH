@@ -13,41 +13,39 @@ variable {l : ℕ} [Fact l.Prime] (A : PAlg l)
 def invS (h : IsBase l A) : A.A →+* Ob l := (RingEquiv.ofBijective A.s h).symm.toRingHom
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => (RingEquiv.ofBijective A.s h).symm_apply_apply x`.
+A detailed English derivation is pending.
 -/
 theorem invS_comp (h : IsBase l A) : (invS A h).comp A.s = RingHom.id _ :=
   RingHom.ext fun x => (RingEquiv.ofBijective A.s h).symm_apply_apply x
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => (RingEquiv.ofBijective A.s h).apply_symm_apply x`.
+A detailed English derivation is pending.
 -/
 theorem comp_invS (h : IsBase l A) : A.s.comp (invS A h) = RingHom.id _ :=
   RingHom.ext fun x => (RingEquiv.ofBijective A.s h).apply_symm_apply x
 
 /- English proof (translation)
-Rewrite using `[xi, sW, ← wmap_comp, invS_comp, wmap_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_xi_invS (h : IsBase l A) : WittVector.map (invS A h) A.xi = xi0 l := by
   rw [xi, sW, ← wmap_comp, invS_comp, wmap_id]
 
 /- English proof (translation)
-Rewrite using `[← RingHom.comp_apply, ← awayW_comp, invS_comp, awayW_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem awayW_left (h : IsBase l A) (y : WL l (Ob l)) : awayW (invS A h) (awayW A.s y) = y := by
   rw [← RingHom.comp_apply, ← awayW_comp, invS_comp, awayW_id]; rfl
 
 /- English proof (translation)
-Rewrite using `[← RingHom.comp_apply, ← awayW_comp, comp_invS, awayW_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem awayW_right (h : IsBase l A) (y : WL l A.A) : awayW A.s (awayW (invS A h) y) = y := by
   rw [← RingHom.comp_apply, ← awayW_comp, comp_invS, awayW_id]; rfl
 
 /- English proof (translation)
-Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨k, rfl⟩` from `hy`. Establish `e` using `awayW_dpw (invS A h) k (A.isUnit_natCast k.factorial_ne_zero) A.xi`. Rewrite `e` using `[map_xi_invS]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Set.mem_of_eq_of_mem e (ACris.dpow_mem xi0_mem k)`. Consider the case `algebraMap x => rw [awayW_algebraMap]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
-
-Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem awayW_inv_mem (h : IsBase l A) {y : WL l A.A} (hy : y ∈ A.Acr0) :
     awayW (invS A h) y ∈ ACris.ACrisZero ℂ_[l] l := by
@@ -62,9 +60,9 @@ theorem awayW_inv_mem (h : IsBase l A) {y : WL l A.A} (hy : y ∈ A.Acr0) :
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Establish `e : awayW A.s x.1 = awayW A.s y.1` using `congrArg Subtype.val hxy`. Establish `e'` using `congrArg (awayW (invS A h)) e`. Rewrite `e'` using `[awayW_left, awayW_left]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subtype.ext e'`. Introduce `y`. Conclude with `⟨⟨awayW (invS A h) y.1, awayW_inv_mem A h y.2⟩, Subtype.ext (awayW_right A h y.1)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem acrisZero_bijective_of_isBase (h : IsBase l A) : Function.Bijective A.cris0 := by
   constructor
@@ -77,7 +75,7 @@ theorem acrisZero_bijective_of_isBase (h : IsBase l A) : Function.Bijective A.cr
     exact ⟨⟨awayW (invS A h) y.1, awayW_inv_mem A h y.2⟩, Subtype.ext (awayW_right A h y.1)⟩
 
 /- English proof (translation)
-The claim follows from `Function.bijective_iff_has_inverse.2 ⟨WittVector.map (invS A h), fun x => by change WittVector.map (invS A h) (WittVector.map A.s x) = x rw [← wmap_comp, invS_comp, wmap_id], fun x => by change WittVector.map A.s (WittVector.map (invS A h) x) = x rw [← wmap_comp, comp_invS, wmap_ …`.
+A detailed English derivation is pending.
 -/
 theorem sW_bijective (h : IsBase l A) : Function.Bijective A.sW :=
   Function.bijective_iff_has_inverse.2 ⟨WittVector.map (invS A h),
@@ -89,13 +87,13 @@ theorem sW_bijective (h : IsBase l A) : Function.Bijective A.sW :=
       rw [← wmap_comp, comp_invS, wmap_id]⟩
 
 /- English proof (translation)
-Establish `hs` using `sW_bijective A h`. Establish `hth` using `IsPerfectoidField.surjective_fontaineTheta (K := ℂ_[l]) l`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, rfl⟩` from `hth y`. Rewrite `hy` using `[oC_theta0]`. Establish `hm : A.sW x ∈ Ideal.span {A.xi}` using `Ideal.Quotient.eq_zero_iff_mem.1 hy`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hm`. Take `⟨c', rfl⟩` from `hs.2 c`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : x = c' * xi0 l` using `hs.1 (by rw [map_mul, ← hc]; rfl)`. Establish `: x ∈ RingHom.ker (theta0 l)`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ xi0_mem`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `u`. Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Take `⟨x, rfl⟩` from `hs.2 w`. Conclude with `⟨theta0 l x, A.oC_theta0 x⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem oC_bijective (h : IsBase l A) : Function.Bijective A.oC := by
   have hs := sW_bijective A h
@@ -118,7 +116,7 @@ theorem oC_bijective (h : IsBase l A) : Function.Bijective A.oC := by
     exact ⟨theta0 l x, A.oC_theta0 x⟩
 
 /- English proof (translation)
-Rewrite using `[← Submodule.restrictScalars_mem B, ← Ideal.smul_top_eq_map, AdicCompletion.pow_smul_top_eq_ker_eval (Submodule.fg_span_singleton _), LinearMap.mem_ker, ← AdicCompletion.factor_evalₐ_eq_eval _ a (by simp), h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_map_of_evalₐ_eq_zero (B : Type) [CommRing B] (π : B) (n : ℕ)
     (a : AdicCompletion (Ideal.span {π}) B) (h : AdicCompletion.evalₐ (Ideal.span {π}) n a = 0) :
@@ -128,7 +126,7 @@ theorem mem_map_of_evalₐ_eq_zero (B : Type) [CommRing B] (π : B) (n : ℕ)
     ← AdicCompletion.factor_evalₐ_eq_eval _ a (by simp), h, map_zero]
 
 /- English proof (translation)
-Introduce `u`. Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Take `⟨y, rfl⟩` from `(acrisZero_bijective_of_isBase A h).2 w`. Conclude with `⟨AdicCompletion.of _ _ y, A.cris_of n y⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cris_surjective (h : IsBase l A) (n : ℕ) : Function.Surjective (A.cris n) := by
   intro u
@@ -137,21 +135,19 @@ theorem cris_surjective (h : IsBase l A) (n : ℕ) : Function.Surjective (A.cris
   exact ⟨AdicCompletion.of _ _ y, A.cris_of n y⟩
 
 /- English proof (translation)
-Rewrite using `[map_pow, map_natCast, pow_l_acr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cris_natCast_pow (n : ℕ) : A.cris n ((l : Acris l) ^ n) = 0 := by
   rw [map_pow, map_natCast, pow_l_acr]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `a ha`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ (Ideal.span {(l : Acris0 l)}) n a)`. Establish `e : A.cris n a = A.mkAcr n (A.cris0 y)`. Simplify using `only [cris, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, ← hy, Ideal.Quotient.lift_mk]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `ha` using `[RingHom.mem_ker, e]`. Establish `hm : A.cris0 y ∈ Ideal.span {(l : A.Acr0) ^ n}` using `Ideal.Quotient.eq_zero_iff_mem.1 ha`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hm`. Take `⟨c', rfl⟩` from `(acrisZero_bijective_of_isBase A h).2 c`. Establish `e2 : y = c' * (l : Acris0 l) ^ n` using `(acrisZero_bijective_of_isBase A h).1 (by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_pow, map_natCast, hc])`. Establish `hz : Ideal.Quotient.mk (Ideal.span {(l : Acris0 l)} ^ n) y = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (by`. Rewrite using `[e2, Ideal.span_singleton_pow]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))`. Rewrite `hy` using `[hz]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : a ∈ (Ideal.span {(l : Acris0 l)} ^ n).map (algebraMap (Acris0 l) (Acris l))`. Conclude with `mem_map_of_evalₐ_eq_zero _ _ n a hy.symm`. Rewrite `hk` using `[ACris.map_span_p_pow, Ideal.span_singleton_pow]`. Conclude with `hk`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`.
-
-Conclude with `cris_natCast_pow A n`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_cris (h : IsBase l A) (n : ℕ) :
     RingHom.ker (A.cris n) = Ideal.span {(l : Acris l) ^ n} := by
@@ -180,7 +176,7 @@ theorem ker_cris (h : IsBase l A) (n : ℕ) :
     exact cris_natCast_pow A n
 
 /- English proof (translation)
-Introduce `A h` and use `⟨⟨acrisZero_bijective_of_isBase A h, oC_bijective A h⟩, fun n => ⟨cris_surjective A h n, ker_cris A h n⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l), IsBase l A →
     (Function.Bijective A.cris0 ∧ Function.Bijective A.oC) ∧

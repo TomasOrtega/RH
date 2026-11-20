@@ -8,29 +8,27 @@ namespace UpperTheory.V.Z.Sym.Glob
 variable {I G : Type} [Group G] {Gv : I → Type} [∀ v, Group (Gv v)] {K : ∀ v, Subgroup (Gv v)}
 
 /- English proof (translation)
-Establish `hab` using `P.inj (a * b⁻¹) fun v => by rw [map_mul, map_inv, h v, mul_inv_cancel]`. Conclude with `mul_inv_eq_one.mp hab`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rpg_ext (P : RPG G Gv K) {a b : G} (h : ∀ v, P.p v a = P.p v b) : a = b := by
   have hab := P.inj (a * b⁻¹) fun v => by rw [map_mul, map_inv, h v, mul_inv_cancel]
   exact mul_inv_eq_one.mp hab
 
 /- English proof (translation)
-Simplify using `[RPG.box, Subgroup.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_box (P : RPG G Gv K) (U : ∀ v, Subgroup (Gv v)) (g : G) : g ∈ P.box U ↔ ∀ v, P.p v g ∈ U v := by
   simp [RPG.box, Subgroup.mem_iInf]
 
 /- English proof (translation)
-Rewrite using `[MulAction.Quotient.smul_mk, QuotientGroup.eq, ← U.inv_mem_iff]`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem smul_mk_iff {A : Type} [Group A] (U : Subgroup A) (x g : A) : x • (g : A ⧸ U) = g ↔ g⁻¹ * x * g ∈ U := by
   rw [MulAction.Quotient.smul_mk, QuotientGroup.eq, ← U.inv_mem_iff]
   simp [mul_assoc]
 
 /- English proof (translation)
-Establish `hx : ∀ t : T, ∀ᶠ v in Filter.cofinite, ιv v (Q.p v t) ∈ K v` using `fun t => ((Q.ae t).and h).mono fun v hv => hv.2 ⟨_, hv.1, rfl⟩`. Use `choose g hg using fun t => P.surj _ (hx t)`. Use `⟨{ toFun := g, map_one' := ?_, map_mul' := ?_ }, fun v t => hg t v⟩` and prove the remaining obligations. Conclude with `rpg_ext P fun v => by simp only [hg, map_one]`. Introduce `a b`.
-
-Conclude with `rpg_ext P fun v => by simp only [hg, map_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rpg_hom {T : Type} [Group T] {Tv : I → Type} [∀ v, Group (Tv v)] {C₀ : ∀ v, Subgroup (Tv v)} (P : RPG G Gv K)
     (Q : RPG T Tv C₀) (ιv : ∀ v, Tv v →* Gv v) (h : ∀ᶠ v in Filter.cofinite, (C₀ v).map (ιv v) ≤ K v) :
@@ -44,15 +42,13 @@ theorem rpg_hom {T : Type} [Group T] {Tv : I → Type} [∀ v, Group (Tv v)] {C�
     exact rpg_ext P fun v => by simp only [hg, map_mul]
 
 /- English proof (translation)
-Establish `key : ∀ F : Finset I, ∃ D : Subgroup T, D.relIndex (Q.box B) ≠ 0 ∧ ∀ t ∈ D, ∀ v ∈ F, Q.p v t ∈ A v`. Introduce `F`. Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => exact ⟨⊤, by simp, fun _ _ v hv => by simp at hv⟩`. Consider the case `@insert a F _ ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨D, hD, hDF⟩` from `ih`. Use `⟨D ⊓ (A a).comap (Q.p a), Subgroup.relIndex_inf_ne_zero hD ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.relIndex_comap]`. Use `mt (Subgroup.relIndex_eq_zero_of_le_right ?_) (hA a)` and prove the remaining obligations. Rewrite using `[Subgroup.map_le_iff_le_comap]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `t ht`. Conclude with `(mem_box Q B t).1 ht a`. Introduce `t ht v hv`. Break down `Finset.mem_insert.1 hv with rfl | hv` into its components or cases. Conclude with `ht.2`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hDF t ht.1 v hv`. Take `⟨D, hD, hDF⟩` from `key (Filter.eventually_cofinite.1 hfin).toFinset`. Use `mt (Subgroup.relIndex_eq_zero_of_le_left (K := Q.box A) ?_) (Subgroup.relIndex_inf_ne_zero hD (by simp : (Q.box B).relIndex (Q.box B) ≠ 0))` and prove the remaining obligations. Introduce `t ht`. Rewrite using `[mem_box]`.
-
-Introduce `v`. Distinguish the cases in `hv : B v ≤ A v`. Conclude with `hv ((mem_box Q B t).1 ht.2 v)`. Conclude with `hDF t ht.1 v (by simpa using hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 private theorem box_relIndex_ne_zero_of_local {T : Type} [Group T] {Tv : I → Type} [∀ v, Group (Tv v)]
     {C₀ : ∀ v, Subgroup (Tv v)} (Q : RPG T Tv C₀) (A B : ∀ v, Subgroup (Tv v))
@@ -87,23 +83,21 @@ private theorem box_relIndex_ne_zero_of_local {T : Type} [Group T] {Tv : I → T
   · exact hDF t ht.1 v (by simpa using hv)
 
 /- English proof (translation)
-Establish `hS' : ∀ᶠ v in Filter.cofinite, v ∉ S` using `Filter.eventually_cofinite.2 (S.finite_toSet.subset fun v hv => by simpa using hv)`. Take `⟨ι, hι⟩` from `rpg_hom P Q ιv (hS'.mono hK)`. Establish `hjι : j = ι.comp φ` using `MonoidHom.ext fun z => rpg_ext P fun v => by rw [hj, MonoidHom.comp_apply, hι]`. Substitute `hjι` using the available equality. Establish `hbox : ∀ (g x : G), x • (g : G ⧸ P.box U) = g ↔ ∀ v, (P.p v g)⁻¹ * P.p v x * P.p v g ∈ U v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Introduce `g x`. Rewrite using `[smul_mk_iff, mem_box]`. Simplify using `only [map_mul, map_inv]`. Establish `hprod` using `Tf.orbProd I G T Gv Tv K U C₀ C P Q ι ιv θ θv f fv δ hι hθ hf hinv hc S hS hoff`. Use `(Tf.gqMass H T G φ ι H₀ (Q.box C) θ (P.box U) f δ ?_ ?_ hprod.1 ?_ m1 m2 ?_ ?_).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu x`. Rewrite using `[hf, hf]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_inv, hθ]`. Conclude with `hinv v _ ((mem_box P U u).1 hu v) _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Conclude with `rpg_ext P fun v => by`. Simplify using `only [map_mul, map_inv, hθ, hι]`. Conclude with `hc v _`. Introduce `z hz y`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `QuotientGroup.induction_on y fun g => ?_` and prove the remaining obligations. Conclude with `(hbox g _).2 fun v => h0 z hz v _`. Introduce `y`. Use `QuotientGroup.induction_on y fun g _ => ?_` and prove the remaining obligations. Establish `hEq : (stabilizer G (g : G ⧸ P.box U)).comap ι = Q.box (fun v => (stabilizer (Gv v) ((P.p v g : Gv v ⧸ U v))).comap (ιv v))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `t`. Rewrite using `[Subgroup.mem_comap, mem_stabilizer_iff, hbox, mem_box]`. Simplify using `only [Subgroup.mem_comap, mem_stabilizer_iff, smul_mk_iff, hι]`. Rewrite using `[hEq]`. Use `⟨fun t ht => (mem_box Q C t).2 fun v => (hst v _).1 ((mem_box Q _ t).1 ht v), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `box_relIndex_ne_zero_of_local Q _ C (fun v => (hst v _).2) ?_` and prove the remaining obligations. Use `((P.ae g).and hS').mono fun v hv t ht => ?_` and prove the remaining obligations. Take `⟨hKU, -, hCU, -⟩` from `hoff v hv.2`. Rewrite using `[Subgroup.mem_comap, mem_stabilizer_iff, smul_mk_iff]`. Establish `hg : P.p v g ∈ U v` using `hKU hv.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(U v).mul_mem ((U v).mul_mem ((U v).inv_mem hg) (hCU ⟨t, ht, rfl⟩)) hg`. Introduce `z hz`. Rewrite using `[Subgroup.mem_comap, mem_box]`. Introduce `v`. Use `(hst v ((1 : Gv v) : Gv v ⧸ U v)).1 ?_` and prove the remaining obligations.
-
-Rewrite using `[Subgroup.mem_comap, mem_stabilizer_iff, smul_mk_iff]`. Establish `h1` using `h0 z hz v 1`. Rewrite `h1` using `[MonoidHom.comp_apply, hι]`. Then use the resulting hypothesis. Rewrite using `[hprod.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gqAbs {T H : Type} [CommGroup T] [Group H] {Tv : I → Type} [∀ v, CommGroup (Tv v)] (U : ∀ v, Subgroup (Gv v))
     {C₀ : ∀ v, Subgroup (Tv v)} (C : ∀ v, Subgroup (Tv v)) (P : RPG G Gv K) (Q : RPG T Tv C₀)

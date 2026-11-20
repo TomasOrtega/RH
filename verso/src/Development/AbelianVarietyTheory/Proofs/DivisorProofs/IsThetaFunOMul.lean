@@ -21,13 +21,13 @@ open GlobalTheory.BigDat
 namespace GlobalTheory.BigDat.ThBox
 
 /- English proof (translation)
-Establish `hH : ∀ x y, symplOH S T x y = symplOH S₁ T₁ (p₁ x) (p₁ y) + symplOH S₂ T₂ (p₂ x) (p₂ y)` using `fun x y => by`. Unfold `symplOH`. Rewrite using `[hs, mul_add]`. Use `⟨fun γ w => ?_, ?_, (h₁.cont.comp c₁).mul (h₂.cont.comp c₂), fun k L hL hL0 w => ?_⟩` and prove the remaining obligations. Take `⟨γ₁, e₁⟩` from `r₁ γ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨γ₂, e₂⟩` from `r₂ γ`. Rewrite using `[map_add, map_add, hH, e₁, e₂, h₁.quasi, h₂.quasi, neg_add, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨U₁, o₁, hU₁⟩` from `h₁.level`. Take `⟨U₂, o₂, hU₂⟩` from `h₂.level`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨U₁.comap p₁ ⊓ U₂.comap p₂, (o₁.preimage c₁).inter (o₂.preimage c₂), fun u hu h0 => funext fun w => ?_⟩` and prove the remaining obligations. Establish `a₁` using `congrFun (hU₁ (p₁ u) hu.1 (hi u h0).1) (p₁ w)`. Establish `a₂` using `congrFun (hU₂ (p₂ u) hu.2 (hi u h0).2) (p₂ w)`. Unfold `heisO at a₁ a₂ ⊢`. Use `beta_reduce`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← a₁, ← a₂, hH, p₁.map_add, p₂.map_add, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_add]`. Conclude with `(h₁.smooth k (p₁.comp L) (c₁.comp hL) (fun t => (hf _ (hL0 t)).1) (p₁ w)).mul (h₂.smooth k (p₂.comp L) (c₂.comp hL) (fun t => (hf _ (hL0 t)).2) (p₂ w))`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isThetaFunO_mul {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T S₁ T₁ S₂ T₂ : HSp D} (p₁ : WO S T →+ WO S₁ T₁)
     (p₂ : WO S T →+ WO S₂ T₂) (c₁ : Continuous p₁) (c₂ : Continuous p₂)
@@ -59,28 +59,28 @@ theorem isThetaFunO_mul {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T S₁ T₁
       (h₂.smooth k (p₂.comp L) (c₂.comp hL) (fun t => (hf _ (hL0 t)).2) (p₂ w))
 
 /- English proof (translation)
-Rewrite using `[mulG_eq, Matrix.map_mul, h, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulG_map_zero {D : D7} {R : Type} [CommRing R] (φ : AE D →+* R) (S : HSp D) {n : ℕ}
     (x : Matrix (Fin n) (Fin S.rank) (AE D)) (h : x.map φ = 0) : (mulG S x).map φ = 0 := by
   rw [mulG_eq, Matrix.map_mul, h, Matrix.zero_mul]
 
 /- English proof (translation)
-Establish `: IsTopologicalRing (AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`. Conclude with `continuous_id.matrix_mul continuous_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_mulG {D : D7} (S : HSp D) {n : ℕ} : Continuous (mulG S (n := n)) := by
   have : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)
   exact continuous_id.matrix_mul continuous_const
 
 /- English proof (translation)
-Rewrite using `[mulG_eq, Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulG_rat {D : D7} (S : HSp D) {n : ℕ} (x : Matrix (Fin n) (Fin S.rank) D.host.E) :
     mulG S (x.map (incA D)) = (x * S.gram).map (incA D) := by
   rw [mulG_eq, Matrix.map_mul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [RingHom.map_zero]`. Consider the case `add x y hx hy => simp only [RingHom.map_add, hx, hy]`. Consider the case `tmul a x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem infPart_cA {D : D7} (x : AE D) :
     infPart D (cA D x) = sigR (Ainf D.host.F) D.sp.cm.sig (infPart D x) := by
@@ -90,7 +90,7 @@ theorem infPart_cA {D : D7} (x : AE D) :
   | tmul a x => rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [RingHom.map_zero]`. Consider the case `add x y hx hy => simp only [RingHom.map_add, hx, hy]`. Consider the case `tmul a x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem finPart_cA {D : D7} (x : AE D) :
     finPart D (cA D x) = sigR (Af D.host.F) D.sp.cm.sig (finPart D x) := by
@@ -102,7 +102,7 @@ theorem finPart_cA {D : D7} (x : AE D) :
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {i j : ℕ}
 
 /- English proof (translation)
-Establish `h0 : ∀ a b, φ (u a b) = 0` using `fun a b => congrFun (congrFun h a) b`. Use `⟨mulG_map_zero φ _ _ (Matrix.ext fun a b => h0 _ _), ?_⟩` and prove the remaining obligations. Establish `h2` using `mulG_map_zero φ (spV₁ G i j) ((u.submatrix id fun k => e (.inr k)).map (cA D)) (Matrix.ext fun a b => hφ _ (h0 _ _))`. Conclude with `Matrix.ext fun a b => (map_neg φ _).trans (neg_eq_zero.2 (congrFun (congrFun h2 a) b))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem maps_map_zero {R : Type} [CommRing R] (φ : AE D →+* R) (hφ : ∀ x, φ x = 0 → φ (cA D x) = 0) (e : Num G i j)
     (u : Pt G i j) (h : u.map φ = 0) : (mapV e u).map φ = 0 ∧ (mapW e u).map φ = 0 := by
@@ -113,13 +113,13 @@ theorem maps_map_zero {R : Type} [CommRing R] (φ : AE D →+* R) (hφ : ∀ x, 
   exact Matrix.ext fun a b => (map_neg φ _).trans (neg_eq_zero.2 (congrFun (congrFun h2 a) b))
 
 /- English proof (translation)
-The claim follows from `(continuous_mulG (negSp (spW G i j))).comp (continuous_id.matrix_submatrix id fun k => e (.inl k)).matrix_transpose`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mapV (e : Num G i j) : Continuous (mapV e) :=
   (continuous_mulG (negSp (spW G i j))).comp (continuous_id.matrix_submatrix id fun k => e (.inl k)).matrix_transpose
 
 /- English proof (translation)
-Establish `: IsTopologicalRing (AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`. Conclude with `((continuous_mulG (spV₁ G i j)).comp ((continuous_id.matrix_submatrix id fun k => e (.inr k)).matrix_map (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conj D))).neg`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_mapW (e : Num G i j) : Continuous (mapW e) := by
   have : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)
@@ -127,14 +127,14 @@ theorem continuous_mapW (e : Num G i j) : Continuous (mapW e) := by
     (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conj D))).neg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, mulG_rat (negSp (spW G i j)) (γ.submatrix id fun k => e (.inl k))ᵀ⟩`.
+Supply the required witnesses or components.
 -/
 theorem mapV_rat (e : Num G i j) (γ : Matrix (Fin (spW G i j).rank) (Fin ((spW G i j).rank + (spW₁ G i j).rank)) D.host.E) :
     ∃ γ', mapV e (γ.map (incA D)) = ratW (spV G i j) (negSp (spW G i j)) γ' :=
   ⟨_, mulG_rat (negSp (spW G i j)) (γ.submatrix id fun k => e (.inl k))ᵀ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨-_, (congrArg Neg.neg (mulG_rat (spV₁ G i j) ((γ.submatrix id fun k => e (.inr k)).map star))).trans (Matrix.map_neg _ (map_neg (incA D)) _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem mapW_rat (e : Num G i j) (γ : Matrix (Fin (spW G i j).rank) (Fin ((spW G i j).rank + (spW₁ G i j).rank)) D.host.E) :
     ∃ γ', mapW e (γ.map (incA D)) = ratW (spW G i j) (spV₁ G i j) γ' :=
@@ -142,15 +142,13 @@ theorem mapW_rat (e : Num G i j) (γ : Matrix (Fin (spW G i j).rank) (Fin ((spW 
     (Matrix.map_neg _ (map_neg (incA D)) _).symm⟩
 
 /- English proof (translation)
-Introduce `D T L sc G W M t i j e Bs Γ X om om' h hT`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.hermitianSelfDualLatticeSpace_form_hermitian_nondeg_unimodular D Bs hT.base _ Γ.V _ _ hT.geo.hV`. Take `⟨hJ, L', hL, h4, h5, h6⟩` from `GlobalTheory.T.skewHermitian_neg_traceZero_inv_hermitian_unimodular D Bs hT.base _ Γ.W _ _ hT.geo.hW`. Establish `hξ : D.host.xi0 ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Set `T₀` to `GlobalTheory.WeilSchrodinger.hspOf D Γ.V.Jᵀ h1 h2 Γ.V.L hT.geo.hV.lat h3 (fun _ => (0, 0))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `S₀` to `GlobalTheory.WeilSchrodinger.hspOf D (-D.host.xi0 • Γ.W.J⁻¹) h4 h5 L' hL h6 (fun _ => (0, 0))`. Establish `eA : Γ.V.J = T₀.gramᵀ` using `by rw [GlobalTheory.WeilSchrodinger.gram_hspOf]; rfl`. Establish `eB : (-1 : AE D) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (D.host.xi0 • S₀.gram⁻¹)`. Rewrite using `[GlobalTheory.WeilSchrodinger.gram_hspOf]`. Establish `e1 : (-D.host.xi0 • Γ.W.J⁻¹)⁻¹ = (-D.host.xi0)⁻¹ • Γ.W.J` using `Matrix.inv_eq_left_inv (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_nonsing_inv _ hJ, inv_mul_cancel₀ (neg_ne_zero.2 hξ), one_smul])`. Establish `e2 : D.host.xi0 • (-D.host.xi0)⁻¹ • Γ.W.J = -Γ.W.J`. Rewrite using `[smul_smul, inv_neg, mul_neg, mul_inv_cancel₀ hξ, neg_one_smul]`. Use `show (-1 : AE D) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (D.host.xi0 • (-D.host.xi0 • Γ.W.J⁻¹)⁻¹)`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a b`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM]`. Establish `hψ : IsStdChar D W.ψ (-1)` using `h.ψ ▸ GlobalTheory.T.isStdChar_neg_one_of_standardTraceAdelicAddChar D Bs.ψ hT.base.std`. Take `⟨ha, hi, hs⟩` from `GlobalTheory.ThetaTransform.thetaTr_bij (S := S₀) (T := T₀) Γ.M.co hψ eA eB hT.geo.hM.rat`. Use `⟨ha, hi, fun f₁ f₂ hf₁ hf₂ => (hs _).1 ?_⟩` and prove the remaining obligations.
-
-Conclude with `isThetaFunO_mul (S := S₀) (T := T₀) (AddMonoidHom.mk' (mapV e) (mapV_add e)) (AddMonoidHom.mk' (mapW e) (mapW_add e)) (continuous_mapV e) (continuous_mapW e) (fun x y => (GlobalTheory.ThetaTransform.symplO_eq_symp eA eB x y).trans (symp_eq e Γ h.JW h.JWW x y)) (mapV_rat e) (mapW_ …`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem thetaPt_box : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (M : Vol G) (t : T) (i j : ℕ) (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E)
     (om : Rep D.sp.cm.sig Γ.V Γ.W) (om' : Rep D.sp.cm.sig Γ.V' Γ.W), IsTripleOf W M t i j e Bs Γ X → IsTriple Bs Γ X om om' →

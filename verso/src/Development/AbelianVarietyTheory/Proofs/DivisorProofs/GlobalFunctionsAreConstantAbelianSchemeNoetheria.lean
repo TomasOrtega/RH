@@ -13,15 +13,15 @@ namespace GlobalTheory.LiftSys
 open Opposite TopologicalSpace
 
 /- English proof (translation)
-Introduce `R _ _ A _ hA`. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact. Use `haveI : GeometricallyIntegral A.hom := GlobalTheory.geometricallyIntegral_of_smooth A.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbij` using `((GlobalTheory.ProperFunctions.functions_of_isProper).2.2 R A.left A.hom).1`. Introduce `g hg`. Establish `hc : ∀ (U V : A.left.affineOpens) (h : V.1 ≤ U.1), A.left.presheaf.map (homOfLE h).op (g (op U)) = g (op V)`. Introduce `U V h`. Establish `e` using `congrFun (congrFun (congrFun hg (op U)) (op V)) (homOfLE h).op`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(sub_eq_zero.1 e).symm`. Take `⟨t, ht, -⟩` from `A.left.sheaf.existsUnique_gluing' (fun U : A.left.affineOpens ↦ U.1) ⊤ (fun _ ↦ homOfLE le_top) (iSup_affineOpens_eq_top A.left).ge (fun U ↦ g (op U)) (by`. Introduce `U V`. Use `A.left.sheaf.eq_of_locally_eq' (fun W : {W : A.left.affineOpens // W.1 ≤ U.1 ⊓ V.1} ↦ W.1.1) (U.1 ⊓ V.1) (fun W ↦ homOfLE W.2) ?_ _ _ fun W ↦ ?_` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Take `⟨W, hW, hxW, hWUV⟩` from `Opens.isBasis_iff_nbhd.mp A.left.isBasis_affineOpens hx`. Conclude with `Opens.mem_iSup.mpr ⟨⟨⟨W, hW⟩, hWUV⟩, hxW⟩`. Simplify using `only`. Establish `e : ∀ {a b c : Opens A.left} (f : b ⟶ a) (f' : c ⟶ b) (x : Γ(A.left, a)), A.left.presheaf.map f'.op (A.left.presheaf.map f.op x) = A.left.presheaf.map (f' ≫ f).op x` using `by intros; simp`. Use `(e _ _ _).trans ((hc U W.1 (W.2.trans inf_le_left)).trans ((hc V W.1 (W.2.trans inf_le_right)).symm.trans (e _ _ _).symm)))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, hr⟩` from `hbij.2 t`. Use `⟨r, fun U ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← ht U.unop, ← hr]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem const_of_isAbelianScheme : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A],
     IsAbelianScheme A → Const A.hom := by

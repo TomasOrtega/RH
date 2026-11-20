@@ -6,13 +6,13 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 namespace GlobalTheory.CompanionTheory.StairAdd
 
 /- English proof (translation)
-Introduce `R _ C _ F T j z z' s`. Proceed by induction on `s with`. Consider the case `zero`. Introduce `k x x' hx hx'`. Take `⟨h, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h', rfl⟩` from `hx'`. Substitute `h` using the available equality. Conclude with `⟨⟨rfl, by simp⟩, ⟨rfl, by simp⟩⟩`. Consider the case `succ s ih`. Introduce `k x x' hx hx'`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, rfl, ha⟩` from `hx`. Take `⟨a', rfl, ha'⟩` from `hx'`. Take `⟨h1, h2⟩` from `ih (k + 1) _ _ ha ha'`. Use `⟨⟨a + a', by simp, ?_⟩, ⟨a - a', by simp, ?_⟩⟩` and prove the remaining obligations. Simplify `h1` using `[map_add, smul_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h2` using `[map_sub, smul_sub]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem stAdd : CrystallineSemistableComparison.E.StAdd := by
   intro R _ C _ F T j z z' s

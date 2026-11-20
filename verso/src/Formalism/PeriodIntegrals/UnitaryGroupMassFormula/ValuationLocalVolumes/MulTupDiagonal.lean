@@ -9,15 +9,13 @@ open MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes PI.
 open scoped NNReal TensorProduct
 
 /- English proof (translation)
-Establish `h1 : e.symm = p.trans (e.trans p)`. Use extensionality with `x`. Conclude with `(he x).symm`. Establish `h2 : p.trans p = ContinuousAddEquiv.refl G`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `hp x`. Establish `hpp : addEquivAddHaarChar p * addEquivAddHaarChar p = 1`. Rewrite using `[← addEquivAddHaarChar_trans, h2, addEquivAddHaarChar_refl]`. Establish `h3 : (addEquivAddHaarChar e)⁻¹ = addEquivAddHaarChar e`. Rewrite using `[← addEquivAddHaarChar_symm, h1, addEquivAddHaarChar_trans, addEquivAddHaarChar_trans]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hpos` using `addEquivAddHaarChar_pos e`. Establish `h4 : addEquivAddHaarChar e * addEquivAddHaarChar e = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : ((addEquivAddHaarChar e : ℝ≥0) : ℝ) * (addEquivAddHaarChar e : ℝ) = 1` using `by exact_mod_cast h4`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : (0 : ℝ) ≤ (addEquivAddHaarChar e : ℝ)` using `(addEquivAddHaarChar e).2`. Establish `hx : ((addEquivAddHaarChar e : ℝ≥0) : ℝ) = 1`. Break down `mul_self_eq_one_iff.1 h5 with h | h` into its components or cases. Conclude with `h`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `hx` after adjusting the coercions.
+Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem char_eq_one {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [MeasurableSpace G] [BorelSpace G] [LocallyCompactSpace G]
@@ -68,7 +66,7 @@ def diagUnit (d : Fin a → Kˣ) : (Matrix (Fin a) (Fin a) K)ˣ where
     simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j i`. Simplify using `[mulTup, Matrix.diagonal_apply, ite_mul, Finset.sum_ite_eq']`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mulTup_diagonal (f : Fin a → K) (X : Fin a → Fin M → K) :
     mulTup (Matrix.diagonal f) X = fun j i => f j * X j i := by
@@ -94,9 +92,9 @@ def permTup (π : Equiv.Perm (Fin n)) : (Fin n → Fin M → R ⊗[F] E) ≃ₜ+
   continuous_invFun := continuous_pi fun j => continuous_apply _
 
 /- English proof (translation)
-Rewrite using `[cTup, char_eq_one (tupEquiv (M := M) (diagUnit d)) (permTup R π) ?_ ?_, inv_one]`. Introduce `X`. Use function extensionality and compare the values at `j`. Use `show X (π (π j)) = X j`. Rewrite using `[hπ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X show (fun j => mulTup (Matrix.diagonal fun i => (d i : R ⊗[F] E)) (fun j => X (π j)) (π j)) = mulTup (Matrix.diagonal fun i => (((d i)⁻¹ : (R ⊗[F] E)ˣ) : R ⊗[F] E)) X`. Rewrite using `[mulTup_diagonal, mulTup_diagonal]`. Use function extensionality and compare the values at `j i`. Simplify using `[hπ, hd]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cTup_eq_one (d : Fin n → (R ⊗[F] E)ˣ) (π : Equiv.Perm (Fin n)) (hπ : ∀ i, π (π i) = i)
     (hd : ∀ i, d (π i) = (d i)⁻¹) : cTup (M := M) R (diagUnit d) = 1 := by
@@ -123,7 +121,7 @@ def permHerm (π : Equiv.Perm (Fin n)) : HermR R σ n ≃ₜ+ HermR R σ n where
   continuous_invFun := (continuous_subtype_val.matrix_submatrix π.symm π.symm).subtype_mk _
 
 /- English proof (translation)
-Unfold `conjT`. Rewrite using `[Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjT_diagonal (f : Fin n → R ⊗[F] E) :
     conjT R σ (Matrix.diagonal f) = Matrix.diagonal fun i => sigR R σ (f i) := by
@@ -131,11 +129,11 @@ theorem conjT_diagonal (f : Fin n → R ⊗[F] E) :
   rw [Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose]
 
 /- English proof (translation)
-Rewrite using `[cHerm, char_eq_one (hermEquiv R σ hσ (diagUnit d)) (permHerm σ R π) ?_ ?_]`. Introduce `S`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) (π (π i)) (π (π j)) = _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hπ, hπ]`. Introduce `S`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show (conjT R σ (Matrix.diagonal fun i => (d i : R ⊗[F] E)) * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).submatrix π π * Matrix.diagonal fun i => (d i : R ⊗[F] E)) (π i) (π j) = (conjT R σ (Matrix.diagonal fun i => (((d i)⁻¹ : (R ⊗[F] E)ˣ) : R ⊗[F] E)) * (S : Matrix (Fin n) (Fin n) …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[conjT_diagonal, conjT_diagonal, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `[hπ, hd]`.
+A detailed English derivation is pending.
 -/
 theorem cHerm_eq_one [SecondCountableTopology (HermR R σ n)] (d : Fin n → (R ⊗[F] E)ˣ)
     (π : Equiv.Perm (Fin n)) (hπ : ∀ i, π (π i) = i) (hd : ∀ i, d (π i) = (d i)⁻¹) :

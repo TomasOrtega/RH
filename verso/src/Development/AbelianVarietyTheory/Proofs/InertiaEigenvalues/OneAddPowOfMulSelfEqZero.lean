@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.OneAddPowSquareZero
 
 /- English proof (translation)
-Introduce `S _ X hX N`. Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, ih, Nat.cast_succ, mul_add, mul_one, add_mul, one_mul, mul_assoc, hX, mul_zero, add_zero, add_mul, one_mul, add_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_add_pow_of_mul_self_eq_zero :
     ∀ {S : Type} [inst : Ring S] (X : S), X * X = (0 : S) →

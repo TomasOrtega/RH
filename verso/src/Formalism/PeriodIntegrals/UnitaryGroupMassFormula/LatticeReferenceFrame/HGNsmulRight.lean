@@ -18,19 +18,19 @@ section Lemmas
 variable (I : Formalism.MainNotions.S.AutInst) (g : ℕ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, zero_mem _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem zmod_zero : ZMod' I g 0 := ⟨0, zero_mem _, by simp⟩
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `h`. Conclude with `⟨Formalism.UG.inclE (F := I.F) (Af I.F) (t : I.E), inclE_mem' I t, by rw [map_mul, map_natCast]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem zmod_of_GE {x : I.E} (h : GE I g x) : ZMod' I g (Formalism.UG.inclE (F := I.F) (Af I.F) x) := by
   obtain ⟨t, rfl⟩ := h
   exact ⟨Formalism.UG.inclE (F := I.F) (Af I.F) (t : I.E), inclE_mem' I t, by rw [map_mul, map_natCast]⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `h1`. Take `⟨b, hb, rfl⟩` from `h2`. Conclude with `⟨a + b, add_mem ha hb, (mul_add _ _ _).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem zmod_add {x y : I.E ⊗[I.F] Af I.F} (h1 : ZMod' I g x) (h2 : ZMod' I g y) :
     ZMod' I g (x + y) := by
@@ -39,7 +39,7 @@ theorem zmod_add {x y : I.E ⊗[I.F] Af I.F} (h1 : ZMod' I g x) (h2 : ZMod' I g 
   exact ⟨a + b, add_mem ha hb, (mul_add _ _ _).symm⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `h`. Conclude with `⟨a * y, mul_mem ha hy, mul_assoc _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem zmod_mul_int {x y : I.E ⊗[I.F] Af I.F} (h : ZMod' I g x) (hy : y ∈ IntAf I.F I.E) :
     ZMod' I g (x * y) := by
@@ -47,9 +47,9 @@ theorem zmod_mul_int {x y : I.E ⊗[I.F] Af I.F} (h : ZMod' I g x) (hy : y ∈ I
   exact ⟨a * y, mul_mem ha hy, mul_assoc _ _ _⟩
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hx`. Establish `h1` using `zmod_mul_int I g hε (inclE_mem' I s)`. Establish `h2` using `zmod_add I g h1 (zmod_of_GE I g h)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `e : algebraMap (𝓞 I.E) I.E s = (s : I.E)` using `rfl`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zmod_eps {ε : I.E ⊗[I.F] Af I.F} {θ : I.E}
     (hε : ZMod' I g (ε - Formalism.UG.inclE (F := I.F) (Af I.F) θ)) {x : I.E}
@@ -65,13 +65,11 @@ theorem zmod_eps {ε : I.E ⊗[I.F] Af I.F} {θ : I.E}
   ring
 
 /- English proof (translation)
-Take `⟨t, ht, he⟩` from `hε`. Establish `hinc : ∀ a : I.E, sigA I (Formalism.UG.inclE (F` using `I.F) (Af I.F) a) = Formalism.UG.inclE (F := I.F) (Af I.F) (star a) := by`. Introduce `a`. Use `show (Algebra.TensorProduct.map I.cm.sig (AlgHom.id I.F (Af I.F))) (a ⊗ₜ[I.F] (1 : Af I.F)) = (star a) ⊗ₜ[I.F] (1 : Af I.F)`. Rewrite using `[Algebra.TensorProduct.map_tmul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hcl : Subring.closure (Set.range (fun x : Formalism.UG.intOE I.E => (x : I.E) ⊗ₜ[I.F] (1 : Af I.F)) ∪ Set.range (fun y : Formalism.UG.intAd I.F => (1 : I.E) ⊗ₜ[I.F] (y : Af I.F))) ≤ (IntAf I.F I.E).comap (sigA I)`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ (⟨⟨s, hs⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩)`. Take `⟨s', rfl⟩` from `hs show sigA I (Formalism.UG.inclE (F := I.F) (Af I.F) (algebraMap (𝓞 I.E) I.E s')) ∈ IntAf I.F I.E`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinc]`. Establish `hi : IsIntegral ℤ (star (algebraMap (𝓞 I.E) I.E s'))` using `IsIntegral.map (starRingEnd I.E).toIntAlgHom (NumberField.RingOfIntegers.isIntegral_coe s')`. Conclude with `inclE_mem' I ⟨_, hi⟩`. Use `show (Algebra.TensorProduct.map I.cm.sig (AlgHom.id I.F (Af I.F))) ((1 : I.E) ⊗ₜ[I.F] (y : Af I.F)) ∈ IntAf I.F I.E`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`.
-
-Conclude with `Subring.subset_closure (Or.inr ⟨⟨y, hy⟩, rfl⟩)`. Use `⟨sigA I t, hcl ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← hinc, ← map_sub, he, map_mul, map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zmod_sig {ε : I.E ⊗[I.F] Af I.F} {θ : I.E}
     (hε : ZMod' I g (ε - Formalism.UG.inclE (F := I.F) (Af I.F) θ)) :
@@ -103,7 +101,7 @@ theorem zmod_sig {ε : I.E ⊗[I.F] Af I.F} {θ : I.E}
   rw [← hinc, ← map_sub, he, map_mul, map_natCast]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, nsmul_eq_mul, map_mul, map_natCast, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hG_nsmul_left (m : ℕ) (x y : Fin I.n → I.E) :
     Formalism.UG.hform (starRingEnd I.E) I.J (m • x) y = (m : I.E) * Formalism.UG.hform (starRingEnd I.E) I.J x y := by
@@ -112,7 +110,7 @@ theorem hG_nsmul_left (m : ℕ) (x y : Fin I.n → I.E) :
   ring
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, nsmul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hG_nsmul_right (m : ℕ) (x y : Fin I.n → I.E) :
     Formalism.UG.hform (starRingEnd I.E) I.J x (m • y) = (m : I.E) * Formalism.UG.hform (starRingEnd I.E) I.J x y := by
@@ -121,13 +119,13 @@ theorem hG_nsmul_right (m : ℕ) (x y : Fin I.n → I.E) :
   ring
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_mL {x : VA I} (hx : x ∈ I.Lf) : ((g : ℕ) : I.E ⊗[I.F] Af I.F) • x ∈ mL I g :=
   Submodule.subset_span ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [incl, Pi.smul_apply, Subring.smul_def, smul_eq_mul, Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem incl_osmul (c : 𝓞 I.E) (x : Fin I.n → I.E) :
     incl I (c • x) = (⟨Formalism.UG.inclE (F := I.F) (Af I.F) (c : I.E), inclE_mem' I c⟩ : IntAf I.F I.E) •
@@ -137,19 +135,17 @@ theorem incl_osmul (c : 𝓞 I.E) (x : Fin I.n → I.E) :
   rfl
 
 /- English proof (translation)
-Use `(I.L_dual x).mpr fun y hy => ?_` and prove the remaining obligations. Set `H : VA I → I.E ⊗[I.F] Af I.F` to `fun v => ∑ i, ∑ j, Formalism.UG.inclE (F := I.F) (Af I.F) (starRingEnd I.E (y i) * I.J i j) * v j`. Establish `hinc : ∀ z : Fin I.n → I.E, H (incl I z) = Formalism.UG.inclE (F` using `I.F) (Af I.F) (Formalism.UG.hform (starRingEnd I.E) I.J y z) := by`. Introduce `z`. Simplify using `only [H, incl, Formalism.UG.hform, map_sum, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ v ∈ I.Lf, H v ∈ IntAf I.F I.E`. Introduce `v hv`. Express the relevant statement in the definitionally equal form `v ∈ Submodule.span _ _ at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Take `⟨z, rfl⟩` from `hv`. Express the relevant statement in the definitionally equal form `H (incl I (z : Fin I.n → I.E)) ∈ IntAf I.F I.E`. Take `⟨s, hs⟩` from `(I.L_dual z).mp z.2 y hy`. Rewrite using `[hinc, ← hs]`. Conclude with `inclE_mem' I s`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp [H]`. Consider the case `add a b _ _ ha hb`. Establish `e : H (a + b) = H a + H b`. Simplify using `only [H, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Rewrite using `[e]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `add_mem ha hb`. Consider the case `smul a v _ hv`. Establish `e : H (a • v) = (a : I.E ⊗[I.F] Af I.F) * H v`. Simplify using `only [H, Pi.smul_apply, Subring.smul_def, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_mem a.2 hv`. Establish `hm` using `key _ hx`. Rewrite `hm` using `[hinc x]`.
-
-Take `⟨s, hs⟩` from `h3 I _ hm`. Conclude with `⟨s, hs⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_L_of (h3 : LocGlob) {x : Fin I.n → I.E} (hx : incl I x ∈ I.Lf) : x ∈ I.L := by
   refine (I.L_dual x).mpr fun y hy => ?_
@@ -188,14 +184,14 @@ theorem mem_L_of (h3 : LocGlob) {x : Fin I.n → I.E} (hx : incl I x ∈ I.Lf) :
   exact ⟨s, hs⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [incl, Pi.smul_apply, map_nsmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incl_nsmul' (m : ℕ) (x : Fin I.n → I.E) : incl I (m • x) = m • incl I x := by
   funext i
   simp only [incl, Pi.smul_apply, map_nsmul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(m : 𝓞 I.E), by rw [h]; exact congrArg _ (map_natCast (algebraMap (𝓞 I.E) I.E) m).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem ge_of_nat {x : I.E} (m : ℕ) (h : x = (g : I.E) * (m : I.E)) : GE I g x :=
   ⟨(m : 𝓞 I.E), by rw [h]; exact congrArg _ (map_natCast (algebraMap (𝓞 I.E) I.E) m).symm⟩

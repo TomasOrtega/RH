@@ -29,7 +29,7 @@ Both sides reduce to the same expression.
 private theorem pY_apply (b : Fin 2 → k) : pY b = ![b 1, -b 0, b 1, b 0] := rfl
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h0` using `congrFun h 0`. Establish `h1` using `congrFun h 1`. Simplify using `[pX_apply] at h0 h1`. Apply the tactic sequence `ext i; fin_cases i <;> simp [h0, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem pX_inj (α β : kˣ) : Function.Injective (pX α β) := by
   intro a b h
@@ -39,7 +39,7 @@ private theorem pX_inj (α β : kˣ) : Function.Injective (pX α β) := by
   ext i; fin_cases i <;> simp [h0, h1]
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h0` using `congrFun h 0`. Establish `h1` using `congrFun h 3`. Simplify using `[pY_apply] at h0 h1`. Apply the tactic sequence `ext i; fin_cases i <;> simp [h0, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem pY_inj : Function.Injective (pY (k := k)) := by
   intro a b h
@@ -49,7 +49,7 @@ private theorem pY_inj : Function.Injective (pY (k := k)) := by
   ext i; fin_cases i <;> simp [h0, h1]
 
 /- English proof (translation)
-Establish `hα` using `α.ne_zero`. Establish `hβ` using `β.ne_zero`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;>`. Apply the tactic sequence `simp [mix, pX_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_four, Fin.sum_univ_two] <;> field_simp <;> ring`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem mix_pX (h2 : (2 : k) ≠ 0) (α β : kˣ) (A B : Matrix (Fin 2) (Fin 2) k) (a : Fin 2 → k) :
     mix (β / α) A B *ᵥ pX α β a = pX α β (A *ᵥ a) := by
@@ -60,7 +60,7 @@ private theorem mix_pX (h2 : (2 : k) ≠ 0) (α β : kˣ) (A B : Matrix (Fin 2) 
     simp [mix, pX_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_four, Fin.sum_univ_two] <;> field_simp <;> ring
 
 /- English proof (translation)
-Establish `hγ` using `γ.ne_zero`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;>`. Apply the tactic sequence `simp [mix, pY_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_four, Fin.sum_univ_two] <;> field_simp <;> ring`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem mix_pY (h2 : (2 : k) ≠ 0) (γ : kˣ) (A B : Matrix (Fin 2) (Fin 2) k) (a : Fin 2 → k) :
     mix γ A B *ᵥ pY a = pY (B *ᵥ a) := by
@@ -70,7 +70,7 @@ private theorem mix_pY (h2 : (2 : k) ≠ 0) (γ : kˣ) (A B : Matrix (Fin 2) (Fi
     simp [mix, pY_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_four, Fin.sum_univ_two] <;> field_simp <;> ring
 
 /- English proof (translation)
-Establish `hα` using `α.ne_zero`. Establish `hβ` using `β.ne_zero`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [pX_apply, pY_apply, Matrix.mulVec_diagonal] <;> field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem diag_pX (α β : kˣ) (a : Fin 2 → k) :
     Matrix.diagonal ![(β : k), -(α : k), -(β : k), (α : k)] *ᵥ pX α β a = pY a := by
@@ -80,13 +80,13 @@ private theorem diag_pX (α β : kˣ) (a : Fin 2 → k) :
   fin_cases i <;> simp [pX_apply, pY_apply, Matrix.mulVec_diagonal] <;> field_simp
 
 /- English proof (translation)
-Establish `hα` using `α.ne_zero`. Establish `hβ` using `β.ne_zero`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `_ ⟨a, rfl⟩ ⟨b, hb⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h0` using `congrFun hb 0`. Establish `h1` using `congrFun hb 1`. Establish `h2'` using `congrFun hb 2`. Establish `h3` using `congrFun hb 3`. Simplify using `[pX_apply, pY_apply] at h0 h1 h2' h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : b 1 = 0` using `mul_left_cancel₀ h2 (by linear_combination h0 + h2')`. Establish `e0 : b 0 = 0` using `mul_left_cancel₀ h2 (by linear_combination h3 - h1)`. Rewrite using `[← hb]`. Apply the tactic sequence `ext i; fin_cases i <;> simp [pY_apply, e0, e1]`. Rewrite using `[codisjoint_iff, eq_top_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Introduce `v _`. Use `Submodule.mem_sup.2 ⟨_, ⟨![α * (v 1 + v 3) / 2, β * (v 0 - v 2) / 2], rfl⟩, _, ⟨![(v 3 - v 1) / 2, (v 0 + v 2) / 2], rfl⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i; fin_cases i <;> simp [pX_apply, pY_apply] <;> field_simp <;> ring`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem compl_XY (h2 : (2 : k) ≠ 0) (α β : kˣ) :
     IsCompl (LinearMap.range (pX α β)) (LinearMap.range (pY (k := k))) := by
@@ -111,7 +111,7 @@ private theorem compl_XY (h2 : (2 : k) ≠ 0) (α β : kˣ) :
     ext i; fin_cases i <;> simp [pX_apply, pY_apply] <;> field_simp <;> ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨((g⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) *ᵥ b, by rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem gl_surj (g : GL (Fin 2) k) (b : Fin 2 → k) : ∃ a, (g : Matrix (Fin 2) (Fin 2) k) *ᵥ a = b :=
   ⟨((g⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) *ᵥ b, by
@@ -120,39 +120,35 @@ private theorem gl_surj (g : GL (Fin 2) k) (b : Fin 2 → k) : ∃ a, (g : Matri
 end
 
 /- English proof (translation)
-Introduce `k Γ₀ Γ _ _ _ j t α β ρ R hm U hU hirr hne`. Establish `hi` using `hm.index`. Establish `hcj : ∀ h : Γ₀, ∃ h', j h' = t⁻¹ * j h * t`. Introduce `h`. Establish `: t⁻¹ * j h * t ∈ j.range`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc]`. Simplify using `only [Subgroup.mul_mem_iff_of_index_two hi, inv_mem_iff, hm.nmem]`. Simplify using the standard rewrite rules. Conclude with `this`. Establish `hX : ∀ h a, (R (j h) : Matrix (Fin 4) (Fin 4) k) *ᵥ pX α β a = pX α β ((ρ h : Matrix (Fin 2) (Fin 2) k) *ᵥ a)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h a`. Take `⟨h', e⟩` from `hcj h`. Rewrite using `[hm.on h h' e, mix_pX hm.two]`. Establish `hY : ∀ h h', j h' = t⁻¹ * j h * t → ∀ a, (R (j h) : Matrix (Fin 4) (Fin 4) k) *ᵥ pY a = pY ((ρ h' : Matrix (Fin 2) (Fin 2) k) *ᵥ a)`. Introduce `h h' e a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm.on h h' e, mix_pY hm.two]`. Take `⟨s, hsU, hs⟩` from `SetLike.not_le_iff_exists.1 hU`. Choose the witnesses or unpack the hypotheses as in `⟨h₀, hh₀⟩ : s * t⁻¹ ∈ j.range := by`. Simplify using `only [Subgroup.mul_mem_iff_of_index_two hi, inv_mem_iff, hm.nmem, hs]`. Take `⟨h₀', e₀⟩` from `hcj h₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsX : ∀ a, (R s : Matrix (Fin 4) (Fin 4) k) *ᵥ pX α β a = pY ((ρ h₀' : Matrix (Fin 2) (Fin 2) k) *ᵥ a)`. Introduce `a`. Establish `: s = j h₀ * t` using `by rw [hh₀]; group`. Rewrite using `[this, map_mul, Units.val_mul, ← Matrix.mulVec_mulVec, hm.off, diag_pX, hY h₀ h₀' e₀]`. Establish `hmap : (LinearMap.range (pX α β)).map (matRep (R.comp U.subtype) ⟨s, hsU⟩) = LinearMap.range (pY (k` using `k)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨a, rfl⟩, rfl⟩`. Conclude with `⟨_, (hsX a).symm⟩`. Introduce and unpack `_ ⟨b, rfl⟩`. Take `⟨a, rfl⟩` from `gl_surj (ρ h₀') b`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, ⟨a, rfl⟩, hsX a⟩`. Establish `key` using `mackeyTwo (matRep (R.comp U.subtype)) (j.range.subgroupOf U) ⟨s, hsU⟩ (LinearMap.range (pX α β)) ?_ hs ?_ ?_ ?_ ?_`. Use `⟨top_ne_bot, fun _ _ _ => trivial, fun W _ hW => key W fun g _ v hv => hW g v hv⟩` and prove the remaining obligations. Rewrite using `[Subgroup.index_eq_two_iff]`. Use `⟨⟨s, hsU⟩, fun b => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.coe_mul, Subgroup.mul_mem_iff_of_index_two hi, hs]`. Apply the tactic sequence `by_cases hb : (b : Γ) ∈ j.range <;> simp [hb]`. Introduce and unpack `⟨g, hg⟩ ⟨h, rfl : j h = g⟩ _ ⟨a, rfl⟩`. Conclude with `⟨_, (hX h a).symm⟩`. Introduce `W hle hW`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hirr.2.2 (W.comap (pX α β)) le_top (by` into its components or cases. Introduce and unpack `⟨h, hh⟩ a ha`. Use `hW ⟨j h, hh⟩ ⟨h, rfl⟩ _ ha` as an intermediate fact. Express the relevant statement in the definitionally equal form `(R (j h) : Matrix (Fin 4) (Fin 4) k) *ᵥ pX α β a ∈ W at this`. Rewrite `this` using `[hX]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this) with h0 | h0`. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `w hw`. Take `⟨a, rfl⟩` from `hle hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: a ∈ W.comap (pX α β)` using `hw`. Rewrite `this` using `[h0, Submodule.mem_bot]`. Simplify using `[this]`. Use `right`. Use `le_antisymm hle ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Establish `: a ∈ W.comap (pX α β)` using `by rw [h0]; trivial`. Conclude with `this`. Rewrite using `[hmap]`. Conclude with `compl_XY hm.two α β`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hmap]`. Introduce and unpack `⟨e, he⟩`. Set `f : (Fin 2 → k) ≃ₗ[k] (Fin 2 → k)` to `(LinearEquiv.ofInjective _ (pX_inj α β)).trans (e.trans (LinearEquiv.ofInjective _ pY_inj).symm)`. Establish `hf : ∀ a, pY (f a) = e ⟨pX α β a, a, rfl⟩`. Introduce `a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg Subtype.val ((LinearEquiv.ofInjective _ (pY_inj (k := k))).apply_symm_apply (e ⟨pX α β a, a, rfl⟩))` as an intermediate fact. Conclude with `this`. Set `M : GL (Fin 2) k` to `⟨LinearMap.toMatrix' (f : (Fin 2 → k) →ₗ[k] (Fin 2 → k)), LinearMap.toMatrix' (f.symm : (Fin 2 → k) →ₗ[k] (Fin 2 → k)), by rw [← LinearMap.toMatrix'_comp]; simp, by rw [← LinearMap.toMatrix'_comp]; simp⟩`. Establish `hM : ∀ a, (M : Matrix (Fin 2) (Fin 2) k) *ᵥ a = f a`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[M, LinearMap.toMatrix'_mulVec]`. Use `hne ⟨M, fun h h' hh e' => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_mul_inv_iff_mul_eq]`. Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.toLin'.injective` to reduce the goal to its premises.
-
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [Matrix.toLin'_apply, Units.val_mul, ← Matrix.mulVec_mulVec, hM]`. Apply `pY_inj` to reduce the goal to its premises. Rewrite using `[← hY h h' e', hf, hf]`.
-
-Conclude with `(he ⟨j h, hh⟩ ⟨h, rfl⟩ ⟨pX α β a, a, rfl⟩ ⟨_, _, rfl⟩ (hX h a).symm).symm`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.mix_invariant_plane_decomposition :
     UpperTheory.V.Sd.S2.MixIrr := by

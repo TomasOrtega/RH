@@ -18,7 +18,7 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
   {s : Matrix (IxF F nS nT) (IxF F nS nT) ℂ}
 
 /- English proof (translation)
-The claim follows from `AutEtaA.exists_half_character_eta_product hB h1 h2 h3 h4 hlam hsq`.
+A detailed English derivation is pending.
 -/
 theorem eta_prod (hB : B.IsGood σ) {η : (AEF F E)ˣ →* Circle} (h1 : IsHeckeCharF η) (h2 : ResEtaF η 1)
     (h3 : HasExp B.emb η (fun _ => 1)) (h4 : UnramInert σ η) (hlam : GoodNorm (sgOF σ) lam)

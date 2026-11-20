@@ -15,9 +15,9 @@ namespace GlobalTheory.GaussSeriesVacuum
 open GlobalTheory.HeisenbergGaussianSeries GlobalTheory.SplitScalar GlobalTheory.VacuumO
 
 /- English proof (translation)
-Unfold `series`. Rewrite using `[← tsum_mul_left, ← tsum_mul_left]`. Use `tsum_congr fun g => ?_` and prove the remaining obligations. Establish `h1 : β (ι a) u = 1`. Use `swap_mul β hl hr hd (ι a) u` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hβ u a, hu]`. Simplify using `using this`. Rewrite using `[← hχ (g + w), ← add_assoc (g : G) w u, hr (ι a) (g + w) u, h1, hr g w u, hl g w u, map_add p w u, hu, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem series_inv_scalar {G V : Type} [AddCommGroup G] [AddCommGroup V] [Module ℝ V]
     {p : G →+ V} {ι : V →+ G} {β : G → G → ℂ} {om : V →ₗ[ℝ] V →ₗ[ℝ] ℝ} {J : V →ₗ[ℝ] V}
@@ -39,23 +39,23 @@ theorem series_inv_scalar {G V : Type} [AddCommGroup G] [AddCommGroup V] [Module
   ring
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `exists_exponent om J`. Establish `hexp` using `fun w : G => GlobalTheory.expSeries_contDiff_and_hasDerivAt V Γ (fun g => β g w * β (ι a) (g + w) * χ (g + w) * Complex.exp (-(Real.pi / 2 : ℂ) * (om (p g + (a + p w)) (J (p g + (a + p w))) : ℝ))) (fun g => M (p g + (a + p w))) (summable_coeff p om J Γ U₀ χ hpos hinj hfin hχ0 hχ1 …`. Establish `hexpand` using `series_expand (Γ := Γ) hp hl hr hβ hsym hχι (fun y v => M y v) hM a`. Establish `hne : ∀ x y, β x y ≠ 0` using `fun x y h => by simpa [h] using hn x y`. Establish `hgauss : ContDiff ℝ ∞ fun v : V => Complex.exp (-(Real.pi / 2 : ℂ) * (om v (J v) : ℝ))` using `(contDiff_const.mul (Complex.ofRealCLM.contDiff.comp (contDiff_bilin om J))).cexp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsmooth : ∀ w, ContDiff ℝ ∞ fun v : V => series p ι β om J Γ χ a (w + ι v)`. Introduce `w`. Establish `h1 : ContDiff ℝ ∞ fun v : V => Complex.exp (Real.pi * Complex.I * (om (p w) v : ℝ))` using `(contDiff_const.mul (Complex.ofRealCLM.contDiff.comp (LinearMap.toContinuousLinearMap (om (p w))).contDiff)).cexp`. Establish `h2` using `h1.mul (hgauss.mul (hexp w).1)`. Use `(congrArg (ContDiff ℝ ∞) (funext fun v => ?_)).mp h2` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hexpand w v, hβ, ← mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules. Use `⟨?_, hsmooth, ?_⟩` and prove the remaining obligations. Rewrite using `[continuous_iff_continuousAt]`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc1 : Continuous fun x : G => p (x - w)` using `hpc.comp (continuous_id.sub continuous_const)`. Establish `hc2 : Continuous fun x : G => β (w + ι (p (x - w))) ((x - w) - ι (p (x - w)))` using `hβc.comp (f := fun x : G => (w + ι (p (x - w)), (x - w) - ι (p (x - w)))) ((continuous_const.add (hιc.comp hc1)).prodMk ((continuous_id.sub continuous_const).sub (hιc.comp hc1)))`. Establish `hc3 : Continuous fun x : G => (β (w + ι (p (x - w))) ((x - w) - ι (p (x - w))))⁻¹ * series p ι β om J Γ χ a (w + ι (p (x - w)))` using `(hc2.inv₀ fun x => hne _ _).mul ((hsmooth w).continuous.comp hc1)`. Use `hc3.continuousAt.congr ?_` and prove the remaining obligations. Establish `hnhds : ∀ᶠ x in nhds w, x - w ∈ U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: IsOpen {x : G | x - w ∈ U}` using `hU.preimage (continuous_id.sub continuous_const)`. Conclude with `this.mem_nhds (by simp)`. Use `filter_upwards [hnhds] with x hx`. Establish `h` using `series_inv (Γ := Γ) (J := J) hl hr hd hβ a ((x - w) - ι (p (x - w))) (by rw [map_sub p, hp, sub_self]) (hUinv _ hx) (w + ι (p (x - w)))`. Rewrite using `[← h, ← mul_assoc, inv_mul_cancel₀ (hne _ _), one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Use `congr 1`. Normalize the expressions using the abelian group laws. Introduce `w z`. Establish `hder : ∀ z : V, HasDerivAt (fun t : ℝ => β w (ι (t • z)) * series p ι β om J Γ χ a (w + ι (t • z))) (∑' g : Γ, (β g w * β (ι a) (g + w) * χ (g + w) * Complex.exp (-(Real.pi / 2 : ℂ) * (om (p g + (a + p w)) (J (p g + (a + p w))) : ℝ))) * M (p g + (a + p w)) z) 0`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g1 : HasDerivAt (fun t : ℝ => Complex.exp (-(Real.pi / 2 : ℂ) * (om (t • z) (J (t • z)) : ℝ))) 0 0`. Establish `g0 : HasDerivAt (fun t : ℝ => om (t • z) (J (t • z))) 0 0`. Use `((hasDerivAt_id (0 : ℝ)).mul (hasDerivAt_id (0 : ℝ))).mul_const (om z (J z))` as an intermediate fact. Use `(this.congr_deriv (by simp)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(g0.ofReal_comp.const_mul (-(Real.pi / 2 : ℂ))).cexp.congr_deriv (by simp)`. Establish `g2` using `g1.mul ((hexp w).2 z).2`. Simplify using `only [hexpand]`. Conclude with `g2.congr_deriv (by simp)`. Rewrite using `[(hder z).deriv, (hder (J z)).deriv, ← tsum_mul_left, ← ((hexp w).2 z).1.tsum_add (((hexp w).2 (J z)).1.mul_left Complex.I)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `(tsum_congr fun g => ?_).trans tsum_zero` and prove the remaining obligations. Rewrite using `[hM, hM, hJ, map_neg]`. Use `push_cast`. Take the linear combination `(-(Real.pi : ℂ) * (β g w * β (ι a) (g + w) * χ (g + w) * Complex.exp (-(Real.pi / 2 : ℂ) * (om (p g + (a + p w)) (J (p g + (a + p w))) : ℝ))) * (om (p g + (a + p w)) (J z) : ℝ)) * Complex.I_mul_I`.
+A detailed English derivation is pending.
 -/
 theorem series_regular {G V : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (p : G →+ V) (ι : V →+ G) (β : G → G → ℂ)
@@ -142,20 +142,20 @@ variable {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ}
   {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
 
 /- English proof (translation)
-Rewrite using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `Matrix.ext fun i j => (realIdem_mul_of_real (congrFun (congrFun hv i) j)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_smul_of_real {v : WO S T} (hv : v.map (finPart D) = 0) : (1 - realIdem D) • v = 0 := by
   rw [sub_smul, one_smul, sub_eq_zero]
   exact Matrix.ext fun i j => (realIdem_mul_of_real (congrFun (congrFun hv i) j)).symm
 
 /- English proof (translation)
-Rewrite using `[sub_smul, one_smul, mem_finSub_iff.1 hu, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_smul_of_fin {u : WO S T} (hu : u.map (infPart D) = 0) : (1 - realIdem D) • u = u := by
   rw [sub_smul, one_smul, mem_finSub_iff.1 hu, sub_zero]
 
 /- English proof (translation)
-Establish `e : (1 - realIdem D) • (x + v) = (1 - realIdem D) • x` using `by rw [smul_add, fin_smul_of_real hv, add_zero]`. Rewrite using `[chiLat, chiLat, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiLat_add_real (w : 𝓞 D.host.E) (x : WO S T) {v : WO S T} (hv : v.map (finPart D) = 0) :
     chiLat ψ S T LS LT w (x + v) = chiLat ψ S T LS LT w x := by
@@ -163,9 +163,9 @@ theorem chiLat_add_real (w : 𝓞 D.host.E) (x : WO S T) {v : WO S T} (hv : v.ma
   rw [chiLat, chiLat, e]
 
 /- English proof (translation)
-Establish `h1 : intA D w • y + cA D (intA D w) • y = y`. Rewrite using `[← add_smul, cA_intA, ← RingHom.map_add, hw, RingHom.map_one, one_smul]`. Establish `h2` using `congrArg (fun z => symplOH S T z u) h1`. Simplify using `only [symplOH_add_left] at h2`. Establish `h3` using `symplOH_smul (intA D w) u y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h3` using `[symplOH_skew S T (cA D (intA D w) • y) u]`. Rewrite using `[smul_add (intA D w) y u, symplOH_add_left, symplOH_add_right, symplOH_add_right, ← symplOH_add_self]`. Take the linear combination `h3 - h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem quad_identity {w : 𝓞 D.host.E} (hw : w + GlobalTheory.FinWeil.sgO D w = 1) (y u : WO S T) :
     -symplOH S T (intA D w • u) u + (symplOH S T y u + symplOH S T (intA D w • (y + u)) (y + u)) =
@@ -180,13 +180,13 @@ theorem quad_identity {w : 𝓞 D.host.E} (hw : w + GlobalTheory.FinWeil.sgO D w
   linear_combination h3 - h2
 
 /- English proof (translation)
-Establish `e : (1 - realIdem D) • (x + (u : WO S T)) = (1 - realIdem D) • x + u`. Rewrite using `[smul_add, fin_smul_of_fin u.fin]`. Establish `e2 : symplOH S T x u = symplOH S T ((1 - realIdem D) • x) u`. Establish `hdec : x = realIdem D • x + (1 - realIdem D) • x` using `by rw [← add_smul, add_sub_cancel, one_smul]`. Use `conv_lhs => rw [hdec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[symplOH_add_left, symplOH, symplO_real_fin S T (real_smul_real x) u.fin, mul_zero, zero_add]`. Rewrite using `[chiLat, chiLat, e, e2]`. Establish `hy` using `fin_smul_fin x`. Generalize the expression as in `(1 - realIdem D) • x = y at hy ⊢`. Distinguish the cases in `h : y ∈ latO S T LS LT fun _ => True`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h, if_pos (add_mem h hu)]`. Establish `h0 : ψ (symplO S T (intA D w • y) u) = 1` using `(hA _).1 ((latF S T LS LT).smul_mem w (show XF.mk y hy ∈ latF S T LS LT from h)) u hu`. Rewrite using `[phase, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, quad_identity hw, AddChar.map_add_eq_mul, h0, mul_one]`. Establish `h2 : y + (u : WO S T) ∉ latO S T LS LT fun _ => True` using `fun h' => h (by`. Establish `h3` using `sub_mem h' (mem_latF.1 hu)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[add_sub_cancel_right] at h3)` and apply the resulting hypothesis. Rewrite using `[if_neg h, if_neg h2, mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiLat_add_lat (hA : SelfDual (gamF ψ S T) (latF S T LS LT)) {w : 𝓞 D.host.E}
     (hw : w + GlobalTheory.FinWeil.sgO D w = 1) {u : XF S T} (hu : u ∈ latF S T LS LT) (x : WO S T) :
@@ -212,37 +212,29 @@ theorem chiLat_add_lat (hA : SelfDual (gamF ψ S T) (latF S T LS LT)) {w : 𝓞 
     rw [if_neg h, if_neg h2, mul_zero, mul_zero]
 
 /- English proof (translation)
-Introduce `D ψ hψ θ σ hσ S T sS sT hS hT ΛS ΛT dS dT w hw a`. Establish `hθ` using `hσ.inf`. Take `⟨hJJ, hskew, hinvJ, hneg⟩` from `GlobalTheory.T.realSymplecticForm_alternating_invariant_definite D S T sS sT hS hT`. Take `⟨aL, aR, a0, -, acont, arat, -, -, -⟩` from `GlobalTheory.T.homSymplecticHalfForm_algebraic_laws_continuous D S T`. Establish `hA` using `selfDual_latF (GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T ΛS ΛT hψ dS dT).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htop : IsTopologicalAddGroup (WO S T)` using `(GlobalTheory.AdelicMatrixLattice.lattice D T S).1`. Establish `hl : ∀ x y z : WO S T, ψ (symplOH S T (x + y) z) = ψ (symplOH S T x z) * ψ (symplOH S T y z)` using `fun x y z => by rw [aL, AddChar.map_add_eq_mul]`. Establish `hr : ∀ x y z : WO S T, ψ (symplOH S T x (y + z)) = ψ (symplOH S T x y) * ψ (symplOH S T x z)` using `fun x y z => by rw [aR, AddChar.map_add_eq_mul]`. Establish `hd : ∀ x : WO S T, ψ (symplOH S T x x) = 1` using `fun x => by rw [a0, AddChar.map_zero_eq_one]`. Establish `hβ : ∀ (x : WO S T) (v : RW T S), ψ (symplOH S T x (iotaW σ T S v)) = Complex.exp (-(Real.pi * Complex.I) * (omO S T (piW θ T S x) v : ℝ))` using `fun x v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `GlobalTheory.T.stdCharacter_halfSymplecticForm_realPoint D θ ψ hθ hψ S T x (iotaW σ T S v) (Or.inr (hσ.real_iota T S v))`. Rewrite `e` using `[hσ.pi_iota]`. Conclude with `e`. Establish `fl : ∀ u ∈ latF S T ΛS ΛT, ∀ x : WO S T, phase ψ w u * (ψ (symplOH S T x u) * serO ψ θ σ S T sS sT ΛS ΛT w a (x + u)) = serO ψ θ σ S T sS sT ΛS ΛT w a x` using `fun u hu x => series_inv_scalar (G := WO S T) (β := fun x y => ψ (symplOH S T x y)) hl hr hd hβ a u (piW_of_inf θ u.fin) _ (chiLat_add_lat hA hw hu) x`. Use `set Λ : AddSubgroup (WO S T) := latO S T ΛS ΛT fun _ => True with hΛ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hlev : ∀ u ∈ thick Λ 2, ∃ l ∈ latF S T ΛS ΛT, u - iotaW σ T S (piW θ T S u) = ((2 • l : XF S T) : WO S T)`. Introduce and unpack `u ⟨l, hl, hu⟩`. Use `⟨XF.mk l (latO_fin hl), hl, ?_⟩` and prove the remaining obligations. Establish `e` using `hσ.iota_pi (V := T) (W := S) (x := u - 2 • l) hu`. Rewrite `e` using `[map_sub, map_nsmul, piW_of_inf θ (latO_fin hl), smul_zero, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e, XF.coe_nsmul, XF.coe_mk]`. Normalize the expressions using the abelian group laws. Take `⟨fc, fs, fv⟩` from `series_regular (G := WO S T) (piW θ T S) (iotaW σ T S) (fun x y => ψ (symplOH S T x y)) (omO S T) (jO S T sS sT) (ratL T S) (Λ.comap (AddMonoidHom.mk' (fun x : WO S T => (1 - realIdem D) • x) (smul_add _))) (thick Λ 2) (chiLat ψ S T ΛS ΛT w) (continuous_pi' hθ T S) (hσ.continuous …`. Introduce and unpack `_ ⟨g, rfl⟩ h`. Establish `: g = 0`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i j`. Establish `e : θ (D.eTau.symm 1) (infPart D (incA D (g i j))) = 0` using `congrFun (congrFun (congrFun h (D.eTau.symm 1)) i) j`. Rewrite `e` using `[comp_incA hθ]`. Conclude with `(tauE D _).injective (e.trans (RingHom.map_zero _).symm)`. Rewrite using `[this, map_zero])`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun R => by`. Use `((GlobalTheory.T.finite_rational_points_completed_lattice D S T ΛS ΛT dS dT R).image (ratW T S)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨g, rfl⟩, h1, h2⟩`. Use `⟨g, ⟨⟨_, h1, ?_⟩, fun τ i j => ?_⟩, rfl⟩` and prove the remaining obligations. Establish `e : (ratW T S g : WO S T) - (1 - realIdem D) • (ratW T S g : WO S T) = realIdem D • (ratW T S g : WO S T)` using `by rw [sub_smul, one_smul, sub_sub_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (fun z : WO S T => z.map (finPart D)) e).trans (real_smul_real _)`. Rewrite using `[← comp_incA hθ]`. Set `y : RW T S` to `piW θ T S (ratW T S g)`. Conclude with `((norm_le_pi_norm (y τ i) j).trans ((norm_le_pi_norm (y τ) i).trans (norm_le_pi_norm y τ))).trans h2)`. Use the proof step `(fun x hx => if_neg hx)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun x => by`. Rewrite using `[chiLat]`. Use `split_ifs`. Conclude with `(hψ.1.2.1 _).le`. Rewrite using `[norm_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_le_one)`. Use the proof step `(fun x v => chiLat_add_real w x (hσ.real_iota T S v))`. Use the proof step `(GlobalTheory.T.isOpen_nsmul_completedHomLattice_finiteAdelic D S T ΛS ΛT dS dT 2 two_pos)`. Use the proof step `(fun u hu x => by`. Take `⟨l, hl, e⟩` from `hlev u hu`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e2` using `chiLat_add_lat hA hw (nsmul_mem hl 2) x`. Rewrite `e2` using `[phase_two hA w hl, one_mul]`. Rewrite using `[e]`. Conclude with `e2) a`. Use `⟨⟨fun g x => ?_, ⟨thick Λ 2, GlobalTheory.T.isOpen_nsmul_completedHomLattice_finiteAdelic D S T ΛS ΛT dS dT 2 two_pos, fun u hu h => ?_⟩, fc, fun k L hL hL0 x => ?_⟩, fun u hu => Subtype.ext (funext fun x => fl u hu x), fun τ z => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ψ (symplOH S T (ratW T S g) x) * serO ψ θ σ S T sS sT ΛS ΛT w a (ratW T S g + x) = serO ψ θ σ S T sS sT ΛS ΛT w a x` using `series_quasi (G := WO S T) (Γ := ratL T S) (β := fun x y => ψ (symplOH S T x y)) hl hr (fun g hg g' hg' => by`. Take `⟨b, hb⟩` from `arat g hg g' hg'`. Simplify using `only [hb]`. Conclude with `hψ.1.2.2.1 b) a (ratW T S g) ⟨g, rfl⟩ x`. Rewrite using `[← e, ← mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`.
-
-Take `⟨l, hl, e⟩` from `hlev u hu`. Rewrite `e` using `[piW_of_inf θ h, map_zero, sub_zero]`. Use function extensionality and compare the values at `x`. Establish `e2` using `fl _ (nsmul_mem hl 2) x`. Rewrite `e2` using `[phase_two hA w hl, one_mul, ← e]`.
-
-Conclude with `e2`. Conclude with `((smooth_iff_sm_and_real_lines D θ σ hσ T S).1 _).2 fs k L hL hL0 x`. Use function extensionality and compare the values at `x`. Set `v : RW T S` to `Pi.single τ z`. Establish `v1 : v τ = z` using `Pi.single_eq_same _ _`.
-
-Establish `v2 : ∀ τ', τ' ≠ τ → v τ' = 0` using `fun τ' h => Pi.single_eq_of_ne h _`. Establish `l1` using `lineAt_eq hσ S T τ z v v1 v2`. Establish `l2` using `lineAt_eq hσ S T τ (cplxO (sS τ) (sT τ) z) (jO S T sS sT v) (by rw [jO_apply, v1]) (fun τ' h => by`. Rewrite using `[jO_apply, v2 τ' h]`. Establish `: cplxO (sS τ') (sT τ') (0 : Matrix (Fin T.rank) (Fin S.rank) ℂ) = 0` using `by simp [cplxO]`.
-
-Conclude with `this)`. Use `show deriv (fun t : ℝ => ψ (symplOH S T x (lineAt θ τ z t)) * serO ψ θ σ S T sS sT ΛS ΛT w a (x + lineAt θ τ z t)) 0 + Complex.I * deriv (fun t : ℝ => ψ (symplOH S T x (lineAt θ τ (cplxO (sS τ) (sT τ) z) t)) * serO ψ θ σ S T sS sT ΛS ΛT w a (x + lineAt θ τ (cplxO (sS τ) (sT τ) z) …`. Simplify using `only [l1, l2]`. Conclude with `fv x v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem series_theta_vacuum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (θ : InfFam D) (σ : (D.what₂.Tau → ℂ) →+ AE D), Chart θ σ → ∀ (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ), (∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) → (∀ τ, IsCartanInv (gramAt D T τ) (sT τ)) → ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ w : 𝓞 D.host.E, w + GlobalTheory.FinWeil.sgO D w = 1 → ∀ a : RW T S, ∃ hf : IsThetaFunO ψ S T (serO ψ θ σ S T sS sT ΛS ΛT w a), Fixes (opF hψ.1 S T w) (latF S T ΛS ΛT) (⟨serO ψ θ σ S T sS sT ΛS ΛT w a, hf⟩ : thetaSub ψ S T) ∧ ∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) (serO ψ θ σ S T sS sT ΛS ΛT w a) := by
   classical

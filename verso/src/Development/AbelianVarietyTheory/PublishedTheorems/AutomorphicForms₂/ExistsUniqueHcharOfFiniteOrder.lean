@@ -84,15 +84,15 @@ namespace GlobalTheory.HeckeGal
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Introduce `k _` and use `h k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAlgPos_of_isAlg {χ : HChar E} {n : (E →+* ℂ) → ℤ} (h : χ.IsAlg n) : IsAlgPos χ n :=
   fun k _ => h k
 
 /- English proof (translation)
-Use `Finite.of_injective (fun j : {j : v.adicCompletion E →+* Qbar l // Continuous j} => j.1.comp (algebraMap E (v.adicCompletion E))) fun a b h => ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `DFunLike.coe_injective` to reduce the goal to its premises. Use `(HeightOneSpectrum.denseRange_algebraMap E v).equalizer a.2 b.2 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `DFunLike.congr_fun h k`.
+A detailed English derivation is pending.
 -/
 theorem finite_contEmb (v : HeightOneSpectrum (𝓞 E)) :
     Finite {j : v.adicCompletion E →+* Qbar l // Continuous j} := by
@@ -106,9 +106,9 @@ theorem finite_contEmb (v : HeightOneSpectrum (𝓞 E)) :
   exact DFunLike.congr_fun h k
 
 /- English proof (translation)
-Use `Finite.of_injective (fun j : {i : w.Completion →+* ℂ // Continuous i} => j.1.comp (algebraMap E w.Completion)) fun a b h => ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `DFunLike.coe_injective` to reduce the goal to its premises. Establish `hd : DenseRange (algebraMap E w.Completion)`. Use `Dense.mono ?_ (InfinitePlace.Completion.denseRange_coe w)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨WithAbs.equiv w.1 a, rfl⟩`. Use `hd.equalizer a.2 b.2 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Conclude with `DFunLike.congr_fun h k`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem finite_contEmbInf (w : InfinitePlace E) :
     Finite {i : w.Completion →+* ℂ // Continuous i} := by
@@ -126,17 +126,15 @@ theorem finite_contEmbInf (w : InfinitePlace E) :
   exact DFunLike.congr_fun h k
 
 /- English proof (translation)
-Use `⟨fun j => ?_⟩` and prove the remaining obligations. Establish `hl : l.Prime` using `Fact.out`. Establish `hN : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`. Take `⟨a, M, hM, hNM⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN l hl.ne_one`. Establish `hmem : ((M : ℕ) : 𝓞 E) ∈ v.asIdeal`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `Ideal.absNorm_mem v.asIdeal`. Rewrite `h` using `[hNM, Nat.cast_mul, Nat.cast_pow]`. Conclude with `(v.isPrime.mem_or_mem h).resolve_left fun h' => hv (v.isPrime.mem_of_pow_mem a h')`. Establish `hlt : Valued.v ((M : ℕ) : v.adicCompletion E) < 1`. Establish `h : Valued.v (((algebraMap (𝓞 E) E (M : 𝓞 E) : E)) : v.adicCompletion E) = v.valuation E (algebraMap (𝓞 E) E (M : 𝓞 E))` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : v.valuation E (algebraMap (𝓞 E) E (M : 𝓞 E)) < 1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem v _).mpr hmem`. Rewrite `h2` using `[← h]`. Establish `e : (((algebraMap (𝓞 E) E (M : 𝓞 E) : E)) : v.adicCompletion E) = ((M : ℕ) : v.adicCompletion E)`. Rewrite using `[map_natCast]`. Conclude with `map_natCast (algebraMap E (v.adicCompletion E)) M`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Establish `ht : Filter.Tendsto (fun k : ℕ => ((M : ℕ) : v.adicCompletion E) ^ k) Filter.atTop (nhds 0)` using `Valued.tendsto_zero_pow_of_v_lt_one hlt`. Establish `ht2` using `((j.2.tendsto 0).comp ht).norm`. Establish `hn : ‖((M : ℕ) : Qbar l)‖ = 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Padic.norm_natCast_eq_one_iff.mpr ((Nat.Prime.coprime_iff_not_dvd hl).mpr hM)`. Establish `e : (fun k : ℕ => ‖((j.1 : _ → _) ∘ fun k : ℕ => ((M : ℕ) : v.adicCompletion E) ^ k) k‖) = fun _ => (1 : ℝ)`. Use function extensionality and compare the values at `k`. Simplify using `[hn]`. Rewrite `ht2` using `[e, map_zero, norm_zero]`.
-
-Conclude with `one_ne_zero (tendsto_nhds_unique tendsto_const_nhds ht2)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEmpty_contEmb {v : HeightOneSpectrum (𝓞 E)} (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal) :
     IsEmpty {j : v.adicCompletion E →+* Qbar l // Continuous j} := by
@@ -172,7 +170,7 @@ theorem isEmpty_contEmb {v : HeightOneSpectrum (𝓞 E)} (hv : ((l : ℕ) : 𝓞
   exact one_ne_zero (tendsto_nhds_unique tendsto_const_nhds ht2)
 
 /- English proof (translation)
-Use `isEmpty_contEmb (l := l) hv` as an intermediate fact. Conclude with `finprod_of_isEmpty _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locPow_of_notMem (ι : Qbar l ≃+* ℂ) (n : (E →+* ℂ) → ℤ) {v : HeightOneSpectrum (𝓞 E)}
     (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal) (y : v.adicCompletion E) : locPow ι n v y = 1 := by
@@ -180,9 +178,9 @@ theorem locPow_of_notMem (ι : Qbar l ≃+* ℂ) (n : (E →+* ℂ) → ℤ) {v 
   exact finprod_of_isEmpty _
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hl.ne_zero` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `hv (locPow_of_notMem ι n (fun hm => h ?_) _)` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.mpr hm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_support_lPow (ι : Qbar l ≃+* ℂ) (n : (E →+* ℂ) → ℤ) (x : Ideles E) :
     (Function.mulSupport fun v : HeightOneSpectrum (𝓞 E) =>
@@ -197,21 +195,21 @@ theorem finite_support_lPow (ι : Qbar l ≃+* ℂ) (n : (E →+* ℂ) → ℤ) 
   exact Ideal.dvd_span_singleton.mpr hm
 
 /- English proof (translation)
-Simplify using `[locPow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem locPow_one (ι : Qbar l ≃+* ℂ) (n : (E →+* ℂ) → ℤ) (v : HeightOneSpectrum (𝓞 E)) :
     locPow ι n v 1 = 1 := by
   simp [locPow]
 
 /- English proof (translation)
-Simplify using `[locPow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem locPow_zero (ι : Qbar l ≃+* ℂ) (v : HeightOneSpectrum (𝓞 E)) (y : v.adicCompletion E) :
     locPow ι (0 : (E →+* ℂ) → ℤ) v y = 1 := by
   simp [locPow]
 
 /- English proof (translation)
-Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Establish `: ((localIdele E v x : Ideles E) : AdeleRing (𝓞 E) E).1 w = 1` using `rfl`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem infPow_localIdele (n : (E →+* ℂ) → ℤ) (v : HeightOneSpectrum (𝓞 E)) (x : (v.adicCompletion E)ˣ) :
     infPow n (localIdele E v x) = 1 := by
@@ -220,9 +218,9 @@ theorem infPow_localIdele (n : (E →+* ℂ) → ℤ) (v : HeightOneSpectrum (�
   simp [this]
 
 /- English proof (translation)
-Unfold `lPow`. Rewrite using `[finprod_eq_single _ v]`. Use `congr 1`. Conclude with `Function.update_self v (x : v.adicCompletion E) (fun w : HeightOneSpectrum (𝓞 E) => (1 : w.adicCompletion E))`. Introduce `w hw`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ((localIdele E v x : Ideles E) : AdeleRing (𝓞 E) E).2 w = 1` using `Function.update_of_ne hw (x : v.adicCompletion E) (fun w : HeightOneSpectrum (𝓞 E) => (1 : w.adicCompletion E))`. Rewrite using `[this, locPow_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lPow_localIdele (ι : Qbar l ≃+* ℂ) (n : (E →+* ℂ) → ℤ) (v : HeightOneSpectrum (𝓞 E))
     (x : (v.adicCompletion E)ˣ) : lPow ι n (localIdele E v x) = locPow ι n v x := by
@@ -237,21 +235,21 @@ theorem lPow_localIdele (ι : Qbar l ≃+* ℂ) (n : (E →+* ℂ) → ℤ) (v :
     rw [this, locPow_one]
 
 /- English proof (translation)
-Simplify using `[infPow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem infPow_zero (x : Ideles E) : infPow (0 : (E →+* ℂ) → ℤ) x = 1 := by
   simp [infPow]
 
 /- English proof (translation)
-Simplify using `[lPow, locPow_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lPow_zero (ι : Qbar l ≃+* ℂ) (x : Ideles E) : lPow ι (0 : (E →+* ℂ) → ℤ) x = 1 := by
   simp [lPow, locPow_zero]
 
 /- English proof (translation)
-Unfold `infPow`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `finite_contEmbInf w` as an intermediate fact. Establish `h0 : (x : AdeleRing (𝓞 E) E).1 w ≠ 0` using `left_ne_zero_of_mul_eq_one (congrArg (fun y : AdeleRing (𝓞 E) E => y.1 w) x.mul_inv)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← finprod_mul_distrib (Set.toFinite _) (Set.toFinite _)]`. Conclude with `finprod_congr fun i => zpow_add₀ ((map_ne_zero i.1).mpr h0) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPow_add (n n' : (E →+* ℂ) → ℤ) (x : Ideles E) : infPow (n + n') x = infPow n x * infPow n' x := by
   unfold infPow
@@ -264,7 +262,7 @@ theorem infPow_add (n n' : (E →+* ℂ) → ℤ) (x : Ideles E) : infPow (n + n
   exact finprod_congr fun i => zpow_add₀ ((map_ne_zero i.1).mpr h0) _ _
 
 /- English proof (translation)
-Unfold `infPow`. Rewrite using `[← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← finprod_inv_distrib]`. Conclude with `finprod_congr fun i => zpow_neg _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPow_neg (n : (E →+* ℂ) → ℤ) (x : Ideles E) : infPow (-n) x = (infPow n x)⁻¹ := by
   unfold infPow
@@ -274,7 +272,7 @@ theorem infPow_neg (n : (E →+* ℂ) → ℤ) (x : Ideles E) : infPow (-n) x = 
   exact finprod_congr fun i => zpow_neg _ _
 
 /- English proof (translation)
-Unfold `locPow`. Use `finite_contEmb (l := l) v` as an intermediate fact. Rewrite using `[← finprod_mul_distrib (Set.toFinite _) (Set.toFinite _)]`. Conclude with `finprod_congr fun j => zpow_add₀ ((map_ne_zero j.1).mpr hy) _ _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locPow_add (ι : Qbar l ≃+* ℂ) (n n' : (E →+* ℂ) → ℤ) (v : HeightOneSpectrum (𝓞 E))
     {y : v.adicCompletion E} (hy : y ≠ 0) : locPow ι (n + n') v y = locPow ι n v y * locPow ι n' v y := by
@@ -284,7 +282,7 @@ theorem locPow_add (ι : Qbar l ≃+* ℂ) (n n' : (E →+* ℂ) → ℤ) (v : H
   exact finprod_congr fun j => zpow_add₀ ((map_ne_zero j.1).mpr hy) _ _
 
 /- English proof (translation)
-Unfold `lPow`. Rewrite using `[← finprod_mul_distrib (finite_support_lPow ι n x) (finite_support_lPow ι n' x)]`. Conclude with `finprod_congr fun v => locPow_add ι n n' v (left_ne_zero_of_mul_eq_one (congrArg (fun y : AdeleRing (𝓞 E) E => y.2 v) x.mul_inv))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lPow_add (ι : Qbar l ≃+* ℂ) (n n' : (E →+* ℂ) → ℤ) (x : Ideles E) :
     lPow ι (n + n') x = lPow ι n x * lPow ι n' x := by
@@ -294,7 +292,7 @@ theorem lPow_add (ι : Qbar l ≃+* ℂ) (n n' : (E →+* ℂ) → ℤ) (x : Ide
     (left_ne_zero_of_mul_eq_one (congrArg (fun y : AdeleRing (𝓞 E) E => y.2 v) x.mul_inv))
 
 /- English proof (translation)
-Unfold `lPow locPow`. Rewrite using `[← finprod_inv_distrib]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[← finprod_inv_distrib]`. Conclude with `finprod_congr fun j => zpow_neg _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lPow_neg (ι : Qbar l ≃+* ℂ) (n : (E →+* ℂ) → ℤ) (x : Ideles E) : lPow ι (-n) x = (lPow ι n x)⁻¹ := by
   unfold lPow locPow
@@ -305,7 +303,7 @@ theorem lPow_neg (ι : Qbar l ≃+* ℂ) (n : (E →+* ℂ) → ℤ) (x : Ideles
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `QuotientGroup.mk'_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem toAb_surjective : Function.Surjective (toAb E Ω) := QuotientGroup.mk'_surjective _
 
@@ -315,7 +313,7 @@ variable {art : Ideles E →* Gab E Ω} {ι : Qbar l ≃+* ℂ} {χ : HChar E} {
   {r : G E Ω →* (Qbar l)ˣ} {v : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
 
 /- English proof (translation)
-Use extensionality with `σ`. Take `⟨x, hx⟩` from `hs (toAb E Ω σ)`. Rewrite using `[h x σ hx, h' x σ hx]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsLAdicOf.unique (hs : Function.Surjective art) {r' : G E Ω →* (Qbar l)ˣ}
     (h : IsLAdicOf art ι χ n r) (h' : IsLAdicOf art ι χ n r') : r = r' := by
@@ -324,7 +322,7 @@ theorem IsLAdicOf.unique (hs : Function.Surjective art) {r' : G E Ω →* (Qbar 
   rw [h x σ hx, h' x σ hx]
 
 /- English proof (translation)
-Rewrite using `[h _ σ hx, infPow_localIdele, inv_one, mul_one, lPow_localIdele]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem IsLAdicOf.loc (h : IsLAdicOf art ι χ n r) (x : (v.adicCompletion E)ˣ) (σ : G E Ω)
     (hx : art (localIdele E v x) = toAb E Ω σ) :
@@ -333,7 +331,7 @@ theorem IsLAdicOf.loc (h : IsLAdicOf art ι χ n r) (x : (v.adicCompletion E)ˣ)
   rfl
 
 /- English proof (translation)
-Rewrite using `[h.loc x σ hx]`. Break down `hv with hv | rfl` into its components or cases. Rewrite using `[locPow_of_notMem ι n hv, mul_one]`. Rewrite using `[locPow_zero, mul_one]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsLAdicOf.loc_away (h : IsLAdicOf art ι χ n r) (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal ∨ n = 0)
     (x : (v.adicCompletion E)ˣ) (σ : G E Ω) (hx : art (localIdele E v x) = toAb E Ω σ) :
@@ -344,9 +342,9 @@ theorem IsLAdicOf.loc_away (h : IsLAdicOf art ι χ n r) (hv : ((l : ℕ) : 𝓞
   · rw [locPow_zero, mul_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, hσ, rfl⟩`. Take `⟨x, hx, e⟩` from `(ha.ine v A hA _).mpr ⟨σ, hσ, rfl⟩`. Conclude with `⟨x, hx, (h.loc_away hv x σ e).symm⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨σ, hσ, e⟩` from `(ha.ine v A hA _).mp ⟨x, hx, rfl⟩`. Conclude with `⟨σ, hσ, h.loc_away hv x σ e.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsLAdicOf.ine_image (ha : IsGlobalArtin art) (h : IsLAdicOf art ι χ n r)
     (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal ∨ n = 0) (hA : IsPlaceOver A v) (z : Qbar l) :
@@ -361,9 +359,9 @@ theorem IsLAdicOf.ine_image (ha : IsGlobalArtin art) (h : IsLAdicOf art ι χ n 
     exact ⟨σ, hσ, h.loc_away hv x σ e.symm⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H x hx`. Take `⟨σ, hσ, e⟩` from `(h.ine_image ha hv hA _).mpr ⟨x, hx, rfl⟩`. Rewrite `e` using `[H σ hσ, Units.val_one, eq_comm, map_eq_one_iff _ ι.symm.injective]`. Conclude with `Units.ext e`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H σ hσ`. Take `⟨x, hx, e⟩` from `(h.ine_image ha hv hA _).mp ⟨σ, hσ, rfl⟩`. Rewrite `e` using `[H x hx, Units.val_one, map_one]`. Conclude with `Units.ext e.symm`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLAdicOf.unr_iff (ha : IsGlobalArtin art) (h : IsLAdicOf art ι χ n r)
     (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal ∨ n = 0) (hA : IsPlaceOver A v) :
@@ -379,7 +377,7 @@ theorem IsLAdicOf.unr_iff (ha : IsGlobalArtin art) (h : IsLAdicOf art ι χ n r)
     exact Units.ext e.symm
 
 /- English proof (translation)
-Take `⟨x, hx, e⟩` from `(ha.frob v A hA _).mpr ⟨σ, hσ, rfl⟩`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[← h.loc_away hv x _ e, map_inv, Units.val_inv_eq_inv_val, inv_inv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsLAdicOf.frob (ha : IsGlobalArtin art) (h : IsLAdicOf art ι χ n r)
     (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal ∨ n = 0) (hA : IsPlaceOver A v) {σ : G E Ω}
@@ -390,7 +388,7 @@ theorem IsLAdicOf.frob (ha : IsGlobalArtin art) (h : IsLAdicOf art ι χ n r)
   rw [← h.loc_away hv x _ e, map_inv, Units.val_inv_eq_inv_val, inv_inv]
 
 /- English proof (translation)
-Take `⟨x, hx, e⟩` from `h.frob ha hv hA hσ`. Rewrite using `[e, χ.val_eq hu x hx]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsLAdicOf.frob_unr (ha : IsGlobalArtin art) (h : IsLAdicOf art ι χ n r)
     (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal ∨ n = 0) (hu : χ.UnrAt v) (hA : IsPlaceOver A v) {σ : G E Ω}
@@ -400,7 +398,7 @@ theorem IsLAdicOf.frob_unr (ha : IsGlobalArtin art) (h : IsLAdicOf art ι χ n r
   rw [e, χ.val_eq hu x hx]
 
 /- English proof (translation)
-Introduce `x σ hx`. Rewrite using `[MonoidHom.mul_apply, Units.val_mul, h x σ hx, h' x σ hx, infPow_add, lPow_add]`. Use `show _ = ι.symm (((χ.1 x * χ'.1 x : ℂˣ) : ℂ) * _) * _`. Simplify using `only [Units.val_mul, mul_inv, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem IsLAdicOf.mul {χ' : HChar E} {n' : (E →+* ℂ) → ℤ} {r' : G E Ω →* (Qbar l)ˣ}
     (h : IsLAdicOf art ι χ n r) (h' : IsLAdicOf art ι χ' n' r') : IsLAdicOf art ι (χ * χ') (n + n') (r * r') := by
@@ -411,7 +409,7 @@ theorem IsLAdicOf.mul {χ' : HChar E} {n' : (E →+* ℂ) → ℤ} {r' : G E Ω 
   ring
 
 /- English proof (translation)
-Introduce `x σ hx`. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, h x σ hx, infPow_neg, lPow_neg]`. Use `show _ = ι.symm ((((χ.1 x)⁻¹ : ℂˣ) : ℂ) * _) * _`. Simplify using `only [Units.val_inv_eq_inv_val, mul_inv, map_mul, map_inv₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsLAdicOf.inv (h : IsLAdicOf art ι χ n r) : IsLAdicOf art ι χ⁻¹ (-n) r⁻¹ := by
   intro x σ hx
@@ -436,22 +434,20 @@ theorem liftAb_toAb {B : Type} [CommGroup B] [TopologicalSpace B] [T1Space B] (�
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `(QuotientGroup.isQuotientMap_mk _).continuous_iff.mpr hφ`.
+A detailed English derivation is pending.
 -/
 theorem continuous_liftAb {B : Type} [CommGroup B] [TopologicalSpace B] [T1Space B] (φ : G E Ω →* B)
     (hφ : Continuous φ) : Continuous (liftAb φ hφ) :=
   (QuotientGroup.isQuotientMap_mk _).continuous_iff.mpr hφ
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H`. Use extensionality with `x`. Establish `hm : art (localIdele E v x) ∈ (Dec (F` using `E) A).map (toAb E Ω) := by`. Rewrite using `[← ha.dec v A hA]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.le_topologicalClosure _ ⟨x, rfl⟩`. Take `⟨σ, hσ, e⟩` from `hm`. Establish `e2` using `h.loc_away hv x σ e.symm`. Rewrite `e2` using `[H σ hσ, Units.val_one, eq_comm, map_eq_one_iff _ ι.symm.injective]`. Conclude with `e2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `H σ hσ`. Establish `hm : toAb E Ω σ ∈ (art.comp (localIdele E v)).range.topologicalClosure`. Rewrite using `[ha.dec v A hA]`. Conclude with `⟨σ, hσ, rfl⟩`. Establish `hle : (art.comp (localIdele E v)).range ≤ (liftAb r hr).ker`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨τ, hτ⟩` from `toAb_surjective (art (localIdele E v x))`. Establish `e2` using `h.loc_away hv x τ hτ.symm`. Rewrite `e2` using `[H, MonoidHom.one_apply, Units.val_one, map_one]`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, ← hτ, liftAb_toAb]`.
-
-Conclude with `Units.ext e2`. Conclude with `Subgroup.topologicalClosure_minimal _ hle (isClosed_singleton.preimage (continuous_liftAb r hr)) hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLAdicOf.dec_triv {art : Ideles E →* Gab E Ω} {ι : Qbar l ≃+* ℂ} {χ : HChar E} {n : (E →+* ℂ) → ℤ}
     {r : G E Ω →* (Qbar l)ˣ} {v : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
@@ -483,9 +479,9 @@ theorem IsLAdicOf.dec_triv {art : Ideles E →* Gab E Ω} {ι : Qbar l ≃+* ℂ
       (isClosed_singleton.preimage (continuous_liftAb r hr)) hm
 
 /- English proof (translation)
-Establish `: NeZero m` using `⟨hm.ne'⟩`. Establish `hfin : ((rootsOfUnity m K : Set Kˣ) \ {1}).Finite` using `(Set.finite_coe_iff.mp (inferInstanceAs (Finite (rootsOfUnity m K)))).sdiff`. Establish `e : (φ.ker : Set Γ) = (φ ⁻¹' ((rootsOfUnity m K : Set Kˣ) \ {1}))ᶜ`. Use extensionality with `g`. Simplify using `[MonoidHom.mem_ker, mem_rootsOfUnity, h g]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `(hfin.isClosed.preimage hφ).isOpen_compl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_ker_of_pow {Γ K : Type} [Group Γ] [TopologicalSpace Γ] [Field K] [TopologicalSpace K] [T1Space Kˣ]
     (φ : Γ →* Kˣ) (hφ : Continuous φ) {m : ℕ} (hm : 0 < m) (h : ∀ g, φ g ^ m = 1) : IsOpen (φ.ker : Set Γ) := by
@@ -499,7 +495,7 @@ theorem isOpen_ker_of_pow {Γ K : Type} [Group Γ] [TopologicalSpace Γ] [Field 
   exact (hfin.isClosed.preimage hφ).isOpen_compl
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_one φ ?_` and prove the remaining obligations. Use `(continuousAt_const (y := (1 : B))).congr ?_` and prove the remaining obligations. Use `filter_upwards [h.mem_nhds φ.ker.one_mem] with g hg`. Conclude with `(MonoidHom.mem_ker.mp hg).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_of_isOpen_ker' {Γ B : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group B]
     [TopologicalSpace B] [IsTopologicalGroup B] (φ : Γ →* B) (h : IsOpen (φ.ker : Set Γ)) : Continuous φ := by
@@ -509,19 +505,17 @@ theorem continuous_of_isOpen_ker' {Γ B : Type} [Group Γ] [TopologicalSpace Γ]
   exact (MonoidHom.mem_ker.mp hg).symm
 
 /- English proof (translation)
-Set `ψ : Ideles E →* (Qbar l)ˣ` to `(liftAb r hr).comp art`. Establish `hψ : Continuous ψ` using `(continuous_liftAb r hr).comp ha.quot.continuous`. Establish `hψm : ∀ x, ψ x ^ m = 1` using `fun x => by`. Take `⟨τ, hτ⟩` from `toAb_surjective (art x)`. Use `show liftAb r hr (art x) ^ m = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hτ, liftAb_toAb]`. Conclude with `DFunLike.congr_fun h τ`. Set `χ0 : Ideles E →* ℂˣ` to `(Units.map ι.toRingHom.toMonoidHom).comp ψ`. Establish `hopen : IsOpen (χ0.ker : Set (Ideles E))` using `Subgroup.isOpen_mono (fun x hx => by`. Rewrite `hx`, the goal using `[MonoidHom.mem_ker]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.comp_apply, hx, map_one]) (isOpen_ker_of_pow ψ hψ hm hψm)`. Establish `htriv : ∀ k : Eˣ, χ0 (diagUnits E k) = 1` using `fun k => by`. Establish `hk : diagUnits E k ∈ art.ker`. Rewrite using `[ha.ker]`. Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_left ⟨k, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show Units.map _ (liftAb r hr (art (diagUnits E k))) = 1`. Rewrite using `[MonoidHom.mem_ker.mp hk, map_one, map_one]`. Use `⟨⟨χ0, continuous_of_isOpen_ker' χ0 hopen, htriv⟩, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (Units.map _ (ψ x)) ^ m = 1`. Rewrite using `[← map_pow, hψm, map_one]`. Introduce `x σ hx`. Rewrite using `[infPow_zero, lPow_zero, inv_one, mul_one, mul_one]`. Use `show _ = ι.symm (ι ((liftAb r hr (art x) : (Qbar l)ˣ) : Qbar l))`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hx, liftAb_toAb, ι.symm_apply_apply]`. Introduce and unpack `χ ⟨-, hχ⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `MonoidHom.ext fun x => Units.ext ?_` and prove the remaining obligations. Take `⟨τ, hτ⟩` from `toAb_surjective (art x)`.
-
-Establish `e` using `hχ x τ hτ.symm`. Rewrite `e` using `[infPow_zero, lPow_zero, inv_one, mul_one, mul_one]`. Use `show _ = ι ((liftAb r hr (art x) : (Qbar l)ˣ) : Qbar l)`. Rewrite using `[← hτ, liftAb_toAb, e, ι.apply_symm_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unique_hchar_of_finite_order {art : Ideles E →* Gab E Ω} (ha : IsGlobalArtin art) (ι : Qbar l ≃+* ℂ)
     (r : G E Ω →* (Qbar l)ˣ) (hr : Continuous r) {m : ℕ} (hm : 0 < m) (h : r ^ m = 1) :
@@ -563,15 +557,15 @@ theorem exists_unique_hchar_of_finite_order {art : Ideles E →* Gab E Ω} (ha :
     rw [← hτ, liftAb_toAb, e, ι.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `k hk`. Establish `h1 : ∀ x, χ.1 x ^ m = 1` using `fun x => congrArg (fun ξ : HChar E => ξ.1 x) h`. Establish `h2 : ∀ w : InfinitePlace E, ∃ y : w.Completion, y ^ m = algebraMap E w.Completion (k : E)` using `fun w => by`. Break down `w.isReal_or_isComplex with hw | hw` into its components or cases. Set `e` to `InfinitePlace.Completion.ringEquivRealOfIsReal hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression.
 
-Establish `he : e (algebraMap E w.Completion (k : E)) = InfinitePlace.embedding_of_isReal hw (k : E)` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hw ((WithAbs.equiv w.1).symm (k : E))`. Use `⟨e.symm ((InfinitePlace.embedding_of_isReal hw (k : E)) ^ ((m : ℝ)⁻¹)), e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, e.apply_symm_apply, he, Real.rpow_inv_natCast_pow (hk _).le hm.ne']`. Set `e` to `InfinitePlace.Completion.ringEquivComplexOfIsComplex hw`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (e (algebraMap E w.Completion (k : E))) hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e.symm z, e.injective (by rw [map_pow, e.apply_symm_apply, hz])⟩`. Establish `h3 : χ.inf k = 1` using `by show χ.1 (infDiag k) = 1`. Rewrite using `[infDiag, MonoidHom.finsetProd_apply, map_prod]`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `h2 w`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[zero_pow hm.ne', eq_comm, map_eq_zero]`. Conclude with `k.ne_zero hy`. Establish `e : atInf w k = Units.mk0 y hy0 ^ m` using `Units.ext (by rw [Units.val_pow_eq_pow_val]; exact hy.symm)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.comp_apply, e, map_pow, map_pow, h1]`. Simplify using `[h3]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isAlgPos_zero_of_orderDvd {χ : HChar E} {m : ℕ} (hm : 0 < m) (h : χ.OrderDvd m) : IsAlgPos χ 0 := by
   intro k hk
@@ -600,7 +594,7 @@ theorem isAlgPos_zero_of_orderDvd {χ : HChar E} {m : ℕ} (hm : 0 < m) (h : χ.
   simp [h3]
 
 /- English proof (translation)
-Use `MonoidHom.ext fun σ => Units.ext ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `hs (toAb E Ω σ)`. Establish `h1 : χ.1 x ^ m = 1` using `congrArg (fun ξ : HChar E => ξ.1 x) hχ`. Rewrite using `[MonoidHom.pow_apply, Units.val_pow_eq_pow_val, h x σ hx, infPow_zero, lPow_zero, inv_one, mul_one, mul_one, ← map_pow, ← Units.val_pow_eq_pow_val, h1]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsLAdicOf.pow_eq_one {art : Ideles E →* Gab E Ω} (hs : Function.Surjective art) {ι : Qbar l ≃+* ℂ}
     {χ : HChar E} {r : G E Ω →* (Qbar l)ˣ} (h : IsLAdicOf art ι χ 0 r) {m : ℕ} (hχ : χ.OrderDvd m) :
@@ -619,16 +613,16 @@ namespace GlobalTheory.Published
 open GlobalTheory.HeckeGal
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _` and use `let ⟨art, ha, _⟩ := H E Ω ⟨art, ha⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HeckeLAdicCharacter.globalArtin (H : HeckeLAdicCharacter) : GlobalArtinReciprocity := fun E Ω _ _ _ _ _ =>
   let ⟨art, ha, _⟩ := H E Ω
   ⟨art, ha⟩
 
 /- English proof (translation)
-Take `⟨art, ha, h⟩` from `H E Ω`. Use `⟨art, ha, fun l _ ι => ⟨fun χ n hn => ?_, fun m hm χ hχ => ?_, fun m hm r hr hrm => exists_unique_hchar_of_finite_order ha ι r hr hm hrm⟩⟩` and prove the remaining obligations. Take `⟨r, ⟨hr, hf⟩, -⟩` from `h l ι χ n (isAlgPos_of_isAlg hn)`. Conclude with `⟨r, hr, hf, fun r' h' => h'.unique ha.quot.surjective hf, fun v hv A hA => ⟨hf.ine_image ha (Or.inl hv) hA, hf.unr_iff ha (Or.inl hv) hA, fun hu σ hσ => hf.frob_unr ha (Or.inl hv) hu hA hσ⟩⟩`. Take `⟨r, ⟨hr, hf⟩, -⟩` from `h l ι χ 0 (isAlgPos_zero_of_orderDvd hm hχ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨r, ⟨hr, hf.pow_eq_one ha.quot.surjective hχ, hf⟩, fun r' h' => h'.2.2.unique ha.quot.surjective hf⟩`.
+Supply the required witnesses or components.
 -/
 theorem HeckeLAdicCharacter.full (H : HeckeLAdicCharacter) (E Ω : Type) [Field E] [NumberField E] [Field Ω]
     [Algebra E Ω] [IsAlgClosure E Ω] :

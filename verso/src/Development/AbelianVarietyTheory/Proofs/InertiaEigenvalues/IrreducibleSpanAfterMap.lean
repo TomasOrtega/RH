@@ -5,43 +5,37 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hmul : ∀ (g : Γ) (w : Fin a → k), ((_root_.Formalism.MainNotions.N.mapRep f ρ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L).mulVec (f ∘ w) = f ∘ ((ρ g : Matrix (Fin a) (Fin a) k).mulVec w)`. Introduce `g w`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec f _ w i).symm`. Set `T : Γ → (Fin a → L) →ₗ[L] (Fin a → L)` to `fun g => Matrix.toLin' ((_root_.Formalism.MainNotions.N.mapRep f ρ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `A` to `Submodule.span L (Set.range T)`. Set `P : Submodule k (Module.End k W)` to `{ carrier := {E | ∃ M ∈ A, ∀ w : W, M (f ∘ (w : Fin a → k)) = f ∘ ((E w : W) : Fin a → k)} add_mem' := by`. Introduce and unpack `E₁ E₂ ⟨M₁, hM₁, h₁⟩ ⟨M₂, hM₂, h₂⟩`. Use `⟨M₁ + M₂, A.add_mem hM₁ hM₂, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, h₁, h₂]`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Use the proof step `zero_mem' := ⟨0, A.zero_mem, fun w => by funext i; simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c E ⟨M, hM, h⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨f c • M, A.smul_mem _ hM, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, h]`. Use function extensionality and compare the values at `i`. Simplify using `}`. Establish `hP : ∀ E, E ∈ P`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hle : Submodule.span k (Set.range fun g => (_root_.Formalism.MainNotions.N.matRep ((Units.coeHom _).comp ρ) g).restrict (hW g)) ≤ P`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Use `⟨T g, Submodule.subset_span ⟨g, rfl⟩, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.restrict_coe_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmul g w`. Introduce `E`. Apply `hle` to reduce the goal to its premises. Rewrite using `[hsp]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hA : ∀ W' : Submodule L (Fin a → L), _root_.Formalism.MainNotions.N.IsInv (_root_.Formalism.MainNotions.N.mapRep f ρ) W' → ∀ M ∈ A, ∀ v ∈ W', M v ∈ W'`. Introduce `W' hW' M hM`. Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately.
 
-Introduce `v hv`. Conclude with `hW' g v hv`. Consider the case `zero => intro v _`. Simplify using `using W'.zero_mem`. Consider the case `add x y _ _ hx hy => intro v hv`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `W'.add_mem (hx v hv) (hy v hv)`. Consider the case `smul c x _ hx => intro v hv`. Conclude with `W'.smul_mem c (hx v hv)`. Unfold `_root_.Formalism.MainNotions.N.IsIrrSub`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, hw, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Introduce `h`. Apply `hw0` to reduce the goal to its premises. Establish `hfw : f ∘ w ∈ Submodule.span L ((fun v => f ∘ v) '' (W : Set (Fin a → k)))` using `Submodule.subset_span ⟨w, hw, rfl⟩`. Rewrite `hfw` using `[h, Submodule.mem_bot]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use function extensionality and compare the values at `i`. Simplify using `using congrFun hfw i`. Introduce `g v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Take `⟨w, hw, rfl⟩` from `hx`. Rewrite using `[hmul]`. Conclude with `Submodule.subset_span ⟨_, hW g w hw, rfl⟩`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `Submodule.zero_mem _`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ c hx`. Introduce `W' hle hst`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : W' = ⊥`. Conclude with `Or.inl h0`. Use `right`. Apply `le_antisymm hle` to reduce the goal to its premises. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, x i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx0 (funext h)`. Rewrite using `[Submodule.span_le]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Introduce and unpack `_ ⟨w₀, hw₀, rfl⟩`. Use `show f ∘ w₀ ∈ W'`. Set `φ : W →ₗ[k] k` to `(LinearMap.proj i : (Fin a → k) →ₗ[k] k).comp W.subtype`. Set `E : Module.End k W` to `φ.smulRight ⟨w₀, hw₀⟩`. Take `⟨M, hMA, hM⟩` from `hP E`.
-
-Establish `key : ∀ y ∈ Submodule.span L ((fun v => f ∘ v) '' (W : Set (Fin a → k))), M y = y i • (f ∘ w₀)`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨w, hw, rfl⟩` from `hy`.
-
-Rewrite using `[hM ⟨w, hw⟩]`. Use function extensionality and compare the values at `j`. Simplify using `[E, φ]`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add, hy, hz, Pi.add_apply, add_smul]`.
-
-Consider the case `smul c y _ hy => rw [map_smul, hy, Pi.smul_apply, smul_eq_mul, mul_smul]`. Establish `hmem : M x ∈ W'` using `hA W' hst M hMA x hx`. Rewrite `hmem` using `[key x (hle hx)]`. Establish `hsm` using `W'.smul_mem (x i)⁻¹ hmem`. Rewrite `hsm` using `[smul_smul, inv_mul_cancel₀ hi, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.isIrrSub_mapRep_of_span_restrict_eq_top {k Γ : Type} [Field k] [Group Γ] {L : Type}
     [Field L] (f : k →+* L) {a : ℕ} (ρ : Γ →* GL (Fin a) k) (W : Submodule k (Fin a → k))

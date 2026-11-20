@@ -16,28 +16,28 @@ noncomputable def d0 (D D' : Type) [CommRing D] [CommRing D'] [Algebra D D'] :
   TensorProduct.mk D D' D' 1 - (TensorProduct.mk D D' D').flip 1
 
 /- English proof (translation)
-Simplify using `[d0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem amitsur_d0_apply (D D' : Type) [CommRing D] [CommRing D'] [Algebra D D'] (a : D') :
     d0 D D' a = (1 : D') ⊗ₜ[D] a - a ⊗ₜ[D] (1 : D') := by
   simp [d0]
 
 /- English proof (translation)
-Introduce `D D' _ _ _ _ c hc`. Set `i1 : D' →ₐ[D] D' ⊗[D] (D' ⊗[D] D')` to `Algebra.TensorProduct.includeLeft`. Set `i2 : D' →ₐ[D] D' ⊗[D] (D' ⊗[D] D')` to `(Algebra.TensorProduct.includeRight).comp Algebra.TensorProduct.includeLeft`. Set `i3 : D' →ₐ[D] D' ⊗[D] (D' ⊗[D] D')` to `(Algebra.TensorProduct.includeRight).comp Algebra.TensorProduct.includeRight`. Establish `h` using `hc (D' ⊗[D] (D' ⊗[D] D')) i1 i2 i3`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `k1 : ∀ x : D' ⊗[D] D', Algebra.TensorProduct.lift i1 i3 (fun _ _ ↦ Commute.all _ _) x - Algebra.TensorProduct.lift i1 i2 (fun _ _ ↦ Commute.all _ _) x = LinearMap.lTensor D' (d0 D D') x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `[i1, i2, i3, amitsur_d0_apply, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.tmul_sub]`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, map_add, ← hx, ← hy]`. Normalize the expressions using the abelian group laws. Establish `k2 : ∀ x : D' ⊗[D] D', Algebra.TensorProduct.lift i2 i3 (fun _ _ ↦ Commute.all _ _) x = (1 : D') ⊗ₜ[D] x`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b`. Simplify using `[i2, i3, Algebra.TensorProduct.tmul_mul_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `add x y hx hy`. Rewrite using `[map_add, hx, hy, TensorProduct.tmul_add]`. Establish `key : (1 : D') ⊗ₜ[D] c = LinearMap.lTensor D' (d0 D D') c`. Rewrite using `[← k1, ← k2, h]`. Normalize the expressions using the abelian group laws.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Set `q` to `(LinearMap.range (d0 D D')).mkQ`. Establish `hq : (1 : D') ⊗ₜ[D] q c = 0`. Establish `: (1 : D') ⊗ₜ[D] q c = LinearMap.lTensor D' q ((1 : D') ⊗ₜ[D] c)` using `by simp`. Rewrite using `[this, key, ← LinearMap.comp_apply, ← LinearMap.lTensor_comp]`. Establish `hz : q ∘ₗ d0 D D' = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `a`. Simplify using `[q]`. Rewrite using `[hz]`. Simplify using the standard rewrite rules. Establish `hq0 : q c = 0` using `(Module.FaithfullyFlat.one_tmul_eq_zero_iff D _ (A := D') _).1 hq`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hq0`. Conclude with `⟨a, by rw [← ha, amitsur_d0_apply]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cocycle_is_coboundary : ∀ (D D' : Type) [CommRing D] [CommRing D'] [Algebra D D']
     [Module.FaithfullyFlat D D'] (c : D' ⊗[D] D'),

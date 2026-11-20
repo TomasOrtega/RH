@@ -21,9 +21,9 @@ Both sides reduce to the same expression.
 @[simp] theorem toPl_rfl {P : Pre} (v : HeightOneSpectrum (𝓞 P.host.F)) : toPl rfl v = v := rfl
 
 /- English proof (translation)
-Take `⟨B, C, W, V, S, N, Gj⟩` from `s`. Take `⟨B', C', W', V', S', N', Gj'⟩` from `s'`. Consider the cases of `B`. Consider the cases of `B'`. Simplify using `only at h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions.
 
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem leastSplitAuxiliaryPrime_congr_preData {s s' : Stages} (h : s.B.toPre = s'.B.toPre) : GlobalTheory.ChiGrid.q0 s.toD7 = GlobalTheory.ChiGrid.q0 s'.toD7 := by
   obtain ⟨B, C, W, V, S, N, Gj⟩ := s
@@ -35,17 +35,15 @@ theorem leastSplitAuxiliaryPrime_congr_preData {s s' : Stages} (h : s.B.toPre = 
   rfl
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Take `⟨B, C, W, V, S, N, Gj⟩` from `s`. Take `⟨B', C', W', V', S', N', Gj'⟩` from `s'`. Consider the cases of `B`. Consider the cases of `B'`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Simplify using `only at hs'`. Substitute `hs'` using the available equality. Establish `hv0 : G'.pl.v0 = G.pl.v0` using `hv`. Use `⟨⟨G.pl, ⟨G'.ch.chiH, G'.ch.chi, G'.ch.chi_eq, G'.ch.triv, G'.ch.inf, fun i h1 h2 PP hPP => G'.ch.unr i h1 h2 PP ?_, G'.ch.lev1, G'.ch.wild, fun i h1 h2 PP hPP => G'.ch.lev0 i h1 h2 PP (hPP.trans hv0.symm)⟩, G.sp⟩, rfl, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hPP` to reduce the goal to its premises. Break down `G'.pl.mem_S0_of_sum_eq.1 h with h | h` into its components or cases. Conclude with `G.pl.mem_S0_of_sum_eq.2 (Or.inl (h.trans hv0))`. Conclude with `G.pl.mem_S0_of_sum_eq.2 (Or.inr h)`. Use `⟨hF.values, fun v hv => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hd : G.pl.depth sc v = G'.pl.depth sc v`. Unfold `Places.depth`. Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression. Conclude with `absurd (h1.trans hv0.symm) h2`.
+Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd (h2.trans hv0) h1`. Both sides reduce to the same expression. Rewrite using `[hd]`. Use `hF.roots v ?_` and prove the remaining obligations. Break down `G.pl.mem_S0_of_sum_eq.1 hv with h | h` into its components or cases.
-
-Conclude with `G'.pl.mem_S0_of_sum_eq.2 (Or.inl (h.trans hv0.symm))`. Conclude with `G'.pl.mem_S0_of_sum_eq.2 (Or.inr h)`.
+A detailed English derivation is pending.
 -/
 theorem exists_gridData_pl_eq_and_fieldHas_of_basePlace_eq {s s' : Stages} {B₀ : Pre} (hs : s.B.toPre = B₀) (hs' : s'.B.toPre = B₀) {T T' : Type}
     {L : Formalism.IndefR.Links.LevCh s.toD7 T} {L' : Formalism.IndefR.Links.LevCh s'.toD7 T'} {sc : Consts} (G : GridData L sc)
@@ -82,17 +80,15 @@ theorem exists_gridData_pl_eq_and_fieldHas_of_basePlace_eq {s s' : Stages} {B₀
     · exact G'.pl.mem_S0_of_sum_eq.2 (Or.inr h)
 
 /- English proof (translation)
-Introduce `cDep b B₀`. Set `Wit : Set (HeightOneSpectrum (𝓞 B₀.host.F))` to `{v | ∃ (s : Stages) (hs : s.B.toPre = B₀) (T : Type) (L : Formalism.IndefR.Links.LevCh s.toD7 T) (G : GridData L ⟨1, cDep, b⟩), toPl hs (vPre s G.pl.v0) = v}`. Establish `hfin : Wit.Finite`. Break down `Wit.eq_empty_or_nonempty with h | ⟨v₁, s₁, hs₁, T₁, L₁, G₁, -⟩` into its components or cases. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.finite_empty`. Establish `hn : ((GlobalTheory.ChiGrid.q0 s₁.toD7 : ℕ) : 𝓞 B₀.host.F) ≠ 0`. Substitute `hs₁` using the available equality. Conclude with `(GlobalTheory.ChiGrid.leastSplitAuxiliaryPrimeThetaChain_spec s₁.toD7).1.ne_zero` after adjusting the coercions. Use `(Formalism.L2.DIV.primesOf ((GlobalTheory.ChiGrid.q0 s₁.toD7 : ℕ) : 𝓞 B₀.host.F)).finite_toSet.subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨s, hs, T, L, G, rfl⟩`. Use `Formalism.L2.DIV.mem_primesOf.2 ⟨hn, ?_⟩` and prove the remaining obligations. Substitute `hs` using the available equality. Rewrite using `[leastSplitAuxiliaryPrime_congr_preData hs₁]`. Conclude with `G.pl.basePlace_over_qZero`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hex : ∀ v : Wit, ∃ Mv : IntermediateField ℚ ℂ, FiniteDimensional ℚ Mv ∧ ∃ (s : Stages) (hs : s.B.toPre = B₀) (T : Type) (L : Formalism.IndefR.Links.LevCh s.toD7 T) (G : GridData L ⟨1, cDep, b⟩), toPl hs (vPre s G.pl.v0) = v ∧ FieldHas G Mv.val.toRingHom`. Introduce and unpack `⟨v, s, hs, T, L, G, hv⟩`. Take `⟨Mv, h1, h2⟩` from `exists_fieldHas G`. Conclude with `⟨Mv, h1, s, hs, T, L, G, hv, h2⟩`. Use `choose Mv hMv hW using hex`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hfin.to_subtype`. Use `haveI : ∀ v, FiniteDimensional ℚ (Mv v) := hMv`. Use `⟨⨆ v, Mv v, IntermediateField.finiteDimensional_iSup_of_finite, ?_⟩` and prove the remaining obligations. Introduce `s hs _ T L G`. Take `⟨s', hs', T', L', G', hv', hF⟩` from `hW ⟨toPl hs (vPre s G.pl.v0), s, hs, T, L, G, rfl⟩`.
-
-Establish `hF' : FieldHas G' (⨆ v, Mv v).val.toRingHom` using `FieldHas.map (IntermediateField.inclusion (le_iSup Mv _)).toRingHom hF`. Take `⟨G'', -, h⟩` from `exists_gridData_pl_eq_and_fieldHas_of_basePlace_eq hs hs' G G' hv' _ hF'`. Conclude with `⟨G'', h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_field_uniform : ∀ (cDep b : ℝ) (B₀ : Pre), ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧
     ∀ (s : Stages), s.B.toPre = B₀ → 0 < GlobalTheory.ChiGrid.q0 s.toD7 → ∀ (T : Type) (L : Formalism.IndefR.Links.LevCh s.toD7 T)

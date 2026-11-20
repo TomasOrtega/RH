@@ -20,11 +20,11 @@ open GlobalTheory.WpFam
 namespace GlobalTheory.HilbFam.SizeGL
 
 /- English proof (translation)
-Introduce `hE F _ _ _ hf s N _ L hs hL _ z hz l _ lam κ y M M' b e ρ₀ ρ he hze hlM hML hLsz hNsz hρ hρ0 hlM' hMy hy α`. Establish `hA` using `GlobalTheory.WpFam.Act.rightActions N`. Establish `hS` using `GlobalTheory.QFam.SzSum.sz_ring l lam`. Establish `hN : 0 < N` using `Nat.pos_of_ne_zero (NeZero.ne N)`. Establish `hTw : HasLevel N (twist N L ((α : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N)))` using `GlobalTheory.HilbFam.hasLevel_twist_of_hasLevel F N L _ hL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hmem, hsz⟩` from `GlobalTheory.T.twistedHilbertLattice_contains_and_coordinate_size l lam F N (M * l ^ b) L α ρ₀ hL.2 hML hLsz hNsz`. Establish `hx : M' • vmul y α = 0` using `by rw [← hA.2.2.2.2.2.1, hMy]; exact (hA.2.2.2.2.1 0 α).mpr rfl`. Establish `hx0 : vmul y α ≠ 0` using `fun h => hy ((hA.2.2.2.2.1 y α).mp h)`. Take `⟨hQ, -⟩` from `GlobalTheory.T.weierstrassTorsion_qExpansion_integral l lam N M' (vmul y α) hlM' hx hx0`. Establish `hQρ : QAll (Sz l lam ρ) N (wB N (vmul y α))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha, hp⟩` from `hQ`. Conclude with `⟨a, ha, fun n => hS.2.2.2.1 0 ρ _ hρ0 (hp n)⟩`. Conclude with `GlobalTheory.T.hilbertEisenstein_coefficient_valuation_bound hE F hf s N _ hs hN hTw z hz l lam κ (wB N (vmul y α)) M b e ρ₀ ρ he hze hlM hmem hsz hρ hQρ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], 2 ≤ Module.finrank ℚ F → ∀ (s N : ℕ) [NeZero N] (L : Lat F), 1 ≤ s → HasLevel N L → ∀ [IsGalois ℚ F] (z : ClassGroup (𝓞 F) → ℚ), ZetaVals (2 * s) z → ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (κ : Emb F → ℕ) (y : Fin 2 → ZMod N) (M M' b : ℕ) (e ρ₀ ρ : ℝ), 0 ≤ e → (∀ C, -(padicValRat l (z C / 2 ^ Module.finrank ℚ F) : ℝ) ≤ e) → ¬ l ∣ M → (∀ x ∈ stdLat F, ((M * l ^ b : ℕ) : 𝓞 F) • x ∈ L) → (∀ v ∈ L, ∀ (j : Fin 2) (i : Emb F), Sz l lam ρ₀ ((i (v j) : ℝ) : ℂ)) → Sz l lam ρ₀ (N : ℂ) → b + (padicValInt l (discr F) : ℝ) / Module.finrank ℚ F + ρ₀ ≤ ρ → 0 ≤ ρ → ¬ l ∣ M' → M' • y = 0 → y ≠ 0 → ∀ α : GL (Fin 2) (ZMod N), QAll (Sz l lam (e + s * (padicValInt l (discr F) : ℝ) + 2 * s * b * Module.finrank ℚ F + (∑ i, κ i : ℕ) * ρ)) N (hfun (2 * s) (twist N L ((α : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N))) κ (wB N (vmul y (α)))) := by
   intro hE F _ _ _ hf s N _ L hs hL _ z hz l _ lam κ y M M' b e ρ₀ ρ he hze hlM hML hLsz hNsz hρ hρ0 hlM' hMy hy α

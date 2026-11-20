@@ -11,27 +11,25 @@ namespace CompanionTheory.RgFd
 open ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Introduce `n ε V _ _ _ Ψ H _ _ σ j C d m hC hj hΨ hd`. Use `set b := stdOrthonormalBasis ℂ V with hb`. Take `⟨hd0, hS⟩` from `hd`. Establish `hb1 : ∀ i, ⟪b i, b i⟫_ℂ = 1` using `fun i => by`. Rewrite using `[inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `key : ∀ i l, Integrable (fun g : Formalism.REAL.UJ ε => ‖⟪b l, Ψ (Formalism.MainNotions.S.umat g) (b i)⟫_ℂ‖ ^ 2) m ∧ ∫ g, ‖⟪b l, Ψ (Formalism.MainNotions.S.umat g) (b i)⟫_ℂ‖ ^ 2 ∂m = 1 / d`. Introduce `i l`. Take `⟨hi, he⟩` from `hS (j (b i)) (j (b l)) (j (b i)) (j (b l))`. Establish `hpt : ∀ g : Formalism.REAL.UJ ε, Formalism.MainNotions.S.coefOn σ (j (b i)) (j (b l)) g * star (Formalism.MainNotions.S.coefOn σ (j (b i)) (j (b l)) g) = ((C ^ 2 * ‖⟪b l, Ψ (Formalism.MainNotions.S.umat g) (b i)⟫_ℂ‖ ^ 2 : ℝ) : ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[RCLike.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Simplify using `only [Formalism.MainNotions.S.coefOn]`. Rewrite using `[hΨ g (b i) (b l), norm_mul, Complex.norm_real, Real.norm_of_nonneg hC.le]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hi`, `he` using `[hpt]`. Rewrite `he` using `[integral_complex_ofReal, hj, hj, hb1, hb1]`. Establish `he' : ∫ g, C ^ 2 * ‖⟪b l, Ψ (Formalism.MainNotions.S.umat g) (b i)⟫_ℂ‖ ^ 2 ∂m = C * C / d`. Apply `Complex.ofReal_injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hi' : Integrable (fun g : Formalism.REAL.UJ ε => C ^ 2 * ‖⟪b l, Ψ (Formalism.MainNotions.S.umat g) (b i)⟫_ℂ‖ ^ 2) m`. Use `hi.re.congr (ae_of_all _ fun g => ?_)` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Conclude with `RCLike.ofReal_re _`. Establish `hC2 : C ^ 2 ≠ 0` using `pow_ne_zero 2 hC.ne'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(hi'.const_mul (C ^ 2)⁻¹).congr (ae_of_all _ fun g => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only`. Clear the denominators using the available nonvanishing facts. Rewrite `he'` using `[integral_const_mul]`. Establish `hd' : d ≠ 0` using `hd0.ne'`. Clear denominators, using `at he' ⊢` for the nonvanishing conditions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[he']`. Establish `hexp : ∀ g : Formalism.REAL.UJ ε, hsOp (Ψ (Formalism.MainNotions.S.umat g)) = ∑ i, ∑ l, ‖⟪b l, Ψ (Formalism.MainNotions.S.umat g) (b i)⟫_ℂ‖ ^ 2`. Introduce `g`. Unfold `hsOp`. Conclude with `sum_congr rfl fun i _ => (b.sum_sq_norm_inner_right _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : Integrable (fun g : Formalism.REAL.UJ ε => hsOp (Ψ (Formalism.MainNotions.S.umat g))) m`. Repeatedly rewrite using `[hexp]`. Conclude with `integrable_finsetSum _ fun i _ => integrable_finsetSum _ fun l _ => (key i l).1`. Establish `hval : ∫ g, hsOp (Ψ (Formalism.MainNotions.S.umat g)) ∂m = (Module.finrank ℂ V : ℝ) ^ 2 / d`. Repeatedly rewrite using `[hexp]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_finsetSum _ (fun i _ => integrable_finsetSum _ fun l _ => (key i l).1)]`. Rewrite using `[sum_congr rfl fun i _ => integral_finsetSum _ fun l _ => (key i l).1]`. Rewrite using `[sum_congr rfl fun i _ => sum_congr rfl fun l _ => (key i l).2]`. Simplify using `only [sum_const, card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hint (ae_of_all _ fun g => by unfold hsOp; positivity), hval]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degPsi : DegPsi := by
   intro n ε V _ _ _ Ψ H _ _ σ j C d m hC hj hΨ hd

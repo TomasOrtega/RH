@@ -10,7 +10,7 @@ open NumberField Matrix
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Simplify using `only [HermForm.h, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermForm_smul_smul {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (a b : K) (u w : Fin r → K) : S.h (a • u) (b • w) = S.c a * b * S.h u w := by
@@ -18,7 +18,7 @@ theorem hermForm_smul_smul {K : Type} [Field K] [NumberField K] {r : ℕ} (S : H
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [HermForm.h, Finset.sum_apply, map_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm (s := s)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hermForm_sum_left {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     {ι : Type} (s : Finset ι) (u : ι → Fin r → K) (w : Fin r → K) :
@@ -29,7 +29,7 @@ theorem hermForm_sum_left {K : Type} [Field K] [NumberField K] {r : ℕ} (S : He
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [HermForm.h, map_sum, map_mul, S.c_invol, S.G_herm]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermForm_conj {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (u w : Fin r → K) : S.c (S.h u w) = S.h w u := by
@@ -47,7 +47,7 @@ theorem intInv_coe {K : Type} [Field K] [NumberField K] (c : K →+* K) (a : �
     algebraMap (𝓞 K) K (intInv c a) = c (algebraMap (𝓞 K) K a) := rfl
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Submodule.mem_one.mp hx`. Conclude with `Submodule.mem_one.mpr ⟨intInv c y, intInv_coe c y⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_one_map {K : Type} [Field K] [NumberField K] (c : K →+* K) {x : K}
     (hx : x ∈ (1 : Submodule (𝓞 K) K)) : c x ∈ (1 : Submodule (𝓞 K) K) := by
@@ -58,19 +58,17 @@ def cImage {K : Type} [Field K] [NumberField K] (c : K →+* K) (C : Submodule (
     Submodule (𝓞 K) K := Bl.ThirdBlockLemmaC.goal1 c C
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_cImage {K : Type} [Field K] [NumberField K] (c : K →+* K) (C : Submodule (𝓞 K) K)
     {x : K} : x ∈ cImage c C ↔ c x ∈ C := Iff.rfl
 
 /- English proof (translation)
-Use `haveI : RingHomSurjective (intInv c) := ⟨fun y => ⟨intInv c y, by`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show algebraMap (𝓞 K) K (intInv c (intInv c y)) = algebraMap (𝓞 K) K y`. Rewrite using `[intInv_coe, intInv_coe, hc]⟩⟩`. Set `f : K →ₛₗ[intInv c] K` to `{ toFun := c map_add' := map_add c map_smul' := fun a x => by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, intInv_coe] }`. Establish `h : cImage c C = C.map f`. Use extensionality with `x`. Rewrite using `[mem_cImage, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `hx`. Conclude with `⟨c x, hx, hc x⟩`. Introduce and unpack `⟨y, hy, rfl⟩ show c (c y) ∈ C`. Rewrite using `[hc]`. Conclude with `hy`.
-
-Rewrite using `[h]`. Conclude with `hC.map f`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cImage_fg {K : Type} [Field K] [NumberField K] (c : K →+* K) (hc : ∀ x, c (c x) = x)
     (C : Submodule (𝓞 K) K) (hC : C.FG) : (cImage c C).FG := by
@@ -98,7 +96,7 @@ theorem cImage_fg {K : Type} [Field K] [NumberField K] (c : K →+* K) (hc : ∀
   exact hC.map f
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[mem_cImage]`. Conclude with `h1 (mem_one_map c hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_cImage {K : Type} [Field K] [NumberField K] (c : K →+* K)
     (C : Submodule (𝓞 K) K) (h1 : 1 ≤ C) : 1 ≤ cImage c C := by
@@ -107,11 +105,11 @@ theorem one_le_cImage {K : Type} [Field K] [NumberField K] (c : K →+* K)
   exact h1 (mem_one_map c hx)
 
 /- English proof (translation)
-Establish `h1 : (1 : Submodule (𝓞 K) K).toAddSubgroup = (1 : Submodule (𝓞 K) K).toAddSubgroup.comap c.toAddMonoidHom`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `mem_one_map c hx`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Establish `h' : c (c x) ∈ (1 : Submodule (𝓞 K) K)` using `mem_one_map c hx`. Rewrite `h'` using `[hc]`. Then use the resulting hypothesis. Establish `h2 : (cImage c C).toAddSubgroup = C.toAddSubgroup.comap c.toAddMonoidHom`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_cImage c C`. Rewrite using `[h1, h2, AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self_of_surjective]`. Rewrite using `[← h1]`. Conclude with `fun y => ⟨c y, hc y⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem relIndex_cImage {K : Type} [Field K] [NumberField K] (c : K →+* K)
     (hc : ∀ x, c (c x) = x) (C : Submodule (𝓞 K) K) :
@@ -134,9 +132,9 @@ theorem relIndex_cImage {K : Type} [Field K] [NumberField K] (c : K →+* K)
   · exact fun y => ⟨c y, hc y⟩
 
 /- English proof (translation)
-It suffices to establish `h : ∀ s : Finset (Fin k), ∏ i ∈ s, x i ∈ ∏ i ∈ s, p i by exact h Finset.univ`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.prod_empty]`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `Submodule.mul_mem_mul (hx a) ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_mem_prod_sub {K : Type} [Field K] [NumberField K] {k : ℕ}
     (p : Fin k → Submodule (𝓞 K) K) (x : Fin k → K) (hx : ∀ i, x i ∈ p i) :
@@ -152,7 +150,7 @@ theorem prod_mem_prod_sub {K : Type} [Field K] [NumberField K] {k : ℕ}
     exact Submodule.mul_mem_mul (hx a) ih
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_transpose, Matrix.det_apply]`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Conclude with `zsmul_mem (prod_mem_prod_sub p (fun i => Tᵀ (σ i) i) fun i => hT i (σ i)) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_prod_sub {K : Type} [Field K] [NumberField K] {k : ℕ}
     (p : Fin k → Submodule (𝓞 K) K) (T : Matrix (Fin k) (Fin k) K)

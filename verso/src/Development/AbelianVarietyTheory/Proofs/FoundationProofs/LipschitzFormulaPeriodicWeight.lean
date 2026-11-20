@@ -10,37 +10,35 @@ noncomputable section
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Introduce `j L φ z hj hL hz`. Use `haveI : NeZero L := ⟨hL.ne'⟩`. Take `⟨k, rfl⟩ : ∃ k, j = k + 2` from `⟨j - 2, by omega⟩`. Establish `htrm : ∀ w : ℂ, trm (k + 2) 0 w = (w ^ (k + 2))⁻¹` using `fun w => by simp [trm]`. Use `set f : ℤ → ℂ := fun d => φ (d : ZMod L) * ((z + d) ^ (k + 2))⁻¹ with hf_def`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, hM⟩ : ∃ M, ∀ x, ‖φ x‖ ≤ M` from `⟨∑ x, ‖φ x‖, fun x => Finset.single_le_sum (f := fun x => ‖φ x‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ x)⟩`. Establish `hs0 : ∀ w : ℂ, Summable fun d : ℤ => ((w + d) ^ (k + 2))⁻¹` using `fun w => by`. Use `EisensteinSeries.linear_right_summable w 1 (k := ((k + 2 : ℕ) : ℤ)) (by push_cast; omega)` as an intermediate fact. Simplify using `only [Int.cast_one, one_mul, zpow_natCast] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hfs : Summable f`. Use `Summable.of_norm_bounded ((hs0 z).norm.mul_left M) fun d => ?_` and prove the remaining obligations. Simplify using `only [f, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hM _) (norm_nonneg _)`. Establish `hlim : Tendsto (fun R : ℕ => ∑ d ∈ Finset.Icc (-(R : ℤ)) R, f d) atTop (𝓝 (∑' d, f d))` using `hfs.hasSum.comp (tendsto_atTop_finset_of_monotone (fun a b hab => Finset.Icc_subset_Icc (by omega) (by omega)) fun x => ⟨x.natAbs, Finset.mem_Icc.mpr ⟨by rw [Int.natCast_natAbs]; exact neg_abs_le x, by rw [Int.natCast_natAbs]; exact le_abs_self x⟩⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hval : ∑' d, f d = (-2 * π * Complex.I / L) ^ (k + 2) / (k + 2 - 1).factorial * ∑' m : ℕ, ((m + 1 : ℕ) : ℂ) ^ (k + 2 - 1) * hat φ (m + 1 : ℕ) * cexp (2 * π * Complex.I * (m + 1 : ℕ) * z / L)` using `by set C : ℂ := (-2 * π * Complex.I) ^ (k + 2) / (k + 1).factorial with hC set w : ℕ → ℂ := fun r => (z + r) / L with hw_def`. Establish `hLc : (L : ℂ) ≠ 0` using `by exact_mod_cast hL.ne'`. Establish `hwim : ∀ r : ℕ, 0 < (w r).im` using `fun r => by`. Simplify using `only [w, Complex.div_natCast_im, Complex.add_im, Complex.natCast_im, add_zero]`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set q : ℕ → ℂ := fun r => cexp (2 * π * Complex.I * w r) with hq_def`. Establish `hq : ∀ r, ‖q r‖ < 1` using `fun r => UpperHalfPlane.norm_exp_two_pi_I_lt_one ⟨w r, hwim r⟩`. Use `set g : ℕ → ℕ → ℂ := fun r m => ((m + 1 : ℕ) : ℂ) ^ (k + 1) * q r ^ (m + 1) with hg_def`. Establish `hgs : ∀ r, Summable (g r)` using `fun r => by`. Establish `h0 : Summable (fun n : ℕ => (n : ℂ) ^ (k + 1) * q r ^ n)` using `summable_pow_mul_geometric_of_norm_lt_one (k + 1) (hq r)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `(summable_nat_add_iff (f := fun n : ℕ => (n : ℂ) ^ (k + 1) * q r ^ n) 1).mpr h0`. Use `h1.congr fun m => ?_` and prove the remaining obligations. Simplify using `only [g, Nat.cast_add, Nat.cast_one]`. Establish `hres : ∀ r : Fin L, HasSum (fun n : ℤ => f (n * L + (r : ℕ))) (φ ((r : ℕ) : ZMod L) * ((L : ℂ)⁻¹) ^ (k + 2) * (C * ∑' m, g r m))`. Introduce `r`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hid` using `EisensteinSeries.qExpansion_identity_pnat (k := k + 1) (by omega) ⟨w r, hwim r⟩`. Rewrite `hid` using `[tsum_pnat_eq_tsum_succ (f := fun n : ℕ => (n : ℂ) ^ (k + 1) * cexp (2 * π * Complex.I * ((⟨w r, hwim r⟩ : ℍ) : ℂ)) ^ n)]`. Establish `h1 : HasSum (fun n : ℤ => ((w r + n) ^ (k + 2))⁻¹) (C * ∑' m, g r m)`. Use `(hs0 (w r)).hasSum using 1` and compare the differences between its conclusion and the goal. Simplify using `only [one_div, UpperHalfPlane.coe_mk_subtype] at hid`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hid]`. Establish `h2` using `h1.mul_left (φ ((r : ℕ) : ZMod L) * ((L : ℂ)⁻¹) ^ (k + 2))`. Use `(congrArg (fun F => HasSum F _) (funext fun n => ?_)).mpr h2` and prove the remaining obligations. Simplify using `only [f]`. Establish `e1 : (((n * L + (r : ℕ) : ℤ)) : ZMod L) = ((r : ℕ) : ZMod L)` using `by push_cast; simp`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : z + (((n * L + (r : ℕ) : ℤ)) : ℂ) = L * (w r + n)`. Simplify using `only [w]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, mul_pow, mul_inv, inv_pow]`. Expand and normalize the polynomial expressions, which then agree. Set `e : Fin L × ℤ ≃ ℤ` to `(Equiv.prodComm _ _).trans (Int.divModEquiv L).symm`. Establish `he : ∀ p : Fin L × ℤ, e p = p.2 * L + ((p.1 : ℕ) : ℤ)` using `fun p => by`. Simplify using `[e, Int.divModEquiv_symm_apply]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfe : HasSum (f ∘ e) (∑' d, f d)` using `by rw [e.hasSum_iff]; exact hfs.hasSum`. Establish `hg2 : HasSum (fun r : Fin L => φ ((r : ℕ) : ZMod L) * ((L : ℂ)⁻¹) ^ (k + 2) * (C * ∑' m, g r m)) (∑' d, f d)` using `hfe.prod_fiberwise fun r => by`. Use `hres r using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`. Simplify using `only [Function.comp_apply, he]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsum : ∑ r : Fin L, φ ((r : ℕ) : ZMod L) * ∑' m, g r m = ∑' m : ℕ, ((m + 1 : ℕ) : ℂ) ^ (k + 1) * hat φ (m + 1 : ℕ) * cexp (2 * π * Complex.I * (m + 1 : ℕ) * z / L)`. Repeatedly rewrite using `[← tsum_mul_left]`. Rewrite using `[← Summable.tsum_finsetSum (f := fun (r : Fin L) m => φ ((r : ℕ) : ZMod L) * g r m) (fun r _ => (hgs r).mul_left _)]`. Use `tsum_congr fun m => ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_eq_sum_range (fun y => φ (y : ZMod L) * g y m) L]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [hat, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `: q y ^ (m + 1) = cexp (2 * π * Complex.I * (y * (((m + 1 : ℕ) : ℤ) : ℂ)) / L) * cexp (2 * π * Complex.I * (m + 1 : ℕ) * z / L)`. Rewrite using `[hq_def, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [w]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [g, this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hg2.unique (hasSum_fintype _), show k + 2 - 1 = k + 1 by omega, ← hsum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[hC, div_pow]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[← hval]`. Use `hlim.congr fun R => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `[f, htrm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lipschitz_periodic : ∀ (j L : ℕ) (φ : ZMod L → ℂ) (z : ℂ), 2 ≤ j → 0 < L → 0 < z.im → Tendsto (fun R : ℕ => ∑ d ∈ Finset.Icc (-(R : ℤ)) R, φ (d : ZMod L) * trm j 0 (z + d)) atTop (𝓝 ((-2 * π * Complex.I / L) ^ j / (j - 1).factorial * ∑' m : ℕ, ((m + 1 : ℕ) : ℂ) ^ (j - 1) * hat φ (m + 1 : ℕ) * cexp (2 * π * Complex.I * (m + 1 : ℕ) * z / L))) := by
   intro j L φ z hj hL hz

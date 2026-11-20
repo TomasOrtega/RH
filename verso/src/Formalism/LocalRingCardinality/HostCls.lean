@@ -10,18 +10,18 @@ section cls
 variable {φ : Frame} (H : HostRaw φ) {p : ℕ}
 
 /- English proof (translation)
-Unfold `primeClass`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem primeClass_eq_ramified_iff : primeClass H p = .ram2 ↔ p ∈ H.small := by
   unfold primeClass
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Rewrite `hp` using `[HostRaw.small, Nat.mem_primeFactors]`. Take `⟨hpp, hdvd, -⟩` from `hp`. Establish `hc` using `H.QS_coprime`. Prove the components needed by the constructor for the conclusion. Introduce `heq`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hdvd`, `hpp` using `[heq]`. Establish `h1 : H.q ∣ Nat.gcd H.QS (H.q * H.d)` using `Nat.dvd_gcd hdvd (dvd_mul_right _ _)`. Rewrite `h1` using `[hc.gcd_eq_one]`. Conclude with `hpp.one_lt.ne' (Nat.dvd_one.mp h1)`. Introduce `heq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdvd`, `hpp` using `[heq]`. Establish `h1 : H.d ∣ Nat.gcd H.QS (H.q * H.d)` using `Nat.dvd_gcd hdvd (dvd_mul_left _ _)`. Rewrite `h1` using `[hc.gcd_eq_one]`. Conclude with `hpp.one_lt.ne' (Nat.dvd_one.mp h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ne_q_and_ne_d_of_mem_small (hp : p ∈ H.small) : p ≠ H.q ∧ p ≠ H.d := by
   rw [HostRaw.small, Nat.mem_primeFactors] at hp
@@ -40,7 +40,7 @@ private theorem ne_q_and_ne_d_of_mem_small (hp : p ∈ H.small) : p ≠ H.q ∧ 
     exact hpp.one_lt.ne' (Nat.dvd_one.mp h1)
 
 /- English proof (translation)
-Establish `hs : p ∈ H.small → p ≠ H.q` using `fun h => (ne_q_and_ne_d_of_mem_small H h).1`. Unfold `primeClass`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem primeClass_eq_ramQ_iff : primeClass H p = .ramQ ↔ p = H.q := by
   have hs : p ∈ H.small → p ≠ H.q := fun h => (ne_q_and_ne_d_of_mem_small H h).1
@@ -48,7 +48,7 @@ theorem primeClass_eq_ramQ_iff : primeClass H p = .ramQ ↔ p = H.q := by
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Establish `hh` using `H.hyp`. Unfold `HostHyp at hh`. Take `⟨-, -, h1, h2, -⟩` from `hh`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem q_ne_d' : H.q ≠ H.d := by
   have hh := H.hyp
@@ -57,7 +57,7 @@ private theorem q_ne_d' : H.q ≠ H.d := by
   omega
 
 /- English proof (translation)
-Establish `hs : p ∈ H.small → p ≠ H.d` using `fun h => (ne_q_and_ne_d_of_mem_small H h).2`. Establish `hqd` using `q_ne_d' H`. Unfold `primeClass`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem primeClass_eq_ramD_iff : primeClass H p = .ramD ↔ p = H.d := by
   have hs : p ∈ H.small → p ≠ H.d := fun h => (ne_q_and_ne_d_of_mem_small H h).2
@@ -66,7 +66,7 @@ theorem primeClass_eq_ramD_iff : primeClass H p = .ramD ↔ p = H.d := by
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Unfold `primeClass`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem primeClass_eq_splitK_iff : primeClass H p = .splitK ↔
     p ∉ H.small ∧ p ≠ H.q ∧ p ≠ H.d ∧ jacobiSym (-(H.d : ℤ)) p = 1 := by
@@ -74,7 +74,7 @@ theorem primeClass_eq_splitK_iff : primeClass H p = .splitK ↔
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Unfold `primeClass`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem primeClass_eq_signal_iff : primeClass H p = .signal ↔
     p ∉ H.small ∧ p ≠ H.q ∧ p ≠ H.d ∧ jacobiSym (-(H.d : ℤ)) p ≠ 1 ∧ H.psAt p = 1 := by
@@ -82,7 +82,7 @@ theorem primeClass_eq_signal_iff : primeClass H p = .signal ↔
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Unfold `primeClass`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem primeClass_eq_inert_iff : primeClass H p = .inertClass ↔
     p ∉ H.small ∧ p ≠ H.q ∧ p ≠ H.d ∧ jacobiSym (-(H.d : ℤ)) p ≠ 1 ∧ H.psAt p ≠ 1 := by
@@ -90,25 +90,25 @@ theorem primeClass_eq_inert_iff : primeClass H p = .inertClass ↔
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Apply `(primeClass_eq_ramified_iff H).2` to reduce the goal to its premises. Rewrite using `[HostRaw.small, Nat.mem_primeFactors]`. Conclude with `⟨Nat.prime_two, dvd_trans (dvd_pow_self 2 (by omega)) H.tower_dvd, H.QS_pos.ne'⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem primeClass_two : primeClass H 2 = .ram2 := by
   apply (primeClass_eq_ramified_iff H).2
   rw [HostRaw.small, Nat.mem_primeFactors]
   exact ⟨Nat.prime_two, dvd_trans (dvd_pow_self 2 (by omega)) H.tower_dvd, H.QS_pos.ne'⟩
 /- English proof (translation)
-The claim follows from `(primeClass_eq_ramQ_iff H).2 rfl`.
+A detailed English derivation is pending.
 -/
 theorem primeClass_q : primeClass H H.q = .ramQ := (primeClass_eq_ramQ_iff H).2 rfl
 /- English proof (translation)
-The claim follows from `(primeClass_eq_ramD_iff H).2 rfl`.
+A detailed English derivation is pending.
 -/
 theorem primeClass_d : primeClass H H.d = .ramD := (primeClass_eq_ramD_iff H).2 rfl
 
 /- English proof (translation)
-Establish `hh` using `H.hyp`. Unfold `HostHyp at hh`. Take `⟨hq, hd, -, -, -⟩` from `hh`. Establish `hQS` using `H.QS_pos.ne'`. Use `show p ∣ H.QS * H.q * H.d ↔ _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[primeClass_eq_ramified_iff, primeClass_eq_ramQ_iff, primeClass_eq_ramD_iff, hp.dvd_mul, hp.dvd_mul, Nat.prime_dvd_prime_iff_eq hp hq, Nat.prime_dvd_prime_iff_eq hp hd, HostRaw.small, Nat.mem_primeFactors]`. The claim follows by propositional logic.
+The claim follows by propositional logic. A detailed English derivation is pending.
 -/
 theorem dvd_condN_iff_primeClass (hp : p.Prime) : p ∣ H.condN ↔
     primeClass H p = .ram2 ∨ primeClass H p = .ramQ ∨ primeClass H p = .ramD := by
@@ -122,7 +122,7 @@ theorem dvd_condN_iff_primeClass (hp : p.Prime) : p ∣ H.condN ↔
   tauto
 
 /- English proof (translation)
-Rewrite using `[dvd_condN_iff_primeClass H hp]`. Unfold `primeClass`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem not_dvd_condN_iff_primeClass (hp : p.Prime) : ¬ p ∣ H.condN ↔
     primeClass H p = .splitK ∨ primeClass H p = .signal ∨ primeClass H p = .inertClass := by
@@ -133,24 +133,24 @@ theorem not_dvd_condN_iff_primeClass (hp : p.Prime) : ¬ p ∣ H.condN ↔
 variable {H}
 
 /- English proof (translation)
-The claim follows from `(not_dvd_condN_iff_primeClass H hp).2 (Or.inl h)`.
+A detailed English derivation is pending.
 -/
 theorem not_dvd_of_splitK (hp : p.Prime) (h : primeClass H p = .splitK) : ¬ p ∣ H.condN := (not_dvd_condN_iff_primeClass H hp).2 (Or.inl h)
 
 /- English proof (translation)
-The claim follows from `(not_dvd_condN_iff_primeClass H hp).2 (Or.inr (Or.inl h))`.
+A detailed English derivation is pending.
 -/
 theorem not_dvd_of_signal (hp : p.Prime) (h : primeClass H p = .signal) : ¬ p ∣ H.condN := (not_dvd_condN_iff_primeClass H hp).2 (Or.inr (Or.inl h))
 
 /- English proof (translation)
-The claim follows from `(not_dvd_condN_iff_primeClass H hp).2 (Or.inr (Or.inr h))`.
+A detailed English derivation is pending.
 -/
 theorem not_dvd_conductor_of_inert (hp : p.Prime) (h : primeClass H p = .inertClass) : ¬ p ∣ H.condN := (not_dvd_condN_iff_primeClass H hp).2 (Or.inr (Or.inr h))
 
 /- English proof (translation)
-Establish `hh` using `H.hyp`. Unfold `HostHyp at hh`. Take `⟨-, hdp, -, -, -⟩` from `hh`. Apply `jacobiSym.eq_one_or_neg_one` to reduce the goal to its premises. Use `show Nat.gcd (-(H.d : ℤ)).natAbs (p : ℤ).natAbs = 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (Nat.coprime_primes hdp hp).2 (Ne.symm hd)`.
+A detailed English derivation is pending.
 -/
 theorem jacobi_d_eq_one_or (hp : p.Prime) (hd : p ≠ H.d) :
     jacobiSym (-(H.d : ℤ)) p = 1 ∨ jacobiSym (-(H.d : ℤ)) p = -1 := by
@@ -162,7 +162,7 @@ theorem jacobi_d_eq_one_or (hp : p.Prime) (hd : p ≠ H.d) :
   simpa using (Nat.coprime_primes hdp hp).2 (Ne.symm hd)
 
 /- English proof (translation)
-Rewrite using `[dvd_condN_iff_primeClass H hp, primeClass_eq_ramified_iff, primeClass_eq_ramQ_iff, primeClass_eq_ramD_iff]`. The claim follows by propositional logic.
+Rewrite the conclusion using the stated equalities. The claim follows by propositional logic.
 -/
 private theorem not_dvd_condN_iff' (hp : p.Prime) :
     ¬ p ∣ H.condN ↔ p ∉ H.small ∧ p ≠ H.q ∧ p ≠ H.d := by
@@ -171,7 +171,7 @@ private theorem not_dvd_condN_iff' (hp : p.Prime) :
   tauto
 
 /- English proof (translation)
-Rewrite using `[primeClass_eq_splitK_iff, not_dvd_condN_iff' hp]`. The claim follows by propositional logic.
+Rewrite the conclusion using the stated equalities. The claim follows by propositional logic.
 -/
 theorem primeClass_eq_splitK_iff' (hp : p.Prime) : primeClass H p = .splitK ↔
     ¬ p ∣ H.condN ∧ jacobiSym (-(H.d : ℤ)) p = 1 := by
@@ -179,9 +179,9 @@ theorem primeClass_eq_splitK_iff' (hp : p.Prime) : primeClass H p = .splitK ↔
   tauto
 
 /- English proof (translation)
-Rewrite using `[primeClass_eq_signal_iff, not_dvd_condN_iff' hp]`. Establish `key : p ≠ H.d → (jacobiSym (-(H.d : ℤ)) p ≠ 1 ↔ jacobiSym (-(H.d : ℤ)) p = -1)` using `fun hd => by`. Apply the tactic sequence `rcases jacobi_d_eq_one_or hp hd with h | h <;> simp [h]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4, h5⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨h1, h2, h3⟩, (key h3).1 h4, h5⟩`. Introduce and unpack `⟨⟨h1, h2, h3⟩, h4, h5⟩`. Conclude with `⟨h1, h2, h3, (key h3).2 h4, h5⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem primeClass_eq_signal_iff' (hp : p.Prime) : primeClass H p = .signal ↔
     ¬ p ∣ H.condN ∧ jacobiSym (-(H.d : ℤ)) p = -1 ∧ H.psAt p = 1 := by
@@ -195,7 +195,7 @@ theorem primeClass_eq_signal_iff' (hp : p.Prime) : primeClass H p = .signal ↔
     exact ⟨h1, h2, h3, (key h3).2 h4, h5⟩
 
 /- English proof (translation)
-Establish `hc : Nat.Coprime p H.condN` using `(Nat.Prime.coprime_iff_not_dvd hp).2 h`. Unfold `HostRaw.psAt`. Rewrite using `[dif_pos hc]`. Apply the tactic sequence `rcases Int.units_eq_one_or ((H.art (ZMod.unitOfCoprime p hc)).1.1) with h1 | h1 <;> simp [h1]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem psAt_eq_one_or_neg_one (hp : p.Prime) (h : ¬ p ∣ H.condN) :
     H.psAt p = 1 ∨ H.psAt p = -1 := by
@@ -205,9 +205,9 @@ private theorem psAt_eq_one_or_neg_one (hp : p.Prime) (h : ¬ p ∣ H.condN) :
   rcases Int.units_eq_one_or ((H.art (ZMod.unitOfCoprime p hc)).1.1) with h1 | h1 <;> simp [h1]
 
 /- English proof (translation)
-Rewrite using `[primeClass_eq_inert_iff, not_dvd_condN_iff' hp]`. Establish `key : p ≠ H.d → (jacobiSym (-(H.d : ℤ)) p ≠ 1 ↔ jacobiSym (-(H.d : ℤ)) p = -1)` using `fun hd => by`. Apply the tactic sequence `rcases jacobi_d_eq_one_or hp hd with h | h <;> simp [h]`. Establish `key2 : p ∉ H.small → p ≠ H.q → p ≠ H.d → (H.psAt p ≠ 1 ↔ H.psAt p = -1)` using `fun h1 h2 h3 => by`. Apply the tactic sequence `rcases psAt_eq_one_or_neg_one (H := H) hp ((not_dvd_condN_iff' (H := H) hp).2 ⟨h1, h2, h3⟩) with h | h <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4, h5⟩`. Conclude with `⟨⟨h1, h2, h3⟩, (key h3).1 h4, (key2 h1 h2 h3).1 h5⟩`. Introduce and unpack `⟨⟨h1, h2, h3⟩, h4, h5⟩`. Conclude with `⟨h1, h2, h3, (key h3).2 h4, (key2 h1 h2 h3).2 h5⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem primeClass_eq_inert_iff_symbols (hp : p.Prime) : primeClass H p = .inertClass ↔
     ¬ p ∣ H.condN ∧ jacobiSym (-(H.d : ℤ)) p = -1 ∧ H.psAt p = -1 := by
@@ -237,7 +237,7 @@ Both sides reduce to the same expression.
 -/
 theorem f_eq_ord : R.f = 2 * R.ord := rfl
 /- English proof (translation)
-Use `show 0 < R.ord`. Establish `h1` using `R.m_le_f`. Establish `h2` using `R.two_le_m`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem n_pos' : 0 < R.n := by
   show 0 < R.ord
@@ -245,11 +245,11 @@ theorem n_pos' : 0 < R.n := by
   have h2 := R.two_le_m
   omega
 /- English proof (translation)
-The claim follows from `Nat.le_of_dvd R.n_pos' R.toFrame.two_pow_dvd_ord`.
+A detailed English derivation is pending.
 -/
 theorem two_pow_le_n : 2 ^ R.e ≤ R.n := Nat.le_of_dvd R.n_pos' R.toFrame.two_pow_dvd_ord
 /- English proof (translation)
-The claim follows from `R.toFrame.cyclic_order_le_exponent`.
+A detailed English derivation is pending.
 -/
 theorem baseRank_le_rank : R.n0 ≤ R.n := R.toFrame.cyclic_order_le_exponent
 
@@ -261,7 +261,7 @@ variable {R : Ranks} (H : Host R)
 
 include H in
 /- English proof (translation)
-Establish `h` using `H.two_le_e`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem four_le_two_pow : 4 ≤ 2 ^ R.e := by
   have h := H.two_le_e
@@ -270,23 +270,23 @@ theorem four_le_two_pow : 4 ≤ 2 ^ R.e := by
 
 include H in
 /- English proof (translation)
-The claim follows from `le_trans (four_le_two_pow H) R.two_pow_le_n`.
+A detailed English derivation is pending.
 -/
 theorem four_le_n' : 4 ≤ R.n := le_trans (four_le_two_pow H) R.two_pow_le_n
 
 include H in
 /- English proof (translation)
-Establish `hc : Nat.Coprime p H.condN` using `(Nat.Prime.coprime_iff_not_dvd hp).2 h`. Establish `hh` using `H.hyp`. Unfold `HostHyp at hh`. Take `⟨hq, -, hq8, -, -⟩` from `hh`. Establish `hq4 : H.q % 4 = 3` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : p ≠ 2`. Introduce `h2`. Apply `h` to reduce the goal to its premises. Rewrite using `[h2]`. Establish `h5 : 2 ∣ H.QS` using `dvd_trans (dvd_pow_self 2 (by omega)) H.tower_dvd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `dvd_mul_of_dvd_left (dvd_mul_of_dvd_left h5 _) _`. Establish `hpo : Odd p` using `hp.odd_of_ne_two h2`. Establish `hqo : Odd H.q` using `hq.odd_of_ne_two (by omega)`. Establish `step1 : H.psAt p = jacobiSym (p : ℤ) H.q`. Unfold `HostRaw.psAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hc, H.flPS (ZMod.unitOfCoprime p hc)]`. Apply `jacobiSym.mod_left'` to reduce the goal to its premises. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, Int.natCast_mod]`. Apply `Int.emod_emod_of_dvd` to reduce the goal to its premises. Conclude with `Int.natCast_dvd_natCast.mpr (dvd_mul_of_dvd_left (dvd_mul_left _ _) _)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : p % 4 = 1 ∨ p % 4 = 3`. Use `Nat.odd_iff.mp hpo` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[step1, jacobiSym.neg _ hpo]`. Break down `h4 with h1 | h3` into its components or cases.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ZMod.χ₄_nat_one_mod_four h1, one_mul, jacobiSym.quadratic_reciprocity_one_mod_four h1 hqo]`. Rewrite using `[ZMod.χ₄_nat_three_mod_four h3, jacobiSym.quadratic_reciprocity_three_mod_four h3 hq4]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem psAt_prime {p : ℕ} (hp : p.Prime) (h : ¬ p ∣ H.condN) : H.psAt p = jacobiSym (-(H.q : ℤ)) p := by
   have hc : Nat.Coprime p H.condN := (Nat.Prime.coprime_iff_not_dvd hp).2 h
@@ -319,11 +319,11 @@ theorem psAt_prime {p : ℕ} (hp : p.Prime) (h : ¬ p ∣ H.condN) : H.psAt p = 
     ring
 
 /- English proof (translation)
-Establish `key : ∀ τ, (-1 : K) ^ k τ = (((-1 : Kˣ) ^ k τ : Kˣ) : K)` using `fun τ => by`. Rewrite using `[Units.val_zpow_eq_zpow_val, Units.val_neg, Units.val_one]`. Establish `hsum : ∀ s : Finset ι, ∏ τ ∈ s, (-1 : Kˣ) ^ k τ = (-1 : Kˣ) ^ (∑ τ ∈ s, k τ)` using `by classical`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add]`. Rewrite `h` using `[Finset.prod_congr rfl (fun τ _ => key τ), ← Units.coe_prod, hsum]`. Break down `Int.even_or_odd (∑ τ, k τ) with ⟨w, hw⟩ | hodd` into its components or cases.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨w, by rw [hw]; ring⟩`. It suffices to derive a contradiction. Rewrite `h` using `[hodd.neg_one_zpow, Units.val_neg, Units.val_one]`. Establish `h4 : (2 : K) = 0` using `by linear_combination -h`. Evaluate the numerical expressions using `at h4`.
+Supply the required witnesses or components. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Evaluate the numerical expressions.
 -/
 private theorem sum_even_of_prod_neg_one_zpow_eq_one {K : Type} [Field K] [CharZero K] {ι : Type} [Fintype ι]
     (k : ι → ℤ) (h : ∏ τ, (-1 : K) ^ k τ = 1) : ∃ z : ℤ, ∑ τ, k τ = 2 * z := by
@@ -347,11 +347,11 @@ private theorem sum_even_of_prod_neg_one_zpow_eq_one {K : Type} [Field K] [CharZ
 variable {H} in
 
 /- English proof (translation)
-Establish `h1` using `h (-1) ⟨2, by norm_num, by norm_num⟩`. Simplify using `only [map_neg, map_one] at h1`. Take `⟨w, hw⟩` from `sum_even_of_prod_neg_one_zpow_eq_one (fun τ => (e τ).num) h1`. Use `⟨w, ?_⟩` and prove the remaining obligations. Establish `hnum : ∀ τ, (((e τ).num : ℤ) : ℚ) = e τ` using `fun τ => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `he τ`. Rewrite using `[hz]`. Simplify using the standard rewrite rules. Establish `h3 : ((∑ τ, (e τ).num : ℤ) : ℚ) = ((2 * w : ℤ) : ℚ)` using `by exact_mod_cast hw`. Move the coercions through the operations in `at h3`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [hnum] at h3`. Conclude with `h3`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem MuCond.even_im_hermitian_sub {ι : Type} [Fintype ι] {g : ι → R.GG} {e : ι → ℚ} (h : H.MuCond g e) (he : ∀ τ, ∃ z : ℤ, e τ = z) :
     ∃ z : ℤ, ∑ τ, e τ = 2 * z := by
@@ -369,7 +369,7 @@ theorem MuCond.even_im_hermitian_sub {ι : Type} [Fintype ι] {g : ι → R.GG} 
   exact h3
 
 /- English proof (translation)
-Rewrite using `[H.der.finrank_E]`. Use `show 4 * R.ord = 2 * (2 * R.ord)`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem finrank_E' : Module.finrank ℚ H.E = 2 * R.f := by
   rw [H.der.finrank_E]

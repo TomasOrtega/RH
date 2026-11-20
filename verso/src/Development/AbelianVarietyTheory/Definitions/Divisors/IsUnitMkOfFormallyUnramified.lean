@@ -22,29 +22,25 @@ open LB
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {D : ℕ}
 
 /- English proof (translation)
-Set `_ : Algebra k A` to `α.toAlgebra`. Use `set I := Ideal.span (Set.range f) with hI`. Establish `_ : Algebra.FormallyUnramified k (A ⧸ I)` using `RingHom.formallyUnramified_algebraMap.1 hu`. Establish `hsurj : Function.Surjective (algebraMap A (A ⧸ I))` using `Ideal.Quotient.mk_surjective`. Set `v : Fin D → TensorProduct A (A ⧸ I) Ω[A⁄k]` to `fun i => TensorProduct.tmul A (1 : A ⧸ I) (KaehlerDifferential.D k A (f i))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `S : Submodule (A ⧸ I) (TensorProduct A (A ⧸ I) Ω[A⁄k])` to `Submodule.span (A ⧸ I) (Set.range v)`. Establish `hmem : ∀ x ∈ I, TensorProduct.tmul A (1 : A ⧸ I) (KaehlerDifferential.D k A x) ∈ S`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add, TensorProduct.tmul_add]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `S.add_mem hx hy`. Consider the case `smul a x hx' hx`. Rewrite using `[smul_eq_mul, Derivation.leibniz, TensorProduct.tmul_add, TensorProduct.tmul_smul, TensorProduct.tmul_smul]`. Establish `h0 : x • (TensorProduct.tmul A (1 : A ⧸ I) (KaehlerDifferential.D k A a)) = 0`. Rewrite using `[TensorProduct.smul_tmul', Algebra.smul_def, mul_one, show algebraMap A (A ⧸ I) x = 0 from (Ideal.Quotient.eq_zero_iff_mem (I := I)).2 hx', TensorProduct.zero_tmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h0, add_zero]`. Conclude with `S.smul_of_tower_mem a hx`. Establish `hS : S = ⊤`. Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(KaehlerDifferential.exact_kerCotangentToTensor_mapBaseChange k A (A ⧸ I) hsurj z).1 (Subsingleton.elim _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨x, hx⟩, rfl⟩` from `Ideal.toCotangent_surjective _ y`. Rewrite using `[KaehlerDifferential.kerCotangentToTensor_toCotangent]`. Conclude with `hmem x ((Ideal.Quotient.eq_zero_iff_mem (I := I)).1 (RingHom.mem_ker.1 hx))`. Establish `hW : Submodule.span (A ⧸ I) {exteriorPower.ιMulti (A ⧸ I) D v} = ⊤`. Rewrite using `[eq_top_iff, ← exteriorPower.ιMulti_span_of_span (R := A ⧸ I) (n := D) (M := TensorProduct A (A ⧸ I) Ω[A⁄k]) (s := Set.range v) hS, Submodule.span_le]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression.
 
-Introduce and unpack `_ ⟨a, ha, rfl⟩`. Use `choose σ hσ using fun i => ha ⟨i, rfl⟩`. Establish `ha' : a = v ∘ σ` using `funext fun i => (hσ i).symm`. Substitute `ha'` using the available equality. Distinguish the cases in `hinj : Function.Injective σ`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `e` to `Equiv.ofBijective σ (Finite.injective_iff_bijective.1 hinj)`. Establish `hp` using `(exteriorPower.ιMulti (A ⧸ I) D (M := TensorProduct A (A ⧸ I) Ω[A⁄k])).map_perm v e`. Express the relevant statement in the definitionally equal form `exteriorPower.ιMulti (A ⧸ I) D (v ∘ ⇑e) ∈ _`. Rewrite using `[hp, Units.smul_def]`. Conclude with `SetLike.mem_coe.2 (zsmul_mem (Submodule.mem_span_singleton_self _) _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hn : ¬ Function.Injective (v ∘ σ)` using `fun h => hinj h.of_comp`. Rewrite using `[(exteriorPower.ιMulti (A ⧸ I) D).map_eq_zero_of_not_injective _ hn]`. Conclude with `SetLike.mem_coe.2 (Submodule.zero_mem _)`. Set `ψ` to `exteriorPowerMapOver (A ⧸ I) D (TensorProduct.mk A (A ⧸ I) Ω[A⁄k] 1)`. Establish `hgen : IsFreeGen (A ⧸ I) (ψ ω)` using `hω.of_isBaseChange (isBaseChange_exteriorPower (TensorProduct.isBaseChange A Ω[A⁄k] (A ⧸ I)) D)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hψJ : ψ (J • ω) = (Ideal.Quotient.mk I J) • ψ ω`. Rewrite using `[map_smul, ← algebraMap_smul (A ⧸ I) J (ψ ω)]`. Both sides reduce to the same expression. Establish `hψd : ψ (dForm α f) = exteriorPower.ιMulti (A ⧸ I) D v`. Rewrite using `[dForm_eq]`.
-
-Conclude with `exteriorPowerMapOver_ιMulti (TensorProduct.mk A (A ⧸ I) Ω[A⁄k] 1) (fun i => dFun α (f i))`. Establish `hmemω : ψ ω ∈ Submodule.span (A ⧸ I) {exteriorPower.ιMulti (A ⧸ I) D v}` using `hW ▸ Submodule.mem_top`. Take `⟨c, hcoef⟩` from `Submodule.mem_span_singleton.1 hmemω`. Rewrite `hcoef` using `[← hψd, ← hJ, hψJ, smul_smul]`. Establish `h1 : c * Ideal.Quotient.mk I J = 1` using `hgen.1 (hcoef.trans (one_smul _ _).symm)`.
-
-Conclude with `isUnit_iff_exists_inv.2 ⟨c, by rw [mul_comm]; exact h1⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_mk_of_formallyUnramified {k A : Type*} [CommRing k] [CommRing A] {α : k →+* A}
     {D : ℕ} {ω : Forms α D} (hω : IsFreeGen A ω) (f : Fin D → A) {J : A} (hJ : J • ω = dForm α f)
@@ -116,7 +112,7 @@ theorem isUnit_mk_of_formallyUnramified {k A : Type*} [CommRing k] [CommRing A] 
 variable (p) in
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [algX, RingHom.comp_apply, resG]`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp]`. Conclude with `congrArg (fun φ : Γ(Sp k, ⊤) ⟶ Γ(Y, V) => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom a)) (Scheme.Hom.appLE_map p _ (homOfLE h).op)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resG_comp_algX {U V : Y.Opens} (h : V ≤ U) : (resG Y h).comp (algX p U) = algX p V := by
   ext a
@@ -137,13 +133,13 @@ def resForm {U V : Y.Opens} (h : V ≤ U) : FormsOn p D U →ₛₗ[resG Y h] Fo
   formMap D (resG Y h) (resG_comp_algX p h)
 
 /- English proof (translation)
-The claim follows from `formMap_dForm _ _ f`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem resForm_dOn {U V : Y.Opens} (h : V ≤ U) (f : Fin D → Γ(Y, U)) :
     resForm h (dOn p f) = dOn p fun i => resG Y h (f i) := formMap_dForm _ _ f
 
 /- English proof (translation)
-The claim follows from `formMap_formMap (resG Y h₁) (resG Y h₂) (resG Y (h₂.trans h₁)) (by rw [resG, resG, resG, ← CommRingCat.hom_comp, ← Functor.map_comp]; rfl) (resG_comp_algX p h₁) (resG_comp_algX p h₂) (resG_comp_algX p _) η`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem resForm_resForm {U V W : Y.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (η : FormsOn p D U) :
     resForm h₂ (resForm h₁ η) = resForm (h₂.trans h₁) η := formMap_formMap (resG Y h₁) (resG Y h₂) (resG Y (h₂.trans h₁))
@@ -151,7 +147,7 @@ The claim follows from `formMap_formMap (resG Y h₁) (resG Y h₂) (resG Y (h�
     (resG_comp_algX p h₁) (resG_comp_algX p h₂) (resG_comp_algX p _) η
 
 /- English proof (translation)
-Use `formMap_of_eq_id (resG Y h) ?_ (resG_comp_algX p h) η` and prove the remaining obligations. Use extensionality with `a`. Simplify using `[resG]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem resForm_self {U : Y.Opens} (h : U ≤ U) (η : FormsOn p D U) : resForm h η = η := by
   refine formMap_of_eq_id (resG Y h) ?_ (resG_comp_algX p h) η
@@ -159,13 +155,13 @@ Use `formMap_of_eq_id (resG Y h) ?_ (resG_comp_algX p h) η` and prove the remai
   simp [resG]
 
 /- English proof (translation)
-The claim follows from `LinearMap.map_smulₛₗ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem resForm_smul {U V : Y.Opens} (h : V ≤ U) (a : Γ(Y, U)) (η : FormsOn p D U) :
     resForm h (a • η) = resG Y h a • resForm h η := LinearMap.map_smulₛₗ _ _ _
 
 /- English proof (translation)
-Use `Scheme.Hom.etale_appLE (𝟙 Y) hU hV (show V ≤ (𝟙 Y) ⁻¹ᵁ U from h)` as an intermediate fact. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.id_app] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem etale_resG {U V : Y.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen V) (h : V ≤ U) :
     (resG Y h).Etale := by
@@ -174,13 +170,13 @@ theorem etale_resG {U V : Y.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen V) (
   exact this
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨h hx, h' hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_preimage_inf {T : Scheme.{0}} {y : T ⟶ Y} {U U' : Y.Opens} {W : T.Opens}
     (h : W ≤ y ⁻¹ᵁ U) (h' : W ≤ y ⁻¹ᵁ U') : W ≤ y ⁻¹ᵁ (U ⊓ U') := fun _ hx => ⟨h hx, h' hx⟩
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨_, ⟨W, hW, rfl⟩, hxW, hWV⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open hx V.2`. Conclude with `Opens.mem_iSup.2 ⟨⟨W, hW, hWV⟩, hxW⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem le_iSup_affine (V : Y.Opens) :
     V ≤ ⨆ W : {W : Y.Opens // IsAffineOpen W ∧ W ≤ V}, W.1 := by
@@ -189,7 +185,7 @@ theorem le_iSup_affine (V : Y.Opens) :
   exact Opens.mem_iSup.2 ⟨⟨W, hW, hWV⟩, hxW⟩
 
 /- English proof (translation)
-The claim follows from `Y.sheaf.eq_of_locally_eq' (fun W : {W : Y.Opens // IsAffineOpen W ∧ W ≤ V} => W.1) V (fun W => homOfLE W.2.2) (le_iSup_affine V) a b fun W => h W.1 W.2.1 W.2.2`.
+A detailed English derivation is pending.
 -/
 theorem fun_ext_affine {V : Y.Opens} {a b : Γ(Y, V)}
     (h : ∀ W : Y.Opens, IsAffineOpen W → ∀ hW : W ≤ V, resG Y hW a = resG Y hW b) : a = b := Y.sheaf.eq_of_locally_eq' (fun W : {W : Y.Opens // IsAffineOpen W ∧ W ≤ V} => W.1) V
@@ -206,12 +202,12 @@ namespace IsFrame
 variable {U U' U'' V W : Y.Opens} {ω : FormsOn p D U} {ω' : FormsOn p D U'} {ω'' : FormsOn p D U''}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hW, IsFreeGen.formMap (etale_resG hω.affine hW h) _ hω.gen⟩`.
+Supply the required witnesses or components.
 -/
 theorem res (hω : IsFrame ω) (hW : IsAffineOpen W) (h : W ≤ U) : IsFrame (resForm h ω) := ⟨hW, IsFreeGen.formMap (etale_resG hω.affine hW h) _ hω.gen⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE h).op ≫ Y.presheaf.map (homOfLE h').op).hom a = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem resG_resG_divisors {U V W : Y.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(Y, U)) :
     resG Y h' (resG Y h a) = resG Y (h'.trans h) a := by
@@ -220,11 +216,11 @@ private theorem resG_resG_divisors {U V W : Y.Opens} (h : V ≤ U) (h' : W ≤ V
   rfl
 
 /- English proof (translation)
-Set `I` to `{W : Y.Opens // IsAffineOpen W ∧ W ≤ V}`. Set `sf : ∀ W : I, Γ(Y, W.1)` to `fun W => (hω.res W.2.1 (W.2.2.trans h)).gen.repr (resForm W.2.2 η)`. Establish `hsf : ∀ W : I, sf W • resForm (W.2.2.trans h) ω = resForm W.2.2 η` using `fun W => (hω.res W.2.1 (W.2.2.trans h)).gen.repr_smul _`. Establish `key : ∀ (W : I) (W' : Y.Opens) (e : W' ≤ W.1), resG Y e (sf W) • resForm ((e.trans W.2.2).trans h) ω = resForm (e.trans W.2.2) η`. Introduce `W W' e`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← resForm_resForm W.2.2 e, ← hsf W, resForm_smul, resForm_resForm]`. Take `⟨c, hc, -⟩` from `Y.sheaf.existsUnique_gluing' (fun W : I => W.1) V (fun W => homOfLE W.2.2) (le_iSup_affine V) sf (by`. Introduce `W₁ W₂`. Use `fun_ext_affine fun W' hW' e => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resG Y e (resG Y inf_le_left (sf W₁)) = resG Y e (resG Y inf_le_right (sf W₂))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[resG_resG_divisors, resG_resG_divisors]`. Conclude with `(hω.res hW' _).gen.1 ((key W₁ W' (e.trans inf_le_left)).trans (key W₂ W' (e.trans inf_le_right)).symm))`. Use `⟨c, fun W hW e => ?_⟩` and prove the remaining obligations. Rewrite using `[show resG Y e c = sf ⟨W, hW, e⟩ from hc ⟨W, hW, e⟩]`. Conclude with `(hsf ⟨W, hW, e⟩).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coeff (hω : IsFrame ω) (h : V ≤ U) (η : FormsOn p D V) :
     ∃ c : Γ(Y, V), ∀ W : Y.Opens, IsAffineOpen W → ∀ hW : W ≤ V,
@@ -249,7 +245,7 @@ theorem exists_coeff (hω : IsFrame ω) (h : V ≤ U) (η : FormsOn p D V) :
   exact (hsf ⟨W, hW, e⟩).symm
 
 /- English proof (translation)
-The claim follows from `fun_ext_affine fun W hW e => (hω.res hW (e.trans h)).gen.1 ((hc W hW e).symm.trans (hc' W hW e))`.
+A detailed English derivation is pending.
 -/
 theorem coeff_unique (hω : IsFrame ω) (h : V ≤ U) {η : FormsOn p D V} {c c' : Γ(Y, V)}
     (hc : ∀ W : Y.Opens, IsAffineOpen W → ∀ hW : W ≤ V,
@@ -267,14 +263,14 @@ def coeff (hω : IsFrame ω) (h : V ≤ U) : FormsOn p D V →ₗ[Γ(Y, V)] Γ(Y
       ← (hω.exists_coeff h η).choose_spec W hW e]
 
 /- English proof (translation)
-The claim follows from `(hω.exists_coeff h η).choose_spec W hW e`.
+A detailed English derivation is pending.
 -/
 theorem resForm_eq_coeff_smul (hω : IsFrame ω) (h : V ≤ U) (η : FormsOn p D V)
     (hW : IsAffineOpen W) (e : W ≤ V) :
     resForm e η = resG Y e (hω.coeff h η) • resForm (e.trans h) ω := (hω.exists_coeff h η).choose_spec W hW e
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rintro rfl; exact fun W hW e => hω.resForm_eq_coeff_smul h η hW e, fun hc => hω.coeff_unique h (fun W hW e => hω.resForm_eq_coeff_smul h η hW e) hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem coeff_eq_iff (hω : IsFrame ω) (h : V ≤ U) {η : FormsOn p D V} {c : Γ(Y, V)} :
     hω.coeff h η = c ↔ ∀ W : Y.Opens, IsAffineOpen W → ∀ hW : W ≤ V,
@@ -282,7 +278,7 @@ theorem coeff_eq_iff (hω : IsFrame ω) (h : V ≤ U) {η : FormsOn p D V} {c : 
     fun hc => hω.coeff_unique h (fun W hW e => hω.resForm_eq_coeff_smul h η hW e) hc⟩
 
 /- English proof (translation)
-Establish `e` using `hω.resForm_eq_coeff_smul h η hV le_rfl`. Rewrite `e` using `[resForm_self, resG_self]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_smul_resForm (hω : IsFrame ω) (hV : IsAffineOpen V) (h : V ≤ U)
     (η : FormsOn p D V) : hω.coeff h η • resForm h ω = η := by
@@ -291,7 +287,7 @@ theorem coeff_smul_resForm (hω : IsFrame ω) (hV : IsAffineOpen V) (h : V ≤ U
   exact e.symm
 
 /- English proof (translation)
-Use `((hω.coeff_eq_iff _).2 fun W' hW' e' => ?_).symm` and prove the remaining obligations. Rewrite using `[resForm_resForm, hω.resForm_eq_coeff_smul h η hW' (e'.trans e), resG_resG]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem resG_coeff (hω : IsFrame ω) (h : V ≤ U) (e : W ≤ V) (η : FormsOn p D V) :
     resG Y e (hω.coeff h η) = hω.coeff (e.trans h) (resForm e η) := by
@@ -299,7 +295,7 @@ Use `((hω.coeff_eq_iff _).2 fun W' hW' e' => ?_).symm` and prove the remaining 
   rw [resForm_resForm, hω.resForm_eq_coeff_smul h η hW' (e'.trans e), resG_resG]
 
 /- English proof (translation)
-Rewrite using `[hω.coeff_eq_iff]`. Introduce `W hW e`. Rewrite using `[map_one, one_smul, resForm_resForm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem coeff_self (hω : IsFrame ω) (h : V ≤ U) : hω.coeff h (resForm h ω) = 1 := by
   rw [hω.coeff_eq_iff]
@@ -307,7 +303,7 @@ Rewrite using `[hω.coeff_eq_iff]`. Introduce `W hW e`. Rewrite using `[map_one,
   rw [map_one, one_smul, resForm_resForm]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `(hω.coeff_eq_iff h).2 fun W hW e' => by rw [resForm_smul, resForm_resForm]`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem coeff_eq_of_eq_smul (hω : IsFrame ω) (h : V ≤ U) {η : FormsOn p D V} {c : Γ(Y, V)}
     (e : η = c • resForm h ω) : hω.coeff h η = c := by
@@ -315,14 +311,14 @@ theorem coeff_eq_of_eq_smul (hω : IsFrame ω) (h : V ≤ U) {η : FormsOn p D V
   exact (hω.coeff_eq_iff h).2 fun W hW e' => by rw [resForm_smul, resForm_resForm]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun η η' e => by rw [← hω.coeff_smul_resForm hV h η, ← hω.coeff_smul_resForm hV h η', e], fun c => ⟨c • resForm h ω, hω.coeff_eq_of_eq_smul h rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem bijective_coeff (hω : IsFrame ω) (hV : IsAffineOpen V) (h : V ≤ U) :
     Function.Bijective (hω.coeff h) := ⟨fun η η' e => by rw [← hω.coeff_smul_resForm hV h η, ← hω.coeff_smul_resForm hV h η', e],
     fun c => ⟨c • resForm h ω, hω.coeff_eq_of_eq_smul h rfl⟩⟩
 
 /- English proof (translation)
-Use `(hω.coeff_eq_iff h).2 fun W hW e => ?_` and prove the remaining obligations. Rewrite using `[hω'.resForm_eq_coeff_smul h' η hW e, ← resForm_resForm h' e, hω.resForm_eq_coeff_smul h _ hW e, smul_smul, map_mul]`. Use `congr 1`. Conclude with `mul_comm _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem coeff_change (hω : IsFrame ω) (hω' : IsFrame ω') (h : V ≤ U) (h' : V ≤ U')
     (η : FormsOn p D V) : hω.coeff h η = hω.coeff h (resForm h' ω') * hω'.coeff h' η := by
@@ -339,7 +335,7 @@ def ratio (hω : IsFrame ω) (hω' : IsFrame ω') : Γ(Y, U ⊓ U')ˣ where
   inv_val := by rw [← coeff_change, coeff_self]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `resG Y h (hω.coeff inf_le_left (resForm inf_le_right ω')) = _`. Rewrite using `[hω.resG_coeff inf_le_left h, resForm_resForm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem resG_ratio (hω : IsFrame ω) (hω' : IsFrame ω') (h : V ≤ U ⊓ U') :
     resG Y h (hω.ratio hω' : Γ(Y, U ⊓ U')) =
@@ -348,7 +344,7 @@ theorem resG_ratio (hω : IsFrame ω) (hω' : IsFrame ω') (h : V ≤ U ⊓ U') 
   rw [hω.resG_coeff inf_le_left h, resForm_resForm]
 
 /- English proof (translation)
-Rewrite using `[hω.resG_ratio hω' (le_inf h h')]`. Conclude with `(hω.coeff_smul_resForm hW h _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resForm_eq_ratio_smul (hω : IsFrame ω) (hω' : IsFrame ω') (hW : IsAffineOpen W)
     (h : W ≤ U) (h' : W ≤ U') :
@@ -357,12 +353,12 @@ theorem resForm_eq_ratio_smul (hω : IsFrame ω) (hω' : IsFrame ω') (hW : IsAf
   exact (hω.coeff_smul_resForm hW h _).symm
 
 /- English proof (translation)
-The claim follows from `Units.ext (by rw [val_res, hω.resG_ratio hω h]; exact hω.coeff_self _)`.
+A detailed English derivation is pending.
 -/
 theorem res_ratio_self (hω : IsFrame ω) (h : V ≤ U ⊓ U) : Semi.res h (hω.ratio hω) = 1 := Units.ext (by rw [val_res, hω.resG_ratio hω h]; exact hω.coeff_self _)
 
 /- English proof (translation)
-The claim follows from `Units.ext (by rw [Units.val_mul, val_res, val_res, val_res, hω.resG_ratio hω' h₁, hω'.resG_ratio hω'' h₂, hω.resG_ratio hω'' h₃] exact (hω.coeff_change hω' _ _ _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem res_ratio_mul (hω : IsFrame ω) (hω' : IsFrame ω') (hω'' : IsFrame ω'')
     (h₁ : V ≤ U ⊓ U') (h₂ : V ≤ U' ⊓ U'') (h₃ : V ≤ U ⊓ U'') :
@@ -376,9 +372,9 @@ end IsFrame
 variable (p D) in
 
 /- English proof (translation)
-Take `⟨U, hU, V, hV, hx, e, hs⟩` from `SmoothOfRelativeDimension.exists_isStandardSmoothOfRelativeDimension (n := D) (f := p) x`. Establish `h0 : (resG (Sp k) (le_top : U ≤ ⊤)).IsStandardSmoothOfRelativeDimension 0` using `RingHom.etale_iff_isStandardSmoothOfRelativeDimension_zero.1 (etale_resG (isAffineOpen_top _) hU le_top)`. Establish `h1` using `(hs.comp h0).comp (RingHom.IsStandardSmoothOfRelativeDimension.equiv (Scheme.ΓSpecIso (CommRingCat.of k)).symm.commRingCatIsoToRingEquiv)`. Simplify using `only [add_zero] at h1`. Establish `e1 : algX p V = ((p.appLE U V e).hom.comp (resG (Sp k) (le_top : U ≤ ⊤))).comp (Scheme.ΓSpecIso (CommRingCat.of k)).symm.commRingCatIsoToRingEquiv.toRingHom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `a`. Conclude with `congrArg (fun φ : Γ(Sp k, ⊤) ⟶ Γ(Y, V) => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom a)) (Scheme.Hom.map_appLE p e (homOfLE le_top).op).symm`. Take `⟨ω, hω⟩` from `exists_isFreeGen (e1 ▸ h1)`. Conclude with `⟨V, ω, hx, hV, hω⟩`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isFrame [SmoothOfRelativeDimension D p] (x : Y) :
     ∃ (U : Y.Opens) (ω : FormsOn p D U), x ∈ U ∧ IsFrame ω := by
@@ -446,12 +442,12 @@ instance nonempty : Nonempty (CanonLB p D) := ⟨all p D⟩
 variable (K K' : CanonLB p D) {V W : Y.Opens}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨K.affine i, K.gen i⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFrame (i : K.bundle.ι) : IsFrame (K.om i) := ⟨K.affine i, K.gen i⟩
 
 /- English proof (translation)
-The claim follows from `Units.ext (fun_ext_affine fun W _ e => by rw [(K.isFrame i).resG_ratio (K.isFrame j) e] exact ((K.isFrame i).coeff_eq_of_eq_smul _ (K.trans i j W ‹_› _ _)).symm)`.
+A detailed English derivation is pending.
 -/
 theorem g_eq_ratio (i j : K.bundle.ι) : K.bundle.g i j = (K.isFrame i).ratio (K.isFrame j) := Units.ext (fun_ext_affine fun W _ e => by
   rw [(K.isFrame i).resG_ratio (K.isFrame j) e]
@@ -461,32 +457,32 @@ def coeff (i : K.bundle.ι) (h : V ≤ K.bundle.U i) : FormsOn p D V →ₗ[Γ(Y
   (K.isFrame i).coeff h
 
 /- English proof (translation)
-The claim follows from `(K.isFrame i).coeff_eq_iff h`.
+A detailed English derivation is pending.
 -/
 theorem coeff_eq_iff (i : K.bundle.ι) (h : V ≤ K.bundle.U i) {η : FormsOn p D V} {c : Γ(Y, V)} :
     K.coeff i h η = c ↔ ∀ W : Y.Opens, IsAffineOpen W → ∀ hW : W ≤ V,
       resForm hW η = resG Y hW c • resForm (hW.trans h) (K.om i) := (K.isFrame i).coeff_eq_iff h
 
 /- English proof (translation)
-The claim follows from `(K.isFrame i).coeff_smul_resForm hV h η`.
+A detailed English derivation is pending.
 -/
 theorem coeff_smul_om (i : K.bundle.ι) (hV : IsAffineOpen V) (h : V ≤ K.bundle.U i)
     (η : FormsOn p D V) : K.coeff i h η • resForm h (K.om i) = η := (K.isFrame i).coeff_smul_resForm hV h η
 
 /- English proof (translation)
-The claim follows from `(K.isFrame i).resG_coeff h e η`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem resG_coeff (i : K.bundle.ι) (h : V ≤ K.bundle.U i) (e : W ≤ V)
     (η : FormsOn p D V) : resG Y e (K.coeff i h η) = K.coeff i (e.trans h) (resForm e η) := (K.isFrame i).resG_coeff h e η
 
 /- English proof (translation)
-The claim follows from `(K.isFrame i).coeff_self h`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem coeff_om (i : K.bundle.ι) (h : V ≤ K.bundle.U i) :
     K.coeff i h (resForm h (K.om i)) = 1 := (K.isFrame i).coeff_self h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(K.isFrame i).coeff hi η = _ * (K.isFrame j).coeff hj η`. Rewrite using `[(K.isFrame i).coeff_change (K.isFrame j) hi hj η, K.g_eq_ratio, (K.isFrame i).resG_ratio (K.isFrame j) (le_inf hi hj)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_change (i j : K.bundle.ι) (hi : V ≤ K.bundle.U i) (hj : V ≤ K.bundle.U j)
     (η : FormsOn p D V) : K.coeff i hi η =
@@ -513,13 +509,13 @@ Both sides reduce to the same expression.
     coord (K.toSec V η) i = K.coeff i inf_le_right (resForm inf_le_left η) := rfl
 
 /- English proof (translation)
-Rewrite using `[chartEquiv_apply, coord_toSec, K.resG_coeff, resForm_resForm, resForm_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chartEquiv_toSec (i : K.bundle.ι) (h : V ≤ K.bundle.U i) (η : FormsOn p D V) :
     chartEquiv K.isLB i h (K.toSec V η) = K.coeff i h η := by rw [chartEquiv_apply, coord_toSec, K.resG_coeff, resForm_resForm, resForm_self]
 
 /- English proof (translation)
-Use `sec_ext fun j => ?_` and prove the remaining obligations. Simplify using `[coord_toSec]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem map_toSec (e : W ≤ V) (η : FormsOn p D V) :
     (toMod K.bundle).presheaf.map (homOfLE e).op (K.toSec V η) = K.toSec W (resForm e η) := by
@@ -527,7 +523,7 @@ theorem map_toSec (e : W ≤ V) (η : FormsOn p D V) :
   simp [coord_toSec]
 
 /- English proof (translation)
-Establish `hc : ⇑(chartEquiv K.isLB i h) ∘ ⇑(K.toSec V) = ⇑(K.coeff i h)` using `funext fun η => K.chartEquiv_toSec i h η`. Establish `hb : Function.Bijective (⇑(chartEquiv K.isLB i h) ∘ ⇑(K.toSec V))`. Rewrite using `[hc]`. Conclude with `(K.isFrame i).bijective_coeff hV h`. Conclude with `((chartEquiv K.isLB i h).bijective.of_comp_iff' _).1 hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_toSec (i : K.bundle.ι) (hV : IsAffineOpen V) (h : V ≤ K.bundle.U i) :
     Function.Bijective (K.toSec V) := by
@@ -538,9 +534,9 @@ theorem bijective_toSec (i : K.bundle.ι) (hV : IsAffineOpen V) (h : V ≤ K.bun
   exact ((chartEquiv K.isLB i h).bijective.of_comp_iff' _).1 hb
 
 /- English proof (translation)
-Unfold `chartSec`. Use `sec_ext fun j => ?_` and prove the remaining obligations. Simplify using `only [coord_toSec]`. Use `(K.coeff_eq_iff j _).2 fun W hW e => ?_` and prove the remaining obligations. Rewrite using `[resForm_resForm, K.trans j i W hW (e.trans inf_le_right) (e.trans inf_le_left)]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `erw [congrFun (coord_mkSec _ _) j]`. Conclude with `(resG_resG _ _ _).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem toSec_om (i : K.bundle.ι) : K.toSec _ (K.om i) = chartSec K.isLB i := by
   unfold chartSec
@@ -561,7 +557,7 @@ theorem weak_admissible_iso (a : K'.bundle.ι) (b : K.bundle.ι) :
     (K.iso K').s (a, b) = (K'.isFrame a).ratio (K.isFrame b) := rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [Units.val_mul]`. Take the linear combination `(↑h⁻¹ : R) * e - (x : R) * (Units.inv_mul h)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem units_eq_mul_inv_mul_of_mul_eq {R : Type*} [CommRing R] (x g h y : Rˣ) (e : (x : R) * h = g * y) :
     x = g * h⁻¹ * y := by
@@ -570,7 +566,7 @@ private theorem units_eq_mul_inv_mul_of_mul_eq {R : Type*} [CommRing R] (x g h y
   linear_combination (↑h⁻¹ : R) * e - (x : R) * (Units.inv_mul h)
 
 /- English proof (translation)
-Simplify using `only [val_res, g_eq_ratio, IsFrame.resG_ratio]`. Rewrite using `[← (K'.isFrame a1).coeff_change (K.isFrame a2), ← (K'.isFrame a1).coeff_change (K'.isFrame b1)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem frame_ratio_res_mul_g_eq_g_mul_ratio_res (K K' : CanonLB p D) (a1 b1 : K'.bundle.ι) (a2 b2 : K.bundle.ι) {O : Y.Opens}
     (hO₁ : O ≤ K'.bundle.U a1 ⊓ K.bundle.U a2) (hO₂ : O ≤ K.bundle.U a2 ⊓ K.bundle.U b2)
@@ -581,7 +577,7 @@ private theorem frame_ratio_res_mul_g_eq_g_mul_ratio_res (K K' : CanonLB p D) (a
   rw [← (K'.isFrame a1).coeff_change (K.isFrame a2), ← (K'.isFrame a1).coeff_change (K'.isFrame b1)]
 
 /- English proof (translation)
-Unfold `LB.Gen.IsGen`. Introduce and unpack `⟨a1, a2⟩ ⟨b1, b2⟩`. Simplify using `only [LB.div]`. Use `units_eq_mul_inv_mul_of_mul_eq _ _ _ _ ?_` and prove the remaining obligations. Conclude with `frame_ratio_res_mul_g_eq_g_mul_ratio_res K K' a1 b1 a2 b2 _ _ _ _`.
+Replace the relevant objects with their definitions. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem iso_isGen : (K.iso K').IsGen := by
   unfold LB.Gen.IsGen
@@ -591,12 +587,12 @@ theorem iso_isGen : (K.iso K').IsGen := by
   exact frame_ratio_res_mul_g_eq_g_mul_ratio_res K K' a1 b1 a2 b2 _ _ _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨K.iso K', K.iso_isGen K'⟩`.
+Supply the required witnesses or components.
 -/
 theorem lbIso : LBIso K.bundle K'.bundle := ⟨K.iso K', K.iso_isGen K'⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(K'.isFrame a).coeff ha η = _ * (K.isFrame b).coeff hb η`. Rewrite using `[(K'.isFrame a).coeff_change (K.isFrame b) ha hb η, (K'.isFrame a).resG_ratio (K.isFrame b) (le_inf ha hb)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_eq_iso_mul (a : K'.bundle.ι) (b : K.bundle.ι) (ha : V ≤ K'.bundle.U a)
     (hb : V ≤ K.bundle.U b) (η : FormsOn p D V) :
@@ -606,9 +602,9 @@ theorem coeff_eq_iso_mul (a : K'.bundle.ι) (b : K.bundle.ι) (ha : V ≤ K'.bun
   rw [(K'.isFrame a).coeff_change (K.isFrame b) ha hb η, (K'.isFrame a).resG_ratio (K.isFrame b) (le_inf ha hb)]
 
 /- English proof (translation)
-Use `Y.sheaf.eq_of_locally_eq' (fun W : {W : Y.Opens // IsAffineOpen W ∧ W ≤ V ∧ ∃ i, W ≤ U i} => W.1) V (fun W => homOfLE W.2.2.1) ?_ a b fun W => h W.1 W.2.2.2.choose W.2.1 W.2.2.1 W.2.2.2.choose_spec` and prove the remaining obligations. Introduce `x hx`. Establish `hxU : x ∈ ⨆ i, U i` using `by rw [hU]; trivial`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 hxU`. Take `⟨_, ⟨W, hW, rfl⟩, hxW, hWV⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ V ⊓ U i from ⟨hx, hi⟩) (V ⊓ U i).2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hWV' : W ≤ V ⊓ U i` using `hWV`. Conclude with `Opens.mem_iSup.2 ⟨⟨W, hW, hWV'.trans inf_le_left, i, hWV'.trans inf_le_right⟩, hxW⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem eq_of_resG_eq_on_affine_cover {ι : Type} (U : ι → Y.Opens) (hU : ⨆ i, U i = ⊤) {V : Y.Opens}
     {a b : Γ(Y, V)}
@@ -625,7 +621,7 @@ private theorem eq_of_resG_eq_on_affine_cover {ι : Type} (U : ι → Y.Opens) (
   exact Opens.mem_iSup.2 ⟨⟨W, hW, hWV'.trans inf_le_left, i, hWV'.trans inf_le_right⟩, hxW⟩
 
 /- English proof (translation)
-Use `sec_ext fun a => ?_` and prove the remaining obligations. Use `eq_of_resG_eq_on_affine_cover K.bundle.U K.isLB.1 fun W b hW e hb => ?_` and prove the remaining obligations. Rewrite using `[coord_isoOfGen_hom_app K.isLB K'.isLB (K.iso K') (K.iso_isGen K') _ a b e (le_inf (e.trans inf_le_left) hb) (le_inf (e.trans inf_le_right) hb)]`. Rewrite using `[coord_toSec, coord_toSec, K.resG_coeff, K'.resG_coeff, resForm_resForm, resForm_resForm]`. Conclude with `(K.coeff_eq_iso_mul K' a b _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoOfGen_toSec (η : FormsOn p D V) :
     (isoOfGen K.isLB K'.isLB (K.iso K') (K.iso_isGen K')).hom.app V (K.toSec V η) =
@@ -641,13 +637,13 @@ def jacobian (i : K.bundle.ι) (h : V ≤ K.bundle.U i) (f : Fin D → Γ(Y, V))
   K.coeff i h (dOn p f)
 
 /- English proof (translation)
-The claim follows from `K.coeff_smul_om i hV h (dOn p f)`.
+A detailed English derivation is pending.
 -/
 theorem jacobian_smul_om (i : K.bundle.ι) (hV : IsAffineOpen V) (h : V ≤ K.bundle.U i)
     (f : Fin D → Γ(Y, V)) : K.jacobian i h f • resForm h (K.om i) = dOn p f := K.coeff_smul_om i hV h (dOn p f)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `resG Y e (K.coeff i h (dOn p f)) = K.coeff i (e.trans h) (dOn p _)`. Rewrite using `[K.resG_coeff, resForm_dOn]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem resG_jacobian (i : K.bundle.ι) (h : V ≤ K.bundle.U i) (e : W ≤ V)
     (f : Fin D → Γ(Y, V)) :
@@ -656,7 +652,7 @@ Express the relevant statement in the definitionally equal form `resG Y e (K.coe
   rw [K.resG_coeff, resForm_dOn]
 
 /- English proof (translation)
-The claim follows from `K.coeff_change i j hi hj (dOn p f)`.
+A detailed English derivation is pending.
 -/
 theorem jacobian_change (i j : K.bundle.ι) (hi : V ≤ K.bundle.U i) (hj : V ≤ K.bundle.U j)
     (f : Fin D → Γ(Y, V)) : K.jacobian i hi f =
@@ -664,14 +660,14 @@ theorem jacobian_change (i j : K.bundle.ι) (hi : V ≤ K.bundle.U i) (hj : V �
         K.jacobian j hj f := K.coeff_change i j hi hj (dOn p f)
 
 /- English proof (translation)
-The claim follows from `map_dForm_mul_sub_mem (K.coeff i h) I u f hf`.
+A detailed English derivation is pending.
 -/
 theorem jacobian_mul_sub_mem (i : K.bundle.ι) (h : V ≤ K.bundle.U i) (I : Ideal Γ(Y, V))
     (u : Γ(Y, V)) (f : Fin D → Γ(Y, V)) (hf : ∀ a, f a ∈ I) :
     K.jacobian i h (fun a => u * f a) - u ^ D * K.jacobian i h f ∈ I := map_dForm_mul_sub_mem (K.coeff i h) I u f hf
 
 /- English proof (translation)
-Use `K.jacobian_mul_sub_mem i h (RingHom.ker ψ) u f hf` as an intermediate fact. Rewrite `this` using `[RingHom.mem_ker, map_sub, map_mul, map_pow, sub_eq_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_jacobian_mul {R : Type*} [CommRing R] (i : K.bundle.ι) (h : V ≤ K.bundle.U i)
     (ψ : Γ(Y, V) →+* R) (u : Γ(Y, V)) (f : Fin D → Γ(Y, V)) (hf : ∀ a, ψ (f a) = 0) :
@@ -681,7 +677,7 @@ theorem map_jacobian_mul {R : Type*} [CommRing R] (i : K.bundle.ι) (h : V ≤ K
   exact this
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `K.coeff i h (dForm _ f) = m.det * K.coeff i h (dForm _ x)`. Rewrite using `[dForm_eq_det_smul f x m e, map_smul, smul_eq_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem jacobian_eq_det_mul (i : K.bundle.ι) (h : V ≤ K.bundle.U i) (f x : Fin D → Γ(Y, V))
     (m : Matrix (Fin D) (Fin D) Γ(Y, V))
@@ -691,9 +687,9 @@ theorem jacobian_eq_det_mul (i : K.bundle.ι) (h : V ≤ K.bundle.U i) (f x : Fi
   rw [dForm_eq_det_smul f x m e, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[← K.jacobian_smul_om i hV h x]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Conclude with `⟨hV, ((K.isFrame i).res hV h).gen.smul_iff.2 hu⟩`. Introduce `hf`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((K.isFrame i).res hV h).gen.smul_iff.1 hf.gen`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_jacobian_iff (i : K.bundle.ι) (hV : IsAffineOpen V) (h : V ≤ K.bundle.U i)
     (x : Fin D → Γ(Y, V)) : IsUnit (K.jacobian i h x) ↔ IsFrame (dOn p x) := by
@@ -713,7 +709,7 @@ variable {L : LB Y} {T : Scheme.{0}}
 def VanishesAlong (s : LB.Sec L) (y : T ⟶ Y) : Prop := ∀ j, (y.app (L.U j)).hom (s.f j) = 0
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE h).op ≫ y.appLE V W e).hom (s.f j) = 0`. Rewrite using `[Scheme.Hom.map_appLE, Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply, hs j, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem VanishesAlong.appLE_resG {s : LB.Sec L} {y : T ⟶ Y} (hs : VanishesAlong s y) (j : L.ι)
     {V : Y.Opens} (h : V ≤ L.U j) {W : T.Opens} (e : W ≤ y ⁻¹ᵁ V) :
@@ -722,13 +718,13 @@ theorem VanishesAlong.appLE_resG {s : LB.Sec L} {y : T ⟶ Y} (hs : VanishesAlon
   rw [Scheme.Hom.map_appLE, Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply, hs j, map_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hs`. Express the relevant statement in the definitionally equal form `((y.app (L.U j) ≫ (Sp R).presheaf.map (homOfLE h).op) ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom).hom (s.f j) = 0`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, hs j, map_zero]`. Introduce `h0 j'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA : (y.appLE (L.U j) ⊤ h).hom (s.f j) = 0`. Establish `e0` using `h0`. Unfold `evalPt at e0`. Rewrite `e0` using `[CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.injective (e0.trans (map_zero _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hO' : y ⁻¹ᵁ L.U j' ≤ y ⁻¹ᵁ (L.U j' ⊓ L.U j)` using `le_preimage_inf le_rfl (le_top.trans h)`. Establish `e2 : (y.appLE (L.U j' ⊓ L.U j) (y ⁻¹ᵁ L.U j') hO').hom (resG Y inf_le_right (s.f j)) = 0`. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE inf_le_right).op ≫ y.appLE (L.U j' ⊓ L.U j) (y ⁻¹ᵁ L.U j') hO').hom (s.f j) = 0`. Rewrite using `[Scheme.Hom.map_appLE, ← Scheme.Hom.appLE_map y h (homOfLE le_top).op, CommRingCat.hom_comp, RingHom.comp_apply, hA, map_zero]`. Establish `e1 : (y.appLE (L.U j') (y ⁻¹ᵁ L.U j') le_rfl).hom (s.f j') = (y.appLE (L.U j' ⊓ L.U j) (y ⁻¹ᵁ L.U j') hO').hom (resG Y inf_le_left (s.f j'))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = (Y.presheaf.map (homOfLE inf_le_left).op ≫ y.appLE (L.U j' ⊓ L.U j) (y ⁻¹ᵁ L.U j') hO').hom (s.f j')`. Rewrite using `[Scheme.Hom.map_appLE]`. Rewrite using `[Scheme.Hom.app_eq_appLE, e1, sec_rel s j' j inf_le_left inf_le_right le_rfl, map_mul, e2, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanishesAlong_iff_evalPt {R : Type} [CommRing R] (s : LB.Sec L) (y : Sp R ⟶ Y) (j : L.ι)
     (h : ⊤ ≤ y ⁻¹ᵁ L.U j) : VanishesAlong s y ↔ evalPt y _ h (s.f j) = 0 := by
@@ -757,14 +753,14 @@ theorem vanishesAlong_iff_evalPt {R : Type} [CommRing R] (s : LB.Sec L) (y : Sp 
     rw [Scheme.Hom.app_eq_appLE, e1, sec_rel s j' j inf_le_left inf_le_right le_rfl, map_mul, e2, mul_zero]
 
 /- English proof (translation)
-Introduce `x hx`. Conclude with `Set.mem_iInter.1 hx PUnit.unit`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lbPow_U_le (n : ℕ) (j : (lbPow L n).ι) : (lbPow L n).U j ≤ L.U (j PUnit.unit) := by
   intro x hx
   exact Set.mem_iInter.1 hx PUnit.unit
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `resG Y h ((∏ k : PUnit, (res _ ((pullU (𝟙 Y) _) (L.g (j k) (j' k)))) ^ (n : ℤ) : Γ(Y, (lbPow L n).U j ⊓ (lbPow L n).U j')ˣ) : Γ(Y, _)) = _`. Simplify using `only [Fintype.prod_unique, zpow_natCast, Units.val_pow_eq_pow_val, map_pow, pullU, Scheme.Hom.id_app]`. Use `congr 1`. Conclude with `resG_resG _ _ _`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem lbPow_g_res_eq_pow (L : LB Y) (n : ℕ) (j j' : (lbPow L n).ι) {W : Y.Opens}
     (h : W ≤ (lbPow L n).U j ⊓ (lbPow L n).U j') (h₂ : W ≤ L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit)) :
@@ -776,7 +772,7 @@ private theorem lbPow_g_res_eq_pow (L : LB Y) (n : ℕ) (j j' : (lbPow L n).ι) 
   exact resG_resG _ _ _
 
 /- English proof (translation)
-Rewrite using `[show ((tens M (lbPow L n)).g a b).val = resG Y (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)) (M.g a.1 b.1).val * resG Y (le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right)) ((lbPow L n).g a.2 b.2).val from rfl]`. Conclude with `(map_mul (resG Y h) _ _).trans (congrArg₂ (· * ·) (resG_resG _ _ _) ((resG_resG _ _ _).trans (lbPow_g_res_eq_pow L n a.2 b.2 _ h₂)))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resG_tens_lbPow_g (M : LB Y) (n : ℕ) (a b : (tens M (lbPow L n)).ι) {W : Y.Opens}
     (h : W ≤ (tens M (lbPow L n)).U a ⊓ (tens M (lbPow L n)).U b)
@@ -798,7 +794,7 @@ variable {p : Y ⟶ Sp k} {D : ℕ} [SmoothOfRelativeDimension D p] (K K' : Cano
   {V W : Y.Opens}
 
 /- English proof (translation)
-Establish `hq` using `isUnit_mk_of_formallyUnramified ((K.isFrame i).res hV h).gen f (K.jacobian_smul_om i hV h f) hu`. Establish `hker : Ideal.span (Set.range f) ≤ RingHom.ker ψ` using `Ideal.span_le.2 (by rintro _ ⟨a, rfl⟩; exact hf a)`. Conclude with `hq.map (Ideal.Quotient.lift _ ψ fun x hx => hker hx)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_map_jacobian {R : Type*} [CommRing R] (i : K.bundle.ι) (hV : IsAffineOpen V)
     (h : V ≤ K.bundle.U i) (f : Fin D → Γ(Y, V))
@@ -812,7 +808,7 @@ theorem isUnit_map_jacobian {R : Type*} [CommRing R] (i : K.bundle.ι) (hV : IsA
 abbrev adj (L : LB Y) (n : ℕ) : LB Y := tens K.bundle (lbPow L n)
 
 /- English proof (translation)
-The claim follows from `isLB_tens K.isLB (LB.isLB_linComb hL _ _)`.
+A detailed English derivation is pending.
 -/
 theorem isLB_adj (hL : L.IsLB) (n : ℕ) : (K.adj L n).IsLB := isLB_tens K.isLB (LB.isLB_linComb hL _ _)
 
@@ -820,7 +816,7 @@ def jacFun (s : Fin D → LB.Sec L) (i : K.bundle.ι) (j : L.ι) : Γ(Y, K.bundl
   K.jacobian i inf_le_left fun a => resG Y inf_le_right ((s a).f j)
 
 /- English proof (translation)
-Unfold `jacFun`. Rewrite using `[K.resG_jacobian]`. Simplify using `only [resG_resG]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem resG_jacFun (s : Fin D → LB.Sec L) (i : K.bundle.ι) (j : L.ι)
     (h : V ≤ K.bundle.U i ⊓ L.U j) : resG Y h (K.jacFun s i j) =
@@ -830,9 +826,9 @@ theorem resG_jacFun (s : Fin D → LB.Sec L) (i : K.bundle.ι) (j : L.ι)
   simp only [resG_resG]
 
 /- English proof (translation)
-Establish `hF : (fun a => resG Y (h.trans inf_le_right) ((s a).f j)) = fun a => resG Y h₂ (L.g j j').val * resG Y (h'.trans inf_le_right) ((s a).f j')`. Use function extensionality and compare the values at `fun a => sec_rel (s a) _ _ _ _ h₂`. Rewrite using `[K.resG_jacFun, K.resG_jacFun, hF]`. Establish `h3` using `K.jacobian_mul_sub_mem i (h.trans inf_le_left) I (resG Y h₂ (L.g j j').val) _ hI`. Rewrite `h3` using `[K.jacobian_change i i' (h.trans inf_le_left) (h'.trans inf_le_left) (fun a => resG Y (h'.trans inf_le_right) ((s a).f j'))]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h3 using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem jacFun_change_sub_mem (s : Fin D → LB.Sec L) (i i' : K.bundle.ι) (j j' : L.ι)
     (h : V ≤ K.bundle.U i ⊓ L.U j) (h' : V ≤ K.bundle.U i' ⊓ L.U j')
@@ -851,7 +847,7 @@ theorem jacFun_change_sub_mem (s : Fin D → LB.Sec L) (i i' : K.bundle.ι) (j j
   ring
 
 /- English proof (translation)
-Use `K.jacFun_change_sub_mem s i i' j j' h h' h₁ h₂ (RingHom.ker ψ) fun a => RingHom.mem_ker.2 (hψ a)` as an intermediate fact. Rewrite `this` using `[RingHom.mem_ker, map_sub, sub_eq_zero, map_mul, map_mul, map_pow]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_jacFun_change {R : Type*} [CommRing R] (s : Fin D → LB.Sec L) (i i' : K.bundle.ι)
     (j j' : L.ι) (h : V ≤ K.bundle.U i ⊓ L.U j) (h' : V ≤ K.bundle.U i' ⊓ L.U j')
@@ -865,7 +861,7 @@ theorem map_jacFun_change {R : Type*} [CommRing R] (s : Fin D → LB.Sec L) (i i
   exact this
 
 /- English proof (translation)
-The claim follows from `le_inf inf_le_left (inf_le_right.trans (lbPow_U_le n a.2))`.
+A detailed English derivation is pending.
 -/
 theorem adj_U_le (n : ℕ) (a : (K.adj L n).ι) :
     (K.adj L n).U a ≤ K.bundle.U a.1 ⊓ L.U (a.2 PUnit.unit) := le_inf inf_le_left (inf_le_right.trans (lbPow_U_le n a.2))
@@ -909,7 +905,7 @@ def jacVal (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (i : K.bundle.ι) (j : L.ι
   evalPt y (K.bundle.U i ⊓ L.U j) (le_preimage_inf hi hj) (K.jacFun s i j)
 
 /- English proof (translation)
-Unfold `jacVal`. Rewrite using `[← evalPt_res y (le_inf h₁ h₂) _ hy, K.resG_jacFun]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem jacVal_eq (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (i : K.bundle.ι) (j : L.ι)
     (hi : ⊤ ≤ y ⁻¹ᵁ K.bundle.U i) (hj : ⊤ ≤ y ⁻¹ᵁ L.U j) (h₁ : V ≤ K.bundle.U i) (h₂ : V ≤ L.U j)
@@ -919,9 +915,7 @@ theorem jacVal_eq (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (i : K.bundle.ι) (j
   rw [← evalPt_res y (le_inf h₁ h₂) _ hy, K.resG_jacFun]
 
 /- English proof (translation)
-Establish `hV : ⊤ ≤ y ⁻¹ᵁ (K.bundle.U i ⊓ L.U j ⊓ (K.bundle.U i' ⊓ L.U j'))` using `le_preimage_inf (le_preimage_inf hi hj) (le_preimage_inf hi' hj')`. Use `K.map_jacFun_change s i i' j j' inf_le_left inf_le_right (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)) (le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right)) (evalPt y _ hV) fun a => by` as an intermediate fact. Rewrite using `[evalPt_res y _ hj' hV]`. Conclude with `(vanishesAlong_iff_evalPt (s a) y j' hj').1 (hs a)`. Rewrite `this` using `[evalPt_res y _ (le_preimage_inf hi hj) hV, evalPt_res y _ (le_preimage_inf hi hi') hV, evalPt_res y _ (le_preimage_inf hj hj') hV, evalPt_res y _ (le_preimage_inf hi' hj') hV]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jacVal_change (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (hs : ∀ a, VanishesAlong (s a) y)
     (i i' : K.bundle.ι) (j j' : L.ι) (hi : ⊤ ≤ y ⁻¹ᵁ K.bundle.U i) (hi' : ⊤ ≤ y ⁻¹ᵁ K.bundle.U i')
@@ -941,7 +935,7 @@ theorem jacVal_change (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (hs : ∀ a, Van
   exact this
 
 /- English proof (translation)
-Rewrite using `[K.jacVal_eq s y i j hi hj h₁ h₂ hy, show (fun a => resG Y h₂ ((s a).f j)) = fun a => u * f a from funext e]`. Conclude with `K.map_jacobian_mul i h₁ (evalPt y V hy) u f hf`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jacVal_eq_pow_mul (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (i : K.bundle.ι) (j : L.ι)
     (hi : ⊤ ≤ y ⁻¹ᵁ K.bundle.U i) (hj : ⊤ ≤ y ⁻¹ᵁ L.U j) (h₁ : V ≤ K.bundle.U i) (h₂ : V ≤ L.U j)
@@ -952,7 +946,7 @@ theorem jacVal_eq_pow_mul (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (i : K.bundl
   exact K.map_jacobian_mul i h₁ (evalPt y V hy) u f hf
 
 /- English proof (translation)
-Establish `hV : ⊤ ≤ y ⁻¹ᵁ (K'.bundle.U a ⊓ K.bundle.U b ⊓ L.U j)` using `le_preimage_inf (le_preimage_inf ha hb) hj`. Rewrite using `[K'.jacVal_eq s y a j ha hj (inf_le_left.trans inf_le_left) inf_le_right hV, K.jacVal_eq s y b j hb hj (inf_le_left.trans inf_le_right) inf_le_right hV, ← evalPt_res y inf_le_left (le_preimage_inf ha hb) hV, ← map_mul]`. Use `congr 1`. Conclude with `K.coeff_eq_iso_mul K' a b _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem jacVal_eq_iso_mul (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (a : K'.bundle.ι) (b : K.bundle.ι)
     (j : L.ι) (ha : ⊤ ≤ y ⁻¹ᵁ K'.bundle.U a) (hb : ⊤ ≤ y ⁻¹ᵁ K.bundle.U b)
@@ -968,7 +962,7 @@ theorem jacVal_eq_iso_mul (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (a : K'.bund
   exact K.coeff_eq_iso_mul K' a b _ _ _
 
 /- English proof (translation)
-Rewrite using `[dSec_f]`. Unfold `jacVal evalPt`. Express the relevant statement in the definitionally equal form `((y.appLE _ _ _ ≫ (Sp F).presheaf.map (homOfLE hc).op) ≫ (Scheme.ΓSpecIso (CommRingCat.of F)).hom).hom _ = _`. Rewrite using `[Scheme.Hom.appLE_map]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem dSec_f_eq_jacVal (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (hs : ∀ a, VanishesAlong (s a) y)
     (c : ((K.adj L D).pull y).ι) (hc : ⊤ ≤ ((K.adj L D).pull y).U c)
@@ -982,7 +976,7 @@ theorem dSec_f_eq_jacVal (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (hs : ∀ a, 
   rw [Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Rewrite using `[K.jacVal_eq s y i j hi hj h₁ h₂ hy]`. Use `K.isUnit_map_jacobian i hV h₁ _ hu _ fun a => ?_` and prove the remaining obligations. Rewrite using `[evalPt_res y h₂ hj hy]`. Conclude with `(vanishesAlong_iff_evalPt (s a) y j hj).1 (hs a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_jacVal (s : Fin D → LB.Sec L) (y : Sp F ⟶ Y) (hs : ∀ a, VanishesAlong (s a) y)
     (i : K.bundle.ι) (j : L.ι) (hi : ⊤ ≤ y ⁻¹ᵁ K.bundle.U i) (hj : ⊤ ≤ y ⁻¹ᵁ L.U j)
@@ -1013,7 +1007,7 @@ theorem jacOn_eq (f : Fin (D + 1) → Γ(Y, U)) : jacOn p f =
     ∑ a : Fin (D + 1), ((-1 : Γ(Y, U)) ^ (a : ℕ) * f a) • dOn p fun b => f (a.succAbove b) := rfl
 
 /- English proof (translation)
-Set `` to `(algX p U).toAlgebra`. Set `` to `(algX p V).toAlgebra`. Set `` to `(resG Y h).toAlgebra`. Establish `: IsScalarTower k Γ(Y, U) Γ(Y, V)` using `IsScalarTower.of_algebraMap_eq' (resG_comp_algX p h).symm`. Conclude with `map_jac k Γ(Y, V) f`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 @[simp] theorem resForm_jacOn (h : V ≤ U) (f : Fin (D + 1) → Γ(Y, U)) :
     resForm h (jacOn p f) = jacOn p fun a => resG Y h (f a) := by
@@ -1024,7 +1018,7 @@ Set `` to `(algX p U).toAlgebra`. Set `` to `(algX p V).toAlgebra`. Set `` to `(
   exact map_jac k Γ(Y, V) f
 
 /- English proof (translation)
-Set `` to `(algX p U).toAlgebra`. Conclude with `jac_mul k u f`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem jacOn_mul (u : Γ(Y, U)) (f : Fin (D + 1) → Γ(Y, U)) :
     jacOn p (fun a => u * f a) = u ^ (D + 1) • jacOn p f := by
@@ -1056,7 +1050,7 @@ def jacSec (s : Fin (D + 1) → LB.Sec L) : LB.Sec (K.adj L (D + 1)) where
       (l₂.trans inf_le_right) l₂]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `resG Y h (K.coeff c.1 _ (jacOn p fun a => resG Y _ ((s a).f (c.2 PUnit.unit)))) = _`. Rewrite using `[K.resG_coeff, resForm_jacOn]`. Simplify using `only [resG_resG]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem resG_jacSec_f (s : Fin (D + 1) → LB.Sec L) (c : (K.adj L (D + 1)).ι)
     (h : V ≤ (K.adj L (D + 1)).U c) (h₁ : V ≤ K.bundle.U c.1) (h₂ : V ≤ L.U (c.2 PUnit.unit)) :
@@ -1067,7 +1061,7 @@ theorem resG_jacSec_f (s : Fin (D + 1) → LB.Sec L) (c : (K.adj L (D + 1)).ι)
   simp only [resG_resG]
 
 /- English proof (translation)
-Rewrite using `[jacOn_eq, map_sum, map_sum, Fin.sum_univ_succ]`. Simplify using `only [map_smul, smul_eq_mul, map_mul, hf, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, Fin.val_zero, pow_zero, one_mul, Fin.succAbove_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem map_coeff_jacOn {R : Type*} [CommRing R] (i : K.bundle.ι) (h : V ≤ K.bundle.U i)
     (ψ : Γ(Y, V) →+* R) (f : Fin (D + 1) → Γ(Y, V)) (hf : ∀ a : Fin D, ψ (f a.succ) = 0) :
@@ -1078,7 +1072,7 @@ theorem map_coeff_jacOn {R : Type*} [CommRing R] (i : K.bundle.ι) (h : V ≤ K.
   rfl
 
 /- English proof (translation)
-Establish `hf : ∀ a : Fin D, evalPt y _ hc (resG Y ((K.adj_U_le _ c).trans inf_le_right) ((s a.succ).f (c.2 PUnit.unit))) = 0` using `fun a => by`. Rewrite using `[evalPt_res y _ hj hc]`. Conclude with `(vanishesAlong_iff_evalPt _ y _ hj).1 (hs a)`. Express the relevant statement in the definitionally equal form `evalPt y _ hc (K.coeff c.1 ((K.adj_U_le _ c).trans inf_le_left) (jacOn p fun a => resG Y ((K.adj_U_le _ c).trans inf_le_right) ((s a).f (c.2 PUnit.unit)))) = _`. Rewrite using `[K.map_coeff_jacOn c.1 _ _ _ hf, evalPt_res y _ hj hc, K.jacVal_eq (fun a => s a.succ) y _ _ hi hj ((K.adj_U_le _ c).trans inf_le_left) ((K.adj_U_le _ c).trans inf_le_right) hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalPt_jacSec_f {F : Type} [CommRing F] (s : Fin (D + 1) → LB.Sec L) (y : Sp F ⟶ Y)
     (hs : ∀ a : Fin D, VanishesAlong (s a.succ) y) (c : (K.adj L (D + 1)).ι)
@@ -1101,13 +1095,11 @@ end CanonLB
 namespace CanonLB
 
 /- English proof (translation)
-Establish `hd : dFun (algX p V) y = (-y ^ 2) • dFun (algX p V) x`. Set `_` to `(algX p V).toAlgebra`. Establish `h1 : KaehlerDifferential.D k Γ(Y, V) (x * y) = 0`. Rewrite using `[e]`. Conclude with `(KaehlerDifferential.D k Γ(Y, V)).map_one_eq_zero`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Derivation.leibniz]`. Establish `h2` using `congrArg (y • ·) h1`. Simplify using `only [smul_add, smul_smul, smul_zero] at h2`. Rewrite `h2` using `[mul_comm y x, e, one_smul]`. Express the relevant statement in the definitionally equal form `KaehlerDifferential.D k Γ(Y, V) y = (-y ^ 2) • KaehlerDifferential.D k Γ(Y, V) x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[neg_smul, eq_neg_iff_add_eq_zero, pow_two]`. Conclude with `h2`. Establish `hm : ∀ a, dFun (algX p V) (![y] a) = ∑ b, (!![-y ^ 2] : Matrix (Fin 1) (Fin 1) Γ(Y, V)) a b • dFun (algX p V) (![x] b)`. Introduce `a`. Use `fin_cases a`.
-
-Simplify using `using hd`. Rewrite using `[K.jacobian_eq_det_mul i h ![y] ![x] _ hm, Matrix.det_fin_one_of]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jacobian_inv {p : Y ⟶ Sp k} [SmoothOfRelativeDimension 1 p] (K : CanonLB p 1)
     {V : Y.Opens} (i : K.bundle.ι) (h : V ≤ K.bundle.U i) (x y : Γ(Y, V)) (e : x * y = 1) :
@@ -1132,9 +1124,9 @@ theorem jacobian_inv {p : Y ⟶ Sp k} [SmoothOfRelativeDimension 1 p] (K : Canon
   rw [K.jacobian_eq_det_mul i h ![y] ![x] _ hm, Matrix.det_fin_one_of]
 
 /- English proof (translation)
-Establish `h₁` using `K.jacobian_inv i inf_le_left _ _ e`. Establish `h₂ : K.jacobian i inf_le_left ![resG Y (inf_le_left : _ ⊓ K.bundle.U j ≤ _) x] = 1`. Rewrite using `[← K.coeff_om i inf_le_left, hx, resForm_dOn, jacobian]`. Simplify using `only [Matrix.vec_single_eq_const, Function.const_apply]`. Establish `h₃ : K.jacobian j inf_le_right ![resG Y (inf_le_right : K.bundle.U i ⊓ _ ≤ _) y] = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← K.coeff_om j inf_le_right, hy, resForm_dOn, jacobian]`. Simplify using `only [Matrix.vec_single_eq_const, Function.const_apply]`. Rewrite `h₁` using `[K.jacobian_change i j _ inf_le_right, h₂, h₃, mul_one, mul_one, resG_self]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 example {p : Y ⟶ Sp k} [SmoothOfRelativeDimension 1 p] (K : CanonLB p 1) (i j : K.bundle.ι)
     (x : Γ(Y, K.bundle.U i)) (y : Γ(Y, K.bundle.U j)) (hx : K.om i = dOn p ![x])
@@ -1185,7 +1177,7 @@ def polyFn : MvPolynomial (Fin D) k →+* Γ(Sp (MvPolynomial (Fin D) k), ⊤) :
   (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (Fin D) k))).inv.hom
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [RingHom.comp_apply, polyFn, algX]`. Rewrite using `[show Scheme.Hom.appLE (affStr k D) ⊤ ⊤ _ = (affStr k D).appTop from (Scheme.Hom.app_eq_appLE _).symm]`. Conclude with `congrArg (fun φ => φ.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap k (MvPolynomial (Fin D) k))))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyFn_comp : (polyFn (k := k) (D := D)).comp (algebraMap k _) = algX (affStr k D) ⊤ := by
   ext a
@@ -1195,13 +1187,13 @@ theorem polyFn_comp : (polyFn (k := k) (D := D)).comp (algebraMap k _) = algX (a
     (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap k (MvPolynomial (Fin D) k))))
 
 /- English proof (translation)
-Set `_` to `(algX (affStr k D) ⊤).toAlgebra`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C c`. Establish `e : polyFn (C c : MvPolynomial (Fin D) k) = algX (affStr k D) ⊤ c`. Rewrite using `[← polyFn_comp]`.
+Introduce a local definition for the expression. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Simplify using `only [pderiv_C, map_zero, zero_smul, Finset.sum_const_zero]`. Conclude with `(KaehlerDifferential.D k _).map_algebraMap c`. Consider the case `add p q hp hq`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, hp, hq, add_smul, Finset.sum_add_distrib]`. Consider the case `mul_X p i hp`. Establish `hl : dFun (algX (affStr k D) ⊤) (polyFn (p * X i)) = polyFn p • dFun (algX (affStr k D) ⊤) (polyFn (X i)) + polyFn (X i : MvPolynomial (Fin D) k) • dFun (algX (affStr k D) ⊤) (polyFn p)`. Rewrite using `[map_mul]`. Conclude with `(KaehlerDifferential.D k _).leibniz _ _`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hl, hp, Finset.smul_sum]`. Simplify using `only [Derivation.leibniz, pderiv_X, smul_eq_mul, map_add, map_mul, add_smul, mul_smul, Finset.sum_add_distrib]`. Use `congr 1`. Simplify using `[Pi.single_apply]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dFun_polyFn_eq_sum_pderiv (g : MvPolynomial (Fin D) k) :
     dFun (algX (affStr k D) ⊤) (polyFn g) =
@@ -1230,13 +1222,11 @@ private theorem dFun_polyFn_eq_sum_pderiv (g : MvPolynomial (Fin D) k) :
     simp [Pi.single_apply]
 
 /- English proof (translation)
-Use `⟨isAffineOpen_top _, ?_⟩` and prove the remaining obligations. Establish `hfg : IsFreeGen (MvPolynomial (Fin D) k) (dForm (algebraMap k (MvPolynomial (Fin D) k)) fun a => X a)`. Set `Pinst : Algebra k (MvPolynomial (Fin D) k) → Prop` to `fun I =>`. Use `letI := I`. Use `IsFreeGen (MvPolynomial (Fin D) k) (exteriorPower.ιMulti (MvPolynomial (Fin D) k) D fun a => KaehlerDifferential.D k (MvPolynomial (Fin D) k) (X a))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hstd : Pinst inferInstance`. Establish `hb` using `isFreeGen_ιMulti (KaehlerDifferential.mvPolynomialBasis k (Fin D))`. Rewrite using `[show ⇑(KaehlerDifferential.mvPolynomialBasis k (Fin D)) = fun a => KaehlerDifferential.D k (MvPolynomial (Fin D) k) (X a) from`. Use function extensionality and compare the values at `fun a => by simp [KaehlerDifferential.mvPolynomialBasis_apply]] at hb`. Conclude with `hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : (inferInstance : Algebra k (MvPolynomial (Fin D) k)) = (algebraMap k (MvPolynomial (Fin D) k)).toAlgebra` using `toAlgebra_algebraMap.symm`. Conclude with `Eq.mp (congrArg Pinst h) hstd`. Establish `hρ : (polyFn (k` using `k) (D := D)).Etale := RingHom.Etale.of_bijective (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (Fin D) k))).commRingCatIsoToRingEquiv.symm.bijective`. Use `hfg.formMap hρ (polyFn_comp k D)` as an intermediate fact. Rewrite `this` using `[formMap_dForm]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrame_dX : IsFrame (dOn (affStr k D) fun a => polyFn (X a)) := by
   refine ⟨isAffineOpen_top _, ?_⟩
@@ -1267,7 +1257,7 @@ def affineSpace : CanonLB (affStr k D) D :=
 variable {k D} in
 
 /- English proof (translation)
-Establish `hx : (affineSpace k D).jacobian PUnit.unit le_rfl (fun a => polyFn (X a)) = 1`. Use `(affineSpace k D).coeff_om PUnit.unit le_rfl` as an intermediate fact. Rewrite `this` using `[resForm_self]`. Then use the resulting hypothesis. Rewrite using `[(affineSpace k D).jacobian_eq_det_mul PUnit.unit le_rfl _ (fun a => polyFn (X a)) (polyFn.mapMatrix (Matrix.of fun a b => pderiv b (f a))) (fun a => dFun_polyFn_eq_sum_pderiv k D (f a)), hx, mul_one, RingHom.map_det]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem jacobian_affineSpace (f : Fin D → MvPolynomial (Fin D) k) :
     (affineSpace k D).jacobian PUnit.unit le_rfl (fun a => polyFn (f a)) =
@@ -1281,7 +1271,7 @@ theorem jacobian_affineSpace (f : Fin D → MvPolynomial (Fin D) k) :
   rfl
 
 /- English proof (translation)
-Use `(jacobian_affineSpace _).trans (Eq.trans ?_ (map_one polyFn))` and prove the remaining obligations. Rewrite using `[← Matrix.det_one (n := Fin D)]`. Use `congr 2`. Use extensionality with `a b : 2`. Simplify using `[Matrix.one_apply, Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 example : (affineSpace k D).jacobian PUnit.unit le_rfl (fun a => polyFn (X a)) = 1 := by
   refine (jacobian_affineSpace _).trans (Eq.trans ?_ (map_one polyFn))
@@ -1291,7 +1281,7 @@ example : (affineSpace k D).jacobian PUnit.unit le_rfl (fun a => polyFn (X a)) =
   simp [Matrix.one_apply, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[jacobian_affineSpace]`. Simplify using `[Matrix.det_fin_two]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 example : (affineSpace k 2).jacobian PUnit.unit le_rfl (fun a => polyFn (![X 1, X 0] a)) = -1 := by
   rw [jacobian_affineSpace]
@@ -1299,7 +1289,7 @@ example : (affineSpace k 2).jacobian PUnit.unit le_rfl (fun a => polyFn (![X 1, 
   rfl
 
 /- English proof (translation)
-Rewrite using `[jacobian_affineSpace]`. Simplify using `[map_ofNat]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 example : (affineSpace k 1).jacobian PUnit.unit le_rfl (fun a => polyFn (![X 0 ^ 2] a)) =
     2 * polyFn (X 0) := by
@@ -1314,7 +1304,7 @@ def polySec (f : MvPolynomial (Fin D) k) :
   ⟨fun _ => polyFn f, fun _ _ => (one_mul _).symm⟩
 
 /- English proof (translation)
-Establish `h1` using `(affineSpace k D).jacVal_eq (fun a => polySec (f a)) (spMap φ) PUnit.unit PUnit.unit le_rfl le_rfl (V := ⊤) le_rfl le_rfl le_rfl`. Use `h1.trans ((congrArg (evalPt (spMap φ) ⊤ _) (congrArg ((affineSpace k D).jacobian PUnit.unit le_rfl) (funext fun a => resG_self _ _))).trans ?_)` and prove the remaining obligations. Conclude with `(congrArg _ (jacobian_affineSpace f)).trans (evalPt_spMap φ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jacVal_affineSpace {F : Type} [CommRing F] (φ : MvPolynomial (Fin D) k →+* F)
     (f : Fin D → MvPolynomial (Fin D) k) :
@@ -1327,7 +1317,7 @@ theorem jacVal_affineSpace {F : Type} [CommRing F] (φ : MvPolynomial (Fin D) k 
   exact (congrArg _ (jacobian_affineSpace f)).trans (evalPt_spMap φ _)
 
 /- English proof (translation)
-Use `⟨(vanishesAlong_iff_evalPt _ _ PUnit.unit le_rfl).2 ((evalPt_spMap _ _).trans (by simp)), ?_⟩` and prove the remaining obligations. Rewrite using `[jacVal_affineSpace]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : VanishesAlong (polySec (X 0 ^ 2 - 1 : MvPolynomial (Fin 1) k))
       (spMap (eval fun _ => 1)) ∧

@@ -18,15 +18,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc.Sep.E8Fibration.FactorBasis
 
 /- English proof (translation)
-Use `set σ : Fin (2 * g) ≃ Fin g ⊕ Fin g := (finCongr (two_mul g)).trans finSumFinEquiv.symm with hσ`. Establish `l : ∀ a, (σ.symm (.inl a) : ℕ) = a` using `fun _ => rfl`. Establish `r : ∀ a, (σ.symm (.inr a) : ℕ) = g + a` using `fun _ => rfl`. Establish `ll : ∀ i j, Out.stdSymp g (σ.symm (.inl i)) (σ.symm (.inl j)) = 0` using `fun i j => by`. Use `i.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `j.2` as an intermediate fact. Apply the tactic sequence `simp only [Out.stdSymp, l, r]; split_ifs <;> omega`. Establish `rr : ∀ i j, Out.stdSymp g (σ.symm (.inr i)) (σ.symm (.inr j)) = 0` using `fun i j => by`. Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [Out.stdSymp, l, r]; split_ifs <;> omega`. Establish `lr : ∀ i j, Out.stdSymp g (σ.symm (.inl i)) (σ.symm (.inr j)) = if i = j then 1 else 0` using `fun i j => by`. Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact. Apply the tactic sequence `simp only [Out.stdSymp, l, r, Fin.ext_iff]; split_ifs <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `rl : ∀ i j, Out.stdSymp g (σ.symm (.inr i)) (σ.symm (.inl j)) = if i = j then -1 else 0` using `fun i j => by`. Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact. Apply the tactic sequence `simp only [Out.stdSymp, l, r, Fin.ext_iff]; split_ifs <;> omega`. Simplify using `only [Fintype.sum_sum_type, ll, rr, lr, rl, omegaStd, Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[sub_eq_add_neg]`.
+A detailed English derivation is pending.
 -/
 theorem omegaStd_eq_sum (g : ℕ) (a b : Fin g ⊕ Fin g → ℤ) :
     omegaStd a b = ∑ c, ∑ d, Out.stdSymp g (((finCongr (two_mul g)).trans finSumFinEquiv.symm).symm c)
@@ -50,27 +50,27 @@ theorem omegaStd_eq_sum (g : ℕ) (a b : Fin g ⊕ Fin g → ℤ) :
   simp [sub_eq_add_neg]
 
 /- English proof (translation)
-Set `s₀ : Fin 8 → ℤ` to `Pi.single 0 1`. Set `t₀ : Fin 8 → ℤ` to `E.adjugate.mulVec s₀`. Establish `h₀ : dotProduct s₀ (E.mulVec t₀) = 1`. Simplify using `only [t₀, Matrix.mulVec_mulVec, Matrix.mul_adjugate, hdet, one_smul, Matrix.one_mulVec]`. Simplify using `[s₀]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h₀' : dotProduct t₀ (E.mulVec s₀) = 1`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hE, dotProduct_comm, h₀]`. Set `pw : (Fin 8 → ℤ) → T →* (Fin 8 → T)` to `fun s => MonoidHom.mk' (fun p u => p ^ s u) fun p q => funext fun u => mul_zpow p q _`. Set `h : T →* T →* Rˣ` to `((e.comp (pw s₀)).flip.comp (pw t₀)).flip`. Establish `hh : ∀ p q, h p q = e (fun u => p ^ s₀ u) (fun u => q ^ t₀ u)` using `fun _ _ => rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ (s t : Fin 8 → ℤ) (p q : T), e (fun u => p ^ s u) (fun u => q ^ t u) = h p q ^ dotProduct s (E.mulVec t)` using `fun s t p q => by`. Rewrite using `[hrel s t (dotProduct s (E.mulVec t) • s₀) t₀ (by rw [smul_dotProduct, h₀, smul_eq_mul, _root_.mul_one]), hh, ← MonoidHom.zpow_apply, ← map_zpow]`. Use `congr 2`. Use function extensionality and compare the values at `u`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.pow_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← zpow_mul, _root_.mul_comm]`. Establish `eskew : ∀ x y, e x y * e y x = 1` using `fun x y => by`. Use `halt (x * y)` as an intermediate fact. Simplify using `only [map_mul, MonoidHom.mul_apply, halt, _root_.one_mul, _root_.mul_one] at this`. Apply the tactic sequence `first | exact this | (rw [_root_.mul_comm]; exact this)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `halt' : ∀ p, h p p = 1` using `fun p => by`. Establish `k₁ : h p p ^ 2 = 1`. Use `eskew (fun u => p ^ s₀ u) (fun u => p ^ t₀ u)` as an intermediate fact. Rewrite `this` using `[key, key, h₀, h₀', zpow_one, ← pow_two]`. Then use the resulting hypothesis. Establish `k₂ : h p p ^ N = 1` using `by rw [← map_pow, hT, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, rfl⟩` from `hN`. Rewrite `k₂` using `[pow_succ, pow_mul, k₁, one_pow, _root_.one_mul]`. Then use the resulting hypothesis. Establish `hnd' : ∀ p, (∀ q, h p q = 1) → p = 1` using `fun p hp => by`. Use `hnd (fun u => p ^ s₀ u) fun y => by` as an intermediate fact. Establish `hy : y = ∏ v, fun u => y v ^ (Pi.single v 1 : Fin 8 → ℤ) u`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `u`. Rewrite using `[Finset.prod_apply, Finset.prod_eq_single u (fun v _ hv => by simp [Pi.single_apply, hv.symm]) (by simp)]`. Simplify using the standard rewrite rules. Rewrite using `[hy, map_prod]`. Conclude with `Finset.prod_eq_one fun v _ => by rw [key, hp, one_zpow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify `congrFun this 0` using `[s₀]`. Take `⟨v, hv⟩` from `exists_stdSymp_of_alternating_pairing N g T R z hN.pos hz hT hc h halt' hnd'`. Set `σ : Fin (2 * g) ≃ Fin g ⊕ Fin g` to `(finCongr (two_mul g)).trans finSumFinEquiv.symm`. Use `⟨fun c => v (σ.symm c), fun x y => ?_⟩` and prove the remaining obligations. Establish `hp : ∀ x : Fin 8 → (Fin g ⊕ Fin g → ℤ), (fun u => ∏ c, v (σ.symm c) ^ x u c) = ∏ c, fun u => v (σ.symm c) ^ x u c` using `fun x =>`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `fun u => by rw [Finset.prod_apply]`. Rewrite using `[hp, hp]`. Simplify using `only [map_prod, MonoidHom.finset_prod_apply, key, hv, ← zpow_mul]`. Establish `zs : ∀ {α : Type} [Fintype α] (f : α → ℤ), ∏ a, z ^ f a = z ^ ∑ a, f a` using `fun f => (map_prod (zpowersHom Rˣ z) (fun a => Multiplicative.ofAdd (f a)) Finset.univ).symm`. Simplify using `only [zs]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [omegaStd_eq_sum, dotProduct, Matrix.mulVec, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `(Finset.sum_congr rfl fun c _ => Finset.sum_comm).trans (Finset.sum_comm.trans (Finset.sum_congr rfl fun u _ => ?_))` and prove the remaining obligations. Use `(Finset.sum_congr rfl fun c _ => Finset.sum_comm).trans (Finset.sum_comm.trans (Finset.sum_congr rfl fun u' _ => ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [σ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_family {N g : ℕ} (hN : Odd N) {T R : Type} [CommGroup T] [CommRing R] [IsDomain R] {z : Rˣ}
     (hz : IsPrimitiveRoot z N) (hT : ∀ x : T, x ^ N = 1)
@@ -143,29 +143,25 @@ theorem exists_family {N g : ℕ} (hN : Odd N) {T R : Type} [CommGroup T] [CommR
   ring
 
 /- English proof (translation)
-Introduce `W hW g N hN K _ _ hK z hz P hg B _ _ pr hpr hrel`. Establish `hL : Out.Laws` using `GlobalTheory.abelianSchemeLaws_all.1`. Use `P.isAb.comm` as an intermediate fact. Establish `: IsDomain Γ(Sp K, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toMulEquiv.isDomain _`. Establish `hz' : IsPrimitiveRoot (unitOn z) N` using `hz.map_of_injective (f := Units.map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom.toMonoidHom) (Units.map_injective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).inv).1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w₁, w₂, w₃, -⟩` from `hL.weil _ P N (Out.baseOver _)`. Establish `hmon` using `hpr.1`. Set `φ₀ : (Out.baseOver (Sp K) ⟶ P.A) →* (Fin 8 → (Out.baseOver (Sp K) ⟶ B))` to `MonoidHom.mk' (fun x u => x ≫ pr u) fun x y => funext fun u => MonObj.mul_comp _ _ _`. Establish `hφ : Function.Bijective φ₀` using `⟨fun x y h => (hpr.2 _ (φ₀ y)).unique (fun u => congrFun h u) fun _ => rfl, fun y => (hpr.2 _ y).exists.imp fun x hx => funext hx⟩`. Set `φ` to `MulEquiv.ofBijective φ₀ hφ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `φa : ∀ x u, φ x u = x ≫ pr u` using `fun _ _ => rfl`. Set `T : Subgroup (Out.baseOver (Sp K) ⟶ B)` to `(powMonoidHom N).ker`. Set `ψ : (Fin 8 → T) →* (Out.baseOver (Sp K) ⟶ P.A)` to `φ.symm.toMonoidHom.comp (T.subtype.compLeft (Fin 8))`. Establish `ψa : ∀ x u, ψ x ≫ pr u = (x u).1` using `fun x u => (φa _ u).symm.trans (congrFun (φ.apply_symm_apply _) u)`. Establish `hT : ∀ x : T, x ^ N = 1` using `fun x => Subtype.ext x.2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ψt : ∀ x, ψ x ^ N = 1` using `fun x => by`. Rewrite using `[← map_pow, show x ^ N = 1 from funext fun u => hT _, map_one]`. Establish `ψs : ∀ y : Out.baseOver (Sp K) ⟶ P.A, y ^ N = 1 → ∃ x, ψ x = y` using `fun y hy => ⟨fun u => ⟨φ y u, by show φ y u ^ N = 1`. Rewrite using `[← Pi.pow_apply, ← map_pow, hy, map_one, Pi.one_apply]⟩, φ.symm_apply_apply y⟩`. Use `choose w hw hw' using fun x y : Fin 8 → T => w₁ _ _ (ψt x) (ψt y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `wl : ∀ x x' y, w (x * x') y = w x y * w x' y` using `fun x x' y => (hw' _ _ _ (by rw [map_mul]; exact w₂ _ _ _ _ _ (hw x y) (hw x' y))).symm`. Establish `ws : ∀ x y, w y x = (w x y)⁻¹` using `fun x y => (hw' _ _ _ (CommPairing.weilIs_symm P.isLB (hw x y))).symm`. Establish `wr : ∀ x y y', w x (y * y') = w x y * w x y'` using `fun x y y' => by`. Rewrite using `[ws _ x, wl, mul_inv, ← ws, ← ws]`. Set `e : (Fin 8 → T) →* (Fin 8 → T) →* Γ(Sp K, ⊤)ˣ` to `MonoidHom.mk' (fun x => MonoidHom.mk' (w x) (wr x)) fun x x' => MonoidHom.ext fun y => wl x x' y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc : ∀ d : ℕ, d ∣ N → Nat.card {x : T // x ^ d = 1} = d ^ (2 * g)` using `fun d hd => by`. Establish `hA : Nat.card {x : Out.baseOver (Sp K) ⟶ P.A // x ^ d = 1} = d ^ (2 * P.g)` using `(hL.mulN _ P d (Nat.pos_of_dvd_of_pos hd hN.pos)).2.2.2.2 K (𝟙 _) (by`. Take `⟨e, rfl⟩` from `hd`. Rewrite `hK` using `[Nat.cast_mul]`. Conclude with `left_ne_zero_of_mul hK)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `F : (Fin 8 → {x : T // x ^ d = 1}) → {x : Out.baseOver (Sp K) ⟶ P.A // x ^ d = 1}` to `fun x => ⟨ψ fun u => (x u).1, by`. Rewrite using `[← map_pow, show (fun u => (x u).1) ^ d = 1 from funext fun u => (x u).2, map_one]⟩`. Establish `hF : Function.Bijective F`. Use `⟨fun x y h => funext fun u => Subtype.ext (Subtype.ext ?_), fun y => ?_⟩` and prove the remaining obligations. Establish `h' : ψ (fun u => (x u).1) = ψ fun u => (y u).1` using `congrArg Subtype.val h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← ψa (fun u => (x u).1) u, h', ψa]`. Take `⟨x, hx⟩` from `ψs y.1 (by`. Take `⟨c, hc⟩` from `hd`. Rewrite using `[hc, pow_mul, y.2, one_pow])`. Use `⟨fun u => ⟨x u, Subtype.ext ?_⟩, Subtype.ext hx⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (x u).1 ^ d = 1`. Rewrite using `[← ψa, hx, ← φa, ← Pi.pow_apply, ← map_pow, y.2, map_one, Pi.one_apply]`. Establish `h` using `Nat.card_eq_of_bijective F hF`. Rewrite `h` using `[hA, hg, Nat.card_fun, Nat.card_fin, show 2 * (8 * g) = 2 * g * 8 by ring, pow_mul]`. Conclude with `Nat.pow_left_injective (by norm_num) h`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `exists_family (g := g) hN hz' hT hc (E8Fibration.e8 W) (by simp [e8, Matrix.transpose_add, add_comm]) hW.2 e (fun x => (hw' _ _ _ (w₃ _ (ψt x))).symm) (fun x hx => by`. Establish `h1 : ψ x = 1` using `hL.weilNondeg K P N hK _ (ψt x) fun y hy => by`. Take `⟨y, rfl⟩` from `ψs y hy`. Establish `h : w x y = 1` using `hx y`. Conclude with `h ▸ hw x y`.
-
-Use function extensionality and compare the values at `u`. Conclude with `Subtype.ext (by rw [← ψa, h1, ← φa, map_one]; rfl))`. Use the proof step `(fun s t s' t' h p q => hw' _ _ _ (hrel s t s' t' h p.1 q.1 p.2 q.2 _ _ _ _ (fun u => ψa _ u) (fun u => ψa _ u) (fun u => ψa _ u) (fun u => ψa _ u) _ (hw _ _)))`. Use `⟨fun c => (b c).1, fun c => (b c).2, fun x y X Y hX hY => ?_⟩` and prove the remaining obligations. Establish `hp : ∀ (x : Fin 8 → (Fin g ⊕ Fin g → ℤ)) (X : Out.baseOver (Sp K) ⟶ P.A), (∀ u, X ≫ pr u = ∏ c, (b c).1 ^ x u c) → X = ψ fun u => ∏ c, b c ^ x u c` using `fun x X hX => hφ.1 (funext fun u => (hX u).trans (Eq.symm ((ψa _ u).trans (by simp))))`.
-
-Rewrite using `[hp x X hX, hp y Y hY, ← hb x y]`. Conclude with `hw _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (gQ N : ℕ), Odd N → ∀ (K : Type) [Field K] [IsAlgClosed K], (N : K) ≠ 0 →
   ∀ (z : Kˣ), IsPrimitiveRoot z N → ∀ (P' : PolAV (Sp K)), P'.g = 8 * gQ →

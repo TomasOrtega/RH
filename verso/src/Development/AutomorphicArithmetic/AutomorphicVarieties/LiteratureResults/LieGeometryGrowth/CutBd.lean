@@ -2,13 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Establish `hP : 0 ≤ ∏ i, n i` using `Finset.prod_nonneg fun i _ => hn i`. Establish `e : A - (u • A + ∑ i : Fin (q + 1), ((-1 : ℂ) ^ (i : ℕ) * l i) • B i) = (1 - u) • A - ∑ i : Fin (q + 1), ((-1 : ℂ) ^ (i : ℕ) * l i) • B i`. Rewrite using `[sub_smul, one_smul, sub_sub]`. Establish `h1 : ‖(1 - u) • A‖ ≤ s * (M' * ∏ i, n i)`. Rewrite using `[norm_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul hs hA (norm_nonneg _) ((norm_nonneg _).trans hs)`. Establish `h2 : ∀ i : Fin (q + 1), ‖((-1 : ℂ) ^ (i : ℕ) * l i) • B i‖ ≤ b * M * ∏ i, n i` using `fun i => by`. Rewrite using `[norm_smul, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Break down `hB with h | h` into its components or cases. Establish `h0 : ‖l i‖ = 0` using `le_antisymm (by simpa [h] using hl i) (norm_nonneg _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h, h0]`. Use `(mul_le_mul (hl i) (h i) (norm_nonneg _) (mul_nonneg hb (hn i))).trans_eq ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_succAbove n i]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ‖∑ i : Fin (q + 1), ((-1 : ℂ) ^ (i : ℕ) * l i) • B i‖ ≤ (q + 1) * (b * M * ∏ i, n i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_sum_le _ _).trans ((Finset.sum_le_sum fun i _ => h2 i).trans_eq ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[e]`. Use `(norm_sub_le _ _).trans ((add_le_add h1 h3).trans_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem aux {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F] {q : ℕ} (A : F) (u : ℂ) (l : Fin (q + 1) → ℂ)
     (B : Fin (q + 1) → F) (n : Fin (q + 1) → ℝ) (s b M M' : ℝ) (hn : ∀ i, 0 ≤ n i) (hM : 0 ≤ M) (hb : 0 ≤ b)
@@ -38,7 +38,7 @@ private theorem aux {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F] {q : �
   ring
 
 /- English proof (translation)
-Introduce `E _ _ _ a Ξ q u η ζ h g s b M M' hM _ hb hs hl hη hd X`. Rewrite using `[AlternatingMap.sub_apply, map_sub, Pi.sub_apply, h]`. Conclude with `aux _ _ _ _ (fun i => ‖UpperTheory.V.Lit.Dr.hv (X i)‖) s b M M' (fun _ => norm_nonneg _) hM hb hs (fun i => hl _) (hη.imp id fun hη i => hη _) (hd X)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.cutBd :
     CutBd := by

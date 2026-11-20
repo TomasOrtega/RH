@@ -17,11 +17,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open UpperTheory.ComplexUniformization
 
 /- English proof (translation)
-Use `set U : Matrix (Fin n) (Fin n) ℂ := (hH.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU`. Establish `hspec : H = U * diagonal (RCLike.ofReal ∘ hH.eigenvalues) * star U`. Establish `h0` using `hH.spectral_theorem`. Rewrite `h0` using `[Unitary.conjStarAlgAut_apply]`. Then use the resulting hypothesis. Establish `hsy : star (star U *ᵥ x) = star x ᵥ* U`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[star_mulVec, ← star_eq_conjTranspose, star_star]`. Establish `hL : star x ⬝ᵥ (H *ᵥ x) = star (star U *ᵥ x) ⬝ᵥ (diagonal (RCLike.ofReal ∘ hH.eigenvalues) *ᵥ (star U *ᵥ x))`. Rewrite using `[hsy, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, ← hspec]`. Rewrite using `[hL, dotProduct, Complex.re_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_diagonal]`. Simplify using `only [Function.comp_apply, Pi.star_apply, RCLike.star_def, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.normSq_apply]`. Simplify using `[Complex.ofReal_re, Complex.ofReal_im]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem form_re_eq {n : ℕ} {H : Matrix (Fin n) (Fin n) ℂ} (hH : H.IsHermitian) (x : Fin n → ℂ) :
     (star x ⬝ᵥ (H *ᵥ x)).re = ∑ i, hH.eigenvalues i *
@@ -44,11 +44,11 @@ private theorem form_re_eq {n : ℕ} {H : Matrix (Fin n) (Fin n) ℂ} (hH : H.Is
   ring
 
 /- English proof (translation)
-Set `f : W →ₗ[ℂ] ({i // p i} → ℂ)` to `{ toFun := fun x i => (U *ᵥ (x : Fin n → ℂ)) i.1 map_add' := fun x y => by`. Use extensionality with `i`. Simplify using `[mulVec_add]`. Use the proof step `map_smul' := fun c x => by`. Use extensionality with `i`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[mulVec_smul] }`. Establish `hinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h x x.2` to reduce the goal to its premises. Introduce `i hi`. Conclude with `congrFun hx ⟨i, hi⟩`. Establish `h1` using `LinearMap.finrank_le_finrank_of_injective hinj`. Rewrite `h1` using `[Module.finrank_pi]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem finrank_le_of_coord {n : ℕ} (U : Matrix (Fin n) (Fin n) ℂ) (p : Fin n → Prop)
     [Fintype {i // p i}] (W : Submodule ℂ (Fin n → ℂ)) (h : ∀ x ∈ W, (∀ i, p i → (U *ᵥ x) i = 0) → x = 0) :
@@ -72,21 +72,19 @@ private theorem finrank_le_of_coord {n : ℕ} (U : Matrix (Fin n) (Fin n) ℂ) (
   rwa [Module.finrank_pi] at h1
 
 /- English proof (translation)
-Use `set U : Matrix (Fin n) (Fin n) ℂ := star (hH.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU`. Establish `hA' : Module.finrank ℂ A ≤ Fintype.card {i // 0 < hH.eigenvalues i}`. Apply `finrank_le_of_coord U (fun i => 0 < hH.eigenvalues i) A` to reduce the goal to its premises. Introduce `x hx hz`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1` using `hA x hx hne`. Rewrite `h1` using `[form_re_eq hH x]`. Establish `h2 : ∑ i, hH.eigenvalues i * Complex.normSq ((U *ᵥ x) i) ≤ 0`. Apply `Finset.sum_nonpos` to reduce the goal to its premises. Introduce `i _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : 0 < hH.eigenvalues i`. Rewrite using `[hz i hi]`. Simplify using the standard rewrite rules. Conclude with `mul_nonpos_of_nonpos_of_nonneg (not_lt.1 hi) (Complex.normSq_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hB' : Module.finrank ℂ B ≤ Fintype.card {i // ¬ 0 < hH.eigenvalues i}`. Apply `finrank_le_of_coord U (fun i => ¬ 0 < hH.eigenvalues i) B` to reduce the goal to its premises. Introduce `x hx hz`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hB x hx hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[form_re_eq hH x]`. Establish `h2 : 0 ≤ ∑ i, hH.eigenvalues i * Complex.normSq ((U *ᵥ x) i)`. Apply `Finset.sum_nonneg` to reduce the goal to its premises. Introduce `i _`. Distinguish the cases in `hi : 0 < hH.eigenvalues i`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `mul_nonneg hi.le (Complex.normSq_nonneg _)`. Rewrite using `[hz i hi]`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : Fintype.card {i // ¬ 0 < hH.eigenvalues i} = n - Fintype.card {i // 0 < hH.eigenvalues i}`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Fintype.card_subtype_compl, Fintype.card_fin]`. Establish `hle : Fintype.card {i // 0 < hH.eigenvalues i} ≤ n`. Simplify using `using Fintype.card_subtype_le (fun i => 0 < hH.eigenvalues i)`. Establish `hs : sigPosH hH = Fintype.card {i // 0 < hH.eigenvalues i}`. Unfold `sigPosH`.
-
-Conclude with `Fintype.card_congr' rfl`. Rewrite using `[hs]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem sig_eq_finrank {n : ℕ} {H : Matrix (Fin n) (Fin n) ℂ} (hH : H.IsHermitian)
     (A B : Submodule ℂ (Fin n → ℂ)) (hAB : Module.finrank ℂ A + Module.finrank ℂ B = n)
@@ -134,33 +132,31 @@ private theorem sig_eq_finrank {n : ℕ} {H : Matrix (Fin n) (Fin n) ℂ} (hH : 
   omega
 
 /- English proof (translation)
-Introduce `n δ H K J e hH hK he hJJ hM htr hKdet hKsig`. Establish `he2 : e * e = -1`. Apply the tactic sequence `rcases he with rfl | rfl <;> simp`. Use `set E : Matrix (Fin n) (Fin n) ℂ := e • J with hEdef`. Establish `hEE : E * E = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hEdef, smul_mul_smul_comm, he2, hJJ, neg_smul, smul_neg, one_smul, neg_neg]`. Establish `hJE : J = (-e) • E`. Rewrite using `[hEdef, smul_smul, neg_mul, he2, neg_neg, one_smul]`. Use `set P : Matrix (Fin n) (Fin n) ℂ := (1 / 2 : ℂ) • (1 - E) with hPdef`. Establish `h2 : (1 - E) * (1 - E) = (2 : ℂ) • (1 - E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[sub_mul, mul_sub, mul_sub, _root_.one_mul, _root_.mul_one, _root_.one_mul, hEE, two_smul]`. Normalize the expressions using the abelian group laws. Establish `hPP : P * P = P`. Rewrite using `[hPdef, smul_mul_smul_comm, h2, smul_smul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hEP : E * P = -P`. Rewrite using `[hPdef, Matrix.mul_smul, mul_sub, _root_.mul_one, hEE, ← smul_neg, neg_sub]`. Use `set f : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ) := Matrix.toLin' P with hfdef`. Establish `hidem : IsIdempotentElem f` using `by show Matrix.toLin' P * Matrix.toLin' P = Matrix.toLin' P`. Rewrite using `[Module.End.mul_eq_comp, ← Matrix.toLin'_mul, hPP]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hJrange : ∀ x ∈ LinearMap.range f, J *ᵥ x = e • x`. Introduce and unpack `x ⟨y, rfl⟩`. Rewrite using `[hfdef, Matrix.toLin'_apply, hJE, smul_mulVec, mulVec_mulVec, hEP, neg_mulVec, smul_neg, ← neg_smul, neg_neg]`. Establish `hJker : ∀ x ∈ LinearMap.ker f, J *ᵥ x = (-e) • x`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hx` using `[LinearMap.mem_ker, hfdef, Matrix.toLin'_apply, hPdef, smul_mulVec, sub_mulVec, one_mulVec, smul_eq_zero]`. Establish `hx' : x = E *ᵥ x`. Break down `hx with h | h` into its components or cases. Evaluate the numerical expressions using `at h`. Conclude with `(sub_eq_zero.1 h)`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJE, smul_mulVec, ← hx']`. Establish `hform : ∀ x c, J *ᵥ x = c • x → ((-e) • (H * J)) *ᵥ x = ((-e) * c) • (H *ᵥ x)`. Introduce `x c hx`. Rewrite using `[smul_mulVec, ← mulVec_mulVec, hx, mulVec_smul, smul_smul]`. Establish `hApos : ∀ x ∈ LinearMap.range f, x ≠ 0 → 0 < (star x ⬝ᵥ (H *ᵥ x)).re`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `x hx hx0`. Establish `h0` using `hM.re_dotProduct_pos hx0`. Rewrite `h0` using `[hform x e (hJrange x hx), neg_mul, he2, neg_neg, one_smul]`. Simplify using `using h0`. Establish `hBneg : ∀ x ∈ LinearMap.ker f, x ≠ 0 → (star x ⬝ᵥ (H *ᵥ x)).re < 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx hx0`. Establish `h0` using `hM.re_dotProduct_pos hx0`. Rewrite `h0` using `[hform x (-e) (hJker x hx), neg_mul_neg, he2, neg_one_smul, dotProduct_neg]`. Establish `h1 : 0 < -(star x ⬝ᵥ (H *ᵥ x)).re` using `by simpa using h0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAB : Module.finrank ℂ (LinearMap.range f) + Module.finrank ℂ (LinearMap.ker f) = n`. Rewrite using `[LinearMap.finrank_range_add_finrank_ker, Module.finrank_fin_fun]`. Establish `htrP : P.trace = (δ : ℂ)`. Rewrite using `[hPdef, Matrix.trace_smul, Matrix.trace_sub, Matrix.trace_one, hEdef, Matrix.trace_smul, htr, Fintype.card_fin, smul_eq_mul, smul_eq_mul]`. Take the linear combination `(-(2 * (δ : ℂ) - (n : ℂ)) / 2) * he2`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hrank : Module.finrank ℂ (LinearMap.range f) = δ`. Establish `h0` using `(LinearMap.IsIdempotentElem.isProj_range f hidem).trace`. Rewrite `h0` using `[hfdef, Matrix.trace_toLin'_eq, htrP]`. Conclude with `h0.symm` after adjusting the coercions. Establish `hsig : sigPosH hH = δ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[sig_eq_finrank hH _ _ hAB hApos hBneg, hrank]`. Establish `hHdet : H.det ≠ 0`. Introduce `h0`. Establish `hd` using `hM.det_pos`. Rewrite `hd` using `[Matrix.det_smul, Matrix.det_mul, h0, zero_mul, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `lt_irrefl _ hd`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨Z, hZ⟩` from `HermCongruence.congr_of_sigPosH_eq K H hK hH hKdet hHdet (by rw [hKsig, hsig])`. Conclude with `⟨Z, hZ⟩`. Introduce `hδ`.
-
-Establish `hpos : 0 < Module.finrank ℂ (LinearMap.range f)` using `hrank ▸ hδ`. Take `⟨⟨z, hzA⟩, hz0⟩` from `Module.finrank_pos_iff_exists_ne_zero.1 hpos`. Establish `hz0' : z ≠ 0` using `fun h => hz0 (Subtype.ext h)`. Conclude with `⟨z, hJrange z hzA, hApos z hzA hz0'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.hermitian_congruent_and_positive_eigenvector_of_signature :
     ∀ (n δ : ℕ) (H K J : Matrix (Fin n) (Fin n) ℂ) (e : ℂ) (hH : H.IsHermitian) (hK : K.IsHermitian), (e = Complex.I ∨ e = -Complex.I) → J * J = -1 → ((-e) • (H * J)).PosDef → Matrix.trace J = e * (2 * (δ : ℂ) - (n : ℂ)) → K.det ≠ 0 → sigPosH hK = δ → (∃ Z : GL (Fin n) ℂ, H = (Z : Matrix (Fin n) (Fin n) ℂ)ᴴ * K * (Z : Matrix (Fin n) (Fin n) ℂ)) ∧ (0 < δ → ∃ z : Fin n → ℂ, J *ᵥ z = e • z ∧ 0 < (star z ⬝ᵥ (H *ᵥ z)).re) := by

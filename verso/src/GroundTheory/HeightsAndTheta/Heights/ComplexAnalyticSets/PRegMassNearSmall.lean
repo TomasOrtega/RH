@@ -11,29 +11,23 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial MeasureTheory Filter Topology Matrix ComplexSets
 
 /- English proof (translation)
-Introduce `n d J I u φ f hJ hdim hu hφ hIdim hf hfc δ hδ`. Distinguish the cases in `h : ∃ A : Matrix (Fin (d + 1)) (Fin n) ℂ, IsFiniteProjection J A`. Use `swap`. Conclude with `⟨Set.univ, isOpen_univ, Set.subset_univ _, fun χ _ _ _ ε _ => by simp [varInt, h, hδ.le]⟩`. Use `set A := h.choose`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : IsFiniteProjection J A` using `h.choose_spec`. Establish `hfin : ∀ y, (fibre J A y).Finite` using `fun y => (FibreBound.proof n (d + 1) J A hJ hdim hA y).2.1`. Use `set K := tsupport f`. Take `⟨C₁, hC₁, h₁⟩` from `hCmp n d J A φ f hJ hdim hA hφ hf hfc`. Take `⟨C₂, hC₂, h₂⟩` from `hBall n d J A u K hJ hdim hA hu hfc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C₃, hC₃, h₃⟩` from `hCov n d I K hIdim hfc`. Establish `hM : 0 ≤ C₁ * C₂ * C₃` using `by positivity`. Use `set r := min 1 (δ / (C₁ * C₂ * C₃ + 1))`. Establish `hr : r ∈ Set.Ioc (0 : ℝ) 1` using `⟨lt_min one_pos (by positivity), min_le_left _ _⟩`. Take `⟨T, hTK, hcov, hcard⟩` from `h₃ r hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Establish `hUo : IsOpen ((⋃ c ∈ T, Metric.ball c r) ∪ Kᶜ)` using `(isOpen_biUnion fun (c : Fin n → ℂ) _ => Metric.isOpen_ball).union hfc.isClosed.isOpen_compl`. Use `⟨(⋃ c ∈ T, Metric.ball c r) ∪ Kᶜ, hUo, fun x hx => ?_, fun χ _ hχ1 hχU ε hε => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hxK : x ∈ K`. Conclude with `Or.inl (hcov ⟨hx, hxK⟩)`. Conclude with `Or.inr hxK`.
+Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set ψ : Fin (d + 1) → (Fin n → ℂ) → ℝ := vecCons (logReg u ε) fun _ => euclPot`. Use `set w : (Fin n → ℂ) → ℝ := fun x => ∑ c ∈ T, (Metric.ball c r).indicator (fun _ => (1 : ℝ)) x with hw`. Establish `hi0 : ∀ c x : Fin n → ℂ, 0 ≤ (Metric.ball c r).indicator (fun _ => (1 : ℝ)) x` using `fun c x => Set.indicator_nonneg (fun _ _ => zero_le_one) x`. Establish `hw0 : ∀ x, 0 ≤ w x` using `fun x => Finset.sum_nonneg fun c _ => hi0 c x`. Establish `hvw : ∀ x ∈ K, |χ x| ≤ w x`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Introduce `x hxK`. Distinguish the cases in `h0 : χ x = 0`. Rewrite using `[h0, abs_zero]`. Conclude with `hw0 x`. Break down `hχU (subset_tsupport χ h0) with hxB | hxK'` into its components or cases.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc, hxc⟩` from `Set.mem_iUnion₂.1 hxB`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd hxK hxK'`. Establish `hsum : chartDens J A w ψ = fun y => ∑ c ∈ T, chartDens J A ((Metric.ball c r).indicator fun _ => 1) ψ y`. Use function extensionality and compare the values at `y`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [chartDens, sheetSum]`. Repeatedly rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (hfin y)]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [hw, Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hball` using `fun c (hc : c ∈ T) => h₂ ε hε c (hTK hc).2 r hr`. Establish `hint : Integrable (chartDens J A w ψ)`. Rewrite using `[hsum]`. Conclude with `integrable_finsetSum _ fun c hc => (hball c hc).1`. Establish `hT : ∫ y, chartDens J A w ψ y ≤ T.card * (C₂ * r ^ (2 * d))`.
-
-Rewrite using `[hsum, integral_finsetSum _ fun c hc => (hball c hc).1, ← nsmul_eq_mul, ← Finset.sum_const]`. Conclude with `Finset.sum_le_sum fun c hc => (hball c hc).2`. Rewrite using `[varInt, dif_pos h]`. Combine the equalities or inequalities in the displayed calculation. Use `abs_integral_le_integral_abs.trans (integral_mono_of_nonneg (Eventually.of_forall fun y => abs_nonneg _) (hint.const_mul C₁) (Eventually.of_forall fun y => ?_))` and prove the remaining obligations.
-
-Conclude with `(VarIntAdd.abs_chartDens_le hfin _ _ y).trans (h₁ u ε hε.1 χ w hw0 hvw y)`. Use `_ = C₁ * ∫ y, chartDens J A w ψ y := integral_const_mul _ _`. Use `_ ≤ C₁ * (T.card * (C₂ * r ^ (2 * d))) := mul_le_mul_of_nonneg_left hT hC₁`. Use `_ = C₁ * C₂ * (T.card * r ^ (2 * d)) := by ring`. Use `_ ≤ C₁ * C₂ * (C₃ * r ^ 2) := mul_le_mul_of_nonneg_left hcard (by positivity)`.
-
-Use `_ ≤ (C₁ * C₂ * C₃ + 1) * r := by`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hr.2 (mul_nonneg hM hr.1.le), hr.1]`. Use `_ ≤ (C₁ * C₂ * C₃ + 1) * (δ / (C₁ * C₂ * C₃ + 1)) := mul_le_mul_of_nonneg_left (min_le_right _ _) (by positivity)`. Use `_ = δ := mul_div_cancel₀ _ (by positivity)`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem RegMassNearSmall.proof (hCmp : RegFormCompare.Statement) (hBall : RegBallMass.Statement)
     (hCov : SmallSetBallCover.Statement) : RegMassNearSmall.Statement := by

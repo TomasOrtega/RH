@@ -4,13 +4,13 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ n ι A hc`. Set `f : ι → Module.End K (Fin n → K)` to `fun i => Matrix.toLin' (A i)`. Establish `hcf : ∀ i j, Commute (f i) (f j)`. Introduce `i j`. Conclude with `(hc i j).map Matrix.toLinAlgEquiv'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hind` using `Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo f (fun i j φ => Module.End.mapsTo_maxGenEigenspace_of_comm (hcf j i) φ)`. Use `(WellFoundedGT.finite_ne_bot_of_iSupIndep hind).subset ?_` and prove the remaining obligations. Introduce and unpack `χ ⟨c, hc0, hχ⟩`. Use `show (⨅ i, (f i).maxGenEigenspace (χ i)) ≠ ⊥`. Introduce `hbot`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hc0` to reduce the goal to its premises. Establish `hmem : c ∈ ⨅ i, (f i).maxGenEigenspace (χ i)`. Rewrite using `[Submodule.mem_iInf]`. Introduce `i`. Apply `Module.End.eigenspace_le_maxGenEigenspace` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Module.End.mem_eigenspace_iff]`. Simplify `hχ i` using `[f]`. Rewrite `hmem` using `[hbot]`. Conclude with `(Submodule.mem_bot K).mp hmem`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_joint_eigensystems : ∀ (K : Type) [Field K] (n : ℕ) (ι : Type) (A : ι → Matrix (Fin n) (Fin n) K), (∀ i j, Commute (A i) (A j)) → Set.Finite {χ : ι → K | ∃ c : Fin n → K, c ≠ 0 ∧ ∀ i, A i *ᵥ c = χ i • c} := by
   intro K _ n ι A hc

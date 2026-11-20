@@ -11,9 +11,9 @@ open GroundTheory.Global.SemiLocal GroundTheory.Global.AdeleBaseChange UpperTheo
 open private UpperTheory.ConvolutionTheory.R2.H.nearSquareValuations.val_iota UpperTheory.ConvolutionTheory.R2.H.nearSquareValuations.finrank_two from Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.UnramifiedSplitting.PlaceAe
 
 /- English proof (translation)
-Establish `hs` using `sum_ramificationIdx_mul_inertiaDeg E v`. Rewrite `hs` using `[UpperTheory.ConvolutionTheory.R2.H.nearSquareValuations.finrank_two D]`. Establish `hpos : ∀ x : PlacesOver E v, 1 ≤ x.1.asIdeal.ramificationIdx (𝓞 F) * x.1.asIdeal.inertiaDeg (𝓞 F)` using `fun x => Nat.mul_pos (Ideal.ramificationIdx_pos _ _) (Ideal.inertiaDeg_pos _ _)`. Establish `h1` using `Finset.sum_le_sum_of_subset (f := fun x : PlacesOver E v => x.1.asIdeal.ramificationIdx (𝓞 F) * x.1.asIdeal.inertiaDeg (𝓞 F)) (Finset.subset_univ {x, y})`. Rewrite `h1` using `[Finset.sum_pair h, hs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hpos x`. Establish `h3` using `hpos y`. Conclude with `Nat.eq_one_of_mul_eq_one_right (show x.1.asIdeal.ramificationIdx (𝓞 F) * x.1.asIdeal.inertiaDeg (𝓞 F) = 1 by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem e_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (D : Dat F E) (v : P F)
     (x y : PlacesOver E v) (h : x ≠ y) : x.1.asIdeal.ramificationIdx (𝓞 F) = 1 := by
@@ -29,17 +29,17 @@ private theorem e_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   exact Nat.eq_one_of_mul_eq_one_right (show x.1.asIdeal.ramificationIdx (𝓞 F) * x.1.asIdeal.inertiaDeg (𝓞 F) = 1 by omega)
 
 /- English proof (translation)
-Take `⟨-, -, hc, -, -, -, -, hs, -, -⟩` from `sgLaws F v`. Take `⟨-, -, hc₁, -, -, -, -, hs₁, -, -⟩` from `sgLaws E w`. Take `⟨-, -, hc₂, -, -, -, -, hs₂, -, -⟩` from `sgLaws E w'`. Use `⟨Prod.ext ?_ (FiniteAdeleRing.ext E fun u => ?_), fun a b => Prod.ext ?_ (FiniteAdeleRing.ext E fun u => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `InfinitePlace.infiniteAdeleRingMap (sg v x).1 = (sg w _).1 + (sg w' _).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[(hs x).1, (hs₁ _).1, (hs₂ _).1, map_zero, add_zero]`. Express the relevant statement in the definitionally equal form `completionMap (below F u) u ((sg v x).2 (below F u)) = (sg w _).2 u + (sg w' _).2 u`. Distinguish the cases in `h : u = w`. Substitute `h` using the available equality. Establish `hb : below F u = v` using `(below_eq_iff _ _).2 hl`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hb` using the available equality. Rewrite using `[(hs₂ _).2 _ hne, add_zero]`. Conclude with `(congrArg _ (hc x)).trans (hc₁ _).symm`. Distinguish the cases in `h' : u = w'`. Substitute `h'` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hb : below F u = v` using `(below_eq_iff _ _).2 hl'`. Substitute `hb` using the available equality. Rewrite using `[(hs₁ _).2 _ h, zero_add]`. Conclude with `(congrArg _ (hc x)).trans (hc₂ _).symm`. Establish `hb : below F u ≠ v` using `fun hb => (hu u ((below_eq_iff _ _).1 hb)).elim h h'`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[(hs x).2 _ hb, map_zero, (hs₁ _).2 _ h, (hs₂ _).2 _ h', add_zero]`. Express the relevant statement in the definitionally equal form `(sg w a).1 * (sg w' b).1 = 0`. Rewrite using `[(hs₁ _).1, zero_mul]`. Express the relevant statement in the definitionally equal form `(sg w a).2 u * (sg w' b).2 u = 0`. Distinguish the cases in `h : u = w`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[(hs₂ _).2 _ hne, mul_zero]`. Rewrite using `[(hs₁ _).2 _ h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_sg {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : P F) (w w' : P E)
     [hl : w.asIdeal.LiesOver v.asIdeal] [hl' : w'.asIdeal.LiesOver v.asIdeal] (hne : w ≠ w')
@@ -76,13 +76,13 @@ private theorem map_sg {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
     · rw [(hs₁ _).2 _ h, zero_mul]
 
 /- English proof (translation)
-Introduce `E _ _ D v w w' hne hw hw' _ _ hall ϖ hϖ`. Use `haveI hl : w.asIdeal.LiesOver v.asIdeal := ⟨by rw [← hw]; rfl⟩`. Use `haveI hl' : w'.asIdeal.LiesOver v.asIdeal := ⟨by rw [← hw']; rfl⟩`. Establish `hn : (⟨w, hl⟩ : PlacesOver E v) ≠ ⟨w', hl'⟩` using `fun h => hne (congrArg Subtype.val h)`. Take `⟨-, -, -, hi, -, -, -, -, -, -⟩` from `sgLaws ℚ v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, hi₁, -, -, -, -, -, -⟩` from `sgLaws E w`. Take `⟨-, -, -, hi₂, -, -, -, -, -, -⟩` from `sgLaws E w'`. Use `⟨Units.map (completionMap v w : Kv v →* Kv w) ϖ, Units.map (completionMap v w' : Kv v →* Kv w') ϖ, ?_, ?_, Units.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v (completionMap v w (ϖ : Kv v)) = _`. Rewrite using `[UpperTheory.ConvolutionTheory.R2.H.nearSquareValuations.val_iota v w (e_one D v _ _ hn)]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hϖ`. Express the relevant statement in the definitionally equal form `Valued.v (completionMap v w' (ϖ : Kv v)) = _`. Rewrite using `[UpperTheory.ConvolutionTheory.R2.H.nearSquareValuations.val_iota v w' (e_one D v _ _ hn.symm)]`. Conclude with `hϖ`. Take `⟨h1, h2⟩` from `map_sg v w w' hne (fun u hu => hall u (HeightOneSpectrum.ext hu.over.symm)) ((ϖ : Kv v) - 1)`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Express the relevant statement in the definitionally equal form `adeleMap ℚ E ((idl v ϖ : (A ℚ)ˣ) : A ℚ) = _`. Rewrite using `[Units.val_mul, hi, hi₁, hi₂, map_add, map_one, h1, map_sub, map_sub, map_one, map_one, add_mul, mul_add, mul_add, h2]`. Simplify using `only [one_mul, mul_one, add_zero, Units.coe_map, MonoidHom.coe_coe]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ideleEmbedding_uniformizer_of_split_place_pair :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (v : H.P ℚ) (w w' : H.P E), w ≠ w' → w.under (𝓞 ℚ) = v → w'.under (𝓞 ℚ) = v → H.SplitAt v w → H.SplitAt v w' →

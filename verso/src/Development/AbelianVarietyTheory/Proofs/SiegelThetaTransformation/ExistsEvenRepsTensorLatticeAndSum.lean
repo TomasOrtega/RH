@@ -20,15 +20,15 @@ namespace GlobalTheory.Dict.ZLat
 open GlobalTheory.SW.TensLat GlobalTheory.SW.TensVac
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hM`. Establish `hcard : Nat.card (A ⧸ C.addSubgroupOf A) = c` using `hc`. Use `haveI : Finite (A ⧸ C.addSubgroupOf A) := Nat.finite_of_card_ne_zero (hcard ▸ h0)`. Set `e` to `(Finite.equivFinOfCardEq hcard).symm`. Establish `key (x : A) : 2 • ((k + 1) • (x : G)) = x + (2 * k + 1) • (x : G)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, show 2 * (k + 1) = (2 * k + 1) + 1 by ring, succ_nsmul, add_comm]`. Use `⟨fun i => (k + 1) • ((e i).out : A), fun i => A.nsmul_mem (e i).out.2 _, ?_, ?_⟩` and prove the remaining obligations. Introduce `i i' h`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[← QuotientAddGroup.out_eq' (e i), ← QuotientAddGroup.out_eq' (e i'), eq_comm, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[key, key]`. Use `C.add_mem (C.sub_mem h (hA _ (e i).out.2)) (hA _ (e i').out.2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Use `⟨e.symm (⟨y, hy⟩ : A), ?_⟩` and prove the remaining obligations. Rewrite using `[key, Equiv.apply_symm_apply]`. Establish `h` using `QuotientAddGroup.out_eq' ((⟨y, hy⟩ : A) : A ⧸ C.addSubgroupOf A)`. Rewrite `h` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `C.sub_mem h (hA _ ((⟨y, hy⟩ : A) : A ⧸ C.addSubgroupOf A).out.2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Normalize the expressions using the abelian group laws.
+Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_even_reps {G : Type} [AddCommGroup G] (A C : AddSubgroup G) {M : ℕ} (hM : Odd M)
     (hA : ∀ a ∈ A, M • a ∈ C) {c : ℕ} (hc : C.relIndex A = c) (h0 : c ≠ 0) :
@@ -66,7 +66,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ}
 
 omit [IsCMField E] in
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Base.mem_stdL, stdLat, Submodule.mem_pi]`. Use `forall_congr' fun k => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_univ, true_imp_iff, Submodule.mem_one]`. Conclude with `⟨fun ⟨a, ha⟩ => ha ▸ a.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem stdLat_eq : stdLat E n = stdL E n := by
   ext x
@@ -77,7 +77,7 @@ theorem stdLat_eq : stdLat E n = stdL E n := by
 
 omit [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using `only [Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_span_smul {N : ℕ} {S : Lt E n} {v : Fin n → E} :
     v ∈ Ideal.span {(N : 𝓞 E)} • S ↔ ∃ v' ∈ S, N • v' = v := by
@@ -86,7 +86,7 @@ theorem mem_span_smul {N : ℕ} {S : Lt E n} {v : Fin n → E} :
 
 omit [IsCMField E] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[vecMulVec_apply, _root_.mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vecMulVec_nsmul (N : ℕ) (v : Fin n → E) (u : Fin r → E) :
     vecMulVec (N • v) u = N • vecMulVec v u := by
@@ -95,11 +95,11 @@ theorem vecMulVec_nsmul (N : ℕ) (v : Fin n → E) (u : Fin r → E) :
 
 omit [IsCMField E] in
 /- English proof (translation)
-Establish `: tens (Ideal.span {(N : 𝓞 E)} • S) L = (tens S L).map (nsmulAddMonoidHom N)`. Apply `le_antisymm` to reduce the goal to its premises. Use `tens_le fun v hv u hu => ?_` and prove the remaining obligations. Take `⟨v', hv', rfl⟩` from `mem_span_smul.1 hv`. Conclude with `⟨_, pure_mem hv' hu, (vecMulVec_nsmul N v' u).symm⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[AddSubgroup.map_le_iff_le_comap]`. Use `tens_le fun v hv u hu => ?_` and prove the remaining obligations. Rewrite using `[AddSubgroup.mem_comap, nsmulAddMonoidHom_apply, ← vecMulVec_nsmul]`. Conclude with `pure_mem (mem_span_smul.2 ⟨v, hv, rfl⟩) hu`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mem_tens_span_smul {N : ℕ} {S : Lt E n} {L : Lt E r} {y : Matrix (Fin n) (Fin r) E} :
     y ∈ tens (Ideal.span {(N : 𝓞 E)} • S) L ↔ ∃ z ∈ tens S L, N • z = y := by
@@ -116,9 +116,9 @@ theorem mem_tens_span_smul {N : ℕ} {S : Lt E n} {L : Lt E r} {y : Matrix (Fin 
   rfl
 
 /- English proof (translation)
-Rewrite using `[(Base.stdL_mem_Vset (E := E) n 1).2.1]`. Introduce `y hy`. Use `(hΛ.2.1 v).1 hv _ (h (mem_span_smul.2 ⟨y, hy, rfl⟩))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Base.herm_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[cc]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nsmul_mem_std {N : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n 1)
     (h : Ideal.span {(N : 𝓞 E)} • stdL E n ≤ Λ) {v : Fin n → E} (hv : v ∈ Λ) :
@@ -136,19 +136,19 @@ variable {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {w : 
   {A B C : AddSubgroup (Matrix (Fin n) (Fin r) E)}
 
 /- English proof (translation)
-Take `⟨v', hv', -⟩` from `hA.vac (bas := bas) hs`. Establish `hsb (i)` using `rho_sb (w := w) idx hs hn (u i) hv.1`. Establish `hsum (s : Finset (Fin c)) : IsSB (∑ i ∈ s, epsW X w (u i) • heisG X bas (u i) v) ∧ SW.ip (∑ i ∈ s, epsW X w (u i) • heisG X bas (u i) v) v' = s.card * SW.ip v v'`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Use `⟨isSB_zero, ?_⟩` and prove the remaining obligations. Use `ip_smul_left 0 hv'.1 hv'.1` as an intermediate fact. Simplify using `using this`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, ip_add_left (hsb a) ih.1 hv'.1, ih.2, Finset.card_insert_of_notMem ha]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ _ _ _ _ (hsb a) ih.1).1, ?_⟩` and prove the remaining obligations. Use `rho_ip (w := w) idx hs hn (u a) hv.1 hv'.1` as an intermediate fact. Rewrite `this` using `[hv'.2.2 _ (h1 a)]`. Rewrite using `[this]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨k1, k2⟩` from `hsum Finset.univ`. Rewrite using `[hA.uniq hs hv' k1, k2, (hA.proj idx hs hn hv.1 hv').2, smul_smul, Finset.card_univ, Fintype.card_fin]`. Introduce `y hy`. Use `choose σ hσ using fun i => h3 (y + u i) (A.add_mem hy (h1 i))`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective σ`. Introduce `i i' h`. Apply `h2` to reduce the goal to its premises. Use `C.sub_mem (hσ i) (hσ i')` as an intermediate fact. Rewrite `this` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `hlin (f : Fin c → SW.TF n g) : heisG X bas y (∑ i, f i) = ∑ i, heisG X bas y (f i)`. Use function extensionality and compare the values at `x`. Simplify using `[heisG, heisS, Finset.sum_mul]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlin, Finset.smul_sum]`. Use `Fintype.sum_bijective σ (Finite.injective_iff_bijective.1 hinj) _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[hA.rho_rho idx hs hn hy (h1 i) hv.1]`. Use `conv_rhs => rw [← hv.2.2 _ (hCB (hσ i))]`. Rewrite using `[hA.rho_rho idx hs hn (h1 _) (hCA (hσ i)) hv.1, add_sub_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_reps (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (hn : Even n)
     (hA : Good X w A) (hCA : C ≤ A) (hCB : C ≤ B) {c : ℕ} (u : Fin c → Matrix (Fin n) (Fin r) E)
@@ -195,25 +195,21 @@ theorem sum_reps (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (hn : Even
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g bas idx n hs hn w hw hw' L hL Λ hΛ N hN hle`. Establish `hN0 : N ≠ 0` using `hN.pos.ne'`. Establish `hstd` using `Base.stdL_mem_Vset (E := E) n 1`. Establish `hA : Good X w (tens Λ L)`. Take `⟨h1, h2, h3, -⟩` from `tens_selfDual_semichar_index E r X g bas idx n hs hn w hw hw' L hL 1 Λ hΛ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1, h2, h3⟩`. Establish `hle'` using `hle`. Rewrite `hle'` using `[stdLat_eq]`. Establish `hsp : Submodule.span E ((Ideal.span {(N : 𝓞 E)} • stdL E n : Lt E n) : Set (Fin n → E)) = ⊤`. Rewrite using `[eq_top_iff, ← DualFamily.span_eq_top _ hstd.1 fun x => (hstd.2.1 x).2, Submodule.span_le]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `: x = (N : E)⁻¹ • (N • x)`. Rewrite using `[← Nat.cast_smul_eq_nsmul E, inv_smul_smul₀ (Nat.cast_ne_zero.2 hN0)]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (mem_span_smul.2 ⟨x, hx, rfl⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hidx : (tens (Ideal.span {(N : 𝓞 E)} • stdL E n) L).relIndex (tens Λ L) = (⟨Λ⟩ : GenLat E n).zCard N r`. Rewrite using `[relIndex_tens_left hL.1 (span_of_selfD X hL) hΛ.1 hsp, GenLat.zCard, stdLat_eq]`. Both sides reduce to the same expression. Establish `hfin : (Ideal.span {(N : 𝓞 E)} • stdLat E n).toAddSubgroup.relIndex Λ.toAddSubgroup ≠ 0`. Establish `hfg : Λ.toAddSubgroup.FG` using `by haveI : Module.Finite (𝓞 E) Λ := Module.Finite.iff_fg.2 hΛ.1 haveI : Module.Finite ℤ Λ := Module.Finite.trans (𝓞 E) Λ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(AddGroup.fg_iff_addSubgroup_fg _).1 (Module.Finite.iff_addGroup_fg.1 this)`. Use `haveI : AddGroup.FG Λ.toAddSubgroup := (AddGroup.fg_iff_addSubgroup_fg _).2 hfg`. Use `haveI := AddSubgroup.finiteIndex_range_nsmulAddMonoidHom_of_fg Λ.toAddSubgroup (mul_ne_zero hN0 hN0)`. Establish `: (nsmulAddMonoidHom (α` using `Λ.toAddSubgroup) (N * N)).range ≤ (Ideal.span {(N : 𝓞 E)} • stdLat E n).toAddSubgroup.addSubgroupOf Λ.toAddSubgroup := by`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[AddSubgroup.mem_addSubgroupOf, Submodule.mem_toAddSubgroup, stdLat_eq, mem_span_smul]`. Conclude with `⟨N • (x : Fin n → E), nsmul_mem_std hΛ hle' x.2, by simp [mul_smul]⟩`. Conclude with `(AddSubgroup.finiteIndex_of_le this).index_ne_zero`. Establish `hz : 0 < (⟨Λ⟩ : GenLat E n).zCard N r` using `pow_pos (Nat.pos_of_ne_zero hfin) r`. Establish `hm : 0 < (⟨Λ⟩ : GenLat E n).mIdx N r`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `pow_pos (Nat.pos_of_ne_zero fun h => hfin ?_) r` and prove the remaining obligations. Conclude with `AddSubgroup.relIndex_eq_zero_of_le_right (K := (⟨Λ⟩ : GenLat E n).Ln.toAddSubgroup) (fun x hx => hx.1) h`. Establish `hNA : ∀ y ∈ tens Λ L, N • y ∈ tens (stdL E n) L`. Establish `: tens Λ L ≤ (tens (stdL E n) L).comap (nsmulAddMonoidHom N)` using `tens_le fun v hv u hu => by`. Rewrite using `[AddSubgroup.mem_comap, nsmulAddMonoidHom_apply, ← vecMulVec_nsmul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pure_mem (nsmul_mem_std hΛ hle' hv) hu`. Conclude with `fun y hy => this hy`. Take `⟨a, ha1, ha2, ha3⟩` from `exists_even_reps (tens Λ L) (tens (Ideal.span {(N : 𝓞 E)} • stdL E n) L) (hN.mul hN) (fun y hy => mem_tens_span_smul.2 ⟨_, hNA y hy, by rw [mul_smul]⟩) hidx hz.ne'`. Use `⟨fun i => 2 • a i, fun i => ⟨AddSubgroup.nsmul_mem _ (ha1 i) 2, fun b => ⟨_, (mem_tens_stdL L _).1 (hNA _ (ha1 i)) b, ?_⟩⟩, fun i i' h => ha2 i i' ?_, hz, hm, fun v hv => ?_⟩` and prove the remaining obligations. Conclude with `smul_comm N 2 (a i b)`.
-
-Use `choose z hz hz' using h`. Use `mem_tens_span_smul.2 ⟨z, (mem_tens_stdL L _).2 hz, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Conclude with `(hz' b).symm`. Rewrite using `[← sum_reps idx hs hn hA (C := tens (Ideal.span {(N : 𝓞 E)} • stdL E n) L) (tens_le fun v hv u hu => pure_mem (hle' hv) hu) (tens_le fun v hv u hu => pure_mem (Submodule.smul_le_right hv) hu) (fun i => 2 • a i) (fun i => AddSubgroup.nsmul_mem _ (ha1 i) 2) ha2 ha3 hv]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hA.eps_two hs (ha1 i), one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reps_sum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ w : E, IsIntegral ℤ w → w + cc w = 1 → ∀ L : Lt E r, SelfD X L → ∀ Λ ∈ Vset E n 1, ∀ N : ℕ, Odd N → Ideal.span {(N : 𝓞 E)} • stdLat E n ≤ Λ → ∃ u : Fin ((⟨Λ⟩ : GenLat E n).zCard N r) → Matrix (Fin n) (Fin r) E, (∀ i, u i ∈ tens Λ L ∧ ∀ b, ∃ u' ∈ L, N • u i b = (2 : ℕ) • u') ∧ (∀ i i', (∀ b, ∃ u' ∈ L, u i b - u i' b = N • u') → i = i') ∧ 0 < (⟨Λ⟩ : GenLat E n).zCard N r ∧ 0 < (⟨Λ⟩ : GenLat E n).mIdx N r ∧ ∀ v : TF n g, IsVac X bas w (tens (stdL E n) L) v → ∑ i, heisG X bas (u i) v = (((⟨Λ⟩ : GenLat E n).zCard N r : ℕ) : ℂ) • projA X bas w (tens Λ L) v := by
   intro E _ _ _ r X g bas idx n hs hn w hw hw' L hL Λ hΛ N hN hle

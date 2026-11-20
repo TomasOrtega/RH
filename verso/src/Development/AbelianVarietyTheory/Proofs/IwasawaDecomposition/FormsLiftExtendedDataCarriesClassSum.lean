@@ -25,7 +25,7 @@ open scoped Matrix
 namespace GlobalTheory.Mem.R3.DefLatBC
 
 /- English proof (translation)
-The claim follows from `congrArg (fun u : (S.toCSD h).Forms => (u.1 : S.Cl → S.V) c) ((S.res h).apply_symm_apply f)`.
+A detailed English derivation is pending.
 -/
 theorem csum_res_symm {K : Type} [Field K] [NumberField K] [StarRing K] (S : Formalism.L2.Col.GSD K) (h : S.Ok)
     (f : (S.toCSD h).Forms) (c : S.Cl) :
@@ -33,15 +33,15 @@ theorem csum_res_symm {K : Type} [Field K] [NumberField K] [StarRing K] (S : For
   congrArg (fun u : (S.toCSD h).Forms => (u.1 : S.Cl → S.V) c) ((S.res h).apply_symm_apply f)
 
 /- English proof (translation)
-Substitute `hS` using the available equality. Establish `he' : e = fun τ => ι.comp (X.emb τ)` using `funext fun τ => (he τ).symm`. Substitute `he'` using the available equality. Take `⟨H₂, l₂, rfl⟩ : ∃ (H₂ : ∀ w : ↥SG₂, Subgroup (GL (Fin n) (𝓞 X.E ⧸ w.1.asIdeal))) (l₂ : ∀ w, ↥(H₂ w) →* Lˣ), Λ₂ = fun w => ⟨H₂ w, l₂ w⟩` from `⟨fun w => (Λ₂ w).H, fun w => (Λ₂ w).lam, rfl⟩`. Establish `hH' : H₂ = fun w => (Λ₁ w).H` using `funext fun w => hH w w.2`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hH'` using the available equality. Establish `key : ∀ (p : Pol X.K X.Tau n) (q : Pol L X.Tau n), HEq (MvPolynomial.map c₂ q) (MvPolynomial.map c₁ p) → q = MvPolynomial.map ι p`. Introduce `p q h`. Apply `MvPolynomial.map_injective c₂ c₂.injective` to reduce the goal to its premises. Rewrite using `[eq_of_heq h, MvPolynomial.map_map, show c₂.comp ι = c₁ from RingHom.ext hc]`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Unfold `CSD.csum`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀, map_natCast]`. Establish `a1` using `key _ _ (hf (Quotient.out c) (Quotient.out c) HEq.rfl)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a2` using `key _ _ (hg (Quotient.out c) (Quotient.out c) HEq.rfl)`. Establish `b1` using `csum_res_symm _ h₁ f c`. Establish `b2` using `csum_res_symm _ h₁ g c`. Establish `b3` using `csum_res_symm _ h₂ f' c`. Establish `b4` using `csum_res_symm _ h₂ g' c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1' : (f'.1 c).1 = MvPolynomial.map ι (f.1 c).1` using `(congrArg Subtype.val b3).symm.trans (a1.trans (congrArg (fun v => MvPolynomial.map ι (Subtype.val v)) b1))`. Establish `a2' : (g'.1 c).1 = MvPolynomial.map ι (g.1 c).1` using `(congrArg Subtype.val b4).symm.trans (a2.trans (congrArg (fun v => MvPolynomial.map ι (Subtype.val v)) b2))`. Establish `hp` using `(baseChangePairingV_holds X.E X.K L ι hstar X.Tau n X.emb lam 1 (f.1 c) (g.1 c) (f'.1 c) (g'.1 c) a1' a2').2`. Conclude with `congrArg₂ (· * ·) rfl hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem csum_round_bc (X : Formalism.L2.Col.Fields) {L : Type} [Field L] [NumberField L] [StarRing L] (ι : X.K →+* L)
     (hstar : ∀ x, ι (star x) = star (ι x))
@@ -90,11 +90,9 @@ theorem csum_round_bc (X : Formalism.L2.Col.Fields) {L : Type} [Field L] [Number
   exact congrArg₂ (· * ·) rfl hp
 
 /- English proof (translation)
-Introduce `w hw`. Establish `h1 : w.1 ∈ SG₁`. Use `w.2` as an intermediate fact. Simplify using `only [Formalism.L2.Col.uSG, hQ₁, Finset.union_empty] at this`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : w.1 ∈ SG₂`. Use `hw` as an intermediate fact. Simplify using `only [Formalism.L2.Col.uSG, hQ₂, Finset.union_empty] at this`. Conclude with `this`. Use `show ((A₂.glue B₂) ⟨w.1, hw⟩).H = ((A₁.glue B₁) w).H`.
-
-Rewrite using `[Formalism.L2.Col.LevFam.glue_of_mem _ _ _ h2, Formalism.L2.Col.LevFam.glue_of_mem _ _ _ h1]`. Conclude with `hA ⟨w.1, h1⟩ h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_inv_H_of_empty {E K L : Type} [Field E] [NumberField E] [Field K] [Field L] {n : ℕ}
     {SG₁ Q₁ SG₂ Q₂ : Finset (HeightOneSpectrum (𝓞 E))} (hQ₁ : Q₁ = ∅) (hQ₂ : Q₂ = ∅)
@@ -119,15 +117,15 @@ theorem glue_inv_H_of_empty {E K L : Type} [Field E] [NumberField E] [Field K] [
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hj` using the available equality. Establish `hstar : ∀ x, ι (star x) = star (ι x)`. Introduce `x`. Apply `B₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[hι, B₂.starLL_cx, hι, B₁.starLL_cx]`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `B₁ with | mk P₁ =>`. Consider the cases of `B₂ with | mk P₂ =>`. Simplify using `only at hpre`. Substitute `hpre` using the available equality. Establish `hpx : w₂.px = w₁.px` using `eq_of_heq hp`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Use `csum_round_bc (baseOfColW w₁).fields ι hstar (baseOfColW w₂).tauLL ?_ ((baseOfColW w₁).wts.lamV j₁) ?_ (Formalism.L2.Col.mtTyKK w₁.I.Ch w₁.I.sel (mu0F (X := (baseOfColW w₁).fields) (tuOf w₁.I (usedOf w₁.I T₁ W₁))).1 j₁).inv (Formalism.L2.Col.mtTyKK w₂.I.Ch w₂.I.sel (mu0F (X := (b …` and prove the remaining obligations. Introduce `τ`. Use extensionality with `x`. Apply `(baseOfColW w₂).embLL.injective` to reduce the goal to its premises. Establish `h1` using `congrArg (fun g => g x) (Base.fields_embC (baseOfColW w₁) τ)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun g => g x) (Base.fields_embC (baseOfColW w₂) τ)`. Simplify using `only [Formalism.L2.Col.Fields.embC, RingHom.comp_apply] at h1 h2`. Rewrite using `[RingHom.comp_apply, hι]`. Conclude with `h1.trans h2.symm`. Use `(rowLevelPrimes_colTuples_eq_vGs w₂ W₂).trans (Eq.trans ?_ (rowLevelPrimes_colTuples_eq_vGs w₁ W₁).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpx]`. Both sides reduce to the same expression. Conclude with `glue_inv_H_of_empty (twistRamifiedPrimes_empty_colTuples w₁ W₁) (twistRamifiedPrimes_empty_colTuples w₂ W₂) _ _ _ _ fun w hw => rfl`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem csum_refTuple {B₁ B₂ : Base} {f₁ : Fr B₁.toPre} {f₂ : Fr B₂.toPre} {T₁ : TwDat B₁} {T₂ : TwDat B₂}
     (w₁ : ColW B₁ f₁ T₁) (w₂ : ColW B₂ f₂ T₂) (W₁ : Set B₁.places.Pl) (W₂ : Set B₂.places.Pl)
@@ -171,7 +169,7 @@ theorem csum_refTuple {B₁ B₂ : Base} {f₁ : Fr B₁.toPre} {f₂ : Fr B₂.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _`. Use `StepW.of_all fun K B' f' T' w' _ _ _ B f T w hE _ _ hp Z hX Wt z _ _ _ _ Z' hX' _ _ _ z' _ _ j j' hj φ hφ L _ hL a b => ?_` and prove the remaining obligations. Conclude with `csum_refTuple w w' Wt {v | B'.places.resChar v ∈ T'.pl} hE.1 hp ((j : ℕ) + 1) ((j' : ℕ) + 1) (by rw [hj]) φ hφ (Formalism.L2.Col.mtKOk (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 hX ((j : ℕ) + 1)) (Formalism.L2.Col.mtKOk (Pr := …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem csum_ext : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

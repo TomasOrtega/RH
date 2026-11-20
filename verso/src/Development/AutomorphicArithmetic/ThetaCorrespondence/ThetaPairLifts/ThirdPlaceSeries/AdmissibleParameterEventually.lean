@@ -14,11 +14,9 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.NLink GlobalTheory.Pass GlobalTheory.Cut
 /- English proof (translation)
-Take `⟨i0⟩` from `Fm.Ix_zero`. Establish `heps : 0 < eps`. Establish `h` using `(Fm.L 0 i0).sc.eps_pos`. Rewrite `h` using `[Fm.L_eps]`. Then use the resulting hypothesis. Take `⟨x0, hx0⟩` from `GlobalTheory.HTW.admissibleParameters_of_large_scale eps (Fm.PK.getD 7 0) heps`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `⟨x0, fun x hxx hx a => ?_⟩` and prove the remaining obligations. Establish `hC : (Fm.params x hx a).CLw ≤ Fm.PK.getD 7 0`. Establish `h` using `congrArg (fun l : List ℝ => l.getD 7 0) (Fm.params_K x hx a)`. Simplify using `only [parConsts] at h`. Conclude with `le_of_eq (by simpa using h)`.
-
-Conclude with `(hx0 (Fm.D x a) (Fm.L x a) (Fm.params x hx a) (Fm.L_eps x a) hC (by rw [Fm.L_x x a hx]; exact hxx)).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem admissible_parameter_eventually {eps : ℝ} (Fm : FamP eps) :
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (_ : Fm.x1 < x) (a : Fm.Ix x), AdmissibleParameterJ.AdmPar (Fm.L x a) := by
@@ -35,15 +33,15 @@ private theorem admissible_parameter_eventually {eps : ℝ} (Fm : FamP eps) :
   exact (hx0 (Fm.D x a) (Fm.L x a) (Fm.params x hx a) (Fm.L_eps x a) hC
     (by rw [Fm.L_x x a hx]; exact hxx)).1
 /- English proof (translation)
-Introduce `hP eps Fm`. Take `⟨x1, h1⟩` from `GlobalTheory.T.exists_localPositionData_off_exceptional_primes Fm`. Take `⟨x2, h2⟩` from `_root_.GlobalTheory.T.eventually_prvJ_of_facts Fm`. Take `⟨x3, h3⟩` from `admissible_parameter_eventually Fm`. Use `⟨max (max x1 x2) x3, fun x hx' hx1 a hF => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : max x1 x2 ≤ x` using `le_trans (le_max_left _ _) hx'`. Establish `hA` using `h3 x (le_trans (le_max_right _ _) hx') hx1 a`. Establish `hJ` using `h2 x (le_trans (le_max_right _ _) hx) hx1 a hF`. Introduce `k hl hg hexc _hW hHG r hr π hπ ρ hρ`. Establish `hlp : (Fm.D x a).nd.l k |>.Prime` using `((Fm.D x a).nd.lPrime k).out`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨⟨h5, ht, hq, hd, hsm⟩, hposition⟩` from `h1 x (le_trans (le_max_left _ _) hx) hx1 a hJ _ hlp hl`. Establish `hur` using `GlobalTheory.TripleGal.host_ramificationIdx_eq_one (Fm.D x a) _ hlp hsm hq hd`. Establish `heps` using `GlobalTheory.AdmissibleDictionary.main (Fm.D x a) k`. Take `⟨g1, gc, gss⟩` from `_root_.GlobalTheory.T.admG1_continuous_admSS_of_rank_r_summand _ _ _ k r π ρ hF hl hg hHG hr hπ hρ`. Establish `g3` using `_root_.GlobalTheory.T.admG3_of_isRankR_of_lStar_lt _ _ _ k r π ρ hF hl hg hHG hr hπ hρ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `g2` using `_root_.GlobalTheory.T.admG2_of_isRankR_of_lStar_lt hP.font _ _ _ k r π ρ hF hA hl hg hHG hr hπ hρ`. Take `⟨gno, gunr⟩` from `_root_.GlobalTheory.T.noChiOff_and_unrOut_of_large_good_place _ _ _ k r π ρ hF hl hg hHG hr hπ hρ`. Establish `gS` using `_root_.GlobalTheory.T.quadAt_unit_zeta_sub_one_or_polyAt _ _ _ k r π ρ hF hl hg hHG hr hπ hρ`. Establish `gQ` using `_root_.GlobalTheory.T.quadAt_and_zeta_ne_one_of_large_place _ _ _ k r π ρ hF hl hg hHG hr hπ hρ`. Establish `gdec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition k r (fun _ => ρ) π` using `hρ.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨S, hS⟩` from `GlobalTheory.T.exists_globalStep_objects_of_cyclotomic_generator_inertia _ k r (fun _ => ρ) π hr g1 g3 gc gss gdec heps g3.2.2 hπ hur ht`. Take `⟨HW, F, ⟨Cm⟩⟩` from `GlobalTheory.T.exists_wachFunctor_comparison_of_bhattScholze hP.bs (Fm.D x a)`. Establish `hTOP` using `GlobalTheory.T.blochKatoTop_of_localTateDuality_eulerChar hP.bk hP.tate hP.euler (Fm.D x a) HW F Cm`. Establish `hloc` using `GlobalTheory.UseLoc.main (Fm.D x a) HW F k r (fun _ => ρ) π hTOP (GlobalTheory.T.crystalline_characters_given_jumps_unramified_twists _ HW F) hJ.1 hr hπ g2 g3 gc gdec heps h5 hsm hq hd (fun n _ up τ => hposition hexc _ ((Fm.D x a).nd.j_range k).1 ((Fm.D x a).nd.j_range k).2 n up …`. Conclude with `GlobalTheory.T.congruenceBound_extended_of_rationalBound _ k π ρ hπ (fun v hv => (gQ v hv).2) (fun hs hsha => GlobalTheory.T.globalCongruenceCount_of_rootDifference_unit hP.artin _ k r _ π S hr hS hπ gno gunr gS gQ hloc hs hsha)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.NLinkE.main_alt_alt : Hypotheses₂ → ∀ {eps : ℝ} (Fm : FamP eps), ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (hx : Fm.x1 < x) (i : Fm.Ix x), _root_.GlobalTheory.NFacts.NormChoiceFacts (Fm.D x i) (Fm.ex x hx i).nch → GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes.CongBound_at (Fm.D x i) (Fm.L x i) := by
   intro hP eps Fm

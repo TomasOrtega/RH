@@ -18,7 +18,7 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.Rate
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Consider the cases of `P`. Consider the cases of `Q`. Simplify the hypotheses and the goal together.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify the hypotheses and the goal together.
 -/
 theorem locPot_eq {P Q : LocPot X} (hU : P.U = Q.U) (hφ : P.φ = Q.φ) : P = Q := by
   cases P
@@ -26,7 +26,7 @@ theorem locPot_eq {P Q : LocPot X} (hU : P.U = Q.U) (hφ : P.φ = Q.φ) : P = Q 
   simp_all
 
 /- English proof (translation)
-Use `locPot_eq ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x show ((Set.univ : Set X) ∩ Set.univ) ∩ Θ.U x = Θ.U x`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `x y show (0 : ℝ) + 0 + Θ.φ x y = Θ.φ x y`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem zero_add_zero_add (Θ : LocPot X) :
     LocPot.ofFun (0 : X → ℝ) + LocPot.ofFun (0 : X → ℝ) + Θ = Θ := by
@@ -39,7 +39,7 @@ theorem zero_add_zero_add (Θ : LocPot X) :
     simp
 
 /- English proof (translation)
-Use `locPot_eq rfl ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x y`. Use `show (1 : ℝ) * Θ.φ x y = Θ.φ x y`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rsmul_one (Θ : LocPot X) : Θ.rsmul 1 = Θ := by
   refine locPot_eq rfl ?_
@@ -48,9 +48,9 @@ theorem rsmul_one (Θ : LocPot X) : Θ.rsmul 1 = Θ := by
   simp
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨j, hj⟩` from `A.cover x`. Establish `h1 : ContinuousOn (f ∘ (A.chart j).symm) (A.chart j).target`. Use `(h j).continuousOn` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h2 : ContinuousAt ((f ∘ (A.chart j).symm) ∘ (A.chart j)) x` using `ContinuousAt.comp (h1.continuousAt ((A.chart j).open_target.mem_nhds ((A.chart j).map_source hj))) ((A.chart j).continuousAt hj)`. Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[(A.chart j).left_inv hy]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_of_smooth (A : FinHolAtlas e X) {f : X → ℝ} (h : A.Smooth f) : Continuous f := by
   rw [continuous_iff_continuousAt]
@@ -67,14 +67,14 @@ theorem continuous_of_smooth (A : FinHolAtlas e X) {f : X → ℝ} (h : A.Smooth
   simp [(A.chart j).left_inv hy]
 
 /- English proof (translation)
-Introduce `j` and use `contDiffOn_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_zero (A : FinHolAtlas e X) : A.Smooth (0 : X → ℝ) := fun j => contDiffOn_const
 
 /- English proof (translation)
-Introduce `x j y _ w`. Establish `h : (LocPot.ofFun (0 : X → ℝ) + LocPot.ofFun (0 : X → ℝ)).φ x ∘ (A.chart j).symm = ⇑(0 : (Fin e → ℂ) →L[ℝ] ℝ)`. Use function extensionality and compare the values at `z`. Use `show (0 : ℝ) + 0 = 0`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, levi_clm]`.
+A detailed English derivation is pending.
 -/
 theorem isPsh_zero (A : FinHolAtlas e X) : IsPsh A (LocPot.ofFun (0 : X → ℝ) + LocPot.ofFun (0 : X → ℝ)) := by
   intro x j y _ w
@@ -86,7 +86,7 @@ theorem isPsh_zero (A : FinHolAtlas e X) : IsPsh A (LocPot.ofFun (0 : X → ℝ)
   rw [h, levi_clm]
 
 /- English proof (translation)
-Consider the cases of `e with`. Consider the case `zero => exact k.elim0`. Consider the case `succ e => exact mInt_update_add A F k P Q hF hP hQ g hg`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem update_add [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (F : Fin e → LocPot X) (k : Fin e)
     (P Q : LocPot X) (hF : ∀ i, IsPotential A (F i)) (hP : IsPotential A P) (hQ : IsPotential A Q)
@@ -98,7 +98,7 @@ theorem update_add [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (F : Fin e
   | succ e => exact mInt_update_add A F k P Q hF hP hQ g hg
 
 /- English proof (translation)
-The claim follows from `|mInt A P g| ≤ 2 ^ e * B := by classical have key : ∀ D T : Finset (Fin e), |mInt A (fun k => if k ∈ D then P k else if k ∈ T then P k + Θ else Θ) g| ≤ 2 ^ D.card * B := by intro D induction D using Finset.induction_on with | empty => intro T; simpa using hB T | insert i D hi ih …`.
+A detailed English derivation is pending.
 -/
 theorem abs_mInt_le_of_words [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (P : Fin e → LocPot X)
     (Θ : LocPot X) (hP : ∀ i, IsPotential A (P i)) (hΘ : IsPotential A Θ) (g : X → ℝ)
@@ -155,7 +155,7 @@ theorem abs_mInt_le_of_words [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) 
   simpa using this
 
 /- English proof (translation)
-Take `⟨-, hm⟩` from `maMeasure_thm A F hp hpsh`. Rewrite using `[(hm g hg.measurable).2 (mIntegrableCont A F hp g hg)]`. Use `(norm_integral_le_lintegral_norm g).trans ?_` and prove the remaining obligations. Simplify using `only [Real.norm_eq_abs]`. Conclude with `ENNReal.toReal_le_of_le_ofReal hB h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem abs_mInt_le_of_lintegral [CompactSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X]
     (A : FinHolAtlas e X) (F : Fin e → LocPot X) (hp : ∀ i, IsPotential A (F i)) (hpsh : ∀ i, IsPsh A (F i))
@@ -172,7 +172,7 @@ end GlobalTheory.CompanionTheory.Ar.PB.Rate
 namespace GlobalTheory.CompanionTheory.Ar.PB
 
 /- English proof (translation)
-The claim follows from `|mInt S.A (fun i => S.potT (w i) (if c i then t else t')) (fun x => S.phT a t x - S.phT a t' x)| ≤ C' * Real.log (Real.log (1 / t)) ^ 2 / Real.log (1 / t) := by intro hR e σ _ S ht₀ classical letI : MeasurableSpace S.X := borel S.X haveI : BorelSpace S.X := ⟨rfl⟩ have hΘ := S.pot …`.
+A detailed English derivation is pending.
 -/
 theorem signed_rate : ConvergenceRateStatement → ∀ (e : ℕ) (σ : Type) [Fintype σ] (S : AnSys e σ), 0 < S.t₀ →
     ∃ C' t₁ : ℝ, 0 < t₁ ∧ t₁ ≤ S.t₀ ∧ ∀ t t', 0 < t' → t' ≤ t → t ≤ t₁ →

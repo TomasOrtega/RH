@@ -9,19 +9,13 @@ noncomputable section
 namespace GlobalTheory.Cusp.Shear
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ Γ N N' _ _ _ hle hn hc hc' V _ _ _ _ _ _ _ _ s π hs hsc hπc hπmul hπs hker hsmul μ hμ`. Use `set e := prodHomeo hle hs hsc hπc hπmul hπs hker with he_def`. Use `set P : Measure (N' × V) := (Measure.haar : Measure N').prod μ with hP`. Use `set ν : Measure N := P.map e with hν`. Use `haveI := hc'.isMulRightInvariant (Measure.haar : Measure N')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hem : Measurable e` using `e.continuous.measurable`. Use `haveI : IsFiniteMeasureOnCompacts ν := Measure.IsFiniteMeasureOnCompacts.map P e`. Use `haveI : ν.IsOpenPosMeasure := e.continuous.isOpenPosMeasure_map e.surjective`. Use `haveI hR : ν.IsMulRightInvariant := ⟨fun n₀ => by set z₀ := e.symm n₀`. Establish `hz₀ : ((n₀ : N) : G) = (z₀.1 : G) * s z₀.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← prodHomeo_apply hle hs hsc hπc hπmul hπs hker z₀]`. Simplify using `[z₀, e]`. Set `c : V → N'` to `fun v => ⟨s v * z₀.1 * (s v)⁻¹, hn _ (hs v) _ z₀.1.2⟩`. Establish `hcc : Continuous c` using `by fun_prop`. Set `T' : V × N' → V × N'` to `fun p => (p.1 + z₀.2, p.2 * c p.1)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hT' : MeasurePreserving T' (μ.prod (Measure.haar : Measure N')) (μ.prod (Measure.haar : Measure N'))` using `(measurePreserving_add_right μ z₀.2).skew_product (g := fun v m => m * c v) (by apply Continuous.measurable; fun_prop) (.of_forall fun v => map_mul_right_eq_self _ _)`. Establish `hT : MeasurePreserving (Prod.swap ∘ T' ∘ Prod.swap) P P` using `Measure.measurePreserving_swap.comp (hT'.comp Measure.measurePreserving_swap)`. Establish `hcomm : (fun n => n * n₀) ∘ e = e ∘ (Prod.swap ∘ T' ∘ Prod.swap)`. Use function extensionality and compare the values at `⟨m, v⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Express the relevant statement in the definitionally equal form `((m : G) * s v) * (n₀ : G) = ((m * c v : N') : G) * s (v + z₀.2)`. Rewrite using `[hz₀, hsmul, Subgroup.coe_mul]`. Express the relevant statement in the definitionally equal form `_ = (m : G) * (s v * (z₀.1 : G) * (s v)⁻¹) * (s v * s z₀.2)`. Use `group`. Rewrite using `[hν, Measure.map_map (measurable_mul_const n₀) hem, hcomm, ← Measure.map_map hem hT.measurable, hT.map_eq]⟩`.
-
-Use `haveI : IsFiniteMeasureOnCompacts ν.inv := Measure.IsFiniteMeasureOnCompacts.map ν (Homeomorph.inv N)`. Use `haveI : ν.inv.IsOpenPosMeasure := (Homeomorph.inv N).continuous.isOpenPosMeasure_map (Homeomorph.inv N).surjective`. Use `haveI : ν.inv.IsHaarMeasure := {}`. Use `haveI := hc.isMulRightInvariant ν.inv`. Establish `hL : ν.IsMulLeftInvariant` using `by rw [← Measure.inv_inv ν]; infer_instance`.
-
-Conclude with `{}`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isHaarMeasure_map_prodHomeo : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (Γ N N' : Subgroup G) [DiscreteTopology Γ] [LocallyCompactSpace N]

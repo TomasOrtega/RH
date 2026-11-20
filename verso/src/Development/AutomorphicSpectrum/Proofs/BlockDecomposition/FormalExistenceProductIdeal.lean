@@ -18,9 +18,9 @@ namespace GlobalTheory.CompanionTheory.GE.NonPrime
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Use `⟨(Subobject.underlyingIso f).hom.app V t, ?_⟩` and prove the remaining obligations. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, Subobject.underlyingIso_hom_comp_eq_mk]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨t, rfl⟩`. Use `⟨(Subobject.underlyingIso f).inv.app V t, ?_⟩` and prove the remaining obligations. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, Subobject.underlyingIso_arrow]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma secs_mk {E F : X.Modules} (f : F ⟶ E) [Mono f] (V : X.Opens) :
     secs (Subobject.mk f) V = Set.range (f.app V) := by
@@ -35,7 +35,7 @@ lemma secs_mk {E F : X.Modules} (f : F ⟶ E) [Mono f] (V : X.Opens) :
     rw [← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, Subobject.underlyingIso_arrow]
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `hx`. Conclude with `⟨a • t, Scheme.Modules.Hom.app_smul S.arrow a t⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma smul_mem_secs {E : X.Modules} (S : Subobject E) {V : X.Opens} (a : Γ(X, V)) {x : Γ(E, V)}
     (hx : x ∈ secs S V) : a • x ∈ secs S V := by
@@ -43,7 +43,7 @@ lemma smul_mem_secs {E : X.Modules} (S : Subobject E) {V : X.Opens} (a : Γ(X, V
   exact ⟨a • t, Scheme.Modules.Hom.app_smul S.arrow a t⟩
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hx`. Take `⟨t, rfl⟩` from `hy`. Conclude with `⟨s + t, map_add _ s t⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma add_mem_secs {E : X.Modules} (S : Subobject E) {V : X.Opens} {x y : Γ(E, V)}
     (hx : x ∈ secs S V) (hy : y ∈ secs S V) : x + y ∈ secs S V := by
@@ -55,7 +55,7 @@ def idealSub (J : X.IdealSheafData) (E : X.Modules) : Subobject E :=
   Subobject.mk (kernel.ι ((Scheme.Modules.pullbackPushforwardAdjunction J.subschemeι).unit.app E))
 
 /- English proof (translation)
-Rewrite using `[idealSub, secs_mk, ← (GlobalTheory.surjective_and_ker_unit_subschemeι J E U).2, ← GlobalTheory.QCoh.range_kernel_ι_app]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma secs_idealSub (J : X.IdealSheafData) (E : X.Modules) [E.IsQuasicoherent]
     (U : X.affineOpens) :
@@ -65,9 +65,9 @@ lemma secs_idealSub (J : X.IdealSheafData) (E : X.Modules) [E.IsQuasicoherent]
   rfl
 
 /- English proof (translation)
-Use `hE.1` as an intermediate fact. Use `(isCoherent_pullback J.subschemeι hE).1` as an intermediate fact. Establish `h₀ : ((𝟭 X.Modules).obj E).IsQuasicoherent` using `hE.1`. Establish `h₁ : ((Scheme.Modules.pullback J.subschemeι ⋙ Scheme.Modules.pushforward J.subschemeι).obj E).IsQuasicoherent` using `isQuasicoherent_pushforward_of_isAffineHom J.subschemeι ((Scheme.Modules.pullback J.subschemeι).obj E)`. Establish `hk : (kernel ((Scheme.Modules.pullbackPushforwardAdjunction J.subschemeι).unit.app E)).IsQuasicoherent` using `GlobalTheory.QCoh.isQuasicoherent_kernel _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(SheafOfModules.isQuasicoherent X.ringCatSheaf).prop_of_iso (Subobject.underlyingIso (kernel.ι ((Scheme.Modules.pullbackPushforwardAdjunction J.subschemeι).unit.app E))).symm hk`.
+A detailed English derivation is pending.
 -/
 lemma isQuasicoherent_idealSub (J : X.IdealSheafData) {E : X.Modules} (hE : IsCoherent E) :
     ((idealSub J E : Subobject E) : X.Modules).IsQuasicoherent := by
@@ -84,9 +84,9 @@ lemma isQuasicoherent_idealSub (J : X.IdealSheafData) {E : X.Modules} (hE : IsCo
       ((Scheme.Modules.pullbackPushforwardAdjunction J.subschemeι).unit.app E))).symm hk
 
 /- English proof (translation)
-Take `⟨T, hT, hsupp⟩` from `hS`. Use `⟨T, hT, ?_⟩` and prove the remaining obligations. Establish `w : S.arrow ≫ cokernel.π S'.arrow = 0`. Rewrite using `[← Subobject.ofLE_arrow h, Category.assoc, cokernel.condition, comp_zero]`. Establish `: Epi (cokernel.desc S.arrow (cokernel.π S'.arrow) w)` using `epi_of_epi_fac (cokernel.π_desc S.arrow (cokernel.π S'.arrow) w)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Scheme.Modules.SupportedIn.of_epi (cokernel.desc S.arrow (cokernel.π S'.arrow) w) hsupp`.
+A detailed English derivation is pending.
 -/
 lemma propSupp_mono {A : Type} [CommRing A] [X.Over (Spec (.of A))] {E : X.Modules}
     {S S' : Subobject E} (h : S ≤ S') (hS : PropSupp A S) : PropSupp A S' := by
@@ -99,19 +99,17 @@ lemma propSupp_mono {A : Type} [CommRing A] [X.Over (Spec (.of A))] {E : X.Modul
   exact Scheme.Modules.SupportedIn.of_epi (cokernel.desc S.arrow (cokernel.π S'.arrow) w) hsupp
 
 /- English proof (translation)
-Introduce `A _ _ I X _ _ _ _ J J₁ J₂ hm h₁ h₂ E hE S hS hK hP`. Establish `hln : IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian (X ↘ Spec (.of A))`. Establish `hEq : E.IsQuasicoherent` using `hE.1`. Use `set K : Subobject E := idealSub J₁ E with hKdef`. Establish `hKq : (K : X.Modules).IsQuasicoherent` using `isQuasicoherent_idealSub J₁ hE`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS1 : ClosedSys I E (fun e => S e ⊔ K)` using `{ qcoh := fun e => (GlobalTheory.T.quasicoherent_sup_sections hEq _ _ (hS.qcoh e) hKq).1 pow_le := fun e => (hS.pow_le e).trans le_sup_left succ := fun e => by conv_lhs => rw [hS.succ e]`. Conclude with `sup_right_comm _ _ _ }`. Establish `hK1 : ∀ e, Killed J₁ (S e ⊔ K)`. Introduce `e U a ha x`. Establish `hax : a • x ∈ secs K U`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hKdef, secs_idealSub]`. Conclude with `Submodule.smul_mem_smul ha Submodule.mem_top`. Conclude with `(GlobalTheory.T.subobject_le_iff_affine_sections K (S e ⊔ K)).1 le_sup_right U hax`. Take `⟨B, hBq, hBP, hB⟩` from `h₁ E hE _ hS1 hK1 (propSupp_mono le_sup_left hP)`. Establish `hDq : ((B ⊔ K : Subobject E) : X.Modules).IsQuasicoherent` using `(GlobalTheory.T.quasicoherent_sup_sections hEq _ _ hBq hKq).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hDP : PropSupp A (B ⊔ K)` using `propSupp_mono le_sup_left hBP`. Establish `hc : ∀ e, S (e + 0) ≤ (B ⊔ K) ⊔ powSub I E (e + 1)` using `fun e => (le_sup_left : S e ≤ S e ⊔ K).trans ((hB e).symm.le.trans (sup_le_sup_right le_sup_left _))`. Take `⟨c', hS', hP', halg⟩` from `GlobalTheory.T.artin_rees_closed_system I hE hS hP (B ⊔ K) hDq 0 hc`. Establish `hkill : ∀ (n : ℕ) (U : X.affineOpens) (a : Γ(X, U)), a ∈ J₂.ideal U → ∀ x ∈ secs (B ⊔ K) U, a • x ∈ secs (S n) U`. Introduce `n U a ha x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hle : B ⊔ K ≤ S n ⊔ K` using `sup_le ((le_sup_left : B ≤ B ⊔ powSub I E (n + 1)).trans (hB n).le) le_sup_right`. Establish `hx'` using `(GlobalTheory.T.subobject_le_iff_affine_sections _ _).1 hle U hx`. Rewrite `hx'` using `[(GlobalTheory.T.quasicoherent_sup_sections hEq _ _ (hS.qcoh n) hKq).2 U U.2]`. Take `⟨s, hs, k, hk, rfl⟩` from `hx'`. Rewrite using `[smul_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `add_mem_secs _ (smul_mem_secs _ a hs) ?_` and prove the remaining obligations. Rewrite `hk` using `[hKdef, secs_idealSub]`. Use `Submodule.smul_induction_on (p := fun k => a • k ∈ secs (S n) U) hk (fun b hb y _ => ?_) (fun y z hy hz => ?_)` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm]`. Conclude with `hK n U _ (hm U b a hb ha) y`.
-
-Rewrite using `[smul_add]`. Conclude with `add_mem_secs _ hy hz`. Conclude with `halg (h₂ _ (GlobalTheory.T.coherent_subobject_coherent hE _ hDq) _ hS' (GlobalTheory.T.restricted_system_killed_by_ideal I J₂ _ S c' hkill) hP') hDP`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem statement_of_mul_mem : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A)
     {X : Scheme.{0}} [X.Over (Spec (.of A))] [IsSeparated (X ↘ Spec (.of A))]

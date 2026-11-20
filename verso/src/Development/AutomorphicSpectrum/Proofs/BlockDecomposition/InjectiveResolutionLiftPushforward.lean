@@ -6,9 +6,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Opposite Limits GroundThe
 namespace GlobalTheory.CompanionTheory.CechLift
 
 /- English proof (translation)
-Establish `hS` using `injectiveSequence_shortExact G`. Establish `: Mono (injectiveSequence G).f` using `hS.mono_f`. Establish `: Injective ((push f).obj (injectiveSequence G').X₂)` using `injective_push f _`. Set `τ₂ : (injectiveSequence G).X₂ ⟶ (push f).obj (injectiveSequence G').X₂` to `Injective.factorThru (φ ≫ (push f).map (injectiveSequence G').f) (injectiveSequence G).f`. Establish `h₁ : (injectiveSequence G).f ≫ τ₂ = φ ≫ (push f).map (injectiveSequence G').f` using `Injective.comp_factorThru _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h₀ : (injectiveSequence G).f ≫ τ₂ ≫ (push f).map (injectiveSequence G').g = 0`. Rewrite using `[← Category.assoc, h₁, Category.assoc, ← Functor.map_comp, (injectiveSequence G').zero, Functor.map_zero, comp_zero]`. Set `τ₃` to `hS.gIsCokernel.desc (CokernelCofork.ofπ _ h₀)`. Establish `h₃ : (injectiveSequence G).g ≫ τ₃ = τ₂ ≫ (push f).map (injectiveSequence G').g` using `Cofork.IsColimit.π_desc hS.gIsCokernel`. Conclude with `⟨{ τ₁ := φ, τ₂ := τ₂, τ₃ := τ₃, comm₁₂ := h₁.symm, comm₂₃ := h₃.symm }, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_injectiveSequence_lift {X Y : TopCat.{0}} (f : X ⟶ Y) {G : AbSheaf Y} {G' : AbSheaf X}
     (φ : G ⟶ (push f).obj G') :

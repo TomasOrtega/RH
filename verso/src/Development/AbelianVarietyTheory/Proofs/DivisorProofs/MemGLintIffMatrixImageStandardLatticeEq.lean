@@ -8,7 +8,7 @@ namespace GlobalTheory.LatOrbGL
 variable {K : Type} [Field K] (V : ValuationSubring K)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `a.2`. Introduce `h`. Conclude with `⟨⟨x, h⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_iff (x : K) : x ∈ (algebraMap V K).range ↔ x ∈ V := by
   constructor
@@ -16,9 +16,9 @@ theorem mem_range_iff (x : K) : x ∈ (algebraMap V K).range ↔ x ∈ V := by
   · intro h; exact ⟨⟨x, h⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite `hv` using `[mem_matLat]`. Take `⟨u, hu, rfl⟩` from `hv`. Rewrite `hu`, the goal using `[mem_stdLat]`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu'` using `fun j => (mem_range_iff V _).1 (hu j)`. Apply `(mem_range_iff V _).2` to reduce the goal to its premises. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `V.toSubring.sum_mem fun j _ => V.toSubring.mul_mem (hg i j) (hu' j)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matLat_le_of_entries {n : ℕ} (g : Matrix (Fin n) (Fin n) K) (hg : ∀ i j, g i j ∈ V) :
     matLat V g (stdLat V n) ≤ stdLat V n := by
@@ -33,11 +33,11 @@ theorem matLat_le_of_entries {n : ℕ} (g : Matrix (Fin n) (Fin n) K) (hg : ∀ 
   exact V.toSubring.sum_mem fun j _ => V.toSubring.mul_mem (hg i j) (hu' j)
 
 /- English proof (translation)
-Establish `hs : (Pi.single j (1 : K) : Fin n → K) ∈ stdLat V n`. Rewrite using `[mem_stdLat]`. Introduce `l`. Rewrite using `[mem_range_iff]`. Distinguish the cases in `h : l = j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[V.one_mem]`. Simplify using `[Pi.single_apply, h, V.zero_mem]`. Establish `hm : g *ᵥ (Pi.single j (1 : K)) ∈ stdLat V n` using `hg ((mem_matLat _ _ _).2 ⟨_, hs, rfl⟩)`. Rewrite `hm` using `[mem_stdLat]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(mem_range_iff V _).1 (hm i)` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem entries_of_matLat_le {n : ℕ} (g : Matrix (Fin n) (Fin n) K)
     (hg : matLat V g (stdLat V n) ≤ stdLat V n) (i j : Fin n) : g i j ∈ V := by
@@ -54,7 +54,7 @@ theorem entries_of_matLat_le {n : ℕ} (g : Matrix (Fin n) (Fin n) K)
   simpa [Matrix.mulVec_single] using this
 
 /- English proof (translation)
-The claim follows from `Submodule.map_mono h`.
+A detailed English derivation is pending.
 -/
 theorem matLat_mono {n : ℕ} (g : Matrix (Fin n) (Fin n) K) {M N : Submodule V (Fin n → K)}
     (h : M ≤ N) : matLat V g M ≤ matLat V g N := Submodule.map_mono h
@@ -64,19 +64,17 @@ end GlobalTheory.LatOrbGL
 open GlobalTheory.LatOrbGL in
 
 /- English proof (translation)
-Introduce `K _ V n k`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩ set k := Formalism.UG.bc V.toSubring.subtype g with hk`. Establish `e1 : ∀ i j, k.val i j ∈ V`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((g : Matrix (Fin n) (Fin n) V.toSubring) i j).2`. Establish `e2 : ∀ i j, (k⁻¹).val i j ∈ V`. Introduce `i j`. Rewrite using `[hk, ← map_inv]`. Conclude with `(((g⁻¹ : GL (Fin n) V.toSubring) : Matrix (Fin n) (Fin n) V.toSubring) i j).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `le_antisymm (matLat_le_of_entries V _ e1)` to reduce the goal to its premises. Establish `: k.val * (k⁻¹).val = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Establish `e1` using `entries_of_matLat_le V k.val h.le`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : matLat V (k⁻¹ : GL (Fin n) K).val (stdLat V n) = stdLat V n` using `by conv_lhs => rw [← h]`. Rewrite using `[← matLat_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, matLat_one]`. Establish `e2` using `entries_of_matLat_le V (k⁻¹ : GL (Fin n) K).val h2.le`. Set `A : Matrix (Fin n) (Fin n) V.toSubring` to `Matrix.of fun i j => ⟨k.val i j, e1 i j⟩`. Set `B : Matrix (Fin n) (Fin n) V.toSubring` to `Matrix.of fun i j => ⟨(k⁻¹ : GL (Fin n) K).val i j, e2 i j⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : (RingHom.mapMatrix V.toSubring.subtype) A = k.val` using `by ext i j; rfl`. Establish `hB : (RingHom.mapMatrix V.toSubring.subtype) B = (k⁻¹ : GL (Fin n) K).val` using `by ext i j; rfl`. Establish `inj : Function.Injective (RingHom.mapMatrix (m` using `Fin n) V.toSubring.subtype) := by`. Introduce `X Y hXY`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrFun (congrFun hXY i) j`. Establish `hAB : A * B = 1` using `inj (by rw [map_mul, hA, hB, map_one, ← Units.val_mul, mul_inv_cancel, Units.val_one])`. Establish `hBA : B * A = 1` using `inj (by rw [map_mul, hA, hB, map_one, ← Units.val_mul, inv_mul_cancel, Units.val_one])`. Use `⟨⟨A, B, hAB, hBA⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LatOrb.mem_GLint_iff_matLat_std :
     ∀ {K : Type} [Field K] (V : ValuationSubring K) (n : ℕ) (k : GL (Fin n) K),

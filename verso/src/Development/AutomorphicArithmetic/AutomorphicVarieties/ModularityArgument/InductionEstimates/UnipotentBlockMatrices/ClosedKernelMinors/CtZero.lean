@@ -19,7 +19,7 @@ open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Use `D.prob` as an intermediate fact. Establish `h1 : IntegrableOn h (D.U : Set (G1 K n)) D.ν` using `hh.continuousOn.integrableOn_compact (typeFin D).1`. Rewrite `h1` using `[IntegrableOn, Measure.restrict_eq_self_of_ae_mem D.supp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem intD {K : Type} [Field K] [NumberField K] {n : ℕ} (D : TypeDat K n) {E : Type} [NormedAddCommGroup E]
     {h : G1 K n → E} (hh : Continuous h) : Integrable h D.ν := by
@@ -28,20 +28,20 @@ private theorem intD {K : Type} [Field K] [NumberField K] {n : ℕ} (D : TypeDat
   rwa [IntegrableOn, Measure.restrict_eq_self_of_ae_mem D.supp] at h1
 
 /- English proof (translation)
-The claim follows from `intD D (D.cont.smul ((rightRegularRep (Gam K n) μ).continuous_orbit w))`.
+A detailed English derivation is pending.
 -/
 private theorem intR {K : Type} [Field K] [NumberField K] {n : ℕ} (D : TypeDat K n) (μ : Measure (G1 K n))
     [μ.IsHaarMeasure] (w : L2 μ) : Integrable (fun k => D.e k • rightRegularRep (Gam K n) μ k w) D.ν :=
   intD D (D.cont.smul ((rightRegularRep (Gam K n) μ).continuous_orbit w))
 
 /- English proof (translation)
-Set `T₀ : L2 μ →ₗ[ℂ] L2 μ` to `{ toFun := fun w => ∫ k, D.e k • rightRegularRep (Gam K n) μ k w ∂D.ν map_add' := fun a b => by`. Rewrite using `[← integral_add (intR D μ a) (intR D μ b)]`. Simplify using `only [map_add, smul_add]`. Use the proof step `map_smul' := fun c a => by`. Simplify using `only [map_smul, RingHom.id_apply]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_smul]`. Simplify using `only [smul_comm c] }`. Establish `hb : ∀ w, ‖T₀ w‖ ≤ (∫ k, ‖D.e k‖ ∂D.ν) * ‖w‖`. Introduce `w`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_mul_const]`. Use `congr 1`. Use extensionality with `k`. Rewrite using `[norm_smul, UnitaryRep.norm_map]`. Set `T : L2 μ →L[ℂ] L2 μ` to `T₀.mkContinuous _ hb`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨LinearMap.eqLocus (T : L2 μ →ₗ[ℂ] L2 μ) LinearMap.id, isClosed_eq T.continuous continuous_id, fun w => Iff.rfl⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 private theorem fixClosed {K : Type} [Field K] [NumberField K] {n : ℕ} (D : TypeDat K n) (μ : Measure (G1 K n))
     [μ.IsHaarMeasure] : ∃ S : Submodule ℂ (L2 μ), IsClosed (S : Set (L2 μ)) ∧ ∀ w, w ∈ S ↔ D.FixedByTypeProjector μ w := by
@@ -66,21 +66,19 @@ private theorem fixClosed {K : Type} [Field K] [NumberField K] {n : ℕ} (D : Ty
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Use `D.prob` as an intermediate fact. Use `isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Establish `hQ` using `h.ae_eq_quotFun`. Establish `hQc` using `continuous_quotFun h.2.1 h.1`. Use `set Q := quotFun Φ h.2.1 with hQd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQb : ∀ x, ‖Q x‖ ≤ C` using `fun x => by`. Take `⟨y, rfl⟩` from `mk_surjective (Gam K n) x`. Conclude with `hC y`. Use `ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Establish `hw : Integrable (fun x => conj (w x)) (quotientMeasure (Gam K n) μ)` using `(Complex.conjCLE : ℂ →L[ℝ] ℂ).integrable_comp ((Lp.memLp w).integrable one_le_two)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcoef : ∀ k, ⟪w, D.e k • rightRegularRep (Gam K n) μ k v⟫_ℂ = ∫ x, D.e k * conj (w x) * Q (rightMul (Gam K n) k x) ∂quotientMeasure (Gam K n) μ`. Introduce `k`. Rewrite using `[inner_smul_right, L2.inner_def, ← integral_const_mul]`. Establish `h2 : (fun x => v (rightMul (Gam K n) k x)) =ᵐ[quotientMeasure (Gam K n) μ] fun x => Q (rightMul (Gam K n) k x)` using `(measurePreserving_rightMul μ k).quasiMeasurePreserving.ae_eq_comp hQ`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [coeFn_rightRegularRep (Gam K n) μ k v, h2] with x h3 h4`. Rewrite using `[h3, h4, RCLike.inner_apply', mul_assoc]`. Establish `hI : Integrable (Function.uncurry fun k x => D.e k * conj (w x) * Q (rightMul (Gam K n) k x)) (D.ν.prod (quotientMeasure (Gam K n) μ))`. Establish `h0 : Integrable D.e D.ν` using `intD D D.cont`. Establish `h1 : Integrable (fun p : G1 K n × RightCosetSpace (Gam K n) => D.e p.1 * conj (w p.2)) (D.ν.prod (quotientMeasure (Gam K n) μ))` using `Integrable.mul_prod (f := D.e) (g := fun x => conj (w x)) h0 hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun p : G1 K n × RightCosetSpace (Gam K n) => Q (rightMul (Gam K n) p.1 p.2)`. Establish `hr : Continuous fun p : RightCosetSpace (Gam K n) × G1 K n => rightMul (Gam K n) p.2 p.1` using `continuous_rightMul_prod (Gam K n)`. Establish `h3 : Continuous fun p : G1 K n × RightCosetSpace (Gam K n) => (p.2, p.1)` using `continuous_snd.prodMk continuous_fst`. Establish `h4` using `hr.comp h3`. Establish `h5` using `hQc.comp h4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h5`. Establish `h2` using `Integrable.mul_bdd (c := C) h1 hc.aestronglyMeasurable (Eventually.of_forall fun p => hQb _)`. Conclude with `h2`. Rewrite using `[← integral_inner (intR D μ v)]`. Simplify using `only [hcoef]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_integral_swap hI, L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hQ] with x hx`. Rewrite using `[RCLike.inner_apply', hx]`. Take `⟨y, rfl⟩` from `mk_surjective (Gam K n) x`.
-
-Simplify using `only [rightMul_mk, hQd, quotFun_mk]`. Rewrite using `[← hfix y, ← integral_const_mul]`. Use `congr 1`. Use extensionality with `k`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem fixRep {K : Type} [Field K] [NumberField K] {n : ℕ} (D : TypeDat K n) (μ : Measure (G1 K n))
     [μ.IsHaarMeasure] {v : L2 μ} {Φ : G1 K n → ℂ} (h : IsContRep μ v Φ) {C : ℝ} (hC : ∀ g, ‖Φ g‖ ≤ C)
@@ -135,13 +133,13 @@ private theorem fixRep {K : Type} [Field K] [NumberField K] {n : ℕ} (D : TypeD
   ring
 
 /- English proof (translation)
-Introduce `g`. Establish `hc : IsCompact ((fun k => g * k) '' (D.U : Set (G1 K (2 + 2))))` using `(typeFin D).1.image (continuous_const_mul g)`. Establish `hS` using `hfin _ hc`. Establish `hs : ∀ k ∈ D.U, th F (g * k) = ∑ q ∈ hS.toFinset, F ((q.out : G1 K (2 + 2)) * g * k)`. Introduce `k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [mul_assoc]`. Use `finsum_eq_sum_of_support_subset _ fun q hq => ?_` and prove the remaining obligations. Rewrite using `[Finite.coe_toFinset]`. Conclude with `⟨g * k, ⟨k, hk, rfl⟩, hq⟩`. Establish `h1` using `hs 1 D.U.one_mem`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Simplify using `only [mul_one] at h1`. Rewrite using `[h1, ← Finset.sum_congr rfl fun q _ => hfix ((q.out : G1 K (2 + 2)) * g), ← integral_finset_sum]`. Use `integral_congr_ae ?_ filter_upwards [D.supp] with k hk` and prove the remaining obligations. Rewrite using `[hs k hk, Finset.mul_sum]`. Introduce `q _`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `intD D (D.cont.mul (hF.comp (continuous_const_mul _)))`.
+A detailed English derivation is pending.
 -/
 private theorem thFix {K : Type} [Field K] [NumberField K] (D : TypeDat K (2 + 2)) {F : G1 K (2 + 2) → ℂ}
     (hF : Continuous F)
@@ -167,9 +165,9 @@ private theorem thFix {K : Type} [Field K] [NumberField K] (D : TypeDat K (2 + 2
     exact intD D (D.cont.mul (hF.comp (continuous_const_mul _)))
 
 /- English proof (translation)
-Introduce `g`. Unfold `bf`. Rewrite using `[← hfix g, ← integral_const_mul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [D.supp] with k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : HP 2 2 (g * k) = HP 2 2 g` using `(hpSpec.2.1 k ((typeFin D).2.1 hk)).2 g`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem bfFix {K : Type} [Field K] [NumberField K] (D : TypeDat K (2 + 2)) (β : ℝ → ℂ) {f : G1 K (2 + 2) → ℂ}
     (hfix : D.Fix f) : D.Fix (bf β f) := by
@@ -183,7 +181,7 @@ private theorem bfFix {K : Type} [Field K] [NumberField K] (D : TypeDat K (2 + 2
   ring
 
 /- English proof (translation)
-Use `filter_upwards [ae_ctFun_congr μ r h.ae_eq_quotFun] with y hy`. Rewrite using `[constantTermL2, hy]`. Conclude with `h0 y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ctRep {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n))
     [μ.IsHaarMeasure] {v : L2 μ} {Φ : G1 K n → ℂ} (h : IsContRep μ v Φ) (r : ℕ)
@@ -194,15 +192,15 @@ private theorem ctRep {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measu
   exact h0 y
 
 /- English proof (translation)
-Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ hP D d d' A A'`. Take `⟨S₀, hS₀, h₀⟩` from `fixClosed D μ`. Take `⟨S₁, hS₁, h₁⟩` from `ctClosed μ 1`. Take `⟨S₃, hS₃, h₃⟩` from `ctClosed μ 3`. Set `S : Submodule ℂ (L2 μ)` to `(cuspidalL2 μ)ᗮ ⊓ (S₀ ⊓ (S₁ ⊓ S₃))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hS : IsClosed (S : Set (L2 μ))` using `(Submodule.isClosed_orthogonal _).inter (hS₀.inter (hS₁.inter hS₃))`. Establish `hgen : Submodule.span ℂ {u : L (Eu d) | ∃ (β : ℝ → ℂ) (v : Eu d), Continuous β ∧ HasCompactSupport β ∧ ∀ᵐ x : ℝ, u x = β x • v} ≤ S.comap A.J.toLinearMap`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `u ⟨β, v, hβ, hβc, hu⟩`. Establish `hrep : Reps μ (A.J u) (th (bf β (A.sec v)))` using `A.spec β v u hβ hβc hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨hsec, hfix⟩` from `(A.onto (A.sec v)).1 ⟨v, rfl⟩`. Take `⟨hp, hband, hdec⟩` from `bfFun _ β (secFun μ₂ τ₁ τ₂ D hP.irr₁ hP.irr₂ _ hsec hfix) hβ hβc`. Take `⟨hfin, hcont, hinv, hb⟩` from `thBasic μ _ hp.cont hp.rat hband`. Take `⟨-, ⟨C, hC⟩, -⟩` from `hb hdec`. Establish `hcr : IsContRep μ (A.J u) (th (bf β (A.sec v)))` using `⟨hcont, hinv, hrep⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨?_, (h₀ _).2 ?_, (h₁ _).2 ?_, (h₃ _).2 ?_⟩` and prove the remaining obligations. Use `(Submodule.mem_orthogonal' _ _).2 fun w hw => ?_` and prove the remaining obligations. Conclude with `orthCt μ _ hp.cont hp.rat hband hdec hp.unip _ w hrep (hw 2 (by norm_num) (by norm_num))`. Conclude with `fixRep D μ hcr hC (thFix D hp.cont hfin (bfFix D β hfix))`. Conclude with `ctRep μ hcr 1 fun g => (thCt _ hp hband g).1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `ctRep μ hcr 3 fun g => (thCt _ hp hband g).2.1`. Introduce `u`. Establish `hu : A.J u ∈ S` using `closure_minimal (s := _) (t := A.J ⁻¹' (S : Set (L2 μ))) hgen (hS.preimage A.J.continuous) ((denseCc d).1 u)`. Take `⟨e, e₀, e₁, e₃⟩` from `hu`. Conclude with `⟨(Submodule.starProjection_apply_eq_zero_iff _).2 e, (h₀ _).1 e₀, (h₁ _).1 e₁, (h₃ _).1 e₃⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.ctZero :
     CtZeroC := by

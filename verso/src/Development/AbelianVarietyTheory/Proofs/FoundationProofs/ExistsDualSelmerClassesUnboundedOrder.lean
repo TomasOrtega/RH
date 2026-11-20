@@ -14,47 +14,43 @@ open scoped Matrix
 namespace GlobalTheory.Ord2.GwCount
 
 /- English proof (translation)
-Introduce `hL l _ Ω _ _ _ e S A W hN hG`. Choose the witnesses or unpack the hypotheses as in `⟨y, hyZ, hyU, hyG, hyB⟩ : ∃ y ∈ Z1 (Loc.colRep W), Unr W y ∧ Gr W A y ∧ y ∉ ReciprocityTheory.Gal.B1 (Loc.colRep W) := by`. Unfold `GrZero at hG`. Use `push_neg at hG`. Conclude with `hG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcol : ∀ s (x : Fin 2 → Qbar l), Loc.colRep W s x = mat W s *ᵥ x` using `fun s x => by`. Simplify using `[Loc.colRep, Matrix.toLin'_apply]`. Take `⟨c0, hc0⟩` from `hN.int`. Take `⟨c, k, hle, hYi, hYu, -, hYg⟩` from `GlobalTheory.T.galois_cocycle_integral_after_scaling l Ω S W c0 y hN.cont hc0 hN.unr hyZ hyU A`. Establish `hW : ∀ s i j, mat W s i j ∈ c.O` using `fun s i j => hle (hc0 s i j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Y, hY⟩ : ∃ Y : G ℚ Ω → Fin 2 → Qbar l, Y = fun s => ((l : ℕ) : Qbar l) ^ k • y s` from `⟨_, rfl⟩`. Establish `hYs : ∀ s, Y s = ((l : ℕ) : Qbar l) ^ k • y s` using `fun s => by rw [hY]`. Establish `hYZ : Y ∈ Z1 (Loc.colRep W)`. Establish `: Y = ((l : ℕ) : Qbar l) ^ k • y` using `by rw [hY]; rfl`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Z1 _).smul_mem _ hyZ`. Establish `hYcoc : ∀ s t, Y (s * t) = Y s + mat W s *ᵥ Y t` using `fun s t => by`. Rewrite using `[hYZ.2 s t, hcol]`. Establish `hYI : ∀ s i, Y s i ∈ c.O` using `fun s i => by`. Rewrite using `[hYs, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hYi s i`. Establish `hl0 : ((l : ℕ) : Qbar l) ^ k ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Establish `hYB : Y ∉ ReciprocityTheory.Gal.B1 (Loc.colRep W)`. Introduce `h`. Apply `hyB` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h`, the goal using `[mem_coboundaries1]`. Take `⟨x, hx⟩` from `h`. Use `⟨(((l : ℕ) : Qbar l) ^ k)⁻¹ • x, fun g => ?_⟩` and prove the remaining obligations. Establish `h1` using `hx g`. Rewrite `h1` using `[hYs]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, ← smul_sub, ← h1, smul_smul, inv_mul_cancel₀ hl0, one_smul]`. Take `⟨k0, hk0⟩` from `GlobalTheory.T.nonzero_class_bounded_torsion l Ω W c Y hW hYZ hYI hYB`. Establish `hY0 : ∀ a ∈ (toGS Ω (S : Set Pl)).ker, Y a = 0`. Use `GlobalTheory.T.cocycle_vanishes_on_ker_toGS_of_inertia_coboundary l Ω e S A W Y hN hYZ fun q hq B hB => ?_` and prove the remaining obligations. Establish `hlq : ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal` using `fun h => hq (hN.above q h)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, -, hx⟩` from `hYu q hlq B hB`. Conclude with `⟨x, fun s hs => by rw [hYs]; exact hx s hs⟩`. Use `⟨c, hW, fun m => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `GlobalTheory.T.greenbergWiles_dualSelmer_lower_bound_mod_prime_pow hL l Ω e S A W hN c hW`. Take `⟨B, hB⟩` from `GlobalTheory.T.card_primePowTorsion_selmerClassesModPrimePow_bounded l Ω e S A W hN c hW (GlobalTheory.T.card_dualCocyclesModPrimePow_unramifiedOutsideS_bounded_alt hL l Ω e S A W hN c hW) m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨t, ht⟩ : ∃ t : ℕ, t = C * B + 1` from `⟨_, rfl⟩`. Establish `hlt : C * B < l ^ t`. Use `Nat.lt_pow_self (Fact.out : l.Prime).one_lt (n := t)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hCv : ∀ {n : ℕ} (a b : Fin 2 → Qbar l), a = b → Cv n a b` using `fun a b h i => by`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Simplify using `[Cg]`. Set `yF : Fin (l ^ t) → G ℚ Ω → Fin 2 → Qbar l` to `fun j s => ((j : ℕ) : Qbar l) • Y s`. Establish `hjO : ∀ j : Fin (l ^ t), ((j : ℕ) : Qbar l) ∈ c.O` using `fun j => natCast_mem _ _`. Establish `hsel : ∀ j, GwCount.SelN c (t + k0) S A W (yF j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `j`. Use `⟨⟨?_, fun s i => ?_, fun s _ r _ => hCv _ _ ?_⟩, fun a ha => hCv _ _ ?_, fun q _ hlq => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hYZ.1.const_smul ((j : ℕ) : Qbar l)).continuousOn`. Simplify using `only [yF, Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_mem (hjO j) (hYI s i)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [yF]`. Rewrite using `[hYcoc, smul_add, Matrix.mulVec_smul]`. Simplify using `only [yF]`. Rewrite using `[hY0 a ha, smul_zero]`. Take `⟨x, hxO, hx⟩` from `hYu q hlq (placeOf Ω q) (isPlaceOver_placeOf Ω q)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨placeOf Ω q, isPlaceOver_placeOf Ω q, ((j : ℕ) : Qbar l) • x, fun i => ?_, fun s hs => hCv _ _ ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_mem (hjO j) (hxO i)`. Simplify using `only [yF]`. Rewrite using `[hYs, hx s hs, Matrix.mulVec_smul, smul_sub]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hxO, hx⟩` from `hYg hyG`. Use `⟨((j : ℕ) : Qbar l) * x, mul_mem (hjO j) hxO, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h1 : yF j s 1 = ((j : ℕ) : Qbar l) * (mat W s 1 1 * x - x)`. Simplify using `only [yF, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hYs, Pi.smul_apply, smul_eq_mul, hx s hs]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2 : ((j : ℕ) : Qbar l) * (mat W s 1 1 * x - x) = mat W s 1 1 * (((j : ℕ) : Qbar l) * x) - ((j : ℕ) : Qbar l) * x` using `by ring`. Rewrite using `[h1, h2]`. Simplify using `[Cg]`. Establish `hne : ∀ i j, i ≠ j → ¬ Cob1 c (t + k0) W ⊤ (yF i - yF j)`. Introduce `i j hij h`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : yF i - yF j = fun s => ((((i : ℕ) : ℤ) - ((j : ℕ) : ℤ) : ℤ) : Qbar l) • Y s`. Use function extensionality and compare the values at `s`. Simplify using `only [yF, Pi.sub_apply]`. Use `push_cast`. Rewrite using `[sub_smul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h` using `[e1]`. Establish `hd` using `hk0 (t + k0) _ (intCast_mem _ _) h`. Use `GlobalTheory.T.not_congruent_zero_intCast_mul_prime_pow l t k0 (((i : ℕ) : ℤ) - ((j : ℕ) : ℤ)) ?_ ?_ hd` and prove the remaining obligations. Introduce `h0`. Apply `hij` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Use `ext`. Use linear arithmetic over natural numbers and integers. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Establish `: ((l ^ t : ℕ) : ℤ) = (l : ℤ) ^ t` using `by push_cast; rfl`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Apply the tactic sequence `rw [← this, abs_lt]; constructor <;> omega`. Take `⟨N', z, hNC, hzS, hzne⟩` from `hC (t + k0) (by omega) (l ^ t) yF hsel hne`. Establish `hex : ∃ i, ¬ Cob1 c (t + k0) (dual1 W) ⊤ (fun s => ((l : ℕ) : Qbar l) ^ m • z i s)`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
-
-Establish `h1` using `hB (t + k0) N' z hzS hzne h`. Establish `h2 : C * N' ≤ C * B` using `Nat.mul_le_mul_left C h1`. Use linear arithmetic over natural numbers and integers. Take `⟨i, hi⟩` from `hex`. Take `⟨h1, h2, h3, h4⟩` from `hzS i`.
-
-Conclude with `⟨t + k0, z i, h1, h2, h3, h4, hi⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dual_classes_unbounded : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l), Nf e S A W → ¬ GrZero W A → ∃ c : Coef l, (∀ s i j, mat W s i j ∈ c.O) ∧ ∀ m : ℕ, ∃ (n : ℕ) (z : G ℚ Ω → Fin 2 → Qbar l), Coc1 c n (dual1 W) ⊤ z ∧ (∀ a ∈ (toGS Ω (S : Set Pl)).ker, Cv n (z a) 0) ∧ (∀ q ∈ S, ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal → ∃ B : ValuationSubring Ω, IsPlaceOver B q ∧ Cob1 c n (dual1 W) (Ine (F := ℚ) B) z) ∧ (∃ x ∈ c.O, ∀ s ∈ Dec (F := ℚ) A, Cg n (z s 1) (mat (dual1 W) s 1 1 * x - x)) ∧ ¬ Cob1 c n (dual1 W) ⊤ (fun s => ((l : ℕ) : Qbar l) ^ m • z s) := by
   intro hL l _ Ω _ _ _ e S A W hN hG

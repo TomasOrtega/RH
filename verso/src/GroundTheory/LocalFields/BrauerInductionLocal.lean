@@ -18,13 +18,13 @@ section ClassCount
 def classCount (s : G) (g : G) : ℂ := ∑ t : G, if t⁻¹ * g * t = s then 1 else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `hN : (Nat.card (Subgroup.zpowers s) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Rewrite using `[indFun_apply, classCount, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ ↦ ?_` and prove the remaining obligations. Establish `hin : ∀ c : Subgroup.zpowers s, (if (Subgroup.zpowers s).subtype c = t⁻¹ * g * t then (if c = ⟨s, Subgroup.mem_zpowers s⟩ then (Nat.card (Subgroup.zpowers s) : ℂ) else 0) else 0) = if c = ⟨s, Subgroup.mem_zpowers s⟩ then (if t⁻¹ * g * t = s then (Nat.card (Subgroup.zpowers s) : ℂ …`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `c`. Distinguish the cases in `hc : c = ⟨s, Subgroup.mem_zpowers s⟩`. Substitute `hc` using the available equality. Simplify using `only [Subgroup.coe_subtype, if_true]`. Distinguish the cases in `h : s = t⁻¹ * g * t`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, if_pos h.symm]`. Rewrite using `[if_neg h, if_neg (Ne.symm h)]`. Simplify using `[hc]`. Rewrite using `[Finset.sum_congr rfl fun c _ ↦ hin c, Finset.sum_ite_eq', if_pos (Finset.mem_univ _)]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem indFun_zpowers_delta (s : G) :
     indFun (Subgroup.zpowers s).subtype
@@ -60,15 +60,15 @@ variable {E : Subgroup G → Prop} (hE : ∀ K L : Subgroup G, E K → L ≤ K �
 include hE hmono hcyc hζ in
 
 /- English proof (translation)
-Use `set C := Subgroup.zpowers s`. Use `set s' : C := ⟨s, Subgroup.mem_zpowers s⟩`. Use `set δ : C → ℂ := fun c ↦ if c = s' then (Nat.card C : ℂ) else 0`. Establish `hcomm : ∀ a b : C, a * b = b * a` using `fun a b ↦ (Subgroup.zpowers_isMulCommutative s).is_comm.comm a b`. Establish `hδ : IsClassFun δ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `g h`. Simplify using `only [δ]`. Rewrite using `[hcomm h g, mul_inv_cancel_right]`. Establish `hN : (Nat.card C : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `hcoef : ∀ ψ : C → ℂ, charInner C δ ψ = ψ s'⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `ψ`. Rewrite using `[charInner_apply]`. Simplify using `only [δ, ite_mul, zero_mul]`. Rewrite using `[Finset.sum_ite_eq', if_pos (Finset.mem_univ _), ← mul_assoc, inv_mul_cancel₀ hN, one_mul]`. Rewrite using `[← indFun_zpowers_delta]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `indFun C.subtype δ ∈ spanA E ζ`. Rewrite using `[eq_sum_irrChars_of_isClassFun hδ, map_sum]`. Use `Submodule.sum_mem _ fun ψ hψ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_smul, hcoef]`. Use `smul_mem_spanA ?_ (indFun_mem_spanZ hE hmono (hcyc s) (mem_irrChars.mp hψ).isCharacter)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: NeZero (Nat.card G)` using `⟨Nat.card_pos.ne'⟩`. Use `(mem_irrChars.mp hψ).isCharacter.apply_mem_adjoin _ hζ ?_` and prove the remaining obligations. Rewrite using `[← Subgroup.orderOf_coe]`. Conclude with `orderOf_dvd_natCard _`.
+A detailed English derivation is pending.
 -/
 theorem classCount_mem_spanA (s : G) : classCount s ∈ spanA E ζ := by
   set C := Subgroup.zpowers s
@@ -102,9 +102,9 @@ end ClassCount
 section Divisible
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.sum_apply, classCount, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `h : ∀ t : G, ∑ s : G, F s * (if t⁻¹ * g * t = s then 1 else 0) = F g`. Introduce `t`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq, if_pos (Finset.mem_univ _)]`. Simplify using `using hF g t⁻¹`. Rewrite using `[Finset.sum_congr rfl fun t _ ↦ h t, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_smul_eq_sum_classCount {F : G → ℂ} (hF : IsClassFun F) :
     (Nat.card G : ℂ) • F = ∑ s : G, F s • classCount s := by
@@ -128,13 +128,11 @@ variable {E : Subgroup G → Prop} (hE : ∀ K L : Subgroup G, E K → L ≤ K �
 include hE hmono hcyc hζ in
 
 /- English proof (translation)
-Use `choose k hk using hdiv`. Establish `hG : (Nat.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `hF' : F = ∑ s : G, k s • classCount s`. Establish `h` using `card_smul_eq_sum_classCount hF`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hg` using `congrFun h g`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.sum_apply] at hg`. Simplify using `only [Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, zsmul_eq_mul]`. Apply `mul_left_cancel₀ hG` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ ↦ ?_` and prove the remaining obligations. Rewrite using `[hk s]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hF']`.
-
-Conclude with `Submodule.sum_mem _ fun s _ ↦ Submodule.smul_mem _ _ (classCount_mem_spanA hE hmono hcyc hζ s)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_spanA_of_dvd {F : G → ℂ} (hF : IsClassFun F)
     (hdiv : ∀ g, ∃ k : ℤ, F g = (Nat.card G : ℂ) * k) : F ∈ spanA E ζ := by
@@ -163,9 +161,9 @@ variable {E : Subgroup G → Prop} {ζ : ℂ} (hζ : IsPrimitiveRoot ζ (Nat.car
 include hζ
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨K, -, l, rfl⟩` from `hx`. Conclude with `(IsCharacter.indLin K l).apply_mem_adjoin_card g hζ`. Consider the case `zero => exact Subalgebra.zero_mem _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact Subalgebra.add_mem _ hx hy`. Consider the case `smul n x _ hx`. Rewrite using `[Pi.smul_apply, zsmul_eq_mul]`. Conclude with `Subalgebra.mul_mem _ (Subalgebra.intCast_mem _ n) hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_mem_adjoin_of_mem_spanZ {f : G → ℂ} (hf : f ∈ spanZ E) (g : G) :
     f g ∈ Algebra.adjoin ℤ ({ζ} : Set ℂ) := by
@@ -180,9 +178,9 @@ theorem apply_mem_adjoin_of_mem_spanZ {f : G → ℂ} (hf : f ∈ spanZ E) (g : 
     exact Subalgebra.mul_mem _ (Subalgebra.intCast_mem _ n) hx
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, g', hg', rfl⟩` from `hx`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `Subalgebra.mul_mem _ ha (apply_mem_adjoin_of_mem_spanZ hζ hg' g)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => exact Subalgebra.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Subalgebra.add_mem _ hx hy`. Consider the case `smul n x _ hx`. Rewrite using `[Pi.smul_apply, zsmul_eq_mul]`. Conclude with `Subalgebra.mul_mem _ (Subalgebra.intCast_mem _ n) hx`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_mem_adjoin_of_mem_spanA {f : G → ℂ} (hf : f ∈ spanA E ζ) (g : G) :
     f g ∈ Algebra.adjoin ℤ ({ζ} : Set ℂ) := by
@@ -209,16 +207,16 @@ variable {ζ : ℂ} {N : ℕ} {s : G} {a : ℤ}
 
 omit [Fintype G] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PEmpty, inferInstance, PEmpty.elim, PEmpty.elim, PEmpty.elim, fun i ↦ i.elim, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem congrData_zero : CongrData ζ N s a (0 : G → ℂ) :=
   ⟨PEmpty, inferInstance, PEmpty.elim, PEmpty.elim, PEmpty.elim, fun i ↦ i.elim, by simp, by simp⟩
 
 omit [Fintype G] in
 /- English proof (translation)
-Take `⟨ι, _, c, β, β', hβ, h1, h2⟩` from `hf`. Take `⟨ι', _, c', γ, γ', hγ, h1', h2'⟩` from `hg`. Use `⟨ι ⊕ ι', inferInstance, Sum.elim c c', Sum.elim β γ, Sum.elim β' γ', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | i)`. Conclude with `hβ i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `hγ i`. Simplify using `[Fintype.sum_sum_type, h1, h1']`. Simplify using `[Fintype.sum_sum_type, h2, h2']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CongrData.add {f g : G → ℂ} (hf : CongrData ζ N s a f) (hg : CongrData ζ N s a g) :
     CongrData ζ N s a (f + g) := by
@@ -233,7 +231,7 @@ theorem CongrData.add {f g : G → ℂ} (hf : CongrData ζ N s a f) (hg : CongrD
 
 omit [Fintype G] in
 /- English proof (translation)
-Take `⟨ι, _, c, β, β', hβ, h1, h2⟩` from `hf`. Use `⟨ι, inferInstance, fun i ↦ x * c i, β, β', hβ, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[h1, Finset.mul_sum, mul_assoc]`. Simplify using `[h2, Finset.mul_sum, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem CongrData.smul {f : G → ℂ} (hf : CongrData ζ N s a f) (x : Algebra.adjoin ℤ ({ζ} : Set ℂ)) :
     CongrData ζ N s a ((x : ℂ) • f) := by
@@ -244,24 +242,22 @@ theorem CongrData.smul {f : G → ℂ} (hf : CongrData ζ N s a f) (x : Algebra.
 
 omit [Fintype G] in
 /- English proof (translation)
-Use `hf.smul (n : Algebra.adjoin ℤ ({ζ} : Set ℂ))` as an intermediate fact. Rewrite `this` using `[show ((n : Algebra.adjoin ℤ ({ζ} : Set ℂ)) : ℂ) = (n : ℂ) by simp, Int.cast_smul_eq_zsmul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem CongrData.zsmul {f : G → ℂ} (hf : CongrData ζ N s a f) (n : ℤ) : CongrData ζ N s a (n • f) := by
   have := hf.smul (n : Algebra.adjoin ℤ ({ζ} : Set ℂ))
   rwa [show ((n : Algebra.adjoin ℤ ({ζ} : Set ℂ)) : ℂ) = (n : ℂ) by simp, Int.cast_smul_eq_zsmul] at this
 
 /- English proof (translation)
-Use `set C := Subgroup.zpowers s`. Use `set s' : C := ⟨s, Subgroup.mem_zpowers s⟩`. Establish `: NeZero (Nat.card G)` using `⟨Nat.card_pos.ne'⟩`. Take `⟨m, hm⟩` from `(hχ.comp C.subtype).exists_nat`. Establish `hval : ∀ ψ ∈ irrChars C, ∀ x : C, ψ x ∈ Algebra.adjoin ℤ ({ζ} : Set ℂ)` using `fun ψ hψ x ↦ (mem_irrChars.mp hψ).isCharacter.apply_mem_adjoin x hζ (by rw [← Subgroup.orderOf_coe]; exact orderOf_dvd_natCard _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsN : s' ^ N = (s' ^ a) ^ N`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [s', Subgroup.coe_pow, Subgroup.coe_zpow]`. Establish `hc : Commute (s ^ a) (s ^ b)` using `(Commute.refl s).zpow_zpow a b`. Rewrite using `[← hab, hc.mul_pow, hb, mul_one, hab]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨irrChars C, inferInstance, fun ψ ↦ (m ψ : Algebra.adjoin ℤ ({ζ} : Set ℂ)), fun ψ ↦ ⟨ψ.1 s', hval ψ.1 ψ.2 s'⟩, fun ψ ↦ ⟨ψ.1 (s' ^ a), hval ψ.1 ψ.2 _⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ψ`. Take `⟨l, hl⟩` from `(mem_irrChars.mp ψ.2).exists_monoidHom`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [SubmonoidClass.coe_pow]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hl, hl, ← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, ← map_pow, ← map_pow, hsN]`. Establish `h` using `congrFun hm s'`. Simplify using `only [Function.comp_apply, Subgroup.coe_subtype, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h`. Express the relevant statement in the definitionally equal form `χ (s' : G) = _`. Rewrite using `[h, ← Finset.sum_coe_sort]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h` using `congrFun hm (s' ^ a)`. Simplify using `only [Function.comp_apply, Subgroup.coe_subtype, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Subgroup.coe_zpow] at h`. Express the relevant statement in the definitionally equal form `χ ((s' : G) ^ a) = _`. Rewrite using `[h, ← Finset.sum_coe_sort]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsCharacter.congrData {χ : G → ℂ} (hχ : IsCharacter χ) (hζ : IsPrimitiveRoot ζ (Nat.card G))
     {b : ℤ} (hab : s ^ a * s ^ b = s) (hb : (s ^ b) ^ N = 1) : CongrData ζ N s a χ := by
@@ -300,9 +296,9 @@ theorem IsCharacter.congrData {χ : G → ℂ} (hχ : IsCharacter χ) (hζ : IsP
 variable {E : Subgroup G → Prop}
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨K, -, l, rfl⟩` from `hx`. Conclude with `(IsCharacter.indLin K l).congrData hζ hab hb`. Consider the case `zero => exact congrData_zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul n x _ hx => exact hx.zsmul n`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem congrData_of_mem_spanZ (hζ : IsPrimitiveRoot ζ (Nat.card G)) {b : ℤ} (hab : s ^ a * s ^ b = s)
     (hb : (s ^ b) ^ N = 1) {f : G → ℂ} (hf : f ∈ spanZ E) : CongrData ζ N s a f := by
@@ -315,9 +311,9 @@ theorem congrData_of_mem_spanZ (hζ : IsPrimitiveRoot ζ (Nat.card G)) {b : ℤ}
   | smul n x _ hx => exact hx.zsmul n
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨x', hx', g, hg, rfl⟩` from `hx`. Conclude with `(congrData_of_mem_spanZ hζ hab hb hg).smul ⟨x', hx'⟩`. Consider the case `zero => exact congrData_zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul n x _ hx => exact hx.zsmul n`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem congrData_of_mem_spanA (hζ : IsPrimitiveRoot ζ (Nat.card G)) {b : ℤ} (hab : s ^ a * s ^ b = s)
     (hb : (s ^ b) ^ N = 1) {f : G → ℂ} (hf : f ∈ spanA E ζ) : CongrData ζ N s a f := by
@@ -332,13 +328,13 @@ theorem congrData_of_mem_spanA (hζ : IsPrimitiveRoot ζ (Nat.card G)) {b : ℤ}
 omit [Fintype G] in
 
 /- English proof (translation)
-Take `⟨ι, _, c, β, β', hβ, h1, h2⟩` from `hf`. Take `⟨r1, hr1⟩` from `exists_sum_pow_prime_pow_eq hp Finset.univ (fun i ↦ c i * β i) k`. Take `⟨r2, hr2⟩` from `exists_sum_pow_prime_pow_eq hp Finset.univ (fun i ↦ c i * β' i) k`. Establish `heq : ∑ i, (c i * β i) ^ p ^ k = ∑ i, (c i * β' i) ^ p ^ k` using `Finset.sum_congr rfl fun i _ ↦ by rw [mul_pow, mul_pow, hβ i]`. Use `⟨(r1 - r2 : Algebra.adjoin ℤ ({ζ} : Set ℂ)), (r1 - r2).2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : f s = ((∑ i, c i * β i : Algebra.adjoin ℤ ({ζ} : Set ℂ)) : ℂ)`. Rewrite using `[h1]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hy : f (s ^ a) = ((∑ i, c i * β' i : Algebra.adjoin ℤ ({ζ} : Set ℂ)) : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hx, hy]`. Establish `key : (∑ i, c i * β i) ^ p ^ k = (∑ i, c i * β' i) ^ p ^ k + p * (r1 - r2)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hr1, hr2, heq]`. Expand and normalize the polynomial expressions, which then agree. Use `congrArg (fun z : Algebra.adjoin ℤ ({ζ} : Set ℂ) ↦ (z : ℂ)) key` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem CongrData.exists_pow_eq {p k : ℕ} (hp : p.Prime) {f : G → ℂ} (hf : CongrData ζ (p ^ k) s a f) :
     ∃ r ∈ Algebra.adjoin ℤ ({ζ} : Set ℂ), f s ^ p ^ k = f (s ^ a) ^ p ^ k + p * r := by
@@ -364,11 +360,11 @@ theorem CongrData.exists_pow_eq {p k : ℕ} (hp : p.Prime) {f : G → ℂ} (hf :
   simpa using this
 
 /- English proof (translation)
-Establish `: Fact p.Prime` using `⟨hp⟩`. Take `⟨r, hr, hrr⟩` from `(congrData_of_mem_spanA hζ hab hb hf).exists_pow_eq hp`. Rewrite `hrr` using `[hu, hv]`. Establish `hint` using `hζ.isIntegral Nat.card_pos`. Take `⟨z, -, hz⟩` from `exists_int_of_mul_eq_int hint hr (d := p) (k := u ^ p ^ k - v ^ p ^ k) (Int.natCast_ne_zero.mpr hp.ne_zero) (by push_cast; rw [hrr]; ring)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmod : ((u ^ p ^ k : ℤ) : ZMod p) = ((v ^ p ^ k : ℤ) : ZMod p)`. Rewrite using `[← sub_eq_zero, ← Int.cast_sub, ← hz]`. Use `push_cast`. Simplify using the standard rewrite rules. Move the coercions through the operations in `at hmod`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite `hmod` using `[ZMod.pow_card_pow, ZMod.pow_card_pow]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem int_modEq_of_mem_spanA (hζ : IsPrimitiveRoot ζ (Nat.card G)) {p k : ℕ} (hp : p.Prime) {b : ℤ}
     (hab : s ^ a * s ^ b = s) (hb : (s ^ b) ^ p ^ k = 1) {f : G → ℂ} (hf : f ∈ spanA E ζ) {u v : ℤ}

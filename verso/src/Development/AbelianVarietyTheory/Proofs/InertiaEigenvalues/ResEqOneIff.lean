@@ -28,30 +28,30 @@ theorem jB_apply (ι : E →ₐ[O] R) {r : ℕ} (e : Module.Basis (Fin r) R M) (
     jB ι e x = ∑ i, ι (x i) • e i := rfl
 
 /- English proof (translation)
-Rewrite using `[jB_apply, e.repr_sum_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_jB (ι : E →ₐ[O] R) {r : ℕ} (e : Module.Basis (Fin r) R M) (x : Fin r → E) (i) :
     e.repr (jB ι e x) i = ι (x i) := by
   rw [jB_apply, e.repr_sum_self]
 
 /- English proof (translation)
-Simplify using `[jB_apply, Finset.smul_sum, mul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jB_smul (ι : E →ₐ[O] R) {r : ℕ} (e : Module.Basis (Fin r) R M) (a : E) (x : Fin r → E) :
     jB ι e (a • x) = ι a • jB ι e x := by
   simp [jB_apply, Finset.smul_sum, mul_smul]
 
 /- English proof (translation)
-Introduce `x y h` and use `funext fun i => hι (by rw [← repr_jB ι e, h, repr_jB])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jB_inj (ι : E →ₐ[O] R) (hι : Function.Injective ι) {r : ℕ} (e : Module.Basis (Fin r) R M) :
     Function.Injective (jB ι e) := fun x y h => funext fun i => hι (by
   rw [← repr_jB ι e, h, repr_jB])
 
 /- English proof (translation)
-Apply `e.repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Rewrite using `[repr_jB, e.repr_self, Finsupp.single_apply, Pi.single_apply]`. Distinguish the cases in `h : k = i`. Simplify using `[h]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jB_single (ι : E →ₐ[O] R) {r : ℕ} (e : Module.Basis (Fin r) R M) (i) :
     jB ι e (Pi.single i 1) = e i := by
@@ -63,7 +63,7 @@ theorem jB_single (ι : E →ₐ[O] R) {r : ℕ} (e : Module.Basis (Fin r) R M) 
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← e.span_eq]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨_, jB_single ι e i⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem jB_span (ι : E →ₐ[O] R) {r : ℕ} (e : Module.Basis (Fin r) R M) :
     Submodule.span R (Set.range (jB ι e)) = ⊤ := by
@@ -73,7 +73,7 @@ theorem jB_span (ι : E →ₐ[O] R) {r : ℕ} (e : Module.Basis (Fin r) R M) :
   exact ⟨_, jB_single ι e i⟩
 
 /- English proof (translation)
-Use `choose x hx using h`. Conclude with `⟨x, by simp [jB_apply, hx]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_jB (ι : E →ₐ[O] R) {r : ℕ} (e : Module.Basis (Fin r) R M) (y : M)
     (h : ∀ i, e.repr y i ∈ Set.range ι) : ∃ x, jB ι e x = y := by
@@ -81,7 +81,7 @@ theorem mem_range_jB (ι : E →ₐ[O] R) {r : ℕ} (e : Module.Basis (Fin r) R 
   exact ⟨x, by simp [jB_apply, hx]⟩
 
 /- English proof (translation)
-Use `choose y hy using fun j => mem_range_jB ι e' _ (h j)`. Establish `h1 : ∀ x, ∃ z, jB ι e' z = F (jB ι e x)` using `fun x => ⟨∑ j, σ (x j) • y j, by simp [map_sum, jB_smul, hy, jB_apply ι e, hF]⟩`. Use `choose f hf using h1`. Conclude with `⟨⟨⟨f, fun a b => jB_inj ι hι e' (by simp [hf])⟩, fun c a => jB_inj ι hι e' (by simp [hf])⟩, hf⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift (ι : E →ₐ[O] R) (hι : Function.Injective ι) {r r' : ℕ}
     (e : Module.Basis (Fin r) R M) (e' : Module.Basis (Fin r') R M') (F : M →ₗ[O] M')
@@ -96,7 +96,7 @@ theorem exists_lift (ι : E →ₐ[O] R) (hι : Function.Injective ι) {r r' : �
     fun c a => jB_inj ι hι e' (by simp [hf])⟩, hf⟩
 
 /- English proof (translation)
-Establish `: F y = ∑ k, σ (e.repr y k) • F (e k)` using `by conv_lhs => rw [← e.sum_repr y]`. Simplify using `only [map_sum, hF]`. Rewrite using `[this]`. Simplify using `[map_sum, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem repr_semi {r : ℕ} (e : Module.Basis (Fin r) R M) (F : M →ₗ[O] M) (σ : R → R)
     (hF : ∀ a y, F (a • y) = σ a • F y) (y : M) (i) :
@@ -108,9 +108,9 @@ theorem repr_semi {r : ℕ} (e : Module.Basis (Fin r) R M) (F : M →ₗ[O] M) (
   simp [map_sum, mul_comm]
 
 /- English proof (translation)
-Use `choose c hc using fun k => (Submodule.mem_span_range_iff_exists_fun R).1 (h (e k))`. Apply `Matrix.isUnit_det_of_right_inverse (B := Matrix.of fun j k => c k j)` to reduce the goal to its premises. Use extensionality with `i k`. Use `congrArg (fun y => e.repr y i) (hc k)` as an intermediate fact. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, e.repr_self, Finsupp.single_apply] at this`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply, mul_comm (e.repr _ _), this, eq_comm]`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_span {r : ℕ} (e : Module.Basis (Fin r) R M) (x : Fin r → M)
     (h : ∀ y, y ∈ Submodule.span R (Set.range x)) :
@@ -137,7 +137,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {RW : Type} [CommRing RW] [Algebra O RW]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [TWact, TensorProduct.smul_tmul']`. Consider the case `add a b ha hb => simp only [smul_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem act_smul (f : RW →ₐ[O] RW) (T : LocLat G Qp LL O) (g : G) (r : RW) (y : TW RW T) :
     TWact f T g (r • y) = f r • TWact f T g y := by
@@ -147,7 +147,7 @@ theorem act_smul (f : RW →ₐ[O] RW) (T : LocLat G Qp LL O) (g : G) (r : RW) (
   | add a b ha hb => simp only [smul_add, map_add, ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [TWmap, TensorProduct.smul_tmul']`. Consider the case `add a b ha hb => simp only [smul_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem phi_smul (f : RW →ₐ[O] RW) (T : LocLat G Qp LL O) (r : RW) (y : TW RW T) :
     TWmap f T (r • y) = f r • TWmap f T y := by
@@ -157,9 +157,9 @@ theorem phi_smul (f : RW →ₐ[O] RW) (T : LocLat G Qp LL O) (r : RW) (y : TW R
   | add a b ha hb => simp only [smul_add, map_add, ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t`. Establish `: T.actT (g * h) t = T.actT g (T.actT h t)` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `T.ρ (g * h) t = T.ρ g (T.ρ h t)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul]`. Use the proof step `rfl)`. Simplify using `[TWact, this, hf]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem act_mul (f f' f'' : RW →ₐ[O] RW) (hf : ∀ x, f x = f' (f'' x)) (T : LocLat G Qp LL O) (g h : G)
     (y : TW RW T) : TWact f T (g * h) y = TWact f' T g (TWact f'' T h y) := by
@@ -173,7 +173,7 @@ theorem act_mul (f f' f'' : RW →ₐ[O] RW) (hf : ∀ x, f x = f' (f'' x)) (T :
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [TWact, TWmap, hf]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem phi_act (φ f : RW →ₐ[O] RW) (hf : ∀ x, φ (f x) = f (φ x)) (T : LocLat G Qp LL O) (g : G)
     (y : TW RW T) : TWmap φ T (TWact f T g y) = TWact f T g (TWmap φ T y) := by
@@ -187,9 +187,9 @@ abbrev oneT (RW : Type) [CommRing RW] [Algebra O RW] {T T' : LocLat G Qp LL O} (
   TensorProduct.map (LinearMap.id : RW →ₗ[O] RW) ((f.f.restrictScalars O).restrict f.T_le)
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `tmul a m`. Rewrite using `[TensorProduct.smul_tmul', TensorProduct.map_tmul, TensorProduct.map_tmul, TensorProduct.smul_tmul']`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, smul_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem oneT_smul {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (r : RW) (y : TW RW T) :
     oneT RW f (r • y) = r • oneT RW f y := by
@@ -202,7 +202,7 @@ theorem oneT_smul {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (r : RW) (y : 
   | add x y hx hy => rw [smul_add, map_add, map_add, smul_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [TWmap]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem oneT_phi {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (φ : RW →ₐ[O] RW) (y : TW RW T) :
     oneT RW f (TWmap φ T y) = TWmap φ T' (oneT RW f y) := by
@@ -212,9 +212,9 @@ theorem oneT_phi {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (φ : RW →ₐ
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t`. Establish `: (f.f.restrictScalars O).restrict f.T_le (T.actT g t) = T'.actT g ((f.f.restrictScalars O).restrict f.T_le t)` using `Subtype.ext (f.equiv g t)`. Simplify using `[TWact, this]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Treat this case separately.
 -/
 theorem oneT_act {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (φ : RW →ₐ[O] RW) (g : G)
     (y : TW RW T) : oneT RW f (TWact φ T g y) = TWact φ T' g (oneT RW f y) := by
@@ -227,7 +227,7 @@ theorem oneT_act {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (φ : RW →ₐ
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => rfl`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem oneT_id (T : LocLat G Qp LL O) (y : TW RW T) : oneT RW (latId T) y = y := by
   induction y using TensorProduct.induction_on with
@@ -236,7 +236,7 @@ theorem oneT_id (T : LocLat G Qp LL O) (y : TW RW T) : oneT RW (latId T) y = y :
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => rfl`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem oneT_comp {T T' T'' : LocLat G Qp LL O} (g : LatHom T'.L T''.L) (f : LatHom T.L T'.L)
     (y : TW RW T) : oneT RW (latComp g f) y = oneT RW g (oneT RW f y) := by
@@ -246,9 +246,9 @@ theorem oneT_comp {T T' T'' : LocLat G Qp LL O} (g : LatHom T'.L T''.L) (f : Lat
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t`. Simplify using `only [TensorProduct.map_tmul, LinearMap.id_apply, ← TensorProduct.tmul_add]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Normalize the expressions using the abelian group laws.
+Treat this case separately. Normalize the expressions using the abelian group laws.
 -/
 theorem oneT_add {T T' : LocLat G Qp LL O} (f g : LatHom T.L T'.L)
     (y : TW RW T) : oneT RW (latAdd f g) y = oneT RW f y + oneT RW g y := by
@@ -260,9 +260,9 @@ theorem oneT_add {T T' : LocLat G Qp LL O} (f g : LatHom T.L T'.L)
   | add a b ha hb => simp only [map_add, ha, hb]; abel
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t`. Simplify using `only [TensorProduct.map_tmul, LinearMap.id_apply, ← TensorProduct.tmul_smul]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap O LL c • (t : T.V) = c • (t : T.V)`. Rewrite using `[algebraMap_smul]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb, smul_add]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem oneT_latSmul (T : LocLat G Qp LL O) (c : O)
     (y : TW RW T) : oneT RW (latSmul T c) y = c • y := by
@@ -277,9 +277,9 @@ theorem oneT_latSmul (T : LocLat G Qp LL O) (c : O)
   | add a b ha hb => simp only [map_add, ha, hb, smul_add]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t`. Establish `: a ⊗ₜ[O] t = a • TWmap φ T ((1 : RW) ⊗ₜ[O] t)`. Simplify using `[TWmap, TensorProduct.smul_tmul']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, ← e.sum_repr ((1 : RW) ⊗ₜ[O] t), map_sum]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[phi_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Consider the case `add a b ha hb => exact Submodule.add_mem _ ha hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_phi (φ : RW →ₐ[O] RW) (T : LocLat G Qp LL O) {r : ℕ}
     (e : Module.Basis (Fin r) RW (TW RW T)) (y : TW RW T) :
@@ -299,39 +299,27 @@ variable {Γ : WGam PD LL O v n s} {R : WSer Γ} {RA : Type} [CommRing RA] [Alge
   {inclR : RA →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : RA}
 
 /- English proof (translation)
-Use `choose A hA using het`. Establish `hAu : ∀ T, IsUnit (Matrix.of (A T))` using `fun T => by`. Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Apply `hunit` to reduce the goal to its premises. Establish `h` using `isUnit_of_span (e T) _ (span_phi φR T (e T))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgHom.map_det]`. Use `h using 2` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Conclude with `hA T i j`. Establish `key : ∀ (T : LocLat G Qp LL O) (q : ℕ) (x : Fin q → TW RW T) (Bm : Matrix (Fin q) (Fin q) R.EE), IsUnit Bm → (∀ g, Γ.resΓ g = 1 → ∀ j, TWact (gR g) T g (x j) = x j) → (∀ j, TWmap φR T (x j) = ∑ k, I.ioE (Bm k j) • x k) → ∀ j i, (e T).repr (x j) i ∈ Set.range I.ioE`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `T q x Bm hB hx hφx j i`. Use `hrat _ q (Matrix.of (A T)) Bm (Matrix.of fun i j => (e T).repr (x j) i) (hAu T) hB ?_ ?_ i j` and prove the remaining obligations. Introduce `i j g hg`. Establish `h` using `repr_semi (e T) (TWact (gR g) T g) (gR g) (act_smul _ T g) (x j) i`. Simplify using `only [hx g hg, hfix T g hg, Module.Basis.repr_self, Finsupp.single_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `h.symm`. Use extensionality with `i j`. Establish `h` using `repr_semi (e T) (TWmap φR T) φR (phi_smul _ T) (x j) i`. Rewrite `h` using `[hφx]`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul] at h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply, hA]`. Rewrite using `[← h]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Establish `hφe : ∀ T j, TWmap φR T (e T j) = ∑ k, I.ioE (A T k j) • e T k` using `fun T j => by`. Simplify using `only [hA, Module.Basis.sum_repr]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `fun T => exists_lift I.ioE hinj (e T) (e T) (TWmap φR T) R.φE (fun a y => by rw [phi_smul, I.ioE_φ]) (fun j i => ⟨_, hA T i j⟩)`. Use `choose φD hφD using h1`. Establish `h2` using `fun T g => exists_lift I.ioE hinj (e T) (e T) (TWact (gR g) T g) (R.γE (Γ.resΓ g)) (fun a y => by rw [act_smul, I.ioE_γ]) (key T _ _ ((R.γE (Γ.resΓ g)).mapMatrix (Matrix.of (A T))) ((hAu T).map _) (fun h hh j => by`. Rewrite using `[← act_mul _ _ _ (hmul h g), show h * g = g * (g⁻¹ * h * g) by group, act_mul _ _ _ (hmul g _), hfix T _ (by simp [hh])])`. Use the proof step `(fun j => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[phi_act _ _ (hφ g), hφe, map_sum]`. Simplify using `only [act_smul, ← I.ioE_γ]`. Use the proof step `rfl))`. Use `choose γG hγG using h2`. Establish `h3` using `fun (T T' : LocLat G Qp LL O) (f : LatHom T.L T'.L) => exists_lift I.ioE hinj (e T) (e T') (oneT RW f) id (fun a y => oneT_smul f _ y) (key T' _ _ (Matrix.of (A T)) (hAu T) (fun h hh j => by rw [← oneT_act, hfix T h hh]) (fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← oneT_phi, hφe, map_sum]`. Simplify using `only [oneT_smul]`. Use the proof step `rfl))`. Use `choose mp hmp using h3`. Establish `hker : ∀ T h, Γ.resΓ h = 1 → ∀ x, TWact (gR h) T h (jB I.ioE (e T) x) = jB I.ioE (e T) x`.
+Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `T h hh x`. Simplify using `only [jB_apply, map_sum, act_smul, ← I.ioE_γ, hh, hfix T h hh, map_one, AlgHom.one_apply]`. Use `choose sec hsec using Γ.resΓ_onto`. Establish `hact : ∀ T g x, jB I.ioE (e T) (γG T (sec (Γ.resΓ g)) x) = TWact (gR g) T g (jB I.ioE (e T) x)`. Introduce `T g x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hγG, show sec (Γ.resΓ g) = g * (g⁻¹ * sec (Γ.resΓ g)) by group, act_mul _ _ _ (hmul g _), hker T _ (by simp [hsec])]`. Establish `hj` using `fun T => jB_inj I.ioE hinj (e T)`. Use `haveI : Nontrivial O := (algebraMap O LL).domain_nontrivial`. Use `haveI : Nontrivial R.EE := R.EE_inj.nontrivial`. Conclude with `⟨{ DD := fun T => Fin (Module.finrank O ↥T.L.T) → R.EE φD := φD φD_smul := fun T a x => hj T (by rw [hφD, jB_smul, jB_smul, phi_smul, hφD, I.ioE_φ]) γD := fun T g => γG T (sec g) γD_smul := fun T g a x => hj T (by`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hγG, jB_smul, jB_smul, act_smul, hγG, ← I.ioE_γ, hsec])`. Use `γD_one := fun T x => hj T (by rw [hγG, hker T _ (hsec 1)])`. Use `γD_mul := fun T g h x => hj T (by`. Rewrite using `[hγG T (sec g), hγG T (sec h), ← act_mul _ _ _ (hmul _ _), ← hact, map_mul, hsec, hsec])`. Use `φγ_comm := fun T g x => hj T (by rw [hφD, hγG, hγG, hφD, phi_act _ _ (hφ _)])`.
-
-Use `DD_free := fun T => ⟨inferInstance, Module.finrank_fin_fun _⟩`. Use `map := fun {T T'} f => { toFun := mp T T' f map_add' := map_add _ map_smul' := fun a x => hj T' (by`. Rewrite using `[hmp, jB_smul, RingHom.id_apply, jB_smul, oneT_smul, hmp]) }`. Use `map_φ := fun {T T'} f x => hj T' (by`. Express the relevant statement in the definitionally equal form `jB _ _ (mp T T' f _) = jB _ _ (φD T' (mp T T' f x))`.
-
-Rewrite using `[hmp, hφD, hφD, hmp, oneT_phi])`. Use `map_γ := fun {T T'} f g x => hj T' (by`. Express the relevant statement in the definitionally equal form `jB _ _ (mp T T' f _) = jB _ _ (γG T' _ (mp T T' f x))`. Rewrite using `[hmp, hγG, hγG, hmp, oneT_act])`. Use `map_id := fun T x => hj T ((hmp _ _ _ x).trans (oneT_id T _))`.
-
-Use `map_comp := fun {T T' T''} g f x => hj T'' (by`. Express the relevant statement in the definitionally equal form `jB _ _ (mp T T'' _ x) = jB _ _ (mp T' T'' g (mp T T' f x))`. Rewrite using `[hmp, hmp, hmp, oneT_comp])`. Use `map_latAdd := fun {T T'} f g x => hj T' (by`. Express the relevant statement in the definitionally equal form `jB _ _ (mp T T' _ x) = jB _ _ (mp T T' f x + mp T T' g x)`.
-
-Rewrite using `[map_add, hmp, hmp, hmp, oneT_add])`. Use `map_latSmul := fun T c x => hj T (by`. Express the relevant statement in the definitionally equal form `jB _ _ (mp T T _ x) = _`. Rewrite using `[hmp, oneT_latSmul, map_smul])`. Use `jD := fun T => jB I.ioE (e T)`.
-
-Use `jD_smul := fun T => jB_smul _ _`. Use `jD_φ := hφD`. Use `jD_act := hact`. Use `jD_inj := hj`. Use `jD_span := fun T => jB_span _ _`.
-
-Use `jD_map := fun {T T'} f x => hmp T T' f x }⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_et (I : WIo R RA RW inclR φR gR πA)
     (hmul : ∀ g h x, gR (g * h) x = gR g (gR h x)) (hφ : ∀ g x, φR (gR g x) = gR g (φR x))
@@ -456,7 +444,7 @@ end Generic
 section Concrete
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a w => simp [h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_id_comm {Z O W : Type} [CommRing Z] [CommRing O] [CommRing W] [Algebra Z O]
     [Algebra Z W] (f g f' g' : W →ₐ[Z] W) (h : ∀ w, f (g w) = f' (g' w)) (x : O ⊗[Z] W) :
@@ -468,7 +456,7 @@ theorem map_id_comm {Z O W : Type} [CommRing Z] [CommRing O] [CommRing W] [Algeb
   | tmul a w => simp [h]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a w => simp [h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_id_comp {Z O W : Type} [CommRing Z] [CommRing O] [CommRing W] [Algebra Z O]
     [Algebra Z W] (f f' g' : W →ₐ[Z] W) (h : ∀ w, f w = f' (g' w)) (x : O ⊗[Z] W) :
@@ -482,14 +470,14 @@ theorem map_id_comp {Z O W : Type} [CommRing Z] [CommRing O] [CommRing W] [Algeb
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `map_id_comp _ _ _ (fun w => by simp) x`.
+A detailed English derivation is pending.
 -/
 theorem gRW_mul {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (g h : GQ l) (x : RW LL) :
     AI.gRW LL (g * h) x = AI.gRW LL g (AI.gRW LL h x) :=
   map_id_comp _ _ _ (fun w => by simp) x
 
 /- English proof (translation)
-Use `map_id_comm _ _ _ _ (fun w => ?_) x` and prove the remaining obligations. Use extensionality with `n`. Express the relevant statement in the definitionally equal form `(WittVector.map (frobenius (Cb l) l) (WittVector.map (autCb l (AI.actT g)).toRingHom w)).coeff n = (WittVector.map (autCb l (AI.actT g)).toRingHom (WittVector.map (frobenius (Cb l) l) w)).coeff n`. Simplify using `[WittVector.map_coeff, frobenius_def]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem phi_gRW {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (g : GQ l) (x : RW LL) :
     φRW LL (AI.gRW LL g x) = AI.gRW LL g (φRW LL x) := by
@@ -501,11 +489,11 @@ theorem phi_gRW {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (g : GQ l) (
   simp [WittVector.map_coeff, frobenius_def]
 
 /- English proof (translation)
-Establish `h : algebraMap ↥(OL LL) ↥LL.1 (Γ.χΓ (Γ.resΓ g) : ↥(OL LL)) = algebraMap ℚ_[l] ↥LL.1 (P.χQ (g : GQ l) : ℚ_[l])`. Rewrite using `[Γ.χΓ_res g, P.PD_χ]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Rewrite `h` using `[hg, map_one, Units.val_one, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Apply `(algebraMap ℚ_[l] ↥LL.1).injective` to reduce the goal to its premises. Rewrite using `[← h, Units.val_one, map_one]`. Introduce `hg`. Rewrite `h` using `[hg, Units.val_one, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Γ.χΓ_inj` to reduce the goal to its premises. Rewrite using `[map_one]`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `Subtype.ext h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem res_eq_one_iff {P : LocPrime l} {K : FinExt l} {s : ℕ} {LL : FinExt l} (Γ : GamS P K s LL)
     (g : ↥(GK K)) : Γ.resΓ g = 1 ↔ P.χQ (g : GQ l) = 1 := by
@@ -528,7 +516,7 @@ theorem res_eq_one_iff {P : LocPrime l} {K : FinExt l} {s : ℕ} {LL : FinExt l}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `l _ P AI K s LL hg Γ R I hI h`. Use `choose e he using h`. Take `⟨h1, h2, -⟩` from `GlobalTheory.T.wachInclusion_injective_saturated_inter l P AI K s LL hg Γ R I hI`. Use `exists_et I (fun g h x => gRW_mul AI LL _ _ x) (fun g x => phi_gRW AI LL _ x) h1 h2 (fun p q A A' U hA hA' hU hφ => GlobalTheory.T.fixedByCyclotomicKernel_etalePhi_solution_mem_wach l P AI K s LL hg Γ R I hI p q A A' 0 U hA hA' (fun i j g hgK hχ => hU i j ⟨g, hgK⟩ ((res_eq_one_if …` and prove the remaining obligations. Rewrite using `[hφ, Matrix.map_zero _ (map_zero _), add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_wEt : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ) (LL : FinExt l), Good K s LL → ∀ (Γ : GamS P K s LL) (R : WSer Γ) (I : IoS AI R), IoW I → (∀ (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)), ∃ e : Module.Basis (Fin (Module.finrank ↥(OL LL) ↥T.L.T)) (RW LL) (TW (RW LL) T), EtBasis I T e) → Nonempty (WEt I) := by
   intro l _ P AI K s LL hg Γ R I hI h

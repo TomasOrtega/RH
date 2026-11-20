@@ -15,9 +15,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg
 
 /- English proof (translation)
-Set `B` to `GlobalTheory.Serre.Lie.basis a hv`. Use `⟨(LinearMap.toMatrixAlgEquiv B).toRingEquiv.toRingHom.comp (Module.toModuleEnd R (S := O) (GlobalTheory.Serre.Lie a)), fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h1 : IsLieComb (fun i => ρ x i j) (fun k => (B k).hom) (v j ≫ a.act x)`. Simplify `h x j` using `only [B, GlobalTheory.Serre.Lie.hom_basis]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h1` using `[GlobalTheory.Serre.Lie.isLieComb_iff]`. Establish `h2 : x • B j = ∑ k, ρ x k j • B k`. Apply `GlobalTheory.Serre.Lie.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.Serre.Lie.hom_act_smul, ← h1, GlobalTheory.Serre.Lie.hom_basis]`. Simplify using `[LinearMap.toMatrixAlgEquiv_apply, h2, Finsupp.finset_sum_apply, Finsupp.single_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_ringHom_of_isLieComb {R O : Type} [CommRing R] [CommRing O] {G : Over (Sp R)} [GrpObj G]
     [IsCommMonObj G] (a : OAct O G) {n : ℕ} {v : Fin n → (epsR R ⟶ G)} (hv : IsLieBasis v)
@@ -37,7 +37,7 @@ theorem exists_ringHom_of_isLieComb {R O : Type} [CommRing R] [CommRing O] {G : 
   simp [LinearMap.toMatrixAlgEquiv_apply, h2, Finsupp.finset_sum_apply, Finsupp.single_apply]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y M`. Take `⟨_, _, _, _, _, hm⟩` from `sabPull Out.CubePf.cubePull (spMap (RingHom.id Γ(Y.X, M.U)) ≫ M.hU.fromSpec) Y.t`. Take `⟨t', ⟨m⟩⟩ : ∃ t' : SAB H (Sp Γ(Y.X, M.U)), Nonempty (SABMap t' Y.t (spMap (RingHom.id Γ(Y.X, M.U)) ≫ M.hU.fromSpec))` from `⟨_, ⟨hm.choose⟩⟩`. Take `⟨v', -, hv', hρ⟩` from `M.lie _ (RingHom.id _) t' m`. Conclude with `exists_ringHom_of_isLieComb t'.act hv' M.ρ hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem MChart.exists_ringHom_rho :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)

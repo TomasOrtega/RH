@@ -40,9 +40,9 @@ theorem orbitQuot_mk {G V : Type} [Group G] (act : G → V → V) (h1 : ∀ x, a
     orbitQuot act h1 hm x₀ (g : G ⧸ stabilizerOf act h1 hm x₀) = act g x₀ := rfl
 
 /- English proof (translation)
-Introduce `a b`. Proceed by induction on `a using QuotientGroup.induction_on with | _ a => ?_`. Proceed by induction on `b using QuotientGroup.induction_on with | _ b => ?_`. Introduce `hab`. Rewrite `hab` using `[orbitQuot_mk, orbitQuot_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Proceed by induction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations. Use `show act (a⁻¹ * b) x₀ = x₀`. Rewrite using `[hm, ← hab, ← hm, inv_mul_cancel, h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbitQuot_injective {G V : Type} [Group G] (act : G → V → V) (h1 : ∀ x, act 1 x = x)
     (hm : ∀ g h x, act (g * h) x = act g (act h x)) (x₀ : V) :
@@ -57,7 +57,7 @@ theorem orbitQuot_injective {G V : Type} [Group G] (act : G → V → V) (h1 : �
   rw [hm, ← hab, ← hm, inv_mul_cancel, h1]
 
 /- English proof (translation)
-Proceed by induction on `y using QuotientGroup.induction_on with | _ a => ?_`. Use `show act (g * a) x₀ = act g (act a x₀)`. Rewrite using `[hm]`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbitQuot_smul {G V : Type} [Group G] (act : G → V → V) (h1 : ∀ x, act 1 x = x)
     (hm : ∀ g h x, act (g * h) x = act g (act h x)) (x₀ : V) (g : G)
@@ -68,9 +68,9 @@ theorem orbitQuot_smul {G V : Type} [Group G] (act : G → V → V) (h1 : ∀ x,
   rw [hm]
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Proceed by induction on `a using QuotientGroup.induction_on with | _ a => ?_`. Conclude with `hinv a x₀ hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Proceed by induction. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Take `⟨g, rfl⟩` from `htr x₀ hx y hy`. Conclude with `⟨(g : G ⧸ stabilizerOf act h1 hm x₀), rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_orbitQuot {G V : Type} [Group G] (act : G → V → V) (h1 : ∀ x, act 1 x = x)
     (hm : ∀ g h x, act (g * h) x = act g (act h x)) (x₀ : V) (Z : Set V) (hx : x₀ ∈ Z)
@@ -86,7 +86,7 @@ theorem range_orbitQuot {G V : Type} [Group G] (act : G → V → V) (h1 : ∀ x
     exact ⟨(g : G ⧸ stabilizerOf act h1 hm x₀), rfl⟩
 
 /- English proof (translation)
-The claim follows from `Continuous.quotient_lift (hc.comp (continuous_id.prodMk continuous_const)) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_orbitQuot {G V : Type} [Group G] [TopologicalSpace G]
     [TopologicalSpace V] (act : G → V → V) (hc : Continuous fun p : G × V => act p.1 p.2)
@@ -96,21 +96,19 @@ theorem continuous_orbitQuot {G V : Type} [Group G] [TopologicalSpace G]
   Continuous.quotient_lift (hc.comp (continuous_id.prodMk continuous_const)) _
 
 /- English proof (translation)
-Establish `hcont : Continuous fun g : G => act g x₀` using `hc.comp (continuous_id.prodMk continuous_const)`. Use `⟨orbitQuot_injective act h1 hm x₀, ?_, ?_⟩` and prove the remaining obligations. Introduce `A hA`. Rewrite using `[measurableSet_quotient]`. Conclude with `hcont.measurable hA`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S hS`. Establish `hS' : MeasurableSet ((fun g : G => (g : G ⧸ stabilizerOf act h1 hm x₀)) ⁻¹' S)` using `measurableSet_quotient.1 hS`. Set `o : G → Z` to `fun g => ⟨act g x₀, hinv g x₀ hx⟩`. Establish `hoc : Continuous o` using `hcont.subtype_mk _`. Establish `hos : Function.Surjective o`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, hy⟩`. Take `⟨g, rfl⟩` from `htr x₀ hx y hy`. Conclude with `⟨g, rfl⟩`. Use `haveI : PolishSpace G := PI.AprimeInfA.polish_of_lcsc G`. Establish `hb` using `hoc.map_eq_borel hos`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T : Set Z` to `Subtype.val ⁻¹' (orbitQuot act h1 hm x₀ '' S)`. Establish `hT : MeasurableSet T`. Establish `hpre : o ⁻¹' T = (fun g : G => (g : G ⧸ stabilizerOf act h1 hm x₀)) ⁻¹' S`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨y, hy, hyg⟩`. Establish `: y = (g : G ⧸ stabilizerOf act h1 hm x₀)` using `orbitQuot_injective act h1 hm x₀ hyg`. Simplify `hy` using `[this]`. Introduce `hg`. Conclude with `⟨_, hg, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm' : MeasurableSet[MeasurableSpace.map o ‹MeasurableSpace G›] T` using `by show MeasurableSet (o ⁻¹' T)`. Rewrite using `[hpre]`. Conclude with `hS'`. Rewrite `hm'` using `[hb, ← BorelSpace.measurable_eq]`. Conclude with `hm'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `himg : orbitQuot act h1 hm x₀ '' S = Subtype.val '' T`. Rewrite using `[Subtype.image_preimage_coe, Set.inter_eq_right.2]`. Introduce and unpack `_ ⟨y, -, rfl⟩`. Rewrite using `[← range_orbitQuot act h1 hm x₀ Z hx hinv htr]`. Conclude with `⟨y, rfl⟩`.
-
-Rewrite using `[himg]`. Conclude with `(MeasurableEmbedding.subtype_coe hZ.measurableSet).measurableSet_image.2 hT`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurableEmbedding_orbitQuot {G V : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G]
@@ -165,11 +163,11 @@ theorem measurableEmbedding_orbitQuot {G V : Type} [Group G] [TopologicalSpace G
     exact (MeasurableEmbedding.subtype_coe hZ.measurableSet).measurableSet_image.2 hT
 
 /- English proof (translation)
-Establish `hact : Measurable (act g)` using `(hc.comp (continuous_const.prodMk continuous_id)).measurable`. Rewrite using `[hφ.comap_apply, hφ.comap_apply]`. Establish `himg : orbitQuot act h1 hm x₀ '' ((fun y => g • y) ⁻¹' s) = act g ⁻¹' (orbitQuot act h1 hm x₀ '' s)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨g • y, hy, orbitQuot_smul act h1 hm x₀ g y⟩`. Introduce and unpack `⟨y, hy, hyx⟩`. Use `⟨g⁻¹ • y, ?_, ?_⟩` and prove the remaining obligations. Use `show g • g⁻¹ • y ∈ s`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hy`. Rewrite using `[orbitQuot_smul, hyx, ← hm, inv_mul_cancel, h1]`. Rewrite using `[himg]`. Use `conv_rhs => rw [← hμ g]`. Rewrite using `[Measure.map_apply hact (hφ.measurableSet_image.2 hs)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_orbitQuot_invariant {G V : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G]
@@ -202,27 +200,23 @@ theorem comap_orbitQuot_invariant {G V : Type} [Group G] [TopologicalSpace G]
   rw [Measure.map_apply hact (hφ.measurableSet_image.2 hs)]
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ V _ _ _ _ _ _ act hc h1 hm Z hZ hinv htr μ ν hμf hνf hμZ hνZ hμ hν hν0`. Establish `hne : Z.Nonempty`. Assume the negation of the conclusion as `hemp`. Rewrite `hemp` using `[Set.not_nonempty_iff_eq_empty]`. Apply `hν0` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Measure.measure_univ_eq_zero]`. Simplify `hνZ` using `[hemp]`. Take `⟨x₀, hx⟩` from `hne`. Use `set H := stabilizerOf act h1 hm x₀ with hH`. Establish `hcont : Continuous fun g : G => act g x₀` using `hc.comp (continuous_id.prodMk continuous_const)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHc : IsClosed (H : Set G)`. Establish `: (H : Set G) = (fun g : G => act g x₀) ⁻¹' {x₀}` using `rfl`. Rewrite using `[this]`. Conclude with `isClosed_singleton.preimage hcont`. Use `set φ := orbitQuot act h1 hm x₀ with hφdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφc : Continuous φ` using `continuous_orbitQuot act hc h1 hm x₀`. Establish `hφ : MeasurableEmbedding φ` using `measurableEmbedding_orbitQuot act hc h1 hm x₀ Z hZ hx hinv htr`. Establish `hr : Set.range φ = Z` using `range_orbitQuot act h1 hm x₀ Z hx hinv htr`. Establish `hfin : ∀ (m : Measure V), IsLocallyFiniteMeasure m → ∀ K : Set (G ⧸ H), IsCompact K → m.comap φ K < ⊤`. Introduce `m _ K hK`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hφ.comap_apply]`. Conclude with `(hK.image hφc).measure_lt_top`. Establish `hrec : ∀ (m : Measure V), m Zᶜ = 0 → (m.comap φ).map φ = m`. Introduce `m hm0`. Rewrite using `[hφ.map_comap, hr]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Measure.restrict_eq_self_of_ae_mem (by`. Rewrite using `[ae_iff]`. Conclude with `hm0)`. Establish `hρ0 : ν.comap φ ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hν0` to reduce the goal to its premises. Rewrite using `[← hrec ν hνZ, h0, Measure.map_zero]`. Take `⟨c, hcc⟩` from `PI.wqUnique G H hHc (ν.comap φ) (μ.comap φ) hρ0 (hfin ν hνf) (comap_orbitQuot_invariant act hc h1 hm x₀ hφ ν hν) (hfin μ hμf) (comap_orbitQuot_invariant act hc h1 hm x₀ hφ μ hμ)`. Establish `hμν : μ = c • ν`. Rewrite using `[← hrec μ hμZ, hcc, Measure.map_smul, hrec ν hνZ]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hct : c ≠ ⊤`. Introduce and unpack `rfl`. Establish `hK : ∃ K : Set V, IsCompact K ∧ ν K ≠ 0`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hν0` to reduce the goal to its premises. Rewrite using `[← Measure.measure_univ_eq_zero, ← iUnion_compactCovering V]`. Conclude with `measure_iUnion_null fun n => hno _ (isCompact_compactCovering V n)`. Take `⟨K, hKc, hK0⟩` from `hK`. Establish `h` using `hKc.measure_lt_top (μ := μ)`.
-
-Rewrite `h` using `[hμν, Measure.smul_apply, smul_eq_mul, ENNReal.top_mul hK0]`. Conclude with `lt_irrefl _ h`. Use `⟨c.toNNReal, ?_⟩` and prove the remaining obligations. Rewrite using `[hμν]`. Use extensionality with `s hs`.
-
-Simplify using `[Measure.smul_apply, ENNReal.smul_def, ENNReal.coe_toNNReal hct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem invariant_measure_unique :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]

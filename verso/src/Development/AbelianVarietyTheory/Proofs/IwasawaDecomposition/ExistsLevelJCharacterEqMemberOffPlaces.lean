@@ -27,9 +27,9 @@ def cut1 (v : HeightOneSpectrum (𝓞 F)) :
 
 open Classical in
 /- English proof (translation)
-Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Express the relevant statement in the definitionally equal form `bc (prV (E := E) w) (afsplitU w 1 x) = 1`. Conclude with `afsplit_right1 w 1 x`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[afsplit_coe_bc_prV, afsplit_coe_bc_prV]`. Conclude with `afsplitC_prV_ne v w h _ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glAdeleReplaceComponentByOne_component (v w : HeightOneSpectrum (𝓞 F)) (x : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) :
     bc (prV (E := E) w) (cut1 v x) = if w = v then 1 else bc (prV (E := E) w) x := by
@@ -48,9 +48,9 @@ def cutL (l : List (HeightOneSpectrum (𝓞 F))) :
 
 open Classical in
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [cutL, List.foldr_nil]`. Consider the case `cons v l ih => show bc (prV (E := E) w) (cut1 v (cutL l x)) = _`. Rewrite using `[glAdeleReplaceComponentByOne_component, ih]`. Distinguish the cases in `h : w = v`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cutL_prV (l : List (HeightOneSpectrum (𝓞 F))) (w : HeightOneSpectrum (𝓞 F))
     (x : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) :
@@ -65,7 +65,7 @@ theorem cutL_prV (l : List (HeightOneSpectrum (𝓞 F))) (w : HeightOneSpectrum 
     · simp [h]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact hx`. Consider the case `cons v l ih => exact afsplitU_mem v σ J 1 _ (one_mem _) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cutL_mem (σ : E →ₐ[F] E) (J : Matrix n n E) (l : List (HeightOneSpectrum (𝓞 F)))
     (x : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (hx : x ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F)) :
@@ -75,9 +75,9 @@ theorem cutL_mem (σ : E →ₐ[F] E) (J : Matrix n n E) (l : List (HeightOneSpe
   | cons v l ih => exact afsplitU_mem v σ J 1 _ (one_mem _) ih
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Apply `afsplit_inj` to reduce the goal to its premises. Introduce `w`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `congrArg (fun g : GL n (E ⊗[F] w.adicCompletion F) => g.val i j) (h w)`. Express the relevant statement in the definitionally equal form `((x : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)).map (prV (E := E) w)) i j = ((y : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)).map (prV (E := E) w)) i j at e`. Rewrite `e` using `[Matrix.map_apply, Matrix.map_apply]`. Rewrite using `[map_sub, e, sub_self]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_bc (x y : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (h : ∀ w : HeightOneSpectrum (𝓞 F), bc (prV (E := E) w) x = bc (prV (E := E) w) y) : x = y := by
@@ -97,7 +97,7 @@ end Cut
 section Re
 
 /- English proof (translation)
-Substitute `h` using the available equality. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `x y`. Both sides reduce to the same expression.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem bc_reGL' {a b : ℕ} (h : a = b) {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (g : GL (Fin a) R) :
     bc φ (reGL h R g) = reGL h S (bc φ g) := by
@@ -107,7 +107,7 @@ theorem bc_reGL' {a b : ℕ} (h : a = b) {R S : Type} [CommRing R] [CommRing S] 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e1 : J' = J` using `by ext x y; exact hJ x y`. Establish `e2 : reGL (rfl : a = a) (E ⊗[F] R) g = g` using `by apply Units.ext; ext x y; rfl`. Rewrite using `[e1, e2]`. Conclude with `hg`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reGL_mem_UPts' {a b : ℕ} (h : a = b) (σ : E →ₐ[F] E) (J : Matrix (Fin a) (Fin a) E)
     (J' : Matrix (Fin b) (Fin b) E) (hJ : ∀ x y, J' x y = J (Fin.cast h.symm x) (Fin.cast h.symm y))
@@ -119,9 +119,9 @@ theorem reGL_mem_UPts' {a b : ℕ} (h : a = b) (σ : E →ₐ[F] E) (J : Matrix 
   rw [e1, e2]; exact hg
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e1 : J' = J` using `by ext x y; exact hJ x y`. Establish `e2 : reGL (rfl : a = a) (E ⊗[F] v.adicCompletion F) g = g` using `by apply Units.ext; ext x y; rfl`. Establish `e3 : reL (rfl : a = a) L = L`. Establish `: ((reV (rfl : a = a) E : (Fin a → E) →ₗ[E] (Fin a → E)).restrictScalars (𝓞 E)) = LinearMap.id`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x i`. Both sides reduce to the same expression. Rewrite using `[reL, this, Submodule.map_id]`. Rewrite using `[e1, e2, e3]`. Conclude with `hg`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reGL_mem_levelVL {a b : ℕ} (h : a = b) (σ : E →ₐ[F] E) (J : Matrix (Fin a) (Fin a) E)
     (J' : Matrix (Fin b) (Fin b) E) (hJ : ∀ x y, J' x y = J (Fin.cast h.symm x) (Fin.cast h.symm y))
@@ -144,7 +144,7 @@ end GlobalTheory.Mem.Col2.TC.ChiOffQ
 namespace GlobalTheory.Mem.Col2.TC.ChiOffQ
 
 /- English proof (translation)
-Establish `h2 : φ (k1⁻¹ * κ') = chiJ ((ρ κ)⁻¹ * κ)` using `hJ _ _ (by`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, hk1, hκ', Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv])`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_inv, MonoidHom.mul_apply, MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.comp_apply, mul_comm (chiJ (ρ κ))⁻¹, ← mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem clause1_alg {M N : Type} [Group M] [Group N] {G : Subgroup M} {A : Subgroup N} (r : M ≃* N)
     (ρ : G →* G) (α chiJ : G →* ℂˣ) (φ : A →* ℂˣ) (κ : G) (κ' : A) (k1 : A)
@@ -160,7 +160,7 @@ theorem clause1_alg {M N : Type} [Group M] [Group N] {G : Subgroup M} {A : Subgr
         mul_comm (chiJ (ρ κ))⁻¹, ← mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.mul_apply, MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.comp_apply, MonoidHom.comp_apply, hρ, hψ, mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem clause2_alg {G B : Type} [Group G] [Group B] (ψ : G →* B) (ρ : G →* G) (χ1 : B →* ℂˣ) (chiJ : G →* ℂˣ)
     (κ : G) (κ' : B) (hρ : ρ κ = κ) (hψ : ψ κ = κ') : ((χ1.comp ψ) * chiJ * (chiJ.comp ρ)⁻¹) κ = χ1 κ' := by
@@ -174,37 +174,29 @@ namespace GlobalTheory.Mem.Col2.TC
 set_option maxHeartbeats 20000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z Ch0 chOf0 F u a Q h1 Ch _ chOf K g hQ hStd hfr hRK hUloc hchi J hLb`. Establish `hcutU : ∀ x : J.levJ.U, ChiOffQ.cutL Q.toList x.1 ∈ J.levJ.U`. Introduce `x`. Establish `hx` using `(J.levJ.U_eq x.1).1 x.2`. Use `(J.levJ.U_eq _).2 ⟨ChiOffQ.cutL_mem _ _ _ _ hx.1, fun v => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ChiOffQ.cutL_prV]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `hx.2 v`. Establish `hρex : ∃ ρ : J.levJ.U →* J.levJ.U, ∀ x, (ρ x).1 = ChiOffQ.cutL Q.toList x.1` using `⟨MonoidHom.codRestrict ((ChiOffQ.cutL Q.toList).comp J.levJ.U.subtype) J.levJ.U hcutU, fun _ => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ρ, hρv⟩` from `hρex`. Establish `hFmem : ∀ x : J.levJ.U, reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ (ChiOffQ.cutL Q.toList x.1) ∈ (F u).levJ.U`. Introduce `x`. Establish `hx` using `(J.levJ.U_eq x.1).1 x.2`. Establish `hUPx` using `ChiOffQ.reGL_mem_UPts' (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ _ (gramN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) (fun _ _ => rfl) _ _ (((J.levJ.U_eq _).1 (hcutU x)).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `((F u).levJ.U_eq _).2 ⟨hUPx, fun v => ?_⟩` and prove the remaining obligations. Use `show bc (prV v) (reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ (ChiOffQ.cutL Q.toList x.1)) ∈ (F u).levJ.Uloc v`. Rewrite using `[ChiOffQ.bc_reGL', ChiOffQ.cutL_prV]`. Use `split_ifs with hv`. Rewrite using `[map_one]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `one_mem _`. Establish `hvQ : v ∉ Q` using `fun h => hv (Finset.mem_toList.2 h)`. Distinguish the cases in `hb : v ∈ badG (I.rec7 l Z)`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j : Fin 2, ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal := by`. Break down `hb with h | h` into its components or cases.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`. Establish `hlevJ` using `J.levJ.Uloc_lev v (hx.2 v)`. Establish `hlev : reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ (bc (prV v) x.1) ∈ levelVL (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) v (F u).levJ.Lb`. Rewrite using `[hLb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `ChiOffQ.reGL_mem_levelVL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) (I.rec7 l Z).sp.cm.sig ((I.rec7 l Z).sp.X (B.R.m - 1)).gram (gramN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) (fun _ _ => rfl) v J.levJ.Lb _ hlevJ`. Take `⟨M, hMmem, hMeq⟩` from `(J.J_g j v hj _ hlevJ).1 (hx.2 v)`. Use `((F u).glevJ.mem j v hj _ hlev).2 ⟨M, hMmem, ?_⟩` and prove the remaining obligations. Rewrite using `[hMeq]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(J.J_off v hvQ hb).le (Subgroup.mem_map_of_mem _ (hx.2 v))`. Establish `hψex : ∃ ψ : J.levJ.U →* (F u).levJ.U, ∀ x, (ψ x).1 = reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ (ChiOffQ.cutL Q.toList x.1)` using `⟨MonoidHom.codRestrict ((((reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _).toMonoidHom.comp (ChiOffQ.cutL Q.toList)).comp J.levJ.U.subtype)) (F u).levJ.U hFmem, fun _ => rfl⟩`. Take `⟨ψ, hψv⟩` from `hψex`. Use `⟨(F u).levJ.chi.comp ψ * J.chiJ * (J.chiJ.comp ρ)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Introduce `β κ κ' hκ'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hK` using `((K β).lev.U_eq κ'.1).1 κ'.2`. Establish `hκ1v : (ρ κ).1 = ChiOffQ.cutL Q.toList κ.1` using `hρv κ`. Establish `hUP` using `ChiOffQ.reGL_mem_UPts' (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ _ (gramN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) (fun _ _ => rfl) _ _ (((J.levJ.U_eq _).1 (ρ κ).2).1)`. Establish `hloc : ∀ w, bc (prV w) (reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ (ρ κ).1) = if w ∈ Q then 1 else bc (prV w) κ'.1`. Introduce `w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ChiOffQ.bc_reGL', hκ1v, ChiOffQ.cutL_prV, hκ', ChiOffQ.bc_reGL']`. Simplify using `only [Finset.mem_toList]`. Use `split_ifs`. Conclude with `map_one _`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `m1 : reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ (ρ κ).1 ∈ (K β).lev.U` using `((K β).lev.U_eq _).2 ⟨hUP, fun w => by`. Rewrite using `[hloc]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `hK.2 w⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `m2 : reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ (ρ κ).1 ∈ ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.U` using `(((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.U_eq _).2 ⟨hUP, fun w => by`. Rewrite using `[hloc]`. Use `split_ifs with hw`. Conclude with `one_mem _`. Rewrite using `[← hUloc β w hw]`.
-
-Conclude with `hK.2 w⟩`. Establish `hk1ex : ∃ k1 : (K β).lev.U, k1.1 = reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ (ρ κ).1` using `⟨⟨_, m1⟩, rfl⟩`. Take `⟨k1, hk1⟩` from `hk1ex`. Establish `e3 : (K β).lev.chi k1 = (F u).levJ.chi (ψ κ)`. Establish `m2' : k1.1 ∈ ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.U` using `by rw [hk1]; exact m2`.
-
-Rewrite using `[hchi β k1 ⟨k1.1, m2'⟩ rfl ?_]`. Conclude with `(F u).levJ_chi h1 (g β) ⟨k1.1, m2'⟩ (ψ κ) (by rw [hψv, hk1, hκ1v])`. Introduce `v hv`. Rewrite using `[hk1, hloc, if_pos hv]`. Conclude with `ChiOffQ.clause1_alg (reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _) ρ ((F u).levJ.chi.comp ψ) J.chiJ (K β).lev.chi κ κ' k1 hκ' hk1 e3 (J.chiJ_eq β)`.
-
-Introduce `κ κ' hκ' hQκ`. Establish `hc : ChiOffQ.cutL Q.toList κ.1 = κ.1` using `ChiOffQ.ext_bc _ _ fun w => by`. Rewrite using `[ChiOffQ.cutL_prV]`. Use `split_ifs with hw`. Conclude with `(hQκ w (Finset.mem_toList.1 hw)).symm`.
-
-Both sides reduce to the same expression. Establish `hρ : ρ κ = κ` using `Subtype.ext ((hρv κ).trans hc)`. Establish `hψ : ψ κ = κ'` using `Subtype.ext (by rw [hψv, hc, hκ'])`. Conclude with `ChiOffQ.clause2_alg ψ ρ (F u).levJ.chi J.chiJ κ κ' hρ hψ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twLevJ_chi_off_of_lb : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (Ch0 : B.Word → ℕ → Type) (chOf0 : ∀ u i, ((I.rec7 l Z).mem u).C.cls i → Ch0 u i) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (Ch0 u) (chOf0 u)) (u : B.Word) (a : I.ι) (Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (h1 : 1 ≤ B.R.m - 1) (Ch : Type) (_ : Finite Ch) (chOf : (I.stp u a (B.R.m - 1)).Cl → Ch) (K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) (badQ (I.rec7 l Z) Q) (B.R.m - 1) (Nat.sub_le _ _) (fun c : {c // chOf c = β} => (I.chain l u a).stab (B.R.m - 1) c.1) (fun c => latCrd (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _) (I.latAt u a (B.R.m - 1) c.1))) (g : Ch → Ch0 u (B.R.m - 1)), (∀ v, v ∈ Q ↔ I.UnderQ a v) → (∀ u, I.StdF l Z u (F u)) → (∀ u j v h, (F u).glevJ.fr j v h = 1) → I.ReadsK l Z u a (B.R.m - 1) (Nat.sub_le _ _) chOf K → (∀ β, ∀ v, v ∉ Q → (K β).lev.Uloc v = ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.Uloc v) → (∀ β (κ : (K β).lev.U) (κ' : ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.U), κ.1 = κ'.1 → (∀ v ∈ Q, bc (prV (E := (I.rec7 l Z).host.E) v) κ.1 = 1) → (K β).lev.chi κ = ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.chi κ') → ∀ J : TwLevJ I l Z F Q u a chOf K, (F u).levJ.Lb = reL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) J.levJ.Lb → ∃ χ : J.levJ.U →* ℂˣ, (∀ β (κ : J.levJ.U) (κ' : (K β).lev.U), κ'.1 = reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ κ.1 → (K β).lev.chi κ' = χ κ) ∧ ∀ (κ : J.levJ.U) (κ' : (F u).levJ.U), κ'.1 = reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ κ.1 → (∀ v ∈ Q, bc (prV (E := (I.rec7 l Z).host.E) v) κ.1 = 1) → χ κ = (F u).levJ.chi κ' := by
   intro B X I hI hP l Z Ch0 chOf0 F u a Q h1 Ch _ chOf K g hQ hStd hfr hRK hUloc hchi J hLb
@@ -306,9 +298,9 @@ theorem twLevJ_chi_off_of_lb : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I
 set_option maxHeartbeats 20000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z Ch0 chOf0 F u a Q h1 Ch hCh chOf K g hQ hStd hfr hRK hUloc hchi hne J`. Establish `hLb : (F u).levJ.Lb = reL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) J.levJ.Lb`. Take `⟨β⟩` from `hne`. Rewrite using `[← J.lb β, ← (F u).levJ_Lb h1 (g β)]`. Take `⟨k, hk⟩` from `hRK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k', hk'⟩` from `(hStd u).mid (B.R.m - 1) h1 (succ_pred_m B.R)`. Use extensionality with `x`. Conclude with `(hk'.lb (g β) x).trans (hk.lb β x).symm`. Conclude with `twLevJ_chi_off_of_lb I hI hP l Z Ch0 chOf0 F u a Q h1 Ch hCh chOf K g hQ hStd hfr hRK hUloc hchi J hLb`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem twLevJ_chi_off : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (Ch0 : B.Word → ℕ → Type) (chOf0 : ∀ u i, ((I.rec7 l Z).mem u).C.cls i → Ch0 u i) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (Ch0 u) (chOf0 u)) (u : B.Word) (a : I.ι) (Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (h1 : 1 ≤ B.R.m - 1) (Ch : Type) (_ : Finite Ch) (chOf : (I.stp u a (B.R.m - 1)).Cl → Ch) (K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) (badQ (I.rec7 l Z) Q) (B.R.m - 1) (Nat.sub_le _ _) (fun c : {c // chOf c = β} => (I.chain l u a).stab (B.R.m - 1) c.1) (fun c => latCrd (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _) (I.latAt u a (B.R.m - 1) c.1))) (g : Ch → Ch0 u (B.R.m - 1)), (∀ v, v ∈ Q ↔ I.UnderQ a v) → (∀ u, I.StdF l Z u (F u)) → (∀ u j v h, (F u).glevJ.fr j v h = 1) → I.ReadsK l Z u a (B.R.m - 1) (Nat.sub_le _ _) chOf K → (∀ β, ∀ v, v ∉ Q → (K β).lev.Uloc v = ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.Uloc v) → (∀ β (κ : (K β).lev.U) (κ' : ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.U), κ.1 = κ'.1 → (∀ v ∈ Q, bc (prV (E := (I.rec7 l Z).host.E) v) κ.1 = 1) → (K β).lev.chi κ = ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.chi κ') → Nonempty Ch → ∀ J : TwLevJ I l Z F Q u a chOf K, ∃ χ : J.levJ.U →* ℂˣ, (∀ β (κ : J.levJ.U) (κ' : (K β).lev.U), κ'.1 = reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ κ.1 → (K β).lev.chi κ' = χ κ) ∧ ∀ (κ : J.levJ.U) (κ' : (F u).levJ.U), κ'.1 = reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ κ.1 → (∀ v ∈ Q, bc (prV (E := (I.rec7 l Z).host.E) v) κ.1 = 1) → χ κ = (F u).levJ.chi κ' := by
   intro B X I hI hP l Z Ch0 chOf0 F u a Q h1 Ch hCh chOf K g hQ hStd hfr hRK hUloc hchi hne J
@@ -323,9 +315,9 @@ theorem twLevJ_chi_off : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok �
   exact twLevJ_chi_off_of_lb I hI hP l Z Ch0 chOf0 F u a Q h1 Ch hCh chOf K g hQ hStd hfr hRK hUloc hchi J hLb
 
 /- English proof (translation)
-Establish `hm2` using `B.R.two_le_m`. Establish `hmj : B.R.m - 1 + 1 = B.R.m` using `by omega`. Use `haveI : NeZero (B.R.N (B.R.m - 1)) := ⟨(B.R.N_pos _).ne'⟩`. Establish `hL` using `hOk.idx_ok a`. Take `⟨b0x, -⟩` from `hL.last_uniq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `b0 : Idx I.sel (I.tup a) (I.idx a) (B.R.m - 1)` to `⟨some (cast (by rw [show B.R.m - 1 = B.R.m - 2 + 1 by omega]) b0x), by simp; omega⟩`. Set `q0 : (I.stp u a (B.R.m - 1)).D b0` to `⟨(DecoF.base _ _ _ _ _, {z | z - 0 ∈ locLat (rowSG (B.primes X) I.sel (I.tup a)) (DecoF.base B.fields.E (B.R.N (B.R.m - 1)) ((B.primes X).vT u) (B.primes X).vGs (QE I.sel (I.tup a : Chr B.fields.F B.fields.E B.fields.K))).deco.1.N (fun P => if P.1 ∈ (B.primes X).vGs then 0 else ( …`. Rewrite using `[ysAt_ys_of_eq _ _ _ hmj]`. Conclude with `⟨0, zero_mem _, rfl⟩⟩`. Conclude with `⟨(I.stp u a (B.R.m - 1)).cl b0 q0⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stepBefore_cl_nonempty_tup {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (u : B.Word) (a : I.ι) :
     Nonempty (I.stp u a (B.R.m - 1)).Cl := by
@@ -346,7 +338,7 @@ theorem stepBefore_cl_nonempty_tup {B : Base} {X : PreX B.toPre} (I : TC B X) (h
 set_option maxHeartbeats 20000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z Ch0 chOf0 F u a Q h1 Ch hCh chOf K g hQ hStd hfr hRK hUloc hchi J`. Conclude with `twLevJ_chi_off I hI hP l Z Ch0 chOf0 F u a Q h1 Ch hCh chOf K g hQ hStd hfr hRK hUloc hchi ((stepBefore_cl_nonempty_tup I hI u a).map chOf) J`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem twLevJ_exists_chi_off : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (Ch0 : B.Word → ℕ → Type) (chOf0 : ∀ u i, ((I.rec7 l Z).mem u).C.cls i → Ch0 u i) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (Ch0 u) (chOf0 u)) (u : B.Word) (a : I.ι) (Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (h1 : 1 ≤ B.R.m - 1) (Ch : Type) (_ : Finite Ch) (chOf : (I.stp u a (B.R.m - 1)).Cl → Ch) (K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) (badQ (I.rec7 l Z) Q) (B.R.m - 1) (Nat.sub_le _ _) (fun c : {c // chOf c = β} => (I.chain l u a).stab (B.R.m - 1) c.1) (fun c => latCrd (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _) (I.latAt u a (B.R.m - 1) c.1))) (g : Ch → Ch0 u (B.R.m - 1)), (∀ v, v ∈ Q ↔ I.UnderQ a v) → (∀ u, I.StdF l Z u (F u)) → (∀ u j v h, (F u).glevJ.fr j v h = 1) → I.ReadsK l Z u a (B.R.m - 1) (Nat.sub_le _ _) chOf K → (∀ β, ∀ v, v ∉ Q → (K β).lev.Uloc v = ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.Uloc v) → (∀ β (κ : (K β).lev.U) (κ' : ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.U), κ.1 = κ'.1 → (∀ v ∈ Q, bc (prV (E := (I.rec7 l Z).host.E) v) κ.1 = 1) → (K β).lev.chi κ = ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.chi κ') → ∀ J : TwLevJ I l Z F Q u a chOf K, ∃ χ : J.levJ.U →* ℂˣ, (∀ β (κ : J.levJ.U) (κ' : (K β).lev.U), κ'.1 = reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ κ.1 → (K β).lev.chi κ' = χ κ) ∧ ∀ (κ : J.levJ.U) (κ' : (F u).levJ.U), κ'.1 = reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ κ.1 → (∀ v ∈ Q, bc (prV (E := (I.rec7 l Z).host.E) v) κ.1 = 1) → χ κ = (F u).levJ.chi κ' := by
   intro B X I hI hP l Z Ch0 chOf0 F u a Q h1 Ch hCh chOf K g hQ hStd hfr hRK hUloc hchi J

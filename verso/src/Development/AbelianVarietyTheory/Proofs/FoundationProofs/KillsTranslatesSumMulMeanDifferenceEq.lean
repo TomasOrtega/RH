@@ -7,19 +7,19 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Introduce `L v Φ G _hL ⟨C, hC⟩ hK hG`. Establish `hGs : Summable G` using `hG.of_norm`. Establish `hsh : ∀ r : ℕ, Summable fun x => ‖G (x + (r : ℤ) • v)‖` using `fun r => (Equiv.addRight ((r : ℤ) • v)).summable_iff.mpr hG`. Establish `hshs : ∀ r : ℕ, Summable fun x => G (x + (r : ℤ) • v)` using `fun r => (hsh r).of_norm`. Establish `hsum : Summable fun x => ∑ r ∈ Finset.range L, G (x + (r : ℤ) • v)` using `summable_sum fun r _ => hshs r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdif : Summable (dif L v G)`. Unfold `dif`. Conclude with `hGs.sub (hsum.mul_left _)`. Use `⟨summable_norm_iff.mpr hdif, ?_⟩` and prove the remaining obligations. Establish `hΦG : ∀ r : ℕ, Summable fun x => Φ x * G (x + (r : ℤ) • v)` using `fun r => Summable.of_norm_bounded ((hsh r).mul_left C) (fun x => by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hC x) (norm_nonneg _))`. Establish `hΦG0 : Summable fun x => Φ x * G x`. Simplify using `using hΦG 0`. Establish `key : ∀ r : ℕ, ∑' x, Φ x * G (x + (r : ℤ) • v) = ∑' x, Φ (x - (r : ℤ) • v) * G x`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `r`. Rewrite using `[← (Equiv.addRight ((r : ℤ) • v)).tsum_eq (fun y => Φ (y - (r : ℤ) • v) * G y)]`. Simplify using the standard rewrite rules. Establish `hΦG' : ∀ r : ℕ, Summable fun x => Φ (x - (r : ℤ) • v) * G x` using `fun r => by`. Use `(Equiv.subRight ((r : ℤ) • v)).summable_iff.mpr (hΦG r)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[Function.comp_def]`. Establish `e1 : (fun x => Φ x * dif L v G x) = fun x => Φ x * G x - (L : ℂ)⁻¹ * ∑ r ∈ Finset.range L, Φ x * G (x + (r : ℤ) • v)`. Use function extensionality and compare the values at `x`. Unfold `dif`. Rewrite using `[mul_sub, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1; refine Finset.sum_congr rfl fun r _ => by ring`. Rewrite using `[e1, hΦG0.tsum_sub ((summable_sum fun r _ => hΦG r).mul_left _), tsum_mul_left, Summable.tsum_finsetSum (fun r _ => hΦG r)]`. Repeatedly rewrite using `[key]`. Rewrite using `[← Summable.tsum_finsetSum (fun r _ => hΦG' r)]`. Establish `: (fun x => ∑ r ∈ Finset.range L, Φ (x - (r : ℤ) • v) * G x) = fun _ => 0`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[← Finset.sum_mul, hK x, zero_mul]`. Rewrite using `[this, tsum_zero, mul_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kills_sum_dif_eq : ∀ (L : ℕ) (v : ℤ × ℤ) (Φ G : ℤ × ℤ → ℂ), 0 < L → (∃ C : ℝ, ∀ x, ‖Φ x‖ ≤ C) → Kills L v Φ → (Summable fun x => ‖G x‖) → (Summable fun x => ‖dif L v G x‖) ∧ ∑' x, Φ x * dif L v G x = ∑' x, Φ x * G x := by
   intro L v Φ G _hL ⟨C, hC⟩ hK hG

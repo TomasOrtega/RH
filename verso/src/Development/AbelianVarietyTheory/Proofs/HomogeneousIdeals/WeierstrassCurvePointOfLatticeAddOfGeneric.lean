@@ -15,7 +15,7 @@ open Filter PeriodPair WeierstrassCurve in
 open scoped Topology in
 variable (L : PeriodPair) in
 /- English proof (translation)
-Rewrite using `[← WeierstrassCurve.Affine.equation_iff_nonsingular, WeierstrassCurve.Affine.equation_iff]`. Establish `h` using `derivWeierstrassP_sq L z hz`. Simplify using `only [_root_.GlobalTheory.latticeCurve]`. Take the linear combination `h / 4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem _root_.GlobalTheory.latticeCurve_nonsingular {z : ℂ} (hz : z ∉ L.lattice) :
     (_root_.GlobalTheory.latticeCurve L).toAffine.Nonsingular (℘[L] z) (℘'[L] z / 2) := by
@@ -33,7 +33,7 @@ open Filter PeriodPair WeierstrassCurve in
 open scoped Topology in
 variable (L : PeriodPair) in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.latticePoint, dif_pos hz]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.latticePoint_of_mem {z : ℂ} (hz : z ∈ L.lattice) :
     _root_.GlobalTheory.latticePoint L z = 0 := by
@@ -43,7 +43,7 @@ open Filter PeriodPair WeierstrassCurve in
 open scoped Topology in
 variable (L : PeriodPair) in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.latticePoint, dif_neg hz]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.latticePoint_of_notMem {z : ℂ} (hz : z ∉ L.lattice) :
     _root_.GlobalTheory.latticePoint L z =
@@ -54,9 +54,7 @@ open Filter PeriodPair WeierstrassCurve in
 open scoped Topology in
 variable (L : PeriodPair) in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hz`. Rewrite `h` using `[_root_.GlobalTheory.latticePoint_of_notMem L hz]`. Conclude with `WeierstrassCurve.Affine.Point.some_ne_zero _ h`.
-
-Conclude with `_root_.GlobalTheory.latticePoint_of_mem L`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.latticePoint_eq_zero_iff {z : ℂ} :
     _root_.GlobalTheory.latticePoint L z = 0 ↔ z ∈ L.lattice := by
@@ -71,7 +69,7 @@ open Filter PeriodPair WeierstrassCurve in
 open scoped Topology in
 variable (L : PeriodPair) in
 /- English proof (translation)
-Distinguish the cases in `hz : z ∈ L.lattice`. Rewrite using `[_root_.GlobalTheory.latticePoint_of_mem L hz, _root_.GlobalTheory.latticePoint_of_mem L (neg_mem hz), neg_zero]`. Establish `hz' : -z ∉ L.lattice` using `fun h => hz (by simpa using neg_mem h)`. Rewrite using `[_root_.GlobalTheory.latticePoint_of_notMem L hz, _root_.GlobalTheory.latticePoint_of_notMem L hz', WeierstrassCurve.Affine.Point.neg_some]`. Apply the tactic sequence `simp [weierstrassP_neg, derivWeierstrassP_neg, WeierstrassCurve.Affine.negY, _root_.GlobalTheory.latticeCurve] <;> ring`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.latticePoint_neg (z : ℂ) :
     _root_.GlobalTheory.latticePoint L (-z) = -_root_.GlobalTheory.latticePoint L z := by
@@ -88,11 +86,11 @@ open Filter PeriodPair WeierstrassCurve in
 open scoped Topology in
 variable (L : PeriodPair) in
 /- English proof (translation)
-Introduce `P`. Consider the cases of `P with`. Consider the case `zero => exact ⟨0, _root_.GlobalTheory.latticePoint_of_mem L (zero_mem _)⟩`. Consider the case `some x y h`. Establish `he` using `h.1`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `he` using `[WeierstrassCurve.Affine.equation_iff]`. Simplify using `only [_root_.GlobalTheory.latticeCurve] at he`. Take `⟨z, hz, hx, hy⟩` from `_root_.GlobalTheory.exists_weierstrassP_eq_and_derivWeierstrassP_eq L (x := x) (y := 2 * y) (by linear_combination 4 * he)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.latticePoint_of_notMem L hz]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [WeierstrassCurve.Affine.Point.some.injEq]`. Conclude with `⟨hx, by rw [hy]; ring⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.latticePoint_surjective :
     Function.Surjective (_root_.GlobalTheory.latticePoint L) := by
@@ -115,9 +113,9 @@ open Filter PeriodPair WeierstrassCurve in
 open scoped Topology in
 variable (L : PeriodPair) in
 /- English proof (translation)
-Distinguish the cases in `hz : z ∈ L.lattice`. Establish `hw : w ∈ L.lattice` using `by simpa using sub_mem hz h`. Rewrite using `[_root_.GlobalTheory.latticePoint_of_mem L hz, _root_.GlobalTheory.latticePoint_of_mem L hw]`. Establish `hw : w ∉ L.lattice` using `fun hw => hz (by simpa using add_mem h hw)`. Rewrite using `[_root_.GlobalTheory.latticePoint_of_notMem L hz, _root_.GlobalTheory.latticePoint_of_notMem L hw]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ℘[L] z = ℘[L] w` using `by simpa using weierstrassP_add_coe L w ⟨z - w, h⟩`. Establish `e2 : ℘'[L] z = ℘'[L] w` using `by simpa using derivWeierstrassP_add_coe L w ⟨z - w, h⟩`. Simplify using `only [WeierstrassCurve.Affine.Point.some.injEq]`. Conclude with `⟨e1, by rw [e2]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem latticePoint_eq_of_sub_mem_lattice {z w : ℂ} (h : z - w ∈ L.lattice) :
     _root_.GlobalTheory.latticePoint L z = _root_.GlobalTheory.latticePoint L w := by
@@ -135,33 +133,29 @@ open Filter PeriodPair WeierstrassCurve in
 open scoped Topology in
 variable (L : PeriodPair) in
 /- English proof (translation)
-Establish `hsub : ℘[L] z - ℘[L] w ≠ 0` using `sub_ne_zero.mpr hne`. Establish `hsub' : ℘[L] w - ℘[L] z ≠ 0` using `sub_ne_zero.mpr hne.symm`. Distinguish the cases in `hw' : ℘'[L] w ≠ 0`. Conclude with `_root_.GlobalTheory.weierstrassP_add_of_ne_of_deriv_ne_zero L hz hw hne hw'`. Distinguish the cases in `hz' : ℘'[L] z ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `_root_.GlobalTheory.weierstrassP_add_of_ne_of_deriv_ne_zero L hw hz hne.symm hz'`. Rewrite `h1`, `h2` using `[add_comm w z]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `push_neg at hw' hz'`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2w : w + w ∈ L.lattice` using `(_root_.GlobalTheory.derivWeierstrassP_eq_zero_iff L hw).mp hw'`. Establish `h2z : z + z ∈ L.lattice` using `(_root_.GlobalTheory.derivWeierstrassP_eq_zero_iff L hz).mp hz'`. Establish `hzw : z + w ∉ L.lattice` using `fun h => hne ((_root_.GlobalTheory.weierstrassP_eq_iff L hz hw).mpr (Or.inr h))`. Establish `hd : ℘'[L] (z + w) = 0`. Use `(_root_.GlobalTheory.derivWeierstrassP_eq_zero_iff L hzw).mpr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : z + w + (z + w) = (z + z) + (w + w)` using `by ring`. Rewrite using `[e]`. Conclude with `add_mem h2z h2w`. Establish `hne2 : ℘[L] (z + w) ≠ ℘[L] w`. Rewrite using `[Ne, _root_.GlobalTheory.weierstrassP_eq_iff L hzw hw, not_or]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Simplify using `using hz`. Introduce `h`. Apply `hz` to reduce the goal to its premises. Establish `e : z = z + w + w - (w + w)` using `by ring`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `sub_mem h h2w`. Establish `ez` using `derivWeierstrassP_sq L z hz`. Establish `ew` using `derivWeierstrassP_sq L w hw`. Establish `es` using `derivWeierstrassP_sq L (z + w) hzw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ez` using `[hz']`. Rewrite `ew` using `[hw']`. Rewrite `es` using `[hd]`. Establish `k1 : 4 * (℘[L] z ^ 2 + ℘[L] z * ℘[L] w + ℘[L] w ^ 2) = L.g₂`. Establish `e : (℘[L] z - ℘[L] w) * (4 * (℘[L] z ^ 2 + ℘[L] z * ℘[L] w + ℘[L] w ^ 2) - L.g₂) = 0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `ew - ez`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp e).resolve_left hsub)`. Establish `k2 : 4 * (℘[L] (z + w) ^ 2 + ℘[L] (z + w) * ℘[L] w + ℘[L] w ^ 2) = L.g₂`. Establish `e : (℘[L] (z + w) - ℘[L] w) * (4 * (℘[L] (z + w) ^ 2 + ℘[L] (z + w) * ℘[L] w + ℘[L] w ^ 2) - L.g₂) = 0`. Take the linear combination `ew - es`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp e).resolve_left (sub_ne_zero.mpr hne2))`. Establish `key : ℘[L] (z + w) = -℘[L] z - ℘[L] w`. Establish `hza : ℘[L] z - ℘[L] (z + w) ≠ 0`. Introduce `h`. Apply `hzw` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h'` using `(_root_.GlobalTheory.weierstrassP_eq_iff L hz hzw).mp (sub_eq_zero.mp h)`. Break down `h' with h' | h'` into its components or cases. Conclude with `(hw (by simpa using neg_mem h')).elim`. It suffices to derive a contradiction. Apply `hw` to reduce the goal to its premises.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : w = z + (z + w) - (z + z)` using `by ring`. Rewrite using `[e2]`. Conclude with `sub_mem h' h2z`. Establish `e : (℘[L] z - ℘[L] (z + w)) * (4 * (℘[L] z + ℘[L] w + ℘[L] (z + w))) = 0`. Take the linear combination `k1 - k2`.
-
-Use `(mul_eq_zero.mp e).resolve_left hza` as an intermediate fact. Take the linear combination `this / 4`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hz', hw', key]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hd, hz', hw']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem weierstrassP_add_and_deriv_add_of_ne {z w : ℂ} (hz : z ∉ L.lattice) (hw : w ∉ L.lattice)
     (hne : ℘[L] z ≠ ℘[L] w) :
@@ -241,11 +235,11 @@ open Filter PeriodPair WeierstrassCurve in
 open scoped Topology in
 variable (L : PeriodPair) in
 /- English proof (translation)
-Establish `hne : ℘[L] z ≠ ℘[L] w` using `fun h => ((_root_.GlobalTheory.weierstrassP_eq_iff L hz hw).mp h).elim hsub hadd`. Establish `hd : ℘[L] z - ℘[L] w ≠ 0` using `sub_ne_zero.mpr hne`. Take `⟨h1, h2⟩` from `weierstrassP_add_and_deriv_add_of_ne L hz hw hne`. Rewrite using `[_root_.GlobalTheory.latticePoint_of_notMem L hz, _root_.GlobalTheory.latticePoint_of_notMem L hw, _root_.GlobalTheory.latticePoint_of_notMem L hadd]`. Rewrite using `[WeierstrassCurve.Affine.Point.add_some (fun h => hne h.1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [WeierstrassCurve.Affine.Point.some.injEq]`. Rewrite using `[WeierstrassCurve.Affine.slope_of_X_ne hne]`. Simplify using `only [WeierstrassCurve.Affine.addX, WeierstrassCurve.Affine.addY, WeierstrassCurve.Affine.negAddY, WeierstrassCurve.Affine.negY, _root_.GlobalTheory.latticeCurve]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, h1]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem latticePoint_add_of_not_mem {z w : ℂ} (hz : z ∉ L.lattice)
     (hw : w ∉ L.lattice) (hsub : z - w ∉ L.lattice) (hadd : z + w ∉ L.lattice) :
@@ -275,19 +269,17 @@ open scoped Topology in
 variable (L : PeriodPair) in
 
 /- English proof (translation)
-Distinguish the cases in `hz : z ∈ L.lattice`. Rewrite using `[_root_.GlobalTheory.latticePoint_of_mem L hz, zero_add]`. Conclude with `latticePoint_eq_of_sub_mem_lattice L (by simpa using hz)`. Distinguish the cases in `hw : w ∈ L.lattice`. Rewrite using `[_root_.GlobalTheory.latticePoint_of_mem L hw, add_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `latticePoint_eq_of_sub_mem_lattice L (by simpa using hw)`. Distinguish the cases in `hs : z + w ∈ L.lattice`. Rewrite using `[_root_.GlobalTheory.latticePoint_of_mem L hs, latticePoint_eq_of_sub_mem_lattice L (z := w) (w := -z) (by rw [sub_neg_eq_add, add_comm]; exact hs), _root_.GlobalTheory.latticePoint_neg, add_neg_cancel]`. Distinguish the cases in `hd : z - w ∈ L.lattice`. Rewrite using `[latticePoint_eq_of_sub_mem_lattice L (z := w) (w := z) (by rw [← neg_sub]; exact neg_mem hd), latticePoint_eq_of_sub_mem_lattice L (z := z + w) (w := z + z) (by rw [show z + w - (z + z) = -(z - w) by ring]; exact neg_mem hd)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ({u : ℂ | u ∈ L.lattice} ∪ {u | u + u ∈ L.lattice} ∪ {u | u + z ∈ L.lattice} ∪ {u | u + -z ∈ L.lattice}).Countable`. Use `(((_root_.GlobalTheory.countable_periodLattice L).union ?_).union (_root_.GlobalTheory.countable_add_mem_periodLattice L z)).union (_root_.GlobalTheory.countable_add_mem_periodLattice L (-z))` and prove the remaining obligations. Use `((_root_.GlobalTheory.countable_periodLattice L).image (fun x => x / 2)).mono ?_` and prove the remaining obligations. Introduce `u hu`. Conclude with `⟨u + u, hu, by ring⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u, u ∉ ({u : ℂ | u ∈ L.lattice} ∪ {u | u + u ∈ L.lattice} ∪ {u | u + z ∈ L.lattice} ∪ {u | u + -z ∈ L.lattice}) := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `not_countable_complex (hc.mono fun u _ => h u)`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or] at hu`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨⟨hu1, hu2⟩, hu3⟩, hu4⟩` from `hu`. Establish `hzu : z + u ∉ L.lattice` using `by rw [add_comm]; exact hu3`. Establish `hzmu : z + -u ∉ L.lattice` using `fun h => hu4 (by`. Use `neg_mem h` as an intermediate fact. Rewrite using `[show -(z + -u) = u + -z by ring] at this)` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hnu : -u ∉ L.lattice` using `fun h => hu1 (by simpa using neg_mem h)`. Establish `hzz : z + z ∉ L.lattice` using `fun h => hs (by`. Use `sub_mem h hd` as an intermediate fact. Rewrite using `[show z + z - (z - w) = z + w by ring] at this)` and apply the resulting hypothesis. Establish `e : z + z = (z + u) + (z + -u)` using `by ring`.
-
-Rewrite using `[e, latticePoint_add_of_not_mem L hzu hzmu (by rw [show z + u - (z + -u) = u + u by ring]; exact hu2) (by rw [← e]; exact hzz), latticePoint_add_of_not_mem L hz hu1 (by rw [sub_eq_add_neg]; exact hzmu) hzu, latticePoint_add_of_not_mem L hz hnu (by rw [sub_neg_eq_add]; exact hzu) …`. Normalize the expressions using the abelian group laws. Conclude with `latticePoint_add_of_not_mem L hz hw hd hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.latticePoint_add (z w : ℂ) :
     _root_.GlobalTheory.latticePoint L (z + w) =
@@ -352,7 +344,7 @@ open Filter PeriodPair WeierstrassCurve in
 open scoped Topology in
 variable (L : PeriodPair) in
 /- English proof (translation)
-Use extensionality with `z`. Rewrite using `[AddMonoidHom.mem_ker, _root_.GlobalTheory.latticePointHom_apply, _root_.GlobalTheory.latticePoint_eq_zero_iff, Submodule.mem_toAddSubgroup]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.ker_latticePointHom :
     (_root_.GlobalTheory.latticePointHom L).ker = L.lattice.toAddSubgroup := by
@@ -374,7 +366,7 @@ open Filter PeriodPair WeierstrassCurve in
 open scoped Topology in
 variable (L : PeriodPair) in
 /- English proof (translation)
-Rewrite using `[← _root_.GlobalTheory.latticePoint_eq_zero_iff, sub_eq_add_neg, _root_.GlobalTheory.latticePoint_add, _root_.GlobalTheory.latticePoint_neg, ← sub_eq_add_neg, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.latticePoint_eq_iff {z w : ℂ} :
     _root_.GlobalTheory.latticePoint L z = _root_.GlobalTheory.latticePoint L w ↔ z - w ∈ L.lattice := by
@@ -386,7 +378,7 @@ open scoped Topology in
 variable (L : PeriodPair) in
 
 /- English proof (translation)
-The claim follows from `weierstrassP_add_and_deriv_add_of_ne L hz hw hne`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.weierstrassP_add {z w : ℂ} (hz : z ∉ L.lattice)
     (hw : w ∉ L.lattice) (hne : ℘[L] z ≠ ℘[L] w) :
@@ -400,11 +392,11 @@ open scoped Topology in
 variable (L : PeriodPair) in
 
 /- English proof (translation)
-Establish `hmw : -w ∉ L.lattice` using `fun h => hw (by simpa using neg_mem h)`. Establish `hne' : ℘[L] z ≠ ℘[L] (-w)` using `by rwa [weierstrassP_neg]`. Take `⟨h1, -⟩` from `weierstrassP_add_and_deriv_add_of_ne L hz hw hne`. Take `⟨h2, -⟩` from `weierstrassP_add_and_deriv_add_of_ne L hz hmw hne'`. Rewrite `h2` using `[weierstrassP_neg, derivWeierstrassP_neg, ← sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ez` using `derivWeierstrassP_sq L z hz`. Establish `ew` using `derivWeierstrassP_sq L w hw`. Establish `hsub : ℘[L] z - ℘[L] w ≠ 0` using `sub_ne_zero.mpr hne`. Establish `hy : ℘'[L] z ^ 2 = ℘'[L] w ^ 2 + (℘[L] z - ℘[L] w) * (4 * (℘[L] z ^ 2 + ℘[L] z * ℘[L] w + ℘[L] w ^ 2) - L.g₂)`. Take the linear combination `ez - ew`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[h1, h2]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `4 * hy`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem _root_.GlobalTheory.weierstrassP_add_add_sub {z w : ℂ} (hz : z ∉ L.lattice)
     (hw : w ∉ L.lattice) (hne : ℘[L] z ≠ ℘[L] w) :
@@ -430,9 +422,9 @@ open scoped Topology in
 variable (L : PeriodPair) in
 
 /- English proof (translation)
-Introduce `h6`. Establish `ew` using `derivWeierstrassP_sq L w hw`. Rewrite `ew` using `[h]`. Establish `hΔ` using `_root_.GlobalTheory.latticeCurve_Δ_ne_zero L`. Rewrite `hΔ` using `[_root_.GlobalTheory.latticeCurve_Δ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hΔ` to reduce the goal to its premises. Establish `hg2 : L.g₂ = 12 * ℘[L] w ^ 2` using `by linear_combination -2 * h6`. Establish `hg3 : L.g₃ = -8 * ℘[L] w ^ 3` using `by linear_combination ew + 2 * ℘[L] w * h6`. Rewrite using `[hg2, hg3]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.weierstrassP_second_ne_zero {w : ℂ} (hw : w ∉ L.lattice)
     (h : ℘'[L] w = 0) : 6 * ℘[L] w ^ 2 - L.g₂ / 2 ≠ 0 := by

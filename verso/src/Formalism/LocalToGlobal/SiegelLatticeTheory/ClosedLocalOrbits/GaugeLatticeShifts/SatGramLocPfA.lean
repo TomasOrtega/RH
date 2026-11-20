@@ -14,9 +14,9 @@ section Deg
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible hpZ.irreducible`. Establish `hne : Ideal.comap (algebraMap ℤ (𝓞 K)) v.asIdeal ≠ ⊤` using `Ideal.comap_ne_top _ v.isPrime.ne_top`. Establish `hle : Ideal.span {(p : ℤ)} ≤ Ideal.comap (algebraMap ℤ (𝓞 K)) v.asIdeal`. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hv`. Prove the components needed by the constructor for the conclusion. Conclude with `hmax.eq_of_le hne hle`.
+Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem liesOver_natCast (p : ℕ) (hp : p.Prime)
     (v : HeightOneSpectrum (𝓞 K)) (hv : ((p : ℕ) : 𝓞 K) ∈ v.asIdeal) :
@@ -32,11 +32,11 @@ theorem liesOver_natCast (p : ℕ) (hp : p.Prime)
   exact hmax.eq_of_le hne hle
 
 /- English proof (translation)
-Use extensionality with `P`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq, Ideal.primesOver]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨v.isPrime, liesOver_natCast p hp v hv⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hP, hPo⟩`. Establish `h' : (p : ℤ) ∈ Ideal.span {(p : ℤ)}` using `Ideal.subset_span rfl`. Rewrite `h'` using `[hPo.over]`. Establish `h'' : algebraMap ℤ (𝓞 K) (p : ℤ) ∈ P` using `h'`. Establish `hmem : ((p : ℕ) : 𝓞 K) ∈ P` using `by simpa using h''`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : P ≠ ⊥`. Introduce `h`. Rewrite `hmem` using `[h, Ideal.mem_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast hmem)`. Conclude with `⟨⟨P, hP, hne⟩, hmem, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem image_places_primesOver (p : ℕ) (hp : p.Prime) :
     (fun v : HeightOneSpectrum (𝓞 K) => v.asIdeal) '' {v | ((p : ℕ) : 𝓞 K) ∈ v.asIdeal} =
@@ -58,9 +58,9 @@ theorem image_places_primesOver (p : ℕ) (hp : p.Prime) :
     exact ⟨⟨P, hP, hne⟩, hmem, rfl⟩
 
 /- English proof (translation)
-Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `hpI : (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime hpZ.ne_zero).2 hpZ`. Establish `hpM : (Ideal.span {(p : ℤ)}).IsMaximal` using `hpI.isMaximal (by rw [Ne, Ideal.span_singleton_eq_bot]; exact hpZ.ne_zero)`. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank (Ideal.span {(p : ℤ)}) (𝓞 K)`. Rewrite `hsum` using `[RingOfIntegers.rank, ← hs, ← Set.ncard_image_of_injective _ (fun v w h => HeightOneSpectrum.ext h), image_places_primesOver p hp, ← Nat.card_coe_set_eq, Nat.card_eq_fintype_card, Fintype.card_eq_sum_ones]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : ∀ q : (Ideal.span {(p : ℤ)}).primesOver (𝓞 K), 1 ≤ q.1.ramificationIdx ℤ * q.1.inertiaDeg ℤ`. Introduce and unpack `⟨q, hq, hql⟩`. Conclude with `Nat.mul_pos (Ideal.ramificationIdx_pos q ℤ) (Ideal.inertiaDeg_pos q ℤ)`. Establish `hall` using `(Finset.sum_eq_sum_iff_of_le (fun q _ => hle q)).1 hsum.symm ⟨v.asIdeal, v.isPrime, liesOver_natCast p hp v hv⟩ (Finset.mem_univ _)`. Conclude with `⟨Nat.dvd_one.1 ⟨_, hall⟩, Nat.dvd_one.1 ⟨_, hall.trans (mul_comm _ _)⟩⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ram_inertia_split (p : ℕ) (hp : p.Prime)
     (hs : {v : HeightOneSpectrum (𝓞 K) | ((p : ℕ) : 𝓞 K) ∈ v.asIdeal}.ncard = Module.finrank ℚ K)
@@ -84,9 +84,9 @@ theorem ram_inertia_split (p : ℕ) (hp : p.Prime)
   exact ⟨Nat.dvd_one.1 ⟨_, hall⟩, Nat.dvd_one.1 ⟨_, hall.trans (mul_comm _ _)⟩⟩
 
 /- English proof (translation)
-Use `haveI := liesOver_natCast p hp v hv`. Establish `h` using `Ideal.absNorm_eq_pow_inertiaDeg' v.asIdeal hp`. Establish `hf` using `(ram_inertia_split p hp hs v hv).2`. Establish `h2 : (Ideal.span {((p : ℕ) : ℤ)}).inertiaDeg' v.asIdeal = 1` using `by haveI : (Ideal.span {((p : ℕ) : ℤ)}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible haveI : v.asIdeal.IsMaximal := v.isMaximal`. Rewrite using `[Ideal.inertiaDeg'_eq_inertiaDeg, hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h2, pow_one]`. Rewrite using `[← h, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quot_split (p : ℕ) (hp : p.Prime)
     (hs : {v : HeightOneSpectrum (𝓞 K) | ((p : ℕ) : 𝓞 K) ∈ v.asIdeal}.ncard = Module.finrank ℚ K)
@@ -104,11 +104,11 @@ theorem card_quot_split (p : ℕ) (hp : p.Prime)
   rw [← h, Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
 /- English proof (translation)
-Use `v.isPrime` as an intermediate fact. Establish `hr : ((p : ℕ) : 𝓞 K) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `hmap : (Ideal.span {((p : ℕ) : ℤ)}).map (algebraMap ℤ (𝓞 K)) = Ideal.span {((p : ℕ) : 𝓞 K)}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hne : (Ideal.span {((p : ℕ) : ℤ)}).map (algebraMap ℤ (𝓞 K)) ≠ ⊥`. Rewrite using `[hmap, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hr`. Use `liesOver_natCast p hp v hv` as an intermediate fact. Establish `he` using `Ideal.IsDedekindDomain.ramificationIdx_eq_multiplicity (Ideal.span {((p : ℕ) : ℤ)}) v.asIdeal hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he` using `[hmap, (ram_inertia_split p hp hs v hv).1]`. Rewrite using `[v.intValuation_eq_exp_neg_multiplicity hr, ← he]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem intValuation_split (p : ℕ) (hp : p.Prime)
     (hs : {v : HeightOneSpectrum (𝓞 K) | ((p : ℕ) : 𝓞 K) ∈ v.asIdeal}.ncard = Module.finrank ℚ K)
@@ -131,13 +131,13 @@ theorem intValuation_split (p : ℕ) (hp : p.Prime)
 end Deg
 
 /- English proof (translation)
-Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `hvp` using `v.isPrime`. Establish `hvl : v.asIdeal.LiesOver (Ideal.span {(p : ℤ)})` using `liesOver_natCast p hp v hv`. Take `⟨⟨P, hPp, hPl⟩⟩ : Nonempty (v.asIdeal.primesOver (𝓞 E))` from `inferInstance`. Establish `hPZ : P.LiesOver (Ideal.span {(p : ℤ)})` using `Ideal.LiesOver.trans P v.asIdeal _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hP0 : P ≠ ⊥`. Introduce and unpack `rfl`. Establish `h0 : Ideal.span {(p : ℤ)} = ⊥`. Rewrite using `[hPZ.over]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective ℤ (𝓞 E))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hpZ.ne_zero (Ideal.span_singleton_eq_bot.1 h0)`. Establish `hPmem : ((p : ℕ) : 𝓞 E) ∈ P`. Establish `: (p : ℤ) ∈ P.under ℤ` using `by rw [← hPZ.over]; exact Ideal.mem_span_singleton_self _`. Simplify using `using this`. Take `⟨he, hf⟩` from `ram_inertia_split (K := E) p hp hs ⟨P, hPp, hP0⟩ hPmem`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `P.ramificationIdx ℤ = 1 at he`. Express the relevant statement in the definitionally equal form `P.inertiaDeg ℤ = 1 at hf`. Rewrite `he` using `[Ideal.ramificationIdx_tower (R := ℤ) v.asIdeal P]`. Rewrite `hf` using `[Ideal.inertiaDeg_tower (R := ℤ) v.asIdeal P]`. Conclude with `⟨Nat.eq_one_of_mul_eq_one_right he, Nat.eq_one_of_mul_eq_one_right hf⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ram_inertia_sub {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (p : ℕ) (hp : p.Prime)
@@ -165,15 +165,13 @@ theorem ram_inertia_sub {F E : Type} [Field F] [NumberField F] [Field E] [Number
   exact ⟨Nat.eq_one_of_mul_eq_one_right he, Nat.eq_one_of_mul_eq_one_right hf⟩
 
 /- English proof (translation)
-Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `hpI : (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime hpZ.ne_zero).2 hpZ`. Establish `hpM : (Ideal.span {(p : ℤ)}).IsMaximal` using `hpI.isMaximal (by rw [Ne, Ideal.span_singleton_eq_bot]; exact hpZ.ne_zero)`. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank (Ideal.span {(p : ℤ)}) (𝓞 F)`. Establish `hone : ∀ q : (Ideal.span {(p : ℤ)}).primesOver (𝓞 F), q.1.ramificationIdx ℤ * q.1.inertiaDeg ℤ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨q, hq, hql⟩`. Establish `hq0 : q ≠ ⊥`. Introduce and unpack `rfl`. Establish `h0 : Ideal.span {(p : ℤ)} = ⊥`. Rewrite using `[hql.over]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective ℤ (𝓞 F))`. Conclude with `hpZ.ne_zero (Ideal.span_singleton_eq_bot.1 h0)`. Establish `hqmem : ((p : ℕ) : 𝓞 F) ∈ q`. Establish `: (p : ℤ) ∈ q.under ℤ` using `by rw [← hql.over]; exact Ideal.mem_span_singleton_self _`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨h1, h2⟩` from `ram_inertia_sub (E := E) p hp hs ⟨q, hq, hq0⟩ hqmem`. Express the relevant statement in the definitionally equal form `q.ramificationIdx ℤ * q.inertiaDeg ℤ = 1`. Rewrite using `[h1, h2]`. Simplify using `only [hone, Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one] at hsum`. Rewrite `hsum` using `[RingOfIntegers.rank]`.
-
-Rewrite using `[← hsum, ← Set.ncard_image_of_injective _ (fun v w h => HeightOneSpectrum.ext h), image_places_primesOver p hp, ← Nat.card_coe_set_eq, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_sub {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (p : ℕ) (hp : p.Prime)
@@ -205,11 +203,11 @@ theorem split_sub {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
     image_places_primesOver p hp, ← Nat.card_coe_set_eq, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ p hp hs`. Establish `hF` using `split_sub (F := F) (E := E) p hp hs`. Use `⟨fun v hv => ⟨card_quot_split p hp hF v hv, ?_⟩, hF⟩` and prove the remaining obligations. Establish `h1` using `intValuation_split p hp hF v hv`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact h1`. Consider the case `(rw [← h1, ← HeightOneSpectrum.valuation_of_algebraMap (K := F), ← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']; congr 1; exact (map_natCast (algebraMap F (v.adicCompletion F)) p).symm)`. Consider the case `(rw [← h1, ← HeightOneSpectrum.valuation_of_algebraMap (K := F), ← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']; congr 1; simp; done)`. Consider the case `(rw [← h1, ← HeightOneSpectrum.valuation_of_algebraMap (K := F), ← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']; congr 1; norm_cast; done)`. Consider the case `(rw [← h1, ← HeightOneSpectrum.valuation_of_algebraMap (K := F), ← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']; simp; done)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [← h1, ← HeightOneSpectrum.valuation_of_algebraMap (K := F), ← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem split_prime_local_holds : SplitPrimeLoc := by
   intro F E _ _ _ _ _ p hp hs

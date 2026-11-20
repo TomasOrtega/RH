@@ -17,9 +17,9 @@ variable {A : Type u} [CommRing A] {X X' : Scheme.{u}} [X.Over (Spec (.of A))] {
   (h : i ≫ ProjSpace.toSpecBase A N = ψ ≫ (X ↘ Spec (.of A)))
 
 /- English proof (translation)
-Use `letI := baseAlgebra A hV`. Rewrite using `[← cancel_mono hV.fromSpec, Category.assoc, Category.assoc, IsAffineOpen.isoSpec_hom_fromSpec, morphismRestrict_ι]`. Establish `hc : pullback.snd (graph i ψ h) (overV (N` using `N) A hV) ≫ overV A hV = pullback.fst _ _ ≫ graph i ψ h := pullback.condition.symm`. Establish `hp` using `pasteIso_hom_snd (N := N) A hV`. Establish `hq : pullback.snd (pullback.snd (ProjSpace.toSpecBase A N) (X ↘ Spec (.of A))) hV.fromSpec ≫ hV.fromSpec = overV A hV ≫ pullback.snd _ _` using `pullback.condition.symm`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [embed, Category.assoc]`. Rewrite using `[reassoc_of% hp, hq, reassoc_of% hc, pullback.lift_snd, ← Category.assoc, restrictIso_hom_fst]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma embed_snd {V : X.Opens} (hV : IsAffineOpen V) :
     letI := baseAlgebra A hV
@@ -36,7 +36,7 @@ lemma embed_snd {V : X.Opens} (hV : IsAffineOpen V) :
   rw [reassoc_of% hp, hq, reassoc_of% hc, pullback.lift_snd, ← Category.assoc, restrictIso_hom_fst]
 
 /- English proof (translation)
-Substitute `hU` using the available equality. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 lemma app_eqToHom_apply {X X' : Scheme.{u}} (ψ : X' ⟶ X) {U U' : X.Opens} (hU : U' = U)
     {W W' : X'.Opens} (h1 : W = ψ ⁻¹ᵁ U') (h2 : W' = W) (b : Γ(X, U)) :
@@ -51,9 +51,9 @@ lemma app_eqToHom_apply {X X' : Scheme.{u}} (ψ : X' ⟶ X) {U U' : X.Opens} (hU
 attribute [local instance] algebraOfOver
 
 /- English proof (translation)
-Use `letI := overBase i ψ h hV`. Establish `s1 : algebraMap Γ(X, V) Γ((ψ ⁻¹ᵁ V).toScheme, ⊤) b = (ψ ∣_ V).appTop (V.topIso.inv b)`. Express the relevant statement in the definitionally equal form `(embed i ψ h hV ≫ pullback.snd _ _).appTop ((Scheme.ΓSpecIso (.of Γ(X, V))).inv b) = _`. Rewrite using `[embed_snd, Scheme.Hom.comp_appTop, CommRingCat.comp_apply, IsAffineOpen.isoSpec_hom_appTop, CommRingCat.comp_apply]`. Use `erw [Iso.inv_hom_id_apply]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[s1]`. Use `erw [morphismRestrict_appTop, Scheme.Opens.topIso_inv, CommRingCat.comp_apply]`. Use `(app_eqToHom_apply ψ (Scheme.Opens.ι_image_top V) _ _ b).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma algebraMap_overBase {V : X.Opens} (hV : IsAffineOpen V) (b : Γ(X, V)) :
     letI := overBase i ψ h hV
@@ -74,9 +74,9 @@ lemma algebraMap_overBase {V : X.Opens} (hV : IsAffineOpen V) (b : Γ(X, V)) :
 omit [X.Over (Spec (.of A))] in
 
 /- English proof (translation)
-Establish `e1 : (modulesAbMap (smulHom (M.restrict U.ι) a)).hom.app (op ⊤) y = restrictTop (X` using `U.toScheme) ⊤ a • y := rfl`. Establish `e2 : restrictTop (X` using `U.toScheme) ⊤ a = a := by`. Simplify using `[restrictTop]`. Both sides reduce to the same expression. Establish `e3 : (a • y : Γ(M.restrict U.ι, ⊤)) = ((U.ι.appIso ⊤).inv a • (@id Γ(M, U.ι ''ᵁ ⊤) y) : Γ(M, U.ι ''ᵁ ⊤))` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, e3, Scheme.Opens.ι_appIso, Iso.refl_inv]`. Conclude with `Scheme.Modules.map_smul M (eqToHom (Scheme.Opens.ι_image_top U).symm) a y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma smul_restrict_top (M : X'.Modules) (U : X'.Opens) (a : Γ(U.toScheme, ⊤))
     (y : Γ(M.restrict U.ι, ⊤)) :
@@ -113,7 +113,7 @@ def H0ToSections {V : X.Opens} (hV : IsAffineOpen V) (M : X'.Modules) :
       exact (smul_pushforward ψ M b _).symm }
 
 /- English proof (translation)
-Use `letI := overBase i ψ h hV`. Conclude with `(ConcreteCategory.bijective_of_isIso (M.presheaf.map (eqToHom (Scheme.Opens.ι_image_top (ψ ⁻¹ᵁ V)).symm).op)).comp (Sheaf.H.equiv₀ (modulesAb (M.restrict (ψ ⁻¹ᵁ V).ι)) isTerminalTop).bijective`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 lemma H0ToSections_bijective {V : X.Opens} (hV : IsAffineOpen V) (M : X'.Modules) :
     Function.Bijective (H0ToSections i ψ h hV M) := by
@@ -123,7 +123,7 @@ lemma H0ToSections_bijective {V : X.Opens} (hV : IsAffineOpen V) (M : X'.Modules
     (Sheaf.H.equiv₀ (modulesAb (M.restrict (ψ ⁻¹ᵁ V).ι)) isTerminalTop).bijective
 
 /- English proof (translation)
-Use `letI := overBase i ψ h hV`. Introduce `hfin`. Conclude with `Module.Finite.of_surjective (H0ToSections i ψ h hV M) (H0ToSections_bijective i ψ h hV M).2`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_sections_pushforward {V : X.Opens} (hV : IsAffineOpen V) (M : X'.Modules) :
     letI := overBase i ψ h hV

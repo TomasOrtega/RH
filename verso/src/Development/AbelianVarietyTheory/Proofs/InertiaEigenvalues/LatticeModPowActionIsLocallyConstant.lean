@@ -11,15 +11,13 @@ open scoped Pointwise
 namespace GlobalTheory.InertiaEigenvalues
 
 /- English proof (translation)
-Introduce `l _ G _ _ LL _ _ _ O _ _ hG A LA r hI x`. Take `⟨_, _, _, hTR, hO⟩` from `hG`. Use `haveI := hTR`. Use `haveI : CharZero LL := charZero_of_injective_algebraMap (algebraMap ℚ_[l] LL).injective`. Use `haveI := IsModuleTopology.topologicalAddGroup LL A.V`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c : LL := ((l : ℕ) : LL) ^ r with hc`. Establish `hc0 : c ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Establish `hT : IsOpen (LA.T : Set A.V)` using `GlobalTheory.Cyc.isOpen_of_fg_of_span_eq_top hO LA.T LA.fg LA.span`. Establish `hcT : IsOpen (c • (LA.T : Set A.V))` using `hT.smul₀ hc0`. Take `⟨t, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g0`. Use `⟨(fun g => A.ρ g t - A.ρ g0 t) ⁻¹' (c • (LA.T : Set A.V)), hcT.preimage ((A.cont _).sub continuous_const), ?_, ?_⟩` and prove the remaining obligations. Use `show A.ρ g0 t - A.ρ g0 t ∈ c • (LA.T : Set A.V)`. Rewrite using `[sub_self]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨0, LA.T.zero_mem, smul_zero c⟩`. Introduce `g hg`. Take `⟨w, hw, hwe⟩` from `hg`. Simplify using `only [actQ, Submodule.mapQ_apply]`. Rewrite using `[Submodule.Quotient.eq, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`.
-
-Use `⟨⟨w, hw⟩, Submodule.mem_top, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul, Submodule.coe_sub, actT, LinearMap.restrict_coe_apply, LinearMap.coe_restrictScalars]`. Rewrite using `[← algebraMap_smul LL ((l : O) ^ r) w, map_pow, map_natCast]`. Conclude with `hwe`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actQ_pow_isLocallyConstant : ∀ (l : ℕ) [Fact l.Prime] (G : Type) [Group G] [TopologicalSpace G] (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep G ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (r : ℕ) (hI : StableSub LA (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T)) (x : ↥LA.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T)), IsLocallyConstant fun g : G => actQ LA _ hI g x := by
   intro l _ G _ _ LL _ _ _ O _ _ hG A LA r hI x

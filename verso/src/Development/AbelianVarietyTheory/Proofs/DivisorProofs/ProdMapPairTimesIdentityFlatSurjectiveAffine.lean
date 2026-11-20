@@ -13,9 +13,9 @@ namespace GlobalTheory.CharKer.PmapTwo
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Establish `h1 : IsPullback (fst W B).left (snd W B).left W.hom B.hom` using `IsPullback.of_hasPullback W.hom B.hom`. Establish `h2 : IsPullback (fst W G).left (snd W G).left W.hom G.hom` using `IsPullback.of_hasPullback W.hom G.hom`. Use `IsPullback.of_right ?_ ?_ h1` and prove the remaining obligations. Rewrite using `[← Over.comp_left, whiskerLeft_fst, Over.w p]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, ← Over.comp_left, whiskerLeft_snd]`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_whiskerLeft_left (W : Over S) {G B : Over S} (p : G ⟶ B) :
     IsPullback (W ◁ p).left (snd W G).left (snd W B).left p.left := by
@@ -26,9 +26,9 @@ theorem isPullback_whiskerLeft_left (W : Over S) {G B : Over S} (p : G ⟶ B) :
   · rw [← Over.comp_left, ← Over.comp_left, whiskerLeft_snd]
 
 /- English proof (translation)
-Establish `h1 : IsPullback (snd B W).left (fst B W).left W.hom B.hom` using `(IsPullback.of_hasPullback B.hom W.hom).flip`. Establish `h2 : IsPullback (snd G W).left (fst G W).left W.hom G.hom` using `(IsPullback.of_hasPullback G.hom W.hom).flip`. Use `IsPullback.of_right ?_ ?_ h1` and prove the remaining obligations. Rewrite using `[← Over.comp_left, whiskerRight_snd, Over.w p]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, ← Over.comp_left, whiskerRight_fst]`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_whiskerRight_left {G B : Over S} (p : G ⟶ B) (W : Over S) :
     IsPullback (p ▷ W).left (fst G W).left (fst B W).left p.left := by
@@ -40,7 +40,7 @@ theorem isPullback_whiskerRight_left {G B : Over S} (p : G ⟶ B) (W : Over S) :
   · rw [← Over.comp_left, ← Over.comp_left, whiskerRight_fst]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [pmap2, pmap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prodMapPairTimesIdentity_eq_comp_whiskers {A A' : Over S} (q : A ⟶ A') (T : Over S) :
     pmap2 q T = (q ▷ (A ⊗ T)) ≫ (A' ◁ (q ▷ T)) := by
@@ -51,11 +51,11 @@ end GlobalTheory.CharKer.PmapTwo
 open GlobalTheory.CharKer.PmapTwo in
 
 /- English proof (translation)
-Introduce `S A A' T q h1 h2 h3`. Establish `hR` using `(isPullback_whiskerRight_left q (A ⊗ T)).flip`. Establish `hL` using `(isPullback_whiskerLeft_left A' (q ▷ T)).flip`. Establish `hR'` using `(isPullback_whiskerRight_left q T).flip`. Establish `a1 : Flat (q ▷ (A ⊗ T)).left` using `MorphismProperty.of_isPullback hR h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : Surjective (q ▷ (A ⊗ T)).left` using `MorphismProperty.of_isPullback hR h2`. Establish `a3 : IsAffineHom (q ▷ (A ⊗ T)).left` using `MorphismProperty.of_isPullback hR h3`. Establish `b1 : Flat (q ▷ T).left` using `MorphismProperty.of_isPullback hR' h1`. Establish `b2 : Surjective (q ▷ T).left` using `MorphismProperty.of_isPullback hR' h2`. Establish `b3 : IsAffineHom (q ▷ T).left` using `MorphismProperty.of_isPullback hR' h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : Flat (A' ◁ (q ▷ T)).left` using `MorphismProperty.of_isPullback hL b1`. Establish `c2 : Surjective (A' ◁ (q ▷ T)).left` using `MorphismProperty.of_isPullback hL b2`. Establish `c3 : IsAffineHom (A' ◁ (q ▷ T)).left` using `MorphismProperty.of_isPullback hL b3`. Rewrite using `[prodMapPairTimesIdentity_eq_comp_whiskers, Over.comp_left]`. Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.CharKer.pmap2_flat_surjective_isAffineHom :
     ∀ (S : Scheme.{0}) (A A' T : Over S) (q : A ⟶ A'), Flat q.left → Surjective q.left → IsAffineHom q.left →

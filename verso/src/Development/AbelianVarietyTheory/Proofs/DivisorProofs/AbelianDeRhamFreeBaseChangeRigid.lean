@@ -12,7 +12,7 @@ set_option autoImplicit false
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hH`. Take `⟨⟨hfree, -, hbc⟩, hcrys⟩` from `GlobalTheory.Published.abelianDeRhamStructure_crystallineDeRham_of_hypotheses GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations hH`. Establish `hF : GlobalTheory.Published.AbelianDeRham.Free` using `GlobalTheory.AbelianPrim.abelianDeRham_free hfree`. Conclude with `⟨hF, hbc, GlobalTheory.Published.AbelianDeRham.rigid_of_free_of_crystallineDeRham hF hcrys⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem abelianDeRham_free_baseChange_rigid : GlobalTheory.Published.AbelianHodgeDeRham →
     GlobalTheory.Published.AbelianDeRham.Free ∧ GlobalTheory.Published.AbelianDeRham.BaseChange ∧

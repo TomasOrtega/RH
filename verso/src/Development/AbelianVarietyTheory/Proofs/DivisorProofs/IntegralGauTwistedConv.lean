@@ -10,27 +10,25 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
   [BorelSpace V] {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] {J : V ≃ₗᵢ[ℝ] V}
 
 /- English proof (translation)
-Use `set m : V := (1 / 2 : ℝ) • (y - a) with hm`. Establish `hym : y - a = m + m`. Rewrite using `[hm, ← add_smul]`. Evaluate the numerical expressions. Establish `hself : ∀ x : V, ⟪x, J x⟫ = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use `omJ_skew hJ x x` as an intermediate fact. Unfold `omJ at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsk : ∀ x z : V, ⟪z, J x⟫ = -⟪x, J z⟫` using `fun x z => by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `omJ_skew hJ x z` as an intermediate fact. Unfold `omJ at this`. Conclude with `this`. Establish `hpt : ∀ v : V, gau (v + m) * (gau (y - (v + m + a)) * cexp (π * I * ((omJ J (v + m) a + omJ J (v + m + a) y : ℝ) : ℂ))) = cexp (-(π : ℂ) * ‖v‖ ^ 2 + (π * I) * ⟪J (a + y), v⟫) * cexp (-(π : ℂ) * ‖m‖ ^ 2)`. Introduce `v`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : y - (v + m + a) = m - v`. Establish `hy : y = m + m + a` using `by rw [← hym]; abel`. Rewrite using `[hy]`. Normalize the expressions using the abelian group laws. Establish `h1 : ‖v + m‖ ^ 2 + ‖y - (v + m + a)‖ ^ 2 = 2 * ‖v‖ ^ 2 + 2 * ‖m‖ ^ 2`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1, norm_add_sq_real, norm_sub_sq_real, real_inner_comm m v]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : omJ J (v + m) a + omJ J (v + m + a) y = ⟪J (a + y), v⟫`. Unfold `omJ`. Rewrite using `[real_inner_comm v (J (a + y)), hm]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_add, inner_add_left, inner_add_right, real_inner_smul_left, inner_sub_left]`. Establish `h3` using `hsk a y`. Establish `h4` using `hself a`. Establish `h5` using `hself y`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1c : ((‖y - (v + m + a)‖ : ℝ) : ℂ) ^ 2 = 2 * (‖v‖ : ℂ) ^ 2 + 2 * (‖m‖ : ℂ) ^ 2 - (‖v + m‖ : ℂ) ^ 2`. Establish `h6 : ‖y - (v + m + a)‖ ^ 2 = 2 * ‖v‖ ^ 2 + 2 * ‖m‖ ^ 2 - ‖v + m‖ ^ 2` using `by linarith`. Conclude with `h6` after adjusting the coercions. Simplify using `only [gau, ← Complex.exp_add]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[h1c, h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hshift` using `integral_add_right_eq_self (μ := (volume : Measure V)) (fun u => gau u * (gau (y - (u + a)) * cexp (π * I * ((omJ J u a + omJ J (u + a) y : ℝ) : ℂ)))) m`. Rewrite using `[← hshift]`. Simplify using `only [hpt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : 0 < (π : ℂ).re` using `by simpa using Real.pi_pos`. Establish `hπ : (π : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Rewrite using `[integral_mul_const, GaussianFourier.integral_cexp_neg_mul_sq_norm_add hb, div_self hπ, Complex.one_cpow, one_mul, LinearIsometryEquiv.norm_map, gau, gau, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Establish `h3 : ‖m‖ ^ 2 = ‖a‖ ^ 2 / 2 + ‖y‖ ^ 2 / 2 - ‖a + y‖ ^ 2 / 4`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hm, norm_smul, Real.norm_eq_abs, abs_of_pos (by norm_num : (0 : ℝ) < 1 / 2), mul_pow, norm_sub_sq_real, norm_add_sq_real, real_inner_comm y a]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3c : (‖m‖ : ℂ) ^ 2 = (‖a‖ : ℂ) ^ 2 / 2 + (‖y‖ : ℂ) ^ 2 / 2 - (‖a + y‖ : ℂ) ^ 2 / 4`. Conclude with `h3` after adjusting the coercions. Rewrite using `[h3c, mul_pow, I_sq]`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_gau_twisted_conv (hJ : ∀ x, J (J x) = -x) (a y : V) :
     ∫ u, gau u * (gau (y - (u + a)) * cexp (π * I * ((omJ J u a + omJ J (u + a) y : ℝ) : ℂ))) = gau a * gau y := by
@@ -91,29 +89,27 @@ theorem integral_gau_twisted_conv (hJ : ∀ x, J (J x) = -x) (a y : V) :
   ring
 
 /- English proof (translation)
-Establish `hself : ∀ x : V, omJ J x x = 0` using `fun x => by`. Use `omJ_skew hJ x x` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `set F : V → V → B := fun u z => (gau u * (gau (z - (u + a)) * cexp (π * I * ((omJ J u a + omJ J (u + a) z : ℝ) : ℂ)))) • ρ z f with hF`. Establish `hin : ∀ u, gau u • ρ u (ρ a (proj h f)) = ∫ z, F u z`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Rewrite using `[h.2.1 u a, proj_apply h f, ← (ρ (u + a)).integral_comp_comm (h.integrable f), ← integral_smul, ← integral_smul, ← integral_add_right_eq_self (F u) (u + a)]`. Use `congr 1`. Use extensionality with `w`. Establish `hw : omJ J (u + a) (w + (u + a)) = omJ J (u + a) w`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `hself (u + a)`. Unfold `omJ at h0 ⊢`. Rewrite using `[map_add, inner_add_right, h0, add_zero]`. Use `show _ = (gau u * (gau (w + (u + a) - (u + a)) * cexp (π * I * ((omJ J u a + omJ J (u + a) (w + (u + a)) : ℝ) : ℂ)))) • ρ (w + (u + a)) f`. Rewrite using `[add_sub_cancel_right, hw, add_comm w (u + a), map_smul, h.2.1 (u + a) w, smul_smul, smul_smul, smul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Use `push_cast`. Rewrite using `[mul_add, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `he : ∀ r : ℝ, ‖cexp (π * I * (r : ℂ))‖ = 1` using `fun r => by`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules. Establish `hnorm : ∀ u z, ‖F u z‖ = ‖gau u‖ * (‖gau (z - (u + a))‖ * ‖f‖)`. Introduce `u z`. Simplify using `only [hF, norm_smul, norm_mul, h.2.2.1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he, mul_one, mul_assoc]`. Establish `hom : Continuous fun p : V × V => omJ J p.1 p.2`. Unfold `omJ`. Conclude with `continuous_fst.inner (J.continuous.comp continuous_snd)`. Establish `hcont : Continuous (Function.uncurry F)` using `by show Continuous fun p : V × V => (gau p.1 * (gau (p.2 - (p.1 + a)) * cexp (π * I * ((omJ J p.1 a + omJ J (p.1 + a) p.2 : ℝ) : ℂ)))) • ρ p.2 f`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Continuous.smul ?_ ((h.2.2.2 f).comp continuous_snd)` and prove the remaining obligations. Use `(continuous_gau.comp continuous_fst).mul ((continuous_gau.comp (continuous_snd.sub (continuous_fst.add continuous_const))).mul ?_)` and prove the remaining obligations. Use `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp ?_))` and prove the remaining obligations. Conclude with `(hom.comp (continuous_fst.prodMk continuous_const)).add (hom.comp ((continuous_fst.add continuous_const).prodMk continuous_snd))`. Establish `hint : Integrable (Function.uncurry F) ((volume : Measure V).prod volume)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[integrable_prod_iff hcont.aestronglyMeasurable]`. Prove the components needed by the constructor for the conclusion. Use `Filter.Eventually.of_forall fun u => ?_` and prove the remaining obligations. Establish `hm : AEStronglyMeasurable (fun z => Function.uncurry F (u, z)) volume` using `(hcont.comp (continuous_const.prodMk continuous_id)).aestronglyMeasurable`. Rewrite using `[← integrable_norm_iff hm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.uncurry_apply_pair, hnorm]`. Conclude with `(((integrable_gau (V := V)).norm.comp_sub_right (u + a)).mul_const ‖f‖).const_mul ‖gau u‖`. Simplify using `only [Function.uncurry_apply_pair, hnorm]`. Simplify using `only [integral_const_mul, integral_mul_const, integral_sub_right_eq_self (‖gau ·‖)]`. Conclude with `(integrable_gau (V := V)).norm.mul_const _`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[proj_apply h (ρ a (proj h f))]`. Repeatedly rewrite using `[hin]`. Rewrite using `[integral_integral_swap hint]`. Establish `hinner : ∀ z, ∫ u, F u z = (gau a * gau z) • ρ z f`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [hF]`. Rewrite using `[integral_smul_const, integral_gau_twisted_conv hJ a z]`. Repeatedly rewrite using `[hinner]`. Rewrite using `[proj_apply h f, ← integral_smul]`. Use `congr 1`.
-
-Use extensionality with `z`. Rewrite using `[smul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_heis_proj {ρ : V → B →L[ℂ] B} (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (a : V) (f : B) :
     proj h (ρ a (proj h f)) = gau a • proj h f := by

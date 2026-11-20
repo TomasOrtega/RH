@@ -6,11 +6,11 @@ noncomputable section
 namespace PositivityTheory.KB
 
 /- English proof (translation)
-Establish `hbd : ∀ (G : Type) [Group G] (m : ℕ), bd G m = SimplicialChains.ibd G m` using `fun _ _ _ => rfl`. Establish `hcm : ∀ (G H : Type) [Group G] [Group H] (f : G →* H) (m : ℕ), cmap f m = SimplicialChains.icmap f m` using `fun _ _ _ _ _ _ => rfl`. Use `⟨fun G _ m z => ?_, fun G H _ _ f m z => ?_, fun G H K _ _ _ f g m z => ?_, fun G _ g m z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hbd, hbd]`. Conclude with `SimplicialChains.ibd_ibd m z`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbd, hbd, hcm, hcm]`. Conclude with `SimplicialChains.ibd_icmap f m z`. Rewrite using `[hcm, hcm, hcm]`. Conclude with `SimplicialChains.icmap_comp f g m z`. Unfold `IsBd`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `IsCyc at hz`. Rewrite `hz`, the goal using `[hbd]`. Rewrite using `[hcm]`. Conclude with `SimplicialChains.conj_bd g m z hz`.
+A detailed English derivation is pending.
 -/
 theorem sChain_of : SChain := by
   have hbd : ∀ (G : Type) [Group G] (m : ℕ), bd G m = SimplicialChains.ibd G m := fun _ _ _ => rfl

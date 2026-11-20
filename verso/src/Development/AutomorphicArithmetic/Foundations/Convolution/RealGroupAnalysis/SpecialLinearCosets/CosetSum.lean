@@ -6,27 +6,27 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTh
 open scoped Classical
 
 /- English proof (translation)
-Introduce `G _ _ _ _ U U' hle hU hU'`. Use `haveI : CompactSpace U := isCompact_iff_compactSpace.mp hU`. Establish `hopen : IsOpen ((U'.subgroupOf U : Subgroup U) : Set U)` using `hU'.preimage continuous_subtype_val`. Use `haveI : Finite (U ⧸ U'.subgroupOf U) := Subgroup.quotient_finite_of_isOpen _ hopen`. Use `haveI : Finite (Quotient (QuotientGroup.rightRel (U'.subgroupOf U))) := Finite.of_equiv _ (QuotientGroup.quotientRightRelEquivQuotientLeftRel (U'.subgroupOf U)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `letI : Fintype (Quotient (QuotientGroup.rightRel (U'.subgroupOf U))) := Fintype.ofFinite _`. Set `mk : U → Quotient (QuotientGroup.rightRel (U'.subgroupOf U))` to `fun u => Quotient.mk _ u`. Set `r : Quotient (QuotientGroup.rightRel (U'.subgroupOf U)) → G` to `fun q => ((Quotient.out q : U) : G)`. Establish `hrU : ∀ q, r q ∈ U` using `fun q => (Quotient.out q : U).2`. Establish `hinj : Function.Injective r`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b h`. Establish `: (Quotient.out a : U) = Quotient.out b` using `Subtype.ext h`. Rewrite using `[← Quotient.out_eq a, ← Quotient.out_eq b, this]`. Establish `key : ∀ (u : U) q, (u : G) * (r q)⁻¹ ∈ U' ↔ q = mk u`. Introduce `u q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : mk (Quotient.out q) = q` using `Quotient.out_eq q`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h1]`. Use `Quotient.sound ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `QuotientGroup.rightRel _ _ _`. Rewrite using `[QuotientGroup.rightRel_apply]`. Express the relevant statement in the definitionally equal form `((u * (Quotient.out q)⁻¹ : U) : G) ∈ U'`. Simplify `h` using `[r]`. Introduce `h`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h2 : mk (Quotient.out q) = mk u` using `h1.trans h`. Establish `h3` using `Quotient.exact h2`. Express the relevant statement in the definitionally equal form `QuotientGroup.rightRel _ _ _ at h3`. Rewrite `h3` using `[QuotientGroup.rightRel_apply]`. Establish `h4 : ((u * (Quotient.out q)⁻¹ : U) : G) ∈ U'` using `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `h4` using `[r]`. Use `⟨Finset.univ.image r, ⟨r (mk 1), Finset.mem_image_of_mem _ (Finset.mem_univ _)⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.mp hg`. Conclude with `hrU q`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[Finset.sum_image (fun a _ b _ h => hinj h)]`. Distinguish the cases in `hx : x ∈ U`. Establish `h1 : ind U x = 1` using `by simp [ind, Set.indicator, hx]`. Rewrite using `[h1, Finset.sum_eq_single (mk ⟨x, hx⟩)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: x * (r (mk ⟨x, hx⟩))⁻¹ ∈ U'` using `(key ⟨x, hx⟩ _).mpr rfl`. Simplify using `[ind, Set.indicator, this]`. Introduce `q _ hq`. Establish `: x * (r q)⁻¹ ∉ U'` using `fun h => hq ((key ⟨x, hx⟩ q).mp h)`. Simplify using `[ind, Set.indicator, this]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `h1 : ind U x = 0` using `by simp [ind, Set.indicator, hx]`. Rewrite using `[h1]`. Use `symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Establish `: x * (r q)⁻¹ ∉ U'` using `fun h => hx (by`. Use `U.mul_mem (hle h) (hrU q)` as an intermediate fact. Simplify using `using this)`. Simplify using `[ind, Set.indicator, this]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.I.cosetSum :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] (U U' : Subgroup G), U' ≤ U → IsCompact (U : Set G) → IsOpen (U' : Set G) →

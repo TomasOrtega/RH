@@ -12,20 +12,18 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 open NumberField MeasureTheory ReciprocityTheory.MultiplicativeHeights
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨n, rfl | rfl⟩ := Int.eq_nat_or_neg e <;> simp [zpow_neg]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hint_zpow_split {F : Type*} [Field F] (x : F) (e : ℤ) :
     x ^ e = x ^ e.toNat / x ^ (-e).toNat := by
   obtain ⟨n, rfl | rfl⟩ := Int.eq_nat_or_neg e <;> simp [zpow_neg]
 
 /- English proof (translation)
-Distinguish the cases in `hfin : (Function.mulSupport fun p => ∏ᶠ (_ : p ∈ S), algebraMap R Fr (g p) ^ e p).Finite`. Use `⟨hfin.toFinset, fun p hp => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hp` using `[Set.Finite.mem_toFinset, Function.mem_mulSupport]`. Distinguish the cases in `hpS : p ∈ S`. Conclude with `⟨hpS, fun h0 => hp (by simp [hpS, h0])⟩`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `(hp (by simp [hpS])).elim`. Rewrite using `[finprod_eq_prod _ hfin, map_prod, map_prod, ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Set.Finite.mem_toFinset, Function.mem_mulSupport]`. Establish `hpS : p ∈ S`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hp (by simp [h])`. Rewrite using `[finprod_eq_if, if_pos hpS, map_pow, map_pow]`. Conclude with `hint_zpow_split _ _`. Use `⟨∅, by simp, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[finprod_of_infinite_mulSupport hfin]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hint_fp_split {R Fr ι : Type*} [CommRing R] [Field Fr] [Algebra R Fr] (S : Set ι)
     (g : ι → R) (e : ι → ℤ) :
@@ -57,9 +55,7 @@ def HintMH {R : Type*} [CommSemiring R] {D n : ℕ} (q : MvPolynomial (Fin (D + 
   ∃ α : Fin (D + 1) → ℕ, α 0 = 0 ∧ IsMultiHomogeneous α q
 
 /- English proof (translation)
-Use `⟨0, rfl, fun s hs b => ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_one]`. Use `split_ifs at hs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
-
-Conclude with `absurd rfl hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hintMH_one {R : Type*} [CommSemiring R] {D n : ℕ} :
     HintMH (1 : MvPolynomial (Fin (D + 1) × Fin n) R) := by
@@ -71,7 +67,7 @@ theorem hintMH_one {R : Type*} [CommSemiring R] {D n : ℕ} :
   · exact absurd rfl hs
 
 /- English proof (translation)
-Take `⟨α, h0, hα⟩` from `hq`. Use `⟨α, h0, fun s hs b => hα s ?_ b⟩` and prove the remaining obligations. Rewrite `hs` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_C_mul]`. Conclude with `MvPolynomial.mem_support_iff.mpr (right_ne_zero_of_mul hs)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hintMH_C_mul {R : Type*} [CommSemiring R] {D n : ℕ} (k : R)
     {q : MvPolynomial (Fin (D + 1) × Fin n) R} (hq : HintMH q) :
@@ -82,9 +78,9 @@ theorem hintMH_C_mul {R : Type*} [CommSemiring R] {D n : ℕ} (k : R)
   exact MvPolynomial.mem_support_iff.mpr (right_ne_zero_of_mul hs)
 
 /- English proof (translation)
-Take `⟨α, h0, hα⟩` from `hq`. Take `⟨α', h0', hα'⟩` from `hq'`. Use `⟨α + α', by simp [h0, h0'], fun s hs b => ?_⟩` and prove the remaining obligations. Use `open scoped Pointwise in`. Establish `hsub : (q * q').support ⊆ q.support + q'.support` using `MvPolynomial.support_mul ..`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, a', ha', rfl⟩` from `Finset.mem_add.mp (hsub hs)`. Simplify using `[Finset.sum_add_distrib, hα a ha b, hα' a' ha' b]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hintMH_mul {R : Type*} [CommSemiring R] {D n : ℕ}
     {q q' : MvPolynomial (Fin (D + 1) × Fin n) R} (hq : HintMH q) (hq' : HintMH q') :
@@ -99,9 +95,9 @@ theorem hintMH_mul {R : Type*} [CommSemiring R] {D n : ℕ}
   simp [Finset.sum_add_distrib, hα a ha b, hα' a' ha' b]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `hintMH_one`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Conclude with `hintMH_mul ih hq`.
+A detailed English derivation is pending.
 -/
 theorem hintMH_pow {R : Type*} [CommSemiring R] {D n : ℕ}
     {q : MvPolynomial (Fin (D + 1) × Fin n) R} (hq : HintMH q) (m : ℕ) : HintMH (q ^ m) := by
@@ -114,7 +110,7 @@ theorem hintMH_pow {R : Type*} [CommSemiring R] {D n : ℕ}
     exact hintMH_mul ih hq
 
 /- English proof (translation)
-Conclude with `Finset.prod_induction _ (fun x => HintMH x) (fun a b ha hb => hintMH_mul ha hb) hintMH_one (fun p hp => hintMH_pow (hq p hp) (m p))`.
+A detailed English derivation is pending.
 -/
 theorem hintMH_prod {R ι : Type*} [CommSemiring R] {D n : ℕ} (s : Finset ι)
     (q : ι → MvPolynomial (Fin (D + 1) × Fin n) R) (m : ι → ℕ) (hq : ∀ p ∈ s, HintMH (q p)) :
@@ -123,7 +119,7 @@ theorem hintMH_prod {R ι : Type*} [CommSemiring R] {D n : ℕ} (s : Finset ι)
     (fun p hp => hintMH_pow (hq p hp) (m p))
 
 /- English proof (translation)
-Take `⟨α, h0, hα⟩` from `hq`. Conclude with `⟨α, h0, fun s hs b => hα s (MvPolynomial.support_map_subset φ q hs) b⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hintMH_map {K : Type*} [Field K] {D n : ℕ} {q : MvPolynomial (Fin (D + 1) × Fin n) K}
     (hq : HintMH q) (φ : K →+* ℂ) : HintMH (MvPolynomial.map φ q) := by
@@ -142,7 +138,7 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hint_evT_eq (sg : K →+* ℂ) (t0 : Fin (d.N + 1) → ℂ)
     (z : ReciprocityTheory.MultiplicativeHeights.BlockSphere d.D (d.N + 1)) (q : KTp K d.D d.N) :
@@ -151,7 +147,7 @@ theorem hint_evT_eq (sg : K →+* ℂ) (t0 : Fin (d.N + 1) → ℂ)
   rfl
 
 /- English proof (translation)
-Take `⟨s, hs, heq⟩` from `hint_fp_split (Fr := KTf K d.D d.N) d.HtOne d.gen e`. Establish `hmh : ∀ p ∈ s, HintMH (d.gen p)` using `fun p hp => by`. Take `⟨hp1, hp2⟩` from `hs p hp`. Conclude with `⟨_, by simp, (d.good_primes_properties hd h c).2.1 p hp1 (he p hp1 hp2)⟩`. Conclude with `⟨_, _, hintMH_prod s _ _ hmh, hintMH_prod s _ _ hmh, heq⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem hint_good_split (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (e : Ideal (KTp K d.D d.N) → ℤ)
     (he : ∀ p ∈ d.HtOne, e p ≠ 0 → ∃ w, w ∈ d.GoodP c p) :
@@ -166,7 +162,7 @@ theorem hint_good_split (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (e : Ideal (KTp K 
   exact ⟨_, _, hintMH_prod s _ _ hmh, hintMH_prod s _ _ hmh, heq⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `hp` to reduce the goal to its premises. Simplify using `[hne]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hint_good_of_ne (c : ι) (p : Ideal (KTp K d.D d.N)) {f : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ) → ℤ}
     (hp : (∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.GoodP c p), f w) ≠ 0) :
@@ -177,7 +173,7 @@ theorem hint_good_of_ne (c : ι) (p : Ideal (KTp K d.D d.N)) {f : AddValuation (
   simp [hne]
 
 /- English proof (translation)
-Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hS, finprod_mem_eq_finite_toFinset_prod _ hS, norm_prod, Real.log_prod]`. Introduce `x hx`. Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Conclude with `norm_ne_zero_iff.mpr (hf x hx)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hint_log_finprod {α : Type*} (S : Set α) (hS : S.Finite) (f : α → ℂ)
     (hf : ∀ x ∈ S, f x ≠ 0) :
@@ -189,23 +185,19 @@ theorem hint_log_finprod {α : Type*} (S : Set α) (hS : S.Finite) (f : α → �
   exact norm_ne_zero_iff.mpr (hf x hx)
 
 /- English proof (translation)
-Use `letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Use `haveI : FiniteDimensional (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.omS_finite hd h c).1`. Take `⟨κ, hκ, hN⟩` from `(d.norm_factorization hd h).1 c g hg`. Take `⟨a, b, ha, hb, hsplit⟩` from `d.hint_good_split hd h c _ (fun p _ hp => d.hint_good_of_ne c p hp)`. Rewrite `hN` using `[hsplit]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hNm0 : Algebra.norm (KTf K d.D d.N) (algebraMap (Ω c) (OmS (Ω c) d.D d.N) g) ≠ 0` using `Algebra.norm_ne_zero_iff.2 ((map_ne_zero_iff _ (algebraMap (Ω c) _).injective).2 hg)`. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Rewrite `hN` using `[map_zero, div_zero, mul_zero]`. Conclude with `hNm0 hN`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `hN` using `[map_zero, zero_div, mul_zero]`. Conclude with `hNm0 hN`. Use `set a' : KTp K d.D d.N := MvPolynomial.C κ * a with ha'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hkey : Algebra.norm (KTf K d.D d.N) (algebraMap (Ω c) (OmS (Ω c) d.D d.N) g) * algebraMap (KTp K d.D d.N) (KTf K d.D d.N) b = algebraMap (KTp K d.D d.N) (KTf K d.D d.N) a'`. Establish `hbne : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) b ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 hb0`. Rewrite using `[hN, ha', map_mul, ← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`. Clear the denominators using the available nonvanishing facts. Establish `hmapb : MvPolynomial.map sg b ≠ 0` using `(map_ne_zero_iff _ (MvPolynomial.map_injective sg sg.injective)).2 hb0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmapa : MvPolynomial.map sg a' ≠ 0` using `(map_ne_zero_iff _ (MvPolynomial.map_injective sg sg.injective)).2 (mul_ne_zero (by simpa using hκ) ha0)`. Establish `hn : 0 < d.N + 1` using `Nat.succ_pos _`. Take `⟨βb, hβb0, hβb⟩` from `hintMH_map hb sg`. Take `⟨βa, hβa0, hβa⟩` from `hintMH_map (hintMH_C_mul κ ha) sg`. Establish `hIa` using `hint_logInt_tail hn hmapa hβa hβa0 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hIb` using `hint_logInt_tail hn hmapb hβb hβb0 0`. Use `(hIa.sub hIb).congr ?_` and prove the remaining obligations. Use `filter_upwards [d.norm_at_sg hd h c sg, hint_ae_tail hn hmapb hβb hβb0 0] with z hz hbz`. Take `⟨hfin, -, hcl1, -⟩` from `hz`. Establish `hbz' : d.evT sg 0 (d.tOf z) b ≠ 0` using `by rw [hint_evT_eq]; exact hbz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hprod` using `hcl1 g a' b 0 hg hb0 hkey hbz'`. Establish `hPg : ∀ P ∈ d.ST c sg (d.tOf z), P g ≠ 0` using `fun P _ => (map_ne_zero_iff P P.injective).2 hg`. Establish `hprod0 : (∏ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg (d.tOf z)), P g) ≠ 0`. Rewrite using `[finprod_mem_eq_finite_toFinset_prod _ hfin]`. Conclude with `Finset.prod_ne_zero_iff.2 fun P hP => hPg P (hfin.mem_toFinset.1 hP)`.
-
-Establish `haz : d.evT sg 0 (d.tOf z) a' ≠ 0`. Introduce `h0`. Rewrite `hprod` using `[h0, zero_div]`. Conclude with `hprod0 hprod.symm`. Simplify using `only [Pi.sub_apply]`.
-
-Rewrite using `[hint_log_finprod _ hfin _ hPg, ← hprod, norm_div, Real.log_div (norm_ne_zero_iff.2 haz) (norm_ne_zero_iff.2 hbz'), hint_evT_eq, hint_evT_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hint_intNorm (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (sg : K →+* ℂ) (g : Ω c) (hg : g ≠ 0) :
     Integrable (fun z : ReciprocityTheory.MultiplicativeHeights.BlockSphere d.D (d.N + 1) =>
@@ -262,9 +254,9 @@ theorem hint_intNorm (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (sg : K →+* ℂ) (g
 
 variable {d} in
 /- English proof (translation)
-Establish `h1` using `hd.finrank_one c G`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨g, hg⟩ : 𝒜 c G) (by simpa using hg0)).mp h1 ⟨f, hf⟩`. Establish `hex : ∃ a : Ω c, f = a • g` using `⟨a, by simpa using (congrArg Subtype.val ha).symm⟩`. Unfold `ratio`. Rewrite using `[dif_pos hex]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hex.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem hint_line (hd : d.AxH 𝒜) {c : ι} {G : WT} {f g : A c} (hg : g ∈ 𝒜 c G) (hg0 : g ≠ 0)
     (hf : f ∈ 𝒜 c G) : f = ratio (Ω := Ω c) f g • g := by
@@ -278,9 +270,9 @@ theorem hint_line (hd : d.AxH 𝒜) {c : ι} {G : WT} {f g : A c} (hg : g ∈ �
 
 variable {d} in
 /- English proof (translation)
-Establish `hex : ∃ a : Ω c, g = a • g` using `⟨1, (one_smul _ _).symm⟩`. Unfold `ratio`. Rewrite using `[dif_pos hex]`. Establish `h` using `hex.choose_spec`. Establish `h2 : (hex.choose - 1) • g = 0` using `by rw [sub_smul, one_smul, ← h, sub_self]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `smul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `sub_eq_zero.mp h3`. Conclude with `absurd h3 hg0`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem hint_ratio_self (hd : d.AxH 𝒜) {c : ι} {G : WT} {g : A c} (hg : g ∈ 𝒜 c G)
     (hg0 : g ≠ 0) : ratio (Ω := Ω c) g g = 1 := by
@@ -297,7 +289,7 @@ noncomputable def hintU (c : ι) (P : Ω c →+* ℂ) : EuclideanSpace ℂ (Fin 
   WithLp.toLp 2 (fun j => P (ratio (Ω := Ω c) (d.w j c) (d.w (d.jc c) c)))
 
 /- English proof (translation)
-Establish `hr : ratio (Ω` using `Ω c) (d.w (d.jc c) c) (d.w (d.jc c) c) = 1 := hint_ratio_self hd (hd.w_mem _ c) (hd.w_base c)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem hint_one_le_U (hd : d.AxH 𝒜) (c : ι) (P : Ω c →+* ℂ) : 1 ≤ ‖d.hintU c P‖ := by
   have hr : ratio (Ω := Ω c) (d.w (d.jc c) c) (d.w (d.jc c) c) = 1 :=
@@ -306,9 +298,7 @@ theorem hint_one_le_U (hd : d.AxH 𝒜) (c : ι) (P : Ω c →+* ℂ) : 1 ≤ �
     _ ≤ ‖d.hintU c P‖ := PiLp.norm_apply_le _ _
 
 /- English proof (translation)
-Establish `hl` using `hint_line hd (hd.w_mem (d.jc c) c) (hd.w_base c) (hd.w_mem j c)`. Distinguish the cases in `h0 : ratio (Ω := Ω c) (d.w j c) (d.w (d.jc c) c) = 0`. Use `conv_lhs => rw [hl, h0, zero_smul, hd.nrm_zero]`. Simplify using `[h0]`. Use `conv_lhs => rw [hl]`.
-
-Conclude with `hd.nrm_smul c P _ (hd.w_mem _ c) (hd.w_base c) h0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hint_nrm_w (hd : d.AxH 𝒜) (c : ι) (P : Ω c →+* ℂ) (j : Fin (d.N + 1)) :
     d.nrm c d.wL (d.w j c) P =
@@ -321,9 +311,9 @@ theorem hint_nrm_w (hd : d.AxH 𝒜) (c : ι) (P : Ω c →+* ℂ) (j : Fin (d.N
     exact hd.nrm_smul c P _ (hd.w_mem _ c) (hd.w_base c) h0
 
 /- English proof (translation)
-Establish `hn : 0 ≤ d.nrm c d.wL (d.w (d.jc c) c) P` using `(hd.nrm_pos c P (hd.w_mem _ c) (hd.w_base c)).le`. Establish `hs : ∑ j, d.nrm c d.wL (d.w j c) P ^ 2 = (∑ j, ‖P (ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c))‖ ^ 2) * d.nrm c d.wL (d.w (d.jc c) c) P ^ 2 := by`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hint_nrm_w d hd c P j, mul_pow]`. Rewrite using `[Data.be, hs, Real.sqrt_mul' _ (sq_nonneg _), Real.sqrt_sq hn, mul_comm, EuclideanSpace.norm_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hintU]`.
+A detailed English derivation is pending.
 -/
 theorem hint_be_eq (hd : d.AxH 𝒜) (c : ι) (P : Ω c →+* ℂ) :
     d.be c P = d.nrm c d.wL (d.w (d.jc c) c) P * ‖d.hintU c P‖ := by
@@ -337,7 +327,7 @@ theorem hint_be_eq (hd : d.AxH 𝒜) (c : ι) (P : Ω c →+* ℂ) :
   simp [hintU]
 
 /- English proof (translation)
-Introduce `h`. Use `congrFun h (d.jc c)` as an intermediate fact. Simplify using `[hintU, hint_ratio_self hd (hd.w_mem _ c) (hd.w_base c)] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem hint_U_coord_ne (hd : d.AxH 𝒜) (c : ι) (P : Ω c →+* ℂ) :
     (WithLp.ofLp (d.hintU c P) : Fin (d.N + 1) → ℂ) ≠ 0 := by
@@ -346,37 +336,35 @@ theorem hint_U_coord_ne (hd : d.AxH 𝒜) (c : ι) (P : Ω c →+* ℂ) :
   simp [hintU, hint_ratio_self hd (hd.w_mem _ c) (hd.w_base c)] at this
 
 /- English proof (translation)
-Use `letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Take `⟨F, hF, hF0, hFmh, -, -⟩` from `d.componentForm_properties hd h c`. Take `⟨a, b, ha, hb, hsplit⟩` from `d.hint_good_split hd h c (fun p => d.nPMM h c (d.w (d.jc c) c) p) (fun p _ hp => d.hint_good_of_ne c p (f := fun w => (d.fze h c w : ℤ) * d.ordMM c (d.Wres c w) (d.w (d.jc c) c)) hp)`. Establish `hfZ : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) F = Algebra.norm (KTf K d.D d.N) (d.rationalBaseRow c) * (algebraMap (KTp K d.D d.N) (KTf K d.D d.N) a / algebraMap (KTp K d.D d.N) (KTf K d.D d.N) b)`. Rewrite using `[hF, ← hsplit]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hinj` using `IsFractionRing.injective (KTp K d.D d.N) (KTf K d.D d.N)`. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Rewrite `hfZ` using `[map_zero, div_zero, mul_zero, ← map_zero (algebraMap (KTp K d.D d.N) (KTf K d.D d.N))]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hF0 (hinj hfZ)`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `hfZ` using `[map_zero, zero_div, mul_zero, ← map_zero (algebraMap (KTp K d.D d.N) (KTf K d.D d.N))]`. Conclude with `hF0 (hinj hfZ)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkey : Algebra.norm (KTf K d.D d.N) (d.rationalBaseRow c) * algebraMap (KTp K d.D d.N) (KTf K d.D d.N) a = algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (F * b)`. Establish `hbne : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) b ≠ 0` using `(map_ne_zero_iff _ hinj).2 hb0`. Rewrite using `[map_mul, hfZ]`. Clear the denominators using the available nonvanishing facts. Establish `hmi` using `MvPolynomial.map_injective (σ := TVar d.D d.N) sg sg.injective`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFc0 : MvPolynomial.map sg F ≠ 0` using `(map_ne_zero_iff _ hmi).2 hF0`. Establish `hac0 : MvPolynomial.map sg a ≠ 0` using `(map_ne_zero_iff _ hmi).2 ha0`. Establish `hbc0 : MvPolynomial.map sg b ≠ 0` using `(map_ne_zero_iff _ hmi).2 hb0`. Establish `hFcmh` using `isMultiHomogeneous_map_ring _ F hFmh sg`. Take `⟨αa, hαa0, hαa⟩` from `hintMH_map ha sg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨αb, hαb0, hαb⟩` from `hintMH_map hb sg`. Establish `hn : 0 < d.N + 1` using `Nat.succ_pos _`. Use `haveI := sphereMeasure_isProbability hn`. Use `haveI := blockSphereMeasure_isProbability (B := d.D) hn`. Establish `I1` using `hint_fubini hn hFc0 hFcmh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `I2` using `hint_logInt_tail hn hac0 hαa hαa0 0`. Establish `I3` using `hint_logInt_tail hn hbc0 hαb hαb0 0`. Use `(((I1.sub I2).add I3).add (integrable_const ((d.delc c : ℝ) * (harmonic d.N : ℝ) / 2))).congr ?_` and prove the remaining obligations. Use `filter_upwards [d.norm_at_sg hd h c sg, hint_ae_tail hn hac0 hαa hαa0 0, hint_ae_tail hn hbc0 hαb hαb0 0] with z hz haz hbz`. Take `⟨hfin, hcard, -, hcl2⟩` from `hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `set S := d.ST c sg (d.tOf z) with hS`. Establish `hind : ∀ (q : MvPolynomial (Fin (d.D + 1) × Fin (d.N + 1)) ℂ) (α : Fin (d.D + 1) → ℕ), α 0 = 0 → IsMultiHomogeneous α q → ∀ t0 : Fin (d.N + 1) → ℂ, MvPolynomial.eval (hintPt t0 z) q = MvPolynomial.eval (hintPt 0 z) q`. Introduce `q α h0 hq t0`. Use `hint_eval_indep hq h0 _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩ hi`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, rfl⟩` from `Fin.exists_succ_eq.2 hi`. Both sides reduce to the same expression. Establish `hlin : ∀ᵐ s ∂(sphereProb (d.N + 1)), ∀ P ∈ S, ∑ j, (WithLp.ofLp (d.hintU c P)) j * spherePoint s j ≠ 0` using `(Filter.eventually_all_finite hfin).2 fun P _ => hint_lin_ae _ (d.hint_U_coord_ne hd c P)`. Establish `hpt : ∀ᵐ s ∂(sphereProb (d.N + 1)), Real.log ‖MvPolynomial.eval (hintPt (spherePoint s) z) (MvPolynomial.map sg F)‖ = Real.log ‖MvPolynomial.eval (hintPt 0 z) (MvPolynomial.map sg a)‖ - Real.log ‖MvPolynomial.eval (hintPt 0 z) (MvPolynomial.map sg b)‖ + ∑ P ∈ hfin.toFinset, Real. …` using `by filter_upwards [hlin] with s hs`. Establish `haz' : d.evT sg (spherePoint s) (d.tOf z) a ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hint_evT_eq, hind _ _ hαa0 hαa]`. Conclude with `haz`. Establish `hq` using `hcl2 (F * b) a (spherePoint s) ha0 hkey haz'`. Rewrite `hq` using `[hint_evT_eq, hint_evT_eq, map_mul, map_mul, hind _ _ hαa0 hαa, hind (MvPolynomial.map sg b) _ hαb0 hαb]`. Establish `hL : ∀ P ∈ S, (∑ j, spherePoint s j * P (ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c))) ≠ 0 := by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Use `hs P hP` as an intermediate fact. Simplify `this` using `[hintU, mul_comm]`. Establish `hprod0 : (∏ᶠ (P : Ω c →+* ℂ) (_ : P ∈ S), ∑ j, spherePoint s j * P (ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c))) ≠ 0 := by`. Rewrite using `[finprod_mem_eq_finite_toFinset_prod _ hfin]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun P hP => hL P (hfin.mem_toFinset.1 hP)`. Establish `hFz : MvPolynomial.eval (hintPt (spherePoint s) z) (MvPolynomial.map sg F) ≠ 0`. Introduce `h0`. Rewrite `hq` using `[h0, zero_mul, zero_div]`. Conclude with `hprod0 hq.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `heq : MvPolynomial.eval (hintPt (spherePoint s) z) (MvPolynomial.map sg F) = MvPolynomial.eval (hintPt 0 z) (MvPolynomial.map sg a) * (∏ᶠ (P : Ω c →+* ℂ) (_ : P ∈ S), ∑ j, spherePoint s j * P (ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c))) / MvPolynomial.eval (hintPt 0 z) (MvPolynomial.map sg b) := by`. Rewrite using `[← hq]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[heq, norm_div, norm_mul, Real.log_div (by simpa using mul_ne_zero haz hprod0) (norm_ne_zero_iff.2 hbz), Real.log_mul (norm_ne_zero_iff.2 haz) (norm_ne_zero_iff.2 hprod0), ← hint_log_finprod _ hfin _ hL, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Establish `: ∀ P ∈ hfin.toFinset, Real.log ‖∑ j, spherePoint s j * P (ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c))‖ = Real.log ‖∑ j, (WithLp.ofLp (d.hintU c P)) j * spherePoint s j‖ := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P _`. Simplify using `[hintU, mul_comm]`. Rewrite using `[Finset.sum_congr rfl this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hInt : ∀ P ∈ hfin.toFinset, Integrable (fun s : UnitSphereC (d.N + 1) => Real.log ‖∑ j, (WithLp.ofLp (d.hintU c P)) j * spherePoint s j‖) (sphereProb (d.N + 1))` using `fun P _ => (ReciprocityTheory.MultiplicativeHeights.Closed.sphereLinLog (d.N + 1) (d.hintU c P) (fun h0 => d.hint_U_coord_ne hd c P (by rw [h0]; rfl))).1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.add_apply, Pi.sub_apply]`. Rewrite using `[integral_congr_ae hpt, integral_add (integrable_const _) (integrable_finset_sum _ hInt), integral_const, integral_finset_sum _ hInt, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Establish `hval : ∀ P ∈ hfin.toFinset, ∫ s, Real.log ‖∑ j, (WithLp.ofLp (d.hintU c P)) j * spherePoint s j‖ ∂(sphereProb (d.N + 1)) = Real.log ‖d.hintU c P‖ - (harmonic d.N : ℝ) / 2`. Introduce `P _`. Use `(ReciprocityTheory.MultiplicativeHeights.Closed.sphereLinLog (d.N + 1) (d.hintU c P) (fun h0 => d.hint_U_coord_ne hd c P (by rw [h0]; rfl))).2` as an intermediate fact.
-
-Simplify using `using this`. Rewrite using `[Finset.sum_congr rfl hval, Finset.sum_sub_distrib, Finset.sum_const, ← Set.ncard_eq_toFinset_card _ hfin, hcard]`. Simplify using `only [probReal_univ, one_smul, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hint_intU (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (sg : K →+* ℂ) :
     Integrable (fun z : ReciprocityTheory.MultiplicativeHeights.BlockSphere d.D (d.N + 1) =>

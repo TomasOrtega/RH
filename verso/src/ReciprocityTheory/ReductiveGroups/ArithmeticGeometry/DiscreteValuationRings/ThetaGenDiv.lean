@@ -15,7 +15,7 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR.TG
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out
 
 /- English proof (translation)
-Establish `e1` using `i0.map_appLE hV (homOfLE h1).op`. Establish `e2 : i0.app W ≫ X.presheaf.map (homOfLE h0).op = i0.appLE W V0 h0`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma appLE_res {X Y : Scheme.{0}} (i0 : X ⟶ Y) {V1 W : Y.Opens} {V0 : X.Opens} (hV : V0 ≤ i0 ⁻¹ᵁ V1)
     (h1 : V1 ≤ W) (h0 : V0 ≤ i0 ⁻¹ᵁ W) (y : Γ(Y, W)) :
@@ -31,9 +31,9 @@ lemma appLE_res {X Y : Scheme.{0}} (i0 : X ⟶ Y) {V1 W : Y.Opens} {V0 : X.Opens
     _ = _ := rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e1 : m.app W ≫ Y.presheaf.map (homOfLE h1).op = m.appLE W V1 h1`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map]`. Establish `e2 : (i0 ≫ m).app W ≫ X.presheaf.map (homOfLE h0).op = (i0 ≫ m).appLE W V0 h0`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma appLE_pull {X Y Z : Scheme.{0}} (i0 : X ⟶ Y) (m : Y ⟶ Z) (m' : X ⟶ Z) (h : i0 ≫ m = m')
     {V1 : Y.Opens} {V0 : X.Opens} (hV : V0 ≤ i0 ⁻¹ᵁ V1) {W : Z.Opens} (h1 : V1 ≤ m ⁻¹ᵁ W)
@@ -77,39 +77,29 @@ def expR (U : UnifPre I D A G) (e : ℕ) (p : (PUnit.{1} → D.toPre.P.L.ι) × 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨S, hout, hmain⟩` from `h`. Establish `hι : thickMap R I e G ≫ pullback.fst G.hom (thick R I (e + 1)) = pullback.fst G.hom (thick R I e)` using `thickMap_fst e`. Establish `hq : thickMap R I e G ≫ (U.gt (e + 1)).pG.left = (U.gt e).pG.left` using `U.gt_q e`. Establish `hJ1 : I ^ (e + 1 + 1) ≤ Ideal.span {ϖ ^ (e + 2)}`. Rewrite using `[hI, Ideal.span_singleton_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ2 : ϖ ^ (e + 1) ∈ I ^ (e + 1)`. Rewrite using `[hI, Ideal.span_singleton_pow]`. Conclude with `Ideal.subset_span rfl`. Establish `van : ∀ (V : (thickObj R I (e + 1) G).left.Opens) (y : Γ((thickObj R I (e + 1) G).left, V)), toW (X` using `(thickObj R I (e + 1) G).left) ((fstG I (e + 1) G).left ≫ G.hom) V ϖ * y = 0 → (thickMap R I e G).app V y = 0 := fun V y hy => vanish_of_mul G.hom hϖ e hJ1 hJ2 (thickMap R I e G) hι V y hy`. Use `⟨S, fun α hα j => ?_, fun p j₁ jf jt hj hcoh => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hout α hα j erw [hfg α j, map_mul, app_toW, toW_congr (pG_struct _)] at h1`. Conclude with `app_eq_zero_of_comp hq _ _ (van _ _ h1)`. Establish `hfam : ∀ z, (Sum.elim (fun _ : PUnit.{1} => (U.gt e).pG.left) (Sum.elim (fun a : S × Fin 4 => (U.gt e).pG.left ≫ D.toPre.famφB a.1.1 a.2) (fun a : S × Fin 4 => D.toPre.Oφ (U.gt e).pG a.1.1 a.2))) z = thickMap R I e G ≫ (Sum.elim (fun _ : PUnit.{1} => (U.gt (e + 1)).pG.left) (Sum. …`. Introduce and unpack `(z | z | z)`. Conclude with `hq.symm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (U.gt e).pG.left ≫ D.toPre.famφB z.1.1 z.2 = thickMap R I e G ≫ (U.gt (e + 1)).pG.left ≫ D.toPre.famφB z.1.1 z.2`. Rewrite using `[← Category.assoc, hq]`. Conclude with `(Oφ_thick U e z.1.1 z.2).symm`. Establish `hcoh1` using `fun a b (hab : (Sum.elim (fun _ : PUnit.{1} => (U.gt (e + 1)).pG.left) (Sum.elim (fun a : S × Fin 4 => (U.gt (e + 1)).pG.left ≫ D.toPre.famφB a.1.1 a.2) (fun a : S × Fin 4 => D.toPre.Oφ (U.gt (e + 1)).pG a.1.1 a.2))) a = (Sum.elim (fun _ : PUnit.{1} => (U.gt (e + 1)).pG.left) (Su …`. Establish `E` using `hmain p j₁ jf jt hj hcoh1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `E' : expL U (e + 1) p j₁ S jf jt σ = expR U (e + 1) p j₁ S jf jt f` using `E`. Use `show expL U e p j₁ S jf jt τ = expR U e p j₁ S jf jt g`. Establish `hι' : thickMap R I e G ≫ (fstG I (e + 1) G).left = (fstG I e G).left` using `thickMap_fst e`. Establish `hV : U.expW e p j₁ S jf jt ≤ thickMap R I e G ⁻¹ᵁ U.expW (e + 1) p j₁ S jf jt`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨⟨h1, h2⟩, h3⟩, h4⟩` from `hx`. Use `⟨⟨⟨?_, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `wchart_le_preimage D.toPre.P.L (thickMap R I e G) (fun _ => (U.gt (e + 1)).pG.left) (fun _ => (U.gt e).pG.left) (fun _ => hq.symm) p.1 h1`. Conclude with `wchart_le_preimage U.LG.L (thickMap R I e G) (fun _ => (fstG I (e + 1) G).left) (fun _ => (fstG I e G).left) (fun _ => hι'.symm) p.2 h2`. Use `show (fstG I (e + 1) G).left.base ((thickMap R I e G).base x) ∈ LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) j₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, hι']`. Conclude with `h3`. Use `WeightPf.mem_finset_inf _ _ _ fun α hα => ?_` and prove the remaining obligations. Establish `hx'` using `WeightPf.mem_of_finset_inf h4 hα`. Use `⟨?_, wchart_le_preimage D.toPre.P.L (thickMap R I e G) (D.toPre.Oφ (U.gt (e + 1)).pG α) (D.toPre.Oφ (U.gt e).pG α) (fun k => (Oφ_thick U e α k).symm) (jt α) hx'.2⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (U.gt (e + 1)).pG.left.base ((thickMap R I e G).base x) ∈ LB.wchart D.toPre.P.L (D.toPre.famφB α) (jf α)`. Rewrite using `[← Scheme.Hom.comp_apply, hq]`. Conclude with `hx'.1`. Use `set c1 := toW (X := (thickObj R I (e + 1) G).left) ((fstG I (e + 1) G).left ≫ G.hom) (U.expW (e + 1) p j₁ S jf jt) ϖ with hc1`. Establish `hL1 : expL U (e + 1) p j₁ S jf jt σ = c1 * expL U (e + 1) p j₁ S jf jt τ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [expL]`. Use `erw [hστ j₁, map_mul, map_mul, app_toW, toW_res]`. Expand and normalize the polynomial expressions, which then agree. Establish `hR1 : expR U (e + 1) p j₁ S jf jt f = c1 * expR U (e + 1) p j₁ S jf jt g`. Simplify using `only [expR, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Use `erw [hfg α.1 (jf α.1), map_mul, map_mul, app_toW, toW_res, toW_congr (pG_struct _)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdiff : c1 * (expL U (e + 1) p j₁ S jf jt τ - expR U (e + 1) p j₁ S jf jt g) = 0`. Rewrite using `[mul_sub, ← hL1, ← hR1, E', sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvan` using `van _ _ hdiff`. Establish `hres : (thickMap R I e G).appLE _ _ hV (expL U (e + 1) p j₁ S jf jt τ - expR U (e + 1) p j₁ S jf jt g) = 0` using `by show ((thickMap R I e G).app _ ≫ (thickObj R I e G).left.presheaf.map (homOfLE hV).op).hom _ = 0`. Rewrite using `[CommRingCat.comp_apply, hvan, map_zero]`. Establish `h0w : U.expW e p j₁ S jf jt ≤ thickMap R I e G ⁻¹ᵁ (LB.div (D.toPre.P.L.pull (U.gt (e + 1)).pG.left) (U.LG.L.pull (fstG I (e + 1) G).left)).U p` using `fun x hx => (inf_le_left.trans inf_le_left : U.expW (e + 1) p j₁ S jf jt ≤ (LB.div (D.toPre.P.L.pull (U.gt (e + 1)).pG.left) (U.LG.L.pull (fstG I (e + 1) G).left)).U p) (hV hx)`. Establish `hL2 : (thickMap R I e G).appLE _ _ hV (expL U (e + 1) p j₁ S jf jt τ) = expL U e p j₁ S jf jt τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [expL, map_mul, map_pow]`. Use `congr 1`. Use `congr 1`. Rewrite using `[WeightPf.res_val, appLE_res (thickMap R I e G) hV _ h0w]`. Conclude with `congrArg Units.val (U.w_compat e p (U.expW e p j₁ S jf jt) h0w (inf_le_left.trans inf_le_left))`.
-
-Conclude with `appLE_pull _ _ _ hι' hV _ _ _`. Establish `ht : ∀ α : S, (thickMap R I e G).appLE _ _ hV (res (U.expWeight_le_chart_weight (e + 1) p j₁ jf jt α.2) (((U.gt (e + 1)).t α.1).s (jt α.1))).val = (res (U.expWeight_le_chart_weight e p j₁ jf jt α.2) (((U.gt e).t α.1).s (jt α.1))).val`. Introduce `α`. Establish `hfun : (fun k => thickMap R I e G ≫ D.toPre.Oφ (U.gt (e + 1)).pG α.1 k) = D.toPre.Oφ (U.gt e).pG α.1` using `funext (Oφ_thick U e α.1)`. Establish `hW : U.expW e p j₁ S jf jt ≤ LB.wchart D.toPre.P.L (fun k => thickMap R I e G ≫ D.toPre.Oφ (U.gt (e + 1)).pG α.1 k) (jt α.1)`.
-
-Rewrite using `[hfun]`. Conclude with `U.expWeight_le_chart_weight e p j₁ jf jt α.2`. Establish `hcohE : ∀ k1 k2, D.toPre.Oφ (U.gt e).pG α.1 k1 = D.toPre.Oφ (U.gt e).pG α.1 k2 → jt α.1 k1 = jt α.1 k2` using `fun k1 k2 h => hcoh (Sum.inr (Sum.inr (α, k1))) (Sum.inr (Sum.inr (α, k2))) h`. Establish `C2` using `LBVal.corr_val D.toPre.P.L _ _ _ _ _ _ (U.gt_t e α.1) (jt α.1) (jt α.1) (fun k1 k2 h => hcohE k1 k2 ((Oφ_thick U e α.1 k1).symm.trans (h.trans (Oφ_thick U e α.1 k2)))) hcohE (fun k k' h => hcohE k k' ((Oφ_thick U e α.1 k).symm.trans h)) (U.expW e p j₁ S jf jt) (le_inf hW (U.expWe …`. Use `show ((thickObj R I (e + 1) G).left.presheaf.map (homOfLE (U.expWeight_le_chart_weight (e + 1) p j₁ jf jt α.2)).op ≫ (thickMap R I e G).appLE _ _ hV).hom (((U.gt (e + 1)).t α.1).s (jt α.1)).val = ((thickObj R I e G).left.presheaf.map (homOfLE (U.expWeight_le_chart_weight e p j₁ j …`.
-
-Use `erw [Scheme.Hom.map_appLE]`. Rewrite using `[← LBVal.pullGen_val (L := D.toPre.P.L) _ _ ((U.gt (e + 1)).t α.1) (thickMap R I e G) (jt α.1) _ hW]`. Conclude with `C2`. Establish `hR2 : (thickMap R I e G).appLE _ _ hV (expR U (e + 1) p j₁ S jf jt g) = expR U e p j₁ S jf jt g`. Simplify using `only [expR, map_sum, map_mul]`.
-
-Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `appLE_pull _ _ _ hq hV _ _ _`. Conclude with `ht α`. Rewrite `hres` using `[map_sub, hL2, hR2, sub_eq_zero]`.
-
-Conclude with `hres`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expandsAt_of_div (U : UnifPre I D A G) [Flat G.hom] {ϖ : R} (hϖ : ϖ ≠ 0) (hI : I = Ideal.span {ϖ})
     (σ τ : H0 U.LG.L 1) (hστ : ∀ j, σ.f j = toW G.hom _ ϖ * τ.f j)
@@ -248,14 +238,14 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Use `haveI := U.smooth`. Conclude with `AlgebraicGeometry.instFlatOfSmooth _`.
+A detailed English derivation is pending.
 -/
 lemma flat_G (U : UnifPre I D A G) : Flat G.hom := by
   haveI := U.smooth
   exact AlgebraicGeometry.instFlatOfSmooth _
 
 /- English proof (translation)
-Use `haveI := D.toPre.P.smoothDim`. Use `haveI : AlgebraicGeometry.Smooth D.toPre.P.A.hom := AlgebraicGeometry.SmoothOfRelativeDimension.smooth D.toPre.P.g _`. Conclude with `AlgebraicGeometry.instFlatOfSmooth _`.
+A detailed English derivation is pending.
 -/
 lemma flat_B : Flat D.toPre.P.A.hom := by
   haveI := D.toPre.P.smoothDim
@@ -264,11 +254,11 @@ lemma flat_B : Flat D.toPre.P.A.hom := by
   exact AlgebraicGeometry.instFlatOfSmooth _
 
 /- English proof (translation)
-Take `⟨S, hout, hmain⟩` from `h`. Use `⟨S, fun α hα j => ?_, fun p j₁ jf jt hj hcoh => ?_⟩` and prove the remaining obligations. Use `erw [hg α j, map_mul, hout α hα j, mul_zero]`. Establish `E : expL U e p j₁ S jf jt τ = expR U e p j₁ S jf jt g` using `hmain p j₁ jf jt hj hcoh show expL U e p j₁ S jf jt τ' = expR U e p j₁ S jf jt g' set c1 := toW (X := (thickObj R I e G).left) ((fstG I e G).left ≫ G.hom) (U.expW e p j₁ S jf jt) c`. Establish `hL : expL U e p j₁ S jf jt τ' = c1 * expL U e p j₁ S jf jt τ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [expL]`. Use `erw [hτ j₁, map_mul, map_mul, app_toW, toW_res]`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : expR U e p j₁ S jf jt g' = c1 * expR U e p j₁ S jf jt g`. Simplify using `only [expR, Finset.mul_sum]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Use `erw [hg α.1 (jf α.1), map_mul, map_mul, app_toW, toW_res, toW_congr (pG_struct _)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL, hR, E]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expandsAt_scale (U : UnifPre I D A G) (c : R) (τ τ' : H0 U.LG.L 1)
     (hτ : ∀ j, τ'.f j = toW G.hom _ c * τ.f j)
@@ -292,13 +282,13 @@ theorem expandsAt_scale (U : UnifPre I D A G) (c : R) (τ τ' : H0 U.LG.L 1)
     rw [hL, hR, E]
 
 /- English proof (translation)
-Use `flat_G U` as an intermediate fact. Use `flat_B (D := D)` as an intermediate fact. Establish `hϖI : ϖ ∈ I ^ (0 + 1)` using `by rw [hI, zero_add, pow_one]; exact Ideal.mem_span_singleton_self ϖ`. Establish `hσ0 : ∀ j, ((fstG I 0 G).left.app _).hom (σ.f j) = 0`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hστ, map_mul]`. Use `erw [app_toW_of_mem G.hom (I ^ (0 + 1)) _ hϖI, zero_mul]`. Establish `hpG` using `hWI R I D A G U 0 1 σ f hσ0 (hf 0)`. Establish `hB : ∀ α j, (pullback.fst D.toPre.P.A.hom (thick R I 0)).app _ ((f α).f j) = 0`. Introduce `α j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(U.gt 0).q_flat` as an intermediate fact. Use `(U.gt 0).q_surj` as an intermediate fact. Apply `app_injective_of_flat_surj (U.gt 0).q.left` to reduce the goal to its premises. Rewrite using `[map_zero]`. Establish `h` using `hpG α j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (U.gt 0).pG.left = (U.gt 0).q.left ≫ pullback.fst D.toPre.P.A.hom (thick R I 0)` using `rfl`. Rewrite `h` using `[e, Scheme.Hom.comp_app]`. Conclude with `h`. Use `choose g hg using fun α => sec_div D.toPre.P.A.hom (f α) hϖ (J := I ^ (0 + 1)) (by rw [hI, zero_add, pow_one]) (hB α)`. Conclude with `⟨g, hg, fun e => expandsAt_of_div U hϖ hI σ τ hστ f g hg e (hf (e + 1))⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem expand_div_one (U : UnifPre I D A G) (hWI : WeightIndepSt) {ϖ : R} (hϖ : ϖ ≠ 0)
     (hI : I = Ideal.span {ϖ}) (σ τ : H0 U.LG.L 1) (hστ : ∀ j, σ.f j = toW G.hom _ ϖ * τ.f j)
@@ -328,13 +318,13 @@ theorem expand_div_one (U : UnifPre I D A G) (hWI : WeightIndepSt) {ϖ : R} (hϖ
   exact ⟨g, hg, fun e => expandsAt_of_div U hϖ hI σ τ hστ f g hg e (hf (e + 1))⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `σ τ hστ f hf`. Use `⟨f, fun α j => by rw [pow_zero, map_one, _root_.one_mul], fun e => ?_⟩` and prove the remaining obligations. Establish `: σ = τ` using `SecOps.sec_ext fun j => by rw [hστ, pow_zero, map_one, _root_.one_mul]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `hf e`. Consider the case `succ n ih`. Introduce `σ τ hστ f hf`. Set `σ' : H0 U.LG.L 1` to `SecOps.secScale (scal G.hom (ϖ ^ n)) τ`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : ∀ j, σ.f j = toW G.hom _ ϖ * σ'.f j` using `fun j => by`. Rewrite using `[hστ]`. Use `show _ = _ * (toW G.hom _ (ϖ ^ n) * τ.f j)`. Rewrite using `[pow_succ', map_mul, _root_.mul_assoc]`. Take `⟨g1, hg1, he1⟩` from `expand_div_one U hWI hϖ hI σ σ' h1 f hf`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg, he⟩` from `ih σ' τ (fun j => rfl) g1 he1`. Use `⟨g, fun α j => ?_, he⟩` and prove the remaining obligations. Rewrite using `[hg1, hg, pow_succ', map_mul, _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expand_div_pow (U : UnifPre I D A G) (hWI : WeightIndepSt) {ϖ : R} (hϖ : ϖ ≠ 0)
     (hI : I = Ideal.span {ϖ}) (n : ℕ) : ∀ (σ τ : H0 U.LG.L 1), (∀ j, σ.f j = toW G.hom _ (ϖ ^ n) * τ.f j) →

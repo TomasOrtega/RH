@@ -9,9 +9,9 @@ open Formalism.MainNotions.S
 open ValuativeRel
 
 /- English proof (translation)
-Use `haveI : Nontrivial E := by`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Establish `h1` using `L.rank`. Establish `h2` using `Module.finrank_zero_of_subsingleton (R := F) (M := E)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `(algebraMap F E).injective`.
+A detailed English derivation is pending.
 -/
 theorem fl_inj {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : Loc.LocE F E) : Function.Injective (algebraMap F E) := by
@@ -24,11 +24,11 @@ theorem fl_inj {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [Com
   exact (algebraMap F E).injective
 
 /- English proof (translation)
-Use `haveI : Nontrivial E := by`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Establish `h1` using `L.rank`. Establish `h2` using `Module.finrank_zero_of_subsingleton (R := F) (M := E)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `hn0`. Rewrite `hn` using `[hn0]`. Establish `hcj : L.cj x ≠ 0` using `fun h => hx0 ((map_eq_zero_iff L.cj L.cj.injective).mp h)`. Establish `hu : IsUnit (x * L.cj x)` using `(hE x hx0).mul (hE _ hcj)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hu.ne_zero` to reduce the goal to its premises. Rewrite using `[← hn]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fl_norm_ne {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : Loc.LocE F E) (hE : ∀ x : E, x ≠ 0 → IsUnit x)
@@ -48,17 +48,17 @@ theorem fl_norm_ne {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] 
   simp
 
 /- English proof (translation)
-Use `haveI := hl`. Establish `key : ∀ n : 𝒪[F], ∀ x ∈ L.O, x ≠ 0 → algebraMap F E n = x * L.cj x → ∃ k : ℕ, ∃ u ∈ L.O, (∃ w ∈ L.O, u * w = 1) ∧ x = algebraMap F E ϖ ^ k * u`. Introduce `n`. Use `WellFounded.induction (wellFounded_dvdNotUnit (α := 𝒪[F])) (C := fun n : 𝒪[F] => ∀ x ∈ L.O, x ≠ 0 → algebraMap F E n = x * L.cj x → ∃ k : ℕ, ∃ u ∈ L.O, (∃ w ∈ L.O, u * w = 1) ∧ x = algebraMap F E ϖ ^ k * u) n ?_` and prove the remaining obligations. Introduce `n ih x hx hx0 hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hdiv : ∃ z ∈ L.O, x = algebraMap F E ϖ * z`. Take `⟨z, hz, rfl⟩` from `hdiv`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨n', hn'⟩` from `fl_norm L hinj hz`. Establish `hcj : L.cj (algebraMap F E ϖ) = algebraMap F E ϖ` using `L.cj.commutes _`. Establish `heq : n = n' * (ϖ * ϖ)`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show ((n' * (ϖ * ϖ) : 𝒪[F]) : F) = (n' : F) * ((ϖ : F) * (ϖ : F)) from rfl, map_mul, map_mul]`. Establish `hdvd : DvdNotUnit n' n`. Use `⟨fl_norm_ne L hE hz0 n' hn', ϖ * ϖ, ?_, heq⟩` and prove the remaining obligations. Rewrite using `[IsUnit.mul_iff]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h => hϖ.not_isUnit h.1`. Take `⟨k, u, hu, hw, hzu⟩` from `ih n' hdvd z hz hz0 hn'`. Conclude with `⟨k + 1, u, hu, hw, by rw [hzu, pow_succ]; ring⟩`. Take `⟨y, hy, hxy⟩` from `fl_local L hl hE hinj ϖ hϖ x hx hdiv`. Conclude with `⟨0, x, hx, ⟨y, hy, hxy⟩, by simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx hx0`. Take `⟨n, hn⟩` from `fl_norm L hinj hx`. Conclude with `key n x hx hx0 hn`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fl_fact {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : Loc.LocE F E) (hl : IsNonarchimedeanLocalField F)
@@ -101,7 +101,7 @@ theorem fl_fact {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [Co
   exact key n x hx hx0 hn
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ L hl _ hE ϖ hϖ`. Establish `hinj` using `fl_inj L`. Conclude with `⟨fl_local L hl hE hinj ϖ hϖ, fl_den L, fl_fact L hl hE hinj ϖ hϖ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem local_density_integral : FLocO := by
   intro F E _ _ _ _ _ _ L hl _ hE ϖ hϖ

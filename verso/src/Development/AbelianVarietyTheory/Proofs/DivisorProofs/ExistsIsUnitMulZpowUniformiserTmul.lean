@@ -15,15 +15,15 @@ noncomputable section
 namespace GlobalTheory.GraphLocal
 
 /- English proof (translation)
-Introduce `K κ' L _ _ _ _ _ _ E 𝔭 _ t _ ht g hg`. Use `set n := E.ord g`. Establish `ht0 : (t : K) ≠ 0` using `fun h => ht.ne_zero (Subtype.ext h)`. Use `set u : K := g * (t : K) ^ (-n) with hu_def`. Establish `hu0 : u ≠ 0` using `mul_ne_zero hg (zpow_ne_zero _ ht0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hord : E.ord u = 0`. Rewrite using `[hu_def, E.ord_mul hg (zpow_ne_zero _ ht0), E.ord_zpow, E.ord_irreducible ht]`. Expand and normalize the polynomial expressions, which then agree. Establish `hu : u ∈ E.ring` using `(E.ord_nonneg_iff hu0).1 hord.ge`. Establish `hui : u⁻¹ ∈ E.ring` using `(E.ord_nonneg_iff (inv_ne_zero hu0)).1 (by rw [E.ord_inv, hord]; simp)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b : tens (κ'` to `κ') (placeAlg E) := ⟨u ⊗ₜ 1, tmul_mem (mem_placeAlg.2 hu) 1⟩`. Set `b' : tens (κ'` to `κ') (placeAlg E) := ⟨u⁻¹ ⊗ₜ 1, tmul_mem (mem_placeAlg.2 hui) 1⟩`. Establish `hbb : b * b' = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(u ⊗ₜ[ℂ] (1 : κ')) * (u⁻¹ ⊗ₜ 1) = 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_inv_cancel₀ hu0, one_mul]`. Both sides reduce to the same expression. Use `⟨toQ (L := L) 𝔭 b, (IsUnit.of_mul_eq_one (b := b') hbb).map _, ?_⟩` and prove the remaining obligations. Set `φ : K →+* L` to `(algebraMap (K ⊗[ℂ] κ') L).comp Algebra.TensorProduct.includeLeftRingHom`. Establish `hφ (x : K) : φ x = algebraMap (K ⊗[ℂ] κ') L (x ⊗ₜ 1)` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg' : g = u * (t : K) ^ n`. Rewrite using `[hu_def, mul_assoc, ← zpow_add₀ ht0, neg_add_cancel, zpow_zero, mul_one]`. Rewrite using `[coe_toQ, ← hφ, ← hφ, ← hφ, ← map_zpow₀, ← map_mul, ← hg']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isUnit_mul_zpow_tmul :
     ∀ {K κ' L : Type} [Field K] [Field κ'] [Field L] [Algebra ℂ K] [Algebra ℂ κ'] [Algebra (K ⊗[ℂ] κ') L]

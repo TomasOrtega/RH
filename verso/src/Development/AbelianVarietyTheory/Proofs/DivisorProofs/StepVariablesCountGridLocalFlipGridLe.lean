@@ -22,11 +22,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.UnfoldLoss
 
 /- English proof (translation)
-Unfold `varCount`. Establish `hterm : ∀ j : Fin (G.m - 1), Nat.card (StepVar (Fin (topRank G (j + 1))) (G.m - 2 - j) (Fin (topRank G j))) ≤ N ^ 2`. Introduce `j`. Establish `hj` using `j.2`. Use `(Finite.card_subtype_le _).trans ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.card_prod, Nat.card_sum, Nat.card_sum]`. Simplify using `only [Nat.card_eq_fintype_card, Fintype.card_fin]`. Establish `h1` using `topRank_add hs (G := G) (j + 1)`. Establish `h2` using `topRank_add hs (G := G) j`. Establish `h3` using `hN (j + 1) (by omega)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `hN j (by omega)`. Rewrite using `[sq]`. Conclude with `Nat.mul_le_mul (by omega) (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem varCount_le_of_rank_le {k : Type*} [Field k] (G : Grid k) (hs : 1 ≤ G.s) (N : ℕ)
     (hN : ∀ j < G.m, G.rank (G.m, j) ≤ N) : varCount G ≤ G.m * N ^ 2 := by
@@ -49,9 +49,9 @@ theorem varCount_le_of_rank_le {k : Type*} [Field k] (G : Grid k) (hs : 1 ≤ G.
     _ ≤ G.m * N ^ 2 := Nat.mul_le_mul_right _ (Nat.sub_le _ _)
 
 /- English proof (translation)
-Introduce `D T L sc G t w`. Use `varCount_le_of_rank_le (locGrid G t w) (show 1 ≤ D.R.r + 6 by omega) _ fun j hj => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `j < D.R.m at hj`. Establish `h1` using `Nat.mul_le_mul_right D.R.t hj.le`. Establish `hr : D.R.r ≤ D.R.k + D.R.m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: D.R.r = D.R.k + D.R.m - 1` using `rfl`. Use linear arithmetic over natural numbers and integers. Express the relevant statement in the definitionally equal form `D.R.r + j * D.R.t + D.R.m * (D.R.r + 6) ≤ D.R.k + D.R.m * (D.R.t + (D.R.r + 6) + 1)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Express the relevant assertion in an equivalent form by its definition. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem varCount_locGrid_le : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t : T) (w : Pl D.host.E),
     varCount (locGrid G t w) ≤ D.R.m * bigN D ^ 2 := by

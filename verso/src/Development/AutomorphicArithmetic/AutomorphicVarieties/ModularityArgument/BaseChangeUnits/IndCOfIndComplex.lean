@@ -27,9 +27,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 end Places
 
 /- English proof (translation)
-Introduce `e`. Establish `h1 : (((2 : ℕ) : ℂ) - 1) / 2 + (m 0 : ℂ) ∈ infOf m` using `Multiset.mem_map.2 ⟨0, Finset.mem_univ_val _, rfl⟩`. Rewrite `h1` using `[e]`. Take `⟨i, -, hi⟩` from `Multiset.mem_map.1 h1`. Establish `h2 : m' i = m 0` using `Int.cast_injective (add_left_cancel hi)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `fin_cases i`. Conclude with `absurd (@h 2 0 h2) (by decide)`. Conclude with `absurd (@h 3 0 h2) (by decide)`.
+A detailed English derivation is pending.
 -/
 private theorem infOf_ne {m m' : Fin 2 → ℤ} (h : Function.Injective ![m 0, m 1, m' 0, m' 1]) : infOf m ≠ infOf m' := by
   intro e
@@ -43,15 +43,13 @@ private theorem infOf_ne {m m' : Fin 2 → ℤ} (h : Function.Injective ![m 0, m
 
 open UpperTheory.CBC UpperTheory.CBC.SConjSpaceCAux in
 /- English proof (translation)
-Introduce `h`. Take `⟨φ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Take `⟨m, m', τ, τ', -, h1, h2, k1, k2, hinj⟩` from `hm φ`. Take `⟨σ, hσ⟩` from `ComplexEmbedding.exists_comp_symm_eq_of_comp_eq (k := K) τ τ' (h1.trans h2.symm)`. Take `⟨s, hs⟩` from `SGalAdEx_holds M σ.toRingEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P', hsp, hiso⟩` from `h σ s hs`. Take `⟨d, hd, hd'⟩` from `exists_GD _ s hs`. Consider the cases of `P' with`. Consider the case `re π' => exact hiso.elim`. Consider the case `cx π'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `e : τ.comp (d.σ.symm : M →+* M) = τ'`. Rewrite using `[hd']`. Conclude with `hσ`. Establish `k3 : π'.HasInfChar τ (infOf m')`. Use `⟨k2.1, fun u x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx' : x.1 ∈ (Cusp.cx π').space` using `⟨x, hx, rfl⟩`. Rewrite `hx'` using `[hsp]`. Take `⟨_, ⟨y, hy, rfl⟩, hxy⟩` from `hx'`. Take `rfl : x = pull d 2 y` from `Subtype.ext (by rw [← hxy, ← hd]; rfl)`. Rewrite using `[cap_pull, e, k2.2 u y hy, map_smul]`.
-
-Conclude with `infOf_ne hinj (k1.unique (CuspSub.Iso.hasInfChar hiso k3))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem not_conjIso {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] [IsTotallyComplex M] [Algebra K M]
     [IsGalois K M] (π : CuspSub M 2) (hm : MixWtC K π) : ¬ ∀ σ : M ≃ₐ[K] M, (Cusp.cx π).ConjIso σ.toRingEquiv := by

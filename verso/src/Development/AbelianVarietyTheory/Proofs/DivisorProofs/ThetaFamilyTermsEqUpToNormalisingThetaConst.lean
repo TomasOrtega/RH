@@ -33,13 +33,13 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
 open GlobalTheory.FieldBaseChange GlobalTheory.ExpFieldCompare in
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_isoVal_ratio A.isLB U.LG.isLB hw' hw`. Take `⟨c₀, hc₀, huc⟩` from `BoxExpansion.unit_const GlobalTheory.firstFiveLaws.1.globalFns A U.gen u`. Use `⟨algebraMap (FractionRing R) F c₀, (map_ne_zero _).2 hc₀, fun k t s h => ?_⟩` and prove the remaining obligations. Take `⟨v, h₁, h₂⟩` from `h`. Establish `z : U.ExpandsG F k (0 : GroupSec U F k) 0` using `(expandsG_iff U F k _ _).2 ⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, (Fin.sum_univ_zero _).symm, fun α => (map_zero _).trans (Fin.sum_univ_zero _).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h₃` using `expandsG_lin U F k (algebraMap (FractionRing R) F c₀ ^ k) h₂ z`. Rewrite `h₃` using `[add_zero, add_zero]`. Use `⟨_, ?_, h₃⟩` and prove the remaining obligations. Use `(isoRelM_iff w (prGK G F) k (U.genF F).left h₁.1 (𝟙 _) h₁.2.1 t _).2 fun y a b ha hb => ?_` and prove the remaining obligations. Establish `e` using `(isoRelM_iff w' (prGK G F) k (U.genF F).left h₁.1 (𝟙 _) h₁.2.1 t v).1 h₁ _ (𝟙 _) y a b ha hb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₃ : (𝟙 _ ≫ prGK G F) ≫ ((Over.pullback (jK R)).obj G).hom = ((𝟙 _ ≫ 𝟙 _) ≫ groupBase G F) ≫ jFK (R` using `R) F := by`. Simplify using `only [Category.id_comp]`. Conclude with `(isPullback_groupBase F).w`. Establish `e₄ : (gm (𝟙 _ ≫ prGK G F) y ⊤ u).val = BoxExpansion.constHomVal ((𝟙 _ ≫ 𝟙 _) ≫ groupBase G F) y (algebraMap (FractionRing R) F c₀)` using `((gs_unit (𝟙 _ ≫ prGK G F) y ⊤ trivial u).symm.trans (congrArg (gs _ y ⊤) huc)).trans ((gs_scal _ _ y c₀).trans ((congrArg (fun q => constVal q y c₀) e₃).trans ((constVal_specMap _ _ y c₀).trans (BoxExpansion.constVal_eq _ _ _))))`. Use `(powVal_smul (π := groupBase G F) _ v (𝟙 _ ≫ 𝟙 _) y (i := a) ha).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hu _ (𝟙 _ ≫ prGK G F) y a b ha hb, mul_zpow, Units.val_mul, BoxExpansion.constVal_eq, map_pow, ← e₄, zpow_natCast (gm _ _ _ _), Units.val_pow_eq_pow_val, _root_.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_expandsF_pow {w w' : W0 U} (hw : w.IsGen) (hw' : w'.IsGen) : ∃ d : F, d ≠ 0 ∧
     ∀ (k : ℕ) t s, U.ExpandsF F k w' t s → U.ExpandsF F k w t (d ^ k • s) := by
@@ -71,7 +71,7 @@ theorem exists_expandsF_pow {w w' : W0 U} (hw : w.IsGen) (hw' : w'.IsGen) : ∃ 
 variable {F} in
 
 /- English proof (translation)
-Introduce `z J hJ` and use `by refine (H z J hJ).trans ?_ rw [GlobalTheory.FrameMove.val_powFrame, GlobalTheory.FrameMove.val_powFrame, h z J hJ]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem valAt_congr {k : ℕ} {t : SecA A F k} {x : TFK (R := R) F ⟶ A.A} {e e' : FrAt x} {c : F}
     (h : ∀ z J, Good A.L z J → val e (𝟙 _) z J = val e' (𝟙 _) z J) (H : ValAt t x e c) : ValAt t x e' c := fun z J hJ => by
@@ -81,19 +81,17 @@ theorem valAt_congr {k : ℕ} {t : SecA A F k} {x : TFK (R := R) F ⟶ A.A} {e e
 variable {F} in
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `GlobalTheory.PowBasis.exists_basis_pow_field hT R A F 1 le_rfl`. Establish `hq : Subsingleton (Fin (1 ^ A.g))` using `by rw [one_pow]; infer_instance`. Take `⟨i₀⟩ : Nonempty (Fin (1 ^ A.g))` from `by rw [one_pow]; infer_instance`. Take `⟨r, hr, -⟩` from `hb t`. Take `⟨r', hr', -⟩` from `hb t'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Fintype.sum_subsingleton _ i₀] at hr hr'`. Take `⟨z⟩` from `CoefBasic.exists_pt (R := R) (F := F)`. Take `⟨J, hJ⟩` from `CoefBasic.exists_good' A.isLB z`. Establish `a` using `(GlobalTheory.ThetaCompare.sval_smul hr x hJ).symm.trans (H z J hJ)`. Establish `a'` using `(GlobalTheory.ThetaCompare.sval_smul hr' x hJ).symm.trans (H' z J hJ)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨q, hq'⟩` from `CoefBasic.cstH_surj (R := R) z (sA (b i₀) (ptSecT A.A x).left z J)`. Establish `b₁ : CoefBasic.cstH (R` using `R) z (r i₀) * CoefBasic.cstH (R := R) z q = CoefBasic.cstH (R := R) z c * (@id ((TF (R := R) F).left.presheaf.stalk z)ˣ (val (powFrame A.A A.L x e (1 : ℕ)) (𝟙 _) z J)).val := by`. Rewrite using `[hq', ← CoefBasic.cst_eq, ← CoefBasic.cst_eq]`. Conclude with `a`. Establish `b₂ : CoefBasic.cstH (R` using `R) z (r' i₀) * CoefBasic.cstH (R := R) z q = CoefBasic.cstH (R := R) z c * (@id ((TF (R := R) F).left.presheaf.stalk z)ˣ (val (powFrame A.A A.L x e (1 : ℕ)) (𝟙 _) z J)).val := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq', ← CoefBasic.cst_eq, ← CoefBasic.cst_eq]`. Conclude with `a'`. Establish `q0 : q ≠ 0` using `fun h => by`. Rewrite `b₁` using `[h, map_zero, mul_zero]`. Conclude with `hc (CoefBasic.cstH_inj z (((Units.mul_left_eq_zero _).1 b₁.symm).trans (map_zero _).symm))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₀ : r i₀ = r' i₀`. Use `b₁.trans b₂.symm` as an intermediate fact. Rewrite `this` using `[← map_mul, ← map_mul]`. Conclude with `mul_right_cancel₀ q0 (CoefBasic.cstH_inj z this)`. Establish `e₁ : ∀ j, t.f j = t'.f j` using `fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `hr j` as an intermediate fact. Establish `e₂ : r = r'` using `funext fun i => by rw [Subsingleton.elim i i₀]; exact e₀`. Rewrite `this` using `[e₂]`. Conclude with `this.trans (hr' j).symm`. Take `⟨f, _⟩` from `t`.
-
-Take `⟨f', _⟩` from `t'`. Take `rfl : f = f'` from `funext e₁`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sec_eq_of_valAt (hT : SecTwistSt) {t t' : SecA A F 1} {x : TFK (R := R) F ⟶ A.A} {e : FrAt x} {c : F} (hc : c ≠ 0)
     (H : ValAt t x e c) (H' : ValAt t' x e c) : t = t' := by
@@ -133,9 +131,9 @@ theorem sec_eq_of_valAt (hT : SecTwistSt) {t t' : SecA A F 1} {x : TFK (R := R) 
 
 variable {F} in
 /- English proof (translation)
-Establish `h₁` using `((CoefBasic.coef_basic R D.toPre F k g).2.2 w hw).2.1`. Establish `h₂ : coef (0 : Fam D.toPre F k) g w χ = 0`. Use `h₁ 0 0 1 χ` as an intermediate fact. Rewrite `this` using `[one_smul, add_zero, _root_.one_mul]`. Conclude with `left_eq_add.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `h₁ s 0 c χ` as an intermediate fact. Rewrite `this` using `[add_zero, h₂, add_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem coef_smul {k : ℕ} (g : GtPtF D.toPre F) {w : Frm D.toPre F k g.b} (hw : w.IsGen) (c : F) (s : Fam D.toPre F k) (χ) :
     coef (c • s) g w χ = c * coef s g w χ := by
@@ -150,9 +148,9 @@ theorem coef_smul {k : ℕ} (g : GtPtF D.toPre F) {w : Frm D.toPre F k g.b} (hw 
 variable {U F} in
 
 /- English proof (translation)
-Introduce `k hk wk hwk _ s s' v hs hval`. Take `⟨W, hW, hWv⟩` from `TorsionValue.exists_frm_pow w' hw' k`. Establish `a` using `H k hk W hWv hW s _ v (hd k s s' hs) (valAt_congr he hval)`. Establish `sc` using `TorsionValue.coef_scale (w' := wk) hW (c := d ^ k) (fun z J hJ => by`. Rewrite using `[hwk z J hJ, hWv z J hJ, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, hv z J hJ, mul_pow, CoefBasic.cst_eq, CoefBasic.cst_eq, map_pow]) s'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `a using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `χ`. Rewrite using `[sc, coef_smul g hW]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem liesOver_change {w₀ w₀' : W0 U} {d : F}
     (hd : ∀ (k : ℕ) t s, U.ExpandsF F k w₀ t s → U.ExpandsF F k w₀' t (d ^ k • s)) {g : GtPtF D.toPre F}
@@ -173,19 +171,17 @@ theorem liesOver_change {w₀ w₀' : W0 U} {d : F}
 end
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ z₁ act V _ _ _ ev X _ m t δ 𝔪 x₀ x₀' C C' lab lab' T T' hT hT' c c' hc mu`. Take `⟨x, fr, th, w₀, s, p, w, hx, hfr, hth, hw₀, hs, hg, hT⟩` from `hT`. Take `⟨x', fr', th', w₀', s', p', w', hx', hfr', hth', hw₀', hs', hg', hT'⟩` from `hT'`. Use `haveI : CharZero V := 𝔪.cn.2.2.2`. Establish `hL : GlobalTheory.UT.LL` using `GlobalTheory.firstFiveLaws`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : AdmBase V (maximalIdeal V)` using `⟨𝔪.cn.1, inferInstance, 𝔪.cn.2.1, 𝔪.cn.2.2.1⟩`. Establish `hk : 1 ≤ X₁.S.r * X₁.S.N`. Use `X₁.S.r_pos` as an intermediate fact. Use `X₁.S.N_ge` as an intermediate fact. Conclude with `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `rfl : x = x'` from `funext fun a => Over.OverMorphism.ext (𝔪.cart.1.hom_ext ((hx a).trans (hx' a).symm) ((Over.w (x a)).trans (Over.w (x' a)).symm))`. Establish `hf : ∀ a z J, Good 𝔪.A.L z J → val (fr a) (𝟙 _) z J = val (fr' a) (𝟙 _) z J` using `fun a z J hJ => by`. Take `⟨J₀, hJ₀⟩` from `CoefBasic.exists_good' X₁.ρ.P.isLB z`. Conclude with `mul_left_cancel (((hfr a).2 z J₀ J hJ₀ hJ).trans ((hfr' a).2 z J₀ J hJ₀ hJ).symm)`. Take `⟨a, ha⟩` from `GlobalTheory.ThetaGeneric.exists_th_ne_zero hL.1 hL.2.1 _ _ X₁.S X₁.ρ (FractionRing V) 𝔪.yK`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `rfl : th = th'` from `sec_eq_of_valAt hL.2.1.secTwist ha (valAt_congr (hf a) (hth a)) (hth' a)`. Take `⟨d, hd0, hd⟩` from `exists_expandsF_pow 𝔪.U.toUnifPre (FractionRing V) hw₀' hw₀`. Establish `hbij` using `(expBijF_and_expandsF_lin hL V _ hA 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U).1 (FractionRing V) 1 le_rfl w₀' hw₀'`. Take `rfl : s' = d ^ 1 • s` from `(hbij.1 th).unique hs' (hd 1 th s hs)`. Take `⟨h₁, h₂, h₃⟩` from `hg c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h₁', h₂', h₃'⟩` from `hg' c'`. Rewrite using `[hT, hT']`. Rewrite `h₃'` using `[← hc]`. Take `⟨w₁, hw₁, hv₁⟩` from `TorsionValue.exists_frm_scale (w' c') h₂' hd0`. Establish `h₄ : LiesOver 𝔪.U.toUnifPre w₀ (p' c') w₁ (x (lab c)) (fr (lab c))` using `liesOver_change hd h₂' hv₁ (hf _) h₃'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨e, ev⟩` from `GlobalTheory.T.framedTorsionPoint_torusExtension_eq_of_liesOver V 𝔪.cn 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U w₀ hw₀ _ hk _ _ _ _ _ _ h₁ h₁' h₂ hw₁ (hfr _).1 h₃ h₄`. Rewrite using `[coef_smul _ h₂', pow_one]`. Generalize the expression as in `w c = om at h₂ ev`. Generalize the expression as in `p c = q at om h₂ e ev`. Substitute `e` using the available equality.
-
-Conclude with `TorsionValue.coef_scale h₂' (fun z J hJ => by rw [ev z J hJ, hv₁ z J hJ]) s _`.
+Replace the chosen expression with an arbitrary variable. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem terms_eq : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X) (𝔪 : UMem X₁ z₁ act V ev X t δ) (x x' : X₁.S.Gam) (C C' : Type) (lab : C → X₁.S.Gam) (lab' : C' → X₁.S.Gam) (T : (Fin 8 → X) → C → V) (T' : (Fin 8 → X) → C' → V), 𝔪.Terms x lab T → 𝔪.Terms x' lab' T' → ∀ (c : C) (c' : C'), lab c = lab' c' → ∀ mu, algebraMap V (FractionRing V) (T mu c) * 𝔪.yK ⟨X₁.S.th x, X₁.S.th_mem x⟩ = algebraMap V (FractionRing V) (T' mu c') * 𝔪.yK ⟨X₁.S.th x', X₁.S.th_mem x'⟩ := by
   intro g n F W Z i X₁ z₁ act V _ _ _ ev X _ m t δ 𝔪 x₀ x₀' C C' lab lab' T T' hT hT' c c' hc mu

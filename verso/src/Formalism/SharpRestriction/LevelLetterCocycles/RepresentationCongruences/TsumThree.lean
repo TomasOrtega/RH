@@ -11,15 +11,15 @@ def Sg (l h w S η : ℕ) : ℝ :=
 def cW (l H : ℕ) : ℕ := ⌈1 + Real.logb l ((H : ℝ) + 1)⌉₊
 
 /- English proof (translation)
-Substitute `hx hy hz` using the available equality. Establish `h0 : (0:ℝ) < L` using `by linarith`. Establish `h1 : (0:ℝ) < L - 1` using `by linarith`. Establish `h2 : (0:ℝ) < L - 2` using `by linarith`. Establish `e0 : L * L⁻¹ = 1` using `mul_inv_cancel₀ h0.ne'`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (L - 1) * (L - 1)⁻¹ = 1` using `mul_inv_cancel₀ h1.ne'`. Establish `e2 : (L - 2) * (L - 2)⁻¹ = 1` using `mul_inv_cancel₀ h2.ne'`. Establish `p0 : 0 < L⁻¹` using `inv_pos.mpr h0`. Establish `p1 : 0 < (L - 1)⁻¹` using `inv_pos.mpr h1`. Establish `p2 : 0 < (L - 2)⁻¹` using `inv_pos.mpr h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q0 : L⁻¹ ≤ 1 / 11` using `by nlinarith [mul_le_mul_of_nonneg_left hL p0.le]`. Establish `q1 : (L - 1)⁻¹ ≤ 1 / 10`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (show (10:ℝ) ≤ L - 1 by linarith) p1.le]`. Establish `q2 : (L - 2)⁻¹ ≤ 1 / 9`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (show (9:ℝ) ≤ L - 2 by linarith) p2.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `iy : (L - 1)⁻¹ = L⁻¹ + L⁻¹ * (L - 1)⁻¹`. Take the linear combination `(-(L - 1)⁻¹) * e0 + L⁻¹ * e1`. Establish `iz : (L - 2)⁻¹ = L⁻¹ + 2 * (L⁻¹ * (L - 2)⁻¹)`. Take the linear combination `(-(L - 2)⁻¹) * e0 + L⁻¹ * e2`. Use `⟨e0, by linear_combination e1, e2, p0, p1, p2, q0, q1, q2, ?_, ?_, iy⟩` and prove the remaining obligations.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left q1 p0.le]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left q2 p0.le]`.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem reciprocal_bounds_of_eleven_le {L x y z : ℝ} (hL : 11 ≤ L) (hx : x = L⁻¹) (hy : y = (L - 1)⁻¹)
     (hz : z = (L - 2)⁻¹) :
@@ -50,19 +50,19 @@ private theorem reciprocal_bounds_of_eleven_le {L x y z : ℝ} (hL : 11 ≤ L) (
   · nlinarith [mul_le_mul_of_nonneg_left q2 p0.le]
 
 /- English proof (translation)
-Establish `hL : (11:ℝ) ≤ l` using `by exact_mod_cast hl`. Take `⟨x, hx⟩ : ∃ x : ℝ, x = (l:ℝ)⁻¹` from `⟨_, rfl⟩`. Take `⟨y, hy⟩ : ∃ y : ℝ, y = ((l:ℝ) - 1)⁻¹` from `⟨_, rfl⟩`. Take `⟨z, hz⟩ : ∃ z : ℝ, z = ((l:ℝ) - 2)⁻¹` from `⟨_, rfl⟩`. Take `⟨eLx, eLy, eLz, px, py, pz, hx1, hy1, hz1, hyx, hzx, iy⟩` from `reciprocal_bounds_of_eleven_le hL hx hy hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hyl : y < 1` using `by linarith`. Establish `hterm : ∀ a : ℕ, f a * ((l : ℝ) - 1) ^ (-(a : ℤ)) = f a * y ^ a`. Introduce `a`. Rewrite using `[zpow_neg, zpow_natCast, hy, inv_pow]`. Establish `hpt : ∀ i : ℕ, f i * y ^ i ≤ X * y ^ i + ((if i = 0 then x₀ - X else 0) + (if i = 1 then (x₁ - X) * y else 0))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Distinguish the cases in `hi0 : i = 0`. Substitute `hi0` using the available equality. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Distinguish the cases in `hi1 : i = 1`. Substitute `hi1` using the available equality. Simplify using the standard rewrite rules. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h1 py.le]`. Rewrite using `[if_neg hi0, if_neg hi1, add_zero, add_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (h2 i (by omega)) (pow_nonneg py.le i)`. Establish `H` using `((hasSum_geometric_of_lt_one py.le hyl).mul_left X).add ((hasSum_ite_eq (0:ℕ) (x₀ - X)).add (hasSum_ite_eq (1:ℕ) ((x₁ - X) * y)))`. Establish `hfs : Summable (fun i : ℕ => f i * y ^ i)` using `Summable.of_nonneg_of_le (fun i => mul_nonneg (hf i) (pow_nonneg py.le i)) hpt H.summable`. Establish `hzy : z - y = y * z` using `by linear_combination (-z) * eLy + y * eLz`. Establish `e1 : (1 - y)⁻¹ = 1 + z` using `inv_eq_of_mul_eq_one_right (by linear_combination hzy)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : x₁ / ((l : ℝ) - 1) = x₁ * y` using `by rw [hy, div_eq_mul_inv]`. Establish `c2 : X / (((l : ℝ) - 1) * ((l : ℝ) - 2)) = X * (y * z)`. Rewrite using `[hy, hz, div_eq_mul_inv, mul_inv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, c1, c2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `X * hzy`.
+A detailed English derivation is pending.
 -/
 theorem tsum_three (l : ℕ) (hl : 11 ≤ l) (f : ℕ → ℝ) (x₀ x₁ X : ℝ) (hf : ∀ a, 0 ≤ f a)
     (h0 : f 0 ≤ x₀) (h1 : f 1 ≤ x₁) (h2 : ∀ a, 2 ≤ a → f a ≤ X) :
@@ -106,11 +106,11 @@ theorem tsum_three (l : ℕ) (hl : 11 ≤ l) (f : ℕ → ℝ) (x₀ x₁ X : �
       linear_combination X * hzy
 
 /- English proof (translation)
-Establish `hL : (1:ℝ) < l`. Establish `: (11:ℝ) ≤ l` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hH1 : (H:ℝ) + 1 ≤ 2 * (h:ℝ)`. Establish `: H + 1 ≤ 2 * h` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hpos : (0:ℝ) < (H:ℝ) + 1` using `by positivity`. Establish `hlog0 : 0 ≤ Real.logb l ((H:ℝ) + 1)` using `Real.logb_nonneg hL (by linarith [(Nat.cast_nonneg H : (0:ℝ) ≤ H)])`. Establish `hmono : Real.logb l ((H:ℝ) + 1) ≤ Real.logb l (2 * (h:ℝ))` using `by first`. Consider the case `exact Real.logb_le_logb_of_le hL hpos hH1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (Real.logb_le_logb hL hpos (by linarith)).mpr hH1`. Establish `hc` using `Nat.ceil_lt_add_one (show (0:ℝ) ≤ 1 + Real.logb l ((H:ℝ) + 1) by linarith)`. Unfold `cW`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cW_le (l : ℕ) (hl : 11 ≤ l) (h η H : ℕ) (hη : η + 1 ≤ h) (hH : H ≤ h + η) :
     (cW l H : ℝ) ≤ 2 + Real.logb l (2 * (h : ℝ)) := by
@@ -132,17 +132,17 @@ theorem cW_le (l : ℕ) (hl : 11 ≤ l) (h η H : ℕ) (hη : η + 1 ≤ h) (hH 
   linarith
 
 /- English proof (translation)
-Establish `a1 : x ^ 2 ≤ x / 11` using `by nlinarith [mul_le_mul_of_nonneg_left hx1 px.le]`. Establish `a2 : x * y ≤ 11 / 10 * x ^ 2` using `by nlinarith [mul_le_mul_of_nonneg_left hyx px.le]`. Establish `hyy` using `mul_le_mul_of_nonneg_left hy1 py.le`. Establish `a3 : y + y ^ 2 ≤ 121 / 100 * x` using `by nlinarith`. Establish `a4 : y + y ^ 2 ≤ 11 / 100` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP0 : 0 ≤ y + y ^ 2` using `add_nonneg py.le (sq_nonneg y)`. Establish `a5 : z * (y + y ^ 2) ≤ 3 / 2 * x ^ 2`. Use `mul_le_mul hzx a3 hP0 (by linarith : (0:ℝ) ≤ 11 / 9 * x)` as an intermediate fact. Use polynomial arithmetic with `[sq_nonneg x]`. Establish `a6 : z * (y + y ^ 2) ≤ 11 / 900`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `mul_le_mul hz1 a4 hP0 (by norm_num : (0:ℝ) ≤ 1 / 9)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a7 : y ^ 2 ≤ 121 / 100 * x ^ 2`. Use `mul_le_mul hyx hyx py.le (by linarith : (0:ℝ) ≤ 11 / 10 * x)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `a8 : y ^ 2 ≤ 1 / 100` using `by nlinarith`. Establish `a9 : y ^ 2 * z ≤ 121 / 900 * x ^ 2`. Use `mul_le_mul a7 hz1 pz.le (by positivity : (0:ℝ) ≤ 121 / 100 * x ^ 2)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a10 : y ^ 2 * z ≤ 1 / 900`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `mul_le_mul a8 hz1 pz.le (by norm_num : (0:ℝ) ≤ 1 / 100)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a11 : z * y ≤ 121 / 90 * x ^ 2`. Use `mul_le_mul hzx hyx py.le (by linarith : (0:ℝ) ≤ 11 / 9 * x)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `a12 : z * y ≤ 1 / 90`. Use `mul_le_mul hz1 hy1 py.le (by norm_num : (0:ℝ) ≤ 1 / 9)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components.
 -/
 private theorem reciprocal_product_bounds_of_eleven_le {x y z : ℝ} (px : 0 < x) (py : 0 < y) (pz : 0 < z) (hx1 : x ≤ 1 / 11)
     (hy1 : y ≤ 1 / 10) (hz1 : z ≤ 1 / 9) (hyx : y ≤ 11 / 10 * x) (hzx : z ≤ 11 / 9 * x) :
@@ -181,9 +181,9 @@ private theorem reciprocal_product_bounds_of_eleven_le {x y z : ℝ} (px : 0 < x
   exact ⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12⟩
 
 /- English proof (translation)
-Establish `hL : (1:ℝ) < l`. Establish `: (11:ℝ) ≤ l` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Apply `Real.logb_nonneg hL` to reduce the goal to its premises. Establish `: (1:ℝ) ≤ n` using `by exact_mod_cast (show 1 ≤ n by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem logb_two_mul_natCast_nonneg_of_eleven_le (l n : ℕ) (hl : 11 ≤ l) : 0 ≤ Real.logb l (2 * (n : ℝ)) := by
   have hL : (1:ℝ) < l := by
@@ -197,7 +197,7 @@ private theorem logb_two_mul_natCast_nonneg_of_eleven_le (l n : ℕ) (hl : 11 �
     linarith
 
 /- English proof (translation)
-Establish `key : L * y ^ 2 = y + y ^ 2` using `by linear_combination y * eLy`. Rewrite using `[← key, hy, inv_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem mul_div_sub_one_sq_eq_mul_add_sq (v L y : ℝ) (hy : y = (L - 1)⁻¹) (eLy : L * y = 1 + y) :
     v * L / (L - 1) ^ 2 = v * (y + y ^ 2) := by
@@ -208,19 +208,19 @@ private theorem mul_div_sub_one_sq_eq_mul_add_sq (v L y : ℝ) (hy : y = (L - 1)
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hL : (11:ℝ) ≤ l` using `by exact_mod_cast hl`. Take `⟨x, hx⟩ : ∃ x : ℝ, x = (l:ℝ)⁻¹` from `⟨_, rfl⟩`. Take `⟨y, hy⟩ : ∃ y : ℝ, y = ((l:ℝ) - 1)⁻¹` from `⟨_, rfl⟩`. Take `⟨z, hz⟩ : ∃ z : ℝ, z = ((l:ℝ) - 2)⁻¹` from `⟨_, rfl⟩`. Take `⟨eLx, eLy, eLz, px, py, pz, hx1, hy1, hz1, hyx, hzx, iy⟩` from `reciprocal_bounds_of_eleven_le hL hx hy hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hx2, -, hP1, hP2, hzP1, hzP2, -⟩` from `reciprocal_product_bounds_of_eleven_le px py pz hx1 hy1 hz1 hyx hzx`. Establish `cw1 : ((w:ℝ) + S + η) / l = ((w:ℝ) + S + η) * x` using `by rw [hx, div_eq_mul_inv]`. Establish `ch1 : (h:ℝ) / (l:ℝ) ^ 2 = (h:ℝ) * x ^ 2` using `by rw [hx, inv_pow, div_eq_mul_inv]`. Establish `n1 : 0 ≤ (w:ℝ) * x` using `mul_nonneg (Nat.cast_nonneg _) px.le`. Establish `n2 : 0 ≤ (S:ℝ) * x` using `mul_nonneg (Nat.cast_nonneg _) px.le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n3 : 0 ≤ (η:ℝ) * x` using `mul_nonneg (Nat.cast_nonneg _) px.le`. Establish `n4 : 0 ≤ (h:ℝ) * x ^ 2` using `mul_nonneg (Nat.cast_nonneg _) (sq_nonneg x)`. Establish `hc` using `cW_le l hl h η H hη hH`. Establish `hg` using `logb_two_mul_natCast_nonneg_of_eleven_le l h hl`. Rewrite `hr` using `[mul_div_sub_one_sq_eq_mul_add_sq _ _ _ hy eLy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ez : ((H : ℝ) + cW l H + 3) / ((l : ℝ) - 2) = ((H : ℝ) + cW l H + 3) * z`. Rewrite using `[hz, div_eq_mul_inv]`. Rewrite `hs` using `[ez]`. Establish `cw : 2 * ((w:ℝ) + S + η) / l = 2 * ((w:ℝ) + S + η) * x` using `by rw [hx, div_eq_mul_inv]`. Establish `ch : 2 * (h:ℝ) / (l:ℝ) ^ 2 = 2 * (h:ℝ) * x ^ 2` using `by rw [hx, inv_pow, div_eq_mul_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP0 : 0 ≤ y + y ^ 2` using `add_nonneg py.le (sq_nonneg y)`. Establish `hzP0 : 0 ≤ z * (y + y ^ 2)` using `mul_nonneg pz.le hP0`. Establish `hH1r : (H₁:ℝ) ≤ (w:ℝ) + S + η` using `by exact_mod_cast hH₁`. Establish `hHr : (H:ℝ) ≤ (h:ℝ) + η` using `by exact_mod_cast hH`. Establish `hu0 : (0:ℝ) ≤ (w:ℝ) + S + η` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc3 : (0:ℝ) ≤ (cW l H : ℝ) + 3` using `by positivity`. Establish `b1` using `mul_le_mul hH1r hP1 hP0 hu0`. Establish `b2` using `mul_le_mul_of_nonneg_left hP2 hc3`. Establish `b3` using `mul_le_mul hHr hzP1 hzP0 (by positivity : (0:ℝ) ≤ (h:ℝ) + η)`. Establish `b4` using `mul_le_mul_of_nonneg_left hzP2 hc3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsP` using `mul_le_mul_of_nonneg_right hs hP0`. Establish `b5` using `mul_le_mul_of_nonneg_left hx2 (Nat.cast_nonneg η : (0:ℝ) ≤ η)`. Unfold `Sg`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -269,21 +269,21 @@ theorem rr_le (l : ℕ) (hl : 11 ≤ l) (h w S η H H₁ : ℕ) (hη : η + 1 �
   · linarith
 
 /- English proof (translation)
-Establish `hL : (11:ℝ) ≤ l` using `by exact_mod_cast hl`. Take `⟨x, hx⟩ : ∃ x : ℝ, x = (l:ℝ)⁻¹` from `⟨_, rfl⟩`. Take `⟨y, hy⟩ : ∃ y : ℝ, y = ((l:ℝ) - 1)⁻¹` from `⟨_, rfl⟩`. Take `⟨z, hz⟩ : ∃ z : ℝ, z = ((l:ℝ) - 2)⁻¹` from `⟨_, rfl⟩`. Take `⟨eLx, eLy, eLz, px, py, pz, hx1, hy1, hz1, hyx, hzx, iy⟩` from `reciprocal_bounds_of_eleven_le hL hx hy hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `cw1 : ((w:ℝ) + S + η) / l = ((w:ℝ) + S + η) * x` using `by rw [hx, div_eq_mul_inv]`. Establish `ch1 : (h:ℝ) / (l:ℝ) ^ 2 = (h:ℝ) * x ^ 2` using `by rw [hx, inv_pow, div_eq_mul_inv]`. Establish `n1 : 0 ≤ (w:ℝ) * x` using `mul_nonneg (Nat.cast_nonneg _) px.le`. Establish `n2 : 0 ≤ (S:ℝ) * x` using `mul_nonneg (Nat.cast_nonneg _) px.le`. Establish `n3 : 0 ≤ (η:ℝ) * x` using `mul_nonneg (Nat.cast_nonneg _) px.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n4 : 0 ≤ (h:ℝ) * x ^ 2` using `mul_nonneg (Nat.cast_nonneg _) (sq_nonneg x)`. Establish `hx2 : x ^ 2 ≤ x / 11` using `by nlinarith [mul_le_mul_of_nonneg_left hx1 px.le]`. Establish `hg` using `logb_two_mul_natCast_nonneg_of_eleven_le l h hl`. Establish `hl1 : ((l - 1 : ℕ) : ℝ) = (l:ℝ) - 1`. Rewrite using `[Nat.cast_sub (show 1 ≤ l by omega), Nat.cast_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : ((2 * h / (l - 1) : ℕ) : ℝ) ≤ 2 * (h:ℝ) * y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hl1, hy, div_eq_mul_inv]`. Apply the tactic sequence `push_cast <;> ring`. Apply the tactic sequence `have e1 : ((2 * (w + S) : ℕ) : ℝ) = 2 * ((w:ℝ) + S) := by push_cast <;> ring`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e2 : ((2 * h / (l - 1) + 1 : ℕ) : ℝ) = ((2 * h / (l - 1) : ℕ) : ℝ) + 1`. Rewrite using `[Nat.cast_add, Nat.cast_one]`. Use `le_trans (Nat.ceil_lt_add_one ?_).le ?_` and prove the remaining obligations. Check the signs of the components of the expression. Rewrite using `[mul_div_sub_one_sq_eq_mul_add_sq _ _ _ hy eLy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hP0 : 0 ≤ y + y ^ 2` using `add_nonneg py.le (sq_nonneg y)`. Establish `hP1 : y + y ^ 2 ≤ 121 / 100 * x` using `by nlinarith [mul_le_mul_of_nonneg_left hy1 py.le]`. Establish `hhy : 0 ≤ (h:ℝ) * y` using `mul_nonneg (Nat.cast_nonneg _) py.le`. Establish `hV : ((2 * (w + S) : ℕ) : ℝ) + ((2 * h / (l - 1) + 1 : ℕ) : ℝ) ≤ 2 * ((w:ℝ) + S) + 2 * (h:ℝ) * y + 1`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hV0 : (0:ℝ) ≤ 2 * ((w:ℝ) + S) + 2 * (h:ℝ) * y + 1`. Establish `hw0 : (0:ℝ) ≤ w` using `Nat.cast_nonneg _`. Establish `hS0 : (0:ℝ) ≤ S` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `b1` using `mul_le_mul hV hP1 hP0 hV0`. Establish `hxy : x * y ≤ 11 / 10 * x ^ 2` using `by nlinarith [mul_le_mul_of_nonneg_left hyx px.le]`. Establish `b2` using `mul_le_mul_of_nonneg_left hxy (Nat.cast_nonneg h : (0:ℝ) ≤ h)`. Unfold `Sg`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sig_le (l : ℕ) (hl : 11 ≤ l) (h w S η : ℕ) (h1 : 1 ≤ h) (hG : w + S ≤ h) :
     (⌈((2 * (w + S) : ℕ) + ((2 * h / (l - 1) + 1 : ℕ) : ℝ)) * l / ((l : ℝ) - 1) ^ 2 + 1⌉₊ : ℝ) ≤
@@ -334,21 +334,21 @@ theorem sig_le (l : ℕ) (hl : 11 ≤ l) (h w S η : ℕ) (h1 : 1 ≤ h) (hG : w
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hL : (11:ℝ) ≤ l` using `by exact_mod_cast hl`. Take `⟨x, hx⟩ : ∃ x : ℝ, x = (l:ℝ)⁻¹` from `⟨_, rfl⟩`. Take `⟨y, hy⟩ : ∃ y : ℝ, y = ((l:ℝ) - 1)⁻¹` from `⟨_, rfl⟩`. Take `⟨z, hz⟩ : ∃ z : ℝ, z = ((l:ℝ) - 2)⁻¹` from `⟨_, rfl⟩`. Take `⟨eLx, eLy, eLz, px, py, pz, hx1, hy1, hz1, hyx, hzx, iy⟩` from `reciprocal_bounds_of_eleven_le hL hx hy hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hx2, hxy, -, -, -, -, hy2, hy2', hy2z, hy2z', -⟩` from `reciprocal_product_bounds_of_eleven_le px py pz hx1 hy1 hz1 hyx hzx`. Establish `cw1 : ((w:ℝ) + S + η) / l = ((w:ℝ) + S + η) * x` using `by rw [hx, div_eq_mul_inv]`. Establish `ch1 : (h:ℝ) / (l:ℝ) ^ 2 = (h:ℝ) * x ^ 2` using `by rw [hx, inv_pow, div_eq_mul_inv]`. Establish `n1 : 0 ≤ (w:ℝ) * x` using `mul_nonneg (Nat.cast_nonneg _) px.le`. Establish `n2 : 0 ≤ (S:ℝ) * x` using `mul_nonneg (Nat.cast_nonneg _) px.le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n3 : 0 ≤ (η:ℝ) * x` using `mul_nonneg (Nat.cast_nonneg _) px.le`. Establish `n4 : 0 ≤ (h:ℝ) * x ^ 2` using `mul_nonneg (Nat.cast_nonneg _) (sq_nonneg x)`. Establish `hc` using `cW_le l hl h η H hη hH`. Establish `hg` using `logb_two_mul_natCast_nonneg_of_eleven_le l h hl`. Establish `c1 : (H₁:ℝ) / l = (H₁:ℝ) * x` using `by rw [hx, div_eq_mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH1r : (H₁:ℝ) ≤ (h:ℝ) + η` using `by exact_mod_cast hH₁`. Establish `hHr : (H:ℝ) ≤ (h:ℝ) + η` using `by exact_mod_cast hH`. Establish `hhη : (0:ℝ) ≤ (h:ℝ) + η` using `by positivity`. Establish `hu0 : (0:ℝ) ≤ (w:ℝ) + S + η` using `by positivity`. Establish `hc3 : (0:ℝ) ≤ (cW l H : ℝ) + 3` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d0 : (H₁:ℝ) * y = (H₁:ℝ) * x + (H₁:ℝ) * (x * y)` using `by linear_combination (H₁:ℝ) * iy`. Establish `d1` using `mul_le_mul hH1r hxy (mul_nonneg px.le py.le) hhη`. Establish `d2` using `mul_le_mul_of_nonneg_left hy1 hc3`. Establish `d7` using `mul_le_mul_of_nonneg_left hx2 (Nat.cast_nonneg η : (0:ℝ) ≤ η)`. Establish `d8` using `mul_le_mul_of_nonneg_left hx2 hu0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : s / ((l : ℝ) - 1) = s * y` using `by rw [hy, div_eq_mul_inv]`. Rewrite `hA` using `[e3]`. Establish `e1 : ((H₂ : ℝ) + cW l H + 3) / ((l : ℝ) - 1) = ((H₂ : ℝ) + cW l H + 3) * y`. Rewrite using `[hy, div_eq_mul_inv]`. Establish `e2 : ((H : ℝ) + cW l H + 3) / (((l : ℝ) - 1) * ((l : ℝ) - 2)) = ((H : ℝ) + cW l H + 3) * (y * z)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy, hz, div_eq_mul_inv, mul_inv]`. Rewrite `hs` using `[e1, e2]`. Establish `hsy` using `mul_le_mul_of_nonneg_right hs py.le`. Establish `hH2r : (H₂:ℝ) ≤ (w:ℝ) + S + η` using `by exact_mod_cast hH₂`. Establish `d3` using `mul_le_mul hH2r hy2 (sq_nonneg y) hu0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d4` using `mul_le_mul_of_nonneg_left hy2' hc3`. Establish `d5` using `mul_le_mul hHr hy2z (mul_nonneg (sq_nonneg y) pz.le) hhη`. Establish `d6` using `mul_le_mul_of_nonneg_left hy2z' hc3`. Unfold `Sg`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem Aa_cut_le (l : ℕ) (hl : 11 ≤ l) (h w S η H H₁ H₂ : ℕ) (hη : η + 1 ≤ h)
     (hH : H ≤ h + η) (hH₁ : H₁ ≤ h + η) (hH₂ : H₂ ≤ w + S + η) (s A : ℝ)
@@ -402,19 +402,19 @@ theorem Aa_cut_le (l : ℕ) (hl : 11 ≤ l) (h w S η H H₁ H₂ : ℕ) (hη : 
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hL : (11:ℝ) ≤ l` using `by exact_mod_cast hl`. Take `⟨x, hx⟩ : ∃ x : ℝ, x = (l:ℝ)⁻¹` from `⟨_, rfl⟩`. Take `⟨y, hy⟩ : ∃ y : ℝ, y = ((l:ℝ) - 1)⁻¹` from `⟨_, rfl⟩`. Take `⟨z, hz⟩ : ∃ z : ℝ, z = ((l:ℝ) - 2)⁻¹` from `⟨_, rfl⟩`. Take `⟨eLx, eLy, eLz, px, py, pz, hx1, hy1, hz1, hyx, hzx, iy⟩` from `reciprocal_bounds_of_eleven_le hL hx hy hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hx2, hxy, -, -, -, -, -, -, -, -, hzy, hzy'⟩` from `reciprocal_product_bounds_of_eleven_le px py pz hx1 hy1 hz1 hyx hzx`. Establish `cw1 : ((w:ℝ) + S + η) / l = ((w:ℝ) + S + η) * x` using `by rw [hx, div_eq_mul_inv]`. Establish `ch1 : (h:ℝ) / (l:ℝ) ^ 2 = (h:ℝ) * x ^ 2` using `by rw [hx, inv_pow, div_eq_mul_inv]`. Establish `n1 : 0 ≤ (w:ℝ) * x` using `mul_nonneg (Nat.cast_nonneg _) px.le`. Establish `n2 : 0 ≤ (S:ℝ) * x` using `mul_nonneg (Nat.cast_nonneg _) px.le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n3 : 0 ≤ (η:ℝ) * x` using `mul_nonneg (Nat.cast_nonneg _) px.le`. Establish `n4 : 0 ≤ (h:ℝ) * x ^ 2` using `mul_nonneg (Nat.cast_nonneg _) (sq_nonneg x)`. Establish `hc` using `cW_le l hl h η H hη hH`. Establish `hg` using `logb_two_mul_natCast_nonneg_of_eleven_le l h hl`. Establish `c1 : (H₁:ℝ) / l = (H₁:ℝ) * x` using `by rw [hx, div_eq_mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH1r : (H₁:ℝ) ≤ (h:ℝ) + η` using `by exact_mod_cast hH₁`. Establish `hHr : (H:ℝ) ≤ (h:ℝ) + η` using `by exact_mod_cast hH`. Establish `hhη : (0:ℝ) ≤ (h:ℝ) + η` using `by positivity`. Establish `hu0 : (0:ℝ) ≤ (w:ℝ) + S + η` using `by positivity`. Establish `hc3 : (0:ℝ) ≤ (cW l H : ℝ) + 3` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d0 : (H₁:ℝ) * y = (H₁:ℝ) * x + (H₁:ℝ) * (x * y)` using `by linear_combination (H₁:ℝ) * iy`. Establish `d1` using `mul_le_mul hH1r hxy (mul_nonneg px.le py.le) hhη`. Establish `d2` using `mul_le_mul_of_nonneg_left hy1 hc3`. Establish `d7` using `mul_le_mul_of_nonneg_left hx2 (Nat.cast_nonneg η : (0:ℝ) ≤ η)`. Establish `d8` using `mul_le_mul_of_nonneg_left hx2 hu0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : s / ((l : ℝ) - 1) = s * y` using `by rw [hy, div_eq_mul_inv]`. Rewrite `hA` using `[e3]`. Establish `ez : ((H : ℝ) + cW l H + 3) / ((l : ℝ) - 2) = ((H : ℝ) + cW l H + 3) * z`. Rewrite using `[hz, div_eq_mul_inv]`. Rewrite `hs` using `[ez]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsy` using `mul_le_mul_of_nonneg_right hs py.le`. Establish `d5` using `mul_le_mul hHr hzy (mul_nonneg pz.le py.le) hhη`. Establish `d6` using `mul_le_mul_of_nonneg_left hzy' hc3`. Unfold `Sg`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem Aa_le (l : ℕ) (hl : 11 ≤ l) (h w S η H H₁ : ℕ) (hη : η + 1 ≤ h)
     (hH : H ≤ h + η) (hH₁ : H₁ ≤ h + η) (s A : ℝ)
@@ -459,9 +459,9 @@ theorem Aa_le (l : ℕ) (hl : 11 ≤ l) (h w S η H H₁ : ℕ) (hη : η + 1 �
   linarith
 
 /- English proof (translation)
-Establish `hL : (11:ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `h1 : (0:ℝ) < (l:ℝ) - 1` using `by linarith`. Establish `hHr : (H:ℝ) ≤ (h:ℝ) + η` using `by exact_mod_cast hH`. Establish `e1 : (H:ℝ) / ((l:ℝ) - 1) = (H:ℝ) * ((l:ℝ) - 1)⁻¹` using `div_eq_mul_inv _ _`. Establish `e2 : ((h:ℝ) + η) / ((l:ℝ) - 1) = ((h:ℝ) + η) * ((l:ℝ) - 1)⁻¹` using `div_eq_mul_inv _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p : (0:ℝ) ≤ ((l:ℝ) - 1)⁻¹` using `inv_nonneg.mpr h1.le`. Use `mul_le_mul_of_nonneg_right hHr p` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem A_le (l : ℕ) (hl : 11 ≤ l) (h η H : ℕ) (hH : H ≤ h + η) (A : ℝ)
     (hA : A ≤ (H : ℝ) / ((l : ℝ) - 1) + 1) :
@@ -476,7 +476,7 @@ theorem A_le (l : ℕ) (hl : 11 ≤ l) (h η H : ℕ) (hH : H ≤ h + η) (A : �
   linarith
 
 /- English proof (translation)
-Establish `key : (2 * L - 1) * y ^ 2 = 2 * y + y ^ 2` using `by linear_combination (2 * y) * eLy`. Rewrite using `[← key, hy, inv_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem mul_two_mul_sub_one_div_sq_eq (v L y : ℝ) (hy : y = (L - 1)⁻¹)
     (eLy : L * y = 1 + y) : v * (2 * L - 1) / (L - 1) ^ 2 = v * (2 * y + y ^ 2) := by
@@ -485,15 +485,15 @@ private theorem mul_two_mul_sub_one_div_sq_eq (v L y : ℝ) (hy : y = (L - 1)⁻
   ring
 
 /- English proof (translation)
-Establish `hL : (11:ℝ) ≤ l` using `by exact_mod_cast hl`. Take `⟨x, hx⟩ : ∃ x : ℝ, x = (l:ℝ)⁻¹` from `⟨_, rfl⟩`. Take `⟨y, hy⟩ : ∃ y : ℝ, y = ((l:ℝ) - 1)⁻¹` from `⟨_, rfl⟩`. Take `⟨z, hz⟩ : ∃ z : ℝ, z = ((l:ℝ) - 2)⁻¹` from `⟨_, rfl⟩`. Take `⟨eLx, eLy, eLz, px, py, pz, hx1, hy1, hz1, hyx, hzx, iy⟩` from `reciprocal_bounds_of_eleven_le hL hx hy hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hg'` using `logb_two_mul_natCast_nonneg_of_eleven_le l (b + η + S) hl`. Establish `t1 : 0 ≤ ((b + η + S : ℕ) : ℝ) / (l:ℝ) ^ 2` using `by positivity`. Establish `t2 : 0 ≤ ((w:ℝ) + S + η) / l` using `by positivity`. Unfold `Sg at hsm`. Establish `hb160 : (160:ℝ) ≤ b` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hb1 : 1 ≤ b` using `by exact_mod_cast (show (1:ℝ) ≤ b by linarith)`. Establish `hc` using `cW_le l hl (b + η + S) η H (by omega) (by omega)`. Establish `hfrac : (H:ℝ) * (2 * l - 1) / ((l:ℝ) - 1) ^ 2 ≤ (H:ℝ) * (21 / 100)`. Rewrite using `[mul_two_mul_sub_one_div_sq_eq _ _ _ hy eLy]`. Use `mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hy1 py.le]`. Establish `hHr : (H:ℝ) ≤ b + 2 * η + S` using `by exact_mod_cast hH`. Establish `hηr : 20 * (η:ℝ) ≤ b` using `by exact_mod_cast hηb`. Establish `hSr : 20 * (S:ℝ) ≤ b` using `by exact_mod_cast hSb`. Establish `key : 2 * (a:ℝ) + η + 1 ≤ b` using `by linarith`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `key` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem K6 (l : ℕ) (hl : 11 ≤ l) (b w S η H : ℕ) (hηb : 20 * η ≤ b) (hSb : 20 * S ≤ b)
     (hwb : 20 * w ≤ b) (hH : H ≤ b + 2 * η + S)

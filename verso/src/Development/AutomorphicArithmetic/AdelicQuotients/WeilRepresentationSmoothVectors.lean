@@ -18,13 +18,13 @@ open PositivityTheory.ThKEst PositivityTheory.ThKEst.levelStructure PositivityTh
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `ring_AE F E` as an intermediate fact. Establish `: IsModuleTopology (AF F) (Ten F E n d)` using `inferInstanceAs (IsModuleTopology (AF F) (Fin n → Fin d → AE F E))`. Establish `he : Continuous M.co.e` using `IsModuleTopology.continuous_of_linearMap M.co.e.toLinearMap`. Establish `hV` using `schr_near hψ hg (hC.image he)`. Establish `hm : Continuous fun p : UA σ X.J × Ten F E n d => M.co.e ((mat p.1 - 1) * p.2)` using `he.comp ((((Units.continuous_val.comp continuous_subtype_val).comp continuous_fst).sub continuous_const).matrix_mul continuous_snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hC.eventually_forall_of_forall_eventually (x₀ := (1 : UA σ X.J)) (P := fun u c => M.co.e ((mat u - 1) * c) ∈ _) fun c _ => hm.continuousAt.preimage_mem_nhds (by`. Rewrite using `[show mat (1 : UA σ X.J) = 1 from rfl, sub_self, Matrix.zero_mul, map_zero])` and apply the resulting hypothesis. Use `filter_upwards [h1] with u h1 hu z hz f`. Take `⟨c, hc, hz⟩` from `hz`. Rewrite `hz` using `[at_iff, smul_sub, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu' : e0 F • (mat u - 1) = mat u - 1` using `hu`. Establish `e : mat u * z = z + (mat u - 1) * c`. Establish `e1 : (mat u - 1) * c = (mat u - 1) * z`. Rewrite using `[← hu', Matrix.smul_mul, ← Matrix.mul_smul, ← hz, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[e1, Matrix.sub_mul, Matrix.one_mul, add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_add]`. Conclude with `h1 c hc (by rw [← map_smul, ← Matrix.smul_mul, hu']) _ ⟨c, hc, rfl⟩ _ (by rw [← map_smul, ← map_smul, hz]) f`.
+A detailed English derivation is pending.
 -/
 private theorem schr_left {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ)
     {g : (Fin n × Fin d → Af F) → ℂ} (hg : g ∈ SB _) {C : Set (Ten F E n d)} (hC : IsCompact C) :
@@ -54,29 +54,27 @@ private theorem schr_left {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model
 end Left
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp φ hφ`. Distinguish the cases in `h0 : ∀ f : SInf F (Fin n × Fin d), pureA F f φ = 0`. Conclude with `⟨Set.univ, univ_mem, fun u _ _ f => by rw [h0, map_zero]⟩`. Use `push Not at h0`. Take `⟨f₀, h0⟩` from `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `Function.ne_iff.1 h0`. Establish `hy : pureA F f₀ φ y ≠ 0` using `hy`. Establish `hs` using `IsUWeilPair.isUSplitting hp.weil`. Establish `mem : ∀ f : SInf F (Fin n × Fin d), pureA F f φ ∈ schA F (Fin n × Fin d)` using `fun f => Submodule.subset_span ⟨f, φ, hφ, rfl⟩`. Take `⟨μ, hμ, -⟩` from `PositivityTheory.ThKEst.ParityOfCoefficients.exists_haar (F := F) (κ := Fin n × Fin d)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, C, -, hCc, hb⟩` from `PositivityTheory.ThKEst.coefBd_of PositivityTheory.ThKEst.coefReal_of F E σ B n d X W M χX χW om r s r' s' hp μ hμ φ hφ φ hφ 0`. Establish `h1` using `schr_left M hp.base.std hφ hCc`. Use `PositivityTheory.ThKEst.LatticeQuotientMeasure.ring_AE F E` as an intermediate fact. Establish `hi : Continuous fun u : UA σ X.J => u⁻¹` using `((continuous_inv (G := GL (Fin n) (AE F E))).comp continuous_subtype_val).subtype_mk fun u => (u⁻¹).2`. Establish `h2` using `(hi.tendsto' 1 1 inv_one).eventually h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun u : UA σ X.J => ‖om (u, 1) (pureA F f₀ φ) y / pureA F f₀ φ y - 1‖` using `((((hs.cont _ (PositivityTheory.ThKEst.levelStructure.ev_adm y) _ (mem f₀)).comp (continuous_id.prodMk continuous_const)).div_const _).sub continuous_const).norm`. Establish `h3` using `PositivityTheory.ThKEst.levelStructure.pow_near _ ((isOpen_lt hc (continuous_const (y := (1 / 2 : ℝ)))).mem_nhds (by`. Express the relevant statement in the definitionally equal form `‖om 1 (pureA F f₀ φ) y / pureA F f₀ φ y - 1‖ < 1 / 2`. Rewrite using `[map_one, Module.End.one_apply, div_self hy]`. Use the proof step `norm_num))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨_, h1.and (h2.and h3), fun u ⟨h1, h2, h3⟩ hu => ?_⟩` and prove the remaining obligations. Establish `hu` using `PositivityTheory.ThKEst.levelStructure.isFin_of hp.base.cm B.emb hu`. Establish `key : ∀ (f : SInf F (Fin n × Fin d)) x, om (u, 1) (pureA F f φ) x * (starRingEnd ℂ) (om (u, 1) (pureA F f₀ φ) y) = pureA F f φ x * (starRingEnd ℂ) (pureA F f₀ φ y)`. Introduce `f x`. Use `PositivityTheory.ThKEst.fourierInj_of F _ B.ψ hp.base.std μ hμ _ (hs.pres _ _ (mem f)) _ (hs.pres _ _ (mem f₀)) _ (mem f) _ (mem f₀) ?_ x y` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `w`. Take `⟨z, rfl⟩` from `M.co.e.surjective w`. Rewrite using `[PositivityTheory.ThKEst.coefEq_of F E σ B n d X W M χX χW om r s r' s' hp μ hμ _ (mem f) _ (mem f₀), PositivityTheory.ThKEst.ParityOfCoefficients.mat_one_inv, Matrix.transpose_one, Matrix.mul_one]`. Distinguish the cases in `a : ∃ c ∈ C, At (evI F) (z - c)`. Unfold `PositivityTheory.ThKEst.coef`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h2 hu.inv z a]`. Distinguish the cases in `a' : ∃ c ∈ C, At (evI F) (mat u⁻¹ * z - c)`. Unfold `PositivityTheory.ThKEst.coef`. Rewrite using `[← h1 hu _ a', ← Matrix.mul_assoc, show mat u * mat u⁻¹ = 1 from Units.mul_inv u.1, Matrix.one_mul]`. Establish `b` using `hb f f₀ z`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `b'` using `hb f f₀ (mat u⁻¹ * z)`. Rewrite `b` using `[PositivityTheory.ThKEst.maj, if_neg a, mul_zero, norm_le_zero_iff]`. Rewrite `b'` using `[PositivityTheory.ThKEst.maj, if_neg a', mul_zero, norm_le_zero_iff]`. Rewrite using `[b, b']`. Establish `h4 : (starRingEnd ℂ) (om (u, 1) (pureA F f₀ φ) y) ≠ 0` using `fun h => by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `key f₀ y` as an intermediate fact. Rewrite `this` using `[h, mul_zero, eq_comm, mul_eq_zero, map_eq_zero, or_self]`. Conclude with `hy this`. Take `⟨c, hc⟩ : ∃ c : ℂ, ∀ f : SInf F (Fin n × Fin d), om (u, 1) (pureA F f φ) = c • pureA F f φ` from `⟨(starRingEnd ℂ) (pureA F f₀ φ y) / (starRingEnd ℂ) (om (u, 1) (pureA F f₀ φ) y), fun f => funext fun x => by`. Rewrite using `[Pi.smul_apply, smul_eq_mul, div_mul_eq_mul_div, eq_div_iff h4, key, mul_comm]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `h5 : ∀ k : ℕ, om (u ^ k, 1) (pureA F f₀ φ) = c ^ k • pureA F f₀ φ` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero, one_smul]`. Conclude with `congrArg (· (pureA F f₀ φ)) (map_one om)`. Consider the case `succ k ih`.
+Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[pow_succ, show ((u ^ k * u, 1) : UA σ X.J × UA σ W.J) = (u ^ k, 1) * (u, 1) from by simp, map_mul, Module.End.mul_apply, hc, map_smul, ih, smul_smul, pow_succ']`. Establish `h6 : c = 1` using `PositivityTheory.ThKH.Locrep.eq_one_of_pow_near fun k => by`. Use `h3 hu k` as an intermediate fact. Rewrite `this` using `[Set.mem_ofPred_eq, h5, Pi.smul_apply, smul_eq_mul, mul_div_assoc, div_self hy, mul_one]`. Then use the resulting hypothesis. Introduce `f`.
-
-Rewrite using `[hc, h6, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.weil_representation_smooth_vectors :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W), ∀ r s r' s', IsPair B M χX χW om r s r' s' → ∀ φ ∈ SB (Fin n × Fin d → Af F), ∃ U ∈ 𝓝 (1 : UA σ X.J), ∀ u ∈ U, (∀ w, (mat u).map (piInf (B.emb w)) = 1) → ∀ f : SInf F (Fin n × Fin d), om (u, 1) (pureA F f φ) = pureA F f φ := by

@@ -11,7 +11,7 @@ namespace GlobalTheory.BCT.ThBasic
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.T.placeConjugation_properties_cmField E hU w).2.2.1 x`. Express the relevant statement in the definitionally equal form `Valued.v (cj w x) ≤ 1`. Rewrite using `[h]`. Conclude with `hx`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cj_mem_integers (hU : Unr E) (w : Pl E) (x : w.adicCompletion E) (hx : x ∈ Ov E w) : cj w x ∈ Ov E w := by
   have h := (GlobalTheory.T.placeConjugation_properties_cmField E hU w).2.2.1 x
@@ -19,7 +19,7 @@ theorem cj_mem_integers (hU : Unr E) (w : Pl E) (x : w.adicCompletion E) (hx : x
   rw [h]; exact hx
 
 /- English proof (translation)
-Unfold `thL`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `GlobalTheory.ThetaPull.thetaGL_thetaGL _ (GlobalTheory.T.placeConjugation_properties_cmField E hU w).2.1 g`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thL_thL (hU : Unr E) (n : ℕ) (w : Pl E) (g : GLw n w) : thL n w (thL n w g) = g := by
   unfold thL
@@ -28,7 +28,7 @@ theorem thL_thL (hU : Unr E) (n : ℕ) (w : Pl E) (g : GLw n w) : thL n w (thL n
   · exact GlobalTheory.ThetaPull.thetaGL_thetaGL _ (GlobalTheory.T.placeConjugation_properties_cmField E hU w).2.1 g
 
 /- English proof (translation)
-Unfold `thL`. Use `split_ifs`. Conclude with `continuous_id`. Conclude with `GlobalTheory.ThetaPull.continuous_thetaGL _ (GlobalTheory.T.placeConjugation_properties_cmField E hU w).1`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_thL (hU : Unr E) (n : ℕ) (w : Pl E) : Continuous (thL n w) := by
   unfold thL
@@ -37,9 +37,7 @@ theorem continuous_thL (hU : Unr E) (n : ℕ) (w : Pl E) : Continuous (thL n w) 
   · exact GlobalTheory.ThetaPull.continuous_thetaGL _ (GlobalTheory.T.placeConjugation_properties_cmField E hU w).1
 
 /- English proof (translation)
-Unfold `thL`. Use `split_ifs`. Conclude with `hk`. Take `⟨k', rfl⟩` from `hk`. Set `c' : Ov E w →+* Ov E w` to `(cj w).restrict (Ov E w) (Ov E w) (cj_mem_integers hU w)`.
-
-Use `⟨thetaGL n c' k', ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.ThetaPull.map_thetaGL (Ov E w).subtype c' (cj w) (fun x => rfl) k'`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem thL_mem_KGL (hU : Unr E) (n : ℕ) (w : Pl E) (k : GLw n w) (hk : k ∈ GlobalTheory.LFun.KGL w n) :
     thL n w k ∈ GlobalTheory.LFun.KGL w n := by
@@ -52,9 +50,9 @@ theorem thL_mem_KGL (hU : Unr E) (n : ℕ) (w : Pl E) (k : GLw n w) (hk : k ∈ 
     exact GlobalTheory.ThetaPull.map_thetaGL (Ov E w).subtype c' (cj w) (fun x => rfl) k'
 
 /- English proof (translation)
-Unfold `nrmL`. Establish `h2` using `thL_thL hU n w g`. Unfold `thL at h2 ⊢`. Use `split_ifs with hs`. Simplify using `[hs] at *`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hs, if_false] at h2 ⊢`. Rewrite using `[map_mul, map_mul, map_inv, h2]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrmL_twist (hU : Unr E) (n : ℕ) (w : Pl E) (g y : GLw n w) :
     nrmL n w (g⁻¹ * y * thL n w g) = g⁻¹ * nrmL n w y * g := by
@@ -68,9 +66,7 @@ theorem nrmL_twist (hU : Unr E) (n : ℕ) (w : Pl E) (g y : GLw n w) :
     group
 
 /- English proof (translation)
-Unfold `UL`. Use `split_ifs`. Conclude with `isClosed_univ`. Establish `hc` using `(GlobalTheory.T.placeConjugation_properties_cmField E hU w).1`. Establish `: Continuous fun g : GLw n w => cT (cj w) (g : Matrix (Fin n) (Fin n) _) * 1 * (g : Matrix (Fin n) (Fin n) _)`.
-
-Use `Continuous.mul (Continuous.mul ?_ continuous_const) Units.continuous_val` and prove the remaining obligations. Conclude with `continuous_matrix fun i j => hc.comp (Units.continuous_val.matrix_elem _ _)`. Conclude with `isClosed_singleton.preimage this`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_UL (hU : Unr E) (n : ℕ) (w : Pl E) : IsClosed (UL n w : Set (GLw n w)) := by
   unfold UL
@@ -83,9 +79,7 @@ theorem isClosed_UL (hU : Unr E) (n : ℕ) (w : Pl E) : IsClosed (UL n w : Set (
     exact isClosed_singleton.preimage this
 
 /- English proof (translation)
-Unfold `nrmL locEl`. Use `split_ifs with hs`. Conclude with `(Matrix.charpoly_map _ _)`. Establish `hm : thetaGL n (cj w) (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) δ) = GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) (thE E n δ)` using `(GlobalTheory.ThetaPull.map_thetaGL _ _ _ (fun x => ((GlobalTheory.T.placeConjugation_properties_cmField E hU w).2.2.2.1 hs).1 x |>.symm) δ).symm`. Rewrite using `[hm, ← map_mul]`.
-
-Conclude with `(Matrix.charpoly_map _ _)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_nrmL (hU : Unr E) (n : ℕ) (w : Pl E) (δ : GL (Fin n) E) :
     (nrmL n w (locEl n w δ)).val.charpoly = atPl w (δ * thE E n δ).val.charpoly := by
@@ -99,11 +93,11 @@ theorem charpoly_nrmL (hU : Unr E) (n : ℕ) (w : Pl E) (δ : GL (Fin n) E) :
     exact (Matrix.charpoly_map _ _)
 
 /- English proof (translation)
-Unfold `UL`. Use `split_ifs with hs`. Conclude with `Subgroup.mem_top _`. Establish `hp` using `((GlobalTheory.T.placeConjugation_properties_cmField E hU w).2.2.2.1 hs).2.2.1`. Establish `hx` using `x.2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `cT (conjAd E) (x.1 : Matrix (Fin n) (Fin n) (Ad E)) * 1 * (x.1 : Matrix (Fin n) (Fin n) (Ad E)) = 1 at hx`. Express the relevant statement in the definitionally equal form `cT (cj w) ((cLoc w x : GLw n w) : Matrix (Fin n) (Fin n) _) * 1 * ((cLoc w x : GLw n w) : Matrix (Fin n) (Fin n) _) = 1`. Use `congrArg (((pLoc E w).comp (pFin E)).mapMatrix) hx` as an intermediate fact. Rewrite `this` using `[map_one, map_mul, map_mul, map_one]`. Use `this using 3` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Matrix.ext fun i j => ?_ show cj w (pLoc E w (pFin E ((x.1 : Matrix (Fin n) (Fin n) (Ad E)) j i))) = pLoc E w (pFin E (conjAd E ((x.1 : Matrix (Fin n) (Fin n) (Ad E)) j i)))` and prove the remaining obligations. Rewrite using `[← hp]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cLoc_mem_UL (hU : Unr E) (n : ℕ) (w : Pl E) (x : UA E n) : cLoc w x ∈ UL n w := by
   unfold UL
@@ -124,9 +118,9 @@ theorem cLoc_mem_UL (hU : Unr E) (n : ℕ) (w : Pl E) (x : UA E n) : cLoc w x �
     · rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n w`. Establish `hK` using `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n`. Use `⟨continuous_thL hU n w, thL_thL hU n w, thL_mem_KGL hU n w, nrmL_twist hU n w, hK.1, hK.2, ?_, ?_, charpoly_nrmL hU n w, fun x _ => cLoc_mem_UL hU n w x⟩` and prove the remaining obligations. Rewrite using `[KL, Subgroup.coe_subgroupOf]`. Conclude with `hK.1.preimage continuous_subtype_val`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[KL, Subgroup.coe_subgroupOf]`. Conclude with `(isClosed_UL hU n w).isClosedEmbedding_subtypeVal.isCompact_preimage hK.2`.
+A detailed English derivation is pending.
 -/
 theorem twist_basic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (w : Pl E), Continuous (thL n w) ∧ (∀ g, thL n w (thL n w g) = g) ∧ (∀ k ∈ GlobalTheory.LFun.KGL w n, thL n w k ∈ GlobalTheory.LFun.KGL w n) ∧ (∀ g y, nrmL n w (g⁻¹ * y * thL n w g) = g⁻¹ * nrmL n w y * g) ∧ IsOpen (GlobalTheory.LFun.KGL w n : Set (GLw n w)) ∧ IsCompact (GlobalTheory.LFun.KGL w n : Set (GLw n w)) ∧ IsOpen (KL n w : Set (UL n w)) ∧ IsCompact (KL n w : Set (UL n w)) ∧ (∀ δ : GL (Fin n) E, (nrmL n w (locEl n w δ)).val.charpoly = atPl w (δ * thE E n δ).val.charpoly) ∧ ∀ x ∈ locU n w, cLoc w x ∈ UL n w := by
   intro E _ _ _ hU n w

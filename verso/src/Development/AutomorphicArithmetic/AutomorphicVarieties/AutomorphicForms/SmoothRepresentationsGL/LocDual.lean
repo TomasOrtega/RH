@@ -9,9 +9,9 @@ open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspS
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
 /- English proof (translation)
-Establish `h1 : ux⁻¹ ≤ g⁻¹` using `inv_anti₀ hg hgx`. Establish `h2 : ua * ux⁻¹ ≤ ua * g⁻¹` using `by gcongr`. Establish `h3 : 1 < p⁻¹` using `one_lt_inv₀ (zero_lt_iff.mpr hp0) |>.mpr hp`. Establish `h4 : 0 < ua * g⁻¹`. Apply `zero_lt_iff.mpr` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `mul_ne_zero hua (inv_ne_zero hg.ne')`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem mul_inv_lt_mul_inv_mul_inv_of_le_of_lt_one {G : Type} [LinearOrderedCommGroupWithZero G] (ua g ux p : G) (hua : ua ≠ 0)
     (hg : 0 < g) (hgx : g ≤ ux) (hp : p < 1) (hp0 : p ≠ 0) :
@@ -27,7 +27,7 @@ private theorem mul_inv_lt_mul_inv_mul_inv_of_le_of_lt_one {G : Type} [LinearOrd
     _ < ua * g⁻¹ * p⁻¹ := mul_lt_mul_of_pos_left h3 h4
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem mul_lt_of_lt_mul_inv_of_lt {G : Type} [LinearOrderedCommGroupWithZero G] (q y r g1 : G) (hr : 0 < r)
     (hy : y < r) (hq : q < g1 * r⁻¹) : q * y < g1 := by
@@ -36,29 +36,23 @@ private theorem mul_lt_of_lt_mul_inv_of_lt {G : Type} [LinearOrderedCommGroupWit
     _ = g1 := by rw [mul_assoc, inv_mul_cancel₀ hr.ne', mul_one]
 
 /- English proof (translation)
-Introduce `E _ _ w ψ hψ V hV`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, ψ a ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hψ (AddChar.ext _ _ fun x => by simpa using h x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ha`. Take `⟨γ, hγ⟩` from `Valued.mem_nhds_zero.mp hV`. Take `⟨C, hC, hC0⟩` from `exists_compact_mem_nhds (0 : HeightOneSpectrum.adicCompletion E w)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ₁, hγ₁⟩` from `Valued.mem_nhds_zero.mp hC0`. Take `⟨π₀, hπ₀⟩` from `HeightOneSpectrum.valuation_exists_uniformizer E w`. Establish `hvπ : Valued.v (π₀ : HeightOneSpectrum.adicCompletion E w) = WithZero.exp (-1 : ℤ)`. Simplify using `[hπ₀]`. Establish `hπ0 : (π₀ : HeightOneSpectrum.adicCompletion E w) ≠ 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `hvπ` using `[h, map_zero]`. Conclude with `WithZero.zero_ne_coe hvπ`. Establish `hπ1 : Valued.v.restrict (π₀ : HeightOneSpectrum.adicCompletion E w) < 1`. Rewrite using `[Valuation.restrict_lt_one_iff, hvπ, ← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Establish `hπn : Valued.v.restrict (π₀ : HeightOneSpectrum.adicCompletion E w) ≠ 0`. Rewrite using `[Ne, Valuation.restrict_eq_zero_iff, hvπ]`. Conclude with `WithZero.exp_ne_zero`. Establish `hua : Valued.v.restrict a ≠ 0` using `by simp [ha0]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set R := Units.mk0 (Valued.v.restrict a * (γ : _)⁻¹ * (Valued.v.restrict (π₀ : HeightOneSpectrum.adicCompletion E w))⁻¹) (mul_ne_zero (mul_ne_zero hua γ⁻¹.ne_zero) (inv_ne_zero hπn)) with hR`. Take `⟨n, hn⟩` from `exists_pow_lt₀ hπ1 (γ₁ * R⁻¹)`. Use `⟨Valued.v.restrict.ltAddSubgroup R, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Valuation.coe_ltAddSubgroup]`. Conclude with `Valued.isOpen_ball _ _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Valuation.coe_ltAddSubgroup]`. Use `IsCompact.of_isClosed_subset (hC.image (continuous_const.mul continuous_id : Continuous fun z : HeightOneSpectrum.adicCompletion E w => ((π₀ : HeightOneSpectrum.adicCompletion E w) ^ n)⁻¹ * z)) (Valued.isClosed_ball _ _) ?_` and prove the remaining obligations. Introduce `y hy`. Use `⟨(π₀ : HeightOneSpectrum.adicCompletion E w) ^ n * y, hγ₁ ?_, ?_⟩` and prove the remaining obligations. Use `show Valued.v.restrict ((π₀ : HeightOneSpectrum.adicCompletion E w) ^ n * y) < γ₁`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[map_mul, map_pow]`. Use `mul_lt_of_lt_mul_inv_of_lt _ _ _ _ (zero_lt_iff.mpr R.ne_zero) hy ?_` and prove the remaining obligations. Simplify using `using hn`. Conclude with `inv_mul_cancel_left₀ (pow_ne_zero n hπ0) y`. Introduce `x hx`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hxV`. Establish `hxg : (γ : _) ≤ Valued.v.restrict x`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hxV (hγ h)`.
-
-Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hxg` using `[map_zero]`. Conclude with `γ.ne_zero (le_antisymm hxg zero_le')`. Establish `hy : a * x⁻¹ ∈ Valued.v.restrict.ltAddSubgroup R`.
-
-Rewrite using `[← SetLike.mem_coe, Valuation.coe_ltAddSubgroup]`. Use `show Valued.v.restrict (a * x⁻¹) < R`. Rewrite using `[map_mul, map_inv₀, hR, Units.val_mk0, Units.val_inv_eq_inv_val]`. Conclude with `mul_inv_lt_mul_inv_mul_inv_of_le_of_lt_one _ _ _ _ hua (zero_lt_iff.mpr γ.ne_zero) hxg hπ1 hπn`. Establish `h1` using `hx _ hy`.
-
-Rewrite `h1` using `[mul_comm a, ← mul_assoc, mul_inv_cancel₀ hx0, one_mul]`. Conclude with `ha h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Smo.locDual :
     UpperTheory.V.Af.Smo.LocDual := by

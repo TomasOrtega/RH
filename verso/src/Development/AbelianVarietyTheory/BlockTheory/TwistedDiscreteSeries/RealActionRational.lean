@@ -45,7 +45,7 @@ def RealActionFock : Prop :=
     R.Char F → ∀ (i : Fin D.R.m) (t : T), RealActionAt R i t
 
 /- English proof (translation)
-The claim follows from `(hR.models.HV i t).2.1`.
+A detailed English derivation is pending.
 -/
 example (R : RealDat D A Ks) (F : Face D A) (hR : R.Char F) (i : Fin D.R.m) (t : T) :
     LinearMap.range (R.HV i t).e = levelForms R i t :=

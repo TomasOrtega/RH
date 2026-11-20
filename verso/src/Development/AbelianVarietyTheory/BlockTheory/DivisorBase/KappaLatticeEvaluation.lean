@@ -18,9 +18,9 @@ def latIn (C : Submodule K R) (Vs : HeightOneSpectrum (𝓞 K) → Set (R → ER
   (latOf C Vs hV).map (C.subtype.restrictScalars (𝓞 K))
 
 /- English proof (translation)
-Unfold `latIn latOf`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, hF, rfl⟩`. Conclude with `⟨F.2, hF⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hC, hv⟩`. Conclude with `⟨⟨f, hC⟩, hv, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_latIn (C : Submodule K R) (Vs : HeightOneSpectrum (𝓞 K) → Set (R → EReal))
     (hV : ∀ la, ∀ v ∈ Vs la, IsVal la v) (f : R) :
@@ -68,19 +68,19 @@ def SupLatticeFull : Prop := ∀ (D : D7) (T : Core D), Pinned T → FullKappa T
 def SupLatticeFullLaws : Prop := ∀ (D : D7) (T : Core D), LawsM T → FullKappa T
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.pins, h.half, h.evalWD, h.unf, h.unTest⟩`.
+Supply the required witnesses or components.
 -/
 theorem Pinned.of_laws {T : Core D} (h : LawsM T) : Pinned T := ⟨h.pins, h.half, h.evalWD, h.unf, h.unTest⟩
 
 /- English proof (translation)
-Introduce `D T hL` and use `h D T (Pinned.of_laws hL)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SupLatticeFull.laws (h : SupLatticeFull) : SupLatticeFullLaws := fun D T hL => h D T (Pinned.of_laws hL)
 
 /- English proof (translation)
-Use `(mem_latIn _ _ _ f).trans (and_congr_right fun _ => ?_)` and prove the remaining obligations. Unfold `valSet algCls`. Simplify using `only [Set.forall_mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `h la V io e hO y hy`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h la ⟨_, V, io, e, hO, y, hy, (), trivial, rfl⟩`. Introduce `h la i`. Take `⟨⟨v, u⟩, V, io, e, hO, y, hy, eta, -, hv⟩` from `i`. Take `rfl : v = _` from `congrArg Prod.fst hv`. Conclude with `h la V io e hO y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_supLat (T : Core D) (j : ℕ) (w : WeightFamilies.Wt D j) (f : T.R j) :
     f ∈ supLat T j w ↔ f ∈ cuspW T j w ∧

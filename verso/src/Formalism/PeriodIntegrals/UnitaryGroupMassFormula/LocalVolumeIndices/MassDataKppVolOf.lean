@@ -61,11 +61,11 @@ theorem Steps_bOf_μKpp (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Gi
         ∏ p : TypX X, (X.measG.μGv p.1 (compSet X.B.I.cm.sig X.B.I.J (levelUnitary X hb) p.1)).toReal := rfl
 
 /- English proof (translation)
-Establish `hne : ∀ p : TypX X, (X.measG.μGv p.1 (compSet X.B.I.cm.sig X.B.I.J (levelUnitary X hb) p.1)).toReal ≠ 0` using `fun p => (ENNReal.toReal_pos (h3 p).1.ne' (h3 p).2.1.ne).ne'`. Establish `hg : gIdx X hb ≠ 0`. Rewrite using `[h4]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun p _ => (h3 p).2.2`. Establish `hprod : ∏ p : TypX X, (X.measG.μGv p.1 (Kv X.B.I.cm.sig X.B.I.J (lamS X) p.1)).toReal = (gIdx X hb : ℝ) * ∏ p : TypX X, (X.measG.μGv p.1 (compSet X.B.I.cm.sig X.B.I.J (levelUnitary X hb) p.1)).toReal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4, Nat.cast_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[h2 p (h3 p).2.2, ENNReal.toReal_mul, ENNReal.toReal_natCast]`. Establish `hP : ∏ p : TypX X, (X.measG.μGv p.1 (compSet X.B.I.cm.sig X.B.I.J (levelUnitary X hb) p.1)).toReal ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun p _ => hne p`. Establish `hG : (gIdx X hb : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hprod, h1 hg, ENNReal.toReal_mul, ENNReal.toReal_natCast, mul_div_mul_left _ _ hG, div_mul_cancel₀ _ hP]`.
+A detailed English derivation is pending.
 -/
 theorem Steps_main (h1 : GlobIdx X hb) (h2 : LocIdx X hb) (h3 : LocPos X hb) (h4 : IdxProd X hb) :
     (X.measG.μGf (KfS X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J))).toReal /
@@ -92,7 +92,7 @@ theorem Steps_main (h1 : GlobIdx X hb) (h2 : LocIdx X hb) (h3 : LocPos X hb) (h4
     div_mul_cancel₀ _ hP]
 
 /- English proof (translation)
-Introduce `D X hb hK FdN FdN' u u' X0 L A hyp`. Rewrite using `[Steps_bOf_μKpp X hb hK FdN FdN' u u' X0 L A]`. Conclude with `Steps_main X hb (h1 X hb hK hyp.1 hyp.2.1) (h2 X hb hK hyp.1 hyp.2.1) (h3 X hb hK hyp.1 hyp.2.1) (h4 X hb hK hyp.1 hyp.2.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem massDataKppVol_of (h1 : GlobIdxAll) (h2 : LocIdxAll) (h3 : LocPosAll) (h4 : IdxProdAll) :
     ∀ {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf)

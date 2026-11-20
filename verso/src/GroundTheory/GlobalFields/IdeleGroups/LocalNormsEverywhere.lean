@@ -16,9 +16,9 @@ attribute [local instance] FractionRing.liftAlgebra in
 variable (K L) in
 
 /- English proof (translation)
-Rewrite using `[eventually_cofinite]`. Use `(Ideal.finite_factors (differentIdeal_ne_bot (A := 𝓞 K) (B := 𝓞 L))).subset fun w hw ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `w.isPrime` as an intermediate fact. Use `not_dvd_differentIdeal_iff.1 h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hw (Ideal.ramificationIdx_eq_one w.asIdeal (𝓞 K))`.
+A detailed English derivation is pending.
 -/
 theorem eventually_ramificationIdx_eq_one :
     ∀ᶠ w : HeightOneSpectrum (𝓞 L) in cofinite, w.asIdeal.ramificationIdx (𝓞 K) = 1 := by
@@ -31,11 +31,9 @@ theorem eventually_ramificationIdx_eq_one :
   exact hw (Ideal.ramificationIdx_eq_one w.asIdeal (𝓞 K))
 
 /- English proof (translation)
-Use `le_antisymm (map_integerUnitsOver_le v) fun u hu ↦ ?_` and prove the remaining obligations. Take `⟨y, hy, hyu⟩` from `exists_norm_eq_of_ramificationIdx_eq_one v w.1 he hu`. Use `⟨Pi.mulSingle w y, mem_integerUnitsOver.2 fun w' ↦ ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `hy`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `one_mem _`. Rewrite using `[finiteLocalNorm_mulSingle]`.
-
-Conclude with `Units.ext hyu`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_integerUnitsOver_eq_of_ramificationIdx_eq_one (v : HeightOneSpectrum (𝓞 K))
     (w : PlacesOver L v) (he : w.1.asIdeal.ramificationIdx (𝓞 K) = 1) :
@@ -57,7 +55,7 @@ theorem map_integerUnitsOver_eq_of_ramificationIdx_eq_one (v : HeightOneSpectrum
 variable (L) in
 
 /- English proof (translation)
-Use `(eventually_forall_placesOver K (eventually_ramificationIdx_eq_one K L)).mono fun v hv ↦ ?_` and prove the remaining obligations. Take `⟨w⟩` from `nonempty_placesOver L v`. Conclude with `map_integerUnitsOver_eq_of_ramificationIdx_eq_one v w (hv w)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually_map_integerUnitsOver_eq :
     ∀ᶠ v : HeightOneSpectrum (𝓞 K) in cofinite,
@@ -71,7 +69,7 @@ theorem eventually_map_integerUnitsOver_eq :
 variable (L) in
 
 /- English proof (translation)
-Rewrite using `[mem_range_ideleNorm_iff]`. Use `⟨fun h ↦ ⟨h.1, h.2.1⟩, fun h ↦ ⟨h.1, h.2, ?_⟩⟩` and prove the remaining obligations. Use `filter_upwards [eventually_finiteProj_mem (L := K) x, eventually_map_integerUnitsOver_eq L] with v hv hv'`. Rewrite using `[hv']`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_ideleNorm_iff_forall (x : IdeleGroup K) :
     x ∈ (ideleNorm K L).range ↔
@@ -85,7 +83,7 @@ theorem mem_range_ideleNorm_iff_forall (x : IdeleGroup K) :
   exact hv
 
 /- English proof (translation)
-The claim follows from `(mem_range_ideleNorm_iff_forall L x).2 ⟨hfin, hinf⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_ideleNorm_of_forall (x : IdeleGroup K)
     (hfin : ∀ v, IdeleGroup.finiteProj v x ∈ (finiteLocalNorm L v).range)

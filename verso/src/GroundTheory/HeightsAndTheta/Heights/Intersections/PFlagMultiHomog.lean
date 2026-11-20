@@ -15,17 +15,17 @@ namespace FlagMultiHomog
 section Kernel
 
 /- English proof (translation)
-Set `_ : Algebra F E` to `τ.toAlgebra`. Establish `: FaithfulSMul F E` using `(faithfulSMul_iff_algebraMap_injective F E).2 τ.injective`. Establish `hBE : LinearIndependent E (B.map τ)` using `(linearIndependent_algebraMap_comp_iff (R := F) (S := E) (v := B)).2 hB`. Take `⟨κ, a, ha, hsp, hli⟩` from `exists_linearIndependent' F M.col`. Establish `: Finite κ` using `Finite.of_injective a ha`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Fintype κ` using `Fintype.ofFinite κ`. Establish `hliE : LinearIndependent E ((M.map τ).col ∘ a)` using `(linearIndependent_algebraMap_comp_iff (R := F) (S := E) (v := M.col ∘ a)).2 hli`. Establish `hr : Module.finrank F (LinearMap.range M.mulVecLin) ≤ Module.finrank E (LinearMap.range (M.map τ).mulVecLin)`. Rewrite using `[Matrix.range_mulVecLin, Matrix.range_mulVecLin, ← hsp, finrank_span_eq_card hli, ← finrank_span_eq_card hliE]`. Conclude with `Submodule.finrank_mono (Submodule.span_mono (Set.range_comp_subset_range _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `LinearMap.finrank_range_add_finrank_ker M.mulVecLin`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker (M.map τ).mulVecLin`. Rewrite `h1` using `[← hK, finrank_span_eq_card hB, Module.finrank_fin_fun]`. Rewrite `h2` using `[Module.finrank_fin_fun]`. Establish `hle : Submodule.span E (Set.range (B.map τ)) ≤ LinearMap.ker (M.map τ).mulVecLin`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Establish `h0 : B a ∈ LinearMap.ker M.mulVecLin` using `hK ▸ Submodule.subset_span ⟨a, rfl⟩`. Rewrite `h0` using `[LinearMap.mem_ker, Matrix.mulVecLin_apply]`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, Matrix.mulVecLin_apply]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Use `show Matrix.mulVec (M.map τ) (τ ∘ B a) i = 0`. Rewrite using `[← RingHom.map_mulVec, h0, Pi.zero_apply, map_zero]`. Use `(Submodule.eq_of_le_of_finrank_le hle ?_).ge` and prove the remaining obligations. Rewrite using `[finrank_span_eq_card hBE]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Fintype.card_fin] at h1 ⊢`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem ker_map_le_span {F E : Type} [Field F] [Field E] (τ : F →+* E) {t N1 n : ℕ}
     (M : Matrix (Fin t) (Fin N1) F) (B : Matrix (Fin n) (Fin N1) F) (hB : LinearIndependent F B)
@@ -75,7 +75,7 @@ def scaleHom (φ : MvPolynomial (Σ b, κ b) ℤ →+* R) : MvPolynomial (Σ b, 
 omit [DecidableEq L] in
 
 /- English proof (translation)
-Establish `h : (eval fun _ : L => (1 : R)).comp (scaleHom φ) = φ` using `MvPolynomial.ringHom_ext' (RingHom.ext_int _ _) fun q => by simp [scaleHom]`. Conclude with `RingHom.congr_fun h f`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eval_one_scaleHom (φ : MvPolynomial (Σ b, κ b) ℤ →+* R) (f : MvPolynomial (Σ b, κ b) ℤ) :
     eval (fun _ => 1) (scaleHom (L := L) φ f) = φ f := by
@@ -84,13 +84,11 @@ theorem eval_one_scaleHom (φ : MvPolynomial (Σ b, κ b) ℤ →+* R) (f : MvPo
   exact RingHom.congr_fun h f
 
 /- English proof (translation)
-Use `set ω : L → L → ℕ := fun c => Pi.single c 1`. Establish `he : ∀ q : Σ b, κ b, IsWeightedHomogeneous ω (C (φ (X q)) * X q.1 : MvPolynomial L R) (NumbersDVR.blockWeight κ q)` using `fun q => by`. Use `(isWeightedHomogeneous_C ω (φ (X q))).mul (isWeightedHomogeneous_X R ω q.1)` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Proceed by induction on `f using MvPolynomial.induction_on' with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Proceed by induction. Treat this case separately.
 
-Consider the case `monomial d c`. Establish `hmon : IsWeightedHomogeneous ω (scaleHom φ (monomial d c)) (Finsupp.weight (NumbersDVR.blockWeight κ) d)`. Rewrite using `[scaleHom, coe_eval₂Hom, eval₂_monomial, Finsupp.weight_apply, eq_intCast, ← map_intCast (C : R →+* MvPolynomial L R)]`. Use `(isWeightedHomogeneous_C ω (c : R)).mul (IsWeightedHomogeneous.prod d.support (fun q => (C (φ (X q)) * X q.1 : MvPolynomial L R) ^ d q) (fun q => d q • NumbersDVR.blockWeight κ q) (fun q _ => (he q).pow (d q)))` as an intermediate fact. Rewrite `this` using `[zero_add]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `this`. Distinguish the cases in `hdm : Finsupp.weight (NumbersDVR.blockWeight κ) d = b`. Establish `hmon' : IsWeightedHomogeneous ω (scaleHom φ (monomial d c)) b` using `hdm ▸ hmon`. Rewrite using `[(isWeightedHomogeneous_monomial _ d c hdm).weightedHomogeneousComponent_same, hmon'.weightedHomogeneousComponent_same]`. Rewrite using `[(isWeightedHomogeneous_monomial (NumbersDVR.blockWeight κ) d c (m := Finsupp.weight (NumbersDVR.blockWeight κ) d) rfl).weightedHomogeneousComponent_ne b (Ne.symm hdm), hmon.weightedHomogeneousComponent_ne b (Ne.symm hdm), map_zero]`.
-
-Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem scaleHom_component (φ : MvPolynomial (Σ b, κ b) ℤ →+* R) (b : L → ℕ)
     (f : MvPolynomial (Σ b, κ b) ℤ) :
@@ -140,7 +138,7 @@ def lam (P : Ideal (MRing ι)) (n : ℕ) (b : K ⊕ Fin (n - 1)) : OmegaF P n :=
   algebraMap (LRing P n) (OmegaF P n) (X b)
 
 /- English proof (translation)
-The claim follows from `(map_ne_zero_iff _ (IsFractionRing.injective (LRing P n) (OmegaF P n))).2 (X_ne_zero b)`.
+A detailed English derivation is pending.
 -/
 theorem lam_ne_zero (P : Ideal (MRing ι)) [P.IsPrime] (n : ℕ) (b : K ⊕ Fin (n - 1)) : lam P n b ≠ 0 :=
   (map_ne_zero_iff _ (IsFractionRing.injective (LRing P n) (OmegaF P n))).2 (X_ne_zero b)
@@ -151,7 +149,7 @@ def zScale (P : Ideal (MRing ι)) (n : ℕ) : MRing ι →+* LRing P n :=
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `h : eval₂Hom (Int.castRingHom S) (fun p => φ (genPt P p)) = φ.comp ((algebraMap (MRing ι ⧸ P) (FnField P)).comp (Ideal.Quotient.mk P))` using `MvPolynomial.ringHom_ext' (RingHom.ext_int _ _) fun p => by simp [genPt]`. Conclude with `RingHom.congr_fun h f`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eval₂_genPt (P : Ideal (MRing ι)) {S : Type} [CommRing S] (φ : FnField P →+* S) (f : MRing ι) :
     eval₂ (Int.castRingHom S) (fun p => φ (genPt P p)) f =
@@ -164,11 +162,11 @@ theorem eval₂_genPt (P : Ideal (MRing ι)) {S : Type} [CommRing S] (φ : FnFie
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Use `le_antisymm (fun f hf => ?_) ?_` and prove the remaining obligations. Establish `h1 : (eval fun _ => (1 : TRing P n)).comp (zScale P n) = C.comp ((algebraMap (MRing ι ⧸ P) (FnField P)).comp (Ideal.Quotient.mk P))` using `MvPolynomial.ringHom_ext' (RingHom.ext_int _ _) fun p => by simp [zScale, genPt]`. Establish `h2` using `RingHom.congr_fun h1 f`. Rewrite `h2` using `[RingHom.comp_apply, RingHom.mem_ker.1 hf, map_zero]`. Rewrite using `[← ker_algebraMap_comp_mk P, RingHom.mem_ker]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `C_injective _ _ (h2.symm.trans C_0.symm)`. Take `⟨S, hS, hSP⟩` from `hP`. Use `hSP.le.trans (Ideal.span_le.2 fun s hs => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `hS s hs`. Establish `hsP : s ∈ P` using `by rw [hSP]; exact Ideal.subset_span hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, zScale, coe_eval₂Hom]`. Establish `h3` using `HeightsSet.CurveComplexPoint.eval₂_smul_homog s a ha (fun k => (X (Sum.inl k) : LRing P n)) (fun p => ((C : TRing P n →+* LRing P n).comp C) (genPt P p))`. Establish `h4` using `eval₂_genPt (S := LRing P n) P ((C : TRing P n →+* LRing P n).comp C) s`. Simplify using `only [RingHom.comp_apply] at h3 h4`. Rewrite using `[show (fun p : Σ k, ι k => (C (C (genPt P p)) * X (Sum.inl p.1) : LRing P n)) = fun p => X (Sum.inl p.1) * C (C (genPt P p)) from funext fun _ => mul_comm _ _, h3, h4, Ideal.Quotient.eq_zero_iff_mem.2 hsP, map_zero, map_zero, map_zero, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_zScale (P : Ideal (MRing ι)) [P.IsPrime] (hP : IsMultiHomogIdeal P) (n : ℕ) :
     RingHom.ker (zScale P n) = P := by
@@ -196,13 +194,11 @@ theorem ker_zScale (P : Ideal (MRing ι)) [P.IsPrime] (hP : IsMultiHomogIdeal P)
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Establish `hker` using `ker_zScale P hP n`. Set `g : MRing ι ⧸ P →+* LRing P n` to `Ideal.Quotient.lift P (zScale P n) fun f hf => by`. Rewrite using `[← RingHom.mem_ker, hker]`. Conclude with `hf`. Establish `hg : Function.Injective g`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, ← hker, RingHom.mem_ker]`. Simplify `ha` using `[g]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hg' : Function.Injective ((algebraMap (LRing P n) (OmegaF P n)).comp g)`. Rewrite using `[RingHom.coe_comp]`. Conclude with `(IsFractionRing.injective (LRing P n) (OmegaF P n)).comp hg`. Use `⟨IsFractionRing.lift hg', fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[genPt, IsFractionRing.lift_algebraMap]`.
-
-Simplify using `[g, zScale, iota, lam, genPt]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sigma (P : Ideal (MRing ι)) [P.IsPrime] (hP : IsMultiHomogIdeal P) (n : ℕ) :
     ∃ σ : FnField P →+* OmegaF P n, ∀ p : Σ k, ι k,
@@ -226,9 +222,9 @@ theorem exists_sigma (P : Ideal (MRing ι)) [P.IsPrime] (hP : IsMultiHomogIdeal 
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Establish `key : ∀ φ : FnField P →+* OmegaF P n, φ (evalAt (genPt P) f) = eval₂ (Int.castRingHom _) (fun p => φ (genPt P p)) f`. Introduce `φ`. Rewrite using `[evalAt, eval_map, eval₂_comp_left]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key σ, key (iota P n)]`. Simplify using `only [hσ]`. Rewrite using `[show (fun p : Σ k, ι k => iota P n (genPt P p) * lam P n (Sum.inl p.1)) = fun p => lam P n (Sum.inl p.1) * iota P n (genPt P p) from funext fun _ => mul_comm _ _]`. Conclude with `HeightsSet.CurveComplexPoint.eval₂_smul_homog f a hf (fun k => lam P n (Sum.inl k)) (fun p => iota P n (genPt P p))`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigma_evalAt (P : Ideal (MRing ι)) [P.IsPrime] (n : ℕ) (σ : FnField P →+* OmegaF P n)
     (hσ : ∀ p : Σ k, ι k, σ (genPt P p) = iota P n (genPt P p) * lam P n (Sum.inl p.1))
@@ -250,13 +246,11 @@ theorem sigma_evalAt (P : Ideal (MRing ι)) [P.IsPrime] (n : ℕ) (σ : FnField 
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Use `set M : Matrix (Fin t) (Fin N1) (FnField P) := Matrix.of fun a j => evalAt (genPt P) (c a j)`. Establish `hmem : ∀ a, (B.map (iota P n)) a ∈ Submodule.span (OmegaF P n) (Set.range (B.map σ))`. Introduce `a`. Apply `ker_map_le_span σ M B hB.1 hB.2` to reduce the goal to its premises. Establish `h0 : B a ∈ LinearMap.ker M.mulVecLin` using `hB.2 ▸ Submodule.subset_span ⟨a, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[LinearMap.mem_ker, Matrix.mulVecLin_apply]`. Rewrite using `[LinearMap.mem_ker, Matrix.mulVecLin_apply]`. Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun h0 i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, M, Matrix.of_apply, Pi.zero_apply] at h1 ⊢`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [sigma_evalAt P n σ hσ (hc _ _), mul_assoc, ← Finset.mul_sum, ← map_mul, ← map_sum, h1, map_zero, mul_zero]`. Use `choose h hh using fun a => (Submodule.mem_span_range_iff_exists_fun _).1 (hmem a)`. Use `⟨Matrix.of h, ?_⟩` and prove the remaining obligations. Use extensionality with `a j`. Rewrite using `[Matrix.mul_apply, ← hh a]`.
-
-Simplify using `[Finset.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_h (P : Ideal (MRing ι)) [P.IsPrime] {t : ℕ} (c : Fin t → Fin N1 → MRing ι) (m : K → ℕ)
     (B : Matrix (Fin n) (Fin N1) (FnField P)) (hc : ∀ a j, IsMultiHomog (c a j) m) (hB : IsKerBasis P c B)
@@ -286,7 +280,7 @@ end Flag
 section Minor
 
 /- English proof (translation)
-The claim follows from `RingHom.map_det φ _`.
+A detailed English derivation is pending.
 -/
 theorem map_flagMinor {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {n N1 : ℕ}
     (M : Matrix (Fin n) (Fin N1) R) (j : Fin (n - 1)) (T : PluckerBlocks N1 n j) :
@@ -294,7 +288,7 @@ theorem map_flagMinor {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {n
   RingHom.map_det φ _
 
 /- English proof (translation)
-Unfold `flagMinor`. Rewrite using `[show (Matrix.diagonal d * M).submatrix (Fin.castLE (by have := j.2; omega)) (T.1.orderEmbOfFin T.2) = Matrix.diagonal (fun a : Fin (j.1 + 1) => d ⟨a.1, by have := j.2; omega⟩) * M.submatrix (Fin.castLE (by have := j.2; omega)) (T.1.orderEmbOfFin T.2) from by`. Use extensionality with `a b`. Simplify using `[Matrix.diagonal_mul]`. Use the proof step `rfl, Matrix.det_mul, Matrix.det_diagonal]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flagMinor_diagonal_mul {R : Type} [CommRing R] {n N1 : ℕ} (d : Fin n → R)
     (M : Matrix (Fin n) (Fin N1) R) (j : Fin (n - 1)) (T : PluckerBlocks N1 n j) :
@@ -307,7 +301,7 @@ theorem flagMinor_diagonal_mul {R : Type} [CommRing R] {n N1 : ℕ} (d : Fin n �
     ext a b; simp [Matrix.diagonal_mul]; rfl, Matrix.det_mul, Matrix.det_diagonal]
 
 /- English proof (translation)
-Rewrite using `[map_flagMinor, map_flagMinor, Matrix.map_mul, Matrix.map_mul, hG, hBs, Matrix.mul_assoc (Matrix.diagonal d * G.map j0), hh, Matrix.mul_assoc, flagMinor_diagonal_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem minor_scale {R S : Type} [CommRing R] [CommRing S] {n N1 : ℕ} (θ j0 : R →+* S)
     (G : Matrix (Fin n) (Fin n) R) (Bc : Matrix (Fin n) (Fin N1) R) (d : Fin n → S)
@@ -329,7 +323,7 @@ def lamN (P : Ideal (MRing ι)) (n : ℕ) (i : ℕ) : OmegaF P n :=
   if h : i + 1 < n then lam P n (Sum.inr ⟨i, by omega⟩) else 1
 
 /- English proof (translation)
-Unfold `lamN`. Use `split_ifs`. Use `exacts [lam_ne_zero P n _, one_ne_zero]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lamN_ne_zero (P : Ideal (MRing ι)) [P.IsPrime] (n i : ℕ) : lamN P n i ≠ 0 := by
   unfold lamN
@@ -340,7 +334,7 @@ def diagE (P : Ideal (MRing ι)) [P.IsPrime] (n : ℕ) (i : ℕ) : OmegaF P n :=
   lamN P n i / (if i = 0 then 1 else lamN P n (i - 1))
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [diagE]`. Consider the case `succ m ih`. Use `lamN_ne_zero P n m` as an intermediate fact. Rewrite using `[Finset.prod_range_succ, ih, diagE, if_neg (Nat.succ_ne_zero m), Nat.add_sub_cancel]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -354,15 +348,15 @@ theorem prod_diagE (P : Ideal (MRing ι)) [P.IsPrime] (n m : ℕ) :
     field_simp
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `exists_sigma P hP n`. Take `⟨h, hh⟩` from `exists_h P c m B hc hB σ hσ`. Set `TΩ : Matrix (Fin n) (Fin n) (OmegaF P n)` to `(genMat (FnField P) n).map ((algebraMap (LRing P n) (OmegaF P n)).comp C)`. Set `D : Matrix (Fin n) (Fin n) (OmegaF P n)` to `Matrix.diagonal fun a => diagE P n a.1`. Set `θ : TRing P n →+* OmegaF P n` to `eval₂Hom σ fun ab => (D * TΩ * h) ab.1 ab.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨θ, MvPolynomial.ringHom_ext' (RingHom.ext_int _ _) ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k | j, i⟩`. Simplify using `[θ, flagMap, scaleHom, hσ, iota, lam]`. Establish `e1 : (genMat (FnField P) n).map θ = D * TΩ * h`. Use extensionality with `a b`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[θ, genMat]`. Establish `e2 : (B.map C).map θ = B.map σ`. Use extensionality with `a b`. Simplify using `[θ]`. Establish `e3 : (B.map C).map ((algebraMap (LRing P n) (OmegaF P n)).comp C) = B.map (iota P n)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `[iota]`. Establish `e4 : ∏ a : Fin (j.1 + 1), diagE P n a.1 = lam P n (Sum.inr j)`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => diagE P n i), prod_diagE, lamN, dif_pos (by omega)]`. Simplify using `only [RingHom.comp_apply, scaleHom, coe_eval₂Hom, eval₂_X, map_mul, flagMap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(minor_scale θ ((algebraMap (LRing P n) (OmegaF P n)).comp C) (genMat (FnField P) n) (B.map C) (fun a => diagE P n a.1) h (B.map σ) e1 e2 (hh.trans e3.symm) j i).trans ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem exists_theta (P : Ideal (MRing ι)) [P.IsPrime] {t : ℕ} (c : Fin t → Fin N1 → MRing ι) (m : K → ℕ)
     (B : Matrix (Fin n) (Fin N1) (FnField P)) (hP : IsMultiHomogIdeal P)
@@ -396,7 +390,7 @@ theorem exists_theta (P : Ideal (MRing ι)) [P.IsPrime] {t : ℕ} (c : Fin t →
     congr 1
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `exists_theta P c m B hP hc hB`. Establish `h0 : scaleHom (L` using `K ⊕ Fin (n - 1)) (flagMap P B) f = 0 := by`. Apply `IsFractionRing.injective (LRing P n) (OmegaF P n)` to reduce the goal to its premises. Rewrite using `[map_zero, ← RingHom.comp_apply, ← hθ, RingHom.comp_apply, RingHom.mem_ker.1 hf, map_zero]`. Rewrite using `[flagIdeal, RingHom.mem_ker, ← eval_one_scaleHom (L := K ⊕ Fin (n - 1)) (flagMap P B), scaleHom_component, h0, map_zero, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem component_mem (P : Ideal (MRing ι)) [P.IsPrime] {t : ℕ} (c : Fin t → Fin N1 → MRing ι)
     (m : K → ℕ) (B : Matrix (Fin n) (Fin N1) (FnField P)) (hP : IsMultiHomogIdeal P)
@@ -413,7 +407,7 @@ theorem component_mem (P : Ideal (MRing ι)) [P.IsPrime] {t : ℕ} (c : Fin t �
 end Flag2
 
 /- English proof (translation)
-Introduce `K _ ι _ N1 t n P c m B hp hP hc hB`. Use `hp` as an intermediate fact. Conclude with `(NumbersDVR.Objects.isMultiHomogIdeal_iff (flagIdeal P B)).1 fun f hf b => component_mem P c m B hP hc hB f hf b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem proof : Statement := by
   intro K _ ι _ N1 t n P c m B hp hP hc hB

@@ -15,17 +15,15 @@ def Chart : Prop := ∀ (A : Type) [CommRing A] (n : ℕ), ∃ (P : Scheme.{0}) 
     j ≫ q = Spec.map (CommRingCat.ofHom (algebraMap A (MvPolynomial (Fin n) A)))
 
 /- English proof (translation)
-Introduce `A _ X p _ V hV`. Use `haveI : IsAffine V.toScheme := hV`. Establish `hfT : LocallyOfFiniteType (V.ι ≫ p)` using `inferInstance`. Establish `happ` using `HasRingHomProperty.appTop @LocallyOfFiniteType (V.ι ≫ p) hfT`. Set `g : CommRingCat.of A ⟶ Γ(V.toScheme, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (V.ι ≫ p).appTop`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : g.hom.FiniteType`. Establish `h1 : (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom.FiniteType` using `RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso _).2`. Conclude with `RingHom.FiniteType.comp happ h1`. Use `letI : Algebra A Γ(V.toScheme, ⊤) := g.hom.toAlgebra`. Establish `hft : Algebra.FiniteType A Γ(V.toScheme, ⊤)` using `hg`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, φ, hφ⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 hft`. Use `⟨n, V.toScheme.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ.toRingHom), ?_, ?_⟩` and prove the remaining obligations. Establish `hs` using `IsClosedImmersion.spec_of_surjective (CommRingCat.ofHom φ.toRingHom) hφ`. Establish `hi : IsClosedImmersion V.toScheme.toSpecΓ` using `inferInstance`. Conclude with `@IsClosedImmersion.comp _ _ _ _ _ hi hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hcomp : CommRingCat.ofHom (algebraMap A (MvPolynomial (Fin n) A)) ≫ CommRingCat.ofHom φ.toRingHom = g`. Use extensionality with `a`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply]`. Conclude with `φ.commutes a`. Establish `h2 : Spec.map (CommRingCat.ofHom φ.toRingHom) ≫ Spec.map (CommRingCat.ofHom (algebraMap A (MvPolynomial (Fin n) A))) = Spec.map g` using `by rw [← Spec.map_comp, hcomp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : V.toScheme.toSpecΓ ≫ Spec.map g = V.ι ≫ p`. Establish `hn` using `Scheme.toSpecΓ_naturality (V.ι ≫ p)`. Establish `h4 : Spec.map g = Spec.map (V.ι ≫ p).appTop ≫ Spec.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv` using `Spec.map_comp _ _`. Rewrite using `[h4, ← Category.assoc, ← hn, Category.assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`. Use `Eq.trans ?_ h3` and prove the remaining obligations.
-
-Rewrite using `[Category.assoc]`. Conclude with `congrArg (fun t => V.toScheme.toSpecΓ ≫ t) h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem affClosed : AffClosed := by
   intro A _ X p _ V hV
@@ -60,9 +58,9 @@ theorem affClosed : AffClosed := by
     exact congrArg (fun t => V.toScheme.toSpecΓ ≫ t) h2
 
 /- English proof (translation)
-Introduce `A _ X p _ V hV`. Take `⟨n, e, he, hep⟩` from `hA A p V hV`. Take `⟨P, q, j, hq, hj, hjq⟩` from `hC A n`. Use `haveI := hj`. Use `haveI := he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨P, q, j.opensRange, e ≫ j.isoOpensRange.hom, hq, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Scheme.Hom.isoOpensRange_hom_ι_assoc, hjq, hep]`.
+A detailed English derivation is pending.
 -/
 theorem Embed_of (hA : AffClosed) (hC : Chart) : LateralTheory.E.ChowGraphCut.Embed := by
   intro A _ X p _ V hV

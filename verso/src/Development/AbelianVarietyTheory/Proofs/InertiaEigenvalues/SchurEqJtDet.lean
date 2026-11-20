@@ -29,20 +29,20 @@ theorem schur_eq_jtDet (n : ℕ) (l : Fin n → ℕ) :
     schur n l = jtDet n (fun k => MvPolynomial.hsymm (Fin n) ℤ k) l := rfl
 
 /- English proof (translation)
-Simplify using `[antiParts, Finset.Nat.mem_antidiagonalTuple]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_antiParts {m d : ℕ} {l : Fin m → ℕ} : l ∈ antiParts m d ↔ ∑ i, l i = d ∧ Antitone l := by
   classical
   simp [antiParts, Finset.Nat.mem_antidiagonalTuple]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[padTo, i.2]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem padTo_self {m : ℕ} (l : Fin m → ℕ) : padTo le_rfl l = l := by
   funext i; simp [padTo, i.2]
 
 /- English proof (translation)
-Simplify using `[alternant, staircase, Matrix.det_fin_two]`.
+Simplify using the standard rewrite rules.
 -/
 example : alternant ℤ 2 (staircase 2) = MvPolynomial.X 0 - MvPolynomial.X 1 := by
   simp [alternant, staircase, Matrix.det_fin_two]

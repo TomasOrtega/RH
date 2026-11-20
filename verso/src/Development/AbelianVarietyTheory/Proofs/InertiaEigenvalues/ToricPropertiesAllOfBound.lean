@@ -13,13 +13,13 @@ open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfD
 namespace GlobalTheory.ToricAssembly
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.toric_sum_eq_hecke_L_value_mul_auxiliary_factors exists_isHeckeL_of_hasInf`.
+A detailed English derivation is pending.
 -/
 theorem toricSumFormula : ToricSumFormula :=
   GlobalTheory.T.toric_sum_eq_hecke_L_value_mul_auxiliary_factors exists_isHeckeL_of_hasInf
 
 /- English proof (translation)
-Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hb.2.1`. Set `v : HeightOneSpectrum (OF E)` to `⟨M, hM.isPrime, fun h => hb.1 (le_bot_iff.1 (h ▸ hle))⟩`. Establish `hv : v.asIdeal ∣ 𝔣` using `Ideal.dvd_iff_le.2 hle`. Take `⟨P, -, -, hP, -⟩` from `(hb.2.2 v hv).1`. Conclude with `GlobalTheory.HeckeOne.not_isNormPow_of_not_unrAt (((hχ.2.2.2 v P hP).2 (Finset.notMem_empty v)).not_unrAt (multiplicity_ne_zero.2 hv))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_isNormPow {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] {φ : I → E →+* ℂ} {s : ℕ} {κ : I → ℕ}
     {𝔣 : Ideal (OF E)} {χ : HChar E} (hb : IsBaseCond 𝔣) (hχ : IsValChar φ s κ 𝔣 ∅ χ) :
@@ -36,21 +36,21 @@ section Record
 variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ h => absurd h (Finset.notMem_empty _), Finset.disjoint_empty_left _, fun _ h => absurd h (Finset.notMem_empty _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem qOk_empty (i : X.Tw) : BlochKatoReduction.Gen.QOk X i ∅ :=
   ⟨fun _ h => absurd h (Finset.notMem_empty _), Finset.disjoint_empty_left _, fun _ h => absurd h (Finset.notMem_empty _)⟩
 
 /- English proof (translation)
-Establish `: IsCMField D.host.E` using `D.host.isCMField_hostE`. Take `⟨I, _, φ, κ, 𝔣, χ, u, hD, h𝔣, -, hu, hth⟩` from `ht`. Take `⟨hfin, π, T, -, hT, hδ⟩` from `hth ∅ (qOk_empty i)`. Establish `he : belowSet (∅ : Finset (HeightOneSpectrum (𝓞 D.host.E))) = ∅` using `Finset.image_empty _`. Take `⟨hφ, -, hs, -, hb, hχ⟩` from `hD`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hn` using `not_isNormPow hb hχ`. Take `⟨Λ, hΛ⟩` from `GlobalTheory.HeckeOne.entire_of_not_normPow hχ.1 hn`. Establish `h0 : Λ s ≠ 0` using `GlobalTheory.HeckePartial.IsHeckeL.ne_zero_of_one_le hχ.1 hn hΛ (by exact_mod_cast hs)`. Choose the witnesses or unpack the hypotheses as in `⟨P₀⟩ : Nonempty (HeightOneSpectrum (𝓞 D.host.E)) := by`. Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 D.host.E)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField _)⟩⟩`. Establish `t1` using `hL _ I φ hφ s κ 𝔣 ∅ χ (fun _ => P₀) Λ host_unramFin hs hb (fun _ h => absurd h (Finset.notMem_empty _)) hχ (fun _ h => absurd h (Finset.notMem_empty _)) hΛ`. Rewrite `t1` using `[Finset.filter_empty, Finset.prod_empty, mul_one, ← he]`. Use `Fintype.ofFinite (PicO (condQ 𝔣 (belowSet ∅)))` as an intermediate fact. Establish `e : Λ s = ∑ q, T q` using `t1.unique ((isToricSum_iff _ _ _ _ _ _).2 ⟨hfin, T, hT, (finsum_eq_sum_of_fintype _).symm⟩)`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hz`. Establish `h1` using `congrArg (algebraMap (FractionRing (X.O i)) (Kbar X i)) hz`. Rewrite `h1` using `[map_sum, map_zero, Finset.sum_congr rfl fun δ _ => hδ δ, ← Finset.mul_sum, ← map_sum]`. Use `mul_ne_zero hu ((map_ne_zero ι).2 ?_) h1` and prove the remaining obligations. Rewrite `h0` using `[e, ← Finset.sum_fiberwise Finset.univ (fun q => π q⁻¹)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h0 using 2 with δ` and compare the differences between its conclusion and the goal. Rewrite using `[show {q | π q⁻¹ = δ} = ↑(Finset.univ.filter fun q => π q⁻¹ = δ) by ext; simp, finsum_mem_coe_finset]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_ne_zero_at (hL : ToricSumFormula) {i : X.Tw} {ι : ℂ →+* Kbar X i} {lam : X.abelian₂ i} {s : ℕ}
     (ht : IsToricEltAt X i ι lam s) : ∑ δ, X.th i ∅ lam δ ≠ 0 := by
@@ -81,7 +81,7 @@ theorem sum_ne_zero_at (hL : ToricSumFormula) {i : X.Tw} {ι : ℂ →+* Kbar X 
   rw [show {q | π q⁻¹ = δ} = ↑(Finset.univ.filter fun q => π q⁻¹ = δ) by ext; simp, finsum_mem_coe_finset]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hs`. Take `⟨s, rfl⟩` from `Int.eq_ofNat_of_zero_le (le_trans zero_le_one hs.2.1)`. Take `⟨ι, -, hι⟩` from `ht i hi`. Conclude with `sum_ne_zero_at hL (hι lam s hs)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gen_sum_ne_zero (hL : ToricSumFormula) (ht : IsToricElt X) (i : X.Tw) (hi : X.NonzeroIndexPlace i) (lam : X.abelian₂ i)
     (hs : ∃ s : ℤ, BlochKatoReduction.Gen.SOk X i lam s) : ∑ δ, X.th i ∅ lam δ ≠ 0 := by
@@ -91,7 +91,7 @@ theorem gen_sum_ne_zero (hL : ToricSumFormula) (ht : IsToricElt X) (i : X.Tw) (h
   exact sum_ne_zero_at hL (hι lam s hs)
 
 /- English proof (translation)
-Take `⟨N0, h⟩` from `exists_gen_bound X hB ht`. Conclude with `⟨N0, h, gen_relation hA hL ht, gen_sum_ne_zero hL ht⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gen_toric_properties (hA : GlobalTheory.Published.GlobalArtinReciprocity) (hL : ToricSumFormula) (hB : ClassTermBound)
     (ht : IsToricElt X) :
@@ -103,7 +103,7 @@ theorem gen_toric_properties (hA : GlobalTheory.Published.GlobalArtinReciprocity
 end Record
 
 /- English proof (translation)
-The claim follows from `gen_toric_properties hA toricSumFormula hB ht`.
+A detailed English derivation is pending.
 -/
 theorem toric_properties_of_bound (hA : GlobalTheory.Published.GlobalArtinReciprocity) (hB : ClassTermBound) (D : D7)
     (ht : IsToricElt D.ntw) :
@@ -112,7 +112,7 @@ theorem toric_properties_of_bound (hA : GlobalTheory.Published.GlobalArtinRecipr
   gen_toric_properties hA toricSumFormula hB ht
 
 /- English proof (translation)
-The claim follows from `toric_properties_of_bound hA (GlobalTheory.ToricDenomBridge.classTermBound_of_toricDenominator hB) D ht`.
+A detailed English derivation is pending.
 -/
 theorem toric_properties (hA : GlobalTheory.Published.GlobalArtinReciprocity) (hB : GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ToricDenominator) (D : D7)
     (ht : IsToricElt D.ntw) :

@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.StdUnn
 
 /- English proof (translation)
-Establish `hce : (1 - e) * e = 0` using `by rw [sub_mul, one_mul, hee, sub_self]`. Establish `hec : e * (1 - e) = 0` using `by rw [mul_sub, mul_one, hee, sub_self]`. Establish `hcc : (1 - e) * (1 - e) = 1 - e` using `by rw [sub_mul, one_mul, hec, sub_zero]`. Simplify using `only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, h1, h2, hce, hec, hcc, hee, zero_smul, add_zero, zero_add]`. Rewrite using `[← add_smul, sub_add_cancel, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_glue_mul {R : Type} [CommRing R] {m : Type} [Fintype m] [DecidableEq m] {e : R} (hee : e * e = e)
     {x y x' y' : Matrix m m R} (h1 : x * x' = 1) (h2 : y * y' = 1) :
@@ -31,7 +31,7 @@ def idemGlue {R : Type} [CommRing R] {m : Type} [Fintype m] [DecidableEq m] (e :
     idem_glue_mul hee (Units.mul_inv x) (Units.mul_inv y), idem_glue_mul hee (Units.inv_mul x) (Units.inv_mul y)⟩
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show φ ((1 - e) * (x : Matrix m m R) i j + e * (y : Matrix m m R) i j) = φ ((x : Matrix m m R) i j)`. Rewrite using `[map_add, map_mul, map_mul, map_sub, map_one, h, sub_zero, one_mul, zero_mul, add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bc_idemGlue_of_zero {R S : Type} [CommRing R] [CommRing S] {m : Type} [Fintype m] [DecidableEq m] {e : R}
     (hee : e * e = e) (x y : GL m R) (φ : R →+* S) (h : φ e = 0) :
@@ -42,7 +42,7 @@ theorem bc_idemGlue_of_zero {R S : Type} [CommRing R] [CommRing S] {m : Type} [F
   rw [map_add, map_mul, map_mul, map_sub, map_one, h, sub_zero, one_mul, zero_mul, add_zero]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show φ ((1 - e) * (x : Matrix m m R) i j + e * (y : Matrix m m R) i j) = φ ((y : Matrix m m R) i j)`. Rewrite using `[map_add, map_mul, map_mul, map_sub, map_one, h, sub_self, zero_mul, one_mul, zero_add]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bc_idemGlue_of_one {R S : Type} [CommRing R] [CommRing S] {m : Type} [Fintype m] [DecidableEq m] {e : R}
     (hee : e * e = e) (x y : GL m R) (φ : R →+* S) (h : φ e = 1) :
@@ -53,7 +53,7 @@ theorem bc_idemGlue_of_one {R S : Type} [CommRing R] [CommRing S] {m : Type} [Fi
   rw [map_add, map_mul, map_mul, map_sub, map_one, h, sub_self, zero_mul, one_mul, zero_add]
 
 /- English proof (translation)
-Introduce `v z`. Rewrite using `[bc_idemGlue_of_zero hee x y _ (he v)]`. Conclude with `hx v z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLatticeFrame_idemGlue {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
     {L : Submodule (𝓞 E) (Fin n → E)} {e : AF F ⊗[F] E} (hee : e * e = e) {x : GL (Fin n) (AF F ⊗[F] E)}
@@ -64,7 +64,7 @@ theorem isLatticeFrame_idemGlue {F E : Type} [Field F] [NumberField F] [Field E]
   exact hx v z
 
 /- English proof (translation)
-Take `⟨b₀, hb₀, -⟩` from `Frames.exists_isLatticeFrame_isMajorantFrame (isCMExt_host D) (isHermND_gram A) (frameLat A)`. Take `⟨e, hee, -, hfin, hinf, -, -⟩` from `GlobalTheory.T.exists_realPlacesIdempotent_extensionAdeles D`. Conclude with `⟨idemGlue e hee b₀ a, isLatticeFrame_idemGlue hee hb₀ a hfin, fun w => bc_idemGlue_of_one hee b₀ a _ (hinf w)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isLatticeFrame_bc_eq (D : D7) (A : HSp D) (a : GL (Fin A.rank) (AE D)) :
     ∃ b : GL (Fin A.rank) (AE D), IsLatticeFrame (frameLat A) b ∧

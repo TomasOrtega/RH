@@ -38,9 +38,9 @@ abbrev mor : Fin 4 → (D.P.A.left ⟶ D.P.A.left) :=
   ![(padd D.P.A (𝟙 _) (oa.onB.act w)).left, 𝟙 D.P.A.left, (oa.onB.act w).left, (toUnit D.P.A ≫ η[D.P.A]).left]
 
 /- English proof (translation)
-Establish `a₀ : x ≫ padd D.P.A (𝟙 _) (oa.onB.act w) = x * (x ≫ oa.onB.act w)` using `(MonObj.comp_mul _ _ _).trans (by rw [Category.comp_id])`. Establish `a₁ : x ≫ toUnit D.P.A ≫ η[D.P.A] = 1` using `MonObj.comp_one (M := D.P.A) x`. Rewrite using `[Fin.prod_univ_four]`. Use `show h (x ≫ padd D.P.A (𝟙 _) (oa.onB.act w)).left ^ (1 : ℤ) * h (x.left ≫ 𝟙 _) ^ (-2 : ℤ) * h (x ≫ oa.onB.act w).left ^ (-1 : ℤ) * h (x ≫ toUnit D.P.A ≫ η[D.P.A]).left ^ (2 : ℤ) = _`. Rewrite using `[a₀, a₁, Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [zpow_neg, zpow_ofNat, pow_one]`.
+A detailed English derivation is pending.
 -/
 theorem prod_mor {T : Over (Sp R)} (x : T ⟶ D.P.A) {U : Type} [CommGroup U] (h : (T.left ⟶ D.P.A.left) → U) :
     ∏ k : Fin 4, h (x.left ≫ mor oa w k) ^ (![1, -2, -1, 2] : Fin 4 → ℤ) k =
@@ -56,7 +56,7 @@ theorem prod_mor {T : Over (Sp R)} (x : T ⟶ D.P.A) {U : Type} [CommGroup U] (h
   simp only [zpow_neg, zpow_ofNat, pow_one]
 
 /- English proof (translation)
-Use `oa.onB.hom w` as an intermediate fact. Rewrite using `[prod_mor, MonObj.one_comp, _root_.mul_one]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_one]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem prod_mor_one {T : Over (Sp R)} {U : Type} [CommGroup U] (h : (T.left ⟶ D.P.A.left) → U) :
     ∏ k : Fin 4, h ((1 : T ⟶ D.P.A).left ≫ mor oa w k) ^ (![1, -2, -1, 2] : Fin 4 → ℤ) k = 1 := by
@@ -67,9 +67,9 @@ theorem prod_mor_one {T : Over (Sp R)} {U : Type} [CommGroup U] (h : (T.left ⟶
   abel
 
 /- English proof (translation)
-Take `⟨t, ht, hv⟩` from `exists_gen D.P.isLB (φ' := mor oa w) (ε' := ![1, -2, -1, 2]) (fun V _ k => by`. Use `Eq.trans (prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := V) _ (c := ∏ i, k (mor oa w i) ^ (![1, -2, -1, 2] : Fin 4 → ℤ) i) rfl (prod_neg _ _ (prod_mor_one oa w (T := D.P.A) k))) ?_` and prove the remaining obligations. Use the proof step `simp)`. Use the proof step `(LB.mulGen D.P.L _ _ _ _ u (LB.invGen D.P.L _ _ (LB.pullGen D.P.L _ _ u (1 : D.P.A ⟶ D.P.A).left)))`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ hu (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ hu _)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨t, ht, corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `e : eSec D.P.A ≫ (1 : D.P.A ⟶ D.P.A).left = eSec D.P.A` using `(congrArg (fun q => q.left) (MonObj.comp_one (M := D.P.A) η[D.P.A])).trans (Category.id_comp _)`. Rewrite using `[val_pull hJ, val_one, Category.id_comp, hv _ _ y J hJ, val_mul hJ, val_inv, val_pull hJ, e, mul_inv_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem exists_normalised (u : LB.Gen (LB.LinComb D.P.L (mor oa w) ![1, -2, -1, 2])) (hu : u.IsGen) :
     ∃ t : LB.Gen (LB.LinComb D.P.L (mor oa w) ![1, -2, -1, 2]), t.IsGen ∧
@@ -96,23 +96,21 @@ namespace GlobalTheory
 open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.ArcPull GlobalTheory.PsiRelationDescent in
 
 /- English proof (translation)
-Introduce `hG K₀ K _ _ i D D' hD O _ _ _ _ oa oa' hx ho w ⟨u', hu', u₀', hy'⟩`. Establish `gp` using `pull_grp hD`. Establish `hφ : Function.Injective i` using `i.injective`. Establish `i₁ : (𝟙 D'.P.A : D'.P.A ⟶ _).left ≫ PsiEvenPull.proj hD = PsiEvenPull.proj hD ≫ (𝟙 D.P.A : D.P.A ⟶ _).left` using `(Category.id_comp _).trans (Category.comp_id _).symm`. Establish `i₂ : (toUnit D'.P.A ≫ η[D'.P.A]).left ≫ PsiEvenPull.proj hD = PsiEvenPull.proj hD ≫ (toUnit D.P.A ≫ η[D.P.A]).left` using `by show (D'.P.A.hom ≫ eSec D'.P.A) ≫ PsiEvenPull.proj hD = PsiEvenPull.proj hD ≫ D.P.A.hom ≫ eSec D.P.A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) hD.he).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) gp.1.w.symm).trans (Category.assoc _ _ _))))`. Establish `hψ : ∀ k, mor oa' w k ≫ PsiEvenPull.proj hD = PsiEvenPull.proj hD ≫ mor oa w k` using `fun k => by fin_cases k exacts [mul_push gp _ i₁ (ho w), i₁, ho w, i₂]`. Take `⟨s, hs, -⟩` from `exists_up_om ((isGen_iff _).1 hD.w_gen) D.P.isLB D'.P.isLB (mor oa' w) (fun k => PsiEvenPull.proj hD ≫ mor oa w k) _ hψ u' hu'`. Take `⟨u₁, hu₁⟩` from `(lb_gen_iso_descend_field K₀ K i _ _ D.P.A.hom D'.P.A.hom (PsiEvenPull.proj hD) D.P.isAb.smooth D.P.isAb.proper D.P.isAb.geomConnected gp.1).1 (LB.LinComb D.P.L (mor oa w) ![1, -2, -1, 2]) (LB.isLB_linComb D.P.isLB _ _) ⟨_, GtBaseChange.genPull_isGen (chartPullComb D.P.L (mor oa …`. Take `⟨u, hu, u₀⟩` from `exists_normalised oa w u₁ hu₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, vt⟩` from `exists_down_om hD.w_gen D.P.isLB D'.P.isLB (φ' := mor oa' w) (PsiEvenPull.proj hD) hψ u hu`. Establish `tu` using `gen_unique D'.P.isLB D'.P.A.hom (eSec D'.P.A) (Over.w η[D'.P.A]) (hG _ _ D'.P.isAb).2 ht hu' fun y J' hJ' => by`. Take `⟨J, hJ⟩` from `DegPull.exists_good' D.P.isLB y`. Establish `o₁ : (1 : 𝟙_ (Over (Sp K)) ⟶ D'.P.A).left = eSec D'.P.A` using `Category.id_comp _`. Establish `e` using `vt _ (1 : 𝟙_ (Over (Sp K)) ⟶ D'.P.A).left y J J' hJ hJ'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[prod_mor_one, _root_.one_mul, o₁, hD.he]`. Establish `e₁` using `(val_pull hJ _ _ _).symm.trans ((val_corr hJ u₀ (specOf i)).trans (val_one _))`. Establish `e₂` using `(val_pull hJ' _ _ _).symm.trans ((val_corr hJ' u₀' (𝟙 _)).trans (val_one _))`. Rewrite `e₂` using `[Category.id_comp]`. Conclude with `e.symm.trans (e₁.trans e₂.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨u, hu, u₀, fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hD.xe.surjective y`. Use `corr_of_val_field_extension _ _ (fracMap hφ) _ _ D.P.isLB _ _ _ _ _ _ _ _ fun z J hJ => ?_` and prove the remaining obligations. Take `⟨J', hJ'⟩` from `DegPull.exists_good' D'.P.isLB (Z := (TK K).left) z`. Establish `sq` using `fracMap_sq hφ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh : (TK K).hom ≫ spMap i = genMap hφ ≫ (TK K₀).hom` using `(Category.id_comp _).symm.trans sq`. Establish `e` using `val_corr hJ' (hy' x) (𝟙 _)`. Establish `v` using `vt _ (cP D' (TK K) x).left z J J' hJ hJ'`. Rewrite `v` using `[prod_mor, cPoint_proj hD _ hh, ← TorusExt.cPoint_smul oa', ← cPoint_add, tu _ _ z J' hJ']`. Establish `c₀ : ∀ x, (cP D' (TK K) x).left = D'.xK x` using `fun _ => rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `c₁ : ∀ x, (cP D (TK K₀) x).left = D.xK x` using `fun _ => rfl`. Simplify using `only [c₀, c₁] at v`. Rewrite `e` using `[val_mul hJ', val_mul hJ', val_pull hJ', Category.id_comp]`. Use `show val (LB.mulGen D.P.L _ _ _ _ (D.tau (hD.xe x) (w • hD.xe x)) (LB.pullGen D.P.L _ _ u (D.xK (hD.xe x)))) (genMap hφ) z J = val (LB.mulGen D.P.L _ _ _ _ (D.psi (hD.xe x)) D.rigK) (genMap hφ) z J`. Establish `hJ₀ : Good (Z` using `(TK K).left) D.P.L z J := hJ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[val_mul hJ₀, val_mul hJ₀, val_pull hJ₀, v, ← hx, tau_val hD _ _ sq hJ₀ hJ', psi_val hD _ _ sq hJ₀ hJ', rig_val hD _ _ sq hJ₀ hJ']`. Simplify using `only [Category.id_comp]`. Establish `e'` using `congrArg Additive.ofMul e`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow] at e' ⊢`.
-
-Take the linear combination `(norm := abel) e'`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem psi_relation_descend_field : GlobalFnsSt → ∀ (K₀ K : Type) [Field K₀] [Field K] (i : K₀ →+* K) (D : DegPre K₀) (D' : DegPre K) (hD : IsPullDeg i D D') (O : Type) [CommRing O] [StarRing O] [Module O D.X] [Module O D'.X] (oa : D.OAct O) (oa' : D'.OAct O), (∀ (a : O) (y : D'.X), hD.xe (a • y) = a • hD.xe y) → (∀ a, (oa'.onB.act a).left ≫ PsiEvenPull.proj hD = PsiEvenPull.proj hD ≫ (oa.onB.act a).left) → ∀ w : O, TraceFormTwistIso D' oa' w → TraceFormTwistIso D oa w := by
   intro hG K₀ K _ _ i D D' hD O _ _ _ _ oa oa' hx ho w ⟨u', hu', u₀', hy'⟩

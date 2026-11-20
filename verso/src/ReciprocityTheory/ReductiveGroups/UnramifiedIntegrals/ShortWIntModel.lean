@@ -10,7 +10,7 @@ namespace ReciprocityTheory.ChartRestriction.L1
 open PowerSeries Formalism.G Formalism.LT Formalism.L2.Th1.CM
 
 /- English proof (translation)
-Take `⟨h0, -, -, -⟩` from `Formalism.L2.Th1.A.logSpec K (Formalism.L2.Th1.A.shortW g2 g3)`. Take `⟨-, -, -, h4, -⟩` from `Formalism.L2.Th1.A.expSpec K (Formalism.L2.Th1.A.shortW g2 g3)`. Use `(lgS_unique g2 g3 _ h0 ?_).symm` and prove the remaining obligations. Rewrite using `[Formalism.L2.Th1.A.uSerEq K g2 g3]`. Conclude with `h4`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lgS_eq_logSer {K : Type} [Field K] [CharZero K] (g2 g3 : K) :
     lgS g2 g3 = Formalism.L2.Th1.A.logSer (Formalism.L2.Th1.A.shortW g2 g3) := by
@@ -21,7 +21,7 @@ theorem lgS_eq_logSer {K : Type} [Field K] [CharZero K] (g2 g3 : K) :
   exact h4
 
 /- English proof (translation)
-Establish `h4 : ‖(4 : K)‖ = 1`. Establish `: (4 : K) = 2 * 2` using `by norm_num`. Rewrite using `[this, norm_mul, h, one_mul]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> simp [Formalism.L2.Th1.A.shortW, h4, h2, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem shortW_intModel {K : Type} [NormedField K] (g2 g3 : K)
     (h2 : ‖g2‖ ≤ 1) (h3 : ‖g3‖ ≤ 1) (h : ‖(2 : K)‖ = 1) :
@@ -32,7 +32,7 @@ theorem shortW_intModel {K : Type} [NormedField K] (g2 g3 : K)
   refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> simp [Formalism.L2.Th1.A.shortW, h4, h2, h3]
 
 /- English proof (translation)
-Rewrite using `[lgS_eq_logSer]`. Take `⟨⟨hF0, hFi, hl0, hl1, -⟩, -, -⟩` from `Formalism.L2.Th1.A.bridgeLaw K (Formalism.L2.Th1.A.shortW g2 g3) (shortW_intModel g2 g3 h2 h3 h)`. Conclude with `⟨hl0, hl1, hF0, hFi, (Formalism.L2.Th1.A.fglLog K (Formalism.L2.Th1.A.shortW g2 g3)).1⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem curve_law {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K] (g2 g3 : K)
     (h2 : ‖g2‖ ≤ 1) (h3 : ‖g3‖ ≤ 1) (h : ‖(2 : K)‖ = 1) :

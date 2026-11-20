@@ -17,9 +17,9 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `hm` using `map_measure_dilation_pair_eq_smul (dilation_jacobian_every_setting k r Wp Wq D) h1 h2`. Establish `hf' : Integrable f (D.μSS.map (dilation₂ t))`. Rewrite using `[hm]`. Conclude with `hf.smul_measure (ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top)`. Use `⟨hf'.comp_measurable (dilation_action_measurable t), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_map (dilation_action_measurable t).aemeasurable hf'.1, hm, integral_smul_measure, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity), ENNReal.toReal_ofReal (by positivity), mul_pow, mul_inv]`.
+A detailed English derivation is pending.
 -/
 theorem dilate_subst (D : RealPlaceData k r Wp Wq) {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {f : SS k r → E} (hf : Integrable f D.μSS) {t : ℝ × ℝ} (h1 : 0 < t.1) (h2 : 0 < t.2) :
@@ -39,11 +39,11 @@ def kernel (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] Wp)) 
 variable {D : RealPlaceData k r Wp Wq} {α : ℝ}
 
 /- English proof (translation)
-Unfold `betaInfTau`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_inSS D] with p hp`. Establish `key` using `(bracket_calculus H hF hF' hp).2.2.2 (τ.1 * lam k r D.z (Matrix.of p.1.2)) (-(τ.2 * lam k r D.z' (Matrix.of p.2.2)))`. Establish `e : ∀ t : ℝ × ℝ, τ.1 * t.1 * lam k r D.z (Matrix.of p.1.2) - τ.2 * t.2 * lam k r D.z' (Matrix.of p.2.2) = τ.1 * lam k r D.z (Matrix.of p.1.2) * t.1 + -(τ.2 * lam k r D.z' (Matrix.of p.2.2)) * t.2` using `fun t => by ring`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [kernel, phase, Bt_eq D F F' hp, e]`. Rewrite using `[key, ← mul_assoc, ← Complex.ofReal_mul]`. Establish `: (1 + τ.1 ^ 2 * lam k r D.z (Matrix.of p.1.2) ^ 2)⁻¹ * (1 + τ.2 ^ 2 * lam k r D.z' (Matrix.of p.2.2) ^ 2)⁻¹ * ((1 + (τ.1 * lam k r D.z (Matrix.of p.1.2)) ^ 2) * (1 + (-(τ.2 * lam k r D.z' (Matrix.of p.2.2))) ^ 2)) = 1`. Establish `a1 : (1 + τ.1 ^ 2 * lam k r D.z (Matrix.of p.1.2) ^ 2) ≠ 0` using `by positivity`. Establish `a2 : (1 + τ.2 ^ 2 * lam k r D.z' (Matrix.of p.2.2) ^ 2) ≠ 0` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem betaInfTau_eq_kernel (H : SqIntegrable D α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ}
     (hF : AdmW α c 2 2 F) (hF' : AdmW α c' 2 2 F') (τ : ℝ × ℝ) :
@@ -67,9 +67,9 @@ theorem betaInfTau_eq_kernel (H : SqIntegrable D α) {F F' : Mat k r → (Wq →
   simp
 
 /- English proof (translation)
-Use `filter_upwards [ae_inSS D] with p hp`. Take `⟨l1, l2⟩` from `lam_dil dilation_unipotent_measure D hp h1 h2`. Establish `l1' : lam k r D.z (Matrix.of (dilation₂ t p).1.2) = t.1 * lam k r D.z (Matrix.of p.1.2)` using `l1`. Establish `l2' : lam k r D.z' (Matrix.of (dilation₂ t p).2.2) = t.2 * lam k r D.z' (Matrix.of p.2.2)` using `l2`. Unfold `kernel xiTau phase`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Bt_eq D F F' hp, l1', l2', Complex.real_smul]`. Unfold `regBracket`. Simplify using `only [mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kernel_slice (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] Wp)) (τ : ℝ × ℝ) {t : ℝ × ℝ}
     (h1 : 0 < t.1) (h2 : 0 < t.2) :
@@ -86,7 +86,7 @@ theorem kernel_slice (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[
   ring
 
 /- English proof (translation)
-The claim follows from `|D.χ t.1| * |D.χ t.2| * ∫ p, ‖xiTau D τ p * Ph D F F' p‖ ∂D.μSS := by by_cases ht : t ∈ Set.Ioo (1 / 2 : ℝ) 2 ×ˢ Set.Ioo (1 / 2 : ℝ) 2 · have h1 : 0 < t.1 := lt_trans (by norm_num) ht.1.1 have h2 : 0 < t.2 := lt_trans (by norm_num) ht.2.1 have e := kernel_slice D F F' τ h1 h2 obt …`.
+A detailed English derivation is pending.
 -/
 theorem kernel_slice_integral (D : RealPlaceData k r Wp Wq) {F F' : Mat k r → (Wq →L[ℂ] Wp)} (τ : ℝ × ℝ)
     (hf : Integrable (fun p => xiTau D τ p * Ph D F F' p) D.μSS) (t : ℝ × ℝ) :
@@ -123,19 +123,17 @@ theorem kernel_slice_integral (D : RealPlaceData k r Wp Wq) {F F' : Mat k r → 
     simp [e]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hcF`. Take `⟨c', hc'⟩` from `hcF'`. Establish `hF` using `admissible_weighted_of_bound hc`. Establish `hF'` using `admissible_weighted_of_bound hc'`. Establish `H` using `sqIntegrable_of_threshold D hα`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sigmaFinite_μSS D` as an intermediate fact. Establish `hξ : Continuous (xiTau D τ)`. Unfold `xiTau`. Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp ((continuous_const.mul (first_eigenvalue_continuous D)).sub (continuous_const.mul (continuous_lambda_second_coordinate D)))))`. Establish `hf : Integrable (fun p => xiTau D τ p * Ph D F F' p) D.μSS`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hΦ.norm.mono' (hξ.aestronglyMeasurable.mul hΦ.1) (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Unfold `xiTau`. Rewrite using `[norm_mul, Complex.norm_exp_I_mul_ofReal, one_mul]`. Establish `hs` using `kernel_slice_integral D τ hf`. Establish `hmeas : AEStronglyMeasurable (kernel D F F' τ) (D.μSS.prod volume)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `kernel`. Use `((cutBracket_measurable H hF hF').mul (Continuous.stronglyMeasurable ?_)).aestronglyMeasurable` and prove the remaining obligations. Establish `hp : Continuous fun q : SS k r × (ℝ × ℝ) => phase D τ q.1 q.2` using `(phase_continuous D).comp ((continuous_const.prodMk continuous_fst).prodMk continuous_snd)`. Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp hp))`. Establish `hχ : Integrable D.χ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `D.χ_int` as an intermediate fact. Rewrite `this` using `[integral_undef h]`. Conclude with `zero_ne_one this`. Establish `hK : Integrable (kernel D F F' τ) (D.μSS.prod volume)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(integrable_prod_iff' hmeas).2 ⟨Eventually.of_forall fun t => (hs t).1, ?_⟩` and prove the remaining obligations. Simplify using `only [fun t => (hs t).2.2]`. Use `Integrable.mul_const ?_ _` and prove the remaining obligations. Rewrite using `[Measure.volume_eq_prod]`. Conclude with `hχ.abs.mul_prod hχ.abs`.
-
-Rewrite using `[betaInfTau_eq_kernel H hF hF', integral_integral_swap (f := fun p t => kernel D F F' τ (p, t)) hK]`. Simplify using `only [fun t => (hs t).2.1]`. Rewrite using `[integral_mul_const, integral_cutoff_product_eq_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem betaInfTau_eq_integral (hα : AB k r ≤ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} (hcF : InCC α 4 F)
     (hcF' : InCC α 4 F') (hΦ : Integrable (Ph D F F') D.μSS) (τ : ℝ × ℝ) :
@@ -182,7 +180,7 @@ open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeD
 open scoped InnerProductSpace ENNReal
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hA hF hΦ` and use `betaInfTau_eq_integral hA hF hF hΦ (1, 1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem betaInf_eq_integral :
     ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]

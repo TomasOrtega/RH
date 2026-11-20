@@ -14,9 +14,9 @@ open Formalism.GradedWeylDivisibility
 namespace GlobalTheory.HighWt
 
 /- English proof (translation)
-Unfold `bideterminant initMinor`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `p q`. Simplify using `[RingHom.mapMatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_bidet {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n K : ℕ} (sz : Fin K → ℕ)
     (hsz : ∀ k, sz k ≤ n) (I : ∀ k, Fin (sz k) → Fin r) :
@@ -30,19 +30,17 @@ theorem map_bidet {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n K
   simp [RingHom.mapMatrix_apply]
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ N ν _`. Establish `hmax : (Ideal.span {ϖ}).IsMaximal`. Rewrite using `[← (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ]`. Conclude with `IsLocalRing.maximalIdeal.isMaximal O`. Use `letI : Field (O ⧸ Ideal.span {ϖ}) := Ideal.Quotient.field _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hdom : IsDomain (O ⧸ Ideal.span {ϖ})` using `Ideal.Quotient.isDomain _`. Prove the components needed by the constructor for the conclusion. Introduce `f hf`. Rewrite `hf` using `[standardMonomialSpanDomain (O ⧸ Ideal.span {ϖ}) N N ν]`. Proceed by induction on `hf using Submodule.span_induction with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨K, sz, hsz, I, hsh, rfl⟩` from `hx`. Use `⟨bideterminant O sz hsz I, ?_, map_bidet _ sz hsz I⟩` and prove the remaining obligations. Rewrite using `[← hsh]`. Conclude with `bidetMem O N N K sz hsz I`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, Submodule.zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`. Conclude with `⟨a + b, Submodule.add_mem _ ha hb, by simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul c x _ hx`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨c', rfl⟩` from `Ideal.Quotient.mk_surjective c`. Use `⟨c' • a, Submodule.smul_mem _ c' ha, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul, smul_eq_C_mul, map_mul, map_C]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g hg h0`. Establish `hk : g ∈ RingHom.ker (MvPolynomial.map (Ideal.Quotient.mk (Ideal.span {ϖ})))` using `h0`. Rewrite `hk` using `[MvPolynomial.ker_map, Ideal.mk_ker, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton']`. Take `⟨h, hh⟩` from `hk`. Establish `hgh : g = ϖ • h` using `by rw [smul_eq_C_mul, ← hh, mul_comm]`.
-
-Use `⟨h, ?_, hgh⟩` and prove the remaining obligations. Conclude with `dualWeylSat O N N ν ϖ h hϖ.ne_zero (hgh ▸ hg)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem baseChange_holds : BaseChange := by
   intro O _ _ _ ϖ hϖ N ν _

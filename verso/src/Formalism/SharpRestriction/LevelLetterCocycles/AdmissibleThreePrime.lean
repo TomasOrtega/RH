@@ -66,13 +66,13 @@ def AdmCylindersL {D : D7} (A : ArithmeticCylinders.AllRows D) : Prop := Arithme
 def PlaceLawTheorem {D : D7} (A : ArithmeticCylinders.AllRows D) : Prop := AdmCylindersL A → PlaceLawConstantSix A
 
 /- English proof (translation)
-Introduce `⟨hL, hg, hV⟩` and use `ArithmeticCylinders.place_law_of_statement A hL hg hV`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem place_law_theorem_holds {D : D7} (A : ArithmeticCylinders.AllRows D) : PlaceLawTheorem A :=
   fun ⟨hL, hg, hV⟩ => ArithmeticCylinders.place_law_of_statement A hL hg hV
 
 /- English proof (translation)
-The claim follows from `place_law_theorem_holds A ⟨hS hq, hg, hV⟩`.
+A detailed English derivation is pending.
 -/
 theorem place_law_idempotents_six_of_lifting {D : D7} (A : ArithmeticCylinders.AllRows D) (hS : ArithmeticCylinders.LiftingLemmasStatement D) (hq : ArithmeticCylinders.admLq D) (hg : GLarge D)
     (hV : VecData A) : ArithmeticCylinders.PlaceLawIdempotents A 6 :=

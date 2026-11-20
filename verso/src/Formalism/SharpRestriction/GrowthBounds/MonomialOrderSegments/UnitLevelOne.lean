@@ -11,7 +11,7 @@ section Dig
 variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O]
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `G.Joints.rat_padicGe_cast hp S x c h`. Rewrite using `[hz, ← geQ_nat_iff S]`. Conclude with `G.Joints.geQ_vK_pow_mul S c z`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vQ_rat_ge (hp : p.Prime) (S : G.UniformizedDVR p O) (x : ℚ) (c : ℕ) (h : CovariantDegrees.PadicGe p x c) :
     ((c : ℕ) : WithTop ℚ) ≤ vQ p S ((x : ℚ) : G.KK O) := by
@@ -20,7 +20,7 @@ theorem vQ_rat_ge (hp : p.Prime) (S : G.UniformizedDVR p O) (x : ℚ) (c : ℕ) 
   exact G.Joints.geQ_vK_pow_mul S c z
 
 /- English proof (translation)
-Use `vQ_rat_ge hp S x 0 (by simpa using h)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vQ_rat_nonneg (hp : p.Prime) (S : G.UniformizedDVR p O) (x : ℚ) (h : CovariantDegrees.PadicGe p x 0) :
     0 ≤ vQ p S ((x : ℚ) : G.KK O) := by
@@ -28,9 +28,9 @@ theorem vQ_rat_nonneg (hp : p.Prime) (S : G.UniformizedDVR p O) (x : ℚ) (h : C
   simpa using this
 
 /- English proof (translation)
-Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `h1` using `vQ_rat_nonneg hp S x (Or.inr (by simp [h]))`. Establish `h2` using `vQ_rat_nonneg hp S x⁻¹ (Or.inr (by rw [padicValRat.inv, h]; simp))`. Establish `h3 : vQ p S ((x : ℚ) : G.KK O) + vQ p S ((x⁻¹ : ℚ) : G.KK O) = 0`. Rewrite using `[← AddValuation.map_mul, ← Rat.cast_mul, mul_inv_cancel₀ hx, Rat.cast_one, AddValuation.map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((add_eq_zero_iff_of_nonneg h1 h2).mp h3).1`.
+A detailed English derivation is pending.
 -/
 theorem vQ_rat_unit [CharZero (G.KK O)] (hp : p.Prime) (S : G.UniformizedDVR p O) (x : ℚ) (hx : x ≠ 0)
     (h : padicValRat p x = 0) : vQ p S ((x : ℚ) : G.KK O) = 0 := by
@@ -42,7 +42,7 @@ theorem vQ_rat_unit [CharZero (G.KK O)] (hp : p.Prime) (S : G.UniformizedDVR p O
   exact ((add_eq_zero_iff_of_nonneg h1 h2).mp h3).1
 
 /- English proof (translation)
-Unfold `G.cUnit G.dUnit`. Establish `: ((n.factorial : ℕ) : ℚ) ≠ 0` using `by exact_mod_cast (Nat.factorial_ne_zero _)`. Simplify using `[this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem unit_level_one (n : ℕ) : G.cUnit 1 n * G.dUnit 1 n 0 = 1 := by
   unfold G.cUnit G.dUnit
@@ -50,48 +50,46 @@ theorem unit_level_one (n : ℕ) : G.cUnit 1 n * G.dUnit 1 n 0 = 1 := by
   simp [this]
 
 /- English proof (translation)
-Unfold `G.cUnit G.dUnit`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem unit_at_zero (P : ℕ) : G.cUnit P 0 * G.dUnit P 0 0 = 1 := by
   unfold G.cUnit G.dUnit
   simp
 
 /- English proof (translation)
-Introduce `_ τ _ r g`. Establish `hp` using `hG.prime`. Establish `: Fact p.Prime` using `⟨hp⟩`. Take `⟨hA, hB⟩` from `(G.GLWeightTheory.lemma_five_two_first_holds D) p hp hG.five_le`. Use `⟨fun t ρ n => (((∏ a, ((ρ a).factorial : ℚ)) * ((p ^ g t).factorial : ℚ) ^ n : ℚ) : G.KK O), fun t ρ β => ((PlaneGramData.gamDig (p ^ g t) ρ β : ℚ) : G.KK O), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t ρ hρ`. Take `⟨h1, h2, -⟩` from `h5 (g t) r ρ hρ`. Use `⟨fun n => ?_, fun β => ⟨vQ_rat_unit hp S _ (h2 β).1 (h2 β).2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Rat.cast_ne_zero]`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun a _ => by exact_mod_cast Nat.factorial_ne_zero _) (pow_ne_zero _ (by exact_mod_cast Nat.factorial_ne_zero _))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun x : ℚ => (x : G.KK O)) (h1 β)` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Rewrite using `[this]`. Introduce `ρ hρ c _ ε hε set tt : τ × Fin r → ℕ := fun k => g k.1 - 1 with htt set rh : τ × Fin r → ℕ := fun k => ρ k.1 k.2 with hrh'`. Establish `hlev : ∀ k : τ × Fin r, g k.1 ≠ 0 → tt k + 1 = g k.1`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k h0`. Simplify using `only [htt]`. Use linear arithmetic over natural numbers and integers. Establish `hrh : ∀ k, rh k < p ^ (tt k + 1)`. Introduce `k`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hρ k.1 k.2`. Distinguish the cases in `h0 : g k.1 = 0`. Rewrite `h` using `[h0, pow_zero]`. Conclude with `lt_of_lt_of_le h (Nat.one_le_pow _ _ hp.pos)`. Rewrite using `[hlev k h0]`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Take `⟨-, -, hQ⟩` from `hB (τ × Fin r) tt rh hrh`. Take `⟨T, q, hT, hq⟩` from `hQ (decide (ε = -1)) c`. Use `set ze : (τ × Fin r → ℕ) → (τ × Fin r → ℕ) := fun β k => if g k.1 = 0 then 0 else β k with hze`. Establish `hquot : ∀ e' : τ × Fin r → ℕ, ((∏ k, (((rh k + p ^ (tt k + 1) * e' k).factorial : ℕ) : ℚ)) / (∏ k, ((rh k).factorial : ℚ) * ((e' k).factorial : ℚ) * ((p ^ (tt k + 1)).factorial : ℚ) ^ (e' k))) = ∏ k, G.cUnit (p ^ (tt k + 1)) (e' k) * G.dUnit (p ^ (tt k + 1)) (e' k) (rh k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `e'`. Establish `hlet : ∀ k, (((rh k + p ^ (tt k + 1) * e' k).factorial : ℕ) : ℚ) = (((rh k).factorial : ℚ) * ((e' k).factorial : ℚ) * ((p ^ (tt k + 1)).factorial : ℚ) ^ (e' k)) * (G.cUnit (p ^ (tt k + 1)) (e' k) * G.dUnit (p ^ (tt k + 1)) (e' k) (rh k))`. Introduce `k`. Rewrite using `[hA (tt k) (rh k) (e' k) (hrh k)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_congr rfl (fun k _ => hlet k), Finset.prod_mul_distrib]`. Establish `hne : (∏ k, ((rh k).factorial : ℚ) * ((e' k).factorial : ℚ) * ((p ^ (tt k + 1)).factorial : ℚ) ^ (e' k)) ≠ 0`. Use `Finset.prod_ne_zero_iff.2 fun k _ => ?_` and prove the remaining obligations. Establish `h1 : ((rh k).factorial : ℚ) ≠ 0` using `by exact_mod_cast (Nat.factorial_ne_zero _)`. Establish `h2 : ((e' k).factorial : ℚ) ≠ 0` using `by exact_mod_cast (Nat.factorial_ne_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : ((p ^ (tt k + 1)).factorial : ℚ) ≠ 0` using `by exact_mod_cast (Nat.factorial_ne_zero _)`. Conclude with `mul_ne_zero (mul_ne_zero h1 h2) (pow_ne_zero _ h3)`. Rewrite using `[mul_div_cancel_left₀ _ hne]`. Establish `hk : ∀ (β : τ × Fin r → ℕ) (k : τ × Fin r), G.cUnit (p ^ (tt k + 1)) (ze β k) * G.dUnit (p ^ (tt k + 1)) (ze β k) (rh k) = G.cUnit (p ^ g k.1) (β k) * G.dUnit (p ^ g k.1) (β k) (ρ k.1 k.2)`. Introduce `β k`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Distinguish the cases in `h0 : g k.1 = 0`. Establish `hr0 : ρ k.1 k.2 = 0`. Establish `h` using `hρ k.1 k.2`. Rewrite `h` using `[h0, pow_zero]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ze β k = 0` using `by simp only [hze, if_pos h0]`. Establish `e2 : rh k = 0` using `hr0`. Rewrite using `[e1, e2, unit_at_zero, h0, pow_zero, hr0, unit_level_one]`. Establish `e1 : ze β k = β k` using `by simp only [hze, if_neg h0]`. Rewrite using `[e1, hlev k h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hprod : ∀ β : τ × Fin r → ℕ, (∏ k, G.cUnit (p ^ (tt k + 1)) (ze β k) * G.dUnit (p ^ (tt k + 1)) (ze β k) (rh k)) = ∏ t, PlaneGramData.gamDig (p ^ g t) (ρ t) (fun a => β (t, a))`. Introduce `β`. Rewrite using `[Finset.prod_congr rfl (fun k _ => hk β k), Fintype.prod_prod_type]`. Both sides reduce to the same expression. Establish `hsum : ∀ β : τ × Fin r → ℕ, (∑ j ∈ T, q j * ∏ k, ((ze β k).choose (j k) : ℚ)) = ∑ j ∈ T.filter (fun m => ∀ k : τ × Fin r, g k.1 = 0 → m k = 0), q j * ∏ k, ((β k).choose (j k) : ℚ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `β`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hjz`. Use `congr 1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : g k.1 = 0`. Simplify using `only [hze, if_pos h0, hjz k h0, Nat.choose_zero_right]`. Simplify using `only [hze, if_neg h0]`. Use `push Not at hjz`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨k, h0, hne⟩` from `hjz`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ k), mul_zero]`. Simplify using `only [hze, if_pos h0]`. Rewrite using `[Nat.choose_eq_zero_of_lt (Nat.pos_of_ne_zero hne), Nat.cast_zero]`. Use `⟨T.filter (fun m => ∀ k : τ × Fin r, g k.1 = 0 → m k = 0), fun m => ((q m : ℚ) : G.KK O), ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `m hm`. Use `hT m (Finset.mem_filter.mp hm).1` as an intermediate fact. Conclude with `⟨vQ_rat_nonneg hp S _ this.2, by omega⟩`. Introduce `β`. Establish `hb` using `hq (ze β)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hquot, hprod, hsum] at hb`. Establish `hv` using `vQ_rat_ge hp S _ c hb`. Establish `e : ((∏ t, ((PlaneGramData.gamDig (p ^ g t) (ρ t) (fun a => β (t, a)) : ℚ) : G.KK O)) ^ ε - binomComb (T.filter (fun m => ∀ k : τ × Fin r, g k.1 = 0 → m k = 0)) (fun m => ((q m : ℚ) : G.KK O)) β) = (((if decide (ε = -1) = true then (∏ t, PlaneGramData.gamDig (p ^ g t) (ρ t) (fun …`. Unfold `binomComb`. Break down `hε with rfl | rfl` into its components or cases.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brDIG [CharZero (G.KK O)] (D : Formalism.BasicNotions.D7) (S : G.UniformizedDVR p O) {n' : ℕ} (hG : G.AdmissibleDVR p n' O)
     (h5 : PlaneGramData.FactorialDigitSplitAtRing p O) : DIG (G.KK O) (vQ p S) p := by

@@ -22,26 +22,26 @@ structure IsFrame (c : S →+* S) (J : Matrix m m S) (K : Matrix n n S) (a : S) 
   vj : cT c V * J = a • (K * P)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_add (c : S →+* S) {p q : Type} (X Y : Matrix p q S) : cT c (X + Y) = cT c X + cT c Y := by
   ext i j; simp [cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_sub (c : S →+* S) {p q : Type} (X Y : Matrix p q S) : cT c (X - Y) = cT c X - cT c Y := by
   ext i j; simp [cT]
 
 /- English proof (translation)
-Simplify using `[emb0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_embedding_one (V : Matrix m n S) (P : Matrix n m S) : emb0 V P 1 = 1 := by simp [emb0]
 
 /- English proof (translation)
-Establish `e : V * (x - 1) * P * (V * (y - 1) * P) = V * ((x - 1) * (y - 1)) * P`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h, Matrix.mul_one]; simp only [Matrix.mul_assoc]`. Simplify using `only [emb0, Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, e]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : x * y - 1 = (x - 1) * (y - 1) + (x - 1) + (y - 1)` using `by noncomm_ring`. Rewrite using `[e2]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem embed_mul {V : Matrix m n S} {P : Matrix n m S} (h : P * V = 1) (x y : Matrix n n S) :
     emb0 V P (x * y) = emb0 V P x * emb0 V P y := by
@@ -61,7 +61,7 @@ def embHom {V : Matrix m n S} {P : Matrix n m S} (h : P * V = 1) : Matrix n n S 
   map_mul' := embed_mul h
 
 /- English proof (translation)
-Establish `e : emb0 V P x = 1 + V * ((x - 1) * P)` using `by rw [emb0, Matrix.mul_assoc]`. Rewrite using `[e, Matrix.det_one_add_mul_comm, Matrix.mul_assoc, h, Matrix.mul_one]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_frame_embedding {V : Matrix m n S} {P : Matrix n m S} (h : P * V = 1) (x : Matrix n n S) :
     (emb0 V P x).det = x.det := by
@@ -70,7 +70,7 @@ theorem det_frame_embedding {V : Matrix m n S} {P : Matrix n m S} (h : P * V = 1
   simp
 
 /- English proof (translation)
-Establish `e : P * (1 + V * (x - 1) * P) * V = P * V + (P * V) * (x - 1) * (P * V)`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.mul_assoc]`. Rewrite using `[emb0, e, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem projection_frame_embedding {V : Matrix m n S} {P : Matrix n m S} (h : P * V = 1) (x : Matrix n n S) :
     P * emb0 V P x * V = x := by
@@ -80,22 +80,22 @@ theorem projection_frame_embedding {V : Matrix m n S} {P : Matrix n m S} (h : P 
   simp
 
 /- English proof (translation)
-Rewrite using `[emb0, cT_add, cT_one, cT_mul, cT_mul, cT_sub, cT_one, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_transpose_frame_embedding (c : S →+* S) (V : Matrix m n S) (P : Matrix n m S) (x : Matrix n n S) :
     cT c (emb0 V P x) = 1 + cT c P * (cT c x - 1) * cT c V := by
   rw [emb0, cT_add, cT_one, cT_mul, cT_mul, cT_sub, cT_one, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hvjv : cT c V * J * V = a • K`. Rewrite using `[h.vj, Matrix.smul_mul, Matrix.mul_assoc, h.pv, Matrix.mul_one]`. Use `set A := x - 1 with hA`. Use `set B := cT c x - 1 with hB`. Establish `hx : x = A + 1` using `by rw [hA]; abel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcx : cT c x = B + 1` using `by rw [hB]; abel`. Establish `e1 : cT c x * K * x - K = K * A + B * K + B * K * A`. Rewrite using `[hcx, hx]`. Use `noncomm_ring`. Establish `t1 : J * (V * A * P) = a • (cT c P * (K * A) * P)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h.jv]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_assoc]`. Establish `t2 : cT c P * B * cT c V * J = a • (cT c P * (B * K) * P)`. Rewrite using `[Matrix.mul_assoc _ (cT c V) J, h.vj]`. Simplify using `only [Matrix.mul_smul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `t3 : cT c P * B * cT c V * J * (V * A * P) = a • (cT c P * (B * K * A) * P)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by`. Rewrite using `[hvjv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`. Rewrite using `[conj_transpose_frame_embedding, ← hB, emb0, ← hA, e1]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, smul_add]`. Rewrite using `[t3, t2, t1]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem frame_embedding_form_defect {c : S →+* S} {J : Matrix m m S} {K : Matrix n n S} {a : S} {V : Matrix m n S}
     {P : Matrix n m S} (h : IsFrame c J K a V P) (x : Matrix n n S) :
@@ -126,7 +126,7 @@ theorem frame_embedding_form_defect {c : S →+* S} {J : Matrix m m S} {K : Matr
   abel
 
 /- English proof (translation)
-Rewrite using `[frame_embedding_form_defect h, hx]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frame_embedding_unitary {c : S →+* S} {J : Matrix m m S} {K : Matrix n n S} {a : S} {V : Matrix m n S}
     {P : Matrix n m S} (h : IsFrame c J K a V P) {x : Matrix n n S} (hx : cT c x * K * x = K) :
@@ -134,11 +134,11 @@ theorem frame_embedding_unitary {c : S →+* S} {J : Matrix m m S} {K : Matrix n
   rw [frame_embedding_form_defect h, hx]; simp
 
 /- English proof (translation)
-Rewrite `hx` using `[frame_embedding_form_defect h]`. Establish `h0 : a • (cT c P * (cT c x * K * x - K) * P) = 0` using `by simpa using hx`. Establish `hvp : cT c V * cT c P = 1` using `by rw [← cT_mul, h.pv, cT_one]`. Establish `h1 : a • (cT c x * K * x - K) = 0`. Use `congrArg (fun Y => cT c V * Y * V) h0` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_zero, Matrix.zero_mul] at this`. Establish `e : cT c V * (cT c P * (cT c x * K * x - K) * P) * V = (cT c V * cT c P) * (cT c x * K * x - K) * (P * V)` using `by simp only [Matrix.mul_assoc]`. Rewrite `this` using `[e, hvp, h.pv, Matrix.one_mul, Matrix.mul_one]`. Then use the resulting hypothesis. Establish `h2 : cT c x * K * x - K = 0`. Use `congrArg (fun Y => b • Y) h1` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[smul_smul, hab]`. Conclude with `sub_eq_zero.1 h2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unitary_of_frame_embedding {c : S →+* S} {J : Matrix m m S} {K : Matrix n n S} {a b : S} {V : Matrix m n S}
     {P : Matrix n m S} (h : IsFrame c J K a V P) (hab : b * a = 1) {x : Matrix n n S}
@@ -158,9 +158,9 @@ theorem unitary_of_frame_embedding {c : S →+* S} {J : Matrix m m S} {K : Matri
   exact sub_eq_zero.1 h2
 
 /- English proof (translation)
-Use `set q := 1 - V * P with hqd`. Establish `hsym : cT c q * J = J * q`. Establish `e1 : cT c q = 1 - cT c P * cT c V` using `by rw [hqd, cT_sub, cT_one, cT_mul]`. Rewrite using `[e1, Matrix.sub_mul, Matrix.one_mul, hqd, Matrix.mul_sub, Matrix.mul_one, Matrix.mul_assoc, h.vj, ← Matrix.mul_assoc J, h.jv]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hstar : cT c q * cT c g = cT c q` using `by rw [← cT_mul, hq]`. Establish `h1 : J * q * g = J * q`. Rewrite using `[← hsym]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem fix_left {c : S →+* S} {J : Matrix m m S} {K : Matrix n n S} {a : S} {V : Matrix m n S}
     {P : Matrix n m S} (h : IsFrame c J K a V P) {L : Matrix m m S} (hL : L * J = 1) {g : Matrix m m S}
@@ -181,11 +181,11 @@ theorem fix_left {c : S →+* S} {J : Matrix m m S} {K : Matrix n n S} {a : S} {
     _ = q := by rw [h1, ← Matrix.mul_assoc, hL, Matrix.one_mul]
 
 /- English proof (translation)
-Use `set p := V * P with hp`. Establish `hpp : p * p = p`. Combine the equalities or inequalities in the displayed calculation. Establish `a1 : g * p = g - 1 + p`. Establish `: g - g * p = 1 - p` using `by rw [← h1, Matrix.mul_sub, Matrix.mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show g * p = g - (g - g * p) by abel, this]; abel`. Establish `a2 : p * g = g - 1 + p`. Establish `: g - p * g = 1 - p` using `by rw [← h2, Matrix.sub_mul, Matrix.one_mul]`. Rewrite using `[show p * g = g - (g - p * g) by abel, this]; abel`. Establish `e : V * (P * g * V - 1) * P = p * g * p - p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hp]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[emb0, e, a2, Matrix.add_mul, Matrix.sub_mul, a1, hpp, Matrix.one_mul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem frame_embedding_projection {V : Matrix m n S} {P : Matrix n m S} (h : P * V = 1) {g : Matrix m m S}
     (h1 : g * (1 - V * P) = 1 - V * P) (h2 : (1 - V * P) * g = 1 - V * P) :
@@ -207,11 +207,11 @@ theorem frame_embedding_projection {V : Matrix m n S} {P : Matrix n m S} (h : P 
   abel
 
 /- English proof (translation)
-Establish `hc : ∀ {p q : Type} (X : Matrix p q S), cT c' (X.map f) = (cT c X).map f`. Introduce `p q X`. Use extensionality with `i j`. Simplify using `[cT, hf]`. Establish `hm : ∀ {p q r : Type} [Fintype q] (X : Matrix p q S) (Y : Matrix q r S), X.map f * Y.map f = (X * Y).map f` using `fun X Y => (Matrix.map_mul (f := f)).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : ∀ {p q : Type} (X : Matrix p q S), f a • X.map f = (a • X).map f`. Introduce `p q X`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hm, h.pv]`. Simplify using `[Matrix.map_one]`. Rewrite using `[hm, h.jv, hc, hm, hs]`. Rewrite using `[hc, hm, h.vj, hm, hs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsFrame.map {S' : Type} [CommRing S'] {c : S →+* S} {c' : S' →+* S'} (f : S →+* S')
     (hf : ∀ s, f (c s) = c' (f s)) {J : Matrix m m S} {K : Matrix n n S} {a : S} {V : Matrix m n S}
@@ -229,11 +229,11 @@ theorem IsFrame.map {S' : Type} [CommRing S'] {c : S →+* S} {c' : S' →+* S'}
   · rw [hc, hm, h.vj, hm, hs]
 
 /- English proof (translation)
-Establish `h1 : ∀ {k : Type} [DecidableEq k], (1 : Matrix k k S).map f = 1` using `fun {k} _ => Matrix.map_one f (map_zero f) (map_one f)`. Establish `hm : ∀ {p q r : Type} [Fintype q] (X : Matrix p q S) (Y : Matrix q r S), (X * Y).map f = X.map f * Y.map f` using `fun X Y => Matrix.map_mul (f := f)`. Establish `hs : (x - 1).map f = x.map f - 1`. Establish `: (x - 1).map f = x.map f - (1 : Matrix n n S).map f`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.map_apply, Matrix.sub_apply, map_sub]`. Rewrite using `[this, h1]`. Establish `ha : ∀ X Y : Matrix m m S, (X + Y).map f = X.map f + Y.map f` using `fun X Y => by`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[emb0, emb0, ha, h1, hm, hm, hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_embedding_map {S' : Type} [CommRing S'] (f : S →+* S') (V : Matrix m n S) (P : Matrix n m S)
     (x : Matrix n n S) : (emb0 V P x).map f = emb0 (V.map f) (P.map f) (x.map f) := by

@@ -14,17 +14,17 @@ namespace GlobalTheory.CapelliLink
 open Formalism.CohomologicalDescent.DepthNonnegative GlobalTheory.ExpFrame Formalism.CohomologicalDescent.LD
 
 /- English proof (translation)
-Proceed by induction on `Φ using FreeAlgebra.induction with`. Consider the case `grade0 r`. Introduce `x`. Use `⟨r • x τ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgHom.commutes, Module.algebraMap_end_apply]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[AlgHom.commutes, AlgHom.commutes, Module.algebraMap_end_apply, MultilinearMap.map_update_smul, Function.update_eq_self]`. Consider the case `grade1 p`. Introduce `x`. Take `⟨y, hy, he⟩` from `hF p x`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hy]`. Simplify using `[evalPol]`. Rewrite using `[FreeAlgebra.lift_ι_apply]`. Conclude with `he`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mul Φ₁ Φ₂ h₁ h₂`. Introduce `x`. Take `⟨y₂, hy₂, he₂⟩` from `h₂ x`. Take `⟨y₁, hy₁, he₁⟩` from `h₁ (Function.update x τ y₂)`. Use `⟨y₁, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy₁, Function.update_self, hy₂, map_mul, Module.End.mul_apply]`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, he₂, he₁, Function.update_idem]`. Consider the case `add Φ₁ Φ₂ h₁ h₂`. Introduce `x`. Take `⟨y₁, hy₁, he₁⟩` from `h₁ x`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y₂, hy₂, he₂⟩` from `h₂ x`. Use `⟨y₁ + y₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.coe_add, hy₁, hy₂, map_add, LinearMap.add_apply]`. Rewrite using `[map_add, map_add, LinearMap.add_apply, he₁, he₂, MultilinearMap.map_update_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pure_step {O : Type} [CommRing O] {N : ℕ} {ι : Type} [DecidableEq ι] (τ : ι)
     (lam : ι → ℕ → ℕ) (P : ι → (Fin N → ℕ) → Module.End O (NablaT O N lam))
@@ -67,9 +67,9 @@ theorem pure_step {O : Type} [CommRing O] {N : ℕ} {ι : Type} [DecidableEq ι]
     · rw [map_add, map_add, LinearMap.add_apply, he₁, he₂, MultilinearMap.map_update_add]
 
 /- English proof (translation)
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨y, hy, he⟩` from `pure_step τ lam P Fab hF Φ x`. Establish `hyc : y = c • x τ` using `Subtype.ext (by rw [hy, hΦ _ (x τ).2]; rfl)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.compMultilinearMap_apply, LinearMap.compMultilinearMap_apply, he, hyc, MultilinearMap.map_update_smul, Function.update_eq_self]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem scalar_of {O : Type} [CommRing O] {N : ℕ} {ι : Type} [DecidableEq ι] (τ : ι)
     (lam : ι → ℕ → ℕ) (P : ι → (Fin N → ℕ) → Module.End O (NablaT O N lam))
@@ -97,9 +97,9 @@ def evalA (O : Type) [CommRing O] (N : ℕ) {ι : Type} [DecidableEq ι] (lam : 
     ⟨P p.1 p.2, Algebra.subset_adjoin (Or.inr ⟨p.1, p.2, hP p.1 p.2⟩)⟩)
 
 /- English proof (translation)
-Establish `h : (alg O N lam).val.comp (evalA O N lam P hP) = evalE O N lam P`. Apply `FreeAlgebra.hom_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Break down `p with g | p` into its components or cases. Simplify using `[evalA, evalE, grpA]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[evalA, evalE]`. Conclude with `DFunLike.congr_fun h Φ`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalA_coe (O : Type) [CommRing O] (N : ℕ) {ι : Type} [DecidableEq ι] (lam : ι → ℕ → ℕ)
     (P : ι → (Fin N → ℕ) → Module.End O (NablaT O N lam)) (hP : ∀ σ w, IsProj O N lam σ w (P σ w))
@@ -114,13 +114,13 @@ theorem evalA_coe (O : Type) [CommRing O] (N : ℕ) {ι : Type} [DecidableEq ι]
   exact DFunLike.congr_fun h Φ
 
 /- English proof (translation)
-Proceed by induction on `Φ using FreeAlgebra.induction with`. Consider the case `grade0 r`. Introduce `z y h`. Rewrite using `[AlgHom.commutes, AlgHom.commutes, h2, h, Module.algebraMap_end_apply, Submodule.Quotient.mk_smul]`. Consider the case `grade1 p`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `z y h`. Break down `p with g | ⟨σ, w⟩` into its components or cases. Simplify using `only [evalA, evalE, FreeAlgebra.lift_ι_apply, Sum.elim_inl]`. Conclude with `h3 g z y h`. Simplify using `only [evalA, evalE, FreeAlgebra.lift_ι_apply, Sum.elim_inr]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `h4 σ w _ (Q σ w) (hP σ w) (hQ σ w) z y h`. Consider the case `mul Φ₁ Φ₂ h₁ h₂`. Introduce `z y h`. Rewrite using `[map_mul, map_mul, mul_smul, Module.End.mul_apply]`. Conclude with `h₁ _ _ (h₂ z y h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add Φ₁ Φ₂ h₁ h₂`. Introduce `z y h`. Rewrite using `[map_add, map_add, add_smul, map_add, LinearMap.add_apply, h₁ z y h, h₂ z y h, Submodule.Quotient.mk_add]`.
+A detailed English derivation is pending.
 -/
 theorem compat {O : Type} [CommRing O] {N : ℕ} {ι : Type} [DecidableEq ι] {lam mu : ι → ℕ → ℕ} {ϖ : O}
     {Gm : Type} [AddCommGroup Gm] [Module (alg O N lam) Gm]
@@ -154,9 +154,9 @@ theorem compat {O : Type} [CommRing O] {N : ℕ} {ι : Type} [DecidableEq ι] {l
     rw [map_add, map_add, add_smul, map_add, LinearMap.add_apply, h₁ z y h, h₂ z y h, Submodule.Quotient.mk_add]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hd`. Establish `hu : IsUnit d`. Assume the negation of the conclusion as `hnu`. Establish `hm : d ∈ IsLocalRing.maximalIdeal O` using `hnu`. Rewrite `hm` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.mem_span_singleton]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hd hm`. Take `⟨u, rfl⟩` from `hu`. Apply `hne` to reduce the goal to its premises. Establish `h1` using `congrArg (fun q => (↑u⁻¹ : O) • q) h0`. Simplify `h1` using `[smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem dvd_of_smul_eq_zero {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {V : Type}
     [AddCommGroup V] [Module O V] {ϖ : O} (hϖ : Irreducible ϖ) (d : O) (y : V)
@@ -174,11 +174,9 @@ theorem dvd_of_smul_eq_zero {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValu
   simpa [smul_smul] using h1
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hc : IsCoprime (l : ℤ) d`. Rewrite using `[Int.isCoprime_iff_gcd_eq_one]`. Establish `h' : Nat.Coprime l d.natAbs` using `(Nat.Prime.coprime_iff_not_dvd hl).2 (fun h' => h (Int.natCast_dvd.2 h'))`. Simplify `h'` using `[Int.gcd]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨u, v, huv⟩` from `hc`. Establish `h1 : ϖ ∣ ((u * l + v * d : ℤ) : O)`. Use `push_cast`. Conclude with `dvd_add (dvd_mul_of_dvd_right hϖl _) (dvd_mul_of_dvd_right hd _)`. Rewrite `h1` using `[huv, Int.cast_one]`.
-
-Conclude with `hϖ (isUnit_of_dvd_one h1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_dvd_of {O : Type} [CommRing O] {ϖ : O} (hϖ : ¬ IsUnit ϖ) {l : ℕ} (hl : l.Prime)
     (hϖl : ϖ ∣ (l : O)) (d : ℤ) (hd : ϖ ∣ (d : O)) : (l : ℤ) ∣ d := by
@@ -197,23 +195,21 @@ theorem int_dvd_of {O : Type} [CommRing O] {ϖ : O} (hϖ : ¬ IsUnit ϖ) {l : �
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `O _ _ _ _ N ι _ _ lam mu l ϖ hl hϖ hϖl hlam hmu Gm _ _ _ hSub hEmb τ`. Take `⟨U, π, hπ, -⟩` from `hSub`. Take `⟨ψ, hψ, h2, h3, h4⟩` from `hEmb`. Use `choose P hP _ using fun σ w => GlobalTheory.T.existsUnique_dualWeylWeightProjector O N ι lam σ w`. Use `choose Q hQ _ using fun σ w => GlobalTheory.T.existsUnique_dualWeylWeightProjector O N ι mu σ w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩ : ∃ M, M = ∑ c : Fin N, lam τ c + ∑ c : Fin N, mu τ c` from `⟨_, rfl⟩`. Use `choose Fab hFab using fun p : Fin N × Fin N => GlobalTheory.T.polarisationOperator_formula_groupAndProjectors O N ι τ M p.1 p.2`. Take `⟨Fk, hFk⟩` from `GlobalTheory.T.capelliCoeff_dualWeyl_eq_coeff_prod O N`. Establish `hscal : ∀ (nu : ι → ℕ → ℕ) (R : ι → (Fin N → ℕ) → Module.End O (NablaT O N nu)), (∀ σ, Antitone (res N (nu σ))) → (∀ σ w, IsProj O N nu σ w (R σ w)) → ∑ c : Fin N, nu τ c ≤ M → ∀ k, evalE O N nu R (FreeAlgebra.lift O Fab (Fk k)) = (((∏ a : Fin N, (Polynomial.X + Polynomial.C (((n …`. Introduce `nu R hnu hR hb k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `scalar_of τ nu R Fab (fun p x => hFab p nu R hnu hR hb x)` to reduce the goal to its premises. Introduce `f hf`. Conclude with `hFk (res N (nu τ)) (hnu τ) f hf k`. Take `⟨z, hz⟩` from `exists_ne (0 : Gm)`. Take `⟨u, rfl⟩` from `hπ z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (ψ (π u))`. Establish `hne : (Submodule.Quotient.mk y : NablaT O N mu ⧸ (Ideal.span {ϖ} • ⊤ : Submodule O (NablaT O N mu))) ≠ 0`. Rewrite using `[hy]`. Introduce `h`. Apply `hz` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hψ` to reduce the goal to its premises. Rewrite using `[h, map_zero]`. Establish `key : ∀ k, ϖ ∣ ((((∏ a : Fin N, (Polynomial.X + Polynomial.C (((lam τ a : ℤ) - (a : ℕ) : ℤ)))).coeff k - (∏ a : Fin N, (Polynomial.X + Polynomial.C (((mu τ a : ℤ) - (a : ℕ) : ℤ)))).coeff k : ℤ)) : O)`. Introduce `k`. Apply `dvd_of_smul_eq_zero hϖ _ y hne` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `hscal lam P hlam hP (by omega) k`. Establish `hMu` using `hscal mu Q hmu hQ (by omega) k`. Establish `hc` using `compat P hP Q hQ ψ h2 h3 h4 (FreeAlgebra.lift O Fab (Fk k)) (π u) y hy.symm`. Establish `hA : evalA O N lam P hP (FreeAlgebra.lift O Fab (Fk k)) • π u = algebraMap O (alg O N lam) (((∏ a : Fin N, (Polynomial.X + Polynomial.C (((lam τ a : ℤ) - (a : ℕ) : ℤ)))).coeff k : ℤ) : O) • π u`. Establish `hu' : evalA O N lam P hP (FreeAlgebra.lift O Fab (Fk k)) • u = algebraMap O (alg O N lam) (((∏ a : Fin N, (Polynomial.X + Polynomial.C (((lam τ a : ℤ) - (a : ℕ) : ℤ)))).coeff k : ℤ) : O) • u`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((evalA O N lam P hP _ : alg O N lam) : Module.End O _) (u : NablaT O N lam) = ((algebraMap O (alg O N lam) _ : alg O N lam) : Module.End O _) (u : NablaT O N lam)`. Rewrite using `[evalA_coe, hL, LinearMap.smul_apply, Module.End.one_apply, Subalgebra.coe_algebraMap, Module.algebraMap_end_apply]`. Rewrite using `[← π.map_smul, hu', π.map_smul]`. Rewrite `hc` using `[hA, h2, hMu, ← hy]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Int.cast_sub, sub_smul, sub_eq_zero, hc]`. Simplify using `[Submodule.Quotient.mk_smul]`. Establish `hmap : ∀ nu : ι → ℕ → ℕ, (∏ a : Fin N, (Polynomial.X + Polynomial.C (((nu τ a : ℤ) - (a : ℕ) : ℤ) : ZMod l))) = (∏ a : Fin N, (Polynomial.X + Polynomial.C (((nu τ a : ℤ) - (a : ℕ) : ℤ)))).map (Int.castRingHom (ZMod l))`. Introduce `nu`. Simplify using `[Polynomial.map_prod]`.
-
-Rewrite using `[hmap lam, hmap mu]`. Use extensionality with `k`. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_map, eq_intCast, eq_intCast, ZMod.intCast_eq_intCast_iff_dvd_sub, ← neg_sub]`. Conclude with `dvd_neg.2 (int_dvd_of hϖ.not_isUnit hl hϖl _ (key k))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linkage : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (N : ℕ) (ι : Type)
     [Fintype ι] [DecidableEq ι] (lam : ι → ℕ → ℕ) (mu : ι → ℕ → ℕ) (l : ℕ) (ϖ : O), l.Prime → Irreducible ϖ →

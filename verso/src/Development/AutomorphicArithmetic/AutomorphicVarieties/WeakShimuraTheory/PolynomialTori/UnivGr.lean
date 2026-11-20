@@ -11,7 +11,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact (SetLike.GradedOne.one_mem : (1 : U) ∈ W.part 0)`. Consider the case `cons a L ih`. Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons]`. Conclude with `SetLike.GradedMul.mul_mem (h _ _ _) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem prod_part {O U H : Type} [CommRing O] [CommRing U] [Algebra O U] [Group H] (W : WPres O (ℤ × ℤ) U)
     (r : H →* UpperTheory.V.GradeZeroInterpolatingElement.M4 U) (h : ∀ g a b, r g a b ∈ W.part (wt a b)) (L : List (H × Fin 4 × Fin 4)) :
@@ -23,17 +23,17 @@ private theorem prod_part {O U H : Type} [CommRing O] [CommRing U] [Algebra O U]
     exact SetLike.GradedMul.mul_mem (h _ _ _) ih
 
 /- English proof (translation)
-Set `φ : W.gr 0 →ₗ[O] R` to `f.toLinearMap ∘ₗ W.A.val.toLinearMap ∘ₗ (W.gr 0).subtype`. Establish `key : ∀ x ∈ Algebra.adjoin O (mono r' 0), ∃ y ∈ W.part 0, f y = x`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨L, hL, rfl⟩` from `hx`. Use `⟨_, hL ▸ prod_part W r h L, ?_⟩` and prove the remaining obligations. Rewrite using `[map_list_prod, List.map_map]`. Simplify using `only [hr]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Consider the case `algebraMap a`. Use `⟨algebraMap O U a, ?_, f.commutes a⟩` and prove the remaining obligations. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ (SetLike.GradedOne.one_mem : (1 : U) ∈ W.part 0)`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`. Conclude with `⟨a + b, add_mem ha hb, map_add f a b⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨a, ha, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, rfl⟩` from `hy`. Use `⟨a * b, ?_, map_mul f a b⟩` and prove the remaining obligations. Use `(SetLike.GradedMul.mul_mem ha hb : a * b ∈ W.part (0 + 0))` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis. Establish `hm : ∀ x : Algebra.adjoin O (mono r' 0), (Algebra.adjoin O (mono r' 0)).val.toLinearMap x ∈ LinearMap.range φ` using `fun x => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, e⟩` from `key x.1 x.2`. Conclude with `⟨⟨⟨y, W.part_le_A hy⟩, hy⟩, e⟩`. Use `Module.Finite.of_injective (LinearMap.codRestrict _ _ hm) fun x y e => ?_` and prove the remaining obligations. Establish `e'` using `congrArg Subtype.val e`. Conclude with `Subtype.ext e'`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fin_adjoin {O U R H : Type} [CommRing O] [IsNoetherianRing O] [CommRing U] [Algebra O U] [CommRing R]
     [Algebra O R] [Group H] (W : WPres O (ℤ × ℤ) U) (r : H →* UpperTheory.V.GradeZeroInterpolatingElement.M4 U) (h : ∀ g a b, r g a b ∈ W.part (wt a b))
@@ -72,13 +72,13 @@ private theorem fin_adjoin {O U R H : Type} [CommRing O] [IsNoetherianRing O] [C
   exact Subtype.ext e'
 
 /- English proof (translation)
-Introduce `hP Ω _ _ _ l _ c D hD hF`. Establish `hex : ∃ (R : Type) (_ : CommRing R) (_ : Algebra c.O R) (_ : IsCO c.O R) (ρ : Lift c.O D.rbar R), D.IsPt ρ`. Assume the negation of the conclusion as `hn`. Conclude with `hF fun R _ _ _ ρ h => (hn ⟨R, inferInstance, inferInstance, inferInstance, ρ, h⟩).elim`. Take `⟨U, _, _, _, ρ, hrep⟩` from `univOf hP D hD (fun _ _ _ _ ρ => D.IsPt ρ) (ptClosed hP D hD) (fun _ _ _ _ _ h => h.unr) hex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgen : ρ.Generates` using `fun R' _ _ _ f f' h => ((hrep R').2 (ρ.map f') ((hrep R').1 f')).unique h rfl`. Establish `hst : ρ.TStable w4` using `tstable hrep fun R' _ _ _ r r' s h1 h2 h3 h4 => ptTorus D hD R' r r' s h1 h2 h3 h4`. Take `⟨W, hW, hz⟩` from `lift_grading c.O (ℤ × ℤ) (G ℚ Ω) (Fin 4) D.rbar w4 U ρ (fun g a b => D.r0 g a b) (fun _ _ _ => rfl) (fun g a b h => Matrix.diagonal_apply_ne _ fun e => h (congrArg w4 e)) hgen hst`. Establish `hid : ρ.map (AlgHom.id c.O U) = ρ`. Use extensionality with `g a b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨U, inferInstance, inferInstance, inferInstance, ρ, W, hid ▸ (hrep U).1 (AlgHom.id c.O U), fun s => ?_, hz, fun hfin => hF fun R _ _ _ r hr => ?_⟩` and prove the remaining obligations. Take `⟨g, a, b, e, -⟩` from `hz s`. Rewrite using `[e, ← res_eq_zero_iff c.O, map_sub, ρ.red, AlgHom.commutes, sub_eq_zero]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, -⟩` from `(hrep R).2 r hr`. Conclude with `fin_adjoin W ρ.hom hW f r.hom fun g a b => by rw [← hf]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Po.univGr :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ¬ D.Fin0 →

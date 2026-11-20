@@ -20,7 +20,7 @@ namespace GlobalTheory.AnPer.SliceTaylor
 variable {I : Type} [Fintype I] [DecidableEq I] {g : ℕ}
 
 /- English proof (translation)
-Establish `h1 : ∀ j, AnalyticAt ℂ (fun y : (I ⊕ Fin g → ℂ) × (Fin g → ℂ) ↦ y.1 j) q` using `fun j ↦ ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : I ⊕ Fin g ↦ ℂ) j).comp (ContinuousLinearMap.fst ℂ (I ⊕ Fin g → ℂ) (Fin g → ℂ))).analyticAt q`. Use `AnalyticAt.prod (analyticAt_pi_iff.2 fun i ↦ h1 _) ?_` and prove the remaining obligations. Conclude with `analyticAt_snd.add (analyticAt_pi_iff.2 fun i ↦ h1 _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem analyticAt_shift (q : (I ⊕ Fin g → ℂ) × (Fin g → ℂ)) :
     AnalyticAt ℂ (fun y : (I ⊕ Fin g → ℂ) × (Fin g → ℂ) ↦
@@ -32,7 +32,7 @@ theorem analyticAt_shift (q : (I ⊕ Fin g → ℂ) × (Fin g → ℂ)) :
   exact analyticAt_snd.add (analyticAt_pi_iff.2 fun i ↦ h1 _)
 
 /- English proof (translation)
-Use `AnalyticAt.comp_of_eq (h.analytic _ hw) (analyticAt_shift _) ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem analyticAt_joint {W : Opens ((I → ℂ) × (Fin g → ℂ))} (h : Hol W) {w : Fin g → ℂ}
     (hw : ((0 : I → ℂ), w) ∈ W) :
@@ -42,7 +42,7 @@ theorem analyticAt_joint {W : Opens ((I → ℂ) × (Fin g → ℂ))} (h : Hol W
   ext <;> simp
 
 /- English proof (translation)
-The claim follows from `AnalyticAt.comp_of_eq (f := fun x : I ⊕ Fin g → ℂ ↦ (x, w)) (analyticAt_joint h hw) (analyticAt_id.prod analyticAt_const) rfl`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_slice {W : Opens ((I → ℂ) × (Fin g → ℂ))} (h : Hol W) {w : Fin g → ℂ}
     (hw : ((0 : I → ℂ), w) ∈ W) :
@@ -52,9 +52,9 @@ theorem analyticAt_slice {W : Opens ((I → ℂ) × (Fin g → ℂ))} (h : Hol W
     (analyticAt_id.prod analyticAt_const) rfl
 
 /- English proof (translation)
-Establish `hc : Continuous (fun x : I ⊕ Fin g → ℂ ↦ (((fun i ↦ x (Sum.inl i)), w + fun b ↦ x (Sum.inr b)) : (I → ℂ) × (Fin g → ℂ)))` using `by fun_prop`. Use `hc.continuousAt.eventually (W.isOpen.mem_nhds ?_)` and prove the remaining obligations. Establish `e : (((fun i ↦ (0 : I ⊕ Fin g → ℂ) (Sum.inl i)), w + fun b ↦ (0 : I ⊕ Fin g → ℂ) (Sum.inr b)) : (I → ℂ) × (Fin g → ℂ)) = (0, w)`. Apply the tactic sequence `ext <;> simp`. Express the relevant statement in the definitionally equal form `_ ∈ W`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [e]`. Conclude with `hw`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eventually_mem {W : Opens ((I → ℂ) × (Fin g → ℂ))} {w : Fin g → ℂ}
     (hw : ((0 : I → ℂ), w) ∈ W) :
@@ -76,17 +76,15 @@ end GlobalTheory.AnPer.SliceTaylor
 open GlobalTheory.AnPer.SliceTaylor in
 
 /- English proof (translation)
-Introduce `I _ _ g D _ _ N t ht E _ _ _ W W₀ a ha hW`. Establish `key : ∀ h : Hol W, ∃ r : D ⊗[ℂ] Hol W₀, ∀ (p : E) (hp : p ∈ W₀), Algebra.TensorProduct.lift (AlgHom.id ℂ D) ((Algebra.ofId ℂ D).comp (Hol.ev p hp)) (fun _ _ ↦ Commute.all _ _) r = GlobalTheory.PeriodFamily.taylor N t (fun x : I ⊕ Fin g → ℂ ↦ h.fn (fun i ↦ x (Sum.inl i), a p + fun …`. Introduce `h`. Establish `han : ∀ (k : ℕ) (v : Fin k → (I ⊕ Fin g → ℂ)), AnalyticOnNhd ℂ (fun p ↦ iteratedFDeriv ℂ k (fun x : I ⊕ Fin g → ℂ ↦ h.fn (fun i ↦ x (Sum.inl i), a p + fun b ↦ x (Sum.inr b))) 0 v) W₀` using `fun k v p hp ↦ AnalyticAt.comp_of_eq (GlobalTheory.T.analyticAt_iteratedFDeriv_slice_and_fderiv_eq _ (a p) k v (analyticAt_joint h (hW p hp))).1 (ha p hp) rfl`. Unfold `GlobalTheory.PeriodFamily.taylor`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨∑ k ∈ Finset.range (N + 1), ∑ s : Fin k → I ⊕ Fin g, ((k.factorial : ℂ)⁻¹ • ∏ b, t (s b)) ⊗ₜ[ℂ] Hol.mk _ (han k fun b ↦ Pi.single (s b) 1), fun p hp ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun k _ ↦ Finset.sum_congr rfl fun s _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.lift_tmul, AlgHom.comp_apply, Hol.ev_apply, Hol.fn_mk _ _ hp, AlgHom.id_apply, Algebra.ofId_apply, mul_comm, ← Algebra.smul_def, smul_smul, mul_comm]`. Use `choose r hr using key`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hadd, -, hconst, hcongr, -, -⟩` from `GlobalTheory.T.taylorPolynomialEvalAlgebra_formal_properties N t`. Establish `hc : ∀ c : ℂ, r (algebraMap ℂ _ c) = algebraMap ℂ _ c` using `fun c ↦ by`. Use `GlobalTheory.T.tensor_holomorphic_ext_of_values W₀ D _ _ fun p hp ↦ ?_` and prove the remaining obligations. Rewrite using `[hr, AlgHom.commutes, ← hconst c]`. Use `hcongr _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [eventually_mem (hW p hp)] with x hx using Hol.fn_algebraMap c hx`. Establish `hA : ∀ f h : Hol W, r (f + h) = r f + r h` using `fun f h ↦ by`. Use `GlobalTheory.T.tensor_holomorphic_ext_of_values W₀ D _ _ fun p hp ↦ ?_` and prove the remaining obligations. Rewrite using `[map_add, hr, hr, hr, ← hadd _ _ (analyticAt_slice f (hW p hp)) (analyticAt_slice h (hW p hp))]`. Use `hcongr _ _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [eventually_mem (hW p hp)] with x hx using Hol.fn_add f h hx`. Establish `hM : ∀ f h : Hol W, r (f * h) = r f * r h` using `fun f h ↦ by`. Use `GlobalTheory.T.tensor_holomorphic_ext_of_values W₀ D _ _ fun p hp ↦ ?_` and prove the remaining obligations. Rewrite using `[map_mul, hr, hr, hr, ← GlobalTheory.T.taylorPolynomialEvalAlgebra_mul_of_prod_eq_zero N t ht _ _ (analyticAt_slice f (hW p hp)) (analyticAt_slice h (hW p hp))]`. Use `hcongr _ _ ?_` and prove the remaining obligations.
-
-Use `filter_upwards [eventually_mem (hW p hp)] with x hx using Hol.fn_mul f h hx`. Conclude with `⟨{ toFun := r map_one' := by simpa only [map_one] using hc 1 map_mul' := hM map_zero' := by simpa using hc 0 map_add' := hA commutes' := hc }, hr⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AnPer.exists_sliceTaylor_algHom : ∀ {I : Type} [Fintype I] [DecidableEq I] {g : ℕ} {D : Type} [CommRing D] [Algebra ℂ D] (N : ℕ) (t : I ⊕ Fin g → D), (∀ s : Fin (N + 1) → I ⊕ Fin g, ∏ a, t (s a) = 0) → ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] (W : Opens ((I → ℂ) × (Fin g → ℂ))) (W₀ : Opens E) (a : E → Fin g → ℂ), AnalyticOnNhd ℂ a W₀ → (∀ p ∈ W₀, ((0 : I → ℂ), a p) ∈ W) → ∃ ρ : Hol W →ₐ[ℂ] D ⊗[ℂ] Hol W₀, ∀ (h : Hol W) (p : E) (hp : p ∈ W₀), Algebra.TensorProduct.lift (AlgHom.id ℂ D) ((Algebra.ofId ℂ D).comp (Hol.ev p hp)) (fun _ _ ↦ Commute.all _ _) (ρ h) = GlobalTheory.PeriodFamily.taylor N t (fun x : I ⊕ Fin g → ℂ ↦ h.fn (fun i ↦ x (Sum.inl i), a p + fun b ↦ x (Sum.inr b))) := by
   intro I _ _ g D _ _ N t ht E _ _ _ W W₀ a ha hW

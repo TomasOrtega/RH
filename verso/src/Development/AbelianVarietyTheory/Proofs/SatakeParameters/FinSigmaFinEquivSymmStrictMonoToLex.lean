@@ -7,9 +7,9 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[finSigmaFinEquiv_apply]`. Use `congr 1`. Rewrite using `[← Fin.sum_univ_eq_sum_range]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi : (i : ℕ) < s` using `lt_of_lt_of_le i.2 x.1.2.le`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [hi, dif_pos]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem finSigmaFinEquiv_val_eq_range {s : ℕ} (t : Fin s → ℕ) (x : (a : Fin s) × Fin (t a)) :
     ((finSigmaFinEquiv x : Fin (∑ a, t a)) : ℕ) =
@@ -23,13 +23,13 @@ theorem finSigmaFinEquiv_val_eq_range {s : ℕ} (t : Fin s → ℕ) (x : (a : Fi
   rfl
 
 /- English proof (translation)
-Rewrite using `[Fin.lt_def, finSigmaFinEquiv_val_eq_range, finSigmaFinEquiv_val_eq_range]`. Use `set t' : ℕ → ℕ := fun i => if h : i < s then t ⟨i, h⟩ else 0 with ht'`. Break down `Sigma.Lex.lt_def.mp hxy with h | ⟨h, h2⟩` into its components or cases. Establish `h' : (x.1 : ℕ) < y.1` using `h`. Establish `hsub : Finset.range (x.1 + 1) ⊆ Finset.range y.1` using `Finset.range_subset_range.mpr h'`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : (Finset.range (x.1 + 1)).sum t' ≤ (Finset.range y.1).sum t'` using `Finset.sum_le_sum_of_subset hsub`. Use `replace hle := (Finset.sum_range_succ t' x.1).symm.trans_le hle`. Establish `hx : t' x.1 = t x.1` using `by simp [ht', x.1.2]`. Establish `h3 : (x.2 : ℕ) < t x.1` using `x.2.2`. Establish `h4 : (∑ i ∈ Finset.range x.1, t' i) = (Finset.range x.1).sum t'` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨a, i⟩` from `x`. Take `⟨b, j⟩` from `y`. Express the relevant statement in the definitionally equal form `a = b at h`. Substitute `h` using the available equality.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `i < j at h2`. Establish `: (i : ℕ) < j` using `h2`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finSigmaFinEquiv_lt_of_lex_lt {s : ℕ} (t : Fin s → ℕ) (x y : (a : Fin s) × Fin (t a))
     (hxy : toLex x < toLex y) :
@@ -57,9 +57,9 @@ theorem finSigmaFinEquiv_lt_of_lex_lt {s : ℕ} (t : Fin s → ℕ) (x y : (a : 
     omega
 
 /- English proof (translation)
-Introduce `s t c d hcd`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_lt]`. Break down `hn.lt_or_eq with h | h` into its components or cases. Use `finSigmaFinEquiv_lt_of_lex_lt t _ _ h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `only [Equiv.apply_symm_apply] at this`. Conclude with `absurd hcd (not_lt.mpr this.le)`. Establish `h' : finSigmaFinEquiv.symm d = finSigmaFinEquiv.symm c` using `toLex.injective h`. Use `finSigmaFinEquiv.symm.injective h'` as an intermediate fact. Conclude with `absurd hcd (by rw [this]; exact lt_irrefl _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finSigmaFinEquiv_symm_strictMono_lex :
     ∀ (s : ℕ) (t : Fin s → ℕ), StrictMono fun c : Fin (∑ a, t a) =>

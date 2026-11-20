@@ -16,15 +16,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT.ClsOrb
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n hn S hS lam K' hK' f hf γ hγ`. Take `⟨hKo, hKc, hlev⟩` from `GlobalTheory.T.productOfLocalLevelsUnitary_isOpen_isCompact_isLevel E hU n hn S hS K' hK'`. Establish `hH` using `GlobalTheory.T.isHecke_productOfLocalTestFunctions_section E hU n hn S hS K' hK' f hf`. Establish `hcomm` using `GlobalTheory.T.centralizer_regular_rationalPoint_finiteAdelic_comm E n γ hγ`. Establish `hcpt` using `GlobalTheory.T.level_stabiliser_le_centraliser_compact_part E hU n hn S hS K' hK' γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsupp` using `GlobalTheory.T.regularRationalPoint_testSupport_doubleCosets_finite E hU n hn S hS K' hK' f hf γ hγ`. Establish `horb` using `GlobalTheory.BCT.OrbLev.twOrb_eq_sum_smallerLevel (finU E n) (MonoidHom.id _) (globLev S (KL n)) hKo hKc (fun k hk => hk) (globLev S K') hlev (finPt γ) (globFn S f) hH hcpt hsupp`. Use `set T := twCent (MonoidHom.id (finU E n)) (finPt γ) with hT`. Establish `hCT : cptPart T ≤ T` using `(Subgroup.closure_le T).2 fun t ht => ht.1`. Establish `hU' : ∀ x : finU E n, T ⊓ (globLev S K').map (MulAut.conj x).toMonoidHom ≤ cptPart T ∧ (T ⊓ (globLev S K').map (MulAut.conj x).toMonoidHom).relIndex (cptPart T) ≠ 0` using `fun x => ⟨le_trans (inf_le_inf_left _ (Subgroup.map_mono hlev.2.1)) (hcpt x).1, (hcpt x).2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ t ∈ T, ∀ k ∈ globLev S K', ∀ x : finU E n, globFn S f ((t * x * k)⁻¹ * finPt γ * (t * x * k)) = globFn S f (x⁻¹ * finPt γ * x)`. Introduce `t ht k hk x`. Establish `ht' : t * finPt γ = finPt γ * t` using `ht`. Establish `e1 : t⁻¹ * finPt γ * t = finPt γ`. Rewrite using `[mul_assoc, ← ht', ← mul_assoc, inv_mul_cancel, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (t * x * k)⁻¹ * finPt γ * (t * x * k) = k⁻¹ * (x⁻¹ * (t⁻¹ * finPt γ * t) * x) * k` using `by group`. Rewrite using `[e2, e1, mul_assoc, (hH.2 k⁻¹ (inv_mem hk) _).1, (hH.2 k hk _).2]`. Establish `hreg` using `GlobalTheory.T.finsum_doubleCoset_regroup_commutative (finU E n) T (ratFinU E n) (cptPart T) (globLev S K') (fun x => globFn S f (x⁻¹ * finPt γ * x)) hcomm hCT hU' hinv`. Simplify using `only [MonoidHom.id_apply] at horb`. Rewrite using `[clsSum, horb.1, horb.2, hreg, mass]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem clsSum_eq_mass_mul_twOrb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ (lam : InfinitePlace E → DomWeight n) (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → ∀ f : ∀ w : Pl E, UL n w → ℂ, IsTest (KL n) K' f → ∀ γ : UE E n, γ.1.val.charpoly.Separable → clsSum S K' f γ = mass (MonoidHom.id _) (ratFinU E n) (finPt γ) * twOrb (MonoidHom.id _) (globLev S (KL n)) (finPt γ) (globFn S f) := by
   intro E _ _ _ hU n hn S hS lam K' hK' f hf γ hγ

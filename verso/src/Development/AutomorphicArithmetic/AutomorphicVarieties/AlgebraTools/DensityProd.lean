@@ -3,11 +3,11 @@ import Mathlib
 open Polynomial Matrix IsLocalRing TensorProduct
 
 /- English proof (translation)
-Use extensionality with `u v`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Simplify using `[Matrix.sum_apply, Matrix.single_apply, Matrix.one_apply]`. Simplify using `[Matrix.sum_apply, Matrix.single_apply, Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `he : (Finset.univ.filter fun w : n => w = u ∧ w = v) = ∅`. Rewrite using `[Finset.filter_eq_empty_iff]`. Introduce and unpack `w - ⟨rfl, rfl⟩`. Conclude with `h rfl`. Rewrite using `[he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem sum_matrix_single_diag_one_eq_one {F : Type} [Field F] {n : Type} [Fintype n] [DecidableEq n] :
     ∑ i : n, Matrix.single i i (1 : F) = 1 := by
@@ -24,23 +24,19 @@ private theorem sum_matrix_single_diag_one_eq_one {F : Type} [Field F] {n : Type
     simp
 
 /- English proof (translation)
-Establish `key : ∀ x ∈ S, ∀ y ∈ S, x t = y t → x s = y s`. Introduce `x hx y hy h`. Use `hk (x - y) (S.sub_mem hx hy) (by rw [Pi.sub_apply, h, sub_self])` as an intermediate fact. Rewrite `this` using `[Pi.sub_apply, sub_eq_zero]`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i0⟩` from `(inferInstance : Nonempty (d t))`. Use `choose xx hxS hxt using fun j => ht (Matrix.single j i0 (1 : F))`. Use `choose z hzS hzt using fun j => ht (Matrix.single i0 j (1 : F))`. Establish `hne : xx i0 s ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx0 : ∀ j, xx j s = 0`. Introduce `j`. Use `key (xx j * xx i0) (S.mul_mem (hxS j) (hxS i0)) (xx j) (hxS j) (by rw [Pi.mul_apply, hxt, hxt, Matrix.single_mul_single_same, one_mul])` as an intermediate fact. Rewrite using `[← this, Pi.mul_apply, h0, mul_zero]`. Establish `h1` using `key (∑ j, xx j * z j) (Subalgebra.sum_mem _ fun j _ => S.mul_mem (hxS j) (hzS j)) 1 S.one_mem (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.mul_apply, hxt, hzt, Matrix.single_mul_single_same, one_mul, Pi.one_apply]`. Conclude with `sum_matrix_single_diag_one_eq_one)`. Rewrite `h1` using `[Finset.sum_apply]`. Simplify using `only [Pi.mul_apply, hx0, zero_mul, Finset.sum_const_zero, Pi.one_apply] at h1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `zero_ne_one h1`. Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab⟩ : ∃ a b, xx i0 s a b ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (Matrix.ext h)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `⟨Matrix.of fun u j => xx j s u b, ?_, ?_⟩` and prove the remaining obligations. Introduce `hV`. Apply `hab` to reduce the goal to its premises. Use `congrFun (congrFun hV a) i0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `x hx`. Use extensionality with `u k`. Establish `e` using `key (x * xx k) (S.mul_mem hx (hxS k)) (∑ j, x t j k • xx j) (Subalgebra.sum_mem _ fun j _ => S.smul_mem (hxS j) _) (by`. Rewrite using `[Pi.mul_apply, hxt, Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, hxt]`.
-
-Use extensionality with `p q`. Apply the tactic sequence `by_cases hq : i0 = q <;> simp [Matrix.mul_apply, Matrix.sum_apply, Matrix.single_apply, hq])`. Establish `e2` using `congrFun (congrFun e u) b`. Simplify using `only [Pi.mul_apply, Finset.sum_apply, Matrix.sum_apply, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply] at e2`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`.
-
-Rewrite using `[e2]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem intertwiner_of_ker {F : Type} [Field F] {σ : Type} (d : σ → Type)
     [∀ s, Fintype (d s)] [∀ s, DecidableEq (d s)] [∀ s, Nonempty (d s)]
@@ -96,15 +92,13 @@ private theorem intertwiner_of_ker {F : Type} [Field F] {σ : Type} (d : σ → 
     exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Take `⟨x, hxS, hxt, hxs⟩` from `hk`. Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab⟩ : ∃ a b, x s a b ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hxs (Matrix.ext h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose p hpS hps using fun i => hs (Matrix.single i a (x s a b)⁻¹)`. Use `choose q hqS hqs using fun i => hs (Matrix.single b i (1 : F))`. Use `⟨∑ i, p i * x * q i, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subalgebra.sum_mem _ fun i _ => S.mul_mem (S.mul_mem (hpS i) hxS) (hqS i)`. Rewrite using `[Finset.sum_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Simplify using `[Pi.mul_apply, hxt]`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.mul_apply, hps, hqs, Matrix.single_mul_mul_single, inv_mul_cancel₀ hab, one_mul]`. Use extensionality with `u v`. Distinguish the cases in `h : u = v`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Simplify using `[Matrix.sum_apply, Matrix.single_apply, Matrix.one_apply]`. Simplify using `[Matrix.sum_apply, Matrix.single_apply, Matrix.one_apply, h]`. Establish `he : (Finset.univ.filter fun w : d s => w = u ∧ w = v) = ∅`. Rewrite using `[Finset.filter_eq_empty_iff]`.
-
-Introduce and unpack `w - ⟨rfl, rfl⟩`. Conclude with `h rfl`. Rewrite using `[he]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem separate {F : Type} [Field F] {σ : Type} (d : σ → Type)
     [∀ s, Fintype (d s)] [∀ s, DecidableEq (d s)] [∀ s, Nonempty (d s)]
@@ -137,37 +131,33 @@ private theorem separate {F : Type} [Field F] {σ : Type} (d : σ → Type)
       simp
 
 /- English proof (translation)
-Introduce `F Γ _ _ σ _ _ d _ _ _ ρ hspan hint`. Set `φ : Γ →* ((s : σ) → Matrix (d s) (d s) F)` to `{ toFun := fun g s => ρ s g map_one' := funext fun s => map_one (ρ s) map_mul' := fun g h => funext fun s => map_mul (ρ s) g h }`. Take `⟨S, hSdef⟩ : ∃ S : Subalgebra F ((s : σ) → Matrix (d s) (d s) F), S = Algebra.adjoin F (Set.range fun g => (fun s => ρ s g : ∀ s, Matrix (d s) (d s) F))` from `⟨_, rfl⟩`. Establish `hmem : ∀ g, (fun s => ρ s g : ∀ s, Matrix (d s) (d s) F) ∈ S`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hSdef]`. Conclude with `Algebra.subset_adjoin ⟨g, rfl⟩`. Establish `hsurj : ∀ s (B : Matrix (d s) (d s) F), ∃ x ∈ S, x s = B`. Introduce `s B`. Establish `hB : B ∈ Submodule.span F (Set.range (ρ s))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hspan s]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hB using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g, rfl⟩` from `hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨_, hmem g, rfl⟩`. Consider the case `zero => exact ⟨0, S.zero_mem, rfl⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨x1, h1, e1⟩` from `hy`. Take `⟨x2, h2, e2⟩` from `hz`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨x1 + x2, S.add_mem h1 h2, by rw [Pi.add_apply, e1, e2]⟩`. Consider the case `smul c y _ hy`. Take `⟨x1, h1, e1⟩` from `hy`. Conclude with `⟨c • x1, S.smul_mem h1 c, by rw [Pi.smul_apply, e1]⟩`. Establish `hsep : ∀ s t, s ≠ t → ∃ x ∈ S, x t = 0 ∧ x s = 1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `s t hst`. Apply `separate d S s t (hsurj s)` to reduce the goal to its premises. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Take `⟨V, hV0, hV⟩` from `intertwiner_of_ker d S s t (hsurj t) hno`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hV0 (hint s t hst V fun g => hV _ (hmem g))`. Establish `he : ∀ s, ∃ e ∈ S, e s = 1 ∧ ∀ t, t ≠ s → e t = 0`. Introduce `s`. Establish `hT : ∀ T : Finset σ, s ∉ T → ∃ e ∈ S, e s = 1 ∧ ∀ t ∈ T, e t = 0`. Introduce `T`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `_`. Conclude with `⟨1, S.one_mem, rfl, by simp⟩`. Consider the case `@insert t T htT ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `hs`. Rewrite `hs` using `[Finset.mem_insert, not_or]`. Take `⟨e, heS, hes, het⟩` from `ih hs.2`. Take `⟨y, hyS, hyt, hys⟩` from `hsep s t hs.1`. Use `⟨e * y, S.mul_mem heS hyS, by rw [Pi.mul_apply, hes, hys, one_mul], ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce `u hu`. Rewrite `hu` using `[Finset.mem_insert]`. Break down `hu with rfl | hu` into its components or cases. Rewrite using `[Pi.mul_apply, hyt, mul_zero]`. Rewrite using `[Pi.mul_apply, het u hu, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e, heS, hes, het⟩` from `hT (Finset.univ.erase s) (by simp)`. Conclude with `⟨e, heS, hes, fun t ht => het t (by simp [ht])⟩`. Establish `htop : S = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `Y _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `choose e heS hes het using he`. Use `choose zz hzS hzs using fun s => hsurj s (Y s)`. Establish `hY : Y = ∑ s, zz s * e s`. Use function extensionality and compare the values at `u`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single u]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pi.mul_apply, hzs, hes, mul_one]`. Introduce `b _ hb`. Rewrite using `[Pi.mul_apply, het b u hb.symm, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ u) h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hY]`. Conclude with `Subalgebra.sum_mem _ fun s _ => S.mul_mem (hzS s) (heS s)`. Establish `h2 : Submodule.span F (Set.range fun g => (fun s => ρ s g : ∀ s, Matrix (d s) (d s) F)) = Subalgebra.toSubmodule S`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
-
-Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `hmem g`. Rewrite using `[hSdef, Algebra.adjoin_eq_span, Submodule.span_le]`. Introduce `x hx`. Establish `hx' : x ∈ MonoidHom.mrange φ` using `(Submonoid.closure_le.mpr (by rintro _ ⟨g, rfl⟩; exact MonoidHom.mem_mrange.mpr ⟨g, rfl⟩)) hx`.
-
-Take `⟨g, rfl⟩` from `MonoidHom.mem_mrange.mp hx'`. Conclude with `Submodule.subset_span ⟨g, rfl⟩`. Rewrite using `[h2, htop]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.density_prod :
     ∀ {F Γ : Type} [Field F] [Monoid Γ] {σ : Type} [Fintype σ] [DecidableEq σ] (d : σ → Type) [∀ s, Fintype (d s)] [∀ s, DecidableEq (d s)] [∀ s, Nonempty (d s)] (ρ : ∀ s, Γ →* Matrix (d s) (d s) F), (∀ s, Submodule.span F (Set.range (ρ s)) = ⊤) → (∀ s t, s ≠ t → ∀ V : Matrix (d s) (d t) F, (∀ g, ρ s g * V = V * ρ t g) → V = 0) → Submodule.span F (Set.range fun g => (fun s => ρ s g : ∀ s, Matrix (d s) (d s) F)) = ⊤ := by

@@ -8,9 +8,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.FilStable
 
 /- English proof (translation)
-Introduce `l _ P K V _ _ ρ a g y hy`. Take `⟨z, rfl⟩` from `hy`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, Submodule.zero_mem]`. Consider the case `tmul v b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `⟨ρ g v ⊗ₜ[ℚ_[l]] ⟨(P.PD K).actdR g b.1, (P.PD K).Fil_G g a _ b.2⟩, rfl⟩`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actVdR_mem_FilV : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (V : Type) [AddCommGroup V]
     [Module ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V) (a : ℤ) (g : ↥(GK K))

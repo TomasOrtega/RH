@@ -10,9 +10,9 @@ open scoped InnerProductSpace ComplexOrder ENNReal
 open Formalism.MainNotions.S Formalism.MainNotions.PlaceDegreeData Formalism.MainNotions.BridgeLemma
 
 /- English proof (translation)
-Establish `h : cn_Reg a = (⋂ x : Fin a, ⋂ y : Fin a, ⋂ _ : x < y, {t : Fin a → ℝ | t x < t y}) ∩ ⋂ x : Fin a, ({t : Fin a → ℝ | 0 < t x} ∩ {t | t x < 1 / 2})`. Use extensionality with `t`. Simplify using `only [cn_Reg, StrictMono, Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_iInter]`. Rewrite using `[h]`. Use `MeasurableSet.inter ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `MeasurableSet.iInter fun x => MeasurableSet.iInter fun y => MeasurableSet.iInter fun _ => measurableSet_lt (measurable_pi_apply x) (measurable_pi_apply y)`. Conclude with `MeasurableSet.iInter fun x => (measurableSet_lt measurable_const (measurable_pi_apply x)).inter (measurableSet_lt (measurable_pi_apply x) measurable_const)`.
+A detailed English derivation is pending.
 -/
 theorem cn_measurableSet_Reg (a : ℕ) : MeasurableSet (cn_Reg a) := by
   have h : cn_Reg a = (⋂ x : Fin a, ⋂ y : Fin a, ⋂ _ : x < y, {t : Fin a → ℝ | t x < t y}) ∩
@@ -27,7 +27,7 @@ theorem cn_measurableSet_Reg (a : ℕ) : MeasurableSet (cn_Reg a) := by
       (measurableSet_lt (measurable_pi_apply x) measurable_const)
 
 /- English proof (translation)
-Break down `r with (p | p) | (x | x)` into its components or cases. Conclude with `(measurable_pi_apply p.1.1).div (measurable_pi_apply p.1.2)`. Conclude with `(measurable_pi_apply p.1.1).mul (measurable_pi_apply p.1.2)`. Conclude with `(measurable_pi_apply x).pow_const 2`. Conclude with `measurable_pi_apply x`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem cn_measurable_la {a : ℕ} (r : cn_Root a) : Measurable fun t : Fin a → ℝ => cn_la t r := by
   rcases r with (p | p) | (x | x)
@@ -37,7 +37,7 @@ theorem cn_measurable_la {a : ℕ} (r : cn_Root a) : Measurable fun t : Fin a �
   · exact measurable_pi_apply x
 
 /- English proof (translation)
-Unfold `cn_cnt`. Conclude with `Finset.measurable_prod _ fun r _ => ((measurable_const.div (cn_measurable_la r)).const_add 1).pow_const _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cn_measurable_cnt {a : ℕ} (j : Fin a → ℕ) (n0 f : ℕ) (de : ℝ) : Measurable (cn_cnt j n0 f de) := by
   unfold cn_cnt
@@ -65,13 +65,13 @@ def NearCount (εN δ : ℝ) : Prop :=
 end CSize
 
 /- English proof (translation)
-Establish `hp : X.I.IsPosType X.e` using `hX.1.2.2.2.2.2.2.1.2.2.2.1`. Establish `he : ‖X.e y.2‖ ≤ (X.e 1).re` using `Formalism.HermitianLatticeCounting.Final.S7.posTypeBound X.I.Gf X.e (positive_type_notation_eq X.I hp) y.2`. Establish `hm : ∀ v, ‖coefOn (X.σ v) (X.w v) (X.w v) (y.1 v)‖ ≤ 1`. Introduce `v`. Establish `hU : IsURepOn (UJset (X.I.ε v)) (X.σ v)` using `(hX.2.1.1 v).2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hw : ‖X.w v‖ = 1` using `(hX.2.1.2.1 v).1`. Unfold `coefOn`. Use `le_trans (norm_inner_le_norm _ _) ?_` and prove the remaining obligations. Rewrite using `[hU.2.1 _ (y.1 v).2, hw]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Unfold `CData.φ phe phOf`. Rewrite using `[norm_mul, norm_mul, norm_star, norm_prod, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg X.fdegAll_nonneg]`. Establish `h1 : ∏ v, ‖coefOn (X.σ v) (X.w v) (X.w v) (y.1 v)‖ ≤ 1` using `Finset.prod_le_one (fun v _ => norm_nonneg _) fun v _ => hm v`. Establish `h2` using `X.fdegAll_nonneg`. Establish `h3 : 0 ≤ ∏ v, ‖coefOn (X.σ v) (X.w v) (X.w v) (y.1 v)‖` using `Finset.prod_nonneg fun v _ => norm_nonneg _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem cn_norm_φ_le (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) (y : X.I.GA) :
     ‖X.φ y‖ ≤ fdegAll X.I X.σ X.w * (X.e 1).re := by
@@ -98,15 +98,13 @@ theorem cn_norm_φ_le (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) (y
 open Classical in
 
 /- English proof (translation)
-Establish `hp : X.I.IsPosType X.e` using `hX.1.2.2.2.2.2.2.1.2.2.2.1`. Use `set k0 : ℝ := fdegAll X.I X.σ X.w * (X.e 1).re with hk0`. Establish `hk0n : 0 ≤ k0` using `mul_nonneg X.fdegAll_nonneg (X.e_one_nonneg hp)`. Unfold `CData.nearS`. Rewrite using `[ENNReal.tsum_eq_iSup_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun s => ?_` and prove the remaining obligations. Use `set T := s.filter (fun γ => (γ ≠ X.one' ∧ ∀ v, X.dist x γ v ≤ εN) ∧ X.φ (x⁻¹ * (γ : X.I.GA) * x) ≠ 0) with hT`. Establish `hterm : ∀ γ ∈ s, (if γ ≠ X.one' ∧ ∀ v, X.dist x γ v ≤ εN then ‖X.φ (x⁻¹ * (γ : X.I.GA) * x)‖ₑ else 0) ≤ (if (γ ≠ X.one' ∧ ∀ v, X.dist x γ v ≤ εN) ∧ X.φ (x⁻¹ * (γ : X.I.GA) * x) ≠ 0 then ENNReal.ofReal k0 else 0)`. Introduce `γ _`. Distinguish the cases in `hP : γ ≠ X.one' ∧ ∀ v, X.dist x γ v ≤ εN`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h0 : X.φ (x⁻¹ * (γ : X.I.GA) * x) = 0`. Simplify using `[h0]`. Rewrite using `[if_pos hP, if_pos ⟨hP, h0⟩, ← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (cn_norm_φ_le X hX _)`. Rewrite using `[if_neg hP]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_le`. Use `le_trans (Finset.sum_le_sum hterm) ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, mul_comm]`. Use `mul_le_mul_right ?_ _` and prove the remaining obligations. Use `hN T fun γ hγ => (Finset.mem_filter.1 hγ).2` as an intermediate fact.
-
-Rewrite using `[← ENNReal.ofReal_natCast]`. Conclude with `ENNReal.ofReal_le_ofReal this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cn_nearS_le (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) (εN : ℝ) (x : X.I.GA) (N : ℝ)
     (hN : ∀ T : Finset X.I.GFset,

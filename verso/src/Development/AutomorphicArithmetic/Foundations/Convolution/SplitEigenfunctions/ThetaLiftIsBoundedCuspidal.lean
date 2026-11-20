@@ -15,15 +15,11 @@ open scoped Classical
 namespace UpperTheory.ConvolutionTheory.RankTwoDescent.FundamentalDomainContinuity
 
 /- English proof (translation)
-Establish `hint : Integrable (fun _ : Y => B) (ν.restrict Dm)` using `integrableOn_const hν.ne`. Establish `hG : ∀ x ∈ U, ContinuousOn (fun z => ∫ y in Dm, f x z y ∂ν) (closure S)`. Introduce `x hx z₀ hz₀`. Use `tendsto_integral_filter_of_dominated_convergence (fun _ => B) ?_ ?_ hint ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun z => (hy x z).aestronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `eventually_nhdsWithin_of_forall fun z hz => Eventually.of_forall fun y => hb x hx z hz y`. Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun z => f x z y` using `(hc y).comp (Continuous.prodMk_right x)`. Conclude with `h1.continuousWithinAt`. Use `tendsto_integral_filter_of_dominated_convergence (fun _ => B * ν.real Dm) ?_ ?_ (integrableOn_const hμ.ne) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hU] with x hx`. Conclude with `((hG x hx).aestronglyMeasurable isClosed_closure.measurableSet).mono_measure (Measure.restrict_mono subset_closure le_rfl)`. Use `filter_upwards [hU] with x hx`. Use `ae_restrict_of_forall_mem hS fun z hz => ?_` and prove the remaining obligations. Conclude with `norm_setIntegral_le_of_norm_le_const hν fun y _ => hb x hx z (subset_closure hz) y`.
-
-Use `ae_restrict_of_forall_mem hS fun z hz => ?_` and prove the remaining obligations. Use `tendsto_integral_filter_of_dominated_convergence (fun _ => B) ?_ ?_ hint ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun x => (hy x z).aestronglyMeasurable`. Use `filter_upwards [hU] with x hx`. Conclude with `Eventually.of_forall fun y => hb x hx z (subset_closure hz) y`.
-
-Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun x => f x z y` using `(hc y).comp (Continuous.prodMk_left z)`. Conclude with `h1.continuousAt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cont_nested {X Z Y : Type} [TopologicalSpace X] [FirstCountableTopology X]
     [TopologicalSpace Z] [SecondCountableTopology Z] [MeasurableSpace Z] [BorelSpace Z]
@@ -62,7 +58,7 @@ private theorem cont_nested {X Z Y : Type} [TopologicalSpace X] [FirstCountableT
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Unfold `J1 UI`. Use `norm_setIntegral_le_of_norm_le_const (normOneMeasure_normOneFundamentalDomain_lt_top E) fun z hz => ?_` and prove the remaining obligations. Unfold `mean`. Conclude with `norm_setIntegral_le_of_norm_le_const hV fun h _ => hB z hz h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem norm_liftIntegral_le (D : Dat ℚ E) (N : MeasE E) (hV : N.μ N.D < ⊤) (Ψ : GL (Fin 2) (A E) → ℂ) (B : ℝ)
     (hB : ∀ z ∈ normOneFundamentalDomain E, ∀ h : G1 E, ‖Ψ (gl h * sZ D (z : IdeleGroup E))‖ ≤ B) :
@@ -76,39 +72,37 @@ end UpperTheory.ConvolutionTheory.RankTwoDescent.FundamentalDomainContinuity
 
 open UpperTheory.ConvolutionTheory.RankTwoDescent.FundamentalDomainContinuity in
 /- English proof (translation)
-Introduce `hMaj hTh hF0 hCoef E _ _ _ D W M N P ph hph φ hφ`. Take `⟨-, hsC, hsN, hgN, -, -, -, -, -, -, -⟩` from `szLaws E D`. Establish `hφc : Continuous φ.1` using `IsAutForm.continuous (P.cusp φ hφ).1`. Establish `hV : N.μ N.D < ⊤` using `volE E N`. Use `set Zc : Set ↥(IdeleGroup.normOneSubgroup E) := closure (normOneFundamentalDomain E) with hZc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZcpt : IsCompact Zc` using `isCompact_closure_normOneFundamentalDomain E`. Establish `hsz : Continuous fun z : ↥(IdeleGroup.normOneSubgroup E) => sZ D (z : IdeleGroup E)` using `hsC.comp continuous_subtype_val`. Use `set C : Set (GL (Fin 2) (A E)) := (fun z : ↥(IdeleGroup.normOneSubgroup E) => sZ D (z : IdeleGroup E)) '' Zc with hCdef`. Establish `hC : IsCompact C` using `hZcpt.image hsz`. Establish `hCn : ∀ k ∈ C, nu ℚ k = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `k ⟨z, -, rfl⟩`. Conclude with `hsN _`. Establish `hzC : ∀ z ∈ Zc, sZ D (z : IdeleGroup E) ∈ C` using `fun z hz => ⟨z, hz, rfl⟩`. Establish `hleft : LInv (f0 W N ph φ.1)`. Introduce `γ g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [f0, map_mul, Module.End.mul_apply, W.th_Om]`. Establish `hth` using `hTh E D W M N P ph hph Set.univ`. Establish `eTh : ∀ u : V4 ℚ → ℂ, ThOn Set.univ u = Th u` using `fun u => tsum_univ (fun ξ : Fin 4 → ℚ => u (rp ξ))`. Establish `hnu : ∀ (h : G1 E) (z : (A E)ˣ), (gl h * sZ D z) ∈ {x : GL (Fin 2) (A E) | nu ℚ x = 1}`. Introduce `h z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `a1 : ideleNorm ℚ E (Matrix.GeneralLinearGroup.det (gl h)) = 1` using `hgN h`. Establish `a2 : ideleNorm ℚ E (Matrix.GeneralLinearGroup.det (sZ D z)) = 1` using `hsN z`. Express the relevant statement in the definitionally equal form `ideleNorm ℚ E (Matrix.GeneralLinearGroup.det (gl h * sZ D z)) = 1`. Rewrite using `[map_mul, map_mul, a1, a2, one_mul]`. Use `⟨?_, hleft, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `continuous_iff_continuousAt.2 fun g₀ => ?_` and prove the remaining obligations. Take `⟨U, hUc, hU⟩` from `exists_compact_mem_nhds g₀`. Take `⟨-, hIw⟩` from `UpperTheory.ConvolutionTheory.R2.Ff.iwa ℚ`. Take `⟨V, hVc, hVU⟩` from `hIw U hUc`. Establish `hab : Continuous (ab : (A ℚ)ˣ → ℝ)` using `UpperTheory.ConvolutionTheory.R2.continuous_ab`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hpos : ∀ a : (A ℚ)ˣ, 0 < ab a` using `fun a => (IdeleGroup.ideleModule ℚ a).2`. Take `⟨T, hT⟩` from `hVc.exists_bound_of_continuousOn hab.continuousOn`. Take `⟨T', hT'⟩` from `hVc.exists_bound_of_continuousOn (f := fun a => (ab a)⁻¹) (hab.inv₀ fun a => (hpos a).ne').continuousOn`. Establish `hc0 : 0 < (|T'| + 1)⁻¹` using `inv_pos.2 (by positivity)`. Take `⟨B, hB⟩` from `hMaj E D W M N P ph hph φ hφ C hC hCn _ hc0 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `cont_nested (normOneMeasure E) N.μ (normOneFundamentalDomain E) N.D (measurableSet_normOneFundamentalDomain E) (normOneMeasure_normOneFundamentalDomain_lt_top E) hV (fun g z h => Th (W.Om g (W.L (gl h * sZ D (z : IdeleGroup E)) ph)).1 * φ.1 (gl h * sZ D (z : IdeleGroup E))) g₀ U …` and prove the remaining obligations. Introduce `x hx z hz h`. Take `⟨b, a, ha, k, hk, rfl⟩` from `hVU x hx`. Establish `hle : (|T'| + 1)⁻¹ ≤ ab a`. Establish `h1 : (ab a)⁻¹ ≤ |T'| + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `hT' a ha` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs, abs_of_pos (inv_pos.2 (hpos a))]`. Combine the linear relations using `[le_abs_self T']`. Conclude with `(inv_le_comm₀ (hpos a) (by positivity)).1 h1`. Take `⟨h1, h2, -⟩` from `hB b a k hk hle h _ (hzC z hz)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ab a ≤ T`. Use `hT a ha` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs, abs_of_pos (hpos a)]`. Then use the resulting hypothesis. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `y`. Establish `hA : Continuous fun p : G1 ℚ × ↥(IdeleGroup.normOneSubgroup E) => (p.1, gl y * sZ D (p.2 : IdeleGroup E))` using `continuous_fst.prodMk (continuous_const.mul (hsz.comp continuous_snd))`. Establish `h1` using `hth.comp_continuous hA (fun p => hnu y _)`. Simplify using `only [eTh] at h1`. Conclude with `h1.mul (hφc.comp (continuous_const.mul (hsz.comp continuous_snd)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `x z`. Establish `hA : Continuous fun h : G1 E => (x, gl h * sZ D (z : IdeleGroup E))` using `continuous_const.prodMk (UpperTheory.ConvolutionTheory.R2.continuous_gl.mul continuous_const)`. Establish `h1` using `hth.comp_continuous hA (fun h => hnu h _)`. Simplify using `only [eTh] at h1`. Conclude with `h1.mul (hφc.comp (UpperTheory.ConvolutionTheory.R2.continuous_gl.mul continuous_const))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc, hred⟩` from `red ℚ`. Take `⟨B, hB⟩` from `hMaj E D W M N P ph hph φ hφ C hC hCn c hc 0`. Use `⟨B * N.μ.real N.D * (normOneMeasure E).real (normOneFundamentalDomain E), fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, b, a, k, hk, he, hle⟩` from `hred g`. Rewrite using `[← hleft γ g, he, hF0 E D W M N P ph hph φ hφ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `norm_liftIntegral_le D N hV _ B fun z hz h => ?_` and prove the remaining obligations. Take `⟨h1, -, h3⟩` from `hB b a k hk hle h _ (hzC z (subset_closure hz))`. Establish `h4 : ‖ThOn {ξ | qr D.δ ξ ≠ 0} (W.Om (nU b * mD a * k) (W.L (gl h * sZ D (z : IdeleGroup E)) ph)).1‖ ≤ ∑' ξ : {ξ : Fin 4 → ℚ // qr D.δ ξ ≠ 0}, ‖(W.Om (nU b * mD a * k) (W.L (gl h * sZ D (z : IdeleGroup E)) ph)).1 (rp ξ.1)‖` using `norm_tsum_le_tsum_norm (h1.subtype _)`. Rewrite using `[norm_mul]`. Use `(mul_le_mul_of_nonneg_right h4 (norm_nonneg _)).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `using h3`. Introduce `g`. Establish `h` using `hCoef E D W M N P ph hph φ hφ 0 g`. Establish `e0 : fOn W N {ξ | qr D.δ ξ ≠ 0 ∧ qr D.δ ξ = 0} ph φ.1 g = 0`. Establish `e : {ξ : Fin 4 → ℚ | qr D.δ ξ ≠ 0 ∧ qr D.δ ξ = 0} = ∅`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `ξ`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Simplify using `[fOn, J1, UI, mean, ThOn]`. Establish `e1 : ∀ b : A ℚ, ψ (-(b * UpperTheory.ConvolutionTheory.R2.rt (0 : ℚ))) = 1` using `fun b => by simp [ψ, UpperTheory.ConvolutionTheory.R2.rt]`.
-
-Rewrite `h` using `[e0, mul_zero]`. Simplify using `only [e1, mul_one] at h`. Rewrite using `[hF0 E D W M N P ph hph φ hφ]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.thetaPairing_constantTerm_cuspidal :
     Maj → ThCont → ThetaLiftEqAnisotropicPart → Coef → ThetaLiftIsBoundedCuspidal := by

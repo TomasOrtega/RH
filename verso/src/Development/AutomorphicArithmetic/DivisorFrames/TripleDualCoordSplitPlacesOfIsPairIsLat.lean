@@ -18,7 +18,7 @@ open GlobalTheory.StageGeo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem piW_cA' {D : D7} {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F} (t : D.host.E →ₐ[D.host.F] Fv D.host.F v) (w : AE D) :
     piW t (cA D w) = piW (t.comp D.sp.cm.sig) w := by
@@ -28,7 +28,7 @@ private theorem piW_cA' {D : D7} {v : GlobalTheory.IndefiniteRowSideFullHecke.We
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `GlobalTheory.AdelicU.evFin D.host.F v 1 * t e = t e`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem piW_incA' {D : D7} {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F} (t : D.host.E →ₐ[D.host.F] Fv D.host.F v)
     (e : D.host.E) : piW t (incA D e) = t e := by
@@ -36,21 +36,21 @@ private theorem piW_incA' {D : D7} {v : GlobalTheory.IndefiniteRowSideFullHecke.
   simp
 
 /- English proof (translation)
-Establish `hG : (A'.gram⁻¹)ᴴ = A'.gram⁻¹`. Rewrite using `[Matrix.conjTranspose_nonsing_inv]`. Use `congr 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.DualPairCheck.gram_star A' j i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : ((GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (A'.gram⁻¹))ᵀ).map (piW (t.comp D.sp.cm.sig)) = (A'.gram⁻¹).map t`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h` using `congrFun (congrFun hG i) j`. Express the relevant statement in the definitionally equal form `piW (t.comp D.sp.cm.sig) (incA D (A'.gram⁻¹ j i)) = t (A'.gram⁻¹ i j)`. Rewrite using `[piW_incA', ← h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h2 : (ptO A'.gram e y).map (piW (t.comp D.sp.cm.sig)) = ((A'.gram⁻¹).map t * ((y : Matrix _ _ (AE D))ᵀ).map (piW (t.comp D.sp.cm.sig))).submatrix id e`. Rewrite using `[← h0, ← Matrix.map_mul, ← Matrix.transpose_mul]`. Both sides reduce to the same expression. Establish `h3 : ((D.host.xi0 • (WW.gramᵀ).submatrix e e).map t)ᵀ = t D.host.xi0 • (WW.gram.map t).submatrix e e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hinc : ∀ {p q : ℕ} (M : Matrix (Fin p) (Fin q) D.host.E), ((M.map (incA D)).map (toEAf D)).map (evW t) = M.map t`. Introduce `p q M`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_apply, GlobalTheory.BotMatch.evW_toEAf, piW_incA']`. Establish `hy : ((((y : Matrix _ _ (AE D)).map (cA D))ᵀ).map (toEAf D)).map (evW t) = ((y : Matrix _ _ (AE D))ᵀ).map (piW (t.comp D.sp.cm.sig))`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, GlobalTheory.BotMatch.evW_toEAf, piW_cA']`. Establish `hxi : evW t (eToEAf D D.host.xi0) = t D.host.xi0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← piW_incA' t, ← GlobalTheory.BotMatch.evW_toEAf]`. Both sides reduce to the same expression. Establish `h1 : (GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.dualCoord A' WW βA' βW y).map (evW t) = t D.host.xi0 • ((βA'⁻¹).1.map (evW t) * ((A'.gram⁻¹).map t * ((y : Matrix _ _ (AE D))ᵀ).map (piW (t.comp D.sp.cm.sig)) * WW.gram.map t) * βW.1.map (evW t))`. Rewrite using `[← hxi, ← hinc, ← hinc, ← hy, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_mul]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_mul (evW t) _ _`. Rewrite using `[h1, h2, h3, Matrix.mul_smul, Matrix.smul_mul, Matrix.submatrix_smul]`. Simplify using `only [Pi.smul_apply]`. Use `congr 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem coord_eq {D : D7} {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F} (t : D.host.E →ₐ[D.host.F] Fv D.host.F v)
     (A' WW : HSp D) {d : ℕ} (e : Fin d ≃ Fin WW.rank)
@@ -104,23 +104,21 @@ private theorem coord_eq {D : D7} {v : GlobalTheory.IndefiniteRowSideFullHecke.W
   rfl
 
 /- English proof (translation)
-Introduce `D T A A' WW X ψ θ α β νH S hX hr Bs Vs Ws M hp hl t P τ hS b c ι hb hc hι h1 φ hφ hφP hstd g hvac`. Establish `hP : ∀ v, v ∈ P ↔ ∃ w ∈ S t, w.under (𝓞 D.host.F) = v` using `fun v => ⟨fun hv => ⟨_, (hS _).2 ⟨⟨v, hv⟩, rfl⟩, GlobalTheory.AdelicU.splitPrime_under _⟩, by`. Introduce and unpack `⟨w, hw, rfl⟩`. Take `⟨u, rfl⟩` from `(hS w).1 hw`. Rewrite using `[GlobalTheory.AdelicU.splitPrime_under]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `u.2⟩`. Establish `hinj : Function.Injective (fun v : P => splitPrime (τ v))` using `fun u v h => Subtype.ext ((GlobalTheory.AdelicU.splitPrime_under (τ u)).symm.trans ((congrArg (fun w : HeightOneSpectrum (𝓞 D.host.E) => w.under (𝓞 D.host.F)) h).trans (GlobalTheory.AdelicU.splitPrime_under (τ v))))`. Take `⟨hh1, hh0⟩` from `UpperTheory.idempotentSum_fixes_iff_halfEl D (X.e t) (S t) (hX.idem t) P τ hP fun v => (hS _).2 ⟨v, rfl⟩`. Establish `hdet : ∀ v : P, ((Ws.J.map (τ v))ᵀ).det ≠ 0` using `fun v => by`. Establish `h0 : Ws.J.det ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp.JW, Matrix.det_smul, Matrix.det_submatrix_equiv_self, Matrix.det_transpose]`. Conclude with `mul_ne_zero (pow_ne_zero _ GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero) (GlobalTheory.LatVac.gram_det_isUnit WW).ne_zero`. Rewrite using `[Matrix.det_transpose]`. Establish `h2` using `(τ v).toRingHom.map_det Ws.J`. Conclude with `fun h => h0 ((τ v).toRingHom.injective ((h2.trans h).trans (map_zero _).symm))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbb : ∀ v : P, -((b v).1ᵀ * Vs.J.map (τ v)) = (X.rA'.β⁻¹).1.map (evW (τ v))` using `fun v => by`. Establish `e1 : Vs.J.map (τ v) = -(A'.gram.map (τ v))`. Rewrite using `[hp.JV]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e2 : (b v).1ᵀ * (A'.gram.map (τ v) * X.rA'.β.1.map (evW (τ v))) = 1`. Rewrite using `[← Matrix.transpose_transpose (A'.gram.map (τ v) * _), ← hb v, ← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]`. Establish `e3 : X.rA'.β.1.map (evW (τ v)) * (X.rA'.β⁻¹).1.map (evW (τ v)) = 1`. Rewrite using `[← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[e1, Matrix.mul_neg, neg_neg, ← Matrix.mul_one (_ * A'.gram.map (τ v)), ← e3, ← Matrix.mul_assoc, Matrix.mul_assoc (b v).1ᵀ, e2, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `UpperTheory.exists_isSBHalf_theta_of_selfDual_lattices D ψ false A' WW _ (finCongr hr) Bs Vs Ws M hp X.rA'.Λ X.rW.Λ hl hX.rigA'.1 hX.rigW.1 P (fun v => (τ v).comp D.sp.cm.sig) τ (fun v x => congrArg (τ v) (star_star x).symm) (cA D (X.e t)) hh0 (fun z => by rw [GlobalTheory.DualPa …` and prove the remaining obligations. Establish `h` using `hι v`. Unfold `Model.IsLinBar at h`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`.
+Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(X.rA'.β⁻¹).1.map (evW (τ v)) * _ * ((Ws.J.map (τ v))ᵀ * (c v).1) = _`. Rewrite using `[← hbb v]`. Simplify using `only [Matrix.neg_mul, Matrix.mul_assoc]`. Distinguish the cases in `hx : IsHalf (cA D (X.e t)) x`. Rewrite using `[if_pos hx]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(UpperTheory.stdSectionSecond_eq_prod_local D (X.e t) (S t) (hX.idem t) P (fun v => v.1) τ hS hinj (X.c t) (α t / β t) A.rank A' WW X.rA'.β X.rW.β hr x hx).trans (Finset.prod_congr rfl fun v _ => ?_)` and prove the remaining obligations. Rewrite using `[hstd v, ← coord_eq, ← hc v, ← hp.JW, Matrix.mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[if_neg hx]`. Conclude with `if_neg fun h => hx h.1`.
-
-Rewrite using `[← hvac]`. Conclude with `hX.snd t`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.triple_dualCoord_split_places_of_isPair_isLat :
     ∀ (D : D7) (T : Type) (A A' WW : HSp D) (X : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)

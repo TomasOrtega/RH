@@ -20,9 +20,9 @@ namespace GlobalTheory.WeilL2Words
 open MeasureTheory
 
 /- English proof (translation)
-Establish `h1 : ‖∑ i, a i * b i‖₊ ≤ ∑ i, ‖b i‖₊ * ‖a i‖₊`. Use `(nnnorm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `[nnnorm_mul, mul_comm]`. Establish `h2 : ‖∑ i, a i * b i‖₊ ^ 2 ≤ (∑ i, ‖b i‖₊ ^ 2) * ∑ i, ‖a i‖₊ ^ 2` using `(pow_le_pow_left₀ (by positivity) h1 2).trans (Finset.sum_mul_sq_le_sq_mul_sq _ _ _)`. Simplify using `only [enorm_eq_nnnorm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h2` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem enorm_sum_mul_sq_le {m : ℕ} (a b : Fin m → ℂ) :
     ‖∑ i, a i * b i‖ₑ ^ 2 ≤ (∑ i, ‖b i‖ₑ ^ 2) * ∑ i, ‖a i‖ₑ ^ 2 := by
@@ -35,27 +35,21 @@ theorem enorm_sum_mul_sq_le {m : ℕ} (a b : Fin m → ℂ) :
   exact_mod_cast h2
 
 /- English proof (translation)
-Establish `hmeas : ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, Measurable fun x => ‖f x‖ₑ ^ 2` using `fun f => by haveI : OpensMeasurableSpace (κ → mixedEmbedding.mixedSpace F) := inferInstance`. Conclude with `(f.continuous.measurable.enorm).pow_const 2`. Use `letI : MeasurableSpace (κ → FiniteAdeleRing (𝓞 F) F) := borel _`. Use `haveI : BorelSpace (κ → FiniteAdeleRing (𝓞 F) F) := ⟨rfl⟩`. Use `haveI := hμ`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hev : ∀ (f : Fin m → SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) x y', (∑ i, GlobalTheory.WeilM.pureA F (f i) (g i)) (GlobalTheory.WeilCont.adeleJoin F x y') = ∑ i, f i x * g i y'`. Introduce `f x y'`. Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => GlobalTheory.WeilCont.pureA_adeleJoin F _ _ x y'`. Set `U : Fin m → Set (κ → FiniteAdeleRing (𝓞 F) F)` to `fun j => ⋂ i, {y' | g i y' = g i (yy j)}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hUo : ∀ j, IsOpen (U j)` using `fun j => isOpen_iInter_of_finite fun i => (hg i).1.isOpen_fiber _`. Establish `hUm : ∀ j, yy j ∈ U j` using `fun j => Set.mem_iInter.2 fun i => rfl`. Establish `hUv : ∀ j, ∀ y' ∈ U j, ∀ i, g i y' = if i = j then 1 else 0` using `fun j y' hy' i => by`. Rewrite using `[← hyy]`. Conclude with `Set.mem_iInter.1 hy' i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hU0 : ∀ j, μ (U j) ≠ 0` using `fun j => (hUo j).measure_ne_zero μ ⟨_, hUm j⟩`. Establish `hUt : ∀ j, μ (U j) ≠ ⊤`. Introduce `j`. Use `ne_top_of_le_ne_top ((hg j).2.isCompact.measure_lt_top).ne (measure_mono ?_)` and prove the remaining obligations. Introduce `y' hy'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `subset_tsupport` to reduce the goal to its premises. Rewrite using `[Function.mem_support, hUv j y' hy' j, if_pos rfl]`. Conclude with `one_ne_zero`. Establish `hB : (∑ i, ‖g i y‖ₑ ^ 2) ≠ ⊤` using `ENNReal.sum_ne_top.2 fun i _ => ENNReal.pow_ne_top enorm_ne_top`. Use `⟨(∑ i, ‖g i y‖ₑ ^ 2) * ∑ j, (μ (U j))⁻¹, ENNReal.mul_ne_top hB (ENNReal.sum_ne_top.2 fun j _ => ENNReal.inv_ne_top.2 (hU0 j)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `f`. Establish `hA : ∀ j, ∫⁻ x, ‖f j x‖ₑ ^ 2 ≤ (μ (U j))⁻¹ * GlobalTheory.WeilL2Words.l2A F μ (∑ i, GlobalTheory.WeilM.pureA F (f i) (g i))`. Introduce `j`. Rewrite using `[← ENNReal.div_eq_inv_mul, ENNReal.le_div_iff_mul_le (Or.inl (hU0 j)) (Or.inl (hUt j))]`. Establish `e : ∫⁻ y' in U j, (∫⁻ x, ‖(∑ i, GlobalTheory.WeilM.pureA F (f i) (g i)) (GlobalTheory.WeilCont.adeleJoin F x y')‖ₑ ^ 2) ∂μ = ∫⁻ y' in U j, (∫⁻ x, ‖f j x‖ₑ ^ 2) ∂μ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `setLIntegral_congr_fun (hUo j).measurableSet (fun y' hy' => ?_)` and prove the remaining obligations. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[hev, Finset.sum_eq_single j]`. Rewrite using `[hUv j y' hy' j, if_pos rfl, mul_one]`. Introduce `i _ hij`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hUv j y' hy' i, if_neg hij, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Rewrite `e` using `[setLIntegral_const]`. Rewrite using `[← e]`.
-
-Conclude with `setLIntegral_le_lintegral _ _`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Rewrite using `[hev]`. Conclude with `enorm_sum_mul_sq_le _ _`.
-
-Use `_ = (∑ i, ‖g i y‖ₑ ^ 2) * ∑ i, ∫⁻ x, ‖f i x‖ₑ ^ 2 := by`. Rewrite using `[lintegral_const_mul' _ _ hB, lintegral_finset_sum]`. Introduce `i _`. Conclude with `hmeas (f i)`. Use `_ ≤ (∑ i, ‖g i y‖ₑ ^ 2) * ∑ j, (μ (U j))⁻¹ * GlobalTheory.WeilL2Words.l2A F μ (∑ i, GlobalTheory.WeilM.pureA F (f i) (g i)) := by gcongr with j`.
-
-Conclude with `hA j`. Use `_ = _ := by rw [← Finset.sum_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem slice_le_l2A (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (m : ℕ)
     (g : Fin m → (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (yy : Fin m → (κ → FiniteAdeleRing (𝓞 F) F))

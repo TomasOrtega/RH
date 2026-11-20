@@ -9,13 +9,13 @@ namespace Formalism.MainNotions.PairMembershipBlocks
 open Formalism.MainNotions.G Formalism.MainNotions.TestSideWords.TwistedFiltration.G3
 
 /- English proof (translation)
-Unfold `multideg`. Rewrite using `[← Finset.sum_filter]`. Establish `h1 : ∑ c : Fin r, μ (y, c) = ∑ v ∈ (Finset.univ.image fun c : Fin r => (y, c)), μ v`. Rewrite using `[Finset.sum_image]`. Introduce `a _ b _ h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Prod.mk.inj h).2`. Rewrite using `[h1]`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `v hv`. Rewrite `hv` using `[Finset.mem_filter]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_image]`. Conclude with `⟨v.2, Finset.mem_univ _, by rw [← hv.2]⟩`. Introduce `v hv hnot`. Rewrite `hv` using `[Finset.mem_image]`. Take `⟨c, -, rfl⟩` from `hv`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hnot (Finset.mem_filter.2 ⟨Finsupp.mem_support_iff.2 h, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem sum_fiber_multideg {r : ℕ} (μ : ℤ × Fin r →₀ ℕ) (y : ℤ) :
     ∑ v ∈ μ.support, (if v.1 = y then μ v else 0) = multideg μ y := by
@@ -38,9 +38,9 @@ theorem sum_fiber_multideg {r : ℕ} (μ : ℤ × Fin r →₀ ℕ) (y : ℤ) :
     exact hnot (Finset.mem_filter.2 ⟨Finsupp.mem_support_iff.2 h, rfl⟩)
 
 /- English proof (translation)
-Unfold `wDeg`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun v _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Take `⟨m, hm⟩` from `h`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `Nat.zero_le _`. Use `_ = ∑ m' : Fin r, ∑ v ∈ μ.support, (if v.1 = Fr.fr (jz - 1) (r - 1 - m'.val) then μ v else 0) := Finset.sum_comm`. Use `_ = ∑ m' : Fin r, multideg μ (Fr.fr (jz - 1) (r - 1 - m'.val)) := Finset.sum_congr rfl fun m' _ => sum_fiber_multideg μ _`.
+A detailed English derivation is pending.
 -/
 theorem lkW {n' r : ℕ} (Fr : Frames n' r) (jz : ℤ) (μ : ℤ × Fin r →₀ ℕ) :
     wDeg (wSet Fr jz) μ ≤ ∑ m' : Fin r, multideg μ (Fr.fr (jz - 1) (r - 1 - m'.val)) := by

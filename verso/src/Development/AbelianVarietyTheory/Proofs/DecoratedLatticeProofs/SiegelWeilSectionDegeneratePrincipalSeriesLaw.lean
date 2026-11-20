@@ -21,7 +21,7 @@ namespace GlobalTheory.Core.Rk.SWLaw
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.inv_apply, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod, npow, sZero, Complex.ofReal_cpow (NNReal.coe_nonneg _)]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem scalar_eq (A B : HSp D) (χB : (AE D)ˣ →* Circle) (a : GL (Fin A.rank) (AE D)) :
     (((χB (Matrix.GeneralLinearGroup.det a))⁻¹ : Circle) : ℂ) * ((GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod B.rank a : ℝ) : ℂ) =
@@ -33,21 +33,21 @@ theorem scalar_eq (A B : HSp D) (χB : (AE D)ˣ →* Circle) (a : GL (Fin A.rank
   ring
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.doublingSiegel_eq_levi_mul_unipotent D A p`.
+A detailed English derivation is pending.
 -/
 theorem siegel_decomp (A : HSp D) (p : siegel A) :
     ∃ (a : GL (Fin A.rank) (AE D)) (c : skewA D A.rank), (p : GA D (dblSp A)) = (dblDec A).levi a * (dblDec A).nC c :=
   GlobalTheory.T.doublingSiegel_eq_levi_mul_unipotent D A p
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.doublingSiegelLeviDetHom_levi_mul_unipotent D A p a c h`.
+A detailed English derivation is pending.
 -/
 theorem aP_decomp (A : HSp D) (p : siegel A) (a : GL (Fin A.rank) (AE D)) (c : skewA D A.rank)
     (h : (p : GA D (dblSp A)) = (dblDec A).levi a * (dblDec A).nC c) : aP A p = Matrix.GeneralLinearGroup.det a :=
   GlobalTheory.T.doublingSiegelLeviDetHom_levi_mul_unipotent D A p a c h
 
 /- English proof (translation)
-Use `hP D ψ (zeroSp D) B 1 χB hW.std hW.hecS hW.hecT ?_ hW.resT` and prove the remaining obligations. Conclude with `⟨hW.resS.1, fun η _ a => by rw [show (zeroSp D).rank = 0 from rfl, pow_zero]; rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem zero_datum (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)ˣ →* Circle)
     (omh : WRep (dblSp A) B) (hW : IsWeilDatumO ψ (dblSp A) B 1 χB omh) (hP : GlobalTheory.Published.WeilRepresentationUnitaryPair) :
@@ -56,13 +56,13 @@ theorem zero_datum (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)�
   exact ⟨hW.resS.1, fun η _ a => by rw [show (zeroSp D).rank = 0 from rfl, pow_zero]; rfl⟩
 
 /- English proof (translation)
-Introduce `hP D ψ A B χB omh hW ν 𝓕 hν φ hφ p g`. Take `⟨om₀, h₀⟩` from `zero_datum ψ A B χB omh hW hP`. Take `⟨a, c, hp⟩` from `siegel_decomp A p`. Establish `haP` using `aP_decomp A p a c hp`. Establish `hν' : IsCovolOne (ratMx D B.rank A.rank) ν 𝓕` using `hν`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF` using `hW.om_pres (g, 1) φ hφ`. Use `set F := omh (g, 1) φ with hFdef`. Establish `hF'` using `hW.om_pres ((dblDec A).nC c, 1) F hF`. Establish `hM` using `GlobalTheory.T.mixedModelFormulasWittSource_proof D ψ (dblSp A) (zeroSp D) B A.rank (dblDec A) 1 χB omh om₀ hW h₀ ν 𝓕 hν'`. Establish `h1` using `(hM _ hF').levi a 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(hM F hF).centre c 0`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.swSec`. Establish `e1 : omh (↑p * g, 1) φ = omh ((dblDec A).levi a, 1) (omh ((dblDec A).nC c, 1) F)`. Rewrite using `[hp, hFdef, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Simplify using `[Prod.mk_mul_mk, mul_assoc]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, ← mixS_dblDec_zero A B ψ ν 𝓕 _ 0, ← mixS_dblDec_zero A B ψ ν 𝓕 F 0, h1, Matrix.zero_mul, h2, map_zero, symplOH_zero_left, AddChar.map_zero_eq_one, one_smul, haP, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[scalar_eq A B χB a]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swSec_law : GlobalTheory.Published.WeilRepresentationUnitaryPair → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)ˣ →* Circle) (omh : WRep (dblSp A) B), IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ (ν : Measure (WO A B)) (𝓕 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓕 → ∀ φ, IsThetaFunO ψ (dblSp A) B φ → ∀ (p : siegel A) (g : GA D (dblSp A)), swSec A B omh ν 𝓕 φ (p * g) = (χB⁻¹ (aP A p) : Circle) * npow (absA D (aP A p)) (sZero A B + (A.rank : ℂ) / 2) * swSec A B omh ν 𝓕 φ g := by
   intro hP D ψ A B χB omh hW ν 𝓕 hν φ hφ p g

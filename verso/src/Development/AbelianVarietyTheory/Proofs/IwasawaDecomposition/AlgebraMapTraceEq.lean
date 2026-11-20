@@ -16,7 +16,7 @@ def endMat (S : HSpace E) (Y : S.V →ₗ[E] S.V) : Matrix (Fin S.rank) (Fin S.r
   LinearMap.toMatrix S.frame S.frame Y
 
 /- English proof (translation)
-Rewrite using `[hT_eq_sum, form, Matrix.dotProduct_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hT_eq_form (x y : S.V) : S.hT y x = form (starRingEnd E) S.gram (co S x) (co S y) := by
   rw [hT_eq_sum, form, Matrix.dotProduct_mulVec]; rfl

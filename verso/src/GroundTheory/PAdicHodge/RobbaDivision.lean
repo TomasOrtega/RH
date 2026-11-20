@@ -30,7 +30,7 @@ Both sides reduce to the same expression.
 @[simp] theorem rev_apply (a : ℤ → K) (n : ℤ) : rev a n = a (-n) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem rev_rev (a : ℤ → K) : rev (rev a) = a := by funext n; simp
 
@@ -40,9 +40,9 @@ Both sides reduce to the same expression.
 theorem rev_add (a b : ℤ → K) : rev (a + b) = rev a + rev b := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n`. Simplify using `only [rev, cmul]`. Rewrite using `[← (Equiv.neg ℤ).tsum_eq (fun i => a i * b (-n - i))]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Equiv.neg_apply]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rev_cmul (a b : ℤ → K) : rev (cmul a b) = cmul (rev a) (rev b) := by
   funext n
@@ -53,15 +53,15 @@ theorem rev_cmul (a b : ℤ → K) : rev (cmul a b) = cmul (rev a) (rev b) := by
   congr 2; ring
 
 /- English proof (translation)
-Rewrite using `[rev_apply, inv_zpow']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem weight_rev (hρ : 0 < ρ) (n : ℤ) : ‖rev a n‖ * ρ⁻¹ ^ n = ‖a (-n)‖ * ρ ^ (-n) := by
   rw [rev_apply, inv_zpow']
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun n : ℤ => -n)` using `neg_injective`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `h.comp hinj.tendsto_cofinite` as an intermediate fact. Use `this.congr fun n => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp, weight_rev hρ, neg_neg]`. Introduce `h`. Use `h.comp hinj.tendsto_cofinite` as an intermediate fact. Use `this.congr fun n => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, weight_rev hρ]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem convergesAt_rev_iff (hρ : 0 < ρ) : ConvergesAt (rev a) ρ⁻¹ ↔ ConvergesAt a ρ := by
   have hinj : Function.Injective (fun n : ℤ => -n) := neg_injective
@@ -76,7 +76,7 @@ theorem convergesAt_rev_iff (hρ : 0 < ρ) : ConvergesAt (rev a) ρ⁻¹ ↔ Con
     simp only [Function.comp, weight_rev hρ]
 
 /- English proof (translation)
-Unfold `gaussNorm`. Repeatedly rewrite using `[weight_rev hρ]`. Conclude with `(Equiv.neg ℤ).iSup_comp (g := fun n => ‖a n‖ * ρ ^ n)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussNorm_rev (hρ : 0 < ρ) : gaussNorm (rev a) ρ⁻¹ = gaussNorm a ρ := by
   unfold gaussNorm
@@ -88,7 +88,7 @@ end Reflection
 section FiniteSupport
 
 /- English proof (translation)
-Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [(Set.finite_Icc A B).compl_mem_cofinite] with n hn`. Simplify using `only [Set.mem_compl_iff, Set.mem_Icc, not_and_or, not_le] at hn`. Rewrite using `[hs n (hn.imp id id), norm_zero, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convergesAt_of_support {A B : ℤ} (hs : ∀ n, n < A ∨ B < n → a n = 0) (ρ : ℝ) :
     ConvergesAt a ρ := by
@@ -98,9 +98,9 @@ theorem convergesAt_of_support {A B : ℤ} (hs : ∀ n, n < A ∨ B < n → a n 
   rw [hs n (hn.imp id id), norm_zero, zero_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `only [cmul, Pi.add_apply, add_mul]`. Establish `hfin : ∀ z : ℤ → K, Summable fun i => z i * P (m - i)` using `fun z => summable_of_ne_finset_zero (s := Finset.Icc (m - B) (m - A)) fun i hi => by`. Simplify using `only [Finset.mem_Icc, not_and_or, not_le] at hi`. Rewrite using `[hs (m - i) (by omega), mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hfin x).tsum_add (hfin y)`.
+A detailed English derivation is pending.
 -/
 theorem cmul_add_left_of_support {P : ℤ → K} {A B : ℤ} (hs : ∀ n, n < A ∨ B < n → P n = 0)
     (x y : ℤ → K) : cmul (x + y) P = cmul x P + cmul y P := by
@@ -113,7 +113,7 @@ theorem cmul_add_left_of_support {P : ℤ → K} {A B : ℤ} (hs : ∀ n, n < A 
   exact (hfin x).tsum_add (hfin y)
 
 /- English proof (translation)
-Unfold `cmul`. Use `tsum_eq_sum fun i hi => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_Icc, not_and_or, not_le] at hi`. Rewrite using `[hs (m - i) (by omega), mul_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cmul_eq_sum_of_support {P : ℤ → K} {A B : ℤ} (hs : ∀ n, n < A ∨ B < n → P n = 0)
     (x : ℤ → K) (m : ℤ) : cmul x P m = ∑ i ∈ Finset.Icc (m - B) (m - A), x i * P (m - i) := by
@@ -129,9 +129,9 @@ section Shift
 def shift (x : ℤ → K) : ℤ → K := fun n => x (n - 1)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n`. Simplify using `only [cmul, shift]`. Rewrite using `[← (Equiv.addRight (1 : ℤ)).tsum_eq (fun i => Q (i - 1) * P (n - i))]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Equiv.coe_addRight, add_sub_cancel_right]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cmul_shift (Q P : ℤ → K) : cmul (shift Q) P = shift (cmul Q P) := by
   funext n
@@ -147,7 +147,7 @@ Both sides reduce to the same expression.
 theorem shift_add (x y : ℤ → K) : shift (x + y) = shift x + shift y := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n`. Simplify using `only [shift, Pi.single_apply, sub_eq_iff_eq_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem shift_single (k : ℤ) (c : K) : shift (Pi.single k c) = Pi.single (k + 1) c := by
   funext n
@@ -160,7 +160,7 @@ end Laurent
 namespace Laurent
 
 /- English proof (translation)
-Rewrite using `[← max_mul_of_nonneg _ _ hw]`. Conclude with `mul_le_mul_of_nonneg_right (IsUltrametricDist.norm_add_le_max _ _) hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_add_mul_le_max (x y : K) {w : ℝ} (hw : 0 ≤ w) :
     ‖x + y‖ * w ≤ max (‖x‖ * w) (‖y‖ * w) := by
@@ -168,7 +168,7 @@ theorem norm_add_mul_le_max (x y : K) {w : ℝ} (hw : 0 ≤ w) :
   exact mul_le_mul_of_nonneg_right (IsUltrametricDist.norm_add_le_max _ _) hw
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← norm_neg y]`. Conclude with `norm_add_mul_le_max x (-y) hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_mul_le_max (x y : K) {w : ℝ} (hw : 0 ≤ w) :
     ‖x - y‖ * w ≤ max (‖x‖ * w) (‖y‖ * w) := by
@@ -185,13 +185,13 @@ def outDiv (P : ℤ → K) (H : ℤ) : ℕ → (ℤ → K) × (ℤ → K)
 variable {P : ℤ → K} {L H : ℤ}
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Simplify using `only [outDiv, cmul_single_left, Nat.cast_zero, add_zero]`. Use function extensionality and compare the values at `n`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, sub_zero]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `succ k ih`. Simplify using `only [outDiv]`. Rewrite using `[cmul_add_left_of_support hs, cmul_shift, cmul_single_left]`. Establish `h2 : shift (cmul (outDiv P H k).1 P) + shift (outDiv P H k).2 = Pi.single (H + ((k + 1 : ℕ) : ℤ)) 1`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← shift_add, ih, shift_single]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `n`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun h2 n` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, sub_zero] at this ⊢`. Take the linear combination `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem outDiv_spec (hs : ∀ n, n < L ∨ H < n → P n = 0) (hPH : P H ≠ 0) (k : ℕ) :
     cmul (outDiv P H k).1 P + (outDiv P H k).2 = Pi.single (H + k) 1 := by
@@ -213,13 +213,13 @@ theorem outDiv_spec (hs : ∀ n, n < L ∨ H < n → P n = 0) (hPH : P H ≠ 0) 
     linear_combination this
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `n hn`. Simplify using `only [outDiv, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hnH : n = H`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hnH` using the available equality. Simplify using `[hPH]`. Rewrite using `[Pi.single_eq_of_ne hnH, hs n (by omega), mul_zero, sub_zero]`. Consider the case `succ k ih`. Introduce `n hn`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [outDiv, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, shift]`. Distinguish the cases in `hnH : n = H`. Substitute `hnH` using the available equality. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[ih (n - 1) (by omega), hs n (by omega), mul_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem outDiv_snd_support (hs : ∀ n, n < L ∨ H < n → P n = 0) (hPH : P H ≠ 0) (hLH : L ≤ H)
     (k : ℕ) : ∀ n, n < L ∨ H - 1 < n → (outDiv P H k).2 n = 0 := by
@@ -238,9 +238,9 @@ theorem outDiv_snd_support (hs : ∀ n, n < L ∨ H < n → P n = 0) (hPH : P H 
     · rw [ih (n - 1) (by omega), hs n (by omega), mul_zero, sub_zero]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `n hn`. Simplify using `only [outDiv]`. Rewrite using `[Pi.single_eq_of_ne (by omega)]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ k ih`. Introduce `n hn`. Simplify using `only [outDiv, Pi.add_apply, shift]`. Rewrite using `[ih (n - 1) (by push_cast at hn; omega), Pi.single_eq_of_ne (by push_cast at hn; omega), add_zero]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem outDiv_fst_support (k : ℕ) : ∀ n, n < 0 ∨ (k : ℤ) < n → (outDiv P H k).1 n = 0 := by
   induction k with
@@ -257,19 +257,17 @@ theorem outDiv_fst_support (k : ℕ) : ∀ n, n < 0 ∨ (k : ℤ) < n → (outDi
 variable {τ : ℝ}
 
 /- English proof (translation)
-Establish `hPH' : 0 < ‖P H‖` using `norm_pos_iff.2 hPH`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `j`. Simplify using `only [outDiv, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Nat.cast_zero, add_zero]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hjH : j = H`. Substitute `hjH` using the available equality. Simplify using `[hPH]`. Check the signs of the components of the expression. Rewrite using `[Pi.single_eq_of_ne hjH, zero_sub, norm_neg, norm_mul, norm_inv, mul_assoc, inv_mul_le_iff₀ hPH']`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hout j`. Consider the case `succ k ih`. Introduce `j`. Simplify using `only [outDiv, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, shift]`. Establish `e : τ ^ (H + ((k + 1 : ℕ) : ℤ)) = τ ^ (H + k) * τ`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← zpow_add_one₀ hτ.ne']`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_sub_mul_le_max _ _ (by positivity)).trans (max_le ?_ ?_)` and prove the remaining obligations. Use `ih (j - 1)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← zpow_add_one₀ hτ.ne', sub_add_cancel]`. Use `_ ≤ τ ^ (H + k) * τ := mul_le_mul_of_nonneg_right this hτ.le`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `ih (H - 1)`. Rewrite using `[norm_mul, norm_div]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show τ ^ H = τ ^ (H - 1) * τ by rw [← zpow_add_one₀ hτ.ne', sub_add_cancel]]`. Clear the denominators using the available nonvanishing facts.
-
-Use `_ ≤ τ ^ (H + k) * τ := mul_le_mul_of_nonneg_right h1 hτ.le`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem outDiv_snd_weight (hτ : 0 < τ) (hPH : P H ≠ 0)
     (hout : ∀ i, ‖P i‖ * τ ^ i ≤ ‖P H‖ * τ ^ H) (k : ℕ) :
@@ -308,21 +306,19 @@ theorem outDiv_snd_weight (hτ : 0 < τ) (hPH : P H ≠ 0)
         _ ≤ τ ^ (H + k) * τ := mul_le_mul_of_nonneg_right h1 hτ.le
 
 /- English proof (translation)
-Establish `hPH' : 0 < ‖P H‖` using `norm_pos_iff.2 hPH`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `j`. Simplify using `only [outDiv, Nat.cast_zero, add_zero]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Simplify using `only [Pi.single_eq_same, norm_inv, zpow_zero, mul_one]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hPH'.ne', one_mul]`. Rewrite using `[Pi.single_eq_of_ne hj, norm_zero, zero_mul, zero_mul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Check the signs of the components of the expression. Consider the case `succ k ih`. Introduce `j`. Simplify using `only [outDiv, Pi.add_apply, shift]`. Establish `e : τ ^ (H + ((k + 1 : ℕ) : ℤ)) = τ ^ (H + k) * τ`.
+Check the signs of the components of the expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← zpow_add_one₀ hτ.ne']`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_add_mul_le_max _ _ (by positivity)).trans (max_le ?_ ?_)` and prove the remaining obligations. Use `ih (j - 1)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show τ ^ j = τ ^ (j - 1) * τ by rw [← zpow_add_one₀ hτ.ne', sub_add_cancel]]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ ≤ τ ^ (H + k) * τ := mul_le_mul_of_nonneg_right this hτ.le`. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Simplify using `only [Pi.single_eq_same, norm_div, zpow_zero, one_mul]`. Establish `h1` using `outDiv_snd_weight hτ hPH hout k (H - 1)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show τ ^ H = τ ^ (H - 1) * τ by rw [← zpow_add_one₀ hτ.ne', sub_add_cancel]]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ τ ^ (H + k) * τ := mul_le_mul_of_nonneg_right h1 hτ.le`. Rewrite using `[Pi.single_eq_of_ne hj, norm_zero, zero_mul]`.
-
-Check the signs of the components of the expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem outDiv_fst_weight (hτ : 0 < τ) (hPH : P H ≠ 0)
     (hout : ∀ i, ‖P i‖ * τ ^ i ≤ ‖P H‖ * τ ^ H) (k : ℕ) :
@@ -367,7 +363,7 @@ end Laurent
 namespace Laurent
 
 /- English proof (translation)
-The claim follows from `tendsto_order.2 ⟨fun e he => Eventually.of_forall fun x => lt_of_lt_of_le he (h0 x), fun ε hε => (h (ε / 2) (half_pos hε)).mono fun x hx => hx.trans_lt (half_lt_self hε)⟩`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_zero_of_eventually_le {ι : Type*} {l : Filter ι} {f : ι → ℝ}
     (h0 : ∀ x, 0 ≤ f x) (h : ∀ ε > 0, ∀ᶠ x in l, f x ≤ ε) : Tendsto f l (𝓝 0) :=
@@ -387,7 +383,7 @@ def outRem (P : ℤ → K) (H : ℤ) (h : ℤ → K) : ℤ → K :=
 variable {h : ℤ → K}
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun k : ℕ => H + (k : ℤ))` using `fun a b e => by`. Simplify using `using e`. Conclude with `hh.comp hinj.tendsto_cofinite`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendsto_weight_shift (hh : ConvergesAt h τ) :
     Tendsto (fun k : ℕ => ‖h (H + k)‖ * τ ^ (H + (k : ℤ))) cofinite (𝓝 0) := by
@@ -396,7 +392,7 @@ theorem tendsto_weight_shift (hh : ConvergesAt h τ) :
   exact hh.comp hinj.tendsto_cofinite
 
 /- English proof (translation)
-Establish `hPH' : 0 < ‖P H‖` using `norm_pos_iff.2 hPH`. Rewrite using `[norm_mul, le_div_iff₀ (by positivity), mul_assoc, ← mul_assoc ‖(outDiv P H k).1 j‖]`. Conclude with `mul_le_mul_of_nonneg_left (outDiv_fst_weight hτ hPH hout k j) (norm_nonneg _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_outDiv_fst_le (hτ : 0 < τ) (hPH : P H ≠ 0)
     (hout : ∀ i, ‖P i‖ * τ ^ i ≤ ‖P H‖ * τ ^ H) (k : ℕ) (j : ℤ) :
@@ -407,7 +403,7 @@ theorem norm_outDiv_fst_le (hτ : 0 < τ) (hPH : P H ≠ 0)
   exact mul_le_mul_of_nonneg_left (outDiv_fst_weight hτ hPH hout k j) (norm_nonneg _)
 
 /- English proof (translation)
-Rewrite using `[norm_mul, le_div_iff₀ (by positivity), mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (outDiv_snd_weight hτ hPH hout k j) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_outDiv_snd_le (hτ : 0 < τ) (hPH : P H ≠ 0)
     (hout : ∀ i, ‖P i‖ * τ ^ i ≤ ‖P H‖ * τ ^ H) (k : ℕ) (j : ℤ) :
@@ -416,7 +412,7 @@ theorem norm_outDiv_snd_le (hτ : 0 < τ) (hPH : P H ≠ 0)
   exact mul_le_mul_of_nonneg_left (outDiv_snd_weight hτ hPH hout k j) (norm_nonneg _)
 
 /- English proof (translation)
-Use `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero ?_` and prove the remaining obligations. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Use `(tendsto_weight_shift (H := H) hh).div_const (τ ^ j * (‖P H‖ * τ ^ H))` as an intermediate fact. Rewrite `this` using `[zero_div]`. Conclude with `squeeze_zero (fun _ => norm_nonneg _) (norm_outDiv_fst_le hτ hPH hout · j) this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_outQuot_term (hτ : 0 < τ) (hPH : P H ≠ 0)
     (hout : ∀ i, ‖P i‖ * τ ^ i ≤ ‖P H‖ * τ ^ H) (hh : ConvergesAt h τ) (j : ℤ) :
@@ -428,7 +424,7 @@ theorem summable_outQuot_term (hτ : 0 < τ) (hPH : P H ≠ 0)
   exact squeeze_zero (fun _ => norm_nonneg _) (norm_outDiv_fst_le hτ hPH hout · j) this
 
 /- English proof (translation)
-Use `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero ?_` and prove the remaining obligations. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Use `(tendsto_weight_shift (H := H) hh).div_const (τ ^ j)` as an intermediate fact. Rewrite `this` using `[zero_div]`. Conclude with `squeeze_zero (fun _ => norm_nonneg _) (norm_outDiv_snd_le hτ hPH hout · j) this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_outRem_term (hτ : 0 < τ) (hPH : P H ≠ 0)
     (hout : ∀ i, ‖P i‖ * τ ^ i ≤ ‖P H‖ * τ ^ H) (hh : ConvergesAt h τ) (j : ℤ) :
@@ -440,7 +436,7 @@ theorem summable_outRem_term (hτ : 0 < τ) (hPH : P H ≠ 0)
   exact squeeze_zero (fun _ => norm_nonneg _) (norm_outDiv_snd_le hτ hPH hout · j) this
 
 /- English proof (translation)
-Establish `hPH' : 0 < ‖P H‖` using `norm_pos_iff.2 hPH`. Establish `hc : 0 < τ ^ j * (‖P H‖ * τ ^ H)` using `by positivity`. Rewrite using `[mul_assoc, ← le_div_iff₀ hc]`. Use `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (div_nonneg (gaussNorm_nonneg hτ) hc.le) fun k => ?_` and prove the remaining obligations. Conclude with `(norm_outDiv_fst_le hτ hPH hout k j).trans (div_le_div_of_nonneg_right (hh.le_gaussNorm _) hc.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem outQuot_weight_le (hτ : 0 < τ) (hPH : P H ≠ 0)
     (hout : ∀ i, ‖P i‖ * τ ^ i ≤ ‖P H‖ * τ ^ H) (hh : ConvergesAt h τ) (j : ℤ) :
@@ -454,14 +450,14 @@ theorem outQuot_weight_le (hτ : 0 < τ) (hPH : P H ≠ 0)
     (div_le_div_of_nonneg_right (hh.le_gaussNorm _) hc.le)
 
 /- English proof (translation)
-Unfold `outQuot`. Conclude with `(tsum_congr fun k => by rw [outDiv_fst_support k j (Or.inl hj), mul_zero]).trans tsum_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem outQuot_support (j : ℤ) (hj : j < 0) : outQuot P H h j = 0 := by
   unfold outQuot
   exact (tsum_congr fun k => by rw [outDiv_fst_support k j (Or.inl hj), mul_zero]).trans tsum_zero
 
 /- English proof (translation)
-Unfold `outRem`. Conclude with `(tsum_congr fun k => by rw [outDiv_snd_support hs hPH hLH k j hj, mul_zero]).trans tsum_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem outRem_support (hs : ∀ n, n < L ∨ H < n → P n = 0) (hPH : P H ≠ 0) (hLH : L ≤ H)
     (j : ℤ) (hj : j < L ∨ H - 1 < j) : outRem P H h j = 0 := by
@@ -469,15 +465,15 @@ theorem outRem_support (hs : ∀ n, n < L ∨ H < n → P n = 0) (hPH : P H ≠ 
   exact (tsum_congr fun k => by rw [outDiv_snd_support hs hPH hLH k j hj, mul_zero]).trans tsum_zero
 
 /- English proof (translation)
-Establish `hPH' : 0 < ‖P H‖` using `norm_pos_iff.2 hPH`. Use `set c := ‖P H‖ * τ ^ H with hc_def`. Establish `hc : 0 < c` using `by positivity`. Use `tendsto_zero_of_eventually_le (fun j => by positivity) fun ε hε => ?_` and prove the remaining obligations. Take `⟨B, hB⟩` from `(hh.finite_le (mul_pos hε hc)).bddAbove`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.eventually_cofinite.2 ((Set.finite_Icc 0 (B - H)).subset fun j hj => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_le] at hj`. Simplify using `only [Set.mem_Icc]`. Assume the negation of the conclusion as `hout'`. Break down `lt_or_ge j 0 with hj0 | hj0` into its components or cases.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[outQuot_support j hj0, norm_zero, zero_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hjB : B - H < j` using `by omega`. Establish `hbound : ‖outQuot P H h j‖ * τ ^ j * c ≤ ε * c`. Rewrite using `[mul_assoc, ← le_div_iff₀ (by positivity)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (by positivity) fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : (k : ℤ) < j`. Rewrite using `[outDiv_fst_support k j (Or.inr hk), mul_zero, norm_zero]`. Check the signs of the components of the expression. Use `(norm_outDiv_fst_le hτ hPH hout k j).trans (div_le_div_of_nonneg_right ?_ (by positivity))` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hlt`. Use `hB (show H + (k : ℤ) ∈ {n | ε * c ≤ ‖h n‖ * τ ^ n} from (not_le.1 hlt).le)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `le_of_mul_le_mul_right hbound hc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem convergesAt_outQuot (hτ : 0 < τ) (hPH : P H ≠ 0)
     (hout : ∀ i, ‖P i‖ * τ ^ i ≤ ‖P H‖ * τ ^ H) (hh : ConvergesAt h τ) :
@@ -508,17 +504,17 @@ theorem convergesAt_outQuot (hτ : 0 < τ) (hPH : P H ≠ 0)
   linarith
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Establish `hQ` using `summable_outQuot_term hτ hPH hout hh`. Establish `hR` using `summable_outRem_term hτ hPH hout hh`. Establish `e1 : cmul (outQuot P H h) P m = ∑' k : ℕ, h (H + k) * cmul (outDiv P H k).1 P m`. Rewrite using `[cmul_eq_sum_of_support hs]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [outQuot]`. Repeatedly rewrite using `[← tsum_mul_right]`. Rewrite using `[← Summable.tsum_finsetSum fun i _ => (hQ i).mul_right _]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[cmul_eq_sum_of_support hs, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `hspec : ∀ k : ℕ, cmul (outDiv P H k).1 P m = (Pi.single (H + (k : ℤ)) (1 : K) : ℤ → K) m - (outDiv P H k).2 m` using `fun k => by`. Rewrite using `[← outDiv_spec hs hPH k]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsingle : ∑' k : ℕ, h (H + k) * (Pi.single (H + (k : ℤ)) (1 : K) : ℤ → K) m = h m`. Break down `lt_or_ge m H with hm | hm` into its components or cases. Rewrite using `[hsupp m hm]`. Use `(tsum_congr fun k => ?_).trans tsum_zero` and prove the remaining obligations. Rewrite using `[Pi.single_eq_of_ne (by omega), mul_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k₀, hk₀⟩ : ∃ k₀ : ℕ, m = H + k₀` from `⟨(m - H).toNat, by omega⟩`. Rewrite using `[tsum_eq_single k₀ fun k hk => by`. Rewrite using `[Pi.single_eq_of_ne (by omega), mul_zero], hk₀, Pi.single_eq_same, mul_one]`. Establish `hsumS : Summable fun k : ℕ => h (H + k) * (Pi.single (H + (k : ℤ)) (1 : K) : ℤ → K) m` using `summable_of_ne_finset_zero (s := {(m - H).toNat}) fun k hk => by`. Simplify using `only [Finset.mem_singleton] at hk`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne (by omega), mul_zero]`. Rewrite using `[Pi.add_apply, e1]`. Repeatedly rewrite using `[hspec, mul_sub]`. Rewrite using `[hsumS.tsum_sub (hR m), hsingle]`. Simplify using `[outRem]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem outDiv_series (hτ : 0 < τ) (hs : ∀ n, n < L ∨ H < n → P n = 0) (hPH : P H ≠ 0)
     (hout : ∀ i, ‖P i‖ * τ ^ i ≤ ‖P H‖ * τ ^ H) (hh : ConvergesAt h τ)
@@ -561,63 +557,57 @@ section Division
 variable {P : ℤ → K} {L H : ℤ} {τ : ℝ}
 
 /- English proof (translation)
-The claim follows from `le_antisymm (gaussNorm_le hdom) ((convergesAt_of_support hs τ).le_gaussNorm N)`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_eq_of_dominant (hs : ∀ n, n < L ∨ H < n → P n = 0) {N : ℤ}
     (hdom : ∀ i, ‖P i‖ * τ ^ i ≤ ‖P N‖ * τ ^ N) : gaussNorm P τ = ‖P N‖ * τ ^ N :=
   le_antisymm (gaussNorm_le hdom) ((convergesAt_of_support hs τ).le_gaussNorm N)
 
 /- English proof (translation)
-Introduce `n hn` and use `hs (-n) (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rev_support (hs : ∀ n, n < L ∨ H < n → P n = 0) :
     ∀ n, n < -H ∨ -L < n → rev P n = 0 := fun n hn => hs (-n) (by omega)
 
 /- English proof (translation)
-Introduce `i` and use `by rw [weight_rev hτ, weight_rev hτ, neg_neg]; exact hdom (-i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rev_dominant (hτ : 0 < τ) {N : ℤ} (hdom : ∀ i, ‖P i‖ * τ ^ i ≤ ‖P N‖ * τ ^ N) :
     ∀ i, ‖rev P i‖ * τ⁻¹ ^ i ≤ ‖rev P (-N)‖ * τ⁻¹ ^ (-N) := fun i => by
   rw [weight_rev hτ, weight_rev hτ, neg_neg]; exact hdom (-i)
 
 /- English proof (translation)
-Establish `hτ₂ : 0 < τ₂` using `hτ₁.trans_le hτ`. Establish `hPL' : 0 < ‖P L‖` using `norm_pos_iff.2 hPL`. Establish `hPH' : 0 < ‖P H‖` using `norm_pos_iff.2 hPH`. Establish `hG₁ : gaussNorm P τ₁ = ‖P L‖ * τ₁ ^ L` using `gaussNorm_eq_of_dominant hs hin`. Establish `hG₂ : gaussNorm P τ₂ = ‖P H‖ * τ₂ ^ H` using `gaussNorm_eq_of_dominant hs hout`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG₁p : 0 < gaussNorm P τ₁` using `by rw [hG₁]; positivity`. Establish `hG₂p : 0 < gaussNorm P τ₂` using `by rw [hG₂]; positivity`. Use `set M := max (gaussNorm h τ₁ / gaussNorm P τ₁) (gaussNorm h τ₂ / gaussNorm P τ₂)`. Use `set hp := trunc h (Set.Ici H)`. Use `set hm := trunc h (Set.Iio L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `set h0 := trunc h (Set.Ico L H)`. Establish `hsplit : h = hp + hm + h0`. Use function extensionality and compare the values at `n`. Simplify using `only [hp, hm, h0, trunc, Pi.add_apply, Set.indicator_apply, Set.mem_Ici, Set.mem_Iio, Set.mem_Ico]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hp₂ : ConvergesAt hp τ₂` using `h₂.trunc hτ₂ _`. Use `set qp := outQuot P H hp`. Use `set rp := outRem P H hp`. Establish `ep : hp = cmul qp P + rp` using `outDiv_series hτ₂ hs hPH hout hp₂ fun n hn => by`. Simplify using `[hp, trunc, Set.indicator_apply, not_le.2 hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `qp₂ : ConvergesAt qp τ₂` using `convergesAt_outQuot hτ₂ hPH hout hp₂`. Establish `qp_supp : ∀ n, n < 0 → qp n = 0` using `fun n hn => outQuot_support n hn`. Establish `qp₁ : ConvergesAt qp τ₁` using `qp₂.of_support_ge qp_supp hτ₁ hτ`. Establish `gqp₂ : gaussNorm qp τ₂ ≤ gaussNorm h τ₂ / gaussNorm P τ₂`. Rewrite using `[hG₂]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `gaussNorm_le fun j => ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (by positivity)]`. Conclude with `(outQuot_weight_le hτ₂ hPH hout hp₂ j).trans (gaussNorm_trunc_le hτ₂ h₂ _)`. Establish `gqp₁ : gaussNorm qp τ₁ ≤ gaussNorm qp τ₂`. Simplify using `using gaussNorm_le_of_support_ge qp_supp qp₂ hτ₁ hτ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ₁i : 0 < τ₁⁻¹` using `inv_pos.2 hτ₁`. Establish `hrevP` using `rev_support hs`. Establish `hrevPL : rev P (-L) ≠ 0` using `by simpa using hPL`. Establish `hrevdom` using `rev_dominant hτ₁ hin`. Establish `hm₁ : ConvergesAt hm τ₁` using `h₁.trunc hτ₁ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrm : ConvergesAt (rev hm) τ₁⁻¹` using `(convergesAt_rev_iff hτ₁).2 hm₁`. Use `set x := outQuot (rev P) (-L) (rev hm)`. Use `set y := outRem (rev P) (-L) (rev hm)`. Establish `ex : rev hm = cmul x (rev P) + y` using `outDiv_series hτ₁i hrevP hrevPL hrevdom hrm fun n hn => by simp [hm, trunc, Set.indicator_apply, show ¬ (-n < L) by omega]`. Use `set qm := rev x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set rm := rev y`. Establish `em : hm = cmul qm P + rm`. Use `congrArg rev ex` as an intermediate fact. Rewrite `this` using `[rev_rev, rev_add, rev_cmul, rev_rev]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `x₁ : ConvergesAt x τ₁⁻¹` using `convergesAt_outQuot hτ₁i hrevPL hrevdom hrm`. Establish `qm₁ : ConvergesAt qm τ₁`. Use `(convergesAt_rev_iff hτ₁i).2 x₁` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `qm_supp : ∀ n, 0 < n → qm n = 0` using `fun n hn => outQuot_support (-n) (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `qm₂ : ConvergesAt qm τ₂` using `qm₁.of_support_le qm_supp hτ₁ hτ`. Establish `gqm₁ : gaussNorm qm τ₁ ≤ gaussNorm h τ₁ / gaussNorm P τ₁`. Establish `e : gaussNorm qm τ₁ = gaussNorm x τ₁⁻¹`. Use `gaussNorm_rev (a := x) hτ₁i` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, hG₁]`. Use `gaussNorm_le fun j => ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (by positivity)]`. Establish `w` using `outQuot_weight_le hτ₁i hrevPL hrevdom hrm j`. Rewrite `w` using `[gaussNorm_rev hτ₁]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `e2 : ‖rev P (-L)‖ * τ₁⁻¹ ^ (-L) = ‖P L‖ * τ₁ ^ L`. Rewrite using `[weight_rev hτ₁, neg_neg]`. Rewrite `w` using `[e2]`. Conclude with `w.trans (gaussNorm_trunc_le hτ₁ h₁ _)`. Establish `gqm₂ : gaussNorm qm τ₂ ≤ gaussNorm qm τ₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using gaussNorm_le_of_support_le qm_supp qm₁ hτ₁ hτ`. Use `set q := qp + qm`. Use `set r := rp + rm + h0`. Establish `hq₁ : ConvergesAt q τ₁` using `qp₁.add hτ₁ qm₁`. Establish `hq₂ : ConvergesAt q τ₂` using `qp₂.add hτ₂ qm₂`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `eq : h = cmul q P + r`. Simplify using `only [q, r]`. Rewrite using `[cmul_add_left_of_support hs]`. Use `conv_lhs => rw [hsplit, ep, em]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM1 : gaussNorm h τ₁ / gaussNorm P τ₁ ≤ M` using `le_max_left _ _`. Establish `hM2 : gaussNorm h τ₂ / gaussNorm P τ₂ ≤ M` using `le_max_right _ _`. Establish `gq₁ : gaussNorm q τ₁ ≤ M` using `(gaussNorm_add_le hτ₁ qp₁ qm₁).trans (max_le ((gqp₁.trans gqp₂).trans hM2) (gqm₁.trans hM1))`. Establish `gq₂ : gaussNorm q τ₂ ≤ M` using `(gaussNorm_add_le hτ₂ qp₂ qm₂).trans (max_le (gqp₂.trans hM2) ((gqm₂.trans gqm₁).trans hM1))`. Establish `hr : r = h - cmul q P` using `by rw [eq]; abel`.
-
-Establish `hP₁ : ConvergesAt P τ₁` using `convergesAt_of_support hs τ₁`. Establish `hP₂ : ConvergesAt P τ₂` using `convergesAt_of_support hs τ₂`. Establish `gr : ∀ τ, 0 < τ → ConvergesAt h τ → ConvergesAt q τ → ConvergesAt P τ → 0 < gaussNorm P τ → gaussNorm h τ / gaussNorm P τ ≤ M → gaussNorm q τ ≤ M → gaussNorm r τ ≤ M * gaussNorm P τ`. Introduce `τ hτ0 hhτ hqτ hPτ hGp hb1 hb2`. Rewrite using `[hr]`.
-
-Use `(gaussNorm_sub_le hτ0 hhτ (hqτ.cmul hτ0 hPτ)).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite `hb1` using `[div_le_iff₀ hGp]`. Then use the resulting hypothesis. Conclude with `(gaussNorm_cmul_le hτ0 hqτ hPτ).trans (mul_le_mul_of_nonneg_right hb2 (gaussNorm_nonneg hτ0))`. Use `⟨q, r, hq₁, hq₂, fun n hn => ?_, eq, gq₁, gq₂, gr τ₁ hτ₁ h₁ hq₁ hP₁ hG₁p hM1 gq₁, gr τ₂ hτ₂ h₂ hq₂ hP₂ hG₂p hM2 gq₂⟩` and prove the remaining obligations. Simplify using `only [r, Pi.add_apply]`.
-
-Establish `h1 : rp n = 0` using `outRem_support hs hPH hLH n (by omega)`. Establish `h2 : rm n = 0` using `outRem_support hrevP hrevPL (by omega) (-n) (by omega)`. Rewrite using `[h1, h2]`. Simplify using `[h0, trunc, Set.indicator_apply]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem weierstrass_division {τ₁ τ₂ : ℝ} (hτ₁ : 0 < τ₁) (hτ : τ₁ ≤ τ₂) (hLH : L ≤ H)
     (hs : ∀ n, n < L ∨ H < n → P n = 0) (hPL : P L ≠ 0) (hPH : P H ≠ 0)

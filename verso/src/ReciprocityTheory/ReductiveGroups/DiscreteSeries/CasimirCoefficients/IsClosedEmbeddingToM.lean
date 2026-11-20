@@ -14,7 +14,7 @@ variable {n : ℕ}
 def hs (g : Matrix (Fin n) (Fin n) ℂ) : ℝ := ∑ i, ∑ j, ‖g i j‖ ^ 2
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Jm_mul_self (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   unfold Jm
@@ -24,7 +24,7 @@ lemma Jm_mul_self (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : ε a = true <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Jm_conjTranspose (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   unfold Jm
@@ -67,7 +67,7 @@ abbrev toM {ε : Fin n → Bool} (g : UJ ε) : Matrix (Fin n) (Fin n) ℂ :=
   ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)
 
 /- English proof (translation)
-Unfold `inUJ at hg`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 lemma left_inv_of_inUJ (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) (hg : inUJ ε g) :
     (Jm ε * gᴴ * Jm ε) * g = 1 := by
@@ -76,19 +76,19 @@ lemma left_inv_of_inUJ (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) (h
     _ = 1 := by rw [hg, Jm_mul_self]
 
 /- English proof (translation)
-The claim follows from `Units.inv_eq_of_mul_eq_one_left (left_inv_of_inUJ ε _ g.2)`.
+A detailed English derivation is pending.
 -/
 lemma toM_inv (ε : Fin n → Bool) (g : UJ ε) : toM g⁻¹ = Jm ε * (toM g)ᴴ * Jm ε :=
   Units.inv_eq_of_mul_eq_one_left (left_inv_of_inUJ ε _ g.2)
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 lemma continuous_toM (ε : Fin n → Bool) : Continuous (fun g : UJ ε => toM g) :=
   Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-Unfold `inUJ`. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma isClosed_inUJ (ε : Fin n → Bool) : IsClosed {g : Matrix (Fin n) (Fin n) ℂ | inUJ ε g} := by
   unfold inUJ
@@ -96,9 +96,9 @@ lemma isClosed_inUJ (ε : Fin n → Bool) : IsClosed {g : Matrix (Fin n) (Fin n)
     continuous_id) continuous_const
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Conclude with `u.2`. Introduce `hg`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `left_inv_of_inUJ ε g hg`. Establish `h1 : g * (Jm ε * gᴴ * Jm ε) = 1` using `mul_eq_one_comm.mp h2`. Conclude with `⟨⟨⟨g, Jm ε * gᴴ * Jm ε, h1, h2⟩, hg⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma range_toM (ε : Fin n → Bool) : Set.range (fun g : UJ ε => toM g) = {g | inUJ ε g} := by
   ext g
@@ -111,7 +111,7 @@ lemma range_toM (ε : Fin n → Bool) : Set.range (fun g : UJ ε => toM g) = {g 
     exact ⟨⟨⟨g, Jm ε * gᴴ * Jm ε, h1, h2⟩, hg⟩, rfl⟩
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qk16.isClosedEmbedding_toM .. | (apply UpperTheory.Reformulated.B.Qk16.isClosedEmbedding_toM <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qk16.isClosedEmbedding_toM <;> assumption) | (apply @UpperTheory.Reformulated.B.Qk16.i …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma isClosedEmbedding_toM (ε : Fin n → Bool) : IsClosedEmbedding (fun g : UJ ε => toM g) := by
   first | exact UpperTheory.Reformulated.B.Qk16.isClosedEmbedding_toM .. | (apply UpperTheory.Reformulated.B.Qk16.isClosedEmbedding_toM <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qk16.isClosedEmbedding_toM <;> assumption) | (apply @UpperTheory.Reformulated.B.Qk16.isClosedEmbedding_toM <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qk16.isClosedEmbedding_toM <;> assumption) | (apply @UpperTheory.Reformulated.B.Qk16.isClosedEmbedding_toM <;> first | assumption | infer_instance)
@@ -131,12 +131,12 @@ instance (ε : Fin n → Bool) : MeasurableSpace (UJ ε) := borel _
 instance (ε : Fin n → Bool) : BorelSpace (UJ ε) := ⟨rfl⟩
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 lemma haar_isHaar (ε : Fin n → Bool) : (Measure.haar : Measure (UJ ε)).IsHaarMeasure := inferInstance
 
 /- English proof (translation)
-Use `⟨Submonoid.mul_mem _ hg.1 hh.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hh.2, ← Matrix.mul_assoc, hg.2, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma Kset_mul (ε : Fin n → Bool) {g h : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε)
     (hh : h ∈ Kset ε) : g * h ∈ Kset ε := by
@@ -144,7 +144,7 @@ lemma Kset_mul (ε : Fin n → Bool) {g h : Matrix (Fin n) (Fin n) ℂ} (hg : g 
   rw [Matrix.mul_assoc, hh.2, ← Matrix.mul_assoc, hg.2, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use `⟨Unitary.star_mem hg.1, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg star hg.2`. Simplify using `only [star_mul, Matrix.star_eq_conjTranspose, Jm_conjTranspose] at h`. Simplify `h.symm` using `[Matrix.star_eq_conjTranspose]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma Kset_star (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
     star g ∈ Kset ε := by

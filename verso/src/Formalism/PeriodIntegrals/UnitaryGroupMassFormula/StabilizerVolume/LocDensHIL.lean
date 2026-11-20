@@ -15,7 +15,7 @@ open NumberField IsDedekindDomain MeasureTheory Topology Filter Formalism.MainNo
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Rewrite using `[← ReciprocityTheory.Bridge.ResidueFieldCardinality.card_residue v]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem index_maxIdeal :
     (maximalIdeal (v.adicCompletionIntegers F)).toAddSubgroup.index = Nat.card (𝓞 F ⧸ v.asIdeal) := by
@@ -37,9 +37,9 @@ def crdL : latSub b v a M →+ (Fin a × Fin M × Fin d → v.adicCompletionInte
     simp
 
 /- English proof (translation)
-Introduce `c`. Set `x : Fin a → Fin M → Fv F v ⊗[F] E` to `fun i j => (Algebra.TensorProduct.basis (Fv F v) b).repr.symm (Finsupp.equivFunOnFinite.symm fun k => (c (i, j, k) : Fv F v))`. Establish `hx : ∀ i j k, (Algebra.TensorProduct.basis (Fv F v) b).repr (x i j) k = c (i, j, k)`. Introduce `i j k`. Simplify using `[x]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨⟨x, fun i j k => by rw [hx]; exact (c (i, j, k)).2⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hx q.1 q.2.1 q.2.2`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem crdL_surj : Function.Surjective (crdL v b a M) := by
   intro c
@@ -55,7 +55,7 @@ theorem crdL_surj : Function.Surjective (crdL v b a M) := by
   exact hx q.1 q.2.1 q.2.2
 
 /- English proof (translation)
-Simplify using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem crd_smul' (s : Fv F v) (y : Fv F v ⊗[F] E) (k : Fin d) :
     (Algebra.TensorProduct.basis (Fv F v) b).repr (s • y) k =
@@ -63,17 +63,17 @@ theorem crd_smul' (s : Fv F v) (y : Fv F v ⊗[F] E) (k : Fin d) :
   simp [map_smul, Finsupp.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hv` using `unifV_val v`. Establish `h0` using `(unifV_spec v).1`. Use extensionality with `x`. Rewrite using `[AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_comap, AddSubgroup.mem_pi]`. Simplify using `only [Set.mem_univ, true_implies, Submodule.mem_toAddSubgroup, ReciprocityTheory.Aut.mem_maxIdeal_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx q`. Simplify using `only [lamF, mem_smulSub, zero_add, pow_one] at hx`. Take `⟨p, hp, hpx⟩` from `hx`. Use `show Valued.v ((Algebra.TensorProduct.basis (Fv F v) b).repr ((x : Fin a → Fin M → Fv F v ⊗[F] E) q.1 q.2.1) q.2.2) < 1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hpx]`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[crd_smul', map_mul, hv]`. Establish `hp' : Valued.v ((Algebra.TensorProduct.basis (Fv F v) b).repr (p q.1 q.2.1) q.2.2) ≤ 1`. Establish `h` using `hp q.1 q.2.1 q.2.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Introduce `hx`. Simplify using `only [lamF, mem_smulSub, zero_add, pow_one]`. Use `⟨(unifV v)⁻¹ • (x : Fin a → Fin M → Fv F v ⊗[F] E), ?_, ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j k`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[crd_smul', map_mul, map_inv₀, hv]`. Use `ReciprocityTheory.Aut.val_le_exp_neg_one_of_lt_one v (hx (i, j, k))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, mul_inv_cancel₀ h0, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addSubgroupOf_eq :
     (lamF b v a M 0).addSubgroupOf (latSub b v a M) =
@@ -118,11 +118,11 @@ end IdxLW
 open IdxLW
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ _ _ a _ _ X0 hT _ d b v`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Establish `hd : d = 2`. Use `Module.finrank_eq_card_basis b` as an intermediate fact. Rewrite `this` using `[hCM.2.2.1, Fintype.card_fin]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Unfold `AddSubgroup.relIndex`. Rewrite using `[addSubgroupOf_eq, AddSubgroup.index_comap_of_surjective _ (crdL_surj v b a M), AddSubgroup.index_pi]`. Simplify using `only [index_maxIdeal, Finset.prod_const, Finset.card_univ, Fintype.card_prod, Fintype.card_fin]`. Substitute `hd` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form.
+A detailed English derivation is pending.
 -/
 theorem idxL_holds : IdxL := by
   intro F E _ _ _ _ _ σ hCM M J hJ _ _ a _ _ X0 hT _ d b v

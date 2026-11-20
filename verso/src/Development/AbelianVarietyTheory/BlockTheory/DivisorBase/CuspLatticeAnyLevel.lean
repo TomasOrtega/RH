@@ -29,7 +29,7 @@ def MjFull (A : FormsL LL Ks WL W G) (J0 : Subgroup G) (lam0 : J0 →* LLˣ) (eC
     ∀ (d : ℕ) (b : Fin d → WL), IsGoodBasis A J0 lam0 eC b → Submodule.IsLattice LL (A.Mcoord J0 lam0 eC b)
 
 /- English proof (translation)
-Set `B` to `Module.finBasis LL (A.Wgood J0 lam0 eC)`. Use `⟨fun i => (A.Wgood J0 lam0 eC).subtype (B i), ?_, ?_⟩` and prove the remaining obligations. Conclude with `B.linearIndependent.map' _ (Submodule.ker_subtype _)`. Use `show Submodule.span LL (Set.range ((A.Wgood J0 lam0 eC).subtype ∘ B)) = _`. Rewrite using `[Set.range_comp, Submodule.span_image, B.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isGoodBasis (A : FormsL LL Ks WL W G) (J0 : Subgroup G) (lam0 : J0 →* LLˣ) (eC : G → LL)
     [FiniteDimensional LL (A.Wgood J0 lam0 eC)] :
@@ -118,16 +118,16 @@ def MLatAnyLevel : Prop :=
   ∀ (J0 : Subgroup G) (lam0 : J0 →* LLˣ) (eC : G → LL), MjFull A J0 lam0 eC
 
 /- English proof (translation)
-Introduce `D T hT j hj w hw LL _ _ _ WL _ _ _ _ _ _ _ _ W _ _ G _ _ A ι hA Pg _ φ _ ψ _ eC _`. Conclude with `h D T hT j hj w hw LL WL W G A ι hA _ _ eC`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem MLat.of_anyLevel (h : MLatAnyLevel) : MLat := by
   intro D T hT j hj w hw LL _ _ _ WL _ _ _ _ _ _ _ _ W _ _ G _ _ A ι hA Pg _ φ _ ψ _ eC _
   exact h D T hT j hj w hw LL WL W G A ι hA _ _ eC
 
 /- English proof (translation)
-Use `⟨DIV.Cons.kaWt_n D hK hn j, fun τ => ⟨fun i => ?_, fun c => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← (hK j hj.1 hj.2 τ).1 i, ← DIV.Cons.kaWt_big D hK hn j hj.1 hj.2 τ i]`. Simplify using the standard rewrite rules. Establish `h1` using `DIV.Cons.kaWt_small D hK hn j hj.1 hj.2 τ (Fin.rev c)`. Establish `h2` using `(hK j hj.1 hj.2 τ).2 c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Fin.rev_rev]`. Establish `h3 : (((DIV.Cons.kaWt D hK hn j).aM τ (Fin.rev c) : ℕ) : ℚ) = -(D.what₂.kaSmall j τ c : ℚ)`. Conclude with `h1` after adjusting the coercions. Rewrite using `[h3, h2, neg_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isKappa_kaWt (hK : DV.KapDef D) (hn : Even D.R.nV) {j : ℕ} (hj : InR D j) :
     IsKappa D j (DIV.Cons.kaWt D hK hn j) := by
@@ -141,7 +141,7 @@ theorem isKappa_kaWt (hK : DV.KapDef D) (hn : Even D.R.nV) {j : ℕ} (hj : InR D
     rw [h3, h2, neg_neg]
 
 /- English proof (translation)
-Use `⟨fun g h => ?_, fun g => ?_⟩` and prove the remaining obligations. Simplify using `[mul_inv_eq_one, mul_inv_eq_iff_eq_mul]`. Apply the tactic sequence `rw [Finset.sum_eq_single (1 : G)] <;> simp +contextual`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example {LL G : Type} [Field LL] [Group G] [Fintype G] [DecidableEq G] :
     IsCentralIdem (fun g : G => if g = 1 then (1 : LL) else 0) := by
@@ -150,9 +150,9 @@ example {LL G : Type} [Field LL] [Group G] [Fintype G] [DecidableEq G] :
   · rw [Finset.sum_eq_single (1 : G)] <;> simp +contextual
 
 /- English proof (translation)
-Use `⟨TensorProduct.isBaseChange _ _ LL, rfl, fun lp f h => ?_⟩` and prove the remaining obligations. Establish `e : (LinearEquiv.ofInjective (incl (K` using `T.Q.c.F) (L := LL) (M := Cusp T j w)) incl_injective).symm ⟨incl f, h⟩ = f := by`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `forall_congr' fun y => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `show T.nrmM j lp y (((LinearEquiv.ofInjective (incl (K := T.Q.c.F) (L := LL) (M := Cusp T j w)) incl_injective).symm ⟨incl f, h⟩ : Cusp T j w) : T.R j) ≤ 1 ↔ _`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem carriesCusp_formsLOf (T : Core D) (j : ℕ) (w : WeightFamilies.Wt D j)
     {LL : Type} [Field LL] [NumberField LL] [Algebra T.Q.c.F LL]
@@ -175,7 +175,7 @@ theorem carriesCusp_formsLOf (T : Core D) (j : ℕ) (w : WeightFamilies.Wt D j)
   rw [e]
 
 /- English proof (translation)
-Unfold `nrmOf`. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `Real.rpow_nonneg (Nat.cast_nonneg _) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nrmOf_nonneg {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (v : EReal) :
     0 ≤ nrmOf la v := by
@@ -184,9 +184,9 @@ theorem nrmOf_nonneg {K : Type} [Field K] [NumberField K] (la : HeightOneSpectru
   · exact Real.rpow_nonneg (Nat.cast_nonneg _) _
 
 /- English proof (translation)
-Distinguish the cases in `hv : v = ⊤`. Substitute `hv` using the available equality. Simplify `nrmOf_nonneg la u` using `[nrmOf]`. Establish `hu' : u ≠ ⊤` using `fun e => hv (top_le_iff.mp (e ▸ h))`. Unfold `nrmOf`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg hv, if_neg hu']`. Conclude with `Real.rpow_le_rpow_of_exponent_le (one_lt_absNorm_real la).le (neg_le_neg (EReal.toReal_le_toReal h hu hv))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrmOf_anti {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) {u v : EReal} (hu : u ≠ ⊥)
     (h : u ≤ v) : nrmOf la v ≤ nrmOf la u := by
@@ -198,11 +198,11 @@ theorem nrmOf_anti {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum 
   exact Real.rpow_le_rpow_of_exponent_le (one_lt_absNorm_real la).le (neg_le_neg (EReal.toReal_le_toReal h hu hv))
 
 /- English proof (translation)
-Establish `hv` using `isVal_valSet lp y.1 y.2`. Establish `hz : T.nrmM j lp y 0 = 0` using `by simp [Core.nrmM, hv.zero, nrmOf]`. Use `⟨fun f => nrmOf_nonneg _ _, hz, fun f g => ?_, fun x f => ?_⟩` and prove the remaining obligations. Break down `le_total (y.1 f) (y.1 g) with h | h` into its components or cases. Conclude with `(nrmOf_anti lp (hv.ne_bot f) ((min_eq_left h).symm.le.trans (hv.add f g))).trans (le_max_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails.
 
-Conclude with `(nrmOf_anti lp (hv.ne_bot g) ((min_eq_right h).symm.le.trans (hv.add f g))).trans (le_max_right _ _)`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite using `[zero_smul, hz]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Core.nrmM`. Rewrite using `[hv.smul x f hx]`. Conclude with `nrmOf_smul lp hx (hv.ne_bot f)`.
+A detailed English derivation is pending.
 -/
 theorem nrmM_laws (T : Core D) (j : ℕ) (lp : HeightOneSpectrum (𝓞 T.Q.c.F)) (y : T.PtM j lp) :
     (∀ f, 0 ≤ T.nrmM j lp y f) ∧ T.nrmM j lp y 0 = 0 ∧

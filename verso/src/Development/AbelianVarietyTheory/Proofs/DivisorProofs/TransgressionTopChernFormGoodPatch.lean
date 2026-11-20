@@ -14,21 +14,15 @@ open scoped ContDiff Matrix
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Introduce `F _ σ X m E O H H₀ hH hH₀ e S A W c hP ρ hρ hsupp`. Take `⟨hUo, hUoff, hcpt⟩` from `GlobalTheory.T.goodPatch_chart_image_properties E O H hP`. Establish `h1` using `GlobalTheory.T.goodMetric_cut_topChern_density_patch E O H H₀ hH hH₀ hP hρ hsupp`. Establish `h0` using `GlobalTheory.T.smoothMetric_cut_topChern_density_patch E O H H₀ hH hH₀ hP hρ hsupp`. Establish `hc` using `GlobalTheory.T.transgression_term_density_good_patch E O H H₀ hH hH₀ hP hρ hsupp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨_, _, h1, h0, ?_⟩` and prove the remaining obligations. Establish `hloc` using `GlobalTheory.T.goodMetric_local_transgression_formula S (e '' W) (e '' tsupport ρ) (fun v => H₀ A (e.symm v) ()) (fun v => H A (e.symm v) ()) (fun v => ρ (e.symm v)) c hUo (hcpt _ (isClosed_tsupport ρ) hsupp) (Set.image_mono hsupp) (by`. Introduce and unpack `v ⟨z, hz, rfl⟩ a ha`. Conclude with `hP.small z hz a ha)`. Use the proof step `(by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `v ⟨z, hz, rfl⟩`. Conclude with `GlobalTheory.T.gramMatrix_smooth_isUnit_in_holomorphicChart E ⊤ H₀ hH₀ hP.holo mem_ptsIn_top (hP.sub hz) (hP.frame z hz))`. Use the proof step `(by`. Introduce `v hv`. Rewrite `hv` using `[← hUoff]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, ⟨hzO, hz⟩, rfl⟩` from `hv`. Conclude with `GlobalTheory.T.gramMatrix_smooth_isUnit_in_holomorphicChart E O H hH hP.holo hzO (hP.sub hz) (hP.frame z hz))`. Use the proof step `(by`. Introduce `v hv a i j`. Rewrite `hv` using `[← hUoff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Take `⟨z, ⟨hzO, hz⟩, rfl⟩` from `hv`. Conclude with `hP.form z hz hzO a i j)`. Use the proof step `(by`. Introduce `v hv a b i j`. Rewrite `hv` using `[← hUoff]`.
-
-Take `⟨z, ⟨hzO, hz⟩, rfl⟩` from `hv`. Conclude with `hP.dbar z hz hzO a b i j)`. Use the proof step `(by`. Introduce and unpack `v ⟨z, hz, rfl⟩`. Conclude with `(GlobalTheory.T.contDiffAt_holomorphicComplexChart_of_smoothAt hP.holo (hP.sub hz) (hρ z)).contDiffWithinAt)`.
-
-Use the proof step `(by`. Introduce and unpack `v ⟨z, hz, rfl⟩ hv`. Rewrite using `[e.left_inv (hP.sub hz)]`. Assume the negation of the conclusion as `h`. Conclude with `hv ⟨z, subset_tsupport _ h, rfl⟩)`.
-
-Use `hc using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← mul_sub, ← Complex.sub_re, hloc]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasInt_patch_transgression : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {m : ℕ} (E : Fr (ratOf X) (fun _ : Unit => m) 0) (O : X.X.Opens) (H H₀ : Mat (fun _ : Unit => m) X.Fn → CxPts X.str σ → Mat (fun _ : Unit => m) ℂ), IsMetricOn E O H → IsMetricOn E ⊤ H₀ → ∀ {e : OpenPartialHomeomorph (CxPts X.str σ) (V X.dim)} {S : Finset (Fin X.dim)} {A : Mat (fun _ : Unit => m) X.Fn} {W : Set (CxPts X.str σ)} {c : ℝ}, GoodPatch E O H e S A W c → ∀ {ρ : CxPts X.str σ → ℝ}, (∀ y, CInfAt ρ y) → tsupport ρ ⊆ W → ∃ a b : ℝ, HasInt (fun c : AlgChart X.str σ X.dim => c.e) (fun c y => ρ y * topDens E H c y) (ptsIn X.str σ O) a ∧ HasInt (fun c : AlgChart X.str σ X.dim => c.e) (fun c y => ρ y * topDens E H₀ c y) (ptsIn X.str σ ⊤) b ∧ HasInt (fun c : AlgChart X.str σ X.dim => c.e) (corrDens E H₀ H ρ) (ptsIn X.str σ O) (a - b) := by
   intro F _ σ X m E O H H₀ hH hH₀ e S A W c hP ρ hρ hsupp

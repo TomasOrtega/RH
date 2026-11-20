@@ -19,23 +19,21 @@ namespace GlobalTheory.AdTh.OverCore
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ _ _ i Tp tup O hP`. Take `⟨gramR, c0R, c0L, hT, hc⟩` from `hP.lift.c0`. Establish `hσ` using `hP.lift.field`. Establish `hE : ∀ v, O.c0' (GlobalTheory.AdTh.CoefExt.up O.jL (lamV D i) v) = c0L i v`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, hw, h⟩` from `hc v`. Rewrite using `[show GlobalTheory.AdTh.CoefExt.up O.jL (lamV D i) v = w from Subtype.ext hw.symm]`. Conclude with `h`. Take `⟨h1, h2, h3⟩` from `hT.mapL i`. Use `⟨?_, ?_, GlobalTheory.AdTh.CoefExt.span_top (W := (R.cV i).W) hE h3, fun m b hb => GlobalTheory.AdTh.CoefExt.linearIndependent (W := (R.cV i).W) hE h2 b hb⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hn` using `GlobalTheory.StdFrame.neg_eq_false_of_vStd D i hP.lift.std`. Establish `hg : (D.sp.V ((i : ℕ) + 1)).gram = 1` using `hP.lift.std.1`. Set `v : VsV D i D.what₂.LL` to `⟨Formalism.L2.DIV.ten fun τ => Formalism.BasicNotions.extremal D.what₂.LL _ (lamV D i τ), GlobalTheory.Proof.TensorMapDescent.ten_mem _ _ fun τ => Formalism.GradedWeylDivisibility.hwMem _ _ _ le_rfl _ (Formalism.L2.DIV.natW_antitone _)⟩`. Establish `hv : GlobalTheory.AdTh.CoefExt.up O.jL (lamV D i) v = O.hw`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hw` using `hP.io.1`. Unfold `hwOK at hw`. Use `Eq.trans ?_ hw.symm` and prove the remaining obligations. Use `show MvPolynomial.map O.jL (Formalism.L2.DIV.ten _) = _`. Rewrite using `[GlobalTheory.Proof.TensorMapDescent.map_ten]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `Formalism.L2.DIV.map_extremal _ _ _`. Establish `hG : (if D.sp.Vneg ((i : ℕ) + 1) then -(D.sp.V ((i : ℕ) + 1)).gram else (D.sp.V ((i : ℕ) + 1)).gram) = 1`. Rewrite using `[hn, hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hi` using `GlobalTheory.AdTh.inner_of_coefTie (hT.coefL i A.μ0) v v`. Rewrite `hi` using `[hG]`. Use `replace hi := hi.trans ((congrArg D.what₂.embLL (GlobalTheory.AdTh.CoefExt.pairVr_extremal (labLL D) v rfl)).trans (map_one _))`. Rewrite using `[← hv, hE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi' : inner ℂ (c0L i v : (R.cV i).W) (c0L i v : (R.cV i).W) = 1` using `hi`. Rewrite `hi'` using `[inner_self_eq_norm_sq_to_K]`. Establish `h4 : ‖(c0L i v : (R.cV i).W)‖ ^ 2 = 1`. Establish `h5` using `congrArg norm hi'`. Simplify using `using h5`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h4`. Introduce `γ γE hγ v`. Establish `hu : IsUnit (γE.val).det` using `(Matrix.isUnit_iff_isUnit_det γE.val).1 γE.isUnit`. Establish `hγE : Matrix.nonsingInvUnit γE.val hu = γE` using `Units.ext rfl`. Establish `hemb : (fun τ => embF O.c' (tauE D τ)) = fun τ => O.jL.comp (labLL D τ)`.
-
-Use function extensionality and compare the values at `fun τ => (embV_eq_embF O.c' O.jL hσ τ).symm`. Rewrite using `[rhoM, dif_pos hu, hγE, hemb]`. Conclude with `GlobalTheory.AdTh.CoefExt.equivariant (W := (R.cV i).W) hE ((R.cV i).ρ γ) (Formalism.L2.DIV.rhoVr (labLL D) (lamV D i) γE) _ (GlobalTheory.AdTh.CoefExt.up_rhoVr O.jL (lamV D i) (labLL D) γE) (h1 γ γE hγ) v`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefMap_norm_equivariant_basis : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → TieIn T R κ v₀ → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → ‖O.c0' O.hw‖ = 1 ∧ (∀ (γ : GQ (Vc D i)) (γE : GL (Fin (Vc D i).rank) D.host.E), Bridge.IsRatMat (Vc D i) γ γE → ∀ v, O.c0' (rhoM O.c' (fun τ => embF O.c' (tauE D τ)) (lamV D i) (γE : Matrix _ _ D.host.E) v) = (R.cV i).ρ γ (O.c0' v)) ∧ Submodule.span ℂ (Set.range O.c0') = ⊤ ∧ ∀ (m : ℕ) (b : Fin m → VsV D i O.c'.F), LinearIndependent O.c'.F b → LinearIndependent ℂ (fun j => O.c0' (b j)) := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ _ _ i Tp tup O hP

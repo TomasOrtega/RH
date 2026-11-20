@@ -15,15 +15,15 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ _ ι _ n lam R hR hS`. Establish `hR0 : 0 ≤ R` using `le_trans zero_le_one hR`. Establish `hw : ∀ τ i, (lam τ).natW i ≤ ⌊R⌋₊`. Introduce `τ i`. Establish `hn : 0 < n` using `Fin.pos i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hS τ i ⟨n - 1, by omega⟩`. Establish `h2 : (lam τ).w i - (lam τ).w ⟨n - 1, by omega⟩ ≤ (⌊R⌋₊ : ℤ)`. Rewrite using `[Int.natCast_floor_eq_floor hR0]`. Conclude with `Int.le_floor.mpr h`. Unfold `DomWeight.natW DomWeight.detShift`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hn]`. Use linear arithmetic over natural numbers and integers. Use `choose s hs0 hs1 hs2 using fun τ => GlobalTheory.T.fockNorm_extremal_vector_eq_bounded_nat n (lam τ) ⌊R⌋₊ (hw τ)`. Use `⟨∏ τ, s τ, Finset.prod_pos fun τ _ => hs0 τ, ?_, ?_⟩` and prove the remaining obligations. Unfold `extNorm`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_prod]`. Conclude with `Finset.prod_congr rfl fun τ _ => hs2 τ K`. Rewrite using `[Nat.cast_prod, Real.log_prod (fun τ _ => by exact_mod_cast (hs0 τ).ne')]`. Establish `hb` using `GlobalTheory.T.log_factorial_pow_mul_factorial_pow_le' n ⌊R⌋₊ R hR (Nat.floor_le hR0)`. Establish `h1 : ∀ τ, Real.log (s τ) ≤ 4 * (n : ℝ) * R * Real.log (n * R)` using `fun τ => le_trans (Real.log_le_log (by exact_mod_cast hs0 τ) (by exact_mod_cast hs1 τ)) hb`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Unfold `bound`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem extNorm_eq_nat_log_le_bound : ∀ (K : Type) [Field K] [StarRing K] [CharZero K] (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n) (R : ℝ), 1 ≤ R → SpreadLe lam R → ∃ s : ℕ, 0 < s ∧ extNorm K lam = (s : K) ∧ Real.log s ≤ bound (Fintype.card ι) n R := by
   intro K _ _ _ ι _ n lam R hR hS

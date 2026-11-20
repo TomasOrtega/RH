@@ -8,9 +8,9 @@ open scoped TensorProduct ENNReal
 namespace GlobalTheory.CompanionTheory.SiegelND.Coef
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ M J _ n _ ψ hψ T`. Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `: IsTopologicalRing (AF F ⊗[F] E)` using `GlobalTheory.CompanionTheory.SW.TopK.isTopRing (AF F)`. Establish `htr : Continuous (Algebra.trace (AF F) (AF F ⊗[F] E))` using `GlobalTheory.CompanionTheory.SW.TopK.continuous_trace (AF F)`. Unfold `chiT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `hψ.1.comp (Continuous.neg (continuous_const.mul (htr.comp ?_)))` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul continuous_subtype_val).matrix_trace`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_chiT : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (n : ℕ), 2 * n < M → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∀ T : Matrix (Fin n) (Fin n) E, Continuous (chiT σ ψ T) := by
   intro F E _ _ _ _ _ σ _ M J _ n _ ψ hψ T

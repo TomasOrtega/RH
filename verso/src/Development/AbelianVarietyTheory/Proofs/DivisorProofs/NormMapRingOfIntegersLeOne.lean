@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory.RingOfIntegersNormBound
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨q, hq, hqx⟩` from `hx`. Rewrite `hqx` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ]`. Establish `hlead : q.coeff q.natDegree = 1` using `hq`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hqx` using `[hlead, map_one, one_mul]`. Establish `hpow : x ^ q.natDegree = -∑ i ∈ Finset.range q.natDegree, algebraMap ℤ F (q.coeff i) * x ^ i` using `eq_neg_of_add_eq_zero_right hqx`. Establish `hpos : 0 < ‖x‖` using `lt_trans one_pos hlt`. Establish `key : ∀ n : ℕ, ‖∑ i ∈ Finset.range n, algebraMap ℤ F (q.coeff i) * x ^ i‖ < ‖x‖ ^ n`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ]`. Establish `h1 : ‖x‖ ^ n < ‖x‖ ^ (n + 1)` using `pow_lt_pow_right₀ hlt (Nat.lt_succ_self n)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt (ih.trans h1) ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Establish `h2 : ‖algebraMap ℤ F (q.coeff n)‖ ≤ 1`. Simplify using `using IsUltrametricDist.norm_intCast_le_one F (q.coeff n)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `key q.natDegree` as an intermediate fact. Rewrite `this` using `[← norm_neg, ← hpow, norm_pow]`. Conclude with `lt_irrefl _ this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral {F : Type*} [NormedField F] [IsUltrametricDist F]
     {x : F} (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
@@ -46,7 +46,7 @@ theorem norm_le_one_of_isIntegral {F : Type*} [NormedField F] [IsUltrametricDist
   exact lt_irrefl _ this
 
 /- English proof (translation)
-The claim follows from `norm_le_one_of_isIntegral (map_isIntegral_int f (NumberField.RingOfIntegers.isIntegral_coe c))`.
+A detailed English derivation is pending.
 -/
 theorem norm_map_ringOfIntegers_le_one {K : Type} [Field K] [NumberField K] {p : ℕ}
     [Fact (Nat.Prime p)] (f : K →+* ℂ_[p]) (c : NumberField.RingOfIntegers K) :

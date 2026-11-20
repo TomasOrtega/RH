@@ -13,14 +13,14 @@ def hwRowSum (R : Type) [CommRing R] {N : ℕ} (μ : Fin N → R) (k : ℕ) (i :
   ∑ l, (hcMat R μ ^ k) i l
 
 /- English proof (translation)
-Simplify using `[hwRowSum, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hwRowSum_zero (R : Type) [CommRing R] {N : ℕ} (μ : Fin N → R) (i : Fin N) :
     hwRowSum R μ 0 i = 1 := by
   simp [hwRowSum, Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `only [hwRowSum, pow_succ', Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hwRowSum_succ_eq_mul (R : Type) [CommRing R] {N : ℕ} (μ : Fin N → R) (k : ℕ) (i : Fin N) :
     hwRowSum R μ (k + 1) i = ∑ m, hcMat R μ i m * hwRowSum R μ k m := by
@@ -28,17 +28,17 @@ theorem hwRowSum_succ_eq_mul (R : Type) [CommRing R] {N : ℕ} (μ : Fin N → R
   exact Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[hwRowSum_succ_eq_mul]`. Use `set r := hwRowSum R μ k with hr`. Establish `h1 : ∀ l, hcMat R μ i l * r l = (if l = i then μ i * r i else 0) + (if l = i then ((N - 1 - i.val : ℕ) : R) * r i else 0) - (if i < l then r l else 0)`. Introduce `l`. Distinguish the cases in `hl : l = i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hl` using the available equality. Simplify using `[hcMat, shift, add_mul]`. Distinguish the cases in `hil : i < l`. Simplify using `[hcMat, hl, hil]`. Simplify using `[hcMat, hl, hil]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ∀ l, (if l < i then 0 else if l = i then μ i * r i else r i - r l) = (if l = i then μ i * r i else 0) + (if i < l then r i else 0) - (if i < l then r l else 0)`. Introduce `l`. Break down `lt_trichotomy l i with h | h | h` into its components or cases. Simplify using `[h, h.ne, h.not_gt]`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[h, h.ne', h.not_gt]`. Simplify using `only [h1, h2, Finset.sum_sub_distrib, Finset.sum_add_distrib]`. Use `congr 2`. Establish `h3 : ∑ l : Fin N, (if i < l then r i else 0) = ((N - 1 - i.val : ℕ) : R) * r i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Use `congr 2`. Establish `: Finset.univ.filter (fun l : Fin N => i < l) = Finset.Ioi i`. Use extensionality with `l`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Fin.card_Ioi]`. Rewrite using `[h3]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hwRowSum_succ (R : Type) [CommRing R] {N : ℕ} (μ : Fin N → R) (k : ℕ) (i : Fin N) :
     hwRowSum R μ (k + 1) i =
@@ -78,11 +78,11 @@ theorem hwRowSum_succ (R : Type) [CommRing R] {N : ℕ} (μ : Fin N → R) (k : 
   simp
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `a b f hf`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify `hf` using `[Matrix.one_apply]`. Simplify using `[Matrix.one_apply, h]`. Consider the case `succ k ih`. Introduce `a b f hf`. Rewrite using `[pow_succ', Matrix.mul_apply, LinearMap.sum_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun l _ => hM a l _ (ih l b f hf)`.
+A detailed English derivation is pending.
 -/
 theorem pow_entry_stable {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] {N : ℕ}
     (E : Matrix (Fin N) (Fin N) (Module.End R V)) (M : Submodule R V)
@@ -101,29 +101,29 @@ theorem pow_entry_stable {R V : Type} [CommRing R] [AddCommGroup V] [Module R V]
     exact Submodule.sum_mem _ fun l _ => hM a l _ (ih l b f hf)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Prove the components needed by the constructor for the conclusion. Introduce `i j hij`. Simplify using `[Matrix.one_apply, hij.ne]`.
+Proceed by induction. Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i`. Simplify using `[hwRowSum_zero, Matrix.one_apply]`. Consider the case `succ k ih`. Take `⟨ih1, ih2⟩` from `ih`. Establish `hcomm` using `(GlobalTheory.T.glMatrixUnit_pow_commutator_and_trace_central (Module.End R V) N E hE k).1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hst` using `pow_entry_stable E M hM k`. Establish `key : ∀ i j l, i < l → E i l ((E ^ k) l j v) - ((E ^ k) i j v - (if j = i then (E ^ k) l l v else 0)) ∈ M`. Introduce `i j l hil`. Establish `h` using `LinearMap.congr_fun (hcomm i l l j) v`. Establish `h' : E i l ((E ^ k) l j v) - (E ^ k) l j (E i l v) = (E ^ k) i j v - (if j = i then (E ^ k) l l v else 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hji : j = i`. Simplify `h` using `[hji, Module.End.mul_apply]`. Simplify `h` using `[hji, Module.End.mul_apply]`. Establish `h2 : (E ^ k) l j (E i l v) ∈ M` using `hst l j _ (hup i l hil)`. Rewrite using `[← h']`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h2`. Prove the components needed by the constructor for the conclusion. Introduce `i j hij`. Rewrite using `[pow_succ', Matrix.mul_apply, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Module.End.mul_apply]`. Break down `lt_trichotomy l j with h | h | h` into its components or cases. Conclude with `hM i l _ (ih1 l j h)`. Substitute `h` using the available equality. Establish `h1` using `hM i l _ (ih2 l)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_sub, map_smul]`. Establish `h2` using `M.smul_mem (hwRowSum R μ k l) (hup i l hij)`. Simplify using `using M.add_mem h1 h2`. Establish `h1` using `key i j l (hij.trans h)`. Rewrite `h1` using `[if_neg hij.ne']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using M.add_mem h1 (ih1 i j hij)`. Introduce `i`. Rewrite using `[pow_succ', Matrix.mul_apply, LinearMap.sum_apply, hwRowSum_succ, Finset.sum_smul, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy l i with h | h | h` into its components or cases. Simplify `hM i l _ (ih1 l i h)` using `[h]`. Substitute `h` using the available equality. Establish `h1` using `hM l l _ (ih2 l)`. Rewrite `h1` using `[map_sub, map_smul]`.
+Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `M.smul_mem (hwRowSum R μ k l) (hd l)`. Establish `h3` using `M.add_mem h1 h2`. Establish `e : E l l ((E ^ k) l l v) - hwRowSum R μ k l • E l l v + hwRowSum R μ k l • (E l l v - μ l • v) = E l l ((E ^ k) l l v) - (μ l * hwRowSum R μ k l) • v`. Rewrite using `[smul_sub, smul_smul, mul_comm (hwRowSum R μ k l)]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[e]`. Simplify using `using h3`. Establish `h1` using `key i i l h`. Rewrite `h1` using `[if_pos rfl]`. Establish `h3` using `M.sub_mem (M.add_mem h1 (ih2 i)) (ih2 l)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : E i l ((E ^ k) l i v) - ((E ^ k) i i v - (E ^ k) l l v) + ((E ^ k) i i v - hwRowSum R μ k i • v) - ((E ^ k) l l v - hwRowSum R μ k l • v) = E i l ((E ^ k) l i v) - (hwRowSum R μ k i - hwRowSum R μ k l) • v`. Rewrite using `[sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite `h3` using `[e]`. Simplify `h3` using `[h.not_gt, h.ne']`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hw_pow_entries {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] {N : ℕ}
     (E : Matrix (Fin N) (Fin N) (Module.End R V)) (hE : GlRel E) (M : Submodule R V)
@@ -199,9 +199,9 @@ theorem hw_pow_entries {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] {
         simpa [h.not_gt, h.ne'] using h3
 
 /- English proof (translation)
-Introduce `R V _ _ _ N E hE M hM μ v hup hd k`. Establish `h` using `(hw_pow_entries E hE M hM μ v hup hd k).2`. Establish `e : (E ^ k).trace v - hcVal R μ k • v = ∑ i, ((E ^ k) i i v - hwRowSum R μ k i • v)`. Simplify using `only [Matrix.trace, Matrix.diag, LinearMap.sum_apply, hcVal, Finset.sum_sub_distrib, Finset.sum_smul, hwRowSum]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun i _ => h i`.
+A detailed English derivation is pending.
 -/
 theorem trace_pow_hw : ∀ (R V : Type) [CommRing R] [AddCommGroup V] [Module R V] (N : ℕ)
     (E : Matrix (Fin N) (Fin N) (Module.End R V)), GlRel E → ∀ (M : Submodule R V),

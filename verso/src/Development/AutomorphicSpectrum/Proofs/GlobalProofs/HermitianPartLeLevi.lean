@@ -20,9 +20,9 @@ section Abstract
 variable {A : Type} [CommRing A] {n r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Use `symm`. Use `Finset.sum_of_injOn (Fin.castLE k.2) (Fin.castLE_injective _).injOn (fun _ _ => Finset.mem_coe.2 (Finset.mem_univ _)) ?_ ?_` and prove the remaining obligations. Introduce `i _ hi`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : ¬ i ≤ k` using `fun h => hi ⟨⟨i.1, Nat.lt_succ_of_le h⟩, by simp, by ext; simp⟩`. Simplify using `[Matrix.mul_diagonal, GlobalTheory.CompanionTheory.LeviGen.ind_apply, h]`. Introduce `j _`. Establish `h : Fin.castLE k.2 j ≤ k` using `Nat.le_of_lt_succ j.2`. Simplify using `[Matrix.mul_diagonal, GlobalTheory.CompanionTheory.LeviGen.ind_apply, h, cT]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mul_ind_cT (s : A →+* A) (X Y : Matrix (Fin n) (Fin r) A) (k : Fin r) :
     X * diagonal (ind {i | i ≤ k} : Fin r → A) * cT s Y =
@@ -42,14 +42,14 @@ theorem mul_ind_cT (s : A →+* A) (X Y : Matrix (Fin n) (Fin r) A) (k : Fin r) 
     simp [Matrix.mul_diagonal, GlobalTheory.CompanionTheory.LeviGen.ind_apply, h, cT]
 
 /- English proof (translation)
-Simplify using `only [onPart, Matrix.add_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, h, sub_self, zero_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem onPart_mul_fix {m : ℕ} {Q G : Matrix (Fin n) (Fin n) A} {Z : Matrix (Fin n) (Fin m) A} (h : Q * Z = Z) :
     onPart Q G * Z = G * Z := by
   simp only [onPart, Matrix.add_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, h, sub_self, zero_add]
 
 /- English proof (translation)
-Establish `e1 : t * (G * Q) = Q * G` using `by rw [hc, ← Matrix.mul_assoc, htQ]`. Establish `e2 : G * Q * t = Q * G` using `by rw [Matrix.mul_assoc, hQt, hc]`. Simplify using `only [onPart, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, htQ, hQt, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem comm_onPart {Q G t : Matrix (Fin n) (Fin n) A} (htQ : t * Q = Q) (hQt : Q * t = Q) (hc : G * Q = Q * G) :
     t * onPart Q G = onPart Q G * t := by
@@ -59,7 +59,7 @@ theorem comm_onPart {Q G t : Matrix (Fin n) (Fin n) A} (htQ : t * Q = Q) (hQt : 
     htQ, hQt, e1, e2]
 
 /- English proof (translation)
-Simplify using `only [onPart, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, hQ, sub_self, zero_add]`. Rewrite using `[← Matrix.mul_assoc, hGH, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_onPart_inv {Q G H : Matrix (Fin n) (Fin n) A} (hQ : Q * Q = Q) (hGH : G * H = 1) :
     G * onPart Q H * Q = Q := by
@@ -79,7 +79,7 @@ variable (σ J X Y) in
 def P (I : Set (Fin r)) : Matrix (Fin n) (Fin n) E := prj (σ : E →+* E) J X Y (ind I)
 
 /- English proof (translation)
-Simplify using `only [P, prj, prX, prY, GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.frameProj, GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.blockDiag, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem proj_eq_frameProj (I : Set (Fin r)) : P σ J X Y I = GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.frameProj σ J X Y I := by
   simp only [P, prj, prX, prY, GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.frameProj, GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.blockDiag,
@@ -87,7 +87,7 @@ theorem proj_eq_frameProj (I : Set (Fin r)) : P σ J X Y I = GlobalTheory.Compan
   rfl
 
 /- English proof (translation)
-Rewrite using `[P, GlobalTheory.CompanionTheory.LeviGen.prj_mul_prj hW.xx hW.yy hW.xy (GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.yJx hCM hJ hW), GlobalTheory.CompanionTheory.LeviGen.ind_mul_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem P_sq (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (I : Set (Fin r)) :
     P σ J X Y I * P σ J X Y I = P σ J X Y I := by
@@ -95,7 +95,7 @@ theorem P_sq (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J 
     GlobalTheory.CompanionTheory.LeviGen.ind_mul_self]
 
 /- English proof (translation)
-Rewrite using `[P, prj, Matrix.add_mul, GlobalTheory.CompanionTheory.LeviGen.prX_mul_X (GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.yJx hCM hJ hW), GlobalTheory.CompanionTheory.LeviGen.prY_mul_X hW.xx, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_mul_X (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (I : Set (Fin r)) :
     P σ J X Y I * X = X * diagonal (ind I : Fin r → E) := by
@@ -103,14 +103,14 @@ theorem proj_mul_X (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame
     GlobalTheory.CompanionTheory.LeviGen.prY_mul_X hW.xx, add_zero]
 
 /- English proof (translation)
-Rewrite using `[P, prj, Matrix.add_mul, GlobalTheory.CompanionTheory.LeviGen.prX_mul_Y hW.yy, GlobalTheory.CompanionTheory.LeviGen.prY_mul_Y hW.xy, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_mul_Y (hW : IsWittFrame σ J X Y) (I : Set (Fin r)) :
     P σ J X Y I * Y = Y * diagonal (ind I : Fin r → E) := by
   rw [P, prj, Matrix.add_mul, GlobalTheory.CompanionTheory.LeviGen.prX_mul_Y hW.yy, GlobalTheory.CompanionTheory.LeviGen.prY_mul_Y hW.xy, zero_add]
 
 /- English proof (translation)
-Rewrite using `[proj_eq_frameProj]`. Conclude with `GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.frameProj_selfAdj hCM hJ I`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem P_selfAdjoint (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (I : Set (Fin r)) :
     cT (σ : E →+* E) (P σ J X Y I) * J = J * P σ J X Y I := by
@@ -118,7 +118,7 @@ theorem P_selfAdjoint (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (I : Set (Fin 
   exact GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.frameProj_selfAdj hCM hJ I
 
 /- English proof (translation)
-Simplify using `only [P, prj, prX, prY, mul_ind_cT]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem proj_Iic_eq (k : Fin r) :
     P σ J X Y {i | i ≤ k} = initCols X k * cT (σ : E →+* E) (initCols Y k) * J +
@@ -127,7 +127,7 @@ theorem proj_Iic_eq (k : Fin r) :
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cT_init_mul (C C' : Matrix (Fin n) (Fin r) E) (k : Fin r) {M : Matrix (Fin r) (Fin r) E}
     (h : cT (σ : E →+* E) C * J * C' = M) :
@@ -136,7 +136,7 @@ theorem cT_init_mul (C C' : Matrix (Fin n) (Fin r) E) (k : Fin r) {M : Matrix (F
   rfl
 
 /- English proof (translation)
-Use extensionality with `a j`. Establish `h : Fin.castLE k.2 j ∈ upTo T` using `⟨k, hk, Nat.le_of_lt_succ j.2⟩`. Simplify using `[Matrix.mul_diagonal, GlobalTheory.CompanionTheory.LeviGen.ind_apply, h, initCols]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mul_diag_init (C : Matrix (Fin n) (Fin r) E) {T : Finset (Fin r)} {k : Fin r} (hk : k ∈ T) :
     ((C * diagonal (ind (upTo T) : Fin r → E)).submatrix id (Fin.castLE k.2) :
@@ -154,9 +154,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}
 
 /- English proof (translation)
-Use extensionality with `i`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, hik⟩`. Conclude with `le_trans hik (T.le_max' k hk)`. Introduce `h`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨_, T.max'_mem hT, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem upTo_eq_max {T : Finset (Fin r)} (hT : T.Nonempty) : upTo T = {i | i ≤ T.max' hT} := by
   ext i
@@ -167,7 +167,7 @@ theorem upTo_eq_max {T : Finset (Fin r)} (hT : T.Nonempty) : upTo T = {i | i ≤
     exact ⟨_, T.max'_mem hT, h⟩
 
 /- English proof (translation)
-Establish `e : upTo (∅ : Finset (Fin r)) = ∅` using `by ext i; simp [upTo]`. Rewrite using `[P, e, GlobalTheory.CompanionTheory.LeviGen.ind_empty]`. Simplify using `[prj, prX, prY]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem proj_upTo_empty : P σ J X Y (upTo (∅ : Finset (Fin r))) = 0 := by
   have e : upTo (∅ : Finset (Fin r)) = ∅ := by ext i; simp [upTo]
@@ -175,14 +175,14 @@ theorem proj_upTo_empty : P σ J X Y (upTo (∅ : Finset (Fin r))) = 0 := by
   simp [prj, prX, prY]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, P_sq hCM hJ hW]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adMat_P_idempotent (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (I : Set (Fin r)) :
     adMat F (P σ J X Y I) * adMat F (P σ J X Y I) = adMat F (P σ J X Y I) := by
   rw [← Matrix.map_mul, P_sq hCM hJ hW]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.cT_map]`. Use `show (cT (σ : E →+* E) (P σ J X Y I)).map (inclR (F := F) (AF F)) * J.map (inclR (F := F) (AF F)) = J.map (inclR (F := F) (AF F)) * (P σ J X Y I).map (inclR (F := F) (AF F))`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, P_selfAdjoint hCM hJ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adMat_P_selfAdjoint (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (I : Set (Fin r)) :
     Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (adMat F (P σ J X Y I)) * JR (F := F) (AF F) J =
@@ -193,7 +193,7 @@ theorem adMat_P_selfAdjoint (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (I : Set
   rw [← Matrix.map_mul, ← Matrix.map_mul, P_selfAdjoint hCM hJ]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.cT_map]`. Use `show (cT (σ : E →+* E) (initCols C k)).map (inclR (F := F) (AF F)) * J.map (inclR (F := F) (AF F)) * (initCols C' k).map (inclR (F := F) (AF F)) = 1`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, cT_init_mul C C' k h, Matrix.submatrix_one _ (Fin.castLE_injective _)]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_one {C C' : Matrix (Fin n) (Fin r) E} (h : cT (σ : E →+* E) C * J * C' = 1) (k : Fin r) :
     cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (adMat F (initCols C k)) * JR (F := F) (AF F) J * adMat F (initCols C' k) = 1 := by
@@ -211,21 +211,21 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}
 
 /- English proof (translation)
-Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matHom_mul_inv (g : GAd σ J) :
     (matHom (AF F) σ J g).1 * (matHom (AF F) σ J g⁻¹).1 = 1 := by
   rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]
 
 /- English proof (translation)
-Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matHom_inv_mul (g : GAd σ J) :
     (matHom (AF F) σ J g⁻¹).1 * (matHom (AF F) σ J g).1 = 1 := by
   rw [← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]
 
 /- English proof (translation)
-The claim follows from `(show HR (AF F) σ J from g).2`.
+A detailed English derivation is pending.
 -/
 theorem matHom_unitary (g : GAd σ J) :
     Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (matHom (AF F) σ J g).1 * JR (F := F) (AF F) J *
@@ -233,13 +233,13 @@ theorem matHom_unitary (g : GAd σ J) :
   (show HR (AF F) σ J from g).2
 
 /- English proof (translation)
-Break down `T.eq_empty_or_nonempty with rfl | hT` into its components or cases. Rewrite using `[proj_upTo_empty]`. Simplify using the standard rewrite rules. Use `set k := T.max' hT`. Establish `hk : k ∈ T` using `T.max'_mem hT`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [levi, Subgroup.mem_iInf, Subgroup.mem_inf] at hg`. Take `⟨B, -, hB⟩` from `(hg k hk).1`. Take `⟨C, -, hC⟩` from `(hg k hk).2`. Establish `eQ : adMat F (P σ J X Y (upTo T)) = adMat F (initCols X k) * cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (adMat F (initCols Y k)) * JR (F` using `F) (AF F) J + adMat F (initCols Y k) * cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (adMat F (initCols X k)) * JR (F := F) (AF F) J := by`. Rewrite using `[upTo_eq_max hT, proj_Iic_eq, GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.cT_map, GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.cT_map]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [adMat, JR]`. Rewrite using `[Matrix.map_add _ (map_add (inclR (F := F) (E := E) (AF F)))]`. Simplify using `only [Matrix.map_mul]`. Apply the tactic sequence `try rfl`. Establish `h1` using `GlobalTheory.CompanionTheory.LeviGen.comm_of_frame (frame_one (GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.yJx hCM hJ hW) k) (matHom_unitary g) (matHom_mul_inv g) (matHom_inv_mul g) hB hC`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `GlobalTheory.CompanionTheory.LeviGen.comm_of_frame (frame_one hW.xy k) (matHom_unitary g) (matHom_mul_inv g) (matHom_inv_mul g) hC hB`. Rewrite using `[eQ, Matrix.mul_add, Matrix.add_mul, h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem comm_Q (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {T : Finset (Fin r)}
     {g : GAd σ J} (hg : g ∈ levi σ J X Y T) :
@@ -274,7 +274,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Use `show (adMat F (P σ J X Y I) * adMat F C) a i = adMat F C a i`. Rewrite using `[← Matrix.map_mul, hC]`. Simplify using `[Matrix.mul_diagonal, GlobalTheory.CompanionTheory.LeviGen.ind_apply, hi]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Q_mulVec_col (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (I : Set (Fin r))
     {C : Matrix (Fin n) (Fin r) E} (hC : P σ J X Y I * C = C * diagonal (ind I : Fin r → E)) {i : Fin r} (hi : i ∈ I) :
@@ -286,9 +286,9 @@ theorem Q_mulVec_col (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFra
   simp [Matrix.mul_diagonal, GlobalTheory.CompanionTheory.LeviGen.ind_apply, hi]
 
 /- English proof (translation)
-Set `S : Submodule (AF F ⊗[F] E) (Fin n → AF F ⊗[F] E)` to `LinearMap.eqLocus (adMat F (P σ J X Y I)).mulVecLin LinearMap.id`. Establish `hle : colSpan F X I ⊔ colSpan F Y I ≤ S`. Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `Q_mulVec_col hCM hJ hW I (proj_mul_X hCM hJ hW I) hi`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `Q_mulVec_col hCM hJ hW I (proj_mul_Y hW I) hi`. Conclude with `hle hy`.
+A detailed English derivation is pending.
 -/
 theorem Q_fix_span (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (I : Set (Fin r))
     {y : Fin n → AF F ⊗[F] E} (hy : y ∈ colSpan F X I ⊔ colSpan F Y I) :
@@ -304,7 +304,7 @@ theorem Q_fix_span (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame
   exact hle hy
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul]`. Use `congr 1`. Establish `e : P σ J X Y (upTo T) * initCols C k = ((P σ J X Y (upTo T) * C).submatrix id (Fin.castLE k.2) : Matrix (Fin n) (Fin (k.val + 1)) E)` using `rfl`. Rewrite using `[e, hC, mul_diag_init C hk]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Q_mul_init (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {T : Finset (Fin r)}
     {C : Matrix (Fin n) (Fin r) E} (hC : P σ J X Y (upTo T) * C = C * diagonal (ind (upTo T) : Fin r → E))
@@ -352,9 +352,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}
 
 /- English proof (translation)
-Establish `hg'` using `hg`. Simplify using `only [levi, Subgroup.mem_iInf, Subgroup.mem_inf] at hg' ⊢`. Introduce `k hk`. Take `⟨B, -, hB⟩` from `(hg' k hk).1`. Take `⟨C, -, hC⟩` from `(hg' k hk).2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨B, Subgroup.mem_top _, ?_⟩, ⟨C, Subgroup.mem_top _, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[matHom_onFrame, onPart_mul_fix (Q_mul_init hCM hJ hW (proj_mul_X hCM hJ hW _) hk), hB]`. Rewrite using `[matHom_onFrame, onPart_mul_fix (Q_mul_init hCM hJ hW (proj_mul_Y hW _) hk), hC]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem onFrame_mem_levi (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (T : Finset (Fin r))
     (g : GAd σ J) (hg : g ∈ levi σ J X Y T) : onFrame hCM hJ hW T g hg ∈ levi σ J X Y T := by
@@ -368,7 +368,7 @@ theorem onFrame_mem_levi (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWit
   · rw [matHom_onFrame, onPart_mul_fix (Q_mul_init hCM hJ hW (proj_mul_Y hW _) hk), hC]
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hQy` using `Q_fix_span hCM hJ hW (upTo T) hy`. Rewrite using `[map_mul, Units.val_mul, matHom_onFrame_inv]`. Rewrite using `[← hQy, mulVec_mulVec, mul_onPart_inv (adMat_P_idempotent hCM hJ hW _) (matHom_mul_inv g)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_inv_onFrame_mem_uPart (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y)
     (T : Finset (Fin r)) (g : GAd σ J) (hg : g ∈ levi σ J X Y T) :
@@ -380,9 +380,9 @@ theorem mul_inv_onFrame_mem_uPart (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (h
     mul_onPart_inv (adMat_P_idempotent hCM hJ hW _) (matHom_mul_inv g)]
 
 /- English proof (translation)
-Establish `key : ∀ v, (matHom (AF F) σ J t).1 *ᵥ (adMat F (P σ J X Y (upTo T)) *ᵥ v) = adMat F (P σ J X Y (upTo T)) *ᵥ v` using `fun v => by`. Use `ht _ ?_` and prove the remaining obligations. Rewrite using `[proj_eq_frameProj]`. Use `show (GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.frameProj σ J X Y (upTo T)).map (inclR (F := F) (AF F)) *ᵥ v ∈ _`. Rewrite using `[GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.frameProj_map, add_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, ← mulVec_mulVec]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `Submodule.add_mem_sup (GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.mem_colSpan X subset_rfl _) (GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.mem_colSpan Y subset_rfl _)`. Use extensionality with `i j`. Use `congrFun (key (Pi.single j 1)) i` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, mulVec_single_one, mulVec_single_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Q_fix_of_uPart (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {T : Finset (Fin r)}
     {t : GAd σ J} (ht : t ∈ uPart σ J X Y T) :
@@ -402,9 +402,9 @@ theorem Q_fix_of_uPart (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittF
   exact this
 
 /- English proof (translation)
-Establish `hJu : IsUnit (JR (F` using `F) (AF F) J).det := by`. Rewrite using `[show JR (F := F) (AF F) J = J.map (inclR (F := F) (AF F)) from rfl, show (J.map (inclR (F := F) (E := E) (AF F))).det = inclR (F := F) (E := E) (AF F) J.det from (RingHom.map_det (inclR (F := F) (E := E) (AF F)) J).symm]`. Conclude with `(isUnit_iff_ne_zero.2 hJ.2).map (inclR (F := F) (E := E) (AF F))`. Establish `htQ` using `Q_fix_of_uPart hCM hJ hW ht`. Establish `hQt` using `GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.mul_eq_of_unitary hJu (matHom_unitary t) (adMat_P_selfAdjoint hCM hJ _) htQ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `comm_onPart htQ hQt (comm_Q hCM hJ hW hg)`. Use `GlobalTheory.AdelicU.matHom_injective (AF F) σ J ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Conclude with `Units.ext (by rw [Units.val_mul, Units.val_mul, matHom_onFrame]; exact hc)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_onFrame (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (T : Finset (Fin r))
     (g : GAd σ J) (hg : g ∈ levi σ J X Y T) {t : GAd σ J} (ht : t ∈ uPart σ J X Y T) :
@@ -422,7 +422,7 @@ theorem comm_onFrame (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFra
   exact Units.ext (by rw [Units.val_mul, Units.val_mul, matHom_onFrame]; exact hc)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, mul_inv_onFrame_mem_uPart hCM hJ hW T g hg, _, onFrame_mem_levi hCM hJ hW T g hg, fun _ ht => comm_onFrame hCM hJ hW T g hg ht, (inv_mul_cancel_right g _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_split_general (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (T : Finset (Fin r))
     (g : GAd σ J) (hg : g ∈ levi σ J X Y T) :
@@ -433,7 +433,7 @@ theorem exists_split_general (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : I
 end AutomorphyRankFourMain
 
 /- English proof (translation)
-Introduce `D V m X Y hW T mm hmm`. Take `⟨hCM, hJ⟩` from `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm`. Conclude with `exists_split_general hCM (hJ V) hW T mm hmm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_split : ∀ (D : D7) (V : HSp D) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E),
     GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ (T : Finset (Fin m)), ∀ mm ∈ levi D.sp.cm.sig V.gram X Y T,

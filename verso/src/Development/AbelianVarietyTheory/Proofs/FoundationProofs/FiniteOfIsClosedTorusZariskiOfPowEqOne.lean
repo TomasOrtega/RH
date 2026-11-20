@@ -9,11 +9,9 @@ section Constructible
 variable {Y Z : Type*} [TopologicalSpace Y] [TopologicalSpace Z]
 
 /- English proof (translation)
-Proceed by induction on `hC using IsConstructible.empty_union_induction with`. Consider the case `open_retrocompact U hU _`. Rewrite using `[← frontier_compl]`. Conclude with `interior_frontier (hU.preimage hf).isClosed_compl`. Consider the case `union s _ t _ hs ht`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.preimage_union]`. Establish `h1 : frontier (f ⁻¹' s ∪ f ⁻¹' t) ⊆ frontier (f ⁻¹' s) ∪ frontier (f ⁻¹' t)` using `(frontier_union_subset _ _).trans (Set.union_subset_union Set.inter_subset_left Set.inter_subset_right)`. Establish `h2 : interior (frontier (f ⁻¹' s) ∪ frontier (f ⁻¹' t)) = ∅`. Rewrite using `[interior_union_isClosed_of_interior_empty isClosed_frontier ht, hs]`. Conclude with `Set.eq_empty_of_subset_empty (h2 ▸ interior_mono h1)`.
-
-Consider the case `compl s _ hs => rw [Set.preimage_compl, frontier_compl, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem interior_frontier_preimage_of_isConstructible {f : Y → Z} (hf : Continuous f)
     {C : Set Z} (hC : IsConstructible C) : interior (frontier (f ⁻¹' C)) = ∅ := by
@@ -32,7 +30,7 @@ theorem interior_frontier_preimage_of_isConstructible {f : Y → Z} (hf : Contin
   | compl s _ hs => rw [Set.preimage_compl, frontier_compl, hs]
 
 /- English proof (translation)
-Establish `h1 : frontier S = (interior S)ᶜ`. Rewrite using `[frontier, hS.closure_eq, Set.compl_eq_univ_diff]`. Rewrite `h` using `[h1, interior_eq_empty_iff_dense_compl, compl_compl]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dense_interior_of_interior_frontier_eq_empty {S : Set Y} (hS : Dense S)
     (h : interior (frontier S) = ∅) : Dense (interior S) := by
@@ -41,13 +39,11 @@ theorem dense_interior_of_interior_frontier_eq_empty {S : Set Y} (hS : Dense S)
   rwa [h1, interior_eq_empty_iff_dense_compl, compl_compl] at h
 
 /- English proof (translation)
-Use `set S := f ⁻¹' C with hS`. Establish `h1` using `interior_frontier_preimage_of_isConstructible (hf.comp (continuous_subtype_val (p := fun y => y ∈ closure S))) hC`. Rewrite `h1` using `[Set.preimage_comp, ← hS]`. Establish `hd : Dense ((↑) ⁻¹' S : Set (closure S))`. Rewrite using `[Subtype.dense_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `closure_mono ?_` and prove the remaining obligations. Introduce `y hy`. Conclude with `⟨⟨y, subset_closure hy⟩, hy, rfl⟩`. Establish `h2` using `dense_interior_of_interior_frontier_eq_empty hd h1`. Take `⟨V, hV, hVe⟩` from `isOpen_induced_iff.1 (isOpen_interior (s := ((↑) ⁻¹' S : Set (closure S))))`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨V, hV, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hyV, hyS⟩`. Establish `: (⟨y, hyS⟩ : closure S) ∈ interior ((↑) ⁻¹' S : Set (closure S))` using `hVe ▸ hyV`. Conclude with `interior_subset (s := ((↑) ⁻¹' S : Set (closure S))) this`. Use `Set.Subset.antisymm (closure_minimal Set.inter_subset_right isClosed_closure) ?_` and prove the remaining obligations.
-
-Rewrite `h2` using `[Subtype.dense_iff, ← hVe, Subtype.image_preimage_coe, Set.inter_comm]`. Conclude with `h2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isOpen_inter_closure_subset_of_isConstructible {f : Y → Z} (hf : Continuous f)
     {C : Set Z} (hC : IsConstructible C) :
@@ -76,9 +72,9 @@ theorem exists_isOpen_inter_closure_subset_of_isConstructible {f : Y → Z} (hf 
 variable {G : Type*} [Group G] [TopologicalSpace G] [SeparatelyContinuousMul G] [ContinuousInv G]
 
 /- English proof (translation)
-Take `⟨u, huV, huK⟩` from `hne`. Establish `huH : u ∈ H` using `hVH ⟨huV, huK⟩`. Establish `hmul : ∀ g ∈ closure (H : Set G), ∀ h ∈ H, g * h ∈ closure (H : Set G)` using `fun g hg h hh => map_mem_closure (f := fun x => x * h) (continuous_mul_const h) hg fun x hx => H.mul_mem hx hh`. Use `isClosed_of_closure_subset fun g hg => ?_` and prove the remaining obligations. Establish `hg' : g⁻¹ ∈ closure (H : Set G)` using `map_mem_closure continuous_inv hg fun x hx => H.inv_mem hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨h, hhV, hhH⟩` from `mem_closure_iff.1 (hmul _ hg' u huH) ((fun y => g * y) ⁻¹' V) (hV.preimage (continuous_const_mul g)) (by simpa using huV)`. Establish `: g * h ∈ H` using `hVH ⟨hhV, hmul g hg h hhH⟩`. Simplify using `using H.mul_mem this (H.inv_mem hhH)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isClosed_subgroup_of_isOpen_inter_closure_subset (H : Subgroup G) {V : Set G}
     (hV : IsOpen V) (hVH : V ∩ closure (H : Set G) ⊆ H) (hne : (V ∩ closure (H : Set G)).Nonempty) :
@@ -96,7 +92,7 @@ theorem isClosed_subgroup_of_isOpen_inter_closure_subset (H : Subgroup G) {V : S
   simpa using H.mul_mem this (H.inv_mem hhH)
 
 /- English proof (translation)
-Take `⟨V, hV, h1, h2⟩` from `exists_isOpen_inter_closure_subset_of_isConstructible hf hC`. Rewrite `h1`, `h2` using `[← hH]`. Use `isClosed_subgroup_of_isOpen_inter_closure_subset H hV h1 ?_` and prove the remaining obligations. Rewrite using `[← closure_nonempty_iff, h2]`. Conclude with `⟨1, subset_closure H.one_mem⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isClosed_subgroup_of_eq_preimage_isConstructible (H : Subgroup G) {f : G → Z}
     (hf : Continuous f) {C : Set Z} (hC : IsConstructible C) (hH : (H : Set G) = f ⁻¹' C) :
@@ -114,11 +110,11 @@ section Characters
 variable {X H : Type*} [MulOneClass H]
 
 /- English proof (translation)
-Establish `h0 : Finsupp.mapDomain χ f = 0`. Use `linearIndependent_iff.1 (linearIndependent_monoidHom H R) _ ?_` and prove the remaining obligations. Rewrite using `[Finsupp.linearCombination_mapDomain]`. Use function extensionality and compare the values at `s`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_apply', Pi.zero_apply, ← hf s]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hfac : Function.FactorsThrough c χ` using `fun x y h => hc x y h`. Establish `h1 : Finsupp.linearCombination R (Function.extend χ c 0) (Finsupp.mapDomain χ f) = 0`. Rewrite using `[h0, map_zero]`. Rewrite `h1` using `[Finsupp.linearCombination_mapDomain, hfac.extend_comp, Finsupp.linearCombination_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem sum_eq_zero_of_factorsThrough_characters {R : Type*} [CommRing R] [IsDomain R]
     (χ : X → (H →* R)) (f : X →₀ R) (hf : ∀ s : H, f.sum (fun x a => a * χ x s) = 0)
@@ -148,23 +144,23 @@ noncomputable def torusEval (t : Multiplicative X →* Rˣ) : AddMonoidAlgebra R
   AddMonoidAlgebra.lift R R X ((Units.coeHom R).comp t)
 
 /- English proof (translation)
-Simplify using `[torusEval]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem torusEval_single (t : Multiplicative X →* Rˣ) (x : X) (a : R) :
     torusEval t (single x a) = a * t (Multiplicative.ofAdd x) := by
   simp [torusEval]
 
 /- English proof (translation)
-Simplify using `[torusEval, lift_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem torusEval_apply (t : Multiplicative X →* Rˣ) (f : AddMonoidAlgebra R X) :
     torusEval t f = f.coeff.sum fun x a => a * t (Multiplicative.ofAdd x) := by
   simp [torusEval, lift_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `s t h`. Use `MonoidHom.ext fun x => Units.ext ?_` and prove the remaining obligations. Simplify using `using congrArg (fun φ : AddMonoidAlgebra R X →ₐ[R] R => φ (single x.toAdd 1)) h`. Introduce `φ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨((AddMonoidAlgebra.lift R R X).symm φ).toHomUnits, ?_⟩` and prove the remaining obligations. Rewrite using `[torusEval]`. Use `conv_rhs => rw [← (AddMonoidAlgebra.lift R R X).apply_symm_apply φ]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem torusEval_bijective :
     Function.Bijective (torusEval : (Multiplicative X →* Rˣ) → (AddMonoidAlgebra R X →ₐ[R] R)) := by
@@ -208,7 +204,7 @@ noncomputable def torusPrime (t : Multiplicative X →* Rˣ) : PrimeSpectrum (Ad
   PrimeSpectrum.comap (torusEval t).toRingHom ⟨⊥, Ideal.isPrime_bot⟩
 
 /- English proof (translation)
-Simplify using `[torusPrime]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem mem_torusPrime (t : Multiplicative X →* Rˣ) (f : AddMonoidAlgebra R X) :
     f ∈ (torusPrime t).asIdeal ↔ torusEval t f = 0 := by
@@ -220,9 +216,9 @@ variable (R X) in
   TopologicalSpace.induced torusPrime inferInstance
 
 /- English proof (translation)
-Rewrite using `[isClosed_induced_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Z, hZ, rfl⟩`. Take `⟨S, rfl⟩` from `(PrimeSpectrum.isClosed_iff_zeroLocus Z).1 hZ`. Conclude with `⟨S, fun t => by simp [Set.subset_def]⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨S, hS⟩`. Use `⟨PrimeSpectrum.zeroLocus S, PrimeSpectrum.isClosed_zeroLocus S, ?_⟩` and prove the remaining obligations. Use extensionality with `t`. Simplify using `[Set.subset_def, hS]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isClosed_torusZariski_iff (H : Set (Multiplicative X →* Rˣ)) :
     IsClosed[torusZariski R X] H ↔
@@ -238,9 +234,9 @@ theorem isClosed_torusZariski_iff (H : Set (Multiplicative X →* Rˣ)) :
     simp [Set.subset_def, hS]
 
 /- English proof (translation)
-Rewrite using `[torusEval_apply]`. Use `sum_eq_zero_of_factorsThrough_characters (fun x => (torusChar x).comp H.subtype) f.coeff (fun s => ?_) _ fun x y hxy => ?_` and prove the remaining obligations. Rewrite using `[← hf s s.2, torusEval_apply]`. Both sides reduce to the same expression. Use `ht (Multiplicative.ofAdd x * (Multiplicative.ofAdd y)⁻¹) fun s hs => by` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h` using `DFunLike.congr_fun hxy ⟨s, hs⟩`. Rewrite using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `Units.ext h`. Rewrite `this` using `[map_mul, map_inv, mul_inv_eq_one]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusEval_eq_zero_of_forall_char (H : Subgroup (Multiplicative X →* Rˣ))
     {f : AddMonoidAlgebra R X} (hf : ∀ s ∈ H, torusEval s f = 0) {t : Multiplicative X →* Rˣ}
@@ -258,7 +254,7 @@ theorem torusEval_eq_zero_of_forall_char (H : Subgroup (Multiplicative X →* R�
     rw [this]
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `(isClosed_torusZariski_iff _).1 hH`. Conclude with `(hS t).2 fun f hf => torusEval_eq_zero_of_forall_char H (fun s hs => (hS s).1 hs f hf) ht`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_isClosed_torusZariski {H : Subgroup (Multiplicative X →* Rˣ)}
     (hH : IsClosed[torusZariski R X] (H : Set (Multiplicative X →* Rˣ)))
@@ -268,9 +264,7 @@ theorem mem_of_isClosed_torusZariski {H : Subgroup (Multiplicative X →* Rˣ)}
   exact (hS t).2 fun f hf => torusEval_eq_zero_of_forall_char H (fun s hs => (hS s).1 hs f hf) ht
 
 /- English proof (translation)
-Use `haveI : NeZero m := ⟨hm⟩`. Use `haveI : AddGroup.FG X := Module.Finite.iff_addGroup_fg.1 inferInstance`. Take `⟨T, hT⟩` from `(Group.fg_def.1 (inferInstance : Group.FG (Multiplicative X)))`. Set `φ : {s : Multiplicative X →* Rˣ | s ^ m = 1} → (T → rootsOfUnity m R)` to `fun s x => ⟨s.1 x, by simpa using DFunLike.congr_fun (show s.1 ^ m = 1 from s.2) x.1⟩`. Use `Finite.of_injective φ fun s t h => Subtype.ext ?_` and prove the remaining obligations.
-
-Use `MonoidHom.eq_of_eqOn_dense hT fun x hx => ?_` and prove the remaining obligations. Conclude with `congrArg Subtype.val (congrFun h ⟨x, hx⟩)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_setOf_pow_eq_one_torus [Module.Finite ℤ X] {m : ℕ} (hm : m ≠ 0) :
     {s : Multiplicative X →* Rˣ | s ^ m = 1}.Finite := by
@@ -284,19 +278,17 @@ theorem finite_setOf_pow_eq_one_torus [Module.Finite ℤ X] {m : ℕ} (hm : m �
   exact congrArg Subtype.val (congrFun h ⟨x, hx⟩)
 
 /- English proof (translation)
-Set `K : Submodule ℤ X` to `AddSubgroup.toIntSubmodule { carrier := {x | ∀ s ∈ H, s (Multiplicative.ofAdd x) = 1} add_mem' := fun {a b} ha hb s hs => by rw [ofAdd_add, map_mul, ha s hs, hb s hs, mul_one] zero_mem' := fun s _ => map_one s neg_mem' := fun {a} ha s hs => by rw [ofAdd_neg, map_inv, ha s hs, inv …`. Establish `hK : ∀ x, x ∈ K ↔ ∀ s ∈ H, s (Multiplicative.ofAdd x) = 1` using `fun x => Iff.rfl`. Set `N : Submodule ℤ X` to `K ⊔ Ideal.span {(n : ℤ)} • ⊤`. Establish `hnN : ∀ x : X, (n : ℤ) • x ∈ N` using `fun x => Submodule.mem_sup_right (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) trivial)`. Establish `hnQ : ∀ q : X ⧸ N, (n : ℤ) • q = 0` using `fun q => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, rfl⟩` from `N.mkQ_surjective q`. Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hnN x`. Establish `hnQ' : ∀ q : Multiplicative (X ⧸ N), q ^ n = 1` using `fun q => by`. Use `hnQ q.toAdd` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[natCast_zsmul]`. Conclude with `congrArg Multiplicative.ofAdd this`. Establish `hN : (⊤ : Submodule ℤ X) ≤ N`. Introduce `x _`. Assume the negation of the conclusion as `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : Finite (X ⧸ N) := Module.finite_of_fg_torsion _ fun q => ⟨⟨n, mem_nonZeroDivisors_of_ne_zero (Nat.cast_ne_zero.2 (NeZero.ne n))⟩, hnQ q⟩`. Use `haveI : HasEnoughRootsOfUnity R (Monoid.exponent (Multiplicative (X ⧸ N))) := HasEnoughRootsOfUnity.of_dvd R (Monoid.exponent_dvd_of_forall_pow_eq_one hnQ')`. Take `⟨φ, hφ⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity (Multiplicative (X ⧸ N)) R (a := Multiplicative.ofAdd (N.mkQ x)) (by simpa using hx)`. Set `t : Multiplicative X →* Rˣ` to `φ.comp (AddMonoidHom.toMultiplicative N.mkQ.toAddMonoidHom)`. Establish `ht : ∀ y, t y = φ (Multiplicative.ofAdd (N.mkQ y.toAdd))` using `fun y => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `htH : t ∈ H` using `mem_of_isClosed_torusZariski hH fun y hy => by`. Establish `: N.mkQ y.toAdd = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.mem_sup_left ((hK _).2 hy)`. Rewrite using `[ht, this, ofAdd_zero, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ht1 : t = 1` using `hn t htH (MonoidHom.ext fun y => by`. Rewrite using `[MonoidHom.pow_apply, ht, ← map_pow, hnQ', map_one, MonoidHom.one_apply])`. Conclude with `hφ (by simpa [ht] using DFunLike.congr_fun ht1 (Multiplicative.ofAdd x))`. Take `⟨r, hr, hrK⟩` from `Submodule.exists_sub_one_mem_and_smul_le_of_fg_of_le_sup (I := Ideal.span {(n : ℤ)}) (N := K) (N' := ⊤) (P := ⊤) Module.Finite.fg_top le_rfl hN`. Use `⟨r, Ideal.mem_span_singleton.1 hr, fun s hs => MonoidHom.ext fun y => ?_⟩` and prove the remaining obligations.
-
-Use `(hK _).1 (hrK (Submodule.smul_mem_pointwise_smul y.toAdd r ⊤ trivial)) s hs` as an intermediate fact. Rewrite `this` using `[ofAdd_zsmul, map_zpow]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_zpow_eq_one_of_isClosed_torusZariski [Module.Finite ℤ X] {n : ℕ} [NeZero n]
     [HasEnoughRootsOfUnity R n] {H : Subgroup (Multiplicative X →* Rˣ)}
@@ -347,13 +339,11 @@ theorem exists_zpow_eq_one_of_isClosed_torusZariski [Module.Finite ℤ X] {n : �
   exact this
 
 /- English proof (translation)
-Use `haveI : NeZero n := ⟨by omega⟩`. Take `⟨r, hr, hrH⟩` from `exists_zpow_eq_one_of_isClosed_torusZariski hH hn`. Establish `hr0 : r.natAbs ≠ 0`. Rewrite using `[Int.natAbs_ne_zero]`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `Int.natAbs_dvd_natAbs.2 hr` as an intermediate fact. Simplify using `only [Int.natAbs_natCast, zero_sub, Int.reduceNeg, Int.natAbs_neg, Int.natAbs_one, Nat.dvd_one] at this`. Use linear arithmetic over natural numbers and integers. Establish `hfin : Finite H` using `(finite_setOf_pow_eq_one_torus (R := R) (X := X) hr0).subset (t := (H : Set (Multiplicative X →* Rˣ))) fun s hs => pow_natAbs_eq_one.2 (hrH s hs)`. Use `⟨hfin, Nat.coprime_of_dvd fun p hp hpH hpn => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI := Fact.mk hp`. Take `⟨s, hs⟩` from `exists_prime_orderOf_dvd_card' p hpH`. Establish `h1 : s ^ n = 1` using `orderOf_dvd_iff_pow_eq_one.1 (hs ▸ hpn)`. Establish `h3 : s = 1` using `Subtype.ext (hn s s.2 (congrArg Subtype.val h1))`. Rewrite `hs` using `[h3, orderOf_one]`.
-
-Conclude with `hp.one_lt.ne hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_of_isClosed_torusZariski_of_pow_eq_one [Module.Finite ℤ X] {n : ℕ} (h2 : 2 ≤ n)
     [HasEnoughRootsOfUnity R n] {H : Subgroup (Multiplicative X →* Rˣ)}
@@ -423,7 +413,7 @@ Both sides reduce to the same expression.
     torusCoord R b t i = t (Multiplicative.ofAdd (b i)) := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Additive.toMul ((b.constr ℤ fun i => Additive.ofMul (u i)) x) = _`. Rewrite using `[Module.Basis.constr_apply, Finsupp.sum, Finsupp.prod, toMul_sum]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem torusCoord_symm_apply (b : Module.Basis ι ℤ X) (u : ι → Rˣ) (x : X) :
     (torusCoord R b).symm u (Multiplicative.ofAdd x) = (b.repr x).prod fun i m => u i ^ m := by
@@ -435,7 +425,7 @@ noncomputable def laurentEval (u : ι → Rˣ) : AddMonoidAlgebra R (ι →₀ �
   torusEval ((torusCoord R Finsupp.basisSingleOne).symm u)
 
 /- English proof (translation)
-Rewrite using `[laurentEval, torusEval_single, torusCoord_symm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 @[simp] theorem laurentEval_single (u : ι → Rˣ) (x : ι →₀ ℤ) (a : R) :
     laurentEval u (single x a) = a * ((x.prod fun i m => u i ^ m : Rˣ) : R) := by

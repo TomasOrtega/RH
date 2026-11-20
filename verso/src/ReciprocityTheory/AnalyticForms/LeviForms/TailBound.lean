@@ -18,7 +18,7 @@ def TailTransferStatement : Prop :=
     μ.restrict V = ν.restrict V → μ Set.univ = ν Set.univ → μ Vᶜ = ν Vᶜ
 
 /- English proof (translation)
-Establish `hm : MeasurableSet V` using `hV.measurableSet`. Establish `hVV : μ V = ν V`. Use `congrArg (fun m : Measure X => m Set.univ) h1` as an intermediate fact. Simplify `this` using `[Measure.restrict_apply MeasurableSet.univ]`. Rewrite using `[measure_compl hm (measure_ne_top μ V), measure_compl hm (measure_ne_top ν V), hVV, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem measure_compl_eq_of_restrict_eq {X : Type} [MeasurableSpace X] [TopologicalSpace X] [OpensMeasurableSpace X]
     (μ ν : Measure X) [IsFiniteMeasure μ] [IsFiniteMeasure ν] (V : Set X) (hV : IsOpen V)
@@ -30,39 +30,35 @@ theorem measure_compl_eq_of_restrict_eq {X : Type} [MeasurableSpace X] [Topologi
   rw [measure_compl hm (measure_ne_top μ V), measure_compl hm (measure_ne_top ν V), hVV, h2]
 
 /- English proof (translation)
-Establish `hR0 : 0 < R` using `lt_of_lt_of_le (Real.exp_pos 1) hR`. Establish `hlogR : 1 ≤ Real.log R`. Rewrite using `[← Real.log_exp 1]`. Conclude with `Real.log_le_log (Real.exp_pos 1) hR`. Establish `hlog2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog2' : Real.log 2 < 1`. Use `Real.log_two_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `set ind : ℕ → X → ENNReal := fun j => Set.indicator {y | 2 ^ j * R ≤ ρ y} (fun _ => (1 : ENNReal)) with hind`. Establish `hmeas : ∀ c : ℝ, MeasurableSet {y | c ≤ ρ y}` using `fun c => measurableSet_le measurable_const hρ`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpt : ∀ y, R ≤ ρ y → ENNReal.ofReal (Real.log (ρ y)) ≤ ENNReal.ofReal (Real.log R) + ENNReal.ofReal (Real.log 2) * ∑' j : ℕ, ind j y`. Introduce `y hy`. Establish `hex : ∃ N : ℕ, ρ y < 2 ^ N * R`. Take `⟨N, hN⟩` from `pow_unbounded_of_one_lt (ρ y / R) (by norm_num : (1:ℝ) < 2)`. Conclude with `⟨N, by rwa [div_lt_iff₀ hR0] at hN⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : ρ y < 2 ^ Nat.find hex * R` using `Nat.find_spec hex`. Establish `hmin : ∀ j < Nat.find hex, 2 ^ j * R ≤ ρ y` using `fun j hj => not_lt.1 (Nat.find_min hex hj)`. Establish `hsum : ((Nat.find hex : ℕ) : ENNReal) ≤ ∑' j : ℕ, ind j y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_congr rfl (fun j hj => Set.indicator_of_mem (show y ∈ {y | 2 ^ j * R ≤ ρ y} from hmin j (Finset.mem_range.1 hj)) _)]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `_ ≤ _ := ENNReal.sum_le_tsum _`. Establish `hρpos : 0 < ρ y` using `lt_of_lt_of_le hR0 hy`. Establish `hlog : Real.log (ρ y) ≤ Real.log R + Real.log 2 * (Nat.find hex : ℕ)`. Use `Real.log_lt_log hρpos hN` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Rewrite `this` using `[Real.log_mul (by positivity) hR0.ne', Real.log_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_add (by linarith) (by positivity), ENNReal.ofReal_mul hlog2.le]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ ≤ _ := by gcongr`. Use `set S := {y | R ≤ ρ y}`. Establish `hS` using `hmeas R`. Establish `hterm : ∀ j : ℕ, μ {y | 2 ^ j * R ≤ ρ y} ≤ ENNReal.ofReal (K * Real.log R / R * ((j + 1) * (1 / 2 : ℝ) ^ j))`. Introduce `j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2j : Real.exp 1 ≤ 2 ^ j * R` using `le_trans hR (le_mul_of_one_le_left hR0.le (one_le_pow₀ (by norm_num)))`. Use `(h _ h2j).trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Establish `hlj : Real.log (2 ^ j * R) ≤ (j + 1) * Real.log R`. Rewrite using `[Real.log_mul (by positivity) hR0.ne', Real.log_pow]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hpos : (0 : ℝ) < 2 ^ j * R` using `by positivity`. Rewrite using `[div_le_iff₀ hpos]`. Establish `: K * Real.log R / R * ((↑j + 1) * (1 / 2) ^ j) * (2 ^ j * R) = K * ((j + 1) * Real.log R)`. Rewrite using `[one_div_pow]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_left hlj hK`. Establish `hsumm : Summable (fun j : ℕ => ((j : ℝ) + 1) * (1 / 2 : ℝ) ^ j)`. Establish `h1` using `summable_pow_mul_geometric_of_norm_lt_one 1 (r := (1 / 2 : ℝ)) (by norm_num)`. Establish `h2` using `summable_geometric_of_lt_one (r := (1 / 2 : ℝ)) (by norm_num) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1.add h2` using `[add_mul]`. Establish `htsum : ∑' j : ℕ, ((j : ℝ) + 1) * (1 / 2 : ℝ) ^ j = 4`. Establish `h1` using `tsum_coe_mul_geometric_of_norm_lt_one (𝕜 := ℝ) (r := 1 / 2) (by norm_num)`. Establish `h2` using `tsum_geometric_of_lt_one (r := (1 / 2 : ℝ)) (by norm_num) (by norm_num)`. Establish `hs1 : Summable (fun j : ℕ => (j : ℝ) * (1 / 2 : ℝ) ^ j)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Simplify using `using summable_pow_mul_geometric_of_norm_lt_one 1 (r := (1 / 2 : ℝ)) (by norm_num)`. Establish `hs2` using `summable_geometric_of_lt_one (r := (1 / 2 : ℝ)) (by norm_num) (by norm_num)`. Simplify using `only [add_mul, one_mul]`. Rewrite using `[hs1.tsum_add hs2, h1, h2]`. Evaluate the numerical expressions.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hKR : 0 ≤ K * Real.log R / R` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_add_left measurable_const, lintegral_const, Measure.restrict_apply MeasurableSet.univ, Set.univ_inter, lintegral_const_mul _ (Measurable.ennreal_tsum fun j => (measurable_const.indicator (hmeas _))), lintegral_tsum fun j => (measurable_const.indicator (hmeas _)).aemeas …`. Use `_ ≤ ENNReal.ofReal (Real.log R) * ENNReal.ofReal (K * Real.log R / R) + ENNReal.ofReal (Real.log 2) * ∑' j : ℕ, ENNReal.ofReal (K * Real.log R / R * ((j + 1) * (1 / 2 : ℝ) ^ j)) := by gcongr with j`. Conclude with `h R hR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hind, lintegral_indicator_const (hmeas _), one_mul, Measure.restrict_apply (hmeas _)]`. Conclude with `(measure_mono Set.inter_subset_left).trans (hterm j)`. Use `_ = ENNReal.ofReal (Real.log R * (K * Real.log R / R) + Real.log 2 * (K * Real.log R / R * 4)) := by`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun j => by positivity) (hsumm.mul_left _), tsum_mul_left, htsum, ← ENNReal.ofReal_mul (by linarith), ← ENNReal.ofReal_mul hlog2.le, ← ENNReal.ofReal_add (by positivity) (by positivity)]`. Use `_ ≤ ENNReal.ofReal (16 * K * Real.log R ^ 2 / R) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `e1 : Real.log R * (K * Real.log R / R) = K * Real.log R ^ 2 / R` using `by ring`. Establish `e2 : Real.log 2 * (K * Real.log R / R * 4) ≤ 4 * (K * Real.log R ^ 2 / R)`. Establish `: Real.log 2 * Real.log R ≤ Real.log R ^ 2` using `by nlinarith`. Establish `h3 : Real.log 2 * (K * Real.log R / R * 4) = 4 * (K / R) * (Real.log 2 * Real.log R)` using `by ring`.
-
-Establish `h4 : 4 * (K * Real.log R ^ 2 / R) = 4 * (K / R) * Real.log R ^ 2` using `by ring`. Rewrite using `[h3, h4]`. Use `gcongr`. Establish `e3 : 0 ≤ K * Real.log R ^ 2 / R` using `by positivity`. Establish `e4 : 16 * K * Real.log R ^ 2 / R = 16 * (K * Real.log R ^ 2 / R)` using `by ring`.
-
-Rewrite using `[e1, e4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem lintegral_log_tail_shells_le {X : Type} [MeasurableSpace X] (μ : Measure X) (ρ : X → ℝ) (K : ℝ)
     (hρ : Measurable ρ) (hK : 0 ≤ K)
@@ -169,7 +165,7 @@ theorem lintegral_log_tail_shells_le {X : Type} [MeasurableSpace X] (μ : Measur
         rw [e1, e4]; linarith
 
 /- English proof (translation)
-Introduce `μ ν _ _ V hV h1 h2` and use `measure_compl_eq_of_restrict_eq μ ν V hV h1 h2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tail_transfer : TailTransferStatement :=
   fun μ ν _ _ V hV h1 h2 => measure_compl_eq_of_restrict_eq μ ν V hV h1 h2
@@ -180,7 +176,7 @@ def TailChernBoundStatement : Prop :=
       ∃ C : ℝ, 0 ≤ C ∧ IsPsh A (Θ.rsmul C + L) ∧ IsPsh A (Θ.rsmul C + L.rsmul (-1))
 
 /- English proof (translation)
-Introduce `A Θ L hΘ hΘp hL` and use `TailBoundAlt.exists_psh_chern_bound A Θ L hΘ hΘp hL`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tail_chern_bound : TailChernBoundStatement :=
   fun A Θ L hΘ hΘp hL => TailBoundAlt.exists_psh_chern_bound A Θ L hΘ hΘp hL
@@ -205,7 +201,7 @@ def TailShellsStatement : Prop :=
           ENNReal.ofReal (16 * K * Real.log R ^ 2 / R)
 
 /- English proof (translation)
-Introduce `μ ρ K hρ hK h R hR` and use `lintegral_log_tail_shells_le μ ρ K hρ hK h R hR`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tail_shells : TailShellsStatement :=
   fun μ ρ K hρ hK h R hR => lintegral_log_tail_shells_le μ ρ K hρ hK h R hR

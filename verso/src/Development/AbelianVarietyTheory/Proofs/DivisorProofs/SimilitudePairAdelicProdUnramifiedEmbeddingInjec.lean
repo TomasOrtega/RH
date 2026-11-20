@@ -6,9 +6,9 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.LKMid
 
 /- English proof (translation)
-Take `⟨q, hqp, hq⟩` from `Nat.exists_infinite_primes (p + 1)`. Establish `hqi : Prime (q : ℤ)` using `Nat.prime_iff_prime_int.mp hq`. Set `v0 : IsDedekindDomain.HeightOneSpectrum ℤ` to `{ asIdeal := Ideal.span {(q : ℤ)} isPrime := (Ideal.span_singleton_prime hqi.ne_zero).mpr hqi ne_bot := by simpa using hqi.ne_zero }`. Establish `hne : v0.asIdeal ≠ Ideal.span {(p : ℤ)}`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `Ideal.span {(q : ℤ)} = Ideal.span {(p : ℤ)} at h`. Rewrite `h` using `[Ideal.span_singleton_eq_span_singleton, Int.associated_iff_natAbs]`. Simplify using `at h`. Use linear arithmetic over natural numbers and integers. Conclude with `(AfP.eval (p := p) ⟨v0, hne⟩).toRingHom.domain_nontrivial`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finiteAdeleRingAway_nontrivial (p : ℕ) [Fact p.Prime] : Nontrivial (AfP p) := by
   obtain ⟨q, hqp, hq⟩ := Nat.exists_infinite_primes (p + 1)
@@ -26,13 +26,11 @@ theorem finiteAdeleRingAway_nontrivial (p : ℕ) [Fact p.Prime] : Nontrivial (Af
   exact (AfP.eval (p := p) ⟨v0, hne⟩).toRingHom.domain_nontrivial
 
 /- English proof (translation)
-Use `haveI := finiteAdeleRingAway_nontrivial p`. Introduce `a b h`. Establish `h0` using `congrArg Subtype.val h`. Establish `h1` using `congrArg Prod.fst h0`. Establish `h2` using `congrArg Prod.snd h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pair.toAf, MonoidHom.codRestrict_apply, MonoidHom.comp_apply, MonoidHom.prodMap, MonoidHom.prod_apply, Prod.map_fst, Prod.map_snd, Subgroup.coe_subtype, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, mul_left_inj, mul_right_inj] at h1 h2`. Establish `e1 : (a : G.Cˣ × ℚˣ).1 = (b : G.Cˣ × ℚˣ).1`. Apply `Units.ext` to reduce the goal to its premises. Use `congrArg Units.val h1` as an intermediate fact. Simplify using `only [Units.coe_map, MonoidHom.coe_coe] at this`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Algebra.TensorProduct.includeRight_injective (algebraMap ℚ (AfP p)).injective this`. Establish `e2 : (a : G.Cˣ × ℚˣ).2 = (b : G.Cˣ × ℚˣ).2`. Apply `Units.ext` to reduce the goal to its premises. Use `congrArg Units.val h2` as an intermediate fact. Simplify using `only [Units.coe_map, MonoidHom.coe_coe] at this`.
-
-Conclude with `(algebraMap ℚ (AfP p)).injective this`. Conclude with `Subtype.ext (Prod.ext e1 e2)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pair_toAf_injective {p : ℕ} [Fact p.Prime] {G : HTGroup p} (P : Pair G) (x : (AfP p ⊗[ℚ] G.C)ˣ)
     (t : (AfP p)ˣ) (hx : Triv G (AfP p) P.β x t) : Function.Injective (P.toAf x t hx) := by
@@ -56,7 +54,7 @@ theorem pair_toAf_injective {p : ℕ} [Fact p.Prime] {G : HTGroup p} (P : Pair G
   exact Subtype.ext (Prod.ext e1 e2)
 
 /- English proof (translation)
-Introduce `p _ G P x t hx r z a b h`. Conclude with `pair_toAf_injective P x t hx (congrArg Prod.fst h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pair_embedding_injective : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) P.β x t) (r : ℕ) (z : Gr G r), Function.Injective ((P.toAf x t hx).prod (P.toQr r z)) := by
   intro p _ G P x t hx r z a b h

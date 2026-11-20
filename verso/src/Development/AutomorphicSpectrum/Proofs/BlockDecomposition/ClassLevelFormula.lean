@@ -14,7 +14,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σS : S →+* S} {ϖ : Fv F v} {ε : ℤ}
 
 /- English proof (translation)
-Rewrite using `[Subring.coe_mul, Subring.coe_pow, Algebra.smul_def, map_pow, mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_mul_pS_pow (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (k : ℕ) (t : S) :
     ((t * hG.pS ^ k : S) : Fv F v ⊗[F] E) = (ϖ ^ k) • (t : Fv F v ⊗[F] E) := by
@@ -22,11 +22,11 @@ theorem coe_mul_pS_pow (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (k : ℕ) (t :
   rfl
 
 /- English proof (translation)
-Establish `hne : ϖ ^ k ≠ 0` using `pow_ne_zero _ hG.unif_ne`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `Ideal.mem_span_singleton'.2 ⟨⟨_, h⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[coe_mul_pS_pow hG]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (ϖ ^ k) • ((ϖ ^ k)⁻¹ • (s : Fv F v ⊗[F] E) - (ϖ ^ k)⁻¹ • (s' : Fv F v ⊗[F] E)) = (s : Fv F v ⊗[F] E) - s'`. Rewrite using `[← smul_sub, smul_smul, mul_inv_cancel₀ hne, one_smul]`. Introduce `h`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h`. Establish `e : (s : Fv F v ⊗[F] E) - (s' : Fv F v ⊗[F] E) = (ϖ ^ k) • (c : Fv F v ⊗[F] E)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← coe_mul_pS_pow hG, hc, AddSubgroupClass.coe_sub]`. Rewrite using `[← smul_sub, e, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Conclude with `c.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_sub_mem_iff (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (k : ℕ) (s s' : S) :
     (ϖ ^ k)⁻¹ • (s : Fv F v ⊗[F] E) - (ϖ ^ k)⁻¹ • (s' : Fv F v ⊗[F] E) ∈ S ↔ s - s' ∈ lev hG.pS k := by
@@ -45,9 +45,9 @@ theorem smul_sub_mem_iff (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (k : ℕ) (s
     exact c.2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M n d J T bs v ψv S σS ϖ ε hG k X X' hX hX'`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq.2 ((smul_sub_mem_iff hG k (X a b) (X' a b)).1 (h a b))`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h a b`. Conclude with `(smul_sub_mem_iff hG k (X a b) (X' a b)).2 (Ideal.Quotient.eq.1 (congrFun (congrFun h a) b))`.
+A detailed English derivation is pending.
 -/
 theorem classLev : ClassLev := by
   intro F E _ _ _ _ _ σ M n d J T bs v ψv S σS ϖ ε hG k X X' hX hX'

@@ -5,23 +5,23 @@ namespace PI.CompDegEF
 open IsDedekindDomain NumberField Module Formalism.BasicNotions Formalism.BasicNotions.Loc
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends, Padic.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast hl.out.one_lt)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_lt_one (l : ℕ) [hl : Fact l.Prime] : ‖((l : ℕ) : Om l)‖ < 1 := by
   rw [← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends, Padic.norm_p]
   exact inv_lt_one_of_one_lt₀ (by exact_mod_cast hl.out.one_lt)
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends, Padic.norm_p]`. Conclude with `inv_pos.2 (by exact_mod_cast hl.out.pos)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_pos (l : ℕ) [hl : Fact l.Prime] : 0 < ‖((l : ℕ) : Om l)‖ := by
   rw [← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends, Padic.norm_p]
   exact inv_pos.2 (by exact_mod_cast hl.out.pos)
 
 /- English proof (translation)
-Establish `hv` using `Valuation.integer.integers (Valued.v : Valuation (Om l) NNReal)`. Establish `h1 : IsIntegral ℤ (φ (x : E))` using `(RingOfIntegers.isIntegral_coe x).map φ.toIntAlgHom`. Establish `h2 : IsIntegral (Valued.v : Valuation (Om l) NNReal).integer (φ (x : E))` using `h1.tower_top`. Establish `h3` using `(hv.isIntegral_iff_v_le_one).1 h2`. Rewrite `h3` using `[PadicAlgCl.valuation_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_integer {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberField E]
     (φ : E →+* Om l) (x : 𝓞 E) : ‖φ (x : E)‖ ≤ 1 := by
@@ -49,13 +49,13 @@ def plIdeal {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberField E] (φ : 
     exact lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) (norm_le_one_of_integer φ c)) ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_plIdeal {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberField E] (φ : E →+* Om l)
     (x : 𝓞 E) : x ∈ plIdeal φ ↔ ‖φ (x : E)‖ < 1 := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_plIdeal]`. Simplify using `using norm_natCast_lt_one l`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem natCast_mem_plIdeal {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberField E]
     (φ : E →+* Om l) : ((l : ℕ) : 𝓞 E) ∈ plIdeal φ := by
@@ -63,9 +63,9 @@ theorem natCast_mem_plIdeal {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [Numbe
   simpa using norm_natCast_lt_one l
 
 /- English proof (translation)
-Establish `: (1 : 𝓞 E) ∈ plIdeal φ` using `h ▸ Submodule.mem_top`. Rewrite `this` using `[mem_plIdeal]`. Simplify using `at this`. Use the proof step `mem_or_mem' {a b} hab := by`. Simplify using `only [mem_plIdeal, RingOfIntegers.coe_eq_algebraMap, map_mul, norm_mul] at *`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `mul_le_mul h.1 h.2 zero_le_one (norm_nonneg _)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem plIdeal_isPrime {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberField E]
     (φ : E →+* Om l) : (plIdeal φ).IsPrime where
@@ -81,7 +81,7 @@ theorem plIdeal_isPrime {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberFie
     linarith
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `natCast_mem_plIdeal (E := E) φ`. Rewrite `h1` using `[h, Ideal.mem_bot]`. Establish `: ((l : ℕ) : E) = 0` using `by exact_mod_cast congrArg (fun y : 𝓞 E => (y : E)) h1`. Conclude with `hl.out.ne_zero (by exact_mod_cast this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem plIdeal_ne_bot {l : ℕ} [hl : Fact l.Prime] {E : Type} [Field E] [NumberField E]
     (φ : E →+* Om l) : plIdeal φ ≠ ⊥ := by
@@ -96,7 +96,7 @@ def plOf {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberField E] (φ : E �
   ⟨plIdeal φ, plIdeal_isPrime φ, plIdeal_ne_bot φ⟩
 
 /- English proof (translation)
-Introduce `l _ E _ _ φ`. Use `⟨plOf φ, natCast_mem_plIdeal φ, fun x => ⟨norm_le_one_of_integer φ x, Iff.rfl⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem placeProp : PlaceProp := by
   intro l _ E _ _ φ

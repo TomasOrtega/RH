@@ -39,7 +39,7 @@ abbrev companionTriple (T : MarkedIdealWithBoundary.{u})
   tripleAtLength T s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s)
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_orderAt_lastNonMonomialPart_le hG hT s`. Introduce `x hx`. Conclude with `orderAt_le_maxOrderOn (lastNonMonomialPart T s) hB (orderAtLeastLocus (s.ideal s.length) T.mult) hx`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orderAt_lastNonMonomialPart_le_maxOrderNonMonomialOnOrderLocus (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
@@ -51,7 +51,7 @@ theorem orderAt_lastNonMonomialPart_le_maxOrderNonMonomialOnOrderLocus (hG : Pri
     (orderAtLeastLocus (s.ideal s.length) T.mult) hx
 
 /- English proof (translation)
-Establish `hs : 1 ≤ maxOrderNonMonomialOnOrderLocus T s` using `(companionIdealReductionContinues_iff T s).mp hcont`. Establish `hT' : (tripleAtLength T s (s.ideal s.length) T.mult).IsAdmissible` using `isAdmissible_tripleAtLength hG hT s`. Establish `hord` using `orderAt_lastNonMonomialPart_le_maxOrderNonMonomialOnOrderLocus hG hT s`. Introduce `x`. Conclude with `(isAdmissible_withIdealAndMult_pow_sup_pow hT' hs hord).2 x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orderAt_companionIdeal_le (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) (hcont : CompanionIdealReductionContinues T s) :
@@ -64,7 +64,7 @@ theorem orderAt_companionIdeal_le (hG : PrincipalizationGeometryHypotheses.{u}) 
   exact (isAdmissible_withIdealAndMult_pow_sup_pow hT' hs hord).2 x
 
 /- English proof (translation)
-Establish `h1 : (tripleAtLength T s (s.ideal s.length) T.mult).IsAdmissible` using `isAdmissible_tripleAtLength hG hT s`. Establish `hv : 1 ≤ maxOrderNonMonomialOnOrderLocus T s` using `(companionIdealReductionContinues_iff T s).mp hcont`. Conclude with `(isAdmissible_withIdealAndMult_pow_sup_pow h1 hv (orderAt_lastNonMonomialPart_le_maxOrderNonMonomialOnOrderLocus hG hT s)).1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem companionTriple_isAdmissible (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) (hcont : CompanionIdealReductionContinues T s) :
@@ -75,7 +75,7 @@ theorem companionTriple_isAdmissible (hG : PrincipalizationGeometryHypotheses.{u
     (orderAt_lastNonMonomialPart_le_maxOrderNonMonomialOnOrderLocus hG hT s)).1
 
 /- English proof (translation)
-Establish `hs : 1 ≤ maxOrderNonMonomialOnOrderLocus T s` using `(companionIdealReductionContinues_iff T s).mp hcont`. Establish `hT' : (tripleAtLength T s (s.ideal s.length) T.mult).IsAdmissible` using `isAdmissible_tripleAtLength hG hT s`. Establish `hsplit` using `isMonomialSplitting_lastNonMonomialPart hG hT s`. Establish `hord` using `orderAt_lastNonMonomialPart_le_maxOrderNonMonomialOnOrderLocus hG hT s`. Conclude with `isMarked_ofMarkedSequence_of_isMonomialSplitting hG hT' hsplit hs hord (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s) (tripleAtLength_dim_le hG hT s _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isMarked_seqAtEnd_companionIdeal (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (A : PrincipalizationAssignment.{u}) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -117,9 +117,9 @@ theorem continuationByCompanionIdeal_length (hG : PrincipalizationGeometryHypoth
   rfl
 
 /- English proof (translation)
-Establish `hhom : AlgebraicGeometry.Smooth e.hom` using `inferInstance`. Establish `hinv : AlgebraicGeometry.Smooth e.inv` using `inferInstance`. Establish `hp : AlgebraicGeometry.Smooth (e.hom ≫ p)` using `inferInstance`. Establish `hcomp : (J.comap e.hom).comap e.inv = J`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, Iso.inv_hom_id, Scheme.IdealSheafData.comap_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `image_orderAtLeastLocus_comap_subset k (e.hom ≫ p) e.inv (J.comap e.hom) c`. Rewrite `key` using `[hcomp, hJ]`. Conclude with `Set.image_eq_empty.mp (Set.subset_empty_iff.mp key)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orderAtLeastLocus_eq_empty_of_comap_iso {k : Type u} [Field k] [CharZero k]
     {X Y : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -135,15 +135,13 @@ private theorem orderAtLeastLocus_eq_empty_of_comap_iso {k : Type u} [Field k] [
   exact Set.image_eq_empty.mp (Set.subset_empty_iff.mp key)
 
 /- English proof (translation)
-Establish `hv : 1 ≤ maxOrderNonMonomialOnOrderLocus T s` using `(companionIdealReductionContinues_iff T s).mp hcont`. Establish `hm : 1 ≤ T.mult` using `hT.one_le_mult`. Establish `hSvalid : (companionTriple T s).IsAdmissible` using `companionTriple_isAdmissible hG hT s hcont`. Establish `hSdim : (companionTriple T s).krullDimSucc ≤ n` using `le_trans (tripleAtLength_dim_le hG hT s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s)) hdim`. Establish `hSob : (companionTriple T s).IsOrderBoundedByMult` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff _).mpr (orderAt_companionIdeal_le hG hT s hcont)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcall : principalizationSeqAtEnd T (principalizationOfDimLe T A) s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s) (tripleAtLength_dim_le hG hT s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s)) = A (companionTriple T s)` using `rfl`. Rewrite using `[hcall]`. Break down `Nat.eq_zero_or_pos (A (companionTriple T s)).length with h0 | hpos` into its components or cases. It suffices to derive a contradiction. Establish `hcz : CharZero T.base` using `hT.charZero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hsm : AlgebraicGeometry.Smooth (s.proj s.length ≫ T.structMap)` using `hSvalid.smooth`. Establish `hres` using `(MarkedSequenceOfBlowups.isResolution_iff (A (companionTriple T s))).mp (hspec.resolves (companionTriple T s) hSvalid hSdim hSob)`. Rewrite `hres` using `[MarkedSequenceOfBlowups.lastIdeal_eq, h0, MarkedSequenceOfBlowups.ideal_zero]`. Establish `hempty : orderAtLeastLocus (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s) = ∅` using `orderAtLeastLocus_eq_empty_of_comap_iso (s.proj s.length ≫ T.structMap) (A (companionTriple T s)).isoZero (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s) hres`. Establish `hforall` using `(orderAtLeastLocus_pow_sup_pow_eq_empty_iff T.base (s.proj s.length ≫ T.structMap) (lastNonMonomialPart T s) (s.ideal s.length) hm hv).mp hempty`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Bd, hBd⟩` from `exists_orderAt_lastNonMonomialPart_le hG hT s`. Establish `hlt` using `maxOrderOn_lt_of_forall_lt (lastNonMonomialPart T s) hBd (orderAtLeastLocus (s.ideal s.length) T.mult) hv hforall`. Establish `hpi : maxOrderNonMonomialOnOrderLocus T s = maxOrderOn (lastNonMonomialPart T s) (orderAtLeastLocus (s.ideal s.length) T.mult)` using `rfl`. Rewrite `hlt` using `[hpi]`. Conclude with `lt_irrefl _ hlt`.
-
-Conclude with `hpos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seqAtEnd_companionIdeal_length_pos (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
@@ -184,7 +182,7 @@ theorem seqAtEnd_companionIdeal_length_pos (hG : PrincipalizationGeometryHypothe
   · exact hpos
 
 /- English proof (translation)
-The claim follows from `appendRecursivePrincipalization_eq_append hinv T (principalizationOfDimLe T A) s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s) (tripleAtLength_dim_le hG hT s _ _) (isMarked_seqAtEnd_companionIdeal hG hT A s hcont)`.
+A detailed English derivation is pending.
 -/
 theorem extendByCompanionIdeal_eq_append (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible) (A : PrincipalizationAssignment.{u})
@@ -200,7 +198,7 @@ private noncomputable def maxOrderNonMonomialPartOnOrderAtLeastLocus {k : Type u
   maxOrderOn (nonMonomialPart D.boundary D.ideal) (orderAtLeastLocus D.ideal μ)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `congrArg (maxOrderNonMonomialPartOnOrderAtLeastLocus μ) (MarkedSchemeWithCenter.transport_refl D)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem maxOrderNonMonomial_transport_eqToIso {k : Type u} [Field k] (μ : ℕ)
     (D : MarkedSchemeWithCenter k) {A : Scheme.{u}} (h : A = D.ambient) :
@@ -217,7 +215,7 @@ private noncomputable def companionIdealPrincipalizationSeq (hG : Principalizati
     (tripleAtLength_dim_le hG hT s _ _)
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[MarkedSequenceOfBlowups.controlledTransform_succ, ← ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -235,21 +233,19 @@ private theorem continuationByCompanionIdeal_ideal_eq (hG : PrincipalizationGeom
       rfl
 
 /- English proof (translation)
-Establish `hs1 : 1 ≤ maxOrderNonMonomialOnOrderLocus T s` using `(companionIdealReductionContinues_iff T s).mp hcont`. Establish `ht : 0 < (continuationByCompanionIdeal hG hT A s hcont).length` using `seqAtEnd_companionIdeal_length_pos hG hspec hT hdim s hcont`. Establish `hT2 : (tripleAtLength T s (s.ideal s.length) T.mult).IsAdmissible` using `isAdmissible_tripleAtLength hG hT s`. Establish `hsplit` using `isMonomialSplitting_lastNonMonomialPart hG hT s`. Establish `hord` using `orderAt_lastNonMonomialPart_le_maxOrderNonMonomialOnOrderLocus hG hT s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hboundaryEq : (continuationByCompanionIdeal hG hT A s hcont).boundary (continuationByCompanionIdeal hG hT A s hcont).length = (companionIdealPrincipalizationSeq hG hT A s).boundary (companionIdealPrincipalizationSeq hG hT A s).length` using `ofMarkedSequence_boundary_eq_of_le (companionIdealPrincipalizationSeq hG hT A s) (companionIdealPrincipalizationSeq hG hT A s).length le_rfl`. Establish `hideal : (continuationByCompanionIdeal hG hT A s hcont).ideal (continuationByCompanionIdeal hG hT A s hcont).length = MarkedSequenceOfBlowups.controlledTransform (companionIdealPrincipalizationSeq hG hT A s) (s.ideal s.length) T.mult (companionIdealPrincipalizationSeq hG hT A s). …` using `continuationByCompanionIdeal_ideal_eq hG hT A s hcont (continuationByCompanionIdeal hG hT A s hcont).length`. Establish `hidealEq : (continuationByCompanionIdeal hG hT A s hcont).ideal (continuationByCompanionIdeal hG hT A s hcont).length = MarkedSequenceOfBlowups.controlledTransform (companionIdealPrincipalizationSeq hG hT A s) (tripleAtLength T s (s.ideal s.length) T.mult).ideal (tripleAtLength T …` using `hideal`. Establish `hempty : orderAtLeastLocus ((companionIdealPrincipalizationSeq hG hT A s).ideal (companionIdealPrincipalizationSeq hG hT A s).length) (T.mult * maxOrderNonMonomialOnOrderLocus T s) = ∅`. Establish `hres` using `hspec.resolves (companionTriple T s) (companionTriple_isAdmissible hG hT s hcont) (le_trans (tripleAtLength_dim_le hG hT s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s)) hdim) ((MarkedIdealWithBoundary.isOrderBoundedByMult_iff _).mpr (orderAt_companionIdeal_ …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(MarkedSequenceOfBlowups.isResolution_iff _).mp hres`. Rewrite `h2` using `[MarkedSequenceOfBlowups.lastIdeal_eq]`. Conclude with `h2`. Establish `hlt0` using `orderAt_controlledNonMonomialTransform_length_lt hG hT2 hsplit hs1 hord (companionIdealPrincipalizationSeq hG hT A s) hempty`. Establish `hlt : ∀ x ∈ orderAtLeastLocus (MarkedSequenceOfBlowups.controlledTransform (companionIdealPrincipalizationSeq hG hT A s) (s.ideal s.length) T.mult (companionIdealPrincipalizationSeq hG hT A s).length) T.mult, orderAt (MarkedSequenceOfBlowups.controlledNonMonomialTransform (compan …` using `hlt0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsp` using `(isMonomialSplitting_controlledTransform_of_le_length hG hT2 hsplit hs1 hord (companionIdealPrincipalizationSeq hG hT A s) (companionIdealPrincipalizationSeq hG hT A s).length le_rfl).2.1`. Establish `hsp' : IsMonomialSplitting ((continuationByCompanionIdeal hG hT A s hcont).boundary (continuationByCompanionIdeal hG hT A s hcont).length) ((continuationByCompanionIdeal hG hT A s hcont).ideal (continuationByCompanionIdeal hG hT A s hcont).length) (MarkedSequenceOfBlowups.control …`. Rewrite using `[hboundaryEq, hidealEq]`. Conclude with `hsp`. Establish `hT'` using `isAdmissible_tripleAtLength hG hT2 (continuationByCompanionIdeal hG hT A s hcont)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNM0` using `hG.nonMonomialPart_eq_of_isMonomialSplitting _ hT' _ _ hsp'`. Establish `hnonMon : nonMonomialPart ((continuationByCompanionIdeal hG hT A s hcont).boundary (continuationByCompanionIdeal hG hT A s hcont).length) ((continuationByCompanionIdeal hG hT A s hcont).ideal (continuationByCompanionIdeal hG hT A s hcont).length) = MarkedSequenceOfBlowups.control …` using `hNM0`. Take `⟨Bd, hBd⟩` from `exists_orderAt_lastNonMonomialPart_le hG hT2 (continuationByCompanionIdeal hG hT A s hcont)`. Establish `hBd3 : ∀ x : ↥((companionIdealPrincipalizationSeq hG hT A s).schemeAt (companionIdealPrincipalizationSeq hG hT A s).length), orderAt (MarkedSequenceOfBlowups.controlledNonMonomialTransform (companionIdealPrincipalizationSeq hG hT A s) (lastNonMonomialPart T s) (maxOrderNonMonomia …`. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : orderAt (nonMonomialPart ((continuationByCompanionIdeal hG hT A s hcont).boundary (continuationByCompanionIdeal hG hT A s hcont).length) ((continuationByCompanionIdeal hG hT A s hcont).ideal (continuationByCompanionIdeal hG hT A s hcont).length)) x ≤ (Bd : ℕ∞)` using `hBd x`. Rewrite `h0` using `[hnonMon]`. Conclude with `h0`. Establish `key : maxOrderNonMonomialOnOrderLocus T (s.append (continuationByCompanionIdeal hG hT A s hcont) hinv) = maxOrderNonMonomialPartOnOrderAtLeastLocus T.mult ((continuationByCompanionIdeal hG hT A s hcont).dataAt (continuationByCompanionIdeal hG hT A s hcont).length)`. Establish `h1 : maxOrderNonMonomialOnOrderLocus T (s.append (continuationByCompanionIdeal hG hT A s hcont) hinv) = maxOrderNonMonomialPartOnOrderAtLeastLocus T.mult ((s.append (continuationByCompanionIdeal hG hT A s hcont) hinv).dataAt (s.append (continuationByCompanionIdeal hG hT A s hcont …` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, MarkedBlowupSequenceData.append_dataAt_last s (continuationByCompanionIdeal hG hT A s hcont) hinv ht]`. Conclude with `maxOrderNonMonomial_transport_eqToIso T.mult ((continuationByCompanionIdeal hG hT A s hcont).dataAt (continuationByCompanionIdeal hG hT A s hcont).length) _`. Rewrite using `[extendByCompanionIdeal_eq_append hG hinv hT A s hcont, key]`. Use `show maxOrderOn (nonMonomialPart ((continuationByCompanionIdeal hG hT A s hcont).boundary (continuationByCompanionIdeal hG hT A s hcont).length) ((continuationByCompanionIdeal hG hT A s hcont).ideal (continuationByCompanionIdeal hG hT A s hcont).length)) (orderAtLeastLocus ((cont …`. Rewrite using `[hnonMon, hideal]`.
-
-Conclude with `maxOrderOn_lt_of_forall_lt _ hBd3 _ hs1 hlt`.
+A detailed English derivation is pending.
 -/
 theorem maxOrderNonMonomialOnOrderLocus_extendByCompanionIdeal_lt (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -343,9 +339,7 @@ theorem maxOrderNonMonomialOnOrderLocus_extendByCompanionIdeal_lt (hG : Principa
   exact maxOrderOn_lt_of_forall_lt _ hBd3 _ hs1 hlt
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `h`. Use `⟨e.inv y, ?_⟩` and prove the remaining obligations. Establish `hy2 : e.hom (e.inv y) ∈ J.support`. Rewrite using `[Scheme.inv_hom_apply]`. Conclude with `hy`.
-
-Conclude with `(mem_comap_support_iff_base_mem_support e.hom J (e.inv y)).mpr hy2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem support_comap_iso_hom_nonempty {X Y : Scheme.{u}} (e : X ≅ Y)
     (J : Y.IdealSheafData) (h : (J.support : Set ↥Y).Nonempty) :
@@ -358,7 +352,7 @@ private theorem support_comap_iso_hom_nonempty {X Y : Scheme.{u}} (e : X ≅ Y)
   exact (mem_comap_support_iff_base_mem_support e.hom J (e.inv y)).mpr hy2
 
 /- English proof (translation)
-Introduce `D A e hD`. Conclude with `⟨support_comap_iso_hom_nonempty e D.center hD.center_nonempty, PrincipalizationCertificate.of_two_le _ _ _ _ _ _ hμ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem isInvariantUnderIso_hasPrincipalizationCenter_of_two_le {k : Type u} [Field k] {μ : ℕ}
     (hμ : 2 ≤ μ) : IsInvariantUnderIso (fun D : MarkedSchemeWithCenter.{u} k => HasPrincipalizationCenter μ D) := by
@@ -367,9 +361,9 @@ private theorem isInvariantUnderIso_hasPrincipalizationCenter_of_two_le {k : Typ
     PrincipalizationCertificate.of_two_le _ _ _ _ _ _ hμ⟩
 
 /- English proof (translation)
-Establish `hval : (companionTriple T s).IsAdmissible` using `companionTriple_isAdmissible hG hT s hcont`. Establish `hd : (companionTriple T s).krullDimSucc ≤ n` using `le_trans (tripleAtLength_dim_le hG hT s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s)) hdim`. Establish `hob : (companionTriple T s).IsOrderBoundedByMult` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff (companionTriple T s)).mpr (orderAt_companionIdeal_le hG hT s hcont)`. Establish `ht : ∀ j < (continuationByCompanionIdeal hG hT A s hcont).length, HasPrincipalizationCenter T.mult ((continuationByCompanionIdeal hG hT A s hcont).dataAt j)`. Introduce `j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨hspec.center_nonempty (companionTriple T s) hval hd hob j hj, PrincipalizationCertificate.of_two_le _ _ _ _ _ _ hm⟩`. Rewrite `hi`, the goal using `[extendByCompanionIdeal_eq_append hG hinv hT A s hcont]`. Conclude with `MarkedBlowupSequenceData.append_dataAt_of_forall s (continuationByCompanionIdeal hG hT A s hcont) hinv (fun D => HasPrincipalizationCenter T.mult D) (isInvariantUnderIso_hasPrincipalizationCenter_of_two_le hm) hs ht i hi`.
+Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasCenter_extendByCompanionIdeal (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -394,11 +388,9 @@ theorem hasCenter_extendByCompanionIdeal (hG : PrincipalizationGeometryHypothese
     (fun D => HasPrincipalizationCenter T.mult D) (isInvariantUnderIso_hasPrincipalizationCenter_of_two_le hm) hs ht i hi
 
 /- English proof (translation)
-Use `revert h`. Proceed by induction on `f with`. Consider the case `zero`. Introduce `h`. Rewrite `h` using `[companionIdealReductionIter_zero]`. Then use the resulting hypothesis.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `h`. Distinguish the cases in `hc : CompanionIdealReductionContinues T (companionIdealReductionIter hinv T rc s₀ n)`. Conclude with `ih hc`. Rewrite `h` using `[companionIdealReductionIter_succ_of_not_continues hinv T rc s₀ n hc]`.
-
-Conclude with `ih h`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem companionIdealReductionContinues_of_continues_iter (hinv : ComapIsoInvariance.{u})
     (T : MarkedIdealWithBoundary.{u}) (rc : (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups)
@@ -417,7 +409,7 @@ theorem companionIdealReductionContinues_of_continues_iter (hinv : ComapIsoInvar
         exact ih h
 
 /- English proof (translation)
-Establish `hv : 1 ≤ maxOrderNonMonomialOnOrderLocus T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A))` using `(companionIdealReductionContinues_iff T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A))).mp hcont`. Take `⟨Bd, hBd⟩` from `exists_orderAt_lastNonMonomialPart_le hG hT (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A))`. Establish `hlt : maxOrderOn (lastNonMonomialPart T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A))) (orderAtLeastLocus ((nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)).ideal (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)).length) T.mult) < …` using `maxOrderOn_lt_of_forall_lt (lastNonMonomialPart T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A))) hBd (orderAtLeastLocus ((nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)).ideal (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)).leng …`. Establish `hpi : maxOrderNonMonomialOnOrderLocus T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) = maxOrderOn (lastNonMonomialPart T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A))) (orderAtLeastLocus ((nonMonomialOrderReduction hinv T (principalizationOf …` using `rfl`. Rewrite `hlt` using `[← hpi]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -443,13 +435,13 @@ theorem two_le_mult_of_continues_after_nonMonomialOrderReduction (hG : Principal
   omega
 
 /- English proof (translation)
-Use `revert h`. Proceed by induction on `f with`. Consider the case `zero`. Introduce `h`. Rewrite using `[companionIdealReductionIter_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `succ m ih`. Introduce `h`. Distinguish the cases in `hc : CompanionIdealReductionContinues T (companionIdealReductionIter hinv T (principalizationOfDimLe T A) s₀ m)`. Establish `hstep` using `companionIdealReductionIter_succ_of_continues hinv T (principalizationOfDimLe T A) s₀ m hc`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : maxOrderNonMonomialOnOrderLocus T (companionIdealReductionIter hinv T (principalizationOfDimLe T A) s₀ (m + 1)) < maxOrderNonMonomialOnOrderLocus T (companionIdealReductionIter hinv T (principalizationOfDimLe T A) s₀ m)`. Rewrite using `[hstep]`. Conclude with `maxOrderNonMonomialOnOrderLocus_extendByCompanionIdeal_lt hG hinv hspec hT hdim (companionIdealReductionIter hinv T (principalizationOfDimLe T A) s₀ m) hc`. Establish `hih` using `ih hc`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-It suffices to derive a contradiction. Rewrite `h` using `[companionIdealReductionIter_succ_of_not_continues hinv T (principalizationOfDimLe T A) s₀ m hc]`. Conclude with `hc h`.
+A detailed English derivation is pending.
 -/
 theorem maxOrderNonMonomialOnOrderLocus_iter_add_le (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -479,11 +471,11 @@ theorem maxOrderNonMonomialOnOrderLocus_iter_add_le (hG : PrincipalizationGeomet
         exact hc h
 
 /- English proof (translation)
-Use `revert i`. Proceed by induction on `f with`. Consider the case `zero`. Introduce `i hi`. Rewrite `hi`, the goal using `[companionIdealReductionIter_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `hasCenter_nonMonomialOrderReduction hG hinv hspec hT hdim i hi`. Consider the case `succ m ih`. Introduce `i hi`. Distinguish the cases in `hc : CompanionIdealReductionContinues T (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m)`. Establish `hcont0 : CompanionIdealReductionContinues T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A))` using `companionIdealReductionContinues_of_continues_iter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m hc`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hm : 2 ≤ T.mult` using `two_le_mult_of_continues_after_nonMonomialOrderReduction hG hinv hspec hT hdim hcont0`. Rewrite `hi`, the goal using `[companionIdealReductionIter_succ_of_continues hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m hc]`. Conclude with `hasCenter_extendByCompanionIdeal hG hinv hspec hT hdim (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m) hc hm (fun j hj => ih j hj) i hi`. Rewrite `hi`, the goal using `[companionIdealReductionIter_succ_of_not_continues hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m hc]`. Conclude with `ih i hi`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasCenter_companionIdealReductionIter (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -517,7 +509,7 @@ theorem hasCenter_companionIdealReductionIter (hG : PrincipalizationGeometryHypo
         exact ih i hi
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[companionIdealReduction_eq hinv T (principalizationOfDimLe T A)]`. Establish `hle` using `maxOrderNonMonomialOnOrderLocus_iter_add_le hG hinv hspec hT hdim (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) (maxOrderNonMonomialOnOrderLocus T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) + 1) h`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem not_companionIdealReductionContinues_companionIdealReduction (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -530,7 +522,7 @@ theorem not_companionIdealReductionContinues_companionIdealReduction (hG : Princ
   omega
 
 /- English proof (translation)
-Rewrite `hi`, the goal using `[companionIdealReduction_eq hinv T (principalizationOfDimLe T A)]`. Conclude with `hasCenter_companionIdealReductionIter hG hinv hspec hT hdim (maxOrderNonMonomialOnOrderLocus T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) + 1) i hi`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasCenter_companionIdealReduction (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -542,9 +534,9 @@ theorem hasCenter_companionIdealReduction (hG : PrincipalizationGeometryHypothes
     (maxOrderNonMonomialOnOrderLocus T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) + 1) i hi
 
 /- English proof (translation)
-Establish `hnc` using `not_companionIdealReductionContinues_companionIdealReduction hG hinv hspec hT hdim`. Establish `hzero : maxOrderNonMonomialOnOrderLocus T (companionIdealReduction hinv T (principalizationOfDimLe T A)) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hnc ((companionIdealReductionContinues_iff T (companionIdealReduction hinv T (principalizationOfDimLe T A))).mpr (Nat.one_le_iff_ne_zero.mpr hne))`. Take `⟨Bd, hBd⟩` from `exists_orderAt_lastNonMonomialPart_le hG hT (companionIdealReduction hinv T (principalizationOfDimLe T A))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpi : maxOrderNonMonomialOnOrderLocus T (companionIdealReduction hinv T (principalizationOfDimLe T A)) = maxOrderOn (lastNonMonomialPart T (companionIdealReduction hinv T (principalizationOfDimLe T A))) (orderAtLeastLocus ((companionIdealReduction hinv T (principalizationOfDimLe …` using `rfl`. Rewrite `hzero` using `[hpi]`. Conclude with `(maxOrderOn_eq_zero_iff (lastNonMonomialPart T (companionIdealReduction hinv T (principalizationOfDimLe T A))) hBd (orderAtLeastLocus ((companionIdealReduction hinv T (principalizationOfDimLe T A)).ideal (companionIdealReduction hinv T (principalizationOfDimLe T A)).length) T.mul …`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderAt_lastNonMonomialPart_companionIdealReduction_eq_zero (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     {n : ℕ} {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -568,9 +560,9 @@ theorem orderAt_lastNonMonomialPart_companionIdealReduction_eq_zero (hG : Princi
       (companionIdealReduction hinv T (principalizationOfDimLe T A)).length) T.mult)).mp hzero
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Establish `h1 : List.ofFn g = []` using `by simp`. Rewrite using `[h1, List.foldr_nil, Fin.prod_univ_zero]`. Conclude with `Scheme.IdealSheafData.one_eq_top.symm`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ p ih`. Rewrite using `[List.ofFn_succ, List.foldr_cons, ih, Fin.prod_univ_succ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem foldr_ofFn_mul_eq_prod {X : Scheme.{u}} (m : ℕ)
     (g : Fin m → X.IdealSheafData) :
@@ -584,9 +576,9 @@ private theorem foldr_ofFn_mul_eq_prod {X : Scheme.{u}} (m : ℕ)
       rw [List.ofFn_succ, List.foldr_cons, ih, Fin.prod_univ_succ]
 
 /- English proof (translation)
-Use `⟨isAdmissible_tripleAtLength hG hT (companionIdealReduction hinv T (principalizationOfDimLe T A)), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hx' : x ∈ orderAtLeastLocus ((companionIdealReduction hinv T (principalizationOfDimLe T A)).ideal (companionIdealReduction hinv T (principalizationOfDimLe T A)).length) T.mult` using `hx`. Establish `hzero` using `orderAt_lastNonMonomialPart_companionIdealReduction_eq_zero hG hinv hspec hT hdim x hx'`. Take `⟨U, e, hxU, hU⟩` from `(isMonomialSplitting_lastNonMonomialPart hG hT (companionIdealReduction hinv T (principalizationOfDimLe T A))).exists_comap_eq_prod_pow_of_orderAt_eq_zero hzero`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U, hxU, e, hU.trans (foldr_ofFn_mul_eq_prod _ _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLocallyMonomialTriple_tripleAtLength_companionIdealReduction (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     {n : ℕ} {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)

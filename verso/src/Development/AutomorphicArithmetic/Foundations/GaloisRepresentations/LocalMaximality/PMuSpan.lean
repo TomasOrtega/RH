@@ -4,13 +4,13 @@ open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Distinguish the cases in `h : a = j`. Substitute `h` using the available equality. Use `⟨0, fun _ => zero_mem _, ?_⟩` and prove the remaining obligations. Simplify using `[Sys.r, Sys.mu, mul_comm]`. Take `⟨t, rfl⟩` from `Fin.exists_succAbove_eq h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨Pi.single t 1, fun l => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hl : l = t`. Substitute `hl` using the available equality. Simplify using `using R.one_mem`. Simplify `R.zero_mem` using `[Pi.single_eq_of_ne hl]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Finset.sum_eq_single t]`. Simplify using `only [Pi.single_eq_same, one_mul]`. Both sides reduce to the same expression. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `hb`. Conclude with `absurd (Finset.mem_univ t) hb`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma muSpan_base {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E]
     (T : Sys d S E) (R : Subalgebra ℂ S) (i j a : Fin (d + 1)) :
@@ -34,7 +34,7 @@ private lemma muSpan_base {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [A
         exact absurd (Finset.mem_univ t) hb
 
 /- English proof (translation)
-Establish `hv : (T.Y j : S) * ((T.Y j)⁻¹ : Sˣ) = 1` using `Units.mul_inv _`. Establish `hu : ∀ l' : Mi d, T.u n11 i j l' = T.X i * T.Y j` using `fun _ => by simp [Sys.u, n11]`. Simplify using `only [Sys.r, Sys.mu, ofLex_toLex, Units.val_mul, hu]`. Take the linear combination `(-((T.X (ofLex l).1 : S) * T.Y (ofLex l).2 - T.X (ofLex l).2 * T.Y (ofLex l).1) * ((T.X i * T.Y j)⁻¹ : Sˣ)) * hv`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma muSpan_rel {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E]
     (T : Sys d S E) (i j : Fin (d + 1)) (l : Mi d) :
@@ -48,11 +48,11 @@ private lemma muSpan_rel {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [Ad
     ((T.X i * T.Y j)⁻¹ : Sˣ)) * hv
 
 /- English proof (translation)
-Introduce `d S E _ _ _ _ T hT I J i hi j hj l`. Establish `hI : I.Nonempty` using `⟨i, hi⟩`. Take `⟨p, hp, hp'⟩` from `muSpan_base T (T.R I J) i j (ofLex l).1`. Take `⟨q, hq, hq'⟩` from `muSpan_base T (T.R I J) i j (ofLex l).2`. Establish `hb` using `hT.memY I J hI j hj (ofLex l).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha` using `hT.memY I J hI j hj (ofLex l).1`. Use `⟨fun t => ((T.Y (ofLex l).2 * (T.Y j)⁻¹ : Sˣ) : S) * p t - ((T.Y (ofLex l).1 * (T.Y j)⁻¹ : Sˣ) : S) * q t, fun t => ?_, ?_⟩` and prove the remaining obligations. Conclude with `sub_mem (mul_mem hb (hp t)) (mul_mem ha (hq t))`. Rewrite using `[muSpan_rel T i j l, hp', hq', Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.muSpan_of :
     MuSpan := by

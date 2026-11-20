@@ -17,7 +17,7 @@ def IsUni (A : (P → ℂ) →ₗ[ℂ] (P → ℂ)) : Prop :=
   ∀ (x x' : P → ℂ) p, (∀ q, ht q < ht p → x q = x' q) → A x p - x p = A x' p - x' p
 
 /- English proof (translation)
-Introduce `n x x' h q hq`. Establish `h1` using `hA x x' q (fun r hr => h r (lt_trans hr hq))`. Rewrite `h1` using `[h q hq]`. Conclude with `sub_left_injective h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uni_low {A : (P → ℂ) →ₗ[ℂ] (P → ℂ)} (hA : IsUni ht A) :
     ∀ n (x x' : P → ℂ), (∀ q, ht q < n → x q = x' q) → ∀ q, ht q < n → A x q = A x' q := by
@@ -27,11 +27,11 @@ theorem uni_low {A : (P → ℂ) →ₗ[ℂ] (P → ℂ)} (hA : IsUni ht A) :
   exact sub_left_injective h1
 
 /- English proof (translation)
-Introduce `x x' hxx`. Establish `key : ∀ n, ∀ q, ht q < n → x q = x' q`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `absurd hq (Nat.not_lt_zero _)`. Consider the case `succ n ih`. Introduce `q hq`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hq with h | h` into its components or cases. Conclude with `ih q h`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hA x x' q (fun r hr => ih r (h ▸ hr))`. Rewrite `h1` using `[hxx]`. Conclude with `sub_right_injective h1`. Use function extensionality and compare the values at `q`. Conclude with `key (ht q + 1) q (Nat.lt_succ_self _)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem uni_injective {A : (P → ℂ) →ₗ[ℂ] (P → ℂ)} (hA : IsUni ht A) : Function.Injective A := by
   intro x x' hxx
@@ -50,15 +50,15 @@ theorem uni_injective {A : (P → ℂ) →ₗ[ℂ] (P → ℂ)} (hA : IsUni ht A
   exact key (ht q + 1) q (Nat.lt_succ_self _)
 
 /- English proof (translation)
-Establish `hinj` using `uni_injective ht hA`. Set `e` to `LinearEquiv.ofInjectiveEndo A hinj`. Use `⟨e.symm.toLinearMap, fun x => e.apply_symm_apply x, fun x => e.symm_apply_apply x, ?_⟩` and prove the remaining obligations. Establish `low : ∀ (x x' : P → ℂ) n, (∀ q, ht q < n → A x q = A x' q) → ∀ q, ht q < n → x q = x' q`. Introduce `x x' n`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => intro _ q hq`. Conclude with `absurd hq (Nat.not_lt_zero _)`. Consider the case `succ n ih`. Introduce `hAx q hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ih'` using `ih (fun r hr => hAx r (Nat.lt_succ_of_lt hr))`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hq with h | h` into its components or cases. Conclude with `ih' q h`. Establish `h1` using `hA x x' q (fun r hr => ih' r (h ▸ hr))`. Rewrite `h1` using `[hAx q hq]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `sub_right_injective h1`. Introduce `y y' p hy`. Establish `e1 : A (e.symm y) = y` using `e.apply_symm_apply y`. Establish `e2 : A (e.symm y') = y'` using `e.apply_symm_apply y'`. Establish `hx : ∀ q, ht q < ht p → e.symm y q = e.symm y' q` using `low _ _ (ht p) (fun q hq => by rw [e1, e2]; exact hy q hq)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h1` using `hA (e.symm y) (e.symm y') p hx`. Rewrite `h1` using `[e1, e2]`. Use `show e.symm y p - y p = e.symm y' p - y' p`. Take the linear combination `-h1`.
+A detailed English derivation is pending.
 -/
 theorem uni_inv {A : (P → ℂ) →ₗ[ℂ] (P → ℂ)} (hA : IsUni ht A) :
     ∃ B : (P → ℂ) →ₗ[ℂ] (P → ℂ), (∀ x, A (B x) = x) ∧ (∀ x, B (A x) = x) ∧ IsUni ht B := by

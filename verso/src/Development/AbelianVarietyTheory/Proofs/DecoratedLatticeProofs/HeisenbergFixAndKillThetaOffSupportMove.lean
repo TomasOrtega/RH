@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.HalfSep
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply]`. Rewrite using `[← hy i j, map_mul, hb, zero_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_infPart_eq_zero {D : D7} {S T : HSp D} {b : AE D} (hb : infPart D b = 0) {y : WO S T}
     (hy : IsHalf b y) : y.map (infPart D) = 0 := by
@@ -21,43 +21,37 @@ theorem map_infPart_eq_zero {D : D7} {S T : HSp D} {b : AE D} (hb : infPart D b 
   rw [← hy i j, map_mul, hb, zero_mul]
 
 /- English proof (translation)
-Introduce `D ψ S T hψ ΛS ΛT hS hT Z e he f₀ Φ f hΦ hth g hsupp`. Take `⟨⟨Tm, hTm⟩, hall⟩` from `hth`. Establish `hfT : f = Tm Φ` using `hall Tm hTm`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he`. Establish `hinfc : infPart D (cA D e) = 0` using `ho.conj.infPart_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, hk, hinv, hsup⟩` from `hΦ.2`. Take `⟨M, hM, hMact⟩` from `(GlobalTheory.LatLevel.level_of_generators D S T ΛS ΛT hS hT (GlobalTheory.LatFinGen.latO_finitely_generated D S T ΛS ΛT hS hT)).2 g 1`. Use `set Λ := latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True with hΛ`. Use `set N : ℕ := M * k with hN`. Establish `hNpos : 0 < N` using `Nat.mul_pos hM hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Ψ : WO S T → ℂ` to `fun u => if ∃ t, Φ t ≠ 0 ∧ N • t = u then 1 else 0`. Establish `hNt : ∀ t, Φ t ≠ 0 → N • t ∈ Λ` using `fun t ht => by`. Rewrite using `[hN, mul_smul]`. Conclude with `Λ.nsmul_mem (hsup t ht) M`. Establish `hΨ : IsSBHalf e Λ Ψ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨fun u hu => ?_, N * k, Nat.mul_pos hNpos hk, fun v hv hvh u => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Establish `: ∃ t, Φ t ≠ 0 ∧ N • t = u`. Assume the negation of the conclusion as `h`. Conclude with `hu (if_neg h)`. Take `⟨t, ht, rfl⟩` from `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.ThetaOrth.isHalf_nsmul (hΦ.1 t ht) N`. Establish `key : (∃ t, Φ t ≠ 0 ∧ N • t = u + (N * k) • v) ↔ ∃ t, Φ t ≠ 0 ∧ N • t = u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, h⟩`. Use `⟨t + k • (-v), by rwa [hinv (-v) (Λ.neg_mem hv) (GlobalTheory.ThetaOrth.isHalf_neg hvh) t], ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `GlobalTheory.ThetaOrth.nsmul_add_neg N k t u v h`. Introduce and unpack `⟨t, ht, rfl⟩`. Use `⟨t + k • v, by rwa [hinv v hv hvh t], ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.ThetaOrth.nsmul_add_mul N k t v`. Use `show (if _ then _ else _) = (if _ then _ else _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [key]`. Establish `: ∃ t, Φ t ≠ 0 ∧ N • t = u`. Assume the negation of the conclusion as `h`. Conclude with `hu (if_neg h)`. Take `⟨t, ht, rfl⟩` from `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Λ.nsmul_mem (hNt t ht) _`. Establish `hspan` using `(GlobalTheory.PlaceTensor.halfWaves_span D ψ S T ΛS ΛT hψ hS hT e ho.idem he.2 ho.infPart_eq).2 Ψ hΨ`. Take `⟨q, hq, hqΨ⟩` from `GlobalTheory.ThetaOrth.exists_char_of_wave N hspan`. Establish `hq1 : ∀ t, Φ t ≠ 0 → q t = 1` using `fun t ht => by`. Rewrite using `[← hqΨ t (hΦ.1 t ht) (hNt t ht)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `if_pos ⟨t, ht, rfl⟩`. Establish `hq0 : ∀ t, Φ t ≠ 0 → q (actO S T g 1 t) = 0` using `fun t ht => by`. Establish `h1 : N • actO S T g 1 t ∈ Λ`. Use `hMact (k • t) (hsup t ht)` as an intermediate fact. Establish `e : actO S T g 1 (k • t) = k • actO S T g 1 t` using `map_nsmul (GlobalTheory.LatLevel.actHom S T g 1) k t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[e, ← mul_smul]`. Then use the resulting hypothesis. Rewrite using `[← hqΨ _ (GlobalTheory.SplitHecke.isHalf_actO _ _ (hΦ.1 t ht)) h1]`. Use `if_neg ?_` and prove the remaining obligations. Introduce and unpack `⟨t', ht', h⟩`. Establish `: t' = actO S T g 1 t` using `GlobalTheory.ThetaOrth.nsmul_inj hNpos h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `ht' (this ▸ hsupp t ht)`. Take `⟨n, a, yy, hqs⟩` from `(Submodule.mem_span_set' (R := ℂ)).1 hq`. Use `choose y hy hyq using fun i => (yy i).2`. Establish `hqt : ∀ t, q t = ∑ i, a i * ψ (symplO S T t (y i))` using `fun t => by`. Rewrite using `[← hqs, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, hyq i, smul_eq_mul]`. Use `set w : Fin n → WO S T := fun i => actO S T g⁻¹ 1 (-(y i)) with hw`. Establish `hwh : ∀ i, IsHalf (cA D e) (w i)` using `fun i => GlobalTheory.SplitHecke.isHalf_actO _ _ (GlobalTheory.ThetaOrth.isHalf_neg (hy i))`. Establish `hact : ∀ i, actO S T g 1 (w i) = -(y i)` using `fun i => by`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `GlobalTheory.AdelicLatMove.actO_actO_inv S T g 1 (-(y i))` as an intermediate fact. Rewrite `this` using `[inv_one]`. Then use the resulting hypothesis. Use `⟨n, a, y, fun i => ⟨map_infPart_eq_zero hinfc (hy i), map_infPart_eq_zero hinfc (hwh i)⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : (fun t => q t * Φ t) = Φ`. Use function extensionality and compare the values at `t`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : Φ t = 0`. Rewrite using `[h, mul_zero]`. Rewrite using `[hq1 t h, one_mul]`. Establish `e2 : (fun t => q t * Φ t) = ∑ i, a i • fun t => ψ (symplO S T t (y i)) * Φ t`. Use function extensionality and compare the values at `t`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hqt, Finset.sum_mul, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_assoc]`. Establish `e3` using `congrArg Tm e2`. Rewrite `e3` using `[e1, map_sum, ← hfT]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(Finset.sum_congr rfl fun i _ => ?_).trans e3.symm` and prove the remaining obligations. Rewrite using `[map_smul, hTm.modul Φ hΦ (y i) (hy i), ← hfT]`. Establish `e1 : (fun t => conj (q (actO S T g 1 t)) * Φ t) = 0`. Use function extensionality and compare the values at `t`. Distinguish the cases in `h : Φ t = 0`.
-
-Simplify using `[h]`. Simplify using `[hq0 t h]`. Establish `e2 : (fun t => conj (q (actO S T g 1 t)) * Φ t) = ∑ i, conj (a i) • fun t => ψ (symplO S T t (w i)) * Φ t`. Use function extensionality and compare the values at `t`. Rewrite using `[hqt, map_sum, Finset.sum_mul, Finset.sum_apply]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, GlobalTheory.ThetaOrth.conj_psi hψ, ← GlobalTheory.ThetaOrth.symplO_neg_right, ← hact i, GlobalTheory.SymplOInv.symplO_actO D S T g 1 t (w i), mul_assoc]`. Establish `e3` using `congrArg Tm e2`. Rewrite `e3` using `[e1, map_zero, map_sum]`. Rewrite using `[e3]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hfT, hTm.modul Φ hΦ (w i) (hwh i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sep : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D), IsStdChar D ψ (-1) → ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ (Z : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e Z → ∀ f₀ Φ f : WO S T → ℂ, IsSBHalf e (latO S T ΛS ΛT fun _ => True) Φ → IsThetaAt ψ (symplO S T) (heisO ψ S T) e (latO S T ΛS ΛT fun _ => True) 1 f₀ Φ f → ∀ g : GA D S, (∀ x, Φ x ≠ 0 → Φ (actO S T g 1 x) = 0) → ∃ (n : ℕ) (a : Fin n → ℂ) (y : Fin n → WO S T), (∀ i, (y i).map (infPart D) = 0 ∧ (actO S T g⁻¹ 1 (-(y i))).map (infPart D) = 0) ∧ ∑ i, a i • heisO ψ S T (y i) f = f ∧ ∑ i, conj (a i) • heisO ψ S T (actO S T g⁻¹ 1 (-(y i))) f = 0 := by
   classical

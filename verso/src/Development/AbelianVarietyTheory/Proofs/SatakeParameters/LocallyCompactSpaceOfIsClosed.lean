@@ -26,7 +26,7 @@ def IsHeckeFam {n : ℕ} (z : Fin n → Gf) : Prop :=
 variable {Kf}
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun m => (m.map F).sum) (hz k hk)`. Simplify `h` using `only [Finset.sum_eq_multiset_sum, Multiset.map_map, Function.comp_def]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_heckeFam {M : Type*} [AddCommMonoid M] {n : ℕ} {z : Fin n → Gf} (hz : IsHeckeFam Kf z)
     (F : Gf ⧸ Kf → M) {k : Gf} (hk : k ∈ Kf) :
@@ -59,12 +59,12 @@ def fixSub (π : UnitaryRep (G × Gf) H) (Kf : Subgroup Gf) : Submodule ℂ H wh
 variable (π : UnitaryRep (G × Gf) H) (Kf : Subgroup Gf)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_fixSub {v : H} : v ∈ fixSub π Kf ↔ ∀ k ∈ Kf, π (1, k) v = v := Iff.rfl
 
 /- English proof (translation)
-Establish `e : (fixSub π Kf : Set H) = ⋂ k ∈ Kf, {v | π (1, k) v = v}`. Use extensionality with `v`. Simplify using `[mem_fixSub]`. Rewrite using `[e]`. Conclude with `isClosed_biInter fun k _ => isClosed_eq (π (1, k)).continuous continuous_id`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_fixSub : IsClosed (fixSub π Kf : Set H) := by
   have e : (fixSub π Kf : Set H) = ⋂ k ∈ Kf, {v | π (1, k) v = v} := by
@@ -75,7 +75,7 @@ theorem isClosed_fixSub : IsClosed (fixSub π Kf : Set H) := by
 instance completeSpace_fixSub : CompleteSpace (fixSub π Kf) := (isClosed_fixSub π Kf).completeSpace_coe
 
 /- English proof (translation)
-Introduce `g v hv k hk`. Apply the tactic sequence `rw [infRep_apply, ← UnitaryRep.map_mul_apply, show ((1 : G), k) * (g, 1) = (g, 1) * (1, k) by ext <;> simp, UnitaryRep.map_mul_apply, hv k hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isInvariant_fixSub : (infRep π).IsInvariant (fixSub π Kf) := by
   intro g v hv k hk
@@ -87,7 +87,7 @@ def fixRep : UnitaryRep G (fixSub π Kf) := (infRep π).restrict _ (isInvariant_
 variable {π Kf}
 
 /- English proof (translation)
-Rewrite `h` using `[QuotientGroup.eq]`. Apply the tactic sequence `rw [show ((1 : G), y) = (1, x) * (1, x⁻¹ * y) by ext <;> simp, UnitaryRep.map_mul_apply, hv _ h]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem op_fix_congr {v : H} (hv : v ∈ fixSub π Kf) {x y : Gf} (h : (x : Gf ⧸ Kf) = y) :
     π (1, x) v = π (1, y) v := by
@@ -95,9 +95,9 @@ theorem op_fix_congr {v : H} (hv : v ∈ fixSub π Kf) {x y : Gf} (h : (x : Gf �
   rw [show ((1 : G), y) = (1, x) * (1, x⁻¹ * y) by ext <;> simp, UnitaryRep.map_mul_apply, hv _ h]
 
 /- English proof (translation)
-Introduce `k hk`. Set `F : Gf ⧸ Kf → H` to `fun y => π (1, y.out) v`. Establish `hF : ∀ x : Gf, π (1, x) v = F (x : Gf ⧸ Kf)` using `fun x => op_fix_congr hv (QuotientGroup.out_eq' (x : Gf ⧸ Kf)).symm`. Simplify using `only [ContinuousLinearMap.sum_apply, map_sum]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [← UnitaryRep.map_mul_apply, show ((1 : G), k) * (1, z i) = (1, k * z i) by ext <;> simp, hF]`. Use `_ = ∑ i, F ((z i : Gf) : Gf ⧸ Kf) := sum_heckeFam hz F hk`. Use `_ = ∑ i, π (1, z i) v := Finset.sum_congr rfl fun i _ => (hF _).symm`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem heckeVec_mem {n : ℕ} {z : Fin n → Gf} (hz : IsHeckeFam Kf z) {v : H} (hv : v ∈ fixSub π Kf) :
     (∑ i, π (1, z i)) v ∈ fixSub π Kf := by
@@ -116,7 +116,7 @@ def heckeOp {n : ℕ} {z : Fin n → Gf} (hz : IsHeckeFam Kf z) : fixSub π Kf �
   ((∑ i, π (1, z i)).comp (fixSub π Kf).subtypeL).codRestrict (fixSub π Kf) fun v => heckeVec_mem hz v.2
 
 /- English proof (translation)
-Use `show (∑ i, π (1, z i)) (v : H) = _`. Conclude with `ContinuousLinearMap.sum_apply _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem coe_heckeOp {n : ℕ} {z : Fin n → Gf} (hz : IsHeckeFam Kf z) (v : fixSub π Kf) :
     ((heckeOp hz v : fixSub π Kf) : H) = ∑ i, π (1, z i) (v : H) := by
@@ -124,9 +124,9 @@ theorem coe_heckeOp {n : ℕ} {z : Fin n → Gf} (hz : IsHeckeFam Kf z) (v : fix
   exact ContinuousLinearMap.sum_apply _ _ _
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_heckeOp]`. Use `show _ = π (g, 1) ((heckeOp hz v : fixSub π Kf) : H)`. Rewrite using `[coe_heckeOp, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `show π (1, z i) (π (g, 1) (v : H)) = _`. Apply the tactic sequence `rw [← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, show ((1 : G), z i) * (g, 1) = (g, 1) * (1, z i) by ext <;> simp]`.
+A detailed English derivation is pending.
 -/
 theorem heckeOp_fixRep {n : ℕ} {z : Fin n → Gf} (hz : IsHeckeFam Kf z) (g : G) (v : fixSub π Kf) :
     heckeOp hz (fixRep π Kf g v) = fixRep π Kf g (heckeOp hz v) := by
@@ -167,7 +167,7 @@ theorem postL_apply (Φ : Module.End ℂ M) {q : ℕ} (f : P [⋀^Fin q]→ₗ[�
     postL Φ q f v = Φ (f v) := rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[gd, AlternatingMap.alternatizeUncurryFin_apply, postL_apply, map_sum, hΦ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gd_postL (L : P →ₗ[ℝ] Module.End ℂ M) (Φ : Module.End ℂ M) (hΦ : ∀ X m, Φ (L X m) = L X (Φ m))
     {q : ℕ} (f : P [⋀^Fin q]→ₗ[ℝ] M) : gd L (postL Φ q f) = postL Φ (q + 1) (gd L f) := by
@@ -175,7 +175,7 @@ theorem gd_postL (L : P →ₗ[ℝ] Module.End ℂ M) (Φ : Module.End ℂ M) (h
   simp [gd, AlternatingMap.alternatizeUncurryFin_apply, postL_apply, map_sum, hΦ]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun k X => by simp only [postL_apply, hf.1 k X, hκ], fun _ => Submodule.mem_top⟩`.
+Supply the required witnesses or components.
 -/
 theorem relCo_postL {K : Type} (ad : K → P → P) (κ : K → Module.End ℂ M) (Φ : Module.End ℂ M)
     (hκ : ∀ k m, Φ (κ k m) = κ k (Φ m)) {q : ℕ} {f : P [⋀^Fin q]→ₗ[ℝ] M} (hf : f ∈ relCo ad κ ⊤ q) :
@@ -192,7 +192,7 @@ variable {M : Type} [AddCommGroup M] [Module ℂ M] [Module ℝ M] [IsScalarTowe
 
 include hL hK in
 /- English proof (translation)
-Use `Submodule.span_le.2 fun f hf => Submodule.subset_span ⟨relCo_postL D.adP κ Φ hK hf.1, ?_⟩` and prove the remaining obligations. Rewrite using `[gd_postL L Φ hL, hf.2]`. Use extensionality with `v`. Simplify using `[postL_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cocyc_le_comap (q : ℕ) : D.cocyc L κ q ≤ (D.cocyc L κ q).comap (postL Φ q) := by
   refine Submodule.span_le.2 fun f hf => Submodule.subset_span ⟨relCo_postL D.adP κ Φ hK hf.1, ?_⟩
@@ -201,9 +201,9 @@ theorem cocyc_le_comap (q : ℕ) : D.cocyc L κ q ≤ (D.cocyc L κ q).comap (po
 
 include hL hK in
 /- English proof (translation)
-Consider the cases of `q with`. Consider the case `zero => intro f hf`. Rewrite `hf` using `[CartanData.cobd, Submodule.mem_bot]`. Substitute `hf` using the available equality. Simplify using `[CartanData.cobd]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Consider the case `succ q`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `Submodule.subset_span ⟨postL Φ q f, relCo_postL D.adP κ Φ hK hf, gd_postL L Φ hL f⟩`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem cobd_le_comap (q : ℕ) : D.cobd L κ q ≤ (D.cobd L κ q).comap (postL Φ q) := by
   cases q with
@@ -226,7 +226,7 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSp
 
 include hT in
 /- English proof (translation)
-Use function extensionality and compare the values at `Y`. Conclude with `(hT _ v).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem expOrbit_op (v : H) : D.lie.expOrbit (CartanData.toBanach π) (T v) =
     (T.restrictScalars ℝ) ∘ D.lie.expOrbit (CartanData.toBanach π) v := by
@@ -235,7 +235,7 @@ theorem expOrbit_op (v : H) : D.lie.expOrbit (CartanData.toBanach π) (T v) =
 
 include hT in
 /- English proof (translation)
-Establish `hv' : D.lie.IsSmoothVector (CartanData.toBanach π) v` using `hv`. Use `show D.lie.IsSmoothVector (CartanData.toBanach π) (T v)`. Rewrite `hv'`, the goal using `[IsExpLieAlgebra.isSmoothVector_iff]`. Rewrite using `[expOrbit_op D π T hT]`. Conclude with `(T.restrictScalars ℝ).contDiff.comp hv'`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_op {v : H} (hv : v ∈ D.SmV π) : T v ∈ D.SmV π := by
   have hv' : D.lie.IsSmoothVector (CartanData.toBanach π) v := hv
@@ -246,7 +246,7 @@ theorem smooth_op {v : H} (hv : v ∈ D.SmV π) : T v ∈ D.SmV π := by
 
 include hT in
 /- English proof (translation)
-Establish `hv' : D.lie.IsSmoothVector (CartanData.toBanach π) v` using `hv`. Unfold `IsExpLieAlgebra.derivOp`. Rewrite using `[expOrbit_op D π T hT, ((T.restrictScalars ℝ).hasFDerivAt.comp 0 (D.lie.differentiable_expOrbit (CartanData.toBanach π) hv' 0).hasFDerivAt).fderiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem derivOp_op {v : H} (hv : v ∈ D.SmV π) (X : 𝔤) :
     D.lie.derivOp (CartanData.toBanach π) X (T v) = T (D.lie.derivOp (CartanData.toBanach π) X v) := by
@@ -271,19 +271,19 @@ theorem opT_apply {d : ℕ} (w : Fin d → D.SmV π) (i : Fin d) : opT D π T hT
 variable {d : ℕ} (ξ : G →* Matrix (Fin d) (Fin d) ℂ)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (derivOp_op D π T hT v.2 X).symm`.
+A detailed English derivation is pending.
 -/
 theorem opS_dOp (X : 𝔤) (v : D.SmV π) : opS D π T hT (D.dOp π X v) = D.dOp π X (opS D π T hT v) :=
   Subtype.ext (derivOp_op D π T hT v.2 X).symm
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (hT g v)`.
+A detailed English derivation is pending.
 -/
 theorem opS_gOp (g : G) (v : D.SmV π) : opS D π T hT (D.gOp π g v) = D.gOp π g (opS D π T hT v) :=
   Subtype.ext (hT g v)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [opT_apply, CartanData.tOp, LinearMap.pi_apply, LinearMap.add_apply, LinearMap.comp_apply, LinearMap.proj_apply, LinearMap.sum_apply, LinearMap.smul_apply, map_add, map_sum, map_smul, opS_dOp]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem opT_tOp (X : 𝔤) (w : Fin d → D.SmV π) :
     opT D π T hT d (D.tOp π ξ X w) = D.tOp π ξ X (opT D π T hT d w) := by
@@ -292,7 +292,7 @@ theorem opT_tOp (X : 𝔤) (w : Fin d → D.SmV π) :
     LinearMap.proj_apply, LinearMap.sum_apply, LinearMap.smul_apply, map_add, map_sum, map_smul, opS_dOp]
 
 /- English proof (translation)
-Rewrite using `[CartanData.gkL, Module.Basis.constr_apply, Finsupp.sum, LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.map_smul_of_tower, opT_tOp]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem opT_gkL (X : D.p) (w : Fin d → D.SmV π) :
     opT D π T hT d (D.gkL π ξ X w) = D.gkL π ξ X (opT D π T hT d w) := by
@@ -301,7 +301,7 @@ theorem opT_gkL (X : D.p) (w : Fin d → D.SmV π) :
   rw [LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.map_smul_of_tower, opT_tOp]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [opT_apply, CartanData.gkK, LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, opS_gOp]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem opT_gkK (k : D.K) (w : Fin d → D.SmV π) :
     opT D π T hT d (D.gkK π ξ k w) = D.gkK π ξ k (opT D π T hT d w) := by
@@ -343,9 +343,7 @@ def heckeFunLin {n : ℕ} (z : Fin n → Gf) : (Gf ⧸ Kf → Fin d → ℂ) →
   map_smul' c φ := by ext y j; simp [Finset.mul_sum]
 
 /- English proof (translation)
-Use `set x' := (x : Gf ⧸ Kf).out`. Establish `hx : x'⁻¹ * x ∈ Kf` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' (x : Gf ⧸ Kf))`. Use `show ∑ i, φ ((x' * z i : Gf) : Gf ⧸ Kf) = _`. Establish `h` using `sum_heckeFam hz (fun w : Gf ⧸ Kf => φ (x' • w)) hx`. Establish `h2 : ∀ i, x' * (x'⁻¹ * x * z i) = x * z i` using `fun i => by group`.
-
-Simplify using `only [MulAction.Quotient.smul_mk, smul_eq_mul, h2] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heckeFunLin_mk {n : ℕ} {z : Fin n → Gf} (hz : IsHeckeFam Kf z) (φ : Gf ⧸ Kf → Fin d → ℂ) (x : Gf) :
     heckeFunLin z φ (x : Gf ⧸ Kf) = ∑ i, φ ((x * z i : Gf) : Gf ⧸ Kf) := by
@@ -358,9 +356,9 @@ theorem heckeFunLin_mk {n : ℕ} {z : Fin n → Gf} (hz : IsHeckeFam Kf z) (φ :
   exact h.symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `H x`. Rewrite using `[heckeFunLin_mk hz, funRepY_apply, heckeFunLin_mk hz, Matrix.mulVec_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[funRepY_apply, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeFunLin_comm {n : ℕ} {z : Fin n → Gf} (hz : IsHeckeFam Kf z) (ξ₀ : Γ₀ →* Matrix (Fin d) (Fin d) ℂ)
     (γ : Γ₀) (φ : Gf ⧸ Kf → Fin d → ℂ) :

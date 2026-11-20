@@ -7,9 +7,9 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.Fo
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X Z φ V hV hf`. Use `haveI : IsAffine (V : Scheme) := hV`. Establish `h1 : IsAffine (φ ⁻¹ᵁ V : Scheme)` using `isAffine_of_isAffineHom (φ ∣_ V)`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h2` using `hf.finite_app ⊤ (isAffineOpen_top _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[morphismRestrict_app]`. Establish `e : V.ι ''ᵁ ⊤ = V` using `by simp`. Rewrite using `[← e]`. Conclude with `(RingHom.finite_respectsIso.cancel_right_isIso _ _).mp h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAffineOpen_preimage_and_finite_app_of_isFinite_restrict :
     ∀ (X Z : Scheme.{0}) (φ : X ⟶ Z) (V : Z.Opens), IsAffineOpen V → IsFinite (φ ∣_ V) →

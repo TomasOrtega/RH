@@ -7,28 +7,28 @@ universe u v
 namespace Formalism.L2.Th1.A
 
 /- English proof (translation)
-The claim follows from `cube_two_relation`.
+A detailed English derivation is pending.
 -/
 theorem cubeTwoR : CubeTwoR.{u} := cube_two_relation
 /- English proof (translation)
-The claim follows from `cube_three_relation`.
+A detailed English derivation is pending.
 -/
 theorem cubeThreeR : CubeThreeR.{u} := cube_three_relation
 /- English proof (translation)
-The claim follows from `coeffMem_of zSerMap halfLog`.
+A detailed English derivation is pending.
 -/
 theorem coeffMem : CoeffMem.{u} := coeffMem_of zSerMap halfLog
 
 /- English proof (translation)
-The claim follows from `short_weierstrass_inverse`.
+A detailed English derivation is pending.
 -/
 theorem shortInv : ShortInv := short_weierstrass_inverse
 /- English proof (translation)
-The claim follows from `wpNumEq_of wpShape wpRecursion`.
+A detailed English derivation is pending.
 -/
 theorem wpNumEq : WpNumEq := wpNumEq_of wpShape wpRecursion
 /- English proof (translation)
-The claim follows from `uSerEq_of wpShape wpRecursion`.
+A detailed English derivation is pending.
 -/
 theorem uSerEq : USerEq := uSerEq_of wpShape wpRecursion
 

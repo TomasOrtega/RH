@@ -15,31 +15,29 @@ noncomputable section
 namespace GlobalTheory.GenChoice
 
 /- English proof (translation)
-Take `⟨a, I, ha, hAI⟩` from `FractionalIdeal.exists_eq_spanSingleton_mul A`. Establish `hI : I ≠ ⊥`. Introduce and unpack `rfl`. Apply `hA` to reduce the goal to its premises. Rewrite using `[hAI, FractionalIdeal.coeIdeal_bot, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj` using `IsFractionRing.injective R K`. Choose the witnesses or unpack the hypotheses as in `⟨g, hgI, hg0, hgQ⟩ : ∃ g ∈ I, g ≠ 0 ∧ ∀ i ∈ Qs, ¬ Ideal.span {g} ≤ I * Q i := by`. Break down `Qs.eq_empty_or_nonempty with rfl | ⟨i0, hi0⟩` into its components or cases. Take `⟨g, hg, hg0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Conclude with `⟨g, hg, hg0, by simp⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hQp0 : (∏ i ∈ Qs, Q i) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i hi => hQ0 i hi`. Take `⟨g, hg⟩` from `IsDedekindDomain.exists_sup_span_eq (Ideal.mul_le_left : I * (∏ i ∈ Qs, Q i) ≤ I) (mul_ne_zero hI hQp0)`. Establish `hgI : g ∈ I`. Rewrite using `[← hg]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self g)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ i ∈ Qs, ¬ Ideal.span {g} ≤ I * Q i`. Introduce `i hi h`. Establish `hle : (∏ j ∈ Qs, Q j) ≤ Q i` using `Ideal.prod_le_inf.trans (Finset.inf_le hi)`. Establish `h1 : I ≤ I * Q i`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h2 : I * Q i = I * ⊤`. Rewrite using `[Ideal.mul_top]`. Conclude with `le_antisymm Ideal.mul_le_left h1`. Conclude with `(hQ i hi).ne_top (mul_left_cancel₀ hI h2)`. Use `⟨g, hgI, ?_, key⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Apply `key i0 hi0` to reduce the goal to its premises. Rewrite using `[Ideal.span_singleton_eq_bot.2 rfl]`. Conclude with `bot_le`. Take `⟨J, hJ⟩` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hgI)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `hJQ : ∀ i ∈ Qs, ¬ J ≤ Q i` using `fun i hi h => hgQ i hi (by rw [hJ]; exact Ideal.mul_mono_right h)`. Choose the witnesses or unpack the hypotheses as in `⟨s, hsJ, hsQ⟩ : ∃ s ∈ J, ∀ i ∈ Qs, s ∉ Q i := by`. Break down `Qs.eq_empty_or_nonempty with rfl | ⟨i0, hi0⟩` into its components or cases. Conclude with `⟨0, J.zero_mem, by simp⟩`. Assume the negation of the conclusion as `hcon push_neg at hcon`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsub : (J : Set R) ⊆ ⋃ i ∈ (Qs : Set ι), (Q i : Set R)`. Introduce `x hx`. Take `⟨i, hi, hxi⟩` from `hcon x hx`. Conclude with `Set.mem_biUnion hi hxi`. Take `⟨i, hi, hle⟩` from `(Ideal.subset_union_prime i0 i0 (fun i hi _ _ => hQ i hi)).1 hsub`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hJQ i hi hle`. Establish `ha' : algebraMap R K a ≠ 0`. Introduce `h; exact ha (hinj (by rw [h, map_zero]))`. Establish `hg' : algebraMap R K g ≠ 0`. Introduce `h; exact hg0 (hinj (by rw [h, map_zero]))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨(algebraMap R K a)⁻¹ * algebraMap R K g, mul_ne_zero (inv_ne_zero ha') hg', s, hsQ, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Rewrite `hc` using `[hAI, FractionalIdeal.mem_singleton_mul]`. Take `⟨y, hy, rfl⟩` from `hc`. Take `⟨x, hx, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hy`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxs : x * s ∈ Ideal.span {g}`. Rewrite using `[hJ]`. Conclude with `Ideal.mul_mem_mul hx hsJ`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 hxs`. Use `⟨r, ?_⟩` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hr' : algebraMap R K r * algebraMap R K g = algebraMap R K x * algebraMap R K s`. Rewrite using `[← map_mul, ← map_mul, hr]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hr'`. Rewrite using `[hAI, FractionalIdeal.mem_singleton_mul]`.
-
-Use `⟨algebraMap R K (s * g), FractionalIdeal.mem_coeIdeal_of_mem _ (I.mul_mem_left s hgI), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_gen_avoid {R K ι : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] (A : FractionalIdeal (nonZeroDivisors R) K) (hA : A ≠ 0) (Qs : Finset ι)
@@ -112,17 +110,15 @@ theorem exists_gen_avoid {R K ι : Type} [CommRing R] [IsDedekindDomain R] [Fiel
     field_simp
 
 /- English proof (translation)
-Introduce `D n Λ ΛT h P`. Take `⟨γ, hγ, s, hsQ, hint, hmem⟩` from `exists_gen_avoid D.host.AA (GlobalTheory.FinPl.LocGen.AA_ne_zero D) P (fun PP => conjI PP.asIdeal) (fun PP _ => by rw [GlobalTheory.LiftIdeal.conjI_eq_map]; exact (GlobalTheory.LiftIdeal.isMaximal_map D PP).isPrime) (fun PP _ => by`. Rewrite using `[GlobalTheory.LiftIdeal.conjI_eq_map, Ne, Ideal.map_eq_bot_iff_of_injective (f := ((GlobalTheory.LiftIdeal.conjO D : 𝓞 D.host.E →+* 𝓞 D.host.E))) (GlobalTheory.LiftIdeal.conjO D).injective]`. Conclude with `PP.ne_bot)`. Use `⟨γ, hγ, s, hsQ, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Establish `hv'` using `(h v).1 hv`. Proceed by induction on `hv' using AddSubgroup.closure_induction with`. Consider the case `mem u hu`. Take `⟨c, hc, t, ht, rfl⟩` from `hu`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `hint c hc`. Rewrite using `[smul_smul]`. Establish `: ((s : D.host.E) * γ⁻¹ * c) = algebraMap (𝓞 D.host.E) D.host.E r`. Rewrite using `[hr]`. Rewrite using `[this, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `ΛT.smul_mem r ht`. Consider the case `zero => rw [smul_zero]`. Conclude with `ΛT.zero_mem`. Consider the case `add x y _ _ hx hy`. Rewrite using `[smul_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ΛT.add_mem (hx ((h x).2 ‹_›)) (hy ((h y).2 ‹_›))`. Consider the case `neg x _ hx`. Rewrite using `[smul_neg]`. Conclude with `ΛT.neg_mem (hx ((h x).2 ‹_›))`. Introduce `v hv`.
-
-Rewrite using `[h]`. Conclude with `AddSubgroup.subset_closure ⟨(s : D.host.E) * γ, hmem, v, hv, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_global_scalar_prime_to_conj_polarisationLattice : ∀ (D : D7) (n : ℕ) (Λ ΛT : Lt D.host.E n), IsAA Λ ΛT → ∀ P : Finset (Formalism.L2.DIV.Pl D.host.E), ∃ γ : D.host.E, γ ≠ 0 ∧ ∃ s : 𝓞 D.host.E, (∀ PP ∈ P, s ∉ conjI PP.asIdeal) ∧ (∀ v ∈ Λ, ((s : D.host.E) * γ⁻¹) • v ∈ ΛT) ∧ (∀ v ∈ ΛT, ((s : D.host.E) * γ) • v ∈ Λ) := by
   intro D n Λ ΛT h P

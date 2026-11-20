@@ -12,9 +12,9 @@ open Scheme.AffineZariskiSite
 noncomputable section
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.RelativeSpectrum.exists_finite_cover`. Consider the case `exact _root_.GlobalTheory.RelativeSpectrum.exists_finite_cover`. Consider the case `(apply _root_.GlobalTheory.RelativeSpectrum.exists_finite_cover <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.RelativeSpectrum.exists_finite_cover <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.RelativeSpectrum.exists_finite_cover <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RelativeSpectrum.exists_finite_cover ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_finite_of_isFinSub : ∀ {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) [IsIntegral S] [IsDominant gp]
     (F : ∀ V : S.Opens, Subring Γ(Sp K, gp ⁻¹ᵁ V)), IsFinSub gp F →

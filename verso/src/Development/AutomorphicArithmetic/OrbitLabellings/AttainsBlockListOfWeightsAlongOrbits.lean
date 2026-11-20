@@ -10,7 +10,7 @@ open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds Formalism.UnitaryB
 namespace UpperTheory.G2.RowPlan
 
 /- English proof (translation)
-Rewrite using `[ZMod.natCast_eq_natCast_iff, ZMod.natCast_eq_natCast_iff, ← Nat.modEq_and_modEq_iff_modEq_mul ((Nat.coprime_two_left).2 hd)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cast_eq {d : ℕ} (hd : Odd d) (x y : ℕ) :
     (x : ZMod (2 * d)) = y ↔ x % 2 = y % 2 ∧ (x : ZMod d) = y := by
@@ -19,9 +19,9 @@ private theorem cast_eq {d : ℕ} (hd : Odd d) (x y : ℕ) :
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨(hev a).1, (hev a).2.symm⟩`. Introduce and unpack `⟨he, ha⟩ haveI : NeZero (2 * d) := ⟨Nat.mul_ne_zero two_ne_zero (NeZero.ne d)⟩`. Establish `key : ((s.val : ℕ) : ZMod (2 * d)) = (((ev a).val : ℕ) : ZMod (2 * d))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[cast_eq hd]`. Conclude with `⟨by rw [Nat.even_iff.1 he, Nat.even_iff.1 (hev a).1], by rw [(hev a).2, ha]⟩`. Simplify `key` using `only [ZMod.natCast_zmod_val]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem ev_iff {d : ℕ} [NeZero d] (hd : Odd d) (ev : ZMod d → ZMod (2 * d))
     (hev : ∀ a, Even (ev a).val ∧ (((ev a).val : ℕ) : ZMod d) = a) (s : ZMod (2 * d)) (a : ZMod d) :
@@ -37,7 +37,7 @@ private theorem ev_iff {d : ℕ} [NeZero d] (hd : Odd d) (ev : ZMod d → ZMod (
     simpa only [ZMod.natCast_zmod_val] using key
 
 /- English proof (translation)
-Use `haveI : NeZero (2 * d) := ⟨Nat.mul_ne_zero two_ne_zero (NeZero.ne d)⟩`. Rewrite using `[ZMod.castHom_apply, ZMod.cast_eq_val]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cast_val_eq_castHom_of_double {d : ℕ} [NeZero d] (x : ZMod (2 * d)) :
     ((x.val : ℕ) : ZMod d) = ZMod.castHom (dvd_mul_left d 2) (ZMod d) x := by
@@ -45,7 +45,7 @@ private theorem cast_val_eq_castHom_of_double {d : ℕ} [NeZero d] (x : ZMod (2 
   rw [ZMod.castHom_apply, ZMod.cast_eq_val]
 
 /- English proof (translation)
-Use `haveI : NeZero (2 * d) := ⟨Nat.mul_ne_zero two_ne_zero (NeZero.ne d)⟩`. Rewrite using `[ZMod.castHom_apply, ZMod.cast_eq_val]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cast_val_two_eq_castHom_of_double {d : ℕ} [NeZero d] (x : ZMod (2 * d)) :
     ((x.val : ℕ) : ZMod 2) = ZMod.castHom (dvd_mul_right 2 d) (ZMod 2) x := by
@@ -53,11 +53,11 @@ private theorem cast_val_two_eq_castHom_of_double {d : ℕ} [NeZero d] (x : ZMod
   rw [ZMod.castHom_apply, ZMod.cast_eq_val]
 
 /- English proof (translation)
-Establish `h1 : s + (d : ZMod (2 * d)) = ev a + (i : ZMod (2 * d)) ↔ s + (d : ZMod (2 * d)) - i = ev a`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, add_sub_cancel_right]`. Introduce `h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h, sub_add_cancel]`. Rewrite using `[h1, ev_iff hd ev hev]`. Establish `hpar : Even (s + (d : ZMod (2 * d)) - i).val ↔ Even s.val`. Rewrite using `[← ZMod.natCast_eq_zero_iff_even, ← ZMod.natCast_eq_zero_iff_even, cast_val_two_eq_castHom_of_double, cast_val_two_eq_castHom_of_double, map_sub, map_add, map_natCast, map_natCast, ZMod.natCast_eq_one_iff_odd.2 hd, ZMod.natCast_eq_one_iff_odd.2 hi, add_sub_cancel_right]`. Establish `hres : (((s + (d : ZMod (2 * d)) - i).val : ℕ) : ZMod d) = ((s.val : ℕ) : ZMod d) - i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[cast_val_eq_castHom_of_double, cast_val_eq_castHom_of_double, map_sub, map_add, map_natCast, map_natCast, ZMod.natCast_self, add_zero]`. Rewrite using `[hpar, hres]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ev_iff' {d : ℕ} [NeZero d] (hd : Odd d) (ev : ZMod d → ZMod (2 * d))
     (hev : ∀ a, Even (ev a).val ∧ (((ev a).val : ℕ) : ZMod d) = a) (s : ZMod (2 * d)) (a : ZMod d) (i : ℕ)
@@ -80,13 +80,13 @@ private theorem ev_iff' {d : ℕ} [NeZero d] (hd : Odd d) (ev : ZMod d → ZMod 
   rw [hpar, hres]
 
 /- English proof (translation)
-Unfold `RF.i0`. Establish `hne : ({i | Odd i ∧ 3 ≤ i ∧ (k : ℝ) ^ (3 / 2 : ℝ) < (l : ℝ) ^ i} : Set ℕ).Nonempty`. Use `⟨2 * k + 3, ⟨k + 1, by ring⟩, by omega, ?_⟩` and prove the remaining obligations. Establish `hk0 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `h1 : (k : ℝ) ^ (3 / 2 : ℝ) ≤ ((k : ℝ) + 1) ^ (2 : ℝ)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ((k : ℝ) + 1) ^ (2 : ℝ) = (((k + 1) ^ 2 : ℕ) : ℝ)`. Rewrite using `[Real.rpow_two]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h3 : (k + 1) ^ 2 < 2 ^ (2 * k + 3)`. Establish `hk : k + 1 ≤ 2 ^ k` using `Nat.lt_two_pow_self`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : (2 : ℝ) ^ (2 * k + 3) ≤ (l : ℝ) ^ (2 * k + 3)` using `pow_le_pow_left₀ (by norm_num) (by exact_mod_cast hl) _`. Establish `h5 : (((k + 1) ^ 2 : ℕ) : ℝ) < (2 : ℝ) ^ (2 * k + 3)` using `by exact_mod_cast h3`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(Nat.sInf_mem hne).1`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem least_level_odd (k l : ℕ) (hl : 2 ≤ l) : Odd (RF.i0 k l) := by
   unfold RF.i0
@@ -114,11 +114,11 @@ private theorem least_level_odd (k l : ℕ) (hl : 2 ≤ l) : Odd (RF.i0 k l) := 
   exact (Nat.sInf_mem hne).1
 
 /- English proof (translation)
-Unfold `RF.IsReps at h`. Set `f : ↥Z × ZMod P.d → P.Pl` to `fun p => P.pos p.1.1 p.2.val`. Establish `hbij : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `p q hpq`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, -, hr⟩` from `h (f q)`. Establish `e1` using `hr (p.1.1, p.2) ⟨p.1.2, hpq⟩`. Establish `e2` using `hr (q.1.1, q.2) ⟨q.1.2, rfl⟩`. Establish `e3 : ((p.1.1, p.2) : P.Pl × ZMod P.d) = (q.1.1, q.2)` using `e1.trans e2.symm`. Simplify using `only [Prod.mk.injEq] at e3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Prod.ext (Subtype.ext e3.1) e3.2`. Introduce `z`. Take `⟨r, ⟨hr1, hr2⟩, -⟩` from `h z`. Conclude with `⟨(⟨r.1, hr1⟩, r.2), hr2⟩`. Rewrite using `[← Fintype.card_of_bijective hbij, Fintype.card_prod, Fintype.card_coe, ZMod.card]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_reps (P : RF.Par) (Z : Finset P.Pl) (h : RF.IsReps P Z) : Z.card * P.d = Fintype.card P.Pl := by
   unfold RF.IsReps at h
@@ -143,7 +143,7 @@ private noncomputable def supp (y : ZMod d → ℕ → ℕ) : Finset (ZMod d × 
   (Finset.univ ×ˢ oddLevels d).filter fun x => y x.1 x.2 ≠ 0
 
 /- English proof (translation)
-Unfold `supp`. Rewrite using `[Finset.sum_filter_of_ne, Finset.sum_product]`. Introduce `x _ hx hy`. Apply `hx` to reduce the goal to its premises. Rewrite using `[hy, hf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_supp {M : Type} [AddCommMonoid M] (y : ZMod d → ℕ → ℕ) (f : ZMod d → ℕ → ℕ → M)
     (hf : ∀ a i, f a i 0 = 0) :
@@ -155,11 +155,11 @@ private theorem sum_supp {M : Type} [AddCommMonoid M] (y : ZMod d → ℕ → �
   rw [hy, hf]
 
 /- English proof (translation)
-Establish `hsub : supp y ⊆ Finset.univ ×ˢ ((Finset.range M).image fun j => 2 * j + 1)`. Introduce `x hx`. Unfold `supp at hx`. Rewrite `hx` using `[Finset.mem_filter, Finset.mem_product]`. Take `⟨⟨-, hodd⟩, hy⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Unfold `oddLevels at hodd`. Rewrite `hodd` using `[Finset.mem_filter]`. Take `⟨j, hj⟩` from `hodd.2`. Rewrite using `[Finset.mem_product]`. Use `⟨Finset.mem_univ _, Finset.mem_image.2 ⟨j, Finset.mem_range.2 ?_, hj.symm⟩⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hjM`. Conclude with `hy (h x.1 x.2 (by omega))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.card_product, Finset.card_univ, ZMod.card, Finset.card_image_of_injective _ (fun a b hab => by simpa using hab), Finset.card_range]`.
+Assume the negation of the conclusion and derive a contradiction. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_supp (y : ZMod d → ℕ → ℕ) (M : ℕ) (h : ∀ a i, 2 * M + 1 ≤ i → y a i = 0) :
     (supp y).card ≤ d * M := by
@@ -187,7 +187,7 @@ private noncomputable def rst (n : ℕ) (ga : ZMod (2 * d) → ℕ → ℕ) (s :
 variable {C : Type} [Field C] {V : VF C} {I J : Fin 2 → Type} [∀ g, Fintype (I g)] [∀ g, Fintype (J g)]
 
 /- English proof (translation)
-Unfold `RowData.rkF`. Distinguish the cases in `h : X.big g a`. Rewrite using `[X.rk_big g a h]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[X.rk_small g a h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -201,13 +201,13 @@ private theorem rk_le (X : RowData C V (2 * d) I J) (g : Fin 2) (a : ZMod (2 * d
     omega
 
 /- English proof (translation)
-Unfold `RF.monDegAll`. Rewrite using `[Finset.sum_eq_single s (fun b _ hb => by simp [monDeg, rst, hb]) (by simp)]`. Unfold `monDeg`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation.
 
-Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `k hk`. Rewrite `hk`, the goal using `[Finset.mem_Icc]`. Conclude with `⟨hk.1, le_trans hk.2 (min_le_left _ _)⟩`. Introduce `k _ _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Check the signs of the components of the expression. Use `_ = ∑ k ∈ Finset.Icc 1 K, (if Even s.val ∧ k = n then (0 : ℝ) else (k : ℝ) * ga s k) := by`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`. Simplify using `only [rst, if_true]`.
+Check the signs of the components of the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Use `_ ≤ _ := le_refl _`.
+A detailed English derivation is pending.
 -/
 private theorem deg_le (X : RowData C V (2 * d) I J) (n K : ℕ) (ga : ZMod (2 * d) → ℕ → ℕ) (s : ZMod (2 * d)) :
     (RF.monDegAll X 0 (rst n ga s) K : ℝ) ≤
@@ -241,7 +241,7 @@ private noncomputable def blocks (X : RowData C V (2 * d) I J) (ev : ZMod d → 
       (RF.GlobalTheory.bi 0 (ev x.1) x.2 (y x.1 x.2), RF.blockBd V.l X.n X.m x.2 (y x.1 x.2))))
 
 /- English proof (translation)
-Simplify using `only [blocks, List.map_append, List.sum_append, List.map_map, Finset.sum_map_toList, Function.comp_def, RF.GlobalTheory.what₂, Finset.sum_const, smul_eq_mul, Finset.card_univ, ZMod.card]`. Establish `h1` using `Nat.mul_le_mul_right X.n (card_supp y M h)`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem blocks_rows (X : RowData C V (2 * d) I J) (ev : ZMod d → ZMod (2 * d)) (y : ZMod d → ℕ → ℕ)
     (u : ZMod d → ℕ) (ga : ZMod (2 * d) → ℕ → ℕ) (K M : ℕ) (h : ∀ a i, 2 * M + 1 ≤ i → y a i = 0) :
@@ -252,9 +252,9 @@ private theorem blocks_rows (X : RowData C V (2 * d) I J) (ev : ZMod d → ZMod 
   nlinarith
 
 /- English proof (translation)
-Simplify using `only [blocks, List.map_append, List.sum_append, List.map_map, Function.comp_def, Finset.sum_map_toList]`. Establish `hs` using `sum_supp y (fun _ i v => RF.blockBd V.l X.n X.m i v) (fun a i => by simp [RF.blockBd])`. Establish `hpos : (0 : ℝ) < (V.l : ℝ) - 1`. Establish `: (2 : ℝ) ≤ (V.l : ℝ)` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hD : ∑ s : ZMod (2 * d), (RF.monDegAll X 0 (rst X.n ga s) K : ℝ) / ((V.l : ℝ) - 1) ≤ (∑ s : ZMod (2 * d), ∑ k ∈ Finset.Icc 1 K, (if Even s.val ∧ k = X.n then (0 : ℝ) else (k : ℝ) * ga s k)) / ((V.l : ℝ) - 1)`. Rewrite using `[← Finset.sum_div]`. Conclude with `div_le_div_of_nonneg_right (Finset.sum_le_sum fun s _ => deg_le X X.n K ga s) hpos.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem blocks_bd (X : RowData C V (2 * d) I J) (ev : ZMod d → ZMod (2 * d)) (y : ZMod d → ℕ → ℕ)
     (u : ZMod d → ℕ) (ga : ZMod (2 * d) → ℕ → ℕ) (K : ℕ) (hl : 2 ≤ V.l) :
@@ -275,27 +275,25 @@ private theorem blocks_bd (X : RowData C V (2 * d) I J) (ev : ZMod d → ZMod (2
   linarith
 
 /- English proof (translation)
-Establish `hrk : ∀ a, X.rkF 0 a ≤ K` using `fun a => le_trans (rk_le X 0 a) hK`. Simplify using `only [blocks, List.map_append, List.sum_append, List.map_map]`. Rewrite using `[Finset.sum_map_toList, Finset.sum_map_toList, Finset.sum_map_toList]`. Simplify using `[Function.comp_def, RF.GlobalTheory.wt, rst]`. Establish `hfirst : (if 1 ≤ k ∧ k ≤ K ∧ k ≤ X.rkF 0 s then ga s k else 0) = ga s k` using `by split_ifs with h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Establish `h'` using `hs s k (Ne.symm hne)`. Conclude with `h ⟨h'.1, le_trans h'.2 (hrk s), h'.2⟩`. Establish `hodd : ∀ i ∈ oddLevels d, Odd i`.
+Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Unfold `oddLevels at hi`. Conclude with `(Finset.mem_filter.1 hi).2`. Distinguish the cases in `hkn : k = X.n`. Use `swap`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [hkn, and_false, if_false, Finset.sum_const_zero, add_zero]`. Conclude with `hfirst`. Substitute `hkn` using the available equality. Simplify using `only [and_true]`. Distinguish the cases in `he : Even s.val`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hch : ∀ a, (s = ev a ↔ a = ((s.val : ℕ) : ZMod d))` using `fun a => by`. Rewrite using `[ev_iff hd ev hev s a]`. Simplify using `[he]`. Establish `hbi : ∀ a (i : ℕ), Odd i → (s + (d : ZMod (2 * d)) = ev a + (i : ZMod (2 * d)) ↔ a = ((s.val : ℕ) : ZMod d) - (i : ZMod d))` using `fun a i hi => by`. Rewrite using `[ev_iff' hd ev hev s a i hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[he]`. Establish `e1` using `sum_supp y (fun a i v => if s = ev a then V.l ^ i * v else 0) (fun a i => by simp)`. Establish `e2` using `sum_supp y (fun a i v => if s + (d : ZMod (2 * d)) = ev a + (i : ZMod (2 * d)) then v else 0) (fun a i => by simp)`. Rewrite using `[Finset.sum_add_distrib, e1, e2]`. Establish `t0 : (if 1 ≤ X.n ∧ X.n ≤ K ∧ X.n ≤ X.rkF 0 s then (if Even s.val then 0 else ga s X.n) else 0) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[he]`. Establish `t1 : (∑ x, if s = ev x then u x else 0) = u ((s.val : ℕ) : ZMod d)`. Repeatedly rewrite using `[hch]`. Simplify using the standard rewrite rules. Establish `t2 : (∑ a, ∑ i ∈ oddLevels d, if s = ev a then V.l ^ i * y a i else 0) = ∑ i ∈ oddLevels d, V.l ^ i * y ((s.val : ℕ) : ZMod d) i`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Repeatedly rewrite using `[hch]`. Rewrite using `[Finset.sum_comm]`. Simplify using the standard rewrite rules. Establish `t3 : (∑ a, ∑ i ∈ oddLevels d, if s + (d : ZMod (2 * d)) = ev a + (i : ZMod (2 * d)) then y a i else 0) = ∑ i ∈ oddLevels d, y (((s.val : ℕ) : ZMod d) - (i : ZMod d)) i`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i hi`. Repeatedly rewrite using `[hbi _ i (hodd i hi)]`. Simplify using the standard rewrite rules. Rewrite using `[t0, t1, t2, t3, hm s he, hb]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hch0 : ∀ a, ¬ s = ev a` using `fun a h => he (by rw [h]; exact (hev a).1)`. Establish `t3 : (∑ a, ∑ i ∈ oddLevels d, if s + (d : ZMod (2 * d)) = ev a + (i : ZMod (2 * d)) then y a i else 0) = 0` using `Finset.sum_eq_zero (fun a _ => Finset.sum_eq_zero (fun i hi => if_neg (fun h => he ((ev_iff' hd ev hev s a i (hodd i hi)).1 h).1)))`. Establish `e2` using `sum_supp y (fun a i v => if s + (d : ZMod (2 * d)) = ev a + (i : ZMod (2 * d)) then v else 0) (fun a i => by simp)`. Rewrite using `[Finset.sum_add_distrib, e2, t3]`.
-
-Simplify `hfirst` using `[hch0, he]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem blocks_wt (hd : Odd d) (X : RowData C V (2 * d) I J) (ev : ZMod d → ZMod (2 * d))
     (hev : ∀ a, Even (ev a).val ∧ (((ev a).val : ℕ) : ZMod d) = a) (y : ZMod d → ℕ → ℕ)
@@ -370,29 +368,25 @@ end UpperTheory.G2.RowPlan
 
 open UpperTheory.G2.RowPlan in
 /- English proof (translation)
-Introduce `hCH hM P l C1 hf hm1 hmk hr hl5 Pk y u ev hev hW hy hbi`. Establish `hd : Odd P.d` using `Pk.odd`. Establish `hn1 : ∀ o, (Pk.R.X o).n = P.k - 1` using `fun o => (Pk.R.hn o).1`. Establish `hn2 : ∀ o, (Pk.R.X o).m = P.m` using `fun o => (Pk.R.hn o).2`. Establish `hVl : Pk.R.V.l = l` using `Pk.R.hVl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨M, hMe⟩` from `least_level_odd P.k l (by omega)`. Set `L : ↥Pk.Z → List (RF.GlobalTheory (2 * P.d) × ℝ)` to `fun o => blocks (Pk.R.X o) ev (y o.1) (u o.1) (Pk.ga o) P.r`. Establish `hv` using `Pk.val L ?_ ?_ ?_ ?_`. Use `le_trans hv ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `o _`. Use `blocks_bd (Pk.R.X o) ev (y o.1) (u o.1) (Pk.ga o) P.r (by rw [hVl]; omega)` as an intermediate fact. Rewrite `this` using `[hn1 o, hn2 o, hVl]`. Then use the resulting hypothesis. Use `_ = _ := by`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_add_distrib, ← Finset.sum_div, Pk.rest_eq]`. Use `congr 1`. Conclude with `Finset.sum_coe_sort Pk.Z (fun z => (∑ a, ∑ i ∈ oddLevels P.d, RF.blockBd l (P.k - 1) P.m i (y z a i)) + ∑ a, RF.chBd l (P.k - 1) P.m (u z a))`. Introduce `o q hq`. Simplify using `only [L, blocks, List.mem_append, List.mem_map, Finset.mem_toList] at hq`.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `hq with ⟨s, -, rfl⟩ | ⟨a, -, rfl⟩ | ⟨x, hx, rfl⟩` into its components or cases. Conclude with `(hM _ _ _ _ _ (Pk.R.X o) (Pk.R.F o) 0 _ P.r).1`. Establish `hbig : (Pk.R.X o).big 0 (ev a)` using `((Pk.R.alt o).2 (ev a)).2 (hev a).1`. Conclude with `(hCH _ _ _ _ _ (Pk.R.X o) (Pk.R.F o) 0 (ev a) hbig (u o.1 a)).1 (Pk.R.alt o)`. Simplify using `only [supp, Finset.mem_filter, Finset.mem_product] at hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `hbi o x.1 x.2 hx.1.2 hx.2` as an intermediate fact. Rewrite using `[hn1 o, hn2 o, hVl]` and apply the resulting hypothesis. Introduce `o q hq g e N hqe`. Simplify using `only [L, blocks, List.mem_append, List.mem_map, Finset.mem_toList] at hq`. Break down `hq with ⟨s, -, rfl⟩ | ⟨a, -, rfl⟩ | ⟨x, hx, rfl⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Take `⟨-, rfl, -⟩` from `RF.GlobalTheory.mon.inj hqe`. Conclude with `⟨s, fun a k ha => by simp [rst, ha]⟩`. Consider the cases of `hqe`. Consider the cases of `hqe`. Establish `hrow : ∀ o, (List.map (fun q => RF.GlobalTheory.what₂ (Pk.R.X o).n q.1) (L o)).sum ≤ P.d * ((M + 1) * (P.k - 1) + 2 * P.r)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `o`. Use `blocks_rows (Pk.R.X o) ev (y o.1) (u o.1) (Pk.ga o) P.r M (fun a i hi => hy o.1 o.2 a i (by omega))` as an intermediate fact. Rewrite `this` using `[hn1 o]`. Rewrite using `[hn1 o]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hZ` using `card_reps P Pk.Z Pk.hZ`. Rewrite `hZ` using `[hf]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hrow o`. Use `_ = P.f * ((RF.i0 P.k l + 1) * (P.k - 1) + 4 * P.r) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_coe, smul_eq_mul, ← hZ, hMe]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ Pk.nW := Pk.what₂`. Introduce `o s k`. Establish `hK : (Pk.R.X o).n + ((Pk.R.X o).j + (Pk.R.X o).j') ≤ P.r`.
-
-Establish `e : (Pk.R.X o).m = (Pk.R.X o).j + (Pk.R.X o).j'` using `rfl`. Rewrite using `[← e, hn1 o, hn2 o]`. Use linear arithmetic over natural numbers and integers. Conclude with `blocks_wt hd (Pk.R.X o) ev hev (y o.1) (u o.1) (Pk.ga o) P.r hK (fun a => RF.alongOrb P o.1 Pk.W a) (Pk.supp o) (fun s hs => by`. Rewrite using `[hn1 o, Pk.main o s hs]`.
-
-Simplify using `only [RF.alongOrb, ZMod.val_natCast])`. Use the proof step `(fun a => by`. Rewrite using `[hVl]`. Conclude with `hW o.1 o.2 a) s k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.attains_blockListOfWeights_along_orbits :
     RF.CHSupply → RF.MONSupply → ∀ (P : RF.Par) (l : ℕ) (C1 : ℝ), Fintype.card P.Pl = P.f → 1 ≤ P.m → P.m + 3 ≤ P.k → P.r = P.k - 1 + P.m → 5 ≤ l →

@@ -19,7 +19,7 @@ def ClopenCond (T : Over S) (P : ∀ T' : Over S, (T' ⟶ T) → Prop) : Prop :=
   ∃ U : T.left.Opens, IsClosed (U : Set T.left) ∧ ∀ (T' : Over S) (h : T' ⟶ T), P T' h ↔ Set.range h.left ⊆ U
 
 /- English proof (translation)
-Take `⟨U, hU, H⟩` from `h`. Conclude with `⟨U, hU, fun T' h => (e T' h).trans (H T' h)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ClopenCond.congr {T : Over S} {P P' : ∀ T' : Over S, (T' ⟶ T) → Prop} (h : ClopenCond T P)
     (e : ∀ T' h, P' T' h ↔ P T' h) : ClopenCond T P' := by
@@ -27,7 +27,7 @@ theorem ClopenCond.congr {T : Over S} {P P' : ∀ T' : Over S, (T' ⟶ T) → Pr
   exact ⟨U, hU, fun T' h => (e T' h).trans (H T' h)⟩
 
 /- English proof (translation)
-Take `⟨U, hU, H⟩` from `h`. Take `⟨U', hU', H'⟩` from `h'`. Use `⟨U ⊓ U', hU.inter hU', fun T' h => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[H, H', TopologicalSpace.Opens.coe_inf, Set.subset_inter_iff]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ClopenCond.and {T : Over S} {P P' : ∀ T' : Over S, (T' ⟶ T) → Prop} (h : ClopenCond T P)
     (h' : ClopenCond T P') : ClopenCond T fun T' h => P T' h ∧ P' T' h := by
@@ -38,7 +38,7 @@ theorem ClopenCond.and {T : Over S} {P P' : ∀ T' : Over S, (T' ⟶ T) → Prop
   rw [H, H', TopologicalSpace.Opens.coe_inf, Set.subset_inter_iff]
 
 /- English proof (translation)
-Use `choose U hU H using h`. Use `⟨⟨⋂ i, (U i : Set T.left), isOpen_iInter_of_finite fun i => (U i).isOpen⟩, isClosed_iInter hU, fun T' h => ?_⟩` and prove the remaining obligations. Simplify using `only [H, TopologicalSpace.Opens.coe_mk, Set.subset_iInter_iff]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ClopenCond.forall_finite {T : Over S} {J : Type} [Finite J] {P : J → ∀ T' : Over S, (T' ⟶ T) → Prop}
     (h : ∀ i, ClopenCond T (P i)) : ClopenCond T fun T' h => ∀ i, P i T' h := by
@@ -48,7 +48,7 @@ theorem ClopenCond.forall_finite {T : Over S} {J : Type} [Finite J] {P : J → �
   simp only [H, TopologicalSpace.Opens.coe_mk, Set.subset_iInter_iff]
 
 /- English proof (translation)
-Use `(ClopenCond.forall_finite (J := Set.range q) fun c => h c.2.choose).congr fun T' h => ?_` and prove the remaining obligations. Conclude with `⟨fun H c => H _, fun H i => hq _ _ (⟨i, rfl⟩ : q i ∈ Set.range q).choose_spec T' h (H ⟨q i, i, rfl⟩)⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem ClopenCond.forall_of_finite {T : Over S} {J κ : Type} [Finite κ] (q : J → κ)
     {P : J → ∀ T' : Over S, (T' ⟶ T) → Prop} (h : ∀ i, ClopenCond T (P i))
@@ -57,9 +57,9 @@ theorem ClopenCond.forall_of_finite {T : Over S} {J κ : Type} [Finite κ] (q : 
   exact ⟨fun H c => H _, fun H i => hq _ _ (⟨i, rfl⟩ : q i ∈ Set.range q).choose_spec T' h (H ⟨q i, i, rfl⟩)⟩
 
 /- English proof (translation)
-Use `haveI : NeZero n := ⟨hn.ne'⟩`. Set `b` to `Module.Free.chooseBasis ℤ M`. Use `⟨Module.Free.ChooseBasisIndex ℤ M → ZMod n, inferInstance, fun a i => (b.repr a i : ZMod n), fun a a' h => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ i, ∃ c : ℤ, b.repr a' i - b.repr a i = n * c` using `fun i => (ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).1 (congrFun h i)`. Use `choose c hc using h1`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨b.equivFun.symm c, b.equivFun.injective (funext fun i => ?_)⟩` and prove the remaining obligations. Rewrite using `[map_add, map_nsmul, LinearEquiv.apply_symm_apply]`. Simplify using `only [Module.Basis.equivFun_apply, Pi.add_apply, Pi.smul_apply, nsmul_eq_mul, Pi.mul_apply, Pi.natCast_apply]`. Combine the linear relations using `[hc i]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_finite_mod (M : Type) [AddCommGroup M] [Module.Free ℤ M] [Module.Finite ℤ M] {n : ℕ} (hn : 0 < n) :
     ∃ (κ : Type) (_ : Finite κ) (q : M → κ), ∀ a a', q a = q a' → ∃ c, a' = a + n • c := by
@@ -76,7 +76,7 @@ theorem exists_finite_mod (M : Type) [AddCommGroup M] [Module.Free ℤ M] [Modul
   linarith [hc i]
 
 /- English proof (translation)
-Use `⟨(FinEt.agreeι u u').opensRange, (FinEt.agreeι u u').isClosedEmbedding.isClosed_range, fun T' h => ?_⟩` and prove the remaining obligations. Use `Iff.trans ?_ (FinEt.comp_eq_comp_iff_range u u' h.left)` and prove the remaining obligations. Conclude with `⟨fun e => congrArg CommaMorphism.left e, fun e => Over.OverMorphism.ext e⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem clopenCond_eq {T Z : Over S} [IsFinite Z.hom] [Etale Z.hom] (u u' : T ⟶ Z) :
     ClopenCond T fun _ h => h ≫ u = h ≫ u' := by
@@ -90,7 +90,7 @@ def RepTors (G : Over S) [GrpObj G] (n : ℕ) (La : Type) [AddCommGroup La] (Z :
       ∃! h : T ⟶ Z, ∀ a, h ≫ et a = et' a
 
 /- English proof (translation)
-The claim follows from `(R.2.2.2.2 T (fun a => u' ≫ et a) (fun a c => by rw [R.2.2.1, MonObj.comp_mul]) (fun a => by rw [← MonObj.comp_pow, R.2.2.2.1, MonObj.comp_one])).unique h fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem RepTors.ext {G : Over S} [GrpObj G] {n : ℕ} {La : Type} [AddCommGroup La] {Z : Over S} {et : La → (Z ⟶ G)}
     (R : RepTors G n La Z et) {T : Over S} {u u' : T ⟶ Z} (h : ∀ a, u ≫ et a = u' ≫ et a) : u = u' :=
@@ -98,9 +98,9 @@ theorem RepTors.ext {G : Over S} [GrpObj G] {n : ℕ} {La : Type} [AddCommGroup 
     (fun a => by rw [← MonObj.comp_pow, R.2.2.2.1, MonObj.comp_one])).unique h fun _ => rfl
 
 /- English proof (translation)
-Take `⟨u, hu, -⟩` from `R.2.2.2.2 T x hx hx'`. Take `⟨u', hu', -⟩` from `R.2.2.2.2 T y hy hy'`. Use `R.1` as an intermediate fact. Use `R.2.1` as an intermediate fact. Use `(clopenCond_eq u u').congr fun T' h => ⟨fun H => R.ext fun a => ?_, fun H a => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, Category.assoc, hu, hu', H]`. Rewrite using `[← hu, ← hu', ← Category.assoc, H, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem RepTors.clopenCond {G : Over S} [GrpObj G] {n : ℕ} {La : Type} [AddCommGroup La] {Z : Over S}
     {et : La → (Z ⟶ G)} (R : RepTors G n La Z et) {T : Over S} (x y : La → (T ⟶ G))
@@ -116,9 +116,9 @@ theorem RepTors.clopenCond {G : Over S} [GrpObj G] {n : ℕ} {La : Type} [AddCom
   · rw [← hu, ← hu', ← Category.assoc, H, Category.assoc]
 
 /- English proof (translation)
-Set `pt : Sp k` to `(⊥ : PrimeSpectrum k)`. Establish `h1 : pt ∈ Set.range (pullback.snd p z)`. Rewrite using `[Scheme.Pullback.range_snd]`. Conclude with `hz ⟨pt, rfl⟩`. Take `⟨y, -⟩` from `h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Nonempty (pullback p z : Scheme)` using `⟨y⟩`. Establish `: IsAffine (pullback p z)` using `isAffine_of_isAffineHom (pullback.snd p z)`. Take `⟨x, -, hx⟩` from `(isClosed_univ (X := (pullback p z : Scheme))).exists_closed_singleton Set.univ_nonempty`. Use `⟨pointOfClosedPoint (pullback.snd p z) x hx ≫ pullback.fst p z, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, pointOfClosedPoint_comp_assoc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_geom {W Z : Scheme.{0}} (p : W ⟶ Z) [IsFinite p] {k : Type} [Field k] [IsAlgClosed k]
     (z : Sp k ⟶ Z) (hz : Set.range z ⊆ Set.range p) : ∃ w : Sp k ⟶ W, w ≫ p = z := by
@@ -134,9 +134,9 @@ theorem exists_lift_geom {W Z : Scheme.{0}} (p : W ⟶ Z) [IsFinite p] {k : Type
   rw [Category.assoc, pullback.condition, pointOfClosedPoint_comp_assoc]
 
 /- English proof (translation)
-Use `FinEt.isFinite_left p` as an intermediate fact. Use `FinEt.etale_left p` as an intermediate fact. Use `⟨⟨Set.range p.left, p.left.isOpenMap.isOpen_range⟩, p.left.isClosedMap.isClosed_range, fun k _ _ x z => ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `exists_lift_geom p.left z.left h`. Use `⟨Over.homMk w ?_, Over.OverMorphism.ext hw⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show w ≫ W.hom = x`. Rewrite using `[← Over.w p, ← Category.assoc, hw]`. Conclude with `Over.w z`. Introduce and unpack `⟨w, rfl⟩ _ ⟨y, rfl⟩`. Conclude with `⟨w.left y, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_image {W Z : Over S} [IsFinite W.hom] [Etale W.hom] [IsFinite Z.hom] [Etale Z.hom] (p : W ⟶ Z) :
     ∃ U : Z.left.Opens, IsClosed (U : Set Z.left) ∧ ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S)
@@ -154,11 +154,11 @@ theorem exists_image {W Z : Over S} [IsFinite W.hom] [Etale W.hom] [IsFinite Z.h
     exact ⟨w.left y, by simp⟩
 
 /- English proof (translation)
-Establish `hc : IsClosedImmersion U.ι` using `.of_isPreimmersion _ (by simpa using hU)`. Use `⟨Over.mk (U.ι ≫ Z.hom), Over.homMk U.ι rfl, inferInstanceAs (IsFinite (U.ι ≫ Z.hom)), inferInstanceAs (Etale (U.ι ≫ Z.hom)), ?_, fun T h => ?_⟩` and prove the remaining obligations. Establish `: Mono (Over.homMk U.ι rfl : Over.mk (U.ι ≫ Z.hom) ⟶ Z).left` using `inferInstanceAs (Mono U.ι)`. Conclude with `Over.mono_of_mono_left _`. Rewrite using `[FinEt.range_subset_iff_factors]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩`. Use `⟨Over.homMk t ?_, Over.OverMorphism.ext ht⟩` and prove the remaining obligations. Use `show t ≫ U.ι ≫ Z.hom = T.hom`. Rewrite using `[← Category.assoc, ht, Over.w h]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨t, ht⟩`. Conclude with `⟨t.left, congrArg CommaMorphism.left ht⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_sub {Z : Over S} [IsFinite Z.hom] [Etale Z.hom] (U : Z.left.Opens) (hU : IsClosed (U : Set Z.left)) :
     ∃ (V : Over S) (i : V ⟶ Z), IsFinite V.hom ∧ Etale V.hom ∧ Mono i ∧
@@ -178,7 +178,7 @@ theorem exists_sub {Z : Over S} [IsFinite Z.hom] [Etale Z.hom] (U : Z.left.Opens
       exact ⟨t.left, congrArg CommaMorphism.left ht⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨t, rfl⟩`. Take `⟨k, _, _, a, ha⟩` from `FinEt.exists_algClosed_point T.left t`. Take `⟨p, rfl⟩ : t ∈ Set.range a` from `by rw [ha]; rfl`. Conclude with `H k (a ≫ T.hom) (Over.homMk a rfl) ⟨p, by simp⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem range_subset_of_geom {T Z : Over S} (h : T ⟶ Z) (U : Set Z.left)
     (H : ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S) (y : Over.mk x ⟶ T), Set.range (y ≫ h).left ⊆ U) :
@@ -189,7 +189,7 @@ theorem range_subset_of_geom {T Z : Over S} (h : T ⟶ Z) (U : Set Z.left)
   exact H k (a ≫ T.hom) (Over.homMk a rfl) ⟨p, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstanceAs (IsFinite (pullback.fst X.hom Y.hom ≫ X.hom)), inferInstanceAs (Etale (pullback.fst X.hom Y.hom ≫ X.hom))⟩`.
+Supply the required witnesses or components.
 -/
 theorem finiteEtale_tensor (X Y : Over S) [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] :
     IsFinite (X ⊗ Y).hom ∧ Etale (X ⊗ Y).hom :=

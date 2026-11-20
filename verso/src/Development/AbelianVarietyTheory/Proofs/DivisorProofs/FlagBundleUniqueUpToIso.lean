@@ -13,9 +13,9 @@ namespace GlobalTheory.CovTest
 variable {S T Y B : Scheme.{0}}
 
 /- English proof (translation)
-Substitute `w w₂` using the available equality. Use `NatTrans.congr_app (Scheme.Modules.pseudofunctor_associativity h g' π) E` as an intermediate fact. Simplify using `[Scheme.Modules.pullbackCongr] at this ⊢`. Rewrite using `[← cancel_epi ((Scheme.Modules.pullbackComp h (g' ≫ π)).inv.app E ≫ (Scheme.Modules.pullback h).map ((Scheme.Modules.pullbackComp g' π).inv.app E) ≫ (Scheme.Modules.pullbackComp h g').hom.app ((Scheme.Modules.pullback π).obj E))]`. Simplify using `only [Category.assoc, reassoc_of% this, eqToHom_trans, eqToHom_refl]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[← Functor.map_comp_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pullbackComp_congr_assoc_app (π : Y ⟶ B) (g' : T ⟶ Y) (g : T ⟶ B) (w : g' ≫ π = g) (h : S ⟶ T)
     (k : S ⟶ B) (w₂ : h ≫ g = k) (w₃ : (h ≫ g') ≫ π = k) (E : B.Modules) :
@@ -34,7 +34,7 @@ theorem pullbackComp_congr_assoc_app (π : Y ⟶ B) (g' : T ⟶ Y) (g : T ⟶ B)
   simp [← Functor.map_comp_assoc]
 
 /- English proof (translation)
-Use `NatTrans.congr_app (Scheme.Modules.pseudofunctor_right_unitality π) E` as an intermediate fact. Simplify using `[Scheme.Modules.pullbackCongr] at this ⊢`. Rewrite `this` using `[← Iso.app_inv, Iso.inv_comp_eq, Iso.app_hom]`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pullbackComp_congr_id_app (π : Y ⟶ B) (w : 𝟙 Y ≫ π = π) (E : B.Modules) :
     (Scheme.Modules.pullbackComp (𝟙 Y) π).hom.app E ≫ (Scheme.Modules.pullbackCongr w).hom.app E =
@@ -45,9 +45,9 @@ theorem pullbackComp_congr_id_app (π : Y ⟶ B) (w : 𝟙 Y ≫ π = π) (E : B
   rw [this]
 
 /- English proof (translation)
-Introduce `a i`. Take `⟨e₁, he₁⟩` from `h₁ a i`. Take `⟨e₂, he₂⟩` from `h₂ a i`. Use `⟨(Scheme.Modules.pullbackComp h g').symm.app _ ≪≫ (Scheme.Modules.pullback h).mapIso e₁ ≪≫ e₂, ?_⟩` and prove the remaining obligations. Rewrite using `[← pullbackComp_congr_assoc_app π g' g w h k w₂ w₃ (E a)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Iso.trans_hom, Iso.app_hom, Iso.symm_hom, Functor.mapIso_hom, Category.assoc, he₂]`. Rewrite using `[← Functor.map_comp_assoc, he₁]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem flagCompat_comp {ι : Type} {E : ι → B.Modules} {n : ι → ℕ} (π : Y ⟶ B)
     (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (n a)) (g : T ⟶ B)
@@ -75,7 +75,7 @@ theorem flagCompat_comp {ι : Type} {E : ι → B.Modules} {n : ι → ℕ} (π 
   simp
 
 /- English proof (translation)
-Introduce `a i`. Use `⟨(Scheme.Modules.pullbackId Y).app _, ?_⟩` and prove the remaining obligations. Rewrite using `[pullbackComp_congr_id_app π w (E a)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem flagCompat_id {ι : Type} {E : ι → B.Modules} {n : ι → ℕ} (π : Y ⟶ B)
     (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (n a)) (w : 𝟙 Y ≫ π = π) :
@@ -88,11 +88,11 @@ theorem flagCompat_id {ι : Type} {E : ι → B.Modules} {n : ι → ℕ} (π : 
   simp
 
 /- English proof (translation)
-Introduce `B Y Y' π π' ι E r fl fl' hπ hπ'`. Take `⟨u, ⟨wu, cu⟩, -⟩` from `hπ' Y π fl`. Take `⟨v, ⟨wv, cv⟩, -⟩` from `hπ Y' π' fl'`. Establish `huv : u ≫ v = 𝟙 Y`. Take `⟨z, -, hz⟩` from `hπ Y π fl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `w₃ : (u ≫ v) ≫ π = π` using `by rw [Category.assoc, wv, wu]`. Conclude with `(hz _ ⟨w₃, flagCompat_comp π fl π' fl' v wv cv π fl u wu cu w₃⟩).trans (hz _ ⟨Category.id_comp π, flagCompat_id π fl _⟩).symm`. Establish `hvu : v ≫ u = 𝟙 Y'`. Take `⟨z, -, hz⟩` from `hπ' Y' π' fl'`. Establish `w₃ : (v ≫ u) ≫ π' = π'` using `by rw [Category.assoc, wu, wv]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `(hz _ ⟨w₃, flagCompat_comp π' fl' π fl u wu cu π' fl' v wv cv w₃⟩).trans (hz _ ⟨Category.id_comp π', flagCompat_id π' fl' _⟩).symm`. Conclude with `⟨⟨u, v, huv, hvu⟩, wu⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_iso_of_isFlagBundle : ∀ (B Y Y' : Scheme.{0}) (π : Y ⟶ B) (π' : Y' ⟶ B) (ι : Type) (E : ι → B.Modules) (r : ι → ℕ) (fl : ∀ a, GlobalTheory.Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)) (fl' : ∀ a, GlobalTheory.Vert.Flag ((Scheme.Modules.pullback π').obj (E a)) (r a)), GlobalTheory.CovTest.IsFlagBundle π E r fl → GlobalTheory.CovTest.IsFlagBundle π' E r fl' → ∃ e : Y ≅ Y', e.hom ≫ π' = π := by
   intro B Y Y' π π' ι E r fl fl' hπ hπ'

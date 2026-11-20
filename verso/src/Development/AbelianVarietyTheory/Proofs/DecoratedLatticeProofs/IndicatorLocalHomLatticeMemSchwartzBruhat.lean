@@ -13,13 +13,13 @@ noncomputable section
 namespace GlobalTheory.LatIndSB
 
 /- English proof (translation)
-Introduce `D ψ S T M M' hM hM' P`. Establish `hset : {x | (ofSplit P.q).up P.FS P.FT x ∈ latO S T (M : Set _) (M' : Set _) (· = P.q.v)} = (((latO S T (M : Set _) (M' : Set _) fun _ => True).comap (GlobalTheory.LocMod.Witness.upH (ofSplit P.q) P.FS P.FT) : AddSubgroup _) : Set (Matrix P.Y P.Y' P.k))`. Take `⟨ε, hε, heε⟩` from `GlobalTheory.FinPl.HalfInd.exists_idem P.q`. Use extensionality with `x`. Use `⟨fun h => GlobalTheory.PlaceModel.latO_le_top _ h, fun h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `(GlobalTheory.PlaceModel.idem_smul_mem hε P.q.split.1 heε h).1`. Establish `hh : (ofSplit P.q).up P.FS P.FT x ∈ GlobalTheory.PlaceModel.half S T P.q.e` using `(GlobalTheory.PlaceModel.isHalf_iff S T).1 (GlobalTheory.LocMod.Witness.up_half (ofSplit P.q) P.FS P.FT x)`. Establish `h3 : P.q.e • (ofSplit P.q).up P.FS P.FT x = (ofSplit P.q).up P.FS P.FT x` using `(GlobalTheory.PlaceModel.mem_half S T).1 hh`. Express the relevant statement in the definitionally equal form `P.q.e • (ofSplit P.q).up P.FS P.FT x ∈ (latO S T (M : Set _) (M' : Set _) fun w => w = P.q.v) at h2`. Rewrite `h2` using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`. Rewrite using `[hset]`. Establish `ho` using `GlobalTheory.LocMod.Witness.lat_open (ofSplit P.q) P.FS P.FT hM hM'`. Establish `hc` using `GlobalTheory.LocMod.Witness.lat_compact (ofSplit P.q) P.FS P.FT hM hM'`. Establish `hcl` using `AddSubgroup.isClosed_of_isOpen _ ho`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(IsLocallyConstant.iff_exists_open _).2 fun x => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ (((latO S T (M : Set _) (M' : Set _) fun _ => True).comap (GlobalTheory.LocMod.Witness.upH (ofSplit P.q) P.FS P.FT) : AddSubgroup _) : Set (Matrix P.Y P.Y' P.k))`. Conclude with `⟨_, ho, hx, fun y hy => by rw [Set.indicator_of_mem hy, Set.indicator_of_mem hx]⟩`. Conclude with `⟨_, hcl.isOpen_compl, hx, fun y hy => by rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩`. Conclude with `HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem indicator_latO_mem_SB : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (M : Lat S) (M' : Lat T), IsSelfDualC S M → IsSelfDualC T M' → ∀ (P : LocPl ψ S T M M'), Set.indicator {x | (ofSplit P.q).up P.FS P.FT x ∈ latO S T (M : Set _) (M' : Set _) (· = P.q.v)} (fun _ => (1 : ℂ)) ∈ SB (Matrix P.Y P.Y' P.k) := by
   intro D ψ S T M M' hM hM' P

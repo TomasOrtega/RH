@@ -19,55 +19,51 @@ end UpperTheory.Esk.PropMVAux
 open UpperTheory.Esk.PropMVAux in
 open Classical in
 /- English proof (translation)
-Introduce `hPH hMH hWC hHR F Ω _ _ _ _ _ _ l _ hl2 hd hsplit ι ξ ho hodd hunr hram P hP1 hP2`. Establish `: IsGalois F Ω` using `{}`. Take `⟨art, ha⟩` from `hPH.litN.aut.art F Ω`. Establish `hc` using `continuous_of_isOpen_ker' ξ ho`. Establish `: Finite (G F Ω ⧸ ξ.ker)` using `ξ.ker.quotient_finite_of_isOpen ho`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : 0 < ξ.ker.index` using `Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite`. Establish `hξm : ξ ^ ξ.ker.index = 1` using `MonoidHom.ext fun g => by`. Rewrite using `[MonoidHom.pow_apply, ← map_pow]`. Conclude with `ξ.ker.pow_index_mem g`. Establish `hn : ∀ s, ‖(ξ s : Qbar l)‖ = 1` using `fun s => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ξ s ^ ξ.ker.index = 1` using `DFunLike.congr_fun hξm s`. Establish `h3 : ‖(ξ s : Qbar l)‖ ^ ξ.ker.index = 1` using `by rw [← norm_pow, ← Units.val_pow_eq_pow_val, h2]; simp`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 h3`. Take `⟨ω, ⟨hω, hL⟩, -⟩` from `exists_unique_hchar_of_finite_order ha ι ξ hc hm hξm`. Establish `hfo : IsOfFinOrder ω` using `isOfFinOrder_iff_pow_eq_one.2 ⟨_, hm, hω⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hcond, hc0, hfin⟩` from `cond_ex ω hm hω`. Establish `hine : ∀ (w : Pl F) (A : ValuationSubring Ω), IsPlaceOver A w → (Ine (F` using `F) A ≤ ξ.ker ↔ c w = 0) := fun w A hA => (hL.unr_iff ha (Or.inr rfl) hA).trans (hc0 w).symm`. Establish `hcl : ∀ w : Pl F, ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → c w = 0` using `fun w hw => by`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Conclude with `(hine w A hA).1 (hunr A (by simpa using (hA _).2 hw))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfr : ∀ (w : Pl F), c w = 0 → ∀ A, IsPlaceOver A w → ∀ σ : G F Ω, IsFrob A (normV w) σ → ι.symm (ω.val w : ℂˣ) = (ξ σ⁻¹ : (Qbar l)ˣ)` using `fun w hw A hA σ hσ => by`. Rewrite using `[map_inv, Units.val_inv_eq_inv_val, hL.frob_unr ha (Or.inr rfl) ((hc0 w).1 hw) hA hσ, inv_inv]`. Establish `hsg : ∀ v, ω.locInf v (-1) = -1` using `fun v => by`. Take `⟨j, σ, hσ, rfl⟩` from `GlobalTheory.HilbertFromArtin.exists_conj (Ω := Ω) v (IsTotallyReal.isReal v)`. Establish `e` using `hL _ σ (GlobalTheory.HilbertFromArtin.art_sign_eq ha j σ hσ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[infPow_zero, lPow_zero, inv_one, mul_one, mul_one, hodd σ ⟨j, hσ⟩]`. Use `Units.ext (ι.symm.injective (e.symm.trans ?_))` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hex : ∃ w, c w ≠ 0`. Take `⟨u, A, -, hA, hnA⟩` from `hram`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨u, fun h => hnA ((hine u A hA).2 h)⟩`. Establish `hnc : ∀ w : Pl F, (((l : ℕ) : 𝓞 F) ∈ w.asIdeal ∧ ∃ A, IsPlaceOver A w ∧ ∃ σ ∈ Dec (F` using `F) A, ¬ Cong (ξ σ) 1) → ((l : ℕ) : 𝓞 F) ∈ w.asIdeal ∧ ¬ ‖ι.symm (ω.val w : ℂˣ) - 1‖ < 1 := by`. Introduce and unpack `w ⟨hw, A, hA, σ, hσ, h⟩`. Conclude with `⟨hw, fun h' => h (dec_cong ha hc hL ((hc0 w).1 (hcl w hw)) h' hA hσ)⟩`. Take `⟨k, hkB, hk, φ, lam, hφ, hcu, hlam⟩` from `hMH F l hl2 ι ω c hfo hsg hcond hex hcl P (hP1.imp fun w h => ⟨h.1, hnc w h.2⟩) (hP2.imp fun w h => ⟨h.1, hnc w h.2⟩) 3`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlev : ∀ w : Pl F, ((l : ℕ) : 𝓞 F) ∉ w.asIdeal → levL l c w = c w` using `fun w hw => if_neg hw`. Establish `hlev1 : ∀ w : Pl F, ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → levL l c w = 1` using `fun w hw => if_pos hw`. Establish `hfinL : {w | levL l c w ≠ 0}.Finite`. Use `(hfin.union (fin_l (l := l))).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not] at h`. Conclude with `hw ((hlev w h.2).trans h.1)`. Establish `heu : ∀ w : Pl F, ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → ‖ι.symm (eisT l ω c P w)‖ = 1` using `fun w hw => by`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Take `⟨σ, hσ⟩` from `exists_isFrob hA`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eisT, if_pos hw]`. Use `split_ifs`. Rewrite using `[hfr w (hcl w hw) A hA σ hσ, hn]`. Simplify using the standard rewrite rules. Take `⟨D⟩` from `Wc.exL F l ι hsplit`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hu2 : ∃ u, levL l c u ≠ 0 ∧ normV u = 2`. Take `⟨u, A, h2, hA, hnA⟩` from `hram`. Use `⟨u, ?_, h2⟩` and prove the remaining obligations. Distinguish the cases in `hl : ((l : ℕ) : 𝓞 F) ∈ u.asIdeal`. Rewrite using `[hlev1 u hl]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `one_ne_zero`. Rewrite using `[hlev u hl]`. Conclude with `fun h => hnA ((hine u A hA).2 h)`. Establish `hunit : ∀ v, Wc.nu ι (lam (D.pl v)) = 1` using `fun v => by`. Rewrite using `[nu_eq]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `norm_eq_one (heu _ (D.mem v)) ?_` and prove the remaining obligations. Rewrite using `[← map_sub]`. Conclude with `hlam _`. Take `⟨t, htB, ht, φ', lam', hV, hne, hcusp, heig, hcong⟩` from `hWC F hd l hl2 ι D (k + 1) (by omega) (levL l c) hfinL (fun v => hlev1 _ (D.mem v)) hu2 ω hfo φ lam hφ hcu hunit {v | D.pl v ∈ P} 2`. Establish `hlam' : ∀ w, ‖ι.symm ((∏ v, if D.pl v = w ∧ v ∈ {v | D.pl v ∈ P} then (l : ℂ) ^ t else 1) * lam' w - eisT l ω c P w)‖ < 1` using `fun w => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← sub_add_sub_cancel _ (lam w), map_add]`. Conclude with `add_lt (nu_lt.1 (hcong w)) (hlam w)`. Establish `haway : ∀ w : Pl F, ((l : ℕ) : 𝓞 F) ∉ w.asIdeal → ‖ι.symm (lam' w - eisT l ω c P w)‖ < 1` using `fun w hw => by`. Establish `h` using `hlam' w`. Rewrite `h` using `[prod_away D _ t w hw, one_mul]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨π, hreg, ⟨χ, hpol⟩, hinf, hU, hsat⟩` from `hHR F (k + 1) (by omega) (fun v => if v ∈ {v | D.pl v ∈ P} then t else 0) (levL l c) ω hfo φ' lam' hV hne heig hcusp`. Take `⟨r, wt, HT, hG, hatt, -⟩` from `_root_.UpperTheory.Gal.SV.exRS_alt hPH.toClassicalTheorems F Ω l ι 2 one_le_two π χ hreg hpol`. Take `⟨hdet, hres⟩` from `det_res ξ hc r hG.cont k hk hn (((Filter.eventually_cofinite.1 hatt.2).union hfin).union (fin_l (l := l))) fun w hw A hA σ hσ => by`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not] at hw`. Take `⟨⟨⟨B₁, hB₁, hF⟩, h0⟩, hl⟩` from `hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨B₂, hB₂, e⟩` from `hsat w ((hlev w hl).trans h0)`. Take `rfl` from `hB₁.unique hB₂`. Take `⟨h2, h3⟩` from `tr_det ι _ _ _ (((hF A hA).2 σ hσ).trans e)`. Establish `h4` using `haway w hl`. Rewrite `h4` using `[eisT, if_neg hl, if_pos h0, map_sub, map_add, map_one, hfr w h0 A hA σ hσ]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h2, h3, map_mul, hfr w h0 A hA σ hσ, map_pow, map_natCast, cyc_frob hl hA hσ]`. Conclude with `⟨h4, rfl⟩`. Use `⟨k, t, by omega, htB, hk, ht, levL l c, fun w => ι.symm (eisT l ω c P w), π, r, ⟨hreg, ⟨χ, hpol⟩, hG.cont, hatt, hdet, ho, hfinL, fun w A hA => ?_, fun w hw => ?_, fun w hw hl => ?_, fun w hw => ?_⟩, hres, fun w hw A hA σ hσ => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hine w A hA]`. Distinguish the cases in `hl : ((l : ℕ) : 𝓞 F) ∈ w.asIdeal`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `[hl, hcl w hl]`. Simplify using `[hl, hlev w hl]`. Take `⟨v, h1, h2, -⟩` from `hU w`. Rewrite `h2` using `[hw]`. Conclude with `⟨v, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨lam' w, hU w, norm_one_of ?_⟩` and prove the remaining obligations. Establish `h4` using `haway w hl`. Rewrite `h4` using `[eisT, if_neg hl, if_neg (hlev w hl ▸ hw), map_sub, map_one]`. Then use the resulting hypothesis. Take `⟨v₀, hv₀⟩` from `D.surj w hw`. Establish `hnorm : normV w = l` using `hv₀ ▸ D.norm v₀`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hc'` using `hlam' w`. Rewrite `hc'` using `[prod_at D _ t w v₀ hv₀]`. Use `⟨hlev1 w hw, ?_, ?_, heu w hw, ⟨lam' w, hlev1 w hw ▸ hU w, ?_⟩, fun τ hτ => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `by_cases h : w ∈ P <;> simp [h] <;> omega`. Apply the tactic sequence `by_cases h : w ∈ P <;> simp [h] <;> ring`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hnorm]`. Distinguish the cases in `h : w ∈ P`. Establish `hv : v₀ ∈ {v | D.pl v ∈ P}` using `by simpa [hv₀] using h`. Rewrite `hc'` using `[if_pos hv, map_sub, map_mul, map_pow, map_natCast, mul_comm]`. Rewrite using `[if_pos h]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hc'`. Establish `hv : v₀ ∉ {v | D.pl v ∈ P}` using `by simpa [hv₀] using h`. Rewrite `hc'` using `[if_neg hv, one_mul, map_sub]`. Rewrite using `[if_neg h]`. Simplify using `using hc'`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Take `⟨v, hvd⟩ : ∃ v, InfinitePlace.mk (ι.toRingHom.comp τ) = v` from `⟨_, rfl⟩`. Establish `hv : D.pl v = w` using `hvd ▸ (D.embAt τ w).1 hτ`. Rewrite using `[hvd]`. Use `hinf v using 3` and compare the differences between its conclusion and the goal. Distinguish the cases in `h : w ∈ P`.
-
-Establish `hS : v ∈ {v | D.pl v ∈ P}` using `by simpa [hv] using h`. Apply the tactic sequence `ext i; fin_cases i <;> simp [h, hS] <;> omega`. Establish `hS : v ∉ {v | D.pl v ∈ P}` using `by simpa [hv] using h`. Apply the tactic sequence `ext i; fin_cases i <;> simp [h, hS] <;> omega`. Simplify using `only [eisT, if_pos hw, if_pos h]`.
-
-Conclude with `hfr w (hcl w hw) A hA σ hσ`. Simplify using `only [eisT, if_pos hw, if_neg h, map_one]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.pf_PropMV_sv_alt : _root_.UpperTheory.V.Af.HypothesesH' → UpperTheory.V.Sd.PropMHol → UpperTheory.Esk.HolWC → UpperTheory.Esk.HRep → UpperTheory.Esk.PropMV := by
   intro hPH hMH hWC hHR F Ω _ _ _ _ _ _ l _ hl2 hd hsplit ι ξ ho hodd hunr hram P hP1 hP2

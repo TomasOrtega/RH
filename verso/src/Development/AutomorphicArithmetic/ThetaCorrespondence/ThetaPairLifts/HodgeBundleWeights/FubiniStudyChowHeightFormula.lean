@@ -15,7 +15,7 @@ namespace FubiniStudyChowHeightFormula₂.Fs
 variable (R : Type) [CommRing R] (N : ℕ)
 end FubiniStudyChowHeightFormula₂.Fs
 /- English proof (translation)
-The claim follows from `FubiniStudyChowHeightFormula₂.fubiniStudyChowHeight_of h.p4`.
+A detailed English derivation is pending.
 -/
 theorem FubiniStudyChowHeightFormula₂.fubiniStudy_chowHeight_formula (h : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) : GlobalTheory.Published.FubiniStudyChowHeight :=
   FubiniStudyChowHeightFormula₂.fubiniStudyChowHeight_of h.p4

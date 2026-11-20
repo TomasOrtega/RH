@@ -11,19 +11,17 @@ set_option autoImplicit false
 namespace GlobalTheory.FlagPush
 
 /- English proof (translation)
-Introduce `F _ Y Z _ p₁ p₂ h hi hη`. Establish `hp₁ : p₁ = Limits.pullback.lift p₁ p₂ h ≫ Limits.pullback.fst Y.str Y.str` using `(Limits.pullback.lift_fst _ _ _).symm`. Establish `hp₂ : p₂ = Limits.pullback.lift p₁ p₂ h ≫ Limits.pullback.snd Y.str Y.str` using `(Limits.pullback.lift_snd _ _ _).symm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hp₁, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ProjSpace.isProjOver_comp_of_isClosedImmersion _ (ProjSpace.isProjOver_pullback Y.isProjOver Y.isProjOver)`. Establish `hc : IsClosed (Set.range (Limits.pullback.lift p₁ p₂ h))` using `(Limits.pullback.lift p₁ p₂ h).isClosedEmbedding.isClosed_range`. Establish `hrange : Set.range (Limits.pullback.diagonal Y.str) ⊆ Set.range (Limits.pullback.lift p₁ p₂ h)`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `hs` using `((genericPoint_spec Y.X).specializes (Set.mem_univ y)).map (Limits.pullback.diagonal Y.str).continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hs.mem_closed hc hη`. Establish `hle : (Limits.pullback.lift p₁ p₂ h).ker ≤ (Limits.pullback.diagonal Y.str).ker`. Use `le_trans ?_ (ReducedSubgroup.vanishingIdeal_le_ker _ ⟨_, hc⟩ hrange)` and prove the remaining obligations. Rewrite using `[← Scheme.IdealSheafData.le_support_iff_le_vanishingIdeal]`. Conclude with `(Limits.pullback.lift p₁ p₂ h).range_subset_ker_support`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hδ` using `IsClosedImmersion.lift_fac (Limits.pullback.lift p₁ p₂ h) (Limits.pullback.diagonal Y.str) hle`. Use `⟨IsClosedImmersion.lift _ _ hle, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: IsClosedImmersion (IsClosedImmersion.lift _ _ hle ≫ Limits.pullback.lift p₁ p₂ h)`. Rewrite using `[hδ]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `IsClosedImmersion.of_comp _ (Limits.pullback.lift p₁ p₂ h)`. Establish `e₁` using `hδ =≫ Limits.pullback.fst Y.str Y.str`. Rewrite `e₁` using `[Category.assoc, Limits.pullback.lift_fst, Limits.pullback.diagonal_fst]`. Then use the resulting hypothesis. Establish `e₂` using `hδ =≫ Limits.pullback.snd Y.str Y.str`. Rewrite `e₂` using `[Category.assoc, Limits.pullback.lift_snd, Limits.pullback.diagonal_snd]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Introduce `K _ w hw`. Establish `e : w = (w ≫ p₁) ≫ IsClosedImmersion.lift _ _ hle`. Rewrite using `[← cancel_mono (Limits.pullback.lift p₁ p₂ h), Category.assoc, hδ]`. Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, Limits.pullback.lift_fst, Limits.pullback.diagonal_fst, Category.comp_id]`.
-
-Simplify using `only [Category.assoc, Limits.pullback.lift_snd, Limits.pullback.diagonal_snd, Category.comp_id, hw]`. Use `⟨(w ≫ p₁) (IsLocalRing.closedPoint K), ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg (fun f : Sp K ⟶ Z => f (IsLocalRing.closedPoint K)) e`. Conclude with `e'.symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dbl_of_isClosedImmersion_lift : ∀ (F : Type) [Field F] (Y : Var F) (Z : Scheme.{0}) [IsIntegral Z] (p₁ p₂ : Z ⟶ Y.X) (h : p₁ ≫ Y.str = p₂ ≫ Y.str), IsClosedImmersion (Limits.pullback.lift p₁ p₂ h) → Limits.pullback.diagonal Y.str (genericPoint Y.X) ∈ Set.range (Limits.pullback.lift p₁ p₂ h) → IsProjOver (p₁ ≫ Y.str) ∧ ∃ δ : Y.X ⟶ Z, IsClosedImmersion δ ∧ δ ≫ p₁ = 𝟙 _ ∧ δ ≫ p₂ = 𝟙 _ ∧ ∀ (K : Type) [Field K] (w : Sp K ⟶ Z), w ≫ p₁ = w ≫ p₂ → w (IsLocalRing.closedPoint K) ∈ Set.range δ := by
   intro F _ Y Z _ p₁ p₂ h hi hη

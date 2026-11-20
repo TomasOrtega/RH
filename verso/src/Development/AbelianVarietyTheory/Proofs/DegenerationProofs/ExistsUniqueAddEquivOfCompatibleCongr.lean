@@ -4,7 +4,7 @@ open Module
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs (h c.natAbs) ?_` and prove the remaining obligations. Rewrite using `[Int.natAbs_pow, Int.natAbs_natCast]`. Conclude with `Nat.lt_pow_self (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem int_eq_zero_of_forall_pow_dvd (n : ℕ) (hn : 2 ≤ n) (c : ℤ)
     (h : ∀ j : ℕ, (n : ℤ) ^ j ∣ c) : c = 0 := by
@@ -13,9 +13,9 @@ private theorem int_eq_zero_of_forall_pow_dvd (n : ℕ) (hn : 2 ≤ n) (c : ℤ)
   exact Nat.lt_pow_self (by omega)
 
 /- English proof (translation)
-Use `set b := Module.Free.chooseBasis ℤ X`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Rewrite using `[map_zero, Finsupp.zero_apply]`. Use `int_eq_zero_of_forall_pow_dvd n hn _ fun j => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, hμ⟩` from `h j`. Use `⟨b.repr μ i, ?_⟩` and prove the remaining obligations. Rewrite using `[hμ, map_nsmul, Finsupp.smul_apply, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_forall_pow_nsmul_dvd (X : Type) [AddCommGroup X] [Module.Free ℤ X]
     [Module.Finite ℤ X] (n : ℕ) (hn : 2 ≤ n) (z : X) (h : ∀ j : ℕ, ∃ μ : X, z = n ^ j • μ) :
@@ -34,15 +34,13 @@ private theorem eq_zero_of_forall_pow_nsmul_dvd (X : Type) [AddCommGroup X] [Mod
 open Module in
 
 /- English proof (translation)
-Introduce `X X' _ _ _ _ _ _ n hn r _ _ hadd hcong _ hfwd hbwd`. Establish `sepR : ∀ x x' y', (∀ j, r j x x') → (∀ j, r j x y') → x' = y'`. Introduce `x x' y' hx hy`. Use `(sub_eq_zero.1 (eq_zero_of_forall_pow_nsmul_dvd X' n hn (y' - x') fun j => ?_)).symm` and prove the remaining obligations. Take `⟨μ', hμ'⟩` from `(hcong j x x x' y' (hx j) (hy j)).1 ⟨0, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨μ', by rw [hμ', add_sub_cancel_left]⟩`. Establish `sepL : ∀ x y x', (∀ j, r j x x') → (∀ j, r j y x') → x = y`. Introduce `x y x' hx hy`. Use `(sub_eq_zero.1 (eq_zero_of_forall_pow_nsmul_dvd X n hn (y - x) fun j => ?_)).symm` and prove the remaining obligations. Take `⟨μ, hμ⟩` from `(hcong j x y x' x' (hx j) (hy j)).2 ⟨0, by simp⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨μ, by rw [hμ, add_sub_cancel_left]⟩`. Use `choose f hf using hfwd`. Establish `fadd : ∀ x y, f (x + y) = f x + f y` using `fun x y => sepR _ _ _ (hf (x + y)) fun j => hadd j x y _ _ (hf x j) (hf y j)`. Establish `bij : Function.Bijective f`. Use `⟨fun x y hxy => sepL x y (f x) (hf x) fun j => ?_, fun x' => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxy]`. Conclude with `hf y j`. Take `⟨x, hx⟩` from `hbwd x'`. Conclude with `⟨x, sepR _ _ _ (hf x) hx⟩`. Use `⟨AddEquiv.ofBijective (AddMonoidHom.mk' f fadd) bij, fun j x => hf x j, fun e he => ?_⟩` and prove the remaining obligations.
-
-Use extensionality with `x`. Conclude with `sepR x (e x) (f x) (fun j => he j x) (hf x)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.existsUnique_addEquiv_of_compatible_congr :
     ∀ (X X' : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [AddCommGroup X'] [Module.Free ℤ X'] [Module.Finite ℤ X'] (n : ℕ), 2 ≤ n → ∀ r : ℕ → X → X' → Prop, (∀ j x, ∃ x', r j x x') → (∀ j x', ∃ x, r j x x') → (∀ j x y x' y', r j x x' → r j y y' → r j (x + y) (x' + y')) → (∀ j x y x' y', r j x x' → r j y y' → ((∃ μ, y = x + n ^ j • μ) ↔ ∃ μ', y' = x' + n ^ j • μ')) → (∀ j x x' μ μ', r j x x' → r j (x + n ^ j • μ) (x' + n ^ j • μ')) → (∀ x, ∃ x', ∀ j, r j x x') → (∀ x', ∃ x, ∀ j, r j x x') → ∃! e : X ≃+ X', ∀ j x, r j x (e x) := by

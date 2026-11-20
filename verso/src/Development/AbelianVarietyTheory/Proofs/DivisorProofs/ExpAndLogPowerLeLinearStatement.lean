@@ -7,7 +7,7 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions Formalism.Basic
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exp_neg_and_log_pow_div_le_mul | exact GlobalTheory.exp_neg_and_log_pow_div_le_mul | (intros; apply GlobalTheory.exp_neg_and_log_pow_div_le_mul <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exp_and_log_power_le_linear : ∀ d : ℕ, ∃ C : ℝ, ∀ s : ℝ, 0 < s → s ≤ 1 → Real.exp (-(s ^ 2)⁻¹ / 3) ≤ C * s ∧ Real.log ((s ^ 2)⁻¹) ^ d / (s ^ 2)⁻¹ ≤ C * s := by
   first | exact @GlobalTheory.exp_neg_and_log_pow_div_le_mul | exact GlobalTheory.exp_neg_and_log_pow_div_le_mul | (intros; apply GlobalTheory.exp_neg_and_log_pow_div_le_mul <;> assumption)

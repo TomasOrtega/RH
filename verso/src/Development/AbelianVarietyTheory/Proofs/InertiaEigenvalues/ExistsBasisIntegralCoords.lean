@@ -15,25 +15,23 @@ noncomputable section
 namespace GlobalTheory.SingleDatum
 
 /- English proof (translation)
-Introduce `F _ la O hO S hS hSO`. Set `R` to `(la.valuation F).integer`. Establish `hsm : ∀ (r : R) (z : ℂ), r • z = (((r : F) : ℂ)) * z` using `fun r z => rfl`. Set `N : Submodule R ℂ` to `Submodule.span R S`. Use `haveI : Module.Finite R N := Module.Finite.span_of_finite R hS`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Module.IsTorsionFree R N := inferInstance`. Use `haveI : Module.Free R N := Module.free_of_finite_type_torsion_free'`. Set `b` to `(Module.Free.chooseBasis R N).reindex (Fintype.equivFin _)`. Set `m` to `Fintype.card (Module.Free.ChooseBasisIndex R N)`. Set `β : Fin m → ℂ` to `fun k => ((b k : N) : ℂ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hliR : LinearIndependent R β` using `b.linearIndependent.map' N.subtype N.ker_subtype`. Establish `hliF : LinearIndependent F β` using `(LinearIndependent.iff_fractionRing R F).1 hliR`. Use `choose g hg using fun k : Fin m => LinearMap.exists_extend ((Finsupp.lapply k).comp hliF.repr)`. Establish `key : ∀ k j, g k (β j) = if j = k then 1 else 0`. Introduce `k j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : β j ∈ Submodule.span F (Set.range β)` using `Submodule.subset_span ⟨j, rfl⟩`. Use `LinearMap.congr_fun (hg k) ⟨β j, hmem⟩` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at this`. Rewrite using `[this, hliF.repr_eq_single j _ rfl]`. Simplify using `[Finsupp.single_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hNO : ∀ z ∈ N, z ∈ O`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy => exact hSO hy`. Consider the case `zero => exact O.zero_mem`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `add y w _ _ hy hw => exact O.add_mem hy hw`. Consider the case `smul r y _ hy`. Rewrite using `[hsm]`. Conclude with `O.mul_mem (hO _ ((Valuation.mem_integer_iff _ _).1 r.2)) hy`. Use `⟨m, β, g, fun k => hNO _ (b k).2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hxN : x ∈ N` using `Submodule.subset_span hx`. Set `c : Fin m → F` to `fun j => ((b.repr ⟨x, hxN⟩ j : R) : F)`. Establish `hxs : x = ∑ j, c j • β j`. Establish `h` using `congrArg Subtype.val (b.sum_repr ⟨x, hxN⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `h` using `[Submodule.coe_sum]`. Use `h.symm.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, hsm, Algebra.smul_def]`. Both sides reduce to the same expression. Establish `hg' : ∀ k, g k x = c k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k`. Rewrite using `[hxs, map_sum]`. Simplify using `only [map_smul, key, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `⟨?_, fun k => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [hxs]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hg', Algebra.smul_def, mul_comm]`. Both sides reduce to the same expression. Rewrite using `[hg']`. Conclude with `(Valuation.mem_integer_iff _ _).1 (b.repr ⟨x, hxN⟩ k).2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis_integral_coords : ∀ (F : IntermediateField ℚ ℂ) [NumberField F] (la : HeightOneSpectrum (𝓞 F)) (O : Subring ℂ), (∀ x : F, la.valuation F x ≤ 1 → (x : ℂ) ∈ O) → ∀ S : Set ℂ, S.Finite → S ⊆ O → ∃ (m : ℕ) (β : Fin m → ℂ) (lam : Fin m → (ℂ →ₗ[F] F)), (∀ k, β k ∈ O) ∧ ∀ x ∈ S, x = ∑ k, β k * (lam k x : ℂ) ∧ ∀ k, la.valuation F (lam k x) ≤ 1 := by
   intro F _ la O hO S hS hSO

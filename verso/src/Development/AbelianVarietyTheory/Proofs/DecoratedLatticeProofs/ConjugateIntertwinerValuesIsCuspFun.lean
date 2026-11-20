@@ -27,15 +27,13 @@ noncomputable section
 namespace GlobalTheory.ConjRowMultCusp
 
 /- English proof (translation)
-Introduce `D r C hC g`. Set `I` to `Formalism.IndefR.RationalEmbedding.inst D`. Set `T` to `(Formalism.IndefR.RationalEmbedding.iota D).toMulEquiv`. Take `⟨L, R, hL, hR⟩` from `GlobalTheory.CuspCompare.exists_inverses (starRingEnd D.host.E) (J := (D.sp.Y 0).gram) I.J_det hC.2.1`. Establish `key : ∀ h : GA D (D.sp.Y 0), T h ∈ I.NA (Submodule.span I.E (Set.range (C : Matrix (Fin I.n) (Fin r) I.E).col)) ↔ GlobalTheory.CuspCompare.UnipEq (incA D) C R (Formalism.UG.cT (starRingEnd D.host.E) C * (D.sp.Y 0).gram) L ((matHom (D.sp.Y 0) h).1 - 1)` using `fun h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : (Formalism.IndefR.RationalEmbedding.iota D).symm (T h) = h` using `(Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply h`. Use `GlobalTheory.CuspCompare.mem_NA_iff I (fun v => Formalism.IndefR.Eqv.thetaC D ((Formalism.L2.Host.tauPl D).symm v)) (fun v => Formalism.IndefR.Eqv.isInfFam_thetaC D ((Formalism.L2.Host.tauPl D).symm v)) h (T h) ?_ (fun v => ?_) hL hR` and prove the remaining obligations. Establish `hb` using `(Formalism.IndefR.RationalEmbedding.iota_symm_isBridge D (T h)).2`. Establish `h2` using `hb.trans (congrArg (Formalism.L2.SG.AdBridge.ofHAFin I) hs)`. Unfold `Formalism.L2.SG.AdBridge.ofHAFin at h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h2` using `[Formalism.L2.SG.EvalTIota.tauF_eq_i]`. Conclude with `h2`. Take `⟨ρ, rfl⟩` from `(Formalism.L2.Host.tauPl D).surjective v`. Establish `hb` using `Formalism.L2.SG.EvalTIota.infMat_brg_i (T h) ρ`. Rewrite `hb` using `[hs]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.symm_apply_apply]`. Conclude with `hb.symm`. Establish `hW : I.IsIsot (Submodule.span I.E (Set.range (C : Matrix (Fin I.n) (Fin r) I.E).col))` using `(GlobalTheory.CuspCompare.isIsot_iff I _).2 ⟨r, C, hC, rfl⟩`. Use `GlobalTheory.CuspCompare.mem_closure_iff_of_equiv T (GlobalTheory.T.strong_approximation_unitaryUnipotentRadical I _ hW).1 (fun g => ?_) g` and prove the remaining obligations. Rewrite using `[key]`.
-
-Conclude with `and_congr Iff.rfl (and_congr Iff.rfl (GlobalTheory.CuspCompare.perp_cond (incA D) hL hR _).2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_NI_iff_iota : ∀ (D : D7) {r : ℕ} (C : Matrix (Fin (D.sp.Y 0).rank) (Fin r) D.host.E), IsIsoFrame (D.sp.Y 0) C → ∀ g : GA D (D.sp.Y 0), g ∈ NI (D.sp.Y 0) C ↔ Formalism.IndefR.RationalEmbedding.iota D g ∈ (Formalism.IndefR.RationalEmbedding.inst D).NA (Submodule.span (Formalism.IndefR.RationalEmbedding.inst D).E (Set.range (C : Matrix (Fin (Formalism.IndefR.RationalEmbedding.inst D).n) (Fin r) (Formalism.IndefR.RationalEmbedding.inst D).E).col)) := by
   intro D r C hC g
@@ -67,9 +65,9 @@ theorem mem_NI_iff_iota : ∀ (D : D7) {r : ℕ} (C : Matrix (Fin (D.sp.Y 0).ran
   exact and_congr Iff.rfl (and_congr Iff.rfl (GlobalTheory.CuspCompare.perp_cond (incA D) hL hR _).2)
 
 /- English proof (translation)
-Introduce `D I hI μf _ _ f hf hi hcusp`. Substitute `hI` using the available equality. Establish `: BorelSpace (GA D (D.sp.Y 0))` using `⟨rfl⟩`. Introduce `r C hC μ 𝓕 hμ h𝓕 g`. Establish `hW : (Formalism.IndefR.RationalEmbedding.inst D).IsIsot (Submodule.span (Formalism.IndefR.RationalEmbedding.inst D).E (Set.range (C : Matrix (Fin (Formalism.IndefR.RationalEmbedding.inst D).n) (Fin r) (Formalism.IndefR.RationalEmbedding.inst D).E).col))` using `(GlobalTheory.CuspCompare.isIsot_iff _ _).2 ⟨r, C, hC, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key` using `(GlobalTheory.CuspCompare.constTerm_iff_inst (Formalism.IndefR.RationalEmbedding.inst D) μf (Formalism.IndefR.RationalEmbedding.iota D).toMulEquiv ⟨(Formalism.IndefR.RationalEmbedding.iota D).continuous, (Formalism.IndefR.RationalEmbedding.iota D).symm.continuous⟩ (GQ (D.sp.Y 0)) …`. Conclude with `key μ 𝓕 hμ h𝓕 g`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCuspFun_of_isCuspFn_iota : ∀ (D : D7) (I : Formalism.MainNotions.S.AutInst) (hI : I = Formalism.L2.SG.InstExistsPf.instOf D)
     (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf] (f : I.GA → ℂ), Continuous f →
@@ -89,17 +87,17 @@ theorem isCuspFun_of_isCuspFn_iota : ∀ (D : D7) (I : Formalism.MainNotions.S.A
   exact key μ 𝓕 hμ h𝓕 g
 
 /- English proof (translation)
-Take `⟨hc, hi, he⟩` from `hψ`. Establish `hfund` using `X.B.fund_spec`. Take `⟨hT, hL, hS, -⟩` from `GlobalTheory.CongTop.adelic_topology X.B.I`. Take `⟨Γ, hΓ, hcΓ, -⟩` from `GlobalTheory.T.rationalUnitaryPoints_discrete_fundamentalDomain X.B.I`. Take `⟨hl, -, -, -, hop⟩` from `GlobalTheory.T.adelicUnitaryHaar_bi_invariant X.B.I X.B.μf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: BorelSpace X.B.I.GA` using `inferInstance`. Establish `: (X.B.I.muA X.B.μf).IsMulLeftInvariant` using `⟨hl⟩`. Establish `: SFinite (X.B.I.muA X.B.μf)` using `by unfold Formalism.MainNotions.S.AutInst.muA; infer_instance`. Establish `hr : ∀ y, ∃ γ : Γ, X.B.I.rep X.B.fund y = (γ : X.B.I.GA) * y ∧ X.B.I.rep X.B.fund y ∈ X.B.fund`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hfund.2.1 y`. Establish `e : X.B.I.rep X.B.fund y = h.choose * y`. Unfold `Formalism.MainNotions.S.AutInst.rep`. Conclude with `dif_pos h`. Establish `hm : h.choose ∈ (Γ : Set X.B.I.GA)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k` using `h.choose_spec.1`. Generalize the expression as in `h.choose = z at k ⊢`. Rewrite using `[hΓ]`. Conclude with `k`. Conclude with `⟨⟨h.choose, hm⟩, e, e ▸ h.choose_spec.2⟩`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hext : X.B.I.ext F =ᵐ[X.B.I.muA X.B.μf] ψ` using `by filter_upwards [GlobalTheory.RightRegFund.ae_rep hfund.1 hr he] with y hy`. Take `⟨γ, h1, -⟩` from `hr y`. Unfold `Formalism.MainNotions.S.AutInst.ext`. Rewrite using `[hy, h1, hi _ (hΓ ▸ γ.2)]`. Introduce `W hW ν hν`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hν.1` as an intermediate fact. Use `filter_upwards [hF W hW ν hν, GlobalTheory.CuspSubspace.constTerm_congr ν hext] with x a b`. Rewrite using `[← b, a]`.
+A detailed English derivation is pending.
 -/
 theorem isCuspFn_of_contRep {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {F : L2X X} {ψ : X.B.I.GA → ℂ}
     (hψ : Formalism.L2.SG.EvalTOntoRep.IsContRep X F ψ) (hF : X.B.I.IsCuspFn (X.B.I.muA X.B.μf) (X.B.I.ext F)) :
@@ -133,13 +131,13 @@ theorem isCuspFn_of_contRep {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSettin
   rw [← b, a]
 
 /- English proof (translation)
-Introduce `hDSC D X h θ S M J χ t c hS hθ hgap hE hM hrep Φ hΦ hcont u`. Take `⟨ψ, hψ⟩` from `hcont u`. Take `⟨hd, hl, hH, hb, -⟩` from `GlobalTheory.Core.Mi.seeData_of_gap D X hgap`. Establish `hSL : GlobalTheory.DSId.StrictLow` using `GlobalTheory.ClassificationConsequences.strictLow_of_dsClass (GlobalTheory.Published.discreteSeriesClassification_iff.1 hDSC)`. Establish `hL2` using `((GlobalTheory.Dec.CuspAll.cusp_all hSL X.B X.dv _ hd (GlobalTheory.PinScale.one_le_g X) hb hl hH Φ hΦ).2 (X.B.tens (GlobalTheory.ConjRowMult.vecC X M c u))).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψc` using `isCuspFn_of_contRep X hψ hL2`. Establish `hY` using `isCuspFun_of_isCuspFn_iota D X.B.I h X.B.μf ψ hψ.1 hψ.2.1 hψc`. Establish `e : GlobalTheory.ConjRowMult.conjMap X M c Φ h t u = fun y => star (ψ (iotaX X h (y * t⁻¹)))`. Use function extensionality and compare the values at `y`. Rewrite using `[GlobalTheory.ConjRowMult.conjMap_apply, GlobalTheory.ConjRowMult.contRepL_spec X hψ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Introduce `r C hC μ 𝓕 hμ h𝓕 g`. Establish `hz : ∫ n in 𝓕, ψ (iotaX X h ((n : GA D (D.sp.Y 0)) * (g * t⁻¹))) ∂μ = 0` using `hY r C hC μ 𝓕 hμ h𝓕 (g * t⁻¹)`. Use `show ∫ n in 𝓕, star (ψ (iotaX X h ((n : GA D (D.sp.Y 0)) * g * t⁻¹))) ∂μ = 0`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg (starRingEnd ℂ) hz` as an intermediate fact. Rewrite `this` using `[← integral_conj, map_zero]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjMap_isCuspFun : GlobalTheory.Published.DiscreteSeriesClassification → ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (θ : InfFam D) (S : D.what₂.Tau → SPar) (M : DSModel (D.sp.Y 0) S) (J : Set (GA D (D.sp.Y 0))) (χ : GA D (D.sp.Y 0) → ℂ) (t : GA D (D.sp.Y 0)) (c : ∀ τ, M.H τ ≃ₗᵢ⋆[ℂ] X.B.H (X.pl.symm τ)), S = parB (Ptw D) 0 → IsInfFam θ → GlobalTheory.Count.GapGe X.B (100 * (D.R.r : ℝ) ^ 4) → IdE X → Matches X h J χ t → (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D (D.sp.Y 0) τ), ∀ w, c τ (M.rep τ g w) = X.B.σ (X.pl.symm τ) (uMat ((iotaX X h (atTau θ (D.sp.Y 0) τ g)).1 (X.pl.symm τ))) (c τ w)) → ∀ Φ : X.B.Hs →L[ℂ] L2X X, Φ ∈ X.B.I.eHom X.B.σs X.B.μf X.B.fund X.B.R X.B.Re → (∀ u : M.Vec, ∃ ψ, Formalism.L2.SG.EvalTOntoRep.IsContRep X (Φ (X.B.tens (GlobalTheory.ConjRowMult.vecC X M c u))) ψ) → ∀ u : M.Vec, IsCuspFun (D.sp.Y 0) (GlobalTheory.ConjRowMult.conjMap X M c Φ h t u) := by
   intro hDSC D X h θ S M J χ t c hS hθ hgap hE hM hrep Φ hΦ hcont u

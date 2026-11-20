@@ -6,11 +6,11 @@ noncomputable section
 namespace Formalism.ZetaNonvanishing.ZetaNonvanishingCriteria
 
 /- English proof (translation)
-Unfold `ExponentChainBound`. Introduce `ℓ b b' S E lam σ₂ h'' c' hℓ hb hS hE hσ hlam hc`. Establish `h1 : 0 < ℓ - 1` using `by linarith`. Establish `h0 : 0 < ℓ` using `by linarith`. Establish `h1' : ℓ - 1 ≠ 0` using `h1.ne'`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0' : ℓ ≠ 0` using `h0.ne'`. Establish `key : b / (ℓ - 1) - b / ℓ = b / (ℓ * (ℓ - 1))` using `by field_simp; ring`. Establish `hS1 : (S + 1) / (ℓ - 1) ≤ S + 1` using `div_le_self (by linarith) (by linarith)`. Establish `hsplit : ((b + S) + 1) / (ℓ - 1) = b / (ℓ - 1) + (S + 1) / (ℓ - 1)` using `by ring`. Establish `hnn : 0 ≤ b / (ℓ * (ℓ - 1))` using `div_nonneg hb (mul_pos h0 h1).le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `max_le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exponentChainBound : ExponentChainBound := by
   unfold ExponentChainBound
@@ -29,7 +29,7 @@ theorem exponentChainBound : ExponentChainBound := by
   · linarith
 
 /- English proof (translation)
-Establish `ht : 0 ≤ ℓ - 11` using `by linarith`. Use polynomial arithmetic with `[mul_nonneg ht ht, mul_nonneg (mul_nonneg ht ht) ht]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma numC_cubic (ℓ : ℝ) (hℓ : 11 ≤ ℓ) :
     8 * (2 * ℓ - 1) * ℓ ^ 2 + 8 * ℓ ^ 2 * (ℓ - 1) + ℓ * (ℓ - 1) ^ 2 ≤ 3111 / 100 * (ℓ - 1) ^ 3 := by
@@ -37,11 +37,11 @@ lemma numC_cubic (ℓ : ℝ) (hℓ : 11 ≤ ℓ) :
   nlinarith [mul_nonneg ht ht, mul_nonneg (mul_nonneg ht ht) ht]
 
 /- English proof (translation)
-Unfold `NumC`. Introduce `ℓ hℓ`. Establish `h1 : 0 < ℓ - 1` using `by linarith`. Establish `h0 : 0 < ℓ` using `by linarith`. Establish `h1' : ℓ - 1 ≠ 0` using `h1.ne'`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0' : ℓ ≠ 0` using `h0.ne'`. Establish `key` using `numC_cubic ℓ hℓ`. Establish `e : 8 * (2 * ℓ - 1) / (ℓ - 1) ^ 3 + 8 / (ℓ - 1) ^ 2 + 1 / (ℓ * (ℓ - 1)) = (8 * (2 * ℓ - 1) * ℓ ^ 2 + 8 * ℓ ^ 2 * (ℓ - 1) + ℓ * (ℓ - 1) ^ 2) / (ℓ ^ 2 * (ℓ - 1) ^ 3)`. Clear the denominators using the available nonvanishing facts. Establish `c : (31.11 : ℝ) = 3111 / 100` using `by norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[e, div_le_div_iff₀ (mul_pos (pow_pos h0 2) (pow_pos h1 3)) (pow_pos h0 2), c]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right key (sq_nonneg ℓ)]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem rationalTailBoundCubic : NumC := by
   unfold NumC

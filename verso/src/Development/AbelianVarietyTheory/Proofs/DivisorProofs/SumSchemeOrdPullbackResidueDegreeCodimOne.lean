@@ -17,7 +17,7 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier G
 namespace GlobalTheory.OrdPull
 
 /- English proof (translation)
-Use `letI : Algebra A B := e.toRingHom.toAlgebra`. Set `e' : A ≃ₐ[A] B` to `{ e with commutes' := fun _ => rfl }`. Unfold `Ring.ord`. Rewrite using `[← Module.length_eq_of_surjective (S := A) (R := B) e.surjective]`. Conclude with `(Ideal.quotientEquivAlg (Ideal.span {a}) (Ideal.span {e a}) e' (by rw [Ideal.map_span, Set.image_singleton]; rfl)).toLinearEquiv.length_eq.symm`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_ringEquiv {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B) (a : A) :
     Ring.ord B (e a) = Ring.ord A a := by
@@ -29,7 +29,7 @@ theorem ord_ringEquiv {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B) (a 
     (by rw [Ideal.map_span, Set.image_singleton]; rfl)).toLinearEquiv.length_eq.symm
 
 /- English proof (translation)
-Rewrite using `[← ord_ringEquiv (IsLocalization.algEquiv p.primeCompl (Localization.AtPrime p) A).toRingEquiv]`. Conclude with `congrArg _ ((IsLocalization.algEquiv p.primeCompl (Localization.AtPrime p) A).commutes a).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_isLocalization {R : Type} [CommRing R] (p : Ideal R) [p.IsPrime] (A : Type) [CommRing A] [Algebra R A]
     [IsLocalization.AtPrime A p] (a : R) :
@@ -38,11 +38,11 @@ theorem ord_isLocalization {R : Type} [CommRing R] (p : Ideal R) [p.IsPrime] (A 
   exact congrArg _ ((IsLocalization.algEquiv p.primeCompl (Localization.AtPrime p) A).commutes a).symm
 
 /- English proof (translation)
-Use `letI := Localization.AtPrime.algebraOfLiesOver (Q.under R) Q`. Rewrite using `[Ideal.inertiaDeg_def]`. Use `haveI : IsLocalization.AtPrime (Localization.AtPrime Q) (Q.under R) := IsLocalization.isLocalization_isLocalization_atPrime_isLocalization M (Localization.AtPrime Q) Q`. Establish `hs : Function.Surjective (algebraMap (Localization.AtPrime (Q.under R)) (Localization.AtPrime Q))`. Establish `h` using `(IsLocalization.algEquiv (Q.under R).primeCompl (Localization.AtPrime (Q.under R)) (Localization.AtPrime Q)).surjective`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Use `RingHom.congr_fun (f := algebraMap _ _) (g := (IsLocalization.algEquiv (Q.under R).primeCompl (Localization.AtPrime (Q.under R)) (Localization.AtPrime Q)).toRingEquiv.toRingHom) (IsLocalization.ringHom_ext (Q.under R).primeCompl ?_) x` and prove the remaining obligations. Use extensionality with `r`. Simplify using `[← IsScalarTower.algebraMap_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Module.finrank_of_bijective_algebraMap ⟨RingHom.injective _, ?_⟩` and prove the remaining obligations. Introduce `y`. Take `⟨y, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨x, rfl⟩` from `hs y`. Conclude with `⟨IsLocalRing.residue _ x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inertiaDeg_isLocalization {R : Type} [CommRing R] (M : Submonoid R) (A : Type) [CommRing A] [Algebra R A]
     [IsLocalization M A] (Q : Ideal A) [Q.IsPrime] : Q.inertiaDeg R = 1 := by
@@ -66,7 +66,7 @@ theorem inertiaDeg_isLocalization {R : Type} [CommRing R] (M : Submonoid R) (A :
   exact ⟨IsLocalRing.residue _ x, rfl⟩
 
 /- English proof (translation)
-Use `letI := TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨z, hz⟩`. Use `haveI : IsLocalization.AtPrime (X.presheaf.stalk z) (hV.primeIdealOf ⟨z, hz⟩).asIdeal := hV.isLocalization_stalk ⟨z, hz⟩`. Rewrite using `[← Scheme.algebraMap_germ_eq_germToFunctionField X hz a, ord_algebraMap h1 ((map_ne_zero_iff _ (germ_injective_of_isIntegral X z hz)).2 ha), ← ord_isLocalization _ (X.presheaf.stalk z)]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ord_germ_eq (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (V : X.Opens) [Nonempty V]
     (hV : IsAffineOpen V) (z : X) (hz : z ∈ V) (h1 : Order.coheight z = 1) (a : Γ(X, V)) (ha : a ≠ 0) :
@@ -81,7 +81,7 @@ theorem ord_germ_eq (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (V :
   rfl
 
 /- English proof (translation)
-Use `letI : Algebra Γ(X, V) Γ(Y, g ⁻¹ᵁ V) := (g.app V).hom.toAlgebra`. Use `haveI : Module.Finite Γ(X, V) Γ(Y, g ⁻¹ᵁ V) := hf`. Establish `h2 : genericPoint Y ∈ g ⁻¹ᵁ V` using `gen_mem (Classical.arbitrary (g ⁻¹ᵁ V)).2`. Rewrite using `[GlobalTheory.T.residueDegree_eq_inertiaDeg_affine_chart X Y g V hV hU _ h2, hU.primeIdealOf_genericPoint, genericPoint_eq_bot_of_affine]`. Conclude with `GlobalTheory.T.inertiaDeg_bot_eq_finrank_finite_domain _ _ hi`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residueDegree_genericPoint_eq_finrank (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (g : Y ⟶ X)
     (V : X.Opens) [Nonempty V] [Nonempty (g ⁻¹ᵁ V)] (hV : IsAffineOpen V) (hU : IsAffineOpen (g ⁻¹ᵁ V))
@@ -95,25 +95,23 @@ theorem residueDegree_genericPoint_eq_finrank (X Y : Scheme.{0}) [IsIntegral X] 
   exact GlobalTheory.T.inertiaDeg_bot_eq_finrank_finite_domain _ _ hi
 
 /- English proof (translation)
-Set `A` to `Localization.AtPrime p`. Set `M` to `Algebra.algebraMapSubmonoid S p.primeCompl`. Set `B` to `Localization M`. Establish `hM : M ≤ nonZeroDivisors S`. Introduce and unpack `_ ⟨r, hr, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `mem_nonZeroDivisors_of_ne_zero ((map_ne_zero_iff _ hi).2 fun h => hr (h ▸ p.zero_mem))`. Use `haveI : IsDomain B := IsLocalization.isDomain_localization hM`. Use `haveI : Module.Finite A B := Module.Finite.of_isLocalization R S p.primeCompl`. Establish `hiAB : Function.Injective (algebraMap A B)` using `localizationAlgebra_injective A B hi`. Establish `hd : ringKrullDim A = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height p A, hp]`. Both sides reduce to the same expression. Establish `haA : algebraMap R A a ≠ 0` using `(map_ne_zero_iff _ (IsLocalization.injective A p.primeCompl_le_nonZeroDivisors)).2 ha`. Establish `hr : Module.finrank A B = Module.finrank R S`. Rewrite using `[IsLocalization.finrank_eq A p.primeCompl p.primeCompl_le_nonZeroDivisors]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsLocalizedModule.finrank_eq p.primeCompl (IsScalarTower.toAlgHom R S B).toLinearMap p.primeCompl_le_nonZeroDivisors`. Rewrite using `[← hr, ← GlobalTheory.T.finsum_ord_mul_inertiaDeg_eq_finrank_mul_ord' A B hiAB hd _ haA]`. Establish `hc : ∀ Q : Ideal B, (Q.comap (algebraMap S B)).comap (algebraMap R S) = (Q.comap (algebraMap A B)).comap (algebraMap R A)` using `fun Q => by`. Rewrite using `[Ideal.comap_comap, Ideal.comap_comap, ← IsScalarTower.algebraMap_eq, ← IsScalarTower.algebraMap_eq]`. Use `symm`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_mem_eq_of_bijOn (PrimeSpectrum.comap (algebraMap S B)) ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `Q hQ`. Express the relevant statement in the definitionally equal form `(Q.asIdeal.comap (algebraMap S B)).comap (algebraMap R S) = p`. Rewrite using `[hc, show Q.asIdeal.comap (algebraMap A B) = _ from hQ]`. Conclude with `Localization.AtPrime.under_maximalIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(PrimeSpectrum.localization_comap_injective B M).injOn`. Introduce `q hq`. Establish `hq' : q.asIdeal.comap (algebraMap R S) = p` using `hq`. Establish `: q ∈ Set.range (PrimeSpectrum.comap (algebraMap S B))`. Rewrite using `[PrimeSpectrum.localization_comap_range B M]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨r, hr, rfl⟩ h`. Conclude with `hr (hq' ▸ h)`. Take `⟨Q, rfl⟩` from `this`. Use `⟨Q, ?_, rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Q.asIdeal.comap (algebraMap A B) = _`. Use `(IsLocalization.orderEmbedding p.primeCompl A).injective ?_` and prove the remaining obligations. Conclude with `(hc _).symm.trans (hq'.trans Localization.AtPrime.under_maximalIdeal.symm)`. Introduce `Q hQ haveI : IsLocalization.AtPrime (Localization.AtPrime Q.asIdeal) (Q.asIdeal.under S) := IsLocalization.isLocalization_isLocalization_atPrime_isLocalization M _ Q.asIdeal`. Establish `e1` using `ord_isLocalization (Q.asIdeal.under S) (Localization.AtPrime Q.asIdeal) (algebraMap R S a)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : algebraMap B (Localization.AtPrime Q.asIdeal) (algebraMap A B (algebraMap R A a)) = algebraMap S _ (algebraMap R S a)`. Rewrite using `[← IsScalarTower.algebraMap_apply R A B, IsScalarTower.algebraMap_apply R S B, ← IsScalarTower.algebraMap_apply S B]`. Establish `e3` using `Ideal.inertiaDeg_tower (R := R) (Q.asIdeal.under S) Q.asIdeal`. Establish `e4` using `Ideal.inertiaDeg_tower (R := R) (Q.asIdeal.under A) Q.asIdeal`. Rewrite `e3` using `[inertiaDeg_isLocalization M B, mul_one]`.
-
-Rewrite `e4` using `[inertiaDeg_isLocalization p.primeCompl A, one_mul]`. Rewrite using `[e2, e1, ← e4, e3]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sum_ord_inertiaDeg (R S : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [CommRing S] [IsDomain S]
     [Algebra R S] [Module.Finite R S] (hi : Function.Injective (algebraMap R S)) (p : Ideal R) [p.IsPrime]
@@ -178,9 +176,9 @@ theorem sum_ord_inertiaDeg (R S : Type) [CommRing R] [IsDomain R] [IsNoetherianR
     rfl
 
 /- English proof (translation)
-Use extensionality with `s`. Rewrite using `[Ideal.mem_comap, ← ReciprocityTheory.AnForm.R.evaluation_eq_zero_iff_mem_primeIdealOf hU w hw, ← ReciprocityTheory.AnForm.R.evaluation_eq_zero_iff_mem_primeIdealOf hV (g w) hw]`. Establish `e` using `Scheme.evaluation_naturality_apply g w hw s`. Establish `h` using `map_eq_zero_iff (g.residueFieldMap w).hom (g.residueFieldMap w).hom.injective (x := X.evaluation V (g w) hw s)`. Rewrite `h` using `[e]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem comap_primeIdealOf {X Y : Scheme.{0}} (g : Y ⟶ X) {V : X.Opens} (hV : IsAffineOpen V)
     (hU : IsAffineOpen (g ⁻¹ᵁ V)) (w : Y) (hw : w ∈ g ⁻¹ᵁ V) :
@@ -195,9 +193,9 @@ theorem comap_primeIdealOf {X Y : Scheme.{0}} (g : Y ⟶ X) {V : X.Opens} (hV : 
   exact h
 
 /- English proof (translation)
-Use `haveI : IsAffine V := hV`. Use `⟨isAffine_of_isAffineHom (g ∣_ V), ?_⟩` and prove the remaining obligations. Establish `h1` using `IsFinite.finite_app (g ∣_ V) ⊤ (isAffineOpen_top _)`. Rewrite `h1` using `[morphismRestrict_app]`. Establish `h2 : (g.app (V.ι ''ᵁ ⊤)).hom.Finite` using `(RingHom.finite_respectsIso.cancel_right_isIso _ _).1 h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[V.ι_image_top]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem finite_app {X Y : Scheme.{0}} (g : Y ⟶ X) {V : X.Opens} (hV : IsAffineOpen V)
     [IsFinite (g ∣_ V)] : IsAffineOpen (g ⁻¹ᵁ V) ∧ (g.app V).hom.Finite := by
@@ -209,7 +207,7 @@ theorem finite_app {X Y : Scheme.{0}} (g : Y ⟶ X) {V : X.Opens} (hV : IsAffine
   rwa [V.ι_image_top] at h2
 
 /- English proof (translation)
-Rewrite using `[idealHeight_eq_coheight Γ(X, V) (hV.primeIdealOf ⟨z, hz⟩), ← coheight_eq_of_isOpenImmersion (x := hV.primeIdealOf ⟨z, hz⟩) hV.fromSpec]`. Establish `h₃ : hV.fromSpec.base (hV.primeIdealOf ⟨z, hz⟩) = z` using `hV.fromSpec_primeIdealOf ⟨z, hz⟩`. Rewrite using `[h₃, h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem height_primeIdealOf {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V) (z : X) (hz : z ∈ V)
     (h : Order.coheight z = 1) : (hV.primeIdealOf ⟨z, hz⟩).asIdeal.height = 1 := by
@@ -219,7 +217,7 @@ theorem height_primeIdealOf {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V)
   rw [h₃, h]
 
 /- English proof (translation)
-Establish `e` using `Scheme.ord_mul (x := x) (div_ne_zero hu hv) hv`. Rewrite `e` using `[div_mul_cancel₀ u hv]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ord_div {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] {u v : X.functionField}
     (hu : u ≠ 0) (hv : v ≠ 0) (x : X) : Scheme.ord (u / v) x = Scheme.ord u x - Scheme.ord v x := by
@@ -228,7 +226,7 @@ theorem ord_div {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] {u v : X
   omega
 
 /- English proof (translation)
-Establish `h1 : genericPoint X ∈ V` using `gen_mem (Classical.arbitrary V).2`. Establish `h2 : genericPoint Y ∈ g ⁻¹ᵁ V` using `gen_mem (Classical.arbitrary (g ⁻¹ᵁ V)).2`. Use `TrueGeo.SmallSec.fnMap_fnOf g hsp h1 h2 a` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fnMap_germ {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (g : Y ⟶ X)
     (hsp : g (genericPoint Y) ⤳ genericPoint X) (V : X.Opens) [Nonempty V] [Nonempty (g ⁻¹ᵁ V)] (a : Γ(X, V)) :
@@ -239,39 +237,33 @@ theorem fnMap_germ {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (g : Y ⟶ X
   exact this
 
 /- English proof (translation)
-Use `haveI : Nonempty V := ⟨⟨z, hzV⟩⟩`. Take `⟨hU, hfinR⟩` from `finite_app g hV`. Establish `hηU : genericPoint Y ∈ g ⁻¹ᵁ V` using `by show g (genericPoint Y) ∈ V`. Rewrite using `[hη]`. Conclude with `gen_mem hzV`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : Nonempty (g ⁻¹ᵁ V) := ⟨⟨_, hηU⟩⟩`. Use `letI : Algebra Γ(X, V) Γ(Y, g ⁻¹ᵁ V) := (g.app V).hom.toAlgebra`. Use `haveI : Module.Finite Γ(X, V) Γ(Y, g ⁻¹ᵁ V) := hfinR`. Use `haveI : IsNoetherianRing Γ(X, V) := IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`. Establish `hinj : Function.Injective (algebraMap Γ(X, V) Γ(Y, g ⁻¹ᵁ V))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a b h`. Apply `X.germToFunctionField_injective V` to reduce the goal to its premises. Apply `(TrueGeo.SmallSec.fnMap g hsp).injective` to reduce the goal to its premises. Rewrite using `[fnMap_germ, fnMap_germ]`. Conclude with `congrArg _ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hP` using `height_primeIdealOf hV z hzV hz`. Establish `key : ∀ a : Γ(X, V), a ≠ 0 → ∑ᶠ w ∈ g ⁻¹' {z}, Scheme.ord (TrueGeo.SmallSec.fnMap g hsp (X.germToFunctionField V a)) w * (g.residueDegree w : ℤ) = (g.residueDegree (genericPoint Y) : ℤ) * Scheme.ord (X.germToFunctionField V a) z`. Introduce `a ha`. Establish `ha' : g.app V a ≠ 0` using `fun h => ha (hinj (by rw [map_zero]; exact h))`. Rewrite using `[ord_germ_eq X V hV z hzV hz a ha, residueDegree_genericPoint_eq_finrank X Y g V hV hU hfinR hinj, ← sum_ord_inertiaDeg Γ(X, V) Γ(Y, g ⁻¹ᵁ V) hinj _ hP a ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `finsum_mem_eq_of_bijOn (fun w => if hw : w ∈ g ⁻¹ᵁ V then hU.primeIdealOf ⟨w, hw⟩ else hU.primeIdealOf ⟨_, hηU⟩) ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `w hw`. Establish `hw' : w ∈ g ⁻¹ᵁ V` using `by show g w ∈ V`. Rewrite using `[show g w = z from hw]`. Conclude with `hzV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, dif_pos hw']`. Conclude with `(comap_primeIdealOf g hV hU w hw').trans (congrArg (fun x => (hV.primeIdealOf x).asIdeal) (Subtype.ext hw))`. Introduce `w₁ hw₁ w₂ hw₂ h`. Establish `h₁ : w₁ ∈ g ⁻¹ᵁ V` using `by show g w₁ ∈ V`. Rewrite using `[show g w₁ = z from hw₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hzV`. Establish `h₂ : w₂ ∈ g ⁻¹ᵁ V` using `by show g w₂ ∈ V`. Rewrite using `[show g w₂ = z from hw₂]`. Conclude with `hzV`. Simplify using `only [dif_pos h₁, dif_pos h₂] at h`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `hU.fromSpec_primeIdealOf ⟨w₁, h₁⟩`. Establish `e₂` using `hU.fromSpec_primeIdealOf ⟨w₂, h₂⟩`. Rewrite `e₁` using `[h]`. Conclude with `e₁.symm.trans e₂`. Introduce `Q hQ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hQU : hU.fromSpec Q ∈ g ⁻¹ᵁ V`. Rewrite using `[← SetLike.mem_coe, ← hU.range_fromSpec]`. Conclude with `⟨Q, rfl⟩`. Establish `hQ' : hU.primeIdealOf ⟨_, hQU⟩ = Q` using `hU.fromSpec.isOpenEmbedding.injective (hU.fromSpec_primeIdealOf ⟨_, hQU⟩)`. Establish `hgw : g (hU.fromSpec Q) = z`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `c` using `comap_primeIdealOf g hV hU _ hQU`. Rewrite `c` using `[hQ']`. Establish `c2 : hV.primeIdealOf ⟨g (hU.fromSpec Q), hQU⟩ = hV.primeIdealOf ⟨z, hzV⟩` using `PrimeSpectrum.ext (c.symm.trans hQ)`. Establish `d1` using `hV.fromSpec_primeIdealOf ⟨g (hU.fromSpec Q), hQU⟩`. Establish `d2` using `hV.fromSpec_primeIdealOf ⟨z, hzV⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `d1` using `[c2]`. Conclude with `d1.symm.trans d2`. Use `⟨hU.fromSpec Q, hgw, ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos hQU]`. Conclude with `hQ'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Establish `hw' : w ∈ g ⁻¹ᵁ V` using `by show g w ∈ V`. Rewrite using `[show g w = z from hw]`. Conclude with `hzV`. Establish `hd : (if hw : w ∈ g ⁻¹ᵁ V then hU.primeIdealOf ⟨w, hw⟩ else hU.primeIdealOf ⟨_, hηU⟩) = hU.primeIdealOf ⟨w, hw'⟩` using `dif_pos hw'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `beta_reduce`. Rewrite using `[hd, fnMap_germ, ord_germ_eq Y (g ⁻¹ᵁ V) hU w hw' (hcod w hw) _ ha', GlobalTheory.T.residueDegree_eq_inertiaDeg_affine_chart X Y g V hV hU w hw']`. Both sides reduce to the same expression. Use `haveI := functionField_isFractionRing_of_isAffineOpen X V hV`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := Γ(X, V)) f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hB : algebraMap Γ(X, V) X.functionField b ≠ 0` using `(map_ne_zero_iff _ (X.germToFunctionField_injective V)).2 hb0`. Establish `hA : algebraMap Γ(X, V) X.functionField a ≠ 0`. Introduce `h`. Apply `hf` to reduce the goal to its premises.
-
-Rewrite using `[h, zero_div]`. Establish `ha0 : a ≠ 0` using `by rintro rfl; exact hA (map_zero _)`. Establish `hFA : TrueGeo.SmallSec.fnMap g hsp (algebraMap Γ(X, V) X.functionField a) ≠ 0` using `(map_ne_zero _).2 hA`. Establish `hFB : TrueGeo.SmallSec.fnMap g hsp (algebraMap Γ(X, V) X.functionField b) ≠ 0` using `(map_ne_zero _).2 hB`. Rewrite using `[map_div₀, ord_div hA hB]`.
-
-Establish `e : ∀ w, Scheme.ord (TrueGeo.SmallSec.fnMap g hsp (algebraMap Γ(X, V) X.functionField a) / TrueGeo.SmallSec.fnMap g hsp (algebraMap Γ(X, V) X.functionField b)) w * (g.residueDegree w : ℤ) = Scheme.ord (TrueGeo.SmallSec.fnMap g hsp (algebraMap Γ(X, V) X.functionField a)) w * (g.re …`. Introduce `w`. Rewrite using `[ord_div hFA hFB, sub_mul]`. Repeatedly rewrite using `[e]`. Establish `hs` using `finsum_mem_sub_distrib (f := fun w => Scheme.ord (TrueGeo.SmallSec.fnMap g hsp (algebraMap Γ(X, V) X.functionField a)) w * (g.residueDegree w : ℤ)) (g := fun w => Scheme.ord (TrueGeo.SmallSec.fnMap g hsp (algebraMap Γ(X, V) X.functionField b)) w * (g.residueDegree w : ℤ)) hfin`.
-
-Rewrite using `[hs]`. Establish `ka` using `key a ha0`. Establish `kb` using `key b hb0`. Rewrite using `[mul_sub]`. Conclude with `congrArg₂ (· - ·) ka kb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_ord_fnMap {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian X]
     [IsLocallyNoetherian Y] (g : Y ⟶ X) (hη : g (genericPoint Y) = genericPoint X)
@@ -386,7 +378,7 @@ theorem sum_ord_fnMap {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsLocall
   exact congrArg₂ (· - ·) ka kb
 
 /- English proof (translation)
-Introduce `k _ X Y _ _ _ _ p q hp hq g hg hη hdeg z hz f hf`. Take `⟨hfin, hcod, V, hV, hzV, hgV⟩` from `GlobalTheory.T.genericallyFinite_finite_near_codimOne_point k X Y p q hp hq g hg hη hdeg z hz`. Conclude with `sum_ord_fnMap g hη _ z hz hfin hcod V hV hzV f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sum_ord_pull : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian X] [IsLocallyNoetherian Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k), IsAmb p → IsAmb q → ∀ (g : Y ⟶ X) (hg : g ≫ p = q) (hη : g (genericPoint Y) = genericPoint X), g.residueDegree (genericPoint Y) ≠ 0 → ∀ z : X, Order.coheight z = 1 → ∀ f : X.functionField, f ≠ 0 → ∑ᶠ w ∈ g ⁻¹' {z}, Scheme.ord (TrueGeo.SmallSec.fnMap g (hη ▸ specializes_rfl : g (genericPoint Y) ⤳ genericPoint X) f) w * (g.residueDegree w : ℤ) = (g.residueDegree (genericPoint Y) : ℤ) * Scheme.ord f z := by
   intro k _ X Y _ _ _ _ p q hp hq g hg hη hdeg z hz f hf

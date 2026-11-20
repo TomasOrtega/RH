@@ -15,9 +15,9 @@ section Local
 variable {K : Type} [Field K] {n : ℕ} {O : Subring K}
 
 /- English proof (translation)
-Establish `h1 : ∀ j : Fin n, ∀ i, (Pi.single j 1 : Fin n → K) i ∈ O` using `fun j i => by`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[e]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `choose z hz ez using fun j => h _ (h1 j)`. Use `⟨Matrix.of fun i j => z j i, fun i j => hz j i, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Use `congrFun (ez j) i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mat {A C : Matrix (Fin n) (Fin n) K}
     (h : ∀ w : Fin n → K, (∀ i, w i ∈ O) → ∃ z : Fin n → K, (∀ i, z i ∈ O) ∧ A *ᵥ w = C *ᵥ z) :
@@ -33,16 +33,16 @@ theorem exists_mat {A C : Matrix (Fin n) (Fin n) K}
   exact this
 
 /- English proof (translation)
-The claim follows from `Subring.sum_mem (t := Finset.univ) _ fun j _ => mul_mem (hA i j) (hz j)`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_mem {A : Matrix (Fin n) (Fin n) K} (hA : ∀ i j, A i j ∈ O) {z : Fin n → K} (hz : ∀ i, z i ∈ O) (i : Fin n) :
     (A *ᵥ z) i ∈ O :=
   Subring.sum_mem (t := Finset.univ) _ fun j _ => mul_mem (hA i j) (hz j)
 
 /- English proof (translation)
-Set `G : Matrix (Fin n) (Fin n) O` to `Matrix.of fun i j => ⟨g i j, hg i j⟩`. Set `G' : Matrix (Fin n) (Fin n) O` to `Matrix.of fun i j => ⟨g' i j, hg' i j⟩`. Establish `e : G * G' = 1`. Apply `Matrix.map_injective (f := O.subtype) O.subtype_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(G * G').map O.subtype = (1 : Matrix (Fin n) (Fin n) O).map O.subtype`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `h`. Conclude with `⟨_, ⟨⟨G, G', e, mul_eq_one_comm.1 e⟩, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_GLint {g g' : Matrix (Fin n) (Fin n) K} (hg : ∀ i j, g i j ∈ O) (hg' : ∀ i j, g' i j ∈ O)
     (h : g * g' = 1) : ∃ a ∈ GLint (Fin n) O, (a : Matrix (Fin n) (Fin n) K) = g := by
@@ -56,7 +56,7 @@ theorem exists_GLint {g g' : Matrix (Fin n) (Fin n) K} (hg : ∀ i j, g i j ∈ 
   exact ⟨_, ⟨⟨G, G', e, mul_eq_one_comm.1 e⟩, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `ha`. Conclude with `((b : Matrix (Fin n) (Fin n) O) i j).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem entry_mem {a : GL (Fin n) K} (ha : a ∈ GLint (Fin n) O) (i j : Fin n) :
     (a : Matrix (Fin n) (Fin n) K) i j ∈ O := by
@@ -70,7 +70,7 @@ def LocBasis (O : Subring K) (x : Matrix (Fin n) (Fin n) K) (τ : Fin n → K) (
   (∀ z : Fin n → K, (∀ i, z i ∈ O) → ∃ w : Fin n → K, (∀ i, w i ∈ O) ∧ x *ᵥ w = g *ᵥ fun i => τ i * z i)
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_mulVec]`. Use `congr 1`. Conclude with `funext fun i => (Matrix.mulVec_diagonal _ _ i).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem mulVec_diag (g : Matrix (Fin n) (Fin n) K) (τ z : Fin n → K) :
     (g *ᵥ fun i => τ i * z i) = (g * Matrix.diagonal τ) *ᵥ z := by
@@ -79,17 +79,17 @@ theorem mulVec_diag (g : Matrix (Fin n) (Fin n) K) (τ z : Fin n → K) :
   exact funext fun i => (Matrix.mulVec_diagonal _ _ i).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, h1, h2, h3, h4⟩`. Simplify using `only [mulVec_diag] at h3 h4`. Take `⟨g₀, hg, e0⟩` from `exists_mat (O := O) (A := g) (C := 1) fun w hw => ⟨_, h1 w hw, by simp⟩`. Rewrite `e0` using `[one_mul]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `e0` using the available equality. Take `⟨g', hg', e1⟩` from `exists_mat (O := O) (A := 1) (C := g) fun w hw => by simpa using h2 w hw`. Take `⟨h, hh, e2⟩` from `exists_mat h3`. Take `⟨h', hh', e3⟩` from `exists_mat (O := O) (A := g * Matrix.diagonal τ) (C := x) fun w hw => (h4 w hw).imp fun z hz => ⟨hz.1, hz.2.symm⟩`. Establish `hd : Matrix.diagonal (fun i => (τ i)⁻¹) * Matrix.diagonal τ = 1`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Conclude with `funext fun i => inv_mul_cancel₀ (hτ i)`. Establish `e1' : g' * g = 1` using `mul_eq_one_comm.1 e1.symm`. Establish `hl : (Matrix.diagonal (fun i => (τ i)⁻¹) * g') * (g * Matrix.diagonal τ) = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc g', e1', one_mul, hd]`. Establish `e4 : h * h' = 1`. Rewrite using `[← one_mul (h * h'), ← hl, Matrix.mul_assoc, ← Matrix.mul_assoc _ h, ← e2, ← e3]`. Take `⟨a, ha, rfl⟩` from `exists_GLint hg hg' e1.symm`. Take `⟨b, hb, rfl⟩` from `exists_GLint hh hh' e4`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, ha, b, hb, e2⟩`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Use `⟨a, fun z hz => mulVec_mem (entry_mem ha) hz, fun w hw => ⟨_, mulVec_mem (entry_mem (inv_mem ha)) hw, ?_⟩, fun w hw => ⟨_, mulVec_mem (entry_mem hb) hw, ?_⟩, fun z hz => ⟨_, mulVec_mem (entry_mem (inv_mem hb)) hz, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Rewrite using `[mulVec_diag, Matrix.mulVec_mulVec]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_diag, Matrix.mulVec_mulVec, Matrix.mul_assoc _ b.1, Units.mul_inv, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem locBasis_iff (x : Matrix (Fin n) (Fin n) K) {τ : Fin n → K} (hτ : ∀ i, τ i ≠ 0) :
     (∃ g, LocBasis O x τ g) ↔ ∃ a ∈ GLint (Fin n) O, ∃ b ∈ GLint (Fin n) O,
@@ -126,29 +126,29 @@ theorem locBasis_iff (x : Matrix (Fin n) (Fin n) K) {τ : Fin n → K} (hτ : �
 end Local
 
 /- English proof (translation)
-Establish `hN' : N' * N = 1` using `mul_eq_one_comm.1 hN`. Establish `hv : ∀ (A : Matrix (Fin n) (Fin n) R) z, (fun i => π (A.mulVec z i)) = (A.map π *ᵥ fun j => π (z j))` using `fun A z => funext fun i => RingHom.map_mulVec π A z i`. Establish `hsm : ∀ (A : Matrix (Fin n) (Fin n) R) y i, (A *ᵥ fun i => ε * y i) i = ε * (A *ᵥ y) i` using `fun A y i => congrFun (Matrix.mulVec_smul A ε y) i`. Establish `heq : ∀ y y' : Fin n → R, ((fun i => ε * y i) = fun i => ε * y' i) ↔ (fun i => π ((N' *ᵥ y) i)) = fun i => π ((N' *ᵥ y') i)` using `fun y y' => by`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use function extensionality and compare the values at `i`. Rewrite using `[← hs (π _), ← hε, ← hsm, h, hsm, hε, hs]`. Introduce `h`. Establish `h2 : (fun i => ε * (N' *ᵥ y) i) = fun i => ε * (N' *ᵥ y') i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hε, hε, congrFun h i]`. Use function extensionality and compare the values at `i`. Use `congrFun (congrArg (N *ᵥ ·) h2) i` as an intermediate fact. Simplify `this` using `only [hsm, Matrix.mulVec_mulVec, hN, Matrix.one_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hΛε : ∀ y : Fin n → R, Λ (fun i => ε * y i) ↔ ∀ i, π ((N' *ᵥ y) i) ∈ O` using `fun y => by`. Rewrite using `[hΛ]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[hsm, hε]`. Conclude with `⟨fun h => hs (π _) ▸ hI _ h, hI' _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hc : ∀ y, N' *ᵥ (N *ᵥ y) = y` using `fun y => by rw [Matrix.mulVec_mulVec, hN', Matrix.one_mulVec]`. Establish `hΛs : ∀ w : Fin n → K, (∀ i, w i ∈ O) → Λ (N *ᵥ fun i => s (w i))` using `fun w hw => by`. Rewrite using `[hΛ, hc]`. Conclude with `fun i => hI' _ (hw i)`. Establish `hX : ∀ y, (fun i => π ((N' *ᵥ ((N * X * N') *ᵥ y)) i)) = X.map π *ᵥ fun i => π ((N' *ᵥ y) i)` using `fun y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hc, hv]`. Establish `hB : ∀ (B : Matrix (Fin n) (Fin n) R) z, (fun i => π ((N' *ᵥ (B *ᵥ z)) i)) = (N' * B).map π *ᵥ fun i => π (z i)` using `fun B z => by`. Rewrite using `[Matrix.mulVec_mulVec, hv]`. Simplify using `only [heq, hΛε, hX, hB, map_mul]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨B, h1, h2, h3, h4⟩`. Use `⟨(N' * B).map π, fun z hz i => ?_, fun w hw => ?_, fun w hw => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `h1 _ (fun i => hI' _ (hz i)) i` as an intermediate fact. Rewrite `this` using `[congrFun (hB B _) i]`. Simplify `this` using `only [hs]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨z, hz, e⟩` from `h2 _ (hΛs w hw)`. Use `⟨_, fun i => hI _ (hz i), ?_⟩` and prove the remaining obligations. Simplify `e` using `only [hc, hs]`. Take `⟨z, hz, e⟩` from `h3 _ (hΛs w hw)`. Use `⟨_, fun i => hI _ (hz i), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `e` using `only [hc, hs]`. Take `⟨y, hy, e⟩` from `h4 _ (fun i => hI' _ (hz i))`. Use `⟨_, fun i => hI _ ((hΛ y).1 hy i), ?_⟩` and prove the remaining obligations. Simplify `e` using `only [hs]`. Introduce and unpack `⟨g, h1, h2, h3, h4⟩`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Establish `hg : (N' * (N * g.map s)).map π = g`. Rewrite using `[← Matrix.mul_assoc, hN', one_mul]`. Conclude with `Matrix.ext fun i j => hs _`. Use `⟨N * g.map s, fun z hz i => ?_, fun y hy => ?_, fun y hy => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[congrFun (hB _ _) i, hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h1 _ (fun i => hI _ (hz i)) i`. Take `⟨z, hz, e⟩` from `h2 _ fun i => hI _ ((hΛ y).1 hy i)`. Use `⟨_, fun i => hI' _ (hz i), ?_⟩` and prove the remaining obligations. Simplify `e` using `only [hg, hs]`. Take `⟨z, hz, e⟩` from `h3 _ fun i => hI _ ((hΛ y).1 hy i)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨_, fun i => hI' _ (hz i), ?_⟩` and prove the remaining obligations. Simplify `e` using `only [hg, hs]`. Take `⟨w, hw, e⟩` from `h4 _ fun i => hI _ (hz i)`. Use `⟨_, hΛs w hw, ?_⟩` and prove the remaining obligations. Simplify `e` using `only [hg, hs, hc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem basis_iff_locBasis {R K : Type} [CommRing R] [Field K] {n : ℕ} (π : R →+* K) (s : K → R)
     (hs : ∀ x, π (s x) = x) {ε : R} (hε : ∀ y, ε * y = s (π y)) {I : R → Prop} {O : Subring K}
@@ -230,17 +230,15 @@ theorem basis_iff_locBasis {R K : Type} [CommRing R] [Field K] {n : ℕ} (π : R
 open IsDedekindDomain NumberField in
 
 /- English proof (translation)
-Use `⟨?_, fun h => ⟨ϖ, hϖ, h⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨u, hu, a, ha, b, hb, e⟩`. Establish `hu' : Valued.v u = Valued.v ϖ` using `hu.trans hϖ.symm`. Establish `h0 : ϖ ≠ 0` using `fun h => by`. Rewrite `hϖ` using `[h, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.exp_ne_zero hϖ.symm`. Establish `hu0 : u ≠ 0` using `fun h => by`. Rewrite `hu'` using `[h, map_zero]`. Conclude with `(map_ne_zero _).2 h0 hu'.symm`. Establish `hm : ∀ k : ℤ, (u / ϖ) ^ k ∈ Ov E P` using `fun k => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Valued.v ((u / ϖ) ^ k) ≤ 1`. Rewrite using `[map_zpow₀, map_div₀, hu', div_self ((map_ne_zero _).2 h0), one_zpow]`. Establish `hd : ∀ (c : Fin n → ℤ) (i j : Fin n), Matrix.diagonal (fun i => (u / ϖ) ^ c i) i j ∈ Ov E P` using `fun c i j => by`. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hm _`. Conclude with `zero_mem _`. Take `⟨c, hc, ec⟩` from `exists_GLint (hd fun i => d.getD i 0) (hd fun i => -d.getD i 0) (by`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[zpow_neg, mul_inv_cancel₀ (zpow_ne_zero _ (div_ne_zero hu0 h0))])`. Use `⟨a, ha, c * b, mul_mem hc hb, ?_⟩` and prove the remaining obligations. Rewrite using `[e, Units.val_mul, ec, ← Matrix.mul_assoc, Matrix.mul_assoc a.1 _ (Matrix.diagonal _), Matrix.diagonal_mul_diagonal]`. Use `congr 3`.
-
-Use function extensionality and compare the values at `i`. Rewrite using `[← mul_zpow, mul_div_cancel₀ _ h0]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDiv_iff {E : Type} [Field E] [NumberField E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) {ϖ : P.adicCompletion E}
     (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (d : List ℤ) (g : GL (Fin n) (P.adicCompletion E)) :
@@ -277,9 +275,9 @@ theorem hasDiv_iff {E : Type} [Field E] [NumberField E] {n : ℕ} (P : HeightOne
 
 open IsDedekindDomain NumberField in
 /- English proof (translation)
-Establish `a1` using `(w.intValuation_le_pow_iff_mem ϖ 1).2 (by simpa using h1)`. Establish `a2` using `mt (w.intValuation_le_pow_iff_mem ϖ 2).1 h2`. Establish `a3 : w.intValuation ϖ ≠ 0` using `w.intValuation_ne_zero ϖ fun h => h2 (h ▸ zero_mem _)`. Rewrite using `[Formalism.UG.P.levelaf_valued_algebraMap, show w.valuation E (ϖ : E) = w.intValuation ϖ from w.valuation_of_algebraMap ϖ]`. Rewrite `a1`, `a2` using `[← WithZero.exp_log a3, WithZero.exp_le_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← WithZero.exp_log a3]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem valued_unif {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {ϖ : 𝓞 E}
     (h1 : ϖ ∈ w.asIdeal) (h2 : ϖ ∉ w.asIdeal ^ 2) :
@@ -301,21 +299,21 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Rewrite using `[mul_assoc, ← mul_assoc A, hA, one_mul, hH]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_mul {R : Type} [Monoid R] {H H' A A' : R} (hH : H' * H = 1) (hA : A * A' = 1) :
     (H' * A) * (A' * H) = 1 := by
   rw [mul_assoc, ← mul_assoc A, hA, one_mul, hH]
 
 /- English proof (translation)
-Simplify using `only [hZ, hY, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_conj {R : Type} [Monoid R] {H H' A A' X Y Z : R} (hZ : Z = H' * Y * H) (hY : Y = A * X * A') :
     Z = (H' * A) * X * (A' * H) := by
   simp only [hZ, hY, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (Matrix.isUnit_det_of_left_inverse h), Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mul_inv {E R : Type} [Field E] [CommRing R] {n : ℕ} (ι : E →+* R) {M M' : Matrix (Fin n) (Fin n) E}
     (h : M' * M = 1) : M.map ι * M⁻¹.map ι = 1 := by
@@ -323,7 +321,7 @@ theorem map_mul_inv {E R : Type} [Field E] [CommRing R] {n : ℕ} (ι : E →+* 
     Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := Algebra.TensorProduct.map (sndA F) (AlgHom.id F E))`.
+A detailed English derivation is pending.
 -/
 theorem finMat_mul' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (g h : HA (AF F) σ J) :
@@ -331,18 +329,16 @@ theorem finMat_mul' {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   Matrix.map_mul (f := Algebra.TensorProduct.map (sndA F) (AlgHom.id F E))
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem finMat_one' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : finMat σ J (1 : HA (AF F) σ J) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Establish `hϖ` using `valued_unif h1 h2`. Establish `h0 : algebraMap D.host.E (P.adicCompletion D.host.E) (ϖ : D.host.E) ≠ 0` using `fun h => by`. Rewrite `hϖ` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hϖ.symm`. Establish `key` using `basis_iff_locBasis (GlobalTheory.LFun.compAt D.host.F P) (GlobalTheory.LFun.singleAt D.host.F P) (GlobalTheory.LFun.compAt_singleAt P) (ε := finPart D e) (fun y => by rw [GlobalTheory.LFun.finPart_of_isPrimeIdem hef, GlobalTheory.LFun.singleAt_mul, one_mul]) (I := (· ∈ intAE D)) …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : (fun i : Fin V.rank => GlobalTheory.LFun.compAt D.host.F P (finPart D (incA D ((ϖ : D.host.E) ^ (d.getD i.1 0))))) = fun i : Fin V.rank => algebraMap D.host.E (P.adicCompletion D.host.E) (ϖ : D.host.E) ^ d.getD i.1 0`. Use function extensionality and compare the values at `fun i => by rw [GlobalTheory.LFun.compAt_incA, map_zpow₀]`. Rewrite `key` using `[← hα]`. Use `replace key := key.trans (by rw [hX, ht, locBasis_iff _ fun i => zpow_ne_zero _ h0])`. Unfold `DivAt IntVec`.
-
-Conclude with `and_congr Iff.rfl (key.trans (hasDiv_iff P hϖ d g).symm)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem divAt_iff_of_frame {D : D7} (V : HSp D) {P : HeightOneSpectrum (𝓞 D.host.E)} {e f : AE D} {ϖ : 𝓞 D.host.E}
     (d : List ℤ) (hef : IsPrimeIdem P e f) (h1 : ϖ ∈ P.asIdeal) (h2 : ϖ ∉ P.asIdeal ^ 2)
@@ -369,9 +365,9 @@ theorem divAt_iff_of_frame {D : D7} (V : HSp D) {P : HeightOneSpectrum (𝓞 D.h
   exact and_congr Iff.rfl (key.trans (hasDiv_iff P hϖ d g).symm)
 
 /- English proof (translation)
-Introduce `D _ V j h₀ M hM _ _ hj hL P e f ϖ d x hef h1 h2 _`. Establish `hMM` using `map_mul_inv (Algebra.TensorProduct.includeRight : D.host.E →ₐ[D.host.F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E).toRingHom hM`. Establish `hH : finMat D.sp.cm.sig V.gram h₀⁻¹ * finMat D.sp.cm.sig V.gram h₀ = 1` using `(finMat_mul' _ _ _ _).symm.trans ((congrArg _ (inv_mul_cancel h₀)).trans (finMat_one' _ _))`. Establish `hα : finMat D.sp.cm.sig V.gram (cj j h₀ x) = finMat D.sp.cm.sig V.gram h₀⁻¹ * finMat D.sp.cm.sig V.gram (j x) * finMat D.sp.cm.sig V.gram h₀` using `(congrArg _ (cj_apply j h₀ x)).trans ((finMat_mul' _ _ _ _).trans (congrArg (· * _) (finMat_mul' _ _ _ _)))`. Use `divAt_iff_of_frame V d hef h1 h2 (frame_mul hH hMM) (fun y => ?_) (frame_conj hα (hj x)) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `hL y`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Conclude with `congrArg (fun y : FiniteAdeleRing (𝓞 D.host.E) D.host.E => y P) ((GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).apply_symm_apply (pFin D.host.E (((x : GL (Fin V.rank) (Ad D.host.E)) : Matrix (Fin V.rank) (Fin V.rank) (Ad D.host.E)) a b)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem divAt_cj_iff : ∀ (D : D7) [IsCMField D.host.E] (V : HSp D) (j : UA D.host.E V.rank ≃ₜ* GA D V) (h₀ : GA D V)
     (M : Matrix (Fin V.rank) (Fin V.rank) D.host.E),

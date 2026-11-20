@@ -35,7 +35,7 @@ def sI : Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1) → (D.s.atP p).Ep :=
     (fun b => sgnP' D p b * Formalism.L2.SG.Pf.BBTie.btT Zd p ^ (D.R.rS - b.val))
 
 /- English proof (translation)
-Unfold `frFac`. Conclude with `Ring.inverse_mul_cancel _ ((Formalism.L2.SG.Pf.BBTie.bt_T_unit Zd p).pow _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem frFac_mul (a : Fin (D.R.rS + 1)) :
     frFac Zd.δ p a * Formalism.L2.SG.Pf.BBTie.btT Zd p ^ (D.R.rS - a.val) = 1 := by
@@ -43,7 +43,7 @@ theorem frFac_mul (a : Fin (D.R.rS + 1)) :
   exact Ring.inverse_mul_cancel _ ((Formalism.L2.SG.Pf.BBTie.bt_T_unit Zd p).pow _)
 
 /- English proof (translation)
-Consider the cases of `k with`. Consider the case `inl a => show sgnP D p a * Formalism.L2.SG.Pf.BBTie.btT Zd p ^ (D.R.rS - a.val) * (sgnP D p a * frFac Zd.δ p a) = 1`. Combine the equalities or inequalities in the displayed calculation. Consider the case `inr b => show sgnP' D p b * Formalism.L2.SG.Pf.BBTie.btT Zd p ^ (D.R.rS - b.val) * (sgnP' D p b * frFac Zd.δ p b) = 1`. Combine the equalities or inequalities in the displayed calculation.
+Split into cases according to the possible forms of the given data. Treat this case separately. Chain the equalities or inequalities of the calculation. Treat this case separately. Chain the equalities or inequalities of the calculation.
 -/
 theorem sI_mul (k : Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) : sI Zd p k * sK Zd p k = 1 := by
   cases k with
@@ -59,9 +59,9 @@ theorem sI_mul (k : Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) : sI Zd p k * sK Zd p
 variable {Zd p}
 
 /- English proof (translation)
-Establish `hA` using `(Zd.agree p).2.2.2.2.2`. Rewrite `hA` using `[hs]`. Consider the cases of `h2 : (D.s.atP p).split with`. Consider the case `none => rfl`. Consider the case `some sg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Rewrite `hA` using `[h2]`. Conclude with `(hA : False).elim`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_none (hs : (Zd.M p).split = none) : (D.s.atP p).split = none := by
   have hA := (Zd.agree p).2.2.2.2.2
@@ -73,11 +73,11 @@ theorem split_none (hs : (Zd.M p).split = none) : (D.s.atP p).split = none := by
     exact (hA : False).elim
 
 /- English proof (translation)
-Establish `hs'` using `split_none hs`. Establish `hT : Formalism.L2.SG.Pf.BBTie.btT Zd p ∈ (D.s.atP p).O` using `Subring.mul_mem _ (Formalism.L2.SG.Pf.LocalDenominators.alg_mem_O (D.s.atP p) hδ) hu`. Consider the cases of `k with`. Consider the case `inl a`. Use `Subring.mul_mem _ ?_ (Subring.pow_mem _ hT _)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `show sgnP D p a ∈ _`. Unfold `TermLoc.sgnP`. Rewrite using `[hs']`. Conclude with `Subring.one_mem _`. Consider the case `inr b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `Subring.mul_mem _ ?_ (Subring.pow_mem _ hT _)` and prove the remaining obligations. Use `show sgnP' D p b ∈ _`. Unfold `TermLoc.sgnP'`. Rewrite using `[hs']`. Conclude with `Subring.pow_mem _ (Subring.neg_mem _ (Subring.one_mem _)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sI_mem (hs : (Zd.M p).split = none) (hδ : Zd.δ p ∈ 𝒪[(D.s.atP p).Fp])
     (hu : (D.s.atP p).ιE (uP p : D.host.E) ∈ (D.s.atP p).O) (k : Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) :
@@ -100,7 +100,7 @@ theorem sI_mem (hs : (Zd.M p).split = none) (hδ : Zd.δ p ∈ 𝒪[(D.s.atP p).
     exact Subring.pow_mem _ (Subring.neg_mem _ (Subring.one_mem _)) _
 
 /- English proof (translation)
-Rewrite `hy`, the goal using `[(D.s.atP p).O_def]`. Conclude with `hy.map (((D.s.atP p).cj : (D.s.atP p).Ep →ₐ[(D.s.atP p).Fp] (D.s.atP p).Ep).restrictScalars 𝒪[(D.s.atP p).Fp])`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cj_mem (y : (D.s.atP p).Ep) (hy : y ∈ (D.s.atP p).O) : (D.s.atP p).cj y ∈ (D.s.atP p).O := by
   rw [(D.s.atP p).O_def] at hy ⊢
@@ -110,7 +110,7 @@ theorem cj_mem (y : (D.s.atP p).Ep) (hy : y ∈ (D.s.atP p).O) : (D.s.atP p).cj 
 variable {u' : D.what₂.Word} {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Rewrite using `[vP_eq Zd γ F'₂ hs]`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `cases k <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vP_eq' (γ : TermDef.Term D u u' F0 what₂) (F'₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))
     (hs : (Zd.M p).split = none) : vP Zd p γ F'₂ = fun k => sK Zd p k • baseChange₂ D p (wG F0 F'₂ k) := by
@@ -119,7 +119,7 @@ theorem vP_eq' (γ : TermDef.Term D u u' F0 what₂) (F'₂ : LFlag (VS D) D.R.r
   cases k <;> rfl
 
 /- English proof (translation)
-Rewrite using `[vP_eq' γ F'₂ hs]`. Use extensionality with `i j`. Simplify using `only [Formalism.MainNotions.S.Loc.HermSp.gram, Matrix.of_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.map_apply, gramG]`. Rewrite using `[Formalism.L2.SG.Pf.ScalarFramePf.h_bcP]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gram_vP (γ : TermDef.Term D u u' F0 what₂) (F'₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))
     (hs : (Zd.M p).split = none) :
@@ -133,13 +133,13 @@ theorem gram_vP (γ : TermDef.Term D u u' F0 what₂) (F'₂ : LFlag (VS D) D.R.
   ring
 
 /- English proof (translation)
-Establish `hO : (Zd.M p).L.O = (D.s.atP p).O` using `Formalism.L2.SG.Pf.LocalDenominators.hO Zd p`. Establish `hcj : (Zd.M p).L.cj = (D.s.atP p).cj` using `Zd.hcj p`. Use `set M := gramG F0 F'₂ with hMdef`. Use `set ι := (D.s.atP p).ιE with hι`. Use `⟨Matrix.diagonal (sI Zd p) * M⁻¹.map ι * Matrix.diagonal (fun k => (Zd.M p).L.cj (sI Zd p k)), fun i j => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.map_apply]`. Rewrite using `[hO, hcj]`. Conclude with `Subring.mul_mem _ (Subring.mul_mem _ (sI_mem hs hδ hu i) (hent i j)) (cj_mem _ (sI_mem hs hδ hu j))`. Rewrite using `[gram_vP γ F'₂ hs]`. Establish `hM : M⁻¹ * M = 1` using `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hdet)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmap : M⁻¹.map ι * M.map ι = 1`. Rewrite using `[← Matrix.map_mul, hM, Matrix.map_one _ (map_zero ι) (map_one ι)]`. Establish `hc1 : (fun k => (Zd.M p).L.cj (sI Zd p k) * (Zd.M p).L.cj (sK Zd p k)) = fun _ => 1`. Use function extensionality and compare the values at `k`. Rewrite using `[← map_mul, sI_mul, map_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hs1 : (fun k => sI Zd p k * sK Zd p k) = fun _ => 1` using `funext fun k => sI_mul Zd p k`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Matrix.diagonal fun k => (Zd.M p).L.cj (sI Zd p k)), Matrix.diagonal_mul_diagonal, hc1, Matrix.diagonal_one, Matrix.one_mul, ← Matrix.mul_assoc (M⁻¹.map ι), hmap, Matrix.one_mul, Matrix.diagonal_mul_diagonal, hs1, Matrix.diagonal_one]`.
+A detailed English derivation is pending.
 -/
 theorem gramInv_at (γ : TermDef.Term D u u' F0 what₂) (F'₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))
     (hdet : (gramG F0 F'₂).det ≠ 0) (hs : (Zd.M p).split = none) (hδ : Zd.δ p ∈ 𝒪[(D.s.atP p).Fp])
@@ -182,13 +182,13 @@ def GlobGramNe : Prop :=
     Ctx γ Z → ZhatL (lf D F0) F'₂ = Z → (gramG F0 F'₂).det ≠ 0
 
 /- English proof (translation)
-Introduce `hP γ Z F'₂ φ' hH`. Establish `hdet` using `hGG hP γ Z F'₂ hH.1 hH.2.1`. Use `set X : Finset D.host.E := Finset.univ.image (fun ij : (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) × (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) => (gramG F0 F'₂)⁻¹ ij.1 ij.2) with hX`. Establish `hgood` using `Formalism.L2.SG.Pf.LocModel.good_cofinite Zd.δ Zd.M Zd.agree X`. Rewrite `hgood` using `[Filter.eventually_cofinite]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hgood.subset fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_ofPred_eq, not_not] at hn`. Apply `hp` to reduce the goal to its premises. Take `⟨hs, hδ, hu, hXm⟩` from `hn`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `gramInv_at γ F'₂ hdet hs hδ.1 hu.1 fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : (gramG F0 F'₂)⁻¹ i j = 0`. Rewrite using `[h0, map_zero]`. Conclude with `Subring.zero_mem _`. Establish `hmem : (gramG F0 F'₂)⁻¹ i j ∈ X` using `Finset.mem_image.2 ⟨(i, j), Finset.mem_univ _, rfl⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `(hXm _ hmem 0 (by simpa using h0)).1`. Simplify using `using h`.
+A detailed English derivation is pending.
 -/
 theorem cohGood_of (hGG : GlobGramNe u u' F0 what₂) : CohGood Zd u u' F0 what₂ := by
   intro hP γ Z F'₂ φ' hH
@@ -210,7 +210,7 @@ theorem cohGood_of (hGG : GlobGramNe u u' F0 what₂) : CohGood Zd u u' F0 what�
     simpa using h
 
 /- English proof (translation)
-The claim follows from `star_coherence_of_good Zd hLp (cohGood_of Zd hGG)`.
+A detailed English derivation is pending.
 -/
 theorem star_coherence_of_gram (hLp : CohLp Zd u u' F0 what₂) (hGG : GlobGramNe u u' F0 what₂) :
     CtxP u u' F0 what₂ → StarCoh Zd u u' F0 what₂ :=

@@ -20,7 +20,7 @@ namespace GlobalTheory.Mum.CommonPull
 open GlobalTheory.UT GlobalTheory.ArcPull GlobalTheory.PullLinear
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨ReciprocityTheory.ChartRestriction.G.Geo.Tor.idIso L₁.L, idIso_isGen L₁.isLB, fun p => L₁.rigGen p.1 p.2⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_rig_iso_of_eq {S : Scheme.{0}} {H : Over S} [GrpObj H] (L₁ L₂ : RigLB H) (h : L₁ = L₂) :
     ∃ w : LB.Iso L₂.L L₁.L, w.IsGen ∧
@@ -29,25 +29,23 @@ theorem exists_rig_iso_of_eq {S : Scheme.{0}} {H : Over S} [GrpObj H] (L₁ L₂
   exact ⟨ReciprocityTheory.ChartRestriction.G.Geo.Tor.idIso L₁.L, idIso_isGen L₁.isLB, fun p => L₁.rigGen p.1 p.2⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D G _ _ L _ hG hT D₂ A U₂ hL`. Take `⟨W, _, _, _, φ, G', _, _, β, D', A', U', hW, hφ, hloc, hβ, hLβ, hD⟩` from `hT`. Substitute `hL` using the available equality. Take `⟨hLw, -, -, h4, h5⟩` from `GlobalTheory.firstFiveLaws`. Establish `h6` using `GlobalTheory.sixthLaws_and_unifUniq.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hW.1` as an intermediate fact. Establish `hW' : AdmBase W (maximalIdeal W)` using `⟨inferInstance, inferInstance, inferInstance, hW.2.1⟩`. Take `⟨bc, mbc, hbc⟩` from `grpPullback_iso hβ (isGrpPullback_pullback G (spMap φ))`. Use `haveI := mbc`. Establish `hG' : IsSemiAbelian G'` using `GlobalTheory.isSemiAbelian_of_grpIso bc (IsSemiAbelian.pullback (spMap φ) G hG)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sq : spMap (fracMap hφ) ≫ jK R = jK W ≫ spMap φ` using `(fracMap_sq hφ).symm.trans (Category.id_comp _)`. Take `⟨A'', gA, pA, dA, mA, tA⟩` from `hLw.polBaseChange _ _ (spMap (fracMap hφ)) A`. Establish `gpA : IsGrpPullback A''.A A.A (spMap (fracMap hφ)) gA` using `⟨pA, fun T x y x₀ y₀ hx hy => by`. Establish `e₁ : x₀ = Out.toBase pA.w x` using `Over.OverMorphism.ext hx`. Establish `e₂ : y₀ = Out.toBase pA.w y` using `Over.OverMorphism.ext hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, e₂, ← mA]`. Use the proof step `rfl⟩`. Establish `gpG` using `ThetaBaseChange.grp_generic U₂.toUnifPre`. Establish `gp' : IsGrpPullback ((Over.pullback (jK W)).obj G') G (spMap (fracMap hφ) ≫ jK R) (pullback.fst G'.hom (jK W) ≫ β)` using `((isGrpPullback_pullback G' (jK W)).comp hβ).congr sq.symm rfl`. Take `⟨eA, mE, heA⟩` from `grpPullback_iso gp' (gpA.comp gpG)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgi : U₂.gen.inv.left ≫ U₂.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Establish `wA : LBIso (A''.L.pull eA.hom.left) (U₂.LG.L.pull (pullback.fst G'.hom (jK W) ≫ bc.hom.left ≫ pullback.fst G.hom (specOf φ)))`. Use `LBIso.trans (pull_isLB A''.isLB _) (pull_isLB (pull_isLB A.isLB gA) eA.hom.left) (pull_isLB U₂.LG.isLB _) ((LBIso.symm tA).chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull A''.L _ _ rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull (A.L.pull gA …` and prove the remaining obligations. Use `LBIso.chartPull (h := eA.hom.left ≫ gA ≫ U₂.gen.inv.left) (chartPullLinComb A.L gA (fun _ => eA.hom.left) (fun _ => U₂.gen.hom.left) _ _ fun _ => ?_) (chartPullSame U₂.LG.L _ (fun _ => pullback.fst G.hom (jK R)) _ _ fun _ => ?_) U₂.ext` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, hgi, Category.comp_id]`. Use `show pullback.fst G'.hom (jK W) ≫ bc.hom.left ≫ pullback.fst G.hom (spMap φ) = _`. Rewrite using `[hbc, ← heA]`. Simplify using `only [Category.assoc]`. Establish `he : eSec G' ≫ bc.hom.left ≫ pullback.fst G.hom (specOf φ) = specOf φ ≫ eSec G` using `by show eSec G' ≫ bc.hom.left ≫ pullback.fst G.hom (spMap φ) = _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbc]`. Conclude with `(cubeMapOf hβ).e_comm`. Take `⟨wL, gwL, rwL⟩` from `GlobalTheory.Unif.RigidifyIso.exists_rigidified_iso _ _ (specOf φ) G G' (bc.hom.left ≫ pullback.fst G.hom (specOf φ)) he U₂.LG U'.LG (by show ∃ w : LB.Iso U'.LG.L (U₂.LG.L.pull (bc.hom.left ≫ pullback.fst G.hom (spMap φ))), w.IsGen`. Rewrite using `[hbc]`. Conclude with `hLβ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Wo, hWo, hψ⟩` from `h5.psiOnExists R (maximalIdeal R) hR.1 D₂`. Establish `hgen : (specOf φ).base (genericPoint (Spec (CommRingCat.of W))) ∈ Wo`. Establish `: (specOf φ).base (genericPoint (Spec (CommRingCat.of W))) = genericPoint (Spec (CommRingCat.of R))`. Rewrite using `[genericPoint_eq_bot_of_affine, genericPoint_eq_bot_of_affine]`. Conclude with `PrimeSpectrum.ext (Ideal.comap_bot_of_injective φ hφ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Conclude with `hWo`. Take `⟨D₂', hD₂, U₂', hLG, -, -⟩` from `h4.unifBaseChange R W (maximalIdeal R) (maximalIdeal W) hR.1 hW' φ (map_maximalIdeal_le φ) D₂ A G hG U₂ Wo hψ hgen G' bc mbc A'' dA eA mE wA U'.LG wL he gwL rwL`. Take `⟨wU, gU, rU⟩` from `exists_rig_iso_of_eq U₂'.LG U'.LG hLG`. Take `⟨hU, -⟩` from `h6 W (maximalIdeal W) hW' D₂' D' A'' A' G' hG' U₂' U' wU gU rU`.
-
-Take `⟨hD'⟩` from `hD`. Use `⟨W, inferInstance, inferInstance, φ, D'.toPre, hφ, ⟨hD'⟩, ?_⟩` and prove the remaining obligations. Conclude with `RingHom.id_comp φ ▸ GlobalTheory.PullDegComp.nonempty_isPullDeg_comp hφ Function.injective_id hD₂ hU`.
+A detailed English derivation is pending.
 -/
 theorem exists_common_pull : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R))
     (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (L : LB G.left), L.IsLB → IsSemiAbelian G → UnifTrait D G L →

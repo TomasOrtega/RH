@@ -30,17 +30,17 @@ def Lo (q n : ℕ) : AddSubgroup ℂ where
     exact ha.neg
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Lo {q n : ℕ} {z : ℂ} : z ∈ Lo q n ↔ IsIntegral ℤ ((q : ℂ) ^ n * z) := Iff.rfl
 
 /- English proof (translation)
-Simplify `h` using `[mem_Lo]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Lo_zero {q : ℕ} {z : ℂ} (h : IsIntegral ℤ z) : z ∈ Lo q 0 := by simpa [mem_Lo] using h
 
 /- English proof (translation)
-Rewrite `*` using `[mem_Lo]`. Use `hx.mul hy` as an intermediate fact. Rewrite `this` using `[show (q : ℂ) ^ a * x * ((q : ℂ) ^ b * y) = (q : ℂ) ^ (a + b) * (x * y) by ring]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Lo_mul {q a b : ℕ} {x y : ℂ} (hx : x ∈ Lo q a) (hy : y ∈ Lo q b) : x * y ∈ Lo q (a + b) := by
   rw [mem_Lo] at *
@@ -48,9 +48,9 @@ theorem Lo_mul {q a b : ℕ} {x y : ℂ} (hx : x ∈ Lo q a) (hy : y ∈ Lo q b)
   rwa [show (q : ℂ) ^ a * x * ((q : ℂ) ^ b * y) = (q : ℂ) ^ (a + b) * (x * y) by ring] at this
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le h`. Rewrite `*` using `[mem_Lo]`. Establish `h1 : IsIntegral ℤ ((q : ℂ) ^ c)`. Establish `: IsIntegral ℤ (q : ℂ)` using `by simpa using isIntegral_algebraMap (R := ℤ) (A := ℂ) (x := (q : ℤ))`. Conclude with `this.pow c`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1.mul hx` as an intermediate fact. Rewrite `this` using `[show (q : ℂ) ^ c * ((q : ℂ) ^ a * x) = (q : ℂ) ^ (a + c) * x by ring]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem Lo_mono {q a b : ℕ} {x : ℂ} (hx : x ∈ Lo q a) (h : a ≤ b) : x ∈ Lo q b := by
   obtain ⟨c, rfl⟩ := Nat.exists_eq_add_of_le h
@@ -62,14 +62,14 @@ theorem Lo_mono {q a b : ℕ} {x : ℂ} (hx : x ∈ Lo q a) (h : a ≤ b) : x �
   rwa [show (q : ℂ) ^ c * ((q : ℂ) ^ a * x) = (q : ℂ) ^ (a + c) * x by ring] at this
 
 /- English proof (translation)
-The claim follows from `| 0 => by simpa using Lo_zero isIntegral_one | n + 1 => by rw [pow_succ, Nat.succ_mul]; exact Lo_mul (Lo_pow hx n) hx`.
+A detailed English derivation is pending.
 -/
 theorem Lo_pow {q a : ℕ} {x : ℂ} (hx : x ∈ Lo q a) : ∀ n : ℕ, x ^ n ∈ Lo q (n * a)
   | 0 => by simpa using Lo_zero isIntegral_one
   | n + 1 => by rw [pow_succ, Nat.succ_mul]; exact Lo_mul (Lo_pow hx n) hx
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using Lo_zero isIntegral_one`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.card_insert_of_notMem hi, Nat.succ_mul, add_comm]`. Conclude with `Lo_mul (h i (Finset.mem_insert_self _ _)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lo_prod {q a : ℕ} {ι : Type} (s : Finset ι) (f : ι → ℂ) (h : ∀ i ∈ s, f i ∈ Lo q a) :
     ∏ i ∈ s, f i ∈ Lo q (s.card * a) := by
@@ -93,7 +93,7 @@ Both sides reduce to the same expression.
 theorem chiZ_apply (ν : kˣ →* ℂˣ) (z : ℂ) (x : kˣ) : chiZ ν z x = (ν x : ℂ) * apow x z := rfl
 
 /- English proof (translation)
-Establish `h` using `valuation_gdet_of_mem_KO hu`. Rewrite using `[chiZ_apply, apow_of_valuation_eq_one h, mul_one]`. Conclude with `Lo_zero (UpperTheory.isIntegral_unitChar_of_conductor_le ϖ e ν hϖ hν _ h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiZ_KO {n : Type} [Fintype n] [DecidableEq n] {ϖ : kˣ} {e : ℕ} {ν : kˣ →* ℂˣ} (hϖ : IsUnif ϖ)
     (hν : CondLE ϖ e ν) (q : ℕ) (z : ℂ) {u : GL n k} (hu : u ∈ KO k n) : chiZ ν z (gdet u) ∈ Lo q 0 := by
@@ -102,7 +102,7 @@ theorem chiZ_KO {n : Type} [Fintype n] [DecidableEq n] {ϖ : kˣ} {e : ℕ} {ν 
   exact Lo_zero (UpperTheory.isIntegral_unitChar_of_conductor_le ϖ e ν hϖ hν _ h)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_right' ((Valuation.mem_integer_iff _ _).1 (hN l j))).trans (hM i l)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_mul_le {a b c : Type} [Fintype b] {M : Matrix a b k} {N : Matrix b c k} {r : ValueGroupWithZero k}
     (hM : ∀ i j, valuation k (M i j) ≤ r) (hN : ∀ i j, N i j ∈ 𝒪[k]) (i : a) (j : c) :
@@ -113,11 +113,11 @@ theorem val_mul_le {a b c : Type} [Fintype b] {M : Matrix a b k} {N : Matrix b c
   exact (mul_le_of_le_one_right' ((Valuation.mem_integer_iff _ _).1 (hN l j))).trans (hM i l)
 
 /- English proof (translation)
-Rewrite using `[fourierSum_apply]`. Use `split_ifs with h`. Use `Lo_mul ?_ (sum_mem fun T _ => Lo_mul (b := 0) (hΦ _) (Lo_zero (hψ _ ?_)))` and prove the remaining obligations. Rewrite using `[mem_Lo, mul_inv_cancel₀ (pow_ne_zero _ (by exact_mod_cast hq))]`. Conclude with `isIntegral_one`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Valuation.mem_integer_iff]`. Express the relevant statement in the definitionally equal form `_ ∈ 𝒪[k]`. Rewrite using `[pairCols, Finset.mul_sum]`. Use `Subring.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Subring.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Conclude with `Subring.mul_mem _ (liftRes_mem T i j) (h i j j.2)`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem fourierSum_mem {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ψ : AddChar k Circle)
     (ϖ : kˣ) (e : ℕ) (P : Finset D) (hψ : ∀ x : k, valuation k (((ϖ ^ e : kˣ) : k) * x) ≤ 1 → IsIntegral ℤ (ψ x : ℂ))
@@ -140,11 +140,11 @@ theorem fourierSum_mem {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [Dec
   · exact zero_mem _
 
 /- English proof (translation)
-Rewrite using `[invFourierSum_inv_apply]`. Use `split_ifs with h`. Use `sum_mem fun S _ => Lo_mul (b := 0) (hΦ _) (Lo_zero (hψ _ ?_))` and prove the remaining obligations. Rewrite using `[← Valuation.mem_integer_iff]`. Express the relevant statement in the definitionally equal form `_ ∈ 𝒪[k]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `e1 : ((ϖ ^ e : kˣ) : k) * pairCols P T ((ϖ ^ e)⁻¹ • liftRes S) = ∑ i, ∑ j : P, liftRes S i j * T i j`. Rewrite using `[pairCols, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_apply, Units.smul_def, smul_eq_mul, ← mul_assoc, ← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul]`. Rewrite using `[e1]`. Conclude with `Subring.sum_mem _ fun i _ => Subring.sum_mem _ fun j _ => Subring.mul_mem _ (liftRes_mem S i j) (h i j j.2)`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invFourierSum_inv_mem {A D : Type} [Fintype A] [DecidableEq A] [DecidableEq D] (ψ : AddChar k Circle)
     (ϖ : kˣ) (e : ℕ) (P : Finset D) (hψ : ∀ x : k, valuation k (((ϖ ^ e : kˣ) : k) * x) ≤ 1 → IsIntegral ℤ (ψ x : ℂ))
@@ -170,23 +170,21 @@ theorem invFourierSum_inv_mem {A D : Type} [Fintype A] [DecidableEq A] [Decidabl
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Establish `hu'` using `(mem_KO_iff u).1 hu`. Establish `hY0 : ∀ i j, Y0 k σ i j ∈ 𝒪[k]` using `fun i j => by`. Apply the tactic sequence `simp only [Y0, of_apply]; split_ifs <;> simp`. Establish `hent : ∀ (g : Matrix (Fin n) (Fin n) k) i j, (g * (Y0 k σ * (u * diagGL fun j => (c' j)⁻¹).val)) i j = (g * Y0 k σ * u.val) i j * (((c' j)⁻¹ : kˣ) : k)` using `fun g i j => by`. Rewrite using `[Units.val_mul, diagGL_val, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_diagonal]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv0 : ∀ x : kˣ, 0 < valuation k (x : k)` using `fun x => zero_lt_iff.2 (by simp)`. Use `UpperTheory.integral_mem_addSubgroup_of_ramified_twisted_invariant μ J hJo hJK hμ ϖ ν e hϖ hram hν _ (fun g => Ψ (g * (Y0 k σ * (u * diagGL fun j => (c' j)⁻¹).val))) e ?_ ?_ ?_ _ ?_` and prove the remaining obligations. Introduce `g hg`. Establish `h1 : g * (Y0 k σ * (u * diagGL fun j => (c' j)⁻¹).val) ∈ matLat (Fin n) (diagLat c)`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hg (hΨ.1 _ h)`. Establish `h2 : ∀ i j, valuation k ((g * Y0 k σ * u.val) i j) ≤ valuation k ((ϖ ^ (-(e : ℤ)) : kˣ) : k)` using `fun i j => by`. Establish `h3 : valuation k ((g * (Y0 k σ * (u * diagGL fun j => (c' j)⁻¹).val)) i j) ≤ valuation k (c j : k)` using `h1 i j`. Rewrite `h3` using `[hent, map_mul, Units.val_inv_eq_inv_val, map_inv₀, mul_inv_le_iff₀ (hv0 _), ← map_mul, ← Units.val_mul, hcc]`. Rewrite using `[_root_.zpow_neg, _root_.zpow_natCast]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Establish `h4` using `val_mul_le h2 hu'.2 i (σ (.inr j))`. Rewrite `h4` using `[Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Simplify `h4` using `[Matrix.mul_apply, Y0]`. Introduce `X Z hZ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.add_mul]`. Use `hΨ.2 _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[smul_diagLat]`. Introduce `j`. Establish `h1 : valuation k ((Z * Y0 k σ * u.val) i j) ≤ 1` using `val_mul_le (val_mul_le (r := 1) (fun i j => by simpa using hZ i j) hY0) hu'.1 i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `show valuation k ((Z * (Y0 k σ * (u * diagGL fun j => (c' j)⁻¹).val)) i j) ≤ valuation k ((ϖ ^ e * c j : kˣ) : k)`. Rewrite using `[hent, map_mul, show ϖ ^ e * c j = (c' j)⁻¹ by rw [eq_inv_iff_mul_eq_one, mul_assoc, hcc, mul_inv_cancel]]`. Conclude with `mul_le_of_le_one_left' h1`. Introduce `j hj g`. Simplify using `only [Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hinv j hj _`. Introduce `m hm g hg`. Take `⟨x, hx, y, hy, rfl⟩` from `mem_shellSet.1 hg`. Rewrite using `[mul_assoc, ← chiZ_apply]`. Use `Lo_mul (hΨa _) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[gdet_mul, gdet_mul, map_mul, map_mul]`. Establish `h1 : chiZ ν ((Fintype.card D : ℂ) / 2) (gdet (diagGL fun i => ϖ ^ m i)) ∈ Lo q (n * (e * C))`. Rewrite using `[gdet, det_diagGL, map_prod]`. Use `Lo_prod (q := q) (a := e * C) Finset.univ (fun i => chiZ ν ((Fintype.card D : ℂ) / 2) (ϖ ^ m i)) fun i _ => by` as an intermediate fact. Take `⟨l, hl⟩ : ∃ l : ℕ, m i = -(l : ℤ)` from `⟨(-m i).toNat, by have := hm i; omega⟩`.
-
-Rewrite using `[hl, _root_.zpow_neg, _root_.zpow_natCast, ← inv_pow, map_pow]`. Conclude with `Lo_mono (Lo_pow hC l) (Nat.mul_le_mul_right _ (by have := hm i; omega))`. Simplify using `using this`. Simplify using `using Lo_mul (Lo_mul (chiZ_KO hϖ hν q _ hx) h1) (chiZ_KO hϖ hν q _ hy)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem smallF_mem {A D : Type} [Fintype A] [DecidableEq A] {n : ℕ} [Fintype D] [DecidableEq D]
     (μ : Measure (GL (Fin n) k)) [μ.IsHaarMeasure] {J : Subgroup (GL (Fin n) k)} (hJo : IsOpen (J : Set (GL (Fin n) k)))
@@ -244,19 +242,15 @@ theorem smallF_mem {A D : Type} [Fintype A] [DecidableEq A] {n : ℕ} [Fintype D
     simpa using Lo_mul (Lo_mul (chiZ_KO hϖ hν q _ hx) h1) (chiZ_KO hϖ hν q _ hy)
 
 /- English proof (translation)
-Unfold `phiA`. Use `split_ifs with hX`. Use `swap`. Conclude with `zero_mem _`. Rewrite `hX` using `[latA_blockLat]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set g : GL D k := blockScale ϖ e Pᶜ with hg`. Establish `h1 : ∀ x, x ᵥ* (g⁻¹).val ∈ stdLat k D ↔ x ∈ blockLat ϖ e Pᶜ` using `fun x => by`. Rewrite using `[← vecMul_blockScale_mem ϖ e Pᶜ, vecMul_vecMul, Units.inv_mul, vecMul_one]`. Take `⟨u, hu, hXu⟩` from `UpperTheory.exists_mem_KO_eq_stdFrame_mul_of_isPrimFrame σ _ (GlobalTheory.SplitFlip.Model.isPrimFrame_mul hX g⁻¹ h1)`. Establish `h2 : invT (diagGL fun j => (blockUnits ϖ e Pᶜ j)⁻¹) = g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: (diagGL fun j => (blockUnits ϖ e Pᶜ j)⁻¹) = g⁻¹`. Rewrite using `[eq_inv_iff_mul_eq_one]`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, hg, blockScale, diagGL_val, diagGL_val, diagonal_mul_diagonal]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[this, invT_val, inv_inv, hg, blockScale, diagGL_val, diagonal_transpose]`. Establish `h3 : X = X0 k σ * (invT (u * diagGL fun j => (blockUnits ϖ e Pᶜ j)⁻¹)).val`. Rewrite using `[map_mul, h2, Units.val_mul, ← Matrix.mul_assoc, ← hXu, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Rewrite using `[h3, splitTheta_fFun_frameFirstBlock_mul, ← chiZ_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `Lo_mul ?_ (smallF_mem μ hJo hJK hμ σ hϖ hν hram hC (blockUnits ϖ e P) (blockUnits ϖ e Pᶜ) (fun j => ?_) hΨ hΨa hinv hu)` and prove the remaining obligations. Rewrite using `[gdet_mul, map_mul, gdet, gdet, det_diagGL, map_prod]`. Use `Lo_prod (q := q) (a := e * C) Finset.univ (fun j => chiZ ν ((Fintype.card D : ℂ) / 2) (blockUnits ϖ e Pᶜ j)⁻¹) fun j _ => by` as an intermediate fact. Unfold `blockUnits`. Use `split_ifs`.
-
-Rewrite using `[inv_inv, map_pow]`. Conclude with `Lo_pow hC' e`. Rewrite using `[inv_one, map_one]`. Conclude with `Lo_mono (Lo_zero isIntegral_one) (Nat.zero_le _)`. Simplify using `using Lo_mul (chiZ_KO hϖ hν q ((Fintype.card D : ℂ) / 2) hu) this`.
-
-Apply the tactic sequence `by_cases h : j ∈ P <;> simp [blockUnits, h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem phiA_mem {A D : Type} [Fintype A] [DecidableEq A] {n : ℕ} [Fintype D] [DecidableEq D]
     (μ : Measure (GL (Fin n) k)) [μ.IsHaarMeasure] {J : Subgroup (GL (Fin n) k)} (hJo : IsOpen (J : Set (GL (Fin n) k)))
@@ -301,11 +295,11 @@ theorem phiA_mem {A D : Type} [Fintype A] [DecidableEq A] {n : ℕ} [Fintype D] 
 omit [MeasurableSpace k] [BorelSpace k] in
 
 /- English proof (translation)
-Establish `hq' : (resCard k : ℂ) ≠ 0` using `by exact_mod_cast hq`. Establish `hi : IsIntegral ℤ (resCard k : ℂ)`. Simplify using `using isIntegral_algebraMap (R := ℤ) (A := ℂ) (x := (resCard k : ℤ))`. Establish `hs : ((resCard k : ℂ) ^ ((d : ℂ) / 2)) ^ 2 = (resCard k : ℂ) ^ d`. Rewrite using `[← Complex.cpow_nat_mul, ← Complex.cpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : IsIntegral ℤ ((resCard k : ℂ) ^ ((d : ℂ) / 2))` using `IsIntegral.of_pow two_pos (by rw [hs]; exact hi.pow d)`. Use `⟨Lo_mul h2 ?_, Lo_mul h1 ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[apow_inv, hϖ.apow_eq, neg_neg]`. Conclude with `Lo_mono (Lo_zero h3) (Nat.zero_le _)`. Rewrite using `[hϖ.apow_eq, mem_Lo, ← hs, Complex.cpow_neg, sq, mul_assoc, mul_inv_cancel₀ ((Complex.cpow_ne_zero_iff).2 (Or.inl hq')), mul_one]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiZ_unif {ν : kˣ →* ℂˣ} {ϖ : kˣ} (hϖ : IsUnif ϖ) (hq : resCard k ≠ 0) {B : ℕ} (d : ℕ)
     (h1 : (ν ϖ : ℂ) ∈ Lo (resCard k) B) (h2 : (ν ϖ⁻¹ : ℂ) ∈ Lo (resCard k) B) :
@@ -324,15 +318,15 @@ theorem chiZ_unif {ν : kˣ →* ℂˣ} {ϖ : kˣ} (hϖ : IsUnif ϖ) (hq : resCa
     exact h3
 
 /- English proof (translation)
-Establish `hJ'` using `isOpen_map_invT hJ hK`. Use `haveI := isHaarMeasure_haarVol hJ'.1 hJ'.2`. Establish `hsub` using `hp.subset`. Establish `hN` using `GlobalTheory.FunObj.isNatDatum_sliceB hT.tensor (hsub (by simp)) (hsub (by simp)) x (i := i) (j := j)`. Take `⟨c1, c2⟩` from `chiZ_unif hϖ hq (Fintype.card (G.Cols i j)) h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Unfold `Grid.flipTensor squareFlip`. Use `invFourierSum_inv_mem ψ ϖ e _ hψ (fun X => Lo_mono (phiA_mem _ hJ hK (UpperTheory.haarVol_self_eq_one_of_openSubgroup_le_KO _ hJ hK) _ hϖ hν hram c1 c2 _ ((GlobalTheory.SplitFlip.FourierDepth.fourier_exchange k _ _ ψ ϖ e _ hϖ hψc).1 _ hN) (fun Y => fourierSum_mem ψ ϖ e _ hψ hq (f …` and prove the remaining obligations. Establish `h3` using `UpperTheory.fourierSum_block_transpose_inv_eq ψ ϖ e hϖ hψc _ hN u⁻¹ (inv_mem (hK hu)) Y`. Rewrite `h3` using `[inv_inv]`. Establish `h4 : G.sliceB i j St.tensor x = (G.nu i j (gdet u) : ℂ) • fun Z => G.sliceB i j St.tensor x (fromCols ((u⁻¹).valᵀ * Z.toCols₁) (u.val * Z.toCols₂))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `Z`. Use `UpperTheory.nu_det_mul_sliceB_block_action ϖ e St i j hp hT u⁻¹ (inv_mem hu) x Z` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `this.symm`. Rewrite using `[← h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `conv_rhs => rw [h4, map_smul]`. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm]`. Apply the tactic sequence `have r1 : G.rank (i, j) ≤ N := le_trans (by simp only [Grid.rank]; gcongr <;> omega) hr`. Establish `r2 : G.rank (i, j + 1) ≤ N` using `le_trans (by simp only [Grid.rank]; gcongr; omega) hr`. Establish `r3 : G.rank (i + 1, j) ≤ N` using `le_trans (by simp only [Grid.rank]; gcongr; omega) hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `r4 : Fintype.card (G.Cols i j) ≤ 2 * N` using `by simp only [Fintype.card_sum, Fintype.card_fin]; omega`. Establish `r5 : (Assignment.one.block (Fin (G.rank (i, j + 1))) (Fin (G.rank (i + 1, j)))).card ≤ 2 * N` using `(Finset.card_le_univ _).trans r4`. Rewrite using `[Fintype.card_fin]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem flip_mem {G : Grid k} {ψ : AddChar k Circle} {ϖ : kˣ} {e : ℕ} (hϖ : IsUnif ϖ) (hψc : HasConductor ψ 1)
     (hq : resCard k ≠ 0) (hψ : ∀ x : k, valuation k (((ϖ ^ e : kˣ) : k) * x) ≤ 1 → IsIntegral ℤ (ψ x : ℂ)) {i j B N a : ℕ}
@@ -372,13 +366,13 @@ theorem flip_mem {G : Grid k} {ψ : AddChar k Circle} {ϖ : kˣ} {e : ℕ} (hϖ 
       _ = _ := by ring
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro S a _ _ _ _ hF`. Simplify `hF` using `[Grid.PiLocalization₂.flips]`. Consider the case `cons x l ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `S a hν hc hJ hT hF z`. Take `_ | ⟨hp, hc'⟩` from `hc`. Take `⟨x1, x2, x3, x4, x5⟩` from `hν x List.mem_cons_self`. Use `ih (S.flip .one ψ ϖ e x) _ (fun y hy => hν y (List.mem_cons_of_mem _ hy)) hc' (fun X => ?_) (GlobalTheory.T.splitThetaGrid_isAdmissible_flipTensor ψ ϖ e hϖ hψc he S x x1 hp hJ hT) (flip_mem hϖ hψc hq hψ x1 x2 x3 x4 x5 S hp (hJ _).1 (hJ _).2 hT hF) z` as an intermediate fact. Rewrite using `[List.length_cons, Nat.succ_mul, add_comm (l.length * _), ← add_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `this`. Express the relevant statement in the definitionally equal form `IsOpen (G.flipLevel x.1 x.2 S.level X : Set (GL (Fin (G.rank X)) k)) ∧ G.flipLevel x.1 x.2 S.level X ≤ _`. Distinguish the cases in `hX : X = (x.1 + 1, x.2 + 1)`. Substitute `hX` using the available equality. Simplify using `only [Grid.flipLevel, Function.update_self]`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨isOpen_KO, le_rfl⟩`. Simplify using `only [Grid.flipLevel, Function.update_of_ne hX]`. Conclude with `hJ X`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flips_mem {G : Grid k} {ψ : AddChar k Circle} {ϖ : kˣ} {e : ℕ} (hϖ : IsUnif ϖ) (hψc : HasConductor ψ 1) (he : 1 ≤ e)
     (hq : resCard k ≠ 0) (hψ : ∀ x : k, valuation k (((ϖ ^ e : kˣ) : k) * x) ≤ 1 → IsIntegral ℤ (ψ x : ℂ)) {B N : ℕ} :

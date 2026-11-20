@@ -20,7 +20,7 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P.PartialDerivativeAlge
 variable {N : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add p₁ p₂ h₁ h₂ => simp [h₁, h₂]`. Consider the case `mul_X p v hp => simp [hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private lemma star_eval_eq_eval₂_starRingEnd {σ : Type*} (x : σ → ℂ) (q : MvPolynomial σ ℂ) :
     star (MvPolynomial.eval x q) = MvPolynomial.eval₂ (starRingEnd ℂ) (fun v => star (x v)) q := by
@@ -30,9 +30,9 @@ private lemma star_eval_eq_eval₂_starRingEnd {σ : Type*} (x : σ → ℂ) (q 
   | mul_X p v hp => simp [hp]
 
 /- English proof (translation)
-Take `⟨q, hq, hP⟩` from `h`. Use `⟨MvPolynomial.rename Sum.swap (MvPolynomial.map (starRingEnd ℂ) q), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(MvPolynomial.totalDegree_rename_le _ _).trans (le_trans (by`. Unfold `MvPolynomial.totalDegree`. Conclude with `Finset.sup_mono (MvPolynomial.support_map_subset _ _)) hq)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g show star (P g) = _`. Rewrite using `[hP g, MvPolynomial.eval_rename, MvPolynomial.eval_map, star_eval_eq_eval₂_starRingEnd]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Apply the tactic sequence `cases v <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isPolyDeg_star {a : ℕ} {P : Matrix (Fin N) (Fin N) ℂ → ℂ} (h : U.IsPolyDeg a P) :
     U.IsPolyDeg a (fun g => star (P g)) := by
@@ -50,7 +50,7 @@ theorem isPolyDeg_star {a : ℕ} {P : Matrix (Fin N) (Fin N) ℂ → ℂ} (h : U
     cases v <;> simp
 
 /- English proof (translation)
-Take `⟨q, hq, hP⟩` from `h`. Use `⟨q ^ n, (MvPolynomial.totalDegree_pow q n).trans (Nat.mul_le_mul_left n hq), ?_⟩` and prove the remaining obligations. Introduce `g`. Simplify using `[hP g]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isPolyDeg_pow {a : ℕ} {P : Matrix (Fin N) (Fin N) ℂ → ℂ} (h : U.IsPolyDeg a P) (n : ℕ) :
     U.IsPolyDeg (n * a) (fun g => P g ^ n) := by
@@ -60,7 +60,7 @@ theorem isPolyDeg_pow {a : ℕ} {P : Matrix (Fin N) (Fin N) ℂ → ℂ} (h : U.
   simp [hP g]
 
 /- English proof (translation)
-Use `choose q hq hP using h`. Use `⟨∏ i ∈ s, q i, (MvPolynomial.totalDegree_finsetProd s q).trans (Finset.sum_le_sum fun i _ => hq i), ?_⟩` and prove the remaining obligations. Introduce `g`. Simplify using `[hP]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPolyDeg_prod {ι : Type*} (s : Finset ι) (d : ι → ℕ) {P : ι → Matrix (Fin N) (Fin N) ℂ → ℂ}
     (h : ∀ i, U.IsPolyDeg (d i) (P i)) : U.IsPolyDeg (∑ i ∈ s, d i) (fun g => ∏ i ∈ s, P i g) := by
@@ -70,13 +70,13 @@ theorem isPolyDeg_prod {ι : Type*} (s : Finset ι) (d : ι → ℕ) {P : ι →
   simp [hP]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨MvPolynomial.C c, by simp, fun g => by simp⟩`.
+Supply the required witnesses or components.
 -/
 private lemma isPolyDeg_const (c : ℂ) (a : ℕ) : U.IsPolyDeg (N := N) a (fun _ => c) :=
   ⟨MvPolynomial.C c, by simp, fun g => by simp⟩
 
 /- English proof (translation)
-Take `⟨p, hp, hPe⟩` from `hP`. Take `⟨q, hq, hQe⟩` from `hQ`. Conclude with `⟨p * q, (MvPolynomial.totalDegree_mul p q).trans (Nat.add_le_add hp hq), fun g => by simp [hPe, hQe]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma exists_pow_mul_mul_mem_subring {a b : ℕ} {P Q : Matrix (Fin N) (Fin N) ℂ → ℂ} (hP : U.IsPolyDeg a P)
     (hQ : U.IsPolyDeg b Q) : U.IsPolyDeg (a + b) (fun g => P g * Q g) := by
@@ -85,11 +85,11 @@ private lemma exists_pow_mul_mul_mem_subring {a b : ℕ} {P Q : Matrix (Fin N) (
   exact ⟨p * q, (MvPolynomial.totalDegree_mul p q).trans (Nat.add_le_add hp hq), fun g => by simp [hPe, hQe]⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isPolyDeg_const (N := N) 0 a`. Consider the case `insert j s hj ih`. Establish `hj'` using `h j (Finset.mem_insert_self j s)`. Establish `hs` using `ih (fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p, hp, hPe⟩` from `hj'`. Take `⟨q, hq, hQe⟩` from `hs`. Use `⟨p + q, (MvPolynomial.totalDegree_add p q).trans (max_le hp hq), fun g => ?_⟩` and prove the remaining obligations. Establish `e` using `hQe g`. Simplify using `only at e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show ∑ i ∈ insert j s, P i g = _`. Rewrite using `[Finset.sum_insert hj, MvPolynomial.eval_add, ← hPe g, ← e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_pow_mul_finset_sum_mem_subring {ι : Type*} (s : Finset ι) {a : ℕ} {P : ι → Matrix (Fin N) (Fin N) ℂ → ℂ}
     (h : ∀ i ∈ s, U.IsPolyDeg a (P i)) : U.IsPolyDeg a (fun g => ∑ i ∈ s, P i g) := by
@@ -108,7 +108,7 @@ private lemma exists_pow_mul_finset_sum_mem_subring {ι : Type*} (s : Finset ι)
     rw [Finset.sum_insert hj, MvPolynomial.eval_add, ← hPe g, ← e]
 
 /- English proof (translation)
-Take `⟨q, hq, hP⟩` from `h`. Conclude with `⟨q, hq.trans hab, hP⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma mono_lemma {a b : ℕ} {P : Matrix (Fin N) (Fin N) ℂ → ℂ} (h : U.IsPolyDeg a P) (hab : a ≤ b) :
     U.IsPolyDeg b P := by
@@ -116,11 +116,11 @@ private lemma mono_lemma {a b : ℕ} {P : Matrix (Fin N) (Fin N) ℂ → ℂ} (h
   exact ⟨q, hq.trans hab, hP⟩
 
 /- English proof (translation)
-Establish `expand : (fun g => MvPolynomial.eval (f g) q) = fun g => ∑ m ∈ q.support, q.coeff m * ∏ i ∈ m.support, f g i ^ m i`. Use function extensionality and compare the values at `g`. Rewrite using `[MvPolynomial.eval_eq]`. Rewrite using `[expand]`. Use `exists_pow_mul_finset_sum_mem_subring _ fun m hm => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdeg : (∑ i ∈ m.support, m i) * a ≤ d * a`. Apply `Nat.mul_le_mul_right` to reduce the goal to its premises. Conclude with `(MvPolynomial.le_totalDegree hm).trans hq`. Use `mono_lemma ?_ hdeg` and prove the remaining obligations. Establish `hprod : U.IsPolyDeg (∑ i ∈ m.support, m i * a) (fun g => ∏ i ∈ m.support, f g i ^ m i)` using `isPolyDeg_prod m.support (fun i => m i * a) (fun i => isPolyDeg_pow (hf i) (m i))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Simplify using `using exists_pow_mul_mul_mem_subring (isPolyDeg_const (q.coeff m) 0) hprod`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPolyDeg_eval {σ : Type*} {a d : ℕ} (f : Matrix (Fin N) (Fin N) ℂ → σ → ℂ)
     (hf : ∀ i, U.IsPolyDeg a (fun g => f g i)) (q : MvPolynomial σ ℂ) (hq : q.totalDegree ≤ d) :
@@ -148,13 +148,13 @@ namespace GlobalTheory.WigSh
 open OmgContr
 
 /- English proof (translation)
-Introduce `Wq _ _ Wq' _ _ k r z z' π' π'' d A hz hTz hz' hTz' hA`. Take `⟨⟨t, q, Lm, hq, hAe⟩, hAeq, -, -⟩` from `hA`. Use `⟨⟨t, fun i g => MvPolynomial.eval (Sum.elim (GlobalTheory.WigSh.omg k r z z' g) (fun j => star (GlobalTheory.WigSh.omg k r z z' g j))) (q i), Lm, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `isPolyDeg_eval (N := 2 * r + k + 1) (fun g => Sum.elim (GlobalTheory.WigSh.omg k r z z' g) (fun j => star (GlobalTheory.WigSh.omg k r z z' g j))) ?_ (q i) (hq i)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `(j | j)`. Conclude with `GlobalTheory.WigSh.omg_isPolyDeg k r z z' j`. Conclude with `isPolyDeg_star (GlobalTheory.WigSh.omg_isPolyDeg k r z z' j)`. Introduce `g`. Conclude with `hAe _`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg p h1 h2 h3 h4`. Establish `hn : (Matrix.of p.1.2)⁻¹ * g ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv h2.1) hg`. Establish `hG : (Matrix.of p.1.2)⁻¹ * g * Matrix.of p.2.2 ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hn h4.1`. Establish `hs : Formalism.FourierDecayAlt.B.sgs p g = (Matrix.of p.1.1)⁻¹ * ((Matrix.of p.1.2)⁻¹ * g * Matrix.of p.2.2) * Matrix.of p.2.1`. Simplify using `only [Formalism.FourierDecayAlt.B.sgs, Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hom : GlobalTheory.WigSh.omg k r z z' (Formalism.FourierDecayAlt.B.sgs p g) = (Matrix.of p.2.1)⁻¹ *ᵥ GlobalTheory.WigSh.omg k r z z' g`. Rewrite using `[hs, GlobalTheory.WigSh.omg_equivariant k r z z' _ _ _ hz hTz hz' hTz' hG h1 h3, GlobalTheory.WigSh.omg_mul_N k r z z' _ _ hz hz' hn h4, GlobalTheory.WigSh.OmLeftN.omg_left_N k r z z' g _ hz hz' hg h2]`. Rewrite using `[hom]`. Conclude with `hAeq _ (GlobalTheory.WigSh.OmgEquiv.inv_mem h3) _`.
+A detailed English derivation is pending.
 -/
 theorem wigMap_omg : ∀ (Wq : Type) [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (Wq' : Type) [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq'] (k r : ℕ) (z z' : (Fin (2 * r + k + 1) → ℂ)) (π' : Mx k r → (Wq →L[ℂ] Wq)) (π'' : Mx k r → (Wq' →L[ℂ] Wq')) (d : ℕ) (A : (Fin (2 * r + k + 1) → ℂ) → (Wq' →L[ℂ] Wq)), inWb k r z → 0 < Tz k r z → inWb k r z' → 0 < Tz k r z' → GlobalTheory.WigSh.WigMap k r z' π'' π' d A → (∃ (t : ℕ) (c : Fin t → Mx k r → ℂ) (L : Fin t → (Wq' →L[ℂ] Wq)), (∀ i, Formalism.FourierDecayAlt.U.IsPolyDeg (d * (r + 1)) (c i)) ∧ ∀ g, A (GlobalTheory.WigSh.omg k r z z' g) = ∑ i, c i g • L i) ∧ ∀ g ∈ UH (Hpk k r), ∀ p : Formalism.FourierDecayAlt.B.SS k r, Matrix.of p.1.1 ∈ UWset k r z → Matrix.of p.1.2 ∈ Formalism.QuantumDeterminants.Nset k r → Matrix.of p.2.1 ∈ UWset k r z' → Matrix.of p.2.2 ∈ Formalism.QuantumDeterminants.Nset k r → (A (GlobalTheory.WigSh.omg k r z z' (Formalism.FourierDecayAlt.B.sgs p g))).comp (π'' (Matrix.of p.2.1)⁻¹) = (π' (Matrix.of p.2.1)⁻¹).comp (A (GlobalTheory.WigSh.omg k r z z' g)) := by
   intro Wq _ _ Wq' _ _ k r z z' π' π'' d A hz hTz hz' hTz' hA

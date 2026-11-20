@@ -17,13 +17,13 @@ section
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `unif_mem la`. Establish `a1 : la.intValuation (Data.unif la) ≤ WithZero.exp (-((1 : ℕ) : ℤ))` using `(la.intValuation_le_pow_iff_mem _ 1).2 (by rw [pow_one]; exact h1)`. Establish `a2 : ¬ la.intValuation (Data.unif la) ≤ WithZero.exp (-((2 : ℕ) : ℤ))` using `fun h => h2 ((la.intValuation_le_pow_iff_mem _ 2).1 h)`. Establish `hne : la.intValuation (Data.unif la) ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `a2` to reduce the goal to its premises. Rewrite using `[h0]`. Conclude with `zero_le`. Establish `hv : la.intValuation (Data.unif la) = WithZero.exp (-1 : ℤ)`. Rewrite `a1`, `a2`, the goal using `[← WithZero.exp_log hne]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a1`, `a2` using `[WithZero.exp_le_exp]`. Use `congr 1`. Move the coercions through the operations in `at a1 a2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[FinitePlace.mk_apply]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `FinitePlace.norm_embedding_int (K := K) (v := la) (Data.unif la)` as an intermediate fact. Simplify using `only [RingOfIntegers.coe_eq_algebraMap] at this ⊢`. Rewrite using `[this, hv]`. Simplify using `[WithZeroMulInt.toNNReal_neg_apply, WithZero.exp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uniformizer_abs_eq_inv_norm (la : HeightOneSpectrum (𝓞 K)) :
     FinitePlace.mk la ((Data.unif la : 𝓞 K) : K) = ((Ideal.absNorm la.asIdeal : ℕ) : ℝ)⁻¹ := by
@@ -47,17 +47,17 @@ theorem uniformizer_abs_eq_inv_norm (la : HeightOneSpectrum (𝓞 K)) :
   simp [WithZeroMulInt.toNNReal_neg_apply, WithZero.exp]
 
 /- English proof (translation)
-Establish `hR : R ≠ 0` using `hPQ ▸ mul_ne_zero hP hQ`. Establish `hfin : ∑ᶠ w : FinitePlace K, Real.log (gaussAbs w P) = (∑ᶠ w : FinitePlace K, Real.log (gaussAbs w R)) - ∑ᶠ w : FinitePlace K, Real.log (gaussAbs w Q)`. Rewrite using `[← finsum_sub_distrib (gauss_abs_log_support_finite R hR) (gauss_abs_log_support_finite Q hQ)]`. Use `finsum_congr fun w => ?_` and prove the remaining obligations. Rewrite using `[← hPQ, gauss_abs_mul w P Q hP hQ, Real.log_mul (gauss_abs_pos_of_ne_zero w P hP).ne' (gauss_abs_pos_of_ne_zero w Q hQ).ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `harch : ∀ σ : K →+* ℂ, blockSphereMean B n (MvPolynomial.map σ P) = blockSphereMean B n (MvPolynomial.map σ R) - blockSphereMean B n (MvPolynomial.map σ Q)`. Introduce `σ`. Establish `hs : ∀ F : MvPolynomial (Fin B × Fin n) K, F ≠ 0 → MvPolynomial.map σ F ≠ 0`. Introduce `F hF h'`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hF (MvPolynomial.map_injective σ σ.injective (by rw [h', map_zero]))`. Establish `IR` using `sphereLogIntegrable B n eR _ (hs R hR) (isMultiHomogeneous_map_ring eR R hRm σ)`. Establish `IQ` using `sphereLogIntegrable B n eQ _ (hs Q hQ) (isMultiHomogeneous_map_ring eQ Q hQm σ)`. Establish `aR` using `ae_blockSphere_eval_ne_zero B n eR _ (hs R hR) (isMultiHomogeneous_map_ring eR R hRm σ)`. Establish `aQ` using `ae_blockSphere_eval_ne_zero B n eQ _ (hs Q hQ) (isMultiHomogeneous_map_ring eQ Q hQm σ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `blockSphereMean`. Rewrite using `[← integral_sub IR IQ]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [aR, aQ] with z hzR hzQ`. Establish `hRe : MvPolynomial.eval (blockPoint z) (MvPolynomial.map σ R) = MvPolynomial.eval (blockPoint z) (MvPolynomial.map σ P) * MvPolynomial.eval (blockPoint z) (MvPolynomial.map σ Q)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hPQ, map_mul, map_mul]`. Establish `hzP : MvPolynomial.eval (blockPoint z) (MvPolynomial.map σ P) ≠ 0`. Introduce `h0`. Apply `hzR` to reduce the goal to its premises. Rewrite using `[hRe, h0, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hRe, norm_mul, Real.log_mul (norm_ne_zero_iff.2 hzP) (norm_ne_zero_iff.2 hzQ)]`. Expand and normalize the polynomial expressions, which then agree. Unfold `h0`. Rewrite using `[hfin, Finset.sum_congr rfl fun σ _ => harch σ, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem logHeight_div_multihomogeneous {B n : ℕ} {P Q R : MvPolynomial (Fin B × Fin n) K}
     (eQ eR : Fin B → ℕ) (hP : P ≠ 0) (hQ : Q ≠ 0) (hQm : IsMultiHomogeneous eQ Q)
@@ -117,37 +117,35 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Set `_` to `algOpKT (K := K) d.D d.N la`. Use `isFractionRing_Op (K := K) d.D d.N la` as an intermediate fact. Use `Op_isDVR (K := K) d.D d.N la` as an intermediate fact. Establish `hinj` using `IsFractionRing.injective (KTp K d.D d.N) (KTf K d.D d.N)`. Establish `hq0 : q ≠ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl; rw [zero_mul] at hq; exact ha (hinj (by rw [hq, map_zero]))`. Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := Op d.D d.N la) q`. Establish `hy0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`. Establish `hx0 : x ≠ 0` using `by rintro rfl; simp at hq0`. Take `⟨n1, u1, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 (unifOp_irreducible d.D d.N la)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n2, u2, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy0 (unifOp_irreducible d.D d.N la)`. Use `set π := algebraMap K (KTf K d.D d.N) ((Data.unif la : 𝓞 K) : K) with hπdef`. Establish `hπ : OpToKT d.D d.N la (unifOp d.D d.N la) = π` using `(algK_unif d.D d.N la).symm`. Establish `hπ0 : π ≠ 0`. Rewrite using `[← hπ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(map_ne_zero_iff _ (OpToKT_injective d.D d.N la)).mpr (unifOp_irreducible d.D d.N la).ne_zero`. Establish `hE : ∀ z : Op d.D d.N la, algebraMap (Op d.D d.N la) (KTf K d.D d.N) z = OpToKT d.D d.N la z` using `fun _ => rfl`. Establish `hU : ∀ u : (Op d.D d.N la)ˣ, OpToKT d.D d.N la (u : Op d.D d.N la) ≠ 0` using `fun u => (map_ne_zero_iff _ (OpToKT_injective d.D d.N la)).mpr u.ne_zero`. Establish `hg : d.gOrd la (algebraMap (Op d.D d.N la) (KTf K d.D d.N) (↑u1 * unifOp d.D d.N la ^ n1) / algebraMap (Op d.D d.N la) (KTf K d.D d.N) (↑u2 * unifOp d.D d.N la ^ n2)) = (n1 : ℤ) - n2`. Use `d.gOrd_eq la (u := ((u1 * u2⁻¹ : (Op d.D d.N la)ˣ) : Op d.D d.N la)) (Units.isUnit _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hE, hE, map_mul, map_mul, map_pow, map_pow, hπ, Units.val_mul, map_mul, map_units_inv (OpToKT d.D d.N la) u2, zpow_sub₀ hπ0, zpow_natCast, zpow_natCast]`. Use `hU u2` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[hg]`. Take `⟨⟨x1, s1⟩, hu1⟩` from `IsLocalization.mk'_surjective (laT d.D d.N la).primeCompl (u1 : Op d.D d.N la)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Take `⟨⟨x2, s2⟩, hu2⟩` from `IsLocalization.mk'_surjective (laT d.D d.N la).primeCompl (u2 : Op d.D d.N la)`. Simplify using `only at hu1 hu2`. Establish `hx1 : x1 ∈ (laT d.D d.N la).primeCompl` using `(IsLocalization.AtPrime.isUnit_mk'_iff (Op d.D d.N la) (laT d.D d.N la) x1 s1).1 (hu1 ▸ u1.isUnit)`. Establish `hx2 : x2 ∈ (laT d.D d.N la).primeCompl` using `(IsLocalization.AtPrime.isUnit_mk'_iff (Op d.D d.N la) (laT d.D d.N la) x2 s2).1 (hu2 ▸ u2.isUnit)`. Use `set g := (algebraMap (KTp K d.D d.N) (KTf K d.D d.N)).comp (OTtoKT K d.D d.N) with hgdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs1 : g x1 = g s1 * OpToKT d.D d.N la (u1 : Op d.D d.N la)`. Rewrite using `[← hu1]`. Conclude with `(IsLocalization.lift_mk'_spec _ _ _ _).1 rfl`. Establish `hs2 : g x2 = g s2 * OpToKT d.D d.N la (u2 : Op d.D d.N la)`. Rewrite using `[← hu2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsLocalization.lift_mk'_spec _ _ _ _).1 rfl`. Establish `hX : x2 * (s1 : OT K d.D d.N) ∈ (laT d.D d.N la).primeCompl` using `(laT d.D d.N la).primeCompl.mul_mem hx2 s1.2`. Establish `hY : x1 * (s2 : OT K d.D d.N) ∈ (laT d.D d.N la).primeCompl` using `(laT d.D d.N la).primeCompl.mul_mem hx1 s2.2`. Establish `hπC : π = algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (C ((Data.unif la : 𝓞 K) : K))`. Rewrite using `[hπdef, IsScalarTower.algebraMap_apply K (KTp K d.D d.N) (KTf K d.D d.N), MvPolynomial.algebraMap_eq]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpoly : a * OTtoKT K d.D d.N (x2 * (s1 : OT K d.D d.N)) * C (((Data.unif la : 𝓞 K) : K) ^ n2) = C (((Data.unif la : 𝓞 K) : K) ^ n1) * OTtoKT K d.D d.N (x1 * (s2 : OT K d.D d.N)) * b`. Apply `hinj` to reduce the goal to its premises. Establish `hs1' : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (OTtoKT K d.D d.N x1) = algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (OTtoKT K d.D d.N (s1 : OT K d.D d.N)) * OpToKT d.D d.N la (u1 : Op d.D d.N la)` using `hs1`. Establish `hs2' : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (OTtoKT K d.D d.N x2) = algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (OTtoKT K d.D d.N (s2 : OT K d.D d.N)) * OpToKT d.D d.N la (u2 : Op d.D d.N la)` using `hs2`. Establish `e3 : ∀ m : ℕ, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (C (((Data.unif la : 𝓞 K) : K) ^ m)) = π ^ m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `m`. Rewrite using `[hπC, MvPolynomial.C_pow, map_pow]`. Simplify using `only [map_mul, e3]`. Rewrite using `[hq, hs1', hs2']`. Simplify using `only [hE, map_mul, map_pow, hπ]`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hU u2` as an intermediate fact. Use `hπ0` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Use `set w := FinitePlace.mk la`. Establish `hXn : gaussAbs w (OTtoKT K d.D d.N (x2 * (s1 : OT K d.D d.N))) = 1` using `gaussAbs_prim la _ hX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYn : gaussAbs w (OTtoKT K d.D d.N (x1 * (s2 : OT K d.D d.N))) = 1` using `gaussAbs_prim la _ hY`. Establish `hX0 : OTtoKT K d.D d.N (x2 * (s1 : OT K d.D d.N)) ≠ 0` using `by intro h0; rw [h0] at hXn; simp [gaussAbs] at hXn`. Establish `hY0 : OTtoKT K d.D d.N (x1 * (s2 : OT K d.D d.N)) ≠ 0` using `by intro h0; rw [h0] at hYn; simp [gaussAbs] at hYn`. Establish `hN : (0 : ℝ) < ((Ideal.absNorm la.asIdeal : ℕ) : ℝ)`. Use `NumberField.HeightOneSpectrum.one_lt_absNorm la` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(zero_lt_one.trans this)` after adjusting the coercions. Establish `hϖ0 : ((Data.unif la : 𝓞 K) : K) ≠ 0`. Introduce `h0`. Use `uniformizer_abs_eq_inv_norm la` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(inv_pos.2 hN).ne' this.symm`. Establish `hC0 : ∀ m : ℕ, (C (((Data.unif la : 𝓞 K) : K) ^ m) : KTp K d.D d.N) ≠ 0` using `fun m => by`. Rewrite using `[Ne, C_eq_zero]`. Conclude with `pow_ne_zero _ hϖ0`. Establish `key` using `congrArg (gaussAbs w) hpoly`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `key` using `[gauss_abs_mul w _ _ (mul_ne_zero ha hX0) (hC0 n2), gauss_abs_mul w _ _ ha hX0, gauss_abs_mul w _ _ (mul_ne_zero (hC0 n1) hY0) hb, gauss_abs_mul w _ _ (hC0 n1) hY0, gaussAbs_C, gaussAbs_C, map_pow, map_pow, uniformizer_abs_eq_inv_norm la, hXn, hYn, mul_one, mul_one]`. Establish `hA'` using `gauss_abs_pos_of_ne_zero w a ha`. Establish `hB'` using `gauss_abs_pos_of_ne_zero w b hb`. Establish `hlogN : logNorm la = Real.log ((Ideal.absNorm la.asIdeal : ℕ) : ℝ)` using `rfl`. Establish `hl` using `congrArg Real.log key`.
-
-Rewrite `hl` using `[Real.log_mul hA'.ne' (pow_ne_zero _ (inv_pos.2 hN).ne'), Real.log_mul (pow_ne_zero _ (inv_pos.2 hN).ne') hB'.ne', Real.log_pow, Real.log_pow, Real.log_inv]`. Rewrite using `[hlogN]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem log_gaussAbs_sub_of_fraction (la : HeightOneSpectrum (𝓞 K)) (a b : KTp K d.D d.N) (ha : a ≠ 0) (hb : b ≠ 0)
     (q : KTf K d.D d.N)
